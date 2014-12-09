@@ -57,13 +57,12 @@ if ( ! class_exists( 'Give' ) ) : /**
 		 * @uses      Give::includes() Include the required files
 		 * @uses      Give::load_textdomain() load the language files
 		 * @see       Give()
-		 * @return The one true Give
+		 * @return    Give
 		 */
 		public static function instance() {
 			if ( ! isset( self::$instance ) && ! ( self::$instance instanceof Give ) ) {
 				self::$instance = new Give;
 				self::$instance->setup_constants();
-
 
 				add_action( 'plugins_loaded', array( self::$instance, 'load_textdomain' ) );
 
@@ -153,6 +152,10 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/post-types.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/scripts.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-roles.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-template-loader.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/template-functions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/checkout.php';
+
 
 			if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 

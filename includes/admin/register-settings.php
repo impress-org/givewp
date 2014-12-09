@@ -48,9 +48,6 @@ class Give_Plugin_Settings {
 		//Customize CMB2 URL
 		add_filter( 'cmb2_meta_box_url', array( $this, 'give_update_cmb_meta_box_url' ) );
 
-		//Custom Field Types
-
-
 	}
 
 	/**
@@ -143,28 +140,6 @@ class Give_Plugin_Settings {
 	}
 
 	/**
-	 * Public getter method for retrieving protected/private variables
-	 *
-	 * @since  1.0
-	 *
-	 * @param  string $field Field to retrieve
-	 *
-	 * @return mixed          Field value or exception is thrown
-	 */
-	public function __get( $field ) {
-
-		// Allowed fields to retrieve
-		if ( in_array( $field, array( 'key', 'fields', 'title', 'options_page' ), true ) ) {
-			return $this->{$field};
-		}
-		if ( 'option_metabox' === $field ) {
-			return $this->option_metabox();
-		}
-
-		throw new Exception( 'Invalid property: ' . $field );
-	}
-
-	/**
 	 * Define General Settings Metabox and field configurations.
 	 *
 	 * Filters are provided for each settings section to allow extensions and other plugins to add their own settings
@@ -227,6 +202,31 @@ class Give_Plugin_Settings {
 		// Add other metaboxes as needed
 		return apply_filters( 'give_registered_settings', $give_settings[ $active_tab ] );
 
+	}
+
+
+	/**
+	 * Public getter method for retrieving protected/private variables
+	 *
+	 * @since  1.0
+	 *
+	 * @param  string $field Field to retrieve
+	 *
+	 * @return mixed          Field value or exception is thrown
+	 */
+	public function __get( $field ) {
+echo "<pre>";
+var_dump('here');
+echo "</pre>";
+		// Allowed fields to retrieve
+		if ( in_array( $field, array( 'key', 'fields', 'title', 'options_page' ), true ) ) {
+			return $this->{$field};
+		}
+		if ( 'option_metabox' === $field ) {
+			return $this->option_metabox();
+		}
+
+		throw new Exception( 'Invalid property: ' . $field );
 	}
 
 

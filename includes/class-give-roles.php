@@ -2,7 +2,7 @@
 /**
  * Roles and Capabilities
  *
- * @package     EDD
+ * @package     Give
  * @subpackage  Classes/Roles
  * @copyright   Copyright (c) 2014, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
