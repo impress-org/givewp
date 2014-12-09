@@ -64,9 +64,12 @@ if ( ! class_exists( 'Give' ) ) : /**
 				self::$instance = new Give;
 				self::$instance->setup_constants();
 
+
 				add_action( 'plugins_loaded', array( self::$instance, 'load_textdomain' ) );
 
 				self::$instance->includes();
+				self::$instance->give_settings_pages = new Give_Plugin_Settings();
+
 			}
 
 			return self::$instance;
@@ -144,7 +147,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 		private function includes() {
 			global $give_options;
 
-			//		require_once GIVE_PLUGIN_DIR . 'includes/admin/settings/register-settings.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/admin/register-settings.php';
 			//		$give_options = give_get_settings();
 
 			require_once GIVE_PLUGIN_DIR . 'includes/post-types.php';
@@ -152,7 +155,11 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-roles.php';
 
 			if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
+
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/welcome.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/metabox.php';
+
 			} else {
 
 			}
