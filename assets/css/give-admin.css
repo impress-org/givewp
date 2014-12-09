@@ -7,7 +7,10 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 
-.give_options_page .nav-tab-wrapper {
+/*------------------------------------
+Settings
+--------------------------------------*/
+.give_settings_page .nav-tab-wrapper {
 	margin-bottom: 25px;
 }
 
@@ -18,9 +21,17 @@
 	width: 220px;
 }
 
+.postbox-container #_give_donation_levels_repeat > .cmb-repeatable-grouping:not(:last-of-type) {
+	border-bottom: 1px solid #e9e9e9;
+	border-top: none;
+}
+
 /*------------------------------------
-Repeatable Levels
+Forms CPT
 --------------------------------------*/
+#_give_donation_levels_repeat {
+	margin: 0 0 20px;
+}
 
 /* Customize Default Label */
 #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row .cmb2-radio-list label {
@@ -29,8 +40,7 @@ Repeatable Levels
 
 /* Table Rows */
 div.cmb-type-levels-repeater-header {
-	border-bottom: none !important;
-	padding: 10px 0 0 !important;
+	padding: 10px 1px 0 0 !important;
 	margin: 0 !important;
 }
 
@@ -82,9 +92,9 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
 
 	#_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-remove-field-row {
 		width: 100%;
-	
+
 		padding-top: 0;
-}
+	}
 
 	#_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-type-text-money {
 		width: 120px;
@@ -148,10 +158,10 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
 	.col-text {
 		width: 288px;
 	}
+
 	#_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-type-text {
 		width: 300px;
 	}
-
 
 }
 
