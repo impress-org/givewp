@@ -215,9 +215,7 @@ class Give_Plugin_Settings {
 	 * @return mixed          Field value or exception is thrown
 	 */
 	public function __get( $field ) {
-echo "<pre>";
-var_dump('here');
-echo "</pre>";
+
 		// Allowed fields to retrieve
 		if ( in_array( $field, array( 'key', 'fields', 'title', 'options_page' ), true ) ) {
 			return $this->{$field};
@@ -245,7 +243,6 @@ $Give_Settings = new Give_Plugin_Settings();
  */
 function give_get_option( $key = '' ) {
 	global $Give_Settings;
-
 	return cmb2_get_option( $Give_Settings->key, $key );
 }
 

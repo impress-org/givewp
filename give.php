@@ -154,7 +154,9 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-roles.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-template-loader.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/template-functions.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/checkout.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/checkout/functions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/checkout/checkout.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/shortcodes.php';
 
 
 			if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {

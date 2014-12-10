@@ -14,8 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-
-add_filter( 'cmb2_meta_boxes', 'cmb2_sample_metaboxes' );
+add_filter( 'cmb2_meta_boxes', 'give_single_forms_cmb2_metaboxes' );
 
 /**
  * Define the metabox and field configurations.
@@ -24,7 +23,7 @@ add_filter( 'cmb2_meta_boxes', 'cmb2_sample_metaboxes' );
  *
  * @return array
  */
-function cmb2_sample_metaboxes( array $meta_boxes ) {
+function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 
 	// Start with an underscore to hide fields from custom fields list
 	$prefix = '_give_';
@@ -39,6 +38,24 @@ function cmb2_sample_metaboxes( array $meta_boxes ) {
 			'context'      => 'normal',
 			'priority'     => 'high', //Show above Content WYSIWYG
 			'fields'       => array(
+				//Donation Option
+				array(
+					'name'        => __( 'Donation Option', 'give' ),
+					'description' => __( 'Do you want this form to have one set price or set levels?', 'give' ),
+					'id'          => $prefix . 'price_option',
+					'type'        => 'radio_inline',
+					'default'     => 'set',
+					'options'     => array(
+						'set'   => __( 'Set Donation', 'give' ),
+						'multi' => __( 'Multi-level Donation', 'give' ),
+					),
+				),
+				array(
+					'name'        => __( 'Set Donation', 'give' ),
+					'description' => __( 'This is the set donation level for this form.', 'give' ),
+					'id'          => $prefix . 'set_price',
+					'type'        => 'text_money',
+				),
 				//Donation levels: Header
 				array(
 					'id'   => $prefix . 'levels_header',
@@ -75,7 +92,7 @@ function cmb2_sample_metaboxes( array $meta_boxes ) {
 							'id'      => $prefix . 'default',
 							'type'    => 'radio_inline',
 							'options' => array(
-								'default' => __( 'Default', 'cmb' ),
+								'default' => __( 'Default', 'give' ),
 							),
 						),
 					),
@@ -88,9 +105,9 @@ function cmb2_sample_metaboxes( array $meta_boxes ) {
 					'type'        => 'radio_inline',
 					'default'     => 'buttons',
 					'options'     => array(
-						'buttons'  => __( 'Buttons', 'cmb' ),
-						'radios'   => __( 'Radios', 'cmb' ),
-						'dropdown' => __( 'Dropdown', 'cmb' ),
+						'buttons'  => __( 'Buttons', 'give' ),
+						'radios'   => __( 'Radios', 'give' ),
+						'dropdown' => __( 'Dropdown', 'give' ),
 					),
 				),
 				//Custom Amount
@@ -101,8 +118,8 @@ function cmb2_sample_metaboxes( array $meta_boxes ) {
 					'type'        => 'radio_inline',
 					'default'     => 'no',
 					'options'     => array(
-						'yes' => __( 'Yes', 'cmb' ),
-						'no'  => __( 'No', 'cmb' ),
+						'yes' => __( 'Yes', 'give' ),
+						'no'  => __( 'No', 'give' ),
 					),
 				),
 			),

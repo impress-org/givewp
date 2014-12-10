@@ -179,8 +179,7 @@ function give_change_default_title( $title ) {
 add_filter( 'enter_title_here', 'give_change_default_title' );
 
 /**
- * Registers Custom Post Statuses which are used by the Payments and Discount
- * Codes
+ * Registers Custom Post Statuses which are used by the Payments
  *
  * @since 1.0
  * @return void

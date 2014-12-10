@@ -12,6 +12,124 @@
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+
+
+/**
+ * Get Purchase Link
+ *
+ * Builds a Purchase link for a specified download based on arguments passed.
+ * This function is used all over EDD to generate the Purchase or Add to Cart
+ * buttons. If no arguments are passed, the function uses the defaults that have
+ * been set by the plugin. The Purchase link is built for simple and variable
+ * pricing and filters are available throughout the function to override
+ * certain elements of the function.
+ *
+ * $download_id = null, $link_text = null, $style = null, $color = null, $class = null
+ *
+ * @since 1.0
+ * @param array $args Arguments for display
+ * @return string $purchase_form
+ */
+
+add_action('give_single_form_summary', 'give_get_purchase_link', 10);
+
+function give_get_purchase_link( $args = array() ) {
+	global $give_options, $post, $give_displayed_form_ids;
+
+
+
+	$post_id = is_object( $post ) ? $post->ID : 0;
+
+
+	$defaults = apply_filters( 'give_purchase_link_defaults', array(
+		'form_id' => $post_id,
+	) );
+
+	$args = wp_parse_args( $args, $defaults );
+
+	$download = new EDD_Download( $args['download_id'] );
+
+	if( empty( $download->ID ) ) {
+		return false;
+	}
+
+	if( 'publish' !== $download->post_status && ! current_user_can( 'edit_product', $download->ID ) ) {
+		return false; // Product not published or user doesn't have permission to view drafts
+	}
+
+	// Override color if color == inherit
+	$args['color'] = ( $args['color'] == 'inherit' ) ? '' : $args['color'];
+
+	$variable_pricing = $download->has_variable_prices();
+
+
+	$args = apply_filters( 'give_purchase_link_args', $args );
+
+	ob_start();
+?>
+	<form id="<?php echo $form_id; ?>" class="give_download_purchase_form give_purchase_<?php echo absint( $download->ID ); ?>" method="post">
+
+		Hello
+
+
+	</form><!--end #<?php echo esc_attr( $form_id ); ?>-->
+<?php
+	$purchase_form = ob_get_clean();
+
+
+	return apply_filters( 'give_purchase_download_form', $purchase_form, $args );
+}
+
+
+
+/**
+ * Variable price output
+ *
+ * Outputs variable pricing options for each download or a specified downloads in a list.
+ * The output generated can be overridden by the filters provided or by removing
+ * the action and adding your own custom action.
+ *
+ * @since 1.2.3
+ * @param int $download_id Download ID
+ * @return void
+ */
+function give_purchase_variable_pricing( $download_id = 0, $args = array() ) {
+	global $give_options;
+
+	$variable_pricing = give_has_variable_prices( $download_id );
+	$prices = apply_filters( 'give_purchase_variable_prices', give_get_variable_prices( $download_id ), $download_id );
+
+	if ( ! $variable_pricing || ( false !== $args['price_id'] && isset( $prices[$args['price_id']] ) ) ) {
+		return;
+	}
+
+	$type = give_single_price_option_mode( $download_id ) ? 'checkbox' : 'radio';
+	$mode = give_single_price_option_mode( $download_id ) ? 'multi' : 'single';
+
+	do_action( 'give_before_price_options', $download_id ); ?>
+	<div class="give_price_options give_<?php echo esc_attr( $mode ); ?>_mode">
+		<ul>
+			<?php
+			if ( $prices ) :
+				$checked_key = isset( $_GET['price_option'] ) ? absint( $_GET['price_option'] ) : give_get_default_variable_price( $download_id );
+				foreach ( $prices as $key => $price ) :
+					echo '<li id="give_price_option_' . $download_id . '_' . sanitize_key( $price['name'] ) . '" itemprop="offers" itemscope itemtype="http://schema.org/Offer">';
+						echo '<label for="'	. esc_attr( 'give_price_option_' . $download_id . '_' . $key ) . '">';
+							echo '<input type="' . $type . '" ' . checked( apply_filters( 'give_price_option_checked', $checked_key, $download_id, $key ), $key, false ) . ' name="give_options[price_id][]" id="' . esc_attr( 'give_price_option_' . $download_id . '_' . $key ) . '" class="' . esc_attr( 'give_price_option_' . $download_id ) . '" value="' . esc_attr( $key ) . '"/>&nbsp;';
+							echo '<span class="give_price_option_name" itemprop="description">' . esc_html( $price['name'] ) . '</span><span class="give_price_option_sep">&nbsp;&ndash;&nbsp;</span><span class="give_price_option_price" itemprop="price">' . give_currency_filter( give_format_amount( $price[ 'amount' ] ) ) . '</span>';
+						echo '</label>';
+						do_action( 'give_after_price_option', $key, $price, $download_id );
+					echo '</li>';
+				endforeach;
+			endif;
+			do_action( 'give_after_price_options_list', $download_id, $prices, $type );
+			?>
+		</ul>
+	</div><!--end .give_price_options-->
+<?php
+	do_action( 'give_after_price_options', $download_id );
+}
+
 /**
  * Get Checkout Form
  *
@@ -24,26 +142,24 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 function give_checkout_form() {
 	global $give_options, $user_ID, $post;
 
-	$payment_mode = give_get_chosen_gateway();
-	$form_action  = esc_url( give_get_checkout_uri( 'payment-mode=' . $payment_mode ) );
+//	$payment_mode = give_get_chosen_gateway();
+
+//	$form_action  = esc_url( give_get_checkout_uri( 'payment-mode=' . $payment_mode ) );
+	$form_action  = '#';
 
 	ob_start();
-		echo '<div id="give_checkout_wrap">';
-		if ( give_get_cart_contents() || give_cart_has_fees() ) :
-
-			give_checkout_cart();
-?>
+		echo '<div id="give_checkout_wrap">'; ?>
 			<div id="give_checkout_form_wrap" class="give_clearfix">
 				<?php do_action( 'give_before_purchase_form' ); ?>
 				<form id="give_purchase_form" class="give_form" action="<?php echo $form_action; ?>" method="POST">
 					<?php
 					do_action( 'give_checkout_form_top' );
 
-					if ( give_show_gateways() ) {
-						do_action( 'give_payment_mode_select'  );
-					} else {
-						do_action( 'give_purchase_form' );
-					}
+//					if ( give_show_gateways() ) {
+//						do_action( 'give_payment_mode_select'  );
+//					} else {
+//						do_action( 'give_purchase_form' );
+//					}
 
 					do_action( 'give_checkout_form_bottom' )
 					?>
@@ -51,9 +167,6 @@ function give_checkout_form() {
 				<?php do_action( 'give_after_purchase_form' ); ?>
 			</div><!--end #give_checkout_form_wrap-->
 		<?php
-		else:
-			do_action( 'give_cart_empty' );
-		endif;
 		echo '</div><!--end #give_checkout_wrap-->';
 	return ob_get_clean();
 }
@@ -71,48 +184,12 @@ function give_checkout_form() {
 function give_show_purchase_form() {
 	global $give_options;
 
-	$payment_mode = give_get_chosen_gateway();
+//	$payment_mode = give_get_chosen_gateway();
+
+	echo "hello";
 
 	do_action( 'give_purchase_form_top' );
 
-	if ( give_can_checkout() ) {
-
-		do_action( 'give_purchase_form_before_register_login' );
-
-		$show_register_form = give_get_option( 'show_register_form', 'none' ) ;
-		if( ( $show_register_form === 'registration' || ( $show_register_form === 'both' && ! isset( $_GET['login'] ) ) ) && ! is_user_logged_in() ) : ?>
-			<div id="give_checkout_login_register">
-				<?php do_action( 'give_purchase_form_register_fields' ); ?>
-			</div>
-		<?php elseif( ( $show_register_form === 'login' || ( $show_register_form === 'both' && isset( $_GET['login'] ) ) ) && ! is_user_logged_in() ) : ?>
-			<div id="give_checkout_login_register">
-				<?php do_action( 'give_purchase_form_login_fields' ); ?>
-			</div>
-		<?php endif; ?>
-
-		<?php if( ( !isset( $_GET['login'] ) && is_user_logged_in() ) || ! isset( $give_options['show_register_form'] ) || 'none' === $show_register_form ) {
-			do_action( 'give_purchase_form_after_user_info' );
-		}
-
-		do_action( 'give_purchase_form_before_cc_form' );
-
-		if( give_get_cart_total() > 0 ) {
-
-			// Load the credit card form and allow gateways to load their own if they wish
-			if ( has_action( 'give_' . $payment_mode . '_cc_form' ) ) {
-				do_action( 'give_' . $payment_mode . '_cc_form' );
-			} else {
-				do_action( 'give_cc_form' );
-			}
-
-		}
-
-		do_action( 'give_purchase_form_after_cc_form' );
-
-	} else {
-		// Can't checkout
-		do_action( 'give_purchase_form_no_access' );
-	}
 
 	do_action( 'give_purchase_form_bottom' );
 }
@@ -122,7 +199,7 @@ add_action( 'give_purchase_form', 'give_show_purchase_form' );
  * Shows the User Info fields in the Personal Info box, more fields can be added
  * via the hooks provided.
  *
- * @since 1.3.3
+ * @since 1.0
  * @return void
  */
 function give_user_info_fields() {
@@ -446,7 +523,7 @@ function give_get_register_fields() {
 	<?php
 	echo ob_get_clean();
 }
-add_action( 'give_purchase_form_register_fields', 'give_get_register_fields' );
+//add_action( 'give_purchase_form_register_fields', 'give_get_register_fields' );
 
 /**
  * Gets the login fields for the login form on the checkout. This function hooks
@@ -493,7 +570,7 @@ function give_get_login_fields() {
 	<?php
 	echo ob_get_clean();
 }
-add_action( 'give_purchase_form_login_fields', 'give_get_login_fields' );
+//add_action( 'give_purchase_form_login_fields', 'give_get_login_fields' );
 
 /**
  * Renders the payment mode form by getting all the enabled payment gateways and
@@ -544,7 +621,7 @@ function give_payment_mode_select() {
 	<div id="give_purchase_form_wrap"></div><!-- the checkout fields are loaded into this-->
 	<?php do_action('give_payment_mode_bottom');
 }
-add_action( 'give_payment_mode_select', 'give_payment_mode_select' );
+//add_action( 'give_payment_mode_select', 'give_payment_mode_select' );
 
 
 /**
@@ -612,49 +689,9 @@ function give_show_payment_icons() {
 
 	echo '</div>';
 }
-add_action( 'give_payment_mode_top', 'give_show_payment_icons' );
-add_action( 'give_checkout_form_top', 'give_show_payment_icons' );
+//add_action( 'give_payment_mode_top', 'give_show_payment_icons' );
+//add_action( 'give_checkout_form_top', 'give_show_payment_icons' );
 
-
-/**
- * Renders the Discount Code field which allows users to enter a discount code.
- * This field is only displayed if there are any active discounts on the site else
- * it's not displayed.
- *
- * @since 1.2.2
- * @return void
-*/
-function give_discount_field() {
-
-	if( isset( $_GET['payment-mode'] ) && give_is_ajax_disabled() ) {
-		return; // Only show before a payment method has been selected if ajax is disabled
-	}
-
-	if ( give_has_active_discounts() && give_get_cart_total() ) :
-
-		$color = give_get_option( 'checkout_color', 'blue' );
-		$color = ( $color == 'inherit' ) ? '' : $color;
-		$style = give_get_option( 'button_style', 'button' );
-?>
-		<fieldset id="give_discount_code">
-			<p id="give_show_discount" style="display:none;">
-				<?php _e( 'Have a discount code?', 'edd' ); ?> <a href="#" class="give_discount_link"><?php echo _x( 'Click to enter it', 'Entering a discount code', 'edd' ); ?></a>
-			</p>
-			<p id="give-discount-code-wrap" class="give-cart-adjustment">
-				<label class="give-label" for="give-discount">
-					<?php _e( 'Discount', 'edd' ); ?>
-					<img src="<?php echo GIVE_PLUGIN_URL; ?>assets/images/loading.gif" id="give-discount-loader" style="display:none;"/>
-				</label>
-				<span class="give-description"><?php _e( 'Enter a coupon code if you have one.', 'edd' ); ?></span>
-				<input class="give-input" type="text" id="give-discount" name="give-discount" placeholder="<?php _e( 'Enter discount', 'edd' ); ?>"/>
-				<input type="submit" class="give-apply-discount give-submit button <?php echo $color . ' ' . $style; ?>" value="<?php echo _x( 'Apply', 'Apply discount at checkout', 'edd' ); ?>"/>
-				<span id="give-discount-error-wrap" class="give_errors" style="display:none;"></span>
-			</p>
-		</fieldset>
-<?php
-	endif;
-}
-add_action( 'give_checkout_form_top', 'give_discount_field', -1 );
 
 /**
  * Renders the Checkout Agree to Terms, this displays a checkbox for users to
@@ -687,7 +724,7 @@ function give_terms_agreement() {
 <?php
 	}
 }
-add_action( 'give_purchase_form_before_submit', 'give_terms_agreement' );
+//add_action( 'give_purchase_form_before_submit', 'give_terms_agreement' );
 
 /**
  * Shows the final purchase total at the bottom of the checkout page
@@ -703,7 +740,7 @@ function give_checkout_final_total() {
 </p>
 <?php
 }
-add_action( 'give_purchase_form_before_submit', 'give_checkout_final_total', 999 );
+//add_action( 'give_purchase_form_before_submit', 'give_checkout_final_total', 999 );
 
 
 /**
@@ -729,7 +766,7 @@ function give_checkout_submit() {
 	</fieldset>
 <?php
 }
-add_action( 'give_purchase_form_after_cc_form', 'give_checkout_submit', 9999 );
+//add_action( 'give_purchase_form_after_cc_form', 'give_checkout_submit', 9999 );
 
 /**
  * Renders the Next button on the Checkout

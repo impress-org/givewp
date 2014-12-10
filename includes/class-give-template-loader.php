@@ -35,18 +35,21 @@ class Give_Template_Loader {
 		add_action( 'give_after_main_content', 'give_output_content_wrapper_end', 10 );
 
 		/**
-		 * Before Single Products Summary Div
+		 * Before Single Forms Summary Div
 		 *
 		 * @see give_show_product_images()
 		 */
 		add_action( 'give_before_single_form_summary', 'give_show_form_images', 10 );
 
 		/**
-		 * Product Summary Box
+		 * Single Forms Summary Box
 		 *
 		 * @see give_template_single_title()
 		 */
 		add_action( 'give_single_form_summary', 'give_template_single_title', 5 );
+		add_action( 'give_single_form_summary', 'give_checkout_form', 10 );
+
+
 
 	}
 

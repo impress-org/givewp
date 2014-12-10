@@ -29,6 +29,13 @@ Settings
 /*------------------------------------
 Forms CPT
 --------------------------------------*/
+
+/* Hide conditional fields */
+
+.cmb2-id--give-set-price, .cmb2-id--give-levels-header, .cmb2-id--give-levels-header + .cmb-repeat-group-wrap {
+	display:none;
+}
+
 #_give_donation_levels_repeat {
 	margin: 0 0 20px;
 }
