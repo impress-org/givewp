@@ -32,8 +32,8 @@ Forms CPT
 
 /* Hide conditional fields */
 
-.cmb2-id--give-set-price, .cmb2-id--give-levels-header, .cmb2-id--give-levels-header + .cmb-repeat-group-wrap {
-	display:none;
+.cmb2-id--give-set-price, .cmb2-id--give-levels-header, .cmb2-id--give-levels-header + .cmb-repeat-group-wrap, .cmb2-id--give-display-style {
+	display: none;
 }
 
 #_give_donation_levels_repeat {

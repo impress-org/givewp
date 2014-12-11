@@ -47,7 +47,7 @@ class Give_Template_Loader {
 		 * @see give_template_single_title()
 		 */
 		add_action( 'give_single_form_summary', 'give_template_single_title', 5 );
-		add_action( 'give_single_form_summary', 'give_checkout_form', 10 );
+		add_action( 'give_single_form_summary', 'give_get_donation_form', 10 );
 
 
 

@@ -34,10 +34,10 @@ jQuery.noConflict();
 			var price_option_val = $( '.cmb2-id--give-price-option input:radio:checked' ).val();
 			if ( price_option_val === 'set' ) {
 				$( '.cmb2-id--give-set-price' ).show();
-				$( '.cmb2-id--give-levels-header, .cmb2-id--give-levels-header + .cmb-repeat-group-wrap' ).hide();
+				$( '.cmb2-id--give-levels-header, .cmb2-id--give-levels-header + .cmb-repeat-group-wrap, .cmb2-id--give-display-style' ).hide();
 			} else {
 				$( '.cmb2-id--give-set-price' ).hide();
-				$( '.cmb2-id--give-levels-header, .cmb2-id--give-levels-header + .cmb-repeat-group-wrap' ).show();
+				$( '.cmb2-id--give-levels-header, .cmb2-id--give-levels-header + .cmb-repeat-group-wrap, .cmb2-id--give-display-style' ).show();
 			}
 		} ).change();
 

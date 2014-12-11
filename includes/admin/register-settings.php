@@ -156,8 +156,8 @@ class Give_Plugin_Settings {
 			 */
 			'general' => apply_filters( 'give_settings_general',
 				array(
-					'id'       => 'test_metabox',
-					'title'    => __( 'Test Metabox', 'cmb2' ),
+					'id'       => 'give_settings_general_metabox',
+					'title'    => __( 'General Settings', 'cmb2' ),
 					'context'  => 'normal',
 					'priority' => 'high',
 					'show_on'  => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
@@ -174,7 +174,46 @@ class Give_Plugin_Settings {
 							'id'   => 'test_textsmall',
 							'type' => 'text_small',
 							// 'repeatable' => true,
-						)
+						),
+						array(
+							'name' => __( 'Currency Settings', 'give' ),
+							'desc' => '<hr>',
+							'type' => 'title',
+							'id'   => 'currency_title'
+						),
+						array(
+							'name'    => __( 'Currency', 'cmb' ),
+							'desc'    => 'Choose your currency. Note that some payment gateways have currency restrictions.',
+							'id'      => 'currency',
+							'type'    => 'select',
+							'options' => give_get_currencies(),
+							'default' => 'USD',
+						),
+						array(
+							'name'    => __( 'Currency Position', 'cmb' ),
+							'desc'    => 'Choose the position of the currency sign.',
+							'id'      => 'currency_position',
+							'type'    => 'select',
+							'options' => array(
+								'before' => __( 'Before - $10', 'give' ),
+								'after'  => __( 'After - 10$', 'give' )
+							),
+							'default' => 'before',
+						),
+						array(
+							'name'    => __( 'Thousands Separator', 'cmb2' ),
+							'desc'    => __( 'The symbol (typically , or .) to separate thousands', 'cmb2' ),
+							'id'      => 'thousands_separator',
+							'type'    => 'text_small',
+							'default' => ',',
+						),
+						array(
+							'name'    => __( 'Decimal Separator', 'cmb2' ),
+							'desc'    => __( 'The symbol (usually , or .) to separate decimal points', 'cmb2' ),
+							'id'      => 'decimal_separator',
+							'type'    => 'text_small',
+							'default' => '.',
+						),
 					)
 				)
 			),
@@ -241,13 +280,36 @@ $Give_Settings = new Give_Plugin_Settings();
  *
  * @return mixed        Option value
  */
-function give_get_option( $key = '' ) {
-	global $Give_Settings;
-	return cmb2_get_option( $Give_Settings->key, $key );
+function give_get_option( $key = '', $default = false ) {
+	global $give_options, $Give_Settings;
+	$value = ! empty( $give_options[ $key ] ) ? $give_options[ $key ] : $default;
+	$value = apply_filters( 'give_get_option', $value, $key, $default );
+
+	return apply_filters( 'give_get_option_' . $key, $value, $key, $default );
+	//	return cmb2_get_option( $Give_Settings->key, $key );
+}
+
+
+/**
+ * Get Settings
+ *
+ * Retrieves all Give plugin settings
+ *
+ * @since 1.0
+ * @return array Give settings
+ */
+function give_get_settings() {
+
+	$settings = get_option( 'give_settings' );
+
+	return apply_filters( 'edd_get_settings', $settings );
+
 }
 
 
 /**
  * Get the CMB2 bootstrap!
+ *
+ * Super important!
  */
 require_once __DIR__ . '/cmb2/init.php';

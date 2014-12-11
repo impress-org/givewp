@@ -147,16 +147,19 @@ if ( ! class_exists( 'Give' ) ) : /**
 			global $give_options;
 
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/register-settings.php';
-			//		$give_options = give_get_settings();
+			$give_options = give_get_settings();
 
 			require_once GIVE_PLUGIN_DIR . 'includes/post-types.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/scripts.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-roles.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-template-loader.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donate-form.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/template-functions.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/checkout/functions.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/checkout/checkout.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/misc-functions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/donate/functions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/donate/template.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/shortcodes.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/price-functions.php';
 
 
 			if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {

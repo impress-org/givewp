@@ -51,7 +51,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					),
 				),
 				array(
-					'name'        => __( 'Set Donation', 'give' ),
+					'name'        => __( 'Set Amount', 'give' ),
 					'description' => __( 'This is the set donation level for this form.', 'give' ),
 					'id'          => $prefix . 'set_price',
 					'type'        => 'text_money',

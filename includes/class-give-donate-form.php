@@ -1,0 +1,425 @@
+<?php
+/**
+ * Donate Form Object
+ *
+ * @package     Give
+ * @subpackage  Classes/Download
+ * @copyright   Copyright (c) 2014, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since       1.0
+ */
+
+/**
+ * Give_Donate_Form Class
+ *
+ * @since 1.0
+ */
+class Give_Donate_Form {
+
+	/**
+	 * The donation ID
+	 *
+	 * @since 1.0
+	 */
+	public $ID = 0;
+
+	/**
+	 * The donation price
+	 *
+	 * @since 1.0
+	 */
+	private $price;
+
+	/**
+	 * The donation prices, if Price Levels are enabled
+	 *
+	 * @since 1.0
+	 */
+	private $prices;
+
+	/**
+	 * The download files
+	 *
+	 * @since 1.0
+	 */
+	private $files;
+
+	/**
+	 * The download's file download limit
+	 *
+	 * @since 1.0
+	 */
+	private $file_download_limit;
+
+	/**
+	 * The download type, default or bundle
+	 *
+	 * @since 1.0
+	 */
+	private $type;
+
+	/**
+	 * The bundled downloads, if this is a bundle type
+	 *
+	 * @since 1.0
+	 */
+	private $bundled_downloads;
+
+	/**
+	 * The download's sale count
+	 *
+	 * @since 1.0
+	 */
+	private $sales;
+
+	/**
+	 * The download's total earnings
+	 *
+	 * @since 1.0
+	 */
+	private $earnings;
+
+	/**
+	 * The download's notes
+	 *
+	 * @since 1.0
+	 */
+	private $notes;
+
+	/**
+	 * The download sku
+	 *
+	 * @since 1.0
+	 */
+	private $sku;
+
+	/**
+	 * The download's purchase button behavior
+	 *
+	 * @since 1.0
+	 */
+	private $button_behavior;
+
+	/**
+	 * Get things going
+	 *
+	 * @since 1.0
+	 */
+	public function __construct( $_id = false, $_args = array() ) {
+
+		if ( false === $_id ) {
+
+			$defaults = array(
+				'post_type'   => 'give_forms',
+				'post_status' => 'draft',
+				'post_title'  => __( 'New Give Form', 'edd' )
+			);
+
+			$args = wp_parse_args( $_args, $defaults );
+
+			$_id = wp_insert_post( $args, true );
+
+		}
+
+		$donate_form = WP_Post::get_instance( $_id );
+
+		if ( ! is_object( $donate_form ) ) {
+			return false;
+		}
+
+		if ( ! is_a( $donate_form, 'WP_Post' ) ) {
+			return false;
+		}
+
+		if ( 'give_forms' !== $donate_form->post_type ) {
+			return false;
+		}
+
+		foreach ( $donate_form as $key => $value ) {
+
+			$this->$key = $value;
+
+		}
+
+	}
+
+	/**
+	 * Magic __get function to dispatch a call to retrieve a private property
+	 *
+	 * @since 1.0
+	 */
+	public function __get( $key ) {
+
+		if ( method_exists( $this, 'get_' . $key ) ) {
+
+			return call_user_func( array( $this, 'get_' . $key ) );
+
+		} else {
+
+			throw new Exception( 'Can\'t get property ' . $key );
+
+		}
+
+	}
+
+	/**
+	 * Retrieve the ID
+	 *
+	 * @since 1.0
+	 * @return int
+	 */
+	public function get_ID() {
+
+		return $this->ID;
+
+	}
+
+	/**
+	 * Retrieve the price
+	 *
+	 * @since 1.0
+	 * @return float
+	 */
+	public function get_price() {
+
+		if ( ! isset( $this->price ) ) {
+
+			$this->price = get_post_meta( $this->ID, '_give_set_price', true );
+
+			if ( $this->price ) {
+
+				$this->price = give_sanitize_amount( $this->price );
+
+			} else {
+
+				$this->price = 0;
+
+			}
+
+		}
+
+		return apply_filters( 'edd_get_set_price', $this->price, $this->ID );
+	}
+
+	/**
+	 * Retrieve the variable prices
+	 *
+	 * @since 1.0
+	 * @return array
+	 */
+	public function get_prices() {
+
+		if ( ! isset( $this->prices ) ) {
+
+			$this->prices = get_post_meta( $this->ID, '_give_donation_levels', true );
+
+		}
+
+		return apply_filters( 'give_get_donation_levels', $this->prices, $this->ID );
+
+	}
+
+	/**
+	 * Determine if single price mode is enabled or disabled
+	 *
+	 * @since 1.0
+	 * @return bool
+	 */
+	public function is_single_price_mode() {
+
+		$ret = get_post_meta( $this->ID, '_edd_price_options_mode', true );
+
+		return (bool) apply_filters( 'edd_single_price_option_mode', $ret, $this->ID );
+
+	}
+
+	/**
+	 * Determine if the download has variable prices enabled
+	 *
+	 * @since 1.0
+	 * @return bool
+	 */
+	public function has_variable_prices() {
+
+		$option = get_post_meta( $this->ID, '_give_price_option', true );
+		$ret    = 0;
+
+		if ( $option === 'multi' ) {
+			$ret = 1;
+		}
+
+		return (bool) apply_filters( 'give_has_variable_prices', $ret, $this->ID );
+
+	}
+
+
+	/**
+	 * Retrieve the sale count for the download
+	 *
+	 * @since 1.0
+	 * @return int
+	 */
+	public function get_sales() {
+
+		if ( ! isset( $this->sales ) ) {
+
+			if ( '' == get_post_meta( $this->ID, '_edd_download_sales', true ) ) {
+				add_post_meta( $this->ID, '_edd_download_sales', 0 );
+			} // End if
+
+			$this->sales = get_post_meta( $this->ID, '_edd_download_sales', true );
+
+			if ( $this->sales < 0 ) {
+				// Never let sales be less than zero
+				$this->sales = 0;
+			}
+
+		}
+
+		return $this->sales;
+
+	}
+
+	/**
+	 * Increment the sale count by one
+	 *
+	 * @since 1.0
+	 * @return int|false
+	 */
+	public function increase_sales() {
+
+		$sales = edd_get_download_sales_stats( $this->ID );
+		$sales = $sales + 1;
+
+		if ( update_post_meta( $this->ID, '_edd_download_sales', $sales ) ) {
+			$this->sales = $sales;
+
+			return $sales;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Decrement the sale count by one
+	 *
+	 * @since 1.0
+	 * @return int|false
+	 */
+	public function decrease_sales() {
+
+		$sales = edd_get_download_sales_stats( $this->ID );
+		if ( $sales > 0 ) // Only decrease if not already zero
+		{
+			$sales = $sales - 1;
+		}
+
+		if ( update_post_meta( $this->ID, '_edd_download_sales', $sales ) ) {
+			$this->sales = $sales;
+
+			return $sales;
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * Retrieve the total earnings for the download
+	 *
+	 * @since 1.0
+	 * @return float
+	 */
+	public function get_earnings() {
+
+		if ( ! isset( $this->earnings ) ) {
+
+			if ( '' == get_post_meta( $this->ID, '_edd_download_earnings', true ) ) {
+				add_post_meta( $this->ID, '_edd_download_earnings', 0 );
+			}
+
+			$this->earnings = get_post_meta( $this->ID, '_edd_download_earnings', true );
+
+			if ( $this->earnings < 0 ) {
+				// Never let earnings be less than zero
+				$this->earnings = 0;
+			}
+
+		}
+
+		return $this->earnings;
+
+	}
+
+	/**
+	 * Increase the earnings by the given amount
+	 *
+	 * @since 1.0
+	 * @return float|false
+	 */
+	public function increase_earnings( $amount = 0 ) {
+
+		$earnings = edd_get_download_earnings_stats( $this->ID );
+		$earnings = $earnings + (float) $amount;
+
+		if ( update_post_meta( $this->ID, '_edd_download_earnings', $earnings ) ) {
+			$this->earnings = $earnings;
+
+			return $earnings;
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * Decrease the earnings by the given amount
+	 *
+	 * @since 1.0
+	 * @return float|false
+	 */
+	public function decrease_earnings( $amount ) {
+
+		$earnings = edd_get_download_earnings_stats( $this->ID );
+
+		if ( $earnings > 0 ) // Only decrease if greater than zero
+		{
+			$earnings = $earnings - (float) $amount;
+		}
+
+		if ( update_post_meta( $this->ID, '_edd_download_earnings', $earnings ) ) {
+			$this->earnings = $earnings;
+
+			return $earnings;
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * Determine if the download is free or if the given price ID is free
+	 *
+	 * @since 1.0
+	 * @return bool
+	 */
+	public function is_free( $price_id = false ) {
+
+		$is_free          = false;
+		$variable_pricing = edd_has_variable_prices( $this->ID );
+
+		if ( $variable_pricing && ! is_null( $price_id ) && $price_id !== false ) {
+			$price = edd_get_price_option_amount( $this->ID, $price_id );
+		} elseif ( ! $variable_pricing ) {
+			$price = get_post_meta( $this->ID, 'edd_price', true );
+		}
+
+		if ( isset( $price ) && (float) $price == 0 ) {
+			$is_free = true;
+		}
+
+		return (bool) apply_filters( 'edd_is_free_download', $is_free, $this->ID, $price_id );
+
+	}
+
+}
