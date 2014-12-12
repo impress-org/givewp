@@ -151,6 +151,8 @@ if ( ! class_exists( 'Give' ) ) : /**
 
 			require_once GIVE_PLUGIN_DIR . 'includes/post-types.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/scripts.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/ajax-functions.php';
+
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-roles.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-template-loader.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donate-form.php';
@@ -159,8 +161,14 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/donate/functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/donate/template.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/shortcodes.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/formatting.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/price-functions.php';
 
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/functions.php';
+//			require_once GIVE_PLUGIN_DIR . 'includes/gateways/actions.php';
+//			require_once GIVE_PLUGIN_DIR . 'includes/gateways/paypal-standard.php';
+//			require_once GIVE_PLUGIN_DIR . 'includes/gateways/manual.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/error-tracking.php';
 
 			if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 

@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * Register Settings
@@ -11,6 +10,7 @@
  * @license    http://www.opensource.org/licenses/gpl-license.php GPL v2.0 (or later)
  * @link       https://github.com/webdevstudios/Custom-Metaboxes-and-Fields-for-WordPress
  */
+
 class Give_Plugin_Settings {
 
 	/**
@@ -48,6 +48,11 @@ class Give_Plugin_Settings {
 		//Customize CMB2 URL
 		add_filter( 'cmb2_meta_box_url', array( $this, 'give_update_cmb_meta_box_url' ) );
 
+		//Custom CMB2 Settings Fields
+		add_action( 'cmb2_render_enabled_gateways', 'give_enabled_gateways_callback', 10, 5 );
+		add_action( 'cmb2_render_default_gateway', 'give_default_gateway_callback', 10, 5 );
+
+
 	}
 
 	/**
@@ -82,7 +87,7 @@ class Give_Plugin_Settings {
 	 */
 	public function give_get_settings_tabs() {
 
-		//		$settings = edd_get_registered_settings();
+		//		$settings = give_get_registered_settings();
 
 		$tabs             = array();
 		$tabs['general']  = __( 'General', 'give' );
@@ -108,7 +113,7 @@ class Give_Plugin_Settings {
 	 */
 	public function admin_page_display() {
 
-		$active_tab = isset( $_GET['tab'] ) && array_key_exists( $_GET['tab'], edd_get_settings_tabs() ) ? $_GET['tab'] : 'general';
+		$active_tab = isset( $_GET['tab'] ) && array_key_exists( $_GET['tab'], $this->give_get_settings_tabs() ) ? $_GET['tab'] : 'general';
 
 		?>
 
@@ -154,10 +159,10 @@ class Give_Plugin_Settings {
 			/**
 			 * General Settings
 			 */
-			'general' => apply_filters( 'give_settings_general',
+			'general'    => apply_filters( 'give_settings_general',
 				array(
 					'id'       => 'give_settings_general_metabox',
-					'title'    => __( 'General Settings', 'cmb2' ),
+					'title'    => __( 'General Settings', 'give' ),
 					'context'  => 'normal',
 					'priority' => 'high',
 					'show_on'  => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
@@ -169,8 +174,8 @@ class Give_Plugin_Settings {
 							'id'   => 'general_title'
 						),
 						array(
-							'name' => __( 'Test Text Small', 'cmb2' ),
-							'desc' => __( 'field description (optional)', 'cmb2' ),
+							'name' => __( 'Test Text Small', 'give' ),
+							'desc' => __( 'field description (optional)', 'give' ),
 							'id'   => 'test_textsmall',
 							'type' => 'text_small',
 							// 'repeatable' => true,
@@ -201,15 +206,15 @@ class Give_Plugin_Settings {
 							'default' => 'before',
 						),
 						array(
-							'name'    => __( 'Thousands Separator', 'cmb2' ),
-							'desc'    => __( 'The symbol (typically , or .) to separate thousands', 'cmb2' ),
+							'name'    => __( 'Thousands Separator', 'give' ),
+							'desc'    => __( 'The symbol (typically , or .) to separate thousands', 'give' ),
 							'id'      => 'thousands_separator',
 							'type'    => 'text_small',
 							'default' => ',',
 						),
 						array(
-							'name'    => __( 'Decimal Separator', 'cmb2' ),
-							'desc'    => __( 'The symbol (usually , or .) to separate decimal points', 'cmb2' ),
+							'name'    => __( 'Decimal Separator', 'give' ),
+							'desc'    => __( 'The symbol (usually , or .) to separate decimal points', 'give' ),
 							'id'      => 'decimal_separator',
 							'type'    => 'text_small',
 							'default' => '.',
@@ -220,22 +225,64 @@ class Give_Plugin_Settings {
 			/**
 			 * Emails Options
 			 */
-			'emails'  => apply_filters( 'give_settings_emails',
+			'emails'     => apply_filters( 'give_settings_emails',
 				array(
 					'id'      => 'options_page',
-					'title'   => __( 'Theme Options Metabox', 'cmb2' ),
+					'title'   => __( 'Theme Options Metabox', 'give' ),
+					'show_on' => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
+					'fields'  => array()
+				)
+			),
+			/**
+			 * Payment Gateways
+			 */
+			'gateways'   => apply_filters( 'give_settings_gateways',
+				array(
+					'id'      => 'options_page',
+					'title'   => __( 'Payment Gateways', 'give' ),
 					'show_on' => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
 					'fields'  => array(
 						array(
-							'name'    => __( 'Site Background Color', 'cmb2' ),
-							'desc'    => __( 'field description (optional)', 'cmb2' ),
-							'id'      => 'bg_color',
-							'type'    => 'colorpicker',
-							'default' => '#ffffff'
-						)
+							'name' => __( 'Payment Gateways', 'give' ),
+							'desc' => '<hr>',
+							'type' => 'title',
+							'id'   => 'general_title'
+						),
+						array(
+							'name' => __( 'Enabled Gateways', 'give' ),
+							'desc' => __( 'Choose the payment gateways you want enabled.', 'give' ),
+							'id'   => 'gateways',
+							'type' => 'enabled_gateways'
+						),
+						array(
+							'name' => __( 'Default Gateway', 'give' ),
+							'desc' => __( 'This is the gateways that will be loaded by default.', 'give' ),
+							'id'   => 'default_gateway',
+							'type' => 'default_gateway'
+						),
+						array(
+							'name'    => 'Test Select',
+							'desc'    => 'Select an option',
+							'id'      => 'test_select',
+							'type'    => 'select',
+							'options' => array(
+								'standard' => __( 'Option One', 'cmb' ),
+								'custom'   => __( 'Option Two', 'cmb' ),
+								'none'     => __( 'Option Three', 'cmb' ),
+							),
+							'default' => 'custom',
+						),
+
 					)
 				)
-			)
+			),
+			/** Extension Settings */
+			'extensions' => apply_filters( 'give_settings_extensions',
+				array()
+			),
+			'licenses'   => apply_filters( 'give_settings_licenses',
+				array()
+			),
 		);
 
 		// Add other metaboxes as needed
@@ -302,10 +349,85 @@ function give_get_settings() {
 
 	$settings = get_option( 'give_settings' );
 
-	return apply_filters( 'edd_get_settings', $settings );
+	return apply_filters( 'give_get_settings', $settings );
 
 }
 
+/**
+ * Gateways Callback
+ *
+ * Renders gateways fields.
+ *
+ * @since 1.0
+ *
+ * @global $give_options Array of all the Give Options
+ * @return void
+ */
+function give_enabled_gateways_callback( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
+	global $give_options;
+
+	$id                = $field_type_object->field->args['id'];
+	$field_description = $field_type_object->field->args['desc'];
+	$gateways          = give_get_payment_gateways();
+
+	echo '<ul class="cmb2-checkbox-list cmb2-list">';
+
+	foreach ( $gateways as $key => $option ) :
+
+		if ( isset( $give_options[ $id ][ $key ] ) ) {
+			$enabled = '1';
+		} else {
+			$enabled = null;
+		}
+
+		echo '<li><input name="' . $id . '[' . $key . ']" id="' . $id . '[' . $key . ']" type="checkbox" value="1" ' . checked( '1', $enabled, false ) . '/>&nbsp;';
+		echo '<label for="' . $id . '[' . $key . ']">' . $option['admin_label'] . '</label></li>';
+
+	endforeach;
+
+	if ( $field_description ) {
+		echo '<p class="cmb2-metabox-description">' . $field_description . '</p>';
+	}
+
+	echo '</ul>';
+
+
+}
+
+/**
+ * Gateways Callback (drop down)
+ *
+ * Renders gateways select menu
+ *
+ * @since 1.0
+ *
+ * @param array $args         Arguments passed by the setting
+ *
+ * @global      $give_options Array of all the EDD Options
+ * @return void
+ */
+function give_default_gateway_callback( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
+	global $give_options;
+
+	$id                = $field_type_object->field->args['id'];
+	$field_description = $field_type_object->field->args['desc'];
+	$gateways          = give_get_payment_gateways();
+
+	echo '<select class="cmb2_select" name="' . $id . '" id="' . $id . '">';
+
+	foreach ( $gateways as $key => $option ) :
+
+		$selected = isset( $give_options[ $id ] ) ? selected( $key, $give_options[ $id ], false ) : '';
+
+		echo '<option value="' . esc_attr( $key ) . '"' . $selected . '>' . esc_html( $option['admin_label'] ) . '</option>';
+
+	endforeach;
+
+	echo '</select>';
+
+	echo '<p class="cmb2-metabox-description">' . $field_description . '</p>';
+
+}
 
 /**
  * Get the CMB2 bootstrap!

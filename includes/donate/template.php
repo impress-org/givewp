@@ -58,7 +58,7 @@ function give_get_donation_form( $args = array() ) {
 		<?php
 
 		do_action( 'give_checkout_form_top', $form->ID, $args );
-
+		do_action( 'give_payment_mode_select' );
 		do_action( 'give_checkout_form_bottom', $form->ID, $args );
 
 		?>
@@ -95,28 +95,47 @@ function give_output_donation_levels( $form_id = 0, $args = array() ) {
 
 	do_action( 'give_before_donation_levels', $form_id );
 
-	$variable_pricing = give_has_variable_prices( $form_id );
+	$variable_pricing    = give_has_variable_prices( $form_id );
+	$set_pricing_option  = get_post_meta( $form_id, '_give_price_option', true );
+	$set_price           = get_post_meta( $form_id, '_give_set_price', true );
+	$allow_custom_amount = get_post_meta( $form_id, '_give_custom_amount', true );
 
-	//Output Variable Pricing
+	//Output Variable Pricing Levels
 	if ( $variable_pricing ) {
-
 		give_output_levels( $form_id );
+	} ?>
 
-	} else {
+	<div class="give-total-wrap">
 
-		//Set Price
-		$output = '<div class="">';
-		$output .= get_post_meta( $form_id, '_give_set_price', true );
-		$output .= '</div>';
+		<div class="give-donation-amount" for="give-amount">
 
-		echo $output;
+			<?php
+			//Set Price, No Custom Amount Allowed means hidden price field
+			if ( $set_pricing_option === 'set' && $allow_custom_amount == 'no' ) {
+				?>
 
-	}
+				<input class="give-text-input" id="give-amount" type="hidden" value="<?php echo $set_price; ?>" required>
+				<p class="set-price">
+					<span class="amount"><?php echo give_currency_filter( give_format_amount( $set_price ) ) ?></span>
+				</p>
+
+			<?php } else { ?>
+				<label class="give-dollar-sign" for="give-amount">$</label>
+				<input class="give-text-input" id="give-amount" type="text" placeholder="" value="<?php echo $set_price; ?>" required>
+			<?php } ?>
+
+
+		</div>
+
+	</div>
+
+	<?php
 
 	do_action( 'give_after_donation_levels', $form_id );
 }
 
 add_action( 'give_checkout_form_top', 'give_output_donation_levels' );
+
 
 /**
  * Outputs the Donation Levels
@@ -471,21 +490,6 @@ add_action( 'give_after_cc_fields', 'give_default_cc_address_fields' );
 
 
 /**
- * Renders the billing address fields for cart taxation
- *
- * @since 1.6
- * @return void
- */
-function give_checkout_tax_fields() {
-	if ( give_cart_needs_tax_address_fields() && give_get_cart_total() ) {
-		give_default_cc_address_fields();
-	}
-}
-
-add_action( 'give_purchase_form_after_cc_form', 'give_checkout_tax_fields', 999 );
-
-
-/**
  * Renders the user registration fields. If the user is logged in, a login
  * form is displayed other a registration form is provided for the user to
  * create an account.
@@ -634,15 +638,16 @@ function give_get_login_fields() {
 /**
  * Renders the payment mode form by getting all the enabled payment gateways and
  * outputting them as radio buttons for the user to choose the payment gateway. If
- * a default payment gateway has been chosen from the EDD Settings, it will be
+ * a default payment gateway has been chosen from the Give Settings, it will be
  * automatically selected.
  *
- * @since 1.2.2
+ * @since 1.0
  * @return void
  */
 function give_payment_mode_select() {
 	$gateways = give_get_enabled_payment_gateways();
 	$page_URL = give_get_current_page_url();
+
 	do_action( 'give_payment_mode_top' ); ?>
 	<?php if ( give_is_ajax_disabled() ) { ?>
 		<form id="give_payment_mode" action="<?php echo $page_URL; ?>" method="GET">
@@ -669,11 +674,7 @@ function give_payment_mode_select() {
 		</div>
 		<?php do_action( 'give_payment_mode_after_gateways_wrap' ); ?>
 	</fieldset>
-	<fieldset id="give_payment_mode_submit" class="give-no-js">
-		<p id="give-next-submit-wrap">
-			<?php echo give_checkout_button_next(); ?>
-		</p>
-	</fieldset>
+
 	<?php if ( give_is_ajax_disabled() ) { ?>
 		</form>
 	<?php } ?>
@@ -681,7 +682,7 @@ function give_payment_mode_select() {
 	<?php do_action( 'give_payment_mode_bottom' );
 }
 
-//add_action( 'give_payment_mode_select', 'give_payment_mode_select' );
+add_action( 'give_payment_mode_select', 'give_payment_mode_select' );
 
 
 /**
@@ -832,28 +833,6 @@ function give_checkout_submit() {
 
 //add_action( 'give_purchase_form_after_cc_form', 'give_checkout_submit', 9999 );
 
-/**
- * Renders the Next button on the Checkout
- *
- * @since 1.2
- * @global $give_options Array of all the EDD Options
- * @return string
- */
-function give_checkout_button_next() {
-	global $give_options;
-
-	$color = isset( $give_options['checkout_color'] ) ? $give_options['checkout_color'] : 'blue';
-	$color = ( $color == 'inherit' ) ? '' : $color;
-	$style = isset( $give_options['button_style'] ) ? $give_options['button_style'] : 'button';
-
-	ob_start();
-	?>
-	<input type="hidden" name="give_action" value="gateway_select" />
-	<input type="hidden" name="page_id" value="<?php echo absint( $give_options['purchase_page'] ); ?>" />
-	<input type="submit" name="gateway_submit" id="give_next_button" class="give-submit <?php echo $color; ?> <?php echo $style; ?>" value="<?php _e( 'Next', 'edd' ); ?>" />
-	<?php
-	return apply_filters( 'give_checkout_button_next', ob_get_clean() );
-}
 
 /**
  * Renders the Purchase button on the Checkout

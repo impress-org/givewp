@@ -68,3 +68,82 @@ function give_get_currencies() {
 
 	return apply_filters( 'give_currencies', $currencies );
 }
+
+
+/**
+ * Given a currency determine the symbol to use. If no currency given, site default is used.
+ * If no symbol is determine, the currency string is returned.
+ *
+ * @since  1.0
+ *
+ * @param  string $currency The currency string
+ *
+ * @return string           The symbol to use for the currency
+ */
+function give_currency_symbol( $currency = '' ) {
+	global $give_options;
+
+	if ( empty( $currency ) ) {
+		$currency = give_get_currency();
+	}
+
+	switch ( $currency ) :
+		case "GBP" :
+			$symbol = '&pound;';
+			break;
+		case "BRL" :
+			$symbol = 'R&#36;';
+			break;
+		case "EUR" :
+			$symbol = '&euro;';
+			break;
+		case "USD" :
+		case "AUD" :
+		case "CAD" :
+		case "HKD" :
+		case "MXN" :
+		case "SGD" :
+			$symbol = '&#36;';
+			break;
+		case "JPY" :
+			$symbol = '&yen;';
+			break;
+		default :
+			$symbol = $currency;
+			break;
+	endswitch;
+
+	return apply_filters( 'give_currency_symbol', $symbol, $currency );
+}
+
+
+/**
+ * Get the current page URL
+ *
+ * @since 1.0
+ * @global $post
+ * @return string $page_url Current page URL
+ */
+function give_get_current_page_url() {
+	global $post;
+
+	if ( is_front_page() ) :
+		$page_url = home_url();
+	else :
+		$page_url = 'http';
+
+		if ( isset( $_SERVER["HTTPS"] ) && $_SERVER["HTTPS"] == "on" ) {
+			$page_url .= "s";
+		}
+
+		$page_url .= "://";
+
+		if ( isset( $_SERVER["SERVER_PORT"] ) && $_SERVER["SERVER_PORT"] != "80" ) {
+			$page_url .= $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"] . $_SERVER["REQUEST_URI"];
+		} else {
+			$page_url .= $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
+		}
+	endif;
+
+	return apply_filters( 'give_get_current_page_url', esc_url( $page_url ) );
+}

@@ -41,7 +41,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 				//Donation Option
 				array(
 					'name'        => __( 'Donation Option', 'give' ),
-					'description' => __( 'Do you want this form to have one set price or set levels?', 'give' ),
+					'description' => __( 'Do you want this form to have one set donation price or multiple levels?', 'give' ),
 					'id'          => $prefix . 'price_option',
 					'type'        => 'radio_inline',
 					'default'     => 'set',
@@ -52,7 +52,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 				),
 				array(
 					'name'        => __( 'Set Amount', 'give' ),
-					'description' => __( 'This is the set donation level for this form.', 'give' ),
+					'description' => __( 'This is the set donation amount for this form.', 'give' ),
 					'id'          => $prefix . 'set_price',
 					'type'        => 'text_money',
 				),

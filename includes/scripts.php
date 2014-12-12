@@ -41,6 +41,45 @@ add_action( 'wp_enqueue_scripts', 'give_load_scripts' );
  */
 function give_register_styles() {
 
+	global $give_options;
+
+	if ( isset( $give_options['disable_styles'] ) ) {
+		return;
+	}
+
+	// Use minified libraries if SCRIPT_DEBUG is turned off
+	$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
+	$file          = 'give' . $suffix . '.css';
+	$templates_dir = give_get_theme_template_dir_name();
+
+	$child_theme_style_sheet    = trailingslashit( get_stylesheet_directory() ) . $templates_dir . $file;
+	$child_theme_style_sheet_2  = trailingslashit( get_stylesheet_directory() ) . $templates_dir . 'give.css';
+	$parent_theme_style_sheet   = trailingslashit( get_template_directory() ) . $templates_dir . $file;
+	$parent_theme_style_sheet_2 = trailingslashit( get_template_directory() ) . $templates_dir . 'give.css';
+	$give_plugin_style_sheet     = trailingslashit( give_get_templates_dir() ) . $file;
+
+	// Look in the child theme directory first, followed by the parent theme, followed by the EDD core templates directory
+	// Also look for the min version first, followed by non minified version, even if SCRIPT_DEBUG is not enabled.
+	// This allows users to copy just edd.css to their theme
+	if ( file_exists( $child_theme_style_sheet ) || ( ! empty( $suffix ) && ( $nonmin = file_exists( $child_theme_style_sheet_2 ) ) ) ) {
+		if ( ! empty( $nonmin ) ) {
+			$url = trailingslashit( get_stylesheet_directory_uri() ) . $templates_dir . 'give.css';
+		} else {
+			$url = trailingslashit( get_stylesheet_directory_uri() ) . $templates_dir . $file;
+		}
+	} elseif ( file_exists( $parent_theme_style_sheet ) || ( ! empty( $suffix ) && ( $nonmin = file_exists( $parent_theme_style_sheet_2 ) ) ) ) {
+		if ( ! empty( $nonmin ) ) {
+			$url = trailingslashit( get_template_directory_uri() ) . $templates_dir . 'give.css';
+		} else {
+			$url = trailingslashit( get_template_directory_uri() ) . $templates_dir . $file;
+		}
+	} elseif ( file_exists( $give_plugin_style_sheet ) || file_exists( $give_plugin_style_sheet ) ) {
+		$url = trailingslashit( give_get_templates_url() ) . $file;
+	}
+
+	wp_enqueue_style( 'give-styles', $url, array(), GIVE_VERSION );
+
 }
 
 add_action( 'wp_enqueue_scripts', 'give_register_styles' );
@@ -69,12 +108,12 @@ function give_load_admin_scripts( $hook ) {
 	$css_dir = GIVE_PLUGIN_URL . 'assets/css/';
 
 	// Use minified libraries if SCRIPT_DEBUG is turned off
-	$suffix  = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+	$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
 	wp_enqueue_script( 'give-admin-scripts', $js_dir . 'admin-scripts' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
 	wp_localize_script( 'give-admin-scripts', 'give_vars', array(
-		'post_id'                 => isset( $post->ID ) ? $post->ID : null,
-	));
+		'post_id' => isset( $post->ID ) ? $post->ID : null,
+	) );
 
 	wp_enqueue_style( 'give-admin', $css_dir . 'give-admin' . $suffix . '.css', GIVE_VERSION );
 
@@ -104,6 +143,7 @@ function give_admin_downloads_icon() {
 		#adminmenu #menu-posts-give_forms .wp-menu-image:before {
 			content: '<?php echo $menu_icon; ?>';
 		}
+
 		<?php }  ?>
 
 	</style>

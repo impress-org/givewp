@@ -157,7 +157,7 @@ function give_get_theme_template_paths() {
  * @return string
  */
 function give_get_theme_template_dir_name() {
-	return trailingslashit( apply_filters( 'give_templates_dir', 'give_templates' ) );
+	return trailingslashit( apply_filters( 'give_templates_dir', 'give' ) );
 }
 
 /**
