@@ -582,7 +582,7 @@ class CMB2_Field {
 			echo "\t<div class=\"cmb-td\">\n";
 
 			if ( ! $this->args( 'show_names' ) ) {
-				$style = 'title' == $this->type() ? ' style="display:none;"' : '';
+				$style = 'title' == $this->type() ? '' : ' style="display:none;"';
 				printf( "\n<label%s for=\"%s\">%s</label>\n", $style, $this->id(), $this->args( 'name' ) );
 			}
 		} else {
@@ -716,6 +716,7 @@ class CMB2_Field {
 			'repeatable'        => false,
 			'inline'            => false,
 			'on_front'          => true,
+			'show_names'        => true,
 			'date_format'       => 'm\/d\/Y',
 			'time_format'       => 'h:i A',
 			'description'       => isset( $args['desc'] ) ? $args['desc'] : '',

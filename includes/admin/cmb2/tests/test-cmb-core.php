@@ -171,7 +171,7 @@ class CMB2_Core_Test extends CMB2_Test {
 
 		$form_get = cmb2_get_metabox_form( $this->cmb_id, $this->post_id );
 
-		$this->assertEquals( $this->clean_string( $form_get ), $this->clean_string( $form ) );
+		$this->assertEquals( $this->normalize_string( $form ), $this->normalize_string( $form_get ) );
 	}
 
 	public function cmb_before_row( $field_args, $field ) {
@@ -185,14 +185,28 @@ class CMB2_Core_Test extends CMB2_Test {
 	public function test_cmb2_options() {
 		$opts = cmb2_options( $this->options_cmb->cmb_id );
 		$this->assertEquals( $opts->get_options(), $this->opt_set );
+	}
 
+	public function test_cmb2_get_option() {
 		$get = get_option( $this->options_cmb->cmb_id );
 		$val = cmb2_get_option( $this->options_cmb->cmb_id, 'my_name' );
 
 		$this->assertEquals( $this->opt_set['my_name'], $get['my_name'] );
 		$this->assertEquals( $val, $get['my_name'] );
 		$this->assertEquals( $val, $this->opt_set['my_name'] );
+	}
 
+	public function test_cmb2_update_option() {
+		$new_value = 'James';
+
+		cmb2_update_option( $this->options_cmb->cmb_id, 'my_name', $new_value );
+
+		$get = get_option( $this->options_cmb->cmb_id );
+		$val = cmb2_get_option( $this->options_cmb->cmb_id, 'my_name' );
+
+		$this->assertEquals( $new_value, $get['my_name'] );
+		$this->assertEquals( $val, $get['my_name'] );
+		$this->assertEquals( $val, $new_value );
 	}
 
 	public function test_class_getters() {
