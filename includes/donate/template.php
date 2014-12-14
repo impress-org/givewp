@@ -71,8 +71,6 @@ function give_get_donation_form( $args = array() ) {
 
 	echo apply_filters( 'give_donate_form', $final_output, $args );
 
-	return;
-
 }
 
 

@@ -256,7 +256,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Default Gateway', 'give' ),
-							'desc' => __( 'This is the gateways that will be loaded by default.', 'give' ),
+							'desc' => __( 'This is the gateways that will be selected by default.', 'give' ),
 							'id'   => 'default_gateway',
 							'type' => 'default_gateway'
 						),
@@ -364,7 +364,6 @@ function give_get_settings() {
  * @return void
  */
 function give_enabled_gateways_callback( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
-	global $give_options;
 
 	$id                = $field_type_object->field->args['id'];
 	$field_description = $field_type_object->field->args['desc'];
@@ -374,7 +373,7 @@ function give_enabled_gateways_callback( $field_object, $escaped_value, $object_
 
 	foreach ( $gateways as $key => $option ) :
 
-		if ( isset( $give_options[ $id ][ $key ] ) ) {
+		if ( is_array($escaped_value) && array_key_exists($key, $escaped_value) ) {
 			$enabled = '1';
 		} else {
 			$enabled = null;
@@ -407,7 +406,6 @@ function give_enabled_gateways_callback( $field_object, $escaped_value, $object_
  * @return void
  */
 function give_default_gateway_callback( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
-	global $give_options;
 
 	$id                = $field_type_object->field->args['id'];
 	$field_description = $field_type_object->field->args['desc'];
@@ -417,7 +415,7 @@ function give_default_gateway_callback( $field_object, $escaped_value, $object_i
 
 	foreach ( $gateways as $key => $option ) :
 
-		$selected = isset( $give_options[ $id ] ) ? selected( $key, $give_options[ $id ], false ) : '';
+		$selected = isset( $escaped_value ) ? selected( $key, $escaped_value, false ) : '';
 
 		echo '<option value="' . esc_attr( $key ) . '"' . $selected . '>' . esc_html( $option['admin_label'] ) . '</option>';
 

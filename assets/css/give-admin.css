@@ -26,6 +26,10 @@ Settings
 	border-top: none;
 }
 
+.cmb-type-enabled-gateways .cmb-td > p:first-of-type {
+	display: none;
+}
+
 /*------------------------------------
 Forms CPT
 --------------------------------------*/
