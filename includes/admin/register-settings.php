@@ -39,7 +39,7 @@ class Give_Plugin_Settings {
 
 	/**
 	 * Constructor
-	 * @since 0.1.0
+	 * @since 1.0
 	 */
 	public function __construct() {
 
@@ -174,11 +174,47 @@ class Give_Plugin_Settings {
 							'id'   => 'general_title'
 						),
 						array(
-							'name' => __( 'Test Text Small', 'give' ),
-							'desc' => __( 'field description (optional)', 'give' ),
-							'id'   => 'test_textsmall',
-							'type' => 'text_small',
-							// 'repeatable' => true,
+							'name' => 'Test Mode',
+							'desc' => __( 'While in test mode no live transactions are processed. To fully use test mode, you must have a sandbox (test) account for the payment gateway you are testing.', 'give' ),
+							'id'   => 'test_mode',
+							'type' => 'checkbox'
+						),
+						array(
+							'name'    => __( 'Success Page', 'edd' ),
+							'desc'    => __( 'This is the page buyers are sent to after completing their purchases. The [edd_receipt] short code should be on this page.', 'edd' ),
+							'id'      => 'success_page',
+							'type'    => 'select',
+							'options' => give_cmb2_get_post_options( array(
+								'post_type'   => 'page',
+								'numberposts' => - 1
+							) ),
+						),
+						array(
+							'name'    => __( 'Failed Transaction Page', 'edd' ),
+							'desc'    => __( 'This is the page buyers are sent to if their transaction is cancelled or fails.', 'edd' ),
+							'id'      => 'failure_page',
+							'type'    => 'select',
+							'options' => give_cmb2_get_post_options( array(
+								'post_type'   => 'page',
+								'numberposts' => - 1
+							) ),
+						),
+						array(
+							'name'    => __( 'History Page', 'edd' ),
+							'desc'    => __( 'This page shows a complete donation history for the current user.', 'edd' ),
+							'id'      => 'purchase_history_page',
+							'type'    => 'select',
+							'options' => give_cmb2_get_post_options( array(
+								'post_type'   => 'page',
+								'numberposts' => - 1
+							) ),
+						),
+						array(
+							'name'    => __( 'Base Country', 'edd' ),
+							'desc'    => __( 'Where does your site operate from?', 'edd' ),
+							'id'      => 'base_country',
+							'type'    => 'select',
+							'options' => give_get_country_list(),
 						),
 						array(
 							'name' => __( 'Currency Settings', 'give' ),
@@ -436,6 +472,40 @@ function give_default_gateway_callback( $field_object, $escaped_value, $object_i
 
 	echo '<p class="cmb2-metabox-description">' . $field_description . '</p>';
 
+}
+
+/**
+ * Gets a number of posts and displays them as options
+ *
+ * @param  array $query_args Optional. Overrides defaults.
+ * @param  bool $force Force the pages to be loaded even if not on settings
+ * @see: https://github.com/WebDevStudios/CMB2/wiki/Adding-your-own-field-types
+ * @return array An array of options that matches the CMB2 options array
+ */
+function give_cmb2_get_post_options( $query_args, $force = false ) {
+
+	$post_options = array( '' => '' ); // Blank option
+
+	if ( ( ! isset( $_GET['page'] ) || 'give-settings' != $_GET['page'] ) && ! $force ) {
+		return $post_options;
+	}
+
+	$args = wp_parse_args( $query_args, array(
+		'post_type'   => 'page',
+		'numberposts' => 10,
+	) );
+
+	$posts = get_posts( $args );
+
+	if ( $posts ) {
+		foreach ( $posts as $post ) {
+
+			$post_options[ $post->ID ] = $post->post_title;
+
+		}
+	}
+
+	return $post_options;
 }
 
 /**

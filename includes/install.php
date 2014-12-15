@@ -39,14 +39,64 @@ function give_install() {
 	// Clear the permalinks
 	flush_rewrite_rules();
 
+	// Setup some default options
+	$options = array();
+
+	// Checks if the purchase page option exists
+	if ( ! isset( $give_options['success_page'] ) ) {
+
+		// Purchase Confirmation (Success) Page
+		$success = wp_insert_post(
+			array(
+				'post_title'     => __( 'Donation Confirmation', 'edd' ),
+				'post_content'   => __( 'Thank you for your donation! [give_receipt]', 'edd' ),
+				'post_status'    => 'publish',
+				'post_author'    => 1,
+				'post_type'      => 'page',
+				'comment_status' => 'closed'
+			)
+		);
+
+		// Failed Purchase Page
+		$failed = wp_insert_post(
+			array(
+				'post_title'     => __( 'Transaction Failed', 'edd' ),
+				'post_content'   => __( 'Your transaction failed, please try again or contact site support.', 'give' ),
+				'post_status'    => 'publish',
+				'post_author'    => 1,
+				'post_type'      => 'page',
+				'comment_status' => 'closed'
+			)
+		);
+
+		// Purchase History (History) Page
+		$history = wp_insert_post(
+			array(
+				'post_title'     => __( 'Purchase History', 'give' ),
+				'post_content'   => '[give_purchase_history]',
+				'post_status'    => 'publish',
+				'post_author'    => 1,
+				'post_type'      => 'page',
+				'comment_status' => 'closed'
+			)
+		);
+
+		// Store our page IDs
+		$options['success_page']          = $success;
+		$options['failure_page']          = $failed;
+		$options['purchase_history_page'] = $history;
+
+	}
+
+
 	// Add Upgraded From Option
 	$current_version = get_option( 'give_version' );
 	if ( $current_version ) {
 		update_option( 'give_version_upgraded_from', $current_version );
 	}
 
-	// Setup some default options
-	$options = array();
+	update_option( 'give_settings', array_merge( $give_options, $options ) );
+	update_option( 'give_version', GIVE_VERSION );
 
 	// Create Give roles
 	$roles = new Give_Roles();

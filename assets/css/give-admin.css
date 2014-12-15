@@ -14,11 +14,22 @@ Settings
 	margin-bottom: 25px;
 }
 
+span.cmb2-metabox-description {
+	font-size: 13px;
+}
+
+.cmb2-wrap .cmb-type-checkbox input[type="checkbox"] {
+	display: block;
+	margin-bottom: 5px;
+}
+
 /* Section Titles */
 
 .cmb-type-title h3 {
 	float: left;
 	width: 220px;
+	font-style: italic;
+	color: #AAA;
 }
 
 .postbox-container #_give_donation_levels_repeat > .cmb-repeatable-grouping:not(:last-of-type) {
@@ -28,6 +39,16 @@ Settings
 
 .cmb-type-enabled-gateways .cmb-td > p:first-of-type {
 	display: none;
+}
+
+/* CMB2 Checkbox Revised Styles */
+
+.cmb-type-checkbox .cmb-td {
+	width: 80%;
+}
+
+.cmb-type-checkbox .cmb-td label {
+	font-size: 13px;
 }
 
 /*------------------------------------

@@ -174,6 +174,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-customers.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-stats.php';
 
+			require_once GIVE_PLUGIN_DIR . 'includes/country-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/template-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/misc-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/donate/functions.php';
