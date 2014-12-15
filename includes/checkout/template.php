@@ -1,9 +1,9 @@
 <?php
 /**
- * Donate Form Template
+ * Checkout Form Template
  *
  * @package     Give
- * @subpackage  Donate
+ * @subpackage  Checkout
  * @copyright   Copyright (c) 2014, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
@@ -684,82 +684,12 @@ add_action( 'give_payment_mode_select', 'give_payment_mode_select' );
 
 
 /**
- * Show Payment Icons by getting all the accepted icons from the EDD Settings
- * then outputting the icons.
- *
- * @since 1.0
- * @return void
- */
-function give_show_payment_icons() {
-
-	if ( give_show_gateways() && did_action( 'give_payment_mode_top' ) ) {
-		return;
-	}
-
-	$payment_methods = give_get_option( 'accepted_cards', array() );
-
-	if ( empty( $payment_methods ) ) {
-		return;
-	}
-
-	echo '<div class="give-payment-icons">';
-
-	foreach ( $payment_methods as $key => $card ) {
-
-		if ( give_string_is_image_url( $key ) ) {
-
-			echo '<img class="payment-icon" src="' . esc_url( $key ) . '"/>';
-
-		} else {
-
-			$card = strtolower( str_replace( ' ', '', $card ) );
-
-			if ( has_filter( 'give_accepted_payment_' . $card . '_image' ) ) {
-
-				$image = apply_filters( 'give_accepted_payment_' . $card . '_image', '' );
-
-			} else {
-
-				$image       = give_locate_template( 'images' . DIRECTORY_SEPARATOR . 'icons' . DIRECTORY_SEPARATOR . $card . '.gif', false );
-				$content_dir = WP_CONTENT_DIR;
-
-				if ( function_exists( 'wp_normalize_path' ) ) {
-
-					// Replaces backslashes with forward slashes for Windows systems
-					$image       = wp_normalize_path( $image );
-					$content_dir = wp_normalize_path( $content_dir );
-
-				}
-
-				$image = str_replace( $content_dir, WP_CONTENT_URL, $image );
-
-			}
-
-			if ( give_is_ssl_enforced() || is_ssl() ) {
-
-				$image = give_enforced_ssl_asset_filter( $image );
-
-			}
-
-			echo '<img class="payment-icon" src="' . esc_url( $image ) . '"/>';
-		}
-
-	}
-
-	echo '</div>';
-}
-
-//add_action( 'give_payment_mode_top', 'give_show_payment_icons' );
-//add_action( 'give_checkout_form_top', 'give_show_payment_icons' );
-
-
-/**
  * Renders the Checkout Agree to Terms, this displays a checkbox for users to
  * agree the T&Cs set in the EDD Settings. This is only displayed if T&Cs are
  * set in the EDD Settings.
  *
- * @since 1.3.2
- * @global $give_options Array of all the EDD Options
+ * @since 1.0
+ * @global $give_options Array of all the Give Options
  * @return void
  */
 function give_terms_agreement() {
@@ -796,7 +726,7 @@ function give_terms_agreement() {
 function give_checkout_final_total() {
 	?>
 	<p id="give_final_total_wrap">
-		<strong><?php _e( 'Purchase Total:', 'edd' ); ?></strong>
+		<strong><?php _e( 'Donation Total:', 'edd' ); ?></strong>
 		<span class="give_cart_amount" data-subtotal="<?php echo give_get_cart_subtotal(); ?>" data-total="<?php echo give_get_cart_subtotal(); ?>"><?php give_cart_total(); ?></span>
 	</p>
 <?php

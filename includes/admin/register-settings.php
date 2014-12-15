@@ -91,8 +91,8 @@ class Give_Plugin_Settings {
 
 		$tabs             = array();
 		$tabs['general']  = __( 'General', 'give' );
-		$tabs['emails']   = __( 'Emails', 'give' );
 		$tabs['gateways'] = __( 'Payment Gateways', 'give' );
+		$tabs['emails']   = __( 'Emails', 'give' );
 
 		//		if ( ! empty( $settings['extensions'] ) ) {
 		//			$tabs['extensions'] = __( 'Extensions', 'give' );
@@ -159,14 +159,13 @@ class Give_Plugin_Settings {
 			/**
 			 * General Settings
 			 */
-			'general'    => apply_filters( 'give_settings_general',
-				array(
-					'id'       => 'give_settings_general_metabox',
-					'title'    => __( 'General Settings', 'give' ),
-					'context'  => 'normal',
-					'priority' => 'high',
-					'show_on'  => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
-					'fields'   => array(
+			'general'    => array(
+				'id'       => 'give_settings_general_metabox',
+				'title'    => __( 'General Settings', 'give' ),
+				'context'  => 'normal',
+				'priority' => 'high',
+				'show_on'  => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
+				'fields'   => apply_filters( 'give_settings_general', array(
 						array(
 							'name' => __( 'General Settings', 'give' ),
 							'desc' => '<hr>',
@@ -259,30 +258,18 @@ class Give_Plugin_Settings {
 				)
 			),
 			/**
-			 * Emails Options
-			 */
-			'emails'     => apply_filters( 'give_settings_emails',
-				array(
-					'id'      => 'options_page',
-					'title'   => __( 'Theme Options Metabox', 'give' ),
-					'show_on' => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
-					'fields'  => array()
-				)
-			),
-			/**
 			 * Payment Gateways
 			 */
-			'gateways'   => apply_filters( 'give_settings_gateways',
-				array(
-					'id'      => 'options_page',
-					'title'   => __( 'Payment Gateways', 'give' ),
-					'show_on' => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
-					'fields'  => array(
+			'gateways'   => array(
+				'id'      => 'options_page',
+				'title'   => __( 'Payment Gateways', 'give' ),
+				'show_on' => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
+				'fields'  => apply_filters( 'give_settings_gateways', array(
 						array(
 							'name' => __( 'Gateways', 'give' ),
 							'desc' => '<hr>',
-							'type' => 'title',
-							'id'   => 'general_title'
+							'id'   => 'general_title',
+							'type' => 'title'
 						),
 						array(
 							'name' => __( 'Enabled Gateways', 'give' ),
@@ -299,8 +286,8 @@ class Give_Plugin_Settings {
 						array(
 							'name' => __( 'PayPal', 'give' ),
 							'desc' => '<hr>',
-							'type' => 'title',
-							'id'   => 'general_title'
+							'id'   => 'general_title',
+							'type' => 'title'
 						),
 						array(
 							'name' => __( 'PayPal Email', 'edd' ),
@@ -309,26 +296,45 @@ class Give_Plugin_Settings {
 							'type' => 'text_email',
 						),
 						array(
-							'id'   => 'paypal_page_style',
 							'name' => __( 'PayPal Page Style', 'edd' ),
 							'desc' => __( 'Enter the name of the page style to use, or leave blank to use the default', 'give' ),
+							'id'   => 'paypal_page_style',
 							'type' => 'text',
 						),
 						array(
-							'id'   => 'disable_paypal_verification',
 							'name' => __( 'Disable PayPal IPN Verification', 'edd' ),
 							'desc' => __( 'If payments are not getting marked as complete, then check this box. This forces the site to use a slightly less secure method of verifying purchases.', 'edd' ),
+							'id'   => 'disable_paypal_verification',
 							'type' => 'checkbox'
 						),
 					)
 				)
 			),
-			/** Extension Settings */
-			'extensions' => apply_filters( 'give_settings_extensions',
-				array()
+			/**
+			 * Emails Options
+			 */
+			'emails'     => array(
+				'id'      => 'options_page',
+				'title'   => __( 'Give Email Settings', 'give' ),
+				'show_on' => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
+				'fields'  => apply_filters( 'give_settings_emails', array()
+				)
 			),
-			'licenses'   => apply_filters( 'give_settings_licenses',
-				array()
+			/** Extension Settings */
+			'extensions' => array(
+				'id'      => 'options_page',
+				'title'   => __( 'Give Extension Settings', 'give' ),
+				'show_on' => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
+				'fields'  => apply_filters( 'give_settings_extensions', array()
+				)
+			),
+			/** Licenses Settings */
+			'licenses' => array(
+				'id'      => 'options_page',
+				'title'   => __( 'Give Licenses', 'give' ),
+				'show_on' => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
+				'fields'  => apply_filters( 'give_settings_licenses', array()
+				)
 			),
 		);
 
@@ -478,7 +484,8 @@ function give_default_gateway_callback( $field_object, $escaped_value, $object_i
  * Gets a number of posts and displays them as options
  *
  * @param  array $query_args Optional. Overrides defaults.
- * @param  bool $force Force the pages to be loaded even if not on settings
+ * @param  bool  $force      Force the pages to be loaded even if not on settings
+ *
  * @see: https://github.com/WebDevStudios/CMB2/wiki/Adding-your-own-field-types
  * @return array An array of options that matches the CMB2 options array
  */
