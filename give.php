@@ -177,8 +177,8 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/country-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/template-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/misc-functions.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/donate/functions.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/donate/template.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/checkout/functions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/checkout/template.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/shortcodes.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/formatting.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/price-functions.php';
