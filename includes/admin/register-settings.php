@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * Register Settings
@@ -10,7 +11,6 @@
  * @license    http://www.opensource.org/licenses/gpl-license.php GPL v2.0 (or later)
  * @link       https://github.com/webdevstudios/Custom-Metaboxes-and-Fields-for-WordPress
  */
-
 class Give_Plugin_Settings {
 
 	/**
@@ -243,7 +243,7 @@ class Give_Plugin_Settings {
 					'show_on' => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
 					'fields'  => array(
 						array(
-							'name' => __( 'Payment Gateways', 'give' ),
+							'name' => __( 'Gateways', 'give' ),
 							'desc' => '<hr>',
 							'type' => 'title',
 							'id'   => 'general_title'
@@ -261,18 +261,29 @@ class Give_Plugin_Settings {
 							'type' => 'default_gateway'
 						),
 						array(
-							'name'    => 'Test Select',
-							'desc'    => 'Select an option',
-							'id'      => 'test_select',
-							'type'    => 'select',
-							'options' => array(
-								'standard' => __( 'Option One', 'cmb' ),
-								'custom'   => __( 'Option Two', 'cmb' ),
-								'none'     => __( 'Option Three', 'cmb' ),
-							),
-							'default' => 'custom',
+							'name' => __( 'PayPal', 'give' ),
+							'desc' => '<hr>',
+							'type' => 'title',
+							'id'   => 'general_title'
 						),
-
+						array(
+							'name' => __( 'PayPal Email', 'edd' ),
+							'desc' => __( 'Enter your PayPal account\'s email', 'edd' ),
+							'id'   => 'paypal_email',
+							'type' => 'text_email',
+						),
+						array(
+							'id'   => 'paypal_page_style',
+							'name' => __( 'PayPal Page Style', 'edd' ),
+							'desc' => __( 'Enter the name of the page style to use, or leave blank to use the default', 'give' ),
+							'type' => 'text',
+						),
+						array(
+							'id'   => 'disable_paypal_verification',
+							'name' => __( 'Disable PayPal IPN Verification', 'edd' ),
+							'desc' => __( 'If payments are not getting marked as complete, then check this box. This forces the site to use a slightly less secure method of verifying purchases.', 'edd' ),
+							'type' => 'checkbox'
+						),
 					)
 				)
 			),
@@ -373,7 +384,7 @@ function give_enabled_gateways_callback( $field_object, $escaped_value, $object_
 
 	foreach ( $gateways as $key => $option ) :
 
-		if ( is_array($escaped_value) && array_key_exists($key, $escaped_value) ) {
+		if ( is_array( $escaped_value ) && array_key_exists( $key, $escaped_value ) ) {
 			$enabled = '1';
 		} else {
 			$enabled = null;

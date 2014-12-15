@@ -75,7 +75,7 @@ register_activation_hook( GIVE_PLUGIN_FILE, 'give_install' );
  * Runs just after plugin installation and exposes the
  * give_after_install hook.
  *
- * @since 1.0.0
+ * @since 1.0
  * @return void
  */
 function give_after_install() {
@@ -92,7 +92,7 @@ function give_after_install() {
 	}
 
 	// Create the customers database (this ensures it creates it on multisite instances where it is network activated)
-//	@Give()->customers->create_table();
+	Give()->customers->create_table();
 
 	// Delete the transient
 	delete_transient( '_give_installed' );

@@ -43,6 +43,21 @@ if ( ! class_exists( 'Give' ) ) : /**
 		 */
 		private static $instance;
 
+		/**
+		 * Give Settings Object
+		 *
+		 * @var object
+		 * @since 1.0
+		 */
+		public $give_settings;
+
+		/**
+		 * Give Customers DB Object
+		 *
+		 * @var object
+		 * @since 1.0
+		 */
+		public $customers;
 
 		/**
 		 * Main Give Instance
@@ -67,8 +82,8 @@ if ( ! class_exists( 'Give' ) ) : /**
 				add_action( 'plugins_loaded', array( self::$instance, 'load_textdomain' ) );
 
 				self::$instance->includes();
-				self::$instance->give_settings_pages = new Give_Plugin_Settings();
-
+				self::$instance->give_settings = new Give_Plugin_Settings();
+				self::$instance->customers     = new Give_DB_Customers();
 			}
 
 			return self::$instance;
@@ -155,6 +170,10 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-roles.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-template-loader.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donate-form.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-customers.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-stats.php';
+
 			require_once GIVE_PLUGIN_DIR . 'includes/template-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/misc-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/donate/functions.php';
@@ -163,17 +182,27 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/formatting.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/price-functions.php';
 
+			require_once GIVE_PLUGIN_DIR . 'includes/payments/functions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/payments/actions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/payments/class-payment-stats.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/payments/class-payments-query.php';
+
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/functions.php';
-//			require_once GIVE_PLUGIN_DIR . 'includes/gateways/actions.php';
-//			require_once GIVE_PLUGIN_DIR . 'includes/gateways/paypal-standard.php';
-//			require_once GIVE_PLUGIN_DIR . 'includes/gateways/manual.php';
+			//			require_once GIVE_PLUGIN_DIR . 'includes/gateways/actions.php';
+			//			require_once GIVE_PLUGIN_DIR . 'includes/gateways/paypal-standard.php';
+			//			require_once GIVE_PLUGIN_DIR . 'includes/gateways/manual.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/error-tracking.php';
+
 
 			if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/welcome.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/metabox.php';
+
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/actions.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/payments-history.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/contextual-help.php';
 
 			} else {
 
