@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * Determines if a user can checkout or not
  *
  * @since 1.0
- * @global $give_options Array of all the EDD Options
+ * @global $give_options Array of all the Give Options
  * @return bool Can user checkout?
  */
 function give_can_checkout() {

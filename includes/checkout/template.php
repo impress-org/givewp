@@ -59,6 +59,7 @@ function give_get_donation_form( $args = array() ) {
 
 		do_action( 'give_checkout_form_top', $form->ID, $args );
 		do_action( 'give_payment_mode_select' );
+
 		do_action( 'give_checkout_form_bottom', $form->ID, $args );
 
 		?>
@@ -73,6 +74,64 @@ function give_get_donation_form( $args = array() ) {
 
 }
 
+
+/**
+ * Renders the Purchase Form, hooks are provided to add to the purchase form.
+ * The default Purchase Form rendered displays a list of the enabled payment
+ * gateways, a user registration form (if enable) and a credit card info form
+ * if credit cards are enabled
+ *
+ * @since 1.4
+ * @global $give_options Array of all the EDD options
+ * @return string
+ */
+function give_show_purchase_form() {
+	global $give_options;
+
+	$payment_mode = give_get_chosen_gateway();
+
+	do_action( 'give_purchase_form_top' );
+
+	if ( give_can_checkout() ) {
+
+		do_action( 'give_purchase_form_before_register_login' );
+
+		$show_register_form = give_get_option( 'show_register_form', 'none' );
+		if ( ( $show_register_form === 'registration' || ( $show_register_form === 'both' && ! isset( $_GET['login'] ) ) ) && ! is_user_logged_in() ) : ?>
+			<div id="give_checkout_login_register">
+				<?php do_action( 'give_purchase_form_register_fields' ); ?>
+			</div>
+		<?php elseif ( ( $show_register_form === 'login' || ( $show_register_form === 'both' && isset( $_GET['login'] ) ) ) && ! is_user_logged_in() ) : ?>
+			<div id="give_checkout_login_register">
+				<?php do_action( 'give_purchase_form_login_fields' ); ?>
+			</div>
+		<?php endif; ?>
+
+		<?php if ( ( ! isset( $_GET['login'] ) && is_user_logged_in() ) || ! isset( $give_options['show_register_form'] ) || 'none' === $show_register_form ) {
+			do_action( 'give_purchase_form_after_user_info' );
+		}
+
+		do_action( 'give_purchase_form_before_cc_form' );
+
+		// Load the credit card form and allow gateways to load their own if they wish
+		if ( has_action( 'give_' . $payment_mode . '_cc_form' ) ) {
+			do_action( 'give_' . $payment_mode . '_cc_form' );
+		} else {
+			do_action( 'give_cc_form' );
+		}
+
+		do_action( 'give_purchase_form_after_cc_form' );
+
+	} else {
+		// Can't checkout
+		do_action( 'give_purchase_form_no_access' );
+
+	}
+
+	do_action( 'give_purchase_form_bottom' );
+}
+
+add_action( 'give_purchase_form', 'give_show_purchase_form' );
 
 /**
  * Donation Levels Output
@@ -574,7 +633,7 @@ function give_get_register_fields() {
 	echo ob_get_clean();
 }
 
-//add_action( 'give_purchase_form_register_fields', 'give_get_register_fields' );
+add_action( 'give_purchase_form_register_fields', 'give_get_register_fields' );
 
 /**
  * Gets the login fields for the login form on the checkout. This function hooks
@@ -631,7 +690,7 @@ function give_get_login_fields() {
 	echo ob_get_clean();
 }
 
-//add_action( 'give_purchase_form_login_fields', 'give_get_login_fields' );
+add_action( 'give_purchase_form_login_fields', 'give_get_login_fields' );
 
 /**
  * Renders the payment mode form by getting all the enabled payment gateways and
@@ -715,7 +774,7 @@ function give_terms_agreement() {
 	}
 }
 
-//add_action( 'give_purchase_form_before_submit', 'give_terms_agreement' );
+add_action( 'give_purchase_form_before_submit', 'give_terms_agreement' );
 
 /**
  * Shows the final purchase total at the bottom of the checkout page
@@ -732,7 +791,7 @@ function give_checkout_final_total() {
 <?php
 }
 
-//add_action( 'give_purchase_form_before_submit', 'give_checkout_final_total', 999 );
+add_action( 'give_purchase_form_before_submit', 'give_checkout_final_total', 999 );
 
 
 /**
@@ -759,7 +818,7 @@ function give_checkout_submit() {
 <?php
 }
 
-//add_action( 'give_purchase_form_after_cc_form', 'give_checkout_submit', 9999 );
+add_action( 'give_purchase_form_after_cc_form', 'give_checkout_submit', 9999 );
 
 
 /**

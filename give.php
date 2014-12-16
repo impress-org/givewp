@@ -84,6 +84,8 @@ if ( ! class_exists( 'Give' ) ) : /**
 				self::$instance->includes();
 				self::$instance->give_settings = new Give_Plugin_Settings();
 				self::$instance->customers     = new Give_DB_Customers();
+				self::$instance->session       = new Give_Session();
+
 			}
 
 			return self::$instance;
@@ -167,12 +169,14 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/post-types.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/scripts.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/ajax-functions.php';
+
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-roles.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-template-loader.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donate-form.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-customers.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-stats.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-session.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/country-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/template-functions.php';
@@ -182,6 +186,8 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/shortcodes.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/formatting.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/price-functions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/error-tracking.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/process-purchase.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/actions.php';
@@ -189,10 +195,9 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/class-payments-query.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/functions.php';
-			//			require_once GIVE_PLUGIN_DIR . 'includes/gateways/actions.php';
-			//			require_once GIVE_PLUGIN_DIR . 'includes/gateways/paypal-standard.php';
-			//			require_once GIVE_PLUGIN_DIR . 'includes/gateways/manual.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/error-tracking.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/actions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/paypal-standard.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/manual.php';
 
 
 			if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {

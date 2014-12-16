@@ -118,7 +118,7 @@ function give_unset_error( $error_id ) {
  * @return void
  */
 function _give_die_handler() {
-	if ( defined( 'EDD_UNIT_TESTS' ) ) {
+	if ( defined( 'GIVE_UNIT_TESTS' ) ) {
 		return '_give_die_handler';
 	} else {
 		die();

@@ -157,7 +157,6 @@ function give_get_current_page_url() {
  * @return bool $ret True is verify credit cards is live
  */
 function give_is_cc_verify_enabled() {
-	global $give_options;
 
 	$ret = true;
 

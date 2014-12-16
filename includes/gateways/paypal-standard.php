@@ -2,7 +2,7 @@
 /**
  * PayPal Standard Gateway
  *
- * @package     EDD
+ * @package     Give
  * @subpackage  Gateways
  * @copyright   Copyright (c) 2014, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -17,18 +17,18 @@
  * @access private
  * @since 1.0
  */
-add_action( 'edd_paypal_cc_form', '__return_false' );
+add_action( 'give_paypal_cc_form', '__return_false' );
 
 /**
  * Process PayPal Purchase
  *
  * @since 1.0
- * @global $edd_options Array of all the EDD Options
+ * @global $give_options Array of all the Give Options
  * @param array   $purchase_data Purchase Data
  * @return void
  */
-function edd_process_paypal_purchase( $purchase_data ) {
-	global $edd_options;
+function give_process_paypal_purchase( $purchase_data ) {
+	global $give_options;
 
 	if( ! wp_verify_nonce( $purchase_data['gateway_nonce'], 'edd-gateway' ) ) {
 		wp_die( __( 'Nonce verification has failed', 'edd' ), __( 'Error', 'edd' ), array( 'response' => 403 ) );
@@ -40,7 +40,7 @@ function edd_process_paypal_purchase( $purchase_data ) {
 		'date'          => $purchase_data['date'],
 		'user_email'    => $purchase_data['user_email'],
 		'purchase_key'  => $purchase_data['purchase_key'],
-		'currency'      => edd_get_currency(),
+		'currency'      => give_get_currency(),
 		'downloads'     => $purchase_data['downloads'],
 		'user_info'     => $purchase_data['user_info'],
 		'cart_details'  => $purchase_data['cart_details'],
@@ -49,14 +49,14 @@ function edd_process_paypal_purchase( $purchase_data ) {
 	);
 
 	// Record the pending payment
-	$payment = edd_insert_payment( $payment_data );
+	$payment = give_insert_payment( $payment_data );
 
 	// Check payment
 	if ( ! $payment ) {
 		// Record the error
-		edd_record_gateway_error( __( 'Payment Error', 'edd' ), sprintf( __( 'Payment creation failed before sending buyer to PayPal. Payment data: %s', 'edd' ), json_encode( $payment_data ) ), $payment );
+		give_record_gateway_error( __( 'Payment Error', 'edd' ), sprintf( __( 'Payment creation failed before sending buyer to PayPal. Payment data: %s', 'edd' ), json_encode( $payment_data ) ), $payment );
 		// Problems? send back
-		edd_send_back_to_checkout( '?payment-mode=' . $purchase_data['post_data']['edd-gateway'] );
+		give_send_back_to_checkout( '?payment-mode=' . $purchase_data['post_data']['edd-gateway'] );
 	} else {
 		// Only send to PayPal if the pending payment is created successfully
 		$listener_url = add_query_arg( 'edd-listener', 'IPN', home_url( 'index.php' ) );
@@ -66,27 +66,27 @@ function edd_process_paypal_purchase( $purchase_data ) {
 				'payment-confirmation' => 'paypal',
 				'payment-id' => $payment
 
-			), get_permalink( $edd_options['success_page'] ) );
+			), get_permalink( $give_options['success_page'] ) );
 
 		// Get the PayPal redirect uri
-		$paypal_redirect = trailingslashit( edd_get_paypal_redirect() ) . '?';
+		$paypal_redirect = trailingslashit( give_get_paypal_redirect() ) . '?';
 
 		// Setup PayPal arguments
 		$paypal_args = array(
-			'business'      => $edd_options['paypal_email'],
+			'business'      => $give_options['paypal_email'],
 			'email'         => $purchase_data['user_email'],
 			'invoice'  => $purchase_data['purchase_key'],
 			'no_shipping'   => '1',
 			'shipping'      => '0',
 			'no_note'       => '1',
-			'currency_code' => edd_get_currency(),
+			'currency_code' => give_get_currency(),
 			'charset'       => get_bloginfo( 'charset' ),
 			'custom'        => $payment,
 			'rm'            => '2',
 			'return'        => $return_url,
-			'cancel_return' => edd_get_failed_transaction_uri( '?payment-id=' . $payment ),
+			'cancel_return' => give_get_failed_transaction_uri( '?payment-id=' . $payment ),
 			'notify_url'    => $listener_url,
-			'page_style'    => edd_get_paypal_page_style(),
+			'page_style'    => give_get_paypal_page_style(),
 			'cbt'           => get_bloginfo( 'name' ),
 			'bn'            => 'EasyDigitalDownloads_SP'
 		);
@@ -115,17 +115,17 @@ function edd_process_paypal_purchase( $purchase_data ) {
 				$item_amount = 0;
 			}
 
-			if ( edd_has_variable_prices( $item['id'] ) && edd_get_cart_item_price_id( $item ) !== false ) {
+			if ( give_has_variable_prices( $item['id'] ) && give_get_cart_item_price_id( $item ) !== false ) {
 
-				$item['name'] .= ' - ' . edd_get_cart_item_price_name( $item );
+				$item['name'] .= ' - ' . give_get_cart_item_price_name( $item );
 			}
 
 			$paypal_args['item_name_' . $i ]      = stripslashes_deep( html_entity_decode( wp_strip_all_tags( $item['name'] ), ENT_COMPAT, 'UTF-8' ) );
 			$paypal_args['quantity_' . $i ]       = $item['quantity'];
 			$paypal_args['amount_' . $i ]         = $item_amount;
 
-			if ( edd_use_skus() ) {
-				$paypal_args['item_number_' . $i ] = edd_get_download_sku( $item['id'] );
+			if ( give_use_skus() ) {
+				$paypal_args['item_number_' . $i ] = give_get_download_sku( $item['id'] );
 			}
 
 			$i++;
@@ -142,7 +142,7 @@ function edd_process_paypal_purchase( $purchase_data ) {
 					// this is a positive fee
 					$paypal_args['item_name_' . $i ] = stripslashes_deep( html_entity_decode( wp_strip_all_tags( $fee['label'] ), ENT_COMPAT, 'UTF-8' ) );
 					$paypal_args['quantity_' . $i ]  = '1';
-					$paypal_args['amount_' . $i ]    = edd_sanitize_amount( $fee['amount'] );
+					$paypal_args['amount_' . $i ]    = give_sanitize_amount( $fee['amount'] );
 					$i++;
 				} else {
 					// This is a negative fee (discount)
@@ -152,17 +152,17 @@ function edd_process_paypal_purchase( $purchase_data ) {
 		}
 
 		if ( $discounted_amount > '0' ) {
-			$paypal_args['discount_amount_cart'] = edd_sanitize_amount( $discounted_amount );
+			$paypal_args['discount_amount_cart'] = give_sanitize_amount( $discounted_amount );
 		}
 
 		// Add taxes to the cart
-		if ( edd_use_taxes() ) {
+		if ( give_use_taxes() ) {
 
-			$paypal_args['tax_cart'] = edd_sanitize_amount( $purchase_data['tax'] );
+			$paypal_args['tax_cart'] = give_sanitize_amount( $purchase_data['tax'] );
 
 		}
 
-		$paypal_args = apply_filters( 'edd_paypal_redirect_args', $paypal_args, $purchase_data );
+		$paypal_args = apply_filters( 'give_paypal_redirect_args', $paypal_args, $purchase_data );
 
 		// Build query
 		$paypal_redirect .= http_build_query( $paypal_args );
@@ -171,7 +171,7 @@ function edd_process_paypal_purchase( $purchase_data ) {
 		$paypal_redirect = str_replace( '&amp;', '&', $paypal_redirect );
 
 		// Get rid of cart contents
-		edd_empty_cart();
+		give_empty_cart();
 
 		// Redirect to PayPal
 		wp_redirect( $paypal_redirect );
@@ -179,34 +179,34 @@ function edd_process_paypal_purchase( $purchase_data ) {
 	}
 
 }
-add_action( 'edd_gateway_paypal', 'edd_process_paypal_purchase' );
+add_action( 'give_gateway_paypal', 'give_process_paypal_purchase' );
 
 /**
  * Listens for a PayPal IPN requests and then sends to the processing function
  *
  * @since 1.0
- * @global $edd_options Array of all the EDD Options
+ * @global $give_options Array of all the Give Options
  * @return void
  */
-function edd_listen_for_paypal_ipn() {
-	global $edd_options;
+function give_listen_for_paypal_ipn() {
+	global $give_options;
 
 	// Regular PayPal IPN
 	if ( isset( $_GET['edd-listener'] ) && $_GET['edd-listener'] == 'IPN' ) {
-		do_action( 'edd_verify_paypal_ipn' );
+		do_action( 'give_verify_paypal_ipn' );
 	}
 }
-add_action( 'init', 'edd_listen_for_paypal_ipn' );
+add_action( 'init', 'give_listen_for_paypal_ipn' );
 
 /**
  * Process PayPal IPN
  *
  * @since 1.0
- * @global $edd_options Array of all the EDD Options
+ * @global $give_options Array of all the Give Options
  * @return void
  */
-function edd_process_paypal_ipn() {
-	global $edd_options;
+function give_process_paypal_ipn() {
+	global $give_options;
 
 	// Check the request method is POST
 	if ( isset( $_SERVER['REQUEST_METHOD'] ) && $_SERVER['REQUEST_METHOD'] != 'POST' ) {
@@ -227,7 +227,7 @@ function edd_process_paypal_ipn() {
 	$encoded_data = 'cmd=_notify-validate';
 
 	// Get current arg separator
-	$arg_separator = edd_get_php_arg_separator_output();
+	$arg_separator = give_get_php_arg_separator_output();
 
 	// Verify there is a post_data
 	if ( $post_data || strlen( $post_data ) > 0 ) {
@@ -251,9 +251,9 @@ function edd_process_paypal_ipn() {
 	parse_str( $encoded_data, $encoded_data_array );
 
 	// Get the PayPal redirect uri
-	$paypal_redirect = edd_get_paypal_redirect( true );
+	$paypal_redirect = give_get_paypal_redirect( true );
 
-	if ( ! edd_get_option( 'disable_paypal_verification' ) ) {
+	if ( ! give_get_option( 'disable_paypal_verification' ) ) {
 
 		// Validate the IPN
 
@@ -275,15 +275,15 @@ function edd_process_paypal_ipn() {
 		);
 
 		// Get response
-		$api_response = wp_remote_post( edd_get_paypal_redirect(), $remote_post_vars );
+		$api_response = wp_remote_post( give_get_paypal_redirect(), $remote_post_vars );
 
 		if ( is_wp_error( $api_response ) ) {
-			edd_record_gateway_error( __( 'IPN Error', 'edd' ), sprintf( __( 'Invalid IPN verification response. IPN data: %s', 'edd' ), json_encode( $api_response ) ) );
+			give_record_gateway_error( __( 'IPN Error', 'edd' ), sprintf( __( 'Invalid IPN verification response. IPN data: %s', 'edd' ), json_encode( $api_response ) ) );
 			return; // Something went wrong
 		}
 
-		if ( $api_response['body'] !== 'VERIFIED' && !isset( $edd_options['disable_paypal_verification'] ) ) {
-			edd_record_gateway_error( __( 'IPN Error', 'edd' ), sprintf( __( 'Invalid IPN verification response. IPN data: %s', 'edd' ), json_encode( $api_response ) ) );
+		if ( $api_response['body'] !== 'VERIFIED' && !isset( $give_options['disable_paypal_verification'] ) ) {
+			give_record_gateway_error( __( 'IPN Error', 'edd' ), sprintf( __( 'Invalid IPN verification response. IPN data: %s', 'edd' ), json_encode( $api_response ) ) );
 			return; // Response not okay
 		}
 
@@ -302,27 +302,27 @@ function edd_process_paypal_ipn() {
 
 	$payment_id = isset( $encoded_data_array['custom'] ) ? absint( $encoded_data_array['custom'] ) : 0;
 
-	if ( has_action( 'edd_paypal_' . $encoded_data_array['txn_type'] ) ) {
+	if ( has_action( 'give_paypal_' . $encoded_data_array['txn_type'] ) ) {
 		// Allow PayPal IPN types to be processed separately
-		do_action( 'edd_paypal_' . $encoded_data_array['txn_type'], $encoded_data_array, $payment_id );
+		do_action( 'give_paypal_' . $encoded_data_array['txn_type'], $encoded_data_array, $payment_id );
 	} else {
 		// Fallback to web accept just in case the txn_type isn't present
-		do_action( 'edd_paypal_web_accept', $encoded_data_array, $payment_id );
+		do_action( 'give_paypal_web_accept', $encoded_data_array, $payment_id );
 	}
 	exit;
 }
-add_action( 'edd_verify_paypal_ipn', 'edd_process_paypal_ipn' );
+add_action( 'give_verify_paypal_ipn', 'give_process_paypal_ipn' );
 
 /**
  * Process web accept (one time) payment IPNs
  *
  * @since 1.3.4
- * @global $edd_options Array of all the EDD Options
+ * @global $give_options Array of all the Give Options
  * @param array   $data IPN Data
  * @return void
  */
-function edd_process_paypal_web_accept_and_cart( $data, $payment_id ) {
-	global $edd_options;
+function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
+	global $give_options;
 
 	if ( $data['txn_type'] != 'web_accept' && $data['txn_type'] != 'cart' && $data['payment_status'] != 'Refunded' ) {
 		return;
@@ -338,37 +338,37 @@ function edd_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 	$payment_status = strtolower( $data['payment_status'] );
 	$currency_code  = strtolower( $data['mc_currency'] );
 	$business_email = isset( $data['business'] ) && is_email( $data['business'] ) ? trim( $data['business'] ) : trim( $data['receiver_email'] );
-	$payment_meta   = edd_get_payment_meta( $payment_id );
+	$payment_meta   = give_get_payment_meta( $payment_id );
 
 
-	if ( edd_get_payment_gateway( $payment_id ) != 'paypal' ) {
+	if ( give_get_payment_gateway( $payment_id ) != 'paypal' ) {
 		return; // this isn't a PayPal standard IPN
 	}
 
 	// Verify payment recipient
-	if ( strcasecmp( $business_email, trim( $edd_options['paypal_email'] ) ) != 0 ) {
+	if ( strcasecmp( $business_email, trim( $give_options['paypal_email'] ) ) != 0 ) {
 
-		edd_record_gateway_error( __( 'IPN Error', 'edd' ), sprintf( __( 'Invalid business email in IPN response. IPN data: %s', 'edd' ), json_encode( $data ) ), $payment_id );
-		edd_update_payment_status( $payment_id, 'failed' );
-		edd_insert_payment_note( $payment_id, __( 'Payment failed due to invalid PayPal business email.', 'edd' ) );
+		give_record_gateway_error( __( 'IPN Error', 'edd' ), sprintf( __( 'Invalid business email in IPN response. IPN data: %s', 'edd' ), json_encode( $data ) ), $payment_id );
+		give_update_payment_status( $payment_id, 'failed' );
+		give_insert_payment_note( $payment_id, __( 'Payment failed due to invalid PayPal business email.', 'edd' ) );
 		return;
 	}
 
 	// Verify payment currency
 	if ( $currency_code != strtolower( $payment_meta['currency'] ) ) {
 
-		edd_record_gateway_error( __( 'IPN Error', 'edd' ), sprintf( __( 'Invalid currency in IPN response. IPN data: %s', 'edd' ), json_encode( $data ) ), $payment_id );
-		edd_update_payment_status( $payment_id, 'failed' );
-		edd_insert_payment_note( $payment_id, __( 'Payment failed due to invalid currency in PayPal IPN.', 'edd' ) );
+		give_record_gateway_error( __( 'IPN Error', 'edd' ), sprintf( __( 'Invalid currency in IPN response. IPN data: %s', 'edd' ), json_encode( $data ) ), $payment_id );
+		give_update_payment_status( $payment_id, 'failed' );
+		give_insert_payment_note( $payment_id, __( 'Payment failed due to invalid currency in PayPal IPN.', 'edd' ) );
 		return;
 	}
 
-	if ( ! edd_get_payment_user_email( $payment_id ) ) {
+	if ( ! give_get_payment_user_email( $payment_id ) ) {
 
 		// This runs when a Buy Now purchase was made. It bypasses checkout so no personal info is collected until PayPal
 
 		// No email associated with purchase, so store from PayPal
-		edd_update_payment_meta( $payment_id, '_edd_payment_user_email', $data['payer_email'] );
+		give_update_payment_meta( $payment_id, '_give_payment_user_email', $data['payer_email'] );
 
 		// Setup and store the customers's details
 		$address = array();
@@ -388,13 +388,13 @@ function edd_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 		);
 
 		$payment_meta['user_info'] = $user_info;
-		edd_update_payment_meta( $payment_id, '_edd_payment_meta', $payment_meta );
+		give_update_payment_meta( $payment_id, '_give_payment_meta', $payment_meta );
 	}
 
 	if ( $payment_status == 'refunded' || $payment_status == 'reversed' ) {
 
 		// Process a refund
-		edd_process_paypal_refund( $data, $payment_id );
+		give_process_paypal_refund( $data, $payment_id );
 
 	} else {
 
@@ -403,31 +403,31 @@ function edd_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 		}
 
 		// Retrieve the total purchase amount (before PayPal)
-		$payment_amount = edd_get_payment_amount( $payment_id );
+		$payment_amount = give_get_payment_amount( $payment_id );
 
 		if ( number_format( (float) $paypal_amount, 2 ) < number_format( (float) $payment_amount, 2 ) ) {
 			// The prices don't match
-			edd_record_gateway_error( __( 'IPN Error', 'edd' ), sprintf( __( 'Invalid payment amount in IPN response. IPN data: %s', 'edd' ), json_encode( $data ) ), $payment_id );
-			edd_update_payment_status( $payment_id, 'failed' );
-			edd_insert_payment_note( $payment_id, __( 'Payment failed due to invalid amount in PayPal IPN.', 'edd' ) );
+			give_record_gateway_error( __( 'IPN Error', 'edd' ), sprintf( __( 'Invalid payment amount in IPN response. IPN data: %s', 'edd' ), json_encode( $data ) ), $payment_id );
+			give_update_payment_status( $payment_id, 'failed' );
+			give_insert_payment_note( $payment_id, __( 'Payment failed due to invalid amount in PayPal IPN.', 'edd' ) );
 			return;
 		}
-		if ( $purchase_key != edd_get_payment_key( $payment_id ) ) {
+		if ( $purchase_key != give_get_payment_key( $payment_id ) ) {
 			// Purchase keys don't match
-			edd_record_gateway_error( __( 'IPN Error', 'edd' ), sprintf( __( 'Invalid purchase key in IPN response. IPN data: %s', 'edd' ), json_encode( $data ) ), $payment_id );
-			edd_update_payment_status( $payment_id, 'failed' );
-			edd_insert_payment_note( $payment_id, __( 'Payment failed due to invalid purchase key in PayPal IPN.', 'edd' ) );
+			give_record_gateway_error( __( 'IPN Error', 'edd' ), sprintf( __( 'Invalid purchase key in IPN response. IPN data: %s', 'edd' ), json_encode( $data ) ), $payment_id );
+			give_update_payment_status( $payment_id, 'failed' );
+			give_insert_payment_note( $payment_id, __( 'Payment failed due to invalid purchase key in PayPal IPN.', 'edd' ) );
 			return;
 		}
 
-		if ( $payment_status == 'completed' || edd_is_test_mode() ) {
-			edd_insert_payment_note( $payment_id, sprintf( __( 'PayPal Transaction ID: %s', 'edd' ) , $data['txn_id'] ) );
-			edd_set_payment_transaction_id( $payment_id, $data['txn_id'] );
-			edd_update_payment_status( $payment_id, 'publish' );
+		if ( $payment_status == 'completed' || give_is_test_mode() ) {
+			give_insert_payment_note( $payment_id, sprintf( __( 'PayPal Transaction ID: %s', 'edd' ) , $data['txn_id'] ) );
+			give_set_payment_transaction_id( $payment_id, $data['txn_id'] );
+			give_update_payment_status( $payment_id, 'publish' );
 		}
 	}
 }
-add_action( 'edd_paypal_web_accept', 'edd_process_paypal_web_accept_and_cart', 10, 2 );
+add_action( 'give_paypal_web_accept', 'give_process_paypal_web_accept_and_cart', 10, 2 );
 
 /**
  * Process PayPal IPN Refunds
@@ -436,7 +436,7 @@ add_action( 'edd_paypal_web_accept', 'edd_process_paypal_web_accept_and_cart', 1
  * @param array   $data IPN Data
  * @return void
  */
-function edd_process_paypal_refund( $data, $payment_id = 0 ) {
+function give_process_paypal_refund( $data, $payment_id = 0 ) {
 
 	// Collect payment details
 
@@ -448,31 +448,31 @@ function edd_process_paypal_refund( $data, $payment_id = 0 ) {
 		return; // Only refund payments once
 	}
 
-	$payment_amount = edd_get_payment_amount( $payment_id );
+	$payment_amount = give_get_payment_amount( $payment_id );
 	$refund_amount  = $data['payment_gross'] * -1;
 
 	if ( number_format( (float) $refund_amount, 2 ) < number_format( (float) $payment_amount, 2 ) ) {
 
-		edd_insert_payment_note( $payment_id, sprintf( __( 'Partial PayPal refund processed: %s', 'edd' ), $data['parent_txn_id'] ) );
+		give_insert_payment_note( $payment_id, sprintf( __( 'Partial PayPal refund processed: %s', 'edd' ), $data['parent_txn_id'] ) );
 		return; // This is a partial refund
 
 	}
 
-	edd_insert_payment_note( $payment_id, sprintf( __( 'PayPal Payment #%s Refunded for reason: %s', 'edd' ), $data['parent_txn_id'], $data['reason_code'] ) );
-	edd_insert_payment_note( $payment_id, sprintf( __( 'PayPal Refund Transaction ID: %s', 'edd' ), $data['txn_id'] ) );
-	edd_update_payment_status( $payment_id, 'refunded' );
+	give_insert_payment_note( $payment_id, sprintf( __( 'PayPal Payment #%s Refunded for reason: %s', 'edd' ), $data['parent_txn_id'], $data['reason_code'] ) );
+	give_insert_payment_note( $payment_id, sprintf( __( 'PayPal Refund Transaction ID: %s', 'edd' ), $data['txn_id'] ) );
+	give_update_payment_status( $payment_id, 'refunded' );
 }
 
 /**
  * Get PayPal Redirect
  *
  * @since 1.0.8.2
- * @global $edd_options Array of all the EDD Options
+ * @global $give_options Array of all the Give Options
  * @param bool    $ssl_check Is SSL?
  * @return string
  */
-function edd_get_paypal_redirect( $ssl_check = false ) {
-	global $edd_options;
+function give_get_paypal_redirect( $ssl_check = false ) {
+	global $give_options;
 
 	if ( is_ssl() || ! $ssl_check ) {
 		$protocal = 'https://';
@@ -481,7 +481,7 @@ function edd_get_paypal_redirect( $ssl_check = false ) {
 	}
 
 	// Check the current payment mode
-	if ( edd_is_test_mode() ) {
+	if ( give_is_test_mode() ) {
 		// Test mode
 		$paypal_uri = $protocal . 'www.sandbox.paypal.com/cgi-bin/webscr';
 	} else {
@@ -489,25 +489,25 @@ function edd_get_paypal_redirect( $ssl_check = false ) {
 		$paypal_uri = $protocal . 'www.paypal.com/cgi-bin/webscr';
 	}
 
-	return apply_filters( 'edd_paypal_uri', $paypal_uri );
+	return apply_filters( 'give_paypal_uri', $paypal_uri );
 }
 
 /**
  * Set the Page Style for PayPal Purchase page
  *
- * @since 1.4.1
- * @global $edd_options Array of all the EDD Options
+ * @since 1.0
+ * @global $give_options Array of all the Give Options
  * @return string
  */
-function edd_get_paypal_page_style() {
-	global $edd_options;
+function give_get_paypal_page_style() {
+	global $give_options;
 
 	$page_style = 'PayPal';
 
-	if ( isset( $edd_options['paypal_page_style'] ) )
-		$page_style = trim( $edd_options['paypal_page_style'] );
+	if ( isset( $give_options['paypal_page_style'] ) )
+		$page_style = trim( $give_options['paypal_page_style'] );
 
-	return apply_filters( 'edd_paypal_page_style', $page_style );
+	return apply_filters( 'give_paypal_page_style', $page_style );
 }
 
 /**
@@ -518,17 +518,17 @@ function edd_get_paypal_page_style() {
  * @since 1.9
  * @return string
  */
-function edd_paypal_success_page_content( $content ) {
+function give_paypal_success_page_content( $content ) {
 
-	if ( ! isset( $_GET['payment-id'] ) && ! edd_get_purchase_session() ) {
+	if ( ! isset( $_GET['payment-id'] ) && ! give_get_purchase_session() ) {
 		return $content;
 	}
 
 	$payment_id = isset( $_GET['payment-id'] ) ? absint( $_GET['payment-id'] ) : false;
 
 	if ( ! $payment_id ) {
-		$session    = edd_get_purchase_session();
-		$payment_id = edd_get_purchase_id_by_key( $session['purchase_key'] );
+		$session    = give_get_purchase_session();
+		$payment_id = give_get_purchase_id_by_key( $session['purchase_key'] );
 	}
 
 	$payment = get_post( $payment_id );
@@ -538,7 +538,7 @@ function edd_paypal_success_page_content( $content ) {
 		// Payment is still pending so show processing indicator to fix the Race Condition, issue #
 		ob_start();
 
-		edd_get_template_part( 'payment', 'processing' );
+		give_get_template_part( 'payment', 'processing' );
 
 		$content = ob_get_clean();
 
@@ -547,7 +547,7 @@ function edd_paypal_success_page_content( $content ) {
 	return $content;
 
 }
-add_filter( 'edd_payment_confirm_paypal', 'edd_paypal_success_page_content' );
+add_filter( 'give_payment_confirm_paypal', 'give_paypal_success_page_content' );
 
 /**
  * Given a Payment ID, extract the transaction ID
@@ -556,10 +556,10 @@ add_filter( 'edd_payment_confirm_paypal', 'edd_paypal_success_page_content' );
  * @param  string $payment_id       Payment ID
  * @return string                   Transaction ID
  */
-function edd_paypal_get_payment_transaction_id( $payment_id ) {
+function give_paypal_get_payment_transaction_id( $payment_id ) {
 
 	$transaction_id = '';
-	$notes = edd_get_payment_notes( $payment_id );
+	$notes = give_get_payment_notes( $payment_id );
 
 	foreach ( $notes as $note ) {
 		if ( preg_match( '/^PayPal Transaction ID: ([^\s]+)/', $note->comment_content, $match ) ) {
@@ -568,9 +568,9 @@ function edd_paypal_get_payment_transaction_id( $payment_id ) {
 		}
 	}
 
-	return apply_filters( 'edd_paypal_set_payment_transaction_id', $transaction_id, $payment_id );
+	return apply_filters( 'give_paypal_set_payment_transaction_id', $transaction_id, $payment_id );
 }
-add_filter( 'edd_get_payment_transaction_id-paypal', 'edd_paypal_get_payment_transaction_id', 10, 1 );
+add_filter( 'give_get_payment_transaction_id-paypal', 'give_paypal_get_payment_transaction_id', 10, 1 );
 
 /**
  * Given a transaction ID, generate a link to the PayPal transaction ID details
@@ -580,12 +580,12 @@ add_filter( 'edd_get_payment_transaction_id-paypal', 'edd_paypal_get_payment_tra
  * @param  int    $payment_id     The payment ID for this transaction
  * @return string                 A link to the PayPal transaction details
  */
-function edd_paypal_link_transaction_id( $transaction_id, $payment_id ) {
+function give_paypal_link_transaction_id( $transaction_id, $payment_id ) {
 
 	$paypal_base_url = 'https://history.paypal.com/cgi-bin/webscr?cmd=_history-details-from-hub&id=';
 	$transaction_url = '<a href="' . esc_url( $paypal_base_url . $transaction_id ) . '" target="_blank">' . $transaction_id . '</a>';
 
-	return apply_filters( 'edd_paypal_link_payment_details_transaction_id', $transaction_url );
+	return apply_filters( 'give_paypal_link_payment_details_transaction_id', $transaction_url );
 
 }
-add_filter( 'edd_payment_details_transaction_id-paypal', 'edd_paypal_link_transaction_id', 10, 2 );
+add_filter( 'give_payment_details_transaction_id-paypal', 'give_paypal_link_transaction_id', 10, 2 );

@@ -10,7 +10,9 @@
  */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Processes gateway select on checkout. Only for users without ajax / javascript
@@ -20,10 +22,12 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @param $data
  */
 function give_process_gateway_select( $data ) {
-	if( isset( $_POST['gateway_submit'] ) ) {
-		wp_redirect( add_query_arg( 'payment-mode', $_POST['payment-mode'] ) ); exit;
+	if ( isset( $_POST['gateway_submit'] ) ) {
+		wp_redirect( add_query_arg( 'payment-mode', $_POST['payment-mode'] ) );
+		exit;
 	}
 }
+
 add_action( 'give_gateway_select', 'give_process_gateway_select' );
 
 /**
@@ -38,6 +42,7 @@ function give_load_ajax_gateway() {
 		exit();
 	}
 }
+
 add_action( 'wp_ajax_give_load_gateway', 'give_load_ajax_gateway' );
 add_action( 'wp_ajax_nopriv_give_load_gateway', 'give_load_ajax_gateway' );
 
@@ -50,9 +55,11 @@ add_action( 'wp_ajax_nopriv_give_load_gateway', 'give_load_ajax_gateway' );
 function give_no_gateway_error() {
 	$gateways = give_get_enabled_payment_gateways();
 
-	if ( empty( $gateways ) )
+	if ( empty( $gateways ) ) {
 		give_set_error( 'no_gateways', __( 'You must enable a payment gateway to use Give', 'give' ) );
-	else
+	} else {
 		give_unset_error( 'no_gateways' );
+	}
 }
+
 add_action( 'init', 'give_no_gateway_error' );
