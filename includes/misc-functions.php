@@ -147,3 +147,33 @@ function give_get_current_page_url() {
 
 	return apply_filters( 'give_get_current_page_url', esc_url( $page_url ) );
 }
+
+
+/**
+ * Verify credit card numbers live?
+ *
+ * @since 1.0
+ * @global $give_options
+ * @return bool $ret True is verify credit cards is live
+ */
+function give_is_cc_verify_enabled() {
+	global $give_options;
+
+	$ret = true;
+
+	/*
+	 * Enable if use a single gateway other than PayPal or Manual. We have to assume it accepts credit cards
+	 * Enable if using more than one gateway if they aren't both PayPal and manual, again assuming credit card usage
+	 */
+	$gateways = give_get_enabled_payment_gateways();
+
+	if ( count( $gateways ) == 1 && ! isset( $gateways['paypal'] ) && ! isset( $gateways['manual'] ) ) {
+		$ret = true;
+	} else if ( count( $gateways ) == 1 ) {
+		$ret = false;
+	} else if ( count( $gateways ) == 2 && isset( $gateways['paypal'] ) && isset( $gateways['manual'] ) ) {
+		$ret = false;
+	}
+
+	return (bool) apply_filters( 'give_verify_credit_cards', $ret );
+}

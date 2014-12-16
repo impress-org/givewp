@@ -26,6 +26,50 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_load_scripts() {
 
+	global $give_options, $post;
+
+	$js_dir = GIVE_PLUGIN_URL . 'assets/js/';
+
+	// Use minified libraries if SCRIPT_DEBUG is turned off
+	$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
+	if ( give_is_cc_verify_enabled() ) {
+		wp_enqueue_script( 'creditCardValidator', $js_dir . 'jquery.creditCardValidator' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+	}
+
+	wp_enqueue_script( 'give-checkout-global', $js_dir . 'give-checkout-global' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+	wp_localize_script( 'give-checkout-global', 'give_global_vars', array(
+		'ajaxurl'           => give_get_ajax_url(),
+		'checkout_nonce'    => wp_create_nonce( 'give_checkout_nonce' ),
+		'currency_sign'     => give_currency_filter( '' ),
+		'currency_pos'      => isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before',
+		'no_gateway'        => __( 'Please select a payment method', 'give' ),
+		'no_discount'       => __( 'Please enter a discount code', 'give' ), // Blank discount code message
+		'enter_discount'    => __( 'Enter discount', 'give' ),
+		'discount_applied'  => __( 'Discount Applied', 'give' ), // Discount verified message
+		'no_email'          => __( 'Please enter an email address before applying a discount code', 'give' ),
+		'no_username'       => __( 'Please enter a username before applying a discount code', 'give' ),
+		'purchase_loading'  => __( 'Please Wait...', 'give' ),
+		'complete_purchase' => __( 'Purchase', 'give' ),
+		'give_version'      => GIVE_VERSION
+	) );
+
+
+	// Load AJAX scripts, if enabled
+	wp_enqueue_script( 'give-ajax', $js_dir . 'give-ajax' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+	wp_localize_script( 'give-ajax', 'give_scripts', array(
+			'ajaxurl'                 => give_get_ajax_url(),
+			'position_in_cart'        => isset( $position ) ? $position : - 1,
+			'loading'                 => __( 'Loading', 'give' ),
+			// General loading message
+			'select_option'           => __( 'Please select an option', 'give' ),
+			// Variable pricing error with multi-purchase option enabled
+			'ajax_loader'             => GIVE_PLUGIN_URL . 'assets/images/loading.gif',
+			'default_gateway'         => give_get_default_gateway(),
+			'permalinks'              => get_option( 'permalink_structure' ) ? '1' : '0',
+		)
+	);
+
 }
 
 add_action( 'wp_enqueue_scripts', 'give_load_scripts' );
@@ -57,7 +101,7 @@ function give_register_styles() {
 	$child_theme_style_sheet_2  = trailingslashit( get_stylesheet_directory() ) . $templates_dir . 'give.css';
 	$parent_theme_style_sheet   = trailingslashit( get_template_directory() ) . $templates_dir . $file;
 	$parent_theme_style_sheet_2 = trailingslashit( get_template_directory() ) . $templates_dir . 'give.css';
-	$give_plugin_style_sheet     = trailingslashit( give_get_templates_dir() ) . $file;
+	$give_plugin_style_sheet    = trailingslashit( give_get_templates_dir() ) . $file;
 
 	// Look in the child theme directory first, followed by the parent theme, followed by the EDD core templates directory
 	// Also look for the min version first, followed by non minified version, even if SCRIPT_DEBUG is not enabled.
