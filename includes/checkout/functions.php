@@ -130,7 +130,7 @@ function give_get_success_page_url( $query_string = null ) {
 /**
  * Get the URL of the Transaction Failed page
  *
- * @since 1.3.4
+ * @since 1.0
  * @global $give_options Array of all the EDD Options
  *
  * @param bool $extras Extras to append to the URL
@@ -184,7 +184,7 @@ function give_listen_for_failed_payments() {
  *
  * @param string $field
  * @access      public
- * @since       1.7
+ * @since       1.0
  * @return      bool
 */
 function give_field_is_required( $field = '' ) {
@@ -195,7 +195,7 @@ function give_field_is_required( $field = '' ) {
 /**
  * Retrieve an array of banned_emails
  *
- * @since       2.0
+ * @since       1.0
  * @return      array
  */
 function give_get_banned_emails() {

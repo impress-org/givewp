@@ -176,3 +176,21 @@ function give_is_cc_verify_enabled() {
 
 	return (bool) apply_filters( 'give_verify_credit_cards', $ret );
 }
+
+
+/**
+ * Checks if users can only give when logged in
+ *
+ * @since 1.0
+ * @global $give_options
+ * @return bool $ret Whether or not the logged_in_only setting is set
+ */
+function give_logged_in_only() {
+
+	global $give_options;
+
+	$ret = ! empty( $give_options['logged_in_only'] );
+
+	return (bool) apply_filters( 'give_logged_in_only', $ret );
+
+}

@@ -30,7 +30,6 @@ function give_process_purchase_form() {
 
 	// Allow themes and plugins to hook to errors
 	do_action( 'give_checkout_error_checks', $valid_data, $_POST );
-	
 
 	$is_ajax = isset( $_POST['give_ajax'] );
 
@@ -70,16 +69,7 @@ function give_process_purchase_form() {
 
 	// Setup purchase information
 	$purchase_data = array(
-		'downloads'    => give_get_cart_contents(),
-		'fees'         => give_get_cart_fees(),
-		// Any arbitrary fees that have been added to the cart
-		'subtotal'     => give_get_cart_subtotal(),
-		// Amount before taxes and discounts
-		'discount'     => give_get_cart_discounted_amount(),
-		// Discounted amount
-		'tax'          => give_get_cart_tax(),
-		// Taxed amount
-		'price'        => give_get_cart_total(),
+		'price'        => '',
 		// Amount after taxes
 		'purchase_key' => strtolower( md5( $user['user_email'] . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) ),
 		// Unique key
@@ -87,7 +77,6 @@ function give_process_purchase_form() {
 		'date'         => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
 		'user_info'    => stripslashes_deep( $user_info ),
 		'post_data'    => $_POST,
-		'cart_details' => give_get_cart_content_details(),
 		'gateway'      => $valid_data['gateway'],
 		'card_info'    => $valid_data['cc_info']
 	);
@@ -102,7 +91,7 @@ function give_process_purchase_form() {
 	if ( ! $purchase_data['price'] ) {
 		// Revert to manual
 		$purchase_data['gateway'] = 'manual';
-		$_POST['give-gateway']     = 'manual';
+		$_POST['give-gateway']    = 'manual';
 	}
 
 	// Allow the purchase data to be modified before it is sent to the gateway
@@ -118,12 +107,10 @@ function give_process_purchase_form() {
 	// Make sure credit card numbers are never stored in sessions
 	unset( $session_data['card_info']['card_number'] );
 
-	// Used for showing download links to non logged-in users after purchase, and for other plugins needing purchase data.
-	give_set_purchase_session( $session_data );
-
 	// Send info to the gateway for payment processing
 	give_send_to_gateway( $purchase_data['gateway'], $purchase_data );
 	give_die();
+
 }
 
 add_action( 'give_purchase', 'give_process_purchase_form' );
@@ -170,10 +157,11 @@ add_action( 'wp_ajax_nopriv_give_process_checkout_login', 'give_process_purchase
  * Purchase Form Validate Fields
  *
  * @access      private
- * @since       1.0.8.1
+ * @since       1.0
  * @return      bool|array
  */
 function give_purchase_form_validate_fields() {
+
 	global $give_options;
 
 	// Check if there is $_POST
@@ -184,7 +172,6 @@ function give_purchase_form_validate_fields() {
 	// Start an array to collect valid data
 	$valid_data = array(
 		'gateway'          => give_purchase_form_validate_gateway(), // Gateway fallback
-		'discount'         => give_purchase_form_validate_discounts(),    // Set default discount
 		'need_new_user'    => false,     // New user flag
 		'need_user_login'  => false,     // Login user flag
 		'logged_user_data' => array(),   // Logged user collected data
@@ -199,20 +186,19 @@ function give_purchase_form_validate_fields() {
 		give_purchase_form_validate_agree_to_terms();
 	}
 
+
 	if ( is_user_logged_in() ) {
 		// Collect logged in user data
 		$valid_data['logged_in_user'] = give_purchase_form_validate_logged_in_user();
 	} else if ( isset( $_POST['give-purchase-var'] ) && $_POST['give-purchase-var'] == 'needs-to-register' ) {
 		// Set new user registration as required
 		$valid_data['need_new_user'] = true;
-
 		// Validate new user data
 		$valid_data['new_user_data'] = give_purchase_form_validate_new_user();
 		// Check if login validation is needed
 	} else if ( isset( $_POST['give-purchase-var'] ) && $_POST['give-purchase-var'] == 'needs-to-login' ) {
 		// Set user login as required
 		$valid_data['need_user_login'] = true;
-
 		// Validate users login info
 		$valid_data['login_user_data'] = give_purchase_form_validate_user_login();
 	} else {
@@ -240,7 +226,7 @@ function give_purchase_form_validate_gateway() {
 
 		$gateway = sanitize_text_field( $_REQUEST['give-gateway'] );
 
-		if ( '0.00' == give_get_cart_total() ) {
+		if ( '0.00' == $_REQUEST['give-amount'] ) {
 
 			$gateway = 'manual';
 
@@ -254,62 +240,6 @@ function give_purchase_form_validate_gateway() {
 
 	return $gateway;
 
-}
-
-/**
- * Purchase Form Validate Discounts
- *
- * @access      private
- * @since       1.0.8.1
- * @return      string
- */
-function give_purchase_form_validate_discounts() {
-
-	// Retrieve the discount stored in cookies
-	$discounts = give_get_cart_discounts();
-
-	$user = '';
-	if ( isset( $_POST['give_user_login'] ) && ! empty( $_POST['give_user_login'] ) ) {
-		$user = sanitize_text_field( $_POST['give_user_login'] );
-	} else if ( isset( $_POST['give_email'] ) && ! empty( $_POST['give_email'] ) ) {
-		$user = sanitize_text_field( $_POST['give_email'] );
-	} else if ( is_user_logged_in() ) {
-		$user = wp_get_current_user()->user_email;
-	}
-
-	$error = false;
-
-	// Check for valid discount(s) is present
-	if ( ! empty( $_POST['give-discount'] ) && empty( $discounts ) && __( 'Enter discount', 'give' ) != $_POST['give-discount'] ) {
-		// Check for a posted discount
-		$posted_discount = isset( $_POST['give-discount'] ) ? trim( $_POST['give-discount'] ) : false;
-
-		if ( $posted_discount ) {
-			$discounts   = array();
-			$discounts[] = $posted_discount;
-		}
-	}
-
-	// If we have discounts, loop through them
-	if ( ! empty( $discounts ) ) {
-
-		foreach ( $discounts as $discount ) {
-			// Check if valid
-			if ( ! give_is_discount_valid( $discount, $user ) ) {
-				// Discount is not valid
-				$error = true;
-			}
-		}
-	} else {
-		// No discounts
-		return 'none';
-	}
-
-	if ( $error ) {
-		give_set_error( 'invalid_discount', __( 'One or more of the discounts you entered is invalid', 'give' ) );
-	}
-
-	return implode( ', ', $discounts );
 }
 
 /**
@@ -331,7 +261,7 @@ function give_purchase_form_validate_agree_to_terms() {
  * Purchase Form Required Fields
  *
  * @access      private
- * @since       1.5
+ * @since       1.0
  * @return      array
  */
 function give_purchase_form_required_fields() {
@@ -369,6 +299,7 @@ function give_purchase_form_required_fields() {
 	}
 
 	return apply_filters( 'give_purchase_form_required_fields', $required_fields );
+
 }
 
 /**
@@ -786,6 +717,7 @@ function give_get_purchase_form_user( $valid_data = array() ) {
  * @return  array
  */
 function give_purchase_form_validate_cc() {
+
 	$card_data = give_get_purchase_cc_info();
 
 	// Validate the card zip

@@ -44,8 +44,6 @@ function give_load_scripts() {
 		'currency_sign'     => give_currency_filter( '' ),
 		'currency_pos'      => isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before',
 		'no_gateway'        => __( 'Please select a payment method', 'give' ),
-		'no_discount'       => __( 'Please enter a discount code', 'give' ), // Blank discount code message
-		'enter_discount'    => __( 'Enter discount', 'give' ),
 		'discount_applied'  => __( 'Discount Applied', 'give' ), // Discount verified message
 		'no_email'          => __( 'Please enter an email address before applying a discount code', 'give' ),
 		'no_username'       => __( 'Please enter a username before applying a discount code', 'give' ),
@@ -58,15 +56,15 @@ function give_load_scripts() {
 	// Load AJAX scripts, if enabled
 	wp_enqueue_script( 'give-ajax', $js_dir . 'give-ajax' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
 	wp_localize_script( 'give-ajax', 'give_scripts', array(
-			'ajaxurl'                 => give_get_ajax_url(),
-			'position_in_cart'        => isset( $position ) ? $position : - 1,
-			'loading'                 => __( 'Loading', 'give' ),
+			'ajaxurl'          => give_get_ajax_url(),
+			'position_in_cart' => isset( $position ) ? $position : - 1,
+			'loading'          => __( 'Loading', 'give' ),
 			// General loading message
-			'select_option'           => __( 'Please select an option', 'give' ),
+			'select_option'    => __( 'Please select an option', 'give' ),
 			// Variable pricing error with multi-purchase option enabled
-			'ajax_loader'             => GIVE_PLUGIN_URL . 'assets/images/loading.gif',
-			'default_gateway'         => give_get_default_gateway(),
-			'permalinks'              => get_option( 'permalink_structure' ) ? '1' : '0',
+			'ajax_loader'      => GIVE_PLUGIN_URL . 'assets/images/loading.gif',
+			'default_gateway'  => give_get_default_gateway(),
+			'permalinks'       => get_option( 'permalink_structure' ) ? '1' : '0'
 		)
 	);
 

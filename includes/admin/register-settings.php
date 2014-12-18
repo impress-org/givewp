@@ -266,7 +266,7 @@ class Give_Plugin_Settings {
 				'show_on' => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
 				'fields'  => apply_filters( 'give_settings_gateways', array(
 						array(
-							'name' => __( 'Gateways', 'give' ),
+							'name' => __( 'Gateways Settings', 'give' ),
 							'desc' => '<hr>',
 							'id'   => 'general_title',
 							'type' => 'title'
@@ -284,7 +284,7 @@ class Give_Plugin_Settings {
 							'type' => 'default_gateway'
 						),
 						array(
-							'name' => __( 'PayPal', 'give' ),
+							'name' => __( 'PayPal Standard', 'give' ),
 							'desc' => '<hr>',
 							'id'   => 'general_title',
 							'type' => 'title'

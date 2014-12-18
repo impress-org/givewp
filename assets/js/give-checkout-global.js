@@ -85,9 +85,9 @@ jQuery(document).ready(function($) {
     });
 
     // Add a class to the currently selected gateway on click
-    $body.on('click', '#give_payment_mode_select input', function() {
-        $('#give_payment_mode_select label.give-gateway-option-selected').removeClass( 'give-gateway-option-selected' );
-        $('#give_payment_mode_select input:checked').parent().addClass( 'give-gateway-option-selected' );
+    $body.on('click', '#give-payment-mode-select input', function() {
+        $('#give-payment-mode-select label.give-gateway-option-selected').removeClass( 'give-gateway-option-selected' );
+        $('#give-payment-mode-select input:checked').parent().addClass( 'give-gateway-option-selected' );
     });
 
     /* Discounts */

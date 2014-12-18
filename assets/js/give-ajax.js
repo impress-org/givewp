@@ -67,33 +67,42 @@ jQuery( document ).ready( function ( $ ) {
 
 		var payment_mode = $( '#give-gateway option:selected, input.give-gateway:checked' ).val();
 
-		if ( payment_mode == '0' )
+		if ( payment_mode == '0' ) {
 			return false;
+		}
 
 		give_load_gateway( payment_mode );
 
 		return false;
+
 	} );
 
 
-	$( document ).on( 'click', '#give_purchase_form #give_purchase_submit input[type=submit]', function ( e ) {
+	$( document ).on( 'click', '.give_donate_form #give_purchase_submit input[type=submit]', function ( e ) {
 
-		var givePurchaseform = document.getElementById( 'give_purchase_form' );
+		var givePurchaseform = $( '.give_donate_form' ).get(0);
 
 		if ( typeof givePurchaseform.checkValidity === "function" && false === givePurchaseform.checkValidity() ) {
 			return;
 		}
 
+		//prevent form from submitting normally
 		e.preventDefault();
 
+		//this form
+		var this_form = $(this).parents('form:first');
+
+		//Submit btn text
 		var complete_purchase_val = $( this ).val();
 
+		//Update submit button text
 		$( this ).val( give_global_vars.purchase_loading );
 
-		$( this ).after( '<span class="give-cart-ajax"><i class="give-icon-spinner give-icon-spin"></i></span>' );
 
-		$.post( give_global_vars.ajaxurl, $( '#give_purchase_form' ).serialize() + '&action=give_process_checkout&give_ajax=true', function ( data ) {
+		//Submit form via AJAX
+		$.post( give_global_vars.ajaxurl, this_form.serialize() + '&action=give_process_checkout&give_ajax=true', function ( data ) {
 			if ( $.trim( data ) == 'success' ) {
+				console.log( data );
 				$( '.give_errors' ).remove();
 				$( givePurchaseform ).submit();
 			} else {
@@ -110,11 +119,18 @@ jQuery( document ).ready( function ( $ ) {
 
 function give_load_gateway( payment_mode ) {
 
-	// Show the ajax loader
-	jQuery( '#give_purchase_form_wrap' ).html( '<img src="' + give_scripts.ajax_loader + '"/>' );
+	var give_form = jQuery( '#give_purchase_form_wrap' );
 
+	// Show the ajax loader
+	give_form.html( '<img src="' + give_scripts.ajax_loader + '"/>' );
+
+	//Update form action
+	give_form.attr( 'action', '?payment-mode=' + payment_mode );
+
+	//Post via AJAX to Give
 	jQuery.post( give_scripts.ajaxurl + '?payment-mode=' + payment_mode, {
 			action           : 'give_load_gateway',
+			give_total       : jQuery( '#give-amount' ).val(),
 			give_payment_mode: payment_mode
 		},
 		function ( response ) {

@@ -41,9 +41,19 @@ function give_get_donation_form( $args = array() ) {
 
 	$form = new Give_Donate_Form( $args['form_id'] );
 
+	//bail if no form ID
 	if ( empty( $form->ID ) ) {
 		return false;
 	}
+
+	$payment_mode = give_get_chosen_gateway();
+
+
+	$form_action = add_query_arg( apply_filters( 'give_form_action_args', array(
+			'payment-mode' => $payment_mode,
+		) ),
+		get_permalink( $form->ID )
+	);
 
 	if ( 'publish' !== $form->post_status && ! current_user_can( 'edit_product', $form->ID ) ) {
 		return false; // Product not published or user doesn't have permission to view drafts
@@ -52,12 +62,12 @@ function give_get_donation_form( $args = array() ) {
 	ob_start();
 
 	?>
-	<form id="<?php echo $post_id; ?>" class="give_donate_form give_donate_form_<?php echo absint( $form->ID ); ?>" method="post">
-
+	<form id="give_donation_form_<?php echo $post_id; ?>" class="give_donate_form give_donate_form_<?php echo absint( $form->ID ); ?>" action="<?php echo $form_action; ?>" method="post">
 
 		<?php
 
 		do_action( 'give_checkout_form_top', $form->ID, $args );
+
 		do_action( 'give_payment_mode_select' );
 
 		do_action( 'give_checkout_form_bottom', $form->ID, $args );
@@ -171,7 +181,7 @@ function give_output_donation_levels( $form_id = 0, $args = array() ) {
 			if ( $set_pricing_option === 'set' && $allow_custom_amount == 'no' ) {
 				?>
 
-				<input class="give-text-input" id="give-amount" type="hidden" value="<?php echo $set_price; ?>" required>
+				<input class="give-text-input" id="give-amount" type="hidden" name="give-amount" value="<?php echo $set_price; ?>" required>
 				<p class="set-price">
 					<span class="amount"><?php echo give_currency_filter( give_format_amount( $set_price ) ) ?></span>
 				</p>
@@ -287,41 +297,41 @@ function give_user_info_fields() {
 	endif;
 	?>
 	<fieldset id="give_checkout_user_info">
-		<span><legend><?php echo apply_filters( 'give_checkout_personal_info_text', __( 'Personal Info', 'edd' ) ); ?></legend></span>
+		<span><legend><?php echo apply_filters( 'give_checkout_personal_info_text', __( 'Personal Info', 'give' ) ); ?></legend></span>
 		<?php do_action( 'give_purchase_form_before_email' ); ?>
 		<p id="give-email-wrap">
 			<label class="give-label" for="give-email">
-				<?php _e( 'Email Address', 'edd' ); ?>
+				<?php _e( 'Email Address', 'give' ); ?>
 				<?php if ( give_field_is_required( 'give_email' ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
 			</label>
-			<span class="give-description"><?php _e( 'We will send the purchase receipt to this address.', 'edd' ); ?></span>
-			<input class="give-input required" type="email" name="give_email" placeholder="<?php _e( 'Email address', 'edd' ); ?>" id="give-email" value="<?php echo is_user_logged_in() ? $user_data->user_email : ''; ?>" />
+			<span class="give-description"><?php _e( 'We will send the purchase receipt to this address.', 'give' ); ?></span>
+			<input class="give-input required" type="email" name="give_email" placeholder="<?php _e( 'Email address', 'give' ); ?>" id="give-email" value="<?php echo is_user_logged_in() ? $user_data->user_email : ''; ?>" />
 		</p>
 		<?php do_action( 'give_purchase_form_after_email' ); ?>
 		<p id="give-first-name-wrap">
 			<label class="give-label" for="give-first">
-				<?php _e( 'First Name', 'edd' ); ?>
+				<?php _e( 'First Name', 'give' ); ?>
 				<?php if ( give_field_is_required( 'give_first' ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
 			</label>
-			<span class="give-description"><?php _e( 'We will use this to personalize your account experience.', 'edd' ); ?></span>
-			<input class="give-input required" type="text" name="give_first" placeholder="<?php _e( 'First name', 'edd' ); ?>" id="give-first" value="<?php echo is_user_logged_in() ? $user_data->first_name : ''; ?>" />
+			<span class="give-description"><?php _e( 'We will use this to personalize your account experience.', 'give' ); ?></span>
+			<input class="give-input required" type="text" name="give_first" placeholder="<?php _e( 'First name', 'give' ); ?>" id="give-first" value="<?php echo is_user_logged_in() ? $user_data->first_name : ''; ?>" />
 		</p>
 
 		<p id="give-last-name-wrap">
 			<label class="give-label" for="give-last">
-				<?php _e( 'Last Name', 'edd' ); ?>
+				<?php _e( 'Last Name', 'give' ); ?>
 				<?php if ( give_field_is_required( 'give_last' ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
 			</label>
-			<span class="give-description"><?php _e( 'We will use this as well to personalize your account experience.', 'edd' ); ?></span>
+			<span class="give-description"><?php _e( 'We will use this as well to personalize your account experience.', 'give' ); ?></span>
 			<input class="give-input<?php if ( give_field_is_required( 'give_last' ) ) {
 				echo ' required';
-			} ?>" type="text" name="give_last" id="give-last" placeholder="<?php _e( 'Last name', 'edd' ); ?>" value="<?php echo is_user_logged_in() ? $user_data->last_name : ''; ?>" />
+			} ?>" type="text" name="give_last" id="give-last" placeholder="<?php _e( 'Last name', 'give' ); ?>" value="<?php echo is_user_logged_in() ? $user_data->last_name : ''; ?>" />
 		</p>
 		<?php do_action( 'give_purchase_form_user_info' ); ?>
 	</fieldset>
@@ -343,47 +353,47 @@ function give_get_cc_form() {
 	<?php do_action( 'give_before_cc_fields' ); ?>
 
 	<fieldset id="give_cc_fields" class="give-do-validate">
-		<span><legend><?php _e( 'Credit Card Info', 'edd' ); ?></legend></span>
+		<span><legend><?php _e( 'Credit Card Info', 'give' ); ?></legend></span>
 		<?php if ( is_ssl() ) : ?>
 			<div id="give_secure_site_wrapper">
 				<span class="padlock"></span>
-				<span><?php _e( 'This is a secure SSL encrypted payment.', 'edd' ); ?></span>
+				<span><?php _e( 'This is a secure SSL encrypted payment.', 'give' ); ?></span>
 			</div>
 		<?php endif; ?>
 		<p id="give-card-number-wrap">
 			<label for="card_number" class="give-label">
-				<?php _e( 'Card Number', 'edd' ); ?>
+				<?php _e( 'Card Number', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
 				<span class="card-type"></span>
 			</label>
-			<span class="give-description"><?php _e( 'The (typically) 16 digits on the front of your credit card.', 'edd' ); ?></span>
-			<input type="text" autocomplete="off" name="card_number" id="card_number" class="card-number give-input required" placeholder="<?php _e( 'Card number', 'edd' ); ?>" />
+			<span class="give-description"><?php _e( 'The (typically) 16 digits on the front of your credit card.', 'give' ); ?></span>
+			<input type="text" autocomplete="off" name="card_number" id="card_number" class="card-number give-input required" placeholder="<?php _e( 'Card number', 'give' ); ?>" />
 		</p>
 
 		<p id="give-card-cvc-wrap">
 			<label for="card_cvc" class="give-label">
-				<?php _e( 'CVC', 'edd' ); ?>
+				<?php _e( 'CVC', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
 			</label>
-			<span class="give-description"><?php _e( 'The 3 digit (back) or 4 digit (front) value on your card.', 'edd' ); ?></span>
-			<input type="text" size="4" autocomplete="off" name="card_cvc" id="card_cvc" class="card-cvc give-input required" placeholder="<?php _e( 'Security code', 'edd' ); ?>" />
+			<span class="give-description"><?php _e( 'The 3 digit (back) or 4 digit (front) value on your card.', 'give' ); ?></span>
+			<input type="text" size="4" autocomplete="off" name="card_cvc" id="card_cvc" class="card-cvc give-input required" placeholder="<?php _e( 'Security code', 'give' ); ?>" />
 		</p>
 
 		<p id="give-card-name-wrap">
 			<label for="card_name" class="give-label">
-				<?php _e( 'Name on the Card', 'edd' ); ?>
+				<?php _e( 'Name on the Card', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
 			</label>
-			<span class="give-description"><?php _e( 'The name printed on the front of your credit card.', 'edd' ); ?></span>
-			<input type="text" autocomplete="off" name="card_name" id="card_name" class="card-name give-input required" placeholder="<?php _e( 'Card name', 'edd' ); ?>" />
+			<span class="give-description"><?php _e( 'The name printed on the front of your credit card.', 'give' ); ?></span>
+			<input type="text" autocomplete="off" name="card_name" id="card_name" class="card-name give-input required" placeholder="<?php _e( 'Card name', 'give' ); ?>" />
 		</p>
 		<?php do_action( 'give_before_cc_expiration' ); ?>
 		<p class="card-expiration">
 			<label for="card_exp_month" class="give-label">
-				<?php _e( 'Expiration (MM/YY)', 'edd' ); ?>
+				<?php _e( 'Expiration (MM/YY)', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
 			</label>
-			<span class="give-description"><?php _e( 'The date your credit card expires, typically on the front of the card.', 'edd' ); ?></span>
+			<span class="give-description"><?php _e( 'The date your credit card expires, typically on the front of the card.', 'give' ); ?></span>
 			<select id="card_exp_month" name="card_exp_month" class="card-expiry-month give-select give-select-small required">
 				<?php for ( $i = 1; $i <= 12; $i ++ ) {
 					echo '<option value="' . $i . '">' . sprintf( '%02d', $i ) . '</option>';
@@ -426,68 +436,68 @@ function give_default_cc_address_fields() {
 	$zip   = $logged_in && ! empty( $user_address['zip'] ) ? $user_address['zip'] : '';
 	ob_start(); ?>
 	<fieldset id="give_cc_address" class="cc-address">
-		<span><legend><?php _e( 'Billing Details', 'edd' ); ?></legend></span>
+		<span><legend><?php _e( 'Billing Details', 'give' ); ?></legend></span>
 		<?php do_action( 'give_cc_billing_top' ); ?>
 		<p id="give-card-address-wrap">
 			<label for="card_address" class="give-label">
-				<?php _e( 'Billing Address', 'edd' ); ?>
+				<?php _e( 'Billing Address', 'give' ); ?>
 				<?php if ( give_field_is_required( 'card_address' ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
 			</label>
-			<span class="give-description"><?php _e( 'The primary billing address for your credit card.', 'edd' ); ?></span>
+			<span class="give-description"><?php _e( 'The primary billing address for your credit card.', 'give' ); ?></span>
 			<input type="text" id="card_address" name="card_address" class="card-address give-input<?php if ( give_field_is_required( 'card_address' ) ) {
 				echo ' required';
-			} ?>" placeholder="<?php _e( 'Address line 1', 'edd' ); ?>" value="<?php echo $line1; ?>" />
+			} ?>" placeholder="<?php _e( 'Address line 1', 'give' ); ?>" value="<?php echo $line1; ?>" />
 		</p>
 
 		<p id="give-card-address-2-wrap">
 			<label for="card_address_2" class="give-label">
-				<?php _e( 'Billing Address Line 2 (optional)', 'edd' ); ?>
+				<?php _e( 'Billing Address Line 2 (optional)', 'give' ); ?>
 				<?php if ( give_field_is_required( 'card_address_2' ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
 			</label>
-			<span class="give-description"><?php _e( 'The suite, apt no, PO box, etc, associated with your billing address.', 'edd' ); ?></span>
+			<span class="give-description"><?php _e( 'The suite, apt no, PO box, etc, associated with your billing address.', 'give' ); ?></span>
 			<input type="text" id="card_address_2" name="card_address_2" class="card-address-2 give-input<?php if ( give_field_is_required( 'card_address_2' ) ) {
 				echo ' required';
-			} ?>" placeholder="<?php _e( 'Address line 2', 'edd' ); ?>" value="<?php echo $line2; ?>" />
+			} ?>" placeholder="<?php _e( 'Address line 2', 'give' ); ?>" value="<?php echo $line2; ?>" />
 		</p>
 
 		<p id="give-card-city-wrap">
 			<label for="card_city" class="give-label">
-				<?php _e( 'Billing City', 'edd' ); ?>
+				<?php _e( 'Billing City', 'give' ); ?>
 				<?php if ( give_field_is_required( 'card_city' ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
 			</label>
-			<span class="give-description"><?php _e( 'The city for your billing address.', 'edd' ); ?></span>
+			<span class="give-description"><?php _e( 'The city for your billing address.', 'give' ); ?></span>
 			<input type="text" id="card_city" name="card_city" class="card-city give-input<?php if ( give_field_is_required( 'card_city' ) ) {
 				echo ' required';
-			} ?>" placeholder="<?php _e( 'City', 'edd' ); ?>" value="<?php echo $city; ?>" />
+			} ?>" placeholder="<?php _e( 'City', 'give' ); ?>" value="<?php echo $city; ?>" />
 		</p>
 
 		<p id="give-card-zip-wrap">
 			<label for="card_zip" class="give-label">
-				<?php _e( 'Billing Zip / Postal Code', 'edd' ); ?>
+				<?php _e( 'Billing Zip / Postal Code', 'give' ); ?>
 				<?php if ( give_field_is_required( 'card_zip' ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
 			</label>
-			<span class="give-description"><?php _e( 'The zip or postal code for your billing address.', 'edd' ); ?></span>
+			<span class="give-description"><?php _e( 'The zip or postal code for your billing address.', 'give' ); ?></span>
 			<input type="text" size="4" name="card_zip" class="card-zip give-input<?php if ( give_field_is_required( 'card_zip' ) ) {
 				echo ' required';
-			} ?>" placeholder="<?php _e( 'Zip / Postal code', 'edd' ); ?>" value="<?php echo $zip; ?>" />
+			} ?>" placeholder="<?php _e( 'Zip / Postal code', 'give' ); ?>" value="<?php echo $zip; ?>" />
 		</p>
 
 		<p id="give-card-country-wrap">
 			<label for="billing_country" class="give-label">
-				<?php _e( 'Billing Country', 'edd' ); ?>
+				<?php _e( 'Billing Country', 'give' ); ?>
 				<?php if ( give_field_is_required( 'billing_country' ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
 			</label>
-			<span class="give-description"><?php _e( 'The country for your billing address.', 'edd' ); ?></span>
+			<span class="give-description"><?php _e( 'The country for your billing address.', 'give' ); ?></span>
 			<select name="billing_country" id="billing_country" class="billing_country give-select<?php if ( give_field_is_required( 'billing_country' ) ) {
 				echo ' required';
 			} ?>">
@@ -509,12 +519,12 @@ function give_default_cc_address_fields() {
 
 		<p id="give-card-state-wrap">
 			<label for="card_state" class="give-label">
-				<?php _e( 'Billing State / Province', 'edd' ); ?>
+				<?php _e( 'Billing State / Province', 'give' ); ?>
 				<?php if ( give_field_is_required( 'card_state' ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
 			</label>
-			<span class="give-description"><?php _e( 'The state or province for your billing address.', 'edd' ); ?></span>
+			<span class="give-description"><?php _e( 'The state or province for your billing address.', 'give' ); ?></span>
 			<?php
 			$selected_state = give_get_shop_state();
 			$states         = give_get_shop_states( $selected_country );
@@ -534,7 +544,7 @@ function give_default_cc_address_fields() {
 					?>
 				</select>
 			<?php else : ?>
-				<input type="text" size="6" name="card_state" id="card_state" class="card_state give-input" placeholder="<?php _e( 'State / Province', 'edd' ); ?>" />
+				<input type="text" size="6" name="card_state" id="card_state" class="card_state give-input" placeholder="<?php _e( 'State / Province', 'give' ); ?>" />
 			<?php endif; ?>
 		</p>
 		<?php do_action( 'give_cc_billing_bottom' ); ?>
@@ -568,56 +578,56 @@ function give_get_register_fields() {
 	<fieldset id="give_register_fields">
 
 		<?php if ( $show_register_form == 'both' ) { ?>
-			<p id="give-login-account-wrap"><?php _e( 'Already have an account?', 'edd' ); ?>
-				<a href="<?php echo add_query_arg( 'login', 1 ); ?>" class="give_checkout_register_login" data-action="checkout_login"><?php _e( 'Login', 'edd' ); ?></a>
+			<p id="give-login-account-wrap"><?php _e( 'Already have an account?', 'give' ); ?>
+				<a href="<?php echo add_query_arg( 'login', 1 ); ?>" class="give_checkout_register_login" data-action="checkout_login"><?php _e( 'Login', 'give' ); ?></a>
 			</p>
 		<?php } ?>
 
 		<?php do_action( 'give_register_fields_before' ); ?>
 
 		<fieldset id="give_register_account_fields">
-			<span><legend><?php _e( 'Create an account', 'edd' );
+			<span><legend><?php _e( 'Create an account', 'give' );
 					if ( ! give_no_guest_checkout() ) {
-						echo ' ' . __( '(optional)', 'edd' );
+						echo ' ' . __( '(optional)', 'give' );
 					} ?></legend></span>
 			<?php do_action( 'give_register_account_fields_before' ); ?>
 			<p id="give-user-login-wrap">
 				<label for="give_user_login">
-					<?php _e( 'Username', 'edd' ); ?>
+					<?php _e( 'Username', 'give' ); ?>
 					<?php if ( give_no_guest_checkout() ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
 				</label>
-				<span class="give-description"><?php _e( 'The username you will use to log into your account.', 'edd' ); ?></span>
+				<span class="give-description"><?php _e( 'The username you will use to log into your account.', 'give' ); ?></span>
 				<input name="give_user_login" id="give_user_login" class="<?php if ( give_no_guest_checkout() ) {
 					echo 'required ';
-				} ?>give-input" type="text" placeholder="<?php _e( 'Username', 'edd' ); ?>" title="<?php _e( 'Username', 'edd' ); ?>" />
+				} ?>give-input" type="text" placeholder="<?php _e( 'Username', 'give' ); ?>" title="<?php _e( 'Username', 'give' ); ?>" />
 			</p>
 
 			<p id="give-user-pass-wrap">
 				<label for="password">
-					<?php _e( 'Password', 'edd' ); ?>
+					<?php _e( 'Password', 'give' ); ?>
 					<?php if ( give_no_guest_checkout() ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
 				</label>
-				<span class="give-description"><?php _e( 'The password used to access your account.', 'edd' ); ?></span>
+				<span class="give-description"><?php _e( 'The password used to access your account.', 'give' ); ?></span>
 				<input name="give_user_pass" id="give_user_pass" class="<?php if ( give_no_guest_checkout() ) {
 					echo 'required ';
-				} ?>give-input" placeholder="<?php _e( 'Password', 'edd' ); ?>" type="password" />
+				} ?>give-input" placeholder="<?php _e( 'Password', 'give' ); ?>" type="password" />
 			</p>
 
 			<p id="give-user-pass-confirm-wrap" class="give_register_password">
 				<label for="password_again">
-					<?php _e( 'Password Again', 'edd' ); ?>
+					<?php _e( 'Password Again', 'give' ); ?>
 					<?php if ( give_no_guest_checkout() ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
 				</label>
-				<span class="give-description"><?php _e( 'Confirm your password.', 'edd' ); ?></span>
+				<span class="give-description"><?php _e( 'Confirm your password.', 'give' ); ?></span>
 				<input name="give_user_pass_confirm" id="give_user_pass_confirm" class="<?php if ( give_no_guest_checkout() ) {
 					echo 'required ';
-				} ?>give-input" placeholder="<?php _e( 'Confirm password', 'edd' ); ?>" type="password" />
+				} ?>give-input" placeholder="<?php _e( 'Confirm password', 'give' ); ?>" type="password" />
 			</p>
 			<?php do_action( 'give_register_account_fields_after' ); ?>
 		</fieldset>
@@ -656,33 +666,33 @@ function give_get_login_fields() {
 	<fieldset id="give_login_fields">
 		<?php if ( $show_register_form == 'both' ) { ?>
 			<p id="give-new-account-wrap">
-				<?php _e( 'Need to create an account?', 'edd' ); ?>
+				<?php _e( 'Need to create an account?', 'give' ); ?>
 				<a href="<?php echo remove_query_arg( 'login' ); ?>" class="give_checkout_register_login" data-action="checkout_register">
-					<?php _e( 'Register', 'edd' );
+					<?php _e( 'Register', 'give' );
 					if ( ! give_no_guest_checkout() ) {
-						echo ' ' . __( 'or checkout as a guest.', 'edd' );
+						echo ' ' . __( 'or checkout as a guest.', 'give' );
 					} ?>
 				</a>
 			</p>
 		<?php } ?>
 		<?php do_action( 'give_checkout_login_fields_before' ); ?>
 		<p id="give-user-login-wrap">
-			<label class="give-label" for="give-username"><?php _e( 'Username', 'edd' ); ?></label>
+			<label class="give-label" for="give-username"><?php _e( 'Username', 'give' ); ?></label>
 			<input class="<?php if ( give_no_guest_checkout() ) {
 				echo 'required ';
-			} ?>give-input" type="text" name="give_user_login" id="give_user_login" value="" placeholder="<?php _e( 'Your username', 'edd' ); ?>" />
+			} ?>give-input" type="text" name="give_user_login" id="give_user_login" value="" placeholder="<?php _e( 'Your username', 'give' ); ?>" />
 		</p>
 
 		<p id="give-user-pass-wrap" class="give_login_password">
-			<label class="give-label" for="give-password"><?php _e( 'Password', 'edd' ); ?></label>
+			<label class="give-label" for="give-password"><?php _e( 'Password', 'give' ); ?></label>
 			<input class="<?php if ( give_no_guest_checkout() ) {
 				echo 'required ';
-			} ?>give-input" type="password" name="give_user_pass" id="give_user_pass" placeholder="<?php _e( 'Your password', 'edd' ); ?>" />
+			} ?>give-input" type="password" name="give_user_pass" id="give_user_pass" placeholder="<?php _e( 'Your password', 'give' ); ?>" />
 			<input type="hidden" name="give-purchase-var" value="needs-to-login" />
 		</p>
 
 		<p id="give-user-login-submit">
-			<input type="submit" class="give-submit button <?php echo $color; ?>" name="give_login_submit" value="<?php _e( 'Login', 'edd' ); ?>" />
+			<input type="submit" class="give-submit button <?php echo $color; ?>" name="give_login_submit" value="<?php _e( 'Login', 'give' ); ?>" />
 		</p>
 		<?php do_action( 'give_checkout_login_fields_after' ); ?>
 	</fieldset><!--end #give_login_fields-->
@@ -702,17 +712,15 @@ add_action( 'give_purchase_form_login_fields', 'give_get_login_fields' );
  * @return void
  */
 function give_payment_mode_select() {
+
 	$gateways = give_get_enabled_payment_gateways();
-	$page_URL = give_get_current_page_url();
 
 	do_action( 'give_payment_mode_top' ); ?>
-	<?php if ( give_is_ajax_disabled() ) { ?>
-		<form id="give_payment_mode" action="<?php echo $page_URL; ?>" method="GET">
-	<?php } ?>
-	<fieldset id="give_payment_mode_select">
+
+	<fieldset id="give-payment-mode-select">
 		<?php do_action( 'give_payment_mode_before_gateways_wrap' ); ?>
 		<div id="give-payment-mode-wrap">
-			<span class="give-payment-mode-label"><?php _e( 'Select Payment Method', 'edd' ); ?></span><br />
+			<span class="give-payment-mode-label"><?php _e( 'Select Payment Method', 'give' ); ?></span><br />
 			<?php
 
 			do_action( 'give_payment_mode_before_gateways' );
@@ -732,11 +740,10 @@ function give_payment_mode_select() {
 		<?php do_action( 'give_payment_mode_after_gateways_wrap' ); ?>
 	</fieldset>
 
-	<?php if ( give_is_ajax_disabled() ) { ?>
-		</form>
-	<?php } ?>
 	<div id="give_purchase_form_wrap"></div><!-- the checkout fields are loaded into this-->
+
 	<?php do_action( 'give_payment_mode_bottom' );
+
 }
 
 add_action( 'give_payment_mode_select', 'give_payment_mode_select' );
@@ -764,10 +771,10 @@ function give_terms_agreement() {
 				?>
 			</div>
 			<div id="give_show_terms">
-				<a href="#" class="give_terms_links"><?php _e( 'Show Terms', 'edd' ); ?></a>
-				<a href="#" class="give_terms_links" style="display:none;"><?php _e( 'Hide Terms', 'edd' ); ?></a>
+				<a href="#" class="give_terms_links"><?php _e( 'Show Terms', 'give' ); ?></a>
+				<a href="#" class="give_terms_links" style="display:none;"><?php _e( 'Hide Terms', 'give' ); ?></a>
 			</div>
-			<label for="give_agree_to_terms"><?php echo isset( $give_options['agree_label'] ) ? stripslashes( $give_options['agree_label'] ) : __( 'Agree to Terms?', 'edd' ); ?></label>
+			<label for="give_agree_to_terms"><?php echo isset( $give_options['agree_label'] ) ? stripslashes( $give_options['agree_label'] ) : __( 'Agree to Terms?', 'give' ); ?></label>
 			<input name="give_agree_to_terms" class="required" type="checkbox" id="give_agree_to_terms" value="1" />
 		</fieldset>
 	<?php
@@ -779,14 +786,22 @@ add_action( 'give_purchase_form_before_submit', 'give_terms_agreement' );
 /**
  * Shows the final purchase total at the bottom of the checkout page
  *
- * @since 1.5
+ * @since 1.0
  * @return void
  */
 function give_checkout_final_total() {
+
+	//Only proceed if give_total available
+	if ( ! isset( $_POST['give_total'] ) ) {
+		return;
+	}
+
+	$total = apply_filters( 'give_cart_total', give_currency_filter( $_POST['give_total'] ) );
+
 	?>
-	<p id="give_final_total_wrap">
-		<strong><?php _e( 'Donation Total:', 'edd' ); ?></strong>
-		<span class="give_cart_amount" data-subtotal="<?php echo give_get_cart_subtotal(); ?>" data-total="<?php echo give_get_cart_subtotal(); ?>"><?php give_cart_total(); ?></span>
+	<p id="give-final-total-wrap">
+		<strong><?php echo apply_filters( 'give_donation_total_label', __( 'Donation Total:', 'give' ) ); ?></strong>
+		<span class="give-final-total-amount" data-total="<?php echo $_POST['give_total']; ?>"><?php echo $total; ?></span>
 	</p>
 <?php
 }
@@ -811,9 +826,6 @@ function give_checkout_submit() {
 
 		<?php do_action( 'give_purchase_form_after_submit' ); ?>
 
-		<?php if ( give_is_ajax_disabled() ) { ?>
-			<p class="give-cancel"><a href="javascript:history.go(-1)"><?php _e( 'Go back', 'edd' ); ?></a></p>
-		<?php } ?>
 	</fieldset>
 <?php
 }
@@ -824,26 +836,19 @@ add_action( 'give_purchase_form_after_cc_form', 'give_checkout_submit', 9999 );
 /**
  * Renders the Purchase button on the Checkout
  *
- * @since 1.2
+ * @since 1.0
  * @global $give_options Array of all the EDD Options
  * @return string
  */
 function give_checkout_button_purchase() {
 	global $give_options;
 
-	$color = isset( $give_options['checkout_color'] ) ? $give_options['checkout_color'] : 'blue';
-	$color = ( $color == 'inherit' ) ? '' : $color;
-	$style = isset( $give_options['button_style'] ) ? $give_options['button_style'] : 'button';
-
-	if ( give_get_cart_total() ) {
-		$complete_purchase = ! empty( $give_options['checkout_label'] ) ? $give_options['checkout_label'] : __( 'Purchase', 'edd' );
-	} else {
-		$complete_purchase = ! empty( $give_options['checkout_label'] ) ? $give_options['checkout_label'] : __( 'Free Download', 'edd' );
-	}
+	$complete_purchase = ! empty( $give_options['checkout_label'] ) ? $give_options['checkout_label'] : __( 'Donate Now', 'give' );
 
 	ob_start();
+
 	?>
-	<input type="submit" class="give-submit <?php echo $color; ?> <?php echo $style; ?>" id="give-purchase-button" name="give-purchase" value="<?php echo $complete_purchase; ?>" />
+	<input type="submit" class="give-submit" id="give-purchase-button" name="give-purchase" value="<?php echo $complete_purchase; ?>" />
 	<?php
 	return apply_filters( 'give_checkout_button_purchase', ob_get_clean() );
 }
@@ -880,7 +885,7 @@ add_action( 'give_checkout_form_top', 'give_agree_to_terms_js' );
 /**
  * Renders the hidden Checkout fields
  *
- * @since 1.3.2
+ * @since 1.0
  * @return void
  */
 function give_checkout_hidden_fields() {

@@ -138,13 +138,21 @@ Forms CPT
 	display: none;
 }
 
+/* Donation Levels Repeating Field */
 #_give_donation_levels_repeat {
 	margin: 0 0 20px;
 }
 
-/* Customize Default Label */
+#_give_donation_levels_repeat .cmb-row, #_give_donation_levels_repeat .inside {
+	margin: 0;
+}
+
 #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row .cmb2-radio-list label {
 	font-size: 12px;
+}
+
+#_give_donation_levels_repeat .cmb-group-title, #_give_donation_levels_repeat .cmb-row > .cmb-remove-group-row, #_give_donation_levels_repeat .cmb-row > .handlediv {
+	display: none;
 }
 
 /* Table Rows */
