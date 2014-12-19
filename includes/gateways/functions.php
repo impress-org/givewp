@@ -192,7 +192,7 @@ function give_shop_supports_buy_now() {
 /**
  * Build the purchase data for a straight-to-gateway purchase button
  *
- * @since 1.7
+ * @since 1.0
  *
  * @param int   $download_id
  * @param array $options
@@ -244,8 +244,6 @@ function give_build_straight_to_gateway_data( $download_id = 0, $options = array
 				'id'      => $download_id,
 				'options' => $price_options
 			),
-			'tax'         => 0,
-			'discount'    => 0,
 			'item_price'  => $price,
 			'subtotal'    => $price,
 			'price'       => $price,
@@ -303,6 +301,10 @@ function give_build_straight_to_gateway_data( $download_id = 0, $options = array
  */
 function give_send_to_gateway( $gateway, $payment_data ) {
 
+//	echo "<pre>";
+//	var_dump( $payment_data );
+//	echo "</pre>";
+//	die( 'hey' );
 	$payment_data['gateway_nonce'] = wp_create_nonce( 'give-gateway' );
 
 	// $gateway must match the ID used when registering the gateway

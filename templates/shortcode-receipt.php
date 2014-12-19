@@ -22,9 +22,6 @@ $user      = give_get_payment_meta_user_info( $payment->ID );
 $email     = give_get_payment_user_email( $payment->ID );
 $status    = give_get_payment_status( $payment, true );
 
-echo "<pre>";
-var_dump($meta);
-echo "</pre>";
 ?>
 <table id="give_purchase_receipt">
 	<thead>
@@ -83,13 +80,6 @@ echo "</pre>";
 		<?php endif; ?>
 
 		<?php if ( $give_receipt_args[ 'price' ] ) : ?>
-
-			<tr>
-				<td><strong><?php _e( 'Subtotal', 'give' ); ?></strong></td>
-				<td>
-					<?php echo give_payment_subtotal( $payment->ID ); ?>
-				</td>
-			</tr>
 
 			<tr>
 				<td><strong><?php _e( 'Total Donation', 'give' ); ?>:</strong></td>

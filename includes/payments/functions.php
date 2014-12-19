@@ -154,15 +154,11 @@ function give_insert_payment( $payment_data = array() ) {
 
 	if ( $payment ) {
 
-		$taxes    = wp_list_pluck( $payment_data['cart_details'], 'tax' );
-		$cart_tax = array_sum( $taxes );
-
 		$payment_meta = array(
 			'currency'     => $payment_data['currency'],
 			'donations'    => $payment_data['donations'],
 			'user_info'    => $payment_data['user_info'],
-			'cart_details' => $payment_data['cart_details'],
-			'tax'          => $cart_tax,
+			'cart_details' => $payment_data['cart_details']
 		);
 
 		$mode    = give_is_test_mode() ? 'test' : 'live';
@@ -1216,25 +1212,6 @@ function give_get_payment_amount( $payment_id ) {
 	}
 
 	return apply_filters( 'give_payment_amount', floatval( $amount ), $payment_id );
-}
-
-/**
- * Retrieves subtotal for payment and then
- * returns a full formatted amount. This function essentially calls
- * give_get_payment_subtotal()
- *
- * @since 1.0
- *
- * @param int $payment_id Payment ID
- *
- * @see   give_get_payment_subtotal()
- *
- * @return array Fully formatted payment subtotal
- */
-function give_payment_subtotal( $payment_id = 0 ) {
-	$subtotal = give_get_payment_subtotal( $payment_id );
-
-	return give_currency_filter( give_format_amount( $subtotal ), give_get_payment_currency_code( $payment_id ) );
 }
 
 /**

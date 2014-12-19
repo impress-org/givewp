@@ -36,14 +36,14 @@ function give_update_payment_details( $data ) {
 	$meta      = give_get_payment_meta( $payment_id );
 	$user_info = give_get_payment_meta_user_info( $payment_id );
 
-	$status    = $data['give-payment-status'];
-	$user_id   = intval( $data['give-payment-user-id'] );
-	$date      = sanitize_text_field( $data['give-payment-date'] );
-	$hour      = sanitize_text_field( $data['give-payment-time-hour'] );
-	$minute    = sanitize_text_field( $data['give-payment-time-min'] );
-	$email     = sanitize_text_field( $data['give-payment-user-email'] );
-	$names     = sanitize_text_field( $data['give-payment-user-name'] );
-	$address   = array_map( 'trim', $data['give-payment-address'][0] );
+	$status  = $data['give-payment-status'];
+	$user_id = intval( $data['give-payment-user-id'] );
+	$date    = sanitize_text_field( $data['give-payment-date'] );
+	$hour    = sanitize_text_field( $data['give-payment-time-hour'] );
+	$minute  = sanitize_text_field( $data['give-payment-time-min'] );
+	$email   = sanitize_text_field( $data['give-payment-user-email'] );
+	$names   = sanitize_text_field( $data['give-payment-user-name'] );
+	$address = array_map( 'trim', $data['give-payment-address'][0] );
 
 	$curr_total = give_sanitize_amount( give_get_payment_amount( $payment_id ) );
 	$new_total  = give_sanitize_amount( $_POST['give-payment-total'] );
@@ -62,6 +62,7 @@ function give_update_payment_details( $data ) {
 	}
 
 	// Setup purchased Downloads and price options
+
 	$updated_downloads = isset( $_POST['give-payment-details-downloads'] ) ? $_POST['give-payment-details-downloads'] : false;
 	if ( $updated_downloads && ! empty( $_POST['give-payment-downloads-changed'] ) ) {
 		$downloads    = array();
@@ -139,9 +140,9 @@ function give_update_payment_details( $data ) {
 
 			// No customer exists for the given email so create one
 			$new_customer_id = Give()->customers->add( array(
-					'email' => $email,
-					'name'  => $first_name . ' ' . $last_name
-				) );
+				'email' => $email,
+				'name'  => $first_name . ' ' . $last_name
+			) );
 
 		}
 

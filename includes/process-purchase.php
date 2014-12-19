@@ -68,7 +68,7 @@ function give_process_purchase_form() {
 
 	// Setup purchase information
 	$purchase_data = array(
-		'price'        => '',
+		'price'        => '15.00',
 		// Amount after taxes
 		'purchase_key' => strtolower( md5( $user['user_email'] . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) ),
 		// Unique key
@@ -1003,7 +1003,7 @@ add_action( 'give_checkout_error_checks', 'give_check_purchase_email', 10, 2 );
  * @return void
  */
 function give_process_straight_to_gateway( $data ) {
-
+	$form_id = $data['form_id'];
 	$options = isset( $data['give_options'] ) ? $data['give_options'] : array();
 
 	$purchase_data = give_build_straight_to_gateway_data( $download_id, $options );

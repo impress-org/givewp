@@ -48,6 +48,11 @@ function give_manual_payment( $purchase_data ) {
 		wp_die( __( 'Nonce verification has failed', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
+//	echo "<pre>";
+//	var_dump( $purchase_data );
+//	echo "</pre>";
+//	die();
+
 	/*
 	* Purchase data comes in like this
 	*

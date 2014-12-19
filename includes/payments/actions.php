@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Performs all necessary actions to complete a purchase.
  * Triggered by the give_update_payment_status() function.
  *
- * @since 1.0.8.3
+ * @since 1.0
  *
  * @param int    $payment_id the ID number of the payment
  * @param string $new_status the status of the payment, probably "publish"
@@ -43,6 +43,12 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 	$user_info      = give_get_payment_meta_user_info( $payment_id );
 	$customer_id    = give_get_payment_customer_id( $payment_id );
 	$amount         = give_get_payment_amount( $payment_id );
+
+//	echo "<pre>";
+//	var_dump($amount);
+//	echo "</pre>";
+//	die();
+
 	$cart_details   = give_get_payment_meta_cart_details( $payment_id );
 
 	do_action( 'give_pre_complete_purchase', $payment_id );
@@ -86,22 +92,6 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 
 	// Increase the customer's purchase stats
 	Give()->customers->increment_stats( $customer_id, $amount );
-
-	// Check for discount codes and increment their use counts
-	if ( ! empty( $user_info['discount'] ) && $user_info['discount'] !== 'none' ) {
-
-		$discounts = array_map( 'trim', explode( ',', $user_info['discount'] ) );
-
-		if ( ! empty( $discounts ) ) {
-
-			foreach ( $discounts as $code ) {
-
-				give_increase_discount_usage( $code );
-
-			}
-
-		}
-	}
 
 	give_increase_total_earnings( $amount );
 
