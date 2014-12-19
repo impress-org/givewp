@@ -205,7 +205,7 @@ add_action( 'give_checkout_form_top', 'give_output_donation_levels' );
 
 
 /**
- * Outputs the Donation Levels
+ * Outputs the Donation Levels in various formats such as dropdown, radios, and buttons
  *
  * @since 1.0
  *

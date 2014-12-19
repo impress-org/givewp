@@ -18,6 +18,18 @@
 add_action( 'give_manual_cc_form', '__return_false' );
 
 /**
+ * Manual Gateway does not need a CC form validation, so remove it.
+ *
+ * @since 1.0
+ * @return void
+ */
+add_filter( 'give_require_billing_address', 'give_manual_no_cc_validation' );
+
+function give_manual_no_cc_validation() {
+	return false;
+}
+
+/**
  * Processes the purchase data and uses the Manual Payment gateway to record
  * the transaction in the Purchase History
  *
@@ -57,7 +69,6 @@ function give_manual_payment( $purchase_data ) {
 		'purchase_key' => $purchase_data['purchase_key'],
 		'currency'     => give_get_currency(),
 		'user_info'    => $purchase_data['user_info'],
-		'cart_details' => $purchase_data['cart_details'],
 		'status'       => 'pending'
 	);
 

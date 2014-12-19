@@ -118,7 +118,7 @@ function give_get_gateway_admin_label( $gateway ) {
 /**
  * Returns the checkout label for the specified gateway
  *
- * @since 1.0.8.5
+ * @since 1.0
  *
  * @param string $gateway Name of the gateway to retrieve a label for
  *
@@ -303,34 +303,12 @@ function give_build_straight_to_gateway_data( $download_id = 0, $options = array
  */
 function give_send_to_gateway( $gateway, $payment_data ) {
 
-	$payment_data['gateway_nonce'] = wp_create_nonce( 'edd-gateway' );
+	$payment_data['gateway_nonce'] = wp_create_nonce( 'give-gateway' );
 
 	// $gateway must match the ID used when registering the gateway
 	do_action( 'give_gateway_' . $gateway, $payment_data );
 }
 
-/**
- * Determines if the gateway menu should be shown
- *
- * If the cart amount is zero, no option is shown and the cart uses the manual gateway
- * to emulate a no-gateway-setup for a free download
- *
- * @since 1.3.2
- * @return bool $show_gateways Whether or not to show the gateways
- */
-function give_show_gateways() {
-	$gateways      = give_get_enabled_payment_gateways();
-	$show_gateways = false;
-
-	if ( count( $gateways ) > 1 && ! isset( $_GET['payment-mode'] ) ) {
-		$show_gateways = true;
-		if ( give_get_cart_total() <= 0 ) {
-			$show_gateways = false;
-		}
-	}
-
-	return apply_filters( 'give_show_gateways', $show_gateways );
-}
 
 /**
  * Determines what the currently selected gateway is

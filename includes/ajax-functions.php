@@ -206,7 +206,7 @@ function give_ajax_get_states_field() {
 			'show_option_none' => false
 		);
 
-		$response = EDD()->html->select( $args );
+		$response = Give()->html->select( $args );
 
 	} else {
 

@@ -85,7 +85,7 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 	}
 
 	// Increase the customer's purchase stats
-	EDD()->customers->increment_stats( $customer_id, $amount );
+	Give()->customers->increment_stats( $customer_id, $amount );
 
 	// Check for discount codes and increment their use counts
 	if ( ! empty( $user_info['discount'] ) && $user_info['discount'] !== 'none' ) {
@@ -114,8 +114,6 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 		do_action( 'give_complete_purchase', $payment_id );
 	}
 
-	// Empty the shopping cart
-	give_empty_cart();
 }
 
 add_action( 'give_update_payment_status', 'give_complete_purchase', 100, 3 );
@@ -124,7 +122,7 @@ add_action( 'give_update_payment_status', 'give_complete_purchase', 100, 3 );
 /**
  * Record payment status change
  *
- * @since 1.4.3
+ * @since 1.0
  *
  * @param int    $payment_id the ID number of the payment
  * @param string $new_status the status of the payment, probably "publish"
@@ -149,7 +147,7 @@ add_action( 'give_update_payment_status', 'give_record_status_change', 100, 3 );
 /**
  * Reduces earnings and sales stats when a purchase is refunded
  *
- * @since 1.8.2
+ * @since 1.0
  *
  * @param $data Arguments passed
  *
@@ -181,7 +179,7 @@ function give_undo_purchase_on_refund( $payment_id, $new_status, $old_status ) {
 
 	if ( $customer_id ) {
 
-		EDD()->customers->decrement_stats( $customer_id, $amount );
+		Give()->customers->decrement_stats( $customer_id, $amount );
 
 	}
 

@@ -136,7 +136,7 @@ function give_receipt_shortcode( $atts, $content = null ) {
 	global $give_receipt_args;
 
 	$give_receipt_args = shortcode_atts( array(
-		'error'          => __( 'Sorry, trouble retrieving payment receipt.', 'edd' ),
+		'error'          => __( 'Sorry, we\'re having trouble retrieving your payment receipt.', 'give' ),
 		'price'          => true,
 		'discount'       => true,
 		'products'       => true,
@@ -148,6 +148,7 @@ function give_receipt_shortcode( $atts, $content = null ) {
 	), $atts, 'give_receipt' );
 
 	$session = give_get_purchase_session();
+
 	if ( isset( $_GET['payment_key'] ) ) {
 		$payment_key = urldecode( $_GET['payment_key'] );
 	} elseif ( $give_receipt_args['payment_key'] ) {
@@ -284,7 +285,7 @@ function give_process_profile_editor_updates( $data ) {
 	// New password
 	if ( ! empty( $data['give_new_user_pass1'] ) ) {
 		if ( $data['give_new_user_pass1'] !== $data['give_new_user_pass2'] ) {
-			give_set_error( 'password_mismatch', __( 'The passwords you entered do not match. Please try again.', 'edd' ) );
+			give_set_error( 'password_mismatch', __( 'The passwords you entered do not match. Please try again.', 'give' ) );
 		} else {
 			$userdata['user_pass'] = $data['give_new_user_pass1'];
 		}
@@ -293,7 +294,7 @@ function give_process_profile_editor_updates( $data ) {
 	// Make sure the new email doesn't belong to another user
 	if ( $email != $old_user_data->user_email ) {
 		if ( email_exists( $email ) ) {
-			give_set_error( 'email_exists', __( 'The email you entered belongs to another user. Please use another.', 'edd' ) );
+			give_set_error( 'email_exists', __( 'The email you entered belongs to another user. Please use another.', 'give' ) );
 		}
 	}
 

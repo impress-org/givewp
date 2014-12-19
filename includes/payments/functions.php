@@ -5,7 +5,7 @@
  * @package     Give
  * @subpackage  Payments
  * @copyright   Copyright (c) 2014, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     http://opensource.org/licenses/gpl-1.0.php GNU Public License
  * @since       1.0
  */
 
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Retrieve payments from the database.
  *
- * Since 1.2, this function takes an array of arguments, instead of individual
+ * Since 1.0, this function takes an array of arguments, instead of individual
  * parameters. All of the original parameters remain, but can be passed in any
  * order via the array.
  *
@@ -50,7 +50,7 @@ function give_get_payments( $args = array() ) {
 /**
  * Retrieve payment by a given field
  *
- * @since       2.0
+ * @since       1.0
  *
  * @param       string $field The field to retrieve the payment with
  * @param       mixed  $value The value for $field
@@ -135,11 +135,6 @@ function give_insert_payment( $payment_data = array() ) {
 		$payment_title = $payment_data['user_email'];
 	}
 
-	// Retrieve the ID of the discount used, if any
-	if ( $payment_data['user_info']['discount'] != 'none' ) {
-		$discount = give_get_discount_by( 'code', $payment_data['user_info']['discount'] );
-	}
-
 	// Find the next payment number, if enabled
 	if ( give_get_option( 'enable_sequential' ) ) {
 		$number = give_get_next_payment_number();
@@ -164,7 +159,7 @@ function give_insert_payment( $payment_data = array() ) {
 
 		$payment_meta = array(
 			'currency'     => $payment_data['currency'],
-			'downloads'    => $payment_data['downloads'],
+			'donations'    => $payment_data['donations'],
 			'user_info'    => $payment_data['user_info'],
 			'cart_details' => $payment_data['cart_details'],
 			'tax'          => $cart_tax,
@@ -172,7 +167,7 @@ function give_insert_payment( $payment_data = array() ) {
 
 		$mode    = give_is_test_mode() ? 'test' : 'live';
 		$gateway = ! empty( $payment_data['gateway'] ) ? $payment_data['gateway'] : '';
-		$gateway = empty( $gateway ) && isset( $_POST['edd-gateway'] ) ? $_POST['edd-gateway'] : $gateway;
+		$gateway = empty( $gateway ) && isset( $_POST['give-gateway'] ) ? $_POST['give-gateway'] : $gateway;
 
 		if ( ! $payment_data['price'] ) {
 			// Ensures the _give_payment_total meta key is created for purchases with an amount of 0
@@ -180,7 +175,7 @@ function give_insert_payment( $payment_data = array() ) {
 		}
 
 		// Create or update a customer
-		$customer_id = EDD()->customers->add( array(
+		$customer_id = Give()->customers->add( array(
 			'name'        => $payment_data['user_info']['first_name'] . ' ' . $payment_data['user_info']['last_name'],
 			'email'       => $payment_data['user_email'],
 			'user_id'     => $payment_data['user_info']['id'],
@@ -256,9 +251,10 @@ function give_update_payment_status( $payment_id, $new_status = 'publish' ) {
 
 		do_action( 'give_before_payment_status_change', $payment_id, $new_status, $old_status );
 
-		$update_fields = array( 'ID'          => $payment_id,
-		                        'post_status' => $new_status,
-		                        'edit_date'   => current_time( 'mysql' )
+		$update_fields = array(
+			'ID'          => $payment_id,
+			'post_status' => $new_status,
+			'edit_date'   => current_time( 'mysql' )
 		);
 
 		wp_update_post( apply_filters( 'give_update_payment_status_fields', $update_fields ) );
@@ -288,11 +284,11 @@ function give_delete_purchase( $payment_id = 0 ) {
 		return;
 	}
 
-	$downloads = give_get_payment_meta_downloads( $payment_id );
+	$donations = give_get_payment_meta_donations( $payment_id );
 
-	if ( is_array( $downloads ) ) {
+	if ( is_array( $donations ) ) {
 		// Update sale counts and earnings for all purchased products
-		foreach ( $downloads as $download ) {
+		foreach ( $donations as $download ) {
 			give_undo_purchase( $download['id'], $payment_id );
 		}
 	}
@@ -311,7 +307,7 @@ function give_delete_purchase( $payment_id = 0 ) {
 		if ( $customer_id ) {
 
 			// Decrement the stats for the customer
-			EDD()->customers->decrement_stats( $customer_id, $amount );
+			Give()->customers->decrement_stats( $customer_id, $amount );
 
 		}
 	}
@@ -321,7 +317,7 @@ function give_delete_purchase( $payment_id = 0 ) {
 	if ( $customer_id ) {
 
 		// Remove the payment ID from the customer
-		EDD()->customers->remove_payment( $customer_id, $payment_id );
+		Give()->customers->remove_payment( $customer_id, $payment_id );
 
 	}
 
@@ -372,7 +368,7 @@ function give_undo_purchase( $download_id, $payment_id ) {
 				// get the item's price
 				$amount = isset( $item['price'] ) ? $item['price'] : false;
 
-				// variable priced downloads
+				// variable priced donations
 				if ( give_has_variable_prices( $download_id ) ) {
 					$price_id = isset( $item['item_number']['options']['price_id'] ) ? $item['item_number']['options']['price_id'] : null;
 					$amount   = ! isset( $item['price'] ) && 0 !== $item['price'] ? give_get_price_option_amount( $download_id, $price_id ) : $item['price'];
@@ -380,7 +376,7 @@ function give_undo_purchase( $download_id, $payment_id ) {
 
 				if ( ! $amount ) {
 					// This function is only used on payments with near 1.0 cart data structure
-					$amount = give_get_download_final_price( $download_id, $user_info, $amount );
+					$amount = give_get_donation_final_price( $download_id, $user_info, $amount );
 				}
 
 				// decrease earnings
@@ -719,7 +715,7 @@ function give_is_payment_complete( $payment_id ) {
 /**
  * Get Total Sales
  *
- * @since 1.2.2
+ * @since 1.0.2
  * @return int $count Total sales
  */
 function give_get_total_sales() {
@@ -732,7 +728,7 @@ function give_get_total_sales() {
 /**
  * Get Total Earnings
  *
- * @since 1.2
+ * @since 1.0
  * @return float $total Total earnings
  */
 function give_get_total_earnings() {
@@ -833,7 +829,7 @@ function give_decrease_total_earnings( $amount = 0 ) {
 /**
  * Get Payment Meta for a specific Payment
  *
- * @since 1.2
+ * @since 1.0
  *
  * @param int    $payment_id Payment ID
  * @param string $meta_key   The meta key to pull
@@ -900,7 +896,7 @@ function give_update_payment_meta( $payment_id = 0, $meta_key = '', $meta_value 
 /**
  * Get the user_info Key from Payment Meta
  *
- * @since 1.2
+ * @since 1.0
  *
  * @param int $payment_id Payment ID
  *
@@ -914,78 +910,34 @@ function give_get_payment_meta_user_info( $payment_id ) {
 }
 
 /**
- * Get the downloads Key from Payment Meta
+ * Get the donations Key from Payment Meta
  *
- * @since 1.2
+ * @since 1.0
  *
  * @param int $payment_id Payment ID
  *
- * @return array $downloads Downloads Meta Values
+ * @return array $donations Downloads Meta Values
  */
-function give_get_payment_meta_downloads( $payment_id ) {
+function give_get_payment_meta_donations( $payment_id ) {
 	$payment_meta = give_get_payment_meta( $payment_id );
-	$downloads    = isset( $payment_meta['downloads'] ) ? maybe_unserialize( $payment_meta['downloads'] ) : array();
+	$donations    = isset( $payment_meta['donations'] ) ? maybe_unserialize( $payment_meta['donations'] ) : array();
 
-	return apply_filters( 'give_payment_meta_downloads', $downloads );
+	return apply_filters( 'give_payment_meta_donations', $donations );
 }
 
 /**
  * Get the cart_details Key from Payment Meta
  *
- * @since 1.2
+ * @since 1.0
  *
- * @param int  $payment_id           Payment ID
- * @param bool $include_bundle_files Whether to retrieve product IDs associated with a bundled product and return them in the array
+ * @param int $payment_id Payment ID
  *
  * @return array $cart_details Cart Details Meta Values
  */
-function give_get_payment_meta_cart_details( $payment_id, $include_bundle_files = false ) {
+function give_get_payment_meta_cart_details( $payment_id ) {
 	$payment_meta = give_get_payment_meta( $payment_id );
+
 	$cart_details = ! empty( $payment_meta['cart_details'] ) ? maybe_unserialize( $payment_meta['cart_details'] ) : array();
-
-	if ( ! empty( $cart_details ) && is_array( $cart_details ) ) {
-
-		foreach ( $cart_details as $key => $cart_item ) {
-
-			// Ensure subtotal is set, for pre-1.9 orders
-			if ( ! isset( $cart_item['subtotal'] ) ) {
-				$cart_details[ $key ]['subtotal'] = $cart_item['price'];
-			}
-
-			if ( $include_bundle_files ) {
-
-				if ( 'bundle' != give_get_download_type( $cart_item['id'] ) ) {
-					continue;
-				}
-
-				$products = give_get_bundled_products( $cart_item['id'] );
-				if ( empty( $products ) ) {
-					continue;
-				}
-
-				foreach ( $products as $product_id ) {
-					$cart_details[] = array(
-						'id'          => $product_id,
-						'name'        => get_the_title( $product_id ),
-						'item_number' => array(
-							'id'      => $product_id,
-							'options' => array(),
-						),
-						'price'       => 0,
-						'subtotal'    => 0,
-						'quantity'    => 1,
-						'tax'         => 0,
-						'in_bundle'   => 1,
-						'parent'      => array(
-							'id'      => $cart_item['id'],
-							'options' => isset( $cart_item['item_number']['options'] ) ? $cart_item['item_number']['options'] : array()
-						)
-					);
-				}
-			}
-		}
-
-	}
 
 	return apply_filters( 'give_payment_meta_cart_details', $cart_details, $payment_id );
 }
@@ -993,7 +945,7 @@ function give_get_payment_meta_cart_details( $payment_id, $include_bundle_files 
 /**
  * Get the user email associated with a payment
  *
- * @since 1.2
+ * @since 1.0
  *
  * @param int $payment_id Payment ID
  *
@@ -1036,21 +988,6 @@ function give_get_payment_customer_id( $payment_id ) {
 }
 
 /**
- * Get the status of the unlimited downloads flag
- *
- * @since 2.0
- *
- * @param int $payment_id Payment ID
- *
- * @return bool $unlimited
- */
-function give_payment_has_unlimited_downloads( $payment_id ) {
-	$unlimited = (bool) give_get_payment_meta( $payment_id, '_give_payment_unlimited_downloads', true );
-
-	return apply_filters( 'give_payment_unlimited_downloads', $unlimited );
-}
-
-/**
  * Get the IP address used to make a purchase
  *
  * @since 1.9
@@ -1068,7 +1005,7 @@ function give_get_payment_user_ip( $payment_id ) {
 /**
  * Get the date a payment was completed
  *
- * @since 2.0
+ * @since 1.0
  *
  * @param int $payment_id Payment ID
  *
@@ -1090,7 +1027,7 @@ function give_get_payment_completed_date( $payment_id = 0 ) {
 /**
  * Get the gateway associated with a payment
  *
- * @since 1.2
+ * @since 1.0
  *
  * @param int $payment_id Payment ID
  *
@@ -1105,7 +1042,7 @@ function give_get_payment_gateway( $payment_id ) {
 /**
  * Get the currency code a payment was made in
  *
- * @since 2.2
+ * @since 1.0
  *
  * @param int $payment_id Payment ID
  *
@@ -1121,7 +1058,7 @@ function give_get_payment_currency_code( $payment_id = 0 ) {
 /**
  * Get the currency name a payment was made in
  *
- * @since 2.2
+ * @since 1.0
  *
  * @param int $payment_id Payment ID
  *
@@ -1136,7 +1073,7 @@ function give_get_payment_currency( $payment_id = 0 ) {
 /**
  * Get the purchase key for a purchase
  *
- * @since 1.2
+ * @since 1.0
  *
  * @param int $payment_id Payment ID
  *
@@ -1153,7 +1090,7 @@ function give_get_payment_key( $payment_id = 0 ) {
  *
  * This will return the payment ID if sequential order numbers are not enabled or the order number does not exist
  *
- * @since 2.0
+ * @since 1.0
  *
  * @param int $payment_id Payment ID
  *
@@ -1183,7 +1120,7 @@ function give_get_payment_number( $payment_id = 0 ) {
  *
  * This is used when inserting a new payment
  *
- * @since 2.0
+ * @since 1.0
  * @return string $number The next available payment number
  */
 function give_get_next_payment_number() {
@@ -1196,12 +1133,13 @@ function give_get_next_payment_number() {
 	$postfix = give_get_option( 'sequential_postfix' );
 	$start   = give_get_option( 'sequential_start', 1 );
 
-	$payments = new EDD_Payments_Query( array( 'number'  => 1,
-	                                           'order'   => 'DESC',
-	                                           'orderby' => 'ID',
-	                                           'output'  => 'posts',
-	                                           'fields'  => 'ids'
-		) );
+	$payments = new Give_Payments_Query( array(
+		'number'  => 1,
+		'order'   => 'DESC',
+		'orderby' => 'ID',
+		'output'  => 'posts',
+		'fields'  => 'ids'
+	) );
 
 	$last_payment = $payments->get_payments();
 
@@ -1260,7 +1198,7 @@ function give_payment_amount( $payment_id = 0 ) {
  * Get the amount associated with a payment
  *
  * @access public
- * @since  1.2
+ * @since  1.0
  *
  * @param int $payment_id Payment ID
  */
@@ -1281,11 +1219,11 @@ function give_get_payment_amount( $payment_id ) {
 }
 
 /**
- * Retrieves subtotal for payment (this is the amount before taxes) and then
+ * Retrieves subtotal for payment and then
  * returns a full formatted amount. This function essentially calls
  * give_get_payment_subtotal()
  *
- * @since 1.3.3
+ * @since 1.0
  *
  * @param int $payment_id Payment ID
  *
@@ -1304,7 +1242,7 @@ function give_payment_subtotal( $payment_id = 0 ) {
  * returns a non formatted amount.
  *
  * @since 1.3.3
- * @global    $give_options Array of all the EDD Options
+ * @global    $give_options Array of all the Give Options
  *
  * @param int $payment_id   Payment ID
  *
@@ -1330,8 +1268,6 @@ function give_get_payment_subtotal( $payment_id = 0 ) {
 	} else {
 
 		$subtotal = give_get_payment_amount( $payment_id );
-		$tax      = give_use_taxes() ? give_get_payment_tax( $payment_id ) : 0;
-		$subtotal -= $tax;
 
 	}
 
@@ -1380,7 +1316,7 @@ function give_get_payment_tax( $payment_id = 0, $payment_meta = false ) {
 /**
  * Retrieves arbitrary fees for the payment
  *
- * @since 1.5
+ * @since 1.0
  *
  * @param int    $payment_id Payment ID
  * @param string $type       Fee type
@@ -1514,7 +1450,7 @@ function give_get_payment_notes( $payment_id = 0, $search = '' ) {
 /**
  * Add a note to a payment
  *
- * @since 1.4
+ * @since 1.0
  *
  * @param int    $payment_id The payment ID to store a note for
  * @param string $note       The note to store
@@ -1591,22 +1527,22 @@ function give_get_payment_note_html( $note, $payment_id = 0 ) {
 		$user = get_userdata( $note->user_id );
 		$user = $user->display_name;
 	} else {
-		$user = __( 'EDD Bot', 'give' );
+		$user = __( 'System', 'give' );
 	}
 
 	$date_format = get_option( 'date_format' ) . ', ' . get_option( 'time_format' );
 
 	$delete_note_url = wp_nonce_url( add_query_arg( array(
-		'edd-action' => 'delete_payment_note',
+		'give-action' => 'delete_payment_note',
 		'note_id'    => $note->comment_ID,
 		'payment_id' => $payment_id
 	) ), 'give_delete_payment_note_' . $note->comment_ID );
 
-	$note_html = '<div class="edd-payment-note" id="edd-payment-note-' . $note->comment_ID . '">';
+	$note_html = '<div class="give-payment-note" id="give-payment-note-' . $note->comment_ID . '">';
 	$note_html .= '<p>';
 	$note_html .= '<strong>' . $user . '</strong>&nbsp;&ndash;&nbsp;' . date_i18n( $date_format, strtotime( $note->comment_date ) ) . '<br/>';
 	$note_html .= $note->comment_content;
-	$note_html .= '&nbsp;&ndash;&nbsp;<a href="' . esc_url( $delete_note_url ) . '" class="edd-delete-payment-note" data-note-id="' . absint( $note->comment_ID ) . '" data-payment-id="' . absint( $payment_id ) . '" title="' . __( 'Delete this payment note', 'give' ) . '">' . __( 'Delete', 'give' ) . '</a>';
+	$note_html .= '&nbsp;&ndash;&nbsp;<a href="' . esc_url( $delete_note_url ) . '" class="give-delete-payment-note" data-note-id="' . absint( $note->comment_ID ) . '" data-payment-id="' . absint( $payment_id ) . '" title="' . __( 'Delete this payment note', 'give' ) . '">' . __( 'Delete', 'give' ) . '</a>';
 	$note_html .= '</p>';
 	$note_html .= '</div>';
 
@@ -1618,7 +1554,7 @@ function give_get_payment_note_html( $note, $payment_id = 0 ) {
  * Exclude notes (comments) on give_payment post type from showing in Recent
  * Comments widgets
  *
- * @since 1.4.1
+ * @since 1.0
  *
  * @param obj $query WordPress Comment Query Object
  *
@@ -1643,7 +1579,7 @@ add_action( 'pre_get_comments', 'give_hide_payment_notes', 10 );
  * Exclude notes (comments) on give_payment post type from showing in Recent
  * Comments widgets
  *
- * @since 2.2
+ * @since 1.0
  *
  * @param array $clauses          Comment clauses for comment query
  * @param obj   $wp_comment_query WordPress Comment Query Object
@@ -1666,7 +1602,7 @@ add_filter( 'comments_clauses', 'give_hide_payment_notes_pre_41', 10, 2 );
 /**
  * Exclude notes (comments) on give_payment post type from showing in comment feeds
  *
- * @since 1.5.1
+ * @since 1.0
  *
  * @param array $where
  * @param obj   $wp_comment_query WordPress Comment Query Object
@@ -1685,7 +1621,7 @@ add_filter( 'comment_feed_where', 'give_hide_payment_notes_from_feeds', 10, 2 );
 
 
 /**
- * Remove EDD Comments from the wp_count_comments function
+ * Remove Give Comments from the wp_count_comments function
  *
  * @access public
  * @since  1.5.2
@@ -1723,11 +1659,12 @@ function give_remove_payment_notes_in_comment_counts( $stats, $post_id ) {
 	$count = $wpdb->get_results( "SELECT comment_approved, COUNT( * ) AS num_comments FROM {$wpdb->comments} {$where} GROUP BY comment_approved", ARRAY_A );
 
 	$total    = 0;
-	$approved = array( '0'            => 'moderated',
-	                   '1'            => 'approved',
-	                   'spam'         => 'spam',
-	                   'trash'        => 'trash',
-	                   'post-trashed' => 'post-trashed'
+	$approved = array(
+		'0'            => 'moderated',
+		'1'            => 'approved',
+		'spam'         => 'spam',
+		'trash'        => 'trash',
+		'post-trashed' => 'post-trashed'
 	);
 	foreach ( (array) $count as $row ) {
 		// Don't count post-trashed toward totals

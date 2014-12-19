@@ -155,13 +155,6 @@ function give_process_paypal_purchase( $purchase_data ) {
 			$paypal_args['discount_amount_cart'] = give_sanitize_amount( $discounted_amount );
 		}
 
-		// Add taxes to the cart
-		if ( give_use_taxes() ) {
-
-			$paypal_args['tax_cart'] = give_sanitize_amount( $purchase_data['tax'] );
-
-		}
-
 		$paypal_args = apply_filters( 'give_paypal_redirect_args', $paypal_args, $purchase_data );
 
 		// Build query
@@ -169,9 +162,6 @@ function give_process_paypal_purchase( $purchase_data ) {
 
 		// Fix for some sites that encode the entities
 		$paypal_redirect = str_replace( '&amp;', '&', $paypal_redirect );
-
-		// Get rid of cart contents
-		give_empty_cart();
 
 		// Redirect to PayPal
 		wp_redirect( $paypal_redirect );

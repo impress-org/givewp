@@ -14,6 +14,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Is Test Mode
+ *
+ * @since 1.0
+ * @global $give_options
+ * @return bool $ret True if return mode is enabled, false otherwise
+ */
+function give_is_test_mode() {
+	global $give_options;
+
+	$ret = ! empty( $give_options['test_mode'] );
+
+	return (bool) apply_filters( 'give_is_test_mode', $ret );
+}
 
 /**
  * Get the set currency
@@ -193,4 +207,100 @@ function give_logged_in_only() {
 
 	return (bool) apply_filters( 'give_logged_in_only', $ret );
 
+}
+
+
+/**
+ * Retrieve timezone
+ *
+ * @since 1.0
+ * @return string $timezone The timezone ID
+ */
+function give_get_timezone_id() {
+
+	// if site timezone string exists, return it
+	if ( $timezone = get_option( 'timezone_string' ) ) {
+		return $timezone;
+	}
+
+	// get UTC offset, if it isn't set return UTC
+	if ( ! ( $utc_offset = 3600 * get_option( 'gmt_offset', 0 ) ) ) {
+		return 'UTC';
+	}
+
+	// attempt to guess the timezone string from the UTC offset
+	$timezone = timezone_name_from_abbr( '', $utc_offset );
+
+	// last try, guess timezone string manually
+	if ( $timezone === false ) {
+
+		$is_dst = date( 'I' );
+
+		foreach ( timezone_abbreviations_list() as $abbr ) {
+			foreach ( $abbr as $city ) {
+				if ( $city['dst'] == $is_dst && $city['offset'] == $utc_offset ) {
+					return $city['timezone_id'];
+				}
+			}
+		}
+	}
+
+	// fallback
+	return 'UTC';
+}
+
+
+/**
+ * Get User IP
+ *
+ * Returns the IP address of the current visitor
+ *
+ * @since 1.0
+ * @return string $ip User's IP address
+ */
+function give_get_ip() {
+
+	$ip = '127.0.0.1';
+
+	if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
+		//check ip from share internet
+		$ip = $_SERVER['HTTP_CLIENT_IP'];
+	} elseif ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
+		//to check ip is pass from proxy
+		$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+	} elseif ( ! empty( $_SERVER['REMOTE_ADDR'] ) ) {
+		$ip = $_SERVER['REMOTE_ADDR'];
+	}
+
+	return apply_filters( 'give_get_ip', $ip );
+}
+
+
+/**
+ * Store Purchase Data in Sessions
+ *
+ * Used for storing info about purchase
+ *
+ * @since 1.1.5
+ *
+ * @param $purchase_data
+ *
+ * @uses Give()->session->set()
+ */
+function give_set_purchase_session( $purchase_data = array() ) {
+	Give()->session->set( 'give_purchase', $purchase_data );
+}
+
+/**
+ * Retrieve Purchase Data from Session
+ *
+ * Used for retrieving info about purchase
+ * after completing a purchase
+ *
+ * @since 1.1.5
+ * @uses Give()->session->get()
+ * @return mixed array | false
+ */
+function give_get_purchase_session() {
+	return Give()->session->get( 'give_purchase' );
 }

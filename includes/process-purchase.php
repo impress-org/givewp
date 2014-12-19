@@ -61,7 +61,6 @@ function give_process_purchase_form() {
 		'email'      => $user['user_email'],
 		'first_name' => $user['user_first'],
 		'last_name'  => $user['user_last'],
-		'discount'   => $valid_data['discount'],
 		'address'    => $user['address']
 	);
 
@@ -87,7 +86,7 @@ function give_process_purchase_form() {
 	// Allow themes and plugins to hook before the gateway
 	do_action( 'give_checkout_before_gateway', $_POST, $user_info, $valid_data );
 
-	// If the total amount in the cart is 0, send to the manual gateway. This emulates a free download purchase
+	// If the total amount in the cart is 0, send to the manual gateway. This emulates a free purchase
 	if ( ! $purchase_data['price'] ) {
 		// Revert to manual
 		$purchase_data['gateway'] = 'manual';
@@ -106,6 +105,9 @@ function give_process_purchase_form() {
 
 	// Make sure credit card numbers are never stored in sessions
 	unset( $session_data['card_info']['card_number'] );
+
+	// Used for showing download links to non logged-in users after purchase, and for other plugins needing purchase data.
+	give_set_purchase_session( $session_data );
 
 	// Send info to the gateway for payment processing
 	give_send_to_gateway( $purchase_data['gateway'], $purchase_data );
@@ -277,7 +279,7 @@ function give_purchase_form_required_fields() {
 	);
 
 	// Let payment gateways and other extensions determine if address fields should be required
-	$require_address = apply_filters( 'give_require_billing_address', 1 );
+	$require_address = apply_filters( 'give_require_billing_address', true );
 
 	if ( $require_address ) {
 		$required_fields['card_zip']        = array(
@@ -1001,8 +1003,8 @@ add_action( 'give_checkout_error_checks', 'give_check_purchase_email', 10, 2 );
  * @return void
  */
 function give_process_straight_to_gateway( $data ) {
-	$download_id = $data['download_id'];
-	$options     = isset( $data['give_options'] ) ? $data['give_options'] : array();
+
+	$options = isset( $data['give_options'] ) ? $data['give_options'] : array();
 
 	$purchase_data = give_build_straight_to_gateway_data( $download_id, $options );
 	give_set_purchase_session( $purchase_data );

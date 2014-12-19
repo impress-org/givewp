@@ -17,11 +17,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * View Order Details Page
  *
- * @since 1.6
+ * @since 1.0
  * @return void
  */
 if ( ! isset( $_GET['id'] ) || ! is_numeric( $_GET['id'] ) ) {
-	wp_die( __( 'Payment ID not supplied. Please try again', 'edd' ), __( 'Error', 'edd' ) );
+	wp_die( __( 'Payment ID not supplied. Please try again', 'give' ), __( 'Error', 'give' ) );
 }
 
 // Setup the variables
@@ -31,7 +31,7 @@ $item       = get_post( $payment_id );
 
 // Sanity check... fail if purchase ID is invalid
 if ( ! is_object( $item ) || $item->post_type != 'give_payment' ) {
-	wp_die( __( 'The specified ID does not belong to a payment. Please try again', 'edd' ), __( 'Error', 'edd' ) );
+	wp_die( __( 'The specified ID does not belong to a payment. Please try again', 'give' ), __( 'Error', 'give' ) );
 }
 
 $payment_meta   = give_get_payment_meta( $payment_id );
@@ -40,253 +40,195 @@ $cart_items     = give_get_payment_meta_cart_details( $payment_id );
 $user_id        = give_get_payment_user_id( $payment_id );
 $customer_id    = give_get_payment_customer_id( $payment_id );
 $payment_date   = strtotime( $item->post_date );
-$unlimited      = give_payment_has_unlimited_downloads( $payment_id );
 $user_info      = give_get_payment_meta_user_info( $payment_id );
-$address        = ! empty( $user_info['address'] ) ? $user_info['address'] : array( 'line1'   => '',
-                                                                                    'line2'   => '',
-                                                                                    'city'    => '',
-                                                                                    'country' => '',
-                                                                                    'state'   => '',
-                                                                                    'zip'     => ''
+$address        = ! empty( $user_info['address'] ) ? $user_info['address'] : array(
+	'line1'   => '',
+	'line2'   => '',
+	'city'    => '',
+	'country' => '',
+	'state'   => '',
+	'zip'     => ''
 );
 $gateway        = give_get_payment_gateway( $payment_id );
 $currency_code  = give_get_payment_currency_code( $payment_id );
 ?>
-<div class="wrap edd-wrap">
-<h2><?php printf( __( 'Payment %s', 'edd' ), $number ); ?></h2>
+<div class="wrap give-wrap">
+<h2><?php printf( __( 'Payment %s', 'give' ), $number ); ?></h2>
 <?php do_action( 'give_view_order_details_before', $payment_id ); ?>
-<form id="edd-edit-order-form" method="post">
+<form id="give-edit-order-form" method="post">
 <?php do_action( 'give_view_order_details_form_top', $payment_id ); ?>
 <div id="poststuff">
-<div id="edd-dashboard-widgets-wrap">
+<div id="give-dashboard-widgets-wrap">
 <div id="post-body" class="metabox-holder columns-2">
 <div id="postbox-container-1" class="postbox-container">
-<div id="side-sortables" class="meta-box-sortables ui-sortable">
+	<div id="side-sortables" class="meta-box-sortables ui-sortable">
 
-<?php do_action( 'give_view_order_details_sidebar_before', $payment_id ); ?>
+		<?php do_action( 'give_view_order_details_sidebar_before', $payment_id ); ?>
 
 
-<div id="edd-order-update" class="postbox edd-order-data">
+		<div id="give-order-update" class="postbox give-order-data">
 
-	<h3 class="hndle">
-		<span><?php _e( 'Update Payment', 'edd' ); ?></span>
-	</h3>
+			<h3 class="hndle">
+				<span><?php _e( 'Update Payment', 'give' ); ?></span>
+			</h3>
 
-	<div class="inside">
-		<div class="edd-admin-box">
+			<div class="inside">
+				<div class="give-admin-box">
 
-			<?php do_action( 'give_view_order_details_totals_before', $payment_id ); ?>
+					<?php do_action( 'give_view_order_details_totals_before', $payment_id ); ?>
 
-			<div class="edd-admin-box-inside">
-				<p>
-					<span class="label"><?php _e( 'Status:', 'edd' ); ?></span>&nbsp;
-					<select name="edd-payment-status" class="medium-text">
-						<?php foreach ( give_get_payment_statuses() as $key => $status ) : ?>
-							<option value="<?php esc_attr_e( $key ); ?>"<?php selected( give_get_payment_status( $item, true ), $status ); ?>><?php esc_html_e( $status ); ?></option>
-						<?php endforeach; ?>
-					</select>
-				</p>
-			</div>
+					<div class="give-admin-box-inside">
+						<p>
+							<span class="label"><?php _e( 'Status:', 'give' ); ?></span>&nbsp;
+							<select name="give-payment-status" class="medium-text">
+								<?php foreach ( give_get_payment_statuses() as $key => $status ) : ?>
+									<option value="<?php esc_attr_e( $key ); ?>"<?php selected( give_get_payment_status( $item, true ), $status ); ?>><?php esc_html_e( $status ); ?></option>
+								<?php endforeach; ?>
+							</select>
+						</p>
+					</div>
 
-			<div class="edd-admin-box-inside">
-				<p>
-					<span class="label"><?php _e( 'Date:', 'edd' ); ?></span>&nbsp;
-					<input type="text" name="edd-payment-date" value="<?php esc_attr_e( date( 'm/d/Y', $payment_date ) ); ?>" class="medium-text give_datepicker" />
-				</p>
-			</div>
+					<div class="give-admin-box-inside">
+						<p>
+							<span class="label"><?php _e( 'Date:', 'give' ); ?></span>&nbsp;
+							<input type="text" name="give-payment-date" value="<?php esc_attr_e( date( 'm/d/Y', $payment_date ) ); ?>" class="medium-text give_datepicker" />
+						</p>
+					</div>
 
-			<div class="edd-admin-box-inside">
-				<p>
-					<span class="label"><?php _e( 'Time:', 'edd' ); ?></span>&nbsp;
-					<input type="number" step="1" max="24" name="edd-payment-time-hour" value="<?php esc_attr_e( date_i18n( 'H', $payment_date ) ); ?>" class="small-text edd-payment-time-hour" />&nbsp;:&nbsp;
-					<input type="number" step="1" max="59" name="edd-payment-time-min" value="<?php esc_attr_e( date( 'i', $payment_date ) ); ?>" class="small-text edd-payment-time-min" />
-				</p>
-			</div>
+					<div class="give-admin-box-inside">
+						<p>
+							<span class="label"><?php _e( 'Time:', 'give' ); ?></span>&nbsp;
+							<input type="number" step="1" max="24" name="give-payment-time-hour" value="<?php esc_attr_e( date_i18n( 'H', $payment_date ) ); ?>" class="small-text give-payment-time-hour" />&nbsp;:&nbsp;
+							<input type="number" step="1" max="59" name="give-payment-time-min" value="<?php esc_attr_e( date( 'i', $payment_date ) ); ?>" class="small-text give-payment-time-min" />
+						</p>
+					</div>
 
-			<?php do_action( 'give_view_order_details_update_inner', $payment_id ); ?>
+					<?php do_action( 'give_view_order_details_update_inner', $payment_id ); ?>
 
-			<div class="edd-order-discount edd-admin-box-inside">
-				<p>
-					<span class="label"><?php _e( 'Discount Code', 'edd' ); ?>:</span>&nbsp;
-					<span><?php if ( isset( $user_info['discount'] ) && $user_info['discount'] !== 'none' ) {
-							echo '<code>' . $user_info['discount'] . '</code>';
-						} else {
-							_e( 'None', 'edd' );
-						} ?></span>
-				</p>
-			</div>
+					<?php
+					$fees = give_get_payment_fees( $payment_id );
+					if ( ! empty( $fees ) ) : ?>
+						<div class="give-order-fees give-admin-box-inside">
+							<p class="strong"><?php _e( 'Fees', 'give' ); ?>:</p>
+							<ul class="give-payment-fees">
+								<?php foreach ( $fees as $fee ) : ?>
+									<li>
+										<span class="fee-label"><?php echo $fee['label'] . ':</span> ' . '<span class="fee-amount" data-fee="' . esc_attr( $fee['amount'] ) . '">' . give_currency_filter( $fee['amount'], $currency_code ); ?></span>
+									</li>
+								<?php endforeach; ?>
+							</ul>
+						</div>
+					<?php endif; ?>
 
-			<?php
-			$fees = give_get_payment_fees( $payment_id );
-			if ( ! empty( $fees ) ) : ?>
-				<div class="edd-order-fees edd-admin-box-inside">
-					<p class="strong"><?php _e( 'Fees', 'edd' ); ?>:</p>
-					<ul class="edd-payment-fees">
-						<?php foreach ( $fees as $fee ) : ?>
-							<li>
-								<span class="fee-label"><?php echo $fee['label'] . ':</span> ' . '<span class="fee-amount" data-fee="' . esc_attr( $fee['amount'] ) . '">' . give_currency_filter( $fee['amount'], $currency_code ); ?></span>
-							</li>
-						<?php endforeach; ?>
-					</ul>
+
+					<div class="give-order-payment give-admin-box-inside">
+						<p>
+							<span class="label"><?php _e( 'Total Price', 'give' ); ?>:</span>&nbsp;
+							<?php echo give_currency_symbol( $payment_meta['currency'] ); ?>&nbsp;<input name="give-payment-total" type="text" class="small-text" value="<?php echo esc_attr( give_format_amount( give_get_payment_amount( $payment_id ) ) ); ?>" />
+						</p>
+					</div>
+
+					<div class="give-order-payment-recalc-totals give-admin-box-inside" style="display:none">
+						<p>
+							<span class="label"><?php _e( 'Recalculate Totals', 'give' ); ?>:</span>&nbsp;
+							<a href="" id="give-order-recalc-total" class="button button-secondary right"><?php _e( 'Recalculate', 'give' ); ?></a>
+						</p>
+					</div>
+
+					<?php do_action( 'give_view_order_details_totals_after', $payment_id ); ?>
+
 				</div>
-			<?php endif; ?>
+				<!-- /.give-admin-box -->
 
-			<?php if ( give_use_taxes() ) : ?>
-				<div class="edd-order-taxes edd-admin-box-inside">
+			</div>
+			<!-- /.inside -->
+
+			<div class="give-order-update-box give-admin-box">
+				<?php do_action( 'give_view_order_details_update_before', $payment_id ); ?>
+				<div id="major-publishing-actions">
+					<div id="publishing-action">
+						<input type="submit" class="button button-primary right" value="<?php esc_attr_e( 'Save Payment', 'give' ); ?>" />
+						<?php if ( give_is_payment_complete( $payment_id ) ) : ?>
+							<a href="<?php echo add_query_arg( array(
+								'give-action' => 'email_links',
+								'purchase_id' => $payment_id
+							) ); ?>" id="give-resend-receipt" class="button-secondary right"><?php _e( 'Resend Receipt', 'give' ); ?></a>
+						<?php endif; ?>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<?php do_action( 'give_view_order_details_update_after', $payment_id ); ?>
+			</div>
+			<!-- /.give-order-update-box -->
+
+		</div>
+		<!-- /#give-order-data -->
+
+		<div id="give-order-details" class="postbox give-order-data">
+
+			<h3 class="hndle">
+				<span><?php _e( 'Payment Meta', 'give' ); ?></span>
+			</h3>
+
+			<div class="inside">
+				<div class="give-admin-box">
+
+					<?php do_action( 'give_view_order_details_payment_meta_before', $payment_id ); ?>
+
+					<?php
+					$gateway = give_get_payment_gateway( $payment_id );
+					if ( $gateway ) : ?>
+						<div class="give-order-gateway give-admin-box-inside">
+							<p>
+								<span class="label"><?php _e( 'Gateway:', 'give' ); ?></span>&nbsp;
+								<?php echo give_get_gateway_admin_label( $gateway ); ?>
+							</p>
+						</div>
+					<?php endif; ?>
+
+					<div class="give-order-payment-key give-admin-box-inside">
+						<p>
+							<span class="label"><?php _e( 'Key:', 'give' ); ?></span>&nbsp;
+							<span><?php echo give_get_payment_key( $payment_id ); ?></span>
+						</p>
+					</div>
+
+					<div class="give-order-ip give-admin-box-inside">
+						<p>
+							<span class="label"><?php _e( 'IP:', 'give' ); ?></span>&nbsp;
+							<span><?php esc_attr_e( give_get_payment_user_ip( $payment_id ) ); ?></span>
+						</p>
+					</div>
+
+					<?php if ( $transaction_id ) : ?>
+						<div class="give-order-tx-id give-admin-box-inside">
+							<p>
+								<span class="label"><?php _e( 'Transaction ID:', 'give' ); ?></span>&nbsp;
+								<span><?php echo apply_filters( 'give_payment_details_transaction_id-' . $gateway, $transaction_id, $payment_id ); ?></span>
+							</p>
+						</div>
+					<?php endif; ?>
+
 					<p>
-						<span class="label"><?php _e( 'Tax', 'edd' ); ?>:</span>&nbsp;
-						<input name="edd-payment-tax" class="small-text" type="text" value="<?php echo esc_attr( give_format_amount( give_get_payment_tax( $payment_id ) ) ); ?>" />
+						<?php $purchase_url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . esc_attr( give_get_payment_user_email( $payment_id ) ) ); ?>
+						<a href="<?php echo $purchase_url; ?>"><?php _e( 'View all purchases of customer', 'give' ); ?></a>
 					</p>
+
+					<?php do_action( 'give_view_order_details_payment_meta_after', $payment_id ); ?>
+
 				</div>
-			<?php endif; ?>
+				<!-- /.column-container -->
 
-			<div class="edd-order-payment edd-admin-box-inside">
-				<p>
-					<span class="label"><?php _e( 'Total Price', 'edd' ); ?>:</span>&nbsp;
-					<?php echo give_currency_symbol( $payment_meta['currency'] ); ?>&nbsp;<input name="edd-payment-total" type="text" class="small-text" value="<?php echo esc_attr( give_format_amount( give_get_payment_amount( $payment_id ) ) ); ?>" />
-				</p>
 			</div>
-
-			<div class="edd-order-payment-recalc-totals edd-admin-box-inside" style="display:none">
-				<p>
-					<span class="label"><?php _e( 'Recalculate Totals', 'edd' ); ?>:</span>&nbsp;
-					<a href="" id="edd-order-recalc-total" class="button button-secondary right"><?php _e( 'Recalculate', 'edd' ); ?></a>
-				</p>
-			</div>
-
-			<?php do_action( 'give_view_order_details_totals_after', $payment_id ); ?>
+			<!-- /.inside -->
 
 		</div>
-		<!-- /.edd-admin-box -->
+		<!-- /#give-order-data -->
+
+		<?php do_action( 'give_view_order_details_sidebar_after', $payment_id ); ?>
 
 	</div>
-	<!-- /.inside -->
-
-	<div class="edd-order-update-box edd-admin-box">
-		<?php do_action( 'give_view_order_details_update_before', $payment_id ); ?>
-		<div id="major-publishing-actions">
-			<div id="publishing-action">
-				<input type="submit" class="button button-primary right" value="<?php esc_attr_e( 'Save Payment', 'edd' ); ?>" />
-				<?php if ( give_is_payment_complete( $payment_id ) ) : ?>
-					<a href="<?php echo add_query_arg( array( 'edd-action'  => 'email_links',
-					                                          'purchase_id' => $payment_id
-						) ); ?>" id="edd-resend-receipt" class="button-secondary right"><?php _e( 'Resend Receipt', 'edd' ); ?></a>
-				<?php endif; ?>
-			</div>
-			<div class="clear"></div>
-		</div>
-		<?php do_action( 'give_view_order_details_update_after', $payment_id ); ?>
-	</div>
-	<!-- /.edd-order-update-box -->
-
-</div>
-<!-- /#edd-order-data -->
-
-<div id="edd-order-details" class="postbox edd-order-data">
-
-	<h3 class="hndle">
-		<span><?php _e( 'Payment Meta', 'edd' ); ?></span>
-	</h3>
-
-	<div class="inside">
-		<div class="edd-admin-box">
-
-			<?php do_action( 'give_view_order_details_payment_meta_before', $payment_id ); ?>
-
-			<?php
-			$gateway = give_get_payment_gateway( $payment_id );
-			if ( $gateway ) : ?>
-				<div class="edd-order-gateway edd-admin-box-inside">
-					<p>
-						<span class="label"><?php _e( 'Gateway:', 'edd' ); ?></span>&nbsp;
-						<?php echo give_get_gateway_admin_label( $gateway ); ?>
-					</p>
-				</div>
-			<?php endif; ?>
-
-			<div class="edd-order-payment-key edd-admin-box-inside">
-				<p>
-					<span class="label"><?php _e( 'Key:', 'edd' ); ?></span>&nbsp;
-					<span><?php echo give_get_payment_key( $payment_id ); ?></span>
-				</p>
-			</div>
-
-			<div class="edd-order-ip edd-admin-box-inside">
-				<p>
-					<span class="label"><?php _e( 'IP:', 'edd' ); ?></span>&nbsp;
-					<span><?php esc_attr_e( give_get_payment_user_ip( $payment_id ) ); ?></span>
-				</p>
-			</div>
-
-			<?php if ( $transaction_id ) : ?>
-				<div class="edd-order-tx-id edd-admin-box-inside">
-					<p>
-						<span class="label"><?php _e( 'Transaction ID:', 'edd' ); ?></span>&nbsp;
-						<span><?php echo apply_filters( 'give_payment_details_transaction_id-' . $gateway, $transaction_id, $payment_id ); ?></span>
-					</p>
-				</div>
-			<?php endif; ?>
-
-			<div class="edd-admin-box-inside edd-unlimited-downloads">
-				<p>
-					<span class="label" title="<?php _e( 'Grants the customer unlimited file downloads for this purchase, regardless of other limits set.', 'edd' ); ?>"><i data-code="f316" class="dashicons dashicons-download"></i></span>&nbsp;
-					<input type="checkbox" name="edd-unlimited-downloads" id="give_unlimited_downloads" value="1"<?php checked( true, $unlimited, true ); ?>/>
-					<label class="description" for="give_unlimited_downloads"><?php _e( 'Unlimited file downloads', 'edd' ); ?></label>
-				</p>
-			</div>
-
-			<?php do_action( 'give_view_order_details_payment_meta_after', $payment_id ); ?>
-
-		</div>
-		<!-- /.column-container -->
-
-	</div>
-	<!-- /.inside -->
-
-</div>
-<!-- /#edd-order-data -->
-
-<div id="edd-order-logs" class="postbox edd-order-logs">
-
-	<h3 class="hndle">
-		<span><?php _e( 'Logs', 'edd' ); ?></span>
-	</h3>
-
-	<div class="inside">
-		<div class="edd-admin-box">
-
-			<div class="edd-admin-box-inside">
-
-				<p>
-					<a href="<?php echo admin_url( '/edit.php?post_type=download&page=edd-reports&tab=logs&payment=' . $payment_id ); ?>"><?php _e( 'View file download log for purchase', 'edd' ); ?></a>
-				</p>
-
-				<p>
-					<?php $download_log_url = admin_url( 'edit.php?post_type=download&page=edd-reports&tab=logs&user=' . $user_id ); ?>
-					<a href="<?php echo $download_log_url; ?>"><?php _e( 'View customer download log', 'edd' ); ?></a>
-				</p>
-
-				<p>
-					<?php $purchase_url = admin_url( 'edit.php?post_type=download&page=edd-payment-history&user=' . esc_attr( give_get_payment_user_email( $payment_id ) ) ); ?>
-					<a href="<?php echo $purchase_url; ?>"><?php _e( 'View all purchases of customer', 'edd' ); ?></a>
-				</p>
-			</div>
-
-			<?php do_action( 'give_view_order_details_logs_inner', $payment_id ); ?>
-
-		</div>
-		<!-- /.column-container -->
-
-	</div>
-	<!-- /.inside -->
-
-
-</div>
-<!-- /#edd-order-logs -->
-
-<?php do_action( 'give_view_order_details_sidebar_after', $payment_id ); ?>
-</div>
-<!-- /#side-sortables -->
+	<!-- /#side-sortables -->
 </div>
 <!-- /#postbox-container-1 -->
 
@@ -295,10 +237,10 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 
 <?php do_action( 'give_view_order_details_main_before', $payment_id ); ?>
 
-<?php $column_count = give_item_quantities_enabled() ? 'columns-4' : 'columns-3'; ?>
-<div id="edd-purchased-files" class="postbox <?php echo $column_count; ?>">
+<?php $column_count = 'columns-3'; ?>
+<div id="give-purchased-files" class="postbox <?php echo $column_count; ?>">
 	<h3 class="hndle">
-		<span><?php printf( __( 'Purchased %s', 'edd' ), give_get_label_plural() ); ?></span>
+		<span><?php _e( 'Completed Donations', 'give' ); ?></span>
 	</h3>
 
 	<?php if ( is_array( $cart_items ) ) :
@@ -315,11 +257,6 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 					$price_id   = isset( $cart_item['item_number']['options']['price_id'] ) ? $cart_item['item_number']['options']['price_id'] : null;
 					$quantity   = isset( $cart_item['quantity'] ) && $cart_item['quantity'] > 0 ? $cart_item['quantity'] : 1;
 
-					if ( false === $price ) {
-
-						// This function is only used on payments with near 1.0 cart data structure
-						$price = give_get_download_final_price( $item_id, $user_info, null );
-					}
 					?>
 
 					<li class="download">
@@ -337,32 +274,20 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 														?>
 													</a>
 												</span>
-						<input type="hidden" name="edd-payment-details-downloads[<?php echo $key; ?>][id]" class="edd-payment-details-download-id" value="<?php echo esc_attr( $item_id ); ?>" />
-						<input type="hidden" name="edd-payment-details-downloads[<?php echo $key; ?>][price_id]" class="edd-payment-details-download-price-id" value="<?php echo esc_attr( $price_id ); ?>" />
-						<input type="hidden" name="edd-payment-details-downloads[<?php echo $key; ?>][amount]" class="edd-payment-details-download-amount" value="<?php echo esc_attr( $price ); ?>" />
-						<input type="hidden" name="edd-payment-details-downloads[<?php echo $key; ?>][quantity]" class="edd-payment-details-download-quantity" value="<?php echo esc_attr( $quantity ); ?>" />
+						<input type="hidden" name="give-payment-details-downloads[<?php echo $key; ?>][id]" class="give-payment-details-download-id" value="<?php echo esc_attr( $item_id ); ?>" />
+						<input type="hidden" name="give-payment-details-downloads[<?php echo $key; ?>][price_id]" class="give-payment-details-download-price-id" value="<?php echo esc_attr( $price_id ); ?>" />
+						<input type="hidden" name="give-payment-details-downloads[<?php echo $key; ?>][amount]" class="give-payment-details-download-amount" value="<?php echo esc_attr( $price ); ?>" />
+						<input type="hidden" name="give-payment-details-downloads[<?php echo $key; ?>][quantity]" class="give-payment-details-download-quantity" value="<?php echo esc_attr( $quantity ); ?>" />
 
 					</li>
 
-					<?php if ( give_item_quantities_enabled() ) : ?>
-						<li class="quantity">
-							<span class="item-price"><?php echo give_currency_filter( give_format_amount( $item_price ) ); ?></span>
-							&nbsp;&times;&nbsp;<span class="item-quantity"><?php echo $quantity; ?></span>
-						</li>
-					<?php endif; ?>
-
 					<li class="price">
-						<?php if ( give_item_quantities_enabled() ) : ?>
-							<?php echo __( 'Total:', 'edd' ) . '&nbsp;'; ?>
-						<?php endif; ?>
 						<span class="price-text"><?php echo give_currency_filter( give_format_amount( $price ), $currency_code ); ?></span>
 					</li>
 
 					<li class="actions">
-						<?php if ( give_get_download_files( $item_id, $price_id ) ) : ?>
-							<a href="" class="edd-copy-download-link" data-download-id="<?php echo esc_attr( $item_id ); ?>" data-price-id="<?php echo esc_attr( $price_id ); ?>"><?php _e( 'Copy Download Link(s)', 'edd' ); ?></a> |
-						<?php endif; ?>
-						<a href="" class="edd-order-remove-download edd-delete" data-key="<?php echo esc_attr( $key ); ?>"><?php _e( 'Remove', 'edd' ); ?></a>
+
+						<a href="" class="give-order-remove-download give-delete" data-key="<?php echo esc_attr( $key ); ?>"><?php _e( 'Remove', 'give' ); ?></a>
 					</li>
 				</ul>
 			</div>
@@ -372,70 +297,63 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 		<div class="inside">
 			<ul>
 				<li class="download">
-					<?php echo EDD()->html->product_dropdown( array(
-						'name'   => 'edd-order-download-select',
-						'id'     => 'edd-order-download-select',
+					<?php echo Give()->html->product_dropdown( array(
+						'name'   => 'give-order-download-select',
+						'id'     => 'give-order-download-select',
 						'chosen' => true
 					) ); ?>
 				</li>
 
-				<?php if ( give_item_quantities_enabled() ) : ?>
-					<li class="quantity">
-						<span><?php _e( 'Quantity', 'edd' ); ?>:&nbsp;</span>
-						<input type="number" id="edd-order-download-quantity" class="small-text" min="1" step="1" value="1" />
-					</li>
-				<?php endif; ?>
-
 				<li class="price">
 					<?php
-					echo EDD()->html->text( array(
-						'name'  => 'edd-order-download-amount',
-						'label' => __( 'Item Price: ', 'edd' ),
-						'class' => 'small-text edd-order-download-price'
+					echo Give()->html->text( array(
+						'name'  => 'give-order-download-amount',
+						'label' => __( 'Item Price: ', 'give' ),
+						'class' => 'small-text give-order-download-price'
 					) );
 					?>
 				</li>
 
 				<li class="actions">
-					<a href="" id="edd-order-add-download" class="button button-secondary"><?php printf( __( 'Add %s to Payment', 'edd' ), give_get_label_singular() ); ?></a>
+					<a href="" id="give-order-add-download" class="button button-secondary"><?php printf( __( 'Add %s to Payment', 'give' ), give_get_label_singular() ); ?></a>
 				</li>
 
 			</ul>
 
-			<input type="hidden" name="edd-payment-downloads-changed" id="edd-payment-downloads-changed" value="" />
+			<input type="hidden" name="give-payment-downloads-changed" id="give-payment-downloads-changed" value="" />
 
 		</div><!-- /.inside -->
 	<?php else : $key = 0; ?>
 		<div class="row">
-			<p><?php printf( __( 'No %s included with this purchase', 'edd' ), give_get_label_plural() ); ?></p>
+			<p><?php printf( __( 'No %s included with this purchase', 'give' ), give_get_label_plural() ); ?></p>
 		</div>
 	<?php endif; ?>
 </div>
-<!-- /#edd-purchased-files -->
+<!-- /#give-purchased-files -->
 
 <?php do_action( 'give_view_order_details_files_after', $payment_id ); ?>
 
 <?php do_action( 'give_view_order_details_billing_before', $payment_id ); ?>
 
-<div id="edd-customer-details" class="postbox">
+<div id="give-customer-details" class="postbox">
 	<h3 class="hndle">
-		<span><?php _e( 'Customer Details', 'edd' ); ?></span>
+		<span><?php _e( 'Customer Details', 'give' ); ?></span>
 	</h3>
 
-	<div class="inside edd-clearfix">
+	<div class="inside give-clearfix">
 
 		<div class="column-container">
 			<div class="column">
-				<strong><?php _e( 'Name:', 'edd' ); ?></strong>&nbsp;
-				<input type="text" name="edd-payment-user-name" value="<?php esc_attr_e( $user_info['first_name'] . ' ' . $user_info['last_name'] ); ?>" class="medium-text" />
+				<strong><?php _e( 'Name:', 'give' ); ?></strong>&nbsp;
+				<input type="text" name="give-payment-user-name" value="<?php esc_attr_e( $user_info['first_name'] . ' ' . $user_info['last_name'] ); ?>" class="medium-text" />
 			</div>
 			<div class="column">
-				<strong><?php _e( 'Email:', 'edd' ); ?></strong>&nbsp;
-				<input type="email" name="edd-payment-user-email" value="<?php esc_attr_e( give_get_payment_user_email( $payment_id ) ); ?>" class="medium-text" />
+				<strong><?php _e( 'Email:', 'give' ); ?></strong>&nbsp;
+				<input type="email" name="give-payment-user-email" value="<?php esc_attr_e( give_get_payment_user_email( $payment_id ) ); ?>" class="medium-text" />
 			</div>
 			<div class="column">
-				<strong><?php _e( 'User ID:', 'edd' ); ?></strong>&nbsp;
-				<input type="number" step="1" min="-1" name="edd-payment-user-id" value="<?php esc_attr_e( $user_id ); ?>" class="small-text" />
+				<strong><?php _e( 'User ID:', 'give' ); ?></strong>&nbsp;
+				<input type="number" step="1" min="-1" name="give-payment-user-id" value="<?php esc_attr_e( $user_id ); ?>" class="small-text" />
 			</div>
 		</div>
 
@@ -448,77 +366,77 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 	</div>
 	<!-- /.inside -->
 </div>
-<!-- /#edd-customer-details -->
+<!-- /#give-customer-details -->
 
-<div id="edd-billing-details" class="postbox">
+<div id="give-billing-details" class="postbox">
 	<h3 class="hndle">
-		<span><?php _e( 'Billing Address', 'edd' ); ?></span>
+		<span><?php _e( 'Billing Address', 'give' ); ?></span>
 	</h3>
 
-	<div class="inside edd-clearfix">
+	<div class="inside give-clearfix">
 
-		<div id="edd-order-address">
+		<div id="give-order-address">
 
 			<div class="order-data-address">
 				<div class="data column-container">
 					<div class="column">
 						<p>
-							<strong class="order-data-address-line"><?php _e( 'Street Address Line 1:', 'edd' ); ?></strong><br />
-							<input type="text" name="edd-payment-address[0][line1]" value="<?php esc_attr_e( $address['line1'] ); ?>" class="medium-text" />
+							<strong class="order-data-address-line"><?php _e( 'Street Address Line 1:', 'give' ); ?></strong><br />
+							<input type="text" name="give-payment-address[0][line1]" value="<?php esc_attr_e( $address['line1'] ); ?>" class="medium-text" />
 						</p>
 
 						<p>
-							<strong class="order-data-address-line"><?php _e( 'Street Address Line 2:', 'edd' ); ?></strong><br />
-							<input type="text" name="edd-payment-address[0][line2]" value="<?php esc_attr_e( $address['line2'] ); ?>" class="medium-text" />
+							<strong class="order-data-address-line"><?php _e( 'Street Address Line 2:', 'give' ); ?></strong><br />
+							<input type="text" name="give-payment-address[0][line2]" value="<?php esc_attr_e( $address['line2'] ); ?>" class="medium-text" />
 						</p>
 
 					</div>
 					<div class="column">
 						<p>
-							<strong class="order-data-address-line"><?php echo _x( 'City:', 'Address City', 'edd' ); ?></strong><br />
-							<input type="text" name="edd-payment-address[0][city]" value="<?php esc_attr_e( $address['city'] ); ?>" class="medium-text" />
+							<strong class="order-data-address-line"><?php echo _x( 'City:', 'Address City', 'give' ); ?></strong><br />
+							<input type="text" name="give-payment-address[0][city]" value="<?php esc_attr_e( $address['city'] ); ?>" class="medium-text" />
 
 						</p>
 
 						<p>
-							<strong class="order-data-address-line"><?php echo _x( 'Zip / Postal Code:', 'Zip / Postal code of address', 'edd' ); ?></strong><br />
-							<input type="text" name="edd-payment-address[0][zip]" value="<?php esc_attr_e( $address['zip'] ); ?>" class="medium-text" />
+							<strong class="order-data-address-line"><?php echo _x( 'Zip / Postal Code:', 'Zip / Postal code of address', 'give' ); ?></strong><br />
+							<input type="text" name="give-payment-address[0][zip]" value="<?php esc_attr_e( $address['zip'] ); ?>" class="medium-text" />
 
 						</p>
 					</div>
 					<div class="column">
-						<p id="edd-order-address-country-wrap">
-							<strong class="order-data-address-line"><?php echo _x( 'Country:', 'Address country', 'edd' ); ?></strong><br />
+						<p id="give-order-address-country-wrap">
+							<strong class="order-data-address-line"><?php echo _x( 'Country:', 'Address country', 'give' ); ?></strong><br />
 							<?php
-							echo EDD()->html->select( array(
+							echo Give()->html->select( array(
 								'options'          => give_get_country_list(),
-								'name'             => 'edd-payment-address[0][country]',
+								'name'             => 'give-payment-address[0][country]',
 								'selected'         => $address['country'],
 								'show_option_all'  => false,
 								'show_option_none' => false,
 								'select2'          => true,
-								'placeholder'      => __( 'Select a country', 'edd' )
+								'placeholder'      => __( 'Select a country', 'give' )
 							) );
 							?>
 						</p>
 
-						<p id="edd-order-address-state-wrap">
-							<strong class="order-data-address-line"><?php echo _x( 'State / Province:', 'State / province of address', 'edd' ); ?></strong><br />
+						<p id="give-order-address-state-wrap">
+							<strong class="order-data-address-line"><?php echo _x( 'State / Province:', 'State / province of address', 'give' ); ?></strong><br />
 							<?php
 							$states = give_get_shop_states( $address['country'] );
 							if ( ! empty( $states ) ) {
-								echo EDD()->html->select( array(
+								echo Give()->html->select( array(
 									'options'          => $states,
-									'name'             => 'edd-payment-address[0][state]',
+									'name'             => 'give-payment-address[0][state]',
 									'selected'         => $address['state'],
 									'show_option_all'  => false,
 									'show_option_none' => false,
 									'select2'          => true,
-									'placeholder'      => __( 'Select a state', 'edd' )
+									'placeholder'      => __( 'Select a state', 'give' )
 								) );
 							} else {
 								?>
-								<input type="text" name="edd-payment-address[0][state]" value="<?php esc_attr_e( $address['state'] ); ?>" class="medium-text" />
+								<input type="text" name="give-payment-address[0][state]" value="<?php esc_attr_e( $address['state'] ); ?>" class="medium-text" />
 							<?php
 							} ?>
 						</p>
@@ -526,22 +444,22 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 				</div>
 			</div>
 		</div>
-		<!-- /#edd-order-address -->
+		<!-- /#give-order-address -->
 
 		<?php do_action( 'give_payment_billing_details', $payment_id ); ?>
 
 	</div>
 	<!-- /.inside -->
 </div>
-<!-- /#edd-billing-details -->
+<!-- /#give-billing-details -->
 
 <?php do_action( 'give_view_order_details_billing_after', $payment_id ); ?>
 
-<div id="edd-payment-notes" class="postbox">
-	<h3 class="hndle"><span><?php _e( 'Payment Notes', 'edd' ); ?></span></h3>
+<div id="give-payment-notes" class="postbox">
+	<h3 class="hndle"><span><?php _e( 'Payment Notes', 'give' ); ?></span></h3>
 
 	<div class="inside">
-		<div id="edd-payment-notes-inner">
+		<div id="give-payment-notes-inner">
 			<?php
 			$notes = give_get_payment_notes( $payment_id );
 			if ( ! empty( $notes ) ) :
@@ -554,20 +472,20 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 			else :
 				$no_notes_display = '';
 			endif;
-			echo '<p class="edd-no-payment-notes"' . $no_notes_display . '>' . __( 'No payment notes', 'edd' ) . '</p>';
+			echo '<p class="give-no-payment-notes"' . $no_notes_display . '>' . __( 'No payment notes', 'give' ) . '</p>';
 			?>
 		</div>
-		<textarea name="edd-payment-note" id="edd-payment-note" class="large-text"></textarea>
+		<textarea name="give-payment-note" id="give-payment-note" class="large-text"></textarea>
 
 		<p>
-			<button id="edd-add-payment-note" class="button button-secondary right" data-payment-id="<?php echo absint( $payment_id ); ?>"><?php _e( 'Add Note', 'edd' ); ?></button>
+			<button id="give-add-payment-note" class="button button-secondary right" data-payment-id="<?php echo absint( $payment_id ); ?>"><?php _e( 'Add Note', 'give' ); ?></button>
 		</p>
 
 		<div class="clear"></div>
 	</div>
 	<!-- /.inside -->
 </div>
-<!-- /#edd-payment-notes -->
+<!-- /#give-payment-notes -->
 
 <?php do_action( 'give_view_order_details_main_after', $payment_id ); ?>
 </div>
@@ -577,7 +495,7 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 </div>
 <!-- /#post-body -->
 </div>
-<!-- #edd-dashboard-widgets-wrap -->
+<!-- #give-dashboard-widgets-wrap -->
 </div>
 <!-- /#post-stuff -->
 <?php do_action( 'give_view_order_details_form_bottom', $payment_id ); ?>
@@ -588,4 +506,4 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 <?php do_action( 'give_view_order_details_after', $payment_id ); ?>
 </div><!-- /.wrap -->
 
-<div id="edd-download-link" title="<?php _e( 'Copy Download Link(s)', 'edd' ); ?>"></div>
+<div id="give-download-link" title="<?php _e( 'Copy Download Link(s)', 'give' ); ?>"></div>

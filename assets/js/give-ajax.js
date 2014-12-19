@@ -101,9 +101,11 @@ jQuery( document ).ready( function ( $ ) {
 
 		//Submit form via AJAX
 		$.post( give_global_vars.ajaxurl, this_form.serialize() + '&action=give_process_checkout&give_ajax=true', function ( data ) {
+
 			if ( $.trim( data ) == 'success' ) {
-				console.log( data );
+				//Remove any errors
 				$( '.give_errors' ).remove();
+				//Submit form for normal processing
 				$( givePurchaseform ).submit();
 			} else {
 				$( '#give-purchase-button' ).val( complete_purchase_val );

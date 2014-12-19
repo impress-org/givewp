@@ -10,7 +10,9 @@
  */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Determines if a user can checkout or not
@@ -31,9 +33,9 @@ function give_can_checkout() {
  * Retrieve the Success page URI
  *
  * @access      public
- * @since       1.6
+ * @since       1.0
  * @return      string
-*/
+ */
 function give_get_success_page_uri() {
 	global $give_options;
 
@@ -51,6 +53,7 @@ function give_get_success_page_uri() {
 function give_is_success_page() {
 	global $give_options;
 	$is_success_page = isset( $give_options['success_page'] ) ? is_page( $give_options['success_page'] ) : false;
+
 	return apply_filters( 'give_is_success_page', $is_success_page );
 }
 
@@ -60,21 +63,23 @@ function give_is_success_page() {
  * Sends the user to the succes page.
  *
  * @param string $query_string
+ *
  * @access      public
  * @since       1.0
  * @return      void
-*/
+ */
 function give_send_to_success_page( $query_string = null ) {
 	global $give_options;
 
 	$redirect = give_get_success_page_uri();
 
-	if ( $query_string )
+	if ( $query_string ) {
 		$redirect .= $query_string;
+	}
 
 	$gateway = isset( $_REQUEST['edd-gateway'] ) ? $_REQUEST['edd-gateway'] : '';
 
-	wp_redirect( apply_filters('give_success_page_redirect', $redirect, $gateway, $query_string) );
+	wp_redirect( apply_filters( 'give_success_page_redirect', $redirect, $gateway, $query_string ) );
 	give_die();
 }
 
@@ -86,17 +91,20 @@ function give_send_to_success_page( $query_string = null ) {
  * page if there are errors present.
  *
  * @param array $args
+ *
  * @access public
  * @since  1.0
  * @return Void
  */
 function give_send_back_to_checkout( $args = array() ) {
+
 	$redirect = 'http://google.com/';
 
 	if ( ! empty( $args ) ) {
 		// Check for backward compatibility
-		if ( is_string( $args ) )
+		if ( is_string( $args ) ) {
 			$args = str_replace( '?', '', $args );
+		}
 
 		$args = wp_parse_args( $args );
 
@@ -113,16 +121,18 @@ function give_send_back_to_checkout( $args = array() ) {
  * Gets the success page URL.
  *
  * @param string $query_string
+ *
  * @access      public
  * @since       1.0
  * @return      string
-*/
+ */
 function give_get_success_page_url( $query_string = null ) {
 	global $give_options;
 
-	$success_page = get_permalink($give_options['success_page']);
-	if ( $query_string )
+	$success_page = get_permalink( $give_options['success_page'] );
+	if ( $query_string ) {
 		$success_page .= $query_string;
+	}
 
 	return apply_filters( 'give_success_page_url', $success_page );
 }
@@ -131,17 +141,19 @@ function give_get_success_page_url( $query_string = null ) {
  * Get the URL of the Transaction Failed page
  *
  * @since 1.0
- * @global $give_options Array of all the EDD Options
+ * @global     $give_options Array of all the EDD Options
  *
- * @param bool $extras Extras to append to the URL
+ * @param bool $extras       Extras to append to the URL
+ *
  * @return mixed|void Full URL to the Transaction Failed page, if present, home page if it doesn't exist
  */
 function give_get_failed_transaction_uri( $extras = false ) {
 	global $give_options;
 
 	$uri = ! empty( $give_options['failure_page'] ) ? trailingslashit( get_permalink( $give_options['failure_page'] ) ) : home_url();
-	if ( $extras )
+	if ( $extras ) {
 		$uri .= $extras;
+	}
 
 	return apply_filters( 'give_get_failed_transaction_uri', $uri );
 }
@@ -149,12 +161,13 @@ function give_get_failed_transaction_uri( $extras = false ) {
 /**
  * Determines if we're currently on the Failed Transaction page.
  *
- * @since 2.1
+ * @since 1.0
  * @return bool True if on the Failed Transaction page, false otherwise.
  */
 function give_is_failed_transaction_page() {
 	global $give_options;
 	$ret = isset( $give_options['failure_page'] ) ? is_page( $give_options['failure_page'] ) : false;
+
 	return apply_filters( 'give_is_failure_page', $ret );
 }
 
@@ -162,14 +175,14 @@ function give_is_failed_transaction_page() {
  * Mark payments as Failed when returning to the Failed Transaction page
  *
  * @access      public
- * @since       1.9.9
+ * @since       1.0
  * @return      void
-*/
+ */
 function give_listen_for_failed_payments() {
-	
+
 	$failed_page = give_get_option( 'failure_page', 0 );
 
-	if( ! empty( $failed_page ) && is_page( $failed_page ) && ! empty( $_GET['payment-id'] ) ) {
+	if ( ! empty( $failed_page ) && is_page( $failed_page ) && ! empty( $_GET['payment-id'] ) ) {
 
 		$payment_id = absint( $_GET['payment-id'] );
 		give_update_payment_status( $payment_id, 'failed' );
@@ -177,18 +190,22 @@ function give_listen_for_failed_payments() {
 	}
 
 }
-//add_action( 'template_redirect', 'give_listen_for_failed_payments' );
+
+add_action( 'template_redirect', 'give_listen_for_failed_payments' );
+
 
 /**
  * Check if a field is required
  *
  * @param string $field
+ *
  * @access      public
  * @since       1.0
  * @return      bool
-*/
+ */
 function give_field_is_required( $field = '' ) {
 	$required_fields = give_purchase_form_required_fields();
+
 	return array_key_exists( $field, $required_fields );
 }
 
@@ -212,7 +229,7 @@ function give_get_banned_emails() {
  */
 function give_is_email_banned( $email = '' ) {
 
-	if( empty( $email ) ) {
+	if ( empty( $email ) ) {
 		return false;
 	}
 
@@ -221,14 +238,15 @@ function give_is_email_banned( $email = '' ) {
 	return apply_filters( 'give_is_email_banned', $ret, $email );
 }
 
-/** 
+/**
  * Determines if secure checkout pages are enforced
  *
- * @since       2.0
+ * @since       1.0
  * @return      bool True if enforce SSL is enabled, false otherwise
  */
 function give_is_ssl_enforced() {
 	$ssl_enforced = give_get_option( 'enforce_ssl', false );
+
 	return (bool) apply_filters( 'give_is_ssl_enforced', $ssl_enforced );
 }
 
@@ -240,10 +258,10 @@ function give_is_ssl_enforced() {
  * @return void
  */
 function give_enforced_ssl_redirect_handler() {
-	if ( ! give_is_ssl_enforced() || ! give_is_checkout() || is_admin() || is_ssl() ) {
+	if ( ! give_is_ssl_enforced() ||  is_admin() || is_ssl() ) {
 		return;
 	}
- 
+
 	if ( isset( $_SERVER["HTTPS"] ) && $_SERVER["HTTPS"] == "on" ) {
 		return;
 	}
@@ -253,6 +271,7 @@ function give_enforced_ssl_redirect_handler() {
 	wp_safe_redirect( $uri );
 	exit;
 }
+
 //add_action( 'template_redirect', 'give_enforced_ssl_redirect_handler' );
 
 /**
@@ -262,7 +281,7 @@ function give_enforced_ssl_redirect_handler() {
  * @return void
  */
 function give_enforced_ssl_asset_handler() {
-	if ( ! give_is_ssl_enforced() || ! give_is_checkout() || is_admin() ) {
+	if ( ! give_is_ssl_enforced() || is_admin() ) {
 		return;
 	}
 
@@ -279,20 +298,23 @@ function give_enforced_ssl_asset_handler() {
 		'stylesheet_directory_uri',
 		'site_url'
 	);
-	
+
 	$filters = apply_filters( 'give_enforced_ssl_asset_filters', $filters );
 
 	foreach ( $filters as $filter ) {
 		add_filter( $filter, 'give_enforced_ssl_asset_filter', 1 );
 	}
 }
+
 //add_action( 'template_redirect', 'give_enforced_ssl_asset_handler' );
 
 /**
  * Filter filters and convert http to https
  *
- * @since 2.0
+ * @since 1.0
+ *
  * @param mixed $content
+ *
  * @return mixed
  */
 function give_enforced_ssl_asset_filter( $content ) {
@@ -326,7 +348,7 @@ function give_enforced_ssl_asset_filter( $content ) {
 			'ru',
 		);
 
-		if( ! in_array( $extension, $suffixes ) ) {
+		if ( ! in_array( $extension, $suffixes ) ) {
 
 			$content = str_replace( 'http:', 'https:', $content );
 

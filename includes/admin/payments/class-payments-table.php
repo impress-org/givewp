@@ -20,7 +20,7 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 }
 
 /**
- * EDD_Payment_History_Table Class
+ * Give_Payment_History_Table Class
  *
  * Renders the Payment History table on the Payment History page
  *
@@ -596,7 +596,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * Setup the final data for the table
 	 *
 	 * @access public
-	 * @since  1.4
+	 * @since  1.0
 	 * @uses   Give_Payment_History_Table::get_columns()
 	 * @uses   Give_Payment_History_Table::get_sortable_columns()
 	 * @uses   Give_Payment_History_Table::payments_data()
@@ -639,7 +639,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 				$total_items = $this->total_count;
 				break;
 			default:
-				// Retrieve the count of the non-default-EDD status
+				// Retrieve the count of the non-default-Give status
 				$count       = wp_count_posts( 'give_payment' );
 				$total_items = $count->{$status};
 		}

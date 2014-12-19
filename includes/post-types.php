@@ -109,7 +109,7 @@ add_action( 'init', 'give_setup_post_types', 1 );
 /**
  * Get Default Labels
  *
- * @since 1.0.8.3
+ * @since 1.0
  * @return array $defaults Default labels
  */
 function give_get_default_labels() {
