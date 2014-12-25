@@ -301,10 +301,6 @@ function give_build_straight_to_gateway_data( $download_id = 0, $options = array
  */
 function give_send_to_gateway( $gateway, $payment_data ) {
 
-//	echo "<pre>";
-//	var_dump( $payment_data );
-//	echo "</pre>";
-//	die( 'hey' );
 	$payment_data['gateway_nonce'] = wp_create_nonce( 'give-gateway' );
 
 	// $gateway must match the ID used when registering the gateway

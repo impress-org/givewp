@@ -209,10 +209,11 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 						</div>
 					<?php endif; ?>
 
-					<p>
-						<?php $purchase_url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . esc_attr( give_get_payment_user_email( $payment_id ) ) ); ?>
-						<a href="<?php echo $purchase_url; ?>"><?php _e( 'View all purchases of customer', 'give' ); ?></a>
-					</p>
+					<div class="give-admin-box-inside">
+						<p><?php $purchase_url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . esc_attr( give_get_payment_user_email( $payment_id ) ) ); ?>
+							<a href="<?php echo $purchase_url; ?>"><?php _e( 'View all purchases of customer', 'give' ); ?></a>
+						</p>
+					</div>
 
 					<?php do_action( 'give_view_order_details_payment_meta_after', $payment_id ); ?>
 

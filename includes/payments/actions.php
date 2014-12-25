@@ -44,10 +44,7 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 	$customer_id    = give_get_payment_customer_id( $payment_id );
 	$amount         = give_get_payment_amount( $payment_id );
 
-//	echo "<pre>";
-//	var_dump($amount);
-//	echo "</pre>";
-//	die();
+
 
 	$cart_details   = give_get_payment_meta_cart_details( $payment_id );
 

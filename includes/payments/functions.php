@@ -1218,7 +1218,7 @@ function give_get_payment_amount( $payment_id ) {
  * Retrieves subtotal for payment (this is the amount before taxes) and then
  * returns a non formatted amount.
  *
- * @since 1.3.3
+ * @since 1.0
  * @global    $give_options Array of all the Give Options
  *
  * @param int $payment_id   Payment ID
@@ -1256,7 +1256,7 @@ function give_get_payment_subtotal( $payment_id = 0 ) {
  * Retrieves taxed amount for payment and then returns a full formatted amount
  * This function essentially calls give_get_payment_tax()
  *
- * @since 1.3.3
+ * @since 1.0
  * @see   give_get_payment_tax()
  *
  * @param int  $payment_id   Payment ID
@@ -1273,7 +1273,7 @@ function give_payment_tax( $payment_id = 0, $payment_meta = false ) {
 /**
  * Retrieves taxed amount for payment and then returns a non formatted amount
  *
- * @since 1.3.3
+ * @since 1.0
  *
  * @param int  $payment_id   Payment ID
  * @param bool $payment_meta Get payment meta?

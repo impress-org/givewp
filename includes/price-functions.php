@@ -55,3 +55,29 @@ function give_get_variable_prices( $form_id = 0 ) {
 	return $form->prices;
 
 }
+
+
+/**
+ * Get the default amount for multi-level forms
+ *
+ * @access public
+ * @since  1.0
+ *
+ * @param int $form_id
+ * @return string $default_price
+ */
+function give_get_default_multilevel_amount( $form_id ) {
+	$default_price = '0.00';
+	$prices        = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
+	foreach ( $prices as $price ) {
+
+		if ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) {
+			$default_price = $price['_give_amount'];
+		}
+
+
+	}
+
+	return $default_price;
+
+}

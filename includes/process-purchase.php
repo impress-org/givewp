@@ -68,7 +68,7 @@ function give_process_purchase_form() {
 
 	// Setup purchase information
 	$purchase_data = array(
-		'price'        => '15.00',
+		'price'        => ( isset( $_POST['give-amount'] ) ? $_POST['give-amount'] : '0.00' ),
 		// Amount after taxes
 		'purchase_key' => strtolower( md5( $user['user_email'] . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) ),
 		// Unique key

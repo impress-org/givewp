@@ -170,6 +170,7 @@ function give_output_donation_levels( $form_id = 0, $args = array() ) {
 	//Output Variable Pricing Levels
 	if ( $variable_pricing ) {
 		give_output_levels( $form_id );
+		$set_price = give_get_default_multilevel_amount( $form_id );
 	} ?>
 
 	<div class="give-total-wrap">
@@ -179,6 +180,7 @@ function give_output_donation_levels( $form_id = 0, $args = array() ) {
 			<?php
 			//Set Price, No Custom Amount Allowed means hidden price field
 			if ( $set_pricing_option === 'set' && $allow_custom_amount == 'no' ) {
+
 				?>
 
 				<input class="give-text-input" id="give-amount" type="hidden" name="give-amount" value="<?php echo $set_price; ?>" required>
@@ -188,9 +190,8 @@ function give_output_donation_levels( $form_id = 0, $args = array() ) {
 
 			<?php } else { ?>
 				<label class="give-dollar-sign" for="give-amount">$</label>
-				<input class="give-text-input" id="give-amount" type="text" placeholder="" value="<?php echo $set_price; ?>" required>
+				<input class="give-text-input" id="give-amount" name="give-amount" type="text" placeholder="" value="<?php echo $set_price; ?>" required>
 			<?php } ?>
-
 
 		</div>
 
