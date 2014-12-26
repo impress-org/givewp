@@ -72,7 +72,8 @@ $header_img = give_get_option( 'email_logo', '' );
 		<table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%">
 			<tr>
 				<td align="center" valign="top">
-					<?php if( ! empty( $header_img ) ) : ?>
+					<?php
+					if( ! empty( $header_img ) ) : ?>
 						<div id="template_header_image">
 							<?php echo '<p style="margin-top:0;"><img src="' . esc_url( $header_img ) . '" alt="' . get_bloginfo( 'name' ) . '" /></p>'; ?>
 						</div>
@@ -84,7 +85,7 @@ $header_img = give_get_option( 'email_logo', '' );
 								<table border="0" cellpadding="0" cellspacing="0" width="520" id="template_header" style="<?php echo $template_header; ?>" bgcolor="#ffffff">
 									<tr>
 										<td>
-											<h1 style="<?php echo $header_content_h1; ?>"><?php echo EDD()->emails->get_heading(); ?></h1>
+											<h1 style="<?php echo $header_content_h1; ?>"><?php echo Give()->emails->get_heading(); ?></h1>
 										</td>
 									</tr>
 								</table>

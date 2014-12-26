@@ -156,6 +156,9 @@ function give_load_admin_scripts( $hook ) {
 	wp_localize_script( 'give-admin-scripts', 'give_vars', array(
 		'post_id' => isset( $post->ID ) ? $post->ID : null,
 	) );
+	wp_enqueue_script( 'jquery-ui-datepicker' );
+
+	wp_enqueue_style( 'jquery-ui-css', $css_dir . 'jquery-ui-fresh' . $suffix . '.css' );
 
 	wp_enqueue_style( 'give-admin', $css_dir . 'give-admin' . $suffix . '.css', GIVE_VERSION );
 
@@ -165,7 +168,7 @@ function give_load_admin_scripts( $hook ) {
 add_action( 'admin_enqueue_scripts', 'give_load_admin_scripts', 100 );
 
 /**
- * Admin Downloads Icon
+ * Admin Give Icon
  *
  * Echoes the CSS for the Give post type icon.
  *

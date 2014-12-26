@@ -141,7 +141,7 @@ function give_admin_email_notice( $payment_id = 0, $payment_data = array() ) {
 	$emails->__set( 'from_name', $from_name );
 	$emails->__set( 'from_email', $from_email );
 	$emails->__set( 'headers', $headers );
-	$emails->__set( 'heading', __( 'New Sale!', 'give' ) );
+	$emails->__set( 'heading', __( 'New Donation!', 'give' ) );
 
 	$emails->send( give_get_admin_notice_emails(), $subject, $message, $attachments );
 

@@ -924,13 +924,3 @@ function give_filter_success_page_content( $content ) {
 }
 
 add_filter( 'the_content', 'give_filter_success_page_content' );
-
-/**
- * Show a download's files in the purchase receipt
- *
- * @since 1.8.6
- * @return boolean
- */
-function give_receipt_show_download_files( $item_id, $receipt_args ) {
-	return apply_filters( 'give_receipt_show_download_files', true, $item_id, $receipt_args );
-}

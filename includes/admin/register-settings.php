@@ -52,6 +52,7 @@ class Give_Plugin_Settings {
 		add_action( 'cmb2_render_give_title', 'give_title_callback', 10, 5 );
 		add_action( 'cmb2_render_enabled_gateways', 'give_enabled_gateways_callback', 10, 5 );
 		add_action( 'cmb2_render_default_gateway', 'give_default_gateway_callback', 10, 5 );
+		add_action( 'cmb2_render_email_preview_buttons', 'give_email_preview_buttons_callback', 10, 5 );
 
 
 	}
@@ -161,7 +162,7 @@ class Give_Plugin_Settings {
 			 * General Settings
 			 */
 			'general'    => array(
-				'id'         => 'give_settings_general_metabox',
+				'id'         => 'options_page',
 				'give_title' => __( 'General Settings', 'give' ),
 				'context'    => 'normal',
 				'priority'   => 'high',
@@ -626,6 +627,26 @@ function give_cmb2_get_post_options( $query_args, $force = false ) {
 	return $post_options;
 }
 
+
+/**
+ * Modify CMB2 Default Form Output
+ *
+ * @param string @args
+ * @since 1.0
+ */
+
+add_filter( 'cmb2_get_metabox_form_format', 'give_modify_cmb2_form_output', 10, 3 );
+
+function give_modify_cmb2_form_output( $form_format, $object_id, $cmb ) {
+
+	if ( 'give_settings' == $object_id && 'options_page' == $cmb->cmb_id ) {
+
+		return '<form class="cmb-form" method="post" id="%1$s" enctype="multipart/form-data" encoding="multipart/form-data"><input type="hidden" name="object_id" value="%2$s">%3$s<div class="give-submit-wrap"><input type="submit" name="submit-cmb" value="' . __( 'Save Settings', 'give' ) . '" class="button-primary"></div></form>';
+	}
+
+	return $form_format;
+
+}
 
 /**
  * Hook Callback

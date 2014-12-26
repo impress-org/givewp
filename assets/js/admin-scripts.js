@@ -45,11 +45,23 @@ jQuery.noConflict();
 	};
 
 
+	var enable_admin_datepicker = function () {
+		// Date picker
+		if ( $( '.give_datepicker' ).length > 0 ) {
+			var dateFormat = 'mm/dd/yy';
+			$( '.give_datepicker' ).datepicker( {
+				dateFormat: dateFormat
+			} );
+		}
+	};
+
+
 	//On DOM Ready
 	$( function () {
 
 		handle_default_radio();
 		toggle_conditional_form_fields();
+		enable_admin_datepicker();
 
 	} );
 

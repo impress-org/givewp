@@ -23,6 +23,10 @@ span.cmb2-metabox-description {
 	margin-bottom: 5px;
 }
 
+div.give-submit-wrap {
+	margin: 20px 0;
+}
+
 /* Section Titles */
 
 .cmb-type-title h3 {
@@ -80,7 +84,7 @@ span.cmb2-metabox-description {
 /*------------------------------------
 Payment History Styles
 --------------------------------------*/
-#give-payment-filters {
+#give-payment-filters, .give-submit-wrap {
 	clear: both;
 	background: #f5f5f5;
 	background-image: -webkit-gradient(linear, left bottom, left top, from(#f5f5f5), to(#fafafa));
@@ -94,7 +98,6 @@ Payment History Styles
 	padding: 12px;
 	border-width: 1px;
 	border-style: solid;
-	border-radius: 3px;
 	font-size: 13px;
 	line-height: 2.1em;
 }

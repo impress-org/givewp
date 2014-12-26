@@ -140,7 +140,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 				<input type="hidden" name="status" value="<?php echo esc_attr( $status ); ?>" />
 			<?php endif; ?>
 			<?php if ( ! empty( $start_date ) || ! empty( $end_date ) ) : ?>
-				<a href="<?php echo admin_url( 'edit.php?post_type=download&page=give-payment-history' ); ?>" class="button-secondary"><?php _e( 'Clear Filter', 'give' ); ?></a>
+				<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ); ?>" class="button-secondary"><?php _e( 'Clear Filter', 'give' ); ?></a>
 			<?php endif; ?>
 			<?php $this->search_box( __( 'Search', 'give' ), 'give-payments' ); ?>
 		</div>
