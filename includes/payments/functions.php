@@ -155,10 +155,12 @@ function give_insert_payment( $payment_data = array() ) {
 	if ( $payment ) {
 
 		$payment_meta = array(
-			'currency'     => $payment_data['currency'],
-			'donations'    => $payment_data['donations'],
-			'user_info'    => $payment_data['user_info'],
-			'cart_details' => $payment_data['cart_details']
+			'currency'       => $payment_data['currency'],
+			'donation_title' => $payment_data['post_title'],
+			'form_title'     => $payment_data['give_form_title'],
+			'form_id'        => $payment_data['give_form_id'],
+			'user_info'      => $payment_data['user_info'],
+			'cart_details'   => $payment_data['cart_details']
 		);
 
 		$mode    = give_is_test_mode() ? 'test' : 'live';
@@ -189,9 +191,6 @@ function give_insert_payment( $payment_data = array() ) {
 		update_post_meta( $payment, '_give_payment_mode', $mode );
 		update_post_meta( $payment, '_give_payment_gateway', $gateway );
 
-		if ( ! empty( $discount ) ) {
-			give_update_payment_meta( $payment, '_give_payment_discount_id', $discount->ID );
-		}
 
 		if ( give_get_option( 'enable_sequential' ) ) {
 			give_update_payment_meta( $payment, '_give_payment_number', $number );
@@ -203,12 +202,18 @@ function give_insert_payment( $payment_data = array() ) {
 		do_action( 'give_insert_payment', $payment, $payment_data );
 
 		return $payment; // Return the ID
+
 	}
 
 	// Return false if no payment was inserted
 	return false;
 }
 
+//$payment_data = give_get_payment_meta( 202 );
+//echo "<pre>";
+//var_dump($payment_data);
+//echo "</pre>";
+//die();
 /**
  * Updates a payment status.
  *
@@ -839,7 +844,7 @@ function give_get_payment_meta( $payment_id = 0, $meta_key = '_give_payment_meta
 
 	if ( $meta_key === '_give_payment_meta' ) {
 
-		// Payment meta was simplified in EDD v1.5, so these are here for backwards compatibility
+		//These are here for backwards compatibility
 		if ( ! isset( $meta['key'] ) ) {
 			$meta['key'] = give_get_payment_key( $payment_id );
 		}
@@ -863,7 +868,7 @@ function give_get_payment_meta( $payment_id = 0, $meta_key = '_give_payment_meta
  *
  * @param  integer $payment_id Payment ID
  * @param  string  $meta_key   Meta key to update
- * @param  string  $meta_value Value to udpate to
+ * @param  string  $meta_value Value to update to
  * @param  string  $prev_value Previous value
  *
  * @return mixed               Meta ID if successful, false if unsuccessful
@@ -1511,8 +1516,8 @@ function give_get_payment_note_html( $note, $payment_id = 0 ) {
 
 	$delete_note_url = wp_nonce_url( add_query_arg( array(
 		'give-action' => 'delete_payment_note',
-		'note_id'    => $note->comment_ID,
-		'payment_id' => $payment_id
+		'note_id'     => $note->comment_ID,
+		'payment_id'  => $payment_id
 	) ), 'give_delete_payment_note_' . $note->comment_ID );
 
 	$note_html = '<div class="give-payment-note" id="give-payment-note-' . $note->comment_ID . '">';

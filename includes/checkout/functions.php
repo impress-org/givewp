@@ -77,7 +77,7 @@ function give_send_to_success_page( $query_string = null ) {
 		$redirect .= $query_string;
 	}
 
-	$gateway = isset( $_REQUEST['edd-gateway'] ) ? $_REQUEST['edd-gateway'] : '';
+	$gateway = isset( $_REQUEST['give-gateway'] ) ? $_REQUEST['give-gateway'] : '';
 
 	wp_redirect( apply_filters( 'give_success_page_redirect', $redirect, $gateway, $query_string ) );
 	give_die();
@@ -141,7 +141,7 @@ function give_get_success_page_url( $query_string = null ) {
  * Get the URL of the Transaction Failed page
  *
  * @since 1.0
- * @global     $give_options Array of all the EDD Options
+ * @global     $give_options Array of all the Give Options
  *
  * @param bool $extras       Extras to append to the URL
  *
@@ -253,8 +253,8 @@ function give_is_ssl_enforced() {
 /**
  * Handle redirections for SSL enforced checkouts
  *
- * @since 2.0
- * @global $give_options Array of all the EDD Options
+ * @since 1.0
+ * @global $give_options Array of all the Give Options
  * @return void
  */
 function give_enforced_ssl_redirect_handler() {

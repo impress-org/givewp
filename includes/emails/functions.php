@@ -2,43 +2,46 @@
 /**
  * Email Functions
  *
- * @package     EDD
+ * @package     Give
  * @subpackage  Emails
- * @copyright   Copyright (c) 2014, Pippin Williamson
+ * @copyright   Copyright (c) 2014, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
- * Email the download link(s) and payment confirmation to the buyer in a
- * customizable Purchase Receipt
+ * Email the payment confirmation to the buyer in a customizable Donation Receipt
  *
  * @since 1.0
- * @param int $payment_id Payment ID
+ *
+ * @param int  $payment_id   Payment ID
  * @param bool $admin_notice Whether to send the admin email notification or not (default: true)
+ *
  * @return void
  */
 function give_email_purchase_receipt( $payment_id, $admin_notice = true ) {
 
 	$payment_data = give_get_payment_meta( $payment_id );
 
-	$from_name    = give_get_option( 'from_name', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) );
-	$from_name    = apply_filters( 'give_purchase_from_name', $from_name, $payment_id, $payment_data );
+	$from_name = give_get_option( 'from_name', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) );
+	$from_name = apply_filters( 'give_purchase_from_name', $from_name, $payment_id, $payment_data );
 
-	$from_email   = give_get_option( 'from_email', get_bloginfo( 'admin_email' ) );
-	$from_email   = apply_filters( 'give_purchase_from_address', $from_email, $payment_id, $payment_data );
+	$from_email = give_get_option( 'from_email', get_bloginfo( 'admin_email' ) );
+	$from_email = apply_filters( 'give_purchase_from_address', $from_email, $payment_id, $payment_data );
 
-	$to_email     = give_get_payment_user_email( $payment_id );
+	$to_email = give_get_payment_user_email( $payment_id );
 
-	$subject      = give_get_option( 'purchase_subject', __( 'Purchase Receipt', 'give' ) );
-	$subject      = apply_filters( 'give_purchase_subject', wp_strip_all_tags( $subject ), $payment_id );
-	$subject      = give_do_email_tags( $subject, $payment_id );
+	$subject = give_get_option( 'purchase_subject', __( 'Purchase Receipt', 'give' ) );
+	$subject = apply_filters( 'give_purchase_subject', wp_strip_all_tags( $subject ), $payment_id );
+	$subject = give_do_email_tags( $subject, $payment_id );
 
-	$attachments  = apply_filters( 'give_receipt_attachments', array(), $payment_id, $payment_data );
-	$message      = give_do_email_tags( give_get_email_body_content( $payment_id, $payment_data ), $payment_id );
+	$attachments = apply_filters( 'give_receipt_attachments', array(), $payment_id, $payment_data );
+	$message     = give_do_email_tags( give_get_email_body_content( $payment_id, $payment_data ), $payment_id );
 
 	$emails = Give()->emails;
 
@@ -58,27 +61,27 @@ function give_email_purchase_receipt( $payment_id, $admin_notice = true ) {
 }
 
 /**
- * Email the download link(s) and payment confirmation to the admin accounts for testing.
+ * Email the donation confirmation to the admin accounts for testing.
  *
- * @since 1.5
- * @global $give_options Array of all the EDD Options
+ * @since 1.0
+ * @global $give_options Array of all the Give Options
  * @return void
  */
 function give_email_test_purchase_receipt() {
 
-	$from_name   = give_get_option( 'from_name', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) );
-	$from_name   = apply_filters( 'give_purchase_from_name', $from_name, 0, array() );
+	$from_name = give_get_option( 'from_name', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) );
+	$from_name = apply_filters( 'give_purchase_from_name', $from_name, 0, array() );
 
-	$from_email  = give_get_option( 'from_email', get_bloginfo( 'admin_email' ) );
-	$from_email  = apply_filters( 'give_purchase_from_address', $from_email, 0, array() );
+	$from_email = give_get_option( 'from_email', get_bloginfo( 'admin_email' ) );
+	$from_email = apply_filters( 'give_purchase_from_address', $from_email, 0, array() );
 
-	$subject     = give_get_option( 'purchase_subject', __( 'Purchase Receipt', 'give' ) );
-	$subject     = apply_filters( 'give_purchase_subject', wp_strip_all_tags( $subject ), 0 );
-	$subject     = give_do_email_tags( $subject, 0 );
+	$subject = give_get_option( 'purchase_subject', __( 'Purchase Receipt', 'give' ) );
+	$subject = apply_filters( 'give_purchase_subject', wp_strip_all_tags( $subject ), 0 );
+	$subject = give_do_email_tags( $subject, 0 );
 
 	$attachments = apply_filters( 'give_receipt_attachments', array(), 0, array() );
 
-	$message     = give_do_email_tags( give_get_email_body_content( 0, array() ), 0 );
+	$message = give_do_email_tags( give_get_email_body_content( 0, array() ), 0 );
 
 	$emails = Give()->emails;
 	$emails->__set( 'from_name', $from_name );
@@ -95,42 +98,44 @@ function give_email_test_purchase_receipt() {
 /**
  * Sends the Admin Sale Notification Email
  *
- * @since 1.4.2
- * @param int $payment_id Payment ID (default: 0)
+ * @since 1.0
+ *
+ * @param int   $payment_id   Payment ID (default: 0)
  * @param array $payment_data Payment Meta and Data
+ *
  * @return void
  */
 function give_admin_email_notice( $payment_id = 0, $payment_data = array() ) {
 
 	$payment_id = absint( $payment_id );
 
-	if( empty( $payment_id ) ) {
+	if ( empty( $payment_id ) ) {
 		return;
 	}
 
-	if( ! give_get_payment_by( 'id', $payment_id ) ) {
+	if ( ! give_get_payment_by( 'id', $payment_id ) ) {
 		return;
 	}
 
-	$from_name   = give_get_option( 'from_name', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) );
-	$from_name   = apply_filters( 'give_purchase_from_name', $from_name, $payment_id, $payment_data );
+	$from_name = give_get_option( 'from_name', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) );
+	$from_name = apply_filters( 'give_purchase_from_name', $from_name, $payment_id, $payment_data );
 
-	$from_email  = give_get_option( 'from_email', get_bloginfo( 'admin_email' ) );
-	$from_email  = apply_filters( 'give_purchase_from_address', $from_email, $payment_id, $payment_data );
+	$from_email = give_get_option( 'from_email', get_bloginfo( 'admin_email' ) );
+	$from_email = apply_filters( 'give_purchase_from_address', $from_email, $payment_id, $payment_data );
 
-	$subject     = give_get_option( 'sale_notification_subject', sprintf( __( 'New download purchase - Order #%1$s', 'give' ), $payment_id ) );
-	$subject     = apply_filters( 'give_admin_sale_notification_subject', wp_strip_all_tags( $subject ), $payment_id );
-	$subject     = give_do_email_tags( $subject, $payment_id );
+	$subject = give_get_option( 'sale_notification_subject', sprintf( __( 'New Donation - Payment #%1$s', 'give' ), $payment_id ) );
+	$subject = apply_filters( 'give_admin_sale_notification_subject', wp_strip_all_tags( $subject ), $payment_id );
+	$subject = give_do_email_tags( $subject, $payment_id );
 
-	$headers     = "From: " . stripslashes_deep( html_entity_decode( $from_name, ENT_COMPAT, 'UTF-8' ) ) . " <$from_email>\r\n";
-	$headers    .= "Reply-To: ". $from_email . "\r\n";
+	$headers = "From: " . stripslashes_deep( html_entity_decode( $from_name, ENT_COMPAT, 'UTF-8' ) ) . " <$from_email>\r\n";
+	$headers .= "Reply-To: " . $from_email . "\r\n";
 	//$headers  .= "MIME-Version: 1.0\r\n";
-	$headers    .= "Content-Type: text/html; charset=utf-8\r\n";
-	$headers     = apply_filters( 'give_admin_sale_notification_headers', $headers, $payment_id, $payment_data );
+	$headers .= "Content-Type: text/html; charset=utf-8\r\n";
+	$headers = apply_filters( 'give_admin_sale_notification_headers', $headers, $payment_id, $payment_data );
 
 	$attachments = apply_filters( 'give_admin_sale_notification_attachments', array(), $payment_id, $payment_data );
 
-	$message     = give_get_sale_notification_body_content( $payment_id, $payment_data );
+	$message = give_get_sale_notification_body_content( $payment_id, $payment_data );
 
 	$emails = Give()->emails;
 	$emails->__set( 'from_name', $from_name );
@@ -141,14 +146,15 @@ function give_admin_email_notice( $payment_id = 0, $payment_data = array() ) {
 	$emails->send( give_get_admin_notice_emails(), $subject, $message, $attachments );
 
 }
+
 add_action( 'give_admin_sale_notice', 'give_admin_email_notice', 10, 2 );
 
 /**
  * Retrieves the emails for which admin notifications are sent to (these can be
- * changed in the EDD Settings)
+ * changed in the Give Settings)
  *
  * @since 1.0
- * @global $give_options Array of all the EDD Options
+ * @global $give_options Array of all the Give Options
  * @return mixed
  */
 function give_get_admin_notice_emails() {
@@ -163,14 +169,16 @@ function give_get_admin_notice_emails() {
 /**
  * Checks whether admin sale notices are disabled
  *
- * @since 1.5.2
+ * @since 1.0
  *
  * @param int $payment_id
+ *
  * @return mixed
  */
 function give_admin_notices_disabled( $payment_id = 0 ) {
 	global $give_options;
 	$retval = isset( $give_options['disable_admin_notices'] );
+
 	return apply_filters( 'give_admin_notices_disabled', $retval, $payment_id );
 }
 
@@ -179,22 +187,20 @@ function give_admin_notices_disabled( $payment_id = 0 ) {
  *
  * Returns the stored email text if available, the standard email text if not
  *
- * @since 1.7
- * @author Daniel J Griffiths
+ * @since  1.0
  * @return string $message
  */
 function give_get_default_sale_notification_email() {
 	global $give_options;
 
-	$default_email_body = __( 'Hello', 'give' ) . "\n\n" . sprintf( __( 'A %s purchase has been made', 'give' ), give_get_label_plural() ) . ".\n\n";
-	$default_email_body .= sprintf( __( '%s sold:', 'give' ), give_get_label_plural() ) . "\n\n";
-	$default_email_body .= '{download_list}' . "\n\n";
-	$default_email_body .= __( 'Purchased by: ', 'give' ) . ' {name}' . "\n";
-	$default_email_body .= __( 'Amount: ', 'give' ) . ' {price}' . "\n";
-	$default_email_body .= __( 'Payment Method: ', 'give' ) . ' {payment_method}' . "\n\n";
-	$default_email_body .= __( 'Thank you', 'give' );
+	$default_email_body = __( 'Hi there,', 'give' ) . "\n\n" . __( 'This email is to inform you that a new donation has been made on your website: ', 'give' ) . '<a href="' . get_bloginfo( 'url' ) . '" target="_blank">' . get_bloginfo( 'url' ) . '</a>' . ".\n\n";
+	$default_email_body .= '<strong>' . __( 'Giver: ', 'give' ) . '</strong> ' . ' {name}' . "\n";
+	$default_email_body .= '<strong>' . __( 'Donation: ', 'give' ) . '</strong> ' . ' {donation}' . "\n";
+	$default_email_body .= '<strong>' . __( 'Amount: ', 'give' ) . '</strong> ' . ' {price}' . "\n";
+	$default_email_body .= '<strong>' . __( 'Payment Method: ', 'give' ) . '</strong> ' . ' {payment_method}' . "\n\n";
+	$default_email_body .= __( 'Thank you,', 'give' ) . "\n\n" . '{sitename}';
 
-	$message = ( isset( $give_options['sale_notification'] ) && !empty( $give_options['sale_notification'] ) ) ? $give_options['sale_notification'] : $default_email_body;
+	$message = ( isset( $give_options['sale_notification'] ) && ! empty( $give_options['sale_notification'] ) ) ? $give_options['sale_notification'] : $default_email_body;
 
 	return $message;
 }
@@ -202,28 +208,29 @@ function give_get_default_sale_notification_email() {
 /**
  * Get various correctly formatted names used in emails
  *
- * @since 1.9
+ * @since 1.0
+ *
  * @param $user_info
  *
  * @return array $email_names
  */
 function give_get_email_names( $user_info ) {
 	$email_names = array();
-	$user_info 	= maybe_unserialize( $user_info );
+	$user_info   = maybe_unserialize( $user_info );
 
-	$email_names[ 'fullname' ] = '';
+	$email_names['fullname'] = '';
 	if ( isset( $user_info['id'] ) && $user_info['id'] > 0 && isset( $user_info['first_name'] ) ) {
-		$user_data = get_userdata( $user_info['id'] );
-		$email_names[ 'name' ]      = $user_info['first_name'];
-		$email_names[ 'fullname' ]  = $user_info['first_name'] . ' ' . $user_info['last_name'];
-		$email_names[ 'username' ]  = $user_data->user_login;
+		$user_data               = get_userdata( $user_info['id'] );
+		$email_names['name']     = $user_info['first_name'];
+		$email_names['fullname'] = $user_info['first_name'] . ' ' . $user_info['last_name'];
+		$email_names['username'] = $user_data->user_login;
 	} elseif ( isset( $user_info['first_name'] ) ) {
-		$email_names[ 'name' ]     = $user_info['first_name'];
-		$email_names[ 'fullname' ] = $user_info['first_name'] . ' ' . $user_info['last_name'];
-		$email_names[ 'username' ] = $user_info['first_name'];
+		$email_names['name']     = $user_info['first_name'];
+		$email_names['fullname'] = $user_info['first_name'] . ' ' . $user_info['last_name'];
+		$email_names['username'] = $user_info['first_name'];
 	} else {
-		$email_names[ 'name' ]     = $user_info['email'];
-		$email_names[ 'username' ] = $user_info['email'];
+		$email_names['name']     = $user_info['email'];
+		$email_names['username'] = $user_info['email'];
 	}
 
 	return $email_names;

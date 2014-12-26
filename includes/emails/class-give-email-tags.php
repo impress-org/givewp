@@ -267,6 +267,11 @@ function give_setup_email_tags() {
 	// Setup default tags array
 	$email_tags = array(
 		array(
+			'tag'         => 'donation',
+			'description' => __( "The name of completed donation form.", 'give' ),
+			'function'    => 'give_email_tag_donation'
+		),
+		array(
 			'tag'         => 'name',
 			'description' => __( "The giver's first name", 'give' ),
 			'function'    => 'give_email_tag_first_name'
@@ -519,6 +524,20 @@ function give_email_tag_receipt_id( $payment_id ) {
 }
 
 /**
+ * Email template tag: donation
+ * The form submitted to make the donation
+ *
+ * @param int $payment_id
+ *
+ * @return string $form_title
+ */
+function give_email_tag_donation( $payment_id ) {
+	$payment_data = give_get_payment_meta( $payment_id );
+	$form_title   = ( ! empty( $payment_data['form_title'] ) ? $payment_data['form_title'] : __( 'There was an error retrieving this donation title', 'give' ) );
+	return $form_title;
+}
+
+/**
  * Email template tag: payment_method
  * The method of payment used for this purchase
  *
@@ -546,13 +565,13 @@ function give_email_tag_sitename( $payment_id ) {
  * Email template tag: receipt_link
  * Adds a link so users can view their receipt directly on your website if they are unable to view it in the browser correctly
  *
- * @param $int payment_id
+ * @param int $payment_id
  *
  * @return string receipt_link
  */
 function give_email_tag_receipt_link( $payment_id ) {
 	return sprintf( __( '%1$sView it in your browser.%2$s', 'give' ), '<a href="' . add_query_arg( array(
-				'payment_key' => give_get_payment_key( $payment_id ),
-				'give_action' => 'view_receipt'
-			), home_url() ) . '">', '</a>' );
+			'payment_key' => give_get_payment_key( $payment_id ),
+			'give_action' => 'view_receipt'
+		), home_url() ) . '">', '</a>' );
 }

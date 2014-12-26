@@ -59,10 +59,11 @@ function give_get_donation_form( $args = array() ) {
 		return false; // Product not published or user doesn't have permission to view drafts
 	}
 
-	ob_start();
+	ob_start(); ?>
 
-	?>
 	<form id="give_donation_form_<?php echo $post_id; ?>" class="give_donate_form give_donate_form_<?php echo absint( $form->ID ); ?>" action="<?php echo $form_action; ?>" method="post">
+		<input type="hidden" name="give-form-id" value="<?php echo $form->ID; ?>" />
+		<input type="hidden" name="give-form-title" value="<?php echo htmlentities( $form->post_title ); ?>" />
 
 		<?php
 
@@ -91,8 +92,8 @@ function give_get_donation_form( $args = array() ) {
  * gateways, a user registration form (if enable) and a credit card info form
  * if credit cards are enabled
  *
- * @since 1.4
- * @global $give_options Array of all the EDD options
+ * @since 1.0
+ * @global $give_options Array of all the Give options
  * @return string
  */
 function give_show_purchase_form() {

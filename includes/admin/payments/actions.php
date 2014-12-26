@@ -47,7 +47,6 @@ function give_update_payment_details( $data ) {
 
 	$curr_total = give_sanitize_amount( give_get_payment_amount( $payment_id ) );
 	$new_total  = give_sanitize_amount( $_POST['give-payment-total'] );
-	$tax        = isset( $_POST['give-payment-tax'] ) ? give_sanitize_amount( $_POST['give-payment-tax'] ) : 0;
 
 	// Setup date from input values
 	$date = date( 'Y-m-d', strtotime( $date ) ) . ' ' . $hour . ':' . $minute . ':00';
@@ -59,53 +58,6 @@ function give_update_payment_details( $data ) {
 	if ( ! empty( $names[1] ) ) {
 		unset( $names[0] );
 		$last_name = implode( ' ', $names );
-	}
-
-	// Setup purchased Downloads and price options
-
-	$updated_downloads = isset( $_POST['give-payment-details-downloads'] ) ? $_POST['give-payment-details-downloads'] : false;
-	if ( $updated_downloads && ! empty( $_POST['give-payment-downloads-changed'] ) ) {
-		$downloads    = array();
-		$cart_details = array();
-		$i            = 0;
-		foreach ( $updated_downloads as $download ) {
-
-			if ( empty( $download['amount'] ) ) {
-				$download['amount'] = '0.00';
-			}
-
-			$item             = array();
-			$item['id']       = absint( $download['id'] );
-			$item['quantity'] = absint( $download['quantity'] ) > 0 ? absint( $download['quantity'] ) : 1;
-			$price_id         = (int) $download['price_id'];
-
-			if ( $price_id !== false && give_has_variable_prices( $item['id'] ) ) {
-				$item['options'] = array(
-					'price_id' => $price_id
-				);
-			}
-			$downloads[] = $item;
-
-			$cart_item                = array();
-			$cart_item['item_number'] = $item;
-
-			$item_price = round( $download['amount'] / $item['quantity'], give_currency_decimal_filter() );
-
-			$cart_details[ $i ] = array(
-				'name'        => get_the_title( $download['id'] ),
-				'id'          => $download['id'],
-				'item_number' => $item,
-				'price'       => $download['amount'],
-				'item_price'  => $item_price,
-				'quantity'    => $download['quantity'],
-				'discount'    => 0,
-				'tax'         => 0,
-			);
-			$i ++;
-		}
-
-		$meta['downloads']    = $downloads;
-		$meta['cart_details'] = $cart_details;
 	}
 
 	do_action( 'give_update_edited_purchase', $payment_id );
@@ -166,7 +118,7 @@ function give_update_payment_details( $data ) {
 	$user_info['last_name']  = $last_name;
 	$user_info['address']    = $address;
 	$meta['user_info']       = $user_info;
-	$meta['tax']             = $tax;
+
 
 	// Check for payment notes
 	if ( ! empty( $data['give-payment-note'] ) ) {

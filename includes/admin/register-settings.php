@@ -353,9 +353,9 @@ class Give_Plugin_Settings {
 							'type'    => 'text'
 						),
 						array(
+							'id'   => 'give_title',
 							'name' => __( 'Donation Receipt', 'give' ),
 							'desc' => '<hr>',
-							'id'   => 'give_title',
 							'type' => 'give_title'
 						),
 						array(
@@ -373,12 +373,38 @@ class Give_Plugin_Settings {
 							'default' => __( "Dear", "give" ) . " {name},\n\n" . __( "Thank you for your donation. Your generosity is appreciated! Please click on the link below to view your receipt.", "give" ) . "\n\n{receipt_link}\n\nSincerely,\n{sitename}"
 						),
 						array(
+							'id'   => 'give_title',
 							'name' => __( 'New Donation Notification', 'give' ),
 							'desc' => '<hr>',
-							'id'   => 'give_title',
 							'type' => 'give_title'
 						),
-
+						array(
+							'id'      => 'sale_notification_subject',
+							'name'    => __( 'Sale Notification Subject', 'give' ),
+							'desc'    => __( 'Enter the subject line for the sale notification email', 'give' ),
+							'type'    => 'text',
+							'default' => __( 'New download purchase - Order #{payment_id}', 'give' )
+						),
+						array(
+							'id'      => 'sale_notification',
+							'name'    => __( 'Sale Notification', 'give' ),
+							'desc'    => __( 'Enter the email that is sent to sale notification emails after completion of a purchase. HTML is accepted. Available template tags:', 'give' ) . '<br/>' . give_get_emails_tags_list(),
+							'type'    => 'wysiwyg',
+							'default' => give_get_default_sale_notification_email()
+						),
+						array(
+							'id'      => 'admin_notice_emails',
+							'name'    => __( 'Sale Notification Emails', 'give' ),
+							'desc'    => __( 'Enter the email address(es) that should receive a notification anytime a sale is made, one per line', 'give' ),
+							'type'    => 'textarea',
+							'default' => get_bloginfo( 'admin_email' )
+						),
+						array(
+							'id'   => 'disable_admin_notices',
+							'name' => __( 'Disable Admin Notifications', 'give' ),
+							'desc' => __( 'Check this box if you do not want to receive emails when new sales are made.', 'give' ),
+							'type' => 'checkbox'
+						)
 					)
 				)
 			),
@@ -545,7 +571,7 @@ function give_default_gateway_callback( $field_object, $escaped_value, $object_i
 /**
  * Give Title
  *
- * Renders custom section titles output
+ * Renders custom section titles output; Really only an <hr> because CMB2's output is a bit funky
  *
  * @since 1.0
  *

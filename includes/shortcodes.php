@@ -138,8 +138,6 @@ function give_receipt_shortcode( $atts, $content = null ) {
 	$give_receipt_args = shortcode_atts( array(
 		'error'          => __( 'Sorry, we\'re having trouble retrieving your payment receipt.', 'give' ),
 		'price'          => true,
-		'discount'       => true,
-		'products'       => true,
 		'date'           => true,
 		'notes'          => true,
 		'payment_key'    => false,
@@ -204,7 +202,7 @@ add_shortcode( 'give_receipt', 'give_receipt_shortcode' );
  * folder. Please visit the EDD Documentation for more information on how the
  * templating system is used.
  *
- * @since  1.4
+ * @since  1.0
  *
  * @author Sunny Ratilal
  *

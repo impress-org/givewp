@@ -38,63 +38,28 @@ class Give_Donate_Form {
 	private $prices;
 
 	/**
-	 * The download files
-	 *
-	 * @since 1.0
-	 */
-	private $files;
-
-	/**
-	 * The download's file download limit
-	 *
-	 * @since 1.0
-	 */
-	private $file_download_limit;
-
-	/**
-	 * The download type, default or bundle
-	 *
-	 * @since 1.0
-	 */
-	private $type;
-
-	/**
-	 * The bundled downloads, if this is a bundle type
-	 *
-	 * @since 1.0
-	 */
-	private $bundled_downloads;
-
-	/**
-	 * The download's sale count
+	 * The form's sale count
 	 *
 	 * @since 1.0
 	 */
 	private $sales;
 
 	/**
-	 * The download's total earnings
+	 * The form's total earnings
 	 *
 	 * @since 1.0
 	 */
 	private $earnings;
 
 	/**
-	 * The download's notes
+	 * The form's notes
 	 *
 	 * @since 1.0
 	 */
 	private $notes;
 
 	/**
-	 * The download sku
-	 *
-	 * @since 1.0
-	 */
-	private $sku;
-
-	/**
-	 * The download's purchase button behavior
+	 * The form's purchase button behavior
 	 *
 	 * @since 1.0
 	 */
