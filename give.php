@@ -87,6 +87,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 				self::$instance->session       = new Give_Session();
 				self::$instance->html          = new Give_HTML_Elements();
 				self::$instance->emails        = new Give_Emails();
+				self::$instance->email_tags    = new Give_Email_Template_Tags();
 
 			}
 
@@ -204,8 +205,8 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/paypal-standard.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/manual.php';
 
-			require_once GIVE_PLUGIN_DIR . 'includes/emails/class-edd-emails.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/emails/class-edd-email-tags.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/emails/class-give-emails.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/emails/class-give-email-tags.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/template.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/actions.php';

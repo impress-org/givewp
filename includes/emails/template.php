@@ -53,13 +53,6 @@ function give_email_template_tags( $message, $payment_data, $payment_id, $admin_
 function give_email_preview_template_tags( $message ) {
 	global $give_options;
 
-	$download_list = '<ul>';
-	$download_list .= '<li>' . __( 'Sample Product Title', 'give' ) . '<br />';
-	$download_list .= '<div>';
-	$download_list .= '<a href="#">' . __( 'Sample Download File Name', 'give' ) . '</a> - <small>' . __( 'Optional notes about this download.', 'give' ) . '</small>';
-	$download_list .= '</div>';
-	$download_list .= '</li>';
-	$download_list .= '</ul>';
 
 	$file_urls = esc_html( trailingslashit( get_site_url() ) . 'test.zip?test=key&key=123' );
 
@@ -79,14 +72,10 @@ function give_email_preview_template_tags( $message ) {
 
 	$user = wp_get_current_user();
 
-	$message = str_replace( '{download_list}', $download_list, $message );
-	$message = str_replace( '{file_urls}', $file_urls, $message );
 	$message = str_replace( '{name}', $user->display_name, $message );
 	$message = str_replace( '{fullname}', $user->display_name, $message );
  	$message = str_replace( '{username}', $user->user_login, $message );
 	$message = str_replace( '{date}', date( get_option( 'date_format' ), current_time( 'timestamp' ) ), $message );
-	$message = str_replace( '{subtotal}', $sub_total, $message );
-	$message = str_replace( '{tax}', $tax, $message );
 	$message = str_replace( '{price}', $price, $message );
 	$message = str_replace( '{receipt_id}', $receipt_id, $message );
 	$message = str_replace( '{payment_method}', $gateway, $message );
@@ -103,7 +92,7 @@ function give_email_preview_template_tags( $message ) {
  *
  * @access private
  * @global $give_options Array of all the EDD Options
- * @since 1.0.8.2
+ * @since 1.0
  */
 function give_email_template_preview() {
 	global $give_options;
@@ -142,9 +131,9 @@ function give_display_email_template_preview() {
 	}
 
 
-	EDD()->emails->heading = __( 'Purchase Receipt', 'give' );
+	Give()->emails->heading = __( 'Purchase Receipt', 'give' );
 
-	echo EDD()->emails->build_email( give_email_preview_template_tags( give_get_email_body_content( 0, array() ) ) );
+	echo Give()->emails->build_email( give_email_preview_template_tags( give_get_email_body_content( 0, array() ) ) );
 
 	exit;
 
@@ -171,7 +160,7 @@ function give_get_email_body_content( $payment_id = 0, $payment_data = array() )
 
 	$email_body = wpautop( $email );
 
-	$email_body = apply_filters( 'give_purchase_receipt_' . EDD()->emails->get_template(), $email_body, $payment_id, $payment_data );
+	$email_body = apply_filters( 'give_purchase_receipt_' . Give()->emails->get_template(), $email_body, $payment_id, $payment_data );
 
 	return apply_filters( 'give_purchase_receipt', $email_body, $payment_id, $payment_data );
 }

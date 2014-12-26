@@ -11,7 +11,7 @@
 Settings
 --------------------------------------*/
 .give_settings_page .nav-tab-wrapper {
-	margin-bottom: 25px;
+	margin-bottom: 5px;
 }
 
 span.cmb2-metabox-description {
@@ -49,6 +49,32 @@ span.cmb2-metabox-description {
 
 .cmb-type-checkbox .cmb-td label {
 	font-size: 13px;
+}
+
+/* Responsive Rows */
+
+.cmb2-wrap .cmb-row {
+	display: table-row;
+}
+
+.cmb2-wrap .cmb-row > .cmb-th, .cmb2-wrap .cmb-row > .cmb-td {
+	display: table-cell;
+	float: none;
+}
+
+/* Custom Title Separators */
+.cmb2-id-give-title label {
+	font-style: italic;
+	color: #AAA;
+	cursor: default;
+}
+
+.cmb2-id-give-title > div.cmb-th {
+	padding-bottom: 10px;
+}
+
+.cmb2-id-give-title > div.cmb-td {
+	padding-bottom: 5px;
 }
 
 /*------------------------------------

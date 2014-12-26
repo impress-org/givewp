@@ -1,12 +1,11 @@
 <?php
 /**
- * Easy Digital Downloads API for creating Email template tags
+ * Give API for creating Email template tags
  *
  * Email tags are wrapped in { }
  *
  * A few examples:
  *
- * {download_list}
  * {name}
  * {sitename}
  *
@@ -16,44 +15,45 @@
  * To add tags, use: give_add_email_tag( $tag, $description, $func ). Be sure to wrap give_add_email_tag()
  * in a function hooked to the 'give_email_tags' action
  *
- * @package     EDD
+ * @package     Give
  * @subpackage  Emails
- * @copyright   Copyright (c) 2014, Pippin Williamson
+ * @copyright   Copyright (c) 2014, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       1.9
- * @author      Barry Kooij
+ * @since       1.0
  */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
-class GIVE_Email_Template_Tags {
+class Give_Email_Template_Tags {
 
 	/**
 	 * Container for storing all tags
 	 *
-	 * @since 1.9
+	 * @since 1.0
 	 */
 	private $tags;
 
 	/**
 	 * Payment ID
 	 *
-	 * @since 1.9
+	 * @since 1.0
 	 */
 	private $payment_id;
 
 	/**
 	 * Add an email tag
 	 *
-	 * @since 1.9
+	 * @since 1.0
 	 *
 	 * @param string   $tag  Email tag to be replace in email
 	 * @param callable $func Hook to run when email tag is found
 	 */
 	public function add( $tag, $description, $func ) {
 		if ( is_callable( $func ) ) {
-			$this->tags[$tag] = array(
+			$this->tags[ $tag ] = array(
 				'tag'         => $tag,
 				'description' => $description,
 				'func'        => $func
@@ -64,18 +64,18 @@ class GIVE_Email_Template_Tags {
 	/**
 	 * Remove an email tag
 	 *
-	 * @since 1.9
+	 * @since 1.0
 	 *
 	 * @param string $tag Email tag to remove hook from
 	 */
 	public function remove( $tag ) {
-		unset( $this->tags[$tag] );
+		unset( $this->tags[ $tag ] );
 	}
 
 	/**
 	 * Check if $tag is a registered email tag
 	 *
-	 * @since 1.9
+	 * @since 1.0
 	 *
 	 * @param string $tag Email tag that will be searched
 	 *
@@ -88,7 +88,7 @@ class GIVE_Email_Template_Tags {
 	/**
 	 * Returns a list of all email tags
 	 *
-	 * @since 1.9
+	 * @since 1.0
 	 *
 	 * @return array
 	 */
@@ -99,10 +99,10 @@ class GIVE_Email_Template_Tags {
 	/**
 	 * Search content for email tags and filter email tags through their hooks
 	 *
-	 * @param string $content Content to search for email tags
-	 * @param int $payment_id The payment id
+	 * @param string $content    Content to search for email tags
+	 * @param int    $payment_id The payment id
 	 *
-	 * @since 1.9
+	 * @since 1.0
 	 *
 	 * @return string Content with email tags filtered out.
 	 */
@@ -125,7 +125,7 @@ class GIVE_Email_Template_Tags {
 	/**
 	 * Do a specific tag, this function should not be used. Please use give_do_email_tags instead.
 	 *
-	 * @since 1.9
+	 * @since 1.0
 	 *
 	 * @param $m message
 	 *
@@ -141,7 +141,7 @@ class GIVE_Email_Template_Tags {
 			return $m[0];
 		}
 
-		return call_user_func( $this->tags[$tag]['func'], $this->payment_id, $tag );
+		return call_user_func( $this->tags[ $tag ]['func'], $this->payment_id, $tag );
 	}
 
 }
@@ -149,54 +149,54 @@ class GIVE_Email_Template_Tags {
 /**
  * Add an email tag
  *
- * @since 1.9
+ * @since 1.0
  *
  * @param string   $tag  Email tag to be replace in email
  * @param callable $func Hook to run when email tag is found
  */
 function give_add_email_tag( $tag, $description, $func ) {
-	EDD()->email_tags->add( $tag, $description, $func );
+	Give()->email_tags->add( $tag, $description, $func );
 }
 
 /**
  * Remove an email tag
  *
- * @since 1.9
+ * @since 1.0
  *
  * @param string $tag Email tag to remove hook from
  */
 function give_remove_email_tag( $tag ) {
-	EDD()->email_tags->remove( $tag );
+	Give()->email_tags->remove( $tag );
 }
 
 /**
  * Check if $tag is a registered email tag
  *
- * @since 1.9
+ * @since 1.0
  *
  * @param string $tag Email tag that will be searched
  *
  * @return bool
  */
 function give_email_tag_exists( $tag ) {
-	return EDD()->email_tags->email_tag_exists( $tag );
+	return Give()->email_tags->email_tag_exists( $tag );
 }
 
 /**
  * Get all email tags
  *
- * @since 1.9
+ * @since 1.0
  *
  * @return array
  */
 function give_get_email_tags() {
-	return EDD()->email_tags->get_tags();
+	return Give()->email_tags->get_tags();
 }
 
 /**
  * Get a formatted HTML list of all available email tags
  *
- * @since 1.9
+ * @since 1.0
  *
  * @return string
  */
@@ -227,17 +227,17 @@ function give_get_emails_tags_list() {
 /**
  * Search content for email tags and filter email tags through their hooks
  *
- * @param string $content Content to search for email tags
- * @param int $payment_id The payment id
+ * @param string $content    Content to search for email tags
+ * @param int    $payment_id The payment id
  *
- * @since 1.9
+ * @since 1.0
  *
  * @return string Content with email tags filtered out.
  */
 function give_do_email_tags( $content, $payment_id ) {
 
 	// Replace all tags
-	$content = EDD()->email_tags->do_tags( $content, $payment_id );
+	$content = Give()->email_tags->do_tags( $content, $payment_id );
 
 	// Maintaining backwards compatibility
 	$content = apply_filters( 'give_email_template_tags', $content, give_get_payment_meta( $payment_id ), $payment_id );
@@ -249,55 +249,46 @@ function give_do_email_tags( $content, $payment_id ) {
 /**
  * Load email tags
  *
- * @since 1.9
+ * @since 1.0
  */
 function give_load_email_tags() {
 	do_action( 'give_add_email_tags' );
 }
-add_action( 'init', 'give_load_email_tags', -999 );
+
+add_action( 'init', 'give_load_email_tags', - 999 );
 
 /**
  * Add default EDD email template tags
  *
- * @since 1.9
+ * @since 1.0
  */
 function give_setup_email_tags() {
 
 	// Setup default tags array
 	$email_tags = array(
 		array(
-			'tag'         => 'download_list',
-			'description' => __( 'A list of download links for each download purchased', 'give' ),
-			'function'    => 'give_email_tag_download_list'
-		),
-		array(
-			'tag'         => 'file_urls',
-			'description' => __( 'A plain-text list of download URLs for each download purchased', 'give' ),
-			'function'    => 'give_email_tag_file_urls'
-		),
-		array(
 			'tag'         => 'name',
-			'description' => __( "The buyer's first name", 'give' ),
+			'description' => __( "The giver's first name", 'give' ),
 			'function'    => 'give_email_tag_first_name'
 		),
 		array(
 			'tag'         => 'fullname',
-			'description' => __( "The buyer's full name, first and last", 'give' ),
+			'description' => __( "The giver's full name, first and last", 'give' ),
 			'function'    => 'give_email_tag_fullname'
 		),
 		array(
 			'tag'         => 'username',
-			'description' => __( "The buyer's user name on the site, if they registered an account", 'give' ),
+			'description' => __( "The giver's user name on the site, if they registered an account", 'give' ),
 			'function'    => 'give_email_tag_username'
 		),
 		array(
 			'tag'         => 'user_email',
-			'description' => __( "The buyer's email address", 'give' ),
+			'description' => __( "The giver's email address", 'give' ),
 			'function'    => 'give_email_tag_user_email'
 		),
 		array(
 			'tag'         => 'billing_address',
-			'description' => __( 'The buyer\'s billing address', 'give' ),
+			'description' => __( 'The giver\'s billing address', 'give' ),
 			'function'    => 'give_email_tag_billing_address'
 		),
 		array(
@@ -361,148 +352,13 @@ function give_setup_email_tags() {
 	}
 
 }
+
 add_action( 'give_add_email_tags', 'give_setup_email_tags' );
 
-/**
- * Email template tag: download_list
- * A list of download links for each download purchased
- *
- * @param int $payment_id
- *
- * @return string download_list
- */
-function give_email_tag_download_list( $payment_id ) {
-
-	$payment_data  = give_get_payment_meta( $payment_id );
-	$download_list = '<ul>';
-	$cart_items    = give_get_payment_meta_cart_details( $payment_id );
-	$email         = give_get_payment_user_email( $payment_id );
-
-	if ( $cart_items ) {
-		$show_names = apply_filters( 'give_email_show_names', true );
-
-		foreach ( $cart_items as $item ) {
-
-			if ( give_use_skus() ) {
-				$sku = give_get_download_sku( $item['id'] );
-			}
-
-			$price_id = give_get_cart_item_price_id( $item );
-
-			if ( $show_names ) {
-
-				$title = get_the_title( $item['id'] );
-
-				if ( ! empty( $sku ) ) {
-					$title .= "&nbsp;&ndash;&nbsp;" . __( 'SKU', 'give' ) . ': ' . $sku;
-				}
-
-				if ( $price_id !== false ) {
-					$title .= "&nbsp;&ndash;&nbsp;" . give_get_price_option_name( $item['id'], $price_id );
-				}
-
-				$download_list .= '<li>' . apply_filters( 'give_email_receipt_download_title', $title, $item, $price_id, $payment_id ) . '<br/>';
-				$download_list .= '<ul>';
-			}
-
-			$files = give_get_download_files( $item['id'], $price_id );
-
-			if ( $files ) {
-				foreach ( $files as $filekey => $file ) {
-					$download_list .= '<li>';
-					$file_url = give_get_download_file_url( $payment_data['key'], $email, $filekey, $item['id'], $price_id );
-					$download_list .= '<a href="' . esc_url( $file_url ) . '">' . give_get_file_name( $file ) . '</a>';
-					$download_list .= '</li>';
-				}
-			}
-			elseif ( give_is_bundled_product( $item['id'] ) ) {
-
-				$bundled_products = give_get_bundled_products( $item['id'] );
-
-				foreach ( $bundled_products as $bundle_item ) {
-
-					$download_list .= '<li class="give_bundled_product"><strong>' . get_the_title( $bundle_item ) . '</strong></li>';
-
-					$files = give_get_download_files( $bundle_item );
-
-					foreach ( $files as $filekey => $file ) {
-						$download_list .= '<li>';
-						$file_url = give_get_download_file_url( $payment_data['key'], $email, $filekey, $bundle_item, $price_id );
-						$download_list .= '<a href="' . esc_url( $file_url ) . '">' . $file['name'] . '</a>';
-						$download_list .= '</li>';
-					}
-				}
-			}
-
-			if ( $show_names ) {
-				$download_list .= '</ul>';
-			}
-
-			if ( '' != give_get_product_notes( $item['id'] ) ) {
-				$download_list .= ' &mdash; <small>' . give_get_product_notes( $item['id'] ) . '</small>';
-			}
-
-
-			if ( $show_names ) {
-				$download_list .= '</li>';
-			}
-		}
-	}
-	$download_list .= '</ul>';
-
-	return $download_list;
-}
-
-/**
- * Email template tag: file_urls
- * A plain-text list of download URLs for each download purchased
- *
- * @param int $payment_id
- *
- * @return string $file_urls
- */
-function give_email_tag_file_urls( $payment_id ) {
-
-	$payment_data = give_get_payment_meta( $payment_id );
-	$file_urls    = '';
-	$cart_items   = give_get_payment_meta_cart_details( $payment_id );
-	$email        = give_get_payment_user_email( $payment_id );
-
-	foreach ( $cart_items as $item ) {
-
-		$price_id = give_get_cart_item_price_id( $item );
-		$files    = give_get_download_files( $item['id'], $price_id );
-
-		if ( $files ) {
-			foreach ( $files as $filekey => $file ) {
-				$file_url = give_get_download_file_url( $payment_data['key'], $email, $filekey, $item['id'], $price_id );
-
-				$file_urls .= esc_html( $file_url ) . '<br/>';
-			}
-		}
-		elseif ( give_is_bundled_product( $item['id'] ) ) {
-
-			$bundled_products = give_get_bundled_products( $item['id'] );
-
-			foreach ( $bundled_products as $bundle_item ) {
-
-				$files = give_get_download_files( $bundle_item );
-				foreach ( $files as $filekey => $file ) {
-					$file_url = give_get_download_file_url( $payment_data['key'], $email, $filekey, $bundle_item, $price_id );
-					$file_urls .= esc_html( $file_url ) . '<br/>';
-				}
-
-			}
-		}
-
-	}
-
-	return $file_urls;
-}
 
 /**
  * Email template tag: name
- * The buyer's first name
+ * The giver's first name
  *
  * @param int $payment_id
  *
@@ -510,13 +366,17 @@ function give_email_tag_file_urls( $payment_id ) {
  */
 function give_email_tag_first_name( $payment_id ) {
 	$payment_data = give_get_payment_meta( $payment_id );
-	$email_name   = give_get_email_names( $payment_data['user_info'] );
+	if ( empty( $payment_data['user_info'] ) ) {
+		return '';
+	}
+	$email_name = give_get_email_names( $payment_data['user_info'] );
+
 	return $email_name['name'];
 }
 
 /**
  * Email template tag: fullname
- * The buyer's full name, first and last
+ * The giver's full name, first and last
  *
  * @param int $payment_id
  *
@@ -524,13 +384,17 @@ function give_email_tag_first_name( $payment_id ) {
  */
 function give_email_tag_fullname( $payment_id ) {
 	$payment_data = give_get_payment_meta( $payment_id );
-	$email_name   = give_get_email_names( $payment_data['user_info'] );
+	if ( empty( $payment_data['user_info'] ) ) {
+		return '';
+	}
+	$email_name = give_get_email_names( $payment_data['user_info'] );
+
 	return $email_name['fullname'];
 }
 
 /**
  * Email template tag: username
- * The buyer's user name on the site, if they registered an account
+ * The giver's user name on the site, if they registered an account
  *
  * @param int $payment_id
  *
@@ -538,13 +402,17 @@ function give_email_tag_fullname( $payment_id ) {
  */
 function give_email_tag_username( $payment_id ) {
 	$payment_data = give_get_payment_meta( $payment_id );
-	$email_name   = give_get_email_names( $payment_data['user_info'] );
+	if ( empty( $payment_data['user_info'] ) ) {
+		return '';
+	}
+	$email_name = give_get_email_names( $payment_data['user_info'] );
+
 	return $email_name['username'];
 }
 
 /**
  * Email template tag: user_email
- * The buyer's email address
+ * The giver's email address
  *
  * @param int $payment_id
  *
@@ -556,7 +424,7 @@ function give_email_tag_user_email( $payment_id ) {
 
 /**
  * Email template tag: billing_address
- * The buyer's billing address
+ * The giver's billing address
  *
  * @param int $payment_id
  *
@@ -565,10 +433,17 @@ function give_email_tag_user_email( $payment_id ) {
 function give_email_tag_billing_address( $payment_id ) {
 
 	$user_info    = give_get_payment_meta_user_info( $payment_id );
-	$user_address = ! empty( $user_info['address'] ) ? $user_info['address'] : array( 'line1' => '', 'line2' => '', 'city' => '', 'country' => '', 'state' => '', 'zip' => '' );
+	$user_address = ! empty( $user_info['address'] ) ? $user_info['address'] : array(
+		'line1'   => '',
+		'line2'   => '',
+		'city'    => '',
+		'country' => '',
+		'state'   => '',
+		'zip'     => ''
+	);
 
 	$return = $user_address['line1'] . "\n";
-	if( ! empty( $user_address['line2'] ) ) {
+	if ( ! empty( $user_address['line2'] ) ) {
 		$return .= $user_address['line2'] . "\n";
 	}
 	$return .= $user_address['city'] . ' ' . $user_address['zip'] . ' ' . $user_address['state'] . "\n";
@@ -587,6 +462,7 @@ function give_email_tag_billing_address( $payment_id ) {
  */
 function give_email_tag_date( $payment_id ) {
 	$payment_data = give_get_payment_meta( $payment_id );
+
 	return date_i18n( get_option( 'date_format' ), strtotime( $payment_data['date'] ) );
 }
 
@@ -599,21 +475,9 @@ function give_email_tag_date( $payment_id ) {
  * @return string subtotal
  */
 function give_email_tag_subtotal( $payment_id ) {
-	$subtotal = give_currency_filter( give_format_amount( give_get_payment_subtotal( $payment_id ) ) );
-	return html_entity_decode( $subtotal, ENT_COMPAT, 'UTF-8' );
-}
+	$subtotal = give_currency_filter( give_format_amount( give_get_payment_subtotal( $payment_id ) ), give_get_payment_currency_code( $payment_id ) );
 
-/**
- * Email template tag: tax
- * The taxed amount of the purchase
- *
- * @param int $payment_id
- *
- * @return string tax
- */
-function give_email_tag_tax( $payment_id ) {
-	$tax = give_currency_filter( give_format_amount( give_get_payment_tax( $payment_id ) ) );
-	return html_entity_decode( $tax, ENT_COMPAT, 'UTF-8' );
+	return html_entity_decode( $subtotal, ENT_COMPAT, 'UTF-8' );
 }
 
 /**
@@ -625,7 +489,8 @@ function give_email_tag_tax( $payment_id ) {
  * @return string price
  */
 function give_email_tag_price( $payment_id ) {
-	$price = give_currency_filter( give_format_amount( give_get_payment_amount( $payment_id ) ) );
+	$price = give_currency_filter( give_format_amount( give_get_payment_amount( $payment_id ) ), give_get_payment_currency_code( $payment_id ) );
+
 	return html_entity_decode( $price, ENT_COMPAT, 'UTF-8' );
 }
 
@@ -674,7 +539,7 @@ function give_email_tag_payment_method( $payment_id ) {
  * @return string sitename
  */
 function give_email_tag_sitename( $payment_id ) {
-	return get_bloginfo( 'name' );
+	return wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES );
 }
 
 /**
@@ -686,25 +551,8 @@ function give_email_tag_sitename( $payment_id ) {
  * @return string receipt_link
  */
 function give_email_tag_receipt_link( $payment_id ) {
-	return sprintf( __( '%1$sView it in your browser.%2$s', 'give' ), '<a href="' . add_query_arg( array( 'payment_key' => give_get_payment_key( $payment_id ), 'give_action' => 'view_receipt' ), home_url() ) . '">', '</a>' );
-}
-
-/**
- * Email template tag: discount_codes
- * Adds a list of any discount codes applied to this purchase
- *
- * @param $int payment_id
- * @since 2.0
- * @return string $discount_codes
- */
-function give_email_tag_discount_codes( $payment_id ) {
-	$user_info = give_get_payment_meta_user_info( $payment_id );
-
-	$discount_codes = '';
-
-	if( isset( $user_info['discount'] ) && $user_info['discount'] !== 'none' ) {
-		$discount_codes = $user_info['discount'];
-	}
-
-	return $discount_codes;
+	return sprintf( __( '%1$sView it in your browser.%2$s', 'give' ), '<a href="' . add_query_arg( array(
+				'payment_key' => give_get_payment_key( $payment_id ),
+				'give_action' => 'view_receipt'
+			), home_url() ) . '">', '</a>' );
 }

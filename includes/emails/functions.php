@@ -40,7 +40,7 @@ function give_email_purchase_receipt( $payment_id, $admin_notice = true ) {
 	$attachments  = apply_filters( 'give_receipt_attachments', array(), $payment_id, $payment_data );
 	$message      = give_do_email_tags( give_get_email_body_content( $payment_id, $payment_data ), $payment_id );
 
-	$emails = EDD()->emails;
+	$emails = Give()->emails;
 
 	$emails->__set( 'from_name', $from_name );
 	$emails->__set( 'from_email', $from_email );
@@ -80,7 +80,7 @@ function give_email_test_purchase_receipt() {
 
 	$message     = give_do_email_tags( give_get_email_body_content( 0, array() ), 0 );
 
-	$emails = EDD()->emails;
+	$emails = Give()->emails;
 	$emails->__set( 'from_name', $from_name );
 	$emails->__set( 'from_email', $from_email );
 	$emails->__set( 'heading', __( 'Purchase Receipt', 'give' ) );
@@ -132,7 +132,7 @@ function give_admin_email_notice( $payment_id = 0, $payment_data = array() ) {
 
 	$message     = give_get_sale_notification_body_content( $payment_id, $payment_data );
 
-	$emails = EDD()->emails;
+	$emails = Give()->emails;
 	$emails->__set( 'from_name', $from_name );
 	$emails->__set( 'from_email', $from_email );
 	$emails->__set( 'headers', $headers );

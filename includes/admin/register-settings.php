@@ -49,6 +49,7 @@ class Give_Plugin_Settings {
 		add_filter( 'cmb2_meta_box_url', array( $this, 'give_update_cmb_meta_box_url' ) );
 
 		//Custom CMB2 Settings Fields
+		add_action( 'cmb2_render_give_title', 'give_title_callback', 10, 5 );
 		add_action( 'cmb2_render_enabled_gateways', 'give_enabled_gateways_callback', 10, 5 );
 		add_action( 'cmb2_render_default_gateway', 'give_default_gateway_callback', 10, 5 );
 
@@ -160,17 +161,17 @@ class Give_Plugin_Settings {
 			 * General Settings
 			 */
 			'general'    => array(
-				'id'       => 'give_settings_general_metabox',
-				'title'    => __( 'General Settings', 'give' ),
-				'context'  => 'normal',
-				'priority' => 'high',
-				'show_on'  => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
-				'fields'   => apply_filters( 'give_settings_general', array(
+				'id'         => 'give_settings_general_metabox',
+				'give_title' => __( 'General Settings', 'give' ),
+				'context'    => 'normal',
+				'priority'   => 'high',
+				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
+				'fields'     => apply_filters( 'give_settings_general', array(
 						array(
 							'name' => __( 'General Settings', 'give' ),
 							'desc' => '<hr>',
-							'type' => 'title',
-							'id'   => 'general_title'
+							'type' => 'give_title',
+							'id'   => 'give_title'
 						),
 						array(
 							'name' => 'Test Mode',
@@ -179,8 +180,8 @@ class Give_Plugin_Settings {
 							'type' => 'checkbox'
 						),
 						array(
-							'name'    => __( 'Success Page', 'edd' ),
-							'desc'    => __( 'This is the page buyers are sent to after completing their purchases. The [edd_receipt] short code should be on this page.', 'edd' ),
+							'name'    => __( 'Success Page', 'give' ),
+							'desc'    => __( 'This is the page buyers are sent to after completing their purchases. The [give_receipt] short code should be on this page.', 'give' ),
 							'id'      => 'success_page',
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
@@ -189,8 +190,8 @@ class Give_Plugin_Settings {
 							) ),
 						),
 						array(
-							'name'    => __( 'Failed Transaction Page', 'edd' ),
-							'desc'    => __( 'This is the page buyers are sent to if their transaction is cancelled or fails.', 'edd' ),
+							'name'    => __( 'Failed Transaction Page', 'give' ),
+							'desc'    => __( 'This is the page buyers are sent to if their transaction is cancelled or fails.', 'give' ),
 							'id'      => 'failure_page',
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
@@ -199,8 +200,8 @@ class Give_Plugin_Settings {
 							) ),
 						),
 						array(
-							'name'    => __( 'History Page', 'edd' ),
-							'desc'    => __( 'This page shows a complete donation history for the current user.', 'edd' ),
+							'name'    => __( 'History Page', 'give' ),
+							'desc'    => __( 'This page shows a complete donation history for the current user.', 'give' ),
 							'id'      => 'purchase_history_page',
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
@@ -209,8 +210,8 @@ class Give_Plugin_Settings {
 							) ),
 						),
 						array(
-							'name'    => __( 'Base Country', 'edd' ),
-							'desc'    => __( 'Where does your site operate from?', 'edd' ),
+							'name'    => __( 'Base Country', 'give' ),
+							'desc'    => __( 'Where does your site operate from?', 'give' ),
 							'id'      => 'base_country',
 							'type'    => 'select',
 							'options' => give_get_country_list(),
@@ -218,7 +219,7 @@ class Give_Plugin_Settings {
 						array(
 							'name' => __( 'Currency Settings', 'give' ),
 							'desc' => '<hr>',
-							'type' => 'title',
+							'type' => 'give_title',
 							'id'   => 'currency_title'
 						),
 						array(
@@ -261,15 +262,15 @@ class Give_Plugin_Settings {
 			 * Payment Gateways
 			 */
 			'gateways'   => array(
-				'id'      => 'options_page',
-				'title'   => __( 'Payment Gateways', 'give' ),
-				'show_on' => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
-				'fields'  => apply_filters( 'give_settings_gateways', array(
+				'id'         => 'options_page',
+				'give_title' => __( 'Payment Gateways', 'give' ),
+				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
+				'fields'     => apply_filters( 'give_settings_gateways', array(
 						array(
 							'name' => __( 'Gateways Settings', 'give' ),
 							'desc' => '<hr>',
-							'id'   => 'general_title',
-							'type' => 'title'
+							'id'   => 'give_title',
+							'type' => 'give_title'
 						),
 						array(
 							'name' => __( 'Enabled Gateways', 'give' ),
@@ -286,24 +287,24 @@ class Give_Plugin_Settings {
 						array(
 							'name' => __( 'PayPal Standard', 'give' ),
 							'desc' => '<hr>',
-							'id'   => 'general_title',
-							'type' => 'title'
+							'id'   => 'give_title',
+							'type' => 'give_title'
 						),
 						array(
-							'name' => __( 'PayPal Email', 'edd' ),
-							'desc' => __( 'Enter your PayPal account\'s email', 'edd' ),
+							'name' => __( 'PayPal Email', 'give' ),
+							'desc' => __( 'Enter your PayPal account\'s email', 'give' ),
 							'id'   => 'paypal_email',
 							'type' => 'text_email',
 						),
 						array(
-							'name' => __( 'PayPal Page Style', 'edd' ),
+							'name' => __( 'PayPal Page Style', 'give' ),
 							'desc' => __( 'Enter the name of the page style to use, or leave blank to use the default', 'give' ),
 							'id'   => 'paypal_page_style',
 							'type' => 'text',
 						),
 						array(
-							'name' => __( 'Disable PayPal IPN Verification', 'edd' ),
-							'desc' => __( 'If payments are not getting marked as complete, then check this box. This forces the site to use a slightly less secure method of verifying purchases.', 'edd' ),
+							'name' => __( 'Disable PayPal IPN Verification', 'give' ),
+							'desc' => __( 'If payments are not getting marked as complete, then check this box. This forces the site to use a slightly less secure method of verifying purchases.', 'give' ),
 							'id'   => 'disable_paypal_verification',
 							'type' => 'checkbox'
 						),
@@ -314,26 +315,87 @@ class Give_Plugin_Settings {
 			 * Emails Options
 			 */
 			'emails'     => array(
-				'id'      => 'options_page',
-				'title'   => __( 'Give Email Settings', 'give' ),
-				'show_on' => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
-				'fields'  => apply_filters( 'give_settings_emails', array()
+				'id'         => 'options_page',
+				'give_title' => __( 'Give Email Settings', 'give' ),
+				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
+				'fields'     => apply_filters( 'give_settings_emails', array(
+						array(
+							'name' => __( 'Email Settings', 'give' ),
+							'desc' => '<hr>',
+							'id'   => 'give_title',
+							'type' => 'give_title'
+						),
+						array(
+							'id'      => 'email_template',
+							'name'    => __( 'Email Template', 'give' ),
+							'desc'    => __( 'Choose a template. Click "Save Changes" then "Preview Purchase Receipt" to see the new template.', 'give' ),
+							'type'    => 'select',
+							'options' => give_get_email_templates()
+						),
+						array(
+							'id'   => 'email_logo',
+							'name' => __( 'Logo', 'give' ),
+							'desc' => __( 'Upload or choose a logo to be displayed at the top of the purchase receipt emails. Displayed on HTML emails only.', 'give' ),
+							'type' => 'file'
+						),
+						array(
+							'id'      => 'from_name',
+							'name'    => __( 'From Name', 'give' ),
+							'desc'    => __( 'The name purchase receipts are said to come from. This should probably be your site or shop name.', 'give' ),
+							'default' => get_bloginfo( 'name' ),
+							'type'    => 'text'
+						),
+						array(
+							'id'      => 'from_email',
+							'name'    => __( 'From Email', 'give' ),
+							'desc'    => __( 'Email to send purchase receipts from. This will act as the "from" and "reply-to" address.', 'give' ),
+							'default' => get_bloginfo( 'admin_email' ),
+							'type'    => 'text'
+						),
+						array(
+							'name' => __( 'Donation Receipt', 'give' ),
+							'desc' => '<hr>',
+							'id'   => 'give_title',
+							'type' => 'give_title'
+						),
+						array(
+							'id'      => 'purchase_subject',
+							'name'    => __( 'Purchase Email Subject', 'give' ),
+							'desc'    => __( 'Enter the subject line for the purchase receipt email', 'give' ),
+							'default' => __( 'Donation Receipt', 'give' ),
+							'type'    => 'text'
+						),
+						array(
+							'id'      => 'purchase_receipt',
+							'name'    => __( 'Purchase Receipt', 'give' ),
+							'desc'    => __( 'Enter the email that is sent to users after completing a successful purchase. HTML is accepted. Available template tags:', 'give' ) . '<br/>' . give_get_emails_tags_list(),
+							'type'    => 'wysiwyg',
+							'default' => __( "Dear", "give" ) . " {name},\n\n" . __( "Thank you for your donation. Your generosity is appreciated! Please click on the link below to view your receipt.", "give" ) . "\n\n{receipt_link}\n\nSincerely,\n{sitename}"
+						),
+						array(
+							'name' => __( 'New Donation Notification', 'give' ),
+							'desc' => '<hr>',
+							'id'   => 'give_title',
+							'type' => 'give_title'
+						),
+
+					)
 				)
 			),
 			/** Extension Settings */
 			'extensions' => array(
-				'id'      => 'options_page',
-				'title'   => __( 'Give Extension Settings', 'give' ),
-				'show_on' => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
-				'fields'  => apply_filters( 'give_settings_extensions', array()
+				'id'         => 'options_page',
+				'give_title' => __( 'Give Extension Settings', 'give' ),
+				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
+				'fields'     => apply_filters( 'give_settings_extensions', array()
 				)
 			),
 			/** Licenses Settings */
-			'licenses' => array(
-				'id'      => 'options_page',
-				'title'   => __( 'Give Licenses', 'give' ),
-				'show_on' => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
-				'fields'  => apply_filters( 'give_settings_licenses', array()
+			'licenses'   => array(
+				'id'         => 'options_page',
+				'give_title' => __( 'Give Licenses', 'give' ),
+				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
+				'fields'     => apply_filters( 'give_settings_licenses', array()
 				)
 			),
 		);
@@ -356,7 +418,7 @@ class Give_Plugin_Settings {
 	public function __get( $field ) {
 
 		// Allowed fields to retrieve
-		if ( in_array( $field, array( 'key', 'fields', 'title', 'options_page' ), true ) ) {
+		if ( in_array( $field, array( 'key', 'fields', 'give_title', 'options_page' ), true ) ) {
 			return $this->{$field};
 		}
 		if ( 'option_metabox' === $field ) {
@@ -481,6 +543,29 @@ function give_default_gateway_callback( $field_object, $escaped_value, $object_i
 }
 
 /**
+ * Give Title
+ *
+ * Renders custom section titles output
+ *
+ * @since 1.0
+ *
+ * @param array $args         Arguments passed by the setting
+ *
+ * @global      $give_options Array of all the EDD Options
+ * @return void
+ */
+function give_title_callback( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
+
+	$id                = $field_type_object->field->args['id'];
+	$title             = $field_type_object->field->args['name'];
+	$field_description = $field_type_object->field->args['desc'];
+
+	?>
+	<hr>
+<?php
+}
+
+/**
  * Gets a number of posts and displays them as options
  *
  * @param  array $query_args Optional. Overrides defaults.
@@ -513,6 +598,22 @@ function give_cmb2_get_post_options( $query_args, $force = false ) {
 	}
 
 	return $post_options;
+}
+
+
+/**
+ * Hook Callback
+ *
+ * Adds a do_action() hook in place of the field
+ *
+ * @since 1.0
+ *
+ * @param array $args Arguments passed by the setting
+ *
+ * @return void
+ */
+function give_hook_callback( $args ) {
+	do_action( 'give_' . $args['id'] );
 }
 
 /**

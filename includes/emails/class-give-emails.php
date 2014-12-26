@@ -2,78 +2,80 @@
 /**
  * Emails
  *
- * This class handles all emails sent through EDD
+ * This class handles all emails sent through Give
  *
- * @package     EDD
+ * @package     Give
  * @subpackage  Classes/Emails
- * @copyright   Copyright (c) 2014, Pippin Williamson
+ * @copyright   Copyright (c) 2014, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.1.php GNU Public License
- * @since       2.1
+ * @since       1.0
  */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Give_Emails Class
  *
- * @since 2.1
+ * @since 1.0
  */
 class Give_Emails {
 
 	/**
 	 * Holds the from address
 	 *
-	 * @since 2.1
+	 * @since 1.0
 	 */
 	private $from_address;
 
 	/**
 	 * Holds the from name
 	 *
-	 * @since 2.1
+	 * @since 1.0
 	 */
 	private $from_name;
 
 	/**
 	 * Holds the email content type
 	 *
-	 * @since 2.1
+	 * @since 1.0
 	 */
 	private $content_type;
 
 	/**
 	 * Holds the email headers
 	 *
-	 * @since 2.1
+	 * @since 1.0
 	 */
 	private $headers;
 
 	/**
 	 * Whether to send email in HTML
 	 *
-	 * @since 2.1
+	 * @since 1.0
 	 */
 	private $html = true;
 
 	/**
 	 * The email template to use
 	 *
-	 * @since 2.1
+	 * @since 1.0
 	 */
 	private $template;
 
 	/**
 	 * The header text for the email
 	 *
-	 * @since  2.1
+	 * @since  1.0
 	 */
 	private $heading = '';
 
 	/**
 	 * Get things going
 	 *
-	 * @since 2.1
+	 * @since 1.0
 	 */
 	public function __construct() {
 
@@ -89,7 +91,7 @@ class Give_Emails {
 	/**
 	 * Set a property
 	 *
-	 * @since 2.1
+	 * @since 1.0
 	 */
 	public function __set( $key, $value ) {
 		$this->$key = $value;
@@ -98,7 +100,7 @@ class Give_Emails {
 	/**
 	 * Get the email from name
 	 *
-	 * @since 2.1
+	 * @since 1.0
 	 */
 	public function get_from_name() {
 		if ( ! $this->from_name ) {
@@ -111,7 +113,7 @@ class Give_Emails {
 	/**
 	 * Get the email from address
 	 *
-	 * @since 2.1
+	 * @since 1.0
 	 */
 	public function get_from_address() {
 		if ( ! $this->from_address ) {
@@ -124,7 +126,7 @@ class Give_Emails {
 	/**
 	 * Get the email content type
 	 *
-	 * @since 2.1
+	 * @since 1.0
 	 */
 	public function get_content_type() {
 		if ( ! $this->content_type && $this->html ) {
@@ -139,11 +141,11 @@ class Give_Emails {
 	/**
 	 * Get the email headers
 	 *
-	 * @since 2.1
+	 * @since 1.0
 	 */
 	public function get_headers() {
 		if ( ! $this->headers ) {
-			$this->headers  = "From: {$this->get_from_name()} <{$this->get_from_address()}>\r\n";
+			$this->headers = "From: {$this->get_from_name()} <{$this->get_from_address()}>\r\n";
 			$this->headers .= "Reply-To: {$this->get_from_address()}\r\n";
 			$this->headers .= "Content-Type: {$this->get_content_type()}; charset=utf-8\r\n";
 		}
@@ -154,7 +156,7 @@ class Give_Emails {
 	/**
 	 * Retrieve email templates
 	 *
-	 * @since 2.1
+	 * @since 1.0
 	 */
 	public function get_templates() {
 		$templates = array(
@@ -168,7 +170,7 @@ class Give_Emails {
 	/**
 	 * Get the enabled email template
 	 *
-	 * @since 2.1
+	 * @since 1.0
 	 */
 	public function get_template() {
 		if ( ! $this->template ) {
@@ -181,7 +183,7 @@ class Give_Emails {
 	/**
 	 * Get the header text for the email
 	 *
-	 * @since 2.1
+	 * @since 1.0
 	 */
 	public function get_heading() {
 		return apply_filters( 'give_email_heading', $this->heading );
@@ -190,7 +192,7 @@ class Give_Emails {
 	/**
 	 * Parse email template tags
 	 *
-	 * @since 2.1
+	 * @since 1.0
 	 */
 	public function parse_tags( $content ) {
 
@@ -203,7 +205,7 @@ class Give_Emails {
 	/**
 	 * Build the final email
 	 *
-	 * @since 2.1
+	 * @since 1.0
 	 */
 	public function build_email( $message ) {
 
@@ -239,16 +241,19 @@ class Give_Emails {
 
 	/**
 	 * Send the email
-	 * @param  string  $to               The To address to send to.
-	 * @param  string  $subject          The subject line of the email to send.
-	 * @param  string  $message          The body of the email to send.
+	 *
+	 * @param  string       $to          The To address to send to.
+	 * @param  string       $subject     The subject line of the email to send.
+	 * @param  string       $message     The body of the email to send.
 	 * @param  string|array $attachments Attachments to the email in a format supported by wp_mail()
-	 * @since 2.1
+	 *
+	 * @since 1.0
 	 */
 	public function send( $to, $subject, $message, $attachments = '' ) {
 
 		if ( ! did_action( 'init' ) && ! did_action( 'admin_init' ) ) {
 			_doing_it_wrong( __FUNCTION__, __( 'You cannot send email with Give_Emails until init/admin_init has been reached', 'give' ), null );
+
 			return false;
 		}
 
@@ -272,7 +277,7 @@ class Give_Emails {
 	/**
 	 * Add filters / actions before the email is sent
 	 *
-	 * @since 2.1
+	 * @since 1.0
 	 */
 	public function send_before() {
 		add_filter( 'wp_mail_from', array( $this, 'get_from_address' ) );
@@ -283,7 +288,7 @@ class Give_Emails {
 	/**
 	 * Remove filters / actions after the email is sent
 	 *
-	 * @since 2.1
+	 * @since 1.0
 	 */
 	public function send_after() {
 		remove_filter( 'wp_mail_from', array( $this, 'get_from_address' ) );
@@ -297,7 +302,7 @@ class Give_Emails {
 	/**
 	 * Converts text to formatted HTML. This is primarily for turning line breaks into <p> and <br/> tags.
 	 *
-	 * @since 2.1
+	 * @since 1.0
 	 */
 	public function text_to_html( $message ) {
 
