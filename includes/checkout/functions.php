@@ -98,7 +98,7 @@ function give_send_to_success_page( $query_string = null ) {
  */
 function give_send_back_to_checkout( $args = array() ) {
 
-	$redirect = 'http://google.com/';
+	$redirect = $_POST['give-current-url'];
 
 	if ( ! empty( $args ) ) {
 		// Check for backward compatibility
@@ -258,7 +258,7 @@ function give_is_ssl_enforced() {
  * @return void
  */
 function give_enforced_ssl_redirect_handler() {
-	if ( ! give_is_ssl_enforced() ||  is_admin() || is_ssl() ) {
+	if ( ! give_is_ssl_enforced() || is_admin() || is_ssl() ) {
 		return;
 	}
 

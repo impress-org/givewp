@@ -58,24 +58,11 @@ function give_resend_purchase_receipt( $data ) {
 
 	give_email_purchase_receipt( $purchase_id, false );
 
-	// Grab all downloads of the purchase and update their file download limits, if needed
-	// This allows admins to resend purchase receipts to grant additional file downloads
-	$downloads = give_get_payment_meta_cart_details( $purchase_id, true );
-
-	if ( is_array( $downloads ) ) {
-		foreach ( $downloads as $download ) {
-			$limit = give_get_file_download_limit( $download['id'] );
-			if ( ! empty( $limit ) ) {
-				give_set_file_download_limit_override( $download['id'], $purchase_id );
-			}
-		}
-	}
-
 	wp_redirect( add_query_arg( array(
-				'give-message' => 'email_sent',
-				'give-action'  => false,
-				'purchase_id' => false
-			) ) );
+		'give-message' => 'email_sent',
+		'give-action'  => false,
+		'purchase_id'  => false
+	) ) );
 	exit;
 }
 
@@ -84,7 +71,7 @@ add_action( 'give_email_links', 'give_resend_purchase_receipt' );
 /**
  * Trigger the sending of a Test Email
  *
- * @since 1.5
+ * @since 1.0
  *
  * @param array $data Parameters sent from Settings page
  *

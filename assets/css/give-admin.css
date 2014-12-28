@@ -115,19 +115,19 @@ tr.status-refunded td {
 	border-top-color: #ccc;
 }
 
-.wp-list-table.downloads th#ID {
+.wp-list-table.forms th#ID {
 	width: 80px;
 }
 
-.wp-list-table.downloads th#details {
+.wp-list-table.forms th#details {
 	width: 130px;
 }
 
-.wp-list-table.downloads th#date {
+.wp-list-table.forms th#date {
 	width: 140px;
 }
 
-.wp-list-table.downloads th#user {
+.wp-list-table.forms th#user {
 	width: 130px;
 }
 
@@ -143,7 +143,7 @@ tr.status-refunded td {
 }
 
 @media handheld, only screen and (max-width: 640px) {
-	.wp-list-table.downloads th {
+	.wp-list-table.forms th {
 		width: auto !important;
 	}
 }

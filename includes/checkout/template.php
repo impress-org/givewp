@@ -64,6 +64,7 @@ function give_get_donation_form( $args = array() ) {
 	<form id="give_donation_form_<?php echo $post_id; ?>" class="give_donate_form give_donate_form_<?php echo absint( $form->ID ); ?>" action="<?php echo $form_action; ?>" method="post">
 		<input type="hidden" name="give-form-id" value="<?php echo $form->ID; ?>" />
 		<input type="hidden" name="give-form-title" value="<?php echo htmlentities( $form->post_title ); ?>" />
+		<input type="hidden" name="give-current-url" value="<?php echo htmlspecialchars( get_permalink( $post_id ) ); ?>" />
 
 		<?php
 
@@ -252,7 +253,7 @@ function give_output_levels( $form_id ) {
 
 				$output .= '<li>';
 
-				$output .= '<input type="radio" class="give-radio-input give-radio-level-' . $counter . '" name="give-radio-donation-level" id="give-radio-level-' . $counter . '" ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'checked="checked"' : '' ) . ' value="' . $price['_give_amount'] . '">';
+				$output .= '<input type="radio" class="give-radio-input give-radio-input-level give-radio-level-' . $counter . '" name="give-radio-donation-level" id="give-radio-level-' . $counter . '" ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'checked="checked"' : '' ) . ' value="' . $price['_give_amount'] . '">';
 
 				$output .= '<label for="give-radio-level-' . $counter . '">' . ( ! empty( $price['_give_text'] ) ? $price['_give_text'] : $price['_give_price'] ) . '</label>';
 
@@ -265,7 +266,7 @@ function give_output_levels( $form_id ) {
 
 		case 'dropdown':
 
-			$output .= '<select id="give-donation-level-' . $form_id . '" class="give-select">';
+			$output .= '<select id="give-donation-level-' . $form_id . '" class="give-select give-select-level">';
 
 			//first loop through prices
 			foreach ( $prices as $price ) {

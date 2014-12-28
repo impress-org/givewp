@@ -44,48 +44,14 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 	$customer_id    = give_get_payment_customer_id( $payment_id );
 	$amount         = give_get_payment_amount( $payment_id );
 
-
-
-	$cart_details   = give_get_payment_meta_cart_details( $payment_id );
-
 	do_action( 'give_pre_complete_purchase', $payment_id );
 
-	if ( is_array( $cart_details ) ) {
+	// Clear the total earnings cache
+	delete_transient( 'give_earnings_total' );
+	// Clear the This Month earnings (this_monththis_month is NOT a typo)
+	delete_transient( md5( 'give_earnings_this_monththis_month' ) );
+	delete_transient( md5( 'give_earnings_todaytoday' ) );
 
-		// Increase purchase count and earnings
-		foreach ( $cart_details as $cart_index => $download ) {
-
-			// "bundle" or "default"
-			$download_type = give_get_download_type( $download['id'] );
-			$price_id      = isset( $download['options']['price_id'] ) ? (int) $download['options']['price_id'] : false;
-
-			// Increase earnings and fire actions once per quantity number
-			for ( $i = 0; $i < $download['quantity']; $i ++ ) {
-
-				// Ensure these actions only run once, ever
-				if ( empty( $completed_date ) ) {
-
-					if ( ! give_is_test_mode() || apply_filters( 'give_log_test_payment_stats', false ) ) {
-
-						give_record_sale_in_log( $download['id'], $payment_id, $price_id, $creation_date );
-						give_increase_purchase_count( $download['id'] );
-						give_increase_earnings( $download['id'], $download['price'] );
-
-					}
-
-					do_action( 'give_complete_download_purchase', $download['id'], $payment_id, $download_type, $download, $cart_index );
-				}
-
-			}
-
-		}
-
-		// Clear the total earnings cache
-		delete_transient( 'give_earnings_total' );
-		// Clear the This Month earnings (this_monththis_month is NOT a typo)
-		delete_transient( md5( 'give_earnings_this_monththis_month' ) );
-		delete_transient( md5( 'give_earnings_todaytoday' ) );
-	}
 
 	// Increase the customer's purchase stats
 	Give()->customers->increment_stats( $customer_id, $amount );
@@ -148,13 +114,6 @@ function give_undo_purchase_on_refund( $payment_id, $new_status, $old_status ) {
 
 	if ( 'refunded' != $new_status ) {
 		return;
-	}
-
-	$downloads = give_get_payment_meta_cart_details( $payment_id );
-	if ( $downloads ) {
-		foreach ( $downloads as $download ) {
-			give_undo_purchase( $download['id'], $payment_id );
-		}
 	}
 
 	// Decrease store earnings

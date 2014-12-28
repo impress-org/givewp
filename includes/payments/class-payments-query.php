@@ -165,7 +165,6 @@ class Give_Payments_Query extends Give_Stats {
 				$details->key          = give_get_payment_key( $payment_id );
 				$details->gateway      = give_get_payment_gateway( $payment_id );
 				$details->user_info    = give_get_payment_meta_user_info( $payment_id );
-				$details->cart_details = give_get_payment_meta_cart_details( $payment_id, true );
 
 				if ( give_get_option( 'enable_sequential' ) ) {
 					$details->payment_number = give_get_payment_number( $payment_id );

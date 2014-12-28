@@ -27,6 +27,102 @@ Layout
 	float: right;
 }
 
+.give_form select.edd-select.required {
+	color: #000;
+}
+
+/* =Receipt Page
+-------------------------------------------------------------- */
+body.give_receipt_page {
+	background-color: #fff;
+	color:   #141412;
+	margin: 0;
+	font-family: Helvetica, sans-serif;
+	font-size: 12px;
+}
+
+body.give_receipt_page #give_receipt_wrapper {
+	width: 660px;
+	margin: 0 auto;
+	padding: 50px 0;
+}
+
+body.give_receipt_page table {
+	display: table;
+	width: 100%;
+	border-bottom: 1px solid #ededed;
+	border-collapse: collapse;
+	border-spacing: 0;
+	font-size: 14px;
+	line-height: 2;
+	margin: 0 0 20px;
+}
+
+body.give_receipt_page td, body.give_receipt_page th {
+	display: table-cell;
+	text-align: left;
+	border-top: 1px solid #ededed;
+	padding: 6px 10px 6px 0;
+	font-weight: normal;
+}
+
+body.give_receipt_page th {
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+body.give_receipt_page h3 {
+	font-size: 22px;
+	margin: 40px 0 5px;
+	clear: both;
+	display: block;
+	font-weight: bold;
+}
+
+/* =Purchase Summary Tables
+-------------------------------------------------------------- */
+table#give_purchase_receipt_products,
+table#give_purchase_receipt {
+	width: 100%;
+}
+
+table#give_purchase_receipt_products td,
+table#give_purchase_receipt_products th,
+table#give_purchase_receipt td,
+table#give_purchase_receipt th {
+	text-align: left;
+}
+
+table#give_purchase_receipt .give_receipt_payment_status.pending,
+table#give_purchase_receipt .give_receipt_payment_status.cancelled,
+table#give_purchase_receipt .give_receipt_payment_status.revoked,
+table#give_purchase_receipt .give_receipt_payment_status.failed {
+	color: #f73f2e;
+}
+
+table#give_purchase_receipt_products li {
+	list-style: none;
+	margin: 0 0 8px 10px;
+}
+
+table#give_purchase_receipt ul, table#give_purchase_receipt_products ul.give_purchase_receipt_files {
+	margin: 0;
+	padding: 0;
+}
+
+table#give_purchase_receipt_products .give_purchase_receipt_product_notes {
+	font-style: italic;
+}
+
+table#give_purchase_receipt_products .give_purchase_receipt_product_name {
+	font-weight: bold;
+}
+
+table#give_purchase_receipt_products .give_bundled_product_name {
+	font-style: italic;
+	font-weight: bold;
+}
+
 /*------------------------------------
 Form
 --------------------------------------*/

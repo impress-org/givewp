@@ -24,32 +24,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_admin_messages() {
 	global $give_options;
 
-	if ( isset( $_GET['give-message'] ) && 'discount_added' == $_GET['give-message'] && current_user_can( 'manage_shop_discounts' ) ) {
-		add_settings_error( 'give-notices', 'give-discount-added', __( 'Discount code added.', 'give' ), 'updated' );
-	}
-
-	if ( isset( $_GET['give-message'] ) && 'discount_add_failed' == $_GET['give-message'] && current_user_can( 'manage_shop_discounts' ) ) {
-		add_settings_error( 'give-notices', 'give-discount-add-fail', __( 'There was a problem adding your discount code, please try again.', 'give' ), 'error' );
-	}
-
-	if ( isset( $_GET['give-message'] ) && 'discount_exists' == $_GET['give-message'] && current_user_can( 'manage_shop_discounts' ) ) {
-		add_settings_error( 'give-notices', 'give-discount-exists', __( 'A discount with that code already exists, please use a different code.', 'give' ), 'error' );
-	}
-
-	if ( isset( $_GET['give-message'] ) && 'discount_updated' == $_GET['give-message'] && current_user_can( 'manage_shop_discounts' ) ) {
-		add_settings_error( 'give-notices', 'give-discount-updated', __( 'Discount code updated.', 'give' ), 'updated' );
-	}
-
-	if ( isset( $_GET['give-message'] ) && 'discount_update_failed' == $_GET['give-message'] && current_user_can( 'manage_shop_discounts' ) ) {
-		add_settings_error( 'give-notices', 'give-discount-updated-fail', __( 'There was a problem updating your discount code, please try again.', 'give' ), 'error' );
-	}
-
 	if ( isset( $_GET['give-message'] ) && 'payment_deleted' == $_GET['give-message'] && current_user_can( 'view_shop_reports' ) ) {
 		add_settings_error( 'give-notices', 'give-payment-deleted', __( 'The payment has been deleted.', 'give' ), 'updated' );
 	}
 
 	if ( isset( $_GET['give-message'] ) && 'email_sent' == $_GET['give-message'] && current_user_can( 'view_shop_reports' ) ) {
-		add_settings_error( 'give-notices', 'give-payment-sent', __( 'The purchase receipt has been resent.', 'give' ), 'updated' );
+		add_settings_error( 'give-notices', 'give-payment-sent', __( 'The donation receipt has been resent.', 'give' ), 'updated' );
 	}
 
 	if ( isset( $_GET['give-message'] ) && 'payment-note-deleted' == $_GET['give-message'] && current_user_can( 'view_shop_reports' ) ) {
@@ -125,7 +105,7 @@ function give_admin_addons_notices() {
 /**
  * Dismisses admin notices when Dismiss links are clicked
  *
- * @since 1.8
+ * @since 1.0
  * @return void
  */
 function give_dismiss_notices() {

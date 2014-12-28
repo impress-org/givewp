@@ -285,7 +285,7 @@ function give_get_ip() {
  *
  * @param $purchase_data
  *
- * @uses Give()->session->set()
+ * @uses  Give()->session->set()
  */
 function give_set_purchase_session( $purchase_data = array() ) {
 	Give()->session->set( 'give_purchase', $purchase_data );
@@ -298,9 +298,33 @@ function give_set_purchase_session( $purchase_data = array() ) {
  * after completing a purchase
  *
  * @since 1.1.5
- * @uses Give()->session->get()
+ * @uses  Give()->session->get()
  * @return mixed array | false
  */
 function give_get_purchase_session() {
 	return Give()->session->get( 'give_purchase' );
+}
+
+/**
+ * Get Purchase Summary
+ *
+ * Retrieves the purchase summary.
+ *
+ * @since       1.0
+ *
+ * @param      $purchase_data
+ * @param bool $email
+ *
+ * @return string
+ */
+function give_get_purchase_summary( $purchase_data, $email = true ) {
+	$summary = '';
+
+	if ( $email ) {
+		$summary .= $purchase_data['user_email'] . ' - ';
+	}
+
+	$summary .= get_the_title( $purchase_data['post_data']['give-form-id'] );
+
+	return $summary;
 }

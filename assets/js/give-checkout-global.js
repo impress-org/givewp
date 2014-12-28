@@ -97,11 +97,11 @@ jQuery( document ).ready( function ( $ ) {
 		update_multiselect_vals( $( this ) );
 	} );
 	//Multi-level Radios: Update Amount Field based on Multi-level Donation Select
-	$body.on( 'click touchend', '.give-radio-input', function ( e ) {
+	$body.on( 'click touchend', '.give-radio-input-level', function ( e ) {
 		update_multiselect_vals( $( this ) );
 	} );
 	//Multi-level Radios: Update Amount Field based on Multi-level Donation Select
-	$body.on( 'change', '.give-select', function ( e ) {
+	$body.on( 'change', '.give-select-level', function ( e ) {
 		update_multiselect_vals( $( this ) );
 	} );
 

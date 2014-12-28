@@ -152,15 +152,45 @@ function give_load_admin_scripts( $hook ) {
 	// Use minified libraries if SCRIPT_DEBUG is turned off
 	$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
+	//CSS
+	wp_enqueue_style( 'jquery-ui-css', $css_dir . 'jquery-ui-fresh' . $suffix . '.css' );
+
+	wp_enqueue_style( 'give-admin', $css_dir . 'give-admin' . $suffix . '.css', GIVE_VERSION );
+
+	//JS
 	wp_enqueue_script( 'give-admin-scripts', $js_dir . 'admin-scripts' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
 	wp_localize_script( 'give-admin-scripts', 'give_vars', array(
 		'post_id' => isset( $post->ID ) ? $post->ID : null,
 	) );
 	wp_enqueue_script( 'jquery-ui-datepicker' );
 
-	wp_enqueue_style( 'jquery-ui-css', $css_dir . 'jquery-ui-fresh' . $suffix . '.css' );
 
-	wp_enqueue_style( 'give-admin', $css_dir . 'give-admin' . $suffix . '.css', GIVE_VERSION );
+	wp_localize_script( 'give-admin-scripts', 'give_vars', array(
+			'post_id'                 => isset( $post->ID ) ? $post->ID : null,
+			'give_version'             => GIVE_VERSION,
+			'quick_edit_warning'      => __( 'Sorry, not available for variable priced products.', 'give' ),
+			'delete_payment'          => __( 'Are you sure you wish to delete this payment?', 'give' ),
+			'delete_payment_note'     => __( 'Are you sure you wish to delete this note?', 'give' ),
+			'delete_tax_rate'         => __( 'Are you sure you wish to delete this tax rate?', 'give' ),
+			'revoke_api_key'          => __( 'Are you sure you wish to revoke this API key?', 'give' ),
+			'regenerate_api_key'      => __( 'Are you sure you wish to regenerate this API key?', 'give' ),
+			'resend_receipt'          => __( 'Are you sure you wish to resend the purchase receipt?', 'give' ),
+			'copy_download_link_text' => __( 'Copy these links to your clipboard and give them to your customer', 'give' ),
+			'delete_payment_download' => sprintf( __( 'Are you sure you wish to delete this %s?', 'give' ), give_get_label_singular() ),
+			'one_price_min'           => __( 'You must have at least one price', 'give' ),
+			'one_file_min'            => __( 'You must have at least one file', 'give' ),
+			'one_field_min'           => __( 'You must have at least one field', 'give' ),
+			'one_option'              => sprintf( __( 'Choose a %s', 'give' ), give_get_label_singular() ),
+			'one_or_more_option'      => sprintf( __( 'Choose one or more %s', 'give' ), give_get_label_plural() ),
+			'numeric_item_price'      => __( 'Item price must be numeric', 'give' ),
+			'numeric_quantity'        => __( 'Quantity must be numeric', 'give' ),
+			'currency_sign'           => give_currency_filter(''),
+			'currency_pos'            => isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before',
+			'currency_decimals'       => give_currency_decimal_filter(),
+			'new_media_ui'            => apply_filters( 'give_use_35_media_ui', 1 ),
+			'remove_text'             => __( 'Remove', 'give' ),
+			'type_to_search'          => sprintf( __( 'Type to search %s', 'give' ), give_get_label_plural() ),
+		));
 
 
 }

@@ -209,11 +209,6 @@ function give_insert_payment( $payment_data = array() ) {
 	return false;
 }
 
-//$payment_data = give_get_payment_meta( 202 );
-//echo "<pre>";
-//var_dump($payment_data);
-//echo "</pre>";
-//die();
 /**
  * Updates a payment status.
  *
@@ -924,23 +919,6 @@ function give_get_payment_meta_donations( $payment_id ) {
 	$donations    = isset( $payment_meta['donations'] ) ? maybe_unserialize( $payment_meta['donations'] ) : array();
 
 	return apply_filters( 'give_payment_meta_donations', $donations );
-}
-
-/**
- * Get the cart_details Key from Payment Meta
- *
- * @since 1.0
- *
- * @param int $payment_id Payment ID
- *
- * @return array $cart_details Cart Details Meta Values
- */
-function give_get_payment_meta_cart_details( $payment_id ) {
-	$payment_meta = give_get_payment_meta( $payment_id );
-
-	$cart_details = ! empty( $payment_meta['cart_details'] ) ? maybe_unserialize( $payment_meta['cart_details'] ) : array();
-
-	return apply_filters( 'give_payment_meta_cart_details', $cart_details, $payment_id );
 }
 
 /**
