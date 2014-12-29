@@ -156,7 +156,6 @@ function give_insert_payment( $payment_data = array() ) {
 
 		$payment_meta = array(
 			'currency'       => $payment_data['currency'],
-			'donation_title' => $payment_data['post_title'],
 			'form_title'     => $payment_data['give_form_title'],
 			'form_id'        => $payment_data['give_form_id'],
 			'user_info'      => $payment_data['user_info'],
@@ -1195,44 +1194,6 @@ function give_get_payment_amount( $payment_id ) {
 	}
 
 	return apply_filters( 'give_payment_amount', floatval( $amount ), $payment_id );
-}
-
-/**
- * Retrieves subtotal for payment (this is the amount before taxes) and then
- * returns a non formatted amount.
- *
- * @since 1.0
- * @global    $give_options Array of all the Give Options
- *
- * @param int $payment_id   Payment ID
- *
- * @return float $subtotal Subtotal for payment (non formatted)
- */
-function give_get_payment_subtotal( $payment_id = 0 ) {
-
-	$subtotal     = 0;
-	$cart_details = give_get_payment_meta_cart_details( $payment_id );
-
-	if ( is_array( $cart_details ) ) {
-
-		foreach ( $cart_details as $item ) {
-
-			if ( isset( $item['subtotal'] ) ) {
-
-				$subtotal += $item['subtotal'];
-
-			}
-
-		}
-
-	} else {
-
-		$subtotal = give_get_payment_amount( $payment_id );
-
-	}
-
-
-	return apply_filters( 'give_get_payment_subtotal', $subtotal, $payment_id );
 }
 
 /**

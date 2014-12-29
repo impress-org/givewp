@@ -27,6 +27,10 @@ div.give-submit-wrap {
 	margin: 20px 0;
 }
 
+.give_forms_page_give-payment-history .postbox .hndle {
+	cursor: default;
+}
+
 /* Section Titles */
 
 .cmb-type-title h3 {
@@ -79,6 +83,26 @@ div.give-submit-wrap {
 
 .cmb2-id-give-title > div.cmb-td {
 	padding-bottom: 5px;
+}
+
+/* System Info page styles
+-------------------------------------------------------------- */
+#system-info-textarea {
+	width: 800px;
+	height: 600px;
+	font-family: Menlo, Monaco, monospace;
+	background: #FFF;
+	white-space: pre;
+	overflow: auto;
+	display: block;
+}
+
+#give-download-sysinfo {
+	margin: 0;
+}
+
+.give_forms_page_give-settings .give-submit-wrap {
+	display: none; /* Hide Save settings button on System Info Tab (not needed) */
 }
 
 /*------------------------------------

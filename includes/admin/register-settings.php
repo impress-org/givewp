@@ -53,6 +53,7 @@ class Give_Plugin_Settings {
 		add_action( 'cmb2_render_enabled_gateways', 'give_enabled_gateways_callback', 10, 5 );
 		add_action( 'cmb2_render_default_gateway', 'give_default_gateway_callback', 10, 5 );
 		add_action( 'cmb2_render_email_preview_buttons', 'give_email_preview_buttons_callback', 10, 5 );
+		add_action( 'cmb2_render_system_info', 'give_system_info_callback', 10, 5 );
 
 
 	}
@@ -96,12 +97,15 @@ class Give_Plugin_Settings {
 		$tabs['gateways'] = __( 'Payment Gateways', 'give' );
 		$tabs['emails']   = __( 'Emails', 'give' );
 
-		//		if ( ! empty( $settings['extensions'] ) ) {
-		//			$tabs['extensions'] = __( 'Extensions', 'give' );
-		//		}
-		//		if ( ! empty( $settings['licenses'] ) ) {
-		//			$tabs['licenses'] = __( 'Licenses', 'give' );
-		//		}
+		if ( ! empty( $settings['extensions'] ) ) {
+			$tabs['extensions'] = __( 'Extensions', 'give' );
+		}
+		if ( ! empty( $settings['licenses'] ) ) {
+			$tabs['licenses'] = __( 'Licenses', 'give' );
+		}
+
+		$tabs['system_info'] = __( 'System Info', 'give' );
+
 		//
 		//		$tabs['misc'] = __( 'Misc', 'give' );
 
@@ -161,7 +165,7 @@ class Give_Plugin_Settings {
 			/**
 			 * General Settings
 			 */
-			'general'    => array(
+			'general'     => array(
 				'id'         => 'options_page',
 				'give_title' => __( 'General Settings', 'give' ),
 				'context'    => 'normal',
@@ -262,7 +266,7 @@ class Give_Plugin_Settings {
 			/**
 			 * Payment Gateways
 			 */
-			'gateways'   => array(
+			'gateways'    => array(
 				'id'         => 'options_page',
 				'give_title' => __( 'Payment Gateways', 'give' ),
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
@@ -315,7 +319,7 @@ class Give_Plugin_Settings {
 			/**
 			 * Emails Options
 			 */
-			'emails'     => array(
+			'emails'      => array(
 				'id'         => 'options_page',
 				'give_title' => __( 'Give Email Settings', 'give' ),
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
@@ -410,7 +414,7 @@ class Give_Plugin_Settings {
 				)
 			),
 			/** Extension Settings */
-			'extensions' => array(
+			'extensions'  => array(
 				'id'         => 'options_page',
 				'give_title' => __( 'Give Extension Settings', 'give' ),
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
@@ -418,16 +422,31 @@ class Give_Plugin_Settings {
 				)
 			),
 			/** Licenses Settings */
-			'licenses'   => array(
+			'licenses'    => array(
 				'id'         => 'options_page',
 				'give_title' => __( 'Give Licenses', 'give' ),
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
 				'fields'     => apply_filters( 'give_settings_licenses', array()
 				)
 			),
+			/** Licenses Settings */
+			'system_info' => array(
+				'id'         => 'options_page',
+				'give_title' => __( 'System Info', 'give' ),
+				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
+				'fields'     => apply_filters( 'give_settings_system', array(
+						array(
+							'id'   => 'system_info',
+							'name' => __( 'System Info', 'give' ),
+							'desc' => __( 'Please copy and paste this information in your ticket when contacting support.', 'give' ),
+							'type' => 'system_info'
+						)
+					)
+				)
+			),
 		);
 
-		// Add other metaboxes as needed
+		// Add other tabs and settings fields as needed
 		return apply_filters( 'give_registered_settings', $give_settings[ $active_tab ] );
 
 	}
@@ -576,7 +595,7 @@ function give_default_gateway_callback( $field_object, $escaped_value, $object_i
  *
  * @since 1.0
  *
- * @param array $args         Arguments passed by the setting
+ * @param       $field_object , $escaped_value, $object_id, $object_type, $field_type_object
  *
  * @global      $give_options Array of all the EDD Options
  * @return void
@@ -632,6 +651,7 @@ function give_cmb2_get_post_options( $query_args, $force = false ) {
  * Modify CMB2 Default Form Output
  *
  * @param string @args
+ *
  * @since 1.0
  */
 

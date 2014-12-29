@@ -472,20 +472,6 @@ function give_email_tag_date( $payment_id ) {
 }
 
 /**
- * Email template tag: subtotal
- * Price of purchase before taxes
- *
- * @param int $payment_id
- *
- * @return string subtotal
- */
-function give_email_tag_subtotal( $payment_id ) {
-	$subtotal = give_currency_filter( give_format_amount( give_get_payment_subtotal( $payment_id ) ), give_get_payment_currency_code( $payment_id ) );
-
-	return html_entity_decode( $subtotal, ENT_COMPAT, 'UTF-8' );
-}
-
-/**
  * Email template tag: price
  * The total price of the purchase
  *

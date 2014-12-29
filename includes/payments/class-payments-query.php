@@ -159,8 +159,6 @@ class Give_Payments_Query extends Give_Stats {
 				$details->date         = get_post()->post_date;
 				$details->post_status  = get_post()->post_status;
 				$details->total        = give_get_payment_amount( $payment_id );
-				$details->subtotal     = give_get_payment_subtotal( $payment_id );
-				$details->tax          = give_get_payment_tax( $payment_id );
 				$details->fees         = give_get_payment_fees( $payment_id );
 				$details->key          = give_get_payment_key( $payment_id );
 				$details->gateway      = give_get_payment_gateway( $payment_id );

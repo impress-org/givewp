@@ -245,11 +245,26 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 
 			<div class="inside">
 
-				<?php
-
-				?>
-
-				Form Title, Form ID, Form, Date, Time, Total Donation
+				<table style="width:100%;text-align:left;">
+					<thead>
+					<tr>
+						<th><?php _e( 'Form ID', 'give' ) ?></th>
+						<th><?php _e( 'Form Title', 'give' ) ?></th>
+						<th><?php _e( 'Date and Time', 'give' ) ?></th>
+						<th><?php _e( 'Total Donation', 'give' ) ?></th>
+					</tr>
+					</thead>
+					<tr>
+						<td>
+							<?php echo $payment_meta['form_id']; ?>
+						</td>
+						<td>
+							<a href="<?php echo get_permalink( $payment_meta['form_id'] ); ?>"><?php echo $payment_meta['form_title']; ?></a>
+						</td>
+						<td><?php echo date( 'm/d/Y', $payment_date ) . ' ' . date_i18n( 'H:i', $payment_date ); ?></td>
+						<td><?php echo esc_attr( give_format_amount( give_get_payment_amount( $payment_id ) ) ); ?></td>
+					</tr>
+				</table>
 
 			</div>
 			<!-- /.inside -->

@@ -141,7 +141,6 @@ class Give_Payment_Stats extends Give_Stats {
 		} else {
 
 			// Download specific earning stats
-
 			global $give_logs, $wpdb;
 
 			$args = array(
@@ -168,15 +167,6 @@ class Give_Payment_Stats extends Give_Stats {
 					$log_ids     = implode( ',', $log_ids );
 					$payment_ids = $wpdb->get_col( "SELECT meta_value FROM $wpdb->postmeta WHERE meta_key='_give_log_payment_id' AND post_id IN ($log_ids);" );
 
-					foreach( $payment_ids as $payment_id ) {
-						$items = give_get_payment_meta_cart_details( $payment_id );
-						foreach( $items as $item ) {
-							if( $item['id'] != $download_id )
-								continue;
-
-							$earnings += $item['price'];
-						}
-					}
 				}
 
 				// Cache the results for one hour
