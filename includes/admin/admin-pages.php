@@ -22,23 +22,31 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @global $give_settings_page
  * @global $give_payments_page
+ * @global $give_campaigns_page
  *
  * @return void
  */
-function give_add_options_link() {
-	global $give_settings_page, $give_payments_page;
+function give_add_options_links() {
+	global $give_settings_page, $give_payments_page, $give_campaigns_page;
 
+	//Campaigns
+	$give_campaigns      = get_post_type_object( 'give_campaigns' );
+	$give_campaigns_page = add_submenu_page( 'edit.php?post_type=give_forms', $give_campaigns->labels->menu_name, $give_campaigns->labels->add_new, 'edit_' . $give_campaigns->capability_type . 's', 'post-new.php?post_type=give_campaigns', null );
+
+	//Payments
 	$give_payment       = get_post_type_object( 'give_payment' );
 	$give_payments_page = add_submenu_page( 'edit.php?post_type=give_forms', $give_payment->labels->name, $give_payment->labels->menu_name, 'edit_give_payments', 'give-payment-history', 'give_payment_history_page' );
 
+	//Settings
 	$give_settings_page = add_submenu_page( 'edit.php?post_type=give_forms', __( 'Give Settings', 'give' ), __( 'Settings', 'give' ), 'manage_give_settings', 'give-settings', array(
 		Give()->give_settings,
 		'admin_page_display'
 	) );
 
+
 }
 
-add_action( 'admin_menu', 'give_add_options_link', 10 );
+add_action( 'admin_menu', 'give_add_options_links', 10 );
 
 /**
  *  Determines whether the current admin page is an EDD admin page.
@@ -55,13 +63,17 @@ function give_is_admin_page() {
 		return false;
 	}
 
-	global $pagenow, $typenow, $give_settings_page, $give_payments_page;
+	global $pagenow, $typenow, $give_settings_page, $give_payments_page, $give_campaigns_page;
 
-	if ( 'give_forms' == $typenow || 'index.php' == $pagenow || 'post-new.php' == $pagenow || 'post.php' == $pagenow ) {
+	if ( 'give_forms' == $typenow || 'give_campaigns' == $typenow || 'index.php' == $pagenow || 'post-new.php' == $pagenow || 'post.php' == $pagenow ) {
 		return true;
 	}
 
-	$give_admin_pages = apply_filters( 'give_admin_pages', array( $give_settings_page, $give_payments_page ) );
+	$give_admin_pages = apply_filters( 'give_admin_pages', array(
+		$give_settings_page,
+		$give_payments_page,
+		$give_campaigns_page
+	) );
 
 	if ( in_array( $pagenow, $give_admin_pages ) ) {
 		return true;

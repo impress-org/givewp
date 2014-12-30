@@ -163,7 +163,7 @@ class Give_Donate_Form {
 
 		}
 
-		return apply_filters( 'edd_get_set_price', $this->price, $this->ID );
+		return apply_filters( 'give_get_set_price', $this->price, $this->ID );
 	}
 
 	/**
@@ -192,9 +192,9 @@ class Give_Donate_Form {
 	 */
 	public function is_single_price_mode() {
 
-		$ret = get_post_meta( $this->ID, '_edd_price_options_mode', true );
+		$ret = get_post_meta( $this->ID, '_give_price_options_mode', true );
 
-		return (bool) apply_filters( 'edd_single_price_option_mode', $ret, $this->ID );
+		return (bool) apply_filters( 'give_single_price_option_mode', $ret, $this->ID );
 
 	}
 
@@ -228,11 +228,11 @@ class Give_Donate_Form {
 
 		if ( ! isset( $this->sales ) ) {
 
-			if ( '' == get_post_meta( $this->ID, '_edd_download_sales', true ) ) {
-				add_post_meta( $this->ID, '_edd_download_sales', 0 );
+			if ( '' == get_post_meta( $this->ID, '_give_download_sales', true ) ) {
+				add_post_meta( $this->ID, '_give_download_sales', 0 );
 			} // End if
 
-			$this->sales = get_post_meta( $this->ID, '_edd_download_sales', true );
+			$this->sales = get_post_meta( $this->ID, '_give_download_sales', true );
 
 			if ( $this->sales < 0 ) {
 				// Never let sales be less than zero
@@ -253,10 +253,10 @@ class Give_Donate_Form {
 	 */
 	public function increase_sales() {
 
-		$sales = edd_get_download_sales_stats( $this->ID );
+		$sales = give_get_download_sales_stats( $this->ID );
 		$sales = $sales + 1;
 
-		if ( update_post_meta( $this->ID, '_edd_download_sales', $sales ) ) {
+		if ( update_post_meta( $this->ID, '_give_download_sales', $sales ) ) {
 			$this->sales = $sales;
 
 			return $sales;
@@ -273,13 +273,13 @@ class Give_Donate_Form {
 	 */
 	public function decrease_sales() {
 
-		$sales = edd_get_download_sales_stats( $this->ID );
+		$sales = give_get_download_sales_stats( $this->ID );
 		if ( $sales > 0 ) // Only decrease if not already zero
 		{
 			$sales = $sales - 1;
 		}
 
-		if ( update_post_meta( $this->ID, '_edd_download_sales', $sales ) ) {
+		if ( update_post_meta( $this->ID, '_give_download_sales', $sales ) ) {
 			$this->sales = $sales;
 
 			return $sales;
@@ -299,11 +299,11 @@ class Give_Donate_Form {
 
 		if ( ! isset( $this->earnings ) ) {
 
-			if ( '' == get_post_meta( $this->ID, '_edd_download_earnings', true ) ) {
-				add_post_meta( $this->ID, '_edd_download_earnings', 0 );
+			if ( '' == get_post_meta( $this->ID, '_give_download_earnings', true ) ) {
+				add_post_meta( $this->ID, '_give_download_earnings', 0 );
 			}
 
-			$this->earnings = get_post_meta( $this->ID, '_edd_download_earnings', true );
+			$this->earnings = get_post_meta( $this->ID, '_give_download_earnings', true );
 
 			if ( $this->earnings < 0 ) {
 				// Never let earnings be less than zero
@@ -324,10 +324,10 @@ class Give_Donate_Form {
 	 */
 	public function increase_earnings( $amount = 0 ) {
 
-		$earnings = edd_get_download_earnings_stats( $this->ID );
+		$earnings = give_get_download_earnings_stats( $this->ID );
 		$earnings = $earnings + (float) $amount;
 
-		if ( update_post_meta( $this->ID, '_edd_download_earnings', $earnings ) ) {
+		if ( update_post_meta( $this->ID, '_give_download_earnings', $earnings ) ) {
 			$this->earnings = $earnings;
 
 			return $earnings;
@@ -345,14 +345,14 @@ class Give_Donate_Form {
 	 */
 	public function decrease_earnings( $amount ) {
 
-		$earnings = edd_get_download_earnings_stats( $this->ID );
+		$earnings = give_get_download_earnings_stats( $this->ID );
 
 		if ( $earnings > 0 ) // Only decrease if greater than zero
 		{
 			$earnings = $earnings - (float) $amount;
 		}
 
-		if ( update_post_meta( $this->ID, '_edd_download_earnings', $earnings ) ) {
+		if ( update_post_meta( $this->ID, '_give_download_earnings', $earnings ) ) {
 			$this->earnings = $earnings;
 
 			return $earnings;
@@ -363,7 +363,7 @@ class Give_Donate_Form {
 	}
 
 	/**
-	 * Determine if the download is free or if the given price ID is free
+	 * Determine if the donation is free or if the given price ID is free
 	 *
 	 * @since 1.0
 	 * @return bool
@@ -371,19 +371,19 @@ class Give_Donate_Form {
 	public function is_free( $price_id = false ) {
 
 		$is_free          = false;
-		$variable_pricing = edd_has_variable_prices( $this->ID );
+		$variable_pricing = give_has_variable_prices( $this->ID );
 
 		if ( $variable_pricing && ! is_null( $price_id ) && $price_id !== false ) {
-			$price = edd_get_price_option_amount( $this->ID, $price_id );
+			$price = give_get_price_option_amount( $this->ID, $price_id );
 		} elseif ( ! $variable_pricing ) {
-			$price = get_post_meta( $this->ID, 'edd_price', true );
+			$price = get_post_meta( $this->ID, 'give_price', true );
 		}
 
 		if ( isset( $price ) && (float) $price == 0 ) {
 			$is_free = true;
 		}
 
-		return (bool) apply_filters( 'edd_is_free_download', $is_free, $this->ID, $price_id );
+		return (bool) apply_filters( 'give_is_free_download', $is_free, $this->ID, $price_id );
 
 	}
 

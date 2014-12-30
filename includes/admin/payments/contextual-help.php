@@ -60,7 +60,7 @@ function give_payments_contextual_help() {
 				<li>' . __( 'You can enter the 32-character purchase key', 'give' ) . '</li>
 				<li>' . __( 'You can enter the purchase ID', 'give' ) . '</li>
 				<li>' . __( 'You can enter a transaction ID prefixed by \'txn:\'', 'give' ) . '</li>
-				<li>' . sprintf( __( 'You can enter the %s ID prefixed by \'#\'', 'give' ), give_get_label_singular() ) . '</li>
+				<li>' . sprintf( __( 'You can enter the %s ID prefixed by \'#\'', 'give' ), give_get_forms_label_singular() ) . '</li>
 			</ul>'
 	) );
 

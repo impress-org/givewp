@@ -6,7 +6,7 @@
  * @subpackage  Classes/Roles
  * @copyright   Copyright (c) 2014, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       1.0.0
+ * @since       1.0
 */
 
 /**
@@ -113,12 +113,10 @@ class Give_Roles {
 			$wp_roles->add_cap( 'give_manager', 'view_give_sensitive_data' );
 			$wp_roles->add_cap( 'give_manager', 'export_give_reports' );
 			$wp_roles->add_cap( 'give_manager', 'manage_give_settings' );
-			$wp_roles->add_cap( 'give_manager', 'manage_give_discounts' );
 
 			$wp_roles->add_cap( 'administrator', 'view_give_reports' );
 			$wp_roles->add_cap( 'administrator', 'view_give_sensitive_data' );
 			$wp_roles->add_cap( 'administrator', 'export_give_reports' );
-			$wp_roles->add_cap( 'administrator', 'manage_give_discounts' );
 			$wp_roles->add_cap( 'administrator', 'manage_give_settings' );
 
 			// Add the main post type capabilities
@@ -158,7 +156,7 @@ class Give_Roles {
 	public function get_core_caps() {
 		$capabilities = array();
 
-		$capability_types = array( 'give_forms', 'give_payments' );
+		$capability_types = array( 'give_forms', 'give_campaigns', 'give_payments' );
 
 		foreach ( $capability_types as $capability_type ) {
 			$capabilities[ $capability_type ] = array(
@@ -246,14 +244,12 @@ class Give_Roles {
 			$wp_roles->remove_cap( 'give_manager', 'view_give_reports' );
 			$wp_roles->remove_cap( 'give_manager', 'view_give_sensitive_data' );
 			$wp_roles->remove_cap( 'give_manager', 'export_give_reports' );
-			$wp_roles->remove_cap( 'give_manager', 'manage_give_discounts' );
 			$wp_roles->remove_cap( 'give_manager', 'manage_give_settings' );
 
 			/** Site Administrator Capabilities */
 			$wp_roles->remove_cap( 'administrator', 'view_give_reports' );
 			$wp_roles->remove_cap( 'administrator', 'view_give_sensitive_data' );
 			$wp_roles->remove_cap( 'administrator', 'export_give_reports' );
-			$wp_roles->remove_cap( 'administrator', 'manage_give_discounts' );
 			$wp_roles->remove_cap( 'administrator', 'manage_give_settings' );
 
 			/** Remove the Main Post Type Capabilities */

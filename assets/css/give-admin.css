@@ -59,13 +59,13 @@ div.give-submit-wrap {
 	font-size: 13px;
 }
 
-/* Responsive Rows */
+/* Responsive Settings Rows */
 
-.cmb2-wrap .cmb-row {
+.give_settings .cmb2-wrap .cmb-row {
 	display: table-row;
 }
 
-.cmb2-wrap .cmb-row > .cmb-th, .cmb2-wrap .cmb-row > .cmb-td {
+.give_settings .cmb2-wrap .cmb-row > .cmb-th, .give_settings .cmb2-wrap .cmb-row > .cmb-td {
 	display: table-cell;
 	float: none;
 }
@@ -187,7 +187,7 @@ Forms CPT
 
 /* Hide conditional fields */
 
-.cmb2-id--give-set-price, .cmb2-id--give-levels-header, .cmb2-id--give-levels-header + .cmb-repeat-group-wrap, .cmb2-id--give-display-style {
+.cmb2-id--give-set-price, .cmb2-id--give-levels-header, .cmb2-id--give-levels-header + .cmb-repeat-group-wrap, .cmb2-id--give-display-style, .post-type-give_forms .tablenav #post-query-submit {
 	display: none;
 }
 
@@ -219,23 +219,27 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
 	margin: 0 !important;
 }
 
-.table-container {
+.cmb2-id--give-levels-header .table-container {
 	display: table;
 	width: 100%;
 	border-top: 1px solid #e9e9e9;
 	border-left: 1px solid #e9e9e9;
 }
 
-.table-container > .table-row {
+.cmb2-id--give-levels-header .table-container > .table-row {
 	display: table-row;
 	background: #FCFCFC;
 }
 
-.table-container > .table-row > .table-cell {
+.cmb2-id--give-levels-header .table-container > .table-row > .table-cell {
 	display: table-cell;
 	vertical-align: middle;
 	padding: 10px 15px;
 	border-right: 1px solid #e9e9e9;
+}
+
+#_give_donation_levels_repeat .cmbhandle {
+	display: none;
 }
 
 /* Smaller Resolution Desktops AND UP */

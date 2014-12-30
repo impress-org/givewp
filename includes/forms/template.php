@@ -1,9 +1,9 @@
 <?php
 /**
- * Checkout Form Template
+ * Give Form Template
  *
  * @package     Give
- * @subpackage  Checkout
+ * @subpackage  Forms
  * @copyright   Copyright (c) 2014, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0

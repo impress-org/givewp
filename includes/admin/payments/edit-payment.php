@@ -83,7 +83,7 @@ $payment_data = give_get_payment_meta( $payment_id );
 					}
 					?>
 					<p id="edit-downloads">
-						<a href="#TB_inline?width=640&amp;inlineId=available-downloads" class="thickbox" title="<?php printf( __( 'Add %s to purchase', 'give' ), strtolower( give_get_label_plural() ) ); ?>"><?php printf( __( 'Add %s to purchase', 'give' ), strtolower( give_get_label_plural() ) ); ?></a>
+						<a href="#TB_inline?width=640&amp;inlineId=available-downloads" class="thickbox" title="<?php printf( __( 'Add %s to purchase', 'give' ), strtolower( give_get_forms_label_plural() ) ); ?>"><?php printf( __( 'Add %s to purchase', 'give' ), strtolower( give_get_forms_label_plural() ) ); ?></a>
 					</p>
 				</td>
 			</tr>
@@ -173,7 +173,7 @@ $payment_data = give_get_payment_meta( $payment_id );
 			</p>
 
 			<p>
-				<a href="#" class="button-secondary edd-add-another-download"><?php echo sprintf( __( 'Add Another %s', 'give' ), esc_html( give_get_label_singular() ) ); ?></a>
+				<a href="#" class="button-secondary edd-add-another-download"><?php echo sprintf( __( 'Add Another %s', 'give' ), esc_html( give_get_forms_label_singular() ) ); ?></a>
 			</p>
 
 			<p>

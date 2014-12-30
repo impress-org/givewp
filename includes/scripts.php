@@ -176,12 +176,12 @@ function give_load_admin_scripts( $hook ) {
 			'regenerate_api_key'      => __( 'Are you sure you wish to regenerate this API key?', 'give' ),
 			'resend_receipt'          => __( 'Are you sure you wish to resend the purchase receipt?', 'give' ),
 			'copy_download_link_text' => __( 'Copy these links to your clipboard and give them to your customer', 'give' ),
-			'delete_payment_download' => sprintf( __( 'Are you sure you wish to delete this %s?', 'give' ), give_get_label_singular() ),
+			'delete_payment_download' => sprintf( __( 'Are you sure you wish to delete this %s?', 'give' ), give_get_forms_label_singular() ),
 			'one_price_min'           => __( 'You must have at least one price', 'give' ),
 			'one_file_min'            => __( 'You must have at least one file', 'give' ),
 			'one_field_min'           => __( 'You must have at least one field', 'give' ),
-			'one_option'              => sprintf( __( 'Choose a %s', 'give' ), give_get_label_singular() ),
-			'one_or_more_option'      => sprintf( __( 'Choose one or more %s', 'give' ), give_get_label_plural() ),
+			'one_option'              => sprintf( __( 'Choose a %s', 'give' ), give_get_forms_label_singular() ),
+			'one_or_more_option'      => sprintf( __( 'Choose one or more %s', 'give' ), give_get_forms_label_plural() ),
 			'numeric_item_price'      => __( 'Item price must be numeric', 'give' ),
 			'numeric_quantity'        => __( 'Quantity must be numeric', 'give' ),
 			'currency_sign'           => give_currency_filter(''),
@@ -189,7 +189,7 @@ function give_load_admin_scripts( $hook ) {
 			'currency_decimals'       => give_currency_decimal_filter(),
 			'new_media_ui'            => apply_filters( 'give_use_35_media_ui', 1 ),
 			'remove_text'             => __( 'Remove', 'give' ),
-			'type_to_search'          => sprintf( __( 'Type to search %s', 'give' ), give_get_label_plural() ),
+			'type_to_search'          => sprintf( __( 'Type to search %s', 'give' ), give_get_forms_label_plural() ),
 		));
 
 
@@ -207,7 +207,7 @@ add_action( 'admin_enqueue_scripts', 'give_load_admin_scripts', 100 );
  * @global $wp_version
  * @return void
  */
-function give_admin_downloads_icon() {
+function give_admin_icon() {
 	global $wp_version;
 
 	$menu_icon = '\f507';
@@ -225,4 +225,4 @@ function give_admin_downloads_icon() {
 <?php
 }
 
-add_action( 'admin_head', 'give_admin_downloads_icon' );
+add_action( 'admin_head', 'give_admin_icon' );

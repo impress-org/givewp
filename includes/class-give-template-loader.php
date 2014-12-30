@@ -3,11 +3,12 @@
 /**
  * Template Loader
  *
- * @class          WC_Template
- * @version        2.2.0
- * @package        WooCommerce/Classes
- * @category       Class
- * @author         WooThemes
+ * @version        1.0
+ * @subpackage     Classes/Template-Loader
+ * @copyright      Copyright (c) 2014, WordImpress
+ * @license        http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since          1.0.0
+ *
  */
 class Give_Template_Loader {
 
@@ -50,7 +51,6 @@ class Give_Template_Loader {
 		add_action( 'give_single_form_summary', 'give_get_donation_form', 10 );
 
 
-
 	}
 
 	/**
@@ -63,7 +63,7 @@ class Give_Template_Loader {
 	 *
 	 * For beginners, it also looks for a give.php template first. If the user adds
 	 * this to the theme (containing a give() inside) this will be used for all
-	 * woocommerce templates.
+	 * give templates.
 	 *
 	 * @param mixed $template
 	 *

@@ -39,7 +39,7 @@ class Give_HTML_Elements {
 			'multiple'    => false,
 			'selected'    => 0,
 			'chosen'      => false,
-			'placeholder' => sprintf( __( 'Select a %s', 'give' ), give_get_label_singular() ),
+			'placeholder' => sprintf( __( 'Select a %s', 'give' ), give_get_forms_label_singular() ),
 			'number'      => 30
 		);
 
@@ -55,7 +55,7 @@ class Give_HTML_Elements {
 		$options = array();
 
 		if ( $products ) {
-			$options[0] = sprintf( __( 'Select a %s', 'give' ), give_get_label_singular() );
+			$options[0] = sprintf( __( 'Select a %s', 'give' ), give_get_forms_label_singular() );
 			foreach ( $products as $product ) {
 				$options[ absint( $product->ID ) ] = esc_html( $product->post_title );
 			}

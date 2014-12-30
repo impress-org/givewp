@@ -187,8 +187,8 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/country-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/template-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/misc-functions.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/checkout/functions.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/checkout/template.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/forms/functions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/forms/template.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/shortcodes.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/formatting.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/price-functions.php';
@@ -216,7 +216,6 @@ if ( ! class_exists( 'Give' ) ) : /**
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/welcome.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/metabox.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-notices.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-actions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/system-info.php';
@@ -224,6 +223,11 @@ if ( ! class_exists( 'Give' ) ) : /**
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/actions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/payments-history.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/contextual-help.php';
+
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/functions.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/metabox.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/dashboard-columns.php';
+
 
 			} else {
 
