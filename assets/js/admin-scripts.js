@@ -1,6 +1,11 @@
-/**
+/*!
  * Give Admin JS
  *
+ * @description: The Give Admin scripts
+ * @package:     Give
+ * @subpackage:  Assets/JS
+ * @copyright:   Copyright (c) 2014, WordImpress
+ * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
 jQuery.noConflict();
@@ -56,13 +61,12 @@ jQuery.noConflict();
 	};
 
 
-	
 	/**
 	 * Edit payment screen JS
 	 */
 	var Give_Edit_Payment = {
 
-		init : function() {
+		init: function () {
 			this.edit_address();
 			this.recalculate_total();
 			this.add_note();
@@ -71,136 +75,135 @@ jQuery.noConflict();
 		},
 
 
-		edit_address : function() {
+		edit_address: function () {
 
 			// Update base state field based on selected base country
-			$('select[name="give-payment-address[0][country]"]').change(function() {
-				var $this = $(this);
+			$( 'select[name="give-payment-address[0][country]"]' ).change( function () {
+				var $this = $( this );
 				data = {
-					action: 'give_get_shop_states',
-					country: $this.val(),
+					action    : 'give_get_shop_states',
+					country   : $this.val(),
 					field_name: 'give-payment-address[0][state]'
 				};
-				$.post(ajaxurl, data, function (response) {
-					if( 'nostates' == response ) {
-						$('#give-order-address-state-wrap select, #give-order-address-state-wrap input').replaceWith( '<input type="text" name="give-payment-address[0][state]" value="" class="give-edit-toggles medium-text"/>' );
+				$.post( ajaxurl, data, function ( response ) {
+					if ( 'nostates' == response ) {
+						$( '#give-order-address-state-wrap select, #give-order-address-state-wrap input' ).replaceWith( '<input type="text" name="give-payment-address[0][state]" value="" class="give-edit-toggles medium-text"/>' );
 					} else {
-						$('#give-order-address-state-wrap select, #give-order-address-state-wrap input').replaceWith( response );
+						$( '#give-order-address-state-wrap select, #give-order-address-state-wrap input' ).replaceWith( response );
 					}
-				});
+				} );
 
 				return false;
-			});
+			} );
 
 		},
 
-		recalculate_total : function() {
+		recalculate_total: function () {
 
 			// Remove a download from a purchase
-			$('#give-order-recalc-total').on('click', function(e) {
+			$( '#give-order-recalc-total' ).on( 'click', function ( e ) {
 				e.preventDefault();
 				var total = 0;
-				if( $('#give-purchased-files .row .give-payment-details-download-amount').length ) {
-					$('#give-purchased-files .row .give-payment-details-download-amount').each(function() {
-						total += parseFloat( $(this).val() );
-					});
+				if ( $( '#give-purchased-files .row .give-payment-details-download-amount' ).length ) {
+					$( '#give-purchased-files .row .give-payment-details-download-amount' ).each( function () {
+						total += parseFloat( $( this ).val() );
+					} );
 				}
-				if( $('.give-payment-fees').length ) {
-					$('.give-payment-fees span.fee-amount').each(function() {
-						total += parseFloat( $(this).data('fee') );
-					});
+				if ( $( '.give-payment-fees' ).length ) {
+					$( '.give-payment-fees span.fee-amount' ).each( function () {
+						total += parseFloat( $( this ).data( 'fee' ) );
+					} );
 				}
-				$('input[name=give-payment-total]').val( total );
-			});
+				$( 'input[name=give-payment-total]' ).val( total );
+			} );
 
 		},
 
-		add_note : function() {
+		add_note: function () {
 
-			$('#give-add-payment-note').on('click', function(e) {
+			$( '#give-add-payment-note' ).on( 'click', function ( e ) {
 				e.preventDefault();
 				var postData = {
-					action : 'give_insert_payment_note',
-					payment_id : $(this).data('payment-id'),
-					note : $('#give-payment-note').val()
+					action    : 'give_insert_payment_note',
+					payment_id: $( this ).data( 'payment-id' ),
+					note      : $( '#give-payment-note' ).val()
 				};
 
-				if( postData.note ) {
+				if ( postData.note ) {
 
-					$.ajax({
-						type: "POST",
-						data: postData,
-						url: ajaxurl,
-						success: function (response) {
-							$('#give-payment-notes-inner').append( response );
-							$('.give-no-payment-notes').hide();
-							$('#give-payment-note').val('');
+					$.ajax( {
+						type   : "POST",
+						data   : postData,
+						url    : ajaxurl,
+						success: function ( response ) {
+							$( '#give-payment-notes-inner' ).append( response );
+							$( '.give-no-payment-notes' ).hide();
+							$( '#give-payment-note' ).val( '' );
 						}
-					}).fail(function (data) {
+					} ).fail( function ( data ) {
 						if ( window.console && window.console.log ) {
 							console.log( data );
 						}
-					});
+					} );
 
 				} else {
-					var border_color = $('#give-payment-note').css('border-color');
-					$('#give-payment-note').css('border-color', 'red');
-					setTimeout( function() {
-						$('#give-payment-note').css('border-color', border_color );
+					var border_color = $( '#give-payment-note' ).css( 'border-color' );
+					$( '#give-payment-note' ).css( 'border-color', 'red' );
+					setTimeout( function () {
+						$( '#give-payment-note' ).css( 'border-color', border_color );
 					}, 500 );
 				}
 
-			});
+			} );
 
 		},
 
-		remove_note : function() {
+		remove_note: function () {
 
-			$('body').on('click', '.give-delete-payment-note', function(e) {
+			$( 'body' ).on( 'click', '.give-delete-payment-note', function ( e ) {
 
 				e.preventDefault();
 
-				if( confirm( give_vars.delete_payment_note) ) {
+				if ( confirm( give_vars.delete_payment_note ) ) {
 
 					var postData = {
-						action : 'give_delete_payment_note',
-						payment_id : $(this).data('payment-id'),
-						note_id : $(this).data('note-id')
+						action    : 'give_delete_payment_note',
+						payment_id: $( this ).data( 'payment-id' ),
+						note_id   : $( this ).data( 'note-id' )
 					};
 
-					$.ajax({
-						type: "POST",
-						data: postData,
-						url: ajaxurl,
-						success: function (response) {
-							$('#give-payment-note-' + postData.note_id ).remove();
-							if( ! $('.give-payment-note').length ) {
-								$('.give-no-payment-notes').show();
+					$.ajax( {
+						type   : "POST",
+						data   : postData,
+						url    : ajaxurl,
+						success: function ( response ) {
+							$( '#give-payment-note-' + postData.note_id ).remove();
+							if ( !$( '.give-payment-note' ).length ) {
+								$( '.give-no-payment-notes' ).show();
 							}
 							return false;
 						}
-					}).fail(function (data) {
+					} ).fail( function ( data ) {
 						if ( window.console && window.console.log ) {
 							console.log( data );
 						}
-					});
+					} );
 					return true;
 				}
 
-			});
+			} );
 
 		},
 
-		resend_receipt : function() {
-			$( 'body' ).on( 'click', '#give-resend-receipt', function( e ) {
+		resend_receipt: function () {
+			$( 'body' ).on( 'click', '#give-resend-receipt', function ( e ) {
 				return confirm( give_vars.resend_receipt );
 			} );
 		}
 
 	};
-	
-	
-	
+
+
 	//On DOM Ready
 	$( function () {
 
@@ -208,7 +211,7 @@ jQuery.noConflict();
 		toggle_conditional_form_fields();
 		enable_admin_datepicker();
 		Give_Edit_Payment.init();
-		
+
 	} );
 
 

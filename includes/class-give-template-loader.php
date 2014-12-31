@@ -62,7 +62,7 @@ class Give_Template_Loader {
 	 * overrides in /theme/give/ by default
 	 *
 	 * For beginners, it also looks for a give.php template first. If the user adds
-	 * this to the theme (containing a give() inside) this will be used for all
+	 * this to the theme (containing give() inside) this will be used for all
 	 * give templates.
 	 *
 	 * @param mixed $template

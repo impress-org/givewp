@@ -101,9 +101,9 @@ function give_register_styles() {
 	$parent_theme_style_sheet_2 = trailingslashit( get_template_directory() ) . $templates_dir . 'give.css';
 	$give_plugin_style_sheet    = trailingslashit( give_get_templates_dir() ) . $file;
 
-	// Look in the child theme directory first, followed by the parent theme, followed by the EDD core templates directory
+	// Look in the child theme directory first, followed by the parent theme, followed by the Give core templates directory
 	// Also look for the min version first, followed by non minified version, even if SCRIPT_DEBUG is not enabled.
-	// This allows users to copy just edd.css to their theme
+	// This allows users to copy just give.css to their theme
 	if ( file_exists( $child_theme_style_sheet ) || ( ! empty( $suffix ) && ( $nonmin = file_exists( $child_theme_style_sheet_2 ) ) ) ) {
 		if ( ! empty( $nonmin ) ) {
 			$url = trailingslashit( get_stylesheet_directory_uri() ) . $templates_dir . 'give.css';

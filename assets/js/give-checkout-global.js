@@ -1,5 +1,11 @@
-/**
+/*!
  * Give Form Checkout JS
+ *
+ * @description: Handles JS functionality for the donation form checkout
+ * @package:     Give
+ * @subpackage:  Assets/JS
+ * @copyright:   Copyright (c) 2014, WordImpress
+ * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 jQuery( document ).ready( function ( $ ) {
 	var $body = $( 'body' ),

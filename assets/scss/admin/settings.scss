@@ -1,0 +1,109 @@
+/**
+ * Give Settings SCSS
+ *
+ * @package     Give
+ * @subpackage  SCSS/Admin
+ * @copyright   Copyright (c) 2014, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+
+/*------------------------------------
+Settings
+--------------------------------------*/
+
+.give_settings_page {
+
+  .nav-tab-wrapper {
+	margin-bottom: 5px;
+  }
+
+  span.cmb2-metabox-description {
+	font-size: 13px;
+  }
+
+  .cmb2-wrap .cmb-type-checkbox input[type="checkbox"] {
+	display: block;
+	margin-bottom: 5px;
+  }
+
+  div.give-submit-wrap {
+	margin: 20px 0;
+  }
+
+  .give_forms_page_give-payment-history .postbox .hndle {
+	cursor: default;
+  }
+
+}
+
+/* Section Titles */
+
+.cmb-type-title h3 {
+  float: left;
+  width: 220px;
+  font-style: italic;
+  color: #AAA;
+}
+
+.postbox-container #_give_donation_levels_repeat > .cmb-repeatable-grouping:not(:last-of-type) {
+  border-bottom: 1px solid #e9e9e9;
+  border-top: none;
+}
+
+.cmb-type-enabled-gateways .cmb-td > p:first-of-type {
+  display: none;
+}
+
+/* CMB2 Checkbox Revised Styles */
+.cmb-type-checkbox .cmb-td {
+  width: 80%;
+}
+
+.cmb-type-checkbox .cmb-td label {
+  font-size: 13px;
+}
+
+/* Responsive Settings Rows */
+.give_settings {
+  .cmb2-wrap .cmb-row {
+	display: table-row;
+  }
+}
+
+.give_settings .cmb2-wrap .cmb-row > .cmb-th, .give_settings .cmb2-wrap .cmb-row > .cmb-td {
+  display: table-cell;
+  float: none;
+}
+
+/* Custom Title Separators */
+.cmb2-id-give-title label {
+  font-style: italic;
+  color: #AAA;
+  cursor: default;
+  > div.cmb-th {
+	padding-bottom: 10px;
+  }
+  > div.cmb-td {
+	padding-bottom: 5px;
+  }
+}
+
+/* System Info page styles
+-------------------------------------------------------------- */
+#system-info-textarea {
+  width: 800px;
+  height: 600px;
+  font-family: Menlo, Monaco, monospace;
+  background: #FFF;
+  white-space: pre;
+  overflow: auto;
+  display: block;
+}
+
+#give-download-sysinfo {
+  margin: 0;
+}
+
+.give_forms_page_give-settings .give-submit-wrap {
+  display: none; /* Hide Save settings button on System Info Tab (not needed) */
+}

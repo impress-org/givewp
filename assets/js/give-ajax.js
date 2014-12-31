@@ -1,5 +1,11 @@
-/**
+/*!
  * Give AJAX JS
+ *
+ * @description: The Give AJAX scripts
+ * @package:     Give
+ * @subpackage:  Assets/JS
+ * @copyright:   Copyright (c) 2014, WordImpress
+ * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 var give_scripts;
 jQuery( document ).ready( function ( $ ) {
@@ -80,7 +86,7 @@ jQuery( document ).ready( function ( $ ) {
 
 	$( document ).on( 'click', '.give_donate_form #give_purchase_submit input[type=submit]', function ( e ) {
 
-		var givePurchaseform = $( '.give_donate_form' ).get(0);
+		var givePurchaseform = $( '.give_donate_form' ).get( 0 );
 
 		if ( typeof givePurchaseform.checkValidity === "function" && false === givePurchaseform.checkValidity() ) {
 			return;
@@ -90,7 +96,7 @@ jQuery( document ).ready( function ( $ ) {
 		e.preventDefault();
 
 		//this form
-		var this_form = $(this).parents('form:first');
+		var this_form = $( this ).parents( 'form:first' );
 
 		//Submit btn text
 		var complete_purchase_val = $( this ).val();

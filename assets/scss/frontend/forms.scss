@@ -1,0 +1,49 @@
+/**
+ * Give Frontend Forms SCSS
+ *
+ * @package     Give
+ * @subpackage  SCSS/Frontend
+ * @copyright   Copyright (c) 2014, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+
+/*------------------------------------
+Layout
+--------------------------------------*/
+[id*='give-form'] {
+  div.images {
+	width: 38%;
+	float: left;
+  }
+
+  div.images img {
+	display: block;
+	width: 100%;
+	height: auto;
+	box-shadow: none;
+  }
+
+  div.summary {
+	width: 58%;
+	float: right;
+  }
+
+  .give_form select.edd-select.required {
+	color: #000;
+  }
+
+}
+
+
+/*------------------------------------
+Form
+--------------------------------------*/
+
+@media (max-width: 768px) {
+
+	[id*='give-form'] div.images, [id*='give-form'] div.summary {
+		width: 100%;
+		float: none;
+	}
+
+}
