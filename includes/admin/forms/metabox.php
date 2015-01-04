@@ -25,6 +25,14 @@ add_filter( 'cmb2_meta_boxes', 'give_single_forms_cmb2_metaboxes' );
  */
 function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 
+
+	$post_id = give_get_admin_post_id();
+
+	$price            = give_get_form_price( $post_id );
+	$variable_pricing = give_has_variable_prices( $post_id );
+	$prices           = give_get_variable_prices( $post_id );
+
+
 	// Start with an underscore to hide fields from custom fields list
 	$prefix = '_give_';
 
@@ -55,6 +63,9 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'description' => __( 'This is the set donation amount for this form.', 'give' ),
 					'id'          => $prefix . 'set_price',
 					'type'        => 'text_money',
+					'attributes'  => array(
+						'value' => isset( $price ) ? esc_attr( give_format_amount( $price ) ) : '',
+					),
 				),
 				//Donation levels: Header
 				array(
@@ -84,15 +95,17 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 							'attributes' => array(
 								'placeholder' => 'Donation Level',
 								'rows'        => 3,
-								'required'    => 'required',
 							),
 						),
 						array(
-							'name'    => __( 'Default', 'give' ),
-							'id'      => $prefix . 'default',
-							'type'    => 'radio_inline',
-							'options' => array(
+							'name'       => __( 'Default', 'give' ),
+							'id'         => $prefix . 'default',
+							'type'       => 'radio_inline',
+							'options'    => array(
 								'default' => __( 'Default', 'give' ),
+							),
+							'attributes' => array(
+								'class' => 'donation-level-radio',
 							),
 						),
 					),

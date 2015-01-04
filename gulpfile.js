@@ -27,7 +27,7 @@ var gulp = require( 'gulp' ),
 var source_paths = {
 	admin_styles   : ['./assets/scss/admin/give-admin.scss'],
 	frontend_styles: ['./assets/scss/frontend/give-frontend.scss'],
-	scripts        : ['./assets/js/*.js', '!./assets/js/*.min.js' ]
+	scripts        : ['./assets/js/*.js', '!./assets/js/*.min.js']
 };
 
 /* Admin SCSS Task
@@ -77,15 +77,15 @@ gulp.task( 'frontend_styles', function () {
  ------------------------------------- */
 gulp.task( 'scripts', function () {
 	return gulp.src( source_paths.scripts )
-		.pipe( uglify({
+		.pipe( uglify( {
 			preserveComments: 'all'
-		}) )
+		} ) )
 		.pipe( rename( {suffix: ".min"} ) )
 		.pipe( gulp.dest( 'assets/js' ) )
 		.pipe( notify( {
 			message: 'Scripts task complete!',
 			onLast : true //only notify on completion of task (prevents multiple notifications per file)
-		 } ) )
+		} ) )
 		.pipe( livereload() );
 } );
 
@@ -130,6 +130,6 @@ var onError = function ( err ) {
 /* Default Gulp task
  ------------------------------------- */
 gulp.task( 'default', function () {
-	gulp.start( 'admin_scripts', 'frontend_styles', 'scripts', 'watch' );
-	notify( {message: 'Styles task complete'} )
+	gulp.start( 'admin_styles', 'frontend_styles', 'scripts', 'watch' );
+	notify( {message: 'Default task complete'} )
 } );

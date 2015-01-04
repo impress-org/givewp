@@ -11,23 +11,67 @@
 jQuery.noConflict();
 (function ( $ ) {
 
-//--------------------------------------
-// Single Forms
-//--------------------------------------
+	//--------------------------------------
+	// Single Forms
+	//--------------------------------------
 
-	//Default Radio Button: Allow only one to be checked
+	/**
+	 * Default Radio Button
+	 *
+	 * @description: Allow only one to be checked
+	 * @since: 1.0
+	 */
+
 	var handle_default_radio = function () {
 		"use strict";
-		var default_radio = $( '#_give_donation_levels_repeat input[type=radio]' );
+		var default_radio = $( 'input.donation-level-radio' );
+		var repeatable_rows = $( '#_give_donation_levels_repeat > .cmb-repeatable-grouping' );
+		var number_of_prices = repeatable_rows.length;
+
+		default_radio_one_checked_radio( default_radio );
+
+		//Ensure that there's always a default price level checked
+		$( 'body' ).on( 'click', '#_give_donation_levels_repeat button.cmb-add-group-row', function ( e ) {
+			var default_radio = $( 'input.donation-level-radio' );
+			default_radio_one_checked_radio( default_radio );
+		} );
+
+		//When a row is removed containing the default selection then revert default to first repeatable row
+		$( 'body' ).on( 'cmb2_remove_row', function ( e ) {
+			var default_radio = $( 'input.donation-level-radio' );
+			var repeatable_rows = $( '#_give_donation_levels_repeat > .cmb-repeatable-grouping' );
+			if ( default_radio.is( ':checked' ) === false ) {
+				repeatable_rows.first().find( 'input.donation-level-radio' ).prop( 'checked', true );
+			}
+		} );
+
+
+		//If only one price then that one is default
+		if ( number_of_prices === 1 ) {
+			console.log( 'here' );
+			default_radio.prop( 'checked', true );
+		}
+
+
+	};
+
+	/**
+	 * Only one radio checked
+	 *
+	 * @description: This function runs when a new row is added and also on DOM load
+	 * @since: 1.0
+	 */
+	var default_radio_one_checked_radio = function ( default_radio ) {
 		default_radio.on( 'change', function () {
 			default_radio.not( this ).prop( 'checked', false );
 		} );
-
 	};
 
 
 	/**
 	 * Toggle Conditional Form Fields
+	 *
+	 *  @since: 1.0
 	 */
 	var toggle_conditional_form_fields = function () {
 
@@ -52,6 +96,7 @@ jQuery.noConflict();
 
 	/**
 	 * Setup Admin Datepicker
+	 * @since: 1.0
 	 */
 	var enable_admin_datepicker = function () {
 		// Date picker
