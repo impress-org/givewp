@@ -27,6 +27,7 @@ function give_download_history() {
 	if ( is_user_logged_in() ) {
 		ob_start();
 		give_get_template_part( 'history', 'downloads' );
+
 		return ob_get_clean();
 	}
 }
@@ -45,7 +46,6 @@ function give_purchase_history() {
 	if ( is_user_logged_in() ) {
 		ob_start();
 		give_get_template_part( 'history', 'purchases' );
-
 		return ob_get_clean();
 	}
 }
@@ -65,7 +65,7 @@ add_shortcode( 'purchase_history', 'give_purchase_history' );
  * @return string
  */
 function give_form_shortcode( $atts, $content = null ) {
-	return give_get_donation_form();
+	give_get_donation_form();
 }
 
 add_shortcode( 'give_form', 'give_form_shortcode' );
@@ -161,7 +161,7 @@ function give_receipt_shortcode( $atts, $content = null ) {
 	}
 
 	$give_receipt_args['id'] = give_get_purchase_id_by_key( $payment_key );
-	$customer_id            = give_get_payment_user_id( $give_receipt_args['id'] );
+	$customer_id             = give_get_payment_user_id( $give_receipt_args['id'] );
 
 	/*
 	 * Check if the user has permission to view the receipt
@@ -194,12 +194,12 @@ add_shortcode( 'give_receipt', 'give_receipt_shortcode' );
 /**
  * Profile Editor Shortcode
  *
- * Outputs the EDD Profile Editor to allow users to amend their details from the
- * front-end. This function uses the EDD templating system allowing users to
+ * Outputs the Give Profile Editor to allow users to amend their details from the
+ * front-end. This function uses the Give templating system allowing users to
  * override the default profile editor template. The profile editor template is located
  * under templates/profile-editor.php, however, it can be altered by creating a
  * file called profile-editor.php in the give_template directory in your active theme's
- * folder. Please visit the EDD Documentation for more information on how the
+ * folder. Please visit the Give Documentation for more information on how the
  * templating system is used.
  *
  * @since  1.0
@@ -228,7 +228,7 @@ add_shortcode( 'give_profile_editor', 'give_profile_editor_shortcode' );
  *
  * Processes the profile updater form by updating the necessary fields
  *
- * @since  1.4
+ * @since  1.0
  * @author Sunny Ratilal
  *
  * @param array $data Data sent from the profile editor
@@ -242,7 +242,7 @@ function give_process_profile_editor_updates( $data ) {
 	}
 
 	// Nonce security
-	if ( ! wp_verify_nonce( $data['give_profile_editor_nonce'], 'edd-profile-editor-nonce' ) ) {
+	if ( ! wp_verify_nonce( $data['give_profile_editor_nonce'], 'give-profile-editor-nonce' ) ) {
 		return false;
 	}
 
@@ -317,3 +317,4 @@ function give_process_profile_editor_updates( $data ) {
 }
 
 add_action( 'give_edit_user_profile', 'give_process_profile_editor_updates' );
+

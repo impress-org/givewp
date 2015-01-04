@@ -1,7 +1,7 @@
 /**
  *  Give Gulp File
  *
- *  @description: Used for automating development tasks using Gulp.js
+ *  @description: Used for automating development tasks such as minifying files, compiling SASS and live-reload; using Gulp.js
  *  @author: Devin
  *  @created: 12/30/2014
  */
@@ -55,25 +55,26 @@ gulp.task( 'admin_styles', function () {
  ------------------------------------- */
 gulp.task( 'frontend_styles', function () {
 	return gulp.src( source_paths.frontend_styles )
-		.pipe( sourcemaps.init() )
+		.pipe( sourcemaps.init() ) //start up sourcemapping
 		.pipe( sass( {
 			errLogToConsole: true
-		} ) )
-		.pipe( autoprefixer() )
-		.pipe( rename( 'give.css' ) )
-		.pipe( sourcemaps.write( '../assets/css/maps' ) )
-		.pipe( gulp.dest( './templates' ) )
-		.pipe( rename( 'give.min.css' ) )
-		.pipe( minifyCSS() )
-		.pipe( gulp.dest( './templates' ) )
-		.pipe( livereload() )
+		} ) ) //compile SASS; ensure any errors don't stop gulp watch
+		.pipe( autoprefixer() ) //add prefixes for older browsers
+		.pipe( rename( 'give.css' ) ) //rename for our main un-minfied file
+		.pipe( sourcemaps.write( '../assets/css/maps' ) ) //write maps to the appropriate plugin dir
+		.pipe( gulp.dest( './templates' ) ) //place compiled file in appropriate directory
+		.pipe( rename( 'give.min.css' ) ) //rename for our minified version
+		.pipe( minifyCSS() ) //actually minify the file
+		.pipe( gulp.dest( './templates' ) ) //place the minified compiled file
+		.pipe( livereload() ) //reload browser
 		.pipe( notify( {
 			message: 'Frontend styles task complete!',
-			onLast : true //only notify on completion of task
+			onLast : true //notify developer: only notify on completion of task (prevents multiple notifications per file)
 		} ) );
 } );
 
-// Concatenate & Minify JS
+/* Concatenate & Minify JS
+ ------------------------------------- */
 gulp.task( 'scripts', function () {
 	return gulp.src( source_paths.scripts )
 		.pipe( uglify({
@@ -83,7 +84,7 @@ gulp.task( 'scripts', function () {
 		.pipe( gulp.dest( 'assets/js' ) )
 		.pipe( notify( {
 			message: 'Scripts task complete!',
-			onLast : true //only notify on completion of task
+			onLast : true //only notify on completion of task (prevents multiple notifications per file)
 		 } ) )
 		.pipe( livereload() );
 } );

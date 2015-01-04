@@ -50,6 +50,9 @@ jQuery.noConflict();
 	};
 
 
+	/**
+	 * Setup Admin Datepicker
+	 */
 	var enable_admin_datepicker = function () {
 		// Date picker
 		if ( $( '.give_datepicker' ).length > 0 ) {
@@ -58,6 +61,25 @@ jQuery.noConflict();
 				dateFormat: dateFormat
 			} );
 		}
+	};
+
+
+	/**
+	 * Setup Pretty Chosen Select Fields
+	 */
+	var setup_chosen_give_selects = function () {
+		// Setup Chosen Selects
+		$( '.give-select-chosen' ).chosen( {
+			inherit_select_classes   : true,
+			placeholder_text_single  : give_vars.one_option,
+			placeholder_text_multiple: give_vars.one_or_more_option
+		} );
+
+		// This fixes the Chosen box being 0px wide when the thickbox is opened
+		$( '#post' ).on( 'click', '.give-thickbox', function () {
+			$( '.give-select-chosen', '#choose-give-form' ).css( 'width', '100%' );
+		} );
+
 	};
 
 
@@ -210,6 +232,7 @@ jQuery.noConflict();
 		handle_default_radio();
 		toggle_conditional_form_fields();
 		enable_admin_datepicker();
+		setup_chosen_give_selects();
 		Give_Edit_Payment.init();
 
 	} );

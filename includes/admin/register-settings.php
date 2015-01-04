@@ -78,7 +78,7 @@ class Give_Plugin_Settings {
 	 */
 	public function give_update_cmb_meta_box_url( $url ) {
 		//Path to Give's CMB
-		return plugin_dir_url( __FILE__ ) . 'cmb2';
+		return plugin_dir_url( __FILE__ ) . 'libraries/cmb2';
 	}
 
 
@@ -689,4 +689,4 @@ function give_hook_callback( $args ) {
  *
  * Super important!
  */
-require_once __DIR__ . '/cmb2/init.php';
+require_once __DIR__ . '/libraries/cmb2/init.php';
