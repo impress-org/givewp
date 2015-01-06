@@ -469,3 +469,19 @@ function give_get_admin_post_id() {
 
 	return $post_id;
 }
+
+
+/**
+ * Checks if Guest checkout is enabled
+ *
+ * @since 1.0
+ * @global $give_options
+ * @return bool $ret True if guest checkout is enabled, false otherwise
+ */
+function give_no_guest_checkout() {
+	global $give_options;
+
+	$ret = ! empty ( $give_options['logged_in_only'] );
+
+	return (bool) apply_filters( 'give_no_guest_checkout', $ret );
+}

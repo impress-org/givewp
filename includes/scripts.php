@@ -37,6 +37,7 @@ function give_load_scripts() {
 		wp_enqueue_script( 'creditCardValidator', $js_dir . 'jquery.creditCardValidator' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
 	}
 
+	wp_enqueue_script( 'give-qtip', $js_dir . 'jquery.qtip' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
 	wp_enqueue_script( 'give-checkout-global', $js_dir . 'give-checkout-global' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
 	wp_localize_script( 'give-checkout-global', 'give_global_vars', array(
 		'ajaxurl'           => give_get_ajax_url(),
@@ -52,6 +53,8 @@ function give_load_scripts() {
 		'give_version'      => GIVE_VERSION
 	) );
 
+	//General scripts
+	wp_enqueue_script( 'give-scripts', $js_dir . 'give' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
 
 	// Load AJAX scripts, if enabled
 	wp_enqueue_script( 'give-ajax', $js_dir . 'give-ajax' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
@@ -140,11 +143,12 @@ add_action( 'wp_enqueue_scripts', 'give_register_styles' );
  */
 function give_load_admin_scripts( $hook ) {
 
+
 	if ( ! apply_filters( 'give_load_admin_scripts', give_is_admin_page(), $hook ) ) {
 		return;
 	}
 
-	global $wp_version, $post;
+	global $wp_version, $post, $post_type;
 
 	$js_dir  = GIVE_PLUGIN_URL . 'assets/js/';
 	$css_dir = GIVE_PLUGIN_URL . 'assets/css/';
@@ -154,7 +158,6 @@ function give_load_admin_scripts( $hook ) {
 
 	//CSS
 	wp_enqueue_style( 'jquery-ui-css', $css_dir . 'jquery-ui-fresh' . $suffix . '.css' );
-
 	wp_enqueue_style( 'give-admin', $css_dir . 'give-admin' . $suffix . '.css', GIVE_VERSION );
 
 	//JS
@@ -163,6 +166,10 @@ function give_load_admin_scripts( $hook ) {
 
 	wp_enqueue_script( 'give-admin-scripts', $js_dir . 'admin-scripts' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
 	wp_enqueue_script( 'jquery-ui-datepicker' );
+
+	if ( $post_type === 'give_forms' ) {
+		wp_enqueue_script( 'give-admin-forms-scripts', $js_dir . 'admin-forms' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
+	}
 
 	//Localize strings & variables for JS
 	wp_localize_script( 'give-admin-scripts', 'give_vars', array(
@@ -213,14 +220,34 @@ add_action( 'admin_enqueue_scripts', 'give_load_admin_scripts', 100 );
  */
 function give_admin_icon() {
 	global $wp_version;
-
-	$menu_icon = '\f507';
-
 	?>
 	<style type="text/css" media="screen">
+
 		<?php if( version_compare( $wp_version, '3.8-RC', '>=' ) || version_compare( $wp_version, '3.8', '>=' ) ) { ?>
+		@font-face {
+			font-family: 'icomoon';
+			src: url('<?php echo GIVE_PLUGIN_URL . 'assets/fonts/icomoon.eot?-ngjl88'; ?>');
+			src: url('<?php echo GIVE_PLUGIN_URL . 'assets/fonts/icomoon.eot?#iefix-ngjl88'?>') format('embedded-opentype'),
+			url('<?php echo GIVE_PLUGIN_URL . 'assets/fonts/icomoon.woff?-ngjl88'; ?>') format('woff'),
+			url('<?php echo GIVE_PLUGIN_URL . 'assets/fonts/icomoon.ttf?-ngjl88'; ?>') format('truetype'),
+			url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.svg?-ngjl88#icomoon'; ?>') format('svg');
+			font-weight: normal;
+			font-style: normal;
+		}
+
 		#adminmenu #menu-posts-give_forms .wp-menu-image:before {
-			content: '<?php echo $menu_icon; ?>';
+			font-family: 'icomoon';
+			speak: none;
+			font-style: normal;
+			font-weight: normal;
+			font-variant: normal;
+			text-transform: none;
+			line-height: 1;
+
+			/* Better Font Rendering =========== */
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+			content: "\e600";
 		}
 
 		<?php }  ?>

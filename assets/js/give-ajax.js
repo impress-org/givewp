@@ -17,6 +17,9 @@ jQuery( document ).ready( function ( $ ) {
 		}, 200 );
 	}
 
+	//Run tooltips setup
+	setup_give_tooltips();
+
 	// Show the login form on the checkout page
 	$( '#give_checkout_form_wrap' ).on( 'click', '.give_checkout_register_login', function () {
 		var $this = $( this ),
@@ -84,9 +87,9 @@ jQuery( document ).ready( function ( $ ) {
 	} );
 
 
-	$( document ).on( 'click', '.give_donate_form #give_purchase_submit input[type=submit]', function ( e ) {
+	$( document ).on( 'click', '.give_form #give_purchase_submit input[type=submit]', function ( e ) {
 
-		var givePurchaseform = $( '.give_donate_form' ).get( 0 );
+		var givePurchaseform = $( '.give-form' ).get( 0 );
 
 		if ( typeof givePurchaseform.checkValidity === "function" && false === givePurchaseform.checkValidity() ) {
 			return;
@@ -144,7 +147,23 @@ function give_load_gateway( payment_mode ) {
 		function ( response ) {
 			jQuery( '#give_purchase_form_wrap' ).html( response );
 			jQuery( '.give-no-js' ).hide();
+
+			setup_give_tooltips();
+
 		}
 	);
 
+}
+
+function setup_give_tooltips() {
+	jQuery( '[data-tooltip!=""]' ).qtip( { // Grab all elements with a non-blank data-tooltip attr.
+		content : {
+			attr: 'data-tooltip' // Tell qTip2 to look inside this attr for its content
+		},
+		style   : {classes: 'qtip-rounded qtip-tipsy'},
+		position: {
+			my: 'bottom center',  // Position my top left...
+			at: 'top center' // at the bottom right of...
+		}
+	} )
 }

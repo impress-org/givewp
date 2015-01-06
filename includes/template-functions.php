@@ -253,7 +253,7 @@ function give_is_purchase_history_page() {
 /**
  * Adds body classes for Give pages
  *
- * @since 2.1
+ * @since 1.0
  *
  * @param array $classes current classes
  *
@@ -262,25 +262,25 @@ function give_is_purchase_history_page() {
 function give_add_body_classes( $class ) {
 	$classes = (array) $class;
 
-	//	if( give_is_success_page() ) {
-	//		$classes[] = 'edd-success';
-	//		$classes[] = 'edd-page';
-	//	}
-	//
-	//	if( give_is_failed_transaction_page() ) {
-	//		$classes[] = 'edd-failed-transaction';
-	//		$classes[] = 'edd-page';
-	//	}
-	//
-	//	if( give_is_purchase_history_page() ) {
-	//		$classes[] = 'edd-purchase-history';
-	//		$classes[] = 'edd-page';
-	//	}
-	//
-	//	if( give_is_test_mode() ) {
-	//		$classes[] = 'edd-test-mode';
-	//		$classes[] = 'edd-page';
-	//	}
+	if ( give_is_success_page() ) {
+		$classes[] = 'give-success';
+		$classes[] = 'give-page';
+	}
+
+	if ( give_is_failed_transaction_page() ) {
+		$classes[] = 'give-failed-transaction';
+		$classes[] = 'give-page';
+	}
+
+	if ( give_is_purchase_history_page() ) {
+		$classes[] = 'give-purchase-history';
+		$classes[] = 'give-page';
+	}
+
+	if ( give_is_test_mode() ) {
+		$classes[] = 'give-test-mode';
+		$classes[] = 'give-page';
+	}
 
 	return array_unique( $classes );
 }
@@ -321,7 +321,12 @@ function give_get_image_size( $image_size ) {
  * @return string
  */
 function give_get_placeholder_img_src() {
-	return apply_filters( 'give_placeholder_img_src', GIVE_PLUGIN_URL . '/assets/images/placeholder.png' );
+
+	$image_size = give_get_image_size( 'give_form_thumbnail' );
+
+	$placeholder_url = 'http://placehold.it/' . $image_size['width'] . 'x' . $image_size['height'] . '&text=' . __( 'Give+Placeholder+Image+', 'give' ) . '(' . $image_size['width'] . 'x' . $image_size['height'] . ')';
+
+	return apply_filters( 'give_placeholder_img_src', $placeholder_url );
 }
 
 

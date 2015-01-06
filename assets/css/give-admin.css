@@ -8,6 +8,51 @@
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 /**
+ * Give Frontend Fontss SCSS
+ *
+ * @description: Fonts are from icomoon and the src paths need to be relative to template directory
+ * @package     Give
+ * @subpackage  SCSS/Frontend
+ * @copyright   Copyright (c) 2014, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+@font-face {
+  font-family: 'icomoon';
+  src: url('../assets/fonts/icomoon.eot?-ngjl88');
+  src: url('../assets/fonts/icomoon.eot?#iefix-ngjl88') format('embedded-opentype'), url('../assets/fonts/icomoon.woff?-ngjl88') format('woff'), url('../assets/fonts/icomoon.ttf?-ngjl88') format('truetype'), url('../assets/fonts/icomoon.svg?-ngjl88#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal; }
+
+/* line 21, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/fonts */
+[class^="icon-"], [class*=" icon-"] {
+  font-family: 'icomoon';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
+/* line 35, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/fonts */
+.icon-question:before {
+  content: "\e602"; }
+
+/* line 39, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/fonts */
+.icon-info:before {
+  content: "\e601"; }
+
+/* line 43, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/fonts */
+.icon-new-tab:before {
+  content: "\ea7e"; }
+
+/* line 47, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/fonts */
+.icon-leaf:before {
+  content: "\e600"; }
+
+/**
  * Give Forms SCSS
  *
  * @package     Give

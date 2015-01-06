@@ -8,6 +8,478 @@
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 /**
+ * Give CSS Variables
+ */
+/**
+ * Clearfix
+ */
+/**
+ * Box Sizing
+ * https://github.com/timrogers/sass-box-sizing-mixin
+ */
+/**
+ * CSS3 Easing
+ */
+/*
+ * qTip2 - Pretty powerful tooltips - v2.2.1
+ * http://qtip2.com
+ *
+ * Copyright (c) 2014
+ * Released under the MIT licenses
+ * http://jquery.org/license
+ *
+ * Date: Mon Sep 8 2014 05:43 EDT-0400
+ * Plugins: tips
+ * Styles: core css3
+ */
+/* line 13, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip {
+  position: absolute;
+  left: -28000px;
+  top: -28000px;
+  display: none;
+  max-width: 280px;
+  min-width: 50px;
+  font-size: 10.5px;
+  line-height: 12px;
+  direction: ltr;
+  box-shadow: none;
+  padding: 0; }
+
+/* line 31, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-content {
+  position: relative;
+  padding: 5px 9px;
+  overflow: hidden;
+  text-align: left;
+  word-wrap: break-word; }
+
+/* line 40, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-titlebar {
+  position: relative;
+  padding: 5px 35px 5px 10px;
+  overflow: hidden;
+  border-width: 0 0 1px;
+  font-weight: bold; }
+
+/* line 49, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-titlebar + .qtip-content {
+  border-top-width: 0 !important; }
+
+/* Default close button class */
+/* line 52, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-close {
+  position: absolute;
+  right: -9px;
+  top: -9px;
+  z-index: 11;
+  /* Overlap .qtip-tip */
+  cursor: pointer;
+  outline: medium none;
+  border: 1px solid transparent; }
+
+/* line 63, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-titlebar .qtip-close {
+  right: 4px;
+  top: 50%;
+  margin-top: -9px; }
+
+/* line 68, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+* html .qtip-titlebar .qtip-close {
+  top: 16px; }
+
+/* IE fix */
+/* line 71, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-titlebar .ui-icon, .qtip-icon .ui-icon {
+  display: block;
+  text-indent: -1000em;
+  direction: ltr; }
+
+/* line 77, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-icon, .qtip-icon .ui-icon {
+  border-radius: 3px;
+  text-decoration: none; }
+
+/* line 84, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-icon .ui-icon {
+  width: 18px;
+  height: 14px;
+  line-height: 14px;
+  text-align: center;
+  text-indent: 0;
+  font: normal bold 10px/13px Tahoma, sans-serif;
+  color: inherit;
+  background: transparent none no-repeat -100em -100em; }
+
+/* Applied to 'focused' tooltips e.g. most recently displayed/interacted with */
+/* Applied on hover of tooltips i.e. added/removed on mouseenter/mouseleave respectively */
+/* Default tooltip style */
+/* line 104, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-default {
+  border: 1px solid #F1D031;
+  background-color: #FFFFA3;
+  color: #555; }
+
+/* line 111, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-default .qtip-titlebar {
+  background-color: #FFEF93; }
+
+/* line 115, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-default .qtip-icon {
+  border-color: #CCC;
+  background: #F1F1F1;
+  color: #777; }
+
+/* line 121, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-default .qtip-titlebar .qtip-close {
+  border-color: #AAA;
+  color: #111; }
+
+/* line 127, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-shadow {
+  box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.15); }
+
+/* Add rounded corners to your tooltips in: FF3+, Chrome 2+, Opera 10.6+, IE9+, Safari 2+ */
+/* line 136, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-rounded, .qtip-tipsy, .qtip-bootstrap {
+  border-radius: 5px; }
+
+/* line 142, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-rounded .qtip-titlebar {
+  border-radius: 4px 4px 0 0; }
+
+/* Youtube tooltip style */
+/* line 149, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-youtube {
+  border-radius: 2px;
+  box-shadow: 0 0 3px #333;
+  color: white;
+  border: 0 solid transparent;
+  background: #4A4A4A;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #4A4A4A), color-stop(100%, black));
+  background-image: -webkit-linear-gradient(top, #4A4A4A 0, black 100%); }
+
+/* line 169, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-youtube .qtip-titlebar {
+  background-color: #4A4A4A;
+  background-color: rgba(0, 0, 0, 0); }
+
+/* line 174, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-youtube .qtip-content {
+  padding: 0.75em;
+  font: 12px arial, sans-serif;
+  filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr=#4a4a4a,EndColorStr=#000000);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr=#4a4a4a,EndColorStr=#000000);"; }
+
+/* line 182, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-youtube .qtip-icon {
+  border-color: #222; }
+
+/* line 186, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-youtube .qtip-titlebar .ui-state-hover {
+  border-color: #303030; }
+
+/* jQuery TOOLS Tooltip style */
+/* line 192, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-jtools {
+  background: #232323;
+  background: rgba(0, 0, 0, 0.7);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#717171), to(#232323));
+  background-image: -webkit-linear-gradient(top, #717171, #232323);
+  border: 2px solid #ddd;
+  border: 2px solid #f1f1f1;
+  border-radius: 2px;
+  box-shadow: 0 0 12px #333; }
+
+/* IE Specific */
+/* line 214, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-jtools .qtip-titlebar {
+  background-color: transparent;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#717171,endColorstr=#4A4A4A);
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#717171,endColorstr=#4A4A4A)"; }
+
+/* line 219, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-jtools .qtip-content {
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#4A4A4A,endColorstr=#232323);
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#4A4A4A,endColorstr=#232323)"; }
+
+/* line 225, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-jtools .qtip-titlebar, .qtip-jtools .qtip-content {
+  background: transparent;
+  color: white;
+  border: 0 dashed transparent; }
+
+/* line 231, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-jtools .qtip-icon {
+  border-color: #555; }
+
+/* line 235, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-jtools .qtip-titlebar .ui-state-hover {
+  border-color: #333; }
+
+/* Cluetip style */
+/* line 241, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-cluetip {
+  box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.4);
+  background-color: #D9D9C2;
+  color: #111;
+  border: 0 dashed transparent; }
+
+/* line 251, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-cluetip .qtip-titlebar {
+  background-color: #87876A;
+  color: white;
+  border: 0 dashed transparent; }
+
+/* line 257, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-cluetip .qtip-icon {
+  border-color: #808064; }
+
+/* line 261, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-cluetip .qtip-titlebar .ui-state-hover {
+  border-color: #696952;
+  color: #696952; }
+
+/* Tipsy style */
+/* line 268, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-tipsy {
+  background: black;
+  background: rgba(0, 0, 0, 0.87);
+  color: white;
+  border: 0 solid transparent;
+  font-size: 11px;
+  font-family: 'Lucida Grande', sans-serif;
+  font-weight: bold;
+  line-height: 16px;
+  text-shadow: 0 1px black; }
+
+/* line 282, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-tipsy .qtip-titlebar {
+  padding: 6px 35px 0 10px;
+  background-color: transparent; }
+
+/* line 287, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-tipsy .qtip-content {
+  padding: 6px 10px; }
+
+/* line 291, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-tipsy .qtip-icon {
+  border-color: #222;
+  text-shadow: none; }
+
+/* line 296, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-tipsy .qtip-titlebar .ui-state-hover {
+  border-color: #303030; }
+
+/* Tipped style */
+/* line 302, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-tipped {
+  border: 3px solid #959FA9;
+  border-radius: 3px;
+  background-color: #F9F9F9;
+  color: #454545;
+  font-weight: normal;
+  font-family: serif; }
+
+/* line 316, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-tipped .qtip-titlebar {
+  border-bottom-width: 0;
+  color: white;
+  background: #3A79B8;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#3A79B8), to(#2E629D));
+  background-image: -webkit-linear-gradient(top, #3A79B8, #2E629D);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#3A79B8,endColorstr=#2E629D);
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#3A79B8,endColorstr=#2E629D)"; }
+
+/* line 330, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-tipped .qtip-icon {
+  border: 2px solid #285589;
+  background: #285589; }
+
+/* line 335, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-tipped .qtip-icon .ui-icon {
+  background-color: #FBFBFB;
+  color: #555; }
+
+/**
+ * Twitter Bootstrap style.
+ *
+ * Tested with IE 8, IE 9, Chrome 18, Firefox 9, Opera 11.
+ * Does not work with IE 7.
+ */
+/* line 347, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-bootstrap {
+  /** Taken from Bootstrap body */
+  font-size: 14px;
+  line-height: 20px;
+  color: #333333;
+  /** Taken from Bootstrap .popover */
+  padding: 1px;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  background-clip: padding-box; }
+
+/* line 369, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-bootstrap .qtip-titlebar {
+  /** Taken from Bootstrap .popover-title */
+  padding: 8px 14px;
+  margin: 0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 18px;
+  background-color: #f7f7f7;
+  border-bottom: 1px solid #ebebeb;
+  border-radius: 5px 5px 0 0; }
+
+/* line 383, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-bootstrap .qtip-titlebar .qtip-close {
+  /**
+			 * Overrides qTip2:
+			 * .qtip-titlebar .qtip-close{
+			 *   [...]
+			 *   right: 4px;
+			 *   top: 50%;
+			 *   [...]
+			 *   border-style: solid;
+			 * }
+			 */
+  right: 11px;
+  top: 45%;
+  border-style: none; }
+
+/* line 399, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-bootstrap .qtip-content {
+  /** Taken from Bootstrap .popover-content */
+  padding: 9px 14px; }
+
+/* line 404, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-bootstrap .qtip-icon {
+  /**
+		 * Overrides qTip2:
+		 * .qtip-default .qtip-icon {
+		 *   border-color: #CCC;
+		 *   background: #F1F1F1;
+		 *   color: #777;
+		 * }
+		 */
+  background: transparent; }
+
+/* line 416, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-bootstrap .qtip-icon .ui-icon {
+  /**
+			 * Overrides qTip2:
+			 * .qtip-icon .ui-icon{
+			 *   width: 18px;
+			 *   height: 14px;
+			 * }
+			 */
+  width: auto;
+  height: auto;
+  /* Taken from Bootstrap .close */
+  float: right;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 18px;
+  color: #000000;
+  text-shadow: 0 1px 0 #ffffff;
+  opacity: 0.2;
+  filter: alpha(opacity=20); }
+
+/* line 438, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip-bootstrap .qtip-icon .ui-icon:hover {
+  /* Taken from Bootstrap .close:hover */
+  color: #000000;
+  text-decoration: none;
+  cursor: pointer;
+  opacity: 0.4;
+  filter: alpha(opacity=40); }
+
+/* IE9 fix - removes all filters */
+/* line 450, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip:not(.ie9haxors) div.qtip-content, .qtip:not(.ie9haxors) div.qtip-titlebar {
+  -webkit-filter: none;
+          filter: none;
+  -ms-filter: none; }
+
+/* line 456, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip .qtip-tip {
+  margin: 0 auto;
+  overflow: hidden;
+  z-index: 10; }
+
+/* Opera bug #357 - Incorrect tip position
+	https://github.com/Craga89/qTip2/issues/367 */
+/* line 465, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+x:-o-prefocus, .qtip .qtip-tip {
+  visibility: hidden; }
+
+/* line 471, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip .qtip-tip, .qtip .qtip-tip .qtip-vml, .qtip .qtip-tip canvas {
+  position: absolute;
+  color: #123456;
+  background: transparent;
+  border: 0 dashed transparent; }
+
+/* line 479, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip .qtip-tip canvas {
+  top: 0;
+  left: 0; }
+
+/* line 481, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/jquery-qtip */
+.qtip .qtip-tip .qtip-vml {
+  behavior: url(#default#VML);
+  display: inline-block;
+  visibility: visible; }
+
+/**
+ * Give Frontend Fontss SCSS
+ *
+ * @description: Fonts are from icomoon and the src paths need to be relative to template directory
+ * @package     Give
+ * @subpackage  SCSS/Frontend
+ * @copyright   Copyright (c) 2014, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+@font-face {
+  font-family: 'icomoon';
+  src: url('../assets/fonts/icomoon.eot?-ngjl88');
+  src: url('../assets/fonts/icomoon.eot?#iefix-ngjl88') format('embedded-opentype'), url('../assets/fonts/icomoon.woff?-ngjl88') format('woff'), url('../assets/fonts/icomoon.ttf?-ngjl88') format('truetype'), url('../assets/fonts/icomoon.svg?-ngjl88#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal; }
+
+/* line 21, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/fonts */
+[class^="icon-"], [class*=" icon-"] {
+  font-family: 'icomoon';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
+/* line 35, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/fonts */
+.icon-question:before {
+  content: "\e602"; }
+
+/* line 39, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/fonts */
+.icon-info:before {
+  content: "\e601"; }
+
+/* line 43, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/fonts */
+.icon-new-tab:before {
+  content: "\ea7e"; }
+
+/* line 47, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/fonts */
+.icon-leaf:before {
+  content: "\e600"; }
+
+/**
  * Give Frontend Receipt SCSS
  *
  * @package     Give
@@ -91,31 +563,119 @@ table#give_purchase_receipt table#give_purchase_receipt .give_receipt_payment_st
 Layout
 --------------------------------------*/
 /* line 14, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/forms */
+[id*='give-form'] h1.give-form-title {
+  margin: 0 0 15px; }
+/* line 18, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/forms */
 [id*='give-form'] div.images {
   width: 38%;
   float: left; }
-/* line 19, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/forms */
+/* line 23, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/forms */
 [id*='give-form'] div.images img {
   display: block;
   width: 100%;
   height: auto;
   box-shadow: none; }
-/* line 26, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/forms */
+/* line 30, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/forms */
 [id*='give-form'] div.summary {
   width: 58%;
   float: right; }
-/* line 31, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/forms */
+/* line 35, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/forms */
 [id*='give-form'] .give_form select.edd-select.required {
   color: #000; }
 
 /*------------------------------------
-Form
+Base Form Styles
 --------------------------------------*/
+/* line 46, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/forms */
+form[id*='give-form'] .give-tooltip {
+  margin: 0 3px;
+  padding: 0;
+  font-size: 14px;
+  -webkit-transition: 0.2s all linear;
+          transition: 0.2s all linear;
+  color: rgba(51, 51, 51, 0.5); }
+  /* line 53, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/forms */
+  form[id*='give-form'] .give-tooltip:hover {
+    color: #333; }
+/* line 58, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/forms */
+form[id*='give-form'] legend {
+  font-weight: bold;
+  margin: 10px 0 15px;
+  padding: 0 0 10px;
+  border-bottom: 1px solid #EDEDED;
+  width: 100%; }
+/* line 66, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/forms */
+form[id*='give-form'] .form-row {
+  *zoom: 1;
+  margin: 0 0 15px;
+  padding: 0; }
+  /* line 8, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/_mixins */
+  form[id*='give-form'] .form-row:before, form[id*='give-form'] .form-row:after {
+    content: " ";
+    display: table; }
+  /* line 13, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/_mixins */
+  form[id*='give-form'] .form-row:after {
+    clear: both; }
+  /* line 71, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/forms */
+  form[id*='give-form'] .form-row label {
+    display: block;
+    margin: 0 0 5px; }
+    /* line 75, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/forms */
+    form[id*='give-form'] .form-row label.checkbox {
+      display: inline; }
+  /* line 81, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/forms */
+  form[id*='give-form'] .form-row select, form[id*='give-form'] .form-row textarea, form[id*='give-form'] .form-row input[type="text"], form[id*='give-form'] .form-row input[type="email"] {
+    box-sizing: border-box;
+    width: 100%;
+    border-radius: 0;
+    outline: none; }
+    /* line 87, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/forms */
+    form[id*='give-form'] .form-row select.required, form[id*='give-form'] .form-row textarea.required, form[id*='give-form'] .form-row input[type="text"].required, form[id*='give-form'] .form-row input[type="email"].required {
+      color: #333; }
+/* line 97, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/forms */
+form[id*='give-form'] .form-row-first, form[id*='give-form'] .form-row-last, form[id*='give-form'] .form-row-two-thirds {
+  float: left;
+  width: 48.5%;
+  overflow: visible; }
+/* line 103, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/forms */
+form[id*='give-form'] .form-row-two-thirds {
+  float: left;
+  width: 67%; }
+/* line 108, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/forms */
+form[id*='give-form'] .form-row-one-third {
+  width: 30%; }
+/* line 112, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/forms */
+form[id*='give-form'] .form-row-last, form[id*='give-form'] .form-row-one-third {
+  float: right; }
+/* line 116, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/forms */
+form[id*='give-form'] .form-row-wide {
+  clear: both; }
+/* line 120, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/forms */
+form[id*='give-form'] .give-required-indicator {
+  color: #a00; }
+/* line 125, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/forms */
+form[id*='give-form'] .card-expiration > select {
+  width: 46%; }
+
+/* line 132, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/forms */
+#give-donation-level-radio-list {
+  margin: 0;
+  padding: 0;
+  list-style: none; }
+  /* line 138, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/forms */
+  #give-donation-level-radio-list > li {
+    margin: 0 0 5px;
+    padding: 0; }
+
 @media (max-width: 768px) {
-  /* line 44, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/forms */
+  /* line 151, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/forms */
   [id*='give-form'] div.images, [id*='give-form'] div.summary {
     width: 100%;
     float: none; }
+
+  /* line 160, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/frontend/forms */
+  form[id*='give-form'] #give-card-name-wrap, form[id*='give-form'] .card-expiration {
+    width: 46%; }
  }
 
 

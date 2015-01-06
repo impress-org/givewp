@@ -92,7 +92,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 				}
 				break;
 			case 'shortcode':
-				echo '<input onclick="this.setSelectionRange(0, this.value.length)" type="text" class="shortcode-input" readonly="" value="[give id=&#34;' . absint( $post_id ) . '&#34; text=&#34;' . esc_html( $purchase_text ) . '&#34; style=&#34;' . $style . '&#34;">';
+				echo '<input onclick="this.setSelectionRange(0, this.value.length)" type="text" class="shortcode-input" readonly="" value="[give id=&#34;' . absint( $post_id ) . '&#34;]">';
 				break;
 		}
 	}

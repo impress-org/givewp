@@ -11,6 +11,10 @@
 Layout
 --------------------------------------*/
 [id*='give-form'] {
+  h1.give-form-title {
+	margin: 0 0 15px;
+  }
+
   div.images {
 	width: 38%;
 	float: left;
@@ -34,16 +38,129 @@ Layout
 
 }
 
-
 /*------------------------------------
-Form
+Base Form Styles
 --------------------------------------*/
+
+form[id*='give-form'] {
+  .give-tooltip {
+	margin: 0 3px;
+	padding: 0;
+	font-size: 14px;
+	@include easing-transition();
+	color: transparentize($dark, 0.5);
+
+	&:hover {
+	  color: $dark;
+	}
+  }
+
+  legend {
+	font-weight: bold;
+	margin: 10px 0 15px;
+	padding: 0 0 10px;
+	border-bottom: 1px solid $light-gray;
+	width: 100%;
+  }
+
+  .form-row {
+	@include clearfix();
+	margin: 0 0 15px;
+	padding: 0;
+
+	label {
+	  display: block;
+	  margin: 0 0 5px;
+
+	  &.checkbox {
+		display: inline;
+	  }
+
+	}
+
+	select, textarea, input[type="text"], input[type="email"] {
+	  @include box-sizing(border-box);
+	  width: 100%;
+	  border-radius: 0;
+	  outline: none;
+
+	  &.required {
+		color: $dark;
+	  }
+
+	}
+
+  }
+
+  .form-row-first,
+  .form-row-last,
+  .form-row-two-thirds {
+	float: left;
+	width: 48.5%;
+	overflow: visible;
+  }
+
+  .form-row-two-thirds {
+	float: left;
+	width: 67%
+  }
+
+  .form-row-one-third {
+	width: 30%;
+  }
+
+  .form-row-last, .form-row-one-third {
+	float: right;
+  }
+
+  .form-row-wide {
+	clear: both;
+  }
+
+  .give-required-indicator {
+	color: $red;
+  }
+
+  .card-expiration {
+	> select {
+	  width: 46%;
+	}
+  }
+
+}
+
+#give-donation-level-radio-list {
+
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  > li {
+
+	margin: 0 0 5px;
+	padding: 0;
+
+  }
+
+}
 
 @media (max-width: 768px) {
 
-	[id*='give-form'] div.images, [id*='give-form'] div.summary {
-		width: 100%;
-		float: none;
+  [id*='give-form'] {
+
+	div.images, div.summary {
+	  width: 100%;
+	  float: none;
 	}
+
+  }
+
+  form[id*='give-form'] {
+
+	#give-card-name-wrap, .card-expiration {
+	  width: 46%;
+	}
+
+  }
 
 }

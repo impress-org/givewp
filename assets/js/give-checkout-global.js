@@ -120,6 +120,9 @@ jQuery( document ).ready( function ( $ ) {
 		$( selected_field ).parents( 'form' ).find( '.give-final-total-amount' ).data( this_amount );
 		//update checkout total (include currency sign)
 		$( selected_field ).parents( 'form' ).find( '.give-final-total-amount' ).text( give_global_vars.currency_sign + this_amount );
+
+		console.log( give_global_vars );
+
 	}
 
 } );

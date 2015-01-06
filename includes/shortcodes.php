@@ -46,6 +46,7 @@ function give_purchase_history() {
 	if ( is_user_logged_in() ) {
 		ob_start();
 		give_get_template_part( 'history', 'purchases' );
+
 		return ob_get_clean();
 	}
 }
@@ -65,7 +66,12 @@ add_shortcode( 'purchase_history', 'give_purchase_history' );
  * @return string
  */
 function give_form_shortcode( $atts, $content = null ) {
-	give_get_donation_form();
+	extract( shortcode_atts( array(
+			'id'         => '',
+			'show_title' => true,
+		), $atts, 'give_login' )
+	);
+	give_get_donation_form( $atts );
 }
 
 add_shortcode( 'give_form', 'give_form_shortcode' );
