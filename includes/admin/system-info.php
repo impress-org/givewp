@@ -34,6 +34,11 @@ function give_system_info_callback() {
 		<input type="hidden" name="give-action" value="download_sysinfo" />
 		<?php submit_button( 'Download System Info File', 'secondary', 'give-download-sysinfo', false ); ?>
 	</p>
+	<style>
+		.give_forms_page_give-settings .give-submit-wrap {
+			display: none; /* Hide Save settings button on System Info Tab (not needed) */
+		}
+	</style>
 <?php
 }
 
@@ -332,4 +337,5 @@ function give_tools_sysinfo_download() {
 	echo wp_strip_all_tags( $_POST['give-sysinfo'] );
 	give_die();
 }
+
 add_action( 'give_download_sysinfo', 'give_tools_sysinfo_download' );

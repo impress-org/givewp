@@ -20,10 +20,9 @@ Forms CPT
 /* Donation Levels Repeating Field */
 #_give_donation_levels_repeat {
   margin: 0 0 20px;
-}
-
-#_give_donation_levels_repeat .cmb-row, #_give_donation_levels_repeat .inside {
-  margin: 0;
+  .cmb-row, .inside {
+	margin: 0;
+  }
 }
 
 #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row .cmb2-radio-list label {
@@ -174,4 +173,32 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
   div.cmb-type-levels-repeater-header {
 	display: none;
   }
+}
+
+/*-------------------------------------
+ASIDE
+-------------------------------------*/
+
+#side-sortables {
+
+  .cmb-th label {
+
+	&:after {
+	  display: none;
+	}
+
+  }
+
+  .cmb2-id--give-logged-in-only {
+	padding-top:10px !important;
+  }
+
+  .cmb2-id--give-show-register-form {
+	padding: 10px 0 0 !important;
+
+	.cmb2-metabox-description {
+	  padding-bottom: 0;
+	}
+  }
+
 }

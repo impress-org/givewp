@@ -123,10 +123,10 @@ add_action( 'wp_ajax_nopriv_give_process_checkout', 'give_process_purchase_form'
  * Process the checkout login form
  *
  * @access      private
- * @since       1.8
+ * @since       1.0
  * @return      void
  */
-function give_process_purchase_login() {
+function give_process_form_login() {
 
 	$is_ajax = isset( $_POST['give_ajax'] );
 
@@ -148,12 +148,12 @@ function give_process_purchase_login() {
 		echo 'success';
 		give_die();
 	} else {
-		wp_redirect( give_get_checkout_uri( $_SERVER['QUERY_STRING'] ) );
+		wp_redirect( $_SERVER['HTTP_REFERER'] );
 	}
 }
 
-add_action( 'wp_ajax_give_process_checkout_login', 'give_process_purchase_login' );
-add_action( 'wp_ajax_nopriv_give_process_checkout_login', 'give_process_purchase_login' );
+add_action( 'wp_ajax_give_process_checkout_login', 'give_process_form_login' );
+add_action( 'wp_ajax_nopriv_give_process_checkout_login', 'give_process_form_login' );
 
 /**
  * Purchase Form Validate Fields
@@ -187,7 +187,6 @@ function give_purchase_form_validate_fields() {
 	if ( isset( $give_options['show_agree_to_terms'] ) ) {
 		give_purchase_form_validate_agree_to_terms();
 	}
-
 
 	if ( is_user_logged_in() ) {
 		// Collect logged in user data
@@ -639,6 +638,7 @@ function give_get_purchase_form_user( $valid_data = array() ) {
 		return true;
 	} else if ( is_user_logged_in() ) {
 		// Set the valid user as the logged in collected data
+
 		$user = $valid_data['logged_in_user'];
 	} else if ( $valid_data['need_new_user'] === true || $valid_data['need_user_login'] === true ) {
 		// New user registration

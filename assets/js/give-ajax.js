@@ -21,7 +21,7 @@ jQuery( document ).ready( function ( $ ) {
 	setup_give_tooltips();
 
 	// Show the login form on the checkout page
-	$( '#give_checkout_form_wrap' ).on( 'click', '.give_checkout_register_login', function () {
+	$( 'body' ).on( 'click', '.give_checkout_register_login', function ( e ) {
 		var $this = $( this ),
 			data = {
 				action: $this.data( 'action' )
@@ -39,7 +39,7 @@ jQuery( document ).ready( function ( $ ) {
 	} );
 
 	// Process the login form via ajax
-	$( document ).on( 'click', '#give_purchase_form #give_login_fields input[type=submit]', function ( e ) {
+	$( document ).on( 'click', '#give-user-login-submit input[type=submit]', function ( e ) {
 
 		e.preventDefault();
 
@@ -52,15 +52,15 @@ jQuery( document ).ready( function ( $ ) {
 		var data = {
 			action         : 'give_process_checkout_login',
 			give_ajax      : 1,
-			give_user_login: $( '#give_login_fields #give_user_login' ).val(),
-			give_user_pass : $( '#give_login_fields #give_user_pass' ).val()
+			give_user_login: $( '#give_user_login' ).val(),
+			give_user_pass : $( '#give_user_pass' ).val()
 		};
 
 		$.post( give_global_vars.ajaxurl, data, function ( data ) {
 
 			if ( $.trim( data ) == 'success' ) {
 				$( '.give_errors' ).remove();
-				window.location = give_scripts.checkout_page;
+				window.location.reload();
 			} else {
 				$( '#give_login_fields input[type=submit]' ).val( complete_purchase_val );
 				$( '.give-cart-ajax' ).remove();
@@ -107,7 +107,6 @@ jQuery( document ).ready( function ( $ ) {
 		//Update submit button text
 		$( this ).val( give_global_vars.purchase_loading );
 
-
 		//Submit form via AJAX
 		$.post( give_global_vars.ajaxurl, this_form.serialize() + '&action=give_process_checkout&give_ajax=true', function ( data ) {
 
@@ -133,7 +132,8 @@ function give_load_gateway( payment_mode ) {
 	var give_form = jQuery( '#give_purchase_form_wrap' );
 
 	// Show the ajax loader
-	give_form.html( '<img src="' + give_scripts.ajax_loader + '"/>' );
+	jQuery( '#give-payment-mode-wrap' ).find( '.give-loading-animation' ).css( 'background-image', 'url(' + give_scripts.ajax_loader + ')' );
+	jQuery( '#give-payment-mode-wrap .give-loading-text' ).fadeIn();
 
 	//Update form action
 	give_form.attr( 'action', '?payment-mode=' + payment_mode );
@@ -142,12 +142,13 @@ function give_load_gateway( payment_mode ) {
 	jQuery.post( give_scripts.ajaxurl + '?payment-mode=' + payment_mode, {
 			action           : 'give_load_gateway',
 			give_total       : jQuery( '#give-amount' ).val(),
+			give_form_id     : jQuery( 'input[name="give-form-id"]' ).val(),
 			give_payment_mode: payment_mode
 		},
 		function ( response ) {
 			jQuery( '#give_purchase_form_wrap' ).html( response );
 			jQuery( '.give-no-js' ).hide();
-
+			jQuery( '#give-payment-mode-wrap .give-loading-text' ).fadeOut();
 			setup_give_tooltips();
 
 		}

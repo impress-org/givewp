@@ -40,103 +40,146 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 	 * Repeatable Field Groups
 	 */
 	$meta_boxes['form_field_options'] = apply_filters( 'give_form_field_options', array(
-			'id'           => 'form_field_options',
-			'title'        => __( 'Create a New Donation Form', 'give' ),
-			'object_types' => array( 'give_forms', ),
-			'context'      => 'normal',
-			'priority'     => 'high', //Show above Content WYSIWYG
-			'fields'       => array(
-				//Donation Option
-				array(
-					'name'        => __( 'Donation Option', 'give' ),
-					'description' => __( 'Do you want this form to have one set donation price or multiple levels?', 'give' ),
-					'id'          => $prefix . 'price_option',
-					'type'        => 'radio_inline',
-					'default'     => 'set',
-					'options'     => array(
-						'set'   => __( 'Set Donation', 'give' ),
-						'multi' => __( 'Multi-level Donation', 'give' ),
-					),
+		'id'           => 'form_field_options',
+		'title'        => __( 'Create a New Donation Form', 'give' ),
+		'object_types' => array( 'give_forms' ),
+		'context'      => 'normal',
+		'priority'     => 'high', //Show above Content WYSIWYG
+		'fields'       => array(
+			//Donation Option
+			array(
+				'name'        => __( 'Donation Option', 'give' ),
+				'description' => __( 'Do you want this form to have one set donation price or multiple levels?', 'give' ),
+				'id'          => $prefix . 'price_option',
+				'type'        => 'radio_inline',
+				'default'     => 'set',
+				'options'     => array(
+					'set'   => __( 'Set Donation', 'give' ),
+					'multi' => __( 'Multi-level Donation', 'give' ),
 				),
-				array(
-					'name'        => __( 'Set Amount', 'give' ),
-					'description' => __( 'This is the set donation amount for this form.', 'give' ),
-					'id'          => $prefix . 'set_price',
-					'type'        => 'text_money',
-					'attributes'  => array(
-						'value' => isset( $price ) ? esc_attr( give_format_amount( $price ) ) : '',
-					),
+			),
+			array(
+				'name'        => __( 'Set Amount', 'give' ),
+				'description' => __( 'This is the set donation amount for this form.', 'give' ),
+				'id'          => $prefix . 'set_price',
+				'type'        => 'text_money',
+				'attributes'  => array(
+					'value' => isset( $price ) ? esc_attr( give_format_amount( $price ) ) : '',
 				),
-				//Donation levels: Header
-				array(
-					'id'   => $prefix . 'levels_header',
-					'type' => 'levels_repeater_header',
+			),
+			//Donation levels: Header
+			array(
+				'id'   => $prefix . 'levels_header',
+				'type' => 'levels_repeater_header',
+			),
+			//Donation Levels: Repeatable CMB2 Group
+			array(
+				'id'      => $prefix . 'donation_levels',
+				'type'    => 'group',
+				'options' => array(
+					'add_button'    => __( 'Add Level', 'give' ),
+					'remove_button' => __( 'Remove Level', 'give' ),
+					'sortable'      => true, // beta
 				),
-				//Donation Levels: Repeatable CMB2 Group
-				array(
-					'id'      => $prefix . 'donation_levels',
-					'type'    => 'group',
-					'options' => array(
-						'add_button'    => __( 'Add Level', 'give' ),
-						'remove_button' => __( 'Remove Level', 'give' ),
-						'sortable'      => true, // beta
+				// Fields array works the same, except id's only need to be unique for this group. Prefix is not needed.
+				'fields'  => array(
+					array(
+						'name' => __( 'Amount', 'give' ),
+						'id'   => $prefix . 'amount',
+						'type' => 'text_money',
 					),
-					// Fields array works the same, except id's only need to be unique for this group. Prefix is not needed.
-					'fields'  => array(
-						array(
-							'name' => __( 'Amount', 'give' ),
-							'id'   => $prefix . 'amount',
-							'type' => 'text_money',
-						),
-						array(
-							'name'       => __( 'Text', 'give' ),
-							'id'         => $prefix . 'text',
-							'type'       => 'text',
-							'attributes' => array(
-								'placeholder' => 'Donation Level',
-								'rows'        => 3,
-							),
-						),
-						array(
-							'name'       => __( 'Default', 'give' ),
-							'id'         => $prefix . 'default',
-							'type'       => 'radio_inline',
-							'options'    => array(
-								'default' => __( 'Default', 'give' ),
-							),
-							'attributes' => array(
-								'class' => 'donation-level-radio',
-							),
+					array(
+						'name'       => __( 'Text', 'give' ),
+						'id'         => $prefix . 'text',
+						'type'       => 'text',
+						'attributes' => array(
+							'placeholder' => 'Donation Level',
+							'rows'        => 3,
 						),
 					),
-				),
-				//Display Style
-				array(
-					'name'        => __( 'Display Style', 'give' ),
-					'description' => __( 'Set how the donations levels will display on the form.', 'give' ),
-					'id'          => $prefix . 'display_style',
-					'type'        => 'radio_inline',
-					'default'     => 'buttons',
-					'options'     => array(
-						'buttons'  => __( 'Buttons', 'give' ),
-						'radios'   => __( 'Radios', 'give' ),
-						'dropdown' => __( 'Dropdown', 'give' ),
-					),
-				),
-				//Custom Amount
-				array(
-					'name'        => __( 'Custom Amount', 'give' ),
-					'description' => __( 'Do you want the user to be able to input their own donation amount?', 'give' ),
-					'id'          => $prefix . 'custom_amount',
-					'type'        => 'radio_inline',
-					'default'     => 'no',
-					'options'     => array(
-						'yes' => __( 'Yes', 'give' ),
-						'no'  => __( 'No', 'give' ),
+					array(
+						'name'       => __( 'Default', 'give' ),
+						'id'         => $prefix . 'default',
+						'type'       => 'radio_inline',
+						'options'    => array(
+							'default' => __( 'Default', 'give' ),
+						),
+						'attributes' => array(
+							'class' => 'donation-level-radio',
+						),
 					),
 				),
 			),
+			//Display Style
+			array(
+				'name'        => __( 'Display Style', 'give' ),
+				'description' => __( 'Set how the donations levels will display on the form.', 'give' ),
+				'id'          => $prefix . 'display_style',
+				'type'        => 'radio_inline',
+				'default'     => 'buttons',
+				'options'     => array(
+					'buttons'  => __( 'Buttons', 'give' ),
+					'radios'   => __( 'Radios', 'give' ),
+					'dropdown' => __( 'Dropdown', 'give' ),
+				),
+			),
+			//Custom Amount
+			array(
+				'name'        => __( 'Custom Amount', 'give' ),
+				'description' => __( 'Do you want the user to be able to input their own donation amount?', 'give' ),
+				'id'          => $prefix . 'custom_amount',
+				'type'        => 'radio_inline',
+				'default'     => 'no',
+				'options'     => array(
+					'yes' => __( 'Yes', 'give' ),
+					'no'  => __( 'No', 'give' ),
+				),
+			),
+		),
+	) );
+
+	$meta_boxes['form_display_options'] = apply_filters( 'give_form_display_options', array(
+			'id'           => 'form_display_options',
+			'title'        => __( 'Form Display Options', 'cmb2' ),
+			'object_types' => array( 'give_forms' ),
+			'context'      => 'side',
+			'priority'     => 'low',
+			'show_names'   => true, // Show field names on the left
+			'fields'       => array(
+				array(
+					'name'    => __( 'Payment Display', 'give' ),
+					'desc'    => __( 'How would you like to collect payment information for this particular form?', 'give' ),
+					'id'      => $prefix . 'show_register_form',
+					'type'    => 'select',
+					'options' => array(
+						'onpage' => __( 'Show on Page', 'give' ),
+						'reveal' => __( 'Reveal Selection', 'give' ),
+						'modal'  => __( 'Modal Window', 'give' ),
+					),
+					'default' => 'onpage',
+				),
+				array(
+					'name' => __( 'Disable Guest Donations', 'give' ),
+					'desc' => __( 'Do you want to require users be logged-in to make donations.', 'give' ),
+					'id'   => $prefix . 'logged_in_only',
+					'type' => 'checkbox'
+				),
+				array(
+					'name'    => __( 'Register / Login Form', 'give' ),
+					'desc'    => __( 'Display the registration and login forms on the checkout page for non-logged-in users.', 'give' ),
+					'id'      => $prefix . 'show_register_form',
+					'type'    => 'select',
+					'options' => array(
+						'both'         => __( 'Registration and Login Forms', 'give' ),
+						'registration' => __( 'Registration Form Only', 'give' ),
+						'login'        => __( 'Login Form Only', 'give' ),
+						'none'         => __( 'None', 'give' ),
+					),
+					'default' => 'none',
+				),
+			)
 		)
+
 	);
 
 	return $meta_boxes;

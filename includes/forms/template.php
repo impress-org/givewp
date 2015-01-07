@@ -83,7 +83,7 @@ function give_get_donation_form( $args = array() ) {
 
 			do_action( 'give_checkout_form_top', $form->ID, $args );
 
-			do_action( 'give_payment_mode_select' );
+			do_action( 'give_payment_mode_select', $form->ID, $args );
 
 			do_action( 'give_checkout_form_bottom', $form->ID, $args );
 
@@ -102,7 +102,10 @@ function give_get_donation_form( $args = array() ) {
 
 
 /**
- * Renders the Purchase Form, hooks are provided to add to the purchase form.
+ *
+ * Give Show Purchase Form
+ *
+ * Renders the Donation Form, hooks are provided to add to the checkout form.
  * The default Purchase Form rendered displays a list of the enabled payment
  * gateways, a user registration form (if enable) and a credit card info form
  * if credit cards are enabled
@@ -118,11 +121,12 @@ function give_show_purchase_form() {
 
 	do_action( 'give_purchase_form_top' );
 
-	if ( give_can_checkout() ) {
+	if ( give_can_checkout() && isset( $_POST['give_form_id'] ) ) {
 
 		do_action( 'give_purchase_form_before_register_login' );
 
-		$show_register_form = give_get_option( 'show_register_form', 'none' );
+		$show_register_form = get_post_meta( $_POST['give_form_id'], '_give_show_register_form', true );
+
 		if ( ( $show_register_form === 'registration' || ( $show_register_form === 'both' && ! isset( $_GET['login'] ) ) ) && ! is_user_logged_in() ) : ?>
 			<div id="give_checkout_login_register">
 				<?php do_action( 'give_purchase_form_register_fields' ); ?>
@@ -133,7 +137,7 @@ function give_show_purchase_form() {
 			</div>
 		<?php endif; ?>
 
-		<?php if ( ( ! isset( $_GET['login'] ) && is_user_logged_in() ) || ! isset( $give_options['show_register_form'] ) || 'none' === $show_register_form ) {
+		<?php if ( ( ! isset( $_GET['login'] ) && is_user_logged_in() ) || ! isset( $show_register_form ) || 'none' === $show_register_form ) {
 			do_action( 'give_purchase_form_after_user_info' );
 		}
 
@@ -182,33 +186,55 @@ function give_output_donation_levels( $form_id = 0, $args = array() ) {
 	$set_pricing_option  = get_post_meta( $form_id, '_give_price_option', true );
 	$set_price           = get_post_meta( $form_id, '_give_set_price', true );
 	$allow_custom_amount = get_post_meta( $form_id, '_give_custom_amount', true );
-
+	$currency_position   = $give_options['currency_position'];
+	$symbol              = give_currency_symbol( $give_options['currency'] );
+	$currency_output     = '<label class="give-currency-symbol give-currency-position-' . $currency_position . '" for="give-amount">' . $symbol . '</label>';
 
 	//Set Price, No Custom Amount Allowed means hidden price field
 	if ( $allow_custom_amount == 'no' ) {
 		?>
+
 		<input class="give-text-input" id="give-amount" type="hidden" name="give-amount" value="<?php echo $set_price; ?>" required>
-		<p class="set-price">
-			<span class="give-final-total-amount"><?php echo give_currency_filter( give_format_amount( $set_price ) ) ?></span>
+		<p class="set-price give-donation-amount form-row form-row-wide">
+			<?php
+
+			if ( $currency_position == 'before' ) {
+				echo $currency_output;
+			}
+
+			?>
+			<span class="give-final-total-amount"><?php echo give_format_amount( $set_price ); ?></span>
 		</p>
 	<?php
-	}
+	} else {
+		?>
 
+		<div class="give-total-wrap>">
+			<div class="give-donation-amount form-row form-row-wide">
+				<?php
+				if ( $currency_position == 'before' ) {
+					echo $currency_output;
+				}
+				?>
+
+				<input class="give-text-input" id="give-amount" name="give-amount" type="text" placeholder="" value="<?php echo $set_price; ?>" required autocomplete="off">
+				<?php if ( $currency_position == 'after' ) {
+					echo $currency_output;
+				}  ?>
+
+				<p class="give-loading-text give-updating-price-loader" style="display: none;">
+					<span class="give-loading-animation"></span> <?php _e( 'Updating Price', 'Give' ); ?>
+					<span class="elipsis">.</span><span class="elipsis">.</span><span class="elipsis">.</span></p>
+
+			</div>
+		</div>
+	<?php } ?>
+	<?php
 	//Output Variable Pricing Levels
 	if ( $variable_pricing ) {
 		give_output_levels( $form_id );
 		$set_price = give_get_default_multilevel_amount( $form_id );
 	} ?>
-
-	<div class="give-total-wrap">
-		<div class="give-donation-amount">
-			<?php if ( $allow_custom_amount !== 'no' ) { ?>
-				<label class="give-dollar-sign" for="give-amount">$</label>
-				<input class="give-text-input" id="give-amount" name="give-amount" type="text" placeholder="" value="<?php echo $set_price; ?>" required>
-			<?php } ?>
-		</div>
-	</div>
-
 	<?php
 	do_action( 'give_after_donation_levels', $form_id );
 }
@@ -243,7 +269,7 @@ function give_output_levels( $form_id ) {
 				$counter ++;
 
 				$output .= '<li>';
-				$output .= '<button class="give-donation-level-btn give-btn give-btn-level-' . $counter . ' ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'give-btn-selected' : '' ) . '" value="' . $price['_give_amount'] . '">';
+				$output .= '<button class="give-donation-level-btn give-btn give-btn-level-' . $counter . ' ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'give-default-level' : '' ) . '" value="' . $price['_give_amount'] . '">';
 				$output .= ( ! empty( $price['_give_text'] ) ? $price['_give_text'] : $price['_give_price'] );
 				$output .= '</button>';
 				$output .= '</li>';
@@ -262,7 +288,7 @@ function give_output_levels( $form_id ) {
 
 				$output .= '<li>';
 
-				$output .= '<input type="radio" class="give-radio-input give-radio-input-level give-radio-level-' . $counter . '" name="give-radio-donation-level" id="give-radio-level-' . $counter . '" ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'checked="checked"' : '' ) . ' value="' . $price['_give_amount'] . '">';
+				$output .= '<input type="radio" class="give-radio-input give-radio-input-level give-radio-level-' . $counter . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? ' give-default-level' : '' ) . '" name="give-radio-donation-level" id="give-radio-level-' . $counter . '" ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'checked="checked"' : '' ) . ' value="' . $price['_give_amount'] . '">';
 
 				$output .= '<label for="give-radio-level-' . $counter . '">' . ( ! empty( $price['_give_text'] ) ? $price['_give_text'] : $price['_give_price'] ) . '</label>';
 
@@ -307,10 +333,11 @@ function give_user_info_fields() {
 	if ( is_user_logged_in() ) :
 		$user_data = get_userdata( get_current_user_id() );
 	endif;
+
+	do_action( 'give_purchase_form_before_personal_info' );
 	?>
 	<fieldset id="give_checkout_user_info">
 		<legend><?php echo apply_filters( 'give_checkout_personal_info_text', __( 'Personal Info', 'give' ) ); ?></legend>
-
 		<p id="give-first-name-wrap" class="form-row form-row-first">
 			<label class="give-label" for="give-first">
 				<?php _e( 'First Name', 'give' ); ?>
@@ -598,14 +625,14 @@ function give_get_register_fields() {
 		$user_data = get_userdata( $user_ID );
 	}
 
-	$show_register_form = give_get_option( 'show_register_form', 'none' );
+	$show_register_form = get_post_meta( $_POST['give_form_id'], '_give_show_register_form', true );
 
 	ob_start(); ?>
 	<fieldset id="give_register_fields">
 
 		<?php if ( $show_register_form == 'both' ) { ?>
 			<p id="give-login-account-wrap"><?php _e( 'Already have an account?', 'give' ); ?>
-				<a href="<?php echo add_query_arg( 'login', 1 ); ?>" class="give_checkout_register_login" data-action="checkout_login"><?php _e( 'Login', 'give' ); ?></a>
+				<a href="<?php echo add_query_arg( 'login', 1 ); ?>" class="give_checkout_register_login" data-action="give_checkout_login"><?php _e( 'Login', 'give' ); ?></a>
 			</p>
 		<?php } ?>
 
@@ -614,10 +641,10 @@ function give_get_register_fields() {
 		<fieldset id="give_register_account_fields">
 			<legend><?php _e( 'Create an account', 'give' );
 				if ( ! give_no_guest_checkout() ) {
-					echo ' ' . __( '(optional)', 'give' );
+					echo ' <span class="sub-text">' . __( '(optional)', 'give' ) . '</span>';
 				} ?></legend>
 			<?php do_action( 'give_register_account_fields_before' ); ?>
-			<p id="give-user-login-wrap">
+			<p id="give-user-login-wrap" class="form-row form-row-one-third form-row-first">
 				<label for="give_user_login">
 					<?php _e( 'Username', 'give' ); ?>
 					<?php if ( give_no_guest_checkout() ) { ?>
@@ -631,7 +658,7 @@ function give_get_register_fields() {
 				} ?>give-input" type="text" placeholder="<?php _e( 'Username', 'give' ); ?>" title="<?php _e( 'Username', 'give' ); ?>" />
 			</p>
 
-			<p id="give-user-pass-wrap">
+			<p id="give-user-pass-wrap" class="form-row form-row-one-third">
 				<label for="password">
 					<?php _e( 'Password', 'give' ); ?>
 					<?php if ( give_no_guest_checkout() ) { ?>
@@ -645,7 +672,7 @@ function give_get_register_fields() {
 				} ?>give-input" placeholder="<?php _e( 'Password', 'give' ); ?>" type="password" />
 			</p>
 
-			<p id="give-user-pass-confirm-wrap" class="give_register_password">
+			<p id="give-user-pass-confirm-wrap" class="give_register_password form-row form-row-one-third">
 				<label for="password_again">
 					<?php _e( 'Password Again', 'give' ); ?>
 					<?php if ( give_no_guest_checkout() ) { ?>
@@ -693,6 +720,10 @@ function give_get_login_fields() {
 
 	ob_start(); ?>
 	<fieldset id="give_login_fields">
+		<legend><?php _e( 'Login to Your Account', 'give' );
+			if ( ! give_no_guest_checkout() ) {
+				echo ' <span class="sub-text">' . __( '(optional)', 'give' ) . '</span>';
+			} ?></legend>
 		<?php if ( $show_register_form == 'both' ) { ?>
 			<p id="give-new-account-wrap">
 				<?php _e( 'Need to create an account?', 'give' ); ?>
@@ -705,14 +736,14 @@ function give_get_login_fields() {
 			</p>
 		<?php } ?>
 		<?php do_action( 'give_checkout_login_fields_before' ); ?>
-		<p id="give-user-login-wrap">
+		<p id="give-user-login-wrap" class="form-row form-row-first">
 			<label class="give-label" for="give-username"><?php _e( 'Username', 'give' ); ?></label>
 			<input class="<?php if ( give_no_guest_checkout() ) {
 				echo 'required ';
 			} ?>give-input" type="text" name="give_user_login" id="give_user_login" value="" placeholder="<?php _e( 'Your username', 'give' ); ?>" />
 		</p>
 
-		<p id="give-user-pass-wrap" class="give_login_password">
+		<p id="give-user-pass-wrap" class="give_login_password form-row form-row-last">
 			<label class="give-label" for="give-password"><?php _e( 'Password', 'give' ); ?></label>
 			<input class="<?php if ( give_no_guest_checkout() ) {
 				echo 'required ';
@@ -752,19 +783,21 @@ function give_payment_mode_select() {
 			<legend class="give-payment-mode-label"><?php _e( 'Select Payment Method', 'give' ); ?></legend>
 			<?php
 
-			do_action( 'give_payment_mode_before_gateways' );
+			do_action( 'give_payment_mode_before_gateways' )  ?>
 
-			foreach ( $gateways as $gateway_id => $gateway ) :
-				$checked       = checked( $gateway_id, give_get_default_gateway(), false );
-				$checked_class = $checked ? ' give-gateway-option-selected' : '';
-				echo '<label for="give-gateway-' . esc_attr( $gateway_id ) . '" class="give-gateway-option' . $checked_class . '" id="give-gateway-option-' . esc_attr( $gateway_id ) . '">';
-				echo '<input type="radio" name="payment-mode" class="give-gateway" id="give-gateway-' . esc_attr( $gateway_id ) . '" value="' . esc_attr( $gateway_id ) . '"' . $checked . '>' . esc_html( $gateway['checkout_label'] );
-				echo '</label>';
-			endforeach;
-
-			do_action( 'give_payment_mode_after_gateways' );
-
-			?>
+			<ul id="give-gateway-radio-list">
+				<?php foreach ( $gateways as $gateway_id => $gateway ) :
+					$checked       = checked( $gateway_id, give_get_default_gateway(), false );
+					$checked_class = $checked ? ' give-gateway-option-selected' : '';
+					echo '<li><label for="give-gateway-' . esc_attr( $gateway_id ) . '" class="give-gateway-option' . $checked_class . '" id="give-gateway-option-' . esc_attr( $gateway_id ) . '">';
+					echo '<input type="radio" name="payment-mode" class="give-gateway" id="give-gateway-' . esc_attr( $gateway_id ) . '" value="' . esc_attr( $gateway_id ) . '"' . $checked . '>' . esc_html( $gateway['checkout_label'] );
+					echo '</label></li>';
+				endforeach; ?>
+			</ul>
+			<?php do_action( 'give_payment_mode_after_gateways' ); ?>
+			<p class="give-loading-text">
+				<span class="give-loading-animation"></span> <?php _e( 'Loading', 'give' ); ?>
+				<span class="elipsis">.</span><span class="elipsis">.</span><span class="elipsis">.</span></p>
 		</div>
 		<?php do_action( 'give_payment_mode_after_gateways_wrap' ); ?>
 	</fieldset>
@@ -820,6 +853,8 @@ add_action( 'give_purchase_form_before_submit', 'give_terms_agreement' );
  */
 function give_checkout_final_total() {
 
+	global $give_options;
+
 	//Only proceed if give_total available
 	if ( ! isset( $_POST['give_total'] ) ) {
 		return;
@@ -828,8 +863,8 @@ function give_checkout_final_total() {
 	$total = apply_filters( 'give_cart_total', give_currency_filter( $_POST['give_total'] ) );
 
 	?>
-	<p id="give-final-total-wrap">
-		<strong><?php echo apply_filters( 'give_donation_total_label', __( 'Donation Total:', 'give' ) ); ?></strong>
+	<p id="give-final-total-wrap" class="form-wrap ">
+		<span class="give-donation-total-label"><?php echo apply_filters( 'give_donation_total_label', __( 'Donation Total:', 'give' ) ); ?></span>
 		<span class="give-final-total-amount" data-total="<?php echo $_POST['give_total']; ?>"><?php echo $total; ?></span>
 	</p>
 <?php

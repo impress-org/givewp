@@ -35,14 +35,14 @@ function give_print_errors() {
 		echo '<div class="' . implode( ' ', $classes ) . '">';
 		// Loop error codes and display errors
 		foreach ( $errors as $error_id => $error ) {
-			echo '<p class="give_error" id="give_error_' . $error_id . '"><strong>' . __( 'Error', 'edd' ) . '</strong>: ' . $error . '</p>';
+			echo '<div class="give_error" id="give_error_' . $error_id . '"><p><strong>' . __( 'Error', 'give' ) . '</strong>: ' . $error . '</p></div>';
 		}
 		echo '</div>';
 		give_clear_errors();
 	}
 }
 
-add_action( 'give_purchase_form_before_submit', 'give_print_errors' );
+add_action( 'give_purchase_form_before_personal_info', 'give_print_errors' );
 add_action( 'give_ajax_checkout_errors', 'give_print_errors' );
 
 /**

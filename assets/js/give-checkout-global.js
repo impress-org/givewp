@@ -97,6 +97,36 @@ jQuery( document ).ready( function ( $ ) {
 	} );
 
 
+	//Custom Donation Amount - If user focuses on field & changes value then update price
+	$body.on( 'focus', '.give-donation-amount .give-text-input', function ( e ) {
+
+		//Set data amount
+		$( this ).data( 'amount', $( this ).val() );
+		//This class is used for CSS purposes
+		$( this ).parent( '.give-donation-amount' ).addClass( 'give-custom-amount-focus-in' );
+
+	} );
+	$body.on( 'blur', '.give-donation-amount .give-text-input', function ( e ) {
+		var pre_focus_amount = $( this ).data( 'amount' );
+		var value_now = $( this ).val();
+
+		//If values don't match up then proceed with updating donation values
+		if ( pre_focus_amount !== value_now ) {
+
+			//update checkout total (include currency sign)
+			$( this ).parents( 'form' ).find( '.give-final-total-amount' ).data( 'total', value_now ).text( give_global_vars.currency_sign + value_now );
+
+			//fade in/out updating text
+			$( this ).next( '.give-updating-price-loader' ).find( '.give-loading-animation' ).css( 'background-image', 'url(' + give_scripts.ajax_loader + ')' );
+			$( this ).next( '.give-updating-price-loader' ).fadeIn().fadeOut();
+
+		}
+		//This class is used for CSS purposes
+		$( this ).parent( '.give-donation-amount' ).removeClass( 'give-custom-amount-focus-in' );
+
+	} );
+
+
 	//Multi-level Buttons: Update Amount Field based on Multi-level Donation Select
 	$body.on( 'click touchend', '.give-donation-level-btn', function ( e ) {
 		e.preventDefault(); //don't let the form submit
@@ -113,15 +143,17 @@ jQuery( document ).ready( function ( $ ) {
 
 	//Helper function: Sets the multiselect amount values
 	function update_multiselect_vals( selected_field ) {
+
+		//remove old selected class & add class for CSS purposes
+		$( selected_field ).parents( '.give-donation-levels-wrap' ).find( '.give-default-level' ).removeClass( 'give-default-level' );
+		$( selected_field ).addClass( 'give-default-level' );
+
+
 		var this_amount = $( selected_field ).val();
 		//update custom amount field
 		$( selected_field ).parents( 'form' ).find( '#give-amount' ).val( this_amount );
 		//update checkout data-total
-		$( selected_field ).parents( 'form' ).find( '.give-final-total-amount' ).data( this_amount );
-		//update checkout total (include currency sign)
-		$( selected_field ).parents( 'form' ).find( '.give-final-total-amount' ).text( give_global_vars.currency_sign + this_amount );
-
-		console.log( give_global_vars );
+		$( selected_field ).parents( 'form' ).find( '.give-final-total-amount' ).data( 'total', this_amount ).text( this_amount );
 
 	}
 

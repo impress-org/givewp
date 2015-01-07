@@ -116,7 +116,7 @@ function give_load_checkout_login_fields() {
 	give_die();
 }
 
-add_action( 'wp_ajax_nopriv_checkout_login', 'give_load_checkout_login_fields' );
+add_action( 'wp_ajax_nopriv_give_checkout_login', 'give_load_checkout_login_fields' );
 
 /**
  * Load Checkout Register Fields via AJAX

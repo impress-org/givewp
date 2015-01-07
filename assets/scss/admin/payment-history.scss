@@ -227,6 +227,10 @@ tr.status-refunded td {
   max-width: 200px;
 }
 
+.give_forms_page_give-payment-history.js .postbox .hndle {
+  cursor: default;
+}
+
 @media screen and (max-width: 782px) {
   .order-data-column input[type="email"] {
 	padding: 6px 10px;

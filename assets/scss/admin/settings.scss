@@ -57,29 +57,29 @@ Settings
 /* CMB2 Checkbox Revised Styles */
 .cmb-type-checkbox .cmb-td {
   width: 80%;
-}
-
-.cmb-type-checkbox .cmb-td label {
-  font-size: 13px;
+  label {
+	font-size: 13px;
+  }
 }
 
 /* Responsive Settings Rows */
 .give_settings {
   .cmb2-wrap .cmb-row {
 	display: table-row;
+	> .cmb-th, > .cmb-td {
+	  display: table-cell;
+	  float: none;
+	}
   }
 }
 
-.give_settings .cmb2-wrap .cmb-row > .cmb-th, .give_settings .cmb2-wrap .cmb-row > .cmb-td {
-  display: table-cell;
-  float: none;
-}
-
 /* Custom Title Separators */
-.cmb2-id-give-title label {
-  font-style: italic;
-  color: #AAA;
-  cursor: default;
+.cmb2-id-give-title {
+  label {
+	font-style: italic;
+	color: #AAA;
+	cursor: default;
+  }
   > div.cmb-th {
 	padding-bottom: 10px;
   }
@@ -102,8 +102,4 @@ Settings
 
 #give-download-sysinfo {
   margin: 0;
-}
-
-.give_forms_page_give-settings .give-submit-wrap {
-  display: none; /* Hide Save settings button on System Info Tab (not needed) */
 }
