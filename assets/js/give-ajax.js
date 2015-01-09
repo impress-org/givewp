@@ -94,10 +94,9 @@ jQuery( document ).ready( function ( $ ) {
 
 
 	//Process the donation submit
-	$( document ).on( 'click', '.give_form #give_purchase_submit input[type=submit]', function ( e ) {
+	$( document ).on( 'click', '.give_form #give_purchase_submit #give-purchase-button', function ( e ) {
 
 		var give_purchase_form = $( '.give-form' ).get( 0 );
-		var loading_animation = this_form.find( '#give_purchase_submit .give-loading-animation' );
 		if ( typeof give_purchase_form.checkValidity === "function" && false === give_purchase_form.checkValidity() ) {
 			return;
 		}
@@ -107,6 +106,13 @@ jQuery( document ).ready( function ( $ ) {
 
 		//this form
 		var this_form = $( this ).parents( 'form:first' );
+
+		//loading animation
+		var loading_animation = this_form.find( '#give_purchase_submit .give-loading-animation' );
+		console.log( this_form );
+		console.log( loading_animation );
+
+		return false;
 
 		//Submit btn text
 		var complete_purchase_val = $( this ).val();

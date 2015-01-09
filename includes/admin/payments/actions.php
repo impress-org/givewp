@@ -174,7 +174,7 @@ function give_trigger_purchase_delete( $data ) {
 		}
 
 		give_delete_purchase( $payment_id );
-		wp_redirect( admin_url( '/edit.php?post_type=download&page=give-payment-history&give-message=payment_deleted' ) );
+		wp_redirect( admin_url( '/edit.php?post_type=give_forms&page=give-payment-history&give-message=payment_deleted' ) );
 		give_die();
 	}
 }
@@ -223,7 +223,7 @@ function give_trigger_payment_note_deletion( $data ) {
 		wp_die( __( 'You do not have permission to edit this payment record', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
-	$edit_order_url = admin_url( 'edit.php?post_type=download&page=give-payment-history&view=view-order-details&give-message=payment-note-deleted&id=' . absint( $data['payment_id'] ) );
+	$edit_order_url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&give-message=payment-note-deleted&id=' . absint( $data['payment_id'] ) );
 
 	give_delete_payment_note( $data['note_id'], $data['payment_id'] );
 
