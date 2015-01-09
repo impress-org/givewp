@@ -285,7 +285,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Default Gateway', 'give' ),
-							'desc' => __( 'This is the gateways that will be selected by default.', 'give' ),
+							'desc' => __( 'This is the gateway that will be selected by default.', 'give' ),
 							'id'   => 'default_gateway',
 							'type' => 'default_gateway'
 						),
@@ -574,9 +574,15 @@ function give_default_gateway_callback( $field_object, $escaped_value, $object_i
 
 	echo '<select class="cmb2_select" name="' . $id . '" id="' . $id . '">';
 
+	//Add a field to the Give Form admin single post view of this field
+	if ( $field_type_object->field->object_type === 'post' ) {
+		echo '<option value="global">' . __( 'Global Default', 'give' ) . '</option>';
+	}
+
 	foreach ( $gateways as $key => $option ) :
 
 		$selected = isset( $escaped_value ) ? selected( $key, $escaped_value, false ) : '';
+
 
 		echo '<option value="' . esc_attr( $key ) . '"' . $selected . '>' . esc_html( $option['admin_label'] ) . '</option>';
 

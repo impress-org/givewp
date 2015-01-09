@@ -149,7 +149,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 				array(
 					'name'    => __( 'Payment Display', 'give' ),
 					'desc'    => __( 'How would you like to collect payment information for this particular form?', 'give' ),
-					'id'      => $prefix . 'show_register_form',
+					'id'      => $prefix . 'payment_display',
 					'type'    => 'select',
 					'options' => array(
 						'onpage' => __( 'Show on Page', 'give' ),
@@ -157,6 +157,12 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 						'modal'  => __( 'Modal Window', 'give' ),
 					),
 					'default' => 'onpage',
+				),
+				array(
+					'name' => __( 'Default Gateway', 'give' ),
+					'desc' => __( 'This is the gateway that will be selected by default. If this option is selected it will override the global setting.', 'give' ),
+					'id'   => $prefix . 'default_gateway',
+					'type' => 'default_gateway'
 				),
 				array(
 					'name' => __( 'Disable Guest Donations', 'give' ),

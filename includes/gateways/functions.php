@@ -79,15 +79,26 @@ function give_is_gateway_active( $gateway ) {
 }
 
 /**
- * Gets the default payment gateway selected from the EDD Settings
+ * Gets the default payment gateway selected from the Give Settings
  *
- * @since 1.5
+ * @since 1.0
  * @global $give_options Array of all the EDD Options
+ *
+ * @param  $form_id      int ID of the Give Form
+ *
  * @return string Gateway ID
  */
-function give_get_default_gateway() {
+function give_get_default_gateway( $form_id ) {
+
 	global $give_options;
-	$default = isset( $give_options['default_gateway'] ) && give_is_gateway_active( $give_options['default_gateway'] ) ? $give_options['default_gateway'] : 'paypal';
+
+	$default      = isset( $give_options['default_gateway'] ) && give_is_gateway_active( $give_options['default_gateway'] ) ? $give_options['default_gateway'] : 'paypal';
+	$form_default = get_post_meta( $form_id, '_give_default_gateway', true );
+
+	//Single Form settings varies compared to the Global default settings
+	if ( ! empty( $form_default ) && $default !== $form_default && $form_default !== 'global' && $form_id !== null ) {
+		$default = $form_default;
+	}
 
 	return apply_filters( 'give_default_gateway', $default );
 }
@@ -311,16 +322,20 @@ function give_send_to_gateway( $gateway, $payment_data ) {
 /**
  * Determines what the currently selected gateway is
  *
- * If the cart amount is zero, no option is shown and the cart uses the manual
- * gateway to emulate a no-gateway-setup for a free download
+ * If the amount is zero, no option is shown and the checkout uses the manual
+ * gateway to emulate a no-gateway-setup for a free donation
  *
  * @access public
- * @since  1.3.2
+ * @since  1.0
+ *
+ * @param  int $form_id The ID of the Form
+ *
  * @return string $enabled_gateway The slug of the gateway
  */
-function give_get_chosen_gateway() {
-	$gateways = give_get_enabled_payment_gateways();
-	$chosen   = isset( $_REQUEST['payment-mode'] ) ? $_REQUEST['payment-mode'] : false;
+function give_get_chosen_gateway( $form_id ) {
+	$gateways        = give_get_enabled_payment_gateways();
+	$chosen          = isset( $_REQUEST['payment-mode'] ) ? $_REQUEST['payment-mode'] : give_get_default_gateway( $form_id );
+	$enabled_gateway = '';
 
 	if ( $chosen ) {
 		$enabled_gateway = urldecode( $chosen );
@@ -329,8 +344,9 @@ function give_get_chosen_gateway() {
 			$enabled_gateway = $gateway_id;
 		endforeach;
 	} else {
-		$enabled_gateway = give_get_default_gateway();
+		$enabled_gateway = give_get_default_gateway( $form_id );
 	}
+
 
 	return apply_filters( 'give_chosen_gateway', $enabled_gateway );
 }
@@ -341,7 +357,7 @@ function give_get_chosen_gateway() {
  * A simple wrapper function for give_record_log()
  *
  * @access public
- * @since  1.3.3
+ * @since  1.0
  *
  * @param string $title   Title of the log entry (default: empty)
  * @param string $message Message to store in the log entry (default: empty)
@@ -356,7 +372,7 @@ function give_record_gateway_error( $title = '', $message = '', $parent = 0 ) {
 /**
  * Counts the number of purchases made with a gateway
  *
- * @since 1.6
+ * @since 1.0
  *
  * @param string $gateway_id
  * @param string $status

@@ -168,9 +168,9 @@ function give_tools_sysinfo_get() {
 
 	$active_gateways = give_get_enabled_payment_gateways();
 	if ( $active_gateways ) {
-		$default_gateway_is_active = give_is_gateway_active( give_get_default_gateway() );
+		$default_gateway_is_active = give_is_gateway_active( give_get_default_gateway(null) );
 		if ( $default_gateway_is_active ) {
-			$default_gateway = give_get_default_gateway();
+			$default_gateway = give_get_default_gateway(null);
 			$default_gateway = $active_gateways[ $default_gateway ]['admin_label'];
 		} else {
 			$default_gateway = 'Test Payment';

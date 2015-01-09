@@ -10,17 +10,10 @@
 var give_scripts;
 jQuery( document ).ready( function ( $ ) {
 
-	// Auto load default payment gateway
-	if ( $( 'input.give-gateway' ).length ) {
-		setTimeout( function () {
-			give_load_gateway( give_scripts.default_gateway );
-		}, 200 );
-	}
-
 	//Run tooltips setup
 	setup_give_tooltips();
 
-	// Show the login form on the checkout page
+	// Show the login form in the checkout
 	$( 'body' ).on( 'click', '.give_checkout_register_login', function ( e ) {
 		var $this = $( this ),
 			data = {
@@ -71,22 +64,27 @@ jQuery( document ).ready( function ( $ ) {
 
 	} );
 
-	// Load the fields for the selected payment method
 	$( 'select#give-gateway, input.give-gateway' ).change( function ( e ) {
 
-		var payment_mode = $( '#give-gateway option:selected, input.give-gateway:checked' ).val();
+		e.preventDefault();
 
+		//Which payment gateway to load?
+		var payment_mode = $( this ).val();
+
+		//Problema? Bounce
 		if ( payment_mode == '0' ) {
+			console.log( 'There was a problem loading the selected gateway' );
 			return false;
 		}
 
-		give_load_gateway( payment_mode );
+		give_load_gateway( $( this ).parents( 'form' ), payment_mode );
 
 		return false;
 
 	} );
 
 
+	//Process the donation submit
 	$( document ).on( 'click', '.give_form #give_purchase_submit input[type=submit]', function ( e ) {
 
 		var givePurchaseform = $( '.give-form' ).get( 0 );
@@ -127,28 +125,38 @@ jQuery( document ).ready( function ( $ ) {
 
 } );
 
-function give_load_gateway( payment_mode ) {
+/**
+ * Load the Payment Gateways
+ *
+ * @description: AJAX load appropriate gateway fields
+ * @param form_object Obj The specific form to load a gateway for
+ * @param payment_mode
+ */
+function give_load_gateway( form_object, payment_mode ) {
 
-	var give_form = jQuery( '#give_purchase_form_wrap' );
+	var loading_element = jQuery( form_object ).find( '#give-payment-mode-select .give-loading-animation' );
+	var give_total = jQuery( form_object ).find( '#give-amount' ).val();
+	var give_form_id = jQuery( form_object ).find( 'input[name="give-form-id"]' ).val();
 
 	// Show the ajax loader
-	jQuery( '#give-payment-mode-wrap' ).find( '.give-loading-animation' ).css( 'background-image', 'url(' + give_scripts.ajax_loader + ')' );
-	jQuery( '#give-payment-mode-wrap .give-loading-text' ).fadeIn();
+	loading_element.css( 'background-image', 'url(' + give_scripts.ajax_loader + ')' );
+	loading_element.parent().fadeIn();
 
 	//Update form action
-	give_form.attr( 'action', '?payment-mode=' + payment_mode );
+	//give_form.attr( 'action', '?payment-mode=' + payment_mode );
 
 	//Post via AJAX to Give
 	jQuery.post( give_scripts.ajaxurl + '?payment-mode=' + payment_mode, {
 			action           : 'give_load_gateway',
-			give_total       : jQuery( '#give-amount' ).val(),
-			give_form_id     : jQuery( 'input[name="give-form-id"]' ).val(),
+			give_total       : give_total,
+			give_form_id     : give_form_id,
 			give_payment_mode: payment_mode
 		},
 		function ( response ) {
-			jQuery( '#give_purchase_form_wrap' ).html( response );
+			//Success: let's output the gateway fields in the appropriate form space
+			jQuery( form_object ).find( '#give_purchase_form_wrap' ).html( response );
 			jQuery( '.give-no-js' ).hide();
-			jQuery( '#give-payment-mode-wrap .give-loading-text' ).fadeOut();
+			jQuery( form_object ).find( '#give-payment-mode-wrap .give-loading-text' ).fadeOut();
 			setup_give_tooltips();
 
 		}

@@ -33,12 +33,12 @@ add_action( 'give_gateway_select', 'give_process_gateway_select' );
 /**
  * Loads a payment gateway via AJAX
  *
- * @since 1.3.4
+ * @since 1.0
  * @return void
  */
 function give_load_ajax_gateway() {
 	if ( isset( $_POST['give_payment_mode'] ) ) {
-		do_action( 'give_purchase_form' );
+		do_action( 'give_purchase_form', $_POST['give_form_id'] );
 		exit();
 	}
 }
@@ -49,7 +49,7 @@ add_action( 'wp_ajax_nopriv_give_load_gateway', 'give_load_ajax_gateway' );
 /**
  * Sets an error on checkout if no gateways are enabled
  *
- * @since 1.3.4
+ * @since 1.0
  * @return void
  */
 function give_no_gateway_error() {

@@ -51,8 +51,7 @@ function give_get_donation_form( $args = array() ) {
 		return false;
 	}
 
-	$payment_mode = give_get_chosen_gateway();
-
+	$payment_mode = give_get_chosen_gateway( $form->ID );
 
 	$form_action = add_query_arg( apply_filters( 'give_form_action_args', array(
 			'payment-mode' => $payment_mode,
@@ -68,7 +67,9 @@ function give_get_donation_form( $args = array() ) {
 
 	<div id="give-form-<?php echo $post_id; ?>-wrap" class="give-form-wrap">
 
-		<?php if ( isset( $args['show_title'] ) && $args['show_title'] == true ) { ?>
+		<?php
+		if ( isset( $args['show_title'] ) && $args['show_title'] == true ) {
+			?>
 
 			<h2 class="give-form-title"><?php echo get_the_title( $post_id ); ?></h2>
 
@@ -111,21 +112,28 @@ function give_get_donation_form( $args = array() ) {
  * if credit cards are enabled
  *
  * @since 1.0
- * @global $give_options Array of all the Give options
+ *
+ * @param int $form_id      ID of the Give Form
+ *
+ * @global    $give_options Array of all the Give options
  * @return string
  */
-function give_show_purchase_form() {
+function give_show_purchase_form( $form_id ) {
 	global $give_options;
 
-	$payment_mode = give_get_chosen_gateway();
+	$payment_mode = give_get_chosen_gateway( $form_id );
+
+	if ( ! isset( $form_id ) && isset( $_POST['give_form_id'] ) ) {
+		$form_id = $_POST['give_form_id'];
+	}
 
 	do_action( 'give_purchase_form_top' );
 
-	if ( give_can_checkout() && isset( $_POST['give_form_id'] ) ) {
+	if ( give_can_checkout() && isset( $form_id ) ) {
 
 		do_action( 'give_purchase_form_before_register_login' );
 
-		$show_register_form = get_post_meta( $_POST['give_form_id'], '_give_show_register_form', true );
+		$show_register_form = get_post_meta( $form_id, '_give_show_register_form', true );
 
 		if ( ( $show_register_form === 'registration' || ( $show_register_form === 'both' && ! isset( $_GET['login'] ) ) ) && ! is_user_logged_in() ) : ?>
 			<div id="give_checkout_login_register">
@@ -141,16 +149,16 @@ function give_show_purchase_form() {
 			do_action( 'give_purchase_form_after_user_info' );
 		}
 
-		do_action( 'give_purchase_form_before_cc_form' );
+		do_action( 'give_purchase_form_before_cc_form', $form_id );
 
 		// Load the credit card form and allow gateways to load their own if they wish
 		if ( has_action( 'give_' . $payment_mode . '_cc_form' ) ) {
-			do_action( 'give_' . $payment_mode . '_cc_form' );
+			do_action( 'give_' . $payment_mode . '_cc_form', $form_id );
 		} else {
-			do_action( 'give_cc_form' );
+			do_action( 'give_cc_form', $form_id );
 		}
 
-		do_action( 'give_purchase_form_after_cc_form' );
+		do_action( 'give_purchase_form_after_cc_form', $form_id );
 
 	} else {
 		// Can't checkout
@@ -763,6 +771,8 @@ function give_get_login_fields() {
 add_action( 'give_purchase_form_login_fields', 'give_get_login_fields' );
 
 /**
+ * Payment Mode Select
+ *
  * Renders the payment mode form by getting all the enabled payment gateways and
  * outputting them as radio buttons for the user to choose the payment gateway. If
  * a default payment gateway has been chosen from the Give Settings, it will be
@@ -771,7 +781,7 @@ add_action( 'give_purchase_form_login_fields', 'give_get_login_fields' );
  * @since 1.0
  * @return void
  */
-function give_payment_mode_select() {
+function give_payment_mode_select( $form_id ) {
 
 	$gateways = give_get_enabled_payment_gateways();
 
@@ -787,22 +797,25 @@ function give_payment_mode_select() {
 
 			<ul id="give-gateway-radio-list">
 				<?php foreach ( $gateways as $gateway_id => $gateway ) :
-					$checked       = checked( $gateway_id, give_get_default_gateway(), false );
+					$checked       = checked( $gateway_id, give_get_default_gateway( $form_id ), false );
 					$checked_class = $checked ? ' give-gateway-option-selected' : '';
-					echo '<li><label for="give-gateway-' . esc_attr( $gateway_id ) . '" class="give-gateway-option' . $checked_class . '" id="give-gateway-option-' . esc_attr( $gateway_id ) . '">';
-					echo '<input type="radio" name="payment-mode" class="give-gateway" id="give-gateway-' . esc_attr( $gateway_id ) . '" value="' . esc_attr( $gateway_id ) . '"' . $checked . '>' . esc_html( $gateway['checkout_label'] );
+					echo '<li><label for="give-gateway-' . esc_attr( $gateway_id ) . '-' . $form_id . '" class="give-gateway-option' . $checked_class . '" id="give-gateway-option-' . esc_attr( $gateway_id ) . '">';
+					echo '<input type="radio" name="payment-mode" class="give-gateway" id="give-gateway-' . esc_attr( $gateway_id ) . '-' . $form_id . '" value="' . esc_attr( $gateway_id ) . '"' . $checked . '>' . esc_html( $gateway['checkout_label'] );
 					echo '</label></li>';
 				endforeach; ?>
 			</ul>
 			<?php do_action( 'give_payment_mode_after_gateways' ); ?>
-			<p class="give-loading-text">
-				<span class="give-loading-animation"></span> <?php _e( 'Loading', 'give' ); ?>
+			<p class="give-loading-text"><span class="give-loading-animation"></span> <?php _e( 'Loading', 'give' ); ?>
 				<span class="elipsis">.</span><span class="elipsis">.</span><span class="elipsis">.</span></p>
 		</div>
 		<?php do_action( 'give_payment_mode_after_gateways_wrap' ); ?>
 	</fieldset>
 
-	<div id="give_purchase_form_wrap"></div><!-- the checkout fields are loaded into this-->
+	<div id="give_purchase_form_wrap">
+
+		<?php do_action( 'give_purchase_form', $form_id ); ?>
+
+	</div><!-- the checkout fields are loaded into this-->
 
 	<?php do_action( 'give_payment_mode_bottom' );
 
@@ -876,15 +889,18 @@ add_action( 'give_purchase_form_before_submit', 'give_checkout_final_total', 999
 /**
  * Renders the Checkout Submit section
  *
- * @since 1.3.3
+ * @since 1.0
+ *
+ * @param int $form_id
+ *
  * @return void
  */
-function give_checkout_submit() {
+function give_checkout_submit( $form_id ) {
 	?>
 	<fieldset id="give_purchase_submit">
 		<?php do_action( 'give_purchase_form_before_submit' ); ?>
 
-		<?php give_checkout_hidden_fields(); ?>
+		<?php give_checkout_hidden_fields( $form_id ); ?>
 
 		<?php echo give_checkout_button_purchase(); ?>
 
@@ -950,15 +966,18 @@ add_action( 'give_checkout_form_top', 'give_agree_to_terms_js' );
  * Renders the hidden Checkout fields
  *
  * @since 1.0
+ *
+ * @param int $form_id
+ *
  * @return void
  */
-function give_checkout_hidden_fields() {
+function give_checkout_hidden_fields( $form_id ) {
 	?>
 	<?php if ( is_user_logged_in() ) { ?>
 		<input type="hidden" name="give-user-id" value="<?php echo get_current_user_id(); ?>" />
 	<?php } ?>
 	<input type="hidden" name="give_action" value="purchase" />
-	<input type="hidden" name="give-gateway" value="<?php echo give_get_chosen_gateway(); ?>" />
+	<input type="hidden" name="give-gateway" value="<?php echo give_get_chosen_gateway( $form_id ); ?>" />
 <?php
 }
 

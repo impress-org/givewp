@@ -17,7 +17,6 @@ jQuery.noConflict();
 	 * @description: Allow only one to be checked
 	 * @since: 1.0
 	 */
-
 	var handle_default_radio = function () {
 		"use strict";
 		var default_radio = $( 'input.donation-level-radio' );
@@ -41,13 +40,10 @@ jQuery.noConflict();
 			}
 		} );
 
-
 		//If only one price then that one is default
 		if ( number_of_prices === 1 ) {
-			console.log( 'here' );
 			default_radio.prop( 'checked', true );
 		}
-
 
 	};
 

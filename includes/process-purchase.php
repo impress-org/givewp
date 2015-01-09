@@ -170,7 +170,6 @@ function give_purchase_form_validate_fields() {
 	if ( empty( $_POST ) ) {
 		return false;
 	}
-
 	// Start an array to collect valid data
 	$valid_data = array(
 		'gateway'          => give_purchase_form_validate_gateway(), // Gateway fallback
@@ -220,7 +219,7 @@ function give_purchase_form_validate_fields() {
  */
 function give_purchase_form_validate_gateway() {
 
-	$gateway = give_get_default_gateway();
+	$gateway = give_get_default_gateway($_REQUEST['give-form-id']);
 
 	// Check if a gateway value is present
 	if ( ! empty( $_REQUEST['give-gateway'] ) ) {

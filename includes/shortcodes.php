@@ -66,12 +66,17 @@ add_shortcode( 'purchase_history', 'give_purchase_history' );
  * @return string
  */
 function give_form_shortcode( $atts, $content = null ) {
-	extract( shortcode_atts( array(
-			'id'         => '',
-			'show_title' => true,
-		), $atts, 'give_login' )
-	);
+	$atts = shortcode_atts( array(
+		'id'         => '',
+		'show_title' => true,
+	), $atts, 'give_form' );
+
+	//get the Give Form
+	ob_start();
 	give_get_donation_form( $atts );
+	$final_output = ob_get_clean();
+
+	return apply_filters( 'give_donate_form', $final_output, $atts );
 }
 
 add_shortcode( 'give_form', 'give_form_shortcode' );

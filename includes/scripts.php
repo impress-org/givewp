@@ -66,7 +66,7 @@ function give_load_scripts() {
 			'select_option'    => __( 'Please select an option', 'give' ),
 			// Variable pricing error with multi-purchase option enabled
 			'ajax_loader'      => apply_filters('give_ajax_preloader_img', GIVE_PLUGIN_URL . 'assets/images/spinner-2x.gif'),
-			'default_gateway'  => give_get_default_gateway(),
+			'default_gateway'  => give_get_default_gateway(null),
 			'permalinks'       => get_option( 'permalink_structure' ) ? '1' : '0'
 		)
 	);
