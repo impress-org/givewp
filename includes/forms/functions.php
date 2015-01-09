@@ -47,7 +47,7 @@ function give_get_success_page_uri() {
 /**
  * Determines if we're currently on the Success page.
  *
- * @since 1.9.9
+ * @since 1.0
  * @return bool True if on the Success page, false otherwise.
  */
 function give_is_success_page() {
@@ -277,7 +277,7 @@ function give_enforced_ssl_redirect_handler() {
 /**
  * Handle rewriting asset URLs for SSL enforced checkouts
  *
- * @since 2.0
+ * @since 1.0
  * @return void
  */
 function give_enforced_ssl_asset_handler() {
@@ -326,8 +326,7 @@ function give_enforced_ssl_asset_filter( $content ) {
 	} else {
 
 		// Detect if URL ends in a common domain suffix. We want to only affect assets
-		$extension = untrailingslashit( give_get_file_extension( $content ) );
-		$suffixes  = array(
+		$suffixes = array(
 			'br',
 			'ca',
 			'cn',
@@ -347,12 +346,6 @@ function give_enforced_ssl_asset_filter( $content ) {
 			'org',
 			'ru',
 		);
-
-		if ( ! in_array( $extension, $suffixes ) ) {
-
-			$content = str_replace( 'http:', 'https:', $content );
-
-		}
 
 	}
 

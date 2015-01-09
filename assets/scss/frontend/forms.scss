@@ -10,6 +10,10 @@
 /*------------------------------------
 Layout
 --------------------------------------*/
+.give-clearfix {
+  @include clearfix();
+}
+
 [id*='give-form'] {
   h1.give-form-title {
 	margin: 0 0 15px;
@@ -293,7 +297,7 @@ Radio Lists
   //this is the radio list for to select a gateway
   @include clearfix();
   float: left;
-  margin: 0 0 15px;
+  margin: 0 0 25px;
   padding: 0;
   list-style: none;
 
@@ -407,21 +411,51 @@ form[id*='give-form'] {
 	padding: 0;
 	font-style: italic;
 
-	.give-loading-animation {
-	  float: left;
-	  width: 20px;
-	  height: 20px;
-	  margin: 2px 5px 0 0;
-	  background-size: 20px 20px;
-	  background-repeat: no-repeat;
-	  background-color: transparent;
-	}
-
 	&.give-updating-price-loader {
 	  float: left;
 	  margin: 6px 0 0 20px;
 	}
 
+  }
+  .give-loading-animation {
+	float: left;
+	width: 20px;
+	height: 20px;
+	margin: 2px 5px 0 0;
+	background-size: 20px 20px;
+	background-repeat: no-repeat;
+	background-color: transparent;
+  }
+
+}
+
+/* Login and Register */
+
+#give-login-account-wrap {
+  @include clearfix();
+
+  > p {
+	float: left;
+	margin: 0 0 15px;
+	padding: 0;
+  }
+
+  p.give-login-message {
+	margin-right: 10px;
+  }
+
+}
+
+/* User Login */
+#give-user-login-submit, .give-submit-button-wrap {
+
+  input.give-submit, span.give-loading-animation {
+	float: left;
+  }
+
+  span.give-loading-animation {
+	margin: 3px 6px;
+	display: none;
   }
 
 }
