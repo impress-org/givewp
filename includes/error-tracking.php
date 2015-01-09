@@ -26,8 +26,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @uses  give_clear_errors()
  * @return void
  */
-function give_print_errors() {
+function give_print_errors($form_id) {
+
 	$errors = give_get_errors();
+
+	//Ensure errors show up on the appropriate form
+	if(isset($_POST['give-form-id']) && intval($_POST['give-form-id']) !== $form_id) {
+		return;
+	}
+
 	if ( $errors ) {
 		$classes = apply_filters( 'give_error_class', array(
 			'give_errors'
@@ -52,7 +59,7 @@ add_action( 'give_ajax_checkout_errors', 'give_print_errors' );
  * If errors exist, they are returned.
  *
  * @since 1.0
- * @uses  EDD_Session::get()
+ * @uses  Give_Session::get()
  * @return mixed array if errors are present, false if none found
  */
 function give_get_errors() {
@@ -65,7 +72,7 @@ function give_get_errors() {
  * Stores an error in a session var.
  *
  * @since 1.0
- * @uses  EDD_Session::get()
+ * @uses  Give_Session::get()
  *
  * @param int    $error_id      ID of the error being set
  * @param string $error_message Message to store with the error
@@ -85,7 +92,7 @@ function give_set_error( $error_id, $error_message ) {
  * Clears all stored errors.
  *
  * @since 1.0
- * @uses  EDD_Session::set()
+ * @uses  Give_Session::set()
  * @return void
  */
 function give_clear_errors() {
@@ -95,8 +102,8 @@ function give_clear_errors() {
 /**
  * Removes (unsets) a stored error
  *
- * @since 1.3.4
- * @uses  EDD_Session::set()
+ * @since 1.0
+ * @uses  Give_Session::set()
  *
  * @param int $error_id ID of the error being set
  *
@@ -114,7 +121,7 @@ function give_unset_error( $error_id ) {
  * Register die handler for give_die()
  *
  * @author Sunny Ratilal
- * @since  1.6
+ * @since  1.0
  * @return void
  */
 function _give_die_handler() {
@@ -131,7 +138,7 @@ function _give_die_handler() {
  * with functions using give_die() in the unit tests.
  *
  * @author Sunny Ratilal
- * @since  1.6
+ * @since  1.0
  * @return void
  */
 function give_die( $message = '', $title = '', $status = 400 ) {

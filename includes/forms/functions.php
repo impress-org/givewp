@@ -98,7 +98,7 @@ function give_send_to_success_page( $query_string = null ) {
  */
 function give_send_back_to_checkout( $args = array() ) {
 
-	$redirect = $_POST['give-current-url'];
+	$redirect = ( isset( $_POST['give-current-url'] ) ) ? $_POST['give-current-url'] : '';
 
 	if ( ! empty( $args ) ) {
 		// Check for backward compatibility

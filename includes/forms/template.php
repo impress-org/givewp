@@ -78,7 +78,8 @@ function give_get_donation_form( $args = array() ) {
 		<form id="give-form-<?php echo $post_id; ?>" class="give-form give-form_<?php echo absint( $form->ID ); ?>" action="<?php echo $form_action; ?>" method="post">
 			<input type="hidden" name="give-form-id" value="<?php echo $form->ID; ?>" />
 			<input type="hidden" name="give-form-title" value="<?php echo htmlentities( $form->post_title ); ?>" />
-			<input type="hidden" name="give-current-url" value="<?php echo htmlspecialchars( get_permalink( $post_id ) ); ?>" />
+			<input type="hidden" name="give-current-url" value="<?php echo htmlspecialchars( get_permalink() ); ?>" />
+			<input type="hidden" name="give-form-url" value="<?php echo htmlspecialchars( get_permalink( $post_id ) ); ?>" />
 
 			<?php
 
@@ -334,14 +335,15 @@ function give_output_levels( $form_id ) {
  * via the hooks provided.
  *
  * @since 1.0
+ * @param int $form_id
  * @return void
  */
-function give_user_info_fields() {
+function give_user_info_fields($form_id) {
 	if ( is_user_logged_in() ) :
 		$user_data = get_userdata( get_current_user_id() );
 	endif;
 
-	do_action( 'give_purchase_form_before_personal_info' );
+	do_action( 'give_purchase_form_before_personal_info', $form_id );
 	?>
 	<fieldset id="give_checkout_user_info">
 		<legend><?php echo apply_filters( 'give_checkout_personal_info_text', __( 'Personal Info', 'give' ) ); ?></legend>
@@ -370,7 +372,7 @@ function give_user_info_fields() {
 			} ?>" type="text" name="give_last" id="give-last" placeholder="<?php _e( 'Last name', 'give' ); ?>" value="<?php echo is_user_logged_in() ? $user_data->last_name : ''; ?>" />
 		</p>
 
-		<?php do_action( 'give_purchase_form_before_email' ); ?>
+		<?php do_action( 'give_purchase_form_before_email', $form_id ); ?>
 		<p id="give-email-wrap" class="form-row form-row-wide">
 			<label class="give-label" for="give-email">
 				<?php _e( 'Email Address', 'give' ); ?>
@@ -383,9 +385,9 @@ function give_user_info_fields() {
 			<input class="give-input required" type="email" name="give_email" placeholder="<?php _e( 'Email address', 'give' ); ?>" id="give-email" value="<?php echo is_user_logged_in() ? $user_data->user_email : ''; ?>" />
 
 		</p>
-		<?php do_action( 'give_purchase_form_after_email' ); ?>
+		<?php do_action( 'give_purchase_form_after_email', $form_id ); ?>
 
-		<?php do_action( 'give_purchase_form_user_info' ); ?>
+		<?php do_action( 'give_purchase_form_user_info', $form_id ); ?>
 	</fieldset>
 <?php
 }

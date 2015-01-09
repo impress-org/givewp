@@ -2,7 +2,7 @@
 /**
  * Give Session
  *
- * This is a wrapper class for WP_Session / PHP $_SESSION and handles the storage of cart items, purchase sessions, etc
+ * This is a wrapper class for WP_Session / PHP $_SESSION and handles the storage of Give sessions
  *
  * @package     Give
  * @subpackage  Classes/Session
@@ -12,12 +12,14 @@
  */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Give_Session Class
  *
- * @since 1.5
+ * @since 1.0
  */
 class Give_Session {
 
@@ -26,7 +28,7 @@ class Give_Session {
 	 *
 	 * @var array
 	 * @access private
-	 * @since 1.5
+	 * @since  1.0
 	 */
 	private $session;
 
@@ -36,7 +38,7 @@ class Give_Session {
 	 *
 	 * @var bool
 	 * @access private
-	 * @since 1.5,1
+	 * @since  1.0,1
 	 */
 	private $use_php_sessions = false;
 
@@ -47,16 +49,16 @@ class Give_Session {
 	 * Defines our WP_Session constants, includes the necessary libraries and
 	 * retrieves the WP Session instance
 	 *
-	 * @since 1.5
+	 * @since 1.0
 	 */
 	public function __construct() {
 
 		$this->use_php_sessions = $this->use_php_sessions();
 
-		if( $this->use_php_sessions ) {
+		if ( $this->use_php_sessions ) {
 
 			// Use PHP SESSION (must be enabled via the GIVE_USE_PHP_SESSIONS constant)
-			add_action( 'init', array( $this, 'maybe_start_session' ), -2 );
+			add_action( 'init', array( $this, 'maybe_start_session' ), - 2 );
 
 		} else {
 
@@ -81,9 +83,9 @@ class Give_Session {
 		}
 
 		if ( empty( $this->session ) && ! $this->use_php_sessions ) {
-			add_action( 'plugins_loaded', array( $this, 'init' ), -1 );
+			add_action( 'plugins_loaded', array( $this, 'init' ), - 1 );
 		} else {
-			add_action( 'init', array( $this, 'init' ), -1 );
+			add_action( 'init', array( $this, 'init' ), - 1 );
 		}
 
 	}
@@ -92,13 +94,13 @@ class Give_Session {
 	 * Setup the WP_Session instance
 	 *
 	 * @access public
-	 * @since 1.5
+	 * @since  1.0
 	 * @return void
 	 */
 	public function init() {
 
-		if( $this->use_php_sessions ) {
-			$this->session = isset( $_SESSION['edd'] ) && is_array( $_SESSION['edd'] ) ? $_SESSION['edd'] : array();
+		if ( $this->use_php_sessions ) {
+			$this->session = isset( $_SESSION['give'] ) && is_array( $_SESSION['give'] ) ? $_SESSION['give'] : array();
 		} else {
 			$this->session = WP_Session::get_instance();
 		}
@@ -106,7 +108,7 @@ class Give_Session {
 		$cart     = $this->get( 'give_cart' );
 		$purchase = $this->get( 'give_purchase' );
 
-		if( ! empty( $cart ) || ! empty( $purchase ) ) {
+		if ( ! empty( $cart ) || ! empty( $purchase ) ) {
 			$this->set_cart_cookie();
 		} else {
 			$this->set_cart_cookie( false );
@@ -120,7 +122,7 @@ class Give_Session {
 	 * Retrieve session ID
 	 *
 	 * @access public
-	 * @since 1.6
+	 * @since  1.0
 	 * @return string Session ID
 	 */
 	public function get_id() {
@@ -132,22 +134,26 @@ class Give_Session {
 	 * Retrieve a session variable
 	 *
 	 * @access public
-	 * @since 1.5
+	 * @since  1.0
+	 *
 	 * @param string $key Session key
+	 *
 	 * @return string Session variable
 	 */
 	public function get( $key ) {
 		$key = sanitize_key( $key );
+
 		return isset( $this->session[ $key ] ) ? maybe_unserialize( $this->session[ $key ] ) : false;
 	}
 
 	/**
 	 * Set a session variable
 	 *
-	 * @since 1.5
+	 * @since 1.0
 	 *
-	 * @param $key Session key
+	 * @param $key   Session key
 	 * @param $value Session variable
+	 *
 	 * @return mixed Session variable
 	 */
 	public function set( $key, $value ) {
@@ -160,8 +166,8 @@ class Give_Session {
 			$this->session[ $key ] = $value;
 		}
 
-		if( $this->use_php_sessions ) {
-			$_SESSION['edd'] = $this->session;
+		if ( $this->use_php_sessions ) {
+			$_SESSION['give'] = $this->session;
 		}
 
 		return $this->session[ $key ];
@@ -173,13 +179,15 @@ class Give_Session {
 	 * This is for hosts and caching plugins to identify if caching should be disabled
 	 *
 	 * @access public
-	 * @since 1.8
+	 * @since  1.0
+	 *
 	 * @param string $set Whether to set or destroy
+	 *
 	 * @return void
 	 */
 	public function set_cart_cookie( $set = true ) {
-		if( ! headers_sent() ) {
-			if( $set ) {
+		if ( ! headers_sent() ) {
+			if ( $set ) {
 				@setcookie( 'give_items_in_cart', '1', time() + 30 * 60, COOKIEPATH, COOKIE_DOMAIN, false );
 			} else {
 				@setcookie( 'give_items_in_cart', '', time() - 3600, COOKIEPATH, COOKIE_DOMAIN, false );
@@ -191,8 +199,10 @@ class Give_Session {
 	 * Force the cookie expiration variant time to 23 hours
 	 *
 	 * @access public
-	 * @since 2.0
+	 * @since  1.0
+	 *
 	 * @param int $exp Default expiration (1 hour)
+	 *
 	 * @return int
 	 */
 	public function set_expiration_variant_time( $exp ) {
@@ -203,8 +213,10 @@ class Give_Session {
 	 * Force the cookie expiration time to 24 hours
 	 *
 	 * @access public
-	 * @since 1.9
+	 * @since  1.0
+	 *
 	 * @param int $exp Default expiration (1 hour)
+	 *
 	 * @return int
 	 */
 	public function set_expiration_time( $exp ) {
@@ -219,7 +231,7 @@ class Give_Session {
 	 * or if the GIVE_USE_PHP_SESSIONS constant is defined
 	 *
 	 * @access public
-	 * @since 2.1
+	 * @since  2.1
 	 * @author Daniel J Griffiths
 	 * @return bool $ret True if we are using PHP sessions, false otherwise
 	 */
@@ -233,11 +245,11 @@ class Give_Session {
 		if ( ! $give_use_php_sessions ) {
 
 			// Attempt to detect if the server supports PHP sessions
-			if( function_exists( 'session_start' ) && ! ini_get( 'safe_mode' ) ) {
+			if ( function_exists( 'session_start' ) && ! ini_get( 'safe_mode' ) ) {
 
 				$this->set( 'give_use_php_sessions', 1 );
 
-				if( $this->get( 'give_use_php_sessions' ) ) {
+				if ( $this->get( 'give_use_php_sessions' ) ) {
 
 					$ret = true;
 
@@ -266,7 +278,7 @@ class Give_Session {
 	 * Starts a new session if one hasn't started yet.
 	 */
 	public function maybe_start_session() {
-		if( ! session_id() && ! headers_sent() ) {
+		if ( ! session_id() && ! headers_sent() ) {
 			session_start();
 		}
 	}

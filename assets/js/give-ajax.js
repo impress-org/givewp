@@ -94,9 +94,19 @@ jQuery( document ).ready( function ( $ ) {
 
 
 	//Process the donation submit
-	$( document ).on( 'click', '.give_form #give_purchase_submit #give-purchase-button', function ( e ) {
+	$( 'body' ).on( 'click touchend', '#give-purchase-button', function ( e ) {
 
-		var give_purchase_form = $( '.give-form' ).get( 0 );
+		//this form object
+		var this_form = $( this ).parents( 'form.give-form' );
+
+		//loading animation
+		var loading_animation = this_form.find( '#give_purchase_submit .give-loading-animation' );
+		loading_animation.fadeIn();
+
+		//this form selector
+		var give_purchase_form = this_form.get( 0 );
+
+		//check validity
 		if ( typeof give_purchase_form.checkValidity === "function" && false === give_purchase_form.checkValidity() ) {
 			return;
 		}
@@ -104,36 +114,25 @@ jQuery( document ).ready( function ( $ ) {
 		//prevent form from submitting normally
 		e.preventDefault();
 
-		//this form
-		var this_form = $( this ).parents( 'form:first' );
-
-		//loading animation
-		var loading_animation = this_form.find( '#give_purchase_submit .give-loading-animation' );
-		console.log( this_form );
-		console.log( loading_animation );
-
-		return false;
-
 		//Submit btn text
 		var complete_purchase_val = $( this ).val();
 
 		//Update submit button text
 		$( this ).val( give_global_vars.purchase_loading );
-		loading_animation.fadeIn();
 
 		//Submit form via AJAX
 		$.post( give_global_vars.ajaxurl, this_form.serialize() + '&action=give_process_checkout&give_ajax=true', function ( data ) {
 
 			if ( $.trim( data ) == 'success' ) {
 				//Remove any errors
-				$( '.give_errors' ).remove();
+				this_form.find( '.give_errors' ).remove();
 				//Submit form for normal processing
 				$( give_purchase_form ).submit();
 			} else {
 				$( '#give-purchase-button' ).val( complete_purchase_val );
 				loading_animation.fadeOut();
-				$( '.give_errors' ).remove();
-				$( '#give_purchase_submit' ).before( data );
+				this_form.find( '.give_errors' ).remove();
+				this_form.find( '#give_purchase_submit' ).before( data );
 			}
 		} );
 

@@ -181,7 +181,7 @@ function give_gateway_supports_buy_now( $gateway ) {
 /**
  * Checks if an enabled gateway supports buy now
  *
- * @since 1.8
+ * @since 1.0
  * @return bool
  */
 function give_shop_supports_buy_now() {
@@ -238,14 +238,6 @@ function give_build_straight_to_gateway_data( $download_id = 0, $options = array
 		$price         = $prices[ $price_id ]['amount'];
 	}
 
-	// Set up Downloads array
-	$downloads = array(
-		array(
-			'id'      => $download_id,
-			'options' => $price_options
-		)
-	);
-
 	// Set up Cart Details array
 	$cart_details = array(
 		array(
@@ -281,7 +273,6 @@ function give_build_straight_to_gateway_data( $download_id = 0, $options = array
 	// Setup purchase information
 	$purchase_data = array(
 		'downloads'    => $downloads,
-		'fees'         => give_get_cart_fees(),
 		'subtotal'     => $price,
 		'discount'     => 0,
 		'tax'          => 0,

@@ -144,6 +144,9 @@ jQuery( document ).ready( function ( $ ) {
 	//Helper function: Sets the multiselect amount values
 	function update_multiselect_vals( selected_field ) {
 
+		//Fade in/out price updating image
+		$( '.give-updating-price-loader' ).fadeIn().fadeOut();
+
 		//remove old selected class & add class for CSS purposes
 		$( selected_field ).parents( '.give-donation-levels-wrap' ).find( '.give-default-level' ).removeClass( 'give-default-level' );
 		$( selected_field ).addClass( 'give-default-level' );
