@@ -1,6 +1,6 @@
 <?php
 /**
- * Shortcodes
+ * Give Shortcodes
  *
  * @package     Give
  * @subpackage  Shortcodes
@@ -136,7 +136,7 @@ add_shortcode( 'give_register', 'give_register_form_shortcode' );
  *
  * Shows an order receipt.
  *
- * @since 1.4
+ * @since 1.0
  *
  * @param array  $atts Shortcode attributes
  * @param string $content
@@ -144,6 +144,7 @@ add_shortcode( 'give_register', 'give_register_form_shortcode' );
  * @return string
  */
 function give_receipt_shortcode( $atts, $content = null ) {
+
 	global $give_receipt_args;
 
 	$give_receipt_args = shortcode_atts( array(
@@ -157,6 +158,7 @@ function give_receipt_shortcode( $atts, $content = null ) {
 	), $atts, 'give_receipt' );
 
 	$session = give_get_purchase_session();
+
 
 	if ( isset( $_GET['payment_key'] ) ) {
 		$payment_key = urldecode( $_GET['payment_key'] );
@@ -223,6 +225,7 @@ add_shortcode( 'give_receipt', 'give_receipt_shortcode' );
  * @return string Output generated from the profile editor
  */
 function give_profile_editor_shortcode( $atts, $content = null ) {
+
 	ob_start();
 
 	give_get_template_part( 'shortcode', 'profile-editor' );

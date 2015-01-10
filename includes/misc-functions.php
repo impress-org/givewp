@@ -485,3 +485,14 @@ function give_no_guest_checkout() {
 
 	return (bool) apply_filters( 'give_no_guest_checkout', $ret );
 }
+
+
+/**
+ * Get PHP Arg Separator Output
+ *
+ * @since 1.0.8.3
+ * @return string Arg separator output
+ */
+function give_get_php_arg_separator_output() {
+	return ini_get( 'arg_separator.output' );
+}
