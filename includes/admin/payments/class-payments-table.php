@@ -24,7 +24,7 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
  *
  * Renders the Payment History table on the Payment History page
  *
- * @since 1.4
+ * @since 1.0
  */
 class Give_Payment_History_Table extends WP_List_Table {
 
@@ -32,7 +32,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * Number of results to show per page
 	 *
 	 * @var string
-	 * @since 1.4
+	 * @since 1.0
 	 */
 	public $per_page = 30;
 
@@ -40,7 +40,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * URL of this page
 	 *
 	 * @var string
-	 * @since 1.4.1
+	 * @since 1.0.1
 	 */
 	public $base_url;
 
@@ -48,7 +48,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * Total number of payments
 	 *
 	 * @var int
-	 * @since 1.4
+	 * @since 1.0
 	 */
 	public $total_count;
 
@@ -56,7 +56,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * Total number of complete payments
 	 *
 	 * @var int
-	 * @since 1.4
+	 * @since 1.0
 	 */
 	public $complete_count;
 
@@ -64,7 +64,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * Total number of pending payments
 	 *
 	 * @var int
-	 * @since 1.4
+	 * @since 1.0
 	 */
 	public $pending_count;
 
@@ -72,7 +72,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * Total number of refunded payments
 	 *
 	 * @var int
-	 * @since 1.4
+	 * @since 1.0
 	 */
 	public $refunded_count;
 
@@ -80,7 +80,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * Total number of failed payments
 	 *
 	 * @var int
-	 * @since 1.4
+	 * @since 1.0
 	 */
 	public $failed_count;
 
@@ -88,7 +88,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * Total number of revoked payments
 	 *
 	 * @var int
-	 * @since 1.4
+	 * @since 1.0
 	 */
 	public $revoked_count;
 
@@ -103,7 +103,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	/**
 	 * Get things started
 	 *
-	 * @since 1.4
+	 * @since 1.0
 	 * @uses  Give_Payment_History_Table::get_payment_counts()
 	 * @see   WP_List_Table::__construct()
 	 */
@@ -151,7 +151,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	/**
 	 * Show the search field
 	 *
-	 * @since  1.4
+	 * @since  1.0
 	 * @access public
 	 *
 	 * @param string $text     Label for the search box
@@ -186,7 +186,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * Retrieve the view types
 	 *
 	 * @access public
-	 * @since  1.4
+	 * @since  1.0
 	 * @return array $views All the views available
 	 */
 	public function get_views() {
@@ -238,7 +238,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * Retrieve the table columns
 	 *
 	 * @access public
-	 * @since  1.4
+	 * @since  1.0
 	 * @return array $columns Array of all the list table columns
 	 */
 	public function get_columns() {
@@ -260,7 +260,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * Retrieve the table's sortable columns
 	 *
 	 * @access public
-	 * @since  1.4
+	 * @since  1.0
 	 * @return array Array of all the sortable columns
 	 */
 	public function get_sortable_columns() {
@@ -277,7 +277,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * This function renders most of the columns in the list table.
 	 *
 	 * @access public
-	 * @since  1.4
+	 * @since  1.0
 	 *
 	 * @param array  $item        Contains all the data of the discount code
 	 * @param string $column_name The name of the column
@@ -314,7 +314,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * Render the Email Column
 	 *
 	 * @access public
-	 * @since  1.4
+	 * @since  1.0
 	 *
 	 * @param array $payment Contains all the data of the payment
 	 *
@@ -352,7 +352,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * Render the checkbox column
 	 *
 	 * @access public
-	 * @since  1.4
+	 * @since  1.0
 	 *
 	 * @param array $payment Contains all the data for the checkbox column
 	 *
@@ -384,7 +384,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * Render the User Column
 	 *
 	 * @access public
-	 * @since  1.4
+	 * @since  1.0
 	 *
 	 * @param array $payment Contains all the data of the payment
 	 *
@@ -413,7 +413,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * Retrieve the bulk actions
 	 *
 	 * @access public
-	 * @since  1.4
+	 * @since  1.0
 	 * @return array $actions Array of the bulk actions
 	 */
 	public function get_bulk_actions() {
@@ -437,7 +437,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * Process the bulk actions
 	 *
 	 * @access public
-	 * @since  1.4
+	 * @since  1.0
 	 * @return void
 	 */
 	public function process_bulk_action() {
@@ -504,7 +504,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * Retrieve the payment counts
 	 *
 	 * @access public
-	 * @since  1.4
+	 * @since  1.0
 	 * @return void
 	 */
 	public function get_payment_counts() {
@@ -544,7 +544,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * Retrieve all the data for all the payments
 	 *
 	 * @access public
-	 * @since  1.4
+	 * @since  1.0
 	 * @return array $payment_data Array of all the data for the payments
 	 */
 	public function payments_data() {

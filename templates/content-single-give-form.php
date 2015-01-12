@@ -27,7 +27,7 @@ if ( post_password_required() ) {
 }
 ?>
 
-<div itemscope itemtype="<?php //echo give_get_product_schema(); ?>" id="give-form-<?php the_ID(); ?>" <?php post_class(); ?>>
+<div id="give-form-<?php the_ID(); ?>" <?php post_class(); ?>>
 
 	<?php
 	/**
@@ -60,7 +60,6 @@ if ( post_password_required() ) {
 	do_action( 'give_after_single_form_summary' );
 	?>
 
-	<meta itemprop="url" content="<?php the_permalink(); ?>" />
 
 </div><!-- #product-<?php the_ID(); ?> -->
 

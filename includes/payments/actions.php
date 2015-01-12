@@ -38,6 +38,7 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 		return;
 	}
 
+	$payment_meta   = give_get_payment_meta( $payment_id );
 	$creation_date  = get_post_field( 'post_date', $payment_id, 'raw' );
 	$completed_date = give_get_payment_completed_date( $payment_id );
 	$user_info      = give_get_payment_meta_user_info( $payment_id );
@@ -45,6 +46,25 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 	$amount         = give_get_payment_amount( $payment_id );
 
 	do_action( 'give_pre_complete_purchase', $payment_id );
+
+	//	$price_id = isset( $download['options']['price_id'] ) ? (int) $download['options']['price_id'] : false;
+
+	$price_id = null;
+
+	// Ensure these actions only run once, ever
+	if ( empty( $completed_date ) ) {
+
+		if ( ! give_is_test_mode() || apply_filters( 'give_log_test_payment_stats', false ) ) {
+
+			give_record_sale_in_log( $payment_meta["form_id"], $payment_id, $price_id, $creation_date );
+			give_increase_purchase_count( $payment_meta["form_id"] );
+			give_increase_earnings( $payment_meta["form_id"], $amount );
+
+		}
+
+		do_action( 'give_complete_download_purchase', $payment_meta["form_id"], $payment_id, $payment_meta );
+	}
+
 
 	// Clear the total earnings cache
 	delete_transient( 'give_earnings_total' );
@@ -140,7 +160,7 @@ add_action( 'give_update_payment_status', 'give_undo_purchase_on_refund', 100, 3
  * Flushes the current user's purchase history transient when a payment status
  * is updated
  *
- * @since 1.2.2
+ * @since 1.0
  *
  * @param $payment_id
  * @param $new_status the status of the payment, probably "publish"
@@ -196,7 +216,7 @@ add_action( 'give_upgrade_payments', 'give_update_old_payments_with_totals' );
 /**
  * Updates week-old+ 'pending' orders to 'abandoned'
  *
- * @since 1.6
+ * @since 1.0
  * @return void
  */
 function give_mark_abandoned_orders() {

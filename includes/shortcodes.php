@@ -81,6 +81,62 @@ function give_form_shortcode( $atts, $content = null ) {
 
 add_shortcode( 'give_form', 'give_form_shortcode' );
 
+
+/**
+ * Show Avatars
+ *
+ * Show Giver avatars.
+ *
+ * @since 1.0
+ *
+ * @return string
+ */
+function give_avatars_shortcode( $atts ) {
+	$atts = shortcode_atts( array(
+		'id'       => '35',
+		'number'   => '20',
+		'tooltips' => true,
+		'size'     => '64px',
+	), $atts, 'give_avatars' );
+
+
+	//Args to pass to the query
+	$args = array(
+		'output'     => 'payments',
+		'status'     => 'publish',
+//		'orderby'    => 'ID',
+//		'number'     => $atts['number'],
+		'give_forms' => 35,
+	);
+
+
+	$p_query = new Give_Payments_Query( $args );
+	$payments = $p_query->get_payments();
+echo "<pre>";
+var_dump($payments);
+echo "</pre>";
+	// The Query
+	?>
+	<!--	<ul>-->
+	<!--	--><?php //// The Loop
+	//	if ( $wp_query->have_posts() ) : while ( $wp_query->have_posts() ) :
+	//		$wp_query->the_post();
+	?>
+	<!---->
+	<!---->
+	<!--		<li><img src="" title=""></li>-->
+	<!---->
+	<!--	--><?php //endwhile; ?>
+	<!--		</ul>-->
+	<!--	--><?php //endif; ?>
+
+	<?php //$output = ob_end_clean();
+
+	//return apply_filters( 'give_avatars', $output, $atts );
+}
+
+add_shortcode( 'give_avatars', 'give_avatars_shortcode' );
+
 /**
  * Login Shortcode
  *

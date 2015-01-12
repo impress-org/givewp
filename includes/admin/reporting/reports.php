@@ -1,0 +1,456 @@
+<?php
+/**
+ * Admin Reports Page
+ *
+ * @package     EDD
+ * @subpackage  Admin/Reports
+ * @copyright   Copyright (c) 2014, Pippin Williamson
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since       1.0
+ */
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
+/**
+ * Reports Page
+ *
+ * Renders the reports page contents.
+ *
+ * @since 1.0
+ * @global $give_options Array of all the EDD Options
+ * @return void
+*/
+function give_reports_page() {
+	global $give_options;
+
+	$current_page = admin_url( 'edit.php?post_type=download&page=give-reports' );
+	$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'reports';
+	?>
+	<div class="wrap">
+		<h2 class="nav-tab-wrapper">
+			<a href="<?php echo add_query_arg( array( 'tab' => 'reports', 'settings-updated' => false ), $current_page ); ?>" class="nav-tab <?php echo $active_tab == 'reports' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Reports', 'give' ); ?></a>
+			<?php if ( current_user_can( 'export_shop_reports' ) ) { ?>
+				<a href="<?php echo add_query_arg( array( 'tab' => 'export', 'settings-updated' => false ), $current_page ); ?>" class="nav-tab <?php echo $active_tab == 'export' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Export', 'give' ); ?></a>
+			<?php } ?>
+			<a href="<?php echo add_query_arg( array( 'tab' => 'logs', 'settings-updated' => false ), $current_page ); ?>" class="nav-tab <?php echo $active_tab == 'logs' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Logs', 'give' ); ?></a>
+			<?php do_action( 'give_reports_tabs' ); ?>
+		</h2>
+
+		<?php
+		do_action( 'give_reports_page_top' );
+		do_action( 'give_reports_tab_' . $active_tab );
+		do_action( 'give_reports_page_bottom' );
+		?>
+	</div><!-- .wrap -->
+	<?php
+}
+
+/**
+ * Default Report Views
+ *
+ * @since 1.4
+ * @return array $views Report Views
+ */
+function give_reports_default_views() {
+	$views = array(
+		'earnings'	=> __( 'Earnings', 'give' ),
+		'downloads' => give_get_forms_label_plural(),
+		'customers'	=> __( 'Customers', 'give' ),
+		'gateways'  => __( 'Payment Methods', 'give' ),
+		'taxes'		=> __( 'Taxes', 'give' )
+	);
+
+	$views = apply_filters( 'give_report_views', $views );
+
+	return $views;
+}
+
+/**
+ * Default Report Views
+ *
+ * Checks the $_GET['view'] parameter to ensure it exists within the default allowed views.
+ * 
+ * @param string $default Default view to use.
+ * 
+ * @since 1.9.6
+ * @return string $view Report View
+ * 
+ */
+function give_get_reporting_view( $default = 'earnings' ) {
+	
+	if ( ! isset( $_GET['view'] ) || ! in_array( $_GET['view'], array_keys( give_reports_default_views() ) ) ) {
+		$view = $default;
+	} else {
+		$view = $_GET['view'];
+	}
+
+	return apply_filters( 'give_get_reporting_view', $view );
+}
+
+/**
+ * Renders the Reports page
+ *
+ * @since 1.3
+ * @return void
+ */
+function give_reports_tab_reports() {
+	$current_view = 'earnings';
+	$views        = give_reports_default_views();
+
+	if ( isset( $_GET[ 'view' ] ) && array_key_exists( $_GET[ 'view' ], $views ) )
+		$current_view = $_GET[ 'view' ];
+
+	do_action( 'give_reports_view_' . $current_view );
+}
+add_action( 'give_reports_tab_reports', 'give_reports_tab_reports' );
+
+/**
+ * Renders the Reports Page Views Drop Downs
+ *
+ * @since 1.3
+ * @return void
+ */
+function give_report_views() {
+	$views        = give_reports_default_views();
+	$current_view = isset( $_GET[ 'view' ] ) ? $_GET[ 'view' ] : 'earnings';
+	?>
+	<form id="give-reports-filter" method="get">
+		<select id="give-reports-view" name="view">
+			<option value="-1"><?php _e( 'Report Type', 'give' ); ?></option>
+			<?php foreach ( $views as $view_id => $label ) : ?>
+				<option value="<?php echo esc_attr( $view_id ); ?>" <?php selected( $view_id, $current_view ); ?>><?php echo $label; ?></option>
+			<?php endforeach; ?>
+		</select>
+
+		<?php do_action( 'give_report_view_actions' ); ?>
+
+		<input type="hidden" name="post_type" value="download"/>
+		<input type="hidden" name="page" value="give-reports"/>
+		<?php submit_button( __( 'Show', 'give' ), 'secondary', 'submit', false ); ?>
+	</form>
+	<?php
+	do_action( 'give_report_view_actions_after' );
+}
+
+/**
+ * Renders the Reports Downloads Table
+ *
+ * @since 1.3
+ * @uses EDD_Download_Reports_Table::prepare_items()
+ * @uses EDD_Download_Reports_Table::display()
+ * @return void
+ */
+function give_reports_downloads_table() {
+	
+	if( isset( $_GET['download-id'] ) )
+		return;
+
+	include( dirname( __FILE__ ) . '/class-download-reports-table.php' );
+
+	$downloads_table = new EDD_Download_Reports_Table();
+	$downloads_table->prepare_items();
+	$downloads_table->display();
+}
+add_action( 'give_reports_view_downloads', 'give_reports_downloads_table' );
+
+/**
+ * Renders the detailed report for a specific product
+ *
+ * @since 1.9
+ * @return void
+ */
+function give_reports_download_details() {
+	if( ! isset( $_GET['download-id'] ) )
+		return;
+?>
+	<div class="tablenav top">
+		<div class="actions bulkactions">
+			<div class="alignleft">
+				<?php give_report_views(); ?>
+			</div>&nbsp;
+			<button onclick="history.go(-1);" class="button-secondary"><?php _e( 'Go Back', 'give' ); ?></button>
+		</div>
+	</div>
+<?php
+	give_reports_graph_of_download( absint( $_GET['download-id'] ) );
+}
+add_action( 'give_reports_view_downloads', 'give_reports_download_details' );
+
+/**
+ * Renders the Reports Customers Table
+ *
+ * @since 1.3
+ * @uses EDD_Customer_Reports_Table::prepare_items()
+ * @uses EDD_Customer_Reports_Table::display()
+ * @return void
+ */
+function give_reports_customers_table() {
+	include( dirname( __FILE__ ) . '/class-customer-reports-table.php' );
+
+	$downloads_table = new EDD_Customer_Reports_Table();
+	$downloads_table->prepare_items();
+	?>
+	<div class="wrap">
+		<?php do_action( 'give_logs_file_downloads_top' ); ?>
+		<form id="give-customers-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=download&page=give-reports&view=customers' ); ?>">
+			<?php
+			$downloads_table->search_box( __( 'Search', 'give' ), 'give-customers' );
+			$downloads_table->display();
+			?>
+			<input type="hidden" name="post_type" value="download" />
+			<input type="hidden" name="page" value="give-reports" />
+			<input type="hidden" name="view" value="customers" />
+		</form>
+		<?php do_action( 'give_logs_file_downloads_bottom' ); ?>
+	</div>
+<?php
+}
+add_action( 'give_reports_view_customers', 'give_reports_customers_table' );
+
+
+/**
+ * Renders the Gateways Table
+ *
+ * @since 1.3
+ * @uses EDD_Gateawy_Reports_Table::prepare_items()
+ * @uses EDD_Gateawy_Reports_Table::display()
+ * @return void
+ */
+function give_reports_gateways_table() {
+	include( dirname( __FILE__ ) . '/class-gateways-reports-table.php' );
+
+	$downloads_table = new EDD_Gateawy_Reports_Table();
+	$downloads_table->prepare_items();
+	$downloads_table->display();
+}
+add_action( 'give_reports_view_gateways', 'give_reports_gateways_table' );
+
+
+/**
+ * Renders the Reports Earnings Graphs
+ *
+ * @since 1.3
+ * @return void
+ */
+function give_reports_earnings() {
+	?>
+	<div class="tablenav top">
+		<div class="alignleft actions"><?php give_report_views(); ?></div>
+	</div>
+	<?php
+	give_reports_graph();
+}
+add_action( 'give_reports_view_earnings', 'give_reports_earnings' );
+
+/**
+ * Renders the Tax Reports
+ *
+ * @since 1.3.3
+ * @return void
+ */
+function give_reports_taxes() {
+	$year = isset( $_GET['year'] ) ? absint( $_GET['year'] ) : date( 'Y' );
+	?>
+	<div class="tablenav top">
+		<div class="alignleft actions"><?php give_report_views(); ?></div>
+	</div>
+
+	<div class="metabox-holder" style="padding-top: 0;">
+		<div class="postbox">
+			<h3><span><?php _e('Tax Report', 'give'); ?></span></h3>
+			<div class="inside">
+				<p><?php _e( 'This report shows the total amount collected in sales tax for the given year.', 'give' ); ?></p>
+				<form method="get" action="<?php echo admin_url( 'edit.php' ); ?>">
+					<span><?php echo $year; ?></span>: <strong><?php give_sales_tax_for_year( $year ); ?></strong>&nbsp;&mdash;&nbsp;
+					<select name="year">
+						<?php for ( $i = 2009; $i <= date( 'Y' ); $i++ ) : ?>
+						<option value="<?php echo $i; ?>"<?php selected( $year, $i ); ?>><?php echo $i; ?></option>
+						<?php endfor; ?>
+					</select>
+					<input type="hidden" name="view" value="taxes" />
+					<input type="hidden" name="post_type" value="download" />
+					<input type="hidden" name="page" value="give-reports" />
+					<?php submit_button( __( 'Submit', 'give' ), 'secondary', 'submit', false ); ?>
+				</form>
+			</div><!-- .inside -->
+		</div><!-- .postbox -->
+	</div><!-- .metabox-holder -->
+	<?php
+}
+add_action( 'give_reports_view_taxes', 'give_reports_taxes' );
+
+/**
+ * Renders the 'Export' tab on the Reports Page
+ *
+ * @since 1.3
+ * @return void
+ */
+function give_reports_tab_export() {
+	?>
+	<div id="give-dashboard-widgets-wrap">
+		<div class="metabox-holder">
+			<div id="post-body">
+				<div id="post-body-content">
+	
+					<?php do_action( 'give_reports_tab_export_content_top' ); ?>
+	
+					<div class="postbox give-export-pdf-sales-earnings">
+						<h3><span><?php _e( 'Export PDF of Sales and Earnings', 'give' ); ?></span></h3>
+						<div class="inside">
+							<p><?php _e( 'Download a PDF of Sales and Earnings reports for all products for the current year.', 'give' ); ?> <?php _e( 'Date range reports will be coming soon.', 'give' ); ?></p>
+							<p><a class="button" href="<?php echo wp_nonce_url( add_query_arg( array( 'give-action' => 'generate_pdf' ) ), 'give_generate_pdf' ); ?>"><?php _e( 'Generate PDF', 'give' ); ?></a></p>
+						</div><!-- .inside -->
+					</div><!-- .postbox -->
+	
+					<div class="postbox give-export-sales-earnings">
+						<h3><span><?php _e( 'Export Earnings and Sales Stats', 'give' ); ?></span></h3>
+						<div class="inside">
+							<p><?php _e( 'Download a CSV of earnings and sales over time.', 'give' ); ?></p>
+							<p>
+								<form method="post">
+									<?php echo EDD()->html->year_dropdown( 'start_year' ); ?>
+									<?php echo EDD()->html->month_dropdown( 'start_month' ); ?>
+									<?php echo _x( 'to', 'Date one to date two', 'give' ); ?>
+									<?php echo EDD()->html->year_dropdown( 'end_year' ); ?>
+									<?php echo EDD()->html->month_dropdown( 'end_month' ); ?>
+									<input type="hidden" name="give-action" value="earnings_export"/>
+									<input type="submit" value="<?php _e( 'Generate CSV', 'give' ); ?>" class="button-secondary"/>
+								</form>
+							</p>
+						</div><!-- .inside -->
+					</div><!-- .postbox -->
+
+					<div class="postbox give-export-payment-history">
+						<h3><span><?php _e('Export Payment History', 'give'); ?></span></h3>
+						<div class="inside">
+							<p><?php _e( 'Download a CSV of all payments recorded.', 'give' ); ?></p>
+							<p>
+								<form method="post">
+									<?php echo EDD()->html->year_dropdown(); ?>
+									<?php echo EDD()->html->month_dropdown(); ?>
+									<select name="give_export_payment_status">
+										<option value="0"><?php _e( 'All Statuses', 'give' ); ?></option>
+										<?php
+										$statuses = give_get_payment_statuses();
+										foreach( $statuses as $status => $label ) {
+											echo '<option value="' . $status . '">' . $label . '</option>';
+										}
+										?>
+									</select>
+									<input type="hidden" name="give-action" value="payment_export"/>
+									<input type="submit" value="<?php _e( 'Generate CSV', 'give' ); ?>" class="button-secondary"/>
+								</form>
+							</p>
+						</div><!-- .inside -->
+					</div><!-- .postbox -->
+	
+					<div class="postbox give-export-customers">
+						<h3><span><?php _e('Export Customers in CSV', 'give'); ?></span></h3>
+						<div class="inside">
+							<p><?php _e( 'Download a CSV of all customer emails. Optionally export only customers that have purchased a particular product. Note, if you have a large number of customers, exporting the purchase stats may fail.', 'give' ); ?></p>
+							<p>
+								<form method="post" id="give_customer_export">
+									<select name="give_export_download" id="give_customer_export_download">
+										<option value="0"><?php printf( __( 'All %s', 'give' ), give_get_forms_label_plural() ); ?></option>
+										<?php
+										$downloads = get_posts( array( 'post_type' => 'download', 'posts_per_page' => -1 ) );
+										if( $downloads ) {
+											foreach( $downloads as $download ) {
+												echo '<option value="' . $download->ID . '">' . get_the_title( $download->ID ) . '</option>';
+											}
+										}
+										?>
+									</select>
+									<select name="give_export_option" id="give_customer_export_option">
+										<option value="emails"><?php _e( 'Emails', 'give' ); ?></option>
+										<option value="emails_and_names"><?php _e( 'Emails and Names', 'give' ); ?></option>
+										<option value="full"><?php _e( 'Emails, Names, and Purchase Stats', 'give' ); ?></option>
+									</select>
+									<input type="hidden" name="give-action" value="email_export"/>
+									<input type="submit" value="<?php _e( 'Generate CSV', 'give' ); ?>" class="button-secondary"/>
+								</form>
+							</p>
+						</div><!-- .inside -->
+					</div><!-- .postbox -->
+	
+					<div class="postbox give-export-download-history">
+						<h3><span><?php _e('Export Download History in CSV', 'give'); ?></span></h3>
+						<div class="inside">
+							<p><?php _e( 'Download a CSV of all file downloads for a specific month and year.', 'give' ); ?></p>
+							<p>
+								<form method="post">
+									<?php echo EDD()->html->year_dropdown(); ?>
+									<?php echo EDD()->html->month_dropdown(); ?>
+									<input type="hidden" name="give-action" value="downloads_history_export"/>
+									<input type="submit" value="<?php _e( 'Generate CSV', 'give' ); ?>" class="button-secondary"/>
+								</form>
+							</p>
+						</div><!-- .inside -->
+					</div><!-- .postbox -->
+	
+					<?php do_action( 'give_reports_tab_export_content_bottom' ); ?>
+	
+				</div><!-- .post-body-content -->
+			</div><!-- .post-body -->
+		</div><!-- .metabox-holder -->
+	</div><!-- #give-dashboard-widgets-wrap -->
+	<?php
+}
+add_action( 'give_reports_tab_export', 'give_reports_tab_export' );
+
+/**
+ * Renders the Reports page
+ *
+ * @since 1.3
+ * @return void
+ */
+function give_reports_tab_logs() {
+	require( EDD_PLUGIN_DIR . 'includes/admin/reporting/logs.php' );
+
+	$current_view = 'file_downloads';
+	$log_views    = give_log_default_views();
+
+	if ( isset( $_GET[ 'view' ] ) && array_key_exists( $_GET[ 'view' ], $log_views ) )
+		$current_view = $_GET[ 'view' ];
+
+	do_action( 'give_logs_view_' . $current_view );
+}
+add_action( 'give_reports_tab_logs', 'give_reports_tab_logs' );
+
+/**
+ * Retrieves estimated monthly earnings and sales
+ *
+ * @since 1.5
+ * @return array
+ */
+function give_estimated_monthly_stats() {
+
+	$estimated = get_transient( 'give_estimated_monthly_stats' );
+
+	if ( false === $estimated ) {
+
+		$estimated = array(
+			'earnings' => 0,
+			'sales'    => 0
+		);
+
+		$stats = new EDD_Payment_Stats;
+
+		$to_date_earnings = $stats->get_earnings( 0, 'this_month' );
+		$to_date_sales    = $stats->get_sales( 0, 'this_month' );
+
+		$current_day      = date( 'd', current_time( 'timestamp' ) );
+		$current_month    = date( 'n', current_time( 'timestamp' ) );
+		$current_year     = date( 'Y', current_time( 'timestamp' ) );
+		$days_in_month    = cal_days_in_month( CAL_GREGORIAN, $current_month, $current_year );
+
+		$estimated['earnings'] = ( $to_date_earnings / $current_day ) * $days_in_month;
+		$estimated['sales']    = ( $to_date_sales / $current_day ) * $days_in_month;
+
+		// Cache for one day
+		set_transient( 'give_estimated_monthly_stats', $estimated, 86400 );
+	}
+
+	return maybe_unserialize( $estimated );
+}

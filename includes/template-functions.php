@@ -37,7 +37,7 @@ function give_get_templates_url() {
 /**
  * Retrieves a template part
  *
- * @since v1.2
+ * @since v1.0
  *
  * Taken from bbPress
  *
@@ -174,7 +174,7 @@ function give_add_schema_microdata() {
 }
 
 /**
- * Add Microdata to download titles
+ * Add Microdata to Give titles
  *
  * @since  1.0
  * @author Sunny Ratilal
@@ -381,5 +381,14 @@ if ( ! function_exists( 'give_template_single_title' ) ) {
 	 */
 	function give_template_single_title() {
 		give_get_template_part( 'single-give-form/title' );
+	}
+}
+if ( ! function_exists( 'give_show_avatars' ) ) {
+
+	/**
+	 * Output the product title.
+	 */
+	function give_show_avatars() {
+		echo do_shortcode( '[give_avatars]' );
 	}
 }

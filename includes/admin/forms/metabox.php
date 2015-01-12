@@ -84,6 +84,11 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 				// Fields array works the same, except id's only need to be unique for this group. Prefix is not needed.
 				'fields'  => array(
 					array(
+						'name' => __( 'ID', 'give' ),
+						'id'   => $prefix . 'id',
+						'type' => 'levels_id',
+					),
+					array(
 						'name' => __( 'Amount', 'give' ),
 						'id'   => $prefix . 'amount',
 						'type' => 'text_money',
@@ -201,6 +206,7 @@ function give_cmb_render_levels_repeater_header() {
 
 	<div class="table-container">
 		<div class="table-row">
+			<div class="table-cell col-amount"><?php _e( 'ID', 'give' ); ?></div>
 			<div class="table-cell col-amount"><?php _e( 'Amount', 'give' ); ?></div>
 			<div class="table-cell col-text"><?php _e( 'Text', 'give' ); ?></div>
 			<div class="table-cell col-default"><?php _e( 'Default', 'give' ); ?></div>
@@ -208,4 +214,41 @@ function give_cmb_render_levels_repeater_header() {
 		</div>
 	</div>
 
-<?php }
+<?php
+}
+
+
+/**
+ * CMB2 Repeatable ID Field
+ */
+//add_action( 'cmb2_render_levels_id', 'give_cmb_render_levels_id', 10, 5 );
+function give_cmb_render_levels_id( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
+
+
+	$level_id            = 1;
+	$field_options_array = array(
+		'class' => 'give-hidden',
+		'name'  => $field_type_object->_name( '[level_id]' ),
+		'id'    => $field_type_object->_id( '_level_id' ),
+		'value' => $level_id,
+		'type'  => 'number',
+		'desc'  => '',
+	);
+
+
+	if ( ! isset( $escaped_value['level_id'] ) && ! empty( $escaped_value['level_id'] ) ) {
+
+		$level_id = ( intval( $escaped_value['level_id'] ) + 1 );
+
+		$field_options_array['value'] = $level_id;
+
+	} else {
+
+		$field_options_array['value'] = $escaped_value['level_id'];
+
+	}//There is already an ID so increment it
+
+	echo '<p class="give-level-id">' . $escaped_value['level_id'] . '</p>';
+	echo $field_type_object->input( $field_options_array );
+
+}

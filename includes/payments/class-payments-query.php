@@ -17,7 +17,7 @@
  *
  * Payments can be retrieved for date ranges and pre-defined periods
  *
- * @since 1.8
+ * @since 1.0
  */
 class Give_Payments_Query extends Give_Stats {
 
@@ -26,7 +26,7 @@ class Give_Payments_Query extends Give_Stats {
 	 *
 	 * @var array
 	 * @access public
-	 * @since  1.8
+	 * @since  1.0
 	 */
 	public $args = array();
 
@@ -35,7 +35,7 @@ class Give_Payments_Query extends Give_Stats {
 	 *
 	 * @var array
 	 * @access public
-	 * @since  1.8
+	 * @since  1.0
 	 */
 	public $payments = array();
 
@@ -46,7 +46,7 @@ class Give_Payments_Query extends Give_Stats {
 	 * the query is run to convert them to the proper syntax.
 	 *
 	 * @access public
-	 * @since  1.8
+	 * @since  1.0
 	 *
 	 * @param $args array The array of arguments that can be passed in and used for setting up this payment query.
 	 */
@@ -70,7 +70,7 @@ class Give_Payments_Query extends Give_Stats {
 			'search_in_notes' => false,
 			'children'        => false,
 			'fields'          => null,
-			'download'        => null
+			'give_forms'      => null
 		);
 
 		$this->args = wp_parse_args( $args, $defaults );
@@ -82,7 +82,7 @@ class Give_Payments_Query extends Give_Stats {
 	 * Set a query variable.
 	 *
 	 * @access public
-	 * @since  1.8
+	 * @since  1.0
 	 */
 	public function __set( $query_var, $value ) {
 		if ( in_array( $query_var, array( 'meta_query', 'tax_query' ) ) ) {
@@ -96,7 +96,7 @@ class Give_Payments_Query extends Give_Stats {
 	 * Unset a query variable.
 	 *
 	 * @access public
-	 * @since  1.8
+	 * @since  1.0
 	 */
 	public function __unset( $query_var ) {
 		unset( $this->args[ $query_var ] );
@@ -106,7 +106,7 @@ class Give_Payments_Query extends Give_Stats {
 	 * Modify the query/query arguments before we retrieve payments.
 	 *
 	 * @access public
-	 * @since  1.8
+	 * @since  1.0
 	 * @return void
 	 */
 	public function init() {
@@ -123,7 +123,7 @@ class Give_Payments_Query extends Give_Stats {
 		add_action( 'give_pre_get_payments', array( $this, 'search' ) );
 		add_action( 'give_pre_get_payments', array( $this, 'mode' ) );
 		add_action( 'give_pre_get_payments', array( $this, 'children' ) );
-		add_action( 'give_pre_get_payments', array( $this, 'download' ) );
+		add_action( 'give_pre_get_payments', array( $this, 'give_forms' ) );
 	}
 
 	/**
@@ -134,7 +134,7 @@ class Give_Payments_Query extends Give_Stats {
 	 * compatibility).
 	 *
 	 * @access public
-	 * @since  1.8
+	 * @since  1.0
 	 * @return object
 	 */
 	public function get_payments() {
@@ -155,14 +155,14 @@ class Give_Payments_Query extends Give_Stats {
 
 				$payment_id = get_post()->ID;
 
-				$details->ID           = $payment_id;
-				$details->date         = get_post()->post_date;
-				$details->post_status  = get_post()->post_status;
-				$details->total        = give_get_payment_amount( $payment_id );
-				$details->fees         = give_get_payment_fees( $payment_id );
-				$details->key          = give_get_payment_key( $payment_id );
-				$details->gateway      = give_get_payment_gateway( $payment_id );
-				$details->user_info    = give_get_payment_meta_user_info( $payment_id );
+				$details->ID          = $payment_id;
+				$details->date        = get_post()->post_date;
+				$details->post_status = get_post()->post_status;
+				$details->total       = give_get_payment_amount( $payment_id );
+				$details->fees        = give_get_payment_fees( $payment_id );
+				$details->key         = give_get_payment_key( $payment_id );
+				$details->gateway     = give_get_payment_gateway( $payment_id );
+				$details->user_info   = give_get_payment_meta_user_info( $payment_id );
 
 				if ( give_get_option( 'enable_sequential' ) ) {
 					$details->payment_number = give_get_payment_number( $payment_id );
@@ -183,7 +183,7 @@ class Give_Payments_Query extends Give_Stats {
 	 * If querying a specific date, add the proper filters.
 	 *
 	 * @access public
-	 * @since  1.8
+	 * @since  1.0
 	 * @return void
 	 */
 	public function date_filter_pre() {
@@ -201,7 +201,7 @@ class Give_Payments_Query extends Give_Stats {
 	 * to avoid affecting future queries.
 	 *
 	 * @access public
-	 * @since  1.8
+	 * @since  1.0
 	 * @return void
 	 */
 	public function date_filter_post() {
@@ -216,7 +216,7 @@ class Give_Payments_Query extends Give_Stats {
 	 * Post Status
 	 *
 	 * @access public
-	 * @since  1.8
+	 * @since  1.0
 	 * @return void
 	 */
 	public function status() {
@@ -232,7 +232,7 @@ class Give_Payments_Query extends Give_Stats {
 	 * Current Page
 	 *
 	 * @access public
-	 * @since  1.8
+	 * @since  1.0
 	 * @return void
 	 */
 	public function page() {
@@ -248,7 +248,7 @@ class Give_Payments_Query extends Give_Stats {
 	 * Posts Per Page
 	 *
 	 * @access public
-	 * @since  1.8
+	 * @since  1.0
 	 * @return void
 	 */
 	public function per_page() {
@@ -270,7 +270,7 @@ class Give_Payments_Query extends Give_Stats {
 	 * Current Month
 	 *
 	 * @access public
-	 * @since  1.8
+	 * @since  1.0
 	 * @return void
 	 */
 	public function month() {
@@ -286,7 +286,7 @@ class Give_Payments_Query extends Give_Stats {
 	 * Order
 	 *
 	 * @access public
-	 * @since  1.8
+	 * @since  1.0
 	 * @return void
 	 */
 	public function orderby() {
@@ -305,7 +305,7 @@ class Give_Payments_Query extends Give_Stats {
 	 * Specific User
 	 *
 	 * @access public
-	 * @since  1.8
+	 * @since  1.0
 	 * @return void
 	 */
 	public function user() {
@@ -329,7 +329,7 @@ class Give_Payments_Query extends Give_Stats {
 	 * Search
 	 *
 	 * @access public
-	 * @since  1.8
+	 * @since  1.0
 	 * @return void
 	 */
 	public function search() {
@@ -428,7 +428,7 @@ class Give_Payments_Query extends Give_Stats {
 
 		} elseif ( '#' == substr( $search, 0, 1 ) ) {
 
-			$this->__set( 'download', str_replace( '#', '', $search ) );
+			$this->__set( 'give_forms', str_replace( '#', '', $search ) );
 			$this->__unset( 's' );
 
 		} else {
@@ -442,7 +442,7 @@ class Give_Payments_Query extends Give_Stats {
 	 * Payment Mode
 	 *
 	 * @access public
-	 * @since  1.8
+	 * @since  1.0
 	 * @return void
 	 */
 	public function mode() {
@@ -462,7 +462,7 @@ class Give_Payments_Query extends Give_Stats {
 	 * Children
 	 *
 	 * @access public
-	 * @since  1.8
+	 * @since  1.0
 	 * @return void
 	 */
 	public function children() {
@@ -473,22 +473,22 @@ class Give_Payments_Query extends Give_Stats {
 	}
 
 	/**
-	 * Specific Download
+	 * Specific Give Form
 	 *
 	 * @access public
-	 * @since  1.8
+	 * @since  1.0
 	 * @return void
 	 */
-	public function download() {
+	public function give_forms() {
 
-		if ( empty( $this->args['download'] ) ) {
+		if ( empty( $this->args['give_forms'] ) ) {
 			return;
 		}
 
 		global $give_logs;
 
 		$args = array(
-			'post_parent'            => $this->args['download'],
+//			'post_id'                => $this->args['give_forms'],
 			'log_type'               => 'sale',
 			'post_status'            => array( 'publish' ),
 			'nopaging'               => true,
@@ -499,9 +499,9 @@ class Give_Payments_Query extends Give_Stats {
 			'fields'                 => 'ids'
 		);
 
-		if ( is_array( $this->args['download'] ) ) {
+		if ( is_array( $this->args['give_forms'] ) ) {
 			unset( $args['post_parent'] );
-			$args['post_parent__in'] = $this->args['download'];
+			$args['post_parent__in'] = $this->args['give_forms'];
 		}
 
 		$sales = $give_logs->get_connected_logs( $args );
@@ -523,7 +523,7 @@ class Give_Payments_Query extends Give_Stats {
 
 		}
 
-		$this->__unset( 'download' );
+		$this->__unset( 'give_forms' );
 
 	}
 }

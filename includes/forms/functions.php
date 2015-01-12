@@ -351,3 +351,116 @@ function give_enforced_ssl_asset_filter( $content ) {
 
 	return $content;
 }
+
+
+/**
+ * Record Sale In Log
+ *
+ * Stores log information for a download sale.
+ *
+ * @since 1.0
+ * @global            $give_logs
+ *
+ * @param int         $give_form_id Give Form ID
+ * @param int         $payment_id   Payment ID
+ * @param bool|int    $price_id     Price ID, if any
+ * @param string|null $sale_date    The date of the sale
+ *
+ * @return void
+ */
+function give_record_sale_in_log( $give_form_id = 0, $payment_id, $price_id = false, $sale_date = null ) {
+	global $give_logs;
+
+	$log_data = array(
+		'post_parent'   => $give_form_id,
+		'log_type'      => 'sale',
+		'post_date'     => isset( $sale_date ) ? $sale_date : null,
+		'post_date_gmt' => isset( $sale_date ) ? $sale_date : null
+	);
+
+	$log_meta = array(
+		'payment_id' => $payment_id,
+		'price_id'   => (int) $price_id
+	);
+
+	$give_logs->insert_log( $log_data, $log_meta );
+}
+
+
+/**
+ *
+ * Increases the sale count of a download.
+ *
+ * @since 1.0
+ * @param int $give_form_id Give Form ID
+ * @return bool|int
+ */
+function give_increase_purchase_count( $give_form_id = 0 ) {
+	$download = new Give_Donate_Form( $give_form_id );
+	return $download->increase_sales();
+}
+
+/**
+ * Decreases the sale count of a form. Primarily for when a donation is refunded.
+ *
+ * @since 1.0
+ * @param int $give_form_id Give Form ID
+ * @return bool|int
+ */
+function give_decrease_purchase_count( $give_form_id = 0 ) {
+	$download = new Give_Donate_Form( $give_form_id );
+	return $download->decrease_sales();	
+}
+
+/**
+ * Increases the total earnings of a form.
+ *
+ * @since 1.0
+ * @param int $give_form_id Give Form ID
+ * @param int $amount Earnings
+ * @return bool|int
+ */
+function give_increase_earnings( $give_form_id = 0, $amount ) {
+	$download = new Give_Donate_Form( $give_form_id );
+	return $download->increase_earnings( $amount );	
+}
+
+/**
+ * Decreases the total earnings of a download. Primarily for when a purchase is refunded.
+ *
+ * @since 1.0
+ * @param int $give_form_id Give Form ID
+ * @param int $amount Earnings
+ * @return bool|int
+ */
+function give_decrease_earnings( $give_form_id = 0, $amount ) {
+	$download = new Give_Donate_Form( $give_form_id );
+	return $download->decrease_earnings( $amount );	
+}
+
+
+/**
+ * Returns the total earnings for a form.
+ *
+ * @since 1.0
+ * @param int $give_form_id Give Form ID
+ * @return int $earnings Earnings for a certain download
+ */
+function give_get_form_earnings_stats( $give_form_id = 0 ) {
+	$give_form = new Give_Donate_Form( $give_form_id );
+	return $give_form->earnings;
+}
+
+
+
+/**
+ * Return the sales number for a form.
+ *
+ * @since 1.0
+ * @param int $give_form_id Give Form ID
+ * @return int $sales Amount of sales for a certain download
+ */
+function give_get_form_sales_stats( $give_form_id = 0 ) {
+	$give_form = new Give_Donate_Form( $give_form_id );
+	return $give_form->sales;
+}

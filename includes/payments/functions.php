@@ -26,8 +26,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * $offset = 0, $number = 20, $mode = 'live', $orderby = 'ID', $order = 'DESC',
  * $user = null, $status = 'any', $meta_key = null
  *
- * As of EDD 1.8 this simply wraps EDD_Payments_Query
- *
  * @since 1.0
  *
  * @param array $args Arguments passed to get payments
@@ -42,7 +40,7 @@ function give_get_payments( $args = array() ) {
 	}
 
 	$args     = apply_filters( 'give_get_payments_args', $args );
-	$payments = new EDD_Payments_Query( $args );
+	$payments = new Give_Payments_Query( $args );
 
 	return $payments->get_payments();
 }
@@ -159,7 +157,6 @@ function give_insert_payment( $payment_data = array() ) {
 			'form_title'     => $payment_data['give_form_title'],
 			'form_id'        => $payment_data['give_form_id'],
 			'user_info'      => $payment_data['user_info'],
-			'cart_details'   => $payment_data['cart_details']
 		);
 
 		$mode    = give_is_test_mode() ? 'test' : 'live';
@@ -1160,7 +1157,7 @@ function give_get_next_payment_number() {
  * give_get_payment_amount() and is then sent through give_currency_filter() and
  * give_format_amount() to format the amount correctly.
  *
- * @since 1.4
+ * @since 1.0
  *
  * @param int $payment_id Payment ID
  *

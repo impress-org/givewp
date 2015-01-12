@@ -253,7 +253,7 @@ class Give_Donate_Form {
 	 */
 	public function increase_sales() {
 
-		$sales = give_get_download_sales_stats( $this->ID );
+		$sales = give_get_form_sales_stats( $this->ID );
 		$sales = $sales + 1;
 
 		if ( update_post_meta( $this->ID, '_give_download_sales', $sales ) ) {
@@ -273,7 +273,7 @@ class Give_Donate_Form {
 	 */
 	public function decrease_sales() {
 
-		$sales = give_get_download_sales_stats( $this->ID );
+		$sales = give_get_form_sales_stats( $this->ID );
 		if ( $sales > 0 ) // Only decrease if not already zero
 		{
 			$sales = $sales - 1;
@@ -324,7 +324,7 @@ class Give_Donate_Form {
 	 */
 	public function increase_earnings( $amount = 0 ) {
 
-		$earnings = give_get_download_earnings_stats( $this->ID );
+		$earnings = give_get_form_earnings_stats( $this->ID );
 		$earnings = $earnings + (float) $amount;
 
 		if ( update_post_meta( $this->ID, '_give_download_earnings', $earnings ) ) {
@@ -345,7 +345,7 @@ class Give_Donate_Form {
 	 */
 	public function decrease_earnings( $amount ) {
 
-		$earnings = give_get_download_earnings_stats( $this->ID );
+		$earnings = give_get_form_earnings_stats( $this->ID );
 
 		if ( $earnings > 0 ) // Only decrease if greater than zero
 		{

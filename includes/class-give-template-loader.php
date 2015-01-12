@@ -39,8 +39,11 @@ class Give_Template_Loader {
 		 * Before Single Forms Summary Div
 		 *
 		 * @see give_show_product_images()
+		 * @see give_show_avatars()
 		 */
 		add_action( 'give_before_single_form_summary', 'give_show_form_images', 10 );
+		add_action( 'give_before_single_form_summary', 'give_show_avatars', 15 );
+
 
 		/**
 		 * Single Forms Summary Box
