@@ -2,9 +2,9 @@
 /**
  * Gateway Error Log View Class
  *
- * @package     EDD
+ * @package     Give
  * @subpackage  Admin/Reports
- * @copyright   Copyright (c) 2014, Pippin Williamson
+ * @copyright   Copyright (c) 2014, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
@@ -17,14 +17,14 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 }
 
 /**
- * EDD_Gateway_Error_Log_Table Class
+ * Give_Gateway_Error_Log_Table Class
  *
  * Renders the gateway errors list table
  *
  * @access      private
  * @since       1.4
  */
-class EDD_Gateway_Error_Log_Table extends WP_List_Table {
+class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	/**
 	 * Number of items per page
 	 *
@@ -193,11 +193,11 @@ class EDD_Gateway_Error_Log_Table extends WP_List_Table {
 	 * @access public
 	 * @since 1.4
 	 * @global object $give_logs EDD Logs Object
-	 * @uses EDD_Gateway_Error_Log_Table::get_columns()
+	 * @uses Give_Gateway_Error_Log_Table::get_columns()
 	 * @uses WP_List_Table::get_sortable_columns()
-	 * @uses EDD_Gateway_Error_Log_Table::get_pagenum()
-	 * @uses EDD_Gateway_Error_Log_Table::get_logs()
-	 * @uses EDD_Gateway_Error_Log_Table::get_log_count()
+	 * @uses Give_Gateway_Error_Log_Table::get_pagenum()
+	 * @uses Give_Gateway_Error_Log_Table::get_logs()
+	 * @uses Give_Gateway_Error_Log_Table::get_log_count()
 	 * @return void
 	 */
 	public function prepare_items() {

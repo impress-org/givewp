@@ -85,12 +85,70 @@ jQuery.noConflict();
 
 	};
 
+	//Handle Repeatable Row ID
+	var handle_repeatable_row_ID = function () {
+
+		$( 'body' ).on( 'cmb2_add_row', function ( event, row ) {
+
+			//Get the row ID and add 1 (iterator starts at 0 in CMB2)
+			var row_id = $( row ).data( 'iterator' ) + 1;
+
+			//Add row ID value to hidden field
+			$( row ).find( 'input.give-hidden' ).val( row_id );
+			//Add row ID to displayed ID
+			$( row ).find( '.give-level-id' ).text( row_id );
+
+		} );
+		$( 'body' ).on( 'cmb2_shift_rows_complete', function ( event, self ) {
+
+			var row_group = $( '.cmb-repeatable-grouping' );
+			row_group.each( function ( index, object ) {
+
+
+				var row_id = $( object ).find( 'input.give-level-id-input' ).val();
+
+				$( object ).find( '.give-level-id' ).text( row_id );
+
+
+			} );
+
+
+		} );
+
+		//$( 'body' ).on( 'cmb2_shift_rows_start', function ( event, self ) {
+		//
+		//
+		//	//Get the Row ID
+		//	var row_group = $( self ).parents( '.cmb-repeatable-grouping' );
+		//	var row_id = $( row_group ).find( 'input.give-level-id-input' ).val();
+		//
+		//	console.log( self );
+		//
+		//	//Determine if we are moving value up or down
+		//	if ( $( self ).hasClass( 'move-up' ) ) {
+		//
+		//		$( row_group ).prev().find( '.give-level-id' ).text( row_id );
+		//
+		//	} else {
+		//
+		//		$( row_group ).next().find( '.give-level-id' ).text( row_id );
+		//	}
+		//
+		//	//move it to the next row
+		//
+		//
+		//} );
+
+	};
+
 
 	//On DOM Ready
 	$( function () {
 
+
 		handle_default_radio();
 		toggle_conditional_form_fields();
+		handle_repeatable_row_ID();
 
 	} );
 

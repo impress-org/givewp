@@ -214,11 +214,13 @@ if ( ! class_exists( 'Give' ) ) : /**
 
 			if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-footer.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/welcome.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-notices.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-actions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/system-info.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/export-functions.php';
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/actions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/payments-history.php';
@@ -228,6 +230,12 @@ if ( ! class_exists( 'Give' ) ) : /**
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/metabox.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/dashboard-columns.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/shortcode.php';
+
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/contextual-help.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/reports.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/pdf-reports.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/class-give-graph.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/graphing.php';
 
 
 			} else {

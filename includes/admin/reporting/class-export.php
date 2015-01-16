@@ -4,26 +4,28 @@
  *
  * This is the base class for all export methods. Each data export type (customers, payments, etc) extend this class
  *
- * @package     EDD
+ * @package     Give
  * @subpackage  Admin/Reports
- * @copyright   Copyright (c) 2014, Pippin Williamson
+ * @copyright   Copyright (c) 2014, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       1.4.4
+ * @since       1.0
  */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
- * EDD_Export Class
+ * Give_Export Class
  *
- * @since 1.4.4
+ * @since 1.0
  */
-class EDD_Export {
+class Give_Export {
 	/**
 	 * Our export type. Used for export-type specific filters/actions
 	 * @var string
-	 * @since 1.4.4
+	 * @since 1.0
 	 */
 	public $export_type = 'default';
 
@@ -31,7 +33,7 @@ class EDD_Export {
 	 * Can we export?
 	 *
 	 * @access public
-	 * @since 1.4.4
+	 * @since  1.0
 	 * @return bool Whether we can export or not
 	 */
 	public function can_export() {
@@ -42,14 +44,15 @@ class EDD_Export {
 	 * Set the export headers
 	 *
 	 * @access public
-	 * @since 1.4.4
+	 * @since  1.0
 	 * @return void
 	 */
 	public function headers() {
 		ignore_user_abort( true );
 
-		if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) )
+		if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
 			set_time_limit( 0 );
+		}
 
 		nocache_headers();
 		header( 'Content-Type: text/csv; charset=utf-8' );
@@ -61,14 +64,15 @@ class EDD_Export {
 	 * Set the CSV columns
 	 *
 	 * @access public
-	 * @since 1.4.4
+	 * @since  1.0
 	 * @return array $cols All the columns
 	 */
 	public function csv_cols() {
 		$cols = array(
-			'id'   => __( 'ID',   'give' ),
+			'id'   => __( 'ID', 'give' ),
 			'date' => __( 'Date', 'give' )
 		);
+
 		return $cols;
 	}
 
@@ -76,11 +80,12 @@ class EDD_Export {
 	 * Retrieve the CSV columns
 	 *
 	 * @access public
-	 * @since 1.4.4
+	 * @since  1.0
 	 * @return array $cols Array of the columns
 	 */
 	public function get_csv_cols() {
 		$cols = $this->csv_cols();
+
 		return apply_filters( 'give_export_csv_cols_' . $this->export_type, $cols );
 	}
 
@@ -88,17 +93,17 @@ class EDD_Export {
 	 * Output the CSV columns
 	 *
 	 * @access public
-	 * @since 1.4.4
-	 * @uses EDD_Export::get_csv_cols()
+	 * @since  1.0
+	 * @uses   Give_Export::get_csv_cols()
 	 * @return void
 	 */
 	public function csv_cols_out() {
 		$cols = $this->get_csv_cols();
-		$i = 1;
-		foreach( $cols as $col_id => $column ) {
+		$i    = 1;
+		foreach ( $cols as $col_id => $column ) {
 			echo '"' . $column . '"';
 			echo $i == count( $cols ) ? '' : ';';
-			$i++;
+			$i ++;
 		}
 		echo "\r\n";
 	}
@@ -107,7 +112,7 @@ class EDD_Export {
 	 * Get the data being exported
 	 *
 	 * @access public
-	 * @since 1.4.4
+	 * @since  1.0
 	 * @return array $data Data for Export
 	 */
 	public function get_data() {
@@ -133,7 +138,7 @@ class EDD_Export {
 	 * Output the CSV rows
 	 *
 	 * @access public
-	 * @since 1.4.4
+	 * @since  1.0
 	 * @return void
 	 */
 	public function csv_rows_out() {
@@ -149,7 +154,7 @@ class EDD_Export {
 				if ( array_key_exists( $col_id, $cols ) ) {
 					echo '"' . $column . '"';
 					echo $i == count( $cols ) ? '' : ';';
-					$i++;
+					$i ++;
 				}
 			}
 			echo "\r\n";
@@ -160,16 +165,17 @@ class EDD_Export {
 	 * Perform the export
 	 *
 	 * @access public
-	 * @since 1.4.4
-	 * @uses EDD_Export::can_export()
-	 * @uses EDD_Export::headers()
-	 * @uses EDD_Export::csv_cols_out()
-	 * @uses EDD_Export::csv_rows_out()
+	 * @since  1.0
+	 * @uses   Give_Export::can_export()
+	 * @uses   Give_Export::headers()
+	 * @uses   Give_Export::csv_cols_out()
+	 * @uses   Give_Export::csv_rows_out()
 	 * @return void
 	 */
 	public function export() {
-		if ( ! $this->can_export() )
+		if ( ! $this->can_export() ) {
 			wp_die( __( 'You do not have permission to export data.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+		}
 
 		// Set headers
 		$this->headers();

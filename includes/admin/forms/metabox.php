@@ -221,34 +221,21 @@ function give_cmb_render_levels_repeater_header() {
 /**
  * CMB2 Repeatable ID Field
  */
-//add_action( 'cmb2_render_levels_id', 'give_cmb_render_levels_id', 10, 5 );
+add_action( 'cmb2_render_levels_id', 'give_cmb_render_levels_id', 10, 5 );
 function give_cmb_render_levels_id( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
 
+	$escaped_value       = ( isset( $escaped_value['level_id'] ) ? $escaped_value['level_id'] : '' );
 
-	$level_id            = 1;
 	$field_options_array = array(
-		'class' => 'give-hidden',
+		'class' => 'give-hidden give-level-id-input',
 		'name'  => $field_type_object->_name( '[level_id]' ),
 		'id'    => $field_type_object->_id( '_level_id' ),
-		'value' => $level_id,
+		'value' => $escaped_value,
 		'type'  => 'number',
 		'desc'  => '',
 	);
 
-
-	if ( ! isset( $escaped_value['level_id'] ) && ! empty( $escaped_value['level_id'] ) ) {
-
-		$level_id = ( intval( $escaped_value['level_id'] ) + 1 );
-
-		$field_options_array['value'] = $level_id;
-
-	} else {
-
-		$field_options_array['value'] = $escaped_value['level_id'];
-
-	}//There is already an ID so increment it
-
-	echo '<p class="give-level-id">' . $escaped_value['level_id'] . '</p>';
+	echo '<p class="give-level-id">' . $escaped_value . '</p>';
 	echo $field_type_object->input( $field_options_array );
 
 }

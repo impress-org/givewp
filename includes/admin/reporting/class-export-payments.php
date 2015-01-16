@@ -4,9 +4,9 @@
  *
  * This class handles payment export
  *
- * @package     EDD
+ * @package     Give
  * @subpackage  Admin/Reports
- * @copyright   Copyright (c) 2014, Pippin Williamson
+ * @copyright   Copyright (c) 2014, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.4.4
  */
@@ -15,11 +15,11 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
- * EDD_Payments_Export Class
+ * Give_Payments_Export Class
  *
  * @since 1.4.4
  */
-class EDD_Payments_Export extends EDD_Export {
+class Give_Payments_Export extends Give_Export {
 	/**
 	 * Our export type. Used for export-type specific filters/actions
 	 * @var string

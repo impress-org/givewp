@@ -2,9 +2,9 @@
 /**
  * Download Reports Table Class
  *
- * @package     EDD
+ * @package     Give
  * @subpackage  Admin/Reports
- * @copyright   Copyright (c) 2014, Pippin Williamson
+ * @copyright   Copyright (c) 2014, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.5
  */
@@ -18,13 +18,13 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 }
 
 /**
- * EDD_Download_Reports_Table Class
+ * Give_Form_Reports_Table Class
  *
  * Renders the Download Reports table
  *
  * @since 1.5
  */
-class EDD_Download_Reports_Table extends WP_List_Table {
+class Give_Form_Reports_Table extends WP_List_Table {
 
 	/**
 	 * @var int Number of items per page
@@ -80,7 +80,7 @@ class EDD_Download_Reports_Table extends WP_List_Table {
 			case 'average_earnings' :
 				return give_currency_filter( give_format_amount( $item[ $column_name ] ) );
 			case 'details' :
-				return '<a href="' . admin_url( 'edit.php?post_type=download&page=give-reports&view=downloads&download-id=' . $item[ 'ID' ] ) . '">' . __( 'View Detailed Report', 'give' ) . '</a>';
+				return '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-reports&view=downloads&download-id=' . $item[ 'ID' ] ) . '">' . __( 'View Detailed Report', 'give' ) . '</a>';
 			default:
 				return $item[ $column_name ];
 		}
@@ -183,7 +183,7 @@ class EDD_Download_Reports_Table extends WP_List_Table {
 	 */
 	public function category_filter() {
 		if( get_terms( 'download_category' ) ) {
-			echo EDD()->html->category_dropdown( 'category', $this->get_category() );
+			echo Give()->html->category_dropdown( 'category', $this->get_category() );
 		}
 	}
 
@@ -259,10 +259,10 @@ class EDD_Download_Reports_Table extends WP_List_Table {
 				$reports_data[] = array(
 					'ID' 				=> $download,
 					'title' 			=> get_the_title( $download ),
-					'sales' 			=> give_get_download_sales_stats( $download ),
-					'earnings'			=> give_get_download_earnings_stats( $download ),
-					'average_sales'   	=> give_get_average_monthly_download_sales( $download ),
-					'average_earnings'  => give_get_average_monthly_download_earnings( $download )
+					'sales' 			=> give_get_form_sales_stats( $download ),
+					'earnings'			=> give_get_form_earnings_stats( $download ),
+					'average_sales'   	=> give_get_average_monthly_form_sales( $download ),
+					'average_earnings'  => give_get_average_monthly_form_earnings( $download )
 				);
 			}
 		}
@@ -276,11 +276,11 @@ class EDD_Download_Reports_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since 1.5
-	 * @uses EDD_Download_Reports_Table::get_columns()
-	 * @uses EDD_Download_Reports_Table::get_sortable_columns()
-	 * @uses EDD_Download_Reports_Table::reports_data()
-	 * @uses EDD_Download_Reports_Table::get_pagenum()
-	 * @uses EDD_Download_Reports_Table::get_total_downloads()
+	 * @uses Give_Form_Reports_Table::get_columns()
+	 * @uses Give_Form_Reports_Table::get_sortable_columns()
+	 * @uses Give_Form_Reports_Table::reports_data()
+	 * @uses Give_Form_Reports_Table::get_pagenum()
+	 * @uses Give_Form_Reports_Table::get_total_downloads()
 	 * @return void
 	 */
 	public function prepare_items() {

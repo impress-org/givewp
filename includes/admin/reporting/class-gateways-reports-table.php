@@ -2,9 +2,9 @@
 /**
  * Gateways Reports Table Class
  *
- * @package     EDD
+ * @package     Give
  * @subpackage  Admin/Reports
- * @copyright   Copyright (c) 2014, Pippin Williamson
+ * @copyright   Copyright (c) 2014, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.5
  */
@@ -18,13 +18,13 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 }
 
 /**
- * EDD_Gateawy_Reports_Table Class
+ * Give_Gateawy_Reports_Table Class
  *
  * Renders the Download Reports table
  *
  * @since 1.5
  */
-class EDD_Gateawy_Reports_Table extends WP_List_Table {
+class Give_Gateawy_Reports_Table extends WP_List_Table {
 
 	/**
 	 * @var int Number of items per page
@@ -148,9 +148,9 @@ class EDD_Gateawy_Reports_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since 1.5
-	 * @uses EDD_Gateawy_Reports_Table::get_columns()
-	 * @uses EDD_Gateawy_Reports_Table::get_sortable_columns()
-	 * @uses EDD_Gateawy_Reports_Table::reports_data()
+	 * @uses Give_Gateawy_Reports_Table::get_columns()
+	 * @uses Give_Gateawy_Reports_Table::get_sortable_columns()
+	 * @uses Give_Gateawy_Reports_Table::reports_data()
 	 * @return void
 	 */
 	public function prepare_items() {

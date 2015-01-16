@@ -490,9 +490,26 @@ function give_no_guest_checkout() {
 /**
  * Get PHP Arg Separator Output
  *
- * @since 1.0.8.3
+ * @since 1.0
  * @return string Arg separator output
  */
 function give_get_php_arg_separator_output() {
 	return ini_get( 'arg_separator.output' );
+}
+
+
+/**
+ * Month Num To Name
+ *
+ * Takes a month number and returns the name three letter name of it.
+ *
+ * @since 1.0
+ *
+ * @param unknown $n
+ * @return string Short month name
+ */
+function give_month_num_to_name( $n ) {
+	$timestamp = mktime( 0, 0, 0, $n, 1, 2005 );
+
+	return date_i18n( "M", $timestamp );
 }

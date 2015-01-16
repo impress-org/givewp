@@ -4,22 +4,22 @@
  *
  * This class handles customer export
  *
- * @package     EDD
+ * @package     Give
  * @subpackage  Admin/Reports
- * @copyright   Copyright (c) 2014, Pippin Williamson
+ * @copyright   Copyright (c) 2014, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       1.4.4
+ * @since       1.0
  */
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
- * EDD_Customers_Export Class
+ * Give_Customers_Export Class
  *
  * @since 1.4.4
  */
-class EDD_Customers_Export extends EDD_Export {
+class Give_Customers_Export extends Give_Export {
 	/**
 	 * Our export type. Used for export-type specific filters/actions
 	 *
@@ -141,7 +141,7 @@ class EDD_Customers_Export extends EDD_Export {
 		} else {
 
 			// Export all customers
-			$customers = EDD()->customers->get_customers( array( 'number' => -1 ) );
+			$customers = Give()->customers->get_customers( array( 'number' => -1 ) );
 
 			$i = 0;
 

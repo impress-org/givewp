@@ -2,9 +2,9 @@
 /**
  * Sales Log View Class
  *
- * @package     EDD
+ * @package     Give
  * @subpackage  Admin/Reports
- * @copyright   Copyright (c) 2014, Pippin Williamson
+ * @copyright   Copyright (c) 2014, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
@@ -17,13 +17,13 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 }
 
 /**
- * EDD_Sales_Log_Table Class
+ * Give_Sales_Log_Table Class
  *
  * Renders the sales log list table
  *
  * @since 1.4
  */
-class EDD_Sales_Log_Table extends WP_List_Table {
+class Give_Sales_Log_Table extends WP_List_Table {
 	/**
 	 * Number of results to show per page
 	 *
@@ -69,14 +69,14 @@ class EDD_Sales_Log_Table extends WP_List_Table {
 
 			case 'user_id' :
 				return '<a href="' .
-					admin_url( 'edit.php?post_type=download&page=give-payment-history&user=' . urlencode( $item['user_id'] ) ) .
+					admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( $item['user_id'] ) ) .
 					 '">' . $item[ 'user_name' ] . '</a>';
 
 			case 'amount' :
 				return give_currency_filter( give_format_amount( $item['amount'] ) );
 
 			case 'payment_id' :
-				return '<a href="' . admin_url( 'edit.php?post_type=download&page=give-payment-history&view=view-order-details&id=' . $item[ 'payment_id' ] ) . '">' . give_get_payment_number( $item[ 'payment_id' ] ) . '</a>';
+				return '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $item[ 'payment_id' ] ) . '">' . give_get_payment_number( $item[ 'payment_id' ] ) . '</a>';
 
 			default:
 				return $item[ $column_name ];
@@ -328,11 +328,11 @@ class EDD_Sales_Log_Table extends WP_List_Table {
 	 * @access public
 	 * @since 1.4
 	 * @global object $give_logs EDD Logs Object
-	 * @uses EDD_Sales_Log_Table::get_columns()
+	 * @uses Give_Sales_Log_Table::get_columns()
 	 * @uses WP_List_Table::get_sortable_columns()
-	 * @uses EDD_Sales_Log_Table::get_pagenum()
-	 * @uses EDD_Sales_Log_Table::get_logs()
-	 * @uses EDD_Sales_Log_Table::get_log_count()
+	 * @uses Give_Sales_Log_Table::get_pagenum()
+	 * @uses Give_Sales_Log_Table::get_logs()
+	 * @uses Give_Sales_Log_Table::get_log_count()
 	 * @return void
 	 */
 	public function prepare_items() {

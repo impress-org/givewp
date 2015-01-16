@@ -4,22 +4,22 @@
  *
  * This class handles building pretty report graphs
  *
- * @package     EDD
+ * @package     Give
  * @subpackage  Admin/Reports
- * @copyright   Copyright (c) 2012, Pippin Williamson
+ * @copyright   Copyright (c) 2012, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       1.9
+ * @since       1.0
  */
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
- * EDD_Graph Class
+ * Give_Graph Class
  *
- * @since 1.9
+ * @since 1.0
  */
-class EDD_Graph {
+class Give_Graph {
 
 	/*
 
@@ -42,7 +42,7 @@ class EDD_Graph {
 		)
 	);
 
-	$graph = new EDD_Graph( $data );
+	$graph = new Give_Graph( $data );
 	$graph->display();
 
 	*/
@@ -51,7 +51,7 @@ class EDD_Graph {
 	 * Data to graph
 	 *
 	 * @var array
-	 * @since 1.9
+	 * @since 1.0
 	 */
 	private $data;
 
@@ -59,7 +59,7 @@ class EDD_Graph {
 	 * Unique ID for the graph
 	 *
 	 * @var string
-	 * @since 1.9
+	 * @since 1.0
 	 */
 	private $id = '';
 
@@ -67,14 +67,14 @@ class EDD_Graph {
 	 * Graph options
 	 *
 	 * @var array
-	 * @since 1.9
+	 * @since 1.0
 	 */
 	private $options = array();
 
 	/**
 	 * Get things started
 	 *
-	 * @since 1.9
+	 * @since 1.0
 	 */
 	public function __construct( $_data ) {
 
@@ -110,7 +110,7 @@ class EDD_Graph {
 	 *
 	 * @param $key The option key to set
 	 * @param $value The value to assign to the key
-	 * @since 1.9
+	 * @since 1.0
 	 */
 	public function set( $key, $value ) {
 		$this->options[ $key ] = $value;
@@ -120,7 +120,7 @@ class EDD_Graph {
 	 * Get an option
 	 *
 	 * @param $key The option key to get
-	 * @since 1.9
+	 * @since 1.0
 	 */
 	public function get( $key ) {
 		return isset( $this->options[ $key ] ) ? $this->options[ $key ] : false;
@@ -129,7 +129,7 @@ class EDD_Graph {
 	/**
 	 * Get graph data
 	 *
-	 * @since 1.9
+	 * @since 1.0
 	 */
 	public function get_data() {
 		return apply_filters( 'give_get_graph_data', $this->data, $this );
@@ -138,19 +138,19 @@ class EDD_Graph {
 	/**
 	 * Load the graphing library script
 	 *
-	 * @since 1.9
+	 * @since 1.0
 	 */
 	public function load_scripts() {
 		// Use minified libraries if SCRIPT_DEBUG is turned off
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-		wp_enqueue_script( 'jquery-flot', EDD_PLUGIN_URL . 'assets/js/jquery.flot' . $suffix . '.js' );
+		wp_enqueue_script( 'jquery-flot', GIVE_PLUGIN_URL . 'assets/js/jquery.flot' . $suffix . '.js' );
 	}
 
 	/**
 	 * Build the graph and return it as a string
 	 *
 	 * @var array
-	 * @since 1.9
+	 * @since 1.0
 	 * @return string
 	 */
 	public function build_graph() {
@@ -272,7 +272,7 @@ class EDD_Graph {
 	/**
 	 * Output the final graph
 	 *
-	 * @since 1.9
+	 * @since 1.0
 	 */
 	public function display() {
 		do_action( 'give_before_graph', $this );

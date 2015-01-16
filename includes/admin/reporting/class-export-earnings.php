@@ -4,9 +4,9 @@
  *
  * This class handles earnings export
  *
- * @package     EDD
+ * @package     Give
  * @subpackage  Admin/Reports
- * @copyright   Copyright (c) 2014, Pippin Williamson
+ * @copyright   Copyright (c) 2014, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       2.0
  */
@@ -15,11 +15,11 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
- * EDD_Earnings_Export Class
+ * Give_Earnings_Export Class
  *
  * @since 2.0
  */
-class EDD_Earnings_Export extends EDD_Export {
+class Give_Earnings_Export extends Give_Export {
 
 	/**
 	 * Our export type. Used for export-type specific filters/actions
@@ -83,7 +83,7 @@ class EDD_Earnings_Export extends EDD_Export {
 
 		$data  = array();
 		$year  = $start_year;
-		$stats = new EDD_Payment_Stats;
+		$stats = new Give_Payment_Stats;
 
 		while( $year <= $end_year ) {
 

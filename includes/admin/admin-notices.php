@@ -75,8 +75,7 @@ function give_admin_messages() {
 		if ( ! give_test_ajax_works() ) {
 
 			echo '<div class="error">';
-			echo '<p>' . __( 'Your site appears to be blocking the WordPress ajax interface. This may causes issues with your store.', 'give' ) . '</p>';
-			echo '<p>' . sprintf( __( 'Please see <a href="%s" target="_blank">this reference</a> for possible solutions.', 'give' ), 'https://easydigitalgive_formss.com/docs/admin-ajax-blocked' ) . '</p>';
+			echo '<p>' . __( 'Your site appears to be blocking the WordPress ajax interface. This may causes issues with Give.', 'give' ) . '</p>';
 			echo '<p><a href="' . add_query_arg( array(
 					'give_action' => 'dismiss_notices',
 					'give_notice' => 'admin_ajax_inaccessible'

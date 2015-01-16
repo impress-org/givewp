@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function give_add_options_links() {
-	global $give_settings_page, $give_payments_page, $give_campaigns_page;
+	global $give_settings_page, $give_payments_page, $give_campaigns_page, $give_reports_page;
 
 	//Campaigns
 	$give_campaigns      = get_post_type_object( 'give_campaigns' );
@@ -42,6 +42,9 @@ function give_add_options_links() {
 		Give()->give_settings,
 		'admin_page_display'
 	) );
+
+	//Reports
+	$give_reports_page = add_submenu_page( 'edit.php?post_type=give_forms', __( 'Donation Reports', 'give' ), __( 'Reports', 'edd' ), 'view_shop_reports', 'give-reports', 'give_reports_page' );
 
 
 }
@@ -63,7 +66,7 @@ function give_is_admin_page() {
 		return false;
 	}
 
-	global $pagenow, $typenow, $give_settings_page, $give_payments_page, $give_campaigns_page;
+	global $pagenow, $typenow, $give_settings_page, $give_payments_page, $give_campaigns_page, $give_reports_page;
 
 	if ( 'give_forms' == $typenow || 'give_campaigns' == $typenow || 'index.php' == $pagenow || 'post-new.php' == $pagenow || 'post.php' == $pagenow ) {
 		return true;
@@ -72,7 +75,8 @@ function give_is_admin_page() {
 	$give_admin_pages = apply_filters( 'give_admin_pages', array(
 		$give_settings_page,
 		$give_payments_page,
-		$give_campaigns_page
+		$give_campaigns_page,
+		$give_reports_page
 	) );
 
 	if ( in_array( $pagenow, $give_admin_pages ) ) {

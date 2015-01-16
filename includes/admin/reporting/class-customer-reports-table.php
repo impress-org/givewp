@@ -2,9 +2,9 @@
 /**
  * Customer Reports Table Class
  *
- * @package     EDD
+ * @package     Give
  * @subpackage  Admin/Reports
- * @copyright   Copyright (c) 2014, Pippin Williamson
+ * @copyright   Copyright (c) 2014, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.5
  */
@@ -18,13 +18,13 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 }
 
 /**
- * EDD_Customer_Reports_Table Class
+ * Give_Customer_Reports_Table Class
  *
  * Renders the Customer Reports table
  *
  * @since 1.5
  */
-class EDD_Customer_Reports_Table extends WP_List_Table {
+class Give_Customer_Reports_Table extends WP_List_Table {
 
 	/**
 	 * Number of items per page
@@ -111,7 +111,7 @@ class EDD_Customer_Reports_Table extends WP_List_Table {
 	
 			case 'num_purchases' :
 				$value = '<a href="' .
-					admin_url( '/edit.php?post_type=download&page=give-payment-history&user=' . urlencode( $item['email'] )
+					admin_url( '/edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( $item['email'] )
 				) . '">' . esc_html( $item['num_purchases'] ) . '</a>';
 				break;
 
@@ -121,7 +121,7 @@ class EDD_Customer_Reports_Table extends WP_List_Table {
 
 			case 'file_downloads' :
 				$user = ! empty( $item['user_id'] ) ? $item['user_id'] : $item['email'];
-				$value = '<a href="' . esc_url( admin_url( '/edit.php?post_type=download&page=give-reports&tab=logs&user=' . urlencode( $user ) ) ) . '">' . __( 'View download log', 'give' ) . '</a>';
+				$value = '<a href="' . esc_url( admin_url( '/edit.php?post_type=give_forms&page=give-reports&tab=logs&user=' . urlencode( $user ) ) ) . '">' . __( 'View download log', 'give' ) . '</a>';
 				break;
 			default:
 				$value = isset( $item[ $column_name ] ) ? $item[ $column_name ] : null;
@@ -233,7 +233,7 @@ class EDD_Customer_Reports_Table extends WP_List_Table {
 			$args['id']    = $search;
 		}
 
-		$customers = EDD()->customers->get_customers( $args );
+		$customers = Give()->customers->get_customers( $args );
 
 		if ( $customers ) {
 
@@ -262,10 +262,10 @@ class EDD_Customer_Reports_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since 1.5
-	 * @uses EDD_Customer_Reports_Table::get_columns()
+	 * @uses Give_Customer_Reports_Table::get_columns()
 	 * @uses WP_List_Table::get_sortable_columns()
-	 * @uses EDD_Customer_Reports_Table::get_pagenum()
-	 * @uses EDD_Customer_Reports_Table::get_total_customers()
+	 * @uses Give_Customer_Reports_Table::get_pagenum()
+	 * @uses Give_Customer_Reports_Table::get_total_customers()
 	 * @return void
 	 */
 	public function prepare_items() {
