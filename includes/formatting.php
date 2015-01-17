@@ -62,7 +62,7 @@ function give_sanitize_amount( $amount ) {
  * @since 1.0
  *
  * @param string $amount   Price amount to format
- * @param string $decimals Whether or not to use decimals.  Useful when set to false for non-currency numbers.
+ * @param string $decimals Whether or not to use decimals. Useful when set to false for non-currency numbers.
  *
  * @return string $amount Newly formatted amount or Price Not Available
  */

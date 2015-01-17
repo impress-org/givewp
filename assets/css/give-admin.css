@@ -69,7 +69,7 @@ Forms CPT
 --------------------------------------*/
 /* Hide conditional fields */
 /* line 16, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
-.cmb2-id--give-set-price, .cmb2-id--give-levels-header, .cmb2-id--give-levels-header + .cmb-repeat-group-wrap, .cmb2-id--give-display-style, .post-type-give_forms .tablenav #post-query-submit {
+.cmb2-id--give-set-price, .cmb2-id--give-levels-header, .cmb2-id--give-levels-header + .cmb-repeat-group-wrap, .cmb2-id--give-display-style, .post-type-give_forms .tablenav #post-query-submit, .give-hidden {
   display: none; }
 
 /* Donation Levels Repeating Field */
@@ -122,113 +122,149 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
 #_give_donation_levels_repeat .cmbhandle {
   display: none; }
 
+/* line 75, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
+p.give-level-id {
+  border-radius: 50%;
+  border: 1px solid #e9e9e9;
+  background: #FCFCFC;
+  padding: 2px 7px;
+  font-size: 11px; }
+
 /* Smaller Resolution Desktops AND UP */
 @media only screen and (min-width: 851px) {
-  /* line 78, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
+  /* line 86, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row > .cmb-th {
     display: none; }
 
-  /* line 82, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
+  /* line 90, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row > .cmb-td {
     float: left;
     width: 100%; }
 
-  /* line 87, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
+  /* line 95, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row {
     float: left;
     border-bottom: none; }
  }
 
 /* Smaller Resolution Desktops */
-@media only screen and (min-width: 851px) and (max-width: 1200px) {
-  /* line 97, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
+@media only screen and (min-width: 851px) and (max-width: 1285px) {
+  /* line 107, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-remove-field-row {
     width: 100%;
     padding-top: 0; }
-
-  /* line 103, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
+  /* line 111, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-type-text-money {
-    width: 120px; }
-
-  /* line 107, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
+    width: 105px; }
+  /* line 114, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
+  #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list input.cmb2-text-money {
+    width: 65px; }
+  /* line 118, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-type-text {
     width: 180px; }
-
-  /* line 111, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
+  /* line 121, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-type-radio-inline {
     margin-left: 20px; }
 
-  /* line 115, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
-  .col-amount {
-    width: 95px; }
+  /* line 127, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
+  .col-id {
+    width: 15px; }
 
-  /* line 119, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
+  /* line 130, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
+  p.give-level-id {
+    margin: 7px 15px 0 0; }
+
+  /* line 134, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
+  .col-amount {
+    width: 70px; }
+
+  /* line 138, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
   .col-text {
     width: 165px; }
+ }
 
-  /* line 123, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
+@media only screen and (min-width: 851px) and (max-width: 1285px) {
+  /* line 145, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
   .col-sort {
     display: none !important; }
  }
 
 @media only screen and (min-width: 1201px) {
-  /* line 130, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
+  /* line 151, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-remove-field-row {
     float: right; }
 
-  /* line 134, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
+  /* line 155, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row {
     padding-right: 20px; }
 
-  /* line 138, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
+  /* line 159, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-remove-field-row.cmb-row {
     padding-right: 0; }
 
-  /* line 142, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
+  /* line 163, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
   #_give_donation_levels_repeat .regular-text {
     width: 100%; }
 
-  /* line 146, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
+  /* line 167, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
+  .col-id {
+    width: 20px; }
+
+  /* line 170, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
+  p.give-level-id {
+    margin: 6px 0 0; }
+
+  /* line 173, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
   .col-amount {
     width: 100px; }
 
-  /* line 150, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
+  /* line 177, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
   .col-text {
     width: 175px; }
 
-  /* line 154, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
+  /* line 181, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
   .col-sort {
     width: 215px; }
  }
 
 @media only screen and (min-width: 1350px) {
-  /* line 162, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
+  /* line 189, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
   .col-text {
-    width: 288px; }
+    width: 270px; }
 
-  /* line 166, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
+  /* line 193, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-type-text {
-    width: 300px; }
+    width: 290px; }
  }
 
+/* Small Resolution Repeater */
 @media only screen and (max-width: 850px) {
-  /* line 173, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
+  /* line 201, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
   div.cmb-type-levels-repeater-header {
-    display: none; }
+    display: none !important; }
+
+  /* line 205, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
+  p.give-level-id {
+    float: left;
+    font-weight: bold;
+    margin-top: 5px; }
  }
 
 /*-------------------------------------
 ASIDE
 -------------------------------------*/
-/* line 186, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
+/* line 221, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
 #side-sortables .cmb-th label:after {
   display: none; }
-/* line 192, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
-#side-sortables .cmb2-id--give-logged-in-only {
-  padding-top: 10px !important; }
-/* line 196, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
+/* line 226, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
 #side-sortables .cmb2-id--give-show-register-form {
   padding: 10px 0 0 !important; }
+/* line 230, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
+#side-sortables .cmb2-wrap > .cmb-field-list > .cmb-row {
+  padding-top: 10px; }
+/* line 234, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
+#side-sortables .cmb-row .cmb2-metabox-description {
+  padding-bottom: 0; }
 
 /**
  * Give Settings SCSS

@@ -14,7 +14,7 @@ jQuery.noConflict();
 	/**
 	 * Default Radio Button
 	 *
-	 * @description: Allow only one to be checked
+	 * @description: Allow only one radio button to be checked at a time
 	 * @since: 1.0
 	 */
 	var handle_default_radio = function () {
@@ -25,13 +25,13 @@ jQuery.noConflict();
 
 		default_radio_one_checked_radio( default_radio );
 
-		//Ensure that there's always a default price level checked
-		$( 'body' ).on( 'click', '#_give_donation_levels_repeat button.cmb-add-group-row', function ( e ) {
+		////Ensure that there's always a default price level checked
+		$( 'body' ).on( 'cmb2_add_row', function ( e ) {
 			var default_radio = $( 'input.donation-level-radio' );
 			default_radio_one_checked_radio( default_radio );
 		} );
 
-		//When a row is removed containing the default selection then revert default to first repeatable row
+		////When a row is removed containing the default selection then revert default to first repeatable row
 		$( 'body' ).on( 'cmb2_remove_row', function ( e ) {
 			var default_radio = $( 'input.donation-level-radio' );
 			var repeatable_rows = $( '#_give_donation_levels_repeat > .cmb-repeatable-grouping' );
@@ -40,7 +40,7 @@ jQuery.noConflict();
 			}
 		} );
 
-		//If only one price then that one is default
+		////If only one price then that one is default
 		if ( number_of_prices === 1 ) {
 			default_radio.prop( 'checked', true );
 		}
@@ -88,67 +88,78 @@ jQuery.noConflict();
 	//Handle Repeatable Row ID
 	var handle_repeatable_row_ID = function () {
 
+		//Ensure for new posts that the repeater is filled
+		if ( $( '.give-level-id' ).text() === '' ) {
+			var row_group = $( '.cmb-repeatable-grouping' );
+			//loop through all repeatable rows and set vals
+			row_group.each( function ( index, object ) {
+
+				var row_id = $( object ).data( 'iterator' ) + 1;
+
+				$( object ).find( '.give-level-id' ).text( row_id );
+				$( object ).find( '.give-level-id-input' ).val( row_id );
+
+			} );
+		}
+
 		$( 'body' ).on( 'cmb2_add_row', function ( event, row ) {
-
-			//Get the row ID and add 1 (iterator starts at 0 in CMB2)
-			var row_id = $( row ).data( 'iterator' ) + 1;
-
-			//Add row ID value to hidden field
-			$( row ).find( 'input.give-hidden' ).val( row_id );
-			//Add row ID to displayed ID
-			$( row ).find( '.give-level-id' ).text( row_id );
+			console.log( row );
+			set_row_ids( row );
 
 		} );
 		$( 'body' ).on( 'cmb2_shift_rows_complete', function ( event, self ) {
 
 			var row_group = $( '.cmb-repeatable-grouping' );
+			//loop through all repeatable rows and set vals
 			row_group.each( function ( index, object ) {
-
 
 				var row_id = $( object ).find( 'input.give-level-id-input' ).val();
 
 				$( object ).find( '.give-level-id' ).text( row_id );
 
-
 			} );
-
 
 		} );
 
-		//$( 'body' ).on( 'cmb2_shift_rows_start', function ( event, self ) {
-		//
-		//
-		//	//Get the Row ID
-		//	var row_group = $( self ).parents( '.cmb-repeatable-grouping' );
-		//	var row_id = $( row_group ).find( 'input.give-level-id-input' ).val();
-		//
-		//	console.log( self );
-		//
-		//	//Determine if we are moving value up or down
-		//	if ( $( self ).hasClass( 'move-up' ) ) {
-		//
-		//		$( row_group ).prev().find( '.give-level-id' ).text( row_id );
-		//
-		//	} else {
-		//
-		//		$( row_group ).next().find( '.give-level-id' ).text( row_id );
-		//	}
-		//
-		//	//move it to the next row
-		//
-		//
-		//} );
+
+		function set_row_ids( row ) {
+			//Get the row ID and add 1 (iterator starts at 0 in CMB2)
+			var row_id = $( row ).data( 'iterator' ) + 1;
+			//Add row ID value to hidden field
+			$( row ).find( 'input.give-hidden' ).val( row_id );
+			//Add row ID to displayed ID
+			$( row ).find( '.give-level-id' ).text( row_id );
+		}
+
 
 	};
+
+	/**
+	 * Misc Cleanup
+	 *
+	 * @description: Clean up and tweaks
+	 * @since: 1.0
+	 */
+	function misc_cleanup() {
+
+		//No Value = Placeholders: determine if value is 0.00 and remove if so in favor of placeholders
+		$( '.cmb2-text-money' ).each( function ( index, object ) {
+			var this_val = parseInt( $( object ).val() );
+			if ( !this_val ) {
+				$( object ).removeAttr( 'value' );
+			}
+		} );
+
+	}
 
 
 	//On DOM Ready
 	$( function () {
 
-
 		handle_default_radio();
 		toggle_conditional_form_fields();
 		handle_repeatable_row_ID();
+		misc_cleanup();
 
 	} );
 

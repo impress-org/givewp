@@ -59,12 +59,14 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 				),
 			),
 			array(
-				'name'        => __( 'Set Amount', 'give' ),
-				'description' => __( 'This is the set donation amount for this form.', 'give' ),
-				'id'          => $prefix . 'set_price',
-				'type'        => 'text_money',
-				'attributes'  => array(
-					'value' => isset( $price ) ? esc_attr( give_format_amount( $price ) ) : '',
+				'name'         => __( 'Set Amount', 'give' ),
+				'description'  => __( 'This is the set donation amount for this form.', 'give' ),
+				'id'           => $prefix . 'set_price',
+				'type'         => 'text_money',
+				'before_field' => give_currency_symbol(), // Replaces default '$'
+				'attributes'   => array(
+					'placeholder' => give_format_amount( '0.00' ),
+					'value'       => isset( $price ) ? esc_attr( give_format_amount( $price ) ) : '',
 				),
 			),
 			//Donation levels: Header
@@ -89,9 +91,14 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 						'type' => 'levels_id',
 					),
 					array(
-						'name' => __( 'Amount', 'give' ),
-						'id'   => $prefix . 'amount',
-						'type' => 'text_money',
+						'name'         => __( 'Amount', 'give' ),
+						'id'           => $prefix . 'amount',
+						'type'         => 'text_money',
+						'before_field' => give_currency_symbol(), // Replaces default '$'
+						'attributes'   => array(
+							'placeholder' => give_format_amount( '0.00' ),
+							'value'       => isset( $price ) ? esc_attr( give_format_amount( $price ) ) : '',
+						),
 					),
 					array(
 						'name'       => __( 'Text', 'give' ),
@@ -206,7 +213,7 @@ function give_cmb_render_levels_repeater_header() {
 
 	<div class="table-container">
 		<div class="table-row">
-			<div class="table-cell col-amount"><?php _e( 'ID', 'give' ); ?></div>
+			<div class="table-cell col-id"><?php _e( 'ID', 'give' ); ?></div>
 			<div class="table-cell col-amount"><?php _e( 'Amount', 'give' ); ?></div>
 			<div class="table-cell col-text"><?php _e( 'Text', 'give' ); ?></div>
 			<div class="table-cell col-default"><?php _e( 'Default', 'give' ); ?></div>
@@ -224,7 +231,7 @@ function give_cmb_render_levels_repeater_header() {
 add_action( 'cmb2_render_levels_id', 'give_cmb_render_levels_id', 10, 5 );
 function give_cmb_render_levels_id( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
 
-	$escaped_value       = ( isset( $escaped_value['level_id'] ) ? $escaped_value['level_id'] : '' );
+	$escaped_value = ( isset( $escaped_value['level_id'] ) ? $escaped_value['level_id'] : '' );
 
 	$field_options_array = array(
 		'class' => 'give-hidden give-level-id-input',
