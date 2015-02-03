@@ -22,7 +22,7 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
  *
  * Renders the Customer Reports table
  *
- * @since 1.5
+ * @since 1.0
  */
 class Give_Customer_Reports_Table extends WP_List_Table {
 
@@ -183,7 +183,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * Retrieve the current page number
 	 *
 	 * @access public
-	 * @since 1.5
+	 * @since 1.0
 	 * @return int Current page number
 	 */
 	public function get_paged() {
@@ -194,7 +194,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * Retrieves the search query string
 	 *
 	 * @access public
-	 * @since 1.7
+	 * @since 1.0
 	 * @return mixed string If search is present, false otherwise
 	 */
 	public function get_search() {
@@ -205,7 +205,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * Build all the reports data
 	 *
 	 * @access public
-	 * @since 1.5
+	 * @since 1.0
 	  * @global object $wpdb Used to query the database using the WordPress
 	 *   Database API
 	 * @return array $reports_data All the data for customer reports
@@ -261,7 +261,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * Setup the final data for the table
 	 *
 	 * @access public
-	 * @since 1.5
+	 * @since 1.0
 	 * @uses Give_Customer_Reports_Table::get_columns()
 	 * @uses WP_List_Table::get_sortable_columns()
 	 * @uses Give_Customer_Reports_Table::get_pagenum()

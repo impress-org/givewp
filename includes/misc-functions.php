@@ -513,3 +513,18 @@ function give_month_num_to_name( $n ) {
 
 	return date_i18n( "M", $timestamp );
 }
+
+
+/**
+ * Checks whether function is disabled.
+ *
+ * @since 1.0
+ *
+ * @param string  $function Name of the function.
+ * @return bool Whether or not function is disabled.
+ */
+function give_is_func_disabled( $function ) {
+	$disabled = explode( ',',  ini_get( 'disable_functions' ) );
+
+	return in_array( $function, $disabled );
+}

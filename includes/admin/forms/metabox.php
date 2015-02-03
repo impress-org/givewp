@@ -97,7 +97,6 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 						'before_field' => give_currency_symbol(), // Replaces default '$'
 						'attributes'   => array(
 							'placeholder' => give_format_amount( '0.00' ),
-							'value'       => isset( $price ) ? esc_attr( give_format_amount( $price ) ) : '',
 						),
 					),
 					array(
@@ -178,7 +177,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 				),
 				array(
 					'name' => __( 'Disable Guest Donations', 'give' ),
-					'desc' => __( 'Do you want to require users be logged-in to make donations.', 'give' ),
+					'desc' => __( 'Do you want to require users be logged-in to make donations?', 'give' ),
 					'id'   => $prefix . 'logged_in_only',
 					'type' => 'checkbox'
 				),

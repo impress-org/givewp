@@ -227,7 +227,7 @@ p.give-level-id {
     width: 215px; }
  }
 
-@media only screen and (min-width: 1350px) {
+@media only screen and (min-width: 1375px) {
   /* line 189, C:/Users/Devin/Dropbox/Sites/givedev.dev/wp-content/plugins/give/assets/scss/admin/forms */
   .col-text {
     width: 270px; }

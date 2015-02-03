@@ -112,6 +112,7 @@ function give_avatars_shortcode( $atts ) {
 
 	$p_query = new Give_Payments_Query( $args );
 	$payments = $p_query->get_payments();
+
 echo "<pre>";
 var_dump($payments);
 echo "</pre>";

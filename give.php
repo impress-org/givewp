@@ -195,6 +195,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/error-tracking.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/process-purchase.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/login-register.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/user-functions.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/actions.php';
@@ -211,6 +212,9 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/template.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/actions.php';
+
+
+
 
 			if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 
