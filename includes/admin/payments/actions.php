@@ -158,7 +158,7 @@ add_action( 'give_update_payment_details', 'give_update_payment_details' );
 /**
  * Trigger a Purchase Deletion
  *
- * @since 1.3.4
+ * @since 1.0
  *
  * @param $data Arguments passed
  *
@@ -207,7 +207,7 @@ add_action( 'wp_ajax_give_insert_payment_note', 'give_ajax_store_payment_note' )
 /**
  * Triggers a payment note deletion without ajax
  *
- * @since 1.6
+ * @since 1.0
  *
  * @param array $data Arguments passed
  *
@@ -235,7 +235,7 @@ add_action( 'give_delete_payment_note', 'give_trigger_payment_note_deletion' );
 /**
  * Delete a payment note deletion with ajax
  *
- * @since 1.6
+ * @since 1.0
  *
  * @param array $data Arguments passed
  *

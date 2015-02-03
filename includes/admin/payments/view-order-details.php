@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 if ( ! isset( $_GET['id'] ) || ! is_numeric( $_GET['id'] ) ) {
-	wp_die( __( 'Payment ID not supplied. Please try again', 'give' ), __( 'Error', 'give' ) );
+	wp_die( __( 'Donation ID not supplied. Please try again', 'give' ), __( 'Error', 'give' ) );
 }
 
 // Setup the variables
@@ -447,5 +447,3 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 </form>
 <?php do_action( 'give_view_order_details_after', $payment_id ); ?>
 </div><!-- /.wrap -->
-
-<div id="give-download-link" title="<?php _e( 'Copy Download Link(s)', 'give' ); ?>"></div>

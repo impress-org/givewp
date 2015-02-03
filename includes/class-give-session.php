@@ -42,6 +42,14 @@ class Give_Session {
 	 */
 	private $use_php_sessions = false;
 
+	/**
+	 * Session index prefix
+	 *
+	 * @var string
+	 * @access private
+	 * @since  1.0
+	 */
+	private $prefix = '';
 
 	/**
 	 * Get things started
@@ -56,6 +64,12 @@ class Give_Session {
 		$this->use_php_sessions = $this->use_php_sessions();
 
 		if ( $this->use_php_sessions ) {
+
+			if ( is_multisite() ) {
+
+				$this->prefix = '_' . get_current_blog_id();
+
+			}
 
 			// Use PHP SESSION (must be enabled via the GIVE_USE_PHP_SESSIONS constant)
 			add_action( 'init', array( $this, 'maybe_start_session' ), - 2 );
@@ -83,9 +97,9 @@ class Give_Session {
 		}
 
 		if ( empty( $this->session ) && ! $this->use_php_sessions ) {
-			add_action( 'plugins_loaded', array( $this, 'init' ), - 1 );
+			add_action( 'plugins_loaded', array( $this, 'init' ), -1 );
 		} else {
-			add_action( 'init', array( $this, 'init' ), - 1 );
+			add_action( 'init', array( $this, 'init' ), -1 );
 		}
 
 	}
@@ -100,15 +114,14 @@ class Give_Session {
 	public function init() {
 
 		if ( $this->use_php_sessions ) {
-			$this->session = isset( $_SESSION['give'] ) && is_array( $_SESSION['give'] ) ? $_SESSION['give'] : array();
+			$this->session = isset( $_SESSION[ 'give' . $this->prefix ] ) && is_array( $_SESSION[ 'give' . $this->prefix ] ) ? $_SESSION[ 'give' . $this->prefix ] : array();
 		} else {
 			$this->session = WP_Session::get_instance();
 		}
 
-		$cart     = $this->get( 'give_cart' );
 		$purchase = $this->get( 'give_purchase' );
 
-		if ( ! empty( $cart ) || ! empty( $purchase ) ) {
+		if ( ! empty( $purchase ) ) {
 			$this->set_cart_cookie();
 		} else {
 			$this->set_cart_cookie( false );
@@ -142,7 +155,6 @@ class Give_Session {
 	 */
 	public function get( $key ) {
 		$key = sanitize_key( $key );
-
 		return isset( $this->session[ $key ] ) ? maybe_unserialize( $this->session[ $key ] ) : false;
 	}
 
@@ -153,7 +165,6 @@ class Give_Session {
 	 *
 	 * @param $key   Session key
 	 * @param $value Session variable
-	 *
 	 * @return mixed Session variable
 	 */
 	public function set( $key, $value ) {
@@ -167,7 +178,7 @@ class Give_Session {
 		}
 
 		if ( $this->use_php_sessions ) {
-			$_SESSION['give'] = $this->session;
+			$_SESSION[ 'give' . $this->prefix ] = $this->session;
 		}
 
 		return $this->session[ $key ];
@@ -231,7 +242,7 @@ class Give_Session {
 	 * or if the GIVE_USE_PHP_SESSIONS constant is defined
 	 *
 	 * @access public
-	 * @since  2.1
+	 * @since  1.0
 	 * @author Daniel J Griffiths
 	 * @return bool $ret True if we are using PHP sessions, false otherwise
 	 */

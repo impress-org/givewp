@@ -448,7 +448,6 @@ class Give_Payment_History_Table extends WP_List_Table {
 			$ids = array( $ids );
 		}
 
-
 		if ( empty( $action ) ) {
 			return;
 		}
