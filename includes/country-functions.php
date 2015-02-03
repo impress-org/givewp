@@ -10,7 +10,9 @@
  */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 
 /**
@@ -22,6 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 function give_get_shop_country() {
 	global $give_options;
 	$country = isset( $give_options['base_country'] ) ? $give_options['base_country'] : 'US';
+
 	return apply_filters( 'give_shop_country', $country );
 }
 
@@ -34,6 +37,7 @@ function give_get_shop_country() {
 function give_get_shop_state() {
 	global $give_options;
 	$state = isset( $give_options['base_state'] ) ? $give_options['base_state'] : false;
+
 	return apply_filters( 'give_shop_state', $state );
 }
 
@@ -43,15 +47,17 @@ function give_get_shop_state() {
  * @since 1.0
  *
  * @param null $country
+ *
  * @return mixed|void  A list of states for the shop's base country
  */
 function give_get_shop_states( $country = null ) {
 	global $give_options;
 
-	if( empty( $country ) )
+	if ( empty( $country ) ) {
 		$country = give_get_shop_country();
+	}
 
-	switch( $country ) :
+	switch ( $country ) :
 
 		case 'US' :
 			$states = give_get_states_list();
@@ -595,38 +601,38 @@ function give_get_hungary_states_list() {
 function give_get_chinese_states_list() {
 	$states = array(
 		''     => '',
-	    'CN1'  => 'Yunnan / &#20113;&#21335;',
-	    'CN2'  => 'Beijing / &#21271;&#20140;',
-	    'CN3'  => 'Tianjin / &#22825;&#27941;',
-	    'CN4'  => 'Hebei / &#27827;&#21271;',
-	    'CN5'  => 'Shanxi / &#23665;&#35199;',
-	    'CN6'  => 'Inner Mongolia / &#20839;&#33945;&#21476;',
-	    'CN7'  => 'Liaoning / &#36797;&#23425;',
-	    'CN8'  => 'Jilin / &#21513;&#26519;',
-	    'CN9'  => 'Heilongjiang / &#40657;&#40857;&#27743;',
-	    'CN10' => 'Shanghai / &#19978;&#28023;',
-	    'CN11' => 'Jiangsu / &#27743;&#33487;',
-	    'CN12' => 'Zhejiang / &#27993;&#27743;',
-	    'CN13' => 'Anhui / &#23433;&#24509;',
-	    'CN14' => 'Fujian / &#31119;&#24314;',
-	    'CN15' => 'Jiangxi / &#27743;&#35199;',
-	    'CN16' => 'Shandong / &#23665;&#19996;',
-	    'CN17' => 'Henan / &#27827;&#21335;',
-	    'CN18' => 'Hubei / &#28246;&#21271;',
-	    'CN19' => 'Hunan / &#28246;&#21335;',
-	    'CN20' => 'Guangdong / &#24191;&#19996;',
-	    'CN21' => 'Guangxi Zhuang / &#24191;&#35199;&#22766;&#26063;',
-	    'CN22' => 'Hainan / &#28023;&#21335;',
-	    'CN23' => 'Chongqing / &#37325;&#24198;',
-	    'CN24' => 'Sichuan / &#22235;&#24029;',
-	    'CN25' => 'Guizhou / &#36149;&#24030;',
-	    'CN26' => 'Shaanxi / &#38485;&#35199;',
-	    'CN27' => 'Gansu / &#29976;&#32899;',
-	    'CN28' => 'Qinghai / &#38738;&#28023;',
-	    'CN29' => 'Ningxia Hui / &#23425;&#22799;',
-	    'CN30' => 'Macau / &#28595;&#38376;',
-	    'CN31' => 'Tibet / &#35199;&#34255;',
-	    'CN32' => 'Xinjiang / &#26032;&#30086;'
+		'CN1'  => 'Yunnan / &#20113;&#21335;',
+		'CN2'  => 'Beijing / &#21271;&#20140;',
+		'CN3'  => 'Tianjin / &#22825;&#27941;',
+		'CN4'  => 'Hebei / &#27827;&#21271;',
+		'CN5'  => 'Shanxi / &#23665;&#35199;',
+		'CN6'  => 'Inner Mongolia / &#20839;&#33945;&#21476;',
+		'CN7'  => 'Liaoning / &#36797;&#23425;',
+		'CN8'  => 'Jilin / &#21513;&#26519;',
+		'CN9'  => 'Heilongjiang / &#40657;&#40857;&#27743;',
+		'CN10' => 'Shanghai / &#19978;&#28023;',
+		'CN11' => 'Jiangsu / &#27743;&#33487;',
+		'CN12' => 'Zhejiang / &#27993;&#27743;',
+		'CN13' => 'Anhui / &#23433;&#24509;',
+		'CN14' => 'Fujian / &#31119;&#24314;',
+		'CN15' => 'Jiangxi / &#27743;&#35199;',
+		'CN16' => 'Shandong / &#23665;&#19996;',
+		'CN17' => 'Henan / &#27827;&#21335;',
+		'CN18' => 'Hubei / &#28246;&#21271;',
+		'CN19' => 'Hunan / &#28246;&#21335;',
+		'CN20' => 'Guangdong / &#24191;&#19996;',
+		'CN21' => 'Guangxi Zhuang / &#24191;&#35199;&#22766;&#26063;',
+		'CN22' => 'Hainan / &#28023;&#21335;',
+		'CN23' => 'Chongqing / &#37325;&#24198;',
+		'CN24' => 'Sichuan / &#22235;&#24029;',
+		'CN25' => 'Guizhou / &#36149;&#24030;',
+		'CN26' => 'Shaanxi / &#38485;&#35199;',
+		'CN27' => 'Gansu / &#29976;&#32899;',
+		'CN28' => 'Qinghai / &#38738;&#28023;',
+		'CN29' => 'Ningxia Hui / &#23425;&#22799;',
+		'CN30' => 'Macau / &#28595;&#38376;',
+		'CN31' => 'Tibet / &#35199;&#34255;',
+		'CN32' => 'Xinjiang / &#26032;&#30086;'
 	);
 
 	return apply_filters( 'give_chinese_states', $states );
@@ -668,42 +674,42 @@ function give_get_new_zealand_states_list() {
  * @return array $states A list of states
  */
 function give_get_indonesian_states_list() {
-	$states  = array(
+	$states = array(
 		''   => '',
 		'AC' => 'Daerah Istimewa Aceh',
-	    'SU' => 'Sumatera Utara',
-	    'SB' => 'Sumatera Barat',
-	    'RI' => 'Riau',
-	    'KR' => 'Kepulauan Riau',
-	    'JA' => 'Jambi',
-	    'SS' => 'Sumatera Selatan',
-	    'BB' => 'Bangka Belitung',
-	    'BE' => 'Bengkulu',
-	    'LA' => 'Lampung',
-	    'JK' => 'DKI Jakarta',
-	    'JB' => 'Jawa Barat',
-	    'BT' => 'Banten',
-	    'JT' => 'Jawa Tengah',
-	    'JI' => 'Jawa Timur',
-	    'YO' => 'Daerah Istimewa Yogyakarta',
-	    'BA' => 'Bali',
-	    'NB' => 'Nusa Tenggara Barat',
-	    'NT' => 'Nusa Tenggara Timur',
-	    'KB' => 'Kalimantan Barat',
-	    'KT' => 'Kalimantan Tengah',
-	    'KI' => 'Kalimantan Timur',
-	    'KS' => 'Kalimantan Selatan',
-	    'KU' => 'Kalimantan Utara',
-	    'SA' => 'Sulawesi Utara',
-	    'ST' => 'Sulawesi Tengah',
-	    'SG' => 'Sulawesi Tenggara',
-	    'SR' => 'Sulawesi Barat',
-	    'SN' => 'Sulawesi Selatan',
-	    'GO' => 'Gorontalo',
-	    'MA' => 'Maluku',
-	    'MU' => 'Maluku Utara',
-	    'PA' => 'Papua',
-	    'PB' => 'Papua Barat'
+		'SU' => 'Sumatera Utara',
+		'SB' => 'Sumatera Barat',
+		'RI' => 'Riau',
+		'KR' => 'Kepulauan Riau',
+		'JA' => 'Jambi',
+		'SS' => 'Sumatera Selatan',
+		'BB' => 'Bangka Belitung',
+		'BE' => 'Bengkulu',
+		'LA' => 'Lampung',
+		'JK' => 'DKI Jakarta',
+		'JB' => 'Jawa Barat',
+		'BT' => 'Banten',
+		'JT' => 'Jawa Tengah',
+		'JI' => 'Jawa Timur',
+		'YO' => 'Daerah Istimewa Yogyakarta',
+		'BA' => 'Bali',
+		'NB' => 'Nusa Tenggara Barat',
+		'NT' => 'Nusa Tenggara Timur',
+		'KB' => 'Kalimantan Barat',
+		'KT' => 'Kalimantan Tengah',
+		'KI' => 'Kalimantan Timur',
+		'KS' => 'Kalimantan Selatan',
+		'KU' => 'Kalimantan Utara',
+		'SA' => 'Sulawesi Utara',
+		'ST' => 'Sulawesi Tengah',
+		'SG' => 'Sulawesi Tenggara',
+		'SR' => 'Sulawesi Barat',
+		'SN' => 'Sulawesi Selatan',
+		'GO' => 'Gorontalo',
+		'MA' => 'Maluku',
+		'MU' => 'Maluku Utara',
+		'PA' => 'Papua',
+		'PB' => 'Papua Barat'
 	);
 
 	return apply_filters( 'give_indonesia_states', $states );
@@ -712,13 +718,13 @@ function give_get_indonesian_states_list() {
 /**
  * Get Indian States
  *
- * @since 1.6
+ * @since 1.0
  * @return array $states A list of states
  */
 function give_get_indian_states_list() {
 	$states = array(
 		''   => '',
-		'AP' => 'Andra Pradesh',
+		'AP' => 'Andhra Pradesh',
 		'AR' => 'Arunachal Pradesh',
 		'AS' => 'Assam',
 		'BR' => 'Bihar',
@@ -742,8 +748,9 @@ function give_get_indian_states_list() {
 		'RJ' => 'Rajasthan',
 		'SK' => 'Sikkim',
 		'TN' => 'Tamil Nadu',
+		'TG' => 'Telangana',
 		'TR' => 'Tripura',
-		'UT' => 'Uttaranchal',
+		'UT' => 'Uttarakhand',
 		'UP' => 'Uttar Pradesh',
 		'WB' => 'West Bengal',
 		'AN' => 'Andaman and Nicobar Islands',
@@ -751,7 +758,7 @@ function give_get_indian_states_list() {
 		'DN' => 'Dadar and Nagar Haveli',
 		'DD' => 'Daman and Diu',
 		'DL' => 'Delhi',
-		'LD' => 'Lakshadeep',
+		'LD' => 'Lakshadweep',
 		'PY' => 'Pondicherry (Puducherry)'
 	);
 
@@ -911,59 +918,59 @@ function give_get_thailand_states_list() {
 function give_get_spain_states_list() {
 	$states = array(
 		''   => '',
-	    'C'  => __( 'A Coru&ntilde;a', 'edd' ),
-	    'VI' => __( 'Araba', 'edd' ),
-	    'AB' => __( 'Albacete', 'edd' ),
-	    'A'  => __( 'Alicante', 'edd' ),
-	    'AL' => __( 'Almer&iacute;a', 'edd' ),
-	    'O'  => __( 'Asturias', 'edd' ),
-	    'AV' => __( '&Aacute;vila', 'edd' ),
-	    'BA' => __( 'Badajoz', 'edd' ),
-	    'PM' => __( 'Baleares', 'edd' ),
-	    'B'  => __( 'Barcelona', 'edd' ),
-	    'BU' => __( 'Burgos', 'edd' ),
-	    'CC' => __( 'C&aacute;ceres', 'edd' ),
-	    'CA' => __( 'C&aacute;diz', 'edd' ),
-	    'S'  => __( 'Cantabria', 'edd' ),
-	    'CS' => __( 'Castell&oacute;n', 'edd' ),
-	    'CE' => __( 'Ceuta', 'edd' ),
-	    'CR' => __( 'Ciudad Real', 'edd' ),
-	    'CO' => __( 'C&oacute;rdoba', 'edd' ),
-	    'CU' => __( 'Cuenca', 'edd' ),
-	    'GI' => __( 'Girona', 'edd' ),
-	    'GR' => __( 'Granada', 'edd' ),
-	    'GU' => __( 'Guadalajara', 'edd' ),
-	    'SS' => __( 'Gipuzkoa', 'edd' ),
-	    'H'  => __( 'Huelva', 'edd' ),
-	    'HU' => __( 'Huesca', 'edd' ),
-	    'J'  => __( 'Ja&eacute;n', 'edd' ),
-	    'LO' => __( 'La Rioja', 'edd' ),
-	    'GC' => __( 'Las Palmas', 'edd' ),
-	    'LE' => __( 'Le&oacute;n', 'edd' ),
-	    'L'  => __( 'Lleida', 'edd' ),
-	    'LU' => __( 'Lugo', 'edd' ),
-	    'M'  => __( 'Madrid', 'edd' ),
-	    'MA' => __( 'M&aacute;laga', 'edd' ),
-	    'ML' => __( 'Melilla', 'edd' ),
-	    'MU' => __( 'Murcia', 'edd' ),
-	    'NA' => __( 'Navarra', 'edd' ),
-	    'OR' => __( 'Ourense', 'edd' ),
-	    'P'  => __( 'Palencia', 'edd' ),
-	    'PO' => __( 'Pontevedra', 'edd' ),
-	    'SA' => __( 'Salamanca', 'edd' ),
-	    'TF' => __( 'Santa Cruz de Tenerife', 'edd' ),
-	    'SG' => __( 'Segovia', 'edd' ),
-	    'SE' => __( 'Sevilla', 'edd' ),
-	    'SO' => __( 'Soria', 'edd' ),
-	    'T'  => __( 'Tarragona', 'edd' ),
-	    'TE' => __( 'Teruel', 'edd' ),
-	    'TO' => __( 'Toledo', 'edd' ),
-	    'V'  => __( 'Valencia', 'edd' ),
-	    'VA' => __( 'Valladolid', 'edd' ),
-	    'BI' => __( 'Bizkaia', 'edd' ),
-	    'ZA' => __( 'Zamora', 'edd' ),
-	    'Z'  => __('Zaragoza', 'edd' )
-	); 	
+		'C'  => __( 'A Coru&ntilde;a', 'edd' ),
+		'VI' => __( 'Araba', 'edd' ),
+		'AB' => __( 'Albacete', 'edd' ),
+		'A'  => __( 'Alicante', 'edd' ),
+		'AL' => __( 'Almer&iacute;a', 'edd' ),
+		'O'  => __( 'Asturias', 'edd' ),
+		'AV' => __( '&Aacute;vila', 'edd' ),
+		'BA' => __( 'Badajoz', 'edd' ),
+		'PM' => __( 'Baleares', 'edd' ),
+		'B'  => __( 'Barcelona', 'edd' ),
+		'BU' => __( 'Burgos', 'edd' ),
+		'CC' => __( 'C&aacute;ceres', 'edd' ),
+		'CA' => __( 'C&aacute;diz', 'edd' ),
+		'S'  => __( 'Cantabria', 'edd' ),
+		'CS' => __( 'Castell&oacute;n', 'edd' ),
+		'CE' => __( 'Ceuta', 'edd' ),
+		'CR' => __( 'Ciudad Real', 'edd' ),
+		'CO' => __( 'C&oacute;rdoba', 'edd' ),
+		'CU' => __( 'Cuenca', 'edd' ),
+		'GI' => __( 'Girona', 'edd' ),
+		'GR' => __( 'Granada', 'edd' ),
+		'GU' => __( 'Guadalajara', 'edd' ),
+		'SS' => __( 'Gipuzkoa', 'edd' ),
+		'H'  => __( 'Huelva', 'edd' ),
+		'HU' => __( 'Huesca', 'edd' ),
+		'J'  => __( 'Ja&eacute;n', 'edd' ),
+		'LO' => __( 'La Rioja', 'edd' ),
+		'GC' => __( 'Las Palmas', 'edd' ),
+		'LE' => __( 'Le&oacute;n', 'edd' ),
+		'L'  => __( 'Lleida', 'edd' ),
+		'LU' => __( 'Lugo', 'edd' ),
+		'M'  => __( 'Madrid', 'edd' ),
+		'MA' => __( 'M&aacute;laga', 'edd' ),
+		'ML' => __( 'Melilla', 'edd' ),
+		'MU' => __( 'Murcia', 'edd' ),
+		'NA' => __( 'Navarra', 'edd' ),
+		'OR' => __( 'Ourense', 'edd' ),
+		'P'  => __( 'Palencia', 'edd' ),
+		'PO' => __( 'Pontevedra', 'edd' ),
+		'SA' => __( 'Salamanca', 'edd' ),
+		'TF' => __( 'Santa Cruz de Tenerife', 'edd' ),
+		'SG' => __( 'Segovia', 'edd' ),
+		'SE' => __( 'Sevilla', 'edd' ),
+		'SO' => __( 'Soria', 'edd' ),
+		'T'  => __( 'Tarragona', 'edd' ),
+		'TE' => __( 'Teruel', 'edd' ),
+		'TO' => __( 'Toledo', 'edd' ),
+		'V'  => __( 'Valencia', 'edd' ),
+		'VA' => __( 'Valladolid', 'edd' ),
+		'BI' => __( 'Bizkaia', 'edd' ),
+		'ZA' => __( 'Zamora', 'edd' ),
+		'Z'  => __( 'Zaragoza', 'edd' )
+	);
 
 	return apply_filters( 'give_spain_states', $states );
 }
