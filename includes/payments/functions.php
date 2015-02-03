@@ -41,7 +41,6 @@ function give_get_payments( $args = array() ) {
 
 	$args     = apply_filters( 'give_get_payments_args', $args );
 	$payments = new Give_Payments_Query( $args );
-
 	return $payments->get_payments();
 }
 
@@ -113,9 +112,7 @@ function give_get_payment_by( $field = '', $value = '' ) {
  * Insert Payment
  *
  * @since 1.0
- *
  * @param array $payment_data
- *
  * @return int|bool Payment ID if payment is inserted, false otherwise
  */
 function give_insert_payment( $payment_data = array() ) {
@@ -144,7 +141,7 @@ function give_insert_payment( $payment_data = array() ) {
 		'post_type'     => 'give_payment',
 		'post_parent'   => isset( $payment_data['parent'] ) ? $payment_data['parent'] : null,
 		'post_date'     => isset( $payment_data['post_date'] ) ? $payment_data['post_date'] : null,
-		'post_date_gmt' => isset( $payment_data['post_date'] ) ? $payment_data['post_date'] : null
+		'post_date_gmt' => isset( $payment_data['post_date'] ) ? get_gmt_from_date( $payment_data['post_date'] ) : null
 	), $payment_data );
 
 	// Create a blank payment
@@ -164,7 +161,7 @@ function give_insert_payment( $payment_data = array() ) {
 		$gateway = empty( $gateway ) && isset( $_POST['give-gateway'] ) ? $_POST['give-gateway'] : $gateway;
 
 		if ( ! $payment_data['price'] ) {
-			// Ensures the _give_payment_total meta key is created for purchases with an amount of 0
+			// Ensures the _give_payment_total meta key is created for donations with an amount of 0
 			$payment_data['price'] = '0.00';
 		}
 
@@ -186,7 +183,6 @@ function give_insert_payment( $payment_data = array() ) {
 		update_post_meta( $payment, '_give_payment_total', $payment_data['price'] );
 		update_post_meta( $payment, '_give_payment_mode', $mode );
 		update_post_meta( $payment, '_give_payment_gateway', $gateway );
-
 
 		if ( give_get_option( 'enable_sequential' ) ) {
 			give_update_payment_meta( $payment, '_give_payment_number', $number );
@@ -262,9 +258,7 @@ function give_update_payment_status( $payment_id, $new_status = 'publish' ) {
  * @since 1.0
  * @global    $give_logs
  * @uses  EDD_Logging::delete_logs()
- *
  * @param int $payment_id Payment ID (default: 0)
- *
  * @return void
  */
 function give_delete_purchase( $payment_id = 0 ) {
@@ -1274,7 +1268,7 @@ function give_get_payment_fees( $payment_id = 0, $type = 'all' ) {
 /**
  * Retrieves the transaction ID for the given payment
  *
- * @since  2.1
+ * @since  1.0
  *
  * @param int payment_id Payment ID
  *
@@ -1298,7 +1292,7 @@ function give_get_payment_transaction_id( $payment_id = 0 ) {
 /**
  * Sets a Transaction ID in post meta for the given Payment ID
  *
- * @since  2.1
+ * @since  1.0
  *
  * @param int    payment_id Payment ID
  * @param string transaction_id The transaciton ID from the gateway
@@ -1317,7 +1311,7 @@ function give_set_payment_transaction_id( $payment_id = 0, $transaction_id = '' 
 /**
  * Retrieve the purchase ID based on the purchase key
  *
- * @since 1.3.2
+ * @since 1.0
  * @global object $wpdb Used to query the database using the WordPress
  *                      Database API
  *
@@ -1340,7 +1334,7 @@ function give_get_purchase_id_by_key( $key ) {
 /**
  * Retrieve all notes attached to a purchase
  *
- * @since 1.4
+ * @since 1.0
  *
  * @param int    $payment_id The payment ID to retrieve notes for
  * @param string $search     Search for notes that contain a search term
@@ -1406,7 +1400,7 @@ function give_insert_payment_note( $payment_id = 0, $note = '' ) {
 /**
  * Deletes a payment note
  *
- * @since 1.6
+ * @since 1.0
  *
  * @param int $comment_id The comment ID to delete
  * @param int $payment_id The payment ID the note is connected to

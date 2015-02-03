@@ -22,13 +22,13 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
  *
  * Renders the Download Reports table
  *
- * @since 1.5
+ * @since 1.0
  */
 class Give_Gateawy_Reports_Table extends WP_List_Table {
 
 	/**
 	 * @var int Number of items per page
-	 * @since 1.5
+	 * @since 1.0
 	 */
 	public $per_page = 30;
 
@@ -36,7 +36,7 @@ class Give_Gateawy_Reports_Table extends WP_List_Table {
 	/**
 	 * Get things started
 	 *
-	 * @since 1.5
+	 * @since 1.0
 	 * @see WP_List_Table::__construct()
 	 */
 	public function __construct() {
@@ -148,9 +148,9 @@ class Give_Gateawy_Reports_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since 1.5
-	 * @uses Give_Gateawy_Reports_Table::get_columns()
-	 * @uses Give_Gateawy_Reports_Table::get_sortable_columns()
-	 * @uses Give_Gateawy_Reports_Table::reports_data()
+	 * @uses Give_Gateway_Reports_Table::get_columns()
+	 * @uses Give_Gateway_Reports_Table::get_sortable_columns()
+	 * @uses Give_Gateway_Reports_Table::reports_data()
 	 * @return void
 	 */
 	public function prepare_items() {

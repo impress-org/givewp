@@ -1,6 +1,6 @@
 <?php
 /**
- * Forms Functions
+ * Give Form Functions
  *
  * @package     WordImpress
  * @subpackage  Forms
@@ -356,7 +356,7 @@ function give_enforced_ssl_asset_filter( $content ) {
 /**
  * Record Sale In Log
  *
- * Stores log information for a download sale.
+ * Stores log information for a form sale.
  *
  * @since 1.0
  * @global            $give_logs
@@ -396,8 +396,8 @@ function give_record_sale_in_log( $give_form_id = 0, $payment_id, $price_id = fa
  * @return bool|int
  */
 function give_increase_purchase_count( $give_form_id = 0 ) {
-	$download = new Give_Donate_Form( $give_form_id );
-	return $download->increase_sales();
+	$form = new Give_Donate_Form( $give_form_id );
+	return $form->increase_sales();
 }
 
 /**
@@ -408,8 +408,8 @@ function give_increase_purchase_count( $give_form_id = 0 ) {
  * @return bool|int
  */
 function give_decrease_purchase_count( $give_form_id = 0 ) {
-	$download = new Give_Donate_Form( $give_form_id );
-	return $download->decrease_sales();	
+	$form = new Give_Donate_Form( $give_form_id );
+	return $form->decrease_sales();
 }
 
 /**
@@ -421,12 +421,12 @@ function give_decrease_purchase_count( $give_form_id = 0 ) {
  * @return bool|int
  */
 function give_increase_earnings( $give_form_id = 0, $amount ) {
-	$download = new Give_Donate_Form( $give_form_id );
-	return $download->increase_earnings( $amount );	
+	$form = new Give_Donate_Form( $give_form_id );
+	return $form->increase_earnings( $amount );
 }
 
 /**
- * Decreases the total earnings of a download. Primarily for when a purchase is refunded.
+ * Decreases the total earnings of a form. Primarily for when a purchase is refunded.
  *
  * @since 1.0
  * @param int $give_form_id Give Form ID
@@ -434,8 +434,8 @@ function give_increase_earnings( $give_form_id = 0, $amount ) {
  * @return bool|int
  */
 function give_decrease_earnings( $give_form_id = 0, $amount ) {
-	$download = new Give_Donate_Form( $give_form_id );
-	return $download->decrease_earnings( $amount );	
+	$form = new Give_Donate_Form( $give_form_id );
+	return $form->decrease_earnings( $amount );
 }
 
 
@@ -444,7 +444,7 @@ function give_decrease_earnings( $give_form_id = 0, $amount ) {
  *
  * @since 1.0
  * @param int $give_form_id Give Form ID
- * @return int $earnings Earnings for a certain download
+ * @return int $earnings Earnings for a certain form
  */
 function give_get_form_earnings_stats( $give_form_id = 0 ) {
 	$give_form = new Give_Donate_Form( $give_form_id );
@@ -458,9 +458,56 @@ function give_get_form_earnings_stats( $give_form_id = 0 ) {
  *
  * @since 1.0
  * @param int $give_form_id Give Form ID
- * @return int $sales Amount of sales for a certain download
+ * @return int $sales Amount of sales for a certain form
  */
 function give_get_form_sales_stats( $give_form_id = 0 ) {
 	$give_form = new Give_Donate_Form( $give_form_id );
 	return $give_form->sales;
+}
+
+
+
+/**
+ * Retrieves the average monthly sales for a specific donation form
+ *
+ * @since 1.0
+ * @param int $form_id Form ID
+ * @return float $sales Average monthly sales
+ */
+function give_get_average_monthly_form_sales( $form_id = 0 ) {
+    $sales          = give_get_form_sales_stats( $form_id );
+    $release_date   = get_post_field( 'post_date', $form_id );
+
+    $diff   = abs( current_time( 'timestamp' ) - strtotime( $release_date ) );
+
+    $months = floor( $diff / ( 30 * 60 * 60 * 24 ) ); // Number of months since publication
+
+    if ( $months > 0 )
+        $sales = ( $sales / $months );
+
+    return $sales;
+}
+
+
+
+/**
+ * Retrieves the average monthly earnings for a specific form
+ *
+ * @since 1.0
+ * @param int $form_id Form ID
+ * @return float $earnings Average monthly earnings
+ */
+function give_get_average_monthly_form_earnings( $form_id = 0 ) {
+	$earnings 	  = give_get_form_earnings_stats( $form_id );
+	$release_date = get_post_field( 'post_date', $form_id );
+
+	$diff 	= abs( current_time( 'timestamp' ) - strtotime( $release_date ) );
+
+    $months = floor( $diff / ( 30 * 60 * 60 * 24 ) ); // Number of months since publication
+
+	if ( $months > 0 ) {
+		$earnings = ( $earnings / $months );
+	}
+
+	return $earnings < 0 ? 0 : $earnings;
 }

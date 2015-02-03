@@ -2,11 +2,12 @@
 /**
  * PDF Report Generation Functions
  *
- * @package     Give
+ * @package     EDD
  * @subpackage  Admin/Reports
- * @copyright   Copyright (c) 2014, WordImpress
+ * @copyright   Copyright (c) 2014, Pippin Williamson
+ * @author      Sunny Ratilal
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       1.0
+ * @since       1.1.4.0
  */
 
 // Exit if accessed directly
@@ -24,6 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param string $data
  *
  * @uses   give_pdf
+ * @author Sunny Ratilal
  */
 function give_generate_pdf( $data ) {
 
@@ -35,17 +37,17 @@ function give_generate_pdf( $data ) {
 		wp_die( __( 'Nonce verification failed', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
-	require_once GIVE_PLUGIN_DIR . '/includes/libraries/fpdf/fpdf.php';
-	require_once GIVE_PLUGIN_DIR . '/includes/libraries/fpdf/give_pdf.php';
+	require_once EDD_PLUGIN_DIR . '/includes/libraries/fpdf/fpdf.php';
+	require_once EDD_PLUGIN_DIR . '/includes/libraries/fpdf/give_pdf.php';
 
 	$daterange = date_i18n( get_option( 'date_format' ), mktime( 0, 0, 0, 1, 1, date( 'Y' ) ) ) . ' ' . utf8_decode( __( 'to', 'give' ) ) . ' ' . date_i18n( get_option( 'date_format' ) );
 
 	$pdf = new give_pdf();
 	$pdf->AddPage( 'L', 'A4' );
 
-	$pdf->SetTitle( utf8_decode( __( 'Sales and earnings reports for the current year for all products', 'give' ) ) );
-	$pdf->SetAuthor( utf8_decode( __( 'Easy Digital Downloads', 'give' ) ) );
-	$pdf->SetCreator( utf8_decode( __( 'Easy Digital Downloads', 'give' ) ) );
+	$pdf->SetTitle( utf8_decode( __( 'Donation report for the current year for all forms', 'give' ) ) );
+	$pdf->SetAuthor( utf8_decode( __( 'Give - Democratizing Generosity', 'give' ) ) );
+	$pdf->SetCreator( utf8_decode( __( 'Give - Democratizing Generosity', 'give' ) ) );
 
 	$pdf->Image( GIVE_PLUGIN_URL . 'assets/images/give-logo.png', 205, 10 );
 
@@ -54,7 +56,7 @@ function give_generate_pdf( $data ) {
 
 	$pdf->SetFont( 'Helvetica', '', 16 );
 	$pdf->SetTextColor( 50, 50, 50 );
-	$pdf->Cell( 0, 3, utf8_decode( __( 'Sales and earnings reports for the current year for all products', 'give' ) ), 0, 2, 'L', false );
+	$pdf->Cell( 0, 3, utf8_decode( __( 'Donation report for the current year for all forms', 'give' ) ), 0, 2, 'L', false );
 
 	$pdf->SetFont( 'Helvetica', '', 13 );
 	$pdf->Ln();
@@ -67,11 +69,11 @@ function give_generate_pdf( $data ) {
 	$pdf->SetFont( 'Helvetica', '', 12 );
 
 	$pdf->SetFillColor( 238, 238, 238 );
-	$pdf->Cell( 70, 6, utf8_decode( __( 'Product Name', 'give' ) ), 1, 0, 'L', true );
+	$pdf->Cell( 70, 6, utf8_decode( __( 'Form Name', 'give' ) ), 1, 0, 'L', true );
 	$pdf->Cell( 30, 6, utf8_decode( __( 'Price', 'give' ) ), 1, 0, 'L', true );
 	$pdf->Cell( 50, 6, utf8_decode( __( 'Categories', 'give' ) ), 1, 0, 'L', true );
 	$pdf->Cell( 50, 6, utf8_decode( __( 'Tags', 'give' ) ), 1, 0, 'L', true );
-	$pdf->Cell( 45, 6, utf8_decode( __( 'Number of Sales', 'give' ) ), 1, 0, 'L', true );
+	$pdf->Cell( 45, 6, utf8_decode( __( 'Number of Donations', 'give' ) ), 1, 0, 'L', true );
 	$pdf->Cell( 35, 6, utf8_decode( __( 'Earnings to Date', 'give' ) ), 1, 1, 'L', true );
 
 	$year      = date( 'Y' );
@@ -106,10 +108,10 @@ function give_generate_pdf( $data ) {
 				$price = html_entity_decode( give_currency_filter( give_get_form_price( $form->ID ) ) );
 			}
 
-			$categories = get_the_term_list( $form->ID, 'download_category', '', ', ', '' );
+			$categories = get_the_term_list( $form->ID, 'form_category', '', ', ', '' );
 			$categories = $categories ? strip_tags( $categories ) : '';
 
-			$tags = get_the_term_list( $form->ID, 'download_tag', '', ', ', '' );
+			$tags = get_the_term_list( $form->ID, 'form_tag', '', ', ', '' );
 			$tags = $tags ? strip_tags( $tags ) : '';
 
 			$sales    = give_get_form_sales_stats( $form->ID );
@@ -153,7 +155,7 @@ add_action( 'give_generate_pdf', 'give_generate_pdf' );
  * Draws the sales and earnings chart for the PDF report and then retrieves the
  * URL of that chart to display on the PDF Report
  *
- * @since  1.0
+ * @since  1.1.4.0
  * @uses   GoogleChart
  * @uses   GoogleChartData
  * @uses   GoogleChartShapeMarker
@@ -226,24 +228,24 @@ function give_draw_chart_image() {
 	$chart->addMarker( $value_marker );
 
 	$data = new GoogleChartData( array(
-			$sales_array[0],
-			$sales_array[1],
-			$sales_array[2],
-			$sales_array[3],
-			$sales_array[4],
-			$sales_array[5],
-			$sales_array[6],
-			$sales_array[7],
-			$sales_array[8],
-			$sales_array[9],
-			$sales_array[10],
-			$sales_array[11]
-		) );
-	$data->setLegend( __( 'Sales', 'give' ) );
+		$sales_array[0],
+		$sales_array[1],
+		$sales_array[2],
+		$sales_array[3],
+		$sales_array[4],
+		$sales_array[5],
+		$sales_array[6],
+		$sales_array[7],
+		$sales_array[8],
+		$sales_array[9],
+		$sales_array[10],
+		$sales_array[11]
+	) );
+	$data->setLegend( __( 'Donations', 'give' ) );
 	$data->setColor( 'ff6c1c' );
 	$chart->addData( $data );
 
-	$chart->setTitle( __( 'Sales and Earnings by Month for all Products', 'give' ), '336699', 18 );
+	$chart->setTitle( __( 'Donations by Month for all Products', 'give' ), '336699', 18 );
 
 	$chart->setScale( 0, $max_earnings );
 

@@ -489,12 +489,10 @@ $Give_Settings = new Give_Plugin_Settings();
  * @return mixed        Option value
  */
 function give_get_option( $key = '', $default = false ) {
-	global $give_options, $Give_Settings;
+	global $give_options;
 	$value = ! empty( $give_options[ $key ] ) ? $give_options[ $key ] : $default;
 	$value = apply_filters( 'give_get_option', $value, $key, $default );
-
 	return apply_filters( 'give_get_option_' . $key, $value, $key, $default );
-	//	return cmb2_get_option( $Give_Settings->key, $key );
 }
 
 

@@ -159,7 +159,7 @@ function give_get_current_page_url() {
 		}
 	endif;
 
-	return apply_filters( 'give_get_current_page_url', esc_url( $page_url ) );
+	return apply_filters( 'edd_get_current_page_url', esc_url( $page_url ) );
 }
 
 
@@ -506,6 +506,7 @@ function give_get_php_arg_separator_output() {
  * @since 1.0
  *
  * @param unknown $n
+ *
  * @return string Short month name
  */
 function give_month_num_to_name( $n ) {
@@ -520,11 +521,12 @@ function give_month_num_to_name( $n ) {
  *
  * @since 1.0
  *
- * @param string  $function Name of the function.
+ * @param string $function Name of the function.
+ *
  * @return bool Whether or not function is disabled.
  */
 function give_is_func_disabled( $function ) {
-	$disabled = explode( ',',  ini_get( 'disable_functions' ) );
+	$disabled = explode( ',', ini_get( 'disable_functions' ) );
 
 	return in_array( $function, $disabled );
 }

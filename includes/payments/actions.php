@@ -62,7 +62,7 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 
 		}
 
-		do_action( 'give_complete_download_purchase', $payment_meta["form_id"], $payment_id, $payment_meta );
+		do_action( 'give_complete_form_donation', $payment_meta["form_id"], $payment_id, $payment_meta );
 	}
 
 
@@ -180,10 +180,8 @@ add_action( 'give_update_payment_status', 'give_clear_user_history_cache', 10, 3
  *
  * This is so that payments can be queried by their totals
  *
- * @since 1.2
- *
+ * @since 1.0
  * @param array $data Arguments passed
- *
  * @return void
  */
 function give_update_old_payments_with_totals( $data ) {
@@ -197,7 +195,7 @@ function give_update_old_payments_with_totals( $data ) {
 
 	$payments = give_get_payments( array(
 		'offset' => 0,
-		'number' => - 1,
+		'number' => -1,
 		'mode'   => 'all'
 	) );
 
@@ -222,7 +220,7 @@ add_action( 'give_upgrade_payments', 'give_update_old_payments_with_totals' );
 function give_mark_abandoned_orders() {
 	$args = array(
 		'status' => 'pending',
-		'number' => - 1,
+		'number' => -1,
 		'fields' => 'ids'
 	);
 

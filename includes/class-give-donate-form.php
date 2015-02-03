@@ -228,11 +228,11 @@ class Give_Donate_Form {
 
 		if ( ! isset( $this->sales ) ) {
 
-			if ( '' == get_post_meta( $this->ID, '_give_download_sales', true ) ) {
-				add_post_meta( $this->ID, '_give_download_sales', 0 );
+			if ( '' == get_post_meta( $this->ID, '_give_form_sales', true ) ) {
+				add_post_meta( $this->ID, '_give_form_sales', 0 );
 			} // End if
 
-			$this->sales = get_post_meta( $this->ID, '_give_download_sales', true );
+			$this->sales = get_post_meta( $this->ID, '_give_form_sales', true );
 
 			if ( $this->sales < 0 ) {
 				// Never let sales be less than zero
@@ -256,7 +256,7 @@ class Give_Donate_Form {
 		$sales = give_get_form_sales_stats( $this->ID );
 		$sales = $sales + 1;
 
-		if ( update_post_meta( $this->ID, '_give_download_sales', $sales ) ) {
+		if ( update_post_meta( $this->ID, '_give_form_sales', $sales ) ) {
 			$this->sales = $sales;
 
 			return $sales;
@@ -279,7 +279,7 @@ class Give_Donate_Form {
 			$sales = $sales - 1;
 		}
 
-		if ( update_post_meta( $this->ID, '_give_download_sales', $sales ) ) {
+		if ( update_post_meta( $this->ID, '_give_form_sales', $sales ) ) {
 			$this->sales = $sales;
 
 			return $sales;
@@ -299,11 +299,11 @@ class Give_Donate_Form {
 
 		if ( ! isset( $this->earnings ) ) {
 
-			if ( '' == get_post_meta( $this->ID, '_give_download_earnings', true ) ) {
-				add_post_meta( $this->ID, '_give_download_earnings', 0 );
+			if ( '' == get_post_meta( $this->ID, '_give_form_earnings', true ) ) {
+				add_post_meta( $this->ID, '_give_form_earnings', 0 );
 			}
 
-			$this->earnings = get_post_meta( $this->ID, '_give_download_earnings', true );
+			$this->earnings = get_post_meta( $this->ID, '_give_form_earnings', true );
 
 			if ( $this->earnings < 0 ) {
 				// Never let earnings be less than zero
@@ -327,7 +327,7 @@ class Give_Donate_Form {
 		$earnings = give_get_form_earnings_stats( $this->ID );
 		$earnings = $earnings + (float) $amount;
 
-		if ( update_post_meta( $this->ID, '_give_download_earnings', $earnings ) ) {
+		if ( update_post_meta( $this->ID, '_give_form_earnings', $earnings ) ) {
 			$this->earnings = $earnings;
 
 			return $earnings;
@@ -352,7 +352,7 @@ class Give_Donate_Form {
 			$earnings = $earnings - (float) $amount;
 		}
 
-		if ( update_post_meta( $this->ID, '_give_download_earnings', $earnings ) ) {
+		if ( update_post_meta( $this->ID, '_give_form_earnings', $earnings ) ) {
 			$this->earnings = $earnings;
 
 			return $earnings;

@@ -164,14 +164,15 @@ class Give_HTML_Elements {
 	 * @return string $output Year dropdown
 	 */
 	public function year_dropdown( $name = 'year', $selected = 0 ) {
-		$current  = date( 'Y' );
-		$year     = $current - 5;
-		$selected = empty( $selected ) ? date( 'Y' ) : $selected;
-		$options  = array();
+		$current    = date( 'Y' );
+		$start_year = $current - absint( $years_before );
+		$end_year   = $current + absint( $years_after );
+		$selected   = empty( $selected ) ? date( 'Y' ) : $selected;
+		$options    = array();
 
-		while ( $year <= $current ) {
-			$options[ absint( $year ) ] = $year;
-			$year ++;
+		while ( $start_year <= $end_year ) {
+			$options[ absint( $start_year ) ] = $start_year;
+			$start_year ++;
 		}
 
 		$output = $this->select( array(
@@ -189,7 +190,7 @@ class Give_HTML_Elements {
 	 * Renders an HTML Dropdown of months
 	 *
 	 * @access public
-	 * @since  1.5.2
+	 * @since  1.0
 	 *
 	 * @param string $name     Name attribute of the dropdown
 	 * @param int    $selected Month to select automatically
@@ -325,11 +326,7 @@ class Give_HTML_Elements {
 	 *
 	 * @since 1.0
 	 *
-	 * @param string $name  Name attribute of the text field
-	 * @param string $value The value to prepopulate the field with
-	 * @param string $label
-	 * @param string $desc
-	 *
+	 * @param array $args
 	 * @return string Text field
 	 */
 	public function text( $args = array() ) {

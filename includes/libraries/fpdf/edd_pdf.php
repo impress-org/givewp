@@ -2,12 +2,12 @@
 /**
  * PDF MultiCell Table Class
  *
- * @package     Easy Digital Downloads
+ * @package     Give PDFs
  * @subpackage  FPDF
- * @since       1.1.4.0
+ * @since       1.0
 */
 
-class edd_pdf extends FPDF {
+class give_pdf extends FPDF {
 
 	var $widths;
 	var $aligns;

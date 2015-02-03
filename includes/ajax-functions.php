@@ -132,12 +132,12 @@ function give_load_checkout_register_fields() {
 add_action( 'wp_ajax_nopriv_checkout_register', 'give_load_checkout_register_fields' );
 
 /**
- * Get Download Title via AJAX (used only in WordPress Admin)
+ * Get Form Title via AJAX (used only in WordPress Admin)
  *
  * @since 1.0
  * @return void
  */
-function give_ajax_get_download_title() {
+function give_ajax_get_form_title() {
 	if ( isset( $_POST['download_id'] ) ) {
 		$title = get_the_title( $_POST['download_id'] );
 		if ( $title ) {
@@ -149,44 +149,13 @@ function give_ajax_get_download_title() {
 	give_die();
 }
 
-add_action( 'wp_ajax_give_get_download_title', 'give_ajax_get_download_title' );
-add_action( 'wp_ajax_nopriv_give_get_download_title', 'give_ajax_get_download_title' );
-
-/**
- * Recalculate cart taxes
- *
- * @since 1.6
- * @return void
- */
-function give_ajax_recalculate_taxes() {
-	if ( ! give_get_cart_contents() ) {
-		return false;
-	}
-
-	if ( empty( $_POST['billing_country'] ) ) {
-		$_POST['billing_country'] = give_get_shop_country();
-	}
-
-	ob_start();
-	give_checkout_cart();
-	$cart     = ob_get_clean();
-	$response = array(
-		'html'  => $cart,
-		'total' => html_entity_decode( give_cart_total( false ), ENT_COMPAT, 'UTF-8' ),
-	);
-
-	echo json_encode( $response );
-
-	give_die();
-}
-
-add_action( 'wp_ajax_give_recalculate_taxes', 'give_ajax_recalculate_taxes' );
-add_action( 'wp_ajax_nopriv_give_recalculate_taxes', 'give_ajax_recalculate_taxes' );
+add_action( 'wp_ajax_give_get_form_title', 'give_ajax_get_form_title' );
+add_action( 'wp_ajax_nopriv_give_get_form_title', 'give_ajax_get_form_title' );
 
 /**
  * Retrieve a states drop down
  *
- * @since 1.6
+ * @since 1.0
  * @return void
  */
 function give_ajax_get_states_field() {
@@ -224,10 +193,10 @@ add_action( 'wp_ajax_nopriv_give_get_shop_states', 'give_ajax_get_states_field' 
 /**
  * Retrieve a states drop down
  *
- * @since 1.6
+ * @since 1.0
  * @return void
  */
-function give_ajax_download_search() {
+function give_ajax_form_search() {
 	global $wpdb;
 
 	$search  = esc_sql( sanitize_text_field( $_GET['s'] ) );
@@ -262,13 +231,13 @@ function give_ajax_download_search() {
 	give_die();
 }
 
-add_action( 'wp_ajax_give_download_search', 'give_ajax_download_search' );
-add_action( 'wp_ajax_nopriv_give_download_search', 'give_ajax_download_search' );
+add_action( 'wp_ajax_give_form_search', 'give_ajax_form_search' );
+add_action( 'wp_ajax_nopriv_give_form_search', 'give_ajax_form_search' );
 
 /**
  * Search the customers database via Ajax
  *
- * @since 2.2
+ * @since 1.0
  * @return void
  */
 function give_ajax_customer_search() {

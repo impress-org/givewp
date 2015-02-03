@@ -65,8 +65,9 @@ function give_load_scripts() {
 			// General loading message
 			'select_option'    => __( 'Please select an option', 'give' ),
 			// Variable pricing error with multi-purchase option enabled
-			'ajax_loader'      => apply_filters('give_ajax_preloader_img', GIVE_PLUGIN_URL . 'assets/images/spinner-2x.gif'),
-			'default_gateway'  => give_get_default_gateway(null),
+			'ajax_loader'      => set_url_scheme( apply_filters( 'give_ajax_preloader_img', EDD_PLUGIN_URL . 'assets/images/loading.gif' ), 'relative' ),
+			// Ajax loading image
+			'default_gateway'  => give_get_default_gateway( null ),
 			'permalinks'       => get_option( 'permalink_structure' ) ? '1' : '0'
 		)
 	);

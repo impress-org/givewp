@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Admin/Reports
- * @copyright   Copyright (c) 2014, WordImpress
+ * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -37,7 +37,7 @@ function give_reports_graph() {
 			$day_by_day = false;
 			break;
 		case 'other' :
-			if ( $dates['m_end'] - $dates['m_start'] >= 2 || $dates['year_end'] > $dates['year'] ) {
+			if ( $dates['m_end'] - $dates['m_start'] >= 2 || $dates['year_end'] > $dates['year'] && ( $dates['m_start'] != '12' && $dates['m_end'] != '1' ) ) {
 				$day_by_day = false;
 			} else {
 				$day_by_day = true;
@@ -103,6 +103,9 @@ function give_reports_graph() {
 			} elseif ( $y == $dates['year'] ) {
 				$month_start = $dates['m_start'];
 				$month_end   = 12;
+			} elseif ( $y == $dates['year_end'] ) {
+				$month_start = 1;
+				$month_end   = $dates['m_end'];
 			} else {
 				$month_start = 1;
 				$month_end   = 12;
@@ -204,6 +207,7 @@ function give_reports_graph() {
 
 					<p class="give_graph_totals"><strong><?php _e( 'Total sales for period shown: ', 'give' );
 							echo give_format_amount( $sales_totals, false ); ?></strong></p>
+
 					<?php if ( 'this_month' == $dates['range'] ) : ?>
 						<p class="give_graph_totals"><strong><?php _e( 'Estimated monthly earnings: ', 'give' );
 								echo give_currency_filter( give_format_amount( $estimated['earnings'] ) ); ?></strong>
@@ -211,6 +215,9 @@ function give_reports_graph() {
 						<p class="give_graph_totals"><strong><?php _e( 'Estimated monthly sales: ', 'give' );
 								echo give_format_amount( $estimated['sales'], false ); ?></strong></p>
 					<?php endif; ?>
+
+					<?php do_action( 'give_reports_graph_additional_stats' ); ?>
+
 				</div>
 			</div>
 		</div>
@@ -229,7 +236,7 @@ function give_reports_graph() {
  * @since 1.0
  * @return void
  */
-function give_reports_graph_of_form( $download_id = 0 ) {
+function give_reports_graph_of_download( $form_id = 0 ) {
 	// Retrieve the queried dates
 	$dates = give_get_report_dates();
 
@@ -285,10 +292,10 @@ function give_reports_graph_of_form( $download_id = 0 ) {
 			$date     = mktime( $hour, $minute, $second, $month, $dates['day'], $dates['year'] );
 			$date_end = mktime( $hour + 1, $minute, $second, $month, $dates['day'], $dates['year'] );
 
-			$sales = $stats->get_sales( $download_id, $date, $date_end );
+			$sales = $stats->get_sales( $form_id, $date, $date_end );
 			$sales_totals += $sales;
 
-			$earnings = $stats->get_earnings( $download_id, $date, $date_end );
+			$earnings = $stats->get_earnings( $form_id, $date, $date_end );
 			$earnings_totals += $earnings;
 
 			$sales_data[]    = array( $date * 1000, $sales );
@@ -307,10 +314,10 @@ function give_reports_graph_of_form( $download_id = 0 ) {
 
 			$date     = mktime( 0, 0, 0, $month, $day, $dates['year'] );
 			$date_end = mktime( 0, 0, 0, $month, $day + 1, $dates['year'] );
-			$sales    = $stats->get_sales( $download_id, $date, $date_end );
+			$sales    = $stats->get_sales( $form_id, $date, $date_end );
 			$sales_totals += $sales;
 
-			$earnings = $stats->get_earnings( $download_id, $date, $date_end );
+			$earnings = $stats->get_earnings( $form_id, $date, $date_end );
 			$earnings_totals += $earnings;
 
 			$sales_data[]    = array( $date * 1000, $sales );
@@ -356,10 +363,10 @@ function give_reports_graph_of_form( $download_id = 0 ) {
 						$date     = mktime( 0, 0, 0, $i, $d, $y );
 						$end_date = mktime( 23, 59, 59, $i, $d, $y );
 
-						$sales = $stats->get_sales( $download_id, $date, $end_date );
+						$sales = $stats->get_sales( $form_id, $date, $end_date );
 						$sales_totals += $sales;
 
-						$earnings = $stats->get_earnings( $download_id, $date, $end_date );
+						$earnings = $stats->get_earnings( $form_id, $date, $end_date );
 						$earnings_totals += $earnings;
 
 						$sales_data[]    = array( $date * 1000, $sales );
@@ -375,10 +382,10 @@ function give_reports_graph_of_form( $download_id = 0 ) {
 					$date     = mktime( 0, 0, 0, $i, 1, $y );
 					$end_date = mktime( 0, 0, 0, $i + 1, $num_of_days, $y );
 
-					$sales = $stats->get_sales( $download_id, $date, $end_date );
+					$sales = $stats->get_sales( $form_id, $date, $end_date );
 					$sales_totals += $sales;
 
-					$earnings = $stats->get_earnings( $download_id, $date, $end_date );
+					$earnings = $stats->get_earnings( $form_id, $date, $end_date );
 					$earnings_totals += $earnings;
 
 					$sales_data[]    = array( $date * 1000, $sales );
@@ -402,8 +409,7 @@ function give_reports_graph_of_form( $download_id = 0 ) {
 	?>
 	<div class="metabox-holder" style="padding-top: 0;">
 		<div class="postbox">
-			<h3>
-				<span><?php printf( __( 'Earnings Over Time for %s', 'give' ), get_the_title( $download_id ) ); ?></span>
+			<h3><span><?php printf( __( 'Earnings Over Time for %s', 'give' ), get_the_title( $form_id ) ); ?></span>
 			</h3>
 
 			<div class="inside">
@@ -421,9 +427,9 @@ function give_reports_graph_of_form( $download_id = 0 ) {
 						echo $sales_totals; ?></strong></p>
 
 				<p class="give_graph_totals">
-					<strong><?php printf( __( 'Average monthly earnings: %s', 'give' ), give_currency_filter( give_format_amount( give_get_average_monthly_download_earnings( $download_id ) ) ) ); ?>
+					<strong><?php printf( __( 'Average monthly earnings: %s', 'give' ), give_currency_filter( give_format_amount( give_get_average_monthly_download_earnings( $form_id ) ) ) ); ?>
 						<p class="give_graph_totals">
-							<strong><?php printf( __( 'Average monthly sales: %s', 'give' ), number_format( give_get_average_monthly_download_sales( $download_id ), 0 ) ); ?>
+							<strong><?php printf( __( 'Average monthly sales: %s', 'give' ), number_format( give_get_average_monthly_download_sales( $form_id ), 0 ) ); ?>
 			</div>
 		</div>
 	</div>
@@ -434,7 +440,7 @@ function give_reports_graph_of_form( $download_id = 0 ) {
 /**
  * Show report graph date filters
  *
- * @since 1.3
+ * @since 1.0
  * @return void
  */
 function give_reports_graph_controls() {
@@ -471,8 +477,8 @@ function give_reports_graph_controls() {
 				<input type="hidden" name="page" value="give-reports" />
 				<input type="hidden" name="view" value="<?php echo esc_attr( $view ); ?>" />
 
-				<?php if ( isset( $_GET['form-id'] ) ) : ?>
-					<input type="hidden" name="form-id" value="<?php echo absint( $_GET['form-id'] ); ?>" />
+				<?php if ( isset( $_GET['download-id'] ) ) : ?>
+					<input type="hidden" name="download-id" value="<?php echo absint( $_GET['download-id'] ); ?>" />
 				<?php endif; ?>
 
 				<select id="give-graphs-date-options" name="range">
@@ -550,10 +556,12 @@ function give_get_report_dates() {
 	switch ( $dates['range'] ) :
 
 		case 'this_month' :
-			$dates['m_start'] = date( 'n', $current_time );
-			$dates['m_end']   = date( 'n', $current_time );
-			$dates['day']     = 1;
-			$dates['day_end'] = cal_days_in_month( CAL_GREGORIAN, $dates['m_end'], $dates['year'] );
+			$dates['m_start']  = date( 'n', $current_time );
+			$dates['m_end']    = date( 'n', $current_time );
+			$dates['day']      = 1;
+			$dates['day_end']  = cal_days_in_month( CAL_GREGORIAN, $dates['m_end'], $dates['year'] );
+			$dates['year']     = date( 'Y' );
+			$dates['year_end'] = date( 'Y' );
 			break;
 
 		case 'last_month' :

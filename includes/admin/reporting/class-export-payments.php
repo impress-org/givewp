@@ -17,13 +17,13 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * Give_Payments_Export Class
  *
- * @since 1.4.4
+ * @since 1.0
  */
 class Give_Payments_Export extends Give_Export {
 	/**
 	 * Our export type. Used for export-type specific filters/actions
 	 * @var string
-	 * @since 1.4.4
+	 * @since 1.0
 	 */
 	public $export_type = 'payments';
 
@@ -31,7 +31,7 @@ class Give_Payments_Export extends Give_Export {
 	 * Set the export headers
 	 *
 	 * @access public
-	 * @since 1.6
+	 * @since 1.0
 	 * @return void
 	 */
 	public function headers() {
@@ -84,9 +84,6 @@ class Give_Payments_Export extends Give_Export {
 			'status'   => __( 'Status', 'give' )
 		);
 
-		if( ! give_use_skus() ){
-			unset( $cols['skus'] );
-		}
 		if ( ! give_get_option( 'enable_sequential' ) ) {
 			unset( $cols['seq_id'] );
 		}

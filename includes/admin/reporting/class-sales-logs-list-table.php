@@ -2,9 +2,9 @@
 /**
  * Sales Log View Class
  *
- * @package     Give
+ * @package     EDD
  * @subpackage  Admin/Reports
- * @copyright   Copyright (c) 2014, WordImpress
+ * @copyright   Copyright (c) 2014, Pippin Williamson
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
@@ -76,7 +76,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 				return give_currency_filter( give_format_amount( $item['amount'] ) );
 
 			case 'payment_id' :
-				return '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $item[ 'payment_id' ] ) . '">' . give_get_payment_number( $item[ 'payment_id' ] ) . '</a>';
+				return '<a href="' . admin_url( 'edit.php?post_type=download&page=give-payment-history&view=view-order-details&id=' . $item[ 'payment_id' ] ) . '">' . give_get_payment_number( $item[ 'payment_id' ] ) . '</a>';
 
 			default:
 				return $item[ $column_name ];
@@ -92,12 +92,12 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'ID'		=> __( 'Log ID', 'give' ),
-			'user_id'  	=> __( 'User', 'give' ),
-			'download'  => give_get_forms_label_singular(),
-			'amount'    => __( 'Item Amount', 'give' ),
-			'payment_id'=> __( 'Payment ID', 'give' ),
-			'date'  	=> __( 'Date', 'give' )
+			'ID'		=> __( 'Log ID', 'edd' ),
+			'user_id'  	=> __( 'User', 'edd' ),
+			'download'  => give_get_label_singular(),
+			'amount'    => __( 'Item Amount', 'edd' ),
+			'payment_id'=> __( 'Payment ID', 'edd' ),
+			'date'  	=> __( 'Date', 'edd' )
 		);
 
 		return $columns;
@@ -252,7 +252,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 
 		if ( $downloads ) {
 			echo '<select name="download" id="give-log-download-filter">';
-				echo '<option value="0">' . __( 'All', 'give' ) . '</option>';
+				echo '<option value="0">' . __( 'All', 'edd' ) . '</option>';
 				foreach ( $downloads as $download ) {
 					echo '<option value="' . $download . '"' . selected( $download, $this->get_filtered_download() ) . '>' . esc_html( get_the_title( $download ) ) . '</option>';
 				}
@@ -299,10 +299,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 					$amount     = 0;
 					if ( is_array( $cart_items ) && is_array( $user_info ) ) {
 						foreach ( $cart_items as $item ) {
-							$price_override = isset( $item['price'] ) ? $item['price'] : null;
-							if ( isset( $item['id'] ) && $item['id'] == $log->post_parent ) {
-								$amount = give_get_download_final_price( $item['id'], $user_info, $price_override );
-							}
+							$amount = isset( $item['item_price'] ) ? $item['item_price'] : $item['price'];
 						}
 
 						$logs_data[] = array(
