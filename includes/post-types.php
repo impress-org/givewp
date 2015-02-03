@@ -124,19 +124,19 @@ function give_setup_post_types() {
 
 	/** Payment Post Type */
 	$payment_labels = array(
-		'name'               => _x( 'Payments', 'post type general name', 'give' ),
-		'singular_name'      => _x( 'Payment', 'post type singular name', 'give' ),
+		'name'               => _x( 'Donations', 'post type general name', 'give' ),
+		'singular_name'      => _x( 'Donation', 'post type singular name', 'give' ),
 		'add_new'            => __( 'Add New', 'give' ),
-		'add_new_item'       => __( 'Add New Payment', 'give' ),
-		'edit_item'          => __( 'Edit Payment', 'give' ),
-		'new_item'           => __( 'New Payment', 'give' ),
-		'all_items'          => __( 'All Payments', 'give' ),
-		'view_item'          => __( 'View Payment', 'give' ),
-		'search_items'       => __( 'Search Payments', 'give' ),
-		'not_found'          => __( 'No Payments found', 'give' ),
-		'not_found_in_trash' => __( 'No Payments found in Trash', 'give' ),
+		'add_new_item'       => __( 'Add New Donation', 'give' ),
+		'edit_item'          => __( 'Edit Donation', 'give' ),
+		'new_item'           => __( 'New Donation', 'give' ),
+		'all_items'          => __( 'All Donations', 'give' ),
+		'view_item'          => __( 'View Donation', 'give' ),
+		'search_items'       => __( 'Search Donations', 'give' ),
+		'not_found'          => __( 'No Donations found', 'give' ),
+		'not_found_in_trash' => __( 'No Donations found in Trash', 'give' ),
 		'parent_item_colon'  => '',
-		'menu_name'          => __( 'Payment History', 'give' )
+		'menu_name'          => __( 'Donation History', 'give' )
 	);
 
 	$payment_args = array(

@@ -82,12 +82,13 @@ if ( ! class_exists( 'Give' ) ) : /**
 				add_action( 'plugins_loaded', array( self::$instance, 'load_textdomain' ) );
 
 				self::$instance->includes();
-				self::$instance->give_settings = new Give_Plugin_Settings();
-				self::$instance->customers     = new Give_DB_Customers();
-				self::$instance->session       = new Give_Session();
-				self::$instance->html          = new Give_HTML_Elements();
-				self::$instance->emails        = new Give_Emails();
-				self::$instance->email_tags    = new Give_Email_Template_Tags();
+				self::$instance->give_settings      = new Give_Plugin_Settings();
+				self::$instance->customers          = new Give_DB_Customers();
+				self::$instance->session            = new Give_Session();
+				self::$instance->html               = new Give_HTML_Elements();
+				self::$instance->emails             = new Give_Emails();
+				self::$instance->email_tags         = new Give_Email_Template_Tags();
+				self::$instance->donators_gravatars = new Give_Donators_Gravatars();
 
 			}
 
@@ -201,6 +202,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/actions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/class-payment-stats.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/class-payments-query.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/payments/class-donators-gravatars.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/actions.php';
@@ -212,8 +214,6 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/template.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/actions.php';
-
-
 
 
 			if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {

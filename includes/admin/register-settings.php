@@ -90,11 +90,10 @@ class Give_Plugin_Settings {
 	 */
 	public function give_get_settings_tabs() {
 
-		//		$settings = give_get_registered_settings();
-
 		$tabs             = array();
 		$tabs['general']  = __( 'General', 'give' );
 		$tabs['gateways'] = __( 'Payment Gateways', 'give' );
+		$tabs['display']  = __( 'Display Options', 'give' );
 		$tabs['emails']   = __( 'Emails', 'give' );
 
 		if ( ! empty( $settings['extensions'] ) ) {
@@ -105,9 +104,6 @@ class Give_Plugin_Settings {
 		}
 
 		$tabs['system_info'] = __( 'System Info', 'give' );
-
-		//
-		//		$tabs['misc'] = __( 'Misc', 'give' );
 
 		return apply_filters( 'give_settings_tabs', $tabs );
 	}
@@ -316,6 +312,14 @@ class Give_Plugin_Settings {
 					)
 				)
 			),
+			/** Display Settings */
+			'display'  => array(
+				'id'         => 'options_page',
+				'give_title' => __( 'Display Settings', 'give' ),
+				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
+				'fields'     => apply_filters( 'give_settings_display', array()
+				)
+			),
 			/**
 			 * Emails Options
 			 */
@@ -492,6 +496,7 @@ function give_get_option( $key = '', $default = false ) {
 	global $give_options;
 	$value = ! empty( $give_options[ $key ] ) ? $give_options[ $key ] : $default;
 	$value = apply_filters( 'give_get_option', $value, $key, $default );
+
 	return apply_filters( 'give_get_option_' . $key, $value, $key, $default );
 }
 
