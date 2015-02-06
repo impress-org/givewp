@@ -155,6 +155,89 @@ function give_setup_post_types() {
 
 add_action( 'init', 'give_setup_post_types', 1 );
 
+
+/**
+ * Give Setup Taxonomies
+ *
+ * @description: Registers the custom taxonomies for the downloads custom post type
+ *
+ * @since      1.0
+ * @return void
+ */
+function give_setup_taxonomies() {
+
+	$slug = defined( 'GIVE_FORMS_SLUG' ) ? GIVE_FORMS_SLUG : 'donations';
+
+	/** Categories */
+	$category_labels = array(
+		'name'              => sprintf( _x( '%s Categories', 'taxonomy general name', 'give' ), give_get_forms_label_singular() ),
+		'singular_name'     => _x( 'Category', 'taxonomy singular name', 'give' ),
+		'search_items'      => __( 'Search Categories', 'give' ),
+		'all_items'         => __( 'All Categories', 'give' ),
+		'parent_item'       => __( 'Parent Category', 'give' ),
+		'parent_item_colon' => __( 'Parent Category:', 'give' ),
+		'edit_item'         => __( 'Edit Category', 'give' ),
+		'update_item'       => __( 'Update Category', 'give' ),
+		'add_new_item'      => sprintf( __( 'Add New %s Category', 'give' ), give_get_forms_label_singular() ),
+		'new_item_name'     => __( 'New Category Name', 'give' ),
+		'menu_name'         => __( 'Categories', 'give' ),
+	);
+
+	$category_args = apply_filters( 'give_forms_category_args', array(
+			'hierarchical' => true,
+			'labels'       => apply_filters( 'give_forms_category_labels', $category_labels ),
+			'show_ui'      => true,
+			'query_var'    => 'give_forms_category',
+			'rewrite'      => array( 'slug' => $slug . '/category', 'with_front' => false, 'hierarchical' => true ),
+			'capabilities' => array(
+				'manage_terms' => 'manage_product_terms',
+				'edit_terms'   => 'edit_product_terms',
+				'assign_terms' => 'assign_product_terms',
+				'delete_terms' => 'delete_product_terms'
+			)
+		)
+	);
+	register_taxonomy( 'give_forms_category', array( 'give_forms' ), $category_args );
+	register_taxonomy_for_object_type( 'give_forms_category', 'give_forms' );
+
+	/** Tags */
+	$tag_labels = array(
+		'name'                  => sprintf( _x( '%s Tags', 'taxonomy general name', 'give' ), give_get_forms_label_singular() ),
+		'singular_name'         => _x( 'Tag', 'taxonomy singular name', 'give' ),
+		'search_items'          => __( 'Search Tags', 'give' ),
+		'all_items'             => __( 'All Tags', 'give' ),
+		'parent_item'           => __( 'Parent Tag', 'give' ),
+		'parent_item_colon'     => __( 'Parent Tag:', 'give' ),
+		'edit_item'             => __( 'Edit Tag', 'give' ),
+		'update_item'           => __( 'Update Tag', 'give' ),
+		'add_new_item'          => __( 'Add New Tag', 'give' ),
+		'new_item_name'         => __( 'New Tag Name', 'give' ),
+		'menu_name'             => __( 'Tags', 'give' ),
+		'choose_from_most_used' => sprintf( __( 'Choose from most used %s tags', 'give' ), give_get_forms_label_singular() ),
+	);
+
+	$tag_args = apply_filters( 'give_forms_tag_args', array(
+			'hierarchical' => false,
+			'labels'       => apply_filters( 'give_forms_tag_labels', $tag_labels ),
+			'show_ui'      => true,
+			'query_var'    => 'give_forms_tag',
+			'rewrite'      => array( 'slug' => $slug . '/tag', 'with_front' => false, 'hierarchical' => true ),
+			'capabilities' => array(
+				'manage_terms' => 'manage_product_terms',
+				'edit_terms'   => 'edit_product_terms',
+				'assign_terms' => 'assign_product_terms',
+				'delete_terms' => 'delete_product_terms'
+			)
+
+		)
+	);
+	register_taxonomy( 'give_forms_tag', array( 'give_forms' ), $tag_args );
+	register_taxonomy_for_object_type( 'give_forms_tag', 'give_forms' );
+}
+
+add_action( 'init', 'give_setup_taxonomies', 0 );
+
+
 /**
  * Get Default Form Labels
  *

@@ -216,14 +216,14 @@ function give_microdata_wrapper( $content ) {
 		return $content;
 	}
 
-	if ( $post && $post->post_type == 'download' && is_singular() && is_main_query() ) {
+	if ( $post && $post->post_type == 'give_forms' && is_singular() && is_main_query() ) {
 		$content = apply_filters( 'give_microdata_wrapper', '<div itemscope itemtype="http://schema.org/Product" itemprop="description">' . $content . '</div>' );
 	}
 
 	return $content;
 }
 
-add_filter( 'the_content', 'give_microdata_wrapper', 10 );
+//add_filter( 'the_content', 'give_microdata_wrapper', 10 );
 
 /**
  * Adds Give Version to the <head> tag
@@ -363,6 +363,16 @@ if ( ! function_exists( 'give_get_sidebar' ) ) {
 
 
 /** Single Give Form ********************************************************/
+if ( ! function_exists( 'give_left_sidebar_pre_wrap' ) ) {
+	function give_left_sidebar_pre_wrap() {
+		echo apply_filters( 'give_left_sidebar_pre_wrap', '<div id="give-sidebar-left" class="give-sidebar give-single-form-sidebar-left">' );
+	}
+}
+if ( ! function_exists( 'give_left_sidebar_post_wrap' ) ) {
+	function give_left_sidebar_post_wrap() {
+		echo apply_filters( 'give_left_sidebar_post_wrap', '</div>' );
+	}
+}
 
 if ( ! function_exists( 'give_show_form_images' ) ) {
 

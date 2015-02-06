@@ -38,8 +38,8 @@ function give_get_donation_form( $args = array() ) {
 	}
 
 
-	$defaults = apply_filters( 'give_purchase_link_defaults', array(
-		'form_id' => $post_id,
+	$defaults = apply_filters( 'give_form_args_defaults', array(
+		'form_id' => $post_id
 	) );
 
 	$args = wp_parse_args( $args, $defaults );
@@ -63,17 +63,24 @@ function give_get_donation_form( $args = array() ) {
 		return false; // Product not published or user doesn't have permission to view drafts
 	}
 
-	ob_start(); ?>
+	$display_option = get_post_meta( $form->ID, '_give_payment_display', true );
 
-	<div id="give-form-<?php echo $post_id; ?>-wrap" class="give-form-wrap">
+	ob_start();
+
+	do_action( 'give_pre_form_output', $form->ID, $args );
+
+	?>
+
+	<div id="give-form-<?php echo $form->ID; ?>-wrap" class="give-form-wrap give-display-<?php echo $display_option; ?>">
 
 		<?php
 		if ( isset( $args['show_title'] ) && $args['show_title'] == true ) {
-			?>
 
-			<h2 class="give-form-title"><?php echo get_the_title( $post_id ); ?></h2>
+			echo apply_filters( 'give_form_title', '<h2  class="give-form-title">' . get_the_title( $post_id ) . '</h2>' );
 
-		<?php } ?>
+		} ?>
+
+		<?php do_action( 'give_pre_form', $form->ID, $args ); ?>
 
 		<form id="give-form-<?php echo $post_id; ?>" class="give-form give-form_<?php echo absint( $form->ID ); ?>" action="<?php echo $form_action; ?>" method="post">
 			<input type="hidden" name="give-form-id" value="<?php echo $form->ID; ?>" />
@@ -91,10 +98,14 @@ function give_get_donation_form( $args = array() ) {
 
 			?>
 
-
 		</form>
-		<!--end #<?php echo absint( $form->ID ); ?>--></div>
+
+		<?php do_action( 'give_post_form', $form->ID, $args ); ?>
+
+		<!--end #give-form-<?php echo absint( $form->ID ); ?>--></div>
 	<?php
+
+	do_action( 'give_post_form_output', $form->ID, $args );
 
 	$final_output = ob_get_clean();
 
@@ -331,6 +342,30 @@ function give_output_levels( $form_id ) {
 
 
 /**
+ * Display Reveal & Lightbox Button
+ *
+ * @description: Outputs a button to reveal form fields
+ *
+ * @param int $form_id
+ *
+ */
+function give_display_checkout_button( $form_id ) {
+
+	$display_option = get_post_meta( $form_id, '_give_payment_display', true );
+
+	//no btn for onpage
+	if($display_option === 'onpage') {
+		return;
+	}
+
+	$output         = '<button class="give-btn give-btn-' . $display_option . '">' . __( 'Donate Now', 'give' ) . '</button>';
+	echo apply_filters( 'give_display_checkout_button', $output );
+
+}
+
+add_action( 'give_after_donation_levels', 'give_display_checkout_button' );
+
+/**
  * Shows the User Info fields in the Personal Info box, more fields can be added
  * via the hooks provided.
  *
@@ -338,7 +373,7 @@ function give_output_levels( $form_id ) {
  * @param int $form_id
  * @return void
  */
-function give_user_info_fields($form_id) {
+function give_user_info_fields( $form_id ) {
 	if ( is_user_logged_in() ) :
 		$user_data = get_userdata( get_current_user_id() );
 	endif;
@@ -768,7 +803,7 @@ function give_get_login_fields() {
 		</p>
 
 		<p id="give-user-login-submit" class="give-clearfix">
-			<input type="submit" class="give-submit button <?php echo $color; ?>" name="give_login_submit" value="<?php _e( 'Login', 'give' ); ?>" />
+			<input type="submit" class="give-submit give-btn button <?php echo $color; ?>" name="give_login_submit" value="<?php _e( 'Login', 'give' ); ?>" />
 			<span class="give-loading-animation"></span>
 		</p>
 		<?php do_action( 'give_checkout_login_fields_after' ); ?>
@@ -835,8 +870,8 @@ add_action( 'give_payment_mode_select', 'give_payment_mode_select' );
 
 /**
  * Renders the Checkout Agree to Terms, this displays a checkbox for users to
- * agree the T&Cs set in the EDD Settings. This is only displayed if T&Cs are
- * set in the EDD Settings.
+ * agree the T&Cs set in the Give Settings. This is only displayed if T&Cs are
+ * set in the Give Settings.
  *
  * @since 1.0
  * @global $give_options Array of all the Give Options
@@ -979,6 +1014,45 @@ function give_agree_to_terms_js() {
 }
 
 add_action( 'give_checkout_form_top', 'give_agree_to_terms_js' );
+
+
+/**
+ * Adds Actions to Render Form Content
+ *
+ * @since 1.0
+ *
+ * @param int $form_id
+ *
+ * @return void
+ */
+function give_form_content( $form_id ) {
+	$content_option = get_post_meta( $form_id, '_give_content_option', true ); //value is action to output content
+	if ( $content_option !== 'none' ) {
+		//add action according to value
+		add_action( $content_option, 'give_form_display_content' );
+	}
+
+}
+
+add_action( 'give_pre_form_output', 'give_form_content', 10, 2 );
+
+/**
+ * Renders Post Form Content
+ *
+ * @description: Displays content for Give forms; fired by action from give_form_content
+ *
+ * @param int $form_id
+ *
+ * @return void
+ * @since      1.0
+ */
+function give_form_display_content( $form_id ) {
+
+	$content = wpautop( get_post_meta( $form_id, '_give_form_content', true ) );
+	$output  = '<div id="give-form-content-' . $form_id . '" class="give-form-content-wrap" >' . $content . '</div>';
+	echo apply_filters( 'give_form_content_output', $output );
+}
+
 
 /**
  * Renders the hidden Checkout fields

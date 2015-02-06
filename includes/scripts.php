@@ -38,6 +38,7 @@ function give_load_scripts() {
 	}
 
 	wp_enqueue_script( 'give-qtip', $js_dir . 'jquery.qtip' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+	wp_enqueue_script( 'give-magnific', $js_dir . 'give-magnific' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
 	wp_enqueue_script( 'give-checkout-global', $js_dir . 'give-checkout-global' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
 	wp_localize_script( 'give-checkout-global', 'give_global_vars', array(
 		'ajaxurl'           => give_get_ajax_url(),

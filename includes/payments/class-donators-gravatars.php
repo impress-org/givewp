@@ -140,10 +140,7 @@ class Give_Donators_Gravatars {
 		global $give_options;
 
 		$log_ids = $this->get_log_ids( $form_id );
-echo "<pre>";
-var_dump($form_id);
-var_dump($log_ids);
-echo "</pre>";
+
 		if ( $log_ids ) {
 
 			$payment_ids = array();
@@ -201,8 +198,8 @@ echo "</pre>";
 		// unique $payment_ids 
 		$payment_ids = $this->get_payment_ids( $form_id );
 
-//			var_dump( $payment_ids );
-//			 var_dump( $this->get_log_ids( get_the_ID() ) );
+		//			var_dump( $payment_ids );
+		//			 var_dump( $this->get_log_ids( get_the_ID() ) );
 
 		global $give_options;
 
@@ -221,24 +218,26 @@ echo "</pre>";
 
 		ob_start();
 
-		echo '<div class="give-purchase-gravatars">';
+		$output = '';
+		echo '<div id="give-purchase-gravatars">';
+
 
 		if ( isset ( $title ) ) {
 
 			if ( $title ) {
-				echo apply_filters( 'give_donators_gravatars_title', '<h2>' . esc_attr( $title ) . '</h2>' );
+				echo apply_filters( 'give_donators_gravatars_title', '<h3 class="give-gravatars-title">' . esc_attr( $title ) . '</h3>' );
 			} elseif ( isset( $give_options['give_donators_gravatars_heading'] ) ) {
-				echo apply_filters( 'give_donators_gravatars_title', '<h2>' . esc_attr( $give_options['give_donators_gravatars_heading'] ) . '</h2>' );
+				echo apply_filters( 'give_donators_gravatars_title', '<h3 class="give-gravatars-title">' . esc_attr( $give_options['give_donators_gravatars_heading'] ) . '</h2>' );
 			}
 
 		}
-
+		echo '<ul class="give-purchase-gravatars-list">';
 		$i = 0;
 
 		if ( $payment_ids ) {
 			foreach ( $payment_ids as $id ) {
 
-				// EDD saves a blank option even when the control is turned off, hence the extra check
+				// Give saves a blank option even when the control is turned off, hence the extra check
 				if ( isset( $give_options['give_donators_gravatars_maximum_number'] ) && '' != $give_options['give_donators_gravatars_maximum_number'] && $i == $give_options['give_donators_gravatars_maximum_number'] ) {
 					continue;
 				}
@@ -261,14 +260,19 @@ echo "</pre>";
 				// default image
 				$default_image = apply_filters( 'give_donators_gravatars_gravatar_default_image', false );
 
-				// show gravatar
-				echo get_avatar( $email, $size, $default_image, $name );
+				// assemble output
+				$output .= '<li>';
+
+				$output .= get_avatar( $email, $size, $default_image, $name );
+				$output .= '</li>';
 
 				$i ++;
 
 			} // end foreach
 		}
 
+		echo $output;
+		echo '</ul>';
 		echo '</div>';
 
 		return apply_filters( 'give_donators_gravatars', ob_get_clean() );
@@ -329,23 +333,24 @@ echo "</pre>";
 				'id'   => 'give_donators_gravatars_heading'
 			),
 			array(
-				'name' => __( 'Gravatar Size', 'give' ),
-				'desc' => __( 'The size of each Gravatar in pixels (512px maximum)', 'give' ),
-				'type' => 'text',
-				'id'   => 'give_donators_gravatars_gravatar_size',
-				'default'  => '48'
+				'name'    => __( 'Gravatar Size', 'give' ),
+				'desc'    => __( 'The size of each Gravatar in pixels (512px maximum)', 'give' ),
+				'type'    => 'text_small',
+				'id'      => 'give_donators_gravatars_gravatar_size',
+				'default' => '64'
 			),
 			array(
 				'name' => __( 'Minimum Unique Purchases Required', 'give' ),
 				'desc' => sprintf( __( 'The minimum number of unique purchases a %s must have before the Gravatars are shown. Leave blank for no minimum.', 'give' ), strtolower( give_get_forms_label_singular() ) ),
-				'type' => 'text',
+				'type' => 'text_small',
 				'id'   => 'give_donators_gravatars_min_purchases_required',
 			),
 			array(
-				'name' => __( 'Maximum Gravatars To Show', 'give' ),
-				'desc' => __( 'The maximum number of gravatars to show. Leave blank for no limit.', 'give' ),
-				'type' => 'text',
-				'id'   => 'give_donators_gravatars_maximum_number',
+				'name'    => __( 'Maximum Gravatars To Show', 'give' ),
+				'desc'    => __( 'The maximum number of gravatars to show. Leave blank for no limit.', 'give' ),
+				'type'    => 'text',
+				'id'      => 'give_donators_gravatars_maximum_number',
+				'default' => '20',
 			),
 			array(
 				'name' => __( 'Gravatar Visibility', 'give' ),

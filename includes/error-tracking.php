@@ -24,6 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 1.0
  * @uses  give_get_errors()
  * @uses  give_clear_errors()
+ * @param int $form_id
  * @return void
  */
 function give_print_errors($form_id) {
@@ -31,7 +32,7 @@ function give_print_errors($form_id) {
 	$errors = give_get_errors();
 
 	//Ensure errors show up on the appropriate form
-	if(isset($_POST['give-form-id']) && intval($_POST['give-form-id']) !== $form_id) {
+	if(!isset( $_POST['give_ajax'] ) && isset($_POST['give-form-id']) && intval($_POST['give-form-id']) !== $form_id) {
 		return;
 	}
 
@@ -104,9 +105,7 @@ function give_clear_errors() {
  *
  * @since 1.0
  * @uses  Give_Session::set()
- *
  * @param int $error_id ID of the error being set
- *
  * @return string
  */
 function give_unset_error( $error_id ) {
@@ -120,7 +119,6 @@ function give_unset_error( $error_id ) {
 /**
  * Register die handler for give_die()
  *
- * @author Sunny Ratilal
  * @since  1.0
  * @return void
  */
@@ -137,7 +135,6 @@ function _give_die_handler() {
  * kills execution of the script using wp_die(). This allows us to then to work
  * with functions using give_die() in the unit tests.
  *
- * @author Sunny Ratilal
  * @since  1.0
  * @return void
  */

@@ -41,8 +41,10 @@ class Give_Template_Loader {
 		 * @see give_show_product_images()
 		 * @see give_show_avatars()
 		 */
+		add_action( 'give_before_single_form_summary', 'give_left_sidebar_pre_wrap', 5 );
 		add_action( 'give_before_single_form_summary', 'give_show_form_images', 10 );
 		add_action( 'give_before_single_form_summary', 'give_show_avatars', 15 );
+		add_action( 'give_before_single_form_summary', 'give_left_sidebar_post_wrap', 20 );
 
 
 		/**

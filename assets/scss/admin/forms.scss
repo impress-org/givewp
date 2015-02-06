@@ -13,7 +13,7 @@ Forms CPT
 
 /* Hide conditional fields */
 
-.cmb2-id--give-set-price, .cmb2-id--give-levels-header, .cmb2-id--give-levels-header + .cmb-repeat-group-wrap, .cmb2-id--give-display-style, .post-type-give_forms .tablenav #post-query-submit, .give-hidden {
+.cmb2-id--give-set-price, .cmb2-id--give-levels-header, .cmb2-id--give-levels-header + .cmb-repeat-group-wrap, .cmb2-id--give-display-style, .post-type-give_forms .tablenav #post-query-submit, .give-hidden, .cmb2-id--give-form-content {
   display: none;
 }
 
@@ -208,6 +208,49 @@ p.give-level-id {
 	margin-top: 5px;
   }
 
+}
+
+/*-------------------------------------
+Publish Metabox
+-------------------------------------*/
+
+/*Shortcode Input */
+
+.shortcode-wrap {
+  margin: 1px 14px 12px 11px;
+
+  label {
+	margin: 0 0 3px;
+	display: block;
+	cursor: default;
+  }
+
+  .shortcode-input {
+	margin: 0;
+	width: 100%;
+  }
+}
+
+/*-------------------------------------
+Content Options
+-------------------------------------*/
+
+#cmb2-metabox-form_content_options .cmb-type-wysiwyg .cmb-th {
+  display: none;
+  width: 0%;
+}
+
+#cmb2-metabox-form_content_options .cmb-type-wysiwyg .cmb-td {
+  width: 100%;
+}
+
+.cmb2-id--give-content-option {
+  border-bottom: none !important;
+  margin: 0;
+}
+
+.cmb2-id--give-form-content {
+  border-top: 1px solid #e9e9e9 !important;
 }
 
 /*-------------------------------------

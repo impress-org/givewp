@@ -83,59 +83,6 @@ add_shortcode( 'give_form', 'give_form_shortcode' );
 
 
 /**
- * Show Avatars
- *
- * Show Giver avatars.
- *
- * @since 1.0
- *
- * @return string
- */
-function give_avatars_shortcode( $atts ) {
-	$atts = shortcode_atts( array(
-		'id'       => '35',
-		'number'   => '20',
-		'tooltips' => true,
-		'size'     => '64px',
-	), $atts, 'give_avatars' );
-
-
-	//Args to pass to the query
-	$args = array(
-		'output'     => 'payments',
-		'status'     => 'publish',
-//		'orderby'    => 'ID',
-//		'number'     => $atts['number'],
-		'give_forms' => 35,
-	);
-
-
-	$p_query = new Give_Payments_Query( $args );
-	$payments = $p_query->get_payments();
-
-	// The Query
-	?>
-	<!--	<ul>-->
-	<!--	--><?php //// The Loop
-	//	if ( $wp_query->have_posts() ) : while ( $wp_query->have_posts() ) :
-	//		$wp_query->the_post();
-	?>
-	<!---->
-	<!---->
-	<!--		<li><img src="" title=""></li>-->
-	<!---->
-	<!--	--><?php //endwhile; ?>
-	<!--		</ul>-->
-	<!--	--><?php //endif; ?>
-
-	<?php //$output = ob_end_clean();
-
-	//return apply_filters( 'give_avatars', $output, $atts );
-}
-
-add_shortcode( 'give_avatars', 'give_avatars_shortcode' );
-
-/**
  * Login Shortcode
  *
  * Shows a login form allowing users to users to log in. This function simply
@@ -165,7 +112,7 @@ add_shortcode( 'give_login', 'give_login_form_shortcode' );
  *
  * Shows a registration form allowing users to users to register for the site
  *
- * @since 2.0
+ * @since 1.0
  *
  * @param array  $atts Shortcode attributes
  * @param string $content
@@ -270,8 +217,6 @@ add_shortcode( 'give_receipt', 'give_receipt_shortcode' );
  * templating system is used.
  *
  * @since  1.0
- *
- * @author Sunny Ratilal
  *
  * @param      $atts Shortcode attributes
  * @param null $content

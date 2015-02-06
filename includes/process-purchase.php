@@ -35,7 +35,7 @@ function give_process_purchase_form() {
 
 	// Process the login form
 	if ( isset( $_POST['give_login_submit'] ) ) {
-		give_process_purchase_login();
+		give_process_form_login();
 	}
 
 	// Validate the user
@@ -106,7 +106,7 @@ function give_process_purchase_form() {
 	// Make sure credit card numbers are never stored in sessions
 	unset( $session_data['card_info']['card_number'] );
 
-	// Used for showing download links to non logged-in users after purchase, and for other plugins needing purchase data.
+	// Used for showing data to non logged-in users after purchase, and for other plugins needing purchase data.
 	give_set_purchase_session( $session_data );
 
 	// Send info to the gateway for payment processing

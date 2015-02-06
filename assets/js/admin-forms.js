@@ -83,6 +83,19 @@ jQuery.noConflict();
 		} ).change();
 
 
+		//Content Option
+		var content_option = $( '#_give_content_option' );
+
+		content_option.on( 'change', function () {
+
+			var content_option_val = $( '#_give_content_option' ).val();
+			if ( content_option_val !== 'none' ) {
+				$( '.cmb2-id--give-form-content' ).show();
+			} else {
+				$( '.cmb2-id--give-form-content' ).hide();
+			}
+		} ).change();
+
 	};
 
 	//Handle Repeatable Row ID

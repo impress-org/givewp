@@ -15,20 +15,24 @@ Layout
 }
 
 [id*='give-form'] {
-  h1.give-form-title {
+
+  .give-form-title {
 	margin: 0 0 15px;
   }
 
-  div.images {
+  div#give-sidebar-left {
 	width: 38%;
 	float: left;
   }
 
-  div.images img {
-	display: block;
-	width: 100%;
-	height: auto;
-	box-shadow: none;
+  div.images {
+	margin: 0 0 15px;
+	img {
+	  display: block;
+	  width: 100%;
+	  height: auto;
+	  box-shadow: none;
+	}
   }
 
   div.summary {
@@ -40,6 +44,44 @@ Layout
 	color: #000;
   }
 
+  div.give-form-content-wrap {
+	margin: 0 0 20px;
+  }
+
+  &.give-display-reveal, &.give-display-modal {
+	.give-btn {
+	  margin: 0 0 15px;
+	}
+	#give-payment-mode-select, #give_purchase_form_wrap {
+	  display: none;
+	}
+  }
+
+}
+
+div.give-form-wrap.mfp-hide {
+  display: block !important;
+}
+
+/*------------------------------------
+Gravatar List
+--------------------------------------*/
+#give-purchase-gravatars {
+
+  .give-gravatars-title {
+	margin: 0 0 15px;
+  }
+
+  .give-purchase-gravatars-list {
+	list-style: none;
+	li {
+	  list-style-type: none;
+	  display: inline-block;
+	  margin: 0 5px 0 0;
+	  padding: 0;
+	}
+
+  }
 }
 
 /*------------------------------------
@@ -270,7 +312,7 @@ Radio Lists
 -----------------------------------*/
 #give-donation-level-radio-list {
   //this is the radio list for the various user set donation levels
-  margin: 0;
+  margin: 0 0 15px;
   padding: 0;
   list-style: none;
 

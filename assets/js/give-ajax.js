@@ -27,7 +27,6 @@ jQuery( document ).ready( function ( $ ) {
 		register_loading_img.show();
 
 		$.post( give_scripts.ajaxurl, data, function ( checkout_response ) {
-			console.log( checkout_response );
 			$( this_form ).find( '#give_checkout_login_register' ).html( '' ).html( checkout_response );
 
 		} ).done( function () {
@@ -37,6 +36,7 @@ jQuery( document ).ready( function ( $ ) {
 		} );
 		return false;
 	} );
+
 
 	// Process the login form via ajax
 	$( document ).on( 'click', '#give-user-login-submit input[type=submit]', function ( e ) {
@@ -107,7 +107,7 @@ jQuery( document ).ready( function ( $ ) {
 		var give_purchase_form = this_form.get( 0 );
 
 		//check validity
-		if ( typeof give_purchase_form.checkValidity === "function" && false === give_purchase_form.checkValidity() ) {
+		if ( typeof give_purchase_form.checkValidity === "function" && give_purchase_form.checkValidity() === false ) {
 			return;
 		}
 
@@ -122,7 +122,7 @@ jQuery( document ).ready( function ( $ ) {
 
 		//Submit form via AJAX
 		$.post( give_global_vars.ajaxurl, this_form.serialize() + '&action=give_process_checkout&give_ajax=true', function ( data ) {
-
+			console.log(  data  );
 			if ( $.trim( data ) == 'success' ) {
 				//Remove any errors
 				this_form.find( '.give_errors' ).remove();

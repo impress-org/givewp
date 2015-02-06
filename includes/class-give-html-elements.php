@@ -153,6 +153,34 @@ class Give_HTML_Elements {
 
 
 	/**
+	 * Renders an HTML Dropdown of all the Categories
+	 *
+	 * @access public
+	 * @since 1.0
+	 * @param string $name Name attribute of the dropdown
+	 * @param int    $selected Category to select automatically
+	 * @return string $output Category dropdown
+	 */
+	public function category_dropdown( $name = 'give_forms_categories', $selected = 0 ) {
+		$categories = get_terms( 'give_forms_category', apply_filters( 'give_forms_category_dropdown', array() ) );
+		$options    = array();
+
+		foreach ( $categories as $category ) {
+			$options[ absint( $category->term_id ) ] = esc_html( $category->name );
+		}
+
+		$output = $this->select( array(
+			'name'             => $name,
+			'selected'         => $selected,
+			'options'          => $options,
+			'show_option_all'  => __( 'All Categories', 'edd' ),
+			'show_option_none' => false
+		) );
+
+		return $output;
+	}
+
+	/**
 	 * Renders an HTML Dropdown of years
 	 *
 	 * @access public
@@ -185,6 +213,8 @@ class Give_HTML_Elements {
 
 		return $output;
 	}
+
+
 
 	/**
 	 * Renders an HTML Dropdown of months

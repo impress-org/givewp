@@ -236,7 +236,7 @@ function give_reports_graph() {
  * @since 1.0
  * @return void
  */
-function give_reports_graph_of_download( $form_id = 0 ) {
+function give_reports_graph_of_form( $form_id = 0 ) {
 	// Retrieve the queried dates
 	$dates = give_get_report_dates();
 
@@ -427,9 +427,9 @@ function give_reports_graph_of_download( $form_id = 0 ) {
 						echo $sales_totals; ?></strong></p>
 
 				<p class="give_graph_totals">
-					<strong><?php printf( __( 'Average monthly earnings: %s', 'give' ), give_currency_filter( give_format_amount( give_get_average_monthly_download_earnings( $form_id ) ) ) ); ?>
+					<strong><?php printf( __( 'Average monthly earnings: %s', 'give' ), give_currency_filter( give_format_amount( give_get_average_monthly_form_earnings( $form_id ) ) ) ); ?>
 						<p class="give_graph_totals">
-							<strong><?php printf( __( 'Average monthly sales: %s', 'give' ), number_format( give_get_average_monthly_download_sales( $form_id ), 0 ) ); ?>
+							<strong><?php printf( __( 'Average monthly sales: %s', 'give' ), number_format( give_get_average_monthly_form_sales( $form_id ), 0 ) ); ?>
 			</div>
 		</div>
 	</div>

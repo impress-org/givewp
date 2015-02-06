@@ -2,7 +2,7 @@
 /**
  * Single Form Featured Image
  *
- * @author        WooThemes
+ * @author        WordImpress
  * @package       Give/Templates
  * @version       1.0
  */
@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 global $post;
-
+do_action( 'give_pre_featured_thumbnail' );
 ?>
 <div class="images">
 
@@ -33,5 +33,6 @@ global $post;
 
 	}
 	?>
-
 </div>
+
+<?php do_action( 'give_post_featured_thumbnail' ); ?>
