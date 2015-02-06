@@ -205,7 +205,7 @@ function give_reports_graph() {
 					<p class="give_graph_totals"><strong><?php _e( 'Total earnings for period shown: ', 'give' );
 							echo give_currency_filter( give_format_amount( $earnings_totals ) ); ?></strong></p>
 
-					<p class="give_graph_totals"><strong><?php _e( 'Total sales for period shown: ', 'give' );
+					<p class="give_graph_totals"><strong><?php _e( 'Total donations for period shown: ', 'give' );
 							echo give_format_amount( $sales_totals, false ); ?></strong></p>
 
 					<?php if ( 'this_month' == $dates['range'] ) : ?>
@@ -423,7 +423,7 @@ function give_reports_graph_of_download( $form_id = 0 ) {
 				<p class="give_graph_totals"><strong><?php _e( 'Total earnings for period shown: ', 'give' );
 						echo give_currency_filter( give_format_amount( $earnings_totals ) ); ?></strong></p>
 
-				<p class="give_graph_totals"><strong><?php _e( 'Total sales for period shown: ', 'give' );
+				<p class="give_graph_totals"><strong><?php _e( 'Total donations for period shown: ', 'give' );
 						echo $sales_totals; ?></strong></p>
 
 				<p class="give_graph_totals">
@@ -473,7 +473,7 @@ function give_reports_graph_controls() {
 		<div class="tablenav top">
 			<div class="alignleft actions">
 
-				<input type="hidden" name="post_type" value="download" />
+				<input type="hidden" name="post_type" value="give_forms" />
 				<input type="hidden" name="page" value="give-reports" />
 				<input type="hidden" name="view" value="<?php echo esc_attr( $view ); ?>" />
 

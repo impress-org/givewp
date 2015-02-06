@@ -9,7 +9,9 @@
  */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 // Load WP_List_Table if not loaded
 if ( ! class_exists( 'WP_List_Table' ) ) {
@@ -21,13 +23,13 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
  *
  * Renders the sales log list table
  *
- * @since 1.4
+ * @since 1.0
  */
 class Give_Sales_Log_Table extends WP_List_Table {
 	/**
 	 * Number of results to show per page
 	 *
-	 * @since 1.4
+	 * @since 1.0
 	 * @var int
 	 */
 	public $per_page = 30;
@@ -35,48 +37,48 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	/**
 	 * Get things started
 	 *
-	 * @since 1.4
-	 * @see WP_List_Table::__construct()
+	 * @since 1.0
+	 * @see   WP_List_Table::__construct()
 	 */
 	public function __construct() {
 		global $status, $page;
 
 		// Set parent defaults
 		parent::__construct( array(
-			'singular'  => give_get_forms_label_singular(),    // Singular name of the listed records
-			'plural'    => give_get_forms_label_plural(),    	// Plural name of the listed records
-			'ajax'      => false             			// Does this table support ajax?
+			'singular' => give_get_forms_label_singular(),    // Singular name of the listed records
+			'plural'   => give_get_forms_label_plural(),        // Plural name of the listed records
+			'ajax'     => false                        // Does this table support ajax?
 		) );
 
-		add_action( 'give_log_view_actions', array( $this, 'downloads_filter' ) );
+		add_action( 'give_log_view_actions', array( $this, 'give_forms_filter' ) );
 	}
 
 	/**
 	 * This function renders most of the columns in the list table.
 	 *
 	 * @access public
-	 * @since 1.4
+	 * @since  1.0
 	 *
-	 * @param array $item Contains all the data of the discount code
+	 * @param array  $item        Contains all the data of the discount code
 	 * @param string $column_name The name of the column
 	 *
 	 * @return string Column Name
 	 */
 	public function column_default( $item, $column_name ) {
-		switch ( $column_name ){
-			case 'download' :
-				return '<a href="' . add_query_arg( 'download', $item[ $column_name ] ) . '" >' . get_the_title( $item[ $column_name ] ) . '</a>';
+		switch ( $column_name ) {
+			case 'give_form' :
+				return '<a href="' . add_query_arg( 'give_forms', $item[ $column_name ] ) . '" >' . get_the_title( $item[ $column_name ] ) . '</a>';
 
 			case 'user_id' :
 				return '<a href="' .
-					admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( $item['user_id'] ) ) .
-					 '">' . $item[ 'user_name' ] . '</a>';
+				       admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( $item['user_id'] ) ) .
+				       '">' . $item['user_name'] . '</a>';
 
 			case 'amount' :
 				return give_currency_filter( give_format_amount( $item['amount'] ) );
 
 			case 'payment_id' :
-				return '<a href="' . admin_url( 'edit.php?post_type=download&page=give-payment-history&view=view-order-details&id=' . $item[ 'payment_id' ] ) . '">' . give_get_payment_number( $item[ 'payment_id' ] ) . '</a>';
+				return '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $item['payment_id'] ) . '">' . give_get_payment_number( $item['payment_id'] ) . '</a>';
 
 			default:
 				return $item[ $column_name ];
@@ -87,17 +89,17 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 * Retrieve the table columns
 	 *
 	 * @access public
-	 * @since 1.4
+	 * @since  1.0
 	 * @return array $columns Array of all the list table columns
 	 */
 	public function get_columns() {
 		$columns = array(
-			'ID'		=> __( 'Log ID', 'edd' ),
-			'user_id'  	=> __( 'User', 'edd' ),
-			'download'  => give_get_label_singular(),
-			'amount'    => __( 'Item Amount', 'edd' ),
-			'payment_id'=> __( 'Payment ID', 'edd' ),
-			'date'  	=> __( 'Date', 'edd' )
+			'ID'         => __( 'Log ID', 'give' ),
+			'user_id'    => __( 'User', 'give' ),
+			'give_form'  => give_get_forms_label_singular(),
+			'amount'     => __( 'Item Amount', 'give' ),
+			'payment_id' => __( 'Payment ID', 'give' ),
+			'date'       => __( 'Date', 'give' )
 		);
 
 		return $columns;
@@ -107,7 +109,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 * Retrieve the current page number
 	 *
 	 * @access public
-	 * @since 1.4
+	 * @since  1.0
 	 * @return int Current page number
 	 */
 	public function get_paged() {
@@ -118,7 +120,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 * Retrieves the user we are filtering logs by, if any
 	 *
 	 * @access public
-	 * @since 1.4
+	 * @since  1.0
 	 * @return mixed int If User ID, string If Email/Login
 	 */
 	public function get_filtered_user() {
@@ -126,21 +128,21 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Retrieves the ID of the download we're filtering logs by
+	 * Retrieves the ID of the give_form we're filtering logs by
 	 *
 	 * @access public
-	 * @since 1.4
+	 * @since  1.0
 	 * @return int Download ID
 	 */
-	public function get_filtered_download() {
-		return ! empty( $_GET['download'] ) ? absint( $_GET['download'] ) : false;
+	public function get_filtered_give_form() {
+		return ! empty( $_GET['give_form'] ) ? absint( $_GET['give_form'] ) : false;
 	}
 
 	/**
 	 * Retrieves the search query string
 	 *
 	 * @access public
-	 * @since 1.4
+	 * @since  1.0
 	 * @return mixed string If search is present, false otherwise
 	 */
 	public function get_search() {
@@ -150,10 +152,10 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	/**
 	 * Gets the meta query for the log query
 	 *
-	 * This is used to return log entries that match our search query, user query, or download query
+	 * This is used to return log entries that match our search query, user query, or form query
 	 *
 	 * @access public
-	 * @since 1.4
+	 * @since  1.0
 	 * @return array $meta_query
 	 */
 	public function get_meta_query() {
@@ -161,7 +163,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 
 		$meta_query = array();
 
-		if( $user ) {
+		if ( $user ) {
 			// Show only logs from a specific user
 			$meta_query[] = array(
 				'key'   => '_give_log_user_id',
@@ -177,7 +179,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 				$compare = 'LIKE';
 			} else {
 				// Look for a user
-				$key = '_give_log_user_id';
+				$key     = '_give_log_user_id';
 				$compare = 'LIKE';
 
 				if ( ! is_numeric( $search ) ) {
@@ -223,7 +225,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 * Outputs the log views
 	 *
 	 * @access public
-	 * @since 1.4
+	 * @since  1.0
 	 * @return void
 	 */
 	function bulk_actions( $which = '' ) {
@@ -232,30 +234,30 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Sets up the downloads filter
+	 * Sets up the forms filter
 	 *
 	 * @access public
-	 * @since 1.4
+	 * @since  1.0
 	 * @return void
 	 */
-	public function downloads_filter() {
-		$downloads = get_posts( array(
-			'post_type'      => 'download',
-			'post_status'    => 'any',
-			'posts_per_page' => -1,
-			'orderby'        => 'title',
-			'order'          => 'ASC',
-			'fields'         => 'ids',
+	public function give_forms_filter() {
+		$give_forms = get_posts( array(
+			'post_type'              => 'give_forms',
+			'post_status'            => 'any',
+			'posts_per_page'         => - 1,
+			'orderby'                => 'title',
+			'order'                  => 'ASC',
+			'fields'                 => 'ids',
 			'update_post_meta_cache' => false,
 			'update_post_term_cache' => false
 		) );
 
-		if ( $downloads ) {
-			echo '<select name="download" id="give-log-download-filter">';
-				echo '<option value="0">' . __( 'All', 'edd' ) . '</option>';
-				foreach ( $downloads as $download ) {
-					echo '<option value="' . $download . '"' . selected( $download, $this->get_filtered_download() ) . '>' . esc_html( get_the_title( $download ) ) . '</option>';
-				}
+		if ( $give_forms ) {
+			echo '<select name="form" id="give-log-form-filter">';
+			echo '<option value="0">' . __( 'All', 'give' ) . '</option>';
+			foreach ( $give_forms as $form ) {
+				echo '<option value="' . $form . '"' . selected( $form, $this->get_filtered_give_form() ) . '>' . esc_html( get_the_title( $form ) ) . '</option>';
+			}
 			echo '</select>';
 		}
 	}
@@ -264,8 +266,8 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 * Gets the log entries for the current view
 	 *
 	 * @access public
-	 * @since 1.4
-	 * @global object $give_logs EDD Logs Object
+	 * @since  1.0
+	 * @global object $give_logs Give Logs Object
 	 * @return array $logs_data Array of all the Log entires
 	 */
 	public function get_logs() {
@@ -276,14 +278,14 @@ class Give_Sales_Log_Table extends WP_List_Table {
 
 		$logs_data = array();
 		$paged     = $this->get_paged();
-		$download  = empty( $_GET['s'] ) ? $this->get_filtered_download() : null;
-		$user      = $this-> get_filtered_user();
+		$give_form = empty( $_GET['s'] ) ? $this->get_filtered_give_form() : null;
+		$user      = $this->get_filtered_user();
 
 		$log_query = array(
-			'post_parent' => $download,
-			'log_type'    => 'sale',
-			'paged'       => $paged,
-			'meta_query'  => $this->get_meta_query()
+			'post__id'   => $give_form,
+			'log_type'   => 'sale',
+			'paged'      => $paged,
+			'meta_query' => $this->get_meta_query()
 		);
 
 		$logs = $give_logs->get_connected_logs( $log_query );
@@ -294,24 +296,20 @@ class Give_Sales_Log_Table extends WP_List_Table {
 
 				// Make sure this payment hasn't been deleted
 				if ( get_post( $payment_id ) ) :
-					$user_info  = give_get_payment_meta_user_info( $payment_id );
-					$cart_items = give_get_payment_meta_cart_details( $payment_id );
-					$amount     = 0;
-					if ( is_array( $cart_items ) && is_array( $user_info ) ) {
-						foreach ( $cart_items as $item ) {
-							$amount = isset( $item['item_price'] ) ? $item['item_price'] : $item['price'];
-						}
+					$user_info      = give_get_payment_meta_user_info( $payment_id );
+					$payment_meta   = give_get_payment_meta( $payment_id );
+					$payment_amount = give_get_payment_amount( $payment_id );
 
-						$logs_data[] = array(
-							'ID' 		=> $log->ID,
-							'payment_id'=> $payment_id,
-							'download'  => $log->post_parent,
-							'amount'    => $amount,
-							'user_id'	=> $user_info['id'],
-							'user_name'	=> $user_info['first_name'] . ' ' . $user_info['last_name'],
-							'date'		=> get_post_field( 'post_date', $payment_id )
-						);
-					}
+					$logs_data[] = array(
+						'ID'         => $log->ID,
+						'payment_id' => $payment_id,
+						'give_form'  => $log->post_parent,
+						'amount'     => $payment_amount,
+						'user_id'    => $user_info['id'],
+						'user_name'  => $user_info['first_name'] . ' ' . $user_info['last_name'],
+						'date'       => get_post_field( 'post_date', $payment_id )
+					);
+
 				endif;
 			}
 		}
@@ -323,13 +321,13 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 * Setup the final data for the table
 	 *
 	 * @access public
-	 * @since 1.4
+	 * @since  1.0
 	 * @global object $give_logs EDD Logs Object
-	 * @uses Give_Sales_Log_Table::get_columns()
-	 * @uses WP_List_Table::get_sortable_columns()
-	 * @uses Give_Sales_Log_Table::get_pagenum()
-	 * @uses Give_Sales_Log_Table::get_logs()
-	 * @uses Give_Sales_Log_Table::get_log_count()
+	 * @uses   Give_Sales_Log_Table::get_columns()
+	 * @uses   WP_List_Table::get_sortable_columns()
+	 * @uses   Give_Sales_Log_Table::get_pagenum()
+	 * @uses   Give_Sales_Log_Table::get_logs()
+	 * @uses   Give_Sales_Log_Table::get_log_count()
 	 * @return void
 	 */
 	public function prepare_items() {
@@ -341,12 +339,12 @@ class Give_Sales_Log_Table extends WP_List_Table {
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 		$current_page          = $this->get_pagenum();
 		$this->items           = $this->get_logs();
-		$total_items           = $give_logs->get_log_count( $this->get_filtered_download(), 'sale', $this->get_meta_query() );
+		$total_items           = $give_logs->get_log_count( $this->get_filtered_give_form(), 'sale', $this->get_meta_query() );
 
 		$this->set_pagination_args( array(
-				'total_items'  => $total_items,
-				'per_page'     => $this->per_page,
-				'total_pages'  => ceil( $total_items / $this->per_page )
+				'total_items' => $total_items,
+				'per_page'    => $this->per_page,
+				'total_pages' => ceil( $total_items / $this->per_page )
 			)
 		);
 	}

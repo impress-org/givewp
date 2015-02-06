@@ -22,21 +22,21 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
  * Renders the gateway errors list table
  *
  * @access      private
- * @since       1.4
+ * @since       1.0
  */
 class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	/**
 	 * Number of items per page
 	 *
 	 * @var int
-	 * @since 1.4
+	 * @since 1.0
 	 */
 	public $per_page = 30;
 
 	/**
 	 * Get things started
 	 *
-	 * @since 1.4
+	 * @since 1.0
 	 * @see WP_List_Table::__construct()
 	 */
 	public function __construct() {
@@ -54,7 +54,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 * This function renders most of the columns in the list table.
 	 *
 	 * @access public
-	 * @since 1.4
+	 * @since 1.0
 	 *
 	 * @param array $item Contains all the data of the discount code
 	 * @param string $column_name The name of the column
@@ -74,7 +74,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 * Output Error Message Column
 	 *
 	 * @access public
-	 * @since 1.4.4
+	 * @since 1.0
 	 * @param array $item Contains all the data of the log
 	 * @return void
 	 */
@@ -109,7 +109,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 * Retrieve the table columns
 	 *
 	 * @access public
-	 * @since 1.4
+	 * @since 1.0
 	 * @return array $columns Array of all the list table columns
 	 */
 	public function get_columns() {
@@ -129,7 +129,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 * Retrieve the current page number
 	 *
 	 * @access public
-	 * @since 1.4
+	 * @since 1.0
 	 * @return int Current page number
 	 */
 	public function get_paged() {
@@ -140,7 +140,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 * Outputs the log views
 	 *
 	 * @access public
-	 * @since 1.4
+	 * @since 1.0
 	 * @return void
 	 */
 	public function bulk_actions($which = '') {
@@ -152,7 +152,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 * Gets the log entries for the current view
 	 *
 	 * @access public
-	 * @since 1.4
+	 * @since 1.0
 	 * @global object $give_logs EDD Logs Object
 	 * @return array $logs_data Array of all the Log entires
 	 */
@@ -191,7 +191,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 * Setup the final data for the table
 	 *
 	 * @access public
-	 * @since 1.4
+	 * @since 1.0
 	 * @global object $give_logs EDD Logs Object
 	 * @uses Give_Gateway_Error_Log_Table::get_columns()
 	 * @uses WP_List_Table::get_sortable_columns()

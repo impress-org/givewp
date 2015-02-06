@@ -36,7 +36,7 @@ class Give_Donators_Gravatars {
 	 */
 	private function setup_actions() {
 		add_action( 'widgets_init', array( $this, 'register_widget' ) );
-		add_shortcode( 'give_purchase_gravatars', array( $this, 'shortcode' ) );
+		add_shortcode( 'give_donators_gravatars', array( $this, 'shortcode' ) );
 		add_filter( 'give_settings_display', array( $this, 'settings' ) );
 		do_action( 'give_donators_gravatars_setup_actions' );
 	}
@@ -113,7 +113,7 @@ class Give_Donators_Gravatars {
 		// get Give_Logging class
 		global $give_logs;
 
-		// get log for this download
+		// get log for this form
 		$logs = $give_logs->get_logs( $form_id );
 
 		if ( $logs ) {
@@ -140,7 +140,10 @@ class Give_Donators_Gravatars {
 		global $give_options;
 
 		$log_ids = $this->get_log_ids( $form_id );
-
+echo "<pre>";
+var_dump($form_id);
+var_dump($log_ids);
+echo "</pre>";
 		if ( $log_ids ) {
 
 			$payment_ids = array();
@@ -198,8 +201,8 @@ class Give_Donators_Gravatars {
 		// unique $payment_ids 
 		$payment_ids = $this->get_payment_ids( $form_id );
 
-		//	var_dump( $payment_ids );
-		//	 var_dump( $this->get_log_ids( get_the_ID() ) );
+//			var_dump( $payment_ids );
+//			 var_dump( $this->get_log_ids( get_the_ID() ) );
 
 		global $give_options;
 
@@ -294,8 +297,8 @@ class Give_Donators_Gravatars {
 			), $atts, 'give_donators_gravatars' )
 		);
 
-		// if no ID is passed on single download pags, get the correct ID
-		if ( is_singular( 'download' ) ) {
+		// if no ID is passed on single give_forms pages, get the correct ID
+		if ( is_singular( 'give_forms' ) ) {
 			$id = get_the_ID();
 		}
 
@@ -410,7 +413,7 @@ class Give_Donators_Gravatars_Widget extends WP_Widget {
 
 		extract( $args );
 
-		if ( ! is_singular( 'download' ) ) {
+		if ( ! is_singular( 'give_forms' ) ) {
 			return;
 		}
 

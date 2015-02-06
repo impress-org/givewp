@@ -1270,7 +1270,7 @@ function give_get_payment_fees( $payment_id = 0, $type = 'all' ) {
  *
  * @since  1.0
  *
- * @param int payment_id Payment ID
+ * @param int $payment_id Payment ID
  *
  * @return string The Transaction ID
  */
@@ -1294,8 +1294,8 @@ function give_get_payment_transaction_id( $payment_id = 0 ) {
  *
  * @since  1.0
  *
- * @param int    payment_id Payment ID
- * @param string transaction_id The transaciton ID from the gateway
+ * @param int    $payment_id Payment ID
+ * @param string $transaction_id The transaciton ID from the gateway
  */
 function give_set_payment_transaction_id( $payment_id = 0, $transaction_id = '' ) {
 

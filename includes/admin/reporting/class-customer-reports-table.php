@@ -119,10 +119,6 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 				$value = give_currency_filter( give_format_amount( $item[ $column_name ] ) );
 				break;
 
-			case 'file_downloads' :
-				$user = ! empty( $item['user_id'] ) ? $item['user_id'] : $item['email'];
-				$value = '<a href="' . esc_url( admin_url( '/edit.php?post_type=give_forms&page=give-reports&tab=logs&user=' . urlencode( $user ) ) ) . '">' . __( 'View download log', 'give' ) . '</a>';
-				break;
 			default:
 				$value = isset( $item[ $column_name ] ) ? $item[ $column_name ] : null;
 				break;
@@ -143,8 +139,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 			'id'     		=> __( 'ID', 'give' ),
 			'email'     	=> __( 'Email', 'give' ),
 			'num_purchases' => __( 'Purchases', 'give' ),
-			'amount_spent'  => __( 'Total Spent', 'give' ),
-			'file_downloads'=> __( 'Files Downloaded', 'give' )
+			'amount_spent'  => __( 'Total Spent', 'give' )
 		);
 
 		return apply_filters( 'give_report_customer_columns', $columns );

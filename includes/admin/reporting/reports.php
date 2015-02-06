@@ -68,8 +68,7 @@ function give_reports_default_views() {
 		'earnings'  => __( 'Earnings', 'give' ),
 		'forms'     => give_get_forms_label_plural(),
 		'customers' => __( 'Customers', 'give' ),
-		'gateways'  => __( 'Payment Methods', 'give' ),
-		'taxes'     => __( 'Taxes', 'give' )
+		'gateways'  => __( 'Payment Methods', 'give' )
 	);
 
 	$views = apply_filters( 'give_report_views', $views );
@@ -138,7 +137,7 @@ function give_report_views() {
 
 		<?php do_action( 'give_report_view_actions' ); ?>
 
-		<input type="hidden" name="post_type" value="download" />
+		<input type="hidden" name="post_type" value="give_forms" />
 		<input type="hidden" name="page" value="give-reports" />
 		<?php submit_button( __( 'Show', 'give' ), 'secondary', 'submit', false ); ?>
 	</form>
@@ -281,10 +280,10 @@ function give_reports_tab_export() {
 					<?php do_action( 'give_reports_tab_export_content_top' ); ?>
 
 					<div class="postbox give-export-pdf-sales-earnings">
-						<h3><span><?php _e( 'Export PDF of Sales and Earnings', 'give' ); ?></span></h3>
+						<h3><span><?php _e( 'Export PDF of Donations and Earnings', 'give' ); ?></span></h3>
 
 						<div class="inside">
-							<p><?php _e( 'Download a PDF of Sales and Earnings reports for all products for the current year.', 'give' ); ?></p>
+							<p><?php _e( 'Download a PDF of Donations and Earnings reports for all forms for the current year.', 'give' ); ?></p>
 
 							<p>
 								<a class="button" href="<?php echo wp_nonce_url( add_query_arg( array( 'give-action' => 'generate_pdf' ) ), 'give_generate_pdf' ); ?>"><?php _e( 'Generate PDF', 'give' ); ?></a>
@@ -295,7 +294,7 @@ function give_reports_tab_export() {
 					<!-- .postbox -->
 
 					<div class="postbox give-export-sales-earnings">
-						<h3><span><?php _e( 'Export Earnings and Sales Stats', 'give' ); ?></span></h3>
+						<h3><span><?php _e( 'Export Earnings and Donation Stats', 'give' ); ?></span></h3>
 
 						<div class="inside">
 							<p><?php _e( 'Download a CSV of earnings and sales over time.', 'give' ); ?></p>
@@ -406,7 +405,7 @@ add_action( 'give_reports_tab_export', 'give_reports_tab_export' );
 function give_reports_tab_logs() {
 	require( GIVE_PLUGIN_DIR . 'includes/admin/reporting/logs.php' );
 
-	$current_view = 'file_downloads';
+	$current_view = 'sales';
 	$log_views    = give_log_default_views();
 
 	if ( isset( $_GET['view'] ) && array_key_exists( $_GET['view'], $log_views ) ) {

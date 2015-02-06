@@ -37,8 +37,8 @@ function give_generate_pdf( $data ) {
 		wp_die( __( 'Nonce verification failed', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
-	require_once EDD_PLUGIN_DIR . '/includes/libraries/fpdf/fpdf.php';
-	require_once EDD_PLUGIN_DIR . '/includes/libraries/fpdf/give_pdf.php';
+	require_once GIVE_PLUGIN_DIR . '/includes/libraries/fpdf/fpdf.php';
+	require_once GIVE_PLUGIN_DIR . '/includes/libraries/fpdf/give_pdf.php';
 
 	$daterange = date_i18n( get_option( 'date_format' ), mktime( 0, 0, 0, 1, 1, date( 'Y' ) ) ) . ' ' . utf8_decode( __( 'to', 'give' ) ) . ' ' . date_i18n( get_option( 'date_format' ) );
 

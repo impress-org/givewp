@@ -37,14 +37,16 @@ function give_add_options_links() {
 	$give_payment       = get_post_type_object( 'give_payment' );
 	$give_payments_page = add_submenu_page( 'edit.php?post_type=give_forms', $give_payment->labels->name, $give_payment->labels->menu_name, 'edit_give_payments', 'give-payment-history', 'give_payment_history_page' );
 
+	//Reports
+	$give_reports_page = add_submenu_page( 'edit.php?post_type=give_forms', __( 'Donation Reports', 'give' ), __( 'Reports', 'edd' ), 'view_shop_reports', 'give-reports', 'give_reports_page' );
+
 	//Settings
 	$give_settings_page = add_submenu_page( 'edit.php?post_type=give_forms', __( 'Give Settings', 'give' ), __( 'Settings', 'give' ), 'manage_give_settings', 'give-settings', array(
 		Give()->give_settings,
 		'admin_page_display'
 	) );
 
-	//Reports
-	$give_reports_page = add_submenu_page( 'edit.php?post_type=give_forms', __( 'Donation Reports', 'give' ), __( 'Reports', 'edd' ), 'view_shop_reports', 'give-reports', 'give_reports_page' );
+
 
 
 }
