@@ -183,7 +183,8 @@ function give_purchase_form_validate_fields() {
 	);
 
 	// Validate agree to terms
-	if ( isset( $give_options['show_agree_to_terms'] ) ) {
+	$terms_option = get_post_meta( $_POST['give-form-id'], '_give_terms_option', true );
+	if ( isset( $terms_option ) && $terms_option === 'yes' ) {
 		give_purchase_form_validate_agree_to_terms();
 	}
 
@@ -219,7 +220,7 @@ function give_purchase_form_validate_fields() {
  */
 function give_purchase_form_validate_gateway() {
 
-	$gateway = give_get_default_gateway($_REQUEST['give-form-id']);
+	$gateway = give_get_default_gateway( $_REQUEST['give-form-id'] );
 
 	// Check if a gateway value is present
 	if ( ! empty( $_REQUEST['give-gateway'] ) ) {

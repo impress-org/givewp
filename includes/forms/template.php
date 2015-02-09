@@ -354,11 +354,11 @@ function give_display_checkout_button( $form_id ) {
 	$display_option = get_post_meta( $form_id, '_give_payment_display', true );
 
 	//no btn for onpage
-	if($display_option === 'onpage') {
+	if ( $display_option === 'onpage' ) {
 		return;
 	}
 
-	$output         = '<button class="give-btn give-btn-' . $display_option . '">' . __( 'Donate Now', 'give' ) . '</button>';
+	$output = '<button class="give-btn give-btn-' . $display_option . '">' . __( 'Donate Now', 'give' ) . '</button>';
 	echo apply_filters( 'give_display_checkout_button', $output );
 
 }
@@ -370,7 +370,9 @@ add_action( 'give_after_donation_levels', 'give_display_checkout_button' );
  * via the hooks provided.
  *
  * @since 1.0
+ *
  * @param int $form_id
+ *
  * @return void
  */
 function give_user_info_fields( $form_id ) {
@@ -874,18 +876,25 @@ add_action( 'give_payment_mode_select', 'give_payment_mode_select' );
  * set in the Give Settings.
  *
  * @since 1.0
- * @global $give_options Array of all the Give Options
+ * @global    $give_options Array of all the Give Options
+ *
+ * @param int $form_id
+ *
  * @return void
  */
-function give_terms_agreement() {
-	global $give_options;
-	if ( isset( $give_options['show_agree_to_terms'] ) ) {
+function give_terms_agreement( $form_id ) {
+
+	$form_option = get_post_meta( $form_id, '_give_terms_option', true );
+
+	if ( $form_option === 'yes' ) {
+		$label = get_post_meta( $form_id, '_give_agree_label', true );
+		$terms = get_post_meta( $form_id, '_give_agree_text', true );
 		?>
 		<fieldset id="give_terms_agreement">
 			<div id="give_terms" style="display:none;">
 				<?php
 				do_action( 'give_before_terms' );
-				echo wpautop( stripslashes( $give_options['agree_text'] ) );
+				echo wpautop( stripslashes( $terms ) );
 				do_action( 'give_after_terms' );
 				?>
 			</div>
@@ -893,14 +902,14 @@ function give_terms_agreement() {
 				<a href="#" class="give_terms_links"><?php _e( 'Show Terms', 'give' ); ?></a>
 				<a href="#" class="give_terms_links" style="display:none;"><?php _e( 'Hide Terms', 'give' ); ?></a>
 			</div>
-			<label for="give_agree_to_terms"><?php echo isset( $give_options['agree_label'] ) ? stripslashes( $give_options['agree_label'] ) : __( 'Agree to Terms?', 'give' ); ?></label>
+			<label for="give_agree_to_terms"><?php echo isset( $terms ) ? stripslashes( $label ) : __( 'Agree to Terms?', 'give' ); ?></label>
 			<input name="give_agree_to_terms" class="required" type="checkbox" id="give_agree_to_terms" value="1" />
 		</fieldset>
 	<?php
 	}
 }
 
-add_action( 'give_purchase_form_before_submit', 'give_terms_agreement' );
+add_action( 'give_purchase_form_before_submit', 'give_terms_agreement', 10, 1 );
 
 /**
  * Checkout Final Total
@@ -992,17 +1001,19 @@ function give_checkout_button_purchase() {
  *
  * @since 1.0
  * @global $give_options Array of all the EDD Options
+ * @param int $form_id
  * @return void
  */
-function give_agree_to_terms_js() {
-	global $give_options;
+function give_agree_to_terms_js( $form_id ) {
 
-	if ( isset( $give_options['show_agree_to_terms'] ) ) {
+	$form_option = get_post_meta( $form_id, '_give_terms_option', true );
+
+	if ( $form_option === 'yes' ) {
 		?>
 		<script type="text/javascript">
 			jQuery( document ).ready( function ( $ ) {
 				$( 'body' ).on( 'click', '.give_terms_links', function ( e ) {
-					//e.preventDefault();
+					e.preventDefault();
 					$( '#give_terms' ).slideToggle();
 					$( '.give_terms_links' ).toggle();
 					return false;
@@ -1013,7 +1024,7 @@ function give_agree_to_terms_js() {
 	}
 }
 
-add_action( 'give_checkout_form_top', 'give_agree_to_terms_js' );
+add_action( 'give_checkout_form_top', 'give_agree_to_terms_js', 10, 2 );
 
 
 /**

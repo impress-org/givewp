@@ -7,15 +7,17 @@
  * @copyright:   Copyright (c) 2014, WordImpress
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
+var give_scripts, give_global_vars;
 jQuery( document ).ready( function ( $ ) {
-	var $body = $( 'body' ),
-		$form = $( "#give_purchase_form" ),
-		$give_cart_amount = $( '.give_cart_amount' );
-
+	var $body = $( 'body' );
 	// Update state/province field on checkout page
 	$body.on( 'change', '#give_cc_address input.card_state, #give_cc_address select', function () {
-		var $this = $( this );
+		var $this = $( this ),
+			$form = $this.parents( "form" );
 		if ( 'card_state' != $this.attr( 'id' ) ) {
+
+			//Disable the State field until updated
+			$form.find( '#card_state' ).empty().append( '<option value="1">' + give_global_vars.general_loading + '</option>' ).prop( 'disabled', true );
 
 			// If the country field has changed, we need to update the state/province field
 			var postData = {
@@ -38,14 +40,12 @@ jQuery( document ).ready( function ( $ ) {
 					} else {
 						$form.find( 'input[name="card_state"], select[name="card_state"]' ).replaceWith( response );
 					}
-					$( 'body' ).trigger( 'give_cart_billing_address_updated', [response] );
+					$( 'body' ).trigger( 'give_checkout_billing_address_updated', [response] );
 				}
 			} ).fail( function ( data ) {
 				if ( window.console && window.console.log ) {
 					console.log( data );
 				}
-			} ).done( function ( data ) {
-
 			} );
 		}
 
@@ -59,9 +59,12 @@ jQuery( document ).ready( function ( $ ) {
 	} );
 
 	function give_validate_card( field ) {
-		var card_field = field;
+
+		var form = field.parents('form' ),
+			card_field = field;
+
 		card_field.validateCreditCard( function ( result ) {
-			var $card_type = $( '.card-type' );
+			var $card_type = form.find( '.card-type' );
 
 			if ( result.card_type == null ) {
 				$card_type.removeClass().addClass( 'off card-type' );

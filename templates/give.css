@@ -522,7 +522,7 @@ Layout
 [id*='give-form'] div.summary {
   width: 58%;
   float: right; }
-[id*='give-form'] .give_form select.edd-select.required {
+[id*='give-form'] .give_form select.give-select.required {
   color: #000; }
 [id*='give-form'] div.give-form-content-wrap {
   margin: 0 0 20px; }
@@ -584,7 +584,9 @@ form[id*='give-form'] {
       clear: both; }
     form[id*='give-form'] .form-row label {
       display: block;
-      margin: 0 0 5px; }
+      margin: 0 0 5px;
+      position: relative;
+      line-height: 1.7; }
       form[id*='give-form'] .form-row label.checkbox {
         display: inline; }
     form[id*='give-form'] .form-row select, form[id*='give-form'] .form-row textarea, form[id*='give-form'] .form-row input[type="text"], form[id*='give-form'] .form-row input[type="email"], form[id*='give-form'] .form-row input[type="password"] {
@@ -617,7 +619,11 @@ form[id*='give-form'] {
   form[id*='give-form'] .give-required-indicator {
     color: #a00; }
   form[id*='give-form'] .card-expiration > select {
-    width: 46%; }
+    width: 47%;
+    margin: 0; }
+  form[id*='give-form'] .card-expiration > span.exp-divider {
+    display: inline;
+    text-align: center; }
 
 /*---------------------------------
 Form Price & Amount
@@ -779,6 +785,44 @@ Buttons
     list-style-type: none;
     float: left;
     margin: 0 5px 5px 0; }
+
+.give_terms_links {
+  float: right; }
+
+/*---------------------------------
+CC Validation
+-----------------------------------*/
+#give_secure_site_wrapper {
+  padding: 4px 4px 4px 0;
+  font-weight: bold; }
+  #give_secure_site_wrapper span.padlock:before {
+    content: '\f160';
+    display: inline-block;
+    -webkit-font-smoothing: antialiased;
+    font: normal 20px/1 'dashicons';
+    vertical-align: top; }
+
+#give_purchase_form_wrap input.give-input.card-number.valid {
+  background-image: url('../assets/images/tick.png');
+  background-repeat: no-repeat;
+  background-position: 98% 50%; }
+#give_purchase_form_wrap span.card-type {
+  position: absolute;
+  top: -2px;
+  right: 0;
+  width: 37px;
+  height: 26px;
+  background-size: 37px 26px !important; }
+#give_purchase_form_wrap span.card-type.off {
+  display: none; }
+#give_purchase_form_wrap span.card-type.visa {
+  background: url('../assets/images/visa.png') no-repeat; }
+#give_purchase_form_wrap span.card-type.mastercard {
+  background: url('../assets/images/mastercard.png') no-repeat; }
+#give_purchase_form_wrap span.card-type.discover {
+  background: url('../assets/images/discover.png') no-repeat; }
+#give_purchase_form_wrap span.card-type.amex {
+  background: url('../assets/images/americanexpress.png') no-repeat; }
 
 /*---------------------------------
 Loading Animation

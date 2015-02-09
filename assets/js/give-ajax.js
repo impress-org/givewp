@@ -7,7 +7,7 @@
  * @copyright:   Copyright (c) 2014, WordImpress
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
-var give_scripts;
+var give_scripts, give_global_vars;
 jQuery( document ).ready( function ( $ ) {
 
 	//Run tooltips setup

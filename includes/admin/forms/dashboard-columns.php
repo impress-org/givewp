@@ -29,19 +29,20 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_form_columns( $give_form_columns ) {
 	$give_form_columns = array(
-		'cb'        => '<input type="checkbox"/>',
-		'title'     => __( 'Name', 'give' ),
-		//		'form_category' => __( 'Categories', 'give' ),
-		//		'form_tag'      => __( 'Tags', 'give' ),
-		'price'     => __( 'Price', 'give' ),
-		'sales'     => __( 'Donations', 'give' ),
-		'earnings'  => __( 'Earnings', 'give' ),
-		'shortcode' => __( 'Shortcode', 'give' ),
-		'date'      => __( 'Date', 'give' )
+		'cb'            => '<input type="checkbox"/>',
+		'title'         => __( 'Name', 'give' ),
+		'form_category' => __( 'Categories', 'give' ),
+		'form_tag'      => __( 'Tags', 'give' ),
+		'price'         => __( 'Price', 'give' ),
+		'donations'     => __( 'Donations', 'give' ),
+		'earnings'      => __( 'Earnings', 'give' ),
+		'shortcode'     => __( 'Shortcode', 'give' ),
+		'date'          => __( 'Date', 'give' )
 	);
 
 	return apply_filters( 'give_forms_columns', $give_form_columns );
 }
+
 add_filter( 'manage_edit-give_forms_columns', 'give_form_columns' );
 
 /**
@@ -65,6 +66,12 @@ function give_render_form_columns( $column_name, $post_id ) {
 		$purchase_text = ! empty( $give_options['add_to_cart_text'] ) ? $give_options['add_to_cart_text'] : __( 'Purchase', 'give' );
 
 		switch ( $column_name ) {
+			case 'form_category':
+				echo get_the_term_list( $post_id, 'give_forms_category', '', ', ', '' );
+				break;
+			case 'form_tag':
+				echo get_the_term_list( $post_id, 'give_forms_tag', '', ', ', '' );
+				break;
 			case 'price':
 				if ( give_has_variable_prices( $post_id ) ) {
 					echo give_price_range( $post_id );
@@ -73,21 +80,24 @@ function give_render_form_columns( $column_name, $post_id ) {
 					echo '<input type="hidden" class="formprice-' . $post_id . '" value="' . give_get_form_price( $post_id ) . '" />';
 				}
 				break;
-			case 'sales':
-				if ( current_user_can( 'view_product_stats', $post_id ) ) {
+			case 'donations':
+				if ( current_user_can( 'view_give_forms_stats', $post_id ) ) {
 					echo '<a href="' . esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=logs&view=sales&form=' . $post_id ) ) . '">';
-					//					echo give_get_form_sales_stats( $post_id );
+					echo give_get_form_sales_stats( $post_id );
 					echo '</a>';
 				} else {
 					echo '-';
 				}
 				break;
 			case 'earnings':
-				if ( current_user_can( 'view_product_stats', $post_id ) ) {
+				if ( current_user_can( 'view_give_forms_stats', $post_id ) ) {
 					echo '<a href="' . esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-reports&view=forms&form-id=' . $post_id ) ) . '">';
-					//					echo give_currency_filter( give_format_amount( give_get_form_earnings_stats( $post_id ) ) );
+					echo give_currency_filter( give_format_amount( give_get_form_earnings_stats( $post_id ) ) );
 					echo '</a>';
 				} else {
+					echo "<pre>";
+					var_dump( current_user_can( 'view_give_forms_stats', $post_id ) );
+					echo "</pre>";
 					echo '-';
 				}
 				break;

@@ -88,11 +88,23 @@ jQuery.noConflict();
 
 		content_option.on( 'change', function () {
 
-			var content_option_val = $( '#_give_content_option' ).val();
-			if ( content_option_val !== 'none' ) {
+			if ( content_option.val() !== 'none' ) {
 				$( '.cmb2-id--give-form-content' ).show();
 			} else {
 				$( '.cmb2-id--give-form-content' ).hide();
+			}
+		} ).change();
+
+		//Terms Option
+		var terms_option = $( '#_give_terms_option' );
+		terms_option.on( 'change', function () {
+
+			if ( terms_option.val() !== 'none' ) {
+				$( '.cmb2-id--give-agree-label' ).show();
+				$( '.cmb2-id--give-agree-text' ).show();
+			} else {
+				$( '.cmb2-id--give-agree-label' ).hide();
+				$( '.cmb2-id--give-agree-text' ).hide();
 			}
 		} ).change();
 

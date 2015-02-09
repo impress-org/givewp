@@ -46,9 +46,7 @@ function give_load_scripts() {
 		'currency_sign'     => give_currency_filter( '' ),
 		'currency_pos'      => isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before',
 		'no_gateway'        => __( 'Please select a payment method', 'give' ),
-		'discount_applied'  => __( 'Discount Applied', 'give' ), // Discount verified message
-		'no_email'          => __( 'Please enter an email address before applying a discount code', 'give' ),
-		'no_username'       => __( 'Please enter a username before applying a discount code', 'give' ),
+		'general_loading'   => __( 'Loading...', 'give' ),
 		'purchase_loading'  => __( 'Please Wait...', 'give' ),
 		'complete_purchase' => __( 'Purchase', 'give' ),
 		'give_version'      => GIVE_VERSION

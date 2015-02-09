@@ -201,19 +201,24 @@ Publish Metabox
 /*-------------------------------------
 Content Options
 -------------------------------------*/
-#cmb2-metabox-form_content_options .cmb-type-wysiwyg .cmb-th {
-  display: none;
-  width: 0%; }
-
-#cmb2-metabox-form_content_options .cmb-type-wysiwyg .cmb-td {
-  width: 100%; }
-
-.cmb2-id--give-content-option {
+.cmb2-id--give-content-option, .cmb2-id--give-terms-option {
   border-bottom: none !important;
-  margin: 0; }
+  margin: 0 !important; }
 
-.cmb2-id--give-form-content {
+.cmb2-id--give-form-content, .cmb2-id--give-agree-label {
   border-top: 1px solid #e9e9e9 !important; }
+
+/*-------------------------------------
+Terms and Conditions Metabox
+---------------------------------------*/
+.cmb2-id--give-agree-label, .cmb2-id--give-agree-text {
+  display: none; }
+
+/*-------------------------------------
+Dashboard Columns
+-------------------------------------*/
+input.shortcode-input {
+  width: 100%; }
 
 /*-------------------------------------
 ASIDE

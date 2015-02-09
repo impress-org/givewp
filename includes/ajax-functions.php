@@ -159,6 +159,7 @@ add_action( 'wp_ajax_nopriv_give_get_form_title', 'give_ajax_get_form_title' );
  * @return void
  */
 function give_ajax_get_states_field() {
+
 	if ( empty( $_POST['country'] ) ) {
 		$_POST['country'] = give_get_shop_country();
 	}
@@ -169,7 +170,7 @@ function give_ajax_get_states_field() {
 		$args = array(
 			'name'             => $_POST['field_name'],
 			'id'               => $_POST['field_name'],
-			'class'            => $_POST['field_name'] . '  edd-select',
+			'class'            => $_POST['field_name'] . '  give-select',
 			'options'          => give_get_shop_states( $_POST['country'] ),
 			'show_option_all'  => false,
 			'show_option_none' => false
@@ -305,7 +306,7 @@ function give_check_for_download_price_variations() {
 		$variable_prices = give_get_variable_prices( $download_id );
 
 		if ( $variable_prices ) {
-			$ajax_response = '<select class="give_price_options_select edd-select edd-select" name="give_price_option">';
+			$ajax_response = '<select class="give_price_options_select give-select give-select" name="give_price_option">';
 			foreach ( $variable_prices as $key => $price ) {
 				$ajax_response .= '<option value="' . esc_attr( $key ) . '">' . esc_html( $price['name'] ) . '</option>';
 			}
