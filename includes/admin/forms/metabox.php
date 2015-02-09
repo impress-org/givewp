@@ -41,7 +41,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 	 */
 	$meta_boxes['form_field_options'] = apply_filters( 'give_forms_field_options', array(
 		'id'           => 'form_field_options',
-		'title'        => __( 'Create a New Donation Form', 'give' ),
+		'title'        => __( 'Donation Options', 'give' ),
 		'object_types' => array( 'give_forms' ),
 		'context'      => 'normal',
 		'priority'     => 'high', //Show above Content WYSIWYG
@@ -146,13 +146,6 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 						'no'  => __( 'No', 'give' ),
 					),
 				),
-				array(
-					'id'   => $prefix . 'checkout_label',
-					'name' => __( 'Complete Donation Text', 'give' ),
-					'desc' => __( 'The button label for completing a donatin.', 'give' ),
-					'type' => 'text',
-					'std'  => __( 'Donate Now', 'give' )
-				),
 			)
 		)
 	) );
@@ -255,6 +248,26 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 							'modal'  => __( 'Modal Window Upon Click', 'give' ),
 						),
 						'default' => 'onpage',
+					),
+
+					array(
+						'id'         => $prefix . 'reveal_label',
+						'name'       => __( 'Reveal / Modal Open Text', 'give' ),
+						'desc'       => __( 'The button label for completing the donation.', 'give' ),
+						'type'       => 'text_small',
+						'attributes' => array(
+							'placeholder' => __( 'Donate Now', 'give' ),
+						),
+					),
+
+					array(
+						'id'         => $prefix . 'checkout_label',
+						'name'       => __( 'Complete Donation Text', 'give' ),
+						'desc'       => __( 'The button label for completing a donation.', 'give' ),
+						'type'       => 'text_small',
+						'attributes' => array(
+							'placeholder' => __( 'Donate Now', 'give' ),
+						),
 					),
 					array(
 						'name' => __( 'Default Gateway', 'give' ),

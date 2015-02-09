@@ -31,3 +31,28 @@
   -o-transition: 0.2s all linear;
   transition: 0.2s all linear;
 }
+
+//Swingin' Loader (from Woo 2.3)
+@mixin loader() {
+	&:before {
+		height: 1em;
+		width: 1em;
+		display: block;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		margin-left: -.5em;
+		margin-top: -.5em;
+		display: block;
+		-webkit-animation: spin 1s ease-in-out infinite;
+	    -moz-animation: spin 1s ease-in-out infinite;
+	    animation: spin 1s ease-in-out infinite;
+	    content: "";
+	    background: url(../images/loader.svg) center center;
+	    background-size: cover;
+		line-height: 1;
+		text-align: center;
+		font-size: 2em;
+		color: rgba(#000,0.75);
+	}
+}

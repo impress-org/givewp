@@ -108,6 +108,16 @@ jQuery.noConflict();
 			}
 		} ).change();
 
+		//Payment Display
+		var payment_display_option = $( '#_give_payment_display' );
+		payment_display_option.on( 'change', function () {
+			if ( payment_display_option.val() !== 'onpage' ) {
+				$( '.cmb2-id--give-reveal-label' ).hide();
+			} else {
+				$( '.cmb2-id--give-reveal-label' ).show();
+			}
+		} ).change();
+
 	};
 
 	//Handle Repeatable Row ID

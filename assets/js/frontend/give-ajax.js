@@ -122,7 +122,7 @@ jQuery( document ).ready( function ( $ ) {
 
 		//Submit form via AJAX
 		$.post( give_global_vars.ajaxurl, this_form.serialize() + '&action=give_process_checkout&give_ajax=true', function ( data ) {
-			console.log(  data  );
+			console.log( data );
 			if ( $.trim( data ) == 'success' ) {
 				//Remove any errors
 				this_form.find( '.give_errors' ).remove();
@@ -159,6 +159,18 @@ function give_load_gateway( form_object, payment_mode ) {
 	//Update form action
 	//give_form.attr( 'action', '?payment-mode=' + payment_mode );
 
+	var form_data = jQuery( form_object ).data();
+
+	if ( form_data["blockUI.isBlocked"] != 1 ) {
+		jQuery( form_object ).find( '#give_purchase_form_wrap' ).block( {
+			message   : null,
+			overlayCSS: {
+				background: '#fff',
+				opacity   : 0.6
+			}
+		} );
+	}
+
 	//Post via AJAX to Give
 	jQuery.post( give_scripts.ajaxurl + '?payment-mode=' + payment_mode, {
 			action           : 'give_load_gateway',
@@ -168,6 +180,7 @@ function give_load_gateway( form_object, payment_mode ) {
 		},
 		function ( response ) {
 			//Success: let's output the gateway fields in the appropriate form space
+			jQuery( form_object ).unblock();
 			jQuery( form_object ).find( '#give_purchase_form_wrap' ).html( response );
 			jQuery( '.give-no-js' ).hide();
 			jQuery( form_object ).find( '#give-payment-mode-wrap .give-loading-text' ).fadeOut();

@@ -358,7 +358,10 @@ function give_display_checkout_button( $form_id ) {
 		return;
 	}
 
-	$output = '<button class="give-btn give-btn-' . $display_option . '">' . __( 'Donate Now', 'give' ) . '</button>';
+	$display_label_field = get_post_meta( $form_id, '_give_reveal_label', true );
+	$display_label       = ( ! empty( $display_label_field ) ? $display_label_field : __( 'Donate Now', 'give' ) );
+
+	$output = '<button class="give-btn give-btn-' . $display_option . '">' . $display_label . '</button>';
 	echo apply_filters( 'give_display_checkout_button', $output );
 
 }
@@ -960,7 +963,7 @@ function give_checkout_submit( $form_id ) {
 
 		<?php give_checkout_hidden_fields( $form_id ); ?>
 
-		<?php echo give_checkout_button_purchase(); ?>
+		<?php echo give_checkout_button_purchase( $form_id ); ?>
 
 		<?php do_action( 'give_purchase_form_after_submit', $form_id ); ?>
 
@@ -976,19 +979,20 @@ add_action( 'give_purchase_form_after_cc_form', 'give_checkout_submit', 9999 );
  *
  * @since 1.0
  * @global $give_options Array of all the EDD Options
+ * @param int $form_id
  * @return string
  */
-function give_checkout_button_purchase() {
-	global $give_options;
+function give_checkout_button_purchase($form_id) {
 
-	$complete_purchase = ! empty( $give_options['checkout_label'] ) ? $give_options['checkout_label'] : __( 'Donate Now', 'give' );
+	$display_label_field = get_post_meta( $form_id, '_give_checkout_label', true );
+	$display_label       = ( ! empty( $display_label_field ) ? $display_label_field : __( 'Donate Now', 'give' ) );
 
 	ob_start();
 
 	?>
 
 	<div class="give-submit-button-wrap give-clearfix">
-		<input type="submit" class="give-submit" id="give-purchase-button" name="give-purchase" value="<?php echo $complete_purchase; ?>" />
+		<input type="submit" class="give-submit" id="give-purchase-button" name="give-purchase" value="<?php echo $display_label; ?>" />
 		<span class="give-loading-animation"></span>
 	</div>
 	<?php
@@ -1000,8 +1004,10 @@ function give_checkout_button_purchase() {
  * the T&Cs text
  *
  * @since 1.0
- * @global $give_options Array of all the EDD Options
+ * @global    $give_options Array of all the EDD Options
+ *
  * @param int $form_id
+ *
  * @return void
  */
 function give_agree_to_terms_js( $form_id ) {

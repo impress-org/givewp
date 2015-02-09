@@ -28,17 +28,19 @@ function give_load_scripts() {
 
 	global $give_options, $post;
 
-	$js_dir = GIVE_PLUGIN_URL . 'assets/js/';
+	$js_dir     = GIVE_PLUGIN_URL . 'assets/js/frontend/';
+	$js_plugins = GIVE_PLUGIN_URL . 'assets/js/plugins/';
 
 	// Use minified libraries if SCRIPT_DEBUG is turned off
 	$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
 	if ( give_is_cc_verify_enabled() ) {
-		wp_enqueue_script( 'creditCardValidator', $js_dir . 'jquery.creditCardValidator' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+		wp_enqueue_script( 'give-cc-validator', $js_plugins . 'jquery.creditCardValidator' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
 	}
 
-	wp_enqueue_script( 'give-qtip', $js_dir . 'jquery.qtip' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
-	wp_enqueue_script( 'give-magnific', $js_dir . 'give-magnific' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+	wp_enqueue_script( 'give-blockui', $js_plugins . 'jquery.blockUI' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+	wp_enqueue_script( 'give-qtip', $js_plugins . 'jquery.qtip' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+	wp_enqueue_script( 'give-magnific', $js_plugins . 'give-magnific' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
 	wp_enqueue_script( 'give-checkout-global', $js_dir . 'give-checkout-global' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
 	wp_localize_script( 'give-checkout-global', 'give_global_vars', array(
 		'ajaxurl'           => give_get_ajax_url(),
@@ -151,7 +153,9 @@ function give_load_admin_scripts( $hook ) {
 
 	global $wp_version, $post, $post_type;
 
-	$js_dir  = GIVE_PLUGIN_URL . 'assets/js/';
+	$js_dir     = GIVE_PLUGIN_URL . 'assets/js/admin/';
+	$js_plugins = GIVE_PLUGIN_URL . 'assets/js/plugins/';
+
 	$css_dir = GIVE_PLUGIN_URL . 'assets/css/';
 
 	// Use minified libraries if SCRIPT_DEBUG is turned off
@@ -160,11 +164,10 @@ function give_load_admin_scripts( $hook ) {
 	//CSS
 	wp_enqueue_style( 'jquery-ui-css', $css_dir . 'jquery-ui-fresh' . $suffix . '.css' );
 	wp_enqueue_style( 'give-admin', $css_dir . 'give-admin' . $suffix . '.css', GIVE_VERSION );
+	wp_enqueue_style( 'jquery-chosen', $css_dir . 'chosen' . $suffix . '.css', array(), GIVE_VERSION );
 
 	//JS
-	wp_enqueue_style( 'jquery-chosen', $css_dir . 'chosen' . $suffix . '.css', array(), GIVE_VERSION );
-	wp_enqueue_script( 'jquery-chosen', $js_dir . 'chosen.jquery' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
-
+	wp_enqueue_script( 'jquery-chosen', $js_plugins . 'chosen.jquery' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
 	wp_enqueue_script( 'give-admin-scripts', $js_dir . 'admin-scripts' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
 	wp_enqueue_script( 'jquery-ui-datepicker' );
 
