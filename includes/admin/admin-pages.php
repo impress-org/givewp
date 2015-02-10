@@ -30,8 +30,8 @@ function give_add_options_links() {
 	global $give_settings_page, $give_payments_page, $give_campaigns_page, $give_reports_page;
 
 	//Campaigns
-	$give_campaigns      = get_post_type_object( 'give_campaigns' );
-	$give_campaigns_page = add_submenu_page( 'edit.php?post_type=give_forms', $give_campaigns->labels->menu_name, $give_campaigns->labels->add_new, 'edit_' . $give_campaigns->capability_type . 's', 'post-new.php?post_type=give_campaigns', null );
+//	$give_campaigns      = get_post_type_object( 'give_campaigns' );
+//	$give_campaigns_page = add_submenu_page( 'edit.php?post_type=give_forms', $give_campaigns->labels->menu_name, $give_campaigns->labels->add_new, 'edit_' . $give_campaigns->capability_type . 's', 'post-new.php?post_type=give_campaigns', null );
 
 	//Payments
 	$give_payment       = get_post_type_object( 'give_payment' );

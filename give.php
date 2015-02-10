@@ -5,7 +5,7 @@
  * Description: <strong>Democratizing Generosity</strong> - Quickly and Easily Accept Donations
  * Author: WordImpress
  * Author URI: http://wordimpress.com
- * Version: 1.0.0
+ * Version: 1.0
  * Text Domain: give
  * Domain Path: languages
  *

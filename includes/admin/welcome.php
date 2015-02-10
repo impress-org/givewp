@@ -109,11 +109,11 @@ class Give_Welcome {
 				padding-top: 150px;
 				height: 52px;
 				width: 185px;
-				color: #666;
+				color: #FFF;
 				font-weight: bold;
 				font-size: 14px;
 				text-align: center;
-				text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+				text-shadow: 0 1px 0 rgba(0, 0, 0, 0.8);
 				margin: 0 -5px;
 				background: url('<?php echo $badge_url; ?>') no-repeat;
 			}
@@ -248,16 +248,17 @@ class Give_Welcome {
 			<div class="feature-section col two-col clearfix introduction">
 
 				<div class="video">
-					<iframe width="560" height="315" src="//www.youtube.com/embed/za43poLirX4" frameborder="0" allowfullscreen></iframe>
+					<img src="http://placehold.it/500x280">
+<!--					<iframe width="560" height="315" src="//www.youtube.com/embed/za43poLirX4" frameborder="0" allowfullscreen></iframe>-->
 				</div>
 
 				<div class="content last-feature">
 
 					<h3><?php _e( 'Accept Donations Quickly and Easily', 'give' ); ?></h3>
 
-					<p><?php _e( 'Illas vis. Animal nunc secuit. Mortales sublime galeae! Surgere habitabilis inmensa! Caeli mentes zonae hunc reparabat. Regio quisque. Modo spisso. Haec pondere. Mundi caeca campoque adhuc onerosior. Omni caelumque dicere quicquam volucres. Onerosior coeptis igni tepescunt addidit. Est unus septemque astra locis summaque.', 'give' ); ?></p>
+					<p><?php _e( 'Getting started with Give is a breeze. How you use the plugin depends on the type of donations you wish to accept donations on your WordPress website. Give is powered by "Forms" which you can display across your website.', 'give' ); ?></p>
 
-					<p><?php _e( 'Magni nullo frigida mundo satus iussit vix? Parte mare dissociata. Ignea finxit lacusque regio fecit fratrum umor habentem duris. Adsiduis fratrum mixtam glomeravit longo.', 'give' ); ?></p>
+					<p><?php _e( 'Forms are completely customizable and can be placed on any WordPress page or post.', 'give' ); ?></p>
 
 				</div>
 
@@ -270,9 +271,9 @@ class Give_Welcome {
 
 					<h3><?php _e( 'Setting Up Your First Form', 'give' ); ?></h3>
 
-					<p><?php _e( 'Illas vis. Animal nunc secuit. Mortales sublime galeae! Surgere habitabilis inmensa! Caeli mentes zonae hunc reparabat. Regio quisque. Modo spisso. Haec pondere. Mundi caeca campoque adhuc onerosior. Omni caelumque dicere quicquam volucres. Onerosior coeptis igni tepescunt addidit. Est unus septemque astra locis summaque.', 'give' ); ?></p>
+					<p><?php _e( 'Give forms are the backbo.', 'give' ); ?></p>
 
-					<p><?php _e( 'Magni nullo frigida mundo satus iussit vix? Parte mare dissociata. Ignea finxit lacusque regio fecit fratrum umor habentem duris. Adsiduis fratrum mixtam glomeravit longo.', 'give' ); ?></p>
+					<p><?php _e( '.', 'give' ); ?></p>
 
 
 				</div>
@@ -334,7 +335,7 @@ class Give_Welcome {
 	 * Render Changelog Screen
 	 *
 	 * @access public
-	 * @since  2.0.3
+	 * @since  1.0
 	 * @return void
 	 */
 	public function changelog_screen() {
@@ -358,7 +359,7 @@ class Give_Welcome {
 
 			<div class="return-to-dashboard">
 				<a href="<?php echo esc_url( admin_url( add_query_arg( array(
-					'post_type' => 'download',
+					'post_type' => 'give_forms',
 					'page'      => 'give-settings'
 				), 'edit.php' ) ) ); ?>"><?php _e( 'Go to Give Settings', 'give' ); ?></a>
 			</div>

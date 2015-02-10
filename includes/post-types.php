@@ -120,7 +120,7 @@ function give_setup_post_types() {
 			'author'
 		) ),
 	);
-	register_post_type( 'give_campaigns', apply_filters( 'give_campaigns_post_type_args', $give_campaigns_args ) );
+//	register_post_type( 'give_campaigns', apply_filters( 'give_campaigns_post_type_args', $give_campaigns_args ) );
 
 	/** Payment Post Type */
 	$payment_labels = array(
