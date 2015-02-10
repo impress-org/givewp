@@ -20,14 +20,15 @@ var gulp = require( 'gulp' ),
 	notify = require( "gulp-notify" ),
 	watch = require( "gulp-watch" ),
 	livereload = require( "gulp-livereload" ),
-	minifyCSS = require( "gulp-minify-css" );
+	minifyCSS = require( "gulp-minify-css" ),
+	cucumber = require( "gulp-cucumber" );
 
 /* Paths
  ------------------------------------- */
 var source_paths = {
 	admin_styles   : ['./assets/scss/admin/give-admin.scss'],
 	frontend_styles: ['./assets/scss/frontend/give-frontend.scss'],
-	scripts        : ['./assets/js/*.js', '!./assets/js/*.min.js']
+	scripts        : ['./assets/js/**/*.js', '!./assets/js/**/*.min.js']
 };
 
 /* Admin SCSS Task
@@ -107,9 +108,7 @@ gulp.task( 'watch', function () {
 	} );
 
 	//Add watching on JS files
-	gulp.watch( source_paths.scripts, function () {
-		gulp.start( 'scripts' );
-	} );
+	gulp.watch( source_paths.scripts, [ 'scripts', 'cucumber' ]);
 
 	//Add watching on template-files
 	gulp.watch( 'templates/*.php', function () {
@@ -117,6 +116,16 @@ gulp.task( 'watch', function () {
 	} );
 
 } );
+
+/* Run cucumber.js features
+ -------------------------------------- */
+gulp.task('cucumber', function() {
+	return gulp.src('*features/*')
+		.pipe(cucumber({
+			'steps': '*features/steps/*.js',
+			'support': '*features/support/*.js'
+	}));
+});
 
 /* Handle errors elegantly with gulp-notify
  ------------------------------------- */
@@ -130,6 +139,6 @@ var onError = function ( err ) {
 /* Default Gulp task
  ------------------------------------- */
 gulp.task( 'default', function () {
-	gulp.start( 'admin_styles', 'frontend_styles', 'scripts', 'watch' );
+	gulp.start( 'admin_styles', 'frontend_styles', 'scripts', 'watch', 'cucumber' );
 	notify( {message: 'Default task complete'} )
 } );
