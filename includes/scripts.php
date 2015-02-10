@@ -234,24 +234,19 @@ function give_admin_icon() {
 			src: url('<?php echo GIVE_PLUGIN_URL . 'assets/fonts/icomoon.eot?#iefix-ngjl88'?>') format('embedded-opentype'),
 			url('<?php echo GIVE_PLUGIN_URL . 'assets/fonts/icomoon.woff?-ngjl88'; ?>') format('woff'),
 			url('<?php echo GIVE_PLUGIN_URL . 'assets/fonts/icomoon.ttf?-ngjl88'; ?>') format('truetype'),
-			url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.svg?-ngjl88#icomoon'; ?>') format('svg');
+			url('<?php echo GIVE_PLUGIN_URL . 'assets/fonts/icomoon.svg?-ngjl88#icomoon'; ?>') format('svg');
 			font-weight: normal;
 			font-style: normal;
 		}
 
+		#adminmenu #menu-posts-give_forms .wp-menu-image img {
+			width: 20px;
+			height: 20px;
+			padding: 7px 0 0;
+		}
 		#adminmenu #menu-posts-give_forms .wp-menu-image:before {
-			font-family: 'icomoon';
-			speak: none;
-			font-style: normal;
-			font-weight: normal;
-			font-variant: normal;
-			text-transform: none;
-			line-height: 1;
-
-			/* Better Font Rendering =========== */
-			-webkit-font-smoothing: antialiased;
-			-moz-osx-font-smoothing: grayscale;
-			content: "\e600";
+			content: '';
+			display: none;
 		}
 
 		<?php }  ?>
