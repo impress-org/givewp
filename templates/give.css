@@ -5,7 +5,7 @@
  * @description: The Main SCSS file for FRONTEND styles which is compiled and minified via Gulp taskrunner
  * @package:     Give
  * @subpackage:  SCSS/Frontend
- * @copyright:   Copyright (c) 2014, WordImpress
+ * @copyright:   Copyright (c) 2015, WordImpress
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 /**
@@ -25,7 +25,7 @@
  * qTip2 - Pretty powerful tooltips - v2.2.1
  * http://qtip2.com
  *
- * Copyright (c) 2014
+ * Copyright (c) 2015
  * Released under the MIT licenses
  * http://jquery.org/license
  *
@@ -390,7 +390,7 @@ x:-o-prefocus, .qtip .qtip-tip {
  * @description: Fonts are from icomoon and the src paths need to be relative to template directory
  * @package     Give
  * @subpackage  SCSS/Frontend
- * @copyright   Copyright (c) 2014, WordImpress
+ * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 @font-face {
@@ -421,9 +421,6 @@ x:-o-prefocus, .qtip .qtip-tip {
 .icon-new-tab:before {
   content: "\ea7e"; }
 
-.icon-leaf:before {
-  content: "\e600"; }
-
 .icon-alert:before {
   content: "\f02d"; }
 
@@ -432,7 +429,7 @@ x:-o-prefocus, .qtip .qtip-tip {
  *
  * @package     Give
  * @subpackage  SCSS/Frontend
- * @copyright   Copyright (c) 2014, WordImpress
+ * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 /* =Receipt Page
@@ -493,7 +490,7 @@ table#give_purchase_receipt .give_receipt_payment_status.pending, table#give_pur
  *
  * @package     Give
  * @subpackage  SCSS/Frontend
- * @copyright   Copyright (c) 2014, WordImpress
+ * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 /*------------------------------------

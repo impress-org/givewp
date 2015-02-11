@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Functions
- * @copyright   Copyright (c) 2014, WordImpress
+ * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Get Shop Base Country
  *
- * @since 1.6
+ * @since 1.0
  * @return string $country The two letter country code for the shop's base country
  */
 function give_get_shop_country() {
@@ -31,7 +31,7 @@ function give_get_shop_country() {
 /**
  * Get Shop Base State
  *
- * @since 1.6
+ * @since 1.0
  * @return string $state The shop's base state name
  */
 function give_get_shop_state() {
@@ -454,7 +454,7 @@ function give_get_states_list() {
  * Get Provinces List
  *
  * @access      public
- * @since       1.2
+ * @since       1.0
  * @return      array
  */
 function give_get_provinces_list() {
@@ -481,7 +481,7 @@ function give_get_provinces_list() {
 /**
  * Get Australian States
  *
- * @since 1.6
+ * @since 1.0
  * @return array $states A list of states
  */
 function give_get_australian_states_list() {
@@ -503,7 +503,7 @@ function give_get_australian_states_list() {
 /**
  * Get Brazil States
  *
- * @since 1.6
+ * @since 1.0
  * @return array $states A list of states
  */
 function give_get_brazil_states_list() {
@@ -544,7 +544,7 @@ function give_get_brazil_states_list() {
 /**
  * Get Hong Kong States
  *
- * @since 1.6
+ * @since 1.0
  * @return array $states A list of states
  */
 function give_get_hong_kong_states_list() {
@@ -561,7 +561,7 @@ function give_get_hong_kong_states_list() {
 /**
  * Get Hungary States
  *
- * @since 1.6
+ * @since 1.0
  * @return array $states A list of states
  */
 function give_get_hungary_states_list() {
@@ -595,7 +595,7 @@ function give_get_hungary_states_list() {
 /**
  * Get Chinese States
  *
- * @since 1.6
+ * @since 1.0
  * @return array $states A list of states
  */
 function give_get_chinese_states_list() {
@@ -641,7 +641,7 @@ function give_get_chinese_states_list() {
 /**
  * Get New Zealand States
  *
- * @since 1.6
+ * @since 1.0
  * @return array $states A list of states
  */
 function give_get_new_zealand_states_list() {
@@ -670,7 +670,7 @@ function give_get_new_zealand_states_list() {
 /**
  * Get Indonesian States
  *
- * @since 1.6
+ * @since 1.0
  * @return array $states A list of states
  */
 function give_get_indonesian_states_list() {

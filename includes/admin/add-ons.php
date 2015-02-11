@@ -1,0 +1,78 @@
+<?php
+/**
+ * Admin Add-ons
+ *
+ * @package     Give
+ * @subpackage  Admin/Add-ons
+ * @copyright   Copyright (c) 2015, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since       1.0
+ */
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Add-ons Page Init
+ *
+ * Hooks check feed to the page load action.
+ *
+ * @since 1.0
+ * @global $give_add_ons_page Give Add-ons Pages
+ * @return void
+ */
+function give_add_ons_init() {
+	global $give_add_ons_page;
+	add_action( 'load-' . $give_add_ons_page, 'give_add_ons_check_feed' );
+}
+
+add_action( 'admin_menu', 'give_add_ons_init' );
+
+/**
+ * Add-ons Page
+ *
+ * Renders the add-ons page content.
+ *
+ * @since 1.0
+ * @return void
+ */
+function give_add_ons_page() {
+	ob_start(); ?>
+	<div class="wrap" id="give-add-ons">
+		<h2><?php _e( 'Give Add-ons', 'give' ); ?>
+			&nbsp;&mdash;&nbsp;<a href="http://givewp.com/addons/" class="button-primary" title="<?php _e( 'Browse All Extensions', 'give' ); ?>" target="_blank"><?php _e( 'Browse All Add-ons', 'give' ); ?></a>
+		</h2>
+
+		<p><?php _e( 'These add-ons extend the functionality of Give.', 'give' ); ?></p>
+		<?php echo give_add_ons_get_feed(); ?>
+	</div>
+	<?php
+	echo ob_get_clean();
+}
+
+/**
+ * Add-ons Get Feed
+ *
+ * Gets the add-ons page feed.
+ *
+ * @since 1.0
+ * @return void
+ */
+function give_add_ons_get_feed() {
+//	if ( false === ( $cache = get_transient( 'give_add_ons_feed' ) ) ) {
+		$feed = wp_remote_get( 'https://givewp.com/addons/feed/', array( 'sslverify' => false ) );
+
+		if ( ! is_wp_error( $feed ) ) {
+			if ( isset( $feed['body'] ) && strlen( $feed['body'] ) > 0 ) {
+				$cache = wp_remote_retrieve_body( $feed );
+				set_transient( 'give_add_ons_feed', $cache, 3600 );
+			}
+		} else {
+			$cache = '<div class="error"><p>' . __( 'There was an error retrieving the Give Add-ons list from the server. Please try again later.', 'give' ) . '</div>';
+		}
+//	}
+
+	return $cache;
+}

@@ -4,7 +4,7 @@
  * @description: The Give AJAX scripts
  * @package:     Give
  * @subpackage:  Assets/JS
- * @copyright:   Copyright (c) 2014, WordImpress
+ * @copyright:   Copyright (c) 2015, WordImpress
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 var give_scripts, give_global_vars;

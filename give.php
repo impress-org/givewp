@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: Give
+ * Plugin Name: Give - Democratizing Generosity
  * Plugin URI: http://give.wordimpress.com
- * Description: <strong>Democratizing Generosity</strong> - Quickly and Easily Accept Donations
+ * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: WordImpress
  * Author URI: http://wordimpress.com
  * Version: 1.0
@@ -225,6 +225,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-actions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/system-info.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/export-functions.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/add-ons.php';
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/actions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/payments-history.php';
@@ -241,8 +242,6 @@ if ( ! class_exists( 'Give' ) ) : /**
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/class-give-graph.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/graphing.php';
 
-
-			} else {
 
 			}
 

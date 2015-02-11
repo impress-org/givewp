@@ -4,7 +4,7 @@
  * @description: Fonts are from icomoon and the src paths need to be relative to template directory
  * @package     Give
  * @subpackage  SCSS/Frontend
- * @copyright   Copyright (c) 2014, WordImpress
+ * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 @font-face {
@@ -46,10 +46,6 @@
 
 .icon-new-tab:before {
   content: "\ea7e";
-}
-
-.icon-leaf:before {
-  content: "\e600";
 }
 .icon-alert:before {
     content: "\f02d";

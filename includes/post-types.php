@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Functions
- * @copyright   Copyright (c) 2014, WordImpress
+ * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -61,6 +61,7 @@ function give_setup_post_types() {
 		'map_meta_cap'       => true,
 		'capability_type'    => 'give_forms',
 		'has_archive'        => $give_forms_archives,
+		'menu_icon'          => GIVE_PLUGIN_URL . 'assets/images/svg/give-icon-full-circle-white.svg',
 		'hierarchical'       => false,
 		'supports'           => apply_filters( 'give_forms_supports', array(
 			'title',
@@ -120,7 +121,7 @@ function give_setup_post_types() {
 			'author'
 		) ),
 	);
-//	register_post_type( 'give_campaigns', apply_filters( 'give_campaigns_post_type_args', $give_campaigns_args ) );
+	//	register_post_type( 'give_campaigns', apply_filters( 'give_campaigns_post_type_args', $give_campaigns_args ) );
 
 	/** Payment Post Type */
 	$payment_labels = array(

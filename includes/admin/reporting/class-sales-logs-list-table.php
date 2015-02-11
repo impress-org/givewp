@@ -2,9 +2,9 @@
 /**
  * Sales Log View Class
  *
- * @package     EDD
+ * @package     Give
  * @subpackage  Admin/Reports
- * @copyright   Copyright (c) 2014, Pippin Williamson
+ * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
