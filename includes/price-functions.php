@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Functions
- * @copyright   Copyright (c) 2014, Pippin WordImpress
+ * @copyright   Copyright (c) 2015, Pippin WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */

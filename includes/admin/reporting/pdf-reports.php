@@ -4,10 +4,10 @@
  *
  * @package     EDD
  * @subpackage  Admin/Reports
- * @copyright   Copyright (c) 2014, Pippin Williamson
+ * @copyright   Copyright (c) 2015, WordImpress
  * @author      Sunny Ratilal
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       1.1.4.0
+ * @since       1.0
  */
 
 // Exit if accessed directly

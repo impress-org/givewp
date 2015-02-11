@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Admin/Pages
- * @copyright   Copyright (c) 2014, WordImpress
+ * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -30,8 +30,8 @@ function give_add_options_links() {
 	global $give_settings_page, $give_payments_page, $give_campaigns_page, $give_reports_page;
 
 	//Campaigns
-//	$give_campaigns      = get_post_type_object( 'give_campaigns' );
-//	$give_campaigns_page = add_submenu_page( 'edit.php?post_type=give_forms', $give_campaigns->labels->menu_name, $give_campaigns->labels->add_new, 'edit_' . $give_campaigns->capability_type . 's', 'post-new.php?post_type=give_campaigns', null );
+	//	$give_campaigns      = get_post_type_object( 'give_campaigns' );
+	//	$give_campaigns_page = add_submenu_page( 'edit.php?post_type=give_forms', $give_campaigns->labels->menu_name, $give_campaigns->labels->add_new, 'edit_' . $give_campaigns->capability_type . 's', 'post-new.php?post_type=give_campaigns', null );
 
 	//Payments
 	$give_payment       = get_post_type_object( 'give_payment' );
@@ -47,6 +47,7 @@ function give_add_options_links() {
 	) );
 
 
+	$give_add_ons_page = add_submenu_page( 'edit.php?post_type=give_forms', __( 'Give Add-ons', 'edd' ), __( 'Add-ons', 'edd' ), 'install_plugins', 'give-addons', 'give_add_ons_page' );
 
 
 }
@@ -68,7 +69,7 @@ function give_is_admin_page() {
 		return false;
 	}
 
-	global $pagenow, $typenow, $give_settings_page, $give_payments_page, $give_campaigns_page, $give_reports_page;
+	global $pagenow, $typenow, $give_settings_page, $give_payments_page, $give_campaigns_page, $give_reports_page, $give_add_ons_page;
 
 	if ( 'give_forms' == $typenow || 'give_campaigns' == $typenow || 'index.php' == $pagenow || 'post-new.php' == $pagenow || 'post.php' == $pagenow ) {
 		return true;
@@ -78,7 +79,8 @@ function give_is_admin_page() {
 		$give_settings_page,
 		$give_payments_page,
 		$give_campaigns_page,
-		$give_reports_page
+		$give_reports_page,
+		$give_add_ons_page
 	) );
 
 	if ( in_array( $pagenow, $give_admin_pages ) ) {

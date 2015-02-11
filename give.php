@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: Give
+ * Plugin Name: Give - Democratizing Generosity
  * Plugin URI: http://give.wordimpress.com
- * Description: <strong>Democratizing Generosity</strong> - Quickly and Easily Accept Donations
+ * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: WordImpress
  * Author URI: http://wordimpress.com
  * Version: 1.0

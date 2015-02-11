@@ -7,22 +7,40 @@ Stable tag: 1.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Give allows you to easily accept donations on your WordPress website quickly and easily.
+Give is the best plugin to quickly and easily accept donations on your WordPress powered website.
 
 == Description ==
 
-Simple and Pain Free Giving - No bouncing outside your site and no “platform” to integrate. Give works great right in WordPress.
+= Simple and Pain Free Giving =
 
-Zero Commission Charge - We earn money by selling premium features, not from your Mission. Raised dollars go to support you cause. Period.
+No bouncing outside your site and no “platform” to integrate. Give works great right in WordPress.
 
-Easy to Customize and Enhance - Built by WordImpress, our plugins are built from the ground up to be intuitive and easy to use. Coupled with the plugin is a support team that is dedicated, fast to respond, and always willing to squash bugs and help troubleshoot.
+= Zero Commission Charge =
+
+We earn money by selling premium features, not from your Mission. Raised dollars go to support you cause. Period.
+
+= Easy to Customize and Enhance =
+
+Built by WordImpress, our plugins are built from the ground up to be intuitive and easy to use. Coupled with the plugin is a support team that is dedicated, fast to respond, and always willing to squash bugs and help troubleshoot.
+
+= Connect with Give =
+
+Stay in touch with us for important plugin news and updates:
+
+Newsletter:
+Facebook:
+GitHub:
+
+= Contribute to Give =
+
+
 
 == Installation ==
 
 = Minimum Requirements =
 
 * WordPress 3.8 or greater
-* PHP version 5.2.4 or greater
+* PHP version 5.3 or greater
 * MySQL version 5.0 or greater
 * Some payment gateways require fsockopen support (for IPN access)
 

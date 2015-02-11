@@ -2,7 +2,7 @@
  * qTip2 - Pretty powerful tooltips - v2.2.1
  * http://qtip2.com
  *
- * Copyright (c) 2014 
+ * Copyright (c) 2015
  * Released under the MIT licenses
  * http://jquery.org/license
  *
