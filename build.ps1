@@ -91,6 +91,11 @@ else {
 	npm update
 }
 
+if ([string]::IsNullOrEmpty([Environment]::GetEnvironmentVariable("NODE_PATH","User"))) {
+	
+	[Environment]::SetEnvironmentVariable("NODE_PATH", "%AppData%\npm", "User")
+}
+
 $Target = 'gulp'
 Invoke-InstallIfMissing -Exe:'npm' -Args:"install -g $Target" -Target:$Target
 
