@@ -108,7 +108,7 @@ gulp.task( 'watch', function () {
 	} );
 
 	//Add watching on JS files
-	gulp.watch( source_paths.scripts, [ 'scripts', 'cucumber' ]);
+	gulp.watch( source_paths.scripts, [ 'scripts' ]);
 
 	//Add watching on template-files
 	gulp.watch( 'templates/*.php', function () {
@@ -139,6 +139,6 @@ var onError = function ( err ) {
 /* Default Gulp task
  ------------------------------------- */
 gulp.task( 'default', function () {
-	gulp.start( 'admin_styles', 'frontend_styles', 'scripts', 'watch', 'cucumber' );
+	gulp.start( 'admin_styles', 'frontend_styles', 'scripts', 'watch' );
 	notify( {message: 'Default task complete'} )
 } );
