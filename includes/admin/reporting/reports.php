@@ -254,8 +254,9 @@ add_action( 'give_reports_view_gateways', 'give_reports_gateways_table' );
  */
 function give_reports_earnings() {
 	?>
-	<div class="tablenav top">
-		<div class="alignleft actions"><?php give_report_views(); ?></div>
+	<div class="tablenav top clearfix" style="margin-bottom:15px;">
+		<h3 class="alignleft" style="margin:10px 0 0;"><span><?php _e( 'Earnings Over Time', 'give' ); ?></span></h3>
+		<div class="alignright actions" style="padding-right: 0;padding-top: 5px;"><?php give_report_views(); ?></div>
 	</div>
 	<?php
 	give_reports_graph();

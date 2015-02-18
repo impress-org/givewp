@@ -178,20 +178,18 @@ function give_reports_graph() {
 
 	$data = array(
 		__( 'Earnings', 'give' ) => $earnings_data,
-		__( 'Sales', 'give' )    => $sales_data
+		__( 'Donations', 'give' )    => $sales_data
 	);
 
 	// start our own output buffer
 	ob_start();
 	?>
+
 	<div id="give-dashboard-widgets-wrap">
 		<div class="metabox-holder" style="padding-top: 0;">
 			<div class="postbox">
-				<h3><span><?php _e( 'Earnings Over Time', 'give' ); ?></span></h3>
-
 				<div class="inside">
 					<?php
-					give_reports_graph_controls();
 					$graph = new Give_Graph( $data );
 					$graph->set( 'x_mode', 'time' );
 					$graph->set( 'multiple_y_axes', true );
@@ -201,25 +199,40 @@ function give_reports_graph() {
 						$estimated = give_estimated_monthly_stats();
 					}
 					?>
-
-					<p class="give_graph_totals"><strong><?php _e( 'Total earnings for period shown: ', 'give' );
-							echo give_currency_filter( give_format_amount( $earnings_totals ) ); ?></strong></p>
-
-					<p class="give_graph_totals"><strong><?php _e( 'Total donations for period shown: ', 'give' );
-							echo give_format_amount( $sales_totals, false ); ?></strong></p>
-
-					<?php if ( 'this_month' == $dates['range'] ) : ?>
-						<p class="give_graph_totals"><strong><?php _e( 'Estimated monthly earnings: ', 'give' );
-								echo give_currency_filter( give_format_amount( $estimated['earnings'] ) ); ?></strong>
-						</p>
-						<p class="give_graph_totals"><strong><?php _e( 'Estimated monthly sales: ', 'give' );
-								echo give_format_amount( $estimated['sales'], false ); ?></strong></p>
-					<?php endif; ?>
-
-					<?php do_action( 'give_reports_graph_additional_stats' ); ?>
-
 				</div>
 			</div>
+			<?php give_reports_graph_controls(); ?>
+			<table class="widefat reports-table alignleft" style="max-width:450px">
+				<tbody>
+				<tr>
+					<td class="row-title">
+						<label for="tablecell"><?php _e( 'Total earnings for period: ', 'give' ); ?></label></td>
+					<td><?php echo give_currency_filter( give_format_amount( $earnings_totals ) ); ?></td>
+				</tr>
+				<tr class="alternate">
+					<td class="row-title">
+						<label for="tablecell"><?php _e( 'Total donations for period shown: ', 'give' ); ?></label>
+					</td>
+					<td><?php echo give_format_amount( $sales_totals, false ); ?></td>
+				</tr>
+				<?php if ( 'this_month' == $dates['range'] ) : ?>
+					<tr>
+						<td class="row-title">
+							<label for="tablecell"><?php _e( 'Estimated monthly earnings: ', 'give' ); ?></label>
+						</td>
+						<td><?php echo give_currency_filter( give_format_amount( $estimated['earnings'] ) ); ?></td>
+					</tr>
+					<tr class="alternate">
+						<td class="row-title">
+							<label for="tablecell"><?php _e( 'Estimated monthly donations: ', 'give' ); ?></label>
+						</td>
+						<td><?php echo give_format_amount( $estimated['sales'], false ); ?></td>
+					</tr>
+				<?php endif; ?>
+			</table>
+
+			<?php do_action( 'give_reports_graph_additional_stats' ); ?>
+
 		</div>
 	</div>
 	<?php
@@ -403,7 +416,7 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 
 	$data = array(
 		__( 'Earnings', 'give' ) => $earnings_data,
-		__( 'Sales', 'give' )    => $sales_data
+		__( 'Donations', 'give' )    => $sales_data
 	);
 
 	?>
@@ -414,7 +427,6 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 
 			<div class="inside">
 				<?php
-				give_reports_graph_controls();
 				$graph = new Give_Graph( $data );
 				$graph->set( 'x_mode', 'time' );
 				$graph->set( 'multiple_y_axes', true );
@@ -432,6 +444,7 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 							<strong><?php printf( __( 'Average monthly sales: %s', 'give' ), number_format( give_get_average_monthly_form_sales( $form_id ), 0 ) ); ?>
 			</div>
 		</div>
+		<?php give_reports_graph_controls(); ?>
 	</div>
 	<?php
 	echo ob_get_clean();
@@ -469,9 +482,9 @@ function give_reports_graph_controls() {
 	//echo '<pre>'; print_r( $dates ); echo '</pre>';
 
 	?>
-	<form id="give-graphs-filter" method="get">
-		<div class="tablenav top">
-			<div class="alignleft actions">
+	<form id="give-graphs-filter" method="get" class="alignright">
+		<div class="tablenav top alignright">
+			<div class="actions">
 
 				<input type="hidden" name="post_type" value="give_forms" />
 				<input type="hidden" name="page" value="give-reports" />
@@ -481,11 +494,15 @@ function give_reports_graph_controls() {
 					<input type="hidden" name="download-id" value="<?php echo absint( $_GET['download-id'] ); ?>" />
 				<?php endif; ?>
 
-				<select id="give-graphs-date-options" name="range">
-					<?php foreach ( $date_options as $key => $option ) : ?>
-						<option value="<?php echo esc_attr( $key ); ?>"<?php selected( $key, $dates['range'] ); ?>><?php echo esc_html( $option ); ?></option>
-					<?php endforeach; ?>
-				</select>
+				<div id="give-graphs-date-options-wrap" class="alignright">
+					<select id="give-graphs-date-options" name="range">
+						<?php foreach ( $date_options as $key => $option ) : ?>
+							<option value="<?php echo esc_attr( $key ); ?>"<?php selected( $key, $dates['range'] ); ?>><?php echo esc_html( $option ); ?></option>
+						<?php endforeach; ?>
+					</select>
+
+					<input type="submit" class="button-secondary" value="<?php _e( 'Filter', 'give' ); ?>" />
+				</div>
 
 				<div id="give-date-range-options" <?php echo $display; ?>>
 					<span><?php _e( 'From', 'give' ); ?>&nbsp;</span>
@@ -523,7 +540,6 @@ function give_reports_graph_controls() {
 				</div>
 
 				<input type="hidden" name="give_action" value="filter_reports" />
-				<input type="submit" class="button-secondary" value="<?php _e( 'Filter', 'give' ); ?>" />
 			</div>
 		</div>
 	</form>

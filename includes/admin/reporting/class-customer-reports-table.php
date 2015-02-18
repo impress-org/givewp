@@ -166,7 +166,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * Outputs the reporting views
 	 *
 	 * @access public
-	 * @since 1.5
+	 * @since 1.0
 	 * @return void
 	 */
 	public function bulk_actions( $which = '' ) {

@@ -230,6 +230,36 @@ ASIDE
   padding-bottom: 0; }
 
 /**
+ * Give Reports SCSS
+ *
+ * @description Payment History Styles
+ * @package     Give
+ * @subpackage  SCSS/Admin
+ * @copyright   Copyright (c) 2015, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+#give-dashboard-widgets-wrap .inside {
+  padding-top: 0;
+  padding-bottom: 0; }
+#give-dashboard-widgets-wrap table.reports-table {
+  clear: none; }
+#give-dashboard-widgets-wrap #give-graphs-filter .tablenav {
+  margin: 0; }
+  #give-dashboard-widgets-wrap #give-graphs-filter .tablenav .actions {
+    padding: 0; }
+#give-dashboard-widgets-wrap #give-date-range-options {
+  clear: both;
+  overflow: hidden;
+  padding: 8px 0; }
+  #give-dashboard-widgets-wrap #give-date-range-options > span {
+    float: left;
+    line-height: 30px;
+    font-style: italic;
+    padding: 0 5px 0 0; }
+  #give-dashboard-widgets-wrap #give-date-range-options #give-graphs-year-end {
+    margin-right: 0; }
+
+/**
  * Give Settings SCSS
  *
  * @package     Give

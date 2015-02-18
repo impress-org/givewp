@@ -1,0 +1,49 @@
+/**
+ * Give Reports SCSS
+ *
+ * @description Payment History Styles
+ * @package     Give
+ * @subpackage  SCSS/Admin
+ * @copyright   Copyright (c) 2015, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+
+#give-dashboard-widgets-wrap {
+
+  .inside {
+	padding-top: 0;
+	padding-bottom: 0;
+  }
+
+  table.reports-table {
+	clear: none;
+  }
+
+  #give-graphs-filter {
+	.tablenav {
+	  margin: 0;
+	  .actions {
+		padding: 0;
+	  }
+	}
+  }
+
+  #give-date-range-options {
+	clear: both;
+	overflow: hidden;
+	padding: 8px 0;
+
+	> span {
+	  float: left;
+	  line-height: 30px;
+	  font-style: italic;
+	  padding: 0 5px 0 0;
+	}
+
+	#give-graphs-year-end {
+	  margin-right: 0;
+	}
+
+  }
+
+}

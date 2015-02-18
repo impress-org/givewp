@@ -95,9 +95,9 @@ class Give_Graph {
 			'ticksize_num'    => 1,
 			'multiple_y_axes' => false,
 			'bgcolor'         => '#f9f9f9',
-			'bordercolor'     => '#ccc',
+			'bordercolor'     => '#eee',
 			'color'           => '#bbb',
-			'borderwidth'     => 2,
+			'borderwidth'     => 1,
 			'bars'            => false,
 			'lines'           => true,
 			'points'          => true
@@ -181,13 +181,18 @@ class Give_Graph {
 								aling: 'center'
 							},
 							lines: {
-								show: <?php echo $this->options['lines'] ? 'true' : 'false'; ?>
+								show: <?php echo $this->options['lines'] ? 'true' : 'false'; ?>,
+								fill: true,
+			                    fillColor: { colors: [{ opacity: 0.4 }, { opacity: 0.1}] }
 							},
 							<?php if( $this->options[ 'multiple_y_axes' ] ) : ?>
 							yaxis: <?php echo $yaxis_count; ?>
 							<?php endif; ?>
+
 						},
+
 						<?php $yaxis_count++; endforeach; ?>
+
 					],
 					{
 						// Options
@@ -201,6 +206,9 @@ class Give_Graph {
 							clickable: false,
 							hoverable: true
 						},
+
+						colors: ["#66bb6a", "#546e7a"], //Give Colors
+
 						xaxis: {
 							mode: "<?php echo $this->options['x_mode']; ?>",
 							timeFormat: "<?php echo $this->options['x_mode'] == 'time' ? $this->options['time_format'] : ''; ?>",
@@ -219,7 +227,6 @@ class Give_Graph {
 							<?php endif; ?>
 						}
 					}
-
 				);
 
 				function give_flot_tooltip(x, y, contents) {
