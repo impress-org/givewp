@@ -8,11 +8,15 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 
-#give-dashboard-widgets-wrap {
+#give-dashboard-widgets-wrap, .metabox-holder {
 
   .inside {
 	padding-top: 0;
 	padding-bottom: 0;
+  }
+
+  .postbox {
+	margin-bottom: 10px;
   }
 
   table.reports-table {
@@ -47,3 +51,83 @@
   }
 
 }
+
+/* Global Graph Styles
+-------------------------------------------------------------- */
+.give-graph {
+  .y1Axis {
+	color: #66bb6a !important;
+  }
+  .y2Axis {
+	color: #546e7a !important;
+  }
+}
+
+//Customer Filter
+
+body.give_forms_page_give-reports {
+
+  h2.nav-tab-wrapper {
+	margin-bottom: 10px;
+  }
+
+  .tablenav {
+	clear: none;
+	float: left;
+	margin: 0 0 10px;
+  }
+
+  .reports-table-nav.tablenav.top {
+	width: 100%;
+	float: none;
+	margin: 0 0 10px;
+  }
+
+  .reports-forms-details-wrap.top {
+	float: right;
+	overflow: hidden;
+
+	#give-reports-filter {
+	  float:left;
+	}
+	> .actions {
+	  padding-right: 0;
+	}
+  }
+
+  .tablenav.bottom {
+	margin-top: 10px;
+  }
+
+  h3.reports-earnings-title {
+	margin: 7px 0 0;
+  }
+
+  .reports-views-wrap {
+	padding: 3px 0 0;
+  }
+
+  .wrap.give-reports-customers-wrap {
+	margin-right: 0;
+	margin-bottom: 10px;
+  }
+
+  .widefat tbody td, .widefat tbody th {
+	padding-top: 12px;
+	padding-bottom: 12px;
+  }
+
+}
+
+/*---------------------
+Table List Styles
+---------------------------*/
+
+.widefat {
+  .column-name, .column-label {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+}
+

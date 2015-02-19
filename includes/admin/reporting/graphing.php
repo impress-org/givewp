@@ -177,8 +177,8 @@ function give_reports_graph() {
 	}
 
 	$data = array(
-		__( 'Earnings', 'give' ) => $earnings_data,
-		__( 'Donations', 'give' )    => $sales_data
+		__( 'Earnings', 'give' )  => $earnings_data,
+		__( 'Donations', 'give' ) => $sales_data
 	);
 
 	// start our own output buffer
@@ -415,16 +415,15 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 	}
 
 	$data = array(
-		__( 'Earnings', 'give' ) => $earnings_data,
-		__( 'Donations', 'give' )    => $sales_data
+		__( 'Earnings', 'give' )  => $earnings_data,
+		__( 'Donations', 'give' ) => $sales_data
 	);
 
 	?>
+	<h3><span><?php printf( __( 'Earnings Over Time for %s', 'give' ), get_the_title( $form_id ) ); ?></span></h3>
+
 	<div class="metabox-holder" style="padding-top: 0;">
 		<div class="postbox">
-			<h3><span><?php printf( __( 'Earnings Over Time for %s', 'give' ), get_the_title( $form_id ) ); ?></span>
-			</h3>
-
 			<div class="inside">
 				<?php
 				$graph = new Give_Graph( $data );
@@ -432,18 +431,36 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 				$graph->set( 'multiple_y_axes', true );
 				$graph->display();
 				?>
-				<p class="give_graph_totals"><strong><?php _e( 'Total earnings for period shown: ', 'give' );
-						echo give_currency_filter( give_format_amount( $earnings_totals ) ); ?></strong></p>
-
-				<p class="give_graph_totals"><strong><?php _e( 'Total donations for period shown: ', 'give' );
-						echo $sales_totals; ?></strong></p>
-
-				<p class="give_graph_totals">
-					<strong><?php printf( __( 'Average monthly earnings: %s', 'give' ), give_currency_filter( give_format_amount( give_get_average_monthly_form_earnings( $form_id ) ) ) ); ?>
-						<p class="give_graph_totals">
-							<strong><?php printf( __( 'Average monthly sales: %s', 'give' ), number_format( give_get_average_monthly_form_sales( $form_id ), 0 ) ); ?>
 			</div>
 		</div>
+		<!--/.postbox -->
+		<table class="widefat reports-table alignleft" style="max-width:450px">
+			<tbody>
+			<tr>
+				<td class="row-title">
+					<label for="tablecell"><?php _e( 'Total earnings for period: ', 'give' ); ?></label></td>
+				<td><?php echo give_currency_filter( give_format_amount( $earnings_totals ) ); ?></td>
+			</tr>
+			<tr class="alternate">
+				<td class="row-title">
+					<label for="tablecell"><?php _e( 'Total donations for period: ', 'give' ); ?></label>
+				</td>
+				<td><?php echo $sales_totals; ?></td>
+			</tr>
+			<tr>
+				<td class="row-title">
+					<label for="tablecell"><?php _e( 'Average monthly earnings: %s', 'give' ); ?></label>
+				</td>
+				<td><?php echo give_currency_filter( give_format_amount( give_get_average_monthly_form_earnings( $form_id ) ) ); ?></td>
+			</tr>
+			<tr class="alternate">
+				<td class="row-title">
+					<label for="tablecell"><?php _e( 'Average monthly donations: %s', 'give' ); ?></label>
+				</td>
+				<td><?php echo number_format( give_get_average_monthly_form_sales( $form_id ), 0 ); ?></td>
+			</tr>
+			</tbody>
+		</table>
 		<?php give_reports_graph_controls(); ?>
 	</div>
 	<?php

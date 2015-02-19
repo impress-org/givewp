@@ -238,26 +238,72 @@ ASIDE
  * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
-#give-dashboard-widgets-wrap .inside {
+#give-dashboard-widgets-wrap .inside, .metabox-holder .inside {
   padding-top: 0;
   padding-bottom: 0; }
-#give-dashboard-widgets-wrap table.reports-table {
+#give-dashboard-widgets-wrap .postbox, .metabox-holder .postbox {
+  margin-bottom: 10px; }
+#give-dashboard-widgets-wrap table.reports-table, .metabox-holder table.reports-table {
   clear: none; }
-#give-dashboard-widgets-wrap #give-graphs-filter .tablenav {
+#give-dashboard-widgets-wrap #give-graphs-filter .tablenav, .metabox-holder #give-graphs-filter .tablenav {
   margin: 0; }
-  #give-dashboard-widgets-wrap #give-graphs-filter .tablenav .actions {
+  #give-dashboard-widgets-wrap #give-graphs-filter .tablenav .actions, .metabox-holder #give-graphs-filter .tablenav .actions {
     padding: 0; }
-#give-dashboard-widgets-wrap #give-date-range-options {
+#give-dashboard-widgets-wrap #give-date-range-options, .metabox-holder #give-date-range-options {
   clear: both;
   overflow: hidden;
   padding: 8px 0; }
-  #give-dashboard-widgets-wrap #give-date-range-options > span {
+  #give-dashboard-widgets-wrap #give-date-range-options > span, .metabox-holder #give-date-range-options > span {
     float: left;
     line-height: 30px;
     font-style: italic;
     padding: 0 5px 0 0; }
-  #give-dashboard-widgets-wrap #give-date-range-options #give-graphs-year-end {
+  #give-dashboard-widgets-wrap #give-date-range-options #give-graphs-year-end, .metabox-holder #give-date-range-options #give-graphs-year-end {
     margin-right: 0; }
+
+/* Global Graph Styles
+-------------------------------------------------------------- */
+.give-graph .y1Axis {
+  color: #66bb6a !important; }
+.give-graph .y2Axis {
+  color: #546e7a !important; }
+
+body.give_forms_page_give-reports h2.nav-tab-wrapper {
+  margin-bottom: 10px; }
+body.give_forms_page_give-reports .tablenav {
+  clear: none;
+  float: left;
+  margin: 0 0 10px; }
+body.give_forms_page_give-reports .reports-table-nav.tablenav.top {
+  width: 100%;
+  float: none;
+  margin: 0 0 10px; }
+body.give_forms_page_give-reports .reports-forms-details-wrap.top {
+  float: right;
+  overflow: hidden; }
+  body.give_forms_page_give-reports .reports-forms-details-wrap.top #give-reports-filter {
+    float: left; }
+  body.give_forms_page_give-reports .reports-forms-details-wrap.top > .actions {
+    padding-right: 0; }
+body.give_forms_page_give-reports .tablenav.bottom {
+  margin-top: 10px; }
+body.give_forms_page_give-reports h3.reports-earnings-title {
+  margin: 7px 0 0; }
+body.give_forms_page_give-reports .reports-views-wrap {
+  padding: 3px 0 0; }
+body.give_forms_page_give-reports .wrap.give-reports-customers-wrap {
+  margin-right: 0;
+  margin-bottom: 10px; }
+body.give_forms_page_give-reports .widefat tbody td, body.give_forms_page_give-reports .widefat tbody th {
+  padding-top: 12px;
+  padding-bottom: 12px; }
+
+/*---------------------
+Table List Styles
+---------------------------*/
+.widefat .column-name, .widefat .column-label {
+  font-size: 14px;
+  font-weight: bold; }
 
 /**
  * Give Settings SCSS
