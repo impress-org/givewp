@@ -8,7 +8,7 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 
-#give-dashboard-widgets-wrap, .metabox-holder {
+#give-dashboard-widgets-wrap {
 
   .inside {
 	padding-top: 0;
@@ -88,7 +88,7 @@ body.give_forms_page_give-reports {
 	overflow: hidden;
 
 	#give-reports-filter {
-	  float:left;
+	  float: left;
 	}
 	> .actions {
 	  padding-right: 0;
@@ -120,14 +120,44 @@ body.give_forms_page_give-reports {
 }
 
 /*---------------------
+Export Options Styles
+---------------------------*/
+
+body.give_forms_page_give-reports table.export-options-table {
+  tbody td {
+	padding: 20px 12px;
+  }
+}
+
+/*---------------------
 Table List Styles
 ---------------------------*/
 
 .widefat {
   .column-name, .column-label {
-    font-size: 14px;
-    font-weight: bold;
+	font-size: 14px;
+	font-weight: bold;
   }
 
 }
 
+table.give-table {
+
+  td {
+	vertical-align: middle;
+  }
+  td.row-title {
+	h3 {
+	  margin: 0 0 0.4em;
+	  font-size: 1.2em;
+	}
+	p {
+	  font-size: 13px;
+	  font-style: italic;
+	  font-weight: normal;
+	  color: #aaa;
+	  margin: 0;
+	}
+  }
+
+}

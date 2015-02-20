@@ -229,6 +229,10 @@ ASIDE
 #side-sortables .cmb-row .cmb2-metabox-description {
   padding-bottom: 0; }
 
+.cmb2-metabox-description {
+  font-size: 13px;
+  line-height: 1.5; }
+
 /**
  * Give Reports SCSS
  *
@@ -238,27 +242,27 @@ ASIDE
  * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
-#give-dashboard-widgets-wrap .inside, .metabox-holder .inside {
+#give-dashboard-widgets-wrap .inside {
   padding-top: 0;
   padding-bottom: 0; }
-#give-dashboard-widgets-wrap .postbox, .metabox-holder .postbox {
+#give-dashboard-widgets-wrap .postbox {
   margin-bottom: 10px; }
-#give-dashboard-widgets-wrap table.reports-table, .metabox-holder table.reports-table {
+#give-dashboard-widgets-wrap table.reports-table {
   clear: none; }
-#give-dashboard-widgets-wrap #give-graphs-filter .tablenav, .metabox-holder #give-graphs-filter .tablenav {
+#give-dashboard-widgets-wrap #give-graphs-filter .tablenav {
   margin: 0; }
-  #give-dashboard-widgets-wrap #give-graphs-filter .tablenav .actions, .metabox-holder #give-graphs-filter .tablenav .actions {
+  #give-dashboard-widgets-wrap #give-graphs-filter .tablenav .actions {
     padding: 0; }
-#give-dashboard-widgets-wrap #give-date-range-options, .metabox-holder #give-date-range-options {
+#give-dashboard-widgets-wrap #give-date-range-options {
   clear: both;
   overflow: hidden;
   padding: 8px 0; }
-  #give-dashboard-widgets-wrap #give-date-range-options > span, .metabox-holder #give-date-range-options > span {
+  #give-dashboard-widgets-wrap #give-date-range-options > span {
     float: left;
     line-height: 30px;
     font-style: italic;
     padding: 0 5px 0 0; }
-  #give-dashboard-widgets-wrap #give-date-range-options #give-graphs-year-end, .metabox-holder #give-date-range-options #give-graphs-year-end {
+  #give-dashboard-widgets-wrap #give-date-range-options #give-graphs-year-end {
     margin-right: 0; }
 
 /* Global Graph Styles
@@ -299,11 +303,29 @@ body.give_forms_page_give-reports .widefat tbody td, body.give_forms_page_give-r
   padding-bottom: 12px; }
 
 /*---------------------
+Export Options Styles
+---------------------------*/
+body.give_forms_page_give-reports table.export-options-table tbody td {
+  padding: 20px 12px; }
+
+/*---------------------
 Table List Styles
 ---------------------------*/
 .widefat .column-name, .widefat .column-label {
   font-size: 14px;
   font-weight: bold; }
+
+table.give-table td {
+  vertical-align: middle; }
+table.give-table td.row-title h3 {
+  margin: 0 0 0.4em;
+  font-size: 1.2em; }
+table.give-table td.row-title p {
+  font-size: 13px;
+  font-style: italic;
+  font-weight: normal;
+  color: #aaa;
+  margin: 0; }
 
 /**
  * Give Settings SCSS

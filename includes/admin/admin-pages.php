@@ -47,7 +47,7 @@ function give_add_options_links() {
 	) );
 
 
-	$give_add_ons_page = add_submenu_page( 'edit.php?post_type=give_forms', __( 'Give Add-ons', 'edd' ), __( 'Add-ons', 'edd' ), 'install_plugins', 'give-addons', 'give_add_ons_page' );
+//	$give_add_ons_page = add_submenu_page( 'edit.php?post_type=give_forms', __( 'Give Add-ons', 'edd' ), __( 'Add-ons', 'edd' ), 'install_plugins', 'give-addons', 'give_add_ons_page' );
 
 
 }

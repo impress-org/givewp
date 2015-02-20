@@ -181,7 +181,7 @@ function give_reports_form_details() {
 	?>
 	<div class="tablenav top reports-forms-details-wrap">
 		<div class="actions bulkactions">
-				<?php give_report_views(); ?>
+			<?php give_report_views(); ?>
 			&nbsp;
 			<button onclick="history.go(-1);" class="button-secondary"><?php _e( 'Go Back', 'give' ); ?></button>
 		</div>
@@ -254,6 +254,7 @@ function give_reports_earnings() {
 	?>
 	<div class="tablenav top reports-table-nav">
 		<h3 class="alignleft reports-earnings-title"><span><?php _e( 'Earnings Over Time', 'give' ); ?></span></h3>
+
 		<div class="alignright actions reports-views-wrap"><?php give_report_views(); ?></div>
 	</div>
 	<?php
@@ -272,34 +273,38 @@ add_action( 'give_reports_view_earnings', 'give_reports_earnings' );
 function give_reports_tab_export() {
 	?>
 	<div id="give-dashboard-widgets-wrap">
-		<div class="metabox-holder">
-			<div id="post-body">
-				<div id="post-body-content">
+		<div id="post-body">
+			<div id="post-body-content">
 
-					<?php do_action( 'give_reports_tab_export_content_top' ); ?>
+				<?php do_action( 'give_reports_tab_export_content_top' ); ?>
 
-					<div class="postbox give-export-pdf-sales-earnings">
-						<h3><span><?php _e( 'Export PDF of Donations and Earnings', 'give' ); ?></span></h3>
 
-						<div class="inside">
+				<table class="widefat export-options-table give-table">
+					<thead>
+					<tr>
+						<th class="row-title"><?php _e( 'Export Type', 'give' ); ?></th>
+						<th><?php _e( 'Export Options', 'give' ); ?></th>
+					</tr>
+					</thead>
+					<tbody>
+					<?php do_action( 'give_reports_tab_export_table_top' ); ?>
+					<tr class="give-export-pdf-sales-earnings">
+						<td class="row-title">
+							<h3><span><?php _e( 'Export PDF of Donations and Earnings', 'give' ); ?></span></h3>
+
 							<p><?php _e( 'Download a PDF of Donations and Earnings reports for all forms for the current year.', 'give' ); ?></p>
+						</td>
+						<td>
+							<a class="button" href="<?php echo wp_nonce_url( add_query_arg( array( 'give-action' => 'generate_pdf' ) ), 'give_generate_pdf' ); ?>"><?php _e( 'Generate PDF', 'give' ); ?></a>
+						</td>
+					</tr>
+					<tr class="alternate give-export-sales-earnings">
+						<td class="row-title">
+							<h3><span><?php _e( 'Export Earnings and Donation Stats', 'give' ); ?></span></h3>
 
-							<p>
-								<a class="button" href="<?php echo wp_nonce_url( add_query_arg( array( 'give-action' => 'generate_pdf' ) ), 'give_generate_pdf' ); ?>"><?php _e( 'Generate PDF', 'give' ); ?></a>
-							</p>
-						</div>
-						<!-- .inside -->
-					</div>
-					<!-- .postbox -->
-
-					<div class="postbox give-export-sales-earnings">
-						<h3><span><?php _e( 'Export Earnings and Donation Stats', 'give' ); ?></span></h3>
-
-						<div class="inside">
 							<p><?php _e( 'Download a CSV of earnings and sales over time.', 'give' ); ?></p>
-
-							<p>
-
+						</td>
+						<td>
 							<form method="post">
 								<?php echo Give()->html->year_dropdown( 'start_year' ); ?>
 								<?php echo Give()->html->month_dropdown( 'start_month' ); ?>
@@ -309,19 +314,15 @@ function give_reports_tab_export() {
 								<input type="hidden" name="give-action" value="earnings_export" />
 								<input type="submit" value="<?php _e( 'Generate CSV', 'give' ); ?>" class="button-secondary" />
 							</form>
-							</p>
-						</div>
-						<!-- .inside -->
-					</div>
-					<!-- .postbox -->
+						</td>
+					</tr>
+					<tr class="give-export-payment-history">
+						<td class="row-title">
+							<h3><span><?php _e( 'Export Donation History', 'give' ); ?></span></h3>
 
-					<div class="postbox give-export-payment-history">
-						<h3><span><?php _e( 'Export Payment History', 'give' ); ?></span></h3>
-
-						<div class="inside">
-							<p><?php _e( 'Download a CSV of all payments recorded.', 'give' ); ?></p>
-
-							<p>
+							<p><?php _e( 'Download a CSV of all donations recorded.', 'give' ); ?></p>
+						</td>
+						<td>
 
 							<form method="post">
 								<?php echo Give()->html->year_dropdown(); ?>
@@ -338,20 +339,16 @@ function give_reports_tab_export() {
 								<input type="hidden" name="give-action" value="payment_export" />
 								<input type="submit" value="<?php _e( 'Generate CSV', 'give' ); ?>" class="button-secondary" />
 							</form>
-							</p>
-						</div>
-						<!-- .inside -->
-					</div>
-					<!-- .postbox -->
 
-					<div class="postbox give-export-customers">
-						<h3><span><?php _e( 'Export Customers in CSV', 'give' ); ?></span></h3>
+						</td>
+					</tr>
+					<tr class="alt give-export-customers">
+						<td class="row-title">
+							<h3><span><?php _e( 'Export Givers in CSV', 'give' ); ?></span></h3>
 
-						<div class="inside">
-							<p><?php _e( 'Download a CSV of all customer emails. Optionally export only customers that have purchased a particular product. Note, if you have a large number of customers, exporting the purchase stats may fail.', 'give' ); ?></p>
-
-							<p>
-
+							<p><?php _e( 'Download a CSV of all givers\' emails. Optionally export only givers that have donated to a particular form. Note: if you have a large number of givers, exporting the donation stats may fail.', 'give' ); ?></p>
+						</td>
+						<td>
 							<form method="post" id="give_customer_export">
 								<select name="give_export_download" id="give_customer_export_download">
 									<option value="0"><?php printf( __( 'All %s', 'give' ), give_get_forms_label_plural() ); ?></option>
@@ -375,20 +372,18 @@ function give_reports_tab_export() {
 								<input type="hidden" name="give-action" value="email_export" />
 								<input type="submit" value="<?php _e( 'Generate CSV', 'give' ); ?>" class="button-secondary" />
 							</form>
-							</p>
-						</div>
-						<!-- .inside -->
-					</div>
-					<!-- .postbox -->
+						</td>
+					</tr>
+					<?php do_action( 'give_reports_tab_export_table_bottom' ); ?>
+					</tbody>
+				</table>
 
-					<?php do_action( 'give_reports_tab_export_content_bottom' ); ?>
+				<?php do_action( 'give_reports_tab_export_content_bottom' ); ?>
 
-				</div>
-				<!-- .post-body-content -->
 			</div>
-			<!-- .post-body -->
+			<!-- .post-body-content -->
 		</div>
-		<!-- .metabox-holder -->
+		<!-- .post-body -->
 	</div><!-- #give-dashboard-widgets-wrap -->
 <?php
 }
