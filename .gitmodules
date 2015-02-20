@@ -1,0 +1,3 @@
+[submodule "includes/admin/libraries/cmb2"]
+	path = includes/admin/libraries/cmb2
+	url = https://github.com/DevinWalker/CMB2.git

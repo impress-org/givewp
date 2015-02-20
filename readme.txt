@@ -11,7 +11,7 @@ Give is the best plugin to quickly and easily accept donations on your WordPress
 
 == Description ==
 
-Give is a robust donation plugin for WordPress that . Prior to Give there's was no single go to solution for accepting donations on WordPress. Your options included using a full fledged e-commerce platform like WooCommerce or Easy Digital Downloads. The problem with this is their systems weren't built for donations. This leads you to purchase several extensions, fumble through
+Give is a robust donation plugin for WordPress that's . Prior to Give there's was no single go to solution for accepting donations on WordPress. Your options included using a full fledged e-commerce platform like WooCommerce or Easy Digital Downloads. The problem with this is their systems weren't built for donations. This leads you to purchase several extensions, fumble through
 
 = Simple and Pain Free Giving =
 
