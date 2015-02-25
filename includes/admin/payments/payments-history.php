@@ -30,7 +30,7 @@ function give_payment_history_page() {
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/view-order-details.php';
 	} else {
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/class-payments-table.php';
-		$payments_table = new GIVE_Payment_History_Table();
+		$payments_table = new Give_Payment_History_Table();
 		$payments_table->prepare_items();
 	?>
 	<div class="wrap">

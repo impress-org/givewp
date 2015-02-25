@@ -121,9 +121,9 @@ function give_get_users_purchased_products( $user = 0, $status = 'complete' ) {
 
 	// Get all the items purchased
 	$purchase_data = array();
-	foreach ( $purchase_history as $purchase ) {
-		$purchase_data[] = give_get_payment_meta_downloads( $purchase->ID );
-	}
+//	foreach ( $purchase_history as $purchase ) {
+//		$purchase_data[] = give_get_payment_meta_downloads( $purchase->ID );
+//	}
 
 	if ( empty( $purchase_data ) ) {
 		return false;
@@ -162,61 +162,6 @@ function give_get_users_purchased_products( $user = 0, $status = 'complete' ) {
 	) );
 
 	return apply_filters( 'give_users_purchased_products_list', get_posts( $args ) );
-}
-
-/**
- * Has User Purchased
- *
- * Checks to see if a user has purchased a download.
- *
- * @access      public
- * @since       1.0
- *
- * @param       int   $user_id           - the ID of the user to check
- * @param       array $downloads         - Array of IDs to check if purchased. If an int is passed, it will be converted to an array
- * @param       int   $variable_price_id - the variable price ID to check for
- *
- * @return      boolean - true if has purchased, false otherwise
- */
-function give_has_user_purchased( $user_id, $downloads, $variable_price_id = null ) {
-
-	if ( empty( $user_id ) ) {
-		return false;
-	}
-
-	$users_purchases = give_get_users_purchases( $user_id );
-
-	$return = false;
-
-	if ( ! is_array( $downloads ) ) {
-		$downloads = array( $downloads );
-	}
-
-	if ( $users_purchases ) {
-		foreach ( $users_purchases as $purchase ) {
-
-			$purchased_files = give_get_payment_meta_downloads( $purchase->ID );
-
-			if ( is_array( $purchased_files ) ) {
-				foreach ( $purchased_files as $download ) {
-					if ( in_array( $download['id'], $downloads ) ) {
-						$variable_prices = give_has_variable_prices( $download['id'] );
-						if ( $variable_prices && ! is_null( $variable_price_id ) && $variable_price_id !== false ) {
-							if ( isset( $download['options']['price_id'] ) && $variable_price_id == $download['options']['price_id'] ) {
-								return true;
-							} else {
-								$return = false;
-							}
-						} else {
-							$return = true;
-						}
-					}
-				}
-			}
-		}
-	}
-
-	return $return;
 }
 
 /**

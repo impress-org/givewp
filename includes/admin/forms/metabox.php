@@ -3,7 +3,7 @@
  * Metabox Functions
  *
  * @package     Give
- * @subpackage  Admin/Downloads
+ * @subpackage  Admin/Forms
  * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
@@ -35,6 +35,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 
 	// Start with an underscore to hide fields from custom fields list
 	$prefix = '_give_';
+
 
 	/**
 	 * Repeatable Field Groups
@@ -84,7 +85,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 						'sortable'      => true, // beta
 					),
 					// Fields array works the same, except id's only need to be unique for this group. Prefix is not needed.
-					'fields'  => array(
+					'fields'  => apply_filters( 'give_donation_levels_table_row', array(
 						array(
 							'name' => __( 'ID', 'give' ),
 							'id'   => $prefix . 'id',
@@ -119,7 +120,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 								'class' => 'donation-level-radio',
 							),
 						),
-					),
+					) ),
 				),
 				//Display Style
 				array(
@@ -159,7 +160,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 		'title'        => __( 'Form Content', 'give' ),
 		'object_types' => array( 'give_forms' ),
 		'context'      => 'normal',
-		'priority'     => 'high',
+		'priority'     => 'core',
 		'fields'       => apply_filters( 'give_forms_content_options_metabox_fields', array(
 				//Donation Option
 				array(
@@ -194,7 +195,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 		'title'        => __( 'Terms and Conditions', 'give' ),
 		'object_types' => array( 'give_forms' ),
 		'context'      => 'normal',
-		'priority'     => 'high',
+		'priority'     => 'core',
 		'fields'       => apply_filters( 'give_forms_terms_options_metabox_fields', array(
 				//Donation Option
 				array(
@@ -229,12 +230,15 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 		)
 	) );
 
+	/**
+	 * Display Options Aside
+	 */
 	$meta_boxes['form_display_options'] = apply_filters( 'give_form_display_options', array(
 			'id'           => 'form_display_options',
 			'title'        => __( 'Form Display Options', 'cmb2' ),
 			'object_types' => array( 'give_forms' ),
-			'context'      => 'side', //  'normal', 'advanced', or 'side'
-			'priority'     => 'low', //  'high', 'core', 'default' or 'low'
+			'context'      => 'normal', //  'normal', 'advanced', or 'side'
+			'priority'     => 'core', //  'high', 'core', 'default' or 'low'
 			'show_names'   => true, // Show field names on the left
 			'fields'       => apply_filters( 'give_forms_display_options_metabox_fields', array(
 					array(
@@ -249,7 +253,6 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 						),
 						'default' => 'onpage',
 					),
-
 					array(
 						'id'         => $prefix . 'reveal_label',
 						'name'       => __( 'Reveal / Modal Open Text', 'give' ),
@@ -259,7 +262,6 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 							'placeholder' => __( 'Donate Now', 'give' ),
 						),
 					),
-
 					array(
 						'id'         => $prefix . 'checkout_label',
 						'name'       => __( 'Complete Donation Text', 'give' ),
@@ -316,7 +318,9 @@ function give_cmb_render_levels_repeater_header() {
 			<div class="table-cell col-amount"><?php _e( 'Amount', 'give' ); ?></div>
 			<div class="table-cell col-text"><?php _e( 'Text', 'give' ); ?></div>
 			<div class="table-cell col-default"><?php _e( 'Default', 'give' ); ?></div>
+			<?php do_action( 'give_donation_levels_table_head' ); ?>
 			<div class="table-cell col-sort"><?php _e( 'Sort', 'give' ); ?></div>
+
 		</div>
 	</div>
 

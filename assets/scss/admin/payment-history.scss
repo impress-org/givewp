@@ -11,11 +11,6 @@
 #give-payment-filters, .give-submit-wrap {
   clear: both;
   background: #f5f5f5;
-  background-image: -webkit-gradient(linear, left bottom, left top, from(#f5f5f5), to(#fafafa));
-  background-image: -webkit-linear-gradient(bottom, #f5f5f5, #fafafa);
-  background-image: -moz-linear-gradient(bottom, #f5f5f5, #fafafa);
-  background-image: -o-linear-gradient(bottom, #f5f5f5, #fafafa);
-  background-image: linear-gradient(to top, #f5f5f5, #fafafa);
   border-color: #dfdfdf;
   overflow: auto;
   margin: 8px 0;
@@ -26,12 +21,47 @@
   line-height: 2.1em;
 }
 
-#give-payments-filter ul.subsubsub {
-  margin-bottom: 8px;
+#give-payment-filters {
+  p {
+	color: #777;
+  }
+  ul.subsubsub {
+	margin-bottom: 8px;
+  }
+  label {
+	font-style: italic;
+	margin: 0 10px;
+
+	&.give-start-date-label {
+	  margin-left: 5px;
+	}
+
+  }
+
 }
 
-#give-payment-filters p {
-  color: #777;
+#give-payments-filter {
+  ul.subsubsub {
+	margin: 0 0 12px;
+  }
+  .tablenav.top {
+	float: none;
+	.bulkactions {
+	  margin-top: 1px;
+	  padding-top: 0;
+	}
+
+  }
+
+  .give-email-column-value {
+	font-size: 14px;
+	font-weight: bold;
+  }
+
+  #the-list .check-column input {
+	margin-top: 1px;
+  }
+
 }
 
 tr.status-refunded td {
@@ -76,7 +106,6 @@ tr.status-refunded td {
   margin-left: -8px;
   margin-top: -8px;
 }
-
 
 /* Payment Details
 -------------------------------------------------------------- */
@@ -234,12 +263,6 @@ tr.status-refunded td {
   }
 }
 
-@media screen and (min-width: 851px) {
-  #give-purchased-files .inside li.actions {
-	text-align: right;
-  }
-}
-
 @media screen and (max-width: 1024px) {
   #give-edit-order-form .column {
 	width: 49%;
@@ -247,9 +270,6 @@ tr.status-refunded td {
 }
 
 @media screen and (max-width: 1280px) and (min-width: 1279px) {
-  #give-purchased-files .inside li.actions {
-	width: 35%;
-  }
 
   #give-edit-order-form .column {
 	width: 32%;
@@ -257,8 +277,7 @@ tr.status-refunded td {
 }
 
 @media screen and (min-width: 1280px) {
-  #give-edit-order-form .column, #give-purchased-files.columns-3 .row > ul > li,
-  #give-purchased-files.columns-3 .inside > ul > li {
+  #give-edit-order-form .column {
 	width: 32%;
 	margin-right: 3%;
   }

@@ -804,7 +804,8 @@ CC Validation
 #give_purchase_form_wrap input.give-input.card-number.valid {
   background-image: url('../assets/images/tick.png');
   background-repeat: no-repeat;
-  background-position: 98% 50%; }
+  background-position: 98% 50%;
+  background-size: 16px; }
 #give_purchase_form_wrap span.card-type {
   position: absolute;
   top: -2px;

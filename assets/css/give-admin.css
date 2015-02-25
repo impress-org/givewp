@@ -272,33 +272,33 @@ ASIDE
 .give-graph .y2Axis {
   color: #546e7a !important; }
 
-body.give_forms_page_give-reports h2.nav-tab-wrapper {
+body.give_forms_page_give-reports h2.nav-tab-wrapper, body.give_forms_page_give-payment-history h2.nav-tab-wrapper {
   margin-bottom: 10px; }
-body.give_forms_page_give-reports .tablenav {
+body.give_forms_page_give-reports .tablenav, body.give_forms_page_give-payment-history .tablenav {
   clear: none;
   float: left;
   margin: 0 0 10px; }
-body.give_forms_page_give-reports .reports-table-nav.tablenav.top {
+body.give_forms_page_give-reports .reports-table-nav.tablenav.top, body.give_forms_page_give-payment-history .reports-table-nav.tablenav.top {
   width: 100%;
   float: none;
   margin: 0 0 10px; }
-body.give_forms_page_give-reports .reports-forms-details-wrap.top {
+body.give_forms_page_give-reports .reports-forms-details-wrap.top, body.give_forms_page_give-payment-history .reports-forms-details-wrap.top {
   float: right;
   overflow: hidden; }
-  body.give_forms_page_give-reports .reports-forms-details-wrap.top #give-reports-filter {
+  body.give_forms_page_give-reports .reports-forms-details-wrap.top #give-reports-filter, body.give_forms_page_give-payment-history .reports-forms-details-wrap.top #give-reports-filter {
     float: left; }
-  body.give_forms_page_give-reports .reports-forms-details-wrap.top > .actions {
+  body.give_forms_page_give-reports .reports-forms-details-wrap.top > .actions, body.give_forms_page_give-payment-history .reports-forms-details-wrap.top > .actions {
     padding-right: 0; }
-body.give_forms_page_give-reports .tablenav.bottom {
+body.give_forms_page_give-reports .tablenav.bottom, body.give_forms_page_give-payment-history .tablenav.bottom {
   margin-top: 10px; }
-body.give_forms_page_give-reports h3.reports-earnings-title {
+body.give_forms_page_give-reports h3.reports-earnings-title, body.give_forms_page_give-payment-history h3.reports-earnings-title {
   margin: 7px 0 0; }
-body.give_forms_page_give-reports .reports-views-wrap {
+body.give_forms_page_give-reports .reports-views-wrap, body.give_forms_page_give-payment-history .reports-views-wrap {
   padding: 3px 0 0; }
-body.give_forms_page_give-reports .wrap.give-reports-customers-wrap {
+body.give_forms_page_give-reports .wrap.give-reports-customers-wrap, body.give_forms_page_give-payment-history .wrap.give-reports-customers-wrap {
   margin-right: 0;
   margin-bottom: 10px; }
-body.give_forms_page_give-reports .widefat tbody td, body.give_forms_page_give-reports .widefat tbody th {
+body.give_forms_page_give-reports .widefat tbody td, body.give_forms_page_give-reports .widefat tbody th, body.give_forms_page_give-payment-history .widefat tbody td, body.give_forms_page_give-payment-history .widefat tbody th {
   padding-top: 12px;
   padding-bottom: 12px; }
 
@@ -432,9 +432,6 @@ Settings
 #give-payment-filters, .give-submit-wrap {
   clear: both;
   background: #f5f5f5;
-  background-image: -webkit-gradient(linear, left bottom, left top, from(#f5f5f5), to(#fafafa));
-  background-image: -webkit-linear-gradient(bottom, #f5f5f5, #fafafa);
-  background-image: linear-gradient(to top, #f5f5f5, #fafafa);
   border-color: #dfdfdf;
   overflow: auto;
   margin: 8px 0;
@@ -444,11 +441,28 @@ Settings
   font-size: 13px;
   line-height: 2.1em; }
 
-#give-payments-filter ul.subsubsub {
-  margin-bottom: 8px; }
-
 #give-payment-filters p {
   color: #777; }
+#give-payment-filters ul.subsubsub {
+  margin-bottom: 8px; }
+#give-payment-filters label {
+  font-style: italic;
+  margin: 0 10px; }
+  #give-payment-filters label.give-start-date-label {
+    margin-left: 5px; }
+
+#give-payments-filter ul.subsubsub {
+  margin: 0 0 12px; }
+#give-payments-filter .tablenav.top {
+  float: none; }
+  #give-payments-filter .tablenav.top .bulkactions {
+    margin-top: 1px;
+    padding-top: 0; }
+#give-payments-filter .give-email-column-value {
+  font-size: 14px;
+  font-weight: bold; }
+#give-payments-filter #the-list .check-column input {
+  margin-top: 1px; }
 
 tr.status-refunded td {
   background: #cecece;
@@ -597,22 +611,16 @@ tr.status-refunded td {
   .order-data-column input[type="email"] {
     padding: 6px 10px; } }
 
-@media screen and (min-width: 851px) {
-  #give-purchased-files .inside li.actions {
-    text-align: right; } }
-
 @media screen and (max-width: 1024px) {
   #give-edit-order-form .column {
     width: 49%; } }
 
 @media screen and (max-width: 1280px) and (min-width: 1279px) {
-  #give-purchased-files .inside li.actions {
-    width: 35%; }
   #give-edit-order-form .column {
     width: 32%; } }
 
 @media screen and (min-width: 1280px) {
-  #give-edit-order-form .column, #give-purchased-files.columns-3 .row > ul > li, #give-purchased-files.columns-3 .inside > ul > li {
+  #give-edit-order-form .column {
     width: 32%;
     margin-right: 3%; }
   #give-edit-order-form .columns-4 .column, #give-purchased-files.columns-4 .row > ul > li, #give-purchased-files.columns-4 .inside > ul > li {

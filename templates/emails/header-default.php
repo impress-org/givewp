@@ -18,7 +18,7 @@ $wrapper = "
 	width:100%;
 	-webkit-text-size-adjust:none !important;
 	margin:0;
-	padding: 70px 0 70px 0;
+	padding: 30px 0 50px 0;
 ";
 $template_container = "
 	box-shadow:0 0 0 1px #f3f3f3 !important;
@@ -78,11 +78,11 @@ $header_img = give_get_option( 'email_logo', '' );
 							<?php echo '<p style="margin-top:0;"><img src="' . esc_url( $header_img ) . '" alt="' . get_bloginfo( 'name' ) . '" /></p>'; ?>
 						</div>
 					<?php endif; ?>
-					<table border="0" cellpadding="0" cellspacing="0" width="520" id="template_container" style="<?php echo $template_container; ?>">
+					<table border="0" cellpadding="0" cellspacing="0" width="600" id="template_container" style="<?php echo $template_container; ?>">
 						<tr>
 							<td align="center" valign="top">
 								<!-- Header -->
-								<table border="0" cellpadding="0" cellspacing="0" width="520" id="template_header" style="<?php echo $template_header; ?>" bgcolor="#ffffff">
+								<table border="0" cellpadding="0" cellspacing="0" width="600" id="template_header" style="<?php echo $template_header; ?>" bgcolor="#ffffff">
 									<tr>
 										<td>
 											<h1 style="<?php echo $header_content_h1; ?>"><?php echo Give()->emails->get_heading(); ?></h1>
@@ -95,7 +95,7 @@ $header_img = give_get_option( 'email_logo', '' );
 						<tr>
 							<td align="center" valign="top">
 								<!-- Body -->
-								<table border="0" cellpadding="0" cellspacing="0" width="520" id="template_body">
+								<table border="0" cellpadding="0" cellspacing="0" width="600" id="template_body">
 									<tr>
 										<td valign="top" style="<?php echo $body_content; ?>">
 											<!-- Content -->
