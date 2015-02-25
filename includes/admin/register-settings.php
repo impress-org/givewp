@@ -54,7 +54,7 @@ class Give_Plugin_Settings {
 		add_action( 'cmb2_render_default_gateway', 'give_default_gateway_callback', 10, 5 );
 		add_action( 'cmb2_render_email_preview_buttons', 'give_email_preview_buttons_callback', 10, 5 );
 		add_action( 'cmb2_render_system_info', 'give_system_info_callback', 10, 5 );
-
+		add_action( 'cmb2_render_license_key', 'give_license_key_callback', 10, 5 );
 
 	}
 
@@ -90,16 +90,19 @@ class Give_Plugin_Settings {
 	 */
 	public function give_get_settings_tabs() {
 
+		$settings = $this->give_settings(null);
+
 		$tabs             = array();
 		$tabs['general']  = __( 'General', 'give' );
 		$tabs['gateways'] = __( 'Payment Gateways', 'give' );
 		$tabs['display']  = __( 'Display Options', 'give' );
 		$tabs['emails']   = __( 'Emails', 'give' );
 
-		if ( ! empty( $settings['extensions'] ) ) {
-			$tabs['extensions'] = __( 'Extensions', 'give' );
+		if ( ! empty($settings['addons']['fields']) ) {
+			$tabs['addons'] = __( 'Add-ons', 'give' );
 		}
-		if ( ! empty( $settings['licenses'] ) ) {
+
+		if ( ! empty( $settings['licenses']['fields'] ) ) {
 			$tabs['licenses'] = __( 'Licenses', 'give' );
 		}
 
@@ -149,7 +152,7 @@ class Give_Plugin_Settings {
 	/**
 	 * Define General Settings Metabox and field configurations.
 	 *
-	 * Filters are provided for each settings section to allow extensions and other plugins to add their own settings
+	 * Filters are provided for each settings section to allow add-ons and other plugins to add their own settings
 	 *
 	 * @param $active_tab
 	 *
@@ -313,7 +316,7 @@ class Give_Plugin_Settings {
 				)
 			),
 			/** Display Settings */
-			'display'  => array(
+			'display'     => array(
 				'id'         => 'options_page',
 				'give_title' => __( 'Display Settings', 'give' ),
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
@@ -418,9 +421,9 @@ class Give_Plugin_Settings {
 				)
 			),
 			/** Extension Settings */
-			'extensions'  => array(
+			'addons'      => array(
 				'id'         => 'options_page',
-				'give_title' => __( 'Give Extension Settings', 'give' ),
+				'give_title' => __( 'Give Add-ons Settings', 'give' ),
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
 				'fields'     => apply_filters( 'give_settings_extensions', array()
 				)
@@ -449,6 +452,11 @@ class Give_Plugin_Settings {
 				)
 			),
 		);
+
+		//Return all settings array if necessary
+		if ( $active_tab === null ) {
+			return apply_filters( 'give_registered_settings', $give_settings );
+		}
 
 		// Add other tabs and settings fields as needed
 		return apply_filters( 'give_registered_settings', $give_settings[ $active_tab ] );
@@ -677,6 +685,48 @@ function give_modify_cmb2_form_output( $form_format, $object_id, $cmb ) {
 	return $form_format;
 
 }
+
+
+/**
+ * Registers the license field callback for Software Licensing
+ *
+ * @since 1.0
+ *
+ * @param array $args         Arguments passed by the setting
+ *
+ * @global      $give_options Array of all the EDD Options
+ * @return void
+ */
+if ( ! function_exists( 'give_license_key_callback' ) ) {
+	function give_license_key_callback( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
+
+		$id                = $field_type_object->field->args['id'];
+		$field_description = $field_type_object->field->args['desc'];
+		$license_status    = get_option( $field_type_object->field->args['options']['is_valid_license_option'] );
+		$field_classes     = 'regular-text give-license-field';
+
+		if ( $license_status === 'valid' ) {
+			$field_classes .= ' give-license-active';
+		}
+
+		$html = $field_type_object->input(
+			array(
+				'class' => $field_classes,
+				'type'  => 'text'
+			) );
+
+		if ( $license_status === 'valid' ) {
+			$html .= '<input type="submit" class="button-secondary give-license-deactivate" name="' . $id . '_deactivate" value="' . __( 'Deactivate License', 'give' ) . '"/>';
+		}
+
+		$html .= '<label for="give_settings[' . $id . ']"> ' . $field_description . '</label>';
+
+		wp_nonce_field( $id . '-nonce', $id . '-nonce' );
+
+		echo $html;
+	}
+}
+
 
 /**
  * Hook Callback

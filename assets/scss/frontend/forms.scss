@@ -194,13 +194,18 @@ form[id*='give-form'] {
 
   .card-expiration {
 	> select {
-	  width: 47%;
+	  width: 44%;
 	  margin: 0;
 	}
 	> span.exp-divider {
 	  display: inline;
 	  text-align: center;
 	}
+
+	select.card-expiry-year {
+	  float: right;
+	}
+
   }
 
 }

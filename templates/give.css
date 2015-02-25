@@ -616,11 +616,13 @@ form[id*='give-form'] {
   form[id*='give-form'] .give-required-indicator {
     color: #a00; }
   form[id*='give-form'] .card-expiration > select {
-    width: 47%;
+    width: 44%;
     margin: 0; }
   form[id*='give-form'] .card-expiration > span.exp-divider {
     display: inline;
     text-align: center; }
+  form[id*='give-form'] .card-expiration select.card-expiry-year {
+    float: right; }
 
 /*---------------------------------
 Form Price & Amount

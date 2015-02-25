@@ -7,23 +7,23 @@ Stable tag: 1.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Give is the best plugin to quickly and easily accept donations on your WordPress powered website.
+Democratizing Generosity - Bringing everyone the power to accept donations freely on their WordPress website.
 
 == Description ==
 
-Give is a robust donation plugin for WordPress that's . Prior to Give there's was no single go to solution for accepting donations on WordPress. Your options included using a full fledged e-commerce platform like WooCommerce or Easy Digital Downloads. The problem with this is their systems weren't built for donations. This leads you to purchase several extensions, fumble through
+Give is a robust plugin that allows you to accept donations on your WordPress powered website. Prior to Give there's was no single go to solution for accepting donations on WordPress. Your options included using an e-commerce platform or a forms plugin. The problem is that's not what they were built for. Sure there are a few other donation specific plugins out there, but not like Give.
 
 = Simple and Pain Free Giving =
 
-No bouncing outside your site and no “platforms” to integrate. Give works great right in WordPress.
+Give works great right in WordPress in a way that you're already familiar in working. Simply install the plugin and take the tour to get started. For new users, reviewing our videos and documentation is always a good idea to get an understanding of how the plugin works. If you run into any trouble, support is here to help.
 
-= Zero Commission Charge =
+= Zero Commission Charges =
 
-We earn money by selling premium features, not from your Mission. Raised dollars go to support you cause. Period.
+We earn money by selling Add-on features, not from your Mission. Raised dollars go to support you cause. Period.
 
 = Easy to Customize and Enhance =
 
-Built by WordImpress, our plugins are built from the ground up to be intuitive and easy to use. Coupled with the plugin is a support team that is dedicated, fast to respond, and always willing to squash bugs and help troubleshoot.
+Built by WordImpress, our plugins are built from the ground up to be intuitive and easy to use. Bundled with the plugin is a support team that is dedicated, fast to respond, and always willing to squash bugs and help troubleshoot.
 
 = Connect with Give =
 
@@ -35,7 +35,7 @@ GitHub:
 
 = Contribute to Give =
 
-
+This plugin is open source and we're always looking for more contributors. Whether you know another language, can code like no ones business, or just have an idea or suggestion, we would love your help and input. To contribute to Give please head over to our website or view/fork/watch the GitHub repository to learn more about what issues we're tackling and about the project.
 
 == Installation ==
 
@@ -62,12 +62,11 @@ Automatic updates should work like a charm; as always though, ensure you backup 
 
 == Frequently Asked Questions ==
 
-
 == Screenshots ==
 
 == Changelog ==
 
 = 1.0 =
 
-* Initial plugin release
+* Initial plugin release. Yippee!
 

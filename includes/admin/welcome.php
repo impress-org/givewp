@@ -494,7 +494,7 @@ class Give_Welcome {
 			return $contributors;
 		}
 
-		$response = wp_remote_get( 'https://api.github.com/repos/WordImpress/give/contributors', array( 'sslverify' => false ) );
+		$response = wp_remote_get( 'https://api.github.com/repos/WordImpress/Give/contributors', array( 'sslverify' => false ) );
 
 		if ( is_wp_error( $response ) || 200 != wp_remote_retrieve_response_code( $response ) ) {
 			return array();

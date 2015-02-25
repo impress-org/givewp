@@ -184,6 +184,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-session.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-html-elements.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-logging.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-license-handler.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/country-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/template-functions.php';
@@ -219,7 +220,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 			if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-footer.php';
-//				require_once GIVE_PLUGIN_DIR . 'includes/admin/welcome.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/welcome.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-notices.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-actions.php';

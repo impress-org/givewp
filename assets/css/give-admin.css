@@ -401,6 +401,25 @@ Settings
 #give-download-sysinfo {
   margin: 0; }
 
+/* License
+-------------------------------------------------------------- */
+.cmb2-wrap .give-license-deactivate {
+  margin: 1px 0 0 10px;
+  height: 30px; }
+.cmb2-wrap .give-license-field {
+  background-image: url('../images/close.png');
+  background-color: #FFF;
+  background-repeat: no-repeat;
+  background-position: 98.5% center;
+  background-size: 18px; }
+.cmb2-wrap .give-license-active, .cmb2-wrap .give-license-active:focus {
+  background-image: url('../images/tick.png');
+  background-color: #FFF;
+  background-repeat: no-repeat;
+  background-position: 98.5% center;
+  outline: none;
+  background-size: 16px; }
+
 /**
  * Give Payment History SCSS
  *
