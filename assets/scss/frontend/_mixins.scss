@@ -14,6 +14,11 @@
 		clear: both;
 	}
 }
+
+.give-clearfix {
+  @include clearfix;
+}
+
 /**
  * Box Sizing
  * https://github.com/timrogers/sass-box-sizing-mixin

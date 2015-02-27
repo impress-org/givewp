@@ -122,7 +122,7 @@ jQuery( document ).ready( function ( $ ) {
 
 		//Submit form via AJAX
 		$.post( give_global_vars.ajaxurl, this_form.serialize() + '&action=give_process_checkout&give_ajax=true', function ( data ) {
-			console.log( data );
+
 			if ( $.trim( data ) == 'success' ) {
 				//Remove any errors
 				this_form.find( '.give_errors' ).remove();

@@ -14,6 +14,14 @@
 /**
  * Clearfix
  */
+.give-clearfix {
+  *zoom: 1; }
+  .give-clearfix:before, .give-clearfix:after {
+    content: " ";
+    display: table; }
+  .give-clearfix:after {
+    clear: both; }
+
 /**
  * Box Sizing
  * https://github.com/timrogers/sass-box-sizing-mixin
@@ -686,7 +694,8 @@ Notices, Warnings & Errors
   background: #F9F9F9;
   padding: 1em 1em 1em 2em;
   border-left: 4px solid #a00;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.125); }
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.125);
+  clear: both; }
   .give_error > p {
     margin: 0 !important; }
   .give_error:before {

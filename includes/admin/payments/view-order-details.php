@@ -52,398 +52,400 @@ $gateway        = give_get_payment_gateway( $payment_id );
 $currency_code  = give_get_payment_currency_code( $payment_id );
 ?>
 <div class="wrap give-wrap">
-<h2><?php printf( __( 'Payment %s', 'give' ), $number ); ?></h2>
-<?php do_action( 'give_view_order_details_before', $payment_id ); ?>
-<form id="give-edit-order-form" method="post">
-<?php do_action( 'give_view_order_details_form_top', $payment_id ); ?>
-<div id="poststuff">
-<div id="give-dashboard-widgets-wrap">
-<div id="post-body" class="metabox-holder columns-2">
-<div id="postbox-container-1" class="postbox-container">
-	<div id="side-sortables" class="meta-box-sortables ui-sortable">
+	<h2><?php printf( __( 'Payment %s', 'give' ), $number ); ?></h2>
+	<?php do_action( 'give_view_order_details_before', $payment_id ); ?>
+	<form id="give-edit-order-form" method="post">
+		<?php do_action( 'give_view_order_details_form_top', $payment_id ); ?>
+		<div id="poststuff">
+			<div id="give-dashboard-widgets-wrap">
+				<div id="post-body" class="metabox-holder columns-2">
+					<div id="postbox-container-1" class="postbox-container">
+						<div id="side-sortables" class="meta-box-sortables ui-sortable">
 
-		<?php do_action( 'give_view_order_details_sidebar_before', $payment_id ); ?>
-
-
-		<div id="give-order-update" class="postbox give-order-data">
-
-			<h3 class="hndle">
-				<span><?php _e( 'Update Payment', 'give' ); ?></span>
-			</h3>
-
-			<div class="inside">
-				<div class="give-admin-box">
-
-					<?php do_action( 'give_view_order_details_totals_before', $payment_id ); ?>
-
-					<div class="give-admin-box-inside">
-						<p>
-							<span class="label"><?php _e( 'Status:', 'give' ); ?></span>&nbsp;
-							<select name="give-payment-status" class="medium-text">
-								<?php foreach ( give_get_payment_statuses() as $key => $status ) : ?>
-									<option value="<?php esc_attr_e( $key ); ?>"<?php selected( give_get_payment_status( $item, true ), $status ); ?>><?php esc_html_e( $status ); ?></option>
-								<?php endforeach; ?>
-							</select>
-						</p>
-					</div>
-
-					<div class="give-admin-box-inside">
-						<p>
-							<span class="label"><?php _e( 'Date:', 'give' ); ?></span>&nbsp;
-							<input type="text" name="give-payment-date" value="<?php esc_attr_e( date( 'm/d/Y', $payment_date ) ); ?>" class="medium-text give_datepicker" />
-						</p>
-					</div>
-
-					<div class="give-admin-box-inside">
-						<p>
-							<span class="label"><?php _e( 'Time:', 'give' ); ?></span>&nbsp;
-							<input type="number" step="1" max="24" name="give-payment-time-hour" value="<?php esc_attr_e( date_i18n( 'H', $payment_date ) ); ?>" class="small-text give-payment-time-hour" />&nbsp;:&nbsp;
-							<input type="number" step="1" max="59" name="give-payment-time-min" value="<?php esc_attr_e( date( 'i', $payment_date ) ); ?>" class="small-text give-payment-time-min" />
-						</p>
-					</div>
-
-					<?php do_action( 'give_view_order_details_update_inner', $payment_id ); ?>
-
-					<?php
-					$fees = give_get_payment_fees( $payment_id );
-					if ( ! empty( $fees ) ) : ?>
-						<div class="give-order-fees give-admin-box-inside">
-							<p class="strong"><?php _e( 'Fees', 'give' ); ?>:</p>
-							<ul class="give-payment-fees">
-								<?php foreach ( $fees as $fee ) : ?>
-									<li>
-										<span class="fee-label"><?php echo $fee['label'] . ':</span> ' . '<span class="fee-amount" data-fee="' . esc_attr( $fee['amount'] ) . '">' . give_currency_filter( $fee['amount'], $currency_code ); ?></span>
-									</li>
-								<?php endforeach; ?>
-							</ul>
-						</div>
-					<?php endif; ?>
+							<?php do_action( 'give_view_order_details_sidebar_before', $payment_id ); ?>
 
 
-					<div class="give-order-payment give-admin-box-inside">
-						<p>
-							<span class="label"><?php _e( 'Total Price', 'give' ); ?>:</span>&nbsp;
-							<?php echo give_currency_symbol( $payment_meta['currency'] ); ?>&nbsp;<input name="give-payment-total" type="text" class="small-text" value="<?php echo esc_attr( give_format_amount( give_get_payment_amount( $payment_id ) ) ); ?>" />
-						</p>
-					</div>
+							<div id="give-order-update" class="postbox give-order-data">
 
-					<div class="give-order-payment-recalc-totals give-admin-box-inside" style="display:none">
-						<p>
-							<span class="label"><?php _e( 'Recalculate Totals', 'give' ); ?>:</span>&nbsp;
-							<a href="" id="give-order-recalc-total" class="button button-secondary right"><?php _e( 'Recalculate', 'give' ); ?></a>
-						</p>
-					</div>
+								<h3 class="hndle">
+									<span><?php _e( 'Update Payment', 'give' ); ?></span>
+								</h3>
 
-					<?php do_action( 'give_view_order_details_totals_after', $payment_id ); ?>
+								<div class="inside">
+									<div class="give-admin-box">
 
-				</div>
-				<!-- /.give-admin-box -->
+										<?php do_action( 'give_view_order_details_totals_before', $payment_id ); ?>
 
-			</div>
-			<!-- /.inside -->
+										<div class="give-admin-box-inside">
+											<p>
+												<span class="label"><?php _e( 'Status:', 'give' ); ?></span>&nbsp;
+												<select name="give-payment-status" class="medium-text">
+													<?php foreach ( give_get_payment_statuses() as $key => $status ) : ?>
+														<option value="<?php esc_attr_e( $key ); ?>"<?php selected( give_get_payment_status( $item, true ), $status ); ?>><?php esc_html_e( $status ); ?></option>
+													<?php endforeach; ?>
+												</select>
+											</p>
+										</div>
 
-			<div class="give-order-update-box give-admin-box">
-				<?php do_action( 'give_view_order_details_update_before', $payment_id ); ?>
-				<div id="major-publishing-actions">
-					<div id="publishing-action">
-						<input type="submit" class="button button-primary right" value="<?php esc_attr_e( 'Save Payment', 'give' ); ?>" />
-						<?php if ( give_is_payment_complete( $payment_id ) ) : ?>
-							<a href="<?php echo add_query_arg( array(
-								'give-action' => 'email_links',
-								'purchase_id' => $payment_id
-							) ); ?>" id="give-resend-receipt" class="button-secondary right"><?php _e( 'Resend Receipt', 'give' ); ?></a>
-						<?php endif; ?>
-					</div>
-					<div class="clear"></div>
-				</div>
-				<?php do_action( 'give_view_order_details_update_after', $payment_id ); ?>
-			</div>
-			<!-- /.give-order-update-box -->
+										<div class="give-admin-box-inside">
+											<p>
+												<span class="label"><?php _e( 'Date:', 'give' ); ?></span>&nbsp;
+												<input type="text" name="give-payment-date" value="<?php esc_attr_e( date( 'm/d/Y', $payment_date ) ); ?>" class="medium-text give_datepicker" />
+											</p>
+										</div>
 
-		</div>
-		<!-- /#give-order-data -->
+										<div class="give-admin-box-inside">
+											<p>
+												<span class="label"><?php _e( 'Time:', 'give' ); ?></span>&nbsp;
+												<input type="number" step="1" max="24" name="give-payment-time-hour" value="<?php esc_attr_e( date_i18n( 'H', $payment_date ) ); ?>" class="small-text give-payment-time-hour" />&nbsp;:&nbsp;
+												<input type="number" step="1" max="59" name="give-payment-time-min" value="<?php esc_attr_e( date( 'i', $payment_date ) ); ?>" class="small-text give-payment-time-min" />
+											</p>
+										</div>
 
-		<div id="give-order-details" class="postbox give-order-data">
+										<?php do_action( 'give_view_order_details_update_inner', $payment_id ); ?>
 
-			<h3 class="hndle">
-				<span><?php _e( 'Payment Meta', 'give' ); ?></span>
-			</h3>
-
-			<div class="inside">
-				<div class="give-admin-box">
-
-					<?php do_action( 'give_view_order_details_payment_meta_before', $payment_id ); ?>
-
-					<?php
-					$gateway = give_get_payment_gateway( $payment_id );
-					if ( $gateway ) : ?>
-						<div class="give-order-gateway give-admin-box-inside">
-							<p>
-								<span class="label"><?php _e( 'Gateway:', 'give' ); ?></span>&nbsp;
-								<?php echo give_get_gateway_admin_label( $gateway ); ?>
-							</p>
-						</div>
-					<?php endif; ?>
-
-					<div class="give-order-payment-key give-admin-box-inside">
-						<p>
-							<span class="label"><?php _e( 'Key:', 'give' ); ?></span>&nbsp;
-							<span><?php echo give_get_payment_key( $payment_id ); ?></span>
-						</p>
-					</div>
-
-					<div class="give-order-ip give-admin-box-inside">
-						<p>
-							<span class="label"><?php _e( 'IP:', 'give' ); ?></span>&nbsp;
-							<span><?php esc_attr_e( give_get_payment_user_ip( $payment_id ) ); ?></span>
-						</p>
-					</div>
-
-					<?php if ( $transaction_id ) : ?>
-						<div class="give-order-tx-id give-admin-box-inside">
-							<p>
-								<span class="label"><?php _e( 'Transaction ID:', 'give' ); ?></span>&nbsp;
-								<span><?php echo apply_filters( 'give_payment_details_transaction_id-' . $gateway, $transaction_id, $payment_id ); ?></span>
-							</p>
-						</div>
-					<?php endif; ?>
-
-					<div class="give-admin-box-inside">
-						<p><?php $purchase_url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . esc_attr( give_get_payment_user_email( $payment_id ) ) ); ?>
-							<a href="<?php echo $purchase_url; ?>"><?php _e( 'View all purchases of customer', 'give' ); ?></a>
-						</p>
-					</div>
-
-					<?php do_action( 'give_view_order_details_payment_meta_after', $payment_id ); ?>
-
-				</div>
-				<!-- /.column-container -->
-
-			</div>
-			<!-- /.inside -->
-
-		</div>
-		<!-- /#give-order-data -->
-
-		<?php do_action( 'give_view_order_details_sidebar_after', $payment_id ); ?>
-
-	</div>
-	<!-- /#side-sortables -->
-</div>
-<!-- /#postbox-container-1 -->
-
-<div id="postbox-container-2" class="postbox-container">
-	<div id="normal-sortables" class="meta-box-sortables ui-sortable">
-
-		<?php do_action( 'give_view_order_details_main_before', $payment_id ); ?>
-
-		<?php $column_count = 'columns-3'; ?>
-		<div id="give-purchased-files" class="postbox <?php echo $column_count; ?>">
-			<h3 class="hndle">
-				<span><?php _e( 'Donation Information', 'give' ); ?></span>
-			</h3>
-
-			<div class="inside">
-
-				<table style="width:100%;text-align:left;">
-					<thead>
-					<tr>
-						<th><?php _e( 'Form ID', 'give' ) ?></th>
-						<th><?php _e( 'Form Title', 'give' ) ?></th>
-						<th><?php _e( 'Date and Time', 'give' ) ?></th>
-						<th><?php _e( 'Total Donation', 'give' ) ?></th>
-					</tr>
-					</thead>
-					<tr>
-						<td>
-							<?php echo $payment_meta['form_id']; ?>
-						</td>
-						<td>
-							<a href="<?php echo get_permalink( $payment_meta['form_id'] ); ?>"><?php echo $payment_meta['form_title']; ?></a>
-						</td>
-						<td><?php echo date( 'm/d/Y', $payment_date ) . ' ' . date_i18n( 'H:i', $payment_date ); ?></td>
-						<td><?php echo esc_attr( give_format_amount( give_get_payment_amount( $payment_id ) ) ); ?></td>
-					</tr>
-				</table>
-
-			</div>
-			<!-- /.inside -->
+										<?php
+										$fees = give_get_payment_fees( $payment_id );
+										if ( ! empty( $fees ) ) : ?>
+											<div class="give-order-fees give-admin-box-inside">
+												<p class="strong"><?php _e( 'Fees', 'give' ); ?>:</p>
+												<ul class="give-payment-fees">
+													<?php foreach ( $fees as $fee ) : ?>
+														<li>
+															<span class="fee-label"><?php echo $fee['label'] . ':</span> ' . '<span class="fee-amount" data-fee="' . esc_attr( $fee['amount'] ) . '">' . give_currency_filter( $fee['amount'], $currency_code ); ?></span>
+														</li>
+													<?php endforeach; ?>
+												</ul>
+											</div>
+										<?php endif; ?>
 
 
-		</div>
-		<!-- /#give-purchased-files -->
+										<div class="give-order-payment give-admin-box-inside">
+											<p>
+												<span class="label"><?php _e( 'Total Price', 'give' ); ?>:</span>&nbsp;
+												<?php echo give_currency_symbol( $payment_meta['currency'] ); ?>&nbsp;<input name="give-payment-total" type="text" class="small-text" value="<?php echo esc_attr( give_format_amount( give_get_payment_amount( $payment_id ) ) ); ?>" />
+											</p>
+										</div>
 
-		<?php do_action( 'give_view_order_details_files_after', $payment_id ); ?>
+										<div class="give-order-payment-recalc-totals give-admin-box-inside" style="display:none">
+											<p>
+												<span class="label"><?php _e( 'Recalculate Totals', 'give' ); ?>:</span>&nbsp;
+												<a href="" id="give-order-recalc-total" class="button button-secondary right"><?php _e( 'Recalculate', 'give' ); ?></a>
+											</p>
+										</div>
 
-		<?php do_action( 'give_view_order_details_billing_before', $payment_id ); ?>
+										<?php do_action( 'give_view_order_details_totals_after', $payment_id ); ?>
 
-		<div id="give-customer-details" class="postbox">
-			<h3 class="hndle">
-				<span><?php _e( 'Customer Details', 'give' ); ?></span>
-			</h3>
+									</div>
+									<!-- /.give-admin-box -->
 
-			<div class="inside give-clearfix">
+								</div>
+								<!-- /.inside -->
 
-				<div class="column-container">
-					<div class="column">
-						<strong><?php _e( 'Name:', 'give' ); ?></strong>&nbsp;
-						<input type="text" name="give-payment-user-name" value="<?php esc_attr_e( $user_info['first_name'] . ' ' . $user_info['last_name'] ); ?>" class="medium-text" />
-					</div>
-					<div class="column">
-						<strong><?php _e( 'Email:', 'give' ); ?></strong>&nbsp;
-						<input type="email" name="give-payment-user-email" value="<?php esc_attr_e( give_get_payment_user_email( $payment_id ) ); ?>" class="medium-text" />
-					</div>
-					<div class="column">
-						<strong><?php _e( 'User ID:', 'give' ); ?></strong>&nbsp;
-						<input type="number" step="1" min="-1" name="give-payment-user-id" value="<?php esc_attr_e( $user_id ); ?>" class="small-text" />
-					</div>
-				</div>
-
-				<?php
-				// The give_payment_personal_details_list hook is left here for backwards compatibility
-				do_action( 'give_payment_personal_details_list', $payment_meta, $user_info );
-				do_action( 'give_payment_view_details', $payment_id );
-				?>
-
-			</div>
-			<!-- /.inside -->
-		</div>
-		<!-- /#give-customer-details -->
-
-		<div id="give-billing-details" class="postbox">
-			<h3 class="hndle">
-				<span><?php _e( 'Billing Address', 'give' ); ?></span>
-			</h3>
-
-			<div class="inside give-clearfix">
-
-				<div id="give-order-address">
-
-					<div class="order-data-address">
-						<div class="data column-container">
-							<div class="column">
-								<p>
-									<strong class="order-data-address-line"><?php _e( 'Street Address Line 1:', 'give' ); ?></strong><br />
-									<input type="text" name="give-payment-address[0][line1]" value="<?php esc_attr_e( $address['line1'] ); ?>" class="medium-text" />
-								</p>
-
-								<p>
-									<strong class="order-data-address-line"><?php _e( 'Street Address Line 2:', 'give' ); ?></strong><br />
-									<input type="text" name="give-payment-address[0][line2]" value="<?php esc_attr_e( $address['line2'] ); ?>" class="medium-text" />
-								</p>
+								<div class="give-order-update-box give-admin-box">
+									<?php do_action( 'give_view_order_details_update_before', $payment_id ); ?>
+									<div id="major-publishing-actions">
+										<div id="publishing-action">
+											<input type="submit" class="button button-primary right" value="<?php esc_attr_e( 'Save Payment', 'give' ); ?>" />
+											<?php if ( give_is_payment_complete( $payment_id ) ) : ?>
+												<a href="<?php echo add_query_arg( array(
+													'give-action' => 'email_links',
+													'purchase_id' => $payment_id
+												) ); ?>" id="give-resend-receipt" class="button-secondary right"><?php _e( 'Resend Receipt', 'give' ); ?></a>
+											<?php endif; ?>
+										</div>
+										<div class="clear"></div>
+									</div>
+									<?php do_action( 'give_view_order_details_update_after', $payment_id ); ?>
+								</div>
+								<!-- /.give-order-update-box -->
 
 							</div>
-							<div class="column">
-								<p>
-									<strong class="order-data-address-line"><?php echo _x( 'City:', 'Address City', 'give' ); ?></strong><br />
-									<input type="text" name="give-payment-address[0][city]" value="<?php esc_attr_e( $address['city'] ); ?>" class="medium-text" />
+							<!-- /#give-order-data -->
 
-								</p>
+							<div id="give-order-details" class="postbox give-order-data">
 
-								<p>
-									<strong class="order-data-address-line"><?php echo _x( 'Zip / Postal Code:', 'Zip / Postal code of address', 'give' ); ?></strong><br />
-									<input type="text" name="give-payment-address[0][zip]" value="<?php esc_attr_e( $address['zip'] ); ?>" class="medium-text" />
+								<h3 class="hndle">
+									<span><?php _e( 'Payment Meta', 'give' ); ?></span>
+								</h3>
 
-								</p>
+								<div class="inside">
+									<div class="give-admin-box">
+
+										<?php do_action( 'give_view_order_details_payment_meta_before', $payment_id ); ?>
+
+										<?php
+										$gateway = give_get_payment_gateway( $payment_id );
+										if ( $gateway ) : ?>
+											<div class="give-order-gateway give-admin-box-inside">
+												<p>
+													<span class="label"><?php _e( 'Gateway:', 'give' ); ?></span>&nbsp;
+													<?php echo give_get_gateway_admin_label( $gateway ); ?>
+												</p>
+											</div>
+										<?php endif; ?>
+
+										<div class="give-order-payment-key give-admin-box-inside">
+											<p>
+												<span class="label"><?php _e( 'Key:', 'give' ); ?></span>&nbsp;
+												<span><?php echo give_get_payment_key( $payment_id ); ?></span>
+											</p>
+										</div>
+
+										<div class="give-order-ip give-admin-box-inside">
+											<p>
+												<span class="label"><?php _e( 'IP:', 'give' ); ?></span>&nbsp;
+												<span><?php esc_attr_e( give_get_payment_user_ip( $payment_id ) ); ?></span>
+											</p>
+										</div>
+
+										<?php if ( $transaction_id ) : ?>
+											<div class="give-order-tx-id give-admin-box-inside">
+												<p>
+													<span class="label"><?php _e( 'Transaction ID:', 'give' ); ?></span>&nbsp;
+													<span><?php echo apply_filters( 'give_payment_details_transaction_id-' . $gateway, $transaction_id, $payment_id ); ?></span>
+												</p>
+											</div>
+										<?php endif; ?>
+
+										<div class="give-admin-box-inside">
+											<p><?php $purchase_url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . esc_attr( give_get_payment_user_email( $payment_id ) ) ); ?>
+												<a href="<?php echo $purchase_url; ?>"><?php _e( 'View all purchases of customer', 'give' ); ?></a>
+											</p>
+										</div>
+
+										<?php do_action( 'give_view_order_details_payment_meta_after', $payment_id ); ?>
+
+									</div>
+									<!-- /.column-container -->
+
+								</div>
+								<!-- /.inside -->
+
 							</div>
-							<div class="column">
-								<p id="give-order-address-country-wrap">
-									<strong class="order-data-address-line"><?php echo _x( 'Country:', 'Address country', 'give' ); ?></strong><br />
+							<!-- /#give-order-data -->
+
+							<?php do_action( 'give_view_order_details_sidebar_after', $payment_id ); ?>
+
+						</div>
+						<!-- /#side-sortables -->
+					</div>
+					<!-- /#postbox-container-1 -->
+
+					<div id="postbox-container-2" class="postbox-container">
+						<div id="normal-sortables" class="meta-box-sortables ui-sortable">
+
+							<?php do_action( 'give_view_order_details_main_before', $payment_id ); ?>
+
+							<?php $column_count = 'columns-3'; ?>
+							<div id="give-purchased-files" class="postbox <?php echo $column_count; ?>">
+								<h3 class="hndle">
+									<span><?php _e( 'Donation Information', 'give' ); ?></span>
+								</h3>
+
+								<div class="inside">
+
+									<table style="width:100%;text-align:left;">
+										<thead>
+										<tr>
+											<th><?php _e( 'Form ID', 'give' ) ?></th>
+											<th><?php _e( 'Form Title', 'give' ) ?></th>
+											<th><?php _e( 'Date and Time', 'give' ) ?></th>
+											<th><?php _e( 'Total Donation', 'give' ) ?></th>
+										</tr>
+										</thead>
+										<tr>
+											<td>
+												<?php echo $payment_meta['form_id']; ?>
+											</td>
+											<td>
+												<a href="<?php echo get_permalink( $payment_meta['form_id'] ); ?>"><?php echo $payment_meta['form_title']; ?></a>
+											</td>
+											<td><?php echo date( 'm/d/Y', $payment_date ) . ' ' . date_i18n( 'H:i', $payment_date ); ?></td>
+											<td><?php echo esc_attr( give_format_amount( give_get_payment_amount( $payment_id ) ) ); ?></td>
+										</tr>
+									</table>
+
+								</div>
+								<!-- /.inside -->
+
+
+							</div>
+							<!-- /#give-purchased-files -->
+
+							<?php do_action( 'give_view_order_details_files_after', $payment_id ); ?>
+
+							<?php do_action( 'give_view_order_details_billing_before', $payment_id ); ?>
+
+							<div id="give-customer-details" class="postbox">
+								<h3 class="hndle">
+									<span><?php _e( 'Customer Details', 'give' ); ?></span>
+								</h3>
+
+								<div class="inside give-clearfix">
+
+									<div class="column-container">
+										<div class="column">
+											<p><strong><?php _e( 'Name:', 'give' ); ?></strong>&nbsp;
+												<input type="text" name="give-payment-user-name" value="<?php esc_attr_e( $user_info['first_name'] . ' ' . $user_info['last_name'] ); ?>" class="medium-text" />
+											</p>
+										</div>
+										<div class="column">
+											<p><strong><?php _e( 'Email:', 'give' ); ?></strong>&nbsp;
+												<input type="email" name="give-payment-user-email" value="<?php esc_attr_e( give_get_payment_user_email( $payment_id ) ); ?>" class="medium-text" />
+											</p>
+										</div>
+										<div class="column">
+											<p><strong><?php _e( 'User ID:', 'give' ); ?></strong>&nbsp;
+						<input type="number" step="1" min="-1" name="give-payment-user-id" value="<?php esc_attr_e( $user_id ); ?>" class="small-text" /></p>
+										</div>
+									</div>
+
 									<?php
-									echo Give()->html->select( array(
-										'options'          => give_get_country_list(),
-										'name'             => 'give-payment-address[0][country]',
-										'selected'         => $address['country'],
-										'show_option_all'  => false,
-										'show_option_none' => false,
-										'select2'          => true,
-										'placeholder'      => __( 'Select a country', 'give' )
-									) );
+									// The give_payment_personal_details_list hook is left here for backwards compatibility
+									do_action( 'give_payment_personal_details_list', $payment_meta, $user_info );
+									do_action( 'give_payment_view_details', $payment_id );
 									?>
-								</p>
 
-								<p id="give-order-address-state-wrap">
-									<strong class="order-data-address-line"><?php echo _x( 'State / Province:', 'State / province of address', 'give' ); ?></strong><br />
-									<?php
-									$states = give_get_shop_states( $address['country'] );
-									if ( ! empty( $states ) ) {
-										echo Give()->html->select( array(
-											'options'          => $states,
-											'name'             => 'give-payment-address[0][state]',
-											'selected'         => $address['state'],
-											'show_option_all'  => false,
-											'show_option_none' => false,
-											'select2'          => true,
-											'placeholder'      => __( 'Select a state', 'give' )
-										) );
-									} else {
-										?>
-										<input type="text" name="give-payment-address[0][state]" value="<?php esc_attr_e( $address['state'] ); ?>" class="medium-text" />
-									<?php
-									} ?>
-								</p>
+								</div>
+								<!-- /.inside -->
 							</div>
+							<!-- /#give-customer-details -->
+
+							<div id="give-billing-details" class="postbox">
+								<h3 class="hndle">
+									<span><?php _e( 'Billing Address', 'give' ); ?></span>
+								</h3>
+
+								<div class="inside give-clearfix">
+
+									<div id="give-order-address">
+
+										<div class="order-data-address">
+											<div class="data column-container">
+												<div class="column">
+													<p>
+														<strong class="order-data-address-line"><?php _e( 'Street Address Line 1:', 'give' ); ?></strong><br />
+														<input type="text" name="give-payment-address[0][line1]" value="<?php esc_attr_e( $address['line1'] ); ?>" class="medium-text" />
+													</p>
+
+													<p>
+														<strong class="order-data-address-line"><?php _e( 'Street Address Line 2:', 'give' ); ?></strong><br />
+														<input type="text" name="give-payment-address[0][line2]" value="<?php esc_attr_e( $address['line2'] ); ?>" class="medium-text" />
+													</p>
+
+												</div>
+												<div class="column">
+													<p>
+														<strong class="order-data-address-line"><?php echo _x( 'City:', 'Address City', 'give' ); ?></strong><br />
+														<input type="text" name="give-payment-address[0][city]" value="<?php esc_attr_e( $address['city'] ); ?>" class="medium-text" />
+
+													</p>
+
+													<p>
+														<strong class="order-data-address-line"><?php echo _x( 'Zip / Postal Code:', 'Zip / Postal code of address', 'give' ); ?></strong><br />
+														<input type="text" name="give-payment-address[0][zip]" value="<?php esc_attr_e( $address['zip'] ); ?>" class="medium-text" />
+
+													</p>
+												</div>
+												<div class="column">
+													<p id="give-order-address-country-wrap">
+														<strong class="order-data-address-line"><?php echo _x( 'Country:', 'Address country', 'give' ); ?></strong><br />
+														<?php
+														echo Give()->html->select( array(
+															'options'          => give_get_country_list(),
+															'name'             => 'give-payment-address[0][country]',
+															'selected'         => $address['country'],
+															'show_option_all'  => false,
+															'show_option_none' => false,
+															'select2'          => true,
+															'placeholder'      => __( 'Select a country', 'give' )
+														) );
+														?>
+													</p>
+
+													<p id="give-order-address-state-wrap">
+														<strong class="order-data-address-line"><?php echo _x( 'State / Province:', 'State / province of address', 'give' ); ?></strong><br />
+														<?php
+														$states = give_get_shop_states( $address['country'] );
+														if ( ! empty( $states ) ) {
+															echo Give()->html->select( array(
+																'options'          => $states,
+																'name'             => 'give-payment-address[0][state]',
+																'selected'         => $address['state'],
+																'show_option_all'  => false,
+																'show_option_none' => false,
+																'select2'          => true,
+																'placeholder'      => __( 'Select a state', 'give' )
+															) );
+														} else {
+															?>
+															<input type="text" name="give-payment-address[0][state]" value="<?php esc_attr_e( $address['state'] ); ?>" class="medium-text" />
+														<?php
+														} ?>
+													</p>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- /#give-order-address -->
+
+									<?php do_action( 'give_payment_billing_details', $payment_id ); ?>
+
+								</div>
+								<!-- /.inside -->
+							</div>
+							<!-- /#give-billing-details -->
+
+							<?php do_action( 'give_view_order_details_billing_after', $payment_id ); ?>
+
+							<div id="give-payment-notes" class="postbox">
+								<h3 class="hndle"><span><?php _e( 'Payment Notes', 'give' ); ?></span></h3>
+
+								<div class="inside">
+									<div id="give-payment-notes-inner">
+										<?php
+										$notes = give_get_payment_notes( $payment_id );
+										if ( ! empty( $notes ) ) :
+											$no_notes_display = ' style="display:none;"';
+											foreach ( $notes as $note ) :
+
+												echo give_get_payment_note_html( $note, $payment_id );
+
+											endforeach;
+										else :
+											$no_notes_display = '';
+										endif;
+										echo '<p class="give-no-payment-notes"' . $no_notes_display . '>' . __( 'No payment notes', 'give' ) . '</p>';
+										?>
+									</div>
+									<textarea name="give-payment-note" id="give-payment-note" class="large-text"></textarea>
+
+									<p class="give-clearfix">
+										<button id="give-add-payment-note" class="button button-secondary button-small" data-payment-id="<?php echo absint( $payment_id ); ?>"><?php _e( 'Add Note', 'give' ); ?></button>
+									</p>
+
+									<div class="clear"></div>
+								</div>
+								<!-- /.inside -->
+							</div>
+							<!-- /#give-payment-notes -->
+
+							<?php do_action( 'give_view_order_details_main_after', $payment_id ); ?>
 						</div>
+						<!-- /#normal-sortables -->
 					</div>
+					<!-- #postbox-container-2 -->
 				</div>
-				<!-- /#give-order-address -->
-
-				<?php do_action( 'give_payment_billing_details', $payment_id ); ?>
-
+				<!-- /#post-body -->
 			</div>
-			<!-- /.inside -->
+			<!-- #give-dashboard-widgets-wrap -->
 		</div>
-		<!-- /#give-billing-details -->
-
-		<?php do_action( 'give_view_order_details_billing_after', $payment_id ); ?>
-
-		<div id="give-payment-notes" class="postbox">
-			<h3 class="hndle"><span><?php _e( 'Payment Notes', 'give' ); ?></span></h3>
-
-			<div class="inside">
-				<div id="give-payment-notes-inner">
-					<?php
-					$notes = give_get_payment_notes( $payment_id );
-					if ( ! empty( $notes ) ) :
-						$no_notes_display = ' style="display:none;"';
-						foreach ( $notes as $note ) :
-
-							echo give_get_payment_note_html( $note, $payment_id );
-
-						endforeach;
-					else :
-						$no_notes_display = '';
-					endif;
-					echo '<p class="give-no-payment-notes"' . $no_notes_display . '>' . __( 'No payment notes', 'give' ) . '</p>';
-					?>
-				</div>
-				<textarea name="give-payment-note" id="give-payment-note" class="large-text"></textarea>
-
-				<p>
-					<button id="give-add-payment-note" class="button button-secondary right" data-payment-id="<?php echo absint( $payment_id ); ?>"><?php _e( 'Add Note', 'give' ); ?></button>
-				</p>
-
-				<div class="clear"></div>
-			</div>
-			<!-- /.inside -->
-		</div>
-		<!-- /#give-payment-notes -->
-
-		<?php do_action( 'give_view_order_details_main_after', $payment_id ); ?>
-	</div>
-	<!-- /#normal-sortables -->
-</div>
-<!-- #postbox-container-2 -->
-</div>
-<!-- /#post-body -->
-</div>
-<!-- #give-dashboard-widgets-wrap -->
-</div>
-<!-- /#post-stuff -->
-<?php do_action( 'give_view_order_details_form_bottom', $payment_id ); ?>
-<?php wp_nonce_field( 'give_update_payment_details_nonce' ); ?>
-<input type="hidden" name="give_payment_id" value="<?php echo esc_attr( $payment_id ); ?>" />
-<input type="hidden" name="give_action" value="update_payment_details" />
-</form>
-<?php do_action( 'give_view_order_details_after', $payment_id ); ?>
+		<!-- /#post-stuff -->
+		<?php do_action( 'give_view_order_details_form_bottom', $payment_id ); ?>
+		<?php wp_nonce_field( 'give_update_payment_details_nonce' ); ?>
+		<input type="hidden" name="give_payment_id" value="<?php echo esc_attr( $payment_id ); ?>" />
+		<input type="hidden" name="give_action" value="update_payment_details" />
+	</form>
+	<?php do_action( 'give_view_order_details_after', $payment_id ); ?>
 </div><!-- /.wrap -->

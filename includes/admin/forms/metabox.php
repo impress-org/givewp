@@ -54,10 +54,10 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'id'          => $prefix . 'price_option',
 					'type'        => 'radio_inline',
 					'default'     => 'set',
-					'options'     => array(
+					'options'     => apply_filters( 'give_forms_price_options', array(
 						'set'   => __( 'Set Donation', 'give' ),
 						'multi' => __( 'Multi-level Donation', 'give' ),
-					),
+					) ),
 				),
 				array(
 					'name'         => __( 'Set Amount', 'give' ),
@@ -81,7 +81,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'type'    => 'group',
 					'options' => array(
 						'add_button'    => __( 'Add Level', 'give' ),
-						'remove_button' => __( 'Remove Level', 'give' ),
+						'remove_button' => __( '<span class="dashicons dashicons-no"></span>', 'give' ),
 						'sortable'      => true, // beta
 					),
 					// Fields array works the same, except id's only need to be unique for this group. Prefix is not needed.
