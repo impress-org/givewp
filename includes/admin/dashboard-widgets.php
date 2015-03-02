@@ -53,18 +53,25 @@ function give_dashboard_sales_widget() {
 					'publish',
 					'revoked'
 				) ); ?><?php echo give_format_amount( $donations_today, false ); ?>
-				<span><?php echo _x( 'orders today', 'Displays in WP admin dashboard widget after number of orders provided', 'give' ); ?></span>
+				<span><?php echo _x( 'donations today', 'Displays in WP admin dashboard widget after the day\'s total donations', 'give' ); ?></span>
 			</p>
 
 			<p class="give-last-seven"><?php
 				echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, '6 days ago 00:00', 'now' ) ) ); ?>
-				<span><?php echo _x( 'last seven days', 'Displays in WP admin dashboard widget after number of orders provided', 'give' ); ?></span>
+				<span><?php echo _x( 'last seven days', 'Displays in WP admin dashboard widget after the total number of donation provided', 'give' ); ?></span>
 			</p>
 
 		</div>
 
 
 		<table class="give-table-stats">
+			<thead style="display: none;">
+			<tr>
+				<th>This Week</th>
+				<th>This Month</th>
+				<th>Past 30 Days</th>
+			</tr>
+			</thead>
 			<tbody>
 			<tr>
 				<td>

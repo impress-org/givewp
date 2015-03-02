@@ -52,6 +52,7 @@
 	width: 100%;
 	text-align: center;
 	margin:0 0 10px;
+	table-layout: fixed;
 
 	.give-dashboard-stat-total, .give-dashboard-stat-total-label {
 	  padding: 0;
@@ -61,7 +62,7 @@
 	.give-dashboard-stat-total {
 	  color: #4ead61;
 	  font-weight: bold;
-	  font-size: 13px;
+	  font-size: 16px;
 	}
 
   }
