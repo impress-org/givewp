@@ -227,6 +227,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/system-info.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/export-functions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/add-ons.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/dashboard-widgets.php';
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/actions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/payments-history.php';

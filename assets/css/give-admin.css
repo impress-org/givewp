@@ -262,6 +262,71 @@ ASIDE
   line-height: 1.5; }
 
 /**
+ * Give Add-ons SCSS
+ *
+ * @description Add-on Styles
+ * @package     Give
+ * @subpackage  SCSS/Admin
+ * @copyright   Copyright (c) 2015, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+.type-download {
+  float: left;
+  margin: 0 1em 1em 0 !important;
+  padding: 0;
+  vertical-align: top;
+  width: 280px;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid #ddd;
+  display: block;
+  min-height: 365px;
+  overflow: hidden;
+  background: #f5f5f5;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  -webkit-transition-property: border, background, color;
+  transition-property: border, background, color;
+  -webkit-transition-duration: .05s;
+  transition-duration: .05s;
+  -webkit-transition-timing-function: ease-in-out;
+  transition-timing-function: ease-in-out;
+  position: relative; }
+  .type-download:hover {
+    border: 1px solid #d1d1d1; }
+  .type-download > .featured-img > img {
+    border-bottom: 1px solid #ddd; }
+  .type-download .addon-content {
+    *zoom: 1;
+    padding: 15px 20px; }
+    .type-download .addon-content:before, .type-download .addon-content:after {
+      content: " ";
+      display: table; }
+    .type-download .addon-content:after {
+      clear: both; }
+    .type-download .addon-content .addon-heading {
+      margin: 0 0 10px; }
+      .type-download .addon-content .addon-heading a {
+        outline: none;
+        text-decoration: none; }
+  .type-download .addon-footer-wrap {
+    border-top: 1px solid #ddd;
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    width: 100%;
+    background-color: #FFF;
+    padding: 15px 20px; }
+
+.give-view-addons-all span.dashicons, .type-download span.dashicons {
+  width: 16px;
+  height: 16px;
+  font-size: 14px;
+  margin: 6px 0 0 0; }
+
+.give-view-addons-all span.dashicons {
+  margin-left: 3px; }
+
+/**
  * Give Reports SCSS
  *
  * @description Payment History Styles
@@ -668,6 +733,51 @@ tr.status-refunded td {
 @media screen and (max-width: 1284px) {
   #give-edit-order-form .column strong {
     display: block; } }
+
+/**
+ * Give Admin Dashboard SCSS
+ *
+ * @description Styles the Give dashboard widget
+ * @package     Give
+ * @subpackage  SCSS/Admin
+ * @copyright   Copyright (c) 2015, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+.give-dashboard-widget .give-dashboard-today {
+  text-align: center; }
+  .give-dashboard-widget .give-dashboard-today .give-dashboard-date-today {
+    margin: 10px 0 0;
+    padding: 0; }
+  .give-dashboard-widget .give-dashboard-today .give-dashboard-happy-day {
+    padding: 3px;
+    margin: 0; }
+  .give-dashboard-widget .give-dashboard-today .give-dashboard-today-earnings {
+    font-size: 42px;
+    color: #4ead61;
+    font-weight: bold;
+    margin: 15px 0 0;
+    line-height: 1; }
+  .give-dashboard-widget .give-dashboard-today .give-orders-today {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+    padding: 8px 0 1px; }
+  .give-dashboard-widget .give-dashboard-today .give-last-seven {
+    font-size: 14px;
+    font-weight: bold;
+    padding: 0;
+    margin: 0 0 30px; }
+.give-dashboard-widget .give-table-stats {
+  width: 100%;
+  text-align: center;
+  margin: 0 0 10px; }
+  .give-dashboard-widget .give-table-stats .give-dashboard-stat-total, .give-dashboard-widget .give-table-stats .give-dashboard-stat-total-label {
+    padding: 0;
+    margin: 0; }
+  .give-dashboard-widget .give-table-stats .give-dashboard-stat-total {
+    color: #4ead61;
+    font-weight: bold;
+    font-size: 13px; }
 
 
 /*# sourceMappingURL=maps/give-admin.css.map */

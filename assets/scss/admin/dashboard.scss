@@ -1,0 +1,69 @@
+/**
+ * Give Admin Dashboard SCSS
+ *
+ * @description Styles the Give dashboard widget
+ * @package     Give
+ * @subpackage  SCSS/Admin
+ * @copyright   Copyright (c) 2015, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+
+.give-dashboard-widget {
+
+  .give-dashboard-today {
+	text-align: center;
+
+	.give-dashboard-date-today {
+	  margin: 10px 0 0;
+	  padding: 0;
+	}
+
+	.give-dashboard-happy-day {
+	  padding: 3px;
+	  margin: 0;
+	}
+
+	.give-dashboard-today-earnings {
+	  font-size: 42px;
+	  color: #4ead61;
+	  font-weight: bold;
+	  margin: 15px 0 0;
+	  line-height: 1;
+	}
+
+	.give-orders-today {
+	  font-size: 18px;
+	  font-weight: bold;
+	  margin: 0;
+	  padding: 8px 0 1px;
+	}
+
+	.give-last-seven {
+	  font-size: 14px;
+	  font-weight: bold;
+	  padding: 0;
+	  margin: 0 0 30px;
+	}
+
+  }
+
+  //Table Stats
+  .give-table-stats {
+	width: 100%;
+	text-align: center;
+	margin:0 0 10px;
+
+	.give-dashboard-stat-total, .give-dashboard-stat-total-label {
+	  padding: 0;
+	  margin: 0;
+	}
+
+	.give-dashboard-stat-total {
+	  color: #4ead61;
+	  font-weight: bold;
+	  font-size: 13px;
+	}
+
+  }
+
+}

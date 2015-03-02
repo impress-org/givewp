@@ -99,7 +99,7 @@ class Give_Stats {
 	 * This calls the convert_date() member function to ensure the dates are formatted correctly
 	 *
 	 * @access public
-	 * @since 1.8
+	 * @since 1.0
 	 * @return void
 	 */
 	public function setup_dates( $_start_date = 'this_month', $_end_date = false ) {
@@ -125,7 +125,7 @@ class Give_Stats {
 	 * Converts a date to a timestamp
 	 *
 	 * @access public
-	 * @since 1.8
+	 * @since 1.0
 	 * @return array|WP_Error If the date is invalid, a WP_Error object will be returned
 	 */
 	public function convert_date( $date, $end_date = false ) {
@@ -159,7 +159,7 @@ class Give_Stats {
 
 						$month = 12;
 						$year--;
-				
+
 					} else {
 
 						$month--;
@@ -173,7 +173,7 @@ class Give_Stats {
 					break;
 
 				case 'today' :
-				
+
 					$day = date( 'd', current_time( 'timestamp' ) );
 
 					if( $end_date ) {
@@ -451,7 +451,7 @@ class Give_Stats {
 	 * Modifies the WHERE flag for payment counts
 	 *
 	 * @access public
-	 * @since 1.8
+	 * @since 1.0
 	 * @return string
 	 */
 	public function count_where( $where = '' ) {
@@ -494,7 +494,7 @@ class Give_Stats {
 	 * Modifies the WHERE flag for payment queries
 	 *
 	 * @access public
-	 * @since 1.8
+	 * @since 1.0
 	 * @return string
 	 */
 	public function payments_where( $where = '' ) {

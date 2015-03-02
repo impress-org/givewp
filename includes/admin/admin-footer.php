@@ -19,21 +19,19 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since        1.0
  * @global        string $typenow
- *
  * @param       string   $footer_text The existing footer text
- *
  * @return      string
  */
 function give_admin_rate_us( $footer_text ) {
 	global $typenow;
 
 	if ( $typenow == 'give_forms' ) {
-		$rate_text = sprintf( __( 'Thank you for using <a href="%1$s" target="_blank">Give</a>! Please <a href="%2$s" target="_blank">rate us</a> on <a href="%2$s" target="_blank">WordPress.org</a>', 'edd' ),
-			'https://wordimpress.com',
-			'https://wordpress.org/support/view/plugin-reviews/give?filter=5#postform'
-		);
+		$rate_text = sprintf( __( 'If you like <strong>Give</strong> please leave us a %s&#9733;&#9733;&#9733;&#9733;&#9733;%s rating. It takes a minute and helps a lot. Thanks in advance!', 'give' ), '<a href="https://wordpress.org/support/view/plugin-reviews/give?filter=5#postform" target="_blank" class="give-rating-link" data-rated="' . __( 'Thanks :)', 'give' ) . '">', '</a>' );
+		wc_enqueue_js( "jQuery('a.give-rating-link').click(function() {
+							jQuery(this).parent().text( jQuery(this).data( 'rated' ) );
+						});" );
 
-		return str_replace( '</span>', '', $footer_text ) . ' | ' . $rate_text . '</span>';
+		return $rate_text;
 	} else {
 		return $footer_text;
 	}

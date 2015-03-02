@@ -42,10 +42,10 @@ function give_add_ons_page() {
 	ob_start(); ?>
 	<div class="wrap" id="give-add-ons">
 		<h2><?php _e( 'Give Add-ons', 'give' ); ?>
-			&nbsp;&mdash;&nbsp;<a href="http://givewp.com/addons/" class="button-primary" title="<?php _e( 'Browse All Extensions', 'give' ); ?>" target="_blank"><?php _e( 'Browse All Add-ons', 'give' ); ?></a>
+			&nbsp;&mdash;&nbsp;<a href="http://givewp.com/addons/" class="button-primary give-view-addons-all" title="<?php _e( 'Browse All Extensions', 'give' ); ?>" target="_blank"><?php _e( 'View All Add-ons', 'give' ); ?><span class="dashicons dashicons-external"></span></a>
 		</h2>
 
-		<p><?php _e( 'These add-ons extend the functionality of Give.', 'give' ); ?></p>
+		<p><?php _e( 'The following Add-ons extend the functionality of Give.', 'give' ); ?></p>
 		<?php echo give_add_ons_get_feed(); ?>
 	</div>
 	<?php
@@ -61,8 +61,8 @@ function give_add_ons_page() {
  * @return void
  */
 function give_add_ons_get_feed() {
-//	if ( false === ( $cache = get_transient( 'give_add_ons_feed' ) ) ) {
-		$feed = wp_remote_get( 'https://givewp.com/addons/feed/', array( 'sslverify' => false ) );
+	if ( false === ( $cache = get_transient( 'give_add_ons_feed' ) ) ) {
+		$feed = wp_remote_get( 'https://givewp.com/downloads/feed/', array( 'sslverify' => false ) );
 
 		if ( ! is_wp_error( $feed ) ) {
 			if ( isset( $feed['body'] ) && strlen( $feed['body'] ) > 0 ) {
@@ -72,7 +72,8 @@ function give_add_ons_get_feed() {
 		} else {
 			$cache = '<div class="error"><p>' . __( 'There was an error retrieving the Give Add-ons list from the server. Please try again later.', 'give' ) . '</div>';
 		}
-//	}
+	}
 
 	return $cache;
+
 }
