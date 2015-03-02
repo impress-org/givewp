@@ -25,13 +25,13 @@ jQuery.noConflict();
 
 		default_radio_one_checked_radio( default_radio );
 
-		////Ensure that there's always a default price level checked
+		//Ensure that there's always a default price level checked
 		$( 'body' ).on( 'cmb2_add_row', function ( e ) {
 			var default_radio = $( 'input.donation-level-radio' );
 			default_radio_one_checked_radio( default_radio );
 		} );
 
-		////When a row is removed containing the default selection then revert default to first repeatable row
+		//When a row is removed containing the default selection then revert default to first repeatable row
 		$( 'body' ).on( 'cmb2_remove_row', function ( e ) {
 			var default_radio = $( 'input.donation-level-radio' );
 			var repeatable_rows = $( '#_give_donation_levels_repeat > .cmb-repeatable-grouping' );
@@ -40,7 +40,7 @@ jQuery.noConflict();
 			}
 		} );
 
-		////If only one price then that one is default
+		//If only one price then that one is default
 		if ( number_of_prices === 1 ) {
 			default_radio.prop( 'checked', true );
 		}
@@ -155,13 +155,55 @@ jQuery.noConflict();
 		} );
 
 
+		/**
+		 * Set Row IDs
+		 *
+		 * @description: Sets values in the Multi-level donation repeatable field
+		 * @param row
+		 */
 		function set_row_ids( row ) {
-			//Get the row ID and add 1 (iterator starts at 0 in CMB2)
-			var row_id = $( row ).data( 'iterator' ) + 1;
+
+			var row_count = count_repeatable_rows();
+
 			//Add row ID value to hidden field
-			$( row ).find( 'input.give-hidden' ).val( row_id );
+			$( row ).find( 'input.give-level-id-input' ).val( row_count );
 			//Add row ID to displayed ID
-			$( row ).find( '.give-level-id' ).text( row_id );
+			$( row ).find( '.give-level-id' ).text( row_count );
+
+
+		}
+
+		/**
+		 * Loops through Multi-level repeater rows
+		 *
+		 * @description: First counts the rows then it compares the row count with the largest iterator count.
+		 *
+		 * @returns {number}
+		 */
+		function count_repeatable_rows() {
+			var row_counter = 0;
+			var row_largest_number = 0;
+			var row_number = 0;
+
+			//Loop through repeatable rows to see what highest ID is currently
+			$( '#_give_donation_levels_repeat > .cmb-repeatable-grouping' ).each( function ( index, value ) {
+
+				row_number = $( this ).find( 'input.give-level-id-input' ).val();
+
+				if(row_number > row_largest_number){
+					row_largest_number = row_number;
+				}
+
+				row_counter++;
+
+			} );
+
+			if ( typeof row_largest_number !== 'undefined' && row_largest_number >= row_counter ) {
+				return (parseInt(row_largest_number) + 1); //ensure no duplicate rows returned
+			} else {
+				return row_counter;
+			}
+
 		}
 
 
