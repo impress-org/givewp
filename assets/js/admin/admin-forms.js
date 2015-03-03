@@ -23,21 +23,8 @@ jQuery.noConflict();
 		var repeatable_rows = $( '#_give_donation_levels_repeat > .cmb-repeatable-grouping' );
 		var number_of_prices = repeatable_rows.length;
 
-		default_radio_one_checked_radio( default_radio );
-
-		//Ensure that there's always a default price level checked
-		$( 'body' ).on( 'cmb2_add_row', function ( e ) {
-			var default_radio = $( 'input.donation-level-radio' );
-			default_radio_one_checked_radio( default_radio );
-		} );
-
-		//When a row is removed containing the default selection then revert default to first repeatable row
-		$( 'body' ).on( 'cmb2_remove_row', function ( e ) {
-			var default_radio = $( 'input.donation-level-radio' );
-			var repeatable_rows = $( '#_give_donation_levels_repeat > .cmb-repeatable-grouping' );
-			if ( default_radio.is( ':checked' ) === false ) {
-				repeatable_rows.first().find( 'input.donation-level-radio' ).prop( 'checked', true );
-			}
+		$( 'body' ).on( 'change', 'input.donation-level-radio', function () {
+			$( 'input.donation-level-radio' ).not( this ).prop( 'checked', false );
 		} );
 
 		//If only one price then that one is default
@@ -45,19 +32,16 @@ jQuery.noConflict();
 			default_radio.prop( 'checked', true );
 		}
 
+		//When a row is removed containing the default selection then revert default to first repeatable row
+		$( 'body' ).on( 'cmb2_remove_row', function ( e ) {
+			var repeatable_rows = $( '#_give_donation_levels_repeat > .cmb-repeatable-grouping' );
+			if (  $( 'input.donation-level-radio' ).is( ':checked' ) === false ) {
+				repeatable_rows.first().find( 'input.donation-level-radio' ).prop( 'checked', true );
+			}
+		} );
+
 	};
 
-	/**
-	 * Only one radio checked
-	 *
-	 * @description: This function runs when a new row is added and also on DOM load
-	 * @since: 1.0
-	 */
-	var default_radio_one_checked_radio = function ( default_radio ) {
-		default_radio.on( 'change', function () {
-			default_radio.not( this ).prop( 'checked', false );
-		} );
-	};
 
 
 	/**
@@ -74,11 +58,18 @@ jQuery.noConflict();
 
 			var price_option_val = $( '.cmb2-id--give-price-option input:radio:checked' ).val();
 			if ( price_option_val === 'set' ) {
-				$( '.cmb2-id--give-set-price' ).show();
-				$( '.cmb2-id--give-levels-header, .cmb2-id--give-levels-header + .cmb-repeat-group-wrap, .cmb2-id--give-display-style' ).hide();
+				//set price shows
+				$( '.cmb2-id--give-set-price, .cmb2-id--give-recurring' ).show();
+				//if recurring conditional equals yes then show subsequent fields
+				if ( $( '#_give_recurring' ).val() == 'yes' ) {
+					$( '.cmb2-id--give-period, .cmb2-id--give-times' ).show();
+				}
+				$( '.cmb2-id--give-levels-header, .cmb2-id--give-levels-header + .cmb-repeat-group-wrap, .cmb2-id--give-display-style' ).hide(); //hide multi-val stuffs
+
 			} else {
-				$( '.cmb2-id--give-set-price' ).hide();
-				$( '.cmb2-id--give-levels-header, .cmb2-id--give-levels-header + .cmb-repeat-group-wrap, .cmb2-id--give-display-style' ).show();
+				//multi-value shows
+				$( '.cmb2-id--give-set-price, .cmb2-id--give-recurring, .cmb2-id--give-period, .cmb2-id--give-times' ).hide();
+				$( '.cmb2-id--give-levels-header, .cmb2-id--give-levels-header + .cmb-repeat-group-wrap, .cmb2-id--give-display-style' ).show(); //show set stuffs
 			}
 		} ).change();
 
@@ -170,7 +161,6 @@ jQuery.noConflict();
 			//Add row ID to displayed ID
 			$( row ).find( '.give-level-id' ).text( row_count );
 
-
 		}
 
 		/**
@@ -190,7 +180,7 @@ jQuery.noConflict();
 
 				row_number = $( this ).find( 'input.give-level-id-input' ).val();
 
-				if(row_number > row_largest_number){
+				if ( row_number > row_largest_number ) {
 					row_largest_number = row_number;
 				}
 
@@ -199,7 +189,7 @@ jQuery.noConflict();
 			} );
 
 			if ( typeof row_largest_number !== 'undefined' && row_largest_number >= row_counter ) {
-				return (parseInt(row_largest_number) + 1); //ensure no duplicate rows returned
+				return (parseInt( row_largest_number ) + 1); //ensure no duplicate rows returned
 			} else {
 				return row_counter;
 			}
