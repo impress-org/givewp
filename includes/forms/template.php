@@ -87,7 +87,21 @@ function give_get_donation_form( $args = array() ) {
 			<input type="hidden" name="give-form-title" value="<?php echo htmlentities( $form->post_title ); ?>" />
 			<input type="hidden" name="give-current-url" value="<?php echo htmlspecialchars( get_permalink() ); ?>" />
 			<input type="hidden" name="give-form-url" value="<?php echo htmlspecialchars( get_permalink( $post_id ) ); ?>" />
-
+			<?php
+			//Price ID hidden field for variable (mult-level) donation forms
+			if ( give_has_variable_prices( $post_id ) ) {
+				//get default selected price ID
+				$prices   = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $post_id ), $post_id );
+				$price_id = 0;
+				//loop through prices
+				foreach ( $prices as $price ) {
+					if ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) {
+						$price_id = $price['_give_id']['level_id'];
+					};
+				}
+				?>
+				<input type="hidden" name="give-price-id" value="<?php echo $price_id; ?>" />
+			<?php } ?>
 			<?php
 
 			do_action( 'give_checkout_form_top', $form->ID, $args );
@@ -1089,22 +1103,6 @@ function give_checkout_hidden_fields( $form_id ) {
 	<?php } ?>
 	<input type="hidden" name="give_action" value="purchase" />
 	<input type="hidden" name="give-gateway" value="<?php echo give_get_chosen_gateway( $form_id ); ?>" />
-	<?php if ( give_has_variable_prices( $form_id ) ) {
-
-		//get default selected price ID
-		$prices = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
-		$price_id = 0;
-		//loop through prices
-		foreach ( $prices as $price ) {
-			if(isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ){
-				$price_id = $price['_give_id']['level_id'];
-			};
-
-		}
-		?>
-		<input type="hidden" name="give-price-id" value="<?php echo $price_id; ?>" />
-	<?php } ?>
-
 <?php
 }
 

@@ -47,10 +47,7 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 
 	do_action( 'give_pre_complete_purchase', $payment_id );
 
-
-	//$price_id = isset( $download['options']['price_id'] ) ? (int) $download['options']['price_id'] : false;
-
-	$price_id = null;
+	$price_id = isset( $_POST['give-price-id'] ) ? (int) $_POST['give-price-id'] : false;
 
 	// Ensure these actions only run once, ever
 	if ( empty( $completed_date ) ) {
