@@ -60,7 +60,7 @@ jQuery( document ).ready( function ( $ ) {
 
 	function give_validate_card( field ) {
 
-		var form = field.parents('form' ),
+		var form = field.parents( 'form' ),
 			card_field = field;
 
 		card_field.validateCreditCard( function ( result ) {
@@ -144,8 +144,18 @@ jQuery( document ).ready( function ( $ ) {
 		update_multiselect_vals( $( this ) );
 	} );
 
+
 	//Helper function: Sets the multiselect amount values
 	function update_multiselect_vals( selected_field ) {
+
+		var parent_form = selected_field.parents( 'form' );
+		var this_amount = selected_field.val();
+		var price_id = selected_field.data( 'price-id' );
+
+		//check if price ID blank because of dropdown type
+		if(!price_id){
+			price_id = selected_field.find('option:selected' ).data('price-id');
+		}
 
 		//Fade in/out price updating image
 		$( '.give-updating-price-loader' ).fadeIn().fadeOut();
@@ -155,12 +165,15 @@ jQuery( document ).ready( function ( $ ) {
 		$( selected_field ).addClass( 'give-default-level' );
 
 
-		var this_amount = $( selected_field ).val();
+		//update price id field for variable products
+		parent_form.find( 'input[name=give-price-id]' ).val(price_id);
+
 		//update custom amount field
-		$( selected_field ).parents( 'form' ).find( '#give-amount' ).val( this_amount );
+		parent_form.find( '#give-amount' ).val( this_amount );
 		//update checkout data-total
-		$( selected_field ).parents( 'form' ).find( '.give-final-total-amount' ).data( 'total', this_amount ).text( this_amount );
+		parent_form.find( '.give-final-total-amount' ).data( 'total', this_amount ).text( this_amount );
 
 	}
+
 
 } );

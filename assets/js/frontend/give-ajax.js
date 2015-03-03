@@ -73,7 +73,7 @@ jQuery( document ).ready( function ( $ ) {
 	} );
 
 	//Switch the gateway on gateway select field change
-	$( 'select#give-gateway, input.give-gateway' ).change( function ( e ) {
+	$( 'select#give-gateway, input.give-gateway' ).on( 'change', function ( e ) {
 
 		e.preventDefault();
 

@@ -54,8 +54,8 @@ function give_get_donation_form( $args = array() ) {
 	$payment_mode = give_get_chosen_gateway( $form->ID );
 
 	$form_action = add_query_arg( apply_filters( 'give_form_action_args', array(
-			'payment-mode' => $payment_mode,
-		) ),
+		'payment-mode' => $payment_mode,
+	) ),
 		get_permalink()
 	);
 
@@ -241,7 +241,7 @@ function give_output_donation_levels( $form_id = 0, $args = array() ) {
 				<input class="give-text-input" id="give-amount" name="give-amount" type="text" placeholder="" value="<?php echo $default_amount; ?>" required autocomplete="off">
 				<?php if ( $currency_position == 'after' ) {
 					echo $currency_output;
-				}  ?>
+				} ?>
 
 				<p class="give-loading-text give-updating-price-loader" style="display: none;">
 					<span class="give-loading-animation"></span> <?php _e( 'Updating Price', 'Give' ); ?>
@@ -288,7 +288,7 @@ function give_output_levels( $form_id ) {
 				$counter ++;
 
 				$output .= '<li>';
-				$output .= '<button class="give-donation-level-btn give-btn give-btn-level-' . $counter . ' ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'give-default-level' : '' ) . '" value="' . $price['_give_amount'] . '">';
+				$output .= '<button data-price-id="' . $price['_give_id']['level_id'] . '" class="give-donation-level-btn give-btn give-btn-level-' . $counter . ' ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'give-default-level' : '' ) . '" value="' . $price['_give_amount'] . '">';
 				$output .= ( ! empty( $price['_give_text'] ) ? $price['_give_text'] : $price['_give_price'] );
 				$output .= '</button>';
 				$output .= '</li>';
@@ -307,7 +307,7 @@ function give_output_levels( $form_id ) {
 
 				$output .= '<li>';
 
-				$output .= '<input type="radio" class="give-radio-input give-radio-input-level give-radio-level-' . $counter . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? ' give-default-level' : '' ) . '" name="give-radio-donation-level" id="give-radio-level-' . $counter . '" ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'checked="checked"' : '' ) . ' value="' . $price['_give_amount'] . '">';
+				$output .= '<input type="radio" data-price-id="' . $price['_give_id']['level_id'] . '" class="give-radio-input give-radio-input-level give-radio-level-' . $counter . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? ' give-default-level' : '' ) . '" name="give-radio-donation-level" id="give-radio-level-' . $counter . '" ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'checked="checked"' : '' ) . ' value="' . $price['_give_amount'] . '">';
 
 				$output .= '<label for="give-radio-level-' . $counter . '">' . ( ! empty( $price['_give_text'] ) ? $price['_give_text'] : $price['_give_price'] ) . '</label>';
 
@@ -325,7 +325,7 @@ function give_output_levels( $form_id ) {
 			//first loop through prices
 			foreach ( $prices as $price ) {
 
-				$output .= '<option id="give-donation-level-' . $form_id . '" ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'selected="selected"' : '' ) . ' value="' . $price['_give_amount'] . '">';
+				$output .= '<option data-price-id="' . $price['_give_id']['level_id'] . '" id="give-donation-level-' . $form_id . '" ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'selected="selected"' : '' ) . ' value="' . $price['_give_amount'] . '">';
 				$output .= ( ! empty( $price['_give_text'] ) ? $price['_give_text'] : $price['_give_price'] );
 				$output .= '</option>';
 
@@ -842,7 +842,7 @@ function give_payment_mode_select( $form_id ) {
 			<legend class="give-payment-mode-label"><?php _e( 'Select Payment Method', 'give' ); ?></legend>
 			<?php
 
-			do_action( 'give_payment_mode_before_gateways' )  ?>
+			do_action( 'give_payment_mode_before_gateways' ) ?>
 
 			<ul id="give-gateway-radio-list">
 				<?php foreach ( $gateways as $gateway_id => $gateway ) :
@@ -978,11 +978,13 @@ add_action( 'give_purchase_form_after_cc_form', 'give_checkout_submit', 9999 );
  * Renders the Purchase button on the Checkout
  *
  * @since 1.0
- * @global $give_options Array of all the EDD Options
+ * @global    $give_options Array of all the EDD Options
+ *
  * @param int $form_id
+ *
  * @return string
  */
-function give_checkout_button_purchase($form_id) {
+function give_checkout_button_purchase( $form_id ) {
 
 	$display_label_field = get_post_meta( $form_id, '_give_checkout_label', true );
 	$display_label       = ( ! empty( $display_label_field ) ? $display_label_field : __( 'Donate Now', 'give' ) );
@@ -1087,6 +1089,22 @@ function give_checkout_hidden_fields( $form_id ) {
 	<?php } ?>
 	<input type="hidden" name="give_action" value="purchase" />
 	<input type="hidden" name="give-gateway" value="<?php echo give_get_chosen_gateway( $form_id ); ?>" />
+	<?php if ( give_has_variable_prices( $form_id ) ) {
+
+		//get default selected price ID
+		$prices = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
+		$price_id = 0;
+		//loop through prices
+		foreach ( $prices as $price ) {
+			if(isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ){
+				$price_id = $price['_give_id']['level_id'];
+			};
+
+		}
+		?>
+		<input type="hidden" name="give-price-id" value="<?php echo $price_id; ?>" />
+	<?php } ?>
+
 <?php
 }
 

@@ -329,7 +329,7 @@ function give_delete_purchase( $payment_id = 0 ) {
  * Undos a purchase, including the decrease of sale and earning stats. Used for
  * when refunding or deleting a purchase
  *
- * @since 1.0.8.1
+ * @since 1.0
  *
  * @param int $download_id Download (Post) ID
  * @param int $payment_id  Payment ID
@@ -341,7 +341,6 @@ function give_undo_purchase( $download_id, $payment_id ) {
 		return;
 	}
 
-	$cart_details = give_get_payment_meta_cart_details( $payment_id );
 	$user_info    = give_get_payment_meta_user_info( $payment_id );
 
 	if ( is_array( $cart_details ) ) {
@@ -555,7 +554,7 @@ function give_get_payment_status( $payment, $return_label = false ) {
 /**
  * Retrieves all available statuses for payments.
  *
- * @since 1.0.8.1
+ * @since 1.0
  * @return array $payment_status All the available payment statuses
  */
 function give_get_payment_statuses() {
@@ -585,7 +584,7 @@ function give_get_payment_statuses() {
  */
 function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour = null ) {
 
-	// This is getting deprecated soon. Use EDD_Payment_Stats with the get_earnings() method instead
+	// This is getting deprecated soon. Use Give_Payment_Stats with the get_earnings() method instead
 
 	global $wpdb;
 
@@ -628,7 +627,7 @@ function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour
 /**
  * Get Sales By Date
  *
- * @since  1.1.4.0
+ * @since  1.0
  * @author Sunny Ratilal
  *
  * @param int $day       Day number
@@ -640,8 +639,7 @@ function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour
  */
 function give_get_sales_by_date( $day = null, $month_num = null, $year = null, $hour = null ) {
 
-	// This is getting deprecated soon. Use EDD_Payment_Stats with the get_sales() method instead
-
+	// This is getting deprecated soon. Use Give_Payment_Stats with the get_sales() method instead
 	$args = array(
 		'post_type'              => 'give_payment',
 		'nopaging'               => true,
@@ -682,7 +680,7 @@ function give_get_sales_by_date( $day = null, $month_num = null, $year = null, $
 /**
  * Checks whether a payment has been marked as complete.
  *
- * @since 1.0.8
+ * @since 1.0
  *
  * @param int $payment_id Payment ID to check against
  *

@@ -47,7 +47,8 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 
 	do_action( 'give_pre_complete_purchase', $payment_id );
 
-	//	$price_id = isset( $download['options']['price_id'] ) ? (int) $download['options']['price_id'] : false;
+
+	//$price_id = isset( $download['options']['price_id'] ) ? (int) $download['options']['price_id'] : false;
 
 	$price_id = null;
 
@@ -56,13 +57,13 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 
 		if ( ! give_is_test_mode() || apply_filters( 'give_log_test_payment_stats', false ) ) {
 
-			give_record_sale_in_log( $payment_meta["form_id"], $payment_id, $price_id, $creation_date );
-			give_increase_purchase_count( $payment_meta["form_id"] );
-			give_increase_earnings( $payment_meta["form_id"], $amount );
+			give_record_sale_in_log( $payment_meta['form_id'], $payment_id, $price_id, $creation_date );
+			give_increase_purchase_count( $payment_meta['form_id'] );
+			give_increase_earnings( $payment_meta['form_id'], $amount );
 
 		}
 
-		do_action( 'give_complete_form_donation', $payment_meta["form_id"], $payment_id, $payment_meta );
+		do_action( 'give_complete_form_donation', $payment_meta['form_id'], $payment_id, $payment_meta );
 	}
 
 
