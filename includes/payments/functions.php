@@ -326,54 +326,39 @@ function give_delete_purchase( $payment_id = 0 ) {
 }
 
 /**
- * Undos a purchase, including the decrease of sale and earning stats. Used for
- * when refunding or deleting a purchase
+ * Undoes a donation, including the decrease of sale and earning stats. Used for when refunding or deleting a donation
  *
  * @since 1.0
  *
- * @param int $download_id Download (Post) ID
+ * @param int $form_id Form (Post) ID
  * @param int $payment_id  Payment ID
  *
  * @return void
  */
-function give_undo_purchase( $download_id, $payment_id ) {
+function give_undo_purchase( $form_id, $payment_id ) {
+
 	if ( give_is_test_mode() ) {
 		return;
 	}
 
-	$user_info    = give_get_payment_meta_user_info( $payment_id );
+	// get the item's price
+	$amount = isset( $item['price'] ) ? $item['price'] : false;
 
-	if ( is_array( $cart_details ) ) {
+	// variable priced donations
+	if ( give_has_variable_prices( $form_id ) ) {
 
-		foreach ( $cart_details as $item ) {
+		$price_id = isset( $item['item_number']['options']['price_id'] ) ? $item['item_number']['options']['price_id'] : null;
 
-			// Decrease earnings/sales and fire action once per quantity number
-			for ( $i = 0; $i < $item['quantity']; $i ++ ) {
-
-				// get the item's price
-				$amount = isset( $item['price'] ) ? $item['price'] : false;
-
-				// variable priced donations
-				if ( give_has_variable_prices( $download_id ) ) {
-					$price_id = isset( $item['item_number']['options']['price_id'] ) ? $item['item_number']['options']['price_id'] : null;
-					$amount   = ! isset( $item['price'] ) && 0 !== $item['price'] ? give_get_price_option_amount( $download_id, $price_id ) : $item['price'];
-				}
-
-				if ( ! $amount ) {
-					// This function is only used on payments with near 1.0 cart data structure
-					$amount = give_get_donation_final_price( $download_id, $user_info, $amount );
-				}
-
-				// decrease earnings
-				give_decrease_earnings( $download_id, $amount );
-
-				// decrease purchase count
-				give_decrease_purchase_count( $download_id );
-			}
-
-		}
-
+		$amount   = ! isset( $item['price'] ) && 0 !== $item['price'] ? give_get_price_option_amount( $form_id, $price_id ) : $item['price'];
 	}
+
+	// decrease earnings
+	give_decrease_earnings( $form_id, $amount );
+
+	// decrease purchase count
+	give_decrease_purchase_count( $form_id );
+
+
 
 }
 

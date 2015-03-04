@@ -376,7 +376,7 @@ class Give_Donate_Form {
 		if ( $variable_pricing && ! is_null( $price_id ) && $price_id !== false ) {
 			$price = give_get_price_option_amount( $this->ID, $price_id );
 		} elseif ( ! $variable_pricing ) {
-			$price = get_post_meta( $this->ID, 'give_price', true );
+			$price = get_post_meta( $this->ID, '_give_set_price', true );
 		}
 
 		if ( isset( $price ) && (float) $price == 0 ) {

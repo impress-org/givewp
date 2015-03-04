@@ -95,7 +95,7 @@ class Give_Payments_Export extends Give_Export {
 	 * Get the Export Data
 	 *
 	 * @access public
-	 * @since 1.4.4
+	 * @since 1.0
 	 * @global object $wpdb Used to query the database using the WordPress
 	 *   Database API
 	 * @return array $data The data for the CSV file
@@ -117,49 +117,10 @@ class Give_Payments_Export extends Give_Export {
 		foreach ( $payments as $payment ) {
 			$payment_meta   = give_get_payment_meta( $payment->ID );
 			$user_info      = give_get_payment_meta_user_info( $payment->ID );
-			$downloads      = give_get_payment_meta_cart_details( $payment->ID );
 			$total          = give_get_payment_amount( $payment->ID );
 			$user_id        = isset( $user_info['id'] ) && $user_info['id'] != -1 ? $user_info['id'] : $user_info['email'];
 			$products       = '';
 			$skus           = '';
-
-			if ( $downloads ) {
-				foreach ( $downloads as $key => $download ) {
-					// Download ID
-					$id = isset( $payment_meta['cart_details'] ) ? $download['id'] : $download;
-
-					// If the download has variable prices, override the default price
-					$price_override = isset( $payment_meta['cart_details'] ) ? $download['price'] : null;
-
-					$price = give_get_download_final_price( $id, $user_info, $price_override );
-
-					// Display the Downoad Name
-					$products .= get_the_title( $id ) . ' - ';
-
-					if ( give_use_skus() ) {
-						$sku = give_get_download_sku( $id );
-
-						if ( ! empty( $sku ) )
-							$skus .= $sku;
-					}
-
-					if ( isset( $downloads[ $key ]['item_number'] ) && isset( $downloads[ $key ]['item_number']['options'] ) ) {
-						$price_options = $downloads[ $key ]['item_number']['options'];
-
-						if ( isset( $price_options['price_id'] ) ) {
-							$products .= give_get_price_option_name( $id, $price_options['price_id'], $payment->ID ) . ' - ';
-						}
-					}
-					$products .= html_entity_decode( give_currency_filter( $price ) );
-
-					if ( $key != ( count( $downloads ) -1 ) ) {
-						$products .= ' / ';
-
-						if( give_use_skus() )
-							$skus .= ' / ';
-					}
-				}
-			}
 
 			if ( is_numeric( $user_id ) ) {
 				$user = get_userdata( $user_id );
@@ -182,8 +143,6 @@ class Give_Payments_Export extends Give_Export {
 				'products' => $products,
 				'skus'     => $skus,
 				'amount'   => html_entity_decode( give_format_amount( $total ) ),
-				'tax'      => html_entity_decode( give_format_amount( give_get_payment_tax( $payment->ID, $payment_meta ) ) ),
-				'discount' => isset( $user_info['discount'] ) && $user_info['discount'] != 'none' ? $user_info['discount'] : __( 'none', 'give' ),
 				'gateway'  => give_get_gateway_admin_label( get_post_meta( $payment->ID, '_give_payment_gateway', true ) ),
 				'trans_id' => give_get_payment_transaction_id( $payment->ID ),
 				'key'      => $payment_meta['key'],

@@ -220,15 +220,15 @@ add_filter( 'give_form_price', 'give_currency_filter', 20 );
  *
  * @return float $amount Amount of the price option
  */
-function give_get_price_option_amount( $download_id = 0, $price_id = 0 ) {
-	$prices = give_get_variable_prices( $download_id );
+function give_get_price_option_amount( $form_id = 0, $price_id = 0 ) {
+	$prices = give_get_variable_prices( $form_id );
 	$amount = 0.00;
 
-	if ( $prices && is_array( $prices ) ) {
-		if ( isset( $prices[ $price_id ] ) ) {
-			$amount = $prices[ $price_id ]['amount'];
-		}
+	foreach ( $prices as $price ) {
+		if ( isset( $price['_give_id']['level_id'] ) && $price['_give_id']['level_id'] === $price_id ) {
+			$amount = $price['_give_amount'];
+		};
 	}
 
-	return apply_filters( 'give_get_price_option_amount', give_sanitize_amount( $amount ), $download_id, $price_id );
+	return apply_filters( 'give_get_price_option_amount', give_sanitize_amount( $amount ), $form_id, $price_id );
 }
