@@ -530,3 +530,121 @@ function give_is_func_disabled( $function ) {
 
 	return in_array( $function, $disabled );
 }
+
+
+/**
+ * Give Newsletter
+ *
+ * @description: Returns the main Give newsletter form
+ */
+function give_get_give_newsletter() { ?>
+
+	<div class="give-newsletter-form-wrap">
+
+		<form action="//wordimpress.us3.list-manage.com/subscribe/post?u=3ccb75d68bda4381e2f45794c&amp;id=12a081aa13" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+			<div class="give-newsletter-confirmation">
+				<p><?php _e( 'Thanks for Subscribing!', 'give' ); ?> :)</p>
+			</div>
+
+			<table class="form-table give-newsletter-form">
+				<tr valign="middle">
+					<td>
+						<input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL" placeholder="Email Address (required)">
+					</td>
+
+					<td scope="row">
+						<input type="text" value="" placeholder="First Name" name="FNAME" class="" id="mce-FNAME"></td>
+
+					<td scope="row">
+						<input type="text" value="" placeholder="Last Name" name="LNAME" class="" id="mce-LNAME"></td>
+
+					<td scope="row">
+						<input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button">
+					</td>
+				</tr>
+			</table>
+		</form>
+
+		<div style="position: absolute; left: -5000px;">
+			<input type="text" name="b_3ccb75d68bda4381e2f45794c_12a081aa13" tabindex="-1" value=""></div>
+
+	</div>
+
+	<script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script>
+	<script type='text/javascript'>(function ( $ ) {
+			window.fnames = new Array();
+			window.ftypes = new Array();
+			fnames[0] = 'EMAIL';
+			ftypes[0] = 'email';
+			fnames[1] = 'FNAME';
+			ftypes[1] = 'text';
+			fnames[2] = 'LNAME';
+			ftypes[2] = 'text';
+
+			//Successful submission
+			$( 'form[name="mc-embedded-subscribe-form"]' ).on( 'submit', function () {
+
+				var email_field = $( this ).find( '#mce-EMAIL' ).val();
+				if ( !email_field ) {
+					return false;
+				}
+				$( this ).find( '.give-newsletter-confirmation' ).show().delay( 5000 ).slideUp();
+				$( this ).find( '.give-newsletter-form' ).hide();
+
+			} );
+
+
+		}( jQuery ));
+		var $mcj = jQuery.noConflict( true );
+
+
+	</script>
+	<!--End mc_embed_signup-->
+
+<?php }
+
+
+/**
+ * Social Media Like Buttons
+ *
+ * @description: Various social media elements to Give
+ */
+function give_social_media_elements() { ?>
+
+	<div class="social-items-wrap">
+
+		<iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fpages%2FWordImpress%2F353658958080509&amp;send=false&amp;layout=button_count&amp;width=100&amp;show_faces=false&amp;font&amp;colorscheme=light&amp;action=like&amp;height=21&amp;appId=220596284639969" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>
+
+		<a href="https://twitter.com/wordimpress" class="twitter-follow-button" data-show-count="false">Follow @wordimpress</a>
+		<script>!function ( d, s, id ) {
+				var js, fjs = d.getElementsByTagName( s )[0], p = /^http:/.test( d.location ) ? 'http' : 'https';
+				if ( !d.getElementById( id ) ) {
+					js = d.createElement( s );
+					js.id = id;
+					js.src = p + '://platform.twitter.com/widgets.js';
+					fjs.parentNode.insertBefore( js, fjs );
+				}
+			}( document, 'script', 'twitter-wjs' );</script>
+		<div class="google-plus">
+			<!-- Place this tag where you want the +1 button to render. -->
+			<div class="g-plusone" data-size="medium" data-annotation="inline" data-width="200" data-href="https://plus.google.com/117062083910623146392"></div>
+
+
+			<!-- Place this tag after the last +1 button tag. -->
+			<script type="text/javascript">
+				(function () {
+					var po = document.createElement( 'script' );
+					po.type = 'text/javascript';
+					po.async = true;
+					po.src = 'https://apis.google.com/js/plusone.js';
+					var s = document.getElementsByTagName( 'script' )[0];
+					s.parentNode.insertBefore( po, s );
+				})();
+			</script>
+		</div>
+		<!--/.google-plus -->
+	</div>
+	<!--/.social-items-wrap -->
+
+
+<?php }

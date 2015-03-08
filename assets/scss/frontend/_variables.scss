@@ -10,6 +10,15 @@ $dark: #333;
 $borders: #ccc;
 $light-gray: #EDEDED;
 
+//Status
+$status-default: #777;
+$status-complete: $green;
+$status-refunded: $status-default;
+$status-subscription: #5bc0de;
+$status-cancelled: $red;
+$status-preapproved: $blue;
+$status-revoked: #d9534f;
+
 //Font sizes
 $font-size-medium: 18px;
 

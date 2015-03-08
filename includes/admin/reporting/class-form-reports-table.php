@@ -96,9 +96,9 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	public function get_columns() {
 		$columns = array(
 			'title'     		=> give_get_forms_label_singular(),
-			'sales'  			=> __( 'Sales', 'give' ),
+			'sales'  			=> __( 'Donations', 'give' ),
 			'earnings'  		=> __( 'Earnings', 'give' ),
-			'average_sales'  	=> __( 'Monthly Average Sales', 'give' ),
+			'average_sales'  	=> __( 'Monthly Average Donations', 'give' ),
 			'average_earnings'  => __( 'Monthly Average Earnings', 'give' ),
 			'details'           => __( 'Detailed Report', 'give' )
 		);

@@ -143,7 +143,7 @@ class Give_Graph {
 	public function load_scripts() {
 		// Use minified libraries if SCRIPT_DEBUG is turned off
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-		wp_enqueue_script( 'jquery-flot', GIVE_PLUGIN_URL . 'assets/js/jquery.flot' . $suffix . '.js' );
+		wp_enqueue_script( 'jquery-flot', GIVE_PLUGIN_URL . 'assets/js/plugins/jquery.flot' . $suffix . '.js' );
 	}
 
 	/**

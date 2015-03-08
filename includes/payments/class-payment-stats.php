@@ -83,7 +83,7 @@ class Give_Payment_Stats extends Give_Stats {
 	 * Retrieve earning stats
 	 *
 	 * @access public
-	 * @since 1.8
+	 * @since 1.0
 	 * @param $form_id INT The download product to retrieve stats for. If false, gets stats for all products
 	 * @param $start_date string|bool The starting date for which we'd like to filter our sale stats. If false, we'll use the default start date of `this_month`
 	 * @param $end_date string|bool The end date for which we'd like to filter our sale stats. If false, we'll use the default end date of `this_month`
@@ -96,12 +96,14 @@ class Give_Payment_Stats extends Give_Stats {
 		$this->setup_dates( $start_date, $end_date );
 
 		// Make sure start date is valid
-		if( is_wp_error( $this->start_date ) )
+		if( is_wp_error( $this->start_date ) ) {
 			return $this->start_date;
+		}
 
 		// Make sure end date is valid
-		if( is_wp_error( $this->end_date ) )
+		if( is_wp_error( $this->end_date ) ){
 			return $this->end_date;
+		}
 
 		$earnings = 0;
 
@@ -110,7 +112,6 @@ class Give_Payment_Stats extends Give_Stats {
 		if( empty( $form_id ) ) {
 
 			// Global earning stats
-
 			$args = array(
 				'post_type'              => 'give_payment',
 				'nopaging'               => true,

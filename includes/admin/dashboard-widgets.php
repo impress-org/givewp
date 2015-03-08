@@ -67,9 +67,9 @@ function give_dashboard_sales_widget() {
 		<table class="give-table-stats">
 			<thead style="display: none;">
 			<tr>
-				<th>This Week</th>
-				<th>This Month</th>
-				<th>Past 30 Days</th>
+				<th><?php _e('This Week', 'give'); ?></th>
+				<th><?php _e('This Month', 'give'); ?></th>
+				<th><?php _e('Past 30 Days', 'give'); ?></th>
 			</tr>
 			</thead>
 			<tbody>

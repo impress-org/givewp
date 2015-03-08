@@ -296,10 +296,10 @@ class Give_Payment_History_Table extends WP_List_Table {
 				break;
 			case 'status' :
 				$payment = get_post( $payment->ID );
-				$value   = '<span class="give-donation-status status-' . sanitize_title( give_get_payment_status( $payment, true ) ) . '">' . give_get_payment_status( $payment, true ) . '</span>';
+				$value   = '<div class="give-donation-status status-' . sanitize_title( give_get_payment_status( $payment, true ) ) . '"><span class="give-donation-status-icon"></span> ' . give_get_payment_status( $payment, true ) . '</div>';
 				break;
 			case 'details' :
-				$value = '<a href="' . add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details' ) ) . '">' . __( 'View Order Details', 'give' ) . '</a>';
+				$value = '<a href="' . add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details' ) ) . '" class="give-payment-details-link">' . __( 'View Order Details', 'give' ) . '</a>';
 				break;
 			default:
 				$value = isset( $payment->$column_name ) ? $payment->$column_name : '';
@@ -377,7 +377,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * @return string Displays a checkbox
 	 */
 	public function column_ID( $payment ) {
-		return give_get_payment_number( $payment->ID );
+		return '<span class="give-payment-id">'.give_get_payment_number( $payment->ID ).'</span>';
 	}
 
 	/**

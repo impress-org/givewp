@@ -96,6 +96,87 @@ tr.status-refunded td {
   float: left;
 }
 
+/*---------------------
+Status Colors
+---------------------------*/
+
+.give-donation-status {
+  > span {
+	float: left;
+	width: 12px;
+	height: 12px;
+	margin: 3px 4px 0 0;
+	padding: 0;
+	border-radius: 50%;
+	background: #888;
+	line-height: 16px;
+  }
+
+  //Pending
+  &.status-pending > span {
+	background-color: $orange;
+  }
+
+  //Complete
+  &.status-complete > span {
+	background-color: $status-complete;
+  }
+
+  //Refunded
+  &.status-refunded > span {
+	background-color: $status-default;
+  }
+
+  &.status-failed > span {
+	background-color: $red;
+  }
+
+  &.status-abandoned > span {
+	background-color: $dark;
+  }
+
+  &.status-revoked > span {
+	background-color: $status-revoked;
+  }
+
+  &.status-preapproved > span {
+	background-color: $status-preapproved;
+  }
+
+  &.status-cancelled > span {
+	background-color: $status-cancelled;
+  }
+
+  &.status-subscription > span {
+	background-color: $status-subscription;
+  }
+
+}
+
+//ID & link field
+#give-payments-filter {
+  .give-payment-id {
+	background-color: #929292;
+	padding: .2em .6em .3em;
+	font-size: 85%;
+	font-weight: 700;
+	line-height: 1;
+	color: #fff;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: baseline;
+	border-radius: .25em;
+  }
+
+  .give-payment-details-link {
+	font-weight: bold;
+  }
+
+}
+
+/*---------------------
+Responsiveness
+---------------------------*/
 @media handheld, only screen and (max-width: 640px) {
   .wp-list-table.forms th {
 	width: auto !important;

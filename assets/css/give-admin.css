@@ -66,6 +66,9 @@
  * CSS3 Easing
  */
 /**
+ * Give CSS Variables
+ */
+/**
  * Give Forms SCSS
  *
  * @package     Give
@@ -582,6 +585,54 @@ tr.status-refunded td {
   height: auto;
   float: left; }
 
+/*---------------------
+Status Colors
+---------------------------*/
+.give-donation-status > span {
+  float: left;
+  width: 12px;
+  height: 12px;
+  margin: 3px 4px 0 0;
+  padding: 0;
+  border-radius: 50%;
+  background: #888;
+  line-height: 16px; }
+.give-donation-status.status-pending > span {
+  background-color: #ffba00; }
+.give-donation-status.status-complete > span {
+  background-color: #7ad03a; }
+.give-donation-status.status-refunded > span {
+  background-color: #777; }
+.give-donation-status.status-failed > span {
+  background-color: #a00; }
+.give-donation-status.status-abandoned > span {
+  background-color: #333; }
+.give-donation-status.status-revoked > span {
+  background-color: #d9534f; }
+.give-donation-status.status-preapproved > span {
+  background-color: #2ea2cc; }
+.give-donation-status.status-cancelled > span {
+  background-color: #a00; }
+.give-donation-status.status-subscription > span {
+  background-color: #5bc0de; }
+
+#give-payments-filter .give-payment-id {
+  background-color: #929292;
+  padding: .2em .6em .3em;
+  font-size: 85%;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25em; }
+#give-payments-filter .give-payment-details-link {
+  font-weight: bold; }
+
+/*---------------------
+Responsiveness
+---------------------------*/
 @media handheld, only screen and (max-width: 640px) {
   .wp-list-table.forms th {
     width: auto !important; } }
@@ -779,6 +830,22 @@ tr.status-refunded td {
     color: #4ead61;
     font-weight: bold;
     font-size: 16px; }
+
+.give-newsletter-form-wrap {
+  margin: 10px 0 20px -5px;
+  max-width: 700px; }
+  .give-newsletter-form-wrap td {
+    padding: 3px; }
+  .give-newsletter-form-wrap div.give-newsletter-confirmation {
+    background: #fff;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+    margin: 5px 10px 4px 5px;
+    padding: 1px 12px;
+    border-left: 4px solid #7ad03a;
+    display: none; }
+    .give-newsletter-form-wrap div.give-newsletter-confirmation > p {
+      margin: 0.5em 0;
+      padding: 2px; }
 
 
 /*# sourceMappingURL=maps/give-admin.css.map */

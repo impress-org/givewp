@@ -37,7 +37,7 @@ function give_admin_messages() {
 	}
 
 	if ( isset( $_GET['page'] ) && 'give-payment-history' == $_GET['page'] && current_user_can( 'view_shop_reports' ) && give_is_test_mode() ) {
-		add_settings_error( 'give-notices', 'give-payment-sent', sprintf( __( 'Note: Test Mode is enabled, only test payments are shown below. <a href="%s">Settings</a>.', 'give' ), admin_url( 'edit.php?post_type=give_forms&page=give-settings' ) ), 'updated' );
+		add_settings_error( 'give-notices', 'give-payment-sent', sprintf( __( 'Note: Test Mode is enabled, only test donations are being displayed. <a href="%s">View Settings</a>', 'give' ), admin_url( 'edit.php?post_type=give_forms&page=give-settings' ) ), 'updated' );
 	}
 
 

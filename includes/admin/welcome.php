@@ -1,7 +1,8 @@
 <?php
 /**
- * Weclome Page Class
+ * Give Welcome Page Class
  *
+ * @description Displays on plugin activation
  * @package     Give
  * @subpackage  Admin/Welcome
  * @copyright   Copyright (c) 2015, WordImpress
@@ -134,9 +135,11 @@ class Give_Welcome {
 			}
 
 			.introduction {
-				border-bottom: 1px solid #CCC;
 				padding: 0 0 20px;
 				margin: 0 0 20px;
+			}
+			.about-wrap h3 {
+				margin:1.5em 0 .6em;
 			}
 
 			/*]]>*/
@@ -191,7 +194,7 @@ class Give_Welcome {
 						} )
 					} )
 				}
-			})( window.jQuery || window.Zepto )
+			})( window.jQuery || window.Zepto );
 			jQuery( document ).ready( function ( $ ) {
 
 				// Target your .container, .wrapper, .post, etc.
@@ -207,7 +210,7 @@ class Give_Welcome {
 	 * Navigation tabs
 	 *
 	 * @access public
-	 * @since  1.9
+	 * @since  1.0
 	 * @return void
 	 */
 	public function tabs() {
@@ -215,7 +218,7 @@ class Give_Welcome {
 		?>
 		<h2 class="nav-tab-wrapper">
 			<a class="nav-tab <?php echo $selected == 'give-about' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'give-about' ), 'index.php' ) ) ); ?>">
-				<?php _e( "What's New", 'give' ); ?>
+				<?php _e( "About Give", 'give' ); ?>
 			</a>
 			<a class="nav-tab <?php echo $selected == 'give-getting-started' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'give-getting-started' ), 'index.php' ) ) ); ?>">
 				<?php _e( 'Getting Started', 'give' ); ?>
@@ -240,8 +243,10 @@ class Give_Welcome {
 		<div class="wrap about-wrap">
 			<h1><?php printf( __( 'Welcome to Give %s', 'give' ), $display_version ); ?></h1>
 
-			<div class="about-text"><?php printf( __( 'Thank you for updating to the latest version! Give allows you to quickly and easily accept donations with little barrier to entry.', 'give' ), $display_version ); ?></div>
+			<div class="about-text"><?php printf( __( 'Thank you for updating to the latest version of Give! If you\'re a first time user be sure to check out the plugin <a href="%s" target="_blank">documentation</a> to help you get started. Be sure to sign up for the Give newsletter below to stay informed of important updates and news.', 'give' ), 'https://givewp.com/documenation/' ); ?></div>
 			<div class="give-badge"><?php printf( __( 'Version %s', 'give' ), $display_version ); ?></div>
+
+			<?php give_get_give_newsletter() ?>
 
 			<?php $this->tabs(); ?>
 
@@ -249,16 +254,14 @@ class Give_Welcome {
 
 				<div class="video">
 					<img src="http://placehold.it/500x280">
-<!--					<iframe width="560" height="315" src="//www.youtube.com/embed/za43poLirX4" frameborder="0" allowfullscreen></iframe>-->
+					<!--					<iframe width="560" height="315" src="//www.youtube.com/embed/za43poLirX4" frameborder="0" allowfullscreen></iframe>-->
 				</div>
 
 				<div class="content last-feature">
 
-					<h3><?php _e( 'Accept Donations Quickly and Easily', 'give' ); ?></h3>
+					<h3><?php _e( 'Give - Democratizing Generosity', 'give' ); ?></h3>
 
-					<p><?php _e( 'Getting started with Give is a breeze. How you use the plugin depends on the type of donations you wish to accept donations on your WordPress website. Give is powered by "Forms" which you can display across your website.', 'give' ); ?></p>
-
-					<p><?php _e( 'Forms are completely customizable and can be placed on any WordPress page or post.', 'give' ); ?></p>
+					<p><?php _e( 'Give empowers you to easily accept donations and setup fundraising campaigns, directly within WordPress. We created Give to provide a better donation experience for you and your users. Robust, flexible, and intuitive, the plugin is built from the ground up to be the goto donation solution for WordPress. Create powerful donation forms, embed them throughout your website, start a campaign, and exceed your fundraising goals with Give. This plugin is actively developed and proudly supported by folks who are dedicated to helping you and your cause.', 'give' ); ?></p>
 
 				</div>
 
@@ -269,12 +272,9 @@ class Give_Welcome {
 
 				<div class="content">
 
-					<h3><?php _e( 'Setting Up Your First Form', 'give' ); ?></h3>
+					<h3><?php _e( 'Getting to Know Give', 'give' ); ?></h3>
 
-					<p><?php _e( 'Give forms are the backbo.', 'give' ); ?></p>
-
-					<p><?php _e( '.', 'give' ); ?></p>
-
+					<p><?php _e( 'Before you get started with Give please take a look at the online documentation . There you will find the getting started guide which will help  you get up and running quickly. If you have an question, issue or bug with the Core plugin please submit an issue on the Give website. We also welcome your feedback and feature requests. Welcome to Give. We hope you much success with your cause.', 'give' ); ?></p>
 
 				</div>
 
@@ -286,45 +286,7 @@ class Give_Welcome {
 
 			</div>
 			<!-- /.feature-section -->
-			<div class="feature-section col two-col clearfix">
 
-				<div class="content">
-					<img src="http://placehold.it/500x280">
-				</div>
-
-				<div class="content last-feature">
-
-					<h3><?php _e( 'Managing a Campaign', 'give' ); ?></h3>
-
-					<p><?php _e( 'Illas vis. Animal nunc secuit. Mortales sublime galeae! Surgere habitabilis inmensa! Caeli mentes zonae hunc reparabat. Regio quisque. Modo spisso. Haec pondere. Mundi caeca campoque adhuc onerosior. Omni caelumque dicere quicquam volucres. Onerosior coeptis igni tepescunt addidit. Est unus septemque astra locis summaque.', 'give' ); ?></p>
-
-					<p><?php _e( 'Magni nullo frigida mundo satus iussit vix? Parte mare dissociata. Ignea finxit lacusque regio fecit fratrum umor habentem duris. Adsiduis fratrum mixtam glomeravit longo.', 'give' ); ?></p>
-
-				</div>
-
-			</div>
-			<!-- /.feature-section -->
-			<div class="feature-section col two-col clearfix">
-
-				<div class="content">
-
-					<h3><?php _e( 'Start Accepting Donations', 'give' ); ?></h3>
-
-					<p><?php _e( 'Illas vis. Animal nunc secuit. Mortales sublime galeae! Surgere habitabilis inmensa! Caeli mentes zonae hunc reparabat. Regio quisque. Modo spisso. Haec pondere. Mundi caeca campoque adhuc onerosior. Omni caelumque dicere quicquam volucres. Onerosior coeptis igni tepescunt addidit. Est unus septemque astra locis summaque.', 'give' ); ?></p>
-
-					<p><?php _e( 'Magni nullo frigida mundo satus iussit vix? Parte mare dissociata. Ignea finxit lacusque regio fecit fratrum umor habentem duris. Adsiduis fratrum mixtam glomeravit longo.', 'give' ); ?></p>
-
-
-				</div>
-
-				<div class="content last-feature">
-
-					<img src="http://placehold.it/500x280">
-
-				</div>
-
-			</div>
-			<!-- /.feature-section -->
 
 
 		</div>
