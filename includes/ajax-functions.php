@@ -278,49 +278,6 @@ function give_ajax_customer_search() {
 
 add_action( 'wp_ajax_give_customer_search', 'give_ajax_customer_search' );
 
-/**
- * Check for Download Price Variations via AJAX (this function can only be used
- * in WordPress Admin). This function is used for the Edit Payment screen when downloads
- * are added to the purchase. When each download is chosen, an AJAX call is fired
- * to this function which will check if variable prices exist for that download.
- * If they do, it will output a dropdown of all the variable prices available for
- * that download.
- *
- * @author Sunny Ratilal
- * @since  1.5
- * @return void
- */
-function give_check_for_download_price_variations() {
-	if ( ! current_user_can( 'edit_products' ) ) {
-		die( '-1' );
-	}
-
-	$download_id = intval( $_POST['download_id'] );
-	$download    = get_post( $download_id );
-
-	if ( 'download' != $download->post_type ) {
-		die( '-2' );
-	}
-
-	if ( give_has_variable_prices( $download_id ) ) {
-		$variable_prices = give_get_variable_prices( $download_id );
-
-		if ( $variable_prices ) {
-			$ajax_response = '<select class="give_price_options_select give-select give-select" name="give_price_option">';
-			foreach ( $variable_prices as $key => $price ) {
-				$ajax_response .= '<option value="' . esc_attr( $key ) . '">' . esc_html( $price['name'] ) . '</option>';
-			}
-			$ajax_response .= '</select>';
-			echo $ajax_response;
-		}
-
-	}
-
-	give_die();
-}
-
-add_action( 'wp_ajax_give_check_for_download_price_variations', 'give_check_for_download_price_variations' );
-
 
 /**
  * Searches for users via ajax and returns a list of results

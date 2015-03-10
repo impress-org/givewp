@@ -226,19 +226,8 @@ jQuery.noConflict();
 					$( '#give_customer_export_option' ).hide();
 				}
 
-				// On Download Select, Check if Variable Prices Exist
-				if ( parseInt( download_id ) != 0 ) {
-					var data = {
-						action     : 'give_check_for_download_price_variations',
-						download_id: download_id
-					};
-					$.post( ajaxurl, data, function ( response ) {
-						$( '.give_price_options_select' ).remove();
-						$this.after( response );
-					} );
-				} else {
-					$( '.give_price_options_select' ).remove();
-				}
+				$( '.give_price_options_select' ).remove();
+				
 			} );
 
 		}
