@@ -188,38 +188,37 @@ jQuery.noConflict();
 
 	};
 
-	
-	
+
 	/**
 	 * Reports / Exports screen JS
 	 */
 	var Give_Reports = {
 
-		init : function() {
+		init: function () {
 			this.date_options();
 			this.customers_export();
 		},
 
-		date_options : function() {
+		date_options: function () {
 
 			// Show hide extended date options
-			$( '#give-graphs-date-options' ).change( function() {
-				var $this = $(this);
+			$( '#give-graphs-date-options' ).change( function () {
+				var $this = $( this );
 				if ( 'other' === $this.val() ) {
 					$( '#give-date-range-options' ).show();
 				} else {
 					$( '#give-date-range-options' ).hide();
 				}
-			});
+			} );
 
 		},
 
-		customers_export : function() {
+		customers_export: function () {
 
 			// Show / hide Download option when exporting customers
-			$( '#give_customer_export_download' ).change( function() {
+			$( '#give_customer_export_download' ).change( function () {
 
-				var $this = $(this), download_id = $('option:selected', $this).val();
+				var $this = $( this ), download_id = $( 'option:selected', $this ).val();
 
 				if ( '0' === $this.val() ) {
 					$( '#give_customer_export_option' ).show();
@@ -230,22 +229,21 @@ jQuery.noConflict();
 				// On Download Select, Check if Variable Prices Exist
 				if ( parseInt( download_id ) != 0 ) {
 					var data = {
-						action : 'give_check_for_download_price_variations',
+						action     : 'give_check_for_download_price_variations',
 						download_id: download_id
 					};
-					$.post(ajaxurl, data, function(response) {
-						$('.give_price_options_select').remove();
+					$.post( ajaxurl, data, function ( response ) {
+						$( '.give_price_options_select' ).remove();
 						$this.after( response );
-					});
+					} );
 				} else {
-					$('.give_price_options_select').remove();
+					$( '.give_price_options_select' ).remove();
 				}
-			});
+			} );
 
 		}
 
 	};
-
 
 
 	//On DOM Ready
@@ -255,6 +253,11 @@ jQuery.noConflict();
 		setup_chosen_give_selects();
 		Give_Edit_Payment.init();
 		Give_Reports.init();
+
+		//Footer
+		$( 'a.give-rating-link' ).click( function () {
+			jQuery( this ).parent().text( jQuery( this ).data( 'rated' ) );
+		} );
 
 	} );
 

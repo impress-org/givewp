@@ -61,7 +61,6 @@ function give_setup_post_types() {
 		'map_meta_cap'       => true,
 		'capability_type'    => 'give_forms',
 		'has_archive'        => $give_forms_archives,
-		'menu_icon'          => GIVE_PLUGIN_URL . 'assets/images/svg/give-icon-full-circle-white.svg',
 		'hierarchical'       => false,
 		'supports'           => apply_filters( 'give_forms_supports', array(
 			'title',
