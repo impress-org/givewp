@@ -145,11 +145,11 @@ gulp.task( 'readme', function () {
 		.pipe( readme( {
 			details       : false,
 			screenshot_list : 'assets/images/',
-			screenshot_ext: ['jpg', 'jpg', 'png'],
-			extract       : {
-				'changelog'                 : 'CHANGELOG',
-				'Frequently Asked Questions': 'FAQ'
-			}
+			screenshot_ext: ['jpg', 'jpg', 'png']
+			//extract       : {
+			//	'changelog'                 : 'CHANGELOG',
+			//	'Frequently Asked Questions': 'FAQ'
+			//}
 		} ) )
 		.pipe( gulp.dest( '.' ) );
 } );

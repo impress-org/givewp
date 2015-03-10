@@ -69,7 +69,7 @@ The manual installation method involves downloading our donation plugin and uplo
 
 Automatic updates should work like a charm; as always though, ensure you backup your site just in case.
 
-
+## Frequently Asked Questions ##
 
 ### How is Give better that *Gravity Forms* for accepting donations through Gravity Forms? ###
 
@@ -79,7 +79,7 @@ First off, we love Gravity Forms. It's a great plugin and has a lot of good feat
 
 We also really like WooCommerce. It's hands-down the most robust eCommerce platform for WordPress. But that's also the issue. Typically you don't need a cart system, shipping, or tax calculations to accept donations. On top of that, customizing the plugin's terminology is a daunting task. You never want your users to receive an "invoice" for the donation "product" they "purchased". Rather, you'd like for them to receive a receipt for the donation they gave. WooCommerce can do donations, but it isn't what it does best.
 
-
+## Changelog ##
 
 ### 1.0 ###
 
