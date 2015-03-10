@@ -514,7 +514,7 @@ class Give_Stats {
 			} else {
 				$format = 'Y-m-d 00:00:00';
 			}
-			
+
 			$start_date  = date( $format, $this->start_date );
 			$start_where = " AND $wpdb->posts.post_date >= '{$start_date}'";
 		}
