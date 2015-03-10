@@ -1,5 +1,6 @@
 # IDE
 .idea
+.svn
 
 # Gulp / Grunt
 node_modules/*

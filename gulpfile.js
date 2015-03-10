@@ -17,11 +17,12 @@ var gulp = require( 'gulp' ),
 	concat = require( 'gulp-concat' ),
 	rename = require( 'gulp-rename' ),
 	plumber = require( 'gulp-plumber' ),
-	notify = require( "gulp-notify" ),
-	watch = require( "gulp-watch" ),
-	livereload = require( "gulp-livereload" ),
-	minifyCSS = require( "gulp-minify-css" ),
-	cucumber = require( "gulp-cucumber" );
+	notify = require( 'gulp-notify' ),
+	watch = require( 'gulp-watch' ),
+	livereload = require( 'gulp-livereload' ),
+	minifyCSS = require( 'gulp-minify-css' ),
+	cucumber = require( 'gulp-cucumber' ),
+	readme = require( 'readme' );
 
 /* Paths
  ------------------------------------- */
@@ -108,7 +109,7 @@ gulp.task( 'watch', function () {
 	} );
 
 	//Add watching on JS files
-	gulp.watch( source_paths.scripts, [ 'scripts' ]);
+	gulp.watch( source_paths.scripts, ['scripts'] );
 
 	//Add watching on template-files
 	gulp.watch( 'templates/*.php', function () {
@@ -117,15 +118,15 @@ gulp.task( 'watch', function () {
 
 } );
 
-/* Run cucumber.js features
+/* Run cucumber.js features (UNUSED)
  -------------------------------------- */
-gulp.task('cucumber', function() {
-	return gulp.src('*features/*')
-		.pipe(cucumber({
-			'steps': '*features/steps/*.js',
+gulp.task( 'cucumber', function () {
+	return gulp.src( '*features/*' )
+		.pipe( cucumber( {
+			'steps'  : '*features/steps/*.js',
 			'support': '*features/support/*.js'
-	}));
-});
+		} ) );
+} );
 
 /* Handle errors elegantly with gulp-notify
  ------------------------------------- */
@@ -135,6 +136,24 @@ var onError = function ( err ) {
 	gutil.beep();
 	this.end();
 };
+
+/* Readme notifications
+* @see: https://github.com/ahoereth/gulp-readme-to-markdown
+ ------------------------------------- */
+gulp.task( 'readme', function () {
+	gulp.src( ['readme.txt'] )
+		.pipe( readme( {
+			details       : false,
+			screenshot_list : 'assets/images/',
+			screenshot_ext: ['jpg', 'jpg', 'png'],
+			extract       : {
+				'changelog'                 : 'CHANGELOG',
+				'Frequently Asked Questions': 'FAQ'
+			}
+		} ) )
+		.pipe( gulp.dest( '.' ) );
+} );
+
 
 /* Default Gulp task
  ------------------------------------- */

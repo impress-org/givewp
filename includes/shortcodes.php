@@ -16,25 +16,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 /**
- * Donation History Shortcode
- *
- * Displays a user's donation history.
- *
- * @since 1.0
- * @return string
- */
-function give_download_history() {
-	if ( is_user_logged_in() ) {
-		ob_start();
-		give_get_template_part( 'history', 'downloads' );
-
-		return ob_get_clean();
-	}
-}
-
-add_shortcode( 'download_history', 'give_download_history' );
-
-/**
  * Purchase History Shortcode
  *
  * Displays a user's purchase history.
@@ -42,16 +23,16 @@ add_shortcode( 'download_history', 'give_download_history' );
  * @since 1.0
  * @return string
  */
-function give_purchase_history() {
+function give_donation_history() {
 	if ( is_user_logged_in() ) {
 		ob_start();
-		give_get_template_part( 'history', 'purchases' );
+		give_get_template_part( 'history', 'donations' );
 
 		return ob_get_clean();
 	}
 }
 
-add_shortcode( 'purchase_history', 'give_purchase_history' );
+add_shortcode( 'donation_history', 'give_donation_history' );
 
 /**
  * Donation Form Shortcode
@@ -181,9 +162,7 @@ function give_receipt_shortcode( $atts, $content = null ) {
 	 * Check if the user has permission to view the receipt
 	 *
 	 * If user is logged in, user ID is compared to user ID of ID stored in payment meta
-	 *
 	 * Or if user is logged out and purchase was made as a guest, the purchase session is checked for
-	 *
 	 * Or if user is logged in and the user can view sensitive shop data
 	 *
 	 */

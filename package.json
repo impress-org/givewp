@@ -1,17 +1,21 @@
 {
-	"devDependencies": {
-		"gulp"             : "^3.8.10",
-		"gulp-autoprefixer": "^2.0.0",
-		"gulp-concat"      : "~2.1.7",
-		"gulp-minify-css"  : "^0.3.11",
-		"gulp-notify"      : "~2.1.0",
-		"gulp-plumber"     : "~0.6.6",
-		"gulp-rename"      : "~1.2.0",
-		"gulp-sass"        : "^1.2.4",
-		"gulp-sourcemaps"  : "^1.3.0",
-		"gulp-uglify"      : "~0.1.0",
-		"gulp-util"        : "~2.2.12",
-		"gulp-watch"       : "~0.5.0",
-		"gulp-livereload"  : "^3.0.0"
-	}
+  "devDependencies": {
+    "gulp": "^3.8.10",
+    "gulp-autoprefixer": "^2.0.0",
+    "gulp-concat": "~2.1.7",
+    "gulp-minify-css": "^0.3.11",
+    "gulp-notify": "~2.1.0",
+    "gulp-plumber": "~0.6.6",
+    "gulp-rename": "~1.2.0",
+    "gulp-sass": "^1.2.4",
+    "gulp-sourcemaps": "^1.3.0",
+    "gulp-uglify": "~0.1.0",
+    "gulp-util": "~2.2.12",
+    "gulp-watch": "~0.5.0",
+    "gulp-livereload": "^3.0.0",
+    "through2": "",
+    "lodash.defaults": "",
+    "lodash.foreach": "",
+    "path": ""
+  }
 }
