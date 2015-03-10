@@ -505,7 +505,6 @@ class Give_Stats {
 
 		$start_where = '';
 		$end_where   = '';
-		$this->setup_dates(  $this->start_date,  $this->end_date );
 
 		if ( $this->start_date ) {
 

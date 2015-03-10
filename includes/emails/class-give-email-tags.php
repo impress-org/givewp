@@ -214,7 +214,7 @@ function give_get_emails_tags_list() {
 		foreach ( $email_tags as $email_tag ) {
 
 			// Add email tag to list
-			$list .= '{' . $email_tag['tag'] . '} - ' . $email_tag['description'] . '<br/>';
+			$list .= '<code>{' . $email_tag['tag'] . '}</code> - ' . $email_tag['description'] . '<br/>';
 
 		}
 
@@ -298,22 +298,12 @@ function give_setup_email_tags() {
 		),
 		array(
 			'tag'         => 'date',
-			'description' => __( 'The date of the purchase', 'give' ),
+			'description' => __( 'The date of the donation', 'give' ),
 			'function'    => 'give_email_tag_date'
 		),
 		array(
-			'tag'         => 'subtotal',
-			'description' => __( 'The price of the purchase before taxes', 'give' ),
-			'function'    => 'give_email_tag_subtotal'
-		),
-		array(
-			'tag'         => 'tax',
-			'description' => __( 'The taxed amount of the purchase', 'give' ),
-			'function'    => 'give_email_tag_tax'
-		),
-		array(
 			'tag'         => 'price',
-			'description' => __( 'The total price of the purchase', 'give' ),
+			'description' => __( 'The total price of the donation', 'give' ),
 			'function'    => 'give_email_tag_price'
 		),
 		array(
@@ -340,11 +330,6 @@ function give_setup_email_tags() {
 			'tag'         => 'receipt_link',
 			'description' => __( 'Adds a link so users can view their receipt directly on your website if they are unable to view it in the browser correctly.', 'give' ),
 			'function'    => 'give_email_tag_receipt_link'
-		),
-		array(
-			'tag'         => 'discount_codes',
-			'description' => __( 'Adds a list of any discount codes applied to this purchase', 'give' ),
-			'function'    => 'give_email_tag_discount_codes'
 		),
 	);
 

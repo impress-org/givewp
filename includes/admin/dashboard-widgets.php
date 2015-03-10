@@ -75,12 +75,12 @@ function give_dashboard_sales_widget() {
 			<tbody>
 			<tr>
 				<td>
-					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_week' ) ) ); ?></p>
+					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_week', false  ) ) ); ?></p>
 
 					<p class="give-dashboard-stat-total-label"><?php _e( 'this week', 'give' ); ?></p>
 				</td>
 				<td>
-					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_month' ) ) ) ?></p>
+					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_month', false  ) ) ) ?></p>
 
 					<p class="give-dashboard-stat-total-label"><?php _e( 'this month', 'give' ); ?></p>
 				</td>

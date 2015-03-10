@@ -185,7 +185,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name'    => __( 'Success Page', 'give' ),
-							'desc'    => __( 'This is the page donators are sent to after completing their purchases. The [give_receipt] short code should be on this page.', 'give' ),
+							'desc'    => __( 'This is the page donators are sent to after completing their donations. The [give_receipt] short code should be on this page.', 'give' ),
 							'id'      => 'success_page',
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
@@ -224,7 +224,7 @@ class Give_Plugin_Settings {
 							'name' => __( 'Currency Settings', 'give' ),
 							'desc' => '<hr>',
 							'type' => 'give_title',
-							'id'   => 'currency_title'
+							'id'   => 'give_title'
 						),
 						array(
 							'name'    => __( 'Currency', 'cmb' ),
@@ -291,8 +291,8 @@ class Give_Plugin_Settings {
 						array(
 							'name' => __( 'PayPal Standard', 'give' ),
 							'desc' => '<hr>',
+							'type' => 'give_title',
 							'id'   => 'give_title',
-							'type' => 'give_title'
 						),
 						array(
 							'name' => __( 'PayPal Email', 'give' ),
@@ -308,7 +308,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Disable PayPal IPN Verification', 'give' ),
-							'desc' => __( 'If payments are not getting marked as complete, then check this box. This forces the site to use a slightly less secure method of verifying purchases.', 'give' ),
+							'desc' => __( 'If payments are not getting marked as complete, then check this box. This forces the site to use a slightly less secure method of verifying donations.', 'give' ),
 							'id'   => 'disable_paypal_verification',
 							'type' => 'checkbox'
 						),
@@ -347,74 +347,74 @@ class Give_Plugin_Settings {
 						array(
 							'id'   => 'email_logo',
 							'name' => __( 'Logo', 'give' ),
-							'desc' => __( 'Upload or choose a logo to be displayed at the top of the purchase receipt emails. Displayed on HTML emails only.', 'give' ),
+							'desc' => __( 'Upload or choose a logo to be displayed at the top of the donation receipt emails. Displayed on HTML emails only.', 'give' ),
 							'type' => 'file'
 						),
 						array(
 							'id'      => 'from_name',
 							'name'    => __( 'From Name', 'give' ),
-							'desc'    => __( 'The name purchase receipts are said to come from. This should probably be your site or shop name.', 'give' ),
+							'desc'    => __( 'The name donation receipts are said to come from. This should probably be your site or shop name.', 'give' ),
 							'default' => get_bloginfo( 'name' ),
 							'type'    => 'text'
 						),
 						array(
 							'id'      => 'from_email',
 							'name'    => __( 'From Email', 'give' ),
-							'desc'    => __( 'Email to send purchase receipts from. This will act as the "from" and "reply-to" address.', 'give' ),
+							'desc'    => __( 'Email to send donation receipts from. This will act as the "from" and "reply-to" address.', 'give' ),
 							'default' => get_bloginfo( 'admin_email' ),
 							'type'    => 'text'
 						),
 						array(
-							'id'   => 'give_title',
 							'name' => __( 'Donation Receipt', 'give' ),
 							'desc' => '<hr>',
+							'id'   => 'give_title',
 							'type' => 'give_title'
 						),
 						array(
 							'id'      => 'purchase_subject',
 							'name'    => __( 'Purchase Email Subject', 'give' ),
-							'desc'    => __( 'Enter the subject line for the purchase receipt email', 'give' ),
+							'desc'    => __( 'Enter the subject line for the donation receipt email', 'give' ),
 							'default' => __( 'Donation Receipt', 'give' ),
 							'type'    => 'text'
 						),
 						array(
 							'id'      => 'purchase_receipt',
 							'name'    => __( 'Purchase Receipt', 'give' ),
-							'desc'    => __( 'Enter the email that is sent to users after completing a successful purchase. HTML is accepted. Available template tags:', 'give' ) . '<br/>' . give_get_emails_tags_list(),
+							'desc'    => __( 'Enter the email that is sent to users after completing a successful donation. HTML is accepted. Available template tags:', 'give' ) . '<br/>' . give_get_emails_tags_list(),
 							'type'    => 'wysiwyg',
 							'default' => __( "Dear", "give" ) . " {name},\n\n" . __( "Thank you for your donation. Your generosity is appreciated! Please click on the link below to view your receipt.", "give" ) . "\n\n{receipt_link}\n\nSincerely,\n{sitename}"
 						),
 						array(
-							'id'   => 'give_title',
 							'name' => __( 'New Donation Notification', 'give' ),
 							'desc' => '<hr>',
+							'id'   => 'give_title',
 							'type' => 'give_title'
 						),
 						array(
 							'id'      => 'sale_notification_subject',
-							'name'    => __( 'Sale Notification Subject', 'give' ),
-							'desc'    => __( 'Enter the subject line for the sale notification email', 'give' ),
+							'name'    => __( 'Donation Notification Subject', 'give' ),
+							'desc'    => __( 'Enter the subject line for the donation notification email', 'give' ),
 							'type'    => 'text',
-							'default' => __( 'New download purchase - Order #{payment_id}', 'give' )
+							'default' => __( 'New Donation - #{payment_id}', 'give' )
 						),
 						array(
 							'id'      => 'sale_notification',
-							'name'    => __( 'Sale Notification', 'give' ),
-							'desc'    => __( 'Enter the email that is sent to sale notification emails after completion of a purchase. HTML is accepted. Available template tags:', 'give' ) . '<br/>' . give_get_emails_tags_list(),
+							'name'    => __( 'Donation Notification', 'give' ),
+							'desc'    => __( 'Enter the email that is sent to donation notification emails after completion of a donation. HTML is accepted. Available template tags:', 'give' ) . '<br/>' . give_get_emails_tags_list(),
 							'type'    => 'wysiwyg',
 							'default' => give_get_default_sale_notification_email()
 						),
 						array(
 							'id'      => 'admin_notice_emails',
-							'name'    => __( 'Sale Notification Emails', 'give' ),
-							'desc'    => __( 'Enter the email address(es) that should receive a notification anytime a sale is made, one per line', 'give' ),
+							'name'    => __( 'Donation Notification Emails', 'give' ),
+							'desc'    => __( 'Enter the email address(es) that should receive a notification anytime a donation is made, one per line', 'give' ),
 							'type'    => 'textarea',
 							'default' => get_bloginfo( 'admin_email' )
 						),
 						array(
 							'id'   => 'disable_admin_notices',
 							'name' => __( 'Disable Admin Notifications', 'give' ),
-							'desc' => __( 'Check this box if you do not want to receive emails when new sales are made.', 'give' ),
+							'desc' => __( 'Check this box if you do not want to receive emails when new donations are made.', 'give' ),
 							'type' => 'checkbox'
 						)
 					)
