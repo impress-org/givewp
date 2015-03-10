@@ -411,16 +411,6 @@ window.CMB2 = (function(window, document, $, undefined){
 
 	cmb.afterRowInsert = function( $row, group ) {
 
-		var $focus = $row.find('input:not([type="button"]), textarea, select').first();
-		if ( $focus.length ) {
-			if ( group ) {
-				$('html, body').animate({
-					scrollTop: Math.round( $focus.offset().top - 150 )
-				}, 1000);
-			}
-			$focus.focus();
-		}
-
 		var _prop;
 
 		// Need to re-init wp_editor instances
