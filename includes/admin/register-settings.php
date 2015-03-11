@@ -178,7 +178,7 @@ class Give_Plugin_Settings {
 							'id'   => 'give_title'
 						),
 						array(
-							'name' => 'Test Mode',
+							'name' => __( 'Test Mode', 'give' ),
 							'desc' => __( 'While in test mode no live transactions are processed. To fully use test mode, you must have a sandbox (test) account for the payment gateway you are testing.', 'give' ),
 							'id'   => 'test_mode',
 							'type' => 'checkbox'
@@ -320,8 +320,22 @@ class Give_Plugin_Settings {
 				'id'         => 'options_page',
 				'give_title' => __( 'Display Settings', 'give' ),
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
-				'fields'     => apply_filters( 'give_settings_display', array()
+				'fields'     => apply_filters( 'give_settings_display', array(
+						array(
+							'name' => __( 'Display Settings', 'give' ),
+							'desc' => '<hr>',
+							'id'   => 'give_title',
+							'type' => 'give_title'
+						),
+						array(
+							'name' => __( 'Disable CSS', 'give' ),
+							'desc' => __( 'Enable this option if you would like to disable all of Give\'s included CSS stylesheets.', 'give' ),
+							'id'   => 'disable_css',
+							'type' => 'checkbox'
+						),
+					)
 				)
+
 			),
 			/**
 			 * Emails Options

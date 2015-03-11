@@ -91,7 +91,7 @@ function give_register_styles() {
 
 	global $give_options;
 
-	if ( isset( $give_options['disable_styles'] ) ) {
+	if ( isset( $give_options['disable_css'] ) ) {
 		return;
 	}
 

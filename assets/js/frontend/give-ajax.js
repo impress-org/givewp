@@ -14,6 +14,9 @@ jQuery( document ).ready( function ( $ ) {
 	setup_give_tooltips();
 	setup_form_loading_images();
 
+	//Hide loading elements
+	$('.give-loading-text' ).hide();
+
 	// Show the login form in the checkout
 	$( 'body' ).on( 'click', '.give_checkout_register_login', function ( e ) {
 		var $this = $( this );
