@@ -11,11 +11,13 @@ Democratizing Generosity - Empower your cause; start accepting donations with Wo
 
 ## Description ##
 
-**[Give](https://givewp.com "Visit the the Give website")** is the most robust WordPress plugin available for accepting donations. Upon activation, Give provides you with powerful features  towards helping your raise more funds for your cause.
+**[Give](https://givewp.com "Visit the the Give website")** is the most robust WordPress plugin available for accepting donations. Upon activation, Give provides you with powerful features geared towards helping you raise more funds for your cause.
 
 ### Why Give? ###
 
-Prior to Give there's was no single go to solution for accepting donations on WordPress. Sure, Gravity Forms and WooCommerce are great plugins but they're not developed to work specifically with donations. This can often lead to your users being confused by unnecessary cart systems, incorrect terminology, or lack of giving flexibility. As an admin, you may have experience wrestling with the various other WordPress donation plugins. Dealing with the lack of documentation and support can be a real pain. There's a better way. Now you have Give.
+Prior to Give there's was no single go to solution for accepting donations on WordPress. Sure, Gravity Forms and WooCommerce are great plugins but they're not developed to work specifically with donations. This can often lead to your users being confused by unnecessary cart systems, incorrect terminology, or lack of flexibility. As an Admin, you may have experience wrestling with the various other WordPress donation plugins. Dealing with the lack of documentation and unreliable support can be an all too common occurrence and a real pain. 
+
+There's a better way. Now you have Give.
 
 ### Simple and Pain Free Giving ###
 
