@@ -3,7 +3,7 @@ Contributors: wordimpress, dlocc, webdevmattcrom
 Tags: donations, donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving
 Requires at least: 3.8
 Tested up to: 4.1
-Stable tag: 1.0
+Stable tag: 0.7 beta
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 

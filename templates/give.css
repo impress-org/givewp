@@ -568,7 +568,9 @@ Gravatar List
 #give-purchase-gravatars .give-gravatars-title {
   margin: 0 0 15px; }
 #give-purchase-gravatars .give-purchase-gravatars-list {
-  list-style: none; }
+  list-style: none;
+  margin: 0;
+  padding: 0; }
   #give-purchase-gravatars .give-purchase-gravatars-list li {
     list-style-type: none;
     display: inline-block;
@@ -892,7 +894,7 @@ form[id*='give-form'] .give-loading-animation {
   float: left;
   width: 20px;
   height: 20px;
-  margin: 2px 5px 0 0;
+  margin: 0 5px 0 0;
   background-size: 20px 20px;
   background-repeat: no-repeat;
   background-color: transparent; }
