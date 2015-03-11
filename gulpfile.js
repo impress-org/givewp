@@ -137,24 +137,6 @@ var onError = function ( err ) {
 	this.end();
 };
 
-/* Readme notifications
-* @see: https://github.com/ahoereth/gulp-readme-to-markdown
- ------------------------------------- */
-gulp.task( 'readme', function () {
-	gulp.src( ['readme.txt'] )
-		.pipe( readme( {
-			details       : false,
-			screenshot_list : 'assets/images/',
-			screenshot_ext: ['jpg', 'jpg', 'png']
-			//extract       : {
-			//	'changelog'                 : 'CHANGELOG',
-			//	'Frequently Asked Questions': 'FAQ'
-			//}
-		} ) )
-		.pipe( gulp.dest( '.' ) );
-} );
-
-
 /* Default Gulp task
  ------------------------------------- */
 gulp.task( 'default', function () {
