@@ -653,6 +653,14 @@ Status Colors
 #give-payments-filter .give-payment-details-link {
   font-weight: bold; }
 
+/* Payment View Metabox */
+#give-order-update .give-donation-status {
+  display: inline-block;
+  float: none;
+  margin: 0 0 0 10px;
+  position: relative;
+  top: 3px; }
+
 /*---------------------
 Responsiveness
 ---------------------------*/
