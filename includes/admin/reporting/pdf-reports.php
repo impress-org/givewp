@@ -245,7 +245,7 @@ function give_draw_chart_image() {
 	$data->setColor( 'ff6c1c' );
 	$chart->addData( $data );
 
-	$chart->setTitle( __( 'Donations by Month for all Products', 'give' ), '336699', 18 );
+	$chart->setTitle( __( 'Donations by Month for all Give Forms', 'give' ), '336699', 18 );
 
 	$chart->setScale( 0, $max_earnings );
 

@@ -71,7 +71,7 @@ Automatic updates should work like a charm; as always though, ensure you backup 
 
 == Frequently Asked Questions ==
 
-= How is Give better that *Gravity Forms* for accepting donations through Gravity Forms? =
+= How is Give better than *Gravity Forms* for accepting donations through WordPress? =
 
 First off, we love Gravity Forms. It's a great plugin and has a lot of good features for accepting donations. That being said, it lacks substantial donation reporting features and requires a developer license ($199/yr) to accept credit card payments on site.
 
