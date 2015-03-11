@@ -41,9 +41,11 @@ Stay in touch with us for important plugin news and updates:
 
 ### Contribute to Give ###
 
-This plugin is open source and we're always looking for more contributors. Whether you know another language, can code like no ones business, or just have an idea, we would love your help and input. To contribute to Give please head over to our website or view/fork/watch the GitHub repository to learn more about what issues we're tackling and about the project.
+This is a WordPress plugin and therefore is GPL / open source. We are always looking for more contributors. Whether you know another language, can code like no ones business, or just have an idea, we would love your help and input. To contribute to Give please head over to our website or view/fork/watch this GitHub repository to learn more about what issues we're tackling and how the project is progressing.
 
 ## Installation ##
+
+The easiest way to install the plugin is through the [WordPress.org plugin repository](http://wordpress.org/plugins/give "Give on the WordPress.org plugin repository"). 
 
 ### Minimum Requirements ###
 
@@ -60,7 +62,7 @@ In the search field type "Give" and click Search Plugins. Once you have found th
 
 ### Manual installation ###
 
-The manual installation method involves downloading our donation plugin and uploading it to your server via your favorite FTP application. The WordPress codex contains [instructions on how to do this here](http://codex.wordpress.org/Managing_Plugins#Manual_Plugin_Installation).
+The manual installation method involves downloading the plugin and uploading it to your server via your favorite FTP application. The WordPress codex contains [instructions on how to do this here](http://codex.wordpress.org/Managing_Plugins#Manual_Plugin_Installation).
 
 ### Updating ###
 
