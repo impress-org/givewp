@@ -2,8 +2,6 @@
  *  Give Gulp File
  *
  *  @description: Used for automating development tasks such as minifying files, compiling SASS and live-reload; using Gulp.js
- *  @author: Devin
- *  @created: 12/30/2014
  */
 
 /* Modules (Can be installed with npm install command using package.json)
@@ -20,9 +18,7 @@ var gulp = require( 'gulp' ),
 	notify = require( 'gulp-notify' ),
 	watch = require( 'gulp-watch' ),
 	livereload = require( 'gulp-livereload' ),
-	minifyCSS = require( 'gulp-minify-css' ),
-	cucumber = require( 'gulp-cucumber' ),
-	readme = require( 'readme' );
+	minifyCSS = require( 'gulp-minify-css' );
 
 /* Paths
  ------------------------------------- */
@@ -41,7 +37,7 @@ gulp.task( 'admin_styles', function () {
 			errLogToConsole: true
 		} ) )
 		.pipe( autoprefixer() )
-		.pipe( sourcemaps.write( './maps' ) )
+		//.pipe( sourcemaps.write( './maps' ) )
 		.pipe( gulp.dest( './assets/css' ) )
 		.pipe( rename( 'give-admin.min.css' ) )
 		.pipe( minifyCSS() )
@@ -63,7 +59,7 @@ gulp.task( 'frontend_styles', function () {
 		} ) ) //compile SASS; ensure any errors don't stop gulp watch
 		.pipe( autoprefixer() ) //add prefixes for older browsers
 		.pipe( rename( 'give.css' ) ) //rename for our main un-minfied file
-		.pipe( sourcemaps.write( '../assets/css/maps' ) ) //write maps to the appropriate plugin dir
+		//.pipe( sourcemaps.write( './maps' ) ) //write maps to the appropriate plugin dir
 		.pipe( gulp.dest( './templates' ) ) //place compiled file in appropriate directory
 		.pipe( rename( 'give.min.css' ) ) //rename for our minified version
 		.pipe( minifyCSS() ) //actually minify the file
@@ -116,16 +112,6 @@ gulp.task( 'watch', function () {
 		livereload(); //and reload when changed
 	} );
 
-} );
-
-/* Run cucumber.js features (UNUSED)
- -------------------------------------- */
-gulp.task( 'cucumber', function () {
-	return gulp.src( '*features/*' )
-		.pipe( cucumber( {
-			'steps'  : '*features/steps/*.js',
-			'support': '*features/support/*.js'
-		} ) );
 } );
 
 /* Handle errors elegantly with gulp-notify

@@ -29,7 +29,7 @@
 /**
  * CSS3 Easing
  */
-.give-label {
+.give-item-label {
   padding: .2em .6em .3em;
   font-size: 85%;
   font-weight: 700;
@@ -40,7 +40,7 @@
   vertical-align: baseline;
   border-radius: .25em; }
 
-.give-label-gray {
+.give-item-label-gray {
   background-color: #929292; }
 
 /*
@@ -1300,5 +1300,3 @@ img.mfp-img {
   right: 0;
   padding-top: 0; }
 
-
-/*# sourceMappingURL=../assets/css/maps/give.css.map */

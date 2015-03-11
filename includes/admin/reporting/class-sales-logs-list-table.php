@@ -301,7 +301,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 					$payment_amount = give_get_payment_amount( $payment_id );
 
 					$logs_data[] = array(
-						'ID'         => '<span class="give-label give-label-gray">'. $log->ID . '</span>',
+						'ID'         => '<span class="give-item-label give-item-label-gray">'. $log->ID . '</span>',
 						'payment_id' => $payment_id,
 						'give_form'  => $log->post_parent,
 						'amount'     => $payment_amount,
