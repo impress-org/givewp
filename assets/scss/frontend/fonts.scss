@@ -8,7 +8,7 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 @font-face {
-  font-family: 'icomoon';
+  font-family: 'give-icomoon';
   src: url('../assets/fonts/icomoon.eot?-ngjl88');
   src: url('../assets/fonts/icomoon.eot?#iefix-ngjl88') format('embedded-opentype'),
   url('../assets/fonts/icomoon.woff?-ngjl88') format('woff'),
@@ -19,7 +19,7 @@
 }
 
 @mixin iconstyle() {
-  font-family: 'icomoon';
+  font-family: 'give-icomoon';
   speak: none;
   font-style: normal;
   font-weight: normal;
@@ -35,18 +35,31 @@
 [class^="icon-"], [class*=" icon-"] {
   @include iconstyle();
 }
+.icon-lamp:before {
+	content: "\e603";
+}
+
+.icon-heart:before {
+	content: "\e604";
+}
 
 .icon-question:before {
-  content: "\e602";
+	content: "\e602";
 }
 
 .icon-info:before {
-  content: "\e601";
+	content: "\e601";
 }
 
 .icon-new-tab:before {
-  content: "\ea7e";
+	content: "\ea7e";
 }
+
 .icon-alert:before {
-    content: "\f02d";
+	content: "\f02d";
 }
+
+.icon-help:before {
+	content: "\e606";
+}
+

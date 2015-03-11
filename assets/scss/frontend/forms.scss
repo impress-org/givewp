@@ -266,8 +266,6 @@ form[id*='give-form'] {
 	  float: left;
 	  margin: 0;
 	  padding: 6px 12px;
-	  height: 30px;
-	  line-height: 30px;
 	  border: 1px solid $borders;
 	}
 
@@ -303,7 +301,6 @@ Notices, Warnings & Errors
 
   &:before {
 	@include iconstyle();
-	font-family: 'icomoon';
 	position: absolute;
 	top: 50%;
 	margin-top: -15px;
@@ -340,8 +337,6 @@ Radio Lists
 
 	input[type="radio"] {
 	  margin: 0 5px 0 0;
-	  position: relative;
-	  top: 1px;
 	  outline: none;
 	}
   }
