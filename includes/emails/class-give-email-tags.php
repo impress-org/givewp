@@ -308,17 +308,17 @@ function give_setup_email_tags() {
 		),
 		array(
 			'tag'         => 'payment_id',
-			'description' => __( 'The unique ID number for this purchase', 'give' ),
+			'description' => __( 'The unique ID number for this donation', 'give' ),
 			'function'    => 'give_email_tag_payment_id'
 		),
 		array(
 			'tag'         => 'receipt_id',
-			'description' => __( 'The unique ID number for this purchase receipt', 'give' ),
+			'description' => __( 'The unique ID number for this donation receipt', 'give' ),
 			'function'    => 'give_email_tag_receipt_id'
 		),
 		array(
 			'tag'         => 'payment_method',
-			'description' => __( 'The method of payment used for this purchase', 'give' ),
+			'description' => __( 'The method of payment used for this donation', 'give' ),
 			'function'    => 'give_email_tag_payment_method'
 		),
 		array(
@@ -444,7 +444,7 @@ function give_email_tag_billing_address( $payment_id ) {
 
 /**
  * Email template tag: date
- * Date of purchase
+ * Date of donation
  *
  * @param int $payment_id
  *
@@ -458,7 +458,7 @@ function give_email_tag_date( $payment_id ) {
 
 /**
  * Email template tag: price
- * The total price of the purchase
+ * The total price of the donation
  *
  * @param int $payment_id
  *
@@ -472,7 +472,7 @@ function give_email_tag_price( $payment_id ) {
 
 /**
  * Email template tag: payment_id
- * The unique ID number for this purchase
+ * The unique ID number for this donation
  *
  * @param int $payment_id
  *
@@ -484,7 +484,7 @@ function give_email_tag_payment_id( $payment_id ) {
 
 /**
  * Email template tag: receipt_id
- * The unique ID number for this purchase receipt
+ * The unique ID number for this donation receipt
  *
  * @param int $payment_id
  *
@@ -510,7 +510,7 @@ function give_email_tag_donation( $payment_id ) {
 
 /**
  * Email template tag: payment_method
- * The method of payment used for this purchase
+ * The method of payment used for this donation
  *
  * @param int $payment_id
  *

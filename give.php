@@ -7,7 +7,7 @@
  * Author URI: http://wordimpress.com
  * Version: 1.0
  * Text Domain: give
- * Domain Path: languages
+ * Domain Path: /languages
  *
  * Give is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -259,7 +259,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 		 * @return void
 		 */
 		public function load_textdomain() {
-			// Set filter for plugin's languages directory
+			// Set filter for Give's languages directory
 			$give_lang_dir = dirname( plugin_basename( GIVE_PLUGIN_FILE ) ) . '/languages/';
 			$give_lang_dir = apply_filters( 'give_languages_directory', $give_lang_dir );
 

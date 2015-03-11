@@ -410,7 +410,7 @@ function give_purchase_form_validate_new_user() {
 		}
 	} else {
 		if ( give_no_guest_checkout() ) {
-			give_set_error( 'registration_required', __( 'You must register or login to complete your purchase', 'give' ) );
+			give_set_error( 'registration_required', __( 'You must register or login to complete your donation', 'give' ) );
 		}
 	}
 
@@ -472,7 +472,7 @@ function give_purchase_form_validate_user_login() {
 
 	// Username
 	if ( ! isset( $_POST['give_user_login'] ) || $_POST['give_user_login'] == '' ) {
-		give_set_error( 'must_log_in', __( 'You must login or register to complete your purchase', 'give' ) );
+		give_set_error( 'must_log_in', __( 'You must login or register to complete your donation', 'give' ) );
 
 		return $valid_user_data;
 	}
@@ -538,7 +538,7 @@ function give_purchase_form_validate_guest_user() {
 
 	// Show error message if user must be logged in
 	if ( give_logged_in_only() ) {
-		give_set_error( 'logged_in_only', __( 'You must be logged into an account to purchase', 'give' ) );
+		give_set_error( 'logged_in_only', __( 'You must be logged into an account to donation', 'give' ) );
 	}
 
 	// Get the guest email
