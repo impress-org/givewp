@@ -5,7 +5,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: WordImpress
  * Author URI: http://wordimpress.com
- * Version: 1.0
+ * Version: 0.7 beta
  * Text Domain: give
  * Domain Path: /languages
  *
@@ -191,6 +191,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/misc-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/template.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/forms/widget.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/shortcodes.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/formatting.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/price-functions.php';
@@ -237,7 +238,6 @@ if ( ! class_exists( 'Give' ) ) : /**
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/metabox.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/dashboard-columns.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/shortcode.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/widget.php';
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/contextual-help.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/reports.php';

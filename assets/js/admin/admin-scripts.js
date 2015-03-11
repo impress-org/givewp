@@ -11,7 +11,6 @@
 jQuery.noConflict();
 (function ( $ ) {
 
-
 	/**
 	 * Setup Admin Datepicker
 	 * @since: 1.0

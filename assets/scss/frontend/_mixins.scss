@@ -80,10 +80,10 @@
   background-color: #929292;
 }
 
-.give-label {
+.give-item-label {
   @include give-label();
 }
 
-.give-label-gray{
+.give-item-label-gray{
   @include give-label-gray();
 }

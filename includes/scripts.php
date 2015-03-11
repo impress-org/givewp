@@ -146,17 +146,16 @@ add_action( 'wp_enqueue_scripts', 'give_register_styles' );
  */
 function give_load_admin_scripts( $hook ) {
 
-
 	if ( ! apply_filters( 'give_load_admin_scripts', give_is_admin_page(), $hook ) ) {
 		return;
 	}
 
 	global $wp_version, $post, $post_type;
 
+	//Directories of assets
 	$js_dir     = GIVE_PLUGIN_URL . 'assets/js/admin/';
 	$js_plugins = GIVE_PLUGIN_URL . 'assets/js/plugins/';
-
-	$css_dir = GIVE_PLUGIN_URL . 'assets/css/';
+	$css_dir    = GIVE_PLUGIN_URL . 'assets/css/';
 
 	// Use minified libraries if SCRIPT_DEBUG is turned off
 	$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
@@ -171,6 +170,7 @@ function give_load_admin_scripts( $hook ) {
 	wp_enqueue_script( 'give-admin-scripts', $js_dir . 'admin-scripts' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
 	wp_enqueue_script( 'jquery-ui-datepicker' );
 
+	//Forms CPT Script
 	if ( $post_type === 'give_forms' ) {
 		wp_enqueue_script( 'give-admin-forms-scripts', $js_dir . 'admin-forms' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
 	}
@@ -244,6 +244,7 @@ function give_admin_icon() {
 			height: 20px;
 			padding: 7px 0 0;
 		}
+
 		#adminmenu #menu-posts-give_forms .wp-menu-image:before {
 			content: '';
 			display: none;
