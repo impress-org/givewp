@@ -226,6 +226,9 @@ class Give_Welcome {
 			<a class="nav-tab <?php echo $selected == 'give-credits' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'give-credits' ), 'index.php' ) ) ); ?>">
 				<?php _e( 'Credits', 'give' ); ?>
 			</a>
+			<a class="nav-tab <?php echo $selected == 'give-add-ons' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( null, 'index.php' ) ) . 'edit.php?post_type=give_forms&page=give-addons'; ?>">
+				<?php _e( 'Add-ons', 'give' ); ?>
+			</a>
 		</h2>
 	<?php
 	}
