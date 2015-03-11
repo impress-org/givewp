@@ -253,7 +253,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 		) );
 
 		if ( $give_forms ) {
-			echo '<select name="form" id="give-log-form-filter">';
+			echo '<select name="give_form" id="give-log-form-filter">';
 			echo '<option value="0">' . __( 'All', 'give' ) . '</option>';
 			foreach ( $give_forms as $form ) {
 				echo '<option value="' . $form . '"' . selected( $form, $this->get_filtered_give_form() ) . '>' . esc_html( get_the_title( $form ) ) . '</option>';

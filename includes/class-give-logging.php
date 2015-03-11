@@ -226,7 +226,7 @@ class Give_Logging {
 	/**
 	 * Retrieve all connected logs
 	 *
-	 * Used for retrieving logs related to particular items, such as a specific purchase.
+	 * Used for retrieving logs related to particular items, such as a specific donation.
 	 *
 	 * @access private
 	 * @since 1.0
@@ -253,7 +253,7 @@ class Give_Logging {
 				)
 			);
 		}
-
+		
 		$logs = get_posts( $query_args );
 
 		if ( $logs )
