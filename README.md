@@ -1,11 +1,6 @@
 # Give - Democratizing Generosity #
-Contributors: wordimpress, dlocc, webdevmattcrom
-Tags: donations, donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving
-Requires at least: 3.8
-Tested up to: 4.1
-Stable tag: 1.0
-License: GPLv3
-License URI: http://www.gnu.org/licenses/gpl-3.0.html
+
+![Give - Democratizing Generosity](https://raw.github.com/WordImpress/Give/branch/master/assets/images/give-logo-large.png)
 
 Democratizing Generosity - Empower your cause; start accepting donations with WordPress via Give.
 
@@ -80,10 +75,3 @@ First off, we love Gravity Forms. It's a great plugin and has a lot of good feat
 ### How is Give better than *WooCommerce* for accepting donations on WordPress? ###
 
 We also really like WooCommerce. It's hands-down the most robust eCommerce platform for WordPress. But that's also the issue. Typically you don't need a cart system, shipping, or tax calculations to accept donations. On top of that, customizing the plugin's terminology is a daunting task. You never want your users to receive an "invoice" for the donation "product" they "purchased". Rather, you'd like for them to receive a receipt for the donation they gave. WooCommerce can do donations, but it isn't what it does best.
-
-## Changelog ##
-
-### 1.0 ###
-
-* Initial plugin release. Yippee!
-
