@@ -253,7 +253,7 @@ class Give_Logging {
 				)
 			);
 		}
-		
+
 		$logs = get_posts( $query_args );
 
 		if ( $logs )
