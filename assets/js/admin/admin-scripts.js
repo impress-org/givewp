@@ -234,10 +234,34 @@ jQuery.noConflict();
 	};
 
 
+	/**
+	 * Admin Status Select Field Change
+	 *
+	 * @description: Handle status switching
+	 * @since: 1.0
+	 */
+	var handle_status_change = function () {
+
+		//When sta
+		$( 'select[name="give-payment-status"]' ).on( 'change', function () {
+
+			var status = $( this ).val();
+			console.log( status );
+			$( '.give-donation-status' ).removeClass( function (index, css) {
+			    return (css.match (/\bstatus-\S+/g) || []).join(' ');
+			 } ).addClass( 'status-' + status );
+
+
+		} );
+
+	};
+
+
 	//On DOM Ready
 	$( function () {
 
 		enable_admin_datepicker();
+		handle_status_change();
 		setup_chosen_give_selects();
 		Give_Edit_Payment.init();
 		Give_Reports.init();

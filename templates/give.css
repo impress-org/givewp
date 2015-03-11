@@ -781,8 +781,6 @@ Radio Lists
       cursor: pointer; }
       #give-gateway-radio-list > li .give-gateway-option input[type="radio"] {
         margin: 0 5px 0 0;
-        position: relative;
-        top: 1px;
         outline: none; }
 
 /*---------------------------------

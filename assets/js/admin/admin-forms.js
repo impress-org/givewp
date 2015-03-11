@@ -218,12 +218,14 @@ jQuery.noConflict();
 	}
 
 
+
 	//On DOM Ready
 	$( function () {
 
 		handle_default_radio();
 		toggle_conditional_form_fields();
 		handle_repeatable_row_ID();
+		handle_status_switch();
 		misc_cleanup();
 
 	} );
