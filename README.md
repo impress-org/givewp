@@ -2,11 +2,9 @@
 
 # [Give - Democratizing Generosity](https://givewp.com "Give - Democratizing Generosity") #
 
-Democratizing Generosity - Empower your cause; start accepting donations with WordPress via Give.
+We know how important fundraising online is to accomplish your goals.  For many non-profits, churches, candidates, schools and causes, online fundraising on your WordPress website is likely to be the most critical part.
 
-## Description ##
-
-**[Give](https://givewp.com "Visit the the Give website")** is the most robust WordPress plugin available for accepting donations. Upon activation, Give provides you with powerful features geared towards helping you raise more funds for your cause.
+Announcing, Give. The most flexible, robust, and easy to use WordPress plugin for accepting donations directly on your website. Upon activation, Give provides you with powerful features geared towards helping you raise more funds for your cause.
 
 ### Why Give? ###
 
