@@ -1,6 +1,6 @@
-# Give - Democratizing Generosity #
-
 ![Give - Democratizing Generosity](https://raw.githubusercontent.com/WordImpress/Give/master/assets/images/give-logo-large.png)
+
+# Give - Democratizing Generosity #
 
 Democratizing Generosity - Empower your cause; start accepting donations with WordPress via Give.
 
