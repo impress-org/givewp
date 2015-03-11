@@ -1,4 +1,4 @@
-![Give - Democratizing Generosity](https://raw.githubusercontent.com/WordImpress/Give/master/assets/images/give-logo-large.png)
+![Give - Democratizing Generosity](https://raw.githubusercontent.com/WordImpress/Give/master/assets/images/give-logo-large-no-tagline.png)
 
 # Give - Democratizing Generosity #
 
