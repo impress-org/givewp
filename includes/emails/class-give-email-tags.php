@@ -258,7 +258,7 @@ function give_load_email_tags() {
 add_action( 'init', 'give_load_email_tags', - 999 );
 
 /**
- * Add default EDD email template tags
+ * Add default Give email template tags
  *
  * @since 1.0
  */

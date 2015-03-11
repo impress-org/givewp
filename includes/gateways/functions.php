@@ -82,7 +82,7 @@ function give_is_gateway_active( $gateway ) {
  * Gets the default payment gateway selected from the Give Settings
  *
  * @since 1.0
- * @global $give_options Array of all the EDD Options
+ * @global $give_options Array of all the Give Options
  *
  * @param  $form_id      int ID of the Give Form
  *

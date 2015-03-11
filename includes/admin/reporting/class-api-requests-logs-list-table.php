@@ -247,7 +247,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @global object $give_logs EDD Logs Object
+	 * @global object $give_logs Give Logs Object
 	 * @return array $logs_data Array of all the Log entires
 	 */
 	public function get_logs() {
@@ -282,7 +282,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @global object $give_logs EDD Logs Object
+	 * @global object $give_logs Give Logs Object
 	 * @uses   Give_API_Request_Log_Table::get_columns()
 	 * @uses   WP_List_Table::get_sortable_columns()
 	 * @uses   Give_API_Request_Log_Table::get_pagenum()

@@ -2,10 +2,9 @@
 /**
  * PDF Report Generation Functions
  *
- * @package     EDD
+ * @package     Give
  * @subpackage  Admin/Reports
  * @copyright   Copyright (c) 2015, WordImpress
- * @author      Sunny Ratilal
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -76,7 +75,7 @@ function give_generate_pdf( $data ) {
 	$pdf->Cell( 45, 6, utf8_decode( __( 'Number of Donations', 'give' ) ), 1, 0, 'L', true );
 	$pdf->Cell( 35, 6, utf8_decode( __( 'Earnings to Date', 'give' ) ), 1, 1, 'L', true );
 
-	$year      = date( 'Y' );
+	$year       = date( 'Y' );
 	$give_forms = get_posts( array( 'post_type' => 'give_forms', 'year' => $year, 'posts_per_page' => - 1 ) );
 
 	if ( $give_forms ):

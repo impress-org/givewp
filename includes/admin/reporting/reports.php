@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Renders the reports page contents.
  *
  * @since 1.0
- * @global $give_options Array of all the EDD Options
+ * @global $give_options Array of all the Give Options
  * @return void
  */
 function give_reports_page() {

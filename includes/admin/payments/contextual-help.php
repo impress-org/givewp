@@ -41,7 +41,7 @@ function give_payments_contextual_help() {
 	);
 
 	$screen->add_help_tab( array(
-		'id'      => 'edd-payments-overview',
+		'id'      => 'give-payments-overview',
 		'title'   => __( 'Overview', 'give' ),
 		'content' =>
 			'<p>' . __( "This screen provides access to all of your store's transactions.", 'give' ) . '</p>' .
@@ -50,7 +50,7 @@ function give_payments_contextual_help() {
 	) );
 
 	$screen->add_help_tab( array(
-		'id'      => 'edd-payments-search',
+		'id'      => 'give-payments-search',
 		'title'   => __( 'Search Payments', 'give' ),
 		'content' =>
 			'<p>' . __( 'The payment history can be searched in several different ways:', 'give' ) . '</p>' .
@@ -65,7 +65,7 @@ function give_payments_contextual_help() {
 	) );
 
 	$screen->add_help_tab( array(
-		'id'      => 'edd-payments-details',
+		'id'      => 'give-payments-details',
 		'title'   => __( 'Payment Details', 'give' ),
 		'content' =>
 			'<p>' . __( 'Each payment can be further inspected by clicking the corresponding <em>View Order Details</em> link. This will provide more information including:', 'give' ) . '</p>' .
@@ -85,4 +85,4 @@ function give_payments_contextual_help() {
 	do_action( 'give_payments_contextual_help', $screen );
 }
 
-add_action( 'load-download_page_edd-payment-history', 'give_payments_contextual_help' );
+add_action( 'load-download_page_give-payment-history', 'give_payments_contextual_help' );

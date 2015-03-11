@@ -173,7 +173,7 @@ class Give_HTML_Elements {
 			'name'             => $name,
 			'selected'         => $selected,
 			'options'          => $options,
-			'show_option_all'  => __( 'All Categories', 'edd' ),
+			'show_option_all'  => __( 'All Categories', 'give' ),
 			'show_option_none' => false
 		) );
 

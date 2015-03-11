@@ -17,15 +17,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Install
  *
- * Runs on plugin install by setting up the post types, custom taxonomies,
- * flushing rewrite rules to initiate the new 'downloads' slug and also
- * creates the plugin and populates the settings fields for those plugin
- * pages. After successful install, the user is redirected to the EDD Welcome
- * screen.
+ * Runs on plugin install by setting up the post types, custom taxonomies, flushing rewrite rules to initiate the new 'downloads' slug and also creates the plugin and populates the settings fields for those plugin pages. After successful install, the user is redirected to the Give Welcome screen.
  *
  * @since 1.0
  * @global $wpdb
- * @global $edd_options
+ * @global $give_options
  * @global $wp_version
  * @return void
  */
@@ -48,8 +44,8 @@ function give_install() {
 		// Purchase Confirmation (Success) Page
 		$success = wp_insert_post(
 			array(
-				'post_title'     => __( 'Donation Confirmation', 'edd' ),
-				'post_content'   => __( 'Thank you for your donation! [give_receipt]', 'edd' ),
+				'post_title'     => __( 'Donation Confirmation', 'give' ),
+				'post_content'   => __( 'Thank you for your donation! [give_receipt]', 'give' ),
 				'post_status'    => 'publish',
 				'post_author'    => 1,
 				'post_type'      => 'page',
@@ -60,7 +56,7 @@ function give_install() {
 		// Failed Purchase Page
 		$failed = wp_insert_post(
 			array(
-				'post_title'     => __( 'Transaction Failed', 'edd' ),
+				'post_title'     => __( 'Transaction Failed', 'give' ),
 				'post_content'   => __( 'Your transaction failed, please try again or contact site support.', 'give' ),
 				'post_status'    => 'publish',
 				'post_author'    => 1,
@@ -104,7 +100,7 @@ function give_install() {
 	$roles->add_caps();
 
 
-	// Add a temporary option to note that EDD pages have been created
+	// Add a temporary option to note that Give pages have been created
 	set_transient( '_give_installed', $options, 30 );
 
 	// Bail if activating from network, or bulk

@@ -51,33 +51,33 @@ function give_get_currency() {
  */
 function give_get_currencies() {
 	$currencies = array(
-		'USD'  => __( 'US Dollars (&#36;)', 'edd' ),
-		'EUR'  => __( 'Euros (&euro;)', 'edd' ),
-		'GBP'  => __( 'Pounds Sterling (&pound;)', 'edd' ),
-		'AUD'  => __( 'Australian Dollars (&#36;)', 'edd' ),
-		'BRL'  => __( 'Brazilian Real (R&#36;)', 'edd' ),
-		'CAD'  => __( 'Canadian Dollars (&#36;)', 'edd' ),
-		'CZK'  => __( 'Czech Koruna', 'edd' ),
-		'DKK'  => __( 'Danish Krone', 'edd' ),
-		'HKD'  => __( 'Hong Kong Dollar (&#36;)', 'edd' ),
-		'HUF'  => __( 'Hungarian Forint', 'edd' ),
-		'ILS'  => __( 'Israeli Shekel (&#8362;)', 'edd' ),
-		'JPY'  => __( 'Japanese Yen (&yen;)', 'edd' ),
-		'MYR'  => __( 'Malaysian Ringgits', 'edd' ),
-		'MXN'  => __( 'Mexican Peso (&#36;)', 'edd' ),
-		'NZD'  => __( 'New Zealand Dollar (&#36;)', 'edd' ),
-		'NOK'  => __( 'Norwegian Krone', 'edd' ),
-		'PHP'  => __( 'Philippine Pesos', 'edd' ),
-		'PLN'  => __( 'Polish Zloty', 'edd' ),
-		'SGD'  => __( 'Singapore Dollar (&#36;)', 'edd' ),
-		'SEK'  => __( 'Swedish Krona', 'edd' ),
-		'CHF'  => __( 'Swiss Franc', 'edd' ),
-		'TWD'  => __( 'Taiwan New Dollars', 'edd' ),
-		'THB'  => __( 'Thai Baht (&#3647;)', 'edd' ),
-		'INR'  => __( 'Indian Rupee (&#8377;)', 'edd' ),
-		'TRY'  => __( 'Turkish Lira (&#8378;)', 'edd' ),
-		'RIAL' => __( 'Iranian Rial (&#65020;)', 'edd' ),
-		'RUB'  => __( 'Russian Rubles', 'edd' )
+		'USD'  => __( 'US Dollars (&#36;)', 'give' ),
+		'EUR'  => __( 'Euros (&euro;)', 'give' ),
+		'GBP'  => __( 'Pounds Sterling (&pound;)', 'give' ),
+		'AUD'  => __( 'Australian Dollars (&#36;)', 'give' ),
+		'BRL'  => __( 'Brazilian Real (R&#36;)', 'give' ),
+		'CAD'  => __( 'Canadian Dollars (&#36;)', 'give' ),
+		'CZK'  => __( 'Czech Koruna', 'give' ),
+		'DKK'  => __( 'Danish Krone', 'give' ),
+		'HKD'  => __( 'Hong Kong Dollar (&#36;)', 'give' ),
+		'HUF'  => __( 'Hungarian Forint', 'give' ),
+		'ILS'  => __( 'Israeli Shekel (&#8362;)', 'give' ),
+		'JPY'  => __( 'Japanese Yen (&yen;)', 'give' ),
+		'MYR'  => __( 'Malaysian Ringgits', 'give' ),
+		'MXN'  => __( 'Mexican Peso (&#36;)', 'give' ),
+		'NZD'  => __( 'New Zealand Dollar (&#36;)', 'give' ),
+		'NOK'  => __( 'Norwegian Krone', 'give' ),
+		'PHP'  => __( 'Philippine Pesos', 'give' ),
+		'PLN'  => __( 'Polish Zloty', 'give' ),
+		'SGD'  => __( 'Singapore Dollar (&#36;)', 'give' ),
+		'SEK'  => __( 'Swedish Krona', 'give' ),
+		'CHF'  => __( 'Swiss Franc', 'give' ),
+		'TWD'  => __( 'Taiwan New Dollars', 'give' ),
+		'THB'  => __( 'Thai Baht (&#3647;)', 'give' ),
+		'INR'  => __( 'Indian Rupee (&#8377;)', 'give' ),
+		'TRY'  => __( 'Turkish Lira (&#8378;)', 'give' ),
+		'RIAL' => __( 'Iranian Rial (&#65020;)', 'give' ),
+		'RUB'  => __( 'Russian Rubles', 'give' )
 	);
 
 	return apply_filters( 'give_currencies', $currencies );
@@ -159,7 +159,7 @@ function give_get_current_page_url() {
 		}
 	endif;
 
-	return apply_filters( 'edd_get_current_page_url', esc_url( $page_url ) );
+	return apply_filters( 'give_get_current_page_url', esc_url( $page_url ) );
 }
 
 

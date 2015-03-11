@@ -989,10 +989,10 @@ add_action( 'give_purchase_form_after_cc_form', 'give_checkout_submit', 9999 );
 
 
 /**
- * Renders the Purchase button on the Checkout
+ * Give Checkout Button Purchase
  *
- * @since 1.0
- * @global    $give_options Array of all the EDD Options
+ * @description Renders the Purchase button on the Checkout
+ * @since       1.0
  *
  * @param int $form_id
  *
@@ -1016,11 +1016,11 @@ function give_checkout_button_purchase( $form_id ) {
 }
 
 /**
- * Outputs the JavaScript code for the Agree to Terms section to toggle
- * the T&Cs text
  *
- * @since 1.0
- * @global    $give_options Array of all the EDD Options
+ * Give Agree to Terms
+ *
+ * @description Outputs the JavaScript code for the Agree to Terms section to toggle the T&Cs text
+ * @since       1.0
  *
  * @param int $form_id
  *

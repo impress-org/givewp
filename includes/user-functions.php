@@ -397,7 +397,7 @@ function give_new_user_notification( $user_id = 0, $user_data = array() ) {
 		return;
 	}
 
-	wp_new_user_notification( $user_id, __( '[Password entered at checkout]', 'edd' ) );
+	wp_new_user_notification( $user_id, __( '[Password entered at checkout]', 'give' ) );
 }
 
 add_action( 'give_insert_user', 'give_new_user_notification', 10, 2 );

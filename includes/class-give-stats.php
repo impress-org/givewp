@@ -505,7 +505,6 @@ class Give_Stats {
 
 		$start_where = '';
 		$end_where   = '';
-
 		if ( $this->start_date ) {
 
 			if ( $this->timestamp ) {

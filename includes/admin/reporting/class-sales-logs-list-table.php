@@ -322,7 +322,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @global object $give_logs EDD Logs Object
+	 * @global object $give_logs Give Logs Object
 	 * @uses   Give_Sales_Log_Table::get_columns()
 	 * @uses   WP_List_Table::get_sortable_columns()
 	 * @uses   Give_Sales_Log_Table::get_pagenum()

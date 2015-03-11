@@ -77,7 +77,7 @@ class Give_Donate_Form {
 			$defaults = array(
 				'post_type'   => 'give_forms',
 				'post_status' => 'draft',
-				'post_title'  => __( 'New Give Form', 'edd' )
+				'post_title'  => __( 'New Give Form', 'give' )
 			);
 
 			$args = wp_parse_args( $_args, $defaults );

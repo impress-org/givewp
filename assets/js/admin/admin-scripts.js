@@ -227,7 +227,7 @@ jQuery.noConflict();
 				}
 
 				$( '.give_price_options_select' ).remove();
-				
+
 			} );
 
 		}

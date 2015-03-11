@@ -151,11 +151,11 @@ function give_get_form_price( $form_id = 0 ) {
 
 
 /**
- * Displays a formatted price for a download
+ * Displays a formatted price for a donation form
  *
  * @since 1.0
  *
- * @param int  $form_id  ID of the download price to show
+ * @param int  $form_id  ID of the form price to show
  * @param bool $echo     Whether to echo or return the results
  * @param int  $price_id Optional price id for variable pricing
  *

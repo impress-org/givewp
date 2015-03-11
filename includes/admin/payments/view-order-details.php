@@ -84,6 +84,7 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 														<option value="<?php esc_attr_e( $key ); ?>"<?php selected( give_get_payment_status( $item, true ), $status ); ?>><?php esc_html_e( $status ); ?></option>
 													<?php endforeach; ?>
 												</select>
+											<span class="give-donation-status status-<?php echo sanitize_title( give_get_payment_status( $item, true ) ); ?>"><span class="give-donation-status-icon"></span></span>
 											</p>
 										</div>
 
@@ -210,7 +211,7 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 
 										<div class="give-admin-box-inside">
 											<p><?php $purchase_url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . esc_attr( give_get_payment_user_email( $payment_id ) ) ); ?>
-												<a href="<?php echo $purchase_url; ?>"><?php _e( 'View all purchases of customer', 'give' ); ?></a>
+												<a href="<?php echo $purchase_url; ?>"><?php _e( 'View all donations for this giver', 'give' ); ?> &raquo;</a>
 											</p>
 										</div>
 
@@ -279,7 +280,7 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 
 							<div id="give-customer-details" class="postbox">
 								<h3 class="hndle">
-									<span><?php _e( 'Customer Details', 'give' ); ?></span>
+									<span><?php _e( 'Giver\'s Details', 'give' ); ?></span>
 								</h3>
 
 								<div class="inside give-clearfix">

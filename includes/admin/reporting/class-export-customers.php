@@ -12,7 +12,9 @@
  */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Give_Customers_Export Class
@@ -32,14 +34,15 @@ class Give_Customers_Export extends Give_Export {
 	 * Set the export headers
 	 *
 	 * @access public
-	 * @since 1.4.4
+	 * @since  1.4.4
 	 * @return void
 	 */
 	public function headers() {
 		ignore_user_abort( true );
 
-		if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) )
+		if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
 			set_time_limit( 0 );
+		}
 
 		$extra = '';
 
@@ -57,14 +60,14 @@ class Give_Customers_Export extends Give_Export {
 	 * Set the CSV columns
 	 *
 	 * @access public
-	 * @since 1.4.4
+	 * @since  1.4.4
 	 * @return array $cols All the columns
 	 */
 	public function csv_cols() {
 		if ( ! empty( $_POST['give_export_download'] ) ) {
 			$cols = array(
-				'first_name' => __( 'First Name',   'give' ),
-				'last_name'  => __( 'Last Name',   'give' ),
+				'first_name' => __( 'First Name', 'give' ),
+				'last_name'  => __( 'Last Name', 'give' ),
 				'email'      => __( 'Email', 'give' ),
 				'date'       => __( 'Date Purchased', 'give' )
 			);
@@ -72,14 +75,14 @@ class Give_Customers_Export extends Give_Export {
 
 			$cols = array();
 
-			if( 'emails' != $_POST['give_export_option'] ) {
-				$cols['name'] = __( 'Name',   'give' );
+			if ( 'emails' != $_POST['give_export_option'] ) {
+				$cols['name'] = __( 'Name', 'give' );
 			}
 
-			$cols['email'] = __( 'Email',   'give' );
+			$cols['email'] = __( 'Email', 'give' );
 
-			if( 'full' == $_POST['give_export_option'] ) {
-				$cols['purchases'] = __( 'Total Purchases',   'give' );
+			if ( 'full' == $_POST['give_export_option'] ) {
+				$cols['purchases'] = __( 'Total Purchases', 'give' );
 				$cols['amount']    = __( 'Total Purchased', 'give' ) . ' (' . html_entity_decode( give_currency_filter( '' ) ) . ')';
 			}
 
@@ -92,10 +95,9 @@ class Give_Customers_Export extends Give_Export {
 	 * Get the Export Data
 	 *
 	 * @access public
-	 * @since 1.4.4
-	 * @global object $wpdb Used to query the database using the WordPress
-	 *   Database API
-	 * @global object $give_logs EDD Logs Object
+	 * @since  1.0
+	 * @global object $wpdb      Used to query the database using the WordPress Database API
+	 * @global object $give_logs Give Logs Object
 	 * @return array $data The data for the CSV file
 	 */
 	public function get_data() {
@@ -114,7 +116,7 @@ class Give_Customers_Export extends Give_Export {
 				'nopaging'    => true
 			);
 
-			if( isset( $_POST['give_price_option'] ) ) {
+			if ( isset( $_POST['give_price_option'] ) ) {
 				$args['meta_query'] = array(
 					array(
 						'key'   => '_give_log_price_id',
@@ -129,7 +131,7 @@ class Give_Customers_Export extends Give_Export {
 				foreach ( $logs as $log ) {
 					$payment_id = get_post_meta( $log->ID, '_give_log_payment_id', true );
 					$user_info  = give_get_payment_meta_user_info( $payment_id );
-					$data[] = array(
+					$data[]     = array(
 						'first_name' => $user_info['first_name'],
 						'last_name'  => $user_info['last_name'],
 						'email'      => $user_info['email'],
@@ -141,25 +143,25 @@ class Give_Customers_Export extends Give_Export {
 		} else {
 
 			// Export all customers
-			$customers = Give()->customers->get_customers( array( 'number' => -1 ) );
+			$customers = Give()->customers->get_customers( array( 'number' => - 1 ) );
 
 			$i = 0;
 
 			foreach ( $customers as $customer ) {
 
-				if( 'emails' != $_POST['give_export_option'] ) {
-					$data[$i]['name'] = $customer->name;
+				if ( 'emails' != $_POST['give_export_option'] ) {
+					$data[ $i ]['name'] = $customer->name;
 				}
 
-				$data[$i]['email'] = $customer->email;
+				$data[ $i ]['email'] = $customer->email;
 
-				if( 'full' == $_POST['give_export_option'] ) {
+				if ( 'full' == $_POST['give_export_option'] ) {
 
-					$data[$i]['purchases'] = $customer->purchase_count;
-					$data[$i]['amount']    = give_format_amount( $customer->purchase_value );
+					$data[ $i ]['purchases'] = $customer->purchase_count;
+					$data[ $i ]['amount']    = give_format_amount( $customer->purchase_value );
 
 				}
-				$i++;
+				$i ++;
 			}
 		}
 

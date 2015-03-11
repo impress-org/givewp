@@ -38,7 +38,7 @@ function give_add_options_links() {
 	$give_payments_page = add_submenu_page( 'edit.php?post_type=give_forms', $give_payment->labels->name, $give_payment->labels->menu_name, 'edit_give_payments', 'give-payment-history', 'give_payment_history_page' );
 
 	//Reports
-	$give_reports_page = add_submenu_page( 'edit.php?post_type=give_forms', __( 'Donation Reports', 'give' ), __( 'Reports', 'edd' ), 'view_shop_reports', 'give-reports', 'give_reports_page' );
+	$give_reports_page = add_submenu_page( 'edit.php?post_type=give_forms', __( 'Donation Reports', 'give' ), __( 'Reports', 'give' ), 'view_shop_reports', 'give-reports', 'give_reports_page' );
 
 	//Settings
 	$give_settings_page = add_submenu_page( 'edit.php?post_type=give_forms', __( 'Give Settings', 'give' ), __( 'Settings', 'give' ), 'manage_give_settings', 'give-settings', array(
@@ -47,7 +47,7 @@ function give_add_options_links() {
 	) );
 
 
-	$give_add_ons_page = add_submenu_page( 'edit.php?post_type=give_forms', __( 'Give Add-ons', 'edd' ), __( 'Add-ons', 'edd' ), 'install_plugins', 'give-addons', 'give_add_ons_page' );
+	$give_add_ons_page = add_submenu_page( 'edit.php?post_type=give_forms', __( 'Give Add-ons', 'give' ), __( 'Add-ons', 'give' ), 'install_plugins', 'give-addons', 'give_add_ons_page' );
 
 
 }
@@ -55,7 +55,7 @@ function give_add_options_links() {
 add_action( 'admin_menu', 'give_add_options_links', 10 );
 
 /**
- *  Determines whether the current admin page is an EDD admin page.
+ *  Determines whether the current admin page is an admin page.
  *
  *  Only works after the `wp_loaded` hook, & most effective
  *  starting on `admin_menu` hook.

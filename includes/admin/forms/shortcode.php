@@ -75,9 +75,9 @@ function give_admin_footer_for_thickbox() {
 			function insertGiveForm() {
 				var id = jQuery( '.give-select#forms' ).val();
 
-				// Return early if no download is selected
+				// Return early if no form  is selected
 				if ( id === '' ) {
-					alert( '<?php _e( "You must choose a download", "give" ); ?>' );
+					alert( '<?php _e( "You must choose a form", "give" ); ?>' );
 					return;
 				}
 

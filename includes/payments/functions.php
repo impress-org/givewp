@@ -274,8 +274,8 @@ function give_delete_purchase( $payment_id = 0 ) {
 
 	if ( is_array( $donations ) ) {
 		// Update sale counts and earnings for all purchased products
-		foreach ( $donations as $download ) {
-			give_undo_purchase( $download['id'], $payment_id );
+		foreach ( $donations as $donation ) {
+			give_undo_purchase( $donation['id'], $payment_id );
 		}
 	}
 

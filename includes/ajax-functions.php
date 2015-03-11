@@ -222,7 +222,7 @@ function give_ajax_form_search() {
 
 		$items[] = array(
 			'id'   => 0,
-			'name' => __( 'No results found', 'edd' )
+			'name' => __( 'No results found', 'give' )
 		);
 
 	}
@@ -266,7 +266,7 @@ function give_ajax_customer_search() {
 
 		$customers[] = array(
 			'id'   => 0,
-			'name' => __( 'No results found', 'edd' )
+			'name' => __( 'No results found', 'give' )
 		);
 
 	}
@@ -303,7 +303,7 @@ function give_ajax_search_users() {
 				$user_list .= '<li><a href="#" data-login="' . esc_attr( $user->user_login ) . '">' . esc_html( $user->user_login ) . '</a></li>';
 			}
 		} else {
-			$user_list .= '<li>' . __( 'No users found', 'edd' ) . '</li>';
+			$user_list .= '<li>' . __( 'No users found', 'give' ) . '</li>';
 		}
 		$user_list .= '</ul>';
 

@@ -90,7 +90,7 @@ class Give_Plugin_Settings {
 	 */
 	public function give_get_settings_tabs() {
 
-		$settings = $this->give_settings(null);
+		$settings = $this->give_settings( null );
 
 		$tabs             = array();
 		$tabs['general']  = __( 'General', 'give' );
@@ -98,7 +98,7 @@ class Give_Plugin_Settings {
 		$tabs['display']  = __( 'Display Options', 'give' );
 		$tabs['emails']   = __( 'Emails', 'give' );
 
-		if ( ! empty($settings['addons']['fields']) ) {
+		if ( ! empty( $settings['addons']['fields'] ) ) {
 			$tabs['addons'] = __( 'Add-ons', 'give' );
 		}
 
@@ -572,9 +572,8 @@ function give_enabled_gateways_callback( $field_object, $escaped_value, $object_
  *
  * @since 1.0
  *
- * @param array $args         Arguments passed by the setting
+ * @param $field_object , $escaped_value, $object_id, $object_type, $field_type_object Arguments passed by CMB2
  *
- * @global      $give_options Array of all the EDD Options
  * @return void
  */
 function give_default_gateway_callback( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
@@ -614,7 +613,6 @@ function give_default_gateway_callback( $field_object, $escaped_value, $object_i
  *
  * @param       $field_object , $escaped_value, $object_id, $object_type, $field_type_object
  *
- * @global      $give_options Array of all the EDD Options
  * @return void
  */
 function give_title_callback( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
@@ -688,13 +686,13 @@ function give_modify_cmb2_form_output( $form_format, $object_id, $cmb ) {
 
 
 /**
- * Registers the license field callback for Software Licensing
+ * Give License Key Callback
  *
- * @since 1.0
+ * @description Registers the license field callback for EDD's Software Licensing
+ * @since       1.0
  *
- * @param array $args         Arguments passed by the setting
+ * @param array $field_object , $escaped_value, $object_id, $object_type, $field_type_object Arguments passed by CMB2
  *
- * @global      $give_options Array of all the EDD Options
  * @return void
  */
 if ( ! function_exists( 'give_license_key_callback' ) ) {
