@@ -35,7 +35,7 @@ class Give_Donators_Gravatars {
 	 * @return void
 	 */
 	private function setup_actions() {
-		add_action( 'widgets_init', array( $this, 'register_widget' ) );
+//		add_action( 'widgets_init', array( $this, 'register_widget' ) );
 		add_shortcode( 'give_donators_gravatars', array( $this, 'shortcode' ) );
 		add_filter( 'give_settings_display', array( $this, 'settings' ) );
 		do_action( 'give_donators_gravatars_setup_actions' );
