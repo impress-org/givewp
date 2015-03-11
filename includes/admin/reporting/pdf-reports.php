@@ -48,7 +48,7 @@ function give_generate_pdf( $data ) {
 	$pdf->SetAuthor( utf8_decode( __( 'Give - Democratizing Generosity', 'give' ) ) );
 	$pdf->SetCreator( utf8_decode( __( 'Give - Democratizing Generosity', 'give' ) ) );
 
-	$pdf->Image( GIVE_PLUGIN_URL . 'assets/images/give-logo.png', 205, 10 );
+	$pdf->Image( GIVE_PLUGIN_URL . 'assets/images/give-logo-small.png', 247, 8 );
 
 	$pdf->SetMargins( 8, 8, 8 );
 	$pdf->SetX( 8 );
@@ -90,9 +90,9 @@ function give_generate_pdf( $data ) {
 
 				$prices = give_get_variable_prices( $form->ID );
 
-				$first = $prices[0]['amount'];
+				$first = $prices[0]['_give_amount'];
 				$last  = array_pop( $prices );
-				$last  = $last['amount'];
+				$last  = $last['_give_amount'];
 
 				if ( $first < $last ) {
 					$min = $first;
@@ -107,10 +107,11 @@ function give_generate_pdf( $data ) {
 				$price = html_entity_decode( give_currency_filter( give_get_form_price( $form->ID ) ) );
 			}
 
-			$categories = get_the_term_list( $form->ID, 'form_category', '', ', ', '' );
+			$categories = get_the_term_list( $form->ID, 'give_forms_category', '', ', ', '' );
+
 			$categories = $categories ? strip_tags( $categories ) : '';
 
-			$tags = get_the_term_list( $form->ID, 'form_tag', '', ', ', '' );
+			$tags = get_the_term_list( $form->ID, 'give_forms_tag', '', ', ', '' );
 			$tags = $tags ? strip_tags( $tags ) : '';
 
 			$sales    = give_get_form_sales_stats( $form->ID );
@@ -118,7 +119,7 @@ function give_generate_pdf( $data ) {
 			$earnings = html_entity_decode( give_currency_filter( give_get_form_earnings_stats( $form->ID ) ) );
 
 			if ( function_exists( 'iconv' ) ) {
-				// Ensure characters like euro; are properly converted. See GithuB issue #472 and #1570
+				// Ensure characters like euro; are properly converted.
 				$price    = iconv( 'UTF-8', 'windows-1252', utf8_encode( $price ) );
 				$earnings = iconv( 'UTF-8', 'windows-1252', utf8_encode( $earnings ) );
 			}
