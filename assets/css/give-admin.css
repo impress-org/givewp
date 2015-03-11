@@ -65,6 +65,20 @@
 /**
  * CSS3 Easing
  */
+.give-label {
+  padding: .2em .6em .3em;
+  font-size: 85%;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25em; }
+
+.give-label-gray {
+  background-color: #929292; }
+
 /**
  * Give CSS Variables
  */
@@ -424,6 +438,15 @@ table.give-table td.row-title p {
   margin: 0; }
 
 /**
+ * Give Logs SCSS
+ *
+ * @description Payment History Styles
+ * @package     Give
+ * @subpackage  SCSS/Admin
+ * @copyright   Copyright (c) 2015, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+/**
  * Give Settings SCSS
  *
  * @package     Give
@@ -617,7 +640,6 @@ Status Colors
   background-color: #5bc0de; }
 
 #give-payments-filter .give-payment-id {
-  background-color: #929292;
   padding: .2em .6em .3em;
   font-size: 85%;
   font-weight: 700;
@@ -626,7 +648,8 @@ Status Colors
   text-align: center;
   white-space: nowrap;
   vertical-align: baseline;
-  border-radius: .25em; }
+  border-radius: .25em;
+  background-color: #929292; }
 #give-payments-filter .give-payment-details-link {
   font-weight: bold; }
 

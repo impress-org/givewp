@@ -946,7 +946,7 @@ function give_purchase_form_validate_cc_zip( $zip = 0, $country_code = '' ) {
 /**
  * Check the purchase to ensure a banned email is not allowed through
  *
- * @since       2.0
+ * @since       1.0
  * @return      void
  */
 function give_check_purchase_email( $valid_data, $posted ) {

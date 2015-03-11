@@ -29,6 +29,20 @@
 /**
  * CSS3 Easing
  */
+.give-label {
+  padding: .2em .6em .3em;
+  font-size: 85%;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25em; }
+
+.give-label-gray {
+  background-color: #929292; }
+
 /*
  * qTip2 - Pretty powerful tooltips - v2.2.1
  * http://qtip2.com
