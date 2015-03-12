@@ -350,7 +350,68 @@ class Give_Welcome {
 
 			<?php $this->tabs(); ?>
 
-			<p class="about-description"><?php _e( 'Use the tips below to get started using Give. You will be up and running in no time!', 'give' ); ?></p>
+			<p class="about-description"><?php _e( 'Getting started with Give is easy. Just fill out a form and you have as many or as little options as you need. You will be up and running in no time!', 'give' ); ?></p>
+
+			<div class="feature-section col two-col clearfix">
+
+				<div class="content">
+					<h3><?php _e( 'STEP 1: Create a New Form', 'give' ); ?></h3>
+					<p><?php _e( 'Give is driven by it\'s powerful form building features. But it is not simply a "form". From the "Add New Form" page you\'ll be able to choose how and where you want to receive your donations. You\'ll be able to set the donation amounts. You even get to choose whether you want to create a whole page for your form, or embed it on a different page of your site.', 'give' ); ?></p>
+					<p><?php _e( 'But all of these features begin simply by going to the menu and choosing "Add New Form."', 'give' ); ?></p>
+				</div>
+
+				<div class="content last-feature">
+					<img src="<?php echo GIVE_PLUGIN_URL; ?>assets/images/admin/getting-started-add-new-form.png">
+				</div>
+
+			</div>
+			<!-- /.feature-section -->
+
+			<div class="feature-section col two-col clearfix">
+
+				<div class="content multi-level-gif">
+					<img src="<?php echo GIVE_PLUGIN_URL; ?>assets/images/admin/getting-started-new-form-multi-level.gif">
+				</div>
+
+				<div class="content last-feature">
+					<h3><?php _e( 'STEP 2: Choose Your Levels', 'give' ); ?></h3>
+					<p><?php _e( 'Each Form can be set to receive either a pre-determined amount or have multiple suggested levels of giving. Choosing "Multi-level Donation" opens up the levels section where you can add as many levels as you like with your own custom names and amounts.', 'give' ); ?></p>
+				</div>
+
+			</div>
+			<!-- /.feature-section -->
+
+			<div class="feature-section col two-col clearfix">
+
+				<div class="content add-content">
+					<h3><?php _e( 'STEP 3: Landing Page or Shortcode Mode?', 'give' ); ?></h3>
+					<p><?php _e( 'Every form you create in Give can either become it\'s own stand-alone page, or it can be inserted into any other page or post throughout your site as a Shortcode.', 'give' ); ?></p>
+
+					<p><?php _e( 'You can choose these different modes by going to the "Form Content" section. From there, you can choose to add content before or after the Donation form on a page, or if you choose "None" perhaps you want to instead use the shortcode. You can find the shortcode in the top right column directly under the Publish/Save button. This feature gives you the most amount of flexibility with controlling your content on your website all within the same page. .', 'give' ); ?></p>
+				</div>
+
+				<div class="content last-feature">
+					<img src="<?php echo GIVE_PLUGIN_URL; ?>assets/images/admin/getting-started-add-content.png">
+				</div>
+
+			</div>
+			<!-- /.feature-section -->
+
+			<div class="feature-section col two-col clearfix">
+
+				<div class="content display-options">
+					<img src="<?php echo GIVE_PLUGIN_URL; ?>assets/images/admin/getting-started-display-options.png">
+				</div>
+
+				<div class="content last-feature">
+					<h3><?php _e( 'STEP 4: Configure Your Display Options', 'give' ); ?></h3>
+					<p><?php _e( 'Lastly, you can present the form in a lot of different ways. With the "Display Options" section you can configure how the credit card field appears, the submit button text, which Gateway you want to use, whether Guests (non-logged in users) can donate or not, and a log-in form.', 'give' ); ?></p>
+				</div>
+
+
+
+			</div>
+			<!-- /.feature-section -->
 
 
 		</div>
