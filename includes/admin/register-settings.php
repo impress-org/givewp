@@ -167,8 +167,6 @@ class Give_Plugin_Settings {
 			'general'     => array(
 				'id'         => 'options_page',
 				'give_title' => __( 'General Settings', 'give' ),
-				'context'    => 'normal',
-				'priority'   => 'high',
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
 				'fields'     => apply_filters( 'give_settings_general', array(
 						array(
