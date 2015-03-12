@@ -163,7 +163,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 		'title'        => __( 'Form Content', 'give' ),
 		'object_types' => array( 'give_forms' ),
 		'context'      => 'normal',
-		'priority'     => 'core',
+		'priority'     => 'high', //Show above Content WYSIWYG
 		'fields'       => apply_filters( 'give_forms_content_options_metabox_fields', array(
 				//Donation Option
 				array(
@@ -191,61 +191,18 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 
 
 	/**
-	 * Terms & Conditions
-	 */
-	$meta_boxes['form_terms_options'] = apply_filters( 'give_forms_terms_options', array(
-		'id'           => 'form_terms_options',
-		'title'        => __( 'Terms and Conditions', 'give' ),
-		'object_types' => array( 'give_forms' ),
-		'context'      => 'normal',
-		'priority'     => 'core',
-		'fields'       => apply_filters( 'give_forms_terms_options_metabox_fields', array(
-				//Donation Option
-				array(
-					'name'        => __( 'Terms and Conditions', 'give' ),
-					'description' => __( 'Do you want to require the user to agree to terms and conditions prior to being able to complete their donation?', 'give' ),
-					'id'          => $prefix . 'terms_option',
-					'type'        => 'select',
-					'options'     => apply_filters( 'give_forms_content_options_select', array(
-							'none' => __( 'No', 'give' ),
-							'yes'  => __( 'Yes', 'give' ),
-						)
-					),
-					'default'     => 'none',
-				),
-				array(
-					'id'         => $prefix . 'agree_label',
-					'name'       => __( 'Agree to Terms Label', 'give' ),
-					'desc'       => __( 'Label shown next to the agree to terms check box.', 'give' ),
-					'type'       => 'text',
-					'size'       => 'regular',
-					'attributes' => array(
-						'placeholder' => __( 'Agree to Terms?', 'give' ),
-					),
-				),
-				array(
-					'id'   => $prefix . 'agree_text',
-					'name' => __( 'Agreement Text', 'give' ),
-					'desc' => __( 'This is the actual text which the user will have to agree to.', 'give' ),
-					'type' => 'wysiwyg'
-				),
-			)
-		)
-	) );
-
-	/**
-	 * Display Options Aside
+	 * Display Options
 	 */
 	$meta_boxes['form_display_options'] = apply_filters( 'give_form_display_options', array(
 			'id'           => 'form_display_options',
 			'title'        => __( 'Form Display Options', 'cmb2' ),
 			'object_types' => array( 'give_forms' ),
 			'context'      => 'normal', //  'normal', 'advanced', or 'side'
-			'priority'     => 'core', //  'high', 'core', 'default' or 'low'
+			'priority'     => 'high', //Show above Content WYSIWYG
 			'show_names'   => true, // Show field names on the left
 			'fields'       => apply_filters( 'give_forms_display_options_metabox_fields', array(
 					array(
-						'name'    => __( 'Payment Display', 'give' ),
+						'name'    => __( 'Payment Fields', 'give' ),
 						'desc'    => __( 'How would you like to display payment information for this form?', 'give' ),
 						'id'      => $prefix . 'payment_display',
 						'type'    => 'select',
@@ -303,6 +260,49 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 			)
 		)
 	);
+
+	/**
+	 * Terms & Conditions
+	 */
+	$meta_boxes['form_terms_options'] = apply_filters( 'give_forms_terms_options', array(
+		'id'           => 'form_terms_options',
+		'title'        => __( 'Terms and Conditions', 'give' ),
+		'object_types' => array( 'give_forms' ),
+		'context'      => 'normal',
+		'priority'     => 'high', //Show above Content WYSIWYG
+		'fields'       => apply_filters( 'give_forms_terms_options_metabox_fields', array(
+				//Donation Option
+				array(
+					'name'        => __( 'Terms and Conditions', 'give' ),
+					'description' => __( 'Do you want to require the user to agree to terms and conditions prior to being able to complete their donation?', 'give' ),
+					'id'          => $prefix . 'terms_option',
+					'type'        => 'select',
+					'options'     => apply_filters( 'give_forms_content_options_select', array(
+							'none' => __( 'No', 'give' ),
+							'yes'  => __( 'Yes', 'give' ),
+						)
+					),
+					'default'     => 'none',
+				),
+				array(
+					'id'         => $prefix . 'agree_label',
+					'name'       => __( 'Agree to Terms Label', 'give' ),
+					'desc'       => __( 'Label shown next to the agree to terms check box.', 'give' ),
+					'type'       => 'text',
+					'size'       => 'regular',
+					'attributes' => array(
+						'placeholder' => __( 'Agree to Terms?', 'give' ),
+					),
+				),
+				array(
+					'id'   => $prefix . 'agree_text',
+					'name' => __( 'Agreement Text', 'give' ),
+					'desc' => __( 'This is the actual text which the user will have to agree to.', 'give' ),
+					'type' => 'wysiwyg'
+				),
+			)
+		)
+	) );
 
 	return $meta_boxes;
 
