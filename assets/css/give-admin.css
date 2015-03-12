@@ -818,6 +818,9 @@ table.give-table td.row-title p {
  * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
+#give_customer_export_download {
+  margin: 0 0 5px; }
+
 /**
  * Give Settings SCSS
  *
