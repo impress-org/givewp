@@ -66,8 +66,8 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 */
 	public function column_default( $item, $column_name ) {
 		switch ( $column_name ) {
-			case 'give_form' :
-				return '<a href="' . add_query_arg( 'give_forms', $item[ $column_name ] ) . '" >' . get_the_title( $item[ $column_name ] ) . '</a>';
+			case 'form' :
+				return '<a href="' . add_query_arg( 'form', $item[ $column_name ] ) . '" >' . get_the_title( $item[ $column_name ] ) . '</a>';
 
 			case 'user_id' :
 				return '<a href="' .
@@ -96,7 +96,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 		$columns = array(
 			'ID'         => __( 'Log ID', 'give' ),
 			'user_id'    => __( 'User', 'give' ),
-			'give_form'  => give_get_forms_label_singular(),
+			'form'  => give_get_forms_label_singular(),
 			'amount'     => __( 'Item Amount', 'give' ),
 			'payment_id' => __( 'Payment ID', 'give' ),
 			'date'       => __( 'Date', 'give' )
@@ -135,7 +135,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 * @return int Download ID
 	 */
 	public function get_filtered_give_form() {
-		return ! empty( $_GET['give_form'] ) ? absint( $_GET['give_form'] ) : false;
+		return ! empty( $_GET['form'] ) ? absint( $_GET['form'] ) : false;
 	}
 
 	/**
@@ -253,7 +253,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 		) );
 
 		if ( $give_forms ) {
-			echo '<select name="give_form" id="give-log-form-filter">';
+			echo '<select name="form" id="give-log-form-filter">';
 			echo '<option value="0">' . __( 'All', 'give' ) . '</option>';
 			foreach ( $give_forms as $form ) {
 				echo '<option value="' . $form . '"' . selected( $form, $this->get_filtered_give_form() ) . '>' . esc_html( get_the_title( $form ) ) . '</option>';
@@ -282,10 +282,10 @@ class Give_Sales_Log_Table extends WP_List_Table {
 		$user      = $this->get_filtered_user();
 
 		$log_query = array(
-			'post__id'   => $give_form,
-			'log_type'   => 'sale',
-			'paged'      => $paged,
-			'meta_query' => $this->get_meta_query()
+			'post_parent' => $give_form,
+			'log_type'    => 'sale',
+			'paged'       => $paged,
+			'meta_query'  => $this->get_meta_query()
 		);
 
 		$logs = $give_logs->get_connected_logs( $log_query );
@@ -301,9 +301,9 @@ class Give_Sales_Log_Table extends WP_List_Table {
 					$payment_amount = give_get_payment_amount( $payment_id );
 
 					$logs_data[] = array(
-						'ID'         => '<span class="give-item-label give-item-label-gray">'. $log->ID . '</span>',
+						'ID'         => '<span class="give-item-label give-item-label-gray">' . $log->ID . '</span>',
 						'payment_id' => $payment_id,
-						'give_form'  => $log->post_parent,
+						'form'       => $log->post_parent,
 						'amount'     => $payment_amount,
 						'user_id'    => $user_info['id'],
 						'user_name'  => $user_info['first_name'] . ' ' . $user_info['last_name'],
