@@ -116,15 +116,17 @@ function give_record_status_change( $payment_id, $new_status, $old_status ) {
 add_action( 'give_update_payment_status', 'give_record_status_change', 100, 3 );
 
 /**
- * Reduces earnings and sales stats when a purchase is refunded
+ * Reduces earnings and donation stats when a donation is refunded
  *
  * @since 1.0
  *
- * @param $data Arguments passed
+ * @param $payment_id
+ * @param $new_status
+ * @param $old_status
  *
  * @return void
  */
-function give_undo_purchase_on_refund( $payment_id, $new_status, $old_status ) {
+function give_undo_donation_on_refund( $payment_id, $new_status, $old_status ) {
 
 	if ( 'publish' != $old_status && 'revoked' != $old_status ) {
 		return;
@@ -134,8 +136,14 @@ function give_undo_purchase_on_refund( $payment_id, $new_status, $old_status ) {
 		return;
 	}
 
-	// Decrease store earnings
+	// Set necessary vars
+	$payment_meta = give_get_payment_meta( $payment_id );
 	$amount = give_get_payment_amount( $payment_id );
+
+	// Undo this purchase
+	give_undo_purchase( $payment_meta['form_id'], $payment_id );
+
+	// Decrease total earnings
 	give_decrease_total_earnings( $amount );
 
 	// Decrement the stats for the customer
@@ -151,7 +159,7 @@ function give_undo_purchase_on_refund( $payment_id, $new_status, $old_status ) {
 	delete_transient( md5( 'give_earnings_this_monththis_month' ) );
 }
 
-add_action( 'give_update_payment_status', 'give_undo_purchase_on_refund', 100, 3 );
+add_action( 'give_update_payment_status', 'give_undo_donation_on_refund', 100, 3 );
 
 
 /**
@@ -179,7 +187,9 @@ add_action( 'give_update_payment_status', 'give_clear_user_history_cache', 10, 3
  * This is so that payments can be queried by their totals
  *
  * @since 1.0
+ *
  * @param array $data Arguments passed
+ *
  * @return void
  */
 function give_update_old_payments_with_totals( $data ) {
@@ -193,7 +203,7 @@ function give_update_old_payments_with_totals( $data ) {
 
 	$payments = give_get_payments( array(
 		'offset' => 0,
-		'number' => -1,
+		'number' => - 1,
 		'mode'   => 'all'
 	) );
 
@@ -218,7 +228,7 @@ add_action( 'give_upgrade_payments', 'give_update_old_payments_with_totals' );
 function give_mark_abandoned_orders() {
 	$args = array(
 		'status' => 'pending',
-		'number' => -1,
+		'number' => - 1,
 		'fields' => 'ids'
 	);
 

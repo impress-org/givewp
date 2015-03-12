@@ -41,6 +41,7 @@ function give_get_payments( $args = array() ) {
 
 	$args     = apply_filters( 'give_get_payments_args', $args );
 	$payments = new Give_Payments_Query( $args );
+
 	return $payments->get_payments();
 }
 
@@ -112,7 +113,9 @@ function give_get_payment_by( $field = '', $value = '' ) {
  * Insert Payment
  *
  * @since 1.0
+ *
  * @param array $payment_data
+ *
  * @return int|bool Payment ID if payment is inserted, false otherwise
  */
 function give_insert_payment( $payment_data = array() ) {
@@ -150,10 +153,10 @@ function give_insert_payment( $payment_data = array() ) {
 	if ( $payment ) {
 
 		$payment_meta = array(
-			'currency'       => $payment_data['currency'],
-			'form_title'     => $payment_data['give_form_title'],
-			'form_id'        => $payment_data['give_form_id'],
-			'user_info'      => $payment_data['user_info'],
+			'currency'   => $payment_data['currency'],
+			'form_title' => $payment_data['give_form_title'],
+			'form_id'    => $payment_data['give_form_id'],
+			'user_info'  => $payment_data['user_info'],
 		);
 
 		$mode    = give_is_test_mode() ? 'test' : 'live';
@@ -257,8 +260,10 @@ function give_update_payment_status( $payment_id, $new_status = 'publish' ) {
  *
  * @since 1.0
  * @global    $give_logs
- * @uses  EDD_Logging::delete_logs()
+ * @uses  Give_Logging::delete_logs()
+ *
  * @param int $payment_id Payment ID (default: 0)
+ *
  * @return void
  */
 function give_delete_purchase( $payment_id = 0 ) {
@@ -326,12 +331,12 @@ function give_delete_purchase( $payment_id = 0 ) {
 }
 
 /**
- * Undoes a donation, including the decrease of sale and earning stats. Used for when refunding or deleting a donation
+ * Undoes a donation, including the decrease of donations and earning stats. Used for when refunding or deleting a donation
  *
  * @since 1.0
  *
- * @param int $form_id Form (Post) ID
- * @param int $payment_id  Payment ID
+ * @param int $form_id    Form (Post) ID
+ * @param int $payment_id Payment ID
  *
  * @return void
  */
@@ -341,23 +346,13 @@ function give_undo_purchase( $form_id, $payment_id ) {
 		return;
 	}
 
-	// get the item's price
-	$amount = isset( $item['price'] ) ? $item['price'] : false;
-
-	// variable priced donations
-	if ( give_has_variable_prices( $form_id ) ) {
-
-		$price_id = isset( $item['item_number']['options']['price_id'] ) ? $item['item_number']['options']['price_id'] : null;
-
-		$amount   = ! isset( $item['price'] ) && 0 !== $item['price'] ? give_get_price_option_amount( $form_id, $price_id ) : $item['price'];
-	}
+	$amount = give_get_payment_amount( $payment_id );
 
 	// decrease earnings
 	give_decrease_earnings( $form_id, $amount );
 
 	// decrease purchase count
 	give_decrease_purchase_count( $form_id );
-
 
 
 }
@@ -778,7 +773,7 @@ function give_increase_total_earnings( $amount = 0 ) {
 /**
  * Decrease the Total Earnings
  *
- * @since 1.8.4
+ * @since 1.0
  *
  * @param $amount int The amount you would like to decrease the total earnings by.
  *
@@ -1277,7 +1272,7 @@ function give_get_payment_transaction_id( $payment_id = 0 ) {
  *
  * @since  1.0
  *
- * @param int    $payment_id Payment ID
+ * @param int    $payment_id     Payment ID
  * @param string $transaction_id The transaciton ID from the gateway
  */
 function give_set_payment_transaction_id( $payment_id = 0, $transaction_id = '' ) {
