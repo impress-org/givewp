@@ -456,9 +456,11 @@ add_action( 'give_register_fields_before', 'give_user_info_fields' );
  * @return void
  */
 function give_get_cc_form() {
-	ob_start(); ?>
 
-	<?php do_action( 'give_before_cc_fields' ); ?>
+
+	ob_start();
+
+	do_action( 'give_before_cc_fields' ); ?>
 
 	<fieldset id="give_cc_fields" class="give-do-validate">
 		<legend><?php _e( 'Credit Card Info', 'give' ); ?></legend>

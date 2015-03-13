@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Triggers Purchase Receipt to be sent after the payment status is updated
+ * Triggers Donation Receipt to be sent after the payment status is updated
  *
  * @since 1.0
  *

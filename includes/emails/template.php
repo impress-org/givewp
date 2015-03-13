@@ -129,8 +129,8 @@ function give_email_template_preview( $array ) {
 function give_email_preview_buttons_callback() {
 	ob_start();
 	?>
-	<a href="<?php echo esc_url( add_query_arg( array( 'give_action' => 'preview_email' ), home_url() ) ); ?>" class="button-secondary" target="_blank" title="<?php _e( 'Purchase Receipt Preview', 'give' ); ?> "><?php _e( 'Preview Purchase Receipt', 'give' ); ?></a>
-	<a href="<?php echo wp_nonce_url( add_query_arg( array( 'give_action' => 'send_test_email' ) ), 'give-test-email' ); ?>" title="<?php _e( 'This will send a demo purchase receipt to the emails listed below.', 'give' ); ?>" class="button-secondary"><?php _e( 'Send Test Email', 'give' ); ?></a>
+	<a href="<?php echo esc_url( add_query_arg( array( 'give_action' => 'preview_email' ), home_url() ) ); ?>" class="button-secondary" target="_blank" title="<?php _e( 'Donation Receipt Preview', 'give' ); ?> "><?php _e( 'Preview Donation Receipt', 'give' ); ?></a>
+	<a href="<?php echo wp_nonce_url( add_query_arg( array( 'give_action' => 'send_test_email' ) ), 'give-test-email' ); ?>" title="<?php _e( 'This will send a demo donation receipt to the emails listed below.', 'give' ); ?>" class="button-secondary"><?php _e( 'Send Test Email', 'give' ); ?></a>
 	<?php
 	echo ob_get_clean();
 }
@@ -219,10 +219,10 @@ function give_get_sale_notification_body_content( $payment_id = 0, $payment_data
 
 	$gateway = give_get_gateway_admin_label( get_post_meta( $payment_id, '_give_payment_gateway', true ) );
 
-	$default_email_body = __( 'Hello', 'give' ) . "\n\n" . sprintf( __( 'A %s purchase has been made', 'give' ), give_get_forms_label_plural() ) . ".\n\n";
+	$default_email_body = __( 'Hello', 'give' ) . "\n\n" . __( 'A donation has been made', 'give' ) . ".\n\n";
 	$default_email_body .= sprintf( __( '%s sold:', 'give' ), give_get_forms_label_plural() ) . "\n\n";
 
-	$default_email_body .= __( 'Purchased by: ', 'give' ) . " " . html_entity_decode( $name, ENT_COMPAT, 'UTF-8' ) . "\n";
+	$default_email_body .= __( 'Donor: ', 'give' ) . " " . html_entity_decode( $name, ENT_COMPAT, 'UTF-8' ) . "\n";
 	$default_email_body .= __( 'Amount: ', 'give' ) . " " . html_entity_decode( give_currency_filter( give_format_amount( give_get_payment_amount( $payment_id ) ) ), ENT_COMPAT, 'UTF-8' ) . "\n";
 	$default_email_body .= __( 'Payment Method: ', 'give' ) . " " . $gateway . "\n\n";
 
@@ -238,8 +238,8 @@ function give_get_sale_notification_body_content( $payment_id = 0, $payment_data
 /**
  * Render Receipt in the Browser
  *
- * A link is added to the Purchase Receipt to view the email in the browser and
- * this function renders the Purchase Receipt in the browser. It overrides the
+ * A link is added to the Donation Receipt to view the email in the browser and
+ * this function renders the Donation Receipt in the browser. It overrides the
  * Purchase Receipt template and provides its only styling.
  *
  * @since  1.5
@@ -247,7 +247,7 @@ function give_get_sale_notification_body_content( $payment_id = 0, $payment_data
  */
 function give_render_receipt_in_browser() {
 	if ( ! isset( $_GET['payment_key'] ) ) {
-		wp_die( __( 'Missing purchase key.', 'give' ), __( 'Error', 'give' ) );
+		wp_die( __( 'Missing donation key.', 'give' ), __( 'Error', 'give' ) );
 	}
 
 	$key = urlencode( $_GET['payment_key'] );

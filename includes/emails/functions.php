@@ -36,7 +36,7 @@ function give_email_purchase_receipt( $payment_id, $admin_notice = true ) {
 
 	$to_email = give_get_payment_user_email( $payment_id );
 
-	$subject = give_get_option( 'purchase_subject', __( 'Purchase Receipt', 'give' ) );
+	$subject = give_get_option( 'purchase_subject', __( 'Donation Receipt', 'give' ) );
 	$subject = apply_filters( 'give_purchase_subject', wp_strip_all_tags( $subject ), $payment_id );
 	$subject = give_do_email_tags( $subject, $payment_id );
 
@@ -47,7 +47,7 @@ function give_email_purchase_receipt( $payment_id, $admin_notice = true ) {
 
 	$emails->__set( 'from_name', $from_name );
 	$emails->__set( 'from_email', $from_email );
-	$emails->__set( 'heading', __( 'Purchase Receipt', 'give' ) );
+	$emails->__set( 'heading', __( 'Donation Receipt', 'give' ) );
 
 
 	$headers = apply_filters( 'give_receipt_headers', $emails->get_headers(), $payment_id, $payment_data );
@@ -75,7 +75,7 @@ function give_email_test_purchase_receipt() {
 	$from_email = give_get_option( 'from_email', get_bloginfo( 'admin_email' ) );
 	$from_email = apply_filters( 'give_purchase_from_address', $from_email, 0, array() );
 
-	$subject = give_get_option( 'purchase_subject', __( 'Purchase Receipt', 'give' ) );
+	$subject = give_get_option( 'purchase_subject', __( 'Donation Receipt', 'give' ) );
 	$subject = apply_filters( 'give_purchase_subject', wp_strip_all_tags( $subject ), 0 );
 	$subject = give_do_email_tags( $subject, 0 );
 
@@ -86,7 +86,7 @@ function give_email_test_purchase_receipt() {
 	$emails = Give()->emails;
 	$emails->__set( 'from_name', $from_name );
 	$emails->__set( 'from_email', $from_email );
-	$emails->__set( 'heading', __( 'Purchase Receipt', 'give' ) );
+	$emails->__set( 'heading', __( 'Donation Receipt', 'give' ) );
 
 	$headers = apply_filters( 'give_receipt_headers', $emails->get_headers(), 0, array() );
 	$emails->__set( 'headers', $headers );
