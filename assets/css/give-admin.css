@@ -682,7 +682,7 @@ ASIDE
   position: relative; }
   .type-download:hover {
     border: 1px solid #d1d1d1; }
-  .type-download > .featured-img > img {
+  .type-download > .featured-img img {
     border-bottom: 1px solid #ddd; }
   .type-download .addon-content {
     *zoom: 1;
