@@ -1,0 +1,87 @@
+/**
+ * Give Admin Welcome SCSS
+ *
+ * @description Displays when user activates the plugin
+ * @package     Give
+ * @subpackage  SCSS/Admin
+ * @copyright   Copyright (c) 2015, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+
+.welcome-h1 {
+  display: inline-block;
+  margin-right: 15px !important;
+}
+
+//Feature section
+.feature-section {
+
+  span.dashicons {
+	width: 16px;
+	height: 16px;
+	font-size: 14px;
+	margin: 6px 0 0 0;
+  }
+
+}
+
+//Get started
+[class^="dashboard_page_give-"], [class*="dashboard_page_give-"]  {
+  .about-text {
+	min-height: 0;
+  }
+}
+
+//Social Media
+.social-items-wrap {
+  display: inline-block;
+  > div {
+	display: inline-block;
+  }
+  .twitter-item-wrap {
+	margin: 0 20px 10px 0;
+  }
+}
+
+//Credits
+.wp-person {
+  img {
+	border-radius: 50%;
+  }
+  a.web {
+	margin: 17px 0 0;
+	font-weight: bold;
+	font-style: italic;
+  }
+}
+
+//Newsletter
+.newsletter-intro {
+  font-size: 13px;
+  font-style: italic;
+  color: #777;
+}
+
+.give-newsletter-form-wrap {
+  margin: 10px 0 20px -5px;
+  max-width: 700px;
+
+  td {
+	padding: 3px;
+  }
+
+  div.give-newsletter-confirmation {
+	background: #fff;
+	-webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+	margin: 5px 10px 4px 5px;
+	padding: 1px 12px;
+	border-left: 4px solid #7ad03a;
+	display: none;
+	> p {
+	  margin: 0.5em 0;
+	  padding: 2px;
+	}
+  }
+
+}

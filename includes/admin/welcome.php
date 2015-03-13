@@ -138,8 +138,9 @@ class Give_Welcome {
 				padding: 0 0 20px;
 				margin: 0 0 20px;
 			}
+
 			.about-wrap h3 {
-				margin:1.5em 0 .6em;
+				margin: 1.5em 0 .6em;
 			}
 
 			/*]]>*/
@@ -244,20 +245,27 @@ class Give_Welcome {
 		list( $display_version ) = explode( '-', GIVE_VERSION );
 		?>
 		<div class="wrap about-wrap">
-			<h1><?php printf( __( 'Welcome to Give %s', 'give' ), $display_version ); ?></h1>
+			<h1 class="welcome-h1"><?php printf( __( 'Welcome to Give %s', 'give' ), $display_version ); ?></h1>
 
-			<div class="about-text"><?php printf( __( 'Thank you for updating to the latest version of Give! If you\'re a first time user be sure to check out the plugin <a href="%s" target="_blank">documentation</a> to help you get started. Be sure to sign up for the Give newsletter below to stay informed of important updates and news.', 'give' ), 'https://givewp.com/documenation/' ); ?></div>
-			<div class="give-badge"><?php printf( __( 'Version %s', 'give' ), $display_version ); ?></div>
+			<?php give_social_media_elements() ?>
+
+			<div class="about-text"><?php printf( __( 'Thank you for activating or updating to the latest version of Give! If you\'re a first time user, welcome! You\'re well on your way to empowering your cause. </You>We encourage you to check out the <a href="%s" title="View the Give plugin documentation online" target="_blank">plugin documentation</a> and getting started guide below.', 'give' ), 'https://givewp.com/documenation/' ); ?></div>
+
+			<p class="newsletter-intro"><?php _e( 'Be sure to sign up for the Give newsletter below to stay informed of important updates and news.', 'give' ); ?></p>
 
 			<?php give_get_give_newsletter() ?>
+
+			<div class="give-badge"><?php printf( __( 'Version %s', 'give' ), $display_version ); ?></div>
+
+
 
 			<?php $this->tabs(); ?>
 
 			<div class="feature-section col two-col clearfix introduction">
 
 				<div class="video">
-					<img src="http://placehold.it/500x280">
-					<!--					<iframe width="560" height="315" src="//www.youtube.com/embed/za43poLirX4" frameborder="0" allowfullscreen></iframe>-->
+					<img src="<?php echo GIVE_PLUGIN_URL . '/assets/images/give-form-mockup.png' ?>" title="A Give donation form" alt="A Give donation form">
+
 				</div>
 
 				<div class="content last-feature">
@@ -265,6 +273,8 @@ class Give_Welcome {
 					<h3><?php _e( 'Give - Democratizing Generosity', 'give' ); ?></h3>
 
 					<p><?php _e( 'Give empowers you to easily accept donations and setup fundraising campaigns, directly within WordPress. We created Give to provide a better donation experience for you and your users. Robust, flexible, and intuitive, the plugin is built from the ground up to be the goto donation solution for WordPress. Create powerful donation forms, embed them throughout your website, start a campaign, and exceed your fundraising goals with Give. This plugin is actively developed and proudly supported by folks who are dedicated to helping you and your cause.', 'give' ); ?></p>
+					<a href="https://givewp.com" target="_blank" class="button-secondary" title="Visit the Give Website">Learn More
+						<span class="dashicons dashicons-external"></span></a>
 
 				</div>
 
@@ -277,19 +287,20 @@ class Give_Welcome {
 
 					<h3><?php _e( 'Getting to Know Give', 'give' ); ?></h3>
 
-					<p><?php _e( 'Before you get started with Give please take a look at the online documentation . There you will find the getting started guide which will help  you get up and running quickly. If you have an question, issue or bug with the Core plugin please submit an issue on the Give website. We also welcome your feedback and feature requests. Welcome to Give. We hope you much success with your cause.', 'give' ); ?></p>
+					<p><?php _e( 'Before you get started with Give we suggest you take a look at the online documentation. There you will find the getting started guide which will help you get up and running quickly. If you have an question, issue or bug with the Core plugin please submit an issue on the Give website. We also welcome your feedback and feature requests. Welcome to Give. We hope you much success with your cause.', 'give' ); ?></p>
+					<a href="https://givewp.com" target="_blank" class="button-secondary" title="Visit the Give Website">View Documentation
+						<span class="dashicons dashicons-external"></span></a>
 
 				</div>
 
 				<div class="content last-feature">
 
-					<img src="http://placehold.it/500x280">
+					<img src="<?php echo GIVE_PLUGIN_URL . '/assets/images/give-logo-photo-mashup.png' ?>" title="Give" alt="Give">
 
 				</div>
 
 			</div>
 			<!-- /.feature-section -->
-
 
 
 		</div>
@@ -342,21 +353,32 @@ class Give_Welcome {
 	public function getting_started_screen() {
 		list( $display_version ) = explode( '-', GIVE_VERSION );
 		?>
-		<div class="wrap about-wrap">
-			<h1><?php printf( __( 'Welcome to Give %s', 'give' ), $display_version ); ?></h1>
+		<div class="wrap about-wrap get-started">
+			<h1 class="welcome-h1"><?php printf( __( 'Give %s - Getting Started Guide', 'give' ), $display_version ); ?></h1>
 
-			<div class="about-text"><?php printf( __( 'Thank you for updating to the latest version of Give!', 'give' ), $display_version ); ?></div>
+			<?php give_social_media_elements() ?>
+
+			<div class="about-text"><?php _e( 'Welcome to the getting started guide.' ); ?></div>
+
+			<p class="newsletter-intro"><?php _e( 'Don\'t forget to sign up for the newsletter!', 'give' ); ?>.</p>
+
+			<?php give_get_give_newsletter() ?>
+
 			<div class="give-badge"><?php printf( __( 'Version %s', 'give' ), $display_version ); ?></div>
 
 			<?php $this->tabs(); ?>
 
-			<p class="about-description"><?php _e( 'Getting started with Give is easy. Just fill out a form and you have as many or as little options as you need. You will be up and running in no time!', 'give' ); ?></p>
+
+			<div class="about-text"><?php printf( __( 'Getting started with Give is easy! We put together this quick start guide to help first time users of the plugin. Our goal is to get you up and running in no time. Let\'s begin!', 'give' ), $display_version ); ?></div>
+
 
 			<div class="feature-section col two-col clearfix">
 
 				<div class="content">
 					<h3><?php _e( 'STEP 1: Create a New Form', 'give' ); ?></h3>
+
 					<p><?php _e( 'Give is driven by it\'s powerful form building features. But it is not simply a "form". From the "Add New Form" page you\'ll be able to choose how and where you want to receive your donations. You\'ll be able to set the donation amounts. You even get to choose whether you want to create a whole page for your form, or embed it on a different page of your site.', 'give' ); ?></p>
+
 					<p><?php _e( 'But all of these features begin simply by going to the menu and choosing "Add New Form."', 'give' ); ?></p>
 				</div>
 
@@ -375,6 +397,7 @@ class Give_Welcome {
 
 				<div class="content last-feature">
 					<h3><?php _e( 'STEP 2: Choose Your Levels', 'give' ); ?></h3>
+
 					<p><?php _e( 'Each Form can be set to receive either a pre-determined amount or have multiple suggested levels of giving. Choosing "Multi-level Donation" opens up the levels section where you can add as many levels as you like with your own custom names and amounts.', 'give' ); ?></p>
 				</div>
 
@@ -385,6 +408,7 @@ class Give_Welcome {
 
 				<div class="content add-content">
 					<h3><?php _e( 'STEP 3: Landing Page or Shortcode Mode?', 'give' ); ?></h3>
+
 					<p><?php _e( 'Every form you create in Give can either become it\'s own stand-alone page, or it can be inserted into any other page or post throughout your site as a Shortcode.', 'give' ); ?></p>
 
 					<p><?php _e( 'You can choose these different modes by going to the "Form Content" section. From there, you can choose to add content before or after the Donation form on a page, or if you choose "None" perhaps you want to instead use the shortcode. You can find the shortcode in the top right column directly under the Publish/Save button. This feature gives you the most amount of flexibility with controlling your content on your website all within the same page. .', 'give' ); ?></p>
@@ -405,9 +429,9 @@ class Give_Welcome {
 
 				<div class="content last-feature">
 					<h3><?php _e( 'STEP 4: Configure Your Display Options', 'give' ); ?></h3>
+
 					<p><?php _e( 'Lastly, you can present the form in a lot of different ways. With the "Display Options" section you can configure how the credit card field appears, the submit button text, which Gateway you want to use, whether Guests (non-logged in users) can donate or not, and a log-in form.', 'give' ); ?></p>
 				</div>
-
 
 
 			</div>
@@ -429,9 +453,18 @@ class Give_Welcome {
 		list( $display_version ) = explode( '-', GIVE_VERSION );
 		?>
 		<div class="wrap about-wrap">
-			<h1><?php printf( __( 'Welcome to Give %s', 'give' ), $display_version ); ?></h1>
+			<h1 class="welcome-h1"><?php printf( __( 'Give %s - Credits', 'give' ), $display_version ); ?></h1>
 
-			<div class="about-text"><?php printf( __( 'Thank you for updating to the latest version! Give %s is ready to make your online store faster, safer and better!', 'give' ), $display_version ); ?></div>
+			<?php give_social_media_elements() ?>
+
+			<div class="about-text"><?php printf( __( 'Thanks to all those who have contributed code directly or indirectly. ', 'give' ), $display_version ); ?></div>
+
+			<div class="about-text"><?php _e( 'Welcome to the getting started guide.' ); ?></div>
+
+			<p class="newsletter-intro">Be sure to sign up for the Give newsletter below to stay informed of important updates and news.</p>
+
+			<?php give_get_give_newsletter() ?>
+
 			<div class="give-badge"><?php printf( __( 'Version %s', 'give' ), $display_version ); ?></div>
 
 			<?php $this->tabs(); ?>
