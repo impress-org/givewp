@@ -109,15 +109,6 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 								'rows'        => 3,
 							),
 						),
-						//						array(
-						//							'name'    => __( 'Default', 'give' ),
-						//							'id'      => $prefix . 'default',
-						//							'type'    => 'radio_inline',
-						//							'value'   => '',
-						//							'options' => array(
-						//								'default' => __( 'Default', 'give' ),
-						//							),
-						//						),
 						array(
 							'name' => __( 'Default', 'give' ),
 							'id'   => $prefix . 'default',

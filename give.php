@@ -209,6 +209,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/actions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/paypal-standard.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/gateways/offline-donations.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/manual.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/class-give-emails.php';
