@@ -100,9 +100,7 @@ class Give_Payment_Stats extends Give_Stats {
 		global $wpdb;
 
 		$this->setup_dates( $start_date, $end_date );
-echo "<pre>";
-var_dump($this->start_date);
-echo "</pre>";
+
 		// Make sure start date is valid
 		if ( is_wp_error( $this->start_date ) ) {
 			return $this->start_date;

@@ -37,13 +37,12 @@ add_action( 'wp_dashboard_setup', 'give_register_dashboard_widgets', 10 );
  * @return void
  */
 function give_dashboard_sales_widget() {
-	$stats = new Give_Payment_Stats;
 
 	if ( ! current_user_can( apply_filters( 'give_dashboard_stats_cap', 'view_give_reports' ) ) ) {
-			die();
-		}
+		return;
+	}
+	$stats = new Give_Payment_Stats; ?>
 
-	?>
 	<div class="give-dashboard-widget">
 
 		<div class="give-dashboard-today give-clearfix">
@@ -62,10 +61,6 @@ function give_dashboard_sales_widget() {
 				<span><?php echo _x( 'donations today', 'Displays in WP admin dashboard widget after the day\'s total donations', 'give' ); ?></span>
 			</p>
 
-			<p class="give-last-seven"><?php
-				echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, '6 days ago 00:00', 'now' ) ) ); ?>
-				<span><?php echo _x( 'last seven days', 'Displays in WP admin dashboard widget after the total number of donation provided', 'give' ); ?></span>
-			</p>
 
 		</div>
 
@@ -81,7 +76,7 @@ function give_dashboard_sales_widget() {
 			<tbody>
 			<tr id="give-table-stats-tr-1">
 				<td>
-					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_week', false ) ) ); ?></p>
+					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_week' ) ) ); ?></p>
 
 					<p class="give-dashboard-stat-total-label"><?php _e( 'this week', 'give' ); ?></p>
 				</td>

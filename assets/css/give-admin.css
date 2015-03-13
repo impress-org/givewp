@@ -1274,8 +1274,8 @@ Responsiveness
   .give-dashboard-widget .give-dashboard-today .give-orders-today {
     font-size: 18px;
     font-weight: bold;
-    margin: 0;
-    padding: 8px 0 1px; }
+    margin: 0 0 30px;
+    padding: 4px 0 1px; }
   .give-dashboard-widget .give-dashboard-today .give-last-seven {
     font-size: 14px;
     font-weight: bold;

@@ -112,15 +112,12 @@ class Give_Stats {
 
 		$this->start_date = $_start_date;
 
-		if ( ! empty( $_end_date ) ) {
-			$this->end_date = $_end_date;
-		} else {
-			$this->end_date = $this->start_date;
+		if( empty( $_end_date ) ) {
+			$_end_date = $_start_date;
 		}
 
-		$this->start_date = $this->convert_date( $this->start_date );
-		$this->end_date   = $this->convert_date( $this->end_date, true );
-
+		$this->start_date = $this->convert_date( $_start_date );
+		$this->end_date   = $this->convert_date( $_end_date, true );
 	}
 
 	/**
@@ -444,10 +441,7 @@ class Give_Stats {
 			$date = mktime( $hour, $minute, $second, $month, $day, $year );
 
 		}
-		echo "<pre>";
-		var_dump($date);
-		var_dump($this->timestamp);
-		echo "</pre>";
+
 		return apply_filters( 'give_stats_date', $date, $end_date, $this );
 
 	}
@@ -508,9 +502,7 @@ class Give_Stats {
 
 		$start_where = '';
 		$end_where   = '';
-echo "<pre>";
-var_dump($this->start_date);
-echo "</pre>";
+
 		if ( $this->start_date ) {
 
 			if ( $this->timestamp ) {
