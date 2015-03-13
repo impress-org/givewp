@@ -43,7 +43,7 @@ function give_setup_post_types() {
 		'not_found'          => __( 'No %2$s found', 'give' ),
 		'not_found_in_trash' => __( 'No %2$s found in Trash', 'give' ),
 		'parent_item_colon'  => '',
-		'menu_name'          => __( 'Give', 'give' )
+		'menu_name'          => apply_filters( 'give_menu_name', __( 'Donations', 'give' ) )
 	) );
 
 	foreach ( $give_forms_labels as $key => $value ) {
@@ -61,7 +61,7 @@ function give_setup_post_types() {
 		'map_meta_cap'       => true,
 		'capability_type'    => 'give_forms',
 		'has_archive'        => $give_forms_archives,
-		'menu_icon'          => give_svg_icons('give_cpt_icon'),
+		'menu_icon'          => give_svg_icons( 'give_cpt_icon' ),
 		'hierarchical'       => false,
 		'supports'           => apply_filters( 'give_forms_supports', array(
 			'title',
