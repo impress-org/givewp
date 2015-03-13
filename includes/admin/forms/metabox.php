@@ -60,7 +60,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					) ),
 				),
 				array(
-					'name'         => __( 'Set Amount', 'give' ),
+					'name'         => __( 'Set Donation', 'give' ),
 					'description'  => __( 'This is the set donation amount for this form.', 'give' ),
 					'id'           => $prefix . 'set_price',
 					'type'         => 'text_money',
@@ -358,7 +358,7 @@ function give_cmb_render_levels_id( $field_object, $escaped_value, $object_id, $
  */
 add_action( 'cmb2_render_give_default_radio_inline', 'give_cmb_give_default_radio_inline', 10, 5 );
 function give_cmb_give_default_radio_inline( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
-	echo '<input type="radio" class="cmb2-option donation-level-radio" name="' . $field_object->args['_name'] . '" id="' . $field_object->args['id'] . '" value="default" '.checked( 'default', $escaped_value, false ).'>';
+	echo '<input type="radio" class="cmb2-option donation-level-radio" name="' . $field_object->args['_name'] . '" id="' . $field_object->args['id'] . '" value="default" ' . checked( 'default', $escaped_value, false ) . '>';
 	echo '<label for="' . $field_object->args['id'] . '">Default</label>';
 
 }

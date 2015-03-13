@@ -15,10 +15,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Adds an "Insert Download" button above the TinyMCE Editor on add/edit screens.
+ * Adds an "Insert Donation Form" button above the TinyMCE Editor on add/edit screens.
  *
  * @since 1.0
- * @return string "Insert Download" Button
+ * @return string "Add Donation Form" Button
  */
 function give_media_button() {
 
@@ -36,11 +36,11 @@ function give_media_button() {
 	) {
 		/* check current WP version */
 		if ( version_compare( $wp_version, '3.5', '<' ) ) {
-			$img    = '<img src="' . GIVE_PLUGIN_URL . 'assets/images/give-media.png" alt="' . sprintf( __( 'Insert Give %s', 'give' ), give_get_forms_label_singular() ) . '"/>';
-			$output = '<a href="#TB_inline?width=640&inlineId=choose-download" class="thickbox" title="' . __( 'Insert Give Form', 'give' ) . '">' . $img . '</a>';
+			$img    = '<img src="' . GIVE_PLUGIN_URL . 'assets/images/give-media.png" alt="' . sprintf( __( 'Add Donation %s', 'give' ), give_get_forms_label_singular() ) . '"/>';
+			$output = '<a href="#TB_inline?width=640&inlineId=choose-give-form" class="thickbox" title="' . __( 'Add Donation Form', 'give' ) . '">' . $img . '</a>';
 		} else {
 			$img    = '<span class="wp-media-buttons-icon" id="give-media-button" style="background-image:url(' . give_svg_icons( 'give_grey' ) . ');margin-right:5px;"></span>';
-			$output = '<a href="#TB_inline?width=640&inlineId=choose-give-form" class="thickbox button give-thickbox" title="' . sprintf( __( 'Insert Give %s', 'give' ), give_get_forms_label_singular() ) . '" style="padding-left: .4em;">' . $img . sprintf( __( 'Insert Give %s', 'give' ), give_get_forms_label_singular() ) . '</a>';
+			$output = '<a href="#TB_inline?width=640&inlineId=choose-give-form" class="thickbox button give-thickbox" title="' . sprintf( __( 'Add Donation %s', 'give' ), give_get_forms_label_singular() ) . '" style="padding-left: .4em;">' . $img . sprintf( __( 'Add Donation %s', 'give' ), give_get_forms_label_singular() ) . '</a>';
 		}
 	}
 	echo $output;
