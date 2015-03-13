@@ -41,36 +41,36 @@ function give_admin_messages() {
 	}
 
 
-	if ( isset( $_GET['give-message'] ) && 'settings-imported' == $_GET['give-message'] && current_user_can( 'manage_shop_settings' ) ) {
+	if ( isset( $_GET['give-message'] ) && 'settings-imported' == $_GET['give-message'] && current_user_can( 'manage_give_settings' ) ) {
 		add_settings_error( 'give-notices', 'give-settings-imported', __( 'The settings have been imported.', 'give' ), 'updated' );
 	}
 
-	if ( isset( $_GET['give-message'] ) && 'note-added' == $_GET['give-message'] && current_user_can( 'edit_shop_payments' ) ) {
+	if ( isset( $_GET['give-message'] ) && 'note-added' == $_GET['give-message'] && current_user_can( 'edit_give_payments' ) ) {
 		add_settings_error( 'give-notices', 'give-note-added', __( 'The payment note has been added successfully.', 'give' ), 'updated' );
 	}
 
-	if ( isset( $_GET['give-message'] ) && 'payment-updated' == $_GET['give-message'] && current_user_can( 'edit_shop_payments' ) ) {
+	if ( isset( $_GET['give-message'] ) && 'payment-updated' == $_GET['give-message'] && current_user_can( 'edit_give_payments' ) ) {
 		add_settings_error( 'give-notices', 'give-payment-updated', __( 'The payment has been successfully updated.', 'give' ), 'updated' );
 	}
 
-	if ( isset( $_GET['give-message'] ) && 'api-key-generated' == $_GET['give-message'] && current_user_can( 'manage_shop_settings' ) ) {
+	if ( isset( $_GET['give-message'] ) && 'api-key-generated' == $_GET['give-message'] && current_user_can( 'manage_give_settings' ) ) {
 		add_settings_error( 'give-notices', 'give-api-key-generated', __( 'API keys successfully generated.', 'give' ), 'updated' );
 	}
 
-	if ( isset( $_GET['give-message'] ) && 'api-key-failed' == $_GET['give-message'] && current_user_can( 'manage_shop_settings' ) ) {
+	if ( isset( $_GET['give-message'] ) && 'api-key-failed' == $_GET['give-message'] && current_user_can( 'manage_give_settings' ) ) {
 		add_settings_error( 'give-notices', 'give-api-key-failed', __( 'The specified user already has API keys or the specified user does not exist..', 'give' ), 'error' );
 	}
 
-	if ( isset( $_GET['give-message'] ) && 'api-key-regenerated' == $_GET['give-message'] && current_user_can( 'manage_shop_settings' ) ) {
+	if ( isset( $_GET['give-message'] ) && 'api-key-regenerated' == $_GET['give-message'] && current_user_can( 'manage_give_settings' ) ) {
 		add_settings_error( 'give-notices', 'give-api-key-regenerated', __( 'API keys successfully regenerated.', 'give' ), 'updated' );
 	}
 
-	if ( isset( $_GET['give-message'] ) && 'api-key-revoked' == $_GET['give-message'] && current_user_can( 'manage_shop_settings' ) ) {
+	if ( isset( $_GET['give-message'] ) && 'api-key-revoked' == $_GET['give-message'] && current_user_can( 'manage_give_settings' ) ) {
 		add_settings_error( 'give-notices', 'give-api-key-revoked', __( 'API keys successfully revoked.', 'give' ), 'updated' );
 	}
 
 
-	if ( ! get_user_meta( get_current_user_id(), '_give_admin_ajax_inaccessible_dismissed', true ) && current_user_can( 'manage_shop_settings' ) && false !== get_transient( '_give_ajax_works' ) ) {
+	if ( ! get_user_meta( get_current_user_id(), '_give_admin_ajax_inaccessible_dismissed', true ) && current_user_can( 'manage_give_settings' ) && false !== get_transient( '_give_ajax_works' ) ) {
 
 		if ( ! give_test_ajax_works() ) {
 

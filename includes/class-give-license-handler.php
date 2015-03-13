@@ -192,7 +192,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			}
 
-			if ( ! current_user_can( 'manage_shop_settings' ) ) {
+			if ( ! current_user_can( 'manage_give_settings' ) ) {
 				return;
 			}
 
@@ -263,7 +263,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			}
 
-			if ( ! current_user_can( 'manage_shop_settings' ) ) {
+			if ( ! current_user_can( 'manage_give_settings' ) ) {
 				return;
 			}
 

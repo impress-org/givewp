@@ -618,7 +618,7 @@ function give_default_cc_address_fields() {
 			} ?>">
 				<?php
 
-				$selected_country = give_get_shop_country();
+				$selected_country = give_get_country();
 
 				if ( $logged_in && ! empty( $user_address['country'] ) && '*' !== $user_address['country'] ) {
 					$selected_country = $user_address['country'];
@@ -642,8 +642,8 @@ function give_default_cc_address_fields() {
 			</label>
 
 			<?php
-			$selected_state = give_get_shop_state();
-			$states         = give_get_shop_states( $selected_country );
+			$selected_state = give_get_state();
+			$states         = give_get_states( $selected_country );
 
 			if ( $logged_in && ! empty( $user_address['state'] ) ) {
 				$selected_state = $user_address['state'];

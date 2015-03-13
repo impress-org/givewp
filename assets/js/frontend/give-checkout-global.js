@@ -21,7 +21,7 @@ jQuery( document ).ready( function ( $ ) {
 
 			// If the country field has changed, we need to update the state/province field
 			var postData = {
-				action    : 'give_get_shop_states',
+				action    : 'give_get_states',
 				country   : $this.val(),
 				field_name: 'card_state'
 			};

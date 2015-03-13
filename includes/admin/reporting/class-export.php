@@ -37,7 +37,7 @@ class Give_Export {
 	 * @return bool Whether we can export or not
 	 */
 	public function can_export() {
-		return (bool) apply_filters( 'give_export_capability', current_user_can( 'export_shop_reports' ) );
+		return (bool) apply_filters( 'give_export_capability', current_user_can( 'export_give_reports' ) );
 	}
 
 	/**

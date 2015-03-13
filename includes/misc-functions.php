@@ -537,7 +537,7 @@ function give_is_func_disabled( $function ) {
  *
  * @description: Returns the main Give newsletter form
  */
-function give_get_give_newsletter() { ?>
+function give_get_newsletter() { ?>
 
 	<div class="give-newsletter-form-wrap">
 

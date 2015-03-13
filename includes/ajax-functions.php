@@ -161,9 +161,9 @@ add_action( 'wp_ajax_nopriv_give_get_form_title', 'give_ajax_get_form_title' );
 function give_ajax_get_states_field() {
 
 	if ( empty( $_POST['country'] ) ) {
-		$_POST['country'] = give_get_shop_country();
+		$_POST['country'] = give_get_country();
 	}
-	$states = give_get_shop_states( $_POST['country'] );
+	$states = give_get_states( $_POST['country'] );
 
 	if ( ! empty( $states ) ) {
 
@@ -171,7 +171,7 @@ function give_ajax_get_states_field() {
 			'name'             => $_POST['field_name'],
 			'id'               => $_POST['field_name'],
 			'class'            => $_POST['field_name'] . '  give-select',
-			'options'          => give_get_shop_states( $_POST['country'] ),
+			'options'          => give_get_states( $_POST['country'] ),
 			'show_option_all'  => false,
 			'show_option_none' => false
 		);
@@ -188,8 +188,8 @@ function give_ajax_get_states_field() {
 	give_die();
 }
 
-add_action( 'wp_ajax_give_get_shop_states', 'give_ajax_get_states_field' );
-add_action( 'wp_ajax_nopriv_give_get_shop_states', 'give_ajax_get_states_field' );
+add_action( 'wp_ajax_give_get_states', 'give_ajax_get_states_field' );
+add_action( 'wp_ajax_nopriv_give_get_states', 'give_ajax_get_states_field' );
 
 /**
  * Retrieve a states drop down
@@ -287,7 +287,7 @@ add_action( 'wp_ajax_give_customer_search', 'give_ajax_customer_search' );
  */
 function give_ajax_search_users() {
 
-	if ( current_user_can( 'manage_shop_settings' ) ) {
+	if ( current_user_can( 'manage_give_settings' ) ) {
 
 		$search_query = trim( $_POST['user_name'] );
 

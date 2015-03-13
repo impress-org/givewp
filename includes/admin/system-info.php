@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_system_info_callback() {
 
-	if ( ! current_user_can( 'manage_shop_settings' ) ) {
+	if ( ! current_user_can( 'manage_give_settings' ) ) {
 		return;
 	}
 
@@ -325,7 +325,7 @@ function give_tools_sysinfo_get() {
  */
 function give_tools_sysinfo_download() {
 
-	if ( ! current_user_can( 'manage_shop_settings' ) ) {
+	if ( ! current_user_can( 'manage_give_settings' ) ) {
 		return;
 	}
 

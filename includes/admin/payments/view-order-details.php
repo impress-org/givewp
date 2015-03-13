@@ -368,7 +368,7 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 													<p id="give-order-address-state-wrap">
 														<strong class="order-data-address-line"><?php echo _x( 'State / Province:', 'State / province of address', 'give' ); ?></strong><br />
 														<?php
-														$states = give_get_shop_states( $address['country'] );
+														$states = give_get_states( $address['country'] );
 														if ( ! empty( $states ) ) {
 															echo Give()->html->select( array(
 																'options'          => $states,

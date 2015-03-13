@@ -52,7 +52,7 @@ function give_resend_purchase_receipt( $data ) {
 		return;
 	}
 
-	if ( ! current_user_can( 'edit_shop_payment', $purchase_id ) ) {
+	if ( ! current_user_can( 'edit_give_payment', $purchase_id ) ) {
 		wp_die( __( 'You do not have permission to edit this payment record', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 

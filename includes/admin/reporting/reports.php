@@ -35,7 +35,7 @@ function give_reports_page() {
 				'tab'              => 'reports',
 				'settings-updated' => false
 			), $current_page ); ?>" class="nav-tab <?php echo $active_tab == 'reports' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Reports', 'give' ); ?></a>
-			<?php if ( current_user_can( 'export_shop_reports' ) ) { ?>
+			<?php if ( current_user_can( 'export_give_reports' ) ) { ?>
 				<a href="<?php echo add_query_arg( array(
 					'tab'              => 'export',
 					'settings-updated' => false

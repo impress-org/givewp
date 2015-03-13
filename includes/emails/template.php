@@ -102,7 +102,7 @@ add_filter( 'give_settings_emails', 'give_email_template_preview' );
 
 function give_email_template_preview( $array ) {
 
-	if ( ! current_user_can( 'manage_shop_settings' ) ) {
+	if ( ! current_user_can( 'manage_give_settings' ) ) {
 		return;
 	}
 	$custom_field = array(
@@ -151,7 +151,7 @@ function give_display_email_template_preview() {
 		return;
 	}
 
-	if ( ! current_user_can( 'manage_shop_settings' ) ) {
+	if ( ! current_user_can( 'manage_give_settings' ) ) {
 		return;
 	}
 

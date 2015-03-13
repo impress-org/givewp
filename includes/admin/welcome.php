@@ -253,7 +253,7 @@ class Give_Welcome {
 
 			<p class="newsletter-intro"><?php _e( 'Be sure to sign up for the Give newsletter below to stay informed of important updates and news.', 'give' ); ?></p>
 
-			<?php give_get_give_newsletter() ?>
+			<?php give_get_newsletter() ?>
 
 			<div class="give-badge"><?php printf( __( 'Version %s', 'give' ), $display_version ); ?></div>
 
@@ -362,7 +362,7 @@ class Give_Welcome {
 
 			<p class="newsletter-intro"><?php _e( 'Don\'t forget to sign up for the newsletter!', 'give' ); ?>.</p>
 
-			<?php give_get_give_newsletter() ?>
+			<?php give_get_newsletter() ?>
 
 			<div class="give-badge"><?php printf( __( 'Version %s', 'give' ), $display_version ); ?></div>
 
@@ -463,7 +463,7 @@ class Give_Welcome {
 
 			<p class="newsletter-intro">Be sure to sign up for the Give newsletter below to stay informed of important updates and news.</p>
 
-			<?php give_get_give_newsletter() ?>
+			<?php give_get_newsletter() ?>
 
 			<div class="give-badge"><?php printf( __( 'Version %s', 'give' ), $display_version ); ?></div>
 

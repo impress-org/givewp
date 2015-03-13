@@ -65,7 +65,7 @@ jQuery.noConflict();
 			$( 'select[name="give-payment-address[0][country]"]' ).change( function () {
 				var $this = $( this );
 				data = {
-					action    : 'give_get_shop_states',
+					action    : 'give_get_states',
 					country   : $this.val(),
 					field_name: 'give-payment-address[0][state]'
 				};

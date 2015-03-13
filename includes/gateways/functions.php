@@ -184,7 +184,7 @@ function give_gateway_supports_buy_now( $gateway ) {
  * @since 1.0
  * @return bool
  */
-function give_shop_supports_buy_now() {
+function give_give_supports_buy_now() {
 	$gateways = give_get_enabled_payment_gateways();
 	$ret      = false;
 
@@ -197,7 +197,7 @@ function give_shop_supports_buy_now() {
 		}
 	}
 
-	return apply_filters( 'give_shop_supports_buy_now', $ret );
+	return apply_filters( 'give_give_supports_buy_now', $ret );
 }
 
 /**

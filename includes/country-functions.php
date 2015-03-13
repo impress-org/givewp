@@ -21,11 +21,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 1.0
  * @return string $country The two letter country code for the shop's base country
  */
-function give_get_shop_country() {
+function give_get_country() {
 	global $give_options;
 	$country = isset( $give_options['base_country'] ) ? $give_options['base_country'] : 'US';
 
-	return apply_filters( 'give_shop_country', $country );
+	return apply_filters( 'give_give_country', $country );
 }
 
 /**
@@ -34,11 +34,11 @@ function give_get_shop_country() {
  * @since 1.0
  * @return string $state The shop's base state name
  */
-function give_get_shop_state() {
+function give_get_state() {
 	global $give_options;
 	$state = isset( $give_options['base_state'] ) ? $give_options['base_state'] : false;
 
-	return apply_filters( 'give_shop_state', $state );
+	return apply_filters( 'give_give_state', $state );
 }
 
 /**
@@ -50,11 +50,11 @@ function give_get_shop_state() {
  *
  * @return mixed|void  A list of states for the shop's base country
  */
-function give_get_shop_states( $country = null ) {
+function give_get_states( $country = null ) {
 	global $give_options;
 
 	if ( empty( $country ) ) {
-		$country = give_get_shop_country();
+		$country = give_get_country();
 	}
 
 	switch ( $country ) :
@@ -107,7 +107,7 @@ function give_get_shop_states( $country = null ) {
 
 	endswitch;
 
-	return apply_filters( 'give_shop_states', $states );
+	return apply_filters( 'give_give_states', $states );
 }
 
 
