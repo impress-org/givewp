@@ -191,7 +191,7 @@ function give_filter_forms( $vars ) {
 	if ( isset( $vars['post_type'] ) && 'give_forms' == $vars['post_type'] ) {
 
 		// If an author ID was passed, use it
-		if ( isset( $_REQUEST['author'] ) && ! current_user_can( 'view_shop_reports' ) ) {
+		if ( isset( $_REQUEST['author'] ) && ! current_user_can( 'view_give_reports' ) ) {
 
 			$author_id = $_REQUEST['author'];
 			if ( (int) $author_id !== get_current_user_id() ) {

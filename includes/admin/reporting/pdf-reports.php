@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_generate_pdf( $data ) {
 
-	if ( ! current_user_can( 'view_shop_reports' ) ) {
+	if ( ! current_user_can( 'view_give_reports' ) ) {
 		wp_die( __( 'You do not have permission to generate PDF sales reports', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 

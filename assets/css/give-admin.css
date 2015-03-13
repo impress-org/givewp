@@ -1284,8 +1284,10 @@ Responsiveness
 .give-dashboard-widget .give-table-stats {
   width: 100%;
   text-align: center;
-  margin: 0 0 10px;
-  table-layout: fixed; }
+  margin: 0;
+  table-layout: fixed;
+  border-top: 1px solid #ececec;
+  border-spacing: 0; }
   .give-dashboard-widget .give-table-stats .give-dashboard-stat-total, .give-dashboard-widget .give-table-stats .give-dashboard-stat-total-label {
     padding: 0;
     margin: 0; }
@@ -1293,4 +1295,13 @@ Responsiveness
     color: #4ead61;
     font-weight: bold;
     font-size: 16px; }
+
+#give_dashboard_sales > .inside {
+  padding: 0; }
+#give_dashboard_sales .give-table-stats td {
+  padding: 10px 0; }
+#give_dashboard_sales .give-table-stats td:first-of-type {
+  border-right: 1px solid #ececec; }
+#give_dashboard_sales .give-table-stats tr#give-table-stats-tr-1 td {
+  border-bottom: 1px solid #ececec; }
 

@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function give_register_dashboard_widgets() {
-	if ( current_user_can( apply_filters( 'give_dashboard_stats_cap', 'view_shop_reports' ) ) ) {
+	if ( current_user_can( apply_filters( 'give_dashboard_stats_cap', 'view_give_reports' ) ) ) {
 		wp_add_dashboard_widget( 'give_dashboard_sales', __( 'Give: Donation Statistics', 'give' ), 'give_dashboard_sales_widget' );
 	}
 }
@@ -37,7 +37,13 @@ add_action( 'wp_dashboard_setup', 'give_register_dashboard_widgets', 10 );
  * @return void
  */
 function give_dashboard_sales_widget() {
-	$stats = new Give_Payment_Stats; ?>
+	$stats = new Give_Payment_Stats;
+
+	if ( ! current_user_can( apply_filters( 'give_dashboard_stats_cap', 'view_give_reports' ) ) ) {
+			die();
+		}
+
+	?>
 	<div class="give-dashboard-widget">
 
 		<div class="give-dashboard-today give-clearfix">
@@ -67,27 +73,34 @@ function give_dashboard_sales_widget() {
 		<table class="give-table-stats">
 			<thead style="display: none;">
 			<tr>
-				<th><?php _e('This Week', 'give'); ?></th>
-				<th><?php _e('This Month', 'give'); ?></th>
-				<th><?php _e('Past 30 Days', 'give'); ?></th>
+				<th><?php _e( 'This Week', 'give' ); ?></th>
+				<th><?php _e( 'This Month', 'give' ); ?></th>
+				<th><?php _e( 'Past 30 Days', 'give' ); ?></th>
 			</tr>
 			</thead>
 			<tbody>
-			<tr>
+			<tr id="give-table-stats-tr-1">
 				<td>
-					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_week', false  ) ) ); ?></p>
+					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_week', false ) ) ); ?></p>
 
 					<p class="give-dashboard-stat-total-label"><?php _e( 'this week', 'give' ); ?></p>
 				</td>
 				<td>
-					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_month', false  ) ) ) ?></p>
+					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_month' ) ) ); ?></p>
 
 					<p class="give-dashboard-stat-total-label"><?php _e( 'this month', 'give' ); ?></p>
 				</td>
+			</tr>
+			<tr id="give-table-stats-tr-2">
 				<td>
-					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, '30 days ago 00:00', 'now' ) ) ); ?></p>
+					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'last_month' ) ) ) ?></p>
 
-					<p class="give-dashboard-stat-total-label"><?php _e( 'past 30 days', 'give' ); ?></p>
+					<p class="give-dashboard-stat-total-label"><?php _e( 'last month', 'give' ); ?></p>
+				</td>
+				<td>
+					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_year', false ) ) ) ?></p>
+
+					<p class="give-dashboard-stat-total-label"><?php _e( 'this year', 'give' ); ?></p>
 				</td>
 			</tr>
 			</tbody>

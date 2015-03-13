@@ -24,19 +24,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_admin_messages() {
 	global $give_options;
 
-	if ( isset( $_GET['give-message'] ) && 'payment_deleted' == $_GET['give-message'] && current_user_can( 'view_shop_reports' ) ) {
+	if ( isset( $_GET['give-message'] ) && 'payment_deleted' == $_GET['give-message'] && current_user_can( 'view_give_reports' ) ) {
 		add_settings_error( 'give-notices', 'give-payment-deleted', __( 'The payment has been deleted.', 'give' ), 'updated' );
 	}
 
-	if ( isset( $_GET['give-message'] ) && 'email_sent' == $_GET['give-message'] && current_user_can( 'view_shop_reports' ) ) {
+	if ( isset( $_GET['give-message'] ) && 'email_sent' == $_GET['give-message'] && current_user_can( 'view_give_reports' ) ) {
 		add_settings_error( 'give-notices', 'give-payment-sent', __( 'The donation receipt has been resent.', 'give' ), 'updated' );
 	}
 
-	if ( isset( $_GET['give-message'] ) && 'payment-note-deleted' == $_GET['give-message'] && current_user_can( 'view_shop_reports' ) ) {
+	if ( isset( $_GET['give-message'] ) && 'payment-note-deleted' == $_GET['give-message'] && current_user_can( 'view_give_reports' ) ) {
 		add_settings_error( 'give-notices', 'give-payment-note-deleted', __( 'The payment note has been deleted.', 'give' ), 'updated' );
 	}
 
-	if ( isset( $_GET['page'] ) && 'give-payment-history' == $_GET['page'] && current_user_can( 'view_shop_reports' ) && give_is_test_mode() ) {
+	if ( isset( $_GET['page'] ) && 'give-payment-history' == $_GET['page'] && current_user_can( 'view_give_reports' ) && give_is_test_mode() ) {
 		add_settings_error( 'give-notices', 'give-payment-sent', sprintf( __( 'Note: Test Mode is enabled, only test donations are being displayed. <a href="%s">View Settings</a>', 'give' ), admin_url( 'edit.php?post_type=give_forms&page=give-settings' ) ), 'updated' );
 	}
 

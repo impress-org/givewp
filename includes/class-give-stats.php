@@ -444,7 +444,10 @@ class Give_Stats {
 			$date = mktime( $hour, $minute, $second, $month, $day, $year );
 
 		}
-
+		echo "<pre>";
+		var_dump($date);
+		var_dump($this->timestamp);
+		echo "</pre>";
 		return apply_filters( 'give_stats_date', $date, $end_date, $this );
 
 	}
@@ -505,6 +508,9 @@ class Give_Stats {
 
 		$start_where = '';
 		$end_where   = '';
+echo "<pre>";
+var_dump($this->start_date);
+echo "</pre>";
 		if ( $this->start_date ) {
 
 			if ( $this->timestamp ) {

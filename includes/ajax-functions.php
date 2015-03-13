@@ -246,7 +246,7 @@ function give_ajax_customer_search() {
 
 	$search  = esc_sql( sanitize_text_field( $_GET['s'] ) );
 	$results = array();
-	if ( ! current_user_can( 'view_shop_reports' ) ) {
+	if ( ! current_user_can( 'view_give_reports' ) ) {
 		$customers = array();
 	} else {
 		$customers = $wpdb->get_results( "SELECT id,name,email FROM {$wpdb->prefix}give_customers WHERE `name` LIKE '%$search%' OR `email` LIKE '%$search%' LIMIT 50" );
