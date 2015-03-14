@@ -3,6 +3,8 @@
 # ATTENTION BETA TESTERS
 Please feel free to make Issues. If you have a pull request (we LOVE that!), please make that to the 0.8 branch.
 
+p.s. We'd also love for you to hit that "star" and become a stargazer. Thanks!
+
 # [Give - Democratizing Generosity](https://givewp.com "Give - Democratizing Generosity") #
 
 We know how important fundraising online is to accomplish your goals.  For many non-profits, churches, candidates, schools and causes, online fundraising on your WordPress website is likely to be the most critical part.
