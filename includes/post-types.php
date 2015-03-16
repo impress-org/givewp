@@ -202,8 +202,8 @@ function give_setup_taxonomies() {
 			)
 		)
 	);
-	register_taxonomy( 'give_forms_category', array( 'give_forms' ), $category_args );
-	register_taxonomy_for_object_type( 'give_forms_category', 'give_forms' );
+//	register_taxonomy( 'give_forms_category', array( 'give_forms' ), $category_args );
+//	register_taxonomy_for_object_type( 'give_forms_category', 'give_forms' );
 
 	/** Tags */
 	$tag_labels = array(
@@ -236,8 +236,8 @@ function give_setup_taxonomies() {
 
 		)
 	);
-	register_taxonomy( 'give_forms_tag', array( 'give_forms' ), $tag_args );
-	register_taxonomy_for_object_type( 'give_forms_tag', 'give_forms' );
+//	register_taxonomy( 'give_forms_tag', array( 'give_forms' ), $tag_args );
+//	register_taxonomy_for_object_type( 'give_forms_tag', 'give_forms' );
 
 }
 
