@@ -189,7 +189,11 @@ function give_setup_taxonomies() {
 			'labels'       => apply_filters( 'give_forms_category_labels', $category_labels ),
 			'show_ui'      => true,
 			'query_var'    => 'give_forms_category',
-			'rewrite'      => array( 'slug' => $slug . '/category', 'with_front' => false, 'hierarchical' => true ),
+			'rewrite'      => array(
+				'slug' => $slug . '/category',
+				'with_front' => false,
+				'hierarchical' => true
+			),
 			'capabilities' => array(
 				'manage_terms' => 'manage_product_terms',
 				'edit_terms'   => 'edit_product_terms',
@@ -234,6 +238,7 @@ function give_setup_taxonomies() {
 	);
 	register_taxonomy( 'give_forms_tag', array( 'give_forms' ), $tag_args );
 	register_taxonomy_for_object_type( 'give_forms_tag', 'give_forms' );
+
 }
 
 add_action( 'init', 'give_setup_taxonomies', 0 );
