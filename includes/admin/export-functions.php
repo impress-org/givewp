@@ -69,19 +69,3 @@ function give_export_all_customers() {
 }
 
 add_action( 'give_email_export', 'give_export_all_customers' );
-
-/**
- * Exports all the downloads to a CSV file using the Give_Export class.
- *
- * @since 1.0
- * @return void
- */
-function give_export_all_downloads_history() {
-	require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/class-export-download-history.php';
-
-	$file_download_export = new Give_Download_History_Export();
-
-	$file_download_export->export();
-}
-
-add_action( 'give_downloads_history_export', 'give_export_all_downloads_history' );
