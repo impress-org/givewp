@@ -160,7 +160,7 @@ add_action( 'init', 'give_setup_post_types', 1 );
 /**
  * Give Setup Taxonomies
  *
- * @description: Registers the custom taxonomies for the downloads custom post type
+ * @description: Registers the custom taxonomies for the give_forms custom post type
  *
  * @since      1.0
  * @return void
@@ -195,10 +195,10 @@ function give_setup_taxonomies() {
 				'hierarchical' => true
 			),
 			'capabilities' => array(
-				'manage_terms' => 'manage_product_terms',
-				'edit_terms'   => 'edit_product_terms',
-				'assign_terms' => 'assign_product_terms',
-				'delete_terms' => 'delete_product_terms'
+				'manage_terms' => 'manage_give_forms_terms',
+				'edit_terms'   => 'edit_give_forms_terms',
+				'assign_terms' => 'assign_give_forms_terms',
+				'delete_terms' => 'delete_give_forms_terms'
 			)
 		)
 	);
@@ -228,10 +228,10 @@ function give_setup_taxonomies() {
 			'query_var'    => 'give_forms_tag',
 			'rewrite'      => array( 'slug' => $slug . '/tag', 'with_front' => false, 'hierarchical' => true ),
 			'capabilities' => array(
-				'manage_terms' => 'manage_product_terms',
-				'edit_terms'   => 'edit_product_terms',
-				'assign_terms' => 'assign_product_terms',
-				'delete_terms' => 'delete_product_terms'
+				'manage_terms' => 'manage_give_forms_terms',
+				'edit_terms'   => 'edit_give_forms_terms',
+				'assign_terms' => 'assign_give_forms_terms',
+				'delete_terms' => 'delete_give_forms_terms'
 			)
 
 		)
@@ -398,7 +398,7 @@ function give_register_post_type_statuses() {
 		'show_in_admin_status_list' => true,
 		'label_count'               => _n_noop( 'Abandoned <span class="count">(%s)</span>', 'Abandoned <span class="count">(%s)</span>', 'give' )
 	) );
-	
+
 }
 
 add_action( 'init', 'give_register_post_type_statuses' );
@@ -421,7 +421,7 @@ function give_updated_messages( $messages ) {
 	$url2 = give_get_forms_label_singular();
 	$url3 = '</a>';
 
-	$messages['download'] = array(
+	$messages['give_forms'] = array(
 		1 => sprintf( __( '%2$s updated. %1$sView %2$s%3$s.', 'give' ), $url1, $url2, $url3 ),
 		4 => sprintf( __( '%2$s updated. %1$sView %2$s%3$s.', 'give' ), $url1, $url2, $url3 ),
 		6 => sprintf( __( '%2$s published. %1$sView %2$s%3$s.', 'give' ), $url1, $url2, $url3 ),
