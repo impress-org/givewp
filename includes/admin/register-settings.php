@@ -204,7 +204,7 @@ class Give_Plugin_Settings {
 						array(
 							'name'    => __( 'History Page', 'give' ),
 							'desc'    => __( 'This page shows a complete donation history for the current user.', 'give' ),
-							'id'      => 'purchase_history_page',
+							'id'      => 'history_page',
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
 								'post_type'   => 'page',
