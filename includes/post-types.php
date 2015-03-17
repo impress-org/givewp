@@ -202,8 +202,8 @@ function give_setup_taxonomies() {
 			)
 		)
 	);
-//	register_taxonomy( 'give_forms_category', array( 'give_forms' ), $category_args );
-//	register_taxonomy_for_object_type( 'give_forms_category', 'give_forms' );
+	register_taxonomy( 'give_forms_category', array( 'give_forms' ), $category_args );
+	register_taxonomy_for_object_type( 'give_forms_category', 'give_forms' );
 
 	/** Tags */
 	$tag_labels = array(
@@ -236,8 +236,8 @@ function give_setup_taxonomies() {
 
 		)
 	);
-//	register_taxonomy( 'give_forms_tag', array( 'give_forms' ), $tag_args );
-//	register_taxonomy_for_object_type( 'give_forms_tag', 'give_forms' );
+	register_taxonomy( 'give_forms_tag', array( 'give_forms' ), $tag_args );
+	register_taxonomy_for_object_type( 'give_forms_tag', 'give_forms' );
 
 }
 
@@ -398,24 +398,7 @@ function give_register_post_type_statuses() {
 		'show_in_admin_status_list' => true,
 		'label_count'               => _n_noop( 'Abandoned <span class="count">(%s)</span>', 'Abandoned <span class="count">(%s)</span>', 'give' )
 	) );
-
-	// Discount Code Statuses
-	register_post_status( 'active', array(
-		'label'                     => _x( 'Active', 'Active discount code status', 'give' ),
-		'public'                    => true,
-		'exclude_from_search'       => false,
-		'show_in_admin_all_list'    => true,
-		'show_in_admin_status_list' => true,
-		'label_count'               => _n_noop( 'Active <span class="count">(%s)</span>', 'Active <span class="count">(%s)</span>', 'give' )
-	) );
-	register_post_status( 'inactive', array(
-		'label'                     => _x( 'Inactive', 'Inactive discount code status', 'give' ),
-		'public'                    => true,
-		'exclude_from_search'       => false,
-		'show_in_admin_all_list'    => true,
-		'show_in_admin_status_list' => true,
-		'label_count'               => _n_noop( 'Inactive <span class="count">(%s)</span>', 'Inactive <span class="count">(%s)</span>', 'give' )
-	) );
+	
 }
 
 add_action( 'init', 'give_register_post_type_statuses' );
