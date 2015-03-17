@@ -95,9 +95,6 @@ function give_render_form_columns( $column_name, $post_id ) {
 					echo give_currency_filter( give_format_amount( give_get_form_earnings_stats( $post_id ) ) );
 					echo '</a>';
 				} else {
-					echo "<pre>";
-					var_dump( current_user_can( 'view_give_forms_stats', $post_id ) );
-					echo "</pre>";
 					echo '-';
 				}
 				break;

@@ -104,10 +104,6 @@ function give_offline_process_payment( $purchase_data ) {
 	// record the pending payment
 	$payment = give_insert_payment( $payment_data );
 
-	echo "<pre>";
-	var_dump( $payment );
-	echo "</pre>";
-
 	if ( $payment ) {
 		give_cg_send_admin_notice( $payment );
 		give_send_to_success_page();
