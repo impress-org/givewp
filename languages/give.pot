@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Give - Democratizing Generosity\n"
-"POT-Creation-Date: 2015-03-13 16:40-0800\n"
-"PO-Revision-Date: 2015-03-13 16:40-0800\n"
+"POT-Creation-Date: 2015-03-18 11:49-0800\n"
+"PO-Revision-Date: 2015-03-18 11:52-0800\n"
 "Last-Translator: \n"
 "Language-Team: WordImpress <info@givewp.com>\n"
 "MIME-Version: 1.0\n"
@@ -252,7 +252,7 @@ msgid "Categories"
 msgstr ""
 
 #: includes/admin/forms/dashboard-columns.php:35
-#: includes/admin/reporting/pdf-reports.php:74 includes/post-types.php:216
+#: includes/admin/reporting/pdf-reports.php:74 includes/post-types.php:220
 msgid "Tags"
 msgstr ""
 
@@ -2234,10 +2234,6 @@ msgstr ""
 msgid "Give Worker"
 msgstr ""
 
-#: includes/class-give-roles.php:86
-msgid "Give Vendor"
-msgstr ""
-
 #: includes/class-give-stats.php:90
 msgid "Last Quater"
 msgstr ""
@@ -3457,163 +3453,163 @@ msgstr ""
 msgid "New Category Name"
 msgstr ""
 
-#: includes/post-types.php:206
+#: includes/post-types.php:210
 #, php-format
 msgctxt "taxonomy general name"
 msgid "%s Tags"
 msgstr ""
 
-#: includes/post-types.php:207
+#: includes/post-types.php:211
 msgctxt "taxonomy singular name"
 msgid "Tag"
 msgstr ""
 
-#: includes/post-types.php:208
+#: includes/post-types.php:212
 msgid "Search Tags"
 msgstr ""
 
-#: includes/post-types.php:209
+#: includes/post-types.php:213
 msgid "All Tags"
 msgstr ""
 
-#: includes/post-types.php:210
+#: includes/post-types.php:214
 msgid "Parent Tag"
 msgstr ""
 
-#: includes/post-types.php:211
+#: includes/post-types.php:215
 msgid "Parent Tag:"
 msgstr ""
 
-#: includes/post-types.php:212
+#: includes/post-types.php:216
 msgid "Edit Tag"
 msgstr ""
 
-#: includes/post-types.php:213
+#: includes/post-types.php:217
 msgid "Update Tag"
 msgstr ""
 
-#: includes/post-types.php:214
+#: includes/post-types.php:218
 msgid "Add New Tag"
 msgstr ""
 
-#: includes/post-types.php:215
+#: includes/post-types.php:219
 msgid "New Tag Name"
 msgstr ""
 
-#: includes/post-types.php:217
+#: includes/post-types.php:221
 #, php-format
 msgid "Choose from most used %s tags"
 msgstr ""
 
-#: includes/post-types.php:250
+#: includes/post-types.php:255
 msgid "Form"
 msgstr ""
 
-#: includes/post-types.php:251
+#: includes/post-types.php:256
 msgid "Forms"
 msgstr ""
 
-#: includes/post-types.php:265
+#: includes/post-types.php:270
 msgid "Campaign"
 msgstr ""
 
-#: includes/post-types.php:266
+#: includes/post-types.php:271
 msgid "Campaigns"
 msgstr ""
 
-#: includes/post-types.php:339 includes/post-types.php:348
+#: includes/post-types.php:344 includes/post-types.php:353
 #, php-format
 msgid "Enter %s title here"
 msgstr ""
 
-#: includes/post-types.php:365
+#: includes/post-types.php:370
 msgctxt "Refunded payment status"
 msgid "Refunded"
 msgstr ""
 
-#: includes/post-types.php:370
+#: includes/post-types.php:375
 #, php-format
 msgid "Refunded <span class=\"count\">(%s)</span>"
 msgid_plural "Refunded <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/post-types.php:373
+#: includes/post-types.php:378
 msgctxt "Failed payment status"
 msgid "Failed"
 msgstr ""
 
-#: includes/post-types.php:378
+#: includes/post-types.php:383
 #, php-format
 msgid "Failed <span class=\"count\">(%s)</span>"
 msgid_plural "Failed <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/post-types.php:381
+#: includes/post-types.php:386
 msgctxt "Revoked payment status"
 msgid "Revoked"
 msgstr ""
 
-#: includes/post-types.php:386
+#: includes/post-types.php:391
 #, php-format
 msgid "Revoked <span class=\"count\">(%s)</span>"
 msgid_plural "Revoked <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/post-types.php:389
+#: includes/post-types.php:394
 msgctxt "Abandoned payment status"
 msgid "Abandoned"
 msgstr ""
 
-#: includes/post-types.php:394
+#: includes/post-types.php:399
 #, php-format
 msgid "Abandoned <span class=\"count\">(%s)</span>"
 msgid_plural "Abandoned <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/post-types.php:399
+#: includes/post-types.php:404
 msgctxt "Active discount code status"
 msgid "Active"
 msgstr ""
 
-#: includes/post-types.php:404
+#: includes/post-types.php:409
 #, php-format
 msgid "Active <span class=\"count\">(%s)</span>"
 msgid_plural "Active <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/post-types.php:407
+#: includes/post-types.php:412
 msgctxt "Inactive discount code status"
 msgid "Inactive"
 msgstr ""
 
-#: includes/post-types.php:412
+#: includes/post-types.php:417
 #, php-format
 msgid "Inactive <span class=\"count\">(%s)</span>"
 msgid_plural "Inactive <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/post-types.php:437 includes/post-types.php:438
+#: includes/post-types.php:442 includes/post-types.php:443
 #, php-format
 msgid "%2$s updated. %1$sView %2$s%3$s."
 msgstr ""
 
-#: includes/post-types.php:439
+#: includes/post-types.php:444
 #, php-format
 msgid "%2$s published. %1$sView %2$s%3$s."
 msgstr ""
 
-#: includes/post-types.php:440
+#: includes/post-types.php:445
 #, php-format
 msgid "%2$s saved. %1$sView %2$s%3$s."
 msgstr ""
 
-#: includes/post-types.php:441
+#: includes/post-types.php:446
 #, php-format
 msgid "%2$s submitted. %1$sView %2$s%3$s."
 msgstr ""
