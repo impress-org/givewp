@@ -241,10 +241,9 @@ function give_output_donation_levels( $form_id = 0, $args = array() ) {
 		</p>
 	<?php
 	} else {
-		//Custom Amount A'lowed
+		//Custom Amount Allowed
 		?>
-
-		<div class="give-total-wrap>">
+		<div class="give-total-wrap">
 			<div class="give-donation-amount form-row form-row-wide">
 				<?php
 				if ( $currency_position == 'before' ) {
