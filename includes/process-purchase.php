@@ -247,7 +247,7 @@ function give_purchase_form_validate_gateway() {
  * Purchase Form Validate Agree To Terms
  *
  * @access      private
- * @since       1.0.8.1
+ * @since       1.0
  * @return      void
  */
 function give_purchase_form_validate_agree_to_terms() {
