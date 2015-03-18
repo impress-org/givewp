@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Give - Democratizing Generosity\n"
-"POT-Creation-Date: 2015-03-18 11:49-0800\n"
-"PO-Revision-Date: 2015-03-18 11:52-0800\n"
+"POT-Creation-Date: 2015-03-18 14:15-0800\n"
+"PO-Revision-Date: 2015-03-18 14:15-0800\n"
 "Last-Translator: \n"
 "Language-Team: WordImpress <info@givewp.com>\n"
 "MIME-Version: 1.0\n"
@@ -45,7 +45,7 @@ msgid "You do not have permission to install plugin updates"
 msgstr ""
 
 #: includes/admin/EDD_SL_Plugin_Updater.php:327
-#: includes/admin/forms/dashboard-columns.php:199
+#: includes/admin/forms/dashboard-columns.php:196
 #: includes/admin/payments/actions.php:27
 #: includes/admin/payments/actions.php:72
 #: includes/admin/payments/actions.php:80
@@ -172,7 +172,7 @@ msgstr ""
 
 #: includes/admin/admin-pages.php:41
 #: includes/admin/reporting/contextual-help.php:45
-#: includes/admin/reporting/reports.php:37
+#: includes/admin/reporting/reports.php:43
 msgid "Reports"
 msgstr ""
 
@@ -257,7 +257,7 @@ msgid "Tags"
 msgstr ""
 
 #: includes/admin/forms/dashboard-columns.php:36
-#: includes/admin/forms/dashboard-columns.php:274
+#: includes/admin/forms/dashboard-columns.php:271
 #: includes/admin/reporting/pdf-reports.php:72
 msgid "Price"
 msgstr ""
@@ -278,8 +278,8 @@ msgstr ""
 #: includes/admin/reporting/graphing.php:180
 #: includes/admin/reporting/graphing.php:418
 #: includes/admin/reporting/pdf-reports.php:214
-#: includes/admin/reporting/reports.php:68
-msgid "Earnings"
+#: includes/admin/reporting/reports.php:74
+msgid "Income"
 msgstr ""
 
 #: includes/admin/forms/dashboard-columns.php:39
@@ -302,11 +302,11 @@ msgstr ""
 msgid "Purchase"
 msgstr ""
 
-#: includes/admin/forms/dashboard-columns.php:199
+#: includes/admin/forms/dashboard-columns.php:196
 msgid "You do not have permission to view this data."
 msgstr ""
 
-#: includes/admin/forms/dashboard-columns.php:272
+#: includes/admin/forms/dashboard-columns.php:269
 #, php-format
 msgid "%s Configuration"
 msgstr ""
@@ -626,7 +626,7 @@ msgstr ""
 
 #: includes/admin/payments/class-payments-table.php:145
 #: includes/admin/reporting/logs.php:74
-#: includes/admin/reporting/reports.php:213
+#: includes/admin/reporting/reports.php:219
 msgid "Search"
 msgstr ""
 
@@ -755,7 +755,6 @@ msgid "For more information:"
 msgstr ""
 
 #: includes/admin/payments/contextual-help.php:33
-#: includes/admin/reporting/contextual-help.php:33
 #, php-format
 msgid ""
 "Visit the <a href=\"%s\">documentation</a> on the Easy Digital Downloads "
@@ -1053,7 +1052,7 @@ msgid "Display Options"
 msgstr ""
 
 #: includes/admin/register-settings.php:99
-#: includes/admin/reporting/reports.php:368
+#: includes/admin/reporting/reports.php:374
 msgid "Emails"
 msgstr ""
 
@@ -1104,7 +1103,7 @@ msgid ""
 msgstr ""
 
 #: includes/admin/register-settings.php:205
-msgid "History Page"
+msgid "Donation History Page"
 msgstr ""
 
 #: includes/admin/register-settings.php:206
@@ -1411,12 +1410,12 @@ msgid "Request Date:"
 msgstr ""
 
 #: includes/admin/reporting/class-customer-reports-table.php:64
-msgid "Customer"
+msgid "Donor"
 msgstr ""
 
 #: includes/admin/reporting/class-customer-reports-table.php:65
-#: includes/admin/reporting/reports.php:70
-msgid "Customers"
+#: includes/admin/reporting/reports.php:76
+msgid "Donors"
 msgstr ""
 
 #: includes/admin/reporting/class-customer-reports-table.php:141
@@ -1524,7 +1523,7 @@ msgid "Monthly Average Donations"
 msgstr ""
 
 #: includes/admin/reporting/class-form-reports-table.php:102
-msgid "Monthly Average Earnings"
+msgid "Monthly Average Income"
 msgstr ""
 
 #: includes/admin/reporting/class-form-reports-table.php:103
@@ -1574,14 +1573,17 @@ msgstr ""
 msgid "Item Amount"
 msgstr ""
 
+#: includes/admin/reporting/contextual-help.php:33
+#, php-format
+msgid "Visit the <a href=\"%s\">documentation</a> on the Give website."
+msgstr ""
+
 #: includes/admin/reporting/contextual-help.php:46
-msgid ""
-"This screen provides you with reports for your earnings, downloads, "
-"customers and taxes."
+msgid "This screen provides you with reports for your income and donations."
 msgstr ""
 
 #: includes/admin/reporting/contextual-help.php:51
-#: includes/admin/reporting/reports.php:42
+#: includes/admin/reporting/reports.php:48
 msgid "Export"
 msgstr ""
 
@@ -1591,10 +1593,10 @@ msgstr ""
 
 #: includes/admin/reporting/contextual-help.php:54
 msgid ""
-"<strong>Sales and Earnings</strong> - This report exports all of the sales "
-"and earnings that you have made in the current year. This report includes "
-"your sales and earnings for each product as well a graphs of sales and "
-"earnings so you can compare them for each month."
+"<strong>Donations and Income</strong> - This report exports all of the "
+"donations and income that you have made in the current year. This report "
+"includes your sales and earnings for each product as well a graphs of sales "
+"and earnings so you can compare them for each month."
 msgstr ""
 
 #: includes/admin/reporting/contextual-help.php:55
@@ -1607,9 +1609,9 @@ msgstr ""
 
 #: includes/admin/reporting/contextual-help.php:56
 msgid ""
-"<strong>Customers</strong> - This report exports all of your customers in a "
-"CSV format. It exports the customer's name and email address and the amount "
-"of products they have purchased as well as the final price of their total "
+"<strong>Donors</strong> - This report exports all of your donors in a CSV "
+"format. It exports the customer's name and email address and the amount of "
+"products they have purchased as well as the final price of their total "
 "purchases."
 msgstr ""
 
@@ -1639,7 +1641,7 @@ msgstr ""
 
 #: includes/admin/reporting/graphing.php:209
 #: includes/admin/reporting/graphing.php:441
-msgid "Total earnings for period: "
+msgid "Total income for period: "
 msgstr ""
 
 #: includes/admin/reporting/graphing.php:214
@@ -1647,7 +1649,7 @@ msgid "Total donations for period shown: "
 msgstr ""
 
 #: includes/admin/reporting/graphing.php:221
-msgid "Estimated monthly earnings: "
+msgid "Estimated monthly income: "
 msgstr ""
 
 #: includes/admin/reporting/graphing.php:227
@@ -1656,7 +1658,7 @@ msgstr ""
 
 #: includes/admin/reporting/graphing.php:423
 #, php-format
-msgid "Earnings Over Time for %s"
+msgid "Income Over Time for %s"
 msgstr ""
 
 #: includes/admin/reporting/graphing.php:446
@@ -1665,7 +1667,7 @@ msgstr ""
 
 #: includes/admin/reporting/graphing.php:452
 #, php-format
-msgid "Average monthly earnings: %s"
+msgid "Average monthly income: %s"
 msgstr ""
 
 #: includes/admin/reporting/graphing.php:458
@@ -1774,7 +1776,7 @@ msgid "Number of Donations"
 msgstr ""
 
 #: includes/admin/reporting/pdf-reports.php:76
-msgid "Earnings to Date"
+msgid "Income to Date"
 msgstr ""
 
 #: includes/admin/reporting/pdf-reports.php:131
@@ -1838,104 +1840,104 @@ msgstr ""
 msgid "Dec"
 msgstr ""
 
-#: includes/admin/reporting/reports.php:47 includes/class-give-logging.php:48
+#: includes/admin/reporting/reports.php:53 includes/class-give-logging.php:48
 msgid "Logs"
 msgstr ""
 
-#: includes/admin/reporting/reports.php:71
+#: includes/admin/reporting/reports.php:77
 msgid "Payment Methods"
 msgstr ""
 
-#: includes/admin/reporting/reports.php:132
+#: includes/admin/reporting/reports.php:138
 msgid "Report Type"
 msgstr ""
 
-#: includes/admin/reporting/reports.php:142
+#: includes/admin/reporting/reports.php:148
 msgid "Show"
 msgstr ""
 
-#: includes/admin/reporting/reports.php:186
+#: includes/admin/reporting/reports.php:192
 msgid "Go Back"
 msgstr ""
 
-#: includes/admin/reporting/reports.php:256
-msgid "Earnings Over Time"
+#: includes/admin/reporting/reports.php:262
+msgid "Income Over Time"
 msgstr ""
 
-#: includes/admin/reporting/reports.php:285
+#: includes/admin/reporting/reports.php:291
 msgid "Export Type"
 msgstr ""
 
-#: includes/admin/reporting/reports.php:286
+#: includes/admin/reporting/reports.php:292
 msgid "Export Options"
 msgstr ""
 
-#: includes/admin/reporting/reports.php:293
-msgid "Export PDF of Donations and Earnings"
+#: includes/admin/reporting/reports.php:299
+msgid "Export PDF of Donations and Income"
 msgstr ""
 
-#: includes/admin/reporting/reports.php:295
+#: includes/admin/reporting/reports.php:301
 msgid ""
-"Download a PDF of Donations and Earnings reports for all forms for the "
-"current year."
+"Download a PDF of Donations and Income reports for all forms for the current "
+"year."
 msgstr ""
 
-#: includes/admin/reporting/reports.php:298
+#: includes/admin/reporting/reports.php:304
 msgid "Generate PDF"
 msgstr ""
 
-#: includes/admin/reporting/reports.php:303
-msgid "Export Earnings and Donation Stats"
-msgstr ""
-
-#: includes/admin/reporting/reports.php:305
-msgid "Download a CSV of earnings and sales over time."
+#: includes/admin/reporting/reports.php:309
+msgid "Export Income and Donation Stats"
 msgstr ""
 
 #: includes/admin/reporting/reports.php:311
+msgid "Download a CSV of income and donations over time."
+msgstr ""
+
+#: includes/admin/reporting/reports.php:317
 msgctxt "Date one to date two"
 msgid "to"
 msgstr ""
 
-#: includes/admin/reporting/reports.php:315
-#: includes/admin/reporting/reports.php:340
-#: includes/admin/reporting/reports.php:373
+#: includes/admin/reporting/reports.php:321
+#: includes/admin/reporting/reports.php:346
+#: includes/admin/reporting/reports.php:379
 msgid "Generate CSV"
 msgstr ""
 
-#: includes/admin/reporting/reports.php:321
+#: includes/admin/reporting/reports.php:327
 msgid "Export Donation History"
 msgstr ""
 
-#: includes/admin/reporting/reports.php:323
+#: includes/admin/reporting/reports.php:329
 msgid "Download a CSV of all donations recorded."
 msgstr ""
 
-#: includes/admin/reporting/reports.php:331
+#: includes/admin/reporting/reports.php:337
 msgid "All Statuses"
 msgstr ""
 
-#: includes/admin/reporting/reports.php:347
+#: includes/admin/reporting/reports.php:353
 msgid "Export Givers in CSV"
 msgstr ""
 
-#: includes/admin/reporting/reports.php:349
+#: includes/admin/reporting/reports.php:355
 msgid ""
 "Download a CSV of all givers' emails. Optionally export only givers that "
 "have donated to a particular form. Note: if you have a large number of "
 "givers, exporting the donation stats may fail."
 msgstr ""
 
-#: includes/admin/reporting/reports.php:354
+#: includes/admin/reporting/reports.php:360
 #, php-format
 msgid "All %s"
 msgstr ""
 
-#: includes/admin/reporting/reports.php:369
+#: includes/admin/reporting/reports.php:375
 msgid "Emails and Names"
 msgstr ""
 
-#: includes/admin/reporting/reports.php:370
+#: includes/admin/reporting/reports.php:376
 msgid "Emails, Names, and Purchase Stats"
 msgstr ""
 
@@ -2555,7 +2557,7 @@ msgid "Donation: "
 msgstr ""
 
 #: includes/emails/functions.php:199 includes/emails/template.php:226
-#: includes/gateways/offline-donations.php:153
+#: includes/gateways/offline-donations.php:149
 msgid "Amount: "
 msgstr ""
 
@@ -2609,7 +2611,7 @@ msgid "%s sold:"
 msgstr ""
 
 #: includes/emails/template.php:225
-#: includes/gateways/offline-donations.php:152
+#: includes/gateways/offline-donations.php:148
 msgid "Donor: "
 msgstr ""
 
@@ -2923,39 +2925,39 @@ msgstr ""
 msgid "this form's settings"
 msgstr ""
 
-#: includes/gateways/offline-donations.php:147
+#: includes/gateways/offline-donations.php:143
 msgid "New Pending Donation"
 msgstr ""
 
-#: includes/gateways/offline-donations.php:149
+#: includes/gateways/offline-donations.php:145
 msgid "Hey there,"
 msgstr ""
 
-#: includes/gateways/offline-donations.php:149
+#: includes/gateways/offline-donations.php:145
 msgid "An offline donation has been made"
 msgstr ""
 
-#: includes/gateways/offline-donations.php:154
+#: includes/gateways/offline-donations.php:150
 msgid "This is a pending donation awaiting payment."
 msgstr ""
 
-#: includes/gateways/offline-donations.php:155
+#: includes/gateways/offline-donations.php:151
 #, php-format
 msgid "View Donation Details: %s."
 msgstr ""
 
-#: includes/gateways/offline-donations.php:186
+#: includes/gateways/offline-donations.php:182
 msgid ""
 "In order to make an offline donation we ask that you please follow these "
 "instructions"
 msgstr ""
 
-#: includes/gateways/offline-donations.php:188
+#: includes/gateways/offline-donations.php:184
 msgctxt "Step 1 for donating offline by check"
 msgid "Make a check payable to"
 msgstr ""
 
-#: includes/gateways/offline-donations.php:189
+#: includes/gateways/offline-donations.php:185
 msgctxt ""
 "Step 2 for donating by check; this explains who the check should be written "
 "to"
@@ -2963,21 +2965,21 @@ msgid ""
 "On the memo line of the check, please indicate that the donation is for."
 msgstr ""
 
-#: includes/gateways/offline-donations.php:190
+#: includes/gateways/offline-donations.php:186
 msgctxt "Step 3; where to mail the check"
 msgid "Please mail your check to:"
 msgstr ""
 
-#: includes/gateways/offline-donations.php:195
+#: includes/gateways/offline-donations.php:191
 msgid ""
 "All contributions will be gratefully acknowledged and are tax deductible."
 msgstr ""
 
-#: includes/gateways/offline-donations.php:202
+#: includes/gateways/offline-donations.php:198
 msgid "Offline Payment Instructions"
 msgstr ""
 
-#: includes/gateways/offline-donations.php:203
+#: includes/gateways/offline-donations.php:199
 msgid ""
 "Enter the instructions you want to display to the donor during the payment "
 "process. Most likely this would include important information like mailing "
@@ -3078,7 +3080,7 @@ msgid "Your transaction failed, please try again or contact site support."
 msgstr ""
 
 #: includes/install.php:71
-msgid "Purchase History"
+msgid "Donation History"
 msgstr ""
 
 #: includes/login-register.php:94
@@ -3410,7 +3412,7 @@ msgid "No Donations found in Trash"
 msgstr ""
 
 #: includes/post-types.php:140
-msgid "History"
+msgid "Transactions"
 msgstr ""
 
 #: includes/post-types.php:174
@@ -3570,46 +3572,22 @@ msgid_plural "Abandoned <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/post-types.php:404
-msgctxt "Active discount code status"
-msgid "Active"
-msgstr ""
-
-#: includes/post-types.php:409
-#, php-format
-msgid "Active <span class=\"count\">(%s)</span>"
-msgid_plural "Active <span class=\"count\">(%s)</span>"
-msgstr[0] ""
-msgstr[1] ""
-
-#: includes/post-types.php:412
-msgctxt "Inactive discount code status"
-msgid "Inactive"
-msgstr ""
-
-#: includes/post-types.php:417
-#, php-format
-msgid "Inactive <span class=\"count\">(%s)</span>"
-msgid_plural "Inactive <span class=\"count\">(%s)</span>"
-msgstr[0] ""
-msgstr[1] ""
-
-#: includes/post-types.php:442 includes/post-types.php:443
+#: includes/post-types.php:425 includes/post-types.php:426
 #, php-format
 msgid "%2$s updated. %1$sView %2$s%3$s."
 msgstr ""
 
-#: includes/post-types.php:444
+#: includes/post-types.php:427
 #, php-format
 msgid "%2$s published. %1$sView %2$s%3$s."
 msgstr ""
 
-#: includes/post-types.php:445
+#: includes/post-types.php:428
 #, php-format
 msgid "%2$s saved. %1$sView %2$s%3$s."
 msgstr ""
 
-#: includes/post-types.php:446
+#: includes/post-types.php:429
 #, php-format
 msgid "%2$s submitted. %1$sView %2$s%3$s."
 msgstr ""

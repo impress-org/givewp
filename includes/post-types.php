@@ -137,7 +137,7 @@ function give_setup_post_types() {
 		'not_found'          => __( 'No Donations found', 'give' ),
 		'not_found_in_trash' => __( 'No Donations found in Trash', 'give' ),
 		'parent_item_colon'  => '',
-		'menu_name'          => __( 'History', 'give' )
+		'menu_name'          => __( 'Transactions', 'give' )
 	);
 
 	$payment_args = array(

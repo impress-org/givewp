@@ -202,7 +202,7 @@ class Give_Plugin_Settings {
 							) ),
 						),
 						array(
-							'name'    => __( 'History Page', 'give' ),
+							'name'    => __( 'Donation History Page', 'give' ),
 							'desc'    => __( 'This page shows a complete donation history for the current user.', 'give' ),
 							'id'      => 'history_page',
 							'type'    => 'select',
