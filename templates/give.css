@@ -680,7 +680,7 @@ form[id*='give-form'] .give-donation-amount input.give-text-input, form[id*='giv
   float: left;
   width: 100px;
   border: 1px solid #ccc;
-  height: 37px;
+  height: 35px;
   font-size: 18px; }
 form[id*='give-form'] .give-donation-amount span.give-final-total-amount {
   height: 35px;
