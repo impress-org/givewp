@@ -73,7 +73,7 @@ function give_generate_pdf( $data ) {
 	$pdf->Cell( 50, 6, utf8_decode( __( 'Categories', 'give' ) ), 1, 0, 'L', true );
 	$pdf->Cell( 50, 6, utf8_decode( __( 'Tags', 'give' ) ), 1, 0, 'L', true );
 	$pdf->Cell( 45, 6, utf8_decode( __( 'Number of Donations', 'give' ) ), 1, 0, 'L', true );
-	$pdf->Cell( 35, 6, utf8_decode( __( 'Earnings to Date', 'give' ) ), 1, 1, 'L', true );
+	$pdf->Cell( 35, 6, utf8_decode( __( 'Income to Date', 'give' ) ), 1, 1, 'L', true );
 
 	$year       = date( 'Y' );
 	$give_forms = get_posts( array( 'post_type' => 'give_forms', 'year' => $year, 'posts_per_page' => - 1 ) );
@@ -211,7 +211,7 @@ function give_draw_chart_image() {
 		$earnings_array[11]
 	) );
 
-	$data->setLegend( __( 'Earnings', 'give' ) );
+	$data->setLegend( __( 'Income', 'give' ) );
 	$data->setColor( '1b58a3' );
 	$chart->addData( $data );
 

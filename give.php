@@ -168,7 +168,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 			global $give_options;
 
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/register-settings.php';
-			$give_options = give_get_settings();
+			$give_options =  give_get_settings();
 
 			require_once GIVE_PLUGIN_DIR . 'includes/post-types.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/scripts.php';
@@ -218,7 +218,6 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/template.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/actions.php';
 
-
 			if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-footer.php';
@@ -245,7 +244,6 @@ if ( ! class_exists( 'Give' ) ) : /**
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/pdf-reports.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/class-give-graph.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/graphing.php';
-
 
 			}
 

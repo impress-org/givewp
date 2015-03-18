@@ -35,7 +35,7 @@ function give_form_columns( $give_form_columns ) {
 		'form_tag'      => __( 'Tags', 'give' ),
 		'price'         => __( 'Price', 'give' ),
 		'donations'     => __( 'Donations', 'give' ),
-		'earnings'      => __( 'Earnings', 'give' ),
+		'earnings'      => __( 'Income', 'give' ),
 		'shortcode'     => __( 'Shortcode', 'give' ),
 		'date'          => __( 'Date', 'give' )
 	);

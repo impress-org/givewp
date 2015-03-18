@@ -154,11 +154,11 @@ class Give_Plugin_Settings {
 	 *
 	 * Filters are provided for each settings section to allow add-ons and other plugins to add their own settings
 	 *
-	 * @param $active_tab
+	 * @param $active_tab active tab settings; null returns full array
 	 *
 	 * @return array
 	 */
-	function give_settings( $active_tab ) {
+	public function give_settings( $active_tab ) {
 
 		$give_settings = array(
 			/**

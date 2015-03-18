@@ -177,7 +177,7 @@ function give_reports_graph() {
 	}
 
 	$data = array(
-		__( 'Earnings', 'give' )  => $earnings_data,
+		__( 'Income', 'give' )  => $earnings_data,
 		__( 'Donations', 'give' ) => $sales_data
 	);
 
@@ -206,7 +206,7 @@ function give_reports_graph() {
 				<tbody>
 				<tr>
 					<td class="row-title">
-						<label for="tablecell"><?php _e( 'Total earnings for period: ', 'give' ); ?></label></td>
+						<label for="tablecell"><?php _e( 'Total income for period: ', 'give' ); ?></label></td>
 					<td><?php echo give_currency_filter( give_format_amount( $earnings_totals ) ); ?></td>
 				</tr>
 				<tr class="alternate">
@@ -218,7 +218,7 @@ function give_reports_graph() {
 				<?php if ( 'this_month' == $dates['range'] ) : ?>
 					<tr>
 						<td class="row-title">
-							<label for="tablecell"><?php _e( 'Estimated monthly earnings: ', 'give' ); ?></label>
+							<label for="tablecell"><?php _e( 'Estimated monthly income: ', 'give' ); ?></label>
 						</td>
 						<td><?php echo give_currency_filter( give_format_amount( $estimated['earnings'] ) ); ?></td>
 					</tr>
@@ -415,12 +415,12 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 	}
 
 	$data = array(
-		__( 'Earnings', 'give' )  => $earnings_data,
+		__( 'Income', 'give' )  => $earnings_data,
 		__( 'Donations', 'give' ) => $sales_data
 	);
 
 	?>
-	<h3><span><?php printf( __( 'Earnings Over Time for %s', 'give' ), get_the_title( $form_id ) ); ?></span></h3>
+	<h3><span><?php printf( __( 'Income Over Time for %s', 'give' ), get_the_title( $form_id ) ); ?></span></h3>
 
 	<div class="metabox-holder" style="padding-top: 0;">
 		<div class="postbox">
@@ -438,7 +438,7 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 			<tbody>
 			<tr>
 				<td class="row-title">
-					<label for="tablecell"><?php _e( 'Total earnings for period: ', 'give' ); ?></label></td>
+					<label for="tablecell"><?php _e( 'Total income for period: ', 'give' ); ?></label></td>
 				<td><?php echo give_currency_filter( give_format_amount( $earnings_totals ) ); ?></td>
 			</tr>
 			<tr class="alternate">
@@ -449,7 +449,7 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 			</tr>
 			<tr>
 				<td class="row-title">
-					<label for="tablecell"><?php _e( 'Average monthly earnings: %s', 'give' ); ?></label>
+					<label for="tablecell"><?php _e( 'Average monthly income: %s', 'give' ); ?></label>
 				</td>
 				<td><?php echo give_currency_filter( give_format_amount( give_get_average_monthly_form_earnings( $form_id ) ) ); ?></td>
 			</tr>

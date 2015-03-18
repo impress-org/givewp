@@ -63,7 +63,7 @@ class Give_Earnings_Export extends Give_Export {
 		$cols = array(
 			'date'      => __( 'Date', 'give' ),
 			'donations' => __( 'Donations', 'give' ),
-			'earnings'  => __( 'Earnings', 'give' ) . ' (' . html_entity_decode( give_currency_filter( '' ) ) . ')'
+			'earnings'  => __( 'Income', 'give' ) . ' (' . html_entity_decode( give_currency_filter( '' ) ) . ')'
 		);
 
 		return $cols;
