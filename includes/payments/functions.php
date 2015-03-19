@@ -1166,44 +1166,6 @@ function give_get_payment_amount( $payment_id ) {
 }
 
 /**
- * Retrieves taxed amount for payment and then returns a full formatted amount
- * This function essentially calls give_get_payment_tax()
- *
- * @since 1.0
- * @see   give_get_payment_tax()
- *
- * @param int  $payment_id   Payment ID
- * @param bool $payment_meta Payment Meta provided? (default: false)
- *
- * @return string $subtotal Fully formatted payment subtotal
- */
-function give_payment_tax( $payment_id = 0, $payment_meta = false ) {
-	$tax = give_get_payment_tax( $payment_id, $payment_meta );
-
-	return give_currency_filter( give_format_amount( $tax ), give_get_payment_currency_code( $payment_id ) );
-}
-
-/**
- * Retrieves taxed amount for payment and then returns a non formatted amount
- *
- * @since 1.0
- *
- * @param int  $payment_id   Payment ID
- * @param bool $payment_meta Get payment meta?
- *
- * @return float $subtotal Subtotal for payment (non formatted)
- */
-function give_get_payment_tax( $payment_id = 0, $payment_meta = false ) {
-	if ( ! $payment_meta ) {
-		$payment_meta = give_get_payment_meta( $payment_id );
-	}
-
-	$tax = isset( $payment_meta['tax'] ) ? $payment_meta['tax'] : 0;
-
-	return apply_filters( 'give_get_payment_tax', $tax, $payment_id );
-}
-
-/**
  * Retrieves arbitrary fees for the payment
  *
  * @since 1.0
