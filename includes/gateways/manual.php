@@ -50,18 +50,7 @@ function give_manual_payment( $purchase_data ) {
 
 	/*
 	* Purchase data comes in like this
-	*
-	$purchase_data = array(
-		'price' => total price of cart contents,
-		'purchase_key' =>  // Random key
-		'user_email' => $user_email,
-		'date' => date('Y-m-d H:i:s'),
-		'user_id' => $user_id,
-		'post_data' => $_POST,
-		'user_info' => array of user's information
-	);
 	*/
-
 	$payment_data = array(
 		'price'           => $purchase_data['price'],
 		'give_form_title' => $purchase_data['post_data']['give-form-title'],
@@ -73,7 +62,6 @@ function give_manual_payment( $purchase_data ) {
 		'user_info'       => $purchase_data['user_info'],
 		'status'          => 'pending'
 	);
-
 	// Record the pending payment
 	$payment = give_insert_payment( $payment_data );
 
