@@ -68,7 +68,7 @@ function give_process_purchase_form() {
 
 	// Setup purchase information
 	$purchase_data = array(
-		'price'        => ( isset( $_POST['give-amount'] ) ? $_POST['give-amount'] : '0.00' ),
+		'price'        => ( isset( $_POST['give-amount'] ) ? (float) apply_filters( 'give_donation_total', give_sanitize_amount( $_POST['give-amount'] ) ) : '0.00' ),
 		// Amount after taxes
 		'purchase_key' => strtolower( md5( $user['user_email'] . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) ),
 		// Unique key
@@ -359,7 +359,7 @@ function give_purchase_form_validate_logged_in_user() {
  * Purchase Form Validate New User
  *
  * @access      private
- * @since       1.0.8.1
+ * @since       1.0
  * @return      array
  */
 function give_purchase_form_validate_new_user() {
@@ -459,7 +459,7 @@ function give_purchase_form_validate_new_user() {
  * Purchase Form Validate User Login
  *
  * @access      private
- * @since       1.0.8.1
+ * @since       1.0
  * @return      array
  */
 function give_purchase_form_validate_user_login() {
@@ -526,7 +526,7 @@ function give_purchase_form_validate_user_login() {
  * Purchase Form Validate Guest User
  *
  * @access  private
- * @since   1.0.8.1
+ * @since   1.0
  * @return  array
  */
 function give_purchase_form_validate_guest_user() {
@@ -575,7 +575,7 @@ function give_purchase_form_validate_guest_user() {
  * @param array $user_data
  *
  * @access  private
- * @since   1.0.8.1
+ * @since   1.0
  * @return  integer
  */
 function give_register_and_login_new_user( $user_data = array() ) {
@@ -625,7 +625,7 @@ function give_register_and_login_new_user( $user_data = array() ) {
  * @param array $valid_data
  *
  * @access  private
- * @since   1.0.8.1
+ * @since   1.0
  * @return  array
  */
 function give_get_purchase_form_user( $valid_data = array() ) {
