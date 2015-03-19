@@ -73,14 +73,13 @@ Single Forms
 
 .single-give_forms {
 
-  .give_forms  {
+  .give_forms {
 
 	@include clearfix;
 
   }
 
 }
-
 
 /*------------------------------------
 Gravatar List
@@ -241,15 +240,7 @@ form[id*='give-form'] {
   .give-donation-amount {
 
 	.give-currency-symbol {
-	  background-color: lighten($light-gray, 2%);
-	  border-top: 1px solid $borders;
-	  border-bottom: 1px solid $borders;
-	  margin: 0;
-	  padding: 0 12px;
-	  float: left;
-	  height: 35px;
-	  line-height: 35px;
-	  font-size: $font-size-medium;
+	  @include give-currency();
 
 	  &.give-currency-position-before {
 		border-left: 1px solid $borders;
@@ -262,19 +253,15 @@ form[id*='give-form'] {
 
 	}
 
-	input.give-text-input, span.give-final-total-amount {
-	  float: left;
-	  width: 100px;
-	  border: 1px solid $borders;
-	  height: 35px;
-	  font-size: $font-size-medium;
+	input.give-text-input {
+	  @include give-input();
 	}
 
 	span.give-final-total-amount {
-	  height: 35px;
-	  line-height: 35px;
-	  padding: 0 8px;
+	  @include give-input();
+	  padding: 0 12px;
 	  cursor: not-allowed;
+
 	}
 
   }
@@ -284,20 +271,15 @@ form[id*='give-form'] {
 	padding: 0;
 	@include clearfix();
 
-	> span {
-	  float: left;
-	  margin: 0;
-	  padding: 6px 12px;
+	.give-donation-total-label {
+	  @include give-currency();
 	  border: 1px solid $borders;
 	}
 
 	.give-final-total-amount {
 	  font-size: $font-size-medium;
+	  @include give-input();
 	  border-left: none;
-	}
-	.give-donation-total-label {
-	  background-color: lighten($light-gray, 2%);
-	  font-weight: bold;
 	}
 
   }
