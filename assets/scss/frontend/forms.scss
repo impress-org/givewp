@@ -16,6 +16,10 @@ Layout
 
 [id*='give-form'] {
 
+  fieldset {
+	border: none;
+  }
+
   .give-form-title {
 	margin: 0 0 15px;
   }
@@ -62,6 +66,21 @@ Layout
 div.give-form-wrap.mfp-hide {
   display: block !important;
 }
+
+/*------------------------------------
+Single Forms
+--------------------------------------*/
+
+.single-give_forms {
+
+  .give_forms  {
+
+	@include clearfix;
+
+  }
+
+}
+
 
 /*------------------------------------
 Gravatar List

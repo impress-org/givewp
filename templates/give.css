@@ -535,6 +535,8 @@ Layout
   .give-clearfix:after {
     clear: both; }
 
+[id*='give-form'] fieldset {
+  border: none; }
 [id*='give-form'] .give-form-title {
   margin: 0 0 15px; }
 [id*='give-form'] div#give-sidebar-left {
@@ -561,6 +563,17 @@ Layout
 
 div.give-form-wrap.mfp-hide {
   display: block !important; }
+
+/*------------------------------------
+Single Forms
+--------------------------------------*/
+.single-give_forms .give_forms {
+  *zoom: 1; }
+  .single-give_forms .give_forms:before, .single-give_forms .give_forms:after {
+    content: " ";
+    display: table; }
+  .single-give_forms .give_forms:after {
+    clear: both; }
 
 /*------------------------------------
 Gravatar List
