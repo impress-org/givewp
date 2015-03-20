@@ -38,6 +38,9 @@ function give_install() {
 	// Setup some default options
 	$options = array();
 
+	// Current Version (if set)
+	$current_version = get_option( 'give_version' );
+
 	// Checks if the Success Page option exists
 	if ( ! isset( $give_options['success_page'] ) ) {
 
@@ -85,17 +88,28 @@ function give_install() {
 
 	}
 
+	//Fresh Install? Setup Test Mode, Base Country (US), Test Gateway
+	if ( empty( $current_version ) ) {
+		$options['base_country']       = 'US';
+		$options['test_mode']          = 1;
+		$options['gateways']['manual'] = 1;
+		$options['default_gateway']    = 'manual';
+
+		//Emails
+		$options['donation_notification'] = give_get_default_donation_notification_email();
+	}
+
+
 	// Populate some default values
 	update_option( 'give_settings', array_merge( $give_options, $options ) );
+	update_option( 'give_version', GIVE_VERSION );
 
 
-	// Add Upgraded From Option
-	$current_version = get_option( 'give_version' );
+	//Update Version Number
 	if ( $current_version ) {
 		update_option( 'give_version_upgraded_from', $current_version );
 	}
 
-	update_option( 'give_version', GIVE_VERSION );
 
 	// Create Give roles
 	$roles = new Give_Roles();
