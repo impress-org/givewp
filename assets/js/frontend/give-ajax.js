@@ -111,6 +111,7 @@ jQuery( document ).ready( function ( $ ) {
 
 		//check validity
 		if ( typeof give_purchase_form.checkValidity === "function" && give_purchase_form.checkValidity() === false ) {
+			loading_animation.fadeOut(); //Don't leave any handing loading animations
 			return;
 		}
 
@@ -132,7 +133,7 @@ jQuery( document ).ready( function ( $ ) {
 				//Submit form for normal processing
 				$( give_purchase_form ).submit();
 			} else {
-				$( '#give-purchase-button' ).val( complete_purchase_val );
+				this_form.find( '#give-purchase-button' ).val( complete_purchase_val );
 				loading_animation.fadeOut();
 				this_form.find( '.give_errors' ).remove();
 				this_form.find( '#give_purchase_submit' ).before( data );
