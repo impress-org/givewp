@@ -183,7 +183,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name'    => __( 'Success Page', 'give' ),
-							'desc'    => __( 'This is the page donators are sent to after completing their donations. The [give_receipt] short code should be on this page.', 'give' ),
+							'desc'    => __( 'This is the page donators are sent to after completing their donations. The <code>[give_receipt]</code> shortcode should be on this page.', 'give' ),
 							'id'      => 'success_page',
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
@@ -203,7 +203,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name'    => __( 'Donation History Page', 'give' ),
-							'desc'    => __( 'This page shows a complete donation history for the current user.', 'give' ),
+							'desc'    => __( 'This page shows a complete donation history for the current user. The <code>[donation_history]</code> shortcode should be on this page.', 'give' ),
 							'id'      => 'history_page',
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
@@ -276,7 +276,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Enabled Gateways', 'give' ),
-							'desc' => __( 'Choose the payment gateways you want enabled.', 'give' ),
+							'desc' => __( 'Choose the payment gateways you would like enabled.', 'give' ),
 							'id'   => 'gateways',
 							'type' => 'enabled_gateways'
 						),
@@ -306,7 +306,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Disable PayPal IPN Verification', 'give' ),
-							'desc' => __( 'If payments are not getting marked as complete, then check this box. This forces the site to use a slightly less secure method of verifying donations.', 'give' ),
+							'desc' => __( 'If donations are not getting marked as complete, then check this box. This forces the site to use a slightly less secure method of verifying donations.', 'give' ),
 							'id'   => 'disable_paypal_verification',
 							'type' => 'checkbox'
 						),
@@ -331,6 +331,18 @@ class Give_Plugin_Settings {
 							'id'   => 'disable_css',
 							'type' => 'checkbox'
 						),
+//						array(
+//							'name' => __( 'Disable Form Categories', 'give' ),
+//							'desc' => __( '', 'give' ),
+//							'id'   => 'disable_categories',
+//							'type' => 'checkbox'
+//						),
+//						array(
+//							'name' => __( 'Disable Form Tags', 'give' ),
+//							'desc' => __( '', 'give' ),
+//							'id'   => 'disable_tags',
+//							'type' => 'checkbox'
+//						),
 					)
 				)
 
@@ -533,7 +545,7 @@ function give_get_settings() {
 
 	$settings = get_option( 'give_settings' );
 
-	return apply_filters( 'give_get_settings', $settings );
+	return (array) apply_filters( 'give_get_settings', $settings );
 
 }
 
