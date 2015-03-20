@@ -280,7 +280,7 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 
 							<div id="give-customer-details" class="postbox">
 								<h3 class="hndle">
-									<span><?php _e( 'Giver\'s Details', 'give' ); ?></span>
+									<span><?php _e( 'Donor\'s Details', 'give' ); ?></span>
 								</h3>
 
 								<div class="inside give-clearfix">

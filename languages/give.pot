@@ -967,7 +967,7 @@ msgid "Total Donation"
 msgstr ""
 
 #: includes/admin/payments/view-order-details.php:283
-msgid "Giver's Details"
+msgid "Donor's Details"
 msgstr ""
 
 #: includes/admin/payments/view-order-details.php:290
@@ -1918,7 +1918,7 @@ msgid "All Statuses"
 msgstr ""
 
 #: includes/admin/reporting/reports.php:353
-msgid "Export Givers in CSV"
+msgid "Export Donors in CSV"
 msgstr ""
 
 #: includes/admin/reporting/reports.php:355
@@ -2549,7 +2549,7 @@ msgid ""
 msgstr ""
 
 #: includes/emails/functions.php:197
-msgid "Giver: "
+msgid "Donor: "
 msgstr ""
 
 #: includes/emails/functions.php:198

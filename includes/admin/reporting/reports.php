@@ -350,7 +350,7 @@ function give_reports_tab_export() {
 					</tr>
 					<tr class="alt give-export-customers">
 						<td class="row-title">
-							<h3><span><?php _e( 'Export Givers in CSV', 'give' ); ?></span></h3>
+							<h3><span><?php _e( 'Export Donors in CSV', 'give' ); ?></span></h3>
 
 							<p><?php _e( 'Download a CSV of all givers\' emails. Optionally export only givers that have donated to a particular form. Note: if you have a large number of givers, exporting the donation stats may fail.', 'give' ); ?></p>
 						</td>

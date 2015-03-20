@@ -352,7 +352,7 @@ class Give_Plugin_Settings {
 						array(
 							'id'      => 'email_template',
 							'name'    => __( 'Email Template', 'give' ),
-							'desc'    => __( 'Choose a template. Click "Save Changes" then "Preview Purchase Receipt" to see the new template.', 'give' ),
+							'desc'    => __( 'Choose a template. Click "Save Changes" then "Preview Donation Receipt" to see the new template.', 'give' ),
 							'type'    => 'select',
 							'options' => give_get_email_templates()
 						),
@@ -383,15 +383,15 @@ class Give_Plugin_Settings {
 							'type' => 'give_title'
 						),
 						array(
-							'id'      => 'purchase_subject',
-							'name'    => __( 'Purchase Email Subject', 'give' ),
+							'id'      => 'donation_subject',
+							'name'    => __( 'Donation Email Subject', 'give' ),
 							'desc'    => __( 'Enter the subject line for the donation receipt email', 'give' ),
 							'default' => __( 'Donation Receipt', 'give' ),
 							'type'    => 'text'
 						),
 						array(
-							'id'      => 'purchase_receipt',
-							'name'    => __( 'Purchase Receipt', 'give' ),
+							'id'      => 'donation_receipt',
+							'name'    => __( 'Donation Receipt', 'give' ),
 							'desc'    => __( 'Enter the email that is sent to users after completing a successful donation. HTML is accepted. Available template tags:', 'give' ) . '<br/>' . give_get_emails_tags_list(),
 							'type'    => 'wysiwyg',
 							'default' => __( "Dear", "give" ) . " {name},\n\n" . __( "Thank you for your donation. Your generosity is appreciated! Please click on the link below to view your receipt.", "give" ) . "\n\n{receipt_link}\n\nSincerely,\n{sitename}"
@@ -403,18 +403,18 @@ class Give_Plugin_Settings {
 							'type' => 'give_title'
 						),
 						array(
-							'id'      => 'sale_notification_subject',
+							'id'      => 'donation_notification_subject',
 							'name'    => __( 'Donation Notification Subject', 'give' ),
 							'desc'    => __( 'Enter the subject line for the donation notification email', 'give' ),
 							'type'    => 'text',
 							'default' => __( 'New Donation - #{payment_id}', 'give' )
 						),
 						array(
-							'id'      => 'sale_notification',
+							'id'      => 'donation_notification',
 							'name'    => __( 'Donation Notification', 'give' ),
 							'desc'    => __( 'Enter the email that is sent to donation notification emails after completion of a donation. HTML is accepted. Available template tags:', 'give' ) . '<br/>' . give_get_emails_tags_list(),
 							'type'    => 'wysiwyg',
-							'default' => give_get_default_sale_notification_email()
+							'default' => give_get_default_donation_notification_email()
 						),
 						array(
 							'id'      => 'admin_notice_emails',
