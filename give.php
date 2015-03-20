@@ -133,7 +133,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 
 			// Plugin version
 			if ( ! defined( 'GIVE_VERSION' ) ) {
-				define( 'GIVE_VERSION', '1.0' );
+				define( 'GIVE_VERSION', '0.7' );
 			}
 
 			// Plugin Folder Path
@@ -168,7 +168,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 			global $give_options;
 
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/register-settings.php';
-			$give_options =  give_get_settings();
+			$give_options = give_get_settings();
 
 			require_once GIVE_PLUGIN_DIR . 'includes/post-types.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/scripts.php';
