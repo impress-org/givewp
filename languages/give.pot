@@ -1089,7 +1089,7 @@ msgstr ""
 #: includes/admin/register-settings.php:186
 msgid ""
 "This is the page donators are sent to after completing their donations. The "
-"[give_receipt] short code should be on this page."
+"[give_receipt] shortcode should be on this page."
 msgstr ""
 
 #: includes/admin/register-settings.php:195
