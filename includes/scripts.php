@@ -50,7 +50,6 @@ function give_load_scripts() {
 		'no_gateway'        => __( 'Please select a payment method', 'give' ),
 		'general_loading'   => __( 'Loading...', 'give' ),
 		'purchase_loading'  => __( 'Please Wait...', 'give' ),
-		'complete_purchase' => __( 'Donate', 'give' ),
 		'give_version'      => GIVE_VERSION
 	) );
 
