@@ -658,7 +658,13 @@ form[id*='give-form'] {
   form[id*='give-form'] .form-row-last {
     float: right; }
   form[id*='give-form'] .form-row-wide {
+    *zoom: 1;
     clear: both; }
+    form[id*='give-form'] .form-row-wide:before, form[id*='give-form'] .form-row-wide:after {
+      content: " ";
+      display: table; }
+    form[id*='give-form'] .form-row-wide:after {
+      clear: both; }
   form[id*='give-form'] .give-required-indicator {
     color: #a00; }
   form[id*='give-form'] .card-expiration > select {
@@ -682,7 +688,8 @@ form[id*='give-form'] .give-donation-amount .give-currency-symbol {
   float: left;
   height: 35px;
   line-height: 35px;
-  font-size: 18px; }
+  font-size: 18px;
+  box-sizing: border-box; }
   form[id*='give-form'] .give-donation-amount .give-currency-symbol.give-currency-position-before {
     border-left: 1px solid #ccc;
     border-right: none; }
@@ -695,7 +702,8 @@ form[id*='give-form'] .give-donation-amount input.give-text-input {
   height: 35px;
   line-height: 35px;
   padding: 0 12px;
-  font-size: 18px; }
+  font-size: 18px;
+  width: 125px; }
 form[id*='give-form'] .give-donation-amount span.give-final-total-amount {
   float: left;
   border: 1px solid #ccc;
@@ -704,7 +712,8 @@ form[id*='give-form'] .give-donation-amount span.give-final-total-amount {
   padding: 0 12px;
   font-size: 18px;
   padding: 0 12px;
-  cursor: not-allowed; }
+  cursor: not-allowed;
+  background: #FFF; }
 form[id*='give-form'] #give-final-total-wrap {
   margin: 25px 0;
   padding: 0;
@@ -724,6 +733,7 @@ form[id*='give-form'] #give-final-total-wrap {
     height: 35px;
     line-height: 35px;
     font-size: 18px;
+    box-sizing: border-box;
     border: 1px solid #ccc; }
   form[id*='give-form'] #give-final-total-wrap .give-final-total-amount {
     font-size: 18px;

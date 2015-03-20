@@ -99,6 +99,7 @@
   height: 35px;
   line-height: 35px;
   font-size: $font-size-medium;
+  @include box-sizing(border-box);
 }
 
 @mixin give-input() {

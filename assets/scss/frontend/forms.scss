@@ -206,6 +206,7 @@ form[id*='give-form'] {
   }
 
   .form-row-wide {
+	@include clearfix();
 	clear: both;
   }
 
@@ -255,13 +256,14 @@ form[id*='give-form'] {
 
 	input.give-text-input {
 	  @include give-input();
+	  width: 125px;
 	}
 
 	span.give-final-total-amount {
 	  @include give-input();
 	  padding: 0 12px;
 	  cursor: not-allowed;
-
+	  background: #FFF;
 	}
 
   }

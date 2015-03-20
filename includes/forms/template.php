@@ -229,7 +229,7 @@ function give_output_donation_levels( $form_id = 0, $args = array() ) {
 		?>
 
 		<input class="give-text-input" id="give-amount" type="hidden" name="give-amount" value="<?php echo $default_amount; ?>" required>
-		<p class="set-price give-donation-amount form-row form-row-wide">
+		<p class="set-price give-donation-amount form-row-wide">
 			<?php
 
 			if ( $currency_position == 'before' ) {
@@ -244,7 +244,7 @@ function give_output_donation_levels( $form_id = 0, $args = array() ) {
 		//Custom Amount Allowed
 		?>
 		<div class="give-total-wrap">
-			<div class="give-donation-amount form-row form-row-wide">
+			<div class="give-donation-amount form-row-wide">
 				<?php
 				if ( $currency_position == 'before' ) {
 					echo $currency_output;
