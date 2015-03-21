@@ -273,27 +273,27 @@ function give_setup_email_tags() {
 		),
 		array(
 			'tag'         => 'name',
-			'description' => __( "The giver's first name", 'give' ),
+			'description' => __( "The donor's first name", 'give' ),
 			'function'    => 'give_email_tag_first_name'
 		),
 		array(
 			'tag'         => 'fullname',
-			'description' => __( "The giver's full name, first and last", 'give' ),
+			'description' => __( "The donor's full name, first and last", 'give' ),
 			'function'    => 'give_email_tag_fullname'
 		),
 		array(
 			'tag'         => 'username',
-			'description' => __( "The giver's user name on the site, if they registered an account", 'give' ),
+			'description' => __( "The donor's user name on the site, if they registered an account", 'give' ),
 			'function'    => 'give_email_tag_username'
 		),
 		array(
 			'tag'         => 'user_email',
-			'description' => __( "The giver's email address", 'give' ),
+			'description' => __( "The donor's email address", 'give' ),
 			'function'    => 'give_email_tag_user_email'
 		),
 		array(
 			'tag'         => 'billing_address',
-			'description' => __( 'The giver\'s billing address', 'give' ),
+			'description' => __( 'The donor\'s billing address', 'give' ),
 			'function'    => 'give_email_tag_billing_address'
 		),
 		array(
@@ -348,7 +348,7 @@ add_action( 'give_add_email_tags', 'give_setup_email_tags' );
 
 /**
  * Email template tag: name
- * The giver's first name
+ * The donor's first name
  *
  * @param int $payment_id
  *
@@ -366,7 +366,7 @@ function give_email_tag_first_name( $payment_id ) {
 
 /**
  * Email template tag: fullname
- * The giver's full name, first and last
+ * The donor's full name, first and last
  *
  * @param int $payment_id
  *
@@ -384,7 +384,7 @@ function give_email_tag_fullname( $payment_id ) {
 
 /**
  * Email template tag: username
- * The giver's user name on the site, if they registered an account
+ * The donor's user name on the site, if they registered an account
  *
  * @param int $payment_id
  *
@@ -402,7 +402,7 @@ function give_email_tag_username( $payment_id ) {
 
 /**
  * Email template tag: user_email
- * The giver's email address
+ * The donor's email address
  *
  * @param int $payment_id
  *
@@ -414,7 +414,7 @@ function give_email_tag_user_email( $payment_id ) {
 
 /**
  * Email template tag: billing_address
- * The giver's billing address
+ * The donor's billing address
  *
  * @param int $payment_id
  *

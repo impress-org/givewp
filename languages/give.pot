@@ -942,7 +942,7 @@ msgid "Transaction ID:"
 msgstr ""
 
 #: includes/admin/payments/view-order-details.php:214
-msgid "View all donations for this giver"
+msgid "View all donations for this donor"
 msgstr ""
 
 #: includes/admin/payments/view-order-details.php:244
@@ -1923,9 +1923,9 @@ msgstr ""
 
 #: includes/admin/reporting/reports.php:355
 msgid ""
-"Download a CSV of all givers' emails. Optionally export only givers that "
+"Download a CSV of all donors' emails. Optionally export only donors that "
 "have donated to a particular form. Note: if you have a large number of "
-"givers, exporting the donation stats may fail."
+"donors, exporting the donation stats may fail."
 msgstr ""
 
 #: includes/admin/reporting/reports.php:360
@@ -2457,23 +2457,23 @@ msgid "The name of completed donation form."
 msgstr ""
 
 #: includes/emails/class-give-email-tags.php:276
-msgid "The giver's first name"
+msgid "The donor's first name"
 msgstr ""
 
 #: includes/emails/class-give-email-tags.php:281
-msgid "The giver's full name, first and last"
+msgid "The donor's full name, first and last"
 msgstr ""
 
 #: includes/emails/class-give-email-tags.php:286
-msgid "The giver's user name on the site, if they registered an account"
+msgid "The donor's user name on the site, if they registered an account"
 msgstr ""
 
 #: includes/emails/class-give-email-tags.php:291
-msgid "The giver's email address"
+msgid "The donor's email address"
 msgstr ""
 
 #: includes/emails/class-give-email-tags.php:296
-msgid "The giver's billing address"
+msgid "The donor's billing address"
 msgstr ""
 
 #: includes/emails/class-give-email-tags.php:301

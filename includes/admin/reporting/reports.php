@@ -352,7 +352,7 @@ function give_reports_tab_export() {
 						<td class="row-title">
 							<h3><span><?php _e( 'Export Donors in CSV', 'give' ); ?></span></h3>
 
-							<p><?php _e( 'Download a CSV of all givers\' emails. Optionally export only givers that have donated to a particular form. Note: if you have a large number of givers, exporting the donation stats may fail.', 'give' ); ?></p>
+							<p><?php _e( 'Download a CSV of all donors\' emails. Optionally export only donors that have donated to a particular form. Note: if you have a large number of donors, exporting the donation stats may fail.', 'give' ); ?></p>
 						</td>
 						<td>
 							<form method="post" id="give_customer_export">

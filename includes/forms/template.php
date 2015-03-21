@@ -101,8 +101,7 @@ function give_get_donation_form( $args = array() ) {
 				}
 				?>
 				<input type="hidden" name="give-price-id" value="<?php echo $price_id; ?>" />
-			<?php } ?>
-			<?php
+			<?php }
 
 			do_action( 'give_checkout_form_top', $form->ID, $args );
 
@@ -214,22 +213,22 @@ function give_output_donation_levels( $form_id = 0, $args = array() ) {
 
 	global $give_options;
 
-	do_action( 'give_before_donation_levels', $form_id );
-
 	$variable_pricing    = give_has_variable_prices( $form_id );
 	$allow_custom_amount = get_post_meta( $form_id, '_give_custom_amount', true );
 	$currency_position   = isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before';
 	$symbol              = isset( $give_options['currency'] ) ? give_currency_symbol( $give_options['currency'] ) : 'USD';
 	$currency_output     = '<span class="give-currency-symbol give-currency-position-' . $currency_position . '">' . $symbol . '</span>';
+	$default_amount      = give_get_default_form_amount( $form_id );
+	$custom_amount_text  = get_post_meta( $form_id, '_give_custom_amount_text', true );
 
-	$default_amount     = give_get_default_form_amount( $form_id );
-	$custom_amount_text = get_post_meta( $form_id, '_give_custom_amount_text', true );
+
+	do_action( 'give_before_donation_levels', $form_id );
 
 	//Set Price, No Custom Amount Allowed means hidden price field
 	if ( $allow_custom_amount == 'no' ) {
 		?>
 
-		<input class="give-text-input" id="give-amount" type="hidden" name="give-amount" value="<?php echo $default_amount; ?>" required>
+		<input id="give-amount" class="give-amount-hidden" type="hidden" name="give-amount" value="<?php echo $default_amount; ?>" required>
 		<p class="set-price give-donation-amount form-row-wide">
 			<?php
 
@@ -247,10 +246,6 @@ function give_output_donation_levels( $form_id = 0, $args = array() ) {
 		<div class="give-total-wrap">
 			<div class="give-donation-amount form-row-wide">
 				<?php
-				//Label
-				if ( ! empty( $custom_amount_text ) ) { ?>
-					<label for="give-amount"><?php echo $custom_amount_text; ?></label>
-				<?php }
 
 				if ( $currency_position == 'before' ) {
 					echo $currency_output;
@@ -258,6 +253,7 @@ function give_output_donation_levels( $form_id = 0, $args = array() ) {
 				?>
 
 				<input class="give-text-input" id="give-amount" name="give-amount" type="text" placeholder="" value="<?php echo $default_amount; ?>" required autocomplete="off">
+
 				<?php if ( $currency_position == 'after' ) {
 					echo $currency_output;
 				} ?>
@@ -268,8 +264,13 @@ function give_output_donation_levels( $form_id = 0, $args = array() ) {
 
 			</div>
 		</div>
-	<?php } ?>
-	<?php
+	<?php }
+
+	//Custom Amount Text
+	if ( ! empty( $custom_amount_text ) && ! $variable_pricing ) { ?>
+		<p class="give-custom-amount-text"><?php echo $custom_amount_text; ?></p>
+	<?php }
+
 	//Output Variable Pricing Levels
 	if ( $variable_pricing ) {
 		give_output_levels( $form_id );
@@ -647,7 +648,7 @@ function give_default_cc_address_fields() {
 				<span class="give-tooltip icon icon-question" data-tooltip="<?php _e( 'The country for your billing address.', 'give' ); ?>"></span>
 			</label>
 
-			<select name="billing_country" id="billing_country" class="billing_country give-select<?php if ( give_field_is_required( 'billing_country' ) ) {
+			<select name="billing_country" id="billing_country" class="billing-country billing_country give-select<?php if ( give_field_is_required( 'billing_country' ) ) {
 				echo ' required';
 			} ?>">
 				<?php
