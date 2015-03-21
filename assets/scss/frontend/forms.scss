@@ -239,7 +239,8 @@ Form Price & Amount
 form[id*='give-form'] {
 
   .give-donation-amount {
-
+	margin: 0 0 15px;
+	
 	.give-currency-symbol {
 	  @include give-currency();
 
@@ -254,7 +255,7 @@ form[id*='give-form'] {
 
 	}
 
-	input.give-text-input {
+	#give-amount {
 	  @include give-input();
 	  width: 125px;
 
