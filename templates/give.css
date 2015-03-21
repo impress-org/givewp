@@ -679,44 +679,48 @@ form[id*='give-form'] {
 /*---------------------------------
 Form Price & Amount
 -----------------------------------*/
-form[id*='give-form'] .give-donation-amount .give-currency-symbol {
-  background-color: #f2f2f2;
-  border-top: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
-  margin: 0;
-  padding: 0 12px;
-  float: left;
-  height: 35px;
-  line-height: 35px;
-  font-size: 18px;
-  box-sizing: border-box; }
-  form[id*='give-form'] .give-donation-amount .give-currency-symbol.give-currency-position-before {
-    border-left: 1px solid #ccc;
-    border-right: none; }
-  form[id*='give-form'] .give-donation-amount .give-currency-symbol.give-currency-position-after {
-    border-left: none;
-    border-right: 1px solid #ccc; }
-form[id*='give-form'] .give-donation-amount input.give-text-input {
-  float: left;
-  border: 1px solid #ccc;
-  height: 35px;
-  line-height: 35px;
-  padding: 0 12px;
-  font-size: 18px;
-  box-sizing: border-box;
-  width: 125px; }
-  form[id*='give-form'] .give-donation-amount input.give-text-input.invalid-amount {
-    border: 1px solid red; }
-form[id*='give-form'] .give-donation-amount span.give-final-total-amount {
-  float: left;
-  border: 1px solid #ccc;
-  height: 35px;
-  line-height: 35px;
-  padding: 0 12px;
-  font-size: 18px;
-  box-sizing: border-box;
-  cursor: not-allowed;
-  background: #FFF; }
+form[id*='give-form'] .give-donation-amount {
+  margin: 0 0 15px; }
+  form[id*='give-form'] .give-donation-amount .give-currency-symbol {
+    background-color: #f2f2f2;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    margin: 0;
+    padding: 0 12px;
+    float: left;
+    height: 35px;
+    line-height: 35px;
+    font-size: 18px;
+    box-sizing: border-box; }
+    form[id*='give-form'] .give-donation-amount .give-currency-symbol.give-currency-position-before {
+      border-left: 1px solid #ccc;
+      border-right: none; }
+    form[id*='give-form'] .give-donation-amount .give-currency-symbol.give-currency-position-after {
+      border-left: none;
+      border-right: 1px solid #ccc; }
+  form[id*='give-form'] .give-donation-amount #give-amount {
+    float: left;
+    border: 1px solid #ccc;
+    border-radius: 0;
+    height: 35px;
+    line-height: 35px;
+    padding: 0 12px;
+    font-size: 18px;
+    box-sizing: border-box;
+    width: 125px; }
+    form[id*='give-form'] .give-donation-amount #give-amount.invalid-amount {
+      border: 1px solid red; }
+  form[id*='give-form'] .give-donation-amount span.give-final-total-amount {
+    float: left;
+    border: 1px solid #ccc;
+    border-radius: 0;
+    height: 35px;
+    line-height: 35px;
+    padding: 0 12px;
+    font-size: 18px;
+    box-sizing: border-box;
+    cursor: not-allowed;
+    background: #FFF; }
 form[id*='give-form'] #give-final-total-wrap {
   margin: 25px 0;
   padding: 0;
@@ -742,6 +746,7 @@ form[id*='give-form'] #give-final-total-wrap {
     font-size: 18px;
     float: left;
     border: 1px solid #ccc;
+    border-radius: 0;
     height: 35px;
     line-height: 35px;
     padding: 0 12px;
