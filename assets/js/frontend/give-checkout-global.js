@@ -100,8 +100,17 @@ jQuery( document ).ready( function ( $ ) {
 	} );
 
 
-	//Custom Donation Amount - If user focuses on field & changes value then update price
+	//Custom Donation Amount - If user focuses on field & changes value then updates price
 	$body.on( 'focus', '.give-donation-amount .give-text-input', function ( e ) {
+
+		//Remove any invalid class
+		$( this ).removeClass( 'invalid-amount' );
+
+		//Fire up Mask Money
+		$( this ).maskMoney( {
+			decimal  : give_global_vars.decimal_separator,
+			thousands: give_global_vars.thousands_separator
+		} );
 
 		var parent_form = $( this ).parents( 'form' );
 
@@ -119,10 +128,17 @@ jQuery( document ).ready( function ( $ ) {
 
 	} );
 	$body.on( 'blur', '.give-donation-amount .give-text-input', function ( e ) {
+
 		var pre_focus_amount = $( this ).data( 'amount' );
 		var value_now = $( this ).val();
 
-		//If values don't match up then proceed with updating donation values
+
+		//Does this number have a value?
+		if ( !value_now || value_now <= 0 ) {
+			$( this ).addClass( 'invalid-amount' );
+		}
+
+		//If values don't match up then proceed with updating donation total value
 		if ( pre_focus_amount !== value_now ) {
 
 			//update checkout total (include currency sign)
@@ -130,7 +146,7 @@ jQuery( document ).ready( function ( $ ) {
 
 			//fade in/out updating text
 			$( this ).next( '.give-updating-price-loader' ).find( '.give-loading-animation' ).css( 'background-image', 'url(' + give_scripts.ajax_loader + ')' );
-			$( this ).next( '.give-updating-price-loader' ).fadeIn().fadeOut();
+			$( this ).next( '.give-updating-price-loader' ).stop().fadeIn().fadeOut();
 
 		}
 		//This class is used for CSS purposes
@@ -160,13 +176,16 @@ jQuery( document ).ready( function ( $ ) {
 		var parent_form = selected_field.parents( 'form' );
 		var this_amount = selected_field.val();
 		var price_id = selected_field.data( 'price-id' );
+		var currency_symbol = parent_form.find( '.give-currency-symbol' ).text();
 
 		//remove old selected class & add class for CSS purposes
 		$( selected_field ).parents( '.give-donation-levels-wrap' ).find( '.give-default-level' ).removeClass( 'give-default-level' );
 		$( selected_field ).addClass( 'give-default-level' );
+		parent_form.find( '#give-amount' ).removeClass( 'invalid-amount' );
 
 		//Is this a custom amount selection?
 		if ( this_amount === 'custom' ) {
+			//It is, so focus on the custom amount input
 			parent_form.find( '#give-amount' ).val( '' ).focus();
 			return false; //Bounce out
 		}
@@ -176,8 +195,8 @@ jQuery( document ).ready( function ( $ ) {
 			price_id = selected_field.find( 'option:selected' ).data( 'price-id' );
 		}
 
-		//Fade in/out price updating image
-		$( '.give-updating-price-loader' ).fadeIn().fadeOut();
+		//Fade in/out price loading updating image
+		parent_form.find( '.give-updating-price-loader' ).stop().fadeIn().fadeOut();
 
 		//update price id field for variable products
 		parent_form.find( 'input[name=give-price-id]' ).val( price_id );
@@ -185,8 +204,16 @@ jQuery( document ).ready( function ( $ ) {
 		//update custom amount field
 		parent_form.find( '#give-amount' ).val( this_amount );
 
-		//update checkout data-total
-		parent_form.find( '.give-final-total-amount' ).data( 'total', this_amount ).text( this_amount );
+		console.log( give_global_vars );
+
+
+		//update checkout total
+		var formatted_total = currency_symbol + this_amount;
+
+		if ( give_global_vars.currency_pos == 'after' ) {
+			formatted_total = this_amount + currency_symbol;
+		}
+		parent_form.find( '.give-final-total-amount' ).data( 'total', this_amount ).text( formatted_total );
 
 	}
 
@@ -195,27 +222,10 @@ jQuery( document ).ready( function ( $ ) {
 
 		var focusin_val = $( this ).val();
 
-		//Remove any invalid class
-		$( this ).removeClass( 'invalid-amount' );
-
-		//Is this custom amount a number?
-		$( this ).maskMoney( {
-			decimal  : give_global_vars.decimal_separator,
-			thousands: give_global_vars.thousands_separator
-		} );
-
 
 	} );
 	//Custom Amount: Focus Out
 	$body.on( 'focusout', '#give-amount', function ( e ) {
-
-		//Is this custom amount a number?
-		var focusout_val = $( this ).val();
-
-		//Does this number have a value
-		if ( !focusout_val || focusout_val <= 0 ) {
-			$( this ).addClass( 'invalid-amount' );
-		}
 
 
 	} );
