@@ -148,6 +148,7 @@ class Give_Graph {
 		// Use minified libraries if SCRIPT_DEBUG is turned off
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 		wp_enqueue_script( 'jquery-flot', GIVE_PLUGIN_URL . 'assets/js/plugins/jquery.flot' . $suffix . '.js' );
+		wp_enqueue_script( 'jquery-flot-orderbars', GIVE_PLUGIN_URL . 'assets/js/plugins/jquery.flot.orderBars' . $suffix . '.js' );
 	}
 
 	/**
@@ -166,6 +167,7 @@ class Give_Graph {
 		ob_start();
 		?>
 		<script type="text/javascript">
+
 			jQuery( document ).ready( function ( $ ) {
 				$.plot(
 					$( "#give-graph-<?php echo $this->id; ?>" ),
@@ -181,8 +183,9 @@ class Give_Graph {
 							},
 							bars  : {
 								show    : <?php echo $this->options['bars'] ? 'true' : 'false'; ?>,
-								barWidth: 12,
-								aling   : 'center'
+								barWidth: 100,
+				                order: 1,
+								align   : 'center'
 							},
 							lines : {
 								show     : <?php echo $this->options['lines'] ? 'true' : 'false'; ?>,
