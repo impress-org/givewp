@@ -103,10 +103,19 @@ jQuery( document ).ready( function ( $ ) {
 	//Custom Donation Amount - If user focuses on field & changes value then update price
 	$body.on( 'focus', '.give-donation-amount .give-text-input', function ( e ) {
 
+		var parent_form = $( this ).parents( 'form' );
+
 		//Set data amount
 		$( this ).data( 'amount', $( this ).val() );
 		//This class is used for CSS purposes
 		$( this ).parent( '.give-donation-amount' ).addClass( 'give-custom-amount-focus-in' );
+		//Set Multi-Level to Custom Amount Field
+		parent_form.find( '.give-default-level, .give-radio-input' ).removeClass( 'give-default-level' );
+		parent_form.find( '.give-btn-level-custom' ).addClass( 'give-default-level' );
+		parent_form.find( '.give-radio-input' ).prop( 'checked', false ); //Radio
+		parent_form.find( '.give-radio-input.give-radio-level-custom' ).prop( 'checked', true ); //Radio
+		parent_form.find( '.give-select-level' ).prop( 'selected', false ); //Select
+		parent_form.find( '.give-select-level .give-donation-level-custom' ).prop( 'selected', true ); //Select
 
 	} );
 	$body.on( 'blur', '.give-donation-amount .give-text-input', function ( e ) {
@@ -152,28 +161,63 @@ jQuery( document ).ready( function ( $ ) {
 		var this_amount = selected_field.val();
 		var price_id = selected_field.data( 'price-id' );
 
+		//remove old selected class & add class for CSS purposes
+		$( selected_field ).parents( '.give-donation-levels-wrap' ).find( '.give-default-level' ).removeClass( 'give-default-level' );
+		$( selected_field ).addClass( 'give-default-level' );
+
+		//Is this a custom amount selection?
+		if ( this_amount === 'custom' ) {
+			parent_form.find( '#give-amount' ).val( '' ).focus();
+			return false; //Bounce out
+		}
+
 		//check if price ID blank because of dropdown type
-		if(!price_id){
-			price_id = selected_field.find('option:selected' ).data('price-id');
+		if ( !price_id ) {
+			price_id = selected_field.find( 'option:selected' ).data( 'price-id' );
 		}
 
 		//Fade in/out price updating image
 		$( '.give-updating-price-loader' ).fadeIn().fadeOut();
 
-		//remove old selected class & add class for CSS purposes
-		$( selected_field ).parents( '.give-donation-levels-wrap' ).find( '.give-default-level' ).removeClass( 'give-default-level' );
-		$( selected_field ).addClass( 'give-default-level' );
-
-
 		//update price id field for variable products
-		parent_form.find( 'input[name=give-price-id]' ).val(price_id);
+		parent_form.find( 'input[name=give-price-id]' ).val( price_id );
 
 		//update custom amount field
 		parent_form.find( '#give-amount' ).val( this_amount );
+
 		//update checkout data-total
 		parent_form.find( '.give-final-total-amount' ).data( 'total', this_amount ).text( this_amount );
 
 	}
 
+	//Custom Amount: Focus In
+	$body.on( 'focusin', '#give-amount', function ( e ) {
+
+		var focusin_val = $( this ).val();
+
+		//Remove any invalid class
+		$( this ).removeClass( 'invalid-amount' );
+
+		//Is this custom amount a number?
+		$( this ).maskMoney( {
+			decimal  : give_global_vars.decimal_separator,
+			thousands: give_global_vars.thousands_separator
+		} );
+
+
+	} );
+	//Custom Amount: Focus Out
+	$body.on( 'focusout', '#give-amount', function ( e ) {
+
+		//Is this custom amount a number?
+		var focusout_val = $( this ).val();
+
+		//Does this number have a value
+		if ( !focusout_val || focusout_val <= 0 ) {
+			$( this ).addClass( 'invalid-amount' );
+		}
+
+
+	} );
 
 } );

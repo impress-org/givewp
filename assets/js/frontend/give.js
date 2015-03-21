@@ -24,6 +24,18 @@ jQuery( document ).ready( function ( $ ) {
 	$( 'body' ).on( 'click', '.give-btn-modal', function ( e ) {
 		e.preventDefault();
 		var this_form = $( this ).parents( 'div.give-form-wrap' );
+		var this_amount_field = this_form.find( '#give-amount' );
+		var this_amount = this_amount_field.val();
+		//Check to ensure our amount is greater than 0
+
+		//Does this number have a value
+		if ( !this_amount || this_amount <= 0 ) {
+			this_amount_field.focus();
+			return false;
+		}
+
+
+		//Alls well, open popup!
 		$.magnificPopup.open( {
 			items: {
 				src : this_form,

@@ -257,6 +257,11 @@ form[id*='give-form'] {
 	input.give-text-input {
 	  @include give-input();
 	  width: 125px;
+
+	  &.invalid-amount {
+		border: 1px solid red;
+	  }
+
 	}
 
 	span.give-final-total-amount {

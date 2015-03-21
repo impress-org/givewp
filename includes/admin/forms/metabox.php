@@ -105,7 +105,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 							'id'         => $prefix . 'text',
 							'type'       => 'text',
 							'attributes' => array(
-								'placeholder' => 'Donation Level',
+								'placeholder' => __( 'Donation Level', 'give' ),
 								'rows'        => 3,
 							),
 						),
@@ -139,6 +139,16 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'options'     => array(
 						'yes' => __( 'Yes', 'give' ),
 						'no'  => __( 'No', 'give' ),
+					),
+				),
+				array(
+					'name'        => __( 'Custom Amount Text', 'give' ),
+					'description' => __( 'This text appears as a label above the custom amount field for single level forms. For multi-level forms the text will appear as it\'s own level. Leave this field blank to prevent it from displaying within your form.', 'give' ),
+					'id'          => $prefix . 'custom_amount_text',
+					'type'        => 'text',
+					'default'     => __( 'Give a Custom Amount', 'give' ),
+					'attributes'  => array(
+						'rows' => 3,
 					),
 				),
 			)

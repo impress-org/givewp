@@ -220,9 +220,10 @@ function give_output_donation_levels( $form_id = 0, $args = array() ) {
 	$allow_custom_amount = get_post_meta( $form_id, '_give_custom_amount', true );
 	$currency_position   = isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before';
 	$symbol              = isset( $give_options['currency'] ) ? give_currency_symbol( $give_options['currency'] ) : 'USD';
-	$currency_output     = '<label class="give-currency-symbol give-currency-position-' . $currency_position . '" for="give-amount">' . $symbol . '</label>';
+	$currency_output     = '<span class="give-currency-symbol give-currency-position-' . $currency_position . '">' . $symbol . '</span>';
 
-	$default_amount = give_get_default_form_amount( $form_id );
+	$default_amount     = give_get_default_form_amount( $form_id );
+	$custom_amount_text = get_post_meta( $form_id, '_give_custom_amount_text', true );
 
 	//Set Price, No Custom Amount Allowed means hidden price field
 	if ( $allow_custom_amount == 'no' ) {
@@ -246,6 +247,11 @@ function give_output_donation_levels( $form_id = 0, $args = array() ) {
 		<div class="give-total-wrap">
 			<div class="give-donation-amount form-row-wide">
 				<?php
+				//Label
+				if ( ! empty( $custom_amount_text ) ) { ?>
+					<label for="give-amount"><?php echo $custom_amount_text; ?></label>
+				<?php }
+
 				if ( $currency_position == 'before' ) {
 					echo $currency_output;
 				}
@@ -285,9 +291,12 @@ add_action( 'give_checkout_form_top', 'give_output_donation_levels' );
  */
 function give_output_levels( $form_id ) {
 
-	//Do variable pricing
-	$prices        = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
-	$display_style = get_post_meta( $form_id, '_give_display_style', true );
+	//Get variable pricing
+	$prices             = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
+	$display_style      = get_post_meta( $form_id, '_give_display_style', true );
+	$custom_amount      = get_post_meta( $form_id, '_give_custom_amount', true );
+	$custom_amount_text = get_post_meta( $form_id, '_give_custom_amount_text', true );
+
 
 	$output  = '';
 	$counter = 0;
@@ -301,12 +310,22 @@ function give_output_levels( $form_id ) {
 				$counter ++;
 
 				$output .= '<li>';
-				$output .= '<button data-price-id="' . $price['_give_id']['level_id'] . '" class="give-donation-level-btn give-btn give-btn-level-' . $counter . ' ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'give-default-level' : '' ) . '" value="' . $price['_give_amount'] . '">';
+				$output .= '<button data-price-id="' . $price['_give_id']['level_id'] . '" class="give-donation-level-btn give-btn give-btn-level-' . $counter . ' ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'give-default-level' : '' ) . '" value="' . give_format_amount( $price['_give_amount'] ) . '">';
 				$output .= ( ! empty( $price['_give_text'] ) ? $price['_give_text'] : $price['_give_price'] );
 				$output .= '</button>';
 				$output .= '</li>';
 
 			}
+
+			//Custom Amount
+			if ( $custom_amount === 'yes' && ! empty( $custom_amount_text ) ) {
+				$output .= '<li>';
+				$output .= '<button data-price-id="custom" class="give-donation-level-btn give-btn give-btn-level-custom" value="custom">';
+				$output .= $custom_amount_text;
+				$output .= '</button>';
+				$output .= '</li>';
+			}
+
 			$output .= '</ul>';
 
 			break;
@@ -320,13 +339,22 @@ function give_output_levels( $form_id ) {
 
 				$output .= '<li>';
 
-				$output .= '<input type="radio" data-price-id="' . $price['_give_id']['level_id'] . '" class="give-radio-input give-radio-input-level give-radio-level-' . $counter . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? ' give-default-level' : '' ) . '" name="give-radio-donation-level" id="give-radio-level-' . $counter . '" ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'checked="checked"' : '' ) . ' value="' . $price['_give_amount'] . '">';
+				$output .= '<input type="radio" data-price-id="' . $price['_give_id']['level_id'] . '" class="give-radio-input give-radio-input-level give-radio-level-' . $counter . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? ' give-default-level' : '' ) . '" name="give-radio-donation-level" id="give-radio-level-' . $counter . '" ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'checked="checked"' : '' ) . ' value="' . give_format_amount( $price['_give_amount'] ) . '">';
 
 				$output .= '<label for="give-radio-level-' . $counter . '">' . ( ! empty( $price['_give_text'] ) ? $price['_give_text'] : $price['_give_price'] ) . '</label>';
 
 				$output .= '</li>';
 
 			}
+
+			//Custom Amount
+			if ( $custom_amount === 'yes' && ! empty( $custom_amount_text ) ) {
+				$output .= '<li>';
+				$output .= '<input type="radio" data-price-id="custom" class="give-radio-input give-radio-input-level give-radio-level-custom" name="give-radio-donation-level" id="give-radio-level-custom" value="custom">';
+				$output .= '<label for="give-radio-level-custom">' . $custom_amount_text . '</label>';
+				$output .= '</li>';
+			}
+
 			$output .= '</ul>';
 
 			break;
@@ -338,10 +366,15 @@ function give_output_levels( $form_id ) {
 			//first loop through prices
 			foreach ( $prices as $price ) {
 
-				$output .= '<option data-price-id="' . $price['_give_id']['level_id'] . '" id="give-donation-level-' . $form_id . '" ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'selected="selected"' : '' ) . ' value="' . $price['_give_amount'] . '">';
+				$output .= '<option data-price-id="' . $price['_give_id']['level_id'] . '" class="give-donation-level-' . $form_id . '" ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'selected="selected"' : '' ) . ' value="' . give_format_amount( $price['_give_amount'] ) . '">';
 				$output .= ( ! empty( $price['_give_text'] ) ? $price['_give_text'] : $price['_give_price'] );
 				$output .= '</option>';
 
+			}
+
+			//Custom Amount
+			if ( $custom_amount === 'yes' && ! empty( $custom_amount_text ) ) {
+				$output .= '<option data-price-id="custom" class="give-donation-level-custom" value="custom">' . $custom_amount_text . '</option>';
 			}
 
 			$output .= '</select>';
@@ -349,7 +382,7 @@ function give_output_levels( $form_id ) {
 			break;
 	}
 
-	echo apply_filters( 'give_form_level_style', $output, $form_id );
+	echo apply_filters( 'give_form_level_output', $output, $form_id );
 
 }
 
@@ -960,7 +993,7 @@ function give_checkout_final_total( $form_id ) {
 	?>
 	<p id="give-final-total-wrap" class="form-wrap ">
 		<span class="give-donation-total-label"><?php echo apply_filters( 'give_donation_total_label', __( 'Donation Total:', 'give' ) ); ?></span>
-		<span class="give-final-total-amount" data-total="<?php echo $total; ?>"><?php echo $total; ?></span>
+		<span class="give-final-total-amount" data-total="<?php echo give_format_amount( $total ); ?>"><?php echo give_format_amount( $total ); ?></span>
 	</p>
 <?php
 }

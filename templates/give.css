@@ -704,6 +704,8 @@ form[id*='give-form'] .give-donation-amount input.give-text-input {
   padding: 0 12px;
   font-size: 18px;
   width: 125px; }
+  form[id*='give-form'] .give-donation-amount input.give-text-input.invalid-amount {
+    border: 1px solid red; }
 form[id*='give-form'] .give-donation-amount span.give-final-total-amount {
   float: left;
   border: 1px solid #ccc;
