@@ -703,6 +703,7 @@ form[id*='give-form'] .give-donation-amount input.give-text-input {
   line-height: 35px;
   padding: 0 12px;
   font-size: 18px;
+  box-sizing: border-box;
   width: 125px; }
   form[id*='give-form'] .give-donation-amount input.give-text-input.invalid-amount {
     border: 1px solid red; }
@@ -713,7 +714,7 @@ form[id*='give-form'] .give-donation-amount span.give-final-total-amount {
   line-height: 35px;
   padding: 0 12px;
   font-size: 18px;
-  padding: 0 12px;
+  box-sizing: border-box;
   cursor: not-allowed;
   background: #FFF; }
 form[id*='give-form'] #give-final-total-wrap {
@@ -745,6 +746,7 @@ form[id*='give-form'] #give-final-total-wrap {
     line-height: 35px;
     padding: 0 12px;
     font-size: 18px;
+    box-sizing: border-box;
     border-left: none; }
 
 /*---------------------------------

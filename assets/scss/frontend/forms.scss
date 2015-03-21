@@ -266,7 +266,6 @@ form[id*='give-form'] {
 
 	span.give-final-total-amount {
 	  @include give-input();
-	  padding: 0 12px;
 	  cursor: not-allowed;
 	  background: #FFF;
 	}

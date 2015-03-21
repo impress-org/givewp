@@ -109,4 +109,5 @@
   line-height: 35px;
   padding: 0 12px;
   font-size: $font-size-medium;
+  @include box-sizing(border-box);
 }
