@@ -466,7 +466,7 @@ x:-o-prefocus, .qtip .qtip-tip {
 Forms CPT
 --------------------------------------*/
 /* Hide conditional fields */
-.cmb2-id--give-set-price, .cmb2-id--give-levels-header, .cmb2-id--give-levels-header + .cmb-repeat-group-wrap, .cmb2-id--give-display-style, .post-type-give_forms .tablenav #post-query-submit, .give-hidden, .cmb2-id--give-form-content, .cmb2-id--give-reveal-label, .give-single-period, .give-single-times {
+.cmb2-id--give-set-price, .cmb2-id--give-levels-header, .cmb2-id--give-levels-header + .cmb-repeat-group-wrap, .cmb2-id--give-display-style, .post-type-give_forms .tablenav #post-query-submit, .give-hidden, .cmb2-id--give-form-content, .cmb2-id--give-reveal-label, .give-single-period, .give-single-times, .cmb2-id--give-custom-amount-text {
   display: none; }
 
 /* Donation Levels Repeating Field */
@@ -615,11 +615,11 @@ Publish Metabox
 /*-------------------------------------
 Content Options
 -------------------------------------*/
-.cmb2-id--give-content-option, .cmb2-id--give-terms-option {
+.cmb2-id--give-content-option, .cmb2-id--give-terms-option, .cmb2-id--give-custom-amount {
   border-bottom: none !important;
   margin: 0 !important; }
 
-.cmb2-id--give-form-content, .cmb2-id--give-agree-label {
+.cmb2-id--give-form-content, .cmb2-id--give-agree-label, .cmb2-id--give-custom-amount-text {
   border-top: 1px solid #e9e9e9 !important; }
 
 /*-------------------------------------

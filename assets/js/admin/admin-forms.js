@@ -109,6 +109,16 @@ jQuery.noConflict();
 			}
 		} ).change();
 
+		//Custom Amount
+		var custom_amount_option = $( '.cmb2-id--give-custom-amount input:radio' );
+		custom_amount_option.on( 'change', function () {
+			var custom_amount_option_val = $( '.cmb2-id--give-custom-amount input:radio:checked' ).val();
+				if ( custom_amount_option_val === 'no' ) {
+					$( '.cmb2-id--give-custom-amount-text' ).hide();
+				} else {
+					$( '.cmb2-id--give-custom-amount-text' ).show();
+				}
+			} ).change();
 	};
 
 	//Handle Repeatable Row ID
