@@ -95,7 +95,6 @@ function give_get_currencies() {
  * @return string           The symbol to use for the currency
  */
 function give_currency_symbol( $currency = '' ) {
-	global $give_options;
 
 	if ( empty( $currency ) ) {
 		$currency = give_get_currency();
