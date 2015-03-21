@@ -981,7 +981,7 @@ add_action( 'give_purchase_form_before_submit', 'give_terms_agreement', 10, 1 );
 function give_checkout_final_total( $form_id ) {
 
 	if ( isset( $_POST['give_total'] ) ) {
-		$total = apply_filters( 'give_cart_total', give_currency_filter( $_POST['give_total'] ) );
+		$total = apply_filters( 'give_donation_total', $_POST['give_total'] );
 	} else {
 		//default total
 		$total = give_get_default_form_amount( $form_id );
@@ -993,7 +993,7 @@ function give_checkout_final_total( $form_id ) {
 	?>
 	<p id="give-final-total-wrap" class="form-wrap ">
 		<span class="give-donation-total-label"><?php echo apply_filters( 'give_donation_total_label', __( 'Donation Total:', 'give' ) ); ?></span>
-		<span class="give-final-total-amount" data-total="<?php echo give_format_amount( $total ); ?>"><?php echo give_format_amount( $total ); ?></span>
+		<span class="give-final-total-amount" data-total="<?php echo give_format_amount( $total ); ?>"><?php echo give_currency_filter( give_format_amount( $total ) ); ?></span>
 	</p>
 <?php
 }
