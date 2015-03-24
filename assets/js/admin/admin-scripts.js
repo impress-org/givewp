@@ -88,8 +88,8 @@ jQuery.noConflict();
 			$( '#give-order-recalc-total' ).on( 'click', function ( e ) {
 				e.preventDefault();
 				var total = 0;
-				if ( $( '#give-purchased-files .row .give-payment-details-download-amount' ).length ) {
-					$( '#give-purchased-files .row .give-payment-details-download-amount' ).each( function () {
+				if ( $( '#give-donation-overview .row .give-payment-details-download-amount' ).length ) {
+					$( '#give-donation-overview .row .give-payment-details-download-amount' ).each( function () {
 						total += parseFloat( $( this ).val() );
 					} );
 				}

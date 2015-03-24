@@ -1151,10 +1151,10 @@ Responsiveness
 .give-order-update-box #major-publishing-actions .button-secondary {
   margin-right: 10px; }
 
-#give-purchased-files .give-select-chosen {
+#give-donation-overview .give-select-chosen {
   width: 196px; }
 
-#give-purchased-files ul, #give-order-address-country-wrap select, #give-customer-details .order-data-address input, #give-edit-order-form .column input, #give-customer-details .order-data-column p.data input {
+#give-donation-overview ul, #give-order-address-country-wrap select, #give-customer-details .order-data-address input, #give-edit-order-form .column input, #give-customer-details .order-data-column p.data input {
   clear: both;
   display: block; }
 
@@ -1171,34 +1171,34 @@ Responsiveness
 #give-edit-order-form .column .description {
   padding-right: 10px; }
 
-#give-edit-order-form .column, #give-purchased-files .row > ul > li, #give-purchased-files .inside > ul > li {
+#give-edit-order-form .column, #give-donation-overview .row > ul > li, #give-donation-overview .inside > ul > li {
   display: inline-block;
   position: relative;
   vertical-align: top;
   margin-right: 5%; }
 
-#give-purchased-files li.actions {
+#give-donation-overview li.actions {
   text-align: right;
   min-width: 200px; }
 
-#give-purchased-files ul li.remove {
+#give-donation-overview ul li.remove {
   text-align: right; }
 
-#give-purchased-files .row {
+#give-donation-overview .row {
   padding: 12px;
   border-bottom: 1px solid #eee; }
 
-#give-purchased-files ul {
+#give-donation-overview ul {
   font-size: 0; }
 
-#give-purchased-files ul li {
+#give-donation-overview ul li {
   font-size: 13px; }
 
 #give-order-data .data span {
   color: #666;
   font-weight: 600; }
 
-#give-purchased-files .inside {
+#give-donation-overview .inside {
   padding: 12px; }
 
 #give-order-recalc-total {
@@ -1230,16 +1230,16 @@ Responsiveness
   #give-edit-order-form .column {
     width: 32%;
     margin-right: 3%; }
-  #give-edit-order-form .columns-4 .column, #give-purchased-files.columns-4 .row > ul > li, #give-purchased-files.columns-4 .inside > ul > li {
+  #give-edit-order-form .columns-4 .column, #give-donation-overview.columns-4 .row > ul > li, #give-donation-overview.columns-4 .inside > ul > li {
     width: 22%;
     margin-right: 2%; }
   #give-edit-order-form .columns-3 .column:nth-child(2n+1), #give-edit-order-form .columns-4 .column:nth-child(3n+1), #give-edit-order-form .column:nth-child(2n+1) {
     margin-right: 0; }
-  #give-purchased-files.columns-4 li.download {
+  #give-donation-overview.columns-4 li.download {
     width: 33%; }
-  #give-purchased-files.columns-4 li.price, #give-purchased-files.columns-3 .row > ul > li.price, #give-purchased-files.columns-3 .inside > ul > li.price {
+  #give-donation-overview.columns-4 li.price, #give-donation-overview.columns-3 .row > ul > li.price, #give-donation-overview.columns-3 .inside > ul > li.price {
     width: 14%; }
-  #give-purchased-files.columns-4 li.actions {
+  #give-donation-overview.columns-4 li.actions {
     width: 25%;
     margin-top: 0;
     margin-right: 0; } }
