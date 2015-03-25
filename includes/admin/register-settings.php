@@ -449,7 +449,7 @@ class Give_Plugin_Settings {
 				'id'         => 'options_page',
 				'give_title' => __( 'Give Add-ons Settings', 'give' ),
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
-				'fields'     => apply_filters( 'give_settings_extensions', array()
+				'fields'     => apply_filters( 'give_settings_addons', array()
 				)
 			),
 			/** Licenses Settings */
