@@ -215,17 +215,4 @@ jQuery( document ).ready( function ( $ ) {
 
 	}
 
-	//Custom Amount: Focus In
-	$body.on( 'focusin', '#give-amount', function ( e ) {
-
-		var focusin_val = $( this ).val();
-
-
-	} );
-	//Custom Amount: Focus Out
-	$body.on( 'focusout', '#give-amount', function ( e ) {
-
-
-	} );
-
 } );
