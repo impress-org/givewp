@@ -120,7 +120,7 @@ function give_dashboard_at_a_glance_widget( $items ) {
 
 		$text = sprintf( $text, number_format_i18n( $num_posts->publish ) );
 
-		if ( current_user_can( 'edit_forms' ) ) {
+		if ( current_user_can( 'edit_give_forms' ) ) {
 			$text = sprintf( '<a class="give-forms-count" href="edit.php?post_type=give_forms">%1$s</a>', $text );
 		} else {
 			$text = sprintf( '<span class="give-forms-count">%1$s</span>', $text );
