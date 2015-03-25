@@ -315,7 +315,7 @@ function give_get_image_size( $image_size ) {
 }
 
 /**
- * Get the placeholder image URL for products etc
+ * Get the placeholder image URL for forms etc
  *
  * @access public
  * @return string

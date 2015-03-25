@@ -28,7 +28,7 @@ class Give_Payment_Stats extends Give_Stats {
 	 * @access public
 	 * @since  1.0
 	 *
-	 * @param $form_id    INT The download product to retrieve stats for. If false, gets stats for all products
+	 * @param $form_id    INT The download product to retrieve stats for. If false, gets stats for all forms
 	 * @param $start_date string|bool The starting date for which we'd like to filter our sale stats. If false, we'll use the default start date of `this_month`
 	 * @param $end_date   string|bool The end date for which we'd like to filter our sale stats. If false, we'll use the default end date of `this_month`
 	 * @param $status     string|array The sale status(es) to count. Only valid when retrieving global stats
@@ -89,7 +89,7 @@ class Give_Payment_Stats extends Give_Stats {
 	 * @access public
 	 * @since  1.0
 	 *
-	 * @param $form_id    INT The download product to retrieve stats for. If false, gets stats for all products
+	 * @param $form_id    INT The download product to retrieve stats for. If false, gets stats for all forms
 	 * @param $start_date string|bool The starting date for which we'd like to filter our sale stats. If false, we'll use the default start date of `this_month`
 	 * @param $end_date   string|bool The end date for which we'd like to filter our sale stats. If false, we'll use the default end date of `this_month`
 	 *

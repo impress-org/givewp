@@ -67,7 +67,7 @@ class Give_HTML_Elements {
 			$options[0] = __( 'No Give Forms Found', 'give' );
 		}
 
-		// This ensures that any selected products are included in the drop down
+		// This ensures that any selected forms are included in the drop down
 		if ( is_array( $args['selected'] ) ) {
 			foreach ( $args['selected'] as $item ) {
 				if ( ! in_array( $item, $options ) ) {

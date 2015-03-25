@@ -98,14 +98,14 @@ function give_get_users_purchases( $user = 0, $number = 20, $pagination = false,
 /**
  * Get Users Purchased Products
  *
- * Returns a list of unique products purchased by a specific user
+ * Returns a list of unique forms purchased by a specific user
  *
  * @since  1.0
  *
  * @param int    $user User ID or email address
  * @param string $status
  *
- * @return bool|object List of unique products purchased by user
+ * @return bool|object List of unique forms purchased by user
  */
 function give_get_users_purchased_products( $user = 0, $status = 'complete' ) {
 	if ( empty( $user ) ) {
@@ -129,7 +129,7 @@ function give_get_users_purchased_products( $user = 0, $status = 'complete' ) {
 		return false;
 	}
 
-	// Grab only the post ids of the products purchased on this order
+	// Grab only the post ids of the forms purchased on this order
 	$purchase_product_ids = array();
 	foreach ( $purchase_data as $purchase_meta ) {
 		$purchase_product_ids[] = wp_list_pluck( $purchase_meta, 'id' );

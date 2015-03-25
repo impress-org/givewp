@@ -181,7 +181,7 @@ function give_load_admin_scripts( $hook ) {
 	wp_localize_script( 'give-admin-scripts', 'give_vars', array(
 		'post_id'                 => isset( $post->ID ) ? $post->ID : null,
 		'give_version'            => GIVE_VERSION,
-		'quick_edit_warning'      => __( 'Sorry, not available for variable priced products.', 'give' ),
+		'quick_edit_warning'      => __( 'Sorry, not available for variable priced forms.', 'give' ),
 		'delete_payment'          => __( 'Are you sure you wish to delete this payment?', 'give' ),
 		'delete_payment_note'     => __( 'Are you sure you wish to delete this note?', 'give' ),
 		'delete_tax_rate'         => __( 'Are you sure you wish to delete this tax rate?', 'give' ),
