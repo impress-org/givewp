@@ -237,7 +237,7 @@ function give_output_donation_levels( $form_id = 0, $args = array() ) {
 			}
 
 			?>
-			<span class="give-final-total-amount"><?php echo give_format_amount( $default_amount ); ?></span>
+			<span id="give-amount" class="give-text-input"><?php echo give_format_amount( $default_amount ); ?></span>
 		</p>
 	<?php
 	} else {
@@ -265,7 +265,7 @@ function give_output_donation_levels( $form_id = 0, $args = array() ) {
 			</div>
 		</div>
 	<?php }
-	
+
 	//Custom Amount Text
 	if ( ! empty( $custom_amount_text ) && ! $variable_pricing && $allow_custom_amount == 'yes' ) { ?>
 		<p class="give-custom-amount-text"><?php echo $custom_amount_text; ?></p>

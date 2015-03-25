@@ -202,10 +202,8 @@ jQuery( document ).ready( function ( $ ) {
 		parent_form.find( 'input[name=give-price-id]' ).val( price_id );
 
 		//update custom amount field
-		parent_form.find( '#give-amount' ).val( this_amount );
-
-		console.log( give_global_vars );
-
+		parent_form.find( 'input#give-amount' ).val( this_amount );
+		parent_form.find( 'span#give-amount' ).text( this_amount );
 
 		//update checkout total
 		var formatted_total = currency_symbol + this_amount;
