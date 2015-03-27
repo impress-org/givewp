@@ -332,6 +332,30 @@ class Give_Plugin_Settings {
 							'type' => 'checkbox'
 						),
 						array(
+							'name' => __( 'Post Types', 'give' ),
+							'desc' => '<hr>',
+							'id'   => 'give_title',
+							'type' => 'give_title'
+						),
+						array(
+							'name' => __( 'Disable Form\'s Single View', 'give' ),
+							'desc' => __( 'By default, all forms have single views enabled which create a specific URL on your website for that form. This option disables the singular and archive views from being publicly viewable. Note: you will need to embed forms using a shortcode or widget if enabled.', 'give' ),
+							'id'   => 'disable_forms_singular',
+							'type' => 'checkbox'
+						),
+						array(
+							'name' => __( 'Disable Form\'s Archives', 'give' ),
+							'desc' => __( 'Archives pages list all the forms you have created. This option will disable only the form\'s archive page(s). The single form\'s view will remain in place. Note: you will need to refresh your permalinks after this option has been enabled.', 'give' ),
+							'id'   => 'disable_forms_archives',
+							'type' => 'checkbox'
+						),
+						array(
+							'name' => __( 'Taxonomies', 'give' ),
+							'desc' => '<hr>',
+							'id'   => 'give_title',
+							'type' => 'give_title'
+						),
+						array(
 							'name' => __( 'Enable Form Categories', 'give' ),
 							'desc' => __( 'Check this option if you would like to categorize your donation forms. This option enables the form\'s category taxonomy.', 'give' ),
 							'id'   => 'enable_categories',

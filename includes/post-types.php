@@ -23,8 +23,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_setup_post_types() {
 
 	/** Give Forms Post Type */
-	$give_forms_archives = defined( 'GIVE_DISABLE_FORMS_ARCHIVE' ) && GIVE_DISABLE_FORMS_ARCHIVE ? false : true;
+	$give_forms_singular = give_get_option( 'disable_forms_singular' ) !== 'on' ? true : false;
+
+	$give_forms_archives = give_get_option( 'disable_forms_archives' ) !== 'on' ? true : false;
+
 	$give_forms_slug     = defined( 'GIVE_FORMS_SLUG' ) ? GIVE_FORMS_SLUG : 'donations';
+
 	$give_forms_rewrite  = defined( 'GIVE_DISABLE_FORMS_REWRITE' ) && GIVE_DISABLE_FORMS_REWRITE ? false : array(
 		'slug'       => $give_forms_slug,
 		'with_front' => false
@@ -53,9 +57,9 @@ function give_setup_post_types() {
 	$give_forms_args = array(
 		'labels'             => $give_forms_labels,
 		'public'             => true,
-		'publicly_queryable' => true,
-		'show_ui'            => true,
-		'show_in_menu'       => true,
+		'publicly_queryable' => $give_forms_singular,
+		'show_ui'            => $give_forms_singular,
+		'show_in_menu'       => $give_forms_singular,
 		'query_var'          => true,
 		'rewrite'            => $give_forms_rewrite,
 		'map_meta_cap'       => true,
