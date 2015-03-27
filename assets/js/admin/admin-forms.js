@@ -35,13 +35,12 @@ jQuery.noConflict();
 		//When a row is removed containing the default selection then revert default to first repeatable row
 		$( 'body' ).on( 'cmb2_remove_row', function ( e ) {
 			var repeatable_rows = $( '#_give_donation_levels_repeat > .cmb-repeatable-grouping' );
-			if (  $( 'input.donation-level-radio' ).is( ':checked' ) === false ) {
+			if ( $( 'input.donation-level-radio' ).is( ':checked' ) === false ) {
 				repeatable_rows.first().find( 'input.donation-level-radio' ).prop( 'checked', true );
 			}
 		} );
 
 	};
-
 
 
 	/**
@@ -113,12 +112,23 @@ jQuery.noConflict();
 		var custom_amount_option = $( '.cmb2-id--give-custom-amount input:radio' );
 		custom_amount_option.on( 'change', function () {
 			var custom_amount_option_val = $( '.cmb2-id--give-custom-amount input:radio:checked' ).val();
-				if ( custom_amount_option_val === 'no' ) {
-					$( '.cmb2-id--give-custom-amount-text' ).hide();
-				} else {
-					$( '.cmb2-id--give-custom-amount-text' ).show();
-				}
-			} ).change();
+			if ( custom_amount_option_val === 'no' ) {
+				$( '.cmb2-id--give-custom-amount-text' ).hide();
+			} else {
+				$( '.cmb2-id--give-custom-amount-text' ).show();
+			}
+		} ).change();
+
+		//Offline Donations
+		var offline_customization_option = $( '.cmb2-id--give-customize-offline-donations input:radio' );
+		offline_customization_option.on( 'change', function () {
+			var offline_customization_option_val = $( '.cmb2-id--give-customize-offline-donations input:radio:checked' ).val();
+			if ( offline_customization_option_val === 'no' ) {
+				$( '.cmb2-id--give-offline-checkout-notes' ).hide();
+			} else {
+				$( '.cmb2-id--give-offline-checkout-notes' ).show();
+			}
+		} ).change();
 	};
 
 	//Handle Repeatable Row ID
@@ -226,7 +236,6 @@ jQuery.noConflict();
 		} );
 
 	}
-
 
 
 	//On DOM Ready

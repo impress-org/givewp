@@ -93,7 +93,11 @@ function give_install() {
 		$options['base_country']       = 'US';
 		$options['test_mode']          = 1;
 		$options['gateways']['manual'] = 1;
-		$options['default_gateway']    = 'manual';
+		$options['default_gateway']    = 'manual'; //default is manual
+
+		//Offline Gateway Setup
+		$options['gateways']['offline']             = 1;
+		$options['global_offline_donation_content'] = give_get_default_offline_donation_content();
 
 		//Emails
 		$options['donation_notification'] = give_get_default_donation_notification_email();
