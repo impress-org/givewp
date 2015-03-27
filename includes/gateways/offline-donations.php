@@ -65,7 +65,7 @@ function give_offline_payment_cc_form( $form_id ) {
 	if ( $post_offline_customization_option == 'yes' ) {
 		$offline_instructions = $post_offline_instructions;
 	}
-	
+
 	ob_start(); ?>
 	<?php do_action( 'give_before_offline_info_fields' ); ?>
 	<fieldset id="give_offline_payment_info">
