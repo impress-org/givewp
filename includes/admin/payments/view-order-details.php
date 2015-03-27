@@ -128,13 +128,6 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 											</p>
 										</div>
 
-										<div class="give-order-payment-recalc-totals give-admin-box-inside" style="display:none">
-											<p>
-												<span class="label"><?php _e( 'Recalculate Totals', 'give' ); ?>:</span>&nbsp;
-												<a href="" id="give-order-recalc-total" class="button button-secondary right"><?php _e( 'Recalculate', 'give' ); ?></a>
-											</p>
-										</div>
-
 										<?php do_action( 'give_view_order_details_totals_after', $payment_id ); ?>
 
 									</div>

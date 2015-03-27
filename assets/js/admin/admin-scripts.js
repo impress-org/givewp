@@ -82,27 +82,6 @@ jQuery.noConflict();
 
 		},
 
-		recalculate_total: function () {
-
-			// Remove a download from a purchase
-			$( '#give-order-recalc-total' ).on( 'click', function ( e ) {
-				e.preventDefault();
-				var total = 0;
-				if ( $( '#give-donation-overview .row .give-payment-details-download-amount' ).length ) {
-					$( '#give-donation-overview .row .give-payment-details-download-amount' ).each( function () {
-						total += parseFloat( $( this ).val() );
-					} );
-				}
-				if ( $( '.give-payment-fees' ).length ) {
-					$( '.give-payment-fees span.fee-amount' ).each( function () {
-						total += parseFloat( $( this ).data( 'fee' ) );
-					} );
-				}
-				$( 'input[name=give-payment-total]' ).val( total );
-			} );
-
-		},
-
 		add_note: function () {
 
 			$( '#give-add-payment-note' ).on( 'click', function ( e ) {
