@@ -331,18 +331,18 @@ class Give_Plugin_Settings {
 							'id'   => 'disable_css',
 							'type' => 'checkbox'
 						),
-//						array(
-//							'name' => __( 'Disable Form Categories', 'give' ),
-//							'desc' => __( '', 'give' ),
-//							'id'   => 'disable_categories',
-//							'type' => 'checkbox'
-//						),
-//						array(
-//							'name' => __( 'Disable Form Tags', 'give' ),
-//							'desc' => __( '', 'give' ),
-//							'id'   => 'disable_tags',
-//							'type' => 'checkbox'
-//						),
+						array(
+							'name' => __( 'Enable Form Categories', 'give' ),
+							'desc' => __( 'Check this option if you would like to categorize your donation forms. This option enables the form\'s category taxonomy.', 'give' ),
+							'id'   => 'enable_categories',
+							'type' => 'checkbox'
+						),
+						array(
+							'name' => __( 'Enable Form Tags', 'give' ),
+							'desc' => __( 'Check this option if you would like to tag your donation forms. This option enables the form\'s tag taxonomy.', 'give' ),
+							'id'   => 'enable_tags',
+							'type' => 'checkbox'
+						),
 					)
 				)
 

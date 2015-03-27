@@ -28,6 +28,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  *  Post Type List Table
  */
 function give_form_columns( $give_form_columns ) {
+
+	//Standard columns
 	$give_form_columns = array(
 		'cb'            => '<input type="checkbox"/>',
 		'title'         => __( 'Name', 'give' ),
@@ -39,6 +41,14 @@ function give_form_columns( $give_form_columns ) {
 		'shortcode'     => __( 'Shortcode', 'give' ),
 		'date'          => __( 'Date', 'give' )
 	);
+
+	//Does the user want categories / tags?
+	if ( give_get_option( 'enable_categories' ) !== 'on' ) {
+		unset( $give_form_columns['form_category'] );
+	}
+	if ( give_get_option( 'enable_tags' ) !== 'on' ) {
+		unset( $give_form_columns['form_tag'] );
+	}
 
 	return apply_filters( 'give_forms_columns', $give_form_columns );
 }
