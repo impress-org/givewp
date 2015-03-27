@@ -994,21 +994,3 @@ function give_check_purchase_email( $valid_data, $posted ) {
 }
 
 add_action( 'give_checkout_error_checks', 'give_check_purchase_email', 10, 2 );
-
-
-/**
- * Process a straight-to-gateway purchase
- *
- * @since 1.0
- * @return void
- */
-function give_process_straight_to_gateway( $data ) {
-	$form_id = $data['form_id'];
-	$options = isset( $data['give_options'] ) ? $data['give_options'] : array();
-
-	$purchase_data = give_build_straight_to_gateway_data( $download_id, $options );
-	give_set_purchase_session( $purchase_data );
-	give_send_to_gateway( $purchase_data['gateway'], $purchase_data );
-}
-
-add_action( 'give_straight_to_gateway', 'give_process_straight_to_gateway' );

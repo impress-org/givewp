@@ -217,7 +217,7 @@ jQuery.noConflict();
 			// Show / hide Download option when exporting customers
 			$( '#give_customer_export_download' ).change( function () {
 
-				var $this = $( this ), download_id = $( 'option:selected', $this ).val();
+				var $this = $( this ), form_id = $( 'option:selected', $this ).val();
 
 				if ( '0' === $this.val() ) {
 					$( '#give_customer_export_option' ).show();

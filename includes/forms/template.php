@@ -1125,6 +1125,7 @@ function give_form_display_content( $form_id ) {
 	$content = apply_filters( 'the_content', get_post_meta( $form_id, '_give_form_content', true ) );
 	$output  = '<div id="give-form-content-' . $form_id . '" class="give-form-content-wrap" >' . $content . '</div>';
 	echo apply_filters( 'give_form_content_output', $output );
+
 }
 
 
