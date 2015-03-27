@@ -197,8 +197,8 @@ add_shortcode( 'give_receipt', 'give_receipt_shortcode' );
  *
  * @since  1.0
  *
- * @param      $atts Shortcode attributes
- * @param null $content
+ * @param array $atts attributes
+ * @param null  $content
  *
  * @return string Output generated from the profile editor
  */

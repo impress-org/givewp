@@ -154,11 +154,11 @@ class Give_Plugin_Settings {
 	 *
 	 * Filters are provided for each settings section to allow add-ons and other plugins to add their own settings
 	 *
-	 * @param $active_tab
+	 * @param $active_tab active tab settings; null returns full array
 	 *
 	 * @return array
 	 */
-	function give_settings( $active_tab ) {
+	public function give_settings( $active_tab ) {
 
 		$give_settings = array(
 			/**
@@ -183,7 +183,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name'    => __( 'Success Page', 'give' ),
-							'desc'    => __( 'This is the page donators are sent to after completing their donations. The [give_receipt] short code should be on this page.', 'give' ),
+							'desc'    => __( 'This is the page donators are sent to after completing their donations. The <code>[give_receipt]</code> shortcode should be on this page.', 'give' ),
 							'id'      => 'success_page',
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
@@ -202,9 +202,9 @@ class Give_Plugin_Settings {
 							) ),
 						),
 						array(
-							'name'    => __( 'History Page', 'give' ),
-							'desc'    => __( 'This page shows a complete donation history for the current user.', 'give' ),
-							'id'      => 'purchase_history_page',
+							'name'    => __( 'Donation History Page', 'give' ),
+							'desc'    => __( 'This page shows a complete donation history for the current user. The <code>[donation_history]</code> shortcode should be on this page.', 'give' ),
+							'id'      => 'history_page',
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
 								'post_type'   => 'page',
@@ -276,7 +276,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Enabled Gateways', 'give' ),
-							'desc' => __( 'Choose the payment gateways you want enabled.', 'give' ),
+							'desc' => __( 'Choose the payment gateways you would like enabled.', 'give' ),
 							'id'   => 'gateways',
 							'type' => 'enabled_gateways'
 						),
@@ -306,7 +306,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Disable PayPal IPN Verification', 'give' ),
-							'desc' => __( 'If payments are not getting marked as complete, then check this box. This forces the site to use a slightly less secure method of verifying donations.', 'give' ),
+							'desc' => __( 'If donations are not getting marked as complete, then check this box. This forces the site to use a slightly less secure method of verifying donations.', 'give' ),
 							'id'   => 'disable_paypal_verification',
 							'type' => 'checkbox'
 						),
@@ -331,6 +331,18 @@ class Give_Plugin_Settings {
 							'id'   => 'disable_css',
 							'type' => 'checkbox'
 						),
+//						array(
+//							'name' => __( 'Disable Form Categories', 'give' ),
+//							'desc' => __( '', 'give' ),
+//							'id'   => 'disable_categories',
+//							'type' => 'checkbox'
+//						),
+//						array(
+//							'name' => __( 'Disable Form Tags', 'give' ),
+//							'desc' => __( '', 'give' ),
+//							'id'   => 'disable_tags',
+//							'type' => 'checkbox'
+//						),
 					)
 				)
 
@@ -352,7 +364,7 @@ class Give_Plugin_Settings {
 						array(
 							'id'      => 'email_template',
 							'name'    => __( 'Email Template', 'give' ),
-							'desc'    => __( 'Choose a template. Click "Save Changes" then "Preview Purchase Receipt" to see the new template.', 'give' ),
+							'desc'    => __( 'Choose a template. Click "Save Changes" then "Preview Donation Receipt" to see the new template.', 'give' ),
 							'type'    => 'select',
 							'options' => give_get_email_templates()
 						),
@@ -383,15 +395,15 @@ class Give_Plugin_Settings {
 							'type' => 'give_title'
 						),
 						array(
-							'id'      => 'purchase_subject',
-							'name'    => __( 'Purchase Email Subject', 'give' ),
+							'id'      => 'donation_subject',
+							'name'    => __( 'Donation Email Subject', 'give' ),
 							'desc'    => __( 'Enter the subject line for the donation receipt email', 'give' ),
 							'default' => __( 'Donation Receipt', 'give' ),
 							'type'    => 'text'
 						),
 						array(
-							'id'      => 'purchase_receipt',
-							'name'    => __( 'Purchase Receipt', 'give' ),
+							'id'      => 'donation_receipt',
+							'name'    => __( 'Donation Receipt', 'give' ),
 							'desc'    => __( 'Enter the email that is sent to users after completing a successful donation. HTML is accepted. Available template tags:', 'give' ) . '<br/>' . give_get_emails_tags_list(),
 							'type'    => 'wysiwyg',
 							'default' => __( "Dear", "give" ) . " {name},\n\n" . __( "Thank you for your donation. Your generosity is appreciated! Please click on the link below to view your receipt.", "give" ) . "\n\n{receipt_link}\n\nSincerely,\n{sitename}"
@@ -403,18 +415,18 @@ class Give_Plugin_Settings {
 							'type' => 'give_title'
 						),
 						array(
-							'id'      => 'sale_notification_subject',
+							'id'      => 'donation_notification_subject',
 							'name'    => __( 'Donation Notification Subject', 'give' ),
 							'desc'    => __( 'Enter the subject line for the donation notification email', 'give' ),
 							'type'    => 'text',
 							'default' => __( 'New Donation - #{payment_id}', 'give' )
 						),
 						array(
-							'id'      => 'sale_notification',
+							'id'      => 'donation_notification',
 							'name'    => __( 'Donation Notification', 'give' ),
 							'desc'    => __( 'Enter the email that is sent to donation notification emails after completion of a donation. HTML is accepted. Available template tags:', 'give' ) . '<br/>' . give_get_emails_tags_list(),
 							'type'    => 'wysiwyg',
-							'default' => give_get_default_sale_notification_email()
+							'default' => give_get_default_donation_notification_email()
 						),
 						array(
 							'id'      => 'admin_notice_emails',
@@ -437,7 +449,7 @@ class Give_Plugin_Settings {
 				'id'         => 'options_page',
 				'give_title' => __( 'Give Add-ons Settings', 'give' ),
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
-				'fields'     => apply_filters( 'give_settings_extensions', array()
+				'fields'     => apply_filters( 'give_settings_addons', array()
 				)
 			),
 			/** Licenses Settings */
@@ -533,7 +545,7 @@ function give_get_settings() {
 
 	$settings = get_option( 'give_settings' );
 
-	return apply_filters( 'give_get_settings', $settings );
+	return (array) apply_filters( 'give_get_settings', $settings );
 
 }
 

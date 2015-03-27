@@ -491,7 +491,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			}
 
 			if ( 'resend-receipt' === $this->current_action() ) {
-				give_email_purchase_receipt( $id, false );
+				give_email_donation_receipt( $id, false );
 			}
 
 			do_action( 'give_payments_table_do_bulk_action', $id, $this->current_action() );

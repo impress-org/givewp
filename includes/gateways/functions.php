@@ -119,7 +119,7 @@ function give_get_gateway_admin_label( $gateway ) {
 
 	if ( $gateway == 'manual' && $payment ) {
 		if ( give_get_payment_amount( $payment ) == 0 ) {
-			$label = __( 'Free Purchase', 'give' );
+			$label = __( 'Test Donation', 'give' );
 		}
 	}
 
@@ -140,7 +140,7 @@ function give_get_gateway_checkout_label( $gateway ) {
 	$label    = isset( $gateways[ $gateway ] ) ? $gateways[ $gateway ]['checkout_label'] : $gateway;
 
 	if ( $gateway == 'manual' ) {
-		$label = __( 'Free Purchase', 'give' );
+		$label = __( 'Test Donation', 'give' );
 	}
 
 	return apply_filters( 'give_gateway_checkout_label', $label, $gateway );

@@ -40,18 +40,20 @@ function give_load_scripts() {
 
 	wp_enqueue_script( 'give-blockui', $js_plugins . 'jquery.blockUI' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
 	wp_enqueue_script( 'give-qtip', $js_plugins . 'jquery.qtip' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+	wp_enqueue_script( 'give-mask-money', $js_plugins . 'jquery.maskMoney' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
 	wp_enqueue_script( 'give-magnific', $js_plugins . 'give-magnific' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
 	wp_enqueue_script( 'give-checkout-global', $js_dir . 'give-checkout-global' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
 	wp_localize_script( 'give-checkout-global', 'give_global_vars', array(
-		'ajaxurl'           => give_get_ajax_url(),
-		'checkout_nonce'    => wp_create_nonce( 'give_checkout_nonce' ),
-		'currency_sign'     => give_currency_filter( '' ),
-		'currency_pos'      => isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before',
-		'no_gateway'        => __( 'Please select a payment method', 'give' ),
-		'general_loading'   => __( 'Loading...', 'give' ),
-		'purchase_loading'  => __( 'Please Wait...', 'give' ),
-		'complete_purchase' => __( 'Donate', 'give' ),
-		'give_version'      => GIVE_VERSION
+		'ajaxurl'             => give_get_ajax_url(),
+		'checkout_nonce'      => wp_create_nonce( 'give_checkout_nonce' ),
+		'currency_sign'       => give_currency_filter( '' ),
+		'currency_pos'        => isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before',
+		'thousands_separator' => isset( $give_options['thousands_separator'] ) ? $give_options['thousands_separator'] : ',',
+		'decimal_separator'   => isset( $give_options['decimal_separator'] ) ? $give_options['decimal_separator'] : '.',
+		'no_gateway'          => __( 'Please select a payment method', 'give' ),
+		'general_loading'     => __( 'Loading...', 'give' ),
+		'purchase_loading'    => __( 'Please Wait...', 'give' ),
+		'give_version'        => GIVE_VERSION
 	) );
 
 	//General scripts
@@ -179,7 +181,7 @@ function give_load_admin_scripts( $hook ) {
 	wp_localize_script( 'give-admin-scripts', 'give_vars', array(
 		'post_id'                 => isset( $post->ID ) ? $post->ID : null,
 		'give_version'            => GIVE_VERSION,
-		'quick_edit_warning'      => __( 'Sorry, not available for variable priced products.', 'give' ),
+		'quick_edit_warning'      => __( 'Sorry, not available for variable priced forms.', 'give' ),
 		'delete_payment'          => __( 'Are you sure you wish to delete this payment?', 'give' ),
 		'delete_payment_note'     => __( 'Are you sure you wish to delete this note?', 'give' ),
 		'delete_tax_rate'         => __( 'Are you sure you wish to delete this tax rate?', 'give' ),

@@ -12,7 +12,9 @@
  */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Give_Graph Class
@@ -81,10 +83,10 @@ class Give_Graph {
 		$this->data = $_data;
 
 		// Generate unique ID
-		$this->id   = md5( rand() );
+		$this->id = md5( rand() );
 
 		// Setup default options;
-		$this->options = array(
+		$this->options = apply_filters( 'give_graph_args', array(
 			'y_mode'          => null,
 			'x_mode'          => null,
 			'y_decimals'      => 0,
@@ -98,18 +100,19 @@ class Give_Graph {
 			'bordercolor'     => '#eee',
 			'color'           => '#bbb',
 			'borderwidth'     => 1,
-			'bars'            => false,
-			'lines'           => true,
+			'bars'            => true,
+			'lines'           => false,
 			'points'          => true
-		);
+		) );
 
 	}
 
 	/**
 	 * Set an option
 	 *
-	 * @param $key The option key to set
+	 * @param $key   The option key to set
 	 * @param $value The value to assign to the key
+	 *
 	 * @since 1.0
 	 */
 	public function set( $key, $value ) {
@@ -120,6 +123,7 @@ class Give_Graph {
 	 * Get an option
 	 *
 	 * @param $key The option key to get
+	 *
 	 * @since 1.0
 	 */
 	public function get( $key ) {
@@ -144,6 +148,7 @@ class Give_Graph {
 		// Use minified libraries if SCRIPT_DEBUG is turned off
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 		wp_enqueue_script( 'jquery-flot', GIVE_PLUGIN_URL . 'assets/js/plugins/jquery.flot' . $suffix . '.js' );
+		wp_enqueue_script( 'jquery-flot-orderbars', GIVE_PLUGIN_URL . 'assets/js/plugins/jquery.flot.orderBars' . $suffix . '.js' );
 	}
 
 	/**
@@ -160,33 +165,35 @@ class Give_Graph {
 		$this->load_scripts();
 
 		ob_start();
-?>
+		?>
 		<script type="text/javascript">
-			jQuery( document ).ready( function($) {
+
+			jQuery( document ).ready( function ( $ ) {
 				$.plot(
-					$("#give-graph-<?php echo $this->id; ?>"),
+					$( "#give-graph-<?php echo $this->id; ?>" ),
 					[
 						<?php foreach( $this->get_data() as $label => $data ) : ?>
 						{
-							label: "<?php echo esc_attr( $label ); ?>",
-							id: "<?php echo sanitize_key( $label ); ?>",
+							label : "<?php echo esc_attr( $label ); ?>",
+							id    : "<?php echo sanitize_key( $label ); ?>",
 							// data format is: [ point on x, value on y ]
-							data: [<?php foreach( $data as $point ) { echo '[' . implode( ',', $point ) . '],'; } ?>],
+							data  : [<?php foreach( $data as $point ) { echo '[' . implode( ',', $point ) . '],'; } ?>],
 							points: {
 								show: <?php echo $this->options['points'] ? 'true' : 'false'; ?>,
 							},
-							bars: {
-								show: <?php echo $this->options['bars'] ? 'true' : 'false'; ?>,
-								barWidth: 12,
-								aling: 'center'
+							bars  : {
+								show    : <?php echo $this->options['bars'] ? 'true' : 'false'; ?>,
+								barWidth: 100,
+				                order: 1,
+								align   : 'center'
 							},
-							lines: {
-								show: <?php echo $this->options['lines'] ? 'true' : 'false'; ?>,
-								fill: true,
-			                    fillColor: { colors: [{ opacity: 0.4 }, { opacity: 0.1}] }
+							lines : {
+								show     : <?php echo $this->options['lines'] ? 'true' : 'false'; ?>,
+								fill     : true,
+								fillColor: {colors: [{opacity: 0.4}, {opacity: 0.1}]}
 							},
 							<?php if( $this->options[ 'multiple_y_axes' ] ) : ?>
-							yaxis: <?php echo $yaxis_count; ?>
+							yaxis : <?php echo $yaxis_count; ?>
 							<?php endif; ?>
 
 						},
@@ -197,31 +204,31 @@ class Give_Graph {
 					{
 						// Options
 						grid: {
-							show: true,
-							aboveData: false,
-							color: "<?php echo $this->options[ 'color' ]; ?>",
+							show           : true,
+							aboveData      : false,
+							color          : "<?php echo $this->options[ 'color' ]; ?>",
 							backgroundColor: "<?php echo $this->options[ 'bgcolor' ]; ?>",
-							borderColor: "<?php echo $this->options[ 'bordercolor' ]; ?>",
-							borderWidth: <?php echo absint( $this->options[ 'borderwidth' ] ); ?>,
-							clickable: false,
-							hoverable: true
+							borderColor    : "<?php echo $this->options[ 'bordercolor' ]; ?>",
+							borderWidth    : <?php echo absint( $this->options[ 'borderwidth' ] ); ?>,
+							clickable      : false,
+							hoverable      : true
 						},
 
 						colors: ["#66bb6a", "#546e7a"], //Give Colors
 
 						xaxis: {
-							mode: "<?php echo $this->options['x_mode']; ?>",
-							timeFormat: "<?php echo $this->options['x_mode'] == 'time' ? $this->options['time_format'] : ''; ?>",
-							tickSize: "<?php echo $this->options['x_mode'] == 'time' ? '' : 1; ?>",
+							mode        : "<?php echo $this->options['x_mode']; ?>",
+							timeFormat  : "<?php echo $this->options['x_mode'] == 'time' ? $this->options['time_format'] : ''; ?>",
+							tickSize    : "<?php echo $this->options['x_mode'] == 'time' ? '' : 1; ?>",
 							<?php if( $this->options['x_mode'] != 'time' ) : ?>
 							tickDecimals: <?php echo $this->options['x_decimals']; ?>
 							<?php endif; ?>
 						},
 						yaxis: {
-							position: 'right',
-							min: 0,
-							mode: "<?php echo $this->options['y_mode']; ?>",
-							timeFormat: "<?php echo $this->options['y_mode'] == 'time' ? $this->options['time_format'] : ''; ?>",
+							position    : 'right',
+							min         : 0,
+							mode        : "<?php echo $this->options['y_mode']; ?>",
+							timeFormat  : "<?php echo $this->options['y_mode'] == 'time' ? $this->options['time_format'] : ''; ?>",
 							<?php if( $this->options['y_mode'] != 'time' ) : ?>
 							tickDecimals: <?php echo $this->options['y_decimals']; ?>
 							<?php endif; ?>
@@ -229,31 +236,31 @@ class Give_Graph {
 					}
 				);
 
-				function give_flot_tooltip(x, y, contents) {
-					$('<div id="give-flot-tooltip">' + contents + '</div>').css( {
-						position: 'absolute',
-						display: 'none',
-						top: y + 5,
-						left: x + 5,
-						border: '1px solid #fdd',
-						padding: '2px',
+				function give_flot_tooltip( x, y, contents ) {
+					$( '<div id="give-flot-tooltip">' + contents + '</div>' ).css( {
+						position          : 'absolute',
+						display           : 'none',
+						top               : y + 5,
+						left              : x + 5,
+						border            : '1px solid #fdd',
+						padding           : '2px',
 						'background-color': '#fee',
-						opacity: 0.80
-					}).appendTo("body").fadeIn(200);
+						opacity           : 0.80
+					} ).appendTo( "body" ).fadeIn( 200 );
 				}
 
 				var previousPoint = null;
-				$("#give-graph-<?php echo $this->id; ?>").bind("plothover", function (event, pos, item) {
-					$("#x").text(pos.x.toFixed(2));
-					$("#y").text(pos.y.toFixed(2));
-					if (item) {
-						if (previousPoint != item.dataIndex) {
+				$( "#give-graph-<?php echo $this->id; ?>" ).bind( "plothover", function ( event, pos, item ) {
+					$( "#x" ).text( pos.x.toFixed( 2 ) );
+					$( "#y" ).text( pos.y.toFixed( 2 ) );
+					if ( item ) {
+						if ( previousPoint != item.dataIndex ) {
 							previousPoint = item.dataIndex;
-							$("#give-flot-tooltip").remove();
-							var x = item.datapoint[0].toFixed(2),
-							y = item.datapoint[1].toFixed(2);
-							if( item.series.id == 'earnings' ) {
-								if( give_vars.currency_pos == 'before' ) {
+							$( "#give-flot-tooltip" ).remove();
+							var x = item.datapoint[0].toFixed( 2 ),
+								y = item.datapoint[1].toFixed( 2 );
+							if ( item.series.id == 'earnings' ) {
+								if ( give_vars.currency_pos == 'before' ) {
 									give_flot_tooltip( item.pageX, item.pageY, item.series.label + ' ' + give_vars.currency_sign + y );
 								} else {
 									give_flot_tooltip( item.pageX, item.pageY, item.series.label + ' ' + y + give_vars.currency_sign );
@@ -263,16 +270,16 @@ class Give_Graph {
 							}
 						}
 					} else {
-						$("#give-flot-tooltip").remove();
+						$( "#give-flot-tooltip" ).remove();
 						previousPoint = null;
 					}
-				});
+				} );
 
-			});
+			} );
 
 		</script>
 		<div id="give-graph-<?php echo $this->id; ?>" class="give-graph" style="height: 300px;"></div>
-<?php
+		<?php
 		return ob_get_clean();
 	}
 

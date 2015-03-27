@@ -30,13 +30,13 @@ function give_payments_contextual_help() {
 
 	$screen->set_help_sidebar(
 		'<p><strong>' . sprintf( __( 'For more information:', 'give' ) . '</strong></p>' .
-		                         '<p>' . sprintf( __( 'Visit the <a href="%s">documentation</a> on the Easy Digital Downloads website.', 'give' ), esc_url( 'https://easydigitaldownloads.com/documentation/' ) ) ) . '</p>' .
+		                         '<p>' . sprintf( __( 'Visit the <a href="%s">documentation</a> on the Easy Digital Downloads website.', 'give' ), esc_url( 'https://givewp.com/documentation/' ) ) ) . '</p>' .
 		'<p>' . sprintf(
 			__( '<a href="%s">Post an issue</a> on <a href="%s">GitHub</a>. View <a href="%s">extensions</a> or <a href="%s">themes</a>.', 'give' ),
-			esc_url( 'https://github.com/easydigitaldownloads/Easy-Digital-Downloads/issues' ),
-			esc_url( 'https://github.com/easydigitaldownloads/Easy-Digital-Downloads' ),
-			esc_url( 'https://easydigitaldownloads.com/extensions/' ),
-			esc_url( 'https://easydigitaldownloads.com/themes/' )
+			esc_url( 'https://github.com/WordImpress/Give/issues' ),
+			esc_url( 'https://github.com/WordImpress/Give' ),
+			esc_url( 'https://givewp.com/addons/' ),
+			esc_url( 'https://givewp.com/themes/' )
 		) . '</p>'
 	);
 

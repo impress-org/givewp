@@ -83,12 +83,6 @@ class Give_Roles {
 			'delete_posts'           => false
 		) );
 
-		add_role( 'give_vendor', __( 'Give Vendor', 'give' ), array(
-			'read'                   => true,
-			'edit_posts'             => false,
-			'upload_files'           => true,
-			'delete_posts'           => false
-		) );
 	}
 
 	/**
@@ -129,20 +123,12 @@ class Give_Roles {
 				}
 			}
 
-			$wp_roles->add_cap( 'give_accountant', 'edit_products' );
-			$wp_roles->add_cap( 'give_accountant', 'read_private_products' );
+			$wp_roles->add_cap( 'give_accountant', 'edit_give_forms' );
+			$wp_roles->add_cap( 'give_accountant', 'read_private_forms' );
 			$wp_roles->add_cap( 'give_accountant', 'view_give_reports' );
 			$wp_roles->add_cap( 'give_accountant', 'export_give_reports' );
 			$wp_roles->add_cap( 'give_accountant', 'edit_give_payments' );
 
-			$wp_roles->add_cap( 'give_vendor', 'edit_product' );
-			$wp_roles->add_cap( 'give_vendor', 'edit_products' );
-			$wp_roles->add_cap( 'give_vendor', 'delete_product' );
-			$wp_roles->add_cap( 'give_vendor', 'delete_products' );
-			$wp_roles->add_cap( 'give_vendor', 'publish_products' );
-			$wp_roles->add_cap( 'give_vendor', 'edit_published_products' );
-			$wp_roles->add_cap( 'give_vendor', 'upload_files' );
-			$wp_roles->add_cap( 'give_vendor', 'assign_product_terms' );
 		}
 	}
 
@@ -264,19 +250,11 @@ class Give_Roles {
 			}
 
 			/** Shop Accountant Capabilities */
-			$wp_roles->remove_cap( 'give_accountant', 'edit_products' );
-			$wp_roles->remove_cap( 'give_accountant', 'read_private_products' );
+			$wp_roles->remove_cap( 'give_accountant', 'edit_give_forms' );
+			$wp_roles->remove_cap( 'give_accountant', 'read_private_forms' );
 			$wp_roles->remove_cap( 'give_accountant', 'view_give_reports' );
 			$wp_roles->remove_cap( 'give_accountant', 'export_give_reports' );
 
-			/** Shop Vendor Capabilities */
-			$wp_roles->remove_cap( 'give_vendor', 'edit_product' );
-			$wp_roles->remove_cap( 'give_vendor', 'edit_products' );
-			$wp_roles->remove_cap( 'give_vendor', 'delete_product' );
-			$wp_roles->remove_cap( 'give_vendor', 'delete_products' );
-			$wp_roles->remove_cap( 'give_vendor', 'publish_products' );
-			$wp_roles->remove_cap( 'give_vendor', 'edit_published_products' );
-			$wp_roles->remove_cap( 'give_vendor', 'upload_files' );
 		}
 	}
 }

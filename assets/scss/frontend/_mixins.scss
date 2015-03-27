@@ -84,6 +84,31 @@
   @include give-label();
 }
 
-.give-item-label-gray{
+.give-item-label-gray {
   @include give-label-gray();
+}
+
+//Fields
+@mixin give-currency() {
+  background-color: lighten($light-gray, 2%);
+  border-top: 1px solid $borders;
+  border-bottom: 1px solid $borders;
+  margin: 0;
+  padding: 0 12px;
+  float: left;
+  height: 35px;
+  line-height: 35px;
+  font-size: $font-size-medium;
+  @include box-sizing(border-box);
+}
+
+@mixin give-input() {
+  float: left;
+  border: 1px solid $borders;
+  border-radius: 0;
+  height: 35px;
+  line-height: 35px;
+  padding: 0 12px;
+  font-size: $font-size-medium;
+  @include box-sizing(border-box);
 }

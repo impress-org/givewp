@@ -81,7 +81,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 == Changelog ==
 
-= 1.0 =
+= 0.8 beta =
 
 * Initial plugin release. Yippee!
 

@@ -88,8 +88,8 @@ jQuery.noConflict();
 			$( '#give-order-recalc-total' ).on( 'click', function ( e ) {
 				e.preventDefault();
 				var total = 0;
-				if ( $( '#give-purchased-files .row .give-payment-details-download-amount' ).length ) {
-					$( '#give-purchased-files .row .give-payment-details-download-amount' ).each( function () {
+				if ( $( '#give-donation-overview .row .give-payment-details-download-amount' ).length ) {
+					$( '#give-donation-overview .row .give-payment-details-download-amount' ).each( function () {
 						total += parseFloat( $( this ).val() );
 					} );
 				}
@@ -217,7 +217,7 @@ jQuery.noConflict();
 			// Show / hide Download option when exporting customers
 			$( '#give_customer_export_download' ).change( function () {
 
-				var $this = $( this ), download_id = $( 'option:selected', $this ).val();
+				var $this = $( this ), form_id = $( 'option:selected', $this ).val();
 
 				if ( '0' === $this.val() ) {
 					$( '#give_customer_export_option' ).show();

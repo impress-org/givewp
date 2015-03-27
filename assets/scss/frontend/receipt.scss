@@ -55,12 +55,12 @@ body.give_receipt_page {
 
 /* =Purchase Summary Tables
 -------------------------------------------------------------- */
-table#give_purchase_receipt_products,
-table#give_purchase_receipt {
+table#give_donation_receipt_products,
+table#give_donation_receipt {
   width: 100%;
 }
 
-table#give_purchase_receipt {
+table#give_donation_receipt {
   td, th, td, th {
 	text-align: left;
   }

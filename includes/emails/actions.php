@@ -23,17 +23,17 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return void
  */
-function give_trigger_purchase_receipt( $payment_id ) {
+function give_trigger_donation_receipt( $payment_id ) {
 	// Make sure we don't send a purchase receipt while editing a payment
 	if ( isset( $_POST['give-action'] ) && 'edit_payment' == $_POST['give-action'] ) {
 		return;
 	}
 
 	// Send email with secure download link
-	give_email_purchase_receipt( $payment_id );
+	give_email_donation_receipt( $payment_id );
 }
 
-add_action( 'give_complete_purchase', 'give_trigger_purchase_receipt', 999, 1 );
+add_action( 'give_complete_purchase', 'give_trigger_donation_receipt', 999, 1 );
 
 /**
  * Resend the Email Purchase Receipt. (This can be done from the Payment History page)
@@ -44,7 +44,7 @@ add_action( 'give_complete_purchase', 'give_trigger_purchase_receipt', 999, 1 );
  *
  * @return void
  */
-function give_resend_purchase_receipt( $data ) {
+function give_resend_donation_receipt( $data ) {
 
 	$purchase_id = absint( $data['purchase_id'] );
 
@@ -56,7 +56,7 @@ function give_resend_purchase_receipt( $data ) {
 		wp_die( __( 'You do not have permission to edit this payment record', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
-	give_email_purchase_receipt( $purchase_id, false );
+	give_email_donation_receipt( $purchase_id, false );
 
 	wp_redirect( add_query_arg( array(
 		'give-message' => 'email_sent',
@@ -66,7 +66,7 @@ function give_resend_purchase_receipt( $data ) {
 	exit;
 }
 
-add_action( 'give_email_links', 'give_resend_purchase_receipt' );
+add_action( 'give_email_links', 'give_resend_donation_receipt' );
 
 /**
  * Trigger the sending of a Test Email
@@ -83,7 +83,7 @@ function give_send_test_email( $data ) {
 	}
 
 	// Send a test email
-	give_email_test_purchase_receipt();
+	give_email_test_donation_receipt();
 
 	// Remove the test email query arg
 	wp_redirect( remove_query_arg( 'give_action' ) );

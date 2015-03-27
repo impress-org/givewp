@@ -411,7 +411,7 @@ class Give_Welcome {
 
 					<p><?php _e( 'Every form you create in Give can either become it\'s own stand-alone page, or it can be inserted into any other page or post throughout your site as a Shortcode.', 'give' ); ?></p>
 
-					<p><?php _e( 'You can choose these different modes by going to the "Form Content" section. From there, you can choose to add content before or after the Donation form on a page, or if you choose "None" perhaps you want to instead use the shortcode. You can find the shortcode in the top right column directly under the Publish/Save button. This feature gives you the most amount of flexibility with controlling your content on your website all within the same page. .', 'give' ); ?></p>
+					<p><?php _e( 'You can choose these different modes by going to the "Form Content" section. From there, you can choose to add content before or after the Donation form on a page, or if you choose "None" perhaps you want to instead use the shortcode. You can find the shortcode in the top right column directly under the Publish/Save button. This feature gives you the most amount of flexibility with controlling your content on your website all within the same page.', 'give' ); ?></p>
 				</div>
 
 				<div class="content last-feature">

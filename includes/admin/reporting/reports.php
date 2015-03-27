@@ -2,6 +2,12 @@
 /**
  * Admin Reports Page
  *
+ * Language Changes from EDD:
+ * 1. "Report Type" stays
+ * 2. "Earnings" changes to "Income"
+ * 3. "Customers" changes to "Donors"
+ * 4. "Payment Method" stays.
+ *
  * @package     Give
  * @subpackage  Admin/Reports
  * @copyright   Copyright (c) 2015, WordImpress
@@ -65,9 +71,9 @@ function give_reports_page() {
  */
 function give_reports_default_views() {
 	$views = array(
-		'earnings'  => __( 'Earnings', 'give' ),
+		'earnings'  => __( 'Income', 'give' ),
 		'forms'     => give_get_forms_label_plural(),
-		'customers' => __( 'Customers', 'give' ),
+		'customers' => __( 'Donors', 'give' ),
 		'gateways'  => __( 'Payment Methods', 'give' )
 	);
 
@@ -253,7 +259,7 @@ add_action( 'give_reports_view_gateways', 'give_reports_gateways_table' );
 function give_reports_earnings() {
 	?>
 	<div class="tablenav top reports-table-nav">
-		<h3 class="alignleft reports-earnings-title"><span><?php _e( 'Earnings Over Time', 'give' ); ?></span></h3>
+		<h3 class="alignleft reports-earnings-title"><span><?php _e( 'Income Over Time', 'give' ); ?></span></h3>
 
 		<div class="alignright actions reports-views-wrap"><?php give_report_views(); ?></div>
 	</div>
@@ -290,9 +296,9 @@ function give_reports_tab_export() {
 					<?php do_action( 'give_reports_tab_export_table_top' ); ?>
 					<tr class="give-export-pdf-sales-earnings">
 						<td class="row-title">
-							<h3><span><?php _e( 'Export PDF of Donations and Earnings', 'give' ); ?></span></h3>
+							<h3><span><?php _e( 'Export PDF of Donations and Income', 'give' ); ?></span></h3>
 
-							<p><?php _e( 'Download a PDF of Donations and Earnings reports for all forms for the current year.', 'give' ); ?></p>
+							<p><?php _e( 'Download a PDF of Donations and Income reports for all forms for the current year.', 'give' ); ?></p>
 						</td>
 						<td>
 							<a class="button" href="<?php echo wp_nonce_url( add_query_arg( array( 'give-action' => 'generate_pdf' ) ), 'give_generate_pdf' ); ?>"><?php _e( 'Generate PDF', 'give' ); ?></a>
@@ -300,9 +306,9 @@ function give_reports_tab_export() {
 					</tr>
 					<tr class="alternate give-export-sales-earnings">
 						<td class="row-title">
-							<h3><span><?php _e( 'Export Earnings and Donation Stats', 'give' ); ?></span></h3>
+							<h3><span><?php _e( 'Export Income and Donation Stats', 'give' ); ?></span></h3>
 
-							<p><?php _e( 'Download a CSV of earnings and sales over time.', 'give' ); ?></p>
+							<p><?php _e( 'Download a CSV of income and donations over time.', 'give' ); ?></p>
 						</td>
 						<td>
 							<form method="post">
@@ -344,9 +350,9 @@ function give_reports_tab_export() {
 					</tr>
 					<tr class="alt give-export-customers">
 						<td class="row-title">
-							<h3><span><?php _e( 'Export Givers in CSV', 'give' ); ?></span></h3>
+							<h3><span><?php _e( 'Export Donors in CSV', 'give' ); ?></span></h3>
 
-							<p><?php _e( 'Download a CSV of all givers\' emails. Optionally export only givers that have donated to a particular form. Note: if you have a large number of givers, exporting the donation stats may fail.', 'give' ); ?></p>
+							<p><?php _e( 'Download a CSV of all donors\' emails. Optionally export only donors that have donated to a particular form. Note: if you have a large number of donors, exporting the donation stats may fail.', 'give' ); ?></p>
 						</td>
 						<td>
 							<form method="post" id="give_customer_export">

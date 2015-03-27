@@ -30,20 +30,20 @@ function give_reporting_contextual_help() {
 
 	$screen->set_help_sidebar(
 		'<p><strong>' . sprintf( __( 'For more information:', 'give' ) . '</strong></p>' .
-		                         '<p>' . sprintf( __( 'Visit the <a href="%s">documentation</a> on the Easy Digital Downloads website.', 'give' ), esc_url( 'https://easydigitaldownloads.com/documentation/' ) ) ) . '</p>' .
+		                         '<p>' . sprintf( __( 'Visit the <a href="%s">documentation</a> on the Give website.', 'give' ), esc_url( 'https://givewp.com/documentation/' ) ) ) . '</p>' .
 		'<p>' . sprintf(
 			__( '<a href="%s">Post an issue</a> on <a href="%s">GitHub</a>. View <a href="%s">extensions</a> or <a href="%s">themes</a>.', 'give' ),
-			esc_url( 'https://github.com/easydigitaldownloads/Easy-Digital-Downloads/issues' ),
-			esc_url( 'https://github.com/easydigitaldownloads/Easy-Digital-Downloads' ),
-			esc_url( 'https://easydigitaldownloads.com/extensions/' ),
-			esc_url( 'https://easydigitaldownloads.com/themes/' )
+			esc_url( 'https://github.com/WordImpress/Give/issues' ),
+			esc_url( 'https://github.com/WordImpress/Give' ),
+			esc_url( 'https://givewp.com/addons/' ),
+			esc_url( 'https://givewp.com/themes/' )
 		) . '</p>'
 	);
 
 	$screen->add_help_tab( array(
 		'id'      => 'give-reports',
 		'title'   => __( 'Reports', 'give' ),
-		'content' => '<p>' . __( 'This screen provides you with reports for your earnings, downloads, customers and taxes.', 'give' ) . '</p>'
+		'content' => '<p>' . __( 'This screen provides you with reports for your income and donations.', 'give' ) . '</p>'
 	) );
 
 	$screen->add_help_tab( array(
@@ -51,9 +51,9 @@ function give_reporting_contextual_help() {
 		'title'   => __( 'Export', 'give' ),
 		'content' =>
 			'<p>' . __( 'This screen allows you to export your reports into a PDF or CSV format.', 'give' ) . '</p>' .
-			'<p>' . __( '<strong>Sales and Earnings</strong> - This report exports all of the sales and earnings that you have made in the current year. This report includes your sales and earnings for each product as well a graphs of sales and earnings so you can compare them for each month.', 'give' ) . '</p>' .
-			'<p>' . __( '<strong>Payment History</strong> - This report exports all of payments you have received on your Give store in a CSV format.  The report includes the contact details of the customer, the products they have purchased as well as any discount codes they have used and the final price they have paid.', 'give' ) . '</p>' .
-			'<p>' . __( "<strong>Customers</strong> - This report exports all of your customers in a CSV format. It exports the customer's name and email address and the amount of products they have purchased as well as the final price of their total purchases.", 'give' ) . '</p>' .
+			'<p>' . __( '<strong>Donations and Income</strong> - This report exports all of the donations and income that you have made in the current year. This report includes your sales and earnings for each product as well a graphs of sales and earnings so you can compare them for each month.', 'give' ) . '</p>' .
+			'<p>' . __( '<strong>Payment History</strong> - This report exports all of payments you have received on your Give store in a CSV format.  The report includes the contact details of the customer, the forms they have purchased as well as any discount codes they have used and the final price they have paid.', 'give' ) . '</p>' .
+			'<p>' . __( "<strong>Donors</strong> - This report exports all of your donors in a CSV format. It exports the customer's name and email address and the amount of forms they have purchased as well as the final price of their total purchases.", 'give' ) . '</p>' .
 			'<p>' . __( '<strong>Download History</strong> - This report exports all of the downloads you have received in the current month into a CSV. It exports the date the file was downloaded, the customer it was downloaded by, their IP address, the name of the product and the file they downloaded.', 'give' ) . '</p>'
 	) );
 

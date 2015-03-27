@@ -24,7 +24,7 @@ do_action( 'give_before_main_content' );
 
 <?php while ( have_posts() ) : the_post(); ?>
 
-	<?php give_get_template_part( 'content', 'single-give-form' ); ?>
+	<?php give_get_template_part( 'single-give-form/content', 'single-give-form' ); ?>
 
 <?php endwhile; // end of the loop. ?>
 

@@ -68,7 +68,7 @@ function give_process_purchase_form() {
 
 	// Setup purchase information
 	$purchase_data = array(
-		'price'        => ( isset( $_POST['give-amount'] ) ? $_POST['give-amount'] : '0.00' ),
+		'price'        => ( isset( $_POST['give-amount'] ) ? (float) apply_filters( 'give_donation_total', give_sanitize_amount( $_POST['give-amount'] ) ) : '0.00' ),
 		// Amount after taxes
 		'purchase_key' => strtolower( md5( $user['user_email'] . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) ),
 		// Unique key
@@ -247,7 +247,7 @@ function give_purchase_form_validate_gateway() {
  * Purchase Form Validate Agree To Terms
  *
  * @access      private
- * @since       1.0.8.1
+ * @since       1.0
  * @return      void
  */
 function give_purchase_form_validate_agree_to_terms() {
@@ -359,7 +359,7 @@ function give_purchase_form_validate_logged_in_user() {
  * Purchase Form Validate New User
  *
  * @access      private
- * @since       1.0.8.1
+ * @since       1.0
  * @return      array
  */
 function give_purchase_form_validate_new_user() {
@@ -409,7 +409,7 @@ function give_purchase_form_validate_new_user() {
 			$valid_user_data['user_login'] = $user_login;
 		}
 	} else {
-		if ( give_no_guest_checkout() ) {
+		if ( give_no_guest_checkout( $_POST['give-form-id'] ) ) {
 			give_set_error( 'registration_required', __( 'You must register or login to complete your donation', 'give' ) );
 		}
 	}
@@ -459,7 +459,7 @@ function give_purchase_form_validate_new_user() {
  * Purchase Form Validate User Login
  *
  * @access      private
- * @since       1.0.8.1
+ * @since       1.0
  * @return      array
  */
 function give_purchase_form_validate_user_login() {
@@ -526,7 +526,7 @@ function give_purchase_form_validate_user_login() {
  * Purchase Form Validate Guest User
  *
  * @access  private
- * @since   1.0.8.1
+ * @since   1.0
  * @return  array
  */
 function give_purchase_form_validate_guest_user() {
@@ -575,7 +575,7 @@ function give_purchase_form_validate_guest_user() {
  * @param array $user_data
  *
  * @access  private
- * @since   1.0.8.1
+ * @since   1.0
  * @return  integer
  */
 function give_register_and_login_new_user( $user_data = array() ) {
@@ -625,7 +625,7 @@ function give_register_and_login_new_user( $user_data = array() ) {
  * @param array $valid_data
  *
  * @access  private
- * @since   1.0.8.1
+ * @since   1.0
  * @return  array
  */
 function give_get_purchase_form_user( $valid_data = array() ) {
@@ -668,7 +668,7 @@ function give_get_purchase_form_user( $valid_data = array() ) {
 	}
 
 	// Check guest checkout
-	if ( false === $user && false === give_no_guest_checkout() ) {
+	if ( false === $user && false === give_no_guest_checkout( $_POST['give-form-id'] ) ) {
 		// Set user
 		$user = $valid_data['guest_user_data'];
 	}
@@ -994,21 +994,3 @@ function give_check_purchase_email( $valid_data, $posted ) {
 }
 
 add_action( 'give_checkout_error_checks', 'give_check_purchase_email', 10, 2 );
-
-
-/**
- * Process a straight-to-gateway purchase
- *
- * @since 1.0
- * @return void
- */
-function give_process_straight_to_gateway( $data ) {
-	$form_id = $data['form_id'];
-	$options = isset( $data['give_options'] ) ? $data['give_options'] : array();
-
-	$purchase_data = give_build_straight_to_gateway_data( $download_id, $options );
-	give_set_purchase_session( $purchase_data );
-	give_send_to_gateway( $purchase_data['gateway'], $purchase_data );
-}
-
-add_action( 'give_straight_to_gateway', 'give_process_straight_to_gateway' );

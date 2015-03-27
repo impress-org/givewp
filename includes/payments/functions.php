@@ -177,15 +177,15 @@ function give_insert_payment( $payment_data = array() ) {
 		) );
 
 		// Record the payment details
-		update_post_meta( $payment, '_give_payment_meta', apply_filters( 'give_payment_meta', $payment_meta, $payment_data ) );
-		update_post_meta( $payment, '_give_payment_user_id', $payment_data['user_info']['id'] );
-		update_post_meta( $payment, '_give_payment_customer_id', $customer_id );
-		update_post_meta( $payment, '_give_payment_user_email', $payment_data['user_email'] );
-		update_post_meta( $payment, '_give_payment_user_ip', give_get_ip() );
-		update_post_meta( $payment, '_give_payment_purchase_key', $payment_data['purchase_key'] );
-		update_post_meta( $payment, '_give_payment_total', $payment_data['price'] );
-		update_post_meta( $payment, '_give_payment_mode', $mode );
-		update_post_meta( $payment, '_give_payment_gateway', $gateway );
+		give_update_payment_meta( $payment, '_give_payment_meta', apply_filters( 'give_payment_meta', $payment_meta, $payment_data ) );
+		give_update_payment_meta( $payment, '_give_payment_user_id', $payment_data['user_info']['id'] );
+		give_update_payment_meta( $payment, '_give_payment_customer_id', $customer_id );
+		give_update_payment_meta( $payment, '_give_payment_user_email', $payment_data['user_email'] );
+		give_update_payment_meta( $payment, '_give_payment_user_ip', give_get_ip() );
+		give_update_payment_meta( $payment, '_give_payment_purchase_key', $payment_data['purchase_key'] );
+		give_update_payment_meta( $payment, '_give_payment_total', $payment_data['price'] );
+		give_update_payment_meta( $payment, '_give_payment_mode', $mode );
+		give_update_payment_meta( $payment, '_give_payment_gateway', $gateway );
 
 		if ( give_get_option( 'enable_sequential' ) ) {
 			give_update_payment_meta( $payment, '_give_payment_number', $number );
@@ -278,7 +278,7 @@ function give_delete_purchase( $payment_id = 0 ) {
 	$donations = give_get_payment_meta_donations( $payment_id );
 
 	if ( is_array( $donations ) ) {
-		// Update sale counts and earnings for all purchased products
+		// Update sale counts and earnings for all purchased forms
 		foreach ( $donations as $donation ) {
 			give_undo_purchase( $donation['id'], $payment_id );
 		}
@@ -842,10 +842,21 @@ function give_update_payment_meta( $payment_id = 0, $meta_key = '', $meta_value 
 		return;
 	}
 
-	if ( $meta_key == 'key' || $meta_key == 'email' || $meta_key == 'date' ) {
+	if ( $meta_key == 'key' || $meta_key == 'date' ) {
 
 		$current_meta              = give_get_payment_meta( $payment_id );
 		$current_meta[ $meta_key ] = $meta_value;
+
+		$meta_key   = '_give_payment_meta';
+		$meta_value = $current_meta;
+
+	} else if ( $meta_key == 'email' || $meta_key == '_give_payment_user_email' ) {
+
+		$meta_value = apply_filters( 'give_give_update_payment_meta_' . $meta_key, $meta_value, $payment_id );
+		update_post_meta( $payment_id, '_give_payment_user_email', $meta_value );
+
+		$current_meta                       = give_get_payment_meta( $payment_id );
+		$current_meta['user_info']['email'] = $meta_value;
 
 		$meta_key   = '_give_payment_meta';
 		$meta_value = $current_meta;
@@ -922,7 +933,7 @@ function give_get_payment_user_id( $payment_id ) {
 /**
  * Get the customer ID associated with a payment
  *
- * @since 2.1
+ * @since 1.0
  *
  * @param int $payment_id Payment ID
  *
@@ -937,7 +948,7 @@ function give_get_payment_customer_id( $payment_id ) {
 /**
  * Get the IP address used to make a purchase
  *
- * @since 1.9
+ * @since 1.0
  *
  * @param int $payment_id Payment ID
  *
@@ -1166,44 +1177,6 @@ function give_get_payment_amount( $payment_id ) {
 }
 
 /**
- * Retrieves taxed amount for payment and then returns a full formatted amount
- * This function essentially calls give_get_payment_tax()
- *
- * @since 1.0
- * @see   give_get_payment_tax()
- *
- * @param int  $payment_id   Payment ID
- * @param bool $payment_meta Payment Meta provided? (default: false)
- *
- * @return string $subtotal Fully formatted payment subtotal
- */
-function give_payment_tax( $payment_id = 0, $payment_meta = false ) {
-	$tax = give_get_payment_tax( $payment_id, $payment_meta );
-
-	return give_currency_filter( give_format_amount( $tax ), give_get_payment_currency_code( $payment_id ) );
-}
-
-/**
- * Retrieves taxed amount for payment and then returns a non formatted amount
- *
- * @since 1.0
- *
- * @param int  $payment_id   Payment ID
- * @param bool $payment_meta Get payment meta?
- *
- * @return float $subtotal Subtotal for payment (non formatted)
- */
-function give_get_payment_tax( $payment_id = 0, $payment_meta = false ) {
-	if ( ! $payment_meta ) {
-		$payment_meta = give_get_payment_meta( $payment_id );
-	}
-
-	$tax = isset( $payment_meta['tax'] ) ? $payment_meta['tax'] : 0;
-
-	return apply_filters( 'give_get_payment_tax', $tax, $payment_id );
-}
-
-/**
  * Retrieves arbitrary fees for the payment
  *
  * @since 1.0
@@ -1400,7 +1373,7 @@ function give_delete_payment_note( $comment_id = 0, $payment_id = 0 ) {
 /**
  * Gets the payment note HTML
  *
- * @since 1.9
+ * @since 1.0
  *
  * @param     object      /int $note The comment object or ID
  * @param int $payment_id The payment ID the note is connected to
@@ -1466,8 +1439,7 @@ function give_hide_payment_notes( $query ) {
 add_action( 'pre_get_comments', 'give_hide_payment_notes', 10 );
 
 /**
- * Exclude notes (comments) on give_payment post type from showing in Recent
- * Comments widgets
+ * Exclude notes (comments) on give_payment post type from showing in Recent Comments widgets
  *
  * @since 1.0
  *
@@ -1514,7 +1486,7 @@ add_filter( 'comment_feed_where', 'give_hide_payment_notes_from_feeds', 10, 2 );
  * Remove Give Comments from the wp_count_comments function
  *
  * @access public
- * @since  1.5.2
+ * @since  1.0
  *
  * @param array $stats   (empty from core filter)
  * @param int   $post_id Post ID
@@ -1586,7 +1558,7 @@ add_filter( 'wp_count_comments', 'give_remove_payment_notes_in_comment_counts', 
  * Filter where older than one week
  *
  * @access public
- * @since  1.6
+ * @since  1.0
  *
  * @param string $where Where clause
  *

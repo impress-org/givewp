@@ -183,13 +183,13 @@ function give_get_email_body_content( $payment_id = 0, $payment_data = array() )
 	$default_email_body .= __( "Thank you for your donation. Your generosity is appreciated! Please click on the link below to view your receipt.", "give" ) . "\n\n" . '{receipt_link}';
 	$default_email_body .= "\n\nSincerely,\n{sitename}";
 
-	$email = isset( $give_options['purchase_receipt'] ) ? stripslashes( $give_options['purchase_receipt'] ) : $default_email_body;
+	$email = isset( $give_options['donation_receipt'] ) ? stripslashes( $give_options['donation_receipt'] ) : $default_email_body;
 
 	$email_body = wpautop( $email );
 
-	$email_body = apply_filters( 'give_purchase_receipt_' . Give()->emails->get_template(), $email_body, $payment_id, $payment_data );
+	$email_body = apply_filters( 'give_donation_receipt_' . Give()->emails->get_template(), $email_body, $payment_id, $payment_data );
 
-	return apply_filters( 'give_purchase_receipt', $email_body, $payment_id, $payment_data );
+	return apply_filters( 'give_donation_receipt', $email_body, $payment_id, $payment_data );
 }
 
 /**
@@ -202,7 +202,7 @@ function give_get_email_body_content( $payment_id = 0, $payment_data = array() )
  *
  * @return string $email_body Body of the email
  */
-function give_get_sale_notification_body_content( $payment_id = 0, $payment_data = array() ) {
+function give_get_donation_notification_body_content( $payment_id = 0, $payment_data = array() ) {
 	global $give_options;
 
 	$user_info = maybe_unserialize( $payment_data['user_info'] );
@@ -228,11 +228,11 @@ function give_get_sale_notification_body_content( $payment_id = 0, $payment_data
 
 	$default_email_body .= __( 'Thank you', 'give' );
 
-	$email = isset( $give_options['sale_notification'] ) ? stripslashes( $give_options['sale_notification'] ) : $default_email_body;
+	$email = isset( $give_options['donation_notification'] ) ? stripslashes( $give_options['donation_notification'] ) : $default_email_body;
 
 	$email_body = give_do_email_tags( $email, $payment_id );
 
-	return apply_filters( 'give_sale_notification', wpautop( $email_body ), $payment_id, $payment_data );
+	return apply_filters( 'give_donation_notification', wpautop( $email_body ), $payment_id, $payment_data );
 }
 
 /**

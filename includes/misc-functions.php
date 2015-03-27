@@ -95,7 +95,6 @@ function give_get_currencies() {
  * @return string           The symbol to use for the currency
  */
 function give_currency_symbol( $currency = '' ) {
-	global $give_options;
 
 	if ( empty( $currency ) ) {
 		$currency = give_get_currency();
@@ -472,16 +471,18 @@ function give_get_admin_post_id() {
 
 
 /**
- * Checks if Guest checkout is enabled
+ * Checks if Guest checkout is enabled for a particular donation form
  *
  * @since 1.0
- * @global $give_options
+ * @global    $give_options
+ *
+ * @param int $form_id
+ *
  * @return bool $ret True if guest checkout is enabled, false otherwise
  */
-function give_no_guest_checkout() {
-	global $give_options;
+function give_no_guest_checkout( $form_id ) {
 
-	$ret = ! empty ( $give_options['logged_in_only'] );
+	$ret = get_post_meta( $form_id, '_give_logged_in_only', true );
 
 	return (bool) apply_filters( 'give_no_guest_checkout', $ret );
 }

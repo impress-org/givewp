@@ -30,7 +30,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * Number of items per page
 	 *
 	 * @var int
-	 * @since 1.5
+	 * @since 1.0
 	 */
 	public $per_page = 30;
 
@@ -38,7 +38,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * Number of customers found
 	 *
 	 * @var int
-	 * @since 1.7
+	 * @since 1.0
 	 */
 	public $count = 0;
 
@@ -46,14 +46,14 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * Total customers
 	 *
 	 * @var int
-	 * @since 1.95
+	 * @since 1.0
 	 */
 	public $total = 0;
 
 	/**
 	 * Get things started
 	 *
-	 * @since 1.5
+	 * @since 1.0
 	 * @see WP_List_Table::__construct()
 	 */
 	public function __construct() {
@@ -61,8 +61,8 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 
 		// Set parent defaults
 		parent::__construct( array(
-			'singular'  => __( 'Customer', 'give' ),     // Singular name of the listed records
-			'plural'    => __( 'Customers', 'give' ),    // Plural name of the listed records
+			'singular'  => __( 'Donor', 'give' ),     // Singular name of the listed records
+			'plural'    => __( 'Donors', 'give' ),    // Plural name of the listed records
 			'ajax'      => false             			// Does this table support ajax?
 		) );
 
@@ -71,7 +71,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	/**
 	 * Show the search field
 	 *
-	 * @since 1.7
+	 * @since 1.0
 	 * @access public
 	 *
 	 * @param string $text Label for the search box
@@ -99,7 +99,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * This function renders most of the columns in the list table.
 	 *
 	 * @access public
-	 * @since 1.5
+	 * @since 1.0
 	 *
 	 * @param array $item Contains all the data of the customers
 	 * @param string $column_name The name of the column
@@ -130,7 +130,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * Retrieve the table columns
 	 *
 	 * @access public
-	 * @since 1.5
+	 * @since 1.0
 	 * @return array $columns Array of all the list table columns
 	 */
 	public function get_columns() {
@@ -150,7 +150,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * Get the sortable columns
 	 *
 	 * @access public
-	 * @since 2.1
+	 * @since 1.0
 	 * @return array Array of all the sortable columns
 	 */
 	public function get_sortable_columns() {

@@ -138,8 +138,8 @@ add_action( 'wp_ajax_nopriv_checkout_register', 'give_load_checkout_register_fie
  * @return void
  */
 function give_ajax_get_form_title() {
-	if ( isset( $_POST['download_id'] ) ) {
-		$title = get_the_title( $_POST['download_id'] );
+	if ( isset( $_POST['form_id'] ) ) {
+		$title = get_the_title( $_POST['form_id'] );
 		if ( $title ) {
 			echo $title;
 		} else {
@@ -202,10 +202,10 @@ function give_ajax_form_search() {
 
 	$search  = esc_sql( sanitize_text_field( $_GET['s'] ) );
 	$results = array();
-	if ( current_user_can( 'edit_products' ) ) {
-		$items = $wpdb->get_results( "SELECT ID,post_title FROM $wpdb->posts WHERE `post_type` = 'download' AND `post_title` LIKE '%$search%' LIMIT 50" );
+	if ( current_user_can( 'edit_give_forms' ) ) {
+		$items = $wpdb->get_results( "SELECT ID,post_title FROM $wpdb->posts WHERE `post_type` = 'give_forms' AND `post_title` LIKE '%$search%' LIMIT 50" );
 	} else {
-		$items = $wpdb->get_results( "SELECT ID,post_title FROM $wpdb->posts WHERE `post_type` = 'download' AND `post_status` = 'publish' AND `post_title` LIKE '%$search%' LIMIT 50" );
+		$items = $wpdb->get_results( "SELECT ID,post_title FROM $wpdb->posts WHERE `post_type` = 'give_forms' AND `post_status` = 'publish' AND `post_title` LIKE '%$search%' LIMIT 50" );
 	}
 
 	if ( $items ) {

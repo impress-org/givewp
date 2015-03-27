@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return void
  */
-function give_email_purchase_receipt( $payment_id, $admin_notice = true ) {
+function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 
 	$payment_data = give_get_payment_meta( $payment_id );
 
@@ -36,8 +36,8 @@ function give_email_purchase_receipt( $payment_id, $admin_notice = true ) {
 
 	$to_email = give_get_payment_user_email( $payment_id );
 
-	$subject = give_get_option( 'purchase_subject', __( 'Donation Receipt', 'give' ) );
-	$subject = apply_filters( 'give_purchase_subject', wp_strip_all_tags( $subject ), $payment_id );
+	$subject = give_get_option( 'donation_subject', __( 'Donation Receipt', 'give' ) );
+	$subject = apply_filters( 'give_donation_subject', wp_strip_all_tags( $subject ), $payment_id );
 	$subject = give_do_email_tags( $subject, $payment_id );
 
 	$attachments = apply_filters( 'give_receipt_attachments', array(), $payment_id, $payment_data );
@@ -67,7 +67,7 @@ function give_email_purchase_receipt( $payment_id, $admin_notice = true ) {
  * @global $give_options Array of all the Give Options
  * @return void
  */
-function give_email_test_purchase_receipt() {
+function give_email_test_donation_receipt() {
 
 	$from_name = give_get_option( 'from_name', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) );
 	$from_name = apply_filters( 'give_purchase_from_name', $from_name, 0, array() );
@@ -75,8 +75,8 @@ function give_email_test_purchase_receipt() {
 	$from_email = give_get_option( 'from_email', get_bloginfo( 'admin_email' ) );
 	$from_email = apply_filters( 'give_purchase_from_address', $from_email, 0, array() );
 
-	$subject = give_get_option( 'purchase_subject', __( 'Donation Receipt', 'give' ) );
-	$subject = apply_filters( 'give_purchase_subject', wp_strip_all_tags( $subject ), 0 );
+	$subject = give_get_option( 'donation_subject', __( 'Donation Receipt', 'give' ) );
+	$subject = apply_filters( 'give_donation_subject', wp_strip_all_tags( $subject ), 0 );
 	$subject = give_do_email_tags( $subject, 0 );
 
 	$attachments = apply_filters( 'give_receipt_attachments', array(), 0, array() );
@@ -123,19 +123,19 @@ function give_admin_email_notice( $payment_id = 0, $payment_data = array() ) {
 	$from_email = give_get_option( 'from_email', get_bloginfo( 'admin_email' ) );
 	$from_email = apply_filters( 'give_purchase_from_address', $from_email, $payment_id, $payment_data );
 
-	$subject = give_get_option( 'sale_notification_subject', sprintf( __( 'New Donation - Payment #%1$s', 'give' ), $payment_id ) );
-	$subject = apply_filters( 'give_admin_sale_notification_subject', wp_strip_all_tags( $subject ), $payment_id );
+	$subject = give_get_option( 'donation_notification_subject', sprintf( __( 'New Donation - Payment #%1$s', 'give' ), $payment_id ) );
+	$subject = apply_filters( 'give_admin_donation_notification_subject', wp_strip_all_tags( $subject ), $payment_id );
 	$subject = give_do_email_tags( $subject, $payment_id );
 
 	$headers = "From: " . stripslashes_deep( html_entity_decode( $from_name, ENT_COMPAT, 'UTF-8' ) ) . " <$from_email>\r\n";
 	$headers .= "Reply-To: " . $from_email . "\r\n";
 	//$headers  .= "MIME-Version: 1.0\r\n";
 	$headers .= "Content-Type: text/html; charset=utf-8\r\n";
-	$headers = apply_filters( 'give_admin_sale_notification_headers', $headers, $payment_id, $payment_data );
+	$headers = apply_filters( 'give_admin_donation_notification_headers', $headers, $payment_id, $payment_data );
 
-	$attachments = apply_filters( 'give_admin_sale_notification_attachments', array(), $payment_id, $payment_data );
+	$attachments = apply_filters( 'give_admin_donation_notification_attachments', array(), $payment_id, $payment_data );
 
-	$message = give_get_sale_notification_body_content( $payment_id, $payment_data );
+	$message = give_get_donation_notification_body_content( $payment_id, $payment_data );
 
 	$emails = Give()->emails;
 	$emails->__set( 'from_name', $from_name );
@@ -190,17 +190,17 @@ function give_admin_notices_disabled( $payment_id = 0 ) {
  * @since  1.0
  * @return string $message
  */
-function give_get_default_sale_notification_email() {
+function give_get_default_donation_notification_email() {
 	global $give_options;
 
 	$default_email_body = __( 'Hi there,', 'give' ) . "\n\n" . __( 'This email is to inform you that a new donation has been made on your website: ', 'give' ) . '<a href="' . get_bloginfo( 'url' ) . '" target="_blank">' . get_bloginfo( 'url' ) . '</a>' . ".\n\n";
-	$default_email_body .= '<strong>' . __( 'Giver: ', 'give' ) . '</strong> ' . ' {name}' . "\n";
+	$default_email_body .= '<strong>' . __( 'Donor: ', 'give' ) . '</strong> ' . ' {name}' . "\n";
 	$default_email_body .= '<strong>' . __( 'Donation: ', 'give' ) . '</strong> ' . ' {donation}' . "\n";
 	$default_email_body .= '<strong>' . __( 'Amount: ', 'give' ) . '</strong> ' . ' {price}' . "\n";
 	$default_email_body .= '<strong>' . __( 'Payment Method: ', 'give' ) . '</strong> ' . ' {payment_method}' . "\n\n";
 	$default_email_body .= __( 'Thank you,', 'give' ) . "\n\n" . '{sitename}';
 
-	$message = ( isset( $give_options['sale_notification'] ) && ! empty( $give_options['sale_notification'] ) ) ? $give_options['sale_notification'] : $default_email_body;
+	$message = ( isset( $give_options['donation_notification'] ) && ! empty( $give_options['donation_notification'] ) ) ? $give_options['donation_notification'] : $default_email_body;
 
 	return $message;
 }

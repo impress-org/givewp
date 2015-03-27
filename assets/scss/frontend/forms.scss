@@ -16,6 +16,10 @@ Layout
 
 [id*='give-form'] {
 
+  fieldset {
+	border: none;
+  }
+
   .give-form-title {
 	margin: 0 0 15px;
   }
@@ -59,8 +63,18 @@ Layout
 
 }
 
-div.give-form-wrap.mfp-hide {
-  display: block !important;
+/*------------------------------------
+Single Forms
+--------------------------------------*/
+
+.single-give_forms {
+
+  .give_forms {
+
+	@include clearfix;
+
+  }
+
 }
 
 /*------------------------------------
@@ -188,6 +202,7 @@ form[id*='give-form'] {
   }
 
   .form-row-wide {
+	@include clearfix();
 	clear: both;
   }
 
@@ -220,17 +235,10 @@ Form Price & Amount
 form[id*='give-form'] {
 
   .give-donation-amount {
+	margin: 0 0 15px;
 
 	.give-currency-symbol {
-	  background-color: lighten($light-gray, 2%);
-	  border-top: 1px solid $borders;
-	  border-bottom: 1px solid $borders;
-	  margin: 0;
-	  padding: 0 12px;
-	  float: left;
-	  height: 35px;
-	  line-height: 35px;
-	  font-size: $font-size-medium;
+	  @include give-currency();
 
 	  &.give-currency-position-before {
 		border-left: 1px solid $borders;
@@ -243,19 +251,20 @@ form[id*='give-form'] {
 
 	}
 
-	input.give-text-input, span.give-final-total-amount {
-	  float: left;
-	  width: 100px;
-	  border: 1px solid $borders;
-	  height: 37px;
-	  font-size: $font-size-medium;
+	#give-amount {
+	  @include give-input();
+	  width: 125px;
+
+	  &.invalid-amount {
+		border: 1px solid red;
+	  }
+
 	}
 
 	span.give-final-total-amount {
-	  height: 35px;
-	  line-height: 35px;
-	  padding: 0 8px;
+	  @include give-input();
 	  cursor: not-allowed;
+	  background: #FFF;
 	}
 
   }
@@ -265,20 +274,15 @@ form[id*='give-form'] {
 	padding: 0;
 	@include clearfix();
 
-	> span {
-	  float: left;
-	  margin: 0;
-	  padding: 6px 12px;
+	.give-donation-total-label {
+	  @include give-currency();
 	  border: 1px solid $borders;
 	}
 
 	.give-final-total-amount {
 	  font-size: $font-size-medium;
+	  @include give-input();
 	  border-left: none;
-	}
-	.give-donation-total-label {
-	  background-color: lighten($light-gray, 2%);
-	  font-weight: bold;
 	}
 
   }
@@ -560,6 +564,30 @@ form[id*='give-form'] {
   span.give-loading-animation {
 	margin: 3px 6px;
 	display: none;
+  }
+
+}
+
+/*---------------------------------
+Modal - Magnific Popup
+-----------------------------------*/
+
+//Show/Hide elements in Magnific Popup
+div.give-form-wrap.mfp-hide {
+  display: block !important;
+}
+
+div.mfp-content {
+  .give-form-content-wrap, .give-donation-amount, .give-select-level {
+	display: none;
+  }
+
+  //Basic Styles
+  fieldset {
+	p, ol, ul {
+	  margin-bottom: 1.2em;
+	  line-height: 1.4;
+	}
   }
 
 }

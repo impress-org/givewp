@@ -137,7 +137,7 @@ function give_setup_post_types() {
 		'not_found'          => __( 'No Donations found', 'give' ),
 		'not_found_in_trash' => __( 'No Donations found in Trash', 'give' ),
 		'parent_item_colon'  => '',
-		'menu_name'          => __( 'History', 'give' )
+		'menu_name'          => __( 'Transactions', 'give' )
 	);
 
 	$payment_args = array(
@@ -160,7 +160,7 @@ add_action( 'init', 'give_setup_post_types', 1 );
 /**
  * Give Setup Taxonomies
  *
- * @description: Registers the custom taxonomies for the downloads custom post type
+ * @description: Registers the custom taxonomies for the give_forms custom post type
  *
  * @since      1.0
  * @return void
@@ -189,12 +189,16 @@ function give_setup_taxonomies() {
 			'labels'       => apply_filters( 'give_forms_category_labels', $category_labels ),
 			'show_ui'      => true,
 			'query_var'    => 'give_forms_category',
-			'rewrite'      => array( 'slug' => $slug . '/category', 'with_front' => false, 'hierarchical' => true ),
+			'rewrite'      => array(
+				'slug' => $slug . '/category',
+				'with_front' => false,
+				'hierarchical' => true
+			),
 			'capabilities' => array(
-				'manage_terms' => 'manage_product_terms',
-				'edit_terms'   => 'edit_product_terms',
-				'assign_terms' => 'assign_product_terms',
-				'delete_terms' => 'delete_product_terms'
+				'manage_terms' => 'manage_give_forms_terms',
+				'edit_terms'   => 'edit_give_forms_terms',
+				'assign_terms' => 'assign_give_forms_terms',
+				'delete_terms' => 'delete_give_forms_terms'
 			)
 		)
 	);
@@ -224,16 +228,17 @@ function give_setup_taxonomies() {
 			'query_var'    => 'give_forms_tag',
 			'rewrite'      => array( 'slug' => $slug . '/tag', 'with_front' => false, 'hierarchical' => true ),
 			'capabilities' => array(
-				'manage_terms' => 'manage_product_terms',
-				'edit_terms'   => 'edit_product_terms',
-				'assign_terms' => 'assign_product_terms',
-				'delete_terms' => 'delete_product_terms'
+				'manage_terms' => 'manage_give_forms_terms',
+				'edit_terms'   => 'edit_give_forms_terms',
+				'assign_terms' => 'assign_give_forms_terms',
+				'delete_terms' => 'delete_give_forms_terms'
 			)
 
 		)
 	);
 	register_taxonomy( 'give_forms_tag', array( 'give_forms' ), $tag_args );
 	register_taxonomy_for_object_type( 'give_forms_tag', 'give_forms' );
+
 }
 
 add_action( 'init', 'give_setup_taxonomies', 0 );
@@ -394,23 +399,6 @@ function give_register_post_type_statuses() {
 		'label_count'               => _n_noop( 'Abandoned <span class="count">(%s)</span>', 'Abandoned <span class="count">(%s)</span>', 'give' )
 	) );
 
-	// Discount Code Statuses
-	register_post_status( 'active', array(
-		'label'                     => _x( 'Active', 'Active discount code status', 'give' ),
-		'public'                    => true,
-		'exclude_from_search'       => false,
-		'show_in_admin_all_list'    => true,
-		'show_in_admin_status_list' => true,
-		'label_count'               => _n_noop( 'Active <span class="count">(%s)</span>', 'Active <span class="count">(%s)</span>', 'give' )
-	) );
-	register_post_status( 'inactive', array(
-		'label'                     => _x( 'Inactive', 'Inactive discount code status', 'give' ),
-		'public'                    => true,
-		'exclude_from_search'       => false,
-		'show_in_admin_all_list'    => true,
-		'show_in_admin_status_list' => true,
-		'label_count'               => _n_noop( 'Inactive <span class="count">(%s)</span>', 'Inactive <span class="count">(%s)</span>', 'give' )
-	) );
 }
 
 add_action( 'init', 'give_register_post_type_statuses' );
@@ -433,7 +421,7 @@ function give_updated_messages( $messages ) {
 	$url2 = give_get_forms_label_singular();
 	$url3 = '</a>';
 
-	$messages['download'] = array(
+	$messages['give_forms'] = array(
 		1 => sprintf( __( '%2$s updated. %1$sView %2$s%3$s.', 'give' ), $url1, $url2, $url3 ),
 		4 => sprintf( __( '%2$s updated. %1$sView %2$s%3$s.', 'give' ), $url1, $url2, $url3 ),
 		6 => sprintf( __( '%2$s published. %1$sView %2$s%3$s.', 'give' ), $url1, $url2, $url3 ),

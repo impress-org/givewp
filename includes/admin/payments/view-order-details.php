@@ -211,7 +211,7 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 
 										<div class="give-admin-box-inside">
 											<p><?php $purchase_url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . esc_attr( give_get_payment_user_email( $payment_id ) ) ); ?>
-												<a href="<?php echo $purchase_url; ?>"><?php _e( 'View all donations for this giver', 'give' ); ?> &raquo;</a>
+												<a href="<?php echo $purchase_url; ?>"><?php _e( 'View all donations for this donor', 'give' ); ?> &raquo;</a>
 											</p>
 										</div>
 
@@ -239,7 +239,7 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 							<?php do_action( 'give_view_order_details_main_before', $payment_id ); ?>
 
 							<?php $column_count = 'columns-3'; ?>
-							<div id="give-purchased-files" class="postbox <?php echo $column_count; ?>">
+							<div id="give-donation-overview" class="postbox <?php echo $column_count; ?>">
 								<h3 class="hndle">
 									<span><?php _e( 'Donation Information', 'give' ); ?></span>
 								</h3>
@@ -263,7 +263,7 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 												<a href="<?php echo get_permalink( $payment_meta['form_id'] ); ?>"><?php echo $payment_meta['form_title']; ?></a>
 											</td>
 											<td><?php echo date( 'm/d/Y', $payment_date ) . ' ' . date_i18n( 'H:i', $payment_date ); ?></td>
-											<td><?php echo esc_attr( give_format_amount( give_get_payment_amount( $payment_id ) ) ); ?></td>
+											<td><?php echo esc_attr( give_currency_filter( give_format_amount( give_get_payment_amount( $payment_id ) ) ) ); ?></td>
 										</tr>
 									</table>
 
@@ -272,7 +272,7 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 
 
 							</div>
-							<!-- /#give-purchased-files -->
+							<!-- /#give-donation-overview -->
 
 							<?php do_action( 'give_view_order_details_files_after', $payment_id ); ?>
 
@@ -280,7 +280,7 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 
 							<div id="give-customer-details" class="postbox">
 								<h3 class="hndle">
-									<span><?php _e( 'Giver\'s Details', 'give' ); ?></span>
+									<span><?php _e( 'Donor\'s Details', 'give' ); ?></span>
 								</h3>
 
 								<div class="inside give-clearfix">

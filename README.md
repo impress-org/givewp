@@ -1,5 +1,10 @@
 ![Give - Democratizing Generosity](https://raw.githubusercontent.com/WordImpress/Give/master/assets/images/give-logo-with-faces.png)
 
+# ATTENTION BETA TESTERS
+Please feel free to make Issues. If you have a pull request (we LOVE that!), please make that to the 0.8 branch.
+
+p.s. We'd also love for you to hit that "star" and become a stargazer. Thanks!
+
 # [Give - Democratizing Generosity](https://givewp.com "Give - Democratizing Generosity") #
 
 We know how important fundraising online is to accomplish your goals.  For many non-profits, churches, candidates, schools and causes, online fundraising on your WordPress website is likely to be the most critical part.
@@ -70,8 +75,8 @@ Automatic updates should work like a charm; as always though, ensure you backup 
 
 ### How is Give better than *Gravity Forms* for accepting donations through WordPress? ###
 
-First off, we love Gravity Forms. It's a great plugin and has a lot of good features for accepting donations. That being said, it lacks substantial donation reporting features and requires a developer license ($199/yr) to accept credit card payments on site.
+First off, we love Gravity Forms. It's a great plugin and has a lot of good features for accepting donations. That being said, it lacks substantial reporting features many nonprofits find crucial to cause. As well, there's a larger barrier to entry than Give. It's a premium only plugin and requires a developer license ($199/yr) to accept credit card and recurring payments on site.
 
 ### How is Give better than *WooCommerce* for accepting donations on WordPress? ###
 
-We also really like WooCommerce. It's hands-down the most robust eCommerce platform for WordPress. But that's also the issue. Typically you don't need a cart system, shipping, or tax calculations to accept donations. On top of that, customizing the plugin's terminology is a daunting task. You never want your users to receive an "invoice" for the donation "product" they "purchased". Rather, you'd like for them to receive a receipt for the donation they gave. WooCommerce can do donations, but it isn't what it does best.
+It's true. We also really like WooCommerce. It's hands-down the most robust eCommerce platform for WordPress. But that's also the issue. When accepting donations you don't need a cart system, shipping, or tax calculations. Additionally, customizing the plugin functionality and terminology for nonprofile needs is often a daunting task. You never want your users to receive an "invoice" for the donation "product" they "purchased". Rather, you'd like for them to receive a tax deductible receipt for the donation they gave. WooCommerce *can* do donations, but it isn't what it does best. Nor is it very easy to setup and maintain across the various major version releases. 
