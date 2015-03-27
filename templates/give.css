@@ -561,9 +561,6 @@ Layout
 [id*='give-form'].give-display-reveal #give-payment-mode-select, [id*='give-form'].give-display-reveal #give_purchase_form_wrap, [id*='give-form'].give-display-modal #give-payment-mode-select, [id*='give-form'].give-display-modal #give_purchase_form_wrap {
   display: none; }
 
-div.give-form-wrap.mfp-hide {
-  display: block !important; }
-
 /*------------------------------------
 Single Forms
 --------------------------------------*/
@@ -964,6 +961,18 @@ form[id*='give-form'] .give-loading-animation {
 #give-user-login-submit span.give-loading-animation, .give-submit-button-wrap span.give-loading-animation {
   margin: 3px 6px;
   display: none; }
+
+/*---------------------------------
+Modal - Magnific Popup
+-----------------------------------*/
+div.give-form-wrap.mfp-hide {
+  display: block !important; }
+
+div.mfp-content .give-form-content-wrap, div.mfp-content .give-donation-amount, div.mfp-content .give-select-level {
+  display: none; }
+div.mfp-content fieldset p, div.mfp-content fieldset ol, div.mfp-content fieldset ul {
+  margin-bottom: 1.2em;
+  line-height: 1.4; }
 
 /*---------------------------------
 Responsiveness

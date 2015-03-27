@@ -63,10 +63,6 @@ Layout
 
 }
 
-div.give-form-wrap.mfp-hide {
-  display: block !important;
-}
-
 /*------------------------------------
 Single Forms
 --------------------------------------*/
@@ -240,7 +236,7 @@ form[id*='give-form'] {
 
   .give-donation-amount {
 	margin: 0 0 15px;
-	
+
 	.give-currency-symbol {
 	  @include give-currency();
 
@@ -568,6 +564,30 @@ form[id*='give-form'] {
   span.give-loading-animation {
 	margin: 3px 6px;
 	display: none;
+  }
+
+}
+
+/*---------------------------------
+Modal - Magnific Popup
+-----------------------------------*/
+
+//Show/Hide elements in Magnific Popup
+div.give-form-wrap.mfp-hide {
+  display: block !important;
+}
+
+div.mfp-content {
+  .give-form-content-wrap, .give-donation-amount, .give-select-level {
+	display: none;
+  }
+
+  //Basic Styles
+  fieldset {
+	p, ol, ul {
+	  margin-bottom: 1.2em;
+	  line-height: 1.4;
+	}
   }
 
 }
