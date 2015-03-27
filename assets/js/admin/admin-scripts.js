@@ -52,7 +52,6 @@ jQuery.noConflict();
 
 		init: function () {
 			this.edit_address();
-			this.recalculate_total();
 			this.add_note();
 			this.remove_note();
 			this.resend_receipt();
