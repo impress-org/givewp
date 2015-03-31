@@ -120,7 +120,7 @@ function give_dashboard_at_a_glance_widget( $items ) {
 
 		$text = sprintf( $text, number_format_i18n( $num_posts->publish ) );
 
-		if ( current_user_can( 'edit_give_forms' ) ) {
+		if ( current_user_can( 'edit_give_forms', get_the_ID() ) ) {
 			$text = sprintf( '<a class="give-forms-count" href="edit.php?post_type=give_forms">%1$s</a>', $text );
 		} else {
 			$text = sprintf( '<span class="give-forms-count">%1$s</span>', $text );
@@ -132,4 +132,4 @@ function give_dashboard_at_a_glance_widget( $items ) {
 	return $items;
 }
 
-add_filter( 'dashboard_glance_items', 'give_dashboard_at_a_glance_widget', 1 );
+add_filter( 'dashboard_glance_items', 'give_dashboard_at_a_glance_widget', 1, 1);
