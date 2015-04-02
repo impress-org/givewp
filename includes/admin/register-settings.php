@@ -45,9 +45,6 @@ class Give_Plugin_Settings {
 
 		add_action( 'admin_init', array( $this, 'init' ) );
 
-		//Customize CMB2 URL
-		add_filter( 'cmb2_meta_box_url', array( $this, 'give_update_cmb_meta_box_url' ) );
-
 		//Custom CMB2 Settings Fields
 		add_action( 'cmb2_render_give_title', 'give_title_callback', 10, 5 );
 		add_action( 'cmb2_render_enabled_gateways', 'give_enabled_gateways_callback', 10, 5 );
@@ -804,10 +801,3 @@ if ( ! function_exists( 'give_license_key_callback' ) ) {
 function give_hook_callback( $args ) {
 	do_action( 'give_' . $args['id'] );
 }
-
-/**
- * Get the CMB2 bootstrap!
- *
- * Super important!
- */
-require_once __DIR__ . '/libraries/cmb2/init.php';

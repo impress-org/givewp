@@ -1,0 +1,9 @@
+{
+   "require": {
+	    "webdevstudios/cmb2": "dev-master"
+    },
+	"autoload": {
+   	    "files": ["vendor/webdevstudios/cmb2/init.php"]
+  } 
+}
+
