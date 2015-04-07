@@ -810,4 +810,4 @@ function give_hook_callback( $args ) {
  *
  * Super important!
  */
-require_once __DIR__ . '/libraries/cmb2/init.php';
+require_once GIVE_PLUGIN_DIR . '/includes/admin/libraries/cmb2/init.php';
