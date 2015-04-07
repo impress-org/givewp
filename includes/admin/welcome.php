@@ -288,7 +288,7 @@ class Give_Welcome {
 					<h3><?php _e( 'Getting to Know Give', 'give' ); ?></h3>
 
 					<p><?php _e( 'Before you get started with Give we suggest you take a look at the online documentation. There you will find the getting started guide which will help you get up and running quickly. If you have an question, issue or bug with the Core plugin please submit an issue on the Give website. We also welcome your feedback and feature requests. Welcome to Give. We hope you much success with your cause.', 'give' ); ?></p>
-					<a href="https://givewp.com" target="_blank" class="button-secondary" title="Visit the Give Website">View Documentation
+					<a href="https://givewp.com/documentation" target="_blank" class="button-secondary" title="Visit the Give Website">View Documentation
 						<span class="dashicons dashicons-external"></span></a>
 
 				</div>
