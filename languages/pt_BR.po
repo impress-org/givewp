@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Give - Democratizing Generosity - Brazilian Portuguese "
 "Translation\n"
 "POT-Creation-Date: 2015-04-07 16:29-0800\n"
-"PO-Revision-Date: 2015-04-08 18:18-0300\n"
+"PO-Revision-Date: 2015-04-08 19:08-0300\n"
 "Last-Translator: \n"
 "Language-Team: Adriano Monecchi <contato@plandesign.com.br>\n"
 "MIME-Version: 1.0\n"
@@ -2703,207 +2703,207 @@ msgstr "A Coruña"
 
 #: includes/country-functions.php:922
 msgid "Araba"
-msgstr ""
+msgstr "Araba"
 
 #: includes/country-functions.php:923
 msgid "Albacete"
-msgstr ""
+msgstr "Albacete"
 
 #: includes/country-functions.php:924
 msgid "Alicante"
-msgstr ""
+msgstr "Alicante"
 
 #: includes/country-functions.php:925
 msgid "Almer&iacute;a"
-msgstr ""
+msgstr "Almería"
 
 #: includes/country-functions.php:926
 msgid "Asturias"
-msgstr ""
+msgstr "Principado das Astúrias"
 
 #: includes/country-functions.php:927
 msgid "&Aacute;vila"
-msgstr ""
+msgstr "Ávila"
 
 #: includes/country-functions.php:928
 msgid "Badajoz"
-msgstr ""
+msgstr "Badajoz"
 
 #: includes/country-functions.php:929
 msgid "Baleares"
-msgstr ""
+msgstr "Baleares"
 
 #: includes/country-functions.php:930
 msgid "Barcelona"
-msgstr ""
+msgstr "Barcelona"
 
 #: includes/country-functions.php:931
 msgid "Burgos"
-msgstr ""
+msgstr "Burgos"
 
 #: includes/country-functions.php:932
 msgid "C&aacute;ceres"
-msgstr ""
+msgstr "Cáceres"
 
 #: includes/country-functions.php:933
 msgid "C&aacute;diz"
-msgstr ""
+msgstr "Cádiz"
 
 #: includes/country-functions.php:934
 msgid "Cantabria"
-msgstr ""
+msgstr "Cantábria"
 
 #: includes/country-functions.php:935
 msgid "Castell&oacute;n"
-msgstr ""
+msgstr "Castellón"
 
 #: includes/country-functions.php:936
 msgid "Ceuta"
-msgstr ""
+msgstr "Ceuta"
 
 #: includes/country-functions.php:937
 msgid "Ciudad Real"
-msgstr ""
+msgstr "Ciudad Real"
 
 #: includes/country-functions.php:938
 msgid "C&oacute;rdoba"
-msgstr ""
+msgstr "Córdoba"
 
 #: includes/country-functions.php:939
 msgid "Cuenca"
-msgstr ""
+msgstr "Cuenca"
 
 #: includes/country-functions.php:940
 msgid "Girona"
-msgstr ""
+msgstr "Girona"
 
 #: includes/country-functions.php:941
 msgid "Granada"
-msgstr ""
+msgstr "Granada"
 
 #: includes/country-functions.php:942
 msgid "Guadalajara"
-msgstr ""
+msgstr "Guadalajara"
 
 #: includes/country-functions.php:943
 msgid "Gipuzkoa"
-msgstr ""
+msgstr "Guipúscoa"
 
 #: includes/country-functions.php:944
 msgid "Huelva"
-msgstr ""
+msgstr "Huelva"
 
 #: includes/country-functions.php:945
 msgid "Huesca"
-msgstr ""
+msgstr "Huesca"
 
 #: includes/country-functions.php:946
 msgid "Ja&eacute;n"
-msgstr ""
+msgstr "Jaén"
 
 #: includes/country-functions.php:947
 msgid "La Rioja"
-msgstr ""
+msgstr "La Rioja"
 
 #: includes/country-functions.php:948
 msgid "Las Palmas"
-msgstr ""
+msgstr "Las Palmas"
 
 #: includes/country-functions.php:949
 msgid "Le&oacute;n"
-msgstr ""
+msgstr "León"
 
 #: includes/country-functions.php:950
 msgid "Lleida"
-msgstr ""
+msgstr "Lérida"
 
 #: includes/country-functions.php:951
 msgid "Lugo"
-msgstr ""
+msgstr "Lugo"
 
 #: includes/country-functions.php:952
 msgid "Madrid"
-msgstr ""
+msgstr "Madrid"
 
 #: includes/country-functions.php:953
 msgid "M&aacute;laga"
-msgstr ""
+msgstr "Málaga"
 
 #: includes/country-functions.php:954
 msgid "Melilla"
-msgstr ""
+msgstr "Melilla"
 
 #: includes/country-functions.php:955
 msgid "Murcia"
-msgstr ""
+msgstr "Múrcia"
 
 #: includes/country-functions.php:956
 msgid "Navarra"
-msgstr ""
+msgstr "Navarra"
 
 #: includes/country-functions.php:957
 msgid "Ourense"
-msgstr ""
+msgstr "Ourense"
 
 #: includes/country-functions.php:958
 msgid "Palencia"
-msgstr ""
+msgstr "Palência"
 
 #: includes/country-functions.php:959
 msgid "Pontevedra"
-msgstr ""
+msgstr "Pontevedra"
 
 #: includes/country-functions.php:960
 msgid "Salamanca"
-msgstr ""
+msgstr "Salamanca"
 
 #: includes/country-functions.php:961
 msgid "Santa Cruz de Tenerife"
-msgstr ""
+msgstr "Santa Cruz de Tenerife"
 
 #: includes/country-functions.php:962
 msgid "Segovia"
-msgstr ""
+msgstr "Segóvia"
 
 #: includes/country-functions.php:963
 msgid "Sevilla"
-msgstr ""
+msgstr "Sevilha"
 
 #: includes/country-functions.php:964
 msgid "Soria"
-msgstr ""
+msgstr "Sória"
 
 #: includes/country-functions.php:965
 msgid "Tarragona"
-msgstr ""
+msgstr "Tarragona"
 
 #: includes/country-functions.php:966
 msgid "Teruel"
-msgstr ""
+msgstr "Teruel"
 
 #: includes/country-functions.php:967
 msgid "Toledo"
-msgstr ""
+msgstr "Toledo"
 
 #: includes/country-functions.php:968
 msgid "Valencia"
-msgstr ""
+msgstr "Valência"
 
 #: includes/country-functions.php:969
 msgid "Valladolid"
-msgstr ""
+msgstr "Valladolid"
 
 #: includes/country-functions.php:970
 msgid "Bizkaia"
-msgstr ""
+msgstr "Biscaia"
 
 #: includes/country-functions.php:971
 msgid "Zamora"
-msgstr ""
+msgstr "Zamora"
 
 #: includes/country-functions.php:972
 msgid "Zaragoza"
-msgstr ""
+msgstr "Saragoça"
 
 #: includes/emails/class-give-email-tags.php:271
 msgid "The name of completed donation form."
@@ -4020,275 +4020,285 @@ msgstr "Insira o %s título aqui"
 #: includes/post-types.php:383
 msgctxt "Refunded payment status"
 msgid "Refunded"
-msgstr ""
+msgstr "Estornada"
 
 #: includes/post-types.php:388
 #, php-format
 msgid "Refunded <span class=\"count\">(%s)</span>"
 msgid_plural "Refunded <span class=\"count\">(%s)</span>"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Estornada <span class=\"count\">(%s)</span>"
+msgstr[1] "Estornadas <span class=\"count\">(%s)</span>"
 
 #: includes/post-types.php:391
 msgctxt "Failed payment status"
 msgid "Failed"
-msgstr ""
+msgstr "Incompleta ou Falha"
 
 #: includes/post-types.php:396
 #, php-format
 msgid "Failed <span class=\"count\">(%s)</span>"
 msgid_plural "Failed <span class=\"count\">(%s)</span>"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Incompleta ou Falha <span class=\"count\">(%s)</span>"
+msgstr[1] "Incompletas ou Falhas <span class=\"count\">(%s)</span>"
 
 #: includes/post-types.php:399
 msgctxt "Revoked payment status"
 msgid "Revoked"
-msgstr ""
+msgstr "Revogada"
 
 #: includes/post-types.php:404
 #, php-format
 msgid "Revoked <span class=\"count\">(%s)</span>"
 msgid_plural "Revoked <span class=\"count\">(%s)</span>"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Revogada <span class=\"count\">(%s)</span>"
+msgstr[1] "Revogadas <span class=\"count\">(%s)</span>"
 
 #: includes/post-types.php:407
 msgctxt "Abandoned payment status"
 msgid "Abandoned"
-msgstr ""
+msgstr "Abandonada"
 
 #: includes/post-types.php:412
 #, php-format
 msgid "Abandoned <span class=\"count\">(%s)</span>"
 msgid_plural "Abandoned <span class=\"count\">(%s)</span>"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Abandonada <span class=\"count\">(%s)</span>"
+msgstr[1] "Abandonadas <span class=\"count\">(%s)</span>"
 
 #: includes/post-types.php:438 includes/post-types.php:439
 #, php-format
 msgid "%2$s updated. %1$sView %2$s%3$s."
-msgstr ""
+msgstr "%2$s Atualizado. %1$sVer %2$s%3$s."
 
 #: includes/post-types.php:440
 #, php-format
 msgid "%2$s published. %1$sView %2$s%3$s."
-msgstr ""
+msgstr "%2$s publicado. %1$sVer %2$s%3$s."
 
 #: includes/post-types.php:441
 #, php-format
 msgid "%2$s saved. %1$sView %2$s%3$s."
-msgstr ""
+msgstr "%2$s salvo. %1$sVer %2$s%3$s."
 
 #: includes/post-types.php:442
 #, php-format
 msgid "%2$s submitted. %1$sView %2$s%3$s."
-msgstr ""
+msgstr "%2$s enviado. %1$sVer %2$s%3$s."
 
 #: includes/process-purchase.php:236
 msgid "The selected payment gateway is not enabled"
-msgstr ""
+msgstr "A Forma de Pagamento selecionada não está habilitada"
 
 #: includes/process-purchase.php:257
 msgid "You must agree to the terms of use"
-msgstr ""
+msgstr "Você deve concordar com os termos de uso"
 
 #: includes/process-purchase.php:272
 msgid "Please enter a valid email address"
-msgstr ""
+msgstr "Por favor digite um endereço de email válido"
 
 #: includes/process-purchase.php:276
 msgid "Please enter your first name"
-msgstr ""
+msgstr "Por favor insira seu nome"
 
 #: includes/process-purchase.php:286
 msgid "Please enter your zip / postal code"
-msgstr ""
+msgstr "Por favor insira seu Cep"
 
 #: includes/process-purchase.php:290
 msgid "Please enter your billing city"
-msgstr ""
+msgstr "Digite o nome da sua cidade"
 
 #: includes/process-purchase.php:294
 msgid "Please select your billing country"
-msgstr ""
+msgstr "Selecione o país de faturamento"
 
 #: includes/process-purchase.php:298
 msgid "Please enter billing state / province"
-msgstr ""
+msgstr "Por favor insira o nome do seu estado / município"
 
 #: includes/process-purchase.php:350
 msgid "The user information is invalid"
-msgstr ""
+msgstr "As informações de usuário são inválidas"
 
 #: includes/process-purchase.php:403
 msgid "Invalid username. Only lowercase letters (a-z) and numbers are allowed"
 msgstr ""
+"Nome de usuário inválido. Apenas letras minúsculas (a-z) e números são "
+"permitidos"
 
 #: includes/process-purchase.php:413
 msgid "You must register or login to complete your donation"
-msgstr ""
+msgstr "Você deve se cadastrar ou fazer login para concluir sua doação"
 
 #: includes/process-purchase.php:424
 msgid "Email already used"
-msgstr ""
+msgstr "E-mail já utilizado"
 
 #: includes/process-purchase.php:431 includes/process-purchase.php:559
 msgid "Enter an email"
-msgstr ""
+msgstr "Insira seu email"
 
 #: includes/process-purchase.php:439
 msgid "Passwords don't match"
-msgstr ""
+msgstr "As senhas não coincidem"
 
 #: includes/process-purchase.php:448 includes/process-purchase.php:515
 msgid "Enter a password"
-msgstr ""
+msgstr "Insira a senha"
 
 #: includes/process-purchase.php:451
 msgid "Enter the password confirmation"
-msgstr ""
+msgstr "Confirmação de senha"
 
 #: includes/process-purchase.php:475
 msgid "You must login or register to complete your donation"
-msgstr ""
+msgstr "Você deve se cadastrar ou fazer login para concluir sua doação"
 
 #: includes/process-purchase.php:496
 #, php-format
 msgid "The password you entered is incorrect. %sReset Password%s"
-msgstr ""
+msgstr "A senha que digitou está incorreta. %sRedefinir Senha%s"
 
 #: includes/process-purchase.php:497
 msgid "Lost Password"
-msgstr ""
+msgstr "Esqueceu sua Senha?"
 
 #: includes/process-purchase.php:541
 msgid "You must be logged into an account to donation"
-msgstr ""
+msgstr "Você precisa estar logado em uma conta para efetuar doações"
 
 #: includes/process-purchase.php:728
 msgid "The zip / postal code you entered for your billing address is invalid"
 msgstr ""
+"O código postal (cep) que você inseriu para o seu endereço de cobrança é "
+"inválido"
 
 #: includes/process-purchase.php:992
 msgid "An internal error has occurred, please try again or contact support."
 msgstr ""
+"Ocorreu um erro interno, por favor tente novamente ou contate o suporte."
 
 #: includes/scripts.php:53
 msgid "Please select a payment method"
-msgstr ""
+msgstr "Selecione uma Forma de Pagamento"
 
 #: includes/scripts.php:54
 msgid "Loading..."
-msgstr ""
+msgstr "Carregando..."
 
 #: includes/scripts.php:55
 msgid "Please Wait..."
-msgstr ""
+msgstr "Aguarde por favor..."
 
 #: includes/scripts.php:69
 msgid "Please select an option"
-msgstr ""
+msgstr "Por favor, selecione uma opção"
 
 #: includes/scripts.php:184
 msgid "Sorry, not available for variable priced forms."
-msgstr ""
+msgstr "Desculpe, não está disponível para formulários com preços variáveis."
 
 #: includes/scripts.php:185
 msgid "Are you sure you wish to delete this payment?"
-msgstr ""
+msgstr "Tem certeza que deseja excluir este pagamento?"
 
 #: includes/scripts.php:186
 msgid "Are you sure you wish to delete this note?"
-msgstr ""
+msgstr "Tem certeza que deseja excluir esta nota?"
 
 #: includes/scripts.php:187
 msgid "Are you sure you wish to delete this tax rate?"
-msgstr ""
+msgstr "Tem certeza que deseja excluir esta taxa de imposto?"
 
 #: includes/scripts.php:188
 msgid "Are you sure you wish to revoke this API key?"
-msgstr ""
+msgstr "Tem certeza que deseja revogar esta chave de API?"
 
 #: includes/scripts.php:189
 msgid "Are you sure you wish to regenerate this API key?"
-msgstr ""
+msgstr "Tem certeza que deseja regenerar esta chave de API?"
 
 #: includes/scripts.php:190
 msgid "Are you sure you wish to resend the donation receipt?"
-msgstr ""
+msgstr "Tem certeza que deseja reenviar o recibo de doação?"
 
 #: includes/scripts.php:191
 msgid "Copy these links to your clipboard and give them to your customer"
 msgstr ""
+"Copie estes links para sua área de transferência e envie ao seu cliente / "
+"doador"
 
 #: includes/scripts.php:192
 #, php-format
 msgid "Are you sure you wish to delete this %s?"
-msgstr ""
+msgstr "Tem certeza que deseja excluir este %s?"
 
 #: includes/scripts.php:193
 msgid "You must have at least one price"
-msgstr ""
+msgstr "Você deve especificar pelo menos um preço (valor)"
 
 #: includes/scripts.php:194
 msgid "You must have at least one file"
-msgstr ""
+msgstr "Você tem que ter no mínimo um arquivo"
 
 #: includes/scripts.php:195
 msgid "You must have at least one field"
-msgstr ""
+msgstr "Você deve ter pelo menos um campo"
 
 #: includes/scripts.php:196
 #, php-format
 msgid "Choose a %s"
-msgstr ""
+msgstr "Escolha um %s"
 
 #: includes/scripts.php:197
 #, php-format
 msgid "Choose one or more %s"
-msgstr ""
+msgstr "Escolha um ou mais %s"
 
 #: includes/scripts.php:198
 msgid "Item price must be numeric"
-msgstr ""
+msgstr "O Preço (valor) do item deve ser numérico"
 
 #: includes/scripts.php:199
 msgid "Quantity must be numeric"
-msgstr ""
+msgstr "A Quantidade deve ser numérica"
 
 #: includes/scripts.php:205
 #, php-format
 msgid "Type to search %s"
-msgstr ""
+msgstr "Digite para buscar %s"
 
 #: includes/shortcodes.php:133
 msgid "Sorry, we're having trouble retrieving your payment receipt."
 msgstr ""
+"Desculpe, estamos tendo problemas para recuperar seu recibo de pagamento."
 
 #: includes/shortcodes.php:278
 msgid "The passwords you entered do not match. Please try again."
 msgstr ""
+"As senhas que você digitou não correspondem. Por favor, tente novamente."
 
 #: includes/shortcodes.php:287
 msgid "The email you entered belongs to another user. Please use another."
 msgstr ""
+"O e-mail que você inseriu pertence a outro usuário. Por favor utilize outro."
 
 #: includes/template-functions.php:327
 msgid "Give+Placeholder+Image+"
-msgstr ""
+msgstr "Give+Espaço Reservado+Imagem+"
 
 #: includes/user-functions.php:400
 msgid "[Password entered at checkout]"
-msgstr ""
+msgstr "[Senha digitada durante o pagamento]"
 
 #: templates/history-donations.php:32
 msgid "View Details"
-msgstr ""
+msgstr "Ver Detalhes"
 
 #: templates/history-donations.php:52
 msgid "It looks like haven't made any donations"
-msgstr ""
+msgstr "Parece que ainda não fez uma doação"
 
 #: templates/payment-processing.php:7
 #, php-format
@@ -4296,27 +4306,29 @@ msgid ""
 "Your donation is processing. This page will reload automatically in 8 "
 "seconds. If it does not, click <a href=\"%s\">here</a>."
 msgstr ""
+"Sua doação está sendo processada. Esta página irá recarregar automaticamente "
+"em 8 segundos. Se isso não acontecer, clique <a href=\"%s\">aqui</a>."
 
 #: templates/shortcode-receipt.php:12
 msgid "The specified receipt ID appears to be invalid"
-msgstr ""
+msgstr "O ID de recibo especificado parece ser inválido"
 
 #: templates/shortcode-receipt.php:33
 msgid "Payment"
-msgstr ""
+msgstr "Pagamento"
 
 #: templates/shortcode-receipt.php:42
 msgid "Payment Status"
-msgstr ""
+msgstr "Status do Pagamento"
 
 #: templates/shortcode-receipt.php:47
 msgid "Donation"
-msgstr ""
+msgstr "Doação"
 
 #: templates/shortcode-receipt.php:53
 msgid "Payment Key"
-msgstr ""
+msgstr "Chave de Pagamento"
 
 #: templates/single-give-form/featured-image.php:32
 msgid "Placeholder"
-msgstr ""
+msgstr "Espaço Reservado"
