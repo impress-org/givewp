@@ -644,7 +644,7 @@ function give_default_gateway_callback( $field_object, $escaped_value, $object_i
 
 	$id                = $field_type_object->field->args['id'];
 	$field_description = $field_type_object->field->args['desc'];
-	$gateways          = give_get_payment_gateways();
+	$gateways          = give_get_enabled_payment_gateways();
 
 	echo '<select class="cmb2_select" name="' . $id . '" id="' . $id . '">';
 
