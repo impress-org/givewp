@@ -145,7 +145,6 @@ function give_update_payment_details( $data ) {
 	}
 
 	give_update_payment_meta( $payment_id, '_give_payment_downloads', $new_total );
-	give_update_payment_meta( $payment_id, '_give_payment_unlimited_downloads', $unlimited );
 
 	do_action( 'give_updated_edited_purchase', $payment_id );
 
