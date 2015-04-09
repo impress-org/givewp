@@ -144,8 +144,6 @@ function give_update_payment_details( $data ) {
 
 	}
 
-	give_update_payment_meta( $payment_id, '_give_payment_downloads', $new_total );
-
 	do_action( 'give_updated_edited_purchase', $payment_id );
 
 	wp_safe_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&give-message=payment-updated&id=' . $payment_id ) );
