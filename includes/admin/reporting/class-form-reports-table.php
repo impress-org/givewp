@@ -182,7 +182,9 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * @return void
 	 */
 	public function category_filter() {
-		if( get_terms( 'form_category' ) ) {
+		
+		$categories = get_terms( 'form_category' );
+		if( $categories && ! is_wp_error( $categories ) ) {
 			echo Give()->html->category_dropdown( 'category', $this->get_category() );
 		}
 	}
