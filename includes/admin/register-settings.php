@@ -173,7 +173,7 @@ class Give_Plugin_Settings {
 							'name' => __( 'General Settings', 'give' ),
 							'desc' => '<hr>',
 							'type' => 'give_title',
-							'id'   => 'give_title'
+							'id'   => 'give_title_general_settings_1'
 						),
 						array(
 							'name' => __( 'Test Mode', 'give' ),
@@ -222,7 +222,7 @@ class Give_Plugin_Settings {
 							'name' => __( 'Currency Settings', 'give' ),
 							'desc' => '<hr>',
 							'type' => 'give_title',
-							'id'   => 'give_title'
+							'id'   => 'give_title_general_settings_2'
 						),
 						array(
 							'name'    => __( 'Currency', 'cmb' ),
@@ -271,7 +271,7 @@ class Give_Plugin_Settings {
 						array(
 							'name' => __( 'Gateways Settings', 'give' ),
 							'desc' => '<hr>',
-							'id'   => 'give_title',
+							'id'   => 'give_title_gateway_settings_1',
 							'type' => 'give_title'
 						),
 						array(
@@ -290,7 +290,7 @@ class Give_Plugin_Settings {
 							'name' => __( 'PayPal Standard', 'give' ),
 							'desc' => '<hr>',
 							'type' => 'give_title',
-							'id'   => 'give_title',
+							'id'   => 'give_title_gateway_settings_2',
 						),
 						array(
 							'name' => __( 'PayPal Email', 'give' ),
@@ -314,7 +314,7 @@ class Give_Plugin_Settings {
 							'name' => __( 'Offline Donations', 'give' ),
 							'desc' => '<hr>',
 							'type' => 'give_title',
-							'id'   => 'give_title',
+							'id'   => 'give_title_gateway_settings_3',
 						),
 						array(
 							'name'    => __( 'Global Offline Donation Text', 'give' ),
@@ -338,7 +338,7 @@ class Give_Plugin_Settings {
 						array(
 							'name' => __( 'Display Settings', 'give' ),
 							'desc' => '<hr>',
-							'id'   => 'give_title',
+							'id'   => 'give_title_display_settings_1',
 							'type' => 'give_title'
 						),
 						array(
@@ -350,7 +350,7 @@ class Give_Plugin_Settings {
 						array(
 							'name' => __( 'Post Types', 'give' ),
 							'desc' => '<hr>',
-							'id'   => 'give_title',
+							'id'   => 'give_title_display_settings_2',
 							'type' => 'give_title'
 						),
 						array(
@@ -368,7 +368,7 @@ class Give_Plugin_Settings {
 						array(
 							'name' => __( 'Taxonomies', 'give' ),
 							'desc' => '<hr>',
-							'id'   => 'give_title',
+							'id'   => 'give_title_display_settings_3',
 							'type' => 'give_title'
 						),
 						array(
@@ -398,7 +398,7 @@ class Give_Plugin_Settings {
 						array(
 							'name' => __( 'Email Settings', 'give' ),
 							'desc' => '<hr>',
-							'id'   => 'give_title',
+							'id'   => 'give_title_email_settings_1',
 							'type' => 'give_title'
 						),
 						array(
@@ -431,7 +431,7 @@ class Give_Plugin_Settings {
 						array(
 							'name' => __( 'Donation Receipt', 'give' ),
 							'desc' => '<hr>',
-							'id'   => 'give_title',
+							'id'   => 'give_title_email_settings_2',
 							'type' => 'give_title'
 						),
 						array(
@@ -451,7 +451,7 @@ class Give_Plugin_Settings {
 						array(
 							'name' => __( 'New Donation Notification', 'give' ),
 							'desc' => '<hr>',
-							'id'   => 'give_title',
+							'id'   => 'give_title_email_settings_3',
 							'type' => 'give_title'
 						),
 						array(
