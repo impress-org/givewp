@@ -108,11 +108,10 @@ function give_generate_pdf( $data ) {
 			}
 
 			$categories = get_the_term_list( $form->ID, 'give_forms_category', '', ', ', '' );
-
-			$categories = $categories ? strip_tags( $categories ) : '';
+			$categories = ! is_wp_error( $categories ) ? strip_tags( $categories ) : '';
 
 			$tags = get_the_term_list( $form->ID, 'give_forms_tag', '', ', ', '' );
-			$tags = $tags ? strip_tags( $tags ) : '';
+			$tags = ! is_wp_error( $tags ) ? strip_tags( $tags ) : '';
 
 			$sales    = give_get_form_sales_stats( $form->ID );
 			$link     = get_permalink( $form->ID );
