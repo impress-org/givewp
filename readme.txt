@@ -1,20 +1,36 @@
 === Give - Democratizing Generosity ===
 Contributors: wordimpress, dlocc, webdevmattcrom
 Donate link: http://givewp.com/
-Tags: donations, donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving
+Tags: donations, donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, reports, reporting
 Requires at least: 3.8
-Tested up to: 4.1
-Stable tag: 0.8 beta
+Tested up to: 4.1.1
+Stable tag: 0.8
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Democratizing Generosity - Empower your cause; start accepting donations with WordPress via Give.
+Democratizing Generosity - Empower your cause: start accepting donations on WordPress with Give.
 
 == Description ==
 
-**[Give's](https://givewp.com "Visit the the Give website")** aim is to Democratize Generosity. Give is the most robust WordPress plugin available for accepting donations. Upon activation, Give provides you with powerful features  towards helping your raise more funds for your cause.
+**[Give's](https://givewp.com "Visit the the Give website")** goal is to "Democratize Generosity". Give is the most robust WordPress plugin available for accepting donations. Upon activation, Give provides you with powerful features  towards helping your raise more funds for your cause.
 
 [youtube https://www.youtube.com/watch?v=gNdEelhjoKE]
+
+= Features Include: =
+
+* Simple and pain free giving
+* Zero commission charges
+* Own all your donation data
+* Accept Single, Custom, and Multi-level donations
+* Easy to customize and enhance
+* Robust reporting features
+* Customizable emails
+* PayPal Standard and Offline Payments
+* Custom user roles
+* Dedicated support and development
+* ... and much more!
+
+Find out more on the **[Give website](https://givewp.com "Visit the the Give website")**.
 
 = Why Give? =
 
@@ -30,7 +46,7 @@ For new users, we suggest reviewing our [documentation](https://givewp.com/docum
 
 = Zero Commission Charges =
 
-We earn money by selling Add-ons, not from your Mission. Raised dollars go to support you cause. Period. Add-ons are premium features that enable you to extend the functionality of Give. For example, you accept funds through your favorite gate
+We earn money by selling Add-ons, not from your Mission. Raised dollars go to support your cause. Period. Add-ons are premium features that enable you to extend the functionality of Give. For example, you can accept funds through your favorite gateway or integrate with your favorite payment gateway.
 
 = Easy to Customize and Enhance =
 
@@ -40,6 +56,7 @@ Give is built by [WordImpress](http://wordimpress.com "Visit the the developers 
 
 Stay in touch with us for important plugin news and updates:
 
+* **[Give Website](https://givewp.com "Visit the the Give website")**
 * **[Newsletter](http://eepurl.com/bggG99 "Subscribe via MailChimp")**
 * **[Facebook](http://facebook.com/wpgive "Visit the Give on Facebook")**
 * **[GitHub](https://github.com/WordImpress/Give "Visit the the developers of Give - WordImpress")**
@@ -48,6 +65,22 @@ Stay in touch with us for important plugin news and updates:
 = Contribute to Give =
 
 This plugin is open source and we're always looking for more contributors. Whether you know another language, can code like no ones business, or just have an idea, we would love your help and input. To contribute to Give please head over to our website or view/fork/watch the GitHub repository to learn more about what issues we're tackling and about the project.
+
+= A Tribute to Open Source =
+
+*"Open source software is software that can be freely used, changed, and shared (in modified or unmodified form) by anyone. Open source software is made by many people, and distributed under licenses that comply with the Open Source Definition."*
+
+**~ The Open Source Initiative**
+
+Give is a tribute to the spirit and philosophy of Open Source. We at WordImpress gladly embrace the Open Source philosophy both in how Give itself was developed, and how we hope to see others build more from our code base.
+
+Give would not have been possible without the tireless efforts of these Open Source projects and their talented developers:
+
+* Pippin Williamson and his wonderful development team, Easy Digital Downloads
+* Mike Jolley and the whole WooThemes Team, WooCommerce
+* Carl Hancock and his entire crew, Gravity Forms
+* Joost De Valk and the Yoast team, WordPress SEO
+* Justin Sternberg and the whole WebDevStudios team, CMB2
 
 == Installation ==
 
@@ -93,7 +126,8 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 4. Multi-level donations
 
 == Upgrade Notice ==
-Version 0.8 is the first release of Give
+
+Version 0.8 is the first release of Give. It's still in beta version so if you find any bugs or issues please let us know! Thanks for using Give.
 
 == Changelog ==
 
