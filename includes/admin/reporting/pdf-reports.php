@@ -84,7 +84,7 @@ function give_generate_pdf( $data ) {
 		foreach ( $give_forms as $form ):
 			$pdf->SetFillColor( 255, 255, 255 );
 
-			$title = utf8_decode( get_the_title( $form->ID ) );
+			$title = $form->post_title;
 
 			if ( give_has_variable_prices( $form->ID ) ) {
 
