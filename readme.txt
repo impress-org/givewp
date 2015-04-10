@@ -46,7 +46,7 @@ For new users, we suggest reviewing our [documentation](https://givewp.com/docum
 
 = Zero Commission Charges =
 
-We earn money by selling Add-ons, not from your Mission. Raised dollars go to support your cause. Period. Add-ons are premium features that enable you to extend the functionality of Give. For example, you can accept funds through your favorite gateway or integrate with your favorite payment gateway.
+We earn money by selling add-ons. The money you raise using Give is yours to go to support your cause. Period. Add-ons are premium features that enable you to extend the functionality of Give. For example, you use one of our add-ons to accept funds through your favorite payment gateway.
 
 = Easy to Customize and Enhance =
 
@@ -88,12 +88,12 @@ Give would not have been possible without the tireless efforts of these open sou
 
 * WordPress 3.8 or greater
 * PHP version 5.3 or greater
-* MySQL version 5.0 or greater
+* MySQL version 5.0.15 or greater
 * Some payment gateways require fsockopen support (for IPN access)
 
 = Automatic installation =
 
-Automatic installation is the easiest option as WordPress handles the file transfers itself and you don't need to leave your web browser. To do an automatic install of Give, log in to your WordPress dashboard, navigate to the Plugins menu and click Add New.
+Automatic installation is the easiest option as WordPress handles the file transfers itself and you don't need to leave your web browser. To do an automatic install of Give, log in to your WordPress dashboard, navigate to the Plugins menu and click "Add New".
 
 In the search field type "Give" and click Search Plugins. Once you have found the plugin you can view details about it such as the the point release, rating and description. Most importantly of course, you can install it by simply clicking "Install Now".
 
@@ -113,7 +113,7 @@ First off, we love Gravity Forms. It's a great plugin and has a lot of good feat
 
 = How is Give better than *WooCommerce* for accepting donations on WordPress? =
 
-We also really like WooCommerce. It's hands-down the most robust eCommerce platform for WordPress. But that's also the issue. Typically you don't need a cart system, shipping, or tax calculations to accept donations. On top of that, customizing the plugin's terminology is a daunting task. You never want your users to receive an "invoice" for the donation "product" they "purchased". Rather, you'd like for them to receive a receipt for the donation they gave. WooCommerce can do donations, but it isn't what it does best.
+We also really like WooCommerce. It's hands-down the most robust eCommerce platform for WordPress. But that's also the issue. Typically you don't need a cart system, shipping, or tax calculations to accept donations. On top of that, customizing the plugin's terminology is a daunting task. You never want your users to receive an "invoice" for the donation "product" they "purchased". Rather, you'd like for them to receive a receipt for the donation they gave. WooCommerce can do donations, but that's not what it was designed for.
 
 == Screenshots ==
 
@@ -146,4 +146,3 @@ Version 0.8 is the first release of Give. It's still in beta version so if you f
 = 0.8 beta =
 
 * Initial plugin release. Yippee!
-
