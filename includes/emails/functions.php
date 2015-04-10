@@ -81,7 +81,7 @@ function give_email_test_donation_receipt() {
 
 	$attachments = apply_filters( 'give_receipt_attachments', array(), 0, array() );
 
-	$message = give_do_email_tags( give_get_email_body_content( 0, array() ), 0 );
+	$message = give_email_preview_template_tags( give_get_email_body_content( 0, array() ), 0 );
 
 	$emails = Give()->emails;
 	$emails->__set( 'from_name', $from_name );
