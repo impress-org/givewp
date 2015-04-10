@@ -141,6 +141,7 @@ Version 0.8 is the first release of Give. It's still in beta version so if you f
 * Fix: PHP warning when exporting PDF: https://github.com/WordImpress/Give/issues/93 - Thanks @sumobi
 * Fix: Property of non-object on Forms Report: https://github.com/WordImpress/Give/issues/91 - Thanks @pippinsplugins
 * Fix: PHP Notice: Undefined variable: unlimited: https://github.com/WordImpress/Give/issues/89 - Thanks @sumobi
+* Fix: Prefix .icon class to prevent conflicts #103: https://github.com/WordImpress/Give/issues/103 - Thanks @stevengliebe
 
 = 0.8 beta =
 
