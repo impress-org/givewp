@@ -32,34 +32,34 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-[class^="icon-"], [class*=" icon-"] {
+[class^="give-icon-"], [class*=" give-icon-"] {
   @include iconstyle();
 }
-.icon-lamp:before {
+.give-icon-lamp:before {
 	content: "\e603";
 }
 
-.icon-heart:before {
+.give-icon-heart:before {
 	content: "\e604";
 }
 
-.icon-question:before {
+.give-icon-question:before {
 	content: "\e602";
 }
 
-.icon-info:before {
+.give-icon-info:before {
 	content: "\e601";
 }
 
-.icon-new-tab:before {
+.give-icon-new-tab:before {
 	content: "\ea7e";
 }
 
-.icon-alert:before {
+.give-icon-alert:before {
 	content: "\f02d";
 }
 
-.icon-help:before {
+.give-icon-help:before {
 	content: "\e606";
 }
 
