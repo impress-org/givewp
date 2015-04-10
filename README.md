@@ -82,9 +82,9 @@ It's true. We also really like WooCommerce. It's hands-down the most robust eCom
 
 **- The Open Source Initiative**
 
-Give is a tribute to the spirit and philosophy of Open Source. We at WordImpress gladly embrace the Open Source philosophy both in how Give itself was developed, and how we hope to see others build more from our code base.
+Give is a tribute to the spirit and philosophy of open source. We at WordImpress gladly embrace the open source philosophy both in how Give itself was developed, and how we hope to see others build more from our code base.
 
-Give would not have been possible without the tireless efforts of these Open Source projects and their talented developers:
+Give would not have been possible without the tireless efforts of these open source projects and their talented developers:
 
 * Pippin Williamson and his wonderful development team, Easy Digital Downloads
 * Mike Jolley and the whole WooThemes Team, WooCommerce

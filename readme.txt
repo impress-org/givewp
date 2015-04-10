@@ -68,13 +68,13 @@ This plugin is open source and we're always looking for more contributors. Wheth
 
 = A Tribute to Open Source =
 
-*"Open source software is software that can be freely used, changed, and shared (in modified or unmodified form) by anyone. Open source software is made by many people, and distributed under licenses that comply with the Open Source Definition."*
+*"Open source software is software that can be freely used, changed, and shared (in modified or unmodified form) by anyone. Open source software is made by many people, and distributed under licenses that comply with the open source Definition."*
 
 **~ The Open Source Initiative**
 
-Give is a tribute to the spirit and philosophy of Open Source. We at WordImpress gladly embrace the Open Source philosophy both in how Give itself was developed, and how we hope to see others build more from our code base.
+Give is a tribute to the spirit and philosophy of open source. We at WordImpress gladly embrace the open source philosophy both in how Give itself was developed, and how we hope to see others build more from our code base.
 
-Give would not have been possible without the tireless efforts of these Open Source projects and their talented developers:
+Give would not have been possible without the tireless efforts of these open source projects and their talented developers:
 
 * Pippin Williamson and his wonderful development team, Easy Digital Downloads
 * Mike Jolley and the whole WooThemes Team, WooCommerce
@@ -135,6 +135,12 @@ Version 0.8 is the first release of Give. It's still in beta version so if you f
 
 * Fix: Global vs Form Payment Gateways https://github.com/WordImpress/Give/issues/86
 * Fix: Setting Section Title Not Displaying Proper Text https://github.com/WordImpress/Give/issues/87
+* Fix: Prefixed "icon" and "icon-question" classes to mitigate conflicts: https://github.com/WordImpress/Give/issues/103
+* Fix: {name} isn't correctly rendered in test email: https://github.com/WordImpress/Give/issues/100 - Thanks @sumobi
+* Fix: When exporting a report, apostrophe's are not correctly shown: https://github.com/WordImpress/Give/issues/96 - Thanks @sumobi
+* Fix: PHP warning when exporting PDF: https://github.com/WordImpress/Give/issues/93 - Thanks @sumobi
+* Fix: Property of non-object on Forms Report: https://github.com/WordImpress/Give/issues/91 - Thanks @pippinsplugins
+* Fix: PHP Notice: Undefined variable: unlimited: https://github.com/WordImpress/Give/issues/89 - Thanks @sumobi
 
 = 0.8 beta =
 
