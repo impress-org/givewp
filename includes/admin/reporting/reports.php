@@ -132,6 +132,7 @@ add_action( 'give_reports_tab_reports', 'give_reports_tab_reports' );
 function give_report_views() {
 	$views        = give_reports_default_views();
 	$current_view = isset( $_GET['view'] ) ? $_GET['view'] : 'earnings';
+	do_action( 'give_report_view_actions_before' );
 	?>
 	<form id="give-reports-filter" method="get">
 		<select id="give-reports-view" name="view">
