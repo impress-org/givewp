@@ -121,9 +121,6 @@ function give_get_users_purchased_products( $user = 0, $status = 'complete' ) {
 
 	// Get all the items purchased
 	$purchase_data = array();
-//	foreach ( $purchase_history as $purchase ) {
-//		$purchase_data[] = give_get_payment_meta_downloads( $purchase->ID );
-//	}
 
 	if ( empty( $purchase_data ) ) {
 		return false;

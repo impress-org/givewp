@@ -197,7 +197,7 @@ class Give_Emails {
 	public function parse_tags( $content ) {
 
 		// The email tags are parsed during setup for purchase receipts and sale notifications
-		// Onoce tags are not restricted to payments, we'll expand this. See https://github.com/easydigitaldownloads/Easy-Digital-Downloads/issues/2151
+		// Once tags are not restricted to payments, we'll expand this. @see https://github.com/easydigitaldownloads/Easy-Digital-Downloads/issues/2151
 
 		return $content;
 	}

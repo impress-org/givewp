@@ -421,7 +421,7 @@ x:-o-prefocus, .qtip .qtip-tip {
   font-weight: normal;
   font-style: normal; }
 
-[class^="icon-"], [class*=" icon-"] {
+[class^="give-icon-"], [class*=" give-icon-"] {
   font-family: 'give-icomoon';
   speak: none;
   font-style: normal;
@@ -433,25 +433,25 @@ x:-o-prefocus, .qtip .qtip-tip {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
-.icon-lamp:before {
+.give-icon-lamp:before {
   content: "\e603"; }
 
-.icon-heart:before {
+.give-icon-heart:before {
   content: "\e604"; }
 
-.icon-question:before {
+.give-icon-question:before {
   content: "\e602"; }
 
-.icon-info:before {
+.give-icon-info:before {
   content: "\e601"; }
 
-.icon-new-tab:before {
+.give-icon-new-tab:before {
   content: "\ea7e"; }
 
-.icon-alert:before {
+.give-icon-alert:before {
   content: "\f02d"; }
 
-.icon-help:before {
+.give-icon-help:before {
   content: "\e606"; }
 
 /**
@@ -758,8 +758,12 @@ body.give_forms_page_give-reports h2.nav-tab-wrapper, body.give_forms_page_give-
   margin-bottom: 10px; }
 body.give_forms_page_give-reports .tablenav, body.give_forms_page_give-payment-history .tablenav {
   clear: none;
-  float: left;
+  float: right;
   margin: 0 0 10px; }
+  body.give_forms_page_give-reports .tablenav .actions, body.give_forms_page_give-payment-history .tablenav .actions {
+    padding-top: 0; }
+body.give_forms_page_give-reports p.search-box, body.give_forms_page_give-payment-history p.search-box {
+  float: left; }
 body.give_forms_page_give-reports .reports-table-nav.tablenav.top, body.give_forms_page_give-payment-history .reports-table-nav.tablenav.top {
   width: 100%;
   float: none;

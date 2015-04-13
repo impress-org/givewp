@@ -73,8 +73,15 @@ body.give_forms_page_give-reports, body.give_forms_page_give-payment-history {
 
   .tablenav {
 	clear: none;
-	float: left;
+	float: right;
 	margin: 0 0 10px;
+	.actions {
+	  padding-top: 0;
+	}
+  }
+
+  p.search-box {
+	float: left;
   }
 
   .reports-table-nav.tablenav.top {

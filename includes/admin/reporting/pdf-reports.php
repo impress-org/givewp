@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Generate PDF Reports
  *
- * Generates PDF report on sales and earnings for all downloads for the current year.
+ * Generates PDF report on donations and income for all forms for the current year.
  *
  * @since  1.0
  *

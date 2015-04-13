@@ -142,6 +142,8 @@ Version 0.8 is the first release of Give. It's still in beta version so if you f
 * Fix: Property of non-object on Forms Report: https://github.com/WordImpress/Give/issues/91 - Thanks @pippinsplugins
 * Fix: PHP Notice: Undefined variable: unlimited: https://github.com/WordImpress/Give/issues/89 - Thanks @sumobi
 * Fix: Prefix .icon class to prevent conflicts #103: https://github.com/WordImpress/Give/issues/103 - Thanks @stevengliebe
+* Update: Removed unnecessary contextual help files until we decide how we are going to approach this with the plugin
+* Update: Inline code comments improved to be more specific to Give - some were incorrectly describing old EDD functionality
 
 = 0.8 beta =
 
