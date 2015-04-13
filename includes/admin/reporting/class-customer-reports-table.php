@@ -10,7 +10,9 @@
  */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 // Load WP_List_Table if not loaded
 if ( ! class_exists( 'WP_List_Table' ) ) {
@@ -54,65 +56,125 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * Get things started
 	 *
 	 * @since 1.0
-	 * @see WP_List_Table::__construct()
+	 * @see   WP_List_Table::__construct()
 	 */
 	public function __construct() {
 		global $status, $page;
 
 		// Set parent defaults
 		parent::__construct( array(
-			'singular'  => __( 'Donor', 'give' ),     // Singular name of the listed records
-			'plural'    => __( 'Donors', 'give' ),    // Plural name of the listed records
-			'ajax'      => false             			// Does this table support ajax?
+			'singular' => __( 'Donor', 'give' ),     // Singular name of the listed records
+			'plural'   => __( 'Donors', 'give' ),    // Plural name of the listed records
+			'ajax'     => false                        // Does this table support ajax?
 		) );
 
 	}
 
 	/**
+	 * Remove default search field in favor for repositioned location
+	 *
+	 * @description Reposition the search field
+	 *
+	 * @since       1.0
+	 * @access      public
+	 *
+	 * @param string $text     Label for the search box
+	 * @param string $input_id ID of the search box
+	 *
+	 * @return false
+	 */
+	public function search_box( $text, $input_id ) {
+		return;
+	}
+
+	/**
 	 * Show the search field
 	 *
-	 * @since 1.0
+	 * @since  1.0
 	 * @access public
 	 *
-	 * @param string $text Label for the search box
+	 * @param string $text     Label for the search box
 	 * @param string $input_id ID of the search box
 	 *
 	 * @return void
 	 */
-	public function search_box( $text, $input_id ) {
+	public function give_search_box( $text, $input_id ) {
 		$input_id = $input_id . '-search-input';
 
-		if ( ! empty( $_REQUEST['orderby'] ) )
+		if ( ! empty( $_REQUEST['orderby'] ) ) {
 			echo '<input type="hidden" name="orderby" value="' . esc_attr( $_REQUEST['orderby'] ) . '" />';
-		if ( ! empty( $_REQUEST['order'] ) )
+		}
+		if ( ! empty( $_REQUEST['order'] ) ) {
 			echo '<input type="hidden" name="order" value="' . esc_attr( $_REQUEST['order'] ) . '" />';
+		}
 		?>
-		<p class="search-box">
+		<p class="search-box donor-search">
 			<label class="screen-reader-text" for="<?php echo $input_id ?>"><?php echo $text; ?>:</label>
 			<input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>" />
-			<?php submit_button( $text, 'button', false, false, array('ID' => 'search-submit') ); ?>
+			<?php submit_button( $text, 'button', false, false, array( 'ID' => 'search-submit' ) ); ?>
 		</p>
-		<?php
+	<?php
+	}
+
+	/**
+	 * Generate the table navigation above or below the table
+	 *
+	 * @since  1.0
+	 * @access protected
+	 *
+	 * @param string $which
+	 */
+	protected function display_tablenav( $which ) {
+
+		if ( 'top' == $which ) {
+			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
+		}
+		?>
+		<div class="tablenav give-clearfix <?php echo esc_attr( $which ); ?>">
+
+			<h3 class="alignleft reports-earnings-title"><span><?php _e( 'Donors Report', 'give' ); ?></span></h3>
+
+			<div class="alignright tablenav-right">
+				<div class="actions bulkactions">
+					<?php
+					if ( 'top' == $which ) {
+						$this->give_search_box( __( 'Search Donors', 'give' ), 'give-donors-report-search' );
+					}
+
+					$this->bulk_actions( $which ); ?>
+
+				</div>
+				<?php
+				$this->extra_tablenav( $which );
+				$this->pagination( $which );
+				?>
+			</div>
+
+
+			<br class="clear" />
+
+		</div>
+	<?php
 	}
 
 	/**
 	 * This function renders most of the columns in the list table.
 	 *
 	 * @access public
-	 * @since 1.0
+	 * @since  1.0
 	 *
-	 * @param array $item Contains all the data of the customers
+	 * @param array  $item        Contains all the data of the customers
 	 * @param string $column_name The name of the column
 	 *
 	 * @return string Column Name
 	 */
 	public function column_default( $item, $column_name ) {
 		switch ( $column_name ) {
-	
+
 			case 'num_purchases' :
 				$value = '<a href="' .
-					admin_url( '/edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( $item['email'] )
-				) . '">' . esc_html( $item['num_purchases'] ) . '</a>';
+				         admin_url( '/edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( $item['email'] )
+				         ) . '">' . esc_html( $item['num_purchases'] ) . '</a>';
 				break;
 
 			case 'amount_spent' :
@@ -123,6 +185,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 				$value = isset( $item[ $column_name ] ) ? $item[ $column_name ] : null;
 				break;
 		}
+
 		return apply_filters( 'give_report_column_' . $column_name, $value, $item['id'] );
 	}
 
@@ -130,14 +193,14 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * Retrieve the table columns
 	 *
 	 * @access public
-	 * @since 1.0
+	 * @since  1.0
 	 * @return array $columns Array of all the list table columns
 	 */
 	public function get_columns() {
 		$columns = array(
-			'name'     		=> __( 'Name', 'give' ),
-			'id'     		=> __( 'ID', 'give' ),
-			'email'     	=> __( 'Email', 'give' ),
+			'name'          => __( 'Name', 'give' ),
+			'id'            => __( 'ID', 'give' ),
+			'email'         => __( 'Email', 'give' ),
 			'num_purchases' => __( 'Purchases', 'give' ),
 			'amount_spent'  => __( 'Total Spent', 'give' )
 		);
@@ -150,15 +213,15 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * Get the sortable columns
 	 *
 	 * @access public
-	 * @since 1.0
+	 * @since  1.0
 	 * @return array Array of all the sortable columns
 	 */
 	public function get_sortable_columns() {
 		return array(
-			'id' 	        => array( 'id', true ),
-			'name' 	        => array( 'name', true ),
+			'id'            => array( 'id', true ),
+			'name'          => array( 'name', true ),
 			'num_purchases' => array( 'purchase_count', false ),
-			'amount_spent' 	=> array( 'purchase_value', false ),
+			'amount_spent'  => array( 'purchase_value', false ),
 		);
 	}
 
@@ -166,7 +229,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * Outputs the reporting views
 	 *
 	 * @access public
-	 * @since 1.0
+	 * @since  1.0
 	 * @return void
 	 */
 	public function bulk_actions( $which = '' ) {
@@ -178,7 +241,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * Retrieve the current page number
 	 *
 	 * @access public
-	 * @since 1.0
+	 * @since  1.0
 	 * @return int Current page number
 	 */
 	public function get_paged() {
@@ -189,7 +252,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * Retrieves the search query string
 	 *
 	 * @access public
-	 * @since 1.0
+	 * @since  1.0
 	 * @return mixed string If search is present, false otherwise
 	 */
 	public function get_search() {
@@ -200,9 +263,9 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * Build all the reports data
 	 *
 	 * @access public
-	 * @since 1.0
-	  * @global object $wpdb Used to query the database using the WordPress
-	 *   Database API
+	 * @since  1.0
+	 * @global object $wpdb Used to query the database using the WordPress
+	 *                      Database API
 	 * @return array $reports_data All the data for customer reports
 	 */
 	public function reports_data() {
@@ -212,20 +275,20 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 		$paged   = $this->get_paged();
 		$offset  = $this->per_page * ( $paged - 1 );
 		$search  = $this->get_search();
-		$order   = isset( $_GET['order'] )   ? sanitize_text_field( $_GET['order'] )   : 'DESC';
+		$order   = isset( $_GET['order'] ) ? sanitize_text_field( $_GET['order'] ) : 'DESC';
 		$orderby = isset( $_GET['orderby'] ) ? sanitize_text_field( $_GET['orderby'] ) : 'id';
 
-		$args    = array(
+		$args = array(
 			'number'  => $this->per_page,
 			'offset'  => $offset,
 			'order'   => $order,
 			'orderby' => $orderby
 		);
 
-		if( is_email( $search ) ) {
+		if ( is_email( $search ) ) {
 			$args['email'] = $search;
-		} elseif( is_numeric( $search ) ) {
-			$args['id']    = $search;
+		} elseif ( is_numeric( $search ) ) {
+			$args['id'] = $search;
 		}
 
 		$customers = Give()->customers->get_customers( $args );
@@ -243,8 +306,8 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 					'user_id'       => $user_id,
 					'name'          => $customer->name,
 					'email'         => $customer->email,
-					'num_purchases'	=> $customer->purchase_count,
-					'amount_spent'	=> $customer->purchase_value
+					'num_purchases' => $customer->purchase_count,
+					'amount_spent'  => $customer->purchase_value
 				);
 			}
 		}
@@ -256,11 +319,11 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * Setup the final data for the table
 	 *
 	 * @access public
-	 * @since 1.0
-	 * @uses Give_Customer_Reports_Table::get_columns()
-	 * @uses WP_List_Table::get_sortable_columns()
-	 * @uses Give_Customer_Reports_Table::get_pagenum()
-	 * @uses Give_Customer_Reports_Table::get_total_customers()
+	 * @since  1.0
+	 * @uses   Give_Customer_Reports_Table::get_columns()
+	 * @uses   WP_List_Table::get_sortable_columns()
+	 * @uses   Give_Customer_Reports_Table::get_pagenum()
+	 * @uses   Give_Customer_Reports_Table::get_total_customers()
 	 * @return void
 	 */
 	public function prepare_items() {

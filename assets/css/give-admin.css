@@ -756,12 +756,18 @@ ASIDE
 
 body.give_forms_page_give-reports h2.nav-tab-wrapper, body.give_forms_page_give-payment-history h2.nav-tab-wrapper {
   margin-bottom: 10px; }
-body.give_forms_page_give-reports .tablenav, body.give_forms_page_give-payment-history .tablenav {
-  clear: none;
-  float: right;
-  margin: 0 0 10px; }
-  body.give_forms_page_give-reports .tablenav .actions, body.give_forms_page_give-payment-history .tablenav .actions {
-    padding-top: 0; }
+body.give_forms_page_give-reports .actions, body.give_forms_page_give-payment-history .actions {
+  padding-top: 0; }
+body.give_forms_page_give-reports .pagination-links, body.give_forms_page_give-payment-history .pagination-links {
+  margin-left: 10px; }
+body.give_forms_page_give-reports p.donor-search, body.give_forms_page_give-payment-history p.donor-search {
+  margin-right: 10px; }
+body.give_forms_page_give-reports .tablenav-right .tablenav-pages, body.give_forms_page_give-payment-history .tablenav-right .tablenav-pages {
+  float: right; }
+body.give_forms_page_give-reports .tablenav-right #give-reports-view, body.give_forms_page_give-payment-history .tablenav-right #give-reports-view {
+  margin-top: 0; }
+body.give_forms_page_give-reports .tablenav-right .actions, body.give_forms_page_give-payment-history .tablenav-right .actions {
+  float: left; }
 body.give_forms_page_give-reports p.search-box, body.give_forms_page_give-payment-history p.search-box {
   float: left; }
 body.give_forms_page_give-reports .reports-table-nav.tablenav.top, body.give_forms_page_give-payment-history .reports-table-nav.tablenav.top {
@@ -793,6 +799,12 @@ Export Options Styles
 ---------------------------*/
 body.give_forms_page_give-reports table.export-options-table tbody td {
   padding: 20px 12px; }
+
+/*---------------------
+Payment Methods
+---------------------------*/
+.gateways-report-tablenav .actions.bulkactions {
+  padding-right: 0; }
 
 /*---------------------
 Table List Styles

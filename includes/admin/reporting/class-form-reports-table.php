@@ -57,8 +57,6 @@ class Give_Form_Reports_Table extends WP_List_Table {
 		) );
 
 		add_action( 'give_report_view_actions', array( $this, 'category_filter' ) );
-		add_action( 'give_report_view_actions_before', array( $this, 'add_forms_reports_header' ) );
-
 		$this->query();
 
 	}
@@ -178,14 +176,38 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	}
 
 	/**
+	 * Generate the table navigation above or below the table
 	 *
+	 * @since  1.0
+	 * @access protected
 	 *
-	 * @description Adds a title to the form title
+	 * @param string $which
 	 */
-	public function add_forms_reports_header() {
+	protected function display_tablenav( $which ) {
 
-		echo '<h3 class="alignleft reports-earnings-title"><span>' . __( 'Form Reports', 'give' ) . '</span></h3>';
+		if ( 'top' == $which ) {
+			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
+		}
+		?>
+		<div class="tablenav give-clearfix <?php echo esc_attr( $which ); ?>">
 
+			<h3 class="alignleft reports-earnings-title"><span><?php _e( 'Form Report', 'give' ); ?></span></h3>
+
+			<div class="alignright tablenav-right">
+				<div class="actions bulkactions">
+					<?php $this->bulk_actions( $which ); ?>
+				</div>
+				<?php
+				$this->extra_tablenav( $which );
+				$this->pagination( $which );
+				?>
+			</div>
+
+
+			<br class="clear" />
+
+		</div>
+	<?php
 	}
 
 	/**
