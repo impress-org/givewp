@@ -24,6 +24,8 @@ $email    = give_get_payment_user_email( $payment->ID );
 $status   = give_get_payment_status( $payment, true );
 ?>
 
+<?php do_action( 'give_payment_receipt_before_table', $payment, $give_receipt_args ); ?>
+
 	<table id="give_donation_receipt">
 		<thead>
 		<?php do_action( 'give_payment_receipt_before', $payment, $give_receipt_args ); ?>
