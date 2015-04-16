@@ -146,7 +146,6 @@ function give_tools_sysinfo_get() {
 	$return .= 'Version:                  ' . GIVE_VERSION . "\n";
 	$return .= 'Upgraded From:            ' . get_option( 'give_version_upgraded_from', 'None' ) . "\n";
 	$return .= 'Test Mode:                ' . ( give_is_test_mode() ? "Enabled\n" : "Disabled\n" );
-	$return .= 'Ajax:                     ' . ( ! give_is_ajax_disabled() ? "Enabled\n" : "Disabled\n" );
 	$return .= 'Currency Code:            ' . give_get_currency() . "\n";
 	$return .= 'Currency Position:        ' . give_get_option( 'currency_position', 'before' ) . "\n";
 	$return .= 'Decimal Separator:        ' . give_get_option( 'decimal_separator', '.' ) . "\n";

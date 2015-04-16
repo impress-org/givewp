@@ -33,7 +33,7 @@ function give_is_ajax_enabled() {
 /**
  * Check if AJAX works as expected
  *
- * @since 2.2
+ * @since 1.0
  * @return bool True if AJAX works, false otherwise
  */
 function give_test_ajax_works() {
@@ -72,19 +72,6 @@ function give_test_ajax_works() {
 
 	return $works;
 }
-
-/**
- * Checks whether AJAX is disabled.
- *
- * @since 1.0
- * @return bool
- */
-function give_is_ajax_disabled() {
-	$retval = ! give_get_option( 'enable_ajax_cart' );
-
-	return apply_filters( 'give_is_ajax_disabled', $retval );
-}
-
 
 /**
  * Get AJAX URL
