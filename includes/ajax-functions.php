@@ -17,20 +17,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Checks whether AJAX is enabled.
- *
- * This will be deprecated soon in favor of give_is_ajax_disabled()
- *
- * @since 1.0
- * @return bool
- */
-function give_is_ajax_enabled() {
-	$retval = ! give_is_ajax_disabled();
-
-	return apply_filters( 'give_is_ajax_enabled', $retval );
-}
-
-/**
  * Check if AJAX works as expected
  *
  * @since 1.0
