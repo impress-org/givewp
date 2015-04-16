@@ -891,7 +891,7 @@ msgstr ""
 
 #: includes/admin/payments/class-payments-table.php:302
 #: includes/admin/payments/payments-history.php:75
-msgid "View Order Details"
+msgid "View Donation Details"
 msgstr ""
 
 #: includes/admin/payments/class-payments-table.php:331
