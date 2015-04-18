@@ -1,6 +1,6 @@
 <?php
 /**
- * View Order Details
+ * View Donation Details
  *
  * @package     Give
  * @subpackage  Admin/Payments

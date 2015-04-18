@@ -76,10 +76,10 @@ function give_admin_messages() {
 
 			echo '<div class="error">';
 			echo '<p>' . __( 'Your site appears to be blocking the WordPress ajax interface. This may causes issues with Give.', 'give' ) . '</p>';
-			echo '<p><a href="' . add_query_arg( array(
+			echo '<p><a href="' . esc_url( add_query_arg( array(
 					'give_action' => 'dismiss_notices',
 					'give_notice' => 'admin_ajax_inaccessible'
-				) ) . '">' . __( 'Dismiss Notice', 'give' ) . '</a></p>';
+				) ) ) . '">' . __( 'Dismiss Notice', 'give' ) . '</a></p>';
 			echo '</div>';
 
 		}

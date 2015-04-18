@@ -80,10 +80,10 @@ function give_email_preview_template_tags( $message ) {
 	$message = str_replace( '{sitename}', get_bloginfo( 'name' ), $message );
 	$message = str_replace( '{product_notes}', $notes, $message );
 	$message = str_replace( '{payment_id}', $payment_id, $message );
-	$message = str_replace( '{receipt_link}', sprintf( __( '%1$sView it in your browser.%2$s', 'give' ), '<a href="' . add_query_arg( array(
+	$message = str_replace( '{receipt_link}', sprintf( __( '%1$sView it in your browser.%2$s', 'give' ), '<a href="' . esc_url( add_query_arg( array(
 			'payment_key' => $receipt_id,
 			'give_action' => 'view_receipt'
-		), home_url() ) . '">', '</a>' ), $message );
+		), home_url() ) ) . '">', '</a>' ), $message );
 
 	return wpautop( apply_filters( 'give_email_preview_template_tags', $message ) );
 }
@@ -263,8 +263,8 @@ function give_render_receipt_in_browser() {
 	<body class="<?php echo apply_filters( 'give_receipt_page_body_class', 'give_receipt_page' ); ?>">
 	<div id="give_receipt_wrapper">
 		<?php do_action( 'give_render_receipt_in_browser_before' ); ?>
-		<?php echo do_shortcode( '[give_receipt payment_key=' . $key . ']' ); ?>
-		<?php do_action( 'give_render_receipt_in_browser_after' ); ?>
+	<?php echo do_shortcode( '[give_receipt payment_key=' . $key . ']' ); ?>
+	<?php do_action( 'give_render_receipt_in_browser_after' ); ?>
 	</div>
 	<?php wp_footer(); ?>
 	</body>

@@ -53,11 +53,11 @@ function give_get_donation_form( $args = array() ) {
 
 	$payment_mode = give_get_chosen_gateway( $form->ID );
 
-	$form_action = add_query_arg( apply_filters( 'give_form_action_args', array(
+	$form_action = esc_url( add_query_arg( apply_filters( 'give_form_action_args', array(
 		'payment-mode' => $payment_mode,
 	) ),
 		get_permalink()
-	);
+	) );
 
 	if ( 'publish' !== $form->post_status && ! current_user_can( 'edit_product', $form->ID ) ) {
 		return false; // Product not published or user doesn't have permission to view drafts
@@ -734,7 +734,7 @@ function give_get_register_fields( $form_id ) {
 		<?php if ( $show_register_form == 'both' ) { ?>
 			<div id="give-login-account-wrap">
 				<p class="give-login-message"><?php _e( 'Already have an account?', 'give' ); ?>&nbsp;
-					<a href="<?php echo add_query_arg( 'login', 1 ); ?>" class="give_checkout_register_login" data-action="give_checkout_login"><?php _e( 'Login', 'give' ); ?></a>
+					<a href="<?php echo esc_url( add_query_arg( 'login', 1 ) ); ?>" class="give_checkout_register_login" data-action="give_checkout_login"><?php _e( 'Login', 'give' ); ?></a>
 				</p>
 
 				<p class="give-loading-text">

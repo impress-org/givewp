@@ -67,7 +67,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	public function column_default( $item, $column_name ) {
 		switch ( $column_name ) {
 			case 'form' :
-				return '<a href="' . add_query_arg( 'form', $item[ $column_name ] ) . '" >' . get_the_title( $item[ $column_name ] ) . '</a>';
+				return '<a href="' . esc_url( add_query_arg( 'form', $item[ $column_name ] ) ) . '" >' . get_the_title( $item[ $column_name ] ) . '</a>';
 
 			case 'user_id' :
 				return '<a href="' .
@@ -96,7 +96,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 		$columns = array(
 			'ID'         => __( 'Log ID', 'give' ),
 			'user_id'    => __( 'User', 'give' ),
-			'form'  => give_get_forms_label_singular(),
+			'form'       => give_get_forms_label_singular(),
 			'amount'     => __( 'Item Amount', 'give' ),
 			'payment_id' => __( 'Payment ID', 'give' ),
 			'date'       => __( 'Date', 'give' )

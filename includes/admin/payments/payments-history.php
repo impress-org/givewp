@@ -72,7 +72,7 @@ function give_view_order_details_title( $admin_title, $title ) {
 	switch( $_GET['give-action'] ) :
 
 		case 'view-order-details' :
-			$title = __( 'View Order Details', 'give' ) . ' - ' . $admin_title;
+			$title = __( 'View Donation Details', 'give' ) . ' - ' . $admin_title;
 			break;
 		case 'edit-payment' :
 			$title = __( 'Edit Payment', 'give' ) . ' - ' . $admin_title;
