@@ -599,10 +599,12 @@ class Give_Welcome {
 		$upgrade = get_option( 'give_version_upgraded_from' );
 
 		if ( ! $upgrade ) { // First time install
-			wp_safe_redirect( admin_url( 'index.php?page=give-getting-started' ) );
-			exit;
-		} else { // Update
 			wp_safe_redirect( admin_url( 'index.php?page=give-about' ) );
+			exit;
+		} elseif( isset( $give_options['disable_welcome'] ) ) { // Welcome is disabled in settings
+
+		} else { // Welcome is NOT disabled in settings
+			wp_safe_redirect(admin_url('index.php?page=give-about'));
 			exit;
 		}
 	}

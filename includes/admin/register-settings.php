@@ -348,6 +348,12 @@ class Give_Plugin_Settings {
 							'type' => 'checkbox'
 						),
 						array(
+							'name' => __( 'Disable Welcome Screen', 'give' ),
+							'desc' => sprintf( __( 'Enable this option if you would like to disable the Give Welcome screen every time Give is activated and/or updated. You can always access the Welcome Screen <a href="%s">here</a> if you want in the future.','give'), esc_url( admin_url('index.php?page=give-about') ) ),
+							'id'   => 'disable_welcome',
+							'type' => 'checkbox'
+						),
+						array(
 							'name' => __( 'Post Types', 'give' ),
 							'desc' => '<hr>',
 							'id'   => 'give_title_display_settings_2',
