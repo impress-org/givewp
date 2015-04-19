@@ -144,6 +144,7 @@ Version 0.8 is the first release of Give. It's still in beta version so if you f
 * Fix: Prefix .icon class to prevent conflicts #103: https://github.com/WordImpress/Give/issues/103 - Thanks @stevengliebe
 * Update: Removed unnecessary contextual help files until we decide how we are going to approach this with the plugin
 * Update: Inline code comments improved to be more specific to Give - some were incorrectly describing old EDD functionality
+* Security: Hardened URLs with esc_url() across the plugin core
 
 = 0.8 beta =
 
