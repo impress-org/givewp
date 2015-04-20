@@ -131,7 +131,7 @@ Version 0.8 is the first release of Give. It's still in beta version so if you f
 
 == Changelog ==
 
-= 0.9 beta =
+= 0.8.5 beta =
 
 * Fix: Global vs Form Payment Gateways https://github.com/WordImpress/Give/issues/86
 * Fix: Setting Section Title Not Displaying Proper Text https://github.com/WordImpress/Give/issues/87
