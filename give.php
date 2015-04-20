@@ -155,7 +155,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 
 			// Plugin version
 			if ( ! defined( 'GIVE_VERSION' ) ) {
-				define( 'GIVE_VERSION', '0.8' );
+				define( 'GIVE_VERSION', '0.8.5' );
 			}
 
 			// Plugin Folder Path
