@@ -280,7 +280,7 @@ function give_get_ip() {
  *
  * Used for storing info about purchase
  *
- * @since 1.1.5
+ * @since 1.0
  *
  * @param $purchase_data
  *
@@ -296,7 +296,7 @@ function give_set_purchase_session( $purchase_data = array() ) {
  * Used for retrieving info about purchase
  * after completing a purchase
  *
- * @since 1.1.5
+ * @since 1.0
  * @uses  Give()->session->get()
  * @return mixed array | false
  */

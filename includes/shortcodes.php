@@ -130,7 +130,7 @@ function give_receipt_shortcode( $atts, $content = null ) {
 	global $give_receipt_args;
 
 	$give_receipt_args = shortcode_atts( array(
-		'error'          => __( 'Sorry, we\'re having trouble retrieving your payment receipt.', 'give' ),
+		'error'          => __( 'Sorry, we\'re having trouble retrieving your donation receipt.', 'give' ),
 		'price'          => true,
 		'date'           => true,
 		'notes'          => true,
@@ -140,7 +140,6 @@ function give_receipt_shortcode( $atts, $content = null ) {
 	), $atts, 'give_receipt' );
 
 	$session = give_get_purchase_session();
-
 
 	if ( isset( $_GET['payment_key'] ) ) {
 		$payment_key = urldecode( $_GET['payment_key'] );
@@ -162,11 +161,11 @@ function give_receipt_shortcode( $atts, $content = null ) {
 	 * Check if the user has permission to view the receipt
 	 *
 	 * If user is logged in, user ID is compared to user ID of ID stored in payment meta
-	 * Or if user is logged out and purchase was made as a guest, the purchase session is checked for
-	 * Or if user is logged in and the user can view sensitive shop data
 	 *
+	 * Or if user is logged out and donation was made as a guest, the donation session is checked for
+	 *
+	 * Or if user is logged in and the user can view sensitive donor data
 	 */
-
 	$user_can_view = ( is_user_logged_in() && $customer_id == get_current_user_id() ) || ( ( $customer_id == 0 || $customer_id == '-1' ) && ! is_user_logged_in() && give_get_purchase_session() ) || current_user_can( 'view_give_sensitive_data' );
 
 	if ( ! apply_filters( 'give_user_can_view_receipt', $user_can_view, $give_receipt_args ) ) {
