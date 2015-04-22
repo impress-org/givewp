@@ -1,6 +1,6 @@
 <?php
 /**
- * View Order Details
+ * View Donation Details
  *
  * @package     Give
  * @subpackage  Admin/Payments
@@ -84,7 +84,7 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 														<option value="<?php esc_attr_e( $key ); ?>"<?php selected( give_get_payment_status( $item, true ), $status ); ?>><?php esc_html_e( $status ); ?></option>
 													<?php endforeach; ?>
 												</select>
-											<span class="give-donation-status status-<?php echo sanitize_title( give_get_payment_status( $item, true ) ); ?>"><span class="give-donation-status-icon"></span></span>
+												<span class="give-donation-status status-<?php echo sanitize_title( give_get_payment_status( $item, true ) ); ?>"><span class="give-donation-status-icon"></span></span>
 											</p>
 										</div>
 
@@ -142,10 +142,10 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 										<div id="publishing-action">
 											<input type="submit" class="button button-primary right" value="<?php esc_attr_e( 'Save Payment', 'give' ); ?>" />
 											<?php if ( give_is_payment_complete( $payment_id ) ) : ?>
-												<a href="<?php echo add_query_arg( array(
+												<a href="<?php echo esc_url( add_query_arg( array(
 													'give-action' => 'email_links',
 													'purchase_id' => $payment_id
-												) ); ?>" id="give-resend-receipt" class="button-secondary right"><?php _e( 'Resend Receipt', 'give' ); ?></a>
+												) ) ); ?>" id="give-resend-receipt" class="button-secondary right"><?php _e( 'Resend Receipt', 'give' ); ?></a>
 											<?php endif; ?>
 										</div>
 										<div class="clear"></div>
@@ -291,7 +291,8 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 										</div>
 										<div class="column">
 											<p><strong><?php _e( 'User ID:', 'give' ); ?></strong>&nbsp;
-						<input type="number" step="1" min="-1" name="give-payment-user-id" value="<?php esc_attr_e( $user_id ); ?>" class="small-text" /></p>
+												<input type="number" step="1" min="-1" name="give-payment-user-id" value="<?php esc_attr_e( $user_id ); ?>" class="small-text" />
+											</p>
 										</div>
 									</div>
 

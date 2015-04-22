@@ -127,10 +127,10 @@ class Give_Plugin_Settings {
 				<?php
 				foreach ( $this->give_get_settings_tabs() as $tab_id => $tab_name ) {
 
-					$tab_url = add_query_arg( array(
+					$tab_url = esc_url( add_query_arg( array(
 						'settings-updated' => false,
 						'tab'              => $tab_id
-					) );
+					) ) );
 
 					$active = $active_tab == $tab_id ? ' nav-tab-active' : '';
 
@@ -173,7 +173,7 @@ class Give_Plugin_Settings {
 							'name' => __( 'General Settings', 'give' ),
 							'desc' => '<hr>',
 							'type' => 'give_title',
-							'id'   => 'give_title'
+							'id'   => 'give_title_general_settings_1'
 						),
 						array(
 							'name' => __( 'Test Mode', 'give' ),
@@ -222,7 +222,7 @@ class Give_Plugin_Settings {
 							'name' => __( 'Currency Settings', 'give' ),
 							'desc' => '<hr>',
 							'type' => 'give_title',
-							'id'   => 'give_title'
+							'id'   => 'give_title_general_settings_2'
 						),
 						array(
 							'name'    => __( 'Currency', 'cmb' ),
@@ -271,7 +271,7 @@ class Give_Plugin_Settings {
 						array(
 							'name' => __( 'Gateways Settings', 'give' ),
 							'desc' => '<hr>',
-							'id'   => 'give_title',
+							'id'   => 'give_title_gateway_settings_1',
 							'type' => 'give_title'
 						),
 						array(
@@ -290,7 +290,7 @@ class Give_Plugin_Settings {
 							'name' => __( 'PayPal Standard', 'give' ),
 							'desc' => '<hr>',
 							'type' => 'give_title',
-							'id'   => 'give_title',
+							'id'   => 'give_title_gateway_settings_2',
 						),
 						array(
 							'name' => __( 'PayPal Email', 'give' ),
@@ -314,7 +314,7 @@ class Give_Plugin_Settings {
 							'name' => __( 'Offline Donations', 'give' ),
 							'desc' => '<hr>',
 							'type' => 'give_title',
-							'id'   => 'give_title',
+							'id'   => 'give_title_gateway_settings_3',
 						),
 						array(
 							'name'    => __( 'Global Offline Donation Text', 'give' ),
@@ -338,7 +338,7 @@ class Give_Plugin_Settings {
 						array(
 							'name' => __( 'Display Settings', 'give' ),
 							'desc' => '<hr>',
-							'id'   => 'give_title',
+							'id'   => 'give_title_display_settings_1',
 							'type' => 'give_title'
 						),
 						array(
@@ -348,9 +348,15 @@ class Give_Plugin_Settings {
 							'type' => 'checkbox'
 						),
 						array(
+							'name' => __( 'Disable Welcome Screen', 'give' ),
+							'desc' => sprintf( __( 'Enable this option if you would like to disable the Give Welcome screen every time Give is activated and/or updated. You can always access the Welcome Screen <a href="%s">here</a> if you want in the future.','give'), esc_url( admin_url('index.php?page=give-about') ) ),
+							'id'   => 'disable_welcome',
+							'type' => 'checkbox'
+						),
+						array(
 							'name' => __( 'Post Types', 'give' ),
 							'desc' => '<hr>',
-							'id'   => 'give_title',
+							'id'   => 'give_title_display_settings_2',
 							'type' => 'give_title'
 						),
 						array(
@@ -368,7 +374,7 @@ class Give_Plugin_Settings {
 						array(
 							'name' => __( 'Taxonomies', 'give' ),
 							'desc' => '<hr>',
-							'id'   => 'give_title',
+							'id'   => 'give_title_display_settings_3',
 							'type' => 'give_title'
 						),
 						array(
@@ -398,7 +404,7 @@ class Give_Plugin_Settings {
 						array(
 							'name' => __( 'Email Settings', 'give' ),
 							'desc' => '<hr>',
-							'id'   => 'give_title',
+							'id'   => 'give_title_email_settings_1',
 							'type' => 'give_title'
 						),
 						array(
@@ -431,7 +437,7 @@ class Give_Plugin_Settings {
 						array(
 							'name' => __( 'Donation Receipt', 'give' ),
 							'desc' => '<hr>',
-							'id'   => 'give_title',
+							'id'   => 'give_title_email_settings_2',
 							'type' => 'give_title'
 						),
 						array(
@@ -451,7 +457,7 @@ class Give_Plugin_Settings {
 						array(
 							'name' => __( 'New Donation Notification', 'give' ),
 							'desc' => '<hr>',
-							'id'   => 'give_title',
+							'id'   => 'give_title_email_settings_3',
 							'type' => 'give_title'
 						),
 						array(
@@ -644,7 +650,7 @@ function give_default_gateway_callback( $field_object, $escaped_value, $object_i
 
 	$id                = $field_type_object->field->args['id'];
 	$field_description = $field_type_object->field->args['desc'];
-	$gateways          = give_get_payment_gateways();
+	$gateways          = give_get_enabled_payment_gateways();
 
 	echo '<select class="cmb2_select" name="' . $id . '" id="' . $id . '">';
 
@@ -810,4 +816,4 @@ function give_hook_callback( $args ) {
  *
  * Super important!
  */
-require_once __DIR__ . '/libraries/cmb2/init.php';
+require_once GIVE_PLUGIN_DIR . '/includes/admin/libraries/cmb2/init.php';

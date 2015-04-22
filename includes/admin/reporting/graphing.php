@@ -177,7 +177,7 @@ function give_reports_graph() {
 	}
 
 	$data = array(
-		__( 'Income', 'give' )  => $earnings_data,
+		__( 'Income', 'give' )    => $earnings_data,
 		__( 'Donations', 'give' ) => $sales_data
 	);
 
@@ -415,7 +415,7 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 	}
 
 	$data = array(
-		__( 'Income', 'give' )  => $earnings_data,
+		__( 'Income', 'give' )    => $earnings_data,
 		__( 'Donations', 'give' ) => $sales_data
 	);
 
@@ -749,7 +749,7 @@ function give_parse_report_dates( $data ) {
 	$view = give_get_reporting_view();
 	$id   = isset( $_GET['form-id'] ) ? $_GET['form-id'] : null;
 
-	wp_redirect( add_query_arg( $dates, admin_url( 'edit.php?post_type=give_forms&page=give-reports&view=' . esc_attr( $view ) . '&form-id=' . absint( $id ) ) ) );
+	wp_redirect( esc_url( add_query_arg( $dates, admin_url( 'edit.php?post_type=give_forms&page=give-reports&view=' . esc_attr( $view ) . '&form-id=' . absint( $id ) ) ) ) );
 	give_die();
 }
 

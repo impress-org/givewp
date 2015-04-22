@@ -108,7 +108,7 @@ function give_send_back_to_checkout( $args = array() ) {
 
 		$args = wp_parse_args( $args );
 
-		$redirect = add_query_arg( $args, $redirect );
+		$redirect = esc_url( add_query_arg( $args, $redirect ) );
 	}
 
 	wp_redirect( apply_filters( 'give_send_back_to_checkout', $redirect, $args ) );
@@ -392,11 +392,14 @@ function give_record_sale_in_log( $give_form_id = 0, $payment_id, $price_id = fa
  * Increases the sale count of a download.
  *
  * @since 1.0
+ *
  * @param int $give_form_id Give Form ID
+ *
  * @return bool|int
  */
 function give_increase_purchase_count( $give_form_id = 0 ) {
 	$form = new Give_Donate_Form( $give_form_id );
+
 	return $form->increase_sales();
 }
 
@@ -404,11 +407,14 @@ function give_increase_purchase_count( $give_form_id = 0 ) {
  * Decreases the sale count of a form. Primarily for when a donation is refunded.
  *
  * @since 1.0
+ *
  * @param int $give_form_id Give Form ID
+ *
  * @return bool|int
  */
 function give_decrease_purchase_count( $give_form_id = 0 ) {
 	$form = new Give_Donate_Form( $give_form_id );
+
 	return $form->decrease_sales();
 }
 
@@ -416,12 +422,15 @@ function give_decrease_purchase_count( $give_form_id = 0 ) {
  * Increases the total earnings of a form.
  *
  * @since 1.0
+ *
  * @param int $give_form_id Give Form ID
- * @param int $amount Earnings
+ * @param int $amount       Earnings
+ *
  * @return bool|int
  */
 function give_increase_earnings( $give_form_id = 0, $amount ) {
 	$form = new Give_Donate_Form( $give_form_id );
+
 	return $form->increase_earnings( $amount );
 }
 
@@ -429,12 +438,15 @@ function give_increase_earnings( $give_form_id = 0, $amount ) {
  * Decreases the total earnings of a form. Primarily for when a purchase is refunded.
  *
  * @since 1.0
+ *
  * @param int $give_form_id Give Form ID
- * @param int $amount Earnings
+ * @param int $amount       Earnings
+ *
  * @return bool|int
  */
 function give_decrease_earnings( $give_form_id = 0, $amount ) {
 	$form = new Give_Donate_Form( $give_form_id );
+
 	return $form->decrease_earnings( $amount );
 }
 
@@ -443,67 +455,75 @@ function give_decrease_earnings( $give_form_id = 0, $amount ) {
  * Returns the total earnings for a form.
  *
  * @since 1.0
+ *
  * @param int $give_form_id Give Form ID
+ *
  * @return int $earnings Earnings for a certain form
  */
 function give_get_form_earnings_stats( $give_form_id = 0 ) {
 	$give_form = new Give_Donate_Form( $give_form_id );
+
 	return $give_form->earnings;
 }
-
 
 
 /**
  * Return the sales number for a form.
  *
  * @since 1.0
+ *
  * @param int $give_form_id Give Form ID
+ *
  * @return int $sales Amount of sales for a certain form
  */
 function give_get_form_sales_stats( $give_form_id = 0 ) {
 	$give_form = new Give_Donate_Form( $give_form_id );
+
 	return $give_form->sales;
 }
-
 
 
 /**
  * Retrieves the average monthly sales for a specific donation form
  *
  * @since 1.0
+ *
  * @param int $form_id Form ID
+ *
  * @return float $sales Average monthly sales
  */
 function give_get_average_monthly_form_sales( $form_id = 0 ) {
-    $sales          = give_get_form_sales_stats( $form_id );
-    $release_date   = get_post_field( 'post_date', $form_id );
+	$sales        = give_get_form_sales_stats( $form_id );
+	$release_date = get_post_field( 'post_date', $form_id );
 
-    $diff   = abs( current_time( 'timestamp' ) - strtotime( $release_date ) );
+	$diff = abs( current_time( 'timestamp' ) - strtotime( $release_date ) );
 
-    $months = floor( $diff / ( 30 * 60 * 60 * 24 ) ); // Number of months since publication
+	$months = floor( $diff / ( 30 * 60 * 60 * 24 ) ); // Number of months since publication
 
-    if ( $months > 0 )
-        $sales = ( $sales / $months );
+	if ( $months > 0 ) {
+		$sales = ( $sales / $months );
+	}
 
-    return $sales;
+	return $sales;
 }
-
 
 
 /**
  * Retrieves the average monthly earnings for a specific form
  *
  * @since 1.0
+ *
  * @param int $form_id Form ID
+ *
  * @return float $earnings Average monthly earnings
  */
 function give_get_average_monthly_form_earnings( $form_id = 0 ) {
-	$earnings 	  = give_get_form_earnings_stats( $form_id );
+	$earnings     = give_get_form_earnings_stats( $form_id );
 	$release_date = get_post_field( 'post_date', $form_id );
 
-	$diff 	= abs( current_time( 'timestamp' ) - strtotime( $release_date ) );
+	$diff = abs( current_time( 'timestamp' ) - strtotime( $release_date ) );
 
-    $months = floor( $diff / ( 30 * 60 * 60 * 24 ) ); // Number of months since publication
+	$months = floor( $diff / ( 30 * 60 * 60 * 24 ) ); // Number of months since publication
 
 	if ( $months > 0 ) {
 		$earnings = ( $earnings / $months );

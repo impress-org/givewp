@@ -37,20 +37,20 @@ function give_reports_page() {
 	?>
 	<div class="wrap">
 		<h2 class="nav-tab-wrapper">
-			<a href="<?php echo add_query_arg( array(
+			<a href="<?php echo esc_url( add_query_arg( array(
 				'tab'              => 'reports',
 				'settings-updated' => false
-			), $current_page ); ?>" class="nav-tab <?php echo $active_tab == 'reports' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Reports', 'give' ); ?></a>
+			), $current_page ) ); ?>" class="nav-tab <?php echo $active_tab == 'reports' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Reports', 'give' ); ?></a>
 			<?php if ( current_user_can( 'export_give_reports' ) ) { ?>
-				<a href="<?php echo add_query_arg( array(
+				<a href="<?php echo esc_url( add_query_arg( array(
 					'tab'              => 'export',
 					'settings-updated' => false
-				), $current_page ); ?>" class="nav-tab <?php echo $active_tab == 'export' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Export', 'give' ); ?></a>
+				), $current_page ) ); ?>" class="nav-tab <?php echo $active_tab == 'export' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Export', 'give' ); ?></a>
 			<?php } ?>
-			<a href="<?php echo add_query_arg( array(
+			<a href="<?php echo esc_url( add_query_arg( array(
 				'tab'              => 'logs',
 				'settings-updated' => false
-			), $current_page ); ?>" class="nav-tab <?php echo $active_tab == 'logs' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Logs', 'give' ); ?></a>
+			), $current_page ) ); ?>" class="nav-tab <?php echo $active_tab == 'logs' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Logs', 'give' ); ?></a>
 			<?php do_action( 'give_reports_tabs' ); ?>
 		</h2>
 
@@ -132,6 +132,7 @@ add_action( 'give_reports_tab_reports', 'give_reports_tab_reports' );
 function give_report_views() {
 	$views        = give_reports_default_views();
 	$current_view = isset( $_GET['view'] ) ? $_GET['view'] : 'earnings';
+	do_action( 'give_report_view_actions_before' );
 	?>
 	<form id="give-reports-filter" method="get">
 		<select id="give-reports-view" name="view">

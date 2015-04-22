@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Generate PDF Reports
  *
- * Generates PDF report on sales and earnings for all downloads for the current year.
+ * Generates PDF report on donations and income for all forms for the current year.
  *
  * @since  1.0
  *
@@ -84,7 +84,7 @@ function give_generate_pdf( $data ) {
 		foreach ( $give_forms as $form ):
 			$pdf->SetFillColor( 255, 255, 255 );
 
-			$title = utf8_decode( get_the_title( $form->ID ) );
+			$title = $form->post_title;
 
 			if ( give_has_variable_prices( $form->ID ) ) {
 
@@ -108,11 +108,10 @@ function give_generate_pdf( $data ) {
 			}
 
 			$categories = get_the_term_list( $form->ID, 'give_forms_category', '', ', ', '' );
-
-			$categories = $categories ? strip_tags( $categories ) : '';
+			$categories = ! is_wp_error( $categories ) ? strip_tags( $categories ) : '';
 
 			$tags = get_the_term_list( $form->ID, 'give_forms_tag', '', ', ', '' );
-			$tags = $tags ? strip_tags( $tags ) : '';
+			$tags = ! is_wp_error( $tags ) ? strip_tags( $tags ) : '';
 
 			$sales    = give_get_form_sales_stats( $form->ID );
 			$link     = get_permalink( $form->ID );

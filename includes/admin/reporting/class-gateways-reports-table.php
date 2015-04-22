@@ -10,7 +10,9 @@
  */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 // Load WP_List_Table if not loaded
 if ( ! class_exists( 'WP_List_Table' ) ) {
@@ -37,16 +39,16 @@ class Give_Gateawy_Reports_Table extends WP_List_Table {
 	 * Get things started
 	 *
 	 * @since 1.0
-	 * @see WP_List_Table::__construct()
+	 * @see   WP_List_Table::__construct()
 	 */
 	public function __construct() {
 		global $status, $page;
 
 		// Set parent defaults
 		parent::__construct( array(
-			'singular'  => give_get_forms_label_singular(),    // Singular name of the listed records
-			'plural'    => give_get_forms_label_plural(),    	// Plural name of the listed records
-			'ajax'      => false             			// Does this table support ajax?
+			'singular' => give_get_forms_label_singular(),    // Singular name of the listed records
+			'plural'   => give_get_forms_label_plural(),        // Plural name of the listed records
+			'ajax'     => false                        // Does this table support ajax?
 		) );
 
 	}
@@ -55,15 +57,15 @@ class Give_Gateawy_Reports_Table extends WP_List_Table {
 	 * This function renders most of the columns in the list table.
 	 *
 	 * @access public
-	 * @since 1.5
+	 * @since  1.5
 	 *
-	 * @param array $item Contains all the data of the downloads
+	 * @param array  $item        Contains all the data of the form
 	 * @param string $column_name The name of the column
 	 *
 	 * @return string Column Name
 	 */
 	public function column_default( $item, $column_name ) {
-		switch( $column_name ){
+		switch ( $column_name ) {
 			default:
 				return $item[ $column_name ];
 		}
@@ -73,7 +75,7 @@ class Give_Gateawy_Reports_Table extends WP_List_Table {
 	 * Retrieve the table columns
 	 *
 	 * @access public
-	 * @since 1.5
+	 * @since  1.5
 	 * @return array $columns Array of all the list table columns
 	 */
 	public function get_columns() {
@@ -92,7 +94,7 @@ class Give_Gateawy_Reports_Table extends WP_List_Table {
 	 * Retrieve the current page number
 	 *
 	 * @access public
-	 * @since 1.5
+	 * @since  1.5
 	 * @return int Current page number
 	 */
 	public function get_paged() {
@@ -104,7 +106,7 @@ class Give_Gateawy_Reports_Table extends WP_List_Table {
 	 * Outputs the reporting views
 	 *
 	 * @access public
-	 * @since 1.5
+	 * @since  1.5
 	 * @return void
 	 */
 	public function bulk_actions( $which = '' ) {
@@ -112,12 +114,49 @@ class Give_Gateawy_Reports_Table extends WP_List_Table {
 		give_report_views();
 	}
 
+	/**
+	 * Generate the table navigation above or below the table
+	 *
+	 * @since  1.0
+	 * @access protected
+	 *
+	 * @param string $which
+	 */
+	protected function display_tablenav( $which ) {
+
+		if ( 'top' == $which ) {
+			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
+		}
+		?>
+		<div class="tablenav gateways-report-tablenav give-clearfix <?php echo esc_attr( $which ); ?>">
+
+			<h3 class="alignleft reports-earnings-title"><span><?php _e( 'Payment Methods Report', 'give' ); ?></span></h3>
+
+			<div class="alignright tablenav-right">
+				<div class="actions bulkactions">
+					<?php
+					$this->bulk_actions( $which ); ?>
+
+				</div>
+				<?php
+				$this->extra_tablenav( $which );
+				$this->pagination( $which );
+				?>
+			</div>
+
+
+			<br class="clear" />
+
+		</div>
+	<?php
+	}
+
 
 	/**
 	 * Build all the reports data
 	 *
 	 * @access public
-	 * @since 1.5
+	 * @since  1.5
 	 * @return array $reports_data All the data for customer reports
 	 */
 	public function reports_data() {
@@ -147,10 +186,10 @@ class Give_Gateawy_Reports_Table extends WP_List_Table {
 	 * Setup the final data for the table
 	 *
 	 * @access public
-	 * @since 1.5
-	 * @uses Give_Gateway_Reports_Table::get_columns()
-	 * @uses Give_Gateway_Reports_Table::get_sortable_columns()
-	 * @uses Give_Gateway_Reports_Table::reports_data()
+	 * @since  1.5
+	 * @uses   Give_Gateway_Reports_Table::get_columns()
+	 * @uses   Give_Gateway_Reports_Table::get_sortable_columns()
+	 * @uses   Give_Gateway_Reports_Table::reports_data()
 	 * @return void
 	 */
 	public function prepare_items() {

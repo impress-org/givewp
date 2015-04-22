@@ -505,6 +505,7 @@ function give_email_tag_receipt_id( $payment_id ) {
 function give_email_tag_donation( $payment_id ) {
 	$payment_data = give_get_payment_meta( $payment_id );
 	$form_title   = ( ! empty( $payment_data['form_title'] ) ? $payment_data['form_title'] : __( 'There was an error retrieving this donation title', 'give' ) );
+
 	return $form_title;
 }
 
@@ -541,8 +542,8 @@ function give_email_tag_sitename( $payment_id ) {
  * @return string receipt_link
  */
 function give_email_tag_receipt_link( $payment_id ) {
-	return sprintf( __( '%1$sView it in your browser.%2$s', 'give' ), '<a href="' . add_query_arg( array(
+	return sprintf( __( '%1$sView it in your browser.%2$s', 'give' ), '<a href="' . esc_url( add_query_arg( array(
 			'payment_key' => give_get_payment_key( $payment_id ),
 			'give_action' => 'view_receipt'
-		), home_url() ) . '">', '</a>' );
+		), home_url() ) ) . '">', '</a>' );
 }

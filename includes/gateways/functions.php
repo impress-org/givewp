@@ -96,7 +96,12 @@ function give_get_default_gateway( $form_id ) {
 	$form_default = get_post_meta( $form_id, '_give_default_gateway', true );
 
 	//Single Form settings varies compared to the Global default settings
-	if ( ! empty( $form_default ) && $default !== $form_default && $form_default !== 'global' && $form_id !== null ) {
+	if ( ! empty( $form_default ) &&
+	     $form_id !== null &&
+	     $default !== $form_default &&
+	     $form_default !== 'global' &&
+	     give_is_gateway_active( $form_default )
+	) {
 		$default = $form_default;
 	}
 

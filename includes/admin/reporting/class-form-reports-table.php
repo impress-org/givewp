@@ -10,7 +10,9 @@
  */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 // Load WP_List_Table if not loaded
 if ( ! class_exists( 'WP_List_Table' ) ) {
@@ -20,7 +22,7 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 /**
  * Give_Form_Reports_Table Class
  *
- * Renders the Download Reports table
+ * Renders the Form Reports table
  *
  * @since 1.0
  */
@@ -42,20 +44,19 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * Get things started
 	 *
 	 * @since 1.0
-	 * @see WP_List_Table::__construct()
+	 * @see   WP_List_Table::__construct()
 	 */
 	public function __construct() {
 		global $status, $page;
 
 		// Set parent defaults
 		parent::__construct( array(
-			'singular'  => give_get_forms_label_singular(),    // Singular name of the listed records
-			'plural'    => give_get_forms_label_plural(),    	// Plural name of the listed records
-			'ajax'      => false             			// Does this table support ajax?
+			'singular' => give_get_forms_label_singular(),    // Singular name of the listed records
+			'plural'   => give_get_forms_label_plural(),        // Plural name of the listed records
+			'ajax'     => false                        // Does this table support ajax?
 		) );
 
 		add_action( 'give_report_view_actions', array( $this, 'category_filter' ) );
-
 		$this->query();
 
 	}
@@ -64,15 +65,15 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * This function renders most of the columns in the list table.
 	 *
 	 * @access public
-	 * @since 1.0
+	 * @since  1.0
 	 *
-	 * @param array $item Contains all the data of the downloads
+	 * @param array  $item        Contains all the data of the downloads
 	 * @param string $column_name The name of the column
 	 *
 	 * @return string Column Name
 	 */
 	public function column_default( $item, $column_name ) {
-		switch( $column_name ){
+		switch ( $column_name ) {
 			case 'earnings' :
 				return give_currency_filter( give_format_amount( $item[ $column_name ] ) );
 			case 'average_sales' :
@@ -80,7 +81,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 			case 'average_earnings' :
 				return give_currency_filter( give_format_amount( $item[ $column_name ] ) );
 			case 'details' :
-				return '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-reports&view=forms&form-id=' . $item[ 'ID' ] ) . '">' . __( 'View Detailed Report', 'give' ) . '</a>';
+				return '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-reports&view=forms&form-id=' . $item['ID'] ) . '">' . __( 'View Detailed Report', 'give' ) . '</a>';
 			default:
 				return $item[ $column_name ];
 		}
@@ -90,17 +91,17 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * Retrieve the table columns
 	 *
 	 * @access public
-	 * @since 1.0
+	 * @since  1.0
 	 * @return array $columns Array of all the list table columns
 	 */
 	public function get_columns() {
 		$columns = array(
-			'title'     		=> give_get_forms_label_singular(),
-			'sales'  			=> __( 'Donations', 'give' ),
-			'earnings'  		=> __( 'Income', 'give' ),
-			'average_sales'  	=> __( 'Monthly Average Donations', 'give' ),
-			'average_earnings'  => __( 'Monthly Average Income', 'give' ),
-			'details'           => __( 'Detailed Report', 'give' )
+			'title'            => give_get_forms_label_singular(),
+			'sales'            => __( 'Donations', 'give' ),
+			'earnings'         => __( 'Income', 'give' ),
+			'average_sales'    => __( 'Monthly Average Donations', 'give' ),
+			'average_earnings' => __( 'Monthly Average Income', 'give' ),
+			'details'          => __( 'Detailed Report', 'give' )
 		);
 
 		return $columns;
@@ -110,14 +111,14 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * Retrieve the table's sortable columns
 	 *
 	 * @access public
-	 * @since 1.0
+	 * @since  1.0
 	 * @return array Array of all the sortable columns
 	 */
 	public function get_sortable_columns() {
 		return array(
-			'title' 	=> array( 'title', true ),
-			'sales' 	=> array( 'sales', false ),
-			'earnings' 	=> array( 'earnings', false ),
+			'title'    => array( 'title', true ),
+			'sales'    => array( 'sales', false ),
+			'earnings' => array( 'earnings', false ),
 		);
 	}
 
@@ -125,7 +126,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * Retrieve the current page number
 	 *
 	 * @access public
-	 * @since 1.0
+	 * @since  1.0
 	 * @return int Current page number
 	 */
 	public function get_paged() {
@@ -137,7 +138,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * Retrieve the category being viewed
 	 *
 	 * @access public
-	 * @since 1.0
+	 * @since  1.0
 	 * @return int Category ID
 	 */
 	public function get_category() {
@@ -146,18 +147,19 @@ class Give_Form_Reports_Table extends WP_List_Table {
 
 
 	/**
-	 * Retrieve the total number of downloads
+	 * Retrieve the total number of forms
 	 *
 	 * @access public
-	 * @since 1.0
-	 * @return int $total Total number of downloads
+	 * @since  1.0
+	 * @return int $total Total number of donation forms
 	 */
 	public function get_total_forms() {
 		$total  = 0;
 		$counts = wp_count_posts( 'give_forms', 'readable' );
-		foreach( $counts as $status => $count ) {
+		foreach ( $counts as $status => $count ) {
 			$total += $count;
 		}
+
 		return $total;
 	}
 
@@ -165,7 +167,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * Outputs the reporting views
 	 *
 	 * @access public
-	 * @since 1.0
+	 * @since  1.0
 	 * @return void
 	 */
 	public function bulk_actions( $which = '' ) {
@@ -173,16 +175,52 @@ class Give_Form_Reports_Table extends WP_List_Table {
 		give_report_views();
 	}
 
+	/**
+	 * Generate the table navigation above or below the table
+	 *
+	 * @since  1.0
+	 * @access protected
+	 *
+	 * @param string $which
+	 */
+	protected function display_tablenav( $which ) {
+
+		if ( 'top' == $which ) {
+			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
+		}
+		?>
+		<div class="tablenav give-clearfix <?php echo esc_attr( $which ); ?>">
+
+			<h3 class="alignleft reports-earnings-title"><span><?php _e( 'Form Report', 'give' ); ?></span></h3>
+
+			<div class="alignright tablenav-right">
+				<div class="actions bulkactions">
+					<?php $this->bulk_actions( $which ); ?>
+				</div>
+				<?php
+				$this->extra_tablenav( $which );
+				$this->pagination( $which );
+				?>
+			</div>
+
+
+			<br class="clear" />
+
+		</div>
+	<?php
+	}
 
 	/**
 	 * Attaches the category filter to the log views
 	 *
 	 * @access public
-	 * @since 1.0
+	 * @since  1.0
 	 * @return void
 	 */
 	public function category_filter() {
-		if( get_terms( 'form_category' ) ) {
+
+		$categories = get_terms( 'form_category' );
+		if ( $categories && ! is_wp_error( $categories ) ) {
 			echo Give()->html->category_dropdown( 'category', $this->get_category() );
 		}
 	}
@@ -192,7 +230,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * Performs the products query
 	 *
 	 * @access public
-	 * @since 1.0
+	 * @since  1.0
 	 * @return void
 	 */
 	public function query() {
@@ -202,16 +240,16 @@ class Give_Form_Reports_Table extends WP_List_Table {
 		$category = $this->get_category();
 
 		$args = array(
-			'post_type' 	=> 'give_forms',
-			'post_status'	=> 'publish',
-			'order'			=> $order,
-			'fields'        => 'ids',
-			'posts_per_page'=> $this->per_page,
-			'paged'         => $this->get_paged(),
+			'post_type'        => 'give_forms',
+			'post_status'      => 'publish',
+			'order'            => $order,
+			'fields'           => 'ids',
+			'posts_per_page'   => $this->per_page,
+			'paged'            => $this->get_paged(),
 			'suppress_filters' => true
 		);
 
-		if( ! empty( $category ) ) {
+		if ( ! empty( $category ) ) {
 			$args['tax_query'] = array(
 				array(
 					'taxonomy' => 'form_category',
@@ -226,12 +264,12 @@ class Give_Form_Reports_Table extends WP_List_Table {
 				break;
 
 			case 'sales' :
-				$args['orderby'] = 'meta_value_num';
+				$args['orderby']  = 'meta_value_num';
 				$args['meta_key'] = '_give_form_sales';
 				break;
 
 			case 'earnings' :
-				$args['orderby'] = 'meta_value_num';
+				$args['orderby']  = 'meta_value_num';
 				$args['meta_key'] = '_give_form_earnings';
 				break;
 		endswitch;
@@ -246,7 +284,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * Build all the reports data
 	 *
 	 * @access public
-	 * @since 1.0
+	 * @since  1.0
 	 * @return array $reports_data All the data for customer reports
 	 */
 	public function reports_data() {
@@ -257,12 +295,12 @@ class Give_Form_Reports_Table extends WP_List_Table {
 		if ( $give_forms ) {
 			foreach ( $give_forms as $form ) {
 				$reports_data[] = array(
-					'ID' 				=> $form,
-					'title' 			=> get_the_title( $form ),
-					'sales' 			=> give_get_form_sales_stats( $form ),
-					'earnings'			=> give_get_form_earnings_stats( $form ),
-					'average_sales'   	=> give_get_average_monthly_form_sales( $form ),
-					'average_earnings'  => give_get_average_monthly_form_earnings( $form )
+					'ID'               => $form,
+					'title'            => get_the_title( $form ),
+					'sales'            => give_get_form_sales_stats( $form ),
+					'earnings'         => give_get_form_earnings_stats( $form ),
+					'average_sales'    => give_get_average_monthly_form_sales( $form ),
+					'average_earnings' => give_get_average_monthly_form_earnings( $form )
 				);
 			}
 		}
@@ -275,12 +313,12 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * Setup the final data for the table
 	 *
 	 * @access public
-	 * @since 1.5
-	 * @uses Give_Form_Reports_Table::get_columns()
-	 * @uses Give_Form_Reports_Table::get_sortable_columns()
-	 * @uses Give_Form_Reports_Table::reports_data()
-	 * @uses Give_Form_Reports_Table::get_pagenum()
-	 * @uses Give_Form_Reports_Table::get_total_forms()
+	 * @since  1.5
+	 * @uses   Give_Form_Reports_Table::get_columns()
+	 * @uses   Give_Form_Reports_Table::get_sortable_columns()
+	 * @uses   Give_Form_Reports_Table::reports_data()
+	 * @uses   Give_Form_Reports_Table::get_pagenum()
+	 * @uses   Give_Form_Reports_Table::get_total_forms()
 	 * @return void
 	 */
 	public function prepare_items() {

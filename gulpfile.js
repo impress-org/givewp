@@ -23,7 +23,7 @@ var gulp = require( 'gulp' ),
 /* Paths
  ------------------------------------- */
 var source_paths = {
-	admin_styles   : ['./assets/scss/admin/give-admin.scss'],
+	admin_styles   : ['./assets/scss/**/give-admin.scss'],
 	frontend_styles: ['./assets/scss/frontend/give-frontend.scss'],
 	scripts        : ['./assets/js/**/*.js', '!./assets/js/**/*.min.js']
 };
@@ -33,14 +33,16 @@ var source_paths = {
 gulp.task( 'admin_styles', function () {
 	return gulp.src( source_paths.admin_styles )
 		.pipe( sourcemaps.init() )
+		.pipe( autoprefixer() )
 		.pipe( sass( {
 			errLogToConsole: true
 		} ) )
-		.pipe( autoprefixer() )
-		//.pipe( sourcemaps.write( './maps' ) )
+		.pipe( rename( 'give-admin.css' ) )
+		.pipe( sourcemaps.write('.') )
 		.pipe( gulp.dest( './assets/css' ) )
 		.pipe( rename( 'give-admin.min.css' ) )
 		.pipe( minifyCSS() )
+		.pipe( sourcemaps.write() )
 		.pipe( gulp.dest( './assets/css' ) )
 		.pipe( livereload() )
 		.pipe( notify( {
@@ -54,15 +56,16 @@ gulp.task( 'admin_styles', function () {
 gulp.task( 'frontend_styles', function () {
 	return gulp.src( source_paths.frontend_styles )
 		.pipe( sourcemaps.init() ) //start up sourcemapping
+		.pipe( autoprefixer() ) //add prefixes for older browsers
 		.pipe( sass( {
 			errLogToConsole: true
 		} ) ) //compile SASS; ensure any errors don't stop gulp watch
-		.pipe( autoprefixer() ) //add prefixes for older browsers
 		.pipe( rename( 'give.css' ) ) //rename for our main un-minfied file
-		//.pipe( sourcemaps.write( './maps' ) ) //write maps to the appropriate plugin dir
+		.pipe( sourcemaps.write( '.' ) ) //write SCSS source maps to the appropriate plugin dir
 		.pipe( gulp.dest( './templates' ) ) //place compiled file in appropriate directory
 		.pipe( rename( 'give.min.css' ) ) //rename for our minified version
 		.pipe( minifyCSS() ) //actually minify the file
+		.pipe( sourcemaps.write( '.' ) ) //write SCSS source maps to the appropriate plugin dir
 		.pipe( gulp.dest( './templates' ) ) //place the minified compiled file
 		.pipe( livereload() ) //reload browser
 		.pipe( notify( {

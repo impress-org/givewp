@@ -61,14 +61,14 @@ function give_process_paypal_purchase( $purchase_data ) {
 		give_send_back_to_checkout( '?payment-mode=' . $purchase_data['post_data']['give-gateway'] );
 	} else {
 		// Only send to PayPal if the pending payment is created successfully
-		$listener_url = add_query_arg( 'give-listener', 'IPN', home_url( 'index.php' ) );
+		$listener_url = esc_url( add_query_arg( 'give-listener', 'IPN', home_url( 'index.php' ) ) );
 
 		// Get the success url
-		$return_url = add_query_arg( array(
+		$return_url = esc_url( add_query_arg( array(
 			'payment-confirmation' => 'paypal',
 			'payment-id'           => $payment
 
-		), get_permalink( $give_options['success_page'] ) );
+		), get_permalink( $give_options['success_page'] ) ) );
 
 		// Get the PayPal redirect uri
 		$paypal_redirect = trailingslashit( give_get_paypal_redirect() ) . '?';

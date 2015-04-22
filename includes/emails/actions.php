@@ -58,11 +58,11 @@ function give_resend_donation_receipt( $data ) {
 
 	give_email_donation_receipt( $purchase_id, false );
 
-	wp_redirect( add_query_arg( array(
+	wp_redirect( esc_url( add_query_arg( array(
 		'give-message' => 'email_sent',
 		'give-action'  => false,
 		'purchase_id'  => false
-	) ) );
+	) ) ) );
 	exit;
 }
 
