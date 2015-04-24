@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_update_payment_details( $data ) {
 
-	if ( ! current_user_can( 'edit_give_payment', $data['give_payment_id'] ) ) {
+	if ( ! current_user_can( 'edit_give_payments', $data['give_payment_id'] ) ) {
 		wp_die( __( 'You do not have permission to edit this payment record', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
@@ -166,7 +166,7 @@ function give_trigger_purchase_delete( $data ) {
 
 		$payment_id = absint( $data['purchase_id'] );
 
-		if ( ! current_user_can( 'edit_give_payment', $payment_id ) ) {
+		if ( ! current_user_can( 'edit_give_payments', $payment_id ) ) {
 			wp_die( __( 'You do not have permission to edit this payment record', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 		}
 
@@ -183,7 +183,7 @@ function give_ajax_store_payment_note() {
 	$payment_id = absint( $_POST['payment_id'] );
 	$note       = wp_kses( $_POST['note'], array() );
 
-	if ( ! current_user_can( 'edit_give_payment', $payment_id ) ) {
+	if ( ! current_user_can( 'edit_give_payments', $payment_id ) ) {
 		wp_die( __( 'You do not have permission to edit this payment record', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
@@ -216,7 +216,7 @@ function give_trigger_payment_note_deletion( $data ) {
 		return;
 	}
 
-	if ( ! current_user_can( 'edit_give_payment', $data['payment_id'] ) ) {
+	if ( ! current_user_can( 'edit_give_payments', $data['payment_id'] ) ) {
 		wp_die( __( 'You do not have permission to edit this payment record', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
@@ -240,7 +240,7 @@ add_action( 'give_delete_payment_note', 'give_trigger_payment_note_deletion' );
  */
 function give_ajax_delete_payment_note() {
 
-	if ( ! current_user_can( 'edit_give_payment', $_POST['payment_id'] ) ) {
+	if ( ! current_user_can( 'edit_give_payments', $_POST['payment_id'] ) ) {
 		wp_die( __( 'You do not have permission to edit this payment record', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 

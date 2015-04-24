@@ -1,11 +1,11 @@
 <?php
 /**
- * Plugin Name: Give - Democratizing Generosity
+ * Plugin Name: Give - Donation Plugin
  * Plugin URI: http://givewp.com
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: WordImpress
  * Author URI: http://wordimpress.com
- * Version: 0.8.5 beta
+ * Version: 0.8.6 beta
  * Text Domain: give
  * Domain Path: /languages
  *
@@ -155,7 +155,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 
 			// Plugin version
 			if ( ! defined( 'GIVE_VERSION' ) ) {
-				define( 'GIVE_VERSION', '0.8.5' );
+				define( 'GIVE_VERSION', '0.8.6' );
 			}
 
 			// Plugin Folder Path
