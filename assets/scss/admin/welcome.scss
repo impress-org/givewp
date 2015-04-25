@@ -25,6 +25,10 @@
 
 }
 
+.two-col > div.last-feature {
+  margin-right:0;
+}
+
 //Get started
 [class^="dashboard_page_give-"], [class*="dashboard_page_give-"]  {
   .about-text {

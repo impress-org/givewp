@@ -878,6 +878,9 @@ table.give-table td.row-title p {
   font-size: 14px;
   margin: 6px 0 0 0; }
 
+.two-col > div.last-feature {
+  margin-right: 0; }
+
 [class^="dashboard_page_give-"] .about-text, [class*="dashboard_page_give-"] .about-text {
   min-height: 0; }
 
