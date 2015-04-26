@@ -311,7 +311,7 @@ function give_output_levels( $form_id ) {
 				$counter ++;
 
 				$output .= '<li>';
-				$output .= '<button data-price-id="' . $price['_give_id']['level_id'] . '" class="give-donation-level-btn give-btn give-btn-level-' . $counter . ' ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'give-default-level' : '' ) . '" value="' . give_format_amount( $price['_give_amount'] ) . '">';
+				$output .= '<button type="button" data-price-id="' . $price['_give_id']['level_id'] . '" class="give-donation-level-btn give-btn give-btn-level-' . $counter . ' ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'give-default-level' : '' ) . '" value="' . give_format_amount( $price['_give_amount'] ) . '">';
 				$output .= ( ! empty( $price['_give_text'] ) ? $price['_give_text'] : $price['_give_price'] );
 				$output .= '</button>';
 				$output .= '</li>';
@@ -321,7 +321,7 @@ function give_output_levels( $form_id ) {
 			//Custom Amount
 			if ( $custom_amount === 'yes' && ! empty( $custom_amount_text ) ) {
 				$output .= '<li>';
-				$output .= '<button data-price-id="custom" class="give-donation-level-btn give-btn give-btn-level-custom" value="custom">';
+				$output .= '<button type="button" data-price-id="custom" class="give-donation-level-btn give-btn give-btn-level-custom" value="custom">';
 				$output .= $custom_amount_text;
 				$output .= '</button>';
 				$output .= '</li>';
@@ -408,7 +408,7 @@ function give_display_checkout_button( $form_id ) {
 	$display_label_field = get_post_meta( $form_id, '_give_reveal_label', true );
 	$display_label       = ( ! empty( $display_label_field ) ? $display_label_field : __( 'Donate Now', 'give' ) );
 
-	$output = '<button class="give-btn give-btn-' . $display_option . '">' . $display_label . '</button>';
+	$output = '<button type="button" class="give-btn give-btn-' . $display_option . '">' . $display_label . '</button>';
 	echo apply_filters( 'give_display_checkout_button', $output );
 
 }
