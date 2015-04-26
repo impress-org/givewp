@@ -1419,5 +1419,43 @@ img.mfp-img {
   right: 0;
   padding-top: 0; }
 
+/*!
+ * Give Layouts SCSS/CSS
+ *
+ * @description: This file provides layout styles for various themes such as the default WordPress themes and others if applicable; Most themes handle Give's template system just fine ;)
+ * @package:     Give
+ * @subpackage:  SCSS/Frontend
+ * @copyright:   Copyright (c) 2015, WordImpress
+ * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+/**
+ * Twenty Fifteen specific styles
+ */
+.twentyfifteen .t15give {
+  padding-left: 7.6923%;
+  padding-right: 7.6923%;
+  padding-top: 7.6923%;
+  margin-bottom: 7.6923%;
+  background: #fff;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.15); }
+  .twentyfifteen .t15give .page-title {
+    margin-left: 0; }
+  .twentyfifteen .t15give div.summary {
+    padding: 0; }
+
+@media screen and (min-width: 38.75em) {
+  .twentyfifteen .t15give {
+    margin-right: 7.6923%;
+    margin-left: 7.6923%;
+    margin-top: 8.3333%; } }
+
+@media screen and (min-width: 59.6875em) {
+  .twentyfifteen .t15give {
+    margin-left: 8.3333%;
+    margin-right: 8.3333%;
+    padding: 10%; }
+  .single-product .twentyfifteen .entry-summary {
+    padding: 0 !important; } }
+
 
 /*# sourceMappingURL=give.css.map */

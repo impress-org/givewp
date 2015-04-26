@@ -29,7 +29,7 @@ class Give_Template_Loader {
 		/**
 		 * Content Wrappers
 		 *
-		 * @see give_output_content_wrapper()
+		 * @see 3give_output_content_wrapper()
 		 * @see give_output_content_wrapper_end()
 		 */
 		add_action( 'give_before_main_content', 'give_output_content_wrapper', 10 );

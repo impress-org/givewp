@@ -133,6 +133,7 @@ Version 0.8 is the first release of Give. It's still in beta version so if you f
 
 = 0.9 beta =
 * Fix: Welcome screen CSS issue with WP 4.2+ https://github.com/WordImpress/Give/issues/119
+* Fix:
 
 = 0.8.6 beta =
 * New: Option to "Disable Welcome Screen" added to Settings > Display Options for those users to set if they don't want a welcome screen appearing

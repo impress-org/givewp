@@ -3,7 +3,7 @@
  * Content wrappers
  *
  * @package     Give
- * @subpackage  Templates/GlobaL
+ * @subpackage  Templates/Global
  * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
@@ -29,7 +29,7 @@ switch( $template ) {
 		echo '<div id="primary" class="content-area"><div id="content" role="main" class="site-content twentyfourteen"><div class="tfwc">';
 		break;
 	case 'twentyfifteen' :
-		echo '<div id="primary" role="main" class="content-area twentyfifteen"><div id="main" class="site-main t15wc">';
+		echo '<div id="primary" role="main" class="content-area twentyfifteen"><div id="main" class="site-main t15give">';
 		break;
 	default :
 		echo '<div id="container"><div id="content" role="main">';

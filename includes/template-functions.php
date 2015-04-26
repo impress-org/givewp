@@ -289,6 +289,37 @@ add_filter( 'body_class', 'give_add_body_classes' );
 
 
 /**
+ * Add Post Class Filter
+ *
+ * @description Adds extra post classes for forms
+ *
+ * @since       1.0
+ *
+ * @param array        $classes
+ * @param string|array $class
+ * @param int          $post_id
+ *
+ * @return array
+ */
+function give_add_post_class( $classes, $class = '', $post_id = '' ) {
+	if ( ! $post_id || 'give_forms' !== get_post_type( $post_id ) ) {
+		return $classes;
+	}
+
+	//@TODO: Add classes for custom taxonomy and form configurations (multi vs single donations, etc). 
+
+	if ( false !== ( $key = array_search( 'hentry', $classes ) ) ) {
+		unset( $classes[ $key ] );
+	}
+
+	return $classes;
+}
+
+
+add_filter( 'post_class', 'give_add_post_class', 20, 3 );
+
+
+/**
  * Get an image size.
  *
  * Variable is filtered by give_get_image_size_{image_size}
