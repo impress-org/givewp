@@ -306,7 +306,7 @@ function give_add_post_class( $classes, $class = '', $post_id = '' ) {
 		return $classes;
 	}
 
-	//@TODO: Add classes for custom taxonomy and form configurations (multi vs single donations, etc). 
+	//@TODO: Add classes for custom taxonomy and form configurations (multi vs single donations, etc).
 
 	if ( false !== ( $key = array_search( 'hentry', $classes ) ) ) {
 		unset( $classes[ $key ] );
