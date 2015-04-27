@@ -77,7 +77,6 @@ class Give_Session {
 		} else {
 
 			// Use WP_Session (default)
-
 			if ( ! defined( 'WP_SESSION_COOKIE' ) ) {
 				define( 'WP_SESSION_COOKIE', 'give_wp_session' );
 			}
@@ -182,28 +181,6 @@ class Give_Session {
 		}
 
 		return $this->session[ $key ];
-	}
-
-	/**
-	 * Set a cookie to identify whether the cart is empty or not
-	 *
-	 * This is for hosts and caching plugins to identify if caching should be disabled
-	 *
-	 * @access public
-	 * @since  1.0
-	 *
-	 * @param string $set Whether to set or destroy
-	 *
-	 * @return void
-	 */
-	public function set_cart_cookie( $set = true ) {
-		if ( ! headers_sent() ) {
-			if ( $set ) {
-				@setcookie( 'give_items_in_cart', '1', time() + 30 * 60, COOKIEPATH, COOKIE_DOMAIN, false );
-			} else {
-				@setcookie( 'give_items_in_cart', '', time() - 3600, COOKIEPATH, COOKIE_DOMAIN, false );
-			}
-		}
 	}
 
 	/**
