@@ -38,9 +38,18 @@ class Give_Session {
 	 *
 	 * @var bool
 	 * @access private
-	 * @since  1.0,1
+	 * @since  1.0
 	 */
 	private $use_php_sessions = false;
+
+	/**
+	 * Expiration Time
+	 *
+	 * @var int
+	 * @access private
+	 * @since  1.0
+	 */
+	private $exp_option = false;
 
 	/**
 	 * Session index prefix
@@ -62,6 +71,7 @@ class Give_Session {
 	public function __construct() {
 
 		$this->use_php_sessions = $this->use_php_sessions();
+		$this->exp_option       = give_get_option( 'session_lifetime' );
 
 		if ( $this->use_php_sessions ) {
 
@@ -96,19 +106,19 @@ class Give_Session {
 		}
 
 		if ( empty( $this->session ) && ! $this->use_php_sessions ) {
-			add_action( 'plugins_loaded', array( $this, 'init' ), -1 );
+			add_action( 'plugins_loaded', array( $this, 'init' ), - 1 );
 		} else {
-			add_action( 'init', array( $this, 'init' ), -1 );
+			add_action( 'init', array( $this, 'init' ), - 1 );
 		}
 
 	}
 
 	/**
-	 * Setup the WP_Session instance
+	 * Setup the session instance
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @return void
+	 * @return array $this->session
 	 */
 	public function init() {
 
@@ -118,13 +128,6 @@ class Give_Session {
 			$this->session = WP_Session::get_instance();
 		}
 
-		$purchase = $this->get( 'give_purchase' );
-
-		if ( ! empty( $purchase ) ) {
-			$this->set_cart_cookie();
-		} else {
-			$this->set_cart_cookie( false );
-		}
 
 		return $this->session;
 	}
@@ -154,7 +157,9 @@ class Give_Session {
 	 */
 	public function get( $key ) {
 		$key = sanitize_key( $key );
+
 		return isset( $this->session[ $key ] ) ? maybe_unserialize( $this->session[ $key ] ) : false;
+
 	}
 
 	/**
@@ -162,8 +167,9 @@ class Give_Session {
 	 *
 	 * @since 1.0
 	 *
-	 * @param $key   Session key
-	 * @param $value Session variable
+	 * @param $key   $_SESSION key
+	 * @param $value $_SESSION variable
+	 *
 	 * @return mixed Session variable
 	 */
 	public function set( $key, $value ) {
@@ -184,31 +190,33 @@ class Give_Session {
 	}
 
 	/**
-	 * Force the cookie expiration variant time to 23 hours
+	 * Set Cookie Variant Time
 	 *
-	 * @access public
-	 * @since  1.0
+	 * @description Force the cookie expiration variant time to custom expiration option, less and hour; defaults to 23 hours (set_expiration_variant_time used in WP_Session)
 	 *
-	 * @param int $exp Default expiration (1 hour)
+	 * @access      public
+	 * @since       1.0
 	 *
 	 * @return int
 	 */
-	public function set_expiration_variant_time( $exp ) {
-		return ( 30 * 60 * 23 );
+	public function set_expiration_variant_time() {
+
+		return ( ! empty( $this->exp_option ) ? ( intval( $this->exp_option ) - 3600 ) : 30 * 60 * 23 );
 	}
 
 	/**
-	 * Force the cookie expiration time to 24 hours
+	 * Set the Cookie Expiration
 	 *
-	 * @access public
-	 * @since  1.0
+	 * @description Force the cookie expiration time if set, default to 24 hours
 	 *
-	 * @param int $exp Default expiration (1 hour)
+	 * @access      public
+	 * @since       1.0
 	 *
 	 * @return int
 	 */
-	public function set_expiration_time( $exp ) {
-		return ( 30 * 60 * 24 );
+	public function set_expiration_time() {
+
+		return ( ! empty( $this->exp_option ) ? intval( $this->exp_option ) : 30 * 60 * 24 );
 	}
 
 	/**
@@ -263,12 +271,42 @@ class Give_Session {
 	}
 
 	/**
-	 * Starts a new session if one hasn't started yet.
+	 * Maybe Start Session
+	 *
+	 * @description Starts a new session if one hasn't started yet.
+	 * @see         http://php.net/manual/en/function.session-set-cookie-params.php
 	 */
 	public function maybe_start_session() {
+
+//		session_destroy(); //Uncomment for testing ONLY
+
 		if ( ! session_id() && ! headers_sent() ) {
+			$lifetime = current_time( 'timestamp' ) + $this->set_expiration_time();
 			session_start();
+			setcookie( session_name(), session_id(), $lifetime ); //
+			setcookie( session_name() . '_expiration', $lifetime, $lifetime );
 		}
+	}
+
+
+	/**
+	 * Get Session Expiration
+	 *
+	 * @description  Looks at the session cookies and returns the expiration date for this session if applicable
+	 *
+	 */
+	public function get_session_expiration() {
+
+		$expiration = false;
+
+		if ( session_id() && isset( $_COOKIE[ session_name() . '_expiration' ] ) ) {
+
+			$expiration = date( 'D, d M Y h:i:s', intval( $_COOKIE[ session_name() . '_expiration' ] ) );
+
+		}
+
+		return $expiration;
+
 	}
 
 }

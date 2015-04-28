@@ -106,6 +106,8 @@ class Give_Plugin_Settings {
 			$tabs['licenses'] = __( 'Licenses', 'give' );
 		}
 
+		$tabs['advanced']    = __( 'Advanced', 'give' );
+
 		$tabs['system_info'] = __( 'System Info', 'give' );
 
 		return apply_filters( 'give_settings_tabs', $tabs );
@@ -349,7 +351,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Disable Welcome Screen', 'give' ),
-							'desc' => sprintf( __( 'Enable this option if you would like to disable the Give Welcome screen every time Give is activated and/or updated. You can always access the Welcome Screen <a href="%s">here</a> if you want in the future.','give'), esc_url( admin_url('index.php?page=give-about') ) ),
+							'desc' => sprintf( __( 'Enable this option if you would like to disable the Give Welcome screen every time Give is activated and/or updated. You can always access the Welcome Screen <a href="%s">here</a> if you want in the future.', 'give' ), esc_url( admin_url( 'index.php?page=give-about' ) ) ),
 							'id'   => 'disable_welcome',
 							'type' => 'checkbox'
 						),
@@ -504,6 +506,33 @@ class Give_Plugin_Settings {
 				'give_title' => __( 'Give Licenses', 'give' ),
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
 				'fields'     => apply_filters( 'give_settings_licenses', array()
+				)
+			),
+			/** Advanced Options */
+			'advanced'    => array(
+				'id'         => 'options_page',
+				'give_title' => __( 'Advanced Options', 'give' ),
+				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
+				'fields'     => apply_filters( 'give_settings_advanced', array(
+						array(
+							'name' => __( 'Session Control', 'give' ),
+							'desc' => '<hr>',
+							'id'   => 'give_title_session_control_1',
+							'type' => 'give_title'
+						),
+						array(
+							'id'      => 'session_lifetime',
+							'name'    => __( 'Session Lifetime', 'give' ),
+							'desc'    => __( 'Give will start a new session per user once they have donated. This option controls the lifetime a user\'s session is kept alive. An active session allows users to view donation receipts on your site without having to be logged in.', 'give' ),
+							'type'    => 'select',
+							'options' => array(
+								'86400'  => __( '24 Hours', 'give' ),
+								'172800' => __( '48 Hours', 'give' ),
+								'259200' => __( '72 Hours', 'give' ),
+								'604800' => __( '1 Week', 'give' ),
+							)
+						),
+					)
 				)
 			),
 			/** Licenses Settings */

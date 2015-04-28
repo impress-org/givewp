@@ -2,11 +2,15 @@
 /**
  * This template is used to display the purchase summary with [give_receipt]
  */
-global $give_receipt_args, $give_options;
+global $give_receipt_args, $give_options, $payment;
 
-$payment = get_post( $give_receipt_args['id'] );
+//Validation: Ensure $payment var is set
+if ( empty( $payment ) && isset( $give_receipt_args['id'] ) ) {
+	$payment = get_post( $give_receipt_args['id'] );
+}
 
-if ( empty( $payment ) ) : ?>
+//Double-Validation: Check for $payment global
+if ( empty( $payment ) ) { ?>
 
 	<div class="give_errors">
 		<p class="give_error"><?php _e( 'The specified receipt ID appears to be invalid', 'give' ); ?></p>
@@ -14,9 +18,9 @@ if ( empty( $payment ) ) : ?>
 
 	<?php
 	return;
-endif;
+}
 
-$meta     = give_get_payment_meta( $payment->ID );
+$meta = give_get_payment_meta( $payment->ID );
 
 $donation = $meta['form_title'];
 $user     = give_get_payment_meta_user_info( $payment->ID );

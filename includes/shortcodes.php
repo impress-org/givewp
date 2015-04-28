@@ -127,20 +127,12 @@ add_shortcode( 'give_register', 'give_register_form_shortcode' );
  */
 function give_receipt_shortcode( $atts, $content = null ) {
 
-	global $give_receipt_args;
+	global $give_receipt_args, $payment;
 
-	$give_receipt_args = shortcode_atts( array(
-		'error'          => __( 'Sorry, we\'re having trouble retrieving your donation receipt.', 'give' ),
-		'price'          => true,
-		'date'           => true,
-		'notes'          => true,
-		'payment_key'    => false,
-		'payment_method' => true,
-		'payment_id'     => true
-	), $atts, 'give_receipt' );
-
+	//set $session var
 	$session = give_get_purchase_session();
 
+	//set payment key var
 	if ( isset( $_GET['payment_key'] ) ) {
 		$payment_key = urldecode( $_GET['payment_key'] );
 	} elseif ( $give_receipt_args['payment_key'] ) {
@@ -149,13 +141,42 @@ function give_receipt_shortcode( $atts, $content = null ) {
 		$payment_key = $session['purchase_key'];
 	}
 
-	// No key found
-	if ( ! isset( $payment_key ) ) {
-		return $give_receipt_args['error'];
+	//Check for payment key
+	if ( empty( $payment_key ) ) { ?>
+
+		<div class="give_errors">
+			<p class="give_error"><?php _e( 'Sorry, there was a problem identifying this donation. Please contact the site owner for more information.', 'give' ); ?></p>
+		</div>
+
+		<?php return false; //bounce out ( no key found )
 	}
 
+	//Set our important payment information variables
 	$give_receipt_args['id'] = give_get_purchase_id_by_key( $payment_key );
 	$customer_id             = give_get_payment_user_id( $give_receipt_args['id'] );
+	$payment                 = get_post( $give_receipt_args['id'] );
+
+
+	$give_receipt_args = shortcode_atts( array(
+		'error'          => __( 'Sorry, it appears the viewing window for this donation receipt has expired or you do not have the permission to view this donation receipt.', 'give' ),
+		'price'          => true,
+		'date'           => true,
+		'notes'          => true,
+		'payment_key'    => false,
+		'payment_method' => true,
+		'payment_id'     => true
+	), $atts, 'give_receipt' );
+
+	//If registration open? If so, add better error messaging to tell user their session expired
+	if ( get_option( 'users_can_register' ) ) {
+
+		$email            = get_post_meta( $payment->ID, '_give_payment_user_email', true );
+		$donation_history = get_permalink( give_get_option( 'history_page' ) );
+
+		$give_receipt_args['error'] .= sprintf( __( ' To view your receipt, please <a href="%s">create an account</a> using the following email %s (the email attached to this donation) and visit the <a href="%s">donation history page</a>' ), wp_registration_url(), '<strong>' . $email . '</strong>', $donation_history );
+
+	}
+
 
 	/*
 	 * Check if the user has permission to view the receipt
@@ -168,9 +189,16 @@ function give_receipt_shortcode( $atts, $content = null ) {
 	 */
 	$user_can_view = ( is_user_logged_in() && $customer_id == get_current_user_id() ) || ( ( $customer_id == 0 || $customer_id == '-1' ) && ! is_user_logged_in() && give_get_purchase_session() ) || current_user_can( 'view_give_sensitive_data' );
 
-	if ( ! apply_filters( 'give_user_can_view_receipt', $user_can_view, $give_receipt_args ) ) {
-		return $give_receipt_args['error'];
-	}
+	if ( ! apply_filters( 'give_user_can_view_receipt', $user_can_view, $give_receipt_args ) ) { ?>
+
+		<div class="give_errors">
+			<p class="give_error"><?php echo $give_receipt_args['error']; ?></p>
+		</div>
+
+		<?php return false; //bounce out (session expired or user not allowed to view) ?>
+
+	<?php }
+
 
 	ob_start();
 
