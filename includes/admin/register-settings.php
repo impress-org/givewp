@@ -318,8 +318,15 @@ class Give_Plugin_Settings {
 							'type' => 'give_title',
 							'id'   => 'give_title_gateway_settings_3',
 						),
+
 						array(
-							'name'    => __( 'Global Offline Donation Text', 'give' ),
+							'name' => __( 'Collect Billing Details', 'give' ),
+							'desc' => __( 'This option will enable the billing details section for offline donations. The fieldset will appear above the offline donation instructions. Note: You may customize this option per form as needed.', 'give' ),
+							'id'   => 'give_offline_donation_enable_billing_fields',
+							'type' => 'checkbox'
+						),
+						array(
+							'name'    => __( 'Offline Donation Text', 'give' ),
 							'desc'    => __( 'The following content will appear for all forms when the user selects the offline donation payment option. Note: You may customize the content per form as needed.', 'give' ),
 							'id'      => 'global_offline_donation_content',
 							'default' => give_get_default_offline_donation_content(),

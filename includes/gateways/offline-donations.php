@@ -66,6 +66,14 @@ function give_offline_payment_cc_form( $form_id ) {
 		$offline_instructions = $post_offline_instructions;
 	}
 
+	//Enable Default CC fields (billing info)
+	$post_offline_cc_fields = get_post_meta( $form_id, '_give_offline_donation_enable_billing_fields_single', true );
+	$global_offline_cc_fields =  give_get_option( 'give_offline_donation_enable_billing_fields' );
+
+	if ( $global_offline_cc_fields == 'on' || $post_offline_cc_fields == 'on' ) {
+		add_action( 'give_before_offline_info_fields', 'give_default_cc_address_fields' );
+	}
+
 	ob_start(); ?>
 	<?php do_action( 'give_before_offline_info_fields' ); ?>
 	<fieldset id="give_offline_payment_info">
@@ -188,7 +196,7 @@ function give_offline_add_settings( $settings ) {
 	$check_settings = array(
 
 		array(
-			'name'    => __( 'Customize Offline Donation Instructions', 'give' ),
+			'name'    => __( 'Customize Offline Donations', 'give' ),
 			'desc'    => __( 'If you would like to customize the donation instructions for this specific forms check this option.', 'give' ),
 			'id'      => $prefix . 'customize_offline_donations',
 			'type'    => 'radio_inline',
@@ -197,6 +205,12 @@ function give_offline_add_settings( $settings ) {
 				'yes' => __( 'Yes', 'give' ),
 				'no'  => __( 'No', 'give' ),
 			),
+		),
+		array(
+			'name' => __( 'Request Billing Information', 'give' ),
+			'desc' => __( 'This option will enable the billing details section for this form\'s offline donation payment gateway. The fieldset will appear above the offline donation instructions.', 'give' ),
+			'id'   => $prefix . 'offline_donation_enable_billing_fields_single',
+			'type' => 'checkbox'
 		),
 		array(
 			'id'      => $prefix . 'offline_checkout_notes',
