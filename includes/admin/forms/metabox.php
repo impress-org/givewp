@@ -146,9 +146,9 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'description' => __( 'This text appears as a label above the custom amount field for single level forms. For multi-level forms the text will appear as it\'s own level. Leave this field blank to prevent it from displaying within your form.', 'give' ),
 					'id'          => $prefix . 'custom_amount_text',
 					'type'        => 'text',
-					'default'     => __( 'Give a Custom Amount', 'give' ),
 					'attributes'  => array(
-						'rows' => 3,
+						'rows'        => 3,
+						'placeholder' => __( 'Give a Custom Amount', 'give' ),
 					),
 				),
 			)
