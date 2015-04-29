@@ -99,10 +99,11 @@ function give_install() {
 	}
 
 
-	//Fresh Install? Setup Test Mode, Base Country (US), Test Gateway
+	//Fresh Install? Setup Test Mode, Base Country (US), Test Gateway, Currency
 	if ( empty( $current_version ) ) {
 		$options['base_country']       = 'US';
 		$options['test_mode']          = 1;
+		$options['currency']           = 'USD';
 		$options['gateways']['manual'] = 1;
 		$options['default_gateway']    = 'manual'; //default is manual
 
