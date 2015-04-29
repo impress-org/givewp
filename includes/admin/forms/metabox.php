@@ -169,7 +169,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 				//Donation Option
 				array(
 					'name'        => __( 'Display Content', 'give' ),
-					'description' => __( 'Do you want to display content?', 'give' ),
+					'description' => __( 'Do you want to display content? If you select "Yes" a WYSIWYG editor will appear which you will be able to enter content to display above or below the form.', 'give' ),
 					'id'          => $prefix . 'content_option',
 					'type'        => 'select',
 					'options'     => apply_filters( 'give_forms_content_options_select', array(
