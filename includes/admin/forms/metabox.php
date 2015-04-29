@@ -246,7 +246,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					),
 					array(
 						'name'    => __( 'Register / Login Form', 'give' ),
-						'desc'    => __( 'Display the registration and login forms in the checkout section for non-logged-in users.', 'give' ),
+						'desc'    => __( 'Display the registration and login forms in the checkout section for non-logged-in users. Note: this option will not require users to register or log in prior to completing a donation. It simply determines whether the login and/or registration form are displayed on the checkout page.', 'give' ),
 						'id'      => $prefix . 'show_register_form',
 						'type'    => 'select',
 						'options' => array(
