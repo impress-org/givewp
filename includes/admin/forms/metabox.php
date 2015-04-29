@@ -234,7 +234,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					),
 					array(
 						'name' => __( 'Default Gateway', 'give' ),
-						'desc' => __( 'This is the gateway that will be selected by default. If this option is selected it will override the global setting.', 'give' ),
+						'desc' => __( 'By default, the gateway for this form will inherit the global default gateway (set under Give > Settings > Payment Gateways). This option allows you to customize the default gateway for this form only.', 'give' ),
 						'id'   => $prefix . 'default_gateway',
 						'type' => 'default_gateway'
 					),
