@@ -15,23 +15,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $template = get_option( 'template' );
 
-switch( $template ) {
+switch ( $template ) {
 	case 'twentyeleven' :
-		echo '<div id="primary"><div id="content" role="main" class="twentyeleven">';
+		echo '<div id="primary" class="give-wrap"><div id="content" role="main" class="twentyeleven">';
 		break;
 	case 'twentytwelve' :
-		echo '<div id="primary" class="site-content"><div id="content" role="main" class="twentytwelve">';
+		echo '<div id="primary" class="site-content give-wrap"><div id="content" role="main" class="twentytwelve">';
 		break;
 	case 'twentythirteen' :
-		echo '<div id="primary" class="site-content"><div id="content" role="main" class="entry-content twentythirteen">';
+		echo '<div id="primary" class="site-content give-wrap"><div id="content" role="main" class="entry-content twentythirteen">';
 		break;
 	case 'twentyfourteen' :
-		echo '<div id="primary" class="content-area"><div id="content" role="main" class="site-content twentyfourteen"><div class="tfgive">';
+		echo '<div id="primary" class="content-area give-wrap"><div id="content" role="main" class="site-content twentyfourteen"><div class="tfgive">';
 		break;
 	case 'twentyfifteen' :
-		echo '<div id="primary" role="main" class="content-area twentyfifteen"><div id="main" class="site-main t15give">';
+		echo '<div id="primary" role="main" class="content-area twentyfifteen give-wrap"><div id="main" class="site-main t15give">';
+		break;
+	case 'flatsome' :
+		echo '<div id="container" class="row product-page give-wrap"><div id="content" role="main">';
+		break;
+	case 'x' :
+		echo '<div id="container" class="x-container-fluid max width offset cf give-wrap"><div class="x-main full" role="main"><div class="entry-wrap"><div class="entry-content">';
 		break;
 	default :
-		echo '<div id="container"><div id="content" role="main">';
+		echo apply_filters( 'give_default_wrapper_start', '<div id="container" class="give-wrap"><div id="content" role="main">' );
 		break;
 }

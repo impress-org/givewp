@@ -134,6 +134,8 @@ Version 0.8 is the first release of Give. It's still in beta version so if you f
 = 0.9 beta =
 * New: Global options to disable the form excerpt and featured image found under Give > Settings > Display Options
 * New: Enable the billing details section for offline donations. The fieldset will appear above the offline donation instructions. Note: You may customize this option per form as needed. Per request https://github.com/WordImpress/Give/issues/26
+* New: Theme template compatibility updates for Flatsome, X Theme, and Avada
+* New: Two new filters introduced give_default_wrapper_start and give_default_wrapper_end to modify template wrappers
 * Fix: Welcome screen CSS issue with WP 4.2+ https://github.com/WordImpress/Give/issues/119
 * Fix: Admin Form Creation: Custom Amount Text Field Won't Accept Empty Value https://github.com/WordImpress/Give/issues/72
 

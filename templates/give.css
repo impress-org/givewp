@@ -1499,5 +1499,11 @@ img.mfp-img {
   .single-product .twentyfifteen .entry-summary {
     padding: 0 !important; } }
 
+/*----------------------------------------------
+Avada
+------------------------------------------------*/
+.avada-row > div.give-wrap #content {
+  width: 100%; }
+
 
 /*# sourceMappingURL=give.css.map */

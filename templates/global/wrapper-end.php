@@ -32,7 +32,10 @@ switch ( $template ) {
 	case 'twentyfifteen' :
 		echo '</div></div>';
 		break;
+	case 'x' :
+		echo '</div></div></div></div>';
+		break;
 	default :
-		echo '</div></div>';
+		echo apply_filters( 'give_default_wrapper_end', '</div></div>' );
 		break;
 }
