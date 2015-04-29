@@ -104,9 +104,15 @@ function give_process_paypal_purchase( $purchase_data ) {
 			$paypal_args['country']  = $purchase_data['user_info']['address']['country'];
 		}
 
-		$paypal_extra_args = array(
-			'cmd' => '_donations',
-		);
+		if ( give_get_option( 'paypal_button_type' ) === 'standard' ) {
+			$paypal_extra_args = array(
+				'cmd' => '_xclick',
+			);
+		} else {
+			$paypal_extra_args = array(
+				'cmd' => '_donations',
+			);
+		}
 
 		$paypal_args = array_merge( $paypal_extra_args, $paypal_args );
 

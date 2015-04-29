@@ -106,7 +106,7 @@ class Give_Plugin_Settings {
 			$tabs['licenses'] = __( 'Licenses', 'give' );
 		}
 
-		$tabs['advanced']    = __( 'Advanced', 'give' );
+		$tabs['advanced'] = __( 'Advanced', 'give' );
 
 		$tabs['system_info'] = __( 'System Info', 'give' );
 
@@ -307,6 +307,17 @@ class Give_Plugin_Settings {
 							'type' => 'text',
 						),
 						array(
+							'name'    => __( 'PayPal ', 'give' ),
+							'desc'    => __( 'Nonprofits must verify their status to withdraw donations they receive via PayPal. PayPal users that are not verified nonprofits must demonstrate how their donations will be used, once they raise more than $10,000. By default, Give transactions are sent to PayPal as donations. You mat change the transaction type using this option if you feel you may not meet PayPal\'s donation requirements.', 'give' ),
+							'id'      => 'paypal_button_type',
+							'type'    => 'radio_inline',
+							'options' => array(
+								'donation' => __( 'Donation', 'give' ),
+								'standard' => __( 'Standard Transaction', 'give' )
+							),
+							'default' => 'donation',
+						),
+						array(
 							'name' => __( 'Disable PayPal IPN Verification', 'give' ),
 							'desc' => __( 'If donations are not getting marked as complete, then check this box. This forces the site to use a slightly less secure method of verifying donations.', 'give' ),
 							'id'   => 'disable_paypal_verification',
@@ -318,7 +329,6 @@ class Give_Plugin_Settings {
 							'type' => 'give_title',
 							'id'   => 'give_title_gateway_settings_3',
 						),
-
 						array(
 							'name' => __( 'Collect Billing Details', 'give' ),
 							'desc' => __( 'This option will enable the billing details section for offline donations. The fieldset will appear above the offline donation instructions. Note: You may customize this option per form as needed.', 'give' ),
