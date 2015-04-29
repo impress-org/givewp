@@ -472,6 +472,9 @@ add_action( 'after_setup_theme', 'give_add_image_sizes', 10 );
  * Ensure post thumbnail support is turned on
  */
 function give_add_thumbnail_support() {
+	if ( give_get_option( 'disable_form_featured_img' ) === 'on' ) {
+		return;
+	}
 	if ( ! current_theme_supports( 'post-thumbnails' ) ) {
 		add_theme_support( 'post-thumbnails' );
 	}
