@@ -27,9 +27,9 @@ function give_setup_post_types() {
 
 	$give_forms_archives = give_get_option( 'disable_forms_archives' ) !== 'on' ? true : false;
 
-	$give_forms_slug     = defined( 'GIVE_FORMS_SLUG' ) ? GIVE_FORMS_SLUG : 'donations';
+	$give_forms_slug = defined( 'GIVE_FORMS_SLUG' ) ? GIVE_FORMS_SLUG : 'donations';
 
-	$give_forms_rewrite  = defined( 'GIVE_DISABLE_FORMS_REWRITE' ) && GIVE_DISABLE_FORMS_REWRITE ? false : array(
+	$give_forms_rewrite = defined( 'GIVE_DISABLE_FORMS_REWRITE' ) && GIVE_DISABLE_FORMS_REWRITE ? false : array(
 		'slug'       => $give_forms_slug,
 		'with_front' => false
 	);
@@ -54,6 +54,26 @@ function give_setup_post_types() {
 		$give_forms_labels[ $key ] = sprintf( $value, give_get_forms_label_singular(), give_get_forms_label_plural() );
 	}
 
+	//Default give_forms supports
+	$give_form_supports = array(
+		'title',
+		'thumbnail',
+		'excerpt',
+		'revisions',
+		'author'
+	);
+
+	//Has the user disabled the excerpt
+	if ( give_get_option( 'disable_forms_excerpt' ) === 'on' ) {
+		unset( $give_form_supports[2] );
+	}
+
+	//Has user disabled the featured image?
+	if ( give_get_option( 'disable_form_featured_img' ) === 'on' ) {
+		unset( $give_form_supports[1] );
+		remove_action( 'give_before_single_form_summary', 'give_show_form_images' );
+	}
+
 	$give_forms_args = array(
 		'labels'             => $give_forms_labels,
 		'public'             => true,
@@ -67,13 +87,7 @@ function give_setup_post_types() {
 		'has_archive'        => $give_forms_archives,
 		'menu_icon'          => give_svg_icons( 'give_cpt_icon' ),
 		'hierarchical'       => false,
-		'supports'           => apply_filters( 'give_forms_supports', array(
-			'title',
-			'thumbnail',
-			'excerpt',
-			'revisions',
-			'author'
-		) ),
+		'supports'           => apply_filters( 'give_forms_supports', $give_form_supports ),
 	);
 	register_post_type( 'give_forms', apply_filters( 'give_forms_post_type_args', $give_forms_args ) );
 

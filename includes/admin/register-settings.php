@@ -362,15 +362,27 @@ class Give_Plugin_Settings {
 							'type' => 'give_title'
 						),
 						array(
-							'name' => __( 'Disable Form\'s Single View', 'give' ),
+							'name' => __( 'Disable Form Single Views', 'give' ),
 							'desc' => __( 'By default, all forms have single views enabled which create a specific URL on your website for that form. This option disables the singular and archive views from being publicly viewable. Note: you will need to embed forms using a shortcode or widget if enabled.', 'give' ),
 							'id'   => 'disable_forms_singular',
 							'type' => 'checkbox'
 						),
 						array(
-							'name' => __( 'Disable Form\'s Archives', 'give' ),
+							'name' => __( 'Disable Form Archives', 'give' ),
 							'desc' => __( 'Archives pages list all the forms you have created. This option will disable only the form\'s archive page(s). The single form\'s view will remain in place. Note: you will need to refresh your permalinks after this option has been enabled.', 'give' ),
 							'id'   => 'disable_forms_archives',
+							'type' => 'checkbox'
+						),
+						array(
+							'name' => __( 'Disable Form Excerpts', 'give' ),
+							'desc' => __( 'The excerpt is an optional summary or description of a donation form; in short, a summary as to why the user should give.', 'give' ),
+							'id'   => 'disable_forms_excerpt',
+							'type' => 'checkbox'
+						),
+						array(
+							'name' => __( 'Disable Form Featured Image', 'give' ),
+							'desc' => __( 'The Featured Image is an image that is chosen as the representative image for donation form. The display of this image is largely up to the theme. If you do not wish to use the featured image you can disable it using this option.', 'give' ),
+							'id'   => 'disable_form_featured_img',
 							'type' => 'checkbox'
 						),
 						array(
