@@ -166,11 +166,13 @@ function give_load_admin_scripts( $hook ) {
 	wp_enqueue_style( 'jquery-ui-css', $css_dir . 'jquery-ui-fresh' . $suffix . '.css' );
 	wp_enqueue_style( 'give-admin', $css_dir . 'give-admin' . $suffix . '.css', GIVE_VERSION );
 	wp_enqueue_style( 'jquery-chosen', $css_dir . 'chosen' . $suffix . '.css', array(), GIVE_VERSION );
+	wp_enqueue_style( 'thickbox' );
 
 	//JS
 	wp_enqueue_script( 'jquery-chosen', $js_plugins . 'chosen.jquery' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
 	wp_enqueue_script( 'give-admin-scripts', $js_dir . 'admin-scripts' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
 	wp_enqueue_script( 'jquery-ui-datepicker' );
+	wp_enqueue_script( 'thickbox' );
 
 	//Forms CPT Script
 	if ( $post_type === 'give_forms' ) {

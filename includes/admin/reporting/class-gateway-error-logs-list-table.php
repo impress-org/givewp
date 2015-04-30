@@ -9,7 +9,9 @@
  */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 // Load WP_List_Table if not loaded
 if ( ! class_exists( 'WP_List_Table' ) ) {
@@ -37,16 +39,16 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 * Get things started
 	 *
 	 * @since 1.0
-	 * @see WP_List_Table::__construct()
+	 * @see   WP_List_Table::__construct()
 	 */
 	public function __construct() {
 		global $status, $page;
 
 		// Set parent defaults
 		parent::__construct( array(
-			'singular'  => give_get_forms_label_singular(),    // Singular name of the listed records
-			'plural'    => give_get_forms_label_plural(),    	// Plural name of the listed records
-			'ajax'      => false             			// Does this table support ajax?
+			'singular' => give_get_forms_label_singular(),    // Singular name of the listed records
+			'plural'   => give_get_forms_label_plural(),        // Plural name of the listed records
+			'ajax'     => false                        // Does this table support ajax?
 		) );
 	}
 
@@ -54,15 +56,17 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 * This function renders most of the columns in the list table.
 	 *
 	 * @access public
-	 * @since 1.0
+	 * @since  1.0
 	 *
-	 * @param array $item Contains all the data of the discount code
+	 * @param array  $item        Contains all the data of the discount code
 	 * @param string $column_name The name of the column
 	 *
 	 * @return string Column Name
 	 */
 	public function column_default( $item, $column_name ) {
 		switch ( $column_name ) {
+			case 'ID' :
+				return $item['ID_label'];
 			case 'error' :
 				return get_the_title( $item['ID'] ) ? get_the_title( $item['ID'] ) : __( 'Payment Error', 'give' );
 			default:
@@ -74,24 +78,28 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 * Output Error Message Column
 	 *
 	 * @access public
-	 * @since 1.0
+	 * @since  1.0
+	 *
 	 * @param array $item Contains all the data of the log
+	 *
 	 * @return void
 	 */
 	public function column_message( $item ) {
-	?>
+
+		?>
 		<a href="#TB_inline?width=640&amp;inlineId=log-message-<?php echo $item['ID']; ?>" class="thickbox" title="<?php _e( 'View Log Message', 'give' ); ?> "><?php _e( 'View Log Message', 'give' ); ?></a>
 		<div id="log-message-<?php echo $item['ID']; ?>" style="display:none;">
 			<?php
 
 			$log_message = get_post_field( 'post_content', $item['ID'] );
+
 			$serialized  = strpos( $log_message, '{"' );
 
 			// Check to see if the log message contains serialized information
 			if ( $serialized !== false ) {
-				$length  = strlen( $log_message ) - $serialized;
-				$intro   = substr( $log_message, 0, - $length );
-				$data    = substr( $log_message, $serialized, strlen( $log_message ) - 1 );
+				$length = strlen( $log_message ) - $serialized;
+				$intro  = substr( $log_message, 0, - $length );
+				$data   = substr( $log_message, $serialized, strlen( $log_message ) - 1 );
 
 				echo wpautop( $intro );
 				echo wpautop( __( '<strong>Log data:</strong>', 'give' ) );
@@ -109,7 +117,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 * Retrieve the table columns
 	 *
 	 * @access public
-	 * @since 1.0
+	 * @since  1.0
 	 * @return array $columns Array of all the list table columns
 	 */
 	public function get_columns() {
@@ -129,7 +137,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 * Retrieve the current page number
 	 *
 	 * @access public
-	 * @since 1.0
+	 * @since  1.0
 	 * @return int Current page number
 	 */
 	public function get_paged() {
@@ -140,10 +148,10 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 * Outputs the log views
 	 *
 	 * @access public
-	 * @since 1.0
+	 * @since  1.0
 	 * @return void
 	 */
-	public function bulk_actions($which = '') {
+	public function bulk_actions( $which = '' ) {
 		// These aren't really bulk actions but this outputs the markup in the right place
 		give_log_views();
 	}
@@ -152,7 +160,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 * Gets the log entries for the current view
 	 *
 	 * @access public
-	 * @since 1.0
+	 * @since  1.0
 	 * @global object $give_logs Give Logs Object
 	 * @return array $logs_data Array of all the Log entires
 	 */
@@ -165,8 +173,8 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 		$logs_data = array();
 		$paged     = $this->get_paged();
 		$log_query = array(
-			'log_type'    => 'gateway_error',
-			'paged'       => $paged
+			'log_type' => 'gateway_error',
+			'paged'    => $paged
 		);
 
 		$logs = $give_logs->get_connected_logs( $log_query );
@@ -175,11 +183,12 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 			foreach ( $logs as $log ) {
 
 				$logs_data[] = array(
-					'ID'         => '<span class=\'give-item-label give-item-label-gray\'>'. $log->ID . '</span>',
+					'ID'         => $log->ID,
+					'ID_label'   => '<span class=\'give-item-label give-item-label-gray\'>' . $log->ID . '</span>',
 					'payment_id' => $log->post_parent,
 					'error'      => 'error',
 					'gateway'    => give_get_payment_gateway( $log->post_parent ),
-					'date'	     => $log->post_date
+					'date'       => $log->post_date
 				);
 			}
 		}
@@ -191,13 +200,13 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 * Setup the final data for the table
 	 *
 	 * @access public
-	 * @since 1.0
+	 * @since  1.0
 	 * @global object $give_logs Give Logs Object
-	 * @uses Give_Gateway_Error_Log_Table::get_columns()
-	 * @uses WP_List_Table::get_sortable_columns()
-	 * @uses Give_Gateway_Error_Log_Table::get_pagenum()
-	 * @uses Give_Gateway_Error_Log_Table::get_logs()
-	 * @uses Give_Gateway_Error_Log_Table::get_log_count()
+	 * @uses   Give_Gateway_Error_Log_Table::get_columns()
+	 * @uses   WP_List_Table::get_sortable_columns()
+	 * @uses   Give_Gateway_Error_Log_Table::get_pagenum()
+	 * @uses   Give_Gateway_Error_Log_Table::get_logs()
+	 * @uses   Give_Gateway_Error_Log_Table::get_log_count()
 	 * @return void
 	 */
 	public function prepare_items() {
@@ -212,9 +221,9 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 		$total_items           = $give_logs->get_log_count( 0, 'gateway_error' );
 
 		$this->set_pagination_args( array(
-				'total_items'  => $total_items,
-				'per_page'     => $this->per_page,
-				'total_pages'  => ceil( $total_items / $this->per_page )
+				'total_items' => $total_items,
+				'per_page'    => $this->per_page,
+				'total_pages' => ceil( $total_items / $this->per_page )
 			)
 		);
 	}
