@@ -940,7 +940,13 @@ CC Validation
 #give_purchase_form_wrap span.card-type.discover {
   background: url('../assets/images/discover.png') no-repeat; }
 #give_purchase_form_wrap span.card-type.amex {
-  background: url('../assets/images/americanexpress.png') no-repeat; }
+  background: url('../assets/images/amex.png') no-repeat; }
+#give_purchase_form_wrap span.card-type.maestro {
+  background: url('../assets/images/maestro.png') no-repeat; }
+#give_purchase_form_wrap span.card-type.diners_club_carte_blanche {
+  background: url('../assets/images/diners-club.png') no-repeat; }
+#give_purchase_form_wrap span.card-type.jcb {
+  background: url('../assets/images/jcb.png') no-repeat; }
 
 /*---------------------------------
 Loading Animation
