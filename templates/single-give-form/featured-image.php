@@ -12,6 +12,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 global $post;
+
+/**
+ * Fires before the featured thumbnail
+ */ 
 do_action( 'give_pre_featured_thumbnail' );
 ?>
 <div class="images">
