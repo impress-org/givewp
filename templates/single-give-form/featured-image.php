@@ -15,6 +15,8 @@ global $post;
 
 /**
  * Fires before the featured thumbnail
+ * 
+ * @since 1.0
  */ 
 do_action( 'give_pre_featured_thumbnail' );
 ?>
