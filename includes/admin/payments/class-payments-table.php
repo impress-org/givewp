@@ -325,10 +325,10 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$row_actions = array();
 
 		if ( give_is_payment_complete( $payment->ID ) ) {
-			$row_actions['email_links'] = '<a href="' . esc_url( add_query_arg( array(
+			$row_actions['email_links'] = '<a href="' . add_query_arg( array(
 					'give-action' => 'email_links',
 					'purchase_id' => $payment->ID
-				), $this->base_url ) ) . '">' . __( 'Resend Purchase Receipt', 'give' ) . '</a>';
+				), $this->base_url ) . '">' . __( 'Resend Purchase Receipt', 'give' ) . '</a>';
 
 		}
 
@@ -370,7 +370,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * Render the ID column
 	 *
 	 * @access public
-	 * @since  2.0
+	 * @since  1.0
 	 *
 	 * @param array $payment Contains all the data for the checkbox column
 	 *
@@ -552,7 +552,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$orderby    = isset( $_GET['orderby'] ) ? urldecode( $_GET['orderby'] ) : 'ID';
 		$order      = isset( $_GET['order'] ) ? $_GET['order'] : 'DESC';
 		$user       = isset( $_GET['user'] ) ? $_GET['user'] : null;
-		$status     = isset( $_GET['status'] ) ? $_GET['status'] : 'any';
+		$status     = isset( $_GET['status'] ) ? $_GET['status'] : give_get_payment_status_keys();
 		$meta_key   = isset( $_GET['meta_key'] ) ? $_GET['meta_key'] : null;
 		$year       = isset( $_GET['year'] ) ? $_GET['year'] : null;
 		$month      = isset( $_GET['m'] ) ? $_GET['m'] : null;
@@ -560,6 +560,10 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$search     = isset( $_GET['s'] ) ? sanitize_text_field( $_GET['s'] ) : null;
 		$start_date = isset( $_GET['start-date'] ) ? sanitize_text_field( $_GET['start-date'] ) : null;
 		$end_date   = isset( $_GET['end-date'] ) ? sanitize_text_field( $_GET['end-date'] ) : $start_date;
+
+		if ( ! empty( $search ) ) {
+			$status = 'any'; // Force all payment statuses when searching
+		}
 
 		$args = array(
 			'output'     => 'payments',

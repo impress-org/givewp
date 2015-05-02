@@ -448,6 +448,7 @@ function give_count_payments( $args = array() ) {
 	}
 
 	$where = apply_filters( 'give_count_payments_where', $where );
+	$join  = apply_filters( 'give_count_payments_join', $join );
 
 	$cache_key = md5( implode( '|', $args ) . $where );
 
@@ -465,12 +466,21 @@ function give_count_payments( $args = array() ) {
 
 	$count = $wpdb->get_results( $query, ARRAY_A );
 
-	$stats = array();
-	foreach ( get_post_stati() as $state ) {
+	$stats    = array();
+	$statuses = get_post_stati();
+	if ( isset( $statuses['private'] ) && empty( $args['s'] ) ) {
+		unset( $statuses['private'] );
+	}
+
+	foreach ( $statuses as $state ) {
 		$stats[ $state ] = 0;
 	}
 
 	foreach ( (array) $count as $row ) {
+		if ( 'private' == $row['post_status'] && empty( $args['s'] ) ) {
+			continue;
+		}
+
 		$stats[ $row['post_status'] ] = $row['num_posts'];
 	}
 
@@ -548,6 +558,21 @@ function give_get_payment_statuses() {
 	);
 
 	return apply_filters( 'give_payment_statuses', $payment_statuses );
+}
+
+/**
+ * Get Payment Status Keys
+ *
+ * @description Retrieves keys for all available statuses for payments
+ *
+ * @since       1.0
+ * @return array $payment_status All the available payment statuses
+ */
+function give_get_payment_status_keys() {
+	$statuses = array_keys( give_get_payment_statuses() );
+	asort( $statuses );
+
+	return array_values( $statuses );
 }
 
 /**
@@ -677,9 +702,9 @@ function give_is_payment_complete( $payment_id ) {
 }
 
 /**
- * Get Total Sales
+ * Get Total Sales (Donations)
  *
- * @since 1.0.2
+ * @since 1.0
  * @return int $count Total sales
  */
 function give_get_total_sales() {
@@ -756,7 +781,7 @@ function give_get_total_earnings() {
 /**
  * Increase the Total Earnings
  *
- * @since 1.8.4
+ * @since 1.0
  *
  * @param $amount int The amount you would like to increase the total earnings by.
  *
@@ -918,7 +943,7 @@ function give_get_payment_user_email( $payment_id ) {
 /**
  * Get the user ID associated with a payment
  *
- * @since 1.5.1
+ * @since 1.0
  *
  * @param int $payment_id Payment ID
  *
