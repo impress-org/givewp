@@ -67,6 +67,14 @@ function give_get_donation_form( $args = array() ) {
 
 	ob_start();
 
+	/**
+	 * Fires before the post form outputs.
+	 * 
+	 * @since 1.0
+	 * 
+	 * @param int $form->ID The current form ID
+	 * @param array $args	An array of form args
+	 */ 
 	do_action( 'give_pre_form_output', $form->ID, $args );
 
 	?>
@@ -120,6 +128,8 @@ function give_get_donation_form( $args = array() ) {
 	
 	/**
 	 * Fires after the post form outputs.
+	 * 
+	 * @since 1.0
 	 * 
 	 * @param int $form->ID The current form ID
 	 * @param array $args	An array of form args
