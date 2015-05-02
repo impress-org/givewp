@@ -67,6 +67,14 @@ function give_get_donation_form( $args = array() ) {
 
 	ob_start();
 
+	/**
+	 * Fires before the post form outputs.
+	 * 
+	 * @since 1.0
+	 * 
+	 * @param int $form->ID The current form ID
+	 * @param array $args	An array of form args
+	 */ 
 	do_action( 'give_pre_form_output', $form->ID, $args );
 
 	?>
@@ -117,7 +125,15 @@ function give_get_donation_form( $args = array() ) {
 
 		<!--end #give-form-<?php echo absint( $form->ID ); ?>--></div>
 	<?php
-
+	
+	/**
+	 * Fires after the post form outputs.
+	 * 
+	 * @since 1.0
+	 * 
+	 * @param int $form->ID The current form ID
+	 * @param array $args	An array of form args
+	 */ 
 	do_action( 'give_post_form_output', $form->ID, $args );
 
 	$final_output = ob_get_clean();
