@@ -141,7 +141,6 @@ Version 0.8 is the first release of Give. It's still in beta version so if you f
 * Fix: Dollar sign in modal doesn't always work https://github.com/WordImpress/Give/issues/120
 * Fix: Reports > Logs > Payment Errors > View Transaction Details now opens properly in Thickbox modal - we weren't properly enqueuing thickbox styles and script in wp-admin
 
-
 = 0.8.6 beta =
 * New: Option to "Disable Welcome Screen" added to Settings > Display Options for those users to set if they don't want a welcome screen appearing
 * Fix: Updated install process to fix #114 - https://github.com/WordImpress/Give/issues/114 - Thanks @paaljoachim
