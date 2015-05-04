@@ -568,7 +568,9 @@ p.give-level-id {
     width: 100%; }
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row {
     float: left;
-    border-bottom: none; } }
+    border-bottom: none; }
+  .cmb2-id--give-donation-levels-0--give-default .cmb-td {
+    margin-top: 5px; } }
 
 /* Smaller Resolution Desktops */
 @media only screen and (min-width: 851px) and (max-width: 1285px) {
@@ -580,7 +582,8 @@ p.give-level-id {
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list input.cmb2-text-money {
     width: 65px; }
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-type-text {
-    width: 180px; }
+    width: 180px;
+    padding-right: 20px; }
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-type-radio-inline {
     margin-left: 20px; }
   .col-id {
@@ -590,11 +593,16 @@ p.give-level-id {
   .col-amount {
     width: 70px; }
   .col-text {
-    width: 165px; } }
-
-@media only screen and (min-width: 851px) and (max-width: 1285px) {
+    width: 165px; }
   .col-sort {
     display: none !important; } }
+
+@media only screen and (min-width: 1000px) {
+  #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-type-text {
+    width: 220px;
+    padding-right: 20px; }
+  .col-text {
+    width: 205px; } }
 
 @media only screen and (min-width: 1201px) {
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-remove-field-row {
@@ -612,7 +620,7 @@ p.give-level-id {
   .col-amount {
     width: 100px; }
   .col-text {
-    width: 175px; }
+    width: 195px; }
   .col-sort {
     width: 100px; } }
 
@@ -630,6 +638,20 @@ p.give-level-id {
     float: left;
     font-weight: bold;
     margin-top: 5px; } }
+
+/*-------------------------------------
+Recurring Fields in Repeater
+-------------------------------------*/
+@media (min-width: 851px) and (max-width: 1300px) {
+  .cmb2-id--give-levels-header .table-container > .table-row > .table-cell.col-recurring, .cmb2-id--give-levels-header .table-container > .table-row > .table-cell.col-period, .cmb2-id--give-levels-header .table-container > .table-row > .table-cell.col-times {
+    display: none; }
+  #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row.cmb2-id--give-donation-levels-0--give-recurring {
+    clear: left; }
+  #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row.cmb2-id--give-donation-levels-0--give-recurring, #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row.cmb2-id--give-donation-levels-0--give-period, #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row.cmb2-id--give-donation-levels-0--give-times {
+    padding-top: 0; }
+    #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row.cmb2-id--give-donation-levels-0--give-recurring > .cmb-th, #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row.cmb2-id--give-donation-levels-0--give-period > .cmb-th, #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row.cmb2-id--give-donation-levels-0--give-times > .cmb-th {
+      width: 100%;
+      display: block; } }
 
 /*-------------------------------------
 Publish Metabox
