@@ -874,4 +874,8 @@ function give_hook_callback( $args ) {
  *
  * Super important!
  */
-require_once GIVE_PLUGIN_DIR . '/includes/admin/libraries/cmb2/init.php';
+if ( file_exists( GIVE_PLUGIN_DIR . '/includes/admin/libraries/cmb2/init.php' ) ) {
+	require_once GIVE_PLUGIN_DIR . '/includes/admin/libraries/cmb2/init.php';
+} elseif ( file_exists( GIVE_PLUGIN_DIR . '/includes/admin/libraries/CMB2/init.php' ) ) {
+	require_once GIVE_PLUGIN_DIR . '/includes/admin/libraries/CMB2/init.php';
+}
