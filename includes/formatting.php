@@ -7,10 +7,12 @@
  * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
-*/
+ */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Sanitize Amount
@@ -18,7 +20,9 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * Returns a sanitized amount by stripping out thousands separators.
  *
  * @since 1.0
+ *
  * @param string $amount Price amount to format
+ *
  * @return string $amount Newly sanitized amount
  */
 function give_sanitize_amount( $amount ) {
@@ -32,16 +36,16 @@ function give_sanitize_amount( $amount ) {
 	if ( $decimal_sep == ',' && false !== ( $found = strpos( $amount, $decimal_sep ) ) ) {
 		if ( ( $thousands_sep == '.' || $thousands_sep == ' ' ) && false !== ( $found = strpos( $amount, $thousands_sep ) ) ) {
 			$amount = str_replace( $thousands_sep, '', $amount );
-		} elseif( empty( $thousands_sep ) && false !== ( $found = strpos( $amount, '.' ) ) ) {
+		} elseif ( empty( $thousands_sep ) && false !== ( $found = strpos( $amount, '.' ) ) ) {
 			$amount = str_replace( '.', '', $amount );
 		}
 
 		$amount = str_replace( $decimal_sep, '.', $amount );
-	} elseif( $thousands_sep == ',' && false !== ( $found = strpos( $amount, $thousands_sep ) ) ) {
+	} elseif ( $thousands_sep == ',' && false !== ( $found = strpos( $amount, $thousands_sep ) ) ) {
 		$amount = str_replace( $thousands_sep, '', $amount );
 	}
 
-	if( $amount < 0 ) {
+	if ( $amount < 0 ) {
 		$is_negative = true;
 	}
 
@@ -49,8 +53,8 @@ function give_sanitize_amount( $amount ) {
 	$decimals = apply_filters( 'give_sanitize_amount_decimals', 2, $amount );
 	$amount   = number_format( (double) $amount, $decimals, '.', '' );
 
-	if( $is_negative ) {
-		$amount *= -1;
+	if ( $is_negative ) {
+		$amount *= - 1;
 	}
 
 	return apply_filters( 'give_sanitize_amount', $amount );
@@ -75,8 +79,8 @@ function give_format_amount( $amount, $decimals = true ) {
 
 	// Format the amount
 	if ( $decimal_sep == ',' && false !== ( $sep_found = strpos( $amount, $decimal_sep ) ) ) {
-		$whole = substr( $amount, 0, $sep_found );
-		$part = substr( $amount, $sep_found + 1, ( strlen( $amount ) - 1 ) );
+		$whole  = substr( $amount, 0, $sep_found );
+		$part   = substr( $amount, $sep_found + 1, ( strlen( $amount ) - 1 ) );
 		$amount = $whole . '.' . $part;
 	}
 
@@ -100,28 +104,47 @@ function give_format_amount( $amount, $decimals = true ) {
 	return apply_filters( 'give_format_amount', $formatted, $amount, $decimals, $decimal_sep, $thousands_sep );
 }
 
+/**
+ * Format Multi-level Amount
+ *
+ * @description Loops through CMB2 repeater field and updates amount field using give_format_amount()
+ *
+ * @param $field_args
+ * @param $field
+ */
+function give_format_admin_multilevel_amount( $field_args, $field ) {
+
+	if(!isset($field->value)) {
+		return;
+	}
+
+	$field->value = give_format_amount($field->value);
+
+}
 
 /**
  * Formats the currency display
  *
  * @since 1.0
+ *
  * @param string $price Price
+ *
  * @return array $currency Currencies displayed correctly
  */
 function give_currency_filter( $price = '', $currency = '' ) {
 	global $give_options;
 
-	if( empty( $currency ) ) {
+	if ( empty( $currency ) ) {
 
 		$currency = give_get_currency();
-	
+
 	}
 
 	$position = isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before';
 
 	$negative = $price < 0;
 
-	if( $negative ) {
+	if ( $negative ) {
 		$price = substr( $price, 1 ); // Remove proceeding "-" -
 	}
 
@@ -168,7 +191,7 @@ function give_currency_filter( $price = '', $currency = '' ) {
 		$formatted = apply_filters( 'give_' . strtolower( $currency ) . '_currency_filter_after', $formatted, $currency, $price );
 	endif;
 
-	if( $negative ) {
+	if ( $negative ) {
 		// Prepend the mins sign before the currency sign
 		$formatted = '-' . $formatted;
 	}
@@ -180,9 +203,11 @@ function give_currency_filter( $price = '', $currency = '' ) {
  * Set the number of decimal places per currency
  *
  * @since 1.4.2
+ *
  * @param int $decimals Number of decimal places
+ *
  * @return int $decimals
-*/
+ */
 function give_currency_decimal_filter( $decimals = 2 ) {
 
 	$currency = give_get_currency();
@@ -198,5 +223,6 @@ function give_currency_decimal_filter( $decimals = 2 ) {
 
 	return apply_filters( 'give_currency_decimal_count', $decimals, $currency );
 }
+
 add_filter( 'give_sanitize_amount_decimals', 'give_currency_decimal_filter' );
 add_filter( 'give_format_amount_decimals', 'give_currency_decimal_filter' );

@@ -99,6 +99,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 							'attributes'   => array(
 								'placeholder' => give_format_amount( '0.00' ),
 							),
+							'before' => 'give_format_admin_multilevel_amount',
 						),
 						array(
 							'name'       => __( 'Text', 'give' ),

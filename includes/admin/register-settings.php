@@ -78,7 +78,7 @@ class Give_Plugin_Settings {
 	 */
 	public function give_update_cmb_meta_box_url( $url ) {
 		//Path to Give's CMB
-		return plugin_dir_url( __FILE__ ) . 'libraries/cmb2';
+		return GIVE_PLUGIN_URL. '/includes/libraries/cmb2';
 	}
 
 
@@ -874,8 +874,8 @@ function give_hook_callback( $args ) {
  *
  * Super important!
  */
-if ( file_exists( GIVE_PLUGIN_DIR . '/includes/admin/libraries/cmb2/init.php' ) ) {
-	require_once GIVE_PLUGIN_DIR . '/includes/admin/libraries/cmb2/init.php';
-} elseif ( file_exists( GIVE_PLUGIN_DIR . '/includes/admin/libraries/CMB2/init.php' ) ) {
-	require_once GIVE_PLUGIN_DIR . '/includes/admin/libraries/CMB2/init.php';
+if ( file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/cmb2/init.php' ) ) {
+	require_once GIVE_PLUGIN_DIR . '/includes/libraries/cmb2/init.php';
+} elseif ( file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/CMB2/init.php' ) ) {
+	require_once GIVE_PLUGIN_DIR . '/includes/libraries/CMB2/init.php';
 }

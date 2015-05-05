@@ -136,6 +136,9 @@ Version 0.8 is the first release of Give. It's still in beta version so if you f
 * New: Enable the billing details section for offline donations. The fieldset will appear above the offline donation instructions. Note: You may customize this option per form as needed. Per request https://github.com/WordImpress/Give/issues/26
 * New: Theme template compatibility updates for Flatsome, X Theme, and Avada
 * New: Two new filters introduced give_default_wrapper_start and give_default_wrapper_end to modify template wrappers
+* Update: CMB2 updated to latest
+* Update: CMB2 moved directories
+* Fix: Admin Multi-Level Amount Fields Not Passed through give_format_amount() https://github.com/WordImpress/Give/issues/65
 * Fix: Welcome screen CSS issue with WP 4.2+ https://github.com/WordImpress/Give/issues/119
 * Fix: Admin Form Creation: Custom Amount Text Field Won't Accept Empty Value https://github.com/WordImpress/Give/issues/72
 * Fix: Dollar sign in modal doesn't always work https://github.com/WordImpress/Give/issues/120
