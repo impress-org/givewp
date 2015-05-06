@@ -130,7 +130,7 @@ function give_email_preview_buttons_callback() {
 	ob_start();
 	?>
 	<a href="<?php echo esc_url( add_query_arg( array( 'give_action' => 'preview_email' ), home_url() ) ); ?>" class="button-secondary" target="_blank" title="<?php _e( 'Donation Receipt Preview', 'give' ); ?> "><?php _e( 'Preview Donation Receipt', 'give' ); ?></a>
-	<a href="<?php echo wp_nonce_url( add_query_arg( array( 'give_action' => 'send_test_email' ) ), 'give-test-email' ); ?>" title="<?php _e( 'This will send a demo donation receipt to the emails listed below.', 'give' ); ?>" class="button-secondary"><?php _e( 'Send Test Email', 'give' ); ?></a>
+	<a href="<?php echo wp_nonce_url( add_query_arg( array( 'give_action' => 'send_test_email', 'give_sent_test_email' => 'true' ) ), 'give-test-email' ); ?>" title="<?php _e( 'This will send a demo donation receipt to the emails listed below.', 'give' ); ?>" class="button-secondary"><?php _e( 'Send Test Email', 'give' ); ?></a>
 	<?php
 	echo ob_get_clean();
 }
