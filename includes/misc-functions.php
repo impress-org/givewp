@@ -542,7 +542,7 @@ function give_get_newsletter() { ?>
 
 	<div class="give-newsletter-form-wrap">
 
-		<form action="//wordimpress.us3.list-manage.com/subscribe/post?u=3ccb75d68bda4381e2f45794c&amp;id=12a081aa13" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+		<form action="//givewp.us3.list-manage.com/subscribe/post?u=3ccb75d68bda4381e2f45794c&amp;id=12a081aa13" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
 			<div class="give-newsletter-confirmation">
 				<p><?php _e( 'Thanks for Subscribing!', 'give' ); ?> :)</p>
 			</div>
