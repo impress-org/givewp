@@ -69,12 +69,12 @@ function give_get_donation_form( $args = array() ) {
 
 	/**
 	 * Fires before the post form outputs.
-	 * 
+	 *
 	 * @since 1.0
-	 * 
-	 * @param int $form->ID The current form ID
-	 * @param array $args	An array of form args
-	 */ 
+	 *
+	 * @param int   $form ->ID The current form ID
+	 * @param array $args An array of form args
+	 */
 	do_action( 'give_pre_form_output', $form->ID, $args );
 
 	?>
@@ -125,15 +125,15 @@ function give_get_donation_form( $args = array() ) {
 
 		<!--end #give-form-<?php echo absint( $form->ID ); ?>--></div>
 	<?php
-	
+
 	/**
 	 * Fires after the post form outputs.
-	 * 
+	 *
 	 * @since 1.0
-	 * 
-	 * @param int $form->ID The current form ID
-	 * @param array $args	An array of form args
-	 */ 
+	 *
+	 * @param int   $form ->ID The current form ID
+	 * @param array $args An array of form args
+	 */
 	do_action( 'give_post_form_output', $form->ID, $args );
 
 	$final_output = ob_get_clean();
@@ -160,7 +160,6 @@ function give_get_donation_form( $args = array() ) {
  * @return string
  */
 function give_show_purchase_form( $form_id ) {
-	global $give_options;
 
 	$payment_mode = give_get_chosen_gateway( $form_id );
 
@@ -172,9 +171,9 @@ function give_show_purchase_form( $form_id ) {
 
 	if ( give_can_checkout() && isset( $form_id ) ) {
 
-		do_action( 'give_purchase_form_before_register_login' );
+		$show_register_form = apply_filters( 'give_show_register_form', get_post_meta( $form_id, '_give_show_register_form', true ) );
 
-		$show_register_form = get_post_meta( $form_id, '_give_show_register_form', true );
+		do_action( 'give_purchase_form_before_register_login', $form_id );
 
 		if ( ( $show_register_form === 'registration' || ( $show_register_form === 'both' && ! isset( $_GET['login'] ) ) ) && ! is_user_logged_in() ) : ?>
 			<div id="give_checkout_login_register">
@@ -506,7 +505,6 @@ add_action( 'give_register_fields_before', 'give_user_info_fields' );
  */
 function give_get_cc_form() {
 
-
 	ob_start();
 
 	do_action( 'give_before_cc_fields' ); ?>
@@ -808,14 +806,14 @@ function give_get_register_fields( $form_id ) {
 					echo 'required ';
 				} ?>give-input" placeholder="<?php _e( 'Confirm password', 'give' ); ?>" type="password" />
 			</p>
-			<?php do_action( 'give_register_account_fields_after' ); ?>
+			<?php do_action( 'give_register_account_fields_after', $form_id ); ?>
 		</fieldset>
 
-		<?php do_action( 'give_register_fields_after' ); ?>
+		<?php do_action( 'give_register_fields_after', $form_id ); ?>
 
 		<input type="hidden" name="give-purchase-var" value="needs-to-register" />
 
-		<?php do_action( 'give_purchase_form_user_info' ); ?>
+		<?php do_action( 'give_purchase_form_user_info', $form_id ); ?>
 
 	</fieldset>
 	<?php
@@ -842,7 +840,8 @@ function give_get_login_fields( $form_id ) {
 	$color              = ( $color == 'inherit' ) ? '' : $color;
 	$show_register_form = give_get_option( 'show_register_form', 'none' );
 
-	ob_start(); ?>
+	ob_start();
+	?>
 	<fieldset id="give_login_fields">
 		<legend><?php _e( 'Login to Your Account', 'give' );
 			if ( ! give_no_guest_checkout( $form_id ) ) {
@@ -859,7 +858,7 @@ function give_get_login_fields( $form_id ) {
 				</a>
 			</p>
 		<?php } ?>
-		<?php do_action( 'give_checkout_login_fields_before' ); ?>
+		<?php do_action( 'give_checkout_login_fields_before', $form_id ); ?>
 		<p id="give-user-login-wrap" class="form-row form-row-first">
 			<label class="give-label" for="give-username"><?php _e( 'Username', 'give' ); ?></label>
 			<input class="<?php if ( give_no_guest_checkout( $form_id ) ) {
