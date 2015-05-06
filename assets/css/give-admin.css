@@ -569,7 +569,7 @@ p.give-level-id {
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row {
     float: left;
     border-bottom: none; }
-  .cmb2-id--give-donation-levels-0--give-default .cmb-td {
+  .cmb-type-give-default-radio-inline .cmb-td {
     margin-top: 5px; } }
 
 /* Smaller Resolution Desktops */
