@@ -68,6 +68,11 @@ function give_admin_messages() {
 	if ( isset( $_GET['give-message'] ) && 'api-key-revoked' == $_GET['give-message'] && current_user_can( 'manage_give_settings' ) ) {
 		add_settings_error( 'give-notices', 'give-api-key-revoked', __( 'API keys successfully revoked.', 'give' ), 'updated' );
 	}
+	
+	if (  isset( $_GET['give_send_test_email'] ) && 'true' == $_GET['give_send_test_email'] && current_user_can( 'manage_give_settings' ) ) {
+		add_settings_error( 'give-notices', 'give-sent-test-email', __( 'Test Email sent!', 'give' ), 'updated' );
+	}
+
 
 
 	if ( ! get_user_meta( get_current_user_id(), '_give_admin_ajax_inaccessible_dismissed', true ) && current_user_can( 'manage_give_settings' ) && false !== get_transient( '_give_ajax_works' ) ) {
