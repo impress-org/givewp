@@ -114,11 +114,11 @@ function give_format_amount( $amount, $decimals = true ) {
  */
 function give_format_admin_multilevel_amount( $field_args, $field ) {
 
-	if(!isset($field->value)) {
+	if ( ! isset( $field->value ) ) {
 		return;
 	}
 
-	$field->value = give_format_amount($field->value);
+	$field->value = give_format_amount( $field->value );
 
 }
 
@@ -202,7 +202,7 @@ function give_currency_filter( $price = '', $currency = '' ) {
 /**
  * Set the number of decimal places per currency
  *
- * @since 1.4.2
+ * @since 1.0
  *
  * @param int $decimals Number of decimal places
  *

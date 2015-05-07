@@ -156,6 +156,7 @@ function give_insert_payment( $payment_data = array() ) {
 			'currency'   => $payment_data['currency'],
 			'form_title' => $payment_data['give_form_title'],
 			'form_id'    => $payment_data['give_form_id'],
+			'price_id'   => give_get_price_id( $payment_data['give_form_id'], $payment_data['price'] ),
 			'user_info'  => $payment_data['user_info'],
 		);
 
@@ -1595,4 +1596,42 @@ function give_filter_where_older_than_week( $where = '' ) {
 	$where .= " AND post_date <= '{$start}'";
 
 	return $where;
+}
+
+
+/**
+ * Get Price ID
+ *
+ * @description Retrieves the Price ID given a proper form ID and price (donation) total
+ *
+ * @param $form_id
+ * @param $price
+ *
+ * @return string $price_id
+ */
+function give_get_price_id( $form_id, $price ) {
+
+	$price_id = 0;
+
+	if ( give_has_variable_prices( $form_id ) ) {
+
+		$levels = maybe_unserialize( get_post_meta( $form_id, '_give_donation_levels', true ) );
+
+		foreach ( $levels as $level ) {
+
+			$level_amount = (float) give_sanitize_amount( $level['_give_amount'] );
+
+			//check that this indeed the recurring price
+			if ( $level_amount == $price ) {
+
+				$price_id = $level['_give_id']['level_id'];
+
+			}
+
+		}
+
+	}
+
+	return $price_id;
+
 }
