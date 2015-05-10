@@ -106,16 +106,16 @@ jQuery( document ).ready( function ( $ ) {
 	//Custom Donation Amount - If user focuses on field & changes value then updates price
 	$body.on( 'focus', '.give-donation-amount .give-text-input', function ( e ) {
 
+		var parent_form = $( this ).parents( 'form' );
+
 		//Remove any invalid class
 		$( this ).removeClass( 'invalid-amount' );
 
 		//Fire up Mask Money
-		$( this ).maskMoney( {
+		$( this ).maskMoney( 'mask', {
 			decimal  : give_global_vars.decimal_separator,
 			thousands: give_global_vars.thousands_separator
 		} );
-
-		var parent_form = $( this ).parents( 'form' );
 
 		//Set data amount
 		$( this ).data( 'amount', $( this ).val() );
@@ -134,7 +134,6 @@ jQuery( document ).ready( function ( $ ) {
 
 		var pre_focus_amount = $( this ).data( 'amount' );
 		var value_now = $( this ).val();
-
 
 		//Does this number have a value?
 		if ( !value_now || value_now <= 0 ) {
