@@ -511,12 +511,12 @@ function give_get_cc_form() {
 
 	<fieldset id="give_cc_fields" class="give-do-validate">
 		<legend><?php _e( 'Credit Card Info', 'give' ); ?></legend>
-		<?php if ( is_ssl() ) : ?>
+		<?php //if ( is_ssl() ) : ?>
 			<div id="give_secure_site_wrapper">
 				<span class="padlock"></span>
 				<span><?php _e( 'This is a secure SSL encrypted payment.', 'give' ); ?></span>
 			</div>
-		<?php endif; ?>
+		<?php // endif; ?>
 		<p id="give-card-number-wrap" class="form-row form-row-two-thirds">
 			<label for="card_number" class="give-label">
 				<?php _e( 'Card Number', 'give' ); ?>

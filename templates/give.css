@@ -1000,6 +1000,12 @@ form[id*='give-form'] .give-loading-animation {
   background-size: 20px 20px;
   background-repeat: no-repeat;
   background-color: transparent; }
+form[id*='give-form'] span.padlock:before {
+  content: '\e600';
+  display: inline-block;
+  -webkit-font-smoothing: antialiased;
+  font: normal 20px/1 'dashicons';
+  vertical-align: top; }
 
 /* Login and Register */
 #give-login-account-wrap {
