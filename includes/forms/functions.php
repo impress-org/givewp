@@ -531,3 +531,34 @@ function give_get_average_monthly_form_earnings( $form_id = 0 ) {
 
 	return $earnings < 0 ? 0 : $earnings;
 }
+
+
+/**
+ * Get Price Option Name (Text)
+ *
+ * @description Retrieves the name of a variable price option
+ *
+ * @since       1.0
+ *
+ * @param int $form_id    ID of the download
+ * @param int $price_id   ID of the price option
+ * @param int $payment_id optional payment ID for use in filters
+ *
+ * @return string $price_name Name of the price option
+ */
+function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 0 ) {
+
+	$prices     = give_get_variable_prices( $form_id );
+	$price_name = '';
+
+	foreach ( $prices as $price ) {
+
+		if ( $price['_give_id']['level_id'] === $price_id ) {
+			$price_name = $price['_give_text'];
+		}
+
+	}
+
+
+	return apply_filters( 'edd_get_price_option_name', $price_name, $form_id, $payment_id, $price_id );
+}
