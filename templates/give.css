@@ -836,6 +836,11 @@ Notices, Warnings & Errors
     line-height: 30px;
     text-shadow: 1px 1px rgba(0, 0, 0, 0.5);
     content: '\f02d'; }
+  .give_error.give_warning {
+    border-color: #ffba00; }
+    .give_error.give_warning:before {
+      background-color: #ffba00;
+      text-shadow: 1px 1px rgba(0, 0, 0, 0.1); }
 
 /*---------------------------------
 Radio Lists
