@@ -130,7 +130,9 @@ function give_email_preview_buttons_callback() {
 	ob_start();
 	?>
 	<a href="<?php echo esc_url( add_query_arg( array( 'give_action' => 'preview_email' ), home_url() ) ); ?>" class="button-secondary" target="_blank" title="<?php _e( 'Donation Receipt Preview', 'give' ); ?> "><?php _e( 'Preview Donation Receipt', 'give' ); ?></a>
-	<a href="<?php echo wp_nonce_url( add_query_arg( array( 'give_action' => 'send_test_email', 'give_sent_test_email' => 'true' ) ), 'give-test-email' ); ?>" title="<?php _e( 'This will send a demo donation receipt to the emails listed below.', 'give' ); ?>" class="button-secondary"><?php _e( 'Send Test Email', 'give' ); ?></a>
+	<a href="<?php echo wp_nonce_url( add_query_arg( array( 'give_action'          => 'send_test_email',
+	                                                        'give_sent_test_email' => 'true'
+	) ), 'give-test-email' ); ?>" title="<?php _e( 'This will send a demo donation receipt to the emails listed below.', 'give' ); ?>" class="button-secondary"><?php _e( 'Send Test Email', 'give' ); ?></a>
 	<?php
 	echo ob_get_clean();
 }
@@ -242,8 +244,7 @@ function give_get_donation_notification_body_content( $payment_id = 0, $payment_
  * this function renders the Donation Receipt in the browser. It overrides the
  * Purchase Receipt template and provides its only styling.
  *
- * @since  1.5
- * @author Sunny Ratilal
+ * @since  1.0
  */
 function give_render_receipt_in_browser() {
 	if ( ! isset( $_GET['payment_key'] ) ) {

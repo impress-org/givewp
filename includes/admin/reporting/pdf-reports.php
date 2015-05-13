@@ -24,7 +24,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param string $data
  *
  * @uses   give_pdf
- * @author Sunny Ratilal
  */
 function give_generate_pdf( $data ) {
 
@@ -160,7 +159,6 @@ add_action( 'give_generate_pdf', 'give_generate_pdf' );
  * @uses   GoogleChartShapeMarker
  * @uses   GoogleChartTextMarker
  * @uses   GoogleChartAxis
- * @author Sunny Ratilal
  * @return string $chart->getUrl() URL for the Google Chart
  */
 function give_draw_chart_image() {

@@ -248,11 +248,10 @@ add_shortcode( 'give_profile_editor', 'give_profile_editor_shortcode' );
  * Processes the profile updater form by updating the necessary fields
  *
  * @since  1.0
- * @author Sunny Ratilal
  *
  * @param array $data Data sent from the profile editor
  *
- * @return void
+ * @return false
  */
 function give_process_profile_editor_updates( $data ) {
 	// Profile field change request

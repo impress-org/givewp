@@ -131,6 +131,10 @@ Version 0.8 is the first release of Give. It's still in beta version so if you f
 
 == Changelog ==
 
+= 1.0 =
+* New: [give_profile_editor] shortcode that enables donors to customize their account information on the frontend #130 https://github.com/WordImpress/Give/issues/130
+
+
 = 0.9 beta =
 * New: Global options to disable the form excerpt and featured image found under Give > Settings > Display Options
 * New: Enable the billing details section for offline donations. The fieldset will appear above the offline donation instructions. Note: You may customize this option per form as needed. Per request https://github.com/WordImpress/Give/issues/26

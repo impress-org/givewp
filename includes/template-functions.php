@@ -177,7 +177,6 @@ function give_add_schema_microdata() {
  * Add Microdata to Give titles
  *
  * @since  1.0
- * @author Sunny Ratilal
  *
  * @param string $title Post Title
  * @param int    $id    Post ID
@@ -202,8 +201,7 @@ add_filter( 'the_title', 'give_microdata_title', 10, 2 );
 /**
  * Add Microdata to download description
  *
- * @since  1.5
- * @author Sunny Ratilal
+ * @since  1.0
  *
  * @param $content
  *

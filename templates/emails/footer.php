@@ -2,7 +2,6 @@
 /**
  * Email Footer
  *
- * @author 		Give
  * @package 	Give/Templates/Emails
  * @version     1.0
  */

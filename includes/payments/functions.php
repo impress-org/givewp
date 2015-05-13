@@ -634,7 +634,6 @@ function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour
  * Get Sales By Date
  *
  * @since  1.0
- * @author Sunny Ratilal
  *
  * @param int $day       Day number
  * @param int $month_num Month number

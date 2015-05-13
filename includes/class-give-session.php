@@ -228,7 +228,6 @@ class Give_Session {
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @author Daniel J Griffiths
 	 * @return bool $ret True if we are using PHP sessions, false otherwise
 	 */
 	public function use_php_sessions() {

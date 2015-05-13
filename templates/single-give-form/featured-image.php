@@ -2,7 +2,6 @@
 /**
  * Single Form Featured Image
  *
- * @author        WordImpress
  * @package       Give/Templates
  * @version       1.0
  */
