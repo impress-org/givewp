@@ -167,7 +167,7 @@ function give_receipt_shortcode( $atts, $content = null ) {
 		'payment_id'     => true
 	), $atts, 'give_receipt' );
 
-	//If registration open? If so, add better error messaging to tell user their session expired
+	//Is registration open? If so, add better error messaging to tell user their session expired
 	if ( get_option( 'users_can_register' ) ) {
 
 		$email            = get_post_meta( $payment->ID, '_give_payment_user_email', true );

@@ -239,7 +239,6 @@ add_action( 'load-edit.php', 'give_forms_load', 9999 );
  *
  * Removes the default drop down filter for forms by date.
  *
- * @author Daniel J Griffiths
  * @since  1.0
  *
  * @param array $dates   The preset array of dates
