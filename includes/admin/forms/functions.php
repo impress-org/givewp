@@ -149,6 +149,26 @@ function give_get_form_price( $form_id = 0 ) {
 	return $form->price;
 }
 
+/**
+ * Returns the goal of a form
+ *
+ * @since 1.0
+ *
+ * @param int $form_id ID number of the form to retrieve a goal for
+ *
+ * @return mixed string|int Goal of the form
+ */
+function give_get_form_goal( $form_id = 0 ) {
+
+	if ( empty( $form_id ) ) {
+		return false;
+	}
+
+	$form = new Give_Donate_Form( $form_id );
+
+	return $form->goal;
+}
+
 
 /**
  * Displays a formatted price for a donation form
@@ -207,6 +227,38 @@ function give_price( $form_id = 0, $echo = true, $price_id = false ) {
 
 add_filter( 'give_form_price', 'give_format_amount', 10 );
 add_filter( 'give_form_price', 'give_currency_filter', 20 );
+
+/**
+ * Displays a formatted goal for a donation form
+ *
+ * @since 1.0
+ *
+ * @param int  $form_id  ID of the form price to show
+ * @param bool $echo     Whether to echo or return the results
+ *
+ * @return void
+ */
+function give_goal( $form_id = 0, $echo = true ) {
+
+	if ( empty( $form_id ) ) {
+		$form_id = get_the_ID();
+	}
+
+	$goal = give_get_form_goal( $form_id );
+
+	$goal           = apply_filters( 'give_form_goal', give_sanitize_amount( $goal ), $form_id );
+	$formatted_goal = '<span class="give_price" id="give_price_' . $form_id . '">' . $goal . '</span>';
+	$formatted_goal = apply_filters( 'give_form_price_after_html', $formatted_goal, $form_id, $goal );
+
+	if ( $echo ) {
+		echo $formatted_goal;
+	} else {
+		return $formatted_goal;
+	}
+}
+
+add_filter( 'give_form_goal', 'give_format_amount', 10 );
+add_filter( 'give_form_goal', 'give_currency_filter', 20 );
 
 
 /**

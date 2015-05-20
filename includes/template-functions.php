@@ -431,3 +431,12 @@ if ( ! function_exists( 'give_show_avatars' ) ) {
 		echo do_shortcode( '[give_donators_gravatars]' );
 	}
 }
+if( ! function_exists( 'give_show_goal_progress' ) ) {
+
+	/**
+	 * Output Donation Progress
+	 */
+	function give_show_goal_progress() {
+		give_get_template_part( 'single-give-form/goal-progress' );
+	}
+}

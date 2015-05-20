@@ -45,7 +45,8 @@ if ( post_password_required() ) {
 		 * give_single_form_summary hook
 		 *
 		 * @hooked give_template_single_title - 5
-		 * @hooked give_get_donation_form - 10
+		 * @hooked give_show_goal_progress - 10
+		 * @hooked give_get_donation_form - 15
 		 */
 		do_action( 'give_single_form_summary' );
 		?>
