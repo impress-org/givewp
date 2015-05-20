@@ -8,7 +8,7 @@ Announcing: Give. The most flexible, robust, and easy to use WordPress plugin fo
 
 ### Why Give? ###
 
-Prior to Give there's was no single go-to solution for accepting donations on WordPress. Sure, Gravity Forms and WooCommerce are great plugins but they're not developed to work specifically for donations. This can often lead to your users being confused by unnecessary cart systems, incorrect terminology, or lack of flexibility. As an admin, you may have wrestled with the various other WordPress donation plugins. Dealing with the lack of documentation and unreliable support can be an all too common occurrence and a real pain. 
+Prior to Give there was no single go-to solution for accepting donations on WordPress. Sure, Gravity Forms and WooCommerce are great plugins but they're not developed to work specifically for donations. This can often lead to your users being confused by unnecessary cart systems, incorrect terminology, or lack of flexibility. As an admin, you may have wrestled with the various other WordPress donation plugins. Dealing with the lack of documentation and unreliable support can be an all too common occurrence and a real pain. 
 
 There's a better way. Now you have Give.
 
