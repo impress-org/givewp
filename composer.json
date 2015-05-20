@@ -7,13 +7,13 @@
   "authors": [
     {
       "name": "Devin Walker",
-      "email": "",
-      "homepage": "http://wordimpress.com"
+      "email": "devin@givewp.com",
+      "homepage": "https://givewp.com"
     },
     {
       "name": "Matt Cromwell",
-      "email": "reachme@mattcromwell.com",
-      "homepage": "http://mattcromwell.com"
+      "email": "matt@givewp.com",
+      "homepage": "https://givewp.com"
     }
   ],
   "keywords": ["wordpress","plugin","donations"],
