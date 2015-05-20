@@ -29,6 +29,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 	$post_id = give_get_admin_post_id();
 
 	$price            = give_get_form_price( $post_id );
+	$goal 			  = give_get_form_goal( $post_id );
 	$variable_pricing = give_has_variable_prices( $post_id );
 	$prices           = give_get_variable_prices( $post_id );
 
@@ -68,6 +69,17 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'attributes'   => array(
 						'placeholder' => give_format_amount( '0.00' ),
 						'value'       => isset( $price ) ? esc_attr( give_format_amount( $price ) ) : '',
+					),
+				),
+				array(
+					'name'			=> __( 'Set Goal', 'give' ),
+					'description'	=> __( 'This is the goal you want to achieve for this form.', 'give' ),
+					'id'			=> $prefix . 'set_goal',
+					'type'			=> 'text_money',
+					'before_field' => give_currency_symbol(), // Replaces default '$'
+					'attributes'   => array(
+						'placeholder' => give_format_amount( '0.00' ),
+						'value'       => isset( $goal ) ? esc_attr( give_format_amount( $goal ) ) : '',
 					),
 				),
 				//Donation levels: Header
