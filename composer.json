@@ -16,9 +16,13 @@
       "homepage": "https://givewp.com"
     }
   ],
-  "keywords": ["wordpress","plugin","donations"],
+  "keywords": [
+    "wordpress",
+    "plugin",
+    "donations"
+  ],
   "support": {
-    "issues": "https://github.com/WordImpress/Give/issues",
+    "issues": "https://github.com/WordImpress/Give/issues"
   },
   "require": {
     "php": ">=5.4.0",
