@@ -1,0 +1,27 @@
+{
+  "name": "wordimpress/give",
+  "type": "wordpress-plugin",
+  "license": "GPL",
+  "description": "Give - The best way to accept donations on WordPress",
+  "homepage": "http://givewp.com",
+  "authors": [
+    {
+      "name": "Devin Walker",
+      "email": "",
+      "homepage": "http://wordimpress.com"
+    }
+    {
+      "name": "Matt Cromwell",
+      "email": "reachme@mattcromwell.com",
+      "homepage": "http://mattcromwell.com"
+    }
+  ],
+  "keywords": ["wordpress","plugin","donations"],
+  "support": {
+    "issues": "https://github.com/WordImpress/Give/issues",
+  },
+  "require": {
+    "php": ">=5.4.0",
+    "composer/installers": "~1.0.6"
+  }
+}
