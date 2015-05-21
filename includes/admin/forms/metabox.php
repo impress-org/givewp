@@ -31,6 +31,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 	$price            = give_get_form_price( $post_id );
 	$variable_pricing = give_has_variable_prices( $post_id );
 	$prices           = give_get_variable_prices( $post_id );
+     $donation_limit   = give_get_donation_limit( $post_id );
 
 
 	// Start with an underscore to hide fields from custom fields list
@@ -244,6 +245,23 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 						'desc' => __( 'Do you want to require users be logged-in to make donations?', 'give' ),
 						'id'   => $prefix . 'logged_in_only',
 						'type' => 'checkbox'
+					),
+                         array(
+                              'name' => __( 'Limit Maximum Total Donation?', 'give' ),
+                              'desc' => __( 'Whether to limit donations per logged-in users to a certain total. (Disable Guest Donations for best results)', 'give' ),
+						'id'   => $prefix . 'donation_limit_option',
+                              'type' => 'checkbox'
+					),
+                         array(
+						'name' => __( 'Total Donation Limit', 'give' ),
+						'desc' => __( 'The maximum total donation per logged-in user.', 'give' ),
+						'id'   => $prefix . 'set_donation_limit',
+                              'type'         => 'text_money',
+					     'before_field' => give_currency_symbol(), // Replaces default '$'
+				          'attributes'   => array(
+                                  'placeholder' => give_format_amount( '0.00' ),
+                                  'value'       => isset( $donation_limit ) ? esc_attr( give_format_amount( $donation_limit ) ) : '',
+                              ),
 					),
 					array(
 						'name'    => __( 'Register / Login Form', 'give' ),
