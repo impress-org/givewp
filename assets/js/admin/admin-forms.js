@@ -84,6 +84,17 @@ jQuery.noConflict();
 				$( '.cmb2-id--give-form-content' ).hide();
 			}
 		} ).change();
+        
+          //Donation Limit Option
+          var donation_limit_option = $( '#_give_donation_limit_option' );
+
+		donation_limit_option.on( 'change', function () {
+			if ( donation_limit_option.is( ':checked' ) ) {
+				$( '.cmb2-id--give-set-donation-limit' ).show();
+			} else {
+				$( '.cmb2-id--give-set-donation-limit' ).hide();
+			}
+		} ).change();
 
 		//Terms Option
 		var terms_option = $( '#_give_terms_option' );

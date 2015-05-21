@@ -64,6 +64,13 @@ class Give_Donate_Form {
 	 * @since 1.0
 	 */
 	private $button_behavior;
+    
+     /**
+	 * The form's total donation limit per-user
+	 *
+	 * @since 1.0
+	 */
+     private $donation_limit;
 
 	/**
 	 * Get things going
@@ -165,6 +172,34 @@ class Give_Donate_Form {
 
 		return apply_filters( 'give_get_set_price', $this->price, $this->ID );
 	}
+    
+     /**
+	 * Retrieve the total donation limit per-user
+	 *
+	 * @since 1.0
+	 * @return float
+	 */
+    public function get_donation_limit() {
+        
+          if ( ! isset( $this->donation_limit ) ) {
+
+			$this->donation_limit = get_post_meta( $this->ID, '_give_set_donation_limit', true );
+
+			if ( $this->donation_limit ) {
+
+				$this->donation_limit = give_sanitize_amount( $this->donation_limit );
+
+			} else {
+
+				$this->donation_limit = 0;
+
+			}
+
+		}
+
+		return apply_filters( 'give_get_set_donation_limit', $this->donation_limit, $this->ID );
+        
+    }
 
 	/**
 	 * Retrieve the variable prices

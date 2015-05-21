@@ -990,3 +990,35 @@ function give_check_purchase_email( $valid_data, $posted ) {
 }
 
 add_action( 'give_checkout_error_checks', 'give_check_purchase_email', 10, 2 );
+
+function give_restrict_donation_total( $valid_data, $posted ) {
+    
+    $form_id = intval( $posted['give-form-id'] );
+
+    if ( is_user_logged_in() && give_is_donation_limited( $form_id ) ) {
+
+        $user_id = get_current_user_id();
+        
+        $donation_limit = give_get_donation_limit( $form_id );
+        
+        $donations = new Give_DB_Customers();
+        $donations = $donations->get_customers( array( 'id' => $user_id ) );
+
+        $total = $donations[0]->purchase_value;
+
+        if ( $total >= $donation_limit ) {
+
+            give_set_error( 'over_donation_limit', 'Maximum donation limit of ' . give_currency_symbol() . give_format_amount( $donation_limit ) . ' reached.', 'give' );
+
+        }
+        else if ( ( $total + floatval( $posted['give-amount'] ) ) > $donation_limit ) {
+
+            give_set_error( 'pushed_over_donation_limit', __( 'You have already donated ' . give_currency_symbol() . give_format_amount( $total ) . '. You can only donate $' . give_format_amount( $donation_limit - $total ) . ' more.', 'give' ) );
+
+        }
+
+    }
+
+}
+
+add_action( 'give_checkout_error_checks', 'give_restrict_donation_total', 10, 2 );

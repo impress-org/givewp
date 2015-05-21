@@ -698,6 +698,53 @@ function give_get_form_price( $form_id = 0 ) {
 	return $form->price;
 }
 
+/**
+ * Returns the whether a donation is limited to a maximum total per logged-in user
+ *
+ * @since 1.0
+ *
+ * @param int $form_id ID number of the form
+ *
+ * @return bool Are donations limited?
+ */
+function give_is_donation_limited( $form_id = 0 ) {
+
+	if ( empty( $form_id ) ) {
+		return false;
+	}
+
+    $donation_limited = get_post_meta( $form_id, '_give_donation_limit_option', true );
+    
+    if ( ! empty( $donation_limited ) ) {
+        $donation_limited = true;
+    }
+    else {
+        $donation_limited = false;
+    }
+
+	return $donation_limited;
+}
+
+/**
+ * Returns the total donation limit per-user of a form
+ *
+ * @since 1.0
+ *
+ * @param int $form_id ID number of the form to retrieve a price for
+ *
+ * @return mixed string|int Donation Limit of the form
+ */
+function give_get_donation_limit( $form_id = 0 ) {
+
+	if ( empty( $form_id ) ) {
+		return false;
+	}
+
+	$form = new Give_Donate_Form( $form_id );
+
+	return $form->donation_limit;
+}
+
 
 /**
  * Displays a formatted price for a donation form
