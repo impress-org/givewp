@@ -257,7 +257,7 @@ class Give_Payments_Query extends Give_Stats {
 			return;
 		}
 
-		if ( $this->args['number'] == -1 ) {
+		if ( $this->args['number'] == - 1 ) {
 			$this->__set( 'nopaging', true );
 		} else {
 			$this->__set( 'posts_per_page', $this->args['number'] );
@@ -488,7 +488,7 @@ class Give_Payments_Query extends Give_Stats {
 		global $give_logs;
 
 		$args = array(
-//			'post_id'                => $this->args['give_forms'],
+			//			'post_id'                => $this->args['give_forms'],
 			'log_type'               => 'sale',
 			'post_status'            => array( 'publish' ),
 			'nopaging'               => true,
