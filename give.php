@@ -255,7 +255,6 @@ if ( ! class_exists( 'Give' ) ) : /**
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/actions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/payments-history.php';
 
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/functions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/metabox.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/dashboard-columns.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/shortcode.php';
