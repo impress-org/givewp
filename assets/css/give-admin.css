@@ -881,6 +881,16 @@ table.give-table td.row-title p {
   color: #aaa;
   margin: 0; }
 
+/*-------------------------
+Logs
+----------------------------*/
+#give-logs-filter .search-box {
+  float: right; }
+#give-logs-filter .tablenav.top {
+  float: left;
+  clear: none;
+  margin-top: 0; }
+
 /**
  * Give Admin Welcome SCSS
  *

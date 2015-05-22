@@ -194,3 +194,17 @@ table.give-table {
   }
 
 }
+
+/*-------------------------
+Logs
+----------------------------*/
+#give-logs-filter {
+  .search-box {
+	float: right;
+  }
+  .tablenav.top {
+	float: left;
+	clear: none;
+	margin-top: 0;
+  }
+}
