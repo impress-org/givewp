@@ -1,44 +1,52 @@
 <?php
 /**
- * Uninstall Easy Digital Downloads
+ * Uninstall Give
  *
- * @package     EDD
+ * @package     Give
  * @subpackage  Uninstall
- * @copyright   Copyright (c) 2015, Pippin Williamson
+ * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       1.4.3
+ * @since       1.0
  */
 
 // Exit if accessed directly
-if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) exit;
+if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
+	exit;
+}
 
-// Load EDD file
-include_once( 'easy-digital-downloads.php' );
+// Load Give file
+include_once( 'give.php' );
 
 global $wpdb, $wp_roles;
 
-if( edd_get_option( 'uninstall_on_delete' ) ) {
 
-	/** Delete All the Custom Post Types */
-	$edd_taxonomies = array( 'download_category', 'download_tag', 'edd_log_type', );
-	$edd_post_types = array( 'download', 'edd_payment', 'edd_discount', 'edd_log' );
-	foreach ( $edd_post_types as $post_type ) {
-	
-		$edd_taxonomies = array_merge( $edd_taxonomies, get_object_taxonomies( $post_type ) );
-		$items = get_posts( array( 'post_type' => $post_type, 'post_status' => 'any', 'numberposts' => -1, 'fields' => 'ids' ) );
+if ( give_get_option( 'uninstall_on_delete' ) === 'on' ) {
+
+	// Delete All the Custom Post Types
+	$give_taxonomies = array( 'form_category', 'form_tag', 'give_log_type', );
+	$give_post_types = array( 'give_forms', 'give_payment', 'give_log' );
+	foreach ( $give_post_types as $post_type ) {
+
+		$give_taxonomies = array_merge( $give_taxonomies, get_object_taxonomies( $post_type ) );
+		$items           = get_posts( array(
+			'post_type'   => $post_type,
+			'post_status' => 'any',
+			'numberposts' => - 1,
+			'fields'      => 'ids'
+		) );
 
 		if ( $items ) {
 			foreach ( $items as $item ) {
-				wp_delete_post( $item, true);
+				wp_delete_post( $item, true );
 			}
 		}
 	}
 
-	/** Delete All the Terms & Taxonomies */
-	foreach ( array_unique( array_filter( $edd_taxonomies ) ) as $taxonomy ) {
-		
+	// Delete All the Terms & Taxonomies
+	foreach ( array_unique( array_filter( $give_taxonomies ) ) as $taxonomy ) {
+
 		$terms = $wpdb->get_results( $wpdb->prepare( "SELECT t.*, tt.* FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON t.term_id = tt.term_id WHERE tt.taxonomy IN ('%s') ORDER BY t.name ASC", $taxonomy ) );
-		
+
 		// Delete Terms
 		if ( $terms ) {
 			foreach ( $terms as $term ) {
@@ -46,37 +54,38 @@ if( edd_get_option( 'uninstall_on_delete' ) ) {
 				$wpdb->delete( $wpdb->terms, array( 'term_id' => $term->term_id ) );
 			}
 		}
-		
+
 		// Delete Taxonomies
 		$wpdb->delete( $wpdb->term_taxonomy, array( 'taxonomy' => $taxonomy ), array( '%s' ) );
 	}
 
-	/** Delete the Plugin Pages */
-	$edd_created_pages = array( 'purchase_page', 'success_page', 'failure_page', 'purchase_history_page' );
-	foreach ( $edd_created_pages as $p ) {
-		$page = edd_get_option( $p, false );
+	// Delete the Plugin Pages
+	$give_created_pages = array( 'success_page', 'failure_page', 'history_page' );
+	foreach ( $give_created_pages as $p ) {
+		$page = give_get_option( $p, false );
 		if ( $page ) {
 			wp_delete_post( $page, true );
 		}
 	}
 
-	/** Delete all the Plugin Options */
-	delete_option( 'edd_settings' );
+	// Delete all the Plugin Options
+	delete_option( 'give_settings' );
+	delete_option( 'give_version' );
 
-	/** Delete Capabilities */
-	EDD()->roles->remove_caps();
+	// Delete Capabilities
+	Give()->roles->remove_caps();
 
-	/** Delete the Roles */
-	$edd_roles = array( 'shop_manager', 'shop_accountant', 'shop_worker', 'shop_vendor' );
-	foreach ( $edd_roles as $role ) {
+	// Delete the Roles
+	$give_roles = array( 'give_manager', 'give_accountant', 'give_worker', 'give_vendor' );
+	foreach ( $give_roles as $role ) {
 		remove_role( $role );
 	}
 
 	// Remove all database tables
-	$wpdb->query( "DROP TABLE IF EXISTS " . $wpdb->prefix . "edd_customers" );
+	$wpdb->query( "DROP TABLE IF EXISTS " . $wpdb->prefix . "give_customers" );
 
-	/** Cleanup Cron Events */
-	wp_clear_scheduled_hook( 'edd_daily_scheduled_events' );
-	wp_clear_scheduled_hook( 'edd_daily_cron' );
-	wp_clear_scheduled_hook( 'edd_weekly_cron' );
+	// Cleanup Cron Events
+	wp_clear_scheduled_hook( 'give_daily_scheduled_events' );
+	wp_clear_scheduled_hook( 'give_daily_cron' );
+	wp_clear_scheduled_hook( 'give_weekly_cron' );
 }

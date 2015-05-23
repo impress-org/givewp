@@ -104,6 +104,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 				add_action( 'plugins_loaded', array( self::$instance, 'load_textdomain' ) );
 
 				self::$instance->includes();
+				self::$instance->roles              = new Give_Roles();
 				self::$instance->give_settings      = new Give_Plugin_Settings();
 				self::$instance->customers          = new Give_DB_Customers();
 				self::$instance->session            = new Give_Session();

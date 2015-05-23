@@ -212,7 +212,7 @@ class Give_Roles {
 	 * Remove core post type capabilities (called on uninstall)
 	 *
 	 * @access public
-	 * @since 1.5.2
+	 * @since 1.0
 	 * @return void
 	 */
 	public function remove_caps() {

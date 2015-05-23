@@ -29,18 +29,17 @@ function give_install() {
 
 	global $give_options;
 
-	// Setup the Downloads Custom Post Type
+	// Setup the Give Custom Post Types
 	give_setup_post_types();
 
 	// Clear the permalinks
-	flush_rewrite_rules();
+	flush_rewrite_rules( false );
 
 	// Setup some default options
 	$options = array();
 
 	// Current Version (if set)
 	$current_version = get_option( 'give_version' );
-
 
 	// Checks if the Success Page option exists AND that the page exists
 	if ( ! isset( $give_options['success_page'] ) || ! get_post( $give_options['success_page'] ) ) {
@@ -104,6 +103,7 @@ function give_install() {
 		$options['base_country']       = 'US';
 		$options['test_mode']          = 1;
 		$options['currency']           = 'USD';
+		$options['session_lifetime']   = '604800';
 		$options['gateways']['manual'] = 1;
 		$options['default_gateway']    = 'manual'; //default is manual
 
