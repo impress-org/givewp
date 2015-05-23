@@ -121,7 +121,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 		 * Throw error on object clone
 		 *
 		 * The whole idea of the singleton design pattern is that there is a single
-		 * object therefore, we don't want the object to be cloned.
+		 * object, therefore we don't want the object to be cloned.
 		 *
 		 * @since  1.0
 		 * @access protected
@@ -317,7 +317,7 @@ endif; // End if class_exists check
  * Example: <?php $give = Give(); ?>
  *
  * @since 1.0
- * @return object The one true Give Instance
+ * @return object - The one true Give Instance
  */
 function Give() {
 	return Give::instance();
