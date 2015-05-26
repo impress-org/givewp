@@ -134,6 +134,7 @@ Version 0.8 is the first release of Give. It's still in beta version so if you f
 = 1.0 =
 * New: [give_profile_editor] shortcode that enables donors to customize their account information on the frontend #130 https://github.com/WordImpress/Give/issues/130
 * New: Uninstall.php file which deletes ALL data if the user chooses under Settings > Advanced
+* New: composer.json file for developers
 * Fix: Admin Logs CSS: https://github.com/WordImpress/Give/issues/127
 
 = 0.9 beta =
