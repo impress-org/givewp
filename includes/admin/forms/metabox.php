@@ -64,6 +64,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'description'  => __( 'This is the set donation amount for this form.', 'give' ),
 					'id'           => $prefix . 'set_price',
 					'type'         => 'text_money',
+					'row_classes' =>  '',
 					'before_field' => give_currency_symbol(), // Replaces default '$'
 					'attributes'   => array(
 						'placeholder' => give_format_amount( '0.00' ),

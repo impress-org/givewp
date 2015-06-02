@@ -96,14 +96,14 @@ function give_email_preview_template_tags( $message ) {
  * @access private
  * @global      $give_options Array of all the Give Options
  * @since  1.0
- * @return array
+ * @return array|bool
  */
 add_filter( 'give_settings_emails', 'give_email_template_preview' );
 
 function give_email_template_preview( $array ) {
 
 	if ( ! current_user_can( 'manage_give_settings' ) ) {
-		return;
+		return false;
 	}
 	$custom_field = array(
 		'name' => __( 'Preview Email', 'give' ),

@@ -336,7 +336,7 @@ class Give_Plugin_Settings {
 							'type' => 'checkbox'
 						),
 						array(
-							'name'    => __( 'Offline Donation Text', 'give' ),
+							'name'    => __( 'Offline Donation Instructions', 'give' ),
 							'desc'    => __( 'The following content will appear for all forms when the user selects the offline donation payment option. Note: You may customize the content per form as needed.', 'give' ),
 							'id'      => 'global_offline_donation_content',
 							'default' => give_get_default_offline_donation_content(),
@@ -345,6 +345,23 @@ class Give_Plugin_Settings {
 								'textarea_rows' => 6,
 							)
 						),
+						array(
+							'name'    => __( 'Offline Donation Email Instructions Subject', 'give' ),
+							'desc'    => __( 'Enter the subject line for the donation receipt email.', 'give' ),
+							'id'      => 'offline_donation_subject',
+							'default' => __( '{donation} - Offline Donation Instructions', 'give' ),
+							'type'    => 'text'
+						),
+						array(
+							'name'    => __( 'Offline Donation Email Instructions', 'give' ),
+							'desc'    => __( 'Enter the instructions you want emailed to the donor after they have submitted the donation form. Most likely this would include important information like mailing address and who to make the check out to.', 'give' ),
+							'id'      => 'global_offline_donation_email',
+							'default' => give_get_default_offline_donation_email_content(),
+							'type'    => 'wysiwyg',
+							'options' => array(
+								'textarea_rows' => 6,
+							)
+						)
 					)
 				)
 			),
