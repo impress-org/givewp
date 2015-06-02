@@ -131,10 +131,11 @@ Version 0.8 is the first release of Give. It's still in beta version so if you f
 
 == Changelog ==
 
-= 1.0 =
+= X.X.X =
 * New: [give_profile_editor] shortcode that enables donors to customize their account information on the frontend #130 https://github.com/WordImpress/Give/issues/130
 * New: Uninstall.php file which deletes ALL data if the user chooses under Settings > Advanced
 * New: composer.json file for developers
+* New: Dynamic sidebar for singular Give Donation Forms. The sidebar will appear under Appearances > Widgets if you have not disabled Give's singular post type in Give > Settings > Display Options. You can add widgets of your choosing to this section and they will display to the left of your forms, below the main form featured image.
 * Fix: Admin Logs CSS: https://github.com/WordImpress/Give/issues/127
 
 = 0.9 beta =

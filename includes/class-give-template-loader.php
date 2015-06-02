@@ -44,7 +44,8 @@ class Give_Template_Loader {
 		add_action( 'give_before_single_form_summary', 'give_left_sidebar_pre_wrap', 5 );
 		add_action( 'give_before_single_form_summary', 'give_show_form_images', 10 );
 		//add_action( 'give_before_single_form_summary', 'give_show_avatars', 15 );
-		add_action( 'give_before_single_form_summary', 'give_left_sidebar_post_wrap', 20 );
+		add_action( 'give_before_single_form_summary', 'give_get_forms_sidebar', 20 );
+		add_action( 'give_before_single_form_summary', 'give_left_sidebar_post_wrap', 30 );
 
 
 		/**
