@@ -1,0 +1,42 @@
+/**
+ * Give Frontend Progress Bar SCSS
+ *
+ * @package     Give
+ * @subpackage  SCSS/Frontend
+ * @copyright   Copyright (c) 2015, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+
+.goal-progress{
+	margin-bottom: 20px;
+
+	.income {
+		font-size: 46px;
+		line-height: 48px;
+		letter-spacing: -1px;
+		color: #333;
+	}
+
+	.raised{
+		margin-bottom: 15px;
+	}
+}
+
+.progress-bar { 
+	height: 20px;  /* Can be anything */
+	position: relative;
+	background: #EEE;
+	border-radius: 25px;
+
+	> span {
+		display: block;
+		height: 100%;
+		border-top-right-radius: 8px;
+		border-bottom-right-radius: 8px;
+		border-top-left-radius: 20px;
+		border-bottom-left-radius: 20px;
+		background-color: rgb(43,194,83);
+		position: relative;
+		overflow: hidden;
+	}
+}

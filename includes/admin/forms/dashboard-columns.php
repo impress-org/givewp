@@ -36,6 +36,7 @@ function give_form_columns( $give_form_columns ) {
 		'form_category' => __( 'Categories', 'give' ),
 		'form_tag'      => __( 'Tags', 'give' ),
 		'price'         => __( 'Price', 'give' ),
+		'goal'			=> __( 'Goal', 'give' ),
 		'donations'     => __( 'Donations', 'give' ),
 		'earnings'      => __( 'Income', 'give' ),
 		'shortcode'     => __( 'Shortcode', 'give' ),
@@ -90,6 +91,10 @@ function give_render_form_columns( $column_name, $post_id ) {
 					echo '<input type="hidden" class="formprice-' . $post_id . '" value="' . give_get_form_price( $post_id ) . '" />';
 				}
 				break;
+			case 'goal':
+				echo give_goal( $post_id, false );
+				echo '<input type="hidden" class="formgoal-' . $post_id . '" value="' . give_get_form_goal( $post_id ) . '" />';
+				break;
 			case 'donations':
 				if ( current_user_can( 'view_give_forms_stats', $post_id ) ) {
 					echo '<a href="' . esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=logs&view=sales&form=' . $post_id ) ) . '">';
@@ -130,6 +135,7 @@ function give_sortable_form_columns( $columns ) {
 	$columns['price']    = 'price';
 	$columns['sales']    = 'sales';
 	$columns['earnings'] = 'earnings';
+	$columns['goal']	 = 'goal';
 
 	return $columns;
 }
@@ -170,12 +176,23 @@ function give_sort_forms( $vars ) {
 			);
 		}
 
-		// Check if "orderby" is set to "earnings"
+		// Check if "orderby" is set to "price"
 		if ( isset( $vars['orderby'] ) && 'price' == $vars['orderby'] ) {
 			$vars = array_merge(
 				$vars,
 				array(
 					'meta_key' => '_give_set_price',
+					'orderby'  => 'meta_value_num'
+				)
+			);
+		}
+
+		// Check if "orderby" is set to "goal"
+		if ( isset( $vars['orderby'] ) && 'goal' == $vars['orderby'] ) {
+			$vars = array_merge(
+				$vars,
+				array(
+					'meta_key' => '_give_set_goal',
 					'orderby'  => 'meta_value_num'
 				)
 			);

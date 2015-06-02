@@ -31,6 +31,13 @@ class Give_Donate_Form {
 	private $price;
 
 	/**
+	 * The donation goal
+	 *
+	 * @since 1.0
+	 */
+	private $goal;
+
+	/**
 	 * The donation prices, if Price Levels are enabled
 	 *
 	 * @since 1.0
@@ -167,6 +174,33 @@ class Give_Donate_Form {
 	}
 
 	/**
+	 * Retrieve the goal
+	 *
+	 * @since 1.0
+	 * @return float
+	 */
+	public function get_goal() {
+
+		if ( ! isset( $this->goal ) ) {
+
+			$this->goal = get_post_meta( $this->ID, '_give_set_goal', true );
+
+			if ( $this->goal ) {
+
+				$this->goal = give_sanitize_amount( $this->goal );
+
+			} else {
+
+				$this->goal = 0;
+
+			}
+
+		}
+
+		return apply_filters( 'give_get_set_goal', $this->goal, $this->ID );
+	}
+
+	/**
 	 * Retrieve the variable prices
 	 *
 	 * @since 1.0
@@ -203,7 +237,7 @@ class Give_Donate_Form {
 	 *
 	 * @description Determine if the donation form has variable prices enabled
 	 *
-	 * @since 1.0
+	 * @since       1.0
 	 * @return bool
 	 */
 	public function has_variable_prices() {
@@ -292,7 +326,7 @@ class Give_Donate_Form {
 	}
 
 	/**
-	 * Retrieve the total earnings for the download
+	 * Retrieve the total earnings for the form
 	 *
 	 * @since 1.0
 	 * @return float
@@ -385,7 +419,7 @@ class Give_Donate_Form {
 			$is_free = true;
 		}
 
-		return (bool) apply_filters( 'give_is_free_download', $is_free, $this->ID, $price_id );
+		return (bool) apply_filters( 'give_is_free_donation', $is_free, $this->ID, $price_id );
 
 	}
 
