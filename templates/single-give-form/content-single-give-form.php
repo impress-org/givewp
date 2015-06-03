@@ -23,45 +23,46 @@ do_action( 'give_before_single_form' );
 
 if ( post_password_required() ) {
 	echo get_the_password_form();
+
 	return;
 }
 ?>
 
-<div id="give-form-<?php the_ID(); ?>" <?php post_class(); ?>>
-
-	<?php
-	/**
-	 * give_before_single_product_summary hook
-	 *
-	 * @hooked give_show_product_images - 10
-	 */
-	do_action( 'give_before_single_form_summary' );
-	?>
-
-	<div class="summary entry-summary">
+	<div id="give-form-<?php the_ID(); ?>" <?php post_class(); ?>>
 
 		<?php
 		/**
-		 * give_single_form_summary hook
+		 * give_before_single_product_summary hook
 		 *
-		 * @hooked give_template_single_title - 5
-		 * @hooked give_show_goal_progress - 10
-		 * @hooked give_get_donation_form - 15
+		 * @hooked give_show_product_images - 10
 		 */
-		do_action( 'give_single_form_summary' );
+		do_action( 'give_before_single_form_summary' );
 		?>
 
-	</div>
-	<!-- .summary -->
+		<div class="summary entry-summary">
 
-	<?php
-	/**
-	 * give_after_single_form_summary hook
-	 */
-	do_action( 'give_after_single_form_summary' );
-	?>
+			<?php
+			/**
+			 * give_single_form_summary hook
+			 *
+			 * @hooked give_template_single_title - 5
+			 * @hooked give_show_goal_progress - 10
+			 * @hooked give_get_donation_form - 15
+			 */
+			do_action( 'give_single_form_summary' );
+			?>
+
+		</div>
+		<!-- .summary -->
+
+		<?php
+		/**
+		 * give_after_single_form_summary hook
+		 */
+		do_action( 'give_after_single_form_summary' );
+		?>
 
 
-</div><!-- #product-<?php the_ID(); ?> -->
+	</div><!-- #give-form-<?php the_ID(); ?> -->
 
 <?php do_action( 'give_after_single_form' ); ?>

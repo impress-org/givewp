@@ -12,11 +12,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 global $post;
 
-$form_id = is_object( $post ) ? $post->ID : 0;
+$form_id     = is_object( $post ) ? $post->ID : 0;
+$goal_option = get_post_meta( $form_id, '_give_goal_option', true );
 
 $form = new Give_Donate_Form( $form_id );
 
-if ( empty( $form->ID ) ) {
+if ( empty( $form->ID ) || $goal_option !== 'yes' ) {
 	return false;
 }
 
