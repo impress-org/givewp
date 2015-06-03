@@ -17,13 +17,6 @@ Forms CPT
 }
 
 /* Donation Levels Repeating Field */
-#_give_donation_levels_repeat {
-  margin: 0 0 20px;
-  .cmb-row, .inside {
-	margin: 0;
-  }
-}
-
 #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row .cmb2-radio-list label {
   font-size: 12px;
 }
@@ -34,8 +27,7 @@ Forms CPT
 
 /* Table Rows */
 div.cmb-type-levels-repeater-header {
-  padding: 10px 1px 0 0 !important;
-  margin: 0 !important;
+  border: none;
 }
 
 div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
@@ -46,29 +38,43 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
 
 }
 
-.cmb2-id--give-levels-header .table-container {
-  display: table;
-  width: 100%;
-  border-top: 1px solid #e9e9e9;
-  border-left: 1px solid #e9e9e9;
+.cmb2-id--give-levels-header {
+  padding: 10px 12px 0 !important;
+  margin: 0 !important;
+  background: #F7F7F7;
 
-  > .table-row {
-	display: table-row;
-	background: #FCFCFC;
+  .table-container {
+	display: table;
+	width: 100%;
 
-	> .table-cell {
-	  display: table-cell;
-	  vertical-align: middle;
-	  padding: 10px 15px;
-	  border-right: 1px solid #e9e9e9;
+	border-top: 1px solid #e9e9e9;
+	border-bottom: 1px solid #e9e9e9;
+	border-left: 1px solid #e9e9e9;
+
+	> .table-row {
+	  display: table-row;
+	  background: #FCFCFC;
+
+	  > .table-cell {
+		display: table-cell;
+		vertical-align: middle;
+		padding: 10px 15px;
+		border-right: 1px solid #e9e9e9;
+	  }
+
 	}
 
   }
-
 }
 
 #_give_donation_levels_repeat {
+  background: #F7F7F7;
+  padding: 0 12px 20px;
+  box-sizing: border-box;
 
+  .cmb-row, .inside {
+	margin: 0;
+  }
   .cmb-remove-field-row {
 	margin: 3px 0 0;
 
@@ -85,6 +91,9 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
   .cmbhandle {
 	display: none;
   }
+  .cmb-add-row {
+	margin: 12px 0 0;
+  }
 
 }
 
@@ -98,6 +107,28 @@ p.give-level-id {
   background: #FCFCFC;
   padding: 2px 7px;
   font-size: 11px;
+}
+
+#poststuff .give-subfield {
+  background: #FAFAFA;
+
+  .cmb-th label {
+	padding-left: 16px;
+  }
+  .cmb-td {
+	padding-right: 10px;
+ 	box-sizing: border-box;
+  }
+
+}
+
+.postbox-container .cmb-row {
+  margin: 0;
+
+  .cmb-th label {
+	padding-left: 8px;
+  }
+
 }
 
 /* Smaller Resolution Desktops AND UP */
@@ -305,12 +336,20 @@ Publish Metabox
 Content Options
 -------------------------------------*/
 
-.cmb2-id--give-content-option, .cmb2-id--give-terms-option, .cmb2-id--give-custom-amount, .cmb2-id--give-offline-donation-enable-billing-fields-single {
+.cmb2-id--give-content-option,
+.cmb2-id--give-terms-option,
+.cmb2-id--give-offline-donation-enable-billing-fields-single,
+.cmb2-id--give-goal-option,
+.cmb2-id--give-customize-offline-donations {
   border-bottom: none !important;
   margin: 0 !important;
 }
 
-.cmb2-id--give-form-content, .cmb2-id--give-agree-label, .cmb2-id--give-custom-amount-text, .cmb2-id--give-offline-checkout-notes {
+.cmb2-id--give-form-content,
+.cmb2-id--give-agree-label,
+.cmb2-id--give-offline-checkout-notes,
+.cmb2-id--give-set-goal,
+.cmb2-id--give-offline-donation-enable-billing-fields-single {
   border-top: 1px solid #e9e9e9 !important;
 }
 
@@ -318,7 +357,8 @@ Content Options
 Terms and Conditions Metabox
 ---------------------------------------*/
 
-.cmb2-id--give-agree-label, .cmb2-id--give-agree-text {
+.cmb2-id--give-agree-label,
+.cmb2-id--give-agree-text {
   display: none;
 }
 

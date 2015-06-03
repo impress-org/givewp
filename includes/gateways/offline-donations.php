@@ -271,6 +271,7 @@ function give_offline_add_settings( $settings ) {
 			'name' => __( 'Request Billing Information', 'give' ),
 			'desc' => __( 'This option will enable the billing details section for this form\'s offline donation payment gateway. The fieldset will appear above the offline donation instructions.', 'give' ),
 			'id'   => $prefix . 'offline_donation_enable_billing_fields_single',
+			'row_classes' => 'give-subfield',
 			'type' => 'checkbox'
 		),
 		array(
@@ -279,6 +280,7 @@ function give_offline_add_settings( $settings ) {
 			'desc'    => __( 'Enter the instructions you want to display to the donor during the donation process. Most likely this would include important information like mailing address and who to make the check out to.', 'give' ),
 			'default' => give_get_default_offline_donation_content(),
 			'type'    => 'wysiwyg',
+			'row_classes' => 'give-subfield',
 			'options' => array(
 				'textarea_rows' => 6,
 			)
@@ -288,6 +290,7 @@ function give_offline_add_settings( $settings ) {
 			'name'    => __( 'Offline Donation Email Instructions Subject', 'give' ),
 			'desc'    => __( 'Enter the subject line for the donation receipt email.', 'give' ),
 			'default' => __( '{donation} - Offline Donation Instructions', 'give' ),
+			'row_classes' => 'give-subfield',
 			'type'    => 'text'
 		),
 		array(
@@ -296,6 +299,7 @@ function give_offline_add_settings( $settings ) {
 			'desc'    => __( 'Enter the instructions you want emailed to the donor after they have submitted the donation form. Most likely this would include important information like mailing address and who to make the check out to.', 'give' ),
 			'default' => give_get_default_offline_donation_email_content(),
 			'type'    => 'wysiwyg',
+			'row_classes' => 'give-subfield',
 			'options' => array(
 				'textarea_rows' => 6,
 			)

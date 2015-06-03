@@ -119,6 +119,20 @@ jQuery.noConflict();
 			}
 		} ).change();
 
+		//Goals
+		var goal_option = $( '.cmb2-id--give-goal-option' );
+		goal_option.on( 'change', function () {
+			var goal_option = $( '.cmb2-id--give-goal-option input:radio:checked' ).val();
+			if ( goal_option === 'no' ) {
+
+				$( '.cmb2-id--give-set-goal' ).hide();
+				$( '.cmb2-id--give-goal-color' ).hide();
+			} else {
+				$( '.cmb2-id--give-set-goal' ).show();
+				$( '.cmb2-id--give-goal-color' ).show();
+			}
+		} ).change();
+
 		//Offline Donations
 		var offline_customization_option = $( '.cmb2-id--give-customize-offline-donations input:radio' );
 		offline_customization_option.on( 'change', function () {

@@ -138,6 +138,7 @@ Version 0.8 is the first release of Give. It's still in beta version so if you f
 * New: Dynamic sidebar for singular Give Donation Forms. The sidebar will appear under Appearances > Widgets if you have not disabled Give's singular post type in Give > Settings > Display Options. You can add widgets of your choosing to this section and they will display to the left of your forms, below the main form featured image.
 * New: Offline Donation enhancements including customizable donation instructions email sent to user upon form completion. See: https://github.com/WordImpress/Give/issues/124
 * New: Goals for Donation Forms. Thanks @ibndawood https://github.com/ibndawood @see
+* New: Admin CSS improvement - Now conditional fields are indicated with a slight gray background color
 * Fix: Admin Logs CSS: https://github.com/WordImpress/Give/issues/127
 
 = 0.9 beta =
