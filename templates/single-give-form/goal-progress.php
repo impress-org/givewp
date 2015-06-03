@@ -31,10 +31,6 @@ $progress = round( ( $income / $goal ) * 100, 2 );
 if ( $income > $goal ) {
 	$progress = 100;
 }
-
-echo "<pre>";
-var_dump( $form );
-echo "</pre>";
 ?>
 <div class="goal-progress">
 	<div class="raised"><?php echo sprintf( __( '<span class="income">%s</span> of %s raised', 'give' ), give_currency_filter( give_format_amount( $income ) ), give_currency_filter( give_format_amount( $goal ) ) ); ?></div>
