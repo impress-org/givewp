@@ -26,15 +26,19 @@ if ( $goal == 0 ) {
 	return;
 }
 
-$income   = $form->get_earnings();
+$income = $form->get_earnings();
+$color  = get_post_meta( $form_id, '_give_goal_color', true );
+
 $progress = round( ( $income / $goal ) * 100, 2 );
 if ( $income > $goal ) {
 	$progress = 100;
 }
 ?>
 <div class="goal-progress">
-	<div class="raised"><?php echo sprintf( __( '<span class="income">%s</span> of %s raised', 'give' ), give_currency_filter( give_format_amount( $income ) ), give_currency_filter( give_format_amount( $goal ) ) ); ?></div>
+	<div class="raised"><?php echo sprintf( _x( '%s of %s raised', 'give', 'This text displays the amount of income raised compared to the goal.' ), '<span class="income">' . give_currency_filter( give_format_amount( $income ) ) . '</span>', '<span class="goal-text">' . give_currency_filter( give_format_amount( $goal ) ) ) . '</span>'; ?></div>
 	<div class="progress-bar">
-		<span style="width: <?php echo esc_attr( $progress ); ?>%"></span>
+		<span style="width: <?php echo esc_attr( $progress ); ?>%; <?php if ( ! empty( $color ) ) {
+			echo 'background-color:' . $color;
+		} ?>"></span>
 	</div>
 </div><!-- /.goal-progress -->

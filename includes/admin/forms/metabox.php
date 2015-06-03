@@ -61,7 +61,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'description'  => __( 'This is the set donation amount for this form.', 'give' ),
 					'id'           => $prefix . 'set_price',
 					'type'         => 'text_money',
-					'row_classes' =>  '',
+					'row_classes'  => '',
 					'before_field' => give_currency_symbol(), // Replaces default '$'
 					'attributes'   => array(
 						'placeholder' => give_format_amount( '0.00' ),
@@ -78,6 +78,12 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 						'placeholder' => give_format_amount( '0.00' ),
 						'value'       => isset( $goal ) ? esc_attr( give_format_amount( $goal ) ) : '',
 					),
+				),
+				array(
+					'name'    => __( 'Goal Progress Bar Color', 'give' ),
+					'id'      => $prefix . 'goal_color',
+					'type'    => 'colorpicker',
+					'default' => '#2bc253',
 				),
 				//Donation levels: Header
 				array(
