@@ -131,18 +131,20 @@ Version 0.8 is the first release of Give. It's still in beta version so if you f
 
 == Changelog ==
 
-= X.X.X =
+= 0.9.5 =
 * New: [give_profile_editor] shortcode that enables donors to customize their account information on the frontend #130 https://github.com/WordImpress/Give/issues/130
 * New: Uninstall.php file which deletes ALL data if the user chooses under Settings > Advanced
 * New: composer.json file for developers
 * New: Dynamic sidebar for singular Give Donation Forms. The sidebar will appear under Appearances > Widgets if you have not disabled Give's singular post type in Give > Settings > Display Options. You can add widgets of your choosing to this section and they will display to the left of your forms, below the main form featured image.
 * New: Offline Donation enhancements including customizable donation instructions email sent to user upon form completion. See: https://github.com/WordImpress/Give/issues/124
-* New: Goals for Donation Forms. Thanks @ibndawood https://github.com/ibndawood @see
+* New: Goals for Donation Forms. Thanks @ibndawood https://github.com/ibndawood @see https://github.com/WordImpress/Give/issues/42
 * New: Admin CSS improvement - Now conditional fields are indicated with a slight gray background color
 * New: Script Optimization - Give now only loads one minified JS script and one CSS file to keep load times fast and minimize footprint
 * New: Using Grunt to generate POT file now for much more timely and accurate translations
+* New: Give has been added Composer support @see: https://packagist.org/packages/wordimpress/give thanks @michaelbeil
 * Fix: Admin Logs CSS: https://github.com/WordImpress/Give/issues/127
 * Fix: Incorrect amount formatting when currency separators set to "," for both thousands and decimals. @see: https://github.com/WordImpress/Give/issues/150
+* Fix: Broken "lock" image that appears above donation fields for SSL sites @see: https://github.com/WordImpress/Give/issues/128
 
 = 0.9 beta =
 * New: Global options to disable the form excerpt and featured image found under Give > Settings > Display Options
