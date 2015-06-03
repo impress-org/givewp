@@ -139,7 +139,10 @@ Version 0.8 is the first release of Give. It's still in beta version so if you f
 * New: Offline Donation enhancements including customizable donation instructions email sent to user upon form completion. See: https://github.com/WordImpress/Give/issues/124
 * New: Goals for Donation Forms. Thanks @ibndawood https://github.com/ibndawood @see
 * New: Admin CSS improvement - Now conditional fields are indicated with a slight gray background color
+* New: Script Optimization - Give now only loads one minified JS script and one CSS file to keep load times fast and minimize footprint
+* New: Using Grunt to generate POT file now for much more timely and accurate translations
 * Fix: Admin Logs CSS: https://github.com/WordImpress/Give/issues/127
+* Fix: Incorrect amount formatting when currency separators set to "," for both thousands and decimals. @see: https://github.com/WordImpress/Give/issues/150
 
 = 0.9 beta =
 * New: Global options to disable the form excerpt and featured image found under Give > Settings > Display Options

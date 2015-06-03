@@ -23,9 +23,16 @@ var gulp = require( 'gulp' ),
 /* Paths
  ------------------------------------- */
 var source_paths = {
-	admin_styles   : ['./assets/scss/**/give-admin.scss'],
-	frontend_styles: ['./assets/scss/frontend/give-frontend.scss'],
-	scripts        : ['./assets/js/**/*.js', '!./assets/js/**/*.min.js']
+	admin_styles    : ['./assets/scss/**/give-admin.scss'],
+	frontend_styles : ['./assets/scss/frontend/give-frontend.scss'],
+	scripts         : ['./assets/js/**/*.js', '!./assets/js/**/*.min.js'],
+	frontend_scripts: [
+		'./assets/js/plugins/jQuery.blockUI.min.js',
+		'./assets/js/plugins/jquery.qtip.min.js',
+		'./assets/js/plugins/jquery.maskMoney.min.js',
+		'./assets/js/plugins/give-magnific.min.js',
+		'./assets/js/frontend/*.min.js' //Frontend scripts need to be loaded last
+	]
 };
 
 /* Admin SCSS Task
@@ -38,7 +45,7 @@ gulp.task( 'admin_styles', function () {
 			errLogToConsole: true
 		} ) )
 		.pipe( rename( 'give-admin.css' ) )
-		.pipe( sourcemaps.write('.') )
+		.pipe( sourcemaps.write( '.' ) )
 		.pipe( gulp.dest( './assets/css' ) )
 		.pipe( rename( 'give-admin.min.css' ) )
 		.pipe( minifyCSS() )
@@ -90,6 +97,19 @@ gulp.task( 'scripts', function () {
 		.pipe( livereload() );
 } );
 
+gulp.task( 'concat_scripts', function () {
+	return gulp.src( source_paths.frontend_scripts )
+		.pipe( uglify( {
+			preserveComments: 'all'
+		} ) )
+		.pipe( concat( 'give.all.min.js' ) ) //Add all compressed frontend JS scripts into one minified file for production
+		.pipe( gulp.dest( 'assets/js/frontend' ) )
+		.pipe( notify( {
+			message: 'Concat scripts task complete!',
+			onLast : true //only notify on completion of task (prevents multiple notifications per file)
+		} ) )
+} );
+
 /* Watch Files For Changes
  ------------------------------------- */
 gulp.task( 'watch', function () {
@@ -129,6 +149,6 @@ var onError = function ( err ) {
 /* Default Gulp task
  ------------------------------------- */
 gulp.task( 'default', function () {
-	gulp.start( 'admin_styles', 'frontend_styles', 'scripts', 'watch' );
+	gulp.start( 'admin_styles', 'frontend_styles', 'scripts', 'concat_scripts', 'watch' );
 	notify( {message: 'Default task complete'} )
 } );
