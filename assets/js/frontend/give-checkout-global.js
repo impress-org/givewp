@@ -112,7 +112,7 @@ jQuery( document ).ready( function ( $ ) {
 		$( this ).removeClass( 'invalid-amount' );
 
 		//Fire up Mask Money
-		$( this ).maskMoney( 'mask', {
+		$( this ).maskMoney( {
 			decimal  : give_global_vars.decimal_separator,
 			thousands: give_global_vars.thousands_separator
 		} );
