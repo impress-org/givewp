@@ -14,21 +14,19 @@ global $post;
 
 $form_id     = is_object( $post ) ? $post->ID : 0;
 $goal_option = get_post_meta( $form_id, '_give_goal_option', true );
+$form        = new Give_Donate_Form( $form_id );
+$goal        = $form->goal;
+$income      = $form->get_earnings();
+$color       = get_post_meta( $form_id, '_give_goal_color', true );
 
-$form = new Give_Donate_Form( $form_id );
 
 if ( empty( $form->ID ) || $goal_option !== 'yes' ) {
 	return false;
 }
 
-$goal = $form->goal;
-
 if ( $goal == 0 ) {
 	return;
 }
-
-$income = $form->get_earnings();
-$color  = get_post_meta( $form_id, '_give_goal_color', true );
 
 $progress = round( ( $income / $goal ) * 100, 2 );
 if ( $income > $goal ) {

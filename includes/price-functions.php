@@ -70,12 +70,12 @@ function give_get_variable_prices( $form_id = 0 ) {
 function give_get_default_multilevel_amount( $form_id ) {
 	$default_price = '0.00';
 	$prices        = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
+
 	foreach ( $prices as $price ) {
 
 		if ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) {
 			$default_price = $price['_give_amount'];
 		}
-
 
 	}
 

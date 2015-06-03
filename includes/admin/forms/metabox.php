@@ -60,12 +60,14 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'name'         => __( 'Set Donation', 'give' ),
 					'description'  => __( 'This is the set donation amount for this form.', 'give' ),
 					'id'           => $prefix . 'set_price',
-					'type'         => 'text_money',
+					'type'         => 'text_small',
 					'row_classes'  => 'give-subfield',
-					'before_field' => give_currency_symbol(), // Replaces default '$'
+					'before_field' => give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol give-money-symbol-before">' . give_currency_symbol() . '</span>' : '',
+					'after_field'  => give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '',
 					'attributes'   => array(
 						'placeholder' => give_format_amount( '0.00' ),
 						'value'       => isset( $price ) ? esc_attr( give_format_amount( $price ) ) : '',
+						'class'       => 'cmb-type-text-small give-money-field',
 					),
 				),
 				//Donation levels: Header
@@ -93,10 +95,12 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 						array(
 							'name'         => __( 'Amount', 'give' ),
 							'id'           => $prefix . 'amount',
-							'type'         => 'text_money',
-							'before_field' => give_currency_symbol(), // Replaces default '$'
+							'type'         => 'text_small',
+							'before_field' => give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol  give-money-symbol-before">' . give_currency_symbol() . '</span>' : '',
+							'after_field'  => give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol  give-money-symbol-after">' . give_currency_symbol() . '</span>' : '',
 							'attributes'   => array(
 								'placeholder' => give_format_amount( '0.00' ),
+								'class'       => 'cmb-type-text-small give-money-field',
 							),
 							'before'       => 'give_format_admin_multilevel_amount',
 						),
@@ -169,7 +173,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'description'  => __( 'This is the goal you want to achieve for this form.', 'give' ),
 					'id'           => $prefix . 'set_goal',
 					'type'         => 'text_money',
-					'row_classes' => 'give-subfield',
+					'row_classes'  => 'give-subfield',
 					'before_field' => give_currency_symbol(), // Replaces default '$'
 					'attributes'   => array(
 						'placeholder' => give_format_amount( '0.00' ),
@@ -177,11 +181,11 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					),
 				),
 				array(
-					'name'    => __( 'Goal Progress Bar Color', 'give' ),
-					'id'      => $prefix . 'goal_color',
-					'type'    => 'colorpicker',
+					'name'        => __( 'Goal Progress Bar Color', 'give' ),
+					'id'          => $prefix . 'goal_color',
+					'type'        => 'colorpicker',
 					'row_classes' => 'give-subfield',
-					'default' => '#2bc253',
+					'default'     => '#2bc253',
 				),
 			)
 		)
@@ -248,12 +252,12 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 						'default' => 'onpage',
 					),
 					array(
-						'id'         => $prefix . 'reveal_label',
-						'name'       => __( 'Reveal / Modal Open Text', 'give' ),
-						'desc'       => __( 'The button label for completing the donation.', 'give' ),
-						'type'       => 'text_small',
+						'id'          => $prefix . 'reveal_label',
+						'name'        => __( 'Reveal / Modal Open Text', 'give' ),
+						'desc'        => __( 'The button label for completing the donation.', 'give' ),
+						'type'        => 'text_small',
 						'row_classes' => 'give-subfield',
-						'attributes' => array(
+						'attributes'  => array(
 							'placeholder' => __( 'Donate Now', 'give' ),
 						),
 					),
@@ -320,22 +324,22 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'default'     => 'none',
 				),
 				array(
-					'id'         => $prefix . 'agree_label',
-					'name'       => __( 'Agree to Terms Label', 'give' ),
-					'desc'       => __( 'Label shown next to the agree to terms check box.', 'give' ),
-					'type'       => 'text',
+					'id'          => $prefix . 'agree_label',
+					'name'        => __( 'Agree to Terms Label', 'give' ),
+					'desc'        => __( 'Label shown next to the agree to terms check box.', 'give' ),
+					'type'        => 'text',
 					'row_classes' => 'give-subfield',
-					'size'       => 'regular',
-					'attributes' => array(
+					'size'        => 'regular',
+					'attributes'  => array(
 						'placeholder' => __( 'Agree to Terms?', 'give' ),
 					),
 				),
 				array(
-					'id'   => $prefix . 'agree_text',
+					'id'          => $prefix . 'agree_text',
 					'row_classes' => 'give-subfield',
-					'name' => __( 'Agreement Text', 'give' ),
-					'desc' => __( 'This is the actual text which the user will have to agree to.', 'give' ),
-					'type' => 'wysiwyg'
+					'name'        => __( 'Agreement Text', 'give' ),
+					'desc'        => __( 'This is the actual text which the user will have to agree to.', 'give' ),
+					'type'        => 'wysiwyg'
 				),
 			)
 		)

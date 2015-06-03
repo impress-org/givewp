@@ -26,8 +26,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string $amount Newly sanitized amount
  */
 function give_sanitize_amount( $amount ) {
-	global $give_options;
-
 	$is_negative   = false;
 	$thousands_sep = give_get_option( 'thousands_separator', ',' );
 	$decimal_sep   = give_get_option( 'decimal_separator', '.' );
@@ -71,8 +69,6 @@ function give_sanitize_amount( $amount ) {
  * @return string $amount Newly formatted amount or Price Not Available
  */
 function give_format_amount( $amount, $decimals = true ) {
-	global $give_options;
-
 	$thousands_sep = give_get_option( 'thousands_separator', ',' );
 	$decimal_sep   = give_get_option( 'decimal_separator', '.' );
 
@@ -98,7 +94,7 @@ function give_format_amount( $amount, $decimals = true ) {
 		$amount = 0;
 	}
 
-	$decimals  = apply_filters( 'give_format_amount_decimals', $decimals ? 2 : 0, $amount );
+	$decimals = apply_filters( 'give_format_amount_decimals', $decimals ? 2 : 0, $amount );
 	$formatted = number_format( $amount, $decimals, $decimal_sep, $thousands_sep );
 
 	return apply_filters( 'give_format_amount', $formatted, $amount, $decimals, $decimal_sep, $thousands_sep );
@@ -132,15 +128,13 @@ function give_format_admin_multilevel_amount( $field_args, $field ) {
  * @return array $currency Currencies displayed correctly
  */
 function give_currency_filter( $price = '', $currency = '' ) {
-	global $give_options;
-
 	if ( empty( $currency ) ) {
 
 		$currency = give_get_currency();
 
 	}
 
-	$position = isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before';
+	$position = give_get_option( 'currency_position', 'before' );
 
 	$negative = $price < 0;
 
