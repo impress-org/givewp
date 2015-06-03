@@ -494,3 +494,29 @@ function give_add_image_sizes() {
 	add_image_size( 'give_form_thumbnail', $give_form_thumbnail['width'], $give_form_thumbnail['height'], $give_form_thumbnail['crop'] );
 	add_image_size( 'give_form_single', $give_form_single['width'], $give_form_single['height'], $give_form_single['crop'] );
 }
+
+/**
+ * Give Sidebars
+ *
+ * @description This option adds Give sidebars; registered late so it display last in list
+ *
+ */
+function give_widgets_init() {
+
+	//Single Give Forms (disabled if single turned off in settings)
+	if ( give_get_option( 'disable_forms_singular' ) !== 'on' ) {
+
+		register_sidebar( apply_filters( 'give_forms_single_sidebar', array(
+			'name'          => __( 'Give Single Form Sidebar', 'give' ),
+			'id'            => 'give-forms-sidebar',
+			'description'   => __( 'Widgets in this area will be shown on the single Give forms aside area. This sidebar will not display for embedded forms.', 'give' ),
+			'before_widget' => '<div id="%1$s" class="widget %2$s">',
+			'after_widget'  => '</div>',
+			'before_title'  => '<h3 class="widgettitle widget-title">',
+			'after_title'   => '</h3>',
+		) ) );
+
+	}
+}
+
+add_action( 'widgets_init', 'give_widgets_init', 999 );

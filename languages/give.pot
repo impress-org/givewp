@@ -895,7 +895,7 @@ msgid "View Donation Details"
 msgstr ""
 
 #: includes/admin/payments/class-payments-table.php:331
-msgid "Resend Purchase Receipt"
+msgid "Resend Donation Receipt"
 msgstr ""
 
 #: includes/admin/payments/class-payments-table.php:338

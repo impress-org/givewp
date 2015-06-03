@@ -711,7 +711,7 @@ function give_get_purchase_form_user( $valid_data = array() ) {
  * Validates the credit card info
  *
  * @access  private
- * @since   1.4.4
+ * @since   1.0
  * @return  array
  */
 function give_purchase_form_validate_cc() {
@@ -733,7 +733,7 @@ function give_purchase_form_validate_cc() {
  * Get Credit Card Info
  *
  * @access  private
- * @since   1.4.4
+ * @since   1.0
  * @return  array
  */
 function give_get_purchase_cc_info() {
@@ -757,7 +757,7 @@ function give_get_purchase_cc_info() {
 /**
  * Validate zip code based on country code
  *
- * @since  1.4.4
+ * @since  1.0
  *
  * @param int    $zip
  * @param string $country_code

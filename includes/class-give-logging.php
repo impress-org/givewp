@@ -84,7 +84,7 @@ class Give_Logging {
 	 */
 	public function log_types() {
 		$terms = array(
-			'sale', 'file_download', 'gateway_error', 'api_request'
+			'sale', 'gateway_error', 'api_request'
 		);
 
 		return apply_filters( 'give_log_types', $terms );

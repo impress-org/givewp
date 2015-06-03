@@ -242,13 +242,16 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 									<table style="width:100%;text-align:left;">
 										<thead>
 										<tr>
+											<?php do_action( 'give_donation_details_thead_before', $payment_id ); ?>
 											<th><?php _e( 'Form ID', 'give' ) ?></th>
 											<th><?php _e( 'Form Title', 'give' ) ?></th>
 											<th><?php _e( 'Date and Time', 'give' ) ?></th>
 											<th><?php _e( 'Total Donation', 'give' ) ?></th>
+											<?php do_action( 'give_donation_details_thead_after', $payment_id ); ?>
 										</tr>
 										</thead>
 										<tr>
+											<?php do_action( 'give_donation_details_tbody_before', $payment_id ); ?>
 											<td>
 												<?php echo $payment_meta['form_id']; ?>
 											</td>
@@ -257,6 +260,8 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 											</td>
 											<td><?php echo date( 'm/d/Y', $payment_date ) . ' ' . date_i18n( 'H:i', $payment_date ); ?></td>
 											<td><?php echo esc_attr( give_currency_filter( give_format_amount( give_get_payment_amount( $payment_id ) ) ) ); ?></td>
+											<?php do_action( 'give_donation_details_tbody_after', $payment_id ); ?>
+
 										</tr>
 									</table>
 

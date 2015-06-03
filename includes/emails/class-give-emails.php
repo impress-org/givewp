@@ -247,7 +247,7 @@ class Give_Emails {
 	 * @param  string       $message     The body of the email to send.
 	 * @param  string|array $attachments Attachments to the email in a format supported by wp_mail()
 	 *
-	 * @since 1.0
+	 * @return bool
 	 */
 	public function send( $to, $subject, $message, $attachments = '' ) {
 

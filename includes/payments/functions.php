@@ -826,16 +826,15 @@ function give_get_payment_meta( $payment_id = 0, $meta_key = '_give_payment_meta
 
 	if ( $meta_key === '_give_payment_meta' ) {
 
-		//These are here for backwards compatibility
-		if ( ! isset( $meta['key'] ) ) {
+		if ( empty( $meta['key'] ) ) {
 			$meta['key'] = give_get_payment_key( $payment_id );
 		}
 
-		if ( ! isset( $meta['email'] ) ) {
+		if ( empty( $meta['email'] ) ) {
 			$meta['email'] = give_get_payment_user_email( $payment_id );
 		}
 
-		if ( ! isset( $meta['date'] ) ) {
+		if ( empty( $meta['date'] ) ) {
 			$meta['date'] = get_post_field( 'post_date', $payment_id );
 		}
 	}

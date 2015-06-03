@@ -881,6 +881,16 @@ table.give-table td.row-title p {
   color: #aaa;
   margin: 0; }
 
+<<<<<<< HEAD
+/**
+ * Give Admin Welcome SCSS
+ *
+ * @description Displays when user activates the plugin
+ * @package     Give
+ * @subpackage  SCSS/Admin
+ * @copyright   Copyright (c) 2015, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+=======
 /*-------------------------
 Logs
 ----------------------------*/
@@ -899,6 +909,7 @@ Logs
  * @subpackage  SCSS/Admin
  * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+>>>>>>> master
 */
 .welcome-h1 {
   display: inline-block;

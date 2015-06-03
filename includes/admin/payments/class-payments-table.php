@@ -328,7 +328,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			$row_actions['email_links'] = '<a href="' . add_query_arg( array(
 					'give-action' => 'email_links',
 					'purchase_id' => $payment->ID
-				), $this->base_url ) . '">' . __( 'Resend Purchase Receipt', 'give' ) . '</a>';
+				), $this->base_url ) . '">' . __( 'Resend Donation Receipt', 'give' ) . '</a>';
 
 		}
 

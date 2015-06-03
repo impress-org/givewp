@@ -507,8 +507,8 @@ function give_reports_graph_controls() {
 				<input type="hidden" name="page" value="give-reports" />
 				<input type="hidden" name="view" value="<?php echo esc_attr( $view ); ?>" />
 
-				<?php if ( isset( $_GET['download-id'] ) ) : ?>
-					<input type="hidden" name="download-id" value="<?php echo absint( $_GET['download-id'] ); ?>" />
+				<?php if ( isset( $_GET['form-id'] ) ) : ?>
+					<input type="hidden" name="form-id" value="<?php echo absint( $_GET['form-id'] ); ?>" />
 				<?php endif; ?>
 
 				<div id="give-graphs-date-options-wrap" class="alignright">
@@ -749,7 +749,7 @@ function give_parse_report_dates( $data ) {
 	$view = give_get_reporting_view();
 	$id   = isset( $_GET['form-id'] ) ? $_GET['form-id'] : null;
 
-	wp_redirect( esc_url( add_query_arg( $dates, admin_url( 'edit.php?post_type=give_forms&page=give-reports&view=' . esc_attr( $view ) . '&form-id=' . absint( $id ) ) ) ) );
+	wp_redirect( add_query_arg( $dates, admin_url( 'edit.php?post_type=give_forms&page=give-reports&view=' . esc_attr( $view ) . '&form-id=' . absint( $id ) ) ) );
 	give_die();
 }
 

@@ -29,7 +29,7 @@ function give_trigger_donation_receipt( $payment_id ) {
 		return;
 	}
 
-	// Send email with secure download link
+	// Send email
 	give_email_donation_receipt( $payment_id );
 }
 

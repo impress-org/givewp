@@ -125,8 +125,14 @@ jQuery.noConflict();
 			var offline_customization_option_val = $( '.cmb2-id--give-customize-offline-donations input:radio:checked' ).val();
 			if ( offline_customization_option_val === 'no' ) {
 				$( '.cmb2-id--give-offline-checkout-notes' ).hide();
+				$( '.cmb2-id--give-offline-donation-enable-billing-fields-single' ).hide();
+				$( '.cmb2-id--give-offline-donation-subject' ).hide();
+				$( '.cmb2-id--give-offline-donation-email' ).hide();
 			} else {
 				$( '.cmb2-id--give-offline-checkout-notes' ).show();
+				$( '.cmb2-id--give-offline-donation-enable-billing-fields-single' ).show();
+				$( '.cmb2-id--give-offline-donation-subject' ).show();
+				$( '.cmb2-id--give-offline-donation-email' ).show();
 			}
 		} ).change();
 	};
