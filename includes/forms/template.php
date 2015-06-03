@@ -24,9 +24,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return string $purchase_form
  */
-
-add_action( 'give_single_form_summary', 'give_get_donation_form', 10 );
-
 function give_get_donation_form( $args = array() ) {
 
 	global $give_options, $post, $give_displayed_form_ids;
