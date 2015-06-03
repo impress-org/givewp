@@ -38,17 +38,16 @@ jQuery( document ).ready( function ( $ ) {
 
 		//Alls well, open popup!
 		$.magnificPopup.open( {
-			items  : {
+			mainClass: 'give-modal',
+			items    : {
 				src : this_form,
 				type: 'inline'
 			},
-			open: function () {
+			open     : function () {
 				// Will fire when this exact popup is opened
 				// this - is Magnific Popup object
-
-
 			},
-			close  : function () {
+			close    : function () {
 				//Remove popup class
 				this_form.removeClass( 'mfp-hide' );
 			}
