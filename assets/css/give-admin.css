@@ -570,7 +570,9 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
   padding: 5px 8px; }
 
 .give-money-symbol-before {
-  border-right: 0; }
+  border-right: 0;
+  position: relative;
+  right: -1px; }
 
 .give-money-symbol-after {
   border-left: 0; }
