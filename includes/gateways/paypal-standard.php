@@ -200,9 +200,6 @@ function give_process_paypal_ipn() {
 	// Convert collected post data to an array
 	parse_str( $encoded_data, $encoded_data_array );
 
-	// Get the PayPal redirect uri
-	$paypal_redirect = give_get_paypal_redirect( true );
-
 	if ( ! give_get_option( 'disable_paypal_verification' ) ) {
 
 		// Validate the IPN
@@ -320,8 +317,6 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 	}
 
 	if ( ! give_get_payment_user_email( $payment_id ) ) {
-
-		// This runs when a Buy Now purchase was made. It bypasses checkout so no personal info is collected until PayPal
 
 		// No email associated with purchase, so store from PayPal
 		give_update_payment_meta( $payment_id, '_give_payment_user_email', $data['payer_email'] );
