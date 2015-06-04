@@ -660,14 +660,14 @@ function give_get_highest_price_option( $form_id = 0 ) {
 		$max = 0;
 
 		foreach ( $prices as $key => $price ) {
-
 			if ( empty( $price['_give_amount'] ) ) {
 				continue;
 			}
+			$give_amount = give_sanitize_amount( $price['_give_amount'] );
 
-			$max = max( $max, give_sanitize_amount( $price['_give_amount'] ) );
+			$max = max( $max, $give_amount);
 
-			if ( $price['_give_amount'] == $max ) {
+			if ( $give_amount == $max ) {
 				$max_id = $key;
 			}
 		}
