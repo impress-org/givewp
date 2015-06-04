@@ -9,6 +9,10 @@
  * @since       1.0
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * PayPal Remove CC Form
  *
@@ -23,15 +27,12 @@ add_action( 'give_paypal_cc_form', '__return_false' );
  * Process PayPal Purchase
  *
  * @since 1.0
- * @global      $give_options  Array of all the Give Options
  *
  * @param array $purchase_data Purchase Data
  *
  * @return void
  */
 function give_process_paypal_purchase( $purchase_data ) {
-	global $give_options;
-
 	if ( ! wp_verify_nonce( $purchase_data['gateway_nonce'], 'give-gateway' ) ) {
 		wp_die( __( 'Nonce verification has failed', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
@@ -68,17 +69,17 @@ function give_process_paypal_purchase( $purchase_data ) {
 			'payment-confirmation' => 'paypal',
 			'payment-id'           => $payment
 
-		), get_permalink( $give_options['success_page'] ) );
+		), get_permalink( give_get_option( 'success_page' ) ) );
 
 		// Get the PayPal redirect uri
 		$paypal_redirect = trailingslashit( give_get_paypal_redirect() ) . '?';
 
 		// Setup PayPal arguments
 		$paypal_args = array(
-			'business'      => $give_options['paypal_email'],
+			'business'      => give_get_option( 'paypal_email', false ),
 			'email'         => $purchase_data['user_email'],
 			'invoice'       => $purchase_data['purchase_key'],
-			'amount'        => $purchase_data['post_data']['give-amount'],
+			'amount'        => $purchase_data['price'],
 			// The all important donation amount
 			'item_name'     => $purchase_data['post_data']['give-form-title'],
 			// "Purpose" field pre-populated with Form Title
@@ -138,12 +139,9 @@ add_action( 'give_gateway_paypal', 'give_process_paypal_purchase' );
  * Listens for a PayPal IPN requests and then sends to the processing function
  *
  * @since 1.0
- * @global $give_options Array of all the Give Options
  * @return void
  */
 function give_listen_for_paypal_ipn() {
-	global $give_options;
-
 	// Regular PayPal IPN
 	if ( isset( $_GET['give-listener'] ) && $_GET['give-listener'] == 'IPN' ) {
 		do_action( 'give_verify_paypal_ipn' );
@@ -156,11 +154,9 @@ add_action( 'init', 'give_listen_for_paypal_ipn' );
  * Process PayPal IPN
  *
  * @since 1.0
- * @global $give_options Array of all the Give Options
  * @return void
  */
 function give_process_paypal_ipn() {
-	global $give_options;
 
 	// Check the request method is POST
 	if ( isset( $_SERVER['REQUEST_METHOD'] ) && $_SERVER['REQUEST_METHOD'] != 'POST' ) {
@@ -215,7 +211,7 @@ function give_process_paypal_ipn() {
 			'method'      => 'POST',
 			'timeout'     => 45,
 			'redirection' => 5,
-			'httpversion' => '1.0',
+			'httpversion' => '1.1',
 			'blocking'    => true,
 			'headers'     => array(
 				'host'         => 'www.paypal.com',
@@ -237,7 +233,7 @@ function give_process_paypal_ipn() {
 			return; // Something went wrong
 		}
 
-		if ( $api_response['body'] !== 'VERIFIED' && ! isset( $give_options['disable_paypal_verification'] ) ) {
+		if ( $api_response['body'] !== 'VERIFIED' && give_get_option( 'disable_paypal_verification', false ) ) {
 			give_record_gateway_error( __( 'IPN Error', 'give' ), sprintf( __( 'Invalid IPN verification response. IPN data: %s', 'give' ), json_encode( $api_response ) ) );
 
 			return; // Response not okay
@@ -275,14 +271,12 @@ add_action( 'give_verify_paypal_ipn', 'give_process_paypal_ipn' );
  * Process web accept (one time) payment IPNs
  *
  * @since 1.0
- * @global      $give_options Array of all the Give Options
  *
- * @param array $data         IPN Data
+ * @param array $data IPN Data
  *
  * @return void
  */
 function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
-	global $give_options;
 
 	if ( $data['txn_type'] != 'web_accept' && $data['txn_type'] != 'cart' && $data['payment_status'] != 'Refunded' ) {
 		return;
@@ -306,7 +300,7 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 	}
 
 	// Verify payment recipient
-	if ( strcasecmp( $business_email, trim( $give_options['paypal_email'] ) ) != 0 ) {
+	if ( strcasecmp( $business_email, trim( give_get_option( 'paypal_email' ) ) ) != 0 ) {
 
 		give_record_gateway_error( __( 'IPN Error', 'give' ), sprintf( __( 'Invalid business email in IPN response. IPN data: %s', 'give' ), json_encode( $data ) ), $payment_id );
 		give_update_payment_status( $payment_id, 'failed' );
@@ -388,6 +382,76 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 			give_insert_payment_note( $payment_id, sprintf( __( 'PayPal Transaction ID: %s', 'give' ), $data['txn_id'] ) );
 			give_set_payment_transaction_id( $payment_id, $data['txn_id'] );
 			give_update_payment_status( $payment_id, 'publish' );
+		} else if ( 'pending' == $payment_status && isset( $data['pending_reason'] ) ) {
+
+			// Look for possible pending reasons, such as an echeck
+
+			$note = '';
+
+			switch ( strtolower( $data['pending_reason'] ) ) {
+
+				case 'echeck' :
+
+					$note = __( 'Payment made via eCheck and will clear automatically in 5-8 days', 'give' );
+
+					break;
+
+				case 'address' :
+
+					$note = __( 'Payment requires a confirmed customer address and must be accepted manually through PayPal', 'give' );
+
+					break;
+
+				case 'intl' :
+
+					$note = __( 'Payment must be accepted manually through PayPal due to international account regulations', 'give' );
+
+					break;
+
+				case 'multi-currency' :
+
+					$note = __( 'Payment received in non-shop currency and must be accepted manually through PayPal', 'give' );
+
+					break;
+
+				case 'paymentreview' :
+				case 'regulatory_review' :
+
+					$note = __( 'Payment is being reviewed by PayPal staff as high-risk or in possible violation of government regulations', 'give' );
+
+					break;
+
+				case 'unilateral' :
+
+					$note = __( 'Payment was sent to non-confirmed or non-registered email address.', 'give' );
+
+					break;
+
+				case 'upgrade' :
+
+					$note = __( 'PayPal account must be upgraded before this payment can be accepted', 'give' );
+
+					break;
+
+				case 'verify' :
+
+					$note = __( 'PayPal account is not verified. Verify account in order to accept this payment', 'give' );
+
+					break;
+
+				case 'other' :
+
+					$note = __( 'Payment is pending for unknown reasons. Contact PayPal support for assistance', 'give' );
+
+					break;
+
+			}
+			
+			if ( ! empty( $note ) ) {
+
+				give_insert_payment_note( $payment_id, $note );
+
+			}
 		}
 	}
 }
@@ -435,14 +499,12 @@ function give_process_paypal_refund( $data, $payment_id = 0 ) {
  * Get PayPal Redirect
  *
  * @since 1.0
- * @global     $give_options Array of all the Give Options
  *
- * @param bool $ssl_check    Is SSL?
+ * @param bool $ssl_check Is SSL?
  *
  * @return string
  */
 function give_get_paypal_redirect( $ssl_check = false ) {
-	global $give_options;
 
 	if ( is_ssl() || ! $ssl_check ) {
 		$protocal = 'https://';
@@ -466,17 +528,11 @@ function give_get_paypal_redirect( $ssl_check = false ) {
  * Set the Page Style for PayPal Purchase page
  *
  * @since 1.0
- * @global $give_options Array of all the Give Options
  * @return string
  */
 function give_get_paypal_page_style() {
-	global $give_options;
 
-	$page_style = 'PayPal';
-
-	if ( isset( $give_options['paypal_page_style'] ) ) {
-		$page_style = trim( $give_options['paypal_page_style'] );
-	}
+	$page_style = trim( edd_get_option( 'paypal_page_style', 'PayPal' ) );
 
 	return apply_filters( 'give_paypal_page_style', $page_style );
 }
