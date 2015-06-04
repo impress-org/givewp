@@ -4,7 +4,7 @@ Donate link: http://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 3.8
 Tested up to: 4.2.1
-Stable tag: 0.9.0
+Stable tag: 0.9.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -18,6 +18,7 @@ Democratizing Generosity - Empower your cause: start accepting donations on Word
 
 = Features Include: =
 
+* Goal tracking per form
 * Simple and pain free giving
 * Zero commission charges
 * Own all your donation data
@@ -127,13 +128,13 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 == Upgrade Notice ==
 
-Version 0.8 is the first release of Give. It's still in beta version so if you find any bugs or issues please let us know! Thanks for using Give.
+Version 0.9.5 beta is still in beta, so if you find any bugs or issues please let us know! This release adds Goal Tracking and several other important updates.
 
 == Changelog ==
 
-= 0.9.5 =
+= 0.9.5 beta =
 * New: [give_profile_editor] shortcode that enables donors to customize their account information on the frontend #130 https://github.com/WordImpress/Give/issues/130
-* New: Uninstall.php file which deletes ALL data if the user chooses under Settings > Advanced
+* New: Uninstall.php file which deletes ALL data if the user chooses to do so under Settings > Advanced
 * New: composer.json file for developers
 * New: Dynamic sidebar for singular Give Donation Forms. The sidebar will appear under Appearances > Widgets if you have not disabled Give's singular post type in Give > Settings > Display Options. You can add widgets of your choosing to this section and they will display to the left of your forms, below the main form featured image.
 * New: Offline Donation enhancements including customizable donation instructions email sent to user upon form completion. See: https://github.com/WordImpress/Give/issues/124
@@ -141,10 +142,11 @@ Version 0.8 is the first release of Give. It's still in beta version so if you f
 * New: Admin CSS improvement - Now conditional fields are indicated with a slight gray background color
 * New: Script Optimization - Give now only loads one minified JS script and one CSS file to keep load times fast and minimize footprint
 * New: Using Grunt to generate POT file now for much more timely and accurate translations
-* New: Give has been added Composer support @see: https://packagist.org/packages/wordimpress/give thanks @michaelbeil
+* New: Give now has Composer support @see: https://packagist.org/packages/wordimpress/give thanks @michaelbeil
 * Fix: Admin Logs CSS: https://github.com/WordImpress/Give/issues/127
 * Fix: Incorrect amount formatting when currency separators set to "," for both thousands and decimals. @see: https://github.com/WordImpress/Give/issues/150
 * Fix: Broken "lock" image that appears above donation fields for SSL sites @see: https://github.com/WordImpress/Give/issues/128
+* Fix: Updated Magnific class to prevent conflicts with other Magnific modals
 
 = 0.9 beta =
 * New: Global options to disable the form excerpt and featured image found under Give > Settings > Display Options
