@@ -26,7 +26,7 @@ do_action( 'give_pre_featured_thumbnail' );
 
 		$image_title = esc_attr( get_the_title( get_post_thumbnail_id() ) );
 		$image_link  = wp_get_attachment_url( get_post_thumbnail_id() );
-		$image       = get_the_post_thumbnail( $post->ID, apply_filters( 'single_give_form_large_thumbnail_size', 'shop_single' ), array(
+		$image       = get_the_post_thumbnail( $post->ID, apply_filters( 'single_give_form_large_thumbnail_size', 'give_form_single' ), array(
 			'title' => $image_title
 		) );
 
