@@ -8,6 +8,7 @@
  ------------------------------------- */
 var gulp = require( 'gulp' ),
 	gutil = require( 'gulp-util' ),
+	del = require( 'del' ),
 	autoprefixer = require( 'gulp-autoprefixer' ),
 	uglify = require( 'gulp-uglify' ),
 	sass = require( 'gulp-sass' ),
@@ -97,17 +98,19 @@ gulp.task( 'scripts', function () {
 		.pipe( livereload() );
 } );
 
-gulp.task( 'concat_scripts', function () {
-	return gulp.src( source_paths.frontend_scripts )
-		.pipe( uglify( {
-			preserveComments: 'all'
-		} ) )
-		.pipe( concat( 'give.all.min.js' ) ) //Add all compressed frontend JS scripts into one minified file for production
-		.pipe( gulp.dest( 'assets/js/frontend' ) )
-		.pipe( notify( {
-			message: 'Concat scripts task complete!',
-			onLast : true //only notify on completion of task (prevents multiple notifications per file)
-		} ) )
+gulp.task( 'concat_scripts', function ( cb ) {
+	del( [
+		'assets/js/frontend/give.all.min.js'
+	], function () {
+		return gulp.src( source_paths.frontend_scripts )
+			.pipe( concat( 'give.all.min.js' ) ) //Add all compressed frontend JS scripts into one minified file for production
+			.pipe( gulp.dest( 'assets/js/frontend' ) )
+			.pipe( notify( {
+				message: 'Concat scripts task complete!',
+				onLast : true //only notify on completion of task (prevents multiple notifications per file)
+			} ) )
+	} );
+
 } );
 
 /* Watch Files For Changes
