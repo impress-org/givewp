@@ -581,13 +581,25 @@ class Give_Plugin_Settings {
 						array(
 							'name' => __( 'Data Control', 'give' ),
 							'desc' => '<hr>',
-							'id'   => 'give_title_session_control_1',
+							'id'   => 'give_title_data_control_2',
 							'type' => 'give_title'
 						),
 						array(
 							'name' => __( 'Remove All Data on Uninstall?', 'give' ),
 							'desc' => __( 'Check this box if you would like Give to completely remove all of its data when the plugin is deleted.', 'give' ),
 							'id'   => 'uninstall_on_delete',
+							'type' => 'checkbox'
+						),
+						array(
+							'name' => __( 'Filter Control', 'give' ),
+							'desc' => '<hr>',
+							'id'   => 'give_title_filter_control',
+							'type' => 'give_title'
+						),
+						array(
+							'name' => __( 'Disable <code>the_content</code> filter', 'give' ),
+							'desc' =>  sprintf( __( 'If you are seeing extra social buttons, related posts, or other unwanted elements appearing within your forms then you can disable WordPress\' content filter. <a href="%s" target="_blank">Learn more</a> about the_content filter.', 'give' ), esc_url( 'https://codex.wordpress.org/Plugin_API/Filter_Reference/the_content' ) ),
+							'id'   => 'disable_the_content_filter',
 							'type' => 'checkbox'
 						),
 					)

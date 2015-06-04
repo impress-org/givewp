@@ -230,7 +230,7 @@ function give_output_donation_levels( $form_id = 0, $args = array() ) {
 	$currency_position   = isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before';
 	$symbol              = isset( $give_options['currency'] ) ? give_currency_symbol( $give_options['currency'] ) : '$';
 	$currency_output     = '<span class="give-currency-symbol give-currency-position-' . $currency_position . '">' . $symbol . '</span>';
-	$default_amount      = give_format_amount(give_get_default_form_amount( $form_id ) );
+	$default_amount      = give_format_amount( give_get_default_form_amount( $form_id ) );
 	$custom_amount_text  = get_post_meta( $form_id, '_give_custom_amount_text', true );
 
 	do_action( 'give_before_donation_levels', $form_id );
@@ -261,7 +261,7 @@ function give_output_donation_levels( $form_id = 0, $args = array() ) {
 				}
 				?>
 
-				<input class="give-text-input" id="give-amount" name="give-amount" type="text" placeholder="" value="<?php echo  $default_amount; ?>" required autocomplete="off">
+				<input class="give-text-input" id="give-amount" name="give-amount" type="text" placeholder="" value="<?php echo $default_amount; ?>" required autocomplete="off">
 
 				<?php if ( $currency_position == 'after' ) {
 					echo $currency_output;
@@ -1130,8 +1130,14 @@ add_action( 'give_pre_form_output', 'give_form_content', 10, 2 );
  */
 function give_form_display_content( $form_id ) {
 
-	$content = apply_filters( 'the_content', get_post_meta( $form_id, '_give_form_content', true ) );
-	$output  = '<div id="give-form-content-' . $form_id . '" class="give-form-content-wrap" >' . $content . '</div>';
+	$content = wpautop( get_post_meta( $form_id, '_give_form_content', true ) );
+
+	if ( give_get_option( 'disable_the_content_filter' ) !== 'on' ) {
+		$content = apply_filters( 'the_content', $content );
+	}
+
+	$output = '<div id="give-form-content-' . $form_id . '" class="give-form-content-wrap" >' . $content . '</div>';
+
 	echo apply_filters( 'give_form_content_output', $output );
 
 }
