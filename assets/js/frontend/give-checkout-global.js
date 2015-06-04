@@ -130,11 +130,16 @@ jQuery( document ).ready( function ( $ ) {
 		parent_form.find( '.give-select-level .give-donation-level-custom' ).prop( 'selected', true ); //Select
 
 	} );
+
+	//Custom Donation (fires on focus end aka "blur")
 	$body.on( 'blur', '.give-donation-amount .give-text-input', function ( e ) {
 
 		var pre_focus_amount = $( this ).data( 'amount' );
 		var value_now = $( this ).val();
-
+		var formatted_total = give_global_vars.currency_sign + value_now;
+		if ( give_global_vars.currency_pos == 'after' ) {
+			formatted_total = value_now + give_global_vars.currency_sign;
+		}
 		//Does this number have a value?
 		if ( !value_now || value_now <= 0 ) {
 			$( this ).addClass( 'invalid-amount' );
@@ -144,7 +149,7 @@ jQuery( document ).ready( function ( $ ) {
 		if ( pre_focus_amount !== value_now ) {
 
 			//update checkout total (include currency sign)
-			$( this ).parents( 'form' ).find( '.give-final-total-amount' ).data( 'total', value_now ).text( give_global_vars.currency_sign + value_now );
+			$( this ).parents( 'form' ).find( '.give-final-total-amount' ).data( 'total', value_now ).text( formatted_total );
 
 			//fade in/out updating text
 			$( this ).next( '.give-updating-price-loader' ).find( '.give-loading-animation' ).css( 'background-image', 'url(' + give_scripts.ajax_loader + ')' );
