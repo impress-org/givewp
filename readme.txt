@@ -1,7 +1,7 @@
-=== Give - Donation Plugin ===
+=== Give - WordPress Donation Plugin ===
 Contributors: wordimpress, dlocc, webdevmattcrom
 Donate link: http://givewp.com/
-Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, reports, reporting
+Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 3.8
 Tested up to: 4.2.1
 Stable tag: 0.9.0
