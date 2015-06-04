@@ -617,7 +617,7 @@ function give_get_lowest_price_option( $form_id = 0 ) {
 			if ( ! isset( $min ) ) {
 				$min = $price['_give_amount'];
 			} else {
-				$min = min( $min, $price['_give_amount'] );
+				$min = min( $min, give_sanitize_amount( $price['_give_amount'] ) );
 			}
 
 			if ( $price['_give_amount'] == $min ) {
@@ -665,7 +665,7 @@ function give_get_highest_price_option( $form_id = 0 ) {
 				continue;
 			}
 
-			$max = max( $max, $price['_give_amount'] );
+			$max = max( $max, give_sanitize_amount( $price['_give_amount'] ) );
 
 			if ( $price['_give_amount'] == $max ) {
 				$max_id = $key;
