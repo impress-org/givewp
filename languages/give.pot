@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Give - Donation Plugin 0.9.0 beta\n"
 "Report-Msgid-Bugs-To: https://givewp.com/\n"
-"POT-Creation-Date: 2015-06-03 21:30:45+00:00\n"
+"POT-Creation-Date: 2015-06-04 03:51:12+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -64,7 +64,7 @@ msgstr ""
 #: includes/class-give-license-handler.php:191
 #: includes/class-give-license-handler.php:262 includes/emails/actions.php:56
 #: includes/emails/template.php:251 includes/error-tracking.php:50
-#: includes/gateways/manual.php:48 includes/gateways/paypal-standard.php:36
+#: includes/gateways/manual.php:48 includes/gateways/paypal-standard.php:37
 msgid "Error"
 msgstr ""
 
@@ -394,13 +394,13 @@ msgstr ""
 
 #: includes/admin/forms/metabox.php:144 includes/admin/forms/metabox.php:167
 #: includes/admin/forms/metabox.php:321
-#: includes/gateways/offline-donations.php:266
+#: includes/gateways/offline-donations.php:267
 msgid "Yes"
 msgstr ""
 
 #: includes/admin/forms/metabox.php:145 includes/admin/forms/metabox.php:168
 #: includes/admin/forms/metabox.php:320
-#: includes/gateways/offline-donations.php:267
+#: includes/gateways/offline-donations.php:268
 msgid "No"
 msgstr ""
 
@@ -963,8 +963,8 @@ msgid "Advanced"
 msgstr ""
 
 #: includes/admin/register-settings.php:111
-#: includes/admin/register-settings.php:599
-#: includes/admin/register-settings.php:604
+#: includes/admin/register-settings.php:611
+#: includes/admin/register-settings.php:616
 msgid "System Info"
 msgstr ""
 
@@ -1142,9 +1142,9 @@ msgid ""
 msgstr ""
 
 #: includes/admin/register-settings.php:339
-#: includes/gateways/offline-donations.php:165
-#: includes/gateways/offline-donations.php:180
-#: includes/gateways/offline-donations.php:279
+#: includes/gateways/offline-donations.php:166
+#: includes/gateways/offline-donations.php:181
+#: includes/gateways/offline-donations.php:280
 msgid "Offline Donation Instructions"
 msgstr ""
 
@@ -1156,27 +1156,27 @@ msgid ""
 msgstr ""
 
 #: includes/admin/register-settings.php:349
-#: includes/gateways/offline-donations.php:290
+#: includes/gateways/offline-donations.php:291
 msgid "Offline Donation Email Instructions Subject"
 msgstr ""
 
 #: includes/admin/register-settings.php:350
-#: includes/gateways/offline-donations.php:291
+#: includes/gateways/offline-donations.php:292
 msgid "Enter the subject line for the donation receipt email."
 msgstr ""
 
 #: includes/admin/register-settings.php:352
-#: includes/gateways/offline-donations.php:292
+#: includes/gateways/offline-donations.php:293
 msgid "{donation} - Offline Donation Instructions"
 msgstr ""
 
 #: includes/admin/register-settings.php:356
-#: includes/gateways/offline-donations.php:298
+#: includes/gateways/offline-donations.php:299
 msgid "Offline Donation Email Instructions"
 msgstr ""
 
 #: includes/admin/register-settings.php:357
-#: includes/gateways/offline-donations.php:299
+#: includes/gateways/offline-donations.php:300
 msgid ""
 "Enter the instructions you want emailed to the donor after they have "
 "submitted the donation form. Most likely this would include important "
@@ -1467,21 +1467,37 @@ msgid ""
 "when the plugin is deleted."
 msgstr ""
 
-#: includes/admin/register-settings.php:605
+#: includes/admin/register-settings.php:594
+msgid "Filter Control"
+msgstr ""
+
+#: includes/admin/register-settings.php:600
+msgid "Disable <code>the_content</code> filter"
+msgstr ""
+
+#: includes/admin/register-settings.php:601
+msgid ""
+"If you are seeing extra social buttons, related posts, or other unwanted "
+"elements appearing within your forms then you can disable WordPress' "
+"content filter. <a href=\"%s\" target=\"_blank\">Learn more</a> about "
+"the_content filter."
+msgstr ""
+
+#: includes/admin/register-settings.php:617
 msgid ""
 "Please copy and paste this information in your ticket when contacting "
 "support."
 msgstr ""
 
-#: includes/admin/register-settings.php:746
+#: includes/admin/register-settings.php:758
 msgid "Global Default"
 msgstr ""
 
-#: includes/admin/register-settings.php:837
+#: includes/admin/register-settings.php:849
 msgid "Save Settings"
 msgstr ""
 
-#: includes/admin/register-settings.php:874
+#: includes/admin/register-settings.php:886
 msgid "Deactivate License"
 msgstr ""
 
@@ -1658,7 +1674,7 @@ msgid "Form Report"
 msgstr ""
 
 #: includes/admin/reporting/class-gateway-error-logs-list-table.php:71
-#: includes/gateways/manual.php:73 includes/gateways/paypal-standard.php:59
+#: includes/gateways/manual.php:73 includes/gateways/paypal-standard.php:60
 msgid "Payment Error"
 msgstr ""
 
@@ -2588,7 +2604,7 @@ msgid ""
 msgstr ""
 
 #: includes/emails/functions.php:197 includes/emails/template.php:227
-#: includes/gateways/offline-donations.php:224
+#: includes/gateways/offline-donations.php:225
 msgid "Donor: "
 msgstr ""
 
@@ -2597,7 +2613,7 @@ msgid "Donation: "
 msgstr ""
 
 #: includes/emails/functions.php:199 includes/emails/template.php:228
-#: includes/gateways/offline-donations.php:225
+#: includes/gateways/offline-donations.php:226
 msgid "Amount: "
 msgstr ""
 
@@ -2813,7 +2829,7 @@ msgid "Login"
 msgstr ""
 
 #: includes/forms/template.php:748 includes/forms/template.php:920
-#: includes/scripts.php:67
+#: includes/scripts.php:53
 msgid "Loading"
 msgstr ""
 
@@ -2935,7 +2951,7 @@ msgstr ""
 msgid "Test Donation"
 msgstr ""
 
-#: includes/gateways/manual.php:48 includes/gateways/paypal-standard.php:36
+#: includes/gateways/manual.php:48 includes/gateways/paypal-standard.php:37
 msgid "Nonce verification has failed"
 msgstr ""
 
@@ -2957,152 +2973,200 @@ msgstr ""
 msgid "this form's settings"
 msgstr ""
 
-#: includes/gateways/offline-donations.php:219
+#: includes/gateways/offline-donations.php:220
 msgid "New Pending Donation"
 msgstr ""
 
-#: includes/gateways/offline-donations.php:221
+#: includes/gateways/offline-donations.php:222
 msgid "Dear Admin,"
 msgstr ""
 
-#: includes/gateways/offline-donations.php:221
+#: includes/gateways/offline-donations.php:222
 msgid "An offline donation has been made"
 msgstr ""
 
-#: includes/gateways/offline-donations.php:226
+#: includes/gateways/offline-donations.php:227
 msgid ""
 "This is a pending donation awaiting payment. Donation instructions have "
 "been emailed to the donor. Once you receive payment, be sure to mark the "
 "donation as complete using the link below."
 msgstr ""
 
-#: includes/gateways/offline-donations.php:227
+#: includes/gateways/offline-donations.php:228
 msgid "View Donation Details: %s."
 msgstr ""
 
-#: includes/gateways/offline-donations.php:260
+#: includes/gateways/offline-donations.php:261
 msgid "Customize Offline Donations"
 msgstr ""
 
-#: includes/gateways/offline-donations.php:261
+#: includes/gateways/offline-donations.php:262
 msgid ""
 "If you would like to customize the donation instructions for this specific "
 "forms check this option."
 msgstr ""
 
-#: includes/gateways/offline-donations.php:271
+#: includes/gateways/offline-donations.php:272
 msgid "Request Billing Information"
 msgstr ""
 
-#: includes/gateways/offline-donations.php:272
+#: includes/gateways/offline-donations.php:273
 msgid ""
 "This option will enable the billing details section for this form's offline "
 "donation payment gateway. The fieldset will appear above the offline "
 "donation instructions."
 msgstr ""
 
-#: includes/gateways/offline-donations.php:280
+#: includes/gateways/offline-donations.php:281
 msgid ""
 "Enter the instructions you want to display to the donor during the donation "
 "process. Most likely this would include important information like mailing "
 "address and who to make the check out to."
 msgstr ""
 
-#: includes/gateways/offline-donations.php:326
+#: includes/gateways/offline-donations.php:327
 msgid ""
 "In order to make an offline donation we ask that you please follow these "
 "instructions"
 msgstr ""
 
-#: includes/gateways/offline-donations.php:335
+#: includes/gateways/offline-donations.php:336
 msgid "All contributions will be gratefully acknowledged and are tax deductible."
 msgstr ""
 
-#: includes/gateways/offline-donations.php:351
+#: includes/gateways/offline-donations.php:352
 msgid "Dear {name},"
 msgstr ""
 
-#: includes/gateways/offline-donations.php:352
+#: includes/gateways/offline-donations.php:353
 msgid ""
 "Thank you for your offline donation request! Your generosity is greatly "
 "appreciated. In order to make an offline donation we ask that you please "
 "follow these instructions"
 msgstr ""
 
-#: includes/gateways/offline-donations.php:361
+#: includes/gateways/offline-donations.php:362
 msgid ""
 "Once your donation has been received we will mark it as complete and you "
 "will receive an email receipt for your records. Please contact us with any "
 "questions you may have!"
 msgstr ""
 
-#: includes/gateways/offline-donations.php:362
+#: includes/gateways/offline-donations.php:363
 msgid "Sincerely,"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:59
+#: includes/gateways/paypal-standard.php:60
 msgid "Payment creation failed before sending buyer to PayPal. Payment data: %s"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:235
-#: includes/gateways/paypal-standard.php:241
-#: includes/gateways/paypal-standard.php:311
-#: includes/gateways/paypal-standard.php:321
-#: includes/gateways/paypal-standard.php:372
-#: includes/gateways/paypal-standard.php:380
+#: includes/gateways/paypal-standard.php:231
+#: includes/gateways/paypal-standard.php:237
+#: includes/gateways/paypal-standard.php:305
+#: includes/gateways/paypal-standard.php:315
+#: includes/gateways/paypal-standard.php:366
+#: includes/gateways/paypal-standard.php:374
 msgid "IPN Error"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:235
-#: includes/gateways/paypal-standard.php:241
+#: includes/gateways/paypal-standard.php:231
+#: includes/gateways/paypal-standard.php:237
 msgid "Invalid IPN verification response. IPN data: %s"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:311
+#: includes/gateways/paypal-standard.php:305
 msgid "Invalid business email in IPN response. IPN data: %s"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:313
+#: includes/gateways/paypal-standard.php:307
 msgid "Payment failed due to invalid PayPal business email."
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:321
+#: includes/gateways/paypal-standard.php:315
 msgid "Invalid currency in IPN response. IPN data: %s"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:323
+#: includes/gateways/paypal-standard.php:317
 msgid "Payment failed due to invalid currency in PayPal IPN."
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:372
+#: includes/gateways/paypal-standard.php:366
 msgid "Invalid payment amount in IPN response. IPN data: %s"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:374
+#: includes/gateways/paypal-standard.php:368
 msgid "Payment failed due to invalid amount in PayPal IPN."
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:380
+#: includes/gateways/paypal-standard.php:374
 msgid "Invalid purchase key in IPN response. IPN data: %s"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:382
+#: includes/gateways/paypal-standard.php:376
 msgid "Payment failed due to invalid purchase key in PayPal IPN."
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:388
+#: includes/gateways/paypal-standard.php:382
 msgid "PayPal Transaction ID: %s"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:423
+#: includes/gateways/paypal-standard.php:395
+msgid "Payment made via eCheck and will clear automatically in 5-8 days"
+msgstr ""
+
+#: includes/gateways/paypal-standard.php:401
+msgid ""
+"Payment requires a confirmed customer address and must be accepted manually "
+"through PayPal"
+msgstr ""
+
+#: includes/gateways/paypal-standard.php:407
+msgid ""
+"Payment must be accepted manually through PayPal due to international "
+"account regulations"
+msgstr ""
+
+#: includes/gateways/paypal-standard.php:413
+msgid ""
+"Payment received in non-shop currency and must be accepted manually through "
+"PayPal"
+msgstr ""
+
+#: includes/gateways/paypal-standard.php:420
+msgid ""
+"Payment is being reviewed by PayPal staff as high-risk or in possible "
+"violation of government regulations"
+msgstr ""
+
+#: includes/gateways/paypal-standard.php:426
+msgid "Payment was sent to non-confirmed or non-registered email address."
+msgstr ""
+
+#: includes/gateways/paypal-standard.php:432
+msgid "PayPal account must be upgraded before this payment can be accepted"
+msgstr ""
+
+#: includes/gateways/paypal-standard.php:438
+msgid ""
+"PayPal account is not verified. Verify account in order to accept this "
+"payment"
+msgstr ""
+
+#: includes/gateways/paypal-standard.php:444
+msgid ""
+"Payment is pending for unknown reasons. Contact PayPal support for "
+"assistance"
+msgstr ""
+
+#: includes/gateways/paypal-standard.php:487
 msgid "Partial PayPal refund processed: %s"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:429
+#: includes/gateways/paypal-standard.php:493
 msgid "PayPal Payment #%s Refunded for reason: %s"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:430
+#: includes/gateways/paypal-standard.php:494
 msgid "PayPal Refund Transaction ID: %s"
 msgstr ""
 
@@ -3130,16 +3194,16 @@ msgstr ""
 msgid "The password you entered is incorrect"
 msgstr ""
 
-#: includes/login-register.php:97 includes/process-purchase.php:515
+#: includes/login-register.php:97 includes/process-purchase.php:513
 msgid "The username you entered does not exist"
 msgstr ""
 
 #: includes/login-register.php:156 includes/login-register.php:164
-#: includes/process-purchase.php:401
+#: includes/process-purchase.php:399
 msgid "Invalid username"
 msgstr ""
 
-#: includes/login-register.php:160 includes/process-purchase.php:394
+#: includes/login-register.php:160 includes/process-purchase.php:392
 msgid "Username already taken"
 msgstr ""
 
@@ -3147,8 +3211,8 @@ msgstr ""
 msgid "Email address already taken"
 msgstr ""
 
-#: includes/login-register.php:172 includes/process-purchase.php:341
-#: includes/process-purchase.php:417 includes/process-purchase.php:548
+#: includes/login-register.php:172 includes/process-purchase.php:339
+#: includes/process-purchase.php:415 includes/process-purchase.php:546
 msgid "Invalid email"
 msgstr ""
 
@@ -3570,179 +3634,179 @@ msgid ""
 "This sidebar will not display for embedded forms."
 msgstr ""
 
-#: includes/process-purchase.php:232
+#: includes/process-purchase.php:230
 msgid "The selected payment gateway is not enabled"
 msgstr ""
 
-#: includes/process-purchase.php:253
+#: includes/process-purchase.php:251
 msgid "You must agree to the terms of use"
 msgstr ""
 
-#: includes/process-purchase.php:268
+#: includes/process-purchase.php:266
 msgid "Please enter a valid email address"
 msgstr ""
 
-#: includes/process-purchase.php:272
+#: includes/process-purchase.php:270
 msgid "Please enter your first name"
 msgstr ""
 
-#: includes/process-purchase.php:282
+#: includes/process-purchase.php:280
 msgid "Please enter your zip / postal code"
 msgstr ""
 
-#: includes/process-purchase.php:286
+#: includes/process-purchase.php:284
 msgid "Please enter your billing city"
 msgstr ""
 
-#: includes/process-purchase.php:290
+#: includes/process-purchase.php:288
 msgid "Please select your billing country"
 msgstr ""
 
-#: includes/process-purchase.php:294
+#: includes/process-purchase.php:292
 msgid "Please enter billing state / province"
 msgstr ""
 
-#: includes/process-purchase.php:346
+#: includes/process-purchase.php:344
 msgid "The user information is invalid"
 msgstr ""
 
-#: includes/process-purchase.php:399
+#: includes/process-purchase.php:397
 msgid "Invalid username. Only lowercase letters (a-z) and numbers are allowed"
 msgstr ""
 
-#: includes/process-purchase.php:409
+#: includes/process-purchase.php:407
 msgid "You must register or login to complete your donation"
 msgstr ""
 
-#: includes/process-purchase.php:420
+#: includes/process-purchase.php:418
 msgid "Email already used"
 msgstr ""
 
-#: includes/process-purchase.php:427 includes/process-purchase.php:555
+#: includes/process-purchase.php:425 includes/process-purchase.php:553
 msgid "Enter an email"
 msgstr ""
 
-#: includes/process-purchase.php:435
+#: includes/process-purchase.php:433
 msgid "Passwords don't match"
 msgstr ""
 
-#: includes/process-purchase.php:444 includes/process-purchase.php:511
+#: includes/process-purchase.php:442 includes/process-purchase.php:509
 msgid "Enter a password"
 msgstr ""
 
-#: includes/process-purchase.php:447
+#: includes/process-purchase.php:445
 msgid "Enter the password confirmation"
 msgstr ""
 
-#: includes/process-purchase.php:471
+#: includes/process-purchase.php:469
 msgid "You must login or register to complete your donation"
 msgstr ""
 
-#: includes/process-purchase.php:492
+#: includes/process-purchase.php:490
 msgid "The password you entered is incorrect. %sReset Password%s"
 msgstr ""
 
-#: includes/process-purchase.php:493
+#: includes/process-purchase.php:491
 msgid "Lost Password"
 msgstr ""
 
-#: includes/process-purchase.php:537
+#: includes/process-purchase.php:535
 msgid "You must be logged into an account to donation"
 msgstr ""
 
-#: includes/process-purchase.php:724
+#: includes/process-purchase.php:722
 msgid "The zip / postal code you entered for your billing address is invalid"
 msgstr ""
 
-#: includes/process-purchase.php:988
+#: includes/process-purchase.php:986
 msgid "An internal error has occurred, please try again or contact support."
 msgstr ""
 
-#: includes/scripts.php:53
+#: includes/scripts.php:45
 msgid "Please select a payment method"
 msgstr ""
 
-#: includes/scripts.php:54
+#: includes/scripts.php:46
 msgid "Loading..."
 msgstr ""
 
-#: includes/scripts.php:55
+#: includes/scripts.php:47
 msgid "Please Wait..."
 msgstr ""
 
-#: includes/scripts.php:69
+#: includes/scripts.php:55
 msgid "Please select an option"
 msgstr ""
 
-#: includes/scripts.php:186
+#: includes/scripts.php:207
 msgid "Sorry, not available for variable priced forms."
 msgstr ""
 
-#: includes/scripts.php:187
+#: includes/scripts.php:208
 msgid "Are you sure you wish to delete this payment?"
 msgstr ""
 
-#: includes/scripts.php:188
+#: includes/scripts.php:209
 msgid "Are you sure you wish to delete this note?"
 msgstr ""
 
-#: includes/scripts.php:189
+#: includes/scripts.php:210
 msgid "Are you sure you wish to delete this tax rate?"
 msgstr ""
 
-#: includes/scripts.php:190
+#: includes/scripts.php:211
 msgid "Are you sure you wish to revoke this API key?"
 msgstr ""
 
-#: includes/scripts.php:191
+#: includes/scripts.php:212
 msgid "Are you sure you wish to regenerate this API key?"
 msgstr ""
 
-#: includes/scripts.php:192
+#: includes/scripts.php:213
 msgid "Are you sure you wish to resend the donation receipt?"
 msgstr ""
 
-#: includes/scripts.php:193
+#: includes/scripts.php:214
 msgid "Copy these links to your clipboard and give them to your customer"
 msgstr ""
 
-#: includes/scripts.php:194
+#: includes/scripts.php:215
 msgid "Are you sure you wish to delete this %s?"
 msgstr ""
 
-#: includes/scripts.php:195
+#: includes/scripts.php:216
 msgid "You must have at least one price"
 msgstr ""
 
-#: includes/scripts.php:196
+#: includes/scripts.php:217
 msgid "You must have at least one file"
 msgstr ""
 
-#: includes/scripts.php:197
+#: includes/scripts.php:218
 msgid "You must have at least one field"
 msgstr ""
 
-#: includes/scripts.php:198
+#: includes/scripts.php:219
 msgid "Choose a %s"
 msgstr ""
 
-#: includes/scripts.php:199
+#: includes/scripts.php:220
 msgid "Choose one or more %s"
 msgstr ""
 
-#: includes/scripts.php:200
+#: includes/scripts.php:221
 msgid "Item price must be numeric"
 msgstr ""
 
-#: includes/scripts.php:201
+#: includes/scripts.php:222
 msgid "Quantity must be numeric"
 msgstr ""
 
-#: includes/scripts.php:206
+#: includes/scripts.php:227
 msgid "Remove"
 msgstr ""
 
-#: includes/scripts.php:207
+#: includes/scripts.php:228
 msgid "Type to search %s"
 msgstr ""
 
@@ -3905,22 +3969,22 @@ msgctxt "no dropdown items"
 msgid "None"
 msgstr ""
 
-#: includes/gateways/offline-donations.php:328
-#: includes/gateways/offline-donations.php:354
+#: includes/gateways/offline-donations.php:329
+#: includes/gateways/offline-donations.php:355
 msgctxt "Step 1 for donating offline by check"
 msgid "Make a check payable to "
 msgstr ""
 
-#: includes/gateways/offline-donations.php:329
-#: includes/gateways/offline-donations.php:355
+#: includes/gateways/offline-donations.php:330
+#: includes/gateways/offline-donations.php:356
 msgctxt ""
 "Step 2 for donating by check; this explains who the check should be written "
 "to"
 msgid "On the memo line of the check, please indicate that the donation is for "
 msgstr ""
 
-#: includes/gateways/offline-donations.php:330
-#: includes/gateways/offline-donations.php:356
+#: includes/gateways/offline-donations.php:331
+#: includes/gateways/offline-donations.php:357
 msgctxt "Step 3; where to mail the check"
 msgid "Please mail your check to:"
 msgstr ""
