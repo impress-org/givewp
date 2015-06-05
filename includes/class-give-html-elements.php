@@ -104,7 +104,7 @@ class Give_HTML_Elements {
 	 *
 	 * @param array $args
 	 *
-	 * @return string $output Customer dropdown
+	 * @return string $output Donor dropdown
 	 */
 	public function donor_dropdown( $args = array() ) {
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Customers Export Class
+ * Donors Export Class
  *
  * This class handles donor export
  *
@@ -17,11 +17,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Give_Customers_Export Class
+ * Give_Donors_Export Class
  *
  * @since 1.4.4
  */
-class Give_Customers_Export extends Give_Export {
+class Give_Donors_Export extends Give_Export {
 	/**
 	 * Our export type. Used for export-type specific filters/actions
 	 *

@@ -78,7 +78,7 @@ class Give_Donor {
 	public $user_id;
 
 	/**
-	 * Customer Notes
+	 * Donor Notes
 	 *
 	 * @since  1.0
 	 */
@@ -130,7 +130,7 @@ class Give_Donor {
 	 *
 	 * @since  1.0
 	 *
-	 * @param  object $donor The Customer Object
+	 * @param  object $donor The Donor Object
 	 *
 	 * @return bool             If the setup was successful or not
 	 */
@@ -156,7 +156,7 @@ class Give_Donor {
 
 		}
 
-		// Customer ID and email are the only things that are necessary, make sure they exist
+		// Donor ID and email are the only things that are necessary, make sure they exist
 		if ( ! empty( $this->id ) && ! empty( $this->email ) ) {
 			return true;
 		}
@@ -191,7 +191,7 @@ class Give_Donor {
 	 *
 	 * @param  array $data Array of attributes for a donor
 	 *
-	 * @return mixed        False if not a valid creation, Customer ID if user is found or valid creation
+	 * @return mixed        False if not a valid creation, Donor ID if user is found or valid creation
 	 */
 	public function create( $data = array() ) {
 

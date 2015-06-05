@@ -1,11 +1,11 @@
 <?php
 /**
- * Customers DB class
+ * Donors DB class
  *
  * This class is for interacting with the donors' database table
  *
  * @package     Give
- * @subpackage  Classes/DB Customers
+ * @subpackage  Classes/DB Donors
  * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
@@ -324,7 +324,7 @@ class Give_DB_Donors extends Give_DB {
 
 		}
 
-		// Customers created for a specific date or in a date range
+		// Donors created for a specific date or in a date range
 		if ( ! empty( $args['date'] ) ) {
 
 			if ( is_array( $args['date'] ) ) {

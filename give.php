@@ -74,7 +74,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 		public $give_settings;
 
 		/**
-		 * Give Customers DB Object
+		 * Give Donors DB Object
 		 *
 		 * @var object
 		 * @since 1.0
@@ -106,12 +106,12 @@ if ( ! class_exists( 'Give' ) ) : /**
 				self::$instance->includes();
 				self::$instance->roles              = new Give_Roles();
 				self::$instance->give_settings      = new Give_Plugin_Settings();
-				self::$instance->donors          = new Give_DB_Donors();
 				self::$instance->session            = new Give_Session();
 				self::$instance->html               = new Give_HTML_Elements();
 				self::$instance->emails             = new Give_Emails();
 				self::$instance->email_tags         = new Give_Email_Template_Tags();
 				self::$instance->donators_gravatars = new Give_Donators_Gravatars();
+				self::$instance->donors             = new Give_DB_Donors();
 
 			}
 
@@ -255,6 +255,10 @@ if ( ! class_exists( 'Give' ) ) : /**
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/actions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/payments-history.php';
+
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/donors/donors.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/donors/donor-functions.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/donors/donor-actions.php';
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/metabox.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/dashboard-columns.php';

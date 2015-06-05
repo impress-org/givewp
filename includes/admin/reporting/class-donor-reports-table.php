@@ -1,6 +1,6 @@
 <?php
 /**
- * Customer Reports Table Class
+ * Donor Reports Table Class
  *
  * @package     Give
  * @subpackage  Admin/Reports
@@ -22,7 +22,7 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 /**
  * Give_Donor_Reports_Table Class
  *
- * Renders the Customer Reports table
+ * Renders the Donor Reports table
  *
  * @since 1.0
  */

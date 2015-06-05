@@ -5,7 +5,7 @@
  * Language Changes from EDD:
  * 1. "Report Type" stays
  * 2. "Earnings" changes to "Income"
- * 3. "Customers" changes to "Donors"
+ * 3. "Donors" changes to "Donors"
  * 4. "Payment Method" stays.
  *
  * @package     Give
@@ -200,7 +200,7 @@ function give_reports_form_details() {
 add_action( 'give_reports_view_forms', 'give_reports_form_details' );
 
 /**
- * Renders the Reports Customers Table
+ * Renders the Reports Donors Table
  *
  * @since 1.0
  * @uses  Give_Donor_Reports_Table::prepare_items()

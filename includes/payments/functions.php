@@ -957,7 +957,7 @@ function give_get_payment_user_id( $payment_id ) {
  *
  * @param int $payment_id Payment ID
  *
- * @return string $donor_id Customer ID
+ * @return string $donor_id Donor ID
  */
 function give_get_payment_donor_id( $payment_id ) {
 	$donor_id = get_post_meta( $payment_id, '_give_payment_donor_id', true );
