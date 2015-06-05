@@ -144,7 +144,7 @@ class Give_DB_Customers extends Give_DB {
 	 * the payment meta and logs. Use give_customer_delete() instead
 	 *
 	 * @access  public
-	 * @since   2.3.1
+	 * @since   1.0
 	 */
 	public function delete( $_id_or_email = false ) {
 
@@ -263,7 +263,7 @@ class Give_DB_Customers extends Give_DB {
 	 * Retrieves a single customer from the database
 	 *
 	 * @access public
-	 * @since  2.3
+	 * @since  1.0
 	 *
 	 * @param  string $column id or email
 	 * @param  mixed  $value  The Customer ID or email to search

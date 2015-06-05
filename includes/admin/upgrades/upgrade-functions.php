@@ -41,19 +41,19 @@ function give_show_upgrade_notices() {
 	//		);
 	//	}
 
-//	if ( version_compare( $give_version, '1.0', '<' ) ) {
-//		printf(
-//			'<div class="updated"><p>' . __( 'Give needs to upgrade the transaction logs database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
-//			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_payments_price_logs_db' ) )
-//		);
-//	}
-//
-//	if ( version_compare( $give_version, '1.0', '<' ) || ! give_has_upgrade_completed( 'upgrade_donor_payments_association' ) ) {
-//		printf(
-//			'<div class="updated"><p>' . __( 'Give needs to upgrade the donor database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
-//			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_donor_payments_association' ) )
-//		);
-//	}
+	if ( version_compare( $give_version, '1.0', '<' ) ) {
+		printf(
+			'<div class="updated"><p>' . __( 'Give needs to upgrade the transaction logs database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
+			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_payments_logs_db' ) )
+		);
+	}
+
+	if ( version_compare( $give_version, '1.0', '<' ) || ! give_has_upgrade_completed( 'upgrade_donor_payments_association' ) ) {
+		printf(
+			'<div class="updated"><p>' . __( 'Give needs to upgrade the donor database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
+			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_donor_payments_association' ) )
+		);
+	}
 
 	/*
 	 *  NOTICE:
@@ -188,7 +188,7 @@ function give_get_completed_upgrades() {
  * @since 1.0
  * @return void
  */
-function give_v1_upgrade_payments_price_logs_db() {
+function give_v1_upgrade_payments_logs_db() {
 	global $wpdb;
 	if ( ! current_user_can( 'manage_give_settings' ) ) {
 		wp_die( __( 'You do not have permission to do Give upgrades', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
@@ -208,48 +208,43 @@ function give_v1_upgrade_payments_price_logs_db() {
 			// We had no variable priced forms, so go ahead and just complete
 			update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
 			delete_option( 'give_doing_upgrade' );
-			wp_redirect( admin_url() );
+			wp_redirect( admin_url( 'index.php?page=give-about' ) );
 			exit;
 		}
 	}
 	$payment_ids = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = 'give_payment' ORDER BY post_date DESC LIMIT %d,%d;", $offset, $number ) );
 	if ( ! empty( $payment_ids ) ) {
 		foreach ( $payment_ids as $payment_id ) {
-			$payment_downloads = give_get_payment_meta_downloads( $payment_id );
-			echo "<pre>";
-			var_dump( $payment_id );
-			echo "</pre>";
-			die();
-			$variable_downloads = array();
-			if ( ! is_array( $payment_downloads ) ) {
-				continue; // May not be an array due to some very old payments, move along
+			$payment_meta = give_get_payment_meta( $payment_id );
+
+			$variable_donation = array();
+
+			// Don't care if the form is a single price id
+			if ( ! isset( $payment_meta['price_id'] ) || empty( $payment_meta['price_id'] ) ) {
+				continue;
 			}
-			foreach ( $payment_downloads as $download ) {
-				// Don't care if the download is a single price id
-				if ( ! isset( $download['options']['price_id'] ) ) {
-					continue;
-				}
-				$variable_downloads[] = array(
-					'id'       => $download['id'],
-					'price_id' => $download['options']['price_id']
-				);
-			}
-			$variable_download_ids = array_unique( wp_list_pluck( $variable_downloads, 'id' ) );
-			$unique_download_ids   = implode( ',', $variable_download_ids );
-			if ( empty( $unique_download_ids ) ) {
+			$variable_donation[] = array(
+				'id'       => $payment_meta['form_id'],
+				'price_id' => $payment_meta['price_id']
+			);
+
+			$variable_donation_ids = array_unique( wp_list_pluck( $variable_donation, 'id' ) );
+			$unique_donation_ids   = implode( ',', $variable_donation_ids );
+			if ( empty( $unique_donation_ids ) ) {
 				continue; // If there were no downloads, just fees, move along
 			}
 			// Get all Log Ids where the post parent is in the set of download IDs we found in the cart meta
-			$logs        = $wpdb->get_results( "SELECT m.post_id AS log_id, p.post_parent AS download_id FROM $wpdb->postmeta m LEFT JOIN $wpdb->posts p ON m.post_id = p.ID WHERE meta_key = '_give_log_payment_id' AND meta_value = $payment_id AND p.post_parent IN ($unique_download_ids)", ARRAY_A );
+			$logs        = $wpdb->get_results( "SELECT m.post_id AS log_id, p.post_parent AS give_form_id FROM $wpdb->postmeta m LEFT JOIN $wpdb->posts p ON m.post_id = p.ID WHERE meta_key = '_give_log_payment_id' AND meta_value = $payment_id AND p.post_parent IN ($unique_donation_ids)", ARRAY_A );
 			$mapped_logs = array();
+
 			// Go through each cart item
-			foreach ( $variable_downloads as $cart_item ) {
+			foreach ( $variable_donation as $cart_item ) {
 				// Itterate through the logs we found attached to this payment
 				foreach ( $logs as $key => $log ) {
-					// If this Log ID is associated with this download ID give it the price_id
-					if ( (int) $log['download_id'] === (int) $cart_item['id'] ) {
+					// If this Log ID is associated with this donation ID give it the price_id
+					if ( (int) $log['give_form_id'] === (int) $cart_item['id'] ) {
 						$mapped_logs[ $log['log_id'] ] = $cart_item['price_id'];
-						// Remove this Download/Log ID from the list, for multipurchase compatibility
+						// Remove this Donation/Log ID from the list, for multipurchase compatibility
 						unset( $logs[ $key ] );
 						// These aren't the logs we're looking for. Move Along, Move Along.
 						break;
@@ -274,7 +269,7 @@ function give_v1_upgrade_payments_price_logs_db() {
 		$step ++;
 		$redirect = add_query_arg( array(
 			'page'         => 'give-upgrades',
-			'give-upgrade' => 'upgrade_payments_price_logs_db',
+			'give-upgrade' => 'upgrade_payments_logs_db',
 			'step'         => $step
 		), admin_url( 'index.php' ) );
 		wp_redirect( $redirect );
@@ -283,12 +278,12 @@ function give_v1_upgrade_payments_price_logs_db() {
 		// No more payments found, finish up
 		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
 		delete_option( 'give_doing_upgrade' );
-		wp_redirect( admin_url() );
+		wp_redirect( admin_url( 'index.php?page=give-about' ) );
 		exit;
 	}
 }
 
-add_action( 'give_upgrade_payments_price_logs_db', 'give_v1_upgrade_payments_price_logs_db' );
+add_action( 'give_upgrade_payments_logs_db', 'give_v1_upgrade_payments_logs_db' );
 
 /**
  * Run the upgrade for the customers to find all payment attachments
@@ -323,7 +318,7 @@ function give_v1_upgrade_customer_purchases() {
 			update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
 			give_set_upgrade_complete( 'upgrade_donor_payments_association' );
 			delete_option( 'give_doing_upgrade' );
-			wp_redirect( admin_url() );
+			wp_redirect( admin_url( 'index.php?page=give-about' ) );
 			exit;
 		}
 	}
@@ -415,7 +410,7 @@ function give_v1_upgrade_customer_purchases() {
 		give_set_upgrade_complete( 'upgrade_donor_payments_association' );
 		delete_option( 'give_doing_upgrade' );
 
-		wp_redirect( admin_url() );
+		wp_redirect( admin_url( 'index.php?page=give-about' ) );
 		exit;
 	}
 }
