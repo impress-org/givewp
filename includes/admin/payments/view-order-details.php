@@ -37,7 +37,7 @@ if ( ! is_object( $item ) || $item->post_type != 'give_payment' ) {
 $payment_meta   = give_get_payment_meta( $payment_id );
 $transaction_id = esc_attr( give_get_payment_transaction_id( $payment_id ) );
 $user_id        = give_get_payment_user_id( $payment_id );
-$customer_id    = give_get_payment_customer_id( $payment_id );
+$donor_id    = give_get_payment_donor_id( $payment_id );
 $payment_date   = strtotime( $item->post_date );
 $user_info      = give_get_payment_meta_user_info( $payment_id );
 $address        = ! empty( $user_info['address'] ) ? $user_info['address'] : array(
@@ -276,7 +276,7 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 
 							<?php do_action( 'give_view_order_details_billing_before', $payment_id ); ?>
 
-							<div id="give-customer-details" class="postbox">
+							<div id="give-donor-details" class="postbox">
 								<h3 class="hndle">
 									<span><?php _e( 'Donor\'s Details', 'give' ); ?></span>
 								</h3>
@@ -310,7 +310,7 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 								</div>
 								<!-- /.inside -->
 							</div>
-							<!-- /#give-customer-details -->
+							<!-- /#give-donor-details -->
 
 							<div id="give-billing-details" class="postbox">
 								<h3 class="hndle">

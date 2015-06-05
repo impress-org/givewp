@@ -24,7 +24,7 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
  *
  * Renders the Donor Reports table
  *
- * @since 1.5
+ * @since 1.0
  */
 class Give_Donor_Reports_Table extends WP_List_Table {
 
@@ -32,12 +32,12 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 * Number of items per page
 	 *
 	 * @var int
-	 * @since 1.5
+	 * @since 1.0
 	 */
 	public $per_page = 30;
 
 	/**
-	 * Number of customers found
+	 * Number of donors found
 	 *
 	 * @var int
 	 * @since 1.7
@@ -45,7 +45,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	public $count = 0;
 
 	/**
-	 * Total customers
+	 * Total donors
 	 *
 	 * @var int
 	 * @since 1.95
@@ -55,7 +55,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	/**
 	 * Get things started
 	 *
-	 * @since 1.5
+	 * @since 1.0
 	 * @see   WP_List_Table::__construct()
 	 */
 	public function __construct() {
@@ -103,9 +103,9 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 * This function renders most of the columns in the list table.
 	 *
 	 * @access public
-	 * @since  1.5
+	 * @since  1.0
 	 *
-	 * @param array  $item        Contains all the data of the customers
+	 * @param array  $item        Contains all the data of the donors
 	 * @param string $column_name The name of the column
 	 *
 	 * @return string Column Name
@@ -153,7 +153,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 * Retrieve the table columns
 	 *
 	 * @access public
-	 * @since  1.5
+	 * @since  1.0
 	 * @return array $columns Array of all the list table columns
 	 */
 	public function get_columns() {
@@ -165,7 +165,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 			'date_created'  => __( 'Date Created', 'give' )
 		);
 
-		return apply_filters( 'give_report_customer_columns', $columns );
+		return apply_filters( 'give_report_donor_columns', $columns );
 
 	}
 
@@ -189,7 +189,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 * Outputs the reporting views
 	 *
 	 * @access public
-	 * @since  1.5
+	 * @since  1.0
 	 * @return void
 	 */
 	public function bulk_actions( $which = '' ) {
@@ -200,7 +200,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 * Retrieve the current page number
 	 *
 	 * @access public
-	 * @since  1.5
+	 * @since  1.0
 	 * @return int Current page number
 	 */
 	public function get_paged() {
@@ -222,10 +222,10 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 * Build all the reports data
 	 *
 	 * @access public
-	 * @since  1.5
+	 * @since  1.0
 	 * @global object $wpdb Used to query the database using the WordPress
 	 *                      Database API
-	 * @return array $reports_data All the data for customer reports
+	 * @return array $reports_data All the data for donor reports
 	 */
 	public function reports_data() {
 		global $wpdb;
@@ -252,22 +252,22 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 			$args['name'] = $search;
 		}
 
-		$customers = EDD()->customers->get_customers( $args );
+		$donors = Give()->donors->get_donors( $args );
 
-		if ( $customers ) {
+		if ( $donors ) {
 
-			foreach ( $customers as $customer ) {
+			foreach ( $donors as $donor ) {
 
-				$user_id = ! empty( $customer->user_id ) ? intval( $customer->user_id ) : 0;
+				$user_id = ! empty( $donor->user_id ) ? intval( $donor->user_id ) : 0;
 
 				$data[] = array(
-					'id'            => $customer->id,
+					'id'            => $donor->id,
 					'user_id'       => $user_id,
-					'name'          => $customer->name,
-					'email'         => $customer->email,
-					'num_purchases' => $customer->purchase_count,
-					'amount_spent'  => $customer->purchase_value,
-					'date_created'  => $customer->date_created,
+					'name'          => $donor->name,
+					'email'         => $donor->email,
+					'num_purchases' => $donor->purchase_count,
+					'amount_spent'  => $donor->purchase_value,
+					'date_created'  => $donor->date_created,
 				);
 			}
 		}
@@ -279,11 +279,11 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 * Setup the final data for the table
 	 *
 	 * @access public
-	 * @since  1.5
+	 * @since  1.0
 	 * @uses   Give_Donor_Reports_Table::get_columns()
 	 * @uses   WP_List_Table::get_sortable_columns()
 	 * @uses   Give_Donor_Reports_Table::get_pagenum()
-	 * @uses   Give_Donor_Reports_Table::get_total_customers()
+	 * @uses   Give_Donor_Reports_Table::get_total_donors()
 	 * @return void
 	 */
 	public function prepare_items() {
@@ -296,7 +296,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 
 		$this->items = $this->reports_data();
 
-		$this->total = give_count_total_customers();
+		$this->total = give_count_total_donors();
 
 		$this->set_pagination_args( array(
 			'total_items' => $this->total,

@@ -173,7 +173,7 @@ jQuery.noConflict();
 
 		init: function () {
 			this.date_options();
-			this.customers_export();
+			this.donors_export();
 		},
 
 		date_options: function () {
@@ -190,17 +190,17 @@ jQuery.noConflict();
 
 		},
 
-		customers_export: function () {
+		donors_export: function () {
 
-			// Show / hide Download option when exporting customers
-			$( '#give_customer_export_download' ).change( function () {
+			// Show / hide Download option when exporting donors
+			$( '#give_donor_export_download' ).change( function () {
 
 				var $this = $( this ), form_id = $( 'option:selected', $this ).val();
 
 				if ( '0' === $this.val() ) {
-					$( '#give_customer_export_option' ).show();
+					$( '#give_donor_export_option' ).show();
 				} else {
-					$( '#give_customer_export_option' ).hide();
+					$( '#give_donor_export_option' ).hide();
 				}
 
 				$( '.give_price_options_select' ).remove();

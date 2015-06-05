@@ -211,7 +211,7 @@ function give_load_admin_scripts( $hook ) {
 		'revoke_api_key'          => __( 'Are you sure you wish to revoke this API key?', 'give' ),
 		'regenerate_api_key'      => __( 'Are you sure you wish to regenerate this API key?', 'give' ),
 		'resend_receipt'          => __( 'Are you sure you wish to resend the donation receipt?', 'give' ),
-		'copy_download_link_text' => __( 'Copy these links to your clipboard and give them to your customer', 'give' ),
+		'copy_download_link_text' => __( 'Copy these links to your clipboard and give them to your donor', 'give' ),
 		'delete_payment_download' => sprintf( __( 'Are you sure you wish to delete this %s?', 'give' ), give_get_forms_label_singular() ),
 		'one_price_min'           => __( 'You must have at least one price', 'give' ),
 		'one_file_min'            => __( 'You must have at least one file', 'give' ),

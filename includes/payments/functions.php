@@ -169,8 +169,8 @@ function give_insert_payment( $payment_data = array() ) {
 			$payment_data['price'] = '0.00';
 		}
 
-		// Create or update a customer
-		$customer_id = Give()->customers->add( array(
+		// Create or update a donor
+		$donor_id = Give()->donors->add( array(
 			'name'        => $payment_data['user_info']['first_name'] . ' ' . $payment_data['user_info']['last_name'],
 			'email'       => $payment_data['user_email'],
 			'user_id'     => $payment_data['user_info']['id'],
@@ -180,7 +180,7 @@ function give_insert_payment( $payment_data = array() ) {
 		// Record the payment details
 		give_update_payment_meta( $payment, '_give_payment_meta', apply_filters( 'give_payment_meta', $payment_meta, $payment_data ) );
 		give_update_payment_meta( $payment, '_give_payment_user_id', $payment_data['user_info']['id'] );
-		give_update_payment_meta( $payment, '_give_payment_customer_id', $customer_id );
+		give_update_payment_meta( $payment, '_give_payment_donor_id', $donor_id );
 		give_update_payment_meta( $payment, '_give_payment_user_email', $payment_data['user_email'] );
 		give_update_payment_meta( $payment, '_give_payment_user_ip', give_get_ip() );
 		give_update_payment_meta( $payment, '_give_payment_purchase_key', $payment_data['purchase_key'] );
@@ -282,7 +282,7 @@ function give_delete_purchase( $payment_id = 0 ) {
 
 	$amount      = give_get_payment_amount( $payment_id );
 	$status      = $post->post_status;
-	$customer_id = give_get_payment_customer_id( $payment_id );
+	$donor_id = give_get_payment_donor_id( $payment_id );
 
 	if ( $status == 'revoked' || $status == 'publish' ) {
 		// Only decrease earnings if they haven't already been decreased (or were never increased for this payment)
@@ -290,20 +290,20 @@ function give_delete_purchase( $payment_id = 0 ) {
 		// Clear the This Month earnings (this_monththis_month is NOT a typo)
 		delete_transient( md5( 'give_earnings_this_monththis_month' ) );
 
-		if ( $customer_id ) {
+		if ( $donor_id ) {
 
-			// Decrement the stats for the customer
-			Give()->customers->decrement_stats( $customer_id, $amount );
+			// Decrement the stats for the donor
+			Give()->donors->decrement_stats( $donor_id, $amount );
 
 		}
 	}
 
 	do_action( 'give_payment_delete', $payment_id );
 
-	if ( $customer_id ) {
+	if ( $donor_id ) {
 
-		// Remove the payment ID from the customer
-		Give()->customers->remove_payment( $customer_id, $payment_id );
+		// Remove the payment ID from the donor
+		Give()->donors->remove_payment( $donor_id, $payment_id );
 
 	}
 
@@ -951,18 +951,18 @@ function give_get_payment_user_id( $payment_id ) {
 }
 
 /**
- * Get the customer ID associated with a payment
+ * Get the donor ID associated with a payment
  *
  * @since 1.0
  *
  * @param int $payment_id Payment ID
  *
- * @return string $customer_id Customer ID
+ * @return string $donor_id Customer ID
  */
-function give_get_payment_customer_id( $payment_id ) {
-	$customer_id = get_post_meta( $payment_id, '_give_payment_customer_id', true );
+function give_get_payment_donor_id( $payment_id ) {
+	$donor_id = get_post_meta( $payment_id, '_give_payment_donor_id', true );
 
-	return apply_filters( 'give_payment_customer_id', $customer_id );
+	return apply_filters( 'give_payment_donor_id', $donor_id );
 }
 
 /**

@@ -20,13 +20,13 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 }
 
 /**
- * Give_Customer_Reports_Table Class
+ * Give_Donor_Reports_Table Class
  *
  * Renders the Customer Reports table
  *
  * @since 1.0
  */
-class Give_Customer_Reports_Table extends WP_List_Table {
+class Give_Donor_Reports_Table extends WP_List_Table {
 
 	/**
 	 * Number of items per page
@@ -37,7 +37,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	public $per_page = 30;
 
 	/**
-	 * Number of customers found
+	 * Number of donors found
 	 *
 	 * @var int
 	 * @since 1.0
@@ -45,7 +45,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	public $count = 0;
 
 	/**
-	 * Total customers
+	 * Total donors
 	 *
 	 * @var int
 	 * @since 1.0
@@ -163,7 +163,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * @access public
 	 * @since  1.0
 	 *
-	 * @param array  $item        Contains all the data of the customers
+	 * @param array  $item        Contains all the data of the donors
 	 * @param string $column_name The name of the column
 	 *
 	 * @return string Column Name
@@ -205,7 +205,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 			'amount_spent'  => __( 'Total Spent', 'give' )
 		);
 
-		return apply_filters( 'give_report_customer_columns', $columns );
+		return apply_filters( 'give_report_donor_columns', $columns );
 
 	}
 
@@ -266,7 +266,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * @since  1.0
 	 * @global object $wpdb Used to query the database using the WordPress
 	 *                      Database API
-	 * @return array $reports_data All the data for customer reports
+	 * @return array $reports_data All the data for donor reports
 	 */
 	public function reports_data() {
 		global $wpdb;
@@ -291,23 +291,23 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 			$args['id'] = $search;
 		}
 
-		$customers = Give()->customers->get_customers( $args );
+		$donors = Give()->donors->get_donors( $args );
 
-		if ( $customers ) {
+		if ( $donors ) {
 
-			$this->count = count( $customers );
+			$this->count = count( $donors );
 
-			foreach ( $customers as $customer ) {
+			foreach ( $donors as $donor ) {
 
-				$user_id = ! empty( $customer->user_id ) ? absint( $customer->user_id ) : 0;
+				$user_id = ! empty( $donor->user_id ) ? absint( $donor->user_id ) : 0;
 
 				$data[] = array(
-					'id'            => $customer->id,
+					'id'            => $donor->id,
 					'user_id'       => $user_id,
-					'name'          => $customer->name,
-					'email'         => $customer->email,
-					'num_purchases' => $customer->purchase_count,
-					'amount_spent'  => $customer->purchase_value
+					'name'          => $donor->name,
+					'email'         => $donor->email,
+					'num_purchases' => $donor->purchase_count,
+					'amount_spent'  => $donor->purchase_value
 				);
 			}
 		}
@@ -320,10 +320,10 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @uses   Give_Customer_Reports_Table::get_columns()
+	 * @uses   Give_Donor_Reports_Table::get_columns()
 	 * @uses   WP_List_Table::get_sortable_columns()
-	 * @uses   Give_Customer_Reports_Table::get_pagenum()
-	 * @uses   Give_Customer_Reports_Table::get_total_customers()
+	 * @uses   Give_Donor_Reports_Table::get_pagenum()
+	 * @uses   Give_Donor_Reports_Table::get_total_donors()
 	 * @return void
 	 */
 	public function prepare_items() {
@@ -336,7 +336,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 
 		$this->items = $this->reports_data();
 
-		$this->total = give_count_total_customers();
+		$this->total = give_count_total_donors();
 
 		$this->set_pagination_args( array(
 			'total_items' => $this->total,

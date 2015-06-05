@@ -2,7 +2,7 @@
 /**
  * User Functions
  *
- * Functions related to users / customers
+ * Functions related to users / donors
  *
  * @package     Give
  * @subpackage  Functions
@@ -77,7 +77,7 @@ function give_get_users_purchases( $user = 0, $number = 20, $pagination = false,
 	}
 
 	/*
-	$payment_ids = Give()->customers->get_column_by( 'payment_ids', $field, $user );
+	$payment_ids = Give()->donors->get_column_by( 'payment_ids', $field, $user );
 
 	if( ! empty( $payment_ids ) ) {
 		unset( $args['user'] );
@@ -194,7 +194,7 @@ function give_has_purchases( $user_id = null ) {
  * @access      public
  * @since       1.0
  *
- * @param       $user int|string - the ID or email of the customer to retrieve stats for
+ * @param       $user int|string - the ID or email of the donor to retrieve stats for
  * @param       $mode string - "test" or "live"
  *
  * @return      array
@@ -211,17 +211,17 @@ function give_get_purchase_stats_by_user( $user = '' ) {
 
 	}
 
-	$customer = Give()->customers->get_by( $field, $user );
+	$donor = Give()->donors->get_by( $field, $user );
 
-	if ( empty( $customer ) ) {
+	if ( empty( $donor ) ) {
 
 		$stats['purchases']   = 0;
 		$stats['total_spent'] = give_sanitize_amount( 0 );
 
 	} else {
 
-		$stats['purchases']   = absint( $customer->purchase_count );
-		$stats['total_spent'] = give_sanitize_amount( $customer->purchase_value );
+		$stats['purchases']   = absint( $donor->purchase_count );
+		$stats['total_spent'] = give_sanitize_amount( $donor->purchase_value );
 
 	}
 
@@ -230,9 +230,9 @@ function give_get_purchase_stats_by_user( $user = '' ) {
 
 
 /**
- * Count number of purchases of a customer
+ * Count number of purchases of a donor
  *
- * Returns total number of purchases a customer has made
+ * Returns total number of purchases a donor has made
  *
  * @access      public
  * @since       1.0
@@ -241,7 +241,7 @@ function give_get_purchase_stats_by_user( $user = '' ) {
  *
  * @return      int - the total number of purchases
  */
-function give_count_purchases_of_customer( $user = null ) {
+function give_count_purchases_of_donor( $user = null ) {
 	if ( empty( $user ) ) {
 		$user = get_current_user_id();
 	}
@@ -329,25 +329,25 @@ add_action( 'user_register', 'give_add_past_purchases_to_new_user' );
 
 
 /**
- * Counts the total number of customers.
+ * Counts the total number of donors.
  *
  * @access        public
  * @since         1.0
- * @return        int - The total number of customers.
+ * @return        int - The total number of donors.
  */
-function give_count_total_customers() {
-	return Give()->customers->count();
+function give_count_total_donors() {
+	return Give()->donors->count();
 }
 
 
 /**
- * Returns the saved address for a customer
+ * Returns the saved address for a donor
  *
  * @access        public
  * @since         1.0
- * @return        array - The customer's address, if any
+ * @return        array - The donor's address, if any
  */
-function give_get_customer_address( $user_id = 0 ) {
+function give_get_donor_address( $user_id = 0 ) {
 	if ( empty( $user_id ) ) {
 		$user_id = get_current_user_id();
 	}

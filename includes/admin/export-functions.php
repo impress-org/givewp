@@ -52,7 +52,7 @@ function give_export_payment_history() {
 add_action( 'give_payment_export', 'give_export_payment_history' );
 
 /**
- * Export all the customers to a CSV file.
+ * Export all the donors to a CSV file.
  *
  * Note: The WordPress Database API is being used directly for performance
  * reasons (workaround of calling all posts and fetch data respectively)
@@ -60,12 +60,12 @@ add_action( 'give_payment_export', 'give_export_payment_history' );
  * @since 1.0
  * @return void
  */
-function give_export_all_customers() {
-	require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/class-export-customers.php';
+function give_export_all_donors() {
+	require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/class-export-donors.php';
 
-	$customer_export = new Give_Customers_Export();
+	$donor_export = new Give_Customers_Export();
 
-	$customer_export->export();
+	$donor_export->export();
 }
 
-add_action( 'give_email_export', 'give_export_all_customers' );
+add_action( 'give_email_export', 'give_export_all_donors' );

@@ -229,8 +229,8 @@ msgid "this year"
 msgstr ""
 
 #: includes/admin/forms/dashboard-columns.php:35
-#: includes/admin/reporting/class-customer-reports-table.php:201
-#: includes/admin/reporting/class-export-customers.php:79
+#: includes/admin/reporting/class-donor-reports-table.php:201
+#: includes/admin/reporting/class-export-donors.php:79
 msgid "Name"
 msgstr ""
 
@@ -338,7 +338,7 @@ msgstr ""
 
 #: includes/admin/forms/metabox.php:91 includes/admin/forms/metabox.php:361
 #: includes/admin/payments/class-payments-table.php:253
-#: includes/admin/reporting/class-customer-reports-table.php:202
+#: includes/admin/reporting/class-donor-reports-table.php:202
 #: includes/admin/reporting/class-export-payments.php:63
 #: includes/admin/reporting/class-export.php:72
 #: templates/history-donations.php:11
@@ -710,9 +710,9 @@ msgid "Abandoned"
 msgstr ""
 
 #: includes/admin/payments/class-payments-table.php:247
-#: includes/admin/reporting/class-customer-reports-table.php:203
-#: includes/admin/reporting/class-export-customers.php:71
-#: includes/admin/reporting/class-export-customers.php:82
+#: includes/admin/reporting/class-donor-reports-table.php:203
+#: includes/admin/reporting/class-export-donors.php:71
+#: includes/admin/reporting/class-export-donors.php:82
 #: includes/admin/reporting/class-export-payments.php:65
 msgid "Email"
 msgstr ""
@@ -1539,52 +1539,52 @@ msgstr ""
 msgid "Request Date:"
 msgstr ""
 
-#: includes/admin/reporting/class-customer-reports-table.php:66
+#: includes/admin/reporting/class-donor-reports-table.php:66
 msgid "Donor"
 msgstr ""
 
-#: includes/admin/reporting/class-customer-reports-table.php:67
+#: includes/admin/reporting/class-donor-reports-table.php:67
 #: includes/admin/reporting/reports.php:76
 msgid "Donors"
 msgstr ""
 
-#: includes/admin/reporting/class-customer-reports-table.php:135
+#: includes/admin/reporting/class-donor-reports-table.php:135
 msgid "Donors Report"
 msgstr ""
 
-#: includes/admin/reporting/class-customer-reports-table.php:141
+#: includes/admin/reporting/class-donor-reports-table.php:141
 msgid "Search Donors"
 msgstr ""
 
-#: includes/admin/reporting/class-customer-reports-table.php:204
+#: includes/admin/reporting/class-donor-reports-table.php:204
 msgid "Purchases"
 msgstr ""
 
-#: includes/admin/reporting/class-customer-reports-table.php:205
+#: includes/admin/reporting/class-donor-reports-table.php:205
 msgid "Total Spent"
 msgstr ""
 
-#: includes/admin/reporting/class-export-customers.php:69
+#: includes/admin/reporting/class-export-donors.php:69
 #: includes/admin/reporting/class-export-payments.php:66
 #: includes/forms/template.php:447 templates/shortcode-profile-editor.php:34
 msgid "First Name"
 msgstr ""
 
-#: includes/admin/reporting/class-export-customers.php:70
+#: includes/admin/reporting/class-export-donors.php:70
 #: includes/admin/reporting/class-export-payments.php:67
 #: includes/forms/template.php:458 templates/shortcode-profile-editor.php:39
 msgid "Last Name"
 msgstr ""
 
-#: includes/admin/reporting/class-export-customers.php:72
+#: includes/admin/reporting/class-export-donors.php:72
 msgid "Date Purchased"
 msgstr ""
 
-#: includes/admin/reporting/class-export-customers.php:85
+#: includes/admin/reporting/class-export-donors.php:85
 msgid "Total Purchases"
 msgstr ""
 
-#: includes/admin/reporting/class-export-customers.php:86
+#: includes/admin/reporting/class-export-donors.php:86
 msgid "Total Purchased"
 msgstr ""
 
@@ -2243,7 +2243,7 @@ msgid "Guest"
 msgstr ""
 
 #: includes/class-give-html-elements.php:136
-msgid "No customers found"
+msgid "No donors found"
 msgstr ""
 
 #: includes/class-give-html-elements.php:176 includes/post-types.php:195
@@ -3116,7 +3116,7 @@ msgstr ""
 
 #: includes/gateways/paypal-standard.php:401
 msgid ""
-"Payment requires a confirmed customer address and must be accepted manually "
+"Payment requires a confirmed donor address and must be accepted manually "
 "through PayPal"
 msgstr ""
 
@@ -3767,7 +3767,7 @@ msgid "Are you sure you wish to resend the donation receipt?"
 msgstr ""
 
 #: includes/scripts.php:214
-msgid "Copy these links to your clipboard and give them to your customer"
+msgid "Copy these links to your clipboard and give them to your donor"
 msgstr ""
 
 #: includes/scripts.php:215

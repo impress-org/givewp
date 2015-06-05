@@ -73,7 +73,7 @@ function give_reports_default_views() {
 	$views = array(
 		'earnings'  => __( 'Income', 'give' ),
 		'forms'     => give_get_forms_label_plural(),
-		'customers' => __( 'Donors', 'give' ),
+		'donors' => __( 'Donors', 'give' ),
 		'gateways'  => __( 'Payment Methods', 'give' )
 	);
 
@@ -203,33 +203,33 @@ add_action( 'give_reports_view_forms', 'give_reports_form_details' );
  * Renders the Reports Customers Table
  *
  * @since 1.0
- * @uses  Give_Customer_Reports_Table::prepare_items()
- * @uses  Give_Customer_Reports_Table::display()
+ * @uses  Give_Donor_Reports_Table::prepare_items()
+ * @uses  Give_Donor_Reports_Table::display()
  * @return void
  */
-function give_reports_customers_table() {
-	include( dirname( __FILE__ ) . '/class-customer-reports-table.php' );
+function give_reports_donors_table() {
+	include( dirname( __FILE__ ) . '/class-donor-reports-table.php' );
 
-	$give_table = new Give_Customer_Reports_Table();
+	$give_table = new Give_Donor_Reports_Table();
 	$give_table->prepare_items();
 	?>
-	<div class="wrap give-reports-customers-wrap">
-		<?php do_action( 'give_logs_customers_table_top' ); ?>
-		<form id="give-customers-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-reports&view=customers' ); ?>">
+	<div class="wrap give-reports-donors-wrap">
+		<?php do_action( 'give_logs_donors_table_top' ); ?>
+		<form id="give-donors-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-reports&view=donors' ); ?>">
 			<?php
-			$give_table->search_box( __( 'Search', 'give' ), 'give-customers' );
+			$give_table->search_box( __( 'Search', 'give' ), 'give-donors' );
 			$give_table->display();
 			?>
 			<input type="hidden" name="post_type" value="give_forms" />
 			<input type="hidden" name="page" value="give-reports" />
-			<input type="hidden" name="view" value="customers" />
+			<input type="hidden" name="view" value="donors" />
 		</form>
-		<?php do_action( 'give_logs_customers_table_bottom' ); ?>
+		<?php do_action( 'give_logs_donors_table_bottom' ); ?>
 	</div>
 <?php
 }
 
-add_action( 'give_reports_view_customers', 'give_reports_customers_table' );
+add_action( 'give_reports_view_donors', 'give_reports_donors_table' );
 
 
 /**
@@ -349,15 +349,15 @@ function give_reports_tab_export() {
 
 						</td>
 					</tr>
-					<tr class="alt give-export-customers">
+					<tr class="alt give-export-donors">
 						<td class="row-title">
 							<h3><span><?php _e( 'Export Donors in CSV', 'give' ); ?></span></h3>
 
 							<p><?php _e( 'Download a CSV of all donors\' emails. Optionally export only donors that have donated to a particular form. Note: if you have a large number of donors, exporting the donation stats may fail.', 'give' ); ?></p>
 						</td>
 						<td>
-							<form method="post" id="give_customer_export">
-								<select name="give_export_download" id="give_customer_export_download">
+							<form method="post" id="give_donor_export">
+								<select name="give_export_download" id="give_donor_export_download">
 									<option value="0"><?php printf( __( 'All %s', 'give' ), give_get_forms_label_plural() ); ?></option>
 									<?php
 									$forms = get_posts( array(
@@ -371,7 +371,7 @@ function give_reports_tab_export() {
 									}
 									?>
 								</select>
-								<select name="give_export_option" id="give_customer_export_option">
+								<select name="give_export_option" id="give_donor_export_option">
 									<option value="emails"><?php _e( 'Emails', 'give' ); ?></option>
 									<option value="emails_and_names"><?php _e( 'Emails and Names', 'give' ); ?></option>
 									<option value="full"><?php _e( 'Emails, Names, and Purchase Stats', 'give' ); ?></option>

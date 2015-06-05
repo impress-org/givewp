@@ -153,7 +153,7 @@ function give_receipt_shortcode( $atts, $content = null ) {
 
 	//Set our important payment information variables
 	$give_receipt_args['id'] = give_get_purchase_id_by_key( $payment_key );
-	$customer_id             = give_get_payment_user_id( $give_receipt_args['id'] );
+	$donor_id             = give_get_payment_user_id( $give_receipt_args['id'] );
 	$payment                 = get_post( $give_receipt_args['id'] );
 
 
@@ -187,7 +187,7 @@ function give_receipt_shortcode( $atts, $content = null ) {
 	 *
 	 * Or if user is logged in and the user can view sensitive donor data
 	 */
-	$user_can_view = ( is_user_logged_in() && $customer_id == get_current_user_id() ) || ( ( $customer_id == 0 || $customer_id == '-1' ) && ! is_user_logged_in() && give_get_purchase_session() ) || current_user_can( 'view_give_sensitive_data' );
+	$user_can_view = ( is_user_logged_in() && $donor_id == get_current_user_id() ) || ( ( $donor_id == 0 || $donor_id == '-1' ) && ! is_user_logged_in() && give_get_purchase_session() ) || current_user_can( 'view_give_sensitive_data' );
 
 	if ( ! apply_filters( 'give_user_can_view_receipt', $user_can_view, $give_receipt_args ) ) { ?>
 

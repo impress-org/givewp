@@ -79,7 +79,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 		 * @var object
 		 * @since 1.0
 		 */
-		public $customers;
+		public $donors;
 
 		/**
 		 * Main Give Instance
@@ -106,7 +106,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 				self::$instance->includes();
 				self::$instance->roles              = new Give_Roles();
 				self::$instance->give_settings      = new Give_Plugin_Settings();
-				self::$instance->customers          = new Give_DB_Customers();
+				self::$instance->donors          = new Give_DB_Donors();
 				self::$instance->session            = new Give_Session();
 				self::$instance->html               = new Give_HTML_Elements();
 				self::$instance->emails             = new Give_Emails();
@@ -202,7 +202,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-template-loader.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donate-form.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-customers.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-donors.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-stats.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-session.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-html-elements.php';

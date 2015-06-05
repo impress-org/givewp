@@ -285,7 +285,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @return array $reports_data All the data for customer reports
+	 * @return array $reports_data All the data for donor reports
 	 */
 	public function reports_data() {
 		$reports_data = array();

@@ -256,8 +256,8 @@ msgstr[0] "%s Doar"
 msgstr[1] "%s Doar"
 
 #: includes/admin/forms/dashboard-columns.php:35
-#: includes/admin/reporting/class-customer-reports-table.php:138
-#: includes/admin/reporting/class-export-customers.php:79
+#: includes/admin/reporting/class-donor-reports-table.php:138
+#: includes/admin/reporting/class-export-donors.php:79
 msgid "Name"
 msgstr "Nome"
 
@@ -363,7 +363,7 @@ msgstr "<span class=\"dashicons dashicons-no\"></span>"
 
 #: includes/admin/forms/metabox.php:90 includes/admin/forms/metabox.php:321
 #: includes/admin/payments/class-payments-table.php:253
-#: includes/admin/reporting/class-customer-reports-table.php:139
+#: includes/admin/reporting/class-donor-reports-table.php:139
 #: includes/admin/reporting/class-export-payments.php:63
 #: includes/admin/reporting/class-export.php:72
 #: templates/history-donations.php:11
@@ -903,9 +903,9 @@ msgid "Abandoned"
 msgstr "Abandonada"
 
 #: includes/admin/payments/class-payments-table.php:247
-#: includes/admin/reporting/class-customer-reports-table.php:140
-#: includes/admin/reporting/class-export-customers.php:71
-#: includes/admin/reporting/class-export-customers.php:82
+#: includes/admin/reporting/class-donor-reports-table.php:140
+#: includes/admin/reporting/class-export-donors.php:71
+#: includes/admin/reporting/class-export-donors.php:82
 #: includes/admin/reporting/class-export-payments.php:65
 msgid "Email"
 msgstr "Email"
@@ -1042,11 +1042,11 @@ msgstr ""
 
 #: includes/admin/payments/contextual-help.php:58
 #: includes/admin/reporting/contextual-help.php:67
-msgid "You can enter the customer's email address"
+msgid "You can enter the donor's email address"
 msgstr "Você pode inserir o endereço de e-mail do cliente"
 
 #: includes/admin/payments/contextual-help.php:59
-msgid "You can enter the customer's name or ID prefexed by 'user:'"
+msgid "You can enter the donor's name or ID prefexed by 'user:'"
 msgstr "Você pode digitar o nome ou ID do cliente precedidos por 'user:'"
 
 #: includes/admin/payments/contextual-help.php:60
@@ -1100,7 +1100,7 @@ msgid "The buyer's email address."
 msgstr "O endereço de e-mail do comprador."
 
 #: includes/admin/payments/contextual-help.php:79
-msgid "Any customer-specific notes related to the payment."
+msgid "Any donor-specific notes related to the payment."
 msgstr "Quaisquer notas específicas do cliente relacionados ao pagamento."
 
 #: includes/admin/payments/contextual-help.php:80
@@ -1773,44 +1773,44 @@ msgstr "Chave da API:"
 msgid "Request Date:"
 msgstr "Data de Solicitação:"
 
-#: includes/admin/reporting/class-customer-reports-table.php:64
+#: includes/admin/reporting/class-donor-reports-table.php:64
 msgid "Donor"
 msgstr "Doador(a)"
 
-#: includes/admin/reporting/class-customer-reports-table.php:65
+#: includes/admin/reporting/class-donor-reports-table.php:65
 #: includes/admin/reporting/reports.php:76
 msgid "Donors"
 msgstr "Doadores"
 
-#: includes/admin/reporting/class-customer-reports-table.php:141
+#: includes/admin/reporting/class-donor-reports-table.php:141
 msgid "Purchases"
 msgstr "Compras"
 
-#: includes/admin/reporting/class-customer-reports-table.php:142
+#: includes/admin/reporting/class-donor-reports-table.php:142
 msgid "Total Spent"
 msgstr "Total Gasto"
 
-#: includes/admin/reporting/class-export-customers.php:69
+#: includes/admin/reporting/class-export-donors.php:69
 #: includes/admin/reporting/class-export-payments.php:66
 #: includes/forms/template.php:439
 msgid "First Name"
 msgstr "Nome"
 
-#: includes/admin/reporting/class-export-customers.php:70
+#: includes/admin/reporting/class-export-donors.php:70
 #: includes/admin/reporting/class-export-payments.php:67
 #: includes/forms/template.php:450
 msgid "Last Name"
 msgstr "Sobrenome"
 
-#: includes/admin/reporting/class-export-customers.php:72
+#: includes/admin/reporting/class-export-donors.php:72
 msgid "Date Purchased"
 msgstr "Data de Aquisição"
 
-#: includes/admin/reporting/class-export-customers.php:85
+#: includes/admin/reporting/class-export-donors.php:85
 msgid "Total Purchases"
 msgstr "Total de Compras"
 
-#: includes/admin/reporting/class-export-customers.php:86
+#: includes/admin/reporting/class-export-donors.php:86
 msgid "Total Purchased"
 msgstr "Total Comprado"
 
@@ -1974,7 +1974,7 @@ msgstr ""
 msgid ""
 "<strong>Payment History</strong> - This report exports all of payments you "
 "have received on your Give store in a CSV format.  The report includes the "
-"contact details of the customer, the forms they have purchased as well as "
+"contact details of the donor, the forms they have purchased as well as "
 "any discount codes they have used and the final price they have paid."
 msgstr ""
 "<strong>Histórico de Pagamentos</strong> - Este relatório exporta todos os "
@@ -1986,7 +1986,7 @@ msgstr ""
 #: includes/admin/reporting/contextual-help.php:56
 msgid ""
 "<strong>Donors</strong> - This report exports all of your donors in a CSV "
-"format. It exports the customer's name and email address and the amount of "
+"format. It exports the donor's name and email address and the amount of "
 "forms they have purchased as well as the final price of their total "
 "purchases."
 msgstr ""
@@ -1999,7 +1999,7 @@ msgstr ""
 msgid ""
 "<strong>Download History</strong> - This report exports all of the downloads "
 "you have received in the current month into a CSV. It exports the date the "
-"file was downloaded, the customer it was downloaded by, their IP address, "
+"file was downloaded, the donor it was downloaded by, their IP address, "
 "the name of the product and the file they downloaded."
 msgstr ""
 "<strong>Histórico de Downloads</strong> - Este relatório exporta todos os "
@@ -2017,7 +2017,7 @@ msgid "The file download log can be searched in several different ways:"
 msgstr "O log de arquivos baixados pode ser pesquisado ​​de várias maneiras:"
 
 #: includes/admin/reporting/contextual-help.php:68
-msgid "You can enter the customer's IP address"
+msgid "You can enter the donor's IP address"
 msgstr "Você pode inserir o endereço de IP do usuário"
 
 #: includes/admin/reporting/contextual-help.php:69
@@ -2626,7 +2626,7 @@ msgid "Guest"
 msgstr "Visitante"
 
 #: includes/class-give-html-elements.php:136
-msgid "No customers found"
+msgid "No donors found"
 msgstr "Nenhum cliente encontrado"
 
 #: includes/class-give-html-elements.php:176 includes/post-types.php:181
@@ -4224,7 +4224,7 @@ msgid "Are you sure you wish to resend the donation receipt?"
 msgstr "Tem certeza que deseja reenviar o recibo de doação?"
 
 #: includes/scripts.php:191
-msgid "Copy these links to your clipboard and give them to your customer"
+msgid "Copy these links to your clipboard and give them to your donor"
 msgstr ""
 "Copie estes links para sua área de transferência e envie ao seu cliente / "
 "doador"

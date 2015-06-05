@@ -209,35 +209,35 @@ add_action( 'wp_ajax_give_form_search', 'give_ajax_form_search' );
 add_action( 'wp_ajax_nopriv_give_form_search', 'give_ajax_form_search' );
 
 /**
- * Search the customers database via Ajax
+ * Search the donors database via Ajax
  *
  * @since 1.0
  * @return void
  */
-function give_ajax_customer_search() {
+function give_ajax_donor_search() {
 	global $wpdb;
 
 	$search  = esc_sql( sanitize_text_field( $_GET['s'] ) );
 	$results = array();
 	if ( ! current_user_can( 'view_give_reports' ) ) {
-		$customers = array();
+		$donors = array();
 	} else {
-		$customers = $wpdb->get_results( "SELECT id,name,email FROM {$wpdb->prefix}give_customers WHERE `name` LIKE '%$search%' OR `email` LIKE '%$search%' LIMIT 50" );
+		$donors = $wpdb->get_results( "SELECT id,name,email FROM {$wpdb->prefix}give_donors WHERE `name` LIKE '%$search%' OR `email` LIKE '%$search%' LIMIT 50" );
 	}
 
-	if ( $customers ) {
+	if ( $donors ) {
 
-		foreach ( $customers as $customer ) {
+		foreach ( $donors as $donor ) {
 
 			$results[] = array(
-				'id'   => $customer->id,
-				'name' => $customer->name . '(' . $customer->email . ')'
+				'id'   => $donor->id,
+				'name' => $donor->name . '(' . $donor->email . ')'
 			);
 		}
 
 	} else {
 
-		$customers[] = array(
+		$donors[] = array(
 			'id'   => 0,
 			'name' => __( 'No results found', 'give' )
 		);
@@ -249,7 +249,7 @@ function give_ajax_customer_search() {
 	give_die();
 }
 
-add_action( 'wp_ajax_give_customer_search', 'give_ajax_customer_search' );
+add_action( 'wp_ajax_give_donor_search', 'give_ajax_donor_search' );
 
 
 /**

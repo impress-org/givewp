@@ -117,7 +117,7 @@ class Give_Donators_Gravatars {
 		$logs = $give_logs->get_logs( $form_id );
 
 		if ( $logs ) {
-			// make an array with all the customer IDs
+			// make an array with all the donor IDs
 			foreach ( $logs as $log ) {
 				$log_ids[] = $log->ID;
 			}
@@ -150,7 +150,7 @@ class Give_Donators_Gravatars {
 				$payment_ids[] = get_post_meta( $id, '_give_log_payment_id', true );
 			}
 
-			// remove customers who have purchased more than once so we can have unique avatars
+			// remove donors who have purchased more than once so we can have unique avatars
 			$unique_emails = array();
 
 			foreach ( $payment_ids as $key => $id ) {
@@ -248,10 +248,10 @@ class Give_Donators_Gravatars {
 				// unserialize the payment meta
 				$user_info = maybe_unserialize( $payment_meta['user_info'] );
 
-				// get customer's first name
+				// get donor's first name
 				$name = $user_info['first_name'];
 
-				// get customer's email
+				// get donor's email
 				$email = get_post_meta( $id, '_give_payment_user_email', true );
 
 				// set gravatar size and provide filter

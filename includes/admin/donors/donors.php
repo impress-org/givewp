@@ -15,23 +15,23 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * Donors Page
  *
- * Renders the customers page contents.
+ * Renders the donors page contents.
  *
  * @since  2.3
  * @return void
 */
 function give_donors_page() {
 	$default_views = give_donor_views();
-	$requested_view = isset( $_GET['view'] ) ? sanitize_text_field( $_GET['view'] ) : 'customers';
+	$requested_view = isset( $_GET['view'] ) ? sanitize_text_field( $_GET['view'] ) : 'donors';
 	if ( array_key_exists( $requested_view, $default_views ) && function_exists( $default_views[$requested_view] ) ) {
-		give_render_customer_view( $requested_view, $default_views );
+		give_render_donor_view( $requested_view, $default_views );
 	} else {
 		give_donors_list();
 	}
 }
 
 /**
- * Register the views for customer management
+ * Register the views for donor management
  *
  * @since  2.3
  * @return array Array of views and their callbacks
@@ -44,10 +44,10 @@ function give_donor_views() {
 }
 
 /**
- * Register the tabs for customer management
+ * Register the tabs for donor management
  *
  * @since  2.3
- * @return array Array of tabs for the customer
+ * @return array Array of tabs for the donor
  */
 function give_donor_tabs() {
 
@@ -57,28 +57,28 @@ function give_donor_tabs() {
 }
 
 /**
- * List table of customers
+ * List table of donors
  *
  * @since  2.3
  * @return void
  */
 function give_donors_list() {
-	include( dirname( __FILE__ ) . '/class-customer-table.php' );
+	include( dirname( __FILE__ ) . '/class-donor-table.php' );
 
-	$customers_table = new Give_Donor_Reports_Table();
-	$customers_table->prepare_items();
+	$donors_table = new Give_Donor_Reports_Table();
+	$donors_table->prepare_items();
 	?>
 	<div class="wrap">
 		<h2><?php _e( 'Donors', 'give' ); ?></h2>
 		<?php do_action( 'give_donors_table_top' ); ?>
 		<form id="give-donors-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors' ); ?>">
 			<?php
-			$customers_table->search_box( __( 'Search Donors', 'give' ), 'give-donors' );
-			$customers_table->display();
+			$donors_table->search_box( __( 'Search Donors', 'give' ), 'give-donors' );
+			$donors_table->display();
 			?>
 			<input type="hidden" name="post_type" value="download" />
 			<input type="hidden" name="page" value="give-donors" />
-			<input type="hidden" name="view" value="customers" />
+			<input type="hidden" name="view" value="donors" />
 		</form>
 		<?php do_action( 'give_donors_table_bottom' ); ?>
 	</div>
@@ -86,38 +86,38 @@ function give_donors_list() {
 }
 
 /**
- * Renders the customer view wrapper
+ * Renders the donor view wrapper
  *
  * @since  2.3
  * @param  string $view      The View being requested
  * @param  array $callbacks  The Registered views and their callback functions
  * @return void
  */
-function give_render_customer_view( $view, $callbacks ) {
+function give_render_donor_view( $view, $callbacks ) {
 
 	$render = true;
 
-	$customer_view_role = apply_filters( 'give_view_customers_role', 'view_shop_reports' );
+	$donor_view_role = apply_filters( 'give_view_donors_role', 'view_shop_reports' );
 
-	if ( ! current_user_can( $customer_view_role ) ) {
+	if ( ! current_user_can( $donor_view_role ) ) {
 		give_set_error( 'give-no-access', __( 'You are not permitted to view this data.', 'give' ) );
 		$render = false;
 	}
 
 	if ( ! isset( $_GET['id'] ) || ! is_numeric( $_GET['id'] ) ) {
-		give_set_error( 'give-invalid_customer', __( 'Invalid Donor ID Provided.', 'give' ) );
+		give_set_error( 'give-invalid_donor', __( 'Invalid Donor ID Provided.', 'give' ) );
 		$render = false;
 	}
 
-	$customer_id = (int)$_GET['id'];
-	$customer    = new Give_Donor( $customer_id );
+	$donor_id = (int)$_GET['id'];
+	$donor    = new Give_Donor( $donor_id );
 
-	if ( empty( $customer->id ) ) {
-		give_set_error( 'give-invalid_customer', __( 'Invalid Donor ID Provided.', 'give' ) );
+	if ( empty( $donor->id ) ) {
+		give_set_error( 'give-invalid_donor', __( 'Invalid Donor ID Provided.', 'give' ) );
 		$render = false;
 	}
 
-	$customer_tabs = give_donor_tabs();
+	$donor_tabs = give_donor_tabs();
 	?>
 
 	<div class='wrap'>
@@ -128,16 +128,16 @@ function give_render_customer_view( $view, $callbacks ) {
 			</div>
 		<?php endif; ?>
 
-		<?php if ( $customer && $render ) : ?>
+		<?php if ( $donor && $render ) : ?>
 
-			<div id="customer-tab-wrapper">
-				<ul id="customer-tab-wrapper-list">
-				<?php foreach ( $customer_tabs as $key => $tab ) : ?>
+			<div id="donor-tab-wrapper">
+				<ul id="donor-tab-wrapper-list">
+				<?php foreach ( $donor_tabs as $key => $tab ) : ?>
 					<?php $active = $key === $view ? true : false; ?>
 					<?php $class  = $active ? 'active' : 'inactive'; ?>
 
 					<?php if ( ! $active ) : ?>
-					<a title="<?php echo esc_attr( $tab['title'] ); ?>" aria-label="<?php echo esc_attr( $tab['title'] ); ?>" href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=' . $key . '&id=' . $customer->id ) ); ?>">
+					<a title="<?php echo esc_attr( $tab['title'] ); ?>" aria-label="<?php echo esc_attr( $tab['title'] ); ?>" href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=' . $key . '&id=' . $donor->id ) ); ?>">
 					<?php endif; ?>
 
 					<li class="<?php echo sanitize_html_class( $class ); ?>"><span class="dashicons <?php echo sanitize_html_class( $tab['dashicon'] ); ?>"></span></li>
@@ -150,8 +150,8 @@ function give_render_customer_view( $view, $callbacks ) {
 				</ul>
 			</div>
 
-			<div id="give-customer-card-wrapper" style="float: left">
-				<?php $callbacks[$view]( $customer ) ?>
+			<div id="give-donor-card-wrapper" style="float: left">
+				<?php $callbacks[$view]( $donor ) ?>
 			</div>
 
 		<?php endif; ?>
@@ -163,42 +163,42 @@ function give_render_customer_view( $view, $callbacks ) {
 
 
 /**
- * View a customer
+ * View a donor
  *
  * @since  2.3
- * @param  $customer The Donor object being displayed
+ * @param  $donor The Donor object being displayed
  * @return void
  */
-function give_donors_view( $customer ) {
+function give_donors_view( $donor ) {
 
-	$customer_edit_role = apply_filters( 'give_edit_customers_role', 'edit_shop_payments' );
+	$donor_edit_role = apply_filters( 'give_edit_donors_role', 'edit_shop_payments' );
 
 	?>
 
-	<?php do_action( 'give_donor_card_top', $customer ); ?>
+	<?php do_action( 'give_donor_card_top', $donor ); ?>
 
-	<div class="info-wrapper customer-section">
+	<div class="info-wrapper donor-section">
 
-		<form id="edit-customer-info" method="post" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $customer->id ); ?>">
+		<form id="edit-donor-info" method="post" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ); ?>">
 
-			<div class="customer-info">
+			<div class="donor-info">
 
-				<div class="avatar-wrap left" id="customer-avatar">
-					<?php echo get_avatar( $customer->email ); ?><br />
-					<?php if ( current_user_can( $customer_edit_role ) ): ?>
-						<span class="info-item editable customer-edit-link"><a title="<?php _e( 'Edit Donor', 'give' ); ?>" href="#" id="edit-customer"><?php _e( 'Edit Donor', 'give' ); ?></a></span>
+				<div class="avatar-wrap left" id="donor-avatar">
+					<?php echo get_avatar( $donor->email ); ?><br />
+					<?php if ( current_user_can( $donor_edit_role ) ): ?>
+						<span class="info-item editable donor-edit-link"><a title="<?php _e( 'Edit Donor', 'give' ); ?>" href="#" id="edit-donor"><?php _e( 'Edit Donor', 'give' ); ?></a></span>
 					<?php endif; ?>
 				</div>
 
-				<div class="customer-id right">
-					#<?php echo $customer->id; ?>
+				<div class="donor-id right">
+					#<?php echo $donor->id; ?>
 				</div>
 
-				<div class="customer-address-wrapper right">
-				<?php if ( isset( $customer->user_id ) && $customer->user_id > 0 ) : ?>
+				<div class="donor-address-wrapper right">
+				<?php if ( isset( $donor->user_id ) && $donor->user_id > 0 ) : ?>
 
 					<?php
-						$address = get_user_meta( $customer->user_id, '_give_user_address', true );
+						$address = get_user_meta( $donor->user_id, '_give_user_address', true );
 						$defaults = array(
 							'line1'   => '',
 							'line2'   => '',
@@ -213,7 +213,7 @@ function give_donors_view( $customer ) {
 
 					<?php if ( ! empty( $address ) ) : ?>
 					<strong><?php _e( 'Donor Address', 'give' ); ?></strong>
-					<span class="customer-address info-item editable">
+					<span class="donor-address info-item editable">
 						<span class="info-item" data-key="line1"><?php echo $address['line1']; ?></span>
 						<span class="info-item" data-key="line2"><?php echo $address['line2']; ?></span>
 						<span class="info-item" data-key="city"><?php echo $address['city']; ?></span>
@@ -222,11 +222,11 @@ function give_donors_view( $customer ) {
 						<span class="info-item" data-key="zip"><?php echo $address['zip']; ?></span>
 					</span>
 					<?php endif; ?>
-					<span class="customer-address info-item edit-item">
-						<input class="info-item" type="text" data-key="line1" name="customerinfo[line1]" placeholder="<?php _e( 'Address 1', 'give' ); ?>" value="<?php echo $address['line1']; ?>" />
-						<input class="info-item" type="text" data-key="line2" name="customerinfo[line2]" placeholder="<?php _e( 'Address 2', 'give' ); ?>" value="<?php echo $address['line2']; ?>" />
-						<input class="info-item" type="text" data-key="city" name="customerinfo[city]" placeholder="<?php _e( 'City', 'give' ); ?>" value="<?php echo $address['city']; ?>" />
-						<select data-key="country" name="customerinfo[country]" id="billing_country" class="billing_country give-select edit-item">
+					<span class="donor-address info-item edit-item">
+						<input class="info-item" type="text" data-key="line1" name="donorinfo[line1]" placeholder="<?php _e( 'Address 1', 'give' ); ?>" value="<?php echo $address['line1']; ?>" />
+						<input class="info-item" type="text" data-key="line2" name="donorinfo[line2]" placeholder="<?php _e( 'Address 2', 'give' ); ?>" value="<?php echo $address['line2']; ?>" />
+						<input class="info-item" type="text" data-key="city" name="donorinfo[city]" placeholder="<?php _e( 'City', 'give' ); ?>" value="<?php echo $address['city']; ?>" />
+						<select data-key="country" name="donorinfo[country]" id="billing_country" class="billing_country give-select edit-item">
 							<?php
 
 							$selected_country = $address['country'];
@@ -244,7 +244,7 @@ function give_donors_view( $customer ) {
 						$selected_state = isset( $address['state'] ) ? $address['state'] : $selected_state;
 
 						if( ! empty( $states ) ) : ?>
-						<select data-key="state" name="customerinfo[state]" id="card_state" class="card_state give-select info-item">
+						<select data-key="state" name="donorinfo[state]" id="card_state" class="card_state give-select info-item">
 							<?php
 								foreach( $states as $state_code => $state ) {
 									echo '<option value="' . $state_code . '"' . selected( $state_code, $selected_state, false ) . '>' . $state . '</option>';
@@ -252,30 +252,30 @@ function give_donors_view( $customer ) {
 							?>
 						</select>
 						<?php else : ?>
-						<input type="text" size="6" data-key="state" name="customerinfo[state]" id="card_state" class="card_state give-input info-item" placeholder="<?php _e( 'State / Province', 'give' ); ?>"/>
+						<input type="text" size="6" data-key="state" name="donorinfo[state]" id="card_state" class="card_state give-input info-item" placeholder="<?php _e( 'State / Province', 'give' ); ?>"/>
 						<?php endif; ?>
-						<input class="info-item" type="text" data-key="zip" name="customerinfo[zip]" placeholder="<?php _e( 'Postal', 'give' ); ?>" value="<?php echo $address['zip']; ?>" />
+						<input class="info-item" type="text" data-key="zip" name="donorinfo[zip]" placeholder="<?php _e( 'Postal', 'give' ); ?>" value="<?php echo $address['zip']; ?>" />
 					</span>
 				<?php endif; ?>
 				</div>
 
-				<div class="customer-main-wrapper left">
+				<div class="donor-main-wrapper left">
 
-					<span class="customer-name info-item edit-item"><input size="15" data-key="name" name="customerinfo[name]" type="text" value="<?php echo esc_attr( $customer->name ); ?>" placeholder="<?php _e( 'Donor Name', 'give' ); ?>" /></span>
-					<span class="customer-name info-item editable"><span data-key="name"><?php echo $customer->name; ?></span></span>
-					<span class="customer-name info-item edit-item"><input size="20" data-key="email" name="customerinfo[email]" type="text" value="<?php echo $customer->email; ?>" placeholder="<?php _e( 'Donor Email', 'give' ); ?>" /></span>
-					<span class="customer-email info-item editable" data-key="email"><?php echo $customer->email; ?></span>
-					<span class="customer-since info-item">
+					<span class="donor-name info-item edit-item"><input size="15" data-key="name" name="donorinfo[name]" type="text" value="<?php echo esc_attr( $donor->name ); ?>" placeholder="<?php _e( 'Donor Name', 'give' ); ?>" /></span>
+					<span class="donor-name info-item editable"><span data-key="name"><?php echo $donor->name; ?></span></span>
+					<span class="donor-name info-item edit-item"><input size="20" data-key="email" name="donorinfo[email]" type="text" value="<?php echo $donor->email; ?>" placeholder="<?php _e( 'Donor Email', 'give' ); ?>" /></span>
+					<span class="donor-email info-item editable" data-key="email"><?php echo $donor->email; ?></span>
+					<span class="donor-since info-item">
 						<?php _e( 'Donor since', 'give' ); ?>
-						<?php echo date_i18n( get_option( 'date_format' ), strtotime( $customer->date_created ) ) ?>
+						<?php echo date_i18n( get_option( 'date_format' ), strtotime( $donor->date_created ) ) ?>
 					</span>
-					<span class="customer-user-id info-item edit-item">
+					<span class="donor-user-id info-item edit-item">
 						<?php
 
-						$user_id    = $customer->user_id > 0 ? $customer->user_id : '';
+						$user_id    = $donor->user_id > 0 ? $donor->user_id : '';
 						$data_atts  = array( 'key' => 'user_login', 'exclude' => $user_id );
 						$user_args  = array(
-							'name'  => 'customerinfo[user_login]',
+							'name'  => 'donorinfo[user_login]',
 							'class' => 'give-user-dropdown',
 							'data'  => $data_atts,
 						);
@@ -285,20 +285,20 @@ function give_donors_view( $customer ) {
 							$user_args['value'] = $userdata->user_login;
 						}
 
-						echo EDD()->html->ajax_user_search( $user_args );
+						echo Give()->html->ajax_user_search( $user_args );
 						?>
-						<input type="hidden" name="customerinfo[user_id]" data-key="user_id" value="<?php echo $customer->user_id; ?>" />
+						<input type="hidden" name="donorinfo[user_id]" data-key="user_id" value="<?php echo $donor->user_id; ?>" />
 					</span>
 
-					<span class="customer-user-id info-item editable">
+					<span class="donor-user-id info-item editable">
 						<?php _e( 'User ID', 'give' ); ?>:&nbsp;
-						<?php if( intval( $customer->user_id ) > 0 ) : ?>
-							<span data-key="user_id"><?php echo $customer->user_id; ?></span>
+						<?php if( intval( $donor->user_id ) > 0 ) : ?>
+							<span data-key="user_id"><?php echo $donor->user_id; ?></span>
 						<?php else : ?>
 							<span data-key="user_id"><?php _e( 'none', 'give' ); ?></span>
 						<?php endif; ?>
-						<?php if ( current_user_can( $customer_edit_role ) && intval( $customer->user_id ) > 0 ) : ?>
-							<span class="disconnect-user"> - <a id="disconnect-customer" href="#disconnect" title="<?php _e( 'Disconnects the current user ID from this customer record', 'give' ); ?>"><?php _e( 'Disconnect User', 'give' ); ?></a></span>
+						<?php if ( current_user_can( $donor_edit_role ) && intval( $donor->user_id ) > 0 ) : ?>
+							<span class="disconnect-user"> - <a id="disconnect-donor" href="#disconnect" title="<?php _e( 'Disconnects the current user ID from this donor record', 'give' ); ?>"><?php _e( 'Disconnect User', 'give' ); ?></a></span>
 						<?php endif; ?>
 					</span>
 
@@ -306,44 +306,44 @@ function give_donors_view( $customer ) {
 
 			</div>
 
-			<span id="customer-edit-actions" class="edit-item">
-				<input type="hidden" data-key="id" name="customerinfo[id]" value="<?php echo $customer->id; ?>" />
-				<?php wp_nonce_field( 'edit-customer', '_wpnonce', false, true ); ?>
-				<input type="hidden" name="give_action" value="edit-customer" />
-				<input type="submit" id="give-edit-customer-save" class="button-secondary" value="<?php _e( 'Update Donor', 'give' ); ?>" />
-				<a id="give-edit-customer-cancel" href="" class="delete"><?php _e( 'Cancel', 'give' ); ?></a>
+			<span id="donor-edit-actions" class="edit-item">
+				<input type="hidden" data-key="id" name="donorinfo[id]" value="<?php echo $donor->id; ?>" />
+				<?php wp_nonce_field( 'edit-donor', '_wpnonce', false, true ); ?>
+				<input type="hidden" name="give_action" value="edit-donor" />
+				<input type="submit" id="give-edit-donor-save" class="button-secondary" value="<?php _e( 'Update Donor', 'give' ); ?>" />
+				<a id="give-edit-donor-cancel" href="" class="delete"><?php _e( 'Cancel', 'give' ); ?></a>
 			</span>
 
 		</form>
 	</div>
 
-	<?php do_action( 'give_donor_before_stats', $customer ); ?>
+	<?php do_action( 'give_donor_before_stats', $donor ); ?>
 
-	<div id="customer-stats-wrapper" class="customer-section">
+	<div id="donor-stats-wrapper" class="donor-section">
 		<ul>
 			<li>
-				<a title="<?php _e( 'View All Purchases', 'give' ); ?>" href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( $customer->email ) ); ?>">
+				<a title="<?php _e( 'View All Purchases', 'give' ); ?>" href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( $donor->email ) ); ?>">
 					<span class="dashicons dashicons-cart"></span>
-					<?php printf( _n( '%d Completed Sale', '%d Completed Sales', $customer->purchase_count, 'give' ), $customer->purchase_count ); ?>
+					<?php printf( _n( '%d Completed Sale', '%d Completed Sales', $donor->purchase_count, 'give' ), $donor->purchase_count ); ?>
 				</a>
 			</li>
 			<li>
 				<span class="dashicons dashicons-chart-area"></span>
-				<?php echo give_currency_filter( give_format_amount( $customer->purchase_value ) ); ?> <?php _e( 'Lifetime Value', 'give' ); ?>
+				<?php echo give_currency_filter( give_format_amount( $donor->purchase_value ) ); ?> <?php _e( 'Lifetime Value', 'give' ); ?>
 			</li>
-			<?php do_action( 'give_donor_stats_list', $customer ); ?>
+			<?php do_action( 'give_donor_stats_list', $donor ); ?>
 		</ul>
 	</div>
 
-	<?php do_action( 'give_donor_before_tables_wrapper', $customer ); ?>
+	<?php do_action( 'give_donor_before_tables_wrapper', $donor ); ?>
 
-	<div id="customer-tables-wrapper" class="customer-section">
+	<div id="donor-tables-wrapper" class="donor-section">
 
-		<?php do_action( 'give_donor_before_tables', $customer ); ?>
+		<?php do_action( 'give_donor_before_tables', $donor ); ?>
 
 		<h3><?php _e( 'Recent Payments', 'give' ); ?></h3>
 		<?php
-			$payment_ids = explode( ',', $customer->payment_ids );
+			$payment_ids = explode( ',', $donor->payment_ids );
 			$payments    = give_get_payments( array( 'post__in' => $payment_ids ) );
 			$payments    = array_slice( $payments, 0, 10 );
 		?>
@@ -369,7 +369,7 @@ function give_donors_view( $customer ) {
 								<a title="<?php _e( 'View Details for Payment', 'give' ); echo ' ' . $payment->ID; ?>" href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $payment->ID ); ?>">
 									<?php _e( 'View Details', 'give' ); ?>
 								</a>
-								<?php do_action( 'give_donor_recent_purcahses_actions', $customer, $payment ); ?>
+								<?php do_action( 'give_donor_recent_purcahses_actions', $donor, $payment ); ?>
 							</td>
 						</tr>
 					<?php endforeach; ?>
@@ -381,7 +381,7 @@ function give_donors_view( $customer ) {
 
 		<h3><?php printf( __( 'Purchased %s', 'give' ), give_get_label_plural() ); ?></h3>
 		<?php
-			$downloads = give_get_users_purchased_products( $customer->email );
+			$downloads = give_get_users_purchased_products( $donor->email );
 		?>
 		<table class="wp-list-table widefat striped downloads">
 			<thead>
@@ -408,48 +408,48 @@ function give_donors_view( $customer ) {
 			</tbody>
 		</table>
 
-		<?php do_action( 'give_donor_after_tables', $customer ); ?>
+		<?php do_action( 'give_donor_after_tables', $donor ); ?>
 
 	</div>
 
-	<?php do_action( 'give_donor_card_bottom', $customer ); ?>
+	<?php do_action( 'give_donor_card_bottom', $donor ); ?>
 
 	<?php
 }
 
 /**
- * View the notes of a customer
+ * View the notes of a donor
  *
  * @since  1.0
- * @param  $customer The Donor being displayed
+ * @param  $donor The Donor being displayed
  * @return void
  */
-function give_donor_notes_view( $customer ) {
+function give_donor_notes_view( $donor ) {
 
 	$paged       = isset( $_GET['paged'] ) && is_numeric( $_GET['paged'] ) ? $_GET['paged'] : 1;
 	$paged       = absint( $paged );
-	$note_count  = $customer->get_notes_count();
+	$note_count  = $donor->get_notes_count();
 	$per_page    = apply_filters( 'give_donor_notes_per_page', 20 );
 	$total_pages = ceil( $note_count / $per_page );
 
-	$customer_notes = $customer->get_notes( $per_page, $paged );
+	$donor_notes = $donor->get_notes( $per_page, $paged );
 	?>
 
-	<div id="customer-notes-wrapper">
-		<div class="customer-notes-header">
-			<?php echo get_avatar( $customer->email, 30 ); ?> <span><?php echo $customer->name; ?></span>
+	<div id="donor-notes-wrapper">
+		<div class="donor-notes-header">
+			<?php echo get_avatar( $donor->email, 30 ); ?> <span><?php echo $donor->name; ?></span>
 		</div>
 		<h3><?php _e( 'Notes', 'give' ); ?></h3>
 
 		<?php if ( 1 == $paged ) : ?>
 		<div style="display: block; margin-bottom: 35px;">
-			<form id="give-add-customer-note" method="post" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=notes&id=' . $customer->id ); ?>">
-				<textarea id="customer-note" name="customer_note" class="customer-note-input" rows="10"></textarea>
+			<form id="give-add-donor-note" method="post" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=notes&id=' . $donor->id ); ?>">
+				<textarea id="donor-note" name="donor_note" class="donor-note-input" rows="10"></textarea>
 				<br />
-				<input type="hidden" id="customer-id" name="customer_id" value="<?php echo $customer->id; ?>" />
-				<input type="hidden" name="give_action" value="add-customer-note" />
-				<?php wp_nonce_field( 'add-customer-note', 'add_customer_note_nonce', true, true ); ?>
-				<input id="add-customer-note" class="right button-primary" type="submit" value="Add Note" />
+				<input type="hidden" id="donor-id" name="donor_id" value="<?php echo $donor->id; ?>" />
+				<input type="hidden" name="give_action" value="add-donor-note" />
+				<?php wp_nonce_field( 'add-donor-note', 'add_donor_note_nonce', true, true ); ?>
+				<input id="add-donor-note" class="right button-primary" type="submit" value="Add Note" />
 			</form>
 		</div>
 		<?php endif; ?>
@@ -466,17 +466,17 @@ function give_donor_notes_view( $customer ) {
 		echo paginate_links( $pagination_args );
 		?>
 
-		<div id="give-customer-notes">
-		<?php if ( count( $customer_notes ) > 0 ) : ?>
-			<?php foreach( $customer_notes as $key => $note ) : ?>
-				<div class="customer-note-wrapper dashboard-comment-wrap comment-item">
+		<div id="give-donor-notes">
+		<?php if ( count( $donor_notes ) > 0 ) : ?>
+			<?php foreach( $donor_notes as $key => $note ) : ?>
+				<div class="donor-note-wrapper dashboard-comment-wrap comment-item">
 					<span class="note-content-wrap">
 						<?php echo stripslashes( $note ); ?>
 					</span>
 				</div>
 			<?php endforeach; ?>
 		<?php else: ?>
-			<div class="give-no-customer-notes">
+			<div class="give-no-donor-notes">
 				<?php _e( 'No Donor Notes', 'give' ); ?>
 			</div>
 		<?php endif; ?>
@@ -489,44 +489,44 @@ function give_donor_notes_view( $customer ) {
 	<?php
 }
 
-function give_donors_delete_view( $customer ) {
-	$customer_edit_role = apply_filters( 'give_edit_customers_role', 'edit_shop_payments' );
+function give_donors_delete_view( $donor ) {
+	$donor_edit_role = apply_filters( 'give_edit_donors_role', 'edit_shop_payments' );
 
 	?>
 
-	<?php do_action( 'give_donor_delete_top', $customer ); ?>
+	<?php do_action( 'give_donor_delete_top', $donor ); ?>
 
-	<div class="info-wrapper customer-section">
+	<div class="info-wrapper donor-section">
 
-		<form id="delete-customer" method="post" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id=' . $customer->id ); ?>">
+		<form id="delete-donor" method="post" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id=' . $donor->id ); ?>">
 
-			<div class="customer-notes-header">
-				<?php echo get_avatar( $customer->email, 30 ); ?> <span><?php echo $customer->name; ?></span>
+			<div class="donor-notes-header">
+				<?php echo get_avatar( $donor->email, 30 ); ?> <span><?php echo $donor->name; ?></span>
 			</div>
 
 
-			<div class="customer-info delete-customer">
+			<div class="donor-info delete-donor">
 
-				<span class="delete-customer-options">
+				<span class="delete-donor-options">
 					<p>
-						<?php echo EDD()->html->checkbox( array( 'name' => 'give-customer-delete-confirm' ) ); ?>
-						<label for="give-customer-delete-confirm"><?php _e( 'Are you sure you want to delete this customer?', 'give' ); ?></label>
+						<?php echo Give()->html->checkbox( array( 'name' => 'give-donor-delete-confirm' ) ); ?>
+						<label for="give-donor-delete-confirm"><?php _e( 'Are you sure you want to delete this donor?', 'give' ); ?></label>
 					</p>
 
 					<p>
-						<?php echo EDD()->html->checkbox( array( 'name' => 'give-customer-delete-records', 'options' => array( 'disabled' => true ) ) ); ?>
-						<label for="give-customer-delete-records"><?php _e( 'Delete all associated payments and records?', 'give' ); ?></label>
+						<?php echo Give()->html->checkbox( array( 'name' => 'give-donor-delete-records', 'options' => array( 'disabled' => true ) ) ); ?>
+						<label for="give-donor-delete-records"><?php _e( 'Delete all associated payments and records?', 'give' ); ?></label>
 					</p>
 
-					<?php do_action( 'give_donor_delete_inputs', $customer ); ?>
+					<?php do_action( 'give_donor_delete_inputs', $donor ); ?>
 				</span>
 
-				<span id="customer-edit-actions">
-					<input type="hidden" name="customer_id" value="<?php echo $customer->id; ?>" />
-					<?php wp_nonce_field( 'delete-customer', '_wpnonce', false, true ); ?>
-					<input type="hidden" name="give_action" value="delete-customer" />
-					<input type="submit" disabled="disabled" id="give-delete-customer" class="button-primary" value="<?php _e( 'Delete Donor', 'give' ); ?>" />
-					<a id="give-delete-customer-cancel" href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $customer->id ); ?>" class="delete"><?php _e( 'Cancel', 'give' ); ?></a>
+				<span id="donor-edit-actions">
+					<input type="hidden" name="donor_id" value="<?php echo $donor->id; ?>" />
+					<?php wp_nonce_field( 'delete-donor', '_wpnonce', false, true ); ?>
+					<input type="hidden" name="give_action" value="delete-donor" />
+					<input type="submit" disabled="disabled" id="give-delete-donor" class="button-primary" value="<?php _e( 'Delete Donor', 'give' ); ?>" />
+					<a id="give-delete-donor-cancel" href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ); ?>" class="delete"><?php _e( 'Cancel', 'give' ); ?></a>
 				</span>
 
 			</div>
@@ -536,5 +536,5 @@ function give_donors_delete_view( $customer ) {
 
 	<?php
 
-	do_action( 'give_donor_delete_bottom', $customer );
+	do_action( 'give_donor_delete_bottom', $donor );
 }

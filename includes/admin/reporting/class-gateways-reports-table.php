@@ -157,7 +157,7 @@ class Give_Gateawy_Reports_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.5
-	 * @return array $reports_data All the data for customer reports
+	 * @return array $reports_data All the data for donor reports
 	 */
 	public function reports_data() {
 

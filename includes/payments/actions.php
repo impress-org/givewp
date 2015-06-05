@@ -42,7 +42,7 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 	$creation_date  = get_post_field( 'post_date', $payment_id, 'raw' );
 	$completed_date = give_get_payment_completed_date( $payment_id );
 	$user_info      = give_get_payment_meta_user_info( $payment_id );
-	$customer_id    = give_get_payment_customer_id( $payment_id );
+	$donor_id    = give_get_payment_donor_id( $payment_id );
 	$amount         = give_get_payment_amount( $payment_id );
 
 	do_action( 'give_pre_complete_purchase', $payment_id );
@@ -71,8 +71,8 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 	delete_transient( md5( 'give_earnings_todaytoday' ) );
 
 
-	// Increase the customer's purchase stats
-	Give()->customers->increment_stats( $customer_id, $amount );
+	// Increase the donor's purchase stats
+	Give()->donors->increment_stats( $donor_id, $amount );
 
 	give_increase_total_earnings( $amount );
 
@@ -146,12 +146,12 @@ function give_undo_donation_on_refund( $payment_id, $new_status, $old_status ) {
 	// Decrease total earnings
 	give_decrease_total_earnings( $amount );
 
-	// Decrement the stats for the customer
-	$customer_id = give_get_payment_customer_id( $payment_id );
+	// Decrement the stats for the donor
+	$donor_id = give_get_payment_donor_id( $payment_id );
 
-	if ( $customer_id ) {
+	if ( $donor_id ) {
 
-		Give()->customers->decrement_stats( $customer_id, $amount );
+		Give()->donors->decrement_stats( $donor_id, $amount );
 
 	}
 

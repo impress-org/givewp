@@ -881,7 +881,7 @@ body.give_forms_page_give-reports h3.reports-earnings-title, body.give_forms_pag
   margin: 7px 0 0; }
 body.give_forms_page_give-reports .reports-views-wrap, body.give_forms_page_give-payment-history .reports-views-wrap {
   padding: 3px 0 0; }
-body.give_forms_page_give-reports .wrap.give-reports-customers-wrap, body.give_forms_page_give-payment-history .wrap.give-reports-customers-wrap {
+body.give_forms_page_give-reports .wrap.give-reports-donors-wrap, body.give_forms_page_give-payment-history .wrap.give-reports-donors-wrap {
   margin-right: 0;
   margin-bottom: 10px; }
 body.give_forms_page_give-reports .widefat tbody td, body.give_forms_page_give-reports .widefat tbody th, body.give_forms_page_give-payment-history .widefat tbody td, body.give_forms_page_give-payment-history .widefat tbody th {
@@ -999,7 +999,7 @@ Logs
  * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
-#give_customer_export_download {
+#give_donor_export_download {
   margin: 0 0 5px; }
 
 /**
@@ -1278,7 +1278,7 @@ Responsiveness
 #give-donation-overview .give-select-chosen {
   width: 196px; }
 
-#give-donation-overview ul, #give-order-address-country-wrap select, #give-customer-details .order-data-address input, #give-edit-order-form .column input, #give-customer-details .order-data-column p.data input {
+#give-donation-overview ul, #give-order-address-country-wrap select, #give-donor-details .order-data-address input, #give-edit-order-form .column input, #give-donor-details .order-data-column p.data input {
   clear: both;
   display: block; }
 

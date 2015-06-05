@@ -650,8 +650,8 @@ function give_get_purchase_form_user( $valid_data = array() ) {
 			 * This also allows the old login process to still work if a user removes the
 			 * checkout login submit button.
 			 *
-			 * This also ensures that the customer is logged in correctly if they click "Purchase"
-			 * instead of submitting the login form, meaning the customer is logged in during the purchase process.
+			 * This also ensures that the donor is logged in correctly if they click "Purchase"
+			 * instead of submitting the login form, meaning the donor is logged in during the purchase process.
 			 */
 
 			// Set user
@@ -982,7 +982,7 @@ function give_check_purchase_email( $valid_data, $posted ) {
 	}
 
 	if ( $is_banned ) {
-		// Set an error and give the customer a general error (don't alert them that they were banned)
+		// Set an error and give the donor a general error (don't alert them that they were banned)
 		give_set_error( 'email_banned', __( 'An internal error has occurred, please try again or contact support.', 'give' ) );
 	}
 }

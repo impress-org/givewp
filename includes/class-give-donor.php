@@ -95,10 +95,13 @@ class Give_Donor {
 	 * Get things going
 	 *
 	 * @since 1.0
+	 *
+	 * @param bool $_id_or_email
+	 * @param bool $by_user_id
 	 */
 	public function __construct( $_id_or_email = false, $by_user_id = false ) {
 
-		$this->db = new Give_DB_Customers;
+		$this->db = new Give_DB_Donors;
 
 		if ( false === $_id_or_email || ( is_numeric( $_id_or_email ) && (int) $_id_or_email !== absint( $_id_or_email ) ) ) {
 			return false;

@@ -2,7 +2,7 @@
 /**
  * Customers Export Class
  *
- * This class handles customer export
+ * This class handles donor export
  *
  * @package     Give
  * @subpackage  Admin/Reports
@@ -28,7 +28,7 @@ class Give_Customers_Export extends Give_Export {
 	 * @var string
 	 * @since 1.4.4
 	 */
-	public $export_type = 'customers';
+	public $export_type = 'donors';
 
 	/**
 	 * Set the export headers
@@ -52,7 +52,7 @@ class Give_Customers_Export extends Give_Export {
 
 		nocache_headers();
 		header( 'Content-Type: text/csv; charset=utf-8' );
-		header( 'Content-Disposition: attachment; filename=' . apply_filters( 'give_customers_export_filename', 'give-export-' . $extra . $this->export_type . '-' . date( 'm-d-Y' ) ) . '.csv' );
+		header( 'Content-Disposition: attachment; filename=' . apply_filters( 'give_donors_export_filename', 'give-export-' . $extra . $this->export_type . '-' . date( 'm-d-Y' ) ) . '.csv' );
 		header( "Expires: 0" );
 	}
 
@@ -107,7 +107,7 @@ class Give_Customers_Export extends Give_Export {
 
 		if ( ! empty( $_POST['give_export_download'] ) ) {
 
-			// Export customers of a specific product
+			// Export donors of a specific product
 			global $give_logs;
 
 			$args = array(
@@ -142,23 +142,23 @@ class Give_Customers_Export extends Give_Export {
 
 		} else {
 
-			// Export all customers
-			$customers = Give()->customers->get_customers( array( 'number' => - 1 ) );
+			// Export all donors
+			$donors = Give()->donors->get_donors( array( 'number' => - 1 ) );
 
 			$i = 0;
 
-			foreach ( $customers as $customer ) {
+			foreach ( $donors as $donor ) {
 
 				if ( 'emails' != $_POST['give_export_option'] ) {
-					$data[ $i ]['name'] = $customer->name;
+					$data[ $i ]['name'] = $donor->name;
 				}
 
-				$data[ $i ]['email'] = $customer->email;
+				$data[ $i ]['email'] = $donor->email;
 
 				if ( 'full' == $_POST['give_export_option'] ) {
 
-					$data[ $i ]['purchases'] = $customer->purchase_count;
-					$data[ $i ]['amount']    = give_format_amount( $customer->purchase_value );
+					$data[ $i ]['purchases'] = $donor->purchase_count;
+					$data[ $i ]['amount']    = give_format_amount( $donor->purchase_value );
 
 				}
 				$i ++;

@@ -82,6 +82,7 @@ if ( give_get_option( 'uninstall_on_delete' ) === 'on' ) {
 	}
 
 	// Remove all database tables
+	$wpdb->query( "DROP TABLE IF EXISTS " . $wpdb->prefix . "give_donors" );
 	$wpdb->query( "DROP TABLE IF EXISTS " . $wpdb->prefix . "give_customers" );
 
 	// Cleanup Cron Events

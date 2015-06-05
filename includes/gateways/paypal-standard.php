@@ -321,7 +321,7 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 		// No email associated with purchase, so store from PayPal
 		give_update_payment_meta( $payment_id, '_give_payment_user_email', $data['payer_email'] );
 
-		// Setup and store the customers's details
+		// Setup and store the donors's details
 		$address            = array();
 		$address['line1']   = ! empty( $data['address_street'] ) ? sanitize_text_field( $data['address_street'] ) : false;
 		$address['city']    = ! empty( $data['address_city'] ) ? sanitize_text_field( $data['address_city'] ) : false;
@@ -393,7 +393,7 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 
 				case 'address' :
 
-					$note = __( 'Payment requires a confirmed customer address and must be accepted manually through PayPal', 'give' );
+					$note = __( 'Payment requires a confirmed donor address and must be accepted manually through PayPal', 'give' );
 
 					break;
 

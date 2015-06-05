@@ -165,8 +165,8 @@ function give_after_install() {
 		return;
 	}
 
-	// Create the customers database (this ensures it creates it on multisite instances where it is network activated)
-	Give()->customers->create_table();
+	// Create the donors database (this ensures it creates it on multisite instances where it is network activated)
+	Give()->donors->create_table();
 
 	// Delete the transient
 	delete_transient( '_give_installed' );

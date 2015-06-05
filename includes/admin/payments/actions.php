@@ -76,39 +76,39 @@ function give_update_payment_details( $data ) {
 
 		$user = get_user_by( 'id', $user_id );
 		if ( ! empty( $user ) && strtolower( $user->data->user_email ) !== strtolower( $email ) ) {
-			// protect a purcahse from being assigned to a customer with a user ID and Email that belong to different users
+			// protect a purcahse from being assigned to a donor with a user ID and Email that belong to different users
 			wp_die( __( 'User ID and User Email do not match.', 'give' ), __( 'Error', 'give' ), array( 'response' => 400 ) );
 			exit;
 		}
 
-		// Remove the stats and payment from the previous customer
-		$previous_customer = Give()->customers->get_by( 'email', $user_info['email'] );
-		Give()->customers->remove_payment( $previous_customer->id, $payment_id );
+		// Remove the stats and payment from the previous donor
+		$previous_donor = Give()->donors->get_by( 'email', $user_info['email'] );
+		Give()->donors->remove_payment( $previous_donor->id, $payment_id );
 
-		// Attribute the payment to the new customer and update the payment post meta
-		$new_customer_id = Give()->customers->get_column_by( 'id', 'email', $email );
+		// Attribute the payment to the new donor and update the payment post meta
+		$new_donor_id = Give()->donors->get_column_by( 'id', 'email', $email );
 
-		if ( ! $new_customer ) {
+		if ( ! $new_donor ) {
 
-			// No customer exists for the given email so create one
-			$new_customer_id = Give()->customers->add( array(
+			// No donor exists for the given email so create one
+			$new_donor_id = Give()->donors->add( array(
 				'email' => $email,
 				'name'  => $first_name . ' ' . $last_name
 			) );
 
 		}
 
-		Give()->customers->attach_payment( $new_customer_id, $payment_id );
+		Give()->donors->attach_payment( $new_donor_id, $payment_id );
 
-		// If purchase was completed and not ever refunded, adjust stats of customers
+		// If purchase was completed and not ever refunded, adjust stats of donors
 		if ( 'revoked' == $status || 'publish' == $status ) {
 
-			Give()->customers->decrement_stats( $previous_customer->id, $total );
-			Give()->customers->increment_stats( $new_customer_id, $total );
+			Give()->donors->decrement_stats( $previous_donor->id, $total );
+			Give()->donors->increment_stats( $new_donor_id, $total );
 
 		}
 
-		update_post_meta( $payment_id, '_give_payment_customer_id', $new_customer_id );
+		update_post_meta( $payment_id, '_give_payment_donor_id', $new_donor_id );
 	}
 
 	// Set new meta values

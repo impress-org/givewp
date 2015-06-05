@@ -97,7 +97,7 @@ class Give_HTML_Elements {
 	}
 
 	/**
-	 * Renders an HTML Dropdown of all customers
+	 * Renders an HTML Dropdown of all donors
 	 *
 	 * @access public
 	 * @since  1.0
@@ -106,11 +106,11 @@ class Give_HTML_Elements {
 	 *
 	 * @return string $output Customer dropdown
 	 */
-	public function customer_dropdown( $args = array() ) {
+	public function donor_dropdown( $args = array() ) {
 
 		$defaults = array(
-			'name'        => 'customers',
-			'id'          => 'customers',
+			'name'        => 'donors',
+			'id'          => 'donors',
 			'class'       => '',
 			'multiple'    => false,
 			'selected'    => 0,
@@ -121,26 +121,26 @@ class Give_HTML_Elements {
 
 		$args = wp_parse_args( $args, $defaults );
 
-		$customers = Give()->customers->get_customers( array(
+		$donors = Give()->donors->get_donors( array(
 			'number' => $args['number']
 		) );
 
 		$options = array();
 
-		if ( $customers ) {
+		if ( $donors ) {
 			$options[ - 1 ] = __( 'Guest', 'give' );
-			foreach ( $customers as $customer ) {
-				$options[ absint( $customer->id ) ] = esc_html( $customer->name . ' (' . $customer->email . ')' );
+			foreach ( $donors as $donor ) {
+				$options[ absint( $donor->id ) ] = esc_html( $donor->name . ' (' . $donor->email . ')' );
 			}
 		} else {
-			$options[0] = __( 'No customers found', 'give' );
+			$options[0] = __( 'No donors found', 'give' );
 		}
 
 		$output = $this->select( array(
 			'name'             => $args['name'],
 			'selected'         => $args['selected'],
 			'id'               => $args['id'],
-			'class'            => $args['class'] . ' give-customer-select',
+			'class'            => $args['class'] . ' give-donor-select',
 			'options'          => $options,
 			'multiple'         => $args['multiple'],
 			'chosen'           => $args['chosen'],

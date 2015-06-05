@@ -2,7 +2,7 @@
 /**
  * Customers DB class
  *
- * This class is for interacting with the customers' database table
+ * This class is for interacting with the donors' database table
  *
  * @package     Give
  * @subpackage  Classes/DB Customers
@@ -17,11 +17,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Give_DB_Customers Class
+ * Give_DB_Donors Class
  *
  * @since 1.0
  */
-class Give_DB_Customers extends Give_DB {
+class Give_DB_Donors extends Give_DB {
 
 	/**
 	 * Get things started
@@ -33,7 +33,7 @@ class Give_DB_Customers extends Give_DB {
 
 		global $wpdb;
 
-		$this->table_name  = $wpdb->prefix . 'give_customers';
+		$this->table_name  = $wpdb->prefix . 'give_donors';
 		$this->primary_key = 'id';
 		$this->version     = '1.0';
 
@@ -79,7 +79,7 @@ class Give_DB_Customers extends Give_DB {
 	}
 
 	/**
-	 * Add a customer
+	 * Add a donor
 	 *
 	 * @access  public
 	 * @since   1.0
@@ -100,45 +100,45 @@ class Give_DB_Customers extends Give_DB {
 			$args['payment_ids'] = implode( ',', array_unique( array_values( $args['payment_ids'] ) ) );
 		}
 
-		$customer = $this->get_by( 'email', $args['email'] );
+		$donor = $this->get_by( 'email', $args['email'] );
 
-		if ( $customer ) {
-			// update an existing customer
+		if ( $donor ) {
+			// update an existing donor
 
-			// Update the payment IDs attached to the customer
+			// Update the payment IDs attached to the donor
 			if ( ! empty( $args['payment_ids'] ) ) {
 
-				if ( empty( $customer->payment_ids ) ) {
+				if ( empty( $donor->payment_ids ) ) {
 
-					$customer->payment_ids = $args['payment_ids'];
+					$donor->payment_ids = $args['payment_ids'];
 
 				} else {
 
-					$existing_ids          = array_map( 'absint', explode( ',', $customer->payment_ids ) );
+					$existing_ids          = array_map( 'absint', explode( ',', $donor->payment_ids ) );
 					$payment_ids           = array_map( 'absint', explode( ',', $args['payment_ids'] ) );
 					$payment_ids           = array_merge( $payment_ids, $existing_ids );
-					$customer->payment_ids = implode( ',', array_unique( array_values( $payment_ids ) ) );
+					$donor->payment_ids = implode( ',', array_unique( array_values( $payment_ids ) ) );
 
 				}
 
-				$args['payment_ids'] = $customer->payment_ids;
+				$args['payment_ids'] = $donor->payment_ids;
 
 			}
 
-			$this->update( $customer->id, $args );
+			$this->update( $donor->id, $args );
 
-			return $customer->id;
+			return $donor->id;
 
 		} else {
 
-			return $this->insert( $args, 'customer' );
+			return $this->insert( $args, 'donor' );
 
 		}
 
 	}
 
 	/**
-	 * Checks if a customer exists by email
+	 * Checks if a donor exists by email
 	 *
 	 * @access  public
 	 * @since   1.0
@@ -150,46 +150,46 @@ class Give_DB_Customers extends Give_DB {
 	}
 
 	/**
-	 * Attaches a payment ID to a customer
+	 * Attaches a payment ID to a donor
 	 *
 	 * @access  public
 	 * @since   1.0
 	 */
-	public function attach_payment( $customer_id = 0, $payment_id = 0 ) {
+	public function attach_payment( $donor_id = 0, $payment_id = 0 ) {
 
-		$customer = $this->get( $customer_id );
+		$donor = $this->get( $donor_id );
 
-		if ( ! $customer ) {
+		if ( ! $donor ) {
 			return false;
 		}
 
-		if ( empty( $customer->payment_ids ) ) {
+		if ( empty( $donor->payment_ids ) ) {
 
-			$customer->payment_ids = $payment_id;
+			$donor->payment_ids = $payment_id;
 
 		} else {
 
-			$payment_ids           = array_map( 'absint', explode( ',', $customer->payment_ids ) );
+			$payment_ids           = array_map( 'absint', explode( ',', $donor->payment_ids ) );
 			$payment_ids[]         = $payment_id;
-			$customer->payment_ids = implode( ',', array_unique( array_values( $payment_ids ) ) );
+			$donor->payment_ids = implode( ',', array_unique( array_values( $payment_ids ) ) );
 
 		}
 
-		return $this->update( $customer_id, (array) $customer );
+		return $this->update( $donor_id, (array) $donor );
 
 	}
 
 	/**
-	 * Removes a payment ID from a customer
+	 * Removes a payment ID from a donor
 	 *
 	 * @access  public
 	 * @since   1.0
 	 */
-	public function remove_payment( $customer_id = 0, $payment_id = 0 ) {
+	public function remove_payment( $donor_id = 0, $payment_id = 0 ) {
 
-		$customer = $this->get( $customer_id );
+		$donor = $this->get( $donor_id );
 
-		if ( ! $customer ) {
+		if ( ! $donor ) {
 			return false;
 		}
 
@@ -197,9 +197,9 @@ class Give_DB_Customers extends Give_DB {
 			return false;
 		}
 
-		if ( ! empty( $customer->payment_ids ) ) {
+		if ( ! empty( $donor->payment_ids ) ) {
 
-			$payment_ids = array_map( 'absint', explode( ',', $customer->payment_ids ) );
+			$payment_ids = array_map( 'absint', explode( ',', $donor->payment_ids ) );
 
 			$pos = array_search( $payment_id, $payment_ids );
 			if ( false === $pos ) {
@@ -209,63 +209,63 @@ class Give_DB_Customers extends Give_DB {
 			unset( $payment_ids[ $pos ] );
 			$payment_ids = array_filter( $payment_ids );
 
-			$customer->payment_ids = implode( ',', array_unique( array_values( $payment_ids ) ) );
+			$donor->payment_ids = implode( ',', array_unique( array_values( $payment_ids ) ) );
 
 		}
 
-		return $this->update( $customer_id, (array) $customer );
+		return $this->update( $donor_id, (array) $donor );
 
 	}
 
 	/**
-	 * Increments customer purchase stats
+	 * Increments donor purchase stats
 	 *
 	 * @access  public
 	 * @since   1.0
 	 */
-	public function increment_stats( $customer_id = 0, $amount = 0.00 ) {
+	public function increment_stats( $donor_id = 0, $amount = 0.00 ) {
 
-		$customer = $this->get( $customer_id );
+		$donor = $this->get( $donor_id );
 
-		if ( ! $customer ) {
+		if ( ! $donor ) {
 			return false;
 		}
 
-		$customer->purchase_count = intval( $customer->purchase_count ) + 1;
-		$customer->purchase_value = floatval( $customer->purchase_value ) + $amount;
+		$donor->purchase_count = intval( $donor->purchase_count ) + 1;
+		$donor->purchase_value = floatval( $donor->purchase_value ) + $amount;
 
-		return $this->update( $customer_id, (array) $customer );
+		return $this->update( $donor_id, (array) $donor );
 
 	}
 
 	/**
-	 * Decrements customer purchase stats
+	 * Decrements donor purchase stats
 	 *
 	 * @access  public
 	 * @since   1.0
 	 */
-	public function decrement_stats( $customer_id = 0, $amount = 0.00 ) {
+	public function decrement_stats( $donor_id = 0, $amount = 0.00 ) {
 
-		$customer = $this->get( $customer_id );
+		$donor = $this->get( $donor_id );
 
-		if ( ! $customer ) {
+		if ( ! $donor ) {
 			return false;
 		}
 
-		$customer->purchase_count = intval( $customer->purchase_count ) - 1;
-		$customer->purchase_value = floatval( $customer->purchase_value ) - $amount;
+		$donor->purchase_count = intval( $donor->purchase_count ) - 1;
+		$donor->purchase_value = floatval( $donor->purchase_value ) - $amount;
 
-		return $this->update( $customer_id, (array) $customer );
+		return $this->update( $donor_id, (array) $donor );
 
 	}
 
 	/**
-	 * Retrieve customers from the database
+	 * Retrieve donors from the database
 	 *
 	 * @access  public
 	 * @since   1.0
 	 */
-	public function get_customers( $args = array() ) {
+	public function get_donors( $args = array() ) {
 
 		global $wpdb;
 
@@ -285,7 +285,7 @@ class Give_DB_Customers extends Give_DB {
 
 		$where = '';
 
-		// specific customers
+		// specific donors
 		if ( ! empty( $args['id'] ) ) {
 
 			if ( is_array( $args['id'] ) ) {
@@ -298,7 +298,7 @@ class Give_DB_Customers extends Give_DB {
 
 		}
 
-		// customers for specific user accounts
+		// donors for specific user accounts
 		if ( ! empty( $args['user_id'] ) ) {
 
 			if ( is_array( $args['user_id'] ) ) {
@@ -311,7 +311,7 @@ class Give_DB_Customers extends Give_DB {
 
 		}
 
-		//specific customers by email
+		//specific donors by email
 		if ( ! empty( $args['email'] ) ) {
 
 			if ( is_array( $args['email'] ) ) {
@@ -382,22 +382,22 @@ class Give_DB_Customers extends Give_DB {
 			$args['orderby'] = 'purchase_value+0';
 		}
 
-		$cache_key = md5( 'give_customers_' . serialize( $args ) );
+		$cache_key = md5( 'give_donors_' . serialize( $args ) );
 
-		$customers = wp_cache_get( $cache_key, 'customers' );
+		$donors = wp_cache_get( $cache_key, 'donors' );
 
-		if ( $customers === false ) {
-			$customers = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM  $this->table_name $where ORDER BY {$args['orderby']} {$args['order']} LIMIT %d,%d;", absint( $args['offset'] ), absint( $args['number'] ) ) );
-			wp_cache_set( $cache_key, $customers, 'customers', 3600 );
+		if ( $donors === false ) {
+			$donors = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM  $this->table_name $where ORDER BY {$args['orderby']} {$args['order']} LIMIT %d,%d;", absint( $args['offset'] ), absint( $args['number'] ) ) );
+			wp_cache_set( $cache_key, $donors, 'donors', 3600 );
 		}
 
-		return $customers;
+		return $donors;
 
 	}
 
 
 	/**
-	 * Count the total number of customers in the database
+	 * Count the total number of donors in the database
 	 *
 	 * @access  public
 	 * @since   1.0
@@ -443,13 +443,13 @@ class Give_DB_Customers extends Give_DB {
 		}
 
 
-		$cache_key = md5( 'give_customers_count' . serialize( $args ) );
+		$cache_key = md5( 'give_donors_count' . serialize( $args ) );
 
-		$count = wp_cache_get( $cache_key, 'customers' );
+		$count = wp_cache_get( $cache_key, 'donors' );
 
 		if ( $count === false ) {
 			$count = $wpdb->get_var( "SELECT COUNT($this->primary_key) FROM " . $this->table_name . "{$where};" );
-			wp_cache_set( $cache_key, $count, 'customers', 3600 );
+			wp_cache_set( $cache_key, $count, 'donors', 3600 );
 		}
 
 		return absint( $count );
