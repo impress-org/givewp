@@ -34,7 +34,7 @@ class Give_Donors_Export extends Give_Export {
 	 * Set the export headers
 	 *
 	 * @access public
-	 * @since  1.4.4
+	 * @since  1.0
 	 * @return void
 	 */
 	public function headers() {
@@ -60,7 +60,7 @@ class Give_Donors_Export extends Give_Export {
 	 * Set the CSV columns
 	 *
 	 * @access public
-	 * @since  1.4.4
+	 * @since  1.0
 	 * @return array $cols All the columns
 	 */
 	public function csv_cols() {
@@ -69,7 +69,7 @@ class Give_Donors_Export extends Give_Export {
 				'first_name' => __( 'First Name', 'give' ),
 				'last_name'  => __( 'Last Name', 'give' ),
 				'email'      => __( 'Email', 'give' ),
-				'date'       => __( 'Date Purchased', 'give' )
+				'date'       => __( 'Date Donated', 'give' )
 			);
 		} else {
 
@@ -82,8 +82,8 @@ class Give_Donors_Export extends Give_Export {
 			$cols['email'] = __( 'Email', 'give' );
 
 			if ( 'full' == $_POST['give_export_option'] ) {
-				$cols['purchases'] = __( 'Total Purchases', 'give' );
-				$cols['amount']    = __( 'Total Purchased', 'give' ) . ' (' . html_entity_decode( give_currency_filter( '' ) ) . ')';
+				$cols['purchases'] = __( 'Total Donations', 'give' );
+				$cols['amount']    = __( 'Total Donated', 'give' ) . ' (' . html_entity_decode( give_currency_filter( '' ) ) . ')';
 			}
 
 		}

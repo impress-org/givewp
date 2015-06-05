@@ -1,15 +1,15 @@
 <?php
 /**
- * User Functions
- *
- * Functions related to users / donors
- *
- * @package     Give
- * @subpackage  Functions
- * @copyright   Copyright (c) 2015, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       1.0
- */
+* User Functions
+*
+* Functions related to users / donors
+*
+* @package     Give
+* @subpackage  Functions
+* @copyright   Copyright (c) 2015, WordImpress
+* @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+* @since       1.0
+*/
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
@@ -335,8 +335,8 @@ add_action( 'user_register', 'give_add_past_purchases_to_new_user' );
  * @since         1.0
  * @return        int - The total number of donors.
  */
-function give_count_total_donors() {
-	return Give()->donors->count();
+function give_count_total_customers() {
+	return Give()->customers->count();
 }
 
 

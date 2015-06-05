@@ -34,44 +34,24 @@ function give_show_upgrade_notices() {
 
 	$give_version = preg_replace( '/[^0-9.].*/', '', $give_version );
 
+	//	if ( Give()->session->get( 'upgrade_sequential' ) && give_get_payments() ) {
+	//		printf(
+	//			'<div class="updated"><p>' . __( 'Give needs to upgrade past order numbers to make them sequential, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
+	//			admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_sequential_payment_numbers' )
+	//		);
+	//	}
 
-	if ( version_compare( $give_version, '2.0', '<' ) ) {
+	if ( version_compare( $give_version, '1.0', '<' ) ) {
 		printf(
-			'<div class="updated"><p>' . esc_html__( 'Easy Digital Downloads needs to upgrade the database, click %shere%s to start the upgrade.', 'give' ) . '</p></div>',
-			'<a href="' . esc_url( admin_url( 'options.php?page=give-upgrades' ) ) . '">',
-			'</a>'
-		);
-	}
-
-
-	// Include all 'Stepped' upgrade process notices in this else statement,
-	// to avoid having a pending, and new upgrade suggested at the same time
-
-	if ( Give()->session->get( 'upgrade_sequential' ) && give_get_payments() ) {
-		printf(
-			'<div class="updated"><p>' . __( 'Give needs to upgrade past order numbers to make them sequential, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
-			admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_sequential_payment_numbers' )
-		);
-	}
-
-	if ( version_compare( $give_version, '2.2.6', '<' ) ) {
-		printf(
-			'<div class="updated"><p>' . __( 'Give needs to upgrade the payment database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
+			'<div class="updated"><p>' . __( 'Give needs to upgrade the transaction logs database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
 			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_payments_price_logs_db' ) )
 		);
 	}
 
-	if ( version_compare( $give_version, '2.3', '<' ) || ! give_has_upgrade_completed( 'upgrade_customer_payments_association' ) ) {
+	if ( version_compare( $give_version, '1.0', '<' ) || ! give_has_upgrade_completed( 'upgrade_donor_payments_association' ) ) {
 		printf(
 			'<div class="updated"><p>' . __( 'Give needs to upgrade the donor database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
-			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_customer_payments_association' ) )
-		);
-	}
-
-	if ( version_compare( $give_version, '2.3', '<' ) || ! give_has_upgrade_completed( 'upgrade_payment_taxes' ) ) {
-		printf(
-			'<div class="updated"><p>' . __( 'Give needs to upgrade the transactions database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
-			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_payment_taxes' ) )
+			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_donor_payments_association' ) )
 		);
 	}
 
@@ -100,8 +80,8 @@ add_action( 'admin_notices', 'give_show_upgrade_notices' );
  */
 function give_trigger_upgrades() {
 
-	if ( ! current_user_can( 'manage_shop_settings' ) ) {
-		wp_die( __( 'You do not have permission to do shop upgrades', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+	if ( ! current_user_can( 'manage_give_settings' ) ) {
+		wp_die( __( 'You do not have permission to do Give upgrades', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	$give_version = get_option( 'give_version' );
@@ -141,7 +121,7 @@ function give_maybe_resume_upgrade() {
 /**
  * Check if the upgrade routine has been run for a specific action
  *
- * @since  2.3
+ * @since  1.0
  *
  * @param  string $upgrade_action The upgrade action to check completion for
  *
@@ -162,7 +142,7 @@ function give_has_upgrade_completed( $upgrade_action = '' ) {
 /**
  * Adds an upgrade action to the completed upgrades array
  *
- * @since  2.3
+ * @since  1.0
  *
  * @param  string $upgrade_action The action to add to the copmleted upgrades array
  *
@@ -186,7 +166,7 @@ function give_set_upgrade_complete( $upgrade_action = '' ) {
 /**
  * Get's the array of completed upgrade actions
  *
- * @since  2.3
+ * @since  1.0
  * @return array The array of completed upgrades
  */
 function give_get_completed_upgrades() {
@@ -203,15 +183,15 @@ function give_get_completed_upgrades() {
 
 
 /**
- * Fixes the give_log meta for 2.2.6
+ * Fixes the give_log meta
  *
- * @since 2.2.6
+ * @since 1.0
  * @return void
  */
-function give_v226_upgrade_payments_price_logs_db() {
+function give_v1_upgrade_payments_price_logs_db() {
 	global $wpdb;
-	if ( ! current_user_can( 'manage_shop_settings' ) ) {
-		wp_die( __( 'You do not have permission to do shop upgrades', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+	if ( ! current_user_can( 'manage_give_settings' ) ) {
+		wp_die( __( 'You do not have permission to do Give upgrades', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 	ignore_user_abort( true );
 	if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
@@ -225,7 +205,7 @@ function give_v226_upgrade_payments_price_logs_db() {
 		$sql          = "SELECT ID FROM $wpdb->posts p LEFT JOIN $wpdb->postmeta m ON p.ID = m.post_id WHERE m.meta_key = '_variable_pricing' AND m.meta_value = 1 LIMIT 1";
 		$has_variable = $wpdb->get_col( $sql );
 		if ( empty( $has_variable ) ) {
-			// We had no variable priced products, so go ahead and just complete
+			// We had no variable priced forms, so go ahead and just complete
 			update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
 			delete_option( 'give_doing_upgrade' );
 			wp_redirect( admin_url() );
@@ -235,7 +215,11 @@ function give_v226_upgrade_payments_price_logs_db() {
 	$payment_ids = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = 'give_payment' ORDER BY post_date DESC LIMIT %d,%d;", $offset, $number ) );
 	if ( ! empty( $payment_ids ) ) {
 		foreach ( $payment_ids as $payment_id ) {
-			$payment_downloads  = give_get_payment_meta_downloads( $payment_id );
+			$payment_downloads = give_get_payment_meta_downloads( $payment_id );
+			echo "<pre>";
+			var_dump( $payment_id );
+			echo "</pre>";
+			die();
 			$variable_downloads = array();
 			if ( ! is_array( $payment_downloads ) ) {
 				continue; // May not be an array due to some very old payments, move along
@@ -304,18 +288,18 @@ function give_v226_upgrade_payments_price_logs_db() {
 	}
 }
 
-add_action( 'give_upgrade_payments_price_logs_db', 'give_v226_upgrade_payments_price_logs_db' );
+add_action( 'give_upgrade_payments_price_logs_db', 'give_v1_upgrade_payments_price_logs_db' );
 
 /**
  * Run the upgrade for the customers to find all payment attachments
  *
- * @since  2.3
+ * @since  1.0
  * @return void
  */
-function give_v23_upgrade_customer_purchases() {
+function give_v1_upgrade_customer_purchases() {
 	global $wpdb;
 
-	if ( ! current_user_can( 'manage_shop_settings' ) ) {
+	if ( ! current_user_can( 'manage_give_settings' ) ) {
 		wp_die( __( 'You do not have permission to do Give upgrades', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
@@ -337,7 +321,7 @@ function give_v23_upgrade_customer_purchases() {
 		if ( empty( $has_payments ) ) {
 			// We had no payments, just complete
 			update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
-			give_set_upgrade_complete( 'upgrade_customer_payments_association' );
+			give_set_upgrade_complete( 'upgrade_donor_payments_association' );
 			delete_option( 'give_doing_upgrade' );
 			wp_redirect( admin_url() );
 			exit;
@@ -405,7 +389,7 @@ function give_v23_upgrade_customer_purchases() {
 
 			if ( ! empty( $customer_data ) ) {
 
-				$customer = new EDD_Customer( $customer->id );
+				$customer = new Give_Customer( $customer->id );
 				$customer->update( $customer_data );
 
 			}
@@ -416,7 +400,7 @@ function give_v23_upgrade_customer_purchases() {
 		$step ++;
 		$redirect = add_query_arg( array(
 			'page'         => 'give-upgrades',
-			'give-upgrade' => 'upgrade_customer_payments_association',
+			'give-upgrade' => 'upgrade_donor_payments_association',
 			'step'         => $step,
 			'number'       => $number,
 			'total'        => $total
@@ -428,7 +412,7 @@ function give_v23_upgrade_customer_purchases() {
 		// No more customers found, finish up
 
 		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
-		give_set_upgrade_complete( 'upgrade_customer_payments_association' );
+		give_set_upgrade_complete( 'upgrade_donor_payments_association' );
 		delete_option( 'give_doing_upgrade' );
 
 		wp_redirect( admin_url() );
@@ -436,4 +420,4 @@ function give_v23_upgrade_customer_purchases() {
 	}
 }
 
-add_action( 'give_upgrade_customer_payments_association', 'give_v23_upgrade_customer_purchases' );
+add_action( 'give_upgrade_donor_payments_association', 'give_v1_upgrade_customer_purchases' );

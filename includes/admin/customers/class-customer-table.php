@@ -6,7 +6,7 @@
  * @subpackage  Admin/Reports
  * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       1.5
+ * @since       1.0
  */
 
 // Exit if accessed directly
@@ -137,12 +137,12 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 
 	public function column_name( $item ) {
 		$name = '#' . $item['id'] . ' ';
-		$name .= ! empty( $item['name'] ) ? $item['name'] : '<em>' . __( 'Unnamed Customer', 'give' ) . '</em>';
+		$name .= ! empty( $item['name'] ) ? $item['name'] : '<em>' . __( 'Unnamed Donor', 'give' ) . '</em>';
 		$user     = ! empty( $item['user_id'] ) ? $item['user_id'] : $item['email'];
 		$view_url = admin_url( 'edit.php?post_type=give_forms&page=give-customers&view=overview&id=' . $item['id'] );
 		$actions  = array(
 			'view'   => sprintf( __( '<a href="%s">View</a>', 'give' ), $view_url ),
-			'logs'   => sprintf( __( '<a href="%s">Download log</a>', 'give' ), admin_url( '/edit.php?post_type=give_forms&page=give-reports&tab=logs&user=' . urlencode( $user ) ) ),
+			'logs'   => sprintf( __( '<a href="%s">Donation log</a>', 'give' ), admin_url( '/edit.php?post_type=give_forms&page=give-reports&tab=logs&user=' . urlencode( $user ) ) ),
 			'delete' => sprintf( __( '<a href="%s">Delete</a>', 'give' ), admin_url( 'edit.php?post_type=give_forms&page=give-customers&view=delete&id=' . $item['id'] ) )
 		);
 
@@ -160,8 +160,8 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 		$columns = array(
 			'name'          => __( 'Name', 'give' ),
 			'email'         => __( 'Email', 'give' ),
-			'num_purchases' => __( 'Purchases', 'give' ),
-			'amount_spent'  => __( 'Total Spent', 'give' ),
+			'num_purchases' => __( 'Donations', 'give' ),
+			'amount_spent'  => __( 'Total Donated', 'give' ),
 			'date_created'  => __( 'Date Created', 'give' )
 		);
 

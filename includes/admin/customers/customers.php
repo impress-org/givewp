@@ -111,7 +111,7 @@ function give_render_customer_view( $view, $callbacks ) {
 	}
 
 	if ( ! isset( $_GET['id'] ) || ! is_numeric( $_GET['id'] ) ) {
-		give_set_error( 'give-invalid_customer', __( 'Invalid Customer ID Provided.', 'give' ) );
+		give_set_error( 'give-invalid_customer', __( 'Invalid Donor ID Provided.', 'give' ) );
 		$render = false;
 	}
 
@@ -119,7 +119,7 @@ function give_render_customer_view( $view, $callbacks ) {
 	$customer    = new Give_Customer( $customer_id );
 
 	if ( empty( $customer->id ) ) {
-		give_set_error( 'give-invalid_customer', __( 'Invalid Customer ID Provided.', 'give' ) );
+		give_set_error( 'give-invalid_customer', __( 'Invalid Donor ID Provided.', 'give' ) );
 		$render = false;
 	}
 
@@ -127,10 +127,10 @@ function give_render_customer_view( $view, $callbacks ) {
 	?>
 
 	<div class='wrap'>
-		<h2><?php _e( 'Customer Details', 'give' ); ?></h2>
+		<h2><?php _e( 'Donor Details', 'give' ); ?></h2>
 		<?php if ( give_get_errors() ) : ?>
 			<div class="error settings-error">
-				<?php give_print_errors(); ?>
+				<?php give_print_errors(0); ?>
 			</div>
 		<?php endif; ?>
 

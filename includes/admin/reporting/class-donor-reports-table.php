@@ -6,7 +6,7 @@
  * @subpackage  Admin/Reports
  * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       1.5
+ * @since       1.0
  */
 
 // Exit if accessed directly
@@ -336,7 +336,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 
 		$this->items = $this->reports_data();
 
-		$this->total = give_count_total_donors();
+		$this->total = give_count_total_customers();
 
 		$this->set_pagination_args( array(
 			'total_items' => $this->total,

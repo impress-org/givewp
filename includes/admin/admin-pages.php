@@ -37,6 +37,9 @@ function give_add_options_links() {
 	$give_payment       = get_post_type_object( 'give_payment' );
 	$give_payments_page = add_submenu_page( 'edit.php?post_type=give_forms', $give_payment->labels->name, $give_payment->labels->menu_name, 'edit_give_payments', 'give-payment-history', 'give_payment_history_page' );
 
+	//Donors
+	$give_donors_page = add_submenu_page( 'edit.php?post_type=give_forms', __( 'Donors', 'give' ), __( 'Donors', 'edd' ), 'view_give_reports', 'give-customers', 'give_customers_page' );
+
 	//Reports
 	$give_reports_page = add_submenu_page( 'edit.php?post_type=give_forms', __( 'Donation Reports', 'give' ), __( 'Reports', 'give' ), 'view_give_reports', 'give-reports', 'give_reports_page' );
 
@@ -46,8 +49,11 @@ function give_add_options_links() {
 		'admin_page_display'
 	) );
 
-
+	//Add-ons
 	$give_add_ons_page = add_submenu_page( 'edit.php?post_type=give_forms', __( 'Give Add-ons', 'give' ), __( 'Add-ons', 'give' ), 'install_plugins', 'give-addons', 'give_add_ons_page' );
+
+	//Upgrades
+	$give_upgrades_screen = add_submenu_page( null, __( 'Give Upgrades', 'give' ), __( 'Give Upgrades', 'give' ), 'manage_give_settings', 'give-upgrades', 'give_upgrades_screen' );
 
 
 }
