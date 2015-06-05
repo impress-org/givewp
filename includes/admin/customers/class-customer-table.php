@@ -1,12 +1,12 @@
 <?php
 /**
- * Donor Reports Table Class
+ * Customer (Donor) Reports Table Class
  *
  * @package     Give
  * @subpackage  Admin/Reports
  * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       1.0
+ * @since       1.5
  */
 
 // Exit if accessed directly
@@ -20,24 +20,24 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 }
 
 /**
- * Give_Donor_Reports_Table Class
+ * Give_Customer_Reports_Table Class
  *
- * Renders the Donor Reports table
+ * Renders the Customer Reports table
  *
- * @since 1.0
+ * @since 1.5
  */
-class Give_Donor_Reports_Table extends WP_List_Table {
+class Give_Customer_Reports_Table extends WP_List_Table {
 
 	/**
 	 * Number of items per page
 	 *
 	 * @var int
-	 * @since 1.0
+	 * @since 1.5
 	 */
 	public $per_page = 30;
 
 	/**
-	 * Number of donors found
+	 * Number of customers found
 	 *
 	 * @var int
 	 * @since 1.7
@@ -45,7 +45,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	public $count = 0;
 
 	/**
-	 * Total donors
+	 * Total customers
 	 *
 	 * @var int
 	 * @since 1.95
@@ -55,7 +55,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	/**
 	 * Get things started
 	 *
-	 * @since 1.0
+	 * @since 1.5
 	 * @see   WP_List_Table::__construct()
 	 */
 	public function __construct() {
@@ -63,8 +63,8 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 
 		// Set parent defaults
 		parent::__construct( array(
-			'singular' => __( 'Donor', 'give' ),     // Singular name of the listed records
-			'plural'   => __( 'Donors', 'give' ),    // Plural name of the listed records
+			'singular' => __( 'Customer', 'give' ),     // Singular name of the listed records
+			'plural'   => __( 'Customers', 'give' ),    // Plural name of the listed records
 			'ajax'     => false                       // Does this table support ajax?
 		) );
 
@@ -103,9 +103,9 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 * This function renders most of the columns in the list table.
 	 *
 	 * @access public
-	 * @since  1.0
+	 * @since  1.5
 	 *
-	 * @param array  $item        Contains all the data of the donors
+	 * @param array  $item        Contains all the data of the customers
 	 * @param string $column_name The name of the column
 	 *
 	 * @return string Column Name
@@ -115,7 +115,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 
 			case 'num_purchases' :
 				$value = '<a href="' .
-				         admin_url( '/edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( $item['email'] )
+				         admin_url( '/edit.php?post_type=download&page=give-payment-history&user=' . urlencode( $item['email'] )
 				         ) . '">' . esc_html( $item['num_purchases'] ) . '</a>';
 				break;
 
@@ -137,13 +137,13 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 
 	public function column_name( $item ) {
 		$name = '#' . $item['id'] . ' ';
-		$name .= ! empty( $item['name'] ) ? $item['name'] : '<em>' . __( 'Unnamed Donor', 'give' ) . '</em>';
+		$name .= ! empty( $item['name'] ) ? $item['name'] : '<em>' . __( 'Unnamed Customer', 'give' ) . '</em>';
 		$user     = ! empty( $item['user_id'] ) ? $item['user_id'] : $item['email'];
-		$view_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $item['id'] );
+		$view_url = admin_url( 'edit.php?post_type=download&page=give-customers&view=overview&id=' . $item['id'] );
 		$actions  = array(
 			'view'   => sprintf( __( '<a href="%s">View</a>', 'give' ), $view_url ),
-			'logs'   => sprintf( __( '<a href="%s">Download log</a>', 'give' ), admin_url( '/edit.php?post_type=give_forms&page=give-reports&tab=logs&user=' . urlencode( $user ) ) ),
-			'delete' => sprintf( __( '<a href="%s">Delete</a>', 'give' ), admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id=' . $item['id'] ) )
+			'logs'   => sprintf( __( '<a href="%s">Download log</a>', 'give' ), admin_url( '/edit.php?post_type=download&page=give-reports&tab=logs&user=' . urlencode( $user ) ) ),
+			'delete' => sprintf( __( '<a href="%s">Delete</a>', 'give' ), admin_url( 'edit.php?post_type=download&page=give-customers&view=delete&id=' . $item['id'] ) )
 		);
 
 		return '<a href="' . esc_url( $view_url ) . '">' . $name . '</a>' . $this->row_actions( $actions );
@@ -153,19 +153,19 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 * Retrieve the table columns
 	 *
 	 * @access public
-	 * @since  1.0
+	 * @since  1.5
 	 * @return array $columns Array of all the list table columns
 	 */
 	public function get_columns() {
 		$columns = array(
 			'name'          => __( 'Name', 'give' ),
 			'email'         => __( 'Email', 'give' ),
-			'num_purchases' => __( 'Donations', 'give' ),
-			'amount_spent'  => __( 'Total Donated', 'give' ),
+			'num_purchases' => __( 'Purchases', 'give' ),
+			'amount_spent'  => __( 'Total Spent', 'give' ),
 			'date_created'  => __( 'Date Created', 'give' )
 		);
 
-		return apply_filters( 'give_report_donor_columns', $columns );
+		return apply_filters( 'give_report_customer_columns', $columns );
 
 	}
 
@@ -189,7 +189,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 * Outputs the reporting views
 	 *
 	 * @access public
-	 * @since  1.0
+	 * @since  1.5
 	 * @return void
 	 */
 	public function bulk_actions( $which = '' ) {
@@ -200,7 +200,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 * Retrieve the current page number
 	 *
 	 * @access public
-	 * @since  1.0
+	 * @since  1.5
 	 * @return int Current page number
 	 */
 	public function get_paged() {
@@ -222,10 +222,10 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 * Build all the reports data
 	 *
 	 * @access public
-	 * @since  1.0
+	 * @since  1.5
 	 * @global object $wpdb Used to query the database using the WordPress
 	 *                      Database API
-	 * @return array $reports_data All the data for donor reports
+	 * @return array $reports_data All the data for customer reports
 	 */
 	public function reports_data() {
 		global $wpdb;
@@ -252,22 +252,22 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 			$args['name'] = $search;
 		}
 
-		$donors = Give()->donors->get_donors( $args );
+		$customers = EDD()->customers->get_customers( $args );
 
-		if ( $donors ) {
+		if ( $customers ) {
 
-			foreach ( $donors as $donor ) {
+			foreach ( $customers as $customer ) {
 
-				$user_id = ! empty( $donor->user_id ) ? intval( $donor->user_id ) : 0;
+				$user_id = ! empty( $customer->user_id ) ? intval( $customer->user_id ) : 0;
 
 				$data[] = array(
-					'id'            => $donor->id,
+					'id'            => $customer->id,
 					'user_id'       => $user_id,
-					'name'          => $donor->name,
-					'email'         => $donor->email,
-					'num_purchases' => $donor->purchase_count,
-					'amount_spent'  => $donor->purchase_value,
-					'date_created'  => $donor->date_created,
+					'name'          => $customer->name,
+					'email'         => $customer->email,
+					'num_purchases' => $customer->purchase_count,
+					'amount_spent'  => $customer->purchase_value,
+					'date_created'  => $customer->date_created,
 				);
 			}
 		}
@@ -279,11 +279,11 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 * Setup the final data for the table
 	 *
 	 * @access public
-	 * @since  1.0
-	 * @uses   Give_Donor_Reports_Table::get_columns()
+	 * @since  1.5
+	 * @uses   Give_Customer_Reports_Table::get_columns()
 	 * @uses   WP_List_Table::get_sortable_columns()
-	 * @uses   Give_Donor_Reports_Table::get_pagenum()
-	 * @uses   Give_Donor_Reports_Table::get_total_donors()
+	 * @uses   Give_Customer_Reports_Table::get_pagenum()
+	 * @uses   Give_Customer_Reports_Table::get_total_customers()
 	 * @return void
 	 */
 	public function prepare_items() {
@@ -296,7 +296,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 
 		$this->items = $this->reports_data();
 
-		$this->total = give_count_total_donors();
+		$this->total = give_count_total_customers();
 
 		$this->set_pagination_args( array(
 			'total_items' => $this->total,
