@@ -41,19 +41,19 @@ function give_show_upgrade_notices() {
 	//		);
 	//	}
 
-	if ( version_compare( $give_version, '1.0', '<' ) ) {
-		printf(
-			'<div class="updated"><p>' . __( 'Give needs to upgrade the transaction logs database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
-			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_payments_price_logs_db' ) )
-		);
-	}
-
-	if ( version_compare( $give_version, '1.0', '<' ) || ! give_has_upgrade_completed( 'upgrade_donor_payments_association' ) ) {
-		printf(
-			'<div class="updated"><p>' . __( 'Give needs to upgrade the donor database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
-			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_donor_payments_association' ) )
-		);
-	}
+//	if ( version_compare( $give_version, '1.0', '<' ) ) {
+//		printf(
+//			'<div class="updated"><p>' . __( 'Give needs to upgrade the transaction logs database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
+//			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_payments_price_logs_db' ) )
+//		);
+//	}
+//
+//	if ( version_compare( $give_version, '1.0', '<' ) || ! give_has_upgrade_completed( 'upgrade_donor_payments_association' ) ) {
+//		printf(
+//			'<div class="updated"><p>' . __( 'Give needs to upgrade the donor database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
+//			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_donor_payments_association' ) )
+//		);
+//	}
 
 	/*
 	 *  NOTICE:
@@ -87,7 +87,7 @@ function give_trigger_upgrades() {
 	$give_version = get_option( 'give_version' );
 
 	if ( ! $give_version ) {
-		// 1.3 is the first version to use this option so we must add it
+		// 1.0 is the first version to use this option so we must add it
 		$give_version = '1.0';
 		add_option( 'give_version', $give_version );
 	}
@@ -125,7 +125,7 @@ function give_maybe_resume_upgrade() {
  *
  * @param  string $upgrade_action The upgrade action to check completion for
  *
- * @return bool                   If the action has been added to the copmleted actions array
+ * @return bool                   If the action has been added to the completed actions array
  */
 function give_has_upgrade_completed( $upgrade_action = '' ) {
 

@@ -139,11 +139,11 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 		$name = '#' . $item['id'] . ' ';
 		$name .= ! empty( $item['name'] ) ? $item['name'] : '<em>' . __( 'Unnamed Donor', 'give' ) . '</em>';
 		$user     = ! empty( $item['user_id'] ) ? $item['user_id'] : $item['email'];
-		$view_url = admin_url( 'edit.php?post_type=give_forms&page=give-customers&view=overview&id=' . $item['id'] );
+		$view_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $item['id'] );
 		$actions  = array(
 			'view'   => sprintf( __( '<a href="%s">View</a>', 'give' ), $view_url ),
 			'logs'   => sprintf( __( '<a href="%s">Donation log</a>', 'give' ), admin_url( '/edit.php?post_type=give_forms&page=give-reports&tab=logs&user=' . urlencode( $user ) ) ),
-			'delete' => sprintf( __( '<a href="%s">Delete</a>', 'give' ), admin_url( 'edit.php?post_type=give_forms&page=give-customers&view=delete&id=' . $item['id'] ) )
+			'delete' => sprintf( __( '<a href="%s">Delete</a>', 'give' ), admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id=' . $item['id'] ) )
 		);
 
 		return '<a href="' . esc_url( $view_url ) . '">' . $name . '</a>' . $this->row_actions( $actions );

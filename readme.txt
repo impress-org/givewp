@@ -3,8 +3,8 @@ Contributors: wordimpress, dlocc, webdevmattcrom
 Donate link: http://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 3.8
-Tested up to: 4.2.1
-Stable tag: 0.9.5
+Tested up to: 4.2.2
+Stable tag: 1.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -126,11 +126,10 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 4. Multi-level donations
 
-== Upgrade Notice ==
-
-Version 0.9.5 beta is still in beta, so if you find any bugs or issues please let us know! This release adds Goal Tracking and several other important updates.
-
 == Changelog ==
+
+= 1.0 =
+* New: Donors overview page that provides a searchable list of your donors and relevant information.
 
 = 0.9.5 beta =
 * New: [give_profile_editor] shortcode that enables donors to customize their account information on the frontend #130 https://github.com/WordImpress/Give/issues/130

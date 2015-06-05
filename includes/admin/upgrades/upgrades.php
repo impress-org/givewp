@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Render Upgrades Screen
  *
- * @since 1.3.1
+ * @since 1.0
  * @return void
  */
 function give_upgrades_screen() {
@@ -29,12 +29,12 @@ function give_upgrades_screen() {
 	$steps  = round( ( $total / $number ), 0 );
 
 	$doing_upgrade_args = array(
-		'page'        => 'give-upgrades',
+		'page'         => 'give-upgrades',
 		'give-upgrade' => $action,
-		'step'        => $step,
-		'total'       => $total,
-		'custom'      => $custom,
-		'steps'       => $steps
+		'step'         => $step,
+		'total'        => $total,
+		'custom'       => $custom,
+		'steps'        => $steps
 	);
 	update_option( 'give_doing_upgrade', $doing_upgrade_args );
 	if ( $step > $steps ) {
@@ -48,8 +48,7 @@ function give_upgrades_screen() {
 		<?php if ( ! empty( $action ) ) : ?>
 
 			<div id="give-upgrade-status">
-				<p><?php _e( 'The upgrade process has started, please be patient. This could take several minutes. You will be automatically redirected when the upgrade is finished.', 'give' ); ?></p>
-
+				<?php _e( 'The upgrade process has started, please be patient and do not close this window or navigate away from this page. This could take several minutes depending on the upgrade and the size of your website. You will be automatically redirected when the upgrade is finished.', 'give' ); ?>
 				<?php if ( ! empty( $total ) ) : ?>
 					<p>
 						<strong><?php printf( __( 'Step %d of approximately %d running', 'give' ), $step, $steps ); ?></strong>
@@ -66,8 +65,8 @@ function give_upgrades_screen() {
 
 			<div id="give-upgrade-status">
 				<p>
-					<?php _e( 'The upgrade process has started, please be patient. This could take several minutes. You will be automatically redirected when the upgrade is finished.', 'give' ); ?>
-					<img src="<?php echo GIVE_PLUGIN_URL . '/assets/images/loading.gif'; ?>" id="give-upgrade-loader" />
+					<?php _e( 'The upgrade process has started, please be patient and do not close this window or navigate away from this page. This could take several minutes depending on the upgrade and the size of your website. You will be automatically redirected when the upgrade is finished.', 'give' ); ?>
+					<img src="<?php echo GIVE_PLUGIN_URL . '/assets/images/spinner.gif'; ?>" id="give-upgrade-loader" style="  position: relative; top: 3px; left: 6px;" />
 				</p>
 			</div>
 			<script type="text/javascript">

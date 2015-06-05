@@ -73,18 +73,18 @@ function give_customers_list() {
 	$customers_table->prepare_items();
 	?>
 	<div class="wrap">
-		<h2><?php _e( 'Customers', 'give' ); ?></h2>
-		<?php do_action( 'give_customers_table_top' ); ?>
-		<form id="give-customers-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-customers' ); ?>">
+		<h2><?php _e( 'Donors', 'give' ); ?></h2>
+		<?php do_action( 'give_donors_table_top' ); ?>
+		<form id="give-donors-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors' ); ?>">
 			<?php
-			$customers_table->search_box( __( 'Search Customers', 'give' ), 'give-customers' );
+			$customers_table->search_box( __( 'Search Donors', 'give' ), 'give-donors' );
 			$customers_table->display();
 			?>
-			<input type="hidden" name="post_type" value="download" />
-			<input type="hidden" name="page" value="give-customers" />
+			<input type="hidden" name="post_type" value="give_forms" />
+			<input type="hidden" name="page" value="give-donors" />
 			<input type="hidden" name="view" value="customers" />
 		</form>
-		<?php do_action( 'give_customers_table_bottom' ); ?>
+		<?php do_action( 'give_donors_table_bottom' ); ?>
 	</div>
 <?php
 }
@@ -130,7 +130,7 @@ function give_render_customer_view( $view, $callbacks ) {
 		<h2><?php _e( 'Donor Details', 'give' ); ?></h2>
 		<?php if ( give_get_errors() ) : ?>
 			<div class="error settings-error">
-				<?php give_print_errors(0); ?>
+				<?php give_print_errors( 0 ); ?>
 			</div>
 		<?php endif; ?>
 
@@ -143,7 +143,7 @@ function give_render_customer_view( $view, $callbacks ) {
 						<?php $class = $active ? 'active' : 'inactive'; ?>
 
 						<?php if ( ! $active ) : ?>
-							<a title="<?php echo esc_attr( $tab['title'] ); ?>" aria-label="<?php echo esc_attr( $tab['title'] ); ?>" href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-customers&view=' . $key . '&id=' . $customer->id ) ); ?>">
+							<a title="<?php echo esc_attr( $tab['title'] ); ?>" aria-label="<?php echo esc_attr( $tab['title'] ); ?>" href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=' . $key . '&id=' . $customer->id ) ); ?>">
 						<?php endif; ?>
 
 						<li class="<?php echo sanitize_html_class( $class ); ?>">
@@ -184,11 +184,11 @@ function give_customers_view( $customer ) {
 
 	?>
 
-	<?php do_action( 'give_customer_card_top', $customer ); ?>
+	<?php do_action( 'give_donor_card_top', $customer ); ?>
 
 	<div class="info-wrapper customer-section">
 
-		<form id="edit-customer-info" method="post" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-customers&view=overview&id=' . $customer->id ); ?>">
+		<form id="edit-customer-info" method="post" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $customer->id ); ?>">
 
 			<div class="customer-info">
 
@@ -247,8 +247,8 @@ function give_customers_view( $customer ) {
 							?>
 						</select>
 							<?php
-							$selected_state = give_get_shop_state();
-							$states         = give_get_shop_states( $selected_country );
+							$selected_state = give_get_state();
+							$states         = give_get_states( $selected_country );
 
 							$selected_state = isset( $address['state'] ) ? $address['state'] : $selected_state;
 
@@ -326,7 +326,7 @@ function give_customers_view( $customer ) {
 		</form>
 	</div>
 
-	<?php do_action( 'give_customer_before_stats', $customer ); ?>
+	<?php do_action( 'give_donor_before_stats', $customer ); ?>
 
 	<div id="customer-stats-wrapper" class="customer-section">
 		<ul>
@@ -340,15 +340,15 @@ function give_customers_view( $customer ) {
 				<span class="dashicons dashicons-chart-area"></span>
 				<?php echo give_currency_filter( give_format_amount( $customer->purchase_value ) ); ?> <?php _e( 'Lifetime Value', 'give' ); ?>
 			</li>
-			<?php do_action( 'give_customer_stats_list', $customer ); ?>
+			<?php do_action( 'give_donor_stats_list', $customer ); ?>
 		</ul>
 	</div>
 
-	<?php do_action( 'give_customer_before_tables_wrapper', $customer ); ?>
+	<?php do_action( 'give_donor_before_tables_wrapper', $customer ); ?>
 
 	<div id="customer-tables-wrapper" class="customer-section">
 
-		<?php do_action( 'give_customer_before_tables', $customer ); ?>
+		<?php do_action( 'give_donor_before_tables', $customer ); ?>
 
 		<h3><?php _e( 'Recent Payments', 'give' ); ?></h3>
 		<?php
@@ -375,58 +375,58 @@ function give_customers_view( $customer ) {
 						<td><?php echo date_i18n( get_option( 'date_format' ), strtotime( $payment->post_date ) ); ?></td>
 						<td><?php echo give_get_payment_status( $payment, true ); ?></td>
 						<td>
-							<a title="<?php _e( 'View Details for Payment', 'give' );
+							<a title="<?php _e( 'View Details for Donation', 'give' );
 							echo ' ' . $payment->ID; ?>" href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $payment->ID ); ?>">
 								<?php _e( 'View Details', 'give' ); ?>
 							</a>
-							<?php do_action( 'give_customer_recent_purcahses_actions', $customer, $payment ); ?>
+							<?php do_action( 'give_donor_recent_purchases_actions', $customer, $payment ); ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>
 			<?php else: ?>
 				<tr>
-					<td colspan="5"><?php _e( 'No Payments Found', 'give' ); ?></td>
+					<td colspan="5"><?php _e( 'No Donations Found', 'give' ); ?></td>
 				</tr>
 			<?php endif; ?>
 			</tbody>
 		</table>
 
-		<h3><?php printf( __( 'Purchased %s', 'give' ), give_get_label_plural() ); ?></h3>
+		<h3><?php _e( 'Completed Donations', 'give' ); ?></h3>
 		<?php
-		$downloads = give_get_users_purchased_products( $customer->email );
+		$donations = give_get_users_purchased_products( $customer->email );
 		?>
 		<table class="wp-list-table widefat striped downloads">
 			<thead>
 			<tr>
-				<th><?php echo give_get_label_singular(); ?></th>
+				<th><?php echo give_get_forms_label_singular(); ?></th>
 				<th width="120px"><?php _e( 'Actions', 'give' ); ?></th>
 			</tr>
 			</thead>
 			<tbody>
-			<?php if ( ! empty( $downloads ) ) : ?>
-				<?php foreach ( $downloads as $download ) : ?>
+			<?php if ( ! empty( $donations ) ) : ?>
+				<?php foreach ( $donations as $donation ) : ?>
 					<tr>
-						<td><?php echo $download->post_title; ?></td>
+						<td><?php echo $donation->post_title; ?></td>
 						<td>
-							<a title="<?php echo esc_attr( sprintf( __( 'View %s', 'give' ), $download->post_title ) ); ?>" href="<?php echo esc_url( admin_url( 'post.php?action=edit&post=' . $download->ID ) ); ?>">
-								<?php printf( __( 'View %s', 'give' ), give_get_label_singular() ); ?>
+							<a title="<?php echo esc_attr( sprintf( __( 'View %s', 'give' ), $donation->post_title ) ); ?>" href="<?php echo esc_url( admin_url( 'post.php?action=edit&post=' . $donation->ID ) ); ?>">
+								<?php printf( __( 'View %s', 'give' ), give_get_forms_label_singular() ); ?>
 							</a>
 						</td>
 					</tr>
 				<?php endforeach; ?>
 			<?php else: ?>
 				<tr>
-					<td colspan="2"><?php printf( __( 'No %s Found', 'give' ), give_get_label_plural() ); ?></td>
+					<td colspan="2"><?php _e( 'No Completed Donations Found', 'give' ); ?></td>
 				</tr>
 			<?php endif; ?>
 			</tbody>
 		</table>
 
-		<?php do_action( 'give_customer_after_tables', $customer ); ?>
+		<?php do_action( 'give_donor_after_tables', $customer ); ?>
 
 	</div>
 
-	<?php do_action( 'give_customer_card_bottom', $customer ); ?>
+	<?php do_action( 'give_donor_card_bottom', $customer ); ?>
 
 <?php
 }
@@ -459,7 +459,7 @@ function give_customer_notes_view( $customer ) {
 
 		<?php if ( 1 == $paged ) : ?>
 			<div style="display: block; margin-bottom: 35px;">
-				<form id="give-add-customer-note" method="post" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-customers&view=notes&id=' . $customer->id ); ?>">
+				<form id="give-add-customer-note" method="post" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=notes&id=' . $customer->id ); ?>">
 					<textarea id="customer-note" name="customer_note" class="customer-note-input" rows="10"></textarea>
 					<br />
 					<input type="hidden" id="customer-id" name="customer_id" value="<?php echo $customer->id; ?>" />
@@ -514,7 +514,7 @@ function give_customers_delete_view( $customer ) {
 
 	<div class="info-wrapper customer-section">
 
-		<form id="delete-customer" method="post" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-customers&view=delete&id=' . $customer->id ); ?>">
+		<form id="delete-customer" method="post" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id=' . $customer->id ); ?>">
 
 			<div class="customer-notes-header">
 				<?php echo get_avatar( $customer->email, 30 ); ?> <span><?php echo $customer->name; ?></span>
@@ -545,7 +545,7 @@ function give_customers_delete_view( $customer ) {
 					<?php wp_nonce_field( 'delete-customer', '_wpnonce', false, true ); ?>
 					<input type="hidden" name="give_action" value="delete-customer" />
 					<input type="submit" disabled="disabled" id="give-delete-customer" class="button-primary" value="<?php _e( 'Delete Customer', 'give' ); ?>" />
-					<a id="give-delete-customer-cancel" href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-customers&view=overview&id=' . $customer->id ); ?>" class="delete"><?php _e( 'Cancel', 'give' ); ?></a>
+					<a id="give-delete-customer-cancel" href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $customer->id ); ?>" class="delete"><?php _e( 'Cancel', 'give' ); ?></a>
 				</span>
 
 			</div>
