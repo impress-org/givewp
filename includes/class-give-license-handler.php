@@ -24,7 +24,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		private $item_shortname;
 		private $version;
 		private $author;
-		private $api_url = 'https://givewp.com/edd-sl-api/';
+		private $api_url = 'https://givewp.com/give-sl-api/';
 
 		/**
 		 * Class constructor

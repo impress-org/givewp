@@ -560,7 +560,7 @@ function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 
 	}
 
 
-	return apply_filters( 'edd_get_price_option_name', $price_name, $form_id, $payment_id, $price_id );
+	return apply_filters( 'give_get_price_option_name', $price_name, $form_id, $payment_id, $price_id );
 }
 
 
@@ -665,7 +665,7 @@ function give_get_highest_price_option( $form_id = 0 ) {
 			}
 			$give_amount = give_sanitize_amount( $price['_give_amount'] );
 
-			$max = max( $max, $give_amount);
+			$max = max( $max, $give_amount );
 
 			if ( $give_amount == $max ) {
 				$max_id = $key;

@@ -1,10 +1,10 @@
 <?php
 /**
- * Donor Class
+ * Customer (Donor) Object
  *
  * @package     Give
- * @subpackage  Classes/Donor
- * @copyright   Copyright (c) 2015, WordImpress
+ * @subpackage  Classes/Customer
+ * @copyright   Copyright (c) 2015, Chris Klosowski
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -15,70 +15,70 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Give_Donor Class
+ * Give_Customer Class
  *
  * @since 1.0
  */
-class Give_Donor {
+class Give_Customer {
 
 	/**
-	 * The donor ID
+	 * The customer ID
 	 *
 	 * @since 1.0
 	 */
 	public $id = 0;
 
 	/**
-	 * The donor's purchase count
+	 * The customer's purchase count
 	 *
 	 * @since 1.0
 	 */
 	public $purchase_count = 0;
 
 	/**
-	 * The donor's lifetime value
+	 * The customer's lifetime value
 	 *
 	 * @since 1.0
 	 */
 	public $purchase_value = 0;
 
 	/**
-	 * The donor's email
+	 * The customer's email
 	 *
 	 * @since 1.0
 	 */
 	public $email;
 
 	/**
-	 * The donor's name
+	 * The customer's name
 	 *
 	 * @since 1.0
 	 */
 	public $name;
 
 	/**
-	 * The donor's creation date
+	 * The customer's creation date
 	 *
 	 * @since 1.0
 	 */
 	public $date_created;
 
 	/**
-	 * The payment IDs associated with the donor
+	 * The payment IDs associated with the customer
 	 *
 	 * @since  1.0
 	 */
 	public $payment_ids;
 
 	/**
-	 * The user ID associated with the donor
+	 * The user ID associated with the customer
 	 *
 	 * @since  1.0
 	 */
 	public $user_id;
 
 	/**
-	 * Donor Notes
+	 * Customer Notes
 	 *
 	 * @since  1.0
 	 */
@@ -95,13 +95,10 @@ class Give_Donor {
 	 * Get things going
 	 *
 	 * @since 1.0
-	 *
-	 * @param bool $_id_or_email
-	 * @param bool $by_user_id
 	 */
 	public function __construct( $_id_or_email = false, $by_user_id = false ) {
 
-		$this->db = new Give_DB_Donors;
+		$this->db = new Give_DB_Customers;
 
 		if ( false === $_id_or_email || ( is_numeric( $_id_or_email ) && (int) $_id_or_email !== absint( $_id_or_email ) ) ) {
 			return false;
@@ -115,32 +112,32 @@ class Give_Donor {
 			$field = 'email';
 		}
 
-		$donor = $this->db->get_donor_by( $field, $_id_or_email );
+		$customer = $this->db->get_customer_by( $field, $_id_or_email );
 
-		if ( empty( $donor ) || ! is_object( $donor ) ) {
+		if ( empty( $customer ) || ! is_object( $customer ) ) {
 			return false;
 		}
 
-		$this->setup_donor( $donor );
+		$this->setup_customer( $customer );
 
 	}
 
 	/**
-	 * Given the donor data, let's set the variables
+	 * Given the customer data, let's set the variables
 	 *
 	 * @since  1.0
 	 *
-	 * @param  object $donor The Donor Object
+	 * @param  object $customer The Customer Object
 	 *
 	 * @return bool             If the setup was successful or not
 	 */
-	private function setup_donor( $donor ) {
+	private function setup_customer( $customer ) {
 
-		if ( ! is_object( $donor ) ) {
+		if ( ! is_object( $customer ) ) {
 			return false;
 		}
 
-		foreach ( $donor as $key => $value ) {
+		foreach ( $customer as $key => $value ) {
 
 			switch ( $key ) {
 
@@ -156,7 +153,7 @@ class Give_Donor {
 
 		}
 
-		// Donor ID and email are the only things that are necessary, make sure they exist
+		// Customer ID and email are the only things that are necessary, make sure they exist
 		if ( ! empty( $this->id ) && ! empty( $this->email ) ) {
 			return true;
 		}
@@ -178,20 +175,20 @@ class Give_Donor {
 
 		} else {
 
-			return new WP_Error( 'edd-donor-invalid-property', sprintf( __( 'Can\'t get property %s', 'edd' ), $key ) );
+			return new WP_Error( 'give-customer-invalid-property', sprintf( __( 'Can\'t get property %s', 'give' ), $key ) );
 
 		}
 
 	}
 
 	/**
-	 * Creates a donor
+	 * Creates a customer
 	 *
 	 * @since  1.0
 	 *
-	 * @param  array $data Array of attributes for a donor
+	 * @param  array $data Array of attributes for a customer
 	 *
-	 * @return mixed        False if not a valid creation, Donor ID if user is found or valid creation
+	 * @return mixed        False if not a valid creation, Customer ID if user is found or valid creation
 	 */
 	public function create( $data = array() ) {
 
@@ -214,34 +211,34 @@ class Give_Donor {
 			$args['payment_ids'] = implode( ',', array_unique( array_values( $args['payment_ids'] ) ) );
 		}
 
-		do_action( 'edd_donor_pre_create', $args );
+		do_action( 'give_customer_pre_create', $args );
 
 		$created = false;
 
-		// The DB class 'add' implies an update if the donor being asked to be created already exists
+		// The DB class 'add' implies an update if the customer being asked to be created already exists
 		if ( $this->db->add( $data ) ) {
 
-			// We've successfully added/updated the donor, reset the class vars with the new data
-			$donor = $this->db->get_donor_by( 'email', $args['email'] );
+			// We've successfully added/updated the customer, reset the class vars with the new data
+			$customer = $this->db->get_customer_by( 'email', $args['email'] );
 
-			// Setup the donor data with the values from DB
-			$this->setup_donor( $donor );
+			// Setup the customer data with the values from DB
+			$this->setup_customer( $customer );
 
 			$created = $this->id;
 		}
 
-		do_action( 'edd_donor_post_create', $created, $args );
+		do_action( 'give_customer_post_create', $created, $args );
 
 		return $created;
 
 	}
 
 	/**
-	 * Update a donor record
+	 * Update a customer record
 	 *
 	 * @since  1.0
 	 *
-	 * @param  array $data Array of data attributes for a donor (checked via whitelist)
+	 * @param  array $data Array of data attributes for a customer (checked via whitelist)
 	 *
 	 * @return bool         If the update was successful or not
 	 */
@@ -253,30 +250,30 @@ class Give_Donor {
 
 		$data = $this->sanitize_columns( $data );
 
-		do_action( 'edd_donor_pre_update', $this->id, $data );
+		do_action( 'give_customer_pre_update', $this->id, $data );
 
 		$updated = false;
 
 		if ( $this->db->update( $this->id, $data ) ) {
 
-			$donor = $this->db->get_donor_by( 'id', $this->id );
-			$this->setup_donor( $donor );
+			$customer = $this->db->get_customer_by( 'id', $this->id );
+			$this->setup_customer( $customer );
 
 			$updated = true;
 		}
 
-		do_action( 'edd_donor_post_update', $updated, $this->id, $data );
+		do_action( 'give_customer_post_update', $updated, $this->id, $data );
 
 		return $updated;
 	}
 
 
 	/**
-	 * Attach payment to the donor then triggers increasing stats
+	 * Attach payment to the customer then triggers increasing stats
 	 *
 	 * @since  1.0
 	 *
-	 * @param  int  $payment_id   The payment ID to attach to the donor
+	 * @param  int  $payment_id   The payment ID to attach to the customer
 	 * @param  bool $update_stats For backwards compatibility, if we should increase the stats or not
 	 *
 	 * @return bool            If the attachment was successfuly
@@ -305,7 +302,7 @@ class Give_Donor {
 
 		}
 
-		do_action( 'edd_donor_pre_attach_payment', $payment_id, $this->id );
+		do_action( 'give_customer_pre_attach_payment', $payment_id, $this->id );
 
 		$payment_added = $this->update( array( 'payment_ids' => $new_payment_ids ) );
 
@@ -315,7 +312,7 @@ class Give_Donor {
 
 			// We added this payment successfully, increment the stats
 			if ( $update_stats ) {
-				$payment_amount = edd_get_payment_amount( $payment_id );
+				$payment_amount = give_get_payment_amount( $payment_id );
 
 				if ( ! empty( $payment_amount ) ) {
 					$this->increase_value( $payment_amount );
@@ -326,14 +323,14 @@ class Give_Donor {
 
 		}
 
-		do_action( 'edd_donor_post_attach_payment', $payment_added, $payment_id, $this->id );
+		do_action( 'give_customer_post_attach_payment', $payment_added, $payment_id, $this->id );
 
 		return $payment_added;
 	}
 
 
 	/**
-	 * Remove a payment from this donor, then triggers reducing stats
+	 * Remove a payment from this customer, then triggers reducing stats
 	 *
 	 * @since  1.0
 	 *
@@ -366,7 +363,7 @@ class Give_Donor {
 
 		}
 
-		do_action( 'edd_donor_pre_remove_payment', $payment_id, $this->id );
+		do_action( 'give_customer_pre_remove_payment', $payment_id, $this->id );
 
 		$payment_removed = $this->update( array( 'payment_ids' => $new_payment_ids ) );
 
@@ -376,7 +373,7 @@ class Give_Donor {
 
 			if ( $update_stats ) {
 				// We removed this payment successfully, decrement the stats
-				$payment_amount = edd_get_payment_amount( $payment_id );
+				$payment_amount = give_get_payment_amount( $payment_id );
 
 				if ( ! empty( $payment_amount ) ) {
 					$this->decrease_value( $payment_amount );
@@ -387,14 +384,14 @@ class Give_Donor {
 
 		}
 
-		do_action( 'edd_donor_post_remove_payment', $payment_removed, $payment_id, $this->id );
+		do_action( 'give_customer_post_remove_payment', $payment_removed, $payment_id, $this->id );
 
 		return $payment_removed;
 
 	}
 
 	/**
-	 * Increase the purchase count of a donor
+	 * Increase the purchase count of a customer
 	 *
 	 * @since  1.0
 	 *
@@ -411,19 +408,19 @@ class Give_Donor {
 
 		$new_total = (int) $this->purchase_count + (int) $count;
 
-		do_action( 'edd_donor_pre_increase_purchase_count', $count, $this->id );
+		do_action( 'give_customer_pre_increase_purchase_count', $count, $this->id );
 
 		if ( $this->update( array( 'purchase_count' => $new_total ) ) ) {
 			$this->purchase_count = $new_total;
 		}
 
-		do_action( 'edd_donor_post_increase_purchase_count', $this->purchase_count, $count, $this->id );
+		do_action( 'give_customer_post_increase_purchase_count', $this->purchase_count, $count, $this->id );
 
 		return $this->purchase_count;
 	}
 
 	/**
-	 * Decrease the donor purchase count
+	 * Decrease the customer purchase count
 	 *
 	 * @since  1.0
 	 *
@@ -444,19 +441,19 @@ class Give_Donor {
 			$new_total = 0;
 		}
 
-		do_action( 'edd_donor_pre_decrease_purchase_count', $count, $this->id );
+		do_action( 'give_customer_pre_decrease_purchase_count', $count, $this->id );
 
 		if ( $this->update( array( 'purchase_count' => $new_total ) ) ) {
 			$this->purchase_count = $new_total;
 		}
 
-		do_action( 'edd_donor_post_decrease_purchase_count', $this->purchase_count, $count, $this->id );
+		do_action( 'give_customer_post_decrease_purchase_count', $this->purchase_count, $count, $this->id );
 
 		return $this->purchase_count;
 	}
 
 	/**
-	 * Increase the donor's lifetime value
+	 * Increase the customer's lifetime value
 	 *
 	 * @since  1.0
 	 *
@@ -468,19 +465,19 @@ class Give_Donor {
 
 		$new_value = floatval( $this->purchase_value ) + $value;
 
-		do_action( 'edd_donor_pre_increase_value', $value, $this->id );
+		do_action( 'give_customer_pre_increase_value', $value, $this->id );
 
 		if ( $this->update( array( 'purchase_value' => $new_value ) ) ) {
 			$this->purchase_value = $new_value;
 		}
 
-		do_action( 'edd_donor_post_increase_value', $this->purchase_value, $value, $this->id );
+		do_action( 'give_customer_post_increase_value', $this->purchase_value, $value, $this->id );
 
 		return $this->purchase_value;
 	}
 
 	/**
-	 * Decrease a donor's lifetime value
+	 * Decrease a customer's lifetime value
 	 *
 	 * @since  1.0
 	 *
@@ -496,19 +493,19 @@ class Give_Donor {
 			$new_value = 0.00;
 		}
 
-		do_action( 'edd_donor_pre_decrease_value', $value, $this->id );
+		do_action( 'give_customer_pre_decrease_value', $value, $this->id );
 
 		if ( $this->update( array( 'purchase_value' => $new_value ) ) ) {
 			$this->purchase_value = $new_value;
 		}
 
-		do_action( 'edd_donor_post_decrease_value', $this->purchase_value, $value, $this->id );
+		do_action( 'give_customer_post_decrease_value', $this->purchase_value, $value, $this->id );
 
 		return $this->purchase_value;
 	}
 
 	/**
-	 * Get the parsed notes for a donor as an array
+	 * Get the parsed notes for a customer as an array
 	 *
 	 * @since  1.0
 	 *
@@ -535,7 +532,7 @@ class Give_Donor {
 	 * Get the total number of notes we have after parsing
 	 *
 	 * @since  1.0
-	 * @return int The number of notes for the donor
+	 * @return int The number of notes for the customer
 	 */
 	public function get_notes_count() {
 
@@ -547,7 +544,7 @@ class Give_Donor {
 	}
 
 	/**
-	 * Add a note for the donor
+	 * Add a note for the customer
 	 *
 	 * @since  1.0
 	 *
@@ -569,10 +566,10 @@ class Give_Donor {
 		}
 
 		$note_string = date_i18n( 'F j, Y H:i:s', current_time( 'timestamp' ) ) . ' - ' . $note;
-		$new_note    = apply_filters( 'edd_donor_add_note_string', $note_string );
+		$new_note    = apply_filters( 'give_customer_add_note_string', $note_string );
 		$notes .= "\n\n" . $new_note;
 
-		do_action( 'edd_donor_pre_add_note', $new_note, $this->id );
+		do_action( 'give_customer_pre_add_note', $new_note, $this->id );
 
 		$updated = $this->update( array( 'notes' => $notes ) );
 
@@ -580,7 +577,7 @@ class Give_Donor {
 			$this->notes = $this->get_notes();
 		}
 
-		do_action( 'edd_donor_post_add_note', $this->notes, $new_note, $this->id );
+		do_action( 'give_customer_post_add_note', $this->notes, $new_note, $this->id );
 
 		// Return the formatted note, so we can test, as well as update any displays
 		return $new_note;
@@ -588,10 +585,10 @@ class Give_Donor {
 	}
 
 	/**
-	 * Get the notes column for the donor
+	 * Get the notes column for the customer
 	 *
 	 * @since  1.0
-	 * @return string The Notes for the donor, non-parsed
+	 * @return string The Notes for the customer, non-parsed
 	 */
 	private function get_raw_notes() {
 

@@ -19,7 +19,7 @@ abstract class Give_DB {
 	 * The name of our database table
 	 *
 	 * @access  public
-	 * @since   2.1
+	 * @since   1.0
 	 */
 	public $table_name;
 
@@ -27,7 +27,7 @@ abstract class Give_DB {
 	 * The version of our database table
 	 *
 	 * @access  public
-	 * @since   2.1
+	 * @since   1.0
 	 */
 	public $version;
 
@@ -35,7 +35,7 @@ abstract class Give_DB {
 	 * The name of the primary column
 	 *
 	 * @access  public
-	 * @since   2.1
+	 * @since   1.0
 	 */
 	public $primary_key;
 
@@ -43,7 +43,7 @@ abstract class Give_DB {
 	 * Get things started
 	 *
 	 * @access  public
-	 * @since   2.1
+	 * @since   1.0
 	 */
 	public function __construct() {
 	}
@@ -52,7 +52,7 @@ abstract class Give_DB {
 	 * Whitelist of columns
 	 *
 	 * @access  public
-	 * @since   2.1
+	 * @since   1.0
 	 * @return  array
 	 */
 	public function get_columns() {
@@ -63,7 +63,7 @@ abstract class Give_DB {
 	 * Default column values
 	 *
 	 * @access  public
-	 * @since   2.1
+	 * @since   1.0
 	 * @return  array
 	 */
 	public function get_column_defaults() {
@@ -74,7 +74,7 @@ abstract class Give_DB {
 	 * Retrieve a row by the primary key
 	 *
 	 * @access  public
-	 * @since   2.1
+	 * @since   1.0
 	 * @return  object
 	 */
 	public function get( $row_id ) {
@@ -87,7 +87,7 @@ abstract class Give_DB {
 	 * Retrieve a row by a specific column / value
 	 *
 	 * @access  public
-	 * @since   2.1
+	 * @since   1.0
 	 * @return  object
 	 */
 	public function get_by( $column, $row_id ) {
@@ -100,7 +100,7 @@ abstract class Give_DB {
 	 * Retrieve a specific column's value by the primary key
 	 *
 	 * @access  public
-	 * @since   2.1
+	 * @since   1.0
 	 * @return  string
 	 */
 	public function get_column( $column, $row_id ) {
@@ -113,7 +113,7 @@ abstract class Give_DB {
 	 * Retrieve a specific column's value by the the specified column / value
 	 *
 	 * @access  public
-	 * @since   2.1
+	 * @since   1.0
 	 * @return  string
 	 */
 	public function get_column_by( $column, $column_where, $column_value ) {
@@ -126,7 +126,7 @@ abstract class Give_DB {
 	 * Insert a new row
 	 *
 	 * @access  public
-	 * @since   2.1
+	 * @since   1.0
 	 * @return  int
 	 */
 	public function insert( $data, $type = '' ) {
@@ -161,7 +161,7 @@ abstract class Give_DB {
 	 * Update a row
 	 *
 	 * @access  public
-	 * @since   2.1
+	 * @since   1.0
 	 * @return  bool
 	 */
 	public function update( $row_id, $data = array(), $where = '' ) {
@@ -203,7 +203,7 @@ abstract class Give_DB {
 	 * Delete a row identified by the primary key
 	 *
 	 * @access  public
-	 * @since   2.1
+	 * @since   1.0
 	 * @return  bool
 	 */
 	public function delete( $row_id = 0 ) {

@@ -111,7 +111,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 				self::$instance->emails             = new Give_Emails();
 				self::$instance->email_tags         = new Give_Email_Template_Tags();
 				self::$instance->donators_gravatars = new Give_Donators_Gravatars();
-				self::$instance->donors             = new Give_DB_Donors();
+				self::$instance->customers          = new Give_DB_Customers();
 
 			}
 
@@ -202,7 +202,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-template-loader.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donate-form.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-donors.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-customers.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-stats.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-session.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-html-elements.php';
@@ -256,10 +256,9 @@ if ( ! class_exists( 'Give' ) ) : /**
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/actions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/payments-history.php';
 
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/donors/donors.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/donors/donor-functions.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/donors/donor-actions.php';
-
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/customers/customers.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/customers/customer-functions.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/customers/customer-actions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/metabox.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/dashboard-columns.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/shortcode.php';

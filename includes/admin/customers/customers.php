@@ -75,7 +75,7 @@ function give_customers_list() {
 	<div class="wrap">
 		<h2><?php _e( 'Customers', 'give' ); ?></h2>
 		<?php do_action( 'give_customers_table_top' ); ?>
-		<form id="give-customers-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=download&page=give-customers' ); ?>">
+		<form id="give-customers-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-customers' ); ?>">
 			<?php
 			$customers_table->search_box( __( 'Search Customers', 'give' ), 'give-customers' );
 			$customers_table->display();
@@ -143,7 +143,7 @@ function give_render_customer_view( $view, $callbacks ) {
 						<?php $class = $active ? 'active' : 'inactive'; ?>
 
 						<?php if ( ! $active ) : ?>
-							<a title="<?php echo esc_attr( $tab['title'] ); ?>" aria-label="<?php echo esc_attr( $tab['title'] ); ?>" href="<?php echo esc_url( admin_url( 'edit.php?post_type=download&page=give-customers&view=' . $key . '&id=' . $customer->id ) ); ?>">
+							<a title="<?php echo esc_attr( $tab['title'] ); ?>" aria-label="<?php echo esc_attr( $tab['title'] ); ?>" href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-customers&view=' . $key . '&id=' . $customer->id ) ); ?>">
 						<?php endif; ?>
 
 						<li class="<?php echo sanitize_html_class( $class ); ?>">
@@ -188,7 +188,7 @@ function give_customers_view( $customer ) {
 
 	<div class="info-wrapper customer-section">
 
-		<form id="edit-customer-info" method="post" action="<?php echo admin_url( 'edit.php?post_type=download&page=give-customers&view=overview&id=' . $customer->id ); ?>">
+		<form id="edit-customer-info" method="post" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-customers&view=overview&id=' . $customer->id ); ?>">
 
 			<div class="customer-info">
 
@@ -294,7 +294,7 @@ function give_customers_view( $customer ) {
 							$user_args['value'] = $userdata->user_login;
 						}
 
-						echo EDD()->html->ajax_user_search( $user_args );
+						echo Give()->html->ajax_user_search( $user_args );
 						?>
 						<input type="hidden" name="customerinfo[user_id]" data-key="user_id" value="<?php echo $customer->user_id; ?>" />
 					</span>
@@ -331,7 +331,7 @@ function give_customers_view( $customer ) {
 	<div id="customer-stats-wrapper" class="customer-section">
 		<ul>
 			<li>
-				<a title="<?php _e( 'View All Purchases', 'give' ); ?>" href="<?php echo admin_url( 'edit.php?post_type=download&page=give-payment-history&user=' . urlencode( $customer->email ) ); ?>">
+				<a title="<?php _e( 'View All Purchases', 'give' ); ?>" href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( $customer->email ) ); ?>">
 					<span class="dashicons dashicons-cart"></span>
 					<?php printf( _n( '%d Completed Sale', '%d Completed Sales', $customer->purchase_count, 'give' ), $customer->purchase_count ); ?>
 				</a>
@@ -376,7 +376,7 @@ function give_customers_view( $customer ) {
 						<td><?php echo give_get_payment_status( $payment, true ); ?></td>
 						<td>
 							<a title="<?php _e( 'View Details for Payment', 'give' );
-							echo ' ' . $payment->ID; ?>" href="<?php echo admin_url( 'edit.php?post_type=download&page=give-payment-history&view=view-order-details&id=' . $payment->ID ); ?>">
+							echo ' ' . $payment->ID; ?>" href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $payment->ID ); ?>">
 								<?php _e( 'View Details', 'give' ); ?>
 							</a>
 							<?php do_action( 'give_customer_recent_purcahses_actions', $customer, $payment ); ?>
@@ -459,7 +459,7 @@ function give_customer_notes_view( $customer ) {
 
 		<?php if ( 1 == $paged ) : ?>
 			<div style="display: block; margin-bottom: 35px;">
-				<form id="give-add-customer-note" method="post" action="<?php echo admin_url( 'edit.php?post_type=download&page=give-customers&view=notes&id=' . $customer->id ); ?>">
+				<form id="give-add-customer-note" method="post" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-customers&view=notes&id=' . $customer->id ); ?>">
 					<textarea id="customer-note" name="customer_note" class="customer-note-input" rows="10"></textarea>
 					<br />
 					<input type="hidden" id="customer-id" name="customer_id" value="<?php echo $customer->id; ?>" />
@@ -514,7 +514,7 @@ function give_customers_delete_view( $customer ) {
 
 	<div class="info-wrapper customer-section">
 
-		<form id="delete-customer" method="post" action="<?php echo admin_url( 'edit.php?post_type=download&page=give-customers&view=delete&id=' . $customer->id ); ?>">
+		<form id="delete-customer" method="post" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-customers&view=delete&id=' . $customer->id ); ?>">
 
 			<div class="customer-notes-header">
 				<?php echo get_avatar( $customer->email, 30 ); ?> <span><?php echo $customer->name; ?></span>
@@ -525,12 +525,12 @@ function give_customers_delete_view( $customer ) {
 
 				<span class="delete-customer-options">
 					<p>
-						<?php echo EDD()->html->checkbox( array( 'name' => 'give-customer-delete-confirm' ) ); ?>
+						<?php echo Give()->html->checkbox( array( 'name' => 'give-customer-delete-confirm' ) ); ?>
 						<label for="give-customer-delete-confirm"><?php _e( 'Are you sure you want to delete this customer?', 'give' ); ?></label>
 					</p>
 
 					<p>
-						<?php echo EDD()->html->checkbox( array(
+						<?php echo Give()->html->checkbox( array(
 							'name'    => 'give-customer-delete-records',
 							'options' => array( 'disabled' => true )
 						) ); ?>
@@ -545,7 +545,7 @@ function give_customers_delete_view( $customer ) {
 					<?php wp_nonce_field( 'delete-customer', '_wpnonce', false, true ); ?>
 					<input type="hidden" name="give_action" value="delete-customer" />
 					<input type="submit" disabled="disabled" id="give-delete-customer" class="button-primary" value="<?php _e( 'Delete Customer', 'give' ); ?>" />
-					<a id="give-delete-customer-cancel" href="<?php echo admin_url( 'edit.php?post_type=download&page=give-customers&view=overview&id=' . $customer->id ); ?>" class="delete"><?php _e( 'Cancel', 'give' ); ?></a>
+					<a id="give-delete-customer-cancel" href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-customers&view=overview&id=' . $customer->id ); ?>" class="delete"><?php _e( 'Cancel', 'give' ); ?></a>
 				</span>
 
 			</div>
