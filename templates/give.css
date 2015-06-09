@@ -879,7 +879,8 @@ Radio Lists
   #give-gateway-radio-list > li {
     float: left;
     margin-right: 15px;
-    margin-left: 0; }
+    margin-left: 0;
+    list-style-type: none; }
     #give-gateway-radio-list > li .give-gateway-option {
       cursor: pointer; }
       #give-gateway-radio-list > li .give-gateway-option input[type="radio"] {
