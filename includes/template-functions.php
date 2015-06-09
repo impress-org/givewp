@@ -206,7 +206,7 @@ function give_add_body_classes( $class ) {
 		$classes[] = 'give-failed-transaction';
 		$classes[] = 'give-page';
 	}
-	
+
 	if ( give_is_donation_history_page() ) {
 		$classes[] = 'give-donation-history';
 		$classes[] = 'give-page';
