@@ -527,7 +527,7 @@ function give_get_paypal_redirect( $ssl_check = false ) {
  */
 function give_get_paypal_page_style() {
 
-	$page_style = trim( edd_get_option( 'paypal_page_style', 'PayPal' ) );
+	$page_style = trim( give_get_option( 'paypal_page_style', 'PayPal' ) );
 
 	return apply_filters( 'give_paypal_page_style', $page_style );
 }
