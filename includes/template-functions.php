@@ -77,7 +77,7 @@ function give_get_template_part( $slug, $name = null, $load = true ) {
  * inherit from a parent theme can just overload one file. If the template is
  * not found in either of those, it looks in the theme-compat folder last.
  *
- * Taken from bbPress
+ * Forked from bbPress
  *
  * @since 1.0
  *
@@ -161,69 +161,6 @@ function give_get_theme_template_dir_name() {
 }
 
 /**
- * Should we add schema.org microdata?
- *
- * @since 1.0
- * @return bool
- */
-function give_add_schema_microdata() {
-	// Don't modify anything until after wp_head() is called
-	$ret = did_action( 'wp_head' );
-
-	return apply_filters( 'give_add_schema_microdata', $ret );
-}
-
-/**
- * Add Microdata to Give titles
- *
- * @since  1.0
- *
- * @param string $title Post Title
- * @param int    $id    Post ID
- *
- * @return string $title New title
- */
-function give_microdata_title( $title, $id = 0 ) {
-
-	if ( ! give_add_schema_microdata() ) {
-		return $title;
-	}
-
-	if ( is_singular( 'give_forms' ) && 'give_forms' == get_post_type( intval( $id ) ) ) {
-		$title = '<span itemprop="name">' . $title . '</span>';
-	}
-
-	return $title;
-}
-
-add_filter( 'the_title', 'give_microdata_title', 10, 2 );
-
-/**
- * Add Microdata to download description
- *
- * @since  1.0
- *
- * @param $content
- *
- * @return mixed|void New title
- */
-function give_microdata_wrapper( $content ) {
-	global $post;
-
-	if ( ! give_add_schema_microdata() ) {
-		return $content;
-	}
-
-	if ( $post && $post->post_type == 'give_forms' && is_singular() && is_main_query() ) {
-		$content = apply_filters( 'give_microdata_wrapper', '<div itemscope itemtype="http://schema.org/Product" itemprop="description">' . $content . '</div>' );
-	}
-
-	return $content;
-}
-
-//add_filter( 'the_content', 'give_microdata_wrapper', 10 );
-
-/**
  * Adds Give Version to the <head> tag
  *
  * @since 1.0
@@ -236,16 +173,16 @@ function give_version_in_header() {
 add_action( 'wp_head', 'give_version_in_header' );
 
 /**
- * Determines if we're currently on the Purchase History page.
+ * Determines if we're currently on the Donations History page.
  *
  * @since 1.0
- * @return bool True if on the Purchase History page, false otherwise.
+ * @return bool True if on the Donations History page, false otherwise.
  */
-function give_is_purchase_history_page() {
-	global $give_options;
-	$ret = isset( $give_options['purchase_history_page'] ) ? is_page( $give_options['purchase_history_page'] ) : false;
+function give_is_donation_history_page() {
 
-	return apply_filters( 'give_is_purchase_history_page', $ret );
+	$ret = is_page( give_get_option( 'purchase_history_page' ) );
+
+	return apply_filters( 'give_is_donation_history_page', $ret );
 }
 
 /**
@@ -269,9 +206,9 @@ function give_add_body_classes( $class ) {
 		$classes[] = 'give-failed-transaction';
 		$classes[] = 'give-page';
 	}
-
-	if ( give_is_purchase_history_page() ) {
-		$classes[] = 'give-purchase-history';
+	
+	if ( give_is_donation_history_page() ) {
+		$classes[] = 'give-donation-history';
 		$classes[] = 'give-page';
 	}
 
@@ -429,7 +366,7 @@ if ( ! function_exists( 'give_show_avatars' ) ) {
 		echo do_shortcode( '[give_donators_gravatars]' );
 	}
 }
-if( ! function_exists( 'give_show_goal_progress' ) ) {
+if ( ! function_exists( 'give_show_goal_progress' ) ) {
 
 	/**
 	 * Output Donation Progress
