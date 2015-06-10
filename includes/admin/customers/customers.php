@@ -221,7 +221,7 @@ function give_customers_view( $customer ) {
 						?>
 
 						<?php if ( ! empty( $address ) ) : ?>
-							<strong><?php _e( 'Customer Address', 'give' ); ?></strong>
+							<strong><?php _e( 'Donor Address', 'give' ); ?></strong>
 							<span class="customer-address info-item editable">
 						<span class="info-item" data-key="line1"><?php echo $address['line1']; ?></span>
 						<span class="info-item" data-key="line2"><?php echo $address['line2']; ?></span>
@@ -270,12 +270,12 @@ function give_customers_view( $customer ) {
 
 				<div class="customer-main-wrapper left">
 
-					<span class="customer-name info-item edit-item"><input size="15" data-key="name" name="customerinfo[name]" type="text" value="<?php echo esc_attr( $customer->name ); ?>" placeholder="<?php _e( 'Customer Name', 'give' ); ?>" /></span>
+					<span class="customer-name info-item edit-item"><input size="15" data-key="name" name="customerinfo[name]" type="text" value="<?php echo esc_attr( $customer->name ); ?>" placeholder="<?php _e( 'Donor Name', 'give' ); ?>" /></span>
 					<span class="customer-name info-item editable"><span data-key="name"><?php echo $customer->name; ?></span></span>
-					<span class="customer-name info-item edit-item"><input size="20" data-key="email" name="customerinfo[email]" type="text" value="<?php echo $customer->email; ?>" placeholder="<?php _e( 'Customer Email', 'give' ); ?>" /></span>
+					<span class="customer-name info-item edit-item"><input size="20" data-key="email" name="customerinfo[email]" type="text" value="<?php echo $customer->email; ?>" placeholder="<?php _e( 'Donor Email', 'give' ); ?>" /></span>
 					<span class="customer-email info-item editable" data-key="email"><?php echo $customer->email; ?></span>
 					<span class="customer-since info-item">
-						<?php _e( 'Customer since', 'give' ); ?>
+						<?php _e( 'Donor since', 'give' ); ?>
 						<?php echo date_i18n( get_option( 'date_format' ), strtotime( $customer->date_created ) ) ?>
 					</span>
 					<span class="customer-user-id info-item edit-item">
@@ -319,7 +319,7 @@ function give_customers_view( $customer ) {
 				<input type="hidden" data-key="id" name="customerinfo[id]" value="<?php echo $customer->id; ?>" />
 				<?php wp_nonce_field( 'edit-customer', '_wpnonce', false, true ); ?>
 				<input type="hidden" name="give_action" value="edit-customer" />
-				<input type="submit" id="give-edit-customer-save" class="button-secondary" value="<?php _e( 'Update Customer', 'give' ); ?>" />
+				<input type="submit" id="give-edit-customer-save" class="button-secondary" value="<?php _e( 'Update Donor', 'give' ); ?>" />
 				<a id="give-edit-customer-cancel" href="" class="delete"><?php _e( 'Cancel', 'give' ); ?></a>
 			</span>
 
@@ -436,7 +436,7 @@ function give_customers_view( $customer ) {
  *
  * @since  1.0
  *
- * @param  $customer The Customer being displayed
+ * @param  $customer The Donor being displayed
  *
  * @return void
  */
@@ -493,7 +493,7 @@ function give_customer_notes_view( $customer ) {
 				<?php endforeach; ?>
 			<?php else: ?>
 				<div class="give-no-customer-notes">
-					<?php _e( 'No Customer Notes', 'give' ); ?>
+					<?php _e( 'No Donor Notes', 'give' ); ?>
 				</div>
 			<?php endif; ?>
 		</div>
@@ -544,7 +544,7 @@ function give_customers_delete_view( $customer ) {
 					<input type="hidden" name="customer_id" value="<?php echo $customer->id; ?>" />
 					<?php wp_nonce_field( 'delete-customer', '_wpnonce', false, true ); ?>
 					<input type="hidden" name="give_action" value="delete-customer" />
-					<input type="submit" disabled="disabled" id="give-delete-customer" class="button-primary" value="<?php _e( 'Delete Customer', 'give' ); ?>" />
+					<input type="submit" disabled="disabled" id="give-delete-customer" class="button-primary" value="<?php _e( 'Delete Donor', 'give' ); ?>" />
 					<a id="give-delete-customer-cancel" href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $customer->id ); ?>" class="delete"><?php _e( 'Cancel', 'give' ); ?></a>
 				</span>
 
