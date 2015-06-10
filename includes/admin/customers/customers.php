@@ -127,7 +127,7 @@ function give_render_customer_view( $view, $callbacks ) {
 	?>
 
 	<div class='wrap'>
-		<h2><?php _e( 'Donor Details', 'give' ); ?></h2>
+
 		<?php if ( give_get_errors() ) : ?>
 			<div class="error settings-error">
 				<?php give_print_errors( 0 ); ?>
@@ -137,27 +137,30 @@ function give_render_customer_view( $view, $callbacks ) {
 		<?php if ( $customer && $render ) : ?>
 
 			<div id="customer-tab-wrapper">
-				<ul id="customer-tab-wrapper-list">
+				<ul id="customer-tab-wrapper-list" class="nav-tab-wrapper">
 					<?php foreach ( $customer_tabs as $key => $tab ) : ?>
 						<?php $active = $key === $view ? true : false; ?>
 						<?php $class = $active ? 'active' : 'inactive'; ?>
 
-						<?php if ( ! $active ) : ?>
-							<a title="<?php echo esc_attr( $tab['title'] ); ?>" aria-label="<?php echo esc_attr( $tab['title'] ); ?>" href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=' . $key . '&id=' . $customer->id ) ); ?>">
-						<?php endif; ?>
-
 						<li class="<?php echo sanitize_html_class( $class ); ?>">
-							<span class="dashicons <?php echo sanitize_html_class( $tab['dashicon'] ); ?>"></span></li>
+							<?php if ( ! $active) : ?>
+							<a title="<?php echo esc_attr( $tab['title'] ); ?>" aria-label="<?php echo esc_attr( $tab['title'] ); ?>" href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=' . $key . '&id=' . $customer->id ) ); ?>">
+								<?php endif; ?>
 
-						<?php if ( ! $active ) : ?>
+								<span class="dashicons <?php echo sanitize_html_class( $tab['dashicon'] ); ?>"></span> <?php echo esc_attr( $tab['title'] ); ?>
+								<?php if ( ! $active) : ?>
 							</a>
 						<?php endif; ?>
+
+						</li>
+
+
 
 					<?php endforeach; ?>
 				</ul>
 			</div>
 
-			<div id="give-customer-card-wrapper" style="float: left">
+			<div id="give-customer-card-wrapper">
 				<?php $callbacks[ $view ]( $customer ) ?>
 			</div>
 
@@ -186,132 +189,167 @@ function give_customers_view( $customer ) {
 
 	<?php do_action( 'give_donor_card_top', $customer ); ?>
 
-	<div class="info-wrapper customer-section">
+	<div id="donor-summary" class="info-wrapper customer-section postbox">
 
 		<form id="edit-customer-info" method="post" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $customer->id ); ?>">
 
 			<div class="customer-info">
 
 				<div class="avatar-wrap left" id="customer-avatar">
-					<?php echo get_avatar( $customer->email ); ?><br />
+					<?php echo get_avatar( $customer->email ); ?>
+				</div>
+
+				<div class="donor-bio-header clearfix">
+					<div class="customer-id" class="left">
+						#<?php echo $customer->id; ?>
+					</div>
+					<div id="customer-name-wrap" class="left">
+						<span class="customer-name info-item edit-item"><input size="15" data-key="name" name="customerinfo[name]" type="text" value="<?php echo esc_attr( $customer->name ); ?>" placeholder="<?php _e( 'Donor Name', 'give' ); ?>" /></span>
+						<span class="customer-name info-item editable"><span data-key="name"><?php echo $customer->name; ?></span></span>
+					</div>
+				<span class="customer-since info-item">
+					<?php _e( 'Donor since', 'give' ); ?>
+					<?php echo date_i18n( get_option( 'date_format' ), strtotime( $customer->date_created ) ) ?>
+				</span>
 					<?php if ( current_user_can( $customer_edit_role ) ): ?>
-						<span class="info-item editable customer-edit-link"><a title="<?php _e( 'Edit Customer', 'give' ); ?>" href="#" id="edit-customer"><?php _e( 'Edit Customer', 'give' ); ?></a></span>
+						<span class="info-item editable customer-edit-link"><a title="<?php _e( 'Edit Donor', 'give' ); ?>" href="#" id="edit-customer" class="button"><?php _e( 'Edit Donor', 'give' ); ?></a></span>
 					<?php endif; ?>
 				</div>
+				<!-- /donor-bio-header -->
 
-				<div class="customer-id right">
-					#<?php echo $customer->id; ?>
-				</div>
+				<div class="customer-main-wrapper">
 
-				<div class="customer-address-wrapper right">
-					<?php if ( isset( $customer->user_id ) && $customer->user_id > 0 ) : ?>
-
-						<?php
-						$address  = get_user_meta( $customer->user_id, '_give_user_address', true );
-						$defaults = array(
-							'line1'   => '',
-							'line2'   => '',
-							'city'    => '',
-							'state'   => '',
-							'country' => '',
-							'zip'     => ''
-						);
-
-						$address = wp_parse_args( $address, $defaults );
-						?>
-
-						<?php if ( ! empty( $address ) ) : ?>
-							<strong><?php _e( 'Donor Address', 'give' ); ?></strong>
-							<span class="customer-address info-item editable">
-						<span class="info-item" data-key="line1"><?php echo $address['line1']; ?></span>
-						<span class="info-item" data-key="line2"><?php echo $address['line2']; ?></span>
-						<span class="info-item" data-key="city"><?php echo $address['city']; ?></span>
-						<span class="info-item" data-key="state"><?php echo $address['state']; ?></span>
-						<span class="info-item" data-key="country"><?php echo $address['country']; ?></span>
-						<span class="info-item" data-key="zip"><?php echo $address['zip']; ?></span>
-					</span>
-						<?php endif; ?>
-						<span class="customer-address info-item edit-item">
-						<input class="info-item" type="text" data-key="line1" name="customerinfo[line1]" placeholder="<?php _e( 'Address 1', 'give' ); ?>" value="<?php echo $address['line1']; ?>" />
-						<input class="info-item" type="text" data-key="line2" name="customerinfo[line2]" placeholder="<?php _e( 'Address 2', 'give' ); ?>" value="<?php echo $address['line2']; ?>" />
-						<input class="info-item" type="text" data-key="city" name="customerinfo[city]" placeholder="<?php _e( 'City', 'give' ); ?>" value="<?php echo $address['city']; ?>" />
-						<select data-key="country" name="customerinfo[country]" id="billing_country" class="billing_country give-select edit-item">
-							<?php
-
-							$selected_country = $address['country'];
-
-							$countries = give_get_country_list();
-							foreach ( $countries as $country_code => $country ) {
-								echo '<option value="' . esc_attr( $country_code ) . '"' . selected( $country_code, $selected_country, false ) . '>' . $country . '</option>';
-							}
-							?>
-						</select>
-							<?php
-							$selected_state = give_get_state();
-							$states         = give_get_states( $selected_country );
-
-							$selected_state = isset( $address['state'] ) ? $address['state'] : $selected_state;
-
-							if ( ! empty( $states ) ) : ?>
-								<select data-key="state" name="customerinfo[state]" id="card_state" class="card_state give-select info-item">
+					<table class="widefat">
+						<tbody>
+						<tr>
+							<td class="row-title"><label for="tablecell"><?php esc_attr_e(
+										'Email', 'give'
+									); ?></label></td>
+							<td>
+								<span class="customer-name info-item edit-item"><input size="20" data-key="email" name="customerinfo[email]" type="text" value="<?php echo $customer->email; ?>" placeholder="<?php _e( 'Donor Email', 'give' ); ?>" /></span>
+								<span class="customer-email info-item editable" data-key="email"><?php echo $customer->email; ?></span>
+							</td>
+						</tr>
+						<tr class="alternate">
+							<td class="row-title"><label for="tablecell"><?php esc_attr_e(
+										'User ID', 'give'
+									); ?></label></td>
+							<td>
+								<span class="customer-user-id info-item edit-item">
 									<?php
-									foreach ( $states as $state_code => $state ) {
-										echo '<option value="' . $state_code . '"' . selected( $state_code, $selected_state, false ) . '>' . $state . '</option>';
+
+									$user_id   = $customer->user_id > 0 ? $customer->user_id : '';
+									$data_atts = array(
+										'key'     => 'user_login',
+										'exclude' => $user_id
+									);
+									$user_args = array(
+										'name'  => 'customerinfo[user_login]',
+										'class' => 'give-user-dropdown',
+										'data'  => $data_atts,
+									);
+
+									if ( ! empty( $user_id ) ) {
+										$userdata           = get_userdata( $user_id );
+										$user_args['value'] = $userdata->user_login;
 									}
+
+									echo Give()->html->ajax_user_search( $user_args );
 									?>
-								</select>
-							<?php else : ?>
-								<input type="text" size="6" data-key="state" name="customerinfo[state]" id="card_state" class="card_state give-input info-item" placeholder="<?php _e( 'State / Province', 'give' ); ?>" />
-							<?php endif; ?>
-							<input class="info-item" type="text" data-key="zip" name="customerinfo[zip]" placeholder="<?php _e( 'Postal', 'give' ); ?>" value="<?php echo $address['zip']; ?>" />
-					</span>
-					<?php endif; ?>
+									<input type="hidden" name="customerinfo[user_id]" data-key="user_id" value="<?php echo $customer->user_id; ?>" />
+								</span>
+			
+								<span class="customer-user-id info-item editable">
+									<?php _e( 'User ID', 'give' ); ?>:&nbsp;
+									<?php if ( intval( $customer->user_id ) > 0 ) : ?>
+										<span data-key="user_id"><?php echo $customer->user_id; ?></span>
+									<?php else : ?>
+										<span data-key="user_id"><?php _e( 'none', 'give' ); ?></span>
+									<?php endif; ?>
+									<?php if ( current_user_can( $customer_edit_role ) && intval( $customer->user_id ) > 0 ) : ?>
+										<span class="disconnect-user"> - <a id="disconnect-customer" href="#disconnect" title="<?php _e( 'Disconnects the current user ID from this customer record', 'give' ); ?>"><?php _e( 'Disconnect User', 'give' ); ?></a></span>
+									<?php endif; ?>
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td class="row-title"><?php esc_attr_e( 'Address', 'give' ); ?></td>
+							<td>
+
+								<div class="customer-address-wrapper">
+
+									<?php if ( isset( $customer->user_id ) && $customer->user_id > 0 ) : ?>
+
+										<?php
+										$address  = get_user_meta( $customer->user_id, '_give_user_address', true );
+										$defaults = array(
+											'line1'   => '',
+											'line2'   => '',
+											'city'    => '',
+											'state'   => '',
+											'country' => '',
+											'zip'     => ''
+										);
+
+										$address = wp_parse_args( $address, $defaults );
+										?>
+
+										<?php if ( ! empty( $address ) ) : ?>
+											<span class="customer-address info-item editable">
+												<span class="info-item" data-key="line1"><?php echo $address['line1']; ?></span>
+												<span class="info-item" data-key="line2"><?php echo $address['line2']; ?></span>
+												<span class="info-item" data-key="city"><?php echo $address['city']; ?></span>
+												<span class="info-item" data-key="state"><?php echo $address['state']; ?></span>
+												<span class="info-item" data-key="country"><?php echo $address['country']; ?></span>
+												<span class="info-item" data-key="zip"><?php echo $address['zip']; ?></span>
+											</span>
+										<?php endif; ?>
+										<span class="customer-address info-item edit-item">
+											<input class="info-item" type="text" data-key="line1" name="customerinfo[line1]" placeholder="<?php _e( 'Address 1', 'give' ); ?>" value="<?php echo $address['line1']; ?>" />
+											<input class="info-item" type="text" data-key="line2" name="customerinfo[line2]" placeholder="<?php _e( 'Address 2', 'give' ); ?>" value="<?php echo $address['line2']; ?>" />
+											<input class="info-item" type="text" data-key="city" name="customerinfo[city]" placeholder="<?php _e( 'City', 'give' ); ?>" value="<?php echo $address['city']; ?>" />
+											<select data-key="country" name="customerinfo[country]" id="billing_country" class="billing_country give-select edit-item">
+												<?php
+
+												$selected_country = $address['country'];
+
+												$countries = give_get_country_list();
+												foreach ( $countries as $country_code => $country ) {
+													echo '<option value="' . esc_attr( $country_code ) . '"' . selected( $country_code, $selected_country, false ) . '>' . $country . '</option>';
+												}
+												?>
+											</select>
+											<?php
+											$selected_state = give_get_state();
+											$states         = give_get_states( $selected_country );
+
+											$selected_state = isset( $address['state'] ) ? $address['state'] : $selected_state;
+
+											if ( ! empty( $states ) ) : ?>
+												<select data-key="state" name="customerinfo[state]" id="card_state" class="card_state give-select info-item">
+													<?php
+													foreach ( $states as $state_code => $state ) {
+														echo '<option value="' . $state_code . '"' . selected( $state_code, $selected_state, false ) . '>' . $state . '</option>';
+													}
+													?>
+												</select>
+											<?php else : ?>
+												<input type="text" size="6" data-key="state" name="customerinfo[state]" id="card_state" class="card_state give-input info-item" placeholder="<?php _e( 'State / Province', 'give' ); ?>" />
+											<?php endif; ?>
+											<input class="info-item" type="text" data-key="zip" name="customerinfo[zip]" placeholder="<?php _e( 'Postal', 'give' ); ?>" value="<?php echo $address['zip']; ?>" />
+													</span>
+									<?php endif; ?>
+								</div>
+
+
+							</td>
+						</tr>
+						</tbody>
+					</table>
+
+
 				</div>
 
-				<div class="customer-main-wrapper left">
-
-					<span class="customer-name info-item edit-item"><input size="15" data-key="name" name="customerinfo[name]" type="text" value="<?php echo esc_attr( $customer->name ); ?>" placeholder="<?php _e( 'Donor Name', 'give' ); ?>" /></span>
-					<span class="customer-name info-item editable"><span data-key="name"><?php echo $customer->name; ?></span></span>
-					<span class="customer-name info-item edit-item"><input size="20" data-key="email" name="customerinfo[email]" type="text" value="<?php echo $customer->email; ?>" placeholder="<?php _e( 'Donor Email', 'give' ); ?>" /></span>
-					<span class="customer-email info-item editable" data-key="email"><?php echo $customer->email; ?></span>
-					<span class="customer-since info-item">
-						<?php _e( 'Donor since', 'give' ); ?>
-						<?php echo date_i18n( get_option( 'date_format' ), strtotime( $customer->date_created ) ) ?>
-					</span>
-					<span class="customer-user-id info-item edit-item">
-						<?php
-
-						$user_id   = $customer->user_id > 0 ? $customer->user_id : '';
-						$data_atts = array( 'key' => 'user_login', 'exclude' => $user_id );
-						$user_args = array(
-							'name'  => 'customerinfo[user_login]',
-							'class' => 'give-user-dropdown',
-							'data'  => $data_atts,
-						);
-
-						if ( ! empty( $user_id ) ) {
-							$userdata           = get_userdata( $user_id );
-							$user_args['value'] = $userdata->user_login;
-						}
-
-						echo Give()->html->ajax_user_search( $user_args );
-						?>
-						<input type="hidden" name="customerinfo[user_id]" data-key="user_id" value="<?php echo $customer->user_id; ?>" />
-					</span>
-
-					<span class="customer-user-id info-item editable">
-						<?php _e( 'User ID', 'give' ); ?>:&nbsp;
-						<?php if ( intval( $customer->user_id ) > 0 ) : ?>
-							<span data-key="user_id"><?php echo $customer->user_id; ?></span>
-						<?php else : ?>
-							<span data-key="user_id"><?php _e( 'none', 'give' ); ?></span>
-						<?php endif; ?>
-						<?php if ( current_user_can( $customer_edit_role ) && intval( $customer->user_id ) > 0 ) : ?>
-							<span class="disconnect-user"> - <a id="disconnect-customer" href="#disconnect" title="<?php _e( 'Disconnects the current user ID from this customer record', 'give' ); ?>"><?php _e( 'Disconnect User', 'give' ); ?></a></span>
-						<?php endif; ?>
-					</span>
-
-				</div>
 
 			</div>
 
@@ -328,17 +366,17 @@ function give_customers_view( $customer ) {
 
 	<?php do_action( 'give_donor_before_stats', $customer ); ?>
 
-	<div id="customer-stats-wrapper" class="customer-section">
+	<div id="customer-stats-wrapper" class="customer-section postbox clear">
 		<ul>
 			<li>
 				<a title="<?php _e( 'View All Purchases', 'give' ); ?>" href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( $customer->email ) ); ?>">
-					<span class="dashicons dashicons-cart"></span>
-					<?php printf( _n( '%d Completed Sale', '%d Completed Sales', $customer->purchase_count, 'give' ), $customer->purchase_count ); ?>
+					<span class="dashicons dashicons-heart"></span>
+					<?php printf( _n( '%d Completed Donation', '%d Completed Donations', $customer->purchase_count, 'give' ), $customer->purchase_count ); ?>
 				</a>
 			</li>
 			<li>
 				<span class="dashicons dashicons-chart-area"></span>
-				<?php echo give_currency_filter( give_format_amount( $customer->purchase_value ) ); ?> <?php _e( 'Lifetime Value', 'give' ); ?>
+				<?php echo give_currency_filter( give_format_amount( $customer->purchase_value ) ); ?> <?php _e( 'Lifetime Donations', 'give' ); ?>
 			</li>
 			<?php do_action( 'give_donor_stats_list', $customer ); ?>
 		</ul>

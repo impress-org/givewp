@@ -41,19 +41,19 @@ function give_show_upgrade_notices() {
 	//		);
 	//	}
 
-	if ( version_compare( $give_version, '1.0', '<' ) ) {
-		printf(
-			'<div class="updated"><p>' . __( 'Give needs to upgrade the transaction logs database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
-			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_payments_logs_db' ) )
-		);
-	}
-
-	if ( version_compare( $give_version, '1.0', '<' ) || ! give_has_upgrade_completed( 'upgrade_donor_payments_association' ) ) {
-		printf(
-			'<div class="updated"><p>' . __( 'Give needs to upgrade the donor database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
-			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_donor_payments_association' ) )
-		);
-	}
+//	if ( version_compare( $give_version, '1.0', '<' ) ) {
+//		printf(
+//			'<div class="updated"><p>' . __( 'Give needs to upgrade the transaction logs database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
+//			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_payments_logs_db' ) )
+//		);
+//	}
+//
+//	if ( version_compare( $give_version, '1.0', '<' ) || ! give_has_upgrade_completed( 'upgrade_donor_payments_association' ) ) {
+//		printf(
+//			'<div class="updated"><p>' . __( 'Give needs to upgrade the donor database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
+//			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_donor_payments_association' ) )
+//		);
+//	}
 
 	/*
 	 *  NOTICE:

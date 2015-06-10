@@ -225,15 +225,143 @@ jQuery.noConflict();
 
 			var status = $( this ).val();
 			console.log( status );
-			$( '.give-donation-status' ).removeClass( function (index, css) {
-			    return (css.match (/\bstatus-\S+/g) || []).join(' ');
-			 } ).addClass( 'status-' + status );
+			$( '.give-donation-status' ).removeClass( function ( index, css ) {
+				return (css.match( /\bstatus-\S+/g ) || []).join( ' ' );
+			} ).addClass( 'status-' + status );
 
 
 		} );
 
 	};
 
+	/**
+	 * Customer management screen JS
+	 */
+	var Give_Customer = {
+
+		init          : function () {
+			this.edit_customer();
+			this.user_search();
+			this.remove_user();
+			this.cancel_edit();
+			this.change_country();
+			this.add_note();
+			this.delete_checked();
+		},
+		edit_customer : function () {
+			$( 'body' ).on( 'click', '#edit-customer', function ( e ) {
+				e.preventDefault();
+				$( '#give-customer-card-wrapper .editable' ).hide();
+				$( '#give-customer-card-wrapper .edit-item' ).fadeIn().css( 'display', 'block' );
+			} );
+		},
+		user_search   : function () {
+			// Upon selecting a user from the dropdown, we need to update the User ID
+			$( 'body' ).on( 'click.giveSelectUser', '.give_user_search_results a', function ( e ) {
+				e.preventDefault();
+				var user_id = $( this ).data( 'userid' );
+				$( 'input[name="customerinfo[user_id]"]' ).val( user_id );
+			} );
+		},
+		remove_user   : function () {
+			$( 'body' ).on( 'click', '#disconnect-customer', function ( e ) {
+				e.preventDefault();
+				var customer_id = $( 'input[name="customerinfo[id]"]' ).val();
+
+				var postData = {
+					give_action : 'disconnect-userid',
+					customer_id: customer_id,
+					_wpnonce   : $( '#edit-customer-info #_wpnonce' ).val()
+				};
+
+				$.post( ajaxurl, postData, function ( response ) {
+
+					window.location.href = window.location.href;
+
+				}, 'json' );
+
+			} );
+		},
+		cancel_edit   : function () {
+			$( 'body' ).on( 'click', '#give-edit-customer-cancel', function ( e ) {
+				e.preventDefault();
+				$( '#give-customer-card-wrapper .edit-item' ).hide();
+				$( '#give-customer-card-wrapper .editable' ).show();
+				$( '.give_user_search_results' ).html( '' );
+			} );
+		},
+		change_country: function () {
+			$( 'select[name="customerinfo[country]"]' ).change( function () {
+				var $this = $( this );
+				data = {
+					action    : 'give_get_shop_states',
+					country   : $this.val(),
+					field_name: 'customerinfo[state]'
+				};
+				$.post( ajaxurl, data, function ( response ) {
+					if ( 'nostates' == response ) {
+						$( ':input[name="customerinfo[state]"]' ).replaceWith( '<input type="text" name="' + data.field_name + '" value="" class="give-edit-toggles medium-text"/>' );
+					} else {
+						$( ':input[name="customerinfo[state]"]' ).replaceWith( response );
+					}
+				} );
+
+				return false;
+			} );
+		},
+		add_note      : function () {
+			$( 'body' ).on( 'click', '#add-customer-note', function ( e ) {
+				e.preventDefault();
+				var postData = {
+					give_action             : 'add-customer-note',
+					customer_id            : $( '#customer-id' ).val(),
+					customer_note          : $( '#customer-note' ).val(),
+					add_customer_note_nonce: $( '#add_customer_note_nonce' ).val()
+				};
+
+				if ( postData.customer_note ) {
+
+					$.ajax( {
+						type   : "POST",
+						data   : postData,
+						url    : ajaxurl,
+						success: function ( response ) {
+							$( '#give-customer-notes' ).prepend( response );
+							$( '.give-no-customer-notes' ).hide();
+							$( '#customer-note' ).val( '' );
+						}
+					} ).fail( function ( data ) {
+						if ( window.console && window.console.log ) {
+							console.log( data );
+						}
+					} );
+
+				} else {
+					var border_color = $( '#customer-note' ).css( 'border-color' );
+					$( '#customer-note' ).css( 'border-color', 'red' );
+					setTimeout( function () {
+						$( '#customer-note' ).css( 'border-color', border_color );
+					}, 500 );
+				}
+			} );
+		},
+		delete_checked: function () {
+			$( '#give-customer-delete-confirm' ).change( function () {
+				var records_input = $( '#give-customer-delete-records' );
+				var submit_button = $( '#give-delete-customer' );
+
+				if ( $( this ).prop( 'checked' ) ) {
+					records_input.attr( 'disabled', false );
+					submit_button.attr( 'disabled', false );
+				} else {
+					records_input.attr( 'disabled', true );
+					records_input.prop( 'checked', false );
+					submit_button.attr( 'disabled', true );
+				}
+			} );
+		}
+
+	};
 
 	//On DOM Ready
 	$( function () {
@@ -243,7 +371,7 @@ jQuery.noConflict();
 		setup_chosen_give_selects();
 		Give_Edit_Payment.init();
 		Give_Reports.init();
-
+		Give_Customer.init();
 		//Footer
 		$( 'a.give-rating-link' ).click( function () {
 			jQuery( this ).parent().text( jQuery( this ).data( 'rated' ) );

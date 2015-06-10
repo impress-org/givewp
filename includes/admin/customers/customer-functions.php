@@ -49,8 +49,8 @@ add_filter( 'give_customer_views', 'give_register_default_customer_views', 1, 1 
 function give_register_default_customer_tabs( $tabs ) {
 
 	$default_tabs = array(
-		'overview' => array( 'dashicon' => 'dashicons-admin-users', 'title' => __( 'Customer Profile', 'give' ) ),
-		'notes'    => array( 'dashicon' => 'dashicons-admin-comments', 'title' => __( 'Customer Notes', 'give' ) )
+		'overview' => array( 'dashicon' => 'dashicons-admin-users', 'title' => __( 'Donor Profile', 'give' ) ),
+		'notes'    => array( 'dashicon' => 'dashicons-admin-comments', 'title' => __( 'Donor Notes', 'give' ) )
 	);
 
 	return array_merge( $tabs, $default_tabs );

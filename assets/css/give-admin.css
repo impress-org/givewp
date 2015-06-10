@@ -1449,84 +1449,84 @@ Responsiveness
 
 /* Donor Styles
 -------------------------------------------------------------- */
-#customer-tab-wrapper {
-  margin-left: -1px;
-  z-index: 1;
-  text-align: center;
-  display: inline-block; }
-
-#customer-tab-wrapper-list li {
-  background-color: #fff;
-  width: 32px;
-  height: 32px; }
-
-#customer-tab-wrapper-list .inactive {
-  background-color: #fff;
-  color: #eee;
-  border-left: 1px solid #e5e5e5; }
-
-#customer-tab-wrapper-list .active {
-  border-width: 1px 1px 1px 0;
-  border-style: solid;
-  border-color: #e5e5e5; }
-
-#customer-tab-wrapper-list :not(:last-child) {
-  margin-bottom: 3px; }
-
-#customer-tab-wrapper-list .dashicons {
-  font-size: 24px;
-  line-height: 32px; }
-
-#give-customer-card-wrapper .left {
-  float: left; }
-
-#give-customer-card-wrapper .right {
-  float: right; }
-
-#give-customer-card-wrapper input {
-  font-weight: normal; }
+#customer-tab-wrapper-list {
+  border-bottom: 1px solid #ccc;
+  padding: 5px 15px 0 10px; }
+  #customer-tab-wrapper-list li {
+    display: inline-block;
+    margin: 0 0 -1px;
+    padding: 0; }
+    #customer-tab-wrapper-list li a {
+      padding: 6px 10px;
+      font-weight: bold;
+      font-size: 15px;
+      line-height: 24px;
+      border: 1px solid #ccc;
+      border-bottom: none;
+      background: #e4e4e4;
+      color: #555;
+      display: inline-block;
+      text-decoration: none;
+      margin: 0; }
+  #customer-tab-wrapper-list .active {
+    padding: 6px 10px;
+    font-weight: bold;
+    font-size: 15px;
+    line-height: 24px;
+    border: 1px solid #ccc;
+    border-bottom: 1px solid #f1f1f1;
+    background: #f1f1f1;
+    color: #000; }
+  #customer-tab-wrapper-list .dashicons {
+    font-size: 20px;
+    line-height: 26px; }
 
 #give-customer-card-wrapper {
-  display: inline-block;
   margin-left: -1px;
   z-index: 2;
-  width: 700px;
-  background-color: #FFF;
-  min-height: 200px;
-  border: 1px solid #e5e5e5;
-  webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04); }
+  min-height: 200px; }
+  #give-customer-card-wrapper input {
+    font-weight: normal; }
+  #give-customer-card-wrapper .customer-section {
+    border-bottom: 1px solid #eee;
+    margin-bottom: 10px; }
+  #give-customer-card-wrapper .customer-section table {
+    margin-bottom: 20px; }
+  #give-customer-card-wrapper > div:first-child {
+    padding-top: 20px; }
+  #give-customer-card-wrapper > div:last-child {
+    padding-bottom: 20px;
+    border: none; }
+  #give-customer-card-wrapper .avatar-wrap {
+    padding: 0 15px 15px 0;
+    text-align: center;
+    float: left; }
+    #give-customer-card-wrapper .avatar-wrap img {
+      border-radius: 3px; }
+  #give-customer-card-wrapper a.delete {
+    text-decoration: none;
+    color: #ff0000;
+    margin-right: 5px; }
+  #give-customer-card-wrapper .donor-bio-header {
+    float: left; }
+    #give-customer-card-wrapper .donor-bio-header .customer-since {
+      float: left;
+      clear: both;
+      margin: 10px 0;
+      font-size: 16px; }
+    #give-customer-card-wrapper .donor-bio-header .customer-id {
+      font-size: 24px;
+      font-weight: 600;
+      float: left;
+      margin-right: 10px; }
 
-#give-customer-card-wrapper .customer-section {
-  border-bottom: 1px solid #eee;
-  margin-bottom: 10px; }
+#donor-summary {
+  padding: 0 20px; }
 
-#give-customer-card-wrapper .customer-section table {
-  margin-bottom: 20px; }
-
-#give-customer-card-wrapper > div {
-  padding: 0px 20px; }
-
-#give-customer-card-wrapper > div:first-child {
-  padding-top: 20px; }
-
-#give-customer-card-wrapper > div:last-child {
-  padding-bottom: 20px;
-  border: none; }
-
-#give-customer-card-wrapper .avatar-wrap {
-  padding-right: 10px;
-  text-align: center; }
-
-#give-customer-card-wrapper .customer-id {
-  font-size: 24px;
-  font-weight: 600; }
-
-#give-customer-card-wrapper .customer-main-wrapper input {
+.customer-main-wrapper input {
   width: 200px; }
 
 #give-customer-card-wrapper .customer-address-wrapper {
-  max-width: 33%;
   margin-right: 25px;
   width: 202px; }
 
@@ -1534,17 +1534,12 @@ Responsiveness
   width: 200px; }
 
 #give-customer-card-wrapper .customer-info {
-  margin-top: 5px;
+  margin-top: 1px;
   min-height: 185px;
   margin-bottom: 10px; }
 
 #give-customer-card-wrapper .info-wrapper {
   min-height: 125px; }
-
-#give-customer-card-wrapper a.delete {
-  text-decoration: none;
-  color: #ff0000;
-  margin-right: 5px; }
 
 .customer-info .customer-name {
   font-size: 24px;
@@ -1563,11 +1558,6 @@ Responsiveness
 #customer-edit-actions .button-secondary {
   margin-right: 10px; }
 
-#give-customer-card-wrapper .info-item {
-  line-height: 16px;
-  display: block;
-  padding-bottom: 5px; }
-
 #give-customer-card-wrapper .edit-item {
   display: none; }
 
@@ -1581,16 +1571,19 @@ Responsiveness
 #customer-stats-wrapper {
   margin: 0 auto;
   text-align: center;
-  min-height: 30px; }
-
-#customer-stats-wrapper li {
-  width: 50%;
-  float: left;
-  line-height: 22px;
-  font-size: 14px; }
-
-#customer-stats-wrapper a {
-  text-decoration: none; }
+  padding: 15px; }
+  #customer-stats-wrapper ul {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; }
+    #customer-stats-wrapper ul li {
+      width: 50%;
+      float: left;
+      line-height: 22px;
+      font-size: 14px;
+      margin: 0; }
+  #customer-stats-wrapper a {
+    text-decoration: none; }
 
 #customer-stats-wrapper .dashicons {
   color: #888; }
