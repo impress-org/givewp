@@ -40,7 +40,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * Number of customers found
 	 *
 	 * @var int
-	 * @since 1.7
+	 * @since 1.0
 	 */
 	public $count = 0;
 
@@ -48,7 +48,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * Total customers
 	 *
 	 * @var int
-	 * @since 1.95
+	 * @since 1.0
 	 */
 	public $total = 0;
 

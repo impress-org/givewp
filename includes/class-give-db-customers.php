@@ -6,7 +6,7 @@
  *
  * @package     Give
  * @subpackage  Classes/DB Customers
- * @copyright   Copyright (c) 2015, Pippin Williamson
+ * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -386,13 +386,22 @@ class Give_DB_Customers extends Give_DB {
 				$emails = "'" . $args['email'] . "'";
 			}
 
-			$where .= $wpdb->prepare( " AND `email` IN( {%s} ) ", $emails );
+			if ( ! empty( $where ) ) {
+				$where .= " AND `email` IN( {$emails} ) ";
+			} else {
+				$where .= "WHERE `email` IN( {$emails} ) ";
+			}
 
 		}
 
 		// specific customers by name
 		if ( ! empty( $args['name'] ) ) {
-			$where .= $wpdb->prepare( " AND `name` LIKE '%%" . '%s' . "%%' ", $args['name'] );
+
+			if ( ! empty( $where ) ) {
+				$where .= " AND `name` LIKE '%%" . $args['name'] . "%%' ";
+			} else {
+				$where .= "WHERE `name` LIKE '%%" . $args['name'] . "%%' ";
+			}
 		}
 
 		// Customers created for a specific date or in a date range
@@ -439,6 +448,11 @@ class Give_DB_Customers extends Give_DB {
 
 		$args['orderby'] = esc_sql( $args['orderby'] );
 		$args['order']   = esc_sql( $args['order'] );
+
+		$sql = $wpdb->prepare( "SELECT * FROM  $this->table_name $where ORDER BY {$args['orderby']} {$args['order']}", absint( $args['offset'] ), absint( $args['number'] ) );
+		echo "<pre>";
+		var_dump( $sql );
+		echo "</pre>";
 
 		if ( $customers === false ) {
 			$customers = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM  $this->table_name $where ORDER BY {$args['orderby']} {$args['order']} LIMIT %d,%d;", absint( $args['offset'] ), absint( $args['number'] ) ) );
