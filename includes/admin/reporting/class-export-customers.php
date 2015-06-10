@@ -143,7 +143,7 @@ class Give_Donors_Export extends Give_Export {
 		} else {
 
 			// Export all donors
-			$donors = Give()->donors->get_donors( array( 'number' => - 1 ) );
+			$donors = Give()->customers->get_donors( array( 'number' => - 1 ) );
 
 			$i = 0;
 

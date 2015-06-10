@@ -170,7 +170,7 @@ function give_insert_payment( $payment_data = array() ) {
 		}
 
 		// Create or update a donor
-		$donor_id = Give()->donors->add( array(
+		$donor_id = Give()->customers->add( array(
 			'name'        => $payment_data['user_info']['first_name'] . ' ' . $payment_data['user_info']['last_name'],
 			'email'       => $payment_data['user_email'],
 			'user_id'     => $payment_data['user_info']['id'],
@@ -293,7 +293,7 @@ function give_delete_purchase( $payment_id = 0 ) {
 		if ( $donor_id ) {
 
 			// Decrement the stats for the donor
-			Give()->donors->decrement_stats( $donor_id, $amount );
+			Give()->customers->decrement_stats( $donor_id, $amount );
 
 		}
 	}
@@ -303,7 +303,7 @@ function give_delete_purchase( $payment_id = 0 ) {
 	if ( $donor_id ) {
 
 		// Remove the payment ID from the donor
-		Give()->donors->remove_payment( $donor_id, $payment_id );
+		Give()->customers->remove_payment( $donor_id, $payment_id );
 
 	}
 

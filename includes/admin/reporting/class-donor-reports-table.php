@@ -291,7 +291,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 			$args['id'] = $search;
 		}
 
-		$donors = Give()->donors->get_donors( $args );
+		$donors = Give()->customers->get_donors( $args );
 
 		if ( $donors ) {
 

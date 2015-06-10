@@ -77,7 +77,7 @@ function give_get_users_purchases( $user = 0, $number = 20, $pagination = false,
 	}
 
 	/*
-	$payment_ids = Give()->donors->get_column_by( 'payment_ids', $field, $user );
+	$payment_ids = Give()->customers->get_column_by( 'payment_ids', $field, $user );
 
 	if( ! empty( $payment_ids ) ) {
 		unset( $args['user'] );
@@ -211,7 +211,7 @@ function give_get_purchase_stats_by_user( $user = '' ) {
 
 	}
 
-	$donor = Give()->donors->get_by( $field, $user );
+	$donor = Give()->customers->get_by( $field, $user );
 
 	if ( empty( $donor ) ) {
 

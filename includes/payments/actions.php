@@ -72,7 +72,7 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 
 
 	// Increase the donor's purchase stats
-	Give()->donors->increment_stats( $donor_id, $amount );
+	Give()->customers->increment_stats( $donor_id, $amount );
 
 	give_increase_total_earnings( $amount );
 
@@ -151,7 +151,7 @@ function give_undo_donation_on_refund( $payment_id, $new_status, $old_status ) {
 
 	if ( $donor_id ) {
 
-		Give()->donors->decrement_stats( $donor_id, $amount );
+		Give()->customers->decrement_stats( $donor_id, $amount );
 
 	}
 

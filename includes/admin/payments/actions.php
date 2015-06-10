@@ -82,29 +82,29 @@ function give_update_payment_details( $data ) {
 		}
 
 		// Remove the stats and payment from the previous donor
-		$previous_donor = Give()->donors->get_by( 'email', $user_info['email'] );
-		Give()->donors->remove_payment( $previous_donor->id, $payment_id );
+		$previous_donor = Give()->customers->get_by( 'email', $user_info['email'] );
+		Give()->customers->remove_payment( $previous_donor->id, $payment_id );
 
 		// Attribute the payment to the new donor and update the payment post meta
-		$new_donor_id = Give()->donors->get_column_by( 'id', 'email', $email );
+		$new_donor_id = Give()->customers->get_column_by( 'id', 'email', $email );
 
 		if ( ! $new_donor ) {
 
 			// No donor exists for the given email so create one
-			$new_donor_id = Give()->donors->add( array(
+			$new_donor_id = Give()->customers->add( array(
 				'email' => $email,
 				'name'  => $first_name . ' ' . $last_name
 			) );
 
 		}
 
-		Give()->donors->attach_payment( $new_donor_id, $payment_id );
+		Give()->customers->attach_payment( $new_donor_id, $payment_id );
 
 		// If purchase was completed and not ever refunded, adjust stats of donors
 		if ( 'revoked' == $status || 'publish' == $status ) {
 
-			Give()->donors->decrement_stats( $previous_donor->id, $total );
-			Give()->donors->increment_stats( $new_donor_id, $total );
+			Give()->customers->decrement_stats( $previous_donor->id, $total );
+			Give()->customers->increment_stats( $new_donor_id, $total );
 
 		}
 

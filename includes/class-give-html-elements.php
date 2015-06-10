@@ -121,7 +121,7 @@ class Give_HTML_Elements {
 
 		$args = wp_parse_args( $args, $defaults );
 
-		$donors = Give()->donors->get_donors( array(
+		$donors = Give()->customers->get_donors( array(
 			'number' => $args['number']
 		) );
 
