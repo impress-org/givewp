@@ -40,25 +40,29 @@ function give_update_payment_details( $data ) {
 	$user_id = intval( $data['give-payment-user-id'] );
 	$date    = sanitize_text_field( $data['give-payment-date'] );
 	$hour    = sanitize_text_field( $data['give-payment-time-hour'] );
-	$minute  = sanitize_text_field( $data['give-payment-time-min'] );
-	$email   = sanitize_text_field( $data['give-payment-user-email'] );
-	$names   = sanitize_text_field( $data['give-payment-user-name'] );
-	$address = array_map( 'trim', $data['give-payment-address'][0] );
 
-	$curr_total = give_sanitize_amount( give_get_payment_amount( $payment_id ) );
-	$new_total  = give_sanitize_amount( $_POST['give-payment-total'] );
-
-	// Setup date from input values
-	$date = date( 'Y-m-d', strtotime( $date ) ) . ' ' . $hour . ':' . $minute . ':00';
-
-	// Setup first and last name from input values
-	$names      = explode( ' ', $names );
-	$first_name = ! empty( $names[0] ) ? $names[0] : '';
-	$last_name  = '';
-	if ( ! empty( $names[1] ) ) {
-		unset( $names[0] );
-		$last_name = implode( ' ', $names );
+	// Restrict to our high and low
+	if ( $hour > 23 ) {
+		$hour = 23;
+	} elseif ( $hour < 0 ) {
+		$hour = 00;
 	}
+
+	$minute = sanitize_text_field( $data['give-payment-time-min'] );
+
+	// Restrict to our high and low
+	if ( $minute > 59 ) {
+		$minute = 59;
+	} elseif ( $minute < 0 ) {
+		$minute = 00;
+	}
+
+	$address          = array_map( 'trim', $data['give-payment-address'][0] );
+	$date             = date( 'Y-m-d', strtotime( $date ) ) . ' ' . $hour . ':' . $minute . ':00';
+	$curr_total       = give_sanitize_amount( give_get_payment_amount( $payment_id ) );
+	$new_total        = give_sanitize_amount( $_POST['give-payment-total'] );
+	$curr_customer_id = sanitize_text_field( $data['give-current-customer'] );
+	$new_customer_id  = sanitize_text_field( $data['customer-id'] );
 
 	do_action( 'give_update_edited_purchase', $payment_id );
 
@@ -72,48 +76,90 @@ function give_update_payment_details( $data ) {
 		wp_die( __( 'Error Updating Payment', 'give' ), __( 'Error', 'give' ), array( 'response' => 400 ) );
 	}
 
-	if ( $user_id !== $user_info['id'] || $email !== $user_info['email'] ) {
+	$customer_changed = false;
 
-		$user = get_user_by( 'id', $user_id );
-		if ( ! empty( $user ) && strtolower( $user->data->user_email ) !== strtolower( $email ) ) {
-			// protect a purcahse from being assigned to a donor with a user ID and Email that belong to different users
-			wp_die( __( 'User ID and User Email do not match.', 'give' ), __( 'Error', 'give' ), array( 'response' => 400 ) );
-			exit;
+	if ( isset( $data['give-new-customer'] ) && $data['give-new-customer'] == '1' ) {
+
+		$email = isset( $data['give-new-customer-email'] ) ? sanitize_text_field( $data['give-new-customer-email'] ) : '';
+		$names = isset( $data['give-new-customer-name'] ) ? sanitize_text_field( $data['give-new-customer-name'] ) : '';
+
+		if ( empty( $email ) || empty( $names ) ) {
+			wp_die( __( 'New Customers require a name and email address', 'give' ) );
 		}
 
-		// Remove the stats and payment from the previous donor
-		$previous_donor = Give()->customers->get_by( 'email', $user_info['email'] );
-		Give()->customers->remove_payment( $previous_donor->id, $payment_id );
+		$customer = new Give_Customer( $email );
+		if ( empty( $customer->id ) ) {
+			$customer_data = array( 'name' => $names, 'email' => $email );
+			$user_id       = email_exists( $email );
+			if ( false !== $user_id ) {
+				$customer_data['user_id'] = $user_id;
+			}
 
-		// Attribute the payment to the new donor and update the payment post meta
-		$new_donor_id = Give()->customers->get_column_by( 'id', 'email', $email );
-
-		if ( ! $new_donor ) {
-
-			// No donor exists for the given email so create one
-			$new_donor_id = Give()->customers->add( array(
-				'email' => $email,
-				'name'  => $first_name . ' ' . $last_name
-			) );
-
+			if ( ! $customer->create( $customer_data ) ) {
+				// Failed to crete the new customer, assume the previous customer
+				$customer_changed = false;
+				$customer         = new Give_Customer( $curr_customer_id );
+				give_set_error( 'give-payment-new-customer-fail', __( 'Error creating new customer', 'give' ) );
+			}
 		}
 
-		Give()->customers->attach_payment( $new_donor_id, $payment_id );
+		$new_customer_id = $customer->id;
 
-		// If purchase was completed and not ever refunded, adjust stats of donors
-		if ( 'revoked' == $status || 'publish' == $status ) {
+		$previous_customer = new Give_Customer( $curr_customer_id );
 
-			Give()->customers->decrement_stats( $previous_donor->id, $total );
-			Give()->customers->increment_stats( $new_donor_id, $total );
+		$customer_changed = true;
 
-		}
+	} elseif ( $curr_customer_id !== $new_customer_id ) {
 
-		update_post_meta( $payment_id, '_give_payment_donor_id', $new_donor_id );
+		$customer = new Give_Customer( $new_customer_id );
+		$email    = $customer->email;
+		$names    = $customer->name;
+
+		$previous_customer = new Give_Customer( $curr_customer_id );
+
+		$customer_changed = true;
+
+	} else {
+
+		$customer = new Give_Customer( $curr_customer_id );
+		$email    = $customer->email;
+		$names    = $customer->name;
+
 	}
 
+
+	// Setup first and last name from input values
+	$names      = explode( ' ', $names );
+	$first_name = ! empty( $names[0] ) ? $names[0] : '';
+	$last_name  = '';
+	if ( ! empty( $names[1] ) ) {
+		unset( $names[0] );
+		$last_name = implode( ' ', $names );
+	}
+
+	if ( $customer_changed ) {
+
+		// Remove the stats and payment from the previous customer and attach it to the new customer
+		$previous_customer->remove_payment( $payment_id, false );
+		$customer->attach_payment( $payment_id, false );
+
+		// If purchase was completed and not ever refunded, adjust stats of customers
+		if ( 'revoked' == $status || 'publish' == $status ) {
+
+			$previous_customer->decrease_purchase_count();
+			$previous_customer->decrease_value( $new_total );
+
+			$customer->increase_purchase_count();
+			$customer->increase_value( $new_total );
+		}
+
+		update_post_meta( $payment_id, '_give_payment_customer_id', $customer->id );
+	}
+
+
 	// Set new meta values
-	$user_info['id']         = $user_id;
-	$user_info['email']      = $email;
+	$user_info['id']         = $customer->user_id;
+	$user_info['email']      = $customer->email;
 	$user_info['first_name'] = $first_name;
 	$user_info['last_name']  = $last_name;
 	$user_info['address']    = $address;
@@ -131,16 +177,25 @@ function give_update_payment_details( $data ) {
 	// Set new status
 	give_update_payment_status( $payment_id, $status );
 
-	give_update_payment_meta( $payment_id, '_give_payment_user_id', $user_id );
-	give_update_payment_meta( $payment_id, '_give_payment_user_email', $email );
+	give_update_payment_meta( $payment_id, '_give_payment_user_id', $customer->user_id );
+	give_update_payment_meta( $payment_id, '_give_payment_user_email', $customer->email );
 	give_update_payment_meta( $payment_id, '_give_payment_meta', $meta );
 	give_update_payment_meta( $payment_id, '_give_payment_total', $new_total );
 
 	// Adjust total store earnings if the payment total has been changed
 	if ( $new_total !== $curr_total && ( 'publish' == $status || 'revoked' == $status ) ) {
 
-		$total_earnings = get_option( 'give_earnings_total' ) - $curr_total + $new_total;
-		update_option( 'give_earnings_total', $total_earnings );
+		if ( $new_total > $curr_total ) {
+			// Increase if our new total is higher
+			$difference = $new_total - $curr_total;
+			give_increase_total_earnings( $difference );
+
+		} elseif ( $curr_total > $new_total ) {
+			// Decrease if our new total is lower
+			$difference = $curr_total - $new_total;
+			give_decrease_total_earnings( $difference );
+
+		}
 
 	}
 
