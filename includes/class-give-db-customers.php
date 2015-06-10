@@ -449,11 +449,6 @@ class Give_DB_Customers extends Give_DB {
 		$args['orderby'] = esc_sql( $args['orderby'] );
 		$args['order']   = esc_sql( $args['order'] );
 
-		$sql = $wpdb->prepare( "SELECT * FROM  $this->table_name $where ORDER BY {$args['orderby']} {$args['order']}", absint( $args['offset'] ), absint( $args['number'] ) );
-		echo "<pre>";
-		var_dump( $sql );
-		echo "</pre>";
-
 		if ( $customers === false ) {
 			$customers = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM  $this->table_name $where ORDER BY {$args['orderby']} {$args['order']} LIMIT %d,%d;", absint( $args['offset'] ), absint( $args['number'] ) ) );
 			wp_cache_set( $cache_key, $customers, 'customers', 3600 );
