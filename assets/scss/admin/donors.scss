@@ -90,7 +90,7 @@
 	margin-bottom: 10px;
   }
   .customer-section table {
-	margin-bottom: 20px;
+	margin-bottom: 0;
   }
 
   > div:first-child {
@@ -121,9 +121,10 @@
   //Donor Header (non-avatar content)
   .donor-bio-header {
 	float: left;
+	width: 33%;
+
 	.customer-since {
 	  float: left;
-	  clear: both;
 	  margin: 10px 0;
 	  font-size: 16px;
 	}
@@ -135,6 +136,27 @@
 	  margin-right: 10px;
 	}
 
+	.customer-edit-link {
+	  margin-bottom: 15px;
+	  float: left;
+	}
+
+  }
+
+}
+
+.customer-main-wrapper {
+  margin: 0 0 20px;
+
+  @media(max-width: 655px) {
+	width: 100%;
+  }
+
+  table {
+	margin: 0;
+  }
+  input {
+	width: 200px;
   }
 
 }
@@ -143,12 +165,7 @@
   padding: 0 20px;
 }
 
-.customer-main-wrapper input {
-  width: 200px;
-}
-
 #give-customer-card-wrapper .customer-address-wrapper {
-  margin-right: 25px;
   width: 202px;
 }
 
@@ -159,7 +176,6 @@
 #give-customer-card-wrapper .customer-info {
   margin-top: 1px;
   min-height: 185px;
-  margin-bottom: 10px;
 }
 
 #give-customer-card-wrapper .info-wrapper {
@@ -259,22 +275,28 @@
   margin-bottom: 5px;
 }
 
-#give-customer-notes div:nth-of-type(even) {
-  background-color: #fcfcfc;
-}
+//Customer Notes
+#give-customer-notes {
+  div:nth-of-type(even) {
+	background-color: #f9f9f9;
+  }
+  .customer-note-wrapper {
+	border-bottom: 1px solid #f9f9f9;
+	min-height: 38px;
+	padding: 0;
 
-.customer-note-wrapper {
-  border-bottom: 1px solid #f9f9f9;
-  min-height: 38px;
-  padding: 7px 0 7px 7px;
+	.note-content-wrap {
+	  padding: 10px 12px;
+	  line-height: 20px;
+	  font-size: 14px;
+	}
+
+  }
+
 }
 
 .customer-note-wrapper span {
   display: block;
-}
-
-.note-content-wrap {
-  padding-top: 7px;
 }
 
 .delete-customer {

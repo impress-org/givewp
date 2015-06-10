@@ -1491,7 +1491,7 @@ Responsiveness
     border-bottom: 1px solid #eee;
     margin-bottom: 10px; }
   #give-customer-card-wrapper .customer-section table {
-    margin-bottom: 20px; }
+    margin-bottom: 0; }
   #give-customer-card-wrapper > div:first-child {
     padding-top: 20px; }
   #give-customer-card-wrapper > div:last-child {
@@ -1508,10 +1508,10 @@ Responsiveness
     color: #ff0000;
     margin-right: 5px; }
   #give-customer-card-wrapper .donor-bio-header {
-    float: left; }
+    float: left;
+    width: 33%; }
     #give-customer-card-wrapper .donor-bio-header .customer-since {
       float: left;
-      clear: both;
       margin: 10px 0;
       font-size: 16px; }
     #give-customer-card-wrapper .donor-bio-header .customer-id {
@@ -1519,15 +1519,24 @@ Responsiveness
       font-weight: 600;
       float: left;
       margin-right: 10px; }
+    #give-customer-card-wrapper .donor-bio-header .customer-edit-link {
+      margin-bottom: 15px;
+      float: left; }
+
+.customer-main-wrapper {
+  margin: 0 0 20px; }
+  @media (max-width: 655px) {
+    .customer-main-wrapper {
+      width: 100%; } }
+  .customer-main-wrapper table {
+    margin: 0; }
+  .customer-main-wrapper input {
+    width: 200px; }
 
 #donor-summary {
   padding: 0 20px; }
 
-.customer-main-wrapper input {
-  width: 200px; }
-
 #give-customer-card-wrapper .customer-address-wrapper {
-  margin-right: 25px;
   width: 202px; }
 
 #give-customer-card-wrapper .customer-address-wrapper select {
@@ -1535,8 +1544,7 @@ Responsiveness
 
 #give-customer-card-wrapper .customer-info {
   margin-top: 1px;
-  min-height: 185px;
-  margin-bottom: 10px; }
+  min-height: 185px; }
 
 #give-customer-card-wrapper .info-wrapper {
   min-height: 125px; }
@@ -1614,18 +1622,18 @@ Responsiveness
   margin-bottom: 5px; }
 
 #give-customer-notes div:nth-of-type(even) {
-  background-color: #fcfcfc; }
-
-.customer-note-wrapper {
+  background-color: #f9f9f9; }
+#give-customer-notes .customer-note-wrapper {
   border-bottom: 1px solid #f9f9f9;
   min-height: 38px;
-  padding: 7px 0 7px 7px; }
+  padding: 0; }
+  #give-customer-notes .customer-note-wrapper .note-content-wrap {
+    padding: 10px 12px;
+    line-height: 20px;
+    font-size: 14px; }
 
 .customer-note-wrapper span {
   display: block; }
-
-.note-content-wrap {
-  padding-top: 7px; }
 
 .delete-customer {
   text-align: center; }

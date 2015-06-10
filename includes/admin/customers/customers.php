@@ -195,11 +195,13 @@ function give_customers_view( $customer ) {
 
 			<div class="customer-info">
 
-				<div class="avatar-wrap left" id="customer-avatar">
-					<?php echo get_avatar( $customer->email ); ?>
-				</div>
 
 				<div class="donor-bio-header clearfix">
+
+					<div class="avatar-wrap left" id="customer-avatar">
+						<?php echo get_avatar( $customer->email ); ?>
+					</div>
+
 					<div class="customer-id" class="left">
 						#<?php echo $customer->id; ?>
 					</div>
@@ -212,7 +214,7 @@ function give_customers_view( $customer ) {
 					<?php echo date_i18n( get_option( 'date_format' ), strtotime( $customer->date_created ) ) ?>
 				</span>
 					<?php if ( current_user_can( $customer_edit_role ) ): ?>
-						<span class="info-item editable customer-edit-link"><a title="<?php _e( 'Edit Donor', 'give' ); ?>" href="#" id="edit-customer" class="button"><?php _e( 'Edit Donor', 'give' ); ?></a></span>
+						<a title="<?php _e( 'Edit Donor', 'give' ); ?>" href="#" id="edit-customer" class="button info-item editable customer-edit-link"><?php _e( 'Edit Donor', 'give' ); ?></a>
 					<?php endif; ?>
 				</div>
 				<!-- /donor-bio-header -->
@@ -222,19 +224,19 @@ function give_customers_view( $customer ) {
 					<table class="widefat">
 						<tbody>
 						<tr>
-							<td class="row-title"><label for="tablecell"><?php esc_attr_e(
+							<td><label for="tablecell"><?php esc_attr_e(
 										'Email', 'give'
 									); ?></label></td>
-							<td>
+							<td class="row-title">
 								<span class="customer-name info-item edit-item"><input size="20" data-key="email" name="customerinfo[email]" type="text" value="<?php echo $customer->email; ?>" placeholder="<?php _e( 'Donor Email', 'give' ); ?>" /></span>
 								<span class="customer-email info-item editable" data-key="email"><?php echo $customer->email; ?></span>
 							</td>
 						</tr>
 						<tr class="alternate">
-							<td class="row-title"><label for="tablecell"><?php esc_attr_e(
+							<td><label for="tablecell"><?php esc_attr_e(
 										'User ID', 'give'
 									); ?></label></td>
-							<td>
+							<td class="row-title">
 								<span class="customer-user-id info-item edit-item">
 									<?php
 
@@ -273,8 +275,8 @@ function give_customers_view( $customer ) {
 							</td>
 						</tr>
 						<tr>
-							<td class="row-title"><?php esc_attr_e( 'Address', 'give' ); ?></td>
-							<td>
+							<td><?php esc_attr_e( 'Address', 'give' ); ?></td>
+							<td class="row-title">
 
 								<div class="customer-address-wrapper">
 
@@ -480,12 +482,11 @@ function give_customers_view( $customer ) {
  */
 function give_customer_notes_view( $customer ) {
 
-	$paged       = isset( $_GET['paged'] ) && is_numeric( $_GET['paged'] ) ? $_GET['paged'] : 1;
-	$paged       = absint( $paged );
-	$note_count  = $customer->get_notes_count();
-	$per_page    = apply_filters( 'give_customer_notes_per_page', 20 );
-	$total_pages = ceil( $note_count / $per_page );
-
+	$paged          = isset( $_GET['paged'] ) && is_numeric( $_GET['paged'] ) ? $_GET['paged'] : 1;
+	$paged          = absint( $paged );
+	$note_count     = $customer->get_notes_count();
+	$per_page       = apply_filters( 'give_customer_notes_per_page', 20 );
+	$total_pages    = ceil( $note_count / $per_page );
 	$customer_notes = $customer->get_notes( $per_page, $paged );
 	?>
 
@@ -496,7 +497,7 @@ function give_customer_notes_view( $customer ) {
 		<h3><?php _e( 'Notes', 'give' ); ?></h3>
 
 		<?php if ( 1 == $paged ) : ?>
-			<div style="display: block; margin-bottom: 35px;">
+			<div style="display: block; margin-bottom: 55px;">
 				<form id="give-add-customer-note" method="post" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=notes&id=' . $customer->id ); ?>">
 					<textarea id="customer-note" name="customer_note" class="customer-note-input" rows="10"></textarea>
 					<br />
@@ -520,7 +521,7 @@ function give_customer_notes_view( $customer ) {
 		echo paginate_links( $pagination_args );
 		?>
 
-		<div id="give-customer-notes">
+		<div id="give-customer-notes" class="postbox">
 			<?php if ( count( $customer_notes ) > 0 ) : ?>
 				<?php foreach ( $customer_notes as $key => $note ) : ?>
 					<div class="customer-note-wrapper dashboard-comment-wrap comment-item">
