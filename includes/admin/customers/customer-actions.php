@@ -63,7 +63,7 @@ function give_edit_customer( $args ) {
 
 		// Make sure we don't already have this user attached to a customer
 		if ( ! empty( $customer_info['user_id'] ) && false !== Give()->customers->get_customer_by( 'user_id', $customer_info['user_id'] ) ) {
-			give_set_error( 'give-invalid-customer-user_id', sprintf( __( 'The User ID %d is already associated with a different customer.', 'give' ), $customer_info['user_id'] ) );
+			give_set_error( 'give-invalid-customer-user_id', sprintf( __( 'The User ID %d is already associated with a different donor.', 'give' ), $customer_info['user_id'] ) );
 		}
 
 		// Make sure it's actually a user
@@ -189,7 +189,7 @@ function give_customer_save_note( $args ) {
 	$customer_view_role = apply_filters( 'give_view_customers_role', 'view_shop_reports' );
 
 	if ( ! is_admin() || ! current_user_can( $customer_view_role ) ) {
-		wp_die( __( 'You do not have permission to edit this customer.', 'give' ) );
+		wp_die( __( 'You do not have permission to edit this donor.', 'give' ) );
 	}
 
 	if ( empty( $args ) ) {
@@ -259,7 +259,7 @@ function give_customer_delete( $args ) {
 	$customer_edit_role = apply_filters( 'give_edit_customers_role', 'edit_shop_payments' );
 
 	if ( ! is_admin() || ! current_user_can( $customer_edit_role ) ) {
-		wp_die( __( 'You do not have permission to delete this customer.', 'give' ) );
+		wp_die( __( 'You do not have permission to delete this donor.', 'give' ) );
 	}
 
 	if ( empty( $args ) ) {
@@ -276,11 +276,11 @@ function give_customer_delete( $args ) {
 	}
 
 	if ( ! $confirm ) {
-		give_set_error( 'customer-delete-no-confirm', __( 'Please confirm you want to delete this customer', 'give' ) );
+		give_set_error( 'customer-delete-no-confirm', __( 'Please confirm you want to delete this donor', 'give' ) );
 	}
 
 	if ( give_get_errors() ) {
-		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-customers&view=overview&id=' . $customer_id ) );
+		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $customer_id ) );
 		exit;
 	}
 
@@ -313,19 +313,19 @@ function give_customer_delete( $args ) {
 
 			}
 
-			$redirect = admin_url( 'edit.php?post_type=give_forms&page=give-customers&give-message=customer-deleted' );
+			$redirect = admin_url( 'edit.php?post_type=give_forms&page=give-donors&give-message=customer-deleted' );
 
 		} else {
 
-			give_set_error( 'give-customer-delete-failed', __( 'Error deleting customer', 'give' ) );
-			$redirect = admin_url( 'edit.php?post_type=give_forms&page=give-customers&view=delete&id=' . $customer_id );
+			give_set_error( 'give-donor-delete-failed', __( 'Error deleting donor', 'give' ) );
+			$redirect = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id=' . $customer_id );
 
 		}
 
 	} else {
 
-		give_set_error( 'give-customer-delete-invalid-id', __( 'Invalid Customer ID', 'give' ) );
-		$redirect = admin_url( 'edit.php?post_type=give_forms&page=give-customers' );
+		give_set_error( 'give-customer-delete-invalid-id', __( 'Invalid Donor ID', 'give' ) );
+		$redirect = admin_url( 'edit.php?post_type=give_forms&page=give-donors' );
 
 	}
 
@@ -337,7 +337,7 @@ function give_customer_delete( $args ) {
 add_action( 'give_delete-customer', 'give_customer_delete', 10, 1 );
 
 /**
- * Disconnect a user ID from a customer
+ * Disconnect a user ID from a donor
  *
  * @since  1.0
  *
@@ -350,7 +350,7 @@ function give_disconnect_customer_user_id( $args ) {
 	$customer_edit_role = apply_filters( 'give_edit_customers_role', 'edit_shop_payments' );
 
 	if ( ! is_admin() || ! current_user_can( $customer_edit_role ) ) {
-		wp_die( __( 'You do not have permission to edit this customer.', 'give' ) );
+		wp_die( __( 'You do not have permission to edit this donor.', 'give' ) );
 	}
 
 	if ( empty( $args ) ) {
@@ -385,7 +385,7 @@ function give_disconnect_customer_user_id( $args ) {
 	} else {
 
 		$output['success'] = false;
-		give_set_error( 'give-disconnect-user-fail', __( 'Failed to disconnect user from customer', 'give' ) );
+		give_set_error( 'give-disconnect-user-fail', __( 'Failed to disconnect user from donor', 'give' ) );
 	}
 
 	do_action( 'give_post_customer_disconnect_user_id', $customer_id );

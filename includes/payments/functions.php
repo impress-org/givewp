@@ -915,7 +915,7 @@ function give_get_payment_meta_user_info( $payment_id ) {
 function give_get_payment_form_id( $payment_id ) {
 	$payment_meta = give_get_payment_meta( $payment_id );
 
-	$form_id = isset( $payment_meta['form_id'] ) ? $payment_meta['donations'] : 0;
+	$form_id = isset( $payment_meta['form_id'] ) ? $payment_meta['form_id'] : 0;
 
 	return apply_filters( 'give_get_payment_form_id', $form_id );
 }

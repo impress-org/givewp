@@ -124,7 +124,6 @@
 	width: 33%;
 
 	.customer-since {
-	  float: left;
 	  margin: 10px 0;
 	  font-size: 16px;
 	}
@@ -139,6 +138,7 @@
 	.customer-edit-link {
 	  margin-bottom: 15px;
 	  float: left;
+
 	}
 
   }
@@ -161,8 +161,21 @@
 
 }
 
+//Donor Summary
 #donor-summary {
   padding: 0 20px;
+
+  &:after {
+	font-family: "dashicons";
+	content: "\f110";
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	font-size: 100px;
+	color: #F0F0F0;
+	z-index: 0;
+  }
+
 }
 
 #give-customer-card-wrapper .customer-address-wrapper {
@@ -187,7 +200,7 @@
   font-weight: 600;
 }
 
-.customer-edit-link a, .disconnect-user a {
+.disconnect-user a {
   font-size: 12px;
   font-weight: normal;
   text-decoration: none;
@@ -291,6 +304,11 @@
 	  font-size: 14px;
 	}
 
+  }
+
+  .give-no-customer-notes {
+	text-align: center;
+	padding: 20px;
   }
 
 }

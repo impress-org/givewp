@@ -1511,7 +1511,6 @@ Responsiveness
     float: left;
     width: 33%; }
     #give-customer-card-wrapper .donor-bio-header .customer-since {
-      float: left;
       margin: 10px 0;
       font-size: 16px; }
     #give-customer-card-wrapper .donor-bio-header .customer-id {
@@ -1535,6 +1534,15 @@ Responsiveness
 
 #donor-summary {
   padding: 0 20px; }
+  #donor-summary:after {
+    font-family: "dashicons";
+    content: "\f110";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 100px;
+    color: #F0F0F0;
+    z-index: 0; }
 
 #give-customer-card-wrapper .customer-address-wrapper {
   width: 202px; }
@@ -1553,7 +1561,7 @@ Responsiveness
   font-size: 24px;
   font-weight: 600; }
 
-.customer-edit-link a, .disconnect-user a {
+.disconnect-user a {
   font-size: 12px;
   font-weight: normal;
   text-decoration: none; }
@@ -1631,6 +1639,9 @@ Responsiveness
     padding: 10px 12px;
     line-height: 20px;
     font-size: 14px; }
+#give-customer-notes .give-no-customer-notes {
+  text-align: center;
+  padding: 20px; }
 
 .customer-note-wrapper span {
   display: block; }

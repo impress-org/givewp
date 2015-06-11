@@ -209,10 +209,10 @@ function give_customers_view( $customer ) {
 						<span class="customer-name info-item edit-item"><input size="15" data-key="name" name="customerinfo[name]" type="text" value="<?php echo esc_attr( $customer->name ); ?>" placeholder="<?php _e( 'Donor Name', 'give' ); ?>" /></span>
 						<span class="customer-name info-item editable"><span data-key="name"><?php echo $customer->name; ?></span></span>
 					</div>
-				<span class="customer-since info-item">
-					<?php _e( 'Donor since', 'give' ); ?>
-					<?php echo date_i18n( get_option( 'date_format' ), strtotime( $customer->date_created ) ) ?>
-				</span>
+					<p class="customer-since info-item">
+						<?php _e( 'Donor since', 'give' ); ?>
+						<?php echo date_i18n( get_option( 'date_format' ), strtotime( $customer->date_created ) ) ?>
+					</p>
 					<?php if ( current_user_can( $customer_edit_role ) ): ?>
 						<a title="<?php _e( 'Edit Donor', 'give' ); ?>" href="#" id="edit-customer" class="button info-item editable customer-edit-link"><?php _e( 'Edit Donor', 'give' ); ?></a>
 					<?php endif; ?>
@@ -262,7 +262,6 @@ function give_customers_view( $customer ) {
 								</span>
 			
 								<span class="customer-user-id info-item editable">
-									<?php _e( 'User ID', 'give' ); ?>:&nbsp;
 									<?php if ( intval( $customer->user_id ) > 0 ) : ?>
 										<span data-key="user_id"><?php echo $customer->user_id; ?></span>
 									<?php else : ?>
@@ -296,7 +295,7 @@ function give_customers_view( $customer ) {
 										$address = wp_parse_args( $address, $defaults );
 										?>
 
-										<?php if ( ! empty( $address ) ) : ?>
+										<?php if ( ! empty( $address ) ) { ?>
 											<span class="customer-address info-item editable">
 												<span class="info-item" data-key="line1"><?php echo $address['line1']; ?></span>
 												<span class="info-item" data-key="line2"><?php echo $address['line2']; ?></span>
@@ -305,7 +304,7 @@ function give_customers_view( $customer ) {
 												<span class="info-item" data-key="country"><?php echo $address['country']; ?></span>
 												<span class="info-item" data-key="zip"><?php echo $address['zip']; ?></span>
 											</span>
-										<?php endif; ?>
+										<?php } ?>
 										<span class="customer-address info-item edit-item">
 											<input class="info-item" type="text" data-key="line1" name="customerinfo[line1]" placeholder="<?php _e( 'Address 1', 'give' ); ?>" value="<?php echo $address['line1']; ?>" />
 											<input class="info-item" type="text" data-key="line2" name="customerinfo[line2]" placeholder="<?php _e( 'Address 2', 'give' ); ?>" value="<?php echo $address['line2']; ?>" />
@@ -340,7 +339,9 @@ function give_customers_view( $customer ) {
 											<?php endif; ?>
 											<input class="info-item" type="text" data-key="zip" name="customerinfo[zip]" placeholder="<?php _e( 'Postal', 'give' ); ?>" value="<?php echo $address['zip']; ?>" />
 													</span>
-									<?php endif; ?>
+									<?php else :
+										echo "none";
+									endif; ?>
 								</div>
 
 
@@ -390,7 +391,7 @@ function give_customers_view( $customer ) {
 
 		<?php do_action( 'give_donor_before_tables', $customer ); ?>
 
-		<h3><?php _e( 'Recent Payments', 'give' ); ?></h3>
+		<h3><?php _e( 'Recent Donations', 'give' ); ?></h3>
 		<?php
 		$payment_ids = explode( ',', $customer->payment_ids );
 		$payments    = give_get_payments( array( 'post__in' => $payment_ids ) );
