@@ -21,7 +21,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0
  * @global $wpdb
- * @global $give_options
  * @global $wp_version
  * @return void
  */
@@ -35,14 +34,17 @@ function give_install() {
 	// Clear the permalinks
 	flush_rewrite_rules( false );
 
+	// Add Upgraded From Option
+	$current_version = get_option( 'give_version' );
+	if ( $current_version ) {
+		update_option( 'give_version_upgraded_from', $current_version );
+	}
+
 	// Setup some default options
 	$options = array();
 
-	// Current Version (if set)
-	$current_version = get_option( 'give_version' );
-
 	// Checks if the Success Page option exists AND that the page exists
-	if ( ! isset( $give_options['success_page'] ) || ! get_post( $give_options['success_page'] ) ) {
+	if ( ! get_post( give_get_option( 'success_page' ) ) ) {
 
 		// Purchase Confirmation (Success) Page
 		$success = wp_insert_post(
@@ -60,9 +62,8 @@ function give_install() {
 		$options['success_page'] = $success;
 	}
 
-
 	// Checks if the Failure Page option exists AND that the page exists
-	if ( ! isset( $give_options['failure_page'] ) || ! get_post( $give_options['failure_page'] ) ) {
+	if ( ! get_post( give_get_option( 'failure_page' ) ) ) {
 
 		// Failed Purchase Page
 		$failed = wp_insert_post(
@@ -79,9 +80,8 @@ function give_install() {
 		$options['failure_page'] = $failed;
 	}
 
-
 	// Checks if the History Page option exists AND that the page exists
-	if ( ! isset( $give_options['history_page'] ) || ! get_post( $give_options['history_page'] ) ) {
+	if ( ! get_post( give_get_option( 'history_page' ) ) ) {
 		// Purchase History (History) Page
 		$history = wp_insert_post(
 			array(
@@ -96,7 +96,6 @@ function give_install() {
 
 		$options['history_page'] = $history;
 	}
-
 
 	//Fresh Install? Setup Test Mode, Base Country (US), Test Gateway, Currency
 	if ( empty( $current_version ) ) {
@@ -129,12 +128,31 @@ function give_install() {
 	$roles->add_roles();
 	$roles->add_caps();
 
+	// Create the customers database
+	@Give()->customers->create_table();
+
+	// Check for PHP Session support, and enable if available
+	Give()->session->use_php_sessions();
+
 	// Add a temporary option to note that Give pages have been created
 	set_transient( '_give_installed', $options, 30 );
 
 	// Bail if activating from network, or bulk
 	if ( is_network_admin() || isset( $_GET['activate-multi'] ) ) {
 		return;
+	}
+
+	if ( ! $current_version ) {
+		require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrade-functions.php';
+
+		// When new upgrade routines are added, mark them as complete on fresh install
+		$upgrade_routines = array(
+			'upgrade_donor_payments_association'
+		);
+
+		foreach ( $upgrade_routines as $upgrade ) {
+			give_set_upgrade_complete( $upgrade );
+		}
 	}
 
 	// Add the transient to redirect
@@ -166,7 +184,7 @@ function give_after_install() {
 	}
 
 	// Create the donors database (this ensures it creates it on multisite instances where it is network activated)
-	Give()->customers->create_table();
+	@Give()->customers->create_table();
 
 	// Delete the transient
 	delete_transient( '_give_installed' );
@@ -176,3 +194,33 @@ function give_after_install() {
 }
 
 add_action( 'admin_init', 'give_after_install' );
+
+
+/**
+ * Install user roles on sub-sites of a network
+ *
+ * Roles do not get created when Give is network activation so we need to create them during admin_init
+ *
+ * @since 1.0
+ * @return void
+ */
+function give_install_roles_on_network() {
+
+	global $wp_roles;
+
+	if ( ! is_object( $wp_roles ) ) {
+		return;
+	}
+
+	if ( ! in_array( 'give_manager', $wp_roles->roles ) ) {
+
+		// Create Give shop roles
+		$roles = new Give_Roles;
+		$roles->add_roles();
+		$roles->add_caps();
+
+	}
+
+}
+
+add_action( 'admin_init', 'give_install_roles_on_network' );

@@ -7,6 +7,9 @@
  * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
+ *
+ * NOTICE: When adding new upgrade notices, please be sure to put the action into the upgrades array during install: /includes/install.php @ Appox Line 156
+ *
  */
 
 // Exit if accessed directly
@@ -41,19 +44,19 @@ function give_show_upgrade_notices() {
 	//		);
 	//	}
 
-//	if ( version_compare( $give_version, '1.0', '<' ) ) {
-//		printf(
-//			'<div class="updated"><p>' . __( 'Give needs to upgrade the transaction logs database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
-//			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_payments_logs_db' ) )
-//		);
-//	}
-//
-//	if ( version_compare( $give_version, '1.0', '<' ) || ! give_has_upgrade_completed( 'upgrade_donor_payments_association' ) ) {
-//		printf(
-//			'<div class="updated"><p>' . __( 'Give needs to upgrade the donor database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
-//			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_donor_payments_association' ) )
-//		);
-//	}
+	if ( version_compare( $give_version, '1.0', '<' ) ) {
+		printf(
+			'<div class="updated"><p>' . __( 'Give needs to upgrade the transaction logs database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
+			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_payments_logs_db' ) )
+		);
+	}
+
+	if ( version_compare( $give_version, '1.0', '<' ) || ! give_has_upgrade_completed( 'upgrade_donor_payments_association' ) ) {
+		printf(
+			'<div class="updated"><p>' . __( 'Give needs to upgrade the donor database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
+			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_donor_payments_association' ) )
+		);
+	}
 
 	/*
 	 *  NOTICE:
@@ -100,23 +103,6 @@ function give_trigger_upgrades() {
 }
 
 add_action( 'wp_ajax_give_trigger_upgrades', 'give_trigger_upgrades' );
-
-/**
- * For use when doing 'stepped' upgrade routines, to see if we need to start somewhere in the middle
- * @since 2.2.6
- * @return mixed   When nothing to resume returns false, otherwise starts the upgrade where it left off
- */
-function give_maybe_resume_upgrade() {
-
-	$doing_upgrade = get_option( 'give_doing_upgrade', false );
-
-	if ( empty( $doing_upgrade ) ) {
-		return false;
-	}
-
-	return $doing_upgrade;
-
-}
 
 /**
  * Check if the upgrade routine has been run for a specific action
@@ -189,11 +175,14 @@ function give_get_completed_upgrades() {
  * @return void
  */
 function give_v1_upgrade_payments_logs_db() {
+
 	global $wpdb;
+
 	if ( ! current_user_can( 'manage_give_settings' ) ) {
 		wp_die( __( 'You do not have permission to do Give upgrades', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 	ignore_user_abort( true );
+
 	if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
 		@set_time_limit( 0 );
 	}
@@ -216,9 +205,7 @@ function give_v1_upgrade_payments_logs_db() {
 	if ( ! empty( $payment_ids ) ) {
 		foreach ( $payment_ids as $payment_id ) {
 			$payment_meta = give_get_payment_meta( $payment_id );
-
 			$variable_donation = array();
-
 			// Don't care if the form is a single price id
 			if ( ! isset( $payment_meta['price_id'] ) || empty( $payment_meta['price_id'] ) ) {
 				continue;

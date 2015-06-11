@@ -42,7 +42,7 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 	$creation_date  = get_post_field( 'post_date', $payment_id, 'raw' );
 	$completed_date = give_get_payment_completed_date( $payment_id );
 	$user_info      = give_get_payment_meta_user_info( $payment_id );
-	$donor_id    = give_get_payment_donor_id( $payment_id );
+	$donor_id    = give_get_payment_customer_id( $payment_id );
 	$amount         = give_get_payment_amount( $payment_id );
 
 	do_action( 'give_pre_complete_purchase', $payment_id );
@@ -147,7 +147,7 @@ function give_undo_donation_on_refund( $payment_id, $new_status, $old_status ) {
 	give_decrease_total_earnings( $amount );
 
 	// Decrement the stats for the donor
-	$donor_id = give_get_payment_donor_id( $payment_id );
+	$donor_id = give_get_payment_customer_id( $payment_id );
 
 	if ( $donor_id ) {
 

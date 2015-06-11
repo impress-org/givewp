@@ -54,6 +54,7 @@ jQuery.noConflict();
 			this.edit_address();
 			this.add_note();
 			this.remove_note();
+			this.new_donor();
 			this.resend_receipt();
 		},
 
@@ -120,7 +121,7 @@ jQuery.noConflict();
 
 		},
 
-		remove_note: function () {
+		remove_note   : function () {
 
 			$( 'body' ).on( 'click', '.give-delete-payment-note', function ( e ) {
 
@@ -156,7 +157,22 @@ jQuery.noConflict();
 			} );
 
 		},
+		new_donor  : function () {
+			
+			$( '#give-customer-details' ).on( 'click', '.give-payment-new-customer, .give-payment-new-customer-cancel', function ( e ) {
+				e.preventDefault();
+				$( '.customer-info' ).toggle();
+				$( '.new-customer' ).toggle();
 
+				if ( $( '.new-customer' ).is( ":visible" ) ) {
+					$( '#give-new-customer' ).val( 1 );
+				} else {
+					$( '#give-new-customer' ).val( 0 );
+				}
+
+			} );
+
+		},
 		resend_receipt: function () {
 			$( 'body' ).on( 'click', '#give-resend-receipt', function ( e ) {
 				return confirm( give_vars.resend_receipt );
@@ -269,7 +285,7 @@ jQuery.noConflict();
 				var customer_id = $( 'input[name="customerinfo[id]"]' ).val();
 
 				var postData = {
-					give_action : 'disconnect-userid',
+					give_action: 'disconnect-userid',
 					customer_id: customer_id,
 					_wpnonce   : $( '#edit-customer-info #_wpnonce' ).val()
 				};
@@ -313,7 +329,7 @@ jQuery.noConflict();
 			$( 'body' ).on( 'click', '#add-customer-note', function ( e ) {
 				e.preventDefault();
 				var postData = {
-					give_action             : 'add-customer-note',
+					give_action            : 'add-customer-note',
 					customer_id            : $( '#customer-id' ).val(),
 					customer_note          : $( '#customer-note' ).val(),
 					add_customer_note_nonce: $( '#add_customer_note_nonce' ).val()

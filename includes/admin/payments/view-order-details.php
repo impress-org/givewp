@@ -37,7 +37,7 @@ if ( ! is_object( $item ) || $item->post_type != 'give_payment' ) {
 $payment_meta   = give_get_payment_meta( $payment_id );
 $transaction_id = esc_attr( give_get_payment_transaction_id( $payment_id ) );
 $user_id        = give_get_payment_user_id( $payment_id );
-$donor_id    = give_get_payment_donor_id( $payment_id );
+$donor_id       = give_get_payment_customer_id( $payment_id );
 $payment_date   = strtotime( $item->post_date );
 $user_info      = give_get_payment_meta_user_info( $payment_id );
 $address        = ! empty( $user_info['address'] ) ? $user_info['address'] : array(
@@ -123,7 +123,7 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 
 										<div class="give-order-payment give-admin-box-inside">
 											<p>
-												<span class="label"><?php _e( 'Total Price', 'give' ); ?>:</span>&nbsp;
+												<span class="label"><?php _e( 'Total Donation', 'give' ); ?>:</span>&nbsp;
 												<?php echo give_currency_symbol( $payment_meta['currency'] ); ?>&nbsp;<input name="give-payment-total" type="text" class="small-text" value="<?php echo esc_attr( give_format_amount( give_get_payment_amount( $payment_id ) ) ); ?>" />
 											</p>
 										</div>
@@ -227,6 +227,7 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 					<!-- /#postbox-container-1 -->
 
 					<div id="postbox-container-2" class="postbox-container">
+
 						<div id="normal-sortables" class="meta-box-sortables ui-sortable">
 
 							<?php do_action( 'give_view_order_details_main_before', $payment_id ); ?>
@@ -276,28 +277,53 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 
 							<?php do_action( 'give_view_order_details_billing_before', $payment_id ); ?>
 
-							<div id="give-donor-details" class="postbox">
+
+							<div id="give-customer-details" class="postbox">
 								<h3 class="hndle">
-									<span><?php _e( 'Donor\'s Details', 'give' ); ?></span>
+									<span><?php _e( 'Donor Details', 'give' ); ?></span>
 								</h3>
 
 								<div class="inside give-clearfix">
 
-									<div class="column-container">
+									<?php $customer = new Give_Customer( give_get_payment_customer_id( $payment_id ) ); ?>
+
+									<div class="column-container customer-info">
 										<div class="column">
-											<p><strong><?php _e( 'Name:', 'give' ); ?></strong>&nbsp;
-												<input type="text" name="give-payment-user-name" value="<?php esc_attr_e( $user_info['first_name'] . ' ' . $user_info['last_name'] ); ?>" class="medium-text" />
-											</p>
+											<?php echo Give()->html->donor_dropdown( array(
+												'selected' => $customer->id,
+												'name'     => 'customer-id'
+											) ); ?>
 										</div>
 										<div class="column">
-											<p><strong><?php _e( 'Email:', 'give' ); ?></strong>&nbsp;
-												<input type="email" name="give-payment-user-email" value="<?php esc_attr_e( give_get_payment_user_email( $payment_id ) ); ?>" class="medium-text" />
-											</p>
+											<input type="hidden" name="give-current-customer" value="<?php echo $customer->id; ?>" />
 										</div>
 										<div class="column">
-											<p><strong><?php _e( 'User ID:', 'give' ); ?></strong>&nbsp;
-												<input type="number" step="1" min="-1" name="give-payment-user-id" value="<?php esc_attr_e( $user_id ); ?>" class="small-text" />
-											</p>
+											<?php if ( ! empty( $customer->id ) ) : ?>
+												<?php $customer_url = admin_url( 'edit.php?post_type=download&page=give-customers&view=overview&id=' . $customer->id ); ?>
+												<a href="<?php echo $customer_url; ?>" title="<?php _e( 'View Customer Details', 'give' ); ?>"><?php _e( 'View Customer Details', 'give' ); ?></a>
+												&nbsp;|&nbsp;
+											<?php endif; ?>
+											<a href="#new" class="give-payment-new-customer" title="<?php _e( 'New Customer', 'give' ); ?>"><?php _e( 'New Customer', 'give' ); ?></a>
+										</div>
+									</div>
+
+									<div class="column-container new-customer" style="display: none">
+										<div class="column">
+											<strong><?php _e( 'Name:', 'give' ); ?></strong>&nbsp;
+											<input type="text" name="give-new-customer-name" value="" class="medium-text" />
+										</div>
+										<div class="column">
+											<strong><?php _e( 'Email:', 'give' ); ?></strong>&nbsp;
+											<input type="email" name="give-new-customer-email" value="" class="medium-text" />
+										</div>
+										<div class="column">
+											<input type="hidden" id="give-new-customer" name="give-new-customer" value="0" />
+											<a href="#cancel" class="give-payment-new-customer-cancel give-delete"><?php _e( 'Cancel', 'give' ); ?></a>
+										</div>
+										<div class="column">
+											<small>
+												<em>*<?php _e( 'Click "Save Payment" to create new donor', 'give' ); ?></em>
+											</small>
 										</div>
 									</div>
 
@@ -310,7 +336,8 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 								</div>
 								<!-- /.inside -->
 							</div>
-							<!-- /#give-donor-details -->
+							<!-- /#give-customer-details -->
+
 
 							<div id="give-billing-details" class="postbox">
 								<h3 class="hndle">
@@ -358,7 +385,7 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 															'selected'         => $address['country'],
 															'show_option_all'  => false,
 															'show_option_none' => false,
-															'select2'          => true,
+															'chosen'           => true,
 															'placeholder'      => __( 'Select a country', 'give' )
 														) );
 														?>
@@ -375,7 +402,7 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 																'selected'         => $address['state'],
 																'show_option_all'  => false,
 																'show_option_none' => false,
-																'select2'          => true,
+																'chosen'           => true,
 																'placeholder'      => __( 'Select a state', 'give' )
 															) );
 														} else {

@@ -282,7 +282,7 @@ function give_delete_purchase( $payment_id = 0 ) {
 
 	$amount      = give_get_payment_amount( $payment_id );
 	$status      = $post->post_status;
-	$donor_id = give_get_payment_donor_id( $payment_id );
+	$donor_id = give_get_payment_customer_id( $payment_id );
 
 	if ( $status == 'revoked' || $status == 'publish' ) {
 		// Only decrease earnings if they haven't already been decreased (or were never increased for this payment)
@@ -959,7 +959,7 @@ function give_get_payment_user_id( $payment_id ) {
  *
  * @return string $donor_id Donor ID
  */
-function give_get_payment_donor_id( $payment_id ) {
+function give_get_payment_customer_id( $payment_id ) {
 	$donor_id = get_post_meta( $payment_id, '_give_payment_donor_id', true );
 
 	return apply_filters( 'give_payment_donor_id', $donor_id );

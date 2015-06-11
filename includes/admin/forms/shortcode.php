@@ -99,7 +99,7 @@ function give_admin_footer_for_thickbox() {
 			<div class="wrap" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
 				<div>
 					<p><?php echo sprintf( __( 'Use the form below to insert the shortcode for a %s', 'give' ), give_get_forms_label_singular() ); ?></p>
-					<?php echo Give()->html->product_dropdown( array( 'chosen' => true ) ); ?>
+					<?php echo Give()->html->forms_dropdown( array( 'chosen' => true ) ); ?>
 				</div>
 				<p class="submit">
 					<input type="button" id="give-insert-download" class="button-primary" value="<?php echo sprintf( __( 'Insert %s', 'give' ), give_get_forms_label_singular() ); ?>" onclick="insertGiveForm();" />

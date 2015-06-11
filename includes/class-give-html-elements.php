@@ -29,12 +29,11 @@ class Give_HTML_Elements {
 	 * @access public
 	 * @since  1.0
 	 *
-	 * @param string $name     Name attribute of the dropdown
-	 * @param int    $selected Download to select automatically
+	 * @param array $args Arguments for the dropdown
 	 *
-	 * @return string $output Product dropdown
+	 * @return string $output Give forms dropdown
 	 */
-	public function product_dropdown( $args = array() ) {
+	public function forms_dropdown( $args = array() ) {
 
 		$defaults = array(
 			'name'        => 'forms',
@@ -43,8 +42,8 @@ class Give_HTML_Elements {
 			'multiple'    => false,
 			'selected'    => 0,
 			'chosen'      => false,
-			'placeholder' => sprintf( __( 'Select a %s', 'give' ), give_get_forms_label_singular() ),
-			'number'      => 30
+			'number'      => 30,
+			'placeholder' => sprintf( __( 'Select a %s', 'give' ), give_get_forms_label_singular() )
 		);
 
 		$args = wp_parse_args( $args, $defaults );
@@ -97,7 +96,7 @@ class Give_HTML_Elements {
 	}
 
 	/**
-	 * Renders an HTML Dropdown of all donors
+	 * Renders an HTML Dropdown of all customers
 	 *
 	 * @access public
 	 * @since  1.0
@@ -109,38 +108,56 @@ class Give_HTML_Elements {
 	public function donor_dropdown( $args = array() ) {
 
 		$defaults = array(
-			'name'        => 'donors',
-			'id'          => 'donors',
+			'name'        => 'customers',
+			'id'          => 'customers',
 			'class'       => '',
 			'multiple'    => false,
 			'selected'    => 0,
-			'select2'     => $args['select2'],
-			'placeholder' => $args['placeholder'],
+			'chosen'      => true,
+			'placeholder' => __( 'Select a Donor', 'give' ),
 			'number'      => 30
 		);
 
 		$args = wp_parse_args( $args, $defaults );
 
-		$donors = Give()->customers->get_donors( array(
+		$customers = Give()->customers->get_customers( array(
 			'number' => $args['number']
 		) );
 
 		$options = array();
 
-		if ( $donors ) {
-			$options[ - 1 ] = __( 'Guest', 'give' );
-			foreach ( $donors as $donor ) {
-				$options[ absint( $donor->id ) ] = esc_html( $donor->name . ' (' . $donor->email . ')' );
+		if ( $customers ) {
+			$options[0] = __( 'No donor attached', 'give' );
+			foreach ( $customers as $customer ) {
+				$options[ absint( $customer->id ) ] = esc_html( $customer->name . ' (' . $customer->email . ')' );
 			}
 		} else {
 			$options[0] = __( 'No donors found', 'give' );
+		}
+
+		if ( ! empty( $args['selected'] ) ) {
+
+			// If a selected customer has been specified, we need to ensure it's in the initial list of customers displayed
+
+			if ( ! array_key_exists( $args['selected'], $options ) ) {
+
+				$customer = new Give_Customer( $args['selected'] );
+
+				if ( $customer ) {
+
+					$options[ absint( $args['selected'] ) ] = esc_html( $customer->name . ' (' . $customer->email . ')' );
+
+				}
+
+			}
+
 		}
 
 		$output = $this->select( array(
 			'name'             => $args['name'],
 			'selected'         => $args['selected'],
 			'id'               => $args['id'],
-			'class'            => $args['class'] . ' give-donor-select',
+			'class'            => $args['class'] . ' give-customer-select',
 			'options'          => $options,
 			'multiple'         => $args['multiple'],
 			'chosen'           => $args['chosen'],
@@ -156,9 +173,11 @@ class Give_HTML_Elements {
 	 * Renders an HTML Dropdown of all the Categories
 	 *
 	 * @access public
-	 * @since 1.0
-	 * @param string $name Name attribute of the dropdown
+	 * @since  1.0
+	 *
+	 * @param string $name     Name attribute of the dropdown
 	 * @param int    $selected Category to select automatically
+	 *
 	 * @return string $output Category dropdown
 	 */
 	public function category_dropdown( $name = 'give_forms_categories', $selected = 0 ) {
@@ -186,12 +205,14 @@ class Give_HTML_Elements {
 	 * @access public
 	 * @since  1.0
 	 *
-	 * @param string $name     Name attribute of the dropdown
-	 * @param int    $selected Year to select automatically
+	 * @param string $name         Name attribute of the dropdown
+	 * @param int    $selected     Year to select automatically
+	 * @param int    $years_before Number of years before the current year the dropdown should start with
+	 * @param int    $years_after  Number of years after the current year the dropdown should finish at
 	 *
 	 * @return string $output Year dropdown
 	 */
-	public function year_dropdown( $name = 'year', $selected = 0, $years_before = 5, $years_after = 0  ) {
+	public function year_dropdown( $name = 'year', $selected = 0, $years_before = 5, $years_after = 0 ) {
 		$current    = date( 'Y' );
 		$start_year = $current - absint( $years_before );
 		$end_year   = $current + absint( $years_after );
@@ -213,7 +234,6 @@ class Give_HTML_Elements {
 
 		return $output;
 	}
-
 
 
 	/**
@@ -292,15 +312,16 @@ class Give_HTML_Elements {
 
 		$output = '<select name="' . esc_attr( $args['name'] ) . '" id="' . esc_attr( sanitize_key( str_replace( '-', '_', $args['id'] ) ) ) . '" class="give-select ' . esc_attr( $args['class'] ) . '"' . $multiple . ' data-placeholder="' . $placeholder . '">';
 
-		if ( ! empty( $args['options'] ) ) {
-			if ( $args['show_option_all'] ) {
-				if ( $args['multiple'] ) {
-					$selected = selected( true, in_array( 0, $args['selected'] ), false );
-				} else {
-					$selected = selected( $args['selected'], 0, false );
-				}
-				$output .= '<option value="all"' . $selected . '>' . esc_html( $args['show_option_all'] ) . '</option>';
+		if ( $args['show_option_all'] ) {
+			if ( $args['multiple'] ) {
+				$selected = selected( true, in_array( 0, $args['selected'] ), false );
+			} else {
+				$selected = selected( $args['selected'], 0, false );
 			}
+			$output .= '<option value="all"' . $selected . '>' . esc_html( $args['show_option_all'] ) . '</option>';
+		}
+
+		if ( ! empty( $args['options'] ) ) {
 
 			if ( $args['show_option_none'] ) {
 				if ( $args['multiple'] ) {
@@ -341,12 +362,23 @@ class Give_HTML_Elements {
 		$defaults = array(
 			'name'    => null,
 			'current' => null,
-			'class'   => 'give-checkbox'
+			'class'   => 'give-checkbox',
+			'options' => array(
+				'disabled' => false,
+				'readonly' => false
+			)
 		);
 
 		$args = wp_parse_args( $args, $defaults );
 
-		$output = '<input type="checkbox" name="' . esc_attr( $args['name'] ) . '" id="' . esc_attr( $args['name'] ) . '" class="' . $args['class'] . ' ' . esc_attr( $args['name'] ) . '" ' . checked( 1, $args['current'], false ) . ' />';
+		$options = '';
+		if ( ! empty( $args['options']['disabled'] ) ) {
+			$options .= ' disabled="disabled"';
+		} elseif ( ! empty( $args['options']['readonly'] ) ) {
+			$options .= ' readonly';
+		}
+
+		$output = '<input type="checkbox"' . $options . ' name="' . esc_attr( $args['name'] ) . '" id="' . esc_attr( $args['name'] ) . '" class="' . $args['class'] . ' ' . esc_attr( $args['name'] ) . '" ' . checked( 1, $args['current'], false ) . ' />';
 
 		return $output;
 	}
@@ -357,6 +389,7 @@ class Give_HTML_Elements {
 	 * @since 1.0
 	 *
 	 * @param array $args
+	 *
 	 * @return string Text field
 	 */
 	public function text( $args = array() ) {
@@ -378,7 +411,8 @@ class Give_HTML_Elements {
 			'placeholder'  => '',
 			'class'        => 'regular-text',
 			'disabled'     => false,
-			'autocomplete' => ''
+			'autocomplete' => '',
+			'data'         => false
 		);
 
 		$args = wp_parse_args( $args, $defaults );
@@ -386,6 +420,13 @@ class Give_HTML_Elements {
 		$disabled = '';
 		if ( $args['disabled'] ) {
 			$disabled = ' disabled="disabled"';
+		}
+
+		$data = '';
+		if ( ! empty( $args['data'] ) ) {
+			foreach ( $args['data'] as $key => $value ) {
+				$data .= 'data-' . $key . '="' . $value . '" ';
+			}
 		}
 
 		$output = '<span id="give-' . sanitize_key( $args['name'] ) . '-wrap">';
@@ -396,7 +437,7 @@ class Give_HTML_Elements {
 			$output .= '<span class="give-description">' . esc_html( $args['desc'] ) . '</span>';
 		}
 
-		$output .= '<input type="text" name="' . esc_attr( $args['name'] ) . '" id="' . esc_attr( $args['name'] ) . '" autocomplete="' . esc_attr( $args['autocomplete'] ) . '" value="' . esc_attr( $args['value'] ) . '" placeholder="' . esc_attr( $args['placeholder'] ) . '" class="' . $args['class'] . '"' . $disabled . '/>';
+		$output .= '<input type="text" name="' . esc_attr( $args['name'] ) . '" id="' . esc_attr( $args['name'] ) . '" autocomplete="' . esc_attr( $args['autocomplete'] ) . '" value="' . esc_attr( $args['value'] ) . '" placeholder="' . esc_attr( $args['placeholder'] ) . '" class="' . $args['class'] . '" ' . $data . '' . $disabled . '/>';
 
 		$output .= '</span>';
 
@@ -408,10 +449,7 @@ class Give_HTML_Elements {
 	 *
 	 * @since 1.0
 	 *
-	 * @param string $name  Name attribute of the textarea
-	 * @param string $value The value to prepopulate the field with
-	 * @param string $label
-	 * @param string $desc
+	 * @param array $args Arguments for the textarea
 	 *
 	 * @return string textarea
 	 */
