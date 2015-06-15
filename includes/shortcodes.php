@@ -141,14 +141,16 @@ function give_receipt_shortcode( $atts, $content = null ) {
 		$payment_key = $session['purchase_key'];
 	}
 
+	ob_start();
+
 	//Check for payment key
 	if ( empty( $payment_key ) ) { ?>
 
 		<div class="give_errors">
-			<p class="give_error"><?php _e( 'Sorry, there was a problem identifying this donation. Please contact the site owner for more information.', 'give' ); ?></p>
+			<p class="give_error"><?php echo apply_filters( 'give_receipt_no_payment_key', __( 'Sorry, there was a problem identifying this donation. Please contact the site owner for more information.', 'give' ) ); ?></p>
 		</div>
 
-		<?php return false; //bounce out ( no key found )
+		<?php return ob_get_clean(); //return error
 	}
 
 	//Set our important payment information variables
@@ -195,12 +197,10 @@ function give_receipt_shortcode( $atts, $content = null ) {
 			<p class="give_error"><?php echo $give_receipt_args['error']; ?></p>
 		</div>
 
-		<?php return false; //bounce out (session expired or user not allowed to view) ?>
+		<?php return ob_get_clean(); // ?>
 
 	<?php }
 
-
-	ob_start();
 
 	give_get_template_part( 'shortcode', 'receipt' );
 
@@ -332,6 +332,8 @@ function give_process_profile_editor_updates( $data ) {
 		wp_redirect( add_query_arg( 'updated', 'true', $data['give_redirect'] ) );
 		give_die();
 	}
+
+	return false;
 }
 
 add_action( 'give_edit_user_profile', 'give_process_profile_editor_updates' );
