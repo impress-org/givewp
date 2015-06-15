@@ -15,9 +15,9 @@ jQuery( document ).ready( function ( $ ) {
 	setup_form_loading_images();
 
 	//Hide loading elements
-	$('.give-loading-text' ).hide();
+	$( '.give-loading-text' ).hide();
 
-	// Show the login form in the checkout
+	// Show the login form in the checkout when the user clicks the "Login" link
 	$( 'body' ).on( 'click', '.give_checkout_register_login', function ( e ) {
 		var $this = $( this );
 		var data = {
@@ -41,8 +41,8 @@ jQuery( document ).ready( function ( $ ) {
 	} );
 
 
-	// Process the login form via ajax
-	$( document ).on( 'click', '#give-user-login-submit input[type=submit]', function ( e ) {
+	// Process the login form via ajax when the user clicks "login"
+	$( document ).on( 'click', '#give_login_fields input[type=submit]', function ( e ) {
 
 		e.preventDefault();
 
@@ -51,7 +51,7 @@ jQuery( document ).ready( function ( $ ) {
 
 		$( this ).val( give_global_vars.purchase_loading );
 
-		this_form.find( '.give-loading-animation' ).fadeIn();
+		this_form.find( '#give_login_fields .give-loading-animation' ).fadeIn();
 
 		var data = {
 			action         : 'give_process_checkout_login',
@@ -62,10 +62,14 @@ jQuery( document ).ready( function ( $ ) {
 
 		$.post( give_global_vars.ajaxurl, data, function ( data ) {
 
+			//user is logged in
 			if ( $.trim( data ) == 'success' ) {
+				//remove errors
 				this_form.find( '.give_errors' ).remove();
-				window.location.reload();
+				//reload the selected gateway so it contains their logged in information
+				give_load_gateway( this_form, this_form.find( '.give-gateway-option-selected input' ).val() );
 			} else {
+				//Login failed, show errors
 				this_form.find( '#give_login_fields input[type=submit]' ).val( complete_purchase_val );
 				this_form.find( '.give-loading-animation' ).fadeOut();
 				this_form.find( '.give_errors' ).remove();
@@ -75,7 +79,7 @@ jQuery( document ).ready( function ( $ ) {
 
 	} );
 
-	//Switch the gateway on gateway select field change
+	//Switch the gateway on gateway selection field change
 	$( 'select#give-gateway, input.give-gateway' ).on( 'change', function ( e ) {
 
 		e.preventDefault();
@@ -190,7 +194,6 @@ function give_load_gateway( form_object, payment_mode ) {
 			jQuery( form_object ).find( '#give-payment-mode-wrap .give-loading-text' ).fadeOut();
 			setup_give_tooltips();
 			setup_form_loading_images();
-
 		}
 	);
 

@@ -131,7 +131,8 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 = 1.0 =
 * New: Donors overview page that provides a searchable list of your donors and relevant information.
 * Fix: Microdata added twice to titles https://github.com/WordImpress/Give/issues/154
-* Fix:
+* Fix: Divi theme compatibility improvements https://github.com/WordImpress/Give/issues/157 and https://github.com/WordImpress/Give/issues/156
+* Fix: Login screen refreshes when user logs in during checkout process @see: https://wordpress.org/support/topic/login-on-form?replies=1#post-7060862 and https://github.com/WordImpress/Give/issues/155
 
 = 0.9.5.1 beta =
 * Fix: Incorrect usage of edd_get_option rather than give_get_option in recent PayPal Standard updates
