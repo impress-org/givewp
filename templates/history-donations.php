@@ -49,5 +49,5 @@ if ( $donations ) : ?>
 	</div>
 	<?php wp_reset_postdata(); ?>
 <?php else : ?>
-	<p class="give-no-purchases"><?php _e( 'It looks like haven\'t made any donations', 'give' ); ?>.</p>
+	<p class="give-no-purchases"><?php _e( 'It looks like you haven\'t made any donations', 'give' ); ?>.</p>
 <?php endif;
