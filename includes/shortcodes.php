@@ -29,6 +29,8 @@ function give_donation_history() {
 		give_get_template_part( 'history', 'donations' );
 
 		return ob_get_clean();
+	} else {
+		echo apply_filters( 'give_donation_history_nonuser_message', '<div class="give_error give_warning"><p>' . __( 'You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with.', 'give' ) . '</p></div>' );
 	}
 }
 
