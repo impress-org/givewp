@@ -130,6 +130,8 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 = 1.0 =
 * New: Donors overview page that provides a searchable list of your donors and relevant information.
+* Fix: Microdata added twice to titles https://github.com/WordImpress/Give/issues/154
+* Fix:
 
 = 0.9.5.1 beta =
 * Fix: Incorrect usage of edd_get_option rather than give_get_option in recent PayPal Standard updates

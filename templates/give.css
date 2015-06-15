@@ -597,6 +597,8 @@ Layout
 /*------------------------------------
 Single Forms
 --------------------------------------*/
+.single-give_forms.et_right_sidebar #main-content .container:before {
+  display: none; }
 .single-give_forms .give_forms {
   *zoom: 1; }
   .single-give_forms .give_forms:before, .single-give_forms .give_forms:after {

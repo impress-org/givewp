@@ -69,6 +69,10 @@ Single Forms
 
 .single-give_forms {
 
+  &.et_right_sidebar #main-content .container:before {
+	display: none; //hide Divi sidebar sep on single give forms
+  }
+
   .give_forms {
 
 	@include clearfix;

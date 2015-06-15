@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-$template = get_option( 'template' );
+$template = strtolower( get_option( 'template' ) );
 
 switch ( $template ) {
 	case 'twentyeleven' :
@@ -36,6 +36,9 @@ switch ( $template ) {
 		break;
 	case 'x' :
 		echo '<div id="container" class="x-container-fluid max width offset cf give-wrap"><div class="x-main full" role="main"><div class="entry-wrap"><div class="entry-content">';
+		break;
+	case 'divi' :
+		echo '<div id="main-content" class="give-wrap"><div id="content" class="container" role="main">';
 		break;
 	default :
 		echo apply_filters( 'give_default_wrapper_start', '<div id="container" class="give-wrap"><div id="content" role="main">' );
