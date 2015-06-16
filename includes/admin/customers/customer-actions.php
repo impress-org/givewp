@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return array $output Response messages
  */
 function give_edit_customer( $args ) {
-	$customer_edit_role = apply_filters( 'give_edit_customers_role', 'edit_shop_payments' );
+	$customer_edit_role = apply_filters( 'give_edit_customers_role', 'edit_give_payments' );
 
 	if ( ! is_admin() || ! current_user_can( $customer_edit_role ) ) {
 		wp_die( __( 'You do not have permission to edit this donor.', 'give' ) );
@@ -186,7 +186,7 @@ add_action( 'give_edit-customer', 'give_edit_customer', 10, 1 );
  */
 function give_customer_save_note( $args ) {
 
-	$customer_view_role = apply_filters( 'give_view_customers_role', 'view_shop_reports' );
+	$customer_view_role = apply_filters( 'give_view_customers_role', 'view_give_reports' );
 
 	if ( ! is_admin() || ! current_user_can( $customer_view_role ) ) {
 		wp_die( __( 'You do not have permission to edit this donor.', 'give' ) );
@@ -256,7 +256,7 @@ add_action( 'give_add-customer-note', 'give_customer_save_note', 10, 1 );
  */
 function give_customer_delete( $args ) {
 
-	$customer_edit_role = apply_filters( 'give_edit_customers_role', 'edit_shop_payments' );
+	$customer_edit_role = apply_filters( 'give_edit_customers_role', 'edit_give_payments' );
 
 	if ( ! is_admin() || ! current_user_can( $customer_edit_role ) ) {
 		wp_die( __( 'You do not have permission to delete this donor.', 'give' ) );
@@ -347,7 +347,7 @@ add_action( 'give_delete-customer', 'give_customer_delete', 10, 1 );
  */
 function give_disconnect_customer_user_id( $args ) {
 
-	$customer_edit_role = apply_filters( 'give_edit_customers_role', 'edit_shop_payments' );
+	$customer_edit_role = apply_filters( 'give_edit_customers_role', 'edit_give_payments' );
 
 	if ( ! is_admin() || ! current_user_can( $customer_edit_role ) ) {
 		wp_die( __( 'You do not have permission to edit this donor.', 'give' ) );

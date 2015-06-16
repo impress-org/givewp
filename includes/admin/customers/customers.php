@@ -103,7 +103,7 @@ function give_render_customer_view( $view, $callbacks ) {
 
 	$render = true;
 
-	$customer_view_role = apply_filters( 'give_view_customers_role', 'view_shop_reports' );
+	$customer_view_role = apply_filters( 'give_view_customers_role', 'view_give_reports' );
 
 	if ( ! current_user_can( $customer_view_role ) ) {
 		give_set_error( 'give-no-access', __( 'You are not permitted to view this data.', 'give' ) );
@@ -183,7 +183,7 @@ function give_render_customer_view( $view, $callbacks ) {
  */
 function give_customers_view( $customer ) {
 
-	$customer_edit_role = apply_filters( 'give_edit_customers_role', 'edit_shop_payments' );
+	$customer_edit_role = apply_filters( 'give_edit_customers_role', 'edit_give_payments' );
 
 	?>
 
@@ -546,7 +546,8 @@ function give_customer_notes_view( $customer ) {
 }
 
 function give_customers_delete_view( $customer ) {
-	$customer_edit_role = apply_filters( 'give_edit_customers_role', 'edit_shop_payments' );
+
+	$customer_edit_role = apply_filters( 'give_edit_customers_role', 'edit_give_payments' );
 
 	?>
 

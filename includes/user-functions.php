@@ -79,7 +79,7 @@ function give_get_users_purchases( $user = 0, $number = 20, $pagination = false,
 
 	}
 
-	$purchases = edd_get_payments( apply_filters( 'edd_get_users_purchases_args', $args ) );
+	$purchases = give_get_payments( apply_filters( 'give_get_users_purchases_args', $args ) );
 
 	// No purchases
 	if ( ! $purchases ) {
@@ -211,21 +211,14 @@ function give_get_purchase_stats_by_user( $user = '' ) {
 
 	}
 
-	$donor = Give()->customers->get_by( $field, $user );
+	$customer = Give()->customers->get_customer_by( $field, $user );
+	$customer = new Give_Customer( $customer->id );
 
-	if ( empty( $donor ) ) {
+	$stats                = array();
+	$stats['purchases']   = absint( $customer->purchase_count );
+	$stats['total_spent'] = give_sanitize_amount( $customer->purchase_value );
 
-		$stats['purchases']   = 0;
-		$stats['total_spent'] = give_sanitize_amount( 0 );
-
-	} else {
-
-		$stats['purchases']   = absint( $donor->purchase_count );
-		$stats['total_spent'] = give_sanitize_amount( $donor->purchase_value );
-
-	}
-
-	return (array) apply_filters( 'give_purchase_stats_by_user', $stats, $user );
+	return (array) apply_filters( 'give_donation_stats_by_user', $stats, $user );
 }
 
 
