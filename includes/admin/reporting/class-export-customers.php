@@ -19,14 +19,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Give_Donors_Export Class
  *
- * @since 1.4.4
+ * @since 1.0
  */
 class Give_Donors_Export extends Give_Export {
 	/**
 	 * Our export type. Used for export-type specific filters/actions
 	 *
 	 * @var string
-	 * @since 1.4.4
+	 * @since 1.0
 	 */
 	public $export_type = 'donors';
 
