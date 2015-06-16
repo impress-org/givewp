@@ -434,7 +434,7 @@ function give_customers_view( $customer ) {
 
 		<h3><?php _e( 'Completed Donations', 'give' ); ?></h3>
 		<?php
-		$donations = give_get_users_purchased_products( $customer->email );
+		$donations = give_get_users_completed_donations( $customer->email );
 		?>
 		<table class="wp-list-table widefat striped downloads">
 			<thead>

@@ -1,15 +1,15 @@
 <?php
 /**
-* User Functions
-*
-* Functions related to users / donors
-*
-* @package     Give
-* @subpackage  Functions
-* @copyright   Copyright (c) 2015, WordImpress
-* @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
-* @since       1.0
-*/
+ * User Functions
+ *
+ * Functions related to users / donors
+ *
+ * @package     Give
+ * @subpackage  Functions
+ * @copyright   Copyright (c) 2015, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since       1.0
+ */
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
@@ -34,6 +34,10 @@ function give_get_users_purchases( $user = 0, $number = 20, $pagination = false,
 
 	if ( empty( $user ) ) {
 		$user = get_current_user_id();
+	}
+
+	if ( 0 === $user ) {
+		return false;
 	}
 
 	$status = $status === 'complete' ? 'publish' : $status;
@@ -65,27 +69,17 @@ function give_get_users_purchases( $user = 0, $number = 20, $pagination = false,
 
 	}
 
+	$by_user_id = is_numeric( $user ) ? true : false;
+	$customer   = new Give_Customer( $user, $by_user_id );
 
-	if ( is_email( $user ) ) {
+	if ( ! empty( $customer->payment_ids ) ) {
 
-		$field = 'email';
-
-	} else {
-
-		$field = 'user_id';
-
-	}
-
-	/*
-	$payment_ids = Give()->customers->get_column_by( 'payment_ids', $field, $user );
-
-	if( ! empty( $payment_ids ) ) {
 		unset( $args['user'] );
-		$args['post__in'] = array_map( 'absint', explode( ',', $payment_ids ) );
-	}
-	*/
+		$args['post__in'] = array_map( 'absint', explode( ',', $customer->payment_ids ) );
 
-	$purchases = give_get_payments( $args );
+	}
+
+	$purchases = edd_get_payments( apply_filters( 'edd_get_users_purchases_args', $args ) );
 
 	// No purchases
 	if ( ! $purchases ) {
@@ -96,7 +90,7 @@ function give_get_users_purchases( $user = 0, $number = 20, $pagination = false,
 }
 
 /**
- * Get Users Purchased Products
+ * Get Users Donations
  *
  * Returns a list of unique forms purchased by a specific user
  *
@@ -107,58 +101,64 @@ function give_get_users_purchases( $user = 0, $number = 20, $pagination = false,
  *
  * @return bool|object List of unique forms purchased by user
  */
-function give_get_users_purchased_products( $user = 0, $status = 'complete' ) {
+function give_get_users_completed_donations( $user = 0, $status = 'complete' ) {
 	if ( empty( $user ) ) {
 		$user = get_current_user_id();
 	}
 
-	// Get the purchase history
-	$purchase_history = give_get_users_purchases( $user, - 1, false, $status );
+	if ( empty( $user ) ) {
+		return false;
+	}
 
-	if ( empty( $purchase_history ) ) {
+	$by_user_id = is_numeric( $user ) ? true : false;
+
+	$customer = new Give_Customer( $user, $by_user_id );
+
+	if ( empty( $customer->payment_ids ) ) {
 		return false;
 	}
 
 	// Get all the items purchased
-	$purchase_data = array();
+	$payment_ids    = array_reverse( explode( ',', $customer->payment_ids ) );
+	$limit_payments = apply_filters( 'give_users_completed_donations_payments', 50 );
+	if ( ! empty( $limit_payments ) ) {
+		$payment_ids = array_slice( $payment_ids, 0, $limit_payments );
+	}
+	$donation_data = array();
+	foreach ( $payment_ids as $payment_id ) {
+		$donation_data[] = give_get_payment_meta( $payment_id );
+	}
 
-	if ( empty( $purchase_data ) ) {
+	if ( empty( $donation_data ) ) {
 		return false;
 	}
 
-	// Grab only the post ids of the forms purchased on this order
-	$purchase_product_ids = array();
-	foreach ( $purchase_data as $purchase_meta ) {
-		$purchase_product_ids[] = wp_list_pluck( $purchase_meta, 'id' );
+	// Grab only the post ids "form_id" of the forms purchased on this order
+	$completed_donations_ids = array();
+	foreach ( $donation_data as $purchase_meta ) {
+		$completed_donations_ids[] = $purchase_meta['form_id'];
 	}
-
-	if ( empty( $purchase_product_ids ) ) {
+	if ( empty( $completed_donations_ids ) ) {
 		return false;
-	}
-
-	// Merge all orders into a single array of all items purchased
-	$purchased_products = array();
-	foreach ( $purchase_product_ids as $product ) {
-		$purchased_products = array_merge( $product, $purchased_products );
 	}
 
 	// Only include each product purchased once
-	$product_ids = array_unique( $purchased_products );
+	$form_ids = array_unique( $completed_donations_ids );
 
 	// Make sure we still have some products and a first item
-	if ( empty ( $product_ids ) || ! isset( $product_ids[0] ) ) {
+	if ( empty ( $form_ids ) || ! isset( $form_ids[0] ) ) {
 		return false;
 	}
 
-	$post_type = get_post_type( $product_ids[0] );
+	$post_type = get_post_type( $form_ids[0] );
 
-	$args = apply_filters( 'give_get_users_purchased_products_args', array(
-		'include'        => $product_ids,
+	$args = apply_filters( 'give_get_users_completed_donations_args', array(
+		'include'        => $form_ids,
 		'post_type'      => $post_type,
 		'posts_per_page' => - 1
 	) );
 
-	return apply_filters( 'give_users_purchased_products_list', get_posts( $args ) );
+	return apply_filters( 'give_users_completed_donations_list', get_posts( $args ) );
 }
 
 /**
