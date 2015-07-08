@@ -152,6 +152,7 @@ class Give_Email_Template_Tags {
  * @since 1.0
  *
  * @param string   $tag  Email tag to be replace in email
+ * @param string $description Description of the email tag added
  * @param callable $func Hook to run when email tag is found
  */
 function give_add_email_tag( $tag, $description, $func ) {
