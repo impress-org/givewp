@@ -320,7 +320,7 @@ function give_output_levels( $form_id ) {
 
 				$output .= '<li>';
 				$output .= '<button type="button" data-price-id="' . $price['_give_id']['level_id'] . '" class="give-donation-level-btn give-btn give-btn-level-' . $counter . ' ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'give-default-level' : '' ) . '" value="' . give_format_amount( $price['_give_amount'] ) . '">';
-				$output .= ( ! empty( $price['_give_text'] ) ? $price['_give_text'] : $price['_give_price'] );
+				$output .= ( ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( $price['_give_amount'] ) );
 				$output .= '</button>';
 				$output .= '</li>';
 
@@ -350,7 +350,7 @@ function give_output_levels( $form_id ) {
 
 				$output .= '<input type="radio" data-price-id="' . $price['_give_id']['level_id'] . '" class="give-radio-input give-radio-input-level give-radio-level-' . $counter . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? ' give-default-level' : '' ) . '" name="give-radio-donation-level" id="give-radio-level-' . $counter . '" ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'checked="checked"' : '' ) . ' value="' . give_format_amount( $price['_give_amount'] ) . '">';
 
-				$output .= '<label for="give-radio-level-' . $counter . '">' . ( ! empty( $price['_give_text'] ) ? $price['_give_text'] : $price['_give_price'] ) . '</label>';
+				$output .= '<label for="give-radio-level-' . $counter . '">' . ( ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( $price['_give_amount'] ) ) . '</label>';
 
 				$output .= '</li>';
 
@@ -376,7 +376,7 @@ function give_output_levels( $form_id ) {
 			foreach ( $prices as $price ) {
 
 				$output .= '<option data-price-id="' . $price['_give_id']['level_id'] . '" class="give-donation-level-' . $form_id . '" ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'selected="selected"' : '' ) . ' value="' . give_format_amount( $price['_give_amount'] ) . '">';
-				$output .= ( ! empty( $price['_give_text'] ) ? $price['_give_text'] : $price['_give_price'] );
+				$output .= ( ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( $price['_give_amount'] ) );
 				$output .= '</option>';
 
 			}
