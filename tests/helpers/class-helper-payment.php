@@ -1,16 +1,16 @@
 <?php
 
 /**
- * Class EDD_Helper_Payment.
+ * Class Give_Helper_Payment.
  *
  * Helper class to create and delete a payment easily.
  */
-class EDD_Helper_Payment extends WP_UnitTestCase {
+class Give_Helper_Payment extends WP_UnitTestCase {
 
 	/**
 	 * Delete a payment.
 	 *
-	 * @since 2.3
+	 * @since 1.0
 	 *
 	 * @param int $payment_id ID of the payment to delete.
 	 */
@@ -22,9 +22,9 @@ class EDD_Helper_Payment extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Create a simple payment.
+	 * Create a simple donation payment.
 	 *
-	 * @since 2.3
+	 * @since 1.0
 	 */
 	public static function create_simple_payment() {
 
@@ -32,85 +32,68 @@ class EDD_Helper_Payment extends WP_UnitTestCase {
 
 		// Enable a few options
 		$give_options['enable_sequential'] = '1';
-		$give_options['sequential_prefix'] = 'EDD-';
+		$give_options['sequential_prefix'] = 'GIVE-';
 		update_option( 'give_settings', $give_options );
 
-		$simple_download   = EDD_Helper_Download::create_simple_download();
-		$variable_download = EDD_Helper_Download::create_variable_download();
+		$simple_form   = Give_Helper_Form::create_simple_form();
+		$multilevel_form = Give_Helper_Form::create_multilevel_form();
 
-		/** Generate some sales */
-		$user      = get_userdata(1);
+		/** Generate some donations */
+		$user      = get_userdata( 1 );
 		$user_info = array(
-			'id'            => $user->ID,
-			'email'         => $user->user_email,
-			'first_name'    => $user->first_name,
-			'last_name'     => $user->last_name,
-			'discount'      => 'none'
+			'id'         => $user->ID,
+			'email'      => $user->user_email,
+			'first_name' => $user->first_name,
+			'last_name'  => $user->last_name,
+			'discount'   => 'none'
 		);
 
-		$download_details = array(
-			array(
-				'id' => $simple_download->ID,
-				'options' => array(
-					'price_id' => 0
-				)
-			),
-			array(
-				'id' => $variable_download->ID,
-				'options' => array(
-					'price_id' => 1
-				)
-			),
-		);
-
-		$total                  = 0;
-		$simple_price           = get_post_meta( $simple_download->ID, 'give_price', true );
-		$variable_prices        = get_post_meta( $variable_download->ID, 'give_variable_prices', true );
-		$variable_item_price    = $variable_prices[1]['amount']; // == $100
+		$total               = 0;
+		$simple_price        = get_post_meta( $simple_form->ID, 'give_price', true );
+		$variable_prices     = get_post_meta( $multilevel_form->ID, 'give_variable_prices', true );
+		$variable_item_price = $variable_prices[1]['amount']; // == $100
 
 		$total += $variable_item_price + $simple_price;
 
 		$cart_details = array(
 			array(
-				'name'          => 'Test Download',
-				'id'            => $simple_download->ID,
-				'item_number'   => array(
-					'id'        => $simple_download->ID,
-					'options'   => array(
+				'name'        => 'Test Download',
+				'id'          => $simple_form->ID,
+				'item_number' => array(
+					'id'      => $simple_form->ID,
+					'options' => array(
 						'price_id' => 1
 					)
 				),
-				'price'         => $simple_price,
-				'item_price'    => $simple_price,
-				'tax'           => 0,
-				'quantity'      => 1
+				'price'       => $simple_price,
+				'item_price'  => $simple_price,
+				'tax'         => 0,
+				'quantity'    => 1
 			),
 			array(
-				'name'          => 'Variable Test Download',
-				'id'            => $variable_download->ID,
-				'item_number'   => array(
-					'id'        => $variable_download->ID,
-					'options'   => array(
+				'name'        => 'Variable Test Download',
+				'id'          => $multilevel_form->ID,
+				'item_number' => array(
+					'id'      => $multilevel_form->ID,
+					'options' => array(
 						'price_id' => 1
 					)
 				),
-				'price'         => $variable_item_price,
-				'item_price'    => $variable_item_price,
-				'tax'           => 0,
-				'quantity'      => 1
+				'price'       => $variable_item_price,
+				'item_price'  => $variable_item_price,
+				'tax'         => 0,
+				'quantity'    => 1
 			),
 		);
 
 		$purchase_data = array(
-			'price'         => number_format( (float) $total, 2 ),
-			'date'          => date( 'Y-m-d H:i:s', strtotime( '-1 day' ) ),
-			'purchase_key'  => strtolower( md5( uniqid() ) ),
-			'user_email'    => $user_info['email'],
-			'user_info'     => $user_info,
-			'currency'      => 'USD',
-			'downloads'     => $download_details,
-			'cart_details'  => $cart_details,
-			'status'        => 'pending'
+			'price'        => number_format( (float) $total, 2 ),
+			'date'         => date( 'Y-m-d H:i:s', strtotime( '-1 day' ) ),
+			'purchase_key' => strtolower( md5( uniqid() ) ),
+			'user_email'   => $user_info['email'],
+			'user_info'    => $user_info,
+			'currency'     => 'USD',
+			'status'       => 'pending'
 		);
 
 		$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
