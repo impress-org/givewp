@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @group give_customers
  */
@@ -13,52 +14,51 @@ class Give_Tests_Customers extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->_post_id = $this->factory->post->create( array( 'post_title' => 'Test Form', 'post_type' => 'give_forms', 'post_status' => 'publish' ) );
+		$this->_post_id = $this->factory->post->create( array( 'post_title'  => 'Test Form',
+		                                                       'post_type'   => 'give_forms',
+		                                                       'post_status' => 'publish'
+		) );
 
 		$_variable_pricing = array(
 			array(
-				'name' => 'Simple',
+				'name'   => 'Simple',
 				'amount' => 20
 			),
 			array(
-				'name' => 'Advanced',
+				'name'   => 'Advanced',
 				'amount' => 100
 			)
 		);
 
 		$meta = array(
-			'give_price' => '0.00',
-			'_variable_pricing' => 1,
+			'give_price'               => '0.00',
+			'_variable_pricing'        => 1,
 			'_give_price_options_mode' => 'on',
-			'give_variable_prices' => array_values( $_variable_pricing ),
-			'give_download_files' => array_values( $_download_files ),
-			'_give_download_limit' => 20,
+			'give_variable_prices'     => array_values( $_variable_pricing ),
+			'_give_download_limit'     => 20,
 			'_give_hide_purchase_link' => 1,
-			'give_product_notes' => 'Purchase Notes',
-			'_give_product_type' => 'default',
-			'_give_download_earnings' => 129.43,
-			'_give_download_sales' => 59,
-			'_give_download_limit_override_1' => 1
+			'give_product_notes'       => 'Purchase Notes',
+			'_give_product_type'       => 'default'
 		);
-		foreach( $meta as $key => $value ) {
+		foreach ( $meta as $key => $value ) {
 			update_post_meta( $this->_post_id, $key, $value );
 		}
 
-		/** Generate some sales */
+		/** Generate some donations */
 		$this->_user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
-		$user = get_userdata( $this->_user_id );
+		$user           = get_userdata( $this->_user_id );
 
 		$user_info = array(
-			'id' => $user->ID,
-			'email' => 'testadmin@domain.com',
+			'id'         => $user->ID,
+			'email'      => 'testadmin@domain.com',
 			'first_name' => $user->first_name,
-			'last_name' => $user->last_name,
-			'discount' => 'none'
+			'last_name'  => $user->last_name,
+			'discount'   => 'none'
 		);
 
 		$download_details = array(
 			array(
-				'id' => $this->_post_id,
+				'id'      => $this->_post_id,
 				'options' => array(
 					'price_id' => 1
 				)
@@ -69,38 +69,20 @@ class Give_Tests_Customers extends WP_UnitTestCase {
 
 		$total = 0;
 
-		$prices = get_post_meta($download_details[0]['id'], 'give_variable_prices', true);
+		$prices     = get_post_meta( $download_details[0]['id'], 'give_variable_prices', true );
 		$item_price = $prices[1]['amount'];
 
 		$total += $item_price;
 
-		$cart_details = array(
-			array(
-				'name' => 'Test Download',
-				'id' => $this->_post_id,
-				'item_number' => array(
-					'id' => $this->_post_id,
-					'options' => array(
-						'price_id' => 1
-					)
-				),
-				'price' =>  100,
-				'quantity' => 1,
-				'tax' => 0
-			)
-		);
-
 		$purchase_data = array(
-			'price' => number_format( (float) $total, 2 ),
-			'date' => date( 'Y-m-d H:i:s', strtotime( '-1 day' ) ),
+			'price'        => number_format( (float) $total, 2 ),
+			'date'         => date( 'Y-m-d H:i:s', strtotime( '-1 day' ) ),
 			'purchase_key' => strtolower( md5( uniqid() ) ),
-			'user_email' => $user_info['email'],
-			'user_info' => $user_info,
-			'currency' => 'USD',
-			'downloads' => $download_details,
-			'cart_details' => $cart_details,
-			'status' => 'pending',
-			'tax'    => '0.00'
+			'user_email'   => $user_info['email'],
+			'user_info'    => $user_info,
+			'currency'     => 'USD',
+			'status'       => 'pending',
+			'tax'          => '0.00'
 		);
 
 		$_SERVER['REMOTE_ADDR'] = '10.0.0.0';
@@ -120,7 +102,7 @@ class Give_Tests_Customers extends WP_UnitTestCase {
 
 		$test_email = 'testaccount@domain.com';
 
-		$customer = new EDD_Customer( $test_email );
+		$customer = new Give_Customer( $test_email );
 		$this->assertEquals( 0, $customer->id );
 
 		$data = array( 'email' => $test_email );
@@ -136,7 +118,7 @@ class Give_Tests_Customers extends WP_UnitTestCase {
 
 		$test_email = 'testaccount2@domain.com';
 
-		$customer = new EDD_Customer( $test_email );
+		$customer    = new Give_Customer( $test_email );
 		$customer_id = $customer->create( array( 'email' => $test_email ) );
 		$this->assertEquals( $customer_id, $customer->id );
 
@@ -152,7 +134,7 @@ class Give_Tests_Customers extends WP_UnitTestCase {
 
 	public function test_magic_get_method() {
 
-		$customer = new EDD_Customer( 'testadmin@domain.com' );
+		$customer = new Give_Customer( 'testadmin@domain.com' );
 		$this->assertEquals( 'testadmin@domain.com', $customer->email );
 		$this->assertTrue( is_wp_error( $customer->__get( 'asdf' ) ) );
 
@@ -160,7 +142,7 @@ class Give_Tests_Customers extends WP_UnitTestCase {
 
 	public function test_attach_payment() {
 
-		$customer = new EDD_Customer( 'testadmin@domain.com' );
+		$customer = new Give_Customer( 'testadmin@domain.com' );
 		$customer->attach_payment( 5222222 );
 
 		$payment_ids = array_map( 'absint', explode( ',', $customer->payment_ids ) );
@@ -175,7 +157,7 @@ class Give_Tests_Customers extends WP_UnitTestCase {
 	public function test_attach_duplicate_payment() {
 
 		// Verify that if we pass a payment that's already attached we do not change stats
-		$customer = new EDD_Customer( 'testadmin@domain.com' );
+		$customer = new Give_Customer( 'testadmin@domain.com' );
 		$payments = array_map( 'absint', explode( ',', $customer->payment_ids ) );
 
 		$expected_purcahse_count = $customer->purchase_count;
@@ -189,7 +171,7 @@ class Give_Tests_Customers extends WP_UnitTestCase {
 
 	public function test_remove_payment() {
 
-		$customer = new EDD_Customer( 'testadmin@domain.com' );
+		$customer = new Give_Customer( 'testadmin@domain.com' );
 		$customer->attach_payment( 5222223, false );
 
 		$payment_ids = array_map( 'absint', explode( ',', $customer->payment_ids ) );
@@ -203,29 +185,29 @@ class Give_Tests_Customers extends WP_UnitTestCase {
 
 	public function test_increment_stats() {
 
-		$customer = new EDD_Customer( 'testadmin@domain.com' );
+		$customer = new Give_Customer( 'testadmin@domain.com' );
 
 		$this->assertEquals( '100', $customer->purchase_value );
-		$this->assertEquals( '1'  , $customer->purchase_count );
+		$this->assertEquals( '1', $customer->purchase_count );
 
 		$customer->increase_purchase_count();
 		$customer->increase_value( 10 );
 
 		$this->assertEquals( '110', $customer->purchase_value );
-		$this->assertEquals( '2'  , $customer->purchase_count );
+		$this->assertEquals( '2', $customer->purchase_count );
 
 		$this->assertEquals( give_count_purchases_of_customer( $this->_user_id ), '2' );
 		$this->assertEquals( give_purchase_total_of_user( $this->_user_id ), '110' );
 
 		// Make sure we hit the false conditions
-		$this->assertFalse( $customer->increase_purchase_count( -1 ) );
+		$this->assertFalse( $customer->increase_purchase_count( - 1 ) );
 		$this->assertFalse( $customer->increase_purchase_count( 'abc' ) );
 
 	}
 
 	public function test_decrement_stats() {
 
-		$customer = new EDD_Customer( 'testadmin@domain.com' );
+		$customer = new Give_Customer( 'testadmin@domain.com' );
 
 		$customer->decrease_purchase_count();
 		$customer->decrease_value( 10 );
@@ -237,7 +219,7 @@ class Give_Tests_Customers extends WP_UnitTestCase {
 		$this->assertEquals( give_purchase_total_of_user( $this->_user_id ), '90' );
 
 		// Make sure we hit the false conditions
-		$this->assertFalse( $customer->decrease_purchase_count( -1 ) );
+		$this->assertFalse( $customer->decrease_purchase_count( - 1 ) );
 		$this->assertFalse( $customer->decrease_purchase_count( 'abc' ) );
 
 		$customer->decrease_purchase_count( 100 );
@@ -250,7 +232,7 @@ class Give_Tests_Customers extends WP_UnitTestCase {
 
 	public function test_customer_notes() {
 
-		$customer = new EDD_Customer( 'testadmin@domain.com' );
+		$customer = new Give_Customer( 'testadmin@domain.com' );
 
 		$this->assertInternalType( 'array', $customer->notes );
 		$this->assertEquals( 0, $customer->get_notes_count() );
