@@ -35,10 +35,10 @@ class Give_Donators_Gravatars {
 	 * @return void
 	 */
 	private function setup_actions() {
-//		add_action( 'widgets_init', array( $this, 'register_widget' ) );
-//		add_shortcode( 'give_donators_gravatars', array( $this, 'shortcode' ) );
-//		add_filter( 'give_settings_display', array( $this, 'settings' ) );
-//		do_action( 'give_donators_gravatars_setup_actions' );
+		//		add_action( 'widgets_init', array( $this, 'register_widget' ) );
+		//		add_shortcode( 'give_donators_gravatars', array( $this, 'shortcode' ) );
+		//		add_filter( 'give_settings_display', array( $this, 'settings' ) );
+		//		do_action( 'give_donators_gravatars_setup_actions' );
 	}
 
 	/**
@@ -295,18 +295,17 @@ class Give_Donators_Gravatars {
 	 */
 	function shortcode( $atts, $content = null ) {
 
-		extract( shortcode_atts( array(
-				'id'    => '',
-				'title' => ''
-			), $atts, 'give_donators_gravatars' )
-		);
+		$atts = shortcode_atts( array(
+			'id'    => '',
+			'title' => ''
+		), $atts, 'give_donators_gravatars' );
 
 		// if no ID is passed on single give_forms pages, get the correct ID
 		if ( is_singular( 'give_forms' ) ) {
 			$id = get_the_ID();
 		}
 
-		$content = $this->gravatars( $id, $title );
+		$content = $this->gravatars( $atts['id'], $atts['title'] );
 
 		return $content;
 
@@ -474,7 +473,7 @@ class Give_Donators_Gravatars_Widget extends WP_Widget {
 		</p>
 
 
-	<?php
+		<?php
 	} // end FORM function
 
 }
