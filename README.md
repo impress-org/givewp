@@ -1,4 +1,5 @@
 ![Give - Democratizing Generosity](https://raw.githubusercontent.com/WordImpress/Give/master/assets/images/give-logo-with-faces.png)
+[![Build Status](https://travis-ci.org/WordImpress/Give.svg?branch=master)](https://travis-ci.org/WordImpress/Give/)
 
 # [Give - Democratizing Generosity](https://givewp.com "Give - Democratizing Generosity") #
 
