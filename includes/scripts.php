@@ -107,14 +107,11 @@ add_action( 'wp_enqueue_scripts', 'give_load_scripts' );
  * Checks the styles option and hooks the required filter.
  *
  * @since 1.0
- * @global $give_options
  * @return void
  */
 function give_register_styles() {
 
-	global $give_options;
-
-	if ( isset( $give_options['disable_css'] ) ) {
+	if ( give_get_option( 'disable_styles', false ) ) {
 		return;
 	}
 
@@ -149,7 +146,8 @@ function give_register_styles() {
 		$url = trailingslashit( give_get_templates_url() ) . $file;
 	}
 
-	wp_enqueue_style( 'give-styles', $url, array(), GIVE_VERSION );
+	wp_register_style( 'give-styles', $url, array(), GIVE_VERSION, 'all' );
+	wp_enqueue_style( 'give-styles' );
 
 }
 
@@ -184,20 +182,28 @@ function give_load_admin_scripts( $hook ) {
 	$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
 	//CSS
-	wp_enqueue_style( 'jquery-ui-css', $css_dir . 'jquery-ui-fresh' . $suffix . '.css' );
-	wp_enqueue_style( 'give-admin', $css_dir . 'give-admin' . $suffix . '.css', GIVE_VERSION );
-	wp_enqueue_style( 'jquery-chosen', $css_dir . 'chosen' . $suffix . '.css', array(), GIVE_VERSION );
+	wp_register_style( 'jquery-ui-css', $css_dir . 'jquery-ui-fresh' . $suffix . '.css' );
+	wp_enqueue_style( 'jquery-ui-css' );
+	wp_register_style( 'give-admin', $css_dir . 'give-admin' . $suffix . '.css', GIVE_VERSION );
+	wp_enqueue_style( 'give-admin' );
+	wp_register_style( 'jquery-chosen', $css_dir . 'chosen' . $suffix . '.css', array(), GIVE_VERSION );
+	wp_enqueue_style( 'jquery-chosen' );
 	wp_enqueue_style( 'thickbox' );
 
 	//JS
-	wp_enqueue_script( 'jquery-chosen', $js_plugins . 'chosen.jquery' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
-	wp_enqueue_script( 'give-admin-scripts', $js_dir . 'admin-scripts' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
+	wp_register_script( 'jquery-chosen', $js_dir . 'chosen.jquery' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+	wp_enqueue_script( 'jquery-chosen' );
+	wp_register_script( 'give-admin-scripts', $js_dir . 'admin-scripts' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
+	wp_enqueue_script( 'give-admin-scripts' );
+	wp_register_script( 'jquery-flot', $js_dir . 'jquery.flot' . $suffix . '.js' );
+	wp_enqueue_script( 'jquery-flot' );
 	wp_enqueue_script( 'jquery-ui-datepicker' );
 	wp_enqueue_script( 'thickbox' );
 
 	//Forms CPT Script
 	if ( $post_type === 'give_forms' ) {
-		wp_enqueue_script( 'give-admin-forms-scripts', $js_dir . 'admin-forms' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
+		wp_register_script( 'give-admin-forms-scripts', $js_dir . 'admin-forms' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
+		wp_enqueue_script( 'give-admin-forms-scripts' );
 	}
 
 	//Localize strings & variables for JS
@@ -278,7 +284,7 @@ function give_admin_icon() {
 		<?php }  ?>
 
 	</style>
-<?php
+	<?php
 }
 
 add_action( 'admin_head', 'give_admin_icon' );

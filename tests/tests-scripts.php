@@ -1,0 +1,149 @@
+<?php
+/**
+ * @group scripts
+ */
+class Tests_Scripts extends WP_UnitTestCase {
+
+	/**
+	 * Test if all the file hooks are working.
+	 *
+	 * @since 1.0
+	 */
+	public function test_file_hooks() {
+
+		$this->assertNotFalse( has_action( 'wp_enqueue_scripts', 'give_load_scripts' ) );
+		$this->assertNotFalse( has_action( 'wp_enqueue_scripts', 'give_register_styles' ) );
+		$this->assertNotFalse( has_action( 'admin_enqueue_scripts', 'give_load_admin_scripts' ) );
+		$this->assertNotFalse( has_action( 'admin_head', 'give_admin_icon' ) );
+
+	}
+
+	/**
+	 * Test that all the scripts are loaded properly.
+	 */
+	public function test_load_scripts() {
+
+		// Prepare test
+		$this->go_to( '/' );
+		give_load_scripts();
+
+		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
+
+			$this->assertTrue( wp_script_is( 'give-cc-validator', 'enqueued' ) );
+			$this->assertTrue( wp_script_is( 'give-blockui', 'enqueued' ) );
+			$this->assertTrue( wp_script_is( 'give-admin-scripts', 'enqueued' ) );
+		} else {
+			$this->assertTrue( wp_script_is( 'give', 'enqueued' ) );
+		}
+
+
+	}
+
+	/**
+	 * Test that the give_register_styles() function will bail when the 'disable_styles'
+	 * option is set to true.
+	 *
+	 * @since 1.0
+	 */
+	public function test_register_styles_bail_option() {
+
+		// Prepare test
+		$origin_disable_styles = give_get_option( 'disable_styles', false );
+		give_update_option( 'disable_styles', true );
+
+		// Assert
+		$this->assertNull( give_register_styles() );
+
+		// Reset to origin
+		give_update_option( 'disable_styles', $origin_disable_styles );
+
+	}
+
+	/**
+	 * Test that the give_register_styles() function will enqueue the styles.
+	 *
+	 * @since 1.0
+	 */
+	public function test_register_styles() {
+
+		give_update_option( 'disable_styles', false );
+		give_register_styles();
+
+		$this->assertTrue( wp_style_is( 'give-styles', 'enqueued' ) );
+
+	}
+
+
+	/**
+	 * Test that the give_load_admin_scripts() function will bail when not a Give admin page.
+	 *
+	 * @since 1.0
+	 */
+	public function test_load_admin_scripts_bail() {
+
+		// Prepare test
+		global $pagenow;
+		$origin_pagenow = $pagenow;
+		$pagenow        = 'dashboard';
+
+		if ( ! function_exists( 'give_is_admin_page' ) ) {
+			include GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php';
+		}
+
+		// Assert
+		$this->assertNull( give_load_admin_scripts( 'dashboard' ) );
+
+		// Reset to origin
+		$pagenow = $origin_pagenow;
+
+	}
+
+	/**
+	 * Test that the give_load_admin_scripts() function will enqueue the proper styles.
+	 *
+	 * @since 1.0
+	 */
+	public function test_load_admin_scripts() {
+
+		if ( ! function_exists( 'give_is_admin_page' ) ) {
+			include GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php';
+		}
+
+		give_load_admin_scripts( 'index.php' );
+
+		$this->assertTrue( wp_style_is( 'jquery-ui-css', 'enqueued' ) );
+		$this->assertTrue( wp_style_is( 'give-admin', 'enqueued' ) );
+		$this->assertTrue( wp_style_is( 'jquery-chosen', 'enqueued' ) );
+		$this->assertTrue( wp_style_is( 'thickbox', 'enqueued' ) );
+
+		$this->assertTrue( wp_script_is( 'jquery-chosen', 'enqueued' ) );
+		$this->assertTrue( wp_script_is( 'give-admin-scripts', 'enqueued' ) );
+		$this->assertTrue( wp_script_is( 'jquery-ui-datepicker', 'enqueued' ) );
+		$this->assertTrue( wp_script_is( 'jquery-flot', 'enqueued' ) );
+		$this->assertTrue( wp_script_is( 'thickbox', 'enqueued' ) );
+
+		//Forms CPT Script
+		if ( $this->go_to( get_admin_url('edit.php?post_type=give_forms') ) ) {
+			$this->assertTrue( wp_script_is( 'give-admin-forms-scripts', 'enqueued' ) );
+		}
+		$this->go_to( '/' );
+
+	}
+
+	/**
+	 * Test that the give_admin_downloads_icon() function will display the proper styles.
+	 *
+	 * @since 1.0
+	 */
+	public function test_admin_icon() {
+
+		ob_start();
+		give_admin_icon();
+		$return = ob_get_clean();
+
+		$this->assertContains( '#menu-posts-give_forms .wp-menu-image', $return );
+
+	}
+
+
+}

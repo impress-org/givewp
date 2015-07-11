@@ -134,11 +134,9 @@ function give_currency_symbol( $currency = '' ) {
  * Get the current page URL
  *
  * @since 1.0
- * @global $post
  * @return string $page_url Current page URL
  */
 function give_get_current_page_url() {
-	global $post;
 
 	if ( is_front_page() ) :
 		$page_url = home_url();

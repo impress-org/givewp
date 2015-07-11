@@ -54,37 +54,6 @@ class Give_Helper_Payment extends WP_UnitTestCase {
 
 		$total += $variable_item_price + $simple_price;
 
-		//		$cart_details = array(
-		//			array(
-		//				'name'        => 'Test Download',
-		//				'id'          => $simple_form->ID,
-		//				'item_number' => array(
-		//					'id'      => $simple_form->ID,
-		//					'options' => array(
-		//						'price_id' => 1
-		//					)
-		//				),
-		//				'price'       => $simple_price,
-		//				'item_price'  => $simple_price,
-		//				'tax'         => 0,
-		//				'quantity'    => 1
-		//			),
-		//			array(
-		//				'name'        => 'Variable Test Download',
-		//				'id'          => $multilevel_form->ID,
-		//				'item_number' => array(
-		//					'id'      => $multilevel_form->ID,
-		//					'options' => array(
-		//						'price_id' => 1
-		//					)
-		//				),
-		//				'price'       => $variable_item_price,
-		//				'item_price'  => $variable_item_price,
-		//				'tax'         => 0,
-		//				'quantity'    => 1
-		//			),
-		//		);
-
 		$purchase_data = array(
 			'price'           => number_format( (float) $total, 2 ),
 			'give_form_title' => 'Test Donation',

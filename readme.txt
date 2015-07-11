@@ -129,12 +129,15 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 == Changelog ==
 
 = 1.0 =
-* New: Donors overview page that provides a searchable list of your donors and relevant information.
+* New: Donors overview page that provides a searchable list of your donors and relevant information
+* New: Initial PHPunit testing in place for post types, script and style loading, and includes
 * Fix: Microdata added twice to titles https://github.com/WordImpress/Give/issues/154
 * Fix: Divi theme compatibility improvements https://github.com/WordImpress/Give/issues/157 and https://github.com/WordImpress/Give/issues/156
 * Fix: Login screen refreshes when user logs in during checkout process @see: https://wordpress.org/support/topic/login-on-form?replies=1#post-7060862 and https://github.com/WordImpress/Give/issues/155
 * Fix: Translation files need "give-" prepended to them to work properly @see: https://github.com/WordImpress/Give/issues/161
 * Fix: Fix PHP notice for Undefined index: _give_price. closes #159 @see: https://github.com/WordImpress/Give/issues/159 - Thanks @helgatheviking!
+* Improvement: Script loading now properly registers scripts and styles globally using wp_register_style & wp_register_script
+* Improvement: Removed numerous uses of the $give_options global - still more cleanup needed
 
 = 0.9.5.1 beta =
 * Fix: Incorrect usage of edd_get_option rather than give_get_option in recent PayPal Standard updates
