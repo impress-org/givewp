@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @group give_customers
  */
@@ -36,8 +35,6 @@ class Tests_Customers_DB extends WP_UnitTestCase {
 			'_variable_pricing'               => 1,
 			'_give_price_options_mode'        => 'on',
 			'give_variable_prices'            => array_values( $_variable_pricing ),
-			'_give_download_limit'            => 20,
-			'_give_hide_purchase_link'        => 1,
 			'give_product_notes'              => 'Donation Notes',
 			'_give_product_type'              => 'default',
 			'_give_download_earnings'         => 129.43,
@@ -86,8 +83,7 @@ class Tests_Customers_DB extends WP_UnitTestCase {
 			'user_email'   => $user_info['email'],
 			'user_info'    => $user_info,
 			'currency'     => 'USD',
-			'status'       => 'pending',
-			'tax'          => '0.00'
+			'status'       => 'pending'
 		);
 
 		$_SERVER['REMOTE_ADDR'] = '10.0.0.0';
