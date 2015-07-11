@@ -13,7 +13,7 @@ class Tests_Post_Types extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @covers ::give_setup_give_post_types
+	 * @covers ::give_setup_post_types
 	 */
 	public function test_give_post_type() {
 		global $wp_post_types;
