@@ -35,7 +35,7 @@ class Give_Helper_Payment extends WP_UnitTestCase {
 		$give_options['sequential_prefix'] = 'GIVE-';
 		update_option( 'give_settings', $give_options );
 
-		$simple_form   = Give_Helper_Form::create_simple_form();
+		$simple_form     = Give_Helper_Form::create_simple_form();
 		$multilevel_form = Give_Helper_Form::create_multilevel_form();
 
 		/** Generate some donations */
@@ -44,8 +44,7 @@ class Give_Helper_Payment extends WP_UnitTestCase {
 			'id'         => $user->ID,
 			'email'      => $user->user_email,
 			'first_name' => $user->first_name,
-			'last_name'  => $user->last_name,
-			'discount'   => 'none'
+			'last_name'  => $user->last_name
 		);
 
 		$total               = 0;
@@ -55,45 +54,47 @@ class Give_Helper_Payment extends WP_UnitTestCase {
 
 		$total += $variable_item_price + $simple_price;
 
-		$cart_details = array(
-			array(
-				'name'        => 'Test Download',
-				'id'          => $simple_form->ID,
-				'item_number' => array(
-					'id'      => $simple_form->ID,
-					'options' => array(
-						'price_id' => 1
-					)
-				),
-				'price'       => $simple_price,
-				'item_price'  => $simple_price,
-				'tax'         => 0,
-				'quantity'    => 1
-			),
-			array(
-				'name'        => 'Variable Test Download',
-				'id'          => $multilevel_form->ID,
-				'item_number' => array(
-					'id'      => $multilevel_form->ID,
-					'options' => array(
-						'price_id' => 1
-					)
-				),
-				'price'       => $variable_item_price,
-				'item_price'  => $variable_item_price,
-				'tax'         => 0,
-				'quantity'    => 1
-			),
-		);
+		//		$cart_details = array(
+		//			array(
+		//				'name'        => 'Test Download',
+		//				'id'          => $simple_form->ID,
+		//				'item_number' => array(
+		//					'id'      => $simple_form->ID,
+		//					'options' => array(
+		//						'price_id' => 1
+		//					)
+		//				),
+		//				'price'       => $simple_price,
+		//				'item_price'  => $simple_price,
+		//				'tax'         => 0,
+		//				'quantity'    => 1
+		//			),
+		//			array(
+		//				'name'        => 'Variable Test Download',
+		//				'id'          => $multilevel_form->ID,
+		//				'item_number' => array(
+		//					'id'      => $multilevel_form->ID,
+		//					'options' => array(
+		//						'price_id' => 1
+		//					)
+		//				),
+		//				'price'       => $variable_item_price,
+		//				'item_price'  => $variable_item_price,
+		//				'tax'         => 0,
+		//				'quantity'    => 1
+		//			),
+		//		);
 
 		$purchase_data = array(
-			'price'        => number_format( (float) $total, 2 ),
-			'date'         => date( 'Y-m-d H:i:s', strtotime( '-1 day' ) ),
-			'purchase_key' => strtolower( md5( uniqid() ) ),
-			'user_email'   => $user_info['email'],
-			'user_info'    => $user_info,
-			'currency'     => 'USD',
-			'status'       => 'pending'
+			'price'           => number_format( (float) $total, 2 ),
+			'give_form_title' => 'Test Donation',
+			'give_form_id'    => $simple_form->ID,
+			'date'            => date( 'Y-m-d H:i:s', strtotime( '-1 day' ) ),
+			'purchase_key'    => strtolower( md5( uniqid() ) ),
+			'user_email'      => $user_info['email'],
+			'user_info'       => $user_info,
+			'currency'        => 'USD',
+			'status'          => 'pending'
 		);
 
 		$_SERVER['REMOTE_ADDR'] = '127.0.0.1';

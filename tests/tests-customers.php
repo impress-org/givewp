@@ -14,9 +14,10 @@ class Give_Tests_Customers extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->_post_id = $this->factory->post->create( array( 'post_title'  => 'Test Form',
-		                                                       'post_type'   => 'give_forms',
-		                                                       'post_status' => 'publish'
+		$this->_post_id = $this->factory->post->create( array(
+			'post_title'  => 'Test Form',
+			'post_type'   => 'give_forms',
+			'post_status' => 'publish'
 		) );
 
 		$_variable_pricing = array(
@@ -35,9 +36,7 @@ class Give_Tests_Customers extends WP_UnitTestCase {
 			'_variable_pricing'        => 1,
 			'_give_price_options_mode' => 'on',
 			'give_variable_prices'     => array_values( $_variable_pricing ),
-			'_give_download_limit'     => 20,
-			'_give_hide_purchase_link' => 1,
-			'give_product_notes'       => 'Purchase Notes',
+			'give_product_notes'       => 'Donation Notes',
 			'_give_product_type'       => 'default'
 		);
 		foreach ( $meta as $key => $value ) {
@@ -52,11 +51,10 @@ class Give_Tests_Customers extends WP_UnitTestCase {
 			'id'         => $user->ID,
 			'email'      => 'testadmin@domain.com',
 			'first_name' => $user->first_name,
-			'last_name'  => $user->last_name,
-			'discount'   => 'none'
+			'last_name'  => $user->last_name
 		);
 
-		$download_details = array(
+		$donation_details = array(
 			array(
 				'id'      => $this->_post_id,
 				'options' => array(
@@ -69,8 +67,8 @@ class Give_Tests_Customers extends WP_UnitTestCase {
 
 		$total = 0;
 
-		$prices     = get_post_meta( $download_details[0]['id'], 'give_variable_prices', true );
-		$item_price = $prices[1]['amount'];
+		$prices     = get_post_meta( $donation_details[0]['id'], 'give_variable_prices', true );
+		$item_price = $prices[1]['_give_amount'];
 
 		$total += $item_price;
 
