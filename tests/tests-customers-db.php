@@ -19,27 +19,31 @@ class Tests_Customers_DB extends WP_UnitTestCase {
 			'post_status' => 'publish'
 		) );
 
-		$_variable_pricing = array(
+		$_multi_level_donations = array(
 			array(
-				'name'   => 'Simple',
-				'amount' => 20
+				'_give_id'     => array( 'level_id' => '1' ),
+				'_give_amount' => '10.00',
+				'_give_text'   => 'Basic Level'
 			),
 			array(
-				'name'   => 'Advanced',
-				'amount' => 100
-			)
+				'_give_id'     => array( 'level_id' => '2' ),
+				'_give_amount' => '20.00',
+				'_give_text'   => 'Intermediate Level'
+			),
+			array(
+				'_give_id'     => array( 'level_id' => '3' ),
+				'_give_amount' => '40.00',
+				'_give_text'   => 'Advanced Level'
+			),
 		);
 
 		$meta = array(
-			'give_price'                      => '0.00',
-			'_variable_pricing'               => 1,
-			'_give_price_options_mode'        => 'on',
-			'give_variable_prices'            => array_values( $_variable_pricing ),
-			'give_product_notes'              => 'Donation Notes',
-			'_give_product_type'              => 'default',
-			'_give_download_earnings'         => 129.43,
-			'_give_download_sales'            => 59,
-			'_give_download_limit_override_1' => 1
+			'give_price'               => '0.00',
+			'_give_price_option'       => 'multi',
+			'_give_price_options_mode' => 'on',
+			'_give_donation_levels'    => array_values( $_multi_level_donations ),
+			'give_product_notes'       => 'Donation Notes',
+			'_give_product_type'       => 'default'
 		);
 
 		foreach ( $meta as $key => $value ) {
@@ -54,11 +58,10 @@ class Tests_Customers_DB extends WP_UnitTestCase {
 			'id'         => $user->ID,
 			'email'      => 'testadmin@domain.com',
 			'first_name' => $user->first_name,
-			'last_name'  => $user->last_name,
-			'discount'   => 'none'
+			'last_name'  => $user->last_name
 		);
 
-		$download_details = array(
+		$donation_details = array(
 			array(
 				'id'      => $this->_post_id,
 				'options' => array(
@@ -67,23 +70,24 @@ class Tests_Customers_DB extends WP_UnitTestCase {
 			)
 		);
 
-		$price = '100.00';
-
 		$total = 0;
 
-		$prices     = get_post_meta( $download_details[0]['id'], 'give_variable_prices', true );
-		$item_price = $prices[1]['amount'];
+		$prices     = get_post_meta( $donation_details[0]['id'], '_give_donation_levels', true );
+		$item_price = $prices[1]['_give_amount'];
 
 		$total += $item_price;
 
 		$purchase_data = array(
-			'price'        => number_format( (float) $total, 2 ),
-			'date'         => date( 'Y-m-d H:i:s', strtotime( '-1 day' ) ),
-			'purchase_key' => strtolower( md5( uniqid() ) ),
-			'user_email'   => $user_info['email'],
-			'user_info'    => $user_info,
-			'currency'     => 'USD',
-			'status'       => 'pending'
+			'price'           => number_format( (float) $total, 2 ),
+			'give_form_title' => get_the_title( $this->_post_id ),
+			'give_form_id'    => $this->_post_id,
+			'date'            => date( 'Y-m-d H:i:s', strtotime( '-1 day' ) ),
+			'purchase_key'    => strtolower( md5( uniqid() ) ),
+			'user_email'      => $user_info['email'],
+			'user_info'       => $user_info,
+			'currency'        => 'USD',
+			'status'          => 'pending',
+			'gateway'         => 'manual'
 		);
 
 		$_SERVER['REMOTE_ADDR'] = '10.0.0.0';
@@ -171,14 +175,14 @@ class Tests_Customers_DB extends WP_UnitTestCase {
 
 		$customer = new Give_Customer( 'testadmin@domain.com' );
 
-		$this->assertEquals( '100', $customer->purchase_value );
+		$this->assertEquals( '20', $customer->purchase_value );
 		$this->assertEquals( '1', $customer->purchase_count );
 
 		Give()->customers->increment_stats( $customer->id, 10 );
 
 		$updated_customer = new Give_Customer( 'testadmin@domain.com' );
 
-		$this->assertEquals( '110', $updated_customer->purchase_value );
+		$this->assertEquals( '30', $updated_customer->purchase_value );
 		$this->assertEquals( '2', $updated_customer->purchase_count );
 	}
 
@@ -186,14 +190,14 @@ class Tests_Customers_DB extends WP_UnitTestCase {
 
 		$customer = new Give_Customer( 'testadmin@domain.com' );
 
-		$this->assertEquals( '100', $customer->purchase_value );
+		$this->assertEquals( '20', $customer->purchase_value );
 		$this->assertEquals( '1', $customer->purchase_count );
 
 		Give()->customers->decrement_stats( $customer->id, 10 );
 
 		$updated_customer = new Give_Customer( 'testadmin@domain.com' );
 
-		$this->assertEquals( '90', $updated_customer->purchase_value );
+		$this->assertEquals( '10', $updated_customer->purchase_value );
 		$this->assertEquals( '0', $updated_customer->purchase_count );
 	}
 
