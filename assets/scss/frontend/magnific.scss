@@ -337,6 +337,7 @@ button {
 .mfp-close-btn-in {
   .mfp-close {
 	color: $mfp-inner-close-icon-color;
+	background-color: transparent;
   }
 }
 
@@ -663,4 +664,27 @@ button {
 	  padding-top: 0;
 	}
   }
+}
+
+/**
+ * Responsive Give Form content within modal
+ */
+.give-responsive-mfp-content {
+  form[id*="give-form"] .form-row-one-third, #give-recurring-form .form-row-one-third, form.give-form .form-row-one-third {
+
+	width: 100%;
+	margin-left: 0;
+	margin-right: 0;
+  }
+
+  #give-user-pass-wrap, #give-user-pass-confirm-wrap {
+	float: left;
+	width: 48.5%;
+	overflow: visible;
+  }
+
+  #give-user-pass-confirm-wrap {
+	float: right;
+  }
+
 }

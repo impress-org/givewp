@@ -43,13 +43,21 @@ jQuery( document ).ready( function ( $ ) {
 				src : this_form,
 				type: 'inline'
 			},
-			open     : function () {
-				// Will fire when this exact popup is opened
-				// this - is Magnific Popup object
-			},
-			close    : function () {
-				//Remove popup class
-				this_form.removeClass( 'mfp-hide' );
+			callbacks: {
+				open : function () {
+					// Will fire when this exact popup is opened
+					// this - is Magnific Popup object
+					if ( $( '.mfp-content' ).outerWidth() >= 500 ) {
+
+						$('.mfp-content' ).addClass('give-responsive-mfp-content');
+
+					}
+
+				},
+				close: function () {
+					//Remove popup class
+					this_form.removeClass( 'mfp-hide' );
+				}
 			}
 		} );
 

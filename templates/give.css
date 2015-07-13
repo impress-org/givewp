@@ -1216,7 +1216,8 @@ button::-moz-focus-inner {
     top: 1px; }
 
 .mfp-close-btn-in .mfp-close {
-  color: #333; }
+  color: #333;
+  background-color: transparent; }
 
 .mfp-image-holder .mfp-close, .mfp-iframe-holder .mfp-close {
   color: #FFF;
@@ -1441,6 +1442,20 @@ img.mfp-img {
   top: 0;
   right: 0;
   padding-top: 0; }
+
+/**
+ * Responsive Give Form content within modal
+ */
+.give-responsive-mfp-content form[id*="give-form"] .form-row-one-third, .give-responsive-mfp-content #give-recurring-form .form-row-one-third, .give-responsive-mfp-content form.give-form .form-row-one-third {
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0; }
+.give-responsive-mfp-content #give-user-pass-wrap, .give-responsive-mfp-content #give-user-pass-confirm-wrap {
+  float: left;
+  width: 48.5%;
+  overflow: visible; }
+.give-responsive-mfp-content #give-user-pass-confirm-wrap {
+  float: right; }
 
 /*!
  * Give Layouts SCSS/CSS
