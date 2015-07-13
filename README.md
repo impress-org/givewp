@@ -1,7 +1,7 @@
 ![Give - Democratizing Generosity](https://raw.githubusercontent.com/WordImpress/Give/master/assets/images/give-logo-with-faces.png)
 
 # [Give - Democratizing Generosity](https://givewp.com "Give - Democratizing Generosity") #
-[![Build Status](https://travis-ci.org/WordImpress/Give.svg?branch=master)](https://travis-ci.org/WordImpress/Give) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/WordImpress/Give/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/WordImpress/Give/?branch=master) [![License](https://img.shields.io/badge/license-GPL--2.0%2B-green.svg)](https://github.com/WordImpress/Give/blob/master/license.txt)
+[![GitHub version](https://badge.fury.io/gh/WordImpress%2FGive.svg)](http://badge.fury.io/gh/WordImpress%2FGive) [![Build Status](https://travis-ci.org/WordImpress/Give.svg?branch=master)](https://travis-ci.org/WordImpress/Give) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/WordImpress/Give/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/WordImpress/Give/?branch=master) [![License](https://img.shields.io/badge/license-GPL--2.0%2B-green.svg)](https://github.com/WordImpress/Give/blob/master/license.txt)
 
 We know how important fundraising online is to accomplish your goals. For many non-profits, churches, candidates, schools and causes, online fundraising on your WordPress website is likely to be the most critical part.
 
