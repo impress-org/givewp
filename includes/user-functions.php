@@ -161,6 +161,7 @@ function give_get_users_completed_donations( $user = 0, $status = 'complete' ) {
 	return apply_filters( 'give_users_completed_donations_list', get_posts( $args ) );
 }
 
+
 /**
  * Has Purchases
  *
@@ -234,7 +235,7 @@ function give_get_purchase_stats_by_user( $user = '' ) {
  *
  * @return      int - the total number of purchases
  */
-function give_count_purchases_of_donor( $user = null ) {
+function give_count_purchases_of_customer( $user = null ) {
 	if ( empty( $user ) ) {
 		$user = get_current_user_id();
 	}
