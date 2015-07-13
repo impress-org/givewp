@@ -71,7 +71,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 
 			case 'user_id' :
 				return '<a href="' .
-				       admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( $item['user_id'] ) ) .
+				       admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . ( ! empty( $item['user_id'] ) ? urlencode( $item['user_id'] ) : give_get_payment_user_email( $item['payment_id'] ) ) ) .
 				       '">' . $item['user_name'] . '</a>';
 
 			case 'amount' :

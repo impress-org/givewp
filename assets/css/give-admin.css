@@ -1582,11 +1582,11 @@ Donation Details
 #give-customer-card-wrapper .edit-item {
   display: none; }
 
-#give-customer-card-wrapper .edd_user_search_results {
+#give-customer-card-wrapper .give_user_search_results {
   left: 1px;
   top: 16px; }
 
-#give-customer-card-wrapper .edd_user_search_results ul {
+#give-customer-card-wrapper .give_user_search_results ul {
   width: 200px; }
 
 #customer-stats-wrapper {

@@ -132,11 +132,13 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * New: Donors overview page that provides a searchable list of your donors and relevant information
 * New: Initial PHPunit testing in place for post types, script and style loading, and includes
 * New: Travis-CI and Scrutinizer added to GitHub repo master branch to improve integrations and code quality @see badges now https://github.com/WordImpress/Give/
+* New: Updated CMB2 to latest stable version 2.0.8
 * Fix: Microdata added twice to titles https://github.com/WordImpress/Give/issues/154
 * Fix: Divi theme compatibility improvements https://github.com/WordImpress/Give/issues/157 and https://github.com/WordImpress/Give/issues/156
 * Fix: Login screen refreshes when user logs in during checkout process @see: https://wordpress.org/support/topic/login-on-form?replies=1#post-7060862 and https://github.com/WordImpress/Give/issues/155
 * Fix: Translation files need "give-" prepended to them to work properly @see: https://github.com/WordImpress/Give/issues/161
 * Fix: Fix PHP notice for Undefined index: _give_price. closes #159 @see: https://github.com/WordImpress/Give/issues/159 - Thanks @helgatheviking!
+* Fix: Shortcode now outputs Goals properly @see: https://wordpress.org/support/topic/goal-tracking
 * Improvement: Script loading now properly registers scripts and styles globally using wp_register_style & wp_register_script
 * Improvement: Removed numerous uses of the $give_options global - still more cleanup needed
 * Improvement: Modal window CSS fixes for login fields: https://github.com/WordImpress/Give/issues/60
