@@ -1142,6 +1142,7 @@ function give_show_goal_progress( $form_id ) {
 	}
 
 	$progress = round( ( $income / $goal ) * 100, 2 );
+
 	if ( $income > $goal ) {
 		$progress = 100;
 	}
@@ -1152,7 +1153,7 @@ function give_show_goal_progress( $form_id ) {
 	$output .= '</div>';
 	$output .= '<div class="progress-bar">';
 
-	$output .= '<span style="width: ' . esc_attr( $progress ) . '%';
+	$output .= '<span style="width: ' . esc_attr( $progress ) . '%;';
 	if ( ! empty( $color ) ) {
 		$output .= 'background-color:' . $color;
 	}
