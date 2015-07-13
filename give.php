@@ -52,18 +52,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! class_exists( 'Give' ) ) : /**
- * Main GIVE Class
+ * Main Give Class
  *
  * @since 1.0
  */ {
 	final class Give {
 		/** Singleton *************************************************************/
 
+
 		/**
 		 * @var Give The one true Give
 		 * @since 1.0
 		 */
 		private static $instance;
+
+		/**
+		 * Give Roles Object
+		 *
+		 * @var object
+		 * @since 1.0
+		 */
+		public $roles;
 
 		/**
 		 * Give Settings Object
@@ -74,12 +83,47 @@ if ( ! class_exists( 'Give' ) ) : /**
 		public $give_settings;
 
 		/**
-		 * Give Donors DB Object
+		 * Give Session Object
+		 *
+		 * This holds donation data for user's session
 		 *
 		 * @var object
 		 * @since 1.0
 		 */
-		public $donors;
+		public $session;
+
+		/**
+		 * Give HTML Element Helper Object
+		 *
+		 * @var object
+		 * @since 1.0
+		 */
+		public $html;
+
+		
+		/**
+		 * Give Emails Object
+		 *
+		 * @var object
+		 * @since 1.0
+		 */
+		public $emails;
+	
+		/**
+		 * Give Email Template Tags Object
+		 *
+		 * @var object
+		 * @since 1.0
+		 */
+		public $email_tags;
+	
+		/**
+		 * Give Customers DB Object
+		 *
+		 * @var object
+		 * @since 1.0
+		 */
+		public $customers;
 
 		/**
 		 * Main Give Instance
