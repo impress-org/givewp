@@ -65,20 +65,32 @@ function give_load_scripts() {
 	if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
 
 		if ( give_is_cc_verify_enabled() ) {
-			wp_enqueue_script( 'give-cc-validator', $js_plugins . 'jquery.creditCardValidator' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+			wp_register_script( 'give-cc-validator', $js_plugins . 'jquery.creditCardValidator' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+			wp_enqueue_script( 'give-cc-validator' );
 		}
 
-		wp_enqueue_script( 'give-blockui', $js_plugins . 'jquery.blockUI' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
-		wp_enqueue_script( 'give-qtip', $js_plugins . 'jquery.qtip' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
-		wp_enqueue_script( 'give-mask-money', $js_plugins . 'jquery.maskMoney' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
-		wp_enqueue_script( 'give-magnific', $js_plugins . 'give-magnific' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
-		wp_enqueue_script( 'give-checkout-global', $js_dir . 'give-checkout-global' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+		wp_register_script( 'give-blockui', $js_plugins . 'jquery.blockUI' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+		wp_enqueue_script( 'give-blockui' );
+
+		wp_register_script( 'give-qtip', $js_plugins . 'jquery.qtip' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+		wp_enqueue_script( 'give-qtip' );
+
+		wp_register_script( 'give-mask-money', $js_plugins . 'jquery.maskMoney' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+		wp_enqueue_script( 'give-mask-money' );
+
+		wp_register_script( 'give-magnific', $js_plugins . 'give-magnific' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+		wp_enqueue_script( 'give-magnific' );
+
+		wp_register_script( 'give-checkout-global', $js_dir . 'give-checkout-global' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+		wp_enqueue_script( 'give-checkout-global' );
 
 		//General scripts
-		wp_enqueue_script( 'give-scripts', $js_dir . 'give' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+		wp_register_script( 'give-scripts', $js_dir . 'give' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+		wp_enqueue_script( 'give-scripts' );
 
 		// Load AJAX scripts, if enabled
-		wp_enqueue_script( 'give-ajax', $js_dir . 'give-ajax' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+		wp_register_script( 'give-ajax', $js_dir . 'give-ajax' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+		wp_enqueue_script( 'give-ajax' );
 
 		//Localize / Pass AJAX vars from PHP
 		wp_localize_script( 'give-checkout-global', 'give_global_vars', $localize_give_checkout );
@@ -88,7 +100,8 @@ function give_load_scripts() {
 	} else {
 
 		//DEBUG is OFF (one JS file to rule them all!)
-		wp_enqueue_script( 'give', $js_dir . 'give.all.min.js', array( 'jquery' ), GIVE_VERSION );
+		wp_register_script( 'give', $js_dir . 'give.all.min.js', array( 'jquery' ), GIVE_VERSION );
+		wp_enqueue_script( 'give' );
 
 		//Localize / Pass AJAX vars from PHP
 		wp_localize_script( 'give', 'give_global_vars', $localize_give_checkout );
