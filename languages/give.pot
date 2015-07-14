@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Give - Donation Plugin 1.0 beta\n"
 "Report-Msgid-Bugs-To: https://givewp.com/\n"
-"POT-Creation-Date: 2015-07-13 17:37:17+00:00\n"
+"POT-Creation-Date: 2015-07-14 19:02:07+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -219,26 +219,22 @@ msgstr ""
 msgid "Unnamed Donor"
 msgstr ""
 
+#: includes/admin/customers/class-customer-table.php:143
+msgid "<a href=\"%s\">View Donor</a>"
+msgstr ""
+
 #: includes/admin/customers/class-customer-table.php:144
-msgid "<a href=\"%s\">View</a>"
-msgstr ""
-
-#: includes/admin/customers/class-customer-table.php:145
-msgid "<a href=\"%s\">Donation log</a>"
-msgstr ""
-
-#: includes/admin/customers/class-customer-table.php:146
 msgid "<a href=\"%s\">Delete</a>"
 msgstr ""
 
-#: includes/admin/customers/class-customer-table.php:161
+#: includes/admin/customers/class-customer-table.php:159
 #: includes/admin/forms/dashboard-columns.php:35
 #: includes/admin/reporting/class-donor-reports-table.php:201
 #: includes/admin/reporting/class-export-customers.php:79
 msgid "Name"
 msgstr ""
 
-#: includes/admin/customers/class-customer-table.php:162
+#: includes/admin/customers/class-customer-table.php:160
 #: includes/admin/customers/customers.php:227
 #: includes/admin/payments/class-payments-table.php:247
 #: includes/admin/reporting/class-donor-reports-table.php:203
@@ -248,7 +244,7 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: includes/admin/customers/class-customer-table.php:163
+#: includes/admin/customers/class-customer-table.php:161
 #: includes/admin/forms/dashboard-columns.php:40
 #: includes/admin/reporting/class-export-earnings.php:65
 #: includes/admin/reporting/class-form-reports-table.php:100
@@ -259,12 +255,12 @@ msgstr ""
 msgid "Donations"
 msgstr ""
 
-#: includes/admin/customers/class-customer-table.php:164
+#: includes/admin/customers/class-customer-table.php:162
 #: includes/admin/reporting/class-export-customers.php:86
 msgid "Total Donated"
 msgstr ""
 
-#: includes/admin/customers/class-customer-table.php:165
+#: includes/admin/customers/class-customer-table.php:163
 msgid "Date Created"
 msgstr ""
 
@@ -4015,75 +4011,75 @@ msgstr ""
 msgid "Please select an option"
 msgstr ""
 
-#: includes/scripts.php:213
+#: includes/scripts.php:226
 msgid "Sorry, not available for variable priced forms."
 msgstr ""
 
-#: includes/scripts.php:214
+#: includes/scripts.php:227
 msgid "Are you sure you wish to delete this payment?"
 msgstr ""
 
-#: includes/scripts.php:215
+#: includes/scripts.php:228
 msgid "Are you sure you wish to delete this note?"
 msgstr ""
 
-#: includes/scripts.php:216
+#: includes/scripts.php:229
 msgid "Are you sure you wish to delete this tax rate?"
 msgstr ""
 
-#: includes/scripts.php:217
+#: includes/scripts.php:230
 msgid "Are you sure you wish to revoke this API key?"
 msgstr ""
 
-#: includes/scripts.php:218
+#: includes/scripts.php:231
 msgid "Are you sure you wish to regenerate this API key?"
 msgstr ""
 
-#: includes/scripts.php:219
+#: includes/scripts.php:232
 msgid "Are you sure you wish to resend the donation receipt?"
 msgstr ""
 
-#: includes/scripts.php:220
+#: includes/scripts.php:233
 msgid "Copy these links to your clipboard and give them to your donor"
 msgstr ""
 
-#: includes/scripts.php:221
+#: includes/scripts.php:234
 msgid "Are you sure you wish to delete this %s?"
 msgstr ""
 
-#: includes/scripts.php:222
+#: includes/scripts.php:235
 msgid "You must have at least one price"
 msgstr ""
 
-#: includes/scripts.php:223
+#: includes/scripts.php:236
 msgid "You must have at least one file"
 msgstr ""
 
-#: includes/scripts.php:224
+#: includes/scripts.php:237
 msgid "You must have at least one field"
 msgstr ""
 
-#: includes/scripts.php:225
+#: includes/scripts.php:238
 msgid "Choose a %s"
 msgstr ""
 
-#: includes/scripts.php:226
+#: includes/scripts.php:239
 msgid "Choose one or more %s"
 msgstr ""
 
-#: includes/scripts.php:227
+#: includes/scripts.php:240
 msgid "Item price must be numeric"
 msgstr ""
 
-#: includes/scripts.php:228
+#: includes/scripts.php:241
 msgid "Quantity must be numeric"
 msgstr ""
 
-#: includes/scripts.php:233
+#: includes/scripts.php:246
 msgid "Remove"
 msgstr ""
 
-#: includes/scripts.php:234
+#: includes/scripts.php:247
 msgid "Type to search %s"
 msgstr ""
 
@@ -4249,6 +4245,11 @@ msgctxt "no dropdown items"
 msgid "None"
 msgstr ""
 
+#: includes/forms/template.php:1152
+msgctxt "give"
+msgid "%s of %s raised"
+msgstr ""
+
 #: includes/gateways/offline-donations.php:329
 #: includes/gateways/offline-donations.php:355
 msgctxt "Step 1 for donating offline by check"
@@ -4317,9 +4318,4 @@ msgstr ""
 #: includes/post-types.php:421
 msgctxt "Abandoned payment status"
 msgid "Abandoned"
-msgstr ""
-
-#: templates/single-give-form/goal-progress.php:37
-msgctxt "give"
-msgid "%s of %s raised"
 msgstr ""
