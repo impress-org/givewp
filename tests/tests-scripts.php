@@ -21,7 +21,7 @@ class Tests_Scripts extends WP_UnitTestCase {
 	/**
 	 * Test that all the scripts are loaded properly.
 	 */
-	public function test_load_scripts() {
+	public function test_load_frontend_scripts() {
 
 		// Prepare test
 		$this->go_to( '/' );
@@ -31,7 +31,13 @@ class Tests_Scripts extends WP_UnitTestCase {
 
 			$this->assertTrue( wp_script_is( 'give-cc-validator', 'enqueued' ) );
 			$this->assertTrue( wp_script_is( 'give-blockui', 'enqueued' ) );
-			$this->assertTrue( wp_script_is( 'give-admin-scripts', 'enqueued' ) );
+			$this->assertTrue( wp_script_is( 'give-qtip', 'enqueued' ) );
+			$this->assertTrue( wp_script_is( 'give-mask-money', 'enqueued' ) );
+			$this->assertTrue( wp_script_is( 'give-magnific', 'enqueued' ) );
+			$this->assertTrue( wp_script_is( 'give-checkout-global', 'enqueued' ) );
+			$this->assertTrue( wp_script_is( 'give-scripts', 'enqueued' ) );
+			$this->assertTrue( wp_script_is( 'give-ajax', 'enqueued' ) );
+
 		} else {
 			$this->assertTrue( wp_script_is( 'give', 'enqueued' ) );
 		}
