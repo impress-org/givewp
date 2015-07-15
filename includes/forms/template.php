@@ -417,6 +417,7 @@ function give_display_checkout_button( $form_id ) {
 	$display_label       = ( ! empty( $display_label_field ) ? $display_label_field : __( 'Donate Now', 'give' ) );
 
 	$output = '<button type="button" class="give-btn give-btn-' . $display_option . '">' . $display_label . '</button>';
+
 	echo apply_filters( 'give_display_checkout_button', $output );
 
 }
@@ -1234,3 +1235,25 @@ function give_filter_success_page_content( $content ) {
 }
 
 add_filter( 'the_content', 'give_filter_success_page_content' );
+
+
+/**
+ * Test Mode Frontend Warning
+ *
+ * @description Displays a notice on the frontend for donation forms
+ * @since 1.1
+ */
+
+function give_test_mode_frontend_warning() {
+
+	$test_mode = give_get_option( 'test_mode' );
+
+	if ( $test_mode == 'on' ) {
+		echo '<div class="give_error give_warning" id="give_error_test_mode"><p><strong>' . __( 'Notice', 'give' ) . '</strong>: ' . __( 'Test mode is enabled. While in test mode no live transactions are processed.', 'give' ) . '</p></div>';
+
+	}
+
+
+}
+
+add_action( 'give_pre_form', 'give_test_mode_frontend_warning', 10 );

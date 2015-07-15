@@ -148,7 +148,7 @@ class Give_Plugin_Settings {
 
 		</div><!-- .wrap -->
 
-	<?php
+		<?php
 	}
 
 	/**
@@ -176,12 +176,6 @@ class Give_Plugin_Settings {
 							'desc' => '<hr>',
 							'type' => 'give_title',
 							'id'   => 'give_title_general_settings_1'
-						),
-						array(
-							'name' => __( 'Test Mode', 'give' ),
-							'desc' => __( 'While in test mode no live transactions are processed. To fully use test mode, you must have a sandbox (test) account for the payment gateway you are testing.', 'give' ),
-							'id'   => 'test_mode',
-							'type' => 'checkbox'
 						),
 						array(
 							'name'    => __( 'Success Page', 'give' ),
@@ -275,6 +269,12 @@ class Give_Plugin_Settings {
 							'desc' => '<hr>',
 							'id'   => 'give_title_gateway_settings_1',
 							'type' => 'give_title'
+						),
+						array(
+							'name' => __( 'Test Mode', 'give' ),
+							'desc' => __( 'While in test mode no live transactions are processed. To fully use test mode, you must have a sandbox (test) account for the payment gateway you are testing.', 'give' ),
+							'id'   => 'test_mode',
+							'type' => 'checkbox'
 						),
 						array(
 							'name' => __( 'Enabled Gateways', 'give' ),
@@ -598,7 +598,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Disable <code>the_content</code> filter', 'give' ),
-							'desc' =>  sprintf( __( 'If you are seeing extra social buttons, related posts, or other unwanted elements appearing within your forms then you can disable WordPress\' content filter. <a href="%s" target="_blank">Learn more</a> about the_content filter.', 'give' ), esc_url( 'https://codex.wordpress.org/Plugin_API/Filter_Reference/the_content' ) ),
+							'desc' => sprintf( __( 'If you are seeing extra social buttons, related posts, or other unwanted elements appearing within your forms then you can disable WordPress\' content filter. <a href="%s" target="_blank">Learn more</a> about the_content filter.', 'give' ), esc_url( 'https://codex.wordpress.org/Plugin_API/Filter_Reference/the_content' ) ),
 							'id'   => 'disable_the_content_filter',
 							'type' => 'checkbox'
 						),
@@ -686,19 +686,22 @@ function give_get_option( $key = '', $default = false ) {
  *          the key from the give_options array.
  *
  * @since 1.0
- * @param string $key The Key to update
+ *
+ * @param string          $key   The Key to update
  * @param string|bool|int $value The value to set the key to
+ *
  * @return boolean True if updated, false if not.
  */
 function give_update_option( $key = '', $value = false ) {
 
 	// If no key, exit
-	if ( empty( $key ) ){
+	if ( empty( $key ) ) {
 		return false;
 	}
 
 	if ( empty( $value ) ) {
 		$remove_option = give_delete_option( $key );
+
 		return $remove_option;
 	}
 
@@ -710,10 +713,10 @@ function give_update_option( $key = '', $value = false ) {
 
 	// Next let's try to update the value
 	$options[ $key ] = $value;
-	$did_update = update_option( 'give_settings', $options );
+	$did_update      = update_option( 'give_settings', $options );
 
 	// If it updated, let's update the global variable
-	if ( $did_update ){
+	if ( $did_update ) {
 		global $give_options;
 		$give_options[ $key ] = $value;
 
@@ -728,13 +731,15 @@ function give_update_option( $key = '', $value = false ) {
  * Removes an give setting value in both the db and the global variable.
  *
  * @since 1.0
+ *
  * @param string $key The Key to delete
+ *
  * @return boolean True if updated, false if not.
  */
 function give_delete_option( $key = '' ) {
 
 	// If no key, exit
-	if ( empty( $key ) ){
+	if ( empty( $key ) ) {
 		return false;
 	}
 
@@ -742,7 +747,7 @@ function give_delete_option( $key = '' ) {
 	$options = get_option( 'give_settings' );
 
 	// Next let's try to update the value
-	if( isset( $options[ $key ] ) ) {
+	if ( isset( $options[ $key ] ) ) {
 
 		unset( $options[ $key ] );
 
@@ -751,7 +756,7 @@ function give_delete_option( $key = '' ) {
 	$did_update = update_option( 'give_settings', $options );
 
 	// If it updated, let's update the global variable
-	if ( $did_update ){
+	if ( $did_update ) {
 		global $give_options;
 		$give_options = $options;
 	}
@@ -874,7 +879,7 @@ function give_title_callback( $field_object, $escaped_value, $object_id, $object
 
 	?>
 	<hr>
-<?php
+	<?php
 }
 
 /**
