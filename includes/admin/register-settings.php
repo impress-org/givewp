@@ -54,6 +54,7 @@ class Give_Plugin_Settings {
 		add_action( 'cmb2_render_default_gateway', 'give_default_gateway_callback', 10, 5 );
 		add_action( 'cmb2_render_email_preview_buttons', 'give_email_preview_buttons_callback', 10, 5 );
 		add_action( 'cmb2_render_system_info', 'give_system_info_callback', 10, 5 );
+		add_action( 'cmb2_render_api', 'give_api_callback', 10, 5 );
 		add_action( 'cmb2_render_license_key', 'give_license_key_callback', 10, 5 );
 
 	}
@@ -106,8 +107,8 @@ class Give_Plugin_Settings {
 			$tabs['licenses'] = __( 'Licenses', 'give' );
 		}
 
-		$tabs['advanced'] = __( 'Advanced', 'give' );
-
+		$tabs['advanced']    = __( 'Advanced', 'give' );
+		$tabs['api']         = __( 'API', 'give' );
 		$tabs['system_info'] = __( 'System Info', 'give' );
 
 		return apply_filters( 'give_settings_tabs', $tabs );
@@ -605,6 +606,21 @@ class Give_Plugin_Settings {
 					)
 				)
 			),
+			/** API Settings */
+			'api'         => array(
+				'id'         => 'options_page',
+				'give_title' => __( 'API', 'give' ),
+				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
+				'show_names'   => false, // Hide field names on the left
+				'fields'     => apply_filters( 'give_settings_system', array(
+						array(
+							'id'   => 'api',
+							'name' => __( 'API', 'give' ),
+							'type' => 'api'
+						)
+					)
+				)
+			),
 			/** Licenses Settings */
 			'system_info' => array(
 				'id'         => 'options_page',
@@ -877,9 +893,8 @@ function give_title_callback( $field_object, $escaped_value, $object_id, $object
 	$title             = $field_type_object->field->args['name'];
 	$field_description = $field_type_object->field->args['desc'];
 
-	?>
-	<hr>
-	<?php
+	echo '<hr>';
+
 }
 
 /**
@@ -983,6 +998,40 @@ if ( ! function_exists( 'give_license_key_callback' ) ) {
 
 
 /**
+ * Display the API Keys
+ *
+ * @since       2.0
+ * @return      void
+ */
+function give_api_callback() {
+
+	if ( ! current_user_can( 'manage_shop_settings' ) ) {
+		return;
+	}
+
+	do_action( 'give_tools_api_keys_before' );
+
+	require_once GIVE_PLUGIN_DIR . 'includes/admin/class-api-keys-table.php';
+
+	$api_keys_table = new Give_API_Keys_Table();
+	$api_keys_table->prepare_items();
+	$api_keys_table->display();
+	?>
+	<p>
+		<?php printf(
+			__( 'These API keys allow you to use the <a href="%s">EDD REST API</a> to retrieve store data in JSON or XML for external applications or devices, such as the <a href="%s">EDD mobile apps</a>.', 'give' ),
+			'https://easydigitaldownloads.com/docs/give-api-reference/',
+			'https://easydigitaldownloads.com/blog/extensions/categories/mobile/'
+		); ?>
+	</p>
+	<?php
+
+	do_action( 'give_tools_api_keys_after' );
+}
+
+add_action( 'give_settings_tab_api_keys', 'give_api_callback' );
+
+/**
  * Hook Callback
  *
  * Adds a do_action() hook in place of the field
@@ -1007,3 +1056,4 @@ if ( file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/cmb2/init.php' ) ) {
 } elseif ( file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/CMB2/init.php' ) ) {
 	require_once GIVE_PLUGIN_DIR . '/includes/libraries/CMB2/init.php';
 }
+

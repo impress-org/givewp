@@ -100,7 +100,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 		 */
 		public $html;
 
-		
+
 		/**
 		 * Give Emails Object
 		 *
@@ -108,7 +108,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 		 * @since 1.0
 		 */
 		public $emails;
-	
+
 		/**
 		 * Give Email Template Tags Object
 		 *
@@ -116,7 +116,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 		 * @since 1.0
 		 */
 		public $email_tags;
-	
+
 		/**
 		 * Give Customers DB Object
 		 *
@@ -124,6 +124,14 @@ if ( ! class_exists( 'Give' ) ) : /**
 		 * @since 1.0
 		 */
 		public $customers;
+
+		/**
+		 * Give API Object
+		 *
+		 * @var object
+		 * @since 1.1
+		 */
+		public $api;
 
 		/**
 		 * Main Give Instance
@@ -149,6 +157,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 
 				self::$instance->includes();
 				self::$instance->roles              = new Give_Roles();
+				self::$instance->api                = new Give_API();
 				self::$instance->give_settings      = new Give_Plugin_Settings();
 				self::$instance->session            = new Give_Session();
 				self::$instance->html               = new Give_HTML_Elements();
@@ -241,6 +250,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/scripts.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/ajax-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/actions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/api/class-give-api.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-roles.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-template-loader.php';
@@ -292,6 +302,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/welcome.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/class-admin-notices.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/class-api-keys-table.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-actions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/system-info.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/export-functions.php';
