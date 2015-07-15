@@ -611,7 +611,7 @@ class Give_Plugin_Settings {
 				'id'         => 'options_page',
 				'give_title' => __( 'API', 'give' ),
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
-				'show_names'   => false, // Hide field names on the left
+				'show_names' => false, // Hide field names on the left
 				'fields'     => apply_filters( 'give_settings_system', array(
 						array(
 							'id'   => 'api',
@@ -1005,7 +1005,7 @@ if ( ! function_exists( 'give_license_key_callback' ) ) {
  */
 function give_api_callback() {
 
-	if ( ! current_user_can( 'manage_shop_settings' ) ) {
+	if ( ! current_user_can( 'manage_give_settings' ) ) {
 		return;
 	}
 
@@ -1019,9 +1019,9 @@ function give_api_callback() {
 	?>
 	<p>
 		<?php printf(
-			__( 'These API keys allow you to use the <a href="%s">EDD REST API</a> to retrieve store data in JSON or XML for external applications or devices, such as the <a href="%s">EDD mobile apps</a>.', 'give' ),
-			'https://easydigitaldownloads.com/docs/give-api-reference/',
-			'https://easydigitaldownloads.com/blog/extensions/categories/mobile/'
+			__( 'API keys allow users to use the <a href="%s">Give REST API</a> to retrieve donation data in JSON or XML for external applications or devices, such as the <a href="%s">Zapier</a>.', 'give' ),
+			'https://givewp.com/documentation/give-api-reference/',
+			'https://givewp.com/addons/zapier/'
 		); ?>
 	</p>
 	<?php

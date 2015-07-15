@@ -504,7 +504,8 @@ class Give_HTML_Elements {
 			'desc'         => null,
 			'class'        => '',
 			'disabled'     => false,
-			'autocomplete' => 'off'
+			'autocomplete' => 'off',
+			'data'         => false
 		);
 
 		$args = wp_parse_args( $args, $defaults );
@@ -513,7 +514,7 @@ class Give_HTML_Elements {
 
 		$output = '<span class="give_user_search_wrap">';
 		$output .= $this->text( $args );
-		$output .= '<span class="give_user_search_results"></span>';
+		$output .= '<span class="give_user_search_results hidden"><a class="give-ajax-user-cancel" title="' . __( 'Cancel', 'give' ) . '" aria-label="' . __( 'Cancel', 'give' ) . '" href="#">x</a><span></span></span>';
 		$output .= '</span>';
 
 		return $output;

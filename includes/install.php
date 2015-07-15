@@ -128,6 +128,9 @@ function give_install() {
 	$roles->add_roles();
 	$roles->add_caps();
 
+	$api = new Give_API();
+	update_option( 'give_default_api_version', 'v' . $api->get_version() );
+
 	// Create the customers database
 	@Give()->customers->create_table();
 

@@ -104,6 +104,60 @@ Settings
   margin: 0;
 }
 
+/* API
+-------------------------------------------------------------- */
+
+.cmb2-id-api {
+
+  .cmb-td {
+	padding: 0;
+  }
+  table th {
+	padding: 10px 8px;
+  }
+
+  .give-ajax-user-search {
+	padding: 3px 5px;
+
+  }
+
+}
+
+.give_user_search_wrap {
+  position: relative;
+  overflow: visible;
+}
+
+.give_user_search_results {
+  position: absolute;
+  left: 0;
+  top: 27px;
+
+  a.give-ajax-user-cancel {
+	position: absolute;
+	right: 6px;
+	top: 2px;
+  }
+  ul {
+	padding: 10px 10px 4px;
+	margin: 0;
+	background: #f0f0f0;
+	border: 1px solid #DFDFDF;
+	width: 300px;
+	max-height: 200px;
+	overflow-y: scroll;
+  }
+
+}
+
+.give_forms_page_give-settings .tablenav .actions {
+  overflow: visible;
+}
+
+a.give-delete {
+  color: #a00;
+}
+
 /* License
 -------------------------------------------------------------- */
 .cmb2-wrap {
@@ -114,19 +168,18 @@ Settings
 
   .give-license-field {
 	background-image: url('../images/close.png');
-	background-color:#FFF;
-	background-repeat:no-repeat;
+	background-color: #FFF;
+	background-repeat: no-repeat;
 	background-position: 98.5% center;
 	background-size: 18px;
   }
 
-
   .give-license-active, .give-license-active:focus {
 	background-image: url('../images/tick.png');
-	background-color:#FFF;
-	background-repeat:no-repeat;
+	background-color: #FFF;
+	background-repeat: no-repeat;
 	background-position: 98.5% center;
-	outline:none;
+	outline: none;
 	background-size: 16px;
   }
 
