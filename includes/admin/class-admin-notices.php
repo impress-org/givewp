@@ -29,11 +29,7 @@ class Give_Notices {
 	public function __construct() {
 		add_action( 'admin_notices', array( $this, 'show_notices' ) );
 		add_action( 'give_dismiss_notices', array( $this, 'dismiss_notices' ) );
-
-
 		add_action( 'admin_bar_menu', array( $this, 'give_admin_bar_menu' ), 1000 );
-
-
 	}
 
 

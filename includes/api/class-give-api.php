@@ -192,13 +192,12 @@ class Give_API {
 		$vars[] = 'key';
 		$vars[] = 'query';
 		$vars[] = 'type';
-		$vars[] = 'product';
+		$vars[] = 'form';
 		$vars[] = 'number';
 		$vars[] = 'date';
 		$vars[] = 'startdate';
 		$vars[] = 'enddate';
 		$vars[] = 'customer';
-		$vars[] = 'discount';
 		$vars[] = 'format';
 		$vars[] = 'id';
 		$vars[] = 'purchasekey';
@@ -307,7 +306,7 @@ class Give_API {
 		$this->override = false;
 
 		// Make sure we have both user and api key
-		if ( ! empty( $wp_query->query_vars['give-api'] ) && ( $wp_query->query_vars['give-api'] != 'products' || ! empty( $wp_query->query_vars['token'] ) ) ) {
+		if ( ! empty( $wp_query->query_vars['give-api'] ) && ( $wp_query->query_vars['give-api'] != 'forms' || ! empty( $wp_query->query_vars['token'] ) ) ) {
 
 			if ( empty( $wp_query->query_vars['token'] ) || empty( $wp_query->query_vars['key'] ) ) {
 				$this->missing_auth();
@@ -333,7 +332,7 @@ class Give_API {
 					$this->invalid_auth();
 				}
 			}
-		} elseif ( ! empty( $wp_query->query_vars['give-api'] ) && $wp_query->query_vars['give-api'] == 'products' ) {
+		} elseif ( ! empty( $wp_query->query_vars['give-api'] ) && $wp_query->query_vars['give-api'] == 'forms' ) {
 			$this->is_valid_request = true;
 			$wp_query->set( 'key', 'public' );
 		}
@@ -389,11 +388,7 @@ class Give_API {
 		$user_public_key = get_transient( $cache_key );
 
 		if ( empty( $user_public_key ) ) {
-			if ( give_has_upgrade_completed( 'upgrade_user_api_keys' ) ) {
-				$user_public_key = $wpdb->get_var( $wpdb->prepare( "SELECT meta_key FROM $wpdb->usermeta WHERE meta_value = 'give_user_public_key' AND user_id = %d", $user_id ) );
-			} else {
-				$user_public_key = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM $wpdb->usermeta WHERE meta_key = 'give_user_public_key' AND user_id = %d", $user_id ) );
-			}
+			$user_public_key = $wpdb->get_var( $wpdb->prepare( "SELECT meta_key FROM $wpdb->usermeta WHERE meta_value = 'give_user_public_key' AND user_id = %d", $user_id ) );
 			set_transient( $cache_key, $user_public_key, HOUR_IN_SECONDS );
 		}
 
@@ -411,11 +406,7 @@ class Give_API {
 		$user_secret_key = get_transient( $cache_key );
 
 		if ( empty( $user_secret_key ) ) {
-			if ( give_has_upgrade_completed( 'upgrade_user_api_keys' ) ) {
-				$user_secret_key = $wpdb->get_var( $wpdb->prepare( "SELECT meta_key FROM $wpdb->usermeta WHERE meta_value = 'give_user_secret_key' AND user_id = %d", $user_id ) );
-			} else {
-				$user_secret_key = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM $wpdb->usermeta WHERE meta_key = 'give_user_secret_key' AND user_id = %d", $user_id ) );
-			}
+			$user_secret_key = $wpdb->get_var( $wpdb->prepare( "SELECT meta_key FROM $wpdb->usermeta WHERE meta_value = 'give_user_secret_key' AND user_id = %d", $user_id ) );
 			set_transient( $cache_key, $user_secret_key, HOUR_IN_SECONDS );
 		}
 
@@ -535,7 +526,7 @@ class Give_API {
 
 				$data = $this->routes->get_stats( array(
 					'type'      => isset( $wp_query->query_vars['type'] ) ? $wp_query->query_vars['type'] : null,
-					'product'   => isset( $wp_query->query_vars['product'] ) ? $wp_query->query_vars['product'] : null,
+					'form'      => isset( $wp_query->query_vars['form'] ) ? $wp_query->query_vars['form'] : null,
 					'date'      => isset( $wp_query->query_vars['date'] ) ? $wp_query->query_vars['date'] : null,
 					'startdate' => isset( $wp_query->query_vars['startdate'] ) ? $wp_query->query_vars['startdate'] : null,
 					'enddate'   => isset( $wp_query->query_vars['enddate'] ) ? $wp_query->query_vars['enddate'] : null
@@ -543,11 +534,11 @@ class Give_API {
 
 				break;
 
-			case 'products' :
+			case 'forms' :
 
-				$product = isset( $wp_query->query_vars['product'] ) ? $wp_query->query_vars['product'] : null;
+				$form = isset( $wp_query->query_vars['form'] ) ? $wp_query->query_vars['form'] : null;
 
-				$data = $this->routes->get_products( $product );
+				$data = $this->routes->get_forms( $form );
 
 				break;
 
@@ -559,17 +550,9 @@ class Give_API {
 
 				break;
 
-			case 'sales' :
+			case 'donations' :
 
-				$data = $this->routes->get_recent_sales();
-
-				break;
-
-			case 'discounts' :
-
-				$discount = isset( $wp_query->query_vars['discount'] ) ? $wp_query->query_vars['discount'] : null;
-
-				$data = $this->routes->get_discounts( $discount );
+				$data = $this->routes->get_recent_donations();
 
 				break;
 
@@ -615,9 +598,9 @@ class Give_API {
 		// Whitelist our query options
 		$accepted = apply_filters( 'give_api_valid_query_modes', array(
 			'stats',
-			'products',
+			'forms',
 			'customers',
-			'sales',
+			'donations',
 			'discounts'
 		) );
 
@@ -673,7 +656,7 @@ class Give_API {
 	}
 
 	/**
-	 * Sets up the dates used to retrieve earnings/sales
+	 * Sets up the dates used to retrieve earnings/donations
 	 *
 	 * @access public
 	 * @since  1.1.1
@@ -687,7 +670,7 @@ class Give_API {
 
 		$defaults = array(
 			'type'      => '',
-			'product'   => null,
+			'form'      => null,
 			'date'      => null,
 			'startdate' => null,
 			'enddate'   => null
@@ -843,11 +826,11 @@ class Give_API {
 		}
 
 		/**
-		 * Returns the filters for the dates used to retreive earnings/sales
+		 * Returns the filters for the dates used to retreive earnings/donations
 		 *
 		 * @since 1.1.1
 		 *
-		 * @param object $dates The dates used for retreiving earnings/sales
+		 * @param object $dates The dates used for retreiving earnings/donations
 		 */
 
 		return apply_filters( 'give_api_stat_dates', $dates );
@@ -869,7 +852,7 @@ class Give_API {
 
 		$customers = array();
 		$error     = array();
-		if ( ! user_can( $this->user_id, 'view_shop_sensitive_data' ) && ! $this->override ) {
+		if ( ! user_can( $this->user_id, 'view_give_sensitive_data' ) && ! $this->override ) {
 			return $customers;
 		}
 
@@ -958,96 +941,102 @@ class Give_API {
 	 * @access public
 	 * @since  1.1
 	 *
-	 * @param int $product Product (Download) ID
+	 * @param int $form Give Form ID
 	 *
-	 * @return array $customers Multidimensional array of the products
+	 * @return array $customers Multidimensional array of the forms
 	 */
-	public function get_products( $product = null ) {
+	public function get_forms( $form = null ) {
 
-		$products = array();
-		$error    = array();
+		$forms = array();
+		$error = array();
 
-		if ( $product == null ) {
-			$products['products'] = array();
+		if ( $form == null ) {
+			$forms['forms'] = array();
 
-			$product_list = get_posts( array(
-				'post_type'        => 'download',
+			$form_list = get_posts( array(
+				'post_type'        => 'give_forms',
 				'posts_per_page'   => $this->per_page(),
 				'suppress_filters' => true,
 				'paged'            => $this->get_paged()
 			) );
 
-			if ( $product_list ) {
+			if ( $form_list ) {
 				$i = 0;
-				foreach ( $product_list as $product_info ) {
-					$products['products'][ $i ] = $this->get_product_data( $product_info );
+				foreach ( $form_list as $form_info ) {
+					$forms['forms'][ $i ] = $this->get_form_data( $form_info );
 					$i ++;
 				}
 			}
 		} else {
-			if ( get_post_type( $product ) == 'download' ) {
-				$product_info = get_post( $product );
+			if ( get_post_type( $form ) == 'give_forms' ) {
+				$form_info = get_post( $form );
 
-				$products['products'][0] = $this->get_product_data( $product_info );
+				$forms['forms'][0] = $this->get_form_data( $form_info );
 
 			} else {
-				$error['error'] = sprintf( __( 'Product %s not found!', 'give' ), $product );
+				$error['error'] = sprintf( __( 'Form %s not found!', 'give' ), $form );
 
 				return $error;
 			}
 		}
 
-		return $products;
+		return $forms;
 	}
 
 	/**
-	 * Given a download post object, generate the data for the API output
+	 * Given a give_forms post object, generate the data for the API output
 	 *
 	 * @since  1.1
 	 *
-	 * @param  object $product_info The Download Post Object
+	 * @param  object $form_info The Download Post Object
 	 *
 	 * @return array                Array of post data to return back in the API
 	 */
-	private function get_product_data( $product_info ) {
+	private function get_form_data( $form_info ) {
 
-		$product = array();
+		$form = array();
 
-		$product['info']['id']            = $product_info->ID;
-		$product['info']['slug']          = $product_info->post_name;
-		$product['info']['title']         = $product_info->post_title;
-		$product['info']['create_date']   = $product_info->post_date;
-		$product['info']['modified_date'] = $product_info->post_modified;
-		$product['info']['status']        = $product_info->post_status;
-		$product['info']['link']          = html_entity_decode( $product_info->guid );
-		$product['info']['content']       = $product_info->post_content;
-		$product['info']['thumbnail']     = wp_get_attachment_url( get_post_thumbnail_id( $product_info->ID ) );
-		$product['info']['category']      = get_the_terms( $product_info, 'give_forms_category' );
-		$product['info']['tags']          = get_the_terms( $product_info, 'give_forms_tag' );
+		$form['info']['id']            = $form_info->ID;
+		$form['info']['slug']          = $form_info->post_name;
+		$form['info']['title']         = $form_info->post_title;
+		$form['info']['create_date']   = $form_info->post_date;
+		$form['info']['modified_date'] = $form_info->post_modified;
+		$form['info']['status']        = $form_info->post_status;
+		$form['info']['link']          = html_entity_decode( $form_info->guid );
+		$form['info']['content']       = get_post_meta( $form_info->ID, '_give_form_content', true );
+		$form['info']['thumbnail']     = wp_get_attachment_url( get_post_thumbnail_id( $form_info->ID ) );
 
-		if ( user_can( $this->user_id, 'view_shop_reports' ) || $this->override ) {
-			$product['stats']['total']['sales']              = give_get_download_sales_stats( $product_info->ID );
-			$product['stats']['total']['earnings']           = give_get_download_earnings_stats( $product_info->ID );
-			$product['stats']['monthly_average']['sales']    = give_get_average_monthly_download_sales( $product_info->ID );
-			$product['stats']['monthly_average']['earnings'] = give_get_average_monthly_download_earnings( $product_info->ID );
+		if ( give_get_option( 'enable_categories' ) == 'on' ) {
+			$form['info']['category'] = get_the_terms( $form_info, 'give_forms_category' );
+			$form['info']['tags']     = get_the_terms( $form_info, 'give_forms_tag' );
+		}
+		if ( give_get_option( 'enable_tags' ) == 'on' ) {
+			$form['info']['tags'] = get_the_terms( $form_info, 'give_forms_tag' );
 		}
 
-		if ( give_has_variable_prices( $product_info->ID ) ) {
-			foreach ( give_get_variable_prices( $product_info->ID ) as $price ) {
-				$product['pricing'][ sanitize_key( $price['name'] ) ] = $price['amount'];
+		if ( user_can( $this->user_id, 'view_give_reports' ) || $this->override ) {
+			$form['stats']['total']['donations']           = give_get_form_sales_stats( $form_info->ID );
+			$form['stats']['total']['earnings']            = give_get_form_earnings_stats( $form_info->ID );
+			$form['stats']['monthly_average']['donations'] = give_get_average_monthly_form_sales( $form_info->ID );
+			$form['stats']['monthly_average']['earnings']  = give_get_average_monthly_form_earnings( $form_info->ID );
+		}
+
+		if ( give_has_variable_prices( $form_info->ID ) ) {
+			foreach ( give_get_variable_prices( $form_info->ID ) as $price ) {
+
+				$form['pricing'][ sanitize_key( $price['_give_text'] ) ] = $price['_give_amount'];
 			}
 		} else {
-			$product['pricing']['amount'] = give_get_download_price( $product_info->ID );
+			$form['pricing']['amount'] = give_get_form_price( $form_info->ID );
 		}
 
-		if ( user_can( $this->user_id, 'view_shop_sensitive_data' ) || $this->override ) {
-			foreach ( give_get_download_files( $product_info->ID ) as $file ) {
-				$product['files'][] = $file;
-			}
-			$product['notes'] = give_get_product_notes( $product_info->ID );
+		if ( user_can( $this->user_id, 'view_give_sensitive_data' ) || $this->override ) {
+
+			//Sensitive data here
+
 		}
 
-		return apply_filters( 'give_api_products_product', $product );
+		return apply_filters( 'give_api_forms_form', $form );
 
 	}
 
@@ -1065,7 +1054,7 @@ class Give_API {
 	public function get_stats( $args = array() ) {
 		$defaults = array(
 			'type'      => null,
-			'product'   => null,
+			'form'      => null,
 			'date'      => null,
 			'startdate' => null,
 			'enddate'   => null
@@ -1075,21 +1064,21 @@ class Give_API {
 
 		$dates = $this->get_dates( $args );
 
-		$stats    = array();
-		$earnings = array(
+		$stats     = array();
+		$earnings  = array(
 			'earnings' => array()
 		);
-		$sales    = array(
-			'sales' => array()
+		$donations = array(
+			'donations' => array()
 		);
-		$error    = array();
+		$error     = array();
 
-		if ( ! user_can( $this->user_id, 'view_shop_reports' ) && ! $this->override ) {
+		if ( ! user_can( $this->user_id, 'view_give_reports' ) && ! $this->override ) {
 			return $stats;
 		}
 
-		if ( $args['type'] == 'sales' ) {
-			if ( $args['product'] == null ) {
+		if ( $args['type'] == 'donations' ) {
+			if ( $args['form'] == null ) {
 				if ( $args['date'] == null ) {
 					$sales = $this->get_default_sales_stats();
 				} elseif ( $args['date'] === 'range' ) {
@@ -1174,19 +1163,19 @@ class Give_API {
 						$sales['sales'][ $args['date'] ] = give_get_sales_by_date( $dates['day'], $dates['m_start'], $dates['year'] );
 					}
 				}
-			} elseif ( $args['product'] == 'all' ) {
-				$products = get_posts( array( 'post_type' => 'download', 'nopaging' => true ) );
-				$i        = 0;
-				foreach ( $products as $product_info ) {
-					$sales['sales'][ $i ] = array( $product_info->post_name => give_get_download_sales_stats( $product_info->ID ) );
+			} elseif ( $args['form'] == 'all' ) {
+				$forms = get_posts( array( 'post_type' => 'give_forms', 'nopaging' => true ) );
+				$i     = 0;
+				foreach ( $forms as $form_info ) {
+					$sales['sales'][ $i ] = array( $form_info->post_name => give_get_form_sales_stats( $form_info->ID ) );
 					$i ++;
 				}
 			} else {
-				if ( get_post_type( $args['product'] ) == 'download' ) {
-					$product_info      = get_post( $args['product'] );
-					$sales['sales'][0] = array( $product_info->post_name => give_get_download_sales_stats( $args['product'] ) );
+				if ( get_post_type( $args['form'] ) == 'give_forms' ) {
+					$form_info         = get_post( $args['form'] );
+					$sales['sales'][0] = array( $form_info->post_name => give_get_form_sales_stats( $args['form'] ) );
 				} else {
-					$error['error'] = sprintf( __( 'Product %s not found!', 'give' ), $args['product'] );
+					$error['error'] = sprintf( __( 'Product %s not found!', 'give' ), $args['form'] );
 				}
 			}
 
@@ -1196,7 +1185,7 @@ class Give_API {
 
 			return $sales;
 		} elseif ( $args['type'] == 'earnings' ) {
-			if ( $args['product'] == null ) {
+			if ( $args['form'] == null ) {
 				if ( $args['date'] == null ) {
 					$earnings = $this->get_default_earnings_stats();
 				} elseif ( $args['date'] === 'range' ) {
@@ -1285,20 +1274,20 @@ class Give_API {
 						$earnings['earnings'][ $args['date'] ] = give_get_earnings_by_date( $dates['day'], $dates['m_start'], $dates['year'] );
 					}
 				}
-			} elseif ( $args['product'] == 'all' ) {
-				$products = get_posts( array( 'post_type' => 'download', 'nopaging' => true ) );
+			} elseif ( $args['form'] == 'all' ) {
+				$forms = get_posts( array( 'post_type' => 'give_forms', 'nopaging' => true ) );
 
 				$i = 0;
-				foreach ( $products as $product_info ) {
-					$earnings['earnings'][ $i ] = array( $product_info->post_name => give_get_download_earnings_stats( $product_info->ID ) );
+				foreach ( $forms as $form_info ) {
+					$earnings['earnings'][ $i ] = array( $form_info->post_name => give_get_form_earnings_stats( $form_info->ID ) );
 					$i ++;
 				}
 			} else {
-				if ( get_post_type( $args['product'] ) == 'give_forms' ) {
-					$product_info            = get_post( $args['product'] );
-					$earnings['earnings'][0] = array( $product_info->post_name => give_get_download_earnings_stats( $args['product'] ) );
+				if ( get_post_type( $args['form'] ) == 'give_forms' ) {
+					$form_info               = get_post( $args['form'] );
+					$earnings['earnings'][0] = array( $form_info->post_name => give_get_form_earnings_stats( $args['form'] ) );
 				} else {
-					$error['error'] = sprintf( __( 'Product %s not found!', 'give' ), $args['product'] );
+					$error['error'] = sprintf( __( 'Form %s not found!', 'give' ), $args['form'] );
 				}
 			}
 
@@ -1328,12 +1317,12 @@ class Give_API {
 	 * @since  1.1
 	 * @return array
 	 */
-	public function get_recent_sales() {
+	public function get_recent_donations() {
 		global $wp_query;
 
 		$sales = array();
 
-		if ( ! user_can( $this->user_id, 'view_shop_reports' ) && ! $this->override ) {
+		if ( ! user_can( $this->user_id, 'view_give_reports' ) && ! $this->override ) {
 			return $sales;
 		}
 
@@ -1364,145 +1353,39 @@ class Give_API {
 			foreach ( $query as $payment ) {
 				$payment_meta = give_get_payment_meta( $payment->ID );
 				$user_info    = give_get_payment_meta_user_info( $payment->ID );
-				$cart_items   = give_get_payment_meta_cart_details( $payment->ID );
 
-				$sales['sales'][ $i ]['ID']             = give_get_payment_number( $payment->ID );
-				$sales['sales'][ $i ]['transaction_id'] = give_get_payment_transaction_id( $payment->ID );
-				$sales['sales'][ $i ]['key']            = give_get_payment_key( $payment->ID );
-				$sales['sales'][ $i ]['discount']       = isset( $user_info['discount'] ) && $user_info['discount'] != 'none' ? explode( ',', $user_info['discount'] ) : array();
-				$sales['sales'][ $i ]['subtotal']       = give_get_payment_subtotal( $payment->ID );
-				$sales['sales'][ $i ]['tax']            = give_get_payment_tax( $payment->ID );
-				$sales['sales'][ $i ]['fees']           = give_get_payment_fees( $payment->ID );
-				$sales['sales'][ $i ]['total']          = give_get_payment_amount( $payment->ID );
-				$sales['sales'][ $i ]['gateway']        = give_get_payment_gateway( $payment->ID );
-				$sales['sales'][ $i ]['email']          = give_get_payment_user_email( $payment->ID );
-				$sales['sales'][ $i ]['date']           = $payment->post_date;
-				$sales['sales'][ $i ]['products']       = array();
+				$sales['donations'][ $i ]['ID']             = give_get_payment_number( $payment->ID );
+				$sales['donations'][ $i ]['transaction_id'] = give_get_payment_transaction_id( $payment->ID );
+				$sales['donations'][ $i ]['key']            = give_get_payment_key( $payment->ID );
+				$sales['donations'][ $i ]['total']          = give_get_payment_amount( $payment->ID );
+				$sales['donations'][ $i ]['gateway']        = give_get_payment_gateway( $payment->ID );
+				$sales['donations'][ $i ]['email']          = give_get_payment_user_email( $payment->ID );
+				$sales['donations'][ $i ]['date']           = $payment->post_date;
 
-				$c = 0;
 
-				foreach ( $cart_items as $key => $item ) {
+				$form_id  = isset( $payment_meta['form_id'] ) ? $payment_meta['form_id'] : $payment_meta;
+				$price    = isset( $payment_meta['form_id'] ) ? give_get_form_price( $payment_meta['form_id'] ) : false;
+				$price_id = isset( $payment_meta['price_id'] ) ? $payment_meta['price_id'] : null;
 
-					$item_id  = isset( $item['id'] ) ? $item['id'] : $item;
-					$price    = isset( $item['price'] ) ? $item['price'] : false;
-					$price_id = isset( $item['item_number']['options']['price_id'] ) ? $item['item_number']['options']['price_id'] : null;
-					$quantity = isset( $item['quantity'] ) && $item['quantity'] > 0 ? $item['quantity'] : 1;
+				$sales['donations'][ $i ]['form']['id']    = $form_id;
+				$sales['donations'][ $i ]['form']['name']  = get_the_title( $payment_meta['form_id'] );
+				$sales['donations'][ $i ]['form']['price'] = $price;
 
-					if ( ! $price ) {
-						// This function is only used on payments with near 1.0 cart data structure
-						$price = give_get_download_final_price( $item_id, $user_info, null );
+				if ( give_has_variable_prices( $form_id ) ) {
+					if ( isset( $payment_meta['price_id'] ) ) {
+						$price_name                                     = give_get_price_option_name( $form_id, $payment_meta['price_id'], $payment->ID );
+						$sales['donations'][ $i ]['form']['price_name'] = $price_name;
+						$sales['donations'][ $i ]['form']['price']      = give_get_price_option_amount( $form_id, $price_id );
+
 					}
-
-					$price_name = '';
-					if ( isset( $item['item_number'] ) && isset( $item['item_number']['options'] ) ) {
-						$price_options = $item['item_number']['options'];
-						if ( isset( $price_options['price_id'] ) ) {
-							$price_name = give_get_price_option_name( $item['id'], $price_options['price_id'], $payment->ID );
-						}
-					}
-
-					$sales['sales'][ $i ]['products'][ $c ]['quantity']   = $quantity;
-					$sales['sales'][ $i ]['products'][ $c ]['name']       = get_the_title( $item['id'] );
-					$sales['sales'][ $i ]['products'][ $c ]['price']      = $price;
-					$sales['sales'][ $i ]['products'][ $c ]['price_name'] = $price_name;
-					$c ++;
 				}
+
 
 				$i ++;
 			}
 		}
 
 		return $sales;
-	}
-
-	/**
-	 * Process Get Discounts API Request
-	 *
-	 * @access public
-	 * @since  1.6
-	 * @global object $wpdb     Used to query the database using the WordPress
-	 *                          Database API
-	 *
-	 * @param int     $discount Discount ID
-	 *
-	 * @return array $discounts Multidimensional array of the discounts
-	 */
-	public function get_discounts( $discount = null ) {
-
-		$discount_list = array();
-
-		if ( ! user_can( $this->user_id, 'manage_shop_discounts' ) && ! $this->override ) {
-			return $discount_list;
-		}
-		$error = array();
-
-		if ( empty( $discount ) ) {
-
-			global $wpdb;
-
-			$paged     = $this->get_paged();
-			$per_page  = $this->per_page();
-			$discounts = give_get_discounts( array( 'posts_per_page' => $per_page, 'paged' => $paged ) );
-			$count     = 0;
-
-			if ( empty( $discounts ) ) {
-				$error['error'] = __( 'No discounts found!', 'give' );
-
-				return $error;
-			}
-
-			foreach ( $discounts as $discount ) {
-
-				$discount_list['discounts'][ $count ]['ID']                    = $discount->ID;
-				$discount_list['discounts'][ $count ]['name']                  = $discount->post_title;
-				$discount_list['discounts'][ $count ]['code']                  = give_get_discount_code( $discount->ID );
-				$discount_list['discounts'][ $count ]['amount']                = give_get_discount_amount( $discount->ID );
-				$discount_list['discounts'][ $count ]['min_price']             = give_get_discount_min_price( $discount->ID );
-				$discount_list['discounts'][ $count ]['type']                  = give_get_discount_type( $discount->ID );
-				$discount_list['discounts'][ $count ]['uses']                  = give_get_discount_uses( $discount->ID );
-				$discount_list['discounts'][ $count ]['max_uses']              = give_get_discount_max_uses( $discount->ID );
-				$discount_list['discounts'][ $count ]['start_date']            = give_get_discount_start_date( $discount->ID );
-				$discount_list['discounts'][ $count ]['exp_date']              = give_get_discount_expiration( $discount->ID );
-				$discount_list['discounts'][ $count ]['status']                = $discount->post_status;
-				$discount_list['discounts'][ $count ]['product_requirements']  = give_get_discount_product_reqs( $discount->ID );
-				$discount_list['discounts'][ $count ]['requirement_condition'] = give_get_discount_product_condition( $discount->ID );
-				$discount_list['discounts'][ $count ]['global_discount']       = give_is_discount_not_global( $discount->ID );
-				$discount_list['discounts'][ $count ]['single_use']            = give_discount_is_single_use( $discount->ID );
-
-				$count ++;
-			}
-
-		} else {
-
-			if ( is_numeric( $discount ) && get_post( $discount ) ) {
-
-				$discount_list['discounts'][0]['ID']                    = $discount;
-				$discount_list['discounts'][0]['name']                  = get_post_field( 'post_title', $discount );
-				$discount_list['discounts'][0]['code']                  = give_get_discount_code( $discount );
-				$discount_list['discounts'][0]['amount']                = give_get_discount_amount( $discount );
-				$discount_list['discounts'][0]['min_price']             = give_get_discount_min_price( $discount );
-				$discount_list['discounts'][0]['type']                  = give_get_discount_type( $discount );
-				$discount_list['discounts'][0]['uses']                  = give_get_discount_uses( $discount );
-				$discount_list['discounts'][0]['max_uses']              = give_get_discount_max_uses( $discount );
-				$discount_list['discounts'][0]['start_date']            = give_get_discount_start_date( $discount );
-				$discount_list['discounts'][0]['exp_date']              = give_get_discount_expiration( $discount );
-				$discount_list['discounts'][0]['status']                = get_post_field( 'post_status', $discount );
-				$discount_list['discounts'][0]['product_requirements']  = give_get_discount_product_reqs( $discount );
-				$discount_list['discounts'][0]['requirement_condition'] = give_get_discount_product_condition( $discount );
-				$discount_list['discounts'][0]['global_discount']       = give_is_discount_not_global( $discount );
-				$discount_list['discounts'][0]['single_use']            = give_discount_is_single_use( $discount );
-
-			} else {
-
-				$error['error'] = sprintf( __( 'Discount %s not found!', 'give' ), $discount );
-
-				return $error;
-
-			}
-
-		}
-
-		return $discount_list;
 	}
 
 	/**
@@ -1548,7 +1431,7 @@ class Give_API {
 			'token'       => isset( $wp_query->query_vars['token'] ) ? $wp_query->query_vars['token'] : null,
 			'query'       => isset( $wp_query->query_vars['query'] ) ? $wp_query->query_vars['query'] : null,
 			'type'        => isset( $wp_query->query_vars['type'] ) ? $wp_query->query_vars['type'] : null,
-			'product'     => isset( $wp_query->query_vars['product'] ) ? $wp_query->query_vars['product'] : null,
+			'form'        => isset( $wp_query->query_vars['form'] ) ? $wp_query->query_vars['form'] : null,
 			'customer'    => isset( $wp_query->query_vars['customer'] ) ? $wp_query->query_vars['customer'] : null,
 			'date'        => isset( $wp_query->query_vars['date'] ) ? $wp_query->query_vars['date'] : null,
 			'startdate'   => isset( $wp_query->query_vars['startdate'] ) ? $wp_query->query_vars['startdate'] : null,
@@ -1581,7 +1464,7 @@ class Give_API {
 	 * Retrieve the output data
 	 *
 	 * @access public
-	 * @since  1.1.2
+	 * @since  1.1
 	 * @return array
 	 */
 	public function get_output() {

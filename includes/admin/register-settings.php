@@ -1024,6 +1024,12 @@ function give_api_callback() {
 			'https://givewp.com/addons/zapier/'
 		); ?>
 	</p>
+
+	<style>
+		.give_forms_page_give-settings .give-submit-wrap {
+			display: none; /* Hide Save settings button on System Info Tab (not needed) */
+		}
+	</style>
 	<?php
 
 	do_action( 'give_tools_api_keys_after' );
