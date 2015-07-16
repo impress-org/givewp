@@ -197,7 +197,7 @@ class Give_API {
 		$vars[] = 'date';
 		$vars[] = 'startdate';
 		$vars[] = 'enddate';
-		$vars[] = 'customer';
+		$vars[] = 'donor';
 		$vars[] = 'format';
 		$vars[] = 'id';
 		$vars[] = 'purchasekey';
@@ -542,9 +542,9 @@ class Give_API {
 
 				break;
 
-			case 'customers' :
+			case 'donors' :
 
-				$customer = isset( $wp_query->query_vars['customer'] ) ? $wp_query->query_vars['customer'] : null;
+				$customer = isset( $wp_query->query_vars['donor'] ) ? $wp_query->query_vars['donor'] : null;
 
 				$data = $this->routes->get_customers( $customer );
 
@@ -599,9 +599,8 @@ class Give_API {
 		$accepted = apply_filters( 'give_api_valid_query_modes', array(
 			'stats',
 			'forms',
-			'customers',
-			'donations',
-			'discounts'
+			'donors',
+			'donations'
 		) );
 
 		$query = isset( $wp_query->query_vars['give-api'] ) ? $wp_query->query_vars['give-api'] : null;
@@ -648,7 +647,7 @@ class Give_API {
 
 		$per_page = isset( $wp_query->query_vars['number'] ) ? $wp_query->query_vars['number'] : 10;
 
-		if ( $per_page < 0 && $this->get_query_mode() == 'customers' ) {
+		if ( $per_page < 0 && $this->get_query_mode() == 'donors' ) {
 			$per_page = 99999999;
 		} // Customers query doesn't support -1
 
@@ -887,32 +886,27 @@ class Give_API {
 					$last_name = implode( ' ', $names );
 				}
 
-				$customers['customers'][ $customer_count ]['info']['id']           = '';
-				$customers['customers'][ $customer_count ]['info']['user_id']      = '';
-				$customers['customers'][ $customer_count ]['info']['username']     = '';
-				$customers['customers'][ $customer_count ]['info']['display_name'] = '';
-				$customers['customers'][ $customer_count ]['info']['customer_id']  = $customer_obj->id;
-				$customers['customers'][ $customer_count ]['info']['first_name']   = $first_name;
-				$customers['customers'][ $customer_count ]['info']['last_name']    = $last_name;
-				$customers['customers'][ $customer_count ]['info']['email']        = $customer_obj->email;
+				$customers['donors'][ $customer_count ]['info']['user_id']      = '';
+				$customers['donors'][ $customer_count ]['info']['username']     = '';
+				$customers['donors'][ $customer_count ]['info']['display_name'] = '';
+				$customers['donors'][ $customer_count ]['info']['customer_id']  = $customer_obj->id;
+				$customers['donors'][ $customer_count ]['info']['first_name']   = $first_name;
+				$customers['donors'][ $customer_count ]['info']['last_name']    = $last_name;
+				$customers['donors'][ $customer_count ]['info']['email']        = $customer_obj->email;
 
 				if ( ! empty( $customer_obj->user_id ) ) {
 
 					$user_data = get_userdata( $customer_obj->user_id );
 
 					// Customer with registered account
-
-					// id is going to get deprecated in the future, user user_id or customer_id instead
-					$customers['customers'][ $customer_count ]['info']['id']           = $customer_obj->user_id;
-					$customers['customers'][ $customer_count ]['info']['user_id']      = $customer_obj->user_id;
-					$customers['customers'][ $customer_count ]['info']['username']     = $user_data->user_login;
-					$customers['customers'][ $customer_count ]['info']['display_name'] = $user_data->display_name;
+					$customers['donors'][ $customer_count ]['info']['user_id']      = $customer_obj->user_id;
+					$customers['donors'][ $customer_count ]['info']['username']     = $user_data->user_login;
+					$customers['donors'][ $customer_count ]['info']['display_name'] = $user_data->display_name;
 
 				}
 
-				$customers['customers'][ $customer_count ]['stats']['total_purchases'] = $customer_obj->purchase_count;
-				$customers['customers'][ $customer_count ]['stats']['total_spent']     = $customer_obj->purchase_value;
-				$customers['customers'][ $customer_count ]['stats']['total_downloads'] = give_count_file_downloads_of_user( $customer_obj->email );
+				$customers['donors'][ $customer_count ]['stats']['total_donations'] = $customer_obj->purchase_count;
+				$customers['donors'][ $customer_count ]['stats']['total_spent']     = $customer_obj->purchase_value;
 
 				$customer_count ++;
 
@@ -920,13 +914,13 @@ class Give_API {
 
 		} elseif ( $customer ) {
 
-			$error['error'] = sprintf( __( 'Customer %s not found!', 'give' ), $customer );
+			$error['error'] = sprintf( __( 'Donor %s not found!', 'give' ), $customer );
 
 			return $error;
 
 		} else {
 
-			$error['error'] = __( 'No customers found!', 'give' );
+			$error['error'] = __( 'No donors found!', 'give' );
 
 			return $error;
 
@@ -1078,6 +1072,7 @@ class Give_API {
 		}
 
 		if ( $args['type'] == 'donations' ) {
+
 			if ( $args['form'] == null ) {
 				if ( $args['date'] == null ) {
 					$sales = $this->get_default_sales_stats();
@@ -1158,22 +1153,22 @@ class Give_API {
 							$month ++;
 						endwhile;
 
-						$sales['sales'][ $args['date'] ] = $sales_count;
+						$sales['donations'][ $args['date'] ] = $sales_count;
 					} else {
-						$sales['sales'][ $args['date'] ] = give_get_sales_by_date( $dates['day'], $dates['m_start'], $dates['year'] );
+						$sales['donations'][ $args['date'] ] = give_get_sales_by_date( $dates['day'], $dates['m_start'], $dates['year'] );
 					}
 				}
 			} elseif ( $args['form'] == 'all' ) {
 				$forms = get_posts( array( 'post_type' => 'give_forms', 'nopaging' => true ) );
 				$i     = 0;
 				foreach ( $forms as $form_info ) {
-					$sales['sales'][ $i ] = array( $form_info->post_name => give_get_form_sales_stats( $form_info->ID ) );
+					$sales['donations'][ $i ] = array( $form_info->post_name => give_get_form_sales_stats( $form_info->ID ) );
 					$i ++;
 				}
 			} else {
 				if ( get_post_type( $args['form'] ) == 'give_forms' ) {
-					$form_info         = get_post( $args['form'] );
-					$sales['sales'][0] = array( $form_info->post_name => give_get_form_sales_stats( $args['form'] ) );
+					$form_info             = get_post( $args['form'] );
+					$sales['donations'][0] = array( $form_info->post_name => give_get_form_sales_stats( $args['form'] ) );
 				} else {
 					$error['error'] = sprintf( __( 'Product %s not found!', 'give' ), $args['form'] );
 				}
@@ -1184,6 +1179,7 @@ class Give_API {
 			}
 
 			return $sales;
+
 		} elseif ( $args['type'] == 'earnings' ) {
 			if ( $args['form'] == null ) {
 				if ( $args['date'] == null ) {
@@ -1296,9 +1292,9 @@ class Give_API {
 			}
 
 			return $earnings;
-		} elseif ( $args['type'] == 'customers' ) {
-			$customers                             = new Give_DB_Customers();
-			$stats['customers']['total_customers'] = $customers->count();
+		} elseif ( $args['type'] == 'donors' ) {
+			$customers                          = new Give_DB_Customers();
+			$stats['donations']['total_donors'] = $customers->count();
 
 			return $stats;
 
@@ -1812,11 +1808,11 @@ class Give_API {
 	private function get_default_sales_stats() {
 
 		// Default sales return
-		$sales                           = array();
-		$sales['sales']['today']         = $this->stats->get_sales( 0, 'today' );
-		$sales['sales']['current_month'] = $this->stats->get_sales( 0, 'this_month' );
-		$sales['sales']['last_month']    = $this->stats->get_sales( 0, 'last_month' );
-		$sales['sales']['totals']        = give_get_total_sales();
+		$sales                               = array();
+		$sales['donations']['today']         = $this->stats->get_sales( 0, 'today' );
+		$sales['donations']['current_month'] = $this->stats->get_sales( 0, 'this_month' );
+		$sales['donations']['last_month']    = $this->stats->get_sales( 0, 'last_month' );
+		$sales['donations']['totals']        = give_get_total_sales();
 
 		return $sales;
 	}
