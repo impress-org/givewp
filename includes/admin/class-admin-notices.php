@@ -29,8 +29,37 @@ class Give_Notices {
 	public function __construct() {
 		add_action( 'admin_notices', array( $this, 'show_notices' ) );
 		add_action( 'give_dismiss_notices', array( $this, 'dismiss_notices' ) );
+
+
+		add_action( 'admin_bar_menu', array( $this, 'give_admin_bar_menu' ), 1000 );
+
+
 	}
 
+
+	/**
+	 *
+	 * Display admin bar when active
+	 *
+	 * @return bool
+	 */
+	public function give_admin_bar_menu() {
+		global $wp_admin_bar;
+
+		if ( ! give_is_test_mode() && current_user_can( 'view_give_reports' ) ) {
+			return false;
+		}
+
+		//Add the main siteadmin menu item
+		$wp_admin_bar->add_menu( array(
+			'id'     => 'give-test-notice',
+			'href'   => admin_url() . 'edit.php?post_type=give_forms&page=give-settings&tab=gateways',
+			'parent' => 'top-secondary',
+			'title'  => __( 'Give Test Mode Active', 'give' ),
+			'meta'   => array( 'class' => 'give-test-mode-active' ),
+		) );
+
+	}
 
 	/**
 	 * Show relevant notices
@@ -42,10 +71,6 @@ class Give_Notices {
 			'updated' => array(),
 			'error'   => array()
 		);
-		//Global Messages
-		if ( isset( $_GET['page'] ) && give_is_admin_page() && current_user_can( 'view_give_reports' ) && give_is_test_mode() ) {
-			add_settings_error( 'give-notices', 'give-payment-sent', sprintf( __( 'Note: Test Mode is enabled, only test donations are being displayed. <a href="%s">View Settings</a>', 'give' ), admin_url( 'edit.php?post_type=give_forms&page=give-settings' ) ), 'updated' );
-		}
 
 		if ( ! give_test_ajax_works() && ! get_user_meta( get_current_user_id(), '_give_admin_ajax_inaccessible_dismissed', true ) && current_user_can( 'manage_give_settings' ) ) {
 			echo '<div class="error">';

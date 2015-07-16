@@ -1,0 +1,9 @@
+#wpadminbar .give-test-mode-active > .ab-item{
+	color:#fff;
+	background-color: #ffba00;
+}
+
+#wpadminbar .give-test-mode-active:hover > .ab-item, #wpadminbar .give-test-mode-active:hover > .ab-item{
+	background-color: rgba(203, 144, 0, 1) !important;
+	color: #fff !important;
+}

@@ -180,10 +180,6 @@ add_action( 'wp_enqueue_scripts', 'give_register_styles' );
  */
 function give_load_admin_scripts( $hook ) {
 
-	if ( ! apply_filters( 'give_load_admin_scripts', give_is_admin_page(), $hook ) ) {
-		return;
-	}
-
 	global $wp_version, $post, $post_type;
 
 	//Directories of assets
@@ -193,6 +189,15 @@ function give_load_admin_scripts( $hook ) {
 
 	// Use minified libraries if SCRIPT_DEBUG is turned off
 	$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
+	//Global Admin:
+	wp_register_style( 'give-admin-bar-notification', $css_dir . 'adminbar-style.css' );
+	wp_enqueue_style( 'give-admin-bar-notification' );
+
+	//Give Admin Only:
+	if ( ! apply_filters( 'give_load_admin_scripts', give_is_admin_page(), $hook ) ) {
+		return;
+	}
 
 	//CSS
 	wp_register_style( 'jquery-ui-css', $css_dir . 'jquery-ui-fresh' . $suffix . '.css' );
