@@ -1019,7 +1019,7 @@ function give_api_callback() {
 	?>
 	<p>
 		<?php printf(
-			__( 'API keys allow users to use the <a href="%s">Give REST API</a> to retrieve donation data in JSON or XML for external applications or devices, such as the <a href="%s">Zapier</a>.', 'give' ),
+			__( 'API keys allow users to use the <a href="%s">Give REST API</a> to retrieve donation data in JSON or XML for external applications or devices, such as <a href="%s">Zapier</a>.', 'give' ),
 			'https://givewp.com/documentation/give-api-reference/',
 			'https://givewp.com/addons/zapier/'
 		); ?>
