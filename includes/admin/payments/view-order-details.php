@@ -300,10 +300,10 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 										<div class="column">
 											<?php if ( ! empty( $customer->id ) ) : ?>
 												<?php $customer_url = admin_url( 'edit.php?post_type=give_forms&page=give-customers&view=overview&id=' . $customer->id ); ?>
-												<a href="<?php echo $customer_url; ?>" title="<?php _e( 'View Customer Details', 'give' ); ?>"><?php _e( 'View Customer Details', 'give' ); ?></a>
+												<a href="<?php echo $customer_url; ?>" title="<?php _e( 'View Donor Details', 'give' ); ?>"><?php _e( 'View Donor Details', 'give' ); ?></a>
 												&nbsp;|&nbsp;
 											<?php endif; ?>
-											<a href="#new" class="give-payment-new-customer" title="<?php _e( 'New Customer', 'give' ); ?>"><?php _e( 'New Customer', 'give' ); ?></a>
+											<a href="#new" class="give-payment-new-customer" title="<?php _e( 'New Donor', 'give' ); ?>"><?php _e( 'New Donor', 'give' ); ?></a>
 										</div>
 									</div>
 
