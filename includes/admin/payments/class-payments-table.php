@@ -425,8 +425,6 @@ class Give_Payment_History_Table extends WP_List_Table {
 			'set-status-revoked'     => __( 'Set To Revoked', 'give' ),
 			'set-status-failed'      => __( 'Set To Failed', 'give' ),
 			'set-status-abandoned'   => __( 'Set To Abandoned', 'give' ),
-			'set-status-preapproval' => __( 'Set To Preapproval', 'give' ),
-			'set-status-cancelled'   => __( 'Set To Cancelled', 'give' ),
 			'resend-receipt'         => __( 'Resend Email Receipts', 'give' )
 		);
 
@@ -453,6 +451,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 		}
 
 		foreach ( $ids as $id ) {
+
 			// Detect when a bulk action is being triggered...
 			if ( 'delete' === $this->current_action() ) {
 				give_delete_purchase( $id );
@@ -480,14 +479,6 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 			if ( 'set-status-abandoned' === $this->current_action() ) {
 				give_update_payment_status( $id, 'abandoned' );
-			}
-
-			if ( 'set-status-preapproval' === $this->current_action() ) {
-				give_update_payment_status( $id, 'preapproval' );
-			}
-
-			if ( 'set-status-cancelled' === $this->current_action() ) {
-				give_update_payment_status( $id, 'cancelled' );
 			}
 
 			if ( 'resend-receipt' === $this->current_action() ) {

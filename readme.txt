@@ -129,9 +129,10 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 == Changelog ==
 
 = 1.1 =
-* New: A front-facing JSON/XML API that makes it possible to query donation data directly from your WordPress site.
+* New: A front-facing JSON/XML API that makes it possible to query donation data directly from your WordPress site; this corresponds with the Zapier Add-on for Give: http://givewp.com/addons/zapier/
 * New: Added warning to frontend donation forms when test mode is enabled
 * Tweak: Moved the "Test Mode" option out from General Settings to Payment Gateways > Gateway Settings from better visibility
+* Tweak: Removed "Cancelled" and "Pre-Approved" payment statuses; "Failed" and "Pending" statuses should be used in their place.
 
 = 1.0.1 =
 * Fix: Admin fatal error call to undefined method "get_donors" when it should've actually been "get_customers"

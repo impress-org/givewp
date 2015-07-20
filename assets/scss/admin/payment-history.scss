@@ -139,14 +139,6 @@ Status Colors
 	background-color: $status-revoked;
   }
 
-  &.status-preapproved > span, &.status-preapproval > span {
-	background-color: $status-preapproved;
-  }
-
-  &.status-cancelled > span {
-	background-color: $status-cancelled;
-  }
-
   &.status-subscription > span, &.status-give_subscription > span {
 	background-color: $status-subscription;
   }

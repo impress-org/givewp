@@ -548,8 +548,9 @@ function give_get_payment_statuses() {
 		'publish'     => __( 'Complete', 'give' ),
 		'refunded'    => __( 'Refunded', 'give' ),
 		'failed'      => __( 'Failed', 'give' ),
+		'cancelled'   => __( 'Cancelled', 'give' ),
 		'abandoned'   => __( 'Abandoned', 'give' ),
-		'preapproval' => __( 'PreApproval', 'give' ),
+		'preapproval' => __( 'Pre-Approved', 'give' ),
 		'revoked'     => __( 'Revoked', 'give' )
 	);
 

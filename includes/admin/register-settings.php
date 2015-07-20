@@ -190,7 +190,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name'    => __( 'Failed Transaction Page', 'give' ),
-							'desc'    => __( 'This is the page donators are sent to if their transaction is cancelled or fails.', 'give' ),
+							'desc'    => __( 'This is the page donors are sent to if their transaction is cancelled or fails.', 'give' ),
 							'id'      => 'failure_page',
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(

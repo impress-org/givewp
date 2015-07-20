@@ -36,8 +36,8 @@ function give_update_payment_details( $data ) {
 	$meta      = give_get_payment_meta( $payment_id );
 	$user_info = give_get_payment_meta_user_info( $payment_id );
 
-	$status  = $data['give-payment-status'];
-	$user_id = intval( $data['give-payment-user-id'] );
+	$status = $data['give-payment-status'];
+	$user_id = isset( $data['give-payment-user-id'] ) ? intval( $data['give-payment-user-id'] ) : '';
 	$date    = sanitize_text_field( $data['give-payment-date'] );
 	$hour    = sanitize_text_field( $data['give-payment-time-hour'] );
 

@@ -76,7 +76,6 @@ table#give_donation_receipt {
   }
 
   .give_receipt_payment_status.pending,
-  .give_receipt_payment_status.cancelled,
   .give_receipt_payment_status.revoked,
   .give_receipt_payment_status.failed {
     color: #f73f2e;
