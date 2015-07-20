@@ -280,8 +280,8 @@ function give_delete_purchase( $payment_id = 0 ) {
 
 	give_undo_purchase( $form_id, $payment_id );
 
-	$amount      = give_get_payment_amount( $payment_id );
-	$status      = $post->post_status;
+	$amount   = give_get_payment_amount( $payment_id );
+	$status   = $post->post_status;
 	$donor_id = give_get_payment_customer_id( $payment_id );
 
 	if ( $status == 'revoked' || $status == 'publish' ) {
@@ -544,12 +544,13 @@ function give_get_payment_status( $payment, $return_label = false ) {
  */
 function give_get_payment_statuses() {
 	$payment_statuses = array(
-		'pending'   => __( 'Pending', 'give' ),
-		'publish'   => __( 'Complete', 'give' ),
-		'refunded'  => __( 'Refunded', 'give' ),
-		'failed'    => __( 'Failed', 'give' ),
-		'abandoned' => __( 'Abandoned', 'give' ),
-		'revoked'   => __( 'Revoked', 'give' )
+		'pending'     => __( 'Pending', 'give' ),
+		'publish'     => __( 'Complete', 'give' ),
+		'refunded'    => __( 'Refunded', 'give' ),
+		'failed'      => __( 'Failed', 'give' ),
+		'abandoned'   => __( 'Abandoned', 'give' ),
+		'preapproval' => __( 'PreApproval', 'give' ),
+		'revoked'     => __( 'Revoked', 'give' )
 	);
 
 	return apply_filters( 'give_payment_statuses', $payment_statuses );
@@ -625,7 +626,7 @@ function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour
 }
 
 /**
- * Get Sales By Date
+ * Get Donations (sales) By Date
  *
  * @since  1.0
  *
@@ -664,7 +665,7 @@ function give_get_sales_by_date( $day = null, $month_num = null, $year = null, $
 	$args = apply_filters( 'give_get_sales_by_date_args', $args );
 
 	$key   = md5( serialize( $args ) );
-	$count = get_transient( $key, 'give' );
+	$count = get_transient( $key );
 
 	if ( false === $count ) {
 		$sales = new WP_Query( $args );
