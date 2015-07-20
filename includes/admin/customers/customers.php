@@ -567,7 +567,7 @@ function give_customers_delete_view( $customer ) {
 				<span class="delete-customer-options">
 					<p>
 						<?php echo Give()->html->checkbox( array( 'name' => 'give-customer-delete-confirm' ) ); ?>
-						<label for="give-customer-delete-confirm"><?php _e( 'Are you sure you want to delete this customer?', 'give' ); ?></label>
+						<label for="give-customer-delete-confirm"><?php _e( 'Are you sure you want to delete this donor?', 'give' ); ?></label>
 					</p>
 
 					<p>
