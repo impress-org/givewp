@@ -59,20 +59,6 @@ class Give_Donate_Form {
 	private $earnings;
 
 	/**
-	 * The form's notes
-	 *
-	 * @since 1.0
-	 */
-	private $notes;
-
-	/**
-	 * The form's purchase button behavior
-	 *
-	 * @since 1.0
-	 */
-	private $button_behavior;
-
-	/**
 	 * Get things going
 	 *
 	 * @since 1.0
