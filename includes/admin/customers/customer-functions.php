@@ -69,7 +69,7 @@ add_filter( 'give_customer_tabs', 'give_register_default_customer_tabs', 1, 1 );
  */
 function give_register_delete_customer_tab( $tabs ) {
 
-	$tabs['delete'] = array( 'dashicon' => 'dashicons-trash', 'title' => __( 'Delete Customer', 'give' ) );
+	$tabs['delete'] = array( 'dashicon' => 'dashicons-trash', 'title' => __( 'Delete Donor', 'give' ) );
 
 	return $tabs;
 }
