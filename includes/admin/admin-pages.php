@@ -77,13 +77,13 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 
 	global $pagenow, $typenow;
 
-	$found       = false;
-	$post_type   = isset( $_GET['post_type'] ) ? strtolower( $_GET['post_type'] ) : false;
-	$action      = isset( $_GET['action'] ) ? strtolower( $_GET['action'] ) : false;
-	$taxonomy    = isset( $_GET['taxonomy'] ) ? strtolower( $_GET['taxonomy'] ) : false;
-	$page        = isset( $_GET['page'] ) ? strtolower( $_GET['page'] ) : false;
-	$view        = isset( $_GET['view'] ) ? strtolower( $_GET['view'] ) : false;
-	$tab         = isset( $_GET['tab'] ) ? strtolower( $_GET['tab'] ) : false;
+	$found     = false;
+	$post_type = isset( $_GET['post_type'] ) ? strtolower( $_GET['post_type'] ) : false;
+	$action    = isset( $_GET['action'] ) ? strtolower( $_GET['action'] ) : false;
+	$taxonomy  = isset( $_GET['taxonomy'] ) ? strtolower( $_GET['taxonomy'] ) : false;
+	$page      = isset( $_GET['page'] ) ? strtolower( $_GET['page'] ) : false;
+	$view      = isset( $_GET['view'] ) ? strtolower( $_GET['view'] ) : false;
+	$tab       = isset( $_GET['tab'] ) ? strtolower( $_GET['tab'] ) : false;
 
 	switch ( $passed_page ) {
 		case 'give_forms':
@@ -271,22 +271,22 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 		case 'customers':
 			switch ( $passed_view ) {
 				case 'list-table':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-customers' === $page && false === $view ) {
+					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-donors' === $page && false === $view ) {
 						$found = true;
 					}
 					break;
 				case 'overview':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-customers' === $page && 'overview' === $view ) {
+					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-donors' === $page && 'overview' === $view ) {
 						$found = true;
 					}
 					break;
 				case 'notes':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-customers' === $page && 'notes' === $view ) {
+					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-donors' === $page && 'notes' === $view ) {
 						$found = true;
 					}
 					break;
 				default:
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-customers' === $page ) {
+					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-donors' === $page ) {
 						$found = true;
 					}
 					break;
