@@ -74,6 +74,19 @@ function give_process_paypal_purchase( $purchase_data ) {
 		// Get the PayPal redirect uri
 		$paypal_redirect = trailingslashit( give_get_paypal_redirect() ) . '?';
 
+		//Item name - pass level name if variable priced
+		$item_name = $purchase_data['post_data']['give-form-title'];
+		if ( give_has_variable_prices( $purchase_data['post_data']['give-form-id'] ) && isset( $purchase_data['post_data']['give-price-id'] ) ) {
+
+			$item_price_level_text = give_get_price_option_name( $purchase_data['post_data']['give-form-id'], $purchase_data['post_data']['give-price-id'] );
+
+			//Is there any donation level text?
+			if(!empty($item_price_level_text)) {
+				$item_name = ' - ' . $item_price_level_text;
+			}
+			
+		}
+
 		// Setup PayPal arguments
 		$paypal_args = array(
 			'business'      => give_get_option( 'paypal_email', false ),
@@ -81,7 +94,7 @@ function give_process_paypal_purchase( $purchase_data ) {
 			'invoice'       => $purchase_data['purchase_key'],
 			'amount'        => $purchase_data['price'],
 			// The all important donation amount
-			'item_name'     => $purchase_data['post_data']['give-form-title'],
+			'item_name'     => $item_name,
 			// "Purpose" field pre-populated with Form Title
 			'no_shipping'   => '1',
 			'shipping'      => '0',
@@ -441,7 +454,7 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 					break;
 
 			}
-			
+
 			if ( ! empty( $note ) ) {
 
 				give_insert_payment_note( $payment_id, $note );
