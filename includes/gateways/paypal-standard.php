@@ -84,7 +84,7 @@ function give_process_paypal_purchase( $purchase_data ) {
 			if(!empty($item_price_level_text)) {
 				$item_name = ' - ' . $item_price_level_text;
 			}
-			
+
 		}
 
 		// Setup PayPal arguments
