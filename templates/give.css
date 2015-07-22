@@ -546,7 +546,7 @@ table#give_donation_receipt li {
 table#give_donation_receipt ul {
   margin: 0;
   padding: 0; }
-table#give_donation_receipt .give_receipt_payment_status.pending, table#give_donation_receipt .give_receipt_payment_status.cancelled, table#give_donation_receipt .give_receipt_payment_status.revoked, table#give_donation_receipt .give_receipt_payment_status.failed {
+table#give_donation_receipt .give_receipt_payment_status.pending, table#give_donation_receipt .give_receipt_payment_status.revoked, table#give_donation_receipt .give_receipt_payment_status.failed {
   color: #f73f2e; }
 
 /**

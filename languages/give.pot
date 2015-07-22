@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Give - Donation Plugin 1.1\n"
 "Report-Msgid-Bugs-To: https://givewp.com/\n"
-"POT-Creation-Date: 2015-07-20 02:29:47+00:00\n"
+"POT-Creation-Date: 2015-07-22 17:42:46+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -550,7 +550,7 @@ msgid "No Donor Notes"
 msgstr ""
 
 #: includes/admin/customers/customers.php:570
-msgid "Are you sure you want to delete this customer?"
+msgid "Are you sure you want to delete this donor?"
 msgstr ""
 
 #: includes/admin/customers/customers.php:578
@@ -1022,7 +1022,7 @@ msgid "Refunded"
 msgstr ""
 
 #: includes/admin/payments/class-payments-table.php:223
-#: includes/payments/functions.php:553
+#: includes/payments/functions.php:554
 msgid "Revoked"
 msgstr ""
 
@@ -1032,7 +1032,7 @@ msgid "Failed"
 msgstr ""
 
 #: includes/admin/payments/class-payments-table.php:231
-#: includes/payments/functions.php:551
+#: includes/payments/functions.php:552
 msgid "Abandoned"
 msgstr ""
 
@@ -1058,7 +1058,7 @@ msgstr ""
 
 #: includes/admin/payments/class-payments-table.php:338
 #: includes/admin/payments/class-payments-table.php:421
-#: includes/payments/functions.php:1394
+#: includes/payments/functions.php:1395
 msgid "Delete"
 msgstr ""
 
@@ -1097,14 +1097,6 @@ msgid "Set To Abandoned"
 msgstr ""
 
 #: includes/admin/payments/class-payments-table.php:428
-msgid "Set To Preapproval"
-msgstr ""
-
-#: includes/admin/payments/class-payments-table.php:429
-msgid "Set To Cancelled"
-msgstr ""
-
-#: includes/admin/payments/class-payments-table.php:430
 msgid "Resend Email Receipts"
 msgstr ""
 
@@ -1314,7 +1306,7 @@ msgstr ""
 
 #: includes/admin/register-settings.php:193
 msgid ""
-"This is the page donators are sent to if their transaction is cancelled or "
+"This is the page donors are sent to if their transaction is cancelled or "
 "fails."
 msgstr ""
 
@@ -1830,7 +1822,7 @@ msgstr ""
 msgid ""
 "API keys allow users to use the <a href=\"%s\">Give REST API</a> to "
 "retrieve donation data in JSON or XML for external applications or devices, "
-"such as the <a href=\"%s\">Zapier</a>."
+"such as <a href=\"%s\">Zapier</a>."
 msgstr ""
 
 #: includes/admin/reporting/class-api-requests-logs-list-table.php:93
@@ -3460,114 +3452,114 @@ msgstr ""
 msgid "Payment creation failed before sending buyer to PayPal. Payment data: %s"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:228
-#: includes/gateways/paypal-standard.php:234
-#: includes/gateways/paypal-standard.php:302
-#: includes/gateways/paypal-standard.php:312
-#: includes/gateways/paypal-standard.php:361
-#: includes/gateways/paypal-standard.php:369
+#: includes/gateways/paypal-standard.php:241
+#: includes/gateways/paypal-standard.php:247
+#: includes/gateways/paypal-standard.php:315
+#: includes/gateways/paypal-standard.php:325
+#: includes/gateways/paypal-standard.php:374
+#: includes/gateways/paypal-standard.php:382
 msgid "IPN Error"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:228
-#: includes/gateways/paypal-standard.php:234
+#: includes/gateways/paypal-standard.php:241
+#: includes/gateways/paypal-standard.php:247
 msgid "Invalid IPN verification response. IPN data: %s"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:302
+#: includes/gateways/paypal-standard.php:315
 msgid "Invalid business email in IPN response. IPN data: %s"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:304
+#: includes/gateways/paypal-standard.php:317
 msgid "Payment failed due to invalid PayPal business email."
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:312
+#: includes/gateways/paypal-standard.php:325
 msgid "Invalid currency in IPN response. IPN data: %s"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:314
+#: includes/gateways/paypal-standard.php:327
 msgid "Payment failed due to invalid currency in PayPal IPN."
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:361
+#: includes/gateways/paypal-standard.php:374
 msgid "Invalid payment amount in IPN response. IPN data: %s"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:363
+#: includes/gateways/paypal-standard.php:376
 msgid "Payment failed due to invalid amount in PayPal IPN."
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:369
+#: includes/gateways/paypal-standard.php:382
 msgid "Invalid purchase key in IPN response. IPN data: %s"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:371
+#: includes/gateways/paypal-standard.php:384
 msgid "Payment failed due to invalid purchase key in PayPal IPN."
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:377
+#: includes/gateways/paypal-standard.php:390
 #: tests/helpers/class-helper-payment.php:77
 msgid "PayPal Transaction ID: %s"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:390
+#: includes/gateways/paypal-standard.php:403
 msgid "Payment made via eCheck and will clear automatically in 5-8 days"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:396
+#: includes/gateways/paypal-standard.php:409
 msgid ""
 "Payment requires a confirmed donor address and must be accepted manually "
 "through PayPal"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:402
+#: includes/gateways/paypal-standard.php:415
 msgid ""
 "Payment must be accepted manually through PayPal due to international "
 "account regulations"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:408
+#: includes/gateways/paypal-standard.php:421
 msgid ""
 "Payment received in non-shop currency and must be accepted manually through "
 "PayPal"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:415
+#: includes/gateways/paypal-standard.php:428
 msgid ""
 "Payment is being reviewed by PayPal staff as high-risk or in possible "
 "violation of government regulations"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:421
+#: includes/gateways/paypal-standard.php:434
 msgid "Payment was sent to non-confirmed or non-registered email address."
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:427
+#: includes/gateways/paypal-standard.php:440
 msgid "PayPal account must be upgraded before this payment can be accepted"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:433
+#: includes/gateways/paypal-standard.php:446
 msgid ""
 "PayPal account is not verified. Verify account in order to accept this "
 "payment"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:439
+#: includes/gateways/paypal-standard.php:452
 msgid ""
 "Payment is pending for unknown reasons. Contact PayPal support for "
 "assistance"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:482
+#: includes/gateways/paypal-standard.php:495
 msgid "Partial PayPal refund processed: %s"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:488
+#: includes/gateways/paypal-standard.php:501
 msgid "PayPal Payment #%s Refunded for reason: %s"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:489
+#: includes/gateways/paypal-standard.php:502
 msgid "PayPal Refund Transaction ID: %s"
 msgstr ""
 
@@ -3817,15 +3809,19 @@ msgstr ""
 msgid "Complete"
 msgstr ""
 
-#: includes/payments/functions.php:552
-msgid "PreApproval"
+#: includes/payments/functions.php:551
+msgid "Cancelled"
 msgstr ""
 
-#: includes/payments/functions.php:1379
+#: includes/payments/functions.php:553
+msgid "Pre-Approved"
+msgstr ""
+
+#: includes/payments/functions.php:1380
 msgid "System"
 msgstr ""
 
-#: includes/payments/functions.php:1394
+#: includes/payments/functions.php:1395
 msgid "Delete this payment note"
 msgstr ""
 

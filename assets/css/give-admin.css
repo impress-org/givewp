@@ -1222,10 +1222,6 @@ Status Colors
   background-color: #333; }
 .give-donation-status.status-revoked > span {
   background-color: #d9534f; }
-.give-donation-status.status-preapproved > span, .give-donation-status.status-preapproval > span {
-  background-color: #2ea2cc; }
-.give-donation-status.status-cancelled > span {
-  background-color: #a00; }
 .give-donation-status.status-subscription > span, .give-donation-status.status-give_subscription > span {
   background-color: #5bc0de; }
 
