@@ -134,6 +134,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Improvement: PalPal Standard now displays the multi-level text within PayPal @see: https://github.com/WordImpress/Give/issues/164
 * Tweak: Moved the "Test Mode" option out from General Settings to Payment Gateways > Gateway Settings from better visibility
 * Tweak: Removed "Cancelled" and "Pre-Approved" payment statuses; "Failed" and "Pending" statuses should be used in their place.
+* Fix: Ensure CMB2 loads text domain properly @see: https://github.com/WebDevStudios/CMB2/issues/400
 
 = 1.0.1 =
 * Fix: Admin fatal error call to undefined method "get_donors" when it should've actually been "get_customers"
