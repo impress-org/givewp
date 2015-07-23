@@ -47,7 +47,7 @@ For new users, we suggest reviewing our [documentation](https://givewp.com/docum
 
 = Zero Commission Charges =
 
-We earn money by selling add-ons. The money you raise using Give is yours to go to support your cause. Period. Add-ons are premium features that enable you to extend the functionality of Give. For example, you use one of our add-ons to accept funds through your favorite payment gateway.
+We earn money by selling add-ons. The money you raise using Give is yours to go to support your cause. Period. Add-ons are premium features that enable you to extend the functionality of Give. For example, you can use one of our add-ons to accept funds through your favorite payment gateway or send new donor emails to MailChimp. [View all add-ons](https://givewp.com/addons "View all Give add-ons") to discover all the ways you can extend Give.
 
 = Easy to Customize and Enhance =
 
@@ -58,14 +58,15 @@ Give is built by [WordImpress](http://wordimpress.com "Visit the the developers 
 Stay in touch with us for important plugin news and updates:
 
 * **[Give Website](https://givewp.com "Visit the the Give website")**
-* **[Newsletter](http://eepurl.com/bggG99 "Subscribe via MailChimp")**
+* **[Give Add-ons](https://givewp.com/addons "View all Give add-ons")**
+* **[Newsletter](http://eepurl.com/bggG99 "Subscribe to Give via MailChimp")**
 * **[Facebook](http://facebook.com/wpgive "Visit the Give on Facebook")**
 * **[GitHub](https://github.com/WordImpress/Give "Visit the the developers of Give - WordImpress")**
 * **[WordImpress](http://wordimpress.com "Visit the the developers of Give - WordImpress")**
 
 = Contribute to Give =
 
-This plugin is open source and we're always looking for more contributors. Whether you know another language, can code like no ones business, or just have an idea, we would love your help and input. To contribute to Give please head over to our website or view/fork/watch the GitHub repository to learn more about what issues we're tackling and about the project.
+This plugin is open source and we're always looking for more contributors. Whether you know another language, can code like no ones business, or just have an idea, we would love your help and input. To contribute to Give please head over to [our website](https://givewp.com "Visit the the Give website") or view/fork/watch the [GitHub repository](github.com/WordImpress/Give "Visit the the Give GitHub Repo") to learn more about what issues we're tackling and the project is developing.
 
 = A Tribute to Open Source =
 
@@ -128,6 +129,9 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 == Changelog ==
 
+= 1.2 =
+* New: API updated to include fname and lname of forms donor
+
 = 1.1 =
 * New: A front-facing JSON/XML API that makes it possible to query donation data directly from your WordPress site; this corresponds with the Zapier Add-on for Give: http://givewp.com/addons/zapier/
 * New: Added warning to frontend donation forms when test mode is enabled
@@ -150,6 +154,8 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Fix: Translation files need "give-" prepended to them to work properly @see: https://github.com/WordImpress/Give/issues/161
 * Fix: Fix PHP notice for Undefined index: _give_price. closes #159 @see: https://github.com/WordImpress/Give/issues/159 - Thanks @helgatheviking!
 * Fix: Shortcode now outputs Goals properly @see: https://wordpress.org/support/topic/goal-tracking
+* Improvement: All scripts are minified and concatenated into one script.
+* Improvement: All CSS styles are minified and concatenated into one stylesheet.
 * Improvement: Script loading now properly registers scripts and styles globally using wp_register_style & wp_register_script
 * Improvement: Removed numerous uses of the $give_options global - still more cleanup needed
 * Improvement: Modal window CSS fixes for login fields: https://github.com/WordImpress/Give/issues/60

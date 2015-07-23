@@ -1349,12 +1349,17 @@ class Give_API {
 			foreach ( $query as $payment ) {
 				$payment_meta = give_get_payment_meta( $payment->ID );
 				$user_info    = give_get_payment_meta_user_info( $payment->ID );
+				$first_name = isset( $user_info['first_name'] ) ? $user_info['first_name'] : '';
+				$last_name  = isset( $user_info['last_name'] ) ? $user_info['last_name'] : '';
 
 				$sales['donations'][ $i ]['ID']             = give_get_payment_number( $payment->ID );
 				$sales['donations'][ $i ]['transaction_id'] = give_get_payment_transaction_id( $payment->ID );
 				$sales['donations'][ $i ]['key']            = give_get_payment_key( $payment->ID );
 				$sales['donations'][ $i ]['total']          = give_get_payment_amount( $payment->ID );
 				$sales['donations'][ $i ]['gateway']        = give_get_payment_gateway( $payment->ID );
+				$sales['donations'][ $i ]['name']           = $first_name . ' ' . $last_name;
+				$sales['donations'][ $i ]['fname']          = $first_name;
+				$sales['donations'][ $i ]['lname']          = $last_name;
 				$sales['donations'][ $i ]['email']          = give_get_payment_user_email( $payment->ID );
 				$sales['donations'][ $i ]['date']           = $payment->post_date;
 
