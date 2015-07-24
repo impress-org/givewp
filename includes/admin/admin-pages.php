@@ -114,17 +114,17 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 			switch ( $passed_view ) {
 				case 'list-table':
 				case 'new':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit-tags.php' && 'edit' !== $action && 'download_category' === $taxonomy ) {
+					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit-tags.php' && 'edit' !== $action && 'give_forms_category' === $taxonomy ) {
 						$found = true;
 					}
 					break;
 				case 'edit':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit-tags.php' && 'edit' === $action && 'download_category' === $taxonomy ) {
+					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit-tags.php' && 'edit' === $action && 'give_forms_category' === $taxonomy ) {
 						$found = true;
 					}
 					break;
 				default:
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit-tags.php' && 'download_category' === $taxonomy ) {
+					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit-tags.php' && 'give_forms_category' === $taxonomy ) {
 						$found = true;
 					}
 					break;
@@ -134,17 +134,17 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 			switch ( $passed_view ) {
 				case 'list-table':
 				case 'new':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit-tags.php' && 'edit' !== $action && 'download_tax' === $taxonomy ) {
+					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit-tags.php' && 'edit' !== $action && 'give_forms_tag' === $taxonomy ) {
 						$found = true;
 					}
 					break;
 				case 'edit':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit-tags.php' && 'edit' === $action && 'download_tax' === $taxonomy ) {
+					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit-tags.php' && 'edit' === $action && 'give_forms_tag' === $taxonomy ) {
 						$found = true;
 					}
 					break;
 				default:
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit-tags.php' && 'download_tax' === $taxonomy ) {
+					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit-tags.php' && 'give_forms_tag' === $taxonomy ) {
 						$found = true;
 					}
 					break;
@@ -177,11 +177,6 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 						$found = true;
 					}
 					break;
-				case 'downloads':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-reports' === $page && 'downloads' === $view ) {
-						$found = true;
-					}
-					break;
 				case 'customers':
 					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-reports' === $page && 'customers' === $view ) {
 						$found = true;
@@ -192,18 +187,13 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 						$found = true;
 					}
 					break;
-				case 'taxes':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-reports' === $page && 'taxes' === $view ) {
-						$found = true;
-					}
-					break;
 				case 'export':
 					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-reports' === $page && 'export' === $view ) {
 						$found = true;
 					}
 					break;
 				case 'logs':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-reports' === $page && 'logs' === $ivew ) {
+					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-reports' === $page && 'logs' === $view ) {
 						$found = true;
 					}
 					break;
@@ -233,11 +223,6 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 					break;
 				case 'styles':
 					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-settings' === $page && 'styles' === $tab ) {
-						$found = true;
-					}
-					break;
-				case 'taxes':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-settings' === $page && 'taxes' === $tab ) {
 						$found = true;
 					}
 					break;
