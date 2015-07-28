@@ -61,7 +61,7 @@ add_action( 'give_payment_export', 'give_export_payment_history' );
  * @return void
  */
 function give_export_all_donors() {
-	require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/class-export-donors.php';
+	require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/class-export-customers.php';
 
 	$donor_export = new Give_Donors_Export();
 

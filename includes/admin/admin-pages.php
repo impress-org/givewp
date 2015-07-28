@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function give_add_options_links() {
-	global $give_settings_page, $give_payments_page, $give_campaigns_page, $give_reports_page;
+	global $give_settings_page, $give_payments_page, $give_reports_page, $give_add_ons_page, $give_upgrades_screen, $give_donors_page;
 
 	//Campaigns
 	//	$give_campaigns      = get_post_type_object( 'give_campaigns' );
@@ -291,6 +291,7 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 				$give_reports_page,
 				$give_system_info_page,
 				$give_add_ons_page,
+				$give_upgrades_screen,
 				$give_settings_export,
 				$give_customers_page
 			) );
