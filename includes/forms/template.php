@@ -79,7 +79,7 @@ function give_get_donation_form( $args = array() ) {
 	<div id="give-form-<?php echo $form->ID; ?>-wrap" class="give-form-wrap give-display-<?php echo $display_option; ?>">
 
 		<?php
-		if ( isset( $args['show_title'] ) && $args['show_title'] == true ) {
+		if ( isset( $args['show_title'] ) && $args['show_title'] === true ) {
 
 			echo apply_filters( 'give_form_title', '<h2  class="give-form-title">' . get_the_title( $post_id ) . '</h2>' );
 
