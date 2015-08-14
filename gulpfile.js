@@ -132,7 +132,7 @@ gulp.task( 'watch', function () {
 	} );
 
 	//Add watching on JS files
-	gulp.watch( source_paths.scripts, ['scripts'] );
+	gulp.watch( source_paths.scripts, ['scripts', 'concat_scripts'] );
 
 	//Add watching on template-files
 	gulp.watch( 'templates/*.php', function () {
