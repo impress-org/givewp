@@ -43,7 +43,7 @@ jQuery( function ( $ )
 					} else {
 						$form.find( 'input[name="card_state"], select[name="card_state"]' ).replaceWith( response );
 					}
-					$( 'body' ).trigger( 'give_checkout_billing_address_updated', [response] );
+					doc.trigger( 'give_checkout_billing_address_updated', [response] );
 				}
 			} ).fail( function ( data ) {
 				if ( window.console && window.console.log ) {
@@ -56,14 +56,26 @@ jQuery( function ( $ )
 	} );
 
 	// Credit card verification
-	var card_number = $( '#card_number' ),
-		card_cvc    = $( '#card_cvc' ),
-		card_month  = $( '#card_exp_month' ),
-		card_year   = $( '#card_exp_year' ),
+	var card_number, card_cvc, card_month, card_year, form;
+
+	function setVars()
+	{
+		card_number = $( '#card_number' );
+		card_cvc    = $( '#card_cvc' );
+		card_month  = $( '#card_exp_month' );
+		card_year   = $( '#card_exp_year' );
 		form        = $( 'form.give-form' );
 
-	card_number.payment( 'formatCardNumber' );
-	card_cvc.payment( 'formatCardCVC' );
+		card_number.payment( 'formatCardNumber' );
+		card_cvc.payment( 'formatCardCVC' );
+	}
+
+	setVars();
+
+	doc.on( 'give_gateway_loaded', function()
+	{
+		setVars();
+	} );
 
 	$.fn.toggleError = function( errored )
 	{
