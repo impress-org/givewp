@@ -65,7 +65,7 @@ function give_load_scripts() {
 	if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
 
 		if ( give_is_cc_verify_enabled() ) {
-			wp_register_script( 'give-cc-validator', $js_plugins . 'jquery.creditCardValidator' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+			wp_register_script( 'give-cc-validator', $js_plugins . 'jquery.payment' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
 			wp_enqueue_script( 'give-cc-validator' );
 		}
 
@@ -124,7 +124,7 @@ add_action( 'wp_enqueue_scripts', 'give_load_scripts' );
  */
 function give_register_styles() {
 
-	if ( give_get_option( 'disable_styles', false ) ) {
+	if ( give_get_option( 'disable_css', false ) ) {
 		return;
 	}
 

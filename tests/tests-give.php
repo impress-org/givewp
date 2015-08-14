@@ -164,8 +164,8 @@ class Tests_Give extends WP_UnitTestCase {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/give-magnific.min.js' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.blockUI.js' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.blockUI.min.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.creditCardValidator.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.creditCardValidator.min.js' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.payment.js' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.payment.min.js' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.flot.js' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.flot.min.js' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.flot.orderBars.js' );
