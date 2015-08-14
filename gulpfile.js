@@ -31,6 +31,7 @@ var source_paths = {
 		'./assets/js/plugins/jQuery.blockUI.min.js',
 		'./assets/js/plugins/jquery.qtip.min.js',
 		'./assets/js/plugins/jquery.maskMoney.min.js',
+		'./assets/js/plugins/jquery.payment.min.js',
 		'./assets/js/plugins/give-magnific.min.js',
 		'./assets/js/frontend/*.min.js' //Frontend scripts need to be loaded last
 	]
