@@ -246,7 +246,7 @@ function give_output_donation_levels( $form_id = 0, $args = array() ) {
 				echo $currency_output;
 			}
 			?>
-			<span id="give-amount" class="give-text-input"><?php echo give_format_amount( $default_amount ); ?></span>
+			<span id="give-amount" class="give-text-input"><?php echo $default_amount; ?></span>
 		</p>
 		<?php
 	} else {
