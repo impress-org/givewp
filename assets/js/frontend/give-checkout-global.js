@@ -58,7 +58,7 @@ jQuery( function ( $ )
 	/**
 	 * Credit card verification
 	 */
-	var card_number, card_cvc, card_month, card_year, give_form, card_type;
+	var card_number, card_cvc, card_month, card_year, give_form;
 
 	// Set variables and format cc fields
 	function format_cc_fields()
@@ -68,7 +68,6 @@ jQuery( function ( $ )
 		card_month  = $( '#card_exp_month' );
 		card_year   = $( '#card_exp_year' );
 		give_form   = $( 'form.give-form' );
-		card_type   = give_form.find( '.card-type' );
 
 		card_number.payment( 'formatCardNumber' );
 		card_cvc.payment( 'formatCardCVC' );
@@ -99,6 +98,8 @@ jQuery( function ( $ )
 			type = $.payment.cardType( card_number.val() );
 
 		if( id === 'card_number' ) {
+
+			var card_type = give_form.find( '.card-type' );
 
 			if( type === null ) {
 				card_type.removeClass().addClass( 'off card-type' );
