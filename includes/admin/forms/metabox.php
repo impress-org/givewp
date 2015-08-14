@@ -172,12 +172,14 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'name'         => __( 'Set Goal', 'give' ),
 					'description'  => __( 'This is the goal you want to achieve for this form.', 'give' ),
 					'id'           => $prefix . 'set_goal',
-					'type'         => 'text_money',
+					'type'         => 'text_small',
 					'row_classes'  => 'give-subfield',
-					'before_field' => give_currency_symbol(), // Replaces default '$'
+					'before_field' => give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol give-money-symbol-before">' . give_currency_symbol() . '</span>' : '',
+					'after_field'  => give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '',
 					'attributes'   => array(
 						'placeholder' => give_format_amount( '0.00' ),
 						'value'       => isset( $goal ) ? esc_attr( give_format_amount( $goal ) ) : '',
+						'class'       => 'cmb-type-text-small give-money-field',
 					),
 				),
 				array(
