@@ -488,11 +488,17 @@ CC Validation
   span.card-type.maestro {
 	background: url('../assets/images/maestro.png') no-repeat;
   }
-  span.card-type.diners_club_carte_blanche {
+  span.card-type.dinersclub {
 	background: url('../assets/images/diners-club.png') no-repeat;
   }
   span.card-type.jcb {
 	background: url('../assets/images/jcb.png') no-repeat;
+  }
+  span.card-type.dankort {
+	background: url('../assets/images/dankort.png') no-repeat;
+  }
+  span.card-type.unionpay {
+	background: url('../assets/images/unionpay.png') no-repeat;
   }
 }
 
