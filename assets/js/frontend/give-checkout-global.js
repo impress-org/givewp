@@ -55,28 +55,34 @@ jQuery( function ( $ )
 		return false;
 	} );
 
-	// Credit card verification
-	var card_number, card_cvc, card_month, card_year, form;
+	/**
+	 * Credit card verification
+	 */
+	var card_number, card_cvc, card_month, card_year, give_form, card_type;
 
-	function setVars()
+	// Set variables and format cc fields
+	function format_cc_fields()
 	{
 		card_number = $( '#card_number' );
 		card_cvc    = $( '#card_cvc' );
 		card_month  = $( '#card_exp_month' );
 		card_year   = $( '#card_exp_year' );
-		form        = $( 'form.give-form' );
+		give_form   = $( 'form.give-form' );
+		card_type   = give_form.find( '.card-type' );
 
 		card_number.payment( 'formatCardNumber' );
 		card_cvc.payment( 'formatCardCVC' );
-	}
+	};
 
-	setVars();
+	format_cc_fields();
 
+	// Trigger formatting function when gateway changes
 	doc.on( 'give_gateway_loaded', function()
 	{
-		setVars();
+		format_cc_fields();
 	} );
 
+	// Toggle validation classes
 	$.fn.toggleError = function( errored )
 	{
 		this.toggleClass( 'error', errored );
@@ -85,6 +91,7 @@ jQuery( function ( $ )
 		return this;
 	};
 
+	// Validate cc fields on change
 	doc.on( 'keyup change', '#card_number, #card_cvc, #card_exp_month, #card_exp_year', function()
 	{
 		var t    = $( this ),
@@ -92,8 +99,6 @@ jQuery( function ( $ )
 			type = $.payment.cardType( card_number.val() );
 
 		if( id === 'card_number' ) {
-
-			var card_type = form.find( '.card-type' );
 
 			if( type === null ) {
 				card_type.removeClass().addClass( 'off card-type' );
