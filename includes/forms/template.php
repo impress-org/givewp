@@ -1064,7 +1064,7 @@ function give_checkout_button_purchase( $form_id ) {
 		<span class="give-loading-animation"></span>
 	</div>
 	<?php
-	return apply_filters( 'give_checkout_button_purchase', ob_get_clean() );
+	return apply_filters( 'give_checkout_button_purchase', ob_get_clean(), $form_id );
 }
 
 /**
