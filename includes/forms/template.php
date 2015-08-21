@@ -903,7 +903,7 @@ function give_payment_mode_select( $form_id ) {
 	<fieldset id="give-payment-mode-select">
 		<?php do_action( 'give_payment_mode_before_gateways_wrap' ); ?>
 		<div id="give-payment-mode-wrap">
-			<legend class="give-payment-mode-label"><?php _e( 'Select Payment Method', 'give' ); ?></legend>
+			<legend class="give-payment-mode-label"><?php echo apply_filters( 'give_checkout_payment_method_text', __( 'Select Payment Method', 'give' ) ); ?></legend>
 			<?php
 
 			do_action( 'give_payment_mode_before_gateways' ) ?>
