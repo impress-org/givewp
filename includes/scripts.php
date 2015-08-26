@@ -57,7 +57,8 @@ function give_load_scripts() {
 		'ajax_loader'      => set_url_scheme( apply_filters( 'give_ajax_preloader_img', GIVE_PLUGIN_URL . 'assets/images/spinner-2x.gif' ), 'relative' ),
 		// Ajax loading image
 		'default_gateway'  => give_get_default_gateway( null ),
-		'permalinks'       => get_option( 'permalink_structure' ) ? '1' : '0'
+		'permalinks'       => get_option( 'permalink_structure' ) ? '1' : '0',
+		'number_decimals' => apply_filters( 'give_format_amount_decimals', 2 )
 	) );
 
 
@@ -75,8 +76,8 @@ function give_load_scripts() {
 		wp_register_script( 'give-qtip', $js_plugins . 'jquery.qtip' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
 		wp_enqueue_script( 'give-qtip' );
 
-		wp_register_script( 'give-mask-money', $js_plugins . 'jquery.maskMoney' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
-		wp_enqueue_script( 'give-mask-money' );
+		wp_register_script( 'give-accounting', $js_plugins . 'accounting' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+		wp_enqueue_script( 'give-accounting' );
 
 		wp_register_script( 'give-magnific', $js_plugins . 'give-magnific' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
 		wp_enqueue_script( 'give-magnific' );
