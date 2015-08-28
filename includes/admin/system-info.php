@@ -187,8 +187,6 @@ function give_tools_sysinfo_get() {
 
 	$return = apply_filters( 'give_sysinfo_after_give_gateways', $return );
 
-	$return = apply_filters( 'give_sysinfo_after_give_taxes', $return );
-
 	// GIVE Templates
 	$dir = get_stylesheet_directory() . '/give_templates/*';
 	if ( is_dir( $dir ) && ( count( glob( "$dir/*" ) ) !== 0 ) ) {
