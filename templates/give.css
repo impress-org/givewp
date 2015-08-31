@@ -958,10 +958,14 @@ CC Validation
   background: url('../assets/images/amex.png') no-repeat; }
 #give_purchase_form_wrap span.card-type.maestro {
   background: url('../assets/images/maestro.png') no-repeat; }
-#give_purchase_form_wrap span.card-type.diners_club_carte_blanche {
+#give_purchase_form_wrap span.card-type.dinersclub {
   background: url('../assets/images/diners-club.png') no-repeat; }
 #give_purchase_form_wrap span.card-type.jcb {
   background: url('../assets/images/jcb.png') no-repeat; }
+#give_purchase_form_wrap span.card-type.dankort {
+  background: url('../assets/images/dankort.png') no-repeat; }
+#give_purchase_form_wrap span.card-type.unionpay {
+  background: url('../assets/images/unionpay.png') no-repeat; }
 
 /*---------------------------------
 Loading Animation

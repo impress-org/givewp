@@ -131,9 +131,13 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 = 1.1.1 =
 * New: API updated to include fname and lname of forms donor
+* New: Credit Card input masking now supported - thanks @pryley https://github.com/WordImpress/Give/issues/76
 * Fix: Form title not displayed on PayPal Standard #190 https://github.com/WordImpress/Give/issues/190
 * Fix: Export donors fatal error https://wordpress.org/support/topic/export-donors-in-csv-error?replies=2
 * Fix: Addons PHP warning https://github.com/WordImpress/Give/issues/191
+* Fix: Goal amount not respecting thousands separator https://github.com/WordImpress/Give/issues/205
+* Fix: Added a WordPress filter to allow developers to modify the 'Select Payment Method' legend text. - thanks @cwackerman https://github.com/WordImpress/Give/pull/211
+* Fix: Modified existing WordPress filter controlling submit button text so that it passes $form_id to hooks. This allows developers to access form options when generating submit button text. For example, to output default donation amount within submit button text, e.g. "Donate $5.00 Now".  - thanks @cwackerman https://github.com/WordImpress/Give/pull/211
 
 = 1.1 =
 * New: A front-facing JSON/XML API that makes it possible to query donation data directly from your WordPress site; this corresponds with the Zapier Add-on for Give: http://givewp.com/addons/zapier/
