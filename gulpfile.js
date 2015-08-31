@@ -31,6 +31,7 @@ var source_paths = {
 		'./assets/js/plugins/jQuery.blockUI.min.js',
 		'./assets/js/plugins/jquery.qtip.min.js',
 		'./assets/js/plugins/jquery.maskMoney.min.js',
+		'./assets/js/plugins/jquery.payment.min.js',
 		'./assets/js/plugins/give-magnific.min.js',
 		'./assets/js/frontend/*.min.js' //Frontend scripts need to be loaded last
 	]
@@ -131,7 +132,7 @@ gulp.task( 'watch', function () {
 	} );
 
 	//Add watching on JS files
-	gulp.watch( source_paths.scripts, ['scripts'] );
+	gulp.watch( source_paths.scripts, ['scripts', 'concat_scripts'] );
 
 	//Add watching on template-files
 	gulp.watch( 'templates/*.php', function () {
