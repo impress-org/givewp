@@ -32,7 +32,7 @@ class Tests_Scripts extends WP_UnitTestCase {
 			$this->assertTrue( wp_script_is( 'give-cc-validator', 'enqueued' ) );
 			$this->assertTrue( wp_script_is( 'give-blockui', 'enqueued' ) );
 			$this->assertTrue( wp_script_is( 'give-qtip', 'enqueued' ) );
-			$this->assertTrue( wp_script_is( 'give-mask-money', 'enqueued' ) );
+			$this->assertTrue( wp_script_is( 'give-accounting', 'enqueued' ) );
 			$this->assertTrue( wp_script_is( 'give-magnific', 'enqueued' ) );
 			$this->assertTrue( wp_script_is( 'give-checkout-global', 'enqueued' ) );
 			$this->assertTrue( wp_script_is( 'give-scripts', 'enqueued' ) );
