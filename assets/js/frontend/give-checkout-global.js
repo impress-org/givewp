@@ -9,8 +9,7 @@
  */
 var give_scripts, give_global_vars;
 
-jQuery( function ( $ )
-{
+jQuery( function ( $ ) {
 	var doc = $( document );
 
 	// Update state/province field on checkout page
@@ -61,13 +60,12 @@ jQuery( function ( $ )
 	var card_number, card_cvc, card_month, card_year, give_form;
 
 	// Set variables and format cc fields
-	function format_cc_fields()
-	{
+	function format_cc_fields() {
 		card_number = $( '#card_number' );
-		card_cvc    = $( '#card_cvc' );
-		card_month  = $( '#card_exp_month' );
-		card_year   = $( '#card_exp_year' );
-		give_form   = $( 'form.give-form' );
+		card_cvc = $( '#card_cvc' );
+		card_month = $( '#card_exp_month' );
+		card_year = $( '#card_exp_year' );
+		give_form = $( 'form.give-form' );
 
 		card_number.payment( 'formatCardNumber' );
 		card_cvc.payment( 'formatCardCVC' );
@@ -76,14 +74,12 @@ jQuery( function ( $ )
 	format_cc_fields();
 
 	// Trigger formatting function when gateway changes
-	doc.on( 'give_gateway_loaded', function()
-	{
+	doc.on( 'give_gateway_loaded', function () {
 		format_cc_fields();
 	} );
 
 	// Toggle validation classes
-	$.fn.toggleError = function( errored )
-	{
+	$.fn.toggleError = function ( errored ) {
 		this.toggleClass( 'error', errored );
 		this.toggleClass( 'valid', !errored );
 
@@ -91,17 +87,16 @@ jQuery( function ( $ )
 	};
 
 	// Validate cc fields on change
-	doc.on( 'keyup change', '#card_number, #card_cvc, #card_exp_month, #card_exp_year', function()
-	{
-		var t    = $( this ),
-			id   = t.attr( 'id' ),
+	doc.on( 'keyup change', '#card_number, #card_cvc, #card_exp_month, #card_exp_year', function () {
+		var t = $( this ),
+			id = t.attr( 'id' ),
 			type = $.payment.cardType( card_number.val() );
 
-		if( id === 'card_number' ) {
+		if ( id === 'card_number' ) {
 
 			var card_type = give_form.find( '.card-type' );
 
-			if( type === null ) {
+			if ( type === null ) {
 				card_type.removeClass().addClass( 'off card-type' );
 				t.removeClass( 'valid' ).addClass( 'error' );
 			}
@@ -111,14 +106,14 @@ jQuery( function ( $ )
 
 			card_number.toggleError( !$.payment.validateCardNumber( card_number.val() ) );
 		}
-		if( id === 'card_cvc' ) {
+		if ( id === 'card_cvc' ) {
 
 			card_cvc.toggleError( !$.payment.validateCardCVC( card_cvc.val(), type ) );
 		}
-		if( id === 'card_exp_month' || id === 'card_exp_year' ) {
+		if ( id === 'card_exp_month' || id === 'card_exp_year' ) {
 
 			var month = parseInt( card_month.val(), 10 ),
-				year  = parseInt( card_year.val(), 10 );
+				year = parseInt( card_year.val(), 10 );
 
 			card_month.toggleError( !$.payment.validateCardExpiry( month, year ) );
 			card_year.toggleError( !$.payment.validateCardExpiry( month, year ) );
