@@ -131,6 +131,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 = 1.1.1 =
 * New: API updated to include fname and lname of forms donor
+* New: Credit Card input masking now supported - thanks @pryley https://github.com/WordImpress/Give/issues/76
 * Fix: Form title not displayed on PayPal Standard #190 https://github.com/WordImpress/Give/issues/190
 * Fix: Export donors fatal error https://wordpress.org/support/topic/export-donors-in-csv-error?replies=2
 * Fix: Addons PHP warning https://github.com/WordImpress/Give/issues/191
