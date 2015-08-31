@@ -374,6 +374,9 @@ function give_cmb_render_levels_repeater_header() {
 
 /**
  * CMB2 Repeatable ID Field
+ *
+ * @description: Custom CMB2 incremental Levels ID Field
+ * @since      1.0
  */
 add_action( 'cmb2_render_levels_id', 'give_cmb_render_levels_id', 10, 5 );
 function give_cmb_render_levels_id( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
@@ -393,6 +396,7 @@ function give_cmb_render_levels_id( $field_object, $escaped_value, $object_id, $
 	echo $field_type_object->input( $field_options_array );
 
 }
+
 
 /**
  * CMB2 Repeatable Default ID Field
