@@ -63,15 +63,15 @@ function give_sanitize_amount( $amount ) {
  *
  * @since 1.0
  *
- * @param string $amount   Price amount to format
- * @param string $decimals Whether or not to use decimals. Useful when set to false for non-currency numbers.
+ * @param string      $amount   Price amount to format
+ * @param bool|string $decimals Whether or not to use decimals. Useful when set to false for non-currency numbers.
  *
  * @return string $amount Newly formatted amount or Price Not Available
  */
 function give_format_amount( $amount, $decimals = true ) {
+
 	$thousands_sep = give_get_option( 'thousands_separator', ',' );
 	$decimal_sep   = give_get_option( 'decimal_separator', '.' );
-
 
 	// Format the amount
 	if ( $decimal_sep == ',' && false !== ( $sep_found = strpos( $amount, $decimal_sep ) ) ) {
@@ -85,6 +85,16 @@ function give_format_amount( $amount, $decimals = true ) {
 		$amount = str_replace( ',', '', $amount );
 	}
 
+	// Strip . from the amount (if set as the thousands separator) AND , set to decimal separator
+	if ( $thousands_sep == '.' && $decimal_sep == ',' && false !== ( $found = strpos( $amount, $thousands_sep ) ) ) {
+		$amount      = explode( '.', $amount );
+		$array_count = count( $amount );
+		if ( $decimals == true ) {
+			unset( $amount[ $array_count - 1 ] );
+		}
+		$amount = implode( '', $amount );
+	}
+
 	// Strip ' ' from the amount (if set as the thousands separator)
 	if ( $thousands_sep == ' ' && false !== ( $found = strpos( $amount, $thousands_sep ) ) ) {
 		$amount = str_replace( ' ', '', $amount );
@@ -95,6 +105,7 @@ function give_format_amount( $amount, $decimals = true ) {
 	}
 
 	$decimals = apply_filters( 'give_format_amount_decimals', $decimals ? 2 : 0, $amount );
+
 	$formatted = number_format( $amount, $decimals, $decimal_sep, $thousands_sep );
 
 	return apply_filters( 'give_format_amount', $formatted, $amount, $decimals, $decimal_sep, $thousands_sep );
@@ -210,6 +221,7 @@ function give_currency_decimal_filter( $decimals = 2 ) {
 		case 'RIAL' :
 		case 'JPY' :
 		case 'TWD' :
+		case 'HUF' :
 
 			$decimals = 0;
 			break;

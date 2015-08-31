@@ -22,7 +22,7 @@ class Give_Helper_Form extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Create a simple download.
+	 * Create a simple form.
 	 *
 	 * @since 1.0
 	 */

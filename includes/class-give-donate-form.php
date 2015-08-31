@@ -3,7 +3,7 @@
  * Donate Form Object
  *
  * @package     Give
- * @subpackage  Classes/Download
+ * @subpackage  Classes/Forms
  * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
@@ -160,6 +160,24 @@ class Give_Donate_Form {
 	}
 
 	/**
+	 * Retrieve the variable prices
+	 *
+	 * @since 1.0
+	 * @return array
+	 */
+	public function get_prices() {
+
+		if ( ! isset( $this->prices ) ) {
+
+			$this->prices = get_post_meta( $this->ID, '_give_donation_levels', true );
+
+		}
+
+		return apply_filters( 'give_get_donation_levels', $this->prices, $this->ID );
+
+	}
+
+	/**
 	 * Retrieve the goal
 	 *
 	 * @since 1.0
@@ -184,23 +202,6 @@ class Give_Donate_Form {
 		}
 
 		return apply_filters( 'give_get_set_goal', $this->goal, $this->ID );
-	}
-
-	/**
-	 * Retrieve the variable prices
-	 *
-	 * @since 1.0
-	 * @return array
-	 */
-	public function get_prices() {
-
-		if ( ! isset( $this->prices ) ) {
-
-			$this->prices = get_post_meta( $this->ID, '_give_donation_levels', true );
-
-		}
-
-		return apply_filters( 'give_get_donation_levels', $this->prices, $this->ID );
 
 	}
 
