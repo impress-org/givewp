@@ -114,7 +114,7 @@ class Give_Session {
 	}
 
 	/**
-	 * Setup the session instance
+	 * Setup the WP_Session instance
 	 *
 	 * @access public
 	 * @since  1.0
