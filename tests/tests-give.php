@@ -132,11 +132,12 @@ class Tests_Give extends WP_UnitTestCase {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/frontend/fonts.scss' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/frontend/forms.scss' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/frontend/give-frontend.scss' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/frontend/jquery-qtip.scss' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/frontend/layouts.scss' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/frontend/magnific.scss' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/frontend/progress-bar.scss' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/frontend/receipt.scss' );
+
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/plugins/qtip.scss' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/plugins/magnific.scss' );
 
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/fonts/icomoon.eot' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/fonts/icomoon.svg' );
@@ -172,6 +173,8 @@ class Tests_Give extends WP_UnitTestCase {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.flot.orderBars.min.js' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.qtip.js' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.qtip.min.js' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.payment.js' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.payment.min.js' );
 
 	}
 }
