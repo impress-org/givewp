@@ -40,7 +40,7 @@ jQuery( document ).ready( function ( $ ) {
 		$.magnificPopup.open( {
 			mainClass: 'give-modal',
 			items    : {
-				src : this_form.find('#give-payment-mode-select'),
+				src : this_form,
 				type: 'inline'
 			},
 			callbacks: {
