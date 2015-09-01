@@ -25,7 +25,8 @@ var gulp = require( 'gulp' ),
  ------------------------------------- */
 var source_paths = {
 	admin_styles    : ['./assets/scss/**/give-admin.scss'],
-	frontend_styles : ['./assets/scss/frontend/give-frontend.scss'],
+	frontend_styles : ['./assets/scss/**/give-frontend.scss'],
+	plugin_styles   : ['./assets/scss/**/*.scss'],
 	scripts         : ['./assets/js/**/*.js', '!./assets/js/**/*.min.js'],
 	frontend_scripts: [
 		'./assets/js/plugins/jQuery.blockUI.min.js',

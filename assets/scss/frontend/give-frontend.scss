@@ -10,9 +10,9 @@
 @import '_variables';
 @import '_mixins';
 @import 'fonts';
-@import 'jquery-qtip';
+@import '../plugins/qtip';
 @import 'receipt';
 @import 'forms';
-@import 'magnific';
+@import '../plugins/magnific';
 @import 'layouts';
 @import 'progress-bar';
