@@ -559,6 +559,8 @@ form[id*='give-form'] {
 	margin: 0;
 	padding: 0;
 	font-style: italic;
+	line-height: 20px;
+	font-size: 16px;
 
 	&.give-updating-price-loader {
 	  float: left;
@@ -567,13 +569,21 @@ form[id*='give-form'] {
 
   }
   .give-loading-animation {
+	@include iconstyle();
 	float: left;
 	width: 20px;
 	height: 20px;
-	margin: 0 5px 0 0;
+	line-height: 20px;
+	font-size: 16px;
+	margin: 0 3px 0 0;
 	background-size: 20px 20px;
 	background-repeat: no-repeat;
 	background-color: transparent;
+	@extend .icon-spinner2;
+
+	&:before {
+	  @extend .fa-spin;
+	}
   }
 
   span.padlock:before {

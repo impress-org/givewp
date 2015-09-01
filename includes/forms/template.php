@@ -269,7 +269,7 @@ function give_output_donation_levels( $form_id = 0, $args = array() ) {
 				} ?>
 
 				<p class="give-loading-text give-updating-price-loader" style="display: none;">
-					<span class="give-loading-animation"></span> <?php _e( 'Updating Price', 'Give' ); ?>
+					<span class="give-loading-animation"></span> <?php _e( 'Updating Price', 'give' ); ?>
 					<span class="elipsis">.</span><span class="elipsis">.</span><span class="elipsis">.</span></p>
 			</div>
 		</div>

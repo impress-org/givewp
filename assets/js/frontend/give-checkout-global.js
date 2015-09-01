@@ -192,7 +192,6 @@ jQuery( function ( $ ) {
 			$( this ).parents( 'form' ).find( '.give-final-total-amount' ).data( 'total', value_now ).text( formatted_total );
 
 			//fade in/out updating text
-			$( this ).next( '.give-updating-price-loader' ).find( '.give-loading-animation' ).css( 'background-image', 'url(' + give_scripts.ajax_loader + ')' );
 			$( this ).next( '.give-updating-price-loader' ).stop().fadeIn().fadeOut();
 
 		}

@@ -92,6 +92,34 @@
 .give-icon-help:before {
   content: "\e606"; }
 
+.icon-spinner:before {
+  content: "\e605"; }
+
+.icon-spinner2:before, form[id*='give-form'] .give-loading-animation:before {
+  content: "\e607"; }
+
+.fa-spin, form[id*='give-form'] .give-loading-animation:before {
+  -webkit-animation: fa-spin 2s infinite linear;
+  animation: fa-spin 2s infinite linear; }
+
+@-webkit-keyframes fa-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg); }
+
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg); } }
+
+@keyframes fa-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg); }
+
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg); } }
+
 /*
  * qTip2 - Pretty powerful tooltips - v2.2.1
  * http://qtip2.com
@@ -1007,15 +1035,29 @@ form[id*='give-form'] p.give-loading-text {
   float: right;
   margin: 0;
   padding: 0;
-  font-style: italic; }
+  font-style: italic;
+  line-height: 20px;
+  font-size: 16px; }
   form[id*='give-form'] p.give-loading-text.give-updating-price-loader {
     float: left;
     margin: 6px 0 0 20px; }
 form[id*='give-form'] .give-loading-animation {
+  font-family: 'give-icomoon';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   float: left;
   width: 20px;
   height: 20px;
-  margin: 0 5px 0 0;
+  line-height: 20px;
+  font-size: 16px;
+  margin: 0 3px 0 0;
   background-size: 20px 20px;
   background-repeat: no-repeat;
   background-color: transparent; }
