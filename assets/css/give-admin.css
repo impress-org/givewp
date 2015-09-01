@@ -493,6 +493,9 @@ x:-o-prefocus, .qtip .qtip-tip {
 .icon-spinner2:before {
   content: "\e607"; }
 
+.give-icon-locked:before {
+  content: "\e600"; }
+
 .fa-spin {
   -webkit-animation: fa-spin 2s infinite linear;
   animation: fa-spin 2s infinite linear; }

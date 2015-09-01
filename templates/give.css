@@ -98,6 +98,9 @@
 .icon-spinner2:before, form[id*='give-form'] .give-loading-animation:before {
   content: "\e607"; }
 
+.give-icon-locked:before, #give_secure_site_wrapper span.padlock:before {
+  content: "\e600"; }
+
 .fa-spin, form[id*='give-form'] .give-loading-animation:before {
   -webkit-animation: fa-spin 2s infinite linear;
   animation: fa-spin 2s infinite linear; }
@@ -953,14 +956,24 @@ Buttons
 CC Validation
 -----------------------------------*/
 #give_secure_site_wrapper {
-  padding: 4px 4px 4px 0;
-  font-weight: bold; }
-  #give_secure_site_wrapper span.padlock:before {
-    content: '\f160';
-    display: inline-block;
+  padding: 4px 4px 15px 0;
+  font-size: 16px;
+  line-height: 20px; }
+  #give_secure_site_wrapper span.padlock {
+    font-family: 'give-icomoon';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    /* Better Font Rendering =========== */
     -webkit-font-smoothing: antialiased;
-    font: normal 20px/1 'dashicons';
-    vertical-align: top; }
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 16px;
+    line-height: 20px; }
+    #give_secure_site_wrapper span.padlock :before {
+      display: inline-block; }
 
 #give_purchase_form_wrap input.give-input.card-number.valid {
   background-image: url('../assets/images/tick.png');
@@ -1061,12 +1074,6 @@ form[id*='give-form'] .give-loading-animation {
   background-size: 20px 20px;
   background-repeat: no-repeat;
   background-color: transparent; }
-form[id*='give-form'] span.padlock:before {
-  content: '\e600';
-  display: inline-block;
-  -webkit-font-smoothing: antialiased;
-  font: normal 20px/1 'dashicons';
-  vertical-align: top; }
 
 /* Login and Register */
 #give-login-account-wrap {

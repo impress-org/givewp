@@ -506,7 +506,7 @@ function give_get_cc_form() {
 		<legend><?php _e( 'Credit Card Info', 'give' ); ?></legend>
 		<?php if ( is_ssl() ) : ?>
 			<div id="give_secure_site_wrapper">
-				<span class="padlock"></span>
+				<span class="give-icon padlock"></span>
 				<span><?php _e( 'This is a secure SSL encrypted payment.', 'give' ); ?></span>
 			</div>
 		<?php endif; ?>
