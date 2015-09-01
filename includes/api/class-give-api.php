@@ -658,7 +658,7 @@ class Give_API {
 	 * Sets up the dates used to retrieve earnings/donations
 	 *
 	 * @access public
-	 * @since  1.1.1
+	 * @since  1.2
 	 *
 	 * @param array $args Arguments to override defaults
 	 *
@@ -827,7 +827,7 @@ class Give_API {
 		/**
 		 * Returns the filters for the dates used to retreive earnings/donations
 		 *
-		 * @since 1.1.1
+		 * @since 1.2
 		 *
 		 * @param object $dates The dates used for retreiving earnings/donations
 		 */

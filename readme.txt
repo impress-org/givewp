@@ -3,7 +3,7 @@ Contributors: wordimpress, dlocc, webdevmattcrom
 Donate link: http://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 3.8
-Tested up to: 4.2.2
+Tested up to: 4.3
 Stable tag: 1.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -129,7 +129,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 == Changelog ==
 
-= 1.1.1 =
+= 1.2 =
 * New: API updated to include fname and lname of forms donor
 * New: Credit Card input masking now supported - thanks @pryley https://github.com/WordImpress/Give/issues/76
 * Improvement: Ditched maskMoney custom donation amount validator for a better script provided by @helgatheviking - thanks! https://github.com/WordImpress/Give/issues/110
