@@ -131,10 +131,11 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 = 1.2 =
 * New: API updated to include fname and lname of forms donor
+* New: API updated to support all field donation data (including custom fields)
 * New: Credit Card input masking now supported - thanks @pryley https://github.com/WordImpress/Give/issues/76
 * Improvement: Ditched maskMoney custom donation amount validator for a better script provided by @helgatheviking - thanks! https://github.com/WordImpress/Give/issues/110
 * Improvement: AJAX spinner is now font icon rather than .gif image @see: https://github.com/WordImpress/Give/issues/193
-* Fix: Form title not displayed on PayPal Standard #190 https://github.com/WordImpress/Give/issues/190
+* Fix: Form title and Level Label now displayed correctly on PayPal Standard https://github.com/WordImpress/Give/issues/190
 * Fix: Export donors fatal error https://wordpress.org/support/topic/export-donors-in-csv-error?replies=2
 * Fix: Addons PHP warning https://github.com/WordImpress/Give/issues/191
 * Fix: Goal amount not respecting thousands separator https://github.com/WordImpress/Give/issues/205
@@ -142,7 +143,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Fix: Modified existing WordPress filter controlling submit button text so that it passes $form_id to hooks. This allows developers to access form options when generating submit button text. For example, to output default donation amount within submit button text, e.g. "Donate $5.00 Now".  - thanks @cwackerman https://github.com/WordImpress/Give/pull/211
 * Fix: GIVE_SLUG define doesn't affect slug https://github.com/WordImpress/Give/issues/199
 * Fix: Widget tooltips now display appropriately https://github.com/WordImpress/Give/issues/195
-* Fix: Broken https/ssl padlock https://github.com/WordImpress/Give/issues/220
+* Fix: https/ssl padlock font now displays correctly https://github.com/WordImpress/Give/issues/220
 
 = 1.1 =
 * New: A front-facing JSON/XML API that makes it possible to query donation data directly from your WordPress site; this corresponds with the Zapier Add-on for Give: http://givewp.com/addons/zapier/
