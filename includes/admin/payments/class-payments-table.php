@@ -245,11 +245,11 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$columns = array(
 			'cb'      => '<input type="checkbox" />', //Render a checkbox instead of text
 			'email'   => __( 'Email', 'give' ),
+			'details' => __( 'Details', 'give' ),
 			'amount'  => __( 'Amount', 'give' ),
 			'status'  => __( 'Status', 'give' ),
 			'date'    => __( 'Date', 'give' ),
 			'user'    => __( 'User', 'give' ),
-			'details' => __( 'Details', 'give' ),
 			'ID'      => __( 'ID', 'give' ),
 		);
 
@@ -299,7 +299,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 				$value   = '<div class="give-donation-status status-' . sanitize_title( give_get_payment_status( $payment, true ) ) . '"><span class="give-donation-status-icon"></span> ' . give_get_payment_status( $payment, true ) . '</div>';
 				break;
 			case 'details' :
-				$value = '<a href="' . esc_url( add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details' ) ) ) . '" class="give-payment-details-link">' . __( 'View Donation Details', 'give' ) . '</a>';
+				$value = '<div class="give-payment-details-link-wrap"><a href="' . esc_url( add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details' ) ) ) . '" class="give-payment-details-link button button-small">' . __( 'View Donation Details', 'give' ) . '</a></div>';
 				break;
 			default:
 				$value = isset( $payment->$column_name ) ? $payment->$column_name : '';

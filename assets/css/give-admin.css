@@ -1267,8 +1267,8 @@ Status Colors
   vertical-align: baseline;
   border-radius: .25em;
   background-color: #929292; }
-#give-payments-filter .give-payment-details-link {
-  font-weight: bold; }
+#give-payments-filter .column-details {
+  padding-right: 30px; }
 
 /* Payment View Metabox */
 #give-order-update .give-donation-status {
