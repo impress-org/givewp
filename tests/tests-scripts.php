@@ -30,6 +30,7 @@ class Tests_Scripts extends WP_UnitTestCase {
 		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
 
 			$this->assertTrue( wp_script_is( 'give-cc-validator', 'enqueued' ) );
+			$this->assertTrue( wp_script_is( 'give-float-labels', 'enqueued' ) );
 			$this->assertTrue( wp_script_is( 'give-blockui', 'enqueued' ) );
 			$this->assertTrue( wp_script_is( 'give-qtip', 'enqueued' ) );
 			$this->assertTrue( wp_script_is( 'give-accounting', 'enqueued' ) );

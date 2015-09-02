@@ -51,6 +51,7 @@ function give_load_scripts() {
 		'ajaxurl'          => give_get_ajax_url(),
 		'position_in_cart' => isset( $position ) ? $position : - 1,
 		'loading'          => __( 'Loading', 'give' ),
+		'floatlabels'      => give_get_option( 'enable_floatlabels' ) ? '1' : '0',
 		// General loading message
 		'select_option'    => __( 'Please select an option', 'give' ),
 		// Variable pricing error with multi-purchase option enabled
@@ -65,6 +66,11 @@ function give_load_scripts() {
 		if ( give_is_cc_verify_enabled() ) {
 			wp_register_script( 'give-cc-validator', $js_plugins . 'jquery.payment' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
 			wp_enqueue_script( 'give-cc-validator' );
+		}
+
+		if ( $localize_give_ajax['floatlabels'] ) {
+			wp_register_script( 'give-float-labels', $js_plugins . 'float-labels' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+			wp_enqueue_script( 'give-float-labels' );
 		}
 
 		wp_register_script( 'give-blockui', $js_plugins . 'jquery.blockUI' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );

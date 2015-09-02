@@ -980,6 +980,10 @@ CC Validation
   background-repeat: no-repeat;
   background-position: 98% 50%;
   background-size: 16px; }
+  #give_purchase_form_wrap input.give-input.card-number.valid.floatlabel-input {
+    background-image: url('../assets/images/tick-alt.png');
+    background-position: 100% 50%;
+    background-size: 72px 16px; }
 #give_purchase_form_wrap span.card-type {
   position: absolute;
   top: -2px;
@@ -987,6 +991,9 @@ CC Validation
   width: 37px;
   height: 26px;
   background-size: 37px 26px !important; }
+#give_purchase_form_wrap .floatlabel span.card-type {
+  top: 11px;
+  right: 11px; }
 #give_purchase_form_wrap span.card-type.off {
   display: none; }
 #give_purchase_form_wrap span.card-type.visa {
@@ -1630,6 +1637,64 @@ Avada
     background-color: #2bc253;
     position: relative;
     overflow: hidden; }
+
+/* ========================================================================== *\
+   Components -> Float Label ($components-float-label)
+\* ========================================================================== */
+form.floated-labels .floatlabel {
+  position: relative; }
+  form.floated-labels .floatlabel input, form.floated-labels .floatlabel select {
+    font-size: 16px;
+    line-height: normal;
+    padding: 12px;
+    border: 1px solid #ccc; }
+  form.floated-labels .floatlabel select {
+    position: relative;
+    color: #aaa;
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none; }
+  form.floated-labels .floatlabel.is-active label.floatlabel-label {
+    opacity: 1;
+    visibility: visible; }
+  form.floated-labels .floatlabel.is-active input, form.floated-labels .floatlabel.is-active select, form.floated-labels .floatlabel.is-active textarea {
+    color: #333;
+    padding-top: 20px;
+    padding-bottom: 4px; }
+  form.floated-labels .floatlabel.is-focused label.floatlabel-label {
+    color: #007ba4; }
+  form.floated-labels .floatlabel label.floatlabel-label {
+    position: absolute;
+    display: block;
+    top: 8px;
+    left: 12px;
+    color: #aaa;
+    font-size: 11px;
+    line-height: 1;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    padding: 0 1px; }
+    form.floated-labels .floatlabel label.floatlabel-label.is-visible {
+      opacity: 1;
+      visibility: visible; }
+form.floated-labels .styled.select {
+  position: relative; }
+  form.floated-labels .styled.select:before, form.floated-labels .styled.select:after {
+    content: '';
+    position: absolute;
+    display: block;
+    top: 24px;
+    height: 2px;
+    width: 6px;
+    background: #aaa;
+    z-index: 2; }
+  form.floated-labels .styled.select:before {
+    right: 18px;
+    transform: skew(0deg, 45deg); }
+  form.floated-labels .styled.select:after {
+    right: 12px;
+    transform: skew(0deg, -45deg); }
 
 
 /*# sourceMappingURL=give.css.map */
