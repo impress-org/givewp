@@ -62,4 +62,41 @@
 .give-icon-help:before {
 	content: "\e606";
 }
+.icon-spinner:before {
+	content: "\e605";
+}
+.icon-spinner2:before {
+	content: "\e607";
+}
+.give-icon-locked:before {
+	content: "\e600";
+}
+// Spinning Icons
+// --------------------------
 
+.fa-spin {
+  -webkit-animation: fa-spin 2s infinite linear;
+          animation: fa-spin 2s infinite linear;
+}
+
+@-webkit-keyframes fa-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+            transform: rotate(359deg);
+  }
+}
+
+@keyframes fa-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+            transform: rotate(359deg);
+  }
+}

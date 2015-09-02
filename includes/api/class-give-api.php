@@ -658,7 +658,7 @@ class Give_API {
 	 * Sets up the dates used to retrieve earnings/donations
 	 *
 	 * @access public
-	 * @since  1.1.1
+	 * @since  1.2
 	 *
 	 * @param array $args Arguments to override defaults
 	 *
@@ -827,7 +827,7 @@ class Give_API {
 		/**
 		 * Returns the filters for the dates used to retreive earnings/donations
 		 *
-		 * @since 1.1.1
+		 * @since 1.2
 		 *
 		 * @param object $dates The dates used for retreiving earnings/donations
 		 */
@@ -1349,8 +1349,8 @@ class Give_API {
 			foreach ( $query as $payment ) {
 				$payment_meta = give_get_payment_meta( $payment->ID );
 				$user_info    = give_get_payment_meta_user_info( $payment->ID );
-				$first_name = isset( $user_info['first_name'] ) ? $user_info['first_name'] : '';
-				$last_name  = isset( $user_info['last_name'] ) ? $user_info['last_name'] : '';
+				$first_name   = isset( $user_info['first_name'] ) ? $user_info['first_name'] : '';
+				$last_name    = isset( $user_info['last_name'] ) ? $user_info['last_name'] : '';
 
 				$sales['donations'][ $i ]['ID']             = give_get_payment_number( $payment->ID );
 				$sales['donations'][ $i ]['transaction_id'] = give_get_payment_transaction_id( $payment->ID );
@@ -1362,7 +1362,6 @@ class Give_API {
 				$sales['donations'][ $i ]['lname']          = $last_name;
 				$sales['donations'][ $i ]['email']          = give_get_payment_user_email( $payment->ID );
 				$sales['donations'][ $i ]['date']           = $payment->post_date;
-
 
 				$form_id  = isset( $payment_meta['form_id'] ) ? $payment_meta['form_id'] : $payment_meta;
 				$price    = isset( $payment_meta['form_id'] ) ? give_get_form_price( $payment_meta['form_id'] ) : false;
@@ -1376,17 +1375,39 @@ class Give_API {
 					if ( isset( $payment_meta['price_id'] ) ) {
 						$price_name                                     = give_get_price_option_name( $form_id, $payment_meta['price_id'], $payment->ID );
 						$sales['donations'][ $i ]['form']['price_name'] = $price_name;
+						$sales['donations'][ $i ]['form']['price_id']   = $price_id;
 						$sales['donations'][ $i ]['form']['price']      = give_get_price_option_amount( $form_id, $price_id );
 
 					}
 				}
 
+				//Add custom meta to API
+				foreach ( $payment_meta as $meta_key => $meta_value ) {
+
+					$exceptions = array(
+						'form_title',
+						'form_id',
+						'price_id',
+						'user_info',
+						'key',
+						'email',
+						'date',
+					);
+
+					//Don't clutter up results with dupes
+					if ( in_array( $meta_key, $exceptions ) ) {
+						continue;
+					}
+
+					$sales['donations'][ $i ]['payment_meta'][ $meta_key ] = $meta_value;
+
+				}
 
 				$i ++;
 			}
 		}
 
-		return $sales;
+		return apply_filters( 'give_api_donations_endpoint', $sales );
 	}
 
 	/**

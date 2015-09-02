@@ -9,8 +9,7 @@
  */
 var give_scripts, give_global_vars;
 
-jQuery( function ( $ )
-{
+jQuery( function ( $ ) {
 	var doc = $( document );
 
 	// Update state/province field on checkout page
@@ -61,13 +60,12 @@ jQuery( function ( $ )
 	var card_number, card_cvc, card_month, card_year, give_form;
 
 	// Set variables and format cc fields
-	function format_cc_fields()
-	{
+	function format_cc_fields() {
 		card_number = $( '#card_number' );
-		card_cvc    = $( '#card_cvc' );
-		card_month  = $( '#card_exp_month' );
-		card_year   = $( '#card_exp_year' );
-		give_form   = $( 'form.give-form' );
+		card_cvc = $( '#card_cvc' );
+		card_month = $( '#card_exp_month' );
+		card_year = $( '#card_exp_year' );
+		give_form = $( 'form.give-form' );
 
 		card_number.payment( 'formatCardNumber' );
 		card_cvc.payment( 'formatCardCVC' );
@@ -76,14 +74,12 @@ jQuery( function ( $ )
 	format_cc_fields();
 
 	// Trigger formatting function when gateway changes
-	doc.on( 'give_gateway_loaded', function()
-	{
+	doc.on( 'give_gateway_loaded', function () {
 		format_cc_fields();
 	} );
 
 	// Toggle validation classes
-	$.fn.toggleError = function( errored )
-	{
+	$.fn.toggleError = function ( errored ) {
 		this.toggleClass( 'error', errored );
 		this.toggleClass( 'valid', !errored );
 
@@ -91,17 +87,16 @@ jQuery( function ( $ )
 	};
 
 	// Validate cc fields on change
-	doc.on( 'keyup change', '#card_number, #card_cvc, #card_exp_month, #card_exp_year', function()
-	{
-		var t    = $( this ),
-			id   = t.attr( 'id' ),
+	doc.on( 'keyup change', '#card_number, #card_cvc, #card_exp_month, #card_exp_year', function () {
+		var t = $( this ),
+			id = t.attr( 'id' ),
 			type = $.payment.cardType( card_number.val() );
 
-		if( id === 'card_number' ) {
+		if ( id === 'card_number' ) {
 
 			var card_type = give_form.find( '.card-type' );
 
-			if( type === null ) {
+			if ( type === null ) {
 				card_type.removeClass().addClass( 'off card-type' );
 				t.removeClass( 'valid' ).addClass( 'error' );
 			}
@@ -111,19 +106,33 @@ jQuery( function ( $ )
 
 			card_number.toggleError( !$.payment.validateCardNumber( card_number.val() ) );
 		}
-		if( id === 'card_cvc' ) {
+		if ( id === 'card_cvc' ) {
 
 			card_cvc.toggleError( !$.payment.validateCardCVC( card_cvc.val(), type ) );
 		}
-		if( id === 'card_exp_month' || id === 'card_exp_year' ) {
+		if ( id === 'card_exp_month' || id === 'card_exp_year' ) {
 
 			var month = parseInt( card_month.val(), 10 ),
-				year  = parseInt( card_year.val(), 10 );
+				year = parseInt( card_year.val(), 10 );
 
 			card_month.toggleError( !$.payment.validateCardExpiry( month, year ) );
 			card_year.toggleError( !$.payment.validateCardExpiry( month, year ) );
 		}
 	} );
+
+	// format the currency with accounting.js
+	function give_format_currency( price ){
+	    return accounting.formatMoney( price, {
+	    	symbol : "",
+	        decimal : give_global_vars.decimal_separator,
+		    thousand: give_global_vars.thousands_separator,
+		    precision : give_global_vars.number_decimals,
+	    }).trim();
+	}
+
+	function give_unformat_currency( price ){
+		return Math.abs( parseFloat( accounting.unformat( price, give_global_vars.decimal_separator ) ) );
+	}
 
 	// Make sure a gateway is selected
 	doc.on( 'submit', '#give_payment_mode', function () {
@@ -148,14 +157,8 @@ jQuery( function ( $ )
 		//Remove any invalid class
 		$( this ).removeClass( 'invalid-amount' );
 
-		//Fire up Mask Money
-		$( this ).maskMoney( {
-			decimal  : give_global_vars.decimal_separator,
-			thousands: give_global_vars.thousands_separator
-		} );
-
 		//Set data amount
-		$( this ).data( 'amount', $( this ).val() );
+		$( this ).data( 'amount', give_unformat_currency( $( this ).val() ) );
 		//This class is used for CSS purposes
 		$( this ).parent( '.give-donation-amount' ).addClass( 'give-custom-amount-focus-in' );
 		//Set Multi-Level to Custom Amount Field
@@ -171,13 +174,14 @@ jQuery( function ( $ )
 	doc.on( 'blur', '.give-donation-amount .give-text-input', function ( e ) {
 
 		var pre_focus_amount = $( this ).data( 'amount' );
-		var value_now = $( this ).val();
-		var formatted_total = give_global_vars.currency_sign + value_now;
-		if ( give_global_vars.currency_pos == 'after' ) {
-			formatted_total = value_now + give_global_vars.currency_sign;
-		}
+
+		var value_now = give_unformat_currency( $( this ).val() );
+		var formatted_total = give_format_currency( value_now );
+
+		$(this).val( formatted_total );
+
 		//Does this number have a value?
-		if ( !value_now || value_now <= 0 ) {
+		if ( !$.isNumeric( value_now ) || value_now <= 0 ) {
 			$( this ).addClass( 'invalid-amount' );
 		}
 
@@ -188,7 +192,6 @@ jQuery( function ( $ )
 			$( this ).parents( 'form' ).find( '.give-final-total-amount' ).data( 'total', value_now ).text( formatted_total );
 
 			//fade in/out updating text
-			$( this ).next( '.give-updating-price-loader' ).find( '.give-loading-animation' ).css( 'background-image', 'url(' + give_scripts.ajax_loader + ')' );
 			$( this ).next( '.give-updating-price-loader' ).stop().fadeIn().fadeOut();
 
 		}

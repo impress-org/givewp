@@ -11,7 +11,6 @@
 jQuery.noConflict();
 (function ( $ ) {
 
-
 	var initialize_qtips = function () {
 		jQuery( '[data-tooltip!=""]' ).qtip( { // Grab all elements with a non-blank data-tooltip attr.
 			content : {

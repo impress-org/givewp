@@ -443,14 +443,19 @@ CC Validation
 -----------------------------------*/
 
 #give_secure_site_wrapper {
-  padding: 4px 4px 4px 0;
-  font-weight: bold;
-  span.padlock:before {
-	content: '\f160';
-	display: inline-block;
-	-webkit-font-smoothing: antialiased;
-	font: normal 20px/1 'dashicons';
-	vertical-align: top;
+  padding: 4px 4px 15px 0;
+  font-size:16px;
+  line-height:20px;
+  //Secure padlock (SSL/HTTPS)
+  span.padlock {
+	@include iconstyle();
+	@extend .give-icon-locked;
+	font-size:16px;
+	line-height:20px;
+
+	:before {
+	  display: inline-block;
+	}
   }
 }
 
@@ -559,6 +564,8 @@ form[id*='give-form'] {
 	margin: 0;
 	padding: 0;
 	font-style: italic;
+	line-height: 20px;
+	font-size: 16px;
 
 	&.give-updating-price-loader {
 	  float: left;
@@ -567,21 +574,21 @@ form[id*='give-form'] {
 
   }
   .give-loading-animation {
+	@include iconstyle();
 	float: left;
 	width: 20px;
 	height: 20px;
-	margin: 0 5px 0 0;
+	line-height: 20px;
+	font-size: 16px;
+	margin: 0 3px 0 0;
 	background-size: 20px 20px;
 	background-repeat: no-repeat;
 	background-color: transparent;
-  }
+	@extend .icon-spinner2;
 
-  span.padlock:before {
-	content: '\e600';
-	display: inline-block;
-	-webkit-font-smoothing: antialiased;
-	font: normal 20px/1 'dashicons';
-	vertical-align: top;
+	&:before {
+	  @extend .fa-spin;
+	}
   }
 
 }

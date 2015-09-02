@@ -487,6 +487,37 @@ x:-o-prefocus, .qtip .qtip-tip {
 .give-icon-help:before {
   content: "\e606"; }
 
+.icon-spinner:before {
+  content: "\e605"; }
+
+.icon-spinner2:before {
+  content: "\e607"; }
+
+.give-icon-locked:before {
+  content: "\e600"; }
+
+.fa-spin {
+  -webkit-animation: fa-spin 2s infinite linear;
+  animation: fa-spin 2s infinite linear; }
+
+@-webkit-keyframes fa-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg); }
+
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg); } }
+
+@keyframes fa-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg); }
+
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg); } }
+
 /**
  * Give Forms SCSS
  *
@@ -1007,7 +1038,7 @@ Logs
  * @subpackage  SCSS/Admin
  * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
-*/
+ */
 /*------------------------------------
 Settings
 --------------------------------------*/
@@ -1236,8 +1267,8 @@ Status Colors
   vertical-align: baseline;
   border-radius: .25em;
   background-color: #929292; }
-#give-payments-filter .give-payment-details-link {
-  font-weight: bold; }
+#give-payments-filter .column-details {
+  padding-right: 30px; }
 
 /* Payment View Metabox */
 #give-order-update .give-donation-status {

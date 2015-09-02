@@ -3,8 +3,8 @@ Contributors: wordimpress, dlocc, webdevmattcrom
 Donate link: http://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 3.8
-Tested up to: 4.2.2
-Stable tag: 1.1
+Tested up to: 4.3
+Stable tag: 1.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -129,11 +129,25 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 == Changelog ==
 
-= 1.1.1 =
+= 1.3 =
+* Improved: Admin UX/UI - "View Donation Details" button now much easier to navigate into the single transaction view - https://github.com/WordImpress/Give/issues/216
+* Fix: Added fallback redirect to homepage if success page isn't set in settings https://github.com/WordImpress/Give/issues/214
+
+= 1.2 =
 * New: API updated to include fname and lname of forms donor
-* Fix: Form title not displayed on PayPal Standard #190 https://github.com/WordImpress/Give/issues/190
+* New: API updated to support all field donation data (including custom fields)
+* New: Credit Card input masking now supported - thanks @pryley https://github.com/WordImpress/Give/issues/76
+* Improvement: Ditched maskMoney custom donation amount validator for a better script provided by @helgatheviking - thanks! https://github.com/WordImpress/Give/issues/110
+* Improvement: AJAX spinner is now font icon rather than .gif image @see: https://github.com/WordImpress/Give/issues/193
+* Fix: Form title and Level Label now displayed correctly on PayPal Standard https://github.com/WordImpress/Give/issues/190
 * Fix: Export donors fatal error https://wordpress.org/support/topic/export-donors-in-csv-error?replies=2
 * Fix: Addons PHP warning https://github.com/WordImpress/Give/issues/191
+* Fix: Goal amount not respecting thousands separator https://github.com/WordImpress/Give/issues/205
+* Fix: Added a WordPress filter to allow developers to modify the 'Select Payment Method' legend text. - thanks @cwackerman https://github.com/WordImpress/Give/pull/211
+* Fix: Modified existing WordPress filter controlling submit button text so that it passes $form_id to hooks. This allows developers to access form options when generating submit button text. For example, to output default donation amount within submit button text, e.g. "Donate $5.00 Now".  - thanks @cwackerman https://github.com/WordImpress/Give/pull/211
+* Fix: GIVE_SLUG define doesn't affect slug https://github.com/WordImpress/Give/issues/199
+* Fix: Widget tooltips now display appropriately https://github.com/WordImpress/Give/issues/195
+* Fix: https/ssl padlock font now displays correctly https://github.com/WordImpress/Give/issues/220
 
 = 1.1 =
 * New: A front-facing JSON/XML API that makes it possible to query donation data directly from your WordPress site; this corresponds with the Zapier Add-on for Give: http://givewp.com/addons/zapier/

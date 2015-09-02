@@ -33,6 +33,7 @@ add_action( 'give_paypal_cc_form', '__return_false' );
  * @return void
  */
 function give_process_paypal_purchase( $purchase_data ) {
+
 	if ( ! wp_verify_nonce( $purchase_data['gateway_nonce'], 'give-gateway' ) ) {
 		wp_die( __( 'Nonce verification has failed', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}

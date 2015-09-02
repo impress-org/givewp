@@ -12,7 +12,6 @@ jQuery( document ).ready( function ( $ ) {
 
 	//Run tooltips setup
 	setup_give_tooltips();
-	setup_form_loading_images();
 
 	//Hide loading elements
 	$( '.give-loading-text' ).hide();
@@ -157,12 +156,12 @@ jQuery( document ).ready( function ( $ ) {
  */
 function give_load_gateway( form_object, payment_mode ) {
 
-	var loading_element = jQuery( form_object ).find( '#give-payment-mode-select .give-loading-animation' );
+	var loading_element = jQuery( form_object ).find( '#give-payment-mode-select .give-loading-text' );
 	var give_total = jQuery( form_object ).find( '#give-amount' ).val();
 	var give_form_id = jQuery( form_object ).find( 'input[name="give-form-id"]' ).val();
 
 	// Show the ajax loader
-	loading_element.parent().fadeIn();
+	loading_element.fadeIn();
 
 	//Update form action
 	//give_form.attr( 'action', '?payment-mode=' + payment_mode );
@@ -193,7 +192,6 @@ function give_load_gateway( form_object, payment_mode ) {
 			jQuery( '.give-no-js' ).hide();
 			jQuery( form_object ).find( '#give-payment-mode-wrap .give-loading-text' ).fadeOut();
 			setup_give_tooltips();
-			setup_form_loading_images();
 
 			// trigger an event on success for hooks
 			jQuery( document ).trigger( 'give_gateway_loaded', [response] );
@@ -219,12 +217,4 @@ function setup_give_tooltips() {
 			at: 'top center' // at the bottom right of...
 		}
 	} )
-}
-
-/**
- * Sets up all loading animation elements with the appropriate image
- * @since 1.0
- */
-function setup_form_loading_images() {
-	jQuery( '.give-loading-animation' ).css( 'background-image', 'url(' + give_scripts.ajax_loader + ')' );
 }

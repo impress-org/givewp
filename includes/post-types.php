@@ -27,7 +27,11 @@ function give_setup_post_types() {
 
 	$give_forms_archives = give_get_option( 'disable_forms_archives' ) !== 'on' ? true : false;
 
-	$give_forms_slug = defined( 'GIVE_FORMS_SLUG' ) ? GIVE_FORMS_SLUG : 'donations';
+	$give_forms_slug = defined( 'GIVE_SLUG' ) ? GIVE_SLUG : 'donations';
+	//support for old 'GIVE_FORMS_SLUG' constant
+	if ( defined( 'GIVE_FORMS_SLUG' ) ) {
+		$give_forms_slug = GIVE_FORMS_SLUG;
+	}
 
 	$give_forms_rewrite = defined( 'GIVE_DISABLE_FORMS_REWRITE' ) && GIVE_DISABLE_FORMS_REWRITE ? false : array(
 		'slug'       => $give_forms_slug,

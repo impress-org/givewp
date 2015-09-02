@@ -79,8 +79,13 @@ class Give_Forms_Widget extends WP_Widget {
 
 		//Widget Script
 		if ( $hook == 'widgets.php' ) {
-			wp_enqueue_script( 'give-qtip', $js_plugins . 'jquery.qtip' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
-			wp_enqueue_script( 'give-admin-widgets-scripts', $js_dir . 'admin-widgets' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
+
+			wp_register_style( 'give-qtip-css', $css_dir . 'jquery.qtip' . $suffix . '.css' );
+			wp_enqueue_style( 'give-qtip-css' );
+			wp_register_script( 'give-qtip', $js_plugins . 'jquery.qtip' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+			wp_enqueue_script( 'give-qtip' );
+			wp_register_script( 'give-admin-widgets-scripts', $js_dir . 'admin-widgets' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
+			wp_enqueue_script( 'give-admin-widgets-scripts' );
 		}
 
 
@@ -118,7 +123,7 @@ class Give_Forms_Widget extends WP_Widget {
 		?>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'id' ) ); ?>"><?php printf( __( 'Give %s', 'give' ), give_get_forms_label_singular() ); ?>
-				<span class="dashicons dashicons-tinymce-help" data-tooltip="<?php _e( 'Select a Give Form that you would like to embed in this widget area.', 'give' ); ?>"></span>
+				<span class="dashicons dashicons-editor-help give-tooltip" style="opacity:0.6" data-tooltip="<?php _e( 'Select a Give Form that you would like to embed in this widget area.', 'give' ); ?>"></span>
 			</label>
 			<select class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'id' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'id' ) ); ?>">
 				<option value="current"><?php _e( 'Please select...', 'give' ); ?></option>
@@ -129,7 +134,7 @@ class Give_Forms_Widget extends WP_Widget {
 		</p>
 		<!-- Give Form Field -->
 
-	<?php
+		<?php
 	} //end form function
 
 
