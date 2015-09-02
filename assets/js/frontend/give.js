@@ -25,7 +25,8 @@ jQuery( document ).ready( function ( $ ) {
 	// Modal with Magnific
 	$body.on( 'click', '.give-btn-modal', function ( e ) {
 		e.preventDefault();
-		var this_form = $( this ).parents( 'div.give-form-wrap' );
+		var this_form_wrap = $( this ).parents( 'div.give-form-wrap' );
+		var this_form = this_form_wrap.find( 'form.give-form' );
 		var this_amount_field = this_form.find( '#give-amount' );
 		var this_amount = this_amount_field.val();
 		//Check to ensure our amount is greater than 0
@@ -48,15 +49,17 @@ jQuery( document ).ready( function ( $ ) {
 					// Will fire when this exact popup is opened
 					// this - is Magnific Popup object
 					if ( $( '.mfp-content' ).outerWidth() >= 500 ) {
-
 						$( '.mfp-content' ).addClass( 'give-responsive-mfp-content' );
-
 					}
+					//Hide all form elements besides the ones required for payment
+					this_form.children().not( '#give_purchase_form_wrap, #give-payment-mode-select' ).hide();
 
 				},
 				close: function () {
 					//Remove popup class
 					this_form.removeClass( 'mfp-hide' );
+					//Show all fields again
+					this_form.children().not( '#give_purchase_form_wrap, #give-payment-mode-select' ).show();
 				}
 			}
 		} );
