@@ -49,7 +49,7 @@ jQuery( document ).ready( function ( $ ) {
 					// this - is Magnific Popup object
 					if ( $( '.mfp-content' ).outerWidth() >= 500 ) {
 
-						$('.mfp-content' ).addClass('give-responsive-mfp-content');
+						$( '.mfp-content' ).addClass( 'give-responsive-mfp-content' );
 
 					}
 

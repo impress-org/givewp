@@ -39,9 +39,9 @@ function give_can_checkout() {
 function give_get_success_page_uri() {
 	global $give_options;
 
-	$page_id = isset( $give_options['success_page'] ) ? absint( $give_options['success_page'] ) : 0;
+	$success_page = isset( $give_options['success_page'] ) ? get_permalink( absint( $give_options['success_page'] ) ) : get_bloginfo( 'url' );
 
-	return apply_filters( 'give_get_success_page_uri', get_permalink( $give_options['success_page'] ) );
+	return apply_filters( 'give_get_success_page_uri', $success_page );
 }
 
 /**
