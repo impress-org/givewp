@@ -4,7 +4,7 @@ Donate link: http://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 3.8
 Tested up to: 4.3
-Stable tag: 1.2
+Stable tag: 1.2.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -129,8 +129,12 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 == Changelog ==
 
-= 1.3 =
+= 1.2.1 =
 * Improved: Admin UX/UI - "View Donation Details" button now much easier to navigate into the single transaction view - https://github.com/WordImpress/Give/issues/216
+* Fix: Bug introduced preventing modal windows opening on click https://givewp.com/support/ticket/1-2-upgrade-issue-submit-buttons-no-longer-work/
+* Fix: Modal content displaying form content other than payment fields - https://github.com/WordImpress/Give/issues/217
+* Fix: Bug preventing viewing of single donation history pages https://github.com/WordImpress/Give/issues/226
+* Fix: Bug not accounting for new Credit Card masking spaces sending malformed content to PayPal
 * Fix: Added fallback redirect to homepage if success page isn't set in settings https://github.com/WordImpress/Give/issues/214
 
 = 1.2 =

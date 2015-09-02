@@ -723,6 +723,12 @@ function give_purchase_form_validate_cc() {
 		}
 	}
 
+	//Ensure no spaces
+	if ( ! empty( $card_data['card_number'] ) ) {
+		$card_data['card_number'] = str_replace( '+', '', $card_data['card_number'] ); //no "+" signs
+		$card_data['card_number'] = str_replace( ' ', '', $card_data['card_number'] ); // No spaces
+	}
+
 	// This should validate card numbers at some point too
 	return $card_data;
 }

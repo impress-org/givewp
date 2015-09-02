@@ -5,7 +5,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: WordImpress
  * Author URI: http://wordimpress.com
- * Version: 1.2
+ * Version: 1.2.1
  * Text Domain: give
  * Domain Path: /languages
  *
@@ -209,7 +209,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 
 			// Plugin version
 			if ( ! defined( 'GIVE_VERSION' ) ) {
-				define( 'GIVE_VERSION', '1.2' );
+				define( 'GIVE_VERSION', '1.2.1' );
 			}
 
 			// Plugin Folder Path
