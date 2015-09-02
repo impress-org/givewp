@@ -130,6 +130,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 == Changelog ==
 
 = 1.3 =
+* Improved: Admin UX/UI - "View Donation Details" button now much easier to navigate into the single transaction view - https://github.com/WordImpress/Give/issues/216
 * Fix: Added fallback redirect to homepage if success page isn't set in settings https://github.com/WordImpress/Give/issues/214
 
 = 1.2 =
