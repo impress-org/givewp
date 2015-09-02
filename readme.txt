@@ -129,6 +129,9 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 == Changelog ==
 
+= 1.3 =
+* Fix: Added fallback redirect to homepage if success page isn't set in settings https://github.com/WordImpress/Give/issues/214
+
 = 1.2 =
 * New: API updated to include fname and lname of forms donor
 * New: API updated to support all field donation data (including custom fields)
