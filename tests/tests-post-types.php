@@ -33,7 +33,7 @@ class Tests_Post_Types extends WP_UnitTestCase {
 		$this->assertEquals( 'No Forms found in Trash', $wp_post_types['give_forms']->labels->not_found_in_trash );
 		$this->assertEquals( 'All Forms', $wp_post_types['give_forms']->labels->all_items );
 		$this->assertEquals( 'Donations', $wp_post_types['give_forms']->labels->menu_name );
-		$this->assertEquals( 'Form', $wp_post_types['give_forms']->labels->name_admin_bar );
+		$this->assertEquals( 'Donation Form', $wp_post_types['give_forms']->labels->name_admin_bar );
 		$this->assertEquals( 1, $wp_post_types['give_forms']->publicly_queryable );
 		$this->assertEquals( 'give_forms', $wp_post_types['give_forms']->capability_type );
 		$this->assertEquals( 1, $wp_post_types['give_forms']->map_meta_cap );
