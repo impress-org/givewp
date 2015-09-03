@@ -51,7 +51,8 @@ function give_setup_post_types() {
 		'not_found'          => __( 'No %2$s found', 'give' ),
 		'not_found_in_trash' => __( 'No %2$s found in Trash', 'give' ),
 		'parent_item_colon'  => '',
-		'menu_name'          => apply_filters( 'give_menu_name', __( 'Donations', 'give' ) )
+		'menu_name'          => apply_filters( 'give_menu_name', __( 'Donations', 'give' ) ),
+		'name_admin_bar'     => apply_filters( 'give_name_admin_bar_name', __( 'Donation Form', 'give' ) )
 	) );
 
 	foreach ( $give_forms_labels as $key => $value ) {
