@@ -427,6 +427,12 @@ class Give_Plugin_Settings {
 							'type' => 'checkbox'
 						),
 						array(
+							'name' => __( 'Disable Single Form Sidebar', 'give' ),
+							'desc' => __( 'The sidebar allows you to add additional widget to the Give single form view. If you don\'t plan on using the sidebar you may disable it with this option.', 'give' ),
+							'id'   => 'disable_form_sidebar',
+							'type' => 'checkbox'
+						),
+						array(
 							'name' => __( 'Taxonomies', 'give' ),
 							'desc' => '<hr>',
 							'id'   => 'give_title_display_settings_3',
@@ -609,6 +615,18 @@ class Give_Plugin_Settings {
 							'id'   => 'disable_the_content_filter',
 							'type' => 'checkbox'
 						),
+						array(
+							'name' => __( 'Script Loading', 'give' ),
+							'desc' => '<hr>',
+							'id'   => 'give_title_script_control',
+							'type' => 'give_title'
+						),
+						array(
+							'name' => __( 'Load Scripts in Footer?', 'give' ),
+							'desc' => __( 'Check this box if you would like Give to load all frontend JavaScript files in the footer.', 'give' ),
+							'id'   => 'scripts_footer',
+							'type' => 'checkbox'
+						)
 					)
 				)
 			),

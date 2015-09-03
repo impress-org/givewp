@@ -42,6 +42,11 @@ Layout
   div.summary {
 	width: 58%;
 	float: right;
+
+	&.give-full-width {
+	  width: 100%;
+	  float: none;
+	}
   }
 
   .give_form select.give-select.required {
@@ -444,14 +449,14 @@ CC Validation
 
 #give_secure_site_wrapper {
   padding: 4px 4px 15px 0;
-  font-size:16px;
-  line-height:20px;
+  font-size: 16px;
+  line-height: 20px;
   //Secure padlock (SSL/HTTPS)
   span.padlock {
 	@include iconstyle();
 	@extend .give-icon-locked;
-	font-size:16px;
-	line-height:20px;
+	font-size: 16px;
+	line-height: 20px;
 
 	:before {
 	  display: inline-block;

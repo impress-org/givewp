@@ -126,7 +126,6 @@ class Tests_Give extends WP_UnitTestCase {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/admin/settings.scss' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/admin/welcome.scss' );
 
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/frontend/_magnific_settings.scss' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/frontend/_mixins.scss' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/frontend/_variables.scss' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/frontend/fonts.scss' );
@@ -138,6 +137,7 @@ class Tests_Give extends WP_UnitTestCase {
 
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/plugins/qtip.scss' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/plugins/magnific.scss' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/plugins/_magnific_settings.scss' );
 
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/fonts/icomoon.eot' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/fonts/icomoon.svg' );

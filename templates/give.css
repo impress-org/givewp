@@ -616,6 +616,9 @@ Layout
 [id*='give-form'] div.summary {
   width: 58%;
   float: right; }
+  [id*='give-form'] div.summary.give-full-width {
+    width: 100%;
+    float: none; }
 [id*='give-form'] .give_form select.give-select.required {
   color: #000; }
 [id*='give-form'] div.give-form-content-wrap {
@@ -1144,75 +1147,6 @@ Responsiveness
   opacity: 0.8;
   filter: alpha(opacity=80); }
 
-.give-modal {
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1043;
-  position: fixed;
-  outline: none !important;
-  -webkit-backface-visibility: hidden; }
-  .give-modal form[id*='give-form'] {
-    margin-bottom: 0; }
-    .give-modal form[id*='give-form'] .give-submit {
-      margin-bottom: 0; }
-  .give-modal .mfp-container {
-    text-align: center;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    padding: 0 8px;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box; }
-  .give-modal .mfp-container:before {
-    content: '';
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle; }
-  .give-modal .mfp-align-top .mfp-container:before {
-    display: none; }
-  .give-modal .mfp-content {
-    display: inline-block;
-    vertical-align: middle;
-    text-align: left;
-    position: relative;
-    background: #FFF;
-    padding: 20px;
-    width: auto;
-    max-width: 500px;
-    margin: 40px auto;
-    z-index: 1045; }
-    .give-modal .mfp-content .give-donation-levels-wrap, .give-modal .mfp-content .give-btn-modal {
-      display: none; }
-    .give-modal .mfp-content [id*='give-form'] #give-payment-mode-select, .give-modal .mfp-content [id*='give-form'] #give_purchase_form_wrap {
-      display: block; }
-  .give-modal .mfp-inline-holder .mfp-content, .give-modal .mfp-ajax-holder .mfp-content {
-    width: 100%;
-    cursor: auto; }
-  .give-modal .mfp-ajax-cur {
-    cursor: progress; }
-  .give-modal .mfp-zoom-out-cur, .give-modal .mfp-zoom-out-cur .mfp-image-holder .mfp-close {
-    cursor: -moz-zoom-out;
-    cursor: -webkit-zoom-out;
-    cursor: zoom-out; }
-  .give-modal .mfp-zoom {
-    cursor: pointer;
-    cursor: -webkit-zoom-in;
-    cursor: -moz-zoom-in;
-    cursor: zoom-in; }
-  .give-modal .mfp-auto-cursor .mfp-content {
-    cursor: auto; }
-  .give-modal .mfp-close, .give-modal .mfp-arrow, .give-modal .mfp-preloader, .give-modal .mfp-counter {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none; }
-  .give-modal .mfp-loading.mfp-figure {
-    display: none; }
-
 .mfp-hide {
   display: none !important; }
 
@@ -1695,6 +1629,86 @@ form.floated-labels .styled.select {
   form.floated-labels .styled.select:after {
     right: 12px;
     transform: skew(0deg, -45deg); }
+
+/**
+ * Give Magnific Modal Custom SCSS
+ *
+ * @package     Give
+ * @subpackage  SCSS/Frontend
+ * @copyright   Copyright (c) 2015, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+.give-modal {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1043;
+  position: fixed;
+  outline: none !important;
+  -webkit-backface-visibility: hidden; }
+  .give-modal form[id*='give-form'] {
+    margin-bottom: 0; }
+    .give-modal form[id*='give-form'] .give-submit {
+      margin-bottom: 0; }
+    .give-modal form[id*='give-form'] .give-payment-mode-label {
+      margin-top: 0;
+      padding-top: 0; }
+  .give-modal .mfp-container {
+    text-align: center;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    padding: 0 8px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box; }
+  .give-modal .mfp-container:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle; }
+  .give-modal .mfp-align-top .mfp-container:before {
+    display: none; }
+  .give-modal .mfp-content {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: left;
+    position: relative;
+    background: #FFF;
+    padding: 20px;
+    width: auto;
+    max-width: 500px;
+    margin: 40px auto;
+    z-index: 1045; }
+    .give-modal .mfp-content .give-donation-levels-wrap, .give-modal .mfp-content .give-btn-modal {
+      display: none; }
+    .give-modal .mfp-content [id*='give-form'] #give-payment-mode-select, .give-modal .mfp-content [id*='give-form'] #give_purchase_form_wrap {
+      display: block; }
+  .give-modal .mfp-inline-holder .mfp-content, .give-modal .mfp-ajax-holder .mfp-content {
+    width: 100%;
+    cursor: auto; }
+  .give-modal .mfp-ajax-cur {
+    cursor: progress; }
+  .give-modal .mfp-zoom-out-cur, .give-modal .mfp-zoom-out-cur .mfp-image-holder .mfp-close {
+    cursor: -moz-zoom-out;
+    cursor: -webkit-zoom-out;
+    cursor: zoom-out; }
+  .give-modal .mfp-zoom {
+    cursor: pointer;
+    cursor: -webkit-zoom-in;
+    cursor: -moz-zoom-in;
+    cursor: zoom-in; }
+  .give-modal .mfp-auto-cursor .mfp-content {
+    cursor: auto; }
+  .give-modal .mfp-close, .give-modal .mfp-arrow, .give-modal .mfp-preloader, .give-modal .mfp-counter {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none; }
+  .give-modal .mfp-loading.mfp-figure {
+    display: none; }
 
 
 /*# sourceMappingURL=give.css.map */
