@@ -13,5 +13,6 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
-
-dynamic_sidebar( 'give-forms-sidebar' );
+if ( is_active_sidebar( 'give-forms-sidebar' ) ) {
+	dynamic_sidebar( 'give-forms-sidebar' );
+}

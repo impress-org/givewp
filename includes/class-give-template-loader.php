@@ -3,19 +3,15 @@
 /**
  * Template Loader
  *
- * @version        1.0
  * @subpackage     Classes/Template-Loader
  * @copyright      Copyright (c) 2015, WordImpress
  * @license        http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since          1.0.0
  *
  */
 class Give_Template_Loader {
 
-	/**
-	 * Hook in methods
-	 */
-	public static function init() {
+
+	public function __construct() {
 
 		add_filter( 'template_include', array( __CLASS__, 'template_loader' ) );
 
@@ -36,16 +32,15 @@ class Give_Template_Loader {
 		add_action( 'give_after_main_content', 'give_output_content_wrapper_end', 10 );
 
 		/**
-		 * Before Single Forms Summary Div
-		 *
-		 * @see give_show_product_images()
-		 * @see give_show_avatars()
+		 * Entry Summary Classes
 		 */
-		add_action( 'give_before_single_form_summary', 'give_left_sidebar_pre_wrap', 5 );
-		add_action( 'give_before_single_form_summary', 'give_show_form_images', 10 );
-		//add_action( 'give_before_single_form_summary', 'give_show_avatars', 15 );
-		add_action( 'give_before_single_form_summary', 'give_get_forms_sidebar', 20 );
-		add_action( 'give_before_single_form_summary', 'give_left_sidebar_post_wrap', 30 );
+		add_filter( 'give_forms_single_summary_classes', array( $this, 'give_set_single_summary_classes' ) );
+
+
+		/**
+		 * Sidebar
+		 */
+		add_action( 'give_before_single_form_summary', array( $this, 'give_output_sidebar_option' ), 1 );
 
 
 		/**
@@ -58,6 +53,50 @@ class Give_Template_Loader {
 
 
 	}
+
+
+	/**
+	 * Give Set Single Simmary Classes
+	 * @description determines if the single form should be full width or with a sidebar
+	 * @see
+	 *
+	 * @param $classes
+	 *
+	 * @return string
+	 */
+	public function give_set_single_summary_classes( $classes ) {
+
+		$sidebar_option = give_get_option( 'disable_form_sidebar' );
+
+		//Add full width class when feature image is disabled AND no widgets are present
+		if ( $sidebar_option == 'on' ) {
+			$classes .= ' give-full-width';
+		}
+
+
+		return $classes;
+
+	}
+
+
+	/**
+	 * Output sidebar option
+	 * @description Determines whether the user has enabled or disabled the sidebar for Single Give forms
+	 * @since       1.3
+	 *
+	 */
+	public function give_output_sidebar_option() {
+		$sidebar_option = give_get_option( 'disable_form_sidebar' );
+		//Add full width class when feature image is disabled AND no widgets are present
+		if ( $sidebar_option !== 'on' ) {
+			add_action( 'give_before_single_form_summary', 'give_left_sidebar_pre_wrap', 5 );
+			add_action( 'give_before_single_form_summary', 'give_show_form_images', 10 );
+			add_action( 'give_before_single_form_summary', 'give_get_forms_sidebar', 20 );
+			add_action( 'give_before_single_form_summary', 'give_left_sidebar_post_wrap', 30 );
+		}
+
+	}
+
 
 	/**
 	 * Load a template.
@@ -99,5 +138,3 @@ class Give_Template_Loader {
 
 
 }
-
-Give_Template_Loader::init();

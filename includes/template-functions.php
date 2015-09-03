@@ -326,17 +326,18 @@ if ( ! function_exists( 'give_left_sidebar_pre_wrap' ) ) {
 		echo apply_filters( 'give_left_sidebar_pre_wrap', '<div id="give-sidebar-left" class="give-sidebar give-single-form-sidebar-left">' );
 	}
 }
+
 if ( ! function_exists( 'give_left_sidebar_post_wrap' ) ) {
 	function give_left_sidebar_post_wrap() {
 		echo apply_filters( 'give_left_sidebar_post_wrap', '</div>' );
 	}
 }
+
 if ( ! function_exists( 'give_get_forms_sidebar' ) ) {
 	function give_get_forms_sidebar() {
 		give_get_template_part( 'single-give-form/sidebar' );
 	}
 }
-
 
 if ( ! function_exists( 'give_show_form_images' ) ) {
 
@@ -344,7 +345,10 @@ if ( ! function_exists( 'give_show_form_images' ) ) {
 	 * Output the product image before the single product summary.
 	 */
 	function give_show_form_images() {
-		give_get_template_part( 'single-give-form/featured-image' );
+		$featured_image_option = give_get_option('disable_form_featured_img');
+		if($featured_image_option !== 'on'){
+			give_get_template_part( 'single-give-form/featured-image' );
+		}
 	}
 }
 
