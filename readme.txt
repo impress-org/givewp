@@ -129,6 +129,11 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 == Changelog ==
 
+= 1.3 =
+* New: Advanced global setting to disable single give forms sidebars added - https://github.com/WordImpress/Give/issues/192
+* New: 'give_forms_single_summary_classes' filter added
+* New: Advanced global setting  to load scripts in the footer Fixes - https://github.com/WordImpress/Give/issues/209
+
 = 1.2.1 =
 * Improved: Admin UX/UI - "View Donation Details" button now much easier to navigate into the single transaction view - https://github.com/WordImpress/Give/issues/216
 * Fix: Bug introduced preventing modal windows opening on click https://givewp.com/support/ticket/1-2-upgrade-issue-submit-buttons-no-longer-work/

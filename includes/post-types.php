@@ -508,7 +508,7 @@ function give_add_image_sizes() {
 function give_widgets_init() {
 
 	//Single Give Forms (disabled if single turned off in settings)
-	if ( give_get_option( 'disable_forms_singular' ) !== 'on' ) {
+	if ( give_get_option( 'disable_forms_singular' ) !== 'on' && give_get_option( 'disable_form_sidebar' ) !== 'on' ) {
 
 		register_sidebar( apply_filters( 'give_forms_single_sidebar', array(
 			'name'          => __( 'Give Single Form Sidebar', 'give' ),

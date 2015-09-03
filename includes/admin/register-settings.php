@@ -421,6 +421,12 @@ class Give_Plugin_Settings {
 							'type' => 'checkbox'
 						),
 						array(
+							'name' => __( 'Disable Single Form Sidebar', 'give' ),
+							'desc' => __( 'The sidebar allows you to add additional widget to the Give single form view. If you don\'t plan on using the sidebar you may disable it with this option.', 'give' ),
+							'id'   => 'disable_form_sidebar',
+							'type' => 'checkbox'
+						),
+						array(
 							'name' => __( 'Taxonomies', 'give' ),
 							'desc' => '<hr>',
 							'id'   => 'give_title_display_settings_3',

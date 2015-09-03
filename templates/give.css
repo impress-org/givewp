@@ -616,6 +616,9 @@ Layout
 [id*='give-form'] div.summary {
   width: 58%;
   float: right; }
+  [id*='give-form'] div.summary.give-full-width {
+    width: 100%;
+    float: none; }
 [id*='give-form'] .give_form select.give-select.required {
   color: #000; }
 [id*='give-form'] div.give-form-content-wrap {
