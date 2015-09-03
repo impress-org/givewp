@@ -130,6 +130,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 == Changelog ==
 
 = 1.3 =
+* New: Floating labels functionality! Enable floating labels to provide a cleaner donation interface for your users. Thanks @pryley - https://github.com/WordImpress/Give/pull/231
 * New: Advanced global setting to disable single give forms sidebars added - https://github.com/WordImpress/Give/issues/192
 * New: 'give_forms_single_summary_classes' filter added for customizing form wrapper classes
 * New: Advanced global setting added for load scripts in the footer - https://github.com/WordImpress/Give/issues/209
