@@ -165,7 +165,7 @@ form[id*='give-form'], #give-recurring-form, form.give-form {
 
 	}
 
-	select, textarea, input[type="text"], input[type="email"], input[type="password"] {
+	select, textarea, input[type="text"], input[type="tel"], input[type="email"], input[type="password"] {
 	  @include box-sizing(border-box);
 	  width: 100%;
 	  border-radius: 0;
@@ -470,6 +470,11 @@ CC Validation
 	background-repeat: no-repeat;
 	background-position: 98% 50%;
 	background-size: 16px;
+	&.floatlabel-input {
+	  background-image: url('../assets/images/tick-alt.png');
+	  background-position: 100% 50%;
+	  background-size: 72px 16px;
+	}
   }
 
   span.card-type {
@@ -480,6 +485,14 @@ CC Validation
 	height: 26px;
 	background-size: 37px 26px !important;
   }
+
+  .floatlabel {
+	span.card-type {
+	  top: 11px;
+	  right: 11px;
+	}
+  }
+
   span.card-type.off {
 	display: none;
   }

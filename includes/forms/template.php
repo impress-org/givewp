@@ -518,7 +518,7 @@ function give_get_cc_form() {
 				<span class="card-type"></span>
 			</label>
 
-			<input type="text" autocomplete="off" name="card_number" id="card_number" class="card-number give-input required" placeholder="<?php _e( 'Card number', 'give' ); ?>" />
+			<input type="tel" autocomplete="off" name="card_number" id="card_number" class="card-number give-input required" placeholder="<?php _e( 'Card number', 'give' ); ?>" />
 		</p>
 
 		<p id="give-card-cvc-wrap" class="form-row form-row-one-third">
@@ -528,7 +528,7 @@ function give_get_cc_form() {
 				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'The 3 digit (back) or 4 digit (front) value on your card.', 'give' ); ?>"></span>
 			</label>
 
-			<input type="text" size="4" autocomplete="off" name="card_cvc" id="card_cvc" class="card-cvc give-input required" placeholder="<?php _e( 'Security code', 'give' ); ?>" />
+			<input type="tel" size="4" autocomplete="off" name="card_cvc" id="card_cvc" class="card-cvc give-input required" placeholder="<?php _e( 'Security code', 'give' ); ?>" />
 		</p>
 
 		<p id="give-card-name-wrap" class="form-row form-row-two-thirds">
@@ -542,22 +542,16 @@ function give_get_cc_form() {
 		</p>
 		<?php do_action( 'give_before_cc_expiration' ); ?>
 		<p class="card-expiration form-row form-row-one-third">
-			<label for="card_exp_month" class="give-label">
+			<label for="card_expiry" class="give-label">
 				<?php _e( 'Expiration (MM/YY)', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
 				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'The date your credit card expires, typically on the front of the card.', 'give' ); ?>"></span>
 			</label>
-			<select id="card_exp_month" name="card_exp_month" class="card-expiry-month give-select give-select-small required">
-				<?php for ( $i = 1; $i <= 12; $i ++ ) {
-					echo '<option value="' . $i . '">' . sprintf( '%02d', $i ) . '</option>';
-				} ?>
-			</select>
-			<span class="exp-divider"> / </span>
-			<select id="card_exp_year" name="card_exp_year" class="card-expiry-year give-select give-select-small required">
-				<?php for ( $i = date( 'Y' ); $i <= date( 'Y' ) + 10; $i ++ ) {
-					echo '<option value="' . $i . '">' . substr( $i, 2 ) . '</option>';
-				} ?>
-			</select>
+
+			<input type="hidden" id="card_exp_month" name="card_exp_month" />
+			<input type="hidden" id="card_exp_year" name="card_exp_year" />
+
+			<input type="tel" autocomplete="off" name="card_expiry" id="card_expiry" class="card-expiry give-input required" placeholder="<?php _e( 'MM / YY', 'give' ); ?>" />
 		</p>
 		<?php do_action( 'give_after_cc_expiration' ); ?>
 
@@ -641,7 +635,7 @@ function give_default_cc_address_fields() {
 				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'The zip or postal code for your billing address.', 'give' ); ?>"></span>
 			</label>
 
-			<input type="text" size="4" name="card_zip" class="card-zip give-input<?php if ( give_field_is_required( 'card_zip' ) ) {
+			<input type="text" size="4" id="card_zip" name="card_zip" class="card-zip give-input<?php if ( give_field_is_required( 'card_zip' ) ) {
 				echo ' required';
 			} ?>" placeholder="<?php _e( 'Zip / Postal code', 'give' ); ?>" value="<?php echo $zip; ?>" />
 		</p>

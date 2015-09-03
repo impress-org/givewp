@@ -34,6 +34,7 @@ var source_paths = {
 		'./assets/js/plugins/accounting.min.js',
 		'./assets/js/plugins/jquery.payment.min.js',
 		'./assets/js/plugins/give-magnific.min.js',
+		'./assets/js/plugins/float-labels.min.js',
 		'./assets/js/frontend/*.min.js' //Frontend scripts need to be loaded last
 	]
 };

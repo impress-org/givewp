@@ -385,6 +385,12 @@ class Give_Plugin_Settings {
 							'type' => 'checkbox'
 						),
 						array(
+							'name' => __( 'Enable Floating Labels', 'give' ),
+							'desc' => sprintf( __( 'Enable this option if you would like to enable <a href="%s" target="_blank">floating labels</a> in Give\'s donation forms.<br>Be aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), esc_url( "http://bradfrost.com/blog/post/float-label-pattern/" ) ),
+							'id'   => 'enable_floatlabels',
+							'type' => 'checkbox'
+						),
+						array(
 							'name' => __( 'Disable Welcome Screen', 'give' ),
 							'desc' => sprintf( __( 'Enable this option if you would like to disable the Give Welcome screen every time Give is activated and/or updated. You can always access the Welcome Screen <a href="%s">here</a> if you want in the future.', 'give' ), esc_url( admin_url( 'index.php?page=give-about' ) ) ),
 							'id'   => 'disable_welcome',
