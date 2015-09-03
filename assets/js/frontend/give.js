@@ -9,29 +9,26 @@
  */
 var give_scripts;
 
-function customEvents( el )
-{
+function customEvents( el ) {
 	var id = el.attr( 'id' );
 
-	if( id === 'card_number' ) {
+	if ( id === 'card_number' ) {
 		el.after( '<span class="off card-type"/>' );
 	}
 }
 
-function customLabels( el, label )
-{
-	// if( el.hasClass( 'give-select-level' ) ) {
+function customLabels( el, label ) {
+	// if ( el.hasClass( 'give-select-level' ) ) {
 	// 	return 'Donation Amount';
 	// }
 
 	var id = el.attr( 'id' );
 
-	if( id !== undefined ) {
+	if ( id !== undefined ) {
 
 		var tooltip = el.closest( 'p' ).find( 'label[for="' + id + '"]' ).find( '.give-tooltip' );
 
-		if( tooltip.length ) {
-
+		if ( tooltip.length ) {
 			label = tooltip.removeClass().text( label ).prop( 'outerHTML' );
 		}
 	}
@@ -44,7 +41,7 @@ jQuery( function ( $ ) {
 	var doc = $( document );
 
 	// floatlabels
-	if( give_scripts.floatlabels === '1' ) {
+	if ( give_scripts.floatlabels === '1' ) {
 
 		var options = {
 			exclude: ['#give-amount, .give-select-level'],
@@ -54,24 +51,21 @@ jQuery( function ( $ ) {
 
 		$( '.give-form' ).floatlabels( options );
 
-		doc.on( 'give_gateway_loaded', function()
-		{
+		doc.on( 'give_gateway_loaded', function () {
 			$( '.give-form' ).floatlabels( options );
 		});
 
-		doc.on( 'give_checkout_billing_address_updated', function( ev, response )
-		{
-			var wrap  = $( '#give-card-state-wrap' ),
-				el    = wrap.find( '#card_state' ),
-				label = wrap.find( 'label[for="card_state"]' );
+		doc.on( 'give_checkout_billing_address_updated', function ( ev, response ) {
+			var wrap  = $( '#give-card-state-wrap' );
+			var el    = wrap.find( '#card_state' );
+			var label = wrap.find( 'label[for="card_state"]' );
 
 			label = label.length ? label.text().replace( '*', '' ).trim() : '';
 
-			if( 'nostates' === response ) {
+			if ( 'nostates' === response ) {
 				// fix input
 				el.attr( 'placeholder', label ).parent().removeClass( 'styled select' );
-			}
-			else {
+			} else {
 				// fix select
 				el.children().first().text( label );
 				el.parent().addClass( 'styled select' );
