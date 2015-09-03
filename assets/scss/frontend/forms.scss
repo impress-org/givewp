@@ -160,7 +160,7 @@ form[id*='give-form'], #give-recurring-form, form.give-form {
 
 	}
 
-	select, textarea, input[type="text"], input[type="email"], input[type="password"] {
+	select, textarea, input[type="text"], input[type="tel"], input[type="email"], input[type="password"] {
 	  @include box-sizing(border-box);
 	  width: 100%;
 	  border-radius: 0;
