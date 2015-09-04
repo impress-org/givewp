@@ -262,7 +262,7 @@ function give_output_donation_levels( $form_id = 0, $args = array() ) {
 				}
 				?>
 
-				<input class="give-text-input" id="give-amount" name="give-amount" type="text" placeholder="" value="<?php echo $default_amount; ?>" required autocomplete="off">
+				<input class="give-text-input" id="give-amount" name="give-amount" type="tel" placeholder="" value="<?php echo $default_amount; ?>" required autocomplete="off">
 
 				<?php if ( $currency_position == 'after' ) {
 					echo $currency_output;
