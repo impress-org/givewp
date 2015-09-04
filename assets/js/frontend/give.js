@@ -44,7 +44,7 @@ jQuery( function ( $ ) {
 	if ( give_scripts.floatlabels === '1' ) {
 
 		var options = {
-			exclude: ['#give-amount, .give-select-level'],
+			exclude    : ['#give-amount, .give-select-level'],
 			customEvent: customEvents,
 			customLabel: customLabels
 		};
@@ -53,11 +53,11 @@ jQuery( function ( $ ) {
 
 		doc.on( 'give_gateway_loaded', function () {
 			$( '.give-form' ).floatlabels( options );
-		});
+		} );
 
 		doc.on( 'give_checkout_billing_address_updated', function ( ev, response ) {
-			var wrap  = $( '#give-card-state-wrap' );
-			var el    = wrap.find( '#card_state' );
+			var wrap = $( '#give-card-state-wrap' );
+			var el = wrap.find( '#card_state' );
 			var label = wrap.find( 'label[for="card_state"]' );
 
 			label = label.length ? label.text().replace( '*', '' ).trim() : '';
@@ -74,7 +74,7 @@ jQuery( function ( $ ) {
 			el.parent().removeClass( 'is-active' );
 
 			$( '.give-form' ).floatlabels( options );
-		});
+		} );
 	}
 
 	// Reveal Btn which displays the checkout content
@@ -104,12 +104,12 @@ jQuery( function ( $ ) {
 
 		//Alls well, open popup!
 		$.magnificPopup.open( {
-			mainClass: 'give-modal',
-			items    : {
+			mainClass   : 'give-modal',
+			items       : {
 				src : this_form,
 				type: 'inline'
 			},
-			callbacks: {
+			callbacks   : {
 				open : function () {
 					// Will fire when this exact popup is opened
 					// this - is Magnific Popup object
@@ -117,14 +117,14 @@ jQuery( function ( $ ) {
 						$( '.mfp-content' ).addClass( 'give-responsive-mfp-content' );
 					}
 					//Hide all form elements besides the ones required for payment
-					this_form.children().not( '#give_purchase_form_wrap, #give-payment-mode-select' ).hide();
+					this_form.children().not( '#give_purchase_form_wrap, #give-payment-mode-select, .mfp-close' ).hide();
 
 				},
 				close: function () {
 					//Remove popup class
 					this_form.removeClass( 'mfp-hide' );
 					//Show all fields again
-					this_form.children().not( '#give_purchase_form_wrap, #give-payment-mode-select' ).show();
+					this_form.children().not( '#give_purchase_form_wrap, #give-payment-mode-select, .mfp-close' ).show();
 				}
 			}
 		} );
