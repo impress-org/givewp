@@ -32,12 +32,12 @@ var source_paths = {
 	plugin_styles   : ['./assets/scss/**/*.scss'],
 	scripts         : ['./assets/js/**/*.js', '!./assets/js/**/*.min.js'],
 	frontend_scripts: [
-		'./assets/js/plugins/jquery.blockUI.min.js',
-		'./assets/js/plugins/jquery.qtip.min.js',
 		'./assets/js/plugins/accounting.min.js',
-		'./assets/js/plugins/jquery.payment.min.js',
-		'./assets/js/plugins/magnific-popup.min.js',
 		'./assets/js/plugins/float-labels.min.js',
+		'./assets/js/plugins/jquery.blockUI.min.js',
+		'./assets/js/plugins/jquery.magnific-popup.min.js',
+		'./assets/js/plugins/jquery.payment.min.js',
+		'./assets/js/plugins/jquery.qtip.min.js',
 		'./assets/js/frontend/*.min.js' //Frontend scripts need to be loaded last
 	]
 };
