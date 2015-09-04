@@ -1,15 +1,17 @@
 /*!
  * Float Labels
  *
- * Version: 1.0.3
+ * Version: 1.0.4
  * Author: Paul Ryley (http://geminilabs.io)
  * URL: https://github.com/geminilabs/float-labels.js
  * License: MIT
  */
 
 /**
- * The float label pattern floats the inline label up above the input after the user focuses
- * on the form field or enters a value.
+ * This plugin applies the float label pattern to a form.
+ *
+ * The float label pattern floats the inline label up above the input after the user focuses on the
+ * form field or enters a value.
  *
  * Pros:
  * - User keeps context
@@ -56,15 +58,15 @@
 
 		form = $( this );
 
-		if( form.get(0).tagName !== 'FORM' ) {
-			var forms = form.find( 'form' );
-			if( forms === 0 ) {
-				forms = form.closest( 'form' );
-			}
-			form = forms;
-		}
-
 		if( form.length ) {
+
+			if( form.get(0).tagName !== 'FORM' ) {
+				var forms = form.find( 'form' );
+				if( forms === 0 ) {
+					forms = form.closest( 'form' );
+				}
+				form = forms;
+			}
 
 			form.addClass( 'floated-labels' );
 
