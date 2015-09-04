@@ -137,7 +137,7 @@ class Tests_Give extends WP_UnitTestCase {
 
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/plugins/_settings.scss' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/plugins/float-labels.scss' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/plugins/magnific.scss' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/plugins/magnific-popup.scss' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/plugins/qtip.scss' );
 
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/fonts/icomoon.eot' );
