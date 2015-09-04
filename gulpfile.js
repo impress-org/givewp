@@ -6,20 +6,23 @@
 
 /* Modules (Can be installed with npm install command using package.json)
  ------------------------------------- */
-var gulp = require( 'gulp' ),
-	gutil = require( 'gulp-util' ),
-	del = require( 'del' ),
-	autoprefixer = require( 'gulp-autoprefixer' ),
-	uglify = require( 'gulp-uglify' ),
-	sass = require( 'gulp-sass' ),
-	sourcemaps = require( 'gulp-sourcemaps' ),
-	concat = require( 'gulp-concat' ),
-	rename = require( 'gulp-rename' ),
-	plumber = require( 'gulp-plumber' ),
-	notify = require( 'gulp-notify' ),
-	watch = require( 'gulp-watch' ),
-	livereload = require( 'gulp-livereload' ),
-	minifyCSS = require( 'gulp-minify-css' );
+var autoprefixer = require( 'gulp-autoprefixer' ),
+	bower        = require( 'gulp-bower' ),
+	bowerMain    = require( 'main-bower-files' ),
+	concat       = require( 'gulp-concat' ),
+	del          = require( 'del' ),
+	filter       = require( 'gulp-filter' ),
+	gulp         = require( 'gulp' ),
+	gutil        = require( 'gulp-util' ),
+	livereload   = require( 'gulp-livereload' ),
+	minifyCSS    = require( 'gulp-minify-css' ),
+	notify       = require( 'gulp-notify' ),
+	plumber      = require( 'gulp-plumber' ),
+	rename       = require( 'gulp-rename' ),
+	sass         = require( 'gulp-sass' ),
+	sourcemaps   = require( 'gulp-sourcemaps' ),
+	uglify       = require( 'gulp-uglify' ),
+	watch        = require( 'gulp-watch' );
 
 /* Paths
  ------------------------------------- */
@@ -29,11 +32,11 @@ var source_paths = {
 	plugin_styles   : ['./assets/scss/**/*.scss'],
 	scripts         : ['./assets/js/**/*.js', '!./assets/js/**/*.min.js'],
 	frontend_scripts: [
-		'./assets/js/plugins/jQuery.blockUI.min.js',
+		'./assets/js/plugins/jquery.blockUI.min.js',
 		'./assets/js/plugins/jquery.qtip.min.js',
 		'./assets/js/plugins/accounting.min.js',
 		'./assets/js/plugins/jquery.payment.min.js',
-		'./assets/js/plugins/give-magnific.min.js',
+		'./assets/js/plugins/magnific-popup.min.js',
 		'./assets/js/plugins/float-labels.min.js',
 		'./assets/js/frontend/*.min.js' //Frontend scripts need to be loaded last
 	]
@@ -44,10 +47,10 @@ var source_paths = {
 gulp.task( 'admin_styles', function () {
 	return gulp.src( source_paths.admin_styles )
 		.pipe( sourcemaps.init() )
-		.pipe( autoprefixer() )
 		.pipe( sass( {
 			errLogToConsole: true
 		} ) )
+		.pipe( autoprefixer() ) //run this after sass!
 		.pipe( rename( 'give-admin.css' ) )
 		.pipe( sourcemaps.write( '.' ) )
 		.pipe( gulp.dest( './assets/css' ) )
@@ -67,10 +70,10 @@ gulp.task( 'admin_styles', function () {
 gulp.task( 'frontend_styles', function () {
 	return gulp.src( source_paths.frontend_styles )
 		.pipe( sourcemaps.init() ) //start up sourcemapping
-		.pipe( autoprefixer() ) //add prefixes for older browsers
 		.pipe( sass( {
 			errLogToConsole: true
 		} ) ) //compile SASS; ensure any errors don't stop gulp watch
+		.pipe( autoprefixer() ) //add prefixes for older browsers, run this after sass!
 		.pipe( rename( 'give.css' ) ) //rename for our main un-minfied file
 		.pipe( sourcemaps.write( '.' ) ) //write SCSS source maps to the appropriate plugin dir
 		.pipe( gulp.dest( './templates' ) ) //place compiled file in appropriate directory
@@ -104,7 +107,7 @@ gulp.task( 'scripts', function () {
 gulp.task( 'concat_scripts', function ( cb ) {
 	del( [
 		'assets/js/frontend/give.all.min.js'
-	], function () {
+	]).then( function () {
 		return gulp.src( source_paths.frontend_scripts )
 			.pipe( concat( 'give.all.min.js' ) ) //Add all compressed frontend JS scripts into one minified file for production
 			.pipe( gulp.dest( 'assets/js/frontend' ) )
@@ -113,7 +116,6 @@ gulp.task( 'concat_scripts', function ( cb ) {
 				onLast : true //only notify on completion of task (prevents multiple notifications per file)
 			} ) )
 	} );
-
 } );
 
 /* Watch Files For Changes
@@ -124,14 +126,10 @@ gulp.task( 'watch', function () {
 	livereload.listen();
 
 	//Add watching on Admin SCSS-files
-	gulp.watch( 'assets/scss/admin/*.scss', function () {
-		gulp.start( 'admin_styles' );
-	} );
+	gulp.watch( 'assets/scss/admin/*.scss', ['admin_styles'] );
 
 	//Add watching on Frontend SCSS-files
-	gulp.watch( 'assets/scss/frontend/*.scss', function () {
-		gulp.start( 'frontend_styles' );
-	} );
+	gulp.watch( 'assets/scss/frontend/*.scss', ['frontend_styles'] );
 
 	//Add watching on JS files
 	gulp.watch( source_paths.scripts, ['scripts', 'concat_scripts'] );
@@ -140,7 +138,6 @@ gulp.task( 'watch', function () {
 	gulp.watch( 'templates/*.php', function () {
 		livereload(); //and reload when changed
 	} );
-
 } );
 
 /* Handle errors elegantly with gulp-notify
@@ -155,6 +152,44 @@ var onError = function ( err ) {
 /* Default Gulp task
  ------------------------------------- */
 gulp.task( 'default', function () {
-	gulp.start( 'admin_styles', 'frontend_styles', 'scripts', 'concat_scripts', 'watch' );
-	notify( {message: 'Default task complete'} )
+
+	var overrides = {
+		"chosen"         : { main: ['chosen.jquery.js'] },
+		"float-labels.js": { main: ['dist/float-labels.js', 'src/scss/float-labels.scss'] },
+		"flot.orderbars" : { main: ['js/jquery.flot.orderBars.js'] },
+		"jquery"         : { ignore: true },
+		"magnific-popup" : { main: ['dist/jquery.magnific-popup.js', 'src/css/*.scss'] },
+		"qtip2"          : { main: ['jquery.qtip.js', 'jquery.qtip.css'], dependencies: null }
+	};
+
+	// run bower install
+	bower()
+		.pipe( gulp.dest( 'bower' ) )
+		.on( 'end', function () {
+
+			// copy bower plugin scripts to assets
+			gulp.src( bowerMain( { overrides: overrides } ) )
+				.pipe( filter( ['*.js'] ) )
+				.pipe( gulp.dest( 'assets/js/plugins/' ) )
+				.on( 'end', function () {
+
+					// copy bower plugin (s)css to assets
+					gulp.src( bowerMain( { overrides: overrides } ) )
+						.pipe( filter( ['*.css', '*.scss'] ) )
+						.pipe( rename( function ( path ) {
+							path.extname  = '.scss';
+							if ( path.basename === 'main' ) {
+								path.basename = 'magnific-popup';
+							} else if ( path.basename === 'jquery.qtip' ) {
+								path.basename = 'qtip';
+							}
+						} ) )
+						.pipe( gulp.dest( 'assets/scss/plugins/' ) )
+						.on( 'end', function () {
+
+							// ... and now we run all the tasks!
+							gulp.start( 'watch', 'admin_styles', 'frontend_styles', 'scripts', 'concat_scripts' );
+						} );
+				} );
+		} );
 } );

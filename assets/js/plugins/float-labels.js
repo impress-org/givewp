@@ -1,7 +1,7 @@
 /*!
  * Float Labels
  *
- * Version: 1.0.4
+ * Version: 1.0.5
  * Author: Paul Ryley (http://geminilabs.io)
  * URL: https://github.com/geminilabs/float-labels.js
  * License: MIT
@@ -62,9 +62,14 @@
 
 			if( form.get(0).tagName !== 'FORM' ) {
 				var forms = form.find( 'form' );
-				if( forms === 0 ) {
+
+				if( forms.length === 0 ) {
 					forms = form.closest( 'form' );
 				}
+				if( forms.length === 0 ) {
+					return;
+				}
+
 				form = forms;
 			}
 

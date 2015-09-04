@@ -3,6 +3,6 @@
 .svn
 
 # Gulp / Grunt
-node_modules/*
 .sass-cache/*
-
+bower/*
+node_modules/*
