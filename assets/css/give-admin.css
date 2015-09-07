@@ -12,7 +12,8 @@
  */
 .give-clearfix {
   *zoom: 1; }
-  .give-clearfix:before, .give-clearfix:after {
+  .give-clearfix:before,
+  .give-clearfix:after {
     content: " ";
     display: table; }
   .give-clearfix:after {
@@ -26,7 +27,7 @@
  * CSS3 Easing
  */
 .give-item-label {
-  padding: .2em .6em .3em;
+  padding: 0.2em 0.6em 0.3em;
   font-size: 85%;
   font-weight: 700;
   line-height: 1;
@@ -46,13 +47,13 @@
  * qTip2 - Pretty powerful tooltips - v2.2.1
  * http://qtip2.com
  *
- * Copyright (c) 2015
+ * Copyright (c) 2014 
  * Released under the MIT licenses
  * http://jquery.org/license
  *
- * Date: Mon Sep 8 2014 05:43 EDT-0400
- * Plugins: tips
- * Styles: core css3
+ * Date: Sun Sep 7 2014 12:09 GMT+0100+0100
+ * Plugins: tips modal viewport svg imagemap ie6
+ * Styles: core basic css3
  */
 .qtip {
   position: absolute;
@@ -104,14 +105,13 @@
   top: 16px; }
 
 /* IE fix */
-.qtip-titlebar .ui-icon, .qtip-icon .ui-icon {
+.qtip-titlebar .ui-icon,
+.qtip-icon .ui-icon {
   display: block;
   text-indent: -1000em;
   direction: ltr; }
 
 .qtip-icon, .qtip-icon .ui-icon {
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
   border-radius: 3px;
   text-decoration: none; }
 
@@ -145,37 +145,105 @@
   border-color: #AAA;
   color: #111; }
 
+/*! Light tooltip style */
+.qtip-light {
+  background-color: white;
+  border-color: #E2E2E2;
+  color: #454545; }
+
+.qtip-light .qtip-titlebar {
+  background-color: #f1f1f1; }
+
+/*! Dark tooltip style */
+.qtip-dark {
+  background-color: #505050;
+  border-color: #303030;
+  color: #f3f3f3; }
+
+.qtip-dark .qtip-titlebar {
+  background-color: #404040; }
+
+.qtip-dark .qtip-icon {
+  border-color: #444; }
+
+.qtip-dark .qtip-titlebar .ui-state-hover {
+  border-color: #303030; }
+
+/*! Cream tooltip style */
+.qtip-cream {
+  background-color: #FBF7AA;
+  border-color: #F9E98E;
+  color: #A27D35; }
+
+.qtip-cream .qtip-titlebar {
+  background-color: #F0DE7D; }
+
+.qtip-cream .qtip-close .qtip-icon {
+  background-position: -82px 0; }
+
+/*! Red tooltip style */
+.qtip-red {
+  background-color: #F78B83;
+  border-color: #D95252;
+  color: #912323; }
+
+.qtip-red .qtip-titlebar {
+  background-color: #F06D65; }
+
+.qtip-red .qtip-close .qtip-icon {
+  background-position: -102px 0; }
+
+.qtip-red .qtip-icon {
+  border-color: #D95252; }
+
+.qtip-red .qtip-titlebar .ui-state-hover {
+  border-color: #D95252; }
+
+/*! Green tooltip style */
+.qtip-green {
+  background-color: #CAED9E;
+  border-color: #90D93F;
+  color: #3F6219; }
+
+.qtip-green .qtip-titlebar {
+  background-color: #B0DE78; }
+
+.qtip-green .qtip-close .qtip-icon {
+  background-position: -42px 0; }
+
+/*! Blue tooltip style */
+.qtip-blue {
+  background-color: #E5F6FE;
+  border-color: #ADD9ED;
+  color: #5E99BD; }
+
+.qtip-blue .qtip-titlebar {
+  background-color: #D0E9F5; }
+
+.qtip-blue .qtip-close .qtip-icon {
+  background-position: -2px 0; }
+
 .qtip-shadow {
-  -webkit-box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.15);
-  -moz-box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.15);
   box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.15); }
 
 /* Add rounded corners to your tooltips in: FF3+, Chrome 2+, Opera 10.6+, IE9+, Safari 2+ */
-.qtip-rounded, .qtip-tipsy, .qtip-bootstrap {
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
+.qtip-rounded,
+.qtip-tipsy,
+.qtip-bootstrap {
   border-radius: 5px; }
 
 .qtip-rounded .qtip-titlebar {
-  -moz-border-radius: 4px 4px 0 0;
-  -webkit-border-radius: 4px 4px 0 0;
   border-radius: 4px 4px 0 0; }
 
 /* Youtube tooltip style */
 .qtip-youtube {
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
   border-radius: 2px;
-  -webkit-box-shadow: 0 0 3px #333;
-  -moz-box-shadow: 0 0 3px #333;
   box-shadow: 0 0 3px #333;
   color: white;
   border: 0 solid transparent;
   background: #4A4A4A;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #4A4A4A), color-stop(100%, black));
   background-image: -webkit-linear-gradient(top, #4A4A4A 0, black 100%);
-  background-image: -moz-linear-gradient(top, #4A4A4A 0, black 100%);
-  background-image: -ms-linear-gradient(top, #4A4A4A 0, black 100%);
   background-image: -o-linear-gradient(top, #4A4A4A 0, black 100%); }
 
 .qtip-youtube .qtip-titlebar {
@@ -184,7 +252,7 @@
 
 .qtip-youtube .qtip-content {
   padding: .75em;
-  font: 12px arial, sans-serif;
+  font: 12px arial,sans-serif;
   filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr=#4a4a4a,EndColorStr=#000000);
   -ms-filter: "progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr=#4a4a4a,EndColorStr=#000000);"; }
 
@@ -199,17 +267,11 @@
   background: #232323;
   background: rgba(0, 0, 0, 0.7);
   background-image: -webkit-gradient(linear, left top, left bottom, from(#717171), to(#232323));
-  background-image: -moz-linear-gradient(top, #717171, #232323);
   background-image: -webkit-linear-gradient(top, #717171, #232323);
-  background-image: -ms-linear-gradient(top, #717171, #232323);
   background-image: -o-linear-gradient(top, #717171, #232323);
   border: 2px solid #ddd;
   border: 2px solid #f1f1f1;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
   border-radius: 2px;
-  -webkit-box-shadow: 0 0 12px #333;
-  -moz-box-shadow: 0 0 12px #333;
   box-shadow: 0 0 12px #333; }
 
 /* IE Specific */
@@ -222,7 +284,8 @@
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#4A4A4A,endColorstr=#232323);
   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#4A4A4A,endColorstr=#232323)"; }
 
-.qtip-jtools .qtip-titlebar, .qtip-jtools .qtip-content {
+.qtip-jtools .qtip-titlebar,
+.qtip-jtools .qtip-content {
   background: transparent;
   color: white;
   border: 0 dashed transparent; }
@@ -235,8 +298,6 @@
 
 /* Cluetip style */
 .qtip-cluetip {
-  -webkit-box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.4);
-  -moz-box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.4);
   box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.4);
   background-color: #D9D9C2;
   color: #111;
@@ -283,8 +344,6 @@
 /* Tipped style */
 .qtip-tipped {
   border: 3px solid #959FA9;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
   border-radius: 3px;
   background-color: #F9F9F9;
   color: #454545;
@@ -297,8 +356,6 @@
   background: #3A79B8;
   background-image: -webkit-gradient(linear, left top, left bottom, from(#3A79B8), to(#2E629D));
   background-image: -webkit-linear-gradient(top, #3A79B8, #2E629D);
-  background-image: -moz-linear-gradient(top, #3A79B8, #2E629D);
-  background-image: -ms-linear-gradient(top, #3A79B8, #2E629D);
   background-image: -o-linear-gradient(top, #3A79B8, #2E629D);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#3A79B8,endColorstr=#2E629D);
   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#3A79B8,endColorstr=#2E629D)"; }
@@ -327,14 +384,8 @@
   background-color: #ffffff;
   border: 1px solid #ccc;
   border: 1px solid rgba(0, 0, 0, 0.2);
-  -webkit-border-radius: 6px;
-  -moz-border-radius: 6px;
   border-radius: 6px;
-  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  -webkit-background-clip: padding-box;
-  -moz-background-clip: padding;
   background-clip: padding-box; }
 
 .qtip-bootstrap .qtip-titlebar {
@@ -346,8 +397,6 @@
   line-height: 18px;
   background-color: #f7f7f7;
   border-bottom: 1px solid #ebebeb;
-  -webkit-border-radius: 5px 5px 0 0;
-  -moz-border-radius: 5px 5px 0 0;
   border-radius: 5px 5px 0 0; }
 
 .qtip-bootstrap .qtip-titlebar .qtip-close {
@@ -409,8 +458,10 @@
   filter: alpha(opacity=40); }
 
 /* IE9 fix - removes all filters */
-.qtip:not(.ie9haxors) div.qtip-content, .qtip:not(.ie9haxors) div.qtip-titlebar {
-  filter: none;
+.qtip:not(.ie9haxors) div.qtip-content,
+.qtip:not(.ie9haxors) div.qtip-titlebar {
+  -webkit-filter: none;
+          filter: none;
   -ms-filter: none; }
 
 .qtip .qtip-tip {
@@ -423,7 +474,9 @@
 x:-o-prefocus, .qtip .qtip-tip {
   visibility: hidden; }
 
-.qtip .qtip-tip, .qtip .qtip-tip .qtip-vml, .qtip .qtip-tip canvas {
+.qtip .qtip-tip,
+.qtip .qtip-tip .qtip-vml,
+.qtip .qtip-tip canvas {
   position: absolute;
   color: #123456;
   background: transparent;
@@ -438,6 +491,32 @@ x:-o-prefocus, .qtip .qtip-tip {
   display: inline-block;
   visibility: visible; }
 
+#qtip-overlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%; }
+
+/* Applied to modals with show.modal.blur set to true */
+#qtip-overlay.blurs {
+  cursor: pointer; }
+
+/* Change opacity of overlay here */
+#qtip-overlay div {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)"; }
+
+.qtipmodal-ie6fix {
+  position: absolute !important; }
+
 /**
  * Give Frontend Fontss SCSS
  *
@@ -449,8 +528,8 @@ x:-o-prefocus, .qtip .qtip-tip {
 */
 @font-face {
   font-family: 'give-icomoon';
-  src: url('../assets/fonts/icomoon.eot?-ngjl88');
-  src: url('../assets/fonts/icomoon.eot?#iefix-ngjl88') format('embedded-opentype'), url('../assets/fonts/icomoon.woff?-ngjl88') format('woff'), url('../assets/fonts/icomoon.ttf?-ngjl88') format('truetype'), url('../assets/fonts/icomoon.svg?-ngjl88#icomoon') format('svg');
+  src: url("../assets/fonts/icomoon.eot?-ngjl88");
+  src: url("../assets/fonts/icomoon.eot?#iefix-ngjl88") format("embedded-opentype"), url("../assets/fonts/icomoon.woff?-ngjl88") format("woff"), url("../assets/fonts/icomoon.ttf?-ngjl88") format("truetype"), url("../assets/fonts/icomoon.svg?-ngjl88#icomoon") format("svg");
   font-weight: normal;
   font-style: normal; }
 
@@ -504,7 +583,6 @@ x:-o-prefocus, .qtip .qtip-tip {
   0% {
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg); }
-
   100% {
     -webkit-transform: rotate(359deg);
     transform: rotate(359deg); } }
@@ -513,7 +591,6 @@ x:-o-prefocus, .qtip .qtip-tip {
   0% {
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg); }
-
   100% {
     -webkit-transform: rotate(359deg);
     transform: rotate(359deg); } }
@@ -737,17 +814,26 @@ Publish Metabox
 /*-------------------------------------
 Content Options
 -------------------------------------*/
-.cmb2-id--give-content-option, .cmb2-id--give-terms-option, .cmb2-id--give-offline-donation-enable-billing-fields-single, .cmb2-id--give-goal-option, .cmb2-id--give-customize-offline-donations {
+.cmb2-id--give-content-option,
+.cmb2-id--give-terms-option,
+.cmb2-id--give-offline-donation-enable-billing-fields-single,
+.cmb2-id--give-goal-option,
+.cmb2-id--give-customize-offline-donations {
   border-bottom: none !important;
   margin: 0 !important; }
 
-.cmb2-id--give-form-content, .cmb2-id--give-agree-label, .cmb2-id--give-offline-checkout-notes, .cmb2-id--give-set-goal, .cmb2-id--give-offline-donation-enable-billing-fields-single {
+.cmb2-id--give-form-content,
+.cmb2-id--give-agree-label,
+.cmb2-id--give-offline-checkout-notes,
+.cmb2-id--give-set-goal,
+.cmb2-id--give-offline-donation-enable-billing-fields-single {
   border-top: 1px solid #e9e9e9 !important; }
 
 /*-------------------------------------
 Terms and Conditions Metabox
 ---------------------------------------*/
-.cmb2-id--give-agree-label, .cmb2-id--give-agree-text {
+.cmb2-id--give-agree-label,
+.cmb2-id--give-agree-text {
   display: none; }
 
 /*-------------------------------------
@@ -761,10 +847,13 @@ ASIDE
 -------------------------------------*/
 #side-sortables .cmb-th label:after {
   display: none; }
+
 #side-sortables .cmb2-id--give-show-register-form {
   padding: 10px 0 0 !important; }
+
 #side-sortables .cmb2-wrap > .cmb-field-list > .cmb-row {
   padding-top: 10px; }
+
 #side-sortables .cmb-row .cmb2-metabox-description {
   padding-bottom: 0; }
 
@@ -794,7 +883,6 @@ ASIDE
   min-height: 365px;
   overflow: hidden;
   background: #f5f5f5;
-  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
   -webkit-transition-property: border, background, color;
   transition-property: border, background, color;
@@ -810,7 +898,8 @@ ASIDE
   .type-download .addon-content {
     *zoom: 1;
     padding: 15px 20px; }
-    .type-download .addon-content:before, .type-download .addon-content:after {
+    .type-download .addon-content:before,
+    .type-download .addon-content:after {
       content: " ";
       display: table; }
     .type-download .addon-content:after {
@@ -850,14 +939,18 @@ ASIDE
 #give-dashboard-widgets-wrap .inside {
   padding-top: 0;
   padding-bottom: 0; }
+
 #give-dashboard-widgets-wrap .postbox {
   margin-bottom: 10px; }
+
 #give-dashboard-widgets-wrap table.reports-table {
   clear: none; }
+
 #give-dashboard-widgets-wrap #give-graphs-filter .tablenav {
   margin: 0; }
   #give-dashboard-widgets-wrap #give-graphs-filter .tablenav .actions {
     padding: 0; }
+
 #give-dashboard-widgets-wrap #give-date-range-options {
   clear: both;
   overflow: hidden;
@@ -874,29 +967,39 @@ ASIDE
 -------------------------------------------------------------- */
 .give-graph .y1Axis {
   color: #66bb6a !important; }
+
 .give-graph .y2Axis {
   color: #546e7a !important; }
 
 body.give_forms_page_give-reports h2.nav-tab-wrapper, body.give_forms_page_give-payment-history h2.nav-tab-wrapper {
   margin-bottom: 10px; }
+
 body.give_forms_page_give-reports .actions, body.give_forms_page_give-payment-history .actions {
   padding-top: 0; }
+
 body.give_forms_page_give-reports .pagination-links, body.give_forms_page_give-payment-history .pagination-links {
   margin-left: 10px; }
+
 body.give_forms_page_give-reports p.donor-search, body.give_forms_page_give-payment-history p.donor-search {
   margin-right: 10px; }
+
 body.give_forms_page_give-reports .tablenav-right .tablenav-pages, body.give_forms_page_give-payment-history .tablenav-right .tablenav-pages {
   float: right; }
+
 body.give_forms_page_give-reports .tablenav-right #give-reports-view, body.give_forms_page_give-payment-history .tablenav-right #give-reports-view {
   margin-top: 0; }
+
 body.give_forms_page_give-reports .tablenav-right .actions, body.give_forms_page_give-payment-history .tablenav-right .actions {
   float: left; }
+
 body.give_forms_page_give-reports p.search-box, body.give_forms_page_give-payment-history p.search-box {
   float: left; }
+
 body.give_forms_page_give-reports .reports-table-nav.tablenav.top, body.give_forms_page_give-payment-history .reports-table-nav.tablenav.top {
   width: 100%;
   float: none;
   margin: 0 0 10px; }
+
 body.give_forms_page_give-reports .reports-forms-details-wrap.top, body.give_forms_page_give-payment-history .reports-forms-details-wrap.top {
   float: right;
   overflow: hidden; }
@@ -904,15 +1007,20 @@ body.give_forms_page_give-reports .reports-forms-details-wrap.top, body.give_for
     float: left; }
   body.give_forms_page_give-reports .reports-forms-details-wrap.top > .actions, body.give_forms_page_give-payment-history .reports-forms-details-wrap.top > .actions {
     padding-right: 0; }
+
 body.give_forms_page_give-reports .tablenav.bottom, body.give_forms_page_give-payment-history .tablenav.bottom {
   margin-top: 10px; }
+
 body.give_forms_page_give-reports h3.reports-earnings-title, body.give_forms_page_give-payment-history h3.reports-earnings-title {
   margin: 7px 0 0; }
+
 body.give_forms_page_give-reports .reports-views-wrap, body.give_forms_page_give-payment-history .reports-views-wrap {
   padding: 3px 0 0; }
+
 body.give_forms_page_give-reports .wrap.give-reports-donors-wrap, body.give_forms_page_give-payment-history .wrap.give-reports-donors-wrap {
   margin-right: 0;
   margin-bottom: 10px; }
+
 body.give_forms_page_give-reports .widefat tbody td, body.give_forms_page_give-reports .widefat tbody th, body.give_forms_page_give-payment-history .widefat tbody td, body.give_forms_page_give-payment-history .widefat tbody th {
   padding-top: 12px;
   padding-bottom: 12px; }
@@ -938,9 +1046,11 @@ Table List Styles
 
 table.give-table td {
   vertical-align: middle; }
+
 table.give-table td.row-title h3 {
   margin: 0 0 0.4em;
   font-size: 1.2em; }
+
 table.give-table td.row-title p {
   font-size: 13px;
   font-style: italic;
@@ -953,6 +1063,7 @@ Logs
 ----------------------------*/
 #give-logs-filter .search-box {
   float: right; }
+
 #give-logs-filter .tablenav.top {
   float: left;
   clear: none;
@@ -992,6 +1103,7 @@ Logs
 
 .wp-person img {
   border-radius: 50%; }
+
 .wp-person a.web {
   margin: 17px 0 0;
   font-weight: bold;
@@ -1009,7 +1121,6 @@ Logs
     padding: 3px; }
   .give-newsletter-form-wrap div.give-newsletter-confirmation {
     background: #fff;
-    -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
     margin: 5px 10px 4px 5px;
     padding: 1px 12px;
@@ -1044,13 +1155,17 @@ Settings
 --------------------------------------*/
 .give_settings_page .nav-tab-wrapper {
   margin-bottom: 5px; }
+
 .give_settings_page span.cmb2-metabox-description {
   font-size: 13px; }
+
 .give_settings_page .cmb2-wrap .cmb-type-checkbox input[type="checkbox"] {
   display: block;
   margin-bottom: 5px; }
+
 .give_settings_page div.give-submit-wrap {
   margin: 20px 0; }
+
 .give_settings_page .give_forms_page_give-payment-history .postbox .hndle {
   cursor: default; }
 
@@ -1086,8 +1201,10 @@ Settings
   font-style: italic;
   color: #AAA;
   cursor: default; }
+
 .cmb2-id-give-title > div.cmb-th {
   padding-bottom: 10px; }
+
 .cmb2-id-give-title > div.cmb-td {
   padding-bottom: 5px; }
 
@@ -1109,8 +1226,10 @@ Settings
 -------------------------------------------------------------- */
 .cmb2-id-api .cmb-td {
   padding: 0; }
+
 .cmb2-id-api table th {
   padding: 10px 8px; }
+
 .cmb2-id-api .give-ajax-user-search {
   padding: 3px 5px; }
 
@@ -1146,14 +1265,16 @@ a.give-delete {
 .cmb2-wrap .give-license-deactivate {
   margin: 1px 0 0 10px;
   height: 30px; }
+
 .cmb2-wrap .give-license-field {
-  background-image: url('../images/close.png');
+  background-image: url("../images/close.png");
   background-color: #FFF;
   background-repeat: no-repeat;
   background-position: 98.5% center;
   background-size: 18px; }
+
 .cmb2-wrap .give-license-active, .cmb2-wrap .give-license-active:focus {
-  background-image: url('../images/tick.png');
+  background-image: url("../images/tick.png");
   background-color: #FFF;
   background-repeat: no-repeat;
   background-position: 98.5% center;
@@ -1183,8 +1304,10 @@ a.give-delete {
 
 #give-payment-filters p {
   color: #777; }
+
 #give-payment-filters ul.subsubsub {
   margin-bottom: 8px; }
+
 #give-payment-filters label {
   font-style: italic;
   margin: 0 10px; }
@@ -1193,14 +1316,17 @@ a.give-delete {
 
 #give-payments-filter ul.subsubsub {
   margin: 0 0 12px; }
+
 #give-payments-filter .tablenav.top {
   float: none; }
   #give-payments-filter .tablenav.top .bulkactions {
     margin-top: 1px;
     padding-top: 0; }
+
 #give-payments-filter .give-email-column-value {
   font-size: 14px;
   font-weight: bold; }
+
 #give-payments-filter #the-list .check-column input {
   margin-top: 1px; }
 
@@ -1241,23 +1367,30 @@ Status Colors
   border-radius: 50%;
   background: #888;
   line-height: 16px; }
+
 .give-donation-status.status-pending > span {
   background-color: #ffba00; }
+
 .give-donation-status.status-complete > span, .give-donation-status.status-publish > span {
   background-color: #7ad03a; }
+
 .give-donation-status.status-refunded > span {
   background-color: #777; }
+
 .give-donation-status.status-failed > span {
   background-color: #a00; }
+
 .give-donation-status.status-abandoned > span {
   background-color: #333; }
+
 .give-donation-status.status-revoked > span {
   background-color: #d9534f; }
+
 .give-donation-status.status-subscription > span, .give-donation-status.status-give_subscription > span {
   background-color: #5bc0de; }
 
 #give-payments-filter .give-payment-id {
-  padding: .2em .6em .3em;
+  padding: 0.2em 0.6em 0.3em;
   font-size: 85%;
   font-weight: 700;
   line-height: 1;
@@ -1267,6 +1400,7 @@ Status Colors
   vertical-align: baseline;
   border-radius: .25em;
   background-color: #929292; }
+
 #give-payments-filter .column-details {
   padding-right: 30px; }
 
@@ -1317,14 +1451,16 @@ Responsiveness
   float: left;
   margin-left: 10px; }
 
-#give-order-update .inside, #give-order-details .inside {
+#give-order-update .inside,
+#give-order-details .inside {
   margin: 0;
   padding: 0; }
 
 #give-order-update input.give_datepicker {
   width: 180px; }
 
-#give-order-update input[type="number"].give-payment-time-hour, #give-order-update input[type="number"].give-payment-time-min {
+#give-order-update input[type="number"].give-payment-time-hour,
+#give-order-update input[type="number"].give-payment-time-min {
   width: 50px; }
 
 .give-admin-box-inside:last-child {
@@ -1339,7 +1475,11 @@ Responsiveness
 #give-donation-overview .give-select-chosen {
   width: 196px; }
 
-#give-donation-overview ul, #give-order-address-country-wrap select, #give-donor-details .order-data-address input, #give-edit-order-form .column input, #give-donor-details .order-data-column p.data input {
+#give-donation-overview ul,
+#give-order-address-country-wrap select,
+#give-donor-details .order-data-address input,
+#give-edit-order-form .column input,
+#give-donor-details .order-data-column p.data input {
   clear: both;
   display: block; }
 
@@ -1356,7 +1496,9 @@ Responsiveness
 #give-edit-order-form .column .description {
   padding-right: 10px; }
 
-#give-edit-order-form .column, #give-donation-overview .row > ul > li, #give-donation-overview .inside > ul > li {
+#give-edit-order-form .column,
+#give-donation-overview .row > ul > li,
+#give-donation-overview .inside > ul > li {
   display: inline-block;
   position: relative;
   vertical-align: top;
@@ -1389,7 +1531,8 @@ Responsiveness
 .give-price-field {
   width: 80px; }
 
-.give_repeatable_upload_wrapper .pricing select, .give_repeatable_product_wrapper .give-select, #give_products .give-select {
+.give_repeatable_upload_wrapper .pricing select, .give_repeatable_product_wrapper .give-select,
+#give_products .give-select {
   min-width: 100%;
   max-width: 200px; }
 
@@ -1412,14 +1555,19 @@ Responsiveness
   #give-edit-order-form .column {
     width: 32%;
     margin-right: 3%; }
-  #give-edit-order-form .columns-4 .column, #give-donation-overview.columns-4 .row > ul > li, #give-donation-overview.columns-4 .inside > ul > li {
+  #give-edit-order-form .columns-4 .column, #give-donation-overview.columns-4 .row > ul > li,
+  #give-donation-overview.columns-4 .inside > ul > li {
     width: 22%;
     margin-right: 2%; }
-  #give-edit-order-form .columns-3 .column:nth-child(2n+1), #give-edit-order-form .columns-4 .column:nth-child(3n+1), #give-edit-order-form .column:nth-child(2n+1) {
+  #give-edit-order-form .columns-3 .column:nth-child(2n+1),
+  #give-edit-order-form .columns-4 .column:nth-child(3n+1),
+  #give-edit-order-form .column:nth-child(2n+1) {
     margin-right: 0; }
   #give-donation-overview.columns-4 li.download {
     width: 33%; }
-  #give-donation-overview.columns-4 li.price, #give-donation-overview.columns-3 .row > ul > li.price, #give-donation-overview.columns-3 .inside > ul > li.price {
+  #give-donation-overview.columns-4 li.price,
+  #give-donation-overview.columns-3 .row > ul > li.price,
+  #give-donation-overview.columns-3 .inside > ul > li.price {
     width: 14%; }
   #give-donation-overview.columns-4 li.actions {
     width: 25%;
@@ -1470,6 +1618,7 @@ Donation Details
     font-weight: bold;
     padding: 0;
     margin: 0 0 30px; }
+
 .give-dashboard-widget .give-table-stats {
   width: 100%;
   text-align: center;
@@ -1487,10 +1636,13 @@ Donation Details
 
 #give_dashboard_sales > .inside {
   padding: 0; }
+
 #give_dashboard_sales .give-table-stats td {
   padding: 10px 0; }
+
 #give_dashboard_sales .give-table-stats td:first-of-type {
   border-right: 1px solid #ececec; }
+
 #give_dashboard_sales .give-table-stats tr#give-table-stats-tr-1 td {
   border-bottom: 1px solid #ececec; }
 
@@ -1506,11 +1658,13 @@ Donation Details
 -------------------------------------------------------------- */
 .give_forms_page_give-donors .wrap > h2 {
   margin-bottom: 15px; }
+
 .give_forms_page_give-donors #give-donors-filter {
   position: relative; }
   .give_forms_page_give-donors #give-donors-filter p.search-box {
     float: left;
     margin: 0; }
+
 .give_forms_page_give-donors .tablenav.top {
   float: right;
   clear: none; }
@@ -1699,6 +1853,7 @@ Donation Details
 
 #give-customer-notes div:nth-of-type(even) {
   background-color: #f9f9f9; }
+
 #give-customer-notes .customer-note-wrapper {
   border-bottom: 1px solid #f9f9f9;
   min-height: 38px;
@@ -1707,6 +1862,7 @@ Donation Details
     padding: 10px 12px;
     line-height: 20px;
     font-size: 14px; }
+
 #give-customer-notes .give-no-customer-notes {
   text-align: center;
   padding: 20px; }
@@ -1716,6 +1872,5 @@ Donation Details
 
 .delete-customer {
   text-align: center; }
-
 
 /*# sourceMappingURL=give-admin.css.map */

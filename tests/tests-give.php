@@ -135,9 +135,10 @@ class Tests_Give extends WP_UnitTestCase {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/frontend/progress-bar.scss' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/frontend/receipt.scss' );
 
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/plugins/_settings.scss' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/plugins/float-labels.scss' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/plugins/magnific-popup.scss' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/plugins/qtip.scss' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/plugins/magnific.scss' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/plugins/_magnific_settings.scss' );
 
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/fonts/icomoon.eot' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/fonts/icomoon.svg' );
@@ -161,8 +162,10 @@ class Tests_Give extends WP_UnitTestCase {
 
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/chosen.jquery.js' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/chosen.jquery.min.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/give-magnific.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/give-magnific.min.js' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/float-labels.js' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/float-labels.min.js' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.magnific-popup.js' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.magnific-popup.min.js' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.blockUI.js' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.blockUI.min.js' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.payment.js' );
