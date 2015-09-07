@@ -684,7 +684,10 @@ Layout
     clear: both; }
 
 [id*='give-form'] fieldset {
-  border: none; }
+  border: none;
+  padding: 0;
+  margin: 0;
+  border: 0; }
 
 [id*='give-form'] .give-form-title {
   margin: 0 0 15px; }
