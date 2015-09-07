@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Give - Democratizing Generosity\n"
 "POT-Creation-Date: 2015-08-31 19:19+0200\n"
-"PO-Revision-Date: 2015-09-01 01:48+0200\n"
+"PO-Revision-Date: 2015-09-07 16:17-0700\n"
 "Last-Translator: P. E.\n"
 "Language-Team: P. E.\n"
 "Language: sv_SE\n"
@@ -29,7 +29,7 @@ msgid ""
 "There is a new version of %1$s available. <a target=\"_blank\" class="
 "\"thickbox\" href=\"%2$s\">View version %3$s details</a>."
 msgstr ""
-"Det finns en ny version av %1$s tillgÃ¤nglig. <a target=\"_blank\" class="
+"Det finns en ny version av %1$s tillgänglig. <a target=\"_blank\" class="
 "\"thickbox\" href=\"%2$s\">Visa version %3$s detaljer</a>."
 
 #: includes/admin/EDD_SL_Plugin_Updater.php:187
@@ -39,13 +39,13 @@ msgid ""
 "\"thickbox\" href=\"%2$s\">View version %3$s details</a> or <a href=\"%4$s"
 "\">update now</a>."
 msgstr ""
-"Det finns en ny version av %1$s tillgÃ¤nglig. <a target=\"_blank\" class="
+"Det finns en ny version av %1$s tillgänglig. <a target=\"_blank\" class="
 "\"thickbox\" href=\"%2$s\">Visa version %3$s detaljer</a> eller <a href="
 "\"%4$s\">uppdatera nu</a>."
 
 #: includes/admin/EDD_SL_Plugin_Updater.php:327
 msgid "You do not have permission to install plugin updates"
-msgstr "Du har inte behÃ¶righet att installera tillÃ¤ggsuppdateringar"
+msgstr "Du har inte behörighet att installera tilläggsuppdateringar"
 
 #: includes/admin/EDD_SL_Plugin_Updater.php:327
 #: includes/admin/forms/dashboard-columns.php:223
@@ -86,15 +86,15 @@ msgstr "Visa Alla Expansioner"
 
 #: includes/admin/add-ons.php:49
 msgid "The following Add-ons extend the functionality of Give."
-msgstr "FÃ¶ljande Expansioner utÃ¶kar funktionaliteten hos Give."
+msgstr "Följande Expansioner utökar funktionaliteten hos Give."
 
 #: includes/admin/add-ons.php:78
 msgid ""
 "There was an error retrieving the Give Add-ons list from the server. Please "
 "try again later."
 msgstr ""
-"Ett fel uppstod nÃ¤r listan med expansioner till Give skulle hÃ¤mtas frÃ¥n "
-"servern. Var god fÃ¶rsÃ¶k igen senare."
+"Ett fel uppstod när listan med expansioner till Give skulle hämtas från "
+"servern. Var god försök igen senare."
 
 #: includes/admin/admin-footer.php:31
 #, php-format
@@ -103,9 +103,9 @@ msgid ""
 "&#9733;&#9733;%s rating. It takes a minute and helps a lot. Thanks in "
 "advance!"
 msgstr ""
-"Om du gillar <strong>Give</strong> var snÃ¤ll att ge oss betyget %s&#9733;"
-"&#9733;&#9733;&#9733;&#9733;%s. Det tar bara en minut och hjÃ¤lper oss "
-"mycket. Tack i fÃ¶rskott!"
+"Om du gillar <strong>Give</strong> var snäll att ge oss betyget %s&#9733;"
+"&#9733;&#9733;&#9733;&#9733;%s. Det tar bara en minut och hjälper oss "
+"mycket. Tack i förskott!"
 
 #: includes/admin/admin-footer.php:31
 msgid "Thanks :)"
@@ -129,11 +129,11 @@ msgstr "Rapporter"
 
 #: includes/admin/admin-pages.php:47
 msgid "Give Settings"
-msgstr "Give InstÃ¤llningar"
+msgstr "Give Inställningar"
 
 #: includes/admin/admin-pages.php:47
 msgid "Settings"
-msgstr "InstÃ¤llningar"
+msgstr "Inställningar"
 
 #: includes/admin/admin-pages.php:53 includes/admin/register-settings.php:103
 #: includes/admin/welcome.php:231
@@ -146,14 +146,14 @@ msgstr "Give Uppgraderingar"
 
 #: includes/admin/class-admin-notices.php:54
 msgid "Give Test Mode Active"
-msgstr "Give TestlÃ¤ge Aktivt"
+msgstr "Give Testläge Aktivt"
 
 #: includes/admin/class-admin-notices.php:73
 msgid ""
 "Your site appears to be blocking the WordPress ajax interface. This may "
 "causes issues with Give."
 msgstr ""
-"Det verkar som att din webbplats blockerar WordPress ajax-grÃ¤nssnitt. Detta "
+"Det verkar som att din webbplats blockerar WordPress ajax-gränssnitt. Detta "
 "kan orsaka problem med Give."
 
 #: includes/admin/class-admin-notices.php:74
@@ -162,12 +162,12 @@ msgid ""
 "Please see <a href=\"%s\" target=\"_blank\">this reference</a> for possible "
 "solutions."
 msgstr ""
-"VÃ¤nligen se <a href=\"%s\" target=\"_blank\">denna referens</a> fÃ¶r mÃ¶jliga "
-"lÃ¶sningar."
+"Vänligen se <a href=\"%s\" target=\"_blank\">denna referens</a> för möjliga "
+"lösningar."
 
 #: includes/admin/class-admin-notices.php:78
 msgid "Dismiss Notice"
-msgstr "AvfÃ¤rda Meddelandet"
+msgstr "Avfärda Meddelandet"
 
 #: includes/admin/class-admin-notices.php:89
 msgid "The payment has been deleted."
@@ -183,7 +183,7 @@ msgstr "Betalningsnoteringen har tagits bort."
 
 #: includes/admin/class-admin-notices.php:104
 msgid "The settings have been imported."
-msgstr "InstÃ¤llningarna har importerats."
+msgstr "Inställningarna har importerats."
 
 #: includes/admin/class-admin-notices.php:107
 msgid "API keys successfully generated."
@@ -191,11 +191,11 @@ msgstr "API-nycklar har genererats utan problem."
 
 #: includes/admin/class-admin-notices.php:110
 msgid "The specified user already has API keys."
-msgstr "Den angivna anvÃ¤ndaren har redan API-nycklar."
+msgstr "Den angivna användaren har redan API-nycklar."
 
 #: includes/admin/class-admin-notices.php:113
 msgid "API keys successfully regenerated."
-msgstr "API-nycklar har Ã¥tergenererats utan problem."
+msgstr "API-nycklar har återgenererats utan problem."
 
 #: includes/admin/class-admin-notices.php:116
 msgid "API keys successfully revoked."
@@ -222,7 +222,7 @@ msgid ""
 "There seems to be an issue with the server. Please try again in a few "
 "minutes."
 msgstr ""
-"Det verkar finnas ett problem med servern. Var god fÃ¶rsÃ¶k igen om nÃ¥gra "
+"Det verkar finnas ett problem med servern. Var god försök igen om några "
 "minuter."
 
 #: includes/admin/class-api-keys-table.php:54
@@ -239,7 +239,7 @@ msgstr "Visa API-logg"
 
 #: includes/admin/class-api-keys-table.php:152
 msgid "Reissue"
-msgstr "Ã…terutfÃ¤rda"
+msgstr "Återutfärda"
 
 #: includes/admin/class-api-keys-table.php:160
 msgid "Revoke"
@@ -248,7 +248,7 @@ msgstr "Annullera"
 #: includes/admin/class-api-keys-table.php:177 includes/forms/template.php:764
 #: includes/forms/template.php:773 includes/forms/template.php:857
 msgid "Username"
-msgstr "AnvÃ¤ndarnamn"
+msgstr "Användarnamn"
 
 #: includes/admin/class-api-keys-table.php:178
 msgid "Public Key"
@@ -326,7 +326,7 @@ msgstr "Skapad Datum"
 #: includes/admin/customers/customer-actions.php:192
 #: includes/admin/customers/customer-actions.php:353
 msgid "You do not have permission to edit this donor."
-msgstr "Du har ej tillstÃ¥nd att redigera denna donator."
+msgstr "Du har ej tillstånd att redigera denna donator."
 
 #: includes/admin/customers/customer-actions.php:42
 #: includes/admin/customers/customer-actions.php:204
@@ -337,30 +337,30 @@ msgstr "Fuskar du, va?!"
 
 #: includes/admin/customers/customer-actions.php:59
 msgid "Please enter a valid email address."
-msgstr "VÃ¤nligen ange en giltig e-postadress."
+msgstr "Vänligen ange en giltig e-postadress."
 
 #: includes/admin/customers/customer-actions.php:66
 #, php-format
 msgid "The User ID %d is already associated with a different donor."
-msgstr "AnvÃ¤ndar-ID:t %d associeras redan med en annan donator."
+msgstr "Användar-ID:t %d associeras redan med en annan donator."
 
 #: includes/admin/customers/customer-actions.php:72
 #, php-format
 msgid "The User ID %d does not exist. Please assign an existing user."
 msgstr ""
-"AnvÃ¤ndar-ID:t %d existerar ej. VÃ¤nligen tilldela en existerande anvÃ¤ndare."
+"Användar-ID:t %d existerar ej. Vänligen tilldela en existerande användare."
 
 #: includes/admin/customers/customer-actions.php:208
 msgid "A note is required"
-msgstr "En notering krÃ¤vs"
+msgstr "En notering krävs"
 
 #: includes/admin/customers/customer-actions.php:262
 msgid "You do not have permission to delete this donor."
-msgstr "Du har ej tillstÃ¥nd att ta bort denna donator."
+msgstr "Du har ej tillstånd att ta bort denna donator."
 
 #: includes/admin/customers/customer-actions.php:279
 msgid "Please confirm you want to delete this donor"
-msgstr "VÃ¤nligen bekrÃ¤fta att du vill ta bort denna donator"
+msgstr "Vänligen bekräfta att du vill ta bort denna donator"
 
 #: includes/admin/customers/customer-actions.php:320
 msgid "Error deleting donor"
@@ -372,7 +372,7 @@ msgstr "Ogiltigt Donator-ID"
 
 #: includes/admin/customers/customer-actions.php:388
 msgid "Failed to disconnect user from donor"
-msgstr "Misslyckades med frÃ¥nkoppling av anvÃ¤ndare frÃ¥n donator"
+msgstr "Misslyckades med frånkoppling av användare från donator"
 
 #: includes/admin/customers/customer-functions.php:52
 msgid "Donor Profile"
@@ -380,7 +380,7 @@ msgstr "Donatorns Profil"
 
 #: includes/admin/customers/customer-functions.php:53
 msgid "Donor Notes"
-msgstr "Noteringar fÃ¶r Donator"
+msgstr "Noteringar för Donator"
 
 #: includes/admin/customers/customer-functions.php:72
 #: includes/admin/customers/customers.php:588
@@ -390,11 +390,11 @@ msgstr "Ta Bort Donator"
 #: includes/admin/customers/customers.php:80
 #: includes/admin/reporting/class-donor-reports-table.php:141
 msgid "Search Donors"
-msgstr "SÃ¶k Donatorer"
+msgstr "Sök Donatorer"
 
 #: includes/admin/customers/customers.php:109
 msgid "You are not permitted to view this data."
-msgstr "Du har ej tillstÃ¥nd att visa denna data."
+msgstr "Du har ej tillstånd att visa denna data."
 
 #: includes/admin/customers/customers.php:114
 #: includes/admin/customers/customers.php:122
@@ -419,7 +419,7 @@ msgstr "Donatorns E-postadress"
 
 #: includes/admin/customers/customers.php:237
 msgid "User ID"
-msgstr "AnvÃ¤ndar-ID"
+msgstr "Användar-ID"
 
 #: includes/admin/customers/customers.php:268
 msgid "none"
@@ -427,11 +427,11 @@ msgstr "inget"
 
 #: includes/admin/customers/customers.php:271
 msgid "Disconnects the current user ID from this customer record"
-msgstr "FrÃ¥nkopplar aktuellt anvÃ¤ndar-ID frÃ¥n denna kundpost"
+msgstr "Frånkopplar aktuellt användar-ID från denna kundpost"
 
 #: includes/admin/customers/customers.php:271
 msgid "Disconnect User"
-msgstr "Koppla frÃ¥n anvÃ¤ndare"
+msgstr "Koppla från användare"
 
 #: includes/admin/customers/customers.php:277
 #: includes/admin/reporting/class-export-payments.php:68
@@ -477,7 +477,7 @@ msgstr "Avbryt"
 
 #: includes/admin/customers/customers.php:375
 msgid "View All Purchases"
-msgstr "Visa Alla KÃ¶p"
+msgstr "Visa Alla Köp"
 
 #: includes/admin/customers/customers.php:377
 #, php-format
@@ -534,11 +534,11 @@ msgstr "Status"
 #: includes/admin/customers/customers.php:407
 #: includes/admin/customers/customers.php:443
 msgid "Actions"
-msgstr "Ã…tgÃ¤rder"
+msgstr "Åtgärder"
 
 #: includes/admin/customers/customers.php:419
 msgid "View Details for Donation"
-msgstr "Visa Detaljer fÃ¶r Donation"
+msgstr "Visa Detaljer för Donation"
 
 #: includes/admin/customers/customers.php:421
 #: templates/history-donations.php:32
@@ -551,7 +551,7 @@ msgstr "Inga Donationer Funna"
 
 #: includes/admin/customers/customers.php:435
 msgid "Completed Donations"
-msgstr "SlutfÃ¶rda Donationer"
+msgstr "Slutförda Donationer"
 
 #: includes/admin/customers/customers.php:452
 #: includes/admin/customers/customers.php:453 includes/admin/welcome.php:528
@@ -561,7 +561,7 @@ msgstr "Visa %s"
 
 #: includes/admin/customers/customers.php:460
 msgid "No Completed Donations Found"
-msgstr "Inga SlutfÃ¶rda Donationer Hittades"
+msgstr "Inga Slutförda Donationer Hittades"
 
 #: includes/admin/customers/customers.php:498
 msgid "Notes"
@@ -573,7 +573,7 @@ msgstr "Inga Donatorsnoteringar"
 
 #: includes/admin/customers/customers.php:570
 msgid "Are you sure you want to delete this donor?"
-msgstr "Ã„r du sÃ¤ker pÃ¥ att du vill ta bort denna donator?"
+msgstr "Är du säker på att du vill ta bort denna donator?"
 
 #: includes/admin/customers/customers.php:578
 msgid "Delete all associated payments and records?"
@@ -601,7 +601,7 @@ msgstr "Denna Vecka"
 #: includes/admin/dashboard-widgets.php:72
 #: includes/admin/reporting/graphing.php:482 includes/class-give-stats.php:87
 msgid "This Month"
-msgstr "Denna MÃ¥nad"
+msgstr "Denna Månad"
 
 #: includes/admin/dashboard-widgets.php:73
 msgid "Past 30 Days"
@@ -613,15 +613,15 @@ msgstr "denna vecka"
 
 #: includes/admin/dashboard-widgets.php:86
 msgid "this month"
-msgstr "denna mÃ¥nad"
+msgstr "denna månad"
 
 #: includes/admin/dashboard-widgets.php:93
 msgid "last month"
-msgstr "fÃ¶rra mÃ¥naden"
+msgstr "förra månaden"
 
 #: includes/admin/dashboard-widgets.php:98
 msgid "this year"
-msgstr "detta Ã¥r"
+msgstr "detta år"
 
 #: includes/admin/dashboard-widgets.php:119
 #, php-format
@@ -648,7 +648,7 @@ msgstr "Pris"
 
 #: includes/admin/forms/dashboard-columns.php:39
 msgid "Goal"
-msgstr "MÃ¥l"
+msgstr "Mål"
 
 #: includes/admin/forms/dashboard-columns.php:41
 #: includes/admin/reporting/class-export-earnings.php:66
@@ -666,11 +666,11 @@ msgstr "Kortkod"
 
 #: includes/admin/forms/dashboard-columns.php:77
 msgid "Purchase"
-msgstr "KÃ¶p"
+msgstr "Köp"
 
 #: includes/admin/forms/dashboard-columns.php:223
 msgid "You do not have permission to view this data."
-msgstr "Du har inte tillstÃ¥nd att visa denna data."
+msgstr "Du har inte tillstånd att visa denna data."
 
 #: includes/admin/forms/dashboard-columns.php:295
 #, php-format
@@ -690,24 +690,24 @@ msgid ""
 "Would you like this form to have one set donation price or multiple levels "
 "(for example, $10 silver, $20 gold, $50 platinum)?"
 msgstr ""
-"Vill du att detta formulÃ¤r skall ha ett bestÃ¤mt donationsbelopp eller flera "
-"nivÃ¥er (exempelvis, 10 SEK - Silver, 20 SEK - Guld, 50 SEK - Platina)?"
+"Vill du att detta formulär skall ha ett bestämt donationsbelopp eller flera "
+"nivåer (exempelvis, 10 SEK - Silver, 20 SEK - Guld, 50 SEK - Platina)?"
 
 #: includes/admin/forms/metabox.php:55 includes/admin/forms/metabox.php:60
 msgid "Set Donation"
-msgstr "StÃ¤ll In Donation"
+msgstr "Ställ In Donation"
 
 #: includes/admin/forms/metabox.php:56
 msgid "Multi-level Donation"
-msgstr "MultinivÃ¥donation"
+msgstr "Multinivådonation"
 
 #: includes/admin/forms/metabox.php:61
 msgid "This is the set donation amount for this form."
-msgstr "Detta Ã¤r det fasta donationsbeloppet fÃ¶r detta formulÃ¤r."
+msgstr "Detta är det fasta donationsbeloppet för detta formulär."
 
 #: includes/admin/forms/metabox.php:84
 msgid "Add Level"
-msgstr "LÃ¤gg Till NivÃ¥"
+msgstr "Lägg Till Nivå"
 
 #: includes/admin/forms/metabox.php:85
 msgid "<span class=\"dashicons dashicons-no\"></span>"
@@ -719,7 +719,7 @@ msgstr "Text"
 
 #: includes/admin/forms/metabox.php:112
 msgid "Donation Level"
-msgstr "DonationsnivÃ¥"
+msgstr "Donationsnivå"
 
 #: includes/admin/forms/metabox.php:117 includes/admin/forms/metabox.php:364
 #: includes/libraries/cmb2/includes/CMB2_JS.php:87
@@ -732,7 +732,7 @@ msgstr "Visningsstil"
 
 #: includes/admin/forms/metabox.php:126
 msgid "Set how the donations levels will display on the form."
-msgstr "BestÃ¤m hur donationsnivÃ¥er skall visas i formulÃ¤ret."
+msgstr "Bestäm hur donationsnivåer skall visas i formuläret."
 
 #: includes/admin/forms/metabox.php:131
 msgid "Buttons"
@@ -753,7 +753,7 @@ msgstr "Anpassat Belopp"
 #: includes/admin/forms/metabox.php:139
 msgid "Do you want the user to be able to input their own donation amount?"
 msgstr ""
-"Vill du att anvÃ¤ndaren skall kunna skriva in sitt eget donationsbelopp?"
+"Vill du att användaren skall kunna skriva in sitt eget donationsbelopp?"
 
 #: includes/admin/forms/metabox.php:144 includes/admin/forms/metabox.php:167
 #: includes/admin/forms/metabox.php:321
@@ -769,7 +769,7 @@ msgstr "Nej"
 
 #: includes/admin/forms/metabox.php:149
 msgid "Custom Amount Text"
-msgstr "Text FÃ¶r Valfritt Belopp"
+msgstr "Text För Valfritt Belopp"
 
 #: includes/admin/forms/metabox.php:150
 msgid ""
@@ -778,10 +778,10 @@ msgid ""
 "(ie button, radio, or select option). Add your own message or leave this "
 "field blank to prevent it from displaying within your form."
 msgstr ""
-"Denna text anvÃ¤nds som etikett bredvid fÃ¤ltet fÃ¶r anpassat belopp pÃ¥ "
-"singelnivÃ¥formulÃ¤r. PÃ¥ multinivÃ¥formulÃ¤r anvÃ¤nds texten istÃ¤llet som en egen "
-"nivÃ¥ (m.a.o. knapp, radioknapp, eller menyalternativ). Ange ett eget "
-"meddelande eller lÃ¤mna detta fÃ¤lt blankt fÃ¶r att ej visa det i dina formulÃ¤r."
+"Denna text används som etikett bredvid fältet för anpassat belopp på "
+"singelnivåformulär. På multinivåformulär används texten istället som en egen "
+"nivå (m.a.o. knapp, radioknapp, eller menyalternativ). Ange ett eget "
+"meddelande eller lämna detta fält blankt för att ej visa det i dina formulär."
 
 #: includes/admin/forms/metabox.php:156
 msgid "Give a Custom Amount"
@@ -789,31 +789,31 @@ msgstr "Ge ett Valfritt Belopp"
 
 #: includes/admin/forms/metabox.php:161
 msgid "Set Goal?"
-msgstr "SÃ¤tt MÃ¥l?"
+msgstr "Sätt Mål?"
 
 #: includes/admin/forms/metabox.php:162
 msgid "Do you want to set a donation goal for this form?"
-msgstr "Vill du ange ett donationsmÃ¥l fÃ¶r detta formulÃ¤r?"
+msgstr "Vill du ange ett donationsmål för detta formulär?"
 
 #: includes/admin/forms/metabox.php:172
 msgid "Set Goal"
-msgstr "SÃ¤tt MÃ¥l"
+msgstr "Sätt Mål"
 
 #: includes/admin/forms/metabox.php:173
 msgid "This is the goal you want to achieve for this form."
-msgstr "Detta Ã¤r det mÃ¥l du vill uppnÃ¥ med detta formulÃ¤r."
+msgstr "Detta är det mål du vill uppnå med detta formulär."
 
 #: includes/admin/forms/metabox.php:184
 msgid "Goal Progress Bar Color"
-msgstr "MÃ¥luppfyllnadsindikatorns FÃ¤rg"
+msgstr "Måluppfyllnadsindikatorns Färg"
 
 #: includes/admin/forms/metabox.php:200
 msgid "Form Content"
-msgstr "FormulÃ¤rinnehÃ¥ll"
+msgstr "Formulärinnehåll"
 
 #: includes/admin/forms/metabox.php:207
 msgid "Display Content"
-msgstr "Visa InnehÃ¥ll"
+msgstr "Visa Innehåll"
 
 #: includes/admin/forms/metabox.php:208
 msgid ""
@@ -821,36 +821,36 @@ msgid ""
 "appear which you will be able to enter content to display above or below the "
 "form."
 msgstr ""
-"Vill du visa innehÃ¥ll? Om du vÃ¤ljer \"Ja\" sÃ¥ kommer en texteditor att visas "
-"dÃ¤r du kan ange innehÃ¥ll som skall visas ovanfÃ¶r eller under formulÃ¤ret."
+"Vill du visa innehåll? Om du väljer \"Ja\" så kommer en texteditor att visas "
+"där du kan ange innehåll som skall visas ovanför eller under formuläret."
 
 #: includes/admin/forms/metabox.php:212
 msgid "No content"
-msgstr "Inget innehÃ¥ll"
+msgstr "Inget innehåll"
 
 #: includes/admin/forms/metabox.php:213
 msgid "Yes, display content ABOVE the form fields"
-msgstr "Ja, visa innehÃ¥ll OVANFÃ–R formulÃ¤rfÃ¤lten"
+msgstr "Ja, visa innehåll OVANFÖR formulärfälten"
 
 #: includes/admin/forms/metabox.php:214
 msgid "Yes, display content BELOW the form fields"
-msgstr "Ja, visa innehÃ¥ll NEDANFÃ–R formulÃ¤rfÃ¤lten"
+msgstr "Ja, visa innehåll NEDANFÖR formulärfälten"
 
 #: includes/admin/forms/metabox.php:220
 msgid "Content"
-msgstr "InnehÃ¥ll"
+msgstr "Innehåll"
 
 #: includes/admin/forms/metabox.php:221
 msgid "This content will display on the single give form page."
-msgstr "Detta innehÃ¥ll kommer att visas pÃ¥ Give-formulÃ¤rets singelvysida."
+msgstr "Detta innehåll kommer att visas på Give-formulärets singelvysida."
 
 #: includes/admin/forms/metabox.php:236
 msgid "Form Display Options"
-msgstr "FormulÃ¤rvisningsalternativ"
+msgstr "Formulärvisningsalternativ"
 
 #: includes/admin/forms/metabox.php:243
 msgid "Payment Fields"
-msgstr "BetalningsfÃ¤lt"
+msgstr "Betalningsfält"
 
 #: includes/admin/forms/metabox.php:244
 msgid ""
@@ -861,16 +861,16 @@ msgid ""
 "similar option, rather than sliding into view the fields they will open in a "
 "shadow box or \"modal\" window."
 msgstr ""
-"Hur vill du att betalningsinformationen skall visas i detta formulÃ¤r? "
-"Alternativet \"Visa pÃ¥ Sida\" kommer att visa hela formulÃ¤ret nÃ¤r sidan "
-"laddas. Alternativet \"Visa Vid Klick\" placerar en knapp nedanfÃ¶r "
-"donatitonsfÃ¤lten och nÃ¤r den klickas glider de Ã¶vriga fÃ¤lten in. \"Modalt "
-"FÃ¶nster Vid Klick\" Ã¤r ett liknande alternativ, men istÃ¤llet fÃ¶r att glida "
-"in sÃ¥ visas de Ã¶vriga fÃ¤lten i ett modalt fÃ¶nster."
+"Hur vill du att betalningsinformationen skall visas i detta formulär? "
+"Alternativet \"Visa på Sida\" kommer att visa hela formuläret när sidan "
+"laddas. Alternativet \"Visa Vid Klick\" placerar en knapp nedanför "
+"donatitonsfälten och när den klickas glider de övriga fälten in. \"Modalt "
+"Fönster Vid Klick\" är ett liknande alternativ, men istället för att glida "
+"in så visas de övriga fälten i ett modalt fönster."
 
 #: includes/admin/forms/metabox.php:248
 msgid "Show on Page"
-msgstr "Visa pÃ¥ Sida"
+msgstr "Visa på Sida"
 
 #: includes/admin/forms/metabox.php:249
 msgid "Reveal Upon Click"
@@ -878,15 +878,15 @@ msgstr "Visa Vid Klick"
 
 #: includes/admin/forms/metabox.php:250
 msgid "Modal Window Upon Click"
-msgstr "Modalt FÃ¶nster Vid Klick"
+msgstr "Modalt Fönster Vid Klick"
 
 #: includes/admin/forms/metabox.php:256
 msgid "Reveal / Modal Open Text"
-msgstr "Visa / Modal  Ã–ppna Text"
+msgstr "Visa / Modal  Öppna Text"
 
 #: includes/admin/forms/metabox.php:257
 msgid "The button label for completing the donation."
-msgstr "Knapptext fÃ¶r att slutfÃ¶ra donationen."
+msgstr "Knapptext för att slutföra donationen."
 
 #: includes/admin/forms/metabox.php:261 includes/admin/forms/metabox.php:270
 #: includes/forms/template.php:417 includes/forms/template.php:1056
@@ -895,16 +895,16 @@ msgstr "Donera Nu"
 
 #: includes/admin/forms/metabox.php:266
 msgid "Complete Donation Text"
-msgstr "FullstÃ¤ndig Donationstext"
+msgstr "Fullständig Donationstext"
 
 #: includes/admin/forms/metabox.php:267
 msgid "The button label for completing a donation."
-msgstr "Knapptext fÃ¶r att slutfÃ¶ra en donation."
+msgstr "Knapptext för att slutföra en donation."
 
 #: includes/admin/forms/metabox.php:274
 #: includes/admin/register-settings.php:287
 msgid "Default Gateway"
-msgstr "Standard NÃ¤tsluss"
+msgstr "Standard Nätsluss"
 
 #: includes/admin/forms/metabox.php:275
 msgid ""
@@ -912,21 +912,21 @@ msgid ""
 "gateway (set under Give > Settings > Payment Gateways). This option allows "
 "you to customize the default gateway for this form only."
 msgstr ""
-"Som standard sÃ¥ Ã¤rver detta formulÃ¤r den globala standardnÃ¤tslussen (som Ã¤r "
-"angiven under Give > InstÃ¤llningar > BetalningsnÃ¤tslussar). Detta alternativ "
-"lÃ¥ter dig ange en standardnÃ¤tsluss endast fÃ¶r detta formulÃ¤r."
+"Som standard så ärver detta formulär den globala standardnätslussen (som är "
+"angiven under Give > Inställningar > Betalningsnätslussar). Detta alternativ "
+"låter dig ange en standardnätsluss endast för detta formulär."
 
 #: includes/admin/forms/metabox.php:280
 msgid "Disable Guest Donations"
-msgstr "Deaktivera GÃ¤stdonationer"
+msgstr "Deaktivera Gästdonationer"
 
 #: includes/admin/forms/metabox.php:281
 msgid "Do you want to require users be logged-in to make donations?"
-msgstr "Vill du att endast inloggade anvÃ¤ndare skall kunna donera?"
+msgstr "Vill du att endast inloggade användare skall kunna donera?"
 
 #: includes/admin/forms/metabox.php:286
 msgid "Register / Login Form"
-msgstr "Registrerings- / InloggningsformulÃ¤r"
+msgstr "Registrerings- / Inloggningsformulär"
 
 #: includes/admin/forms/metabox.php:287
 msgid ""
@@ -935,23 +935,23 @@ msgid ""
 "in prior to completing a donation. It simply determines whether the login "
 "and/or registration form are displayed on the checkout page."
 msgstr ""
-"Visa registrerings- och inloggningsformulÃ¤ren i utcheckningssektionen fÃ¶r "
-"icke-inloggade anvÃ¤ndare. Notera: detta alternativ kommer ej att krÃ¤va att "
-"anvÃ¤ndare registrerar sig eller loggar in innan donationen slutfÃ¶rs. Det "
-"avgÃ¶r endast om  inloggnings- och/eller registreringsformulÃ¤ren visas pÃ¥ "
+"Visa registrerings- och inloggningsformulären i utcheckningssektionen för "
+"icke-inloggade användare. Notera: detta alternativ kommer ej att kräva att "
+"användare registrerar sig eller loggar in innan donationen slutförs. Det "
+"avgör endast om  inloggnings- och/eller registreringsformulären visas på "
 "utcheckningssidan."
 
 #: includes/admin/forms/metabox.php:291
 msgid "Registration and Login Forms"
-msgstr "Registrerings- och InloggninsformulÃ¤r"
+msgstr "Registrerings- och Inloggninsformulär"
 
 #: includes/admin/forms/metabox.php:292
 msgid "Registration Form Only"
-msgstr "Endast RegistreringsformulÃ¤r"
+msgstr "Endast Registreringsformulär"
 
 #: includes/admin/forms/metabox.php:293
 msgid "Login Form Only"
-msgstr "Endast InloggningsformulÃ¤r"
+msgstr "Endast Inloggningsformulär"
 
 #: includes/admin/forms/metabox.php:294
 #: includes/libraries/cmb2/includes/CMB2_Field.php:914
@@ -962,28 +962,28 @@ msgstr "Inget"
 
 #: includes/admin/forms/metabox.php:308 includes/admin/forms/metabox.php:315
 msgid "Terms and Conditions"
-msgstr "AnvÃ¤ndarvillkor"
+msgstr "Användarvillkor"
 
 #: includes/admin/forms/metabox.php:316
 msgid ""
 "Do you want to require the user to agree to terms and conditions prior to "
 "being able to complete their donation?"
 msgstr ""
-"Vill du att det skall krÃ¤vas att anvÃ¤ndaren accepterar anvÃ¤ndarvillkoren "
-"innan denne kan genomfÃ¶ra sin donation?"
+"Vill du att det skall krävas att användaren accepterar användarvillkoren "
+"innan denne kan genomföra sin donation?"
 
 #: includes/admin/forms/metabox.php:328
 msgid "Agree to Terms Label"
-msgstr "Etikett fÃ¶r Acceptera Villkor"
+msgstr "Etikett för Acceptera Villkor"
 
 #: includes/admin/forms/metabox.php:329
 msgid ""
 "The label shown next to the agree to terms check box. Add your own to "
 "customize or leave blank to use the default text placeholder."
 msgstr ""
-"Etikett som visas bredvid kryssrutan fÃ¶r godkÃ¤nnande av anvÃ¤ndarvillkor. "
-"Ange din egen text eller lÃ¤mna tomt fÃ¶r att anvÃ¤nda den fÃ¶rvalda "
-"textplatshÃ¥llaren."
+"Etikett som visas bredvid kryssrutan för godkännande av användarvillkor. "
+"Ange din egen text eller lämna tomt för att använda den förvalda "
+"textplatshållaren."
 
 #: includes/admin/forms/metabox.php:334 includes/forms/template.php:974
 msgid "Agree to Terms?"
@@ -998,7 +998,7 @@ msgid ""
 "This is the actual text which the user will have to agree to in order to "
 "make a donation."
 msgstr ""
-"Detta Ã¤r den faktiska text som anvÃ¤ndaren mÃ¥ste godkÃ¤nna fÃ¶r att kunna gÃ¶ra "
+"Detta är den faktiska text som användaren måste godkänna för att kunna göra "
 "en donation."
 
 #: includes/admin/forms/metabox.php:366
@@ -1007,25 +1007,25 @@ msgstr "Sortera"
 
 #: includes/admin/forms/metabox.php:425
 msgid "Give Form Shortcode:"
-msgstr "Kortkod FÃ¶r Give-formulÃ¤r:"
+msgstr "Kortkod För Give-formulär:"
 
 #: includes/admin/forms/shortcode.php:39 includes/admin/forms/shortcode.php:43
 #, php-format
 msgid "Add Donation %s"
-msgstr "LÃ¤gg Till Donation %s"
+msgstr "Lägg Till Donation %s"
 
 #: includes/admin/forms/shortcode.php:40
 msgid "Add Donation Form"
-msgstr "LÃ¤gg Till DonationsformulÃ¤r"
+msgstr "Lägg Till Donationsformulär"
 
 #: includes/admin/forms/shortcode.php:80
 msgid "You must choose a form"
-msgstr "Du mÃ¥ste vÃ¤lja ett formulÃ¤r"
+msgstr "Du måste välja ett formulär"
 
 #: includes/admin/forms/shortcode.php:101
 #, php-format
 msgid "Use the form below to insert the shortcode for a %s"
-msgstr "AnvÃ¤nd formulÃ¤ret nedan fÃ¶r att infoga kortkoden fÃ¶r en %s"
+msgstr "Använd formuläret nedan för att infoga kortkoden för en %s"
 
 #: includes/admin/forms/shortcode.php:105
 #, php-format
@@ -1038,7 +1038,7 @@ msgstr "Infoga %s"
 #: includes/admin/payments/actions.php:275
 #: includes/admin/payments/actions.php:299 includes/emails/actions.php:56
 msgid "You do not have permission to edit this payment record"
-msgstr "Du har ej tillstÃ¥nd att redigera denna betalningspost"
+msgstr "Du har ej tillstånd att redigera denna betalningspost"
 
 #: includes/admin/payments/actions.php:76
 msgid "Error Updating Payment"
@@ -1046,7 +1046,7 @@ msgstr "Fel Vid Uppdatering Av Betalning"
 
 #: includes/admin/payments/actions.php:87
 msgid "New Customers require a name and email address"
-msgstr "Ny Kund krÃ¤ver ett namn och en e-postadress"
+msgstr "Ny Kund kräver ett namn och en e-postadress"
 
 #: includes/admin/payments/actions.php:102
 msgid "Error creating new customer"
@@ -1063,7 +1063,7 @@ msgstr "Slutdatum:"
 #: includes/admin/payments/class-payments-table.php:137
 #: includes/admin/reporting/logs.php:131
 msgid "Apply"
-msgstr "TillÃ¤mpa"
+msgstr "Tillämpa"
 
 #: includes/admin/payments/class-payments-table.php:143
 msgid "Clear Filter"
@@ -1073,7 +1073,7 @@ msgstr "Ta Bort Filter"
 #: includes/admin/reporting/logs.php:74
 #: includes/admin/reporting/reports.php:220
 msgid "Search"
-msgstr "SÃ¶k"
+msgstr "Sök"
 
 #: includes/admin/payments/class-payments-table.php:207
 #: includes/admin/reporting/class-sales-logs-list-table.php:257
@@ -1082,17 +1082,17 @@ msgstr "Alla"
 
 #: includes/admin/payments/class-payments-table.php:211
 msgid "Completed"
-msgstr "GenomfÃ¶rda"
+msgstr "Genomförda"
 
 #: includes/admin/payments/class-payments-table.php:215
 #: includes/payments/functions.php:547
 msgid "Pending"
-msgstr "PÃ¥gÃ¥ende"
+msgstr "Pågående"
 
 #: includes/admin/payments/class-payments-table.php:219
 #: includes/payments/functions.php:549
 msgid "Refunded"
-msgstr "Ã…terbetalda"
+msgstr "Återbetalda"
 
 #: includes/admin/payments/class-payments-table.php:223
 #: includes/payments/functions.php:554
@@ -1113,7 +1113,7 @@ msgstr "Oavslutade"
 #: includes/admin/reporting/class-export-payments.php:83
 #: includes/admin/reporting/class-sales-logs-list-table.php:98
 msgid "User"
-msgstr "AnvÃ¤ndare"
+msgstr "Användare"
 
 #: includes/admin/payments/class-payments-table.php:252
 #: templates/history-donations.php:14
@@ -1137,37 +1137,37 @@ msgstr "Ta Bort"
 
 #: includes/admin/payments/class-payments-table.php:343
 msgid "(unknown)"
-msgstr "(okÃ¤nt)"
+msgstr "(okänt)"
 
 #: includes/admin/payments/class-payments-table.php:399
 #: includes/admin/payments/class-payments-table.php:401
 #: includes/admin/reporting/class-export-payments.php:150
 msgid "guest"
-msgstr "gÃ¤st"
+msgstr "gäst"
 
 #: includes/admin/payments/class-payments-table.php:422
 msgid "Set To Completed"
-msgstr "SÃ¤tt Som GenomfÃ¶rd"
+msgstr "Sätt Som Genomförd"
 
 #: includes/admin/payments/class-payments-table.php:423
 msgid "Set To Pending"
-msgstr "SÃ¤tt Som PÃ¥gÃ¥ende"
+msgstr "Sätt Som Pågående"
 
 #: includes/admin/payments/class-payments-table.php:424
 msgid "Set To Refunded"
-msgstr "SÃ¤tt Som Ã…terbetald"
+msgstr "Sätt Som Återbetald"
 
 #: includes/admin/payments/class-payments-table.php:425
 msgid "Set To Revoked"
-msgstr "SÃ¤tt Som Annullerad"
+msgstr "Sätt Som Annullerad"
 
 #: includes/admin/payments/class-payments-table.php:426
 msgid "Set To Failed"
-msgstr "SÃ¤tt Som Misslyckad"
+msgstr "Sätt Som Misslyckad"
 
 #: includes/admin/payments/class-payments-table.php:427
 msgid "Set To Abandoned"
-msgstr "SÃ¤tt Som Oavslutad"
+msgstr "Sätt Som Oavslutad"
 
 #: includes/admin/payments/class-payments-table.php:428
 msgid "Resend Email Receipts"
@@ -1179,11 +1179,11 @@ msgstr "Redigera Betalning"
 
 #: includes/admin/payments/view-order-details.php:24
 msgid "Donation ID not supplied. Please try again"
-msgstr "Donations-ID har ej angivits. Var god fÃ¶rsÃ¶k igen"
+msgstr "Donations-ID har ej angivits. Var god försök igen"
 
 #: includes/admin/payments/view-order-details.php:34
 msgid "The specified ID does not belong to a payment. Please try again"
-msgstr "Det angivna ID:t tillhÃ¶r ej nÃ¥gon betalning. Var god fÃ¶rsÃ¶k igen"
+msgstr "Det angivna ID:t tillhör ej någon betalning. Var god försök igen"
 
 #: includes/admin/payments/view-order-details.php:55
 #, php-format
@@ -1227,11 +1227,11 @@ msgstr "Skicka Kvitto Igen"
 
 #: includes/admin/payments/view-order-details.php:163
 msgid "Payment Meta"
-msgstr "Metainformation FÃ¶r Betalning"
+msgstr "Metainformation För Betalning"
 
 #: includes/admin/payments/view-order-details.php:176
 msgid "Gateway:"
-msgstr "NÃ¤tsluss:"
+msgstr "Nätsluss:"
 
 #: includes/admin/payments/view-order-details.php:184
 msgid "Key:"
@@ -1247,7 +1247,7 @@ msgstr "Transaktions-ID:"
 
 #: includes/admin/payments/view-order-details.php:207
 msgid "View all donations for this donor"
-msgstr "Visa alla donationer fÃ¶r denna donator"
+msgstr "Visa alla donationer för denna donator"
 
 #: includes/admin/payments/view-order-details.php:238
 msgid "Donation Information"
@@ -1255,11 +1255,11 @@ msgstr "Donationsinformation"
 
 #: includes/admin/payments/view-order-details.php:247
 msgid "Form ID"
-msgstr "FormulÃ¤r-ID"
+msgstr "Formulär-ID"
 
 #: includes/admin/payments/view-order-details.php:248
 msgid "Form Title"
-msgstr "FormulÃ¤rtitel"
+msgstr "Formulärtitel"
 
 #: includes/admin/payments/view-order-details.php:249
 msgid "Date and Time"
@@ -1271,7 +1271,7 @@ msgstr "Donatorns Detaljer"
 
 #: includes/admin/payments/view-order-details.php:303
 msgid "View Donor Details"
-msgstr "Visa Detaljer fÃ¶r Donator"
+msgstr "Visa Detaljer för Donator"
 
 #: includes/admin/payments/view-order-details.php:306
 msgid "New Donor"
@@ -1287,7 +1287,7 @@ msgstr "E-post"
 
 #: includes/admin/payments/view-order-details.php:325
 msgid "Click \"Save Payment\" to create new donor"
-msgstr "Klicka \"Spara Betalning\" fÃ¶r at skapa en ny donator"
+msgstr "Klicka \"Spara Betalning\" för at skapa en ny donator"
 
 #: includes/admin/payments/view-order-details.php:344
 msgid "Billing Address"
@@ -1318,7 +1318,7 @@ msgstr "Land"
 
 #: includes/admin/payments/view-order-details.php:389
 msgid "Select a country"
-msgstr "VÃ¤lj ett land"
+msgstr "Välj ett land"
 
 #: includes/admin/payments/view-order-details.php:395
 msgctxt "State / province of address"
@@ -1327,7 +1327,7 @@ msgstr "Stat / Provins:"
 
 #: includes/admin/payments/view-order-details.php:406
 msgid "Select a state"
-msgstr "VÃ¤lj en stat"
+msgstr "Välj en stat"
 
 #: includes/admin/payments/view-order-details.php:430
 msgid "Payment Notes"
@@ -1339,16 +1339,16 @@ msgstr "Inga betalningsnoteringar"
 
 #: includes/admin/payments/view-order-details.php:452
 msgid "Add Note"
-msgstr "LÃ¤gg Till Notering"
+msgstr "Lägg Till Notering"
 
 #: includes/admin/register-settings.php:97
 msgid "General"
-msgstr "AllmÃ¤nt"
+msgstr "Allmänt"
 
 #: includes/admin/register-settings.php:98
 #: includes/admin/register-settings.php:265
 msgid "Payment Gateways"
-msgstr "BetalningsnÃ¤tslussar"
+msgstr "Betalningsnätslussar"
 
 #: includes/admin/register-settings.php:99
 msgid "Display Options"
@@ -1382,43 +1382,43 @@ msgstr "Systeminfo"
 #: includes/admin/register-settings.php:172
 #: includes/admin/register-settings.php:176
 msgid "General Settings"
-msgstr "AllmÃ¤na InstÃ¤llningar"
+msgstr "Allmäna Inställningar"
 
 #: includes/admin/register-settings.php:182
 msgid "Success Page"
-msgstr "Sida FÃ¶r Lyckad Donation"
+msgstr "Sida För Lyckad Donation"
 
 #: includes/admin/register-settings.php:183
 msgid ""
 "This is the page donators are sent to after completing their donations. The "
 "<code>[give_receipt]</code> shortcode should be on this page."
 msgstr ""
-"Detta Ã¤r sidan som donatorerna skickas till efter en genomfÃ¶rd donation. "
-"Kortkoden <code>[give_receipt]</code> skall finnas pÃ¥ denna sida."
+"Detta är sidan som donatorerna skickas till efter en genomförd donation. "
+"Kortkoden <code>[give_receipt]</code> skall finnas på denna sida."
 
 #: includes/admin/register-settings.php:192
 msgid "Failed Transaction Page"
-msgstr "Sida FÃ¶r Misslyckad Transaktion"
+msgstr "Sida För Misslyckad Transaktion"
 
 #: includes/admin/register-settings.php:193
 msgid ""
 "This is the page donors are sent to if their transaction is cancelled or "
 "fails."
 msgstr ""
-"Detta Ã¤r den sida dit donatorer skickas om deras transaktion avbryts eller "
+"Detta är den sida dit donatorer skickas om deras transaktion avbryts eller "
 "misslyckas."
 
 #: includes/admin/register-settings.php:202
 msgid "Donation History Page"
-msgstr "Sida FÃ¶r Donationshistoria"
+msgstr "Sida För Donationshistoria"
 
 #: includes/admin/register-settings.php:203
 msgid ""
 "This page shows a complete donation history for the current user. The "
 "<code>[donation_history]</code> shortcode should be on this page."
 msgstr ""
-"Denna sida visar en komplett donationshistoria fÃ¶r den aktuella anvÃ¤ndaren. "
-"<code>[donation_history]</code> kortkoden skall finnas pÃ¥ denna sida."
+"Denna sida visar en komplett donationshistoria för den aktuella användaren. "
+"<code>[donation_history]</code> kortkoden skall finnas på denna sida."
 
 #: includes/admin/register-settings.php:212
 msgid "Base Country"
@@ -1426,11 +1426,11 @@ msgstr "Bas-Land"
 
 #: includes/admin/register-settings.php:213
 msgid "Where does your site operate from?"
-msgstr "VarifrÃ¥n administreras din webbplats?"
+msgstr "Varifrån administreras din webbplats?"
 
 #: includes/admin/register-settings.php:219
 msgid "Currency Settings"
-msgstr "ValutainstÃ¤llningar"
+msgstr "Valutainställningar"
 
 #: includes/admin/register-settings.php:225
 msgid "Currency"
@@ -1438,11 +1438,11 @@ msgstr "Valuta"
 
 #: includes/admin/register-settings.php:233
 msgid "Currency Position"
-msgstr "Position FÃ¶r Valutasymbol"
+msgstr "Position För Valutasymbol"
 
 #: includes/admin/register-settings.php:238
 msgid "Before - $10"
-msgstr "FÃ¶re - $10"
+msgstr "Före - $10"
 
 #: includes/admin/register-settings.php:239
 msgid "After - 10$"
@@ -1450,11 +1450,11 @@ msgstr "Efter - 10$"
 
 #: includes/admin/register-settings.php:244
 msgid "Thousands Separator"
-msgstr "TusentalsavgrÃ¤nsare"
+msgstr "Tusentalsavgränsare"
 
 #: includes/admin/register-settings.php:245
 msgid "The symbol (typically , or .) to separate thousands"
-msgstr "Symbolen som anvÃ¤nds (vanligen , eller .) fÃ¶r att avgrÃ¤nsa tusental"
+msgstr "Symbolen som används (vanligen , eller .) för att avgränsa tusental"
 
 #: includes/admin/register-settings.php:251
 msgid "Decimal Separator"
@@ -1462,15 +1462,15 @@ msgstr "Decimalavskiljare"
 
 #: includes/admin/register-settings.php:252
 msgid "The symbol (usually , or .) to separate decimal points"
-msgstr "Symbolen som anvÃ¤nds (vanligen , eller .) fÃ¶r att avskilja decimaler"
+msgstr "Symbolen som används (vanligen , eller .) för att avskilja decimaler"
 
 #: includes/admin/register-settings.php:269
 msgid "Gateways Settings"
-msgstr "NÃ¤tslussinstÃ¤llningar"
+msgstr "Nätslussinställningar"
 
 #: includes/admin/register-settings.php:275
 msgid "Test Mode"
-msgstr "TestlÃ¤ge"
+msgstr "Testläge"
 
 #: includes/admin/register-settings.php:276
 msgid ""
@@ -1478,21 +1478,21 @@ msgid ""
 "mode, you must have a sandbox (test) account for the payment gateway you are "
 "testing."
 msgstr ""
-"NÃ¤r du befinner dig i testlÃ¤ge sÃ¥ behandlas inga verkliga transaktioner. FÃ¶r "
-"att anvÃ¤nda testlÃ¤get fullt ut sÃ¥ mÃ¥ste du ha ett testkonto (sandbox) fÃ¶r "
-"den betalningsnÃ¤tsluss som du testar."
+"När du befinner dig i testläge så behandlas inga verkliga transaktioner. För "
+"att använda testläget fullt ut så måste du ha ett testkonto (sandbox) för "
+"den betalningsnätsluss som du testar."
 
 #: includes/admin/register-settings.php:281
 msgid "Enabled Gateways"
-msgstr "Aktiverade NÃ¤tslussar"
+msgstr "Aktiverade Nätslussar"
 
 #: includes/admin/register-settings.php:282
 msgid "Choose the payment gateways you would like enabled."
-msgstr "VÃ¤lj de betalningsnÃ¤tslussar du vill skall vara aktiverade."
+msgstr "Välj de betalningsnätslussar du vill skall vara aktiverade."
 
 #: includes/admin/register-settings.php:288
 msgid "This is the gateway that will be selected by default."
-msgstr "Detta Ã¤r den nÃ¤tsluss som kommer att vÃ¤ljas som standard."
+msgstr "Detta är den nätsluss som kommer att väljas som standard."
 
 #: includes/admin/register-settings.php:293 includes/gateways/functions.php:27
 msgid "PayPal Standard"
@@ -1514,7 +1514,7 @@ msgstr "PayPal Sidstil"
 msgid ""
 "Enter the name of the page style to use, or leave blank to use the default"
 msgstr ""
-"Ange namnet pÃ¥ den sidstil du vill anvÃ¤nda, eller lÃ¤mna tomt fÃ¶r standard"
+"Ange namnet på den sidstil du vill använda, eller lämna tomt för standard"
 
 #: includes/admin/register-settings.php:311
 msgid "PayPal "
@@ -1529,12 +1529,12 @@ msgid ""
 "transaction type using this option if you feel you may not meet PayPal's "
 "donation requirements."
 msgstr ""
-"Ideella organisationer mÃ¥ste verifiera sin status fÃ¶r att kunna ta ut "
-"donationer som tas emot via PayPal. PayPay-anvÃ¤ndare som ej Ã¤r verifierade "
-"som ideella organisationer mÃ¥ste, nÃ¤r mer Ã¤n $10,000 samlats in, kunna visa "
-"hur donationerna skall anvÃ¤ndas. Give:s transaktioner skickas som donationer "
-"till PayPal som standard. Du kan Ã¤ndra typ av transaktion med detta "
-"alternativ om du inte kÃ¤nner att du uppnÃ¥r PayPals krav fÃ¶r donationer."
+"Ideella organisationer måste verifiera sin status för att kunna ta ut "
+"donationer som tas emot via PayPal. PayPay-användare som ej är verifierade "
+"som ideella organisationer måste, när mer än $10,000 samlats in, kunna visa "
+"hur donationerna skall användas. Give:s transaktioner skickas som donationer "
+"till PayPal som standard. Du kan ändra typ av transaktion med detta "
+"alternativ om du inte känner att du uppnår PayPals krav för donationer."
 
 #: includes/admin/register-settings.php:316 templates/shortcode-receipt.php:53
 msgid "Donation"
@@ -1553,8 +1553,8 @@ msgid ""
 "If donations are not getting marked as complete, then check this box. This "
 "forces the site to use a slightly less secure method of verifying donations."
 msgstr ""
-"Om donationer ej markeras som genomfÃ¶rda, markera denna ruta. Detta tvingar "
-"webbplatsen att anvÃ¤nda en nÃ¥got mindre sÃ¤ker metod fÃ¶r verifiering av "
+"Om donationer ej markeras som genomförda, markera denna ruta. Detta tvingar "
+"webbplatsen att använda en något mindre säker metod för verifiering av "
 "donationer."
 
 #: includes/admin/register-settings.php:328
@@ -1571,17 +1571,17 @@ msgid ""
 "The fieldset will appear above the offline donation instructions. Note: You "
 "may customize this option per form as needed."
 msgstr ""
-"Detta alternativ aktiverar sektionen faktureringsdetaljer fÃ¶r ouppkopplade "
-"donationer. FÃ¤lten kommer att infogas ovanfÃ¶r instruktionerna fÃ¶r "
-"ouppkopplade donationer. Notera: Du kan stÃ¤lla in detta alternativ per "
-"formulÃ¤r vid behov."
+"Detta alternativ aktiverar sektionen faktureringsdetaljer för ouppkopplade "
+"donationer. Fälten kommer att infogas ovanför instruktionerna för "
+"ouppkopplade donationer. Notera: Du kan ställa in detta alternativ per "
+"formulär vid behov."
 
 #: includes/admin/register-settings.php:340
 #: includes/gateways/offline-donations.php:166
 #: includes/gateways/offline-donations.php:181
 #: includes/gateways/offline-donations.php:280
 msgid "Offline Donation Instructions"
-msgstr "Instruktioner FÃ¶r Ouppkopplad Donation"
+msgstr "Instruktioner För Ouppkopplad Donation"
 
 #: includes/admin/register-settings.php:341
 msgid ""
@@ -1589,29 +1589,29 @@ msgid ""
 "offline donation payment option. Note: You may customize the content per "
 "form as needed."
 msgstr ""
-"FÃ¶ljande innehÃ¥ll kommer att visas fÃ¶r alla formulÃ¤r nÃ¤r anvÃ¤ndaren vÃ¤ljer "
-"alternativet ouppkopplad donation. Notera: Du kan anpassa innehÃ¥llet per "
-"formulÃ¤r."
+"Följande innehåll kommer att visas för alla formulär när användaren väljer "
+"alternativet ouppkopplad donation. Notera: Du kan anpassa innehållet per "
+"formulär."
 
 #: includes/admin/register-settings.php:350
 #: includes/gateways/offline-donations.php:291
 msgid "Offline Donation Email Instructions Subject"
-msgstr "Ã„renderad FÃ¶r Meddelande Med Instruktioner FÃ¶r Ouppkopplad Donation"
+msgstr "Ärenderad För Meddelande Med Instruktioner För Ouppkopplad Donation"
 
 #: includes/admin/register-settings.php:351
 #: includes/gateways/offline-donations.php:292
 msgid "Enter the subject line for the donation receipt email."
-msgstr "Ange Ã¤renderad fÃ¶r e-postmeddelandet med donationskvitto."
+msgstr "Ange ärenderad för e-postmeddelandet med donationskvitto."
 
 #: includes/admin/register-settings.php:353
 #: includes/gateways/offline-donations.php:293
 msgid "{donation} - Offline Donation Instructions"
-msgstr "{donation} - Instruktioner FÃ¶r Ouppkopplad Donation"
+msgstr "{donation} - Instruktioner För Ouppkopplad Donation"
 
 #: includes/admin/register-settings.php:357
 #: includes/gateways/offline-donations.php:299
 msgid "Offline Donation Email Instructions"
-msgstr "E-postinstruktioner FÃ¶r Ouppkopplad Donation"
+msgstr "E-postinstruktioner För Ouppkopplad Donation"
 
 #: includes/admin/register-settings.php:358
 #: includes/gateways/offline-donations.php:300
@@ -1621,13 +1621,13 @@ msgid ""
 "information like mailing address and who to make the check out to."
 msgstr ""
 "Ange de instruktioner du vill skall skickas till donatorn efter att de har "
-"skickat in donationsformulÃ¤ret. Troligen bÃ¶r denna information inkludera "
-"viktiga uppgifter sÃ¥ som postadress samt vem checken skall stÃ¤llas ut till."
+"skickat in donationsformuläret. Troligen bör denna information inkludera "
+"viktiga uppgifter så som postadress samt vem checken skall ställas ut till."
 
 #: includes/admin/register-settings.php:372
 #: includes/admin/register-settings.php:376
 msgid "Display Settings"
-msgstr "VisningsinstÃ¤llningar"
+msgstr "Visningsinställningar"
 
 #: includes/admin/register-settings.php:382
 msgid "Disable CSS"
@@ -1643,7 +1643,7 @@ msgstr ""
 
 #: includes/admin/register-settings.php:388
 msgid "Disable Welcome Screen"
-msgstr "Deaktivera VÃ¤lkomstskÃ¤rm"
+msgstr "Deaktivera Välkomstskärm"
 
 #: includes/admin/register-settings.php:389
 #, php-format
@@ -1652,9 +1652,9 @@ msgid ""
 "every time Give is activated and/or updated. You can always access the "
 "Welcome Screen <a href=\"%s\">here</a> if you want in the future."
 msgstr ""
-"Aktivera detta alternativ om du vill deaktivera Gives VÃ¤lkomstskÃ¤rm som "
-"visas varje gÃ¥ng Give aktiveras och/eller uppdateras. Du kan alltid komma Ã¥t "
-"VÃ¤lkomstskÃ¤rmen <a href=\"%s\">hÃ¤r</a> framÃ¶ver om du skulle vilja."
+"Aktivera detta alternativ om du vill deaktivera Gives Välkomstskärm som "
+"visas varje gång Give aktiveras och/eller uppdateras. Du kan alltid komma åt "
+"Välkomstskärmen <a href=\"%s\">här</a> framöver om du skulle vilja."
 
 #: includes/admin/register-settings.php:394
 msgid "Post Types"
@@ -1662,7 +1662,7 @@ msgstr "Posttyper"
 
 #: includes/admin/register-settings.php:400
 msgid "Disable Form Single Views"
-msgstr "Deaktivera Singelvyer FÃ¶r FormulÃ¤r"
+msgstr "Deaktivera Singelvyer För Formulär"
 
 #: includes/admin/register-settings.php:401
 msgid ""
@@ -1671,14 +1671,14 @@ msgid ""
 "views from being publicly viewable. Note: you will need to embed forms using "
 "a shortcode or widget if enabled."
 msgstr ""
-"Som standard har alla formulÃ¤r singelvyn aktiverad vilket skapar en specifik "
-"URL pÃ¥ din webbplats fÃ¶r varje formulÃ¤r. Detta alternativ hindrar singel- "
-"och arkivvyerna frÃ¥n att visas publikt. Notera: du mÃ¥ste bÃ¤dda in formulÃ¤r "
-"med en kortkod eller widget om alternativet Ã¤r aktiverat."
+"Som standard har alla formulär singelvyn aktiverad vilket skapar en specifik "
+"URL på din webbplats för varje formulär. Detta alternativ hindrar singel- "
+"och arkivvyerna från att visas publikt. Notera: du måste bädda in formulär "
+"med en kortkod eller widget om alternativet är aktiverat."
 
 #: includes/admin/register-settings.php:406
 msgid "Disable Form Archives"
-msgstr "Deaktivera FormulÃ¤rarkiv"
+msgstr "Deaktivera Formulärarkiv"
 
 #: includes/admin/register-settings.php:407
 msgid ""
@@ -1687,27 +1687,27 @@ msgid ""
 "place. Note: you will need to refresh your permalinks after this option has "
 "been enabled."
 msgstr ""
-"Arkivsidor listar alla formulÃ¤r du har skapat. Detta alternativ deaktiverar "
-"endast formulÃ¤rets arkivsida/sidor. FormulÃ¤rets singelvy kommer fortfarande "
-"att finnas pÃ¥ plats. Notera: du mÃ¥ste ladda om dina permalÃ¤nkar efter att "
+"Arkivsidor listar alla formulär du har skapat. Detta alternativ deaktiverar "
+"endast formulärets arkivsida/sidor. Formulärets singelvy kommer fortfarande "
+"att finnas på plats. Notera: du måste ladda om dina permalänkar efter att "
 "detta alternativ har aktiverats."
 
 #: includes/admin/register-settings.php:412
 msgid "Disable Form Excerpts"
-msgstr "Deaktivera FormulÃ¤rutdrag"
+msgstr "Deaktivera Formulärutdrag"
 
 #: includes/admin/register-settings.php:413
 msgid ""
 "The excerpt is an optional summary or description of a donation form; in "
 "short, a summary as to why the user should give."
 msgstr ""
-"Detta utdrag Ã¤r en valfri sammanfattning eller beskrivning av ett "
-"donationsformulÃ¤r; i korthet, en sammanfattning av anledningen till att "
-"anvÃ¤ndaren skall donera."
+"Detta utdrag är en valfri sammanfattning eller beskrivning av ett "
+"donationsformulär; i korthet, en sammanfattning av anledningen till att "
+"användaren skall donera."
 
 #: includes/admin/register-settings.php:418
 msgid "Disable Form Featured Image"
-msgstr "Deaktivera Utvald Bild fÃ¶r FormulÃ¤r"
+msgstr "Deaktivera Utvald Bild för Formulär"
 
 #: includes/admin/register-settings.php:419
 msgid ""
@@ -1716,9 +1716,9 @@ msgid ""
 "you do not wish to use the featured image you can disable it using this "
 "option."
 msgstr ""
-"Den Utvalda Bilden Ã¤r en bild som Ã¤r vald som representativ bild fÃ¶r "
-"donationsformulÃ¤ret. Hur bilden visas Ã¤r huvudsakligen upp till temat. Om du "
-"ej vill anvÃ¤nda den utvalda bilden sÃ¥ kan du deaktivera den med detta "
+"Den Utvalda Bilden är en bild som är vald som representativ bild för "
+"donationsformuläret. Hur bilden visas är huvudsakligen upp till temat. Om du "
+"ej vill använda den utvalda bilden så kan du deaktivera den med detta "
 "alternativ."
 
 #: includes/admin/register-settings.php:424
@@ -1727,35 +1727,35 @@ msgstr "Taxonomier"
 
 #: includes/admin/register-settings.php:430
 msgid "Enable Form Categories"
-msgstr "Aktivera FormulÃ¤rkategorier"
+msgstr "Aktivera Formulärkategorier"
 
 #: includes/admin/register-settings.php:431
 msgid ""
 "Check this option if you would like to categorize your donation forms. This "
 "option enables the form's category taxonomy."
 msgstr ""
-"Markera detta alternativ om du vill kategorisera dina donationsformulÃ¤r. "
-"Detta alternativ aktiverar formulÃ¤rets kategoritaxonomi."
+"Markera detta alternativ om du vill kategorisera dina donationsformulär. "
+"Detta alternativ aktiverar formulärets kategoritaxonomi."
 
 #: includes/admin/register-settings.php:436
 msgid "Enable Form Tags"
-msgstr "Aktivera FormulÃ¤retiketter"
+msgstr "Aktivera Formuläretiketter"
 
 #: includes/admin/register-settings.php:437
 msgid ""
 "Check this option if you would like to tag your donation forms. This option "
 "enables the form's tag taxonomy."
 msgstr ""
-"Markera detta alternativ om du vill sÃ¤tta etiketter pÃ¥ dina "
-"donationsformulÃ¤r. Detta alternativ aktiverar formulÃ¤rets etikettaxonomi."
+"Markera detta alternativ om du vill sätta etiketter på dina "
+"donationsformulär. Detta alternativ aktiverar formulärets etikettaxonomi."
 
 #: includes/admin/register-settings.php:450
 msgid "Give Email Settings"
-msgstr "Give E-postinstÃ¤llningar"
+msgstr "Give E-postinställningar"
 
 #: includes/admin/register-settings.php:454
 msgid "Email Settings"
-msgstr "E-postinstÃ¤llningar"
+msgstr "E-postinställningar"
 
 #: includes/admin/register-settings.php:461
 msgid "Email Template"
@@ -1766,8 +1766,8 @@ msgid ""
 "Choose a template. Click \"Save Changes\" then \"Preview Donation Receipt\" "
 "to see the new template."
 msgstr ""
-"VÃ¤lj en mall. Klicka pÃ¥ \"Spara Ã„ndringar\" och sedan pÃ¥ \"FÃ¶rhandsgranska "
-"Donationskvitto\" fÃ¶r att se den nya mallen."
+"Välj en mall. Klicka på \"Spara Ändringar\" och sedan på \"Förhandsgranska "
+"Donationskvitto\" för att se den nya mallen."
 
 #: includes/admin/register-settings.php:468
 msgid "Logo"
@@ -1778,32 +1778,32 @@ msgid ""
 "Upload or choose a logo to be displayed at the top of the donation receipt "
 "emails. Displayed on HTML emails only."
 msgstr ""
-"Ladda upp eller vÃ¤lj en logotyp som skall visas i toppen pÃ¥ "
+"Ladda upp eller välj en logotyp som skall visas i toppen på "
 "donationskvitton. Visas endast i HTML-e-postmeddelanden."
 
 #: includes/admin/register-settings.php:474
 msgid "From Name"
-msgstr "FrÃ¥n Namn"
+msgstr "Från Namn"
 
 #: includes/admin/register-settings.php:475
 msgid ""
 "The name donation receipts are said to come from. This should probably be "
 "your site or shop name."
 msgstr ""
-"Namnet som stÃ¥r som avsÃ¤ndare fÃ¶r donationskvitton. Detta bÃ¶r antagligen "
-"vara namnet pÃ¥ din webbplats eller butik."
+"Namnet som står som avsändare för donationskvitton. Detta bör antagligen "
+"vara namnet på din webbplats eller butik."
 
 #: includes/admin/register-settings.php:481
 msgid "From Email"
-msgstr "FrÃ¥n E-post"
+msgstr "Från E-post"
 
 #: includes/admin/register-settings.php:482
 msgid ""
 "Email to send donation receipts from. This will act as the \"from\" and "
 "\"reply-to\" address."
 msgstr ""
-"E-postadress som donationskvitton skall skickas frÃ¥n. Denna kommer att "
-"fungera som \"frÃ¥n\"- samt \"svara till\"-adress."
+"E-postadress som donationskvitton skall skickas från. Denna kommer att "
+"fungera som \"från\"- samt \"svara till\"-adress."
 
 #: includes/admin/register-settings.php:487
 #: includes/admin/register-settings.php:496
@@ -1815,31 +1815,31 @@ msgstr "Donationskvitto"
 
 #: includes/admin/register-settings.php:494
 msgid "Donation Email Subject"
-msgstr "Ã„rende fÃ¶r E-postmeddelanden gÃ¤llande Donation"
+msgstr "Ärende för E-postmeddelanden gällande Donation"
 
 #: includes/admin/register-settings.php:495
 msgid "Enter the subject line for the donation receipt email"
-msgstr "Ange Ã¤renderad fÃ¶r e-postmeddelandet med donationskvitto"
+msgstr "Ange ärenderad för e-postmeddelandet med donationskvitto"
 
 #: includes/admin/register-settings.php:502
 msgid ""
 "Enter the email that is sent to users after completing a successful "
 "donation. HTML is accepted. Available template tags:"
 msgstr ""
-"Ange det e-postmeddelande som skickas till anvÃ¤ndare efter en genomfÃ¶rd "
-"donation. HTML Ã¤r accepterat. TillgÃ¤ngliga malltaggar Ã¤r:"
+"Ange det e-postmeddelande som skickas till användare efter en genomförd "
+"donation. HTML är accepterat. Tillgängliga malltaggar är:"
 
 #: includes/admin/register-settings.php:504 includes/emails/template.php:182
 msgid "Dear"
-msgstr "KÃ¤ra"
+msgstr "Kära"
 
 #: includes/admin/register-settings.php:504 includes/emails/template.php:183
 msgid ""
 "Thank you for your donation. Your generosity is appreciated! Please click on "
 "the link below to view your receipt."
 msgstr ""
-"Tack fÃ¶r din donation. Din generositet uppskattas! VÃ¤nligen klicka pÃ¥ lÃ¤nken "
-"nedan fÃ¶r att se ditt kvitto."
+"Tack för din donation. Din generositet uppskattas! Vänligen klicka på länken "
+"nedan för att se ditt kvitto."
 
 #: includes/admin/register-settings.php:507
 msgid "New Donation Notification"
@@ -1847,12 +1847,12 @@ msgstr "Ny Donationsnotifiering"
 
 #: includes/admin/register-settings.php:514
 msgid "Donation Notification Subject"
-msgstr "Ã„mne FÃ¶r Donationsnotifiering"
+msgstr "Ämne För Donationsnotifiering"
 
 #: includes/admin/register-settings.php:515
 msgid "Enter the subject line for the donation notification email"
 msgstr ""
-"Ange Ã¤mnesraden fÃ¶r notifieringsmeddelandet som skickas ut vid donationer"
+"Ange ämnesraden för notifieringsmeddelandet som skickas ut vid donationer"
 
 #: includes/admin/register-settings.php:517
 msgid "New Donation - #{payment_id}"
@@ -1867,21 +1867,21 @@ msgid ""
 "Enter the email that is sent to donation notification emails after "
 "completion of a donation. HTML is accepted. Available template tags:"
 msgstr ""
-"Skriv in texten fÃ¶r e-postmeddelandet som skickas till de e-postadresser som "
-"skall notifieras vid en genomfÃ¶rd donation. HTML accepteras. TillgÃ¤ngliga "
+"Skriv in texten för e-postmeddelandet som skickas till de e-postadresser som "
+"skall notifieras vid en genomförd donation. HTML accepteras. Tillgängliga "
 "malltaggar:"
 
 #: includes/admin/register-settings.php:528
 msgid "Donation Notification Emails"
-msgstr "E-postadresser FÃ¶r Donationsnotifiering"
+msgstr "E-postadresser För Donationsnotifiering"
 
 #: includes/admin/register-settings.php:529
 msgid ""
 "Enter the email address(es) that should receive a notification anytime a "
 "donation is made, one per line"
 msgstr ""
-"Ange den/de e-postadress(er) som skall motta notifieringar varje gÃ¥ng en "
-"donation gÃ¶rs, en per rad"
+"Ange den/de e-postadress(er) som skall motta notifieringar varje gång en "
+"donation görs, en per rad"
 
 #: includes/admin/register-settings.php:535
 msgid "Disable Admin Notifications"
@@ -1892,12 +1892,12 @@ msgid ""
 "Check this box if you do not want to receive emails when new donations are "
 "made."
 msgstr ""
-"Kryssa i denna rutan om du inte vill motta e-postmeddelanden nÃ¤r nya "
+"Kryssa i denna rutan om du inte vill motta e-postmeddelanden när nya "
 "donationer gjorts."
 
 #: includes/admin/register-settings.php:545
 msgid "Give Add-ons Settings"
-msgstr "InstÃ¤llningar FÃ¶r Give-expansioner"
+msgstr "Inställningar För Give-expansioner"
 
 #: includes/admin/register-settings.php:553
 msgid "Give Licenses"
@@ -1922,10 +1922,10 @@ msgid ""
 "allows users to view donation receipts on your site without having to be "
 "logged in."
 msgstr ""
-"Give kommer att starta en ny session per anvÃ¤ndare nÃ¤r de en gÃ¥ng har "
-"donerat. Detta alternativ bestÃ¤mmer livstiden fÃ¶r en anvÃ¤ndares session. En "
-"aktiv session tillÃ¥ter anvÃ¤ndare att visa donationskvitton pÃ¥ din webbplats "
-"utan att behÃ¶va vara inloggad."
+"Give kommer att starta en ny session per användare när de en gång har "
+"donerat. Detta alternativ bestämmer livstiden för en användares session. En "
+"aktiv session tillåter användare att visa donationskvitton på din webbplats "
+"utan att behöva vara inloggad."
 
 #: includes/admin/register-settings.php:576
 msgid "24 Hours"
@@ -1956,8 +1956,8 @@ msgid ""
 "Check this box if you would like Give to completely remove all of its data "
 "when the plugin is deleted."
 msgstr ""
-"Markera denna kryssruta om du vill att Give skall ta bort all sin data nÃ¤r "
-"tillÃ¤gget tas bort. "
+"Markera denna kryssruta om du vill att Give skall ta bort all sin data när "
+"tillägget tas bort. "
 
 #: includes/admin/register-settings.php:595
 msgid "Filter Control"
@@ -1975,9 +1975,9 @@ msgid ""
 "filter. <a href=\"%s\" target=\"_blank\">Learn more</a> about the_content "
 "filter."
 msgstr ""
-"Om du ser extra knappar fÃ¶r sociala medier, relaterade poster, eller andra "
-"oÃ¶nskade element dyka upp i dina formulÃ¤r sÃ¥ kan du deaktivera WordPress "
-"innehÃ¥llsfilter. <a href=\"%s\" target=\"_blank\">LÃ¤s mer</a> om the_content-"
+"Om du ser extra knappar för sociala medier, relaterade poster, eller andra "
+"oönskade element dyka upp i dina formulär så kan du deaktivera WordPress "
+"innehållsfilter. <a href=\"%s\" target=\"_blank\">Läs mer</a> om the_content-"
 "filtret."
 
 #: includes/admin/register-settings.php:633
@@ -1985,7 +1985,7 @@ msgid ""
 "Please copy and paste this information in your ticket when contacting "
 "support."
 msgstr ""
-"Var god att kopiera och klistra in denna information i ditt meddelande nÃ¤r "
+"Var god att kopiera och klistra in denna information i ditt meddelande när "
 "du kontaktar support."
 
 #: includes/admin/register-settings.php:861
@@ -1994,7 +1994,7 @@ msgstr "Global Standard"
 
 #: includes/admin/register-settings.php:951
 msgid "Save Settings"
-msgstr "Spara InstÃ¤llningar"
+msgstr "Spara Inställningar"
 
 #: includes/admin/register-settings.php:988
 msgid "Deactivate License"
@@ -2007,9 +2007,9 @@ msgid ""
 "donation data in JSON or XML for external applications or devices, such as "
 "<a href=\"%s\">Zapier</a>."
 msgstr ""
-"API-nycklar tillÃ¥ter anvÃ¤ndare att anvÃ¤nda <a href=\"%s\">Give REST API</a> "
-"fÃ¶r att hÃ¤mta donationsdata som JSON eller XML till externa applikationer "
-"eller enheter, sÃ¥ som <a href=\"%s\">Zapier</a>."
+"API-nycklar tillåter användare att använda <a href=\"%s\">Give REST API</a> "
+"för att hämta donationsdata som JSON eller XML till externa applikationer "
+"eller enheter, så som <a href=\"%s\">Zapier</a>."
 
 #: includes/admin/reporting/class-api-requests-logs-list-table.php:93
 #: includes/admin/reporting/class-gateway-error-logs-list-table.php:125
@@ -2019,27 +2019,27 @@ msgstr "Logg-ID"
 
 #: includes/admin/reporting/class-api-requests-logs-list-table.php:94
 msgid "Request Details"
-msgstr "Detaljer Om FÃ¶rfrÃ¥gan"
+msgstr "Detaljer Om Förfrågan"
 
 #: includes/admin/reporting/class-api-requests-logs-list-table.php:95
 msgid "Request IP"
-msgstr "IP FÃ¶r FÃ¶rfrÃ¥gan"
+msgstr "IP För Förfrågan"
 
 #: includes/admin/reporting/class-api-requests-logs-list-table.php:132
 msgid "View Request Details"
-msgstr "Visa Detaljer Om FÃ¶rfrÃ¥gan"
+msgstr "Visa Detaljer Om Förfrågan"
 
 #: includes/admin/reporting/class-api-requests-logs-list-table.php:132
 msgid "View Request"
-msgstr "Visa FÃ¶rfrÃ¥gan"
+msgstr "Visa Förfrågan"
 
 #: includes/admin/reporting/class-api-requests-logs-list-table.php:138
 msgid "API Request:"
-msgstr "API-fÃ¶rfrÃ¥gan:"
+msgstr "API-förfrågan:"
 
 #: includes/admin/reporting/class-api-requests-logs-list-table.php:144
 msgid "API User:"
-msgstr "API-anvÃ¤ndare:"
+msgstr "API-användare:"
 
 #: includes/admin/reporting/class-api-requests-logs-list-table.php:146
 msgid "API Key:"
@@ -2047,7 +2047,7 @@ msgstr "API-nyckel:"
 
 #: includes/admin/reporting/class-api-requests-logs-list-table.php:148
 msgid "Request Date:"
-msgstr "Datum FÃ¶r FÃ¶rfrÃ¥gan:"
+msgstr "Datum För Förfrågan:"
 
 #: includes/admin/reporting/class-donor-reports-table.php:135
 msgid "Donors Report"
@@ -2055,7 +2055,7 @@ msgstr "Donatorsrapport"
 
 #: includes/admin/reporting/class-donor-reports-table.php:204
 msgid "Purchases"
-msgstr "KÃ¶p"
+msgstr "Köp"
 
 #: includes/admin/reporting/class-donor-reports-table.php:205
 msgid "Total Spent"
@@ -2065,7 +2065,7 @@ msgstr "Spenderat Totalt"
 #: includes/admin/reporting/class-export-payments.php:66
 #: includes/forms/template.php:448 templates/shortcode-profile-editor.php:34
 msgid "First Name"
-msgstr "FÃ¶rnamn"
+msgstr "Förnamn"
 
 #: includes/admin/reporting/class-export-customers.php:70
 #: includes/admin/reporting/class-export-payments.php:67
@@ -2075,7 +2075,7 @@ msgstr "Efternamn"
 
 #: includes/admin/reporting/class-export-customers.php:72
 msgid "Date Donated"
-msgstr "Datum fÃ¶r Donation"
+msgstr "Datum för Donation"
 
 #: includes/admin/reporting/class-export-customers.php:85
 msgid "Total Donations"
@@ -2121,7 +2121,7 @@ msgstr "Rabattkod"
 #: includes/admin/reporting/class-export-payments.php:79
 #: templates/shortcode-receipt.php:66
 msgid "Payment Method"
-msgstr "BetalningssÃ¤tt"
+msgstr "Betalningssätt"
 
 #: includes/admin/reporting/class-export-payments.php:80
 msgid "Transaction ID"
@@ -2133,7 +2133,7 @@ msgstr "Betalningsnyckel"
 
 #: includes/admin/reporting/class-export.php:177
 msgid "You do not have permission to export data."
-msgstr "Du har inte tillstÃ¥nd att exportera data."
+msgstr "Du har inte tillstånd att exportera data."
 
 #: includes/admin/reporting/class-form-reports-table.php:84
 msgid "View Detailed Report"
@@ -2141,11 +2141,11 @@ msgstr "Visa Detaljerad Rapport"
 
 #: includes/admin/reporting/class-form-reports-table.php:102
 msgid "Monthly Average Donations"
-msgstr "Genomsnittligt Antal MÃ¥natliga Donationer"
+msgstr "Genomsnittligt Antal Månatliga Donationer"
 
 #: includes/admin/reporting/class-form-reports-table.php:103
 msgid "Monthly Average Income"
-msgstr "MÃ¥natlig Genomsnittlig Inkomst"
+msgstr "Månatlig Genomsnittlig Inkomst"
 
 #: includes/admin/reporting/class-form-reports-table.php:104
 msgid "Detailed Report"
@@ -2153,7 +2153,7 @@ msgstr "Detaljerad Rapport"
 
 #: includes/admin/reporting/class-form-reports-table.php:194
 msgid "Form Report"
-msgstr "FormulÃ¤rrapport"
+msgstr "Formulärrapport"
 
 #: includes/admin/reporting/class-gateway-error-logs-list-table.php:71
 #: includes/gateways/manual.php:73 includes/gateways/paypal-standard.php:60
@@ -2180,19 +2180,19 @@ msgstr "Felmeddelande"
 #: includes/admin/reporting/class-gateway-error-logs-list-table.php:129
 #: includes/admin/reporting/class-gateways-reports-table.php:83
 msgid "Gateway"
-msgstr "NÃ¤tsluss"
+msgstr "Nätsluss"
 
 #: includes/admin/reporting/class-gateways-reports-table.php:84
 msgid "Complete Sales"
-msgstr "GenomfÃ¶rda KÃ¶p"
+msgstr "Genomförda Köp"
 
 #: includes/admin/reporting/class-gateways-reports-table.php:85
 msgid "Pending / Failed Sales"
-msgstr "PÃ¥gÃ¥ende / Misslyckade KÃ¶p"
+msgstr "Pågående / Misslyckade Köp"
 
 #: includes/admin/reporting/class-gateways-reports-table.php:86
 msgid "Total Sales"
-msgstr "Total FÃ¶rsÃ¤ljning"
+msgstr "Total Försäljning"
 
 #: includes/admin/reporting/class-gateways-reports-table.php:133
 msgid "Payment Methods Report"
@@ -2205,38 +2205,38 @@ msgstr "Objektbelopp"
 #: includes/admin/reporting/graphing.php:209
 #: includes/admin/reporting/graphing.php:441
 msgid "Total income for period: "
-msgstr "Total inkomst fÃ¶r period:"
+msgstr "Total inkomst för period:"
 
 #: includes/admin/reporting/graphing.php:214
 msgid "Total donations for period shown: "
-msgstr "Totala donationer fÃ¶r period som visas:"
+msgstr "Totala donationer för period som visas:"
 
 #: includes/admin/reporting/graphing.php:221
 msgid "Estimated monthly income: "
-msgstr "Uppskattad mÃ¥natlig inkomst:"
+msgstr "Uppskattad månatlig inkomst:"
 
 #: includes/admin/reporting/graphing.php:227
 msgid "Estimated monthly donations: "
-msgstr "Uppskattade mÃ¥natliga donationer:"
+msgstr "Uppskattade månatliga donationer:"
 
 #: includes/admin/reporting/graphing.php:423
 #, php-format
 msgid "Income Over Time for %s"
-msgstr "Inkomst Ã–ver Tid fÃ¶r %s"
+msgstr "Inkomst Över Tid för %s"
 
 #: includes/admin/reporting/graphing.php:446
 msgid "Total donations for period: "
-msgstr "Donationer totalt fÃ¶r period:"
+msgstr "Donationer totalt för period:"
 
 #: includes/admin/reporting/graphing.php:452
 #, php-format
 msgid "Average monthly income: %s"
-msgstr "Genomsnittlig mÃ¥natlig inkomst: %s"
+msgstr "Genomsnittlig månatlig inkomst: %s"
 
 #: includes/admin/reporting/graphing.php:458
 #, php-format
 msgid "Average monthly donations: %s"
-msgstr "Genomsnittligt antal mÃ¥natliga donationer: %s"
+msgstr "Genomsnittligt antal månatliga donationer: %s"
 
 #: includes/admin/reporting/graphing.php:478 includes/class-give-stats.php:83
 #: includes/libraries/cmb2/includes/CMB2_JS.php:117
@@ -2245,15 +2245,15 @@ msgstr "Idag"
 
 #: includes/admin/reporting/graphing.php:479 includes/class-give-stats.php:84
 msgid "Yesterday"
-msgstr "IgÃ¥r"
+msgstr "Igår"
 
 #: includes/admin/reporting/graphing.php:481 includes/class-give-stats.php:86
 msgid "Last Week"
-msgstr "FÃ¶rra Veckan"
+msgstr "Förra Veckan"
 
 #: includes/admin/reporting/graphing.php:483 includes/class-give-stats.php:88
 msgid "Last Month"
-msgstr "FÃ¶rra MÃ¥naden"
+msgstr "Förra Månaden"
 
 #: includes/admin/reporting/graphing.php:484 includes/class-give-stats.php:89
 msgid "This Quarter"
@@ -2261,15 +2261,15 @@ msgstr "Detta Kvartal"
 
 #: includes/admin/reporting/graphing.php:485
 msgid "Last Quarter"
-msgstr "FÃ¶regÃ¥ende Kvartal"
+msgstr "Föregående Kvartal"
 
 #: includes/admin/reporting/graphing.php:486 includes/class-give-stats.php:91
 msgid "This Year"
-msgstr "Detta Ã…r"
+msgstr "Detta År"
 
 #: includes/admin/reporting/graphing.php:487 includes/class-give-stats.php:92
 msgid "Last Year"
-msgstr "FÃ¶rra Ã…ret"
+msgstr "Förra Året"
 
 #: includes/admin/reporting/graphing.php:488
 msgid "Custom"
@@ -2281,7 +2281,7 @@ msgstr "Filter"
 
 #: includes/admin/reporting/graphing.php:525
 msgid "From"
-msgstr "FrÃ¥n"
+msgstr "Från"
 
 #: includes/admin/reporting/graphing.php:541
 msgid "To"
@@ -2293,7 +2293,7 @@ msgstr "Betalningsfel"
 
 #: includes/admin/reporting/logs.php:99
 msgid "API Requests"
-msgstr "API-fÃ¶rfrÃ¥gningar"
+msgstr "API-förfrågningar"
 
 #: includes/admin/reporting/logs.php:119
 msgid "Log Type"
@@ -2301,14 +2301,14 @@ msgstr "Loggtyp"
 
 #: includes/admin/reporting/pdf-reports.php:31
 msgid "You do not have permission to generate PDF sales reports"
-msgstr "Du har ej tillstÃ¥nd att generera PDf-fÃ¶rsÃ¤ljningsrapporter"
+msgstr "Du har ej tillstånd att generera PDf-försäljningsrapporter"
 
 #: includes/admin/reporting/pdf-reports.php:35
 #: includes/api/class-give-api.php:1588
 #: includes/class-give-license-handler.php:191
 #: includes/class-give-license-handler.php:262
 msgid "Nonce verification failed"
-msgstr "Verifiering av unik strÃ¤ng (nonce) misslyckades"
+msgstr "Verifiering av unik sträng (nonce) misslyckades"
 
 #: includes/admin/reporting/pdf-reports.php:41
 msgid "to"
@@ -2317,7 +2317,7 @@ msgstr "till"
 #: includes/admin/reporting/pdf-reports.php:46
 #: includes/admin/reporting/pdf-reports.php:57
 msgid "Donation report for the current year for all forms"
-msgstr "Donationsrapport fÃ¶r nuvarande och fÃ¶r alla formulÃ¤r"
+msgstr "Donationsrapport för nuvarande och för alla formulär"
 
 #: includes/admin/reporting/pdf-reports.php:47
 #: includes/admin/reporting/pdf-reports.php:48 includes/admin/welcome.php:273
@@ -2334,7 +2334,7 @@ msgstr "Tabellvy"
 
 #: includes/admin/reporting/pdf-reports.php:70
 msgid "Form Name"
-msgstr "FormulÃ¤rnamn"
+msgstr "Formulärnamn"
 
 #: includes/admin/reporting/pdf-reports.php:74
 msgid "Number of Donations"
@@ -2355,7 +2355,7 @@ msgstr "Grafvy"
 
 #: includes/admin/reporting/pdf-reports.php:245
 msgid "Donations by Month for all Give Forms"
-msgstr "Donationer MÃ¥nadsvis fÃ¶r alla Give FormulÃ¤r"
+msgstr "Donationer Månadsvis för alla Give Formulär"
 
 #: includes/admin/reporting/pdf-reports.php:256
 msgid "Jan"
@@ -2431,7 +2431,7 @@ msgstr "Tillbaks"
 
 #: includes/admin/reporting/reports.php:263
 msgid "Income Over Time"
-msgstr "Inkomst Ã–ver Tid"
+msgstr "Inkomst Över Tid"
 
 #: includes/admin/reporting/reports.php:292
 msgid "Export Type"
@@ -2450,8 +2450,8 @@ msgid ""
 "Download a PDF of Donations and Income reports for all forms for the current "
 "year."
 msgstr ""
-"Ladda ned en PDF med Donations- samt inkomstrapporter fÃ¶r nuvarande Ã¥r och "
-"fÃ¶r alla formulÃ¤r."
+"Ladda ned en PDF med Donations- samt inkomstrapporter för nuvarande år och "
+"för alla formulär."
 
 #: includes/admin/reporting/reports.php:305
 msgid "Generate PDF"
@@ -2463,7 +2463,7 @@ msgstr "Exportera Inkomst- och Donationsstatistik"
 
 #: includes/admin/reporting/reports.php:312
 msgid "Download a CSV of income and donations over time."
-msgstr "Ladda ned en CSV-fil med inkomst och donationer Ã¶ver tid."
+msgstr "Ladda ned en CSV-fil med inkomst och donationer över tid."
 
 #: includes/admin/reporting/reports.php:318
 msgctxt "Date one to date two"
@@ -2499,8 +2499,8 @@ msgid ""
 "donors, exporting the donation stats may fail."
 msgstr ""
 "Ladda ned en CSV-fil med alla donatorers e-postadresser. Alternativt "
-"exportera endast donatorer som har donerat till ett specifikt formulÃ¤r. "
-"Notera: om du har ett stort antal donatorer sÃ¥ finns risk att export av "
+"exportera endast donatorer som har donerat till ett specifikt formulär. "
+"Notera: om du har ett stort antal donatorer så finns risk att export av "
 "donationsstatistik misslyckas."
 
 #: includes/admin/reporting/reports.php:361
@@ -2514,11 +2514,11 @@ msgstr "E-postadresser och Namn"
 
 #: includes/admin/reporting/reports.php:377
 msgid "Emails, Names, and Purchase Stats"
-msgstr "E-postadresser, Namn, och KÃ¶pestatistik"
+msgstr "E-postadresser, Namn, och Köpestatistik"
 
 #: includes/admin/upgrades/upgrade-functions.php:80
 msgid "You do not have permission to do Give upgrades"
-msgstr "Du har ej tillstÃ¥nd att gÃ¶ra Give-uppgraderingar."
+msgstr "Du har ej tillstånd att göra Give-uppgraderingar."
 
 #: includes/admin/upgrades/upgrades.php:46
 msgid "Give - Upgrades"
@@ -2532,28 +2532,28 @@ msgid ""
 "depending on the upgrade and the size of your website. You will be "
 "automatically redirected when the upgrade is finished."
 msgstr ""
-"Uppgraderingsprocessen har pÃ¥bÃ¶rjats, vÃ¤nligen ha tÃ¥lamod och stÃ¤ng inte "
-"detta fÃ¶nster eller navigera ivÃ¤g frÃ¥n sidan. Detta kan ta flera minuter "
-"beroende pÃ¥ uppgraderingen och storleken pÃ¥ din webbplats. Du kommer "
-"automatiskt att dirigeras vidare nÃ¤r uppgraderingen Ã¤r klar."
+"Uppgraderingsprocessen har påbörjats, vänligen ha tålamod och stäng inte "
+"detta fönster eller navigera iväg från sidan. Detta kan ta flera minuter "
+"beroende på uppgraderingen och storleken på din webbplats. Du kommer "
+"automatiskt att dirigeras vidare när uppgraderingen är klar."
 
 #: includes/admin/upgrades/upgrades.php:57
 #, php-format
 msgid "Step %d of approximately %d running"
-msgstr "Steg %d av ca. %d kÃ¶rs"
+msgstr "Steg %d av ca. %d körs"
 
 #: includes/admin/welcome.php:54 includes/admin/welcome.php:55
 msgid "Welcome to Give"
-msgstr "VÃ¤lkommen till Give"
+msgstr "Välkommen till Give"
 
 #: includes/admin/welcome.php:63 includes/admin/welcome.php:64
 #: includes/admin/welcome.php:321
 msgid "Give Changelog"
-msgstr "Give Ã„ndringslogg"
+msgstr "Give Ändringslogg"
 
 #: includes/admin/welcome.php:72 includes/admin/welcome.php:73
 msgid "Getting started with Give"
-msgstr "Komma igÃ¥ng med Give"
+msgstr "Komma igång med Give"
 
 #: includes/admin/welcome.php:81 includes/admin/welcome.php:82
 msgid "The people that build Give"
@@ -2565,16 +2565,16 @@ msgstr "Om Give"
 
 #: includes/admin/welcome.php:225
 msgid "Getting Started"
-msgstr "Komma IgÃ¥ng"
+msgstr "Komma Igång"
 
 #: includes/admin/welcome.php:228
 msgid "Credits"
-msgstr "ErkÃ¤nnanden"
+msgstr "Erkännanden"
 
 #: includes/admin/welcome.php:248
 #, php-format
 msgid "Welcome to Give %s"
-msgstr "VÃ¤lkommen till Give %s"
+msgstr "Välkommen till Give %s"
 
 #: includes/admin/welcome.php:252
 #, php-format
@@ -2585,19 +2585,19 @@ msgid ""
 "\"View the Give plugin documentation online\" target=\"_blank\">plugin "
 "documentation</a> and getting started guide below."
 msgstr ""
-"Tack fÃ¶r att du aktiverar, eller uppdaterar till, den senaste versionen av "
-"Give! Om du Ã¤r en fÃ¶rstagÃ¥ngsanvÃ¤ndare, vÃ¤lkommen! Du Ã¤r pÃ¥ god vÃ¤g att ge "
-"din sak en skjuts framÃ¥t. </You>Vi uppmanar dig att kolla in <a href=\"%s\" "
-"title=\"LÃ¤s dokumentation fÃ¶r Give-tillÃ¤gget online\" target=\"_blank"
-"\">tillÃ¤ggets dokumentation</a> samt kom-i-gÃ¥ng-guiden nedan."
+"Tack för att du aktiverar, eller uppdaterar till, den senaste versionen av "
+"Give! Om du är en förstagångsanvändare, välkommen! Du är på god väg att ge "
+"din sak en skjuts framåt. </You>Vi uppmanar dig att kolla in <a href=\"%s\" "
+"title=\"Läs dokumentation för Give-tillägget online\" target=\"_blank"
+"\">tilläggets dokumentation</a> samt kom-i-gång-guiden nedan."
 
 #: includes/admin/welcome.php:254
 msgid ""
 "Be sure to sign up for the Give newsletter below to stay informed of "
 "important updates and news."
 msgstr ""
-"FÃ¶r att hÃ¥lla dig uppdaterad om vikitga uppdateringar och nyheter, glÃ¶m ej "
-"att registrera dig fÃ¶r prenumeration pÃ¥ Give:s nyhetsbrev."
+"För att hålla dig uppdaterad om vikitga uppdateringar och nyheter, glöm ej "
+"att registrera dig för prenumeration på Give:s nyhetsbrev."
 
 #: includes/admin/welcome.php:258 includes/admin/welcome.php:324
 #: includes/admin/welcome.php:367 includes/admin/welcome.php:468
@@ -2616,19 +2616,19 @@ msgid ""
 "plugin is actively developed and proudly supported by folks who are "
 "dedicated to helping you and your cause."
 msgstr ""
-"Give ger dig mÃ¶jlighet att enkelt ta emot donationer och sÃ¤tta upp "
-"insamlingskampanjer direkt i WordPress. Vi skapade Give fÃ¶r att ge dig och "
-"dina anvÃ¤ndare en bÃ¤ttre donationsupplevelse. TillÃ¤gget Ã¤r robust, "
-"flexibelt, intuitivt och byggt frÃ¥n grunden och upp fÃ¶r att vara det "
-"sjÃ¤lvklara valet fÃ¶r donationer i WordPress. Skapa kraftfulla "
-"donationsformulÃ¤r, bÃ¤dda in dem var du vill pÃ¥ din webbplats, starta en "
-"kampanj och Ã¶verskrid dina insamlingsmÃ¥l med Give. Detta tillÃ¤gg utvecklas "
-"aktivt och stÃ¶ds stolt av mÃ¤nniskor dedikerade att hjÃ¤lpa dig och din sak "
-"framÃ¥t."
+"Give ger dig möjlighet att enkelt ta emot donationer och sätta upp "
+"insamlingskampanjer direkt i WordPress. Vi skapade Give för att ge dig och "
+"dina användare en bättre donationsupplevelse. Tillägget är robust, "
+"flexibelt, intuitivt och byggt från grunden och upp för att vara det "
+"självklara valet för donationer i WordPress. Skapa kraftfulla "
+"donationsformulär, bädda in dem var du vill på din webbplats, starta en "
+"kampanj och överskrid dina insamlingsmål med Give. Detta tillägg utvecklas "
+"aktivt och stöds stolt av människor dedikerade att hjälpa dig och din sak "
+"framåt."
 
 #: includes/admin/welcome.php:288
 msgid "Getting to Know Give"
-msgstr "Att LÃ¤ra KÃ¤nna Give"
+msgstr "Att Lära Känna Give"
 
 #: includes/admin/welcome.php:290
 msgid ""
@@ -2639,12 +2639,12 @@ msgid ""
 "your feedback and feature requests. Welcome to Give. We hope you much "
 "success with your cause."
 msgstr ""
-"Innan du bÃ¶rjar med Give rekommenderar vi att du lÃ¤ser dokumentationen pÃ¥ "
-"nÃ¤tet. DÃ¤r hittar du kom-i-gÃ¥ng-guiden som ser till att du snabbt och enkelt "
-"Ã¤r pÃ¥ banan. Om du har en frÃ¥ga, ett problem eller hittar en bugg i "
-"tillÃ¤ggets KÃ¤rna, var vÃ¤nlig att posta detta till oss pÃ¥ Give:s webbplats. "
-"Vi tar ocksÃ¥ tacksamt emot din feedback och dina Ã¶nskemÃ¥l om nya funktioner. "
-"VÃ¤lkommen till Give. Vi Ã¶nskar dig stor framgÃ¥ng med din sak."
+"Innan du börjar med Give rekommenderar vi att du läser dokumentationen på "
+"nätet. Där hittar du kom-i-gång-guiden som ser till att du snabbt och enkelt "
+"är på banan. Om du har en fråga, ett problem eller hittar en bugg i "
+"tilläggets Kärna, var vänlig att posta detta till oss på Give:s webbplats. "
+"Vi tar också tacksamt emot din feedback och dina önskemål om nya funktioner. "
+"Välkommen till Give. Vi önskar dig stor framgång med din sak."
 
 #: includes/admin/welcome.php:323
 #, php-format
@@ -2652,29 +2652,29 @@ msgid ""
 "Thank you for updating to the latest version! Give %s is ready to make your "
 "online store faster, safer, and better!"
 msgstr ""
-"Tack fÃ¶r att du uppdaterar till den senaste versionen! Give %s Ã¤r redo fÃ¶r "
-"att gÃ¶ra din webbaffÃ¤r snabbare, sÃ¤krare, och bÃ¤ttre!"
+"Tack för att du uppdaterar till den senaste versionen! Give %s är redo för "
+"att göra din webbaffär snabbare, säkrare, och bättre!"
 
 #: includes/admin/welcome.php:329
 msgid "Full Changelog"
-msgstr "FullstÃ¤ndig Ã„ndringslogg"
+msgstr "Fullständig Ändringslogg"
 
 #: includes/admin/welcome.php:340
 msgid "Go to Give Settings"
-msgstr "GÃ¥ till Give-instÃ¤llningar"
+msgstr "Gå till Give-inställningar"
 
 #: includes/admin/welcome.php:357
 #, php-format
 msgid "Give %s - Getting Started Guide"
-msgstr "Give %s - Kom-I-GÃ¥ng-Guide"
+msgstr "Give %s - Kom-I-Gång-Guide"
 
 #: includes/admin/welcome.php:361 includes/admin/welcome.php:462
 msgid "Welcome to the getting started guide."
-msgstr "VÃ¤lkommen till kom-i-gÃ¥ng-guiden."
+msgstr "Välkommen till kom-i-gång-guiden."
 
 #: includes/admin/welcome.php:363
 msgid "Don't forget to sign up for the newsletter!"
-msgstr "GlÃ¶m ej att registrera dig fÃ¶r nyhetsbrevet!"
+msgstr "Glöm ej att registrera dig för nyhetsbrevet!"
 
 #: includes/admin/welcome.php:372
 msgid ""
@@ -2682,13 +2682,13 @@ msgid ""
 "help first time users of the plugin. Our goal is to get you up and running "
 "in no time. Let's begin!"
 msgstr ""
-"Det Ã¤r lÃ¤tt att komma igÃ¥ng med Give! Vi har satt ihop denna kom-i-gÃ¥ng-"
-"guide fÃ¶r nya anvÃ¤ndare av detta tillÃ¤gg. VÃ¥rt mÃ¥l Ã¤r att du skall komma "
-"igÃ¥ng pÃ¥ nolltid. LÃ¥t oss bÃ¶rja!"
+"Det är lätt att komma igång med Give! Vi har satt ihop denna kom-i-gång-"
+"guide för nya användare av detta tillägg. Vårt mål är att du skall komma "
+"igång på nolltid. Låt oss börja!"
 
 #: includes/admin/welcome.php:378
 msgid "STEP 1: Create a New Form"
-msgstr "STEG 1: Skapa ett Nytt FormulÃ¤r"
+msgstr "STEG 1: Skapa ett Nytt Formulär"
 
 #: includes/admin/welcome.php:380
 msgid ""
@@ -2698,23 +2698,23 @@ msgid ""
 "amounts. You even get to choose whether you want to create a whole page for "
 "your form, or embed it on a different page of your site."
 msgstr ""
-"Give drivs av sina kraftfulla verktyg fÃ¶r att skapa formulÃ¤r. Men det Ã¤r "
-"inte bara ett \"formulÃ¤r\". FrÃ¥n sidan \"LÃ¤gg Till Nytt FormulÃ¤r\" kan du "
-"vÃ¤lja hur och var du vill ta emot dina donationer. Du kan bestÃ¤mma "
-"donationsbelopp. Du kan till och med bestÃ¤mma om du vill skapa en helt egen "
-"sida fÃ¶r ditt formulÃ¤r eller bÃ¤dda in det pÃ¥ en annan sida."
+"Give drivs av sina kraftfulla verktyg för att skapa formulär. Men det är "
+"inte bara ett \"formulär\". Från sidan \"Lägg Till Nytt Formulär\" kan du "
+"välja hur och var du vill ta emot dina donationer. Du kan bestämma "
+"donationsbelopp. Du kan till och med bestämma om du vill skapa en helt egen "
+"sida för ditt formulär eller bädda in det på en annan sida."
 
 #: includes/admin/welcome.php:382
 msgid ""
 "But all of these features begin simply by going to the menu and choosing "
 "\"Add New Form.\""
 msgstr ""
-"Men tillgÃ¥ngen till alla dessa funktioner bÃ¶rjar med att du helt enkelt gÃ¥r "
-"till menyn och vÃ¤ljer \"LÃ¤gg Till Nytt FormulÃ¤r\"."
+"Men tillgången till alla dessa funktioner börjar med att du helt enkelt går "
+"till menyn och väljer \"Lägg Till Nytt Formulär\"."
 
 #: includes/admin/welcome.php:399
 msgid "STEP 2: Choose Your Levels"
-msgstr "STEG 2: VÃ¤lj Dina NivÃ¥er"
+msgstr "STEG 2: Välj Dina Nivåer"
 
 #: includes/admin/welcome.php:401
 msgid ""
@@ -2723,14 +2723,14 @@ msgid ""
 "up the levels section where you can add as many levels as you like with your "
 "own custom names and amounts."
 msgstr ""
-"Varje FormulÃ¤r kan stÃ¤llas in att ta emot antingen ett fÃ¶rutbestÃ¤mt belopp "
-"eller att ha flera donationsnivÃ¥er. Vid val av \"FlernivÃ¥donation\" Ã¶ppnas "
-"nivÃ¥sektionen upp dÃ¤r du kan lÃ¤gga till sÃ¥ mÃ¥nga nivÃ¥er du vill med egna "
+"Varje Formulär kan ställas in att ta emot antingen ett förutbestämt belopp "
+"eller att ha flera donationsnivåer. Vid val av \"Flernivådonation\" öppnas "
+"nivåsektionen upp där du kan lägga till så många nivåer du vill med egna "
 "anpassade namn och belopp."
 
 #: includes/admin/welcome.php:410
 msgid "STEP 3: Landing Page or Shortcode Mode?"
-msgstr "STEG 3: Landningssida eller KortkodslÃ¤ge?"
+msgstr "STEG 3: Landningssida eller Kortkodsläge?"
 
 #: includes/admin/welcome.php:412
 msgid ""
@@ -2738,8 +2738,8 @@ msgid ""
 "or it can be inserted into any other page or post throughout your site as a "
 "Shortcode."
 msgstr ""
-"Varje formulÃ¤r skapat i Give kan antingen visas som en egen sida, eller sÃ¥ "
-"kan det infogas pÃ¥ valfri sida/inlÃ¤gg pÃ¥ din webbplats med en Kortkod."
+"Varje formulär skapat i Give kan antingen visas som en egen sida, eller så "
+"kan det infogas på valfri sida/inlägg på din webbplats med en Kortkod."
 
 #: includes/admin/welcome.php:414
 msgid ""
@@ -2751,12 +2751,12 @@ msgid ""
 "most amount of flexibility with controlling your content on your website all "
 "within the same page."
 msgstr ""
-"Du kan vÃ¤lja dessa olika lÃ¤gen genom att gÃ¥ till sektionen \"FormulÃ¤rinnehÃ¥ll"
-"\". DÃ¤r kan du vÃ¤lja att lÃ¤gga till innehÃ¥ll fÃ¶re eller efter "
-"DonationsformulÃ¤ret pÃ¥ en sida, eller om du vÃ¤ljer \"Inget\" sÃ¥ kanske du "
-"istÃ¤llet vill anvÃ¤nda kortkoden. Kortkoden hittar du hÃ¶gst upp i den hÃ¶gra "
-"kolumnen omedelbart under knappen Publicera/Spara. Detta upplÃ¤gg ger dig "
-"stÃ¶rsta mÃ¶jliga flexibilitet att styra innehÃ¥llet pÃ¥ din webbplats. Allt pÃ¥ "
+"Du kan välja dessa olika lägen genom att gå till sektionen \"Formulärinnehåll"
+"\". Där kan du välja att lägga till innehåll före eller efter "
+"Donationsformuläret på en sida, eller om du väljer \"Inget\" så kanske du "
+"istället vill använda kortkoden. Kortkoden hittar du högst upp i den högra "
+"kolumnen omedelbart under knappen Publicera/Spara. Detta upplägg ger dig "
+"största möjliga flexibilitet att styra innehållet på din webbplats. Allt på "
 "samma sida."
 
 #: includes/admin/welcome.php:431
@@ -2770,15 +2770,15 @@ msgid ""
 "appears, the submit button text, which Gateway you want to use, whether "
 "Guests (non-logged in users) can donate or not, and a log-in form."
 msgstr ""
-"Slutligen sÃ¥ kan du presentera formulÃ¤ret pÃ¥ mÃ¥nga olika sÃ¤tt. I sektionen "
-"\"Visningsalternativ\" kan du konfigurera hur kreditkortsfÃ¤ltet skall se ut, "
-"ange text pÃ¥ skickaknappen, vilken NÃ¤tsluss du vill anvÃ¤nda, huruvida GÃ¤ster "
-"(ej inloggade anvÃ¤ndare) kan donera eller ej, samt ett inloggningsformulÃ¤r."
+"Slutligen så kan du presentera formuläret på många olika sätt. I sektionen "
+"\"Visningsalternativ\" kan du konfigurera hur kreditkortsfältet skall se ut, "
+"ange text på skickaknappen, vilken Nätsluss du vill använda, huruvida Gäster "
+"(ej inloggade användare) kan donera eller ej, samt ett inloggningsformulär."
 
 #: includes/admin/welcome.php:456
 #, php-format
 msgid "Give %s - Credits"
-msgstr "Give %s - PoÃ¤ng"
+msgstr "Give %s - Poäng"
 
 #: includes/admin/welcome.php:460
 msgid "Thanks to all those who have contributed code directly or indirectly. "
@@ -2790,13 +2790,13 @@ msgid ""
 "contributing please visit the <a href=\"https://github.com/WordImpress/give"
 "\" target=\"_blank\">GitHub Repo</a>."
 msgstr ""
-"Give Ã¤r skapat av ett dedikerat team av utvecklare. Om du Ã¤r intresserad av "
-"att bidra, var god besÃ¶k <a href=\"https://github.com/WordImpress/give\" "
+"Give är skapat av ett dedikerat team av utvecklare. Om du är intresserad av "
+"att bidra, var god besök <a href=\"https://github.com/WordImpress/give\" "
 "target=\"_blank\">Give:s GitHub Repo</a>."
 
 #: includes/admin/welcome.php:490
 msgid "No valid changlog was found."
-msgstr "Ingen giltig Ã¤ndringslogg hittades."
+msgstr "Ingen giltig ändringslogg hittades."
 
 #: includes/ajax-functions.php:231 includes/ajax-functions.php:275
 msgid "No results found"
@@ -2804,15 +2804,15 @@ msgstr "Inga resultat funna"
 
 #: includes/ajax-functions.php:312
 msgid "No users found"
-msgstr "Inga anvÃ¤ndare funna"
+msgstr "Inga användare funna"
 
 #: includes/api/class-give-api.php:426
 msgid "You must specify both a token and API key!"
-msgstr "Du mÃ¥ste specificera en pollett och en API-nyckel!"
+msgstr "Du måste specificera en pollett och en API-nyckel!"
 
 #: includes/api/class-give-api.php:443
 msgid "Your request could not be authenticated!"
-msgstr "Din fÃ¶rfrÃ¥gan kunde ej autentiseras!"
+msgstr "Din förfrågan kunde ej autentiseras!"
 
 #: includes/api/class-give-api.php:460
 msgid "Invalid API key!"
@@ -2824,7 +2824,7 @@ msgstr "Ogiltig API-version!"
 
 #: includes/api/class-give-api.php:613
 msgid "Invalid query!"
-msgstr "Ogiltig fÃ¶rfrÃ¥gan!"
+msgstr "Ogiltig förfrågan!"
 
 #: includes/api/class-give-api.php:917
 #, php-format
@@ -2838,11 +2838,11 @@ msgstr "Inga donatorer hittades!"
 #: includes/api/class-give-api.php:971 includes/api/class-give-api.php:1286
 #, php-format
 msgid "Form %s not found!"
-msgstr "FormulÃ¤r %s hittades ej!"
+msgstr "Formulär %s hittades ej!"
 
 #: includes/api/class-give-api.php:1084 includes/api/class-give-api.php:1192
 msgid "The end date must be later than the start date!"
-msgstr "Slutdatum mÃ¥ste vara senare Ã¤n startdatum!"
+msgstr "Slutdatum måste vara senare än startdatum!"
 
 #: includes/api/class-give-api.php:1089 includes/api/class-give-api.php:1197
 msgid "Invalid or no date range specified!"
@@ -2880,30 +2880,30 @@ msgstr "Annullera API-nycklar"
 #: includes/api/class-give-api.php:1601 includes/api/class-give-api.php:1603
 #, php-format
 msgid "You do not have permission to %s API keys for this user"
-msgstr "Du har ej tillstÃ¥nd att %s API-nycklar fÃ¶r denna anvÃ¤ndare"
+msgstr "Du har ej tillstånd att %s API-nycklar för denna användare"
 
 #: includes/class-give-customer.php:178
 #, php-format
 msgid "Can't get property %s"
-msgstr "Kan ej hÃ¤mta egenskap %s"
+msgstr "Kan ej hämta egenskap %s"
 
 #: includes/class-give-donate-form.php:73
 msgid "New Give Form"
-msgstr "Nytt Give-formulÃ¤r"
+msgstr "Nytt Give-formulär"
 
 #: includes/class-give-html-elements.php:46
 #: includes/class-give-html-elements.php:61
 #, php-format
 msgid "Select a %s"
-msgstr "VÃ¤lj en %s"
+msgstr "Välj en %s"
 
 #: includes/class-give-html-elements.php:66
 msgid "No Give Forms Found"
-msgstr "Inga Give-formulÃ¤r Funna"
+msgstr "Inga Give-formulär Funna"
 
 #: includes/class-give-html-elements.php:117
 msgid "Select a Donor"
-msgstr "VÃ¤lj en Donator"
+msgstr "Välj en Donator"
 
 #: includes/class-give-html-elements.php:130
 msgid "No donor attached"
@@ -2929,7 +2929,7 @@ msgstr "Inga"
 
 #: includes/class-give-html-elements.php:502
 msgid "Enter username"
-msgstr "Ange anvÃ¤ndarnamn"
+msgstr "Ange användarnamn"
 
 #: includes/class-give-license-handler.php:134
 #, php-format
@@ -2942,7 +2942,7 @@ msgstr "Expansionslicenser"
 
 #: includes/class-give-license-handler.php:339
 msgid "This license does not belong to the product you have entered it for."
-msgstr "Denna licens tillhÃ¶r ej produkten som du har angivit den fÃ¶r."
+msgstr "Denna licens tillhör ej produkten som du har angivit den för."
 
 #: includes/class-give-license-handler.php:344
 msgid "This license does not have any activations left"
@@ -2950,7 +2950,7 @@ msgstr "Denna licens har inga aktiveringar kvar"
 
 #: includes/class-give-license-handler.php:349
 msgid "This license key is expired. Please renew it."
-msgstr "Licensnyckeln Ã¤r utgÃ¥ngen. Var god att fÃ¶rnya den."
+msgstr "Licensnyckeln är utgången. Var god att förnya den."
 
 #: includes/class-give-license-handler.php:354
 #, php-format
@@ -2958,12 +2958,12 @@ msgid ""
 "There was a problem activating your license key, please try again or contact "
 "support. Error code: %s"
 msgstr ""
-"Ett problem uppstod nÃ¤r din licensnyckal skulle aktiveras, var god fÃ¶rsÃ¶k "
+"Ett problem uppstod när din licensnyckal skulle aktiveras, var god försök "
 "igen eller kontakta support. Felkod: %s"
 
 #: includes/class-give-roles.php:42
 msgid "Give Manager"
-msgstr "Give AdministratÃ¶r"
+msgstr "Give Administratör"
 
 #: includes/class-give-roles.php:73
 msgid "Give Accountant"
@@ -2975,11 +2975,11 @@ msgstr "Give Arbetare"
 
 #: includes/class-give-stats.php:90
 msgid "Last Quater"
-msgstr "FÃ¶rra Kvartalet"
+msgstr "Förra Kvartalet"
 
 #: includes/class-give-stats.php:434
 msgid "Improper date provided."
-msgstr "OlÃ¤mpligt datum angivet."
+msgstr "Olämpligt datum angivet."
 
 #: includes/country-functions.php:921
 msgid "A Coru&ntilde;a"
@@ -3191,19 +3191,19 @@ msgstr "Zaragoza"
 
 #: includes/emails/class-give-email-tags.php:272
 msgid "The name of completed donation form."
-msgstr "Namnet pÃ¥ det ifyllda donationsformulÃ¤ret."
+msgstr "Namnet på det ifyllda donationsformuläret."
 
 #: includes/emails/class-give-email-tags.php:277
 msgid "The donor's first name"
-msgstr "Donatorns fÃ¶rnamn"
+msgstr "Donatorns förnamn"
 
 #: includes/emails/class-give-email-tags.php:282
 msgid "The donor's full name, first and last"
-msgstr "Donatorns hela namn, fÃ¶rnamn och efternamn"
+msgstr "Donatorns hela namn, förnamn och efternamn"
 
 #: includes/emails/class-give-email-tags.php:287
 msgid "The donor's user name on the site, if they registered an account"
-msgstr "Donatorns anvÃ¤ndarnamn pÃ¥ webbplatsen, om de har registrerat ett konto"
+msgstr "Donatorns användarnamn på webbplatsen, om de har registrerat ett konto"
 
 #: includes/emails/class-give-email-tags.php:292
 msgid "The donor's email address"
@@ -3215,45 +3215,45 @@ msgstr "Donatorns faktureringsadress"
 
 #: includes/emails/class-give-email-tags.php:302
 msgid "The date of the donation"
-msgstr "Datum fÃ¶r donationen"
+msgstr "Datum för donationen"
 
 #: includes/emails/class-give-email-tags.php:307
 msgid "The total price of the donation"
-msgstr "Totalt pris fÃ¶r donationen"
+msgstr "Totalt pris för donationen"
 
 #: includes/emails/class-give-email-tags.php:312
 msgid "The unique ID number for this donation"
-msgstr "Det unika ID-numret fÃ¶r denna donation"
+msgstr "Det unika ID-numret för denna donation"
 
 #: includes/emails/class-give-email-tags.php:317
 msgid "The unique ID number for this donation receipt"
-msgstr "Det unika ID-numret fÃ¶r detta donationskvitto"
+msgstr "Det unika ID-numret för detta donationskvitto"
 
 #: includes/emails/class-give-email-tags.php:322
 msgid "The method of payment used for this donation"
-msgstr "BetalningssÃ¤tt som anvÃ¤nts vid denna donation"
+msgstr "Betalningssätt som använts vid denna donation"
 
 #: includes/emails/class-give-email-tags.php:327
 msgid "Your site name"
-msgstr "Namnet pÃ¥ din webbplats"
+msgstr "Namnet på din webbplats"
 
 #: includes/emails/class-give-email-tags.php:332
 msgid ""
 "Adds a link so users can view their receipt directly on your website if they "
 "are unable to view it in the browser correctly."
 msgstr ""
-"LÃ¤gger till en lÃ¤nk sÃ¥ att anvÃ¤ndare kan se sitt kvitto direkt pÃ¥ din "
-"webbplats om de ej kan visa det korrekt i webblÃ¤saren."
+"Lägger till en länk så att användare kan se sitt kvitto direkt på din "
+"webbplats om de ej kan visa det korrekt i webbläsaren."
 
 #: includes/emails/class-give-email-tags.php:508
 msgid "There was an error retrieving this donation title"
-msgstr "Ett fel uppstod vid hÃ¤mtning av denna donationstitel"
+msgstr "Ett fel uppstod vid hämtning av denna donationstitel"
 
 #: includes/emails/class-give-email-tags.php:546
 #: includes/emails/template.php:83
 #, php-format
 msgid "%1$sView it in your browser.%2$s"
-msgstr "%1$sVisa det i din webblÃ¤sare.%2$s"
+msgstr "%1$sVisa det i din webbläsare.%2$s"
 
 #: includes/emails/class-give-emails.php:163
 msgid "Default Template"
@@ -3267,7 +3267,7 @@ msgstr "Ingen mall, endast ren text"
 msgid ""
 "You cannot send email with Give_Emails until init/admin_init has been reached"
 msgstr ""
-"Du kan inte skicka e-post med Give_Emails fÃ¶rrÃ¤n init/admin_init har uppnÃ¥tts"
+"Du kan inte skicka e-post med Give_Emails förrän init/admin_init har uppnåtts"
 
 #: includes/emails/functions.php:126
 #, php-format
@@ -3280,15 +3280,15 @@ msgstr "Ny Donation!"
 
 #: includes/emails/functions.php:196
 msgid "Hi there,"
-msgstr "HallÃ¥ dÃ¤r,"
+msgstr "Hallå där,"
 
 #: includes/emails/functions.php:196
 msgid ""
 "This email is to inform you that a new donation has been made on your "
 "website: "
 msgstr ""
-"Detta e-postmeddelande skickas fÃ¶r att informera dig om att en ny donation "
-"har gjorts pÃ¥ din webbplats: "
+"Detta e-postmeddelande skickas för att informera dig om att en ny donation "
+"har gjorts på din webbplats: "
 
 #: includes/emails/functions.php:197 includes/emails/template.php:225
 #: includes/gateways/offline-donations.php:225
@@ -3306,7 +3306,7 @@ msgstr "Belopp:"
 
 #: includes/emails/functions.php:200 includes/emails/template.php:227
 msgid "Payment Method: "
-msgstr "BetalningssÃ¤tt:"
+msgstr "Betalningssätt:"
 
 #: includes/emails/functions.php:201
 msgid "Thank you,"
@@ -3314,23 +3314,23 @@ msgstr "Tack,"
 
 #: includes/emails/template.php:67
 msgid "These are some sample notes added to a donation."
-msgstr "Detta Ã¤r ett antal exempel pÃ¥ noteringar som lÃ¤ggs till en donation."
+msgstr "Detta är ett antal exempel på noteringar som läggs till en donation."
 
 #: includes/emails/template.php:109
 msgid "Preview Email"
-msgstr "FÃ¶rhandsgranska E-postmeddelande"
+msgstr "Förhandsgranska E-postmeddelande"
 
 #: includes/emails/template.php:110
 msgid "Click the buttons to preview emails."
-msgstr "Klicka pÃ¥ knapparna fÃ¶r att fÃ¶rhandsgranska e-post."
+msgstr "Klicka på knapparna för att förhandsgranska e-post."
 
 #: includes/emails/template.php:130
 msgid "Donation Receipt Preview"
-msgstr "FÃ¶rhandsgranskning Av Donationskvitto"
+msgstr "Förhandsgranskning Av Donationskvitto"
 
 #: includes/emails/template.php:130
 msgid "Preview Donation Receipt"
-msgstr "FÃ¶rhandsgranska Donationskvitto"
+msgstr "Förhandsgranska Donationskvitto"
 
 #: includes/emails/template.php:134
 msgid "This will send a demo donation receipt to the emails listed below."
@@ -3353,7 +3353,7 @@ msgstr "En donation har gjorts"
 #: includes/emails/template.php:223
 #, php-format
 msgid "%s sold:"
-msgstr "%s sÃ¥lda:"
+msgstr "%s sålda:"
 
 #: includes/emails/template.php:229
 msgid "Thank you"
@@ -3378,18 +3378,18 @@ msgstr "Personlig Information"
 #: includes/forms/template.php:452
 msgid "We will use this to personalize your account experience."
 msgstr ""
-"Vi kommer att anvÃ¤nda detta fÃ¶r att gÃ¶ra din upplevelse mer personlig fÃ¶r "
+"Vi kommer att använda detta för att göra din upplevelse mer personlig för "
 "detta konto."
 
 #: includes/forms/template.php:454
 msgid "First name"
-msgstr "FÃ¶rnamn"
+msgstr "Förnamn"
 
 #: includes/forms/template.php:463
 msgid "We will use this as well to personalize your account experience."
 msgstr ""
-"Detta kommer vi ocksÃ¥ att anvÃ¤nda fÃ¶r att gÃ¶ra din upplevelse mer personlig "
-"fÃ¶r detta konto."
+"Detta kommer vi också att använda för att göra din upplevelse mer personlig "
+"för detta konto."
 
 #: includes/forms/template.php:468
 msgid "Last name"
@@ -3401,7 +3401,7 @@ msgstr "E-postadress"
 
 #: includes/forms/template.php:478
 msgid "We will send the purchase receipt to this address."
-msgstr "Vi kommer att skicka kÃ¶pekvittot till denna adress."
+msgstr "Vi kommer att skicka köpekvittot till denna adress."
 
 #: includes/forms/template.php:481
 msgid "Email address"
@@ -3413,7 +3413,7 @@ msgstr "Kreditkortsinformation"
 
 #: includes/forms/template.php:511
 msgid "This is a secure SSL encrypted payment."
-msgstr "Detta Ã¤r en sÃ¤ker SSL-krypterad betalning."
+msgstr "Detta är en säker SSL-krypterad betalning."
 
 #: includes/forms/template.php:516
 msgid "Card Number"
@@ -3421,7 +3421,7 @@ msgstr "Kortnummer"
 
 #: includes/forms/template.php:518
 msgid "The (typically) 16 digits on the front of your credit card."
-msgstr "De (vanligen) 16 siffrorna pÃ¥ framsidan av ditt kreditkort."
+msgstr "De (vanligen) 16 siffrorna på framsidan av ditt kreditkort."
 
 #: includes/forms/template.php:522
 msgid "Card number"
@@ -3434,19 +3434,19 @@ msgstr "CVC"
 #: includes/forms/template.php:529
 msgid "The 3 digit (back) or 4 digit (front) value on your card."
 msgstr ""
-"Det 3-siffriga (baksidan) eller 4-siffriga (framsidan) vÃ¤rdet pÃ¥ ditt kort. "
+"Det 3-siffriga (baksidan) eller 4-siffriga (framsidan) värdet på ditt kort. "
 
 #: includes/forms/template.php:532
 msgid "Security code"
-msgstr "SÃ¤kerhetskod"
+msgstr "Säkerhetskod"
 
 #: includes/forms/template.php:537
 msgid "Name on the Card"
-msgstr "Namn pÃ¥ Kortet"
+msgstr "Namn på Kortet"
 
 #: includes/forms/template.php:539
 msgid "The name printed on the front of your credit card."
-msgstr "Namnet som Ã¤r tryckt pÃ¥ framsidan av ditt kreditkort."
+msgstr "Namnet som är tryckt på framsidan av ditt kreditkort."
 
 #: includes/forms/template.php:542
 msgid "Card name"
@@ -3454,12 +3454,12 @@ msgstr "Kortnamn"
 
 #: includes/forms/template.php:547
 msgid "Expiration (MM/YY)"
-msgstr "FÃ¶rfaller (MM/Ã…Ã…)"
+msgstr "Förfaller (MM/ÅÅ)"
 
 #: includes/forms/template.php:549
 msgid "The date your credit card expires, typically on the front of the card."
 msgstr ""
-"Datum nÃ¤r ditt kreditkort fÃ¶rfaller. Ã…terfinns vanligen pÃ¥ kortets framsida."
+"Datum när ditt kreditkort förfaller. Återfinns vanligen på kortets framsida."
 
 #: includes/forms/template.php:593
 msgid "Billing Details"
@@ -3467,7 +3467,7 @@ msgstr "Faktureringsdetaljer"
 
 #: includes/forms/template.php:601
 msgid "The primary billing address for your credit card."
-msgstr "Den primÃ¤ra faktureringsadressen fÃ¶r ditt kreditkort"
+msgstr "Den primära faktureringsadressen för ditt kreditkort"
 
 #: includes/forms/template.php:606
 msgid "Address line 1"
@@ -3482,7 +3482,7 @@ msgid ""
 "(optional) The suite, apt no, PO box, etc, associated with your billing "
 "address."
 msgstr ""
-"(valfritt) Svit, lÃ¤genhetsnummer, postbox, etc, kopplat till din "
+"(valfritt) Svit, lägenhetsnummer, postbox, etc, kopplat till din "
 "faktureringsadress."
 
 #: includes/forms/template.php:620
@@ -3491,7 +3491,7 @@ msgstr "Adressrad 2"
 
 #: includes/forms/template.php:629
 msgid "The city for your billing address."
-msgstr "Stad fÃ¶r din faktureringsadress"
+msgstr "Stad för din faktureringsadress"
 
 #: includes/forms/template.php:638 templates/shortcode-profile-editor.php:93
 msgid "Zip / Postal Code"
@@ -3499,7 +3499,7 @@ msgstr "Postnummer"
 
 #: includes/forms/template.php:642
 msgid "The zip or postal code for your billing address."
-msgstr "Postnummer fÃ¶r din faktureringsadress"
+msgstr "Postnummer för din faktureringsadress"
 
 #: includes/forms/template.php:647
 msgid "Zip / Postal code"
@@ -3507,11 +3507,11 @@ msgstr "Postnummer"
 
 #: includes/forms/template.php:656
 msgid "The country for your billing address."
-msgstr "Land fÃ¶r din faktureringsadress"
+msgstr "Land för din faktureringsadress"
 
 #: includes/forms/template.php:684
 msgid "The state or province for your billing address."
-msgstr "Stat eller provins fÃ¶r din faktureringsadress"
+msgstr "Stat eller provins för din faktureringsadress"
 
 #: includes/forms/template.php:744
 msgid "Already have an account?"
@@ -3537,28 +3537,28 @@ msgstr "(valfritt)"
 #: includes/forms/template.php:768
 msgid "The username you will use to log into your account."
 msgstr ""
-"AnvÃ¤ndarnamnet som du kommer att anvÃ¤nda fÃ¶r att logga in till ditt konto."
+"Användarnamnet som du kommer att använda för att logga in till ditt konto."
 
 #: includes/forms/template.php:778 includes/forms/template.php:787
 #: includes/forms/template.php:864
 msgid "Password"
-msgstr "LÃ¶senord"
+msgstr "Lösenord"
 
 #: includes/forms/template.php:782
 msgid "The password used to access your account."
-msgstr "LÃ¶senordet som anvÃ¤nds fÃ¶r Ã¥tkomst till ditt konto."
+msgstr "Lösenordet som används för åtkomst till ditt konto."
 
 #: includes/forms/template.php:792
 msgid "Password Again"
-msgstr "LÃ¶senord Igen"
+msgstr "Lösenord Igen"
 
 #: includes/forms/template.php:796
 msgid "Confirm your password."
-msgstr "BekrÃ¤fta ditt lÃ¶senord."
+msgstr "Bekräfta ditt lösenord."
 
 #: includes/forms/template.php:801
 msgid "Confirm password"
-msgstr "BekrÃ¤fta lÃ¶senord"
+msgstr "Bekräfta lösenord"
 
 #: includes/forms/template.php:840
 msgid "Login to Your Account"
@@ -3566,7 +3566,7 @@ msgstr "Logga in till Ditt Konto"
 
 #: includes/forms/template.php:846
 msgid "Need to create an account?"
-msgstr "BehÃ¶ver du skapa ett konto?"
+msgstr "Behöver du skapa ett konto?"
 
 #: includes/forms/template.php:848
 msgid "Register"
@@ -3574,19 +3574,19 @@ msgstr "Registrera Dig"
 
 #: includes/forms/template.php:850
 msgid "or checkout as a guest."
-msgstr "eller checka ut som gÃ¤st."
+msgstr "eller checka ut som gäst."
 
 #: includes/forms/template.php:860
 msgid "Your username"
-msgstr "Ditt anvÃ¤ndarnamn"
+msgstr "Ditt användarnamn"
 
 #: includes/forms/template.php:867
 msgid "Your password"
-msgstr "Ditt lÃ¶senord"
+msgstr "Ditt lösenord"
 
 #: includes/forms/template.php:906
 msgid "Select Payment Method"
-msgstr "VÃ¤j BetalningssÃ¤tt"
+msgstr "Väj Betalningssätt"
 
 #: includes/forms/template.php:970
 msgid "Show Terms"
@@ -3594,7 +3594,7 @@ msgstr "Visa Regler"
 
 #: includes/forms/template.php:971
 msgid "Hide Terms"
-msgstr "DÃ¶lj Regler"
+msgstr "Dölj Regler"
 
 #: includes/forms/template.php:1007
 msgid "Donation Total:"
@@ -3614,16 +3614,16 @@ msgstr "Notering"
 msgid ""
 "Test mode is enabled. While in test mode no live transactions are processed."
 msgstr ""
-"TestlÃ¤ge Ã¤r aktiverat. I testlÃ¤ge behandlas inga riktiga transaktioner."
+"Testläge är aktiverat. I testläge behandlas inga riktiga transaktioner."
 
 #: includes/forms/widget.php:56
 msgid "Give - Donation Form"
-msgstr "Give - DonationsformulÃ¤r"
+msgstr "Give - Donationsformulär"
 
 #: includes/forms/widget.php:59
 msgid "Display a Give Donation Form in your theme's widget powered sidebar."
 msgstr ""
-"Visa ett Give donationsformulÃ¤r i ditt temas sidofÃ¤lt (om det stÃ¶der "
+"Visa ett Give donationsformulär i ditt temas sidofält (om det stöder "
 "widgets)."
 
 #: includes/forms/widget.php:104
@@ -3637,15 +3637,15 @@ msgstr "Give %s"
 
 #: includes/forms/widget.php:121
 msgid "Select a Give Form that you would like to embed in this widget area."
-msgstr "VÃ¤lj ett Give-formulÃ¤r som du vill infoga pÃ¥ den hÃ¤r widget-platsen."
+msgstr "Välj ett Give-formulär som du vill infoga på den här widget-platsen."
 
 #: includes/forms/widget.php:124
 msgid "Please select..."
-msgstr "Var god vÃ¤lj..."
+msgstr "Var god välj..."
 
 #: includes/gateways/actions.php:59
 msgid "You must enable a payment gateway to use Give"
-msgstr "Du mÃ¥ste aktivera nÃ¤tslussen fÃ¶r betalning fÃ¶r att anvÃ¤nda Give"
+msgstr "Du måste aktivera nätslussen för betalning för att använda Give"
 
 #: includes/gateways/functions.php:28
 msgid "PayPal"
@@ -3661,7 +3661,7 @@ msgstr "Testdonation"
 
 #: includes/gateways/manual.php:48 includes/gateways/paypal-standard.php:37
 msgid "Nonce verification has failed"
-msgstr "Verifiering av unik strÃ¤ng (nonce) har misslyckats"
+msgstr "Verifiering av unik sträng (nonce) har misslyckats"
 
 #: includes/gateways/manual.php:73
 #, php-format
@@ -3669,7 +3669,7 @@ msgid ""
 "Payment creation failed while processing a manual (free or test) purchase. "
 "Payment data: %s"
 msgstr ""
-"Betalning kunde ej skapas vid behandling av ett manuellt kÃ¶p (gratis eller "
+"Betalning kunde ej skapas vid behandling av ett manuellt köp (gratis eller "
 "test). Betalningsdata: %s"
 
 #: includes/gateways/offline-donations.php:26
@@ -3679,19 +3679,19 @@ msgstr "Ouppkopplad Donation"
 #: includes/gateways/offline-donations.php:82
 #, php-format
 msgid "Please enter offline donation instructions in the %s."
-msgstr "Var god ange instruktioner fÃ¶r ouppkopplad donation i %s."
+msgstr "Var god ange instruktioner för ouppkopplad donation i %s."
 
 #: includes/gateways/offline-donations.php:82
 msgid "this form's settings"
-msgstr "detta formulÃ¤rs instÃ¤llningar"
+msgstr "detta formulärs inställningar"
 
 #: includes/gateways/offline-donations.php:220
 msgid "New Pending Donation"
-msgstr "Ny PÃ¥gÃ¥ende Donation"
+msgstr "Ny Pågående Donation"
 
 #: includes/gateways/offline-donations.php:222
 msgid "Dear Admin,"
-msgstr "KÃ¤ra Admin,"
+msgstr "Kära Admin,"
 
 #: includes/gateways/offline-donations.php:222
 msgid "An offline donation has been made"
@@ -3703,10 +3703,10 @@ msgid ""
 "emailed to the donor. Once you receive payment, be sure to mark the donation "
 "as complete using the link below."
 msgstr ""
-"Detta Ã¤r en pÃ¥gÃ¥ende donation som vÃ¤ntar pÃ¥ betalning. "
-"Donationsinstruktioner har skickats med e-post till donatorn. NÃ¤r du tagit "
-"emot betalning, glÃ¶m ej att markera donationen som fullbordad med hjÃ¤lp av "
-"lÃ¤nken nedan."
+"Detta är en pågående donation som väntar på betalning. "
+"Donationsinstruktioner har skickats med e-post till donatorn. När du tagit "
+"emot betalning, glöm ej att markera donationen som fullbordad med hjälp av "
+"länken nedan."
 
 #: includes/gateways/offline-donations.php:228
 #, php-format
@@ -3722,12 +3722,12 @@ msgid ""
 "If you would like to customize the donation instructions for this specific "
 "forms check this option."
 msgstr ""
-"Markera detta alternativ om du vill anpassa donationsinstruktionerna fÃ¶r "
-"dessa specifika formulÃ¤r."
+"Markera detta alternativ om du vill anpassa donationsinstruktionerna för "
+"dessa specifika formulär."
 
 #: includes/gateways/offline-donations.php:272
 msgid "Request Billing Information"
-msgstr "BegÃ¤r Faktureringsinformation"
+msgstr "Begär Faktureringsinformation"
 
 #: includes/gateways/offline-donations.php:273
 msgid ""
@@ -3735,9 +3735,9 @@ msgid ""
 "donation payment gateway. The fieldset will appear above the offline "
 "donation instructions."
 msgstr ""
-"Detta alternativ aktiverar sektionen faktureringsdetaljer fÃ¶r detta "
-"formulÃ¤rs betalningsnÃ¤tsluss fÃ¶r ouppkopplade donationer. FÃ¤lten kommer att "
-"infogas ovanfÃ¶r instruktionerna fÃ¶r ouppkopplade donationer."
+"Detta alternativ aktiverar sektionen faktureringsdetaljer för detta "
+"formulärs betalningsnätsluss för ouppkopplade donationer. Fälten kommer att "
+"infogas ovanför instruktionerna för ouppkopplade donationer."
 
 #: includes/gateways/offline-donations.php:281
 msgid ""
@@ -3746,21 +3746,21 @@ msgid ""
 "address and who to make the check out to."
 msgstr ""
 "Ange de instruktioner du vill visa donatorn under donationsprocessen. "
-"Troligen bÃ¶r denna information inkludera viktiga uppgifter sÃ¥ som postadress "
-"samt vem checken skall stÃ¤llas ut till."
+"Troligen bör denna information inkludera viktiga uppgifter så som postadress "
+"samt vem checken skall ställas ut till."
 
 #: includes/gateways/offline-donations.php:327
 msgid ""
 "In order to make an offline donation we ask that you please follow these "
 "instructions"
 msgstr ""
-"FÃ¶r att gÃ¶ra en ouppkopplad donation ber vi dig att fÃ¶lja dessa instruktioner"
+"För att göra en ouppkopplad donation ber vi dig att följa dessa instruktioner"
 
 #: includes/gateways/offline-donations.php:329
 #: includes/gateways/offline-donations.php:355
 msgctxt "Step 1 for donating offline by check"
 msgid "Make a check payable to "
-msgstr "GÃ¶r en check betalbar till "
+msgstr "Gör en check betalbar till "
 
 #: includes/gateways/offline-donations.php:330
 #: includes/gateways/offline-donations.php:356
@@ -3769,22 +3769,22 @@ msgctxt ""
 "to"
 msgid ""
 "On the memo line of the check, please indicate that the donation is for "
-msgstr "Indikera pÃ¥ checkens memorad att donationen Ã¤r till "
+msgstr "Indikera på checkens memorad att donationen är till "
 
 #: includes/gateways/offline-donations.php:331
 #: includes/gateways/offline-donations.php:357
 msgctxt "Step 3; where to mail the check"
 msgid "Please mail your check to:"
-msgstr "VÃ¤nligen posta din check till:"
+msgstr "Vänligen posta din check till:"
 
 #: includes/gateways/offline-donations.php:336
 msgid ""
 "All contributions will be gratefully acknowledged and are tax deductible."
-msgstr "Alla bidrag mottages tacksamt och Ã¤r avdragsgilla hos skatteverket."
+msgstr "Alla bidrag mottages tacksamt och är avdragsgilla hos skatteverket."
 
 #: includes/gateways/offline-donations.php:352
 msgid "Dear {name},"
-msgstr "KÃ¤ra {name},"
+msgstr "Kära {name},"
 
 #: includes/gateways/offline-donations.php:353
 msgid ""
@@ -3792,9 +3792,9 @@ msgid ""
 "appreciated. In order to make an offline donation we ask that you please "
 "follow these instructions"
 msgstr ""
-"Tack fÃ¶r din fÃ¶rfrÃ¥gan om ouppkopplad donation! Din generositet uppskattas "
-"innerligt. FÃ¶r att gÃ¶ra en ouppkopplad donation ber vi dig att vÃ¤nligen "
-"fÃ¶lja dessa instruktioner"
+"Tack för din förfrågan om ouppkopplad donation! Din generositet uppskattas "
+"innerligt. För att göra en ouppkopplad donation ber vi dig att vänligen "
+"följa dessa instruktioner"
 
 #: includes/gateways/offline-donations.php:362
 msgid ""
@@ -3802,20 +3802,20 @@ msgid ""
 "will receive an email receipt for your records. Please contact us with any "
 "questions you may have!"
 msgstr ""
-"SÃ¥ snart din donation har tagits emot sÃ¥ kommer den markeras som slutfÃ¶rd "
-"och ett e-postkvitto kommer att skickas till dig. VÃ¤nligen kontakta oss om "
-"du har nÃ¥gra frÃ¥gor!"
+"Så snart din donation har tagits emot så kommer den markeras som slutförd "
+"och ett e-postkvitto kommer att skickas till dig. Vänligen kontakta oss om "
+"du har några frågor!"
 
 #: includes/gateways/offline-donations.php:363
 msgid "Sincerely,"
-msgstr "VÃ¤nligen,"
+msgstr "Vänligen,"
 
 #: includes/gateways/paypal-standard.php:60
 #, php-format
 msgid ""
 "Payment creation failed before sending buyer to PayPal. Payment data: %s"
 msgstr ""
-"Skapandet av betalningen misslyckades innan kÃ¶paren skickades till PayPal. "
+"Skapandet av betalningen misslyckades innan köparen skickades till PayPal. "
 "Betalningsdata: %s"
 
 #: includes/gateways/paypal-standard.php:241
@@ -3836,11 +3836,11 @@ msgstr "Ogiltigt IPN-verifieringssvar. IPN-data: %s"
 #: includes/gateways/paypal-standard.php:315
 #, php-format
 msgid "Invalid business email in IPN response. IPN data: %s"
-msgstr "Ogiltig e-postadress fÃ¶r affÃ¤rsverksamhiet i IPN-svar. IPN data: %s"
+msgstr "Ogiltig e-postadress för affärsverksamhiet i IPN-svar. IPN data: %s"
 
 #: includes/gateways/paypal-standard.php:317
 msgid "Payment failed due to invalid PayPal business email."
-msgstr "Betalning misslyckades p.g.a. ogiltig PayPal e-postadress fÃ¶r fÃ¶retag."
+msgstr "Betalning misslyckades p.g.a. ogiltig PayPal e-postadress för företag."
 
 #: includes/gateways/paypal-standard.php:325
 #, php-format
@@ -3863,11 +3863,11 @@ msgstr "Betalning misslyckades p.g.a. ogiltigt belopp i PayPal IPN."
 #: includes/gateways/paypal-standard.php:382
 #, php-format
 msgid "Invalid purchase key in IPN response. IPN data: %s"
-msgstr "Ogiltig kÃ¶penyckel i IPN-svar. IPN-data: %s"
+msgstr "Ogiltig köpenyckel i IPN-svar. IPN-data: %s"
 
 #: includes/gateways/paypal-standard.php:384
 msgid "Payment failed due to invalid purchase key in PayPal IPN."
-msgstr "Betalningen misslyckades p.g.a. ogiltig kÃ¶penyckel i PayPal IPN."
+msgstr "Betalningen misslyckades p.g.a. ogiltig köpenyckel i PayPal IPN."
 
 #: includes/gateways/paypal-standard.php:390
 #, php-format
@@ -3884,7 +3884,7 @@ msgid ""
 "Payment requires a confirmed donor address and must be accepted manually "
 "through PayPal"
 msgstr ""
-"Betalning krÃ¤ver en bekrÃ¤ftad donatoradress samt mÃ¥ste accepteras manuellt "
+"Betalning kräver en bekräftad donatoradress samt måste accepteras manuellt "
 "genom PayPal"
 
 #: includes/gateways/paypal-standard.php:415
@@ -3892,15 +3892,15 @@ msgid ""
 "Payment must be accepted manually through PayPal due to international "
 "account regulations"
 msgstr ""
-"Betalning mÃ¥ste accepteras manuellt genom PayPal p.g.a. intenationella "
-"kontofÃ¶rordningar"
+"Betalning måste accepteras manuellt genom PayPal p.g.a. intenationella "
+"kontoförordningar"
 
 #: includes/gateways/paypal-standard.php:421
 msgid ""
 "Payment received in non-shop currency and must be accepted manually through "
 "PayPal"
 msgstr ""
-"Betalning mottagen i en valuta som ej hanteras av systemet och dÃ¤rfÃ¶r mÃ¥ste "
+"Betalning mottagen i en valuta som ej hanteras av systemet och därför måste "
 "accepteras manuellt genom PayPal"
 
 #: includes/gateways/paypal-standard.php:428
@@ -3908,54 +3908,54 @@ msgid ""
 "Payment is being reviewed by PayPal staff as high-risk or in possible "
 "violation of government regulations"
 msgstr ""
-"Betalning granskas av PayPals stab som hÃ¶grisk eller i mÃ¶jlig strid mot "
-"gÃ¤llande lagstiftning"
+"Betalning granskas av PayPals stab som högrisk eller i möjlig strid mot "
+"gällande lagstiftning"
 
 #: includes/gateways/paypal-standard.php:434
 msgid "Payment was sent to non-confirmed or non-registered email address."
-msgstr "Betalning skickades till obekrÃ¤ftad eller oregistrerad e-postadress."
+msgstr "Betalning skickades till obekräftad eller oregistrerad e-postadress."
 
 #: includes/gateways/paypal-standard.php:440
 msgid "PayPal account must be upgraded before this payment can be accepted"
-msgstr "PayPal-konto mÃ¥ste uppgraderas innan denna betalning kan tas emot"
+msgstr "PayPal-konto måste uppgraderas innan denna betalning kan tas emot"
 
 #: includes/gateways/paypal-standard.php:446
 msgid ""
 "PayPal account is not verified. Verify account in order to accept this "
 "payment"
 msgstr ""
-"PayPal-konto Ã¤r ej verifierat. Verifiera konto fÃ¶r att fÃ¶r att kunna ta emot "
+"PayPal-konto är ej verifierat. Verifiera konto för att för att kunna ta emot "
 "denna betalning"
 
 #: includes/gateways/paypal-standard.php:452
 msgid ""
 "Payment is pending for unknown reasons. Contact PayPal support for assistance"
 msgstr ""
-"Betalningen Ã¤r pÃ¥gÃ¥ende/vÃ¤ntande av okÃ¤nd anledning. Kontakta PayPal support "
-"fÃ¶r hjÃ¤lp"
+"Betalningen är pågående/väntande av okänd anledning. Kontakta PayPal support "
+"för hjälp"
 
 #: includes/gateways/paypal-standard.php:495
 #, php-format
 msgid "Partial PayPal refund processed: %s"
-msgstr "Partiell PayPal Ã¥terbetalning behandlad: %s"
+msgstr "Partiell PayPal återbetalning behandlad: %s"
 
 #: includes/gateways/paypal-standard.php:501
 #, php-format
 msgid "PayPal Payment #%s Refunded for reason: %s"
-msgstr "PayPal Betalning #%s Ã…terbetald av fÃ¶ljande anledning: %s"
+msgstr "PayPal Betalning #%s Återbetald av följande anledning: %s"
 
 #: includes/gateways/paypal-standard.php:502
 #, php-format
 msgid "PayPal Refund Transaction ID: %s"
-msgstr "PayPal Transaktions-ID FÃ¶r Ã…terbetalning: %s"
+msgstr "PayPal Transaktions-ID För Återbetalning: %s"
 
 #: includes/install.php:52
 msgid "Donation Confirmation"
-msgstr "DonationsbekrÃ¤ftelse"
+msgstr "Donationsbekräftelse"
 
 #: includes/install.php:53
 msgid "Thank you for your donation! [give_receipt]"
-msgstr "Tack fÃ¶r din donation! [give_receipt]"
+msgstr "Tack för din donation! [give_receipt]"
 
 #: includes/install.php:71
 msgid "Transaction Failed"
@@ -3964,7 +3964,7 @@ msgstr "Transaktionen Misslyckades"
 #: includes/install.php:72
 msgid "Your transaction failed, please try again or contact site support."
 msgstr ""
-"Din transaktion misslyckades, var god fÃ¶rsÃ¶k igen eller kontakta "
+"Din transaktion misslyckades, var god försök igen eller kontakta "
 "webbplatsens support."
 
 #: includes/install.php:88
@@ -4015,7 +4015,7 @@ msgstr "Testtext"
 #: includes/libraries/cmb2/example-functions.php:556
 #: includes/libraries/cmb2/tests/test-cmb-field.php:218
 msgid "field description (optional)"
-msgstr "FÃ¤ltbeskrivning (valfri)"
+msgstr "Fältbeskrivning (valfri)"
 
 #: includes/libraries/cmb2/example-functions.php:105
 msgid "Test Text Small"
@@ -4044,15 +4044,15 @@ msgstr "Tidszon"
 
 #: includes/libraries/cmb2/example-functions.php:152
 msgid "Test Date Picker"
-msgstr "Test-datumvÃ¤ljare"
+msgstr "Test-datumväljare"
 
 #: includes/libraries/cmb2/example-functions.php:159
 msgid "Test Date Picker (UNIX timestamp)"
-msgstr "Test-datumvÃ¤ljare (UNIX tid)"
+msgstr "Test-datumväljare (UNIX tid)"
 
 #: includes/libraries/cmb2/example-functions.php:167
 msgid "Test Date/Time Picker Combo (UNIX timestamp)"
-msgstr "Test-datum/tidsvÃ¤ljarkombination (UNIX tidsstÃ¤mpel)"
+msgstr "Test-datum/tidsväljarkombination (UNIX tidsstämpel)"
 
 #: includes/libraries/cmb2/example-functions.php:184
 msgid "Test Money"
@@ -4060,19 +4060,19 @@ msgstr "Test-valuta"
 
 #: includes/libraries/cmb2/example-functions.php:193
 msgid "Test Color Picker"
-msgstr "Test-fÃ¤rgvÃ¤ljare"
+msgstr "Test-färgväljare"
 
 #: includes/libraries/cmb2/example-functions.php:201
 msgid "Test Text Area"
-msgstr "Test-textfÃ¤lt"
+msgstr "Test-textfält"
 
 #: includes/libraries/cmb2/example-functions.php:208
 msgid "Test Text Area Small"
-msgstr "Test-textfÃ¤lt Litet"
+msgstr "Test-textfält Litet"
 
 #: includes/libraries/cmb2/example-functions.php:215
 msgid "Test Text Area for Code"
-msgstr "Test-textfÃ¤lt fÃ¶r kod"
+msgstr "Test-textfält för kod"
 
 #: includes/libraries/cmb2/example-functions.php:222
 msgid "Test Title Weeeee"
@@ -4080,7 +4080,7 @@ msgstr "Test-titel Weeeee"
 
 #: includes/libraries/cmb2/example-functions.php:223
 msgid "This is a title description"
-msgstr "Detta Ã¤r en titelbeskrivning"
+msgstr "Detta är en titelbeskrivning"
 
 #: includes/libraries/cmb2/example-functions.php:229
 msgid "Test Select"
@@ -4096,7 +4096,7 @@ msgstr "Radioknapp Ett"
 #: includes/libraries/cmb2/example-functions.php:249
 #: includes/libraries/cmb2/example-functions.php:261
 msgid "Option Two"
-msgstr "Radioknapp TvÃ¥"
+msgstr "Radioknapp Två"
 
 #: includes/libraries/cmb2/example-functions.php:237
 #: includes/libraries/cmb2/example-functions.php:250
@@ -4106,7 +4106,7 @@ msgstr "Radioknapp Tre"
 
 #: includes/libraries/cmb2/example-functions.php:242
 msgid "Test Radio inline"
-msgstr "Test-radioknapp i textflÃ¶de"
+msgstr "Test-radioknapp i textflöde"
 
 #: includes/libraries/cmb2/example-functions.php:255
 msgid "Test Radio"
@@ -4141,7 +4141,7 @@ msgstr "Kryssruta Ett"
 #: includes/libraries/cmb2/example-functions.php:307
 #: includes/libraries/cmb2/tests/test-cmb-field.php:224
 msgid "Check Two"
-msgstr "Kryssruta TvÃ¥"
+msgstr "Kryssruta Två"
 
 #: includes/libraries/cmb2/example-functions.php:308
 #: includes/libraries/cmb2/tests/test-cmb-field.php:225
@@ -4166,7 +4166,7 @@ msgstr "Flera Filer"
 
 #: includes/libraries/cmb2/example-functions.php:330
 msgid "Upload or add multiple images/attachments."
-msgstr "Ladda upp eller lÃ¤gg till flera bilder/bilagor."
+msgstr "Ladda upp eller lägg till flera bilder/bilagor."
 
 #: includes/libraries/cmb2/example-functions.php:337
 msgid "oEmbed"
@@ -4178,21 +4178,21 @@ msgid ""
 "href=\"http://codex.wordpress.org/Embeds\">http://codex.wordpress.org/"
 "Embeds</a>."
 msgstr ""
-"Ange en youtube, twitter, eller instagram URL. TjÃ¤nster som stÃ¶ds listas pÃ¥ "
+"Ange en youtube, twitter, eller instagram URL. Tjänster som stöds listas på "
 "<a href=\"http://codex.wordpress.org/Embeds\">http://codex.wordpress.org/"
 "Embeds</a>."
 
 #: includes/libraries/cmb2/example-functions.php:371
 msgid "About Page Metabox"
-msgstr "Metaruta fÃ¶r Infosida"
+msgstr "Metaruta för Infosida"
 
 #: includes/libraries/cmb2/example-functions.php:402
 msgid "Repeating Field Group"
-msgstr "Upprepande FÃ¤ltgrupp"
+msgstr "Upprepande Fältgrupp"
 
 #: includes/libraries/cmb2/example-functions.php:410
 msgid "Generates reusable form entries"
-msgstr "Genererar Ã¥teranvÃ¤ndbara formulÃ¤rposter"
+msgstr "Genererar återanvändbara formulärposter"
 
 #: includes/libraries/cmb2/example-functions.php:412
 msgid "Entry {#}"
@@ -4200,7 +4200,7 @@ msgstr "Post {#}"
 
 #: includes/libraries/cmb2/example-functions.php:413
 msgid "Add Another Entry"
-msgstr "LÃ¤gg Till Ytterligare En Post"
+msgstr "Lägg Till Ytterligare En Post"
 
 #: includes/libraries/cmb2/example-functions.php:414
 msgid "Remove Entry"
@@ -4216,11 +4216,11 @@ msgstr "Beskrivning"
 
 #: includes/libraries/cmb2/example-functions.php:434
 msgid "Write a short description for this entry"
-msgstr "Skriv en kort beskrivning fÃ¶r denna post"
+msgstr "Skriv en kort beskrivning för denna post"
 
 #: includes/libraries/cmb2/example-functions.php:440
 msgid "Entry Image"
-msgstr "VÃ¤lkomstbild"
+msgstr "Välkomstbild"
 
 #: includes/libraries/cmb2/example-functions.php:446
 msgid "Image Caption"
@@ -4228,7 +4228,7 @@ msgstr "Bildtext"
 
 #: includes/libraries/cmb2/example-functions.php:467
 msgid "User Profile Metabox"
-msgstr "Metaruta fÃ¶r AnvÃ¤ndarprofil"
+msgstr "Metaruta för Användarprofil"
 
 #: includes/libraries/cmb2/example-functions.php:474
 msgid "Extra Info"
@@ -4256,42 +4256,42 @@ msgstr "Linkedin URL"
 
 #: includes/libraries/cmb2/example-functions.php:517
 msgid "User Field"
-msgstr "AnvÃ¤ndarfÃ¤lt"
+msgstr "Användarfält"
 
 #: includes/libraries/cmb2/example-functions.php:540
 msgid "Theme Options Metabox"
-msgstr "Metabox fÃ¶r Temaalternativ"
+msgstr "Metabox för Temaalternativ"
 
 #: includes/libraries/cmb2/example-functions.php:555
 msgid "Site Background Color"
-msgstr "Webbplatsens BakgrundsfÃ¤rg"
+msgstr "Webbplatsens Bakgrundsfärg"
 
 #: includes/libraries/cmb2/includes/CMB2.php:120
 msgid "Metabox configuration is required to have an ID parameter"
-msgstr "Metarutans konfiguraton krÃ¤ver en ID-parameter"
+msgstr "Metarutans konfiguraton kräver en ID-parameter"
 
 #: includes/libraries/cmb2/includes/CMB2.php:326
 msgid "Click to toggle"
-msgstr "Klicka fÃ¶r att vÃ¤xla"
+msgstr "Klicka för att växla"
 
 #: includes/libraries/cmb2/includes/CMB2_Ajax.php:40
 msgid "Please Try Again"
-msgstr "VÃ¤nligen FÃ¶rsÃ¶k Igen"
+msgstr "Vänligen Försök Igen"
 
 #: includes/libraries/cmb2/includes/CMB2_Ajax.php:135
 #: includes/libraries/cmb2/tests/test-cmb-types.php:786
 msgid "Remove Embed"
-msgstr "Ta Bort InbÃ¤ddning"
+msgstr "Ta Bort Inbäddning"
 
 #: includes/libraries/cmb2/includes/CMB2_Ajax.php:139
 #: includes/libraries/cmb2/tests/test-cmb-types.php:787
 #, php-format
 msgid "No oEmbed Results Found for %s. View more info at"
-msgstr "Inga oEmbed-resultat Funna fÃ¶r %s. Se mer information pÃ¥"
+msgstr "Inga oEmbed-resultat Funna för %s. Se mer information på"
 
 #: includes/libraries/cmb2/includes/CMB2_Field.php:891
 msgid "Add Group"
-msgstr "LÃ¤gg Till Grupp"
+msgstr "Lägg Till Grupp"
 
 #: includes/libraries/cmb2/includes/CMB2_Field.php:892
 msgid "Remove Group"
@@ -4300,15 +4300,15 @@ msgstr "Ta Bort Grupp"
 #: includes/libraries/cmb2/includes/CMB2_JS.php:86
 #: includes/libraries/cmb2/includes/CMB2_JS.php:119
 msgid "Clear"
-msgstr "TÃ¶m"
+msgstr "Töm"
 
 #: includes/libraries/cmb2/includes/CMB2_JS.php:88
 msgid "Select Color"
-msgstr "VÃ¤lj FÃ¤rg"
+msgstr "Välj Färg"
 
 #: includes/libraries/cmb2/includes/CMB2_JS.php:89
 msgid "Current Color"
-msgstr "Nuvarande FÃ¤rg"
+msgstr "Nuvarande Färg"
 
 #: includes/libraries/cmb2/includes/CMB2_JS.php:109
 msgctxt "Valid formatDate string for jquery-ui datepicker"
@@ -4317,15 +4317,15 @@ msgstr "yy-mm-dd"
 
 #: includes/libraries/cmb2/includes/CMB2_JS.php:110
 msgid "Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday"
-msgstr "SÃ¶ndag, MÃ¥ndag, Tisdag, Onsdag, Torsdag, Fredag, LÃ¶rdag"
+msgstr "Söndag, Måndag, Tisdag, Onsdag, Torsdag, Fredag, Lördag"
 
 #: includes/libraries/cmb2/includes/CMB2_JS.php:111
 msgid "Su, Mo, Tu, We, Th, Fr, Sa"
-msgstr "SÃ¶, MÃ¥, Ti, On, To, Fr, LÃ¶"
+msgstr "Sö, Må, Ti, On, To, Fr, Lö"
 
 #: includes/libraries/cmb2/includes/CMB2_JS.php:112
 msgid "Sun, Mon, Tue, Wed, Thu, Fri, Sat"
-msgstr "SÃ¶n, MÃ¥n, Tis, Ons, Tor, Fre, LÃ¶r"
+msgstr "Sön, Mån, Tis, Ons, Tor, Fre, Lör"
 
 #: includes/libraries/cmb2/includes/CMB2_JS.php:113
 msgid ""
@@ -4341,11 +4341,11 @@ msgstr "Jan, Feb, Mar, Apr, Maj, Jun, Jul, Aug, Sep, Okt, Nov, Dec"
 
 #: includes/libraries/cmb2/includes/CMB2_JS.php:115
 msgid "Next"
-msgstr "NÃ¤sta"
+msgstr "Nästa"
 
 #: includes/libraries/cmb2/includes/CMB2_JS.php:116
 msgid "Prev"
-msgstr "FÃ¶regÃ¥ende"
+msgstr "Föregående"
 
 #: includes/libraries/cmb2/includes/CMB2_JS.php:118
 #: includes/libraries/cmb2/includes/CMB2_JS.php:128
@@ -4354,7 +4354,7 @@ msgstr "Klar"
 
 #: includes/libraries/cmb2/includes/CMB2_JS.php:122
 msgid "Choose Time"
-msgstr "VÃ¤lj Tid"
+msgstr "Välj Tid"
 
 #: includes/libraries/cmb2/includes/CMB2_JS.php:123
 msgid "Time"
@@ -4385,7 +4385,7 @@ msgstr "HH:mm"
 
 #: includes/libraries/cmb2/includes/CMB2_JS.php:135
 msgid "Use this file"
-msgstr "AnvÃ¤nd denna fil"
+msgstr "Använd denna fil"
 
 #: includes/libraries/cmb2/includes/CMB2_JS.php:136
 #: includes/libraries/cmb2/includes/CMB2_Types.php:983
@@ -4423,7 +4423,7 @@ msgstr "Markera / Avmarkera Alla"
 
 #: includes/libraries/cmb2/includes/CMB2_Types.php:297
 msgid "Add Row"
-msgstr "LÃ¤gg Till Rad"
+msgstr "Lägg Till Rad"
 
 #: includes/libraries/cmb2/includes/CMB2_Types.php:734
 #: includes/libraries/cmb2/includes/CMB2_Types.php:782
@@ -4434,13 +4434,13 @@ msgstr "Inga villkor"
 #: includes/libraries/cmb2/tests/test-cmb-types.php:711
 #: includes/libraries/cmb2/tests/test-cmb-types.php:737
 msgid "Add or Upload Files"
-msgstr "LÃ¤gg Till eller Ladda Upp Filer"
+msgstr "Lägg Till eller Ladda Upp Filer"
 
 #: includes/libraries/cmb2/includes/CMB2_Types.php:907
 #: includes/libraries/cmb2/tests/test-cmb-types.php:747
 #: includes/libraries/cmb2/tests/test-cmb-types.php:762
 msgid "Add or Upload File"
-msgstr "LÃ¤gg Till eller Ladda Upp Fil"
+msgstr "Lägg Till eller Ladda Upp Fil"
 
 #: includes/libraries/cmb2/includes/helper-functions.php:249
 msgid "Save"
@@ -4448,24 +4448,24 @@ msgstr "Spara"
 
 #: includes/login-register.php:94
 msgid "The password you entered is incorrect"
-msgstr "LÃ¶senordet du angav Ã¤r ej korrekt"
+msgstr "Lösenordet du angav är ej korrekt"
 
 #: includes/login-register.php:97 includes/process-purchase.php:513
 msgid "The username you entered does not exist"
-msgstr "AnvÃ¤ndarnamnet du angav finns ej"
+msgstr "Användarnamnet du angav finns ej"
 
 #: includes/login-register.php:156 includes/login-register.php:164
 #: includes/process-purchase.php:399
 msgid "Invalid username"
-msgstr "Ogiltigt anvÃ¤ndarnamn"
+msgstr "Ogiltigt användarnamn"
 
 #: includes/login-register.php:160 includes/process-purchase.php:392
 msgid "Username already taken"
-msgstr "AnvÃ¤ndarnamnet Ã¤r upptaget"
+msgstr "Användarnamnet är upptaget"
 
 #: includes/login-register.php:168
 msgid "Email address already taken"
-msgstr "E-postadressen Ã¤r upptagen"
+msgstr "E-postadressen är upptagen"
 
 #: includes/login-register.php:172 includes/process-purchase.php:339
 #: includes/process-purchase.php:415 includes/process-purchase.php:546
@@ -4474,15 +4474,15 @@ msgstr "Ogiltig e-postadress"
 
 #: includes/login-register.php:176
 msgid "Invalid payment email"
-msgstr "Ogiltig e-postadress fÃ¶r betalning"
+msgstr "Ogiltig e-postadress för betalning"
 
 #: includes/login-register.php:180
 msgid "Please enter a password"
-msgstr "Var god ange ett lÃ¶senord"
+msgstr "Var god ange ett lösenord"
 
 #: includes/login-register.php:184
 msgid "Passwords do not match"
-msgstr "LÃ¶senorden Ã¶verensstÃ¤mmer ej"
+msgstr "Lösenorden överensstämmer ej"
 
 #: includes/misc-functions.php:54
 msgid "US Dollars (&#36;)"
@@ -4542,7 +4542,7 @@ msgstr "Mexikanska Pesos (&#36;)"
 
 #: includes/misc-functions.php:68
 msgid "New Zealand Dollar (&#36;)"
-msgstr "Nya ZeelÃ¤ndska Dollar (&#36;)"
+msgstr "Nya Zeeländska Dollar (&#36;)"
 
 #: includes/misc-functions.php:69
 msgid "Norwegian Krone"
@@ -4574,7 +4574,7 @@ msgstr "Nya Taiwanesiska Dollar"
 
 #: includes/misc-functions.php:76
 msgid "Thai Baht (&#3647;)"
-msgstr "ThailÃ¤ndska Baht (&#3647;)"
+msgstr "Thailändska Baht (&#3647;)"
 
 #: includes/misc-functions.php:77
 msgid "Indian Rupee (&#8377;)"
@@ -4594,12 +4594,12 @@ msgstr "Ryska Rubel"
 
 #: includes/misc-functions.php:545
 msgid "Thanks for Subscribing!"
-msgstr "Tack fÃ¶r Din Prenumeration!"
+msgstr "Tack för Din Prenumeration!"
 
 #: includes/payments/actions.php:111
 #, php-format
 msgid "Status changed from %s to %s"
-msgstr "Status Ã¤ndrad frÃ¥n %s till %s"
+msgstr "Status ändrad från %s till %s"
 
 #: includes/payments/class-donators-gravatars.php:323
 msgid "Donator Gravatars"
@@ -4607,23 +4607,23 @@ msgstr "Donator-Gravatarer"
 
 #: includes/payments/class-donators-gravatars.php:329
 msgid "Heading"
-msgstr "Ã–verskrift"
+msgstr "Överskrift"
 
 #: includes/payments/class-donators-gravatars.php:330
 msgid "The heading to display above the Gravatars"
-msgstr "Titel att visa ovanfÃ¶r Gravatarerna"
+msgstr "Titel att visa ovanför Gravatarerna"
 
 #: includes/payments/class-donators-gravatars.php:335
 msgid "Gravatar Size"
-msgstr "Storlek PÃ¥ Gravatar"
+msgstr "Storlek På Gravatar"
 
 #: includes/payments/class-donators-gravatars.php:336
 msgid "The size of each Gravatar in pixels (512px maximum)"
-msgstr "Storleken pÃ¥ varje Gravatar i pixlar (512px Ã¤r max)"
+msgstr "Storleken på varje Gravatar i pixlar (512px är max)"
 
 #: includes/payments/class-donators-gravatars.php:342
 msgid "Minimum Unique Purchases Required"
-msgstr "Minsta Antal Unika KÃ¶p Som KrÃ¤vs"
+msgstr "Minsta Antal Unika Köp Som Krävs"
 
 #: includes/payments/class-donators-gravatars.php:343
 #, php-format
@@ -4631,8 +4631,8 @@ msgid ""
 "The minimum number of unique purchases a %s must have before the Gravatars "
 "are shown. Leave blank for no minimum."
 msgstr ""
-"Det minsta antalet unika kÃ¶p som en %s mÃ¥ste ha gjort innan Gravatarer "
-"visas. LÃ¤mna tomt fÃ¶r inget minimivÃ¤rde."
+"Det minsta antalet unika köp som en %s måste ha gjort innan Gravatarer "
+"visas. Lämna tomt för inget minimivärde."
 
 #: includes/payments/class-donators-gravatars.php:348
 msgid "Maximum Gravatars To Show"
@@ -4640,11 +4640,11 @@ msgstr "Maximalt Antal Gravatarer Att Visa"
 
 #: includes/payments/class-donators-gravatars.php:349
 msgid "The maximum number of gravatars to show. Leave blank for no limit."
-msgstr "Maximalt antal gravatarer att visa. LÃ¤mna tomt fÃ¶r obegrÃ¤nsat."
+msgstr "Maximalt antal gravatarer att visa. Lämna tomt för obegränsat."
 
 #: includes/payments/class-donators-gravatars.php:355
 msgid "Gravatar Visibility"
-msgstr "Synlighet FÃ¶r Gravatar"
+msgstr "Synlighet För Gravatar"
 
 #: includes/payments/class-donators-gravatars.php:356
 msgid "Only show donators with a Gravatar account"
@@ -4664,8 +4664,8 @@ msgid ""
 "Displays gravatars of people who have donated using your your %s. Will only "
 "show on the single %s page."
 msgstr ""
-"Visa gravatarer tillhÃ¶rande de som har donerat med din %s. Kommer endast att "
-"visas pÃ¥ sidan fÃ¶r singel %s."
+"Visa gravatarer tillhörande de som har donerat med din %s. Kommer endast att "
+"visas på sidan för singel %s."
 
 #: includes/payments/class-donators-gravatars.php:404
 msgid "Give Donators Gravatars"
@@ -4677,7 +4677,7 @@ msgstr "Titel:"
 
 #: includes/payments/functions.php:548
 msgid "Complete"
-msgstr "GenomfÃ¶rd"
+msgstr "Genomförd"
 
 #: includes/payments/functions.php:551
 msgid "Cancelled"
@@ -4685,7 +4685,7 @@ msgstr "Avbruten"
 
 #: includes/payments/functions.php:553
 msgid "Pre-Approved"
-msgstr "FÃ¶rhandsgodkÃ¤nd"
+msgstr "Förhandsgodkänd"
 
 #: includes/payments/functions.php:1380
 msgid "System"
@@ -4698,12 +4698,12 @@ msgstr "Ta bort denna betalningsnotering"
 #: includes/post-types.php:40 includes/post-types.php:106
 #, php-format
 msgid "Add %1$s"
-msgstr "LÃ¤gg Till %1$s"
+msgstr "Lägg Till %1$s"
 
 #: includes/post-types.php:41 includes/post-types.php:107
 #, php-format
 msgid "Add New %1$s"
-msgstr "LÃ¤gg Till Nytt %1$s"
+msgstr "Lägg Till Nytt %1$s"
 
 #: includes/post-types.php:42 includes/post-types.php:108
 #, php-format
@@ -4728,7 +4728,7 @@ msgstr "Visa %1$s"
 #: includes/post-types.php:46 includes/post-types.php:112
 #, php-format
 msgid "Search %2$s"
-msgstr "SÃ¶k %2$s"
+msgstr "Sök %2$s"
 
 #: includes/post-types.php:47 includes/post-types.php:113
 #, php-format
@@ -4752,11 +4752,11 @@ msgstr "Donation"
 
 #: includes/post-types.php:148
 msgid "Add New"
-msgstr "LÃ¤gg Till Ny"
+msgstr "Lägg Till Ny"
 
 #: includes/post-types.php:149
 msgid "Add New Donation"
-msgstr "LÃ¤gg Till Ny Donation"
+msgstr "Lägg Till Ny Donation"
 
 #: includes/post-types.php:150
 msgid "Edit Donation"
@@ -4776,7 +4776,7 @@ msgstr "Visa Donation"
 
 #: includes/post-types.php:154
 msgid "Search Donations"
-msgstr "SÃ¶k Donationer"
+msgstr "Sök Donationer"
 
 #: includes/post-types.php:155
 msgid "No Donations found"
@@ -4803,15 +4803,15 @@ msgstr "Kategori"
 
 #: includes/post-types.php:194
 msgid "Search Categories"
-msgstr "SÃ¶k Kategorier"
+msgstr "Sök Kategorier"
 
 #: includes/post-types.php:196
 msgid "Parent Category"
-msgstr "FÃ¶rÃ¤ldrakategori"
+msgstr "Föräldrakategori"
 
 #: includes/post-types.php:197
 msgid "Parent Category:"
-msgstr "FÃ¶rÃ¤ldrakategori:"
+msgstr "Föräldrakategori:"
 
 #: includes/post-types.php:198
 msgid "Edit Category"
@@ -4824,7 +4824,7 @@ msgstr "Uppdatera Kategori"
 #: includes/post-types.php:200
 #, php-format
 msgid "Add New %s Category"
-msgstr "LÃ¤gg Till Ny %s Kategori"
+msgstr "Lägg Till Ny %s Kategori"
 
 #: includes/post-types.php:201
 msgid "New Category Name"
@@ -4843,7 +4843,7 @@ msgstr "Etikett"
 
 #: includes/post-types.php:235
 msgid "Search Tags"
-msgstr "SÃ¶k Etiketter"
+msgstr "Sök Etiketter"
 
 #: includes/post-types.php:236
 msgid "All Tags"
@@ -4851,11 +4851,11 @@ msgstr "Alla Etiketter"
 
 #: includes/post-types.php:237
 msgid "Parent Tag"
-msgstr "FÃ¶rÃ¤ldraetikett"
+msgstr "Föräldraetikett"
 
 #: includes/post-types.php:238
 msgid "Parent Tag:"
-msgstr "FÃ¶rÃ¤ldraetikett:"
+msgstr "Föräldraetikett:"
 
 #: includes/post-types.php:239
 msgid "Edit Tag"
@@ -4867,7 +4867,7 @@ msgstr "Uppdatera Etikett"
 
 #: includes/post-types.php:241
 msgid "Add New Tag"
-msgstr "LÃ¤gg Till Ny Etikett"
+msgstr "Lägg Till Ny Etikett"
 
 #: includes/post-types.php:242
 msgid "New Tag Name"
@@ -4876,15 +4876,15 @@ msgstr "Nytt Etikettnamn"
 #: includes/post-types.php:244
 #, php-format
 msgid "Choose from most used %s tags"
-msgstr "VÃ¤lj frÃ¥n mest anvÃ¤nda %s etiketter"
+msgstr "Välj från mest använda %s etiketter"
 
 #: includes/post-types.php:282
 msgid "Form"
-msgstr "FormulÃ¤r"
+msgstr "Formulär"
 
 #: includes/post-types.php:283
 msgid "Forms"
-msgstr "FormulÃ¤r"
+msgstr "Formulär"
 
 #: includes/post-types.php:297
 msgid "Campaign"
@@ -4897,19 +4897,19 @@ msgstr "Kampanjer"
 #: includes/post-types.php:371 includes/post-types.php:380
 #, php-format
 msgid "Enter %s title here"
-msgstr "Ange %s titel hÃ¤r"
+msgstr "Ange %s titel här"
 
 #: includes/post-types.php:397
 msgctxt "Refunded payment status"
 msgid "Refunded"
-msgstr "Ã…terbetald"
+msgstr "Återbetald"
 
 #: includes/post-types.php:402
 #, php-format
 msgid "Refunded <span class=\"count\">(%s)</span>"
 msgid_plural "Refunded <span class=\"count\">(%s)</span>"
-msgstr[0] "Ã…terbetald <span class=\"count\">(%s)</span>"
-msgstr[1] "Ã…terbetalda <span class=\"count\">(%s)</span>"
+msgstr[0] "Återbetald <span class=\"count\">(%s)</span>"
+msgstr[1] "Återbetalda <span class=\"count\">(%s)</span>"
 
 #: includes/post-types.php:405
 msgctxt "Failed payment status"
@@ -4969,23 +4969,23 @@ msgstr "%2$s skickade. %1$sVisa %2$s%3$s."
 
 #: includes/post-types.php:510
 msgid "Give Single Form Sidebar"
-msgstr "Give FormulÃ¤rsingelvy SidofÃ¤lt  "
+msgstr "Give Formulärsingelvy Sidofält  "
 
 #: includes/post-types.php:512
 msgid ""
 "Widgets in this area will be shown on the single Give forms aside area. This "
 "sidebar will not display for embedded forms."
 msgstr ""
-"Widgetar i detta omrÃ¥de kommer att visas som ett sidofÃ¤lt pÃ¥ Give-"
-"formulÃ¤rens singelvy. FÃ¤ltet kommer ej att visas fÃ¶r inbÃ¤ddade formulÃ¤r."
+"Widgetar i detta område kommer att visas som ett sidofält på Give-"
+"formulärens singelvy. Fältet kommer ej att visas för inbäddade formulär."
 
 #: includes/process-purchase.php:230
 msgid "The selected payment gateway is not enabled"
-msgstr "Den valda betalningsnÃ¤tslussen Ã¤r ej aktiverad"
+msgstr "Den valda betalningsnätslussen är ej aktiverad"
 
 #: includes/process-purchase.php:251
 msgid "You must agree to the terms of use"
-msgstr "Du mÃ¥ste acceptera anvÃ¤ndarvillkoren"
+msgstr "Du måste acceptera användarvillkoren"
 
 #: includes/process-purchase.php:266
 msgid "Please enter a valid email address"
@@ -4993,7 +4993,7 @@ msgstr "Var god ange en giltig e-postadress"
 
 #: includes/process-purchase.php:270
 msgid "Please enter your first name"
-msgstr "Var god att ange ditt fÃ¶rnamn"
+msgstr "Var god att ange ditt förnamn"
 
 #: includes/process-purchase.php:280
 msgid "Please enter your zip / postal code"
@@ -5009,24 +5009,24 @@ msgstr "Var god ange ditt faktureringsland"
 
 #: includes/process-purchase.php:292
 msgid "Please enter billing state / province"
-msgstr "Var god ange stat / provins fÃ¶r fakturering"
+msgstr "Var god ange stat / provins för fakturering"
 
 #: includes/process-purchase.php:344
 msgid "The user information is invalid"
-msgstr "AnvÃ¤ndarinformatitonen Ã¤r ogiltig"
+msgstr "Användarinformatitonen är ogiltig"
 
 #: includes/process-purchase.php:397
 msgid "Invalid username. Only lowercase letters (a-z) and numbers are allowed"
 msgstr ""
-"Ogiltigt anvÃ¤ndarnamn. Endast smÃ¥ bokstÃ¤ver (a-z) och siffror Ã¤r tillÃ¥tna"
+"Ogiltigt användarnamn. Endast små bokstäver (a-z) och siffror är tillåtna"
 
 #: includes/process-purchase.php:407
 msgid "You must register or login to complete your donation"
-msgstr "Du mÃ¥ste registrera dig eller logga in fÃ¶r att slutfÃ¶ra din donation"
+msgstr "Du måste registrera dig eller logga in för att slutföra din donation"
 
 #: includes/process-purchase.php:418
 msgid "Email already used"
-msgstr "E-postadressen anvÃ¤nds redan"
+msgstr "E-postadressen används redan"
 
 #: includes/process-purchase.php:425 includes/process-purchase.php:553
 msgid "Enter an email"
@@ -5034,45 +5034,45 @@ msgstr "Ange en e-postadress"
 
 #: includes/process-purchase.php:433
 msgid "Passwords don't match"
-msgstr "LÃ¶senorden Ã¶verensstÃ¤mmer ej"
+msgstr "Lösenorden överensstämmer ej"
 
 #: includes/process-purchase.php:442 includes/process-purchase.php:509
 msgid "Enter a password"
-msgstr "Ange ett lÃ¶senord"
+msgstr "Ange ett lösenord"
 
 #: includes/process-purchase.php:445
 msgid "Enter the password confirmation"
-msgstr "Ange lÃ¶senordsbekrÃ¤ftelsen"
+msgstr "Ange lösenordsbekräftelsen"
 
 #: includes/process-purchase.php:469
 msgid "You must login or register to complete your donation"
-msgstr "Du mÃ¥ste logga in eller registrera dig fÃ¶r att slutfÃ¶ra din donation"
+msgstr "Du måste logga in eller registrera dig för att slutföra din donation"
 
 #: includes/process-purchase.php:490
 #, php-format
 msgid "The password you entered is incorrect. %sReset Password%s"
-msgstr "LÃ¶senordet du angav Ã¤r fel. %sÃ…terstÃ¤ll LÃ¶senord%s"
+msgstr "Lösenordet du angav är fel. %sÅterställ Lösenord%s"
 
 #: includes/process-purchase.php:491
 msgid "Lost Password"
-msgstr "GlÃ¶mt LÃ¶senord"
+msgstr "Glömt Lösenord"
 
 #: includes/process-purchase.php:535
 msgid "You must be logged into an account to donation"
-msgstr "Du mÃ¥ste vara inloggad med ett konto fÃ¶r att donera"
+msgstr "Du måste vara inloggad med ett konto för att donera"
 
 #: includes/process-purchase.php:722
 msgid "The zip / postal code you entered for your billing address is invalid"
-msgstr "Postnumret du angav fÃ¶r din faktureringsadress Ã¤r ogiltigt"
+msgstr "Postnumret du angav för din faktureringsadress är ogiltigt"
 
 #: includes/process-purchase.php:986
 msgid "An internal error has occurred, please try again or contact support."
 msgstr ""
-"Ett internt fel har uppstÃ¥tt, var god fÃ¶rsÃ¶k igen eller kontakta support."
+"Ett internt fel har uppstått, var god försök igen eller kontakta support."
 
 #: includes/scripts.php:45
 msgid "Please select a payment method"
-msgstr "Var god vÃ¤lj ett betalningssÃ¤tt"
+msgstr "Var god välj ett betalningssätt"
 
 #: includes/scripts.php:46
 msgid "Loading..."
@@ -5080,91 +5080,91 @@ msgstr "Laddar..."
 
 #: includes/scripts.php:47
 msgid "Please Wait..."
-msgstr "Var God VÃ¤nta..."
+msgstr "Var God Vänta..."
 
 #: includes/scripts.php:55
 msgid "Please select an option"
-msgstr "Var god vÃ¤lj ett alternativ"
+msgstr "Var god välj ett alternativ"
 
 #: includes/scripts.php:234
 msgid "Sorry, not available for variable priced forms."
-msgstr "Ledsen, ej tillgÃ¤ngligt fÃ¶r formulÃ¤r med variabelt pris."
+msgstr "Ledsen, ej tillgängligt för formulär med variabelt pris."
 
 #: includes/scripts.php:235
 msgid "Are you sure you wish to delete this payment?"
-msgstr "Ã„r du sÃ¤ker pÃ¥ att du vill ta bort denna betalning?"
+msgstr "Är du säker på att du vill ta bort denna betalning?"
 
 #: includes/scripts.php:236
 msgid "Are you sure you wish to delete this note?"
-msgstr "Ã„r du sÃ¤ker pÃ¥ att du vill ta bort denna notering?"
+msgstr "Är du säker på att du vill ta bort denna notering?"
 
 #: includes/scripts.php:237
 msgid "Are you sure you wish to delete this tax rate?"
-msgstr "Ã„r du sÃ¤ker pÃ¥ att du vill ta bort denna momsnivÃ¥?"
+msgstr "Är du säker på att du vill ta bort denna momsnivå?"
 
 #: includes/scripts.php:238
 msgid "Are you sure you wish to revoke this API key?"
-msgstr "Ã„r du sÃ¤ker pÃ¥ att du vill Ã¥terkalla denna API-nyckel?"
+msgstr "Är du säker på att du vill återkalla denna API-nyckel?"
 
 #: includes/scripts.php:239
 msgid "Are you sure you wish to regenerate this API key?"
-msgstr "Ã„r du sÃ¤ker pÃ¥ att du vill Ã¥tergenerera denna API-nyckel?"
+msgstr "Är du säker på att du vill återgenerera denna API-nyckel?"
 
 #: includes/scripts.php:240
 msgid "Are you sure you wish to resend the donation receipt?"
-msgstr "Ã„r du sÃ¤ker pÃ¥ att du vill skicka detta donationskvitto igen?"
+msgstr "Är du säker på att du vill skicka detta donationskvitto igen?"
 
 #: includes/scripts.php:241
 msgid "Copy these links to your clipboard and give them to your donor"
-msgstr "Kopiera dessa lÃ¤nkar till urklipp och ge dem till din donator"
+msgstr "Kopiera dessa länkar till urklipp och ge dem till din donator"
 
 #: includes/scripts.php:242
 #, php-format
 msgid "Are you sure you wish to delete this %s?"
-msgstr "Ã„r du sÃ¤ker pÃ¥ att du vill ta bort denna %s?"
+msgstr "Är du säker på att du vill ta bort denna %s?"
 
 #: includes/scripts.php:243
 msgid "You must have at least one price"
-msgstr "Du mÃ¥ste ha minst ett pris"
+msgstr "Du måste ha minst ett pris"
 
 #: includes/scripts.php:244
 msgid "You must have at least one file"
-msgstr "Du mÃ¥ste ha minst en fil"
+msgstr "Du måste ha minst en fil"
 
 #: includes/scripts.php:245
 msgid "You must have at least one field"
-msgstr "Du mÃ¥ste ha minst ett fÃ¤lt"
+msgstr "Du måste ha minst ett fält"
 
 #: includes/scripts.php:246
 #, php-format
 msgid "Choose a %s"
-msgstr "VÃ¤lj en %s"
+msgstr "Välj en %s"
 
 #: includes/scripts.php:247
 #, php-format
 msgid "Choose one or more %s"
-msgstr "VÃ¤lj en eller flera %s"
+msgstr "Välj en eller flera %s"
 
 #: includes/scripts.php:248
 msgid "Item price must be numeric"
-msgstr "Artikelpris mÃ¥ste vara numeriskt"
+msgstr "Artikelpris måste vara numeriskt"
 
 #: includes/scripts.php:249
 msgid "Quantity must be numeric"
-msgstr "Kvantitet mÃ¥ste vara numerisk"
+msgstr "Kvantitet måste vara numerisk"
 
 #: includes/scripts.php:255
 #, php-format
 msgid "Type to search %s"
-msgstr "Skriv fÃ¶r att sÃ¶ka %s"
+msgstr "Skriv för att söka %s"
 
 #: includes/shortcodes.php:33
 msgid ""
 "You must be logged in to view your donation history. Please login using your "
 "account or create an account using the same email you used to donate with."
 msgstr ""
-"Du mÃ¥ste vara inloggad fÃ¶r att visa din donationshistoria. VÃ¤nligen logga in "
-"med ditt konto eller skapa ett konto med samma e-postadress som du anvÃ¤nde "
+"Du måste vara inloggad för att visa din donationshistoria. Vänligen logga in "
+"med ditt konto eller skapa ett konto med samma e-postadress som du använde "
 "vid donationen."
 
 #: includes/shortcodes.php:152
@@ -5172,16 +5172,16 @@ msgid ""
 "Sorry, there was a problem identifying this donation. Please contact the "
 "site owner for more information."
 msgstr ""
-"Ledsen, det uppstod ett problem med att identifiera denna donation. VÃ¤nligen "
-"kontakta webbplatsÃ¤garen fÃ¶r mer information."
+"Ledsen, det uppstod ett problem med att identifiera denna donation. Vänligen "
+"kontakta webbplatsägaren för mer information."
 
 #: includes/shortcodes.php:165
 msgid ""
 "Sorry, it appears the viewing window for this donation receipt has expired "
 "or you do not have the permission to view this donation receipt."
 msgstr ""
-"Ledsen, det verkar som att visningsfÃ¶nstret fÃ¶r detta donationskvitto har "
-"fÃ¶rfallit eller sÃ¥ har du ej tillstÃ¥nd att visa detta donationskvitto."
+"Ledsen, det verkar som att visningsfönstret för detta donationskvitto har "
+"förfallit eller så har du ej tillstånd att visa detta donationskvitto."
 
 #: includes/shortcodes.php:180
 #, php-format
@@ -5190,30 +5190,30 @@ msgid ""
 "following email %s (the email attached to this donation) and visit the <a "
 "href=\"%s\">donation history page</a>"
 msgstr ""
-" FÃ¶r att visa ditt kvitto, vÃ¤nligen <a href=\"%s\">skapa ett konto</a> med "
-"fÃ¶ljande e-postadress %s (e-postadressen som Ã¤r kopplad till denna donation) "
-"och besÃ¶k <a href=\"%s\">sidan fÃ¶r donationshistoria</a>"
+" För att visa ditt kvitto, vänligen <a href=\"%s\">skapa ett konto</a> med "
+"följande e-postadress %s (e-postadressen som är kopplad till denna donation) "
+"och besök <a href=\"%s\">sidan för donationshistoria</a>"
 
 #: includes/shortcodes.php:306
 msgid "The passwords you entered do not match. Please try again."
-msgstr "LÃ¶senorden du angav matchar ej varandra. Var god fÃ¶rsÃ¶k igen."
+msgstr "Lösenorden du angav matchar ej varandra. Var god försök igen."
 
 #: includes/shortcodes.php:315
 msgid "The email you entered belongs to another user. Please use another."
 msgstr ""
-"E-postadressen du angav tillhÃ¶r en annan anvÃ¤ndare. VÃ¤nligen anvÃ¤nd en annan."
+"E-postadressen du angav tillhör en annan användare. Vänligen använd en annan."
 
 #: includes/template-functions.php:293
 msgid "Give+Placeholder+Image+"
-msgstr "Give+PlashÃ¥llare+Bild+"
+msgstr "Give+Plashållare+Bild+"
 
 #: includes/user-functions.php:391
 msgid "[Password entered during donation]"
-msgstr "[LÃ¶senord angivet vid donation]"
+msgstr "[Lösenord angivet vid donation]"
 
 #: templates/history-donations.php:52
 msgid "It looks like you haven't made any donations"
-msgstr "Det verkar inte som att du har gjort nÃ¥gra donationer"
+msgstr "Det verkar inte som att du har gjort några donationer"
 
 #: templates/payment-processing.php:7
 #, php-format
@@ -5222,7 +5222,7 @@ msgid ""
 "seconds. If it does not, click <a href=\"%s\">here</a>."
 msgstr ""
 "Din donation behandlas. Denna sida kommer att laddas om automatiskt om 8 "
-"sekunder. Om detta ej sker, klicka <a href=\"%s\">hÃ¤r</a>."
+"sekunder. Om detta ej sker, klicka <a href=\"%s\">här</a>."
 
 #: templates/shortcode-profile-editor.php:20
 msgid "Success"
@@ -5234,7 +5234,7 @@ msgstr "Redigeringen av din profil lyckades."
 
 #: templates/shortcode-profile-editor.php:31
 msgid "Change your Name"
-msgstr "Ã„ndra ditt Namn"
+msgstr "Ändra ditt Namn"
 
 #: templates/shortcode-profile-editor.php:44
 msgid "Display Name"
@@ -5242,32 +5242,32 @@ msgstr "Visningsnamn"
 
 #: templates/shortcode-profile-editor.php:70
 msgid "Change your Billing Address"
-msgstr "Ã„ndra din Faktureringsadress"
+msgstr "Ändra din Faktureringsadress"
 
 #: templates/shortcode-profile-editor.php:117
 msgid "Change your Password"
-msgstr "Ã„ndra ditt LÃ¶senord"
+msgstr "Ändra ditt Lösenord"
 
 #: templates/shortcode-profile-editor.php:120
 msgid "New Password"
-msgstr "Nytt LÃ¶senord"
+msgstr "Nytt Lösenord"
 
 #: templates/shortcode-profile-editor.php:124
 msgid "Re-enter Password"
-msgstr "Ange ditt LÃ¶senord igen"
+msgstr "Ange ditt Lösenord igen"
 
 #: templates/shortcode-profile-editor.php:129
 msgid "Please note after changing your password, you must log back in."
 msgstr ""
-"VÃ¤nligen notera att du mÃ¥ste logga in igen efter att du Ã¤ndrat ditt lÃ¶senord."
+"Vänligen notera att du måste logga in igen efter att du ändrat ditt lösenord."
 
 #: templates/shortcode-profile-editor.php:137
 msgid "Save Changes"
-msgstr "Spara Ã„ndringar"
+msgstr "Spara Ändringar"
 
 #: templates/shortcode-profile-editor.php:146
 msgid "You need to login to edit your profile."
-msgstr "Du mÃ¥ste logga in fÃ¶r att redigera din profil."
+msgstr "Du måste logga in för att redigera din profil."
 
 #: templates/shortcode-receipt.php:16
 msgid "The specified receipt ID appears to be invalid"
@@ -5287,27 +5287,27 @@ msgstr "Betalningsnyckel"
 
 #: templates/single-give-form/featured-image.php:37
 msgid "Placeholder"
-msgstr "PlatshÃ¥llare"
+msgstr "Platshållare"
 
 #~ msgid ""
 #~ "Note: Test Mode is enabled, only test donations are being displayed. <a "
 #~ "href=\"%s\">View Settings</a>"
 #~ msgstr ""
-#~ "Observera: TestlÃ¤ge Ã¤r aktiverat. Endast testdonationer visas. <a href="
-#~ "\"%s\">Till InstÃ¤llningar</a>"
+#~ "Observera: Testläge är aktiverat. Endast testdonationer visas. <a href="
+#~ "\"%s\">Till Inställningar</a>"
 
 #~ msgid ""
 #~ "The specified user already has API keys or the specified user does not "
 #~ "exist.."
 #~ msgstr ""
-#~ "Den angivna anvÃ¤ndaren har redan API-nycklar eller sÃ¥ finns anvÃ¤ndaren "
+#~ "Den angivna användaren har redan API-nycklar eller så finns användaren "
 #~ "ej.."
 
 #~ msgid ""
 #~ "Do you want this form to have one set donation price or multiple levels?"
 #~ msgstr ""
-#~ "Vill du att detta formulÃ¤r endast skall ha ett fast donationsbelopp eller "
-#~ "skall det finnas flera nivÃ¥er?"
+#~ "Vill du att detta formulär endast skall ha ett fast donationsbelopp eller "
+#~ "skall det finnas flera nivåer?"
 
 #~ msgid ""
 #~ "This text appears as a label above the custom amount field for single "
@@ -5315,94 +5315,94 @@ msgstr "PlatshÃ¥llare"
 #~ "level. Leave this field blank to prevent it from displaying within your "
 #~ "form."
 #~ msgstr ""
-#~ "I ennivÃ¥formulÃ¤r visas denna text som en etikett ovanfÃ¶r fÃ¤ltet fÃ¶r "
-#~ "anpassat belopp. I flernivÃ¥formulÃ¤r sÃ¥ kommer texten att visas som en "
-#~ "egen nivÃ¥. LÃ¤mna fÃ¤ltet blankt fÃ¶r att inte visa nÃ¥gon text alls."
+#~ "I ennivåformulär visas denna text som en etikett ovanför fältet för "
+#~ "anpassat belopp. I flernivåformulär så kommer texten att visas som en "
+#~ "egen nivå. Lämna fältet blankt för att inte visa någon text alls."
 
 #~ msgid "Do you want to display content?"
-#~ msgstr "Vill du visa innehÃ¥ll?"
+#~ msgstr "Vill du visa innehåll?"
 
 #~ msgid "How would you like to display payment information for this form?"
-#~ msgstr "Hur vill du visa betalningsinformation i detta formulÃ¤r?"
+#~ msgstr "Hur vill du visa betalningsinformation i detta formulär?"
 
 #~ msgid ""
 #~ "This is the gateway that will be selected by default. If this option is "
 #~ "selected it will override the global setting."
 #~ msgstr ""
-#~ "Detta Ã¤r den nÃ¤tsluss som kommer att vÃ¤ljas som standard. Om detta "
-#~ "alternativ Ã¤r valt sÃ¥ kommer det att Ã¶verskrida den globala instÃ¤llningen."
+#~ "Detta är den nätsluss som kommer att väljas som standard. Om detta "
+#~ "alternativ är valt så kommer det att överskrida den globala inställningen."
 
 #~ msgid ""
 #~ "Display the registration and login forms in the checkout section for non-"
 #~ "logged-in users."
 #~ msgstr ""
-#~ "Visa registrerings- och inloggningsformulÃ¤ren i utcheckningssektionen fÃ¶r "
-#~ "ej inloggade anvÃ¤ndare."
+#~ "Visa registrerings- och inloggningsformulären i utcheckningssektionen för "
+#~ "ej inloggade användare."
 
 #~ msgid "Label shown next to the agree to terms check box."
-#~ msgstr "Text som visas bredvid kryssrutan fÃ¶r att acceptera villkor."
+#~ msgstr "Text som visas bredvid kryssrutan för att acceptera villkor."
 
 #~ msgid "This is the actual text which the user will have to agree to."
 #~ msgstr ""
-#~ "Detta Ã¤r den faktiska text med villkor som anvÃ¤ndaren mÃ¥ste acceptera."
+#~ "Detta är den faktiska text med villkor som användaren måste acceptera."
 
 #~ msgid "mm/dd/yy"
-#~ msgstr "mm/dd/Ã¥Ã¥"
+#~ msgstr "mm/dd/åå"
 
 #~ msgid "hh:mm TT"
 #~ msgstr "tt:mm TT"
 
 #~ msgid "User ID and User Email do not match."
-#~ msgstr "AnvÃ¤ndar-ID och AnvÃ¤ndare-post matchar ej."
+#~ msgstr "Användar-ID och Användare-post matchar ej."
 
 #~ msgid "Resend Purchase Receipt"
-#~ msgstr "Skicka KÃ¶pekvitto Igen"
+#~ msgstr "Skicka Köpekvitto Igen"
 
 #~ msgid "Set To Preapproval"
-#~ msgstr "SÃ¤tt Som VÃ¤ntar PÃ¥ Granskning"
+#~ msgstr "Sätt Som Väntar På Granskning"
 
 #~ msgid "Set To Cancelled"
-#~ msgstr "SÃ¤tt Som Avbruten"
+#~ msgstr "Sätt Som Avbruten"
 
 #~ msgid "For more information:"
-#~ msgstr "FÃ¶r ytterligare information:"
+#~ msgstr "För ytterligare information:"
 
 #~ msgid ""
 #~ "Visit the <a href=\"%s\">documentation</a> on the Easy Digital Downloads "
 #~ "website."
 #~ msgstr ""
-#~ "BesÃ¶k sidan fÃ¶r <a href=\"%s\">dokumentation</a> pÃ¥ Easy Digital "
+#~ "Besök sidan för <a href=\"%s\">dokumentation</a> på Easy Digital "
 #~ "Downloads webbplats."
 
 #~ msgid ""
 #~ "<a href=\"%s\">Post an issue</a> on <a href=\"%s\">GitHub</a>. View <a "
 #~ "href=\"%s\">extensions</a> or <a href=\"%s\">themes</a>."
 #~ msgstr ""
-#~ "<a href=\"%s\">Rapportera ett problem</a> pÃ¥ <a href=\"%s\">GitHub</a>. "
-#~ "Visa <a href=\"%s\">utÃ¶kningar</a> eller <a href=\"%s\">teman</a>."
+#~ "<a href=\"%s\">Rapportera ett problem</a> på <a href=\"%s\">GitHub</a>. "
+#~ "Visa <a href=\"%s\">utökningar</a> eller <a href=\"%s\">teman</a>."
 
 #~ msgid "Overview"
-#~ msgstr "Ã–versikt"
+#~ msgstr "Översikt"
 
 #~ msgid "This screen provides access to all of your store's transactions."
-#~ msgstr "Denna skÃ¤rm ger tillgÃ¥ng till din affÃ¤rs alla transaktioner."
+#~ msgstr "Denna skärm ger tillgång till din affärs alla transaktioner."
 
 #~ msgid ""
 #~ "Payments can be searched by email address, user name, or filtered by "
 #~ "status (completed, pending, etc.)"
 #~ msgstr ""
-#~ "Betalningar kan genomsÃ¶kas pÃ¥ e-postadress, anvÃ¤ndarnamn eller filtreras "
-#~ "efter status (genomfÃ¶rd, vÃ¤ntande o.s.v.)"
+#~ "Betalningar kan genomsökas på e-postadress, användarnamn eller filtreras "
+#~ "efter status (genomförd, väntande o.s.v.)"
 
 #~ msgid "You also have the option to bulk delete payment should you wish."
 #~ msgstr ""
-#~ "Du har ocksÃ¥ alternativet att ta bort betalningar i bulk om du sÃ¥ Ã¶nskar."
+#~ "Du har också alternativet att ta bort betalningar i bulk om du så önskar."
 
 #~ msgid "Search Payments"
-#~ msgstr "SÃ¶k Betalningar"
+#~ msgstr "Sök Betalningar"
 
 #~ msgid "The payment history can be searched in several different ways:"
-#~ msgstr "Det gÃ¥r att sÃ¶ka i kÃ¶pehistoriken pÃ¥ flera olika sÃ¤tt:"
+#~ msgstr "Det går att söka i köpehistoriken på flera olika sätt:"
 
 #~ msgid "You can enter the customer's email address"
 #~ msgstr "Du kan ange kundens e-postadress"
@@ -5411,10 +5411,10 @@ msgstr "PlatshÃ¥llare"
 #~ msgstr "Du kan ange kundens namn eller ID med prefixet 'user:'"
 
 #~ msgid "You can enter the 32-character purchase key"
-#~ msgstr "Du kan ange den 32 tecken lÃ¥nga kÃ¶penyckeln"
+#~ msgstr "Du kan ange den 32 tecken långa köpenyckeln"
 
 #~ msgid "You can enter the purchase ID"
-#~ msgstr "Du kan ange kÃ¶pe-ID:t"
+#~ msgstr "Du kan ange köpe-ID:t"
 
 #~ msgid "You can enter a transaction ID prefixed by 'txn:'"
 #~ msgstr "Du kan ange ett transaktions-ID med prefixet 'txn:'"
@@ -5430,34 +5430,34 @@ msgstr "PlatshÃ¥llare"
 #~ "<em>View Order Details</em> link. This will provide more information "
 #~ "including:"
 #~ msgstr ""
-#~ "Varje betalning kan inspekteras ytterligare genom att man klickar pÃ¥ "
-#~ "lÃ¤nken <em>Visa Orderdetaljer</em>. DÃ¥ ges ytterligare information, bland "
+#~ "Varje betalning kan inspekteras ytterligare genom att man klickar på "
+#~ "länken <em>Visa Orderdetaljer</em>. Då ges ytterligare information, bland "
 #~ "annat:"
 
 #~ msgid "The file associated with the purchase."
-#~ msgstr "Filen som Ã¤r kopplad till kÃ¶pet."
+#~ msgstr "Filen som är kopplad till köpet."
 
 #~ msgid "The exact date and time the payment was completed."
-#~ msgstr "Exakt datum och tid fÃ¶r nÃ¤r inbetalningen gjordes."
+#~ msgstr "Exakt datum och tid för när inbetalningen gjordes."
 
 #~ msgid "If a coupon or discount was used during the checkout process."
-#~ msgstr "Ifall en kupong eller rabatt anvÃ¤ndes vid utcheckningsprocessen."
+#~ msgstr "Ifall en kupong eller rabatt användes vid utcheckningsprocessen."
 
 #~ msgid "The buyer's name."
-#~ msgstr "KÃ¶parens namn."
+#~ msgstr "Köparens namn."
 
 #~ msgid "The buyer's email address."
-#~ msgstr "KÃ¶parens e-postadress."
+#~ msgstr "Köparens e-postadress."
 
 #~ msgid "Any customer-specific notes related to the payment."
 #~ msgstr "Kundspecifika noteringar relaterat till betalningen."
 
 #~ msgid "The name of the payment gateway used to complete the payment."
 #~ msgstr ""
-#~ "Namnet pÃ¥ den betalningsnÃ¤tsluss som anvÃ¤nds fÃ¶r att genomfÃ¶ra betalning."
+#~ "Namnet på den betalningsnätsluss som används för att genomföra betalning."
 
 #~ msgid "A unique key used to identify the payment."
-#~ msgstr "En unik nyckel som anvÃ¤nds fÃ¶r att identifiera betalningen."
+#~ msgstr "En unik nyckel som används för att identifiera betalningen."
 
 #~ msgid "Total Price"
 #~ msgstr "Totalt Pris"
@@ -5469,46 +5469,46 @@ msgstr "PlatshÃ¥llare"
 #~ msgstr " "
 
 #~ msgid "User ID:"
-#~ msgstr "AnvÃ¤ndar-ID:"
+#~ msgstr "Användar-ID:"
 
 #~ msgid ""
 #~ "This is the page donators are sent to if their transaction is cancelled "
 #~ "or fails."
 #~ msgstr ""
-#~ "Detta Ã¤r sidan dit donatorer skickas om transaktionen avbryts eller "
+#~ "Detta är sidan dit donatorer skickas om transaktionen avbryts eller "
 #~ "misslyckas."
 
 #~ msgid "Global Offline Donation Text"
-#~ msgstr "Global Text FÃ¶r Ouppkopplade Donationer"
+#~ msgstr "Global Text För Ouppkopplade Donationer"
 
 #~ msgid "Disable Form's Single View"
-#~ msgstr "Deaktivera FormulÃ¤rets Singelvy"
+#~ msgstr "Deaktivera Formulärets Singelvy"
 
 #~ msgid "Disable Form's Archives"
-#~ msgstr "Deaktivera FormulÃ¤rets Arkiv"
+#~ msgstr "Deaktivera Formulärets Arkiv"
 
 #~ msgid "Date Purchased"
-#~ msgstr "KÃ¶pedatum"
+#~ msgstr "Köpedatum"
 
 #~ msgid "Total Purchases"
-#~ msgstr "Totalt Antal KÃ¶p"
+#~ msgstr "Totalt Antal Köp"
 
 #~ msgid "Total Purchased"
-#~ msgstr "KÃ¶petotal"
+#~ msgstr "Köpetotal"
 
 #~ msgid "Visit the <a href=\"%s\">documentation</a> on the Give website."
 #~ msgstr ""
-#~ "BesÃ¶k sidan fÃ¶r <a href=\"%s\">dokumentation</a> pÃ¥ Give:s webbplats."
+#~ "Besök sidan för <a href=\"%s\">dokumentation</a> på Give:s webbplats."
 
 #~ msgid "This screen provides you with reports for your income and donations."
 #~ msgstr ""
-#~ "Denna skÃ¤rm ger dig tillgÃ¥ng till rapporter fÃ¶r din inkomst och "
+#~ "Denna skärm ger dig tillgång till rapporter för din inkomst och "
 #~ "donationer."
 
 #~ msgid ""
 #~ "This screen allows you to export your reports into a PDF or CSV format."
 #~ msgstr ""
-#~ "Denna skÃ¤rm tillÃ¥ter dig att exportera dina rapporter i PDF- eller CSV-"
+#~ "Denna skärm tillåter dig att exportera dina rapporter i PDF- eller CSV-"
 #~ "format."
 
 #~ msgid ""
@@ -5518,9 +5518,9 @@ msgstr "PlatshÃ¥llare"
 #~ "sales and earnings so you can compare them for each month."
 #~ msgstr ""
 #~ "<strong>Donationer och Inkomst</strong> - Denna rapport exporterar alla "
-#~ "donationer och din fullstÃ¤ndiga inkomst fÃ¶r nuvarande Ã¥r. Denna rapport "
-#~ "inkluderar fÃ¶rsÃ¤ljning och fÃ¶rtjÃ¤nst fÃ¶r varje produkt sÃ¥vÃ¤l som en graf "
-#~ "Ã¶ver fÃ¶rsÃ¤ljning och fÃ¶rtjÃ¤nst sÃ¥ att du kan jÃ¤mfÃ¶ra mÃ¥nadsvis."
+#~ "donationer och din fullständiga inkomst för nuvarande år. Denna rapport "
+#~ "inkluderar försäljning och förtjänst för varje produkt såväl som en graf "
+#~ "över försäljning och förtjänst så att du kan jämföra månadsvis."
 
 #~ msgid ""
 #~ "<strong>Payment History</strong> - This report exports all of payments "
@@ -5531,8 +5531,8 @@ msgstr "PlatshÃ¥llare"
 #~ msgstr ""
 #~ "<strong>Betalningshistorik</strong> - Denna rapport exporterar alla "
 #~ "betalningar du har tagit emot i din Give-butik i CSV-format. Rapporten "
-#~ "inkluderar kundernas kontaktinformation, vilket formulÃ¤r som anvÃ¤nts fÃ¶r "
-#~ "kÃ¶p, eventuella rabattkoder som anvÃ¤nts, samt det slutliga priset som "
+#~ "inkluderar kundernas kontaktinformation, vilket formulär som använts för "
+#~ "köp, eventuella rabattkoder som använts, samt det slutliga priset som "
 #~ "betalts.  "
 
 #~ msgid ""
@@ -5543,8 +5543,8 @@ msgstr "PlatshÃ¥llare"
 #~ msgstr ""
 #~ "<strong>Donatorer</strong> - Denna rapport exporterar alla dina donatorer "
 #~ "i CSV-format. Den exporterar kundens namn och e-postadress samt antal "
-#~ "formulÃ¤r de har anvÃ¤nt fÃ¶r kÃ¶p sÃ¥vÃ¤l som den slutliga summan av deras "
-#~ "sammanlagda kÃ¶p."
+#~ "formulär de har använt för köp såväl som den slutliga summan av deras "
+#~ "sammanlagda köp."
 
 #~ msgid ""
 #~ "<strong>Download History</strong> - This report exports all of the "
@@ -5553,15 +5553,15 @@ msgstr "PlatshÃ¥llare"
 #~ "their IP address, the name of the product and the file they downloaded."
 #~ msgstr ""
 #~ "<strong>Nedladdningshistorik</strong> - Denna rapport exporterar alla "
-#~ "nedladdningar som har gjorts under nuvarande mÃ¥nad i CSV-format. Den "
-#~ "exporterar datum fÃ¶r filnedladdningen, kunden som laddade ned den, dennes "
-#~ "IP-adress, namnet pÃ¥ produkten samt vilken fil som laddats ned."
+#~ "nedladdningar som har gjorts under nuvarande månad i CSV-format. Den "
+#~ "exporterar datum för filnedladdningen, kunden som laddade ned den, dennes "
+#~ "IP-adress, namnet på produkten samt vilken fil som laddats ned."
 
 #~ msgid "Search File Downloads"
-#~ msgstr "SÃ¶k Filnedladdningar"
+#~ msgstr "Sök Filnedladdningar"
 
 #~ msgid "The file download log can be searched in several different ways:"
-#~ msgstr "Filneddladdningsloggen kan genomsÃ¶kas pÃ¥ flera olika sÃ¤tt:"
+#~ msgstr "Filneddladdningsloggen kan genomsökas på flera olika sätt:"
 
 #~ msgid "You can enter the customer's IP address"
 #~ msgstr "Du kan ange kundens IP-adress"
@@ -5570,39 +5570,38 @@ msgstr "PlatshÃ¥llare"
 #~ msgstr "Du kan ange den nedladdningsbara filens namn"
 
 #~ msgid "Guest"
-#~ msgstr "GÃ¤st"
+#~ msgstr "Gäst"
 
 #~ msgid "No customers found"
 #~ msgstr "Inga kunder funna"
 
 #~ msgid "Hey there,"
-#~ msgstr "HallÃ¥ dÃ¤r,"
+#~ msgstr "Hallå där,"
 
 #~ msgid "This is a pending donation awaiting payment."
-#~ msgstr "Detta Ã¤r en donation som vÃ¤ntar pÃ¥ betalning."
+#~ msgstr "Detta är en donation som väntar på betalning."
 
 #~ msgid "Customize Offline Donation Instructions"
-#~ msgstr "Anpassa Instruktioner FÃ¶r Ouppkopplad Donation"
+#~ msgstr "Anpassa Instruktioner För Ouppkopplad Donation"
 
 #~ msgid ""
 #~ "Enter the instructions you want to display to the donor during the "
 #~ "payment process. Most likely this would include important information "
 #~ "like mailing address and who to make the check out to."
 #~ msgstr ""
-#~ "Ange instruktionerna som du vill visa fÃ¶r donatorn under "
-#~ "betalningsprocessen. Troligen kommer dessa instruktioner att innehÃ¥lla "
-#~ "viktig information sÃ¥ som postadress samt vem checken skall stÃ¤llas ut "
+#~ "Ange instruktionerna som du vill visa för donatorn under "
+#~ "betalningsprocessen. Troligen kommer dessa instruktioner att innehålla "
+#~ "viktig information så som postadress samt vem checken skall ställas ut "
 #~ "till."
 
 #~ msgid "Copy these links to your clipboard and give them to your customer"
-#~ msgstr "Kopiera dessa lÃ¤nkar till urklipp och ge dem till din kund"
+#~ msgstr "Kopiera dessa länkar till urklipp och ge dem till din kund"
 
 #~ msgid "Sorry, we're having trouble retrieving your payment receipt."
-#~ msgstr "UrsÃ¤kta, vi har problem med att hÃ¤mta din betalningskvittens."
+#~ msgstr "Ursäkta, vi har problem med att hämta din betalningskvittens."
 
 #~ msgid "[Password entered at checkout]"
-#~ msgstr "[LÃ¶senord angivet vid utcheckning]"
+#~ msgstr "[Lösenord angivet vid utcheckning]"
 
 #~ msgid "It looks like haven't made any donations"
-#~ msgstr "Det verkar inte som har gjort nÃ¥gra donationer"
-
+#~ msgstr "Det verkar inte som har gjort några donationer"

@@ -76,7 +76,7 @@ jQuery( function ( $ ) {
 			$( '.give-form' ).floatlabels( options );
 		} );
 	}
-
+	
 	// Reveal Btn which displays the checkout content
 	doc.on( 'click', '.give-btn-reveal', function ( e ) {
 		e.preventDefault();

@@ -137,6 +137,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * New: Basic table styles for Give tables - https://github.com/WordImpress/Give/issues/232
 * New: Custom amount field displays numbers by default on mobile/tablet - https://github.com/WordImpress/Give/issues/233
 * New: Bower implemented to manage third-party JS scripts - Thanks @pryley https://github.com/WordImpress/Give/pull/236
+* New: Swedish translation files added - Thanks @mepmepmep https://github.com/WordImpress/Give/issues/238
 * Fix: Modal close button now displays properly - https://github.com/WordImpress/Give/issues/228
 * Fix: Admin Give menu section called "Donation Forms" rather than just "Forms" thanks @pryley - https://github.com/WordImpress/Give/issues/196
 

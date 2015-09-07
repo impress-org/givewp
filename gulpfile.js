@@ -93,7 +93,7 @@ gulp.task( 'frontend_styles', function () {
 gulp.task( 'scripts', function () {
 	return gulp.src( source_paths.scripts )
 		.pipe( uglify( {
-			preserveComments: 'all'
+			preserveComments: 'false'
 		} ) )
 		.pipe( rename( {suffix: ".min"} ) )
 		.pipe( gulp.dest( 'assets/js' ) )

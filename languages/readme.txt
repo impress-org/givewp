@@ -8,9 +8,10 @@
   
   Keep custom Give translations in /wp-content/languages/give/
   
-  You want to translate, help, or improve a translation.
+  If you would like to translate, help, or improve a translation.
   
-  Join our WP-Translations Community at
+  Email info@wordmpress.com OR Coming soon:
+  join our WP-Translations Community at
   https://www.transifex.com/projects/p/give/
 
   More info at http://wp-translations.org/
