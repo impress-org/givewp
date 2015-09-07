@@ -37,7 +37,7 @@ jQuery( function ( $ ) {
 				},
 				success  : function ( response ) {
 					if ( 'nostates' == response ) {
-						var text_field = '<input type="text" name="card_state" class="cart-state give-input required" value=""/>';
+						var text_field = '<input type="text" id="card_state" name="card_state" class="cart-state give-input required" value=""/>';
 						$form.find( 'input[name="card_state"], select[name="card_state"]' ).replaceWith( text_field );
 					} else {
 						$form.find( 'input[name="card_state"], select[name="card_state"]' ).replaceWith( response );
@@ -57,18 +57,18 @@ jQuery( function ( $ ) {
 	/**
 	 * Credit card verification
 	 */
-	var card_number, card_cvc, card_month, card_year, give_form;
+	var card_number, card_cvc, card_expiry, give_form;
 
 	// Set variables and format cc fields
 	function format_cc_fields() {
 		card_number = $( '#card_number' );
 		card_cvc = $( '#card_cvc' );
-		card_month = $( '#card_exp_month' );
-		card_year = $( '#card_exp_year' );
+		card_expiry = $( '#card_expiry' );
 		give_form = $( 'form.give-form' );
 
 		card_number.payment( 'formatCardNumber' );
 		card_cvc.payment( 'formatCardCVC' );
+		card_expiry.payment( 'formatCardExpiry' );
 	};
 
 	format_cc_fields();
@@ -87,7 +87,7 @@ jQuery( function ( $ ) {
 	};
 
 	// Validate cc fields on change
-	doc.on( 'keyup change', '#card_number, #card_cvc, #card_exp_month, #card_exp_year', function () {
+	doc.on( 'keyup change', '#card_number, #card_cvc, #card_expiry', function () {
 		var t = $( this ),
 			id = t.attr( 'id' ),
 			type = $.payment.cardType( card_number.val() );
@@ -110,13 +110,14 @@ jQuery( function ( $ ) {
 
 			card_cvc.toggleError( !$.payment.validateCardCVC( card_cvc.val(), type ) );
 		}
-		if ( id === 'card_exp_month' || id === 'card_exp_year' ) {
+		if ( id === 'card_expiry' ) {
 
-			var month = parseInt( card_month.val(), 10 ),
-				year = parseInt( card_year.val(), 10 );
+			card_expiry.toggleError( !$.payment.validateCardExpiry( card_expiry.payment( 'cardExpiryVal' ) ) );
 
-			card_month.toggleError( !$.payment.validateCardExpiry( month, year ) );
-			card_year.toggleError( !$.payment.validateCardExpiry( month, year ) );
+			var expiry = card_expiry.payment( 'cardExpiryVal' );
+
+			$( '#card_exp_month' ).val( expiry.month );
+			$( '#card_exp_year' ).val( expiry.year );
 		}
 	} );
 

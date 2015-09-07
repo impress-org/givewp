@@ -652,3 +652,22 @@ function give_svg_icons( $icon ) {
 	// Return the chosen icon's SVG string
 	return $svgs[ $icon ];
 }
+
+/**
+ * Modify Admin Nav Menu Label
+ *
+ * @since 1.3
+ *
+ * @param $post_type
+ *
+ * @return mixed
+ */
+function modify_nav_menu_meta_box_object( $post_type ) {
+	if ( isset( $post_type->name ) && $post_type->name == 'give_forms' ) {
+		$post_type->labels->name = 'Donation Forms';
+	}
+
+	return $post_type;
+}
+
+add_filter( 'nav_menu_meta_box_object', 'modify_nav_menu_meta_box_object' );

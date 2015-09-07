@@ -385,6 +385,12 @@ class Give_Plugin_Settings {
 							'type' => 'checkbox'
 						),
 						array(
+							'name' => __( 'Enable Floating Labels', 'give' ),
+							'desc' => sprintf( __( 'Enable this option if you would like to enable <a href="%s" target="_blank">floating labels</a> in Give\'s donation forms.<br>Be aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), esc_url( "http://bradfrost.com/blog/post/float-label-pattern/" ) ),
+							'id'   => 'enable_floatlabels',
+							'type' => 'checkbox'
+						),
+						array(
 							'name' => __( 'Disable Welcome Screen', 'give' ),
 							'desc' => sprintf( __( 'Enable this option if you would like to disable the Give Welcome screen every time Give is activated and/or updated. You can always access the Welcome Screen <a href="%s">here</a> if you want in the future.', 'give' ), esc_url( admin_url( 'index.php?page=give-about' ) ) ),
 							'id'   => 'disable_welcome',
@@ -418,6 +424,12 @@ class Give_Plugin_Settings {
 							'name' => __( 'Disable Form Featured Image', 'give' ),
 							'desc' => __( 'The Featured Image is an image that is chosen as the representative image for donation form. The display of this image is largely up to the theme. If you do not wish to use the featured image you can disable it using this option.', 'give' ),
 							'id'   => 'disable_form_featured_img',
+							'type' => 'checkbox'
+						),
+						array(
+							'name' => __( 'Disable Single Form Sidebar', 'give' ),
+							'desc' => __( 'The sidebar allows you to add additional widget to the Give single form view. If you don\'t plan on using the sidebar you may disable it with this option.', 'give' ),
+							'id'   => 'disable_form_sidebar',
 							'type' => 'checkbox'
 						),
 						array(
@@ -603,6 +615,18 @@ class Give_Plugin_Settings {
 							'id'   => 'disable_the_content_filter',
 							'type' => 'checkbox'
 						),
+						array(
+							'name' => __( 'Script Loading', 'give' ),
+							'desc' => '<hr>',
+							'id'   => 'give_title_script_control',
+							'type' => 'give_title'
+						),
+						array(
+							'name' => __( 'Load Scripts in Footer?', 'give' ),
+							'desc' => __( 'Check this box if you would like Give to load all frontend JavaScript files in the footer.', 'give' ),
+							'id'   => 'scripts_footer',
+							'type' => 'checkbox'
+						)
 					)
 				)
 			),

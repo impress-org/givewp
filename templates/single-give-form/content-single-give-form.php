@@ -39,7 +39,7 @@ if ( post_password_required() ) {
 		do_action( 'give_before_single_form_summary' );
 		?>
 
-		<div class="summary entry-summary">
+		<div class="<?php echo apply_filters( 'give_forms_single_summary_classes', 'summary entry-summary' ); ?>">
 
 			<?php
 			/**

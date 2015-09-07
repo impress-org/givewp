@@ -30,6 +30,7 @@ class Tests_Scripts extends WP_UnitTestCase {
 		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
 
 			$this->assertTrue( wp_script_is( 'give-cc-validator', 'enqueued' ) );
+			$this->assertTrue( wp_script_is( 'give-float-labels', 'enqueued' ) );
 			$this->assertTrue( wp_script_is( 'give-blockui', 'enqueued' ) );
 			$this->assertTrue( wp_script_is( 'give-qtip', 'enqueued' ) );
 			$this->assertTrue( wp_script_is( 'give-accounting', 'enqueued' ) );
@@ -46,7 +47,7 @@ class Tests_Scripts extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test that the give_register_styles() function will bail when the 'disable_styles'
+	 * Test that the give_register_styles() function will bail when the 'disable_css'
 	 * option is set to true.
 	 *
 	 * @since 1.0
@@ -54,14 +55,14 @@ class Tests_Scripts extends WP_UnitTestCase {
 	public function test_register_styles_bail_option() {
 
 		// Prepare test
-		$origin_disable_styles = give_get_option( 'disable_styles', false );
-		give_update_option( 'disable_styles', true );
+		$origin_disable_css = give_get_option( 'disable_css', false );
+		give_update_option( 'disable_css', true );
 
 		// Assert
 		$this->assertNull( give_register_styles() );
 
 		// Reset to origin
-		give_update_option( 'disable_styles', $origin_disable_styles );
+		give_update_option( 'disable_css', $origin_disable_css );
 
 	}
 
@@ -72,7 +73,7 @@ class Tests_Scripts extends WP_UnitTestCase {
 	 */
 	public function test_register_styles() {
 
-		give_update_option( 'disable_styles', false );
+		give_update_option( 'disable_css', false );
 		give_register_styles();
 
 		$this->assertTrue( wp_style_is( 'give-styles', 'enqueued' ) );

@@ -28,8 +28,9 @@ function give_load_scripts() {
 
 	global $give_options;
 
-	$js_dir     = GIVE_PLUGIN_URL . 'assets/js/frontend/';
-	$js_plugins = GIVE_PLUGIN_URL . 'assets/js/plugins/';
+	$js_dir        = GIVE_PLUGIN_URL . 'assets/js/frontend/';
+	$js_plugins    = GIVE_PLUGIN_URL . 'assets/js/plugins/';
+	$scripts_footer = ( give_get_option( 'scripts_footer' ) == 'on' ) ? true : false;
 
 	// Use minified libraries if SCRIPT_DEBUG is turned off
 	$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
@@ -51,6 +52,7 @@ function give_load_scripts() {
 		'ajaxurl'          => give_get_ajax_url(),
 		'position_in_cart' => isset( $position ) ? $position : - 1,
 		'loading'          => __( 'Loading', 'give' ),
+		'floatlabels'      => give_get_option( 'enable_floatlabels' ) ? '1' : '0',
 		// General loading message
 		'select_option'    => __( 'Please select an option', 'give' ),
 		// Variable pricing error with multi-purchase option enabled
@@ -63,31 +65,36 @@ function give_load_scripts() {
 	if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
 
 		if ( give_is_cc_verify_enabled() ) {
-			wp_register_script( 'give-cc-validator', $js_plugins . 'jquery.payment' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+			wp_register_script( 'give-cc-validator', $js_plugins . 'jquery.payment' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, $scripts_footer );
 			wp_enqueue_script( 'give-cc-validator' );
 		}
 
-		wp_register_script( 'give-blockui', $js_plugins . 'jquery.blockUI' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+		if ( $localize_give_ajax['floatlabels'] ) {
+			wp_register_script( 'give-float-labels', $js_plugins . 'float-labels' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, $scripts_footer );
+			wp_enqueue_script( 'give-float-labels' );
+		}
+
+		wp_register_script( 'give-blockui', $js_plugins . 'jquery.blockUI' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, $scripts_footer );
 		wp_enqueue_script( 'give-blockui' );
 
-		wp_register_script( 'give-qtip', $js_plugins . 'jquery.qtip' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+		wp_register_script( 'give-qtip', $js_plugins . 'jquery.qtip' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, $scripts_footer );
 		wp_enqueue_script( 'give-qtip' );
 
-		wp_register_script( 'give-accounting', $js_plugins . 'accounting' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+		wp_register_script( 'give-accounting', $js_plugins . 'accounting' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, $scripts_footer );
 		wp_enqueue_script( 'give-accounting' );
 
-		wp_register_script( 'give-magnific', $js_plugins . 'give-magnific' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+		wp_register_script( 'give-magnific', $js_plugins . 'give-magnific' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, $scripts_footer );
 		wp_enqueue_script( 'give-magnific' );
 
-		wp_register_script( 'give-checkout-global', $js_dir . 'give-checkout-global' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+		wp_register_script( 'give-checkout-global', $js_dir . 'give-checkout-global' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, $scripts_footer );
 		wp_enqueue_script( 'give-checkout-global' );
 
 		//General scripts
-		wp_register_script( 'give-scripts', $js_dir . 'give' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+		wp_register_script( 'give-scripts', $js_dir . 'give' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, $scripts_footer );
 		wp_enqueue_script( 'give-scripts' );
 
 		// Load AJAX scripts, if enabled
-		wp_register_script( 'give-ajax', $js_dir . 'give-ajax' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+		wp_register_script( 'give-ajax', $js_dir . 'give-ajax' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, $scripts_footer );
 		wp_enqueue_script( 'give-ajax' );
 
 		//Localize / Pass AJAX vars from PHP
@@ -98,7 +105,7 @@ function give_load_scripts() {
 	} else {
 
 		//DEBUG is OFF (one JS file to rule them all!)
-		wp_register_script( 'give', $js_dir . 'give.all.min.js', array( 'jquery' ), GIVE_VERSION );
+		wp_register_script( 'give', $js_dir . 'give.all.min.js', array( 'jquery' ), GIVE_VERSION, $scripts_footer );
 		wp_enqueue_script( 'give' );
 
 		//Localize / Pass AJAX vars from PHP
@@ -122,7 +129,7 @@ add_action( 'wp_enqueue_scripts', 'give_load_scripts' );
  */
 function give_register_styles() {
 
-	if ( give_get_option( 'disable_styles', false ) ) {
+	if ( give_get_option( 'disable_css', false ) ) {
 		return;
 	}
 

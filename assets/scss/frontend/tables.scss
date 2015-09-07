@@ -1,0 +1,69 @@
+/**
+ * Give Frontend Tables SCSS
+ *
+ * @package     Give
+ * @subpackage  SCSS/Frontend
+ * @copyright   Copyright (c) 2015, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+
+table.give-table {
+  color: #666;
+  font-size: 14px;
+  text-shadow: 1px 1px 0px #fff;
+  background: #eaebec;
+  margin: 20px 0;
+  border: 1px solid #e0e0e0;
+  border-top: none;
+  border-bottom: none;
+  width: 100%;
+
+  thead {
+	font-weight: bold;
+
+	th:first-child {
+	  border-left: none;
+	  text-align:left;
+	}
+  }
+
+  th {
+	padding: 21px 25px 22px 25px;
+	border-top: 1px solid #E8E8E8;
+	border-bottom: 1px solid #e0e0e0;
+	border-left: 1px solid #e0e0e0;
+	border-right: none;
+	background: #F6F6F6;
+	text-align:center;
+	font-weight: bold;
+  }
+
+  tbody {
+
+	tr {
+	  text-align: center;
+
+	  td {
+		padding: 18px;
+		border: none;
+		border-top: 1px solid #ffffff;
+		border-bottom: 1px solid #e0e0e0;
+		border-left: 1px solid #e0e0e0;
+		background: #FFF;
+	  }
+
+	  td:first-child {
+		text-align: left;
+		//padding-left:20px;
+		border-left: 0;
+	  }
+	}
+
+	//Even Rows
+	tr:nth-child(even) td {
+	  background: #fcfcfc;
+	}
+
+  }
+
+}

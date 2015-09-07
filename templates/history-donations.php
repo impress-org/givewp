@@ -4,7 +4,7 @@
  */
 $donations = give_get_users_purchases( get_current_user_id(), 20, true, 'any' );
 if ( $donations ) : ?>
-	<table id="give_user_history">
+	<table id="give_user_history" class="give-table">
 		<thead>
 		<tr class="give_purchase_row">
 			<?php do_action( 'give_purchase_history_header_before' ); ?>
@@ -26,10 +26,9 @@ if ( $donations ) : ?>
 				</td>
 				<td class="give_purchase_details">
 					<?php if ( $post->post_status != 'publish' ) : ?>
-						<span class="give_purchase_status <?php echo $post->post_status; ?>"><?php echo give_get_payment_status( $post, true ); ?></span>
-						<a href="<?php echo esc_url( add_query_arg( 'payment_key', give_get_payment_key( $post->ID ), give_get_success_page_uri() ) ); ?>">&raquo;</a>
+						<a href="<?php echo esc_url( add_query_arg( 'payment_key', give_get_payment_key( $post->ID ), give_get_success_page_uri() ) ); ?>"><span class="give_purchase_status <?php echo $post->post_status; ?>"><?php echo give_get_payment_status( $post, true ); ?></span> &raquo;</a>
 					<?php else: ?>
-						<a href="<?php echo esc_url( add_query_arg( 'payment_key', give_get_payment_key( $post->ID ), give_get_success_page_uri() ) ); ?>"><?php _e( 'View Details', 'give' ); ?></a>
+						<a href="<?php echo esc_url( add_query_arg( 'payment_key', give_get_payment_key( $post->ID ), give_get_success_page_uri() ) ); ?>"><?php _e( 'View Details', 'give' ); ?>&raquo;</a>
 					<?php endif; ?>
 				</td>
 				<?php do_action( 'give_purchase_history_row_end', $post->ID, $donation_data ); ?>
