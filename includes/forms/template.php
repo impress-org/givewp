@@ -548,8 +548,8 @@ function give_get_cc_form() {
 				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'The date your credit card expires, typically on the front of the card.', 'give' ); ?>"></span>
 			</label>
 
-			<input type="hidden" id="card_exp_month" name="card_exp_month" />
-			<input type="hidden" id="card_exp_year" name="card_exp_year" />
+			<input type="hidden" id="card_exp_month" name="card_exp_month" class="card-expiry-month" />
+			<input type="hidden" id="card_exp_year" name="card_exp_year" class="card-expiry-year" />
 
 			<input type="tel" autocomplete="off" name="card_expiry" id="card_expiry" class="card-expiry give-input required" placeholder="<?php _e( 'MM / YY', 'give' ); ?>" />
 		</p>
