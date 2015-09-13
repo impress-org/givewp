@@ -174,6 +174,8 @@ class Tests_Give extends WP_UnitTestCase {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.flot.min.js' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.flot.orderBars.js' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.flot.orderBars.min.js' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.flot.time.js' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.flot.time.min.js' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.qtip.js' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.qtip.min.js' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.payment.js' );

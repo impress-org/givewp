@@ -156,6 +156,7 @@ gulp.task( 'default', function () {
 	var overrides = {
 		"chosen"         : { main: ['chosen.jquery.js'] },
 		"float-labels.js": { main: ['dist/float-labels.js', 'src/scss/float-labels.scss'] },
+		"Flot"           : { main: ['jquery.flot.js', 'jquery.flot.time.js'] },
 		"flot.orderbars" : { main: ['js/jquery.flot.orderBars.js'] },
 		"jquery"         : { ignore: true },
 		"magnific-popup" : { main: ['dist/jquery.magnific-popup.js', 'src/css/*.scss'] },

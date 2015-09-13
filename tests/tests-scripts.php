@@ -127,6 +127,8 @@ class Tests_Scripts extends WP_UnitTestCase {
 		$this->assertTrue( wp_script_is( 'give-admin-scripts', 'enqueued' ) );
 		$this->assertTrue( wp_script_is( 'jquery-ui-datepicker', 'enqueued' ) );
 		$this->assertTrue( wp_script_is( 'jquery-flot', 'enqueued' ) );
+		$this->assertTrue( wp_script_is( 'jquery-flot-orderbars', 'enqueued' ) );
+		$this->assertTrue( wp_script_is( 'jquery-flot-time', 'enqueued' ) );
 		$this->assertTrue( wp_script_is( 'thickbox', 'enqueued' ) );
 
 		//Forms CPT Script
