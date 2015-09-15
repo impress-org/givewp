@@ -10,6 +10,8 @@ By contributing code to Give, you agree to license your contribution under the [
 
 Search our [issue tracker](https://github.com/WordImpress/Give/issues) for similar issues.
 
+* __Do not report potential security vulnerabilities here. Email them privately to our security team at [security@givewp.com](mailto:security@givewp.com)__
+
 ## How to report a bug
 
 1. Specify the version number for Give. 
