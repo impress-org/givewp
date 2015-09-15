@@ -6,7 +6,7 @@
  * @subpackage  Gateways
  * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       1.0
+ * @since       1.1
  */
 
 
@@ -44,6 +44,35 @@ function give_offline_disable_abandoned_orders() {
 }
 
 add_action( 'plugins_loaded', 'give_offline_disable_abandoned_orders' );
+
+
+/**
+ * Require CC billing validation if offline billing info is enabled for the form.
+ *
+ * @since 1.1
+ *
+ * @param bool $bool
+ *
+ * @return void
+ */
+function give_offline_do_billing_address_validation( $bool ) {
+
+	if ( isset( $_POST['give-gateway'] ) && $_POST['give-gateway'] == 'offline' ) {
+
+		$form_id = isset( $_POST['give-form-id'] ) ? $_POST['give-form-id'] : false;
+
+		$post_offline_cc_fields   = $form_id ? get_post_meta( $form_id, '_give_offline_donation_enable_billing_fields_single', true ) : false;
+		$global_offline_cc_fields = give_get_option( 'give_offline_donation_enable_billing_fields' );
+
+		if ( ! ( $global_offline_cc_fields == 'on' || $post_offline_cc_fields == 'on' ) ) {
+			$bool = false;
+		}
+	}
+
+	return $bool;
+}
+
+add_filter( 'give_require_billing_address', 'give_offline_do_billing_address_validation' );
 
 
 /**

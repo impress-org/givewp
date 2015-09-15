@@ -18,16 +18,24 @@
 add_action( 'give_manual_cc_form', '__return_false' );
 
 /**
- * Manual Gateway does not need a CC form validation, so remove it.
+ * Manual Gateway does not need CC billing address validation, so remove it.
  *
  * @since 1.0
+ *
+ * @param bool $bool
+ *
  * @return void
  */
-add_filter( 'give_require_billing_address', 'give_manual_no_cc_validation' );
+function give_manual_do_billing_address_validation( $bool ) {
 
-function give_manual_no_cc_validation() {
-	return false;
+	if ( isset( $_POST['give-gateway'] ) && $_POST['give-gateway'] == 'manual' ) {
+		$bool = false;
+	}
+
+	return $bool;
 }
+
+add_filter( 'give_require_billing_address', 'give_manual_do_billing_address_validation' );
 
 /**
  * Processes the purchase data and uses the Manual Payment gateway to record
