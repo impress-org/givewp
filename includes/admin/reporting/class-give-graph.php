@@ -180,7 +180,10 @@ class Give_Graph {
 				$.plot(
 					$( "#give-graph-<?php echo $this->id; ?>" ),
 					[
-						<?php foreach( $this->get_data() as $label => $data ) : ?>
+						<?php
+							$order = 0;
+							foreach( $this->get_data() as $label => $data ) :
+						?>
 						{
 							label : "<?php echo esc_attr( $label ); ?>",
 							id    : "<?php echo sanitize_key( $label ); ?>",
@@ -192,7 +195,7 @@ class Give_Graph {
 							bars  : {
 								show    : <?php echo $this->options['bars'] ? 'true' : 'false'; ?>,
 								barWidth: 100,
-				                order: 1,
+				                order: <?php echo $order++; ?>,
 								align   : 'center'
 							},
 							lines : {
