@@ -710,7 +710,7 @@ function give_get_form_price( $form_id = 0 ) {
  * @param bool $echo     Whether to echo or return the results
  * @param int  $price_id Optional price id for variable pricing
  *
- * @return void
+ * @return int $formatted_price
  */
 function give_price( $form_id = 0, $echo = true, $price_id = false ) {
 
@@ -813,7 +813,7 @@ function give_get_form_goal( $form_id = 0 ) {
  * @param int  $form_id ID of the form price to show
  * @param bool $echo    Whether to echo or return the results
  *
- * @return void
+ * @return string $formatted_goal
  */
 function give_goal( $form_id = 0, $echo = true ) {
 
