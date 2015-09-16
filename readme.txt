@@ -145,6 +145,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Fix: Delete invalid licenses and when a valid license is entered the field is now a password type https://github.com/WordImpress/Give/issues/203
 * Fix: When Only a Payment Gateway without CC Fields is Active Fatal JS error https://github.com/WordImpress/Give/issues/253
 * Fix: Multiple Give Forms on Single Page Causes CC Validation to Fail https://github.com/WordImpress/Give/issues/254
+* Fix: Donation form income totals not properly updated when manually updating amounts or deleting transactions causing goals to not calculate correctly - https://github.com/WordImpress/Give/issues/188
 * Fix: Admin Column: If no goal is set for a donation form show "No Goal Set" rather than "0.00" - https://github.com/WordImpress/Give/issues/256
 
 = 1.2.1 =
