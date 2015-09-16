@@ -6,7 +6,7 @@
  * @subpackage  Functions
  * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       1.0
+ * @since       1.0.1
  */
 
 // Exit if accessed directly
@@ -278,7 +278,7 @@ function give_purchase_form_required_fields() {
 	);
 
 	// Let payment gateways and other extensions determine if address fields should be required
-	$require_address = apply_filters( 'give_require_billing_address', true );
+	$require_address = give_require_billing_address();
 
 	if ( $require_address ) {
 		$required_fields['card_zip']        = array(
@@ -301,6 +301,23 @@ function give_purchase_form_required_fields() {
 
 	return apply_filters( 'give_purchase_form_required_fields', $required_fields );
 
+}
+
+/**
+ * Check if the Billing Address is required
+ *
+ * @since  1.0.1
+ * @return bool
+ */
+function give_require_billing_address() {
+
+	$return = false;
+
+	if ( isset( $_POST['billing_country'] ) ) {
+		$return = true;
+	}
+
+	return apply_filters( 'give_require_billing_address', $return );
 }
 
 /**
