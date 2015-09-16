@@ -36,7 +36,7 @@ function give_form_columns( $give_form_columns ) {
 		'form_category' => __( 'Categories', 'give' ),
 		'form_tag'      => __( 'Tags', 'give' ),
 		'price'         => __( 'Price', 'give' ),
-		'goal'			=> __( 'Goal', 'give' ),
+		'goal'          => __( 'Goal', 'give' ),
 		'donations'     => __( 'Donations', 'give' ),
 		'earnings'      => __( 'Income', 'give' ),
 		'shortcode'     => __( 'Shortcode', 'give' ),
@@ -92,7 +92,13 @@ function give_render_form_columns( $column_name, $post_id ) {
 				}
 				break;
 			case 'goal':
-				echo give_goal( $post_id, false );
+				$goal_option = get_post_meta( $post_id, '_give_goal_option', true );
+				if ( ! empty( $goal_option ) && $goal_option === 'yes' ) {
+					echo give_goal( $post_id, false );
+				} else {
+					echo __( 'No Goal Set', 'give' );
+				}
+
 				echo '<input type="hidden" class="formgoal-' . $post_id . '" value="' . give_get_form_goal( $post_id ) . '" />';
 				break;
 			case 'donations':
@@ -135,7 +141,7 @@ function give_sortable_form_columns( $columns ) {
 	$columns['price']    = 'price';
 	$columns['sales']    = 'sales';
 	$columns['earnings'] = 'earnings';
-	$columns['goal']	 = 'goal';
+	$columns['goal']     = 'goal';
 
 	return $columns;
 }
@@ -302,7 +308,7 @@ function give_price_field_quick_edit( $column_name, $post_type ) {
 			<br class="clear" />
 		</div>
 	</fieldset>
-<?php
+	<?php
 }
 
 add_action( 'quick_edit_custom_box', 'give_price_field_quick_edit', 10, 2 );
