@@ -1001,19 +1001,23 @@ if ( ! function_exists( 'give_license_key_callback' ) ) {
 		$field_description = $field_type_object->field->args['desc'];
 		$license_status    = get_option( $field_type_object->field->args['options']['is_valid_license_option'] );
 		$field_classes     = 'regular-text give-license-field';
+		$type              = empty( $escaped_value ) ? 'text' : 'password';
 
 		if ( $license_status === 'valid' ) {
 			$field_classes .= ' give-license-active';
 		}
 
-		$html = $field_type_object->input(
-			array(
-				'class' => $field_classes,
-				'type'  => 'text'
-			) );
+		$html = $field_type_object->input( array(
+			'class' => $field_classes,
+			'type'  => $type
+		) );
 
+		//License is active so show deactivate button
 		if ( $license_status === 'valid' ) {
 			$html .= '<input type="submit" class="button-secondary give-license-deactivate" name="' . $id . '_deactivate" value="' . __( 'Deactivate License', 'give' ) . '"/>';
+		} else {
+			//This license is not valid so delete it
+			give_delete_option($id);
 		}
 
 		$html .= '<label for="give_settings[' . $id . ']"> ' . $field_description . '</label>';
