@@ -142,6 +142,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Fix: Admin Give menu section called "Donation Forms" rather than just "Forms" thanks @pryley - https://github.com/WordImpress/Give/issues/196
 * Fix: Include CMB2CSS in the head to avoid FOUC https://github.com/WordImpress/Give/issues/243
 * Fix: Test Mode Active notification displays for editors when inactive https://github.com/WordImpress/Give/issues/242
+* Fix:  Delete invalid licenses and when a valid license is entered the field is now a password type https://github.com/WordImpress/Give/issues/203
 
 = 1.2.1 =
 * Improved: Admin UX/UI - "View Donation Details" button now much easier to navigate into the single transaction view - https://github.com/WordImpress/Give/issues/216
