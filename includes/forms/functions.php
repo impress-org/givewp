@@ -205,7 +205,8 @@ add_action( 'template_redirect', 'give_listen_for_failed_payments' );
  * @return      bool
  */
 function give_field_is_required( $field = '', $form_id ) {
-	$required_fields = give_purchase_form_required_fields($form_id);
+
+	$required_fields = give_purchase_form_required_fields( $form_id );
 
 	return array_key_exists( $field, $required_fields );
 }

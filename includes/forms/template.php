@@ -569,9 +569,10 @@ add_action( 'give_cc_form', 'give_get_cc_form' );
  * Outputs the default credit card address fields
  *
  * @since 1.0
+ * @param int $form_id
  * @return void
  */
-function give_default_cc_address_fields() {
+function give_default_cc_address_fields($form_id) {
 
 	$logged_in = is_user_logged_in();
 
