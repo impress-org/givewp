@@ -25,6 +25,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_process_purchase_form() {
 
+	do_action( 'give_pre_process_purchase' );
+
 	// Validate the form $_POST data
 	$valid_data = give_purchase_form_validate_fields();
 
@@ -92,7 +94,11 @@ function give_process_purchase_form() {
 	}
 
 	// Allow the purchase data to be modified before it is sent to the gateway
-	$purchase_data = apply_filters( 'give_purchase_data_before_gateway', $purchase_data, $valid_data );
+	$purchase_data = apply_filters(
+		'give_purchase_data_before_gateway',
+		$purchase_data,
+		$valid_data
+	);
 
 	// Setup the data we're storing in the purchase session
 	$session_data = $purchase_data;
