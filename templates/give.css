@@ -1734,10 +1734,10 @@ Avada
 
 .progress-bar {
   height: 20px;
-  /* Can be anything */
   position: relative;
   background: #EEE;
-  border-radius: 25px; }
+  border-radius: 25px;
+  overflow: hidden; }
   .progress-bar > span {
     display: block;
     height: 100%;

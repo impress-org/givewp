@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Print Errors
  *
- * Prints all stored errors. For use during checkout.
+ * Prints all stored errors. For use during donation process.
  * If errors exist, they are returned.
  *
  * @since 1.0
@@ -148,4 +148,27 @@ function give_die( $message = '', $title = '', $status = 400 ) {
 	add_filter( 'wp_die_ajax_handler', '_give_die_handler', 10, 3 );
 	add_filter( 'wp_die_handler', '_give_die_handler', 10, 3 );
 	wp_die( $message, $title, array( 'response' => $status ) );
+}
+
+/**
+ * Give Output Error
+ *
+ * @description: Helper function to easily output an error message properly wrapped; used commonly with shortcodes
+ * @since      1.3
+ *
+ * @param $message
+ * @param $echo
+ * @param $error_id
+ *
+ * @return   string  $error
+ */
+function give_output_error( $message, $echo = true, $error_id = 'warning' ) {
+	$error = '<div class="give_errors" id="give_error_' . $error_id . '"><p class="give_error">' . $message . '</p></div>';
+
+	if ( $echo ) {
+		echo $error;
+	} else {
+		return $error;
+	}
+
 }

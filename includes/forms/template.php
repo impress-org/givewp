@@ -1118,18 +1118,21 @@ add_action( 'give_pre_form_output', 'give_form_content', 10, 2 );
  * Show Give Goals
  * @since 1.0
  *
- * @param int $form_id
+ * @param int   $form_id
+ * @param array $args
  *
  * @return bool
  */
 
-function give_show_goal_progress( $form_id ) {
+function give_show_goal_progress( $form_id, $args ) {
 
 	$goal_option = get_post_meta( $form_id, '_give_goal_option', true );
 	$form        = new Give_Donate_Form( $form_id );
 	$goal        = $form->goal;
 	$income      = $form->get_earnings();
 	$color       = get_post_meta( $form_id, '_give_goal_color', true );
+	$show_text   = (bool) isset( $args['show_text'] ) ? filter_var( $args['show_text'], FILTER_VALIDATE_BOOLEAN ) : true;
+	$show_bar    = (bool) isset( $args['show_bar'] ) ? filter_var( $args['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
 
 	if ( empty( $form->ID ) || $goal_option !== 'yes' || $goal == 0 ) {
 		return false;
@@ -1142,17 +1145,24 @@ function give_show_goal_progress( $form_id ) {
 	}
 
 	$output = '<div class="goal-progress">';
-	$output .= '<div class="raised">';
-	$output .= sprintf( _x( '%s of %s raised', 'give', 'This text displays the amount of income raised compared to the goal.' ), '<span class="income">' . give_currency_filter( give_format_amount( $income ) ) . '</span>', '<span class="goal-text">' . give_currency_filter( give_format_amount( $goal ) ) ) . '</span>';
-	$output .= '</div>';
-	$output .= '<div class="progress-bar">';
-
-	$output .= '<span style="width: ' . esc_attr( $progress ) . '%;';
-	if ( ! empty( $color ) ) {
-		$output .= 'background-color:' . $color;
+	//Goal Progress Text
+	if ( ! empty( $show_text ) ) {
+		$output .= '<div class="raised">';
+		$output .= sprintf( _x( '%s of %s raised', 'give', 'This text displays the amount of income raised compared to the goal.' ), '<span class="income">' . give_currency_filter( give_format_amount( $income ) ) . '</span>', '<span class="goal-text">' . give_currency_filter( give_format_amount( $goal ) ) ) . '</span>';
+		$output .= '</div>';
 	}
-	$output .= '"></span>';
-	$output .= '</div></div><!-- /.goal-progress -->';
+	//Goal Progress Bar
+	if ( ! empty( $show_bar ) ) {
+		$output .= '<div class="progress-bar">';
+		$output .= '<span style="width: ' . esc_attr( $progress ) . '%;';
+		if ( ! empty( $color ) ) {
+			$output .= 'background-color:' . $color;
+		}
+		$output .= '"></span>';
+		$output .= '</div><!-- /.progress-bar -->';
+	}
+
+	$output .= '</div><!-- /.goal-progress -->';
 
 	echo apply_filters( 'give_goal_output', $output );
 
