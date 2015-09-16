@@ -42,7 +42,7 @@ class Give_Notices {
 	public function give_admin_bar_menu() {
 		global $wp_admin_bar;
 
-		if ( ! give_is_test_mode() && current_user_can( 'view_give_reports' ) ) {
+		if ( ! give_is_test_mode() || ! current_user_can( 'view_give_reports' ) ) {
 			return false;
 		}
 
