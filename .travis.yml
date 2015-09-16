@@ -15,9 +15,6 @@ env:
 - WP_VERSION=4.0 WP_MULTISITE=0
 - WP_VERSION=3.9.2 WP_MULTISITE=0
 
-install:
-- composer install --dev
-
 matrix:
   include:
     - php: 5.3
