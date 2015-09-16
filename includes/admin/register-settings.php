@@ -57,6 +57,9 @@ class Give_Plugin_Settings {
 		add_action( 'cmb2_render_api', 'give_api_callback', 10, 5 );
 		add_action( 'cmb2_render_license_key', 'give_license_key_callback', 10, 5 );
 
+		// Include CMB CSS in the head to avoid FOUC
+		add_action( "admin_print_styles-give_forms_page_give-settings", array( 'CMB2_hookup', 'enqueue_cmb_css' ) );
+
 	}
 
 	/**
@@ -65,6 +68,7 @@ class Give_Plugin_Settings {
 	 */
 	public function init() {
 		register_setting( $this->key, $this->key );
+
 	}
 
 
