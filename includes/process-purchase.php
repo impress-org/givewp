@@ -6,7 +6,7 @@
  * @subpackage  Functions
  * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       1.0
+ * @since       1.0.1
  */
 
 // Exit if accessed directly
@@ -300,8 +300,7 @@ function give_purchase_form_required_fields() {
 /**
  * Check if the Billing Address is required
  *
- * @param int $form_id
- *
+ * @since  1.0.1
  * @return bool
  */
 function give_require_billing_address() {
