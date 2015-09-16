@@ -39,9 +39,9 @@ add_shortcode( 'donation_history', 'give_donation_history' );
 /**
  * Donation Form Shortcode
  *
- * Show the Give donation form.
+ * @description Show the Give donation form.
  *
- * @since 1.0
+ * @since       1.0
  *
  * @param array  $atts Shortcode attributes
  * @param string $content
@@ -63,6 +63,50 @@ function give_form_shortcode( $atts, $content = null ) {
 }
 
 add_shortcode( 'give_form', 'give_form_shortcode' );
+
+/**
+ * Donation Form Goal Shortcode
+ *
+ * @description Show the Give donation form goals.
+ *
+ * @since       1.0
+ *
+ * @param array  $atts Shortcode attributes
+ * @param string $content
+ *
+ * @return string
+ */
+function give_goal_shortcode( $atts, $content = null ) {
+	$atts = shortcode_atts( array(
+		'id'        => '',
+		'show_text' => true,
+		'show_bar'  => true,
+	), $atts, 'give_goal' );
+
+
+	//get the Give Form
+	ob_start();
+
+	//Sanity check 1: ensure there is an ID Provided
+	if ( empty( $atts['id'] ) ) {
+		give_output_error( __('Error: No Donation form ID for the shortcode provided.', 'give'), true );
+	}
+
+	//Sanity check 2: Check that this form even has Goals enabled
+	$goal_option = get_post_meta( $atts['id'], '_give_goal_option', true );
+	if(empty($goal_option) || $goal_option !== 'yes'){
+		give_output_error( __('Error: This form does not have Goals enabled.', 'give'), true );
+	} else {
+		//Passed all sanity checks: output Goal
+		give_show_goal_progress( $atts['id'], $atts );
+	}
+
+	$final_output = ob_get_clean();
+
+	return apply_filters( 'give_goal_shortcode_output', $final_output, $atts );
+}
+
+add_shortcode( 'give_goal', 'give_goal_shortcode' );
 
 
 /**
@@ -157,7 +201,7 @@ function give_receipt_shortcode( $atts, $content = null ) {
 
 	//Set our important payment information variables
 	$give_receipt_args['id'] = give_get_purchase_id_by_key( $payment_key );
-	$donor_id             = give_get_payment_user_id( $give_receipt_args['id'] );
+	$donor_id                = give_get_payment_user_id( $give_receipt_args['id'] );
 	$payment                 = get_post( $give_receipt_args['id'] );
 
 
