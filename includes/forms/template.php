@@ -494,13 +494,14 @@ add_action( 'give_register_fields_before', 'give_user_info_fields' );
  * Renders the credit card info form.
  *
  * @since 1.0
+ * @param int $form_id
  * @return void
  */
-function give_get_cc_form() {
+function give_get_cc_form($form_id) {
 
 	ob_start();
 
-	do_action( 'give_before_cc_fields' ); ?>
+	do_action( 'give_before_cc_fields', $form_id ); ?>
 
 	<fieldset id="give_cc_fields" class="give-do-validate">
 		<legend><?php _e( 'Credit Card Info', 'give' ); ?></legend>
@@ -553,11 +554,11 @@ function give_get_cc_form() {
 
 			<input type="tel" autocomplete="off" name="card_expiry" id="card_expiry" class="card-expiry give-input required" placeholder="<?php _e( 'MM / YY', 'give' ); ?>" />
 		</p>
-		<?php do_action( 'give_after_cc_expiration' ); ?>
+		<?php do_action( 'give_after_cc_expiration', $form_id ); ?>
 
 	</fieldset>
 	<?php
-	do_action( 'give_after_cc_fields' );
+	do_action( 'give_after_cc_fields', $form_id );
 
 	echo ob_get_clean();
 }
