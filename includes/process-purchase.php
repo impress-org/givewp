@@ -263,9 +263,10 @@ function give_purchase_form_validate_agree_to_terms() {
  *
  * @access      private
  * @since       1.0
+ * @param       $form_id
  * @return      array
  */
-function give_purchase_form_required_fields() {
+function give_purchase_form_required_fields($form_id) {
 	$required_fields = array(
 		'give_email' => array(
 			'error_id'      => 'invalid_email',
@@ -277,10 +278,13 @@ function give_purchase_form_required_fields() {
 		)
 	);
 
-	// Let payment gateways and other extensions determine if address fields should be required
 	$require_address = give_require_billing_address();
 
 	if ( $require_address ) {
+		$required_fields['card_address']        = array(
+			'error_id'      => 'invalid_card_address',
+			'error_message' => __( 'Please enter your primary billing address', 'give' )
+		);
 		$required_fields['card_zip']        = array(
 			'error_id'      => 'invalid_zip_code',
 			'error_message' => __( 'Please enter your zip / postal code', 'give' )
@@ -317,7 +321,9 @@ function give_require_billing_address() {
 		$return = true;
 	}
 
+	// Let payment gateways and other extensions determine if address fields should be required
 	return apply_filters( 'give_require_billing_address', $return );
+
 }
 
 /**
@@ -342,8 +348,8 @@ function give_purchase_form_validate_logged_in_user() {
 		$user_data = get_userdata( $user_ID );
 
 		// Loop through required fields and show error messages
-		foreach ( give_purchase_form_required_fields() as $field_name => $value ) {
-			if ( in_array( $value, give_purchase_form_required_fields() ) && empty( $_POST[ $field_name ] ) ) {
+		foreach ( give_purchase_form_required_fields($form_id) as $field_name => $value ) {
+			if ( in_array( $value, give_purchase_form_required_fields($form_id) ) && empty( $_POST[ $field_name ] ) ) {
 				give_set_error( $value['error_id'], $value['error_message'] );
 			}
 		}

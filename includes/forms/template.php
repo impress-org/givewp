@@ -445,7 +445,7 @@ function give_user_info_fields( $form_id ) {
 		<p id="give-first-name-wrap" class="form-row form-row-first">
 			<label class="give-label" for="give-first">
 				<?php _e( 'First Name', 'give' ); ?>
-				<?php if ( give_field_is_required( 'give_first' ) ) { ?>
+				<?php if ( give_field_is_required( 'give_first', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
 				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'We will use this to personalize your account experience.', 'give' ); ?>"></span>
@@ -456,13 +456,13 @@ function give_user_info_fields( $form_id ) {
 		<p id="give-last-name-wrap" class="form-row form-row-last">
 			<label class="give-label" for="give-last">
 				<?php _e( 'Last Name', 'give' ); ?>
-				<?php if ( give_field_is_required( 'give_last' ) ) { ?>
+				<?php if ( give_field_is_required( 'give_last', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
 				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'We will use this as well to personalize your account experience.', 'give' ); ?>"></span>
 			</label>
 
-			<input class="give-input<?php if ( give_field_is_required( 'give_last' ) ) {
+			<input class="give-input<?php if ( give_field_is_required( 'give_last', $form_id ) ) {
 				echo ' required';
 			} ?>" type="text" name="give_last" id="give-last" placeholder="<?php _e( 'Last name', 'give' ); ?>" value="<?php echo is_user_logged_in() ? $user_data->last_name : ''; ?>" />
 		</p>
@@ -471,7 +471,7 @@ function give_user_info_fields( $form_id ) {
 		<p id="give-email-wrap" class="form-row form-row-wide">
 			<label class="give-label" for="give-email">
 				<?php _e( 'Email Address', 'give' ); ?>
-				<?php if ( give_field_is_required( 'give_email' ) ) { ?>
+				<?php if ( give_field_is_required( 'give_email', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
 				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'We will send the purchase receipt to this address.', 'give' ); ?>"></span>
@@ -588,13 +588,14 @@ function give_default_cc_address_fields() {
 		<p id="give-card-address-wrap" class="form-row form-row-two-thirds">
 			<label for="card_address" class="give-label">
 				<?php _e( 'Address', 'give' ); ?>
-				<?php if ( give_field_is_required( 'card_address' ) ) { ?>
+				<?php
+				if ( give_field_is_required( 'card_address', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
 				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'The primary billing address for your credit card.', 'give' ); ?>"></span>
 			</label>
 
-			<input type="text" id="card_address" name="card_address" class="card-address give-input<?php if ( give_field_is_required( 'card_address' ) ) {
+			<input type="text" id="card_address" name="card_address" class="card-address give-input<?php if ( give_field_is_required( 'card_address', $form_id ) ) {
 				echo ' required';
 			} ?>" placeholder="<?php _e( 'Address line 1', 'give' ); ?>" value="<?php echo $line1; ?>" />
 		</p>
@@ -602,13 +603,13 @@ function give_default_cc_address_fields() {
 		<p id="give-card-address-2-wrap" class="form-row form-row-one-third">
 			<label for="card_address_2" class="give-label">
 				<?php _e( 'Address Line 2', 'give' ); ?>
-				<?php if ( give_field_is_required( 'card_address_2' ) ) { ?>
+				<?php if ( give_field_is_required( 'card_address_2', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
 				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( '(optional) The suite, apt no, PO box, etc, associated with your billing address.', 'give' ); ?>"></span>
 			</label>
 
-			<input type="text" id="card_address_2" name="card_address_2" class="card-address-2 give-input<?php if ( give_field_is_required( 'card_address_2' ) ) {
+			<input type="text" id="card_address_2" name="card_address_2" class="card-address-2 give-input<?php if ( give_field_is_required( 'card_address_2', $form_id ) ) {
 				echo ' required';
 			} ?>" placeholder="<?php _e( 'Address line 2', 'give' ); ?>" value="<?php echo $line2; ?>" />
 		</p>
@@ -616,12 +617,12 @@ function give_default_cc_address_fields() {
 		<p id="give-card-city-wrap" class="form-row form-row-two-thirds">
 			<label for="card_city" class="give-label">
 				<?php _e( 'City', 'give' ); ?>
-				<?php if ( give_field_is_required( 'card_city' ) ) { ?>
+				<?php if ( give_field_is_required( 'card_city', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
 				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'The city for your billing address.', 'give' ); ?>"></span>
 			</label>
-			<input type="text" id="card_city" name="card_city" class="card-city give-input<?php if ( give_field_is_required( 'card_city' ) ) {
+			<input type="text" id="card_city" name="card_city" class="card-city give-input<?php if ( give_field_is_required( 'card_city', $form_id ) ) {
 				echo ' required';
 			} ?>" placeholder="<?php _e( 'City', 'give' ); ?>" value="<?php echo $city; ?>" />
 		</p>
@@ -629,13 +630,13 @@ function give_default_cc_address_fields() {
 		<p id="give-card-zip-wrap" class="form-row form-row-one-third">
 			<label for="card_zip" class="give-label">
 				<?php _e( 'Zip / Postal Code', 'give' ); ?>
-				<?php if ( give_field_is_required( 'card_zip' ) ) { ?>
+				<?php if ( give_field_is_required( 'card_zip', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
 				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'The zip or postal code for your billing address.', 'give' ); ?>"></span>
 			</label>
 
-			<input type="text" size="4" id="card_zip" name="card_zip" class="card-zip give-input<?php if ( give_field_is_required( 'card_zip' ) ) {
+			<input type="text" size="4" id="card_zip" name="card_zip" class="card-zip give-input<?php if ( give_field_is_required( 'card_zip', $form_id ) ) {
 				echo ' required';
 			} ?>" placeholder="<?php _e( 'Zip / Postal code', 'give' ); ?>" value="<?php echo $zip; ?>" />
 		</p>
@@ -643,13 +644,13 @@ function give_default_cc_address_fields() {
 		<p id="give-card-country-wrap" class="form-row form-row-first">
 			<label for="billing_country" class="give-label">
 				<?php _e( 'Country', 'give' ); ?>
-				<?php if ( give_field_is_required( 'billing_country' ) ) { ?>
+				<?php if ( give_field_is_required( 'billing_country', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
 				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'The country for your billing address.', 'give' ); ?>"></span>
 			</label>
 
-			<select name="billing_country" id="billing_country" class="billing-country billing_country give-select<?php if ( give_field_is_required( 'billing_country' ) ) {
+			<select name="billing_country" id="billing_country" class="billing-country billing_country give-select<?php if ( give_field_is_required( 'billing_country', $form_id ) ) {
 				echo ' required';
 			} ?>">
 				<?php
@@ -671,7 +672,7 @@ function give_default_cc_address_fields() {
 		<p id="give-card-state-wrap" class="form-row form-row-last">
 			<label for="card_state" class="give-label">
 				<?php _e( 'State / Province', 'give' ); ?>
-				<?php if ( give_field_is_required( 'card_state' ) ) { ?>
+				<?php if ( give_field_is_required( 'card_state', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
 				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'The state or province for your billing address.', 'give' ); ?>"></span>
@@ -686,7 +687,7 @@ function give_default_cc_address_fields() {
 			}
 
 			if ( ! empty( $states ) ) : ?>
-				<select name="card_state" id="card_state" class="card_state give-select<?php if ( give_field_is_required( 'card_state' ) ) {
+				<select name="card_state" id="card_state" class="card_state give-select<?php if ( give_field_is_required( 'card_state', $form_id ) ) {
 					echo ' required';
 				} ?>">
 					<?php

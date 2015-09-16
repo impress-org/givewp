@@ -70,7 +70,7 @@ function give_offline_payment_cc_form( $form_id ) {
 	$global_offline_cc_fields = give_get_option( 'give_offline_donation_enable_billing_fields' );
 
 	if ( $global_offline_cc_fields == 'on' || ( $post_offline_customization_option == 'yes' && $post_offline_cc_fields == 'on' ) ) {
-		add_action( 'give_before_offline_info_fields', 'give_default_cc_address_fields' );
+		add_action( 'give_before_offline_info_fields', 'give_default_cc_address_fields', $form_id );
 	}
 
 	ob_start(); ?>
