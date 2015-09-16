@@ -12,10 +12,12 @@ var give_scripts, give_global_vars;
 jQuery( function ( $ ) {
 	var doc = $( document );
 
-	// Update state/province field on checkout page
-	doc.on( 'change', '#give_cc_address input.card_state, #give_cc_address select', function () {
+	/**
+	 * Update state/province fields per country selection
+	 */
+	function update_billing_state_field() {
 		var $this = $( this ),
-			$form = $this.parents( "form" );
+			$form = $this.parents( 'form' );
 		if ( 'card_state' != $this.attr( 'id' ) ) {
 
 			//Disable the State field until updated
@@ -29,7 +31,7 @@ jQuery( function ( $ ) {
 			};
 
 			$.ajax( {
-				type     : "POST",
+				type     : 'POST',
 				data     : postData,
 				url      : give_global_vars.ajaxurl,
 				xhrFields: {
@@ -52,24 +54,36 @@ jQuery( function ( $ ) {
 		}
 
 		return false;
-	} );
+	}
+
+	doc.on( 'change', '#give_cc_address input.card_state, #give_cc_address select', update_billing_state_field );
+
 
 	/**
-	 * Credit card verification
+	 * Format CC Fields
+	 * @description Set variables and format cc fields
+	 * @since 1.2
 	 */
-	var card_number, card_cvc, card_expiry, give_form;
-
-	// Set variables and format cc fields
 	function format_cc_fields() {
-		card_number = $( '#card_number' );
-		card_cvc = $( '#card_cvc' );
-		card_expiry = $( '#card_expiry' );
 		give_form = $( 'form.give-form' );
 
-		card_number.payment( 'formatCardNumber' );
-		card_cvc.payment( 'formatCardCVC' );
-		card_expiry.payment( 'formatCardExpiry' );
-	};
+		//Loop through forms on page and set CC validation
+		give_form.each( function () {
+			var card_number = $( this ).find( '#card_number' );
+			var card_cvc = $( this ).find( '#card_cvc' );
+			var card_expiry = $( this ).find( '#card_expiry' );
+
+			//Only validate if there is a card field
+			if ( card_number.length === 0 ) {
+				return false;
+			}
+
+			card_number.payment( 'formatCardNumber' );
+			card_cvc.payment( 'formatCardCVC' );
+			card_expiry.payment( 'formatCardExpiry' );
+		} );
+
+	}
 
 	format_cc_fields();
 
@@ -86,10 +100,16 @@ jQuery( function ( $ ) {
 		return this;
 	};
 
-	// Validate cc fields on change
+	/**
+	 * Validate cc fields on change
+	 */
 	doc.on( 'keyup change', '#card_number, #card_cvc, #card_expiry', function () {
-		var t = $( this ),
-			id = t.attr( 'id' ),
+		var el = $( this ),
+			give_form = el.parents( 'form.give-form' ),
+			id = el.attr( 'id' ),
+			card_number = give_form.find('#card_number' ),
+			card_cvc = give_form.find('#card_cvc' ),
+			card_expiry = give_form.find('#card_expiry' ),
 			type = $.payment.cardType( card_number.val() );
 
 		if ( id === 'card_number' ) {
@@ -98,7 +118,7 @@ jQuery( function ( $ ) {
 
 			if ( type === null ) {
 				card_type.removeClass().addClass( 'off card-type' );
-				t.removeClass( 'valid' ).addClass( 'error' );
+				el.removeClass( 'valid' ).addClass( 'error' );
 			}
 			else {
 				card_type.removeClass( 'off' ).addClass( type );
@@ -121,17 +141,28 @@ jQuery( function ( $ ) {
 		}
 	} );
 
-	// format the currency with accounting.js
-	function give_format_currency( price ){
-	    return accounting.formatMoney( price, {
-	    	symbol : "",
-	        decimal : give_global_vars.decimal_separator,
-		    thousand: give_global_vars.thousands_separator,
-		    precision : give_global_vars.number_decimals,
-	    }).trim();
+	/**
+	 * Format Currency
+	 *
+	 * @description format the currency with accounting.js
+	 * @param price
+	 * @returns {*|string}
+	 */
+	function give_format_currency( price ) {
+		return accounting.formatMoney( price, {
+			symbol   : '',
+			decimal  : give_global_vars.decimal_separator,
+			thousand : give_global_vars.thousands_separator,
+			precision: give_global_vars.number_decimals
+		} ).trim();
 	}
 
-	function give_unformat_currency( price ){
+	/**
+	 * Unformat Currency
+	 * @param price
+	 * @returns {number}
+	 */
+	function give_unformat_currency( price ) {
 		return Math.abs( parseFloat( accounting.unformat( price, give_global_vars.decimal_separator ) ) );
 	}
 
@@ -150,7 +181,9 @@ jQuery( function ( $ ) {
 		$( '#give-payment-mode-select input:checked' ).parent().addClass( 'give-gateway-option-selected' );
 	} );
 
-	//Custom Donation Amount - If user focuses on field & changes value then updates price
+	/**
+	 * Custom Donation Amount - If user focuses on field & changes value then updates price
+	 */
 	doc.on( 'focus', '.give-donation-amount .give-text-input', function ( e ) {
 
 		var parent_form = $( this ).parents( 'form' );
@@ -171,7 +204,9 @@ jQuery( function ( $ ) {
 		parent_form.find( '.give-select-level .give-donation-level-custom' ).prop( 'selected', true ); //Select
 	} );
 
-	//Custom Donation (fires on focus end aka "blur")
+	/**
+	 * Custom Donation (fires on focus end aka "blur")
+	 */
 	doc.on( 'blur', '.give-donation-amount .give-text-input', function ( e ) {
 
 		var pre_focus_amount = $( this ).data( 'amount' );
@@ -179,7 +214,7 @@ jQuery( function ( $ ) {
 		var value_now = give_unformat_currency( $( this ).val() );
 		var formatted_total = give_format_currency( value_now );
 
-		$(this).val( formatted_total );
+		$( this ).val( formatted_total );
 
 		//Does this number have a value?
 		if ( !$.isNumeric( value_now ) || value_now <= 0 ) {
@@ -216,7 +251,13 @@ jQuery( function ( $ ) {
 		update_multiselect_vals( $( this ) );
 	} );
 
-	//Helper function: Sets the multiselect amount values
+	/**
+	 * Update Multiselect Vals
+	 * @description Helper function: Sets the multiselect amount values
+	 *
+	 * @param selected_field
+	 * @returns {boolean}
+	 */
 	function update_multiselect_vals( selected_field ) {
 
 		var parent_form = selected_field.parents( 'form' );
