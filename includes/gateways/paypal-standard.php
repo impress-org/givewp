@@ -6,7 +6,7 @@
  * @subpackage  Gateways
  * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       1.1
+ * @since       1.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -22,26 +22,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since  1.0
  */
 add_action( 'give_paypal_cc_form', '__return_false' );
-
-/**
- * PayPal Standard Gateway does not need CC billing address validation, so remove it.
- *
- * @since 1.1
- *
- * @param bool $bool
- *
- * @return void
- */
-function give_paypal_do_billing_address_validation( $bool ) {
-
-	if ( isset( $_POST['give-gateway'] ) && $_POST['give-gateway'] == 'paypal' ) {
-		$bool = false;
-	}
-
-	return $bool;
-}
-
-add_filter( 'give_require_billing_address', 'give_paypal_do_billing_address_validation' );
 
 /**
  * Process PayPal Purchase
