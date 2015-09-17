@@ -821,9 +821,6 @@ function give_run_refresh_reports_transients( $data ) {
 	delete_transient( md5( 'give_earnings_this_monththis_month' ) );
 	delete_transient( md5( 'give_earnings_todaytoday' ) );
 
-	// Remove the test email query arg
-	remove_query_arg( 'give-message' );
-
 }
 
 add_action( 'give_refresh_reports_transients', 'give_run_refresh_reports_transients' );
