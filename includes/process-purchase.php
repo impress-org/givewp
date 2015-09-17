@@ -311,7 +311,7 @@ function give_purchase_form_required_fields( $form_id ) {
 		);
 	}
 
-	return apply_filters( 'give_purchase_form_required_fields', $required_fields );
+	return apply_filters( 'give_purchase_form_required_fields', $required_fields, $form_id );
 
 }
 
@@ -319,7 +319,10 @@ function give_purchase_form_required_fields( $form_id ) {
  * Check if the Billing Address is required
  *
  * @since  1.0.1
- * @return bool
+ *
+ * @param $payment_mode
+ *
+ * @return mixed|void
  */
 function give_require_billing_address( $payment_mode ) {
 
@@ -344,7 +347,7 @@ function give_require_billing_address( $payment_mode ) {
 function give_purchase_form_validate_logged_in_user() {
 	global $user_ID;
 
-	$form_id = isset($_POST['give-form-id']) ? $_POST['give-form-id'] : '';
+	$form_id = isset( $_POST['give-form-id'] ) ? $_POST['give-form-id'] : '';
 
 	// Start empty array to collect valid user data
 	$valid_user_data = array(
@@ -565,6 +568,9 @@ function give_purchase_form_validate_user_login() {
  * @return  array
  */
 function give_purchase_form_validate_guest_user() {
+
+	$form_id = isset( $_POST['give-form-id'] ) ? $_POST['give-form-id'] : '';
+
 	// Start an array to collect valid user data
 	$valid_user_data = array(
 		// Set a default id for guests
@@ -595,8 +601,8 @@ function give_purchase_form_validate_guest_user() {
 	}
 
 	// Loop through required fields and show error messages
-	foreach ( give_purchase_form_required_fields() as $field_name => $value ) {
-		if ( in_array( $value, give_purchase_form_required_fields() ) && empty( $_POST[ $field_name ] ) ) {
+	foreach ( give_purchase_form_required_fields( $form_id ) as $field_name => $value ) {
+		if ( in_array( $value, give_purchase_form_required_fields( $form_id ) ) && empty( $_POST[ $field_name ] ) ) {
 			give_set_error( $value['error_id'], $value['error_message'] );
 		}
 	}
