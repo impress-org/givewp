@@ -193,7 +193,7 @@ function give_insert_payment( $payment_data = array() ) {
 		// Record the payment details
 		give_update_payment_meta( $payment, '_give_payment_meta', apply_filters( 'give_payment_meta', $payment_meta, $payment_data ) );
 		give_update_payment_meta( $payment, '_give_payment_user_id', $payment_data['user_info']['id'] );
-		give_update_payment_meta( $payment, '_give_payment_donor_id', $donor_id );
+		give_update_payment_meta( $payment, '_give_payment_donor_id', $customer->id );
 		give_update_payment_meta( $payment, '_give_payment_user_email', $payment_data['user_email'] );
 		give_update_payment_meta( $payment, '_give_payment_user_ip', give_get_ip() );
 		give_update_payment_meta( $payment, '_give_payment_purchase_key', $payment_data['purchase_key'] );
