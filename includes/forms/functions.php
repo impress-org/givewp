@@ -554,7 +554,7 @@ function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 
 	foreach ( $prices as $price ) {
 
 		if ( $price['_give_id']['level_id'] === $price_id ) {
-			$price_name = $price['_give_text'];
+			$price_name = isset( $price['_give_text'] ) ? $price['_give_text'] : '';
 		}
 
 	}
@@ -771,11 +771,12 @@ add_filter( 'give_form_price', 'give_currency_filter', 20 );
  */
 function give_get_price_option_amount( $form_id = 0, $price_id = 0 ) {
 	$prices = give_get_variable_prices( $form_id );
+
 	$amount = 0.00;
 
 	foreach ( $prices as $price ) {
 		if ( isset( $price['_give_id']['level_id'] ) && $price['_give_id']['level_id'] === $price_id ) {
-			$amount = $price['_give_amount'];
+			$amount = isset( $price['_give_amount'] ) ? $price['_give_amount'] : 0.00;
 		};
 	}
 
