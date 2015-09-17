@@ -89,13 +89,13 @@ function give_goal_shortcode( $atts, $content = null ) {
 
 	//Sanity check 1: ensure there is an ID Provided
 	if ( empty( $atts['id'] ) ) {
-		give_output_error( __('Error: No Donation form ID for the shortcode provided.', 'give'), true );
+		give_output_error( __( 'Error: No Donation form ID for the shortcode provided.', 'give' ), true );
 	}
 
 	//Sanity check 2: Check that this form even has Goals enabled
 	$goal_option = get_post_meta( $atts['id'], '_give_goal_option', true );
-	if(empty($goal_option) || $goal_option !== 'yes'){
-		give_output_error( __('Error: This form does not have Goals enabled.', 'give'), true );
+	if ( empty( $goal_option ) || $goal_option !== 'yes' ) {
+		give_output_error( __( 'Error: This form does not have Goals enabled.', 'give' ), true );
 	} else {
 		//Passed all sanity checks: output Goal
 		give_show_goal_progress( $atts['id'], $atts );
@@ -247,12 +247,12 @@ function give_receipt_shortcode( $atts, $content = null ) {
 
 	<?php }
 
-
 	give_get_template_part( 'shortcode', 'receipt' );
 
 	$display = ob_get_clean();
 
 	return $display;
+
 }
 
 add_shortcode( 'give_receipt', 'give_receipt_shortcode' );

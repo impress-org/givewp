@@ -34,6 +34,8 @@ switch ( $template ) {
 	case 'flatsome' :
 		echo '<div id="container" class="row product-page give-wrap"><div id="content" role="main">';
 		break;
+	case 'divi' :
+		echo '<div id="main-content"><div class="container give-wrap" role="main">';
 	case 'x' :
 		echo '<div id="container" class="x-container-fluid max width offset cf give-wrap"><div class="x-main full" role="main"><div class="entry-wrap"><div class="entry-content">';
 		break;
