@@ -713,7 +713,12 @@ function give_get_sales_by_date( $day = null, $month_num = null, $year = null, $
 	$args = apply_filters( 'give_get_sales_by_date_args', $args );
 
 	$key   = md5( serialize( $args ) );
-	$count = get_transient( $key );
+
+	if ( ! empty( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'give-refresh-reports' ) ) {
+		$count = false;
+	} else {
+		$count = get_transient( $key );
+	}
 
 	if ( false === $count ) {
 		$sales = new WP_Query( $args );
