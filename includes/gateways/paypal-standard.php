@@ -88,7 +88,7 @@ function give_process_paypal_purchase( $purchase_data ) {
 			$price_level_amount = give_get_price_option_amount( $form_id, $purchase_data['post_data']['give-price-id'] );
 
 			//Donation given doesn't match selected level (must be a custom amount)
-			if ( $price_level_amount !== give_sanitize_amount( $purchase_data['price'] ) ) {
+			if ( $price_level_amount != give_sanitize_amount( $purchase_data['price'] ) ) {
 				$custom_amount_text = get_post_meta( $form_id, '_give_custom_amount_text', true );
 				//user custom amount text if any, fallback to default if not
 				$item_name .= ' - ' . (! empty( $custom_amount_text ) ? $custom_amount_text : __( 'Custom Amount', 'give' ));
