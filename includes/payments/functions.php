@@ -649,10 +649,14 @@ function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour
 		$args['hour'] = $hour;
 	}
 
-	$args     = apply_filters( 'give_get_earnings_by_date_args', $args );
-	$key      = md5( serialize( $args ) );
+	$args = apply_filters( 'give_get_earnings_by_date_args', $args );
+	$key  = md5( serialize( $args ) );
 
-	$earnings = get_transient( $key );
+	if ( ! empty( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'give-refresh-reports' ) ) {
+		$earnings = false;
+	} else {
+		$earnings = get_transient( $key );
+	}
 
 	if ( false === $earnings ) {
 		$sales    = get_posts( $args );
