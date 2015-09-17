@@ -400,6 +400,25 @@ jQuery.noConflict();
 		}
 	};
 
+	/**
+	 * Initialize qTips
+	 */
+	var initialize_qtips = function () {
+		jQuery( '[data-tooltip!=""]' ).qtip( { // Grab all elements with a non-blank data-tooltip attr.
+			content: {
+				attr: 'data-tooltip' // Tell qTip2 to look inside this attr for its content
+			},
+			style  : {classes: 'qtip-rounded qtip-tipsy'},
+			events : {
+				show: function ( event, api ) {
+					var $el = $( api.elements.target[0] );
+					$el.qtip( 'option', 'position.my', ($el.data( 'tooltip-my-position' ) == undefined) ? 'bottom center' : $el.data( 'tooltip-my-position' ) );
+					$el.qtip( 'option', 'position.at', ($el.data( 'tooltip-target-position' ) == undefined) ? 'top center' : $el.data( 'tooltip-target-position' ) );
+				}
+			}
+		} )
+	};
+
 	//On DOM Ready
 	$( function () {
 
@@ -410,6 +429,7 @@ jQuery.noConflict();
 		Give_Reports.init();
 		Give_Customer.init();
 		API_Screen.init();
+		initialize_qtips();
 
 		//Footer
 		$( 'a.give-rating-link' ).click( function () {

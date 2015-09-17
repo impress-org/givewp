@@ -497,7 +497,7 @@ function give_reports_graph_controls() {
 	}
 
 	//echo '<pre>'; print_r( $dates ); echo '</pre>';
-
+	do_action( 'give_report_graph_controls_before' );
 	?>
 	<form id="give-graphs-filter" method="get" class="alignright">
 		<div class="tablenav top alignright">
@@ -560,7 +560,8 @@ function give_reports_graph_controls() {
 			</div>
 		</div>
 	</form>
-<?php
+	<?php
+	do_action( 'give_report_graph_controls_after' );
 }
 
 /**
@@ -754,3 +755,50 @@ function give_parse_report_dates( $data ) {
 }
 
 add_action( 'give_filter_reports', 'give_parse_report_dates' );
+
+
+/**
+ * Give Reports Refresh Button
+ * @since      1.3
+ * @description: Outputs a "Refresh Reports" button for graphs
+ */
+function give_reports_refresh_button() {
+
+	$url = wp_nonce_url( add_query_arg( array(
+		'give_action'  => 'refresh_reports_transients',
+		'give-message' => 'refreshed-reports'
+	) ), 'give-refresh-reports' );
+
+	echo '<a href="' . $url . '" data-tooltip="' . __( 'Clicking this will clear the reports cache.', 'give' ) . '" data-tooltip-my-position="right center"  data-tooltip-target-position="left center" class="button alignright give-refresh-reports-button give-tooltip">' . __( 'Refresh Reports', 'give' ) . '</a>';
+
+}
+
+add_action( 'give_reports_graph_additional_stats', 'give_reports_refresh_button' );
+
+/**
+ * Trigger the refresh of reports transients
+ *
+ * @since 1.3
+ *
+ * @param array $data Parameters sent from Settings page
+ *
+ * @return void
+ */
+function give_run_refresh_reports_transients( $data ) {
+	if ( ! wp_verify_nonce( $data['_wpnonce'], 'give-refresh-reports' ) ) {
+		return;
+	}
+
+	//Delete transients
+	delete_transient('give_estimated_monthly_stats');
+	delete_transient('give_earnings_total');
+	delete_transient(md5('give_earnings_this_monththis_month'));
+	delete_transient(md5('give_earnings_todaytoday'));
+
+	// Remove the test email query arg
+	remove_query_arg( 'give-message' );
+
+}
+
+add_action( 'give_refresh_reports_transients', 'give_run_refresh_reports_transients' );
+
