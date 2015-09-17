@@ -651,6 +651,7 @@ function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour
 
 	$args     = apply_filters( 'give_get_earnings_by_date_args', $args );
 	$key      = md5( serialize( $args ) );
+
 	$earnings = get_transient( $key );
 
 	if ( false === $earnings ) {
