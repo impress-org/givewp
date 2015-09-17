@@ -126,7 +126,7 @@ function give_process_paypal_purchase( $purchase_data ) {
 			'notify_url'    => $listener_url,
 			'page_style'    => give_get_paypal_page_style(),
 			'cbt'           => get_bloginfo( 'name' ),
-			'bn'            => 'WordImpress_Donate_Give_US'
+			'bn'            => 'givewp_SP'
 		);
 
 		if ( ! empty( $purchase_data['user_info']['address'] ) ) {
