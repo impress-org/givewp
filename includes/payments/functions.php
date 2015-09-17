@@ -169,13 +169,26 @@ function give_insert_payment( $payment_data = array() ) {
 			$payment_data['price'] = '0.00';
 		}
 
-		// Create or update a donor
-		$donor_id = Give()->customers->add( array(
-			'name'        => $payment_data['user_info']['first_name'] . ' ' . $payment_data['user_info']['last_name'],
-			'email'       => $payment_data['user_email'],
-			'user_id'     => $payment_data['user_info']['id'],
-			'payment_ids' => $payment
-		) );
+		// Create or update a customer
+		$customer      = new Give_Customer( $payment_data['user_email'] );
+		$customer_data = array(
+			'name'    => $payment_data['user_info']['first_name'] . ' ' . $payment_data['user_info']['last_name'],
+			'email'   => $payment_data['user_email'],
+			'user_id' => $payment_data['user_info']['id']
+		);
+
+		if ( empty( $customer->id ) ) {
+			$customer->create( $customer_data );
+		} else {
+			// Only update the customer if their name or email has changed
+			if ( $customer_data['email'] !== $customer->email || $customer_data['name'] !== $customer->name ) {
+				// We shouldn't be updating the User ID here, that is an admin task
+				unset( $customer_data['user_id'] );
+				$customer->update( $customer_data );
+			}
+		}
+
+		$customer->attach_payment( $payment, false );
 
 		// Record the payment details
 		give_update_payment_meta( $payment, '_give_payment_meta', apply_filters( 'give_payment_meta', $payment_meta, $payment_data ) );
@@ -189,7 +202,8 @@ function give_insert_payment( $payment_data = array() ) {
 		give_update_payment_meta( $payment, '_give_payment_gateway', $gateway );
 
 		if ( give_get_option( 'enable_sequential' ) ) {
-			give_update_payment_meta( $payment, '_give_payment_number', $number );
+			give_update_payment_meta( $payment, '_give_payment_number', give_format_payment_number( $number ) );
+			update_option( 'give_last_payment_number', $number );
 		}
 
 		// Clear the user's purchased cache
@@ -430,22 +444,48 @@ function give_count_payments( $args = array() ) {
 	}
 
 	// Limit payments count by date
-	if ( ! empty( $args['start-date'] ) ) {
-		$date = new DateTime( $args['start-date'] );
-		$where .= "
-			AND p.post_date >= '" . $date->format( 'Y-m-d' ) . "'";
+	if ( ! empty( $args['start-date'] ) && false !== strpos( $args['start-date'], '/' ) ) {
+
+		$date_parts = explode( '/', $args['start-date'] );
+		$month      = ! empty( $date_parts[0] ) && is_numeric( $date_parts[0] ) ? $date_parts[0] : 0;
+		$day        = ! empty( $date_parts[1] ) && is_numeric( $date_parts[1] ) ? $date_parts[1] : 0;
+		$year       = ! empty( $date_parts[2] ) && is_numeric( $date_parts[2] ) ? $date_parts[2] : 0;
+
+		$is_date = checkdate( $month, $day, $year );
+		if ( false !== $is_date ) {
+
+			$date = new DateTime( $args['start-date'] );
+			$where .= $wpdb->prepare( " AND p.post_date >= '%s'", $date->format( 'Y-m-d' ) );
+
+		}
+
+		// Fixes an issue with the payments list table counts when no end date is specified (partiy with stats class)
+		if ( empty( $args['end-date'] ) ) {
+			$args['end-date'] = $args['start-date'];
+		}
+
 	}
 
-	if ( ! empty ( $args['end-date'] ) ) {
-		$date = new DateTime( $args['end-date'] );
-		$where .= "
-			AND p.post_date <= '" . $date->format( 'Y-m-d' ) . "'";
+	if ( ! empty ( $args['end-date'] ) && false !== strpos( $args['end-date'], '/' ) ) {
+
+		$date_parts = explode( '/', $args['end-date'] );
+
+		$month = ! empty( $date_parts[0] ) ? $date_parts[0] : 0;
+		$day   = ! empty( $date_parts[1] ) ? $date_parts[1] : 0;
+		$year  = ! empty( $date_parts[2] ) ? $date_parts[2] : 0;
+
+		$is_date = checkdate( $month, $day, $year );
+		if ( false !== $is_date ) {
+
+			$date = new DateTime( $args['end-date'] );
+			$where .= $wpdb->prepare( " AND p.post_date <= '%s'", $date->format( 'Y-m-d' ) );
+
+		}
+
 	}
 
 	$where = apply_filters( 'give_count_payments_where', $where );
 	$join  = apply_filters( 'give_count_payments_join', $join );
-
-	$cache_key = md5( implode( '|', $args ) . $where );
 
 	$query = "SELECT p.post_status,count( * ) AS num_posts
 		FROM $wpdb->posts p
@@ -453,6 +493,8 @@ function give_count_payments( $args = array() ) {
 		$where
 		GROUP BY p.post_status
 	";
+
+	$cache_key = md5( implode( '|', $args ) . $where );
 
 	$count = wp_cache_get( $cache_key, 'counts' );
 	if ( false !== $count ) {
@@ -907,12 +949,12 @@ function give_get_payment_meta_user_info( $payment_id ) {
 /**
  * Get the donations Key from Payment Meta
  *
- * @description Retrieves the form_id from a (Previously title give_get_payment_meta_donations)
+ * @description Retrieves the form_id from a (Previously titled give_get_payment_meta_donations)
  * @since       1.0
  *
  * @param int $payment_id Payment ID
  *
- * @return array $donations Downloads Meta Values
+ * @return int $form_id
  */
 function give_get_payment_form_id( $payment_id ) {
 	$payment_meta = give_get_payment_meta( $payment_id );
@@ -938,18 +980,62 @@ function give_get_payment_user_email( $payment_id ) {
 }
 
 /**
+ * Is the payment provided associated with a user account
+ *
+ * @since  1.3
+ *
+ * @param  int $payment_id The payment ID
+ *
+ * @return bool            If the payment is associted with a user (false) or not (true)
+ */
+function give_is_guest_payment( $payment_id ) {
+	$payment_user_id  = give_get_payment_user_id( $payment_id );
+	$is_guest_payment = ! empty( $payment_user_id ) && $payment_user_id > 0 ? false : true;
+
+	return (bool) apply_filters( 'give_is_guest_payment', $is_guest_payment, $payment_id );
+}
+
+/**
  * Get the user ID associated with a payment
  *
- * @since 1.0
+ * @since 1.3
  *
  * @param int $payment_id Payment ID
  *
  * @return string $user_id User ID
  */
 function give_get_payment_user_id( $payment_id ) {
-	$user_id = give_get_payment_meta( $payment_id, '_give_payment_user_id', true );
 
-	return apply_filters( 'give_payment_user_id', $user_id );
+	$user_id = - 1;
+
+	// check the customer record first
+	$customer_id = give_get_payment_customer_id( $payment_id );
+	$customer    = new Give_Customer( $customer_id );
+
+	if ( ! empty( $customer->user_id ) && $customer->user_id > 0 ) {
+		$user_id = $customer->user_id;
+	}
+
+	// check the payment meta if we're still not finding a user with the customer record
+	if ( empty( $user_id ) || $user_id < 1 ) {
+		$payment_meta_user_id = give_get_payment_meta( $payment_id, '_give_payment_user_id', true );
+
+		if ( ! empty( $payment_meta_user_id ) ) {
+			$user_id = $payment_meta_user_id;
+		}
+	}
+
+	// Last ditch effort is to connect payment email with a user in the user table
+	if ( empty( $user_id ) || $user_id < 1 ) {
+		$payment_email = give_get_payment_user_email( $payment_id );
+		$user          = get_user_by( 'email', $payment_email );
+
+		if ( false !== $user ) {
+			$user_id = $user->ID;
+		}
+	}
+
+	return apply_filters( 'give_payment_user_id', (int) $user_id );
 }
 
 /**
@@ -962,9 +1048,9 @@ function give_get_payment_user_id( $payment_id ) {
  * @return string $donor_id Donor ID
  */
 function give_get_payment_customer_id( $payment_id ) {
-	$donor_id = get_post_meta( $payment_id, '_give_payment_donor_id', true );
+	$customer_id = get_post_meta( $payment_id, '_give_payment_donor_id', true );
 
-	return apply_filters( 'give_payment_donor_id', $donor_id );
+	return apply_filters( 'give_payment_donor_id', $customer_id );
 }
 
 /**
@@ -1096,6 +1182,34 @@ function give_get_payment_number( $payment_id = 0 ) {
 }
 
 /**
+ * Formats the payment number with the prefix and postfix
+ *
+ * @since  1.3
+ *
+ * @param  int $number The payment number to format
+ *
+ * @return string      The formatted payment number
+ */
+function give_format_payment_number( $number ) {
+
+	if ( ! give_get_option( 'enable_sequential' ) ) {
+		return $number;
+	}
+
+	if ( ! is_numeric( $number ) ) {
+		return $number;
+	}
+
+	$prefix  = give_get_option( 'sequential_prefix' );
+	$number  = absint( $number );
+	$postfix = give_get_option( 'sequential_postfix' );
+
+	$formatted_number = $prefix . $number . $postfix;
+
+	return apply_filters( 'give_format_payment_number', $formatted_number, $prefix, $number, $postfix );
+}
+
+/**
  * Gets the next available order number
  *
  * This is used when inserting a new payment
@@ -1109,53 +1223,89 @@ function give_get_next_payment_number() {
 		return false;
 	}
 
-	$prefix  = give_get_option( 'sequential_prefix' );
-	$postfix = give_get_option( 'sequential_postfix' );
-	$start   = give_get_option( 'sequential_start', 1 );
+	$number           = get_option( 'give_last_payment_number' );
+	$start            = give_get_option( 'sequential_start', 1 );
+	$increment_number = true;
 
-	$payments = new Give_Payments_Query( array(
-		'number'  => 1,
-		'order'   => 'DESC',
-		'orderby' => 'ID',
-		'output'  => 'posts',
-		'fields'  => 'ids'
-	) );
-
-	$last_payment = $payments->get_payments();
-
-	if ( $last_payment ) {
-
-		$number = give_get_payment_number( $last_payment[0] );
+	if ( false !== $number ) {
 
 		if ( empty( $number ) ) {
 
-			$number = $prefix . $start . $postfix;
-
-		} else {
-
-			// Remove prefix and postfix
-			$number = str_replace( $prefix, '', $number );
-			$number = str_replace( $postfix, '', $number );
-
-			// Ensure it's a whole number
-			$number = intval( $number );
-
-			// Increment the payment number
-			$number ++;
-
-			// Re-add the prefix and postfix
-			$number = $prefix . $number . $postfix;
+			$number           = $start;
+			$increment_number = false;
 
 		}
 
 	} else {
 
-		$number = $prefix . $start . $postfix;
+		// This case handles the first addition of the new option, as well as if it get's deleted for any reason
+		$payments     = new Give_Payments_Query( array(
+			'number'  => 1,
+			'order'   => 'DESC',
+			'orderby' => 'ID',
+			'output'  => 'posts',
+			'fields'  => 'ids'
+		) );
+		$last_payment = $payments->get_payments();
 
+		if ( $last_payment ) {
+
+			$number = give_get_payment_number( $last_payment[0] );
+
+		}
+
+		if ( ! empty( $number ) && $number !== $last_payment[0] ) {
+
+			$number = give_remove_payment_prefix_postfix( $number );
+
+		} else {
+
+			$number           = $start;
+			$increment_number = false;
+		}
+
+	}
+
+	$increment_number = apply_filters( 'give_increment_payment_number', $increment_number, $number );
+
+	if ( $increment_number ) {
+		$number ++;
 	}
 
 	return apply_filters( 'give_get_next_payment_number', $number );
 }
+
+/**
+ * Given a given a number, remove the pre/postfix
+ *
+ * @since  1.3
+ *
+ * @param  string $number The formatted Current Number to increment
+ *
+ * @return string          The new Payment number without prefix and postfix
+ */
+function give_remove_payment_prefix_postfix( $number ) {
+
+	$prefix  = give_get_option( 'sequential_prefix' );
+	$postfix = give_get_option( 'sequential_postfix' );
+
+	// Remove prefix
+	$number = preg_replace( '/' . $prefix . '/', '', $number, 1 );
+
+	// Remove the postfix
+	$length      = strlen( $number );
+	$postfix_pos = strrpos( $number, $postfix );
+	if ( false !== $postfix_pos ) {
+		$number = substr_replace( $number, '', $postfix_pos, $length );
+	}
+
+	// Ensure it's a whole number
+	$number = intval( $number );
+
+	return apply_filters( 'give_remove_payment_prefix_postfix', $number, $prefix, $postfix );
+
+}
+
 
 /**
  * Get Payment Amount
@@ -1261,6 +1411,30 @@ function give_get_purchase_id_by_key( $key ) {
 	global $wpdb;
 
 	$purchase = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_give_payment_purchase_key' AND meta_value = %s LIMIT 1", $key ) );
+
+	if ( $purchase != null ) {
+		return $purchase;
+	}
+
+	return 0;
+}
+
+
+/**
+ * Retrieve the purchase ID based on the transaction ID
+ *
+ * @since 1.3
+ * @global object $wpdb Used to query the database using the WordPress
+ *                      Database API
+ *
+ * @param string  $key  the transaction ID to search for
+ *
+ * @return int $purchase Purchase ID
+ */
+function give_get_purchase_id_by_transaction_id( $key ) {
+	global $wpdb;
+
+	$purchase = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_give_payment_transaction_id' AND meta_value = %s LIMIT 1", $key ) );
 
 	if ( $purchase != null ) {
 		return $purchase;
