@@ -198,13 +198,15 @@ add_action( 'template_redirect', 'give_listen_for_failed_payments' );
  * Check if a field is required
  *
  * @param string $field
+ * @param int    $form_id
  *
  * @access      public
  * @since       1.0
  * @return      bool
  */
-function give_field_is_required( $field = '' ) {
-	$required_fields = give_purchase_form_required_fields();
+function give_field_is_required( $field = '', $form_id ) {
+
+	$required_fields = give_purchase_form_required_fields( $form_id );
 
 	return array_key_exists( $field, $required_fields );
 }
