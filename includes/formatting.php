@@ -170,6 +170,9 @@ function give_currency_filter( $price = '', $currency = '' ) {
 			case "JPY" :
 				$formatted = $symbol . $price;
 				break;
+			case "NOK" :
+				$formatted = $symbol . ' ' . $price;
+				break;
 			default :
 				$formatted = $currency . ' ' . $price;
 				break;

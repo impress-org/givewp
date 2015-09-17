@@ -66,7 +66,7 @@ function give_get_currencies() {
 		'MYR'  => __( 'Malaysian Ringgits', 'give' ),
 		'MXN'  => __( 'Mexican Peso (&#36;)', 'give' ),
 		'NZD'  => __( 'New Zealand Dollar (&#36;)', 'give' ),
-		'NOK'  => __( 'Norwegian Krone', 'give' ),
+		'NOK'  => __( 'Norwegian Krone (Kr.)', 'give' ),
 		'PHP'  => __( 'Philippine Pesos', 'give' ),
 		'PLN'  => __( 'Polish Zloty', 'give' ),
 		'SGD'  => __( 'Singapore Dollar (&#36;)', 'give' ),
@@ -99,7 +99,6 @@ function give_currency_symbol( $currency = '' ) {
 	if ( empty( $currency ) ) {
 		$currency = give_get_currency();
 	}
-
 	switch ( $currency ) :
 		case "GBP" :
 			$symbol = '&pound;';
@@ -109,6 +108,9 @@ function give_currency_symbol( $currency = '' ) {
 			break;
 		case "EUR" :
 			$symbol = '&euro;';
+			break;
+		case "NOK" :
+			$symbol = 'Kr.';
 			break;
 		case "USD" :
 		case "AUD" :
