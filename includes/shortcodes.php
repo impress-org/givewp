@@ -57,13 +57,13 @@ function give_form_shortcode( $atts, $content = null ) {
 		'display_style' => '', //onpage|reveal|modal
 	), $atts, 'give_form' );
 
-	foreach( $atts as $key => $value ) {
+	foreach ( $atts as $key => $value ) {
 		//convert shortcode_atts values to booleans
-		if( in_array( $key, ['show_title', 'show_goal', 'show_content'] ) ) {
+		if ( in_array( $key, ['show_title', 'show_goal', 'show_content'] ) ) {
 			$atts[ $key ] = filter_var( $atts[ $key ], FILTER_VALIDATE_BOOLEAN );
 		}
 		//default display_style to 'onpage'
-		if( $key == 'display_style' && !in_array( $value, ['onpage', 'reveal', 'modal'] ) ) {
+		if ( $key == 'display_style' && !in_array( $value, ['onpage', 'reveal', 'modal'] ) ) {
 			$atts[ $key ] = '';
 		}
 	}
