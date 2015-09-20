@@ -50,9 +50,23 @@ add_shortcode( 'donation_history', 'give_donation_history' );
  */
 function give_form_shortcode( $atts, $content = null ) {
 	$atts = shortcode_atts( array(
-		'id'         => '',
-		'show_title' => true,
+		'id'            => '',
+		'show_title'    => true,
+		'show_goal'     => true,
+		'show_content'  => true,
+		'display_style' => '', //onpage|reveal|modal
 	), $atts, 'give_form' );
+
+	foreach( $atts as $key => $value ) {
+		//convert shortcode_atts values to booleans
+		if( in_array( $key, ['show_title', 'show_goal', 'show_content'] ) ) {
+			$atts[ $key ] = filter_var( $atts[ $key ], FILTER_VALIDATE_BOOLEAN );
+		}
+		//default display_style to 'onpage'
+		if( $key == 'display_style' && !in_array( $value, ['onpage', 'reveal', 'modal'] ) ) {
+			$atts[ $key ] = '';
+		}
+	}
 
 	//get the Give Form
 	ob_start();

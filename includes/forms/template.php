@@ -34,7 +34,6 @@ function give_get_donation_form( $args = array() ) {
 		$post_id = $args['id'];
 	}
 
-
 	$defaults = apply_filters( 'give_form_args_defaults', array(
 		'form_id' => $post_id
 	) );
@@ -60,7 +59,9 @@ function give_get_donation_form( $args = array() ) {
 		return false; // Product not published or user doesn't have permission to view drafts
 	}
 
-	$display_option = get_post_meta( $form->ID, '_give_payment_display', true );
+	$display_option = ( isset( $args['display_style'] ) && !empty( $args['display_style'] ) )
+		? $args['display_style']
+		: get_post_meta( $form->ID, '_give_payment_display', true );
 
 	ob_start();
 
@@ -136,7 +137,6 @@ function give_get_donation_form( $args = array() ) {
 	$final_output = ob_get_clean();
 
 	echo apply_filters( 'give_donate_form', $final_output, $args );
-
 }
 
 
@@ -284,10 +284,10 @@ function give_output_donation_levels( $form_id = 0, $args = array() ) {
 	if ( $variable_pricing ) {
 		give_output_levels( $form_id );
 	}
-	do_action( 'give_after_donation_levels', $form_id );
+	do_action( 'give_after_donation_levels', $form_id, $args );
 }
 
-add_action( 'give_checkout_form_top', 'give_output_donation_levels' );
+add_action( 'give_checkout_form_top', 'give_output_donation_levels', 10, 2 );
 
 
 /**
@@ -391,7 +391,6 @@ function give_output_levels( $form_id ) {
 	}
 
 	echo apply_filters( 'give_form_level_output', $output, $form_id );
-
 }
 
 
@@ -400,12 +399,15 @@ function give_output_levels( $form_id ) {
  *
  * @description: Outputs a button to reveal form fields
  *
- * @param int $form_id
+ * @param int   $form_id
+ * @param array $args
  *
  */
-function give_display_checkout_button( $form_id ) {
+function give_display_checkout_button( $form_id, $args ) {
 
-	$display_option = get_post_meta( $form_id, '_give_payment_display', true );
+	$display_option = ( isset( $args['display_style'] ) && !empty( $args['display_style'] ) )
+		? $args['display_style']
+		: get_post_meta( $form_id, '_give_payment_display', true );
 
 	//no btn for onpage
 	if ( $display_option === 'onpage' ) {
@@ -418,10 +420,9 @@ function give_display_checkout_button( $form_id ) {
 	$output = '<button type="button" class="give-btn give-btn-' . $display_option . '">' . $display_label . '</button>';
 
 	echo apply_filters( 'give_display_checkout_button', $output );
-
 }
 
-add_action( 'give_after_donation_levels', 'give_display_checkout_button' );
+add_action( 'give_after_donation_levels', 'give_display_checkout_button', 10, 2 );
 
 /**
  * Shows the User Info fields in the Personal Info box, more fields can be added
@@ -434,6 +435,7 @@ add_action( 'give_after_donation_levels', 'give_display_checkout_button' );
  * @return void
  */
 function give_user_info_fields( $form_id ) {
+
 	if ( is_user_logged_in() ) :
 		$user_data = get_userdata( get_current_user_id() );
 	endif;
@@ -723,6 +725,7 @@ add_action( 'give_after_cc_fields', 'give_default_cc_address_fields' );
  * @return string
  */
 function give_get_register_fields( $form_id ) {
+
 	global $give_options;
 	global $user_ID;
 
@@ -824,6 +827,7 @@ add_action( 'give_purchase_form_register_fields', 'give_get_register_fields' );
  * @return string
  */
 function give_get_login_fields( $form_id ) {
+
 	global $give_options;
 
 	$color              = isset( $give_options['checkout_color'] ) ? $give_options['checkout_color'] : 'gray';
@@ -927,7 +931,6 @@ function give_payment_mode_select( $form_id ) {
 	</div><!-- the checkout fields are loaded into this-->
 
 	<?php do_action( 'give_payment_mode_bottom' );
-
 }
 
 add_action( 'give_payment_mode_select', 'give_payment_mode_select' );
@@ -1102,17 +1105,21 @@ add_action( 'give_checkout_form_top', 'give_agree_to_terms_js', 10, 2 );
  *
  * @since 1.0
  *
- * @param int $form_id
+ * @param int   $form_id
+ * @param array $args
  *
  * @return void
  */
-function give_form_content( $form_id ) {
+function give_form_content( $form_id, $args ) {
+
 	$content_option = get_post_meta( $form_id, '_give_content_option', true ); //value is action to output content
-	if ( $content_option !== 'none' ) {
+	$show_content   = ( isset( $args['show_content'] ) && $args['show_content'] === true );
+
+	if ( ( $content_option !== 'none' && $show_content )
+		|| ( $content_option === 'none' && !$show_content ) ) {
 		//add action according to value
 		add_action( $content_option, 'give_form_display_content' );
 	}
-
 }
 
 add_action( 'give_pre_form_output', 'give_form_content', 10, 2 );
@@ -1136,8 +1143,14 @@ function give_show_goal_progress( $form_id, $args ) {
 	$color       = get_post_meta( $form_id, '_give_goal_color', true );
 	$show_text   = (bool) isset( $args['show_text'] ) ? filter_var( $args['show_text'], FILTER_VALIDATE_BOOLEAN ) : true;
 	$show_bar    = (bool) isset( $args['show_bar'] ) ? filter_var( $args['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
+	$show_goal   = ( isset( $args['show_goal'] ) && $args['show_goal'] === true );
 
-	if ( empty( $form->ID ) || $goal_option !== 'yes' || $goal == 0 ) {
+	if ( empty( $form->ID )
+		|| $goal_option !== 'yes'
+		|| $goal == 0
+		|| ( $goal_option !== 'yes' && $show_goal === true )
+		|| ( $goal_option === 'yes' && $show_goal === false ) ) {
+
 		return false;
 	}
 
@@ -1168,7 +1181,6 @@ function give_show_goal_progress( $form_id, $args ) {
 	$output .= '</div><!-- /.goal-progress -->';
 
 	echo apply_filters( 'give_goal_output', $output );
-
 }
 
 add_action( 'give_pre_form', 'give_show_goal_progress', 10, 2 );
@@ -1194,7 +1206,6 @@ function give_form_display_content( $form_id ) {
 	$output = '<div id="give-form-content-' . $form_id . '" class="give-form-content-wrap" >' . $content . '</div>';
 
 	echo apply_filters( 'give_form_content_output', $output );
-
 }
 
 
@@ -1229,6 +1240,7 @@ function give_checkout_hidden_fields( $form_id ) {
  * @return string $content Filtered content
  */
 function give_filter_success_page_content( $content ) {
+
 	global $give_options;
 
 	if ( isset( $give_options['success_page'] ) && isset( $_GET['payment-confirmation'] ) && is_page( $give_options['success_page'] ) ) {
@@ -1256,10 +1268,7 @@ function give_test_mode_frontend_warning() {
 
 	if ( $test_mode == 'on' ) {
 		echo '<div class="give_error give_warning" id="give_error_test_mode"><p><strong>' . __( 'Notice', 'give' ) . '</strong>: ' . __( 'Test mode is enabled. While in test mode no live transactions are processed.', 'give' ) . '</p></div>';
-
 	}
-
-
 }
 
 add_action( 'give_pre_form', 'give_test_mode_frontend_warning', 10 );
