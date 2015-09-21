@@ -141,6 +141,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * New: Bower implemented to manage third-party JS scripts - Thanks @pryley https://github.com/WordImpress/Give/pull/236
 * New: Swedish translation files added - Thanks @mepmepmep https://github.com/WordImpress/Give/issues/238
 * New: Add "Refresh Reports" button to Reports page - https://github.com/WordImpress/Give/issues/210
+* New: Changed the ajax loader text from "Updating Price" to "Updating Amount" - https://github.com/WordImpress/Give/issues/269
 * Fix: Modal close button now displays properly - https://github.com/WordImpress/Give/issues/228
 * Fix: Admin Give menu section called "Donation Forms" rather than just "Forms" thanks @pryley - https://github.com/WordImpress/Give/issues/196
 * Fix: Include CMB2CSS in the head to avoid FOUC https://github.com/WordImpress/Give/issues/243
