@@ -135,6 +135,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * New: Advanced global setting to disable single give forms sidebars added - https://github.com/WordImpress/Give/issues/192
 * New: 'give_forms_single_summary_classes' filter added for customizing form wrapper classes
 * New: Advanced global setting added for load scripts in the footer - https://github.com/WordImpress/Give/issues/209
+* New: Admin - Refresh Reports button added to ensure user can clear transients used to store reporting data - https://github.com/WordImpress/Give/issues/210 and https://github.com/WordImpress/Give/issues/85
 * New: Basic table styles for Give tables - https://github.com/WordImpress/Give/issues/232
 * New: Custom amount field displays numbers by default on mobile/tablet - https://github.com/WordImpress/Give/issues/233
 * New: Bower implemented to manage third-party JS scripts - Thanks @pryley https://github.com/WordImpress/Give/pull/236
