@@ -92,7 +92,7 @@ function give_get_users_purchases( $user = 0, $number = 20, $pagination = false,
 /**
  * Get Users Donations
  *
- * Returns a list of unique forms purchased by a specific user
+ * Returns a list of unique donation forms given to by a specific user
  *
  * @since  1.0
  *
