@@ -291,8 +291,9 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 	$stats         = new Give_Payment_Stats;
 
 	if ( $dates['range'] == 'today' || $dates['range'] == 'yesterday' ) {
+
 		// Hour by hour
-		$month  = date( 'n', current_time( 'timestamp' ) );
+		$month  = $dates['m_start'];
 		$hour   = 1;
 		$minute = 0;
 		$second = 0;
@@ -342,11 +343,15 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 	} else {
 
 		$y = $dates['year'];
+
 		while ( $y <= $dates['year_end'] ) :
+
+			$last_year = false;
 
 			if ( $dates['year'] == $dates['year_end'] ) {
 				$month_start = $dates['m_start'];
 				$month_end   = $dates['m_end'];
+				$last_year   = true;
 			} elseif ( $y == $dates['year'] ) {
 				$month_start = $dates['m_start'];
 				$month_end   = 12;
@@ -360,7 +365,7 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 
 				if ( $day_by_day ) :
 
-					if ( $i == $month_end ) {
+					if ( $i == $month_end && $last_year ) {
 
 						$num_of_days = $dates['day_end'];
 
@@ -393,7 +398,7 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 					$num_of_days = cal_days_in_month( CAL_GREGORIAN, $i, $y );
 
 					$date     = mktime( 0, 0, 0, $i, 1, $y );
-					$end_date = mktime( 0, 0, 0, $i + 1, $num_of_days, $y );
+					$end_date = mktime( 23, 59, 59, $i, $num_of_days, $y );
 
 					$sales = $stats->get_sales( $form_id, $date, $end_date );
 					$sales_totals += $sales;
@@ -497,7 +502,7 @@ function give_reports_graph_controls() {
 	}
 
 	//echo '<pre>'; print_r( $dates ); echo '</pre>';
-
+	do_action( 'give_report_graph_controls_before' );
 	?>
 	<form id="give-graphs-filter" method="get" class="alignright">
 		<div class="tablenav top alignright">
@@ -560,7 +565,8 @@ function give_reports_graph_controls() {
 			</div>
 		</div>
 	</form>
-<?php
+	<?php
+	do_action( 'give_report_graph_controls_after' );
 }
 
 /**
@@ -619,13 +625,33 @@ function give_get_report_dates() {
 			break;
 
 		case 'yesterday' :
-			$month            = date( 'n', $current_time ) == 1 ? 12 : date( 'n', $current_time );
-			$days_in_month    = cal_days_in_month( CAL_GREGORIAN, $month, date( 'Y' ) );
-			$yesterday        = date( 'd', $current_time ) == 1 ? $days_in_month : date( 'd', $current_time ) - 1;
-			$dates['day']     = $yesterday;
-			$dates['m_start'] = $month;
-			$dates['m_end']   = $month;
-			$dates['year']    = $month == 1 && date( 'd', $current_time ) == 1 ? date( 'Y', $current_time ) - 1 : date( 'Y', $current_time );
+
+			$year  = date( 'Y', $current_time );
+			$month = date( 'n', $current_time );
+			$day   = date( 'd', $current_time );
+
+			if ( $month == 1 && $day == 1 ) {
+
+				$year -= 1;
+				$month = 12;
+				$day   = cal_days_in_month( CAL_GREGORIAN, $month, $year );
+
+			} elseif ( $month > 1 && $day == 1 ) {
+
+				$month -= 1;
+				$day = cal_days_in_month( CAL_GREGORIAN, $month, $year );
+
+			} else {
+
+				$day -= 1;
+
+			}
+
+			$dates['day']      = $day;
+			$dates['m_start']  = $month;
+			$dates['m_end']    = $month;
+			$dates['year']     = $year;
+			$dates['year_end'] = $year;
 			break;
 
 		case 'this_week' :
@@ -754,3 +780,47 @@ function give_parse_report_dates( $data ) {
 }
 
 add_action( 'give_filter_reports', 'give_parse_report_dates' );
+
+
+/**
+ * Give Reports Refresh Button
+ * @since      1.3
+ * @description: Outputs a "Refresh Reports" button for graphs
+ */
+function give_reports_refresh_button() {
+
+	$url = wp_nonce_url( add_query_arg( array(
+		'give_action'  => 'refresh_reports_transients',
+		'give-message' => 'refreshed-reports'
+	) ), 'give-refresh-reports' );
+
+	echo '<a href="' . $url . '" data-tooltip="' . __( 'Clicking this will clear the reports cache.', 'give' ) . '" data-tooltip-my-position="right center"  data-tooltip-target-position="left center" class="button alignright give-refresh-reports-button give-tooltip">' . __( 'Refresh Reports', 'give' ) . '</a>';
+
+}
+
+add_action( 'give_reports_graph_additional_stats', 'give_reports_refresh_button' );
+
+/**
+ * Trigger the refresh of reports transients
+ *
+ * @since 1.3
+ *
+ * @param array $data Parameters sent from Settings page
+ *
+ * @return void
+ */
+function give_run_refresh_reports_transients( $data ) {
+
+	if ( ! wp_verify_nonce( $data['_wpnonce'], 'give-refresh-reports' ) ) {
+		return;
+	}
+
+	//Delete transients
+	delete_transient( 'give_estimated_monthly_stats' );
+	delete_transient( 'give_earnings_total' );
+	delete_transient( md5( 'give_earnings_this_monththis_month' ) );
+	delete_transient( md5( 'give_earnings_todaytoday' ) );
+
+}
+
+add_action( 'give_refresh_reports_transients', 'give_run_refresh_reports_transients' );

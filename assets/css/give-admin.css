@@ -963,6 +963,11 @@ ASIDE
   #give-dashboard-widgets-wrap #give-date-range-options #give-graphs-year-end {
     margin-right: 0; }
 
+#give-dashboard-widgets-wrap a.give-refresh-reports-button {
+  display: inline-block;
+  clear: right;
+  margin: 8px 0 0; }
+
 /* Global Graph Styles
 -------------------------------------------------------------- */
 .give-graph .y1Axis {

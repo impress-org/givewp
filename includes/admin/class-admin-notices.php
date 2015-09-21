@@ -91,6 +91,9 @@ class Give_Notices {
 					case 'email_sent' :
 						$notices['updated']['give-payment-sent'] = __( 'The donation receipt has been resent.', 'give' );
 						break;
+					case 'refreshed-reports' :
+						$notices['updated']['give-refreshed-reports'] = __( 'The reports cache has been cleared.', 'give' );
+						break;
 					case 'payment-note-deleted' :
 						$notices['updated']['give-payment-note-deleted'] = __( 'The payment note has been deleted.', 'give' );
 						break;
