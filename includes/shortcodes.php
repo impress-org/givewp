@@ -62,7 +62,7 @@ function give_form_shortcode( $atts, $content = null ) {
 		if ( in_array( $key, ['show_title', 'show_goal', 'show_content'] ) ) {
 			$atts[ $key ] = filter_var( $atts[ $key ], FILTER_VALIDATE_BOOLEAN );
 		}
-		//default display_style to 'onpage'
+		//validate display_style value
 		if ( $key == 'display_style' && !in_array( $value, ['onpage', 'reveal', 'modal'] ) ) {
 			$atts[ $key ] = '';
 		}
