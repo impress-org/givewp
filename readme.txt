@@ -132,7 +132,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 = 1.3 =
 * New: Floating labels functionality! Enable floating labels to provide a cleaner donation interface for your users. Thanks @pryley - https://github.com/WordImpress/Give/pull/231
 * New: Goal shortcode added to Core so you can now show various donation form goals separately from donation forms - https://github.com/WordImpress/Give/issues/184
-* New: Advanced global setting to disable single give forms sidebars added - https://github.com/WordImpress/Give/issues/192
+* New: Global setting to disable single give forms sidebars added - https://github.com/WordImpress/Give/issues/192
 * New: 'give_forms_single_summary_classes' filter added for customizing form wrapper classes
 * New: Advanced global setting added for load scripts in the footer - https://github.com/WordImpress/Give/issues/209
 * New: Admin - Refresh Reports button added to ensure user can clear transients used to store reporting data - https://github.com/WordImpress/Give/issues/210 and https://github.com/WordImpress/Give/issues/85
@@ -140,7 +140,6 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * New: Custom amount field displays numbers by default on mobile/tablet - https://github.com/WordImpress/Give/issues/233
 * New: Bower implemented to manage third-party JS scripts - Thanks @pryley https://github.com/WordImpress/Give/pull/236
 * New: Swedish translation files added - Thanks @mepmepmep https://github.com/WordImpress/Give/issues/238
-* New: Add "Refresh Reports" button to Reports page - https://github.com/WordImpress/Give/issues/210
 * New: Changed the ajax loader text from "Updating Price" to "Updating Amount" - https://github.com/WordImpress/Give/issues/269
 * Fix: Modal close button now displays properly - https://github.com/WordImpress/Give/issues/228
 * Fix: Admin Give menu section called "Donation Forms" rather than just "Forms" thanks @pryley - https://github.com/WordImpress/Give/issues/196
