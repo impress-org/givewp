@@ -1,12 +1,23 @@
+/*!
+ * Float Labels
+ *
+ * Version: 1.0.6
+ * Author: Paul Ryley (http://geminilabs.io)
+ * URL: https://github.com/geminilabs/float-labels.js
+ * License: MIT
+ */
+
 //
 // Variables
 //
 
-$fl-white             : #fff !default;
-$fl-black             : #333 !default;
 $fl-placeholder       : #aaa !default;
+$fl-text              : #333 !default;
+$fl-text-focus        : #007ba4 !default;
 $fl-borders           : #ccc !default;
-$fl-primary           : #007ba4 !default;
+$fl-borders-focus     : #ccc !default;
+$fl-background        : inherit !default;
+$fl-background-focus  : inherit !default;
 
 $fl-font-size         : 16px !default;
 $fl-font-size-small   : 11px !default;
@@ -33,13 +44,13 @@ form.floated-labels {
 		select {
 			font-size: $fl-font-size;
 			line-height: normal;
-			padding: $fl-spacing-half;
+			background-color: $fl-background;
 			border: 1px solid $fl-borders;
+			padding: $fl-spacing-half;
 		}
 
 		select {
 			position: relative;
-			// background-color: $fl-white;
 			color: $fl-placeholder;
 			cursor: pointer;
 			-webkit-appearance: none;
@@ -55,7 +66,9 @@ form.floated-labels {
 			input,
 			select,
 			textarea {
-				color: $fl-black;
+				color: $fl-text;
+				background-color: $fl-background-focus;
+				border-color: $fl-borders-focus;
 				padding-top: $fl-spacing-base - ($fl-spacing-third / 2);
 				padding-bottom: $fl-spacing-third / 2;
 			}
@@ -63,7 +76,7 @@ form.floated-labels {
 
 		&.is-focused {
 			label.floatlabel-label {
-				color: $fl-primary;
+				color: $fl-text-focus;
 			}
 		}
 
@@ -90,7 +103,6 @@ form.floated-labels {
 	.styled {
 
 		&.select {
-
 			position: relative;
 
 			&:before,

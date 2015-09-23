@@ -1,7 +1,7 @@
 /*!
  * Float Labels
  *
- * Version: 1.0.5
+ * Version: 1.0.6
  * Author: Paul Ryley (http://geminilabs.io)
  * URL: https://github.com/geminilabs/float-labels.js
  * License: MIT
@@ -115,66 +115,69 @@
 		el = $( el );
 		id = el.attr( 'id' );
 
-		if( id === undefined ) {
-			id = el.attr( 'name' );
+		if( id !== undefined ) {
+			label_el = $( 'label[for="' + id + '"]' );
 		}
 
-		label_el = $( 'label[for="' + id + '"]' );
-		label    = label_el.text().replace( '*', '' ).trim();
+		// only proceed if element label exists
+		if( label_el && label_el.length ) {
 
-		// add a placholder option to the select if it doesn't already exist
-		if( placeholder === 'formSelect' ) {
-			var first = el.children().first();
+			label = label_el.text().replace( '*', '' ).trim();
 
-			if( label.length && first.val() === '' && first.text() === '' ) {
-				first.text( label );
+			// add a placholder option to the select if it doesn't already exist
+			if( placeholder === 'formSelect' ) {
+				var first = el.children().first();
+
+				if( label.length && first.val() === '' && first.text() === '' ) {
+					first.text( label );
+				}
 			}
+
+			if( !el.parent().hasClass( floatlabel ) ) {
+
+				if( !label.length ) {
+					label = el.attr( 'placeholder' );
+				}
+
+				el.addClass( floatlabel + '-input' ).wrap( _pf( '<div class="{0} {0}-{1}"/>', floatlabel, id ) );
+
+				// allow for custom defined events
+				opts.customEvent.call( this, el );
+
+				// allow for custom defined labels
+				var custom_label = opts.customLabel.call( this, el, label );
+
+				if( custom_label !== undefined ) {
+					label = custom_label;
+				}
+
+				if( label_el.length ) {
+					label_el.remove();
+				}
+
+				el.after( _pf('<label for="{0}" class="{1}-label">{2}</label>', id, floatlabel, label ) );
+			}
+
+			if( el.val().length ) {
+				el.parent().addClass( 'is-active' );
+			}
+
+			// Events
+			el.on( 'focus', function()
+			{
+				el.parent().addClass( 'is-focused' );
+			});
+
+			el.on( 'blur', function()
+			{
+				el.parent().removeClass( 'is-focused' );
+			});
+
+			el.on( 'keyup blur change', function( ev )
+			{
+				keyPress( el, ev );
+			});
 		}
-
-		if( !el.parent().hasClass( floatlabel ) ) {
-
-			if( !label.length ) {
-				label = el.attr( 'placeholder' );
-			}
-
-			el.addClass( floatlabel + '-input' ).wrap( _pf( '<div class="{0} {0}-{1}"/>', floatlabel, id ) );
-
-			// allow for custom defined events
-			opts.customEvent.call( this, el );
-
-			// allow for custom defined labels
-			var custom_label = opts.customLabel.call( this, el, label );
-
-			if( custom_label !== undefined ) {
-				label = custom_label;
-			}
-
-			if( label_el.length ) {
-				label_el.remove();
-			}
-
-			el.after( _pf('<label for="{0}" class="{1}-label">{2}</label>', id, floatlabel, label ) );
-		}
-
-		if( el.val().length ) {
-			el.parent().addClass( 'is-active' );
-		}
-
-		// Events
-		el.on( 'focus', function()
-		{
-			el.parent().addClass( 'is-focused' );
-		});
-
-		el.on( 'blur', function()
-		{
-			el.parent().removeClass( 'is-focused' );
-		});
-
-		el.on( 'keyup blur change', function( ev )
-		{
-			keyPress( el, ev );
-		});
 	};
 
 	/**
