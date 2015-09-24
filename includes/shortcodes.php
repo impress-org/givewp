@@ -60,15 +60,15 @@ function give_form_shortcode( $atts, $content = null ) {
 
 	foreach ( $atts as $key => $value ) {
 		//convert shortcode_atts values to booleans
-		if ( in_array( $key, ['show_title', 'show_goal', 'show_content'] ) ) {
+		if ( in_array( $key, array( 'show_title', 'show_goal', 'show_content' ) ) ) {
 			$atts[ $key ] = filter_var( $atts[ $key ], FILTER_VALIDATE_BOOLEAN );
 		}
 		//validate display_style value
-		if ( $key == 'display_style' && !in_array( $value, ['onpage', 'reveal', 'modal'] ) ) {
+		if ( $key == 'display_style' && !in_array( $value, array( 'onpage', 'reveal', 'modal' ) ) ) {
 			$atts[ $key ] = '';
 		}
 		//validate float_labels value
-		if ( $key == 'float_labels' && !in_array( $value, ['local', 'enabled', 'disabled'] ) ) {
+		if ( $key == 'float_labels' && !in_array( $value, array( 'local', 'enabled', 'disabled' ) ) ) {
 			$atts[ $key ] = 'global';
 		}
 	}
