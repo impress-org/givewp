@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return int|false
  */
-public function get_form_id_from_args( $args ) {
+function get_form_id_from_args( $args ) {
 
 	if ( isset( $args['form_id'] ) && $args['form_id'] != 0 ) {
 
