@@ -54,6 +54,7 @@ function give_form_shortcode( $atts, $content = null ) {
 		'show_title'    => true,
 		'show_goal'     => true,
 		'show_content'  => true,
+		'float_labels'  => '', //global|local|enabled|disabled
 		'display_style' => '', //onpage|reveal|modal
 	), $atts, 'give_form' );
 
@@ -65,6 +66,10 @@ function give_form_shortcode( $atts, $content = null ) {
 		//validate display_style value
 		if ( $key == 'display_style' && !in_array( $value, ['onpage', 'reveal', 'modal'] ) ) {
 			$atts[ $key ] = '';
+		}
+		//validate float_labels value
+		if ( $key == 'float_labels' && !in_array( $value, ['local', 'enabled', 'disabled'] ) ) {
+			$atts[ $key ] = 'global';
 		}
 	}
 

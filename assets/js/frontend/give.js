@@ -29,7 +29,7 @@ jQuery( function ( $ ) {
 			customEvent: customEvents
 		};
 
-		$( '.give-form' ).floatlabels( options );
+		$( '.float-labels-enabled' ).floatlabels( options );
 
 		doc.on( 'give_gateway_loaded', function ( ev, response, form_id ) {
 			$( '#' + form_id ).floatlabels( options );

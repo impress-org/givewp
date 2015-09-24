@@ -63,6 +63,22 @@ function give_get_donation_form( $args = array() ) {
 		? $args['display_style']
 		: get_post_meta( $form->ID, '_give_payment_display', true );
 
+	// get the floating labels setting for this form
+
+	if( isset( $args['float_labels'] ) ) {
+		$float_labels = $args['float_labels'];
+	}
+
+	if( ! isset( $float_labels ) || ( isset( $float_labels ) && $float_labels == 'local' ) ) {
+		$float_labels = get_post_meta( $form->ID, '_give_form_floating_labels', true );
+	}
+
+	if( empty( $float_labels ) || $float_labels == 'global' ) {
+		$float_labels = give_get_option( 'enable_floatlabels' ) ? 'enabled' : 'disabled';
+	}
+
+	$float_labels = 'float-labels-' . $float_labels;
+
 	ob_start();
 
 	/**
@@ -77,7 +93,7 @@ function give_get_donation_form( $args = array() ) {
 
 	?>
 
-	<div id="give-form-<?php echo $form->ID; ?>-wrap" class="give-form-wrap give-display-<?php echo $display_option; ?>">
+	<div id="give-form-<?php echo $form->ID; ?>-wrap" class="give-form-wrap give-display-<?php echo $display_option; ?> <?php echo $float_labels; ?>">
 
 		<?php
 		if ( isset( $args['show_title'] ) && $args['show_title'] == true ) {
