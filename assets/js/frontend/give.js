@@ -17,25 +17,6 @@ function customEvents( el ) {
 	}
 }
 
-function customLabels( el, label ) {
-	// if ( el.hasClass( 'give-select-level' ) ) {
-	// 	return 'Donation Amount';
-	// }
-
-	var id = el.attr( 'id' );
-
-	if ( id !== undefined ) {
-
-		var tooltip = el.closest( 'p' ).find( 'label[for="' + id + '"]' ).find( '.give-tooltip' );
-
-		if ( tooltip.length ) {
-			label = tooltip.removeClass().text( label ).prop( 'outerHTML' );
-		}
-	}
-
-	return label;
-}
-
 jQuery( function ( $ ) {
 
 	var doc = $( document );
@@ -45,22 +26,23 @@ jQuery( function ( $ ) {
 
 		var options = {
 			exclude    : ['#give-amount, .give-select-level'],
-			customEvent: customEvents,
-			customLabel: customLabels
+			customEvent: customEvents
 		};
 
 		$( '.give-form' ).floatlabels( options );
 
-		doc.on( 'give_gateway_loaded', function () {
-			$( '.give-form' ).floatlabels( options );
+		doc.on( 'give_gateway_loaded', function ( ev, response, form_id ) {
+			$( '#' + form_id ).floatlabels( options );
 		} );
 
-		doc.on( 'give_checkout_billing_address_updated', function ( ev, response ) {
-			var wrap = $( '#give-card-state-wrap' );
-			var el = wrap.find( '#card_state' );
+		doc.on( 'give_checkout_billing_address_updated', function ( ev, response, form_id ) {
+
+			var form  = $( '#' + form_id );
+			var wrap  = form.find( '#give-card-state-wrap' );
+			var el    = wrap.find( '#card_state' );
 			var label = wrap.find( 'label[for="card_state"]' );
 
-			label = label.length ? label.text().replace( '*', '' ).trim() : '';
+			label = label.length ? label.text().replace( /[*:]/g, '' ).trim() : '';
 
 			if ( 'nostates' === response ) {
 				// fix input
@@ -73,7 +55,7 @@ jQuery( function ( $ ) {
 
 			el.parent().removeClass( 'is-active' );
 
-			$( '.give-form' ).floatlabels( options );
+			form.floatlabels( options );
 		} );
 	}
 

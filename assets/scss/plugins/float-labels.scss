@@ -1,7 +1,7 @@
 /*!
  * Float Labels
  *
- * Version: 1.0.6
+ * Version: 1.0.7
  * Author: Paul Ryley (http://geminilabs.io)
  * URL: https://github.com/geminilabs/float-labels.js
  * License: MIT
@@ -27,8 +27,8 @@ $fl-spacing-half      : $fl-spacing-base / 2 !default;
 $fl-spacing-third     : $fl-spacing-base / 3 !default;
 $fl-spacing-fourth    : $fl-spacing-base / 4 !default;
 
-$fl-transition-speed  : 0.2s !default;
-$fl-transition-easing : ease !default;
+$fl-transition-speed  : 0.3s !default;
+$fl-transition-easing : ease-in-out !default;
 
 //
 // Styles
