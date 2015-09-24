@@ -93,7 +93,7 @@ function give_get_donation_form( $args = array() ) {
 
 	?>
 
-	<div id="give-form-<?php echo $form->ID; ?>-wrap" class="give-form-wrap give-display-<?php echo $display_option; ?> <?php echo $float_labels; ?>">
+	<div id="give-form-<?php echo $form->ID; ?>-wrap" class="give-form-wrap give-display-<?php echo $display_option; ?>">
 
 		<?php
 		if ( isset( $args['show_title'] ) && $args['show_title'] == true ) {
@@ -104,7 +104,7 @@ function give_get_donation_form( $args = array() ) {
 
 		<?php do_action( 'give_pre_form', $form->ID, $args ); ?>
 
-		<form id="give-form-<?php echo $post_id; ?>" class="give-form give-form_<?php echo absint( $form->ID ); ?>" action="<?php echo $form_action; ?>" method="post">
+		<form id="give-form-<?php echo $post_id; ?>" class="give-form give-form_<?php echo absint( $form->ID ); ?> <?php echo $float_labels; ?>" action="<?php echo $form_action; ?>" method="post">
 			<input type="hidden" name="give-form-id" value="<?php echo $form->ID; ?>" />
 			<input type="hidden" name="give-form-title" value="<?php echo htmlentities( $form->post_title ); ?>" />
 			<input type="hidden" name="give-current-url" value="<?php echo htmlspecialchars( get_permalink() ); ?>" />

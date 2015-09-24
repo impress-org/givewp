@@ -22,42 +22,39 @@ jQuery( function ( $ ) {
 	var doc = $( document );
 
 	// floatlabels
-	if ( give_scripts.floatlabels === '1' ) {
+	var options = {
+		exclude     : ['#give-amount, .give-select-level'],
+		customEvent : customEvents
+	};
 
-		var options = {
-			exclude    : ['#give-amount, .give-select-level'],
-			customEvent: customEvents
-		};
+	$( '.float-labels-enabled' ).floatlabels( options );
 
-		$( '.float-labels-enabled' ).floatlabels( options );
+	doc.on( 'give_gateway_loaded', function ( ev, response, form_id ) {
+		$( '#' + form_id ).floatlabels( options );
+	} );
 
-		doc.on( 'give_gateway_loaded', function ( ev, response, form_id ) {
-			$( '#' + form_id ).floatlabels( options );
-		} );
+	doc.on( 'give_checkout_billing_address_updated', function ( ev, response, form_id ) {
 
-		doc.on( 'give_checkout_billing_address_updated', function ( ev, response, form_id ) {
+		var form  = $( '#' + form_id );
+		var wrap  = form.find( '#give-card-state-wrap' );
+		var el    = wrap.find( '#card_state' );
+		var label = wrap.find( 'label[for="card_state"]' );
 
-			var form  = $( '#' + form_id );
-			var wrap  = form.find( '#give-card-state-wrap' );
-			var el    = wrap.find( '#card_state' );
-			var label = wrap.find( 'label[for="card_state"]' );
+		label = label.length ? label.text().replace( /[*:]/g, '' ).trim() : '';
 
-			label = label.length ? label.text().replace( /[*:]/g, '' ).trim() : '';
+		if ( 'nostates' === response ) {
+			// fix input
+			el.attr( 'placeholder', label ).parent().removeClass( 'styled select' );
+		} else {
+			// fix select
+			el.children().first().text( label );
+			el.parent().addClass( 'styled select' );
+		}
 
-			if ( 'nostates' === response ) {
-				// fix input
-				el.attr( 'placeholder', label ).parent().removeClass( 'styled select' );
-			} else {
-				// fix select
-				el.children().first().text( label );
-				el.parent().addClass( 'styled select' );
-			}
+		el.parent().removeClass( 'is-active' );
 
-			el.parent().removeClass( 'is-active' );
-
-			form.floatlabels( options );
-		} );
-	}
+		form.floatlabels( options );
+	} );
 
 	// Reveal Btn which displays the checkout content
 	doc.on( 'click', '.give-btn-reveal', function ( e ) {
