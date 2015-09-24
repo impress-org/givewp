@@ -58,7 +58,7 @@ function give_get_donation_form( $args = array() ) {
 		return false; // Product not published or user doesn't have permission to view drafts
 	}
 
-	$display_option = ( isset( $args['display_style'] ) && !empty( $args['display_style'] ) )
+	$display_option = ( isset( $args['display_style'] ) && ! empty( $args['display_style'] ) )
 		? $args['display_style']
 		: get_post_meta( $form->ID, '_give_payment_display', true );
 
