@@ -6,12 +6,38 @@
  * @subpackage  Includes/Forms
  * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       1.0
+ * @since       1.1
  */
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
+}
+
+/**
+ * Checks whether floating labels is enabled for the form ID in $args
+ *
+ * @since  1.1
+ *
+ * @param  array $args
+ *
+ * @return bool
+ */
+function give_is_float_labels_enabled( $args )
+{
+	if( isset( $args['float_labels'] ) ) {
+		$float_labels = $args['float_labels'];
+	}
+
+	if( ! isset( $float_labels ) || ( isset( $float_labels ) && $float_labels == 'local' ) ) {
+		$float_labels = get_post_meta( $args['form_id'], '_give_form_floating_labels', true );
+	}
+
+	if( empty( $float_labels ) || $float_labels == 'global' ) {
+		$float_labels = give_get_option( 'enable_floatlabels' ) ? 'enabled' : 'disabled';
+	}
+
+	return ( $float_labels == 'enabled' ) ? true : false;
 }
 
 /**

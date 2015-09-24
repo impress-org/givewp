@@ -14,7 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-
 /**
  * Get Donation Form
  *
@@ -63,21 +62,9 @@ function give_get_donation_form( $args = array() ) {
 		? $args['display_style']
 		: get_post_meta( $form->ID, '_give_payment_display', true );
 
-	// get the floating labels setting for this form
-
-	if( isset( $args['float_labels'] ) ) {
-		$float_labels = $args['float_labels'];
-	}
-
-	if( ! isset( $float_labels ) || ( isset( $float_labels ) && $float_labels == 'local' ) ) {
-		$float_labels = get_post_meta( $form->ID, '_give_form_floating_labels', true );
-	}
-
-	if( empty( $float_labels ) || $float_labels == 'global' ) {
-		$float_labels = give_get_option( 'enable_floatlabels' ) ? 'enabled' : 'disabled';
-	}
-
-	$float_labels = 'float-labels-' . $float_labels;
+	$float_labels_option = give_is_float_labels_enabled( $args )
+		? ' float-labels-enabled'
+		: '';
 
 	ob_start();
 
@@ -104,7 +91,7 @@ function give_get_donation_form( $args = array() ) {
 
 		<?php do_action( 'give_pre_form', $form->ID, $args ); ?>
 
-		<form id="give-form-<?php echo $post_id; ?>" class="give-form give-form_<?php echo absint( $form->ID ); ?> <?php echo $float_labels; ?>" action="<?php echo $form_action; ?>" method="post">
+		<form id="give-form-<?php echo $post_id; ?>" class="give-form give-form_<?php echo absint( $form->ID ); ?><?php echo $float_labels_option; ?>" action="<?php echo $form_action; ?>" method="post">
 			<input type="hidden" name="give-form-id" value="<?php echo $form->ID; ?>" />
 			<input type="hidden" name="give-form-title" value="<?php echo htmlentities( $form->post_title ); ?>" />
 			<input type="hidden" name="give-current-url" value="<?php echo htmlspecialchars( get_permalink() ); ?>" />
