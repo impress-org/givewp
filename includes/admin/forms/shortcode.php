@@ -112,33 +112,8 @@ function give_admin_footer_for_thickbox() {
 
 		<style type="text/css">
 
-			#TB_giveForm .row {
-				display: block;
-				min-height: 30px;
-				line-height: 30px;
-				margin: 5px 0;
-			}
-			#TB_giveForm p.row {
-				padding-top: 15px;
-				margin-top: 0;
-			}
-			#TB_giveForm label {
-				width: 110px;
-				display: inline-block;
-			}
-
-			/* Modify the thickbox frame and size
+			/* This Modifies the default thickbox frame and size
 			-------------------------------------- */
-			#TB_giveForm .row {
-				padding: 0 20px;
-			}
-			#TB_giveForm p.submit {
-				text-align: right;
-				background: #fcfcfc;
-				border-top: 1px solid #dfdfdf;
-				padding: 12px;
-				margin: 20px 0 0;
-			}
 			#TB_window {
 				background: transparent !important;
 				height: auto !important;
@@ -177,6 +152,46 @@ function give_admin_footer_for_thickbox() {
 				margin: 0 auto;
 				-webkit-box-shadow: 0 3px 6px rgba( 0, 0, 0, 0.3 );
 				        box-shadow: 0 3px 6px rgba( 0, 0, 0, 0.3 );
+			}
+
+			#TB_ajaxContent > * {
+				padding-right: 20px;
+				padding-left: 20px;
+			}
+
+			#TB_ajaxContent > *:last-child {
+				padding-bottom: 20px;
+			}
+
+			#TB_giveForm {
+				padding: 0 !important;
+			}
+			#TB_giveForm .row {
+				padding: 0 20px;
+			}
+			#TB_giveForm p.submit {
+				text-align: right;
+				background: #fcfcfc;
+				border-top: 1px solid #dfdfdf;
+				padding: 12px;
+				margin: 20px 0 0;
+			}
+
+			/* These styles are specific to the give shortcode thickbox
+			-------------------------------------- */
+			#TB_giveForm .row {
+				display: block;
+				min-height: 30px;
+				line-height: 30px;
+				margin: 5px 0;
+			}
+			#TB_giveForm p.row {
+				padding-top: 15px;
+				margin-top: 0;
+			}
+			#TB_giveForm label {
+				width: 110px;
+				display: inline-block;
 			}
 		</style>
 
