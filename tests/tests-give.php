@@ -97,6 +97,7 @@ class Tests_Give extends WP_UnitTestCase {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/customers/customer-actions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/forms/metabox.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/forms/dashboard-columns.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/forms/class-give-shortcode.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/forms/shortcode.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/reporting/reports.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/reporting/pdf-reports.php' );

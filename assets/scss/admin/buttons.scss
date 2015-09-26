@@ -7,8 +7,7 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 
-/*------------------------------------
-Give Shortcode Button
+/*=Give Shortcode Button
 --------------------------------------*/
 
 @media screen and (max-width: 782px) {
@@ -22,4 +21,12 @@ Give Shortcode Button
       margin-top: 0 !important;
       margin-left: 2px !important;
   }
+}
+
+/*=Button in shortcode tinymce dialog
+--------------------------------------*/
+
+.mce-primary.mce-give-primary button {
+  padding-right: 10px;
+  padding-left: 10px;
 }

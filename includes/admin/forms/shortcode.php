@@ -1,266 +1,195 @@
 <?php
 /**
- *  Give Form Shortcode
+ * Give Form Shortcode
  *
  * @description: Adds the ability for users to add Give forms to Tiny MCE and across the site
  * @copyright  : http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since      : 1.0.0
- * @created    : 1/2/2015
+ * @created    : 26/09/2015
  */
 
-// Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
-/**
- * Adds an "Insert Donation Form" button above the TinyMCE Editor on add/edit screens.
- *
- * @since 1.0
- * @return string "Add Donation Form" Button
- */
-function give_media_button() {
+class Give_Form_Shortcode extends Give_Shortcode
+{
+	/**
+	 * Class constructor
+	 *
+	 * @return void
+	 */
+	public function __construct()
+	{
+		$this->shortcode = 'give_form';
 
-	global $pagenow, $typenow, $wp_version;
+		$this->dialog_title = __( 'Insert Give Form Shortcode', 'give' );
+		$this->dialog_alert = __( 'You must first choose a form!', 'give' );
+		$this->dialog_okay  = __( 'Insert Shortcode', 'give' );
+		$this->dialog_close = __( 'Close', 'give' );
 
-	$output = '';
+		parent::__construct();
+	}
 
-	/** Only run in post/page creation and edit screens */
-	if ( in_array( $pagenow, array(
-			'post.php',
-			'page.php',
-			'post-new.php',
-			'post-edit.php'
-		) ) && $typenow != 'give_forms' && $typenow != 'give_campaigns'
-	) {
-		/* check current WP version */
-		if ( version_compare( $wp_version, '3.5', '<' ) ) {
-			$img    = '<img src="' . GIVE_PLUGIN_URL . 'assets/images/give-media.png" alt="' . sprintf( __( 'Add Donation %s', 'give' ), give_get_forms_label_singular() ) . '"/>';
-			$output = '<a href="#TB_inline?width=640&inlineId=choose-give-form" class="thickbox" title="' . __( 'Insert Donation Form Shortcode', 'give' ) . '">' . $img . '</a>';
-		} else {
-			$img    = '<span class="wp-media-buttons-icon" id="give-media-button" style="background-image:url(' . give_svg_icons( 'give_grey' ) . ');margin-right:5px;"></span>';
-			$output = '<a href="#TB_inline?width=640&inlineId=choose-give-form" class="thickbox button give-thickbox" title="' . sprintf( __( 'Insert Donation %s Shortcode', 'give' ), give_get_forms_label_singular() ) . '" style="padding-left: .4em;">' . $img . sprintf( __( 'Add Donation %s', 'give' ), give_get_forms_label_singular() ) . '</a>';
+	/**
+	 * Define the shortcode dialog fields
+	 *
+	 * @return array
+	 */
+	public function define_fields()
+	{
+		return array(
+			array(
+				'type' => 'container',
+				'html' => sprintf( '<p>%s</p>', sprintf( __( 'Use the form below to insert the shortcode for a %s', 'give' ), give_get_forms_label_singular() ) ),
+			),
+			array(
+				'type'        => 'post',
+				'query_args'  => array(
+					'post_type' => 'give_forms',
+				),
+				'name'        => 'id',
+				'placeholder' => sprintf( '– %s –', __( 'Select a Form', 'give' ) ),
+			),
+			array(
+				'type' => 'container',
+				'html' => sprintf( '<p style="font-weight: 600 !important; margin-top: 1em;">%s</p>', __( 'Optional form settings', 'give' ) ),
+			),
+			array(
+				'type'        => 'listbox',
+				'name'        => 'show_title',
+				'label'       => __( 'Show Title:', 'give' ),
+				'tooltip'     => __( 'Do you want to display the form title?', 'give' ),
+				'options'     => array(
+					'true'  => __( 'Show', 'give' ),
+					'false' => __( 'Hide', 'give' ),
+				),
+			),
+			array(
+				'type'        => 'listbox',
+				'name'        => 'show_goal',
+				'label'       => __( 'Show Goal:', 'give' ),
+				'tooltip'     => __( 'Do you want to display the donation goal?', 'give' ),
+				'options'     => array(
+					'true'  => __( 'Show', 'give' ),
+					'false' => __( 'Hide', 'give' ),
+				),
+			),
+			array(
+				'type'        => 'listbox',
+				'name'        => 'show_content',
+				'label'       => __( 'Display Content:', 'give' ),
+				'tooltip'     => __( 'Do you want to display the form content?', 'give' ),
+				'options'     => array(
+					'true'  => __( 'Show', 'give' ),
+					'false' => __( 'Hide', 'give' ),
+				),
+			),
+			array(
+				'type'        => 'listbox',
+				'name'        => 'display_style',
+				'label'       => __( 'Payment Fields:', 'give' ),
+				'tooltip'     => __( 'How would you like to display payment information?', 'give' ),
+				'options'     => array(
+					'onpage' => __( 'Show on Page', 'give' ),
+					'reveal' => __( 'Reveal Upon Click', 'give' ),
+					'modal'  => __( 'Modal Window Upon Click', 'give' ),
+				),
+			),
+			array(
+				'type'        => 'listbox',
+				'name'        => 'float_labels',
+				'label'       => __( 'Floating Labels:', 'give' ),
+				'tooltip'     => __( 'Would you like to enable floating labels?', 'give' ),
+				'options'     => array(
+					'enabled'  => __( 'Enabled', 'give' ),
+					'disabled' => __( 'Disabled', 'give' ),
+				),
+			),
+		);
+	}
+
+	/**
+	 * Adds the "Donation Form" button above the TinyMCE Editor on add/edit screens.
+	 *
+	 * @return string
+	 */
+	public function give_shortcode_button()
+	{
+		global $pagenow, $typenow, $wp_version;
+
+		// Only run in admin post/page creation and edit screens
+		if( in_array( $pagenow, ['post.php', 'page.php', 'post-new.php', 'post-edit.php'] )
+			&& $typenow != 'give_forms'
+			&& $typenow != 'give_campaigns' ) {
+
+			$button_text = sprintf( __( 'Add Donation %s', 'give' ), give_get_forms_label_singular() );
+
+			// check current WP version
+			$img = ( version_compare( $wp_version, '3.5', '<' ) )
+				? '<img src="' . GIVE_PLUGIN_URL . 'assets/images/give-media.png" alt="' . $button_text . '"/>'
+				: '<span class="wp-media-buttons-icon" id="give-media-button" style="background-image: url(' . give_svg_icons( 'give_grey' ) . ');"></span>';
+
+			printf( '<button class="button give-shortcode-button" title="%s">%s %s</button>',
+				__( 'Insert Donation Form Shortcode', 'give' ),
+				$img,
+				$button_text
+			);
 		}
 	}
-	echo $output;
 }
 
-add_action( 'media_buttons', 'give_media_button', 11 );
+new Give_Form_Shortcode;
 
-/**
- * Admin Footer For Thickbox
- *
- * Prints the footer code needed for the Insert Download
- * TinyMCE button.
- *
- * @since 1.0
- * @global $pagenow
- * @global $typenow
- * @return void
- */
-function give_admin_footer_for_thickbox() {
 
-	global $pagenow, $typenow;
 
-	// Only run in post/page creation and edit screens
-	if ( in_array( $pagenow, array(
-			'post.php',
-			'page.php',
-			'post-new.php',
-			'post-edit.php'
-		) ) && $typenow != 'give_forms' && $typenow != 'give_campaigns' ) {
-		?>
-		<script type="text/javascript">
-			function insertGiveForm() {
 
-				var tb = jQuery( '#TB_giveForm' );
 
-				var id            = tb.find( '#forms' ).val();
-				var show_title    = tb.find( '#show_title option' ).filter( ':selected' ).val();
-				var show_goal     = tb.find( '#show_goal option' ).filter( ':selected' ).val();
-				var show_content  = tb.find( '#show_content option' ).filter( ':selected' ).val();
-				var display_style = tb.find( '#display_style option' ).filter( ':selected' ).val();
-				var float_labels  = tb.find( '#float_labels option' ).filter( ':selected' ).val();
 
-				// Return early if no form  is selected
-				if ( id === '0' ) {
-					alert( '<?php _e( "You must choose a form", "give" ); ?>' );
-					return;
-				}
 
-				show_title    = show_title && ' show_title="' + show_title + '"';
-				show_goal     = show_goal && ' show_goal="' + show_goal + '"';
-				show_content  = show_content && ' show_content="' + show_content + '"';
-				float_labels  = float_labels && ' float_labels="' + float_labels + '"';
-				display_style = display_style && ' display_style="' + display_style + '"';
 
-				// Send the shortcode to the editor
-				window.send_to_editor(
-					'[give_form id="' + id + '"' + show_title + show_goal + show_content + display_style + float_labels + ']'
-				);
-			}
-			jQuery( document ).ready( function ( $ ) {
-				$( '#select-give-style' ).change( function () {
-					if ( $( this ).val() === 'button' ) {
-						$( '#give-color-choice' ).slideDown();
-					} else {
-						$( '#give-color-choice' ).slideUp();
-					}
-				} );
-			} );
-		</script>
 
-		<style type="text/css">
 
-			/* This Modifies the default thickbox frame and size
-			-------------------------------------- */
-			#TB_window {
-				background: transparent !important;
-				height: auto !important;
-				-webkit-box-shadow: none;
-				        box-shadow: none;
-			}
-			#TB_title {
-				position: relative;
-				max-width: 480px;
-				height: 50px;
-				margin: 0 auto;
-				z-index: 1;
-			}
-			#TB_ajaxWindowTitle {
-				width: calc( 100% - 70px );
-				font-size: 18px;
-				line-height: 50px;
-				padding: 0 50px 0 20px;
-			}
-			.tb-close-icon {
-				width: 50px;
-				height: 50px;
-				line-height: 50px;
-			}
-			.tb-close-icon:before {
-				line-height: 50px;
-			}
-			#TB_ajaxContent {
-				position: relative;
-				top: -51px;
-				background: white;
-				height: auto !important;
-				width: auto !important;
-				max-width: 480px;
-				padding: 51px 0 0;
-				margin: 0 auto;
-				-webkit-box-shadow: 0 3px 6px rgba( 0, 0, 0, 0.3 );
-				        box-shadow: 0 3px 6px rgba( 0, 0, 0, 0.3 );
-			}
 
-			#TB_ajaxContent > * {
-				padding-right: 20px;
-				padding-left: 20px;
-			}
 
-			#TB_ajaxContent > *:last-child {
-				padding-bottom: 20px;
-			}
 
-			#TB_giveForm {
-				padding: 0 !important;
-			}
-			#TB_giveForm .row {
-				padding: 0 20px;
-			}
-			#TB_giveForm p.submit {
-				text-align: right;
-				background: #fcfcfc;
-				border-top: 1px solid #dfdfdf;
-				padding: 12px;
-				margin: 20px 0 0;
-			}
 
-			/* These styles are specific to the give shortcode thickbox
-			-------------------------------------- */
-			#TB_giveForm .row {
-				display: block;
-				min-height: 30px;
-				line-height: 30px;
-				margin: 5px 0;
-			}
-			#TB_giveForm p.row {
-				padding-top: 15px;
-				margin-top: 0;
-			}
-			#TB_giveForm label {
-				width: 110px;
-				display: inline-block;
-			}
-		</style>
 
-		<div id="choose-give-form" style="display: none;">
-			<div id="TB_giveForm">
 
-				<p class="row"><em><?php printf( __( 'Use the form below to insert the shortcode for a %s', 'give' ), give_get_forms_label_singular() ); ?></em></p>
 
-				<div class="row">
-					<?php echo Give()->html->forms_dropdown( array( 'chosen' => true ) ); ?>
-				</div>
 
-				<p class="row"><em><?php _e( 'Optional form settings:', 'give' ); ?></em></p>
 
-				<div class="row">
-					<label for="show_title"><?php _e( 'Show Title', 'give' ); ?>:</label>
-					<select id="show_title" name="show_title">
-						<option value="">– <?php _e( 'Select', 'give' ); ?> –</option>
-						<option value="true"><?php _e( 'Show', 'give' ); ?></option>
-						<option value="false"><?php _e( 'Hide', 'give' ); ?></option>
-					</select>
-				</div>
 
-				<div class="row">
-					<label for="show_goal"><?php _e( 'Show Goal', 'give' ); ?>:</label>
-					<select id="show_goal" name="show_goal">
-						<option value="">– <?php _e( 'Select', 'give' ); ?> –</option>
-						<option value="true"><?php _e( 'Show', 'give' ); ?></option>
-						<option value="false"><?php _e( 'Hide', 'give' ); ?></option>
-					</select>
-				</div>
 
-				<div class="row">
-					<label for="show_content"><?php _e( 'Display Content', 'give' ); ?>:</label>
-					<select id="show_content" name="show_content">
-						<option value="">– <?php _e( 'Select', 'give' ); ?> –</option>
-						<option value="true"><?php _e( 'Show', 'give' ); ?></option>
-						<option value="false"><?php _e( 'Hide', 'give' ); ?></option>
-					</select>
-				</div>
 
-				<div class="row">
-					<label for="display_style"><?php _e( 'Payment Fields', 'give' ); ?>:</label>
-					<select id="display_style" name="display_style">
-						<option value="">– <?php _e( 'Select', 'give' ); ?> –</option>
-						<option value="onpage"><?php _e( 'Show on Page', 'give' ); ?></option>
-						<option value="reveal"><?php _e( 'Reveal Upon Click', 'give' ); ?></option>
-						<option value="modal"><?php _e( 'Modal Window Upon Click', 'give' ); ?></option>
-					</select>
-				</div>
 
-				<div class="row">
-					<label for="float_labels"><?php _e( 'Floating Labels', 'give' ); ?>:</label>
-					<select id="float_labels" name="float_labels">
-						<option value="">– <?php _e( 'Select', 'give' ); ?> –</option>
-						<option value="enabled"><?php _e( 'Enabled', 'give' ); ?></option>
-						<option value="disabled"><?php _e( 'Disabled', 'give' ); ?></option>
-					</select>
-				</div>
 
-				<p class="submit">
-					<input type="button" id="give-insert-download" class="button-primary" value="<?php echo sprintf( __( 'Insert %s', 'give' ), give_get_forms_label_singular() ); ?>" onclick="insertGiveForm();" />
-					<a id="give-cancel-download-insert" class="button-secondary" onclick="tb_remove();" title="<?php _e( 'Cancel', 'give' ); ?>"><?php _e( 'Cancel', 'give' ); ?></a>
-				</p>
 
-			</div>
-		</div>
-	<?php
-	}
-}
 
-add_action( 'admin_footer', 'give_admin_footer_for_thickbox' );
+
+// function give_media_button() {
+
+// 	global $pagenow, $typenow, $wp_version;
+
+// 	$output = '';
+
+// 	/** Only run in post/page creation and edit screens */
+// 	if ( in_array( $pagenow, array(
+// 			'post.php',
+// 			'page.php',
+// 			'post-new.php',
+// 			'post-edit.php'
+// 		) ) && $typenow != 'give_forms' && $typenow != 'give_campaigns'
+// 	) {
+// 		/* check current WP version */
+// 		if ( version_compare( $wp_version, '3.5', '<' ) ) {
+// 			$img    = '<img src="' . GIVE_PLUGIN_URL . 'assets/images/give-media.png" alt="' . sprintf( __( 'Add Donation %s', 'give' ), give_get_forms_label_singular() ) . '"/>';
+// 			$output = '<a href="#TB_inline?width=640&inlineId=choose-give-form" class="thickbox" title="' . __( 'Insert Donation Form Shortcode', 'give' ) . '">' . $img . '</a>';
+// 		} else {
+// 			$img    = '<span class="wp-media-buttons-icon" id="give-media-button" style="background-image:url(' . give_svg_icons( 'give_grey' ) . ');margin-right:5px;"></span>';
+// 			$output = '<a href="#TB_inline?width=640&inlineId=choose-give-form" class="thickbox button give-thickbox" title="' . sprintf( __( 'Insert Donation %s Shortcode', 'give' ), give_get_forms_label_singular() ) . '" style="padding-left: .4em;">' . $img . sprintf( __( 'Add Donation %s', 'give' ), give_get_forms_label_singular() ) . '</a>';
+// 		}
+// 	}
+// 	echo $output;
+// }
+
+// add_action( 'media_buttons', 'give_media_button', 11 );
+
