@@ -3,15 +3,16 @@
  * Give Shortcode
  *
  * @description: Adds the ability for users to add Give forms to Tiny MCE and across the site
- * @copyright  : http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license    : http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since      : 1.0.0
  * @created    : 26/09/2015
  */
 
-defined( 'ABSPATH' ) || exit;
+// Exit if accessed directly
+defined( 'ABSPATH' ) or exit;
 
-class Give_Shortcode
-{
+abstract class Give_Shortcode {
+
 	/**
 	 * The shortcode tag
 	 */
@@ -32,19 +33,17 @@ class Give_Shortcode
 
 	/**
 	 * Class constructor
-	 *
-	 * @return void
 	 */
-	public function __construct()
-	{
-		if( is_admin() ) {
-			add_action( 'admin_head',            [ $this, 'admin_head'] );
-			add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts'] );
-			add_action( 'media_buttons',         [ $this, 'give_shortcode_button'], 11 );
+	public function __construct() {
+
+		if ( is_admin() ) {
+			add_action( 'admin_head',            array( $this, 'admin_head' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+			add_action( 'media_buttons',         array( $this, 'give_shortcode_button' ), 11 );
 		}
 
-		add_action( "wp_ajax_{$this->shortcode}_ajax",        [ $this, 'give_shortcode_ajax'] );
-		add_action( "wp_ajax_nopriv_{$this->shortcode}_ajax", [ $this, 'give_shortcode_ajax'] );
+		add_action( "wp_ajax_{$this->shortcode}_ajax",        array( $this, 'give_shortcode_ajax' ) );
+		add_action( "wp_ajax_nopriv_{$this->shortcode}_ajax", array( $this, 'give_shortcode_ajax' ) );
 	}
 
 	/**
@@ -52,21 +51,18 @@ class Give_Shortcode
 	 *
 	 * @return array
 	 */
-	public function define_fields()
-	{
-		return array();
-	}
+	public abstract function define_fields();
 
 	/**
 	 * Trigger custom admin_head hooks
 	 *
 	 * @return void
 	 */
-	public function admin_head()
-	{
-		if( current_user_can( 'edit_posts' ) && current_user_can( 'edit_pages' ) ) {
+	public function admin_head() {
 
-			add_filter( 'mce_external_plugins', [ $this, 'mce_external_plugins'] );
+		if ( current_user_can( 'edit_posts' ) && current_user_can( 'edit_pages' ) ) {
+
+			add_filter( 'mce_external_plugins', array( $this, 'mce_external_plugins' ) );
 		}
 	}
 
@@ -77,11 +73,11 @@ class Give_Shortcode
 	 *
 	 * @return array
 	 */
-	public function mce_external_plugins( $plugin_array )
-	{
+	public function mce_external_plugins( $plugin_array ) {
+
 		$plugin = 'assets/js/admin/tinymce/mce-' . $this->shortcode . '.js';
 
-		if( file_exists( GIVE_PLUGIN_DIR . $plugin ) ) {
+		if ( file_exists( GIVE_PLUGIN_DIR . $plugin ) ) {
 			$plugin_array[ $this->shortcode ] = GIVE_PLUGIN_URL . $plugin;
 		}
 
@@ -93,8 +89,8 @@ class Give_Shortcode
 	 *
 	 * @return void
 	 */
-	public function admin_enqueue_scripts()
-	{
+	public function admin_enqueue_scripts() {
+
 		wp_enqueue_script(
 			'give_form_shortcode',
 			GIVE_PLUGIN_URL . 'assets/js/admin/admin-shortcodes.js',
@@ -109,17 +105,15 @@ class Give_Shortcode
 	 *
 	 * @return string
 	 */
-	public function give_shortcode_button()
-	{
-	}
+	public abstract function give_shortcode_button();
 
 	/**
 	 * Load the shortcode dialog fields via AJAX
 	 *
 	 * @return void
 	 */
-	public function give_shortcode_ajax()
-	{
+	public function give_shortcode_ajax() {
+
 		wp_send_json( array(
 			'shortcode' => $this->shortcode,
 			'body'      => $this->generate_fields(),
@@ -135,15 +129,15 @@ class Give_Shortcode
 	 *
 	 * @return array
 	 */
-	protected function generate_fields()
-	{
+	protected function generate_fields() {
+
 		$fields = array();
 
-		if( ! $this->fields ) {
+		if ( ! $this->fields ) {
 			$this->fields = $this->define_fields();
 		}
 
-		foreach( $this->fields as $field ) {
+		foreach ( $this->fields as $field ) {
 
 			$defaults = array(
 				'label'       => false,
@@ -157,11 +151,11 @@ class Give_Shortcode
 			$field  = wp_parse_args( (array) $field, $defaults );
 			$method = 'generate_' . strtolower( $field['type'] );
 
-			if( method_exists( $this, $method ) ) {
+			if ( method_exists( $this, $method ) ) {
 
 				$field = call_user_func( array( get_class( $this ), $method ), $field );
 
-				if( $field ) {
+				if ( $field ) {
 					$fields[] = $field;
 				}
 			}
@@ -177,8 +171,8 @@ class Give_Shortcode
 	 *
 	 * @return array|false
 	 */
-	protected function generate_listbox( $field )
-	{
+	protected function generate_listbox( $field ) {
+
 		$listbox = shortcode_atts( array(
 			'label'   => '',
 			'name'    => false,
@@ -187,16 +181,15 @@ class Give_Shortcode
 			'value'   => '',
 		), $field );
 
-		if( $listbox['name'] ) {
+		if ( $listbox['name'] ) {
 
 			$new_listbox = array();
 
-			foreach( $listbox as $key => $value ) {
+			foreach ( $listbox as $key => $value ) {
 
-				if( $key == 'value' && empty( $value ) ) {
+				if ( $key == 'value' && empty( $value ) ) {
 					$new_listbox[ $key ] = $listbox['name'];
-				}
-				else if( $value ) {
+				} else if ( $value ) {
 					$new_listbox[ $key ] = $value;
 				}
 			}
@@ -206,7 +199,7 @@ class Give_Shortcode
 				''  => ( $field['placeholder'] ? $field['placeholder'] : sprintf( '– %s –', __( 'Select', 'give' ) ) ),
 			) + $field['options'];
 
-			foreach( $field['options'] as $value => $text ) {
+			foreach ( $field['options'] as $value => $text ) {
 				$new_listbox['values'][] = array(
 					'text'  => $text,
 					'value' => $value,
@@ -226,8 +219,8 @@ class Give_Shortcode
 	 *
 	 * @return array|false
 	 */
-	protected function generate_post( $field )
-	{
+	protected function generate_post( $field ) {
+
 		$args = array(
 			'post_type'      => 'post',
 			'orderby'        => 'title',
@@ -235,14 +228,13 @@ class Give_Shortcode
 			'posts_per_page' => 30,
 		);
 
-		$args = wp_parse_args( (array) $field['query_args'], $args );
-
-		$posts = get_posts( $args );
-
+		$args    = wp_parse_args( (array) $field['query_args'], $args );
+		$posts   = get_posts( $args );
 		$options = array();
 
-		if( $posts ) {
-			foreach( $posts as $post ) {
+		if ( $posts ) {
+
+			foreach ( $posts as $post ) {
 				$options[ absint( $post->ID ) ] = esc_html( $post->post_title );
 			}
 
@@ -251,9 +243,8 @@ class Give_Shortcode
 
 			return $this->generate_listbox( $field );
 		}
-		else {
-			// @todo: nothing found...
-		}
+
+		// @todo: else if nothing found...
 
 		return false;
 	}
@@ -265,9 +256,9 @@ class Give_Shortcode
 	 *
 	 * @return array|false
 	 */
-	protected function generate_container( $field )
-	{
-		if( array_key_exists( 'html', $field ) ) {
+	protected function generate_container( $field ) {
+
+		if ( array_key_exists( 'html', $field ) ) {
 
 			return array(
 				'type' => $field['type'],

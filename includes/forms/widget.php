@@ -10,7 +10,7 @@
  */
 
 // Exit if accessed directly
-defined( 'ABSPATH' ) or die();
+defined( 'ABSPATH' ) or exit;
 
 /**
  * Give Form widget
@@ -28,8 +28,6 @@ class Give_Forms_Widget extends WP_Widget
 
 	/**
 	 * Instantiate the class
-	 *
-	 * @return void
 	 */
 	public function __construct()
 	{

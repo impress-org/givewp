@@ -54,8 +54,8 @@ function give_form_shortcode( $atts, $content = null ) {
 		'show_title'    => true,
 		'show_goal'     => true,
 		'show_content'  => true,
-		'float_labels'  => '', //global|local|enabled|disabled
-		'display_style' => '', //onpage|reveal|modal
+		'float_labels'  => '',
+		'display_style' => '',
 	), $atts, 'give_form' );
 
 	foreach ( $atts as $key => $value ) {

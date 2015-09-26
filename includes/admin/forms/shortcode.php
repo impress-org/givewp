@@ -3,22 +3,21 @@
  * Give Form Shortcode
  *
  * @description: Adds the ability for users to add Give forms to Tiny MCE and across the site
- * @copyright  : http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license    : http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since      : 1.0.0
  * @created    : 26/09/2015
  */
 
-defined( 'ABSPATH' ) || exit;
+// Exit if accessed directly
+defined( 'ABSPATH' ) or exit;
 
-class Give_Form_Shortcode extends Give_Shortcode
-{
+class Give_Form_Shortcode extends Give_Shortcode {
+
 	/**
 	 * Class constructor
-	 *
-	 * @return void
 	 */
-	public function __construct()
-	{
+	public function __construct() {
+
 		$this->shortcode = 'give_form';
 
 		$this->dialog_title = __( 'Insert Give Form Shortcode', 'give' );
@@ -34,8 +33,8 @@ class Give_Form_Shortcode extends Give_Shortcode
 	 *
 	 * @return array
 	 */
-	public function define_fields()
-	{
+	public function define_fields() {
+
 		return array(
 			array(
 				'type' => 'container',
@@ -112,12 +111,12 @@ class Give_Form_Shortcode extends Give_Shortcode
 	 *
 	 * @return string
 	 */
-	public function give_shortcode_button()
-	{
+	public function give_shortcode_button() {
+
 		global $pagenow, $typenow, $wp_version;
 
 		// Only run in admin post/page creation and edit screens
-		if( in_array( $pagenow, ['post.php', 'page.php', 'post-new.php', 'post-edit.php'] )
+		if ( in_array( $pagenow, ['post.php', 'page.php', 'post-new.php', 'post-edit.php'] )
 			&& $typenow != 'give_forms'
 			&& $typenow != 'give_campaigns' ) {
 
