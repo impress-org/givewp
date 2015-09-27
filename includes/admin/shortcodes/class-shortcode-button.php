@@ -92,7 +92,7 @@ final class Give_Shortcode_Button {
 	 */
 	public function admin_localize_scripts() {
 
-		if ( self::$shortcodes ) {
+		if ( ! empty( self::$shortcodes ) ) {
 
 			$variables = array();
 
@@ -115,7 +115,7 @@ final class Give_Shortcode_Button {
 
 		// Only run in admin post/page creation and edit screens
 		if ( in_array( $pagenow, ['post.php', 'page.php', 'post-new.php', 'post-edit.php'] )
-			&& self::$shortcodes ) {
+			&& ! empty( self::$shortcodes ) ) {
 
 			$shortcodes = array();
 
@@ -128,7 +128,7 @@ final class Give_Shortcode_Button {
 				 */
 				if ( apply_filters( sanitize_title( $shortcode ) . '_condition', true ) ) {
 
-					$shortcodes[] = sprintf(
+					$shortcodes[ $shortcode ] = sprintf(
 						'<div class="sc-shortcode mce-menu-item" data-shortcode="%s">%s</div>',
 						$shortcode,
 						$values['label']
@@ -143,7 +143,12 @@ final class Give_Shortcode_Button {
 					? '<img src="' . GIVE_PLUGIN_URL . 'assets/images/give-media.png" />'
 					: '<span class="wp-media-buttons-icon" id="give-media-button" style="background-image: url(' . give_svg_icons( 'give_grey' ) . ');"></span>';
 
+				reset( $shortcodes );
+
 				if ( count( $shortcodes ) == 1 ) {
+
+					$shortcode = key( $shortcodes );
+
 					printf(
 						'<button class="button sc-shortcode" data-shortcode="%s">%s</button>',
 						$shortcode,
@@ -161,7 +166,7 @@ final class Give_Shortcode_Button {
 						'</div>',
 						$img,
 						__( 'Give Shortcodes', 'give' ),
-						implode( '', $shortcodes )
+						implode( '', array_values( $shortcodes ) )
 					);
 				}
 			}

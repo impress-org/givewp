@@ -69,7 +69,7 @@ abstract class Give_Shortcode_Generator {
 
 		$shortcode_fields = $this->define_fields();
 
-		if ( $shortcode_fields ) {
+		if ( is_array( $shortcode_fields ) ) {
 
 			foreach ( $shortcode_fields as $field ) {
 
