@@ -1,108 +1,166 @@
-/*!
- * Give Admin Shortcodes JS
- *
- * @description: The Give Admin Shortcode script
- * @package:     Give
- * @subpackage:  Assets/JS
- * @copyright:   Copyright (c) 2015, WordImpress
- * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- */
-
-/* global ajaxurl, tinymce */
+/* global ajaxurl, scShortcodes, tinymce */
 
 var jq = jQuery.noConflict();
 
-var giveForm = {
+var scShortcode;
+
+var scForm = {
 
 	open: function( editor_id )
 	{
 		var editor = tinymce.get( editor_id );
 
-		if( editor ) {
+		if( !editor ) {
+			return;
+		}
 
-			var data = {
-				action: 'give_form_ajax'
-			};
+		var i, len, data, required, valid, win;
 
-			jq.post( ajaxurl, data, function( response )
-			{
-				editor.windowManager.open({
-					title    : response.title,
-					body     : response.body,
-					buttons  : [
+		data = {
+			action    : 'give_shortcode',
+			shortcode : scShortcode
+		};
+
+		jq.post( ajaxurl, data, function( response )
+		{
+			if( response.body.length === 0 ) {
+				window.send_to_editor( '[' + response.shortcode + ']' );
+
+				scForm.destroy();
+
+				return;
+			}
+
+			editor.windowManager.open({
+				title   : response.title,
+				body    : response.body,
+				buttons : [
+					{
+						text    : response.ok,
+						classes : 'primary sc-primary',
+						onclick : function( e )
 						{
-							text    : response.ok,
-							classes : 'primary give-primary',
-							onclick : function( e )
-							{
-								// Get the top most window object
-								var win = editor.windowManager.getWindows()[0];
+							// Get the top most window object
+							win = editor.windowManager.getWindows()[0];
 
-								// Do some validation voodoo
-								if( win.find('#id')[0].state.data.value === '' ) {
-									alert( response.alert );
-								}
-								else {
-									win.submit();
+							// Get the shortcode required field IDs
+							required = scShortcodes[ scShortcode ];
+
+							valid = true;
+
+							// Do some validation voodoo
+							for( len = required.length, i = 0; i < len; i++ ) {
+								if( win.find( '#' + required[ i ] )[0].state.data.value === '' ) {
+									valid = false;
 								}
 							}
-						},
-						{
-							text    : response.close,
-							onclick : 'close'
-						},
-					],
-					onsubmit : function( e )
-					{
-						var attributes = '';
 
-						for( var key in e.data ) {
-							if( e.data.hasOwnProperty( key ) && e.data[ key ] !== '' ) {
-								attributes += ' ' + key + '="' + e.data[ key ] + '"';
+							if( !valid ) {
+								alert( response.alert );
+							}
+							else {
+								win.submit();
 							}
 						}
-
-						// Insert shortcode into the WP_Editor
-						window.send_to_editor( '[' + response.shortcode + attributes + ']' );
 					},
-					onclose : function( e )
 					{
-						var tmp = jq( '#tmp_textarea' );
+						text    : response.close,
+						onclick : 'close'
+					},
+				],
+				onsubmit: function( e )
+				{
+					var attributes = '';
 
-						if( tmp.length ) {
-							tinymce.get( 'tmp_textarea' ).remove();
-							tmp.remove();
+					for( var key in e.data ) {
+						if( e.data.hasOwnProperty( key ) && e.data[ key ] !== '' ) {
+							attributes += ' ' + key + '="' + e.data[ key ] + '"';
 						}
 					}
-				});
+
+					// Insert shortcode into the WP_Editor
+					window.send_to_editor( '[' + response.shortcode + attributes + ']' );
+				},
+				onclose: function( e )
+				{
+					scForm.destroy();
+				}
 			});
+		});
+	},
+
+	destroy: function()
+	{
+		var tmp = jq( '#scTemp' );
+
+		if( tmp.length ) {
+			tinymce.get( 'scTemp' ).remove();
+			tmp.remove();
 		}
 	}
 };
 
 jq( function( $ )
 {
-	$( document ).on( 'click', 'button.give-shortcode-button', function( e )
+	$( document ).on( 'click', function( e )
+	{
+		if( !$( e.target ).closest( '.sc-wrap' ).length ) {
+			$( '.sc-button' ).removeClass( 'active' );
+			$( '.sc-menu' ).hide();
+		}
+	});
+
+	$( document ).on( 'click', 'button.sc-button', function( e )
 	{
 		e.preventDefault();
 
-		if( !tinymce.get( window.wpActiveEditor ) ) {
+		var t    = $( this );
+		var menu = t.next( '.sc-menu' );
 
-			if( !$( '#tmp_textarea' ).length ) {
+		t.toggleClass( 'active' );
 
-				$( 'body' ).append( '<textarea id="tmp_textarea" style="display: none;" />' );
-
-				tinymce.init({
-					mode     : "exact",
-					elements : "tmp_textarea",
-					plugins  : ['give_form','wplink']
-				});
-			}
-
-			setTimeout( function() { tinymce.execCommand( 'Give_Form' ); }, 200 );
+		if( t.hasClass( 'active' ) ) {
+			menu.show();
 		}
 		else {
-			tinymce.execCommand( 'Give_Form' );
+			menu.hide();
+		}
+	});
+
+
+	$( document ).on( 'click', '.sc-shortcode', function( e )
+	{
+		e.preventDefault();
+
+		scShortcode = $( this ).attr( 'data-shortcode' );
+
+		if( scShortcode ) {
+			if( !tinymce.get( window.wpActiveEditor ) ) {
+
+				if( !$( '#scTemp' ).length ) {
+
+					$( 'body' ).append( '<textarea id="scTemp" style="display: none;" />' );
+
+					tinymce.init({
+						mode     : "exact",
+						elements : "scTemp",
+						plugins  : ['give_shortcode', 'wplink']
+					});
+				}
+
+				setTimeout( function() { tinymce.execCommand( 'Give_Shortcode' ); }, 200 );
+			}
+			else {
+				tinymce.execCommand( 'Give_Shortcode' );
+			}
+
+			setTimeout( function() {
+				$( '.sc-button' ).removeClass( 'active' );
+				$( '.sc-menu' ).hide();
+			}, 100 );
+		}
+		else {
+			alert( 'No custom shortcodes have been registered!' )
 		}
 	});
 });

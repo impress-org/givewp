@@ -318,13 +318,21 @@ if ( ! class_exists( 'Give' ) ) : /**
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/customers/customer-actions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/metabox.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/dashboard-columns.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/class-give-shortcode.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/shortcode.php';
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/reports.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/pdf-reports.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/class-give-graph.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/graphing.php';
+
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/abstract-shortcode-generator.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/class-shortcode-button.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-donation-history.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-form.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-goal.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-login.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-profile-editor.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-receipt.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-register.php';
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrade-functions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrades.php';

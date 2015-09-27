@@ -97,14 +97,22 @@ class Tests_Give extends WP_UnitTestCase {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/customers/customer-actions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/forms/metabox.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/forms/dashboard-columns.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/forms/class-give-shortcode.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/forms/shortcode.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/reporting/reports.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/reporting/pdf-reports.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/reporting/class-give-graph.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/reporting/graphing.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/abstract-shortcode-generator.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/class-shortcode-button.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-donation-history.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-form.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-goal.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-login.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-profile-editor.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-receipt.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-register.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrade-functions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrades.php' );
+
 
 		/** Check Assets Exist */
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/css/chosen.css' );
