@@ -34,7 +34,7 @@ class Give_Shortcode_Register extends Give_Shortcode_Generator {
 		return array(
 			array(
 				'type' => 'container',
-				'html' => sprintf( '<p>%s</p>', __( 'Redirect URL (optional):', 'give' ) ),
+				'html' => sprintf( '<p class="no-margin">%s</p>', __( 'Redirect URL (optional):', 'give' ) ),
 			),
 			array(
 				'type'     => 'textbox',

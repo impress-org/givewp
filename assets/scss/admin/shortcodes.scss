@@ -7,6 +7,24 @@
 	padding-left: 10px;
 }
 
+.mce-sc-popup {
+	a {
+		text-decoration: underline;
+	}
+	p {
+		margin-bottom: 1em;
+		&.strong {
+			font-weight: 600;
+		}
+		&.no-margin {
+			margin-bottom: 0;
+		}
+		&.margin-top {
+			margin-top: 1em;
+		}
+	}
+}
+
 /* =Shortcode button above wp_editor
 -------------------------------------------------------------- */
 
@@ -49,7 +67,6 @@ button.sc-button {
 	}
 }
 
-
 /* =Shortcode button dropdown menu
 -------------------------------------------------------------- */
 
@@ -67,8 +84,7 @@ div.sc-menu {
 	min-width: 100%;
 	max-height: 410px;
 	font-size: 14px;
-	-webkit-box-shadow: 0 3px 5px rgba( 0, 0, 0, 0.2 );
-	        box-shadow: 0 3px 5px rgba( 0, 0, 0, 0.2 );
+	box-shadow: 0 3px 5px rgba( 0, 0, 0, 0.2 );
 	background: #fff;
 	border: 1px solid rgba( 0, 0, 0, 0.15 );
 	overflow: auto;

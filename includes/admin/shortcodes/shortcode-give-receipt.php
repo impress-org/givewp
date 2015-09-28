@@ -34,7 +34,7 @@ class Give_Shortcode_Donation_Receipt extends Give_Shortcode_Generator {
 		return array(
 			array(
 				'type' => 'container',
-				'html' => sprintf( '<p style="font-weight: 600 !important;">%s</p>', __( 'Optional settings', 'give' ) ),
+				'html' => sprintf( '<p class="strong">%s</p>', __( 'Optional settings', 'give' ) ),
 			),
 			array(
 				'type'    => 'listbox',

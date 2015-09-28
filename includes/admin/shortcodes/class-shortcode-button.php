@@ -115,6 +115,7 @@ final class Give_Shortcode_Button {
 
 		// Only run in admin post/page creation and edit screens
 		if ( in_array( $pagenow, ['post.php', 'page.php', 'post-new.php', 'post-edit.php'] )
+			&& apply_filters( 'give_shortcode_button_condition', true )
 			&& ! empty( self::$shortcodes ) ) {
 
 			$shortcodes = array();
@@ -185,13 +186,32 @@ final class Give_Shortcode_Button {
 
 		if ( $shortcode && array_key_exists( $shortcode, self::$shortcodes ) ) {
 
+			$data = self::$shortcodes[ $shortcode ];
+
+			$errors = array();
+
+			// verify that require keys exist in the shortcode field names
+			foreach ( $data['require'] as $name => $message ) {
+				if ( false === array_search( $name, array_column( $data['fields'], 'name' ) ) ) {
+					$errors[] = array(
+						'type' => 'container',
+						'html' => $message,
+					);
+				}
+			}
+
+			if ( ! empty( $errors ) ) {
+				$data['fields']   = $errors;
+				$data['btn_okay'] = array( __( 'Okay', 'give' ) );
+			}
+
 			$response = [
-				'alert'     => self::$shortcodes[ $shortcode ]['alert'],
-				'body'      => self::$shortcodes[ $shortcode ]['fields'],
-				'close'     => self::$shortcodes[ $shortcode ]['btn_close'],
-				'ok'        => self::$shortcodes[ $shortcode ]['btn_okay'],
+				'alert'     => $data['alert'],
+				'body'      => $data['fields'],
+				'close'     => $data['btn_close'],
+				'ok'        => $data['btn_okay'],
 				'shortcode' => $shortcode,
-				'title'     => self::$shortcodes[ $shortcode ]['title'],
+				'title'     => $data['title'],
 			];
 		} else {
 			// todo: handle error

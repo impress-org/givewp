@@ -20,8 +20,15 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 
 		$this->shortcode['title']   = __( 'Donation Form', 'give' );
 		$this->shortcode['label']   = __( 'Donation Form', 'give' );
-		$this->shortcode['require'] = array( 'id' );
 		$this->shortcode['alert']   = __( 'You must first select a Form!', 'give' );
+		$this->shortcode['require'] = array(
+			'id' => sprintf( '<p class="strong">%s</p><p class="no-margin"><a href="%s">%s</a> %s</p>',
+						__( 'No donation forms were found!', 'give' ),
+						admin_url( 'post-new.php?post_type=give_forms' ),
+						__( 'Click here', 'give' ),
+						__( 'to create a new Donation Form.', 'give' )
+					),
+		);
 
 		parent::__construct( 'give_form' );
 	}
@@ -45,7 +52,7 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 			),
 			array(
 				'type' => 'container',
-				'html' => sprintf( '<p style="font-weight: 600 !important; margin-top: 1em;">%s</p>', __( 'Optional form settings', 'give' ) ),
+				'html' => sprintf( '<p class="strong margin-top">%s</p>', __( 'Optional form settings', 'give' ) ),
 			),
 			array(
 				'type'    => 'listbox',

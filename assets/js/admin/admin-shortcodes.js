@@ -14,7 +14,7 @@ var scForm = {
 			return;
 		}
 
-		var i, len, data, required, valid, win;
+		var data, required, valid, win;
 
 		data = {
 			action    : 'give_shortcode',
@@ -23,6 +23,12 @@ var scForm = {
 
 		jq.post( ajaxurl, data, function( response )
 		{
+			// what happens if response === false?
+			if( !response.body ) {
+				console.error( 'Bad AJAX response!' );
+				return;
+			}
+
 			if( response.body.length === 0 ) {
 				window.send_to_editor( '[' + response.shortcode + ']' );
 
@@ -31,9 +37,10 @@ var scForm = {
 				return;
 			}
 
-			editor.windowManager.open({
+			var popup = {
 				title   : response.title,
 				body    : response.body,
+				classes: 'sc-popup',
 				minWidth: 320,
 				buttons : [
 					{
@@ -44,14 +51,15 @@ var scForm = {
 							// Get the top most window object
 							win = editor.windowManager.getWindows()[0];
 
-							// Get the shortcode required field IDs
+							// Get the shortcode required attributes
 							required = scShortcodes[ scShortcode ];
 
 							valid = true;
 
 							// Do some validation voodoo
-							for( len = required.length, i = 0; i < len; i++ ) {
-								if( win.find( '#' + required[ i ] )[0].state.data.value === '' ) {
+							for( var id in required ) {
+								if( required.hasOwnProperty( id )
+									&& win.find( '#' + id )[0].state.data.value === '' ) {
 									valid = false;
 								}
 							}
@@ -86,7 +94,16 @@ var scForm = {
 				{
 					scForm.destroy();
 				}
-			});
+			};
+
+			// Change the buttons if server-side validation failed
+			if( response.ok.constructor === Array ) {
+				popup.buttons[0].text    = response.ok[0];
+				popup.buttons[0].onclick = 'close';
+				delete popup.buttons[1];
+			}
+
+			editor.windowManager.open( popup );
 		});
 	},
 

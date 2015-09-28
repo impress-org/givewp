@@ -1910,6 +1910,18 @@ Donation Details
   padding-right: 10px;
   padding-left: 10px; }
 
+.mce-sc-popup a {
+  text-decoration: underline; }
+
+.mce-sc-popup p {
+  margin-bottom: 1em; }
+  .mce-sc-popup p.strong {
+    font-weight: 600; }
+  .mce-sc-popup p.no-margin {
+    margin-bottom: 0; }
+  .mce-sc-popup p.margin-top {
+    margin-top: 1em; }
+
 /* =Shortcode button above wp_editor
 -------------------------------------------------------------- */
 @media screen and (max-width: 782px) {

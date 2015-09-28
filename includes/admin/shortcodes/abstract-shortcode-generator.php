@@ -199,8 +199,6 @@ abstract class Give_Shortcode_Generator {
 			return $this->generate_listbox( $field );
 		}
 
-		// @todo: else if nothing found...
-
 		return false;
 	}
 
