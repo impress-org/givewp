@@ -1,4 +1,4 @@
-/* global ajaxurl, scShortcodes, tinymce */
+/* global ajaxurl, jQuery, scShortcodes, tinymce */
 
 var jq = jQuery.noConflict();
 
@@ -34,11 +34,12 @@ var scForm = {
 			editor.windowManager.open({
 				title   : response.title,
 				body    : response.body,
+				minWidth: 320,
 				buttons : [
 					{
 						text    : response.ok,
 						classes : 'primary sc-primary',
-						onclick : function( e )
+						onclick : function()
 						{
 							// Get the top most window object
 							win = editor.windowManager.getWindows()[0];
@@ -81,7 +82,7 @@ var scForm = {
 					// Insert shortcode into the WP_Editor
 					window.send_to_editor( '[' + response.shortcode + attributes + ']' );
 				},
-				onclose: function( e )
+				onclose: function()
 				{
 					scForm.destroy();
 				}
@@ -102,31 +103,36 @@ var scForm = {
 
 jq( function( $ )
 {
+	var scOpen = function()
+	{
+		$( '#sc-button' ).addClass( 'active' );
+		$( '#sc-menu' ).show();
+	};
+
+	var scClose = function()
+	{
+		$( '#sc-button' ).removeClass( 'active' );
+		$( '#sc-menu' ).hide();
+	};
+
 	$( document ).on( 'click', function( e )
 	{
 		if( !$( e.target ).closest( '.sc-wrap' ).length ) {
-			$( '.sc-button' ).removeClass( 'active' );
-			$( '.sc-menu' ).hide();
+			scClose();
 		}
 	});
 
-	$( document ).on( 'click', 'button.sc-button', function( e )
+	$( document ).on( 'click', '#sc-button', function( e )
 	{
 		e.preventDefault();
 
-		var t    = $( this );
-		var menu = t.next( '.sc-menu' );
-
-		t.toggleClass( 'active' );
-
-		if( t.hasClass( 'active' ) ) {
-			menu.show();
+		if( $( this ).hasClass( 'active' ) ) {
+			scClose();
 		}
 		else {
-			menu.hide();
+			scOpen();
 		}
 	});
-
 
 	$( document ).on( 'click', '.sc-shortcode', function( e )
 	{
@@ -154,13 +160,10 @@ jq( function( $ )
 				tinymce.execCommand( 'Give_Shortcode' );
 			}
 
-			setTimeout( function() {
-				$( '.sc-button' ).removeClass( 'active' );
-				$( '.sc-menu' ).hide();
-			}, 100 );
+			setTimeout( function() { scClose(); }, 100 );
 		}
 		else {
-			alert( 'No custom shortcodes have been registered!' )
+			alert( 'No custom shortcodes have been registered!' );
 		}
 	});
 });

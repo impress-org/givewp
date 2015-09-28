@@ -161,8 +161,8 @@ final class Give_Shortcode_Button {
 				} else {
 					printf(
 						'<div class="sc-wrap">' .
-							'<button class="button sc-button">%s %s</button>' .
-							'<div class="sc-menu mce-menu">%s</div>' .
+							'<button id="sc-button" class="button sc-button">%s %s</button>' .
+							'<div id="sc-menu" class="sc-menu mce-menu">%s</div>' .
 						'</div>',
 						$img,
 						__( 'Give Shortcodes', 'give' ),
