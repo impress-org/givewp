@@ -130,7 +130,9 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 == Changelog ==
 
 = 1.3 =
+* Special shout out to a rock star contributor @pryley https://github.com/pryley - v1.3 wouldn't be packed full with all these awesome enhancements without him!
 * New: Floating labels functionality! Enable floating labels to provide a cleaner donation interface for your users. Thanks @pryley - https://github.com/WordImpress/Give/pull/231
+* New: Shortcode generator for easily adding the various Give shortcodes to your pages and posts. Special thanks to @pryley for all his hard work on this! https://github.com/WordImpress/Give/pull/275
 * New: Goal shortcode added to Core so you can now show various donation form goals separately from donation forms - https://github.com/WordImpress/Give/issues/184
 * New: Global setting to disable single give forms sidebars added - https://github.com/WordImpress/Give/issues/192
 * New: 'give_forms_single_summary_classes' filter added for customizing form wrapper classes
