@@ -18,17 +18,21 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 	 */
 	public function __construct() {
 
-		$this->shortcode['title']   = __( 'Donation Form', 'give' );
-		$this->shortcode['label']   = __( 'Donation Form', 'give' );
-		$this->shortcode['alert']   = __( 'You must first select a Form!', 'give' );
-		$this->shortcode['require'] = array(
-			'id' => sprintf( '<p class="strong">%s</p><p class="no-margin"><a href="%s">%s</a> %s</p>',
-						__( 'No donation forms were found!', 'give' ),
-						admin_url( 'post-new.php?post_type=give_forms' ),
-						__( 'Click here', 'give' ),
-						__( 'to create a new Donation Form.', 'give' )
-					),
+		$create_form_link = sprintf( __( '%sClick here%s to create a new Donation Form.', 'give' ),
+			'<a href="' . admin_url( 'post-new.php?post_type=give_forms' ) . '">',
+			'</a>'
 		);
+
+		$this->shortcode['require'] = array(
+			'id' => sprintf( '<p class="strong">%s</p><p class="no-margin">%s</p>',
+				__( 'No donation forms were found!', 'give' ),
+				$create_form_link
+			),
+		);
+
+		$this->shortcode['title'] = __( 'Donation Form', 'give' );
+		$this->shortcode['label'] = __( 'Donation Form', 'give' );
+		$this->shortcode['alert'] = __( 'You must first select a Form!', 'give' );
 
 		parent::__construct( 'give_form' );
 	}
