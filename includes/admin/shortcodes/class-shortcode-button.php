@@ -134,10 +134,9 @@ final class Give_Shortcode_Button {
 
 			foreach ( self::$shortcodes as $shortcode => $values ) {
 				/**
-				 * Filters the condition for including the current shortcode in the Shortcode Creator
-				 * dropdown menu.
+				 * Filters the condition for including the current shortcode
 				 *
-				 * @since 1.0.0
+				 * @since 1.0
 				 */
 				if ( apply_filters( sanitize_title( $shortcode ) . '_condition', true ) ) {
 
