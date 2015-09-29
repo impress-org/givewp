@@ -4,9 +4,11 @@
  *
  * @package     Give
  * @subpackage  Admin
+ * @author      Paul Ryley
  * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       1.0
+ * @version     1.0
+ * @since       1.3.0
  */
 
 defined( 'ABSPATH' ) or exit;
@@ -15,28 +17,38 @@ abstract class Give_Shortcode_Generator {
 
 	/**
 	 * The current class name
+	 *
+	 * @since 1.0
 	 */
 	public $self;
 
 	/**
 	 * The current shortcode
+	 *
+	 * @since 1.0
 	 */
 	public $shortcode;
 
 	/**
 	 * Shortcode field errors
+	 *
+	 * @since 1.0
 	 */
-	public $errors;
+	protected $errors;
 
 	/**
 	 * Required shortcode fields
+	 *
+	 * @since 1.0
 	 */
-	public $required;
+	protected $required;
 
 	/**
 	 * Class constructor
 	 *
 	 * @param string $shortcode The shortcode tag
+	 *
+	 * @since 1.0
 	 */
 	public function __construct( $shortcode ) {
 
@@ -48,7 +60,7 @@ abstract class Give_Shortcode_Generator {
 			$this->required = array();
 
 			// Generate the fields, errors, and requirements
-			$fields = $this->fields();
+			$fields = $this->get_fields();
 
 			$defaults = array(
 				'btn_close' => __( 'Close', 'give' ),
@@ -68,8 +80,10 @@ abstract class Give_Shortcode_Generator {
 	 * Define the shortcode attribute fields
 	 *
 	 * @return false|array
+	 *
+	 * @since 1.0
 	 */
-	protected function define_fields() {
+	public function define_fields() {
 
 		return false;
 	}
@@ -80,6 +94,8 @@ abstract class Give_Shortcode_Generator {
 	 * @param array $defined_fields
 	 *
 	 * @return array
+	 *
+	 * @since 1.0
 	 */
 	protected function generate_fields( $defined_fields ) {
 
@@ -116,14 +132,13 @@ abstract class Give_Shortcode_Generator {
 	}
 
 	/**
-	 * Perform final shortcode error validation
-	 *
-	 * @param array $defined_fields
-	 * @param array $generated_fields
+	 * Get the generated shortcode dialog fields
 	 *
 	 * @return array
+	 *
+	 * @since 1.0
 	 */
-	protected function fields() {
+	protected function get_fields() {
 
 		$defined_fields   = $this->define_fields();
 		$generated_fields = $this->generate_fields( $defined_fields );
@@ -155,6 +170,8 @@ abstract class Give_Shortcode_Generator {
 	 * @param array $field
 	 *
 	 * @return array|false
+	 *
+	 * @since 1.0
 	 */
 	protected function generate_container( $field ) {
 
@@ -175,6 +192,8 @@ abstract class Give_Shortcode_Generator {
 	 * @param array $field
 	 *
 	 * @return array|false
+	 *
+	 * @since 1.0
 	 */
 	protected function generate_listbox( $field ) {
 
@@ -224,6 +243,8 @@ abstract class Give_Shortcode_Generator {
 	 * @param array $field
 	 *
 	 * @return array|false
+	 *
+	 * @since 1.0
 	 */
 	protected function generate_post( $field ) {
 
@@ -261,6 +282,8 @@ abstract class Give_Shortcode_Generator {
 	 * @param array $field
 	 *
 	 * @return array|false
+	 *
+	 * @since 1.0
 	 */
 	protected function generate_textbox( $field ) {
 
@@ -293,6 +316,8 @@ abstract class Give_Shortcode_Generator {
 	 * @param array $field
 	 *
 	 * @return bool
+	 *
+	 * @since 1.0
 	 */
 	protected function validate( $field ) {
 

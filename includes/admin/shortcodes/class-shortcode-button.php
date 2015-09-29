@@ -4,9 +4,11 @@
  *
  * @package     Give
  * @subpackage  Admin
+ * @author      Paul Ryley
  * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       1.0
+ * @version     1.0
+ * @since       1.3.0
  */
 
 defined( 'ABSPATH' ) or exit;
@@ -15,15 +17,13 @@ final class Give_Shortcode_Button {
 
 	/**
 	 * All shortcode tags
+	 *
+	 * @since 1.0
 	 */
 	public static $shortcodes;
 
 	/**
-	 * Construct
-	 *
-	 * @param
-	 *
-	 * @return
+	 * Class constructor
 	 */
 	public function __construct() {
 
@@ -42,6 +42,8 @@ final class Give_Shortcode_Button {
 	 * Trigger custom admin_head hooks
 	 *
 	 * @return void
+	 *
+	 * @since 1.0
 	 */
 	public function admin_head() {
 
@@ -57,6 +59,8 @@ final class Give_Shortcode_Button {
 	 * @param array $plugin_array
 	 *
 	 * @return array
+	 *
+	 * @since 1.0
 	 */
 	public function mce_external_plugins( $plugin_array ) {
 
@@ -71,6 +75,8 @@ final class Give_Shortcode_Button {
 	 * Enqueue the admin assets
 	 *
 	 * @return void
+	 *
+	 * @since 1.0
 	 */
 	public function admin_enqueue_assets() {
 
@@ -89,6 +95,8 @@ final class Give_Shortcode_Button {
 	 * Localize the admin scripts
 	 *
 	 * @return void
+	 *
+	 * @since 1.0
 	 */
 	public function admin_localize_scripts() {
 
@@ -110,6 +118,8 @@ final class Give_Shortcode_Button {
 	 * Adds the "Donation Form" button above the TinyMCE Editor on add/edit screens.
 	 *
 	 * @return string
+	 *
+	 * @since 1.0
 	 */
 	public function shortcode_button() {
 
@@ -180,6 +190,8 @@ final class Give_Shortcode_Button {
 	 * Load the shortcode dialog fields via AJAX
 	 *
 	 * @return void
+	 *
+	 * @since 1.0
 	 */
 	public function shortcode_ajax() {
 

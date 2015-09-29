@@ -1,3 +1,15 @@
+/*!
+ * Give Admin Shortcodes JS
+ *
+ * @description: The Give Admin Shortcode scripts. Only enqueued on the admin widgets screen; used to show shortcode dialogs, show/hide, and other functions
+ * @package:     Give
+ * @subpackage:  Assets/JS
+ * @author:      Paul Ryley
+ * @copyright:   Copyright (c) 2015, WordImpress
+ * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since:       1.3.0
+ */
+
 /* global ajaxurl, jQuery, scShortcodes, tinymce */
 
 var jq = jQuery.noConflict();
