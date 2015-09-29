@@ -194,7 +194,7 @@ function give_load_gateway( form_object, payment_mode ) {
 			setup_give_tooltips();
 
 			// trigger an event on success for hooks
-			jQuery( document ).trigger( 'give_gateway_loaded', [response] );
+			jQuery( document ).trigger( 'give_gateway_loaded', [ response, jQuery( form_object ).attr( 'id' ) ] );
 		}
 	);
 

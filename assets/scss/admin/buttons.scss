@@ -1,0 +1,32 @@
+/**
+ * Give Admin Buttons SCSS
+ *
+ * @package     Give
+ * @subpackage  SCSS/Admin
+ * @copyright   Copyright (c) 2015, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+
+/*=Give Shortcode Button
+--------------------------------------*/
+
+@media screen and (max-width: 782px) {
+  #wp-content-media-buttons a.give-thickbox {
+    padding: 6px 14px;
+    line-height: normal;
+    font-size: 14px;
+    height: auto;
+  }
+  .wp-media-buttons span#give-media-button {
+      margin-top: 0 !important;
+      margin-left: 2px !important;
+  }
+}
+
+/*=Button in shortcode tinymce dialog
+--------------------------------------*/
+
+.mce-primary.mce-give-primary button {
+  padding-right: 10px;
+  padding-left: 10px;
+}

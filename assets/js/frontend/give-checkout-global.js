@@ -44,7 +44,7 @@ jQuery( function ( $ ) {
 					} else {
 						$form.find( 'input[name="card_state"], select[name="card_state"]' ).replaceWith( response );
 					}
-					doc.trigger( 'give_checkout_billing_address_updated', [response] );
+					doc.trigger( 'give_checkout_billing_address_updated', [ response, $form.attr( 'id' ) ] );
 				}
 			} ).fail( function ( data ) {
 				if ( window.console && window.console.log ) {

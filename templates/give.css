@@ -1749,14 +1749,23 @@ Avada
     position: relative;
     overflow: hidden; }
 
+/*!
+ * Float Labels
+ *
+ * Version: 1.0.7
+ * Author: Paul Ryley (http://geminilabs.io)
+ * URL: https://github.com/geminilabs/float-labels.js
+ * License: MIT
+ */
 form.floated-labels .floatlabel {
   position: relative; }
   form.floated-labels .floatlabel input,
   form.floated-labels .floatlabel select {
     font-size: 16px;
     line-height: normal;
-    padding: 12px;
-    border: 1px solid #ccc; }
+    background-color: inherit;
+    border: 1px solid #ccc;
+    padding: 12px; }
   form.floated-labels .floatlabel select {
     position: relative;
     color: #aaa;
@@ -1770,6 +1779,8 @@ form.floated-labels .floatlabel {
   form.floated-labels .floatlabel.is-active select,
   form.floated-labels .floatlabel.is-active textarea {
     color: #333;
+    background-color: inherit;
+    border-color: #ccc;
     padding-top: 20px;
     padding-bottom: 4px; }
   form.floated-labels .floatlabel.is-focused label.floatlabel-label {
@@ -1784,8 +1795,8 @@ form.floated-labels .floatlabel {
     line-height: 1;
     opacity: 0;
     visibility: hidden;
-    -webkit-transition: all 0.2s ease;
-            transition: all 0.2s ease;
+    -webkit-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
     padding: 0 1px; }
     form.floated-labels .floatlabel label.floatlabel-label.is-visible {
       opacity: 1;
