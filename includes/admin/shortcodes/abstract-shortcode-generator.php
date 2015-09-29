@@ -221,8 +221,8 @@ abstract class Give_Shortcode_Generator {
 
 			// do not reindex array!
 			$field['options'] = array(
-				''  => ( $field['placeholder'] ? $field['placeholder'] : sprintf( '– %s –', __( 'Select', 'give' ) ) ),
-			) + $field['options'];
+				                    '' => ( $field['placeholder'] ? $field['placeholder'] : sprintf( '– %s –', __( 'Select', 'give' ) ) ),
+			                    ) + $field['options'];
 
 			foreach ( $field['options'] as $value => $text ) {
 				$new_listbox['values'][] = array(
@@ -301,7 +301,9 @@ abstract class Give_Shortcode_Generator {
 
 		if ( $this->validate( $field ) ) {
 
-			return array_filter( $textbox, function( $value ) { return $value !== ''; } );
+			return array_filter( $textbox, function ( $value ) {
+				return $value !== '';
+			} );
 		}
 
 		return false;
@@ -322,11 +324,11 @@ abstract class Give_Shortcode_Generator {
 	protected function validate( $field ) {
 
 		extract( shortcode_atts(
-			array(
-				'name'     => false,
-				'required' => false,
-				'label'    => '',
-			), $field )
+				array(
+					'name'     => false,
+					'required' => false,
+					'label'    => '',
+				), $field )
 		);
 
 		if ( $name ) {
@@ -341,7 +343,7 @@ abstract class Give_Shortcode_Generator {
 				$this->errors[ $name ] = $this->generate_container( $error );
 			}
 
-			if ( !! $required || is_array( $required ) ) {
+			if ( ! ! $required || is_array( $required ) ) {
 
 				$alert = __( 'Some of the Shortcode options are required.', 'give' );
 
