@@ -408,7 +408,7 @@ function give_output_levels( $form_id ) {
  */
 function give_display_checkout_button( $form_id, $args ) {
 
-	$display_option = ( isset( $args['display_style'] ) && !empty( $args['display_style'] ) )
+	$display_option = ( isset( $args['display_style'] ) && ! empty( $args['display_style'] ) )
 		? $args['display_style']
 		: get_post_meta( $form_id, '_give_payment_display', true );
 
@@ -499,10 +499,12 @@ add_action( 'give_register_fields_before', 'give_user_info_fields' );
  * Renders the credit card info form.
  *
  * @since 1.0
+ *
  * @param int $form_id
+ *
  * @return void
  */
-function give_get_cc_form($form_id) {
+function give_get_cc_form( $form_id ) {
 
 	ob_start();
 
@@ -574,10 +576,12 @@ add_action( 'give_cc_form', 'give_get_cc_form' );
  * Outputs the default credit card address fields
  *
  * @since 1.0
+ *
  * @param int $form_id
+ *
  * @return void
  */
-function give_default_cc_address_fields($form_id) {
+function give_default_cc_address_fields( $form_id ) {
 
 	$logged_in = is_user_logged_in();
 
@@ -1119,7 +1123,8 @@ function give_form_content( $form_id, $args ) {
 	$show_content   = ( isset( $args['show_content'] ) && $args['show_content'] === true );
 
 	if ( ( $content_option !== 'none' && $show_content )
-		|| ( $content_option === 'none' && !$show_content ) ) {
+	     || ( $content_option === 'none' && ! $show_content )
+	) {
 		//add action according to value
 		add_action( $content_option, 'give_form_display_content' );
 	}
@@ -1146,14 +1151,15 @@ function give_show_goal_progress( $form_id, $args ) {
 	$color       = get_post_meta( $form_id, '_give_goal_color', true );
 	$show_text   = (bool) isset( $args['show_text'] ) ? filter_var( $args['show_text'], FILTER_VALIDATE_BOOLEAN ) : true;
 	$show_bar    = (bool) isset( $args['show_bar'] ) ? filter_var( $args['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
-	$show_goal   = ( isset( $args['show_goal'] ) && $args['show_goal'] === true || is_singular('give_forms') && $goal_option === 'yes');
 
+	//Sanity check - ensure form has goal set to output
 	if ( empty( $form->ID )
-		|| $goal_option !== 'yes'
-		|| $goal == 0
-		|| ( $goal_option !== 'yes' && $show_goal === true )
-		|| ( $goal_option === 'yes' && $show_goal === false ) ) {
+	     || (is_singular('give_forms') && $goal_option !== 'yes')
+	     || $goal_option !== 'yes'
+	     || $goal == 0
+	) {
 
+		//not this form, bail
 		return false;
 	}
 
@@ -1164,6 +1170,7 @@ function give_show_goal_progress( $form_id, $args ) {
 	}
 
 	$output = '<div class="goal-progress">';
+
 	//Goal Progress Text
 	if ( ! empty( $show_text ) ) {
 		$output .= '<div class="raised">';
@@ -1184,6 +1191,7 @@ function give_show_goal_progress( $form_id, $args ) {
 	$output .= '</div><!-- /.goal-progress -->';
 
 	echo apply_filters( 'give_goal_output', $output );
+
 	return false;
 
 }
