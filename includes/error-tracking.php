@@ -163,7 +163,7 @@ function give_die( $message = '', $title = '', $status = 400 ) {
  * @return   string  $error
  */
 function give_output_error( $message, $echo = true, $error_id = 'warning' ) {
-	$error = '<div class="give_errors" id="give_error_' . $error_id . '"><p class="give_error">' . $message . '</p></div>';
+	$error = '<div class="give_errors" id="give_error_' . $error_id . '"><p class="give_error  give_' . $error_id . '">' . $message . '</p></div>';
 
 	if ( $echo ) {
 		echo $error;

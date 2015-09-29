@@ -144,6 +144,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * New: Swedish translation files added - Thanks @mepmepmep https://github.com/WordImpress/Give/issues/238
 * New: Changed the ajax loader text from "Updating Price" to "Updating Amount" - https://github.com/WordImpress/Give/issues/269
 * Fix: Modal close button now displays properly - https://github.com/WordImpress/Give/issues/228
+* Fix: [give_login] shortcode now working as expected - also fixed up the logic to output the new [give_goal] shortcode see - https://github.com/WordImpress/Give/issues/279
 * Fix: Admin Give menu section called "Donation Forms" rather than just "Forms" thanks @pryley - https://github.com/WordImpress/Give/issues/196
 * Fix: Include CMB2CSS in the head to avoid FOUC https://github.com/WordImpress/Give/issues/243
 * Fix: Test Mode Active notification displays for editors when inactive https://github.com/WordImpress/Give/issues/242

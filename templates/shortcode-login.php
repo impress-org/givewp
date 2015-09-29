@@ -35,5 +35,5 @@ if ( ! is_user_logged_in() ) :
 		</fieldset>
 	</form>
 <?php else : ?>
-	<p class="give-logged-in"><?php _e( 'You are already logged in', 'give' ); ?></p>
+	<?php give_output_error( __( 'You are already logged in', 'give' ), true, 'success' ); ?>
 <?php endif; ?>
