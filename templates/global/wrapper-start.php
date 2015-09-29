@@ -36,6 +36,10 @@ switch ( $template ) {
 		break;
 	case 'divi' :
 		echo '<div id="main-content"><div class="container give-wrap" role="main">';
+		break;
+	case 'salient' :
+		echo '<div class="container-wrap"><div id="container" class="give-wrap container"><div id="content" role="main">';
+		break;
 	case 'x' :
 		echo '<div id="container" class="x-container-fluid max width offset cf give-wrap"><div class="x-main full" role="main"><div class="entry-wrap"><div class="entry-content">';
 		break;
