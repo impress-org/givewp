@@ -96,8 +96,10 @@ final class Give_Shortcode_Button {
 
 			$variables = array();
 
-			foreach ( self::$shortcodes as $key => $value ) {
-				$variables[ $key ] = $value['require'];
+			foreach ( self::$shortcodes as $shortcode => $values ) {
+				if ( ! empty( $values['required'] ) ) {
+					$variables[ $shortcode ] = $values['required'];
+				}
 			}
 
 			wp_localize_script( 'give_shortcode', 'scShortcodes', $variables );
@@ -188,25 +190,11 @@ final class Give_Shortcode_Button {
 
 			$data = self::$shortcodes[ $shortcode ];
 
-			$errors = array();
-
-			// verify that require keys exist in the shortcode field names
-			foreach ( $data['require'] as $name => $message ) {
-				if ( false === array_search( $name, array_column( $data['fields'], 'name' ) ) ) {
-					$errors[] = array(
-						'type' => 'container',
-						'html' => $message,
-					);
-				}
-			}
-
-			if ( ! empty( $errors ) ) {
-				$data['fields']   = $errors;
+			if( ! empty( $data['errors'] ) ) {
 				$data['btn_okay'] = array( __( 'Okay', 'give' ) );
 			}
 
 			$response = [
-				'alert'     => $data['alert'],
 				'body'      => $data['fields'],
 				'close'     => $data['btn_close'],
 				'ok'        => $data['btn_okay'],

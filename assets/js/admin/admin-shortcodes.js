@@ -14,7 +14,7 @@ var scForm = {
 			return;
 		}
 
-		var data, required, valid, win;
+		var data, field, required, valid, win;
 
 		data = {
 			action    : 'give_shortcode',
@@ -58,16 +58,22 @@ var scForm = {
 
 							// Do some validation voodoo
 							for( var id in required ) {
-								if( required.hasOwnProperty( id )
-									&& win.find( '#' + id )[0].state.data.value === '' ) {
-									valid = false;
+								if( required.hasOwnProperty( id ) ) {
+
+									field = win.find( '#' + id )[0];
+
+									if( typeof field !== 'undefined' && field.state.data.value === '' ) {
+
+										valid = false;
+
+										alert( required[ id ] );
+
+										break;
+									}
 								}
 							}
 
-							if( !valid ) {
-								alert( response.alert );
-							}
-							else {
+							if( valid ) {
 								win.submit();
 							}
 						}
