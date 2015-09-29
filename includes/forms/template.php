@@ -1147,7 +1147,7 @@ function give_show_goal_progress( $form_id, $args ) {
 	$show_text   = (bool) isset( $args['show_text'] ) ? filter_var( $args['show_text'], FILTER_VALIDATE_BOOLEAN ) : true;
 	$show_bar    = (bool) isset( $args['show_bar'] ) ? filter_var( $args['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
 	$show_goal   = ( isset( $args['show_goal'] ) && $args['show_goal'] === true || is_singular('give_forms') && $goal_option === 'yes');
-	
+
 	if ( empty( $form->ID )
 		|| $goal_option !== 'yes'
 		|| $goal == 0
