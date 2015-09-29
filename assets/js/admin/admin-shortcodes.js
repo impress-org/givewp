@@ -155,6 +155,7 @@ jq( function( $ )
 	{
 		e.preventDefault();
 
+		// scShortcode is used by scForm to trigger the correct popup
 		scShortcode = $( this ).attr( 'data-shortcode' );
 
 		if( scShortcode ) {
@@ -180,7 +181,7 @@ jq( function( $ )
 			setTimeout( function() { scClose(); }, 100 );
 		}
 		else {
-			alert( 'No custom shortcodes have been registered!' );
+			console.warn( 'That is not a valid shortcode link.' );
 		}
 	});
 });
