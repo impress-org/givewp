@@ -1134,7 +1134,7 @@ add_action( 'give_pre_form_output', 'give_form_content', 10, 2 );
  * @param int   $form_id
  * @param array $args
  *
- * @return bool
+ * @return mixed
  */
 
 function give_show_goal_progress( $form_id, $args ) {
@@ -1146,8 +1146,8 @@ function give_show_goal_progress( $form_id, $args ) {
 	$color       = get_post_meta( $form_id, '_give_goal_color', true );
 	$show_text   = (bool) isset( $args['show_text'] ) ? filter_var( $args['show_text'], FILTER_VALIDATE_BOOLEAN ) : true;
 	$show_bar    = (bool) isset( $args['show_bar'] ) ? filter_var( $args['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
-	$show_goal   = ( isset( $args['show_goal'] ) && $args['show_goal'] === true );
-
+	$show_goal   = ( isset( $args['show_goal'] ) && $args['show_goal'] === true || is_singular('give_forms') && $goal_option === 'yes');
+	
 	if ( empty( $form->ID )
 		|| $goal_option !== 'yes'
 		|| $goal == 0
@@ -1184,6 +1184,8 @@ function give_show_goal_progress( $form_id, $args ) {
 	$output .= '</div><!-- /.goal-progress -->';
 
 	echo apply_filters( 'give_goal_output', $output );
+	return false;
+
 }
 
 add_action( 'give_pre_form', 'give_show_goal_progress', 10, 2 );
