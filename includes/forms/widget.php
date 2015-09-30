@@ -153,14 +153,13 @@ class Give_Forms_Widget extends WP_Widget
 		// Widget: Floating Labels
 
 		?><p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'float_labels' ) ); ?>"><?php _e( 'Floating Labels:', 'give' ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'float_labels' ) ); ?>"><?php _e( 'Floating Labels (optional):', 'give' ); ?></label>
 			<select class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'float_labels' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'float_labels' ) ); ?>">
-				<option value="global" <?php selected( esc_attr( $float_labels ), 'global' ) ?>><?php _e( 'Use the global setting', 'give' ); ?></option>
-				<option value="local" <?php selected( esc_attr( $float_labels ), 'local' ) ?>><?php _e( 'Use the form setting', 'give' ); ?></option>
+				<option value="" <?php selected( esc_attr( $float_labels ), '' ) ?>>– <?php _e( 'Select', 'give' ); ?> –</option>
 				<option value="enabled" <?php selected( esc_attr( $float_labels ), 'enabled' ) ?>><?php _e( 'Enabled', 'give' ); ?></option>
 				<option value="disabled" <?php selected( esc_attr( $float_labels ), 'disabled' ) ?>><?php _e( 'Disabled', 'give' ); ?></option>
 			</select><br>
-			<small><?php printf( __( 'Select the <a href="%s" target="_blank">floating labels</a> setting for this Give form.', 'give' ), esc_url( "http://bradfrost.com/blog/post/float-label-pattern/" ) ); ?></small>
+			<small><?php printf( __( 'Override the <a href="%s" target="_blank">floating labels</a> setting for this Give form.', 'give' ), esc_url( "http://bradfrost.com/blog/post/float-label-pattern/" ) ); ?></small>
 		</p><?php
 	}
 

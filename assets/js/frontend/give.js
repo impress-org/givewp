@@ -30,30 +30,39 @@ jQuery( function ( $ ) {
 	$( '.float-labels-enabled' ).floatlabels( options );
 
 	doc.on( 'give_gateway_loaded', function ( ev, response, form_id ) {
-		$( '#' + form_id ).floatlabels( options );
+
+		var form = $( 'form#' + form_id );
+
+		if ( form.hasClass( 'float-labels-enabled' ) ) {
+			form.floatlabels( options );
+		}
 	} );
 
 	doc.on( 'give_checkout_billing_address_updated', function ( ev, response, form_id ) {
 
-		var form  = $( '#' + form_id );
-		var wrap  = form.find( '#give-card-state-wrap' );
-		var el    = wrap.find( '#card_state' );
-		var label = wrap.find( 'label[for="card_state"]' );
+		var form  = $( 'form#' + form_id );
 
-		label = label.length ? label.text().replace( /[*:]/g, '' ).trim() : '';
+		if ( form.hasClass( 'float-labels-enabled' ) ) {
 
-		if ( 'nostates' === response ) {
-			// fix input
-			el.attr( 'placeholder', label ).parent().removeClass( 'styled select' );
-		} else {
-			// fix select
-			el.children().first().text( label );
-			el.parent().addClass( 'styled select' );
+			var wrap  = form.find( '#give-card-state-wrap' );
+			var el    = wrap.find( '#card_state' );
+			var label = wrap.find( 'label[for="card_state"]' );
+
+			label = label.length ? label.text().replace( /[*:]/g, '' ).trim() : '';
+
+			if ( 'nostates' === response ) {
+				// fix input
+				el.attr( 'placeholder', label ).parent().removeClass( 'styled select' );
+			} else {
+				// fix select
+				el.children().first().text( label );
+				el.parent().addClass( 'styled select' );
+			}
+
+			el.parent().removeClass( 'is-active' );
+
+			form.floatlabels( options );
 		}
-
-		el.parent().removeClass( 'is-active' );
-
-		form.floatlabels( options );
 	} );
 
 	// Reveal Btn which displays the checkout content
