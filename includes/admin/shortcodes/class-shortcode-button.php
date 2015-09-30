@@ -28,13 +28,13 @@ final class Give_Shortcode_Button {
 	public function __construct() {
 
 		if ( is_admin() ) {
-			add_action( 'admin_head',            array( $this, 'admin_head' ) );
+			add_action( 'admin_head', array( $this, 'admin_head' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_assets' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_localize_scripts' ), 13 );
-			add_action( 'media_buttons',         array( $this, 'shortcode_button' ) );
+			add_action( 'media_buttons', array( $this, 'shortcode_button' ) );
 		}
 
-		add_action( "wp_ajax_give_shortcode",        array( $this, 'shortcode_ajax' ) );
+		add_action( "wp_ajax_give_shortcode", array( $this, 'shortcode_ajax' ) );
 		add_action( "wp_ajax_nopriv_give_shortcode", array( $this, 'shortcode_ajax' ) );
 	}
 
@@ -125,10 +125,12 @@ final class Give_Shortcode_Button {
 
 		global $pagenow, $wp_version;
 
+		$shortcode_button_pages = array( 'post.php', 'page.php', 'post-new.php', 'post-edit.php' );
 		// Only run in admin post/page creation and edit screens
-		if ( in_array( $pagenow, ['post.php', 'page.php', 'post-new.php', 'post-edit.php'] )
-			&& apply_filters( 'give_shortcode_button_condition', true )
-			&& ! empty( self::$shortcodes ) ) {
+		if ( in_array( $pagenow, $shortcode_button_pages )
+		     && apply_filters( 'give_shortcode_button_condition', true )
+		     && ! empty( self::$shortcodes )
+		) {
 
 			$shortcodes = array();
 
@@ -149,7 +151,7 @@ final class Give_Shortcode_Button {
 				}
 			}
 
-			if ( !empty( $shortcodes  ) ) {
+			if ( ! empty( $shortcodes ) ) {
 
 				// check current WP version
 				$img = ( version_compare( $wp_version, '3.5', '<' ) )
@@ -174,8 +176,8 @@ final class Give_Shortcode_Button {
 				} else {
 					printf(
 						'<div class="sc-wrap">' .
-							'<button id="sc-button" class="button sc-button">%s %s</button>' .
-							'<div id="sc-menu" class="sc-menu mce-menu">%s</div>' .
+						'<button id="sc-button" class="button sc-button">%s %s</button>' .
+						'<div id="sc-menu" class="sc-menu mce-menu">%s</div>' .
 						'</div>',
 						$img,
 						__( 'Give Shortcodes', 'give' ),
@@ -202,17 +204,17 @@ final class Give_Shortcode_Button {
 
 			$data = self::$shortcodes[ $shortcode ];
 
-			if( ! empty( $data['errors'] ) ) {
+			if ( ! empty( $data['errors'] ) ) {
 				$data['btn_okay'] = array( __( 'Okay', 'give' ) );
 			}
 
-			$response = [
+			$response = array(
 				'body'      => $data['fields'],
 				'close'     => $data['btn_close'],
 				'ok'        => $data['btn_okay'],
 				'shortcode' => $shortcode,
 				'title'     => $data['title'],
-			];
+			);
 		} else {
 			// todo: handle error
 			error_log( print_r( 'AJAX error!', 1 ) );
