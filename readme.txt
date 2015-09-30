@@ -4,7 +4,7 @@ Donate link: http://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 3.8
 Tested up to: 4.3.1
-Stable tag: 1.3.0.1
+Stable tag: 1.3.0.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -128,6 +128,10 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 4. Multi-level donations
 
 == Changelog ==
+
+= 1.3.0.2 =
+* Fix: Removed bracket array declarations usage that only works with PHP 5.4+ - https://github.com/WordImpress/Give/issues/290
+* Fix: PHP 5.2 Issue with anonymous function / Closure used in new shortcode generator - https://github.com/WordImpress/Give/issues/291
 
 = 1.3.0.1 =
 * Fix: Provided fallback function for array_column function used that's only in PHP 5.5+ - https://github.com/WordImpress/Give/issues/288

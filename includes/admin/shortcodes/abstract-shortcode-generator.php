@@ -301,12 +301,21 @@ abstract class Give_Shortcode_Generator {
 
 		if ( $this->validate( $field ) ) {
 
-			return array_filter( $textbox, function ( $value ) {
-				return $value !== '';
-			} );
+			return array_filter( $textbox, array( $this, '' ) );
 		}
 
 		return false;
+	}
+
+	/**
+	 * Validate Textbox Value
+	 *
+	 * @param $value
+	 *
+	 * @return bool
+	 */
+	protected function validate_textbox_value( $value ) {
+		return $value !== '';
 	}
 
 	/**
