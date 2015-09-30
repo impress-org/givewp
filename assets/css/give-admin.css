@@ -518,7 +518,7 @@ x:-o-prefocus, .qtip .qtip-tip {
   position: absolute !important; }
 
 /**
- * Give Frontend Fontss SCSS
+ * Give Frontend Fonts SCSS
  *
  * @description: Fonts are from icomoon and the src paths need to be relative to template directory
  * @package     Give
@@ -1093,8 +1093,13 @@ Logs
   font-size: 14px;
   margin: 6px 0 0 0; }
 
-.two-col > div.last-feature {
-  margin-right: 0; }
+.feature-section .feature-section-item {
+  width: 48%;
+  float: left; }
+
+.feature-section div.last-feature {
+  margin-right: 0;
+  margin-left: 4%; }
 
 [class^="dashboard_page_give-"] .about-text, [class*="dashboard_page_give-"] .about-text {
   min-height: 0; }

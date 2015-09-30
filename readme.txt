@@ -155,6 +155,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Fix: Admin Column: If no goal is set for a donation form show "No Goal Set" rather than "0.00" - https://github.com/WordImpress/Give/issues/256
 * Fix: Norwegian Kroner currency symbol adjustments - https://github.com/WordImpress/Give/issues/256
 * Fix: Salient theme wrapper divs added - https://github.com/WordImpress/Give/issues/280
+* Fix: Broken welcome screen content columns - https://github.com/WordImpress/Give/issues/287
 
 = 1.2.1 =
 * Improved: Admin UX/UI - "View Donation Details" button now much easier to navigate into the single transaction view - https://github.com/WordImpress/Give/issues/216

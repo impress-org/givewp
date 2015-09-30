@@ -23,11 +23,18 @@
 	margin: 6px 0 0 0;
   }
 
+  .feature-section-item {
+	width:48%;
+	float:left;
+  }
+
+  div.last-feature {
+	margin-right:0;
+	margin-left:4%;
+  }
+
 }
 
-.two-col > div.last-feature {
-  margin-right:0;
-}
 
 //Get started
 [class^="dashboard_page_give-"], [class*="dashboard_page_give-"]  {
