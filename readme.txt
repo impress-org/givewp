@@ -132,6 +132,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 = 1.3.0.2 =
 * Fix: Removed bracket array declarations usage that only works with PHP 5.4+ - https://github.com/WordImpress/Give/issues/290
 * Fix: PHP 5.2 Issue with anonymous function / Closure used in new shortcode generator - https://github.com/WordImpress/Give/issues/291
+* Fix: wp_mail function conflict with Mandrill and the new shortcode generator due to too early initialization https://github.com/WordImpress/Give/issues/289
 
 = 1.3.0.1 =
 * Fix: Provided fallback function for array_column function used that's only in PHP 5.5+ - https://github.com/WordImpress/Give/issues/288
