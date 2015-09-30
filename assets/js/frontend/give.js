@@ -31,7 +31,7 @@ jQuery( function ( $ ) {
 
 	doc.on( 'give_gateway_loaded', function ( ev, response, form_id ) {
 
-		var form = $( '#' + form_id );
+		var form = $( 'form#' + form_id );
 
 		if ( form.hasClass( 'float-labels-enabled' ) ) {
 			form.floatlabels( options );
@@ -40,7 +40,7 @@ jQuery( function ( $ ) {
 
 	doc.on( 'give_checkout_billing_address_updated', function ( ev, response, form_id ) {
 
-		var form  = $( '#' + form_id );
+		var form  = $( 'form#' + form_id );
 
 		if ( form.hasClass( 'float-labels-enabled' ) ) {
 
