@@ -131,6 +131,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 = 1.3.0.1 =
 * Fix: Provided fallback function for array_column function used that's only in PHP 5.5+ - https://github.com/WordImpress/Give/issues/288
+* Fix: Removed Bower folder from WordPress.org plugin repo as it shouldn't be there
 
 = 1.3 =
 * Special shout out to a rock star contributor @pryley https://github.com/pryley - v1.3 wouldn't be packed full with all these awesome enhancements without him!
