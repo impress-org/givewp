@@ -30,6 +30,13 @@ abstract class Give_Shortcode_Generator {
 	public $shortcode;
 
 	/**
+	 * The current shortcode tag
+	 *
+	 * @since 1.0
+	 */
+	public $shortcode_tag;
+
+	/**
 	 * Shortcode field errors
 	 *
 	 * @since 1.0
@@ -52,7 +59,20 @@ abstract class Give_Shortcode_Generator {
 	 */
 	public function __construct( $shortcode ) {
 
-		if ( $shortcode ) {
+
+		$this->shortcode_tag = $shortcode;
+
+		add_action( 'admin_init', array( $this, 'init' ) );
+
+	}
+
+	/**
+	 * Kick things off for the shortcode generator
+	 * @since 1.3.0.2
+	 */
+	public function init() {
+
+		if ( $this->shortcode_tag ) {
 
 			$this->self = get_class( $this );
 
@@ -67,14 +87,19 @@ abstract class Give_Shortcode_Generator {
 				'btn_okay'  => __( 'Insert Shortcode', 'give' ),
 				'errors'    => $this->errors,
 				'fields'    => $fields,
-				'label'     => '[' . $shortcode . ']',
+				'label'     => '[' . $this->shortcode_tag . ']',
 				'required'  => $this->required,
 				'title'     => __( 'Insert Shortcode', 'give' ),
 			);
 
-			Give_Shortcode_Button::$shortcodes[ $shortcode ] = wp_parse_args( $this->shortcode, $defaults );
+			Give_Shortcode_Button::$shortcodes[ $this->shortcode_tag ] = wp_parse_args( $this->shortcode, $defaults );
+
+			//
+
 		}
+
 	}
+
 
 	/**
 	 * Define the shortcode attribute fields
@@ -301,21 +326,12 @@ abstract class Give_Shortcode_Generator {
 
 		if ( $this->validate( $field ) ) {
 
-			return array_filter( $textbox, array( $this, 'validate_textbox_value' ) );
+			return array_filter( $textbox, function ( $value ) {
+				return $value !== '';
+			} );
 		}
 
 		return false;
-	}
-
-	/**
-	 * Validate Textbox Value
-	 *
-	 * @param $value
-	 *
-	 * @return bool
-	 */
-	protected function validate_textbox_value( $value ) {
-		return $value !== '';
 	}
 
 	/**
