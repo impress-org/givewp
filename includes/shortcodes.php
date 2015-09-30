@@ -68,8 +68,8 @@ function give_form_shortcode( $atts, $content = null ) {
 			$atts[ $key ] = '';
 		}
 		//validate float_labels value
-		if ( $key == 'float_labels' && !in_array( $value, array( 'local', 'enabled', 'disabled' ) ) ) {
-			$atts[ $key ] = 'global';
+		if ( $key == 'float_labels' && !in_array( $value, array( 'enabled', 'disabled' ) ) ) {
+			$atts[ $key ] = '';
 		}
 	}
 

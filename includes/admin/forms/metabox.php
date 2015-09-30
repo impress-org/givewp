@@ -303,7 +303,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 						'id'      => $prefix . 'form_floating_labels',
 						'type'    => 'select',
 						'options' => array(
-							'global'   => __( 'Use the global setting', 'give' ),
+							''         => __( 'Use the global setting', 'give' ),
 							'enabled'  => __( 'Enabled', 'give' ),
 							'disabled' => __( 'Disabled', 'give' ),
 						),

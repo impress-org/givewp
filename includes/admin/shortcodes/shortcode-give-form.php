@@ -99,7 +99,7 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 				'type'    => 'listbox',
 				'name'    => 'float_labels',
 				'label'   => __( 'Floating Labels:', 'give' ),
-				'tooltip' => __( 'Would you like to enable floating labels?', 'give' ),
+				'tooltip' => __( 'Override the default floating labels setting for this form?', 'give' ),
 				'options' => array(
 					'enabled'  => __( 'Enabled', 'give' ),
 					'disabled' => __( 'Disabled', 'give' ),

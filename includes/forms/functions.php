@@ -42,15 +42,17 @@ function get_form_id_from_args( $args ) {
  */
 function give_is_float_labels_enabled( $args ) {
 
-	if ( isset( $args['float_labels'] ) ) {
+	$float_labels = '';
+
+	if ( ! empty( $args['float_labels'] ) ) {
 		$float_labels = $args['float_labels'];
 	}
 
-	if ( ! isset( $float_labels ) || ( isset( $float_labels ) && $float_labels == 'local' ) ) {
+	if ( empty( $float_labels ) ) {
 		$float_labels = get_post_meta( $args['form_id'], '_give_form_floating_labels', true );
 	}
 
-	if ( empty( $float_labels ) || $float_labels == 'global' ) {
+	if ( empty( $float_labels ) ) {
 		$float_labels = give_get_option( 'enable_floatlabels' ) ? 'enabled' : 'disabled';
 	}
 
