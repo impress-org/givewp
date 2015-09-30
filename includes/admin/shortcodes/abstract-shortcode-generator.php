@@ -301,7 +301,7 @@ abstract class Give_Shortcode_Generator {
 
 		if ( $this->validate( $field ) ) {
 
-			return array_filter( $textbox, array( $this, '' ) );
+			return array_filter( $textbox, array( $this, 'validate_textbox_value' ) );
 		}
 
 		return false;
