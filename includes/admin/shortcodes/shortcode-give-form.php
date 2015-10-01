@@ -77,11 +77,13 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 			array(
 				'type'    => 'listbox',
 				'name'    => 'show_content',
+				'minWidth' => 240,
 				'label'   => __( 'Display Content:', 'give' ),
 				'tooltip' => __( 'Do you want to display the form content?', 'give' ),
 				'options' => array(
-					'true'  => __( 'Show', 'give' ),
-					'false' => __( 'Hide', 'give' ),
+					'none'           => __( 'No Content', 'give' ),
+					'give_pre_form'  => __( 'Display above the form fields', 'give' ),
+					'give_post_form' => __( 'Display below the form fields', 'give' ),
 				),
 			),
 			array(
