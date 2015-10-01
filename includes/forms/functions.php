@@ -15,6 +15,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Filter: Do not show the Give shortcut button on Give Forms or Campaign posts
+ *
+ * @return bool
+ */
+function give_shortcode_button_condition() {
+
+	global $typenow;
+
+	if ( $typenow != 'give_forms' && $typenow != 'give_campaigns' ) {
+		return true;
+	}
+
+	return false;
+}
+
+add_filter( 'give_shortcode_button_condition', 'give_shortcode_button_condition' );
+
+
+/**
  * Get the form ID from the form $args
  *
  * @param $args
