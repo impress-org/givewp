@@ -81,9 +81,9 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 				'label'   => __( 'Display Content:', 'give' ),
 				'tooltip' => __( 'Do you want to display the form content?', 'give' ),
 				'options' => array(
-					'none'           => __( 'No Content', 'give' ),
-					'give_pre_form'  => __( 'Display above the form fields', 'give' ),
-					'give_post_form' => __( 'Display below the form fields', 'give' ),
+					'none'  => __( 'No Content', 'give' ),
+					'above' => __( 'Display above the form fields', 'give' ),
+					'below' => __( 'Display below the form fields', 'give' ),
 				),
 			),
 			array(
