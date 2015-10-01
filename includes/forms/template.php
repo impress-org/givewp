@@ -1120,7 +1120,7 @@ add_action( 'give_checkout_form_top', 'give_agree_to_terms_js', 10, 2 );
 function give_form_content( $form_id, $args ) {
 
 	$content_option = get_post_meta( $form_id, '_give_content_option', true ); //value is action to output content
-	$show_content   = ( isset( $args['show_content'] ) && $args['show_content'] === true );
+	$show_content   = ( isset( $args['show_content'] ) && $args['show_content'] === false ? false : true );
 
 	if ( ( $content_option !== 'none' && $show_content )
 	     || ( $content_option === 'none' && ! $show_content )
