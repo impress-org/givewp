@@ -62,9 +62,20 @@ function give_form_shortcode( $atts, $content = null ) {
 		if ( $key == 'show_title' ) {
 			$atts[ $key ] = filter_var( $atts[ $key ], FILTER_VALIDATE_BOOLEAN );
 		}
+
 		//validate show_content value
-		if ( ( $key == 'show_content' && ! in_array( $value, array( 'none', 'above', 'below' ) ) )
-			|| ( $key == 'display_style' && ! in_array( $value, array( 'onpage', 'reveal', 'modal' ) ) )
+		if ( $key == 'show_content' ) {
+			if ( ! in_array( $value, array( 'none', 'above', 'below' ) ) ) {
+				$atts[ $key ] = '';
+			} else if ( $value == 'above' ) {
+				$atts[ $key ] = 'give_pre_form';
+			} else if ( $value == 'below' ) {
+				$atts[ $key ] = 'give_post_form';
+			}
+		}
+
+		//validate display_style and float_labels value
+		if ( ( $key == 'display_style' && ! in_array( $value, array( 'onpage', 'reveal', 'modal' ) ) )
 			|| ( $key == 'float_labels' && ! in_array( $value, array( 'enabled', 'disabled' ) ) ) ) {
 
 			$atts[ $key ] = '';
