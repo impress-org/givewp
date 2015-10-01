@@ -52,23 +52,21 @@ function give_form_shortcode( $atts, $content = null ) {
 	$atts = shortcode_atts( array(
 		'id'            => '',
 		'show_title'    => true,
-//		'show_goal'     => true,
-		'show_content'  => true,
+		'show_content'  => '',
 		'float_labels'  => '',
 		'display_style' => '',
 	), $atts, 'give_form' );
 
 	foreach ( $atts as $key => $value ) {
 		//convert shortcode_atts values to booleans
-		if ( in_array( $key, array( 'show_title', 'show_content' ) ) ) {
+		if ( $key == 'show_title' ) {
 			$atts[ $key ] = filter_var( $atts[ $key ], FILTER_VALIDATE_BOOLEAN );
 		}
-		//validate display_style value
-		if ( $key == 'display_style' && !in_array( $value, array( 'onpage', 'reveal', 'modal' ) ) ) {
-			$atts[ $key ] = '';
-		}
-		//validate float_labels value
-		if ( $key == 'float_labels' && !in_array( $value, array( 'enabled', 'disabled' ) ) ) {
+		//validate show_content value
+		if ( ( $key == 'show_content' && ! in_array( $value, array( 'none', 'above', 'below' ) ) )
+			|| ( $key == 'display_style' && ! in_array( $value, array( 'onpage', 'reveal', 'modal' ) ) )
+			|| ( $key == 'float_labels' && ! in_array( $value, array( 'enabled', 'disabled' ) ) ) ) {
+
 			$atts[ $key ] = '';
 		}
 	}
