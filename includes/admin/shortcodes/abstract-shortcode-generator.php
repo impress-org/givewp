@@ -325,13 +325,21 @@ abstract class Give_Shortcode_Generator {
 		), $field );
 
 		if ( $this->validate( $field ) ) {
-
-			return array_filter( $textbox, function ( $value ) {
-				return $value !== '';
-			} );
+			return array_filter( $textbox, array( $this, 'return_textbox_value' ) );
 		}
 
 		return false;
+	}
+
+	/**
+	 * Validate Textbox Value
+	 *
+	 * @param $value
+	 *
+	 * @return bool
+	 */
+	function return_textbox_value( $value ) {
+		return $value !== '';
 	}
 
 	/**
