@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Give - Donation Plugin package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Give - Donation Plugin 1.3.0.2\n"
+"Project-Id-Version: Give - Donation Plugin 1.3.0.4\n"
 "Report-Msgid-Bugs-To: https://givewp.com/\n"
-"POT-Creation-Date: 2015-10-01 17:20:31+00:00\n"
+"POT-Creation-Date: 2015-10-06 21:23:11+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -524,7 +524,7 @@ msgid "View Details for Donation"
 msgstr ""
 
 #: includes/admin/customers/customers.php:421
-#: templates/history-donations.php:31
+#: templates/history-donations.php:32
 msgid "View Details"
 msgstr ""
 
@@ -2405,11 +2405,11 @@ msgstr ""
 msgid "Select"
 msgstr ""
 
-#: includes/admin/shortcodes/abstract-shortcode-generator.php:373
+#: includes/admin/shortcodes/abstract-shortcode-generator.php:381
 msgid "Some of the Shortcode options are required."
 msgstr ""
 
-#: includes/admin/shortcodes/abstract-shortcode-generator.php:381
+#: includes/admin/shortcodes/abstract-shortcode-generator.php:389
 msgid "The \"%s\" option is required."
 msgstr ""
 
@@ -4564,7 +4564,7 @@ msgstr ""
 msgid "[Password entered during donation]"
 msgstr ""
 
-#: templates/history-donations.php:51
+#: templates/history-donations.php:52
 msgid "It looks like you haven't made any donations"
 msgstr ""
 
