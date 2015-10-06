@@ -58,16 +58,12 @@ jQuery.noConflict();
 			var price_option_val = $( '.cmb2-id--give-price-option input:radio:checked' ).val();
 			if ( price_option_val === 'set' ) {
 				//set price shows
-				$( '.cmb2-id--give-set-price, .cmb2-id--give-recurring' ).show();
-				//if recurring conditional equals yes then show subsequent fields
-				if ( $( '#_give_recurring' ).val() == 'yes' ) {
-					$( '.cmb2-id--give-period, .cmb2-id--give-times' ).show();
-				}
+				$( '.cmb2-id--give-set-price' ).show();
 				$( '.cmb2-id--give-levels-header, .cmb2-id--give-levels-header + .cmb-repeat-group-wrap, .cmb2-id--give-display-style' ).hide(); //hide multi-val stuffs
 
 			} else {
 				//multi-value shows
-				$( '.cmb2-id--give-set-price, .cmb2-id--give-recurring, .cmb2-id--give-period, .cmb2-id--give-times' ).hide();
+				$( '.cmb2-id--give-set-price' ).hide();
 				$( '.cmb2-id--give-levels-header, .cmb2-id--give-levels-header + .cmb-repeat-group-wrap, .cmb2-id--give-display-style' ).show(); //show set stuffs
 			}
 		} ).change();
