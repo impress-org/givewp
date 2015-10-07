@@ -130,7 +130,8 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 == Changelog ==
 
 = 1.3.1 =
-* New: give_fo ilter needed for give form classes
+* New: `give_form_classes` filter added for give form classes - https://github.com/WordImpress/Give/issues/306
+* New: `give_form_level_text` filter added for altering multilevel donation form level text - https://github.com/WordImpress/Give/issues/307
 
 = 1.3.0.4 =
 * New: Added new filter for default form amount - https://github.com/WordImpress/Give/issues/301
