@@ -327,7 +327,7 @@ function give_output_levels( $form_id ) {
 
 			foreach ( $prices as $price ) {
 				$counter ++;
-				$level_text = apply_filters( 'give_form_level_text', ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( give_format_amount( $price['_give_amount'] ) ), $form_id );
+				$level_text = apply_filters( 'give_form_level_text', ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( give_format_amount( $price['_give_amount'] ) ), $form_id, $price );
 
 				$output .= '<li>';
 				$output .= '<button type="button" data-price-id="' . $price['_give_id']['level_id'] . '" class="give-donation-level-btn give-btn give-btn-level-' . $counter . ' ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'give-default-level' : '' ) . '" value="' . give_format_amount( $price['_give_amount'] ) . '">';
@@ -356,7 +356,7 @@ function give_output_levels( $form_id ) {
 
 			foreach ( $prices as $price ) {
 				$counter ++;
-				$level_text = apply_filters( 'give_form_level_text', ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( give_format_amount( $price['_give_amount'] ) ), $form_id );
+				$level_text = apply_filters( 'give_form_level_text', ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( give_format_amount( $price['_give_amount'] ) ), $form_id, $price );
 
 				$output .= '<li>';
 
@@ -386,7 +386,7 @@ function give_output_levels( $form_id ) {
 
 			//first loop through prices
 			foreach ( $prices as $price ) {
-				$level_text = apply_filters( 'give_form_level_text', ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( give_format_amount( $price['_give_amount'] ) ), $form_id );
+				$level_text = apply_filters( 'give_form_level_text', ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( give_format_amount( $price['_give_amount'] ) ), $form_id, $price );
 
 				$output .= '<option data-price-id="' . $price['_give_id']['level_id'] . '" class="give-donation-level-' . $form_id . '" ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'selected="selected"' : '' ) . ' value="' . give_format_amount( $price['_give_amount'] ) . '">';
 				$output .= $level_text;
