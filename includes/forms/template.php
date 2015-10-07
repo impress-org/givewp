@@ -66,6 +66,11 @@ function give_get_donation_form( $args = array() ) {
 		? ' float-labels-enabled'
 		: '';
 
+
+	$form_classes_array = apply_filters('give_form_classes', array( 'give-form-wrap', 'give-display-' . $display_option), $form->ID, $args  );
+
+	$form_classes = implode(' ', $form_classes_array);
+
 	ob_start();
 
 	/**
@@ -80,7 +85,7 @@ function give_get_donation_form( $args = array() ) {
 
 	?>
 
-	<div id="give-form-<?php echo $form->ID; ?>-wrap" class="give-form-wrap give-display-<?php echo $display_option; ?>">
+	<div id="give-form-<?php echo $form->ID; ?>-wrap" class="<?php echo $form_classes; ?>">
 
 		<?php
 		if ( isset( $args['show_title'] ) && $args['show_title'] == true ) {
@@ -1153,7 +1158,7 @@ function give_show_goal_progress( $form_id, $args ) {
 
 	//Sanity check - ensure form has goal set to output
 	if ( empty( $form->ID )
-	     || (is_singular('give_forms') && $goal_option !== 'yes')
+	     || ( is_singular( 'give_forms' ) && $goal_option !== 'yes' )
 	     || $goal_option !== 'yes'
 	     || $goal == 0
 	) {
