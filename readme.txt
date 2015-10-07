@@ -129,6 +129,9 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 == Changelog ==
 
+= 1.3.1 =
+* New: give_fo ilter needed for give form classes
+
 = 1.3.0.4 =
 * New: Added new filter for default form amount - https://github.com/WordImpress/Give/issues/301
 * Fix: Account for recurring donations in the donation history shortcode
