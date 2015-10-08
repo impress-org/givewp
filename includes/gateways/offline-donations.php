@@ -89,7 +89,7 @@ function give_offline_billing_fields($form_id){
 		$post_offline_cc_fields   = get_post_meta( $form_id, '_give_offline_donation_enable_billing_fields_single', true );
 		$global_offline_cc_fields = give_get_option( 'give_offline_donation_enable_billing_fields' );
 
-	
+
 	if ( $global_offline_cc_fields == 'on' ||  $post_offline_cc_fields == 'on' ) {
 		give_default_cc_address_fields( $form_id );
 	}
