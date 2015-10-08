@@ -316,7 +316,7 @@ function give_output_levels( $form_id ) {
 	$prices             = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
 	$display_style      = get_post_meta( $form_id, '_give_display_style', true );
 	$custom_amount      = get_post_meta( $form_id, '_give_custom_amount', true );
-	$custom_amount_text = apply_filters('', get_post_meta( $form_id, '_give_custom_amount_text', true ));
+	$custom_amount_text = apply_filters( '', get_post_meta( $form_id, '_give_custom_amount_text', true ) );
 	$output             = '';
 	$counter            = 0;
 
@@ -1242,13 +1242,16 @@ function give_form_display_content( $form_id ) {
  * @return void
  */
 function give_checkout_hidden_fields( $form_id ) {
-	?>
-	<?php if ( is_user_logged_in() ) { ?>
+
+	do_action( 'give_hidden_fields_before' );
+	if ( is_user_logged_in() ) { ?>
 		<input type="hidden" name="give-user-id" value="<?php echo get_current_user_id(); ?>" />
 	<?php } ?>
 	<input type="hidden" name="give_action" value="purchase" />
 	<input type="hidden" name="give-gateway" value="<?php echo give_get_chosen_gateway( $form_id ); ?>" />
 	<?php
+	do_action( 'give_hidden_fields_after' );
+	
 }
 
 /**
