@@ -1243,15 +1243,15 @@ function give_form_display_content( $form_id ) {
  */
 function give_checkout_hidden_fields( $form_id ) {
 
-	do_action( 'give_hidden_fields_before' );
+	do_action( 'give_hidden_fields_before', $form_id );
 	if ( is_user_logged_in() ) { ?>
 		<input type="hidden" name="give-user-id" value="<?php echo get_current_user_id(); ?>" />
 	<?php } ?>
 	<input type="hidden" name="give_action" value="purchase" />
 	<input type="hidden" name="give-gateway" value="<?php echo give_get_chosen_gateway( $form_id ); ?>" />
 	<?php
-	do_action( 'give_hidden_fields_after' );
-	
+	do_action( 'give_hidden_fields_after', $form_id );
+
 }
 
 /**
