@@ -65,16 +65,9 @@ function give_offline_payment_cc_form( $form_id ) {
 		$offline_instructions = $post_offline_instructions;
 	}
 
-	//Enable Default CC fields (billing info)
-	$post_offline_cc_fields   = get_post_meta( $form_id, '_give_offline_donation_enable_billing_fields_single', true );
-	$global_offline_cc_fields = give_get_option( 'give_offline_donation_enable_billing_fields' );
-
-	if ( $global_offline_cc_fields == 'on' || ( $post_offline_customization_option == 'yes' && $post_offline_cc_fields == 'on' ) ) {
-		add_action( 'give_before_offline_info_fields', 'give_default_cc_address_fields', $form_id );
-	}
 
 	ob_start(); ?>
-	<?php do_action( 'give_before_offline_info_fields' ); ?>
+	<?php do_action( 'give_before_offline_info_fields', $form_id ); ?>
 	<fieldset id="give_offline_payment_info">
 		<?php
 		$settings_url         = admin_url( 'post.php?post=' . $form_id . '&action=edit&message=1' );
@@ -82,13 +75,27 @@ function give_offline_payment_cc_form( $form_id ) {
 		echo wpautop( stripslashes( $offline_instructions ) );
 		?>
 	</fieldset>
-	<?php do_action( 'give_after_offline_info_fields' ); ?>
+	<?php do_action( 'give_after_offline_info_fields', $form_id ); ?>
 	<?php
 	echo ob_get_clean();
 }
 
 add_action( 'give_offline_cc_form', 'give_offline_payment_cc_form' );
 
+
+
+function give_offline_billing_fields($form_id){
+	//Enable Default CC fields (billing info)
+		$post_offline_cc_fields   = get_post_meta( $form_id, '_give_offline_donation_enable_billing_fields_single', true );
+		$global_offline_cc_fields = give_get_option( 'give_offline_donation_enable_billing_fields' );
+
+	
+	if ( $global_offline_cc_fields == 'on' ||  $post_offline_cc_fields == 'on' ) {
+		give_default_cc_address_fields( $form_id );
+	}
+}
+
+add_action('give_before_offline_info_fields', 'give_offline_billing_fields', 10, 1 );
 
 /**
  * Process the payment
