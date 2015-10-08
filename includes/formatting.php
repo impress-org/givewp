@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Sanitize Amount
  *
- * Returns a sanitized amount by stripping out thousands separators.
+ * @description: Returns a sanitized amount by stripping out thousands separators.
  *
  * @since 1.0
  *
