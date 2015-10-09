@@ -134,6 +134,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * New: `give_form_level_text` filter added for altering multilevel donation form level text - https://github.com/WordImpress/Give/issues/307
 * New: Add-on activation class added - https://github.com/WordImpress/Give/issues/316
 * Fix: Multiple billing fields being output when multiple forms on a single page - https://github.com/WordImpress/Give/issues/310
+* Fix: Assume multiple give dropdown buttons - https://github.com/WordImpress/Give/issues/310
 
 = 1.3.0.4 =
 * New: Added new filter for default form amount - https://github.com/WordImpress/Give/issues/301
