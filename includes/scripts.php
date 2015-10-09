@@ -28,8 +28,8 @@ function give_load_scripts() {
 
 	global $give_options;
 
-	$js_dir        = GIVE_PLUGIN_URL . 'assets/js/frontend/';
-	$js_plugins    = GIVE_PLUGIN_URL . 'assets/js/plugins/';
+	$js_dir         = GIVE_PLUGIN_URL . 'assets/js/frontend/';
+	$js_plugins     = GIVE_PLUGIN_URL . 'assets/js/plugins/';
 	$scripts_footer = ( give_get_option( 'scripts_footer' ) == 'on' ) ? true : false;
 
 	// Use minified libraries if SCRIPT_DEBUG is turned off
@@ -286,25 +286,22 @@ function give_admin_icon() {
 
 		<?php if( version_compare( $wp_version, '3.8-RC', '>=' ) || version_compare( $wp_version, '3.8', '>=' ) ) { ?>
 		@font-face {
-			font-family: 'icomoon';
-			src: url('<?php echo GIVE_PLUGIN_URL . 'assets/fonts/icomoon.eot?-ngjl88'; ?>');
-			src: url('<?php echo GIVE_PLUGIN_URL . 'assets/fonts/icomoon.eot?#iefix-ngjl88'?>') format('embedded-opentype'),
-			url('<?php echo GIVE_PLUGIN_URL . 'assets/fonts/icomoon.woff?-ngjl88'; ?>') format('woff'),
-			url('<?php echo GIVE_PLUGIN_URL . 'assets/fonts/icomoon.ttf?-ngjl88'; ?>') format('truetype'),
-			url('<?php echo GIVE_PLUGIN_URL . 'assets/fonts/icomoon.svg?-ngjl88#icomoon'; ?>') format('svg');
+			font-family: 'give-icomoon';
+			src: url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.eot?-ngjl88'; ?>');
+			src: url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.eot?#iefix-ngjl88'?>') format('embedded-opentype'),
+			url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.woff?-ngjl88'; ?>') format('woff'),
+			url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.ttf?-ngjl88'; ?>') format('truetype'),
+			url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.svg?-ngjl88#icomoon'; ?>') format('svg');
 			font-weight: normal;
 			font-style: normal;
 		}
 
-		#adminmenu #menu-posts-give_forms .wp-menu-image img {
-			width: 20px;
-			height: 20px;
-			padding: 7px 0 0;
-		}
-
-		#adminmenu #menu-posts-give_forms .wp-menu-image:before {
-			content: '';
-			display: none;
+		.dashicons-give:before, #adminmenu div.wp-menu-image.dashicons-give:before {
+			font-family: 'give-icomoon';
+			font-size:18px;
+			width:18px;
+			height:18px;
+			content: "\e800";
 		}
 
 		<?php }  ?>

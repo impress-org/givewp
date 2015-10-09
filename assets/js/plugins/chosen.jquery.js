@@ -524,6 +524,9 @@
     };
 
     AbstractChosen.browser_is_supported = function() {
+      if (window.navigator.appName === "Microsoft Internet Explorer") {
+        return document.documentMode >= 8;
+      }
       if (/iP(od|hone)/i.test(window.navigator.userAgent)) {
         return false;
       }
@@ -531,21 +534,6 @@
         if (/Mobile/i.test(window.navigator.userAgent)) {
           return false;
         }
-      }
-      if (/IEMobile/i.test(window.navigator.userAgent)) {
-        return false;
-      }
-      if (/Windows Phone/i.test(window.navigator.userAgent)) {
-        return false;
-      }
-      if (/BlackBerry/i.test(window.navigator.userAgent)) {
-        return false;
-      }
-      if (/BB10/i.test(window.navigator.userAgent)) {
-        return false;
-      }
-      if (window.navigator.appName === "Microsoft Internet Explorer") {
-        return document.documentMode >= 8;
       }
       return true;
     };
