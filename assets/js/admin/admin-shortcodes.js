@@ -14,7 +14,7 @@
 
 var jq = jQuery.noConflict();
 
-var scShortcode;
+var scShortcode, scButton;
 
 var scForm = {
 
@@ -140,14 +140,14 @@ jq( function( $ )
 {
 	var scOpen = function()
 	{
-		$( '#sc-button' ).addClass( 'active' );
-		$( '#sc-menu' ).show();
+		scButton.addClass( 'active' ).parent().find( '.sc-menu' ).show();
 	};
 
 	var scClose = function()
 	{
-		$( '#sc-button' ).removeClass( 'active' );
-		$( '#sc-menu' ).hide();
+		if( typeof scButton !== 'undefined' ) {
+			scButton.removeClass( 'active' ).parent().find( '.sc-menu' ).hide();
+		}
 	};
 
 	$( document ).on( 'click', function( e )
@@ -157,11 +157,13 @@ jq( function( $ )
 		}
 	});
 
-	$( document ).on( 'click', '#sc-button', function( e )
+	$( document ).on( 'click', '.sc-button', function( e )
 	{
 		e.preventDefault();
 
-		if( $( this ).hasClass( 'active' ) ) {
+		scButton = $( this );
+
+		if( scButton.hasClass( 'active' ) ) {
 			scClose();
 		}
 		else {
