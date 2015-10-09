@@ -135,6 +135,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * New: Add-on activation class added - https://github.com/WordImpress/Give/issues/316
 * Fix: Multiple billing fields being output when multiple forms on a single page - https://github.com/WordImpress/Give/issues/310
 * Fix: Assume multiple give dropdown buttons - https://github.com/WordImpress/Give/issues/310
+* Fix: Give admin dashicon no longer lights up annoyingly on page load in wp-admin - https://github.com/WordImpress/Give/issues/315
 
 = 1.3.0.4 =
 * New: Added new filter for default form amount - https://github.com/WordImpress/Give/issues/301
