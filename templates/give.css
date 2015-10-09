@@ -102,9 +102,6 @@
 .give-icon-locked:before, #give_secure_site_wrapper span.padlock:before {
   content: "\e600"; }
 
-.give-icon:before {
-  content: "\e800"; }
-
 .dashicons-give:before {
   font-family: 'give-icomoon';
   speak: none;
