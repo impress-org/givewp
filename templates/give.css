@@ -102,6 +102,22 @@
 .give-icon-locked:before, #give_secure_site_wrapper span.padlock:before {
   content: "\e600"; }
 
+.give-icon:before {
+  content: "\e800"; }
+
+.dashicons-give:before {
+  font-family: 'give-icomoon';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "\e800"; }
+
 .fa-spin, form[id*='give-form'] .give-loading-animation:before {
   -webkit-animation: fa-spin 2s infinite linear;
   animation: fa-spin 2s infinite linear; }
@@ -1752,7 +1768,7 @@ Avada
 /*!
  * Float Labels
  *
- * Version: 1.0.7
+ * Version: 1.0.6
  * Author: Paul Ryley (http://geminilabs.io)
  * URL: https://github.com/geminilabs/float-labels.js
  * License: MIT
@@ -1795,8 +1811,8 @@ form.floated-labels .floatlabel {
     line-height: 1;
     opacity: 0;
     visibility: hidden;
-    -webkit-transition: all 0.3s ease-in-out;
-            transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.2s ease;
+            transition: all 0.2s ease;
     padding: 0 1px; }
     form.floated-labels .floatlabel label.floatlabel-label.is-visible {
       opacity: 1;

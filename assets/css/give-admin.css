@@ -575,6 +575,22 @@ x:-o-prefocus, .qtip .qtip-tip {
 .give-icon-locked:before {
   content: "\e600"; }
 
+.give-icon:before {
+  content: "\e800"; }
+
+.dashicons-give:before {
+  font-family: 'give-icomoon';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "\e800"; }
+
 .fa-spin {
   -webkit-animation: fa-spin 2s infinite linear;
   animation: fa-spin 2s infinite linear; }

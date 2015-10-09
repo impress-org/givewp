@@ -71,6 +71,14 @@
 .give-icon-locked:before {
 	content: "\e600";
 }
+.give-icon:before {
+	content: "\e800";
+}
+.dashicons-give:before {
+  @include iconstyle();
+  content: "\e800";
+}
+
 // Spinning Icons
 // --------------------------
 

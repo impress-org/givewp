@@ -90,7 +90,7 @@ function give_setup_post_types() {
 		'map_meta_cap'       => true,
 		'capability_type'    => 'give_forms',
 		'has_archive'        => $give_forms_archives,
-		'menu_icon'          => give_svg_icons( 'give_cpt_icon' ),
+		'menu_icon'          => 'dashicons-give',
 		'hierarchical'       => false,
 		'supports'           => apply_filters( 'give_forms_supports', $give_form_supports ),
 	);
