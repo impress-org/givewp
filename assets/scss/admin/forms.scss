@@ -423,3 +423,21 @@ ASIDE
   font-size: 13px;
   line-height: 1.5;
 }
+
+/*-------------------------------------
+Tooltips
+-------------------------------------*/
+.give-tooltip {
+  margin: 0 3px;
+  padding: 0;
+  font-size: 14px;
+  @include easing-transition();
+  color: transparentize($dark, 0.5);
+  position: relative;
+  top: 1px;
+
+  &:hover {
+	color: $dark;
+  }
+
+}

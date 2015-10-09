@@ -575,9 +575,6 @@ x:-o-prefocus, .qtip .qtip-tip {
 .give-icon-locked:before {
   content: "\e600"; }
 
-.give-icon:before {
-  content: "\e800"; }
-
 .dashicons-give:before {
   font-family: 'give-icomoon';
   speak: none;
@@ -876,6 +873,21 @@ ASIDE
 .cmb2-metabox-description {
   font-size: 13px;
   line-height: 1.5; }
+
+/*-------------------------------------
+Tooltips
+-------------------------------------*/
+.give-tooltip {
+  margin: 0 3px;
+  padding: 0;
+  font-size: 14px;
+  -webkit-transition: 0.2s all linear;
+          transition: 0.2s all linear;
+  color: rgba(51, 51, 51, 0.5);
+  position: relative;
+  top: 1px; }
+  .give-tooltip:hover {
+    color: #333; }
 
 /**
  * Give Add-ons SCSS
