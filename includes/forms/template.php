@@ -175,7 +175,7 @@ function give_show_purchase_form( $form_id ) {
 		$form_id = $_POST['give_form_id'];
 	}
 
-	do_action( 'give_purchase_form_top' );
+	do_action( 'give_purchase_form_top', $form_id );
 
 	if ( give_can_checkout() && isset( $form_id ) ) {
 
@@ -210,11 +210,11 @@ function give_show_purchase_form( $form_id ) {
 
 	} else {
 		// Can't checkout
-		do_action( 'give_purchase_form_no_access' );
+		do_action( 'give_purchase_form_no_access', $form_id );
 
 	}
 
-	do_action( 'give_purchase_form_bottom' );
+	do_action( 'give_purchase_form_bottom', $form_id );
 }
 
 add_action( 'give_purchase_form', 'give_show_purchase_form' );
@@ -501,6 +501,8 @@ function give_user_info_fields( $form_id ) {
 		<?php do_action( 'give_purchase_form_user_info', $form_id ); ?>
 	</fieldset>
 	<?php
+	do_action( 'give_purchase_form_after_personal_info', $form_id );
+
 }
 
 add_action( 'give_purchase_form_after_user_info', 'give_user_info_fields' );
@@ -916,7 +918,7 @@ function give_payment_mode_select( $form_id ) {
 
 	$gateways = give_get_enabled_payment_gateways();
 
-	do_action( 'give_payment_mode_top' ); ?>
+	do_action( 'give_payment_mode_top', $form_id ); ?>
 
 	<fieldset id="give-payment-mode-select">
 		<?php do_action( 'give_payment_mode_before_gateways_wrap' ); ?>
@@ -948,7 +950,7 @@ function give_payment_mode_select( $form_id ) {
 
 	</div><!-- the checkout fields are loaded into this-->
 
-	<?php do_action( 'give_payment_mode_bottom' );
+	<?php do_action( 'give_payment_mode_bottom', $form_id );
 }
 
 add_action( 'give_payment_mode_select', 'give_payment_mode_select' );

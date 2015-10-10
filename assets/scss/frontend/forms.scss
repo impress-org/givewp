@@ -135,7 +135,7 @@ form[id*='give-form'], #give-recurring-form, form.give-form {
 
   }
 
-  legend {
+  legend, h3.give-section-break, h4.give-section-break {
 	font-weight: bold;
 	margin: 10px 0 15px;
 	padding: 0 0 10px;
@@ -147,6 +147,10 @@ form[id*='give-form'], #give-recurring-form, form.give-form {
 	  font-weight: normal;
 	}
 
+  }
+
+  div[id^='section-'] .give-section-break {
+	margin:0;
   }
 
   //Form Layout
