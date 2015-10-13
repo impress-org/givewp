@@ -35,42 +35,55 @@
 [class^="give-icon-"], [class*=" give-icon-"] {
   @include iconstyle();
 }
+
 .give-icon-lamp:before {
-	content: "\e603";
+  content: "\e603";
 }
 
 .give-icon-heart:before {
-	content: "\e604";
+  content: "\e604";
 }
 
 .give-icon-question:before {
-	content: "\e602";
+  content: "\e602";
 }
 
 .give-icon-info:before {
-	content: "\e601";
+  content: "\e601";
 }
 
 .give-icon-new-tab:before {
-	content: "\ea7e";
+  content: "\ea7e";
 }
 
 .give-icon-alert:before {
-	content: "\f02d";
+  content: "\f02d";
 }
 
 .give-icon-help:before {
-	content: "\e606";
+  content: "\e606";
 }
+
 .icon-spinner:before {
-	content: "\e605";
+  content: "\e605";
 }
+
 .icon-spinner2:before {
-	content: "\e607";
+  content: "\e607";
 }
+
+.give-icon-plus:before {
+  content: "\e040";
+}
+
+.give-icon-minus:before {
+  content: "\e041";
+}
+
 .give-icon-locked:before {
-	content: "\e600";
+  content: "\e600";
 }
+
 .dashicons-give:before {
   @include iconstyle();
   content: "\e800";
@@ -81,27 +94,27 @@
 
 .fa-spin {
   -webkit-animation: fa-spin 2s infinite linear;
-          animation: fa-spin 2s infinite linear;
+  animation: fa-spin 2s infinite linear;
 }
 
 @-webkit-keyframes fa-spin {
   0% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
+	-webkit-transform: rotate(0deg);
+	transform: rotate(0deg);
   }
   100% {
-    -webkit-transform: rotate(359deg);
-            transform: rotate(359deg);
+	-webkit-transform: rotate(359deg);
+	transform: rotate(359deg);
   }
 }
 
 @keyframes fa-spin {
   0% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
+	-webkit-transform: rotate(0deg);
+	transform: rotate(0deg);
   }
   100% {
-    -webkit-transform: rotate(359deg);
-            transform: rotate(359deg);
+	-webkit-transform: rotate(359deg);
+	transform: rotate(359deg);
   }
 }
