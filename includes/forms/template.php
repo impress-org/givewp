@@ -944,13 +944,16 @@ function give_payment_mode_select( $form_id ) {
 		<?php do_action( 'give_payment_mode_after_gateways_wrap' ); ?>
 	</fieldset>
 
+	<?php do_action( 'give_payment_mode_bottom', $form_id ); ?>
+
 	<div id="give_purchase_form_wrap">
 
 		<?php do_action( 'give_purchase_form', $form_id ); ?>
 
 	</div><!-- the checkout fields are loaded into this-->
 
-	<?php do_action( 'give_payment_mode_bottom', $form_id );
+	<?php do_action( 'give_purchase_form_wrap_bottom', $form_id );
+
 }
 
 add_action( 'give_payment_mode_select', 'give_payment_mode_select' );
