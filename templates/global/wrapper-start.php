@@ -43,6 +43,9 @@ switch ( $template ) {
 	case 'x' :
 		echo '<div id="container" class="x-container-fluid max width offset cf give-wrap"><div class="x-main full" role="main"><div class="entry-wrap"><div class="entry-content">';
 		break;
+	case 'jupiter' :
+		echo '<div id="theme-page" class="give-wrap"><div class="theme-page-wrapper mk-blog-single full-layout vc_row-fluid mk-grid"><div class="theme-content">';
+		break;
 	default :
 		echo apply_filters( 'give_default_wrapper_start', '<div id="container" class="give-wrap container"><div id="content" role="main">' );
 		break;
