@@ -12,9 +12,9 @@ if ( empty( $payment ) && isset( $give_receipt_args['id'] ) ) {
 //Double-Validation: Check for $payment global
 if ( empty( $payment ) ) {
 	give_output_error( __( 'The specified receipt ID appears to be invalid', 'give' ) );
-
 	return;
 }
+
 $meta = give_get_payment_meta( $payment->ID );
 $donation = $meta['form_title'];
 $user     = give_get_payment_meta_user_info( $payment->ID );
