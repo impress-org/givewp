@@ -1097,4 +1097,3 @@ if ( file_exists( WP_PLUGIN_DIR . '/cmb2/init.php' ) ) {
 } elseif ( file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/CMB2/init.php' ) ) {
 	require_once GIVE_PLUGIN_DIR . '/includes/libraries/CMB2/init.php';
 }
-

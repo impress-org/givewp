@@ -121,9 +121,15 @@ class CMB2 {
 		}
 
 		$this->meta_box = wp_parse_args( $meta_box, $this->mb_defaults );
+		$this->meta_box['fields'] = array();
+
 		$this->object_id( $object_id );
 		$this->mb_object_type();
 		$this->cmb_id = $meta_box['id'];
+
+		if ( ! empty( $meta_box['fields'] ) && is_array( $meta_box['fields'] ) ) {
+			$this->add_fields( $meta_box['fields'] );
+		}
 
 		CMB2_Boxes::add( $this );
 
@@ -139,9 +145,9 @@ class CMB2 {
 
 	/**
 	 * Loops through and displays fields
-	 * @since  1.0.0
-	 * @param  int    $object_id   Object ID
-	 * @param  string $object_type Type of object being saved. (e.g., post, user, or comment)
+	 * @since 1.0.0
+	 * @param int    $object_id   Object ID
+	 * @param string $object_type Type of object being saved. (e.g., post, user, or comment)
 	 */
 	public function show_form( $object_id = 0, $object_type = '' ) {
 		$object_type = $this->object_type( $object_type );
@@ -191,8 +197,7 @@ class CMB2 {
 				}
 				$this->render_group( $field_args );
 
-			} elseif ( 'hidden' == $field_args['type'] ) {
-
+			} elseif ( 'hidden' == $field_args['type'] && $this->get_field( $field_args )->should_show() ) {
 				// Save rendering for after the metabox
 				$this->add_hidden_field( array(
 					'field_args'  => $field_args,
@@ -256,7 +261,7 @@ class CMB2 {
 		$field_group = $this->get_field( $args );
 
 		// If field is requesting to be conditionally shown
-		if ( isset( $args['show_on_cb'] ) && is_callable( $args['show_on_cb'] ) && ! call_user_func( $args['show_on_cb'], $field_group ) ) {
+		if ( ! $field_group || ! $field_group->should_show() ) {
 			return;
 		}
 
@@ -314,9 +319,10 @@ class CMB2 {
 	public function render_group_row( $field_group, $remove_disabled ) {
 
 		$field_group->peform_param_callback( 'before_group_row' );
+		$closed_class = $field_group->options( 'closed' ) ? ' closed' : '';
 
 		echo '
-		<div class="postbox cmb-row cmb-repeatable-grouping" data-iterator="', $field_group->index, '">';
+		<div class="postbox cmb-row cmb-repeatable-grouping', $closed_class, '" data-iterator="', $field_group->index, '">';
 
 			if ( $field_group->args( 'repeatable' ) ) {
 				echo '<button ', $remove_disabled, 'data-selector="', $field_group->id(), '_repeat" class="dashicons-before dashicons-no-alt cmb-remove-group-row"></button>';
@@ -420,9 +426,10 @@ class CMB2 {
 	 * @param  string $object_type  Type of object being saved. (e.g., post, user, or comment)
 	 * @param  array  $data_to_save Array of key => value data for saving. Likely $_POST data.
 	 */
-	public function save_fields( $object_id = 0, $object_type = '', $data_to_save ) {
+	public function save_fields( $object_id = 0, $object_type = '', $data_to_save = array() ) {
 
-		$this->data_to_save = $data_to_save;
+		// Fall-back to $_POST data
+		$this->data_to_save = ! empty( $data_to_save ) ? $data_to_save : $_POST;
 		$object_id = $this->object_id( $object_id );
 		$object_type = $this->object_type( $object_type );
 
@@ -471,6 +478,22 @@ class CMB2 {
 	 * @since  2.0.0
 	 */
 	public function process_fields() {
+
+		/**
+		 * Fires before fields have been processed/saved.
+		 *
+		 * The dynamic portion of the hook name, $this->cmb_id, is the meta_box id.
+		 *
+		 * The dynamic portion of the hook name, $object_type, refers to the metabox/form's object type
+		 * 	Usually `post` (this applies to all post-types).
+		 *  	Could also be `comment`, `user` or `options-page`.
+		 *
+		 * @param array $cmb       This CMB2 object
+		 * @param int   $object_id The ID of the current object
+		 */
+		do_action( "cmb2_{$this->object_type()}_process_fields_{$this->cmb_id}", $this, $this->object_id() );
+
+		// Remove the show_on properties so saving works
 		$this->prop( 'show_on', array() );
 
 		// save field ids of those that are updated
@@ -591,6 +614,7 @@ class CMB2 {
 	 * @return integer $object_id Object ID
 	 */
 	public function object_id( $object_id = 0 ) {
+		global $pagenow;
 
 		if ( $object_id ) {
 			$this->object_id = $object_id;
@@ -605,7 +629,12 @@ class CMB2 {
 		switch ( $this->object_type() ) {
 			case 'user':
 				$object_id = isset( $_REQUEST['user_id'] ) ? $_REQUEST['user_id'] : $object_id;
-				$object_id = ! $object_id && isset( $GLOBALS['user_ID'] ) ? $GLOBALS['user_ID'] : $object_id;
+				$object_id = ! $object_id && 'user-new.php' != $pagenow && isset( $GLOBALS['user_ID'] ) ? $GLOBALS['user_ID'] : $object_id;
+				break;
+
+			case 'comment':
+				$object_id = isset( $_REQUEST['c'] ) ? $_REQUEST['c'] : $object_id;
+				$object_id = ! $object_id && isset( $GLOBALS['comments']->comment_ID ) ? $GLOBALS['comments']->comment_ID : $object_id;
 				break;
 
 			default:
@@ -730,11 +759,14 @@ class CMB2 {
 	}
 
 	/**
-	 * Add a field to the metabox
+	 * Get a field object
+	 *
 	 * @since  2.0.3
-	 * @param  mixed             $field Metabox field id or field config array or CMB2_Field object
-	 * @param  CMB2_Field object $field_group   (optional) CMB2_Field object (group parent)
-	 * @return mixed                            CMB2_Field object (or false)
+	 *
+	 * @param  string|array|CMB2_Field $field       Metabox field id or field config array or CMB2_Field object
+	 * @param  CMB2_Field              $field_group (optional) CMB2_Field object (group parent)
+	 *
+	 * @return CMB2_Field|false CMB2_Field object (or false)
 	 */
 	public function get_field( $field, $field_group = null ) {
 		if ( is_a( $field, 'CMB2_Field' ) ) {
@@ -798,6 +830,31 @@ class CMB2 {
 	}
 
 	/**
+	 * When fields are added in the old-school way, intitate them as they should be
+	 * @since 2.1.0
+	 * @param array $fields          Array of fields to add
+	 * @param mixed $parent_field_id Parent field id or null
+	 */
+	protected function add_fields( $fields, $parent_field_id = null ) {
+		foreach ( $fields as $field ) {
+
+			$sub_fields = false;
+			if ( array_key_exists( 'fields', $field ) ) {
+				$sub_fields = $field['fields'];
+				unset( $field['fields'] );
+			}
+
+			$field_id = $parent_field_id
+				? $this->add_group_field( $parent_field_id, $field )
+				: $this->add_field( $field );
+
+			if ( $sub_fields ) {
+				$this->add_fields( $sub_fields, $field_id );
+			}
+		}
+	}
+
+	/**
 	 * Add a field to the metabox
 	 * @since  2.0.0
 	 * @param  array  $field           Metabox field config array
@@ -819,7 +876,7 @@ class CMB2 {
 	}
 
 	/**
-	 * Add a field to the metabox
+	 * Add a field to a group
 	 * @since  2.0.0
 	 * @param  string $parent_field_id The field id of the group field to add the field
 	 * @param  array  $field           Metabox field config array
@@ -966,6 +1023,25 @@ class CMB2 {
 		$ids = wp_list_pluck( $fields, 'id' );
 		$index = array_search( $field_id, $ids );
 		return false !== $index ? $index : false;
+	}
+
+	/**
+	 * Determine whether this cmb object should show, based on the 'show_on_cb' callback.
+	 *
+	 * @since 2.0.9
+	 *
+	 * @return bool Whether this cmb should be shown.
+	 */
+	public function should_show() {
+		// Default to showing this cmb
+		$show = true;
+
+		// Use the callback to determine showing the cmb, if it exists
+		if ( is_callable( $this->prop( 'show_on_cb' ) ) ) {
+			$show = (bool) call_user_func( $this->prop( 'show_on_cb' ), $this );
+		}
+
+		return $show;
 	}
 
 	/**
