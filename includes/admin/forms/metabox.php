@@ -26,7 +26,7 @@ add_filter( 'cmb2_meta_boxes', 'give_single_forms_cmb2_metaboxes' );
 function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 
 	$post_id          = give_get_admin_post_id();
-	$price            = give_get_form_price( $post_id );
+	$price            = ! empty( give_get_form_price( $post_id ) ) ? give_get_form_price( $post_id ) : esc_attr( give_format_amount( '1.00' ) );
 	$goal             = give_get_form_goal( $post_id );
 	$variable_pricing = give_has_variable_prices( $post_id );
 	$prices           = give_get_variable_prices( $post_id );
@@ -65,8 +65,8 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'before_field' => give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol give-money-symbol-before">' . give_currency_symbol() . '</span>' : '',
 					'after_field'  => give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '',
 					'attributes'   => array(
-						'placeholder' => give_format_amount( '0.00' ),
-						'value'       => isset( $price ) ? esc_attr( give_format_amount( $price ) ) : '',
+						'placeholder' => give_format_amount( '1.00' ),
+						'value'       => $price,
 						'class'       => 'cmb-type-text-small give-money-field',
 					),
 				),
@@ -99,7 +99,8 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 							'before_field' => give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol  give-money-symbol-before">' . give_currency_symbol() . '</span>' : '',
 							'after_field'  => give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol  give-money-symbol-after">' . give_currency_symbol() . '</span>' : '',
 							'attributes'   => array(
-								'placeholder' => give_format_amount( '0.00' ),
+								'placeholder' => give_format_amount( '1.00' ),
+								'value'       => give_format_amount( '1.00' ),
 								'class'       => 'cmb-type-text-small give-money-field',
 							),
 							'before'       => 'give_format_admin_multilevel_amount',
