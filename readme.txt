@@ -138,6 +138,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Fix: Give admin dashicon no longer lights up annoyingly on page load in wp-admin - https://github.com/WordImpress/Give/issues/315
 * Fix: Prevent fatal error if user has CMB2 plugin installed - https://github.com/WordImpress/Give/issues/321
 * Fix: When you save the Give Global Settings there is now a notice that displays - https://github.com/WordImpress/Give/issues/312
+* Fix: PayPal transactions types field label updated to  "PayPal Transaction Type" - https://github.com/WordImpress/Give/issues/293
 
 = 1.3.0.4 =
 * New: Added new filter for default form amount - https://github.com/WordImpress/Give/issues/301
