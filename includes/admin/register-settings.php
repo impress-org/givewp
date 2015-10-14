@@ -1017,7 +1017,7 @@ if ( ! function_exists( 'give_license_key_callback' ) ) {
 			$html .= '<input type="submit" class="button-secondary give-license-deactivate" name="' . $id . '_deactivate" value="' . __( 'Deactivate License', 'give' ) . '"/>';
 		} else {
 			//This license is not valid so delete it
-			give_delete_option($id);
+			give_delete_option( $id );
 		}
 
 		$html .= '<label for="give_settings[' . $id . ']"> ' . $field_description . '</label>';
@@ -1087,9 +1087,12 @@ function give_hook_callback( $args ) {
 /**
  * Get the CMB2 bootstrap!
  *
- * Super important!
+ * @description: Checks to see if CMB2 plugin is installed first the uses included CMB2; we can still use it even it it's not active. This prevents fatal error conflicts with other themes and users of the CMB2 WP.org plugin
+ *
  */
-if ( file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/cmb2/init.php' ) ) {
+if ( file_exists( WP_PLUGIN_DIR . '/cmb2/init.php' ) ) {
+	require_once WP_PLUGIN_DIR . '/cmb2/init.php';
+} elseif ( file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/cmb2/init.php' ) ) {
 	require_once GIVE_PLUGIN_DIR . '/includes/libraries/cmb2/init.php';
 } elseif ( file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/CMB2/init.php' ) ) {
 	require_once GIVE_PLUGIN_DIR . '/includes/libraries/CMB2/init.php';
