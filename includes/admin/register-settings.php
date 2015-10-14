@@ -56,6 +56,7 @@ class Give_Plugin_Settings {
 		add_action( 'cmb2_render_system_info', 'give_system_info_callback', 10, 5 );
 		add_action( 'cmb2_render_api', 'give_api_callback', 10, 5 );
 		add_action( 'cmb2_render_license_key', 'give_license_key_callback', 10, 5 );
+		add_action( "cmb2_save_options-page_fields", array( $this, 'settings_notices' ), 10, 3 );
 
 		// Include CMB CSS in the head to avoid FOUC
 		add_action( "admin_print_styles-give_forms_page_give-settings", array( 'CMB2_hookup', 'enqueue_cmb_css' ) );
@@ -676,6 +677,28 @@ class Give_Plugin_Settings {
 
 	}
 
+	/**
+	 * Show Settings Notices
+	 *
+	 * @param $object_id
+	 * @param $updated
+	 * @param $cmb
+	 */
+	public function settings_notices( $object_id, $updated, $cmb ) {
+
+		//Sanity check
+		if ( $object_id !== $this->key ) {
+			return;
+		}
+
+		if ( did_action( 'cmb2_save_options-page_fields' ) === 1 ) {
+			settings_errors( 'give-notices' );
+		}
+
+		add_settings_error( 'give-notices', 'global-settings-updated', __( 'Settings updated.', 'give' ), 'updated' );
+
+	}
+
 
 	/**
 	 * Public getter method for retrieving protected/private variables
@@ -763,7 +786,6 @@ function give_update_option( $key = '', $value = false ) {
 	if ( $did_update ) {
 		global $give_options;
 		$give_options[ $key ] = $value;
-
 	}
 
 	return $did_update;
