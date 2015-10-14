@@ -230,11 +230,20 @@ function give_purchase_form_validate_gateway() {
 
 		$gateway = sanitize_text_field( $_REQUEST['give-gateway'] );
 
-		if ( '0.00' == $_REQUEST['give-amount'] ) {
+		//Is amount being donated in LIVE mode above 0.00?
+		if ( '0.00' == $_REQUEST['give-amount'] && ! give_is_test_mode() ) {
+
+			give_set_error( 'invalid_gateway', __( 'Please insert a valid donation amount.', 'give' ) );
+
+		}
+		//Is this test mode zero donation? Let it through but set to manual gateway
+		elseif ( '0.00' == $_REQUEST['give-amount'] && give_is_test_mode() ) {
 
 			$gateway = 'manual';
 
-		} elseif ( ! give_is_gateway_active( $gateway ) ) {
+		}
+		//Check if this gateway is active
+		elseif ( ! give_is_gateway_active( $gateway ) ) {
 
 			give_set_error( 'invalid_gateway', __( 'The selected payment gateway is not enabled', 'give' ) );
 
