@@ -1015,10 +1015,14 @@ class Give_API {
 			$form['stats']['monthly_average']['earnings']  = give_get_average_monthly_form_earnings( $form_info->ID );
 		}
 
+		$counter = 0;
 		if ( give_has_variable_prices( $form_info->ID ) ) {
 			foreach ( give_get_variable_prices( $form_info->ID ) as $price ) {
+				$counter ++;
+				//muli-level item
+				$level = isset( $price['_give_text'] ) ? $price['_give_text'] : 'level-' . $counter;
+				$form['pricing'][ sanitize_key( $level ) ] = $price['_give_amount'];
 
-				$form['pricing'][ sanitize_key( $price['_give_text'] ) ] = $price['_give_amount'];
 			}
 		} else {
 			$form['pricing']['amount'] = give_get_form_price( $form_info->ID );
@@ -1031,7 +1035,7 @@ class Give_API {
 		}
 
 		return apply_filters( 'give_api_forms_form', $form );
-
+		die();
 	}
 
 	/**
