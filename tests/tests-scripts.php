@@ -148,7 +148,7 @@ class Tests_Scripts extends WP_UnitTestCase {
 		give_admin_icon();
 		$return = ob_get_clean();
 
-		$this->assertContains( '#menu-posts-give_forms .wp-menu-image.dashicons-give', $return );
+		$this->assertContains( '#adminmenu div.wp-menu-image.dashicons-give:before', $return );
 
 	}
 
