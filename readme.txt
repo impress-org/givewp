@@ -140,6 +140,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Fix: When you save the Give Global Settings there is now a notice that displays - https://github.com/WordImpress/Give/issues/312
 * Fix: PayPal transactions types field label updated to "PayPal Transaction Type" - https://github.com/WordImpress/Give/issues/293
 * Fix: Custom Jupiter theme wrapper start and end added to prevent single donation form views from being incorrectly formatted - https://github.com/WordImpress/Give/issues/170
+* Fix: [give_receipt] options now work as expected - https://github.com/WordImpress/Give/issues/267
 
 = 1.3.0.4 =
 * New: Added new filter for default form amount - https://github.com/WordImpress/Give/issues/301
