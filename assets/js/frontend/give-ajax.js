@@ -163,8 +163,6 @@ function give_load_gateway( form_object, payment_mode ) {
 	// Show the ajax loader
 	loading_element.fadeIn();
 
-	//Update form action
-	//give_form.attr( 'action', '?payment-mode=' + payment_mode );
 
 	var form_data = jQuery( form_object ).data();
 
