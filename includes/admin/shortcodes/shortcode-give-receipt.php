@@ -56,15 +56,6 @@ class Give_Shortcode_Donation_Receipt extends Give_Shortcode_Generator {
 			),
 			array(
 				'type'    => 'listbox',
-				'name'    => 'notes',
-				'label'   => __( 'Show Notes:', 'give' ),
-				'options' => array(
-					'true'  => __( 'Show', 'give' ),
-					'false' => __( 'Hide', 'give' ),
-				),
-			),
-			array(
-				'type'    => 'listbox',
 				'name'    => 'payment_key',
 				'label'   => __( 'Show Payment Key:', 'give' ),
 				'options' => array(

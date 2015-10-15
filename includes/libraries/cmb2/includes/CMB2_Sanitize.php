@@ -90,12 +90,15 @@ class CMB2_Sanitize {
 				break;
 			case 'taxonomy_select':
 			case 'taxonomy_radio':
+			case 'taxonomy_radio_inline':
 			case 'taxonomy_multicheck':
+			case 'taxonomy_multicheck_inline':
 				if ( $this->field->args( 'taxonomy' ) ) {
 					wp_set_object_terms( $this->field->object_id, $this->value, $this->field->args( 'taxonomy' ) );
 					break;
 				}
 			case 'multicheck':
+			case 'multicheck_inline':
 			case 'file_list':
 			case 'oembed':
 			case 'group':
@@ -264,10 +267,23 @@ class CMB2_Sanitize {
 
 		if ( 'UTC' === substr( $tzstring, 0, 3 ) ) {
 			$tzstring = timezone_name_from_abbr( '', $offset, 0 );
+			/*
+			 * timezone_name_from_abbr() returns false if not found based on offset.
+			 * Since there are currently some invalid timezones in wp_timezone_dropdown(),
+			 * fallback to an offset of 0 (UTC+0)
+			 * https://core.trac.wordpress.org/ticket/29205
+			 */
+			$tzstring = false !== $tzstring ? $tzstring : timezone_name_from_abbr( '', 0, 0 );
 		}
 
-		$this->value = new DateTime( $this->value['date'] . ' ' . $this->value['time'], new DateTimeZone( $tzstring ) );
-		$this->value = serialize( $this->value );
+		try {
+			$this->value = new DateTime( $this->value['date'] . ' ' . $this->value['time'], new DateTimeZone( $tzstring ) );
+			$this->value = serialize( $this->value );
+		} catch ( Exception $e ) {
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( 'CMB2_Sanitize:::text_datetime_timestamp_timezone, ' . __LINE__ . ': ' . print_r( $e->getMessage(), true ) );
+			}
+		}
 
 		return $this->value;
 	}

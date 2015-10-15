@@ -650,7 +650,7 @@ function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour
 	}
 
 	$args = apply_filters( 'give_get_earnings_by_date_args', $args );
-	$key  = md5( serialize( $args ) );
+	$key  = 'give_stats_' . substr( md5( serialize( $args ) ), 0, 15 );
 
 	if ( ! empty( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'give-refresh-reports' ) ) {
 		$earnings = false;
@@ -667,7 +667,7 @@ function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour
 
 		}
 		// Cache the results for one hour
-		set_transient( $key, $earnings, 60 * 60 );
+		set_transient( $key, $earnings, HOUR_IN_SECONDS );
 	}
 
 	return round( $earnings, 2 );
@@ -711,8 +711,7 @@ function give_get_sales_by_date( $day = null, $month_num = null, $year = null, $
 	}
 
 	$args = apply_filters( 'give_get_sales_by_date_args', $args );
-
-	$key   = md5( serialize( $args ) );
+	$key   = 'give_stats_' . substr( md5( serialize( $args ) ), 0, 15 );
 
 	if ( ! empty( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'give-refresh-reports' ) ) {
 		$count = false;
@@ -724,7 +723,7 @@ function give_get_sales_by_date( $day = null, $month_num = null, $year = null, $
 		$sales = new WP_Query( $args );
 		$count = (int) $sales->post_count;
 		// Cache the results for one hour
-		set_transient( $key, $count, 60 * 60 );
+		set_transient( $key, $count, HOUR_IN_SECONDS );
 	}
 
 	return $count;

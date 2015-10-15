@@ -23,28 +23,49 @@ class CMB2_Utils {
 	 * Utility method that attempts to get an attachment's ID by it's url
 	 * @since  1.0.0
 	 * @param  string  $img_url Attachment url
-	 * @return mixed            Attachment ID or false
+	 * @return int|false            Attachment ID or false
 	 */
 	public function image_id_from_url( $img_url ) {
-		global $wpdb;
+		$attachment_id = 0;
+		$dir = wp_upload_dir();
 
-		$img_url = esc_url_raw( $img_url );
-		// Get just the file name
-		if ( false !== strpos( $img_url, '/' ) ) {
-			$explode = explode( '/', $img_url );
-			$img_url = end( $explode );
+		// Is URL in uploads directory?
+		if ( false === strpos( $img_url, $dir['baseurl'] . '/' ) ) {
+			return false;
 		}
 
-		// And search for a fuzzy match of the file name
-		$attachment = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE guid LIKE '%%%s%%' LIMIT 1;", $img_url ) );
+		$file = basename( $img_url );
 
-		// If we found an attachement ID, return it
-		if ( ! empty( $attachment ) && is_array( $attachment ) ) {
-			return $attachment[0];
+		$query_args = array(
+			'post_type'   => 'attachment',
+			'post_status' => 'inherit',
+			'fields'      => 'ids',
+			'meta_query'  => array(
+				array(
+					'value'   => $file,
+					'compare' => 'LIKE',
+					'key'     => '_wp_attachment_metadata',
+				),
+			)
+		);
+
+		$query = new WP_Query( $query_args );
+
+		if ( $query->have_posts() ) {
+
+			foreach ( $query->posts as $post_id ) {
+				$meta = wp_get_attachment_metadata( $post_id );
+				$original_file       = basename( $meta['file'] );
+				$cropped_image_files = isset( $meta['sizes'] ) ? wp_list_pluck( $meta['sizes'], 'file' ) : array();
+				if ( $original_file === $file || in_array( $file, $cropped_image_files ) ) {
+					$attachment_id = $post_id;
+					break;
+				}
+			}
+
 		}
 
-		// No luck
-		return false;
+		return 0 === $attachment_id ? false : $attachment_id;
 	}
 
 	/**
@@ -54,19 +75,26 @@ class CMB2_Utils {
 	 * @return string           Offset time string
 	 */
 	public function timezone_offset( $tzstring ) {
+		$tz_offset = 0;
+
 		if ( ! empty( $tzstring ) && is_string( $tzstring ) ) {
 			if ( 'UTC' === substr( $tzstring, 0, 3 ) ) {
 				$tzstring = str_replace( array( ':15', ':30', ':45' ), array( '.25', '.5', '.75' ), $tzstring );
 				return intval( floatval( substr( $tzstring, 3 ) ) * HOUR_IN_SECONDS );
 			}
 
-			$date_time_zone_selected = new DateTimeZone( $tzstring );
-			$tz_offset = timezone_offset_get( $date_time_zone_selected, date_create() );
+			try {
+				$date_time_zone_selected = new DateTimeZone( $tzstring );
+				$tz_offset = timezone_offset_get( $date_time_zone_selected, date_create() );
+			} catch ( Exception $e ) {
+				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					error_log( 'CMB2_Sanitize:::text_datetime_timestamp_timezone, ' . __LINE__ . ': ' . print_r( $e->getMessage(), true ) );
+				}
+			}
 
-			return $tz_offset;
 		}
 
-		return 0;
+		return $tz_offset;
 	}
 
 	/**
@@ -110,7 +138,7 @@ class CMB2_Utils {
 
 		return $this->is_valid_time_stamp( $string )
 			? (int) $string :
-			strtotime( $string );
+			strtotime( (string) $string );
 	}
 
 	/**

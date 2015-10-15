@@ -237,7 +237,6 @@ function give_receipt_shortcode( $atts, $content = null ) {
 		'error'          => __( 'Sorry, it appears the viewing window for this donation receipt has expired or you do not have the permission to view this donation receipt.', 'give' ),
 		'price'          => true,
 		'date'           => true,
-		'notes'          => true,
 		'payment_key'    => false,
 		'payment_method' => true,
 		'payment_id'     => true

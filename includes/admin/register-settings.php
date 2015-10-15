@@ -56,6 +56,7 @@ class Give_Plugin_Settings {
 		add_action( 'cmb2_render_system_info', 'give_system_info_callback', 10, 5 );
 		add_action( 'cmb2_render_api', 'give_api_callback', 10, 5 );
 		add_action( 'cmb2_render_license_key', 'give_license_key_callback', 10, 5 );
+		add_action( "cmb2_save_options-page_fields", array( $this, 'settings_notices' ), 10, 3 );
 
 		// Include CMB CSS in the head to avoid FOUC
 		add_action( "admin_print_styles-give_forms_page_give-settings", array( 'CMB2_hookup', 'enqueue_cmb_css' ) );
@@ -312,7 +313,7 @@ class Give_Plugin_Settings {
 							'type' => 'text',
 						),
 						array(
-							'name'    => __( 'PayPal ', 'give' ),
+							'name'    => __( 'PayPal Transaction Type', 'give' ),
 							'desc'    => __( 'Nonprofits must verify their status to withdraw donations they receive via PayPal. PayPal users that are not verified nonprofits must demonstrate how their donations will be used, once they raise more than $10,000. By default, Give transactions are sent to PayPal as donations. You may change the transaction type using this option if you feel you may not meet PayPal\'s donation requirements.', 'give' ),
 							'id'      => 'paypal_button_type',
 							'type'    => 'radio_inline',
@@ -676,6 +677,28 @@ class Give_Plugin_Settings {
 
 	}
 
+	/**
+	 * Show Settings Notices
+	 *
+	 * @param $object_id
+	 * @param $updated
+	 * @param $cmb
+	 */
+	public function settings_notices( $object_id, $updated, $cmb ) {
+
+		//Sanity check
+		if ( $object_id !== $this->key ) {
+			return;
+		}
+
+		if ( did_action( 'cmb2_save_options-page_fields' ) === 1 ) {
+			settings_errors( 'give-notices' );
+		}
+
+		add_settings_error( 'give-notices', 'global-settings-updated', __( 'Settings updated.', 'give' ), 'updated' );
+
+	}
+
 
 	/**
 	 * Public getter method for retrieving protected/private variables
@@ -763,7 +786,6 @@ function give_update_option( $key = '', $value = false ) {
 	if ( $did_update ) {
 		global $give_options;
 		$give_options[ $key ] = $value;
-
 	}
 
 	return $did_update;
@@ -1017,7 +1039,7 @@ if ( ! function_exists( 'give_license_key_callback' ) ) {
 			$html .= '<input type="submit" class="button-secondary give-license-deactivate" name="' . $id . '_deactivate" value="' . __( 'Deactivate License', 'give' ) . '"/>';
 		} else {
 			//This license is not valid so delete it
-			give_delete_option($id);
+			give_delete_option( $id );
 		}
 
 		$html .= '<label for="give_settings[' . $id . ']"> ' . $field_description . '</label>';
@@ -1087,11 +1109,13 @@ function give_hook_callback( $args ) {
 /**
  * Get the CMB2 bootstrap!
  *
- * Super important!
+ * @description: Checks to see if CMB2 plugin is installed first the uses included CMB2; we can still use it even it it's not active. This prevents fatal error conflicts with other themes and users of the CMB2 WP.org plugin
+ *
  */
-if ( file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/cmb2/init.php' ) ) {
+if ( file_exists( WP_PLUGIN_DIR . '/cmb2/init.php' ) ) {
+	require_once WP_PLUGIN_DIR . '/cmb2/init.php';
+} elseif ( file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/cmb2/init.php' ) ) {
 	require_once GIVE_PLUGIN_DIR . '/includes/libraries/cmb2/init.php';
 } elseif ( file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/CMB2/init.php' ) ) {
 	require_once GIVE_PLUGIN_DIR . '/includes/libraries/CMB2/init.php';
 }
-
