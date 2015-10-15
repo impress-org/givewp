@@ -6,7 +6,7 @@
  * @subpackage  Functions
  * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       1.0.1
+ * @since       1.0
  */
 
 // Exit if accessed directly
@@ -86,7 +86,7 @@ function give_process_purchase_form() {
 	// Allow themes and plugins to hook before the gateway
 	do_action( 'give_checkout_before_gateway', $_POST, $user_info, $valid_data );
 
-	// If the total amount for the donation is 0, send to the manual gateway
+
 	if ( ! $purchase_data['price'] ) {
 		// Revert to manual
 		$purchase_data['gateway'] = 'manual';
