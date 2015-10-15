@@ -163,9 +163,10 @@ function give_send_to_success_page( $query_string = null ) {
 function give_send_back_to_checkout( $args = array() ) {
 
 	$redirect = ( isset( $_POST['give-current-url'] ) ) ? $_POST['give-current-url'] : '';
+	$form_id  = isset( $_POST['give-form-id'] ) ? $_POST['give-form-id'] : 0;
 
 	$defaults = array(
-		'form_id' => (int) isset( $_POST['give-form-id'] ) ? $_POST['give-form-id'] : 0
+		'form-id' => (int) $form_id
 	);
 
 	// Check for backward compatibility
@@ -175,7 +176,8 @@ function give_send_back_to_checkout( $args = array() ) {
 
 	$args = wp_parse_args( $args, $defaults );
 
-	$redirect = add_query_arg( $args, $redirect );
+	$redirect = add_query_arg( $args, $redirect ) . '#give-form-' . $form_id . '-wrap';
+
 	wp_redirect( apply_filters( 'give_send_back_to_checkout', $redirect, $args ) );
 	give_die();
 }
