@@ -255,18 +255,40 @@ function give_render_receipt_in_browser() {
 	?>
 	<!DOCTYPE html>
 	<html lang="en">
-	<title><?php _e( 'Receipt', 'give' ); ?></title>
-	<meta charset="utf-8" />
-	<?php wp_head(); ?>
+		<head>
+			<title><?php _e( 'Donation Receipt', 'give' ); ?></title>
+			<meta charset="utf-8" />
+
+			<?php
+				//Disallows caching of the page
+				header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+				header("Cache-Control: no-store, no-cache, must-revalidate"); // HTTP/1.1
+				header("Cache-Control: post-check=0, pre-check=0", false);
+				header("Pragma: no-cache"); // HTTP/1.0
+				header("Expires: Sat, 23 Oct 1977 05:00:00 PST"); // Date in the past
+			?>
+
+			<!-- Further disallowing of caching of this page -->
+			<meta charset="utf-8" />
+			<meta http-equiv="cache-control" content="max-age=0" />
+			<meta http-equiv="cache-control" content="no-cache" />
+			<meta http-equiv="expires" content="0" />
+			<meta http-equiv="expires" content="Tue, 23 Oct 1977 05:00:00 PST" />
+			<meta http-equiv="pragma" content="no-cache" />
+
+			<?php wp_head(); ?>
+		</head>
+		<body class="<?php echo apply_filters( 'give_receipt_page_body_class', 'give_receipt_page' ); ?>">
+
+			<div id="give_receipt_wrapper">
+				<?php do_action( 'give_render_receipt_in_browser_before' ); ?>
+				<?php echo do_shortcode( '[give_receipt payment_key=' . $key . ']' ); ?>
+				<?php do_action( 'give_render_receipt_in_browser_after' ); ?>
+			</div>
+
+			<?php wp_footer(); ?>
+		</body>
 	</html>
-	<body class="<?php echo apply_filters( 'give_receipt_page_body_class', 'give_receipt_page' ); ?>">
-	<div id="give_receipt_wrapper">
-		<?php do_action( 'give_render_receipt_in_browser_before' ); ?>
-	<?php echo do_shortcode( '[give_receipt payment_key=' . $key . ']' ); ?>
-	<?php do_action( 'give_render_receipt_in_browser_after' ); ?>
-	</div>
-	<?php wp_footer(); ?>
-	</body>
 	<?php
 	echo ob_get_clean();
 	die();
