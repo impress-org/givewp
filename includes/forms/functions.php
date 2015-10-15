@@ -164,17 +164,18 @@ function give_send_back_to_checkout( $args = array() ) {
 
 	$redirect = ( isset( $_POST['give-current-url'] ) ) ? $_POST['give-current-url'] : '';
 
-	if ( ! empty( $args ) ) {
-		// Check for backward compatibility
-		if ( is_string( $args ) ) {
-			$args = str_replace( '?', '', $args );
-		}
+	$defaults = array(
+		'form_id' => (int) isset( $_POST['give-form-id'] ) ? $_POST['give-form-id'] : 0
+	);
 
-		$args = wp_parse_args( $args );
-
-		$redirect = esc_url( add_query_arg( $args, $redirect ) );
+	// Check for backward compatibility
+	if ( is_string( $args ) ) {
+		$args = str_replace( '?', '', $args );
 	}
 
+	$args = wp_parse_args( $args, $defaults );
+
+	$redirect = add_query_arg( $args, $redirect );
 	wp_redirect( apply_filters( 'give_send_back_to_checkout', $redirect, $args ) );
 	give_die();
 }
