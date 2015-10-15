@@ -133,7 +133,7 @@ class Give_Payment_Stats extends Give_Stats {
 			);
 
 			$args = apply_filters( 'give_stats_earnings_args', $args );
-			$key  = md5( serialize( $args ) );
+			$key  = 'give_stats_' . substr( md5( serialize( $args ) ), 0, 15 );
 
 			$earnings = get_transient( $key );
 			$earnings = false; //TEMPORARY
@@ -145,7 +145,7 @@ class Give_Payment_Stats extends Give_Stats {
 					$earnings += $wpdb->get_var( "SELECT SUM(meta_value) FROM $wpdb->postmeta WHERE meta_key = '_give_payment_total' AND post_id IN({$sales})" );
 				}
 				// Cache the results for one hour
-				set_transient( $key, $earnings, 60 * 60 );
+				set_transient( $key, $earnings, HOUR_IN_SECONDS );
 			}
 
 		} else {
@@ -167,7 +167,7 @@ class Give_Payment_Stats extends Give_Stats {
 			);
 
 			$args = apply_filters( 'give_stats_earnings_args', $args );
-			$key  = md5( serialize( $args ) );
+			$key  =  'give_stats_' . substr( md5( serialize( $args ) ), 0, 15 );
 
 			$earnings = get_transient( $key );
 			if ( false === $earnings ) {
