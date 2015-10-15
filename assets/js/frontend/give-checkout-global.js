@@ -10,6 +10,7 @@
 var give_scripts, give_global_vars;
 
 jQuery( function ( $ ) {
+
 	var doc = $( document );
 
 	/**
@@ -44,7 +45,7 @@ jQuery( function ( $ ) {
 					} else {
 						$form.find( 'input[name="card_state"], select[name="card_state"]' ).replaceWith( response );
 					}
-					doc.trigger( 'give_checkout_billing_address_updated', [ response, $form.attr( 'id' ) ] );
+					doc.trigger( 'give_checkout_billing_address_updated', [response, $form.attr( 'id' )] );
 				}
 			} ).fail( function ( data ) {
 				if ( window.console && window.console.log ) {
@@ -56,8 +57,10 @@ jQuery( function ( $ ) {
 		return false;
 	}
 
-	doc.on( 'change', '#give_cc_address input.card_state, #give_cc_address select', update_billing_state_field );
+	doc.on( 'change', '#give_cc_address input.card_state, #give_cc_address select', update_billing_state_field
+	);
 
+	check_for_hidden_errors();
 
 	/**
 	 * Format CC Fields
@@ -107,9 +110,9 @@ jQuery( function ( $ ) {
 		var el = $( this ),
 			give_form = el.parents( 'form.give-form' ),
 			id = el.attr( 'id' ),
-			card_number = give_form.find('#card_number' ),
-			card_cvc = give_form.find('#card_cvc' ),
-			card_expiry = give_form.find('#card_expiry' ),
+			card_number = give_form.find( '#card_number' ),
+			card_cvc = give_form.find( '#card_cvc' ),
+			card_expiry = give_form.find( '#card_expiry' ),
 			type = $.payment.cardType( card_number.val() );
 
 		if ( id === 'card_number' ) {
@@ -299,6 +302,62 @@ jQuery( function ( $ ) {
 			formatted_total = this_amount + currency_symbol;
 		}
 		parent_form.find( '.give-final-total-amount' ).data( 'total', this_amount ).text( formatted_total );
+	}
+
+
+	function check_for_hidden_errors() {
+
+		$( '.give-display-modal, .give-display-reveal' ).each( function () {
+
+			var form_errors = $( this ).find( 'form.give-form .give_error' );
+			var display_modal = $( this ).hasClass( 'give-display-modal' );
+			var display_reveal = $( this ).hasClass( 'give-display-reveal' );
+			var this_form = $( this ).find( 'form.give-form' );
+
+			console.log( form_errors );
+			console.log( $( this ) );
+			console.log( display_modal );
+			console.log( display_reveal );
+			//Sanity check: Are there errors? If there are NOT skip this iteration
+			if ( form_errors.length === 0 ) {
+				return true;
+			}
+
+			//This form is modal display and has an error
+			if ( display_modal ) {
+
+				//@TODO: Make this DRYer - repeated in give.js
+				//Show error
+				$.magnificPopup.open( {
+					mainClass: 'give-modal',
+					items    : {
+						src : this_form,
+						type: 'inline'
+					},
+					callbacks: {
+						open : function () {
+							// Will fire when this exact popup is opened
+							// this - is Magnific Popup object
+							if ( $( '.mfp-content' ).outerWidth() >= 500 ) {
+								$( '.mfp-content' ).addClass( 'give-responsive-mfp-content' );
+							}
+							//Hide all form elements besides the ones required for payment
+							this_form.children().not( '#give_purchase_form_wrap, #give-payment-mode-select, .mfp-close' ).hide();
+
+						},
+						close: function () {
+							//Remove popup class
+							this_form.removeClass( 'mfp-hide' );
+							//Show all fields again
+							this_form.children().not( '#give_purchase_form_wrap, #give-payment-mode-select, .mfp-close' ).show();
+						}
+					}
+				} );
+			}
+
+
+		} );
+
 	}
 
 } );
