@@ -86,7 +86,7 @@ function give_process_purchase_form() {
 	// Allow themes and plugins to hook before the gateway
 	do_action( 'give_checkout_before_gateway', $_POST, $user_info, $valid_data );
 
-	// If the total amount in the cart is 0, send to the manual gateway. This emulates a free purchase
+	// If the total amount for the donation is 0, send to the manual gateway
 	if ( ! $purchase_data['price'] ) {
 		// Revert to manual
 		$purchase_data['gateway'] = 'manual';
@@ -94,11 +94,7 @@ function give_process_purchase_form() {
 	}
 
 	// Allow the purchase data to be modified before it is sent to the gateway
-	$purchase_data = apply_filters(
-		'give_purchase_data_before_gateway',
-		$purchase_data,
-		$valid_data
-	);
+	$purchase_data = apply_filters( 'give_purchase_data_before_gateway', $purchase_data, $valid_data );
 
 	// Setup the data we're storing in the purchase session
 	$session_data = $purchase_data;
@@ -191,6 +187,9 @@ function give_purchase_form_validate_fields() {
 		give_purchase_form_validate_agree_to_terms();
 	}
 
+	//Validate amount is more than 0
+
+
 	if ( is_user_logged_in() ) {
 		// Collect logged in user data
 		$valid_data['logged_in_user'] = give_purchase_form_validate_logged_in_user();
@@ -233,16 +232,14 @@ function give_purchase_form_validate_gateway() {
 		//Is amount being donated in LIVE mode above 0.00?
 		if ( '0.00' == $_REQUEST['give-amount'] && ! give_is_test_mode() ) {
 
-			give_set_error( 'invalid_gateway', __( 'Please insert a valid donation amount.', 'give' ) );
+			give_set_error( 'invalid_donation_amount', __( 'Please insert a valid donation amount.', 'give' ) );
 
-		}
-		//Is this test mode zero donation? Let it through but set to manual gateway
+		} //Is this test mode zero donation? Let it through but set to manual gateway
 		elseif ( '0.00' == $_REQUEST['give-amount'] && give_is_test_mode() ) {
 
 			$gateway = 'manual';
 
-		}
-		//Check if this gateway is active
+		} //Check if this gateway is active
 		elseif ( ! give_is_gateway_active( $gateway ) ) {
 
 			give_set_error( 'invalid_gateway', __( 'The selected payment gateway is not enabled', 'give' ) );
