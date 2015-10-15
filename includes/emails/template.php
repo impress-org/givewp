@@ -256,10 +256,10 @@ function give_render_receipt_in_browser() {
 	<!DOCTYPE html>
 	<html lang="en">
 		<head>
-			<title><?php _e( 'Receipt', 'give' ); ?></title>
+			<title><?php _e( 'Donation Receipt', 'give' ); ?></title>
 			<meta charset="utf-8" />
 
-			<?
+			<?php
 				//Disallows caching of the page
 				header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 				header("Cache-Control: no-store, no-cache, must-revalidate"); // HTTP/1.1
@@ -280,15 +280,11 @@ function give_render_receipt_in_browser() {
 		</head>
 		<body class="<?php echo apply_filters( 'give_receipt_page_body_class', 'give_receipt_page' ); ?>">
 
-			<?php get_header(); ?>
-
 			<div id="give_receipt_wrapper">
 				<?php do_action( 'give_render_receipt_in_browser_before' ); ?>
 				<?php echo do_shortcode( '[give_receipt payment_key=' . $key . ']' ); ?>
 				<?php do_action( 'give_render_receipt_in_browser_after' ); ?>
 			</div>
-
-			<?php get_footer(); ?>
 
 			<?php wp_footer(); ?>
 		</body>
