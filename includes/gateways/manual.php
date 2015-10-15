@@ -60,7 +60,6 @@ function give_manual_payment( $purchase_data ) {
 
 	if ( $payment ) {
 		give_update_payment_status( $payment, 'publish' );
-		// Empty the shopping cart
 		give_send_to_success_page();
 	} else {
 		give_record_gateway_error( __( 'Payment Error', 'give' ), sprintf( __( 'Payment creation failed while processing a manual (free or test) purchase. Payment data: %s', 'give' ), json_encode( $payment_data ) ), $payment );
