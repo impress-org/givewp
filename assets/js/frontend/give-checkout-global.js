@@ -9,6 +9,24 @@
  */
 var give_scripts, give_global_vars;
 
+
+//Get Query function used to grab URL params
+(function ( $ ) {
+	$.getQuery = function ( query ) {
+		query = query.replace( /[\[]/, "\\\[" ).replace( /[\]]/, "\\\]" );
+		var expr = "[\\?&]" + query + "=([^&#]*)";
+		var regex = new RegExp( expr );
+		var results = regex.exec( window.location.href );
+		if ( results !== null ) {
+			return results[1];
+			return decodeURIComponent( results[1].replace( /\+/g, " " ) );
+		} else {
+			return false;
+		}
+	};
+})( jQuery );
+
+
 jQuery( function ( $ ) {
 
 	var doc = $( document );
@@ -60,7 +78,7 @@ jQuery( function ( $ ) {
 	doc.on( 'change', '#give_cc_address input.card_state, #give_cc_address select', update_billing_state_field
 	);
 
-	check_for_hidden_errors();
+	sent_back_to_form();
 
 	/**
 	 * Format CC Fields
@@ -72,9 +90,9 @@ jQuery( function ( $ ) {
 
 		//Loop through forms on page and set CC validation
 		give_form.each( function () {
-			var card_number = $( this ).find( '#card_number' );
-			var card_cvc = $( this ).find( '#card_cvc' );
-			var card_expiry = $( this ).find( '#card_expiry' );
+			var card_number = $( this ).find( '.card-number' );
+			var card_cvc = $( this ).find( '.card-cvc' );
+			var card_expiry = $( this ).find( '.card-expiry' );
 
 			//Only validate if there is a card field
 			if ( card_number.length === 0 ) {
@@ -106,16 +124,16 @@ jQuery( function ( $ ) {
 	/**
 	 * Validate cc fields on change
 	 */
-	doc.on( 'keyup change', '#card_number, #card_cvc, #card_expiry', function () {
+	doc.on( 'keyup change', '.card-number, .card-cvc, .card-expiry', function () {
 		var el = $( this ),
 			give_form = el.parents( 'form.give-form' ),
 			id = el.attr( 'id' ),
-			card_number = give_form.find( '#card_number' ),
-			card_cvc = give_form.find( '#card_cvc' ),
-			card_expiry = give_form.find( '#card_expiry' ),
+			card_number = give_form.find( '.card-number' ),
+			card_cvc = give_form.find( '.card-cvc' ),
+			card_expiry = give_form.find( '.card-expiry' ),
 			type = $.payment.cardType( card_number.val() );
 
-		if ( id === 'card_number' ) {
+		if ( id.indexOf( 'card_number' ) > -1 ) {
 
 			var card_type = give_form.find( '.card-type' );
 
@@ -129,18 +147,18 @@ jQuery( function ( $ ) {
 
 			card_number.toggleError( !$.payment.validateCardNumber( card_number.val() ) );
 		}
-		if ( id === 'card_cvc' ) {
+		if ( id.indexOf( 'card_cvc' ) > -1 ) {
 
 			card_cvc.toggleError( !$.payment.validateCardCVC( card_cvc.val(), type ) );
 		}
-		if ( id === 'card_expiry' ) {
+		if ( id.indexOf( 'card_expiry' ) > -1 ) {
 
 			card_expiry.toggleError( !$.payment.validateCardExpiry( card_expiry.payment( 'cardExpiryVal' ) ) );
 
 			var expiry = card_expiry.payment( 'cardExpiryVal' );
 
-			$( '#card_exp_month' ).val( expiry.month );
-			$( '#card_exp_year' ).val( expiry.year );
+			give_form.find( '.card-expiry-month' ).val( expiry.month );
+			give_form.find( '.card-expiry-year' ).val( expiry.year );
 		}
 	} );
 
@@ -304,60 +322,69 @@ jQuery( function ( $ ) {
 		parent_form.find( '.give-final-total-amount' ).data( 'total', this_amount ).text( formatted_total );
 	}
 
+	/**
+	 * Donor sent back to the form
+	 */
+	function sent_back_to_form() {
 
-	function check_for_hidden_errors() {
+		var form_id = $.getQuery( 'form-id' );
+		var payment_mode = $.getQuery( 'payment-mode' );
 
-		$( '.give-display-modal, .give-display-reveal' ).each( function () {
+		//Sanitch check - only proceed if query strings in place
+		if ( !form_id || !payment_mode ) {
+			return false;
+		}
 
-			var form_errors = $( this ).find( 'form.give-form .give_error' );
-			var display_modal = $( this ).hasClass( 'give-display-modal' );
-			var display_reveal = $( this ).hasClass( 'give-display-reveal' );
-			var this_form = $( this ).find( 'form.give-form' );
+		var form_wrap = $( 'body' ).find( '#give-form-' + form_id + '-wrap' );
+		var form = form_wrap.find( 'form.give-form' );
+		var display_modal = form_wrap.hasClass( 'give-display-modal' );
+		var display_reveal = form_wrap.hasClass( 'give-display-reveal' );
 
-			console.log( form_errors );
-			console.log( $( this ) );
-			console.log( display_modal );
-			console.log( display_reveal );
-			//Sanity check: Are there errors? If there are NOT skip this iteration
-			if ( form_errors.length === 0 ) {
-				return true;
-			}
+		//Update payment mode radio so it's correctly checked
+		form.find( '#give-gateway-radio-list label' ).removeClass( 'give-gateway-option-selected' );
+		form.find( 'input[name=payment-mode][value=' + payment_mode + ']' ).prop( 'checked', true ).parent().addClass( 'give-gateway-option-selected' );
 
-			//This form is modal display and has an error
-			if ( display_modal ) {
+		//This form is modal display so show the modal
+		if ( display_modal ) {
 
-				//@TODO: Make this DRYer - repeated in give.js
-				//Show error
-				$.magnificPopup.open( {
-					mainClass: 'give-modal',
-					items    : {
-						src : this_form,
-						type: 'inline'
-					},
-					callbacks: {
-						open : function () {
-							// Will fire when this exact popup is opened
-							// this - is Magnific Popup object
-							if ( $( '.mfp-content' ).outerWidth() >= 500 ) {
-								$( '.mfp-content' ).addClass( 'give-responsive-mfp-content' );
-							}
-							//Hide all form elements besides the ones required for payment
-							this_form.children().not( '#give_purchase_form_wrap, #give-payment-mode-select, .mfp-close' ).hide();
-
-						},
-						close: function () {
-							//Remove popup class
-							this_form.removeClass( 'mfp-hide' );
-							//Show all fields again
-							this_form.children().not( '#give_purchase_form_wrap, #give-payment-mode-select, .mfp-close' ).show();
+			//@TODO: Make this DRYer - repeated in give.js
+			$.magnificPopup.open( {
+				mainClass: 'give-modal',
+				items    : {
+					src : form,
+					type: 'inline'
+				},
+				callbacks: {
+					open : function () {
+						// Will fire when this exact popup is opened
+						// this - is Magnific Popup object
+						if ( $( '.mfp-content' ).outerWidth() >= 500 ) {
+							$( '.mfp-content' ).addClass( 'give-responsive-mfp-content' );
 						}
+						//Hide all form elements besides the ones required for payment
+						//form.children().not( '#give_purchase_form_wrap, #give-payment-mode-select, .mfp-close, .give_error' ).hide();
+
+					},
+					close: function () {
+						//Remove popup class
+						form.removeClass( 'mfp-hide' );
+						//Show all fields again
+						//form.children().not( '#give_purchase_form_wrap, #give-payment-mode-select, .mfp-close, .give_error' ).show();
 					}
-				} );
-			}
+				}
+			} );
+		}
+		//This is a reveal form, show it
+		else if ( display_reveal ) {
 
 
-		} );
+			form.find( '.give-btn-reveal' ).hide();
+			form.find( '#give-payment-mode-select, #give_purchase_form_wrap' ).slideDown();
+
+		}
+
 
 	}
+
 
 } );
