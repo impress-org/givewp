@@ -239,7 +239,7 @@ function give_send_to_gateway( $gateway, $payment_data ) {
  */
 function give_get_chosen_gateway( $form_id ) {
 	$gateways        = give_get_enabled_payment_gateways();
-	$chosen          = isset( $_REQUEST['payment-mode'] ) ? $_REQUEST['payment-mode'] : give_get_default_gateway( $form_id );
+	$chosen          = (isset( $_REQUEST['payment-mode'] ) && isset( $_REQUEST['form-id'] ) && $form_id == $_REQUEST['form-id']) ? $_REQUEST['payment-mode'] : give_get_default_gateway( $form_id );
 	$enabled_gateway = '';
 
 	if ( $chosen ) {
