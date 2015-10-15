@@ -539,7 +539,7 @@ function give_get_cc_form( $form_id ) {
 				<span class="card-type"></span>
 			</label>
 
-			<input type="tel" autocomplete="off" name="card_number" id="card_number" class="card-number give-input required" placeholder="<?php _e( 'Card number', 'give' ); ?>" />
+			<input type="tel" autocomplete="off" name="card_number" id="card_number" required class="card-number give-input required" placeholder="<?php _e( 'Card number', 'give' ); ?>" />
 		</p>
 
 		<p id="give-card-cvc-wrap" class="form-row form-row-one-third">
@@ -549,7 +549,7 @@ function give_get_cc_form( $form_id ) {
 				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'The 3 digit (back) or 4 digit (front) value on your card.', 'give' ); ?>"></span>
 			</label>
 
-			<input type="tel" size="4" autocomplete="off" name="card_cvc" id="card_cvc" class="card-cvc give-input required" placeholder="<?php _e( 'Security code', 'give' ); ?>" />
+			<input type="tel" size="4" required autocomplete="off" name="card_cvc" id="card_cvc" class="card-cvc give-input required" placeholder="<?php _e( 'Security code', 'give' ); ?>" />
 		</p>
 
 		<p id="give-card-name-wrap" class="form-row form-row-two-thirds">
@@ -559,7 +559,7 @@ function give_get_cc_form( $form_id ) {
 				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'The name printed on the front of your credit card.', 'give' ); ?>"></span>
 			</label>
 
-			<input type="text" autocomplete="off" name="card_name" id="card_name" class="card-name give-input required" placeholder="<?php _e( 'Card name', 'give' ); ?>" />
+			<input type="text" autocomplete="off" required name="card_name" id="card_name" class="card-name give-input required" placeholder="<?php _e( 'Card name', 'give' ); ?>" />
 		</p>
 		<?php do_action( 'give_before_cc_expiration' ); ?>
 		<p class="card-expiration form-row form-row-one-third">
@@ -572,7 +572,7 @@ function give_get_cc_form( $form_id ) {
 			<input type="hidden" id="card_exp_month" name="card_exp_month" class="card-expiry-month" />
 			<input type="hidden" id="card_exp_year" name="card_exp_year" class="card-expiry-year" />
 
-			<input type="tel" autocomplete="off" name="card_expiry" id="card_expiry" class="card-expiry give-input required" placeholder="<?php _e( 'MM / YY', 'give' ); ?>" />
+			<input type="tel" required autocomplete="off" name="card_expiry" id="card_expiry" class="card-expiry give-input required" placeholder="<?php _e( 'MM / YY', 'give' ); ?>" />
 		</p>
 		<?php do_action( 'give_after_cc_expiration', $form_id ); ?>
 
