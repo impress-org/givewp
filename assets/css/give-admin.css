@@ -566,10 +566,10 @@ x:-o-prefocus, .qtip .qtip-tip {
 .give-icon-help:before {
   content: "\e606"; }
 
-.icon-spinner:before {
+.give-icon-spinner:before {
   content: "\e605"; }
 
-.icon-spinner2:before {
+.give-icon-spinner2:before {
   content: "\e607"; }
 
 .give-icon-plus:before {

@@ -609,7 +609,7 @@ form[id*='give-form'] {
 	background-size: 20px 20px;
 	background-repeat: no-repeat;
 	background-color: transparent;
-	@extend .icon-spinner2;
+	@extend .give-icon-spinner2;
 
 	&:before {
 	  @extend .fa-spin;
