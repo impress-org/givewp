@@ -709,6 +709,9 @@ p.give-level-id {
   padding: 2px 7px;
   font-size: 11px; }
 
+.give-underline {
+  text-decoration: underline; }
+
 #poststuff .give-subfield {
   background: #FAFAFA; }
   #poststuff .give-subfield .cmb-th label {

@@ -12,7 +12,9 @@
  */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Give_Payments_Export Class
@@ -31,17 +33,18 @@ class Give_Payments_Export extends Give_Export {
 	 * Set the export headers
 	 *
 	 * @access public
-	 * @since 1.0
+	 * @since  1.0
 	 * @return void
 	 */
 	public function headers() {
 		ignore_user_abort( true );
 
-		if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) )
+		if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
 			set_time_limit( 0 );
+		}
 
 		$month = isset( $_POST['month'] ) ? absint( $_POST['month'] ) : date( 'n' );
-		$year  = isset( $_POST['year']  ) ? absint( $_POST['year']  ) : date( 'Y' );
+		$year  = isset( $_POST['year'] ) ? absint( $_POST['year'] ) : date( 'Y' );
 
 		nocache_headers();
 		header( 'Content-Type: text/csv; charset=utf-8' );
@@ -53,15 +56,15 @@ class Give_Payments_Export extends Give_Export {
 	 * Set the CSV columns
 	 *
 	 * @access public
-	 * @since 1.4.4
+	 * @since  1.4.4
 	 * @return array $cols All the columns
 	 */
 	public function csv_cols() {
 		global $give_options;
 
 		$cols = array(
-			'id'       => __( 'ID',   'give' ), // unaltered payment ID (use for querying)
-			'seq_id'   => __( 'Payment Number',   'give' ), // sequential payment ID
+			'id'       => __( 'ID', 'give' ), // unaltered payment ID (use for querying)
+			'seq_id'   => __( 'Payment Number', 'give' ), // sequential payment ID
 			'email'    => __( 'Email', 'give' ),
 			'first'    => __( 'First Name', 'give' ),
 			'last'     => __( 'Last Name', 'give' ),
@@ -71,11 +74,9 @@ class Give_Payments_Export extends Give_Export {
 			'state'    => __( 'State', 'give' ),
 			'country'  => __( 'Country', 'give' ),
 			'zip'      => __( 'Zip Code', 'give' ),
-			'products' => __( 'Products', 'give' ),
-			'skus'     => __( 'SKUs', 'give' ),
-			'amount'   => __( 'Amount', 'give' ) . ' (' . html_entity_decode( give_currency_filter( '' ) ) . ')',
-			'tax'      => __( 'Tax', 'give' ) . ' (' . html_entity_decode( give_currency_filter( '' ) ) . ')',
-			'discount' => __( 'Discount Code', 'give' ),
+			'amount'   => __( 'Donation Amount', 'give' ) . ' (' . html_entity_decode( give_currency_filter( '' ) ) . ')',
+			'form_id'  => __( 'Form ID', 'give' ),
+			'form'     => __( 'Form Title', 'give' ),
 			'gateway'  => __( 'Payment Method', 'give' ),
 			'trans_id' => __( 'Transaction ID', 'give' ),
 			'key'      => __( 'Purchase Key', 'give' ),
@@ -95,9 +96,9 @@ class Give_Payments_Export extends Give_Export {
 	 * Get the Export Data
 	 *
 	 * @access public
-	 * @since 1.0
+	 * @since  1.0
 	 * @global object $wpdb Used to query the database using the WordPress
-	 *   Database API
+	 *                      Database API
 	 * @return array $data The data for the CSV file
 	 */
 	public function get_data() {
@@ -107,7 +108,7 @@ class Give_Payments_Export extends Give_Export {
 
 		$payments = give_get_payments( array(
 			'offset' => 0,
-			'number' => -1,
+			'number' => - 1,
 			'mode'   => give_is_test_mode() ? 'test' : 'live',
 			'status' => isset( $_POST['give_export_payment_status'] ) ? $_POST['give_export_payment_status'] : 'any',
 			'month'  => isset( $_POST['month'] ) ? absint( $_POST['month'] ) : date( 'n' ),
@@ -115,12 +116,13 @@ class Give_Payments_Export extends Give_Export {
 		) );
 
 		foreach ( $payments as $payment ) {
-			$payment_meta   = give_get_payment_meta( $payment->ID );
-			$user_info      = give_get_payment_meta_user_info( $payment->ID );
-			$total          = give_get_payment_amount( $payment->ID );
-			$user_id        = isset( $user_info['id'] ) && $user_info['id'] != -1 ? $user_info['id'] : $user_info['email'];
-			$products       = '';
-			$skus           = '';
+			$payment_meta = give_get_payment_meta( $payment->ID );
+			$user_info    = give_get_payment_meta_user_info( $payment->ID );
+			$total        = give_get_payment_amount( $payment->ID );
+			$user_id      = isset( $user_info['id'] ) && $user_info['id'] != - 1 ? $user_info['id'] : $user_info['email'];
+
+			$form_id = isset($payment_meta['form_id']) ? $payment_meta['form_id'] : '';
+			$form_title = isset($payment_meta['form_title']) ? $payment_meta['form_title'] : '';
 
 			if ( is_numeric( $user_id ) ) {
 				$user = get_userdata( $user_id );
@@ -134,15 +136,15 @@ class Give_Payments_Export extends Give_Export {
 				'email'    => $payment_meta['email'],
 				'first'    => $user_info['first_name'],
 				'last'     => $user_info['last_name'],
-				'address1' => isset( $user_info['address']['line1'] )   ? $user_info['address']['line1']   : '',
-				'address2' => isset( $user_info['address']['line2'] )   ? $user_info['address']['line2']   : '',
-				'city'     => isset( $user_info['address']['city'] )    ? $user_info['address']['city']    : '',
-				'state'    => isset( $user_info['address']['state'] )   ? $user_info['address']['state']   : '',
+				'address1' => isset( $user_info['address']['line1'] ) ? $user_info['address']['line1'] : '',
+				'address2' => isset( $user_info['address']['line2'] ) ? $user_info['address']['line2'] : '',
+				'city'     => isset( $user_info['address']['city'] ) ? $user_info['address']['city'] : '',
+				'state'    => isset( $user_info['address']['state'] ) ? $user_info['address']['state'] : '',
 				'country'  => isset( $user_info['address']['country'] ) ? $user_info['address']['country'] : '',
-				'zip'      => isset( $user_info['address']['zip'] )     ? $user_info['address']['zip']     : '',
-				'products' => $products,
-				'skus'     => $skus,
+				'zip'      => isset( $user_info['address']['zip'] ) ? $user_info['address']['zip'] : '',
 				'amount'   => html_entity_decode( give_format_amount( $total ) ),
+				'form_id'  => $form_id,
+				'form'     => $form_title,
 				'gateway'  => give_get_gateway_admin_label( get_post_meta( $payment->ID, '_give_payment_gateway', true ) ),
 				'trans_id' => give_get_payment_transaction_id( $payment->ID ),
 				'key'      => $payment_meta['key'],
