@@ -1,11 +1,11 @@
 filter:
-    excluded_paths: [vendor/*, tests/*, .tx/*, languages/*, includes/libraries/*, bin/*, assets/*, templates/* ]
+    excluded_paths: [vendor/*, tests/*, languages/*, includes/libraries/*, bin/*, assets/*, templates/* ]
 before_commands:
     - 'composer install --dev --prefer-source'
 tools:
     external_code_coverage:
             timeout: 900    # wait for 15 minutes instead of 5
-    php_mess_detector: 
+    php_mess_detector:
         config:
             code_size_rules:
                 cyclomatic_complexity:  false
@@ -24,10 +24,10 @@ tools:
     php_pdepend: true
     php_loc:
         enabled: true
-        excluded_dirs: [vendor, tests, .tx, languages, includes/libraries, bin, assets, templates]
+        excluded_dirs: [vendor, tests, languages, includes/libraries, bin, assets, templates]
     php_cpd:
         enabled: true
-        excluded_dirs: [vendor, tests, .tx, languages, includes/libraries, bin, assets, templates]
+        excluded_dirs: [vendor, tests, languages, includes/libraries, bin, assets, templates]
 checks:
     php:
         psr2_switch_declaration: false
