@@ -81,15 +81,6 @@ module.exports = function ( grunt ) {
 			}
 		},
 
-		exec: {
-			txpull  : { // Pull Transifex translation - grunt exec:txpull
-				cmd: 'tx pull -a -f --minimum-perc=1' // Change the percentage with --minimum-perc=yourvalue
-			},
-			txpush_s: { // Push pot to Transifex - grunt exec:txpush_s
-				cmd: 'tx push -s'
-			}
-		},
-
 		dirs: {
 			lang: 'languages'
 		},
@@ -115,12 +106,6 @@ module.exports = function ( grunt ) {
 
 // Default task. - grunt makepot
 	grunt.registerTask( 'default', 'makepot' );
-
-// Makepot and push it on Transifex task(s).
-	grunt.registerTask( 'tx-push', ['makepot', 'exec:txpush_s'] );
-
-// Pull from Transifex and create .mo task(s).
-	grunt.registerTask( 'tx-pull', ['exec:txpull', 'potomo'] );
 
 // Build task(s).
 //	grunt.registerTask( 'build', ['clean', 'copy', 'compress'] );
