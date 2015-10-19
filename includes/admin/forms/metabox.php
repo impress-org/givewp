@@ -26,10 +26,15 @@ add_filter( 'cmb2_meta_boxes', 'give_single_forms_cmb2_metaboxes' );
 function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 
 	$post_id          = give_get_admin_post_id();
-	$price            = ! empty( give_get_form_price( $post_id ) ) ? give_get_form_price( $post_id ) : esc_attr( give_format_amount( '1.00' ) );
+	$price            = give_get_form_price( $post_id );
 	$goal             = give_get_form_goal( $post_id );
 	$variable_pricing = give_has_variable_prices( $post_id );
 	$prices           = give_get_variable_prices( $post_id );
+
+	//No empty prices - min. 1.00 for new forms
+	if ( empty( $price ) ) {
+		$price = esc_attr( give_format_amount( '1.00' ) );
+	}
 
 	// Start with an underscore to hide fields from custom fields list
 	$prefix = '_give_';
