@@ -142,6 +142,8 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Fix: PayPal transactions types field label updated to "PayPal Transaction Type" - https://github.com/WordImpress/Give/issues/293
 * Fix: Custom Jupiter theme wrapper start and end added to prevent single donation form views from being incorrectly formatted - https://github.com/WordImpress/Give/issues/170
 * Fix: [give_receipt] options now work as expected - https://github.com/WordImpress/Give/issues/267
+* Fix: give_send_back_to_checkout() now properly sends back to donation form with form ID added as query param - https://github.com/WordImpress/Give/issues/337
+* Fix: Server side validation errors now properly reopen a modal or slide down donation forms so the user clearly sees there's an error - https://github.com/WordImpress/Give/issues/264
 * Fix: Dynamically generated receipt pages now have no-cache headers - https://github.com/WordImpress/Give/issues/338
 
 = 1.3.0.4 =
