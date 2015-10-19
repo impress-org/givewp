@@ -25,7 +25,7 @@ jQuery( function ( $ ) {
 
 	// floatlabels
 	var options = {
-		exclude     : ['#give-amount, .give-select-level, .multiselect, .give-repeater-table input, select'],
+		exclude     : ['#give-amount, .give-select-level, .multiselect, .give-repeater-table input, select, input[type="url"]'],
 		customEvent : customEvents
 	};
 
