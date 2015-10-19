@@ -465,7 +465,7 @@ function give_user_info_fields( $form_id ) {
 				<?php } ?>
 				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'We will use this to personalize your account experience.', 'give' ); ?>"></span>
 			</label>
-			<input class="give-input required" type="text" name="give_first" placeholder="<?php _e( 'First name', 'give' ); ?>" id="give-first" value="<?php echo is_user_logged_in() ? $user_data->first_name : ''; ?>" />
+			<input class="give-input required" type="text" name="give_first" placeholder="<?php _e( 'First name', 'give' ); ?>" id="give-first" value="<?php echo is_user_logged_in() ? $user_data->first_name : ''; ?>" required />
 		</p>
 
 		<p id="give-last-name-wrap" class="form-row form-row-last">
@@ -492,7 +492,7 @@ function give_user_info_fields( $form_id ) {
 				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'We will send the purchase receipt to this address.', 'give' ); ?>"></span>
 			</label>
 
-			<input class="give-input required" type="email" name="give_email" placeholder="<?php _e( 'Email address', 'give' ); ?>" id="give-email" value="<?php echo is_user_logged_in() ? $user_data->user_email : ''; ?>" />
+			<input class="give-input required" type="email" name="give_email" placeholder="<?php _e( 'Email address', 'give' ); ?>" id="give-email" value="<?php echo is_user_logged_in() ? $user_data->user_email : ''; ?>" required />
 
 		</p>
 		<?php do_action( 'give_purchase_form_after_email', $form_id ); ?>
