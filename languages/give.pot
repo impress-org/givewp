@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Give - Donation Plugin package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Give - Donation Plugin 1.3.0.4\n"
+"Project-Id-Version: Give - Donation Plugin 1.3.1\n"
 "Report-Msgid-Bugs-To: https://givewp.com/\n"
-"POT-Creation-Date: 2015-10-19 20:19:59+00:00\n"
+"POT-Creation-Date: 2015-10-19 22:37:43+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -494,7 +494,7 @@ msgid "Recent Donations"
 msgstr ""
 
 #: includes/admin/customers/customers.php:403
-#: includes/admin/forms/metabox.php:91 includes/admin/forms/metabox.php:376
+#: includes/admin/forms/metabox.php:96 includes/admin/forms/metabox.php:381
 #: includes/admin/payments/class-payments-table.php:253
 #: includes/admin/reporting/class-donor-reports-table.php:202
 #: includes/admin/reporting/class-export-payments.php:66
@@ -504,7 +504,7 @@ msgid "ID"
 msgstr ""
 
 #: includes/admin/customers/customers.php:404
-#: includes/admin/forms/metabox.php:96 includes/admin/forms/metabox.php:377
+#: includes/admin/forms/metabox.php:101 includes/admin/forms/metabox.php:382
 #: includes/admin/payments/class-payments-table.php:249
 #: templates/history-donations.php:13
 msgid "Amount"
@@ -664,99 +664,99 @@ msgstr ""
 msgid "%s Configuration"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:42
+#: includes/admin/forms/metabox.php:47
 msgid "Donation Options"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:49
+#: includes/admin/forms/metabox.php:54
 msgid "Donation Option"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:50
+#: includes/admin/forms/metabox.php:55
 msgid ""
 "Would you like this form to have one set donation price or multiple levels "
 "(for example, $10 silver, $20 gold, $50 platinum)?"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:55 includes/admin/forms/metabox.php:60
+#: includes/admin/forms/metabox.php:60 includes/admin/forms/metabox.php:65
 msgid "Set Donation"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:56
+#: includes/admin/forms/metabox.php:61
 msgid "Multi-level Donation"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:61
+#: includes/admin/forms/metabox.php:66
 msgid "This is the set donation amount for this form."
 msgstr ""
 
-#: includes/admin/forms/metabox.php:84
+#: includes/admin/forms/metabox.php:89
 msgid "Add Level"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:85
+#: includes/admin/forms/metabox.php:90
 msgid "<span class=\"dashicons dashicons-no\"></span>"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:109 includes/admin/forms/metabox.php:378
+#: includes/admin/forms/metabox.php:114 includes/admin/forms/metabox.php:383
 msgid "Text"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:113
+#: includes/admin/forms/metabox.php:118
 msgid "Donation Level"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:118 includes/admin/forms/metabox.php:379
+#: includes/admin/forms/metabox.php:123 includes/admin/forms/metabox.php:384
 msgid "Default"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:126
+#: includes/admin/forms/metabox.php:131
 msgid "Display Style"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:127
+#: includes/admin/forms/metabox.php:132
 msgid "Set how the donations levels will display on the form."
 msgstr ""
 
-#: includes/admin/forms/metabox.php:132
+#: includes/admin/forms/metabox.php:137
 msgid "Buttons"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:133
+#: includes/admin/forms/metabox.php:138
 msgid "Radios"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:134
+#: includes/admin/forms/metabox.php:139
 msgid "Dropdown"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:139
+#: includes/admin/forms/metabox.php:144
 #: includes/gateways/paypal-standard.php:94
 #: includes/gateways/paypal-standard.php:105
 msgid "Custom Amount"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:140
+#: includes/admin/forms/metabox.php:145
 msgid "Do you want the user to be able to input their own donation amount?"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:145 includes/admin/forms/metabox.php:168
-#: includes/admin/forms/metabox.php:336
+#: includes/admin/forms/metabox.php:150 includes/admin/forms/metabox.php:173
+#: includes/admin/forms/metabox.php:341
 #: includes/gateways/offline-donations.php:273
 msgid "Yes"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:146 includes/admin/forms/metabox.php:169
-#: includes/admin/forms/metabox.php:335
+#: includes/admin/forms/metabox.php:151 includes/admin/forms/metabox.php:174
+#: includes/admin/forms/metabox.php:340
 #: includes/gateways/offline-donations.php:274
 msgid "No"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:150
+#: includes/admin/forms/metabox.php:155
 msgid "Custom Amount Text"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:151
+#: includes/admin/forms/metabox.php:156
 msgid ""
 "This text appears as a label next to the custom amount field for single "
 "level forms. For multi-level forms the text will appear as it's own level "
@@ -764,74 +764,74 @@ msgid ""
 "field blank to prevent it from displaying within your form."
 msgstr ""
 
-#: includes/admin/forms/metabox.php:157
+#: includes/admin/forms/metabox.php:162
 msgid "Give a Custom Amount"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:162
+#: includes/admin/forms/metabox.php:167
 msgid "Set Goal?"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:163
+#: includes/admin/forms/metabox.php:168
 msgid "Do you want to set a donation goal for this form?"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:173
+#: includes/admin/forms/metabox.php:178
 msgid "Set Goal"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:174
+#: includes/admin/forms/metabox.php:179
 msgid "This is the goal you want to achieve for this form."
 msgstr ""
 
-#: includes/admin/forms/metabox.php:187
+#: includes/admin/forms/metabox.php:192
 msgid "Goal Progress Bar Color"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:203
+#: includes/admin/forms/metabox.php:208
 msgid "Form Content"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:210
+#: includes/admin/forms/metabox.php:215
 msgid "Display Content"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:211
+#: includes/admin/forms/metabox.php:216
 msgid ""
 "Do you want to display content? If you select \"Yes\" a WYSIWYG editor will "
 "appear which you will be able to enter content to display above or below "
 "the form."
 msgstr ""
 
-#: includes/admin/forms/metabox.php:215
+#: includes/admin/forms/metabox.php:220
 msgid "No content"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:216
+#: includes/admin/forms/metabox.php:221
 msgid "Yes, display content ABOVE the form fields"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:217
+#: includes/admin/forms/metabox.php:222
 msgid "Yes, display content BELOW the form fields"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:223
+#: includes/admin/forms/metabox.php:228
 msgid "Content"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:224
+#: includes/admin/forms/metabox.php:229
 msgid "This content will display on the single give form page."
 msgstr ""
 
-#: includes/admin/forms/metabox.php:239
+#: includes/admin/forms/metabox.php:244
 msgid "Form Display Options"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:246
+#: includes/admin/forms/metabox.php:251
 msgid "Payment Fields"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:247
+#: includes/admin/forms/metabox.php:252
 msgid ""
 "How would you like to display payment information for this form? The \"Show "
 "on Page\" option will display the entire form when the page loads. \"Reveal "
@@ -841,67 +841,67 @@ msgid ""
 "a shadow box or \"modal\" window."
 msgstr ""
 
-#: includes/admin/forms/metabox.php:251
+#: includes/admin/forms/metabox.php:256
 #: includes/admin/shortcodes/shortcode-give-form.php:95
 msgid "Show on Page"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:252
+#: includes/admin/forms/metabox.php:257
 #: includes/admin/shortcodes/shortcode-give-form.php:96
 msgid "Reveal Upon Click"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:253
+#: includes/admin/forms/metabox.php:258
 #: includes/admin/shortcodes/shortcode-give-form.php:97
 msgid "Modal Window Upon Click"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:259
+#: includes/admin/forms/metabox.php:264
 msgid "Reveal / Modal Open Text"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:260
+#: includes/admin/forms/metabox.php:265
 msgid "The button label for completing the donation."
 msgstr ""
 
-#: includes/admin/forms/metabox.php:264 includes/admin/forms/metabox.php:273
+#: includes/admin/forms/metabox.php:269 includes/admin/forms/metabox.php:278
 #: includes/forms/template.php:431 includes/forms/template.php:1077
 msgid "Donate Now"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:269
+#: includes/admin/forms/metabox.php:274
 msgid "Complete Donation Text"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:270
+#: includes/admin/forms/metabox.php:275
 msgid "The button label for completing a donation."
 msgstr ""
 
-#: includes/admin/forms/metabox.php:277
+#: includes/admin/forms/metabox.php:282
 #: includes/admin/register-settings.php:292
 msgid "Default Gateway"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:278
+#: includes/admin/forms/metabox.php:283
 msgid ""
 "By default, the gateway for this form will inherit the global default "
 "gateway (set under Give > Settings > Payment Gateways). This option allows "
 "you to customize the default gateway for this form only."
 msgstr ""
 
-#: includes/admin/forms/metabox.php:283
+#: includes/admin/forms/metabox.php:288
 msgid "Disable Guest Donations"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:284
+#: includes/admin/forms/metabox.php:289
 msgid "Do you want to require users be logged-in to make donations?"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:289
+#: includes/admin/forms/metabox.php:294
 msgid "Register / Login Form"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:290
+#: includes/admin/forms/metabox.php:295
 msgid ""
 "Display the registration and login forms in the checkout section for "
 "non-logged-in users. Note: this option will not require users to register "
@@ -909,88 +909,88 @@ msgid ""
 "login and/or registration form are displayed on the checkout page."
 msgstr ""
 
-#: includes/admin/forms/metabox.php:294
+#: includes/admin/forms/metabox.php:299
 msgid "Registration and Login Forms"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:295
+#: includes/admin/forms/metabox.php:300
 msgid "Registration Form Only"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:296
+#: includes/admin/forms/metabox.php:301
 msgid "Login Form Only"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:297
+#: includes/admin/forms/metabox.php:302
 msgid "None"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:302
+#: includes/admin/forms/metabox.php:307
 msgid "Floating Labels"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:303
+#: includes/admin/forms/metabox.php:308
 msgid ""
 "Select the <a href=\"%s\" target=\"_blank\">floating labels</a> setting for "
 "this Give form.<br>Be aware that if you have the \"Disable CSS\" option "
 "enabled, you will need to style the floating labels yourself."
 msgstr ""
 
-#: includes/admin/forms/metabox.php:307
+#: includes/admin/forms/metabox.php:312
 msgid "Use the global setting"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:308
+#: includes/admin/forms/metabox.php:313
 #: includes/admin/shortcodes/shortcode-give-form.php:106
 #: includes/forms/widget.php:159
 msgid "Enabled"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:309
+#: includes/admin/forms/metabox.php:314
 #: includes/admin/shortcodes/shortcode-give-form.php:107
 #: includes/forms/widget.php:160
 msgid "Disabled"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:323 includes/admin/forms/metabox.php:330
+#: includes/admin/forms/metabox.php:328 includes/admin/forms/metabox.php:335
 msgid "Terms and Conditions"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:331
+#: includes/admin/forms/metabox.php:336
 msgid ""
 "Do you want to require the user to agree to terms and conditions prior to "
 "being able to complete their donation?"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:343
+#: includes/admin/forms/metabox.php:348
 msgid "Agree to Terms Label"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:344
+#: includes/admin/forms/metabox.php:349
 msgid ""
 "The label shown next to the agree to terms check box. Add your own to "
 "customize or leave blank to use the default text placeholder."
 msgstr ""
 
-#: includes/admin/forms/metabox.php:349 includes/forms/template.php:995
+#: includes/admin/forms/metabox.php:354 includes/forms/template.php:995
 msgid "Agree to Terms?"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:355
+#: includes/admin/forms/metabox.php:360
 msgid "Agreement Text"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:356
+#: includes/admin/forms/metabox.php:361
 msgid ""
 "This is the actual text which the user will have to agree to in order to "
 "make a donation."
 msgstr ""
 
-#: includes/admin/forms/metabox.php:381
+#: includes/admin/forms/metabox.php:386
 msgid "Sort"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:444
+#: includes/admin/forms/metabox.php:449
 msgid "Give Form Shortcode:"
 msgstr ""
 
