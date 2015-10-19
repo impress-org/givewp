@@ -7,6 +7,8 @@
  * @copyright:   Copyright (c) 2015, WordImpress
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
+
+
 var give_scripts;
 
 function customEvents( el ) {
