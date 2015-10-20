@@ -121,8 +121,8 @@ function give_format_amount( $amount, $decimals = true ) {
  */
 function give_format_admin_multilevel_amount( $field_args, $field ) {
 
-	if ( ! isset( $field->value ) ) {
-		return;
+	if ( empty( $field->value ) ) {
+		return false;
 	}
 
 	$field->value = give_format_amount( $field->value );

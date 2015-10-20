@@ -68,7 +68,7 @@ function give_get_variable_prices( $form_id = 0 ) {
  * @return string $default_price
  */
 function give_get_default_multilevel_amount( $form_id ) {
-	$default_price = '0.00';
+	$default_price = '1.00';
 	$prices        = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
 
 	foreach ( $prices as $price ) {

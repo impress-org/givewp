@@ -4,7 +4,7 @@ Donate link: http://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 3.8
 Tested up to: 4.3.2
-Stable tag: 1.3.1
+Stable tag: 1.3.1.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -128,6 +128,9 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 4. Multi-level donations
 
 == Changelog ==
+
+= 1.3.1.1 =
+* Fix: Multi-level amounts were incorrectly re-saving to the default of 1.00 due to a bug within the recent update
 
 = 1.3.1 =
 * New: `give_form_classes` filter added for give form classes - https://github.com/WordImpress/Give/issues/306
