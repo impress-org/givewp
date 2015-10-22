@@ -12,8 +12,7 @@
  */
 .give-clearfix {
   *zoom: 1; }
-  .give-clearfix:before,
-  .give-clearfix:after {
+  .give-clearfix:before, .give-clearfix:after {
     content: " ";
     display: table; }
   .give-clearfix:after {
@@ -935,8 +934,7 @@ Tooltips
   .type-download .addon-content {
     *zoom: 1;
     padding: 15px 20px; }
-    .type-download .addon-content:before,
-    .type-download .addon-content:after {
+    .type-download .addon-content:before, .type-download .addon-content:after {
       content: " ";
       display: table; }
     .type-download .addon-content:after {
