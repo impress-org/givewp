@@ -251,6 +251,7 @@ function give_output_donation_levels( $form_id = 0, $args = array() ) {
 	if ( $allow_custom_amount == 'no' ) {
 		?>
 
+		<label class="give-hidden" for="give-amount-hidden"><?php echo __('Donation Amount:', 'give'); ?></label>
 		<input id="give-amount" class="give-amount-hidden" type="hidden" name="give-amount" value="<?php echo $default_amount; ?>" required>
 		<p class="set-price give-donation-amount form-row-wide">
 			<?php
@@ -258,7 +259,7 @@ function give_output_donation_levels( $form_id = 0, $args = array() ) {
 				echo $currency_output;
 			}
 			?>
-			<span id="give-amount" class="give-text-input"><?php echo $default_amount; ?></span>
+			<span id="give-amount-text" class="give-text-input"><?php echo $default_amount; ?></span>
 		</p>
 		<?php
 	} else {
@@ -272,7 +273,7 @@ function give_output_donation_levels( $form_id = 0, $args = array() ) {
 					echo $currency_output;
 				}
 				?>
-
+				<label class="give-hidden" for="give-amount"><?php echo __('Donation Amount:', 'give'); ?></label>
 				<input class="give-text-input" id="give-amount" name="give-amount" type="tel" placeholder="" value="<?php echo $default_amount; ?>" required autocomplete="off">
 
 				<?php if ( $currency_position == 'after' ) {
