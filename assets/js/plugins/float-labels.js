@@ -1,7 +1,7 @@
 /*!
  * Float Labels
  *
- * Version: 1.0.6
+ * Version: 1.0.7
  * Author: Paul Ryley (http://geminilabs.io)
  * URL: https://github.com/geminilabs/float-labels.js
  * License: MIT
@@ -10,8 +10,7 @@
 /**
  * This plugin applies the float label pattern to a form.
  *
- * The float label pattern floats the inline label up above the input after the user focuses on the
- * form field or enters a value.
+ * The float label pattern floats the inline label up above the input after the user enters a value.
  *
  * Pros:
  * - User keeps context
@@ -52,6 +51,7 @@
 		opts = $.extend({
 			regex       : /text|password|email|number|search|url|tel/,
 			exclude     : [],
+			priority    : '', // label|placeholder
 			customLabel : function(){},
 			customEvent : function(){},
 		}, options );
@@ -95,7 +95,7 @@
 			// float select labels
 			form.find( 'select:not(' + opts.exclude + ')' ).each( function()
 			{
-				floatLabel( this, 'formSelect' );
+				floatLabel( this, 'select' );
 
 				$( this ).parent().addClass( 'styled select' );
 			});
@@ -105,57 +105,79 @@
 	/**
 	 * Modifies a form element for floatlabels CSS styling
 	 *
-	 * @param object el          [the :input element]
-	 * @param string placeholder [the :input placeholder] // @todo: need to detect if it exists!!
+	 * @param object el   [the :input element]
+	 * @param string type [the :input type] (optional)
 	 */
-	floatLabel = function( el, placeholder )
+	floatLabel = function( el, type )
 	{
-		var id, label, label_el, floatlabel = 'floatlabel';
+		var id, label_el, label_for, label, placeholder, tooltip, floatlabel = 'floatlabel';
 
-		el = $( el );
-		id = el.attr( 'id' );
+		el          = $( el );
+		id          = el.attr( 'id' );
+		placeholder = el.attr( 'placeholder' );
+		label_for   = 'label[for="' + id + '"]';
 
 		if( id !== undefined ) {
-			label_el = $( 'label[for="' + id + '"]' );
+
+			label_el = $( label_for );
+
+			// check for multiple labels with identical 'for' attributes
+			if( label_el.length > 1 ) {
+				label_el = el.parent().find( label_for );
+			}
+
+			if( label_el.length === 1 ) {
+				label   = label_el.text().replace( /[*:]/g, '' ).trim();
+				tooltip = label_el.find( '[data-tooltip]' ).data( 'tooltip' );
+			}
+
+			if( !label || ( label && placeholder && opts.priority === 'placeholder' ) ) {
+				label = placeholder;
+			}
 		}
 
-		// only proceed if element label exists
-		if( label_el && label_el.length ) {
-
-			label = label_el.text().replace( '*', '' ).trim();
+		// only proceed if label is not empty
+		if( label ) {
 
 			// add a placholder option to the select if it doesn't already exist
-			if( placeholder === 'formSelect' ) {
+			if( type === 'select' ) {
 				var first = el.children().first();
 
-				if( label.length && first.val() === '' && first.text() === '' ) {
+				if( first.val() === '' && first.text() === '' ) {
 					first.text( label );
+				}
+			}
+			// add a textarea/input placeholder attribute if it doesn't exist
+			else {
+				if( !placeholder || opts.priority === 'label' ) {
+					el.attr( 'placeholder', label );
 				}
 			}
 
 			if( !el.parent().hasClass( floatlabel ) ) {
 
-				if( !label.length ) {
-					label = el.attr( 'placeholder' );
-				}
-
 				el.addClass( floatlabel + '-input' ).wrap( _pf( '<div class="{0} {0}-{1}"/>', floatlabel, id ) );
 
-				// allow for custom defined events
+				// call the custom defined event
 				opts.customEvent.call( this, el );
 
-				// allow for custom defined labels
+				// call the custom defined label event
 				var custom_label = opts.customLabel.call( this, el, label );
 
 				if( custom_label !== undefined ) {
 					label = custom_label;
 				}
 
-				if( label_el.length ) {
-					label_el.remove();
+				label = $( _pf('<label for="{0}" class="{1}-label">{2}</label>', id, floatlabel, label ) );
+
+				// re-add existing label tooltip
+				if( tooltip ) {
+					label.attr( 'data-tooltip', tooltip );
 				}
 
-				el.after( _pf('<label for="{0}" class="{1}-label">{2}</label>', id, floatlabel, label ) );
+				label_el.remove();
+
+				el.after( label );
 			}
 
 			if( el.val().length ) {

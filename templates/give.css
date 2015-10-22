@@ -1777,7 +1777,7 @@ Avada
 /*!
  * Float Labels
  *
- * Version: 1.0.6
+ * Version: 1.0.7
  * Author: Paul Ryley (http://geminilabs.io)
  * URL: https://github.com/geminilabs/float-labels.js
  * License: MIT
@@ -1820,8 +1820,8 @@ form.floated-labels .floatlabel {
     line-height: 1;
     opacity: 0;
     visibility: hidden;
-    -webkit-transition: all 0.2s ease;
-            transition: all 0.2s ease;
+    -webkit-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
     padding: 0 1px; }
     form.floated-labels .floatlabel label.floatlabel-label.is-visible {
       opacity: 1;
