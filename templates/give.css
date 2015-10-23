@@ -780,6 +780,8 @@ form[id*='give-form'], #give-recurring-form, form.give-form {
   color: #333;
   margin: 0 0 25px;
   padding: 0; }
+  form[id*='give-form'] .give-hidden, #give-recurring-form .give-hidden, form.give-form .give-hidden {
+    display: none; }
   form[id*='give-form'] .give-tooltip, #give-recurring-form .give-tooltip, form.give-form .give-tooltip {
     margin: 0 3px;
     padding: 0;
@@ -889,7 +891,8 @@ form[id*='give-form'] .give-donation-amount {
     form[id*='give-form'] .give-donation-amount .give-currency-symbol.give-currency-position-after {
       border-left: none;
       border-right: 1px solid #ccc; }
-  form[id*='give-form'] .give-donation-amount #give-amount {
+  form[id*='give-form'] .give-donation-amount #give-amount,
+  form[id*='give-form'] .give-donation-amount #give-amount-text {
     float: left;
     border: 1px solid #ccc;
     border-radius: 0;
@@ -899,7 +902,8 @@ form[id*='give-form'] .give-donation-amount {
     font-size: 18px;
     box-sizing: border-box;
     width: 125px; }
-    form[id*='give-form'] .give-donation-amount #give-amount.invalid-amount {
+    form[id*='give-form'] .give-donation-amount #give-amount.invalid-amount,
+    form[id*='give-form'] .give-donation-amount #give-amount-text.invalid-amount {
       border: 1px solid red; }
   form[id*='give-form'] .give-donation-amount span.give-final-total-amount {
     float: left;
