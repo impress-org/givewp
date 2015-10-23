@@ -16,6 +16,10 @@ Layout
 
 [id*='give-form'] {
 
+  .give-hidden {
+	display:none;
+  }
+
   fieldset {
 	border: none;
 	padding: 0;

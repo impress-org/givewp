@@ -382,7 +382,8 @@ function give_output_levels( $form_id ) {
 
 		case 'dropdown':
 
-			$output .= '<select id="give-donation-level-' . $form_id . '" class="give-select give-select-level">';
+			$output .='<label for="give-donation-level" class="give-hidden">Choose your Donation Amount:</label>';
+			$output .='<select id="give-donation-level-' . $form_id . '" class="give-select give-select-level">';
 
 			//first loop through prices
 			foreach ( $prices as $price ) {
