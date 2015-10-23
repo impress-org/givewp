@@ -129,6 +129,12 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 == Changelog ==
 
+= 1.3.2 =
+* Accessibility: Multi-level select field has no label - https://github.com/WordImpress/Give/issues/331
+* Accessibility: #give-amount ID output multiple times on the page - https://github.com/WordImpress/Give/issues/326
+* Accessibility: Login form submit surrounded incorrectly with <p> tag - https://github.com/WordImpress/Give/issues/332
+* Accessibility: .give-amount input didn't have a label associated with it, now it does :) - https://github.com/WordImpress/Give/issues/328
+
 = 1.3.1.1 =
 * Fix: Multi-level amounts were incorrectly re-saving to the default of 1.00 due to a bug within the recent update
 
