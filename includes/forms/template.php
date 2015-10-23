@@ -84,9 +84,7 @@ function give_get_donation_form( $args = array() ) {
 	 * @param int   $form ->ID The current form ID
 	 * @param array $args An array of form args
 	 */
-	do_action( 'give_pre_form_output', $form->ID, $args );
-
-	?>
+	do_action( 'give_pre_form_output', $form->ID, $args ); ?>
 
 	<div id="give-form-<?php echo $form->ID; ?>-wrap" class="<?php echo $form_classes; ?>">
 
@@ -1168,13 +1166,17 @@ function give_show_goal_progress( $form_id, $args ) {
 	$show_text   = (bool) isset( $args['show_text'] ) ? filter_var( $args['show_text'], FILTER_VALIDATE_BOOLEAN ) : true;
 	$show_bar    = (bool) isset( $args['show_bar'] ) ? filter_var( $args['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
 
+	//Sanity check - respect shortcode args
+	if(isset($args['show_goal']) && $args['show_goal'] === false) {
+		return false;
+	}
+
 	//Sanity check - ensure form has goal set to output
 	if ( empty( $form->ID )
 	     || ( is_singular( 'give_forms' ) && $goal_option !== 'yes' )
 	     || $goal_option !== 'yes'
 	     || $goal == 0
 	) {
-
 		//not this form, bail
 		return false;
 	}
