@@ -46,6 +46,9 @@ switch ( $template ) {
 	case 'jupiter' :
 		echo '<div id="theme-page" class="give-wrap"><div class="theme-page-wrapper mk-blog-single full-layout vc_row-fluid mk-grid"><div class="theme-content">';
 		break;
+	case 'avada' :
+		echo '<div class="give-wrap"><div id="content" role="main" style="width:100%">';
+		break;
 	default :
 		echo apply_filters( 'give_default_wrapper_start', '<div id="container" class="give-wrap container"><div id="content" role="main">' );
 		break;

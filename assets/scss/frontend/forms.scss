@@ -17,7 +17,7 @@ Layout
 [id*='give-form'] {
 
   .give-hidden {
-	display:none;
+	display: none;
   }
 
   fieldset {
@@ -127,7 +127,7 @@ form[id*='give-form'], #give-recurring-form, form.give-form {
   padding: 0;
 
   .give-hidden {
-	display:none;
+	display: none;
   }
   .give-tooltip {
 	margin: 0 3px;
@@ -157,7 +157,7 @@ form[id*='give-form'], #give-recurring-form, form.give-form {
   }
 
   div[id^='section-'] .give-section-break {
-	margin:0;
+	margin: 0;
   }
 
   //Form Layout
@@ -700,6 +700,24 @@ div.mfp-content {
 	  margin-bottom: 1.2em;
 	  line-height: 1.4;
 	}
+  }
+
+}
+
+/*---------------------------------
+Basic Button Style
+-----------------------------------*/
+
+.give-btn {
+  background: #eeeeee;
+  border: 1px solid #ccc;
+  padding: 8px 10px;
+  cursor: pointer;
+  line-height: 1.2em;
+  font-size: 14px;
+
+  &:hover {
+	background: #dbdbdb;
   }
 
 }
