@@ -139,6 +139,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Fix: HTML5 required attribute needs to respect give_is_field_required() conditonal - https://github.com/WordImpress/Give/issues/361
 * Fix: Custom wrapper added for the popular Avada theme - https://github.com/WordImpress/Give/issues/366
 * Fix: Basic CSS style added for .give-btn buttons - https://github.com/WordImpress/Give/issues/234
+* Fix: Address field is not editable on Donor information screen - https://github.com/WordImpress/Give/issues/369
 
 = 1.3.1.1 =
 * Fix: Multi-level amounts were incorrectly re-saving to the default of 1.00 due to a bug within the recent update
