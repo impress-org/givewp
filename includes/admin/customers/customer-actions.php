@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Processes a custom edit
+ * Processes a customer edit
  *
  * @since  1.0
  *
@@ -250,9 +250,9 @@ add_action( 'give_add-customer-note', 'give_customer_save_note', 10, 1 );
  *
  * @since  1.0
  *
- * @param  array $args The $_POST array being passeed
+ * @param  array $args The $_POST array being passed
  *
- * @return int         Wether it was a successful deletion
+ * @return int Whether it was a successful deletion
  */
 function give_customer_delete( $args ) {
 
@@ -301,7 +301,7 @@ function give_customer_delete( $args ) {
 
 				// Remove all payments, logs, etc
 				foreach ( $payments_array as $payment_id ) {
-					give_delete_purchase( $payment_id, false, true );
+					give_delete_purchase( $payment_id );
 				}
 
 			} else {
