@@ -22,11 +22,11 @@ class Tests_Post_Types extends WP_UnitTestCase {
 
 	public function test_give_post_type_labels() {
 		global $wp_post_types;
-		$this->assertEquals( 'Forms', $wp_post_types['give_forms']->labels->name );
+		$this->assertEquals( 'Donation Forms', $wp_post_types['give_forms']->labels->name );
 		$this->assertEquals( 'Form', $wp_post_types['give_forms']->labels->singular_name );
 		$this->assertEquals( 'Add Form', $wp_post_types['give_forms']->labels->add_new );
 		$this->assertEquals( 'Add New Form', $wp_post_types['give_forms']->labels->add_new_item );
-		$this->assertEquals( 'Edit Form', $wp_post_types['give_forms']->labels->edit_item );
+		$this->assertEquals( 'Edit Donation Form', $wp_post_types['give_forms']->labels->edit_item );
 		$this->assertEquals( 'View Form', $wp_post_types['give_forms']->labels->view_item );
 		$this->assertEquals( 'Search Forms', $wp_post_types['give_forms']->labels->search_items );
 		$this->assertEquals( 'No Forms found', $wp_post_types['give_forms']->labels->not_found );
