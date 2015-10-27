@@ -86,7 +86,7 @@ function give_customers_list() {
 		</form>
 		<?php do_action( 'give_donors_table_bottom' ); ?>
 	</div>
-<?php
+	<?php
 }
 
 /**
@@ -143,17 +143,16 @@ function give_render_customer_view( $view, $callbacks ) {
 						<?php $class = $active ? 'active' : 'inactive'; ?>
 
 						<li class="<?php echo sanitize_html_class( $class ); ?>">
-							<?php if ( ! $active) : ?>
+							<?php if ( ! $active ) : ?>
 							<a title="<?php echo esc_attr( $tab['title'] ); ?>" aria-label="<?php echo esc_attr( $tab['title'] ); ?>" href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=' . $key . '&id=' . $customer->id ) ); ?>">
 								<?php endif; ?>
 
 								<span class="dashicons <?php echo sanitize_html_class( $tab['dashicon'] ); ?>"></span> <?php echo esc_attr( $tab['title'] ); ?>
-								<?php if ( ! $active) : ?>
+								<?php if ( ! $active ) : ?>
 							</a>
 						<?php endif; ?>
 
 						</li>
-
 
 
 					<?php endforeach; ?>
@@ -167,7 +166,7 @@ function give_render_customer_view( $view, $callbacks ) {
 		<?php endif; ?>
 
 	</div>
-<?php
+	<?php
 
 }
 
@@ -224,18 +223,14 @@ function give_customers_view( $customer ) {
 					<table class="widefat">
 						<tbody>
 						<tr>
-							<td><label for="tablecell"><?php esc_attr_e(
-										'Email', 'give'
-									); ?></label></td>
+							<td><label for="tablecell"><?php esc_attr_e( 'Email', 'give' ); ?></label>:</td>
 							<td class="row-title">
 								<span class="customer-name info-item edit-item"><input size="20" data-key="email" name="customerinfo[email]" type="text" value="<?php echo $customer->email; ?>" placeholder="<?php _e( 'Donor Email', 'give' ); ?>" /></span>
 								<span class="customer-email info-item editable" data-key="email"><?php echo $customer->email; ?></span>
 							</td>
 						</tr>
 						<tr class="alternate">
-							<td><label for="tablecell"><?php esc_attr_e(
-										'User ID', 'give'
-									); ?></label></td>
+							<td><label for="tablecell"><?php esc_attr_e( 'User ID', 'give' ); ?></label>:</td>
 							<td class="row-title">
 								<span class="customer-user-id info-item edit-item">
 									<?php
@@ -273,13 +268,13 @@ function give_customers_view( $customer ) {
 								</span>
 							</td>
 						</tr>
-						<tr>
-							<td><?php esc_attr_e( 'Address', 'give' ); ?></td>
-							<td class="row-title">
+						<?php if ( isset( $customer->user_id ) && $customer->user_id > 0 ) : ?>
 
-								<div class="customer-address-wrapper">
+							<tr>
+								<td><?php esc_attr_e( 'Address', 'give' ); ?>:</td>
+								<td class="row-title">
 
-									<?php if ( isset( $customer->user_id ) && $customer->user_id > 0 ) : ?>
+									<div class="customer-address-wrapper">
 
 										<?php
 										$address  = get_user_meta( $customer->user_id, '_give_user_address', true );
@@ -339,14 +334,11 @@ function give_customers_view( $customer ) {
 											<?php endif; ?>
 											<input class="info-item" type="text" data-key="zip" name="customerinfo[zip]" placeholder="<?php _e( 'Postal', 'give' ); ?>" value="<?php echo $address['zip']; ?>" />
 													</span>
-									<?php else :
-										echo "none";
-									endif; ?>
-								</div>
 
-
-							</td>
-						</tr>
+									</div>
+								</td>
+							</tr>
+						<?php endif; ?>
 						</tbody>
 					</table>
 
@@ -469,7 +461,7 @@ function give_customers_view( $customer ) {
 
 	<?php do_action( 'give_donor_card_bottom', $customer ); ?>
 
-<?php
+	<?php
 }
 
 /**
@@ -542,7 +534,7 @@ function give_customer_notes_view( $customer ) {
 
 	</div>
 
-<?php
+	<?php
 }
 
 function give_customers_delete_view( $customer ) {
