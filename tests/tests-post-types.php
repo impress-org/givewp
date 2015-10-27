@@ -40,7 +40,7 @@ class Tests_Post_Types extends WP_UnitTestCase {
 		$this->assertEquals( 'donations', $wp_post_types['give_forms']->rewrite['slug'] );
 		$this->assertEquals( 1, $wp_post_types['give_forms']->has_archive );
 		$this->assertEquals( 'give_forms', $wp_post_types['give_forms']->query_var );
-		$this->assertEquals( 'Forms', $wp_post_types['give_forms']->label );
+		$this->assertEquals( 'Donation Forms', $wp_post_types['give_forms']->label );
 	}
 
 	public function test_payment_post_type() {
