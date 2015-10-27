@@ -309,8 +309,8 @@ jQuery.noConflict();
 		change_country: function () {
 			$( 'select[name="customerinfo[country]"]' ).change( function () {
 				var $this = $( this );
-				data = {
-					action    : 'give_get_shop_states',
+				var data = {
+					action    : 'give_get_states',
 					country   : $this.val(),
 					field_name: 'customerinfo[state]'
 				};
