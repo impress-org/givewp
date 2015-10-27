@@ -39,11 +39,11 @@ function give_setup_post_types() {
 	);
 
 	$give_forms_labels = apply_filters( 'give_forms_labels', array(
-		'name'               => '%2$s',
+		'name'               => __( 'Donation %2$s', 'give' ),
 		'singular_name'      => '%1$s',
 		'add_new'            => __( 'Add %1$s', 'give' ),
-		'add_new_item'       => __( 'Add New %1$s', 'give' ),
-		'edit_item'          => __( 'Edit %1$s', 'give' ),
+		'add_new_item'       => __( 'Add New Donation %1$s', 'give' ),
+		'edit_item'          => __( 'Edit Donation %1$s', 'give' ),
 		'new_item'           => __( 'New %1$s', 'give' ),
 		'all_items'          => __( 'All %2$s', 'give' ),
 		'view_item'          => __( 'View %1$s', 'give' ),
