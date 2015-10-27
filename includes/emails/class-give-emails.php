@@ -192,7 +192,9 @@ class Give_Emails {
 	/**
 	 * Parse email template tags
 	 *
-	 * @since 1.0
+	 * @param $content
+	 *
+	 * @return mixed
 	 */
 	public function parse_tags( $content ) {
 
