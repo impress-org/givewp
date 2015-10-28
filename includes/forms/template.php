@@ -1190,7 +1190,7 @@ function give_show_goal_progress( $form_id, $args ) {
 	//Goal Progress Text
 	if ( ! empty( $show_text ) ) {
 		$output .= '<div class="raised">';
-		$output .= sprintf( _x( '%s of %s raised', 'give', 'This text displays the amount of income raised compared to the goal.' ), '<span class="income">' . give_currency_filter( give_format_amount( $income ) ) . '</span>', '<span class="goal-text">' . give_currency_filter( give_format_amount( $goal ) ) ) . '</span>';
+		$output .= sprintf( _x( '%s of %s raised', 'This text displays the amount of income raised compared to the goal.', 'give' ), '<span class="income">' . give_currency_filter( give_format_amount( $income ) ) . '</span>', '<span class="goal-text">' . give_currency_filter( give_format_amount( $goal ) ) ) . '</span>';
 		$output .= '</div>';
 	}
 	//Goal Progress Bar
