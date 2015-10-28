@@ -145,7 +145,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			<?php $this->search_box( __( 'Search', 'give' ), 'give-payments' ); ?>
 		</div>
 
-	<?php
+		<?php
 	}
 
 	/**
@@ -179,7 +179,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			<input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>" />
 			<?php submit_button( $text, 'button', false, false, array( 'ID' => 'search-submit' ) ); ?><br />
 		</p>
-	<?php
+		<?php
 	}
 
 	/**
@@ -249,7 +249,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			'amount'  => __( 'Amount', 'give' ),
 			'status'  => __( 'Status', 'give' ),
 			'date'    => __( 'Date', 'give' ),
-			'user'    => __( 'User', 'give' ),
+			'donor'   => __( 'Donor', 'give' ),
 			'ID'      => __( 'ID', 'give' ),
 		);
 
@@ -390,23 +390,18 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 *
 	 * @return string Data shown in the User column
 	 */
-	public function column_user( $payment ) {
+	public function column_donor( $payment ) {
 
-		$user_id = give_get_payment_user_id( $payment->ID );
+		//		$user_id = give_get_payment_user_id( $payment->ID );
 
-		if ( $user_id && $user_id > 0 ) {
-			$user         = get_userdata( $user_id );
-			$display_name = is_object( $user ) ? $user->display_name : __( 'guest', 'give' );
-		} else {
-			$display_name = __( 'guest', 'give' );
-		}
+		$customer_id = give_get_payment_customer_id( $payment->ID );
+		$customer    = new Give_Customer( $customer_id );
 
-		$value = '<a href="' . esc_url( add_query_arg( array(
-				'user'  => urlencode( $payment->user_info['email'] ),
-				'paged' => false
-			) ) ) . '">' . $display_name . '</a>';
+		$view_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $customer_id );
 
-		return apply_filters( 'give_payments_table_column', $value, $payment->ID, 'user' );
+		$value = '<a href="' . esc_url( $view_url ) . '" data-tooltip="' . __( 'Click here to view this Donor\'s profile', 'give' ) . '">' . $customer->name . '</a>';
+
+		return apply_filters( 'give_payments_table_column', $value, $payment->ID, 'donor' );
 	}
 
 	/**
@@ -418,14 +413,14 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 */
 	public function get_bulk_actions() {
 		$actions = array(
-			'delete'                 => __( 'Delete', 'give' ),
-			'set-status-publish'     => __( 'Set To Completed', 'give' ),
-			'set-status-pending'     => __( 'Set To Pending', 'give' ),
-			'set-status-refunded'    => __( 'Set To Refunded', 'give' ),
-			'set-status-revoked'     => __( 'Set To Revoked', 'give' ),
-			'set-status-failed'      => __( 'Set To Failed', 'give' ),
-			'set-status-abandoned'   => __( 'Set To Abandoned', 'give' ),
-			'resend-receipt'         => __( 'Resend Email Receipts', 'give' )
+			'delete'               => __( 'Delete', 'give' ),
+			'set-status-publish'   => __( 'Set To Completed', 'give' ),
+			'set-status-pending'   => __( 'Set To Pending', 'give' ),
+			'set-status-refunded'  => __( 'Set To Refunded', 'give' ),
+			'set-status-revoked'   => __( 'Set To Revoked', 'give' ),
+			'set-status-failed'    => __( 'Set To Failed', 'give' ),
+			'set-status-abandoned' => __( 'Set To Abandoned', 'give' ),
+			'resend-receipt'       => __( 'Resend Email Receipts', 'give' )
 		);
 
 		return apply_filters( 'give_payments_table_bulk_actions', $actions );
