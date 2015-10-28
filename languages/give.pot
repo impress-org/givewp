@@ -4705,7 +4705,7 @@ msgid "None"
 msgstr ""
 
 #: includes/forms/template.php:1191
-msgctxt "give"
+msgctxt "This text displays the amount of income raised compared to the goal."
 msgid "%s of %s raised"
 msgstr ""
 
