@@ -66,7 +66,7 @@ Stay in touch with us for important plugin news and updates:
 
 = Contribute to Give =
 
-This plugin is open source and we're always looking for more contributors. Whether you know another language, can code like no ones business, or just have an idea, we would love your help and input. To contribute to Give please head over to [our website](https://givewp.com "Visit the the Give website") or view/fork/watch the [GitHub repository](github.com/WordImpress/Give "Visit the the Give GitHub Repo") to learn more about what issues we're tackling and the project is developing.
+This plugin is open source and we're always looking for more contributors. Whether you know another language, can code like no ones business, or just have an idea, we would love your help and input. To contribute to Give please head over to [our website](https://givewp.com "Visit the the Give website") or view/fork/watch the [GitHub repository](https://github.com/WordImpress/Give "Visit the the Give GitHub Repo") to learn more about what issues we're tackling and the project is developing.
 
 = A Tribute to Open Source =
 
