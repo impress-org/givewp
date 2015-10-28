@@ -140,6 +140,8 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Fix: Custom wrapper added for the popular Avada theme - https://github.com/WordImpress/Give/issues/366
 * Fix: Basic CSS style added for .give-btn buttons - https://github.com/WordImpress/Give/issues/234
 * Fix: Address field is not editable on Donor information screen - https://github.com/WordImpress/Give/issues/369
+* Fix: Optimized conditional check in give_install_roles_on_network - thanks @jimwebb - https://github.com/WordImpress/Give/issues/376
+* Fix: Wrong param order for _x() i18n function - thanks @andrejcremoznik - https://github.com/WordImpress/Give/issues/376
 * Tweak: Change labels to "Donation Form" within admin - https://github.com/WordImpress/Give/issues/303
 * Tweak: "Donor" column link under Give > Transactions now goes to donor's page - https://github.com/WordImpress/Give/issues/285
 
