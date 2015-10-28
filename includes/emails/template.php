@@ -272,6 +272,7 @@ function give_render_receipt_in_browser() {
 			<meta http-equiv="expires" content="0" />
 			<meta http-equiv="expires" content="Tue, 23 Oct 1977 05:00:00 PST" />
 			<meta http-equiv="pragma" content="no-cache" />
+			<meta name="robots" content="noindex, nofollow" />
 
 			<?php wp_head(); ?>
 		</head>
