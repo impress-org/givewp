@@ -131,7 +131,7 @@ class Give_Plugin_Settings {
 		?>
 
 		<div class="wrap give_settings_page cmb2_options_page <?php echo $this->key; ?>">
-			<h2 class="nav-tab-wrapper">
+			<h1 class="nav-tab-wrapper">
 				<?php
 				foreach ( $this->give_get_settings_tabs() as $tab_id => $tab_name ) {
 
@@ -148,7 +148,7 @@ class Give_Plugin_Settings {
 					echo '</a>';
 				}
 				?>
-			</h2>
+			</h1>
 
 			<?php cmb2_metabox_form( $this->give_settings( $active_tab ), $this->key ); ?>
 

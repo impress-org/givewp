@@ -144,6 +144,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Fix: Wrong param order for _x() i18n function - thanks @andrejcremoznik - https://github.com/WordImpress/Give/issues/376
 * Tweak: Change labels to "Donation Form" within admin - https://github.com/WordImpress/Give/issues/303
 * Tweak: "Donor" column link under Give > Transactions now goes to donor's page - https://github.com/WordImpress/Give/issues/285
+* Tweak: Updated nav-tab wrappers heading tag to h1s for WordPress 4.4s #a11y release - https://github.com/WordImpress/Give/issues/377
 
 = 1.3.1.1 =
 * Fix: Multi-level amounts were incorrectly re-saving to the default of 1.00 due to a bug within the recent update

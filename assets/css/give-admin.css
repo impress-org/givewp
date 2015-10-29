@@ -1013,7 +1013,7 @@ Tooltips
 .give-graph .y2Axis {
   color: #546e7a !important; }
 
-body.give_forms_page_give-reports h2.nav-tab-wrapper, body.give_forms_page_give-payment-history h2.nav-tab-wrapper {
+body.give_forms_page_give-reports h1.nav-tab-wrapper, body.give_forms_page_give-payment-history h1.nav-tab-wrapper {
   margin-bottom: 10px; }
 
 body.give_forms_page_give-reports .actions, body.give_forms_page_give-payment-history .actions {
