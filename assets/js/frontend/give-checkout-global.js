@@ -40,7 +40,7 @@ jQuery( function ( $ ) {
 		if ( 'card_state' != $this.attr( 'id' ) ) {
 
 			//Disable the State field until updated
-			$form.find( '[id*="card_state"]' ).empty().append( '<option value="1">' + give_global_vars.general_loading + '</option>' ).prop( 'disabled', true );
+			$form.find( '[id*="card-state"]' ).empty().append( '<option value="1">' + give_global_vars.general_loading + '</option>' ).prop( 'disabled', true );
 
 			// If the country field has changed, we need to update the state/province field
 			var postData = {
@@ -58,10 +58,10 @@ jQuery( function ( $ ) {
 				},
 				success  : function ( response ) {
 					if ( 'nostates' == response ) {
-						var text_field = '<input type="text" id="card_state" name="card_state" class="cart-state give-input required" value=""/>';
-						$form.find( 'input[name="card_state"], select[name="card_state"]' ).replaceWith( text_field );
+						var text_field = '<input type="text" id="card-state" name="card-state" class="cart-state give-input required" value=""/>';
+						$form.find( 'input[name="card-state"], select[name="card-state"]' ).replaceWith( text_field );
 					} else {
-						$form.find( 'input[name="card_state"], select[name="card_state"]' ).replaceWith( response );
+						$form.find( 'input[name="card-state"], select[name="card-state"]' ).replaceWith( response );
 					}
 					doc.trigger( 'give_checkout_billing_address_updated', [response, $form.attr( 'id' )] );
 				}
@@ -75,7 +75,7 @@ jQuery( function ( $ ) {
 		return false;
 	}
 
-	doc.on( 'change', '[id*="give_cc_address"] input.card_state, [id*="give_cc_address"] select', update_billing_state_field
+	doc.on( 'change', '[id*="give-cc-address"] input.card-state, [id*="give-cc-address"] select', update_billing_state_field
 	);
 
 	sent_back_to_form();
@@ -188,7 +188,7 @@ jQuery( function ( $ ) {
 	}
 
 	// Make sure a gateway is selected
-	doc.on( 'submit', '[id*="give_payment_mode"]', function () {
+	doc.on( 'submit', '[id*="give-payment-mode-select-form-id"]', function () {
 		var gateway = $( '[id*="give-gateway"] option:selected' ).val();
 		if ( gateway == 0 ) {
 			alert( give_global_vars.no_gateway );
@@ -341,7 +341,7 @@ jQuery( function ( $ ) {
 		var display_reveal = form_wrap.hasClass( 'give-display-reveal' );
 
 		//Update payment mode radio so it's correctly checked
-		form.find( '#give-gateway-radio-list_form_id-' + form_id + ' label' ).removeClass( 'give-gateway-option-selected' );
+		form.find( '#give-gateway-radio-list-form-id-' + form_id + ' label' ).removeClass( 'give-gateway-option-selected' );
 		form.find( 'input[name=payment-mode][value=' + payment_mode + ']' ).prop( 'checked', true ).parent().addClass( 'give-gateway-option-selected' );
 
 		//This form is modal display so show the modal
@@ -362,14 +362,14 @@ jQuery( function ( $ ) {
 							$( '.mfp-content' ).addClass( 'give-responsive-mfp-content' );
 						}
 						//Hide all form elements besides the ones required for payment
-						//form.children().not( '#give_purchase_form_wrap, #give-payment-mode-select, .mfp-close, .give_error' ).hide();
+						//form.children().not( '#give-purchase-form-wrap, #give-payment-mode-select, .mfp-close, .give-error' ).hide();
 
 					},
 					close: function () {
 						//Remove popup class
 						form.removeClass( 'mfp-hide' );
 						//Show all fields again
-						//form.children().not( '#give_purchase_form_wrap, #give-payment-mode-select, .mfp-close, .give_error' ).show();
+						//form.children().not( '#give-purchase-form-wrap, #give-payment-mode-select, .mfp-close, .give-error' ).show();
 					}
 				}
 			} );
@@ -379,7 +379,7 @@ jQuery( function ( $ ) {
 
 
 			form.find( '.give-btn-reveal' ).hide();
-			form.find( '[id*="give-payment-mode-select"], [id*="give_purchase_form_wrap"]' ).slideDown();
+			form.find( '[id*="give-payment-mode-select"], [id*="give-purchase-form-wrap"]' ).slideDown();
 
 		}
 

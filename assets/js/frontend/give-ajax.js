@@ -17,7 +17,7 @@ jQuery( document ).ready( function ( $ ) {
 	$( '.give-loading-text' ).hide();
 
 	// Show the login form in the checkout when the user clicks the "Login" link
-	$( 'body' ).on( 'click', '.give_checkout_register_login', function ( e ) {
+	$( 'body' ).on( 'click', '.give-checkout-register-login', function ( e ) {
 		var $this = $( this );
 		var data = {
 			action: $this.data( 'action' )
@@ -29,7 +29,7 @@ jQuery( document ).ready( function ( $ ) {
 		register_loading_img.show();
 
 		$.post( give_scripts.ajaxurl, data, function ( checkout_response ) {
-			$( this_form ).find( '#give_checkout_login_register' ).html( '' ).html( checkout_response );
+			$( this_form ).find( '#give-checkout-login-register' ).html( '' ).html( checkout_response );
 
 		} ).done( function () {
 			setup_form_loading_images();
@@ -41,7 +41,7 @@ jQuery( document ).ready( function ( $ ) {
 
 
 	// Process the login form via ajax when the user clicks "login"
-	$( document ).on( 'click', '#give_login_fields input[type=submit]', function ( e ) {
+	$( document ).on( 'click', '#give-login-fields input[type=submit]', function ( e ) {
 
 		e.preventDefault();
 
@@ -50,13 +50,13 @@ jQuery( document ).ready( function ( $ ) {
 
 		$( this ).val( give_global_vars.purchase_loading );
 
-		this_form.find( '#give_login_fields .give-loading-animation' ).fadeIn();
+		this_form.find( '#give-login-fields .give-loading-animation' ).fadeIn();
 
 		var data = {
 			action         : 'give_process_checkout_login',
 			give_ajax      : 1,
-			give_user_login: this_form.find( '#give_user_login' ).val(),
-			give_user_pass : this_form.find( '#give_user_pass' ).val()
+			give_user_login: this_form.find( '#give-user-login' ).val(),
+			give_user_pass : this_form.find( '#give-user-pass' ).val()
 		};
 
 		$.post( give_global_vars.ajaxurl, data, function ( data ) {
@@ -64,14 +64,14 @@ jQuery( document ).ready( function ( $ ) {
 			//user is logged in
 			if ( $.trim( data ) == 'success' ) {
 				//remove errors
-				this_form.find( '.give_errors' ).remove();
+				this_form.find( '.give-errors' ).remove();
 				//reload the selected gateway so it contains their logged in information
 				give_load_gateway( this_form, this_form.find( '.give-gateway-option-selected input' ).val() );
 			} else {
 				//Login failed, show errors
-				this_form.find( '#give_login_fields input[type=submit]' ).val( complete_purchase_val );
+				this_form.find( '#give-login-fields input[type=submit]' ).val( complete_purchase_val );
 				this_form.find( '.give-loading-animation' ).fadeOut();
-				this_form.find( '.give_errors' ).remove();
+				this_form.find( '.give-errors' ).remove();
 				this_form.find( '#give-user-login-submit' ).before( data );
 			}
 		} );
@@ -79,7 +79,7 @@ jQuery( document ).ready( function ( $ ) {
 	} );
 
 	//Switch the gateway on gateway selection field change
-	$( 'select#give-gateway, input.give-gateway' ).on( 'change', function ( e ) {
+	$( 'select[id*="give-gateway"], input[class*="give-gateway"]' ).on( 'change', function ( e ) {
 
 		e.preventDefault();
 
@@ -106,7 +106,7 @@ jQuery( document ).ready( function ( $ ) {
 		var this_form = $( this ).parents( 'form.give-form' );
 
 		//loading animation
-		var loading_animation = this_form.find( '#give_purchase_submit .give-loading-animation' );
+		var loading_animation = this_form.find( '#give-purchase-submit .give-loading-animation' );
 		loading_animation.fadeIn();
 
 		//this form selector
@@ -132,14 +132,14 @@ jQuery( document ).ready( function ( $ ) {
 
 			if ( $.trim( data ) == 'success' ) {
 				//Remove any errors
-				this_form.find( '.give_errors' ).remove();
+				this_form.find( '.give-errors' ).remove();
 				//Submit form for normal processing
 				$( give_purchase_form ).submit();
 			} else {
-				this_form.find( '#give-purchase-button_form_id-' + form_id ).val( complete_purchase_val );
+				this_form.find( '#give-purchase-button-form-id-' + form_id ).val( complete_purchase_val );
 				loading_animation.fadeOut();
-				this_form.find( '.give_errors' ).remove();
-				this_form.find( '#give_purchase_submit_form_id-' + form_id ).before( data );
+				this_form.find( '.give-errors' ).remove();
+				this_form.find( '#give-purchase-submit-form-id-' + form_id ).before( data );
 			}
 		} );
 
@@ -167,7 +167,7 @@ function give_load_gateway( form_object, payment_mode ) {
 	var form_data = jQuery( form_object ).data();
 
 	if ( form_data["blockUI.isBlocked"] != 1 ) {
-		jQuery( form_object ).find( '[id*="give_purchase_form_wrap"]' ).block( {
+		jQuery( form_object ).find( '[id*="give-purchase-form-wrap"]' ).block( {
 			message   : null,
 			overlayCSS: {
 				background: '#fff',
@@ -186,7 +186,7 @@ function give_load_gateway( form_object, payment_mode ) {
 		function ( response ) {
 			//Success: let's output the gateway fields in the appropriate form space
 			jQuery( form_object ).unblock();
-			jQuery( form_object ).find( '[id*="give_purchase_form_wrap"]' ).html( response );
+			jQuery( form_object ).find( '[id*="give-purchase-form-wrap-form-id"]' ).html( response );
 			jQuery( '.give-no-js' ).hide();
 			jQuery( form_object ).find( '[id*="give-payment-mode-wrap"] .give-loading-text' ).fadeOut();
 			setup_give_tooltips();

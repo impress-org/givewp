@@ -104,7 +104,7 @@
 .give-icon-minus:before {
   content: "\e041"; }
 
-.give-icon-locked:before, [id*="give_secure_site_wrapper"] span.padlock:before {
+.give-icon-locked:before, [id*="give-secure-site-wrapper"] span.padlock:before {
   content: "\e600"; }
 
 .dashicons-give:before {
@@ -731,7 +731,7 @@ Layout
     width: 100%;
     float: none; }
 
-[id*='give-form'] .give_form select.give-select.required {
+[id*='give-form'] .give-form select.give-select.required {
   color: #000; }
 
 [id*='give-form'] div.give-form-content-wrap {
@@ -740,21 +740,21 @@ Layout
 [id*='give-form'].give-display-reveal .give-btn, [id*='give-form'].give-display-modal .give-btn {
   margin: 0 0 15px; }
 
-[id*='give-form'].give-display-reveal [id*="give-payment-mode-select"], [id*='give-form'].give-display-reveal [id*="give_purchase_form_wrap"], [id*='give-form'].give-display-modal [id*="give-payment-mode-select"], [id*='give-form'].give-display-modal [id*="give_purchase_form_wrap"] {
+[id*='give-form'].give-display-reveal [id*="give-payment-mode-select"], [id*='give-form'].give-display-reveal [id*="give-purchase-form-wrap"], [id*='give-form'].give-display-modal [id*="give-payment-mode-select"], [id*='give-form'].give-display-modal [id*="give-purchase-form-wrap"] {
   display: none; }
 
 /*------------------------------------
 Single Forms
 --------------------------------------*/
-.single-give_forms.et_right_sidebar #main-content .container:before {
+.single-give-forms.et_right_sidebar #main-content .container:before {
   display: none; }
 
-.single-give_forms .give_forms {
+.single-give-forms .give-forms {
   *zoom: 1; }
-  .single-give_forms .give_forms:before, .single-give_forms .give_forms:after {
+  .single-give-forms .give-forms:before, .single-give-forms .give-forms:after {
     content: " ";
     display: table; }
-  .single-give_forms .give_forms:after {
+  .single-give-forms .give-forms:after {
     clear: both; }
 
 /*------------------------------------
@@ -953,7 +953,7 @@ form[id*='give-form'] p[id*="give-final-total-wrap"] {
 /*---------------------------------
 Notices, Warnings & Errors
 -----------------------------------*/
-.give_error, .give_success {
+.give-error, .give-success {
   position: relative;
   margin: 15px 0;
   background: #F9F9F9;
@@ -961,9 +961,9 @@ Notices, Warnings & Errors
   border-left: 4px solid #a00;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.125);
   clear: both; }
-  .give_error > p, .give_success > p {
+  .give-error > p, .give-success > p {
     margin: 0 !important; }
-  .give_error:before, .give_success:before {
+  .give-error:before, .give-success:before {
     font-family: 'give-icomoon';
     speak: none;
     font-style: normal;
@@ -987,15 +987,15 @@ Notices, Warnings & Errors
     line-height: 30px;
     text-shadow: 1px 1px rgba(0, 0, 0, 0.5);
     content: '\f02d'; }
-  .give_error.give_warning, .give_success.give_warning {
+  .give-error.give-warning, .give-success.give-warning {
     border-color: #ffba00; }
-    .give_error.give_warning:before, .give_success.give_warning:before {
+    .give-error.give-warning:before, .give-success.give-warning:before {
       background-color: #ffba00;
       text-shadow: 1px 1px rgba(0, 0, 0, 0.1); }
 
-.give_success {
+.give-success {
   border-color: #7ad03a; }
-  .give_success:before {
+  .give-success:before {
     background-color: #7ad03a;
     content: '\e601';
     text-shadow: 1px 1px rgba(0, 0, 0, 0.2); }
@@ -1067,17 +1067,17 @@ ul[id*="give-donation-level-button-wrap"] {
     float: left;
     margin: 0 5px 5px 0; }
 
-.give_terms_links {
+.give-terms-links {
   float: right; }
 
 /*---------------------------------
 CC Validation
 -----------------------------------*/
-[id*="give_secure_site_wrapper"] {
+[id*="give-secure-site-wrapper"] {
   padding: 4px 4px 15px 0;
   font-size: 16px;
   line-height: 20px; }
-  [id*="give_secure_site_wrapper"] span.padlock {
+  [id*="give-secure-site-wrapper"] span.padlock {
     font-family: 'give-icomoon';
     speak: none;
     font-style: normal;
@@ -1090,20 +1090,20 @@ CC Validation
     -moz-osx-font-smoothing: grayscale;
     font-size: 16px;
     line-height: 20px; }
-    [id*="give_secure_site_wrapper"] span.padlock :before {
+    [id*="give-secure-site-wrapper"] span.padlock :before {
       display: inline-block; }
 
-[id*="give_purchase_form_wrap"] input.give-input.card-number.valid {
+[id*="give-purchase-form-wrap"] input.give-input.card-number.valid {
   background-image: url("../assets/images/tick.png");
   background-repeat: no-repeat;
   background-position: 98% 50%;
   background-size: 16px; }
-  [id*="give_purchase_form_wrap"] input.give-input.card-number.valid.floatlabel-input {
+  [id*="give-purchase-form-wrap"] input.give-input.card-number.valid.floatlabel-input {
     background-image: url("../assets/images/tick-alt.png");
     background-position: 100% 50%;
     background-size: 72px 16px; }
 
-[id*="give_purchase_form_wrap"] span.card-type {
+[id*="give-purchase-form-wrap"] span.card-type {
   position: absolute;
   top: -2px;
   right: 0;
@@ -1111,38 +1111,38 @@ CC Validation
   height: 26px;
   background-size: 37px 26px !important; }
 
-[id*="give_purchase_form_wrap"] .floatlabel span.card-type {
+[id*="give-purchase-form-wrap"] .floatlabel span.card-type {
   top: 11px;
   right: 11px; }
 
-[id*="give_purchase_form_wrap"] span.card-type.off {
+[id*="give-purchase-form-wrap"] span.card-type.off {
   display: none; }
 
-[id*="give_purchase_form_wrap"] span.card-type.visa {
+[id*="give-purchase-form-wrap"] span.card-type.visa {
   background: url("../assets/images/visa.png") no-repeat; }
 
-[id*="give_purchase_form_wrap"] span.card-type.mastercard {
+[id*="give-purchase-form-wrap"] span.card-type.mastercard {
   background: url("../assets/images/mastercard.png") no-repeat; }
 
-[id*="give_purchase_form_wrap"] span.card-type.discover {
+[id*="give-purchase-form-wrap"] span.card-type.discover {
   background: url("../assets/images/discover.png") no-repeat; }
 
-[id*="give_purchase_form_wrap"] span.card-type.amex {
+[id*="give-purchase-form-wrap"] span.card-type.amex {
   background: url("../assets/images/amex.png") no-repeat; }
 
-[id*="give_purchase_form_wrap"] span.card-type.maestro {
+[id*="give-purchase-form-wrap"] span.card-type.maestro {
   background: url("../assets/images/maestro.png") no-repeat; }
 
-[id*="give_purchase_form_wrap"] span.card-type.dinersclub {
+[id*="give-purchase-form-wrap"] span.card-type.dinersclub {
   background: url("../assets/images/diners-club.png") no-repeat; }
 
-[id*="give_purchase_form_wrap"] span.card-type.jcb {
+[id*="give-purchase-form-wrap"] span.card-type.jcb {
   background: url("../assets/images/jcb.png") no-repeat; }
 
-[id*="give_purchase_form_wrap"] span.card-type.dankort {
+[id*="give-purchase-form-wrap"] span.card-type.dankort {
   background: url("../assets/images/dankort.png") no-repeat; }
 
-[id*="give_purchase_form_wrap"] span.card-type.unionpay {
+[id*="give-purchase-form-wrap"] span.card-type.unionpay {
   background: url("../assets/images/unionpay.png") no-repeat; }
 
 /*---------------------------------
@@ -1232,14 +1232,14 @@ p.give-recurring-login-toggle {
   font-style: italic; }
 
 /* Login Shortcode Form */
-[id*="give_login_form"] legend {
+[id*="give-login-form"] legend {
   line-height: 2;
   margin-bottom: 15px; }
 
-[id*="give_login_form"] div.give-login {
+[id*="give-login-form"] div.give-login {
   line-height: 2;
   margin-bottom: 15px; }
-  [id*="give_login_form"] div.give-login label {
+  [id*="give-login-form"] div.give-login label {
     min-width: 100px;
     display: inline-block; }
 

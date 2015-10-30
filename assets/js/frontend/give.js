@@ -73,7 +73,7 @@ jQuery( function ( $ ) {
 		var this_button = $( this );
 		var this_form = $( this ).parents( 'form' );
 		this_button.hide();
-		this_form.find( '[id*="give-payment-mode-select"], [id*="give_purchase_form_wrap"]' ).slideDown();
+		this_form.find( '[id*="give-payment-mode-select"], [id*="give-purchase-form-wrap"]' ).slideDown();
 		return false;
 	} );
 
@@ -107,14 +107,14 @@ jQuery( function ( $ ) {
 						$( '.mfp-content' ).addClass( 'give-responsive-mfp-content' );
 					}
 					//Hide all form elements besides the ones required for payment
-					this_form.children().not( '[id*="give_purchase_form_wrap"], [id*="give-payment-mode-select"], .mfp-close' ).hide();
+					this_form.children().not( '[id*="give-purchase-form-wrap"], [id*="give-payment-mode-select"], .mfp-close' ).hide();
 
 				},
 				close: function () {
 					//Remove popup class
 					this_form.removeClass( 'mfp-hide' );
 					//Show all fields again
-					this_form.children().not( '[id*="give_purchase_form_wrap"], [id*="give-payment-mode-select"], .mfp-close' ).show();
+					this_form.children().not( '[id*="give-purchase-form-wrap"], [id*="give-payment-mode-select"], .mfp-close' ).show();
 				}
 			}
 		} );

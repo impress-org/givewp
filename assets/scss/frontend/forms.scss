@@ -56,7 +56,7 @@ Layout
 	}
   }
 
-  .give_form select.give-select.required {
+  .give-form select.give-select.required {
 	color: #000;
   }
 
@@ -68,7 +68,7 @@ Layout
 	.give-btn {
 	  margin: 0 0 15px;
 	}
-	[id*="give-payment-mode-select"], [id*="give_purchase_form_wrap"] {
+	[id*="give-payment-mode-select"], [id*="give-purchase-form-wrap"] {
 	  display: none;
 	}
   }
@@ -79,13 +79,13 @@ Layout
 Single Forms
 --------------------------------------*/
 
-.single-give_forms {
+.single-give-forms {
 
   &.et_right_sidebar #main-content .container:before {
 	display: none; //hide Divi sidebar sep on single give forms
   }
 
-  .give_forms {
+  .give-forms {
 
 	@include clearfix;
 
@@ -317,7 +317,7 @@ form[id*='give-form'] {
 Notices, Warnings & Errors
 -----------------------------------*/
 
-.give_error, .give_success {
+.give-error, .give-success {
   position: relative;
   margin: 15px 0;
   background: #F9F9F9;
@@ -347,7 +347,7 @@ Notices, Warnings & Errors
 	content: '\f02d';
   }
 
-  &.give_warning {
+  &.give-warning {
 	border-color: $orange;
 
 	&:before {
@@ -358,7 +358,7 @@ Notices, Warnings & Errors
   }
 }
 
-.give_success {
+.give-success {
   border-color: $green;
 
   &:before {
@@ -454,7 +454,7 @@ ul[id*="give-donation-level-button-wrap"] {
 
 }
 
-.give_terms_links {
+.give-terms-links {
   float: right;
 }
 
@@ -462,7 +462,7 @@ ul[id*="give-donation-level-button-wrap"] {
 CC Validation
 -----------------------------------*/
 
-[id*="give_secure_site_wrapper"] {
+[id*="give-secure-site-wrapper"] {
   padding: 4px 4px 15px 0;
   font-size: 16px;
   line-height: 20px;
@@ -479,7 +479,7 @@ CC Validation
   }
 }
 
-[id*="give_purchase_form_wrap"] {
+[id*="give-purchase-form-wrap"] {
   input.give-input.card-number.valid {
 	background-image: url('../assets/images/tick.png');
 	background-repeat: no-repeat;
@@ -663,7 +663,7 @@ p.give-recurring-login-toggle {
 
 /* Login Shortcode Form */
 
-[id*="give_login_form"] {
+[id*="give-login-form"] {
   legend {
 	line-height: 2;
 	margin-bottom: 15px;
