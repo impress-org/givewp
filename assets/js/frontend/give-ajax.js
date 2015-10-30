@@ -136,10 +136,10 @@ jQuery( document ).ready( function ( $ ) {
 				//Submit form for normal processing
 				$( give_purchase_form ).submit();
 			} else {
-				this_form.find( '#give-purchase-button' ).val( complete_purchase_val );
+				this_form.find( '#give-purchase-button_form_id-' + form_id ).val( complete_purchase_val );
 				loading_animation.fadeOut();
 				this_form.find( '.give_errors' ).remove();
-				this_form.find( '#give_purchase_submit' ).before( data );
+				this_form.find( '#give_purchase_submit_form_id-' + form_id ).before( data );
 			}
 		} );
 
@@ -156,8 +156,8 @@ jQuery( document ).ready( function ( $ ) {
  */
 function give_load_gateway( form_object, payment_mode ) {
 
-	var loading_element = jQuery( form_object ).find( '#give-payment-mode-select .give-loading-text' );
-	var give_total = jQuery( form_object ).find( '#give-amount' ).val();
+	var loading_element = jQuery( form_object ).find( '[id*="give-payment-mode-select"] .give-loading-text' );
+	var give_total = jQuery( form_object ).find( '[id*="give-amount"]' ).val();
 	var give_form_id = jQuery( form_object ).find( 'input[name="give-form-id"]' ).val();
 
 	// Show the ajax loader
@@ -167,7 +167,7 @@ function give_load_gateway( form_object, payment_mode ) {
 	var form_data = jQuery( form_object ).data();
 
 	if ( form_data["blockUI.isBlocked"] != 1 ) {
-		jQuery( form_object ).find( '#give_purchase_form_wrap' ).block( {
+		jQuery( form_object ).find( '[id*="give_purchase_form_wrap"]' ).block( {
 			message   : null,
 			overlayCSS: {
 				background: '#fff',
@@ -186,9 +186,9 @@ function give_load_gateway( form_object, payment_mode ) {
 		function ( response ) {
 			//Success: let's output the gateway fields in the appropriate form space
 			jQuery( form_object ).unblock();
-			jQuery( form_object ).find( '#give_purchase_form_wrap' ).html( response );
+			jQuery( form_object ).find( '[id*="give_purchase_form_wrap"]' ).html( response );
 			jQuery( '.give-no-js' ).hide();
-			jQuery( form_object ).find( '#give-payment-mode-wrap .give-loading-text' ).fadeOut();
+			jQuery( form_object ).find( '[id*="give-payment-mode-wrap"] .give-loading-text' ).fadeOut();
 			setup_give_tooltips();
 
 			// trigger an event on success for hooks

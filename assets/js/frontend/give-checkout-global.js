@@ -40,7 +40,7 @@ jQuery( function ( $ ) {
 		if ( 'card_state' != $this.attr( 'id' ) ) {
 
 			//Disable the State field until updated
-			$form.find( '#card_state' ).empty().append( '<option value="1">' + give_global_vars.general_loading + '</option>' ).prop( 'disabled', true );
+			$form.find( '[id*="card_state"]' ).empty().append( '<option value="1">' + give_global_vars.general_loading + '</option>' ).prop( 'disabled', true );
 
 			// If the country field has changed, we need to update the state/province field
 			var postData = {
@@ -75,7 +75,7 @@ jQuery( function ( $ ) {
 		return false;
 	}
 
-	doc.on( 'change', '#give_cc_address input.card_state, #give_cc_address select', update_billing_state_field
+	doc.on( 'change', '[id*="give_cc_address"] input.card_state, [id*="give_cc_address"] select', update_billing_state_field
 	);
 
 	sent_back_to_form();
@@ -188,8 +188,8 @@ jQuery( function ( $ ) {
 	}
 
 	// Make sure a gateway is selected
-	doc.on( 'submit', '#give_payment_mode', function () {
-		var gateway = $( '#give-gateway option:selected' ).val();
+	doc.on( 'submit', '[id*="give_payment_mode"]', function () {
+		var gateway = $( '[id*="give-gateway"] option:selected' ).val();
 		if ( gateway == 0 ) {
 			alert( give_global_vars.no_gateway );
 			return false;
@@ -197,9 +197,9 @@ jQuery( function ( $ ) {
 	} );
 
 	// Add a class to the currently selected gateway on click
-	doc.on( 'click', '#give-payment-mode-select input', function () {
-		$( '#give-payment-mode-select label.give-gateway-option-selected' ).removeClass( 'give-gateway-option-selected' );
-		$( '#give-payment-mode-select input:checked' ).parent().addClass( 'give-gateway-option-selected' );
+	doc.on( 'click', '[id*="give-payment-mode-select"] input', function () {
+		$( '[id*="give-payment-mode-select"] label.give-gateway-option-selected' ).removeClass( 'give-gateway-option-selected' );
+		$( '[id*="give-payment-mode-select"] input:checked' ).parent().addClass( 'give-gateway-option-selected' );
 	} );
 
 	/**
@@ -289,12 +289,12 @@ jQuery( function ( $ ) {
 		//remove old selected class & add class for CSS purposes
 		$( selected_field ).parents( '.give-donation-levels-wrap' ).find( '.give-default-level' ).removeClass( 'give-default-level' );
 		$( selected_field ).addClass( 'give-default-level' );
-		parent_form.find( '#give-amount' ).removeClass( 'invalid-amount' );
+		parent_form.find( '[id*="give-amount"]' ).removeClass( 'invalid-amount' );
 
 		//Is this a custom amount selection?
 		if ( this_amount === 'custom' ) {
 			//It is, so focus on the custom amount input
-			parent_form.find( '#give-amount' ).val( '' ).focus();
+			parent_form.find( '[id*="give-amount"]' ).val( '' ).focus();
 			return false; //Bounce out
 		}
 
@@ -310,8 +310,8 @@ jQuery( function ( $ ) {
 		parent_form.find( 'input[name=give-price-id]' ).val( price_id );
 
 		//update custom amount field
-		parent_form.find( 'input#give-amount' ).val( this_amount );
-		parent_form.find( 'span#give-amount' ).text( this_amount );
+		parent_form.find( 'input[id*="give-amount"]' ).val( this_amount );
+		parent_form.find( 'span[id*="give-amount-text"]' ).text( this_amount );
 
 		//update checkout total
 		var formatted_total = currency_symbol + this_amount;
@@ -341,7 +341,7 @@ jQuery( function ( $ ) {
 		var display_reveal = form_wrap.hasClass( 'give-display-reveal' );
 
 		//Update payment mode radio so it's correctly checked
-		form.find( '#give-gateway-radio-list label' ).removeClass( 'give-gateway-option-selected' );
+		form.find( '#give-gateway-radio-list_form_id-' + form_id + ' label' ).removeClass( 'give-gateway-option-selected' );
 		form.find( 'input[name=payment-mode][value=' + payment_mode + ']' ).prop( 'checked', true ).parent().addClass( 'give-gateway-option-selected' );
 
 		//This form is modal display so show the modal
@@ -379,7 +379,7 @@ jQuery( function ( $ ) {
 
 
 			form.find( '.give-btn-reveal' ).hide();
-			form.find( '#give-payment-mode-select, #give_purchase_form_wrap' ).slideDown();
+			form.find( '[id*="give-payment-mode-select"], [id*="give_purchase_form_wrap"]' ).slideDown();
 
 		}
 
