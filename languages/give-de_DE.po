@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Give - Donation Plugin 1.3.1\n"
 "Report-Msgid-Bugs-To: https://givewp.com/\n"
 "POT-Creation-Date: 2015-10-19 22:37:43+00:00\n"
-"PO-Revision-Date: Mon Nov 02 2015 02:43:29 GMT+0100\n"
+"PO-Revision-Date: Fri Nov 06 2015 20:11:06 GMT+0100\n"
 "Last-Translator: Konrad Bauckmeier <kontakt@dd4kids.de>\n"
 "Language-Team: WP-Translations <wpt@wp-translations.org>\n"
 "Language: German\n"
@@ -832,7 +832,7 @@ msgstr "Abbrechen"
 
 #: includes/admin/customers/customers.php:375
 msgid "View All Purchases"
-msgstr "Zeige alle Käufe"
+msgstr "Zeige alle Spenden"
 
 #: includes/admin/customers/customers.php:377
 #, c-format
@@ -843,7 +843,7 @@ msgstr[1] "%d abgeschlossene Spenden"
 
 #: includes/admin/customers/customers.php:382
 msgid "Lifetime Donations"
-msgstr "Lebenslage Spenden"
+msgstr "bisher gespendet"
 
 #: includes/admin/customers/customers.php:394
 msgid "Recent Donations"
@@ -897,7 +897,7 @@ msgstr "Zeige Details für Spende"
 #: includes/admin/customers/customers.php:421
 #: templates/history-donations.php:32
 msgid "View Details"
-msgstr "Zeige Detaisl"
+msgstr "Zeige Details"
 
 #: includes/admin/customers/customers.php:429
 msgid "No Donations Found"
@@ -1037,7 +1037,7 @@ msgid ""
 "(for example, $10 silver, $20 gold, $50 platinum)?"
 msgstr ""
 "Möchten Sie in diesem Formular einen Spendenbetrag haben oder mehrere "
-"Spendenstufen (z.B. $10 Silber, $20 Gold, $50 Platin)?"
+"Spendenstufen (z.B. 10€ Silber, 20€ Gold, 50€ Platin)?"
 
 #: includes/admin/forms/metabox.php:60 includes/admin/forms/metabox.php:65
 msgid "Set Donation"
@@ -1234,7 +1234,7 @@ msgstr "Überlagerndes Fenster nach Klick"
 
 #: includes/admin/forms/metabox.php:264
 msgid "Reveal / Modal Open Text"
-msgstr "Einblenden / Überlagern Texst"
+msgstr "Einblenden / Überlagern Text"
 
 #: includes/admin/forms/metabox.php:265
 msgid "The button label for completing the donation."
@@ -1247,7 +1247,7 @@ msgstr "Spende jetzt"
 
 #: includes/admin/forms/metabox.php:274
 msgid "Complete Donation Text"
-msgstr "Spende abschließen Text"
+msgstr "Text Spende abschließen"
 
 #: includes/admin/forms/metabox.php:275
 msgid "The button label for completing a donation."
@@ -1264,7 +1264,7 @@ msgid ""
 "gateway (set under Give > Settings > Payment Gateways). This option allows "
 "you to customize the default gateway for this form only."
 msgstr ""
-"Standardmäßig verwendet dieses Formular, das zentral festgelegte Gateway "
+"Standardmäßig verwendet dieses Formular das zentral festgelegte Gateway "
 "(einzustellen unter Give > Einstellungen > Zahlungs Gateways). Mit dieser "
 "Option können Sie das Gateway für dieses Formular anpassen."
 
@@ -1901,7 +1901,7 @@ msgstr ""
 
 #: includes/admin/register-settings.php:333
 msgid "Offline Donations"
-msgstr "Offline Spenden"
+msgstr "Überweisungen"
 
 #: includes/admin/register-settings.php:339
 msgid "Collect Billing Details"
@@ -1913,8 +1913,8 @@ msgid ""
 "The fieldset will appear above the offline donation instructions. Note: You "
 "may customize this option per form as needed."
 msgstr ""
-"Diese Option wird den Abschnitt mit den Zahlungsdetails für die Offline "
-"Zahlung aktivieren. Die Feldgruppe wird über den Offline Zahlungsanweisungen "
+"Diese Option wird den Abschnitt mit den Rechnungsdetails für die Überweisung "
+"aktivieren. Die Feldgruppe wird über den Überweisungs-Zahlungsanweisungen "
 "erscheinen. Hinweis: Bei Bedarf können Sie diese Einstellungen in jedem "
 "Formular anpassen."
 
@@ -1923,7 +1923,7 @@ msgstr ""
 #: includes/gateways/offline-donations.php:187
 #: includes/gateways/offline-donations.php:286
 msgid "Offline Donation Instructions"
-msgstr "Offline Spendenanweisungen"
+msgstr "Anweisung für Überweisungen"
 
 #: includes/admin/register-settings.php:346
 msgid ""
@@ -1932,13 +1932,13 @@ msgid ""
 "form as needed."
 msgstr ""
 "Der folgende Text wird auf allen Formularen erscheinen, wenn der Benutzer "
-"die Offline Spenden Option auswählt. Hinweis: Bei Bedarf können Sie den Text "
-"auf jedem Formular anpassen."
+"die Spenden Option Überweisung auswählt. Hinweis: Bei Bedarf können Sie den "
+"Text auf jedem Formular anpassen."
 
 #: includes/admin/register-settings.php:355
 #: includes/gateways/offline-donations.php:297
 msgid "Offline Donation Email Instructions Subject"
-msgstr "Betreff für Offline Spendenanweisung Email"
+msgstr "Email-Betreff für Spendenanweisung Überweisung "
 
 #: includes/admin/register-settings.php:356
 #: includes/gateways/offline-donations.php:298
@@ -1948,12 +1948,12 @@ msgstr "Geben Sie die Betreff Zeile für die Spendenquittung an."
 #: includes/admin/register-settings.php:358
 #: includes/gateways/offline-donations.php:299
 msgid "{donation} - Offline Donation Instructions"
-msgstr "{Spende} - Offline Spendenanweisung"
+msgstr "[Spende] - Anleitung für Überweisung"
 
 #: includes/admin/register-settings.php:362
 #: includes/gateways/offline-donations.php:305
 msgid "Offline Donation Email Instructions"
-msgstr "Email-Anleitung für Offline Spenden "
+msgstr "Email-Anleitung für Überweisung"
 
 #: includes/admin/register-settings.php:363
 #: includes/gateways/offline-donations.php:306
@@ -2193,7 +2193,7 @@ msgstr "Spendenquittung"
 
 #: includes/admin/register-settings.php:511
 msgid "Donation Email Subject"
-msgstr "Spenden Email Betraff"
+msgstr "Spenden Email-Betreff"
 
 #: includes/admin/register-settings.php:512
 msgid "Enter the subject line for the donation receipt email"
@@ -2217,8 +2217,8 @@ msgid ""
 "Thank you for your donation. Your generosity is appreciated! Please click on "
 "the link below to view your receipt."
 msgstr ""
-"Vielen Dank für Ihre Spende! Bitte rufen Sie den unten stehenden Link auf "
-"und ihre Quittung anzuschauen."
+"Vielen Dank für Ihre Spende! Bitte rufen Sie den unten stehenden Link auf um "
+"Ihre Quittung anzuschauen."
 
 #: includes/admin/register-settings.php:524
 msgid "New Donation Notification"
@@ -2444,7 +2444,7 @@ msgstr "Spender-Bericht"
 
 #: includes/admin/reporting/class-donor-reports-table.php:204
 msgid "Purchases"
-msgstr "Käufe"
+msgstr "Spenden"
 
 #: includes/admin/reporting/class-donor-reports-table.php:205
 msgid "Total Spent"
@@ -2565,7 +2565,7 @@ msgstr "Abgeschlossene Verkäufe"
 
 #: includes/admin/reporting/class-gateways-reports-table.php:85
 msgid "Pending / Failed Sales"
-msgstr "Unerledigt/ Fehlgeschlagene Verkäufe"
+msgstr "Unerledigte/ Fehlgeschlagene Verkäufe"
 
 #: includes/admin/reporting/class-gateways-reports-table.php:86
 msgid "Total Sales"
@@ -2843,8 +2843,8 @@ msgid ""
 "Download a PDF of Donations and Income reports for all forms for the current "
 "year."
 msgstr ""
-"Lade ein PDF mit Spenden und Einkommensbericht für alle Formulare im "
-"aktuellen Jahr herunter."
+"Erzeuge ein PDF mit Spenden und Einkommensbericht für alle Formulare im "
+"aktuellen Jahr."
 
 #: includes/admin/reporting/reports.php:305
 msgid "Generate PDF"
@@ -2852,11 +2852,11 @@ msgstr "Erzeuge PDF"
 
 #: includes/admin/reporting/reports.php:310
 msgid "Export Income and Donation Stats"
-msgstr "Export Einkommen und Spendenstatus"
+msgstr "Export CSV mit Einkommen und Spendenstatus"
 
 #: includes/admin/reporting/reports.php:312
 msgid "Download a CSV of income and donations over time."
-msgstr "Lade ein CSV herunter mit Einkommen und Spenden über Zeitraum."
+msgstr "Erzeugt ein CSV mit Einkommen und Spenden über Zeitraum."
 
 #: includes/admin/reporting/reports.php:322
 #: includes/admin/reporting/reports.php:347
@@ -2866,15 +2866,15 @@ msgstr "Erzeuge CSV\n"
 
 #: includes/admin/reporting/reports.php:328
 msgid "Export Donation History"
-msgstr "Exportiere Spendenverlauf"
+msgstr "Exportiere Spendenverlauf als CSV"
 
 #: includes/admin/reporting/reports.php:330
 msgid "Download a CSV of all donations recorded."
-msgstr "Lade ein CSV von allen aufgezeichneten Spenden."
+msgstr "Erzeugt ein CSV von allen aufgezeichneten Spenden."
 
 #: includes/admin/reporting/reports.php:338
 msgid "All Statuses"
-msgstr "Alle Stati"
+msgstr "Alle"
 
 #: includes/admin/reporting/reports.php:354
 msgid "Export Donors in CSV"
@@ -2886,10 +2886,9 @@ msgid ""
 "have donated to a particular form. Note: if you have a large number of "
 "donors, exporting the donation stats may fail."
 msgstr ""
-"Laden Sie eine CSV Datei mit allen Spender Email-Adressen. Optional "
-"exportiere nur Spender, welche mit einem bestimmten Formular gespendet haben."
-" Hinweis: Der Export der Spenden kann fehlschlagen, wenn Sie sehr viele "
-"Spender haben."
+"Erzeugt eine CSV Datei mit allen Spender Email-Adressen. Optional exportiere "
+"nur Spender, welche mit einem bestimmten Formular gespendet haben. Hinweis: "
+"Der Export der Spenden kann fehlschlagen, wenn Sie sehr viele Spender haben."
 
 #: includes/admin/reporting/reports.php:361
 #, c-format
@@ -4068,12 +4067,12 @@ msgstr ""
 
 #: includes/gateways/offline-donations.php:25
 msgid "Offline Donation"
-msgstr "Offline Spende"
+msgstr "Überweisung"
 
 #: includes/gateways/offline-donations.php:74
 #, c-format
 msgid "Please enter offline donation instructions in the %s."
-msgstr "Bitte geben Sie die Offline Spendenanweisung in den %s ein."
+msgstr "Bitte geben Sie die Überweisung Spendenanweisung in den %s ein."
 
 #: includes/gateways/offline-donations.php:74
 msgid "this form's settings"
@@ -4089,7 +4088,7 @@ msgstr "Lieber Admin,"
 
 #: includes/gateways/offline-donations.php:228
 msgid "An offline donation has been made"
-msgstr "Eine Offline Spende wurde vorgenommen"
+msgstr "Eine Überweisungs-Spende wurde vorgenommen"
 
 #: includes/gateways/offline-donations.php:233
 msgid ""
@@ -4109,7 +4108,7 @@ msgstr "Zeige Spendendetails: %s"
 
 #: includes/gateways/offline-donations.php:267
 msgid "Customize Offline Donations"
-msgstr "Offline Spenden anpassen"
+msgstr "Überweisungsanleitung anpassen"
 
 #: includes/gateways/offline-donations.php:268
 msgid ""
@@ -4129,8 +4128,8 @@ msgid ""
 "donation payment gateway. The fieldset will appear above the offline "
 "donation instructions."
 msgstr ""
-"Diese Option wird den Abschnitt mit den Zahlungsdetails für die Offline "
-"Zahlung für dieses Formular aktivieren. Die Feldgruppe wird über den Offline "
+"Diese Option wird den Abschnitt mit den Rechnungsdetails für die Überweisung "
+"für dieses Formular aktivieren. Die Feldgruppe wird über den Überweisungs-"
 "Zahlungsanweisungen erscheinen."
 
 #: includes/gateways/offline-donations.php:287
@@ -4148,7 +4147,7 @@ msgid ""
 "In order to make an offline donation we ask that you please follow these "
 "instructions"
 msgstr ""
-"Um eine Offline Spende zu tätigen, befolgen Sie bitte die folgendene "
+"Um eine Spende per Überweisung zu tätigen, befolgen Sie bitte die folgende "
 "Anleitung"
 
 #: includes/gateways/offline-donations.php:342
@@ -4168,7 +4167,7 @@ msgid ""
 "follow these instructions"
 msgstr ""
 "Vielen Dank für Ihre Spendenbereitschaft! Um die Spendenzahlung "
-"abzuschließen befolgen Sie bitte die folgende Anleitung"
+"abzuschließen, befolgen Sie bitte die folgende Anleitung"
 
 #: includes/gateways/offline-donations.php:368
 msgid ""
@@ -4424,7 +4423,7 @@ msgid ""
 "The minimum number of unique purchases a %s must have before the Gravatars "
 "are shown. Leave blank for no minimum."
 msgstr ""
-"Die Mindestanzahl von einzelnen Käufen, die ein %s haben muss, bevor das "
+"Die Mindestanzahl von einzelnen Spenden, die ein %s haben muss, bevor das "
 "Gravatar Icon angezeigt wird. Leer lassen für kein Minimum."
 
 #: includes/payments/class-donators-gravatars.php:348
@@ -5090,7 +5089,7 @@ msgstr "Spenden heute"
 #: includes/admin/payments/view-order-details.php:367
 msgctxt "Address City"
 msgid "City:"
-msgstr "Stadt: [Adress Citiy]"
+msgstr "Stadt:"
 
 #: includes/admin/payments/view-order-details.php:373
 msgctxt "Zip / Postal code of address"
@@ -5100,7 +5099,7 @@ msgstr "PLZ"
 #: includes/admin/payments/view-order-details.php:380
 msgctxt "Address country"
 msgid "Country:"
-msgstr "Land: [Adress country]"
+msgstr "Land:"
 
 #: includes/admin/payments/view-order-details.php:395
 msgctxt "State / province of address"
