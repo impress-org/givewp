@@ -17,7 +17,7 @@ Layout
 [id*='give-form'] {
 
   .give-hidden {
-	display: none;
+	display: none !important;
   }
 
   fieldset {
@@ -56,7 +56,7 @@ Layout
 	}
   }
 
-  .give_form select.give-select.required {
+  .give-form select.give-select.required {
 	color: #000;
   }
 
@@ -68,7 +68,7 @@ Layout
 	.give-btn {
 	  margin: 0 0 15px;
 	}
-	#give-payment-mode-select, #give_purchase_form_wrap {
+	[id*="give-payment-mode-select"], [id*="give-purchase-form-wrap"] {
 	  display: none;
 	}
   }
@@ -79,13 +79,13 @@ Layout
 Single Forms
 --------------------------------------*/
 
-.single-give_forms {
+.single-give-forms {
 
   &.et_right_sidebar #main-content .container:before {
 	display: none; //hide Divi sidebar sep on single give forms
   }
 
-  .give_forms {
+  .give-forms {
 
 	@include clearfix;
 
@@ -96,7 +96,7 @@ Single Forms
 /*------------------------------------
 Gravatar List
 --------------------------------------*/
-#give-purchase-gravatars {
+[id*="give-purchase-gravatars"] {
 
   .give-gravatars-title {
 	margin: 0 0 15px;
@@ -121,7 +121,7 @@ Gravatar List
 Base Form Styles
 --------------------------------------*/
 
-form[id*='give-form'], #give-recurring-form, form.give-form {
+form[id*='give-form'], [id*="give-recurring-form"], form.give-form {
   color: $dark;
   margin: 0 0 25px;
   padding: 0;
@@ -274,8 +274,8 @@ form[id*='give-form'] {
 
 	}
 
-	#give-amount,
-	#give-amount-text {
+	[id*="give-amount"],
+	[id*="give-amount-text"] {
 	  @include give-input();
 	  width: 125px;
 
@@ -293,7 +293,7 @@ form[id*='give-form'] {
 
   }
 
-  #give-final-total-wrap {
+  p[id*="give-final-total-wrap"] {
 	margin: 25px 0;
 	padding: 0;
 	@include clearfix();
@@ -317,7 +317,7 @@ form[id*='give-form'] {
 Notices, Warnings & Errors
 -----------------------------------*/
 
-.give_error, .give_success {
+.give-error, .give-success {
   position: relative;
   margin: 15px 0;
   background: #F9F9F9;
@@ -347,7 +347,7 @@ Notices, Warnings & Errors
 	content: '\f02d';
   }
 
-  &.give_warning {
+  &.give-warning {
 	border-color: $orange;
 
 	&:before {
@@ -358,7 +358,7 @@ Notices, Warnings & Errors
   }
 }
 
-.give_success {
+.give-success {
   border-color: $green;
 
   &:before {
@@ -372,7 +372,7 @@ Notices, Warnings & Errors
 /*---------------------------------
 Radio Lists
 -----------------------------------*/
-#give-donation-level-radio-list {
+[id*="give-donation-level-radio-list"] {
   //this is the radio list for the various user set donation levels
   margin: 0 0 15px;
   padding: 0;
@@ -395,7 +395,7 @@ Radio Lists
 
 }
 
-#give-gateway-radio-list {
+ul[id*="give-gateway-radio-list"] {
   //this is the radio list for to select a gateway
   @include clearfix();
   float: left;
@@ -439,7 +439,7 @@ form[id*='give-form'] {
 Buttons
 -----------------------------------*/
 
-#give-donation-level-button-wrap {
+ul[id*="give-donation-level-button-wrap"] {
   @include clearfix();
   margin: 0 0 15px;
   padding: 0;
@@ -454,7 +454,7 @@ Buttons
 
 }
 
-.give_terms_links {
+.give-terms-links {
   float: right;
 }
 
@@ -462,7 +462,7 @@ Buttons
 CC Validation
 -----------------------------------*/
 
-#give_secure_site_wrapper {
+[id*="give-secure-site-wrapper"] {
   padding: 4px 4px 15px 0;
   font-size: 16px;
   line-height: 20px;
@@ -479,7 +479,7 @@ CC Validation
   }
 }
 
-#give_purchase_form_wrap {
+[id*="give-purchase-form-wrap"] {
   input.give-input.card-number.valid {
 	background-image: url('../assets/images/tick.png');
 	background-repeat: no-repeat;
@@ -628,7 +628,7 @@ form[id*='give-form'] {
 
 /* Login and Register */
 
-#give-login-account-wrap {
+[id*="give-login-account-wrap"] {
   @include clearfix();
 
   > p {
@@ -644,7 +644,7 @@ form[id*='give-form'] {
 }
 
 /* User Login */
-#give-user-login-submit, .give-submit-button-wrap {
+[id*="give-user-login-submit"], .give-submit-button-wrap {
 
   input.give-submit, span.give-loading-animation {
 	float: left;
@@ -663,7 +663,7 @@ p.give-recurring-login-toggle {
 
 /* Login Shortcode Form */
 
-#give_login_form {
+[id*="give-login-form"] {
   legend {
 	line-height: 2;
 	margin-bottom: 15px;
@@ -740,7 +740,7 @@ Responsiveness
   /* Form */
   form[id*='give-form'] {
 
-	#give-card-name-wrap, .card-expiration {
+	[id*="give-card-name-wrap"], .card-expiration {
 	  width: 46%;
 	}
 
