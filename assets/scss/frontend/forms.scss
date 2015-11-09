@@ -662,22 +662,17 @@ p.give-recurring-login-toggle {
 }
 
 /* Login Shortcode Form */
+#give-login-form, #give-register-form {
 
-#give_login_form {
-  legend {
+  legend, div.give-login {
 	line-height: 2;
 	margin-bottom: 15px;
   }
-  div.give-login {
-	line-height: 2;
-	margin-bottom: 15px;
 
-	label {
-	  min-width: 100px;
-	  display: inline-block;
-	}
+  label {
+	min-width: 100px;
+	display: inline-block;
   }
-
 }
 
 /*---------------------------------

@@ -6,8 +6,8 @@ global $give_login_redirect;
 if ( ! is_user_logged_in() ) :
 
 	// Show any error messages after form submission
-	give_print_errors( false ); ?>
-	<form id="give_login_form" class="give_form" action="" method="post">
+	give_print_errors( 0 ); ?>
+	<form id="give-login-form" class="give-form" action="" method="post">
 		<fieldset>
 			<legend><?php _e( 'Log into Your Account', 'give' ); ?></legend>
 			<?php do_action( 'give_login_fields_before' ); ?>

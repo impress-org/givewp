@@ -147,6 +147,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Fix: Wrong param order for _x() i18n function - thanks @andrejcremoznik - https://github.com/WordImpress/Give/issues/376
 * Fix: North/South Korea country codes reversed - https://github.com/WordImpress/Give/issues/382
 * Fix: [give_register] shortcode template file missing - https://github.com/WordImpress/Give/issues/393
+* Fix: [give_register] and [give_login] shortcodes not properly outputting error notices - https://github.com/WordImpress/Give/issues/394
 * Tweak: Change labels to "Donation Form" within admin - https://github.com/WordImpress/Give/issues/303
 * Tweak: "Donor" column link under Give > Transactions now goes to donor's page - https://github.com/WordImpress/Give/issues/285
 * Tweak: Updated nav-tab wrappers heading tag to h1s for WordPress 4.4s #a11y release - https://github.com/WordImpress/Give/issues/377
