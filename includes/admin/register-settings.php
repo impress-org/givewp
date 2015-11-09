@@ -543,7 +543,7 @@ class Give_Plugin_Settings {
 						array(
 							'id'      => 'admin_notice_emails',
 							'name'    => __( 'Donation Notification Emails', 'give' ),
-							'desc'    => sprintf(__( 'Enter the email address(es) that should receive a notification anytime a donation is made, please only enter %1$sone email address per line%2$s and not separated by commas.', 'give' ), '<span class="give-underline">', '</span>'),
+							'desc'    => sprintf( __( 'Enter the email address(es) that should receive a notification anytime a donation is made, please only enter %1$sone email address per line%2$s and not separated by commas.', 'give' ), '<span class="give-underline">', '</span>' ),
 							'type'    => 'textarea',
 							'default' => get_bloginfo( 'admin_email' )
 						),
@@ -1112,10 +1112,11 @@ function give_hook_callback( $args ) {
  * @description: Checks to see if CMB2 plugin is installed first the uses included CMB2; we can still use it even it it's not active. This prevents fatal error conflicts with other themes and users of the CMB2 WP.org plugin
  *
  */
-if ( file_exists( WP_PLUGIN_DIR . '/cmb2/init.php' ) ) {
+
+if ( file_exists( WP_PLUGIN_DIR . '/cmb2/init.php' ) && ! defined( 'CMB2_LOADED' ) ) {
 	require_once WP_PLUGIN_DIR . '/cmb2/init.php';
-} elseif ( file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/cmb2/init.php' ) ) {
+} elseif ( file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/cmb2/init.php' ) && ! defined( 'CMB2_LOADED' ) ) {
 	require_once GIVE_PLUGIN_DIR . '/includes/libraries/cmb2/init.php';
-} elseif ( file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/CMB2/init.php' ) ) {
+} elseif ( file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/CMB2/init.php' ) && ! defined( 'CMB2_LOADED' ) ) {
 	require_once GIVE_PLUGIN_DIR . '/includes/libraries/CMB2/init.php';
 }
