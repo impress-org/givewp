@@ -3,7 +3,7 @@ Contributors: wordimpress, dlocc, webdevmattcrom
 Donate link: http://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 3.8
-Tested up to: 4.3.2
+Tested up to: 4.4
 Stable tag: 1.3.1.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -147,6 +147,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Tweak: Change labels to "Donation Form" within admin - https://github.com/WordImpress/Give/issues/303
 * Tweak: "Donor" column link under Give > Transactions now goes to donor's page - https://github.com/WordImpress/Give/issues/285
 * Tweak: Updated nav-tab wrappers heading tag to h1s for WordPress 4.4s #a11y release - https://github.com/WordImpress/Give/issues/377
+* Tweak: Updated how CMB2 is included to prevent conflicts with other themes and/or plugins - https://github.com/WordImpress/Give/issues/389
 
 = 1.3.1.1 =
 * Fix: Multi-level amounts were incorrectly re-saving to the default of 1.00 due to a bug within the recent update
