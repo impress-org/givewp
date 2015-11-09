@@ -32,6 +32,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_print_errors( $form_id ) {
 
 	$errors = give_get_errors();
+
 	$request_form_id = isset( $_REQUEST['form-id'] ) ? intval( $_REQUEST['form-id'] ) : 0;
 
 	//Sanity checks first: Ensure that gateway returned errors display on the appropriate form
