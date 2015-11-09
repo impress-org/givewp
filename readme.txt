@@ -131,6 +131,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 = 1.3.2 =
 * New: German/Deutsch translation for Give provided by Konrad - Thanks! :) - https://github.com/WordImpress/Give/issues/383
+* Unit Test: New install unit test that verifies roles, version matches, pages create #222 - https://github.com/WordImpress/Give/issues/222
 * Accessibility: Multi-level select field has no label - https://github.com/WordImpress/Give/issues/331
 * Accessibility: Multi-level select field has no label - https://github.com/WordImpress/Give/issues/331
 * Accessibility: #give-amount ID output multiple times on the page - https://github.com/WordImpress/Give/issues/326
