@@ -76,7 +76,7 @@ if ( give_get_option( 'uninstall_on_delete' ) === 'on' ) {
 	Give()->roles->remove_caps();
 
 	// Delete the Roles
-	$give_roles = array( 'give_manager', 'give_accountant', 'give_worker', 'give_vendor' );
+	$give_roles = array( 'give_manager', 'give_accountant', 'give_worker' );
 	foreach ( $give_roles as $role ) {
 		remove_role( $role );
 	}
