@@ -97,7 +97,7 @@ function give_get_donation_form( $args = array() ) {
 
 		<?php do_action( 'give_pre_form', $form->ID, $args ); ?>
 
-		<form id="give-form-<?php echo $post_id; ?>" class="give-form give-form_<?php echo absint( $form->ID ); ?><?php echo $float_labels_option; ?>" action="<?php echo $form_action; ?>" method="post">
+		<form id="give-form-<?php echo $post_id; ?>" class="give-form give-form-<?php echo absint( $form->ID ); ?><?php echo $float_labels_option; ?>" action="<?php echo $form_action; ?>" method="post">
 			<input type="hidden" name="give-form-id" value="<?php echo $form->ID; ?>" />
 			<input type="hidden" name="give-form-title" value="<?php echo htmlentities( $form->post_title ); ?>" />
 			<input type="hidden" name="give-current-url" value="<?php echo htmlspecialchars( get_permalink() ); ?>" />
@@ -218,11 +218,9 @@ function give_show_purchase_form( $form_id ) {
 add_action( 'give_purchase_form', 'give_show_purchase_form' );
 
 /**
- * Donation Levels Output
+ * Donation Amount Field
  *
- * Outputs donation levels based on the specific form ID.
- * The output generated can be overridden by the filters provided or by removing
- * the action and adding your own custom action.
+ * @description Outputs the donation amount field that appears at the top of the donation forms. If the user has custom amount enabled the field will output as a customizable input
  *
  * @since 1.0
  *
@@ -231,9 +229,10 @@ add_action( 'give_purchase_form', 'give_show_purchase_form' );
  *
  * @return void
  */
-function give_output_donation_levels( $form_id = 0, $args = array() ) {
+function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 
 	global $give_options;
+
 
 	$variable_pricing    = give_has_variable_prices( $form_id );
 	$allow_custom_amount = get_post_meta( $form_id, '_give_custom_amount', true );
@@ -297,7 +296,7 @@ function give_output_donation_levels( $form_id = 0, $args = array() ) {
 	do_action( 'give_after_donation_levels', $form_id, $args );
 }
 
-add_action( 'give_checkout_form_top', 'give_output_donation_levels', 10, 2 );
+add_action( 'give_checkout_form_top', 'give_output_donation_amount_top', 10, 2 );
 
 
 /**

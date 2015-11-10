@@ -72,24 +72,35 @@ class Give_Helper_Form extends WP_UnitTestCase {
 			'post_status' => 'publish'
 		) );
 
-		$_variable_pricing = array(
+		$_multi_level_donations = array(
 			array(
-				'name'   => '',
-				'amount' => 20
+				'_give_id'     => array( 'level_id' => '1' ),
+				'_give_amount' => '10.00',
+				'_give_text'   => 'Basic Level'
 			),
 			array(
-				'name'   => 'Advanced',
-				'amount' => 100
-			)
+				'_give_id'      => array( 'level_id' => '2' ),
+				'_give_amount'  => '20.00',
+				'_give_text'    => 'Intermediate Level',
+				'_give_default' => 'default'
+			),
+			array(
+				'_give_id'     => array( 'level_id' => '3' ),
+				'_give_amount' => '40.00',
+				'_give_text'   => 'Advanced Level'
+			),
 		);
 
 		$meta = array(
 			'give_price'               => '0.00',
-			'_variable_pricing'        => 1,
+			'_give_price_option'       => 'multi',
+			'_give_display_style'      => 'buttons',
 			'_give_price_options_mode' => 'on',
-			'give_variable_prices'     => array_values( $_variable_pricing ),
+			'_give_donation_levels'    => array_values( $_multi_level_donations ),
 			'give_product_notes'       => 'Donation Notes',
+			'_give_product_type'       => 'default'
 		);
+
 
 		foreach ( $meta as $key => $value ) {
 			update_post_meta( $post_id, $key, $value );
