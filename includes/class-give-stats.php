@@ -87,7 +87,7 @@ class Give_Stats {
 			'this_month'   => __( 'This Month', 'give' ),
 			'last_month'   => __( 'Last Month', 'give' ),
 			'this_quarter' => __( 'This Quarter', 'give' ),
-			'last_quarter' => __( 'Last Quater', 'give' ),
+			'last_quarter' => __( 'Last Quarter', 'give' ),
 			'this_year'    => __( 'This Year', 'give' ),
 			'last_year'    => __( 'Last Year', 'give' )
 		);
