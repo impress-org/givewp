@@ -1,0 +1,19 @@
+/**
+ * Give Frontend Theme Compatibility
+ *
+ * @description: The following styles help Give look good and fixes CSS conflicts with popular WordPress themes
+ * @package     Give
+ * @subpackage  SCSS/Frontend
+ * @copyright   Copyright (c) 2015, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+
+
+//Divi
+.give-divi {
+
+  .qtip-tipsy {
+	z-index: 1000002 !important;
+  }
+
+}

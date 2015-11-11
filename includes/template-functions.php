@@ -190,7 +190,7 @@ function give_is_donation_history_page() {
  *
  * @since 1.0
  *
- * @param array $classes current classes
+ * @param array $class current classes
  *
  * @return array Modified array of classes
  */
@@ -215,6 +215,20 @@ function give_add_body_classes( $class ) {
 	if ( give_is_test_mode() ) {
 		$classes[] = 'give-test-mode';
 		$classes[] = 'give-page';
+	}
+
+	//Theme-specific Classes used to prevent conflicts via CSS
+	$current_theme = wp_get_theme();
+
+	switch ( $current_theme->template ) {
+
+		case 'Divi':
+			$classes[] = 'give-divi';
+			break;
+		case 'Avada':
+			$classes[] = 'give-avada';
+			break;
+
 	}
 
 	return array_unique( $classes );
@@ -345,8 +359,8 @@ if ( ! function_exists( 'give_show_form_images' ) ) {
 	 * Output the product image before the single product summary.
 	 */
 	function give_show_form_images() {
-		$featured_image_option = give_get_option('disable_form_featured_img');
-		if($featured_image_option !== 'on'){
+		$featured_image_option = give_get_option( 'disable_form_featured_img' );
+		if ( $featured_image_option !== 'on' ) {
 			give_get_template_part( 'single-give-form/featured-image' );
 		}
 	}
