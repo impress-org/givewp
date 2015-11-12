@@ -289,12 +289,12 @@ jQuery( function ( $ ) {
 		//remove old selected class & add class for CSS purposes
 		$( selected_field ).parents( '.give-donation-levels-wrap' ).find( '.give-default-level' ).removeClass( 'give-default-level' );
 		$( selected_field ).addClass( 'give-default-level' );
-		parent_form.find( '#give-amount' ).removeClass( 'invalid-amount' );
+		parent_form.find( '.give-amount-top' ).removeClass( 'invalid-amount' );
 
 		//Is this a custom amount selection?
 		if ( this_amount === 'custom' ) {
 			//It is, so focus on the custom amount input
-			parent_form.find( '#give-amount' ).val( '' ).focus();
+			parent_form.find( '.give-amount-top' ).val( '' ).focus();
 			return false; //Bounce out
 		}
 
@@ -310,8 +310,8 @@ jQuery( function ( $ ) {
 		parent_form.find( 'input[name=give-price-id]' ).val( price_id );
 
 		//update custom amount field
-		parent_form.find( 'input#give-amount' ).val( this_amount );
-		parent_form.find( 'span#give-amount' ).text( this_amount );
+		parent_form.find( '.give-amount-top' ).val( this_amount );
+		parent_form.find( 'span.give-amount-top' ).text( this_amount );
 
 		//update checkout total
 		var formatted_total = currency_symbol + this_amount;
@@ -319,6 +319,8 @@ jQuery( function ( $ ) {
 		if ( give_global_vars.currency_pos == 'after' ) {
 			formatted_total = this_amount + currency_symbol;
 		}
+
+		//Update donation form bottom total data attr and text
 		parent_form.find( '.give-final-total-amount' ).data( 'total', this_amount ).text( formatted_total );
 	}
 

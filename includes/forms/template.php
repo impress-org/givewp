@@ -256,7 +256,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 				echo $currency_output;
 			}
 			?>
-			<span id="give-amount-text" class="give-text-input"><?php echo $default_amount; ?></span>
+			<span id="give-amount-text" class="give-text-input give-amount-top"><?php echo $default_amount; ?></span>
 		</p>
 		<?php
 	} else {
@@ -271,7 +271,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 				}
 				?>
 				<label class="give-hidden" for="give-amount"><?php echo __('Donation Amount:', 'give'); ?></label>
-				<input class="give-text-input" id="give-amount" name="give-amount" type="tel" placeholder="" value="<?php echo $default_amount; ?>" autocomplete="off">
+				<input class="give-text-input give-amount-top" id="give-amount" name="give-amount" type="tel" placeholder="" value="<?php echo $default_amount; ?>" autocomplete="off">
 
 				<?php if ( $currency_position == 'after' ) {
 					echo $currency_output;
