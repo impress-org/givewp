@@ -6,3 +6,7 @@
 .sass-cache/*
 bower/*
 node_modules/*
+
+# Unit tests
+/tmp
+/tests/bin/tmp
