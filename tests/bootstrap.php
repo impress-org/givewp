@@ -80,6 +80,10 @@ class Give_Unit_Tests_Bootstrap {
 
 		// reload capabilities after install, see https://core.trac.wordpress.org/ticket/28374
 		$GLOBALS['wp_roles']->reinit();
+
+		global $give_options;
+
+		$give_options = get_option( 'give_settings' );
 	}
 
 	/**
