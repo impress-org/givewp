@@ -2,7 +2,7 @@
 /**
  * @group give_customers
  */
-class Tests_Customers_DB extends WP_UnitTestCase {
+class Tests_Customers_DB extends Give_Unit_Test_Case {
 
 	protected $_post_id = null;
 

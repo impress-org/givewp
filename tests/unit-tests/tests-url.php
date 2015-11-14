@@ -2,7 +2,7 @@
 /**
  * @group give_url
  */
-class Tests_URL extends WP_UnitTestCase {
+class Tests_URL extends Give_Unit_Test_Case {
 	public function setUp() {
 		parent::setUp();
 	}

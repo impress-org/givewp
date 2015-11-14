@@ -3,7 +3,7 @@
 /**
  * @group give_api
  */
-class Tests_API extends WP_UnitTestCase {
+class Tests_API extends Give_Unit_Test_Case {
 	protected $_rewrite = null;
 
 	protected $query = null;

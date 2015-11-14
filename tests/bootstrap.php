@@ -27,12 +27,6 @@ class Give_Unit_Tests_Bootstrap {
 
 		ini_set( 'display_errors', 'on' );
 		error_reporting( E_ALL );
-
-		$_SERVER['SERVER_PROTOCOL'] = 'HTTP/1.1';
-		$_SERVER['SERVER_NAME']     = '';
-		$PHP_SELF                   = $GLOBALS['PHP_SELF'] = $_SERVER['PHP_SELF'] = '/index.php';
-
-		define( 'GIVE_USE_PHP_SESSIONS', false );
 		
 		$this->tests_dir 	= dirname( __FILE__ );
 		$this->plugin_dir	= dirname( $this->tests_dir );
@@ -80,10 +74,7 @@ class Give_Unit_Tests_Bootstrap {
 
 		// reload capabilities after install, see https://core.trac.wordpress.org/ticket/28374
 		$GLOBALS['wp_roles']->reinit();
-
-		global $give_options;
-
-		$give_options = get_option( 'give_settings' );
+		
 	}
 
 	/**
@@ -92,6 +83,9 @@ class Give_Unit_Tests_Bootstrap {
 	 * @since 1.3.2
 	 */
 	public function includes() {
+
+		// test cases
+		require_once( $this->tests_dir . '/framework/class-give-unit-test-case.php' );
 
 		//Helpers
 		require_once( $this->tests_dir . '/framework/helpers/shims.php' );

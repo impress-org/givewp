@@ -2,7 +2,7 @@
 /**
  * @group scripts
  */
-class Tests_Scripts extends WP_UnitTestCase {
+class Tests_Scripts extends Give_Unit_Test_Case {
 
 	/**
 	 * Test if all the file hooks are working.

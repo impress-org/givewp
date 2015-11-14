@@ -1,5 +1,5 @@
 <?php
-class Tests_Give extends WP_UnitTestCase {
+class Tests_Give extends Give_Unit_Test_Case {
 	protected $object;
 
 	public function setUp() {

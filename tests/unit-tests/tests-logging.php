@@ -4,7 +4,7 @@
 /**
  * @group give_logging
  */
-class Tests_Logging extends WP_UnitTestCase {
+class Tests_Logging extends Give_Unit_Test_Case {
 	protected $_object = null;
 
 	public function setUp() {

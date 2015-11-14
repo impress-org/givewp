@@ -4,7 +4,7 @@
 /**
  * @group give_activation
  */
-class Tests_Activation extends WP_UnitTestCase {
+class Tests_Activation extends Give_Unit_Test_Case {
 
 	/**
 	 * SetUp test class.
