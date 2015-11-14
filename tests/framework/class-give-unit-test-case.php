@@ -24,7 +24,9 @@ class Give_Unit_Test_Case extends WP_UnitTestCase {
 		$_SERVER['SERVER_NAME']     = '';
 		$PHP_SELF                   = $GLOBALS['PHP_SELF'] = $_SERVER['PHP_SELF'] = '/index.php';
 
-		define( 'GIVE_USE_PHP_SESSIONS', false );
+		if( ! defined( 'GIVE_USE_PHP_SESSIONS' ) ) {
+			define( 'GIVE_USE_PHP_SESSIONS', false );
+		}
 
 		$give_options = get_option( 'give_settings' );
 	}
