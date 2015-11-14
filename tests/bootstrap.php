@@ -60,7 +60,7 @@ class Give_Unit_Tests_Bootstrap {
 	 * @since 1.3.2
 	 */
 	public function load_give() {
-		require_once( $this->plugin_dir . '/woocommerce.php' );
+		require_once( $this->plugin_dir . '/give.php' );
 	}
 
 	/**
