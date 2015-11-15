@@ -2027,4 +2027,11 @@ div.sc-shortcode {
   div.sc-shortcode:hover {
     color: #fff; }
 
+/* =Shortcode tinymce dialog backdrop
+-------------------------------------------------------------- */
+#mce-modal-block.mce-reset.mce-fade.mce-in {
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+
 /*# sourceMappingURL=give-admin.css.map */
