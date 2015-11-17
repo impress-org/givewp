@@ -17,7 +17,7 @@
  *
  * Primarily for setting up dates and ranges
  *
- * @since 1.8
+ * @since 1.0
  */
 class Give_Stats {
 
@@ -32,7 +32,7 @@ class Give_Stats {
 	 * this_quarter, last_quarter, this_year, last_year
 	 *
 	 * @access public
-	 * @since  1.8
+	 * @since  1.0
 	 */
 	public $start_date;
 
@@ -49,7 +49,6 @@ class Give_Stats {
 	 * The end date is optional
 	 *
 	 * @access public
-	 * @since  1.8
 	 */
 	public $end_date;
 
@@ -57,14 +56,11 @@ class Give_Stats {
 	 * Flag to determine if current query is based on timestamps
 	 *
 	 * @access public
-	 * @since  1.9
 	 */
 	public $timestamp;
 
 	/**
-	 *
 	 * @access public
-	 * @since  1.8
 	 * @return void
 	 */
 	public function __construct() { /* nothing here. Call get_sales() and get_earnings() directly */
