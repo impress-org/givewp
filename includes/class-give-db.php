@@ -223,5 +223,19 @@ abstract class Give_DB {
 
 		return true;
 	}
+	
+	/**
+	 * Check if the given table exists
+	 *
+	 * @since  1.3.2
+	 * @param  string $table The table name
+	 * @return bool          If the table name exists
+	 */
+	public function table_exists( $table ) {
+		global $wpdb;
+		$table = sanitize_text_field( $table );
+		
+		return $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE '%s'", $table ) ) === $table;
+	}
 
 }
