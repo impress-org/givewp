@@ -15,7 +15,7 @@ if ( empty( $payment ) ) {
 	return;
 }
 
-$meta = give_get_payment_meta( $payment->ID );
+$meta     = give_get_payment_meta( $payment->ID );
 $donation = $meta['form_title'];
 $user     = give_get_payment_meta_user_info( $payment->ID );
 $email    = give_get_payment_user_email( $payment->ID );

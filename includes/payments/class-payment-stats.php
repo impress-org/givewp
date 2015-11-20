@@ -151,7 +151,7 @@ class Give_Payment_Stats extends Give_Stats {
 
 		} else {
 
-			// Download specific earning stats
+			// Donation form specific earning stats
 			global $give_logs, $wpdb;
 
 			$args = array(

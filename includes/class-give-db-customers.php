@@ -220,8 +220,10 @@ class Give_DB_Customers extends Give_DB {
 	/**
 	 * Increments customer purchase stats
 	 *
-	 * @access  public
-	 * @since   1.0
+	 * @param int   $customer_id
+	 * @param float $amount
+	 *
+	 * @return bool
 	 */
 	public function increment_stats( $customer_id = 0, $amount = 0.00 ) {
 
