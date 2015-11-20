@@ -457,8 +457,7 @@ function give_record_sale_in_log( $give_form_id = 0, $payment_id, $price_id = fa
 
 
 /**
- *
- * Increases the sale count of a download.
+ * Increases the donation total count of a donation form.
  *
  * @since 1.0
  *
