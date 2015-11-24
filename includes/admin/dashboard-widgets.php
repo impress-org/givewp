@@ -116,7 +116,7 @@ function give_dashboard_at_a_glance_widget( $items ) {
 	$num_posts = wp_count_posts( 'give_forms' );
 
 	if ( $num_posts && $num_posts->publish ) {
-		$text = _n( '%s Give ' . give_get_forms_label_singular(), '%s Give ' . give_get_forms_label_plural(), $num_posts->publish );
+		$text = sprintf( _n( '%1$s Give %2$s', '%1$s Give %3$s', $num_posts->publish, 'give' ), $num_posts->publish, give_get_forms_label_singular(), give_get_forms_label_plural() );
 
 		$text = sprintf( $text, number_format_i18n( $num_posts->publish ) );
 

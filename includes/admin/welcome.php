@@ -358,7 +358,7 @@ class Give_Welcome {
 
 			<?php give_social_media_elements() ?>
 
-			<div class="about-text"><?php _e( 'Welcome to the getting started guide.' ); ?></div>
+			<div class="about-text"><?php _e( 'Welcome to the getting started guide.', 'give' ); ?></div>
 
 			<p class="newsletter-intro"><?php _e( 'Don\'t forget to sign up for the newsletter!', 'give' ); ?>.</p>
 
@@ -459,7 +459,7 @@ class Give_Welcome {
 
 			<div class="about-text"><?php printf( __( 'Thanks to all those who have contributed code directly or indirectly. ', 'give' ), $display_version ); ?></div>
 
-			<div class="about-text"><?php _e( 'Welcome to the getting started guide.' ); ?></div>
+			<div class="about-text"><?php _e( 'Welcome to the getting started guide.', 'give' ); ?></div>
 
 			<p class="newsletter-intro">Be sure to sign up for the Give newsletter below to stay informed of important updates and news.</p>
 

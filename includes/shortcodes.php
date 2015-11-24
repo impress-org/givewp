@@ -252,7 +252,7 @@ function give_receipt_shortcode( $atts, $content = null ) {
 		$email            = get_post_meta( $payment->ID, '_give_payment_user_email', true );
 		$donation_history = get_permalink( give_get_option( 'history_page' ) );
 
-		$give_receipt_args['error'] .= sprintf( __( ' To view your receipt, please <a href="%s">create an account</a> using the following email %s (the email attached to this donation) and visit the <a href="%s">donation history page</a>' ), wp_registration_url(), '<strong>' . $email . '</strong>', $donation_history );
+		$give_receipt_args['error'] .= sprintf( __( ' To view your receipt, please <a href="%s">create an account</a> using the following email %s (the email attached to this donation) and visit the <a href="%s">donation history page</a>', 'give' ), wp_registration_url(), '<strong>' . $email . '</strong>', $donation_history );
 
 	}
 

@@ -240,7 +240,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 	 */
 	$meta_boxes['form_display_options'] = apply_filters( 'give_form_display_options', array(
 			'id'           => 'form_display_options',
-			'title'        => __( 'Form Display Options', 'cmb2' ),
+			'title'        => __( 'Form Display Options', 'give' ),
 			'object_types' => array( 'give_forms' ),
 			'context'      => 'normal', //  'normal', 'advanced', or 'side'
 			'priority'     => 'high', //Show above Content WYSIWYG
