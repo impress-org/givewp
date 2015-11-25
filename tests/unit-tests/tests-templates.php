@@ -4,7 +4,7 @@
 /**
  * @group give_mime
  */
-class Tests_Templates extends WP_UnitTestCase {
+class Tests_Templates extends Give_Unit_Test_Case {
 
 	protected $_post;
 

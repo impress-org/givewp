@@ -4,7 +4,7 @@
 /**
  * @group give_login_register
  */
-class Tests_Login_Register extends WP_UnitTestCase {
+class Tests_Login_Register extends Give_Unit_Test_Case {
 	public function setUp() {
 		parent::setUp();
 		wp_set_current_user(0);

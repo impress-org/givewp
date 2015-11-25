@@ -3,7 +3,7 @@
 /**
  * @group give_roles
  */
-class Tests_Roles extends WP_UnitTestCase {
+class Tests_Roles extends Give_Unit_Test_Case {
 
 	protected $_roles;
 

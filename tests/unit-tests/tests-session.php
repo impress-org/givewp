@@ -4,7 +4,7 @@
 /**
  * @group give_session
  */
-class Tests_Session extends WP_UnitTestCase {
+class Tests_Session extends Give_Unit_Test_Case {
 	public function setUp() {
 		parent::setUp();
 		new \Give_Session;

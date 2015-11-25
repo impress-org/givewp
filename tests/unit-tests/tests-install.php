@@ -4,7 +4,7 @@
 /**
  * @group give_activation
  */
-class Tests_Activation extends WP_UnitTestCase {
+class Tests_Activation extends Give_Unit_Test_Case {
 
 	/**
 	 * SetUp test class.
@@ -36,7 +36,7 @@ class Tests_Activation extends WP_UnitTestCase {
 		global $give_options;
 
 		$origin_give_options		= $give_options;
-		$origin_upgraded_from 	= get_option( 'give_version_upgraded_from' );
+		$origin_upgraded_from 		= get_option( 'give_version_upgraded_from' );
 		$origin_give_version		= get_option( 'give_version' );
 
 		// Prepare values for testing
