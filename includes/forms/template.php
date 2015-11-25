@@ -560,7 +560,7 @@ function give_get_cc_form( $form_id ) {
 		<?php do_action( 'give_before_cc_expiration' ); ?>
 		<p class="card-expiration form-row form-row-one-third">
 			<label for="card_expiry-<?php echo $form_id ?>" class="give-label">
-				<?php _e( 'Expiration (MM/YY)', 'give' ); ?>
+				<?php _e( 'Expiration', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
 				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'The date your credit card expires, typically on the front of the card.', 'give' ); ?>"></span>
 			</label>
