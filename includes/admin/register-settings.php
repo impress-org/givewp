@@ -227,7 +227,7 @@ class Give_Plugin_Settings {
 							'id'   => 'give_title_general_settings_2'
 						),
 						array(
-							'name'    => __( 'Currency', 'cmb' ),
+							'name'    => __( 'Currency', 'give' ),
 							'desc'    => 'Choose your currency. Note that some payment gateways have currency restrictions.',
 							'id'      => 'currency',
 							'type'    => 'select',
@@ -235,7 +235,7 @@ class Give_Plugin_Settings {
 							'default' => 'USD',
 						),
 						array(
-							'name'    => __( 'Currency Position', 'cmb' ),
+							'name'    => __( 'Currency Position', 'give' ),
 							'desc'    => 'Choose the position of the currency sign.',
 							'id'      => 'currency_position',
 							'type'    => 'select',
