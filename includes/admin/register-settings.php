@@ -185,7 +185,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name'    => __( 'Success Page', 'give' ),
-							'desc'    => __( 'This is the page donators are sent to after completing their donations. The <code>[give_receipt]</code> shortcode should be on this page.', 'give' ),
+							'desc'    => sprintf(__( 'This is the page donors are sent to after completing their donations. The %1$s[give_receipt]%2$s shortcode should be on this page.', 'give' ), '<code>', '</code>'),
 							'id'      => 'success_page',
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
