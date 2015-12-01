@@ -225,7 +225,7 @@ add_action( 'give_upgrade_payments', 'give_update_old_payments_with_totals' );
  * @since 1.0
  * @return void
  */
-function give_mark_abandoned_orders() {
+function give_mark_abandoned_donations() {
 	$args = array(
 		'status' => 'pending',
 		'number' => - 1,
@@ -245,4 +245,4 @@ function give_mark_abandoned_orders() {
 	}
 }
 
-add_action( 'give_weekly_scheduled_events', 'give_mark_abandoned_orders' );
+add_action( 'give_weekly_scheduled_events', 'give_mark_abandoned_donations' );
