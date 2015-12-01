@@ -12,8 +12,7 @@
  */
 .give-clearfix {
   *zoom: 1; }
-  .give-clearfix:before,
-  .give-clearfix:after {
+  .give-clearfix:before, .give-clearfix:after {
     content: " ";
     display: table; }
   .give-clearfix:after {
@@ -27,7 +26,7 @@
  * CSS3 Easing
  */
 .give-item-label {
-  padding: 0.2em 0.6em 0.3em;
+  padding: .2em .6em .3em;
   font-size: 85%;
   font-weight: 700;
   line-height: 1;
@@ -121,7 +120,7 @@
   line-height: 14px;
   text-align: center;
   text-indent: 0;
-  font: normal bold 10px/13px Tahoma, sans-serif;
+  font: normal bold 10px/13px Tahoma,sans-serif;
   color: inherit;
   background: transparent none no-repeat -100em -100em; }
 
@@ -935,8 +934,7 @@ Tooltips
   .type-download .addon-content {
     *zoom: 1;
     padding: 15px 20px; }
-    .type-download .addon-content:before,
-    .type-download .addon-content:after {
+    .type-download .addon-content:before, .type-download .addon-content:after {
       content: " ";
       display: table; }
     .type-download .addon-content:after {
@@ -1328,6 +1326,10 @@ a.give-delete {
   outline: none;
   background-size: 16px; }
 
+/* Tables */
+.give-table thead th {
+  padding: 8px 10px !important; }
+
 /**
  * Give Payment History SCSS
  *
@@ -1437,7 +1439,7 @@ Status Colors
   background-color: #5bc0de; }
 
 #give-payments-filter .give-payment-id {
-  padding: 0.2em 0.6em 0.3em;
+  padding: .2em .6em .3em;
   font-size: 85%;
   font-weight: 700;
   line-height: 1;
@@ -2031,7 +2033,6 @@ div.sc-shortcode {
 -------------------------------------------------------------- */
 #mce-modal-block.mce-reset.mce-fade.mce-in {
   opacity: 0.7;
-  filter: alpha(opacity=70);
-}
+  filter: alpha(opacity=70); }
 
 /*# sourceMappingURL=give-admin.css.map */
