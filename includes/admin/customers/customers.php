@@ -364,7 +364,7 @@ function give_customers_view( $customer ) {
 	<div id="customer-stats-wrapper" class="customer-section postbox clear">
 		<ul>
 			<li>
-				<a title="<?php _e( 'View All Purchases', 'give' ); ?>" href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( $customer->email ) ); ?>">
+				<a title="<?php _e( 'View All Donations', 'give' ); ?>" href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( $customer->email ) ); ?>">
 					<span class="dashicons dashicons-heart"></span>
 					<?php printf( _n( '%d Completed Donation', '%d Completed Donations', $customer->purchase_count, 'give' ), $customer->purchase_count ); ?>
 				</a>
