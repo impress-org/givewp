@@ -366,7 +366,11 @@ function give_customers_view( $customer ) {
 			<li>
 				<a title="<?php _e( 'View All Donations', 'give' ); ?>" href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( $customer->email ) ); ?>">
 					<span class="dashicons dashicons-heart"></span>
-					<?php printf( _n( '%d Completed Donation', '%d Completed Donations', $customer->purchase_count, 'give' ), $customer->purchase_count ); ?>
+					<?php
+					//Completed Donations
+					$completed_donations_text = sprintf( _n( '%d Completed Donation', '%d Completed Donations', $customer->purchase_count, 'give' ), $customer->purchase_count );
+					echo apply_filters( 'give_donor_completed_donations', $completed_donations_text, $customer );
+					?>
 				</a>
 			</li>
 			<li>
