@@ -145,6 +145,10 @@ class Give_DB_Customers extends Give_DB {
 	 *
 	 * @access  public
 	 * @since   1.0
+	 *
+	 * @param bool|false $_id_or_email
+	 *
+	 * @return bool|false|int
 	 */
 	public function delete( $_id_or_email = false ) {
 
@@ -268,7 +272,7 @@ class Give_DB_Customers extends Give_DB {
 	 * @since  1.0
 	 *
 	 * @param  string $field id or email
-	 * @param  mixed  $value  The Customer ID or email to search
+	 * @param  mixed  $value The Customer ID or email to search
 	 *
 	 * @return mixed          Upon success, an object of the customer. Upon failure, NULL
 	 */

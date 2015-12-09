@@ -133,6 +133,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 		}
 
 		return apply_filters( 'give_report_column_' . $column_name, $value, $item['id'] );
+
 	}
 
 	public function column_name( $item ) {
