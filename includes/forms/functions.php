@@ -621,7 +621,7 @@ function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 
 
 	foreach ( $prices as $price ) {
 
-		if ( $price['_give_id']['level_id'] === $price_id ) {
+		if ( intval( $price['_give_id']['level_id'] ) == intval( $price_id ) ) {
 			$price_name = isset( $price['_give_text'] ) ? $price['_give_text'] : '';
 		}
 
