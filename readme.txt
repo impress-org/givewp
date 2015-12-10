@@ -133,6 +133,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * New: German/Deutsch translation for Give provided by Konrad - Thanks! :) - https://github.com/WordImpress/Give/issues/383
 * New: Polish/Polski translation provided by Emilia - Thanks! :) - https://github.com/WordImpress/Give/issues/418
 * New: Introduced Give_Cron class for scheduling routine events - https://github.com/WordImpress/Give/issues/422
+* New: Introduced `give_can_view_receipt` function with `give_user_can_view_receipt_item` - https://github.com/WordImpress/Give/issues/407
 * Unit Test: Restructured unit testing #415 - https://github.com/WordImpress/Give/issues/415
 * Unit Test: New install unit test that verifies roles, version matches, pages create #222 - https://github.com/WordImpress/Give/issues/222
 * Unit Test: Login / Register functionality #342 - https://github.com/WordImpress/Give/issues/342

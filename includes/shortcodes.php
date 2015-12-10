@@ -205,7 +205,16 @@ add_shortcode( 'give_register', 'give_register_form_shortcode' );
  */
 function give_receipt_shortcode( $atts, $content = null ) {
 
-	global $give_receipt_args, $payment;
+	global $give_receipt_args;
+
+	$give_receipt_args = shortcode_atts( array(
+		'error'          => __( 'Sorry, it appears the viewing window for this donation receipt has expired or you do not have the permission to view this donation receipt.', 'give' ),
+		'price'          => true,
+		'date'           => true,
+		'payment_key'    => false,
+		'payment_method' => true,
+		'payment_id'     => true
+	), $atts, 'give_receipt' );
 
 	//set $session var
 	$session = give_get_purchase_session();
@@ -219,70 +228,54 @@ function give_receipt_shortcode( $atts, $content = null ) {
 		$payment_key = $session['purchase_key'];
 	}
 
-	ob_start();
 
-	//Check for payment key
-	if ( empty( $payment_key ) ) { ?>
-
-		<div class="give_errors">
-			<p class="give_error"><?php echo apply_filters( 'give_receipt_no_payment_key', __( 'Sorry, there was a problem identifying this donation. Please contact the site owner for more information.', 'give' ) ); ?></p>
-		</div>
-
-		<?php return ob_get_clean(); //return error
+	// No key found
+	if ( ! isset( $payment_key ) ) {
+		return '<div class="give_errors"><p class="give_error">' . $give_receipt_args['error'] . '</p></div>';
 	}
 
-	//Set our important payment information variables
-	$give_receipt_args['id'] = give_get_purchase_id_by_key( $payment_key );
-	$donor_id                = give_get_payment_user_id( $give_receipt_args['id'] );
-	$payment                 = get_post( $give_receipt_args['id'] );
+	$payment_id    = give_get_purchase_id_by_key( $payment_key );
+	$user_can_view = give_can_view_receipt( $payment_key );
 
+	// Key was provided, but user is logged out. Offer them the ability to login and view the receipt
+	if ( ! $user_can_view && ! empty( $payment_key ) && ! is_user_logged_in() && ! give_is_guest_payment( $payment_id ) ) {
+		global $give_login_redirect;
+		$give_login_redirect = give_get_current_page_url();
 
-	$give_receipt_args = shortcode_atts( array(
-		'error'          => __( 'Sorry, it appears the viewing window for this donation receipt has expired or you do not have the permission to view this donation receipt.', 'give' ),
-		'price'          => true,
-		'date'           => true,
-		'payment_key'    => false,
-		'payment_method' => true,
-		'payment_id'     => true
-	), $atts, 'give_receipt' );
+		ob_start();
+		echo '<div class="give_errors"><p class="give_error">' . __( 'You must be logged in to view this payment receipt.', 'give' ) . '</p></div>';
 
-	//Is registration open? If so, add better error messaging to tell user their session expired
-	if ( get_option( 'users_can_register' ) ) {
+		give_get_template_part( 'shortcode', 'login' );
 
-		$email            = get_post_meta( $payment->ID, '_give_payment_user_email', true );
-		$donation_history = get_permalink( give_get_option( 'history_page' ) );
+		$login_form = ob_get_clean();
 
-		$give_receipt_args['error'] .= sprintf( __( ' To view your receipt, please <a href="%s">create an account</a> using the following email %s (the email attached to this donation) and visit the <a href="%s">donation history page</a>', 'give' ), wp_registration_url(), '<strong>' . $email . '</strong>', $donation_history );
-
+		return $login_form;
 	}
-
 
 	/*
 	 * Check if the user has permission to view the receipt
 	 *
 	 * If user is logged in, user ID is compared to user ID of ID stored in payment meta
 	 *
-	 * Or if user is logged out and donation was made as a guest, the donation session is checked for
+	 * Or if user is logged out and purchase was made as a guest, the purchase session is checked for
 	 *
-	 * Or if user is logged in and the user can view sensitive donor data
+	 * Or if user is logged in and the user can view sensitive shop data
+	 *
 	 */
-	$user_can_view = ( is_user_logged_in() && $donor_id == get_current_user_id() ) || ( ( $donor_id == 0 || $donor_id == '-1' ) && ! is_user_logged_in() && give_get_purchase_session() ) || current_user_can( 'view_give_sensitive_data' );
 
-	if ( ! apply_filters( 'give_user_can_view_receipt', $user_can_view, $give_receipt_args ) ) { ?>
 
-		<div class="give_errors">
-			<p class="give_error"><?php echo $give_receipt_args['error']; ?></p>
-		</div>
+	if ( ! apply_filters( 'give_user_can_view_receipt', $user_can_view, $give_receipt_args ) ) {
+		return '<p class="edd-alert edd-alert-error">' . $give_receipt_args['error'] . '</p>';
+	}
 
-		<?php return ob_get_clean(); // ?>
-
-	<?php }
+	ob_start();
 
 	give_get_template_part( 'shortcode', 'receipt' );
 
 	$display = ob_get_clean();
 
 	return $display;
+
 
 }
 
