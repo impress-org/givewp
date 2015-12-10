@@ -266,7 +266,7 @@ function give_receipt_shortcode( $atts, $content = null ) {
 	 *
 	 * Or if user is logged in and the user can view sensitive donor data
 	 */
-	$user_can_view = ( is_user_logged_in() && $donor_id == get_current_user_id() ) || ( ( $donor_id == 0 || $donor_id == '-1' ) && ! is_user_logged_in() && give_get_purchase_session() ) || current_user_can( 'view_give_sensitive_data' );
+	$user_can_view = ( is_user_logged_in() && $donor_id == get_current_user_id() ) || ( ! is_user_logged_in() && give_get_purchase_session() ) || current_user_can( 'view_give_sensitive_data' );
 
 	if ( ! apply_filters( 'give_user_can_view_receipt', $user_can_view, $give_receipt_args ) ) { ?>
 
