@@ -4,7 +4,7 @@ Donate link: http://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 3.8
 Tested up to: 4.4
-Stable tag: 1.3.1.1
+Stable tag: 1.3.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -154,6 +154,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Fix: North/South Korea country codes reversed - https://github.com/WordImpress/Give/issues/382
 * Fix: [give_register] shortcode template file missing - https://github.com/WordImpress/Give/issues/393
 * Fix: [give_register] and [give_login] shortcodes not properly outputting error notices - https://github.com/WordImpress/Give/issues/394
+* Fix: Discrepancies between competing metakeys causing donor details dropdown to not reflect saved value when switching donors; develop accompanying upgrade routine - https://github.com/WordImpress/Give/issues/388
 * Tweak: Added table_exists method to Give_DB class - https://github.com/WordImpress/Give/pull/404
 * Tweak: Change labels to "Donation Form" within admin - https://github.com/WordImpress/Give/issues/303
 * Tweak: "Donor" column link under Give > Transactions now goes to donor's page - https://github.com/WordImpress/Give/issues/285

@@ -193,7 +193,7 @@ function give_insert_payment( $payment_data = array() ) {
 		// Record the payment details
 		give_update_payment_meta( $payment, '_give_payment_meta', apply_filters( 'give_payment_meta', $payment_meta, $payment_data ) );
 		give_update_payment_meta( $payment, '_give_payment_user_id', $payment_data['user_info']['id'] );
-		give_update_payment_meta( $payment, '_give_payment_donor_id', $customer->id );
+		give_update_payment_meta( $payment, '_give_payment_customer_id', $customer->id );
 		give_update_payment_meta( $payment, '_give_payment_user_email', $payment_data['user_email'] );
 		give_update_payment_meta( $payment, '_give_payment_user_ip', give_get_ip() );
 		give_update_payment_meta( $payment, '_give_payment_purchase_key', $payment_data['purchase_key'] );
@@ -1057,9 +1057,9 @@ function give_get_payment_user_id( $payment_id ) {
  * @return string $donor_id Donor ID
  */
 function give_get_payment_customer_id( $payment_id ) {
-	$customer_id = get_post_meta( $payment_id, '_give_payment_donor_id', true );
+	$customer_id = get_post_meta( $payment_id, '_give_payment_customer_id', true );
 
-	return apply_filters( 'give_payment_donor_id', $customer_id );
+	return apply_filters( '_give_payment_customer_id', $customer_id );
 }
 
 /**

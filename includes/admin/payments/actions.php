@@ -143,6 +143,7 @@ function give_update_payment_details( $data ) {
 		$last_name = implode( ' ', $names );
 	}
 
+
 	if ( $customer_changed ) {
 
 		// Remove the stats and payment from the previous customer and attach it to the new customer
@@ -160,6 +161,7 @@ function give_update_payment_details( $data ) {
 		}
 
 		update_post_meta( $payment_id, '_give_payment_customer_id', $customer->id );
+
 	}
 
 

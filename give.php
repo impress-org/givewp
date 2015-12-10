@@ -5,7 +5,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: WordImpress
  * Author URI: http://wordimpress.com
- * Version: 1.3.1.1
+ * Version: 1.3.2
  * Text Domain: give
  * Domain Path: /languages
  *
@@ -32,15 +32,7 @@
  * Give is a tribute to the spirit and philosophy of Open Source. We at WordImpress gladly embrace the Open Source philosophy both
  * in how Give itself was developed, and how we hope to see others build more from our code base.
  *
- * Give would not have been possible without the tireless efforts of these Open Source projects and their talented developers:
- *
- * Pippin Williamson and his wonderful development team, Easy Digital Downloads
- * Mike Jolley and the whole WooThemes Team, WooCommerce
- * Carl Hancock and his entire crew, Gravity Forms
- * Joost De Valk and the Yoast team, WordPress SEO
- * Justin Sternberg and the whole WebDevStudios team, CMB2
- *
- * Thank you all for your contribution to WordPress.
+ * Give would not have been possible without the tireless efforts of WordPress and the surrounding Open Source projects and their talented developers. Thank you all for your contribution to WordPress.
  *
  * - The WordImpress Team
  *
@@ -210,7 +202,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 
 			// Plugin version
 			if ( ! defined( 'GIVE_VERSION' ) ) {
-				define( 'GIVE_VERSION', '1.3.1.1' );
+				define( 'GIVE_VERSION', '1.3.2' );
 			}
 
 			// Plugin Folder Path
