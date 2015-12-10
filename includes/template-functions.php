@@ -228,6 +228,9 @@ function give_add_body_classes( $class ) {
 		case 'Avada':
 			$classes[] = 'give-avada';
 			break;
+		case 'twentysixteen':
+			$classes[] = 'give-twentysixteen';
+			break;
 
 	}
 
