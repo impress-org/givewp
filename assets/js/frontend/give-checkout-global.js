@@ -309,6 +309,9 @@ jQuery( function ( $ ) {
 		//update price id field for variable products
 		parent_form.find( 'input[name=give-price-id]' ).val( price_id );
 
+		//Update hidden price field
+		parent_form.find( '.give-amount-hidden' ).val( this_amount );
+		
 		//update custom amount field
 		parent_form.find( '.give-amount-top' ).val( this_amount );
 		parent_form.find( 'span.give-amount-top' ).text( this_amount );
