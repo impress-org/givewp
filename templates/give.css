@@ -1998,4 +1998,13 @@ table.give-table {
 .give-divi .qtip-tipsy {
   z-index: 1000002 !important; }
 
+body.give-twentysixteen div.entry-summary {
+  margin: 0; }
+
+body.give-twentysixteen .give-btn {
+  color: #333; }
+
+body.give-twentysixteen .give-submit {
+  color: #FFF; }
+
 /*# sourceMappingURL=give.css.map */
