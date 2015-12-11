@@ -155,7 +155,8 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Fix: [give_register] shortcode template file missing - https://github.com/WordImpress/Give/issues/393
 * Fix: [give_register] and [give_login] shortcodes not properly outputting error notices - https://github.com/WordImpress/Give/issues/394
 * Fix: Discrepancies between competing metakeys causing donor details dropdown to not reflect saved value when switching donors; develop accompanying upgrade routine - https://github.com/WordImpress/Give/issues/388
-* Fix: Theme compatibility issues with the new twentysixteen WordPress default theme: https://github.com/WordImpress/Give/issues/401
+* Fix: Theme compatibility issues with the new twentysixteen WordPress default theme - https://github.com/WordImpress/Give/issues/401
+* Fix: Fixed Safari iOS bug with HTML5 required attribute and form reloading - https://github.com/WordImpress/Give/issues/402
 * Tweak: Added table_exists method to Give_DB class - https://github.com/WordImpress/Give/pull/404
 * Tweak: Change labels to "Donation Form" within admin - https://github.com/WordImpress/Give/issues/303
 * Tweak: "Donor" column link under Give > Transactions now goes to donor's page - https://github.com/WordImpress/Give/issues/285
