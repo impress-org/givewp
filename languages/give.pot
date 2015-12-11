@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Give - Donation Plugin package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Give - Donation Plugin 1.3.1.1\n"
+"Project-Id-Version: Give - Donation Plugin 1.3.2\n"
 "Report-Msgid-Bugs-To: https://givewp.com/\n"
-"POT-Creation-Date: 2015-12-10 05:34:07+00:00\n"
+"POT-Creation-Date: 2015-12-11 01:05:55+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,7 +24,7 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
-#: give.php:187 give.php:199
+#: give.php:179 give.php:191
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
@@ -49,10 +49,10 @@ msgstr ""
 #: includes/admin/forms/dashboard-columns.php:229
 #: includes/admin/payments/actions.php:32
 #: includes/admin/payments/actions.php:82
-#: includes/admin/payments/actions.php:233
-#: includes/admin/payments/actions.php:250
-#: includes/admin/payments/actions.php:283
-#: includes/admin/payments/actions.php:307
+#: includes/admin/payments/actions.php:235
+#: includes/admin/payments/actions.php:252
+#: includes/admin/payments/actions.php:285
+#: includes/admin/payments/actions.php:309
 #: includes/admin/payments/view-order-details.php:24
 #: includes/admin/payments/view-order-details.php:34
 #: includes/admin/reporting/class-api-requests-logs-list-table.php:141
@@ -60,7 +60,8 @@ msgstr ""
 #: includes/admin/reporting/class-gateway-error-logs-list-table.php:127
 #: includes/admin/reporting/pdf-reports.php:31
 #: includes/admin/reporting/pdf-reports.php:35
-#: includes/admin/upgrades/upgrade-functions.php:80
+#: includes/admin/upgrades/upgrade-functions.php:76
+#: includes/admin/upgrades/upgrade-functions.php:171
 #: includes/api/class-give-api.php:1618 includes/api/class-give-api.php:1631
 #: includes/api/class-give-api.php:1633
 #: includes/class-give-license-handler.php:191
@@ -1004,10 +1005,10 @@ msgid "Give Form Shortcode:"
 msgstr ""
 
 #: includes/admin/payments/actions.php:32
-#: includes/admin/payments/actions.php:233
-#: includes/admin/payments/actions.php:250
-#: includes/admin/payments/actions.php:283
-#: includes/admin/payments/actions.php:307 includes/emails/actions.php:56
+#: includes/admin/payments/actions.php:235
+#: includes/admin/payments/actions.php:252
+#: includes/admin/payments/actions.php:285
+#: includes/admin/payments/actions.php:309 includes/emails/actions.php:56
 msgid "You do not have permission to edit this payment record"
 msgstr ""
 
@@ -2623,7 +2624,14 @@ msgstr ""
 msgid "Enter an URL here to redirect to after registering."
 msgstr ""
 
-#: includes/admin/upgrades/upgrade-functions.php:80
+#: includes/admin/upgrades/upgrade-functions.php:52
+msgid ""
+"Give needs to upgrade the donor database, click <a href=\"%s\">here</a> to "
+"start the upgrade."
+msgstr ""
+
+#: includes/admin/upgrades/upgrade-functions.php:76
+#: includes/admin/upgrades/upgrade-functions.php:171
 msgid "You do not have permission to do Give upgrades"
 msgstr ""
 
@@ -4565,34 +4573,25 @@ msgstr ""
 msgid "Error: This form does not have Goals enabled."
 msgstr ""
 
-#: includes/shortcodes.php:228
-msgid ""
-"Sorry, there was a problem identifying this donation. Please contact the "
-"site owner for more information."
-msgstr ""
-
-#: includes/shortcodes.php:241
+#: includes/shortcodes.php:211
 msgid ""
 "Sorry, it appears the viewing window for this donation receipt has expired "
 "or you do not have the permission to view this donation receipt."
 msgstr ""
 
-#: includes/shortcodes.php:255
-msgid ""
-" To view your receipt, please <a href=\"%s\">create an account</a> using "
-"the following email %s (the email attached to this donation) and visit the "
-"<a href=\"%s\">donation history page</a>"
+#: includes/shortcodes.php:246
+msgid "You must be logged in to view this payment receipt."
 msgstr ""
 
-#: includes/shortcodes.php:381
+#: includes/shortcodes.php:374
 msgid "The passwords you entered do not match. Please try again."
 msgstr ""
 
-#: includes/shortcodes.php:390
+#: includes/shortcodes.php:383
 msgid "The email you entered belongs to another user. Please use another."
 msgstr ""
 
-#: includes/template-functions.php:307
+#: includes/template-functions.php:310
 msgid "Give+Placeholder+Image+"
 msgstr ""
 
