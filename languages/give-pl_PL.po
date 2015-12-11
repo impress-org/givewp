@@ -8,7 +8,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2015-11-23 22:06+0000\n"
+"PO-Revision-Date: 2015-12-08 15:35+0000\n"
 "Language-Team: C2P <office@code2prog.com>\n"
 "X-Generator: Poedit 1.8.6\n"
 "X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;"
@@ -117,7 +117,7 @@ msgstr "Dziękuję :) "
 #: includes/admin/reporting/class-donor-reports-table.php:67
 #: includes/admin/reporting/reports.php:76
 msgid "Donors"
-msgstr "Dawcy"
+msgstr "Darczyńcy"
 
 #: includes/admin/admin-pages.php:44
 msgid "Donation Reports"
@@ -287,15 +287,15 @@ msgstr "Generuj nowe klucze API"
 #: includes/admin/customers/class-customer-table.php:66
 #: includes/admin/reporting/class-donor-reports-table.php:66
 msgid "Donor"
-msgstr "Dawca"
+msgstr "Darczyńca"
 
 #: includes/admin/customers/class-customer-table.php:140
 msgid "Unnamed Donor"
-msgstr "Nienazwany dawca"
+msgstr "Nienazwany Darczyńca"
 
 #: includes/admin/customers/class-customer-table.php:143
 msgid "<a href=\"%s\">View Donor</a>"
-msgstr "<a href=\"%s\">Zobacz dawcę</a>"
+msgstr "<a href=\"%s\">Zobacz darczyńcę</a>"
 
 #: includes/admin/customers/class-customer-table.php:144
 msgid "<a href=\"%s\">Delete</a>"
@@ -342,7 +342,7 @@ msgstr "Data utworzenia"
 #: includes/admin/customers/customer-actions.php:192
 #: includes/admin/customers/customer-actions.php:353
 msgid "You do not have permission to edit this donor."
-msgstr "Nie masz uprawnień do edytowania tego dawcy."
+msgstr "Nie masz uprawnień do edytowania tego darczyńcy."
 
 #: includes/admin/customers/customer-actions.php:42
 #: includes/admin/customers/customer-actions.php:204
@@ -357,7 +357,7 @@ msgstr "Wprowadź poprawny adres email."
 
 #: includes/admin/customers/customer-actions.php:66
 msgid "The User ID %d is already associated with a different donor."
-msgstr "Identyfikator: %d jest już skojarzony z innym dawcą."
+msgstr "Identyfikator: %d jest już skojarzony z innym darczyńcą."
 
 #: includes/admin/customers/customer-actions.php:72
 msgid "The User ID %d does not exist. Please assign an existing user."
@@ -370,41 +370,41 @@ msgstr "Notka jest wymagana"
 
 #: includes/admin/customers/customer-actions.php:262
 msgid "You do not have permission to delete this donor."
-msgstr "Nie masz uprawnień do usuwania tego dawcy."
+msgstr "Nie masz uprawnień do usuwania tego darczyńcy."
 
 #: includes/admin/customers/customer-actions.php:279
 msgid "Please confirm you want to delete this donor"
-msgstr "Potwierdź, że chcesz usunąć tego dawcę"
+msgstr "Potwierdź, że chcesz usunąć tego darczyńcę"
 
 #: includes/admin/customers/customer-actions.php:320
 msgid "Error deleting donor"
-msgstr "Błąd podczas usuwania dawcy"
+msgstr "Błąd podczas usuwania darczyńcy"
 
 #: includes/admin/customers/customer-actions.php:327
 msgid "Invalid Donor ID"
-msgstr "Nieprawidłowy identyfikator dawcy"
+msgstr "Nieprawidłowy identyfikator darczyńcy"
 
 #: includes/admin/customers/customer-actions.php:388
 msgid "Failed to disconnect user from donor"
-msgstr "Odłączenie użytkownika od dawcy nie powiodło się"
+msgstr "Odłączenie użytkownika od darczyńcy nie powiodło się"
 
 #: includes/admin/customers/customer-functions.php:52
 msgid "Donor Profile"
-msgstr "Profil dawcy"
+msgstr "Profil darczyńcy"
 
 #: includes/admin/customers/customer-functions.php:53
 msgid "Donor Notes"
-msgstr "Notatki Dawcy"
+msgstr "Notatki Darczyńcy"
 
 #: includes/admin/customers/customer-functions.php:72
 #: includes/admin/customers/customers.php:588
 msgid "Delete Donor"
-msgstr "Usuń dawcę"
+msgstr "Usuń darczyńcę"
 
 #: includes/admin/customers/customers.php:80
 #: includes/admin/reporting/class-donor-reports-table.php:141
 msgid "Search Donors"
-msgstr "Szukaj dawców"
+msgstr "Szukaj darczyńców"
 
 #: includes/admin/customers/customers.php:109
 msgid "You are not permitted to view this data."
@@ -413,15 +413,15 @@ msgstr "Nie masz uprawnień do przeglądania tych danych."
 #: includes/admin/customers/customers.php:114
 #: includes/admin/customers/customers.php:122
 msgid "Invalid Donor ID Provided."
-msgstr "Nieprawidłowy identyfikator dawcy"
+msgstr "Nieprawidłowy identyfikator darczyńcy"
 
 #: includes/admin/customers/customers.php:209
 msgid "Donor Name"
-msgstr "Imię Dawcy"
+msgstr "Imię Darczyńcy"
 
 #: includes/admin/customers/customers.php:213
 msgid "Donor since"
-msgstr "Dawca od"
+msgstr "Darczyńca od"
 
 #: includes/admin/customers/customers.php:217
 msgid "Edit Donor"
@@ -429,7 +429,7 @@ msgstr "Edytuj "
 
 #: includes/admin/customers/customers.php:231
 msgid "Donor Email"
-msgstr "Email Dawcy"
+msgstr "Email Darczyńcy"
 
 #: includes/admin/customers/customers.php:236
 msgid "User ID"
@@ -479,7 +479,7 @@ msgstr "Kod pocztowy"
 
 #: includes/admin/customers/customers.php:363
 msgid "Update Donor"
-msgstr "Aktualizuj Dawcę"
+msgstr "Aktualizuj Darczyńcę"
 
 #: includes/admin/customers/customers.php:364
 #: includes/admin/customers/customers.php:589
@@ -1254,7 +1254,7 @@ msgstr "Identyfikator transakcji:"
 
 #: includes/admin/payments/view-order-details.php:207
 msgid "View all donations for this donor"
-msgstr "Pokaż wszystkie dotacje tego dawcy"
+msgstr "Pokaż wszystkie dotacje tego darczyńcy"
 
 #: includes/admin/payments/view-order-details.php:238
 msgid "Donation Information"
@@ -1276,15 +1276,15 @@ msgstr "Data i czas"
 
 #: includes/admin/payments/view-order-details.php:283
 msgid "Donor Details"
-msgstr "Szczegóły Dawcy"
+msgstr "Szczegóły Darczyńcy"
 
 #: includes/admin/payments/view-order-details.php:303
 msgid "View Donor Details"
-msgstr "Zobacz szczegóły dawcy"
+msgstr "Zobacz szczegóły darczyńcy"
 
 #: includes/admin/payments/view-order-details.php:306
 msgid "New Donor"
-msgstr "Nowy Dawca"
+msgstr "Nowy Darczyńca"
 
 #: includes/admin/payments/view-order-details.php:312
 msgid "Name:"
@@ -1296,7 +1296,7 @@ msgstr "Email:"
 
 #: includes/admin/payments/view-order-details.php:325
 msgid "Click \"Save Payment\" to create new donor"
-msgstr "Kliknij na \"Zapisz Płatność\" by utworzyć nowego dawcę"
+msgstr "Kliknij na \"Zapisz Płatność\" by utworzyć nowego darczyńcę"
 
 #: includes/admin/payments/view-order-details.php:344
 msgid "Billing Address"
@@ -1394,7 +1394,7 @@ msgid ""
 "This is the page donors are sent to if their transaction is cancelled or "
 "fails."
 msgstr ""
-"Tą stronę zobaczą dawcy których transakcja nie powiodła się lub z niej "
+"Tą stronę zobaczą darczyńcy, których transakcja nie powiodła się lub z niej "
 "zrezygnowali."
 
 #: includes/admin/register-settings.php:207
@@ -1607,9 +1607,9 @@ msgid ""
 "submitted the donation form. Most likely this would include important "
 "information like mailing address and who to make the check out to."
 msgstr ""
-"Wpisz instrukcje jakie będą wysłane mailem do dawcy, który zdecydował się na "
-"płatność offline. Może to być adres, na kogo ma być wystawiony czek czy też "
-"numer konta."
+"Wpisz instrukcje jakie będą wysłane mailem do darczyńców, który zdecydował "
+"się na płatność offline. Może to być adres, na kogo ma być wystawiony czek "
+"czy też numer konta."
 
 #: includes/admin/register-settings.php:377
 #: includes/admin/register-settings.php:381
@@ -1817,8 +1817,8 @@ msgid ""
 "Email to send donation receipts from. This will act as the \"from\" and "
 "\"reply-to\" address."
 msgstr ""
-"Adres email jaki będzie podany jako nadawca rachunku. Będzie to działać tak "
-"jak adres email \"Od\" i \"Odpowiedz\""
+"Adres email jaki będzie podany jako na rachunku darczyńcy. Będzie to działać "
+"tak jak adres email \"Od\" i \"Odpowiedz\""
 
 #: includes/admin/register-settings.php:504
 #: includes/admin/register-settings.php:513
@@ -2084,7 +2084,7 @@ msgstr "Data zgłoszenia:"
 
 #: includes/admin/reporting/class-donor-reports-table.php:135
 msgid "Donors Report"
-msgstr "Raport Dawców"
+msgstr "Raport Darczyńców"
 
 #: includes/admin/reporting/class-donor-reports-table.php:204
 msgid "Purchases"
@@ -2517,7 +2517,7 @@ msgstr "Wszystkie Statusy"
 
 #: includes/admin/reporting/reports.php:354
 msgid "Export Donors in CSV"
-msgstr "Eksportuj Dawców do CSV"
+msgstr "Eksportuj Darczyńców do CSV"
 
 #: includes/admin/reporting/reports.php:356
 msgid ""
@@ -2525,9 +2525,9 @@ msgid ""
 "have donated to a particular form. Note: if you have a large number of "
 "donors, exporting the donation stats may fail."
 msgstr ""
-"Pobierz CSV wszystkich adresów email dawców. Opcjonalnie eksportuj tylko "
-"dawców którzy wpłacili na konkretnym formularzu. Uwaga: jeśli masz dużą "
-"liczbę dawców eksport dawców może się nie udać."
+"Pobierz CSV wszystkich adresów email darczyńców. Opcjonalnie eksportuj tylko "
+"darczyńców, którzy wpłacili używając konkretnego formularza. Uwaga: jeśli "
+"masz dużą liczbę darczyńców eksport może się nie udać."
 
 #: includes/admin/reporting/reports.php:361
 msgid "All %s"
@@ -3062,7 +3062,7 @@ msgstr "Nieprawidłowe zapytanie"
 
 #: includes/api/class-give-api.php:917
 msgid "Donor %s not found!"
-msgstr "Nie znaleziono dawcy %s!"
+msgstr "Nie znaleziono darczyńcy %s!"
 
 #: includes/api/class-give-api.php:923
 msgid "No donors found!"
@@ -3131,15 +3131,15 @@ msgstr "Nie znaleziono formularzy"
 
 #: includes/class-give-html-elements.php:117
 msgid "Select a Donor"
-msgstr "Wybierz dawcę"
+msgstr "Wybierz darczyńcę"
 
 #: includes/class-give-html-elements.php:130
 msgid "No donor attached"
-msgstr "Brak powiązanego dawcy"
+msgstr "Brak powiązanego darczyńcy"
 
 #: includes/class-give-html-elements.php:135
 msgid "No donors found"
-msgstr "Nie znaleziono dawców"
+msgstr "Nie znaleziono darczyńców"
 
 #: includes/class-give-html-elements.php:195 includes/post-types.php:200
 msgid "All Categories"
@@ -3411,23 +3411,23 @@ msgstr "Nazwa wypełnionego formularza dotacji."
 
 #: includes/emails/class-give-email-tags.php:277
 msgid "The donor's first name"
-msgstr "Imię Dawcy"
+msgstr "Imię Darczyńcy"
 
 #: includes/emails/class-give-email-tags.php:282
 msgid "The donor's full name, first and last"
-msgstr "Imię i nazwisko dawcy"
+msgstr "Imię i nazwisko darczyńcy"
 
 #: includes/emails/class-give-email-tags.php:287
 msgid "The donor's user name on the site, if they registered an account"
-msgstr "Nazwa użytkownika dawcy jeśli jest zarejestrowany"
+msgstr "Nazwa użytkownika darczyńcy jeśli jest zarejestrowany"
 
 #: includes/emails/class-give-email-tags.php:292
 msgid "The donor's email address"
-msgstr "Adres email dawcy"
+msgstr "Adres email darczyńcy"
 
 #: includes/emails/class-give-email-tags.php:297
 msgid "The donor's billing address"
-msgstr "Dane rozliczeniowe dawcy"
+msgstr "Dane rozliczeniowe darczyńcy"
 
 #: includes/emails/class-give-email-tags.php:302
 msgid "The date of the donation"
@@ -3505,7 +3505,7 @@ msgstr "Informujemy cię że na Twojej stronie dokonano nowej dotacji:"
 #: includes/emails/functions.php:197 includes/emails/template.php:225
 #: includes/gateways/offline-donations.php:231
 msgid "Donor: "
-msgstr "Dawca:"
+msgstr "Darczyńca:"
 
 #: includes/emails/functions.php:198
 msgid "Donation: "
@@ -3943,9 +3943,9 @@ msgid ""
 "process. Most likely this would include important information like mailing "
 "address and who to make the check out to."
 msgstr ""
-"Wpisz instrukcje jakie będą wysłane mailem do dawcy, który zdecydował się na "
-"płatność offline. Może to być adres, na kogo ma być wystawiony czek czy też "
-"numer konta."
+"Wpisz instrukcje jakie będą wysłane mailem do darczyńcy, który zdecydował "
+"się na płatność offline. Może to być adres, na kogo ma być wystawiony czek "
+"czy też numer konta."
 
 #: includes/gateways/offline-donations.php:333
 msgid ""
@@ -4064,7 +4064,7 @@ msgid ""
 "Payment requires a confirmed donor address and must be accepted manually "
 "through PayPal"
 msgstr ""
-"Płatność wymaga potwierdzonego adresu dawcy i musi być zaakceptowana "
+"Płatność wymaga potwierdzonego adresu darczyńcy i musi być zaakceptowana "
 "manualnie w PayPal"
 
 #: includes/gateways/paypal-standard.php:433
@@ -4398,7 +4398,7 @@ msgstr "Dodaj %1$s"
 
 #: includes/post-types.php:45 includes/post-types.php:112
 msgid "Add New %1$s"
-msgstr "Dodaj nowe %1$s"
+msgstr "Dodaj nowy %1$s"
 
 #: includes/post-types.php:46 includes/post-types.php:113
 msgid "Edit %1$s"
@@ -4753,7 +4753,7 @@ msgstr "Czy na pewno chcesz ponownie wysłać potwierdzenie wpłaty?"
 
 #: includes/scripts.php:246
 msgid "Copy these links to your clipboard and give them to your donor"
-msgstr "Skopiuj te linki do schowka i daj je swojemu dawcy"
+msgstr "Skopiuj te linki do schowka i daj je swojemu darczyńcy"
 
 #: includes/scripts.php:247
 msgid "Are you sure you wish to delete this %s?"
