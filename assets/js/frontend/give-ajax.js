@@ -115,7 +115,13 @@ jQuery( document ).ready( function ( $ ) {
 		//check validity
 		if ( typeof give_purchase_form.checkValidity === "function" && give_purchase_form.checkValidity() === false ) {
 			loading_animation.fadeOut(); //Don't leave any handing loading animations
-			return;
+
+			//Check for Safari (doesn't support HTML5 required)
+			if ( (navigator.userAgent.indexOf( 'Safari' ) != -1 && navigator.userAgent.indexOf( 'Chrome' ) == -1) === false ) {
+				//Not safari: Support HTML5 "required" so skip the rest of this function
+				return;
+			}
+
 		}
 
 		//prevent form from submitting normally
@@ -192,7 +198,7 @@ function give_load_gateway( form_object, payment_mode ) {
 			setup_give_tooltips();
 
 			// trigger an event on success for hooks
-			jQuery( document ).trigger( 'give_gateway_loaded', [ response, jQuery( form_object ).attr( 'id' ) ] );
+			jQuery( document ).trigger( 'give_gateway_loaded', [response, jQuery( form_object ).attr( 'id' )] );
 		}
 	);
 
