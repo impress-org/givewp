@@ -30,7 +30,7 @@
  * CSS3 Easing
  */
 .give-item-label {
-  padding: .2em .6em .3em;
+  padding: 0.2em 0.6em 0.3em;
   font-size: 85%;
   font-weight: 700;
   line-height: 1;
@@ -218,7 +218,7 @@
   line-height: 14px;
   text-align: center;
   text-indent: 0;
-  font: normal bold 10px/13px Tahoma,sans-serif;
+  font: normal bold 10px/13px Tahoma, sans-serif;
   color: inherit;
   background: transparent none no-repeat -100em -100em; }
 
@@ -2006,5 +2006,11 @@ body.give-twentysixteen .give-btn {
 
 body.give-twentysixteen .give-submit {
   color: #FFF; }
+
+body.give-twentysixteen form[id*="give"] fieldset {
+  margin-bottom: 0; }
+
+body.give-twentysixteen fieldset#give_terms_agreement {
+  padding-left: 0; }
 
 /*# sourceMappingURL=give.css.map */

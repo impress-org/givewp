@@ -32,4 +32,12 @@ body.give-twentysixteen {
 	color: #FFF;
   }
 
+  form[id*="give"] fieldset {
+    margin-bottom: 0;
+  }
+
+  fieldset#give_terms_agreement {
+    padding-left: 0;
+  }
+
 }
