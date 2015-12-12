@@ -26,7 +26,7 @@
  * CSS3 Easing
  */
 .give-item-label {
-  padding: .2em .6em .3em;
+  padding: 0.2em 0.6em 0.3em;
   font-size: 85%;
   font-weight: 700;
   line-height: 1;
@@ -120,7 +120,7 @@
   line-height: 14px;
   text-align: center;
   text-indent: 0;
-  font: normal bold 10px/13px Tahoma,sans-serif;
+  font: normal bold 10px/13px Tahoma, sans-serif;
   color: inherit;
   background: transparent none no-repeat -100em -100em; }
 
@@ -1439,7 +1439,7 @@ Status Colors
   background-color: #5bc0de; }
 
 #give-payments-filter .give-payment-id {
-  padding: .2em .6em .3em;
+  padding: 0.2em 0.6em 0.3em;
   font-size: 85%;
   font-weight: 700;
   line-height: 1;
@@ -1817,6 +1817,9 @@ Donation Details
 
 #give-customer-card-wrapper .customer-address-wrapper {
   width: 202px; }
+  #give-customer-card-wrapper .customer-address-wrapper span[data-key="line2"] {
+    display: table;
+    clear: both; }
 
 #give-customer-card-wrapper .customer-address-wrapper select {
   width: 200px; }

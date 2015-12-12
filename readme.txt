@@ -142,6 +142,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Accessibility: #give-amount ID output multiple times on the page - https://github.com/WordImpress/Give/issues/326
 * Accessibility: Login form submit surrounded incorrectly with <p> tag - https://github.com/WordImpress/Give/issues/332
 * Accessibility: .give-amount input didn't have a label associated with it, now it does :) - https://github.com/WordImpress/Give/issues/328
+* Fix: Payments that are in "Pending" status for more then 10 days are not automatically set to "Abandoned" status instead of staying in "Pending" status
 * Fix: Shortcode builder dialogs do not work when the "SiteOrigin Widgets Bundle" plugin is active - https://github.com/WordImpress/Give/issues/405
 * Fix: Missing calculation in give stats earnings - thanks @andrejcremoznik - https://github.com/WordImpress/Give/issues/408
 * Fix: Give donation form shortcode not respecting show_goal="false" - https://github.com/WordImpress/Give/issues/360
@@ -162,6 +163,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Tweak: "Donor" column link under Give > Transactions now goes to donor's page - https://github.com/WordImpress/Give/issues/285
 * Tweak: Updated nav-tab wrappers heading tag to h1s for WordPress 4.4s #a11y release - https://github.com/WordImpress/Give/issues/377
 * Tweak: Updated how CMB2 is included to prevent conflicts with other themes and/or plugins - https://github.com/WordImpress/Give/issues/389
+* Tweak: Add visual line break to Donor card second address line
 
 = 1.3.1.1 =
 * Fix: Multi-level amounts were incorrectly re-saving to the default of 1.00 due to a bug within the recent update
