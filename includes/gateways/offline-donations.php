@@ -32,20 +32,6 @@ add_filter( 'give_payment_gateways', 'give_offline_register_gateway', 1 );
 
 
 /**
- * Disables the automatic marking of abandoned orders
- * Marking pending payments as abandoned could break manual check payments
- *
- * @since  1.0
- * @return void
- */
-function give_offline_disable_abandoned_orders() {
-	remove_action( 'give_weekly_scheduled_events', 'give_mark_abandoned_orders' );
-}
-
-add_action( 'plugins_loaded', 'give_offline_disable_abandoned_orders' );
-
-
-/**
  * Add our payment instructions to the checkout
  *
  * @since  1.0
