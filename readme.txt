@@ -4,7 +4,7 @@ Donate link: http://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 4.0
 Tested up to: 4.4.1
-Stable tag: 1.3.3
+Stable tag: 1.3.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -128,6 +128,9 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 4. Multi-level donations
 
 == Changelog ==
+
+= 1.3.4 =
+* Fixed issue where pending "Offline Donations" payments were inappropriately marked as abandoned - @see: https://github.com/WordImpress/Give/issues/434
 
 = 1.3.3 =
 * Fixed security vulnerability due to WP session IDs
