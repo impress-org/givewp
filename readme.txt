@@ -129,6 +129,9 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 == Changelog ==
 
+= 1.3.3 =
+* Fixed security vulnerability due to WP session IDs
+
 = 1.3.2 =
 * New: German/Deutsch translation for Give provided by Konrad - Thanks! :) - https://github.com/WordImpress/Give/issues/383
 * New: Polish/Polski translation provided by Emilia - Thanks! :) - https://github.com/WordImpress/Give/issues/418
