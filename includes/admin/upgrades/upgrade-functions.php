@@ -54,8 +54,8 @@ function give_show_upgrade_notices() {
 		);
 	}
 
-	//v1.3.4 Upgrades
-	if ( version_compare( $give_version, '1.3.4', '<' ) || ! give_has_upgrade_completed( 'upgrade_give_offline_status' ) ) {
+	//v1.3.4 Upgrades //ensure the user has gone through 1.3.4
+	if ( version_compare( $give_version, '1.3.4', '<' ) || ( ! give_has_upgrade_completed( 'upgrade_give_offline_status' ) && give_has_upgrade_completed( 'upgrade_give_payment_customer_id' ) ) ) {
 		printf(
 			'<div class="updated"><p>' . __( 'Give needs to upgrade the transaction database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
 			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_give_offline_status' ) )
@@ -240,7 +240,7 @@ function give_v134_upgrade_give_offline_status() {
 		$modified_time = get_post_modified_time( 'U', false, $payment );
 
 		//1450124863 =  12/10/2015 20:42:25
-		if($modified_time >= 1450124863) {
+		if ( $modified_time >= 1450124863 ) {
 
 			give_update_payment_status( $payment, 'pending' );
 
