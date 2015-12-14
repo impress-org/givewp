@@ -150,7 +150,8 @@ function give_install() {
 
 		// When new upgrade routines are added, mark them as complete on fresh install
 		$upgrade_routines = array(
-			'upgrade_give_payment_customer_id'
+			'upgrade_give_payment_customer_id',
+			'upgrade_give_offline_status'
 		);
 
 		foreach ( $upgrade_routines as $upgrade ) {

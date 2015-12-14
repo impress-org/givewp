@@ -226,7 +226,7 @@ add_action( 'give_upgrade_payments', 'give_update_old_payments_with_totals' );
  * @return void
  */
 function give_mark_abandoned_donations() {
-	$args = array(
+	$args     = array(
 		'status' => 'pending',
 		'number' => - 1,
 		'fields' => 'ids'
@@ -240,6 +240,12 @@ function give_mark_abandoned_donations() {
 
 	if ( $payments ) {
 		foreach ( $payments as $payment ) {
+			$gateway = give_get_payment_gateway( $payment );
+			//Skip offline gateway payments
+			if ( $gateway == 'offline' ) {
+				continue;
+			}
+			//Non-offline get marked as 'abandoned'
 			give_update_payment_status( $payment, 'abandoned' );
 		}
 	}
