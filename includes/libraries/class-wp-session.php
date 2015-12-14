@@ -5,9 +5,9 @@
  * Standardizes WordPress session data using database-backed options for storage.
  * for storing user session information.
  *
- * @package WordPress
+ * @package    WordPress
  * @subpackage Session
- * @since   3.7.0
+ * @since      3.7.0
  */
 
 /**
@@ -66,17 +66,20 @@ final class WP_Session extends Recursive_ArrayAccess implements Iterator, Counta
 	 * create a new session with that ID.
 	 *
 	 * @param $session_id
+	 *
 	 * @uses apply_filters Calls `wp_session_expiration` to determine how long until sessions expire.
 	 */
 	protected function __construct() {
-		if ( isset( $_COOKIE[WP_SESSION_COOKIE] ) ) {
-			$cookie = stripslashes( $_COOKIE[WP_SESSION_COOKIE] );
+		if ( isset( $_COOKIE[ WP_SESSION_COOKIE ] ) ) {
+			$cookie        = stripslashes( $_COOKIE[ WP_SESSION_COOKIE ] );
 			$cookie_crumbs = explode( '||', $cookie );
-
-			$this->session_id = $cookie_crumbs[0];
-			$this->expires = $cookie_crumbs[1];
+			if ( $this->is_valid_md5( $cookie_crumbs[0] ) ) {
+				$this->session_id = $cookie_crumbs[0];
+			} else {
+				$this->regenerate_id( true );
+			}
+			$this->expires     = $cookie_crumbs[1];
 			$this->exp_variant = $cookie_crumbs[2];
-
 			// Update the session expiration if we're past the variant time
 			if ( time() > $this->exp_variant ) {
 				$this->set_expiration();
@@ -87,9 +90,7 @@ final class WP_Session extends Recursive_ArrayAccess implements Iterator, Counta
 			$this->session_id = $this->generate_id();
 			$this->set_expiration();
 		}
-
 		$this->read_data();
-
 		$this->set_cookie();
 
 	}
@@ -114,14 +115,14 @@ final class WP_Session extends Recursive_ArrayAccess implements Iterator, Counta
 	 */
 	protected function set_expiration() {
 		$this->exp_variant = time() + (int) apply_filters( 'wp_session_expiration_variant', 24 * 60 );
-		$this->expires = time() + (int) apply_filters( 'wp_session_expiration', 30 * 60 );
+		$this->expires     = time() + (int) apply_filters( 'wp_session_expiration', 30 * 60 );
 	}
 
 	/**
 	 * Set the session cookie
 	 */
 	protected function set_cookie() {
-		@setcookie( WP_SESSION_COOKIE, $this->session_id . '||' . $this->expires . '||' . $this->exp_variant , $this->expires, COOKIEPATH, COOKIE_DOMAIN );
+		@setcookie( WP_SESSION_COOKIE, $this->session_id . '||' . $this->expires . '||' . $this->exp_variant, $this->expires, COOKIEPATH, COOKIE_DOMAIN );
 	}
 
 	/**
@@ -130,7 +131,7 @@ final class WP_Session extends Recursive_ArrayAccess implements Iterator, Counta
 	 * @return string
 	 */
 	protected function generate_id() {
-		require_once( ABSPATH . 'wp-includes/class-phpass.php');
+		require_once( ABSPATH . 'wp-includes/class-phpass.php' );
 		$hasher = new PasswordHash( 8, false );
 
 		return md5( $hasher->get_random_bytes( 32 ) );
@@ -147,6 +148,17 @@ final class WP_Session extends Recursive_ArrayAccess implements Iterator, Counta
 		$this->container = get_option( "_wp_session_{$this->session_id}", array() );
 
 		return $this->container;
+	}
+
+	/**
+	 * Checks if is valid md5 string
+	 *
+	 * @param string $md5
+	 *
+	 * @return int
+	 */
+	protected function is_valid_md5( $md5 = '' ) {
+		return preg_match( '/^[a-f0-9]{32}$/', $md5 );
 	}
 
 	/**
@@ -188,6 +200,7 @@ final class WP_Session extends Recursive_ArrayAccess implements Iterator, Counta
 
 		if ( is_array( $array ) ) {
 			$this->container = $array;
+
 			return true;
 		}
 
@@ -215,7 +228,7 @@ final class WP_Session extends Recursive_ArrayAccess implements Iterator, Counta
 	 * @return bool
 	 */
 	public function session_started() {
-		return !!self::$instance;
+		return ! ! self::$instance;
 	}
 
 	/**
