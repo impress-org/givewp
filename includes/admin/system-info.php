@@ -39,7 +39,7 @@ function give_system_info_callback() {
 			display: none; /* Hide Save settings button on System Info Tab (not needed) */
 		}
 	</style>
-<?php
+	<?php
 }
 
 
@@ -166,9 +166,9 @@ function give_tools_sysinfo_get() {
 
 	$active_gateways = give_get_enabled_payment_gateways();
 	if ( $active_gateways ) {
-		$default_gateway_is_active = give_is_gateway_active( give_get_default_gateway(null) );
+		$default_gateway_is_active = give_is_gateway_active( give_get_default_gateway( null ) );
 		if ( $default_gateway_is_active ) {
-			$default_gateway = give_get_default_gateway(null);
+			$default_gateway = give_get_default_gateway( null );
 			$default_gateway = $active_gateways[ $default_gateway ]['admin_label'];
 		} else {
 			$default_gateway = 'Test Payment';
@@ -285,6 +285,12 @@ function give_tools_sysinfo_get() {
 	// PHP extensions and such
 	$return .= "\n" . '-- PHP Extensions' . "\n\n";
 	$return .= 'cURL:                     ' . ( function_exists( 'curl_init' ) ? 'Supported' : 'Not Supported' ) . "\n";
+
+	//cURL version
+	if ( function_exists( 'curl_init' ) && function_exists( 'curl_version' ) ) {
+		$curl_values = curl_version();
+		$return .= 'cURL Version:             ' . $curl_values["version"] . "\n";
+	}
 	$return .= 'fsockopen:                ' . ( function_exists( 'fsockopen' ) ? 'Supported' : 'Not Supported' ) . "\n";
 	$return .= 'SOAP Client:              ' . ( class_exists( 'SoapClient' ) ? 'Installed' : 'Not Installed' ) . "\n";
 	$return .= 'Suhosin:                  ' . ( extension_loaded( 'suhosin' ) ? 'Installed' : 'Not Installed' ) . "\n";
@@ -293,7 +299,7 @@ function give_tools_sysinfo_get() {
 
 	// Session stuff
 	$return .= "\n" . '-- Session Configuration' . "\n\n";
-	$return .= 'Give Use Sessions:         ' . ( defined( 'GIVE_USE_PHP_SESSIONS' ) && GIVE_USE_PHP_SESSIONS ? 'Enforced' : ( Give()->session->use_php_sessions() ? 'Enabled' : 'Disabled' ) ) . "\n";
+	$return .= 'Give Use Sessions:        ' . ( defined( 'GIVE_USE_PHP_SESSIONS' ) && GIVE_USE_PHP_SESSIONS ? 'Enforced' : ( Give()->session->use_php_sessions() ? 'Enabled' : 'Disabled' ) ) . "\n";
 	$return .= 'Session:                  ' . ( isset( $_SESSION ) ? 'Enabled' : 'Disabled' ) . "\n";
 
 	// The rest of this is only relevant is session is enabled
