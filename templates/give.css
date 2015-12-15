@@ -1010,7 +1010,8 @@ Radio Lists
 #give-donation-level-radio-list {
   margin: 0 0 15px;
   padding: 0;
-  list-style: none; }
+  list-style: none;
+  clear: both; }
   #give-donation-level-radio-list > li {
     margin: 0 0 5px;
     padding: 0; }

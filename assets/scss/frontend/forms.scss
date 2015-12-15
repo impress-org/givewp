@@ -172,7 +172,7 @@ form[id*='give-form'], #give-recurring-form, form.give-form {
 	  margin: 0 0 5px;
 	  position: relative;
 	  line-height: 1.7;
-	  text-align:left;
+	  text-align: left;
 
 	  &.checkbox {
 		display: inline;
@@ -378,6 +378,7 @@ Radio Lists
   margin: 0 0 15px;
   padding: 0;
   list-style: none;
+  clear: both;
 
   > li {
 
@@ -732,5 +733,5 @@ Responsiveness
 	}
 
   }
-  
+
 }
