@@ -174,7 +174,7 @@ function give_insert_payment( $payment_data = array() ) {
 
 		// If we didn't find a customer and the user is logged in, check by user_id #437
 		if ( empty( $customer->id ) && is_user_logged_in() ) {
-			$customer = new Give_customer( get_current_user_id(), true );
+			$customer = new Give_Customer( get_current_user_id(), true );
 		}
 
 		$customer_data = array(
