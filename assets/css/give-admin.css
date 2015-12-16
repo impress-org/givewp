@@ -805,20 +805,6 @@ p.give-level-id {
     margin-top: 5px; } }
 
 /*-------------------------------------
-Recurring Fields in Repeater
--------------------------------------*/
-@media (min-width: 851px) and (max-width: 1300px) {
-  .cmb2-id--give-levels-header .table-container > .table-row > .table-cell.col-recurring, .cmb2-id--give-levels-header .table-container > .table-row > .table-cell.col-period, .cmb2-id--give-levels-header .table-container > .table-row > .table-cell.col-times {
-    display: none; }
-  #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row.cmb2-id--give-donation-levels-0--give-recurring {
-    clear: left; }
-  #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row.cmb2-id--give-donation-levels-0--give-recurring, #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row.cmb2-id--give-donation-levels-0--give-period, #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row.cmb2-id--give-donation-levels-0--give-times {
-    padding-top: 0; }
-    #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row.cmb2-id--give-donation-levels-0--give-recurring > .cmb-th, #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row.cmb2-id--give-donation-levels-0--give-period > .cmb-th, #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row.cmb2-id--give-donation-levels-0--give-times > .cmb-th {
-      width: 100%;
-      display: block; } }
-
-/*-------------------------------------
 Publish Metabox
 -------------------------------------*/
 /*Shortcode Input */

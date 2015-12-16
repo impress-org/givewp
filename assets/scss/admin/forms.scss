@@ -304,40 +304,6 @@ p.give-level-id {
 }
 
 /*-------------------------------------
-Recurring Fields in Repeater
--------------------------------------*/
-
-@media(min-width: 851px) and (max-width: 1300px) {
-
-  // Hide Table columns
-  .cmb2-id--give-levels-header .table-container > .table-row > .table-cell {
-
-	&.col-recurring, &.col-period, &.col-times {
-	  display: none;
-	}
-
-  }
-
-  // display labels for new recurring fields
-  #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row {
-
-	&.cmb2-id--give-donation-levels-0--give-recurring {
-	  clear: left;
-	}
-	&.cmb2-id--give-donation-levels-0--give-recurring, &.cmb2-id--give-donation-levels-0--give-period, &.cmb2-id--give-donation-levels-0--give-times {
-	  padding-top: 0;
-	  > .cmb-th {
-		width: 100%;
-		display: block;
-	  }
-
-	}
-
-  }
-
-}
-
-/*-------------------------------------
 Publish Metabox
 -------------------------------------*/
 
