@@ -129,6 +129,9 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 == Changelog ==
 
+= 1.3.5 =
+* Fixed: Logged in user, different email address, new donor - https://github.com/WordImpress/Give/issues/437
+
 = 1.3.4 =
 * Fixed issue where pending "Offline Donations" payments were inappropriately marked as abandoned - @see: https://github.com/WordImpress/Give/issues/434
 

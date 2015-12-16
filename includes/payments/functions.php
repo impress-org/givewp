@@ -170,7 +170,13 @@ function give_insert_payment( $payment_data = array() ) {
 		}
 
 		// Create or update a customer
-		$customer      = new Give_Customer( $payment_data['user_email'] );
+		$customer = new Give_Customer( $payment_data['user_email'] );
+
+		// If we didn't find a customer and the user is logged in, check by user_id #437
+		if ( empty( $customer->id ) && is_user_logged_in() ) {
+			$customer = new Give_Customer( get_current_user_id(), true );
+		}
+
 		$customer_data = array(
 			'name'    => $payment_data['user_info']['first_name'] . ' ' . $payment_data['user_info']['last_name'],
 			'email'   => $payment_data['user_email'],
@@ -179,13 +185,6 @@ function give_insert_payment( $payment_data = array() ) {
 
 		if ( empty( $customer->id ) ) {
 			$customer->create( $customer_data );
-		} else {
-			// Only update the customer if their name or email has changed
-			if ( $customer_data['email'] !== $customer->email || $customer_data['name'] !== $customer->name ) {
-				// We shouldn't be updating the User ID here, that is an admin task
-				unset( $customer_data['user_id'] );
-				$customer->update( $customer_data );
-			}
 		}
 
 		$customer->attach_payment( $payment, false );
@@ -711,7 +710,7 @@ function give_get_sales_by_date( $day = null, $month_num = null, $year = null, $
 	}
 
 	$args = apply_filters( 'give_get_sales_by_date_args', $args );
-	$key   = 'give_stats_' . substr( md5( serialize( $args ) ), 0, 15 );
+	$key  = 'give_stats_' . substr( md5( serialize( $args ) ), 0, 15 );
 
 	if ( ! empty( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'give-refresh-reports' ) ) {
 		$count = false;
