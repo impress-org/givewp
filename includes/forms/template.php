@@ -1180,7 +1180,7 @@ function give_show_goal_progress( $form_id, $args ) {
 
 	$progress = round( ( $income / $goal ) * 100, 2 );
 
-	if ( $income > $goal ) {
+	if ( $income >= $goal ) {
 		$progress = 100;
 	}
 
