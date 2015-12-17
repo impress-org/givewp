@@ -242,7 +242,9 @@ class Give_Donate_Form {
 
 
 	/**
-	 * Retrieve the sale count for the download
+	 * Get Sales
+	 *
+	 * @description: Retrieve the sale count for the donation form
 	 *
 	 * @since 1.0
 	 * @return int
