@@ -847,6 +847,42 @@ function give_get_settings() {
 
 }
 
+
+/**
+ * Give Settings Array Insert
+ *
+ * @description: Allows other Add-ons and plugins to insert Give settings at a desired position
+ *
+ * @since      1.3.5
+ *
+ * @param $array
+ * @param $position |int|string Expects an array key or 'id' of the settings field to appear after
+ * @param $insert   |array a valid array of options to insert
+ *
+ * @return array
+ */
+function give_settings_array_insert( $array, $position, $insert ) {
+	if ( is_int( $position ) ) {
+		array_splice( $array, $position, 0, $insert );
+	} else {
+
+		foreach ( $array as $index => $subarray ) {
+			if ( isset( $subarray['id'] ) && $subarray['id'] == $position ) {
+				$pos = $index;
+			}
+		}
+
+		$array = array_merge(
+			array_slice( $array, 0, $pos ),
+			$insert,
+			array_slice( $array, $pos )
+		);
+	}
+
+	return $array;
+}
+
+
 /**
  * Gateways Callback
  *
