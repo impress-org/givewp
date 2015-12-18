@@ -50,6 +50,7 @@ class Give_Plugin_Settings {
 
 		//Custom CMB2 Settings Fields
 		add_action( 'cmb2_render_give_title', 'give_title_callback', 10, 5 );
+		add_action( 'cmb2_render_give_description', 'give_description_callback', 10, 5 );
 		add_action( 'cmb2_render_enabled_gateways', 'give_enabled_gateways_callback', 10, 5 );
 		add_action( 'cmb2_render_default_gateway', 'give_default_gateway_callback', 10, 5 );
 		add_action( 'cmb2_render_email_preview_buttons', 'give_email_preview_buttons_callback', 10, 5 );
@@ -179,7 +180,7 @@ class Give_Plugin_Settings {
 				'fields'     => apply_filters( 'give_settings_general', array(
 						array(
 							'name' => __( 'General Settings', 'give' ),
-							'desc' => '<hr>',
+							'desc' => '',
 							'type' => 'give_title',
 							'id'   => 'give_title_general_settings_1'
 						),
@@ -222,7 +223,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Currency Settings', 'give' ),
-							'desc' => '<hr>',
+							'desc' => '',
 							'type' => 'give_title',
 							'id'   => 'give_title_general_settings_2'
 						),
@@ -272,7 +273,7 @@ class Give_Plugin_Settings {
 				'fields'     => apply_filters( 'give_settings_gateways', array(
 						array(
 							'name' => __( 'Gateways Settings', 'give' ),
-							'desc' => '<hr>',
+							'desc' => '',
 							'id'   => 'give_title_gateway_settings_1',
 							'type' => 'give_title'
 						),
@@ -296,7 +297,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'PayPal Standard', 'give' ),
-							'desc' => '<hr>',
+							'desc' => '',
 							'type' => 'give_title',
 							'id'   => 'give_title_gateway_settings_2',
 						),
@@ -331,7 +332,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Offline Donations', 'give' ),
-							'desc' => '<hr>',
+							'desc' => '',
 							'type' => 'give_title',
 							'id'   => 'give_title_gateway_settings_3',
 						),
@@ -379,7 +380,7 @@ class Give_Plugin_Settings {
 				'fields'     => apply_filters( 'give_settings_display', array(
 						array(
 							'name' => __( 'Display Settings', 'give' ),
-							'desc' => '<hr>',
+							'desc' => '',
 							'id'   => 'give_title_display_settings_1',
 							'type' => 'give_title'
 						),
@@ -403,7 +404,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Post Types', 'give' ),
-							'desc' => '<hr>',
+							'desc' => '',
 							'id'   => 'give_title_display_settings_2',
 							'type' => 'give_title'
 						),
@@ -439,7 +440,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Taxonomies', 'give' ),
-							'desc' => '<hr>',
+							'desc' => '',
 							'id'   => 'give_title_display_settings_3',
 							'type' => 'give_title'
 						),
@@ -469,7 +470,7 @@ class Give_Plugin_Settings {
 				'fields'     => apply_filters( 'give_settings_emails', array(
 						array(
 							'name' => __( 'Email Settings', 'give' ),
-							'desc' => '<hr>',
+							'desc' => '',
 							'id'   => 'give_title_email_settings_1',
 							'type' => 'give_title'
 						),
@@ -502,7 +503,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Donation Receipt', 'give' ),
-							'desc' => '<hr>',
+							'desc' => '',
 							'id'   => 'give_title_email_settings_2',
 							'type' => 'give_title'
 						),
@@ -522,7 +523,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'New Donation Notification', 'give' ),
-							'desc' => '<hr>',
+							'desc' => '',
 							'id'   => 'give_title_email_settings_3',
 							'type' => 'give_title'
 						),
@@ -580,7 +581,7 @@ class Give_Plugin_Settings {
 				'fields'     => apply_filters( 'give_settings_advanced', array(
 						array(
 							'name' => __( 'Session Control', 'give' ),
-							'desc' => '<hr>',
+							'desc' => '',
 							'id'   => 'give_title_session_control_1',
 							'type' => 'give_title'
 						),
@@ -598,7 +599,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Data Control', 'give' ),
-							'desc' => '<hr>',
+							'desc' => '',
 							'id'   => 'give_title_data_control_2',
 							'type' => 'give_title'
 						),
@@ -610,7 +611,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Filter Control', 'give' ),
-							'desc' => '<hr>',
+							'desc' => '',
 							'id'   => 'give_title_filter_control',
 							'type' => 'give_title'
 						),
@@ -622,7 +623,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Script Loading', 'give' ),
-							'desc' => '<hr>',
+							'desc' => '',
 							'id'   => 'give_title_script_control',
 							'type' => 'give_title'
 						),
@@ -970,7 +971,7 @@ function give_default_gateway_callback( $field_object, $escaped_value, $object_i
 /**
  * Give Title
  *
- * Renders custom section titles output; Really only an <hr> because CMB2's output is a bit funky
+ * Renders custom section titles output; Really only an  because CMB2's output is a bit funky
  *
  * @since 1.0
  *
@@ -984,7 +985,30 @@ function give_title_callback( $field_object, $escaped_value, $object_id, $object
 	$title             = $field_type_object->field->args['name'];
 	$field_description = $field_type_object->field->args['desc'];
 
-	echo '<hr>';
+	echo '<hr>' . $field_description;
+
+}
+
+/**
+ * Give Description
+ *
+ * @description: Renders custom description text which any plugin can use to output content, html, php, etc.
+ *
+ * @since      1.3.5
+ *
+ * @param       $field_object , $escaped_value, $object_id, $object_type, $field_type_object
+ *
+ * @return void
+ */
+function give_description_callback( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
+
+	$id                = $field_type_object->field->args['id'];
+	$title             = $field_type_object->field->args['name'];
+	$field_description = $field_type_object->field->args['desc'];
+
+
+
+	echo $field_description;
 
 }
 
