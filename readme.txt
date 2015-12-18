@@ -131,6 +131,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 = 1.3.5 =
 * New: give_settings_array_insert() function to help other Add-ons and plugins insert Give settings at a desired position
+* New: give_description settings field type for plugin authors to easily add content to the settings
 * Fixed: Logged in user, different email address, new donor - https://github.com/WordImpress/Give/issues/437
 
 = 1.3.4 =

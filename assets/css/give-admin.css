@@ -1316,6 +1316,9 @@ a.give-delete {
 .give-table thead th {
   padding: 8px 10px !important; }
 
+.give_settings .cmb-td hr + hr {
+  display: none; }
+
 /**
  * Give Payment History SCSS
  *

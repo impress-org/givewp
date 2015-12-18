@@ -184,7 +184,6 @@ a.give-delete {
 
 }
 
-
 /* Tables */
 
 .give-table {
@@ -195,4 +194,9 @@ a.give-delete {
 	}
   }
 
+}
+
+//Fix double <hr>s for change to `give_title` in 1.3.5
+.give_settings .cmb-td hr + hr {
+  display: none;
 }
