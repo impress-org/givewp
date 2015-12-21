@@ -222,12 +222,11 @@ function give_receipt_shortcode( $atts, $content = null ) {
 	//set payment key var
 	if ( isset( $_GET['payment_key'] ) ) {
 		$payment_key = urldecode( $_GET['payment_key'] );
+	} elseif ( $session ) {
+		$payment_key = $session['purchase_key'];
 	} elseif ( $give_receipt_args['payment_key'] ) {
 		$payment_key = $give_receipt_args['payment_key'];
-	} else if ( $session ) {
-		$payment_key = $session['purchase_key'];
 	}
-
 
 	// No key found
 	if ( ! isset( $payment_key ) ) {
