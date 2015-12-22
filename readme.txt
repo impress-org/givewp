@@ -133,6 +133,8 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * New: give_settings_array_insert() function to help other Add-ons and plugins insert Give settings at a desired position
 * New: give_description settings field type for plugin authors to easily add content to the settings
 * Fixed: Logged in user, different email address, new donor - https://github.com/WordImpress/Give/issues/437
+* Fixed: Test email save notification appears three times - https://github.com/WordImpress/Give/issues/364
+* Fixed: [give_receipt] not passing Form title properly when "payment_key" option set to true - https://github.com/WordImpress/Give/issues/443
 
 = 1.3.4 =
 * Fixed issue where pending "Offline Donations" payments were inappropriately marked as abandoned - @see: https://github.com/WordImpress/Give/issues/434
