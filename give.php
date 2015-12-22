@@ -216,6 +216,11 @@ if ( ! class_exists( 'Give' ) ) : /**
 				define( 'GIVE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 			}
 
+			// Plugin Basename aka: "give/give.php"
+			if ( ! defined( 'GIVE_PLUGIN_BASENAME' ) ) {
+				define( 'GIVE_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
+			}
+
 			// Plugin Root File
 			if ( ! defined( 'GIVE_PLUGIN_FILE' ) ) {
 				define( 'GIVE_PLUGIN_FILE', __FILE__ );
