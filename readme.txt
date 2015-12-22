@@ -88,7 +88,7 @@ Give would not have been possible without the tireless efforts of these open sou
 
 = Minimum Requirements =
 
-* WordPress 3.8 or greater
+* WordPress 4.0 or greater
 * PHP version 5.3 or greater
 * MySQL version 5.0.15 or greater
 * Some payment gateways require fsockopen support (for IPN access)
