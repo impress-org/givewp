@@ -685,7 +685,11 @@ class Give_Plugin_Settings {
 	 * @param $updated
 	 * @param $cmb
 	 */
-	public function settings_notices( ) {
+	public function settings_notices() {
+
+		if ( ! isset( $_POST['give_settings_saved'] ) ) {
+			return;
+		}
 
 		add_settings_error( 'give-notices', 'global-settings-updated', __( 'Settings updated.', 'give' ), 'updated' );
 
@@ -998,7 +1002,6 @@ function give_description_callback( $field_object, $escaped_value, $object_id, $
 	$field_description = $field_type_object->field->args['desc'];
 
 
-
 	echo $field_description;
 
 }
@@ -1054,7 +1057,7 @@ function give_modify_cmb2_form_output( $form_format, $object_id, $cmb ) {
 	//only modify the give settings form
 	if ( 'give_settings' == $object_id && 'options_page' == $cmb->cmb_id ) {
 
-		return '<form class="cmb-form" method="post" id="%1$s" enctype="multipart/form-data" encoding="multipart/form-data"><input type="hidden" name="object_id" value="%2$s">%3$s<div class="give-submit-wrap"><input type="submit" name="submit-cmb" value="' . __( 'Save Settings', 'give' ) . '" class="button-primary"></div></form>';
+		return '<form class="cmb-form" method="post" id="%1$s" enctype="multipart/form-data" encoding="multipart/form-data"><input type="hidden" name="give_settings_saved" value="true"><input type="hidden" name="object_id" value="%2$s">%3$s<div class="give-submit-wrap"><input type="submit" name="submit-cmb" value="' . __( 'Save Settings', 'give' ) . '" class="button-primary"></div></form>';
 	}
 
 	return $form_format;
