@@ -281,6 +281,9 @@ class Give_Tests_Customers extends Give_Unit_Test_Case {
 		$no_user = give_get_users_purchases( 0 );
 		$this->assertFalse( $no_user );
 
+		$no_user_count = give_count_purchases_of_customer();
+		$this->assertEquals( 0, $no_user_count );
+
 	}
 
 	public function test_give_get_users_completed_donations() {

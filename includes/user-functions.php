@@ -241,7 +241,7 @@ function give_count_purchases_of_customer( $user = null ) {
 		$user = get_current_user_id();
 	}
 
-	$stats = give_get_purchase_stats_by_user( $user );
+	$stats = ! empty( $user ) ? give_get_purchase_stats_by_user( $user ) : false;
 
 	return isset( $stats['purchases'] ) ? $stats['purchases'] : 0;
 }
