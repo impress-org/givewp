@@ -23,6 +23,7 @@ Democratizing Generosity - Empower your cause: start accepting donations on Word
 * Zero commission charges
 * Own all your donation data
 * Accept Single, Custom, and Multi-level donations
+* Flexible public API for developers
 * Easy to customize and enhance
 * Robust reporting features
 * Customizable emails
@@ -135,6 +136,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Fixed: Logged in user, different email address, new donor - https://github.com/WordImpress/Give/issues/437
 * Fixed: Test email save notification appears three times - https://github.com/WordImpress/Give/issues/364
 * Fixed: [give_receipt] not passing Form title properly when "payment_key" option set to true - https://github.com/WordImpress/Give/issues/443
+* Fixed: Give Network Activated on WP Multisite Displaying upgrade messages for new sites incorrectly - https://github.com/WordImpress/Give/issues/439
 
 = 1.3.4 =
 * Fixed issue where pending "Offline Donations" payments were inappropriately marked as abandoned - @see: https://github.com/WordImpress/Give/issues/434
