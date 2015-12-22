@@ -140,10 +140,6 @@ function give_install() {
 	// Add a temporary option to note that Give pages have been created
 	set_transient( '_give_installed', $options, 30 );
 
-	// Bail if activating from network, or bulk
-	if ( is_network_admin() || isset( $_GET['activate-multi'] ) ) {
-		return;
-	}
 
 	if ( ! $current_version ) {
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrade-functions.php';
@@ -158,7 +154,10 @@ function give_install() {
 			give_set_upgrade_complete( $upgrade );
 		}
 	}
-
+	// Bail if activating from network, or bulk
+	if ( is_network_admin() || isset( $_GET['activate-multi'] ) ) {
+		return;
+	}
 	// Add the transient to redirect
 	set_transient( '_give_activation_redirect', true, 30 );
 
@@ -228,3 +227,27 @@ function give_install_roles_on_network() {
 }
 
 add_action( 'admin_init', 'give_install_roles_on_network' );
+
+/**
+ * Network Activated New Site Setup
+ *
+ * @description: When a new site is created when Give is network activated this function runs the appropriate install function to set up the site for Give.
+ *
+ * @since      1.3.5
+ *
+ * @param $blog_id
+ * @param $user_id
+ * @param $domain
+ * @param $path
+ * @param $site_id
+ * @param $meta
+ */
+function on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
+	if ( is_plugin_active_for_network( GIVE_PLUGIN_BASENAME ) ) {
+		switch_to_blog( $blog_id );
+		give_install();
+		restore_current_blog();
+	}
+}
+
+add_action( 'wpmu_new_blog', 'on_create_blog', 10, 6 );
