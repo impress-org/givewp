@@ -57,7 +57,7 @@ class Give_Plugin_Settings {
 		add_action( 'cmb2_render_system_info', 'give_system_info_callback', 10, 5 );
 		add_action( 'cmb2_render_api', 'give_api_callback', 10, 5 );
 		add_action( 'cmb2_render_license_key', 'give_license_key_callback', 10, 5 );
-		add_action( 'cmb2_save_options-page_fields', array( $this, 'settings_notices' ), 10, 4 );
+		add_action( 'admin_notices', array( $this, 'settings_notices' ) );
 
 		// Include CMB CSS in the head to avoid FOUC
 		add_action( "admin_print_styles-give_forms_page_give-settings", array( 'CMB2_hookup', 'enqueue_cmb_css' ) );
@@ -685,27 +685,9 @@ class Give_Plugin_Settings {
 	 * @param $updated
 	 * @param $cmb
 	 */
-	public function settings_notices( $object_id, $cmb_id, $updated, $cmb ) {
+	public function settings_notices( ) {
 
-		//Sanity check
-		if ( $object_id !== $this->key ) {
-			return;
-		}
-echo "<pre>";
-var_dump($object_id);
-var_dump($updated);
-var_dump($cmb_id);
-var_dump($cmb);
-var_dump(did_action( 'cmb2_save_options-page_fields' ));
-echo "</pre>";
-		if ( did_action( 'cmb2_save_options-page_fields' ) === 1 ) {
-//			settings_errors( 'give-notices' );
-			echo 'hello';
-		}
-
-
-
-//		add_settings_error( 'give-notices', 'global-settings-updated', __( 'Settings updated.', 'give' ), 'updated' );
+		add_settings_error( 'give-notices', 'global-settings-updated', __( 'Settings updated.', 'give' ), 'updated' );
 
 	}
 
@@ -1014,6 +996,7 @@ function give_description_callback( $field_object, $escaped_value, $object_id, $
 	$id                = $field_type_object->field->args['id'];
 	$title             = $field_type_object->field->args['name'];
 	$field_description = $field_type_object->field->args['desc'];
+
 
 
 	echo $field_description;
