@@ -216,7 +216,7 @@ function give_offline_send_admin_notice( $payment_id = 0 ) {
 	$order_url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $payment_id );
 	$admin_message .= __( 'Donor: ', 'give' ) . " " . html_entity_decode( $name, ENT_COMPAT, 'UTF-8' ) . "\n";
 	$admin_message .= __( 'Amount: ', 'give' ) . " " . html_entity_decode( $amount, ENT_COMPAT, 'UTF-8' ) . "\n\n";
-	$admin_message .= __( 'This is a pending donation awaiting payment. Donation instructions have been emailed to the donor. Once you receive payment, be sure to mark the donation as complete using the link below.', 'give' ) . "\n\n";
+	$admin_message .= __( 'There is a new pending donation awaiting payment. Donation instructions have been emailed to the donor. Once you receive payment, be sure to mark the donation as complete using the link below.', 'give' ) . "\n\n";
 	$admin_message .= sprintf( __( 'View Donation Details: %s.', 'give' ), $order_url ) . "\n\n";
 	$admin_message = apply_filters( 'give_offline_admin_donation_notification', $admin_message, $payment_id );
 	$admin_headers = apply_filters( 'give_offline_admin_donation_notification_headers', array(), $payment_id );
