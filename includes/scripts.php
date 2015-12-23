@@ -239,7 +239,6 @@ function give_load_admin_scripts( $hook ) {
 		'quick_edit_warning'      => __( 'Sorry, not available for variable priced forms.', 'give' ),
 		'delete_payment'          => __( 'Are you sure you wish to delete this payment?', 'give' ),
 		'delete_payment_note'     => __( 'Are you sure you wish to delete this note?', 'give' ),
-		'delete_tax_rate'         => __( 'Are you sure you wish to delete this tax rate?', 'give' ),
 		'revoke_api_key'          => __( 'Are you sure you wish to revoke this API key?', 'give' ),
 		'regenerate_api_key'      => __( 'Are you sure you wish to regenerate this API key?', 'give' ),
 		'resend_receipt'          => __( 'Are you sure you wish to resend the donation receipt?', 'give' ),
