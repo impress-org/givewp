@@ -213,8 +213,11 @@ function give_get_purchase_stats_by_user( $user = '' ) {
 	}
 
 	$customer = Give()->customers->get_customer_by( $field, $user );
-
-	$customer = new Give_Customer( $customer->id );
+	if ( isset( $customer->id ) ){
+		$customer = new Give_Customer( $customer->id );
+	} else {
+		$customer = new Give_Customer();
+	}
 
 	$stats                = array();
 	$stats['purchases']   = absint( $customer->purchase_count );
