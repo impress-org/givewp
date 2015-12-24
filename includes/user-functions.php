@@ -220,12 +220,12 @@ function give_get_purchase_stats_by_user( $user = '' ) {
 		$customer = new Give_Customer( $customer->id );
 
 		$stats['purchases']   = absint( $customer->purchase_count );
-		$stats['total_spent'] = edd_sanitize_amount( $customer->purchase_value );
+		$stats['total_spent'] = give_sanitize_amount( $customer->purchase_value );
 
 	}
 
 
-	return (array) apply_filters( 'edd_purchase_stats_by_user', $stats, $user );
+	return (array) apply_filters( 'give_purchase_stats_by_user', $stats, $user );
 }
 
 
