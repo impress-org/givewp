@@ -196,7 +196,6 @@ function give_has_purchases( $user_id = null ) {
  * @since       1.0
  *
  * @param       $user int|string - the ID or email of the donor to retrieve stats for
- * @param       $mode string - "test" or "live"
  *
  * @return      array
  */
