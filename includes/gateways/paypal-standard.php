@@ -91,7 +91,7 @@ function give_process_paypal_purchase( $purchase_data ) {
 			if ( $price_level_amount != give_sanitize_amount( $purchase_data['price'] ) ) {
 				$custom_amount_text = get_post_meta( $form_id, '_give_custom_amount_text', true );
 				//user custom amount text if any, fallback to default if not
-				$item_name .= ' - ' . (! empty( $custom_amount_text ) ? $custom_amount_text : __( 'Custom Amount', 'give' ));
+				$item_name .= ' - ' . ( ! empty( $custom_amount_text ) ? $custom_amount_text : __( 'Custom Amount', 'give' ) );
 
 			} //Is there any donation level text?
 			elseif ( ! empty( $item_price_level_text ) ) {
@@ -102,7 +102,7 @@ function give_process_paypal_purchase( $purchase_data ) {
 		elseif ( give_get_form_price( $form_id ) !== give_sanitize_amount( $purchase_data['price'] ) ) {
 			$custom_amount_text = get_post_meta( $form_id, '_give_custom_amount_text', true );
 			//user custom amount text if any, fallback to default if not
-			$item_name .= ' - ' . (! empty( $custom_amount_text ) ? $custom_amount_text : __( 'Custom Amount', 'give' ));
+			$item_name .= ' - ' . ( ! empty( $custom_amount_text ) ? $custom_amount_text : __( 'Custom Amount', 'give' ) );
 		}
 
 		// Setup PayPal arguments
@@ -564,14 +564,20 @@ function give_get_paypal_page_style() {
 }
 
 /**
- * Shows "Purchase Processing" message for PayPal payments are still pending on site return
+ * PayPal Success Page
  *
- * This helps address the Race Condition, as detailed in issue #1839
+ * @description: Shows "Purchase Processing" message for PayPal payments are still pending on site return
  *
- * @since 1.0
+ * @since      1.0
+ *
+ * @param $content
+ *
  * @return string
+ *
  */
 function give_paypal_success_page_content( $content ) {
+
+	global $payment;
 
 	if ( ! isset( $_GET['payment-id'] ) && ! give_get_purchase_session() ) {
 		return $content;
