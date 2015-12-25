@@ -205,7 +205,7 @@ add_shortcode( 'give_register', 'give_register_form_shortcode' );
  */
 function give_receipt_shortcode( $atts, $content = null ) {
 
-	global $give_receipt_args;
+	global $give_receipt_args, $payment;
 
 	$give_receipt_args = shortcode_atts( array(
 		'error'          => __( 'Sorry, it appears the viewing window for this donation receipt has expired or you do not have the permission to view this donation receipt.', 'give' ),

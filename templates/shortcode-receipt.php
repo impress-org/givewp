@@ -2,7 +2,7 @@
 /**
  * This template is used to display the purchase summary with [give_receipt]
  */
-global $give_receipt_args, $give_options, $payment;
+global $give_receipt_args, $payment;
 
 //Validation: Ensure $payment var is set
 if ( empty( $payment ) && isset( $give_receipt_args['id'] ) ) {

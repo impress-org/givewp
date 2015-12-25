@@ -576,8 +576,6 @@ function give_get_paypal_page_style() {
  */
 function give_paypal_success_page_content( $content ) {
 
-	global $payment;
-
 	if ( ! isset( $_GET['payment-id'] ) && ! give_get_purchase_session() ) {
 		return $content;
 	}
