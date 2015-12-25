@@ -234,7 +234,6 @@ function give_process_paypal_ipn() {
 	if ( ! give_get_option( 'disable_paypal_verification' ) ) {
 
 		// Validate the IPN
-
 		$remote_post_vars = array(
 			'method'      => 'POST',
 			'timeout'     => 45,
