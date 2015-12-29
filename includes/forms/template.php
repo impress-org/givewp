@@ -804,11 +804,11 @@ function give_get_register_fields( $form_id ) {
 
 			<p id="give-user-pass-confirm-wrap" class="give_register_password form-row form-row-one-third">
 				<label for="password_again">
-					<?php _e( 'Password Again', 'give' ); ?>
+					<?php _e( 'Confirm Password', 'give' ); ?>
 					<?php if ( give_no_guest_checkout( $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
-					<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'Confirm your password.', 'give' ); ?>"></span>
+					<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'Please retype your password to confirm.', 'give' ); ?>"></span>
 				</label>
 
 				<input name="give_user_pass_confirm" id="give_user_pass_confirm" class="<?php if ( give_no_guest_checkout( $form_id ) ) {
