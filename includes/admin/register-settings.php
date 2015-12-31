@@ -868,6 +868,10 @@ function give_settings_array_insert( $array, $position, $insert ) {
 			}
 		}
 
+		if ( ! isset( $pos ) ) {
+			return $array;
+		}
+
 		$array = array_merge(
 			array_slice( $array, 0, $pos ),
 			$insert,
