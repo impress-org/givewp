@@ -366,10 +366,10 @@ if ( ! class_exists( 'Give' ) ) : /**
 				// Look in global /wp-content/languages/give folder
 				load_textdomain( 'give', $mofile_global );
 			} elseif ( file_exists( $mofile_local ) ) {
-				// Look in local /wp-content/plugins/give/languages/ folder
+				// Look in local location from filter `give_languages_directory`
 				load_textdomain( 'give', $mofile_local );
 			} else {
-				// Load the default language files
+				// Load the default language files packaged up w/ Give
 				load_plugin_textdomain( 'give', false, $give_lang_dir );
 			}
 		}

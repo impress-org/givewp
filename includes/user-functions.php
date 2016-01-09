@@ -165,7 +165,7 @@ function give_get_users_completed_donations( $user = 0, $status = 'complete' ) {
 /**
  * Has Purchases
  *
- * Checks to see if a user has purchased at least one item.
+ * Checks to see if a user has donated to at least one form.
  *
  * @access      public
  * @since       1.0
