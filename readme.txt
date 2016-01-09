@@ -137,6 +137,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Fixed: Test email save notification appears three times - https://github.com/WordImpress/Give/issues/364
 * Fixed: [give_receipt] not passing Form title properly when "payment_key" option set to true - https://github.com/WordImpress/Give/issues/443
 * Fixed: Give Network Activated on WP Multisite Displaying upgrade messages for new sites incorrectly - https://github.com/WordImpress/Give/issues/439
+* Fixed: .mo file corruption issue with Brazilian Portuguese translation file - https://github.com/WordImpress/Give/issues/458
 
 = 1.3.4 =
 * Fixed issue where pending "Offline Donations" payments were inappropriately marked as abandoned - @see: https://github.com/WordImpress/Give/issues/434
