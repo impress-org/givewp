@@ -528,7 +528,7 @@ function give_get_cc_form( $form_id ) {
 			</div>
 		<?php endif; ?>
 		<p id="give-card-number-wrap-<?php echo $form_id ?>" class="form-row form-row-two-thirds">
-			<label for="card_number" class="give-label">
+			<label for="card_number-<?php echo $form_id ?>" class="give-label">
 				<?php _e( 'Card Number', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
 				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'The (typically) 16 digits on the front of your credit card.', 'give' ); ?>"></span>
@@ -539,7 +539,7 @@ function give_get_cc_form( $form_id ) {
 		</p>
 
 		<p id="give-card-cvc-wrap-<?php echo $form_id ?>" class="form-row form-row-one-third">
-			<label for="card_cvc" class="give-label">
+			<label for="card_cvc-<?php echo $form_id ?>" class="give-label">
 				<?php _e( 'CVC', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
 				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'The 3 digit (back) or 4 digit (front) value on your card.', 'give' ); ?>"></span>
@@ -549,7 +549,7 @@ function give_get_cc_form( $form_id ) {
 		</p>
 
 		<p id="give-card-name-wrap-<?php echo $form_id ?>" class="form-row form-row-two-thirds">
-			<label for="card_name" class="give-label">
+			<label for="card_name-<?php echo $form_id ?>" class="give-label">
 				<?php _e( 'Name on the Card', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
 				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'The name printed on the front of your credit card.', 'give' ); ?>"></span>
