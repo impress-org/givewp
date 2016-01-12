@@ -18,25 +18,27 @@ Democratizing Generosity - Empower your cause: start accepting donations on Word
 
 = Features Include: =
 
-* Goal tracking per form
-* Simple and pain free giving
+* Goal tracking per donation form
+* Single-page, simple, and hassle-free donor giving
 * Zero commission charges
 * Own all your donation data
 * Accept Single, Custom, and Multi-level donations
-* Flexible public API for developers
 * Easy to customize and enhance
+* Looks great with nearly all WordPress themes
 * Robust reporting features
 * Customizable emails
-* PayPal Standard and Offline Payments
-* Custom user roles
-* Dedicated support and development
-* ... and much more!
+* PayPal Standard and Offline Payments included for free
+* Custom user roles for administration
+* Flexible public API for developers
+* Dedicated US-based support
+* Continually developed an improved
+* Updated and thorough **[documentation](https://givewp.com/documentation "Visit the Give documentation")**
 
-Find out more on the **[Give website](https://givewp.com "Visit the the Give website")**.
+Find out more on the **[Give website](https://givewp.com "Visit the Give website")**.
 
-= Why Give? =
+= Why Use Give for Donations? =
 
-Prior to Give there was no single go-to solution for accepting donations on WordPress. Sure, Gravity Forms and WooCommerce are great plugins but they're not developed to work specifically with donations. This can often lead to your users being confused by unnecessary cart systems, incorrect terminology, or lack of giving flexibility. As an admin, you may have experience wrestling with the various other WordPress donation plugins. Dealing with the lack of documentation and support can be a real pain. There's a better way. Now you have Give.
+Prior to Give there was no single goto solution for accepting donations on WordPress. *Sure*, Gravity Forms and WooCommerce are great plugins... but they're not developed to work specifically for accepting donations. This can often lead to your users being confused by unnecessary cart systems, incorrect terminology, and clunky user experiences. As an admin, you may have experience wrestling with the various other WordPress donation plugins. Dealing with the lack of features, documentation, and support can be a real pain. There's a better way. Now you have Give and the entire team on *your* side.
 
 = Simple and Pain Free Giving =
 
@@ -44,15 +46,17 @@ Give works great right in WordPress in a way that you're already familiar in wor
 
 = First Time Users =
 
-For new users, we suggest reviewing our [documentation](https://givewp.com/documentation "Visit the Give docs") to get an understanding of how the plugin works prior to using it. If you run into any trouble, [support](https://givewp.com/support "Visit the Give support page") is here to help you with your issues, questions, and concerns.
+For new users, we suggest reviewing our [documentation](https://givewp.com/documentation "Visit the Give docs") to get an understanding of how the plugin works prior to using it. If you run into any trouble, we offer [free support](https://wordpress.org/support/plugin/give "Visit the Give support page on WordPress.org") to help you with your issues, questions, and concerns.
 
 = Zero Commission Charges =
 
-We earn money by selling add-ons. The money you raise using Give is yours to go to support your cause. Period. Add-ons are premium features that enable you to extend the functionality of Give. For example, you can use one of our add-ons to accept funds through your favorite payment gateway or send new donor emails to MailChimp. [View all add-ons](https://givewp.com/addons "View all Give add-ons") to discover all the ways you can extend Give.
+We earn money by selling [premium add-ons](https://givewp.com/addons/ "View all of Give's Premium Add-ons"). The money you raise using Give is yours to support your cause. Period. Add-ons are premium features that enable you to extend the functionality of Give. For example, you can use one of our add-ons to accept funds through your favorite payment gateway or send new donor emails to MailChimp. [View all of Give's Add-ons](https://givewp.com/addons "View all Give add-ons") to discover all the ways you can extend Give.
 
 = Easy to Customize and Enhance =
 
-Give is built by [WordImpress](http://wordimpress.com "Visit the the developers of Give - WordImpress"), our plugins are built from the ground up to be intuitive and easy to use. Along with the plugin is a support team that is dedicated, fast to respond, and always willing to squash bugs and help troubleshoot.
+Give is built by [WordImpress](http://wordimpress.com "Visit the the developers of Give - WordImpress"), our plugins are built from the ground up to be intuitive and easy to use. By following along with our [Getting Stated Guide](https://givewp.com/documentation/core/give-101/ "Give 101 - Getting started using Give to accept donations on WordPress"), setting up Give to accept donations on WordPress is simple and easy.
+
+Do you have some development experience? We've built in an advanced templating system similar to the ones found in many of WordPress' top plugins that makes customizing many of Give's frontend elements upgrade proof and extremely flexible. Run into some trouble? We're here to help! Along with the plugin is a support team that is dedicated, fast to respond, and always willing to squash bugs and help troubleshoot.
 
 = Connect with Give =
 
@@ -76,14 +80,6 @@ This plugin is open source and we're always looking for more contributors. Wheth
 **~ The Open Source Initiative**
 
 Give is a tribute to the spirit and philosophy of open source. We at WordImpress gladly embrace the open source philosophy both in how Give itself was developed, and how we hope to see others build more from our code base.
-
-Give would not have been possible without the tireless efforts of these open source projects and their talented developers:
-
-* Pippin Williamson and his wonderful development team, Easy Digital Downloads
-* Mike Jolley and the whole WooThemes Team, WooCommerce
-* Carl Hancock and his entire crew, Gravity Forms
-* Joost De Valk and the Yoast team, WordPress SEO
-* Justin Sternberg and the whole WebDevStudios team, CMB2
 
 == Installation ==
 
@@ -159,7 +155,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Accessibility: Multi-level select field has no label - https://github.com/WordImpress/Give/issues/331
 * Accessibility: Multi-level select field has no label - https://github.com/WordImpress/Give/issues/331
 * Accessibility: #give-amount ID output multiple times on the page - https://github.com/WordImpress/Give/issues/326
-* Accessibility: Login form submit surrounded incorrectly with <p> tag - https://github.com/WordImpress/Give/issues/332
+* Accessibility: Login form submit surrounded incorrectly with paragraph tag - https://github.com/WordImpress/Give/issues/332
 * Accessibility: .give-amount input didn't have a label associated with it, now it does :) - https://github.com/WordImpress/Give/issues/328
 * Fix: Payments that are in "Pending" status for more then 10 days are not automatically set to "Abandoned" status instead of staying in "Pending" status
 * Fix: Shortcode builder dialogs do not work when the "SiteOrigin Widgets Bundle" plugin is active - https://github.com/WordImpress/Give/issues/405
