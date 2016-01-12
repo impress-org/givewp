@@ -16,7 +16,8 @@
  */
 .give-clearfix {
   *zoom: 1; }
-  .give-clearfix:before, .give-clearfix:after {
+  .give-clearfix:before,
+  .give-clearfix:after {
     content: " ";
     display: table; }
   .give-clearfix:after {
@@ -30,7 +31,7 @@
  * CSS3 Easing
  */
 .give-item-label {
-  padding: .2em .6em .3em;
+  padding: 0.2em 0.6em 0.3em;
   font-size: 85%;
   font-weight: 700;
   line-height: 1;
@@ -218,7 +219,7 @@
   line-height: 14px;
   text-align: center;
   text-indent: 0;
-  font: normal bold 10px/13px Tahoma,sans-serif;
+  font: normal bold 10px/13px Tahoma, sans-serif;
   color: inherit;
   background: transparent none no-repeat -100em -100em; }
 
@@ -694,7 +695,8 @@ Layout
 --------------------------------------*/
 .give-clearfix {
   *zoom: 1; }
-  .give-clearfix:before, .give-clearfix:after {
+  .give-clearfix:before,
+  .give-clearfix:after {
     content: " ";
     display: table; }
   .give-clearfix:after {
@@ -751,7 +753,8 @@ Single Forms
 
 .single-give_forms .give_forms {
   *zoom: 1; }
-  .single-give_forms .give_forms:before, .single-give_forms .give_forms:after {
+  .single-give_forms .give_forms:before,
+  .single-give_forms .give_forms:after {
     content: " ";
     display: table; }
   .single-give_forms .give_forms:after {
@@ -807,7 +810,10 @@ form[id*='give-form'], #give-recurring-form, form.give-form {
     box-sizing: border-box;
     margin: 0 0 15px;
     padding: 0; }
-    form[id*='give-form'] .form-row:before, form[id*='give-form'] .form-row:after, #give-recurring-form .form-row:before, #give-recurring-form .form-row:after, form.give-form .form-row:before, form.give-form .form-row:after {
+    form[id*='give-form'] .form-row:before,
+    form[id*='give-form'] .form-row:after, #give-recurring-form .form-row:before,
+    #give-recurring-form .form-row:after, form.give-form .form-row:before,
+    form.give-form .form-row:after {
       content: " ";
       display: table; }
     form[id*='give-form'] .form-row:after, #give-recurring-form .form-row:after, form.give-form .form-row:after {
@@ -854,7 +860,10 @@ form[id*='give-form'], #give-recurring-form, form.give-form {
   form[id*='give-form'] .form-row-wide, #give-recurring-form .form-row-wide, form.give-form .form-row-wide {
     *zoom: 1;
     clear: both; }
-    form[id*='give-form'] .form-row-wide:before, form[id*='give-form'] .form-row-wide:after, #give-recurring-form .form-row-wide:before, #give-recurring-form .form-row-wide:after, form.give-form .form-row-wide:before, form.give-form .form-row-wide:after {
+    form[id*='give-form'] .form-row-wide:before,
+    form[id*='give-form'] .form-row-wide:after, #give-recurring-form .form-row-wide:before,
+    #give-recurring-form .form-row-wide:after, form.give-form .form-row-wide:before,
+    form.give-form .form-row-wide:after {
       content: " ";
       display: table; }
     form[id*='give-form'] .form-row-wide:after, #give-recurring-form .form-row-wide:after, form.give-form .form-row-wide:after {
@@ -924,7 +933,8 @@ form[id*='give-form'] #give-final-total-wrap {
   margin: 25px 0;
   padding: 0;
   *zoom: 1; }
-  form[id*='give-form'] #give-final-total-wrap:before, form[id*='give-form'] #give-final-total-wrap:after {
+  form[id*='give-form'] #give-final-total-wrap:before,
+  form[id*='give-form'] #give-final-total-wrap:after {
     content: " ";
     display: table; }
   form[id*='give-form'] #give-final-total-wrap:after {
@@ -1027,7 +1037,8 @@ Radio Lists
   margin: 0 0 25px;
   padding: 0;
   list-style: none; }
-  #give-gateway-radio-list:before, #give-gateway-radio-list:after {
+  #give-gateway-radio-list:before,
+  #give-gateway-radio-list:after {
     content: " ";
     display: table; }
   #give-gateway-radio-list:after {
@@ -1062,7 +1073,8 @@ Buttons
   padding: 0;
   clear: both;
   list-style: none; }
-  #give-donation-level-button-wrap:before, #give-donation-level-button-wrap:after {
+  #give-donation-level-button-wrap:before,
+  #give-donation-level-button-wrap:after {
     content: " ";
     display: table; }
   #give-donation-level-button-wrap:after {
@@ -1213,7 +1225,8 @@ form[id*='give-form'] .give-loading-animation {
 /* Login and Register */
 #give-login-account-wrap {
   *zoom: 1; }
-  #give-login-account-wrap:before, #give-login-account-wrap:after {
+  #give-login-account-wrap:before,
+  #give-login-account-wrap:after {
     content: " ";
     display: table; }
   #give-login-account-wrap:after {
@@ -1386,7 +1399,8 @@ Responsiveness
 .mfp-s-error .mfp-content {
   display: none; }
 
-button.mfp-close, button.mfp-arrow {
+button.mfp-close,
+button.mfp-arrow {
   overflow: visible;
   cursor: pointer;
   background: transparent;
@@ -1418,7 +1432,8 @@ button::-moz-focus-inner {
   font-style: normal;
   font-size: 28px;
   font-family: Arial, Baskerville, monospace; }
-  .mfp-close:hover, .mfp-close:focus {
+  .mfp-close:hover,
+  .mfp-close:focus {
     opacity: 1;
     filter: alpha(opacity=100); }
   .mfp-close:active {
@@ -1457,10 +1472,12 @@ button::-moz-focus-inner {
   -webkit-tap-highlight-color: transparent; }
   .mfp-arrow:active {
     margin-top: -54px; }
-  .mfp-arrow:hover, .mfp-arrow:focus {
+  .mfp-arrow:hover,
+  .mfp-arrow:focus {
     opacity: 1;
     filter: alpha(opacity=100); }
-  .mfp-arrow:before, .mfp-arrow:after,
+  .mfp-arrow:before,
+  .mfp-arrow:after,
   .mfp-arrow .mfp-b,
   .mfp-arrow .mfp-a {
     content: '';
@@ -1757,23 +1774,24 @@ Avada
  * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
-.goal-progress {
-  margin-bottom: 20px; }
-  .goal-progress .income {
+.give-goal-progress {
+  margin-bottom: 20px;
+  clear: both; }
+  .give-goal-progress .income {
     font-size: 46px;
     line-height: 48px;
     letter-spacing: -1px;
     color: #333; }
-  .goal-progress .raised {
+  .give-goal-progress .raised {
     margin-bottom: 15px; }
 
-.progress-bar {
+.give-progress-bar {
   height: 20px;
   position: relative;
   background: #EEE;
   border-radius: 25px;
   overflow: hidden; }
-  .progress-bar > span {
+  .give-progress-bar > span {
     display: block;
     height: 100%;
     border-top-right-radius: 8px;
@@ -1839,7 +1857,8 @@ form.floated-labels .floatlabel {
 
 form.floated-labels .styled.select {
   position: relative; }
-  form.floated-labels .styled.select:before, form.floated-labels .styled.select:after {
+  form.floated-labels .styled.select:before,
+  form.floated-labels .styled.select:after {
     content: '';
     position: absolute;
     display: block;

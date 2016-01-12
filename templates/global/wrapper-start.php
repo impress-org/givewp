@@ -49,6 +49,9 @@ switch ( $template ) {
 	case 'avada' :
 		echo '<div class="give-wrap"><div id="content" role="main" style="width:100%">';
 		break;
+	case 'philanthropy-parent' :
+		echo '<div id="main" class="site-main" role="main"><div class="container"><div class="row"><div class="col-sm-12 col-xs-12 content-area">';
+		break;
 	default :
 		echo apply_filters( 'give_default_wrapper_start', '<div id="container" class="give-wrap container"><div id="content" role="main">' );
 		break;
