@@ -41,6 +41,9 @@ switch ( $template ) {
 	case 'jupiter' :
 		echo '</div></div></div>';
 		break;
+	case 'philanthropy-parent' :
+		echo '</div></div></div></div>';
+		break;
 	default :
 		echo apply_filters( 'give_default_wrapper_end', '</div></div>' );
 		break;

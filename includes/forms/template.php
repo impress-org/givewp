@@ -1184,7 +1184,7 @@ function give_show_goal_progress( $form_id, $args ) {
 		$progress = 100;
 	}
 
-	$output = '<div class="goal-progress">';
+	$output = '<div class="give-goal-progress">';
 
 	//Goal Progress Text
 	if ( ! empty( $show_text ) ) {
@@ -1194,13 +1194,13 @@ function give_show_goal_progress( $form_id, $args ) {
 	}
 	//Goal Progress Bar
 	if ( ! empty( $show_bar ) ) {
-		$output .= '<div class="progress-bar">';
+		$output .= '<div class="give-progress-bar">';
 		$output .= '<span style="width: ' . esc_attr( $progress ) . '%;';
 		if ( ! empty( $color ) ) {
 			$output .= 'background-color:' . $color;
 		}
 		$output .= '"></span>';
-		$output .= '</div><!-- /.progress-bar -->';
+		$output .= '</div><!-- /.give-progress-bar -->';
 	}
 
 	$output .= '</div><!-- /.goal-progress -->';
