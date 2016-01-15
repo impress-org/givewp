@@ -269,27 +269,27 @@ function give_setup_email_tags() {
 	$email_tags = array(
 		array(
 			'tag'         => 'donation',
-			'description' => __( "The name of completed donation form.", 'give' ),
+			'description' => __( 'The name of completed donation form', 'give' ),
 			'function'    => 'give_email_tag_donation'
 		),
 		array(
 			'tag'         => 'name',
-			'description' => __( "The donor's first name", 'give' ),
+			'description' => __( 'The donor\'s first name', 'give' ),
 			'function'    => 'give_email_tag_first_name'
 		),
 		array(
 			'tag'         => 'fullname',
-			'description' => __( "The donor's full name, first and last", 'give' ),
+			'description' => __( 'The donor\'s full name, first and last', 'give' ),
 			'function'    => 'give_email_tag_fullname'
 		),
 		array(
 			'tag'         => 'username',
-			'description' => __( "The donor's user name on the site, if they registered an account", 'give' ),
+			'description' => __( 'The donor\'s user name on the site, if they registered an account', 'give' ),
 			'function'    => 'give_email_tag_username'
 		),
 		array(
 			'tag'         => 'user_email',
-			'description' => __( "The donor's email address", 'give' ),
+			'description' => __( 'The donor\'s email address', 'give' ),
 			'function'    => 'give_email_tag_user_email'
 		),
 		array(
