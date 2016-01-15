@@ -255,7 +255,6 @@ class Give_Emails {
 
 		if ( ! did_action( 'init' ) && ! did_action( 'admin_init' ) ) {
 			_doing_it_wrong( __FUNCTION__, __( 'You cannot send email with Give_Emails until init/admin_init has been reached', 'give' ), null );
-
 			return false;
 		}
 
