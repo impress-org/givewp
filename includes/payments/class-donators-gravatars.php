@@ -381,7 +381,7 @@ class Give_Donators_Gravatars_Widget extends WP_Widget {
 	/*
 	 * widget constructor
 	 */
-	function give_donators_gravatars_widget() {
+	function __construct() {
 
 		$give_label_singular = function_exists( 'give_get_forms_label_singular' ) ? strtolower( give_get_forms_label_singular() ) : null;
 
