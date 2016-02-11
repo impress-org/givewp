@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @description: Returns a sanitized amount by stripping out thousands separators.
  *
- * @since 1.0
+ * @since      1.0
  *
  * @param string $amount Price amount to format
  *
@@ -118,6 +118,8 @@ function give_format_amount( $amount, $decimals = true ) {
  *
  * @param $field_args
  * @param $field
+ *
+ * @return bool
  */
 function give_format_admin_multilevel_amount( $field_args, $field ) {
 
@@ -134,9 +136,10 @@ function give_format_admin_multilevel_amount( $field_args, $field ) {
  *
  * @since 1.0
  *
- * @param string $price Price
+ * @param string $price
+ * @param string $currency
  *
- * @return array $currency Currencies displayed correctly
+ * @return mixed|string|void
  */
 function give_currency_filter( $price = '', $currency = '' ) {
 	if ( empty( $currency ) ) {
@@ -157,20 +160,24 @@ function give_currency_filter( $price = '', $currency = '' ) {
 
 	if ( $position == 'before' ):
 		switch ( $currency ):
-			case "GBP" :
-			case "BRL" :
-			case "EUR" :
-			case "USD" :
-			case "AUD" :
-			case "CAD" :
-			case "HKD" :
-			case "MXN" :
-			case "NZD" :
-			case "SGD" :
-			case "JPY" :
+			case 'GBP' :
+			case 'BRL' :
+			case 'EUR' :
+			case 'USD' :
+			case 'AUD' :
+			case 'CAD' :
+			case 'HKD' :
+			case 'MXN' :
+			case 'NZD' :
+			case 'SGD' :
+			case 'JPY' :
+			case 'THB' :
+			case 'INR' :
+			case 'RIAL' :
+			case 'TRY' :
 				$formatted = $symbol . $price;
 				break;
-			case "NOK" :
+			case 'NOK' :
 				$formatted = $symbol . ' ' . $price;
 				break;
 			default :
@@ -180,16 +187,20 @@ function give_currency_filter( $price = '', $currency = '' ) {
 		$formatted = apply_filters( 'give_' . strtolower( $currency ) . '_currency_filter_before', $formatted, $currency, $price );
 	else :
 		switch ( $currency ) :
-			case "GBP" :
-			case "BRL" :
-			case "EUR" :
-			case "USD" :
-			case "AUD" :
-			case "CAD" :
-			case "HKD" :
-			case "MXN" :
-			case "SGD" :
-			case "JPY" :
+			case 'GBP' :
+			case 'BRL' :
+			case 'EUR' :
+			case 'USD' :
+			case 'AUD' :
+			case 'CAD' :
+			case 'HKD' :
+			case 'MXN' :
+			case 'SGD' :
+			case 'JPY' :
+			case 'THB' :
+			case 'INR' :
+			case 'RIAL' :
+			case 'TRY' :
 				$formatted = $price . $symbol;
 				break;
 			default :

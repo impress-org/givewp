@@ -51,32 +51,32 @@ function give_get_currency() {
  */
 function give_get_currencies() {
 	$currencies = array(
-		'USD'  => __( 'US Dollars (&#36;)', 'give' ),
-		'EUR'  => __( 'Euros (&euro;)', 'give' ),
-		'GBP'  => __( 'Pounds Sterling (&pound;)', 'give' ),
-		'AUD'  => __( 'Australian Dollars (&#36;)', 'give' ),
-		'BRL'  => __( 'Brazilian Real (R&#36;)', 'give' ),
-		'CAD'  => __( 'Canadian Dollars (&#36;)', 'give' ),
+		'USD'  => __( 'US Dollars ($)', 'give' ),
+		'EUR'  => __( 'Euros (€)', 'give' ),
+		'GBP'  => __( 'Pounds Sterling (£)', 'give' ),
+		'AUD'  => __( 'Australian Dollars ($)', 'give' ),
+		'BRL'  => __( 'Brazilian Real (R$)', 'give' ),
+		'CAD'  => __( 'Canadian Dollars ($)', 'give' ),
 		'CZK'  => __( 'Czech Koruna', 'give' ),
 		'DKK'  => __( 'Danish Krone', 'give' ),
-		'HKD'  => __( 'Hong Kong Dollar (&#36;)', 'give' ),
+		'HKD'  => __( 'Hong Kong Dollar ($)', 'give' ),
 		'HUF'  => __( 'Hungarian Forint', 'give' ),
-		'ILS'  => __( 'Israeli Shekel (&#8362;)', 'give' ),
-		'JPY'  => __( 'Japanese Yen (&yen;)', 'give' ),
+		'ILS'  => __( 'Israeli Shekel (₪)', 'give' ),
+		'JPY'  => __( 'Japanese Yen (¥)', 'give' ),
 		'MYR'  => __( 'Malaysian Ringgits', 'give' ),
-		'MXN'  => __( 'Mexican Peso (&#36;)', 'give' ),
-		'NZD'  => __( 'New Zealand Dollar (&#36;)', 'give' ),
+		'MXN'  => __( 'Mexican Peso ($)', 'give' ),
+		'NZD'  => __( 'New Zealand Dollar ($)', 'give' ),
 		'NOK'  => __( 'Norwegian Krone (Kr.)', 'give' ),
 		'PHP'  => __( 'Philippine Pesos', 'give' ),
 		'PLN'  => __( 'Polish Zloty', 'give' ),
-		'SGD'  => __( 'Singapore Dollar (&#36;)', 'give' ),
+		'SGD'  => __( 'Singapore Dollar ($)', 'give' ),
 		'SEK'  => __( 'Swedish Krona', 'give' ),
 		'CHF'  => __( 'Swiss Franc', 'give' ),
 		'TWD'  => __( 'Taiwan New Dollars', 'give' ),
-		'THB'  => __( 'Thai Baht (&#3647;)', 'give' ),
-		'INR'  => __( 'Indian Rupee (&#8377;)', 'give' ),
-		'TRY'  => __( 'Turkish Lira (&#8378;)', 'give' ),
-		'RIAL' => __( 'Iranian Rial (&#65020;)', 'give' ),
+		'THB'  => __( 'Thai Baht (฿)', 'give' ),
+		'INR'  => __( 'Indian Rupee (₹)', 'give' ),
+		'TRY'  => __( 'Turkish Lira (₺)', 'give' ),
+		'RIAL' => __( 'Iranian Rial (﷼)', 'give' ),
 		'RUB'  => __( 'Russian Rubles', 'give' )
 	);
 
@@ -85,10 +85,11 @@ function give_get_currencies() {
 
 
 /**
- * Given a currency determine the symbol to use. If no currency given, site default is used.
- * If no symbol is determine, the currency string is returned.
+ * Give Currency Symbol
  *
- * @since  1.0
+ * @description: Given a currency determine the symbol to use. If no currency given, site default is used. If no symbol is determine, the currency string is returned.
+ *
+ * @since      1.0
  *
  * @param  string $currency The currency string
  *
@@ -100,28 +101,43 @@ function give_currency_symbol( $currency = '' ) {
 		$currency = give_get_currency();
 	}
 	switch ( $currency ) :
-		case "GBP" :
-			$symbol = '&pound;';
+		case 'GBP' :
+			$symbol = '£';
 			break;
-		case "BRL" :
-			$symbol = 'R&#36;';
+		case 'BRL' :
+			$symbol = 'R$';
 			break;
-		case "EUR" :
-			$symbol = '&euro;';
+		case 'EUR' :
+			$symbol = '€';
 			break;
-		case "NOK" :
+		case 'NOK' :
 			$symbol = 'Kr.';
 			break;
-		case "USD" :
-		case "AUD" :
-		case "CAD" :
-		case "HKD" :
-		case "MXN" :
-		case "SGD" :
-			$symbol = '&#36;';
+		case 'INR' :
+			$symbol = '₹';
 			break;
-		case "JPY" :
-			$symbol = '&yen;';
+		case 'USD' :
+		case 'AUD' :
+		case 'CAD' :
+		case 'HKD' :
+		case 'MXN' :
+		case 'SGD' :
+			$symbol = '$';
+			break;
+		case 'JPY' :
+			$symbol = '¥';
+			break;
+		case 'THB' :
+			$symbol = '฿';
+			break;
+		case 'TRY' :
+			$symbol = '₺';
+			break;
+		case 'ILS' :
+			$symbol = '₪';
+			break;
+		case 'RIAL' :
+			$symbol = '﷼';
 			break;
 		default :
 			$symbol = $currency;
