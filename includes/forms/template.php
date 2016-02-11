@@ -51,7 +51,7 @@ function give_get_donation_form( $args = array() ) {
 	$form_action = esc_url( add_query_arg( apply_filters( 'give_form_action_args', array(
 		'payment-mode' => $payment_mode,
 	) ),
-		get_permalink()
+		give_get_current_page_url()
 	) );
 
 	if ( 'publish' !== $form->post_status && ! current_user_can( 'edit_product', $form->ID ) ) {
@@ -100,8 +100,8 @@ function give_get_donation_form( $args = array() ) {
 		<form id="give-form-<?php echo $post_id; ?>" class="give-form give-form-<?php echo absint( $form->ID ); ?><?php echo $float_labels_option; ?>" action="<?php echo $form_action; ?>" method="post">
 			<input type="hidden" name="give-form-id" value="<?php echo $form->ID; ?>" />
 			<input type="hidden" name="give-form-title" value="<?php echo htmlentities( $form->post_title ); ?>" />
-			<input type="hidden" name="give-current-url" value="<?php echo htmlspecialchars( get_permalink() ); ?>" />
-			<input type="hidden" name="give-form-url" value="<?php echo htmlspecialchars( get_permalink( $post_id ) ); ?>" />
+			<input type="hidden" name="give-current-url" value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>" />
+			<input type="hidden" name="give-form-url" value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>" />
 			<?php
 			//Price ID hidden field for variable (mult-level) donation forms
 			if ( give_has_variable_prices( $post_id ) ) {
@@ -789,7 +789,7 @@ function give_get_register_fields( $form_id ) {
 			</p>
 
 			<p id="give-user-pass-wrap" class="form-row form-row-one-third">
-				<label for="password">
+				<label for="give_user_pass">
 					<?php _e( 'Password', 'give' ); ?>
 					<?php if ( give_no_guest_checkout( $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
@@ -803,7 +803,7 @@ function give_get_register_fields( $form_id ) {
 			</p>
 
 			<p id="give-user-pass-confirm-wrap" class="give_register_password form-row form-row-one-third">
-				<label for="password_again">
+				<label for="give_user_pass_confirm">
 					<?php _e( 'Confirm Password', 'give' ); ?>
 					<?php if ( give_no_guest_checkout( $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
