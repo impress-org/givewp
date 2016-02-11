@@ -57,27 +57,27 @@ function give_get_currencies() {
 		'AUD'  => __( 'Australian Dollars ($)', 'give' ),
 		'BRL'  => __( 'Brazilian Real (R$)', 'give' ),
 		'CAD'  => __( 'Canadian Dollars ($)', 'give' ),
-		'CZK'  => __( 'Czech Koruna', 'give' ),
-		'DKK'  => __( 'Danish Krone', 'give' ),
+		'CZK'  => __( 'Czech Koruna (Kč)', 'give' ),
+		'DKK'  => __( 'Danish Krone (kr)', 'give' ),
 		'HKD'  => __( 'Hong Kong Dollar ($)', 'give' ),
-		'HUF'  => __( 'Hungarian Forint', 'give' ),
+		'HUF'  => __( 'Hungarian Forint (Ft)', 'give' ),
 		'ILS'  => __( 'Israeli Shekel (₪)', 'give' ),
 		'JPY'  => __( 'Japanese Yen (¥)', 'give' ),
-		'MYR'  => __( 'Malaysian Ringgits', 'give' ),
+		'MYR'  => __( 'Malaysian Ringgits (RM)', 'give' ),
 		'MXN'  => __( 'Mexican Peso ($)', 'give' ),
 		'NZD'  => __( 'New Zealand Dollar ($)', 'give' ),
 		'NOK'  => __( 'Norwegian Krone (Kr.)', 'give' ),
-		'PHP'  => __( 'Philippine Pesos', 'give' ),
-		'PLN'  => __( 'Polish Zloty', 'give' ),
+		'PHP'  => __( 'Philippine Pesos (₱)', 'give' ),
+		'PLN'  => __( 'Polish Zloty (zł)', 'give' ),
 		'SGD'  => __( 'Singapore Dollar ($)', 'give' ),
-		'SEK'  => __( 'Swedish Krona', 'give' ),
-		'CHF'  => __( 'Swiss Franc', 'give' ),
-		'TWD'  => __( 'Taiwan New Dollars', 'give' ),
+		'SEK'  => __( 'Swedish Krona (kr)', 'give' ),
+		'CHF'  => __( 'Swiss Franc (CHF)', 'give' ),
+		'TWD'  => __( 'Taiwan New Dollars (NT$)', 'give' ),
 		'THB'  => __( 'Thai Baht (฿)', 'give' ),
 		'INR'  => __( 'Indian Rupee (₹)', 'give' ),
 		'TRY'  => __( 'Turkish Lira (₺)', 'give' ),
 		'RIAL' => __( 'Iranian Rial (﷼)', 'give' ),
-		'RUB'  => __( 'Russian Rubles', 'give' )
+		'RUB'  => __( 'Russian Rubles (руб)', 'give' )
 	);
 
 	return apply_filters( 'give_currencies', $currencies );
@@ -133,11 +133,36 @@ function give_currency_symbol( $currency = '' ) {
 		case 'TRY' :
 			$symbol = '₺';
 			break;
+		case 'TWD' :
+			$symbol = 'NT$';
+			break;
 		case 'ILS' :
 			$symbol = '₪';
 			break;
 		case 'RIAL' :
 			$symbol = '﷼';
+			break;
+		case 'RUB' :
+			$symbol = 'руб';
+			break;
+		case 'DKK' :
+		case 'SEK' :
+			$symbol = 'kr';
+			break;
+		case 'PLN' :
+			$symbol = 'zł';
+			break;
+		case 'PHP' :
+			$symbol = '₱';
+			break;
+		case 'MYR' :
+			$symbol = 'RM';
+			break;
+		case 'HUF' :
+			$symbol = 'Ft';
+			break;
+		case 'CZK' :
+			$symbol = 'Kč';
 			break;
 		default :
 			$symbol = $currency;

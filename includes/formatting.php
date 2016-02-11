@@ -175,6 +175,16 @@ function give_currency_filter( $price = '', $currency = '' ) {
 			case 'INR' :
 			case 'RIAL' :
 			case 'TRY' :
+			case 'RUB' :
+			case 'SEK' :
+			case 'PLN' :
+			case 'PHP' :
+			case 'TWD' :
+			case 'MYR' :
+			case 'CZK' :
+			case 'DKK' :
+			case 'HUF' :
+			case 'ILS' :
 				$formatted = $symbol . $price;
 				break;
 			case 'NOK' :
@@ -201,6 +211,16 @@ function give_currency_filter( $price = '', $currency = '' ) {
 			case 'INR' :
 			case 'RIAL' :
 			case 'TRY' :
+			case 'RUB' :
+			case 'SEK' :
+			case 'PLN' :
+			case 'PHP' :
+			case 'TWD' :
+			case 'CZK' :
+			case 'DKK' :
+			case 'HUF' :
+			case 'MYR' :
+			case 'ILS' :
 				$formatted = $price . $symbol;
 				break;
 			default :
