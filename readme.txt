@@ -128,6 +128,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 = 1.3.6 =
 * New: Give French translation provided by Laurent. Thanks! - https://github.com/WordImpress/Give/issues/472
+* Fixed: Currency output has better support for - https://github.com/WordImpress/Give/issues/468
 * Fixed: Bug with floating labels functionality and the password field type not hiding labels appropriately - https://github.com/WordImpress/Give/issues/468
 
 = 1.3.5 =
