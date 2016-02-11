@@ -156,7 +156,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 				self::$instance->html               = new Give_HTML_Elements();
 				self::$instance->emails             = new Give_Emails();
 				self::$instance->email_tags         = new Give_Email_Template_Tags();
-				self::$instance->donators_gravatars = new Give_Donators_Gravatars();
+//				self::$instance->donators_gravatars = new Give_Donators_Gravatars();
 				self::$instance->customers          = new Give_DB_Customers();
 				self::$instance->template_loader    = new Give_Template_Loader();
 
