@@ -4,7 +4,7 @@
  * @description: Scripts that power the Give experience
  * @package:     Give
  * @subpackage:  Assets/JS
- * @copyright:   Copyright (c) 2015, WordImpress
+ * @copyright:   Copyright (c) 2016, WordImpress
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 

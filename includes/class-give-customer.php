@@ -92,9 +92,10 @@ class Give_Customer {
 	protected $db;
 
 	/**
-	 * Get things going
+	 * Give_Customer constructor.
 	 *
-	 * @since 1.0
+	 * @param bool $_id_or_email
+	 * @param bool $by_user_id
 	 */
 	public function __construct( $_id_or_email = false, $by_user_id = false ) {
 
