@@ -98,6 +98,10 @@ class Give_Stats {
 	 *
 	 * @access public
 	 * @since  1.0
+	 *
+	 * @param string $_start_date
+	 * @param bool   $_end_date
+	 *
 	 * @return void
 	 */
 	public function setup_dates( $_start_date = 'this_month', $_end_date = false ) {
@@ -108,7 +112,7 @@ class Give_Stats {
 
 		$this->start_date = $_start_date;
 
-		if( empty( $_end_date ) ) {
+		if ( empty( $_end_date ) ) {
 			$_end_date = $_start_date;
 		}
 
@@ -490,6 +494,9 @@ class Give_Stats {
 	 *
 	 * @access public
 	 * @since  1.0
+	 *
+	 * @param string $where
+	 *
 	 * @return string
 	 */
 	public function payments_where( $where = '' ) {
