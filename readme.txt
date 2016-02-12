@@ -130,6 +130,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * New: Give French translation provided by Laurent. Thanks! - https://github.com/WordImpress/Give/issues/472
 * Fixed: Currency output has better support for - https://github.com/WordImpress/Give/issues/468
 * Fixed: Bug with floating labels functionality and the password field type not hiding labels appropriately - https://github.com/WordImpress/Give/issues/468
+* Fixed: Updating the transaction payment date was not working as expected when in "Pending" status - https://github.com/WordImpress/Give/issues/435
 
 = 1.3.5 =
 * New: give_settings_array_insert() function to help other Add-ons and plugins insert Give settings at a desired position
