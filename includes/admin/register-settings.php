@@ -680,10 +680,6 @@ class Give_Plugin_Settings {
 
 	/**
 	 * Show Settings Notices
-	 *
-	 * @param $object_id
-	 * @param $updated
-	 * @param $cmb
 	 */
 	public function settings_notices() {
 
