@@ -415,6 +415,7 @@ class Give_Donators_Gravatars_Widget extends WP_Widget {
 	function widget( $args, $instance ) {
 		global $give_options;
 
+		//@TODO: Don't extract it!!!
 		extract( $args );
 
 		if ( ! is_singular( 'give_forms' ) ) {
