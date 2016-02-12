@@ -381,7 +381,7 @@ class Give_Donators_Gravatars_Widget extends WP_Widget {
 	/*
 	 * widget constructor
 	 */
-	function __construct() {
+	public function __construct() {
 
 		$give_label_singular = function_exists( 'give_get_forms_label_singular' ) ? strtolower( give_get_forms_label_singular() ) : null;
 
@@ -399,7 +399,7 @@ class Give_Donators_Gravatars_Widget extends WP_Widget {
 		);
 
 		// create the widget
-		$this->WP_Widget(
+		parent::__construct(
 			'give_donators_gravatars_widget',
 			__( 'Give Donators Gravatars', 'give' ),
 			$widget_ops,
