@@ -315,9 +315,6 @@ class Give_API {
 				$this->missing_auth();
 			}
 
-			// Auth was provided, include the upgrade routine so we can use the fallback api checks
-			require GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrade-functions.php';
-
 			// Retrieve the user by public API key and ensure they exist
 			if ( ! ( $user = $this->get_user( $wp_query->query_vars['key'] ) ) ) {
 
