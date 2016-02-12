@@ -307,7 +307,7 @@ function give_get_placeholder_img_src() {
 
 	$image_size = give_get_image_size( 'give_form_thumbnail' );
 
-	$placeholder_url = 'http://placehold.it/' . $image_size['width'] . 'x' . $image_size['height'] . '&text=' . urlencode( esc_attr__( 'Give Placeholder Image+', 'give' ) ) . '(' . $image_size['width'] . 'x' . $image_size['height'] . ')';
+	$placeholder_url = 'http://placehold.it/' . $image_size['width'] . 'x' . $image_size['height'] . '&text=' . urlencode( esc_attr__( 'Give Placeholder Image', 'give' ) ) . '+(' . $image_size['width'] . 'x' . $image_size['height'] . ')';
 
 	return apply_filters( 'give_placeholder_img_src', $placeholder_url );
 }
