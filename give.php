@@ -62,7 +62,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 		/**
 		 * Give Roles Object
 		 *
-		 * @var object
+		 * @var Give_Roles object
 		 * @since 1.0
 		 */
 		public $roles;
@@ -70,7 +70,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 		/**
 		 * Give Settings Object
 		 *
-		 * @var object
+		 * @var Give_Plugin_Settings object
 		 * @since 1.0
 		 */
 		public $give_settings;
@@ -80,7 +80,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 		 *
 		 * This holds donation data for user's session
 		 *
-		 * @var object
+		 * @var Give_Session object
 		 * @since 1.0
 		 */
 		public $session;
@@ -88,7 +88,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 		/**
 		 * Give HTML Element Helper Object
 		 *
-		 * @var object
+		 * @var Give_HTML_Elements object
 		 * @since 1.0
 		 */
 		public $html;
@@ -97,7 +97,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 		/**
 		 * Give Emails Object
 		 *
-		 * @var object
+		 * @var Give_Emails object
 		 * @since 1.0
 		 */
 		public $emails;
@@ -105,7 +105,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 		/**
 		 * Give Email Template Tags Object
 		 *
-		 * @var object
+		 * @var Give_Email_Template_Tags object
 		 * @since 1.0
 		 */
 		public $email_tags;
@@ -113,7 +113,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 		/**
 		 * Give Customers DB Object
 		 *
-		 * @var object
+		 * @var Give_Customer object
 		 * @since 1.0
 		 */
 		public $customers;
@@ -121,10 +121,18 @@ if ( ! class_exists( 'Give' ) ) : /**
 		/**
 		 * Give API Object
 		 *
-		 * @var object
+		 * @var Give_API object
 		 * @since 1.1
 		 */
 		public $api;
+
+		/**
+		 * Give Template Loader Object
+		 *
+		 * @var Give_Template_Loader object
+		 * @since 1.0
+		 */
+		public $template_loader;
 
 		/**
 		 * Main Give Instance
@@ -149,16 +157,16 @@ if ( ! class_exists( 'Give' ) ) : /**
 				add_action( 'plugins_loaded', array( self::$instance, 'load_textdomain' ) );
 
 				self::$instance->includes();
-				self::$instance->roles              = new Give_Roles();
-				self::$instance->api                = new Give_API();
-				self::$instance->give_settings      = new Give_Plugin_Settings();
-				self::$instance->session            = new Give_Session();
-				self::$instance->html               = new Give_HTML_Elements();
-				self::$instance->emails             = new Give_Emails();
-				self::$instance->email_tags         = new Give_Email_Template_Tags();
-//				self::$instance->donators_gravatars = new Give_Donators_Gravatars();
-				self::$instance->customers          = new Give_DB_Customers();
-				self::$instance->template_loader    = new Give_Template_Loader();
+				self::$instance->roles         = new Give_Roles();
+				self::$instance->api           = new Give_API();
+				self::$instance->give_settings = new Give_Plugin_Settings();
+				self::$instance->session       = new Give_Session();
+				self::$instance->html          = new Give_HTML_Elements();
+				self::$instance->emails        = new Give_Emails();
+				self::$instance->email_tags    = new Give_Email_Template_Tags();
+				//				self::$instance->donators_gravatars = new Give_Donators_Gravatars();
+				self::$instance->customers       = new Give_DB_Customers();
+				self::$instance->template_loader = new Give_Template_Loader();
 
 			}
 
