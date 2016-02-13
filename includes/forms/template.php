@@ -281,8 +281,8 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 	<?php }
 
 	//Custom Amount Text
-	if ( ! empty( $custom_amount_text ) && ! $variable_pricing && $allow_custom_amount == 'yes' ) { ?>
-		<p class="give-custom-amount-text"><?php echo $custom_amount_text; ?></p>
+	if ( ! $variable_pricing && $allow_custom_amount == 'yes' ) { ?>
+		<p class="give-custom-amount-text"><?php echo ! empty( $custom_amount_text ) ? $custom_amount_text : __( 'Give a Custom Amount', 'give' ); ?></p>
 	<?php }
 
 	//Output Variable Pricing Levels
@@ -310,9 +310,13 @@ function give_output_levels( $form_id ) {
 	$prices             = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
 	$display_style      = get_post_meta( $form_id, '_give_display_style', true );
 	$custom_amount      = get_post_meta( $form_id, '_give_custom_amount', true );
-	$custom_amount_text = apply_filters( '', get_post_meta( $form_id, '_give_custom_amount_text', true ) );
-	$output             = '';
-	$counter            = 0;
+	$custom_amount_text = get_post_meta( $form_id, '_give_custom_amount_text', true );
+	if ( empty( $custom_amount_text ) ) {
+		$custom_amount_text = __( 'Give a Custom Amount', 'give' );
+	}
+
+	$output  = '';
+	$counter = 0;
 
 	switch ( $display_style ) {
 		case 'buttons':
