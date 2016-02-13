@@ -132,6 +132,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Fixed: Bug with floating labels functionality and the password field type not hiding labels appropriately - https://github.com/WordImpress/Give/issues/468
 * Fixed: Updating the transaction payment date was not working as expected when in "Pending" status - https://github.com/WordImpress/Give/issues/435
 * Fixed: PHP Warning with Deprecated wp_new_user_notification when donor creates a new account - https://github.com/WordImpress/Give/issues/474
+* Fixed: Required to have value in "Custom Amount Text" for field to display #462 - https://github.com/WordImpress/Give/issues/462
 
 = 1.3.5 =
 * New: give_settings_array_insert() function to help other Add-ons and plugins insert Give settings at a desired position
