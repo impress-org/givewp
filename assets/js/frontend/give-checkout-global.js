@@ -171,7 +171,7 @@ jQuery( function ( $ ) {
 	 */
 	function give_format_currency( price ) {
 		return accounting.formatMoney( price, {
-			symbol   : '',
+			symbol   : give_global_vars.currency_sign,
 			decimal  : give_global_vars.decimal_separator,
 			thousand : give_global_vars.thousands_separator,
 			precision: give_global_vars.number_decimals
@@ -311,7 +311,7 @@ jQuery( function ( $ ) {
 
 		//Update hidden price field
 		parent_form.find( '.give-amount-hidden' ).val( this_amount );
-		
+
 		//update custom amount field
 		parent_form.find( '.give-amount-top' ).val( this_amount );
 		parent_form.find( 'span.give-amount-top' ).text( this_amount );
