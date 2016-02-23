@@ -12,9 +12,7 @@
 var give_scripts;
 
 function customEvents( el ) {
-	var id = el.attr( 'id' );
-
-	if ( id === 'card_number' ) {
+	if ( el.hasClass( 'card-number' ) ) {
 		el.after( '<span class="off card-type"/>' );
 	}
 }
