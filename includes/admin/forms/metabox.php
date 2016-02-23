@@ -27,6 +27,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 
 	$post_id          = give_get_admin_post_id();
 	$price            = give_get_form_price( $post_id );
+	$minimum_amount   = give_get_form_minimum_price( $post_id );
 	$goal             = give_get_form_goal( $post_id );
 	$variable_pricing = give_has_variable_prices( $post_id );
 	$prices           = give_get_variable_prices( $post_id );
@@ -34,6 +35,11 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 	//No empty prices - min. 1.00 for new forms
 	if ( empty( $price ) ) {
 		$price = esc_attr( give_format_amount( '1.00' ) );
+	}
+
+	//Min. 1.00 for new forms
+	if ( empty( $minimum_amount ) ) {
+		$minimum_amount = esc_attr( give_format_amount( '1.00' ) );
 	}
 
 	// Start with an underscore to hide fields from custom fields list
@@ -148,6 +154,20 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'options'     => array(
 						'yes' => __( 'Yes', 'give' ),
 						'no'  => __( 'No', 'give' ),
+					),
+				),
+				array(
+					'name'         => __( 'Minimum Amount', 'give' ),
+					'description'  => __( 'If you would like to set a minimum donation amount, enter it here.', 'give' ),
+					'id'           => $prefix . 'custom_amount_minimum',
+					'type'         => 'text_small',
+					'row_classes'  => 'give-subfield',
+					'before_field' => give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol give-money-symbol-before">' . give_currency_symbol() . '</span>' : '',
+					'after_field'  => give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '',
+					'attributes'   => array(
+						'placeholder' => give_format_amount( '1.00' ),
+						'value'       => $minimum_amount,
+						'class'       => 'cmb-type-text-small give-money-field',
 					),
 				),
 				array(
