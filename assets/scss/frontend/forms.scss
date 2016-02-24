@@ -381,7 +381,8 @@ Radio Lists
   clear: both;
 
   > li {
-
+	list-style-type: none;
+	list-style-image: none;
 	margin: 0 0 5px;
 	padding: 0;
 
@@ -392,6 +393,7 @@ Radio Lists
 	input[type="radio"] {
 	  margin: 0 5px 0 0;
 	  outline: none;
+	  width:auto;
 	}
   }
 
@@ -410,6 +412,7 @@ Radio Lists
 	margin-right: 15px;
 	margin-left: 0;
 	list-style-type: none;
+	list-style-image: none;
 
 	.give-gateway-option {
 	  cursor: pointer;
@@ -417,6 +420,7 @@ Radio Lists
 	  input[type="radio"] {
 		margin: 0 5px 0 0;
 		outline: none;
+		width:auto;
 	  }
 	}
 
@@ -450,6 +454,7 @@ Buttons
 
   > li {
 	list-style-type: none;
+	list-style-image: none;
 	float: left;
 	margin: 0 5px 5px 0;
   }

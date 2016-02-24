@@ -1013,13 +1013,16 @@ Radio Lists
   list-style: none;
   clear: both; }
   #give-donation-level-radio-list > li {
+    list-style-type: none;
+    list-style-image: none;
     margin: 0 0 5px;
     padding: 0; }
     #give-donation-level-radio-list > li label {
       cursor: pointer; }
     #give-donation-level-radio-list > li input[type="radio"] {
       margin: 0 5px 0 0;
-      outline: none; }
+      outline: none;
+      width: auto; }
 
 #give-gateway-radio-list {
   *zoom: 1;
@@ -1036,12 +1039,14 @@ Radio Lists
     float: left;
     margin-right: 15px;
     margin-left: 0;
-    list-style-type: none; }
+    list-style-type: none;
+    list-style-image: none; }
     #give-gateway-radio-list > li .give-gateway-option {
       cursor: pointer; }
       #give-gateway-radio-list > li .give-gateway-option input[type="radio"] {
         margin: 0 5px 0 0;
-        outline: none; }
+        outline: none;
+        width: auto; }
 
 /*---------------------------------
 Donation Level: Dropdown/Select
@@ -1069,6 +1074,7 @@ Buttons
     clear: both; }
   #give-donation-level-button-wrap > li {
     list-style-type: none;
+    list-style-image: none;
     float: left;
     margin: 0 5px 5px 0; }
 

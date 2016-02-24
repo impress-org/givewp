@@ -128,11 +128,14 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 = 1.3.6 =
 * New: Give French translation provided by Laurent. Thanks! - https://github.com/WordImpress/Give/issues/472
+* Tweak: Improved "Offline Donations" gateway admin notification messaging - https://github.com/WordImpress/Give/issues/448
 * Fixed: Currency output has better support for - https://github.com/WordImpress/Give/issues/468
 * Fixed: Bug with floating labels functionality and the password field type not hiding labels appropriately - https://github.com/WordImpress/Give/issues/468
 * Fixed: Updating the transaction payment date was not working as expected when in "Pending" status - https://github.com/WordImpress/Give/issues/435
 * Fixed: PHP Warning with Deprecated wp_new_user_notification when donor creates a new account - https://github.com/WordImpress/Give/issues/474
-* Fixed: Required to have value in "Custom Amount Text" for field to display #462 - https://github.com/WordImpress/Give/issues/462
+* Fixed: Required to have value in "Custom Amount Text" for field to display - https://github.com/WordImpress/Give/issues/462
+* Fixed: "Generate API Keys" Profile setting not reflecting saved state - https://github.com/WordImpress/Give/issues/440
+* Fixed: Offline Donation Emails not using Give_Emails class - https://github.com/WordImpress/Give/issues/447
 
 = 1.3.5 =
 * New: give_settings_array_insert() function to help other Add-ons and plugins insert Give settings at a desired position
