@@ -766,6 +766,25 @@ function give_get_form_price( $form_id = 0 ) {
 	return $form->price;
 }
 
+/**
+ * Returns the minimum price amount of a form, only enforced for the custom amount input.
+ *
+ * @since 1.3.6
+ *
+ * @param int $form_id ID number of the form to retrieve the minimum price for
+ *
+ * @return mixed string|int Minimum price of the form
+ */
+function give_get_form_minimum_price( $form_id = 0 ) {
+
+	if ( empty( $form_id ) ) {
+		return false;
+	}
+
+	$form = new Give_Donate_Form( $form_id );
+
+	return $form->minimum_price;
+}
 
 /**
  * Displays a formatted price for a donation form

@@ -44,6 +44,7 @@ function give_load_scripts() {
 		'thousands_separator' => isset( $give_options['thousands_separator'] ) ? $give_options['thousands_separator'] : ',',
 		'decimal_separator'   => isset( $give_options['decimal_separator'] ) ? $give_options['decimal_separator'] : '.',
 		'no_gateway'          => __( 'Please select a payment method', 'give' ),
+		'bad_minimum'         => __( 'The minimum donation amount for this form is', 'give' ),
 		'general_loading'     => __( 'Loading...', 'give' ),
 		'purchase_loading'    => __( 'Please Wait...', 'give' ),
 		'give_version'        => GIVE_VERSION

@@ -40,6 +40,7 @@ class Give_Helper_Form extends WP_UnitTestCase {
 			'_give_set_price'                   => '50.00',
 			'_variable_pricing'                 => 0,
 			'_give_custom_amount'               => 'yes',
+			'_give_custom_amount_minimum'        => '1.00',
 			'_give_custom_amount_text'          => 'Would you like to set a custom amount?',
 			'_give_goal_option'                 => 'no',
 			'_give_payment_display'             => 'onpage',
