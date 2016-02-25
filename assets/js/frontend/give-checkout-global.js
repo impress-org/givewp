@@ -254,10 +254,10 @@ jQuery( function ( $ ) {
 
 			minimum_amount = give_global_vars.bad_minimum + ' ' + give_format_currency( value_min );
 
-			$invalid_minimum = parent_form.find( '.invalid-minimum' );
+			var invalid_minimum = parent_form.find( '.invalid-minimum' );
 
-			if( $invalid_minimum.length === 0 ) {
-
+			//Invalid Minimum
+			if( invalid_minimum.length === 0 ) {
 				var error = $( '<p class="invalid-minimum give-error">' + minimum_amount + '</p>' ).hide();
 
 				error.insertAfter( $( this ).closest( '.give-total-wrap' ) ).slideDown();
