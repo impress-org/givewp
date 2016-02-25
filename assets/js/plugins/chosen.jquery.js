@@ -463,6 +463,7 @@
         case 16:
         case 91:
         case 17:
+        case 18:
           break;
         default:
           return this.results_search();
