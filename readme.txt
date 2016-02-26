@@ -129,7 +129,8 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 = 1.3.6 =
 * New: Give French translation provided by Laurent. Thanks! - https://github.com/WordImpress/Give/issues/472
 * Tweak: Improved "Offline Donations" gateway admin notification messaging - https://github.com/WordImpress/Give/issues/448
-* Fixed: Donation total does not show the currency sign when changing custom amount - thanks @pryley - see: https://github.com/WordImpress/Give/issues/485
+* Fixed: Updated "At a Glance" dashboard widget icon to be Give symbol rather than empty circle - https://github.com/WordImpress/Give/issues/492
+* Fixed: Donation total does not show the currency sign when changing custom amount - thanks @pryley - https://github.com/WordImpress/Give/issues/485
 * Fixed: Currency output has better support for - https://github.com/WordImpress/Give/issues/468
 * Fixed: Bug with floating labels functionality and the password field type not hiding labels appropriately - https://github.com/WordImpress/Give/issues/468
 * Fixed: Updating the transaction payment date was not working as expected when in "Pending" status - https://github.com/WordImpress/Give/issues/435

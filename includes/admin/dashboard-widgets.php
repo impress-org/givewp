@@ -107,10 +107,13 @@ function give_dashboard_sales_widget() {
 }
 
 /**
- * Add download count to At a glance widget
+ * Add donation forms count to dashboard "At a glance" widget
  *
  * @since  1.0
- * @return void
+ *
+ * @param $items
+ *
+ * @return array
  */
 function give_dashboard_at_a_glance_widget( $items ) {
 	$num_posts = wp_count_posts( 'give_forms' );

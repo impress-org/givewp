@@ -91,3 +91,14 @@
   }
 
 }
+
+//At a Glance Widget
+#dashboard_right_now {
+  .give-forms-count:before {
+	@include iconstyle();
+	font-size: 18px;
+	width: 18px;
+	height: 18px;
+	content: "\e800";
+  }
+}
