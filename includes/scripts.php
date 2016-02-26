@@ -50,7 +50,6 @@ function give_load_scripts() {
 	) );
 	$localize_give_ajax     = apply_filters( 'give_global_ajax_vars', array(
 		'ajaxurl'          => give_get_ajax_url(),
-		'position_in_cart' => isset( $position ) ? $position : - 1,
 		'loading'          => __( 'Loading', 'give' ),
 		// General loading message
 		'select_option'    => __( 'Please select an option', 'give' ),
