@@ -3,7 +3,7 @@
 
 We know how important fundraising online is to accomplish your goals. For many non-profits, churches, candidates, schools and causes, online fundraising on your WordPress website is likely to be the most critical part.
 
-Announcing: Give. The most flexible, robust, and easy to use WordPress plugin for accepting donations directly on your website. Upon activation, Give provides you with powerful features geared towards helping you raise more funds for your cause.
+[Give](https://givewp.com "Give - Democratizing Generosity") is the most flexible, robust, and easy to use WordPress plugin for accepting donations directly on your website. Upon activation, Give provides you with powerful features geared towards helping you raise more funds for your cause.
 
 ### Why Give? ###
 
