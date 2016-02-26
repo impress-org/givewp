@@ -167,15 +167,18 @@ jQuery( function ( $ ) {
 	 *
 	 * @description format the currency with accounting.js
 	 * @param price
+	 * @param args object
 	 * @returns {*|string}
 	 */
-	function give_format_currency( price ) {
-		return accounting.formatMoney( price, {
-			symbol   : give_global_vars.currency_sign,
-			decimal  : give_global_vars.decimal_separator,
-			thousand : give_global_vars.thousands_separator,
-			precision: give_global_vars.number_decimals
-		} ).trim();
+	function give_format_currency( price, args ) {
+
+		//Properly position symbol after if selected
+		if ( give_global_vars.currency_pos == 'after' ) {
+			args.format = "%v%s";
+		}
+
+		return accounting.formatMoney( price, args ).trim();
+		
 	}
 
 	/**
@@ -231,10 +234,16 @@ jQuery( function ( $ ) {
 	doc.on( 'blur', '.give-donation-amount .give-text-input', function ( e ) {
 
 		var pre_focus_amount = $( this ).data( 'amount' );
-
 		var value_now = give_unformat_currency( $( this ).val() );
-		var formatted_total = give_format_currency( value_now );
+		var format_args = {
+			symbol   : '',
+			decimal  : give_global_vars.decimal_separator,
+			thousand : give_global_vars.thousands_separator,
+			precision: give_global_vars.number_decimals
+		};
+		var formatted_total = give_format_currency( value_now, format_args );
 
+		//Set the custom amount input value formatted properly
 		$( this ).val( formatted_total );
 
 		//Does this number have a value?
@@ -245,8 +254,9 @@ jQuery( function ( $ ) {
 		//If values don't match up then proceed with updating donation total value
 		if ( pre_focus_amount !== value_now ) {
 
-			//update checkout total (include currency sign)
-			$( this ).parents( 'form' ).find( '.give-final-total-amount' ).data( 'total', value_now ).text( formatted_total );
+			//update donation total (include currency symbol)
+			format_args.symbol = give_global_vars.currency_sign;
+			$( this ).parents( 'form' ).find( '.give-final-total-amount' ).data( 'total', value_now ).text( give_format_currency( value_now, format_args ) );
 
 			//fade in/out updating text
 			$( this ).next( '.give-updating-price-loader' ).stop().fadeIn().fadeOut();
@@ -273,7 +283,8 @@ jQuery( function ( $ ) {
 	} );
 
 	/**
-	 * Update Multiselect Vals
+	 * Update Multiselect Values
+	 *
 	 * @description Helper function: Sets the multiselect amount values
 	 *
 	 * @param selected_field
