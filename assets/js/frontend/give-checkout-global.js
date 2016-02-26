@@ -178,7 +178,7 @@ jQuery( function ( $ ) {
 		}
 
 		return accounting.formatMoney( price, args ).trim();
-		
+
 	}
 
 	/**
