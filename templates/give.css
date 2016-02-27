@@ -859,7 +859,10 @@ form[id*='give-form'], #give-recurring-form, form.give-form {
       display: table; }
     form[id*='give-form'] .form-row-wide:after, #give-recurring-form .form-row-wide:after, form.give-form .form-row-wide:after {
       clear: both; }
-  form[id*='give-form'] .give-required-indicator, #give-recurring-form .give-required-indicator, form.give-form .give-required-indicator {
+  form[id*='give-form'] .give-error,
+  form[id*='give-form'] .give-required-indicator, #give-recurring-form .give-error,
+  #give-recurring-form .give-required-indicator, form.give-form .give-error,
+  form.give-form .give-required-indicator {
     color: #a00; }
   form[id*='give-form'] .card-expiration > select, #give-recurring-form .card-expiration > select, form.give-form .card-expiration > select {
     width: 44%;
@@ -1296,8 +1299,7 @@ Responsiveness
   overflow: hidden;
   position: fixed;
   background: #0b0b0b;
-  opacity: 0.8;
-  filter: alpha(opacity=80); }
+  opacity: 0.8; }
 
 .mfp-wrap {
   top: 0;
@@ -1402,7 +1404,9 @@ button.mfp-close, button.mfp-arrow {
   outline: none;
   padding: 0;
   z-index: 1046;
-  box-shadow: none; }
+  box-shadow: none;
+  -ms-touch-action: manipulation;
+      touch-action: manipulation; }
 
 button::-moz-focus-inner {
   padding: 0;
@@ -1418,15 +1422,13 @@ button::-moz-focus-inner {
   text-decoration: none;
   text-align: center;
   opacity: 0.65;
-  filter: alpha(opacity=65);
   padding: 0 0 18px 10px;
   color: #FFF;
   font-style: normal;
   font-size: 28px;
   font-family: Arial, Baskerville, monospace; }
   .mfp-close:hover, .mfp-close:focus {
-    opacity: 1;
-    filter: alpha(opacity=100); }
+    opacity: 1; }
   .mfp-close:active {
     top: 1px; }
 
@@ -1453,7 +1455,6 @@ button::-moz-focus-inner {
 .mfp-arrow {
   position: absolute;
   opacity: 0.65;
-  filter: alpha(opacity=65);
   margin: 0;
   top: 50%;
   margin-top: -55px;
@@ -1464,11 +1465,8 @@ button::-moz-focus-inner {
   .mfp-arrow:active {
     margin-top: -54px; }
   .mfp-arrow:hover, .mfp-arrow:focus {
-    opacity: 1;
-    filter: alpha(opacity=100); }
-  .mfp-arrow:before, .mfp-arrow:after,
-  .mfp-arrow .mfp-b,
-  .mfp-arrow .mfp-a {
+    opacity: 1; }
+  .mfp-arrow:before, .mfp-arrow:after {
     content: '';
     display: block;
     width: 0;
@@ -1479,36 +1477,30 @@ button::-moz-focus-inner {
     margin-top: 35px;
     margin-left: 35px;
     border: medium inset transparent; }
-  .mfp-arrow:after,
-  .mfp-arrow .mfp-a {
+  .mfp-arrow:after {
     border-top-width: 13px;
     border-bottom-width: 13px;
     top: 8px; }
-  .mfp-arrow:before,
-  .mfp-arrow .mfp-b {
+  .mfp-arrow:before {
     border-top-width: 21px;
     border-bottom-width: 21px;
     opacity: 0.7; }
 
 .mfp-arrow-left {
   left: 0; }
-  .mfp-arrow-left:after,
-  .mfp-arrow-left .mfp-a {
+  .mfp-arrow-left:after {
     border-right: 17px solid #FFF;
     margin-left: 31px; }
-  .mfp-arrow-left:before,
-  .mfp-arrow-left .mfp-b {
+  .mfp-arrow-left:before {
     margin-left: 25px;
     border-right: 27px solid #3F3F3F; }
 
 .mfp-arrow-right {
   right: 0; }
-  .mfp-arrow-right:after,
-  .mfp-arrow-right .mfp-a {
+  .mfp-arrow-right:after {
     border-left: 17px solid #FFF;
     margin-left: 39px; }
-  .mfp-arrow-right:before,
-  .mfp-arrow-right .mfp-b {
+  .mfp-arrow-right:before {
     border-left: 27px solid #3F3F3F; }
 
 .mfp-iframe-holder {
@@ -1634,40 +1626,16 @@ img.mfp-img {
 @media all and (max-width: 900px) {
   .mfp-arrow {
     -webkit-transform: scale(0.75);
-    -ms-transform: scale(0.75);
-        transform: scale(0.75); }
+    transform: scale(0.75); }
   .mfp-arrow-left {
     -webkit-transform-origin: 0;
-    -ms-transform-origin: 0;
-        transform-origin: 0; }
+    transform-origin: 0; }
   .mfp-arrow-right {
     -webkit-transform-origin: 100%;
-    -ms-transform-origin: 100%;
-        transform-origin: 100%; }
+    transform-origin: 100%; }
   .mfp-container {
     padding-left: 6px;
     padding-right: 6px; } }
-
-.mfp-ie7 .mfp-img {
-  padding: 0; }
-
-.mfp-ie7 .mfp-bottom-bar {
-  width: 600px;
-  left: 50%;
-  margin-left: -300px;
-  margin-top: 5px;
-  padding-bottom: 5px; }
-
-.mfp-ie7 .mfp-container {
-  padding: 0; }
-
-.mfp-ie7 .mfp-content {
-  padding-top: 44px; }
-
-.mfp-ie7 .mfp-close {
-  top: 0;
-  right: 0;
-  padding-top: 0; }
 
 /*!
  * Give Layouts SCSS/CSS
@@ -1794,7 +1762,7 @@ Avada
 /*!
  * Float Labels
  *
- * Version: 1.0.7
+ * Version: 1.0.8
  * Author: Paul Ryley (http://geminilabs.io)
  * URL: https://github.com/geminilabs/float-labels.js
  * License: MIT
@@ -1802,7 +1770,8 @@ Avada
 form.floated-labels .floatlabel {
   position: relative; }
   form.floated-labels .floatlabel input,
-  form.floated-labels .floatlabel select {
+  form.floated-labels .floatlabel select,
+  form.floated-labels .floatlabel textarea {
     font-size: 16px;
     line-height: normal;
     background-color: inherit;
@@ -1827,6 +1796,11 @@ form.floated-labels .floatlabel {
     padding-bottom: 4px; }
   form.floated-labels .floatlabel.is-focused label.floatlabel-label {
     color: #007ba4; }
+  form.floated-labels .floatlabel.is-focused input,
+  form.floated-labels .floatlabel.is-focused select,
+  form.floated-labels .floatlabel.is-focused textarea {
+    background-color: inherit;
+    border-color: #ccc; }
   form.floated-labels .floatlabel label.floatlabel-label {
     position: absolute;
     display: block;
@@ -1858,12 +1832,10 @@ form.floated-labels .styled.select {
   form.floated-labels .styled.select:before {
     right: 18px;
     -webkit-transform: skew(0deg, 45deg);
-        -ms-transform: skew(0deg, 45deg);
             transform: skew(0deg, 45deg); }
   form.floated-labels .styled.select:after {
     right: 12px;
     -webkit-transform: skew(0deg, -45deg);
-        -ms-transform: skew(0deg, -45deg);
             transform: skew(0deg, -45deg); }
 
 /**
