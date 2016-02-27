@@ -70,6 +70,11 @@ class Give_Session {
 	 */
 	public function __construct() {
 
+		//Frontend only
+		if ( is_admin() ) {
+			return false;
+		}
+
 		$this->use_php_sessions = $this->use_php_sessions();
 		$this->exp_option       = give_get_option( 'session_lifetime' );
 
@@ -277,7 +282,7 @@ class Give_Session {
 	 */
 	public function maybe_start_session() {
 
-//		session_destroy(); //Uncomment for testing ONLY
+		//		session_destroy(); //Uncomment for testing ONLY
 
 		if ( ! session_id() && ! headers_sent() ) {
 			$lifetime = current_time( 'timestamp' ) + $this->set_expiration_time();
