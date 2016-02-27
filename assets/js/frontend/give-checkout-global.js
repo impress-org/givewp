@@ -167,15 +167,18 @@ jQuery( function ( $ ) {
 	 *
 	 * @description format the currency with accounting.js
 	 * @param price
+	 * @param args object
 	 * @returns {*|string}
 	 */
-	function give_format_currency( price ) {
-		return accounting.formatMoney( price, {
-			symbol   : '',
-			decimal  : give_global_vars.decimal_separator,
-			thousand : give_global_vars.thousands_separator,
-			precision: give_global_vars.number_decimals
-		} ).trim();
+	function give_format_currency( price, args ) {
+
+		//Properly position symbol after if selected
+		if ( give_global_vars.currency_pos == 'after' ) {
+			args.format = "%v%s";
+		}
+
+		return accounting.formatMoney( price, args ).trim();
+
 	}
 
 	/**
@@ -216,7 +219,6 @@ jQuery( function ( $ ) {
 		$( this ).data( 'amount', give_unformat_currency( $( this ).val() ) );
 		//This class is used for CSS purposes
 		$( this ).parent( '.give-donation-amount' ).addClass( 'give-custom-amount-focus-in' );
-
 		//Set Multi-Level to Custom Amount Field
 		parent_form.find( '.give-default-level, .give-radio-input' ).removeClass( 'give-default-level' );
 		parent_form.find( '.give-btn-level-custom' ).addClass( 'give-default-level' );
@@ -231,48 +233,30 @@ jQuery( function ( $ ) {
 	 */
 	doc.on( 'blur', '.give-donation-amount .give-text-input', function ( e ) {
 
-		var parent_form = $( this ).closest( 'form' );
 		var pre_focus_amount = $( this ).data( 'amount' );
-		var minimum_amount = parent_form.find( 'input[name="give-form-minimum"]');
 		var value_now = give_unformat_currency( $( this ).val() );
-		var value_min = give_unformat_currency( minimum_amount.val() );
-		var formatted_total = give_format_currency( value_now );
-		var is_level = false;
+		var format_args = {
+			symbol   : '',
+			decimal  : give_global_vars.decimal_separator,
+			thousand : give_global_vars.thousands_separator,
+			precision: give_global_vars.number_decimals
+		};
+		var formatted_total = give_format_currency( value_now, format_args );
 
+		//Set the custom amount input value formatted properly
 		$( this ).val( formatted_total );
 
-		parent_form.find( '*[data-price-id]' ).each( function() {
-			if( this.value !== 'custom' && give_unformat_currency( this.value ) === value_now ) {
-				is_level = true;
-			}
-		});
-
-		//Does this number have an accepted value?
-		if ( ( !$.isNumeric( value_now ) || value_now < value_min || value_now < 1 ) && ! is_level ) {
-
+		//Does this number have a value?
+		if ( !$.isNumeric( value_now ) || value_now <= 0 ) {
 			$( this ).addClass( 'invalid-amount' );
-
-			minimum_amount = give_global_vars.bad_minimum + ' ' + give_format_currency( value_min );
-
-			$invalid_minimum = parent_form.find( '.invalid-minimum' );
-
-			if( $invalid_minimum.length === 0 ) {
-
-				var error = $( '<p class="invalid-minimum give-error">' + minimum_amount + '</p>' ).hide();
-
-				error.insertAfter( $( this ).closest( '.give-total-wrap' ) ).slideDown();
-			}
-		} else {
-			parent_form.find( '.invalid-minimum' ).slideUp( 400, function() {
-				$( this ).remove();
-			});
 		}
 
 		//If values don't match up then proceed with updating donation total value
 		if ( pre_focus_amount !== value_now ) {
 
-			//update checkout total (include currency sign)
-			parent_form.find( '.give-final-total-amount' ).data( 'total', value_now ).text( formatted_total );
+			//update donation total (include currency symbol)
+			format_args.symbol = give_global_vars.currency_sign;
+			$( this ).parents( 'form' ).find( '.give-final-total-amount' ).data( 'total', value_now ).text( give_format_currency( value_now, format_args ) );
 
 			//fade in/out updating text
 			$( this ).next( '.give-updating-price-loader' ).stop().fadeIn().fadeOut();
@@ -299,7 +283,8 @@ jQuery( function ( $ ) {
 	} );
 
 	/**
-	 * Update Multiselect Vals
+	 * Update Multiselect Values
+	 *
 	 * @description Helper function: Sets the multiselect amount values
 	 *
 	 * @param selected_field
@@ -348,8 +333,6 @@ jQuery( function ( $ ) {
 		if ( give_global_vars.currency_pos == 'after' ) {
 			formatted_total = this_amount + currency_symbol;
 		}
-
-		$( '.give-donation-amount .give-text-input' ).trigger( 'blur' );
 
 		//Update donation form bottom total data attr and text
 		parent_form.find( '.give-final-total-amount' ).data( 'total', this_amount ).text( formatted_total );

@@ -1,11 +1,9 @@
-![Give - Democratizing Generosity](https://raw.githubusercontent.com/WordImpress/Give/master/assets/images/give-logo-with-faces.png)
-
 # [Give - Democratizing Generosity](https://givewp.com "Give - Democratizing Generosity") #
 [![GitHub version](https://badge.fury.io/gh/WordImpress%2FGive.svg)](http://badge.fury.io/gh/WordImpress%2FGive) [![Build Status](https://travis-ci.org/WordImpress/Give.svg?branch=master)](https://travis-ci.org/WordImpress/Give) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/WordImpress/Give/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/WordImpress/Give/?branch=master) [![License](https://img.shields.io/badge/license-GPL--2.0%2B-green.svg)](https://github.com/WordImpress/Give/blob/master/license.txt) [![Coverage Status](https://coveralls.io/repos/WordImpress/Give/badge.svg?branch=master&service=github)](https://coveralls.io/github/WordImpress/Give?branch=master)
 
 We know how important fundraising online is to accomplish your goals. For many non-profits, churches, candidates, schools and causes, online fundraising on your WordPress website is likely to be the most critical part.
 
-Announcing: Give. The most flexible, robust, and easy to use WordPress plugin for accepting donations directly on your website. Upon activation, Give provides you with powerful features geared towards helping you raise more funds for your cause.
+[Give](https://givewp.com "Give - Democratizing Generosity") is the most flexible, robust, and easy to use WordPress plugin for accepting donations directly on your website. Upon activation, Give provides you with powerful features geared towards helping you raise more funds for your cause.
 
 ### Why Give? ###
 

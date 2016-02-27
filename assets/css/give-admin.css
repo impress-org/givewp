@@ -625,17 +625,7 @@ x:-o-prefocus, .qtip .qtip-tip {
 Forms CPT
 --------------------------------------*/
 /* Hide conditional fields */
-.cmb2-id--give-set-price,
-.cmb2-id--give-levels-header,
-.cmb2-id--give-levels-header + .cmb-repeat-group-wrap,
-.cmb2-id--give-display-style,
-.post-type-give_forms .tablenav #post-query-submit,
-.give-hidden,
-.cmb2-id--give-form-content,
-.cmb2-id--give-reveal-label,
-.cmb2-id--give-custom-amount-minimum,
-.cmb2-id--give-custom-amount-text,
-.cmb2-id--give-offline-checkout-notes {
+.cmb2-id--give-set-price, .cmb2-id--give-levels-header, .cmb2-id--give-levels-header + .cmb-repeat-group-wrap, .cmb2-id--give-display-style, .post-type-give_forms .tablenav #post-query-submit, .give-hidden, .cmb2-id--give-form-content, .cmb2-id--give-reveal-label, .cmb2-id--give-custom-amount-text, .cmb2-id--give-offline-checkout-notes {
   display: none; }
 
 /* Donation Levels Repeating Field */
@@ -1693,6 +1683,22 @@ Donation Details
 
 #give_dashboard_sales .give-table-stats tr#give-table-stats-tr-1 td {
   border-bottom: 1px solid #ececec; }
+
+#dashboard_right_now .give-forms-count:before {
+  font-family: 'give-icomoon';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  content: "\e800"; }
 
 /**
  * Give Forms SCSS

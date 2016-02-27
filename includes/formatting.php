@@ -142,10 +142,9 @@ function give_format_admin_multilevel_amount( $field_args, $field ) {
  * @return mixed|string|void
  */
 function give_currency_filter( $price = '', $currency = '' ) {
+
 	if ( empty( $currency ) ) {
-
 		$currency = give_get_currency();
-
 	}
 
 	$position = give_get_option( 'currency_position', 'before' );
