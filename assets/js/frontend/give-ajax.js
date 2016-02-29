@@ -23,7 +23,7 @@ jQuery( document ).ready( function ( $ ) {
 			action: $this.data( 'action' )
 		};
 		var this_form = $( this ).parents( 'form' );
-		var register_loading_img = $( this_form ).find( '#give-login-account-wrap .give-loading-text' );
+		var register_loading_img = $( this_form ).find( '.give-login-account-wrap .give-loading-text' );
 
 		// Show the ajax loader
 		register_loading_img.show();

@@ -1220,18 +1220,18 @@ form[id*='give-form'] .give-loading-animation {
   background-color: transparent; }
 
 /* Login and Register */
-#give-login-account-wrap {
+.give-login-account-wrap {
   *zoom: 1; }
-  #give-login-account-wrap:before, #give-login-account-wrap:after {
+  .give-login-account-wrap:before, .give-login-account-wrap:after {
     content: " ";
     display: table; }
-  #give-login-account-wrap:after {
+  .give-login-account-wrap:after {
     clear: both; }
-  #give-login-account-wrap > p {
+  .give-login-account-wrap > p {
     float: left;
     margin: 0 0 15px;
     padding: 0; }
-  #give-login-account-wrap p.give-login-message {
+  .give-login-account-wrap p.give-login-message {
     margin-right: 10px; }
 
 /* User Login */
