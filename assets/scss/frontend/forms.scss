@@ -230,6 +230,7 @@ form[id*='give-form'], #give-recurring-form, form.give-form {
 	clear: both;
   }
 
+  .give-error,
   .give-required-indicator {
 	color: $red;
   }

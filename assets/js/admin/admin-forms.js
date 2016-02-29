@@ -109,8 +109,10 @@ jQuery.noConflict();
 		custom_amount_option.on( 'change', function () {
 			var custom_amount_option_val = $( '.cmb2-id--give-custom-amount input:radio:checked' ).val();
 			if ( custom_amount_option_val === 'no' ) {
+				$( '.cmb2-id--give-custom-amount-minimum' ).hide();
 				$( '.cmb2-id--give-custom-amount-text' ).hide();
 			} else {
+				$( '.cmb2-id--give-custom-amount-minimum' ).show();
 				$( '.cmb2-id--give-custom-amount-text' ).show();
 			}
 		} ).change();

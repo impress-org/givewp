@@ -219,6 +219,7 @@ jQuery( function ( $ ) {
 		$( this ).data( 'amount', give_unformat_currency( $( this ).val() ) );
 		//This class is used for CSS purposes
 		$( this ).parent( '.give-donation-amount' ).addClass( 'give-custom-amount-focus-in' );
+
 		//Set Multi-Level to Custom Amount Field
 		parent_form.find( '.give-default-level, .give-radio-input' ).removeClass( 'give-default-level' );
 		parent_form.find( '.give-btn-level-custom' ).addClass( 'give-default-level' );
@@ -233,7 +234,11 @@ jQuery( function ( $ ) {
 	 */
 	doc.on( 'blur', '.give-donation-amount .give-text-input', function ( e ) {
 
+		var parent_form = $( this ).closest( 'form' );
 		var pre_focus_amount = $( this ).data( 'amount' );
+		var minimum_amount = parent_form.find( 'input[name="give-form-minimum"]' );
+		var value_min = give_unformat_currency( minimum_amount.val() );
+		var is_level = false;
 		var value_now = give_unformat_currency( $( this ).val() );
 		var format_args = {
 			symbol   : '',
@@ -246,9 +251,35 @@ jQuery( function ( $ ) {
 		//Set the custom amount input value formatted properly
 		$( this ).val( formatted_total );
 
-		//Does this number have a value?
-		if ( !$.isNumeric( value_now ) || value_now <= 0 ) {
-			$( this ).addClass( 'invalid-amount' );
+		parent_form.find( '*[data-price-id]' ).each( function () {
+			if ( this.value !== 'custom' && give_unformat_currency( this.value ) === value_now ) {
+				is_level = true;
+			}
+		} );
+
+		//Does this number have an accepted minimum value?
+		if ( ( !$.isNumeric( value_now ) || value_now < value_min || value_now < 1 ) && !is_level ) {
+
+			//It doesn't... Invalid Minimum
+			$( this ).addClass( 'give-invalid-amount' );
+			format_args.symbol = give_global_vars.currency_sign;
+			minimum_amount = give_global_vars.bad_minimum + ' ' + give_format_currency( value_min, format_args );
+			//Disable submit
+			parent_form.find( '.give-submit' ).prop( 'disabled', true );
+			var invalid_minimum = parent_form.find( '.give-invalid-minimum' );
+			//If no error present, create it, insert, slide down (show)
+			if ( invalid_minimum.length === 0 ) {
+				var error = $( '<div class="give_error give-invalid-minimum">' + minimum_amount + '</div>' ).hide();
+				error.insertAfter( parent_form.find( '.give-total-wrap' ) ).slideDown();
+			}
+
+		} else {
+			//Minimum amount met - slide up error & remove it from DOM
+			parent_form.find( '.give-invalid-minimum' ).slideUp( 400, function () {
+				$( this ).remove();
+			} );
+			//Re-enable submit
+			parent_form.find( '.give-submit' ).prop( 'disabled', false );
 		}
 
 		//If values don't match up then proceed with updating donation total value
@@ -256,14 +287,16 @@ jQuery( function ( $ ) {
 
 			//update donation total (include currency symbol)
 			format_args.symbol = give_global_vars.currency_sign;
-			$( this ).parents( 'form' ).find( '.give-final-total-amount' ).data( 'total', value_now ).text( give_format_currency( value_now, format_args ) );
+			parent_form.find( '.give-final-total-amount' ).data( 'total', value_now ).text( give_format_currency( value_now, format_args ) );
 
 			//fade in/out updating text
 			$( this ).next( '.give-updating-price-loader' ).stop().fadeIn().fadeOut();
 
 		}
+
 		//This class is used for CSS purposes
 		$( this ).parent( '.give-donation-amount' ).removeClass( 'give-custom-amount-focus-in' );
+
 	} );
 
 	//Multi-level Buttons: Update Amount Field based on Multi-level Donation Select
@@ -333,6 +366,8 @@ jQuery( function ( $ ) {
 		if ( give_global_vars.currency_pos == 'after' ) {
 			formatted_total = this_amount + currency_symbol;
 		}
+
+		$( '.give-donation-amount .give-text-input' ).trigger( 'blur' );
 
 		//Update donation form bottom total data attr and text
 		parent_form.find( '.give-final-total-amount' ).data( 'total', this_amount ).text( formatted_total );

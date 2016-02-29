@@ -42,6 +42,20 @@ function give_get_currency() {
 	return apply_filters( 'give_currency', $currency );
 }
 
+/**
+ * Get the set currency position
+ *
+ * @since 1.3.6
+ *
+ * @return string The currency code
+ */
+function give_get_currency_position() {
+	global $give_options;
+	$currency_pos = isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before';
+
+	return apply_filters( 'give_currency_position', $currency_pos );
+}
+
 
 /**
  * Get Currencies
