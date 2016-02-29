@@ -763,7 +763,7 @@ function give_get_form_price( $form_id = 0 ) {
 
 	$form = new Give_Donate_Form( $form_id );
 
-	return $form->price;
+	return $form->__get( 'price' );
 }
 
 /**
@@ -792,9 +792,9 @@ function give_get_form_minimum_price( $form_id = 0 ) {
  *
  * @since 1.0
  *
- * @param int  $form_id  ID of the form price to show
- * @param bool $echo     Whether to echo or return the results
- * @param int  $price_id Optional price id for variable pricing
+ * @param int      $form_id  ID of the form price to show
+ * @param bool     $echo     Whether to echo or return the results
+ * @param bool|int $price_id Optional price id for variable pricing
  *
  * @return int $formatted_price
  */
