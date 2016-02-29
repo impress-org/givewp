@@ -777,7 +777,7 @@ function give_get_register_fields( $form_id ) {
 		<?php if ( $show_register_form == 'both' ) { ?>
 			<div class="give-login-account-wrap">
 				<p class="give-login-message"><?php _e( 'Already have an account?', 'give' ); ?>&nbsp;
-					<a href="<?php echo esc_url( add_query_arg( 'login', 1 ) ); ?>" class="give_checkout_register_login" data-action="give_checkout_login"><?php _e( 'Login', 'give' ); ?></a>
+					<a href="<?php echo esc_url( add_query_arg( 'login', 1 ) ); ?>" class="give-checkout-register-login" data-action="give_checkout_login"><?php _e( 'Login', 'give' ); ?></a>
 				</p>
 
 				<p class="give-loading-text">
@@ -880,7 +880,7 @@ function give_get_login_fields( $form_id ) {
 		<?php if ( $show_register_form == 'both' ) { ?>
 			<p id="give-new-account-wrap">
 				<?php _e( 'Need to create an account?', 'give' ); ?>&nbsp;
-				<a href="<?php echo remove_query_arg( 'login' ); ?>" class="give_checkout_register_login" data-action="checkout_register">
+				<a href="<?php echo remove_query_arg( 'login' ); ?>" class="give-checkout-register-login" data-action="checkout_register">
 					<?php _e( 'Register', 'give' );
 					if ( ! give_no_guest_checkout( $form_id ) ) {
 						echo ' ' . __( 'or checkout as a guest.', 'give' );

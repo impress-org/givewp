@@ -17,7 +17,7 @@ jQuery( document ).ready( function ( $ ) {
 	$( '.give-loading-text' ).hide();
 
 	// Show the login form in the checkout when the user clicks the "Login" link
-	$( 'body' ).on( 'click', '.give_checkout_register_login', function ( e ) {
+	$( 'body' ).on( 'click', '.give-checkout-register-login', function ( e ) {
 		var $this = $( this );
 		var data = {
 			action: $this.data( 'action' )
