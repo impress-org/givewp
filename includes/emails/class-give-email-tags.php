@@ -551,10 +551,10 @@ function give_email_tag_receipt_link( $payment_id ) {
 	), home_url() ) );
 	$formatted = sprintf( __( '%1$sView it in your browser.%2$s', 'give' ), '<a href="' . $receipt_url . '">', '</a>' );
 
-	if(give_get_option('email_template') == 'none') {
-		return $receipt_url;
-	} else {
+	if(give_get_option('email_template') !== 'none') {
 		return $formatted;
+	} else {
+		return $receipt_url;
 	}
 
 }
