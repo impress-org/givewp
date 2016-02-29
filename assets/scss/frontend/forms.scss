@@ -636,7 +636,7 @@ form[id*='give-form'] {
 
 /* Login and Register */
 
-#give-login-account-wrap {
+.give-login-account-wrap {
   @include clearfix();
 
   > p {
