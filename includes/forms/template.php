@@ -325,10 +325,11 @@ function give_output_levels( $form_id ) {
 
 			foreach ( $prices as $price ) {
 				$counter ++;
-				$level_text = apply_filters( 'give_form_level_text', ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( give_format_amount( $price['_give_amount'] ) ), $form_id, $price );
+				$level_text    = apply_filters( 'give_form_level_text', ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( give_format_amount( $price['_give_amount'] ) ), $form_id, $price );
+				$level_classes = apply_filters( 'give_form_level_classes', 'give-donation-level-btn give-btn give-btn-level-' . $counter . ' ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'give-default-level' : '' ), $form_id, $price );
 
 				$output .= '<li>';
-				$output .= '<button type="button" data-price-id="' . $price['_give_id']['level_id'] . '" class="give-donation-level-btn give-btn give-btn-level-' . $counter . ' ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'give-default-level' : '' ) . '" value="' . give_format_amount( $price['_give_amount'] ) . '">';
+				$output .= '<button type="button" data-price-id="' . $price['_give_id']['level_id'] . '" class=" ' . $level_classes . '" value="' . give_format_amount( $price['_give_amount'] ) . '">';
 				$output .= $level_text;
 				$output .= '</button>';
 				$output .= '</li>';
@@ -354,13 +355,12 @@ function give_output_levels( $form_id ) {
 
 			foreach ( $prices as $price ) {
 				$counter ++;
-				$level_text = apply_filters( 'give_form_level_text', ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( give_format_amount( $price['_give_amount'] ) ), $form_id, $price );
+				$level_text    = apply_filters( 'give_form_level_text', ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( give_format_amount( $price['_give_amount'] ) ), $form_id, $price );
+				$level_classes = apply_filters( 'give_form_level_classes', 'give-radio-input give-radio-input-level give-radio-level-' . $counter . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? ' give-default-level' : '' ), $form_id, $price );
 
 				$output .= '<li>';
-				$output .= '<input type="radio" data-price-id="' . $price['_give_id']['level_id'] . '" class="give-radio-input give-radio-input-level give-radio-level-' . $counter . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? ' give-default-level' : '' ) . '" name="give-radio-donation-level" id="give-radio-level-' . $counter . '" ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'checked="checked"' : '' ) . ' value="' . give_format_amount( $price['_give_amount'] ) . '">';
-
+				$output .= '<input type="radio" data-price-id="' . $price['_give_id']['level_id'] . '" class="' . $level_classes . '" name="give-radio-donation-level" id="give-radio-level-' . $counter . '" ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'checked="checked"' : '' ) . ' value="' . give_format_amount( $price['_give_amount'] ) . '">';
 				$output .= '<label for="give-radio-level-' . $counter . '">' . $level_text . '</label>';
-
 				$output .= '</li>';
 
 			}
@@ -384,9 +384,10 @@ function give_output_levels( $form_id ) {
 
 			//first loop through prices
 			foreach ( $prices as $price ) {
-				$level_text = apply_filters( 'give_form_level_text', ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( give_format_amount( $price['_give_amount'] ) ), $form_id, $price );
+				$level_text    = apply_filters( 'give_form_level_text', ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( give_format_amount( $price['_give_amount'] ) ), $form_id, $price );
+				$level_classes = apply_filters( 'give_form_level_classes', 'give-donation-level-' . $form_id, $form_id, $price );
 
-				$output .= '<option data-price-id="' . $price['_give_id']['level_id'] . '" class="give-donation-level-' . $form_id . '" ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'selected="selected"' : '' ) . ' value="' . give_format_amount( $price['_give_amount'] ) . '">';
+				$output .= '<option data-price-id="' . $price['_give_id']['level_id'] . '" class="' . $level_classes . '" ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'selected="selected"' : '' ) . ' value="' . give_format_amount( $price['_give_amount'] ) . '">';
 				$output .= $level_text;
 				$output .= '</option>';
 
@@ -404,7 +405,6 @@ function give_output_levels( $form_id ) {
 
 	echo apply_filters( 'give_form_level_output', $output, $form_id );
 }
-
 
 /**
  * Display Reveal & Lightbox Button
@@ -772,10 +772,10 @@ function give_get_register_fields( $form_id ) {
 	$show_register_form = apply_filters( 'give_show_register_form', get_post_meta( $form_id, '_give_show_register_form', true ) );
 
 	ob_start(); ?>
-	<fieldset id="give_register_fields">
+	<fieldset id="give-register-fields-<?php echo $form_id; ?>">
 
 		<?php if ( $show_register_form == 'both' ) { ?>
-			<div id="give-login-account-wrap">
+			<div class="give-login-account-wrap">
 				<p class="give-login-message"><?php _e( 'Already have an account?', 'give' ); ?>&nbsp;
 					<a href="<?php echo esc_url( add_query_arg( 'login', 1 ) ); ?>" class="give_checkout_register_login" data-action="give_checkout_login"><?php _e( 'Login', 'give' ); ?></a>
 				</p>
@@ -788,7 +788,7 @@ function give_get_register_fields( $form_id ) {
 
 		<?php do_action( 'give_register_fields_before' ); ?>
 
-		<fieldset id="give_register_account_fields">
+		<fieldset id="give-register-account-fields-<?php echo $form_id; ?>">
 			<legend><?php _e( 'Create an account', 'give' );
 				if ( ! give_no_guest_checkout( $form_id ) ) {
 					echo ' <span class="sub-text">' . __( '(optional)', 'give' ) . '</span>';
@@ -822,8 +822,8 @@ function give_get_register_fields( $form_id ) {
 				} ?>give-input" placeholder="<?php _e( 'Password', 'give' ); ?>" type="password" />
 			</p>
 
-			<p id="give-user-pass-confirm-wrap" class="give_register_password form-row form-row-one-third">
-				<label for="give_user_pass_confirm">
+			<p id="give-user-pass-confirm-wrap-<?php echo $form_id; ?>" class="give-register-password form-row form-row-one-third">
+				<label for="give-user-pass-confirm-<?php echo $form_id; ?>">
 					<?php _e( 'Confirm Password', 'give' ); ?>
 					<?php if ( give_no_guest_checkout( $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
@@ -831,7 +831,7 @@ function give_get_register_fields( $form_id ) {
 					<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'Please retype your password to confirm.', 'give' ); ?>"></span>
 				</label>
 
-				<input name="give_user_pass_confirm" id="give_user_pass_confirm" class="<?php if ( give_no_guest_checkout( $form_id ) ) {
+				<input name="give_user_pass_confirm" id="give-user-pass-confirm--<?php echo $form_id; ?>" class="<?php if ( give_no_guest_checkout( $form_id ) ) {
 					echo 'required ';
 				} ?>give-input" placeholder="<?php _e( 'Confirm password', 'give' ); ?>" type="password" />
 			</p>
