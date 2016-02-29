@@ -29,7 +29,7 @@ jQuery( document ).ready( function ( $ ) {
 		register_loading_img.show();
 
 		$.post( give_scripts.ajaxurl, data, function ( checkout_response ) {
-			$( this_form ).find( '#give_checkout_login_register' ).html( '' ).html( checkout_response );
+			$( this_form ).find( '[id^=give-checkout-login-register]' ).html( '' ).html( checkout_response );
 
 		} ).done( function () {
 			// Hide the ajax loader

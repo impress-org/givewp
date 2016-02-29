@@ -183,11 +183,11 @@ function give_show_purchase_form( $form_id ) {
 		$show_register_form = apply_filters( 'give_show_register_form', get_post_meta( $form_id, '_give_show_register_form', true ) );
 
 		if ( ( $show_register_form === 'registration' || ( $show_register_form === 'both' && ! isset( $_GET['login'] ) ) ) && ! is_user_logged_in() ) : ?>
-			<div id="give_checkout_login_register">
+			<div id="give-checkout-login-register-<?php echo $form_id; ?>">
 				<?php do_action( 'give_purchase_form_register_fields', $form_id ); ?>
 			</div>
 		<?php elseif ( ( $show_register_form === 'login' || ( $show_register_form === 'both' && isset( $_GET['login'] ) ) ) && ! is_user_logged_in() ) : ?>
-			<div id="give_checkout_login_register">
+			<div id="give-checkout-login-register-<?php echo $form_id; ?>">
 				<?php do_action( 'give_purchase_form_login_fields', $form_id ); ?>
 			</div>
 		<?php endif; ?>
