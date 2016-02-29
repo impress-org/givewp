@@ -783,7 +783,8 @@ function give_get_form_minimum_price( $form_id = 0 ) {
 
 	$form = new Give_Donate_Form( $form_id );
 
-	return $form->minimum_price;
+	return $form->__get( 'minimum_price' );
+
 }
 
 /**
