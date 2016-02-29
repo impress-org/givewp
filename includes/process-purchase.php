@@ -433,15 +433,15 @@ function give_purchase_form_validate_logged_in_user() {
 }
 
 /**
- * Purchase Form Validate New User
+ * Donate Form Validate New User
  *
  * @access      private
  * @since       1.0
  * @return      array
  */
 function give_purchase_form_validate_new_user() {
-	$registering_new_user = false;
 
+	$registering_new_user = false;
 	$form_id = isset( $_POST['give-form-id'] ) ? $_POST['give-form-id'] : '';
 
 	// Start an empty array to collect valid user data
@@ -489,7 +489,7 @@ function give_purchase_form_validate_new_user() {
 		}
 	} else {
 		if ( give_no_guest_checkout( $form_id ) ) {
-			give_set_error( 'registration_required', __( 'You must register or login to complete your donation', 'give' ) );
+			give_set_error( 'registration_required', esc_html__( 'You must register or login to complete your donation', 'give' ) );
 		}
 	}
 
