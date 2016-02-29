@@ -86,7 +86,7 @@ function give_process_purchase_form() {
 	// Allow themes and plugins to hook before the gateway
 	do_action( 'give_checkout_before_gateway', $_POST, $user_info, $valid_data );
 
-
+	//Sanity check for price
 	if ( ! $purchase_data['price'] ) {
 		// Revert to manual
 		$purchase_data['gateway'] = 'manual';
@@ -160,8 +160,6 @@ add_action( 'wp_ajax_nopriv_give_process_checkout_login', 'give_process_form_log
  */
 function give_purchase_form_validate_fields() {
 
-	global $give_options;
-
 	// Check if there is $_POST
 	if ( empty( $_POST ) ) {
 		return false;
@@ -232,18 +230,12 @@ function give_purchase_form_validate_gateway() {
 			give_set_error( 'invalid_donation_amount', __( 'Please insert a valid donation amount.', 'give' ) );
 
 		} //Check for a minimum custom amount
-		elseif ( !give_verify_minimum_price() ) {
+		elseif ( ! give_verify_minimum_price() ) {
 
-			$symbol = give_currency_symbol( $give_options['currency'] );
-			$symbol_position = isset( $give_options['currency_position'] )
-				? $give_options['currency_position']
-				: 'before';
-
-			$minimum = give_get_form_minimum_price( $_REQUEST['give-form-id'] );
-			$amount = ( $symbol_position == 'before' ) ? $symbol . $minimum : $minimum . $symbol;
+			$minimum       = give_currency_filter( give_format_amount( give_get_form_minimum_price( $_REQUEST['give-form-id'] ) ) );
 			$error_message = __( 'This form has a minimum donation amount of %s', 'give' );
 
-			give_set_error( 'invalid_donation_minimum', sprintf( $error_message, $amount ) );
+			give_set_error( 'invalid_donation_minimum', sprintf( $error_message, $minimum ) );
 
 		} //Is this test mode zero donation? Let it through but set to manual gateway
 		elseif ( '0.00' == $_REQUEST['give-amount'] && give_is_test_mode() ) {
@@ -264,7 +256,7 @@ function give_purchase_form_validate_gateway() {
 }
 
 /**
- * Purchase Form Validate Minimum Donation Amount
+ * Donation Form Validate Minimum Donation Amount
  *
  * @access      private
  * @since       1.3.6
@@ -272,9 +264,9 @@ function give_purchase_form_validate_gateway() {
  */
 function give_verify_minimum_price() {
 
-	$amount = give_sanitize_amount( $_REQUEST['give-amount'] );
-	$form_id = $_REQUEST['give-form-id'];
-	$price_id = isset( $_REQUEST['give-price-id'] ) ? $_REQUEST['give-price-id'] : 0;
+	$amount          = give_sanitize_amount( $_REQUEST['give-amount'] );
+	$form_id         = $_REQUEST['give-form-id'];
+	$price_id        = isset( $_REQUEST['give-price-id'] ) ? $_REQUEST['give-price-id'] : 0;
 	$variable_prices = give_has_variable_prices( $form_id );
 
 	if ( $variable_prices && ! empty( $price_id ) ) {
@@ -288,7 +280,7 @@ function give_verify_minimum_price() {
 
 	$minimum = give_get_form_minimum_price( $form_id );
 
-	if ( $minimum > $amount && ! give_is_test_mode() ) {
+	if ( $minimum > $amount ) {
 		return false;
 	}
 
