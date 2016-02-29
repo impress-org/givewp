@@ -233,6 +233,11 @@ jQuery( function ( $ ) {
 	 */
 	doc.on( 'blur', '.give-donation-amount .give-text-input', function ( e ) {
 
+		var parent_form = $( this ).closest( 'form' );
+		var minimum_amount = parent_form.find( 'input[name="give-form-minimum"]');
+		var value_min = give_unformat_currency( minimum_amount.val() );
+		var value_is_multi_level = false;
+
 		var pre_focus_amount = $( this ).data( 'amount' );
 		var value_now = give_unformat_currency( $( this ).val() );
 		var format_args = {
@@ -246,16 +251,43 @@ jQuery( function ( $ ) {
 		//Set the custom amount input value formatted properly
 		$( this ).val( formatted_total );
 
-		//Does this number have a value?
-		if ( !$.isNumeric( value_now ) || value_now <= 0 ) {
+		//Compare the multi-level price-id value to the donation value
+		parent_form.find( '*[data-price-id]' ).each( function() {
+			if ( this.value !== 'custom' && give_unformat_currency( this.value ) === value_now ) {
+				value_is_multi_level = true;
+			}
+		});
+
+		//Add the currency symbol to the format_args in case it is needed from here on
+		format_args.symbol = give_global_vars.currency_sign;
+
+		//Does this number have a valid value?
+		if ( !$.isNumeric( value_now ) || ( value_now < value_min || value_now <= 0 ) && ! value_is_multi_level ) {
+
 			$( this ).addClass( 'invalid-amount' );
+
+			minimum_amount_error_text = give_global_vars.bad_minimum + ' ' + give_format_currency( value_min, format_args );
+
+			var invalid_minimum = parent_form.find( '.invalid-minimum' );
+
+			if ( invalid_minimum.length === 0 ) {
+
+				var error = $( '<p class="invalid-minimum give-error">' + minimum_amount_error_text + '</p>' ).hide();
+
+				error.insertAfter( $( this ).closest( '.give-total-wrap' ) ).slideDown();
+			}
+
+		} else {
+
+			parent_form.find( '.invalid-minimum' ).slideUp( 400, function() {
+				$( this ).remove();
+			});
 		}
 
 		//If values don't match up then proceed with updating donation total value
 		if ( pre_focus_amount !== value_now ) {
 
-			//update donation total (include currency symbol)
-			format_args.symbol = give_global_vars.currency_sign;
+			//update donation total
 			$( this ).parents( 'form' ).find( '.give-final-total-amount' ).data( 'total', value_now ).text( give_format_currency( value_now, format_args ) );
 
 			//fade in/out updating text
@@ -333,6 +365,8 @@ jQuery( function ( $ ) {
 		if ( give_global_vars.currency_pos == 'after' ) {
 			formatted_total = this_amount + currency_symbol;
 		}
+
+		$( '.give-donation-amount .give-text-input' ).trigger( 'blur' );
 
 		//Update donation form bottom total data attr and text
 		parent_form.find( '.give-final-total-amount' ).data( 'total', this_amount ).text( formatted_total );

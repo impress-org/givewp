@@ -171,7 +171,7 @@ function give_purchase_form_validate_fields() {
 
 	// Start an array to collect valid data
 	$valid_data = array(
-		'gateway'          => give_purchase_form_validate_gateway(), // Gateway fallback
+		'gateway'          => give_purchase_form_validate_gateway(), // Gateway fallback (amount is validated here)
 		'need_new_user'    => false,     // New user flag
 		'need_user_login'  => false,     // Login user flag
 		'logged_user_data' => array(),   // Logged user collected data
@@ -186,9 +186,6 @@ function give_purchase_form_validate_fields() {
 	if ( isset( $terms_option ) && $terms_option === 'yes' ) {
 		give_purchase_form_validate_agree_to_terms();
 	}
-
-	//Validate amount is more than 0
-
 
 	if ( is_user_logged_in() ) {
 		// Collect logged in user data
@@ -234,6 +231,20 @@ function give_purchase_form_validate_gateway() {
 
 			give_set_error( 'invalid_donation_amount', __( 'Please insert a valid donation amount.', 'give' ) );
 
+		} //Check for a minimum custom amount
+		elseif ( !give_verify_minimum_price() ) {
+
+			$symbol = give_currency_symbol( $give_options['currency'] );
+			$symbol_position = isset( $give_options['currency_position'] )
+				? $give_options['currency_position']
+				: 'before';
+
+			$minimum = give_get_form_minimum_price( $_REQUEST['give-form-id'] );
+			$amount = ( $symbol_position == 'before' ) ? $symbol . $minimum : $minimum . $symbol;
+			$error_message = __( 'This form has a minimum donation amount of %s', 'give' );
+
+			give_set_error( 'invalid_donation_minimum', sprintf( $error_message, $amount ) );
+
 		} //Is this test mode zero donation? Let it through but set to manual gateway
 		elseif ( '0.00' == $_REQUEST['give-amount'] && give_is_test_mode() ) {
 
@@ -250,6 +261,38 @@ function give_purchase_form_validate_gateway() {
 
 	return $gateway;
 
+}
+
+/**
+ * Purchase Form Validate Minimum Donation Amount
+ *
+ * @access      private
+ * @since       1.3.6
+ * @return      bool
+ */
+function give_verify_minimum_price() {
+
+	$amount = give_sanitize_amount( $_REQUEST['give-amount'] );
+	$form_id = $_REQUEST['give-form-id'];
+	$price_id = isset( $_REQUEST['give-price-id'] ) ? $_REQUEST['give-price-id'] : 0;
+	$variable_prices = give_has_variable_prices( $form_id );
+
+	if ( $variable_prices && ! empty( $price_id ) ) {
+
+		$price_level_amount = give_get_price_option_amount( $form_id, $price_id );
+
+		if ( $price_level_amount == $amount ) {
+			return true;
+		}
+	}
+
+	$minimum = give_get_form_minimum_price( $form_id );
+
+	if ( $minimum > $amount && ! give_is_test_mode() ) {
+		return false;
+	}
+
+	return true;
 }
 
 /**
