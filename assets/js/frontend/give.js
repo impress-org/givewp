@@ -11,24 +11,15 @@
 
 var give_scripts;
 
-function customEvents( el ) {
-	var id = el.attr( 'id' );
-
-	if ( id === 'card_number' ) {
-		el.after( '<span class="off card-type"/>' );
-	}
-}
-
 jQuery( function ( $ ) {
 
 	var doc = $( document );
 
-	// floatlabels
+	//Float Labels
 	var options = {
-		exclude     : ['#give-amount, .give-select-level, .multiselect, .give-repeater-table input, select, input[type="url"]'],
-		customEvent : customEvents
+		exclude     : ['#give-amount, .give-select-level, .multiselect, .give-repeater-table input, input[type="url"]'],
+		customEvent : give_fl_custom_events
 	};
-
 	$( '.float-labels-enabled' ).floatlabels( options );
 
 	doc.on( 'give_gateway_loaded', function ( ev, response, form_id ) {
@@ -121,3 +112,13 @@ jQuery( function ( $ ) {
 	} );
 
 } );
+
+/**
+ * Floating Labels Custom Events
+ * @param el
+ */
+function give_fl_custom_events( el ) {
+	if ( el.hasClass( 'card-number' ) ) {
+		el.after( '<span class="off card-type"/>' );
+	}
+}
