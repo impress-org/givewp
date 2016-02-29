@@ -40,7 +40,7 @@ function give_load_scripts() {
 		'ajaxurl'             => give_get_ajax_url(),
 		'checkout_nonce'      => wp_create_nonce( 'give_checkout_nonce' ),
 		'currency_sign'       => give_currency_filter( '' ),
-		'currency_pos'        => isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before',
+		'currency_pos'        => give_get_currency_position(),
 		'thousands_separator' => isset( $give_options['thousands_separator'] ) ? $give_options['thousands_separator'] : ',',
 		'decimal_separator'   => isset( $give_options['decimal_separator'] ) ? $give_options['decimal_separator'] : '.',
 		'no_gateway'          => __( 'Please select a payment method', 'give' ),
