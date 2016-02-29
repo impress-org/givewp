@@ -1694,6 +1694,22 @@ Donation Details
 #give_dashboard_sales .give-table-stats tr#give-table-stats-tr-1 td {
   border-bottom: 1px solid #ececec; }
 
+#dashboard_right_now .give-forms-count:before {
+  font-family: 'give-icomoon';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  content: "\e800"; }
+
 /**
  * Give Forms SCSS
  *

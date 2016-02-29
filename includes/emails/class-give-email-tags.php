@@ -151,9 +151,9 @@ class Give_Email_Template_Tags {
  *
  * @since 1.0
  *
- * @param string   $tag  Email tag to be replace in email
- * @param string $description Description of the email tag added
- * @param callable $func Hook to run when email tag is found
+ * @param string   $tag         Email tag to be replace in email
+ * @param string   $description Description of the email tag added
+ * @param callable $func        Hook to run when email tag is found
  */
 function give_add_email_tag( $tag, $description, $func ) {
 	Give()->email_tags->add( $tag, $description, $func );
@@ -536,15 +536,25 @@ function give_email_tag_sitename( $payment_id ) {
 
 /**
  * Email template tag: receipt_link
- * Adds a link so users can view their receipt directly on your website if they are unable to view it in the browser correctly
+ *
+ * @description: Adds a link so users can view their receipt directly on your website if they are unable to view it in the browser correctly
  *
  * @param int $payment_id
  *
  * @return string receipt_link
  */
 function give_email_tag_receipt_link( $payment_id ) {
-	return sprintf( __( '%1$sView it in your browser.%2$s', 'give' ), '<a href="' . esc_url( add_query_arg( array(
-			'payment_key' => give_get_payment_key( $payment_id ),
-			'give_action' => 'view_receipt'
-		), home_url() ) ) . '">', '</a>' );
+
+	$receipt_url       = esc_url( add_query_arg( array(
+		'payment_key' => give_get_payment_key( $payment_id ),
+		'give_action' => 'view_receipt'
+	), home_url() ) );
+	$formatted = sprintf( __( '%1$sView it in your browser.%2$s', 'give' ), '<a href="' . $receipt_url . '">', '</a>' );
+
+	if(give_get_option('email_template') !== 'none') {
+		return $formatted;
+	} else {
+		return $receipt_url;
+	}
+
 }
