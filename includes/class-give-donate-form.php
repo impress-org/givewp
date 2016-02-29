@@ -66,9 +66,12 @@ class Give_Donate_Form {
 	private $earnings;
 
 	/**
-	 * Get things going
+	 * Give_Donate_Form constructor.
 	 *
 	 * @since 1.0
+	 *
+	 * @param bool  $_id
+	 * @param array $_args
 	 */
 	public function __construct( $_id = false, $_args = array() ) {
 
@@ -112,6 +115,11 @@ class Give_Donate_Form {
 	 * Magic __get function to dispatch a call to retrieve a private property
 	 *
 	 * @since 1.0
+	 *
+	 * @param $key
+	 *
+	 * @return mixed
+	 * @throws Exception
 	 */
 	public function __get( $key ) {
 
