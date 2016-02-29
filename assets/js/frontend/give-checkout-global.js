@@ -236,13 +236,9 @@ jQuery( function ( $ ) {
 
 		var parent_form = $( this ).closest( 'form' );
 		var pre_focus_amount = $( this ).data( 'amount' );
-<<<<<<< HEAD
 		var minimum_amount = parent_form.find( 'input[name="give-form-minimum"]');
-		var value_now = give_unformat_currency( $( this ).val() );
 		var value_min = give_unformat_currency( minimum_amount.val() );
-		var formatted_total = give_format_currency( value_now );
 		var is_level = false;
-=======
 		var value_now = give_unformat_currency( $( this ).val() );
 		var format_args = {
 			symbol   : '',
@@ -251,7 +247,6 @@ jQuery( function ( $ ) {
 			precision: give_global_vars.number_decimals
 		};
 		var formatted_total = give_format_currency( value_now, format_args );
->>>>>>> master
 
 		//Set the custom amount input value formatted properly
 		$( this ).val( formatted_total );
@@ -265,20 +260,20 @@ jQuery( function ( $ ) {
 		//Does this number have an accepted value?
 		if ( ( !$.isNumeric( value_now ) || value_now < value_min || value_now < 1 ) && ! is_level ) {
 
+			//It doesn't... Invalid Minimum
 			$( this ).addClass( 'invalid-amount' );
 
-			minimum_amount = give_global_vars.bad_minimum + ' ' + give_format_currency( value_min );
+			format_args.symbol = give_global_vars.currency_sign;
+			minimum_amount = give_global_vars.bad_minimum + ' ' + give_format_currency( value_min, format_args );
 
-			var invalid_minimum = parent_form.find( '.invalid-minimum' );
-
-			//Invalid Minimum
+			var invalid_minimum = parent_form.find( '.give-invalid-minimum' );
 			if( invalid_minimum.length === 0 ) {
-				var error = $( '<p class="invalid-minimum give-error">' + minimum_amount + '</p>' ).hide();
-
-				error.insertAfter( $( this ).closest( '.give-total-wrap' ) ).slideDown();
+				var error = $( '<div class="give_error give-invalid-minimum">' + minimum_amount + '</div>' ).hide();
+				error.insertAfter( parent_form.find( '.give-total-wrap' ) ).slideDown();
 			}
+
 		} else {
-			parent_form.find( '.invalid-minimum' ).slideUp( 400, function() {
+			parent_form.find( '.give-invalid-minimum' ).slideUp( 400, function() {
 				$( this ).remove();
 			});
 		}
@@ -286,21 +281,18 @@ jQuery( function ( $ ) {
 		//If values don't match up then proceed with updating donation total value
 		if ( pre_focus_amount !== value_now ) {
 
-<<<<<<< HEAD
-			//update checkout total (include currency sign)
-			parent_form.find( '.give-final-total-amount' ).data( 'total', value_now ).text( formatted_total );
-=======
 			//update donation total (include currency symbol)
 			format_args.symbol = give_global_vars.currency_sign;
-			$( this ).parents( 'form' ).find( '.give-final-total-amount' ).data( 'total', value_now ).text( give_format_currency( value_now, format_args ) );
->>>>>>> master
+			parent_form.find( '.give-final-total-amount' ).data( 'total', value_now ).text( give_format_currency( value_now, format_args ) );
 
 			//fade in/out updating text
 			$( this ).next( '.give-updating-price-loader' ).stop().fadeIn().fadeOut();
 
 		}
+
 		//This class is used for CSS purposes
 		$( this ).parent( '.give-donation-amount' ).removeClass( 'give-custom-amount-focus-in' );
+
 	} );
 
 	//Multi-level Buttons: Update Amount Field based on Multi-level Donation Select
