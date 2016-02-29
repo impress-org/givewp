@@ -158,7 +158,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 				),
 				array(
 					'name'         => __( 'Custom Amount Minimum', 'give' ),
-					'description'  => __( 'If you would like to set a minimum donation amount, enter it here.', 'give' ),
+					'description'  => __( 'If you would like to set a minimum custom donation amount please enter it here.', 'give' ),
 					'id'           => $prefix . 'custom_amount_minimum',
 					'type'         => 'text_small',
 					'row_classes'  => 'give-subfield',
