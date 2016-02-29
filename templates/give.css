@@ -859,7 +859,10 @@ form[id*='give-form'], #give-recurring-form, form.give-form {
       display: table; }
     form[id*='give-form'] .form-row-wide:after, #give-recurring-form .form-row-wide:after, form.give-form .form-row-wide:after {
       clear: both; }
-  form[id*='give-form'] .give-required-indicator, #give-recurring-form .give-required-indicator, form.give-form .give-required-indicator {
+  form[id*='give-form'] .give-error,
+  form[id*='give-form'] .give-required-indicator, #give-recurring-form .give-error,
+  #give-recurring-form .give-required-indicator, form.give-form .give-error,
+  form.give-form .give-required-indicator {
     color: #a00; }
   form[id*='give-form'] .card-expiration > select, #give-recurring-form .card-expiration > select, form.give-form .card-expiration > select {
     width: 44%;

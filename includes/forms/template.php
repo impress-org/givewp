@@ -102,6 +102,7 @@ function give_get_donation_form( $args = array() ) {
 			<input type="hidden" name="give-form-title" value="<?php echo htmlentities( $form->post_title ); ?>" />
 			<input type="hidden" name="give-current-url" value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>" />
 			<input type="hidden" name="give-form-url" value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>" />
+			<input type="hidden" name="give-form-minimum" value="<?php echo give_get_form_minimum_price( $form->ID ); ?>" />
 			<?php
 			//Price ID hidden field for variable (mult-level) donation forms
 			if ( give_has_variable_prices( $post_id ) ) {
@@ -233,11 +234,10 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 
 	global $give_options;
 
-
 	$variable_pricing    = give_has_variable_prices( $form_id );
 	$allow_custom_amount = get_post_meta( $form_id, '_give_custom_amount', true );
 	$currency_position   = isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before';
-	$symbol              = isset( $give_options['currency'] ) ? give_currency_symbol( $give_options['currency'] ) : '$';
+	$symbol              = give_currency_symbol( $give_options['currency'] );
 	$currency_output     = '<span class="give-currency-symbol give-currency-position-' . $currency_position . '">' . $symbol . '</span>';
 	$default_amount      = give_format_amount( give_get_default_form_amount( $form_id ) );
 	$custom_amount_text  = get_post_meta( $form_id, '_give_custom_amount_text', true );
