@@ -128,6 +128,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 = 1.3.6 =
 * New: Give French translation provided by Laurent. Thanks! - https://github.com/WordImpress/Give/issues/472
+* New: Minimum custom donation amount feature added; now you customize custom donations to help prevent fraud and further refine giving - https://github.com/WordImpress/Give/issues/390
 * Tweak: Improved "Offline Donations" gateway admin notification messaging - https://github.com/WordImpress/Give/issues/448
 * Tweak: Sessions only started on WP frontend - https://github.com/WordImpress/Give/issues/493
 * Fixed: Updated "At a Glance" dashboard widget icon to be Give symbol rather than empty circle - https://github.com/WordImpress/Give/issues/492
