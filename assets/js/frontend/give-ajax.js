@@ -32,7 +32,6 @@ jQuery( document ).ready( function ( $ ) {
 			$( this_form ).find( '#give_checkout_login_register' ).html( '' ).html( checkout_response );
 
 		} ).done( function () {
-			setup_form_loading_images();
 			// Hide the ajax loader
 			register_loading_img.hide();
 		} );
