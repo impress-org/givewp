@@ -346,7 +346,7 @@ jQuery( function ( $ ) {
 		var form_id = $.getQuery( 'form-id' );
 		var payment_mode = $.getQuery( 'payment-mode' );
 
-		//Sanitch check - only proceed if query strings in place
+		//Sanity check - only proceed if query strings in place
 		if ( !form_id || !payment_mode ) {
 			return false;
 		}
