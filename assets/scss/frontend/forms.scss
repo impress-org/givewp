@@ -634,12 +634,12 @@ form[id*='give-form'] {
 
 }
 
-/* Login and Register */
+/* Login Wrap */
 
-.give-login-account-wrap {
+.give-login-account-wrap, [id^="give-login-fields"] {
   @include clearfix();
 
-  > p {
+  > p.give-new-account-link, > p.give-login-message {
 	float: left;
 	margin: 0 0 15px;
 	padding: 0;
