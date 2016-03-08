@@ -528,7 +528,7 @@ function give_get_cc_form( $form_id ) {
 	do_action( 'give_before_cc_fields', $form_id ); ?>
 
 	<fieldset id="give_cc_fields-<?php echo $form_id ?>" class="give-do-validate">
-		<legend><?php _e( 'Credit Card Info', 'give' ); ?></legend>
+		<legend><?php echo apply_filters( 'give_credit_card_fieldset_heading', __( 'Credit Card Info', 'give' )); ?></legend>
 		<?php if ( is_ssl() ) : ?>
 			<div id="give_secure_site_wrapper-<?php echo $form_id ?>">
 				<span class="give-icon padlock"></span>
@@ -611,7 +611,7 @@ function give_default_cc_address_fields( $form_id ) {
 	$zip   = $logged_in && ! empty( $user_address['zip'] ) ? $user_address['zip'] : '';
 	ob_start(); ?>
 	<fieldset id="give_cc_address" class="cc-address">
-		<legend><?php _e( 'Billing Details', 'give' ); ?></legend>
+		<legend><?php echo apply_filters( 'give_billing_details_fieldset_heading', __( 'Billing Details', 'give' )); ?></legend>
 		<?php do_action( 'give_cc_billing_top' ); ?>
 		<p id="give-card-address-wrap" class="form-row form-row-two-thirds">
 			<label for="card_address" class="give-label">
@@ -789,7 +789,7 @@ function give_get_register_fields( $form_id ) {
 		<?php do_action( 'give_register_fields_before' ); ?>
 
 		<fieldset id="give-register-account-fields-<?php echo $form_id; ?>">
-			<legend><?php _e( 'Create an account', 'give' );
+			<legend><?php echo apply_filters( 'give_create_account_fieldset_heading', __('Create an account', 'give' ));
 				if ( ! give_no_guest_checkout( $form_id ) ) {
 					echo ' <span class="sub-text">' . __( '(optional)', 'give' ) . '</span>';
 				} ?></legend>
@@ -873,7 +873,7 @@ function give_get_login_fields( $form_id ) {
 	ob_start();
 	?>
 	<fieldset id="give_login_fields">
-		<legend><?php _e( 'Login to Your Account', 'give' );
+		<legend><?php echo apply_filters( 'give_account_login_fieldset_heading', __( 'Login to Your Account', 'give' ));
 			if ( ! give_no_guest_checkout( $form_id ) ) {
 				echo ' <span class="sub-text">' . __( '(optional)', 'give' ) . '</span>';
 			} ?></legend>
