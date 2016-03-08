@@ -128,20 +128,6 @@ function give_load_checkout_login_fields()
 add_action('wp_ajax_nopriv_give_checkout_login', 'give_load_checkout_login_fields');
 
 /**
- * Load Checkout Register Fields via AJAX
- *
- * @since 1.0
- * @return void
- */
-function give_load_checkout_register_fields()
-{
-    do_action('give_purchase_form_register_fields');
-    give_die();
-}
-
-add_action('wp_ajax_nopriv_checkout_register', 'give_load_checkout_register_fields');
-
-/**
  * Load Checkout Fields
  *
  * @since 1.3.6
@@ -155,6 +141,7 @@ function give_load_checkout_fields()
 }
 
 add_action('wp_ajax_nopriv_give_cancel_login', 'give_load_checkout_fields');
+add_action('wp_ajax_nopriv_give_checkout_register', 'give_load_checkout_fields');
 
 /**
  * Get Form Title via AJAX (used only in WordPress Admin)
