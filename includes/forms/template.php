@@ -868,15 +868,11 @@ function give_get_login_fields( $form_id ) {
 	ob_start();
 	?>
 	<fieldset id="give-login-fields-<?php echo $form_id; ?>">
-	<fieldset id="give_login_fields">
 		<legend><?php echo apply_filters( 'give_account_login_fieldset_heading', __( 'Login to Your Account', 'give' ));
 			if ( ! give_no_guest_checkout( $form_id ) ) {
 				echo ' <span class="sub-text">' . __( '(optional)', 'give' ) . '</span>';
-			} ?></legend>
-			<legend><?php echo apply_filters( 'give_account_login_fieldset_heading', __( 'Login to Your Account', 'give' ));
-			if ( ! give_no_guest_checkout( $form_id ) ) {
-				echo ' <span class="sub-text">' . __( '(optional)', 'give' ) . '</span>';
-			} ?></legend>
+			} ?>
+		</legend>
         <?php if ( $show_register_form == 'both' ) { ?>
 			<p class="give-new-account-link">
 				<?php _e( 'Need to create an account?', 'give' ); ?>&nbsp;
@@ -1010,9 +1006,7 @@ function give_terms_agreement( $form_id ) {
 	$label       = get_post_meta( $form_id, '_give_agree_label', true );
 	$terms       = get_post_meta( $form_id, '_give_agree_text', true );
 
-	if ( $form_option === 'yes' && ! empty( $terms ) ) {
-
-		?>
+	if ( $form_option === 'yes' && ! empty( $terms ) ) { ?>
 		<fieldset id="give_terms_agreement">
 			<div id="give_terms" style="display:none;">
 				<?php
