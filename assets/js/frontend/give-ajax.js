@@ -20,20 +20,23 @@ jQuery(document).ready(function ($) {
     $('body').on('click', '.give-checkout-register-login', function (e) {
         var $this = $(this);
         var this_form = $(this).parents('form');
-        var register_loading_img = $(this_form).find('.give-login-account-wrap .give-loading-text');
+        var loading_animation = $(this_form).find('[id^="give-checkout-login-register"] .give-loading-text');
         var data = {
             action: $this.data('action'),
             form_id: $(this_form).find('[name="give-form-id"]').val()
         };
-        
+
         // Show the ajax loader
-        register_loading_img.show();
+        loading_animation.show();
 
         $.post(give_scripts.ajaxurl, data, function (checkout_response) {
 
-            //Prepend the login form
+            //Clear form HTML and add AJAX response containing fields
+            $(this_form).find('[id^=give_purchase_submit]').remove();
             $(this_form).find('[id^=give-checkout-login-register]').html('').html(checkout_response);
-            $(this_form).find('[id^=give_purchase_submit]').hide();
+
+            //Setup tooltips again
+            setup_give_tooltips();
 
             //Activate cancel button
             $(this_form).find('input.give-cancel-login').on('click', function (e) {
@@ -47,20 +50,18 @@ jQuery(document).ready(function ($) {
                 $.post(give_scripts.ajaxurl, data, function (checkout_response) {
                     //Show fields
                     $(this_form).find('[id^=give-checkout-login-register]').html('').html(checkout_response);
-                    //Show submit fieldset
-                    $(this_form).find('[id^=give_purchase_submit]').show();
                 });
             });
         }).done(function () {
             // Hide the ajax loader
-            register_loading_img.hide();
+            loading_animation.hide();
         });
         return false;
     });
 
 
     // Process the login form via ajax when the user clicks "login"
-    $(document).on('click', '#give_login_fields input[type=submit]', function (e) {
+    $(document).on('click', '[id^=give-login-fields] input[type=submit]', function (e) {
 
         e.preventDefault();
 
@@ -69,13 +70,13 @@ jQuery(document).ready(function ($) {
 
         $(this).val(give_global_vars.purchase_loading);
 
-        this_form.find('#give_login_fields .give-loading-animation').fadeIn();
+        this_form.find('[id^=give-login-fields] .give-loading-animation').fadeIn();
 
         var data = {
             action: 'give_process_checkout_login',
             give_ajax: 1,
-            give_user_login: this_form.find('#give_user_login').val(),
-            give_user_pass: this_form.find('#give_user_pass').val()
+            give_user_login: this_form.find('[name=give_user_login]').val(),
+            give_user_pass: this_form.find('[name=give_user_pass]').val()
         };
 
         $.post(give_global_vars.ajaxurl, data, function (data) {
@@ -88,10 +89,10 @@ jQuery(document).ready(function ($) {
                 give_load_gateway(this_form, this_form.find('.give-gateway-option-selected input').val());
             } else {
                 //Login failed, show errors
-                this_form.find('#give_login_fields input[type=submit]').val(complete_purchase_val);
+                this_form.find('[id^=give-login-fields] input[type=submit]').val(complete_purchase_val);
                 this_form.find('.give-loading-animation').fadeOut();
                 this_form.find('.give_errors').remove();
-                this_form.find('#give-user-login-submit').before(data);
+                this_form.find('[id^=give-user-login-submit]').before(data);
             }
         });
 
