@@ -119,11 +119,12 @@ function give_dashboard_at_a_glance_widget( $items ) {
 	$num_posts = wp_count_posts( 'give_forms' );
 
 	if ( $num_posts && $num_posts->publish ) {
+        
 		$text = sprintf( _n( '%1$s Give %2$s', '%1$s Give %3$s', $num_posts->publish, 'give' ), $num_posts->publish, give_get_forms_label_singular(), give_get_forms_label_plural() );
 
 		$text = sprintf( $text, number_format_i18n( $num_posts->publish ) );
 
-		if ( current_user_can( 'edit_give_forms', get_the_ID() ) ) {
+		if ( current_user_can( 'edit_give_forms', get_current_user_id() ) ) {
 			$text = sprintf( '<a class="give-forms-count" href="edit.php?post_type=give_forms">%1$s</a>', $text );
 		} else {
 			$text = sprintf( '<span class="give-forms-count">%1$s</span>', $text );
