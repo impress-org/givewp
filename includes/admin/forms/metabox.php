@@ -311,7 +311,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					),
 					array(
 						'name'    => __( 'Register / Login Form', 'give' ),
-						'desc'    => __( 'Display the registration and login forms in the checkout section for non-logged-in users. Note: if you have "Login Form Only" enabled it will require users to login prior to donating.', 'give' ),
+						'desc'    => __( 'Display the registration and login forms in the payment section for non-logged-in users.', 'give' ),
 						'id'      => $prefix . 'show_register_form',
 						'type'    => 'select',
 						'options' => array(
