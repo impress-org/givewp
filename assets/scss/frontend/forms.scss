@@ -652,10 +652,14 @@ form[id*='give-form'] {
 }
 
 /* User Login */
-#give-user-login-submit, .give-submit-button-wrap {
+[id^='give-user-login-submit'], .give-submit-button-wrap {
 
-  input.give-submit, span.give-loading-animation {
+  input.give-submit, input.give-btn, span.give-loading-animation {
 	float: left;
+  }
+
+  input.give-cancel-login {
+    margin-left:5px;
   }
 
   span.give-loading-animation {
