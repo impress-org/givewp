@@ -170,9 +170,9 @@ function give_show_purchase_form( $form_id ) {
 
 	$payment_mode = give_get_chosen_gateway( $form_id );
 
-	if ( ! isset( $form_id ) && isset( $_POST['give_form_id'] ) ) {
-		$form_id = $_POST['give_form_id'];
-	}
+//	if ( ! isset( $form_id ) && isset( $_POST['give_form_id'] ) ) {
+//		$form_id = $_POST['give_form_id'];
+//	}
 
 	do_action( 'give_purchase_form_top', $form_id );
 
