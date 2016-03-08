@@ -8,149 +8,170 @@
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 var give_scripts, give_global_vars;
-jQuery( document ).ready( function ( $ ) {
+jQuery(document).ready(function ($) {
 
-	//Run tooltips setup
-	setup_give_tooltips();
+    //Run tooltips setup
+    setup_give_tooltips();
 
-	//Hide loading elements
-	$( '.give-loading-text' ).hide();
+    //Hide loading elements
+    $('.give-loading-text').hide();
 
-	// Show the login form in the checkout when the user clicks the "Login" link
-	$( 'body' ).on( 'click', '.give-checkout-register-login', function ( e ) {
-		var $this = $( this );
-		var data = {
-			action: $this.data( 'action' )
-		};
-		var this_form = $( this ).parents( 'form' );
-		var register_loading_img = $( this_form ).find( '.give-login-account-wrap .give-loading-text' );
+    // Show the login form in the checkout when the user clicks the "Login" link
+    $('body').on('click', '.give-checkout-register-login', function (e) {
+        var $this = $(this);
+        var this_form = $(this).parents('form');
+        var loading_animation = $(this_form).find('[id^="give-checkout-login-register"] .give-loading-text');
+        var data = {
+            action: $this.data('action'),
+            form_id: $(this_form).find('[name="give-form-id"]').val()
+        };
 
-		// Show the ajax loader
-		register_loading_img.show();
+        // Show the ajax loader
+        loading_animation.show();
 
-		$.post( give_scripts.ajaxurl, data, function ( checkout_response ) {
-			$( this_form ).find( '[id^=give-checkout-login-register]' ).html( '' ).html( checkout_response );
+        $.post(give_scripts.ajaxurl, data, function (checkout_response) {
 
-		} ).done( function () {
-			// Hide the ajax loader
-			register_loading_img.hide();
-		} );
-		return false;
-	} );
+            //Clear form HTML and add AJAX response containing fields
+            $(this_form).find('[id^=give_purchase_submit]').remove();
+            $(this_form).find('[id^=give-checkout-login-register]').html('').html(checkout_response);
 
+            //Setup tooltips again
+            setup_give_tooltips();
 
-	// Process the login form via ajax when the user clicks "login"
-	$( document ).on( 'click', '#give_login_fields input[type=submit]', function ( e ) {
-
-		e.preventDefault();
-
-		var complete_purchase_val = $( this ).val();
-		var this_form = $( this ).parents( 'form' );
-
-		$( this ).val( give_global_vars.purchase_loading );
-
-		this_form.find( '#give_login_fields .give-loading-animation' ).fadeIn();
-
-		var data = {
-			action         : 'give_process_checkout_login',
-			give_ajax      : 1,
-			give_user_login: this_form.find( '#give_user_login' ).val(),
-			give_user_pass : this_form.find( '#give_user_pass' ).val()
-		};
-
-		$.post( give_global_vars.ajaxurl, data, function ( data ) {
-
-			//user is logged in
-			if ( $.trim( data ) == 'success' ) {
-				//remove errors
-				this_form.find( '.give_errors' ).remove();
-				//reload the selected gateway so it contains their logged in information
-				give_load_gateway( this_form, this_form.find( '.give-gateway-option-selected input' ).val() );
-			} else {
-				//Login failed, show errors
-				this_form.find( '#give_login_fields input[type=submit]' ).val( complete_purchase_val );
-				this_form.find( '.give-loading-animation' ).fadeOut();
-				this_form.find( '.give_errors' ).remove();
-				this_form.find( '#give-user-login-submit' ).before( data );
-			}
-		} );
-
-	} );
-
-	//Switch the gateway on gateway selection field change
-	$( 'select#give-gateway, input.give-gateway' ).on( 'change', function ( e ) {
-
-		e.preventDefault();
-
-		//Which payment gateway to load?
-		var payment_mode = $( this ).val();
-
-		//Problema? Bounce
-		if ( payment_mode == '0' ) {
-			console.log( 'There was a problem loading the selected gateway' );
-			return false;
-		}
-
-		give_load_gateway( $( this ).parents( 'form' ), payment_mode );
-
-		return false;
-
-	} );
+            //Activate cancel button
+            $(this_form).find('input.give-cancel-login').on('click', function (e) {
+                e.preventDefault();
+                //User cancelled login
+                var data = {
+                    action: $(this).data('action'),
+                    form_id: $(this_form).find('[name="give-form-id"]').val()
+                };
+                //AJAX get the payment fields
+                $.post(give_scripts.ajaxurl, data, function (checkout_response) {
+                    //Show fields
+                    $(this_form).find('[id^=give-checkout-login-register]').html('').html(checkout_response);
+                });
+            });
+        }).done(function () {
+            // Hide the ajax loader
+            loading_animation.hide();
+        });
+        return false;
+    });
 
 
-	//Process the donation submit
-	$( 'body' ).on( 'click touchend', '#give-purchase-button', function ( e ) {
+    // Process the login form via ajax when the user clicks "login"
+    $(document).on('click', '[id^=give-login-fields] input[type=submit]', function (e) {
 
-		//this form object
-		var this_form = $( this ).parents( 'form.give-form' );
+        e.preventDefault();
 
-		//loading animation
-		var loading_animation = this_form.find( '#give_purchase_submit .give-loading-animation' );
-		loading_animation.fadeIn();
+        var complete_purchase_val = $(this).val();
+        var this_form = $(this).parents('form');
 
-		//this form selector
-		var give_purchase_form = this_form.get( 0 );
+        $(this).val(give_global_vars.purchase_loading);
 
-		//check validity
-		if ( typeof give_purchase_form.checkValidity === "function" && give_purchase_form.checkValidity() === false ) {
-			loading_animation.fadeOut(); //Don't leave any handing loading animations
+        this_form.find('[id^=give-login-fields] .give-loading-animation').fadeIn();
 
-			//Check for Safari (doesn't support HTML5 required)
-			if ( (navigator.userAgent.indexOf( 'Safari' ) != -1 && navigator.userAgent.indexOf( 'Chrome' ) == -1) === false ) {
-				//Not safari: Support HTML5 "required" so skip the rest of this function
-				return;
-			}
+        var data = {
+            action: 'give_process_checkout_login',
+            give_ajax: 1,
+            give_user_login: this_form.find('[name=give_user_login]').val(),
+            give_user_pass: this_form.find('[name=give_user_pass]').val()
+        };
 
-		}
+        $.post(give_global_vars.ajaxurl, data, function (data) {
 
-		//prevent form from submitting normally
-		e.preventDefault();
+            //user is logged in
+            if ($.trim(data) == 'success') {
+                //remove errors
+                this_form.find('.give_errors').remove();
+                //reload the selected gateway so it contains their logged in information
+                give_load_gateway(this_form, this_form.find('.give-gateway-option-selected input').val());
+            } else {
+                //Login failed, show errors
+                this_form.find('[id^=give-login-fields] input[type=submit]').val(complete_purchase_val);
+                this_form.find('.give-loading-animation').fadeOut();
+                this_form.find('.give_errors').remove();
+                this_form.find('[id^=give-user-login-submit]').before(data);
+            }
+        });
 
-		//Submit btn text
-		var complete_purchase_val = $( this ).val();
+    });
 
-		//Update submit button text
-		$( this ).val( give_global_vars.purchase_loading );
+    //Switch the gateway on gateway selection field change
+    $('select#give-gateway, input.give-gateway').on('change', function (e) {
 
-		//Submit form via AJAX
-		$.post( give_global_vars.ajaxurl, this_form.serialize() + '&action=give_process_checkout&give_ajax=true', function ( data ) {
+        e.preventDefault();
 
-			if ( $.trim( data ) == 'success' ) {
-				//Remove any errors
-				this_form.find( '.give_errors' ).remove();
-				//Submit form for normal processing
-				$( give_purchase_form ).submit();
-			} else {
-				this_form.find( '#give-purchase-button' ).val( complete_purchase_val );
-				loading_animation.fadeOut();
-				this_form.find( '.give_errors' ).remove();
-				this_form.find( '#give_purchase_submit' ).before( data );
-			}
-		} );
+        //Which payment gateway to load?
+        var payment_mode = $(this).val();
 
-	} );
+        //Problema? Bounce
+        if (payment_mode == '0') {
+            console.log('There was a problem loading the selected gateway');
+            return false;
+        }
 
-} );
+        give_load_gateway($(this).parents('form'), payment_mode);
+
+        return false;
+
+    });
+
+
+    //Process the donation submit
+    $('body').on('click touchend', '#give-purchase-button', function (e) {
+
+        //this form object
+        var this_form = $(this).parents('form.give-form');
+
+        //loading animation
+        var loading_animation = this_form.find('#give_purchase_submit .give-loading-animation');
+        loading_animation.fadeIn();
+
+        //this form selector
+        var give_purchase_form = this_form.get(0);
+
+        //check validity
+        if (typeof give_purchase_form.checkValidity === "function" && give_purchase_form.checkValidity() === false) {
+            loading_animation.fadeOut(); //Don't leave any handing loading animations
+
+            //Check for Safari (doesn't support HTML5 required)
+            if ((navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) === false) {
+                //Not safari: Support HTML5 "required" so skip the rest of this function
+                return;
+            }
+
+        }
+
+        //prevent form from submitting normally
+        e.preventDefault();
+
+        //Submit btn text
+        var complete_purchase_val = $(this).val();
+
+        //Update submit button text
+        $(this).val(give_global_vars.purchase_loading);
+
+        //Submit form via AJAX
+        $.post(give_global_vars.ajaxurl, this_form.serialize() + '&action=give_process_checkout&give_ajax=true', function (data) {
+
+            if ($.trim(data) == 'success') {
+                //Remove any errors
+                this_form.find('.give_errors').remove();
+                //Submit form for normal processing
+                $(give_purchase_form).submit();
+            } else {
+                this_form.find('#give-purchase-button').val(complete_purchase_val);
+                loading_animation.fadeOut();
+                this_form.find('.give_errors').remove();
+                this_form.find('#give_purchase_submit').before(data);
+            }
+        });
+
+    });
+
+});
 
 /**
  * Load the Payment Gateways
@@ -159,47 +180,47 @@ jQuery( document ).ready( function ( $ ) {
  * @param form_object Obj The specific form to load a gateway for
  * @param payment_mode
  */
-function give_load_gateway( form_object, payment_mode ) {
+function give_load_gateway(form_object, payment_mode) {
 
-	var loading_element = jQuery( form_object ).find( '#give-payment-mode-select .give-loading-text' );
-	var give_total = jQuery( form_object ).find( '#give-amount' ).val();
-	var give_form_id = jQuery( form_object ).find( 'input[name="give-form-id"]' ).val();
+    var loading_element = jQuery(form_object).find('#give-payment-mode-select .give-loading-text');
+    var give_total = jQuery(form_object).find('#give-amount').val();
+    var give_form_id = jQuery(form_object).find('input[name="give-form-id"]').val();
 
-	// Show the ajax loader
-	loading_element.fadeIn();
+    // Show the ajax loader
+    loading_element.fadeIn();
 
 
-	var form_data = jQuery( form_object ).data();
+    var form_data = jQuery(form_object).data();
 
-	if ( form_data["blockUI.isBlocked"] != 1 ) {
-		jQuery( form_object ).find( '#give_purchase_form_wrap' ).block( {
-			message   : null,
-			overlayCSS: {
-				background: '#fff',
-				opacity   : 0.6
-			}
-		} );
-	}
+    if (form_data["blockUI.isBlocked"] != 1) {
+        jQuery(form_object).find('#give_purchase_form_wrap').block({
+            message: null,
+            overlayCSS: {
+                background: '#fff',
+                opacity: 0.6
+            }
+        });
+    }
 
-	//Post via AJAX to Give
-	jQuery.post( give_scripts.ajaxurl + '?payment-mode=' + payment_mode, {
-			action           : 'give_load_gateway',
-			give_total       : give_total,
-			give_form_id     : give_form_id,
-			give_payment_mode: payment_mode
-		},
-		function ( response ) {
-			//Success: let's output the gateway fields in the appropriate form space
-			jQuery( form_object ).unblock();
-			jQuery( form_object ).find( '#give_purchase_form_wrap' ).html( response );
-			jQuery( '.give-no-js' ).hide();
-			jQuery( form_object ).find( '#give-payment-mode-wrap .give-loading-text' ).fadeOut();
-			setup_give_tooltips();
+    //Post via AJAX to Give
+    jQuery.post(give_scripts.ajaxurl + '?payment-mode=' + payment_mode, {
+            action: 'give_load_gateway',
+            give_total: give_total,
+            give_form_id: give_form_id,
+            give_payment_mode: payment_mode
+        },
+        function (response) {
+            //Success: let's output the gateway fields in the appropriate form space
+            jQuery(form_object).unblock();
+            jQuery(form_object).find('#give_purchase_form_wrap').html(response);
+            jQuery('.give-no-js').hide();
+            jQuery(form_object).find('#give-payment-mode-wrap .give-loading-text').fadeOut();
+            setup_give_tooltips();
 
-			// trigger an event on success for hooks
-			jQuery( document ).trigger( 'give_gateway_loaded', [response, jQuery( form_object ).attr( 'id' )] );
-		}
-	);
+            // trigger an event on success for hooks
+            jQuery(document).trigger('give_gateway_loaded', [response, jQuery(form_object).attr('id')]);
+        }
+    );
 
 }
 
@@ -210,14 +231,14 @@ function give_load_gateway( form_object, payment_mode ) {
  * @since 1.0
  */
 function setup_give_tooltips() {
-	jQuery( '[data-tooltip!=""]' ).qtip( { // Grab all elements with a non-blank data-tooltip attr.
-		content : {
-			attr: 'data-tooltip' // Tell qTip2 to look inside this attr for its content
-		},
-		style   : {classes: 'qtip-rounded qtip-tipsy'},
-		position: {
-			my: 'bottom center',  // Position my top left...
-			at: 'top center' // at the bottom right of...
-		}
-	} )
+    jQuery('[data-tooltip!=""]').qtip({ // Grab all elements with a non-blank data-tooltip attr.
+        content: {
+            attr: 'data-tooltip' // Tell qTip2 to look inside this attr for its content
+        },
+        style: {classes: 'qtip-rounded qtip-tipsy'},
+        position: {
+            my: 'bottom center',  // Position my top left...
+            at: 'top center' // at the bottom right of...
+        }
+    })
 }

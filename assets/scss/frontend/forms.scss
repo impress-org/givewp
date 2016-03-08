@@ -634,12 +634,12 @@ form[id*='give-form'] {
 
 }
 
-/* Login and Register */
+/* Login Wrap */
 
-.give-login-account-wrap {
+.give-login-account-wrap, [id^="give-login-fields"] {
   @include clearfix();
 
-  > p {
+  > p.give-new-account-link, > p.give-login-message {
 	float: left;
 	margin: 0 0 15px;
 	padding: 0;
@@ -652,10 +652,14 @@ form[id*='give-form'] {
 }
 
 /* User Login */
-#give-user-login-submit, .give-submit-button-wrap {
+[id^='give-user-login-submit'], .give-submit-button-wrap {
 
-  input.give-submit, span.give-loading-animation {
+  input.give-submit, input.give-btn, span.give-loading-animation {
 	float: left;
+  }
+
+  input.give-cancel-login {
+    margin-left:5px;
   }
 
   span.give-loading-animation {
