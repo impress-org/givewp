@@ -80,10 +80,10 @@ function give_email_preview_template_tags( $message ) {
 	$message = str_replace( '{sitename}', get_bloginfo( 'name' ), $message );
 	$message = str_replace( '{product_notes}', $notes, $message );
 	$message = str_replace( '{payment_id}', $payment_id, $message );
-	$message = str_replace( '{receipt_link}', sprintf( __( '%1$sView it in your browser.%2$s', 'give' ), '<a href="' . esc_url( add_query_arg( array(
+	$message = str_replace( '{receipt_link}', sprintf( __( '%1$sView it in your browser %2$s', 'give' ), '<a href="' . esc_url( add_query_arg( array(
 			'payment_key' => $receipt_id,
 			'give_action' => 'view_receipt'
-		), home_url() ) ) . '">', '</a>' ), $message );
+		), home_url() ) ) . '">', '&raquo;</a>' ), $message );
 
 	return wpautop( apply_filters( 'give_email_preview_template_tags', $message ) );
 }
@@ -246,7 +246,7 @@ function give_get_donation_notification_body_content( $payment_id = 0, $payment_
  */
 function give_render_receipt_in_browser() {
 	if ( ! isset( $_GET['payment_key'] ) ) {
-		wp_die( __( 'Missing donation key.', 'give' ), __( 'Error', 'give' ) );
+		wp_die( __( 'Missing donation payment key.', 'give' ), __( 'Error', 'give' ) );
 	}
 
 	$key = urlencode( $_GET['payment_key'] );
