@@ -43,7 +43,7 @@ add_shortcode( 'donation_history', 'give_donation_history' );
  *
  * @since       1.0
  *
- * @param array  $atts Shortcode attributes
+ * @param array $atts Shortcode attributes
  * @param string $content
  *
  * @return string
@@ -103,7 +103,7 @@ add_shortcode( 'give_form', 'give_form_shortcode' );
  *
  * @since       1.0
  *
- * @param array  $atts Shortcode attributes
+ * @param array $atts Shortcode attributes
  * @param string $content
  *
  * @return string
@@ -149,19 +149,18 @@ add_shortcode( 'give_goal', 'give_goal_shortcode' );
  *
  * @since 1.0
  *
- * @param array  $atts Shortcode attributes
+ * @param array $atts Shortcode attributes
  * @param string $content
  *
  * @uses  give_login_form()
  * @return string
  */
 function give_login_form_shortcode( $atts, $content = null ) {
-	extract( shortcode_atts( array(
-			'redirect' => '',
-		), $atts, 'give_login' )
-	);
+	$args = shortcode_atts( array(
+		'redirect' => '',
+	), $atts, 'give_login' );
 
-	return give_login_form( $redirect );
+	return give_login_form( $args['redirect'] );
 }
 
 add_shortcode( 'give_login', 'give_login_form_shortcode' );
@@ -173,7 +172,7 @@ add_shortcode( 'give_login', 'give_login_form_shortcode' );
  *
  * @since 1.0
  *
- * @param array  $atts Shortcode attributes
+ * @param array $atts Shortcode attributes
  * @param string $content
  *
  * @uses  give_register_form()
@@ -198,7 +197,7 @@ add_shortcode( 'give_register', 'give_register_form_shortcode' );
  *
  * @since 1.0
  *
- * @param array  $atts Shortcode attributes
+ * @param array $atts Shortcode attributes
  * @param string $content
  *
  * @return string
@@ -242,7 +241,7 @@ function give_receipt_shortcode( $atts, $content = null ) {
 		$give_login_redirect = give_get_current_page_url();
 
 		ob_start();
-		echo '<div class="give_errors"><p class="give_error">' . __( 'You must be logged in to view this payment receipt.', 'give' ) . '</p></div>';
+		echo '<div class="give_errors"><p class="give_error">' . __( 'You must be logged in to view this donation payment receipt.', 'give' ) . '</p></div>';
 
 		give_get_template_part( 'shortcode', 'login' );
 
@@ -261,8 +260,6 @@ function give_receipt_shortcode( $atts, $content = null ) {
 	 * Or if user is logged in and the user can view sensitive shop data
 	 *
 	 */
-
-
 	if ( ! apply_filters( 'give_user_can_view_receipt', $user_can_view, $give_receipt_args ) ) {
 		return '<p class="edd-alert edd-alert-error">' . $give_receipt_args['error'] . '</p>';
 	}
@@ -294,7 +291,7 @@ add_shortcode( 'give_receipt', 'give_receipt_shortcode' );
  * @since  1.0
  *
  * @param array $atts attributes
- * @param null  $content
+ * @param null $content
  *
  * @return string Output generated from the profile editor
  */
