@@ -97,17 +97,12 @@ function give_get_donation_form( $args = array() ) {
 
 		<?php do_action( 'give_pre_form', $form->ID, $args ); ?>
 
-		<form id="give-form-<?php echo $post_id; ?>"
-		      class="give-form give-form-<?php echo absint( $form->ID ); ?><?php echo $float_labels_option; ?>"
-		      action="<?php echo $form_action; ?>" method="post">
+		<form id="give-form-<?php echo $post_id; ?>" class="give-form give-form-<?php echo absint( $form->ID ); ?><?php echo $float_labels_option; ?>" action="<?php echo $form_action; ?>" method="post">
 			<input type="hidden" name="give-form-id" value="<?php echo $form->ID; ?>"/>
 			<input type="hidden" name="give-form-title" value="<?php echo htmlentities( $form->post_title ); ?>"/>
-			<input type="hidden" name="give-current-url"
-			       value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
-			<input type="hidden" name="give-form-url"
-			       value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
-			<input type="hidden" name="give-form-minimum"
-			       value="<?php echo give_get_form_minimum_price( $form->ID ); ?>"/>
+			<input type="hidden" name="give-current-url" value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
+			<input type="hidden" name="give-form-url" value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
+			<input type="hidden" name="give-form-minimum" value="<?php echo give_get_form_minimum_price( $form->ID ); ?>"/>
 			<?php
 			//Price ID hidden field for variable (mult-level) donation forms
 			if ( give_has_variable_prices( $post_id ) ) {
@@ -471,12 +466,9 @@ function give_user_info_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'give_first', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
-				<span class="give-tooltip give-icon give-icon-question"
-				      data-tooltip="<?php _e( 'We will use this to personalize your account experience.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'We will use this to personalize your account experience.', 'give' ); ?>"></span>
 			</label>
-			<input class="give-input required" type="text" name="give_first"
-			       placeholder="<?php _e( 'First name', 'give' ); ?>" id="give-first"
-			       value="<?php echo is_user_logged_in() ? $user_data->first_name : ''; ?>"<?php if ( give_field_is_required( 'give_first', $form_id ) ) {
+			<input class="give-input required" type="text" name="give_first" placeholder="<?php _e( 'First name', 'give' ); ?>" id="give-first" value="<?php echo is_user_logged_in() ? $user_data->first_name : ''; ?>"<?php if ( give_field_is_required( 'give_first', $form_id ) ) {
 				echo ' required ';
 			} ?>/>
 		</p>
@@ -487,14 +479,12 @@ function give_user_info_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'give_last', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
-				<span class="give-tooltip give-icon give-icon-question"
-				      data-tooltip="<?php _e( 'We will use this as well to personalize your account experience.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'We will use this as well to personalize your account experience.', 'give' ); ?>"></span>
 			</label>
 
 			<input class="give-input<?php if ( give_field_is_required( 'give_last', $form_id ) ) {
 				echo ' required';
-			} ?>" type="text" name="give_last" id="give-last" placeholder="<?php _e( 'Last name', 'give' ); ?>"
-			       value="<?php echo is_user_logged_in() ? $user_data->last_name : ''; ?>"<?php if ( give_field_is_required( 'give_last', $form_id ) ) {
+			} ?>" type="text" name="give_last" id="give-last" placeholder="<?php _e( 'Last name', 'give' ); ?>" value="<?php echo is_user_logged_in() ? $user_data->last_name : ''; ?>"<?php if ( give_field_is_required( 'give_last', $form_id ) ) {
 				echo ' required ';
 			} ?> />
 		</p>
@@ -506,13 +496,10 @@ function give_user_info_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'give_email', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
-				<span class="give-tooltip give-icon give-icon-question"
-				      data-tooltip="<?php _e( 'We will send the purchase receipt to this address.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'We will send the purchase receipt to this address.', 'give' ); ?>"></span>
 			</label>
 
-			<input class="give-input required" type="email" name="give_email"
-			       placeholder="<?php _e( 'Email address', 'give' ); ?>" id="give-email"
-			       value="<?php echo is_user_logged_in() ? $user_data->user_email : ''; ?>"<?php if ( give_field_is_required( 'give_email', $form_id ) ) {
+			<input class="give-input required" type="email" name="give_email" placeholder="<?php _e( 'Email address', 'give' ); ?>" id="give-email" value="<?php echo is_user_logged_in() ? $user_data->user_email : ''; ?>"<?php if ( give_field_is_required( 'give_email', $form_id ) ) {
 				echo ' required ';
 			} ?>/>
 
@@ -556,55 +543,44 @@ function give_get_cc_form( $form_id ) {
 			<label for="card_number-<?php echo $form_id ?>" class="give-label">
 				<?php _e( 'Card Number', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
-				<span class="give-tooltip give-icon give-icon-question"
-				      data-tooltip="<?php _e( 'The (typically) 16 digits on the front of your credit card.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'The (typically) 16 digits on the front of your credit card.', 'give' ); ?>"></span>
 				<span class="card-type"></span>
 			</label>
 
-			<input type="tel" autocomplete="off" name="card_number" id="card_number-<?php echo $form_id ?>"
-			       class="card-number give-input required" placeholder="<?php _e( 'Card number', 'give' ); ?>"
-			       required/>
+			<input type="tel" autocomplete="off" name="card_number" id="card_number-<?php echo $form_id ?>" class="card-number give-input required" placeholder="<?php _e( 'Card number', 'give' ); ?>" required/>
 		</p>
 
 		<p id="give-card-cvc-wrap-<?php echo $form_id ?>" class="form-row form-row-one-third">
 			<label for="card_cvc-<?php echo $form_id ?>" class="give-label">
 				<?php _e( 'CVC', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
-				<span class="give-tooltip give-icon give-icon-question"
-				      data-tooltip="<?php _e( 'The 3 digit (back) or 4 digit (front) value on your card.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'The 3 digit (back) or 4 digit (front) value on your card.', 'give' ); ?>"></span>
 			</label>
 
-			<input type="tel" size="4" autocomplete="off" name="card_cvc" id="card_cvc-<?php echo $form_id ?>"
-			       class="card-cvc give-input required" placeholder="<?php _e( 'Security code', 'give' ); ?>" required/>
+			<input type="tel" size="4" autocomplete="off" name="card_cvc" id="card_cvc-<?php echo $form_id ?>" class="card-cvc give-input required" placeholder="<?php _e( 'Security code', 'give' ); ?>" required/>
 		</p>
 
 		<p id="give-card-name-wrap-<?php echo $form_id ?>" class="form-row form-row-two-thirds">
 			<label for="card_name-<?php echo $form_id ?>" class="give-label">
 				<?php _e( 'Name on the Card', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
-				<span class="give-tooltip give-icon give-icon-question"
-				      data-tooltip="<?php _e( 'The name printed on the front of your credit card.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'The name printed on the front of your credit card.', 'give' ); ?>"></span>
 			</label>
 
-			<input type="text" autocomplete="off" name="card_name" id="card_name-<?php echo $form_id ?>"
-			       class="card-name give-input required" placeholder="<?php _e( 'Card name', 'give' ); ?>" required/>
+			<input type="text" autocomplete="off" name="card_name" id="card_name-<?php echo $form_id ?>" class="card-name give-input required" placeholder="<?php _e( 'Card name', 'give' ); ?>" required/>
 		</p>
 		<?php do_action( 'give_before_cc_expiration' ); ?>
 		<p class="card-expiration form-row form-row-one-third">
 			<label for="card_expiry-<?php echo $form_id ?>" class="give-label">
 				<?php _e( 'Expiration', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
-				<span class="give-tooltip give-icon give-icon-question"
-				      data-tooltip="<?php _e( 'The date your credit card expires, typically on the front of the card.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'The date your credit card expires, typically on the front of the card.', 'give' ); ?>"></span>
 			</label>
 
-			<input type="hidden" id="card_exp_month-<?php echo $form_id ?>" name="card_exp_month"
-			       class="card-expiry-month"/>
-			<input type="hidden" id="card_exp_year-<?php echo $form_id ?>" name="card_exp_year"
-			       class="card-expiry-year"/>
+			<input type="hidden" id="card_exp_month-<?php echo $form_id ?>" name="card_exp_month" class="card-expiry-month"/>
+			<input type="hidden" id="card_exp_year-<?php echo $form_id ?>" name="card_exp_year" class="card-expiry-year"/>
 
-			<input type="tel" autocomplete="off" name="card_expiry" id="card_expiry-<?php echo $form_id ?>"
-			       class="card-expiry give-input required" placeholder="<?php _e( 'MM / YY', 'give' ); ?>" required/>
+			<input type="tel" autocomplete="off" name="card_expiry" id="card_expiry-<?php echo $form_id ?>" class="card-expiry give-input required" placeholder="<?php _e( 'MM / YY', 'give' ); ?>" required/>
 		</p>
 		<?php do_action( 'give_after_cc_expiration', $form_id ); ?>
 
@@ -648,15 +624,12 @@ function give_default_cc_address_fields( $form_id ) {
 				if ( give_field_is_required( 'card_address', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
-				<span class="give-tooltip give-icon give-icon-question"
-				      data-tooltip="<?php _e( 'The primary billing address for your credit card.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'The primary billing address for your credit card.', 'give' ); ?>"></span>
 			</label>
 
-			<input type="text" id="card_address" name="card_address"
-			       class="card-address give-input<?php if ( give_field_is_required( 'card_address', $form_id ) ) {
-				       echo ' required';
-			       } ?>" placeholder="<?php _e( 'Address line 1', 'give' ); ?>"
-			       value="<?php echo $line1; ?>"<?php if ( give_field_is_required( 'card_address', $form_id ) ) {
+			<input type="text" id="card_address" name="card_address" class="card-address give-input<?php if ( give_field_is_required( 'card_address', $form_id ) ) {
+				echo ' required';
+			} ?>" placeholder="<?php _e( 'Address line 1', 'give' ); ?>" value="<?php echo $line1; ?>"<?php if ( give_field_is_required( 'card_address', $form_id ) ) {
 				echo '  required ';
 			} ?>/>
 		</p>
@@ -667,15 +640,12 @@ function give_default_cc_address_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'card_address_2', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
-				<span class="give-tooltip give-icon give-icon-question"
-				      data-tooltip="<?php _e( '(optional) The suite, apt no, PO box, etc, associated with your billing address.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( '(optional) The suite, apt no, PO box, etc, associated with your billing address.', 'give' ); ?>"></span>
 			</label>
 
-			<input type="text" id="card_address_2" name="card_address_2"
-			       class="card-address-2 give-input<?php if ( give_field_is_required( 'card_address_2', $form_id ) ) {
-				       echo ' required';
-			       } ?>" placeholder="<?php _e( 'Address line 2', 'give' ); ?>"
-			       value="<?php echo $line2; ?>"<?php if ( give_field_is_required( 'card_address_2', $form_id ) ) {
+			<input type="text" id="card_address_2" name="card_address_2" class="card-address-2 give-input<?php if ( give_field_is_required( 'card_address_2', $form_id ) ) {
+				echo ' required';
+			} ?>" placeholder="<?php _e( 'Address line 2', 'give' ); ?>" value="<?php echo $line2; ?>"<?php if ( give_field_is_required( 'card_address_2', $form_id ) ) {
 				echo ' required ';
 			} ?>/>
 		</p>
@@ -686,14 +656,11 @@ function give_default_cc_address_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'card_city', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
-				<span class="give-tooltip give-icon give-icon-question"
-				      data-tooltip="<?php _e( 'The city for your billing address.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'The city for your billing address.', 'give' ); ?>"></span>
 			</label>
-			<input type="text" id="card_city" name="card_city"
-			       class="card-city give-input<?php if ( give_field_is_required( 'card_city', $form_id ) ) {
-				       echo ' required';
-			       } ?>" placeholder="<?php _e( 'City', 'give' ); ?>"
-			       value="<?php echo $city; ?>"<?php if ( give_field_is_required( 'card_city', $form_id ) ) {
+			<input type="text" id="card_city" name="card_city" class="card-city give-input<?php if ( give_field_is_required( 'card_city', $form_id ) ) {
+				echo ' required';
+			} ?>" placeholder="<?php _e( 'City', 'give' ); ?>" value="<?php echo $city; ?>"<?php if ( give_field_is_required( 'card_city', $form_id ) ) {
 				echo ' required ';
 			} ?>/>
 		</p>
@@ -704,15 +671,12 @@ function give_default_cc_address_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'card_zip', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
-				<span class="give-tooltip give-icon give-icon-question"
-				      data-tooltip="<?php _e( 'The zip or postal code for your billing address.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'The zip or postal code for your billing address.', 'give' ); ?>"></span>
 			</label>
 
-			<input type="text" size="4" id="card_zip" name="card_zip"
-			       class="card-zip give-input<?php if ( give_field_is_required( 'card_zip', $form_id ) ) {
-				       echo ' required';
-			       } ?>" placeholder="<?php _e( 'Zip / Postal code', 'give' ); ?>"
-			       value="<?php echo $zip; ?>" <?php if ( give_field_is_required( 'card_zip', $form_id ) ) {
+			<input type="text" size="4" id="card_zip" name="card_zip" class="card-zip give-input<?php if ( give_field_is_required( 'card_zip', $form_id ) ) {
+				echo ' required';
+			} ?>" placeholder="<?php _e( 'Zip / Postal code', 'give' ); ?>" value="<?php echo $zip; ?>" <?php if ( give_field_is_required( 'card_zip', $form_id ) ) {
 				echo ' required ';
 			} ?>/>
 		</p>
@@ -723,14 +687,12 @@ function give_default_cc_address_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'billing_country', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
-				<span class="give-tooltip give-icon give-icon-question"
-				      data-tooltip="<?php _e( 'The country for your billing address.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'The country for your billing address.', 'give' ); ?>"></span>
 			</label>
 
-			<select name="billing_country" id="billing_country"
-			        class="billing-country billing_country give-select<?php if ( give_field_is_required( 'billing_country', $form_id ) ) {
-				        echo ' required';
-			        } ?>"<?php if ( give_field_is_required( 'billing_country', $form_id ) ) {
+			<select name="billing_country" id="billing_country" class="billing-country billing_country give-select<?php if ( give_field_is_required( 'billing_country', $form_id ) ) {
+				echo ' required';
+			} ?>"<?php if ( give_field_is_required( 'billing_country', $form_id ) ) {
 				echo ' required ';
 			} ?>>
 				<?php
@@ -755,8 +717,7 @@ function give_default_cc_address_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'card_state', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
-				<span class="give-tooltip give-icon give-icon-question"
-				      data-tooltip="<?php _e( 'The state or province for your billing address.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'The state or province for your billing address.', 'give' ); ?>"></span>
 			</label>
 
 			<?php
@@ -768,10 +729,9 @@ function give_default_cc_address_fields( $form_id ) {
 			}
 
 			if ( ! empty( $states ) ) : ?>
-				<select name="card_state" id="card_state"
-				        class="card_state give-select<?php if ( give_field_is_required( 'card_state', $form_id ) ) {
-					        echo ' required';
-				        } ?>"<?php if ( give_field_is_required( 'card_state', $form_id ) ) {
+				<select name="card_state" id="card_state" class="card_state give-select<?php if ( give_field_is_required( 'card_state', $form_id ) ) {
+					echo ' required';
+				} ?>"<?php if ( give_field_is_required( 'card_state', $form_id ) ) {
 					echo ' required ';
 				} ?>>
 					<?php
@@ -781,8 +741,7 @@ function give_default_cc_address_fields( $form_id ) {
 					?>
 				</select>
 			<?php else : ?>
-				<input type="text" size="6" name="card_state" id="card_state" class="card_state give-input"
-				       placeholder="<?php _e( 'State / Province', 'give' ); ?>"/>
+				<input type="text" size="6" name="card_state" id="card_state" class="card_state give-input" placeholder="<?php _e( 'State / Province', 'give' ); ?>"/>
 			<?php endif; ?>
 		</p>
 		<?php do_action( 'give_cc_billing_bottom' ); ?>
@@ -820,8 +779,7 @@ function give_get_register_fields( $form_id ) {
 		<?php if ( $show_register_form == 'both' ) { ?>
 			<div class="give-login-account-wrap">
 				<p class="give-login-message"><?php _e( 'Already have an account?', 'give' ); ?>&nbsp;
-					<a href="<?php echo esc_url( add_query_arg( 'login', 1 ) ); ?>" class="give-checkout-register-login"
-					   data-action="give_checkout_login"><?php _e( 'Login', 'give' ); ?></a>
+					<a href="<?php echo esc_url( add_query_arg( 'login', 1 ) ); ?>" class="give-checkout-register-login" data-action="give_checkout_login"><?php _e( 'Login', 'give' ); ?></a>
 				</p>
 				<p class="give-loading-text">
 					<span class="give-loading-animation"></span> <?php _e( 'Loading...', 'give' ); ?></p>
@@ -842,15 +800,12 @@ function give_get_register_fields( $form_id ) {
 					<?php if ( give_no_guest_checkout( $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
-					<span class="give-tooltip give-icon give-icon-question"
-					      data-tooltip="<?php _e( 'The username you will use to log into your account.', 'give' ); ?>"></span>
+					<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'The username you will use to log into your account.', 'give' ); ?>"></span>
 				</label>
 
-				<input name="give_user_login" id="give-user-login-<?php echo $form_id; ?>"
-				       class="<?php if ( give_no_guest_checkout( $form_id ) ) {
-					       echo 'required ';
-				       } ?>give-input" type="text" placeholder="<?php _e( 'Username', 'give' ); ?>"
-				       title="<?php _e( 'Username', 'give' ); ?>"/>
+				<input name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" class="<?php if ( give_no_guest_checkout( $form_id ) ) {
+					echo 'required ';
+				} ?>give-input" type="text" placeholder="<?php _e( 'Username', 'give' ); ?>" title="<?php _e( 'Username', 'give' ); ?>"/>
 			</p>
 
 			<p id="give-user-pass-wrap-<?php echo $form_id; ?>" class="form-row form-row-one-third">
@@ -859,31 +814,26 @@ function give_get_register_fields( $form_id ) {
 					<?php if ( give_no_guest_checkout( $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
-					<span class="give-tooltip give-icon give-icon-question"
-					      data-tooltip="<?php _e( 'The password used to access your account.', 'give' ); ?>"></span>
+					<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'The password used to access your account.', 'give' ); ?>"></span>
 				</label>
 
-				<input name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>"
-				       class="<?php if ( give_no_guest_checkout( $form_id ) ) {
-					       echo 'required ';
-				       } ?>give-input" placeholder="<?php _e( 'Password', 'give' ); ?>" type="password"/>
+				<input name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>" class="<?php if ( give_no_guest_checkout( $form_id ) ) {
+					echo 'required ';
+				} ?>give-input" placeholder="<?php _e( 'Password', 'give' ); ?>" type="password"/>
 			</p>
 
-			<p id="give-user-pass-confirm-wrap-<?php echo $form_id; ?>"
-			   class="give-register-password form-row form-row-one-third">
+			<p id="give-user-pass-confirm-wrap-<?php echo $form_id; ?>" class="give-register-password form-row form-row-one-third">
 				<label for="give-user-pass-confirm-<?php echo $form_id; ?>">
 					<?php _e( 'Confirm Password', 'give' ); ?>
 					<?php if ( give_no_guest_checkout( $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
-					<span class="give-tooltip give-icon give-icon-question"
-					      data-tooltip="<?php _e( 'Please retype your password to confirm.', 'give' ); ?>"></span>
+					<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'Please retype your password to confirm.', 'give' ); ?>"></span>
 				</label>
 
-				<input name="give_user_pass_confirm" id="give-user-pass-confirm-<?php echo $form_id; ?>"
-				       class="<?php if ( give_no_guest_checkout( $form_id ) ) {
-					       echo 'required ';
-				       } ?>give-input" placeholder="<?php _e( 'Confirm password', 'give' ); ?>" type="password"/>
+				<input name="give_user_pass_confirm" id="give-user-pass-confirm-<?php echo $form_id; ?>" class="<?php if ( give_no_guest_checkout( $form_id ) ) {
+					echo 'required ';
+				} ?>give-input" placeholder="<?php _e( 'Confirm password', 'give' ); ?>" type="password"/>
 			</p>
 			<?php do_action( 'give_register_account_fields_after', $form_id ); ?>
 		</fieldset>
@@ -939,7 +889,7 @@ function give_get_login_fields( $form_id ) {
 				</a>
 			</p>
 			<p class="give-loading-text">
-				<span class="give-loading-animation"></span> <?php _e( 'Loading...', 'give' ); ?></p>
+				<span class="give-loading-animation"></span> <?php _e( 'Loading...', 'give' ); ?> </p>
 		<?php } ?>
 		<?php do_action( 'give_checkout_login_fields_before', $form_id ); ?>
 		<p id="give-user-login-wrap-<?php echo $form_id; ?>" class="form-row form-row-first">
@@ -952,8 +902,7 @@ function give_get_login_fields( $form_id ) {
 
 			<input class="<?php if ( give_no_guest_checkout( $form_id ) ) {
 				echo 'required ';
-			} ?>give-input" type="text" name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" value=""
-			       placeholder="<?php _e( 'Your username', 'give' ); ?>"/>
+			} ?>give-input" type="text" name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" value="" placeholder="<?php _e( 'Your username', 'give' ); ?>"/>
 		</p>
 
 		<p id="give-user-pass-wrap-<?php echo $form_id; ?>" class="give_login_password form-row form-row-last">
@@ -965,17 +914,14 @@ function give_get_login_fields( $form_id ) {
 			</label>
 			<input class="<?php if ( give_no_guest_checkout( $form_id ) ) {
 				echo 'required ';
-			} ?>give-input" type="password" name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>"
-			       placeholder="<?php _e( 'Your password', 'give' ); ?>"/>
+			} ?>give-input" type="password" name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>" placeholder="<?php _e( 'Your password', 'give' ); ?>"/>
 			<input type="hidden" name="give-purchase-var" value="needs-to-login"/>
 		</p>
 
 		<p id="give-user-login-submit-<?php echo $form_id; ?>" class="give-clearfix">
-			<input type="submit" class="give-submit give-btn button" name="give_login_submit"
-			       value="<?php _e( 'Login', 'give' ); ?>"/>
+			<input type="submit" class="give-submit give-btn button" name="give_login_submit" value="<?php _e( 'Login', 'give' ); ?>"/>
 			<?php if ( $show_register_form !== 'login' ) { ?>
-				<input type="button" data-action="give_cancel_login" class="give-cancel-login give-btn button"
-				       name="give_login_cancel" value="<?php _e( 'Cancel', 'give' ); ?>"/>
+				<input type="button" data-action="give_cancel_login" class="give-cancel-login give-btn button" name="give_login_cancel" value="<?php _e( 'Cancel', 'give' ); ?>"/>
 			<?php } ?>
 			<span class="give-loading-animation"></span>
 		</p>
@@ -1010,10 +956,8 @@ function give_payment_mode_select( $form_id ) {
 	<fieldset id="give-payment-mode-select">
 		<?php do_action( 'give_payment_mode_before_gateways_wrap' ); ?>
 		<div id="give-payment-mode-wrap">
-			<legend
-				class="give-payment-mode-label"><?php echo apply_filters( 'give_checkout_payment_method_text', __( 'Select Payment Method', 'give' ) ); ?>
-				<span class="give-loading-text"><span
-						class="give-loading-animation"></span> <?php _e( 'Loading...', 'give' ); ?></span></legend>
+			<legend class="give-payment-mode-label"><?php echo apply_filters( 'give_checkout_payment_method_text', __( 'Select Payment Method', 'give' ) ); ?>
+				<span class="give-loading-text"><span class="give-loading-animation"></span> <?php _e( 'Loading...', 'give' ); ?></span></legend>
 			<?php
 
 			do_action( 'give_payment_mode_before_gateways' ) ?>
@@ -1113,10 +1057,8 @@ function give_checkout_final_total( $form_id ) {
 	}
 	?>
 	<p id="give-final-total-wrap" class="form-wrap ">
-		<span
-			class="give-donation-total-label"><?php echo apply_filters( 'give_donation_total_label', esc_attr__( 'Donation Total:', 'give' ) ); ?></span>
-		<span class="give-final-total-amount"
-		      data-total="<?php echo give_format_amount( $total ); ?>"><?php echo give_currency_filter( give_format_amount( $total ) ); ?></span>
+		<span class="give-donation-total-label"><?php echo apply_filters( 'give_donation_total_label', esc_attr__( 'Donation Total:', 'give' ) ); ?></span>
+		<span class="give-final-total-amount" data-total="<?php echo give_format_amount( $total ); ?>"><?php echo give_currency_filter( give_format_amount( $total ) ); ?></span>
 	</p>
 	<?php
 }
@@ -1171,8 +1113,7 @@ function give_checkout_button_purchase( $form_id ) {
 	?>
 
 	<div class="give-submit-button-wrap give-clearfix">
-		<input type="submit" class="give-submit give-btn" id="give-purchase-button" name="give-purchase"
-		       value="<?php echo $display_label; ?>"/>
+		<input type="submit" class="give-submit give-btn" id="give-purchase-button" name="give-purchase" value="<?php echo $display_label; ?>"/>
 		<span class="give-loading-animation"></span>
 	</div>
 	<?php
@@ -1239,6 +1180,7 @@ add_action( 'give_pre_form_output', 'give_form_content', 10, 2 );
 
 /**
  * Show Give Goals
+ *
  * @since 1.0
  *
  * @param int $form_id

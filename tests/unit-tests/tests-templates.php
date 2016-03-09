@@ -39,9 +39,9 @@ class Tests_Templates extends Give_Unit_Test_Case {
 		$this->assertContains( '<form id="give-form-', $form );
 		$this->assertContains( 'class="give-form', $form );
 		$this->assertContains( 'method="post">', $form );
-		$this->assertContains( '<input type="hidden" name="give-form-id" value="' . $this->_post->ID . '" />', $form );
-		$this->assertContains( '<input type="hidden" name="give-form-title" value="' . get_the_title( $this->_post->ID ) . '" />', $form );
-		$this->assertContains( '<input type="hidden" name="give-form-url" value="' . give_get_current_page_url() . '" />', $form );
+		$this->assertContains( '<input type="hidden" name="give-form-id" value="' . $this->_post->ID . '"/>', $form );
+		$this->assertContains( '<input type="hidden" name="give-form-title" value="' . get_the_title( $this->_post->ID ) . '"/>', $form );
+		$this->assertContains( '<input type="hidden" name="give-form-url" value="' . give_get_current_page_url() . '"/>', $form );
 
 		// The donation form we created has variable pricing, so ensure the price options render
 		$this->assertContains( 'class="give-donation-levels-wrap', $form );
