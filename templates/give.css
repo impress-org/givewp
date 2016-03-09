@@ -120,11 +120,11 @@
   -moz-osx-font-smoothing: grayscale;
   content: "\e800"; }
 
-.fa-spin, form[id*='give-form'] .give-loading-animation:before {
-  -webkit-animation: fa-spin 2s infinite linear;
-  animation: fa-spin 2s infinite linear; }
+.fa-spin, form[id*='give-form'] .give-loading-animation {
+  -webkit-animation: spin 1000ms infinite linear;
+  animation: spin 1000ms infinite linear; }
 
-@-webkit-keyframes fa-spin {
+@-webkit-keyframes spin {
   0% {
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg); }
@@ -132,7 +132,7 @@
     -webkit-transform: rotate(359deg);
     transform: rotate(359deg); } }
 
-@keyframes fa-spin {
+@keyframes spin {
   0% {
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg); }
@@ -1169,24 +1169,7 @@ Loading Animation
   100% {
     opacity: 0; } }
 
-.give-loading-text span.elipsis {
-  -webkit-animation-name: opacity;
-  -webkit-animation-duration: 1s;
-  -webkit-animation-iteration-count: infinite;
-  -moz-animation-name: opacity;
-  -moz-animation-duration: 1s;
-  -moz-animation-iteration-count: infinite; }
-  .give-loading-text span.elipsis:nth-child(1) {
-    -webkit-animation-delay: 100ms;
-    -moz-animation-delay: 100ms; }
-  .give-loading-text span.elipsis:nth-child(2) {
-    -webkit-animation-delay: 300ms;
-    -moz-animation-delay: 300ms; }
-  .give-loading-text span.elipsis:nth-child(3) {
-    -webkit-animation-delay: 500ms;
-    -moz-animation-delay: 500ms; }
-
-form[id*='give-form'] p.give-loading-text {
+form[id*='give-form'] p.give-loading-text, form[id*='give-form'] span.give-loading-text {
   display: none;
   float: right;
   margin: 0;
@@ -1194,7 +1177,7 @@ form[id*='give-form'] p.give-loading-text {
   font-style: italic;
   line-height: 20px;
   font-size: 16px; }
-  form[id*='give-form'] p.give-loading-text.give-updating-price-loader {
+  form[id*='give-form'] p.give-loading-text.give-updating-price-loader, form[id*='give-form'] span.give-loading-text.give-updating-price-loader {
     float: left;
     margin: 6px 0 0 20px; }
 
@@ -1210,14 +1193,18 @@ form[id*='give-form'] .give-loading-animation {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   float: left;
-  width: 20px;
+  width: 16px;
   height: 20px;
   line-height: 20px;
   font-size: 16px;
-  margin: 0 3px 0 0;
+  margin: 0 5px 0 0;
   background-size: 20px 20px;
   background-repeat: no-repeat;
   background-color: transparent; }
+
+form[id*='give-form'] .give-payment-mode-label
+.give-loading-text {
+  float: right; }
 
 /* Login Wrap */
 .give-login-account-wrap, [id^="give-login-fields"] {
