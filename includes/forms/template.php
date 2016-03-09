@@ -274,8 +274,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 					echo $currency_output;
 				} ?>
 				<p class="give-loading-text give-updating-price-loader" style="display: none;">
-					<span class="give-loading-animation"></span> <?php _e( 'Updating Amount', 'give' ); ?>
-					<span class="elipsis">.</span><span class="elipsis">.</span><span class="elipsis">.</span></p>
+					<span class="give-loading-animation"></span> <?php _e( 'Updating Amount...', 'give' ); ?></p>
 			</div>
 		</div>
 	<?php }
@@ -777,8 +776,7 @@ function give_get_register_fields( $form_id ) {
 					<a href="<?php echo esc_url( add_query_arg( 'login', 1 ) ); ?>" class="give-checkout-register-login" data-action="give_checkout_login"><?php _e( 'Login', 'give' ); ?></a>
 				</p>
 				<p class="give-loading-text">
-					<span class="give-loading-animation"></span> <?php _e( 'Loading', 'give' ); ?>
-					<span class="elipsis">.</span><span class="elipsis">.</span><span class="elipsis">.</span></p>
+					<span class="give-loading-animation"></span> <?php _e( 'Loading...', 'give' ); ?></p>
 			</div>
 		<?php } ?>
 
@@ -884,8 +882,7 @@ function give_get_login_fields( $form_id ) {
 				</a>
 			</p>
             <p class="give-loading-text">
-                <span class="give-loading-animation"></span> <?php _e( 'Loading', 'give' ); ?>
-                <span class="elipsis">.</span><span class="elipsis">.</span><span class="elipsis">.</span></p>
+                <span class="give-loading-animation"></span> <?php _e( 'Loading...', 'give' ); ?></p>
 		<?php } ?>
 		<?php do_action( 'give_checkout_login_fields_before', $form_id ); ?>
 		<p id="give-user-login-wrap-<?php echo $form_id; ?>" class="form-row form-row-first">
@@ -952,7 +949,7 @@ function give_payment_mode_select( $form_id ) {
 	<fieldset id="give-payment-mode-select">
 		<?php do_action( 'give_payment_mode_before_gateways_wrap' ); ?>
 		<div id="give-payment-mode-wrap">
-			<legend class="give-payment-mode-label"><?php echo apply_filters( 'give_checkout_payment_method_text', __( 'Select Payment Method', 'give' ) ); ?></legend>
+			<legend class="give-payment-mode-label"><?php echo apply_filters( 'give_checkout_payment_method_text', __( 'Select Payment Method', 'give' ) ); ?> <span class="give-loading-text"><span class="give-loading-animation"></span> <?php _e( 'Loading...', 'give' ); ?></span></legend>
 			<?php
 
 			do_action( 'give_payment_mode_before_gateways' ) ?>
@@ -967,8 +964,6 @@ function give_payment_mode_select( $form_id ) {
 				endforeach; ?>
 			</ul>
 			<?php do_action( 'give_payment_mode_after_gateways' ); ?>
-			<p class="give-loading-text"><span class="give-loading-animation"></span> <?php _e( 'Loading', 'give' ); ?>
-				<span class="elipsis">.</span><span class="elipsis">.</span><span class="elipsis">.</span></p>
 		</div>
 		<?php do_action( 'give_payment_mode_after_gateways_wrap' ); ?>
 	</fieldset>
