@@ -132,6 +132,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * New: Minimum custom donation amount feature added; now you customize custom donations to help prevent fraud and further refine giving - https://github.com/WordImpress/Give/issues/390
 * New: Added additional filters for the donation form fieldset headings - https://github.com/WordImpress/Give/issues/487
 * Tweak: Improved "Offline Donations" gateway admin notification messaging - https://github.com/WordImpress/Give/issues/448
+* Tweak: Optimized loading animations and placement - https://github.com/WordImpress/Give/issues/508
 * Tweak: Sessions only started on WP frontend - https://github.com/WordImpress/Give/issues/493
 * Fixed: Updated "At a Glance" dashboard widget icon to be Give symbol rather than empty circle - https://github.com/WordImpress/Give/issues/492
 * Fixed: Donation total does not show the currency sign when changing custom amount - thanks @pryley - https://github.com/WordImpress/Give/issues/485
