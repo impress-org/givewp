@@ -1906,6 +1906,8 @@ form.floated-labels .styled.select {
     -moz-user-select: none;
     -ms-user-select: none;
         user-select: none; }
+  .give-modal .mfp-close:hover {
+    background-color: transparent; }
   .give-modal .mfp-loading.mfp-figure {
     display: none; }
 

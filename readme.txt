@@ -134,6 +134,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Tweak: Improved "Offline Donations" gateway admin notification messaging - https://github.com/WordImpress/Give/issues/448
 * Tweak: Optimized loading animations and placement - https://github.com/WordImpress/Give/issues/508
 * Tweak: Sessions only started on WP frontend - https://github.com/WordImpress/Give/issues/493
+* Fixed: Switching levels with set donation doesn't display "Updating Amount..." animation - https://github.com/WordImpress/Give/issues/510
 * Fixed: Updated "At a Glance" dashboard widget icon to be Give symbol rather than empty circle - https://github.com/WordImpress/Give/issues/492
 * Fixed: Donation total does not show the currency sign when changing custom amount - thanks @pryley - https://github.com/WordImpress/Give/issues/485
 * Fixed: Currency output has better support for - https://github.com/WordImpress/Give/issues/468
