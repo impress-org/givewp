@@ -156,11 +156,11 @@ add_shortcode( 'give_goal', 'give_goal_shortcode' );
  * @return string
  */
 function give_login_form_shortcode( $atts, $content = null ) {
-	$args = shortcode_atts( array(
+	$atts = shortcode_atts( array(
 		'redirect' => '',
 	), $atts, 'give_login' );
 
-	return give_login_form( $args['redirect'] );
+	return give_login_form( $atts['redirect'] );
 }
 
 add_shortcode( 'give_login', 'give_login_form_shortcode' );
@@ -179,12 +179,11 @@ add_shortcode( 'give_login', 'give_login_form_shortcode' );
  * @return string
  */
 function give_register_form_shortcode( $atts, $content = null ) {
-	extract( shortcode_atts( array(
-			'redirect' => '',
-		), $atts, 'give_register' )
-	);
+	$atts = shortcode_atts( array(
+		'redirect' => '',
+	), $atts, 'give_register' );
 
-	return give_register_form( $redirect );
+	return give_register_form( $atts['redirect'] );
 }
 
 add_shortcode( 'give_register', 'give_register_form_shortcode' );
