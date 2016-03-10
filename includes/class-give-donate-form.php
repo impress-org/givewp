@@ -256,7 +256,12 @@ class Give_Donate_Form {
 	 */
 	public function is_single_price_mode() {
 
-		$ret = get_post_meta( $this->ID, '_give_price_options_mode', true );
+		$option = get_post_meta( $this->ID, '_give_price_options_mode', true );
+		$ret    = 0;
+
+		if ( empty( $option ) || $option === 'set' ) {
+			$ret = 1;
+		}
 
 		return (bool) apply_filters( 'give_single_price_option_mode', $ret, $this->ID );
 
