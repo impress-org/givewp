@@ -206,7 +206,7 @@ function give_receipt_shortcode( $atts, $content = null ) {
 	global $give_receipt_args, $payment;
 
 	$give_receipt_args = shortcode_atts( array(
-		'error'          => __( 'Sorry, it appears the viewing window for this donation receipt has expired or you do not have the permission to view this donation receipt.', 'give' ),
+		'error'          => esc_html__( 'Sorry, it appears the viewing window for this donation receipt has expired or you do not have the permission to view this donation receipt.', 'give' ),
 		'price'          => true,
 		'date'           => true,
 		'payment_key'    => false,
@@ -228,7 +228,10 @@ function give_receipt_shortcode( $atts, $content = null ) {
 
 	// No key found
 	if ( ! isset( $payment_key ) ) {
-		return '<div class="give_errors"><p class="give_error">' . $give_receipt_args['error'] . '</p></div>';
+		ob_start();
+		give_output_error( $give_receipt_args['error'], true, 'error' );
+		esc_html_e('Don\'t have an account? Enter your email to be sent a new receipt', 'give');
+		return ob_get_clean();
 	}
 
 	$payment_id    = give_get_purchase_id_by_key( $payment_key );
@@ -263,7 +266,7 @@ function give_receipt_shortcode( $atts, $content = null ) {
 	 *
 	 */
 	if ( ! apply_filters( 'give_user_can_view_receipt', $user_can_view, $give_receipt_args ) ) {
-		return '<p class="give-alert give-alert-error">' . $give_receipt_args['error'] . '</p>';
+		return give_output_error( $give_receipt_args['error'], false, 'error' );
 	}
 
 	ob_start();
