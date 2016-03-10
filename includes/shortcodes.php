@@ -236,11 +236,14 @@ function give_receipt_shortcode( $atts, $content = null ) {
 
 	// Key was provided, but user is logged out. Offer them the ability to login and view the receipt
 	if ( ! $user_can_view && ! empty( $payment_key ) && ! is_user_logged_in() && ! give_is_guest_payment( $payment_id ) ) {
+
 		global $give_login_redirect;
+
 		$give_login_redirect = give_get_current_page_url();
 
 		ob_start();
-		echo '<div class="give_errors"><p class="give_error">' . __( 'You must be logged in to view this donation payment receipt.', 'give' ) . '</p></div>';
+
+		give_output_error( apply_filters( 'give_must_be_logged_in_error_message', esc_html__( 'You must be logged in to view this donation payment receipt.', 'give' ) ) );
 
 		give_get_template_part( 'shortcode', 'login' );
 
@@ -260,7 +263,7 @@ function give_receipt_shortcode( $atts, $content = null ) {
 	 *
 	 */
 	if ( ! apply_filters( 'give_user_can_view_receipt', $user_can_view, $give_receipt_args ) ) {
-		return '<p class="edd-alert edd-alert-error">' . $give_receipt_args['error'] . '</p>';
+		return '<p class="give-alert give-alert-error">' . $give_receipt_args['error'] . '</p>';
 	}
 
 	ob_start();
