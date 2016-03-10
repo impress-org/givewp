@@ -43,7 +43,7 @@ function give_get_templates_url() {
  *
  * @param string $slug
  * @param string $name Optional. Default null
- * @param bool   $load
+ * @param bool $load
  *
  * @return string
  *
@@ -82,8 +82,8 @@ function give_get_template_part( $slug, $name = null, $load = true ) {
  * @since 1.0
  *
  * @param string|array $template_names Template file(s) to search for, in order.
- * @param bool         $load           If true the template file will be loaded if it is found.
- * @param bool         $require_once   Whether to require_once or require. Default true.
+ * @param bool $load If true the template file will be loaded if it is found.
+ * @param bool $require_once Whether to require_once or require. Default true.
  *                                     Has no effect if $load is false.
  *
  * @return string The template filename if one is located.
@@ -247,9 +247,9 @@ add_filter( 'body_class', 'give_add_body_classes' );
  *
  * @since       1.0
  *
- * @param array        $classes
+ * @param array $classes
  * @param string|array $class
- * @param int          $post_id
+ * @param int $post_id
  *
  * @return array
  */
@@ -281,18 +281,12 @@ add_filter( 'post_class', 'give_add_post_class', 20, 3 );
  * @return array
  */
 function give_get_image_size( $image_size ) {
-	if ( in_array( $image_size, array( 'give_form_thumbnail', 'give_form_single' ) ) ) {
-		$size           = get_option( $image_size . '_image_size', array() );
-		$size['width']  = isset( $size['width'] ) ? $size['width'] : '300';
-		$size['height'] = isset( $size['height'] ) ? $size['height'] : '300';
-		$size['crop']   = isset( $size['crop'] ) ? $size['crop'] : 0;
-	} else {
-		$size = array(
-			'width'  => '300',
-			'height' => '300',
-			'crop'   => 1
-		);
-	}
+
+	$size = array(
+		'width'  => '300',
+		'height' => '300',
+		'crop'   => 1
+	);
 
 	return apply_filters( 'give_get_image_size_' . $image_size, $size );
 }
@@ -305,7 +299,7 @@ function give_get_image_size( $image_size ) {
  */
 function give_get_placeholder_img_src() {
 
-	$image_size = give_get_image_size( 'give_form_thumbnail' );
+	$image_size = give_get_image_size( 'give_form_single' );
 
 	$placeholder_url = 'http://placehold.it/' . $image_size['width'] . 'x' . $image_size['height'] . '&text=' . urlencode( esc_attr__( 'Give Placeholder Image', 'give' ) ) . '+(' . $image_size['width'] . 'x' . $image_size['height'] . ')';
 

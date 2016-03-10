@@ -501,11 +501,10 @@ function give_add_thumbnail_support() {
  * @since 1.0
  */
 function give_add_image_sizes() {
-	$give_form_thumbnail = give_get_image_size( 'give_form_thumbnail' );
 	$give_form_single    = give_get_image_size( 'give_form_single' );
 
-	add_image_size( 'give_form_thumbnail', $give_form_thumbnail['width'], $give_form_thumbnail['height'], $give_form_thumbnail['crop'] );
 	add_image_size( 'give_form_single', $give_form_single['width'], $give_form_single['height'], $give_form_single['crop'] );
+
 }
 
 /**
