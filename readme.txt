@@ -126,6 +126,9 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 == Changelog ==
 
+= 1.3.7 =
+* Fix: Transactions with a "cancelled" status are not shown in the wp-admin Transactions table - thanks @pryley - https://github.com/WordImpress/Give/issues/514
+
 = 1.3.6 =
 * New: Give French translation provided by Laurent. Thanks! - https://github.com/WordImpress/Give/issues/472
 * New: Give Spanish translation provided by Javier. Thanks! - https://github.com/WordImpress/Give/issues/501

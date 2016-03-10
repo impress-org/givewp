@@ -422,6 +422,14 @@ function give_register_post_type_statuses() {
 		'show_in_admin_status_list' => true,
 		'label_count'               => _n_noop( 'Revoked <span class="count">(%s)</span>', 'Revoked <span class="count">(%s)</span>', 'give' )
 	) );
+	register_post_status( 'cancelled', array(
+		'label'                     => _x( 'Cancelled', 'Cancelled payment status', 'give' ),
+		'public'                    => true,
+		'exclude_from_search'       => false,
+		'show_in_admin_all_list'    => true,
+		'show_in_admin_status_list' => true,
+		'label_count'               => _n_noop( 'Cancelled <span class="count">(%s)</span>', 'Cancelled <span class="count">(%s)</span>', 'give' )
+	) );
 	register_post_status( 'abandoned', array(
 		'label'                     => _x( 'Abandoned', 'Abandoned payment status', 'give' ),
 		'public'                    => true,
