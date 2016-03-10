@@ -519,7 +519,7 @@ class Give_Plugin_Settings {
 							'name'    => __( 'Donation Receipt', 'give' ),
 							'desc'    => __( 'Enter the email that is sent to users after completing a successful donation. HTML is accepted. Available template tags:', 'give' ) . '<br/>' . give_get_emails_tags_list(),
 							'type'    => 'wysiwyg',
-							'default' => __( "Dear", "give" ) . " {name},\n\n" . __( "Thank you for your donation. Your generosity is appreciated! Please click on the link below to view your receipt.", "give" ) . "\n\n{receipt_link}\n\nSincerely,\n{sitename}"
+							'default' => give_get_default_donation_receipt_email()
 						),
 						array(
 							'name' => __( 'New Donation Notification', 'give' ),
