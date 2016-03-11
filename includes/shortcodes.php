@@ -229,8 +229,10 @@ function give_receipt_shortcode( $atts, $content = null ) {
 	// No key found
 	if ( ! isset( $payment_key ) ) {
 		ob_start();
-		give_output_error( $give_receipt_args['error'], true, 'error' );
-		esc_html_e('Don\'t have an account? Enter your email to be sent a new receipt', 'give');
+		give_output_error( $give_receipt_args['error'], true, 'warning' );
+		echo apply_filters( 'give_send_new_receipt_message', esc_html__( 'Enter the email address you used when making your donation below to be sent a new receipt', 'give' ) . ':' );
+		give_get_template_part('session-refresh-form');
+
 		return ob_get_clean();
 	}
 

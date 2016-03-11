@@ -22,14 +22,8 @@ class Give_No_Logins {
 
 	function __construct() {
 
-		// setup variables
-		define( 'EDDNL_VERSION', '0.3' );
-		define( 'EDDNL_DIR', dirname( __FILE__ ) );
-		define( 'EDDNL_URL', plugins_url( basename( EDDNL_DIR ) ) );
-		define( 'EDDNL_BASENAME', plugin_basename( __FILE__ ) );
-
 		// get the gears turning
-		add_action( 'init', array( $this, 'init' ), 8 );
+		add_action( 'init', array( $this, 'init' ) );
 	}
 
 
@@ -45,15 +39,13 @@ class Give_No_Logins {
 //		include( EDDNL_DIR . '/includes/class-upgrade.php' );
 
 		//INSTALL ROUGH My_SQL:
-		//ALTER TABLE `wp_give_customers` ADD `nl_token` VARCHAR(255) NOT NULL AFTER `date_created`, ADD `nl_verify_key` VARCHAR(255) NOT NULL AFTER `nl_token`, ADD `nl_date_added` DATETIME NOT NULL AFTER `nl_verify_key`;
-
+		//ALTER TABLE `wp_give_customers` ADD `token` VARCHAR(255) NOT NULL AFTER `date_created`, ADD `verify_key` VARCHAR(255) NOT NULL AFTER `date_created`, ADD `verify_throttle` DATETIME NOT NULL AFTER `date_created`;
 
 		// Timeouts
 		$this->verify_throttle  = apply_filters( 'give_nl_verify_throttle', 300 );
 		$this->token_expiration = apply_filters( 'give_nl_token_expiration', 7200 );
 
 		// Setup login
-		$this->load_textdomain();
 		$this->check_for_token();
 
 		if ( $this->token_exists ) {
@@ -61,7 +53,6 @@ class Give_No_Logins {
 			add_filter( 'give_user_pending_verification', '__return_false' );
 			add_filter( 'give_get_success_page_uri', array( $this, 'give_success_page_uri' ) );
 			add_filter( 'give_get_users_purchases_args', array( $this, 'users_purchases_args' ) );
-			add_filter( 'give_payment_user_id', array( $this, 'give_payment_user_id' ) );
 		} else {
 			add_action( 'get_template_part_history', array( $this, 'login' ), 10, 2 );
 		}
@@ -88,6 +79,10 @@ class Give_No_Logins {
 
 	/**
 	 * Prevent email spamming
+	 *
+	 * @param $customer_id
+	 *
+	 * @return bool
 	 */
 	function can_send_email( $customer_id ) {
 		global $wpdb;
@@ -97,16 +92,16 @@ class Give_No_Logins {
 
 		// Does a user row exist?
 		$exists = (int) $wpdb->get_var(
-			$wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}give_nl_tokens WHERE customer_id = %d", $customer_id )
+			$wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}give_customers WHERE customer_id = %d", $customer_id )
 		);
 
 		if ( 0 < $exists ) {
 			$row_id = (int) $wpdb->get_var(
-				$wpdb->prepare( "SELECT id FROM {$wpdb->prefix}give_nl_tokens WHERE customer_id = %d AND (added < %s OR verify_key = '') LIMIT 1", $customer_id, $throttle )
+				$wpdb->prepare( "SELECT id FROM {$wpdb->prefix}give_customers WHERE customer_id = %d AND (added < %s OR verify_key = '') LIMIT 1", $customer_id, $throttle )
 			);
 
 			if ( $row_id < 1 ) {
-				EDDNL()->error = __( 'Please wait a few minutes before requesting a new token', 'give_nl' );
+				EDDNL()->error = __( 'Please wait a few minutes before requesting a new token', 'give' );
 
 				return false;
 			}
@@ -130,7 +125,7 @@ class Give_No_Logins {
 		$page_url = get_permalink( $page_id );
 
 		// Send the email
-		$subject = __( 'Your access token', 'give_nl' );
+		$subject = __( 'Your access token', 'give' );
 		$message = "$page_url?give_nl=$verify_key";
 		wp_mail( $email, $subject, $message );
 	}
@@ -159,26 +154,16 @@ class Give_No_Logins {
 
 			// Set cookie
 			setcookie( 'give_nl', $token );
-
-			// Simulate a user login
-			$user = get_user_by( 'login', 'give_nl' );
-
-			if ( $user ) {
-				$user_id = $user->ID;
-			} else {
-				$user_id = wp_create_user( 'give_nl', wp_generate_password( 32 ), 'give_nl@facetwp.com' );
-				update_user_meta( $user_id, 'show_admin_bar_front', false );
-				update_user_meta( $user_id, 'wp_capabilities', '' );
-				update_user_meta( $user_id, 'wp_user_level', 0 );
-			}
-
-			wp_set_current_user( $user_id );
 		}
 	}
 
 
 	/**
 	 * Add the verify key to DB
+	 *
+	 * @param $customer_id
+	 * @param $email
+	 * @param $verify_key
 	 */
 	function set_verify_key( $customer_id, $email, $verify_key ) {
 		global $wpdb;
@@ -187,18 +172,18 @@ class Give_No_Logins {
 
 		// Insert or update?
 		$row_id = (int) $wpdb->get_var(
-			$wpdb->prepare( "SELECT id FROM {$wpdb->prefix}give_nl_tokens WHERE customer_id = %d LIMIT 1", $customer_id )
+			$wpdb->prepare( "SELECT id FROM {$wpdb->prefix}give_customers WHERE customer_id = %d LIMIT 1", $customer_id )
 		);
 
 		// Update
 		if ( ! empty( $row_id ) ) {
 			$wpdb->query(
-				$wpdb->prepare( "UPDATE {$wpdb->prefix}give_nl_tokens SET verify_key = %s, added = %s WHERE id = %d LIMIT 1", $verify_key, $now, $row_id )
+				$wpdb->prepare( "UPDATE {$wpdb->prefix}give_customers SET verify_key = %s, verify_throttle = %s WHERE id = %d LIMIT 1", $verify_key, $now, $row_id )
 			);
 		} // Insert
 		else {
 			$wpdb->query(
-				$wpdb->prepare( "INSERT INTO {$wpdb->prefix}give_nl_tokens (customer_id, email, verify_key, added) VALUES (%d, %s, %s, %s)", $customer_id, $email, $verify_key, $now )
+				$wpdb->prepare( "INSERT INTO {$wpdb->prefix}give_customers ( verify_key, verify_throttle) VALUES (%s, %s)", $verify_key, $now )
 			);
 		}
 	}
@@ -214,7 +199,7 @@ class Give_No_Logins {
 		$expires = date( 'Y-m-d H:i:s', time() - $this->token_expiration );
 
 		$email = $wpdb->get_var(
-			$wpdb->prepare( "SELECT email FROM {$wpdb->prefix}give_nl_tokens WHERE token = %s AND added >= %s LIMIT 1", $token, $expires )
+			$wpdb->prepare( "SELECT email FROM {$wpdb->prefix}give_customers WHERE token = %s AND verify_throttle >= %s LIMIT 1", $token, $expires )
 		);
 
 		if ( ! empty( $email ) ) {
@@ -224,7 +209,7 @@ class Give_No_Logins {
 			return true;
 		}
 
-		EDDNL()->error = __( 'That token has expired', 'give_nl' );
+		EDDNL()->error = __( 'That token has expired', 'give' );
 
 		return false;
 	}
@@ -238,7 +223,7 @@ class Give_No_Logins {
 
 		// See if the verify_key exists
 		$row = $wpdb->get_row(
-			$wpdb->prepare( "SELECT id, email FROM {$wpdb->prefix}give_nl_tokens WHERE verify_key = %s LIMIT 1", $token )
+			$wpdb->prepare( "SELECT id, email FROM {$wpdb->prefix}give_customers WHERE verify_key = %s LIMIT 1", $token )
 		);
 
 		$now = date( 'Y-m-d H:i:s' );
@@ -246,7 +231,7 @@ class Give_No_Logins {
 		// Set token
 		if ( ! empty( $row ) ) {
 			$wpdb->query(
-				$wpdb->prepare( "UPDATE {$wpdb->prefix}give_nl_tokens SET verify_key = '', token = %s, added = %s WHERE id = %d LIMIT 1", $token, $now, $row->id )
+				$wpdb->prepare( "UPDATE {$wpdb->prefix}give_customers SET verify_key = '', token = %s, verify_throttle = %s WHERE id = %d LIMIT 1", $token, $now, $row->id )
 			);
 
 			$this->token_email = $row->email;
@@ -282,20 +267,11 @@ class Give_No_Logins {
 
 
 	/**
-	 *
-	 * Trick Give into thinking we're logged in
-	 *
-	 * @param $user_id
-	 *
-	 * @return int
-	 */
-	function give_payment_user_id( $user_id ) {
-		return get_current_user_id();
-	}
-
-
-	/**
 	 * Force Give to find transactions by purchase email, not user ID
+	 *
+	 * @param $args
+	 *
+	 * @return mixed
 	 */
 	function users_purchases_args( $args ) {
 		$args['user'] = $this->token_email;
@@ -305,3 +281,5 @@ class Give_No_Logins {
 
 
 }
+
+new Give_No_Logins();
