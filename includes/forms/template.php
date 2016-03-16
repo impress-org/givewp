@@ -957,7 +957,8 @@ function give_payment_mode_select( $form_id ) {
 		<?php do_action( 'give_payment_mode_before_gateways_wrap' ); ?>
 		<div id="give-payment-mode-wrap">
 			<legend class="give-payment-mode-label"><?php echo apply_filters( 'give_checkout_payment_method_text', __( 'Select Payment Method', 'give' ) ); ?>
-				<span class="give-loading-text"><span class="give-loading-animation"></span> <?php _e( 'Loading...', 'give' ); ?></span></legend>
+				<span class="give-loading-text"><span class="give-loading-animation"></span> <?php _e( 'Loading...', 'give' ); ?></span>
+			</legend>
 			<?php
 
 			do_action( 'give_payment_mode_before_gateways' ) ?>
@@ -1225,7 +1226,7 @@ function give_show_goal_progress( $form_id, $args ) {
 	//Goal Progress Text
 	if ( ! empty( $show_text ) ) {
 		$output .= '<div class="raised">';
-		$output .= sprintf( _x( '%s of %s raised', 'This text displays the amount of income raised compared to the goal.', 'give' ), '<span class="income">' . give_currency_filter( give_format_amount( $income ) ) . '</span>', '<span class="goal-text">' . give_currency_filter( give_format_amount( $goal ) ) ) . '</span>';
+		$output .= sprintf( _x( '%s of %s raised', 'This text displays the amount of income raised compared to the goal.', 'give' ), '<span class="income">' . apply_filters( 'give_goal_amount_raised_output', give_currency_filter( give_format_amount( $income ) ) ) . '</span>', '<span class="goal-text">' . apply_filters( 'give_goal_amount_target_output', give_currency_filter( give_format_amount( $goal ) ) ) ) . '</span>';
 		$output .= '</div>';
 	}
 	//Goal Progress Bar
