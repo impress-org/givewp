@@ -882,6 +882,7 @@ form[id*='give-form'] .give-donation-amount {
     background-color: #f2f2f2;
     border-top: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
+    color: #333;
     margin: 0;
     padding: 0 12px;
     float: left;
@@ -936,6 +937,7 @@ form[id*='give-form'] #give-final-total-wrap {
     background-color: #f2f2f2;
     border-top: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
+    color: #333;
     margin: 0;
     padding: 0 12px;
     float: left;
