@@ -3,7 +3,10 @@
  * Single Form Featured Image
  *
  * @package       Give/Templates
- * @version       1.0
+ * @description Displays the featured image for the single donation form - Override this template by copying it to yourtheme/give/single-give-form/featured-image.php
+ * @copyright   Copyright (c) 2016, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since       1.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -14,9 +17,9 @@ global $post;
 
 /**
  * Fires before the featured thumbnail
- * 
+ *
  * @since 1.0
- */ 
+ */
 do_action( 'give_pre_featured_thumbnail' );
 ?>
 <div class="images">
