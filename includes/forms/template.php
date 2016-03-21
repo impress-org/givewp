@@ -1195,6 +1195,7 @@ function give_show_goal_progress( $form_id, $args ) {
 	$goal_option = get_post_meta( $form_id, '_give_goal_option', true );
 	$form        = new Give_Donate_Form( $form_id );
 	$goal        = $form->goal;
+	$goal_format = get_post_meta( $form_id, '_give_goal_format', true );
 	$income      = $form->get_earnings();
 	$color       = get_post_meta( $form_id, '_give_goal_color', true );
 	$show_text   = (bool) isset( $args['show_text'] ) ? filter_var( $args['show_text'], FILTER_VALIDATE_BOOLEAN ) : true;
@@ -1225,9 +1226,21 @@ function give_show_goal_progress( $form_id, $args ) {
 
 	//Goal Progress Text
 	if ( ! empty( $show_text ) ) {
+
 		$output .= '<div class="raised">';
-		$output .= sprintf( _x( '%s of %s raised', 'This text displays the amount of income raised compared to the goal.', 'give' ), '<span class="income">' . apply_filters( 'give_goal_amount_raised_output', give_currency_filter( give_format_amount( $income ) ) ) . '</span>', '<span class="goal-text">' . apply_filters( 'give_goal_amount_target_output', give_currency_filter( give_format_amount( $goal ) ) ) ) . '</span>';
+
+		if ( $goal_format !== 'percentage' ) {
+
+			$output .= sprintf( _x( '%s of %s raised', 'This text displays the amount of income raised compared to the goal.', 'give' ), '<span class="income">' . apply_filters( 'give_goal_amount_raised_output', give_currency_filter( give_format_amount( $income ) ) ) . '</span>', '<span class="goal-text">' . apply_filters( 'give_goal_amount_target_output', give_currency_filter( give_format_amount( $goal ) ) ) ) . '</span>';
+
+		} elseif ( $goal_format == 'percentage' ) {
+
+			$output .= sprintf( _x( '%s%% funded', 'This text displays the percentage amount of income raised compared to the goal target.', 'give' ), '<span class="give-percentage">' . apply_filters( 'give_goal_amount_funded_percentage_output', round( $progress ) ) . '</span>' ) . '</span>';
+
+		}
+
 		$output .= '</div>';
+
 	}
 
 	//Goal Progress Bar
