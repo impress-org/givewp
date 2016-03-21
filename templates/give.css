@@ -1843,7 +1843,7 @@ form.floated-labels .styled.select {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 1043;
+  z-index: 2147483540;
   position: fixed;
   outline: none !important;
   -webkit-backface-visibility: hidden; }
@@ -1880,7 +1880,7 @@ form.floated-labels .styled.select {
     width: auto;
     max-width: 500px;
     margin: 40px auto;
-    z-index: 1045; }
+    z-index: 2147483640; }
     .give-modal .mfp-content .give-donation-levels-wrap, .give-modal .mfp-content .give-btn-modal {
       display: none; }
     .give-modal .mfp-content [id*='give-form'] #give-payment-mode-select, .give-modal .mfp-content [id*='give-form'] #give_purchase_form_wrap {
