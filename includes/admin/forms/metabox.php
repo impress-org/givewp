@@ -195,7 +195,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 				),
 				array(
 					'name'         => __( 'Set Goal', 'give' ),
-					'description'  => __( 'This is the goal you want to achieve for this form.', 'give' ),
+					'description'  => __( 'This is the monetary goal amount you want to reach for this donation form.', 'give' ),
 					'id'           => $prefix . 'set_goal',
 					'type'         => 'text_small',
 					'row_classes'  => 'give-subfield',
@@ -205,6 +205,19 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 						'placeholder' => give_format_amount( '0.00' ),
 						'value'       => isset( $goal ) ? esc_attr( give_format_amount( $goal ) ) : '',
 						'class'       => 'cmb-type-text-small give-money-field',
+					),
+				),
+
+				array(
+					'name'        => __( 'Goal Format', 'give' ),
+					'description' => __( 'Would you like to display the total amount raised based on your monetary goal or a percentage? For instance, "$500 of $1,000 raised" or "50% funded".', 'give' ),
+					'id'          => $prefix . 'goal_format',
+					'type'        => 'radio_inline',
+					'default'     => 'amount',
+					'row_classes' => 'give-subfield',
+					'options'     => array(
+						'amount' => __( 'Amount ', 'give' ),
+						'percentage'  => __( 'Percentage', 'give' ),
 					),
 				),
 				array(
