@@ -31,7 +31,7 @@ function give_system_info_callback() {
 	?>
 	<textarea readonly="readonly" onclick="this.focus(); this.select()" id="system-info-textarea" name="give-sysinfo" title="To copy the system info, click below then press Ctrl + C (PC) or Cmd + C (Mac)."><?php echo give_tools_sysinfo_get(); ?></textarea>
 	<p class="submit">
-		<input type="hidden" name="give-action" value="download_sysinfo" />
+		<input type="hidden" name="give-action" value="download_sysinfo"/>
 		<?php submit_button( 'Download System Info File', 'secondary', 'give-download-sysinfo', false ); ?>
 	</p>
 	<style>
@@ -48,8 +48,8 @@ function give_system_info_callback() {
  *
  * @since       1.0
  * @access      public
- * @global      object $wpdb         Used to query the database using the WordPress Database API
- * @global      array  $give_options Array of all Give options
+ * @global      object $wpdb Used to query the database using the WordPress Database API
+ * @global      array $give_options Array of all Give options
  * @return      string $return A string containing the info to output
  */
 function give_tools_sysinfo_get() {
@@ -63,7 +63,7 @@ function give_tools_sysinfo_get() {
 
 	// Get theme info
 	if ( get_bloginfo( 'version' ) < '3.4' ) {
-		$theme_data = get_theme_data( get_stylesheet_directory() . '/style.css' );
+		$theme_data = wp_get_theme( get_stylesheet_directory() . '/style.css' );
 		$theme      = $theme_data['Name'] . ' ' . $theme_data['Version'];
 	} else {
 		$theme_data = wp_get_theme();
@@ -278,6 +278,7 @@ function give_tools_sysinfo_get() {
 	$return .= 'Upload Max Filesize:      ' . ini_get( 'upload_max_filesize' ) . "\n";
 	$return .= 'Time Limit:               ' . ini_get( 'max_execution_time' ) . "\n";
 	$return .= 'Max Input Vars:           ' . ini_get( 'max_input_vars' ) . "\n";
+	$return .= 'URL-aware fopen:          ' . ( ini_get( 'allow_url_fopen' ) ? 'On (' . ini_get( 'allow_url_fopen' ) . ')' : 'N/A' ) . "\n";
 	$return .= 'Display Errors:           ' . ( ini_get( 'display_errors' ) ? 'On (' . ini_get( 'display_errors' ) . ')' : 'N/A' ) . "\n";
 
 	$return = apply_filters( 'give_sysinfo_after_php_config', $return );
@@ -291,6 +292,8 @@ function give_tools_sysinfo_get() {
 		$curl_values = curl_version();
 		$return .= 'cURL Version:             ' . $curl_values["version"] . "\n";
 	}
+	$return .= 'zlib:                     ' . ( function_exists( 'gzcompress' ) ? 'Supported' : 'Not Supported' ) . "\n";
+	$return .= 'GD:                       ' . ( ( extension_loaded( 'gd' ) && function_exists( 'gd_info' ) ) ? 'Supported' : 'Not Supported' ) . "\n";
 	$return .= 'fsockopen:                ' . ( function_exists( 'fsockopen' ) ? 'Supported' : 'Not Supported' ) . "\n";
 	$return .= 'SOAP Client:              ' . ( class_exists( 'SoapClient' ) ? 'Installed' : 'Not Installed' ) . "\n";
 	$return .= 'Suhosin:                  ' . ( extension_loaded( 'suhosin' ) ? 'Installed' : 'Not Installed' ) . "\n";
