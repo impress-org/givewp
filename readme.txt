@@ -132,6 +132,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * New: Added links to plugin settings page and documentation on the WordPress plugin listing page - https://github.com/WordImpress/Give/issues/531
 * Tweak: Removed usage of the image size "give_form_thumbnail" in favor of "give_form_single" - https://github.com/WordImpress/Give/issues/412
 * Tweak: Increased modal windows z-index value - https://github.com/WordImpress/Give/issues/524
+* Tweak: Added additional checks to the "System Info" settings tab - https://github.com/WordImpress/Give/issues/506
 * Fix: Transactions with a "cancelled" status are not shown in the wp-admin Transactions table - thanks @pryley - https://github.com/WordImpress/Give/issues/514
 
 = 1.3.6 =
