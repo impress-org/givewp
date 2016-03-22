@@ -191,29 +191,17 @@ function give_currency_symbol( $currency = '' ) {
  * Get the current page URL
  *
  * @since 1.0
- * @return string $page_url Current page URL
+ * @return string $current_url Current page URL
  */
 function give_get_current_page_url() {
 
-	if ( is_front_page() ) :
-		$page_url = home_url();
-	else :
-		$page_url = 'http';
+	if ( is_front_page() )  {
+		$current_url = home_url();
+	} else {
+		$current_url = ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+	}
 
-		if ( isset( $_SERVER["HTTPS"] ) && $_SERVER["HTTPS"] == "on" ) {
-			$page_url .= "s";
-		}
-
-		$page_url .= "://";
-
-		if ( isset( $_SERVER["SERVER_PORT"] ) && $_SERVER["SERVER_PORT"] != "80" ) {
-			$page_url .= $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"] . $_SERVER["REQUEST_URI"];
-		} else {
-			$page_url .= $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
-		}
-	endif;
-
-	return apply_filters( 'give_get_current_page_url', esc_url( $page_url ) );
+	return apply_filters( 'give_get_current_page_url', esc_url( $current_url ) );
 }
 
 
@@ -627,7 +615,7 @@ function give_get_newsletter() { ?>
 	</div>
 
 	<script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script>
-	<script type='text/javascript'>(function ( $ ) {
+	<script type='text/javascript'>(function ($) {
 			window.fnames = new Array();
 			window.ftypes = new Array();
 			fnames[0] = 'EMAIL';
@@ -638,20 +626,20 @@ function give_get_newsletter() { ?>
 			ftypes[2] = 'text';
 
 			//Successful submission
-			$( 'form[name="mc-embedded-subscribe-form"]' ).on( 'submit', function () {
+			$('form[name="mc-embedded-subscribe-form"]').on('submit', function () {
 
-				var email_field = $( this ).find( '#mce-EMAIL' ).val();
-				if ( !email_field ) {
+				var email_field = $(this).find('#mce-EMAIL').val();
+				if (!email_field) {
 					return false;
 				}
-				$( this ).find( '.give-newsletter-confirmation' ).show().delay( 5000 ).slideUp();
-				$( this ).find( '.give-newsletter-form' ).hide();
+				$(this).find('.give-newsletter-confirmation').show().delay(5000).slideUp();
+				$(this).find('.give-newsletter-form').hide();
 
-			} );
+			});
 
 
-		}( jQuery ));
-		var $mcj = jQuery.noConflict( true );
+		}(jQuery));
+		var $mcj = jQuery.noConflict(true);
 
 
 	</script>
@@ -672,15 +660,15 @@ function give_social_media_elements() { ?>
 		<iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fwpgive&amp;send=false&amp;layout=button_count&amp;width=100&amp;show_faces=false&amp;font&amp;colorscheme=light&amp;action=like&amp;height=21&amp;appId=220596284639969" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>
 
 		<a href="https://twitter.com/givewp" class="twitter-follow-button" data-show-count="false">Follow @givewp</a>
-		<script>!function ( d, s, id ) {
-				var js, fjs = d.getElementsByTagName( s )[0], p = /^http:/.test( d.location ) ? 'http' : 'https';
-				if ( !d.getElementById( id ) ) {
-					js = d.createElement( s );
+		<script>!function (d, s, id) {
+				var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
+				if (!d.getElementById(id)) {
+					js = d.createElement(s);
 					js.id = id;
 					js.src = p + '://platform.twitter.com/widgets.js';
-					fjs.parentNode.insertBefore( js, fjs );
+					fjs.parentNode.insertBefore(js, fjs);
 				}
-			}( document, 'script', 'twitter-wjs' );</script>
+			}(document, 'script', 'twitter-wjs');</script>
 	</div>
 	<!--/.social-items-wrap -->
 
@@ -748,12 +736,12 @@ if ( ! function_exists( 'array_column' ) ) {
 	 * Optionally, you may provide an $indexKey to index the values in the returned
 	 * array by the values from the $indexKey column in the input array.
 	 *
-	 * @param array $input     A multi-dimensional array (record set) from which to pull
+	 * @param array $input A multi-dimensional array (record set) from which to pull
 	 *                         a column of values.
 	 * @param mixed $columnKey The column of values to return. This value may be the
 	 *                         integer key of the column you wish to retrieve, or it
 	 *                         may be the string key name for an associative array.
-	 * @param mixed $indexKey  (Optional.) The column to use as the index/keys for
+	 * @param mixed $indexKey (Optional.) The column to use as the index/keys for
 	 *                         the returned array. This value may be the integer key
 	 *                         of the column, or it may be the string key name.
 	 *
