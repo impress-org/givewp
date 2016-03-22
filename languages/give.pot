@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Give - Donation Plugin package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Give - Donation Plugin 1.3.5\n"
+"Project-Id-Version: Give - Donation Plugin 1.3.6\n"
 "Report-Msgid-Bugs-To: https://givewp.com/\n"
-"POT-Creation-Date: 2016-03-09 19:12:28+00:00\n"
+"POT-Creation-Date: 2016-03-22 00:01:33+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -125,12 +125,12 @@ msgstr ""
 msgid "Give Settings"
 msgstr ""
 
-#: includes/admin/admin-pages.php:47
+#: includes/admin/admin-pages.php:47 includes/admin/plugins.php:30
 msgid "Settings"
 msgstr ""
 
-#: includes/admin/admin-pages.php:53 includes/admin/register-settings.php:109
-#: includes/admin/welcome.php:231
+#: includes/admin/admin-pages.php:53 includes/admin/plugins.php:72
+#: includes/admin/register-settings.php:109 includes/admin/welcome.php:231
 msgid "Add-ons"
 msgstr ""
 
@@ -250,11 +250,10 @@ msgstr ""
 msgid "Revoke"
 msgstr ""
 
-#: includes/admin/class-api-keys-table.php:177 includes/forms/template.php:841
-#: includes/forms/template.php:852 includes/forms/template.php:853
-#: includes/forms/template.php:947 templates/shortcode-login.php:15
-#: templates/shortcode-login.php:16 templates/shortcode-register.php:18
-#: templates/shortcode-register.php:19
+#: includes/admin/class-api-keys-table.php:177 includes/forms/template.php:799
+#: includes/forms/template.php:808 includes/forms/template.php:897
+#: templates/shortcode-login.php:15 templates/shortcode-login.php:16
+#: templates/shortcode-register.php:18 templates/shortcode-register.php:19
 msgid "Username"
 msgstr ""
 
@@ -275,7 +274,7 @@ msgid "Generate New API Keys"
 msgstr ""
 
 #: includes/admin/customers/class-customer-table.php:66
-#: includes/admin/payments/class-payments-table.php:252
+#: includes/admin/payments/class-payments-table.php:265
 #: includes/admin/reporting/class-donor-reports-table.php:66
 msgid "Donor"
 msgstr ""
@@ -301,7 +300,7 @@ msgstr ""
 
 #: includes/admin/customers/class-customer-table.php:161
 #: includes/admin/customers/customers.php:226
-#: includes/admin/payments/class-payments-table.php:247
+#: includes/admin/payments/class-payments-table.php:260
 #: includes/admin/reporting/class-donor-reports-table.php:203
 #: includes/admin/reporting/class-export-customers.php:71
 #: includes/admin/reporting/class-export-customers.php:82
@@ -440,7 +439,7 @@ msgstr ""
 
 #: includes/admin/customers/customers.php:274
 #: includes/admin/reporting/class-export-payments.php:71
-#: includes/forms/template.php:646 templates/shortcode-profile-editor.php:75
+#: includes/forms/template.php:622 templates/shortcode-profile-editor.php:75
 msgid "Address"
 msgstr ""
 
@@ -454,13 +453,13 @@ msgstr ""
 
 #: includes/admin/customers/customers.php:306
 #: includes/admin/reporting/class-export-payments.php:73
-#: includes/forms/template.php:685 includes/forms/template.php:695
+#: includes/forms/template.php:655 includes/forms/template.php:663
 #: templates/shortcode-profile-editor.php:87
 msgid "City"
 msgstr ""
 
-#: includes/admin/customers/customers.php:333 includes/forms/template.php:754
-#: includes/forms/template.php:785 templates/shortcode-profile-editor.php:108
+#: includes/admin/customers/customers.php:333 includes/forms/template.php:716
+#: includes/forms/template.php:744 templates/shortcode-profile-editor.php:108
 msgid "State / Province"
 msgstr ""
 
@@ -475,7 +474,7 @@ msgstr ""
 #: includes/admin/customers/customers.php:356
 #: includes/admin/customers/customers.php:585
 #: includes/admin/payments/view-order-details.php:321
-#: includes/class-give-html-elements.php:517 includes/forms/template.php:978
+#: includes/class-give-html-elements.php:517 includes/forms/template.php:924
 msgid "Cancel"
 msgstr ""
 
@@ -498,8 +497,8 @@ msgid "Recent Donations"
 msgstr ""
 
 #: includes/admin/customers/customers.php:399
-#: includes/admin/forms/metabox.php:102 includes/admin/forms/metabox.php:400
-#: includes/admin/payments/class-payments-table.php:253
+#: includes/admin/forms/metabox.php:102 includes/admin/forms/metabox.php:413
+#: includes/admin/payments/class-payments-table.php:266
 #: includes/admin/reporting/class-donor-reports-table.php:202
 #: includes/admin/reporting/class-export-payments.php:66
 #: includes/admin/reporting/class-export.php:72
@@ -508,15 +507,15 @@ msgid "ID"
 msgstr ""
 
 #: includes/admin/customers/customers.php:400
-#: includes/admin/forms/metabox.php:107 includes/admin/forms/metabox.php:401
-#: includes/admin/payments/class-payments-table.php:249
+#: includes/admin/forms/metabox.php:107 includes/admin/forms/metabox.php:414
+#: includes/admin/payments/class-payments-table.php:262
 #: templates/history-donations.php:13
 msgid "Amount"
 msgstr ""
 
 #: includes/admin/customers/customers.php:401
 #: includes/admin/forms/dashboard-columns.php:43
-#: includes/admin/payments/class-payments-table.php:251
+#: includes/admin/payments/class-payments-table.php:264
 #: includes/admin/reporting/class-api-requests-logs-list-table.php:96
 #: includes/admin/reporting/class-export-earnings.php:64
 #: includes/admin/reporting/class-export-payments.php:83
@@ -528,7 +527,7 @@ msgid "Date"
 msgstr ""
 
 #: includes/admin/customers/customers.php:402
-#: includes/admin/payments/class-payments-table.php:250
+#: includes/admin/payments/class-payments-table.php:263
 #: includes/admin/reporting/class-export-payments.php:85
 msgid "Status"
 msgstr ""
@@ -710,7 +709,7 @@ msgstr ""
 msgid "<span class=\"dashicons dashicons-no\"></span>"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:119 includes/admin/forms/metabox.php:402
+#: includes/admin/forms/metabox.php:119 includes/admin/forms/metabox.php:415
 msgid "Text"
 msgstr ""
 
@@ -718,7 +717,7 @@ msgstr ""
 msgid "Donation Level"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:128 includes/admin/forms/metabox.php:403
+#: includes/admin/forms/metabox.php:128 includes/admin/forms/metabox.php:416
 msgid "Default"
 msgstr ""
 
@@ -753,13 +752,13 @@ msgid "Do you want the user to be able to input their own donation amount?"
 msgstr ""
 
 #: includes/admin/forms/metabox.php:155 includes/admin/forms/metabox.php:192
-#: includes/admin/forms/metabox.php:360
+#: includes/admin/forms/metabox.php:373
 #: includes/gateways/offline-donations.php:272
 msgid "Yes"
 msgstr ""
 
 #: includes/admin/forms/metabox.php:156 includes/admin/forms/metabox.php:193
-#: includes/admin/forms/metabox.php:359
+#: includes/admin/forms/metabox.php:372
 #: includes/gateways/offline-donations.php:273
 msgid "No"
 msgstr ""
@@ -786,8 +785,8 @@ msgid ""
 "field blank to prevent it from displaying within your form."
 msgstr ""
 
-#: includes/admin/forms/metabox.php:181 includes/forms/template.php:295
-#: includes/forms/template.php:325
+#: includes/admin/forms/metabox.php:181 includes/forms/template.php:290
+#: includes/forms/template.php:320
 msgid "Give a Custom Amount"
 msgstr ""
 
@@ -804,57 +803,76 @@ msgid "Set Goal"
 msgstr ""
 
 #: includes/admin/forms/metabox.php:198
-msgid "This is the goal you want to achieve for this form."
+msgid "This is the monetary goal amount you want to reach for this donation form."
 msgstr ""
 
-#: includes/admin/forms/metabox.php:211
+#: includes/admin/forms/metabox.php:212
+msgid "Goal Format"
+msgstr ""
+
+#: includes/admin/forms/metabox.php:213
+msgid ""
+"Would you like to display the total amount raised based on your monetary "
+"goal or a percentage? For instance, \"$500 of $1,000 raised\" or \"50% "
+"funded\"."
+msgstr ""
+
+#: includes/admin/forms/metabox.php:219
+msgid "Amount "
+msgstr ""
+
+#: includes/admin/forms/metabox.php:220
+msgid "Percentage"
+msgstr ""
+
+#: includes/admin/forms/metabox.php:224
 msgid "Goal Progress Bar Color"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:227
+#: includes/admin/forms/metabox.php:240
 msgid "Form Content"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:234
+#: includes/admin/forms/metabox.php:247
 msgid "Display Content"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:235
+#: includes/admin/forms/metabox.php:248
 msgid ""
 "Do you want to display content? If you select \"Yes\" a WYSIWYG editor will "
 "appear which you will be able to enter content to display above or below "
 "the form."
 msgstr ""
 
-#: includes/admin/forms/metabox.php:239
+#: includes/admin/forms/metabox.php:252
 msgid "No content"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:240
+#: includes/admin/forms/metabox.php:253
 msgid "Yes, display content ABOVE the form fields"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:241
+#: includes/admin/forms/metabox.php:254
 msgid "Yes, display content BELOW the form fields"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:247
+#: includes/admin/forms/metabox.php:260
 msgid "Content"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:248
+#: includes/admin/forms/metabox.php:261
 msgid "This content will display on the single give form page."
 msgstr ""
 
-#: includes/admin/forms/metabox.php:263
+#: includes/admin/forms/metabox.php:276
 msgid "Form Display Options"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:270
+#: includes/admin/forms/metabox.php:283
 msgid "Payment Fields"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:271
+#: includes/admin/forms/metabox.php:284
 msgid ""
 "How would you like to display payment information for this form? The \"Show "
 "on Page\" option will display the entire form when the page loads. \"Reveal "
@@ -864,154 +882,154 @@ msgid ""
 "a shadow box or \"modal\" window."
 msgstr ""
 
-#: includes/admin/forms/metabox.php:275
+#: includes/admin/forms/metabox.php:288
 #: includes/admin/shortcodes/shortcode-give-form.php:95
 msgid "Show on Page"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:276
+#: includes/admin/forms/metabox.php:289
 #: includes/admin/shortcodes/shortcode-give-form.php:96
 msgid "Reveal Upon Click"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:277
+#: includes/admin/forms/metabox.php:290
 #: includes/admin/shortcodes/shortcode-give-form.php:97
 msgid "Modal Window Upon Click"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:283
+#: includes/admin/forms/metabox.php:296
 msgid "Reveal / Modal Open Text"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:284
+#: includes/admin/forms/metabox.php:297
 msgid "The button label for completing the donation."
 msgstr ""
 
-#: includes/admin/forms/metabox.php:288 includes/admin/forms/metabox.php:297
-#: includes/forms/template.php:440 includes/forms/template.php:1167
+#: includes/admin/forms/metabox.php:301 includes/admin/forms/metabox.php:310
+#: includes/forms/template.php:435 includes/forms/template.php:1110
 msgid "Donate Now"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:293
+#: includes/admin/forms/metabox.php:306
 msgid "Complete Donation Text"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:294
+#: includes/admin/forms/metabox.php:307
 msgid "The button label for completing a donation."
 msgstr ""
 
-#: includes/admin/forms/metabox.php:301
+#: includes/admin/forms/metabox.php:314
 #: includes/admin/register-settings.php:293
 msgid "Default Gateway"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:302
+#: includes/admin/forms/metabox.php:315
 msgid ""
 "By default, the gateway for this form will inherit the global default "
 "gateway (set under Give > Settings > Payment Gateways). This option allows "
 "you to customize the default gateway for this form only."
 msgstr ""
 
-#: includes/admin/forms/metabox.php:307
+#: includes/admin/forms/metabox.php:320
 msgid "Disable Guest Donations"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:308
+#: includes/admin/forms/metabox.php:321
 msgid "Do you want to require users be logged-in to make donations?"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:313
+#: includes/admin/forms/metabox.php:326
 msgid "Register / Login Form"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:314
+#: includes/admin/forms/metabox.php:327
 msgid ""
 "Display the registration and login forms in the payment section for "
 "non-logged-in users."
 msgstr ""
 
-#: includes/admin/forms/metabox.php:318
+#: includes/admin/forms/metabox.php:331
 msgid "Registration and Login Forms"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:319
+#: includes/admin/forms/metabox.php:332
 msgid "Registration Form Only"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:320
+#: includes/admin/forms/metabox.php:333
 msgid "Login Form Only"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:321
+#: includes/admin/forms/metabox.php:334
 msgid "None"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:326
+#: includes/admin/forms/metabox.php:339
 msgid "Floating Labels"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:327
+#: includes/admin/forms/metabox.php:340
 msgid ""
 "Select the <a href=\"%s\" target=\"_blank\">floating labels</a> setting for "
 "this Give form.<br>Be aware that if you have the \"Disable CSS\" option "
 "enabled, you will need to style the floating labels yourself."
 msgstr ""
 
-#: includes/admin/forms/metabox.php:331
+#: includes/admin/forms/metabox.php:344
 msgid "Use the global setting"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:332
+#: includes/admin/forms/metabox.php:345
 #: includes/admin/shortcodes/shortcode-give-form.php:106
 #: includes/forms/widget.php:159
 msgid "Enabled"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:333
+#: includes/admin/forms/metabox.php:346
 #: includes/admin/shortcodes/shortcode-give-form.php:107
 #: includes/forms/widget.php:160
 msgid "Disabled"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:347 includes/admin/forms/metabox.php:354
+#: includes/admin/forms/metabox.php:360 includes/admin/forms/metabox.php:367
 msgid "Terms and Conditions"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:355
+#: includes/admin/forms/metabox.php:368
 msgid ""
 "Do you want to require the user to agree to terms and conditions prior to "
 "being able to complete their donation?"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:367
+#: includes/admin/forms/metabox.php:380
 msgid "Agree to Terms Label"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:368
+#: includes/admin/forms/metabox.php:381
 msgid ""
 "The label shown next to the agree to terms check box. Add your own to "
 "customize or leave blank to use the default text placeholder."
 msgstr ""
 
-#: includes/admin/forms/metabox.php:373 includes/forms/template.php:1083
+#: includes/admin/forms/metabox.php:386 includes/forms/template.php:1028
 msgid "Agree to Terms?"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:379
+#: includes/admin/forms/metabox.php:392
 msgid "Agreement Text"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:380
+#: includes/admin/forms/metabox.php:393
 msgid ""
 "This is the actual text which the user will have to agree to in order to "
 "make a donation."
 msgstr ""
 
-#: includes/admin/forms/metabox.php:405
+#: includes/admin/forms/metabox.php:418
 msgid "Sort"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:468
+#: includes/admin/forms/metabox.php:481
 msgid "Give Form Shortcode:"
 msgstr ""
 
@@ -1035,116 +1053,125 @@ msgstr ""
 msgid "Error creating new customer"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:133
+#: includes/admin/payments/class-payments-table.php:141
 msgid "Start Date:"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:135
+#: includes/admin/payments/class-payments-table.php:143
 msgid "End Date:"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:137
+#: includes/admin/payments/class-payments-table.php:145
 #: includes/admin/reporting/logs.php:131
 msgid "Apply"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:143
+#: includes/admin/payments/class-payments-table.php:151
 msgid "Clear Filter"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:145
+#: includes/admin/payments/class-payments-table.php:153
 #: includes/admin/reporting/logs.php:74
 #: includes/admin/reporting/reports.php:220
 msgid "Search"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:207
+#: includes/admin/payments/class-payments-table.php:216
 #: includes/admin/reporting/class-sales-logs-list-table.php:257
 msgid "All"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:211
+#: includes/admin/payments/class-payments-table.php:220
 msgid "Completed"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:215
+#: includes/admin/payments/class-payments-table.php:224
 #: includes/payments/functions.php:588
 msgid "Pending"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:219
+#: includes/admin/payments/class-payments-table.php:228
 #: includes/payments/functions.php:590
 msgid "Refunded"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:223
+#: includes/admin/payments/class-payments-table.php:232
 #: includes/payments/functions.php:595
 msgid "Revoked"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:227
+#: includes/admin/payments/class-payments-table.php:236
 #: includes/payments/functions.php:591
 msgid "Failed"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:231
+#: includes/admin/payments/class-payments-table.php:240
+#: includes/payments/functions.php:592
+msgid "Cancelled"
+msgstr ""
+
+#: includes/admin/payments/class-payments-table.php:244
 #: includes/payments/functions.php:593
 msgid "Abandoned"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:248
+#: includes/admin/payments/class-payments-table.php:261
 #: templates/history-donations.php:14 templates/shortcode-receipt.php:39
 msgid "Details"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:302
+#: includes/admin/payments/class-payments-table.php:315
 #: includes/admin/payments/payments-history.php:75
 msgid "View Donation Details"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:331
+#: includes/admin/payments/class-payments-table.php:344
 msgid "Resend Donation Receipt"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:338
-#: includes/admin/payments/class-payments-table.php:416
+#: includes/admin/payments/class-payments-table.php:351
+#: includes/admin/payments/class-payments-table.php:429
 #: includes/payments/functions.php:1577
 msgid "Delete"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:343
+#: includes/admin/payments/class-payments-table.php:356
 msgid "(unknown)"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:402
+#: includes/admin/payments/class-payments-table.php:415
 msgid "Click here to view this Donor's profile"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:417
+#: includes/admin/payments/class-payments-table.php:430
 msgid "Set To Completed"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:418
+#: includes/admin/payments/class-payments-table.php:431
 msgid "Set To Pending"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:419
+#: includes/admin/payments/class-payments-table.php:432
 msgid "Set To Refunded"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:420
+#: includes/admin/payments/class-payments-table.php:433
 msgid "Set To Revoked"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:421
+#: includes/admin/payments/class-payments-table.php:434
 msgid "Set To Failed"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:422
+#: includes/admin/payments/class-payments-table.php:435
+msgid "Set To Cancelled"
+msgstr ""
+
+#: includes/admin/payments/class-payments-table.php:436
 msgid "Set To Abandoned"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:423
+#: includes/admin/payments/class-payments-table.php:437
 msgid "Resend Email Receipts"
 msgstr ""
 
@@ -1295,6 +1322,10 @@ msgstr ""
 
 #: includes/admin/payments/view-order-details.php:452
 msgid "Add Note"
+msgstr ""
+
+#: includes/admin/plugins.php:71
+msgid "Documentation"
 msgstr ""
 
 #: includes/admin/register-settings.php:103
@@ -1972,13 +2003,13 @@ msgstr ""
 
 #: includes/admin/reporting/class-export-customers.php:69
 #: includes/admin/reporting/class-export-payments.php:69
-#: includes/forms/template.php:470 templates/shortcode-profile-editor.php:34
+#: includes/forms/template.php:465 templates/shortcode-profile-editor.php:34
 msgid "First Name"
 msgstr ""
 
 #: includes/admin/reporting/class-export-customers.php:70
 #: includes/admin/reporting/class-export-payments.php:70
-#: includes/forms/template.php:486 templates/shortcode-profile-editor.php:39
+#: includes/forms/template.php:478 templates/shortcode-profile-editor.php:39
 msgid "Last Name"
 msgstr ""
 
@@ -2004,7 +2035,7 @@ msgid "State"
 msgstr ""
 
 #: includes/admin/reporting/class-export-payments.php:75
-#: includes/forms/template.php:722 templates/shortcode-profile-editor.php:99
+#: includes/forms/template.php:686 templates/shortcode-profile-editor.php:99
 msgid "Country"
 msgstr ""
 
@@ -2589,7 +2620,7 @@ msgstr ""
 
 #: includes/admin/shortcodes/shortcode-give-login.php:21
 #: includes/admin/shortcodes/shortcode-give-login.php:22
-#: includes/forms/template.php:824 includes/forms/template.php:975
+#: includes/forms/template.php:782 includes/forms/template.php:922
 msgid "Login"
 msgstr ""
 
@@ -2628,7 +2659,7 @@ msgstr ""
 
 #: includes/admin/shortcodes/shortcode-give-register.php:21
 #: includes/admin/shortcodes/shortcode-give-register.php:22
-#: includes/forms/template.php:935 templates/shortcode-register.php:47
+#: includes/forms/template.php:885 templates/shortcode-register.php:47
 msgid "Register"
 msgstr ""
 
@@ -3408,241 +3439,241 @@ msgstr ""
 msgid "Missing donation key."
 msgstr ""
 
-#: includes/forms/template.php:256 includes/forms/template.php:280
+#: includes/forms/template.php:251 includes/forms/template.php:275
 msgid "Donation Amount:"
 msgstr ""
 
-#: includes/forms/template.php:268 includes/forms/template.php:287
+#: includes/forms/template.php:263 includes/forms/template.php:282
 msgid "Updating Amount..."
 msgstr ""
 
-#: includes/forms/template.php:392
+#: includes/forms/template.php:387
 msgid "Choose your Donation Amount"
 msgstr ""
 
-#: includes/forms/template.php:467
+#: includes/forms/template.php:462
 msgid "Personal Info"
 msgstr ""
 
-#: includes/forms/template.php:475
+#: includes/forms/template.php:469
 msgid "We will use this to personalize your account experience."
 msgstr ""
 
-#: includes/forms/template.php:478
+#: includes/forms/template.php:471
 msgid "First name"
 msgstr ""
 
-#: includes/forms/template.php:491
+#: includes/forms/template.php:482
 msgid "We will use this as well to personalize your account experience."
 msgstr ""
 
-#: includes/forms/template.php:496
+#: includes/forms/template.php:487
 msgid "Last name"
 msgstr ""
 
-#: includes/forms/template.php:505 templates/shortcode-profile-editor.php:63
+#: includes/forms/template.php:495 templates/shortcode-profile-editor.php:63
 #: templates/shortcode-register.php:24
 msgid "Email Address"
 msgstr ""
 
-#: includes/forms/template.php:510
+#: includes/forms/template.php:499
 msgid "We will send the purchase receipt to this address."
 msgstr ""
 
-#: includes/forms/template.php:514
+#: includes/forms/template.php:502
 msgid "Email address"
 msgstr ""
 
-#: includes/forms/template.php:548
+#: includes/forms/template.php:535
 msgid "Credit Card Info"
 msgstr ""
 
-#: includes/forms/template.php:552
+#: includes/forms/template.php:539
 msgid "This is a secure SSL encrypted payment."
 msgstr ""
 
-#: includes/forms/template.php:557
+#: includes/forms/template.php:544
 msgid "Card Number"
 msgstr ""
 
-#: includes/forms/template.php:560
+#: includes/forms/template.php:546
 msgid "The (typically) 16 digits on the front of your credit card."
 msgstr ""
 
-#: includes/forms/template.php:565
+#: includes/forms/template.php:550
 msgid "Card number"
 msgstr ""
 
-#: includes/forms/template.php:571
+#: includes/forms/template.php:555
 msgid "CVC"
 msgstr ""
 
-#: includes/forms/template.php:574
+#: includes/forms/template.php:557
 msgid "The 3 digit (back) or 4 digit (front) value on your card."
 msgstr ""
 
-#: includes/forms/template.php:578
+#: includes/forms/template.php:560
 msgid "Security code"
 msgstr ""
 
-#: includes/forms/template.php:583
+#: includes/forms/template.php:565
 msgid "Name on the Card"
 msgstr ""
 
-#: includes/forms/template.php:586
+#: includes/forms/template.php:567
 msgid "The name printed on the front of your credit card."
 msgstr ""
 
-#: includes/forms/template.php:590
+#: includes/forms/template.php:570
 msgid "Card name"
 msgstr ""
 
-#: includes/forms/template.php:595
+#: includes/forms/template.php:575
 msgid "Expiration"
 msgstr ""
 
-#: includes/forms/template.php:598
+#: includes/forms/template.php:577
 msgid "The date your credit card expires, typically on the front of the card."
 msgstr ""
 
-#: includes/forms/template.php:607
+#: includes/forms/template.php:583
 msgid "MM / YY"
 msgstr ""
 
-#: includes/forms/template.php:642
+#: includes/forms/template.php:618
 msgid "Billing Details"
 msgstr ""
 
-#: includes/forms/template.php:652
+#: includes/forms/template.php:627
 msgid "The primary billing address for your credit card."
 msgstr ""
 
-#: includes/forms/template.php:658
+#: includes/forms/template.php:632
 msgid "Address line 1"
 msgstr ""
 
-#: includes/forms/template.php:666 templates/shortcode-profile-editor.php:81
+#: includes/forms/template.php:639 templates/shortcode-profile-editor.php:81
 msgid "Address Line 2"
 msgstr ""
 
-#: includes/forms/template.php:671
+#: includes/forms/template.php:643
 msgid ""
 "(optional) The suite, apt no, PO box, etc, associated with your billing "
 "address."
 msgstr ""
 
-#: includes/forms/template.php:677
+#: includes/forms/template.php:648
 msgid "Address line 2"
 msgstr ""
 
-#: includes/forms/template.php:690
+#: includes/forms/template.php:659
 msgid "The city for your billing address."
 msgstr ""
 
-#: includes/forms/template.php:703 templates/shortcode-profile-editor.php:93
+#: includes/forms/template.php:670 templates/shortcode-profile-editor.php:93
 msgid "Zip / Postal Code"
 msgstr ""
 
-#: includes/forms/template.php:708
+#: includes/forms/template.php:674
 msgid "The zip or postal code for your billing address."
 msgstr ""
 
-#: includes/forms/template.php:714
+#: includes/forms/template.php:679
 msgid "Zip / Postal code"
 msgstr ""
 
-#: includes/forms/template.php:727
+#: includes/forms/template.php:690
 msgid "The country for your billing address."
 msgstr ""
 
-#: includes/forms/template.php:759
+#: includes/forms/template.php:720
 msgid "The state or province for your billing address."
 msgstr ""
 
-#: includes/forms/template.php:822
+#: includes/forms/template.php:781
 msgid "Already have an account?"
 msgstr ""
 
-#: includes/forms/template.php:827 includes/forms/template.php:942
-#: includes/forms/template.php:1016 includes/scripts.php:48
+#: includes/forms/template.php:785 includes/forms/template.php:892
+#: includes/forms/template.php:960 includes/scripts.php:48
 msgid "Loading..."
 msgstr ""
 
-#: includes/forms/template.php:834
+#: includes/forms/template.php:792
 msgid "Create an account"
 msgstr ""
 
-#: includes/forms/template.php:836 includes/forms/template.php:927
+#: includes/forms/template.php:794 includes/forms/template.php:877
 msgid "(optional)"
 msgstr ""
 
-#: includes/forms/template.php:846
+#: includes/forms/template.php:803
 msgid "The username you will use to log into your account."
 msgstr ""
 
-#: includes/forms/template.php:858 includes/forms/template.php:869
-#: includes/forms/template.php:961 templates/shortcode-login.php:19
+#: includes/forms/template.php:813 includes/forms/template.php:822
+#: includes/forms/template.php:910 templates/shortcode-login.php:19
 #: templates/shortcode-register.php:28
 msgid "Password"
 msgstr ""
 
-#: includes/forms/template.php:863
+#: includes/forms/template.php:817
 msgid "The password used to access your account."
 msgstr ""
 
-#: includes/forms/template.php:875 templates/shortcode-register.php:33
+#: includes/forms/template.php:827 templates/shortcode-register.php:33
 msgid "Confirm Password"
 msgstr ""
 
-#: includes/forms/template.php:880
+#: includes/forms/template.php:831
 msgid "Please retype your password to confirm."
 msgstr ""
 
-#: includes/forms/template.php:886
+#: includes/forms/template.php:836
 msgid "Confirm password"
 msgstr ""
 
-#: includes/forms/template.php:925
+#: includes/forms/template.php:875
 msgid "Login to Your Account"
 msgstr ""
 
-#: includes/forms/template.php:932
+#: includes/forms/template.php:882
 msgid "Need to create an account?"
 msgstr ""
 
-#: includes/forms/template.php:937
+#: includes/forms/template.php:887
 msgid "or checkout as a guest."
 msgstr ""
 
-#: includes/forms/template.php:956
+#: includes/forms/template.php:905
 msgid "Your username"
 msgstr ""
 
-#: includes/forms/template.php:969
+#: includes/forms/template.php:917
 msgid "Your password"
 msgstr ""
 
-#: includes/forms/template.php:1014
+#: includes/forms/template.php:959
 msgid "Select Payment Method"
 msgstr ""
 
-#: includes/forms/template.php:1078
+#: includes/forms/template.php:1023
 msgid "Show Terms"
 msgstr ""
 
-#: includes/forms/template.php:1079
+#: includes/forms/template.php:1024
 msgid "Hide Terms"
 msgstr ""
 
-#: includes/forms/template.php:1117
+#: includes/forms/template.php:1061
 msgid "Donation Total:"
 msgstr ""
 
-#: includes/forms/template.php:1395
+#: includes/forms/template.php:1352
 msgid "Notice"
 msgstr ""
 
-#: includes/forms/template.php:1395
+#: includes/forms/template.php:1352
 msgid "Test mode is enabled. While in test mode no live transactions are processed."
 msgstr ""
 
@@ -3697,7 +3728,7 @@ msgstr ""
 msgid "Test Payment"
 msgstr ""
 
-#: includes/gateways/functions.php:127 includes/gateways/functions.php:148
+#: includes/gateways/functions.php:130 includes/gateways/functions.php:151
 msgid "Test Donation"
 msgstr ""
 
@@ -4160,10 +4191,6 @@ msgstr ""
 msgid "Complete"
 msgstr ""
 
-#: includes/payments/functions.php:592
-msgid "Cancelled"
-msgstr ""
-
 #: includes/payments/functions.php:594
 msgid "Pre-Approved"
 msgstr ""
@@ -4367,32 +4394,38 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: includes/post-types.php:431
+msgid "Cancelled <span class=\"count\">(%s)</span>"
+msgid_plural "Cancelled <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/post-types.php:439
 msgid "Abandoned <span class=\"count\">(%s)</span>"
 msgid_plural "Abandoned <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/post-types.php:457 includes/post-types.php:458
+#: includes/post-types.php:465 includes/post-types.php:466
 msgid "%2$s updated. %1$sView %2$s%3$s."
 msgstr ""
 
-#: includes/post-types.php:459
+#: includes/post-types.php:467
 msgid "%2$s published. %1$sView %2$s%3$s."
 msgstr ""
 
-#: includes/post-types.php:460
+#: includes/post-types.php:468
 msgid "%2$s saved. %1$sView %2$s%3$s."
 msgstr ""
 
-#: includes/post-types.php:461
+#: includes/post-types.php:469
 msgid "%2$s submitted. %1$sView %2$s%3$s."
 msgstr ""
 
-#: includes/post-types.php:515
+#: includes/post-types.php:522
 msgid "Give Single Form Sidebar"
 msgstr ""
 
-#: includes/post-types.php:517
+#: includes/post-types.php:524
 msgid ""
 "Widgets in this area will be shown on the single Give forms aside area. "
 "This sidebar will not display for embedded forms."
@@ -4619,7 +4652,7 @@ msgstr ""
 msgid "The email you entered belongs to another user. Please use another."
 msgstr ""
 
-#: includes/template-functions.php:310
+#: includes/template-functions.php:304
 msgid "Give Placeholder Image"
 msgstr ""
 
@@ -4745,7 +4778,7 @@ msgstr ""
 msgid "Register a New Account"
 msgstr ""
 
-#: templates/single-give-form/featured-image.php:37
+#: templates/single-give-form/featured-image.php:40
 msgid "Placeholder"
 msgstr ""
 
@@ -4795,9 +4828,16 @@ msgctxt "no dropdown items"
 msgid "None"
 msgstr ""
 
-#: includes/forms/template.php:1286
+#: includes/forms/template.php:1234
 msgctxt "This text displays the amount of income raised compared to the goal."
 msgid "%s of %s raised"
+msgstr ""
+
+#: includes/forms/template.php:1238
+msgctxt ""
+"This text displays the percentage amount of income raised compared to the "
+"goal target."
+msgid "%s%% funded"
 msgstr ""
 
 #: includes/gateways/offline-donations.php:334
@@ -4866,6 +4906,11 @@ msgid "Revoked"
 msgstr ""
 
 #: includes/post-types.php:426
+msgctxt "Cancelled payment status"
+msgid "Cancelled"
+msgstr ""
+
+#: includes/post-types.php:434
 msgctxt "Abandoned payment status"
 msgid "Abandoned"
 msgstr ""
