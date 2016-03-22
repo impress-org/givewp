@@ -133,6 +133,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Tweak: Removed usage of the image size "give_form_thumbnail" in favor of "give_form_single" - https://github.com/WordImpress/Give/issues/412
 * Tweak: Increased modal windows z-index value - https://github.com/WordImpress/Give/issues/524
 * Fix: Transactions with a "cancelled" status are not shown in the wp-admin Transactions table - thanks @pryley - https://github.com/WordImpress/Give/issues/514
+* Fix: Alternative to fopen provided for PDF exports - https://github.com/WordImpress/Give/issues/511
 
 = 1.3.6 =
 * New: Give French translation provided by Laurent. Thanks! - https://github.com/WordImpress/Give/issues/472
