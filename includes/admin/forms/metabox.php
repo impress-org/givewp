@@ -25,21 +25,21 @@ add_filter( 'cmb2_meta_boxes', 'give_single_forms_cmb2_metaboxes' );
  */
 function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 
-	$post_id          = give_get_admin_post_id();
-	$price            = give_get_form_price( $post_id );
-	$minimum_amount   = give_get_form_minimum_price( $post_id );
-	$goal             = give_get_form_goal( $post_id );
-	$variable_pricing = give_has_variable_prices( $post_id );
-	$prices           = give_get_variable_prices( $post_id );
+	$post_id               = give_get_admin_post_id();
+	$price                 = give_get_form_price( $post_id );
+	$custom_amount_minimum = give_get_form_minimum_price( $post_id );
+	$goal                  = give_get_form_goal( $post_id );
+	$variable_pricing      = give_has_variable_prices( $post_id );
+	$prices                = give_get_variable_prices( $post_id );
 
 	//No empty prices - min. 1.00 for new forms
-	if ( empty( $price ) ) {
+	if ( empty( $price ) && is_null( $post_id ) ) {
 		$price = esc_attr( give_format_amount( '1.00' ) );
 	}
 
-	//Min. 1.00 for new forms
-	if ( empty( $minimum_amount ) ) {
-		$minimum_amount = esc_attr( give_format_amount( '1.00' ) );
+	//Min. $1.00 for new forms
+	if ( empty( $custom_amount_minimum ) ) {
+		$custom_amount_minimum = esc_attr( give_format_amount( '1.00' ) );
 	}
 
 	// Start with an underscore to hide fields from custom fields list
@@ -69,7 +69,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 				),
 				array(
 					'name'         => __( 'Set Donation', 'give' ),
-					'description'  => __( 'This is the set donation amount for this form. If you have a Custom Amount Minimum set, make sure it is less than this.', 'give' ),
+					'description'  => __( 'This is the set donation amount for this form. If you have a "Custom Amount Minimum" set, make sure it is less than this amount.', 'give' ),
 					'id'           => $prefix . 'set_price',
 					'type'         => 'text_small',
 					'row_classes'  => 'give-subfield',
@@ -77,7 +77,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'after_field'  => give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '',
 					'attributes'   => array(
 						'placeholder' => give_format_amount( '1.00' ),
-						'value'       => $price,
+						'value'       => give_format_amount( $price ),
 						'class'       => 'cmb-type-text-small give-money-field',
 					),
 				),
@@ -166,7 +166,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'after_field'  => give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '',
 					'attributes'   => array(
 						'placeholder' => give_format_amount( '1.00' ),
-						'value'       => $minimum_amount,
+						'value'       => $custom_amount_minimum,
 						'class'       => 'cmb-type-text-small give-money-field',
 					),
 				),
@@ -216,8 +216,8 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'default'     => 'amount',
 					'row_classes' => 'give-subfield',
 					'options'     => array(
-						'amount' => __( 'Amount ', 'give' ),
-						'percentage'  => __( 'Percentage', 'give' ),
+						'amount'     => __( 'Amount ', 'give' ),
+						'percentage' => __( 'Percentage', 'give' ),
 					),
 				),
 				array(
