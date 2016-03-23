@@ -135,6 +135,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Tweak: Added additional checks to the "System Info" settings tab - https://github.com/WordImpress/Give/issues/506
 * Tweak: Removed Give's custom thumbnail size in favor for using WordPress' large media size to prevent image quality issues and excess image creation - https://github.com/WordImpress/Give/issues/535
 * Tweak: Use $_SERVER['HTTP_HOST'] rather than $_SERVER['SERVER_NAME'] in give_get_current_page_url() - https://github.com/WordImpress/Give/issues/530
+* Fix: Theme compatibility with Zerif and Customizr for single give donation forms - https://github.com/WordImpress/Give/issues/537
 * Fix: Transactions with a "cancelled" status are not shown in the wp-admin Transactions table - thanks @pryley - https://github.com/WordImpress/Give/issues/514
 * Fix: Alternative to fopen provided for PDF exports - https://github.com/WordImpress/Give/issues/511
 
