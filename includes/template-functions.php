@@ -270,27 +270,6 @@ function give_add_post_class( $classes, $class = '', $post_id = '' ) {
 
 add_filter( 'post_class', 'give_add_post_class', 20, 3 );
 
-
-/**
- * Get an image size.
- *
- * Variable is filtered by give_get_image_size_{image_size}
- *
- * @param string $image_size
- *
- * @return array
- */
-function give_get_image_size( $image_size ) {
-
-	$size = array(
-		'width'  => '300',
-		'height' => '300',
-		'crop'   => 1
-	);
-
-	return apply_filters( 'give_get_image_size_' . $image_size, $size );
-}
-
 /**
  * Get the placeholder image URL for forms etc
  *
@@ -299,9 +278,7 @@ function give_get_image_size( $image_size ) {
  */
 function give_get_placeholder_img_src() {
 
-	$image_size = give_get_image_size( 'give_form_single' );
-
-	$placeholder_url = 'http://placehold.it/' . $image_size['width'] . 'x' . $image_size['height'] . '&text=' . urlencode( esc_attr__( 'Give Placeholder Image', 'give' ) ) . '+(' . $image_size['width'] . 'x' . $image_size['height'] . ')';
+	$placeholder_url = 'http://placehold.it/600x600&text=' . urlencode( esc_attr__( 'Give Placeholder Image', 'give' ) );
 
 	return apply_filters( 'give_placeholder_img_src', $placeholder_url );
 }
