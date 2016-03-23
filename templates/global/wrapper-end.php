@@ -44,6 +44,12 @@ switch ( $template ) {
 	case 'philanthropy-parent' :
 		echo '</div></div></div></div>';
 		break;
+	case 'zerif-lite' :
+		echo '</main></article></div></div></div>';
+		break;
+	case 'customizr' :
+		echo '</div>';
+		break;
 	default :
 		echo apply_filters( 'give_default_wrapper_end', '</div></div>' );
 		break;
