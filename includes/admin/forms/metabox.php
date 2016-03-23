@@ -166,7 +166,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'after_field'  => give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '',
 					'attributes'   => array(
 						'placeholder' => give_format_amount( '1.00' ),
-						'value'       => $custom_amount_minimum,
+						'value'       => give_format_amount( $custom_amount_minimum ),
 						'class'       => 'cmb-type-text-small give-money-field',
 					),
 				),
