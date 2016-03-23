@@ -124,9 +124,11 @@ jQuery.noConflict();
 			if ( goal_option === 'no' ) {
 
 				$( '.cmb2-id--give-set-goal' ).hide();
+				$( '.cmb2-id--give-goal-format' ).hide();
 				$( '.cmb2-id--give-goal-color' ).hide();
 			} else {
 				$( '.cmb2-id--give-set-goal' ).show();
+				$( '.cmb2-id--give-goal-format' ).show();
 				$( '.cmb2-id--give-goal-color' ).show();
 			}
 		} ).change();
