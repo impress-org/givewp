@@ -1062,7 +1062,8 @@ form[id*='give-form'] select.give-select-level {
   border-radius: 0;
   min-width: 155px;
   border: 1px solid #ccc;
-  margin: 0 0 15px; }
+  margin: 0 0 15px;
+  display: block; }
 
 /*---------------------------------
 Buttons
