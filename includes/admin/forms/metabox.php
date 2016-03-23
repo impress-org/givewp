@@ -172,7 +172,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 				),
 				array(
 					'name'        => __( 'Custom Amount Text', 'give' ),
-					'description' => __( 'This text appears as a label next to the custom amount field for single level forms. For multi-level forms the text will appear as it\'s own level (ie button, radio, or select option). Add your own message or leave this field blank to prevent it from displaying within your form.', 'give' ),
+					'description' => __( 'This text appears as a label below the custom amount field for set donation forms. For multi-level forms the text will appear as it\'s own level (ie button, radio, or select option).', 'give' ),
 					'id'          => $prefix . 'custom_amount_text',
 					'type'        => 'text',
 					'row_classes' => 'give-subfield',

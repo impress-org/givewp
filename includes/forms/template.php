@@ -287,7 +287,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 
 	//Custom Amount Text
 	if ( ! $variable_pricing && $allow_custom_amount == 'yes' ) { ?>
-		<p class="give-custom-amount-text"><?php echo ! empty( $custom_amount_text ) ? $custom_amount_text : __( 'Give a Custom Amount', 'give' ); ?></p>
+		<p class="give-custom-amount-text"><?php echo ! empty( $custom_amount_text ) ? $custom_amount_text : ''; ?></p>
 	<?php }
 
 	//Output Variable Pricing Levels
