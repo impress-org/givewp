@@ -162,6 +162,7 @@ jQuery(document).ready(function ($) {
                 //Submit form for normal processing
                 $(give_purchase_form).submit();
             } else {
+                //There was an error / remove old errors and prepend new ones
                 this_form.find('#give-purchase-button').val(complete_purchase_val);
                 loading_animation.fadeOut();
                 this_form.find('.give_errors').remove();
