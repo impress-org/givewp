@@ -882,6 +882,7 @@ form[id*='give-form'] .give-donation-amount {
     background-color: #f2f2f2;
     border-top: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
+    color: #333;
     margin: 0;
     padding: 0 12px;
     float: left;
@@ -936,6 +937,7 @@ form[id*='give-form'] #give-final-total-wrap {
     background-color: #f2f2f2;
     border-top: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
+    color: #333;
     margin: 0;
     padding: 0 12px;
     float: left;
@@ -1021,7 +1023,8 @@ Radio Lists
     margin: 0 0 5px;
     padding: 0; }
     #give-donation-level-radio-list > li label {
-      cursor: pointer; }
+      cursor: pointer;
+      display: inline-block; }
     #give-donation-level-radio-list > li input[type="radio"] {
       margin: 0 5px 0 0;
       outline: none;
@@ -1059,7 +1062,8 @@ form[id*='give-form'] select.give-select-level {
   border-radius: 0;
   min-width: 155px;
   border: 1px solid #ccc;
-  margin: 0 0 15px; }
+  margin: 0 0 15px;
+  display: block; }
 
 /*---------------------------------
 Buttons
@@ -1261,8 +1265,9 @@ div.mfp-content fieldset p, div.mfp-content fieldset ol, div.mfp-content fieldse
 Basic Button Style
 -----------------------------------*/
 .give-btn {
-  background: #eeeeee;
+  background: #EDEDED;
   border: 1px solid #ccc;
+  color: #333;
   padding: 8px 10px;
   cursor: pointer;
   line-height: 1.2em;
@@ -1841,7 +1846,7 @@ form.floated-labels .styled.select {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 1043;
+  z-index: 2147483540;
   position: fixed;
   outline: none !important;
   -webkit-backface-visibility: hidden; }
@@ -1878,7 +1883,7 @@ form.floated-labels .styled.select {
     width: auto;
     max-width: 500px;
     margin: 40px auto;
-    z-index: 1045; }
+    z-index: 2147483640; }
     .give-modal .mfp-content .give-donation-levels-wrap, .give-modal .mfp-content .give-btn-modal {
       display: none; }
     .give-modal .mfp-content [id*='give-form'] #give-payment-mode-select, .give-modal .mfp-content [id*='give-form'] #give_purchase_form_wrap {
@@ -1973,10 +1978,10 @@ table.give-table {
 body.give-twentysixteen div.entry-summary {
   margin: 0; }
 
-body.give-twentysixteen .give-btn {
+body.give-twentysixteen button.give-btn {
   color: #333; }
 
-body.give-twentysixteen .give-submit, body.give-twentysixteen .give-btn {
+body.give-twentysixteen .give-submit {
   color: #FFF; }
 
 body.give-twentysixteen form[id*="give"] fieldset {

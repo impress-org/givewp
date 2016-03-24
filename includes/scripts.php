@@ -47,6 +47,7 @@ function give_load_scripts() {
 		'bad_minimum'         => __( 'The minimum donation amount for this form is', 'give' ),
 		'general_loading'     => __( 'Loading...', 'give' ),
 		'purchase_loading'    => __( 'Please Wait...', 'give' ),
+		'number_decimals'  => apply_filters( 'give_format_amount_decimals', 2 ),
 		'give_version'        => GIVE_VERSION
 	) );
 	$localize_give_ajax     = apply_filters( 'give_global_ajax_vars', array(

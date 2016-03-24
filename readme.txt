@@ -127,8 +127,20 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 == Changelog ==
 
 = 1.3.7 =
+* New: Unit tests added for Give_Donate_Form class - thanks @cklosowski - https://github.com/WordImpress/Give/pull/517
+* New: Added new "Goal Format" option which will allow totals to be output based on a percentage rather than amount; also added more filters for better control over output - https://github.com/WordImpress/Give/issues/387
+* New: Added links to plugin settings page and documentation on the WordPress plugin listing page - https://github.com/WordImpress/Give/issues/531
 * Tweak: Removed usage of the image size "give_form_thumbnail" in favor of "give_form_single" - https://github.com/WordImpress/Give/issues/412
+* Tweak: Increased modal windows z-index value - https://github.com/WordImpress/Give/issues/524
+* Tweak: Added additional checks to the "System Info" settings tab - https://github.com/WordImpress/Give/issues/506
+* Tweak: Removed Give's custom thumbnail size in favor for using WordPress' large media size to prevent image quality issues and excess image creation - https://github.com/WordImpress/Give/issues/535
+* Tweak: Use $_SERVER['HTTP_HOST'] rather than $_SERVER['SERVER_NAME'] in give_get_current_page_url() - https://github.com/WordImpress/Give/issues/530
+* Fix: Problem give_format_amount_decimals return always 2 decimals - https://github.com/WordImpress/Give/issues/467
+* Fix: "Custom Amount Text" should not show if the field is left blank for set donation forms - https://github.com/WordImpress/Give/issues/522
+* Fix: Theme compatibility with Zerif and Customizr for single give donation forms - https://github.com/WordImpress/Give/issues/537
+* Fix: Allow for $0 set donations to be saved properly - https://github.com/WordImpress/Give/issues/529
 * Fix: Transactions with a "cancelled" status are not shown in the wp-admin Transactions table - thanks @pryley - https://github.com/WordImpress/Give/issues/514
+* Fix: Alternative to fopen provided for PDF exports - https://github.com/WordImpress/Give/issues/511
 
 = 1.3.6 =
 * New: Give French translation provided by Laurent. Thanks! - https://github.com/WordImpress/Give/issues/472

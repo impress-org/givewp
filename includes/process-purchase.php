@@ -442,7 +442,7 @@ function give_purchase_form_validate_logged_in_user() {
 function give_purchase_form_validate_new_user() {
 
 	$registering_new_user = false;
-	$form_id = isset( $_POST['give-form-id'] ) ? $_POST['give-form-id'] : '';
+	$form_id              = isset( $_POST['give-form-id'] ) ? $_POST['give-form-id'] : '';
 
 	// Start an empty array to collect valid user data
 	$valid_user_data = array(
@@ -720,7 +720,6 @@ function give_get_purchase_form_user( $valid_data = array() ) {
 		return true;
 	} else if ( is_user_logged_in() ) {
 		// Set the valid user as the logged in collected data
-
 		$user = $valid_data['logged_in_user'];
 	} else if ( $valid_data['need_new_user'] === true || $valid_data['need_user_login'] === true ) {
 		// New user registration
@@ -851,7 +850,7 @@ function give_get_purchase_cc_info() {
  *
  * @since  1.0
  *
- * @param int    $zip
+ * @param int $zip
  * @param string $country_code
  *
  * @return bool|mixed|void

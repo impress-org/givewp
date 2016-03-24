@@ -389,6 +389,7 @@ Radio Lists
 
     label {
       cursor: pointer;
+      display:inline-block;
     }
 
     input[type="radio"] {
@@ -439,6 +440,7 @@ form[id*='give-form'] {
     min-width: 155px;
     border: 1px solid $borders;
     margin: 0 0 15px;
+    display:block;
   }
 }
 
@@ -691,8 +693,9 @@ Basic Button Style
 -----------------------------------*/
 
 .give-btn {
-  background: #eeeeee;
-  border: 1px solid #ccc;
+  background: $light-gray;
+  border: 1px solid $borders;
+  color: $dark;
   padding: 8px 10px;
   cursor: pointer;
   line-height: 1.2em;

@@ -287,7 +287,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 
 	//Custom Amount Text
 	if ( ! $variable_pricing && $allow_custom_amount == 'yes' ) { ?>
-		<p class="give-custom-amount-text"><?php echo ! empty( $custom_amount_text ) ? $custom_amount_text : __( 'Give a Custom Amount', 'give' ); ?></p>
+		<p class="give-custom-amount-text"><?php echo ! empty( $custom_amount_text ) ? $custom_amount_text : ''; ?></p>
 	<?php }
 
 	//Output Variable Pricing Levels
@@ -384,7 +384,7 @@ function give_output_levels( $form_id ) {
 
 		case 'dropdown':
 
-			$output .= '<label for="give-donation-level" class="give-hidden">' . __( 'Choose your Donation Amount', 'give' ) . ':</label>';
+			$output .= '<label for="give-donation-level" class="give-hidden">' . __( 'Choose Your Donation Amount', 'give' ) . ':</label>';
 			$output .= '<select id="give-donation-level-' . $form_id . '" class="give-select give-select-level">';
 
 			//first loop through prices
@@ -957,7 +957,8 @@ function give_payment_mode_select( $form_id ) {
 		<?php do_action( 'give_payment_mode_before_gateways_wrap' ); ?>
 		<div id="give-payment-mode-wrap">
 			<legend class="give-payment-mode-label"><?php echo apply_filters( 'give_checkout_payment_method_text', __( 'Select Payment Method', 'give' ) ); ?>
-				<span class="give-loading-text"><span class="give-loading-animation"></span> <?php _e( 'Loading...', 'give' ); ?></span></legend>
+				<span class="give-loading-text"><span class="give-loading-animation"></span> <?php _e( 'Loading...', 'give' ); ?></span>
+			</legend>
 			<?php
 
 			do_action( 'give_payment_mode_before_gateways' ) ?>
@@ -1194,6 +1195,7 @@ function give_show_goal_progress( $form_id, $args ) {
 	$goal_option = get_post_meta( $form_id, '_give_goal_option', true );
 	$form        = new Give_Donate_Form( $form_id );
 	$goal        = $form->goal;
+	$goal_format = get_post_meta( $form_id, '_give_goal_format', true );
 	$income      = $form->get_earnings();
 	$color       = get_post_meta( $form_id, '_give_goal_color', true );
 	$show_text   = (bool) isset( $args['show_text'] ) ? filter_var( $args['show_text'], FILTER_VALIDATE_BOOLEAN ) : true;
@@ -1224,10 +1226,23 @@ function give_show_goal_progress( $form_id, $args ) {
 
 	//Goal Progress Text
 	if ( ! empty( $show_text ) ) {
+
 		$output .= '<div class="raised">';
-		$output .= sprintf( _x( '%s of %s raised', 'This text displays the amount of income raised compared to the goal.', 'give' ), '<span class="income">' . give_currency_filter( give_format_amount( $income ) ) . '</span>', '<span class="goal-text">' . give_currency_filter( give_format_amount( $goal ) ) ) . '</span>';
+
+		if ( $goal_format !== 'percentage' ) {
+
+			$output .= sprintf( _x( '%s of %s raised', 'This text displays the amount of income raised compared to the goal.', 'give' ), '<span class="income">' . apply_filters( 'give_goal_amount_raised_output', give_currency_filter( give_format_amount( $income ) ) ) . '</span>', '<span class="goal-text">' . apply_filters( 'give_goal_amount_target_output', give_currency_filter( give_format_amount( $goal ) ) ) ) . '</span>';
+
+		} elseif ( $goal_format == 'percentage' ) {
+
+			$output .= sprintf( _x( '%s%% funded', 'This text displays the percentage amount of income raised compared to the goal target.', 'give' ), '<span class="give-percentage">' . apply_filters( 'give_goal_amount_funded_percentage_output', round( $progress ) ) . '</span>' ) . '</span>';
+
+		}
+
 		$output .= '</div>';
+
 	}
+
 	//Goal Progress Bar
 	if ( ! empty( $show_bar ) ) {
 		$output .= '<div class="give-progress-bar">';
