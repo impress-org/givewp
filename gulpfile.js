@@ -6,18 +6,15 @@
 
 /* Modules (Can be installed with npm install command using package.json)
  ------------------------------------- */
-var autoprefixer = require('gulp-autoprefixer'),
-    bower = require('gulp-bower'),
+var bower = require('gulp-bower'),
     bowerMain = require('main-bower-files'),
     concat = require('gulp-concat'),
     del = require('del'),
     filter = require('gulp-filter'),
     gulp = require('gulp'),
-    gutil = require('gulp-util'),
     livereload = require('gulp-livereload'),
-    minifyCSS = require('gulp-clean-css'),
+    cssmin = require('gulp-cssmin'),
     notify = require('gulp-notify'),
-    plumber = require('gulp-plumber'),
     rename = require('gulp-rename'),
     sass = require('gulp-sass'),
     sourcemaps = require('gulp-sourcemaps'),
@@ -29,7 +26,7 @@ var autoprefixer = require('gulp-autoprefixer'),
 var source_paths = {
     admin_styles: ['./assets/scss/**/give-admin.scss'],
     frontend_styles: ['./assets/scss/**/give-frontend.scss'],
-    plugin_styles: ['./assets/scss/**/*.scss'],
+    plugin_styles: ['./assets/scss/plugins/*.scss'],
     scripts: ['./assets/js/**/*.js', '!./assets/js/**/*.min.js'],
     frontend_scripts: [
         './assets/js/plugins/accounting.min.js',
@@ -45,18 +42,16 @@ var source_paths = {
 /* Admin SCSS Task
  ------------------------------------- */
 gulp.task('admin_styles', function () {
-    return gulp.src(source_paths.admin_styles)
+    gulp.src(source_paths.admin_styles)
         .pipe(sourcemaps.init())
         .pipe(sass({
             errLogToConsole: true
         }))
-        .pipe(autoprefixer()) //run this after sass!
         .pipe(rename('give-admin.css'))
-        .pipe(sourcemaps.write('.'))
+        .pipe(sourcemaps.write('../sourcemaps')) //write SCSS source maps to the appropriate plugin dir
         .pipe(gulp.dest('./assets/css'))
         .pipe(rename('give-admin.min.css'))
-        .pipe(minifyCSS())
-        .pipe(sourcemaps.write())
+        .pipe(cssmin())
         .pipe(gulp.dest('./assets/css'))
         .pipe(livereload())
         .pipe(notify({
@@ -68,18 +63,16 @@ gulp.task('admin_styles', function () {
 /* Frontend SCSS Task
  ------------------------------------- */
 gulp.task('frontend_styles', function () {
-    return gulp.src(source_paths.frontend_styles)
+    gulp.src(source_paths.frontend_styles)
         .pipe(sourcemaps.init()) //start up sourcemapping
         .pipe(sass({
             errLogToConsole: true
-        })) //compile SASS; ensure any errors don't stop gulp watch
-        .pipe(autoprefixer()) //add prefixes for older browsers, run this after sass!
+        })) //compile SASS; ensure any errors don't stop gulp watch\
         .pipe(rename('give.css')) //rename for our main un-minfied file
-        .pipe(sourcemaps.write('.')) //write SCSS source maps to the appropriate plugin dir
+        .pipe(sourcemaps.write('../assets/sourcemaps')) //write SCSS source maps to the appropriate plugin dir
         .pipe(gulp.dest('./templates')) //place compiled file in appropriate directory
+        .pipe(cssmin())
         .pipe(rename('give.min.css')) //rename for our minified version
-        .pipe(minifyCSS()) //actually minify the file
-        .pipe(sourcemaps.write('.')) //write SCSS source maps to the appropriate plugin dir
         .pipe(gulp.dest('./templates')) //place the minified compiled file
         .pipe(livereload()) //reload browser
         .pipe(notify({
@@ -139,15 +132,6 @@ gulp.task('watch', function () {
         livereload(); //and reload when changed
     });
 });
-
-/* Handle errors elegantly with gulp-notify
- ------------------------------------- */
-var onError = function (err) {
-    gutil.log('======= ERROR. ========\n');
-    notify.onError("ERROR: " + err.plugin)(err); // for growl
-    gutil.beep();
-    this.end();
-};
 
 /* Default Gulp task
  ------------------------------------- */
