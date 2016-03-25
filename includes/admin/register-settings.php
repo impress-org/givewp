@@ -580,7 +580,7 @@ class Give_Plugin_Settings {
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
 				'fields'     => apply_filters( 'give_settings_advanced', array(
 						array(
-							'name' => __( 'Session Control', 'give' ),
+							'name' => __( 'Access Control', 'give' ),
 							'desc' => '',
 							'id'   => 'give_title_session_control_1',
 							'type' => 'give_title'
@@ -602,6 +602,20 @@ class Give_Plugin_Settings {
 							'desc' => __( 'Would you like your donors to be able to access their donation history using only email? Donors whose sessions have expired and do not have an account may still access their donation history via a temporary email access link.', 'give' ),
 							'id'   => 'email_access',
 							'type' => 'checkbox',
+						),
+						array(
+							'id'      => 'recaptcha_key',
+							'name'    => __( 'reCAPTCHA Site Key', 'give' ),
+							'desc'    => sprintf( __( 'If you would like to prevent spam on the email access form navigate to %1$sthe reCAPTCHA website%2$s and sign up for an API key. The reCAPTCHA uses Google\'s user-friendly single click verification method.', 'give' ), '<a href="https://www.google.com/recaptcha/" target="_blank">', '</a>' ),
+							'default' => '',
+							'type'    => 'text'
+						),
+						array(
+							'id'      => 'recaptcha_secret',
+							'name'    => __( 'reCAPTCHA Secret Key', 'give' ),
+							'desc'    => __( 'Please paste the reCAPTCHA secret key here from your manage reCAPTCHA API Keys panel.', 'give' ),
+							'default' => '',
+							'type'    => 'text'
 						),
 						array(
 							'name' => __( 'Data Control', 'give' ),

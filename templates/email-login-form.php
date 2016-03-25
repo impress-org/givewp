@@ -8,14 +8,19 @@
 $show_form = true;
 $email     = isset( $_POST['give_email'] ) ? $_POST['give_email'] : '';
 
+//reCAPTCHA
+$recaptcha_key    = give_get_option( 'recaptcha_key' );
+$recaptcha_secret = give_get_option( 'recaptcha_secret' );
+$enable_recaptcha = ( ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ) ? true : false;
+
 // Form submission
 if ( is_email( $email ) && wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
 
 	// Use reCAPTCHA
-	if ( defined( 'RECAPTCHA_KEY' ) ) {
+	if ( $enable_recaptcha ) {
 
 		$args = array(
-			'secret'   => RECAPTCHA_SECRET,
+			'secret'   => $recaptcha_secret,
 			'response' => $_POST['g-recaptcha-response'],
 			'remoteip' => $_POST['give_ip']
 		);
@@ -33,6 +38,7 @@ if ( is_email( $email ) && wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
 
 			} else {
 
+				//Connection issue
 				give_set_error( 'give_recaptcha_connection_issue', apply_filters( 'give_recaptcha_connection_issue_message', __( 'Unable to connect to reCAPTCHA server', 'give' ) ) );
 
 			}
@@ -45,6 +51,7 @@ if ( is_email( $email ) && wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
 		}
 	}
 
+	//If no errors or only expired token key error - then send email
 	if ( ! give_get_errors() ) {
 
 		$customer = Give()->customers->get_customer_by( 'email', $email );
@@ -60,35 +67,37 @@ if ( is_email( $email ) && wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
 	}
 }
 
-?>
-	<script>
-		(function ($) {
-			$(function () {
-				$.getJSON('https://api.ipify.org?format=jsonp&callback=?', function (json) {
-					$('.give_ip').val(json.ip);
-				});
-			});
-		})(jQuery);
-	</script>
+//Print any messages & errors
+give_print_errors( 0 );
 
-	<h3><?php echo apply_filters( 'give_access_donation_history_headline', __( 'Access Your Donation History', 'give' ) ); ?></h3>
-
-<?php give_print_errors( 0 ); ?>
-
-<?php
 //Show the email login form?
 if ( $show_form ) { ?>
 
-	<script src='https://www.google.com/recaptcha/api.js'></script>
 	<div class="give-form">
 		<form method="post" action="">
-			<input type="email" name="give_email" value="" placeholder="<?php _e( 'Your donation email', 'give' ); ?>"/>
+			<label for="give_email"><?php __( 'Donation Email:', 'give' ); ?></label>
+			<input id="give-email" type="email" name="give_email" value="" placeholder="<?php _e( 'Your donation email', 'give' ); ?>"/>
 			<input type="hidden" name="_wpnonce" value="<?php echo wp_create_nonce( 'give' ); ?>"/>
 
-			<?php if ( defined( 'RECAPTCHA_KEY' ) ) : ?>
-				<div class="g-recaptcha" data-sitekey="<?php echo RECAPTCHA_KEY; ?>"></div>
+			<?php
+			//Enable reCAPTCHA?
+			if ( $enable_recaptcha ) { ?>
+
+				<script>
+					//IP verify for reCAPTCHA
+					(function ($) {
+						$(function () {
+							$.getJSON('https://api.ipify.org?format=jsonp&callback=?', function (json) {
+								$('.give_ip').val(json.ip);
+							});
+						});
+					})(jQuery);
+				</script>
+
+				<script src='https://www.google.com/recaptcha/api.js'></script>
+				<div class="g-recaptcha" data-sitekey="<?php echo $recaptcha_key; ?>"></div>
 				<input type="hidden" name="give_ip" class="give_ip" value=""/>
-			<?php endif; ?>
+			<?php } ?>
 
 			<input type="submit" class="give-submit" value="<?php _e( 'Email access token', 'give' ); ?>"/>
 		</form>
@@ -96,6 +105,6 @@ if ( $show_form ) { ?>
 
 <?php } else { ?>
 
-	<?php give_output_error( sprintf( __( 'An email with an access link has been sent to %1$s.', 'give' ), $email ), true, 'success' ); ?>
+	<?php give_output_error( sprintf( __( 'An email with an access link has been sent to %1$s', 'give' ), $email ), true, 'success' ); ?>
 
 <?php } ?>

@@ -2,7 +2,7 @@
 /**
  * Class for allowing donors access to their donation w/o logging in;
  *
- * Based on the work from Matt Gibbs -
+ * Based on the work from Matt Gibbs - https://github.com/FacetWP/edd-no-logins
  *
  * @package     Give
  * @copyright   Copyright (c) 2016, WordImpress
@@ -135,12 +135,45 @@ class Give_No_Logins {
 			}
 
 			$this->token_exists = true;
-
 			// Set cookie
 			setcookie( 'give_nl', $token );
 		}
 	}
 
+	/**
+	 * Is this a valid token?
+	 *
+	 * @param $token
+	 *
+	 * @return bool
+	 */
+	function is_valid_token( $token ) {
+
+		global $wpdb;
+
+		// Make sure token isn't expired
+		$expires = date( 'Y-m-d H:i:s', time() - $this->token_expiration );
+
+		$email = $wpdb->get_var(
+			$wpdb->prepare( "SELECT email FROM {$wpdb->prefix}give_customers WHERE token = %s AND verify_throttle >= %s LIMIT 1", $token, $expires )
+		);
+
+		if ( ! empty( $email ) ) {
+			$this->token_email = $email;
+			$this->token       = $token;
+
+			return true;
+		}
+
+		//Set error only if email access form isn't being submitted
+		if ( ! isset( $_POST['give_email'] )  && ! isset( $_POST['_wpnonce'] ) ) {
+			give_set_error( 'give_email_token_expired', apply_filters( 'give_email_token_expired_message', 'Sorry, your access token has expired. Please request a new one below:', 'give' ) );
+		}
+
+
+		return false;
+
+	}
 
 	/**
 	 * Add the verify key to DB
@@ -171,38 +204,6 @@ class Give_No_Logins {
 			);
 		}
 	}
-
-
-	/**
-	 * Is this a valid token?
-	 *
-	 * @param $token
-	 *
-	 * @return bool
-	 */
-	function is_valid_token( $token ) {
-
-		global $wpdb;
-
-		// Make sure token isn't expired
-		$expires = date( 'Y-m-d H:i:s', time() - $this->token_expiration );
-
-		$email = $wpdb->get_var(
-			$wpdb->prepare( "SELECT email FROM {$wpdb->prefix}give_customers WHERE token = %s AND verify_throttle >= %s LIMIT 1", $token, $expires )
-		);
-
-		if ( ! empty( $email ) ) {
-			$this->token_email = $email;
-			$this->token       = $token;
-
-			return true;
-		}
-
-		give_set_error( 'give_email_token_expired', apply_filters( 'give_email_token_expired_message', 'Sorry, your access token has expired', 'give' ) );
-
-		return false;
-	}
-
 
 	/**
 	 * Is this a valid verify key?
