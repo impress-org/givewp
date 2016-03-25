@@ -146,7 +146,7 @@ function give_insert_payment( $payment_data = array() ) {
 		'post_date'     => isset( $payment_data['post_date'] ) ? $payment_data['post_date'] : null,
 		'post_date_gmt' => isset( $payment_data['post_date'] ) ? get_gmt_from_date( $payment_data['post_date'] ) : null
 	), $payment_data );
-
+	
 	// Create a blank payment
 	$payment = wp_insert_post( $args );
 
