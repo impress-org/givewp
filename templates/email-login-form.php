@@ -71,7 +71,7 @@ if ( is_email( $email ) && wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
 		})(jQuery);
 	</script>
 
-	<h3><?php _e( 'Access Your Account', 'give' ); ?></h3>
+	<h3><?php echo apply_filters( 'give_access_donation_history_headline', __( 'Access Your Donation History', 'give' ) ); ?></h3>
 
 <?php give_print_errors( 0 ); ?>
 
