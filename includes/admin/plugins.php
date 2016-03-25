@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return array $links
  */
 function give_plugin_action_links( $links, $file ) {
-	$settings_link = '<a href="' . admin_url( 'edit.php?post_type=give&page=give-settings' ) . '">' . esc_html__( 'Settings', 'give' ) . '</a>';
+	$settings_link = '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-settings' ) . '">' . esc_html__( 'Settings', 'give' ) . '</a>';
 	if ( $file == 'give/give.php' ) {
 		array_unshift( $links, $settings_link );
 	}
