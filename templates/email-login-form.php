@@ -74,7 +74,13 @@ give_print_errors( 0 );
 if ( $show_form ) { ?>
 
 	<div class="give-form">
-		<form method="post" action="">
+
+		<?php
+		if ( ! give_get_errors() ) {
+			give_output_error( __( 'Please enter the email address you used when donating. A verification email containing an access link will be sent to you.', 'give' ), true );
+		} ?>
+
+		<form method="post" action="" id="give-email-access-form">
 			<label for="give_email"><?php __( 'Donation Email:', 'give' ); ?></label>
 			<input id="give-email" type="email" name="give_email" value="" placeholder="<?php _e( 'Your donation email', 'give' ); ?>"/>
 			<input type="hidden" name="_wpnonce" value="<?php echo wp_create_nonce( 'give' ); ?>"/>

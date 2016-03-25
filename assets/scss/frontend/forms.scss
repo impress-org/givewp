@@ -707,6 +707,19 @@ Basic Button Style
 }
 
 /*---------------------------------
+Email Access Form
+-----------------------------------*/
+
+form#give-email-access-form {
+  div.g-recaptcha, input#give-email {
+    margin: 0 0 15px;
+  }
+  input#give-email {
+    width: 305px;
+  }
+}
+
+/*---------------------------------
 Responsiveness
 -----------------------------------*/
 @media (max-width: 768px) {

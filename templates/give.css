@@ -1330,6 +1330,15 @@ Basic Button Style
     background: #dbdbdb; }
 
 /*---------------------------------
+Email Access Form
+-----------------------------------*/
+form#give-email-access-form div.g-recaptcha, form#give-email-access-form input#give-email {
+  margin: 0 0 15px; }
+
+form#give-email-access-form input#give-email {
+  width: 305px; }
+
+/*---------------------------------
 Responsiveness
 -----------------------------------*/
 @media (max-width: 768px) {
