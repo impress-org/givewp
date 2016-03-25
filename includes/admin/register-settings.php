@@ -392,13 +392,13 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Enable Floating Labels', 'give' ),
-							'desc' => sprintf( __( 'Enable this option if you would like to enable %1$sfloating labels%1$s in Give\'s donation forms. %3$sBe aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), '<a href="' . esc_url( "http://bradfrost.com/blog/post/float-label-pattern/" ) . '" target="_blank">', '</a>', '<br />' ),
+							'desc' => sprintf( esc_html__( 'Enable this option if you would like to enable %1$sfloating labels%2$s in Give\'s donation forms. %3$sBe aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), '<a href="' . esc_url( "http://bradfrost.com/blog/post/float-label-pattern/" ) . '" target="_blank">', '</a>', '<br />' ),
 							'id'   => 'enable_floatlabels',
 							'type' => 'checkbox'
 						),
 						array(
 							'name' => __( 'Disable Welcome Screen', 'give' ),
-							'desc' => sprintf( __( 'Enable this option if you would like to disable the Give Welcome screen every time Give is activated and/or updated. You can always access the Welcome Screen <a href="%s">here</a> if you want in the future.', 'give' ), esc_url( admin_url( 'index.php?page=give-about' ) ) ),
+							'desc' => sprintf( esc_html__( 'Enable this option if you would like to disable the Give Welcome screen every time Give is activated and/or updated. You can always access the Welcome Screen %1$shere%2$s if you want in the future.', 'give' ), '<a href="' . esc_url( admin_url( 'index.php?page=give-about' ) ) . '">', '</a>' ),
 							'id'   => 'disable_welcome',
 							'type' => 'checkbox'
 						),
@@ -588,7 +588,7 @@ class Give_Plugin_Settings {
 						array(
 							'id'      => 'session_lifetime',
 							'name'    => __( 'Session Lifetime', 'give' ),
-							'desc'    => __( 'Give will start a new session per user once they have donated. This option controls the lifetime a user\'s session is kept alive. An active session allows users to view donation receipts on your site without having to be logged in.', 'give' ),
+							'desc'    => __( 'Give will start a new session per user once they have donated. This option controls the lifetime a user\'s session is kept alive. An active session allows users to view donation receipts on your site without having to be logged in as long as they are using the same browser they used when donating.', 'give' ),
 							'type'    => 'select',
 							'options' => array(
 								'86400'  => __( '24 Hours', 'give' ),
@@ -599,7 +599,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Email-based Account Access', 'give' ),
-							'desc' => __( 'Would you like your donors to be able to access their donation history using only email?', 'give' ),
+							'desc' => __( 'Would you like your donors to be able to access their donation history using only email? Donors whose sessions have expired and do not have an account may still access their donation history via a temporary email access link.', 'give' ),
 							'id'   => 'email_access',
 							'type' => 'checkbox',
 						),

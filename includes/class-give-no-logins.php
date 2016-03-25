@@ -1,6 +1,8 @@
 <?php
 /**
- * Class for allowing donors access to their history w/o logging in; Based on the work from Matt Gibbs
+ * Class for allowing donors access to their donation w/o logging in;
+ *
+ * Based on the work from Matt Gibbs -
  *
  * @package     Give
  * @copyright   Copyright (c) 2016, WordImpress
@@ -23,7 +25,7 @@ class Give_No_Logins {
 
 	function __construct() {
 
-		// get the gears turning
+		// get it started
 		add_action( 'init', array( $this, 'init' ) );
 	}
 
@@ -33,7 +35,7 @@ class Give_No_Logins {
 	 */
 	function init() {
 
-		$is_enabled = give_get_option( 'email_login' );
+		$is_enabled = give_get_option( 'email_access' );
 
 		//Non-logged in users only
 		if ( is_user_logged_in() || $is_enabled !== 'on' ) {
@@ -96,6 +98,7 @@ class Give_No_Logins {
 	 * @param $email
 	 */
 	function send_email( $customer_id, $email ) {
+
 		$verify_key = wp_generate_password( 20, false );
 
 		// Generate a new verify key
@@ -178,6 +181,7 @@ class Give_No_Logins {
 	 * @return bool
 	 */
 	function is_valid_token( $token ) {
+
 		global $wpdb;
 
 		// Make sure token isn't expired
@@ -194,7 +198,7 @@ class Give_No_Logins {
 			return true;
 		}
 
-		give_set_error( 'give_email_token_expired', apply_filters( 'give_email_token_expired_message', 'That token has expired', 'give' ) );
+		give_set_error( 'give_email_token_expired', apply_filters( 'give_email_token_expired_message', 'Sorry, your access token has expired', 'give' ) );
 
 		return false;
 	}

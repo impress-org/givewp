@@ -36,7 +36,7 @@ function give_get_users_purchases( $user = 0, $number = 20, $pagination = false,
 		$user = get_current_user_id();
 	}
 
-	if ( 0 === $user ) {
+	if ( 0 === $user && !Give()->email_login->token_exists ) {
 		return false;
 	}
 

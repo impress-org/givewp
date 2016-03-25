@@ -2,7 +2,15 @@
 /**
  * This template is used to display the donation history of the current user.
  */
+
+//User's Donations
 $donations = give_get_users_purchases( get_current_user_id(), 20, true, 'any' );
+
+//Email Access Token?
+if(Give()->email_login->token_exists) {
+	$donations = give_get_users_purchases( 0, 20, true, 'any' );
+}
+
 if ( $donations ) : ?>
 	<table id="give_user_history" class="give-table">
 		<thead>
@@ -27,7 +35,8 @@ if ( $donations ) : ?>
 				<td class="give_purchase_details">
 					<?php
 					if ( $post->post_status != 'publish' && $post->post_status != 'subscription' ) : ?>
-						<a href="<?php echo esc_url( add_query_arg( 'payment_key', give_get_payment_key( $post->ID ), give_get_success_page_uri() ) ); ?>"><span class="give_purchase_status <?php echo $post->post_status; ?>"><?php echo give_get_payment_status( $post, true ); ?></span> &raquo;</a>
+						<a href="<?php echo esc_url( add_query_arg( 'payment_key', give_get_payment_key( $post->ID ), give_get_success_page_uri() ) ); ?>"><span class="give_purchase_status <?php echo $post->post_status; ?>"><?php echo give_get_payment_status( $post, true ); ?></span> &raquo;
+						</a>
 					<?php else: ?>
 						<a href="<?php echo esc_url( add_query_arg( 'payment_key', give_get_payment_key( $post->ID ), give_get_success_page_uri() ) ); ?>"><?php _e( 'View Details', 'give' ); ?>&raquo;</a>
 					<?php endif; ?>
@@ -49,5 +58,5 @@ if ( $donations ) : ?>
 	</div>
 	<?php wp_reset_postdata(); ?>
 <?php else : ?>
-	<p class="give-no-purchases"><?php _e( 'It looks like you haven\'t made any donations', 'give' ); ?>.</p>
+	<?php give_output_error( __( 'It looks like you haven\'t made any donations', 'give' ), true, 'success' ); ?>
 <?php endif;

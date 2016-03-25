@@ -26,16 +26,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_donation_history() {
 	$email_based = give_get_option( 'email_access' );
 
-	//Is user logged in?
-	if ( is_user_logged_in() ) {
+	//Is user logged in? Does an email-access token exist?
+	if ( is_user_logged_in() || ( $email_based == 'on' && Give()->email_login->token_exists ) ) {
 		ob_start();
 		give_get_template_part( 'history', 'donations' );
 
 		return ob_get_clean();
-	} //Is Email-Based Setup?
+	} //Is Email-based access enabled?
 	elseif ( $email_based == 'on' ) {
+
 		ob_start();
 		give_get_template_part( 'email', 'login-form' );
+
 		return ob_get_clean();
 	} else {
 		$message = __( 'You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with.', 'give' );
