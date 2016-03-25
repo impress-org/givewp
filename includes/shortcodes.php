@@ -24,16 +24,17 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function give_donation_history() {
-	$email_based = give_get_option( 'email_access' );
+
+	$email_access = give_get_option( 'email_access' );
 
 	//Is user logged in? Does an email-access token exist?
-	if ( is_user_logged_in() || ( $email_based == 'on' && Give()->email_login->token_exists ) ) {
+	if ( is_user_logged_in() || ( $email_access == 'on' && Give()->email_login->token_exists ) ) {
 		ob_start();
 		give_get_template_part( 'history', 'donations' );
 
 		return ob_get_clean();
 	} //Is Email-based access enabled?
-	elseif ( $email_based == 'on' ) {
+	elseif ( $email_access == 'on' ) {
 
 		ob_start();
 		give_get_template_part( 'email', 'login-form' );
@@ -217,7 +218,7 @@ function give_receipt_shortcode( $atts, $content = null ) {
 	global $give_receipt_args, $payment;
 
 	$give_receipt_args = shortcode_atts( array(
-		'error'          => esc_html__( 'Sorry, it appears the viewing window for this donation receipt has expired or you do not have the permission to view this donation receipt.', 'give' ),
+		'error'          => esc_html__( 'Sorry, you are missing the payment key to view this donation receipt.', 'give' ),
 		'price'          => true,
 		'date'           => true,
 		'payment_key'    => false,
@@ -237,21 +238,36 @@ function give_receipt_shortcode( $atts, $content = null ) {
 		$payment_key = $give_receipt_args['payment_key'];
 	}
 
-	// No key found
-	if ( ! isset( $payment_key ) ) {
+	$email_access = give_get_option( 'email_access' );
+
+	// No payment_key found & Email Access is Turned on:
+	if ( ! isset( $payment_key ) && $email_access == 'on' && ! Give()->email_login->token_exists ) {
+
 		ob_start();
-		give_output_error( $give_receipt_args['error'], true, 'warning' );
-		echo apply_filters( 'give_send_new_receipt_message', esc_html__( 'Enter the email address you used when making your donation below to be sent a new receipt', 'give' ) . ':' );
+
 		give_get_template_part( 'email-login-form' );
 
 		return ob_get_clean();
+
+	} elseif ( ! isset( $payment_key ) ) {
+
+		return give_output_error( $give_receipt_args['error'], false, 'error' );
+
 	}
 
 	$payment_id    = give_get_purchase_id_by_key( $payment_key );
 	$user_can_view = give_can_view_receipt( $payment_key );
 
 	// Key was provided, but user is logged out. Offer them the ability to login and view the receipt
-	if ( ! $user_can_view && ! empty( $payment_key ) && ! is_user_logged_in() && ! give_is_guest_payment( $payment_id ) ) {
+	if ( ! $user_can_view && $email_access == 'on' && ! Give()->email_login->token_exists ) {
+
+		ob_start();
+
+		give_get_template_part( 'email-login-form' );
+
+		return ob_get_clean();
+
+	} elseif ( ! $user_can_view ) {
 
 		global $give_login_redirect;
 

@@ -105,13 +105,31 @@ class Give_No_Logins {
 		$this->set_verify_key( $customer_id, $email, $verify_key );
 
 		// Get the purchase history URL
-		$page_id  = give_get_option( 'purchase_history_page' );
-		$page_url = get_permalink( $page_id );
+		$page_id = give_get_option( 'purchase_history_page' );
+
+		$access_url = add_query_arg( array(
+			'give_nl' => $verify_key,
+		), get_permalink( $page_id ) );
+
+		//Nice subject and message
+		$subject = apply_filters( 'give_email_access_token_subject', sprintf( __( 'Your Access Link to %1$s', 'give' ), get_bloginfo( 'name' ) ) );
+
+		$message = __( 'You or someone in your organization requested an access link be sent to this email address. This is a temporary access link for you to view your donation information. Click on the link below to view:', 'give' ) . "\n\n";
+
+		$message .= '<a href="' . esc_url( $access_url ) . '" target="_blank">' . __( 'Access My Donation Details', 'give' ) . ' &raquo;</a>';
+
+		$message .= "\n\n";
+		$message .= "\n\n";
+		$message .= __( 'Sincerely,', 'give' );
+		$message .= "\n" . get_bloginfo( 'name' ) . "\n";
+
+		$message = apply_filters( 'give_email_access_token_message', $message );
+
 
 		// Send the email
-		$subject = __( 'Your access token', 'give' );
-		$message = "$page_url?give_nl=$verify_key";
-		wp_mail( $email, $subject, $message );
+		Give()->emails->__set( 'heading', apply_filters( 'give_email_access_token_heading', __( 'Your Access Link', 'give' ) ) );
+		Give()->emails->send( $email, $subject, $message );
+
 	}
 
 
@@ -166,7 +184,7 @@ class Give_No_Logins {
 		}
 
 		//Set error only if email access form isn't being submitted
-		if ( ! isset( $_POST['give_email'] )  && ! isset( $_POST['_wpnonce'] ) ) {
+		if ( ! isset( $_POST['give_email'] ) && ! isset( $_POST['_wpnonce'] ) ) {
 			give_set_error( 'give_email_token_expired', apply_filters( 'give_email_token_expired_message', 'Sorry, your access token has expired. Please request a new one below:', 'give' ) );
 		}
 
