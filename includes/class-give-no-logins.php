@@ -19,6 +19,7 @@ class Give_No_Logins {
 
 	private static $instance;
 
+	private $verify_throttle;
 
 	function __construct() {
 
@@ -31,15 +32,13 @@ class Give_No_Logins {
 	 * Register defaults and filters
 	 */
 	function init() {
-		if ( is_user_logged_in() ) {
+
+		$is_enabled = give_get_option( 'email_login' );
+
+		//Non-logged in users only
+		if ( is_user_logged_in() || $is_enabled !== 'on' ) {
 			return;
 		}
-
-		// Setup the DB table
-//		include( EDDNL_DIR . '/includes/class-upgrade.php' );
-
-		//INSTALL ROUGH My_SQL:
-		//ALTER TABLE `wp_give_customers` ADD `token` VARCHAR(255) NOT NULL AFTER `date_created`, ADD `verify_key` VARCHAR(255) NOT NULL AFTER `date_created`, ADD `verify_throttle` DATETIME NOT NULL AFTER `date_created`;
 
 		// Timeouts
 		$this->verify_throttle  = apply_filters( 'give_nl_verify_throttle', 300 );
@@ -53,29 +52,8 @@ class Give_No_Logins {
 			add_filter( 'give_user_pending_verification', '__return_false' );
 			add_filter( 'give_get_success_page_uri', array( $this, 'give_success_page_uri' ) );
 			add_filter( 'give_get_users_purchases_args', array( $this, 'users_purchases_args' ) );
-		} else {
-			add_action( 'get_template_part_history', array( $this, 'login' ), 10, 2 );
 		}
 	}
-
-
-	/**
-	 * Search for a customer ID by purchase email
-	 *
-	 * @param $email
-	 *
-	 * @return int
-	 */
-	function get_customer_id( $email ) {
-		global $wpdb;
-
-		$customer_id = (int) $wpdb->get_var(
-			$wpdb->prepare( "SELECT id FROM {$wpdb->prefix}give_customers WHERE email = %s", $email )
-		);
-
-		return $customer_id;
-	}
-
 
 	/**
 	 * Prevent email spamming
@@ -92,16 +70,16 @@ class Give_No_Logins {
 
 		// Does a user row exist?
 		$exists = (int) $wpdb->get_var(
-			$wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}give_customers WHERE customer_id = %d", $customer_id )
+			$wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}give_customers WHERE id = %d", $customer_id )
 		);
 
 		if ( 0 < $exists ) {
 			$row_id = (int) $wpdb->get_var(
-				$wpdb->prepare( "SELECT id FROM {$wpdb->prefix}give_customers WHERE customer_id = %d AND (added < %s OR verify_key = '') LIMIT 1", $customer_id, $throttle )
+				$wpdb->prepare( "SELECT id FROM {$wpdb->prefix}give_customers WHERE id = %d AND (verify_throttle < %s OR verify_key = '') LIMIT 1", $customer_id, $throttle )
 			);
 
 			if ( $row_id < 1 ) {
-				EDDNL()->error = __( 'Please wait a few minutes before requesting a new token', 'give' );
+				give_set_error( 'give_email_logins_exhausted', __( 'Please wait a few minutes before requesting a new token', 'give' ) );
 
 				return false;
 			}
@@ -113,6 +91,9 @@ class Give_No_Logins {
 
 	/**
 	 * Send the user's token
+	 *
+	 * @param $customer_id
+	 * @param $email
 	 */
 	function send_email( $customer_id, $email ) {
 		$verify_key = wp_generate_password( 20, false );
@@ -172,7 +153,7 @@ class Give_No_Logins {
 
 		// Insert or update?
 		$row_id = (int) $wpdb->get_var(
-			$wpdb->prepare( "SELECT id FROM {$wpdb->prefix}give_customers WHERE customer_id = %d LIMIT 1", $customer_id )
+			$wpdb->prepare( "SELECT id FROM {$wpdb->prefix}give_customers WHERE id = %d LIMIT 1", $customer_id )
 		);
 
 		// Update
@@ -191,6 +172,10 @@ class Give_No_Logins {
 
 	/**
 	 * Is this a valid token?
+	 *
+	 * @param $token
+	 *
+	 * @return bool
 	 */
 	function is_valid_token( $token ) {
 		global $wpdb;
@@ -209,7 +194,7 @@ class Give_No_Logins {
 			return true;
 		}
 
-		EDDNL()->error = __( 'That token has expired', 'give' );
+		give_set_error( 'give_email_token_expired', apply_filters( 'give_email_token_expired_message', 'That token has expired', 'give' ) );
 
 		return false;
 	}
@@ -245,14 +230,6 @@ class Give_No_Logins {
 
 
 	/**
-	 * Show the email login form
-	 */
-	function login( $slug = 'history', $name = 'purchases' ) {
-		give_get_template_part( 'session-refresh-form' );
-	}
-
-
-	/**
 	 * Append the token to Give purchase links
 	 *
 	 * @param $uri
@@ -281,5 +258,3 @@ class Give_No_Logins {
 
 
 }
-
-new Give_No_Logins();

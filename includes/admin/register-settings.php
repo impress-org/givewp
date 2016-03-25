@@ -392,7 +392,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Enable Floating Labels', 'give' ),
-							'desc' => sprintf( __( 'Enable this option if you would like to enable <a href="%s" target="_blank">floating labels</a> in Give\'s donation forms.<br>Be aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), esc_url( "http://bradfrost.com/blog/post/float-label-pattern/" ) ),
+							'desc' => sprintf( __( 'Enable this option if you would like to enable %1$sfloating labels%1$s in Give\'s donation forms. %3$sBe aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), '<a href="' . esc_url( "http://bradfrost.com/blog/post/float-label-pattern/" ) . '" target="_blank">', '</a>', '<br />' ),
 							'id'   => 'enable_floatlabels',
 							'type' => 'checkbox'
 						),
@@ -598,6 +598,12 @@ class Give_Plugin_Settings {
 							)
 						),
 						array(
+							'name' => __( 'Email-based Account Access', 'give' ),
+							'desc' => __( 'Would you like your donors to be able to access their donation history using only email?', 'give' ),
+							'id'   => 'email_access',
+							'type' => 'checkbox',
+						),
+						array(
 							'name' => __( 'Data Control', 'give' ),
 							'desc' => '',
 							'id'   => 'give_title_data_control_2',
@@ -746,7 +752,7 @@ function give_get_option( $key = '', $default = false ) {
  *
  * @since 1.0
  *
- * @param string          $key   The Key to update
+ * @param string $key The Key to update
  * @param string|bool|int $value The value to set the key to
  *
  * @return boolean True if updated, false if not.
@@ -849,7 +855,7 @@ function give_get_settings() {
  *
  * @param $array
  * @param $position |int|string Expects an array key or 'id' of the settings field to appear after
- * @param $insert   |array a valid array of options to insert
+ * @param $insert |array a valid array of options to insert
  *
  * @return array
  */
@@ -1010,7 +1016,7 @@ function give_description_callback( $field_object, $escaped_value, $object_id, $
  * Gets a number of posts and displays them as options
  *
  * @param  array $query_args Optional. Overrides defaults.
- * @param  bool  $force      Force the pages to be loaded even if not on settings
+ * @param  bool $force Force the pages to be loaded even if not on settings
  *
  * @see: https://github.com/WebDevStudios/CMB2/wiki/Adding-your-own-field-types
  * @return array An array of options that matches the CMB2 options array

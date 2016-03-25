@@ -24,13 +24,22 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function give_donation_history() {
+	$email_based = give_get_option( 'email_access' );
+
+	//Is user logged in?
 	if ( is_user_logged_in() ) {
 		ob_start();
 		give_get_template_part( 'history', 'donations' );
 
 		return ob_get_clean();
+	} //Is Email-Based Setup?
+	elseif ( $email_based == 'on' ) {
+		ob_start();
+		give_get_template_part( 'email', 'login-form' );
+		return ob_get_clean();
 	} else {
-		echo apply_filters( 'give_donation_history_nonuser_message', '<div class="give_error give_warning"><p>' . __( 'You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with.', 'give' ) . '</p></div>' );
+		$message = __( 'You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with.', 'give' );
+		echo apply_filters( 'give_donation_history_nonuser_message', give_output_error( $message, false ), $message );
 	}
 }
 
@@ -231,7 +240,7 @@ function give_receipt_shortcode( $atts, $content = null ) {
 		ob_start();
 		give_output_error( $give_receipt_args['error'], true, 'warning' );
 		echo apply_filters( 'give_send_new_receipt_message', esc_html__( 'Enter the email address you used when making your donation below to be sent a new receipt', 'give' ) . ':' );
-		give_get_template_part('session-refresh-form');
+		give_get_template_part( 'email-login-form' );
 
 		return ob_get_clean();
 	}
