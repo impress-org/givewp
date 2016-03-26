@@ -38,8 +38,14 @@ class Give_No_Logins {
 		$is_enabled = give_get_option( 'email_access' );
 
 		//Non-logged in users only
-		if ( is_user_logged_in() || $is_enabled !== 'on' ) {
+		if ( is_user_logged_in() || $is_enabled !== 'on' || is_admin() ) {
 			return;
+		}
+
+		//Are db columns setup?
+		$is_setup = give_get_option( 'email_access_installed' );
+		if ( empty( $is_setup ) ) {
+			$this->create_columns();
 		}
 
 		// Timeouts
@@ -277,6 +283,26 @@ class Give_No_Logins {
 		$args['user'] = $this->token_email;
 
 		return $args;
+	}
+
+
+	/**
+	 * Create Columns
+	 *
+	 * @description Create the necessary columns for email access
+	 */
+	function create_columns() {
+
+		global $wpdb;
+
+		//Create columns in customers table
+		$query = $wpdb->query( "ALTER TABLE {$wpdb->prefix}give_customers ADD `token` VARCHAR(255) CHARACTER SET utf8 NOT NULL, ADD `verify_key` VARCHAR(255) CHARACTER SET utf8 NOT NULL AFTER `token`, ADD `verify_throttle` DATETIME NOT NULL AFTER `verify_key`");
+
+		//Columns added properly
+		if($query) {
+			give_update_option( 'email_access_installed', 1 );
+		}
+
 	}
 
 

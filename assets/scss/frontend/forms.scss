@@ -341,6 +341,7 @@ Notices, Warnings & Errors
     color: #FFF;
     width: 30px;
     height: 30px;
+    font-size:16px;
     border-radius: 100%;
     text-align: center;
     line-height: 30px;
@@ -582,6 +583,7 @@ form[id*='give-form'] {
     font-style: italic;
     line-height: 20px;
     font-size: 16px;
+    font-weight:normal;
 
     &.give-updating-price-loader {
       float: left;
