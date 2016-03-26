@@ -53,7 +53,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 			// Setup hooks
 			$this->includes();
 			$this->hooks();
-			//$this->auto_updater();
 		}
 
 		/**
@@ -99,10 +98,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @return  void
 		 */
 		public function auto_updater() {
-
-			if ( 'valid' !== get_option( $this->item_shortname . '_license_active' ) ) {
-				return;
-			}
 
 			// Setup the updater
 			$give_updater = new EDD_SL_Plugin_Updater(
