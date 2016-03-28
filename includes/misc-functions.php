@@ -196,7 +196,7 @@ function give_currency_symbol( $currency = '' ) {
 function give_get_current_page_url() {
 
 	if ( is_front_page() )  {
-		$current_url = home_url();
+		$current_url = trailingslashit( home_url() );
 	} else {
 		$current_url = ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 	}
