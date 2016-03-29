@@ -164,7 +164,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 				self::$instance->html          = new Give_HTML_Elements();
 				self::$instance->emails        = new Give_Emails();
 				self::$instance->email_tags    = new Give_Email_Template_Tags();
-				//				self::$instance->donators_gravatars = new Give_Donators_Gravatars();
+				//self::$instance->donators_gravatars = new Give_Donators_Gravatars();
 				self::$instance->customers       = new Give_DB_Customers();
 				self::$instance->template_loader = new Give_Template_Loader();
 
@@ -285,6 +285,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/process-purchase.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/login-register.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/user-functions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/plugin-compatibility.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/actions.php';
