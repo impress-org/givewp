@@ -8,7 +8,7 @@
  * @subpackage  Functions/Compatibility
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       1.0
+ * @since       1.4
  */
 
 

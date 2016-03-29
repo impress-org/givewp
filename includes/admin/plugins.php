@@ -6,7 +6,7 @@
  * @subpackage  Admin/Plugins
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       1.3.7
+ * @since       1.4
  */
 
 
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Plugins row action links
  *
- * @since 1.3.7
+ * @since 1.4
  *
  * @param array $links already defined action links
  * @param string $file plugin file path and name being processed
@@ -41,7 +41,7 @@ add_filter( 'plugin_action_links', 'give_plugin_action_links', 10, 2 );
 /**
  * Plugin row meta links
  *
- * @since 1.3.7
+ * @since 1.4
  *
  * @param array $input already defined meta links
  * @param string $file plugin file path and name being processed
