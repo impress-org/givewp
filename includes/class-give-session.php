@@ -70,9 +70,14 @@ class Give_Session {
 	 */
 	public function __construct() {
 
+		if ( is_admin() ) {
+			return false;
+		}
+
 		$this->use_php_sessions = $this->use_php_sessions();
 		$this->exp_option       = give_get_option( 'session_lifetime' );
 
+		//PHP Sessions
 		if ( $this->use_php_sessions ) {
 
 			if ( is_multisite() ) {
@@ -85,7 +90,7 @@ class Give_Session {
 
 		} else {
 
-			// Use WP_Session (default)
+			// Use WP_Session
 			if ( ! defined( 'WP_SESSION_COOKIE' ) ) {
 				define( 'WP_SESSION_COOKIE', 'give_wp_session' );
 			}
@@ -126,7 +131,7 @@ class Give_Session {
 		} else {
 			$this->session = WP_Session::get_instance();
 		}
-		
+
 		return $this->session;
 	}
 
