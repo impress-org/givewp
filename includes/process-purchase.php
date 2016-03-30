@@ -27,6 +27,12 @@ function give_process_purchase_form() {
 
 	do_action( 'give_pre_process_purchase' );
 
+	$session_reflection = new ReflectionMethod( 'WP_Session', 'set_cookie' );
+	if( $session_reflection->isPublic() ){
+		// Manually set the cookie.
+		Give()->session->init()->set_cookie();
+	}
+
 	// Validate the form $_POST data
 	$valid_data = give_purchase_form_validate_fields();
 
