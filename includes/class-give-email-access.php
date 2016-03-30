@@ -93,7 +93,7 @@ class Give_Email_Access {
 			);
 
 			if ( $row_id < 1 ) {
-				give_set_error( 'give_email_access_attempts_exhausted', __( 'Please wait a few minutes before requesting a new email access link', 'give' ) );
+				give_set_error( 'give_email_access_attempts_exhausted', __( 'Please wait a few minutes before requesting a new email access link.', 'give' ) );
 
 				return false;
 			}
@@ -117,7 +117,7 @@ class Give_Email_Access {
 		$this->set_verify_key( $customer_id, $email, $verify_key );
 
 		// Get the purchase history URL
-		$page_id = give_get_option( 'purchase_history_page' );
+		$page_id = give_get_option( 'history_page' );
 
 		$access_url = add_query_arg( array(
 			'give_nl' => $verify_key,
