@@ -29,9 +29,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function give_complete_purchase( $payment_id, $new_status, $old_status ) {
+	
+	// Make sure that payments are only completed once
 	if ( $old_status == 'publish' || $old_status == 'complete' ) {
 		return;
-	} // Make sure that payments are only completed once
+	}
 
 	// Make sure the payment completion is only processed when new status is complete
 	if ( $new_status != 'publish' && $new_status != 'complete' ) {
