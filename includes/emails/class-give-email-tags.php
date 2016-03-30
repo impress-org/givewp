@@ -48,7 +48,7 @@ class Give_Email_Template_Tags {
 	 *
 	 * @since 1.0
 	 *
-	 * @param string   $tag  Email tag to be replace in email
+	 * @param string $tag Email tag to be replace in email
 	 * @param callable $func Hook to run when email tag is found
 	 */
 	public function add( $tag, $description, $func ) {
@@ -99,8 +99,8 @@ class Give_Email_Template_Tags {
 	/**
 	 * Search content for email tags and filter email tags through their hooks
 	 *
-	 * @param string $content    Content to search for email tags
-	 * @param int    $payment_id The payment id
+	 * @param string $content Content to search for email tags
+	 * @param int $payment_id The payment id
 	 *
 	 * @since 1.0
 	 *
@@ -151,9 +151,9 @@ class Give_Email_Template_Tags {
  *
  * @since 1.0
  *
- * @param string   $tag         Email tag to be replace in email
- * @param string   $description Description of the email tag added
- * @param callable $func        Hook to run when email tag is found
+ * @param string $tag Email tag to be replace in email
+ * @param string $description Description of the email tag added
+ * @param callable $func Hook to run when email tag is found
  */
 function give_add_email_tag( $tag, $description, $func ) {
 	Give()->email_tags->add( $tag, $description, $func );
@@ -228,8 +228,8 @@ function give_get_emails_tags_list() {
 /**
  * Search content for email tags and filter email tags through their hooks
  *
- * @param string $content    Content to search for email tags
- * @param int    $payment_id The payment id
+ * @param string $content Content to search for email tags
+ * @param int $payment_id The payment id
  *
  * @since 1.0
  *
@@ -545,13 +545,13 @@ function give_email_tag_sitename( $payment_id ) {
  */
 function give_email_tag_receipt_link( $payment_id ) {
 
-	$receipt_url       = esc_url( add_query_arg( array(
+	$receipt_url = esc_url( add_query_arg( array(
 		'payment_key' => give_get_payment_key( $payment_id ),
 		'give_action' => 'view_receipt'
 	), home_url() ) );
-	$formatted = sprintf( __( '%1$sView it in your browser.%2$s', 'give' ), '<a href="' . $receipt_url . '">', '</a>' );
+	$formatted   = sprintf( __( '%1$sView it in your browser%2$s', 'give' ), '<a href="' . $receipt_url . '">', '&raquo;</a>' );
 
-	if(give_get_option('email_template') !== 'none') {
+	if ( give_get_option( 'email_template' ) !== 'none' ) {
 		return $formatted;
 	} else {
 		return $receipt_url;
