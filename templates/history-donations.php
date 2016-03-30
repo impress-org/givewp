@@ -7,7 +7,7 @@
 $donations = give_get_users_purchases( get_current_user_id(), 20, true, 'any' );
 
 //Email Access Token?
-if(Give()->email_login->token_exists) {
+if(Give()->email_access->token_exists) {
 	$donations = give_get_users_purchases( 0, 20, true, 'any' );
 }
 

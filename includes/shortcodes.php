@@ -28,7 +28,7 @@ function give_donation_history() {
 	$email_access = give_get_option( 'email_access' );
 
 	//Is user logged in? Does an email-access token exist?
-	if ( is_user_logged_in() || ( $email_access == 'on' && Give()->email_login->token_exists ) ) {
+	if ( is_user_logged_in() || ( $email_access == 'on' && Give()->email_access->token_exists ) ) {
 		ob_start();
 		give_get_template_part( 'history', 'donations' );
 
@@ -241,7 +241,7 @@ function give_receipt_shortcode( $atts, $content = null ) {
 	$email_access = give_get_option( 'email_access' );
 
 	// No payment_key found & Email Access is Turned on:
-	if ( ! isset( $payment_key ) && $email_access == 'on' && ! Give()->email_login->token_exists ) {
+	if ( ! isset( $payment_key ) && $email_access == 'on' && ! Give()->email_access->token_exists ) {
 
 		ob_start();
 
@@ -259,7 +259,7 @@ function give_receipt_shortcode( $atts, $content = null ) {
 	$user_can_view = give_can_view_receipt( $payment_key );
 
 	// Key was provided, but user is logged out. Offer them the ability to login and view the receipt
-	if ( ! $user_can_view && $email_access == 'on' && ! Give()->email_login->token_exists ) {
+	if ( ! $user_can_view && $email_access == 'on' && ! Give()->email_access->token_exists ) {
 
 		ob_start();
 

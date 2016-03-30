@@ -57,8 +57,8 @@ if ( is_email( $email ) && wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
 		$customer = Give()->customers->get_customer_by( 'email', $email );
 
 		if ( isset( $customer->id ) ) {
-			if ( Give()->email_login->can_send_email( $customer->id ) ) {
-				Give()->email_login->send_email( $customer->id, $email );
+			if ( Give()->email_access->can_send_email( $customer->id ) ) {
+				Give()->email_access->send_email( $customer->id, $email );
 				$show_form = false;
 			}
 		} else {

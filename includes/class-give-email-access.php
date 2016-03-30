@@ -7,12 +7,15 @@
  * @package     Give
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       1.3.7
+ * @since       1.4
  */
 
 defined( 'ABSPATH' ) or exit;
 
-class Give_No_Logins {
+/**
+ * Class Give_Email_Access
+ */
+class Give_Email_Access {
 
 	public $token_exists = false;
 	public $token_email = false;
@@ -23,6 +26,9 @@ class Give_No_Logins {
 
 	private $verify_throttle;
 
+	/**
+	 * Give_Email_Access constructor.
+	 */
 	function __construct() {
 
 		// get it started
@@ -87,7 +93,7 @@ class Give_No_Logins {
 			);
 
 			if ( $row_id < 1 ) {
-				give_set_error( 'give_email_logins_exhausted', __( 'Please wait a few minutes before requesting a new token', 'give' ) );
+				give_set_error( 'give_email_access_attempts_exhausted', __( 'Please wait a few minutes before requesting a new email access link', 'give' ) );
 
 				return false;
 			}
@@ -296,10 +302,10 @@ class Give_No_Logins {
 		global $wpdb;
 
 		//Create columns in customers table
-		$query = $wpdb->query( "ALTER TABLE {$wpdb->prefix}give_customers ADD `token` VARCHAR(255) CHARACTER SET utf8 NOT NULL, ADD `verify_key` VARCHAR(255) CHARACTER SET utf8 NOT NULL AFTER `token`, ADD `verify_throttle` DATETIME NOT NULL AFTER `verify_key`");
+		$query = $wpdb->query( "ALTER TABLE {$wpdb->prefix}give_customers ADD `token` VARCHAR(255) CHARACTER SET utf8 NOT NULL, ADD `verify_key` VARCHAR(255) CHARACTER SET utf8 NOT NULL AFTER `token`, ADD `verify_throttle` DATETIME NOT NULL AFTER `verify_key`" );
 
 		//Columns added properly
-		if($query) {
+		if ( $query ) {
 			give_update_option( 'email_access_installed', 1 );
 		}
 
