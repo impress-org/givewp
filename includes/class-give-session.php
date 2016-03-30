@@ -70,11 +70,6 @@ class Give_Session {
 	 */
 	public function __construct() {
 
-		//Frontend only
-		if ( is_admin() ) {
-			return false;
-		}
-
 		$this->use_php_sessions = $this->use_php_sessions();
 		$this->exp_option       = give_get_option( 'session_lifetime' );
 
@@ -87,7 +82,7 @@ class Give_Session {
 			}
 
 			// Use PHP SESSION (must be enabled via the GIVE_USE_PHP_SESSIONS constant)
-			add_action( 'init', array( $this, 'maybe_start_session' ), - 2 );
+			add_action( 'give_pre_process_purchase', array( $this, 'maybe_start_session' ), - 2 );
 
 		} else {
 
@@ -172,7 +167,7 @@ class Give_Session {
 	 *
 	 * @since 1.0
 	 *
-	 * @param $key   $_SESSION key
+	 * @param $key $_SESSION key
 	 * @param $value $_SESSION variable
 	 *
 	 * @return mixed Session variable
