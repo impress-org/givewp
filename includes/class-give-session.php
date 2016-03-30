@@ -6,7 +6,7 @@
  *
  * @package     Give
  * @subpackage  Classes/Session
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -81,7 +81,6 @@ class Give_Session {
 
 			}
 
-			// Use PHP SESSION (must be enabled via the GIVE_USE_PHP_SESSIONS constant)
 			add_action( 'give_pre_process_purchase', array( $this, 'maybe_start_session' ), - 2 );
 
 		} else {
@@ -223,8 +222,7 @@ class Give_Session {
 	 * Starts a new session if one hasn't started yet.
 	 *
 	 * @return null
-	 * Checks to see if the server supports PHP sessions
-	 * or if the GIVE_USE_PHP_SESSIONS constant is defined
+	 * Checks to see if the server supports PHP sessions or if the GIVE_USE_PHP_SESSIONS constant is defined
 	 *
 	 * @access public
 	 * @since  1.0
@@ -256,6 +254,7 @@ class Give_Session {
 			}
 
 		} else {
+
 			$ret = $give_use_php_sessions;
 		}
 
