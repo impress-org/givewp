@@ -70,7 +70,7 @@ class Give_Donate_Form {
 	 *
 	 * @since 1.0
 	 *
-	 * @param bool  $_id
+	 * @param bool $_id
 	 * @param array $_args
 	 */
 	public function __construct( $_id = false, $_args = array() ) {
@@ -284,13 +284,19 @@ class Give_Donate_Form {
 			$ret = 1;
 		}
 
+		/**
+		 * Filter: Override whether the donation form has variables prices.
+		 *
+		 * @param bool $ret Does donation form have variable prices?
+		 * @param int|string The ID of the donation form.
+		 */
 		return (bool) apply_filters( 'give_has_variable_prices', $ret, $this->ID );
 
 	}
 
 
 	/**
-	 * Retrieve the sale count for the download
+	 * Retrieve the sale count for the donation form
 	 *
 	 * @since 1.0
 	 * @return int
@@ -328,9 +334,11 @@ class Give_Donate_Form {
 		$sales = $sales + 1;
 
 		if ( update_post_meta( $this->ID, '_give_form_sales', $sales ) ) {
+
 			$this->sales = $sales;
 
 			return $sales;
+
 		}
 
 		return false;
@@ -345,15 +353,20 @@ class Give_Donate_Form {
 	public function decrease_sales() {
 
 		$sales = give_get_form_sales_stats( $this->ID );
-		if ( $sales > 0 ) // Only decrease if not already zero
-		{
+
+		// Only decrease if not already zero
+		if ( $sales > 0 ) {
+
 			$sales = $sales - 1;
-		}
 
-		if ( update_post_meta( $this->ID, '_give_form_sales', $sales ) ) {
-			$this->sales = $sales;
+			if ( update_post_meta( $this->ID, '_give_form_sales', $sales ) ) {
 
-			return $sales;
+				$this->sales = $sales;
+
+				return $sales;
+
+			}
+
 		}
 
 		return false;
@@ -399,9 +412,11 @@ class Give_Donate_Form {
 		$earnings = $earnings + (float) $amount;
 
 		if ( update_post_meta( $this->ID, '_give_form_earnings', $earnings ) ) {
+
 			$this->earnings = $earnings;
 
 			return $earnings;
+
 		}
 
 		return false;
@@ -418,15 +433,18 @@ class Give_Donate_Form {
 
 		$earnings = give_get_form_earnings_stats( $this->ID );
 
-		if ( $earnings > 0 ) // Only decrease if greater than zero
-		{
+		if ( $earnings > 0 ) {
+			// Only decrease if greater than zero
 			$earnings = $earnings - (float) $amount;
-		}
 
-		if ( update_post_meta( $this->ID, '_give_form_earnings', $earnings ) ) {
-			$this->earnings = $earnings;
 
-			return $earnings;
+			if ( update_post_meta( $this->ID, '_give_form_earnings', $earnings ) ) {
+
+				$this->earnings = $earnings;
+				return $earnings;
+
+			}
+			
 		}
 
 		return false;
