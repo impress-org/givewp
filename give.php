@@ -169,6 +169,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 				self::$instance->template_loader = new Give_Template_Loader();
 
 			}
+			
 
 			return self::$instance;
 		}
