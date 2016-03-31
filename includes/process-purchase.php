@@ -27,12 +27,6 @@ function give_process_purchase_form() {
 
 	do_action( 'give_pre_process_purchase' );
 
-	$session_reflection = new ReflectionMethod( 'WP_Session', 'set_cookie' );
-	if( $session_reflection->isPublic() ){
-		// Manually set the cookie.
-		Give()->session->init()->set_cookie();
-	}
-
 	// Validate the form $_POST data
 	$valid_data = give_purchase_form_validate_fields();
 
@@ -58,9 +52,21 @@ function give_process_purchase_form() {
 		}
 	}
 
+	//If AJAX send back success to proceed with form submission
 	if ( $is_ajax ) {
 		echo 'success';
 		give_die();
+	}
+
+	//After AJAX: Setup session if not using php_sessions
+	if ( ! Give()->session->use_php_sessions() ) {
+		//Double-check that set_cookie is publicly accessible;
+		// we're using a slightly modified class-wp-sessions.php
+		$session_reflection = new ReflectionMethod( 'WP_Session', 'set_cookie' );
+		if ( $session_reflection->isPublic() ) {
+			// Manually set the cookie.
+			Give()->session->init()->set_cookie();
+		}
 	}
 
 	// Setup user information
