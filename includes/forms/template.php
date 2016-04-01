@@ -273,8 +273,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 					echo $currency_output;
 				} ?>
 				<label class="give-hidden" for="give-amount"><?php echo __( 'Donation Amount:', 'give' ); ?></label>
-				<input class="give-text-input give-amount-top" id="give-amount" name="give-amount" type="tel"
-				       placeholder="" value="<?php echo $default_amount; ?>" autocomplete="off">
+				<input class="give-text-input give-amount-top" id="give-amount" name="give-amount" type="tel" placeholder="" value="<?php echo $default_amount; ?>" autocomplete="off">
 				<?php if ( $currency_position == 'after' ) {
 					echo $currency_output;
 				} ?>
@@ -285,15 +284,18 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 		</div>
 	<?php }
 
+	do_action( 'give_after_donation_amount', $form_id, $args );
+	
 	//Custom Amount Text
-	if ( ! $variable_pricing && $allow_custom_amount == 'yes' ) { ?>
-		<p class="give-custom-amount-text"><?php echo ! empty( $custom_amount_text ) ? $custom_amount_text : ''; ?></p>
+	if ( ! $variable_pricing && $allow_custom_amount == 'yes' && ! empty( $custom_amount_text ) ) { ?>
+		<p class="give-custom-amount-text"><?php echo $custom_amount_text; ?></p>
 	<?php }
 
 	//Output Variable Pricing Levels
 	if ( $variable_pricing ) {
 		give_output_levels( $form_id );
 	}
+
 	do_action( 'give_after_donation_levels', $form_id, $args );
 }
 
