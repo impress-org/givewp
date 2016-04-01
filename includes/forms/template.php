@@ -824,7 +824,7 @@ function give_get_register_fields( $form_id ) {
 
 			<p id="give-user-pass-confirm-wrap-<?php echo $form_id; ?>" class="give-register-password form-row form-row-one-third">
 				<label for="give-user-pass-confirm-<?php echo $form_id; ?>">
-					<?php _e( 'Confirm Password', 'give' ); ?>
+					<?php _e( 'Confirm PW', 'give' ); ?>
 					<?php if ( give_no_guest_checkout( $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
