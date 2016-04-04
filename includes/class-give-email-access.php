@@ -22,8 +22,6 @@ class Give_Email_Access {
 	public $token = false;
 	public $error = '';
 
-	private static $instance;
-
 	private $verify_throttle;
 
 	/**
@@ -64,7 +62,6 @@ class Give_Email_Access {
 		if ( $this->token_exists ) {
 			add_filter( 'give_can_view_receipt', '__return_true' );
 			add_filter( 'give_user_pending_verification', '__return_false' );
-			add_filter( 'give_get_success_page_uri', array( $this, 'give_success_page_uri' ) );
 			add_filter( 'give_get_users_purchases_args', array( $this, 'users_purchases_args' ) );
 		}
 	}
@@ -237,6 +234,10 @@ class Give_Email_Access {
 
 	/**
 	 * Is this a valid verify key?
+	 *
+	 * @param $token
+	 *
+	 * @return bool
 	 */
 	function is_valid_verify_key( $token ) {
 		global $wpdb;
@@ -263,23 +264,8 @@ class Give_Email_Access {
 		return false;
 	}
 
-
 	/**
-	 * Append the token to Give purchase links
-	 *
-	 * @param $uri
-	 *
-	 * @return string
-	 */
-	function give_success_page_uri( $uri ) {
-		if ( $this->token_exists ) {
-			return add_query_arg( array( 'give_nl' => $this->token ), $uri );
-		}
-	}
-
-
-	/**
-	 * Force Give to find transactions by purchase email, not user ID
+	 * Force Give to find transactions by donation email, not user ID
 	 *
 	 * @param $args
 	 *
