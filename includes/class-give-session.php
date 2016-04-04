@@ -6,7 +6,7 @@
  *
  * @package     Give
  * @subpackage  Classes/Session
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -70,7 +70,6 @@ class Give_Session {
 	 */
 	public function __construct() {
 
-		//Frontend only
 		if ( is_admin() ) {
 			return false;
 		}
@@ -78,6 +77,7 @@ class Give_Session {
 		$this->use_php_sessions = $this->use_php_sessions();
 		$this->exp_option       = give_get_option( 'session_lifetime' );
 
+		//PHP Sessions
 		if ( $this->use_php_sessions ) {
 
 			if ( is_multisite() ) {
@@ -86,23 +86,22 @@ class Give_Session {
 
 			}
 
-			// Use PHP SESSION (must be enabled via the GIVE_USE_PHP_SESSIONS constant)
-			add_action( 'init', array( $this, 'maybe_start_session' ), - 2 );
+			add_action( 'give_pre_process_purchase', array( $this, 'maybe_start_session' ), - 2 );
 
 		} else {
 
-			// Use WP_Session (default)
+			// Use WP_Session
 			if ( ! defined( 'WP_SESSION_COOKIE' ) ) {
 				define( 'WP_SESSION_COOKIE', 'give_wp_session' );
 			}
 
 			if ( ! class_exists( 'Recursive_ArrayAccess' ) ) {
-				require_once GIVE_PLUGIN_DIR . 'includes/libraries/class-recursive-arrayaccess.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/libraries/sessions/class-recursive-arrayaccess.php';
 			}
 
 			if ( ! class_exists( 'WP_Session' ) ) {
-				require_once GIVE_PLUGIN_DIR . 'includes/libraries/class-wp-session.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/libraries/wp-session.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/libraries/sessions/class-wp-session.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/libraries/sessions/wp-session.php';
 			}
 
 			add_filter( 'wp_session_expiration_variant', array( $this, 'set_expiration_variant_time' ), 99999 );
@@ -132,7 +131,6 @@ class Give_Session {
 		} else {
 			$this->session = WP_Session::get_instance();
 		}
-
 
 		return $this->session;
 	}
@@ -172,7 +170,7 @@ class Give_Session {
 	 *
 	 * @since 1.0
 	 *
-	 * @param $key   $_SESSION key
+	 * @param $key $_SESSION key
 	 * @param $value $_SESSION variable
 	 *
 	 * @return mixed Session variable
@@ -228,8 +226,7 @@ class Give_Session {
 	 * Starts a new session if one has not started yet.
 	 *
 	 * @return null
-	 * Checks to see if the server supports PHP sessions
-	 * or if the GIVE_USE_PHP_SESSIONS constant is defined
+	 * Checks to see if the server supports PHP sessions or if the GIVE_USE_PHP_SESSIONS constant is defined
 	 *
 	 * @access public
 	 * @since  1.0
@@ -261,6 +258,7 @@ class Give_Session {
 			}
 
 		} else {
+
 			$ret = $give_use_php_sessions;
 		}
 

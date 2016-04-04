@@ -119,7 +119,11 @@ jQuery(document).ready(function ($) {
     });
 
 
-    //Process the donation submit
+    /**
+     * Donation Form AJAX Submission
+     * 
+     * @description: Process the donation submit
+     */
     $('body').on('click touchend', '#give-purchase-button', function (e) {
 
         //this form object
@@ -132,9 +136,11 @@ jQuery(document).ready(function ($) {
         //this form selector
         var give_purchase_form = this_form.get(0);
 
-        //check validity
+        //HTML5 required check validity
         if (typeof give_purchase_form.checkValidity === "function" && give_purchase_form.checkValidity() === false) {
-            loading_animation.fadeOut(); //Don't leave any handing loading animations
+            
+            //Don't leave any hanging loading animations
+            loading_animation.fadeOut(); 
 
             //Check for Safari (doesn't support HTML5 required)
             if ((navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) === false) {
@@ -189,7 +195,7 @@ function give_load_gateway(form_object, payment_mode) {
 
     // Show the ajax loader
     loading_element.fadeIn();
-    
+
     var form_data = jQuery(form_object).data();
 
     if (form_data["blockUI.isBlocked"] != 1) {

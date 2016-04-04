@@ -178,6 +178,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 				self::$instance->email_access    = new Give_Email_Access();
 
 			}
+			
 
 			return self::$instance;
 		}
