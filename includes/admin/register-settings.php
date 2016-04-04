@@ -426,9 +426,18 @@ class Give_Plugin_Settings {
 							'id'   => 'disable_forms_excerpt',
 							'type' => 'checkbox'
 						),
+
+						array(
+							'name'    => __( 'Featured Image Size', 'give' ),
+							'desc'    => __( 'The Featured Image is an image that is chosen as the representative image for a donation form. Some themes may have custom featured image sizes. Please select the size you would like to display for your single donation forms\' featured image.', 'give' ),
+							'id'      => 'featured_image_size',
+							'type'    => 'select',
+							'default' => 'large',
+							'options' => give_get_featured_image_sizes()
+						),
 						array(
 							'name' => __( 'Disable Form Featured Image', 'give' ),
-							'desc' => __( 'The Featured Image is an image that is chosen as the representative image for donation form. The display of this image is largely up to the theme. If you do not wish to use the featured image you can disable it using this option.', 'give' ),
+							'desc' => __( 'If you do not wish to use the featured image functionality you can disable it using this option and it will not be displayed for single donation forms.', 'give' ),
 							'id'   => 'disable_form_featured_img',
 							'type' => 'checkbox'
 						),
@@ -1062,6 +1071,30 @@ function give_modify_cmb2_form_output( $form_format, $object_id, $cmb ) {
 
 	return $form_format;
 
+}
+
+/**
+ * Featured Image Sizes
+ *
+ * @description: Outputs an array for the "Featured Image Size" option found under Settings > Display Options
+ *
+ * @since 1.4
+ */
+function give_get_featured_image_sizes() {
+	global $_wp_additional_image_sizes;
+	$sizes = array();
+
+	foreach ( get_intermediate_image_sizes() as $_size ) {
+		
+		if ( in_array( $_size, array( 'thumbnail', 'medium', 'medium_large', 'large' ) ) ) {
+			$sizes[ $_size ] = $_size . ' - ' . get_option( "{$_size}_size_w" ) . 'x' . get_option( "{$_size}_size_h" );
+		} elseif ( isset( $_wp_additional_image_sizes[ $_size ] ) ) {
+			$sizes[ $_size ] = $_size . ' - ' . $_wp_additional_image_sizes[ $_size ]['width'] . 'x' . $_wp_additional_image_sizes[ $_size ]['height'];
+		}
+
+	}
+
+	return apply_filters( 'give_get_featured_image_sizes', $sizes );
 }
 
 

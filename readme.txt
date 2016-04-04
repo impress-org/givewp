@@ -130,6 +130,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * New: Unit tests added for Give_Donate_Form class - thanks @cklosowski - https://github.com/WordImpress/Give/pull/517
 * New: Added new "Goal Format" option which will allow totals to be output based on a percentage rather than amount; also added more filters for better control over goal output - https://github.com/WordImpress/Give/issues/387
 * New: Added links to plugin settings page and documentation on the WordPress plugin listing page - https://github.com/WordImpress/Give/issues/531
+* New: Featured image size option for single donation forms found under Settings > Display Options - https://github.com/WordImpress/Give/issues/535
 * Tweak: Removed usage of the image size "give_form_thumbnail" in favor of "give_form_single" - https://github.com/WordImpress/Give/issues/412
 * Tweak: Increased modal windows z-index value - https://github.com/WordImpress/Give/issues/524
 * Tweak: Added additional checks to the "System Info" settings tab - https://github.com/WordImpress/Give/issues/506
