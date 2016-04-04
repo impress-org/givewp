@@ -126,15 +126,18 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 == Changelog ==
 
-= 1.3.7 =
+= 1.4 =
 * New: Unit tests added for Give_Donate_Form class - thanks @cklosowski - https://github.com/WordImpress/Give/pull/517
-* New: Added new "Goal Format" option which will allow totals to be output based on a percentage rather than amount; also added more filters for better control over output - https://github.com/WordImpress/Give/issues/387
+* New: Added new "Goal Format" option which will allow totals to be output based on a percentage rather than amount; also added more filters for better control over goal output - https://github.com/WordImpress/Give/issues/387
 * New: Added links to plugin settings page and documentation on the WordPress plugin listing page - https://github.com/WordImpress/Give/issues/531
+* New: Featured image size option for single donation forms found under Settings > Display Options - https://github.com/WordImpress/Give/issues/535
 * Tweak: Removed usage of the image size "give_form_thumbnail" in favor of "give_form_single" - https://github.com/WordImpress/Give/issues/412
 * Tweak: Increased modal windows z-index value - https://github.com/WordImpress/Give/issues/524
 * Tweak: Added additional checks to the "System Info" settings tab - https://github.com/WordImpress/Give/issues/506
 * Tweak: Removed Give's custom thumbnail size in favor for using WordPress' large media size to prevent image quality issues and excess image creation - https://github.com/WordImpress/Give/issues/535
 * Tweak: Use $_SERVER['HTTP_HOST'] rather than $_SERVER['SERVER_NAME'] in give_get_current_page_url() - https://github.com/WordImpress/Give/issues/530
+* Fix: Email compatibility with Mandrill WP plugin - https://github.com/WordImpress/Give/issues/548
+* Fix: Add trailing slash to home_url() to prevent homepage redirect - https://github.com/WordImpress/Give/issues/545
 * Fix: Problem give_format_amount_decimals return always 2 decimals - https://github.com/WordImpress/Give/issues/467
 * Fix: "Custom Amount Text" should not show if the field is left blank for set donation forms - https://github.com/WordImpress/Give/issues/522
 * Fix: Theme compatibility with Zerif and Customizr for single give donation forms - https://github.com/WordImpress/Give/issues/537

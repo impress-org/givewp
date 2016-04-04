@@ -23,12 +23,11 @@ global $post;
 do_action( 'give_pre_featured_thumbnail' );
 ?>
 <div class="images">
-
-	<?php
+	<?php //Featured Thumbnail
 	if ( has_post_thumbnail() ) {
-
-		//Featured Thumbnail
-		$image = get_the_post_thumbnail( $post->ID, apply_filters( 'single_give_form_large_thumbnail_size', 'large' ) );
+		
+		$image_size = give_get_option( 'featured_image_size' );
+		$image      = get_the_post_thumbnail( $post->ID, apply_filters( 'single_give_form_large_thumbnail_size', ( ! empty( $image_size ) ? $image_size : 'large' ) ) );
 
 		echo apply_filters( 'single_give_form_image_html', $image );
 

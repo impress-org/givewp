@@ -757,6 +757,9 @@ Layout
     height: auto;
     box-shadow: none; }
 
+[id*='give-form'] .give-custom-amount-text {
+  clear: both; }
+
 [id*='give-form'] div.summary {
   width: 58%;
   float: right; }
@@ -1033,6 +1036,7 @@ Notices, Warnings & Errors
     -moz-osx-font-smoothing: grayscale;
     position: absolute;
     top: 50%;
+    font-size: 16px;
     margin-top: -15px;
     left: -17px;
     background-color: #a00;

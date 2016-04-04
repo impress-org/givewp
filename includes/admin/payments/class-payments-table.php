@@ -96,7 +96,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * Total number of cancelled payments
 	 *
 	 * @var int
-	 * @since 1.3.7
+	 * @since 1.4
 	 */
 	public $cancelled_count;
 

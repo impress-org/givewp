@@ -46,6 +46,10 @@ Layout
     }
   }
 
+  .give-custom-amount-text {
+    clear: both;
+  }
+
   div.summary {
     width: 58%;
     float: right;
@@ -335,6 +339,7 @@ Notices, Warnings & Errors
     @include iconstyle();
     position: absolute;
     top: 50%;
+    font-size:16px;
     margin-top: -15px;
     left: -17px;
     background-color: $red;
@@ -389,7 +394,7 @@ Radio Lists
 
     label {
       cursor: pointer;
-      display:inline-block;
+      display: inline-block;
     }
 
     input[type="radio"] {
@@ -440,7 +445,7 @@ form[id*='give-form'] {
     min-width: 155px;
     border: 1px solid $borders;
     margin: 0 0 15px;
-    display:block;
+    display: block;
   }
 }
 
