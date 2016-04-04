@@ -555,7 +555,7 @@ x:-o-prefocus, .qtip .qtip-tip {
  * @description: Fonts are from icomoon and the src paths need to be relative to template directory
  * @package     Give
  * @subpackage  SCSS/Frontend
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 @font-face {
@@ -651,7 +651,7 @@ x:-o-prefocus, .qtip .qtip-tip {
  *
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 /*------------------------------------
@@ -933,7 +933,7 @@ Tooltips
  * @description Add-on Styles
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 .type-download {
@@ -999,7 +999,7 @@ Tooltips
  * @description Payment History Styles
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 #give-dashboard-widgets-wrap .inside {
@@ -1146,7 +1146,7 @@ Logs
  * @description Displays when user activates the plugin
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 .welcome-h1 {
@@ -1213,7 +1213,7 @@ Logs
  * @description Payment History Styles
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 #give_donor_export_download {
@@ -1224,7 +1224,7 @@ Logs
  *
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 /*------------------------------------
@@ -1371,7 +1371,7 @@ a.give-delete {
  * @description Payment History Styles
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 #give-payment-filters, .give-submit-wrap {
@@ -1675,7 +1675,7 @@ Donation Details
  * @description Styles the Give dashboard widget
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 .give-dashboard-widget .give-dashboard-today {
@@ -1751,7 +1751,7 @@ Donation Details
  *
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 /* Donors Listing Page Style
@@ -1981,7 +1981,7 @@ Donation Details
  *
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 /*=Give Shortcode Button

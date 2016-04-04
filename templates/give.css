@@ -49,7 +49,7 @@
  * @description: Fonts are from icomoon and the src paths need to be relative to template directory
  * @package     Give
  * @subpackage  SCSS/Frontend
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 @font-face {
@@ -652,7 +652,7 @@ x:-o-prefocus, .qtip .qtip-tip {
  *
  * @package     Give
  * @subpackage  SCSS/Frontend
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 /* =Receipt Page
@@ -719,7 +719,7 @@ table#give_donation_receipt .give_receipt_payment_status.failed {
  *
  * @package     Give
  * @subpackage  SCSS/Frontend
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 /*------------------------------------
@@ -1707,7 +1707,7 @@ img.mfp-img {
  * @description: This file provides layout styles for various themes such as the default WordPress themes and others if applicable; Most themes handle Give's template system just fine ;)
  * @package:     Give
  * @subpackage:  SCSS/Frontend
- * @copyright:   Copyright (c) 2015, WordImpress
+ * @copyright:   Copyright (c) 2016, WordImpress
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 /**
@@ -1792,7 +1792,7 @@ Avada
  *
  * @package     Give
  * @subpackage  SCSS/Frontend
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 .give-goal-progress {
@@ -1904,7 +1904,7 @@ form.floated-labels .styled.select {
  *
  * @package     Give
  * @subpackage  SCSS/Frontend
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 .give-modal {
@@ -1990,7 +1990,7 @@ form.floated-labels .styled.select {
  *
  * @package     Give
  * @subpackage  SCSS/Frontend
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 table.give-table {
@@ -2038,7 +2038,7 @@ table.give-table {
  * @description: The following styles help Give look good and fixes CSS conflicts with popular WordPress themes
  * @package     Give
  * @subpackage  SCSS/Frontend
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 .give-divi .qtip-tipsy {

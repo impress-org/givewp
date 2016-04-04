@@ -3,7 +3,7 @@
  * Profile Editor
  *
  * @description  This template is used to display the profile editor with [give_profile_editor]
- * @copyright    Copyright (c) 2015, WordImpress
+ * @copyright    Copyright (c) 2016, WordImpress
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 global $current_user;
