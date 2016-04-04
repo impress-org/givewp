@@ -51,7 +51,7 @@ function give_get_payments( $args = array() ) {
  * @since       1.0
  *
  * @param       string $field The field to retrieve the payment with
- * @param       mixed  $value The value for $field
+ * @param       mixed $value The value for $field
  *
  * @return      mixed
  */
@@ -223,7 +223,7 @@ function give_insert_payment( $payment_data = array() ) {
  *
  * @since 1.0
  *
- * @param int    $payment_id Payment ID
+ * @param int $payment_id Payment ID
  * @param string $new_status New Payment Status (default: publish)
  *
  * @return void
@@ -343,7 +343,7 @@ function give_delete_purchase( $payment_id = 0 ) {
  *
  * @since 1.0
  *
- * @param int $form_id    Form (Post) ID
+ * @param int $form_id Form (Post) ID
  * @param int $payment_id Payment ID
  *
  * @return void
@@ -552,7 +552,7 @@ function give_check_for_existing_payment( $payment_id ) {
  * @since 1.0
  *
  * @param WP_Post $payment
- * @param bool    $return_label Whether to return the donation status or not
+ * @param bool $return_label Whether to return the donation status or not
  *
  * @return bool|mixed if payment status exists, false otherwise
  */
@@ -618,10 +618,10 @@ function give_get_payment_status_keys() {
  *
  * @since 1.0
  *
- * @param int $day       Day number
+ * @param int $day Day number
  * @param int $month_num Month number
- * @param int $year      Year
- * @param int $hour      Hour
+ * @param int $year Year
+ * @param int $hour Hour
  *
  * @return int $earnings Earnings
  */
@@ -677,10 +677,10 @@ function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour
  *
  * @since  1.0
  *
- * @param int $day       Day number
+ * @param int $day Day number
  * @param int $month_num Month number
- * @param int $year      Year
- * @param int $hour      Hour
+ * @param int $year Year
+ * @param int $hour Hour
  *
  * @return int $count Sales
  */
@@ -866,9 +866,9 @@ function give_decrease_total_earnings( $amount = 0 ) {
  *
  * @since 1.0
  *
- * @param int    $payment_id Payment ID
- * @param string $meta_key   The meta key to pull
- * @param bool   $single     Pull single meta entry or as an object
+ * @param int $payment_id Payment ID
+ * @param string $meta_key The meta key to pull
+ * @param bool $single Pull single meta entry or as an object
  *
  * @return mixed $meta Payment Meta
  */
@@ -900,9 +900,9 @@ function give_get_payment_meta( $payment_id = 0, $meta_key = '_give_payment_meta
  * Update the meta for a payment
  *
  * @param  integer $payment_id Payment ID
- * @param  string  $meta_key   Meta key to update
- * @param  string  $meta_value Value to update to
- * @param  string  $prev_value Previous value
+ * @param  string $meta_key Meta key to update
+ * @param  string $meta_value Value to update to
+ * @param  string $prev_value Previous value
  *
  * @return mixed               Meta ID if successful, false if unsuccessful
  */
@@ -994,7 +994,7 @@ function give_get_payment_user_email( $payment_id ) {
  *
  * @param  int $payment_id The payment ID
  *
- * @return bool            If the payment is associted with a user (false) or not (true)
+ * @return bool            If the payment is associated with a user (false) or not (true)
  */
 function give_is_guest_payment( $payment_id ) {
 	$payment_user_id  = give_get_payment_user_id( $payment_id );
@@ -1388,7 +1388,7 @@ function give_get_payment_transaction_id( $payment_id = 0 ) {
  *
  * @since  1.0
  *
- * @param int    $payment_id     Payment ID
+ * @param int $payment_id Payment ID
  * @param string $transaction_id The transaction ID from the gateway
  *
  * @return bool|mixed
@@ -1411,7 +1411,7 @@ function give_set_payment_transaction_id( $payment_id = 0, $transaction_id = '' 
  * @global object $wpdb Used to query the database using the WordPress
  *                      Database API
  *
- * @param string  $key  the purchase key to search for
+ * @param string $key the purchase key to search for
  *
  * @return int $purchase Purchase ID
  */
@@ -1435,7 +1435,7 @@ function give_get_purchase_id_by_key( $key ) {
  * @global object $wpdb Used to query the database using the WordPress
  *                      Database API
  *
- * @param string  $key  the transaction ID to search for
+ * @param string $key the transaction ID to search for
  *
  * @return int $purchase Purchase ID
  */
@@ -1456,8 +1456,8 @@ function give_get_purchase_id_by_transaction_id( $key ) {
  *
  * @since 1.0
  *
- * @param int    $payment_id The payment ID to retrieve notes for
- * @param string $search     Search for notes that contain a search term
+ * @param int $payment_id The payment ID to retrieve notes for
+ * @param string $search Search for notes that contain a search term
  *
  * @return array $notes Payment Notes
  */
@@ -1484,8 +1484,8 @@ function give_get_payment_notes( $payment_id = 0, $search = '' ) {
  *
  * @since 1.0
  *
- * @param int    $payment_id The payment ID to store a note for
- * @param string $note       The note to store
+ * @param int $payment_id The payment ID to store a note for
+ * @param string $note The note to store
  *
  * @return int The new note ID
  */
@@ -1544,7 +1544,7 @@ function give_delete_payment_note( $comment_id = 0, $payment_id = 0 ) {
  *
  * @since 1.0
  *
- * @param     object      /int $note The comment object or ID
+ * @param     object /int $note The comment object or ID
  * @param int $payment_id The payment ID the note is connected to
  *
  * @return string
@@ -1612,8 +1612,8 @@ add_action( 'pre_get_comments', 'give_hide_payment_notes', 10 );
  *
  * @since 1.0
  *
- * @param array $clauses          Comment clauses for comment query
- * @param obj   $wp_comment_query WordPress Comment Query Object
+ * @param array $clauses Comment clauses for comment query
+ * @param obj $wp_comment_query WordPress Comment Query Object
  *
  * @return array $clauses Updated comment clauses
  */
@@ -1636,7 +1636,7 @@ add_filter( 'comments_clauses', 'give_hide_payment_notes_pre_41', 10, 2 );
  * @since 1.0
  *
  * @param array $where
- * @param obj   $wp_comment_query WordPress Comment Query Object
+ * @param obj $wp_comment_query WordPress Comment Query Object
  *
  * @return array $where
  */
@@ -1657,8 +1657,8 @@ add_filter( 'comment_feed_where', 'give_hide_payment_notes_from_feeds', 10, 2 );
  * @access public
  * @since  1.0
  *
- * @param array $stats   (empty from core filter)
- * @param int   $post_id Post ID
+ * @param array $stats (empty from core filter)
+ * @param int $post_id Post ID
  *
  * @return array Array of comment counts
  */
@@ -1784,8 +1784,8 @@ function give_get_price_id( $form_id, $price ) {
  * @TODO  - Incorporate a fee-based functionality similar to below
  * @since 1.0
  *
- * @param int    $payment_id Payment ID
- * @param string $type       Fee type
+ * @param int $payment_id Payment ID
+ * @param string $type Fee type
  *
  * @return mixed array if payment fees found, false otherwise
  */

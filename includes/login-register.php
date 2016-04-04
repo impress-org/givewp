@@ -29,7 +29,7 @@ function give_login_form( $redirect = '' ) {
 	global $give_options, $give_login_redirect;
 
 	if ( empty( $redirect ) ) {
-		$redirect = give_get_current_page_url();
+		$redirect = add_query_arg('give-login-success', 'true', give_get_current_page_url());
 	}
 
 	$give_login_redirect = $redirect;

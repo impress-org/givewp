@@ -135,6 +135,14 @@ if ( ! class_exists( 'Give' ) ) : /**
 		public $template_loader;
 
 		/**
+		 * Give No Login Object
+		 *
+		 * @var Give_Email_Access object
+		 * @since 1.0
+		 */
+		public $email_access;
+
+		/**
 		 * Main Give Instance
 		 *
 		 * Insures that only one instance of Give exists in memory at any one
@@ -167,6 +175,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 				//self::$instance->donators_gravatars = new Give_Donators_Gravatars();
 				self::$instance->customers       = new Give_DB_Customers();
 				self::$instance->template_loader = new Give_Template_Loader();
+				self::$instance->email_access    = new Give_Email_Access();
 
 			}
 
@@ -271,6 +280,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-logging.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-license-handler.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-cron.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-email-access.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/country-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/template-functions.php';

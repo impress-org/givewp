@@ -225,7 +225,7 @@ class Give_Session {
 	}
 
 	/**
-	 * Starts a new session if one hasn't started yet.
+	 * Starts a new session if one has not started yet.
 	 *
 	 * @return null
 	 * Checks to see if the server supports PHP sessions

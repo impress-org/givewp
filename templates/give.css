@@ -1043,6 +1043,7 @@ Notices, Warnings & Errors
     color: #FFF;
     width: 30px;
     height: 30px;
+    font-size: 16px;
     border-radius: 100%;
     text-align: center;
     line-height: 30px;
@@ -1238,7 +1239,8 @@ form[id*='give-form'] p.give-loading-text, form[id*='give-form'] span.give-loadi
   padding: 0;
   font-style: italic;
   line-height: 20px;
-  font-size: 16px; }
+  font-size: 16px;
+  font-weight: normal; }
   form[id*='give-form'] p.give-loading-text.give-updating-price-loader, form[id*='give-form'] span.give-loading-text.give-updating-price-loader {
     float: left;
     margin: 6px 0 0 20px; }
@@ -1332,6 +1334,15 @@ Basic Button Style
   font-size: 14px; }
   .give-btn:hover {
     background: #dbdbdb; }
+
+/*---------------------------------
+Email Access Form
+-----------------------------------*/
+form#give-email-access-form div.g-recaptcha, form#give-email-access-form input#give-email {
+  margin: 0 0 15px; }
+
+form#give-email-access-form input#give-email {
+  width: 305px; }
 
 /*---------------------------------
 Responsiveness

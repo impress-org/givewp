@@ -620,7 +620,7 @@ function give_purchase_form_validate_guest_user() {
 
 	// Show error message if user must be logged in
 	if ( give_logged_in_only() ) {
-		give_set_error( 'logged_in_only', __( 'You must be logged into an account to donation', 'give' ) );
+		give_set_error( 'logged_in_only', __( 'You must be logged into to donate', 'give' ) );
 	}
 
 	// Get the guest email

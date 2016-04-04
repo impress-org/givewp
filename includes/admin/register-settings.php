@@ -392,13 +392,13 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Enable Floating Labels', 'give' ),
-							'desc' => sprintf( __( 'Enable this option if you would like to enable <a href="%s" target="_blank">floating labels</a> in Give\'s donation forms.<br>Be aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), esc_url( "http://bradfrost.com/blog/post/float-label-pattern/" ) ),
+							'desc' => sprintf( esc_html__( 'Enable this option if you would like to enable %1$sfloating labels%2$s in Give\'s donation forms. %3$sBe aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), '<a href="' . esc_url( "http://bradfrost.com/blog/post/float-label-pattern/" ) . '" target="_blank">', '</a>', '<br />' ),
 							'id'   => 'enable_floatlabels',
 							'type' => 'checkbox'
 						),
 						array(
 							'name' => __( 'Disable Welcome Screen', 'give' ),
-							'desc' => sprintf( __( 'Enable this option if you would like to disable the Give Welcome screen every time Give is activated and/or updated. You can always access the Welcome Screen <a href="%s">here</a> if you want in the future.', 'give' ), esc_url( admin_url( 'index.php?page=give-about' ) ) ),
+							'desc' => sprintf( esc_html__( 'Enable this option if you would like to disable the Give Welcome screen every time Give is activated and/or updated. You can always access the Welcome Screen %1$shere%2$s if you want in the future.', 'give' ), '<a href="' . esc_url( admin_url( 'index.php?page=give-about' ) ) . '">', '</a>' ),
 							'id'   => 'disable_welcome',
 							'type' => 'checkbox'
 						),
@@ -528,7 +528,7 @@ class Give_Plugin_Settings {
 							'name'    => __( 'Donation Receipt', 'give' ),
 							'desc'    => __( 'Enter the email that is sent to users after completing a successful donation. HTML is accepted. Available template tags:', 'give' ) . '<br/>' . give_get_emails_tags_list(),
 							'type'    => 'wysiwyg',
-							'default' => __( "Dear", "give" ) . " {name},\n\n" . __( "Thank you for your donation. Your generosity is appreciated! Please click on the link below to view your receipt.", "give" ) . "\n\n{receipt_link}\n\nSincerely,\n{sitename}"
+							'default' => give_get_default_donation_receipt_email()
 						),
 						array(
 							'name' => __( 'New Donation Notification', 'give' ),
@@ -589,7 +589,7 @@ class Give_Plugin_Settings {
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
 				'fields'     => apply_filters( 'give_settings_advanced', array(
 						array(
-							'name' => __( 'Session Control', 'give' ),
+							'name' => __( 'Access Control', 'give' ),
 							'desc' => '',
 							'id'   => 'give_title_session_control_1',
 							'type' => 'give_title'
@@ -597,7 +597,7 @@ class Give_Plugin_Settings {
 						array(
 							'id'      => 'session_lifetime',
 							'name'    => __( 'Session Lifetime', 'give' ),
-							'desc'    => __( 'Give will start a new session per user once they have donated. This option controls the lifetime a user\'s session is kept alive. An active session allows users to view donation receipts on your site without having to be logged in.', 'give' ),
+							'desc'    => __( 'Give will start a new session per user once they have donated. This option controls the lifetime a user\'s session is kept alive. An active session allows users to view donation receipts on your site without having to be logged in as long as they are using the same browser they used when donating.', 'give' ),
 							'type'    => 'select',
 							'options' => array(
 								'86400'  => __( '24 Hours', 'give' ),
@@ -605,6 +605,26 @@ class Give_Plugin_Settings {
 								'259200' => __( '72 Hours', 'give' ),
 								'604800' => __( '1 Week', 'give' ),
 							)
+						),
+						array(
+							'name' => __( 'Email-based Account Access', 'give' ),
+							'desc' => __( 'Would you like your donors to be able to access their donation history using only email? Donors whose sessions have expired and do not have an account may still access their donation history via a temporary email access link.', 'give' ),
+							'id'   => 'email_access',
+							'type' => 'checkbox',
+						),
+						array(
+							'id'      => 'recaptcha_key',
+							'name'    => __( 'reCAPTCHA Site Key', 'give' ),
+							'desc'    => sprintf( __( 'If you would like to prevent spam on the email access form navigate to %1$sthe reCAPTCHA website%2$s and sign up for an API key. The reCAPTCHA uses Google\'s user-friendly single click verification method.', 'give' ), '<a href="https://www.google.com/recaptcha/" target="_blank">', '</a>' ),
+							'default' => '',
+							'type'    => 'text'
+						),
+						array(
+							'id'      => 'recaptcha_secret',
+							'name'    => __( 'reCAPTCHA Secret Key', 'give' ),
+							'desc'    => __( 'Please paste the reCAPTCHA secret key here from your manage reCAPTCHA API Keys panel.', 'give' ),
+							'default' => '',
+							'type'    => 'text'
 						),
 						array(
 							'name' => __( 'Data Control', 'give' ),

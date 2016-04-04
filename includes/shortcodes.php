@@ -24,13 +24,25 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function give_donation_history() {
-	if ( is_user_logged_in() ) {
+
+	$email_access = give_get_option( 'email_access' );
+
+	//Is user logged in? Does an email-access token exist?
+	if ( is_user_logged_in() || ( $email_access == 'on' && Give()->email_access->token_exists ) ) {
 		ob_start();
 		give_get_template_part( 'history', 'donations' );
 
 		return ob_get_clean();
+	} //Is Email-based access enabled?
+	elseif ( $email_access == 'on' ) {
+
+		ob_start();
+		give_get_template_part( 'email', 'login-form' );
+
+		return ob_get_clean();
 	} else {
-		echo apply_filters( 'give_donation_history_nonuser_message', '<div class="give_error give_warning"><p>' . __( 'You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with.', 'give' ) . '</p></div>' );
+		$message = __( 'You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with.', 'give' );
+		echo apply_filters( 'give_donation_history_nonuser_message', give_output_error( $message, false ), $message );
 	}
 }
 
@@ -43,7 +55,7 @@ add_shortcode( 'donation_history', 'give_donation_history' );
  *
  * @since       1.0
  *
- * @param array  $atts Shortcode attributes
+ * @param array $atts Shortcode attributes
  * @param string $content
  *
  * @return string
@@ -103,7 +115,7 @@ add_shortcode( 'give_form', 'give_form_shortcode' );
  *
  * @since       1.0
  *
- * @param array  $atts Shortcode attributes
+ * @param array $atts Shortcode attributes
  * @param string $content
  *
  * @return string
@@ -149,19 +161,18 @@ add_shortcode( 'give_goal', 'give_goal_shortcode' );
  *
  * @since 1.0
  *
- * @param array  $atts Shortcode attributes
+ * @param array $atts Shortcode attributes
  * @param string $content
  *
  * @uses  give_login_form()
  * @return string
  */
 function give_login_form_shortcode( $atts, $content = null ) {
-	extract( shortcode_atts( array(
-			'redirect' => '',
-		), $atts, 'give_login' )
-	);
+	$atts = shortcode_atts( array(
+		'redirect' => '',
+	), $atts, 'give_login' );
 
-	return give_login_form( $redirect );
+	return give_login_form( $atts['redirect'] );
 }
 
 add_shortcode( 'give_login', 'give_login_form_shortcode' );
@@ -173,19 +184,18 @@ add_shortcode( 'give_login', 'give_login_form_shortcode' );
  *
  * @since 1.0
  *
- * @param array  $atts Shortcode attributes
+ * @param array $atts Shortcode attributes
  * @param string $content
  *
  * @uses  give_register_form()
  * @return string
  */
 function give_register_form_shortcode( $atts, $content = null ) {
-	extract( shortcode_atts( array(
-			'redirect' => '',
-		), $atts, 'give_register' )
-	);
+	$atts = shortcode_atts( array(
+		'redirect' => '',
+	), $atts, 'give_register' );
 
-	return give_register_form( $redirect );
+	return give_register_form( $atts['redirect'] );
 }
 
 add_shortcode( 'give_register', 'give_register_form_shortcode' );
@@ -198,7 +208,7 @@ add_shortcode( 'give_register', 'give_register_form_shortcode' );
  *
  * @since 1.0
  *
- * @param array  $atts Shortcode attributes
+ * @param array $atts Shortcode attributes
  * @param string $content
  *
  * @return string
@@ -208,7 +218,7 @@ function give_receipt_shortcode( $atts, $content = null ) {
 	global $give_receipt_args, $payment;
 
 	$give_receipt_args = shortcode_atts( array(
-		'error'          => __( 'Sorry, it appears the viewing window for this donation receipt has expired or you do not have the permission to view this donation receipt.', 'give' ),
+		'error'          => esc_html__( 'Sorry, you are missing the payment key to view this donation receipt.', 'give' ),
 		'price'          => true,
 		'date'           => true,
 		'payment_key'    => false,
@@ -228,21 +238,44 @@ function give_receipt_shortcode( $atts, $content = null ) {
 		$payment_key = $give_receipt_args['payment_key'];
 	}
 
-	// No key found
-	if ( ! isset( $payment_key ) ) {
-		return '<div class="give_errors"><p class="give_error">' . $give_receipt_args['error'] . '</p></div>';
+	$email_access = give_get_option( 'email_access' );
+
+	// No payment_key found & Email Access is Turned on:
+	if ( ! isset( $payment_key ) && $email_access == 'on' && ! Give()->email_access->token_exists ) {
+
+		ob_start();
+
+		give_get_template_part( 'email-login-form' );
+
+		return ob_get_clean();
+
+	} elseif ( ! isset( $payment_key ) ) {
+
+		return give_output_error( $give_receipt_args['error'], false, 'error' );
+
 	}
 
 	$payment_id    = give_get_purchase_id_by_key( $payment_key );
 	$user_can_view = give_can_view_receipt( $payment_key );
 
 	// Key was provided, but user is logged out. Offer them the ability to login and view the receipt
-	if ( ! $user_can_view && ! empty( $payment_key ) && ! is_user_logged_in() && ! give_is_guest_payment( $payment_id ) ) {
+	if ( ! $user_can_view && $email_access == 'on' && ! Give()->email_access->token_exists ) {
+
+		ob_start();
+
+		give_get_template_part( 'email-login-form' );
+
+		return ob_get_clean();
+
+	} elseif ( ! $user_can_view ) {
+
 		global $give_login_redirect;
+
 		$give_login_redirect = give_get_current_page_url();
 
 		ob_start();
-		echo '<div class="give_errors"><p class="give_error">' . __( 'You must be logged in to view this payment receipt.', 'give' ) . '</p></div>';
+
+		give_output_error( apply_filters( 'give_must_be_logged_in_error_message', esc_html__( 'You must be logged in to view this donation payment receipt.', 'give' ) ) );
 
 		give_get_template_part( 'shortcode', 'login' );
 
@@ -261,10 +294,8 @@ function give_receipt_shortcode( $atts, $content = null ) {
 	 * Or if user is logged in and the user can view sensitive shop data
 	 *
 	 */
-
-
 	if ( ! apply_filters( 'give_user_can_view_receipt', $user_can_view, $give_receipt_args ) ) {
-		return '<p class="edd-alert edd-alert-error">' . $give_receipt_args['error'] . '</p>';
+		return give_output_error( $give_receipt_args['error'], false, 'error' );
 	}
 
 	ob_start();
@@ -294,7 +325,7 @@ add_shortcode( 'give_receipt', 'give_receipt_shortcode' );
  * @since  1.0
  *
  * @param array $atts attributes
- * @param null  $content
+ * @param null $content
  *
  * @return string Output generated from the profile editor
  */
