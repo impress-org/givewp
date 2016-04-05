@@ -607,7 +607,7 @@ class Give_Plugin_Settings {
 							)
 						),
 						array(
-							'name' => __( 'Email-based Account Access', 'give' ),
+							'name' => __( 'Email Access', 'give' ),
 							'desc' => __( 'Would you like your donors to be able to access their donation history using only email? Donors whose sessions have expired and do not have an account may still access their donation history via a temporary email access link.', 'give' ),
 							'id'   => 'email_access',
 							'type' => 'checkbox',
