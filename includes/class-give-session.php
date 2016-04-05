@@ -63,16 +63,11 @@ class Give_Session {
 	/**
 	 * Get things started
 	 *
-	 * Defines our WP_Session constants, includes the necessary libraries and
-	 * retrieves the WP Session instance
+	 * @description: Defines our session constants, includes the necessary libraries and retrieves the session instance
 	 *
 	 * @since 1.0
 	 */
 	public function __construct() {
-
-		if ( is_admin() ) {
-			return false;
-		}
 
 		$this->use_php_sessions = $this->use_php_sessions();
 		$this->exp_option       = give_get_option( 'session_lifetime' );
@@ -86,9 +81,13 @@ class Give_Session {
 
 			}
 
-			add_action( 'give_pre_process_purchase', array( $this, 'maybe_start_session' ), - 2 );
+			add_action( 'init', array( $this, 'maybe_start_session' ), - 2 );
 
 		} else {
+
+			if ( ! $this->should_start_session() ) {
+				return;
+			}
 
 			// Use WP_Session
 			if ( ! defined( 'WP_SESSION_COOKIE' ) ) {
@@ -109,16 +108,20 @@ class Give_Session {
 
 		}
 
+		//Init Session
 		if ( empty( $this->session ) && ! $this->use_php_sessions ) {
 			add_action( 'plugins_loaded', array( $this, 'init' ), - 1 );
 		} else {
 			add_action( 'init', array( $this, 'init' ), - 1 );
 		}
 
+		//Set cookie on Donation Completion page
+		add_action( 'give_pre_process_purchase', array( $this, 'set_session_cookies' ) );
+
 	}
 
 	/**
-	 * Setup the WP_Session instance
+	 * Setup the Session instance
 	 *
 	 * @access public
 	 * @since  1.0
@@ -133,6 +136,7 @@ class Give_Session {
 		}
 
 		return $this->session;
+
 	}
 
 
@@ -190,6 +194,23 @@ class Give_Session {
 		}
 
 		return $this->session[ $key ];
+	}
+
+	/**
+	 * Set Session Cookies
+	 *
+	 * @description: Cookies are used to increase the session lifetime using the give setting; this is helpful for when a user closes their browser after making a donation and comes back to the site.
+	 *
+	 * @access public
+	 * @hook
+	 * @since 1.4
+	 */
+	public function set_session_cookies() {
+		if( ! headers_sent() ) {
+			$lifetime = current_time( 'timestamp' ) + $this->set_expiration_time();
+			@setcookie( session_name(), session_id(), $lifetime, COOKIEPATH, COOKIE_DOMAIN, false  );
+			@setcookie( session_name() . '_expiration', $lifetime, $lifetime,  COOKIEPATH, COOKIE_DOMAIN, false  );
+		}
 	}
 
 	/**
@@ -273,6 +294,43 @@ class Give_Session {
 	}
 
 	/**
+	 * Determines if we should start sessions
+	 *
+	 * @since  1.4
+	 * @return bool
+	 */
+	public function should_start_session() {
+
+		$start_session = true;
+
+		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
+
+			$blacklist = apply_filters( 'give_session_start_uri_blacklist', array(
+				'feed',
+				'feed',
+				'feed/rss',
+				'feed/rss2',
+				'feed/rdf',
+				'feed/atom',
+				'comments/feed/'
+			) );
+			$uri       = ltrim( $_SERVER['REQUEST_URI'], '/' );
+			$uri       = untrailingslashit( $uri );
+			if ( in_array( $uri, $blacklist ) ) {
+				$start_session = false;
+			}
+			if ( false !== strpos( $uri, 'feed=' ) ) {
+				$start_session = false;
+			}
+			if ( is_admin() ) {
+				$start_session = false;
+			}
+		}
+
+		return apply_filters( 'give_start_session', $start_session );
+	}
+
+	/**
 	 * Maybe Start Session
 	 *
 	 * @description Starts a new session if one hasn't started yet.
@@ -280,14 +338,14 @@ class Give_Session {
 	 */
 	public function maybe_start_session() {
 
-		//		session_destroy(); //Uncomment for testing ONLY
+		if ( ! $this->should_start_session() ) {
+			return;
+		}
 
 		if ( ! session_id() && ! headers_sent() ) {
-			$lifetime = current_time( 'timestamp' ) + $this->set_expiration_time();
 			session_start();
-			setcookie( session_name(), session_id(), $lifetime ); //
-			setcookie( session_name() . '_expiration', $lifetime, $lifetime );
 		}
+
 	}
 
 
@@ -295,7 +353,6 @@ class Give_Session {
 	 * Get Session Expiration
 	 *
 	 * @description  Looks at the session cookies and returns the expiration date for this session if applicable
-	 *
 	 */
 	public function get_session_expiration() {
 
