@@ -208,8 +208,8 @@ class Give_Session {
 	public function set_session_cookies() {
 		if( ! headers_sent() ) {
 			$lifetime = current_time( 'timestamp' ) + $this->set_expiration_time();
-			@setcookie( session_name(), session_id(), $lifetime );
-			@setcookie( session_name() . '_expiration', $lifetime, $lifetime );
+			@setcookie( session_name(), session_id(), $lifetime, COOKIEPATH, COOKIE_DOMAIN, false  );
+			@setcookie( session_name() . '_expiration', $lifetime, $lifetime,  COOKIEPATH, COOKIE_DOMAIN, false  );
 		}
 	}
 
