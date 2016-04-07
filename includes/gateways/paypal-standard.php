@@ -231,9 +231,21 @@ function give_process_paypal_ipn() {
 	// Convert collected post data to an array
 	parse_str( $encoded_data, $encoded_data_array );
 
+	foreach ( $encoded_data_array as $key => $value ) {
+
+		if ( false !== strpos( $key, 'amp;' ) ) {
+			$new_key = str_replace( '&amp;', '&', $key );
+			$new_key = str_replace( 'amp;', '&' , $new_key );
+
+			unset( $encoded_data_array[ $key ] );
+			$encoded_data_array[ $new_key ] = $value;
+		}
+
+	}
+	
+	//Validate IPN request w/ PayPal if user hasn't disabled this security measure
 	if ( ! give_get_option( 'disable_paypal_verification' ) ) {
 
-		// Validate the IPN
 		$remote_post_vars = array(
 			'method'      => 'POST',
 			'timeout'     => 45,
@@ -251,18 +263,16 @@ function give_process_paypal_ipn() {
 			'body'        => $encoded_data_array
 		);
 
-		// Get response
+		// Validate the IPN
 		$api_response = wp_remote_post( give_get_paypal_redirect(), $remote_post_vars );
 
 		if ( is_wp_error( $api_response ) ) {
 			give_record_gateway_error( __( 'IPN Error', 'give' ), sprintf( __( 'Invalid IPN verification response. IPN data: %s', 'give' ), json_encode( $api_response ) ) );
-
 			return; // Something went wrong
 		}
 
 		if ( $api_response['body'] !== 'VERIFIED' && give_get_option( 'disable_paypal_verification', false ) ) {
 			give_record_gateway_error( __( 'IPN Error', 'give' ), sprintf( __( 'Invalid IPN verification response. IPN data: %s', 'give' ), json_encode( $api_response ) ) );
-
 			return; // Response not okay
 		}
 
@@ -556,16 +566,14 @@ function give_get_paypal_redirect( $ssl_check = false ) {
  * @return string
  */
 function give_get_paypal_page_style() {
-
 	$page_style = trim( give_get_option( 'paypal_page_style', 'PayPal' ) );
-
 	return apply_filters( 'give_paypal_page_style', $page_style );
 }
 
 /**
  * PayPal Success Page
  *
- * @description: Shows "Purchase Processing" message for PayPal payments are still pending on site return
+ * @description: Shows "Donation Processing" message for PayPal payments that are still pending on site return
  *
  * @since      1.0
  *
@@ -591,7 +599,7 @@ function give_paypal_success_page_content( $content ) {
 
 	if ( $payment && 'pending' == $payment->post_status ) {
 
-		// Payment is still pending so show processing indicator to fix the Race Condition, issue #
+		// Payment is still pending so show processing indicator to fix the Race Condition
 		ob_start();
 
 		give_get_template_part( 'payment', 'processing' );
