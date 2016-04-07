@@ -314,6 +314,8 @@ function give_tools_sysinfo_get() {
 	$return .= 'fsockopen:                ' . ( function_exists( 'fsockopen' ) ? 'Supported' : 'Not Supported' ) . "\n";
 	$return .= 'SOAP Client:              ' . ( class_exists( 'SoapClient' ) ? 'Installed' : 'Not Installed' ) . "\n";
 	$return .= 'Suhosin:                  ' . ( extension_loaded( 'suhosin' ) ? 'Installed' : 'Not Installed' ) . "\n";
+	$return .= 'DOM:                      ' . ( extension_loaded( 'dom' ) ? 'Installed' : 'Not Installed' ) . "\n";
+	$return .= 'MBString:                 ' . ( extension_loaded( 'mbstring' ) ? 'Installed' : 'Not Installed' ) . "\n";
 
 	$return = apply_filters( 'give_sysinfo_after_php_ext', $return );
 
