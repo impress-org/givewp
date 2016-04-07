@@ -126,6 +126,10 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 == Changelog ==
 
+= 1.4.1 =
+* Tweak: Clean up '&amp' encoded ampersands for PayPal standard -  https://github.com/WordImpress/Give/issues/562
+* Tweak: Added a check for DOM and MBString PHP extensions in System Info tab -  https://github.com/WordImpress/Give/issues/560
+
 = 1.4 =
 * New: Donors now have the ability to view their donation history using only the email they donated with via the new "Email Access" functionality that can be enabled under Settings > Advanced - https://github.com/WordImpress/Give/pull/496
 * New: Unit tests added for Give_Donate_Form class - thanks @cklosowski - https://github.com/WordImpress/Give/pull/517
