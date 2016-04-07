@@ -242,8 +242,7 @@ function give_process_paypal_ipn() {
 		}
 
 	}
-
-
+	
 	//Validate IPN request w/ PayPal if user hasn't disabled this security measure
 	if ( ! give_get_option( 'disable_paypal_verification' ) ) {
 
