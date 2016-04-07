@@ -109,7 +109,7 @@ function give_render_customer_view( $view, $callbacks ) {
 		give_set_error( 'give-no-access', __( 'You are not permitted to view this data.', 'give' ) );
 		$render = false;
 	}
-
+ 
 	if ( ! isset( $_GET['id'] ) || ! is_numeric( $_GET['id'] ) ) {
 		give_set_error( 'give-invalid_customer', __( 'Invalid Donor ID Provided.', 'give' ) );
 		$render = false;

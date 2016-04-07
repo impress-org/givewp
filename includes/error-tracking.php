@@ -79,7 +79,7 @@ function give_get_errors() {
  * @since 1.0
  * @uses  Give_Session::get()
  *
- * @param int    $error_id      ID of the error being set
+ * @param int $error_id ID of the error being set
  * @param string $error_message Message to store with the error
  *
  * @return void
