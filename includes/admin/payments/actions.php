@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Admin/Payments
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -75,11 +75,12 @@ function give_update_payment_details( $data ) {
 	// Update main payment record
 	$updated = wp_update_post( array(
 		'ID'        => $payment_id,
+		'edit_date' => true,
 		'post_date' => $date
 	) );
 
 	if ( 0 === $updated ) {
-		wp_die( __( 'Error Updating Payment', 'give' ), __( 'Error', 'give' ), array( 'response' => 400 ) );
+		wp_die( esc_attr__( 'Error Updating Payment', 'give' ), esc_attr__( 'Error', 'give' ), array( 'response' => 400 ) );
 	}
 
 	$customer_changed = false;
@@ -90,7 +91,7 @@ function give_update_payment_details( $data ) {
 		$names = isset( $data['give-new-customer-name'] ) ? sanitize_text_field( $data['give-new-customer-name'] ) : '';
 
 		if ( empty( $email ) || empty( $names ) ) {
-			wp_die( __( 'New Customers require a name and email address', 'give' ) );
+			wp_die( esc_attr__( 'New Customers require a name and email address', 'give' ) );
 		}
 
 		$customer = new Give_Customer( $email );
@@ -143,6 +144,7 @@ function give_update_payment_details( $data ) {
 		$last_name = implode( ' ', $names );
 	}
 
+
 	if ( $customer_changed ) {
 
 		// Remove the stats and payment from the previous customer and attach it to the new customer
@@ -160,6 +162,7 @@ function give_update_payment_details( $data ) {
 		}
 
 		update_post_meta( $payment_id, '_give_payment_customer_id', $customer->id );
+
 	}
 
 

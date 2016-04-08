@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Gateways
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -48,7 +48,10 @@ function give_get_enabled_payment_gateways() {
 	global $give_options;
 
 	$gateways = give_get_payment_gateways();
-	$enabled  = isset( $give_options['gateways'] ) ? $give_options['gateways'] : false;
+
+	$enabled = isset( $_POST['gateways'] )
+		? $_POST['gateways']
+		: ( isset( $give_options['gateways'] ) ? $give_options['gateways'] : false );
 
 	$gateway_list = array();
 

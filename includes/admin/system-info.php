@@ -6,7 +6,7 @@
  *
  * @package     Give
  * @subpackage  Admin/System
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
@@ -27,11 +27,10 @@ function give_system_info_callback() {
 	if ( ! current_user_can( 'manage_give_settings' ) ) {
 		return;
 	}
-
 	?>
 	<textarea readonly="readonly" onclick="this.focus(); this.select()" id="system-info-textarea" name="give-sysinfo" title="To copy the system info, click below then press Ctrl + C (PC) or Cmd + C (Mac)."><?php echo give_tools_sysinfo_get(); ?></textarea>
 	<p class="submit">
-		<input type="hidden" name="give-action" value="download_sysinfo" />
+		<input type="hidden" name="give-action" value="download_sysinfo"/>
 		<?php submit_button( 'Download System Info File', 'secondary', 'give-download-sysinfo', false ); ?>
 	</p>
 	<style>
@@ -39,8 +38,26 @@ function give_system_info_callback() {
 			display: none; /* Hide Save settings button on System Info Tab (not needed) */
 		}
 	</style>
-<?php
+	<?php
 }
+
+
+/**
+ * Allow Sessions for System Info Tab
+ *
+ * @description: In 1.3.6 we prevented sessions within wp-admin, this allows them and allows the system info to properly detect
+ *
+ * @since: 1.4
+ *
+ * @return bool
+ */
+function give_allow_sessions_for_sysinfo() {
+	if ( is_admin() && ( isset( $_GET['page'] ) && isset( $_GET['tab'] ) ) && ( $_GET['tab'] == 'system_info' && $_GET['page'] == 'give-settings' ) ) {
+		return true;
+	}
+}
+
+add_filter( 'give_start_session', 'give_allow_sessions_for_sysinfo' );
 
 
 /**
@@ -48,8 +65,8 @@ function give_system_info_callback() {
  *
  * @since       1.0
  * @access      public
- * @global      object $wpdb         Used to query the database using the WordPress Database API
- * @global      array  $give_options Array of all Give options
+ * @global      object $wpdb Used to query the database using the WordPress Database API
+ * @global      array $give_options Array of all Give options
  * @return      string $return A string containing the info to output
  */
 function give_tools_sysinfo_get() {
@@ -63,7 +80,7 @@ function give_tools_sysinfo_get() {
 
 	// Get theme info
 	if ( get_bloginfo( 'version' ) < '3.4' ) {
-		$theme_data = get_theme_data( get_stylesheet_directory() . '/style.css' );
+		$theme_data = wp_get_theme( get_stylesheet_directory() . '/style.css' );
 		$theme      = $theme_data['Name'] . ' ' . $theme_data['Version'];
 	} else {
 		$theme_data = wp_get_theme();
@@ -166,9 +183,9 @@ function give_tools_sysinfo_get() {
 
 	$active_gateways = give_get_enabled_payment_gateways();
 	if ( $active_gateways ) {
-		$default_gateway_is_active = give_is_gateway_active( give_get_default_gateway(null) );
+		$default_gateway_is_active = give_is_gateway_active( give_get_default_gateway( null ) );
 		if ( $default_gateway_is_active ) {
-			$default_gateway = give_get_default_gateway(null);
+			$default_gateway = give_get_default_gateway( null );
 			$default_gateway = $active_gateways[ $default_gateway ]['admin_label'];
 		} else {
 			$default_gateway = 'Test Payment';
@@ -278,6 +295,7 @@ function give_tools_sysinfo_get() {
 	$return .= 'Upload Max Filesize:      ' . ini_get( 'upload_max_filesize' ) . "\n";
 	$return .= 'Time Limit:               ' . ini_get( 'max_execution_time' ) . "\n";
 	$return .= 'Max Input Vars:           ' . ini_get( 'max_input_vars' ) . "\n";
+	$return .= 'URL-aware fopen:          ' . ( ini_get( 'allow_url_fopen' ) ? 'On (' . ini_get( 'allow_url_fopen' ) . ')' : 'N/A' ) . "\n";
 	$return .= 'Display Errors:           ' . ( ini_get( 'display_errors' ) ? 'On (' . ini_get( 'display_errors' ) . ')' : 'N/A' ) . "\n";
 
 	$return = apply_filters( 'give_sysinfo_after_php_config', $return );
@@ -285,15 +303,25 @@ function give_tools_sysinfo_get() {
 	// PHP extensions and such
 	$return .= "\n" . '-- PHP Extensions' . "\n\n";
 	$return .= 'cURL:                     ' . ( function_exists( 'curl_init' ) ? 'Supported' : 'Not Supported' ) . "\n";
+
+	//cURL version
+	if ( function_exists( 'curl_init' ) && function_exists( 'curl_version' ) ) {
+		$curl_values = curl_version();
+		$return .= 'cURL Version:             ' . $curl_values["version"] . "\n";
+	}
+	$return .= 'zlib:                     ' . ( function_exists( 'gzcompress' ) ? 'Supported' : 'Not Supported' ) . "\n";
+	$return .= 'GD:                       ' . ( ( extension_loaded( 'gd' ) && function_exists( 'gd_info' ) ) ? 'Supported' : 'Not Supported' ) . "\n";
 	$return .= 'fsockopen:                ' . ( function_exists( 'fsockopen' ) ? 'Supported' : 'Not Supported' ) . "\n";
 	$return .= 'SOAP Client:              ' . ( class_exists( 'SoapClient' ) ? 'Installed' : 'Not Installed' ) . "\n";
 	$return .= 'Suhosin:                  ' . ( extension_loaded( 'suhosin' ) ? 'Installed' : 'Not Installed' ) . "\n";
+	$return .= 'DOM:                      ' . ( extension_loaded( 'dom' ) ? 'Installed' : 'Not Installed' ) . "\n";
+	$return .= 'MBString:                 ' . ( extension_loaded( 'mbstring' ) ? 'Installed' : 'Not Installed' ) . "\n";
 
 	$return = apply_filters( 'give_sysinfo_after_php_ext', $return );
 
 	// Session stuff
 	$return .= "\n" . '-- Session Configuration' . "\n\n";
-	$return .= 'Give Use Sessions:         ' . ( defined( 'GIVE_USE_PHP_SESSIONS' ) && GIVE_USE_PHP_SESSIONS ? 'Enforced' : ( Give()->session->use_php_sessions() ? 'Enabled' : 'Disabled' ) ) . "\n";
+	$return .= 'Give Use Sessions:        ' . ( defined( 'GIVE_USE_PHP_SESSIONS' ) && GIVE_USE_PHP_SESSIONS ? 'Enforced' : ( Give()->session->use_php_sessions() ? 'Enabled' : 'Disabled' ) ) . "\n";
 	$return .= 'Session:                  ' . ( isset( $_SESSION ) ? 'Enabled' : 'Disabled' ) . "\n";
 
 	// The rest of this is only relevant is session is enabled

@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Functions/Formatting
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @description: Returns a sanitized amount by stripping out thousands separators.
  *
- * @since 1.0
+ * @since      1.0
  *
  * @param string $amount Price amount to format
  *
@@ -118,6 +118,8 @@ function give_format_amount( $amount, $decimals = true ) {
  *
  * @param $field_args
  * @param $field
+ *
+ * @return bool
  */
 function give_format_admin_multilevel_amount( $field_args, $field ) {
 
@@ -134,15 +136,15 @@ function give_format_admin_multilevel_amount( $field_args, $field ) {
  *
  * @since 1.0
  *
- * @param string $price Price
+ * @param string $price
+ * @param string $currency
  *
- * @return array $currency Currencies displayed correctly
+ * @return mixed|string|void
  */
 function give_currency_filter( $price = '', $currency = '' ) {
+
 	if ( empty( $currency ) ) {
-
 		$currency = give_get_currency();
-
 	}
 
 	$position = give_get_option( 'currency_position', 'before' );
@@ -157,20 +159,34 @@ function give_currency_filter( $price = '', $currency = '' ) {
 
 	if ( $position == 'before' ):
 		switch ( $currency ):
-			case "GBP" :
-			case "BRL" :
-			case "EUR" :
-			case "USD" :
-			case "AUD" :
-			case "CAD" :
-			case "HKD" :
-			case "MXN" :
-			case "NZD" :
-			case "SGD" :
-			case "JPY" :
+			case 'GBP' :
+			case 'BRL' :
+			case 'EUR' :
+			case 'USD' :
+			case 'AUD' :
+			case 'CAD' :
+			case 'HKD' :
+			case 'MXN' :
+			case 'NZD' :
+			case 'SGD' :
+			case 'JPY' :
+			case 'THB' :
+			case 'INR' :
+			case 'RIAL' :
+			case 'TRY' :
+			case 'RUB' :
+			case 'SEK' :
+			case 'PLN' :
+			case 'PHP' :
+			case 'TWD' :
+			case 'MYR' :
+			case 'CZK' :
+			case 'DKK' :
+			case 'HUF' :
+			case 'ILS' :
 				$formatted = $symbol . $price;
 				break;
-			case "NOK" :
+			case 'NOK' :
 				$formatted = $symbol . ' ' . $price;
 				break;
 			default :
@@ -180,16 +196,30 @@ function give_currency_filter( $price = '', $currency = '' ) {
 		$formatted = apply_filters( 'give_' . strtolower( $currency ) . '_currency_filter_before', $formatted, $currency, $price );
 	else :
 		switch ( $currency ) :
-			case "GBP" :
-			case "BRL" :
-			case "EUR" :
-			case "USD" :
-			case "AUD" :
-			case "CAD" :
-			case "HKD" :
-			case "MXN" :
-			case "SGD" :
-			case "JPY" :
+			case 'GBP' :
+			case 'BRL' :
+			case 'EUR' :
+			case 'USD' :
+			case 'AUD' :
+			case 'CAD' :
+			case 'HKD' :
+			case 'MXN' :
+			case 'SGD' :
+			case 'JPY' :
+			case 'THB' :
+			case 'INR' :
+			case 'RIAL' :
+			case 'TRY' :
+			case 'RUB' :
+			case 'SEK' :
+			case 'PLN' :
+			case 'PHP' :
+			case 'TWD' :
+			case 'CZK' :
+			case 'DKK' :
+			case 'HUF' :
+			case 'MYR' :
+			case 'ILS' :
 				$formatted = $price . $symbol;
 				break;
 			default :

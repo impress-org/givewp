@@ -6,7 +6,7 @@
  *
  * @package     Give
  * @subpackage  Classes/API
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.1
  */
@@ -144,13 +144,16 @@ class Give_API {
 		}
 
 		add_action( 'init', array( $this, 'add_endpoint' ) );
-		add_action( 'template_redirect', array( $this, 'process_query' ), - 1 );
+		add_action( 'wp', array( $this, 'process_query' ), - 1 );
 		add_filter( 'query_vars', array( $this, 'query_vars' ) );
 		add_action( 'show_user_profile', array( $this, 'user_key_field' ) );
 		add_action( 'edit_user_profile', array( $this, 'user_key_field' ) );
 		add_action( 'personal_options_update', array( $this, 'update_key' ) );
 		add_action( 'edit_user_profile_update', array( $this, 'update_key' ) );
 		add_action( 'give_process_api_key', array( $this, 'process_api_key' ) );
+
+		// Setup a backwards compatibility check for user API Keys
+		add_filter( 'get_user_metadata', array( $this, 'api_key_backwards_compat' ), 10, 4 );
 
 		// Determine if JSON_PRETTY_PRINT is available
 		$this->pretty_print = defined( 'JSON_PRETTY_PRINT' ) ? JSON_PRETTY_PRINT : null;
@@ -312,9 +315,6 @@ class Give_API {
 				$this->missing_auth();
 			}
 
-			// Auth was provided, include the upgrade routine so we can use the fallback api checks
-			require GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrade-functions.php';
-
 			// Retrieve the user by public API key and ensure they exist
 			if ( ! ( $user = $this->get_user( $wp_query->query_vars['key'] ) ) ) {
 
@@ -423,7 +423,7 @@ class Give_API {
 	 */
 	private function missing_auth() {
 		$error          = array();
-		$error['error'] = __( 'You must specify both a token and API key!', 'give' );
+		$error['error'] = esc_attr__( 'You must specify both a token and API key!', 'give' );
 
 		$this->data = $error;
 		$this->output( 401 );
@@ -440,10 +440,10 @@ class Give_API {
 	 */
 	private function invalid_auth() {
 		$error          = array();
-		$error['error'] = __( 'Your request could not be authenticated!', 'give' );
+		$error['error'] = esc_attr__( 'Your request could not be authenticated!', 'give' );
 
 		$this->data = $error;
-		$this->output( 401 );
+		$this->output( 403 );
 	}
 
 	/**
@@ -457,10 +457,10 @@ class Give_API {
 	 */
 	private function invalid_key() {
 		$error          = array();
-		$error['error'] = __( 'Invalid API key!', 'give' );
+		$error['error'] = esc_attr__( 'Invalid API key!', 'give' );
 
 		$this->data = $error;
-		$this->output( 401 );
+		$this->output( 403 );
 	}
 
 	/**
@@ -473,7 +473,7 @@ class Give_API {
 	 */
 	private function invalid_version() {
 		$error          = array();
-		$error['error'] = __( 'Invalid API version!', 'give' );
+		$error['error'] = esc_attr__( 'Invalid API version!', 'give' );
 
 		$this->data = $error;
 		$this->output( 404 );
@@ -519,6 +519,7 @@ class Give_API {
 
 		$data         = array();
 		$this->routes = new $this->versions[$this->get_queried_version()];
+		$this->routes->validate_request();
 
 		switch ( $this->endpoint ) :
 
@@ -1020,7 +1021,7 @@ class Give_API {
 			foreach ( give_get_variable_prices( $form_info->ID ) as $price ) {
 				$counter ++;
 				//muli-level item
-				$level = isset( $price['_give_text'] ) ? $price['_give_text'] : 'level-' . $counter;
+				$level                                     = isset( $price['_give_text'] ) ? $price['_give_text'] : 'level-' . $counter;
 				$form['pricing'][ sanitize_key( $level ) ] = $price['_give_amount'];
 
 			}
@@ -1031,11 +1032,12 @@ class Give_API {
 		if ( user_can( $this->user_id, 'view_give_sensitive_data' ) || $this->override ) {
 
 			//Sensitive data here
+			do_action( 'give_api_sensitive_data' );
 
 		}
 
 		return apply_filters( 'give_api_forms_form', $form );
-		die();
+
 	}
 
 	/**
@@ -1066,7 +1068,7 @@ class Give_API {
 		$earnings  = array(
 			'earnings' => array()
 		);
-		$donations = array(
+		$sales = array(
 			'donations' => array()
 		);
 		$error     = array();
@@ -1564,6 +1566,7 @@ class Give_API {
 	 * @return void
 	 */
 	function user_key_field( $user ) {
+
 		if ( ( give_get_option( 'api_allow_user_keys', false ) || current_user_can( 'manage_give_settings' ) ) && current_user_can( 'edit_user', $user->ID ) ) {
 			$user = get_userdata( $user->ID );
 			?>
@@ -1571,7 +1574,7 @@ class Give_API {
 				<tbody>
 				<tr>
 					<th>
-						<?php _e( 'Give API Keys', 'give' ); ?>
+						<?php esc_attr_e( 'Give API Keys', 'give' ); ?>
 					</th>
 					<td>
 						<?php
@@ -1580,19 +1583,19 @@ class Give_API {
 						?>
 						<?php if ( empty( $user->give_user_public_key ) ) { ?>
 							<input name="give_set_api_key" type="checkbox" id="give_set_api_key" value="0" />
-							<span class="description"><?php _e( 'Generate API Key', 'give' ); ?></span>
+							<span class="description"><?php esc_attr_e( 'Generate API Key', 'give' ); ?></span>
 						<?php } else { ?>
 							<strong style="display:inline-block; width: 125px;"><?php _e( 'Public key:', 'give' ); ?>&nbsp;</strong>
 							<input type="text" disabled="disabled" class="regular-text" id="publickey" value="<?php echo esc_attr( $public_key ); ?>" />
 							<br />
-							<strong style="display:inline-block; width: 125px;"><?php _e( 'Secret key:', 'give' ); ?>&nbsp;</strong>
+							<strong style="display:inline-block; width: 125px;"><?php esc_attr_e( 'Secret key:', 'give' ); ?>&nbsp;</strong>
 							<input type="text" disabled="disabled" class="regular-text" id="privatekey" value="<?php echo esc_attr( $secret_key ); ?>" />
 							<br />
-							<strong style="display:inline-block; width: 125px;"><?php _e( 'Token:', 'give' ); ?>&nbsp;</strong>
+							<strong style="display:inline-block; width: 125px;"><?php esc_attr_e( 'Token:', 'give' ); ?>&nbsp;</strong>
 							<input type="text" disabled="disabled" class="regular-text" id="token" value="<?php echo esc_attr( $this->get_token( $user->ID ) ); ?>" />
 							<br />
 							<input name="give_set_api_key" type="checkbox" id="give_set_api_key" value="0" />
-							<span class="description"><label for="give_set_api_key"><?php _e( 'Revoke API Keys', 'give' ); ?></label></span>
+							<span class="description"><label for="give_set_api_key"><?php esc_attr_e( 'Revoke API Keys', 'give' ); ?></label></span>
 						<?php } ?>
 					</td>
 				</tr>
@@ -1615,8 +1618,12 @@ class Give_API {
 
 		if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'give-api-nonce' ) ) {
 
-			wp_die( __( 'Nonce verification failed', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die( esc_attr__( 'Nonce verification failed', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 
+		}
+
+		if ( empty( $args['user_id'] ) ) {
+			wp_die(  esc_attr__( 'User ID Required', 'give' ), esc_attr__( 'Error', 'give' ), array( 'response' => 401 ) );
 		}
 
 		if ( is_numeric( $args['user_id'] ) ) {
@@ -1728,8 +1735,6 @@ class Give_API {
 
 		$public_key = $this->get_user_public_key( $user_id );
 		$secret_key = $this->get_user_secret_key( $user_id );
-
-
 		if ( ! empty( $public_key ) ) {
 			delete_transient( md5( 'give_api_user_' . $public_key ) );
 			delete_transient( md5( 'give_api_user_public_key' . $user_id ) );
@@ -1793,7 +1798,6 @@ class Give_API {
 	private function generate_public_key( $user_email = '' ) {
 		$auth_key = defined( 'AUTH_KEY' ) ? AUTH_KEY : '';
 		$public   = hash( 'md5', $user_email . $auth_key . date( 'U' ) );
-
 		return $public;
 	}
 
@@ -1864,6 +1868,45 @@ class Give_API {
 		$earnings['earnings']['totals']        = give_get_total_earnings();
 
 		return $earnings;
+	}
+
+	/**
+	 * API Key Backwards Compatibility
+	 *
+	 * @description A Backwards Compatibility call for the change of meta_key/value for users API Keys
+	 *
+	 * @since       1.3.6
+	 *
+	 * @param  string $check     Whether to check the cache or not
+	 * @param  int    $object_id The User ID being passed
+	 * @param  string $meta_key  The user meta key
+	 * @param  bool   $single    If it should return a single value or array
+	 *
+	 * @return string            The API key/secret for the user supplied
+	 */
+	public function api_key_backwards_compat( $check, $object_id, $meta_key, $single ) {
+
+		if ( $meta_key !== 'give_user_public_key' && $meta_key !== 'give_user_secret_key' ) {
+			return $check;
+		}
+
+		$return = $check;
+
+		switch ( $meta_key ) {
+			case 'give_user_public_key':
+				$return = Give()->api->get_user_public_key( $object_id );
+				break;
+			case 'give_user_secret_key':
+				$return = Give()->api->get_user_secret_key( $object_id );
+				break;
+		}
+
+		if ( ! $single ) {
+			$return = array( $return );
+		}
+
+		return $return;
+
 	}
 
 }

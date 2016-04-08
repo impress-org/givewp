@@ -1,0 +1,5635 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Give - Democratizing Generosity\n"
+"POT-Creation-Date: 2015-08-31 19:19+0200\n"
+"PO-Revision-Date: 2016-02-03 19:23+0100\n"
+"Last-Translator: P. E.\n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.6\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: give.php:186 give.php:198
+msgid "Cheatin&#8217; huh?"
+msgstr "Tricheur ?!"
+
+#: includes/admin/EDD_SL_Plugin_Updater.php:180
+#, php-format
+msgid ""
+"There is a new version of %1$s available. <a target=\"_blank\" class="
+"\"thickbox\" href=\"%2$s\">View version %3$s details</a>."
+msgstr ""
+"Il y a une nouvelle version de %1$s disponible. <a target=\"_blank\" class="
+"\"thickbox\" href=\"%2$s\">Voir les détails de %3$s</a>."
+
+#: includes/admin/EDD_SL_Plugin_Updater.php:187
+#, php-format
+msgid ""
+"There is a new version of %1$s available. <a target=\"_blank\" class="
+"\"thickbox\" href=\"%2$s\">View version %3$s details</a> or <a href=\"%4$s"
+"\">update now</a>."
+msgstr ""
+"Il y a une nouvelle version de %1$s disponible. <a target=\"_blank\" class="
+"\"thickbox\" href=\"%2$s\">Voir les détails de %3$s</a> ou <a href=\"%4$s"
+"\">mettre à jour maintenant</a>."
+
+#: includes/admin/EDD_SL_Plugin_Updater.php:327
+msgid "You do not have permission to install plugin updates"
+msgstr "Vous n’avez pas les permissions pour mettre à jour les plugins"
+
+#: includes/admin/EDD_SL_Plugin_Updater.php:327
+#: includes/admin/forms/dashboard-columns.php:223
+#: includes/admin/payments/actions.php:27
+#: includes/admin/payments/actions.php:76
+#: includes/admin/payments/actions.php:225
+#: includes/admin/payments/actions.php:242
+#: includes/admin/payments/actions.php:275
+#: includes/admin/payments/actions.php:299
+#: includes/admin/payments/view-order-details.php:24
+#: includes/admin/payments/view-order-details.php:34
+#: includes/admin/reporting/class-api-requests-logs-list-table.php:141
+#: includes/admin/reporting/class-export.php:177
+#: includes/admin/reporting/class-gateway-error-logs-list-table.php:127
+#: includes/admin/reporting/pdf-reports.php:31
+#: includes/admin/reporting/pdf-reports.php:35
+#: includes/admin/upgrades/upgrade-functions.php:80
+#: includes/api/class-give-api.php:1588 includes/api/class-give-api.php:1601
+#: includes/api/class-give-api.php:1603
+#: includes/class-give-license-handler.php:191
+#: includes/class-give-license-handler.php:262 includes/emails/actions.php:56
+#: includes/emails/template.php:249 includes/error-tracking.php:50
+#: includes/gateways/manual.php:48 includes/gateways/paypal-standard.php:37
+msgid "Error"
+msgstr "Erreur"
+
+#: includes/admin/add-ons.php:44 includes/admin/admin-pages.php:53
+msgid "Give Add-ons"
+msgstr "Extensions de Give"
+
+#: includes/admin/add-ons.php:45
+msgid "Browse All Extensions"
+msgstr "Parcourir toutes les extensions"
+
+#: includes/admin/add-ons.php:45
+msgid "View All Add-ons"
+msgstr "Voir toutes les extensions"
+
+#: includes/admin/add-ons.php:49
+msgid "The following Add-ons extend the functionality of Give."
+msgstr "Les extensions suivantes ajoutent des fonctionnalités à Give."
+
+#: includes/admin/add-ons.php:78
+msgid ""
+"There was an error retrieving the Give Add-ons list from the server. Please "
+"try again later."
+msgstr ""
+"Il y a eu un problème lors de la récupération des extensions de Give depuis "
+"le serveur. Merci de re-essayer."
+
+#: includes/admin/admin-footer.php:31
+#, php-format
+msgid ""
+"If you like <strong>Give</strong> please leave us a %s&#9733;&#9733;&#9733;"
+"&#9733;&#9733;%s rating. It takes a minute and helps a lot. Thanks in "
+"advance!"
+msgstr ""
+"Si vous aimez <strong>Give</strong> merci de nous laisser %s&#9733;&#9733;"
+"&#9733;&#9733;&#9733;%s un avis. Cela prends une minute et nous aide "
+"beaucoup. Merci !"
+
+#: includes/admin/admin-footer.php:31
+msgid "Thanks :)"
+msgstr "Merci :)"
+
+#: includes/admin/admin-pages.php:41
+#: includes/admin/customers/class-customer-table.php:67
+#: includes/admin/customers/customers.php:76
+#: includes/admin/reporting/class-donor-reports-table.php:67
+#: includes/admin/reporting/reports.php:76
+msgid "Donors"
+msgstr "Donateurs"
+
+#: includes/admin/admin-pages.php:44
+msgid "Donation Reports"
+msgstr "Rapports des dons"
+
+#: includes/admin/admin-pages.php:44 includes/admin/reporting/reports.php:43
+msgid "Reports"
+msgstr "Rapports"
+
+#: includes/admin/admin-pages.php:47
+msgid "Give Settings"
+msgstr "Paramètres de Give"
+
+#: includes/admin/admin-pages.php:47
+msgid "Settings"
+msgstr "Paramètres"
+
+#: includes/admin/admin-pages.php:53 includes/admin/register-settings.php:103
+#: includes/admin/welcome.php:231
+msgid "Add-ons"
+msgstr "Extensions"
+
+#: includes/admin/admin-pages.php:56
+msgid "Give Upgrades"
+msgstr "Mise à jour de Give"
+
+#: includes/admin/class-admin-notices.php:54
+msgid "Give Test Mode Active"
+msgstr "Mode test actif de Give"
+
+#: includes/admin/class-admin-notices.php:73
+msgid ""
+"Your site appears to be blocking the WordPress ajax interface. This may "
+"causes issues with Give."
+msgstr ""
+"Votre site bloque apparement les requêtes Ajax de Wordpress. Ceci peut "
+"causer des problèmes avec Give."
+
+#: includes/admin/class-admin-notices.php:74
+#, php-format
+msgid ""
+"Please see <a href=\"%s\" target=\"_blank\">this reference</a> for possible "
+"solutions."
+msgstr ""
+"Veuillez lire <a href=\"%s\" target=\"_blank\">cette référence</a> pour "
+"d’éventuelles solutions"
+
+#: includes/admin/class-admin-notices.php:78
+msgid "Dismiss Notice"
+msgstr "Message d’alerte"
+
+#: includes/admin/class-admin-notices.php:89
+msgid "The payment has been deleted."
+msgstr "Le paiement a été supprimé"
+
+#: includes/admin/class-admin-notices.php:92
+msgid "The donation receipt has been resent."
+msgstr "L’accusé de réception du bon a été renvoyé"
+
+#: includes/admin/class-admin-notices.php:95
+msgid "The payment note has been deleted."
+msgstr "La facture de paiement a été supprimée"
+
+#: includes/admin/class-admin-notices.php:104
+msgid "The settings have been imported."
+msgstr "Les paramètres ont été importés"
+
+#: includes/admin/class-admin-notices.php:107
+msgid "API keys successfully generated."
+msgstr "Clé API générée avec succès"
+
+#: includes/admin/class-admin-notices.php:110
+msgid "The specified user already has API keys."
+msgstr "L’utilisateur actuel a déjà une clé API."
+
+#: includes/admin/class-admin-notices.php:113
+msgid "API keys successfully regenerated."
+msgstr "Clé API re-générée avec succès"
+
+#: includes/admin/class-admin-notices.php:116
+msgid "API keys successfully revoked."
+msgstr "Clé API supprimée avec succès"
+
+#: includes/admin/class-admin-notices.php:119
+msgid "The test email has been sent."
+msgstr "L’email de test a été envoyé avec succès."
+
+#: includes/admin/class-admin-notices.php:127
+msgid "The payment note has been added successfully."
+msgstr "Le récépissé de paiement a été ajouté avec succès."
+
+#: includes/admin/class-admin-notices.php:130
+msgid "The payment has been successfully updated."
+msgstr "Le paiement a été mis à jour avec succès."
+
+#: includes/admin/class-admin-notices.php:139
+msgid "Donor successfully deleted"
+msgstr "Donateur supprimé avec succès"
+
+#: includes/admin/class-admin-notices.php:169
+msgid ""
+"There seems to be an issue with the server. Please try again in a few "
+"minutes."
+msgstr ""
+"Il semble y avoir des problèmes avec le serveur. Merci de re-essayer dans "
+"quelques minutes."
+
+#: includes/admin/class-api-keys-table.php:54
+msgid "API Key"
+msgstr "Clé API"
+
+#: includes/admin/class-api-keys-table.php:55
+msgid "API Keys"
+msgstr "Clés API"
+
+#: includes/admin/class-api-keys-table.php:142
+msgid "View API Log"
+msgstr "Voir le journal API"
+
+#: includes/admin/class-api-keys-table.php:152
+msgid "Reissue"
+msgstr "Re-génerer"
+
+#: includes/admin/class-api-keys-table.php:160
+msgid "Revoke"
+msgstr "Annuler"
+
+#: includes/admin/class-api-keys-table.php:177 includes/forms/template.php:764
+#: includes/forms/template.php:773 includes/forms/template.php:857
+msgid "Username"
+msgstr "Nom d’utilisateur"
+
+#: includes/admin/class-api-keys-table.php:178
+msgid "Public Key"
+msgstr "Clé publique"
+
+#: includes/admin/class-api-keys-table.php:179
+msgid "Token"
+msgstr "Jeton"
+
+#: includes/admin/class-api-keys-table.php:180
+msgid "Secret Key"
+msgstr "Clé secrète"
+
+#: includes/admin/class-api-keys-table.php:206
+msgid "Generate New API Keys"
+msgstr "Générer de nouvelles clés API"
+
+#: includes/admin/customers/class-customer-table.php:66
+#: includes/admin/reporting/class-donor-reports-table.php:66
+msgid "Donor"
+msgstr "Donateur"
+
+#: includes/admin/customers/class-customer-table.php:140
+msgid "Unnamed Donor"
+msgstr "Donateur inconnu"
+
+#: includes/admin/customers/class-customer-table.php:143
+#, php-format
+msgid "<a href=\"%s\">View Donor</a>"
+msgstr "<a href=\"%s\">Voir le donateur</a>"
+
+#: includes/admin/customers/class-customer-table.php:144
+#, php-format
+msgid "<a href=\"%s\">Delete</a>"
+msgstr "<a href=\"%s\">Supprimer</a>"
+
+#: includes/admin/customers/class-customer-table.php:159
+#: includes/admin/forms/dashboard-columns.php:35
+#: includes/admin/reporting/class-donor-reports-table.php:201
+#: includes/admin/reporting/class-export-customers.php:79
+msgid "Name"
+msgstr "Nom"
+
+#: includes/admin/customers/class-customer-table.php:160
+#: includes/admin/customers/customers.php:228
+#: includes/admin/payments/class-payments-table.php:247
+#: includes/admin/reporting/class-donor-reports-table.php:203
+#: includes/admin/reporting/class-export-customers.php:71
+#: includes/admin/reporting/class-export-customers.php:82
+#: includes/admin/reporting/class-export-payments.php:65
+msgid "Email"
+msgstr "Email"
+
+#: includes/admin/customers/class-customer-table.php:161
+#: includes/admin/forms/dashboard-columns.php:40
+#: includes/admin/reporting/class-export-earnings.php:65
+#: includes/admin/reporting/class-form-reports-table.php:100
+#: includes/admin/reporting/graphing.php:181
+#: includes/admin/reporting/graphing.php:419
+#: includes/admin/reporting/logs.php:97
+#: includes/admin/reporting/pdf-reports.php:241 includes/post-types.php:50
+msgid "Donations"
+msgstr "Dons"
+
+#: includes/admin/customers/class-customer-table.php:162
+#: includes/admin/reporting/class-export-customers.php:86
+msgid "Total Donated"
+msgstr "Total dons"
+
+#: includes/admin/customers/class-customer-table.php:163
+msgid "Date Created"
+msgstr "Date de création"
+
+#: includes/admin/customers/customer-actions.php:30
+#: includes/admin/customers/customer-actions.php:192
+#: includes/admin/customers/customer-actions.php:353
+msgid "You do not have permission to edit this donor."
+msgstr "Vous n’avez pas les permissions pour modifier ce donateur"
+
+#: includes/admin/customers/customer-actions.php:42
+#: includes/admin/customers/customer-actions.php:204
+#: includes/admin/customers/customer-actions.php:275
+#: includes/admin/customers/customer-actions.php:364
+msgid "Cheatin' eh?!"
+msgstr "Tricheur, non ?!"
+
+#: includes/admin/customers/customer-actions.php:59
+msgid "Please enter a valid email address."
+msgstr "Entrez une adresse Email correcte."
+
+#: includes/admin/customers/customer-actions.php:66
+#, php-format
+msgid "The User ID %d is already associated with a different donor."
+msgstr "L’utilisateur ID %d est déjà associé à un autre donateur"
+
+#: includes/admin/customers/customer-actions.php:72
+#, php-format
+msgid "The User ID %d does not exist. Please assign an existing user."
+msgstr "L’utilisateur ID %d n’existe pas. Assignez un utilisateur existant."
+
+#: includes/admin/customers/customer-actions.php:208
+msgid "A note is required"
+msgstr "Un récépissé est requis"
+
+#: includes/admin/customers/customer-actions.php:262
+msgid "You do not have permission to delete this donor."
+msgstr "Vous n’avez pas les permissions pour supprimer ce donateur."
+
+#: includes/admin/customers/customer-actions.php:279
+msgid "Please confirm you want to delete this donor"
+msgstr "Confimez la suppression de ce donateur"
+
+#: includes/admin/customers/customer-actions.php:320
+msgid "Error deleting donor"
+msgstr "Erreur pendant la suppression de ce donateur"
+
+#: includes/admin/customers/customer-actions.php:327
+msgid "Invalid Donor ID"
+msgstr "ID du donateur incorrect"
+
+#: includes/admin/customers/customer-actions.php:388
+msgid "Failed to disconnect user from donor"
+msgstr "Echec de la dissociation de l’utilisateur du donateur"
+
+#: includes/admin/customers/customer-functions.php:52
+msgid "Donor Profile"
+msgstr "Profil du donateur"
+
+#: includes/admin/customers/customer-functions.php:53
+msgid "Donor Notes"
+msgstr "Récépissés du donateur"
+
+#: includes/admin/customers/customer-functions.php:72
+#: includes/admin/customers/customers.php:588
+msgid "Delete Donor"
+msgstr "Supprimer le donateur"
+
+#: includes/admin/customers/customers.php:80
+#: includes/admin/reporting/class-donor-reports-table.php:141
+msgid "Search Donors"
+msgstr "Rechercher un donateur"
+
+#: includes/admin/customers/customers.php:109
+msgid "You are not permitted to view this data."
+msgstr "Vous n’avez pas les permissions pour voir cela."
+
+#: includes/admin/customers/customers.php:114
+#: includes/admin/customers/customers.php:122
+msgid "Invalid Donor ID Provided."
+msgstr "ID du donateur fourni incorrect."
+
+#: includes/admin/customers/customers.php:209
+msgid "Donor Name"
+msgstr "Nom du donateur"
+
+#: includes/admin/customers/customers.php:213
+msgid "Donor since"
+msgstr "donateur depuis"
+
+#: includes/admin/customers/customers.php:217
+msgid "Edit Donor"
+msgstr "Modifier le donateur"
+
+#: includes/admin/customers/customers.php:231
+msgid "Donor Email"
+msgstr "Email du donateur"
+
+#: includes/admin/customers/customers.php:237
+msgid "User ID"
+msgstr "ID Utilisateur"
+
+#: includes/admin/customers/customers.php:268
+msgid "none"
+msgstr "aucun"
+
+#: includes/admin/customers/customers.php:271
+msgid "Disconnects the current user ID from this customer record"
+msgstr ""
+"Déconnecter l’ID de l’utilisateur actuel de l’enregistrement de ce client"
+
+#: includes/admin/customers/customers.php:271
+msgid "Disconnect User"
+msgstr "Déconnecter l’utilisateur"
+
+#: includes/admin/customers/customers.php:277
+#: includes/admin/reporting/class-export-payments.php:68
+#: includes/forms/template.php:597 templates/shortcode-profile-editor.php:75
+msgid "Address"
+msgstr "Adresse"
+
+#: includes/admin/customers/customers.php:309
+msgid "Address 1"
+msgstr "Adresse 1"
+
+#: includes/admin/customers/customers.php:310
+msgid "Address 2"
+msgstr "Adresse 2"
+
+#: includes/admin/customers/customers.php:311
+#: includes/admin/reporting/class-export-payments.php:70
+#: includes/forms/template.php:625 includes/forms/template.php:633
+#: templates/shortcode-profile-editor.php:87
+msgid "City"
+msgstr "Ville"
+
+#: includes/admin/customers/customers.php:338 includes/forms/template.php:680
+#: includes/forms/template.php:706 templates/shortcode-profile-editor.php:108
+msgid "State / Province"
+msgstr "Région"
+
+#: includes/admin/customers/customers.php:340
+msgid "Postal"
+msgstr "Code postal"
+
+#: includes/admin/customers/customers.php:363
+msgid "Update Donor"
+msgstr "Mettre à jour le donateur"
+
+#: includes/admin/customers/customers.php:364
+#: includes/admin/customers/customers.php:589
+#: includes/admin/forms/shortcode.php:106
+#: includes/admin/payments/view-order-details.php:321
+#: includes/class-give-html-elements.php:517
+msgid "Cancel"
+msgstr "Annuler"
+
+#: includes/admin/customers/customers.php:375
+msgid "View All Purchases"
+msgstr "Voir tous les achats"
+
+#: includes/admin/customers/customers.php:377
+#, php-format
+msgid "%d Completed Donation"
+msgid_plural "%d Completed Donations"
+msgstr[0] "%d du don complété"
+msgstr[1] "%d des dons complétés"
+
+#: includes/admin/customers/customers.php:382
+msgid "Lifetime Donations"
+msgstr "Durée du vie des dons"
+
+#: includes/admin/customers/customers.php:394
+msgid "Recent Donations"
+msgstr "Dons récents"
+
+#: includes/admin/customers/customers.php:403
+#: includes/admin/forms/metabox.php:91 includes/admin/forms/metabox.php:361
+#: includes/admin/payments/class-payments-table.php:253
+#: includes/admin/reporting/class-donor-reports-table.php:202
+#: includes/admin/reporting/class-export-payments.php:63
+#: includes/admin/reporting/class-export.php:72
+#: templates/history-donations.php:11
+msgid "ID"
+msgstr "ID"
+
+#: includes/admin/customers/customers.php:404
+#: includes/admin/forms/metabox.php:96 includes/admin/forms/metabox.php:362
+#: includes/admin/payments/class-payments-table.php:248
+#: includes/admin/reporting/class-export-payments.php:76
+#: templates/history-donations.php:13
+msgid "Amount"
+msgstr "Montant"
+
+#: includes/admin/customers/customers.php:405
+#: includes/admin/forms/dashboard-columns.php:43
+#: includes/admin/payments/class-payments-table.php:250
+#: includes/admin/reporting/class-api-requests-logs-list-table.php:96
+#: includes/admin/reporting/class-export-earnings.php:64
+#: includes/admin/reporting/class-export-payments.php:82
+#: includes/admin/reporting/class-export.php:73
+#: includes/admin/reporting/class-gateway-error-logs-list-table.php:130
+#: includes/admin/reporting/class-sales-logs-list-table.php:102
+#: templates/history-donations.php:12 templates/shortcode-receipt.php:72
+msgid "Date"
+msgstr "Date"
+
+#: includes/admin/customers/customers.php:406
+#: includes/admin/payments/class-payments-table.php:249
+#: includes/admin/reporting/class-export-payments.php:84
+msgid "Status"
+msgstr "État"
+
+#: includes/admin/customers/customers.php:407
+#: includes/admin/customers/customers.php:443
+msgid "Actions"
+msgstr "Actions"
+
+#: includes/admin/customers/customers.php:419
+msgid "View Details for Donation"
+msgstr "Voir les détails du don"
+
+#: includes/admin/customers/customers.php:421
+#: templates/history-donations.php:32
+msgid "View Details"
+msgstr "Voir les détails"
+
+#: includes/admin/customers/customers.php:429
+msgid "No Donations Found"
+msgstr "Aucun don trouvé"
+
+#: includes/admin/customers/customers.php:435
+msgid "Completed Donations"
+msgstr "Dons terminés"
+
+#: includes/admin/customers/customers.php:452
+#: includes/admin/customers/customers.php:453 includes/admin/welcome.php:528
+#, php-format
+msgid "View %s"
+msgstr "Voir %s"
+
+#: includes/admin/customers/customers.php:460
+msgid "No Completed Donations Found"
+msgstr "Aucun don terminé trouvé"
+
+#: includes/admin/customers/customers.php:498
+msgid "Notes"
+msgstr "Récépissés"
+
+#: includes/admin/customers/customers.php:536
+msgid "No Donor Notes"
+msgstr "Aucun récépissé de dons trouvés"
+
+#: includes/admin/customers/customers.php:570
+msgid "Are you sure you want to delete this donor?"
+msgstr "Êtes-vous sûr de vouloir supprimer ce donateur ?"
+
+#: includes/admin/customers/customers.php:578
+msgid "Delete all associated payments and records?"
+msgstr "Supprimer tous les paiements et enregistrements associés ?"
+
+#: includes/admin/dashboard-widgets.php:25
+msgid "Give: Donation Statistics"
+msgstr "Give : Statistiques des dons"
+
+#: includes/admin/dashboard-widgets.php:51
+#, php-format
+msgid "Happy %1$s!"
+msgstr "Joyeux %1$s !"
+
+#: includes/admin/dashboard-widgets.php:61
+msgctxt "Displays in WP admin dashboard widget after the day's total donations"
+msgid "donations today"
+msgstr "dons aujourd’hui"
+
+#: includes/admin/dashboard-widgets.php:71
+#: includes/admin/reporting/graphing.php:480 includes/class-give-stats.php:85
+msgid "This Week"
+msgstr "Cette semaine"
+
+#: includes/admin/dashboard-widgets.php:72
+#: includes/admin/reporting/graphing.php:482 includes/class-give-stats.php:87
+msgid "This Month"
+msgstr "Ce mois"
+
+#: includes/admin/dashboard-widgets.php:73
+msgid "Past 30 Days"
+msgstr "Les 30 derniers jours"
+
+#: includes/admin/dashboard-widgets.php:81
+msgid "this week"
+msgstr "cette semaine"
+
+#: includes/admin/dashboard-widgets.php:86
+msgid "this month"
+msgstr "ce mois"
+
+#: includes/admin/dashboard-widgets.php:93
+msgid "last month"
+msgstr "le mois dernier"
+
+#: includes/admin/dashboard-widgets.php:98
+msgid "this year"
+msgstr "cette année"
+
+#: includes/admin/dashboard-widgets.php:119
+#, php-format
+msgid "%s Give "
+msgid_plural "%s Give "
+msgstr[0] "%s Give "
+msgstr[1] "%s Give "
+
+#: includes/admin/forms/dashboard-columns.php:36
+#: includes/admin/reporting/pdf-reports.php:72 includes/post-types.php:202
+msgid "Categories"
+msgstr "Catégories"
+
+#: includes/admin/forms/dashboard-columns.php:37
+#: includes/admin/reporting/pdf-reports.php:73 includes/post-types.php:243
+msgid "Tags"
+msgstr "Étiquettes"
+
+#: includes/admin/forms/dashboard-columns.php:38
+#: includes/admin/forms/dashboard-columns.php:297
+#: includes/admin/reporting/pdf-reports.php:71
+msgid "Price"
+msgstr "Prix"
+
+#: includes/admin/forms/dashboard-columns.php:39
+msgid "Goal"
+msgstr "Objectif"
+
+#: includes/admin/forms/dashboard-columns.php:41
+#: includes/admin/reporting/class-export-earnings.php:66
+#: includes/admin/reporting/class-form-reports-table.php:101
+#: includes/admin/reporting/graphing.php:180
+#: includes/admin/reporting/graphing.php:418
+#: includes/admin/reporting/pdf-reports.php:211
+#: includes/admin/reporting/reports.php:74
+msgid "Income"
+msgstr "Revenu"
+
+#: includes/admin/forms/dashboard-columns.php:42
+msgid "Shortcode"
+msgstr "Shortcode"
+
+#: includes/admin/forms/dashboard-columns.php:77
+msgid "Purchase"
+msgstr "Achat"
+
+#: includes/admin/forms/dashboard-columns.php:223
+msgid "You do not have permission to view this data."
+msgstr "Vous n’avez pas les permissions de voir cela."
+
+#: includes/admin/forms/dashboard-columns.php:295
+#, php-format
+msgid "%s Configuration"
+msgstr "%s Configuration"
+
+#: includes/admin/forms/metabox.php:42
+msgid "Donation Options"
+msgstr "Options du don"
+
+#: includes/admin/forms/metabox.php:49
+msgid "Donation Option"
+msgstr "Option du don"
+
+#: includes/admin/forms/metabox.php:50
+msgid ""
+"Would you like this form to have one set donation price or multiple levels "
+"(for example, $10 silver, $20 gold, $50 platinum)?"
+msgstr ""
+"Voulez-vous du formulaire qu’il soit à prix simple ou multiple ? (par "
+"exemple, 10€ argent, 20€ or, 50€ platine) ?"
+
+#: includes/admin/forms/metabox.php:55 includes/admin/forms/metabox.php:60
+msgid "Set Donation"
+msgstr "Définir le don"
+
+#: includes/admin/forms/metabox.php:56
+msgid "Multi-level Donation"
+msgstr "Don à plusieurs niveaux"
+
+#: includes/admin/forms/metabox.php:61
+msgid "This is the set donation amount for this form."
+msgstr "Ceci est le montant défini du don pour ce formulaire."
+
+#: includes/admin/forms/metabox.php:84
+msgid "Add Level"
+msgstr "Ajouter un niveau"
+
+#: includes/admin/forms/metabox.php:85
+msgid "<span class=\"dashicons dashicons-no\"></span>"
+msgstr "<span class=\"dashicons dashicons-no\"></span>"
+
+#: includes/admin/forms/metabox.php:108 includes/admin/forms/metabox.php:363
+msgid "Text"
+msgstr "Texte"
+
+#: includes/admin/forms/metabox.php:112
+msgid "Donation Level"
+msgstr "Niveau du don"
+
+#: includes/admin/forms/metabox.php:117 includes/admin/forms/metabox.php:364
+#: includes/libraries/cmb2/includes/CMB2_JS.php:87
+msgid "Default"
+msgstr "Défaut"
+
+#: includes/admin/forms/metabox.php:125
+msgid "Display Style"
+msgstr "Style d’affichage"
+
+#: includes/admin/forms/metabox.php:126
+msgid "Set how the donations levels will display on the form."
+msgstr ""
+"Indiquez comment les niveaux du don seront affichés dans le formulaire."
+
+#: includes/admin/forms/metabox.php:131
+msgid "Buttons"
+msgstr "Boutons"
+
+#: includes/admin/forms/metabox.php:132
+msgid "Radios"
+msgstr "Radios"
+
+#: includes/admin/forms/metabox.php:133
+msgid "Dropdown"
+msgstr "Liste déroulante"
+
+#: includes/admin/forms/metabox.php:138
+msgid "Custom Amount"
+msgstr "Montant personnalisé"
+
+#: includes/admin/forms/metabox.php:139
+msgid "Do you want the user to be able to input their own donation amount?"
+msgstr ""
+"Voulez-vous que les utilisateurs soient autorisés à entrer un montant "
+"personnalisé ?"
+
+#: includes/admin/forms/metabox.php:144 includes/admin/forms/metabox.php:167
+#: includes/admin/forms/metabox.php:321
+#: includes/gateways/offline-donations.php:267
+msgid "Yes"
+msgstr "Oui"
+
+#: includes/admin/forms/metabox.php:145 includes/admin/forms/metabox.php:168
+#: includes/admin/forms/metabox.php:320
+#: includes/gateways/offline-donations.php:268
+msgid "No"
+msgstr "Non"
+
+#: includes/admin/forms/metabox.php:149
+msgid "Custom Amount Text"
+msgstr "Texte pour le montant personnalisé"
+
+#: includes/admin/forms/metabox.php:150
+msgid ""
+"This text appears as a label next to the custom amount field for single "
+"level forms. For multi-level forms the text will appear as it's own level "
+"(ie button, radio, or select option). Add your own message or leave this "
+"field blank to prevent it from displaying within your form."
+msgstr ""
+"Ce texte apparaît comme une étiquette à coté du champ de montant "
+"personnalisé pour les dons à niveau simple. Pour les dons à niveaux "
+"multiples, ce texte apparaîtra à son propre niveau (ie. bouton, radio ou "
+"liste déroulante). Ajoutez votre propre message ou laissez ce champ vide "
+"pour ne pas l’afficher dans votre formulaire."
+
+#: includes/admin/forms/metabox.php:156
+msgid "Give a Custom Amount"
+msgstr "Indiquez un montant personnalisé"
+
+#: includes/admin/forms/metabox.php:161
+msgid "Set Goal?"
+msgstr "Définir un objectif ?"
+
+#: includes/admin/forms/metabox.php:162
+msgid "Do you want to set a donation goal for this form?"
+msgstr "Voulez-vous définir un objectif de dons pour ce formulaire ?"
+
+#: includes/admin/forms/metabox.php:172
+msgid "Set Goal"
+msgstr "Définir un objectif"
+
+#: includes/admin/forms/metabox.php:173
+msgid "This is the goal you want to achieve for this form."
+msgstr "Ceci est l’objectif que vous souhaitez atteindre pour ce formulaire."
+
+#: includes/admin/forms/metabox.php:184
+msgid "Goal Progress Bar Color"
+msgstr "Couleur de la barre de progression pour l’objectif"
+
+#: includes/admin/forms/metabox.php:200
+msgid "Form Content"
+msgstr "Contenu du formulaire"
+
+#: includes/admin/forms/metabox.php:207
+msgid "Display Content"
+msgstr "Content affiché"
+
+#: includes/admin/forms/metabox.php:208
+msgid ""
+"Do you want to display content? If you select \"Yes\" a WYSIWYG editor will "
+"appear which you will be able to enter content to display above or below the "
+"form."
+msgstr ""
+"Voulez-vous afficher du contenu ? Si vous choisissez « Oui », un éditeur "
+"WYSIWYG apparaîtra, dans lequel vous pourrez entrer du contenu à afficher au "
+"dessus ou en dessous du formulaire."
+
+#: includes/admin/forms/metabox.php:212
+msgid "No content"
+msgstr "Aucun contenu"
+
+#: includes/admin/forms/metabox.php:213
+msgid "Yes, display content ABOVE the form fields"
+msgstr "Oui, afficher AU DESSUS des champs du formulaire"
+
+#: includes/admin/forms/metabox.php:214
+msgid "Yes, display content BELOW the form fields"
+msgstr "Oui, afficher EN DESSOUS des champs du formulaire"
+
+#: includes/admin/forms/metabox.php:220
+msgid "Content"
+msgstr "Contenu"
+
+#: includes/admin/forms/metabox.php:221
+msgid "This content will display on the single give form page."
+msgstr "Ce contenu va s’afficher dans le formulaire simple de Give"
+
+#: includes/admin/forms/metabox.php:236
+msgid "Form Display Options"
+msgstr "Options d’affichage du formulaire"
+
+#: includes/admin/forms/metabox.php:243
+msgid "Payment Fields"
+msgstr "Champs de paiement"
+
+#: includes/admin/forms/metabox.php:244
+msgid ""
+"How would you like to display payment information for this form? The \"Show "
+"on Page\" option will display the entire form when the page loads. \"Reveal "
+"Upon Click\" places a button below the donation fields and upon clicks "
+"slides into view the rest of the fields. \"Modal Window Upon Click\" is a "
+"similar option, rather than sliding into view the fields they will open in a "
+"shadow box or \"modal\" window."
+msgstr ""
+"Hur vill du att betalningsinformationen skall visas i detta formulär? "
+"Alternativet \"Visa på Sida\" kommer att visa hela formuläret när sidan "
+"laddas. Alternativet \"Visa Vid Klick\" placerar en knapp nedanför "
+"donatitonsfälten och när den klickas glider de övriga fälten in. \"Modalt "
+"Fönster Vid Klick\" är ett liknande alternativ, men istället för att glida "
+"in så visas de övriga fälten i ett modalt fönster."
+
+#: includes/admin/forms/metabox.php:248
+msgid "Show on Page"
+msgstr "Afficher sur la page"
+
+#: includes/admin/forms/metabox.php:249
+msgid "Reveal Upon Click"
+msgstr "Révéler après un click"
+
+#: includes/admin/forms/metabox.php:250
+msgid "Modal Window Upon Click"
+msgstr "Fenêtre modale après un click"
+
+#: includes/admin/forms/metabox.php:256
+msgid "Reveal / Modal Open Text"
+msgstr "Révéler / fenêtre modale de texte"
+
+#: includes/admin/forms/metabox.php:257
+msgid "The button label for completing the donation."
+msgstr "Étiquette du bouton pour terminer un don."
+
+#: includes/admin/forms/metabox.php:261 includes/admin/forms/metabox.php:270
+#: includes/forms/template.php:417 includes/forms/template.php:1056
+msgid "Donate Now"
+msgstr "Donner maintenant"
+
+#: includes/admin/forms/metabox.php:266
+msgid "Complete Donation Text"
+msgstr "Texte de don terminé"
+
+#: includes/admin/forms/metabox.php:267
+msgid "The button label for completing a donation."
+msgstr "Étiquette pour terminer un don."
+
+#: includes/admin/forms/metabox.php:274
+#: includes/admin/register-settings.php:287
+msgid "Default Gateway"
+msgstr "Passerelle par défaut"
+
+#: includes/admin/forms/metabox.php:275
+msgid ""
+"By default, the gateway for this form will inherit the global default "
+"gateway (set under Give > Settings > Payment Gateways). This option allows "
+"you to customize the default gateway for this form only."
+msgstr ""
+"Par défaut, la passerelle pour ce formulaire sera la passerelle par défaut "
+"(définie dans Give -> Paramètres -> Passerelles). Cette option vous permet "
+"de personnaliser la passerelle par défaut pour ce formulaire seulement."
+
+#: includes/admin/forms/metabox.php:280
+msgid "Disable Guest Donations"
+msgstr "Désactiver les dons anonymes"
+
+#: includes/admin/forms/metabox.php:281
+msgid "Do you want to require users be logged-in to make donations?"
+msgstr ""
+"Souhaitez-vous que les utilisateurs soient connectés pour effectuer des "
+"dons ?"
+
+#: includes/admin/forms/metabox.php:286
+msgid "Register / Login Form"
+msgstr "Inscription / Connexion"
+
+#: includes/admin/forms/metabox.php:287
+msgid ""
+"Display the registration and login forms in the checkout section for non-"
+"logged-in users. Note: this option will not require users to register or log "
+"in prior to completing a donation. It simply determines whether the login "
+"and/or registration form are displayed on the checkout page."
+msgstr ""
+"Affiche les formulaires d’inscription et de connexion pour les utilisateurs "
+"non connectés. Précision : cette option ne requiert pas des utilisateurs de "
+"se connecter ou de s’inscrire avant de terminer un don. Ceci détermine "
+"simplement si les formulaires d’inscription et/ou de connexion sont affichés "
+"sur la page de remerciement."
+
+#: includes/admin/forms/metabox.php:291
+msgid "Registration and Login Forms"
+msgstr "Formulaires d’inscription et de connexion"
+
+#: includes/admin/forms/metabox.php:292
+msgid "Registration Form Only"
+msgstr "Formulaire d’inscription seulement"
+
+#: includes/admin/forms/metabox.php:293
+msgid "Login Form Only"
+msgstr "Formulaire de connexion seulement"
+
+#: includes/admin/forms/metabox.php:294
+#: includes/libraries/cmb2/includes/CMB2_Field.php:914
+#: includes/libraries/cmb2/includes/CMB2_Field.php:918
+#: includes/libraries/cmb2/tests/test-cmb-field.php:178
+msgid "None"
+msgstr "Aucun"
+
+#: includes/admin/forms/metabox.php:308 includes/admin/forms/metabox.php:315
+msgid "Terms and Conditions"
+msgstr "Conditions d’utilisation"
+
+#: includes/admin/forms/metabox.php:316
+msgid ""
+"Do you want to require the user to agree to terms and conditions prior to "
+"being able to complete their donation?"
+msgstr ""
+"Souhaitez-vous que l’utilisateur accepte les conditions d’utilisations avant "
+"de pouvoir compléter son don ?"
+
+#: includes/admin/forms/metabox.php:328
+msgid "Agree to Terms Label"
+msgstr "Étiquette « Accepter les conditions »"
+
+#: includes/admin/forms/metabox.php:329
+msgid ""
+"The label shown next to the agree to terms check box. Add your own to "
+"customize or leave blank to use the default text placeholder."
+msgstr ""
+"L’étiquette qui sera à coté de la case à cocher des conditions "
+"d’utilisation. Ajouter la votre pour la personnaliser, ou laissez vide pour "
+"le texte par défaut."
+
+#: includes/admin/forms/metabox.php:334 includes/forms/template.php:974
+msgid "Agree to Terms?"
+msgstr "Accepter les conditions ?"
+
+#: includes/admin/forms/metabox.php:340
+msgid "Agreement Text"
+msgstr "Conditions d’utilisations complètes"
+
+#: includes/admin/forms/metabox.php:341
+msgid ""
+"This is the actual text which the user will have to agree to in order to "
+"make a donation."
+msgstr ""
+"Ceci est le texte que l’utilisateur devra accepter pour effectuer un don."
+
+#: includes/admin/forms/metabox.php:366
+msgid "Sort"
+msgstr "Trier"
+
+#: includes/admin/forms/metabox.php:425
+msgid "Give Form Shortcode:"
+msgstr "Shortcode du formulaire de Give :"
+
+#: includes/admin/forms/shortcode.php:39 includes/admin/forms/shortcode.php:43
+#, php-format
+msgid "Add Donation %s"
+msgstr "Ajouter un don %s"
+
+#: includes/admin/forms/shortcode.php:40
+msgid "Add Donation Form"
+msgstr "Ajouter un formulaire de don"
+
+#: includes/admin/forms/shortcode.php:80
+msgid "You must choose a form"
+msgstr "Vous devez choisir un formulaire"
+
+#: includes/admin/forms/shortcode.php:101
+#, php-format
+msgid "Use the form below to insert the shortcode for a %s"
+msgstr "Utilisez le formulaire ci-dessous pour insérer le shortcode pour un %s"
+
+#: includes/admin/forms/shortcode.php:105
+#, php-format
+msgid "Insert %s"
+msgstr "Insérer %s"
+
+#: includes/admin/payments/actions.php:27
+#: includes/admin/payments/actions.php:225
+#: includes/admin/payments/actions.php:242
+#: includes/admin/payments/actions.php:275
+#: includes/admin/payments/actions.php:299 includes/emails/actions.php:56
+msgid "You do not have permission to edit this payment record"
+msgstr ""
+"Vous n’avez pas les autorisations pour modifier cet enregistrement de "
+"paiement"
+
+#: includes/admin/payments/actions.php:76
+msgid "Error Updating Payment"
+msgstr "Erreur pendant la mise à jour du paiement"
+
+#: includes/admin/payments/actions.php:87
+msgid "New Customers require a name and email address"
+msgstr "Les nouveaux clients requièrent un nom et une adresse email"
+
+#: includes/admin/payments/actions.php:102
+msgid "Error creating new customer"
+msgstr "Erreur pendant la création d’un nouveau client"
+
+#: includes/admin/payments/class-payments-table.php:133
+msgid "Start Date:"
+msgstr "Date de début :"
+
+#: includes/admin/payments/class-payments-table.php:135
+msgid "End Date:"
+msgstr "Date de fin :"
+
+#: includes/admin/payments/class-payments-table.php:137
+#: includes/admin/reporting/logs.php:131
+msgid "Apply"
+msgstr "Appliquer"
+
+#: includes/admin/payments/class-payments-table.php:143
+msgid "Clear Filter"
+msgstr "Réinitialiser le filtre"
+
+#: includes/admin/payments/class-payments-table.php:145
+#: includes/admin/reporting/logs.php:74
+#: includes/admin/reporting/reports.php:220
+msgid "Search"
+msgstr "Rechercher"
+
+#: includes/admin/payments/class-payments-table.php:207
+#: includes/admin/reporting/class-sales-logs-list-table.php:257
+msgid "All"
+msgstr "Tous"
+
+#: includes/admin/payments/class-payments-table.php:211
+msgid "Completed"
+msgstr "Terminés"
+
+#: includes/admin/payments/class-payments-table.php:215
+#: includes/payments/functions.php:547
+msgid "Pending"
+msgstr "En cours"
+
+#: includes/admin/payments/class-payments-table.php:219
+#: includes/payments/functions.php:549
+msgid "Refunded"
+msgstr "Remboursés"
+
+#: includes/admin/payments/class-payments-table.php:223
+#: includes/payments/functions.php:554
+msgid "Revoked"
+msgstr "Annulés"
+
+#: includes/admin/payments/class-payments-table.php:227
+#: includes/payments/functions.php:550
+msgid "Failed"
+msgstr "En erreur"
+
+#: includes/admin/payments/class-payments-table.php:231
+#: includes/payments/functions.php:552
+msgid "Abandoned"
+msgstr "Abandonnés"
+
+#: includes/admin/payments/class-payments-table.php:251
+#: includes/admin/reporting/class-export-payments.php:83
+#: includes/admin/reporting/class-sales-logs-list-table.php:98
+msgid "User"
+msgstr "Utilisateur"
+
+#: includes/admin/payments/class-payments-table.php:252
+#: templates/history-donations.php:14
+msgid "Details"
+msgstr "Détails"
+
+#: includes/admin/payments/class-payments-table.php:302
+#: includes/admin/payments/payments-history.php:75
+msgid "View Donation Details"
+msgstr "Voir les détails du don"
+
+#: includes/admin/payments/class-payments-table.php:331
+msgid "Resend Donation Receipt"
+msgstr "Ré-envoyer le récépissé du don"
+
+#: includes/admin/payments/class-payments-table.php:338
+#: includes/admin/payments/class-payments-table.php:421
+#: includes/payments/functions.php:1395
+msgid "Delete"
+msgstr "Supprimer"
+
+#: includes/admin/payments/class-payments-table.php:343
+msgid "(unknown)"
+msgstr "(inconnu)"
+
+#: includes/admin/payments/class-payments-table.php:399
+#: includes/admin/payments/class-payments-table.php:401
+#: includes/admin/reporting/class-export-payments.php:150
+msgid "guest"
+msgstr "invité"
+
+#: includes/admin/payments/class-payments-table.php:422
+msgid "Set To Completed"
+msgstr "Régler sur Terminé"
+
+#: includes/admin/payments/class-payments-table.php:423
+msgid "Set To Pending"
+msgstr "Régler sur En cours"
+
+#: includes/admin/payments/class-payments-table.php:424
+msgid "Set To Refunded"
+msgstr "Régler sur Remboursé"
+
+#: includes/admin/payments/class-payments-table.php:425
+msgid "Set To Revoked"
+msgstr "Régler sur Annulé"
+
+#: includes/admin/payments/class-payments-table.php:426
+msgid "Set To Failed"
+msgstr "Régler sur En erreur"
+
+#: includes/admin/payments/class-payments-table.php:427
+msgid "Set To Abandoned"
+msgstr "Régler sur Abandonné"
+
+#: includes/admin/payments/class-payments-table.php:428
+msgid "Resend Email Receipts"
+msgstr "Ré-envoyer l’email d’accusé de réception"
+
+#: includes/admin/payments/payments-history.php:78
+msgid "Edit Payment"
+msgstr "Modifier le paiement"
+
+#: includes/admin/payments/view-order-details.php:24
+msgid "Donation ID not supplied. Please try again"
+msgstr "ID du donateur non fourni. Merci de re-essayer"
+
+#: includes/admin/payments/view-order-details.php:34
+msgid "The specified ID does not belong to a payment. Please try again"
+msgstr "L’ID indiqué n’appartient pas à un paiement. Merci de re-essayer"
+
+#: includes/admin/payments/view-order-details.php:55
+#, php-format
+msgid "Payment %s"
+msgstr "Paiement %s"
+
+#: includes/admin/payments/view-order-details.php:71
+msgid "Update Payment"
+msgstr "Mettre à jour le paiement"
+
+#: includes/admin/payments/view-order-details.php:81
+msgid "Status:"
+msgstr "État :"
+
+#: includes/admin/payments/view-order-details.php:93
+msgid "Date:"
+msgstr "Date :"
+
+#: includes/admin/payments/view-order-details.php:100
+msgid "Time:"
+msgstr "Heure :"
+
+#: includes/admin/payments/view-order-details.php:112
+#: templates/shortcode-receipt.php:79
+msgid "Fees"
+msgstr "Charges"
+
+#: includes/admin/payments/view-order-details.php:126
+#: includes/admin/payments/view-order-details.php:250
+#: templates/shortcode-receipt.php:97
+msgid "Total Donation"
+msgstr "Total don"
+
+#: includes/admin/payments/view-order-details.php:143
+msgid "Save Payment"
+msgstr "Sauvegarder le paiement"
+
+#: includes/admin/payments/view-order-details.php:148
+msgid "Resend Receipt"
+msgstr "Ré-envoyer le récépissé"
+
+#: includes/admin/payments/view-order-details.php:163
+msgid "Payment Meta"
+msgstr "Étiquette du paiement"
+
+#: includes/admin/payments/view-order-details.php:176
+msgid "Gateway:"
+msgstr "Passerelle :"
+
+#: includes/admin/payments/view-order-details.php:184
+msgid "Key:"
+msgstr "Clé :"
+
+#: includes/admin/payments/view-order-details.php:191
+msgid "IP:"
+msgstr "IP :"
+
+#: includes/admin/payments/view-order-details.php:199
+msgid "Transaction ID:"
+msgstr "ID de transaction :"
+
+#: includes/admin/payments/view-order-details.php:207
+msgid "View all donations for this donor"
+msgstr "Voir tous les dons de ce donateur"
+
+#: includes/admin/payments/view-order-details.php:238
+msgid "Donation Information"
+msgstr "Informations du don"
+
+#: includes/admin/payments/view-order-details.php:247
+msgid "Form ID"
+msgstr "ID"
+
+#: includes/admin/payments/view-order-details.php:248
+msgid "Form Title"
+msgstr "Titre"
+
+#: includes/admin/payments/view-order-details.php:249
+msgid "Date and Time"
+msgstr "Date et heure"
+
+#: includes/admin/payments/view-order-details.php:283
+msgid "Donor Details"
+msgstr "Détails du donateur"
+
+#: includes/admin/payments/view-order-details.php:303
+msgid "View Donor Details"
+msgstr "Voir les détails du donateur"
+
+#: includes/admin/payments/view-order-details.php:306
+msgid "New Donor"
+msgstr "Nouveau donateur"
+
+#: includes/admin/payments/view-order-details.php:312
+msgid "Name:"
+msgstr "Nom :"
+
+#: includes/admin/payments/view-order-details.php:316
+msgid "Email:"
+msgstr "Email :"
+
+#: includes/admin/payments/view-order-details.php:325
+msgid "Click \"Save Payment\" to create new donor"
+msgstr "Cliquez sur « Sauvegarder le paiement » pour créer un nouveau donateur"
+
+#: includes/admin/payments/view-order-details.php:344
+msgid "Billing Address"
+msgstr "Adresse de facturation"
+
+#: includes/admin/payments/view-order-details.php:355
+msgid "Street Address Line 1:"
+msgstr "Adresse 1 :"
+
+#: includes/admin/payments/view-order-details.php:360
+msgid "Street Address Line 2:"
+msgstr "Adresse 2 :"
+
+#: includes/admin/payments/view-order-details.php:367
+msgctxt "Address City"
+msgid "City:"
+msgstr "Ville : "
+
+#: includes/admin/payments/view-order-details.php:373
+msgctxt "Zip / Postal code of address"
+msgid "Zip / Postal Code:"
+msgstr "Code postal :"
+
+#: includes/admin/payments/view-order-details.php:380
+msgctxt "Address country"
+msgid "Country:"
+msgstr "Pays :"
+
+#: includes/admin/payments/view-order-details.php:389
+msgid "Select a country"
+msgstr "Sélectionnez un pays"
+
+#: includes/admin/payments/view-order-details.php:395
+msgctxt "State / province of address"
+msgid "State / Province:"
+msgstr "Région"
+
+#: includes/admin/payments/view-order-details.php:406
+msgid "Select a state"
+msgstr "Sélectionner une région"
+
+#: includes/admin/payments/view-order-details.php:430
+msgid "Payment Notes"
+msgstr "Récépissés de paiement"
+
+#: includes/admin/payments/view-order-details.php:446
+msgid "No payment notes"
+msgstr "Pas de récépissés de paiement"
+
+#: includes/admin/payments/view-order-details.php:452
+msgid "Add Note"
+msgstr "Ajouter un récépissé"
+
+#: includes/admin/register-settings.php:97
+msgid "General"
+msgstr "Général"
+
+#: includes/admin/register-settings.php:98
+#: includes/admin/register-settings.php:265
+msgid "Payment Gateways"
+msgstr "Passerelles de paiement"
+
+#: includes/admin/register-settings.php:99
+msgid "Display Options"
+msgstr "Options d’affichage"
+
+#: includes/admin/register-settings.php:100
+#: includes/admin/reporting/reports.php:375
+msgid "Emails"
+msgstr "Emails"
+
+#: includes/admin/register-settings.php:107
+msgid "Licenses"
+msgstr "Licences"
+
+#: includes/admin/register-settings.php:110
+msgid "Advanced"
+msgstr "Avancé"
+
+#: includes/admin/register-settings.php:111
+#: includes/admin/register-settings.php:612
+#: includes/admin/register-settings.php:618
+msgid "API"
+msgstr "API"
+
+#: includes/admin/register-settings.php:112
+#: includes/admin/register-settings.php:627
+#: includes/admin/register-settings.php:632
+msgid "System Info"
+msgstr "Informations système"
+
+#: includes/admin/register-settings.php:172
+#: includes/admin/register-settings.php:176
+msgid "General Settings"
+msgstr "Paramètres généraux"
+
+#: includes/admin/register-settings.php:182
+msgid "Success Page"
+msgstr "Page de confirmation"
+
+#: includes/admin/register-settings.php:183
+msgid ""
+"This is the page donators are sent to after completing their donations. The "
+"<code>[give_receipt]</code> shortcode should be on this page."
+msgstr ""
+"Ceci est la page où les donateurs sont renvoyés après avoir terminé leur "
+"don. Le shortcode <code>[give_receipt]</code> devrait être sur cette page."
+
+#: includes/admin/register-settings.php:192
+msgid "Failed Transaction Page"
+msgstr "Page d’échec de transaction"
+
+#: includes/admin/register-settings.php:193
+msgid ""
+"This is the page donors are sent to if their transaction is cancelled or "
+"fails."
+msgstr ""
+"Ceci est la page où les donateurs sont renvoyés si leur transaction a échoué "
+"ou a rencontré une erreur."
+
+#: includes/admin/register-settings.php:202
+msgid "Donation History Page"
+msgstr "Page d’historique d’un don"
+
+#: includes/admin/register-settings.php:203
+msgid ""
+"This page shows a complete donation history for the current user. The "
+"<code>[donation_history]</code> shortcode should be on this page."
+msgstr ""
+"Cette page affiche un historique complet des dons pour l’utilisateur actuel. "
+"Le shortcode <code>[donation_history]</code> devrait être sur cette page."
+
+#: includes/admin/register-settings.php:212
+msgid "Base Country"
+msgstr "Pays de rattachement"
+
+#: includes/admin/register-settings.php:213
+msgid "Where does your site operate from?"
+msgstr "Où est-ce que votre site est hébergé ?"
+
+#: includes/admin/register-settings.php:219
+msgid "Currency Settings"
+msgstr "Réglages de monnaie"
+
+#: includes/admin/register-settings.php:225
+msgid "Currency"
+msgstr "Monnaie"
+
+#: includes/admin/register-settings.php:233
+msgid "Currency Position"
+msgstr "Position du symbole de monnaie"
+
+#: includes/admin/register-settings.php:238
+msgid "Before - $10"
+msgstr "Avant : € 10"
+
+#: includes/admin/register-settings.php:239
+msgid "After - 10$"
+msgstr "Après : 10 €"
+
+#: includes/admin/register-settings.php:244
+msgid "Thousands Separator"
+msgstr "Séparateur des milliers"
+
+#: includes/admin/register-settings.php:245
+msgid "The symbol (typically , or .) to separate thousands"
+msgstr "Le symbole (typiquement , ou .) pour séparer les milliers"
+
+#: includes/admin/register-settings.php:251
+msgid "Decimal Separator"
+msgstr "Séparateur des décimales"
+
+#: includes/admin/register-settings.php:252
+msgid "The symbol (usually , or .) to separate decimal points"
+msgstr "Le symbole (typiquement , ou .) pour séparer les décimales"
+
+#: includes/admin/register-settings.php:269
+msgid "Gateways Settings"
+msgstr "Paramètres de la passerelle"
+
+#: includes/admin/register-settings.php:275
+msgid "Test Mode"
+msgstr "Mode test"
+
+#: includes/admin/register-settings.php:276
+msgid ""
+"While in test mode no live transactions are processed. To fully use test "
+"mode, you must have a sandbox (test) account for the payment gateway you are "
+"testing."
+msgstr ""
+"Tant que le mode test est actif, aucune transaction n’est réalisée. Pour "
+"utiliser pleinement le mode test, vous devez avoir un compte sandbox pour la "
+"passerelle testée."
+
+#: includes/admin/register-settings.php:281
+msgid "Enabled Gateways"
+msgstr "Passerelles activées"
+
+#: includes/admin/register-settings.php:282
+msgid "Choose the payment gateways you would like enabled."
+msgstr "Sélectionner la passerelle de paiement que vous souhaitez activer."
+
+#: includes/admin/register-settings.php:288
+msgid "This is the gateway that will be selected by default."
+msgstr "Ceci est la passerelle qui sera sélectionnée par défaut."
+
+#: includes/admin/register-settings.php:293 includes/gateways/functions.php:27
+msgid "PayPal Standard"
+msgstr "PayPal standard"
+
+#: includes/admin/register-settings.php:299
+msgid "PayPal Email"
+msgstr "Email PayPal"
+
+#: includes/admin/register-settings.php:300
+msgid "Enter your PayPal account's email"
+msgstr "Entrez l’email de votre compte PayPal"
+
+#: includes/admin/register-settings.php:305
+msgid "PayPal Page Style"
+msgstr "Style de la page PayPal"
+
+#: includes/admin/register-settings.php:306
+msgid ""
+"Enter the name of the page style to use, or leave blank to use the default"
+msgstr ""
+"Entrez le nom du style de page à utiliser, ou laissez vide pour utiliser le "
+"style par défaut"
+
+#: includes/admin/register-settings.php:311
+msgid "PayPal "
+msgstr "PayPal"
+
+#: includes/admin/register-settings.php:312
+msgid ""
+"Nonprofits must verify their status to withdraw donations they receive via "
+"PayPal. PayPal users that are not verified nonprofits must demonstrate how "
+"their donations will be used, once they raise more than $10,000. By default, "
+"Give transactions are sent to PayPal as donations. You may change the "
+"transaction type using this option if you feel you may not meet PayPal's "
+"donation requirements."
+msgstr ""
+"Les associations doivent vérifier leur statuts pour transférer les dons "
+"reçus par PayPal. Les utilisateurs de PayPal qui ne sont pas inscrits en "
+"association doivent prouver comment les dons sont utilisés, une fois la "
+"barre des 10 000 € franchie. Par défaut, les transactions Give sont envoyées "
+"en tant que dons. Vous pouvez changer le type de transaction en choisissant "
+"cette option si vous pensez que vous ne remplissez pas les conditions de "
+"PayPal."
+
+#: includes/admin/register-settings.php:316 templates/shortcode-receipt.php:53
+msgid "Donation"
+msgstr "Don"
+
+#: includes/admin/register-settings.php:317
+msgid "Standard Transaction"
+msgstr "Transaction standard"
+
+#: includes/admin/register-settings.php:322
+msgid "Disable PayPal IPN Verification"
+msgstr "Désactiver la vérification PayPal IPN"
+
+#: includes/admin/register-settings.php:323
+msgid ""
+"If donations are not getting marked as complete, then check this box. This "
+"forces the site to use a slightly less secure method of verifying donations."
+msgstr ""
+"Si les dons ne sont pas marqués en tant que terminés, cochez cette case. "
+"Ceci force le site à utiliser une méthode moins sécurisée de vérification "
+"des dons."
+
+#: includes/admin/register-settings.php:328
+msgid "Offline Donations"
+msgstr "Dons hors-ligne"
+
+#: includes/admin/register-settings.php:334
+msgid "Collect Billing Details"
+msgstr "Demander les informations de facturation"
+
+#: includes/admin/register-settings.php:335
+msgid ""
+"This option will enable the billing details section for offline donations. "
+"The fieldset will appear above the offline donation instructions. Note: You "
+"may customize this option per form as needed."
+msgstr ""
+"Cette option activera la section facturation pour les dons hors-ligne. Le "
+"formulaire apparaîtra au dessus des indications de don hors-ligne. "
+"Précision : vous pouvez personnaliser cette option sur chaque formulaire."
+
+#: includes/admin/register-settings.php:340
+#: includes/gateways/offline-donations.php:166
+#: includes/gateways/offline-donations.php:181
+#: includes/gateways/offline-donations.php:280
+msgid "Offline Donation Instructions"
+msgstr "Indications pour les dons hors-ligne"
+
+#: includes/admin/register-settings.php:341
+msgid ""
+"The following content will appear for all forms when the user selects the "
+"offline donation payment option. Note: You may customize the content per "
+"form as needed."
+msgstr ""
+"Ce contenu apparaîtra sur tous les formulaires si l’utilisateur choisit "
+"d’effectuer un don hors-ligne. Précision : vous pouvez personnaliser le "
+"contenu sur chaque formulaire."
+
+#: includes/admin/register-settings.php:350
+#: includes/gateways/offline-donations.php:291
+msgid "Offline Donation Email Instructions Subject"
+msgstr "Titre pour l’email des indications concernant les dons hors-ligne"
+
+#: includes/admin/register-settings.php:351
+#: includes/gateways/offline-donations.php:292
+msgid "Enter the subject line for the donation receipt email."
+msgstr "Entrez le titre pour l’email d’accusé de don."
+
+#: includes/admin/register-settings.php:353
+#: includes/gateways/offline-donations.php:293
+msgid "{donation} - Offline Donation Instructions"
+msgstr "{don} - Indications pour les dons hors-ligne"
+
+#: includes/admin/register-settings.php:357
+#: includes/gateways/offline-donations.php:299
+msgid "Offline Donation Email Instructions"
+msgstr "Email pour les indications de don hors-ligne"
+
+#: includes/admin/register-settings.php:358
+#: includes/gateways/offline-donations.php:300
+msgid ""
+"Enter the instructions you want emailed to the donor after they have "
+"submitted the donation form. Most likely this would include important "
+"information like mailing address and who to make the check out to."
+msgstr ""
+"Entrez ici les indications qui seront envoyées par email au donateur une "
+"fois qu’ils ont complété le formulaire de don. Ces indications devraient "
+"inclure des informations importantes, comme l’adresse postale et les "
+"personnes à contacter."
+
+#: includes/admin/register-settings.php:372
+#: includes/admin/register-settings.php:376
+msgid "Display Settings"
+msgstr "Paramètres d’affichage"
+
+#: includes/admin/register-settings.php:382
+msgid "Disable CSS"
+msgstr "Désactiver CSS"
+
+#: includes/admin/register-settings.php:383
+msgid ""
+"Enable this option if you would like to disable all of Give's included CSS "
+"stylesheets."
+msgstr ""
+"Activez cette option si vous souhaitez désactiver tous les styles CSS de Give"
+
+#: includes/admin/register-settings.php:388
+msgid "Disable Welcome Screen"
+msgstr "Désactiver l’écran d’accueil"
+
+#: includes/admin/register-settings.php:389
+#, php-format
+msgid ""
+"Enable this option if you would like to disable the Give Welcome screen "
+"every time Give is activated and/or updated. You can always access the "
+"Welcome Screen <a href=\"%s\">here</a> if you want in the future."
+msgstr ""
+"Activez cette option si vous souhaitez désactiver l’écran d’accueil de Give "
+"chaque fois que Give est activé / mis à jour. Vous pouvez ré-activer l’écran "
+"d’accueil à tout moment en cliquant <a href=\"%s\">ici</a>."
+
+#: includes/admin/register-settings.php:394
+msgid "Post Types"
+msgstr "Types d’article"
+
+#: includes/admin/register-settings.php:400
+msgid "Disable Form Single Views"
+msgstr "Désactiver l’affichage des formulaires simples"
+
+#: includes/admin/register-settings.php:401
+msgid ""
+"By default, all forms have single views enabled which create a specific URL "
+"on your website for that form. This option disables the singular and archive "
+"views from being publicly viewable. Note: you will need to embed forms using "
+"a shortcode or widget if enabled."
+msgstr ""
+"Par défaut, tous les formulaires de dons ont des pages qui créent des URL "
+"spécifiques sur votre site internet. Cette option désactive ces vues et de "
+"facto la possibilité de voir les formulaires en tant que pages simple ou "
+"dans les archives. Vous devrez, le cas échéant, utiliser un shortcode ou un "
+"widget pour inclure les formulaires."
+
+#: includes/admin/register-settings.php:406
+msgid "Disable Form Archives"
+msgstr "Désactiver les archives de formulaires"
+
+#: includes/admin/register-settings.php:407
+msgid ""
+"Archives pages list all the forms you have created. This option will disable "
+"only the form's archive page(s). The single form's view will remain in "
+"place. Note: you will need to refresh your permalinks after this option has "
+"been enabled."
+msgstr ""
+"Les pages d’archives listent tous les formulaires que vous avez créés. Cette "
+"option désactive la page d’archive du formulaire. La page simple du "
+"formulaire reste en ligne. Précision : vous devrez rafraichir vos permaliens "
+"après avoir activé cette option."
+
+#: includes/admin/register-settings.php:412
+msgid "Disable Form Excerpts"
+msgstr "Désactiver les aperçus de formulaires"
+
+#: includes/admin/register-settings.php:413
+msgid ""
+"The excerpt is an optional summary or description of a donation form; in "
+"short, a summary as to why the user should give."
+msgstr ""
+"L’aperçu est un résumé optionel ou une description d’un formulaire de don, "
+"brièvement, un résumé de ce que l’utilisateur devrait faire."
+
+#: includes/admin/register-settings.php:418
+msgid "Disable Form Featured Image"
+msgstr "Désactiver l’image à la une du formulaire"
+
+#: includes/admin/register-settings.php:419
+msgid ""
+"The Featured Image is an image that is chosen as the representative image "
+"for donation form. The display of this image is largely up to the theme. If "
+"you do not wish to use the featured image you can disable it using this "
+"option."
+msgstr ""
+"L’image à la une est une image choisie pour représenter l’idée générale pour "
+"le formulaire de don. L’affichage de cette image dépend grandement du thème "
+"utilisé. Si vous ne souhaitez pas utiliser l’image à la une, vous pouvez "
+"désactiver cette option."
+
+#: includes/admin/register-settings.php:424
+msgid "Taxonomies"
+msgstr "Taxonomies"
+
+#: includes/admin/register-settings.php:430
+msgid "Enable Form Categories"
+msgstr "Activer les catégories de formulaires"
+
+#: includes/admin/register-settings.php:431
+msgid ""
+"Check this option if you would like to categorize your donation forms. This "
+"option enables the form's category taxonomy."
+msgstr ""
+"Cochez cette option si vous souhaitez catégoriser vos formulaires de dons. "
+"Cette option active la taxonomie de la catégorie du formulaire."
+
+#: includes/admin/register-settings.php:436
+msgid "Enable Form Tags"
+msgstr "Activer les mots-clefs de formulaires"
+
+#: includes/admin/register-settings.php:437
+msgid ""
+"Check this option if you would like to tag your donation forms. This option "
+"enables the form's tag taxonomy."
+msgstr ""
+"Activez cette option si vous souhaitez utiliser les mots-clés pour vos "
+"formulaires de dons. Cette option active la taxonomie du mot-clé pour le "
+"formulaire."
+
+#: includes/admin/register-settings.php:450
+msgid "Give Email Settings"
+msgstr "Paramètres d’email de Give"
+
+#: includes/admin/register-settings.php:454
+msgid "Email Settings"
+msgstr "Paramètres d’email"
+
+#: includes/admin/register-settings.php:461
+msgid "Email Template"
+msgstr "Template email"
+
+#: includes/admin/register-settings.php:462
+msgid ""
+"Choose a template. Click \"Save Changes\" then \"Preview Donation Receipt\" "
+"to see the new template."
+msgstr ""
+"Sélectionnez un template. Cliquez sur « Sauvegarder les changements », puis "
+"« Aperçu du récépissé de don » pour visualiser le nouveau template."
+
+#: includes/admin/register-settings.php:468
+msgid "Logo"
+msgstr "Logo"
+
+#: includes/admin/register-settings.php:469
+msgid ""
+"Upload or choose a logo to be displayed at the top of the donation receipt "
+"emails. Displayed on HTML emails only."
+msgstr ""
+"Téléversez ou choisissez un logo à afficher en haut des emails d’aaccusés de "
+"dons. Affichage en HTML seulement."
+
+#: includes/admin/register-settings.php:474
+msgid "From Name"
+msgstr "Nom d’émetteur"
+
+#: includes/admin/register-settings.php:475
+msgid ""
+"The name donation receipts are said to come from. This should probably be "
+"your site or shop name."
+msgstr ""
+"Le nom dont viennent les mails d’accusés de dons. Ceci devrait être le nom "
+"de votre site internet ou de votre boutique."
+
+#: includes/admin/register-settings.php:481
+msgid "From Email"
+msgstr "Email d’émetteur"
+
+#: includes/admin/register-settings.php:482
+msgid ""
+"Email to send donation receipts from. This will act as the \"from\" and "
+"\"reply-to\" address."
+msgstr ""
+"Adresse email d’où doivent provenir les emails d’accusés de dons. Ceci joue "
+"le rôle d’adresse de « De » et de « Répondre à »."
+
+#: includes/admin/register-settings.php:487
+#: includes/admin/register-settings.php:496
+#: includes/admin/register-settings.php:501 includes/emails/functions.php:39
+#: includes/emails/functions.php:50 includes/emails/functions.php:78
+#: includes/emails/functions.php:89 includes/emails/template.php:159
+msgid "Donation Receipt"
+msgstr "Accusé de don"
+
+#: includes/admin/register-settings.php:494
+msgid "Donation Email Subject"
+msgstr "Sujet pour l’email de don"
+
+#: includes/admin/register-settings.php:495
+msgid "Enter the subject line for the donation receipt email"
+msgstr "Entrez le sujet pour l’email d’accusé de don"
+
+#: includes/admin/register-settings.php:502
+msgid ""
+"Enter the email that is sent to users after completing a successful "
+"donation. HTML is accepted. Available template tags:"
+msgstr ""
+"Entrez l’email qui est envoyé aux utilisateur après avoir terminé un don "
+"avec succès. L’HTML est accepté. Balises acceptées :"
+
+#: includes/admin/register-settings.php:504 includes/emails/template.php:182
+msgid "Dear"
+msgstr "Cher"
+
+#: includes/admin/register-settings.php:504 includes/emails/template.php:183
+msgid ""
+"Thank you for your donation. Your generosity is appreciated! Please click on "
+"the link below to view your receipt."
+msgstr ""
+"Merci pour votre don. Votre générosité est appréciée ! Merci de cliquer sur "
+"le lien en dessous pour voir votre reçu."
+
+#: includes/admin/register-settings.php:507
+msgid "New Donation Notification"
+msgstr "Notification de nouveau don"
+
+#: includes/admin/register-settings.php:514
+msgid "Donation Notification Subject"
+msgstr "Titre de notification de don"
+
+#: includes/admin/register-settings.php:515
+msgid "Enter the subject line for the donation notification email"
+msgstr "Entrez le sujet pour l’email de notification de don"
+
+#: includes/admin/register-settings.php:517
+msgid "New Donation - #{payment_id}"
+msgstr "Nouveau don - #{payment_id}"
+
+#: includes/admin/register-settings.php:521
+msgid "Donation Notification"
+msgstr "Notification de don"
+
+#: includes/admin/register-settings.php:522
+msgid ""
+"Enter the email that is sent to donation notification emails after "
+"completion of a donation. HTML is accepted. Available template tags:"
+msgstr ""
+"Entrez l’email qui est envoyé aux emails de notifications de don à la fin "
+"d’un don. L’HTML est accepté. Balises disponibles : "
+
+#: includes/admin/register-settings.php:528
+msgid "Donation Notification Emails"
+msgstr "Emails de notification de don"
+
+#: includes/admin/register-settings.php:529
+msgid ""
+"Enter the email address(es) that should receive a notification anytime a "
+"donation is made, one per line"
+msgstr ""
+"Entrez l’adresse email qui devrait recevoir une notification dès qu’un don "
+"est fait, une adresse par ligne."
+
+#: includes/admin/register-settings.php:535
+msgid "Disable Admin Notifications"
+msgstr "Désactiver les notifications Administrateur"
+
+#: includes/admin/register-settings.php:536
+msgid ""
+"Check this box if you do not want to receive emails when new donations are "
+"made."
+msgstr ""
+"Cochez cette case si vous ne souhaitez pas recevoir de notifications quand "
+"des nouveaux dons sont faits."
+
+#: includes/admin/register-settings.php:545
+msgid "Give Add-ons Settings"
+msgstr "Paramètres des extensions de Give"
+
+#: includes/admin/register-settings.php:553
+msgid "Give Licenses"
+msgstr "Licences de Give"
+
+#: includes/admin/register-settings.php:561
+msgid "Advanced Options"
+msgstr "Options avancées"
+
+#: includes/admin/register-settings.php:565
+msgid "Session Control"
+msgstr "Contrôle de session"
+
+#: includes/admin/register-settings.php:572
+msgid "Session Lifetime"
+msgstr "Durée de vie d’une session"
+
+#: includes/admin/register-settings.php:573
+msgid ""
+"Give will start a new session per user once they have donated. This option "
+"controls the lifetime a user's session is kept alive. An active session "
+"allows users to view donation receipts on your site without having to be "
+"logged in."
+msgstr ""
+"Give va démarrer une nouvelle session par utilisateur une fois qu’il a "
+"donné. Cette option détermine la durée de vie d’une session utilisateur. Une "
+"session active permet aux utilisateurs de voir leurs reçus sur votre site "
+"sans avoir à se connecter."
+
+#: includes/admin/register-settings.php:576
+msgid "24 Hours"
+msgstr "24 heures"
+
+#: includes/admin/register-settings.php:577
+msgid "48 Hours"
+msgstr "48 heures"
+
+#: includes/admin/register-settings.php:578
+msgid "72 Hours"
+msgstr "72 heures"
+
+#: includes/admin/register-settings.php:579
+msgid "1 Week"
+msgstr "1 semaine"
+
+#: includes/admin/register-settings.php:583
+msgid "Data Control"
+msgstr "Contrôle des données"
+
+#: includes/admin/register-settings.php:589
+msgid "Remove All Data on Uninstall?"
+msgstr "Supprimer toutes les données à la désinstallation ?"
+
+#: includes/admin/register-settings.php:590
+msgid ""
+"Check this box if you would like Give to completely remove all of its data "
+"when the plugin is deleted."
+msgstr ""
+"Cochez cette case si vous souhaitez que Give supprime toutes ses données "
+"lors de sa désactivation."
+
+#: includes/admin/register-settings.php:595
+msgid "Filter Control"
+msgstr "Contrôle de filtre"
+
+#: includes/admin/register-settings.php:601
+msgid "Disable <code>the_content</code> filter"
+msgstr "Désactiver le filtre <code>the_content</code>"
+
+#: includes/admin/register-settings.php:602
+#, php-format
+msgid ""
+"If you are seeing extra social buttons, related posts, or other unwanted "
+"elements appearing within your forms then you can disable WordPress' content "
+"filter. <a href=\"%s\" target=\"_blank\">Learn more</a> about the_content "
+"filter."
+msgstr ""
+"Si vous voyez des boutons additionnels de réseaux sociaux, articles associés "
+"ou autres éléments non souhaités dans votre formulaire, alors vous pouvez "
+"désactiver le filtre de contenu de Wordpress. <a href=\"%s\" target=\"_blank"
+"\">En savoir plus</a> sur le filtre the_content."
+
+#: includes/admin/register-settings.php:633
+msgid ""
+"Please copy and paste this information in your ticket when contacting "
+"support."
+msgstr ""
+"Merci de copier/coller cette information dans votre ticket si vous contactez "
+"le support."
+
+#: includes/admin/register-settings.php:861
+msgid "Global Default"
+msgstr "Paramètres globals"
+
+#: includes/admin/register-settings.php:951
+msgid "Save Settings"
+msgstr "Sauvegarder les paramètres"
+
+#: includes/admin/register-settings.php:988
+msgid "Deactivate License"
+msgstr "Désactiver la licence"
+
+#: includes/admin/register-settings.php:1022
+#, php-format
+msgid ""
+"API keys allow users to use the <a href=\"%s\">Give REST API</a> to retrieve "
+"donation data in JSON or XML for external applications or devices, such as "
+"<a href=\"%s\">Zapier</a>."
+msgstr ""
+"Les clés API permettent aux utilisateurs d’utiliser l’<a href=\"%s\">API "
+"REST de Give</a> pour récupérer les données du don en JSON ou XML pour "
+"l’utilisation dans d’autres applications ou appareil, comme <a href=\"%s"
+"\">Zapier</a>."
+
+#: includes/admin/reporting/class-api-requests-logs-list-table.php:93
+#: includes/admin/reporting/class-gateway-error-logs-list-table.php:125
+#: includes/admin/reporting/class-sales-logs-list-table.php:97
+msgid "Log ID"
+msgstr "ID journal"
+
+#: includes/admin/reporting/class-api-requests-logs-list-table.php:94
+msgid "Request Details"
+msgstr "Détails de la requête"
+
+#: includes/admin/reporting/class-api-requests-logs-list-table.php:95
+msgid "Request IP"
+msgstr "Adresse IP de la requête"
+
+#: includes/admin/reporting/class-api-requests-logs-list-table.php:132
+msgid "View Request Details"
+msgstr "Voir les détails de la requête"
+
+#: includes/admin/reporting/class-api-requests-logs-list-table.php:132
+msgid "View Request"
+msgstr "Voir la requête"
+
+#: includes/admin/reporting/class-api-requests-logs-list-table.php:138
+msgid "API Request:"
+msgstr "Requête API :"
+
+#: includes/admin/reporting/class-api-requests-logs-list-table.php:144
+msgid "API User:"
+msgstr "Utilisateur API :"
+
+#: includes/admin/reporting/class-api-requests-logs-list-table.php:146
+msgid "API Key:"
+msgstr "Clé API :"
+
+#: includes/admin/reporting/class-api-requests-logs-list-table.php:148
+msgid "Request Date:"
+msgstr "Date de la requête :"
+
+#: includes/admin/reporting/class-donor-reports-table.php:135
+msgid "Donors Report"
+msgstr "Rapport des donateurs"
+
+#: includes/admin/reporting/class-donor-reports-table.php:204
+msgid "Purchases"
+msgstr "Achats"
+
+#: includes/admin/reporting/class-donor-reports-table.php:205
+msgid "Total Spent"
+msgstr "Total dépensé"
+
+#: includes/admin/reporting/class-export-customers.php:69
+#: includes/admin/reporting/class-export-payments.php:66
+#: includes/forms/template.php:448 templates/shortcode-profile-editor.php:34
+msgid "First Name"
+msgstr "Prénom"
+
+#: includes/admin/reporting/class-export-customers.php:70
+#: includes/admin/reporting/class-export-payments.php:67
+#: includes/forms/template.php:459 templates/shortcode-profile-editor.php:39
+msgid "Last Name"
+msgstr "Nom"
+
+#: includes/admin/reporting/class-export-customers.php:72
+msgid "Date Donated"
+msgstr "Date du don"
+
+#: includes/admin/reporting/class-export-customers.php:85
+msgid "Total Donations"
+msgstr "Total des dons"
+
+#: includes/admin/reporting/class-export-payments.php:64
+msgid "Payment Number"
+msgstr "Numéro de paiement"
+
+#: includes/admin/reporting/class-export-payments.php:69
+msgid "Address (Line 2)"
+msgstr "Adresse (ligne 2)"
+
+#: includes/admin/reporting/class-export-payments.php:71
+msgid "State"
+msgstr "État"
+
+#: includes/admin/reporting/class-export-payments.php:72
+#: includes/forms/template.php:652 templates/shortcode-profile-editor.php:99
+msgid "Country"
+msgstr "Pays"
+
+#: includes/admin/reporting/class-export-payments.php:73
+msgid "Zip Code"
+msgstr "Code postal"
+
+#: includes/admin/reporting/class-export-payments.php:74
+msgid "Products"
+msgstr "Produits"
+
+#: includes/admin/reporting/class-export-payments.php:75
+msgid "SKUs"
+msgstr "SKUs"
+
+#: includes/admin/reporting/class-export-payments.php:77
+msgid "Tax"
+msgstr "Taxe"
+
+#: includes/admin/reporting/class-export-payments.php:78
+msgid "Discount Code"
+msgstr "Coupon de promotion"
+
+#: includes/admin/reporting/class-export-payments.php:79
+#: templates/shortcode-receipt.php:66
+msgid "Payment Method"
+msgstr "Méthode de paiement"
+
+#: includes/admin/reporting/class-export-payments.php:80
+msgid "Transaction ID"
+msgstr "ID de transaction"
+
+#: includes/admin/reporting/class-export-payments.php:81
+msgid "Purchase Key"
+msgstr "Clé d’achat"
+
+#: includes/admin/reporting/class-export.php:177
+msgid "You do not have permission to export data."
+msgstr "Vous n’avez pas les permissions pour exporter des données."
+
+#: includes/admin/reporting/class-form-reports-table.php:84
+msgid "View Detailed Report"
+msgstr "Voir le rapport détaillé"
+
+#: includes/admin/reporting/class-form-reports-table.php:102
+msgid "Monthly Average Donations"
+msgstr "Moyenne mensuelle des dons"
+
+#: includes/admin/reporting/class-form-reports-table.php:103
+msgid "Monthly Average Income"
+msgstr "Moyenne mensuelle des revenus"
+
+#: includes/admin/reporting/class-form-reports-table.php:104
+msgid "Detailed Report"
+msgstr "Rapport détaillé"
+
+#: includes/admin/reporting/class-form-reports-table.php:194
+msgid "Form Report"
+msgstr "Rapport du formulaire"
+
+#: includes/admin/reporting/class-gateway-error-logs-list-table.php:71
+#: includes/gateways/manual.php:73 includes/gateways/paypal-standard.php:60
+msgid "Payment Error"
+msgstr "Erreur de paiement"
+
+#: includes/admin/reporting/class-gateway-error-logs-list-table.php:90
+msgid "View Log Message"
+msgstr "Voir le journal d’activité"
+
+#: includes/admin/reporting/class-gateway-error-logs-list-table.php:105
+msgid "<strong>Log data:</strong>"
+msgstr "<strong>Journal d’activité :</strong>"
+
+#: includes/admin/reporting/class-gateway-error-logs-list-table.php:126
+#: includes/admin/reporting/class-sales-logs-list-table.php:101
+msgid "Payment ID"
+msgstr "ID du paiement"
+
+#: includes/admin/reporting/class-gateway-error-logs-list-table.php:128
+msgid "Error Message"
+msgstr "Message d’erreur"
+
+#: includes/admin/reporting/class-gateway-error-logs-list-table.php:129
+#: includes/admin/reporting/class-gateways-reports-table.php:83
+msgid "Gateway"
+msgstr "Passerelle"
+
+#: includes/admin/reporting/class-gateways-reports-table.php:84
+msgid "Complete Sales"
+msgstr "Ventes terminées"
+
+#: includes/admin/reporting/class-gateways-reports-table.php:85
+msgid "Pending / Failed Sales"
+msgstr "Ventes en cours / échouées"
+
+#: includes/admin/reporting/class-gateways-reports-table.php:86
+msgid "Total Sales"
+msgstr "Ventes totales"
+
+#: includes/admin/reporting/class-gateways-reports-table.php:133
+msgid "Payment Methods Report"
+msgstr "Rapport des méthodes de paiement"
+
+#: includes/admin/reporting/class-sales-logs-list-table.php:100
+msgid "Item Amount"
+msgstr "Montant de l’objet"
+
+#: includes/admin/reporting/graphing.php:209
+#: includes/admin/reporting/graphing.php:441
+msgid "Total income for period: "
+msgstr "Total des revenus pour la période :"
+
+#: includes/admin/reporting/graphing.php:214
+msgid "Total donations for period shown: "
+msgstr "Total des dons pour la période affichée :"
+
+#: includes/admin/reporting/graphing.php:221
+msgid "Estimated monthly income: "
+msgstr "Estimation du revenu mensuel"
+
+#: includes/admin/reporting/graphing.php:227
+msgid "Estimated monthly donations: "
+msgstr "Estimation des dons mensuels"
+
+#: includes/admin/reporting/graphing.php:423
+#, php-format
+msgid "Income Over Time for %s"
+msgstr "Revenu depuis le début pour %s"
+
+#: includes/admin/reporting/graphing.php:446
+msgid "Total donations for period: "
+msgstr "Total des dons pour la période :"
+
+#: includes/admin/reporting/graphing.php:452
+#, php-format
+msgid "Average monthly income: %s"
+msgstr "Revenu mensuel moyen : %s"
+
+#: includes/admin/reporting/graphing.php:458
+#, php-format
+msgid "Average monthly donations: %s"
+msgstr "Dons mensuels moyen : %s"
+
+#: includes/admin/reporting/graphing.php:478 includes/class-give-stats.php:83
+#: includes/libraries/cmb2/includes/CMB2_JS.php:117
+msgid "Today"
+msgstr "Aujourd’hui"
+
+#: includes/admin/reporting/graphing.php:479 includes/class-give-stats.php:84
+msgid "Yesterday"
+msgstr "Hier"
+
+#: includes/admin/reporting/graphing.php:481 includes/class-give-stats.php:86
+msgid "Last Week"
+msgstr "La semaine dernière"
+
+#: includes/admin/reporting/graphing.php:483 includes/class-give-stats.php:88
+msgid "Last Month"
+msgstr "Le mois dernier"
+
+#: includes/admin/reporting/graphing.php:484 includes/class-give-stats.php:89
+msgid "This Quarter"
+msgstr "Ce trimestre"
+
+#: includes/admin/reporting/graphing.php:485
+msgid "Last Quarter"
+msgstr "Le dernier trimestre"
+
+#: includes/admin/reporting/graphing.php:486 includes/class-give-stats.php:91
+msgid "This Year"
+msgstr "Cette année"
+
+#: includes/admin/reporting/graphing.php:487 includes/class-give-stats.php:92
+msgid "Last Year"
+msgstr "L’année dernière"
+
+#: includes/admin/reporting/graphing.php:488
+msgid "Custom"
+msgstr "Personnalisé"
+
+#: includes/admin/reporting/graphing.php:521
+msgid "Filter"
+msgstr "Filtre"
+
+#: includes/admin/reporting/graphing.php:525
+msgid "From"
+msgstr "De"
+
+#: includes/admin/reporting/graphing.php:541
+msgid "To"
+msgstr "À"
+
+#: includes/admin/reporting/logs.php:98
+msgid "Payment Errors"
+msgstr "Erreurs de paiement"
+
+#: includes/admin/reporting/logs.php:99
+msgid "API Requests"
+msgstr "Requêtes API"
+
+#: includes/admin/reporting/logs.php:119
+msgid "Log Type"
+msgstr "Type de journal"
+
+#: includes/admin/reporting/pdf-reports.php:31
+msgid "You do not have permission to generate PDF sales reports"
+msgstr "Vous n’avez pas les permissions de générer des rapports de vente PDF"
+
+#: includes/admin/reporting/pdf-reports.php:35
+#: includes/api/class-give-api.php:1588
+#: includes/class-give-license-handler.php:191
+#: includes/class-give-license-handler.php:262
+msgid "Nonce verification failed"
+msgstr "Vérification nonce échouée"
+
+#: includes/admin/reporting/pdf-reports.php:41
+msgid "to"
+msgstr "à"
+
+#: includes/admin/reporting/pdf-reports.php:46
+#: includes/admin/reporting/pdf-reports.php:57
+msgid "Donation report for the current year for all forms"
+msgstr "Rapport des dons pour l’année en cours pour tous les formulaires"
+
+#: includes/admin/reporting/pdf-reports.php:47
+#: includes/admin/reporting/pdf-reports.php:48 includes/admin/welcome.php:273
+msgid "Give - Democratizing Generosity"
+msgstr "Give - démocratisons la générosité"
+
+#: includes/admin/reporting/pdf-reports.php:62
+msgid "Date Range: "
+msgstr "Période :"
+
+#: includes/admin/reporting/pdf-reports.php:66
+msgid "Table View"
+msgstr "Vue en tableau"
+
+#: includes/admin/reporting/pdf-reports.php:70
+msgid "Form Name"
+msgstr "Nom du formulaire"
+
+#: includes/admin/reporting/pdf-reports.php:74
+msgid "Number of Donations"
+msgstr "Nombre de dons"
+
+#: includes/admin/reporting/pdf-reports.php:75
+msgid "Income to Date"
+msgstr "Revenu à ce jour"
+
+#: includes/admin/reporting/pdf-reports.php:129
+#, php-format
+msgid "No %s found."
+msgstr "Aucun %s trouvé"
+
+#: includes/admin/reporting/pdf-reports.php:136
+msgid "Graph View"
+msgstr "Vue en graphique"
+
+#: includes/admin/reporting/pdf-reports.php:245
+msgid "Donations by Month for all Give Forms"
+msgstr "Dons par mois, pour tous les formulaires de Give"
+
+#: includes/admin/reporting/pdf-reports.php:256
+msgid "Jan"
+msgstr "Jan"
+
+#: includes/admin/reporting/pdf-reports.php:257
+msgid "Feb"
+msgstr "Fév"
+
+#: includes/admin/reporting/pdf-reports.php:258
+msgid "Mar"
+msgstr "Mar"
+
+#: includes/admin/reporting/pdf-reports.php:259
+msgid "Apr"
+msgstr "Avr"
+
+#: includes/admin/reporting/pdf-reports.php:260
+msgid "May"
+msgstr "Mai"
+
+#: includes/admin/reporting/pdf-reports.php:261
+msgid "June"
+msgstr "Juin"
+
+#: includes/admin/reporting/pdf-reports.php:262
+msgid "July"
+msgstr "Juil"
+
+#: includes/admin/reporting/pdf-reports.php:263
+msgid "Aug"
+msgstr "Août"
+
+#: includes/admin/reporting/pdf-reports.php:264
+msgid "Sept"
+msgstr "Sep"
+
+#: includes/admin/reporting/pdf-reports.php:265
+msgid "Oct"
+msgstr "Oct"
+
+#: includes/admin/reporting/pdf-reports.php:266
+msgid "Nov"
+msgstr "Nov"
+
+#: includes/admin/reporting/pdf-reports.php:267
+msgid "Dec"
+msgstr "Déc"
+
+#: includes/admin/reporting/reports.php:48
+msgid "Export"
+msgstr "Exporter"
+
+#: includes/admin/reporting/reports.php:53 includes/class-give-logging.php:48
+msgid "Logs"
+msgstr "Journaux"
+
+#: includes/admin/reporting/reports.php:77
+msgid "Payment Methods"
+msgstr "Méthodes de paiement"
+
+#: includes/admin/reporting/reports.php:139
+msgid "Report Type"
+msgstr "Type de rapport"
+
+#: includes/admin/reporting/reports.php:149
+msgid "Show"
+msgstr "Montrer"
+
+#: includes/admin/reporting/reports.php:193
+msgid "Go Back"
+msgstr "Retour"
+
+#: includes/admin/reporting/reports.php:263
+msgid "Income Over Time"
+msgstr "Revenus depuis le début"
+
+#: includes/admin/reporting/reports.php:292
+msgid "Export Type"
+msgstr "Type d’export"
+
+#: includes/admin/reporting/reports.php:293
+msgid "Export Options"
+msgstr "Options d’exportation"
+
+#: includes/admin/reporting/reports.php:300
+msgid "Export PDF of Donations and Income"
+msgstr "Exporter un fichier PDF des dons et revenus"
+
+#: includes/admin/reporting/reports.php:302
+msgid ""
+"Download a PDF of Donations and Income reports for all forms for the current "
+"year."
+msgstr ""
+"Télécharger un fichier PDF des dons et revenus de l’année en cours pour tous "
+"les formulaires"
+
+#: includes/admin/reporting/reports.php:305
+msgid "Generate PDF"
+msgstr "Générer un PDF"
+
+#: includes/admin/reporting/reports.php:310
+msgid "Export Income and Donation Stats"
+msgstr "Exporter les statistiques des dons et revenus"
+
+#: includes/admin/reporting/reports.php:312
+msgid "Download a CSV of income and donations over time."
+msgstr "Télécharger un fichier CSV des revenus et dons depuis le début."
+
+#: includes/admin/reporting/reports.php:318
+msgctxt "Date one to date two"
+msgid "to"
+msgstr "au"
+
+#: includes/admin/reporting/reports.php:322
+#: includes/admin/reporting/reports.php:347
+#: includes/admin/reporting/reports.php:380
+msgid "Generate CSV"
+msgstr "Générer un fichier CSV"
+
+#: includes/admin/reporting/reports.php:328
+msgid "Export Donation History"
+msgstr "Exporter l’historique des dons"
+
+#: includes/admin/reporting/reports.php:330
+msgid "Download a CSV of all donations recorded."
+msgstr "Télécharger un fichier CSV de tous les dons enregistrés."
+
+#: includes/admin/reporting/reports.php:338
+msgid "All Statuses"
+msgstr "Tous les status"
+
+#: includes/admin/reporting/reports.php:354
+msgid "Export Donors in CSV"
+msgstr "Exporter les donateurs dans un fichier CSV"
+
+#: includes/admin/reporting/reports.php:356
+msgid ""
+"Download a CSV of all donors' emails. Optionally export only donors that "
+"have donated to a particular form. Note: if you have a large number of "
+"donors, exporting the donation stats may fail."
+msgstr ""
+"Télécharger un fichier CSV de tous les emails des donateurs. En option, "
+"exportez seulement les donateurs qui ont donné dans un formulaire précis. "
+"Précision : si vous avez un grand nombre de donateurs, l’exportation peut "
+"échouer."
+
+#: includes/admin/reporting/reports.php:361
+#, php-format
+msgid "All %s"
+msgstr "Tous %s"
+
+#: includes/admin/reporting/reports.php:376
+msgid "Emails and Names"
+msgstr "Emails et noms"
+
+#: includes/admin/reporting/reports.php:377
+msgid "Emails, Names, and Purchase Stats"
+msgstr "Emails, noms et statistiques d’achat"
+
+#: includes/admin/upgrades/upgrade-functions.php:80
+msgid "You do not have permission to do Give upgrades"
+msgstr "Vous n’avez pas les permissions de mettre à jour Give"
+
+#: includes/admin/upgrades/upgrades.php:46
+msgid "Give - Upgrades"
+msgstr "Give - Mises à jour"
+
+#: includes/admin/upgrades/upgrades.php:51
+#: includes/admin/upgrades/upgrades.php:71
+msgid ""
+"The upgrade process has started, please be patient and do not close this "
+"window or navigate away from this page. This could take several minutes "
+"depending on the upgrade and the size of your website. You will be "
+"automatically redirected when the upgrade is finished."
+msgstr ""
+"Le processus de mise à jour a débuté, soyez patient et ne fermez pas cette "
+"fenêtre, ni ne naviguez ailleurs de cette page. Ceci peut durer quelques "
+"minutes, selon la mise à jour et la taille de votre site internet. Vous "
+"serez redirigé automatiquement quand la mise à jour sera terminée."
+
+#: includes/admin/upgrades/upgrades.php:57
+#, php-format
+msgid "Step %d of approximately %d running"
+msgstr "Étape %d de %d en cours"
+
+#: includes/admin/welcome.php:54 includes/admin/welcome.php:55
+msgid "Welcome to Give"
+msgstr "Bienvenue à Give"
+
+#: includes/admin/welcome.php:63 includes/admin/welcome.php:64
+#: includes/admin/welcome.php:321
+msgid "Give Changelog"
+msgstr "Journal des modifications de Give"
+
+#: includes/admin/welcome.php:72 includes/admin/welcome.php:73
+msgid "Getting started with Give"
+msgstr "Débuter avec Give"
+
+#: includes/admin/welcome.php:81 includes/admin/welcome.php:82
+msgid "The people that build Give"
+msgstr "Les personnes qui ont créé Give"
+
+#: includes/admin/welcome.php:222
+msgid "About Give"
+msgstr "À propos de Give"
+
+#: includes/admin/welcome.php:225
+msgid "Getting Started"
+msgstr "Débuter"
+
+#: includes/admin/welcome.php:228
+msgid "Credits"
+msgstr "Crédits"
+
+#: includes/admin/welcome.php:248
+#, php-format
+msgid "Welcome to Give %s"
+msgstr "Bienvenue à Give %s"
+
+#: includes/admin/welcome.php:252
+#, php-format
+msgid ""
+"Thank you for activating or updating to the latest version of Give! If "
+"you're a first time user, welcome! You're well on your way to empowering "
+"your cause. </You>We encourage you to check out the <a href=\"%s\" title="
+"\"View the Give plugin documentation online\" target=\"_blank\">plugin "
+"documentation</a> and getting started guide below."
+msgstr ""
+"Merci d’avoir activé ou d’avoir mis à jour Give avec la dernière version ! "
+"Si c’est votre première utilisation, bienvenue ! Vous êtes sur le bon chemin "
+"vers la mise en avant de votre projet. </You>Nous vous encourageons à "
+"vérifier la <a href=\"%s\" title=\"Voir la documentation du plugin Give«  "
+"target=\"_blank\">documentation du plugin</a> et suivre le tutoriel de mise "
+"en place ci-dessous."
+
+#: includes/admin/welcome.php:254
+msgid ""
+"Be sure to sign up for the Give newsletter below to stay informed of "
+"important updates and news."
+msgstr ""
+"N’oubliez pas de vous inscrire à la newsletter de Give pour rester informé "
+"de l’actualité et des mises à jour importantes."
+
+#: includes/admin/welcome.php:258 includes/admin/welcome.php:324
+#: includes/admin/welcome.php:367 includes/admin/welcome.php:468
+#, php-format
+msgid "Version %s"
+msgstr "Version %s"
+
+#: includes/admin/welcome.php:275
+msgid ""
+"Give empowers you to easily accept donations and setup fundraising "
+"campaigns, directly within WordPress. We created Give to provide a better "
+"donation experience for you and your users. Robust, flexible, and intuitive, "
+"the plugin is built from the ground up to be the goto donation solution for "
+"WordPress. Create powerful donation forms, embed them throughout your "
+"website, start a campaign, and exceed your fundraising goals with Give. This "
+"plugin is actively developed and proudly supported by folks who are "
+"dedicated to helping you and your cause."
+msgstr ""
+"Give vous donne le pouvoir d’accepter des dons et des campagnes de "
+"financement facilement, directement au sein de Wordpress. Nous avons créé "
+"Give pour apporter une meilleure expérience des dons pour vous et vos "
+"utilisateurs. Robuste, flexible, intuitif, le plugin a été développé depuis "
+"le début pour être la solution de dons pour Wordpress. Créez des formulaires "
+"de dons puissants, intégrez-les dans votre site internet, démarrez une "
+"campagne et dépassez vos objectifs avec Give. Ce plugin est en constante "
+"évolution, et est supporté par une communauté de personnes qui pensent comme "
+"vous de la générosité et de l’entre-aide."
+
+#: includes/admin/welcome.php:288
+msgid "Getting to Know Give"
+msgstr "Parlez de Give"
+
+#: includes/admin/welcome.php:290
+msgid ""
+"Before you get started with Give we suggest you take a look at the online "
+"documentation. There you will find the getting started guide which will help "
+"you get up and running quickly. If you have an question, issue or bug with "
+"the Core plugin please submit an issue on the Give website. We also welcome "
+"your feedback and feature requests. Welcome to Give. We hope you much "
+"success with your cause."
+msgstr ""
+"Avant de démarrer avec Give, nous vous conseillons de lire la documentation. "
+"Vous y trouverez le guide de démarrage qui vous aidera à mettre en place "
+"rapidement votre première campagne. Si vous avez des questions, erreurs ou "
+"bugs avec le noyau du plugin, merci de nous soumettre le problème sur le "
+"site de Give. Nous accueillons également votre retour et vos demandes "
+"d’améliorations. Bienvenue à Give. Nous espérons que vous rencontrez le "
+"succès estompé."
+
+#: includes/admin/welcome.php:323
+#, php-format
+msgid ""
+"Thank you for updating to the latest version! Give %s is ready to make your "
+"online store faster, safer, and better!"
+msgstr ""
+"Merci d’avoir mis à jour Give avec la dernière version ! Give %s est prêt "
+"pour rendre votre boutique en ligne plus rapide, plus sûre et meilleure !"
+
+#: includes/admin/welcome.php:329
+msgid "Full Changelog"
+msgstr "Journal complet des changements"
+
+#: includes/admin/welcome.php:340
+msgid "Go to Give Settings"
+msgstr "Aller aux paramètres de Give"
+
+#: includes/admin/welcome.php:357
+#, php-format
+msgid "Give %s - Getting Started Guide"
+msgstr "Give %s - Guide de démarrage"
+
+#: includes/admin/welcome.php:361 includes/admin/welcome.php:462
+msgid "Welcome to the getting started guide."
+msgstr "Bienvenue dans le guide de démarrage."
+
+#: includes/admin/welcome.php:363
+msgid "Don't forget to sign up for the newsletter!"
+msgstr "N’oubliez pas de vous inscrire à la newsletter !"
+
+#: includes/admin/welcome.php:372
+msgid ""
+"Getting started with Give is easy! We put together this quick start guide to "
+"help first time users of the plugin. Our goal is to get you up and running "
+"in no time. Let's begin!"
+msgstr ""
+"Démarrer avec Give est facile ! Nous mettons à disposition ce guide de "
+"démarrage rapide pour les nouveaux utilisateurs du plugin. Notre but est de "
+"vous former à démarrer rapidement ! Commençons !"
+
+#: includes/admin/welcome.php:378
+msgid "STEP 1: Create a New Form"
+msgstr "Étape 1 : créer un nouveau formulaire"
+
+#: includes/admin/welcome.php:380
+msgid ""
+"Give is driven by it's powerful form building features. But it is not simply "
+"a \"form\". From the \"Add New Form\" page you'll be able to choose how and "
+"where you want to receive your donations. You'll be able to set the donation "
+"amounts. You even get to choose whether you want to create a whole page for "
+"your form, or embed it on a different page of your site."
+msgstr ""
+"Give est dirigé par son puissant système de construction de formulaires. Ce "
+"n’est pas juste un \"formulaire\". Depuis la page  \"Ajouter un nouveau "
+"formulaire », vous serez capable de choisir comment et où vous souhaitez "
+"recevoir vos dons. Vous serez également capable de définir des montants de "
+"dons. Vous aurez la possibilité de choisir entre créer une page complète "
+"pour un formulaire, ou bien de l’intégrer dans une page différente de votre "
+"site internet."
+
+#: includes/admin/welcome.php:382
+msgid ""
+"But all of these features begin simply by going to the menu and choosing "
+"\"Add New Form.\""
+msgstr ""
+"Mais toutes ces fonctionnalités débutent simplement en allant dans le menu "
+"et en choisissant \"Ajouter un nouveau formulaire\""
+
+#: includes/admin/welcome.php:399
+msgid "STEP 2: Choose Your Levels"
+msgstr "Étape 2 : Choisissez vos niveaux"
+
+#: includes/admin/welcome.php:401
+msgid ""
+"Each Form can be set to receive either a pre-determined amount or have "
+"multiple suggested levels of giving. Choosing \"Multi-level Donation\" opens "
+"up the levels section where you can add as many levels as you like with your "
+"own custom names and amounts."
+msgstr ""
+"Chaque formulaire peut à la fois recevoir un montant prédéfini ou avoir "
+"plusieurs propositions de montants. Choisir \"Don à niveaux multiples\" "
+"ouvre la section des niveaux multiples, où vous pouvez ajouter autant de "
+"niveaux que souhaité, avec leurs noms et montants."
+
+#: includes/admin/welcome.php:410
+msgid "STEP 3: Landing Page or Shortcode Mode?"
+msgstr "Étape 3 : Page complète ou Shortcode ?"
+
+#: includes/admin/welcome.php:412
+msgid ""
+"Every form you create in Give can either become it's own stand-alone page, "
+"or it can be inserted into any other page or post throughout your site as a "
+"Shortcode."
+msgstr ""
+"Chaque formulaire que vous créez dans Give peut devenir lui-même soit une "
+"page autonome, ou être inséré dans n’importe quelle page ou article de votre "
+"site avec un ShortCode."
+
+#: includes/admin/welcome.php:414
+msgid ""
+"You can choose these different modes by going to the \"Form Content\" "
+"section. From there, you can choose to add content before or after the "
+"Donation form on a page, or if you choose \"None\" perhaps you want to "
+"instead use the shortcode. You can find the shortcode in the top right "
+"column directly under the Publish/Save button. This feature gives you the "
+"most amount of flexibility with controlling your content on your website all "
+"within the same page."
+msgstr ""
+"Vous pouvez choisir ces différents modes en allant dans la section \"Contenu "
+"de formulaire ». De là, vous pouvez choisir d’ajouter le contenu avant ou "
+"après le formulaire de don sur la page, ou si vous choisissez \"Aucun\" si "
+"vous souhaitez utiliser un ShortCode. Vous trouverez le ShortCode dans la "
+"colonne en haut à droite directement sous le bouton \"Publier\". Cette "
+"fonctionnalité vous donne le plus de flexibilité en contrôlant directement "
+"le contenu de votre site internet dans la même page."
+
+#: includes/admin/welcome.php:431
+msgid "STEP 4: Configure Your Display Options"
+msgstr "Étape 4 : Configurer vos options d’affichage"
+
+#: includes/admin/welcome.php:433
+msgid ""
+"Lastly, you can present the form in a lot of different ways. With the "
+"\"Display Options\" section you can configure how the credit card field "
+"appears, the submit button text, which Gateway you want to use, whether "
+"Guests (non-logged in users) can donate or not, and a log-in form."
+msgstr ""
+"En dernier, vous pouvez présenter le formulaire de plusieurs façons. Dans la "
+"zone \"Options d’affichage\" vous pouvez configurer comment le champ \"Carte "
+"bancaire\" apparaît, le bouton de validation, la passerelle à utiliser, si "
+"les invités peuvent faire des dons ou non, et un formulaire de connexion."
+
+#: includes/admin/welcome.php:456
+#, php-format
+msgid "Give %s - Credits"
+msgstr "Give %s - Crédits"
+
+#: includes/admin/welcome.php:460
+msgid "Thanks to all those who have contributed code directly or indirectly. "
+msgstr ""
+"Merci à tous ceux qui ont contribué au code directement ou indirectement."
+
+#: includes/admin/welcome.php:472
+msgid ""
+"Give is created by a dedicated team of developers. If you are interested in "
+"contributing please visit the <a href=\"https://github.com/WordImpress/give"
+"\" target=\"_blank\">GitHub Repo</a>."
+msgstr ""
+"Give a été créé par une équipe de développeurs. Si vous êtes intéressés pour "
+"contribuer, visitez le <a href=\"https://github.com/WordImpress/give\" "
+"target=\"_blank\">repository GitHub</a>."
+
+#: includes/admin/welcome.php:490
+msgid "No valid changlog was found."
+msgstr "Aucun journal de modifications a été trouvé."
+
+#: includes/ajax-functions.php:231 includes/ajax-functions.php:275
+msgid "No results found"
+msgstr "Aucun résultat trouvé"
+
+#: includes/ajax-functions.php:312
+msgid "No users found"
+msgstr "Aucun utilisateur trouvé"
+
+#: includes/api/class-give-api.php:426
+msgid "You must specify both a token and API key!"
+msgstr "Vous devez spécifier à la fois un jeton et une clé API !"
+
+#: includes/api/class-give-api.php:443
+msgid "Your request could not be authenticated!"
+msgstr "Votre demande n’a pas pu être authentifiée !"
+
+#: includes/api/class-give-api.php:460
+msgid "Invalid API key!"
+msgstr "Clé API incorrecte !"
+
+#: includes/api/class-give-api.php:476
+msgid "Invalid API version!"
+msgstr "Version d’API incorrecte !"
+
+#: includes/api/class-give-api.php:613
+msgid "Invalid query!"
+msgstr "Requête incorrecte !"
+
+#: includes/api/class-give-api.php:917
+#, php-format
+msgid "Donor %s not found!"
+msgstr "Donateur %s non trouvé !"
+
+#: includes/api/class-give-api.php:923
+msgid "No donors found!"
+msgstr "Aucun donateur trouvé !"
+
+#: includes/api/class-give-api.php:971 includes/api/class-give-api.php:1286
+#, php-format
+msgid "Form %s not found!"
+msgstr "Formulaire %s non trouvé !"
+
+#: includes/api/class-give-api.php:1084 includes/api/class-give-api.php:1192
+msgid "The end date must be later than the start date!"
+msgstr "La date de fin doit être après la date de début !"
+
+#: includes/api/class-give-api.php:1089 includes/api/class-give-api.php:1197
+msgid "Invalid or no date range specified!"
+msgstr "Période absente ou incorrecte !"
+
+#: includes/api/class-give-api.php:1173
+#, php-format
+msgid "Product %s not found!"
+msgstr "Produit %s non trouvé !"
+
+#: includes/api/class-give-api.php:1544
+msgid "Give API Keys"
+msgstr "Clés API de Give :"
+
+#: includes/api/class-give-api.php:1553
+msgid "Generate API Key"
+msgstr "Générer des clés API"
+
+#: includes/api/class-give-api.php:1555
+msgid "Public key:"
+msgstr "Clé publique :"
+
+#: includes/api/class-give-api.php:1558
+msgid "Secret key:"
+msgstr "Clé secrète :"
+
+#: includes/api/class-give-api.php:1561
+msgid "Token:"
+msgstr "Jeton :"
+
+#: includes/api/class-give-api.php:1565
+msgid "Revoke API Keys"
+msgstr "Annuler les clés API"
+
+#: includes/api/class-give-api.php:1601 includes/api/class-give-api.php:1603
+#, php-format
+msgid "You do not have permission to %s API keys for this user"
+msgstr ""
+"Vous n’avez pas les permissions de %s les clés API pour cet utilisateur"
+
+#: includes/class-give-customer.php:178
+#, php-format
+msgid "Can't get property %s"
+msgstr "Impossible d’obtenir la propriété %s"
+
+#: includes/class-give-donate-form.php:73
+msgid "New Give Form"
+msgstr "Nouveau formulaire Give"
+
+#: includes/class-give-html-elements.php:46
+#: includes/class-give-html-elements.php:61
+#, php-format
+msgid "Select a %s"
+msgstr "Sélectionnez un %s"
+
+#: includes/class-give-html-elements.php:66
+msgid "No Give Forms Found"
+msgstr "Aucun formulaire Give trouvé"
+
+#: includes/class-give-html-elements.php:117
+msgid "Select a Donor"
+msgstr "Choisir un donateur"
+
+#: includes/class-give-html-elements.php:130
+msgid "No donor attached"
+msgstr "Pas de donateur rattaché"
+
+#: includes/class-give-html-elements.php:135
+msgid "No donors found"
+msgstr "Aucun donateur trouvé"
+
+#: includes/class-give-html-elements.php:195 includes/post-types.php:195
+msgid "All Categories"
+msgstr "Toutes les catégories"
+
+#: includes/class-give-html-elements.php:290
+msgctxt "all dropdown items"
+msgid "All"
+msgstr "Tous"
+
+#: includes/class-give-html-elements.php:291
+msgctxt "no dropdown items"
+msgid "None"
+msgstr "Aucun"
+
+#: includes/class-give-html-elements.php:502
+msgid "Enter username"
+msgstr "Entrez un nom d’utilisateur"
+
+#: includes/class-give-license-handler.php:134
+#, php-format
+msgid "%1$s"
+msgstr "%1$s"
+
+#: includes/class-give-license-handler.php:159
+msgid "Add-on Licenses"
+msgstr "Licences d’extensions"
+
+#: includes/class-give-license-handler.php:339
+msgid "This license does not belong to the product you have entered it for."
+msgstr "Cette licence n’appartient pas au produit que vous avez entré"
+
+#: includes/class-give-license-handler.php:344
+msgid "This license does not have any activations left"
+msgstr "Cette licence ne possède plus d’activations possibles"
+
+#: includes/class-give-license-handler.php:349
+msgid "This license key is expired. Please renew it."
+msgstr "Cette licence est expirée. Merci de la renouveller."
+
+#: includes/class-give-license-handler.php:354
+#, php-format
+msgid ""
+"There was a problem activating your license key, please try again or contact "
+"support. Error code: %s"
+msgstr ""
+"Il y a eu un soucis lors de l’activation de votre clé de licence, merci de "
+"re-essayer ou de contact le support. Code d’erreur : %s"
+
+#: includes/class-give-roles.php:42
+msgid "Give Manager"
+msgstr "Manager Give"
+
+#: includes/class-give-roles.php:73
+msgid "Give Accountant"
+msgstr "Consultant Give"
+
+#: includes/class-give-roles.php:79
+msgid "Give Worker"
+msgstr "Salarié Give"
+
+#: includes/class-give-stats.php:90
+msgid "Last Quater"
+msgstr "Dernier trimestre"
+
+#: includes/class-give-stats.php:434
+msgid "Improper date provided."
+msgstr "Données fournies incorrectes."
+
+#: includes/country-functions.php:921
+msgid "A Coru&ntilde;a"
+msgstr "La Corogne"
+
+#: includes/country-functions.php:922
+msgid "Araba"
+msgstr "Alava"
+
+#: includes/country-functions.php:923
+msgid "Albacete"
+msgstr "Albacete"
+
+#: includes/country-functions.php:924
+msgid "Alicante"
+msgstr "Alicante"
+
+#: includes/country-functions.php:925
+msgid "Almer&iacute;a"
+msgstr "Almer&iacute;a"
+
+#: includes/country-functions.php:926
+msgid "Asturias"
+msgstr "Asturias"
+
+#: includes/country-functions.php:927
+msgid "&Aacute;vila"
+msgstr "&Aacute;vila"
+
+#: includes/country-functions.php:928
+msgid "Badajoz"
+msgstr "Badajoz"
+
+#: includes/country-functions.php:929
+msgid "Baleares"
+msgstr "Bal&eacute;ares"
+
+#: includes/country-functions.php:930
+msgid "Barcelona"
+msgstr "Barcelone"
+
+#: includes/country-functions.php:931
+msgid "Burgos"
+msgstr "Burgos"
+
+#: includes/country-functions.php:932
+msgid "C&aacute;ceres"
+msgstr "C&aacute;ceres"
+
+#: includes/country-functions.php:933
+msgid "C&aacute;diz"
+msgstr "Cadix"
+
+#: includes/country-functions.php:934
+msgid "Cantabria"
+msgstr "La Cantabrie "
+
+#: includes/country-functions.php:935
+msgid "Castell&oacute;n"
+msgstr "Castell&oacute;n"
+
+#: includes/country-functions.php:936
+msgid "Ceuta"
+msgstr "Ceuta"
+
+#: includes/country-functions.php:937
+msgid "Ciudad Real"
+msgstr "Ciudad Real"
+
+#: includes/country-functions.php:938
+msgid "C&oacute;rdoba"
+msgstr "Cordoue"
+
+#: includes/country-functions.php:939
+msgid "Cuenca"
+msgstr "Cuenca"
+
+#: includes/country-functions.php:940
+msgid "Girona"
+msgstr "G&eacute;rone"
+
+#: includes/country-functions.php:941
+msgid "Granada"
+msgstr "Grenade"
+
+#: includes/country-functions.php:942
+msgid "Guadalajara"
+msgstr "Guadalajara"
+
+#: includes/country-functions.php:943
+msgid "Gipuzkoa"
+msgstr "Le Guipuscoa "
+
+#: includes/country-functions.php:944
+msgid "Huelva"
+msgstr "Huelva"
+
+#: includes/country-functions.php:945
+msgid "Huesca"
+msgstr "Huesca"
+
+#: includes/country-functions.php:946
+msgid "Ja&eacute;n"
+msgstr "Ja&eacute;n"
+
+#: includes/country-functions.php:947
+msgid "La Rioja"
+msgstr "La Rioja"
+
+#: includes/country-functions.php:948
+msgid "Las Palmas"
+msgstr "Las Palmas"
+
+#: includes/country-functions.php:949
+msgid "Le&oacute;n"
+msgstr "Le&oacute;n"
+
+#: includes/country-functions.php:950
+msgid "Lleida"
+msgstr "Lérida"
+
+#: includes/country-functions.php:951
+msgid "Lugo"
+msgstr "Lugo"
+
+#: includes/country-functions.php:952
+msgid "Madrid"
+msgstr "Madrid"
+
+#: includes/country-functions.php:953
+msgid "M&aacute;laga"
+msgstr "Malaga"
+
+#: includes/country-functions.php:954
+msgid "Melilla"
+msgstr "Melilla"
+
+#: includes/country-functions.php:955
+msgid "Murcia"
+msgstr "Murcie"
+
+#: includes/country-functions.php:956
+msgid "Navarra"
+msgstr "Navarre"
+
+#: includes/country-functions.php:957
+msgid "Ourense"
+msgstr "Orense"
+
+#: includes/country-functions.php:958
+msgid "Palencia"
+msgstr "Palencia"
+
+#: includes/country-functions.php:959
+msgid "Pontevedra"
+msgstr "Pontevedra"
+
+#: includes/country-functions.php:960
+msgid "Salamanca"
+msgstr "Salamanque"
+
+#: includes/country-functions.php:961
+msgid "Santa Cruz de Tenerife"
+msgstr "Santa Cruz de Tenerife"
+
+#: includes/country-functions.php:962
+msgid "Segovia"
+msgstr "Ségovie"
+
+#: includes/country-functions.php:963
+msgid "Sevilla"
+msgstr "Séville"
+
+#: includes/country-functions.php:964
+msgid "Soria"
+msgstr "Soria"
+
+#: includes/country-functions.php:965
+msgid "Tarragona"
+msgstr "Tarragone"
+
+#: includes/country-functions.php:966
+msgid "Teruel"
+msgstr "Teruel"
+
+#: includes/country-functions.php:967
+msgid "Toledo"
+msgstr "Tolède"
+
+#: includes/country-functions.php:968
+msgid "Valencia"
+msgstr "Valence"
+
+#: includes/country-functions.php:969
+msgid "Valladolid"
+msgstr "Valladolid"
+
+#: includes/country-functions.php:970
+msgid "Bizkaia"
+msgstr "Biscaye"
+
+#: includes/country-functions.php:971
+msgid "Zamora"
+msgstr "Zamora"
+
+#: includes/country-functions.php:972
+msgid "Zaragoza"
+msgstr "Saragosse"
+
+#: includes/emails/class-give-email-tags.php:272
+msgid "The name of completed donation form."
+msgstr "Le nom du formulaire de don terminé."
+
+#: includes/emails/class-give-email-tags.php:277
+msgid "The donor's first name"
+msgstr "prénom du donateur"
+
+#: includes/emails/class-give-email-tags.php:282
+msgid "The donor's full name, first and last"
+msgstr "Nom complet, prénom et nom du donateur"
+
+#: includes/emails/class-give-email-tags.php:287
+msgid "The donor's user name on the site, if they registered an account"
+msgstr ""
+"Nom d’utilisateur du donateur sur le site internet, s’il a créé un compte"
+
+#: includes/emails/class-give-email-tags.php:292
+msgid "The donor's email address"
+msgstr "Adresse email du donateur"
+
+#: includes/emails/class-give-email-tags.php:297
+msgid "The donor's billing address"
+msgstr "Adresse de facturation du donateur"
+
+#: includes/emails/class-give-email-tags.php:302
+msgid "The date of the donation"
+msgstr "Date du don"
+
+#: includes/emails/class-give-email-tags.php:307
+msgid "The total price of the donation"
+msgstr "Prix total du don"
+
+#: includes/emails/class-give-email-tags.php:312
+msgid "The unique ID number for this donation"
+msgstr "Numéro unique ID pour ce don"
+
+#: includes/emails/class-give-email-tags.php:317
+msgid "The unique ID number for this donation receipt"
+msgstr "Numéro unique ID pour ce récépissé"
+
+#: includes/emails/class-give-email-tags.php:322
+msgid "The method of payment used for this donation"
+msgstr "La méthode de paiement utilisée pour ce don"
+
+#: includes/emails/class-give-email-tags.php:327
+msgid "Your site name"
+msgstr "Le nom de votre site internet"
+
+#: includes/emails/class-give-email-tags.php:332
+msgid ""
+"Adds a link so users can view their receipt directly on your website if they "
+"are unable to view it in the browser correctly."
+msgstr ""
+"Ajoute un lien pour que les utilisateurs puissent voir leur récépissé "
+"directement sur votre site internet, s’ils ne peuvent pas le voir "
+"correctement dans leur navigateur."
+
+#: includes/emails/class-give-email-tags.php:508
+msgid "There was an error retrieving this donation title"
+msgstr "Il y a eu une erreur pendant la récupération du titre du don"
+
+#: includes/emails/class-give-email-tags.php:546
+#: includes/emails/template.php:83
+#, php-format
+msgid "%1$sView it in your browser.%2$s"
+msgstr "%1$sLe voir dans votre navigateur.%2$s"
+
+#: includes/emails/class-give-emails.php:163
+msgid "Default Template"
+msgstr "Template par défaut"
+
+#: includes/emails/class-give-emails.php:164
+msgid "No template, plain text only"
+msgstr "Pas de template, texte seulement"
+
+#: includes/emails/class-give-emails.php:255
+msgid ""
+"You cannot send email with Give_Emails until init/admin_init has been reached"
+msgstr ""
+"Vous ne pouvez pas envoyer de mails avec Give_Emails tant que init/"
+"admin_init n’est pas atteint."
+
+#: includes/emails/functions.php:126
+#, php-format
+msgid "New Donation - Payment #%1$s"
+msgstr "Nouveau don - Paiement #%1$s"
+
+#: includes/emails/functions.php:144
+msgid "New Donation!"
+msgstr "Nouveau don !"
+
+#: includes/emails/functions.php:196
+msgid "Hi there,"
+msgstr "Salut,"
+
+#: includes/emails/functions.php:196
+msgid ""
+"This email is to inform you that a new donation has been made on your "
+"website: "
+msgstr ""
+"Cet email pour vous informer qu’un nouveau don a été fait sur votre site "
+"internet :"
+
+#: includes/emails/functions.php:197 includes/emails/template.php:225
+#: includes/gateways/offline-donations.php:225
+msgid "Donor: "
+msgstr "Donateur :"
+
+#: includes/emails/functions.php:198
+msgid "Donation: "
+msgstr "Don :"
+
+#: includes/emails/functions.php:199 includes/emails/template.php:226
+#: includes/gateways/offline-donations.php:226
+msgid "Amount: "
+msgstr "Montant :"
+
+#: includes/emails/functions.php:200 includes/emails/template.php:227
+msgid "Payment Method: "
+msgstr "Méthode de paiement :"
+
+#: includes/emails/functions.php:201
+msgid "Thank you,"
+msgstr "Merci,"
+
+#: includes/emails/template.php:67
+msgid "These are some sample notes added to a donation."
+msgstr "Il y a quelque commentaires additionnels ajoutés au don."
+
+#: includes/emails/template.php:109
+msgid "Preview Email"
+msgstr "Prévisualiser l’email"
+
+#: includes/emails/template.php:110
+msgid "Click the buttons to preview emails."
+msgstr "Cliquez sur les boutons pour prévisualiser les emails."
+
+#: includes/emails/template.php:130
+msgid "Donation Receipt Preview"
+msgstr "Prévisualisation du récépissé de don"
+
+#: includes/emails/template.php:130
+msgid "Preview Donation Receipt"
+msgstr "Prévisualiser le récépissé de don"
+
+#: includes/emails/template.php:134
+msgid "This will send a demo donation receipt to the emails listed below."
+msgstr ""
+"Ceci enverra une démonstration de récépissé de don aux emails listés ci-"
+"dessous."
+
+#: includes/emails/template.php:134
+msgid "Send Test Email"
+msgstr "Envoyer un email test"
+
+#: includes/emails/template.php:222
+msgid "Hello"
+msgstr "Salut"
+
+#: includes/emails/template.php:222
+msgid "A donation has been made"
+msgstr "Un don a été fait"
+
+#: includes/emails/template.php:223
+#, php-format
+msgid "%s sold:"
+msgstr "%s vendu :"
+
+#: includes/emails/template.php:229
+msgid "Thank you"
+msgstr "Merci"
+
+#: includes/emails/template.php:249
+msgid "Missing donation key."
+msgstr "Clé de don manquante."
+
+#: includes/emails/template.php:258
+msgid "Receipt"
+msgstr "Récépissé"
+
+#: includes/forms/template.php:271
+msgid "Updating Price"
+msgstr "Mise à jour du prix"
+
+#: includes/forms/template.php:445
+msgid "Personal Info"
+msgstr "Informations personnelles"
+
+#: includes/forms/template.php:452
+msgid "We will use this to personalize your account experience."
+msgstr "Nous allons utiliser ceci pour personnaliser votre compte."
+
+#: includes/forms/template.php:454
+msgid "First name"
+msgstr "Prénom"
+
+#: includes/forms/template.php:463
+msgid "We will use this as well to personalize your account experience."
+msgstr "Nous allons également utiliser ceci pour personnaliser votre compte."
+
+#: includes/forms/template.php:468
+msgid "Last name"
+msgstr "Nom"
+
+#: includes/forms/template.php:474 templates/shortcode-profile-editor.php:63
+msgid "Email Address"
+msgstr "Adresse email"
+
+#: includes/forms/template.php:478
+msgid "We will send the purchase receipt to this address."
+msgstr "Nous allons vous envoyer le récépissé d’achat sur cette adresse"
+
+#: includes/forms/template.php:481
+msgid "Email address"
+msgstr "Adresse email"
+
+#: includes/forms/template.php:507
+msgid "Credit Card Info"
+msgstr "Informations de carte bancaire"
+
+#: includes/forms/template.php:511
+msgid "This is a secure SSL encrypted payment."
+msgstr "Ceci est paiement crypté avec SSL."
+
+#: includes/forms/template.php:516
+msgid "Card Number"
+msgstr "Numéro de carte"
+
+#: includes/forms/template.php:518
+msgid "The (typically) 16 digits on the front of your credit card."
+msgstr "Les (typiquement) 16 chiffres sur le recto de votre carte bancaire."
+
+#: includes/forms/template.php:522
+msgid "Card number"
+msgstr "Carte bancaire"
+
+#: includes/forms/template.php:527
+msgid "CVC"
+msgstr "CVV"
+
+#: includes/forms/template.php:529
+msgid "The 3 digit (back) or 4 digit (front) value on your card."
+msgstr "Les 3 chiffres (verso) ou 4 chiffres (recto) de votre carte"
+
+#: includes/forms/template.php:532
+msgid "Security code"
+msgstr "Code de sécurité"
+
+#: includes/forms/template.php:537
+msgid "Name on the Card"
+msgstr "Nom inscrit sur la carte"
+
+#: includes/forms/template.php:539
+msgid "The name printed on the front of your credit card."
+msgstr "Le nom inscrit sur le recto de votre carte bancaire"
+
+#: includes/forms/template.php:542
+msgid "Card name"
+msgstr "Nom de carte"
+
+#: includes/forms/template.php:547
+msgid "Expiration (MM/YY)"
+msgstr "Expiration (MM/AA)"
+
+#: includes/forms/template.php:549
+msgid "The date your credit card expires, typically on the front of the card."
+msgstr ""
+"La date d’expiration de votre carte bancaire, habituellement sur le recto de "
+"votre carte."
+
+#: includes/forms/template.php:593
+msgid "Billing Details"
+msgstr "Détails de facturation"
+
+#: includes/forms/template.php:601
+msgid "The primary billing address for your credit card."
+msgstr "L’adresse de facturation principale de votre carte bancaire."
+
+#: includes/forms/template.php:606
+msgid "Address line 1"
+msgstr "Adresse (ligne 1)"
+
+#: includes/forms/template.php:611 templates/shortcode-profile-editor.php:81
+msgid "Address Line 2"
+msgstr "Adresse (ligne 2)"
+
+#: includes/forms/template.php:615
+msgid ""
+"(optional) The suite, apt no, PO box, etc, associated with your billing "
+"address."
+msgstr ""
+"(optionnel) Appartement, boîte postal, etc, associé à votre adresse de "
+"facturation."
+
+#: includes/forms/template.php:620
+msgid "Address line 2"
+msgstr "Adresse (ligne 1)"
+
+#: includes/forms/template.php:629
+msgid "The city for your billing address."
+msgstr "Ville de votre adresse de facturation."
+
+#: includes/forms/template.php:638 templates/shortcode-profile-editor.php:93
+msgid "Zip / Postal Code"
+msgstr "Code postal"
+
+#: includes/forms/template.php:642
+msgid "The zip or postal code for your billing address."
+msgstr "Code postal de votre adresse de facturation."
+
+#: includes/forms/template.php:647
+msgid "Zip / Postal code"
+msgstr "Code postal"
+
+#: includes/forms/template.php:656
+msgid "The country for your billing address."
+msgstr "Pays de votre adresse de facturation."
+
+#: includes/forms/template.php:684
+msgid "The state or province for your billing address."
+msgstr "Région ou état de votre adresse de facturation."
+
+#: includes/forms/template.php:744
+msgid "Already have an account?"
+msgstr "Possédez-vous déjà un compte ?"
+
+#: includes/forms/template.php:745 includes/forms/template.php:872
+msgid "Login"
+msgstr "Connexion"
+
+#: includes/forms/template.php:749 includes/forms/template.php:921
+#: includes/scripts.php:53
+msgid "Loading"
+msgstr "Chargement"
+
+#: includes/forms/template.php:757
+msgid "Create an account"
+msgstr "Créer un compte"
+
+#: includes/forms/template.php:759 includes/forms/template.php:842
+msgid "(optional)"
+msgstr "(optionnel)"
+
+#: includes/forms/template.php:768
+msgid "The username you will use to log into your account."
+msgstr "Le nom d’utilisateur que vous utiliserez pour vous connecter."
+
+#: includes/forms/template.php:778 includes/forms/template.php:787
+#: includes/forms/template.php:864
+msgid "Password"
+msgstr "Mot de passe"
+
+#: includes/forms/template.php:782
+msgid "The password used to access your account."
+msgstr "Le mot de passe utilisé pour accéder à votre compte."
+
+#: includes/forms/template.php:792
+msgid "Password Again"
+msgstr "Mot de passe (confirmation)"
+
+#: includes/forms/template.php:796
+msgid "Confirm your password."
+msgstr "Confirmez votre mot de passe."
+
+#: includes/forms/template.php:801
+msgid "Confirm password"
+msgstr "Confirmez votre mot de passe"
+
+#: includes/forms/template.php:840
+msgid "Login to Your Account"
+msgstr "Connexion à votre compte"
+
+#: includes/forms/template.php:846
+msgid "Need to create an account?"
+msgstr "Besoin de créer un compte ?"
+
+#: includes/forms/template.php:848
+msgid "Register"
+msgstr "Inscription"
+
+#: includes/forms/template.php:850
+msgid "or checkout as a guest."
+msgstr "ou continuer en tant qu’invité."
+
+#: includes/forms/template.php:860
+msgid "Your username"
+msgstr "Votre nom d’utilisateur"
+
+#: includes/forms/template.php:867
+msgid "Your password"
+msgstr "Votre mot de passe"
+
+#: includes/forms/template.php:906
+msgid "Select Payment Method"
+msgstr "Sélectionnez une méthode de paiement"
+
+#: includes/forms/template.php:970
+msgid "Show Terms"
+msgstr "Montrer les conditions d’utilisation"
+
+#: includes/forms/template.php:971
+msgid "Hide Terms"
+msgstr "Cacher les conditions d’utilisation"
+
+#: includes/forms/template.php:1007
+msgid "Donation Total:"
+msgstr "Total du don :"
+
+#: includes/forms/template.php:1153
+#, php-format
+msgctxt "give"
+msgid "%s of %s raised"
+msgstr "%s de %s atteint"
+
+#: includes/forms/template.php:1252
+msgid "Notice"
+msgstr "Information"
+
+#: includes/forms/template.php:1252
+msgid ""
+"Test mode is enabled. While in test mode no live transactions are processed."
+msgstr ""
+"Mode test activé. Tant que le mode test est activé, aucune transaction n’est "
+"réalisée."
+
+#: includes/forms/widget.php:56
+msgid "Give - Donation Form"
+msgstr "Give - formulaire de don"
+
+#: includes/forms/widget.php:59
+msgid "Display a Give Donation Form in your theme's widget powered sidebar."
+msgstr "Affiche un formulaire de don Give dans un widget de votre thème."
+
+#: includes/forms/widget.php:104
+msgid "Widget Title"
+msgstr "Titre du widget"
+
+#: includes/forms/widget.php:120
+#, php-format
+msgid "Give %s"
+msgstr "Give %s"
+
+#: includes/forms/widget.php:121
+msgid "Select a Give Form that you would like to embed in this widget area."
+msgstr ""
+"Sélectionnez un formulaire de Give dont vous souhaitez intégrer dans cette "
+"zone de widget."
+
+#: includes/forms/widget.php:124
+msgid "Please select..."
+msgstr "Sélectionnez…"
+
+#: includes/gateways/actions.php:59
+msgid "You must enable a payment gateway to use Give"
+msgstr "Vous devez activer une passerelle de paiement pour utiliser Give"
+
+#: includes/gateways/functions.php:28
+msgid "PayPal"
+msgstr "PayPal"
+
+#: includes/gateways/functions.php:32 includes/gateways/functions.php:33
+msgid "Test Payment"
+msgstr "Paiement de test"
+
+#: includes/gateways/functions.php:127 includes/gateways/functions.php:148
+msgid "Test Donation"
+msgstr "Don de test"
+
+#: includes/gateways/manual.php:48 includes/gateways/paypal-standard.php:37
+msgid "Nonce verification has failed"
+msgstr "La vérification du Nonce a échoué"
+
+#: includes/gateways/manual.php:73
+#, php-format
+msgid ""
+"Payment creation failed while processing a manual (free or test) purchase. "
+"Payment data: %s"
+msgstr ""
+"La création du paiement a échoué pendant l’achat manuel (gratuit ou en "
+"test). Données de paiement : %s"
+
+#: includes/gateways/offline-donations.php:26
+msgid "Offline Donation"
+msgstr "Don hors-ligne"
+
+#: includes/gateways/offline-donations.php:82
+#, php-format
+msgid "Please enter offline donation instructions in the %s."
+msgstr "Merci de lire les instructions pour les dons hors-ligne dans le %s."
+
+#: includes/gateways/offline-donations.php:82
+msgid "this form's settings"
+msgstr "les paramètres de ce formulaire"
+
+#: includes/gateways/offline-donations.php:220
+msgid "New Pending Donation"
+msgstr "Nouveau don en attente"
+
+#: includes/gateways/offline-donations.php:222
+msgid "Dear Admin,"
+msgstr "Cher administrateur,"
+
+#: includes/gateways/offline-donations.php:222
+msgid "An offline donation has been made"
+msgstr "Un don hors-ligne a été fait"
+
+#: includes/gateways/offline-donations.php:227
+msgid ""
+"This is a pending donation awaiting payment. Donation instructions have been "
+"emailed to the donor. Once you receive payment, be sure to mark the donation "
+"as complete using the link below."
+msgstr ""
+"Ceci est un don en attente de paiement. Les instructions de don ont été "
+"envoyées par email au donateur. Une fois que vous avez reçu le paiement, "
+"soyez sûr de marquer le don comme terminé en utilisant le lien ci-dessous."
+
+#: includes/gateways/offline-donations.php:228
+#, php-format
+msgid "View Donation Details: %s."
+msgstr "Voir les détails du don : %s."
+
+#: includes/gateways/offline-donations.php:261
+msgid "Customize Offline Donations"
+msgstr "Personnaliser les dons hors-ligne"
+
+#: includes/gateways/offline-donations.php:262
+msgid ""
+"If you would like to customize the donation instructions for this specific "
+"forms check this option."
+msgstr ""
+"Si vous souhaitez personnaliser les instructions de don hors-ligne pour ces "
+"formulaires, cochez cette case."
+
+#: includes/gateways/offline-donations.php:272
+msgid "Request Billing Information"
+msgstr "Demander les informations de facturation"
+
+#: includes/gateways/offline-donations.php:273
+msgid ""
+"This option will enable the billing details section for this form's offline "
+"donation payment gateway. The fieldset will appear above the offline "
+"donation instructions."
+msgstr ""
+"Cette option vous permet d’activer la section de facturation pour ce "
+"formulaire de don hors-ligne. La zone apparaîtra au-dessus des instructions "
+"de don hors-ligne."
+
+#: includes/gateways/offline-donations.php:281
+msgid ""
+"Enter the instructions you want to display to the donor during the donation "
+"process. Most likely this would include important information like mailing "
+"address and who to make the check out to."
+msgstr ""
+"Entrez les instruction que vous souhaiter afficher au donateur pendant la "
+"phase de don. Ceci devrait inclure des informations importantes comme "
+"l’adresse postal, et les personnes qu’ils peuvent contacter."
+
+#: includes/gateways/offline-donations.php:327
+msgid ""
+"In order to make an offline donation we ask that you please follow these "
+"instructions"
+msgstr ""
+"Pour faire un don hors-ligne, merci de bien vouloir suivre ces instructions"
+
+#: includes/gateways/offline-donations.php:329
+#: includes/gateways/offline-donations.php:355
+msgctxt "Step 1 for donating offline by check"
+msgid "Make a check payable to "
+msgstr "Faire un chèque payable à"
+
+#: includes/gateways/offline-donations.php:330
+#: includes/gateways/offline-donations.php:356
+msgctxt ""
+"Step 2 for donating by check; this explains who the check should be written "
+"to"
+msgid ""
+"On the memo line of the check, please indicate that the donation is for "
+msgstr "Sur la ligne Mémo du chèque, merci d’indiquer que le don est pour"
+
+#: includes/gateways/offline-donations.php:331
+#: includes/gateways/offline-donations.php:357
+msgctxt "Step 3; where to mail the check"
+msgid "Please mail your check to:"
+msgstr "Merci d’adresser votre chèque à :"
+
+#: includes/gateways/offline-donations.php:336
+msgid ""
+"All contributions will be gratefully acknowledged and are tax deductible."
+msgstr "Toutes les contributions seront validées et la taxe est déductible."
+
+#: includes/gateways/offline-donations.php:352
+msgid "Dear {name},"
+msgstr "Cher {name},"
+
+#: includes/gateways/offline-donations.php:353
+msgid ""
+"Thank you for your offline donation request! Your generosity is greatly "
+"appreciated. In order to make an offline donation we ask that you please "
+"follow these instructions"
+msgstr ""
+"Merci pour votre demande de don hors-ligne ! Votre générosité est grandement "
+"appréciée ! Pour faire un don hors-ligne, nous vous demandons de bien "
+"vouloir suivre ces instructions"
+
+#: includes/gateways/offline-donations.php:362
+msgid ""
+"Once your donation has been received we will mark it as complete and you "
+"will receive an email receipt for your records. Please contact us with any "
+"questions you may have!"
+msgstr ""
+"Une fois que votre don sera reçu, nous le validerons en tant que terminé, et "
+"vous recevrez un email avec un récépissé de vos enregistrements. N’hésitez "
+"pas à nous contacter si vous avez des questions !"
+
+#: includes/gateways/offline-donations.php:363
+msgid "Sincerely,"
+msgstr "Cordialement,"
+
+#: includes/gateways/paypal-standard.php:60
+#, php-format
+msgid ""
+"Payment creation failed before sending buyer to PayPal. Payment data: %s"
+msgstr ""
+"La création du paiement a échoué avant d’envoyer l’acheteur sur PayPal. "
+"Données de paiement : %s"
+
+#: includes/gateways/paypal-standard.php:241
+#: includes/gateways/paypal-standard.php:247
+#: includes/gateways/paypal-standard.php:315
+#: includes/gateways/paypal-standard.php:325
+#: includes/gateways/paypal-standard.php:374
+#: includes/gateways/paypal-standard.php:382
+msgid "IPN Error"
+msgstr "Erreur IPN"
+
+#: includes/gateways/paypal-standard.php:241
+#: includes/gateways/paypal-standard.php:247
+#, php-format
+msgid "Invalid IPN verification response. IPN data: %s"
+msgstr "Réponse de vérification de l’IPN incorrect. Données IPN : %s"
+
+#: includes/gateways/paypal-standard.php:315
+#, php-format
+msgid "Invalid business email in IPN response. IPN data: %s"
+msgstr "Adresse email incorrecte dans la réponse IPN. Données IPN : %s"
+
+#: includes/gateways/paypal-standard.php:317
+msgid "Payment failed due to invalid PayPal business email."
+msgstr "Le paiement a échoué faute d’une adresse email Paypal correcte."
+
+#: includes/gateways/paypal-standard.php:325
+#, php-format
+msgid "Invalid currency in IPN response. IPN data: %s"
+msgstr "Monnaie invalide dans la réponse IPN. Données IPN : %s"
+
+#: includes/gateways/paypal-standard.php:327
+msgid "Payment failed due to invalid currency in PayPal IPN."
+msgstr ""
+"Le paiement a échoué en raison d’une monnaie incorrecte dans l’IPN PayPal."
+
+#: includes/gateways/paypal-standard.php:374
+#, php-format
+msgid "Invalid payment amount in IPN response. IPN data: %s"
+msgstr "Montant incorrect dans la réponse IPN. Données IPN : %s"
+
+#: includes/gateways/paypal-standard.php:376
+msgid "Payment failed due to invalid amount in PayPal IPN."
+msgstr ""
+"Le paiement a échoué en raison d’un montant invalide dans l’IPN PayPal."
+
+#: includes/gateways/paypal-standard.php:382
+#, php-format
+msgid "Invalid purchase key in IPN response. IPN data: %s"
+msgstr "Clé d’achat invalide dans la réponse IPN. Données IPN : %s"
+
+#: includes/gateways/paypal-standard.php:384
+msgid "Payment failed due to invalid purchase key in PayPal IPN."
+msgstr ""
+"Le paiement a échoué en raison d’une clé d’achat invalide dans l’IPN PayPal."
+
+#: includes/gateways/paypal-standard.php:390
+#, php-format
+msgid "PayPal Transaction ID: %s"
+msgstr "ID de transaction Paypal : %s"
+
+#: includes/gateways/paypal-standard.php:403
+msgid "Payment made via eCheck and will clear automatically in 5-8 days"
+msgstr ""
+"Paiement effectué avec eCheck et sera effacé automatiquement dans 5 à 8 jours"
+
+#: includes/gateways/paypal-standard.php:409
+msgid ""
+"Payment requires a confirmed donor address and must be accepted manually "
+"through PayPal"
+msgstr ""
+"Le paiement requiert une adresse de donateur confirmée, et devant être "
+"acceptée manuelle dans PayPal"
+
+#: includes/gateways/paypal-standard.php:415
+msgid ""
+"Payment must be accepted manually through PayPal due to international "
+"account regulations"
+msgstr ""
+"Le paiement doit être accepté manuellement dans PayPal en raison de "
+"régulations de comptes internationaux."
+
+#: includes/gateways/paypal-standard.php:421
+msgid ""
+"Payment received in non-shop currency and must be accepted manually through "
+"PayPal"
+msgstr ""
+"Le paiement a été reçu dans une autre monnaie de la boutique, et doit être "
+"accepté manuellement dans PayPal"
+
+#: includes/gateways/paypal-standard.php:428
+msgid ""
+"Payment is being reviewed by PayPal staff as high-risk or in possible "
+"violation of government regulations"
+msgstr ""
+"Le paiement doit être validé manuellement par l’équipe de PayPal en raison "
+"de risques de fraudes fiscales."
+
+#: includes/gateways/paypal-standard.php:434
+msgid "Payment was sent to non-confirmed or non-registered email address."
+msgstr ""
+"Le paiement a été envoyé à une adresse email non confirmée ou non inscrite."
+
+#: includes/gateways/paypal-standard.php:440
+msgid "PayPal account must be upgraded before this payment can be accepted"
+msgstr ""
+"Le compte PayPal doit être mis à jour avant que le paiement puisse être "
+"accepté"
+
+#: includes/gateways/paypal-standard.php:446
+msgid ""
+"PayPal account is not verified. Verify account in order to accept this "
+"payment"
+msgstr ""
+"Le compte PayPal n’est pas vérifié. Vérifiez votre compte PayPal pour "
+"pouvoir accepter ce paiement."
+
+#: includes/gateways/paypal-standard.php:452
+msgid ""
+"Payment is pending for unknown reasons. Contact PayPal support for assistance"
+msgstr ""
+"Le paiement est en attente pour une raison inconnue. Contactez PayPal pour "
+"un support"
+
+#: includes/gateways/paypal-standard.php:495
+#, php-format
+msgid "Partial PayPal refund processed: %s"
+msgstr "Remboursement partiel de PayPal à hauteur de : %s"
+
+#: includes/gateways/paypal-standard.php:501
+#, php-format
+msgid "PayPal Payment #%s Refunded for reason: %s"
+msgstr "Le paiement PayPal #%s a été remboursé pour la raison suivante : %s"
+
+#: includes/gateways/paypal-standard.php:502
+#, php-format
+msgid "PayPal Refund Transaction ID: %s"
+msgstr "ID de transaction de remboursement PayPay : %s"
+
+#: includes/install.php:52
+msgid "Donation Confirmation"
+msgstr "Confirmation de don"
+
+#: includes/install.php:53
+msgid "Thank you for your donation! [give_receipt]"
+msgstr "Merci pour votre don ! [give_receipt]"
+
+#: includes/install.php:71
+msgid "Transaction Failed"
+msgstr "La transaction a échoué"
+
+#: includes/install.php:72
+msgid "Your transaction failed, please try again or contact site support."
+msgstr ""
+"La transaction a échoué, merci de re-essayer ou de contact le support du "
+"site internet."
+
+#: includes/install.php:88
+msgid "Donation History"
+msgstr "Historique du don"
+
+#: includes/libraries/cmb2/example-functions.php:82
+#: includes/libraries/cmb2/tests/test-cmb-field.php:206
+msgid "Test Metabox"
+msgstr "Boîte de méta d’essai"
+
+#: includes/libraries/cmb2/example-functions.php:93
+#: includes/libraries/cmb2/example-functions.php:380
+msgid "Test Text"
+msgstr "Texte d’essai"
+
+#: includes/libraries/cmb2/example-functions.php:94
+#: includes/libraries/cmb2/example-functions.php:106
+#: includes/libraries/cmb2/example-functions.php:114
+#: includes/libraries/cmb2/example-functions.php:122
+#: includes/libraries/cmb2/example-functions.php:131
+#: includes/libraries/cmb2/example-functions.php:139
+#: includes/libraries/cmb2/example-functions.php:153
+#: includes/libraries/cmb2/example-functions.php:160
+#: includes/libraries/cmb2/example-functions.php:168
+#: includes/libraries/cmb2/example-functions.php:185
+#: includes/libraries/cmb2/example-functions.php:194
+#: includes/libraries/cmb2/example-functions.php:202
+#: includes/libraries/cmb2/example-functions.php:209
+#: includes/libraries/cmb2/example-functions.php:216
+#: includes/libraries/cmb2/example-functions.php:230
+#: includes/libraries/cmb2/example-functions.php:243
+#: includes/libraries/cmb2/example-functions.php:256
+#: includes/libraries/cmb2/example-functions.php:268
+#: includes/libraries/cmb2/example-functions.php:277
+#: includes/libraries/cmb2/example-functions.php:285
+#: includes/libraries/cmb2/example-functions.php:294
+#: includes/libraries/cmb2/example-functions.php:301
+#: includes/libraries/cmb2/example-functions.php:315
+#: includes/libraries/cmb2/example-functions.php:381
+#: includes/libraries/cmb2/example-functions.php:475
+#: includes/libraries/cmb2/example-functions.php:483
+#: includes/libraries/cmb2/example-functions.php:490
+#: includes/libraries/cmb2/example-functions.php:497
+#: includes/libraries/cmb2/example-functions.php:504
+#: includes/libraries/cmb2/example-functions.php:511
+#: includes/libraries/cmb2/example-functions.php:518
+#: includes/libraries/cmb2/example-functions.php:556
+#: includes/libraries/cmb2/tests/test-cmb-field.php:218
+msgid "field description (optional)"
+msgstr "description du champ (optionnel)"
+
+#: includes/libraries/cmb2/example-functions.php:105
+msgid "Test Text Small"
+msgstr "Petit texte d’essai"
+
+#: includes/libraries/cmb2/example-functions.php:113
+msgid "Test Text Medium"
+msgstr "Texte moyen d’essai"
+
+#: includes/libraries/cmb2/example-functions.php:121
+msgid "Website URL"
+msgstr "URL du site internet"
+
+#: includes/libraries/cmb2/example-functions.php:130
+msgid "Test Text Email"
+msgstr "Texte de l’email d’essai"
+
+#: includes/libraries/cmb2/example-functions.php:138
+msgid "Test Time"
+msgstr "Heure d’essai"
+
+#: includes/libraries/cmb2/example-functions.php:145
+#: includes/libraries/cmb2/example-functions.php:146
+msgid "Time zone"
+msgstr "Fuseau horaire"
+
+#: includes/libraries/cmb2/example-functions.php:152
+msgid "Test Date Picker"
+msgstr "Sélecteur de date d’essai"
+
+#: includes/libraries/cmb2/example-functions.php:159
+msgid "Test Date Picker (UNIX timestamp)"
+msgstr "Sélecteur de date d’essai (timestamp UNIX)"
+
+#: includes/libraries/cmb2/example-functions.php:167
+msgid "Test Date/Time Picker Combo (UNIX timestamp)"
+msgstr "Sélecteur de date et heure d’essai (timestamp UNIX)"
+
+#: includes/libraries/cmb2/example-functions.php:184
+msgid "Test Money"
+msgstr "Argent d’essai"
+
+#: includes/libraries/cmb2/example-functions.php:193
+msgid "Test Color Picker"
+msgstr "Palette de couleur d’essai"
+
+#: includes/libraries/cmb2/example-functions.php:201
+msgid "Test Text Area"
+msgstr "Champ texte d’essai"
+
+#: includes/libraries/cmb2/example-functions.php:208
+msgid "Test Text Area Small"
+msgstr "Petit champ de texte d’essai"
+
+#: includes/libraries/cmb2/example-functions.php:215
+msgid "Test Text Area for Code"
+msgstr "Petit champ de code d’essai"
+
+#: includes/libraries/cmb2/example-functions.php:222
+msgid "Test Title Weeeee"
+msgstr "Titre Weeee d’essai"
+
+#: includes/libraries/cmb2/example-functions.php:223
+msgid "This is a title description"
+msgstr "Ceci est une description de titre"
+
+#: includes/libraries/cmb2/example-functions.php:229
+msgid "Test Select"
+msgstr "Choix d’essai"
+
+#: includes/libraries/cmb2/example-functions.php:235
+#: includes/libraries/cmb2/example-functions.php:248
+#: includes/libraries/cmb2/example-functions.php:260
+msgid "Option One"
+msgstr "Option une"
+
+#: includes/libraries/cmb2/example-functions.php:236
+#: includes/libraries/cmb2/example-functions.php:249
+#: includes/libraries/cmb2/example-functions.php:261
+msgid "Option Two"
+msgstr "Option deux"
+
+#: includes/libraries/cmb2/example-functions.php:237
+#: includes/libraries/cmb2/example-functions.php:250
+#: includes/libraries/cmb2/example-functions.php:262
+msgid "Option Three"
+msgstr "Option trois"
+
+#: includes/libraries/cmb2/example-functions.php:242
+msgid "Test Radio inline"
+msgstr "Radio en ligne d’essai"
+
+#: includes/libraries/cmb2/example-functions.php:255
+msgid "Test Radio"
+msgstr "Radio d’essai"
+
+#: includes/libraries/cmb2/example-functions.php:267
+msgid "Test Taxonomy Radio"
+msgstr "Radio de taxonomie d’essai"
+
+#: includes/libraries/cmb2/example-functions.php:276
+msgid "Test Taxonomy Select"
+msgstr "Sélecteur de taxonomie d’essai"
+
+#: includes/libraries/cmb2/example-functions.php:284
+msgid "Test Taxonomy Multi Checkbox"
+msgstr "Cases à cocher multiples de taxonomie d’essai"
+
+#: includes/libraries/cmb2/example-functions.php:293
+msgid "Test Checkbox"
+msgstr "Case à cocher d’essai"
+
+#: includes/libraries/cmb2/example-functions.php:300
+#: includes/libraries/cmb2/tests/test-cmb-field.php:217
+msgid "Test Multi Checkbox"
+msgstr "Cases à cocher multiples d’essai"
+
+#: includes/libraries/cmb2/example-functions.php:306
+#: includes/libraries/cmb2/tests/test-cmb-field.php:223
+msgid "Check One"
+msgstr "Case à cocher une"
+
+#: includes/libraries/cmb2/example-functions.php:307
+#: includes/libraries/cmb2/tests/test-cmb-field.php:224
+msgid "Check Two"
+msgstr "Case à cocher deux"
+
+#: includes/libraries/cmb2/example-functions.php:308
+#: includes/libraries/cmb2/tests/test-cmb-field.php:225
+msgid "Check Three"
+msgstr "Case à cocher trois"
+
+#: includes/libraries/cmb2/example-functions.php:314
+msgid "Test wysiwyg"
+msgstr "WYSIWYG d’essai"
+
+#: includes/libraries/cmb2/example-functions.php:322
+msgid "Test Image"
+msgstr "Image d’essai"
+
+#: includes/libraries/cmb2/example-functions.php:323
+msgid "Upload an image or enter a URL."
+msgstr "Téléversez une image ou entrez une URL"
+
+#: includes/libraries/cmb2/example-functions.php:329
+msgid "Multiple Files"
+msgstr "Fichiers multiples"
+
+#: includes/libraries/cmb2/example-functions.php:330
+msgid "Upload or add multiple images/attachments."
+msgstr "Téléversez ou ajoutez plusieurs images / pièces-jointes."
+
+#: includes/libraries/cmb2/example-functions.php:337
+msgid "oEmbed"
+msgstr "oEmbed"
+
+#: includes/libraries/cmb2/example-functions.php:338
+msgid ""
+"Enter a youtube, twitter, or instagram URL. Supports services listed at <a "
+"href=\"http://codex.wordpress.org/Embeds\">http://codex.wordpress.org/"
+"Embeds</a>."
+msgstr ""
+"Entrez une URL Youtube, Twitter ou Instagram. Supporte les services listés "
+"sur : <a href=\"http://codex.wordpress.org/Embeds\">http://codex.wordpress."
+"org/Embeds</a>."
+
+#: includes/libraries/cmb2/example-functions.php:371
+msgid "About Page Metabox"
+msgstr "Page d’informations des métadonnées "
+
+#: includes/libraries/cmb2/example-functions.php:402
+msgid "Repeating Field Group"
+msgstr "Groupe de champs répétitifs"
+
+#: includes/libraries/cmb2/example-functions.php:410
+msgid "Generates reusable form entries"
+msgstr "Génère des entrées de formulaires réutilisables"
+
+#: includes/libraries/cmb2/example-functions.php:412
+msgid "Entry {#}"
+msgstr "Entrée {#}"
+
+#: includes/libraries/cmb2/example-functions.php:413
+msgid "Add Another Entry"
+msgstr "Ajouter une nouvelle entrée"
+
+#: includes/libraries/cmb2/example-functions.php:414
+msgid "Remove Entry"
+msgstr "Supprimer l’entrée"
+
+#: includes/libraries/cmb2/example-functions.php:426
+msgid "Entry Title"
+msgstr "Titre de l’entrée"
+
+#: includes/libraries/cmb2/example-functions.php:433
+msgid "Description"
+msgstr "Description"
+
+#: includes/libraries/cmb2/example-functions.php:434
+msgid "Write a short description for this entry"
+msgstr "Écrivez une brève description pour cette entrée"
+
+#: includes/libraries/cmb2/example-functions.php:440
+msgid "Entry Image"
+msgstr "Image de l’entrée"
+
+#: includes/libraries/cmb2/example-functions.php:446
+msgid "Image Caption"
+msgstr "Légende de l’image"
+
+#: includes/libraries/cmb2/example-functions.php:467
+msgid "User Profile Metabox"
+msgstr "Métadonnées du profil de l’utilisateur"
+
+#: includes/libraries/cmb2/example-functions.php:474
+msgid "Extra Info"
+msgstr "Informations additionnelles"
+
+#: includes/libraries/cmb2/example-functions.php:482
+msgid "Avatar"
+msgstr "Avatar"
+
+#: includes/libraries/cmb2/example-functions.php:489
+msgid "Facebook URL"
+msgstr "URL Facebook"
+
+#: includes/libraries/cmb2/example-functions.php:496
+msgid "Twitter URL"
+msgstr "URL Twitter"
+
+#: includes/libraries/cmb2/example-functions.php:503
+msgid "Google+ URL"
+msgstr "URL Google+"
+
+#: includes/libraries/cmb2/example-functions.php:510
+msgid "Linkedin URL"
+msgstr "URL Linkedin"
+
+#: includes/libraries/cmb2/example-functions.php:517
+msgid "User Field"
+msgstr "Champ utilisateur"
+
+#: includes/libraries/cmb2/example-functions.php:540
+msgid "Theme Options Metabox"
+msgstr "Métadonnées des options du thème"
+
+#: includes/libraries/cmb2/example-functions.php:555
+msgid "Site Background Color"
+msgstr "Couleur de fond du site internet"
+
+#: includes/libraries/cmb2/includes/CMB2.php:120
+msgid "Metabox configuration is required to have an ID parameter"
+msgstr ""
+"La configuration des métadonnées est nécéssaire pour obtenir un paramètre "
+"d’ID"
+
+#: includes/libraries/cmb2/includes/CMB2.php:326
+msgid "Click to toggle"
+msgstr "Cliquez pour échanger"
+
+#: includes/libraries/cmb2/includes/CMB2_Ajax.php:40
+msgid "Please Try Again"
+msgstr "Merci de re-essayer"
+
+#: includes/libraries/cmb2/includes/CMB2_Ajax.php:135
+#: includes/libraries/cmb2/tests/test-cmb-types.php:786
+msgid "Remove Embed"
+msgstr "Supprimer l’intégration"
+
+#: includes/libraries/cmb2/includes/CMB2_Ajax.php:139
+#: includes/libraries/cmb2/tests/test-cmb-types.php:787
+#, php-format
+msgid "No oEmbed Results Found for %s. View more info at"
+msgstr "Aucun oEmbed trouvé pour %s. Plus d’informations à"
+
+#: includes/libraries/cmb2/includes/CMB2_Field.php:891
+msgid "Add Group"
+msgstr "Ajouter un groupe"
+
+#: includes/libraries/cmb2/includes/CMB2_Field.php:892
+msgid "Remove Group"
+msgstr "Supprimer le groupe"
+
+#: includes/libraries/cmb2/includes/CMB2_JS.php:86
+#: includes/libraries/cmb2/includes/CMB2_JS.php:119
+msgid "Clear"
+msgstr "Vider"
+
+#: includes/libraries/cmb2/includes/CMB2_JS.php:88
+msgid "Select Color"
+msgstr "Sélectionner une couleur"
+
+#: includes/libraries/cmb2/includes/CMB2_JS.php:89
+msgid "Current Color"
+msgstr "Couleur actuelle"
+
+#: includes/libraries/cmb2/includes/CMB2_JS.php:109
+msgctxt "Valid formatDate string for jquery-ui datepicker"
+msgid "mm/dd/yy"
+msgstr "jj/mm/aaaa"
+
+#: includes/libraries/cmb2/includes/CMB2_JS.php:110
+msgid "Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday"
+msgstr "Dimanche, Lundi, Mardi, Mercredi, Jeudi, Vendredi, Samedi"
+
+#: includes/libraries/cmb2/includes/CMB2_JS.php:111
+msgid "Su, Mo, Tu, We, Th, Fr, Sa"
+msgstr "Di, Lu, Ma, Me, Je, Ve, Sa"
+
+#: includes/libraries/cmb2/includes/CMB2_JS.php:112
+msgid "Sun, Mon, Tue, Wed, Thu, Fri, Sat"
+msgstr "Dim, Lun, Mar, Mer, Jeu, Ven, Sam"
+
+#: includes/libraries/cmb2/includes/CMB2_JS.php:113
+msgid ""
+"January, February, March, April, May, June, July, August, September, "
+"October, November, December"
+msgstr ""
+"Janvier, Février, Mars, Avril, Mai, Juin, Juillet, Août, Septembre, Octobre, "
+"Novembre, Décembre"
+
+#: includes/libraries/cmb2/includes/CMB2_JS.php:114
+msgid "Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec"
+msgstr "Jan, Fév, Mar, Avr, Mai, Jui, Juil, Août, Sep, Oct, Nov, Déc"
+
+#: includes/libraries/cmb2/includes/CMB2_JS.php:115
+msgid "Next"
+msgstr "Suivant"
+
+#: includes/libraries/cmb2/includes/CMB2_JS.php:116
+msgid "Prev"
+msgstr "Précédent"
+
+#: includes/libraries/cmb2/includes/CMB2_JS.php:118
+#: includes/libraries/cmb2/includes/CMB2_JS.php:128
+msgid "Done"
+msgstr "Terminer"
+
+#: includes/libraries/cmb2/includes/CMB2_JS.php:122
+msgid "Choose Time"
+msgstr "Sélectionner l’heure"
+
+#: includes/libraries/cmb2/includes/CMB2_JS.php:123
+msgid "Time"
+msgstr "Heure"
+
+#: includes/libraries/cmb2/includes/CMB2_JS.php:124
+msgid "Hour"
+msgstr "Heure"
+
+#: includes/libraries/cmb2/includes/CMB2_JS.php:125
+msgid "Minute"
+msgstr "Minute"
+
+#: includes/libraries/cmb2/includes/CMB2_JS.php:126
+msgid "Second"
+msgstr "Seconde"
+
+#: includes/libraries/cmb2/includes/CMB2_JS.php:127
+msgid "Now"
+msgstr "Maintenant"
+
+#: includes/libraries/cmb2/includes/CMB2_JS.php:129
+msgctxt ""
+"Valid formatting string, as per http://trentrichardson.com/examples/"
+"timepicker/"
+msgid "hh:mm TT"
+msgstr "hh:mm"
+
+#: includes/libraries/cmb2/includes/CMB2_JS.php:135
+msgid "Use this file"
+msgstr "Utiliser ce fichier"
+
+#: includes/libraries/cmb2/includes/CMB2_JS.php:136
+#: includes/libraries/cmb2/includes/CMB2_Types.php:983
+msgid "Remove Image"
+msgstr "Supprimer l’image"
+
+#: includes/libraries/cmb2/includes/CMB2_JS.php:137
+#: includes/libraries/cmb2/includes/CMB2_Types.php:356
+#: includes/libraries/cmb2/includes/CMB2_Types.php:1002
+#: includes/libraries/cmb2/tests/test-cmb-types.php:155
+#: includes/libraries/cmb2/tests/test-cmb-types.php:163
+#: includes/libraries/cmb2/tests/test-cmb-types.php:735
+#: includes/libraries/cmb2/tests/test-cmb-types.php:760
+#: includes/scripts.php:254
+msgid "Remove"
+msgstr "Supprimer"
+
+#: includes/libraries/cmb2/includes/CMB2_JS.php:138
+#: includes/libraries/cmb2/includes/CMB2_Types.php:997
+#: includes/libraries/cmb2/tests/test-cmb-types.php:736
+#: includes/libraries/cmb2/tests/test-cmb-types.php:761
+msgid "File:"
+msgstr "Fichier :"
+
+#: includes/libraries/cmb2/includes/CMB2_JS.php:139
+#: includes/libraries/cmb2/includes/CMB2_Types.php:1000
+#: includes/libraries/cmb2/tests/test-cmb-types.php:734
+#: includes/libraries/cmb2/tests/test-cmb-types.php:759
+msgid "Download"
+msgstr "Télécharger"
+
+#: includes/libraries/cmb2/includes/CMB2_JS.php:140
+msgid "Select / Deselect All"
+msgstr "Sélectionner tous / aucun"
+
+#: includes/libraries/cmb2/includes/CMB2_Types.php:297
+msgid "Add Row"
+msgstr "Ajouter une ligne"
+
+#: includes/libraries/cmb2/includes/CMB2_Types.php:734
+#: includes/libraries/cmb2/includes/CMB2_Types.php:782
+msgid "No terms"
+msgstr "Pas de conditions d’utilisation"
+
+#: includes/libraries/cmb2/includes/CMB2_Types.php:847
+#: includes/libraries/cmb2/tests/test-cmb-types.php:711
+#: includes/libraries/cmb2/tests/test-cmb-types.php:737
+msgid "Add or Upload Files"
+msgstr "Ajouter ou téléverser des fichiers"
+
+#: includes/libraries/cmb2/includes/CMB2_Types.php:907
+#: includes/libraries/cmb2/tests/test-cmb-types.php:747
+#: includes/libraries/cmb2/tests/test-cmb-types.php:762
+msgid "Add or Upload File"
+msgstr "Ajouter ou téléverser un fichier"
+
+#: includes/libraries/cmb2/includes/helper-functions.php:249
+msgid "Save"
+msgstr "Sauvegarder"
+
+#: includes/login-register.php:94
+msgid "The password you entered is incorrect"
+msgstr "Le mot de passe entré est incorrect"
+
+#: includes/login-register.php:97 includes/process-purchase.php:513
+msgid "The username you entered does not exist"
+msgstr "Le nom d’utilisateur entré n’existe pas"
+
+#: includes/login-register.php:156 includes/login-register.php:164
+#: includes/process-purchase.php:399
+msgid "Invalid username"
+msgstr "Nom d’utilisateur incorrect"
+
+#: includes/login-register.php:160 includes/process-purchase.php:392
+msgid "Username already taken"
+msgstr "Nom d’utilisateur déjà pris"
+
+#: includes/login-register.php:168
+msgid "Email address already taken"
+msgstr "Adresse email déjà prise"
+
+#: includes/login-register.php:172 includes/process-purchase.php:339
+#: includes/process-purchase.php:415 includes/process-purchase.php:546
+msgid "Invalid email"
+msgstr "Adresse email incorrecte"
+
+#: includes/login-register.php:176
+msgid "Invalid payment email"
+msgstr "Adresse email de paiement incorrecte"
+
+#: includes/login-register.php:180
+msgid "Please enter a password"
+msgstr "Merci d’entrer un mot de passe"
+
+#: includes/login-register.php:184
+msgid "Passwords do not match"
+msgstr "Les mots de passe ne correspondent pas"
+
+#: includes/misc-functions.php:54
+msgid "US Dollars (&#36;)"
+msgstr "Dollars US (&#36;)"
+
+#: includes/misc-functions.php:55
+msgid "Euros (&euro;)"
+msgstr "Euros (&euro;)"
+
+#: includes/misc-functions.php:56
+msgid "Pounds Sterling (&pound;)"
+msgstr "Livre anglaise (&pound;)"
+
+#: includes/misc-functions.php:57
+msgid "Australian Dollars (&#36;)"
+msgstr "Dollar australien (&#36;)"
+
+#: includes/misc-functions.php:58
+msgid "Brazilian Real (R&#36;)"
+msgstr "Réal brésilien (R&#36;)"
+
+#: includes/misc-functions.php:59
+msgid "Canadian Dollars (&#36;)"
+msgstr "Dollar canadien (&#36;)"
+
+#: includes/misc-functions.php:60
+msgid "Czech Koruna"
+msgstr "Couronne tchèque"
+
+#: includes/misc-functions.php:61
+msgid "Danish Krone"
+msgstr "Couronne danoise"
+
+#: includes/misc-functions.php:62
+msgid "Hong Kong Dollar (&#36;)"
+msgstr "Dollar de Hong-Kong (&#36;)"
+
+#: includes/misc-functions.php:63
+msgid "Hungarian Forint"
+msgstr "Forint hongrois"
+
+#: includes/misc-functions.php:64
+msgid "Israeli Shekel (&#8362;)"
+msgstr "Shekel israélien (&#8362;)"
+
+#: includes/misc-functions.php:65
+msgid "Japanese Yen (&yen;)"
+msgstr "Yen japonais (&yen;)"
+
+#: includes/misc-functions.php:66
+msgid "Malaysian Ringgits"
+msgstr "Ringgit malaisien"
+
+#: includes/misc-functions.php:67
+msgid "Mexican Peso (&#36;)"
+msgstr "Peso mexicain (&#36;)"
+
+#: includes/misc-functions.php:68
+msgid "New Zealand Dollar (&#36;)"
+msgstr "Dollar de Nouvelle-Zélande (&#36;)"
+
+#: includes/misc-functions.php:69
+msgid "Norwegian Krone"
+msgstr "Couronne norvégienne"
+
+#: includes/misc-functions.php:70
+msgid "Philippine Pesos"
+msgstr "Pesos philippin"
+
+#: includes/misc-functions.php:71
+msgid "Polish Zloty"
+msgstr "Zloty polonais"
+
+#: includes/misc-functions.php:72
+msgid "Singapore Dollar (&#36;)"
+msgstr "Dollar singapourien (#&36;)"
+
+#: includes/misc-functions.php:73
+msgid "Swedish Krona"
+msgstr "Couronne suédoise"
+
+#: includes/misc-functions.php:74
+msgid "Swiss Franc"
+msgstr "Franc suisse"
+
+#: includes/misc-functions.php:75
+msgid "Taiwan New Dollars"
+msgstr "Nouveau dollar de taiwan"
+
+#: includes/misc-functions.php:76
+msgid "Thai Baht (&#3647;)"
+msgstr "Bath thailandais (&#3647;)"
+
+#: includes/misc-functions.php:77
+msgid "Indian Rupee (&#8377;)"
+msgstr "Roupie indienne (&#8377;)"
+
+#: includes/misc-functions.php:78
+msgid "Turkish Lira (&#8378;)"
+msgstr "Nouvelle Lire turque (&#8378;)"
+
+#: includes/misc-functions.php:79
+msgid "Iranian Rial (&#65020;)"
+msgstr "Rial iranien (&#65020;)"
+
+#: includes/misc-functions.php:80
+msgid "Russian Rubles"
+msgstr "Roubles russes"
+
+#: includes/misc-functions.php:545
+msgid "Thanks for Subscribing!"
+msgstr "Merci pour votre inscription !"
+
+#: includes/payments/actions.php:111
+#, php-format
+msgid "Status changed from %s to %s"
+msgstr "État changé de %s à %s"
+
+#: includes/payments/class-donators-gravatars.php:323
+msgid "Donator Gravatars"
+msgstr "Avatars des donateurs"
+
+#: includes/payments/class-donators-gravatars.php:329
+msgid "Heading"
+msgstr "Entête"
+
+#: includes/payments/class-donators-gravatars.php:330
+msgid "The heading to display above the Gravatars"
+msgstr "Entête à afficher au-dessus des Gravatars"
+
+#: includes/payments/class-donators-gravatars.php:335
+msgid "Gravatar Size"
+msgstr "Taille des Gravatars"
+
+#: includes/payments/class-donators-gravatars.php:336
+msgid "The size of each Gravatar in pixels (512px maximum)"
+msgstr "La taille de chaque Gravatar en pixels (512px maximum)"
+
+#: includes/payments/class-donators-gravatars.php:342
+msgid "Minimum Unique Purchases Required"
+msgstr "Minimum d’achats unique nécéssaire"
+
+#: includes/payments/class-donators-gravatars.php:343
+#, php-format
+msgid ""
+"The minimum number of unique purchases a %s must have before the Gravatars "
+"are shown. Leave blank for no minimum."
+msgstr ""
+"Le nombre minimum d’achats uniques qu’%s doit avoir avant que les Gravatars "
+"soient montrés. Laissez vide pour aucun minimum."
+
+#: includes/payments/class-donators-gravatars.php:348
+msgid "Maximum Gravatars To Show"
+msgstr "Gravatars maximum à afficher"
+
+#: includes/payments/class-donators-gravatars.php:349
+msgid "The maximum number of gravatars to show. Leave blank for no limit."
+msgstr ""
+"Nombre maximum de Gravatars à afficher. Laissez vide pour aucune limite."
+
+#: includes/payments/class-donators-gravatars.php:355
+msgid "Gravatar Visibility"
+msgstr "Visibilité des Gravatars"
+
+#: includes/payments/class-donators-gravatars.php:356
+msgid "Only show donators with a Gravatar account"
+msgstr "Montrer uniquement les donateurs avec un compte Gravatar"
+
+#: includes/payments/class-donators-gravatars.php:361
+msgid "Randomize Gravatars"
+msgstr "Ordonne aléatoirement les Gavatars"
+
+#: includes/payments/class-donators-gravatars.php:362
+msgid "Randomize the Gravatars"
+msgstr "Ordonner aléatoirement les Gavatars"
+
+#: includes/payments/class-donators-gravatars.php:391
+#, php-format
+msgid ""
+"Displays gravatars of people who have donated using your your %s. Will only "
+"show on the single %s page."
+msgstr ""
+"Affiche les Gravatars des personnes qui ont donné via votre %s. S’affiche "
+"uniquement sur la page simple de %s."
+
+#: includes/payments/class-donators-gravatars.php:404
+msgid "Give Donators Gravatars"
+msgstr "Gravatars des donateurs de Give"
+
+#: includes/payments/class-donators-gravatars.php:471
+msgid "Title:"
+msgstr "Titre :"
+
+#: includes/payments/functions.php:548
+msgid "Complete"
+msgstr "Terminé"
+
+#: includes/payments/functions.php:551
+msgid "Cancelled"
+msgstr "Annulé"
+
+#: includes/payments/functions.php:553
+msgid "Pre-Approved"
+msgstr "Pré-approuvé"
+
+#: includes/payments/functions.php:1380
+msgid "System"
+msgstr "Système"
+
+#: includes/payments/functions.php:1395
+msgid "Delete this payment note"
+msgstr "Supprimer cet récépissé de paiement"
+
+#: includes/post-types.php:40 includes/post-types.php:106
+#, php-format
+msgid "Add %1$s"
+msgstr "Ajouter un %1$s"
+
+#: includes/post-types.php:41 includes/post-types.php:107
+#, php-format
+msgid "Add New %1$s"
+msgstr "Ajouter un nouveau %1$s"
+
+#: includes/post-types.php:42 includes/post-types.php:108
+#, php-format
+msgid "Edit %1$s"
+msgstr "Modifier %1$s"
+
+#: includes/post-types.php:43 includes/post-types.php:109
+#, php-format
+msgid "New %1$s"
+msgstr "Nouveau %1$s"
+
+#: includes/post-types.php:44 includes/post-types.php:110
+#, php-format
+msgid "All %2$s"
+msgstr "Tous les %2$s"
+
+#: includes/post-types.php:45 includes/post-types.php:111
+#, php-format
+msgid "View %1$s"
+msgstr "Voir %1$s"
+
+#: includes/post-types.php:46 includes/post-types.php:112
+#, php-format
+msgid "Search %2$s"
+msgstr "Rechercher %2$s"
+
+#: includes/post-types.php:47 includes/post-types.php:113
+#, php-format
+msgid "No %2$s found"
+msgstr "Aucun %2$s trouvé"
+
+#: includes/post-types.php:48 includes/post-types.php:114
+#, php-format
+msgid "No %2$s found in Trash"
+msgstr "Aucun %2$s trouvé dans la corbeille"
+
+#: includes/post-types.php:146
+msgctxt "post type general name"
+msgid "Donations"
+msgstr "Dons"
+
+#: includes/post-types.php:147
+msgctxt "post type singular name"
+msgid "Donation"
+msgstr "Don"
+
+#: includes/post-types.php:148
+msgid "Add New"
+msgstr "Ajouter nouveau"
+
+#: includes/post-types.php:149
+msgid "Add New Donation"
+msgstr "Ajouter un nouveau don"
+
+#: includes/post-types.php:150
+msgid "Edit Donation"
+msgstr "Modifier le don"
+
+#: includes/post-types.php:151
+msgid "New Donation"
+msgstr "Nouveau don"
+
+#: includes/post-types.php:152
+msgid "All Donations"
+msgstr "Tous les dons"
+
+#: includes/post-types.php:153
+msgid "View Donation"
+msgstr "Voir le don"
+
+#: includes/post-types.php:154
+msgid "Search Donations"
+msgstr "Rechercher un don"
+
+#: includes/post-types.php:155
+msgid "No Donations found"
+msgstr "Aucun don trouvé"
+
+#: includes/post-types.php:156
+msgid "No Donations found in Trash"
+msgstr "Aucun don trouvé dans la corbeille"
+
+#: includes/post-types.php:158
+msgid "Transactions"
+msgstr "Transactions"
+
+#: includes/post-types.php:192
+#, php-format
+msgctxt "taxonomy general name"
+msgid "%s Categories"
+msgstr "%s Catégories"
+
+#: includes/post-types.php:193
+msgctxt "taxonomy singular name"
+msgid "Category"
+msgstr "Catégorie"
+
+#: includes/post-types.php:194
+msgid "Search Categories"
+msgstr "Rechercher les catégories"
+
+#: includes/post-types.php:196
+msgid "Parent Category"
+msgstr "Catégorie parente"
+
+#: includes/post-types.php:197
+msgid "Parent Category:"
+msgstr "Catégorie parente :"
+
+#: includes/post-types.php:198
+msgid "Edit Category"
+msgstr "Modifier la catégorie"
+
+#: includes/post-types.php:199
+msgid "Update Category"
+msgstr "Mettre à jour la catégorie"
+
+#: includes/post-types.php:200
+#, php-format
+msgid "Add New %s Category"
+msgstr "Ajouter une nouvelle catégorie %s"
+
+#: includes/post-types.php:201
+msgid "New Category Name"
+msgstr "Nom de la nouvelle catégorie"
+
+#: includes/post-types.php:233
+#, php-format
+msgctxt "taxonomy general name"
+msgid "%s Tags"
+msgstr "%s étiquettes"
+
+#: includes/post-types.php:234
+msgctxt "taxonomy singular name"
+msgid "Tag"
+msgstr "Étiquette"
+
+#: includes/post-types.php:235
+msgid "Search Tags"
+msgstr "Rechercher une étiquette"
+
+#: includes/post-types.php:236
+msgid "All Tags"
+msgstr "Toutes les étiquettes"
+
+#: includes/post-types.php:237
+msgid "Parent Tag"
+msgstr "Étiquette parente"
+
+#: includes/post-types.php:238
+msgid "Parent Tag:"
+msgstr "Étiquette parente :"
+
+#: includes/post-types.php:239
+msgid "Edit Tag"
+msgstr "Modifier l’étiquette"
+
+#: includes/post-types.php:240
+msgid "Update Tag"
+msgstr "Mettre à jour l’étiquette"
+
+#: includes/post-types.php:241
+msgid "Add New Tag"
+msgstr "Ajouter une nouvelle étiquette"
+
+#: includes/post-types.php:242
+msgid "New Tag Name"
+msgstr "Nom de la nouvelle étiquette"
+
+#: includes/post-types.php:244
+#, php-format
+msgid "Choose from most used %s tags"
+msgstr "Sélectionnez parmi les étiquettes %s les plus utilisées"
+
+#: includes/post-types.php:282
+msgid "Form"
+msgstr "Formulaire"
+
+#: includes/post-types.php:283
+msgid "Forms"
+msgstr "Formulaires"
+
+#: includes/post-types.php:297
+msgid "Campaign"
+msgstr "Campagne"
+
+#: includes/post-types.php:298
+msgid "Campaigns"
+msgstr "Campagnes"
+
+#: includes/post-types.php:371 includes/post-types.php:380
+#, php-format
+msgid "Enter %s title here"
+msgstr "Entrez le titre de %s ici"
+
+#: includes/post-types.php:397
+msgctxt "Refunded payment status"
+msgid "Refunded"
+msgstr "Remboursé"
+
+#: includes/post-types.php:402
+#, php-format
+msgid "Refunded <span class=\"count\">(%s)</span>"
+msgid_plural "Refunded <span class=\"count\">(%s)</span>"
+msgstr[0] "Remboursé <span class=\"count\">(%s)</span>"
+msgstr[1] "Remboursés <span class=\"count\">(%s)</span>"
+
+#: includes/post-types.php:405
+msgctxt "Failed payment status"
+msgid "Failed"
+msgstr "Erreur"
+
+#: includes/post-types.php:410
+#, php-format
+msgid "Failed <span class=\"count\">(%s)</span>"
+msgid_plural "Failed <span class=\"count\">(%s)</span>"
+msgstr[0] "Erreur <span class=\"count\">(%s)</span>"
+msgstr[1] "Erreur <span class=\"count\">(%s)</span>"
+
+#: includes/post-types.php:413
+msgctxt "Revoked payment status"
+msgid "Revoked"
+msgstr "Annulé"
+
+#: includes/post-types.php:418
+#, php-format
+msgid "Revoked <span class=\"count\">(%s)</span>"
+msgid_plural "Revoked <span class=\"count\">(%s)</span>"
+msgstr[0] "Annulé <span class=\"count\">(%s)</span>"
+msgstr[1] "Annulés <span class=\"count\">(%s)</span>"
+
+#: includes/post-types.php:421
+msgctxt "Abandoned payment status"
+msgid "Abandoned"
+msgstr "Abandonné"
+
+#: includes/post-types.php:426
+#, php-format
+msgid "Abandoned <span class=\"count\">(%s)</span>"
+msgid_plural "Abandoned <span class=\"count\">(%s)</span>"
+msgstr[0] "Abandonné <span class=\"count\">(%s)</span>"
+msgstr[1] "Abandonnés <span class=\"count\">(%s)</span>"
+
+#: includes/post-types.php:452 includes/post-types.php:453
+#, php-format
+msgid "%2$s updated. %1$sView %2$s%3$s."
+msgstr "%2$s mis à jour. %1$sVoir %2$s%3$s."
+
+#: includes/post-types.php:454
+#, php-format
+msgid "%2$s published. %1$sView %2$s%3$s."
+msgstr "%2$s publié. %1$sVoir %2$s%3$s."
+
+#: includes/post-types.php:455
+#, php-format
+msgid "%2$s saved. %1$sView %2$s%3$s."
+msgstr "%2$s sauvegardé. %1$sVoir %2$s%3$s."
+
+#: includes/post-types.php:456
+#, php-format
+msgid "%2$s submitted. %1$sView %2$s%3$s."
+msgstr "%2$s envoyé. %1$sVoir %2$s%3$s."
+
+#: includes/post-types.php:510
+msgid "Give Single Form Sidebar"
+msgstr "Sidebar de formulaire simple de Give"
+
+#: includes/post-types.php:512
+msgid ""
+"Widgets in this area will be shown on the single Give forms aside area. This "
+"sidebar will not display for embedded forms."
+msgstr ""
+"Les widgets dans cette zone seront toujours affichés sur le formulaire "
+"simple de Give dans la zone latérale. Cette barre latérale ne sera pas "
+"intégrée dans les formulaires."
+
+#: includes/process-purchase.php:230
+msgid "The selected payment gateway is not enabled"
+msgstr "La passerelle de paiement sélectionnée n’est pas activée"
+
+#: includes/process-purchase.php:251
+msgid "You must agree to the terms of use"
+msgstr "Vous devez accepter les conditions d’utilisation"
+
+#: includes/process-purchase.php:266
+msgid "Please enter a valid email address"
+msgstr "Entrez une adresse email valide"
+
+#: includes/process-purchase.php:270
+msgid "Please enter your first name"
+msgstr "Entrez votre prénom"
+
+#: includes/process-purchase.php:280
+msgid "Please enter your zip / postal code"
+msgstr "Entrez votre code postal"
+
+#: includes/process-purchase.php:284
+msgid "Please enter your billing city"
+msgstr "Entrez votre ville"
+
+#: includes/process-purchase.php:288
+msgid "Please select your billing country"
+msgstr "Entrez votre pays"
+
+#: includes/process-purchase.php:292
+msgid "Please enter billing state / province"
+msgstr "Entrez votre région / état"
+
+#: includes/process-purchase.php:344
+msgid "The user information is invalid"
+msgstr "Les informations de l’utilisateur sont incorrectes"
+
+#: includes/process-purchase.php:397
+msgid "Invalid username. Only lowercase letters (a-z) and numbers are allowed"
+msgstr ""
+"Nom d’utilisateur incorrect. Sont acceptés seulement les lettres minuscules "
+"(a-z) et les chiffres."
+
+#: includes/process-purchase.php:407
+msgid "You must register or login to complete your donation"
+msgstr "Vous devez vous inscrire ou vous connecter pour terminer votre don"
+
+#: includes/process-purchase.php:418
+msgid "Email already used"
+msgstr "Adresse email déjà utilisée"
+
+#: includes/process-purchase.php:425 includes/process-purchase.php:553
+msgid "Enter an email"
+msgstr "Entrez un email"
+
+#: includes/process-purchase.php:433
+msgid "Passwords don't match"
+msgstr "Les mots de passe ne correspondent pas"
+
+#: includes/process-purchase.php:442 includes/process-purchase.php:509
+msgid "Enter a password"
+msgstr "Entrez un mot de passe"
+
+#: includes/process-purchase.php:445
+msgid "Enter the password confirmation"
+msgstr "Retapez le mot de passe"
+
+#: includes/process-purchase.php:469
+msgid "You must login or register to complete your donation"
+msgstr "Vous devez vous connecter ou vous inscrire pour terminer votre don"
+
+#: includes/process-purchase.php:490
+#, php-format
+msgid "The password you entered is incorrect. %sReset Password%s"
+msgstr "Le mot de passe entré est incorrect. %sRéinitialiser le mot de passe%s"
+
+#: includes/process-purchase.php:491
+msgid "Lost Password"
+msgstr "Mot de passe perdu"
+
+#: includes/process-purchase.php:535
+msgid "You must be logged into an account to donation"
+msgstr "Vous devez être connecté à votre compte pour donner"
+
+#: includes/process-purchase.php:722
+msgid "The zip / postal code you entered for your billing address is invalid"
+msgstr "Le code postal fourni pour votre adresse de facturation est incorrect"
+
+#: includes/process-purchase.php:986
+msgid "An internal error has occurred, please try again or contact support."
+msgstr ""
+"Une erreur interne est survenue, merci de contacter le support ou de re-"
+"essayer ultérieurement."
+
+#: includes/scripts.php:45
+msgid "Please select a payment method"
+msgstr "Sélectionner une méthode de paiement"
+
+#: includes/scripts.php:46
+msgid "Loading..."
+msgstr "Chargement…"
+
+#: includes/scripts.php:47
+msgid "Please Wait..."
+msgstr "Patientez…"
+
+#: includes/scripts.php:55
+msgid "Please select an option"
+msgstr "Sélectionner une option"
+
+#: includes/scripts.php:234
+msgid "Sorry, not available for variable priced forms."
+msgstr "Désolé, non disponible pour les formulaires à prix variable."
+
+#: includes/scripts.php:235
+msgid "Are you sure you wish to delete this payment?"
+msgstr "Êtes-vous sûr de vouloir supprimer ce paiement ?"
+
+#: includes/scripts.php:236
+msgid "Are you sure you wish to delete this note?"
+msgstr "Êtes-vous sûr de vouloir supprimer ce récépissé ?"
+
+#: includes/scripts.php:237
+msgid "Are you sure you wish to delete this tax rate?"
+msgstr "Êtes-vous sûr de vouloir supprimer cette taxe ?"
+
+#: includes/scripts.php:238
+msgid "Are you sure you wish to revoke this API key?"
+msgstr "Êtes-vous sûr de vouloir annuler cette clé API ?"
+
+#: includes/scripts.php:239
+msgid "Are you sure you wish to regenerate this API key?"
+msgstr "Êtes-vous sûr de vouloir re-générer cette clé API ?"
+
+#: includes/scripts.php:240
+msgid "Are you sure you wish to resend the donation receipt?"
+msgstr "Êtes-vous sûr de vouloir ré-envoyer le récépissé de don ?"
+
+#: includes/scripts.php:241
+msgid "Copy these links to your clipboard and give them to your donor"
+msgstr ""
+"Copiez ces liens dans votre presse-papiers et donnez-le à votre donateur"
+
+#: includes/scripts.php:242
+#, php-format
+msgid "Are you sure you wish to delete this %s?"
+msgstr "Êtes-vous sûr de vouloir supprimer ce %s ?"
+
+#: includes/scripts.php:243
+msgid "You must have at least one price"
+msgstr "Vous devez avoir au moins un prix"
+
+#: includes/scripts.php:244
+msgid "You must have at least one file"
+msgstr "Vous devez avoir au moins un fichier"
+
+#: includes/scripts.php:245
+msgid "You must have at least one field"
+msgstr "Vous devez avoir au moins un champ"
+
+#: includes/scripts.php:246
+#, php-format
+msgid "Choose a %s"
+msgstr "Choisissez un %s"
+
+#: includes/scripts.php:247
+#, php-format
+msgid "Choose one or more %s"
+msgstr "Choisissez un ou plusieurs %s"
+
+#: includes/scripts.php:248
+msgid "Item price must be numeric"
+msgstr "Le prix doit être un nombre"
+
+#: includes/scripts.php:249
+msgid "Quantity must be numeric"
+msgstr "La quantité doit être un nombre"
+
+#: includes/scripts.php:255
+#, php-format
+msgid "Type to search %s"
+msgstr "Tapez pour rechercher %s"
+
+#: includes/shortcodes.php:33
+msgid ""
+"You must be logged in to view your donation history. Please login using your "
+"account or create an account using the same email you used to donate with."
+msgstr ""
+"Vous devez être connecté pour voir votre historique de dons. Connectez-vous "
+"à votre compte, ou inscrivez-vous avec la même adresse mail que vous avez "
+"utilisée pour faire votre don."
+
+#: includes/shortcodes.php:152
+msgid ""
+"Sorry, there was a problem identifying this donation. Please contact the "
+"site owner for more information."
+msgstr ""
+"Désolé, il y a eu un problème lors de l’identification de ce don. Contactez "
+"le propriétaire du site internet pour plus d’informations."
+
+#: includes/shortcodes.php:165
+msgid ""
+"Sorry, it appears the viewing window for this donation receipt has expired "
+"or you do not have the permission to view this donation receipt."
+msgstr ""
+"Désolé, il semble que la fenêtre du récépissé de ce don a expiré, ou alors "
+"vous n’avez pas les permissions pour voir ce récépissé."
+
+#: includes/shortcodes.php:180
+#, php-format
+msgid ""
+" To view your receipt, please <a href=\"%s\">create an account</a> using the "
+"following email %s (the email attached to this donation) and visit the <a "
+"href=\"%s\">donation history page</a>"
+msgstr ""
+"Pour voir votre récépissé, merci de <a href=\"%s\">créer un compte</a> en "
+"utilisant l’email suivant %s (l’email est joint à ce don) et visitez la <a "
+"href=\"%s\">page d’historique du don</a>"
+
+#: includes/shortcodes.php:306
+msgid "The passwords you entered do not match. Please try again."
+msgstr "Les mots de passe entrés ne correspondent pas. Re-essayez."
+
+#: includes/shortcodes.php:315
+msgid "The email you entered belongs to another user. Please use another."
+msgstr ""
+"L’adresse email entrée appartient à un autre utilisateur. Choisissez-en une "
+"autre."
+
+#: includes/template-functions.php:293
+msgid "Give+Placeholder+Image+"
+msgstr "Give+Placeholder+Image+"
+
+#: includes/user-functions.php:391
+msgid "[Password entered during donation]"
+msgstr "[Mot de passe entrée pendant le don]"
+
+#: templates/history-donations.php:52
+msgid "It looks like you haven't made any donations"
+msgstr "Il semble que vous n’ayez fait aucun don"
+
+#: templates/payment-processing.php:7
+#, php-format
+msgid ""
+"Your donation is processing. This page will reload automatically in 8 "
+"seconds. If it does not, click <a href=\"%s\">here</a>."
+msgstr ""
+"Votre don est en cours de traitement. Cette page va se recharger "
+"automatiquement dans 8 secondes. Si ce n’est pas le cas, <a href=\"%s"
+"\">cliquez-ici</a>."
+
+#: templates/shortcode-profile-editor.php:20
+msgid "Success"
+msgstr "Succès"
+
+#: templates/shortcode-profile-editor.php:20
+msgid "Your profile has been edited successfully."
+msgstr "Votre profil a été modifié avec succès."
+
+#: templates/shortcode-profile-editor.php:31
+msgid "Change your Name"
+msgstr "Changez votre nom"
+
+#: templates/shortcode-profile-editor.php:44
+msgid "Display Name"
+msgstr "Nom d’affichage"
+
+#: templates/shortcode-profile-editor.php:70
+msgid "Change your Billing Address"
+msgstr "Changer votre adresse de facturation"
+
+#: templates/shortcode-profile-editor.php:117
+msgid "Change your Password"
+msgstr "Changer votre mot de passe"
+
+#: templates/shortcode-profile-editor.php:120
+msgid "New Password"
+msgstr "Nouveau mot de passe"
+
+#: templates/shortcode-profile-editor.php:124
+msgid "Re-enter Password"
+msgstr "Retapez le mot de passe"
+
+#: templates/shortcode-profile-editor.php:129
+msgid "Please note after changing your password, you must log back in."
+msgstr ""
+"Notez qu’après avoir changé votre mot de passe, vous devrez vous reconnecter."
+
+#: templates/shortcode-profile-editor.php:137
+msgid "Save Changes"
+msgstr "Sauvegarder les changements"
+
+#: templates/shortcode-profile-editor.php:146
+msgid "You need to login to edit your profile."
+msgstr "Vous devez vous connecter pour modifier votre profil."
+
+#: templates/shortcode-receipt.php:16
+msgid "The specified receipt ID appears to be invalid"
+msgstr "L’ID spécifié du récépissé semble incorrect"
+
+#: templates/shortcode-receipt.php:39
+msgid "Payment"
+msgstr "Paiement"
+
+#: templates/shortcode-receipt.php:48
+msgid "Payment Status"
+msgstr "État du paiement"
+
+#: templates/shortcode-receipt.php:59
+msgid "Payment Key"
+msgstr "Clé du paiement"
+
+#: templates/single-give-form/featured-image.php:37
+msgid "Placeholder"
+msgstr "Texte par défaut"
+
+#~ msgid ""
+#~ "Note: Test Mode is enabled, only test donations are being displayed. <a "
+#~ "href=\"%s\">View Settings</a>"
+#~ msgstr ""
+#~ "Observera: Testläge är aktiverat. Endast testdonationer visas. <a href="
+#~ "\"%s\">Till Inställningar</a>"
+
+#~ msgid ""
+#~ "The specified user already has API keys or the specified user does not "
+#~ "exist.."
+#~ msgstr ""
+#~ "Den angivna användaren har redan API-nycklar eller så finns användaren "
+#~ "ej.."
+
+#~ msgid ""
+#~ "Do you want this form to have one set donation price or multiple levels?"
+#~ msgstr ""
+#~ "Vill du att detta formulär endast skall ha ett fast donationsbelopp eller "
+#~ "skall det finnas flera nivåer?"
+
+#~ msgid ""
+#~ "This text appears as a label above the custom amount field for single "
+#~ "level forms. For multi-level forms the text will appear as it's own "
+#~ "level. Leave this field blank to prevent it from displaying within your "
+#~ "form."
+#~ msgstr ""
+#~ "I ennivåformulär visas denna text som en etikett ovanför fältet för "
+#~ "anpassat belopp. I flernivåformulär så kommer texten att visas som en "
+#~ "egen nivå. Lämna fältet blankt för att inte visa någon text alls."
+
+#~ msgid "Do you want to display content?"
+#~ msgstr "Vill du visa innehåll?"
+
+#~ msgid "How would you like to display payment information for this form?"
+#~ msgstr "Hur vill du visa betalningsinformation i detta formulär?"
+
+#~ msgid ""
+#~ "This is the gateway that will be selected by default. If this option is "
+#~ "selected it will override the global setting."
+#~ msgstr ""
+#~ "Detta är den nätsluss som kommer att väljas som standard. Om detta "
+#~ "alternativ är valt så kommer det att överskrida den globala inställningen."
+
+#~ msgid ""
+#~ "Display the registration and login forms in the checkout section for non-"
+#~ "logged-in users."
+#~ msgstr ""
+#~ "Visa registrerings- och inloggningsformulären i utcheckningssektionen för "
+#~ "ej inloggade användare."
+
+#~ msgid "Label shown next to the agree to terms check box."
+#~ msgstr "Text som visas bredvid kryssrutan för att acceptera villkor."
+
+#~ msgid "This is the actual text which the user will have to agree to."
+#~ msgstr ""
+#~ "Detta är den faktiska text med villkor som användaren måste acceptera."
+
+#~ msgid "mm/dd/yy"
+#~ msgstr "mm/dd/åå"
+
+#~ msgid "hh:mm TT"
+#~ msgstr "tt:mm TT"
+
+#~ msgid "User ID and User Email do not match."
+#~ msgstr "Användar-ID och Användare-post matchar ej."
+
+#~ msgid "Resend Purchase Receipt"
+#~ msgstr "Skicka Köpekvitto Igen"
+
+#~ msgid "Set To Preapproval"
+#~ msgstr "Sätt Som Väntar På Granskning"
+
+#~ msgid "Set To Cancelled"
+#~ msgstr "Sätt Som Avbruten"
+
+#~ msgid "For more information:"
+#~ msgstr "För ytterligare information:"
+
+#~ msgid ""
+#~ "Visit the <a href=\"%s\">documentation</a> on the Easy Digital Downloads "
+#~ "website."
+#~ msgstr ""
+#~ "Besök sidan för <a href=\"%s\">dokumentation</a> på Easy Digital "
+#~ "Downloads webbplats."
+
+#~ msgid ""
+#~ "<a href=\"%s\">Post an issue</a> on <a href=\"%s\">GitHub</a>. View <a "
+#~ "href=\"%s\">extensions</a> or <a href=\"%s\">themes</a>."
+#~ msgstr ""
+#~ "<a href=\"%s\">Rapportera ett problem</a> på <a href=\"%s\">GitHub</a>. "
+#~ "Visa <a href=\"%s\">utökningar</a> eller <a href=\"%s\">teman</a>."
+
+#~ msgid "Overview"
+#~ msgstr "Översikt"
+
+#~ msgid "This screen provides access to all of your store's transactions."
+#~ msgstr "Denna skärm ger tillgång till din affärs alla transaktioner."
+
+#~ msgid ""
+#~ "Payments can be searched by email address, user name, or filtered by "
+#~ "status (completed, pending, etc.)"
+#~ msgstr ""
+#~ "Betalningar kan genomsökas på e-postadress, användarnamn eller filtreras "
+#~ "efter status (genomförd, väntande o.s.v.)"
+
+#~ msgid "You also have the option to bulk delete payment should you wish."
+#~ msgstr ""
+#~ "Du har också alternativet att ta bort betalningar i bulk om du så önskar."
+
+#~ msgid "Search Payments"
+#~ msgstr "Sök Betalningar"
+
+#~ msgid "The payment history can be searched in several different ways:"
+#~ msgstr "Det går att söka i köpehistoriken på flera olika sätt:"
+
+#~ msgid "You can enter the customer's email address"
+#~ msgstr "Du kan ange kundens e-postadress"
+
+#~ msgid "You can enter the customer's name or ID prefexed by 'user:'"
+#~ msgstr "Du kan ange kundens namn eller ID med prefixet 'user:'"
+
+#~ msgid "You can enter the 32-character purchase key"
+#~ msgstr "Du kan ange den 32 tecken långa köpenyckeln"
+
+#~ msgid "You can enter the purchase ID"
+#~ msgstr "Du kan ange köpe-ID:t"
+
+#~ msgid "You can enter a transaction ID prefixed by 'txn:'"
+#~ msgstr "Du kan ange ett transaktions-ID med prefixet 'txn:'"
+
+#~ msgid "You can enter the %s ID prefixed by '#'"
+#~ msgstr "Du kan ange %s ID med prefixet '#'"
+
+#~ msgid "Payment Details"
+#~ msgstr "Betalningsdetaljer"
+
+#~ msgid ""
+#~ "Each payment can be further inspected by clicking the corresponding "
+#~ "<em>View Order Details</em> link. This will provide more information "
+#~ "including:"
+#~ msgstr ""
+#~ "Varje betalning kan inspekteras ytterligare genom att man klickar på "
+#~ "länken <em>Visa Orderdetaljer</em>. Då ges ytterligare information, bland "
+#~ "annat:"
+
+#~ msgid "The file associated with the purchase."
+#~ msgstr "Filen som är kopplad till köpet."
+
+#~ msgid "The exact date and time the payment was completed."
+#~ msgstr "Exakt datum och tid för när inbetalningen gjordes."
+
+#~ msgid "If a coupon or discount was used during the checkout process."
+#~ msgstr "Ifall en kupong eller rabatt användes vid utcheckningsprocessen."
+
+#~ msgid "The buyer's name."
+#~ msgstr "Köparens namn."
+
+#~ msgid "The buyer's email address."
+#~ msgstr "Köparens e-postadress."
+
+#~ msgid "Any customer-specific notes related to the payment."
+#~ msgstr "Kundspecifika noteringar relaterat till betalningen."
+
+#~ msgid "The name of the payment gateway used to complete the payment."
+#~ msgstr ""
+#~ "Namnet på den betalningsnätsluss som används för att genomföra betalning."
+
+#~ msgid "A unique key used to identify the payment."
+#~ msgstr "En unik nyckel som används för att identifiera betalningen."
+
+#~ msgid "Total Price"
+#~ msgstr "Totalt Pris"
+
+#~ msgid "Donor's Details"
+#~ msgstr "Donatorns Detaljer"
+
+#~ msgid " "
+#~ msgstr " "
+
+#~ msgid "User ID:"
+#~ msgstr "Användar-ID:"
+
+#~ msgid ""
+#~ "This is the page donators are sent to if their transaction is cancelled "
+#~ "or fails."
+#~ msgstr ""
+#~ "Detta är sidan dit donatorer skickas om transaktionen avbryts eller "
+#~ "misslyckas."
+
+#~ msgid "Global Offline Donation Text"
+#~ msgstr "Global Text För Ouppkopplade Donationer"
+
+#~ msgid "Disable Form's Single View"
+#~ msgstr "Deaktivera Formulärets Singelvy"
+
+#~ msgid "Disable Form's Archives"
+#~ msgstr "Deaktivera Formulärets Arkiv"
+
+#~ msgid "Date Purchased"
+#~ msgstr "Köpedatum"
+
+#~ msgid "Total Purchases"
+#~ msgstr "Totalt Antal Köp"
+
+#~ msgid "Total Purchased"
+#~ msgstr "Köpetotal"
+
+#~ msgid "Visit the <a href=\"%s\">documentation</a> on the Give website."
+#~ msgstr ""
+#~ "Besök sidan för <a href=\"%s\">dokumentation</a> på Give:s webbplats."
+
+#~ msgid "This screen provides you with reports for your income and donations."
+#~ msgstr ""
+#~ "Denna skärm ger dig tillgång till rapporter för din inkomst och "
+#~ "donationer."
+
+#~ msgid ""
+#~ "This screen allows you to export your reports into a PDF or CSV format."
+#~ msgstr ""
+#~ "Denna skärm tillåter dig att exportera dina rapporter i PDF- eller CSV-"
+#~ "format."
+
+#~ msgid ""
+#~ "<strong>Donations and Income</strong> - This report exports all of the "
+#~ "donations and income that you have made in the current year. This report "
+#~ "includes your sales and earnings for each product as well a graphs of "
+#~ "sales and earnings so you can compare them for each month."
+#~ msgstr ""
+#~ "<strong>Donationer och Inkomst</strong> - Denna rapport exporterar alla "
+#~ "donationer och din fullständiga inkomst för nuvarande år. Denna rapport "
+#~ "inkluderar försäljning och förtjänst för varje produkt såväl som en graf "
+#~ "över försäljning och förtjänst så att du kan jämföra månadsvis."
+
+#~ msgid ""
+#~ "<strong>Payment History</strong> - This report exports all of payments "
+#~ "you have received on your Give store in a CSV format.  The report "
+#~ "includes the contact details of the customer, the forms they have "
+#~ "purchased as well as any discount codes they have used and the final "
+#~ "price they have paid."
+#~ msgstr ""
+#~ "<strong>Betalningshistorik</strong> - Denna rapport exporterar alla "
+#~ "betalningar du har tagit emot i din Give-butik i CSV-format. Rapporten "
+#~ "inkluderar kundernas kontaktinformation, vilket formulär som använts för "
+#~ "köp, eventuella rabattkoder som använts, samt det slutliga priset som "
+#~ "betalts.  "
+
+#~ msgid ""
+#~ "<strong>Donors</strong> - This report exports all of your donors in a CSV "
+#~ "format. It exports the customer's name and email address and the amount "
+#~ "of forms they have purchased as well as the final price of their total "
+#~ "purchases."
+#~ msgstr ""
+#~ "<strong>Donatorer</strong> - Denna rapport exporterar alla dina donatorer "
+#~ "i CSV-format. Den exporterar kundens namn och e-postadress samt antal "
+#~ "formulär de har använt för köp såväl som den slutliga summan av deras "
+#~ "sammanlagda köp."
+
+#~ msgid ""
+#~ "<strong>Download History</strong> - This report exports all of the "
+#~ "downloads you have received in the current month into a CSV. It exports "
+#~ "the date the file was downloaded, the customer it was downloaded by, "
+#~ "their IP address, the name of the product and the file they downloaded."
+#~ msgstr ""
+#~ "<strong>Nedladdningshistorik</strong> - Denna rapport exporterar alla "
+#~ "nedladdningar som har gjorts under nuvarande månad i CSV-format. Den "
+#~ "exporterar datum för filnedladdningen, kunden som laddade ned den, dennes "
+#~ "IP-adress, namnet på produkten samt vilken fil som laddats ned."
+
+#~ msgid "Search File Downloads"
+#~ msgstr "Sök Filnedladdningar"
+
+#~ msgid "The file download log can be searched in several different ways:"
+#~ msgstr "Filneddladdningsloggen kan genomsökas på flera olika sätt:"
+
+#~ msgid "You can enter the customer's IP address"
+#~ msgstr "Du kan ange kundens IP-adress"
+
+#~ msgid "You can enter the download file's name"
+#~ msgstr "Du kan ange den nedladdningsbara filens namn"
+
+#~ msgid "Guest"
+#~ msgstr "Gäst"
+
+#~ msgid "No customers found"
+#~ msgstr "Inga kunder funna"
+
+#~ msgid "Hey there,"
+#~ msgstr "Hallå där,"
+
+#~ msgid "This is a pending donation awaiting payment."
+#~ msgstr "Detta är en donation som väntar på betalning."
+
+#~ msgid "Customize Offline Donation Instructions"
+#~ msgstr "Anpassa Instruktioner För Ouppkopplad Donation"
+
+#~ msgid ""
+#~ "Enter the instructions you want to display to the donor during the "
+#~ "payment process. Most likely this would include important information "
+#~ "like mailing address and who to make the check out to."
+#~ msgstr ""
+#~ "Ange instruktionerna som du vill visa för donatorn under "
+#~ "betalningsprocessen. Troligen kommer dessa instruktioner att innehålla "
+#~ "viktig information så som postadress samt vem checken skall ställas ut "
+#~ "till."
+
+#~ msgid "Copy these links to your clipboard and give them to your customer"
+#~ msgstr "Kopiera dessa länkar till urklipp och ge dem till din kund"
+
+#~ msgid "Sorry, we're having trouble retrieving your payment receipt."
+#~ msgstr "Ursäkta, vi har problem med att hämta din betalningskvittens."
+
+#~ msgid "[Password entered at checkout]"
+#~ msgstr "[Lösenord angivet vid utcheckning]"
+
+#~ msgid "It looks like haven't made any donations"
+#~ msgstr "Det verkar inte som har gjort några donationer"

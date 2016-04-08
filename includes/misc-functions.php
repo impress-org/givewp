@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Functions
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -42,6 +42,20 @@ function give_get_currency() {
 	return apply_filters( 'give_currency', $currency );
 }
 
+/**
+ * Get the set currency position
+ *
+ * @since 1.3.6
+ *
+ * @return string The currency code
+ */
+function give_get_currency_position() {
+	global $give_options;
+	$currency_pos = isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before';
+
+	return apply_filters( 'give_currency_position', $currency_pos );
+}
+
 
 /**
  * Get Currencies
@@ -51,33 +65,33 @@ function give_get_currency() {
  */
 function give_get_currencies() {
 	$currencies = array(
-		'USD'  => __( 'US Dollars (&#36;)', 'give' ),
-		'EUR'  => __( 'Euros (&euro;)', 'give' ),
-		'GBP'  => __( 'Pounds Sterling (&pound;)', 'give' ),
-		'AUD'  => __( 'Australian Dollars (&#36;)', 'give' ),
-		'BRL'  => __( 'Brazilian Real (R&#36;)', 'give' ),
-		'CAD'  => __( 'Canadian Dollars (&#36;)', 'give' ),
-		'CZK'  => __( 'Czech Koruna', 'give' ),
-		'DKK'  => __( 'Danish Krone', 'give' ),
-		'HKD'  => __( 'Hong Kong Dollar (&#36;)', 'give' ),
-		'HUF'  => __( 'Hungarian Forint', 'give' ),
-		'ILS'  => __( 'Israeli Shekel (&#8362;)', 'give' ),
-		'JPY'  => __( 'Japanese Yen (&yen;)', 'give' ),
-		'MYR'  => __( 'Malaysian Ringgits', 'give' ),
-		'MXN'  => __( 'Mexican Peso (&#36;)', 'give' ),
-		'NZD'  => __( 'New Zealand Dollar (&#36;)', 'give' ),
+		'USD'  => __( 'US Dollars ($)', 'give' ),
+		'EUR'  => __( 'Euros (€)', 'give' ),
+		'GBP'  => __( 'Pounds Sterling (£)', 'give' ),
+		'AUD'  => __( 'Australian Dollars ($)', 'give' ),
+		'BRL'  => __( 'Brazilian Real (R$)', 'give' ),
+		'CAD'  => __( 'Canadian Dollars ($)', 'give' ),
+		'CZK'  => __( 'Czech Koruna (Kč)', 'give' ),
+		'DKK'  => __( 'Danish Krone (kr)', 'give' ),
+		'HKD'  => __( 'Hong Kong Dollar ($)', 'give' ),
+		'HUF'  => __( 'Hungarian Forint (Ft)', 'give' ),
+		'ILS'  => __( 'Israeli Shekel (₪)', 'give' ),
+		'JPY'  => __( 'Japanese Yen (¥)', 'give' ),
+		'MYR'  => __( 'Malaysian Ringgits (RM)', 'give' ),
+		'MXN'  => __( 'Mexican Peso ($)', 'give' ),
+		'NZD'  => __( 'New Zealand Dollar ($)', 'give' ),
 		'NOK'  => __( 'Norwegian Krone (Kr.)', 'give' ),
-		'PHP'  => __( 'Philippine Pesos', 'give' ),
-		'PLN'  => __( 'Polish Zloty', 'give' ),
-		'SGD'  => __( 'Singapore Dollar (&#36;)', 'give' ),
-		'SEK'  => __( 'Swedish Krona', 'give' ),
-		'CHF'  => __( 'Swiss Franc', 'give' ),
-		'TWD'  => __( 'Taiwan New Dollars', 'give' ),
-		'THB'  => __( 'Thai Baht (&#3647;)', 'give' ),
-		'INR'  => __( 'Indian Rupee (&#8377;)', 'give' ),
-		'TRY'  => __( 'Turkish Lira (&#8378;)', 'give' ),
-		'RIAL' => __( 'Iranian Rial (&#65020;)', 'give' ),
-		'RUB'  => __( 'Russian Rubles', 'give' )
+		'PHP'  => __( 'Philippine Pesos (₱)', 'give' ),
+		'PLN'  => __( 'Polish Zloty (zł)', 'give' ),
+		'SGD'  => __( 'Singapore Dollar ($)', 'give' ),
+		'SEK'  => __( 'Swedish Krona (kr)', 'give' ),
+		'CHF'  => __( 'Swiss Franc (CHF)', 'give' ),
+		'TWD'  => __( 'Taiwan New Dollars (NT$)', 'give' ),
+		'THB'  => __( 'Thai Baht (฿)', 'give' ),
+		'INR'  => __( 'Indian Rupee (₹)', 'give' ),
+		'TRY'  => __( 'Turkish Lira (₺)', 'give' ),
+		'RIAL' => __( 'Iranian Rial (﷼)', 'give' ),
+		'RUB'  => __( 'Russian Rubles (руб)', 'give' )
 	);
 
 	return apply_filters( 'give_currencies', $currencies );
@@ -85,10 +99,11 @@ function give_get_currencies() {
 
 
 /**
- * Given a currency determine the symbol to use. If no currency given, site default is used.
- * If no symbol is determine, the currency string is returned.
+ * Give Currency Symbol
  *
- * @since  1.0
+ * @description: Given a currency determine the symbol to use. If no currency given, site default is used. If no symbol is determine, the currency string is returned.
+ *
+ * @since      1.0
  *
  * @param  string $currency The currency string
  *
@@ -100,28 +115,68 @@ function give_currency_symbol( $currency = '' ) {
 		$currency = give_get_currency();
 	}
 	switch ( $currency ) :
-		case "GBP" :
-			$symbol = '&pound;';
+		case 'GBP' :
+			$symbol = '£';
 			break;
-		case "BRL" :
-			$symbol = 'R&#36;';
+		case 'BRL' :
+			$symbol = 'R$';
 			break;
-		case "EUR" :
-			$symbol = '&euro;';
+		case 'EUR' :
+			$symbol = '€';
 			break;
-		case "NOK" :
+		case 'NOK' :
 			$symbol = 'Kr.';
 			break;
-		case "USD" :
-		case "AUD" :
-		case "CAD" :
-		case "HKD" :
-		case "MXN" :
-		case "SGD" :
-			$symbol = '&#36;';
+		case 'INR' :
+			$symbol = '₹';
 			break;
-		case "JPY" :
-			$symbol = '&yen;';
+		case 'USD' :
+		case 'AUD' :
+		case 'CAD' :
+		case 'HKD' :
+		case 'MXN' :
+		case 'SGD' :
+			$symbol = '$';
+			break;
+		case 'JPY' :
+			$symbol = '¥';
+			break;
+		case 'THB' :
+			$symbol = '฿';
+			break;
+		case 'TRY' :
+			$symbol = '₺';
+			break;
+		case 'TWD' :
+			$symbol = 'NT$';
+			break;
+		case 'ILS' :
+			$symbol = '₪';
+			break;
+		case 'RIAL' :
+			$symbol = '﷼';
+			break;
+		case 'RUB' :
+			$symbol = 'руб';
+			break;
+		case 'DKK' :
+		case 'SEK' :
+			$symbol = 'kr';
+			break;
+		case 'PLN' :
+			$symbol = 'zł';
+			break;
+		case 'PHP' :
+			$symbol = '₱';
+			break;
+		case 'MYR' :
+			$symbol = 'RM';
+			break;
+		case 'HUF' :
+			$symbol = 'Ft';
+			break;
+		case 'CZK' :
+			$symbol = 'Kč';
 			break;
 		default :
 			$symbol = $currency;
@@ -136,29 +191,17 @@ function give_currency_symbol( $currency = '' ) {
  * Get the current page URL
  *
  * @since 1.0
- * @return string $page_url Current page URL
+ * @return string $current_url Current page URL
  */
 function give_get_current_page_url() {
 
-	if ( is_front_page() ) :
-		$page_url = home_url();
-	else :
-		$page_url = 'http';
+	if ( is_front_page() ) {
+		$current_url = home_url( '/' );
+	} else {
+		$current_url = ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+	}
 
-		if ( isset( $_SERVER["HTTPS"] ) && $_SERVER["HTTPS"] == "on" ) {
-			$page_url .= "s";
-		}
-
-		$page_url .= "://";
-
-		if ( isset( $_SERVER["SERVER_PORT"] ) && $_SERVER["SERVER_PORT"] != "80" ) {
-			$page_url .= $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"] . $_SERVER["REQUEST_URI"];
-		} else {
-			$page_url .= $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
-		}
-	endif;
-
-	return apply_filters( 'give_get_current_page_url', esc_url( $page_url ) );
+	return apply_filters( 'give_get_current_page_url', esc_url( $current_url ) );
 }
 
 
@@ -572,7 +615,7 @@ function give_get_newsletter() { ?>
 	</div>
 
 	<script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script>
-	<script type='text/javascript'>(function ( $ ) {
+	<script type='text/javascript'>(function ($) {
 			window.fnames = new Array();
 			window.ftypes = new Array();
 			fnames[0] = 'EMAIL';
@@ -583,20 +626,20 @@ function give_get_newsletter() { ?>
 			ftypes[2] = 'text';
 
 			//Successful submission
-			$( 'form[name="mc-embedded-subscribe-form"]' ).on( 'submit', function () {
+			$('form[name="mc-embedded-subscribe-form"]').on('submit', function () {
 
-				var email_field = $( this ).find( '#mce-EMAIL' ).val();
-				if ( !email_field ) {
+				var email_field = $(this).find('#mce-EMAIL').val();
+				if (!email_field) {
 					return false;
 				}
-				$( this ).find( '.give-newsletter-confirmation' ).show().delay( 5000 ).slideUp();
-				$( this ).find( '.give-newsletter-form' ).hide();
+				$(this).find('.give-newsletter-confirmation').show().delay(5000).slideUp();
+				$(this).find('.give-newsletter-form').hide();
 
-			} );
+			});
 
 
-		}( jQuery ));
-		var $mcj = jQuery.noConflict( true );
+		}(jQuery));
+		var $mcj = jQuery.noConflict(true);
 
 
 	</script>
@@ -617,15 +660,15 @@ function give_social_media_elements() { ?>
 		<iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fwpgive&amp;send=false&amp;layout=button_count&amp;width=100&amp;show_faces=false&amp;font&amp;colorscheme=light&amp;action=like&amp;height=21&amp;appId=220596284639969" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>
 
 		<a href="https://twitter.com/givewp" class="twitter-follow-button" data-show-count="false">Follow @givewp</a>
-		<script>!function ( d, s, id ) {
-				var js, fjs = d.getElementsByTagName( s )[0], p = /^http:/.test( d.location ) ? 'http' : 'https';
-				if ( !d.getElementById( id ) ) {
-					js = d.createElement( s );
+		<script>!function (d, s, id) {
+				var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
+				if (!d.getElementById(id)) {
+					js = d.createElement(s);
 					js.id = id;
 					js.src = p + '://platform.twitter.com/widgets.js';
-					fjs.parentNode.insertBefore( js, fjs );
+					fjs.parentNode.insertBefore(js, fjs);
 				}
-			}( document, 'script', 'twitter-wjs' );</script>
+			}(document, 'script', 'twitter-wjs');</script>
 	</div>
 	<!--/.social-items-wrap -->
 
@@ -676,117 +719,166 @@ add_filter( 'nav_menu_meta_box_object', 'modify_nav_menu_meta_box_object' );
 
 
 /**
- *
  * Array_column backup usage
  *
  * @desctipiont: This file is part of the array_column library
- * @since: 1.3.0.1
+ * @since      : 1.3.0.1
  *
- * @copyright Copyright (c) Ben Ramsey (http://benramsey.com)
- * @license http://opensource.org/licenses/MIT MIT
+ * @copyright  Copyright (c) Ben Ramsey (http://benramsey.com)
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
-if (!function_exists('array_column')) {
-    /**
-     * Returns the values from a single column of the input array, identified by
-     * the $columnKey.
-     *
-     * Optionally, you may provide an $indexKey to index the values in the returned
-     * array by the values from the $indexKey column in the input array.
-     *
-     * @param array $input A multi-dimensional array (record set) from which to pull
-     *                     a column of values.
-     * @param mixed $columnKey The column of values to return. This value may be the
-     *                         integer key of the column you wish to retrieve, or it
-     *                         may be the string key name for an associative array.
-     * @param mixed $indexKey (Optional.) The column to use as the index/keys for
-     *                        the returned array. This value may be the integer key
-     *                        of the column, or it may be the string key name.
-     * @return array
-     */
-    function array_column($input = null, $columnKey = null, $indexKey = null)
-    {
-        // Using func_get_args() in order to check for proper number of
-        // parameters and trigger errors exactly as the built-in array_column()
-        // does in PHP 5.5.
-        $argc = func_num_args();
-        $params = func_get_args();
+if ( ! function_exists( 'array_column' ) ) {
+	/**
+	 * Returns the values from a single column of the input array, identified by
+	 * the $columnKey.
+	 *
+	 * Optionally, you may provide an $indexKey to index the values in the returned
+	 * array by the values from the $indexKey column in the input array.
+	 *
+	 * @param array $input A multi-dimensional array (record set) from which to pull
+	 *                         a column of values.
+	 * @param mixed $columnKey The column of values to return. This value may be the
+	 *                         integer key of the column you wish to retrieve, or it
+	 *                         may be the string key name for an associative array.
+	 * @param mixed $indexKey (Optional.) The column to use as the index/keys for
+	 *                         the returned array. This value may be the integer key
+	 *                         of the column, or it may be the string key name.
+	 *
+	 * @return array
+	 */
+	function array_column( $input = null, $columnKey = null, $indexKey = null ) {
+		// Using func_get_args() in order to check for proper number of
+		// parameters and trigger errors exactly as the built-in array_column()
+		// does in PHP 5.5.
+		$argc   = func_num_args();
+		$params = func_get_args();
 
-        if ($argc < 2) {
-            trigger_error("array_column() expects at least 2 parameters, {$argc} given", E_USER_WARNING);
-            return null;
-        }
+		if ( $argc < 2 ) {
+			trigger_error( "array_column() expects at least 2 parameters, {$argc} given", E_USER_WARNING );
 
-        if (!is_array($params[0])) {
-            trigger_error(
-                'array_column() expects parameter 1 to be array, ' . gettype($params[0]) . ' given',
-                E_USER_WARNING
-            );
-            return null;
-        }
+			return null;
+		}
 
-        if (!is_int($params[1])
-            && !is_float($params[1])
-            && !is_string($params[1])
-            && $params[1] !== null
-            && !(is_object($params[1]) && method_exists($params[1], '__toString'))
-        ) {
-            trigger_error('array_column(): The column key should be either a string or an integer', E_USER_WARNING);
-            return false;
-        }
+		if ( ! is_array( $params[0] ) ) {
+			trigger_error(
+				'array_column() expects parameter 1 to be array, ' . gettype( $params[0] ) . ' given',
+				E_USER_WARNING
+			);
 
-        if (isset($params[2])
-            && !is_int($params[2])
-            && !is_float($params[2])
-            && !is_string($params[2])
-            && !(is_object($params[2]) && method_exists($params[2], '__toString'))
-        ) {
-            trigger_error('array_column(): The index key should be either a string or an integer', E_USER_WARNING);
-            return false;
-        }
+			return null;
+		}
 
-        $paramsInput = $params[0];
-        $paramsColumnKey = ($params[1] !== null) ? (string) $params[1] : null;
+		if ( ! is_int( $params[1] )
+		     && ! is_float( $params[1] )
+		     && ! is_string( $params[1] )
+		     && $params[1] !== null
+		     && ! ( is_object( $params[1] ) && method_exists( $params[1], '__toString' ) )
+		) {
+			trigger_error( 'array_column(): The column key should be either a string or an integer', E_USER_WARNING );
 
-        $paramsIndexKey = null;
-        if (isset($params[2])) {
-            if (is_float($params[2]) || is_int($params[2])) {
-                $paramsIndexKey = (int) $params[2];
-            } else {
-                $paramsIndexKey = (string) $params[2];
-            }
-        }
+			return false;
+		}
 
-        $resultArray = array();
+		if ( isset( $params[2] )
+		     && ! is_int( $params[2] )
+		     && ! is_float( $params[2] )
+		     && ! is_string( $params[2] )
+		     && ! ( is_object( $params[2] ) && method_exists( $params[2], '__toString' ) )
+		) {
+			trigger_error( 'array_column(): The index key should be either a string or an integer', E_USER_WARNING );
 
-        foreach ($paramsInput as $row) {
-            $key = $value = null;
-            $keySet = $valueSet = false;
+			return false;
+		}
 
-            if ($paramsIndexKey !== null && array_key_exists($paramsIndexKey, $row)) {
-                $keySet = true;
-                $key = (string) $row[$paramsIndexKey];
-            }
+		$paramsInput     = $params[0];
+		$paramsColumnKey = ( $params[1] !== null ) ? (string) $params[1] : null;
 
-            if ($paramsColumnKey === null) {
-                $valueSet = true;
-                $value = $row;
-            } elseif (is_array($row) && array_key_exists($paramsColumnKey, $row)) {
-                $valueSet = true;
-                $value = $row[$paramsColumnKey];
-            }
+		$paramsIndexKey = null;
+		if ( isset( $params[2] ) ) {
+			if ( is_float( $params[2] ) || is_int( $params[2] ) ) {
+				$paramsIndexKey = (int) $params[2];
+			} else {
+				$paramsIndexKey = (string) $params[2];
+			}
+		}
 
-            if ($valueSet) {
-                if ($keySet) {
-                    $resultArray[$key] = $value;
-                } else {
-                    $resultArray[] = $value;
-                }
-            }
+		$resultArray = array();
 
-        }
+		foreach ( $paramsInput as $row ) {
+			$key    = $value = null;
+			$keySet = $valueSet = false;
 
-        return $resultArray;
-    }
+			if ( $paramsIndexKey !== null && array_key_exists( $paramsIndexKey, $row ) ) {
+				$keySet = true;
+				$key    = (string) $row[ $paramsIndexKey ];
+			}
+
+			if ( $paramsColumnKey === null ) {
+				$valueSet = true;
+				$value    = $row;
+			} elseif ( is_array( $row ) && array_key_exists( $paramsColumnKey, $row ) ) {
+				$valueSet = true;
+				$value    = $row[ $paramsColumnKey ];
+			}
+
+			if ( $valueSet ) {
+				if ( $keySet ) {
+					$resultArray[ $key ] = $value;
+				} else {
+					$resultArray[] = $value;
+				}
+			}
+
+		}
+
+		return $resultArray;
+	}
+
+}
+
+/**
+ * Determines the receipt visibility status
+ *
+ * @since 1.3.2
+ *
+ * @param string $payment_key
+ *
+ * @return bool Whether the receipt is visible or not.
+ */
+function give_can_view_receipt( $payment_key = '' ) {
+
+	$return = false;
+
+	if ( empty( $payment_key ) ) {
+		return $return;
+	}
+
+	global $give_receipt_args;
+
+	$give_receipt_args['id'] = give_get_purchase_id_by_key( $payment_key );
+
+	$user_id = (int) give_get_payment_user_id( $give_receipt_args['id'] );
+
+	$payment_meta = give_get_payment_meta( $give_receipt_args['id'] );
+
+	if ( is_user_logged_in() ) {
+		if ( $user_id === (int) get_current_user_id() ) {
+			$return = true;
+		} elseif ( wp_get_current_user()->user_email === give_get_payment_user_email( $give_receipt_args['id'] ) ) {
+			$return = true;
+		} elseif ( current_user_can( 'view_give_sensitive_data' ) ) {
+			$return = true;
+		}
+	}
+
+	$session = give_get_purchase_session();
+	if ( ! empty( $session ) && ! is_user_logged_in() ) {
+		if ( $session['purchase_key'] === $payment_meta['key'] ) {
+			$return = true;
+		}
+	}
+
+	return (bool) apply_filters( 'give_can_view_receipt', $return, $payment_key );
 
 }

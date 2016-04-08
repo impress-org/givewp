@@ -50,13 +50,14 @@ class Give_Plugin_Settings {
 
 		//Custom CMB2 Settings Fields
 		add_action( 'cmb2_render_give_title', 'give_title_callback', 10, 5 );
+		add_action( 'cmb2_render_give_description', 'give_description_callback', 10, 5 );
 		add_action( 'cmb2_render_enabled_gateways', 'give_enabled_gateways_callback', 10, 5 );
 		add_action( 'cmb2_render_default_gateway', 'give_default_gateway_callback', 10, 5 );
 		add_action( 'cmb2_render_email_preview_buttons', 'give_email_preview_buttons_callback', 10, 5 );
 		add_action( 'cmb2_render_system_info', 'give_system_info_callback', 10, 5 );
 		add_action( 'cmb2_render_api', 'give_api_callback', 10, 5 );
 		add_action( 'cmb2_render_license_key', 'give_license_key_callback', 10, 5 );
-		add_action( "cmb2_save_options-page_fields", array( $this, 'settings_notices' ), 10, 3 );
+		add_action( 'admin_notices', array( $this, 'settings_notices' ) );
 
 		// Include CMB CSS in the head to avoid FOUC
 		add_action( "admin_print_styles-give_forms_page_give-settings", array( 'CMB2_hookup', 'enqueue_cmb_css' ) );
@@ -131,7 +132,7 @@ class Give_Plugin_Settings {
 		?>
 
 		<div class="wrap give_settings_page cmb2_options_page <?php echo $this->key; ?>">
-			<h2 class="nav-tab-wrapper">
+			<h1 class="nav-tab-wrapper">
 				<?php
 				foreach ( $this->give_get_settings_tabs() as $tab_id => $tab_name ) {
 
@@ -148,7 +149,7 @@ class Give_Plugin_Settings {
 					echo '</a>';
 				}
 				?>
-			</h2>
+			</h1>
 
 			<?php cmb2_metabox_form( $this->give_settings( $active_tab ), $this->key ); ?>
 
@@ -179,13 +180,13 @@ class Give_Plugin_Settings {
 				'fields'     => apply_filters( 'give_settings_general', array(
 						array(
 							'name' => __( 'General Settings', 'give' ),
-							'desc' => '<hr>',
+							'desc' => '',
 							'type' => 'give_title',
 							'id'   => 'give_title_general_settings_1'
 						),
 						array(
 							'name'    => __( 'Success Page', 'give' ),
-							'desc'    => __( 'This is the page donators are sent to after completing their donations. The <code>[give_receipt]</code> shortcode should be on this page.', 'give' ),
+							'desc'    => sprintf( __( 'This is the page donors are sent to after completing their donations. The %1$s[give_receipt]%2$s shortcode should be on this page.', 'give' ), '<code>', '</code>' ),
 							'id'      => 'success_page',
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
@@ -205,7 +206,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name'    => __( 'Donation History Page', 'give' ),
-							'desc'    => __( 'This page shows a complete donation history for the current user. The <code>[donation_history]</code> shortcode should be on this page.', 'give' ),
+							'desc'    => sprintf( __( 'This page shows a complete donation history for the current user. The %1$s[donation_history]%2$s shortcode should be on this page.', 'give' ), '<code>', '</code>' ),
 							'id'      => 'history_page',
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
@@ -222,12 +223,12 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Currency Settings', 'give' ),
-							'desc' => '<hr>',
+							'desc' => '',
 							'type' => 'give_title',
 							'id'   => 'give_title_general_settings_2'
 						),
 						array(
-							'name'    => __( 'Currency', 'cmb' ),
+							'name'    => __( 'Currency', 'give' ),
 							'desc'    => 'Choose your currency. Note that some payment gateways have currency restrictions.',
 							'id'      => 'currency',
 							'type'    => 'select',
@@ -235,13 +236,13 @@ class Give_Plugin_Settings {
 							'default' => 'USD',
 						),
 						array(
-							'name'    => __( 'Currency Position', 'cmb' ),
+							'name'    => __( 'Currency Position', 'give' ),
 							'desc'    => 'Choose the position of the currency sign.',
 							'id'      => 'currency_position',
 							'type'    => 'select',
 							'options' => array(
-								'before' => __( 'Before - $10', 'give' ),
-								'after'  => __( 'After - 10$', 'give' )
+								'before' => sprintf( __( 'Before - %1$s10', 'give' ), give_currency_symbol( give_get_currency() ) ),
+								'after'  => sprintf( __( 'After - 10%1$s', 'give' ), give_currency_symbol( give_get_currency() ) )
 							),
 							'default' => 'before',
 						),
@@ -272,7 +273,7 @@ class Give_Plugin_Settings {
 				'fields'     => apply_filters( 'give_settings_gateways', array(
 						array(
 							'name' => __( 'Gateways Settings', 'give' ),
-							'desc' => '<hr>',
+							'desc' => '',
 							'id'   => 'give_title_gateway_settings_1',
 							'type' => 'give_title'
 						),
@@ -296,7 +297,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'PayPal Standard', 'give' ),
-							'desc' => '<hr>',
+							'desc' => '',
 							'type' => 'give_title',
 							'id'   => 'give_title_gateway_settings_2',
 						),
@@ -331,7 +332,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Offline Donations', 'give' ),
-							'desc' => '<hr>',
+							'desc' => '',
 							'type' => 'give_title',
 							'id'   => 'give_title_gateway_settings_3',
 						),
@@ -379,7 +380,7 @@ class Give_Plugin_Settings {
 				'fields'     => apply_filters( 'give_settings_display', array(
 						array(
 							'name' => __( 'Display Settings', 'give' ),
-							'desc' => '<hr>',
+							'desc' => '',
 							'id'   => 'give_title_display_settings_1',
 							'type' => 'give_title'
 						),
@@ -391,19 +392,19 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Enable Floating Labels', 'give' ),
-							'desc' => sprintf( __( 'Enable this option if you would like to enable <a href="%s" target="_blank">floating labels</a> in Give\'s donation forms.<br>Be aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), esc_url( "http://bradfrost.com/blog/post/float-label-pattern/" ) ),
+							'desc' => sprintf( esc_html__( 'Enable this option if you would like to enable %1$sfloating labels%2$s in Give\'s donation forms. %3$sBe aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), '<a href="' . esc_url( "http://bradfrost.com/blog/post/float-label-pattern/" ) . '" target="_blank">', '</a>', '<br />' ),
 							'id'   => 'enable_floatlabels',
 							'type' => 'checkbox'
 						),
 						array(
 							'name' => __( 'Disable Welcome Screen', 'give' ),
-							'desc' => sprintf( __( 'Enable this option if you would like to disable the Give Welcome screen every time Give is activated and/or updated. You can always access the Welcome Screen <a href="%s">here</a> if you want in the future.', 'give' ), esc_url( admin_url( 'index.php?page=give-about' ) ) ),
+							'desc' => sprintf( esc_html__( 'Enable this option if you would like to disable the Give Welcome screen every time Give is activated and/or updated. You can always access the Welcome Screen %1$shere%2$s if you want in the future.', 'give' ), '<a href="' . esc_url( admin_url( 'index.php?page=give-about' ) ) . '">', '</a>' ),
 							'id'   => 'disable_welcome',
 							'type' => 'checkbox'
 						),
 						array(
 							'name' => __( 'Post Types', 'give' ),
-							'desc' => '<hr>',
+							'desc' => '',
 							'id'   => 'give_title_display_settings_2',
 							'type' => 'give_title'
 						),
@@ -425,9 +426,18 @@ class Give_Plugin_Settings {
 							'id'   => 'disable_forms_excerpt',
 							'type' => 'checkbox'
 						),
+
+						array(
+							'name'    => __( 'Featured Image Size', 'give' ),
+							'desc'    => __( 'The Featured Image is an image that is chosen as the representative image for a donation form. Some themes may have custom featured image sizes. Please select the size you would like to display for your single donation forms\' featured image.', 'give' ),
+							'id'      => 'featured_image_size',
+							'type'    => 'select',
+							'default' => 'large',
+							'options' => give_get_featured_image_sizes()
+						),
 						array(
 							'name' => __( 'Disable Form Featured Image', 'give' ),
-							'desc' => __( 'The Featured Image is an image that is chosen as the representative image for donation form. The display of this image is largely up to the theme. If you do not wish to use the featured image you can disable it using this option.', 'give' ),
+							'desc' => __( 'If you do not wish to use the featured image functionality you can disable it using this option and it will not be displayed for single donation forms.', 'give' ),
 							'id'   => 'disable_form_featured_img',
 							'type' => 'checkbox'
 						),
@@ -439,7 +449,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Taxonomies', 'give' ),
-							'desc' => '<hr>',
+							'desc' => '',
 							'id'   => 'give_title_display_settings_3',
 							'type' => 'give_title'
 						),
@@ -469,7 +479,7 @@ class Give_Plugin_Settings {
 				'fields'     => apply_filters( 'give_settings_emails', array(
 						array(
 							'name' => __( 'Email Settings', 'give' ),
-							'desc' => '<hr>',
+							'desc' => '',
 							'id'   => 'give_title_email_settings_1',
 							'type' => 'give_title'
 						),
@@ -502,7 +512,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Donation Receipt', 'give' ),
-							'desc' => '<hr>',
+							'desc' => '',
 							'id'   => 'give_title_email_settings_2',
 							'type' => 'give_title'
 						),
@@ -518,11 +528,11 @@ class Give_Plugin_Settings {
 							'name'    => __( 'Donation Receipt', 'give' ),
 							'desc'    => __( 'Enter the email that is sent to users after completing a successful donation. HTML is accepted. Available template tags:', 'give' ) . '<br/>' . give_get_emails_tags_list(),
 							'type'    => 'wysiwyg',
-							'default' => __( "Dear", "give" ) . " {name},\n\n" . __( "Thank you for your donation. Your generosity is appreciated! Please click on the link below to view your receipt.", "give" ) . "\n\n{receipt_link}\n\nSincerely,\n{sitename}"
+							'default' => give_get_default_donation_receipt_email()
 						),
 						array(
 							'name' => __( 'New Donation Notification', 'give' ),
-							'desc' => '<hr>',
+							'desc' => '',
 							'id'   => 'give_title_email_settings_3',
 							'type' => 'give_title'
 						),
@@ -543,7 +553,7 @@ class Give_Plugin_Settings {
 						array(
 							'id'      => 'admin_notice_emails',
 							'name'    => __( 'Donation Notification Emails', 'give' ),
-							'desc'    => sprintf(__( 'Enter the email address(es) that should receive a notification anytime a donation is made, please only enter %1$sone email address per line%2$s and not separated by commas.', 'give' ), '<span class="give-underline">', '</span>'),
+							'desc'    => sprintf( __( 'Enter the email address(es) that should receive a notification anytime a donation is made, please only enter %1$sone email address per line%2$s and not separated by commas.', 'give' ), '<span class="give-underline">', '</span>' ),
 							'type'    => 'textarea',
 							'default' => get_bloginfo( 'admin_email' )
 						),
@@ -579,15 +589,15 @@ class Give_Plugin_Settings {
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
 				'fields'     => apply_filters( 'give_settings_advanced', array(
 						array(
-							'name' => __( 'Session Control', 'give' ),
-							'desc' => '<hr>',
+							'name' => __( 'Access Control', 'give' ),
+							'desc' => '',
 							'id'   => 'give_title_session_control_1',
 							'type' => 'give_title'
 						),
 						array(
 							'id'      => 'session_lifetime',
 							'name'    => __( 'Session Lifetime', 'give' ),
-							'desc'    => __( 'Give will start a new session per user once they have donated. This option controls the lifetime a user\'s session is kept alive. An active session allows users to view donation receipts on your site without having to be logged in.', 'give' ),
+							'desc'    => __( 'Give will start a new session per user once they have donated. This option controls the lifetime a user\'s session is kept alive. An active session allows users to view donation receipts on your site without having to be logged in as long as they are using the same browser they used when donating.', 'give' ),
 							'type'    => 'select',
 							'options' => array(
 								'86400'  => __( '24 Hours', 'give' ),
@@ -597,8 +607,28 @@ class Give_Plugin_Settings {
 							)
 						),
 						array(
+							'name' => __( 'Email Access', 'give' ),
+							'desc' => __( 'Would you like your donors to be able to access their donation history using only email? Donors whose sessions have expired and do not have an account may still access their donation history via a temporary email access link.', 'give' ),
+							'id'   => 'email_access',
+							'type' => 'checkbox',
+						),
+						array(
+							'id'      => 'recaptcha_key',
+							'name'    => __( 'reCAPTCHA Site Key', 'give' ),
+							'desc'    => sprintf( __( 'If you would like to prevent spam on the email access form navigate to %1$sthe reCAPTCHA website%2$s and sign up for an API key. The reCAPTCHA uses Google\'s user-friendly single click verification method.', 'give' ), '<a href="https://www.google.com/recaptcha/" target="_blank">', '</a>' ),
+							'default' => '',
+							'type'    => 'text'
+						),
+						array(
+							'id'      => 'recaptcha_secret',
+							'name'    => __( 'reCAPTCHA Secret Key', 'give' ),
+							'desc'    => __( 'Please paste the reCAPTCHA secret key here from your manage reCAPTCHA API Keys panel.', 'give' ),
+							'default' => '',
+							'type'    => 'text'
+						),
+						array(
 							'name' => __( 'Data Control', 'give' ),
-							'desc' => '<hr>',
+							'desc' => '',
 							'id'   => 'give_title_data_control_2',
 							'type' => 'give_title'
 						),
@@ -610,7 +640,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Filter Control', 'give' ),
-							'desc' => '<hr>',
+							'desc' => '',
 							'id'   => 'give_title_filter_control',
 							'type' => 'give_title'
 						),
@@ -622,7 +652,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Script Loading', 'give' ),
-							'desc' => '<hr>',
+							'desc' => '',
 							'id'   => 'give_title_script_control',
 							'type' => 'give_title'
 						),
@@ -679,20 +709,11 @@ class Give_Plugin_Settings {
 
 	/**
 	 * Show Settings Notices
-	 *
-	 * @param $object_id
-	 * @param $updated
-	 * @param $cmb
 	 */
-	public function settings_notices( $object_id, $updated, $cmb ) {
+	public function settings_notices() {
 
-		//Sanity check
-		if ( $object_id !== $this->key ) {
+		if ( ! isset( $_POST['give_settings_saved'] ) ) {
 			return;
-		}
-
-		if ( did_action( 'cmb2_save_options-page_fields' ) === 1 ) {
-			settings_errors( 'give-notices' );
 		}
 
 		add_settings_error( 'give-notices', 'global-settings-updated', __( 'Settings updated.', 'give' ), 'updated' );
@@ -754,7 +775,7 @@ function give_get_option( $key = '', $default = false ) {
  *
  * @since 1.0
  *
- * @param string          $key   The Key to update
+ * @param string $key The Key to update
  * @param string|bool|int $value The value to set the key to
  *
  * @return boolean True if updated, false if not.
@@ -847,6 +868,46 @@ function give_get_settings() {
 
 }
 
+
+/**
+ * Give Settings Array Insert
+ *
+ * @description: Allows other Add-ons and plugins to insert Give settings at a desired position
+ *
+ * @since      1.3.5
+ *
+ * @param $array
+ * @param $position |int|string Expects an array key or 'id' of the settings field to appear after
+ * @param $insert |array a valid array of options to insert
+ *
+ * @return array
+ */
+function give_settings_array_insert( $array, $position, $insert ) {
+	if ( is_int( $position ) ) {
+		array_splice( $array, $position, 0, $insert );
+	} else {
+
+		foreach ( $array as $index => $subarray ) {
+			if ( isset( $subarray['id'] ) && $subarray['id'] == $position ) {
+				$pos = $index;
+			}
+		}
+
+		if ( ! isset( $pos ) ) {
+			return $array;
+		}
+
+		$array = array_merge(
+			array_slice( $array, 0, $pos ),
+			$insert,
+			array_slice( $array, $pos )
+		);
+	}
+
+	return $array;
+}
+
+
 /**
  * Gateways Callback
  *
@@ -854,7 +915,12 @@ function give_get_settings() {
  *
  * @since 1.0
  *
- * @global $give_options Array of all the Give Options
+ * @param $field_object
+ * @param $escaped_value
+ * @param $object_id
+ * @param $object_type
+ * @param $field_type_object
+ *
  * @return void
  */
 function give_enabled_gateways_callback( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
@@ -929,7 +995,7 @@ function give_default_gateway_callback( $field_object, $escaped_value, $object_i
 /**
  * Give Title
  *
- * Renders custom section titles output; Really only an <hr> because CMB2's output is a bit funky
+ * Renders custom section titles output; Really only an  because CMB2's output is a bit funky
  *
  * @since 1.0
  *
@@ -943,7 +1009,29 @@ function give_title_callback( $field_object, $escaped_value, $object_id, $object
 	$title             = $field_type_object->field->args['name'];
 	$field_description = $field_type_object->field->args['desc'];
 
-	echo '<hr>';
+	echo '<hr>' . $field_description;
+
+}
+
+/**
+ * Give Description
+ *
+ * @description: Renders custom description text which any plugin can use to output content, html, php, etc.
+ *
+ * @since      1.3.5
+ *
+ * @param       $field_object , $escaped_value, $object_id, $object_type, $field_type_object
+ *
+ * @return void
+ */
+function give_description_callback( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
+
+	$id                = $field_type_object->field->args['id'];
+	$title             = $field_type_object->field->args['name'];
+	$field_description = $field_type_object->field->args['desc'];
+
+
+	echo $field_description;
 
 }
 
@@ -951,7 +1039,7 @@ function give_title_callback( $field_object, $escaped_value, $object_id, $object
  * Gets a number of posts and displays them as options
  *
  * @param  array $query_args Optional. Overrides defaults.
- * @param  bool  $force      Force the pages to be loaded even if not on settings
+ * @param  bool $force Force the pages to be loaded even if not on settings
  *
  * @see: https://github.com/WebDevStudios/CMB2/wiki/Adding-your-own-field-types
  * @return array An array of options that matches the CMB2 options array
@@ -998,11 +1086,35 @@ function give_modify_cmb2_form_output( $form_format, $object_id, $cmb ) {
 	//only modify the give settings form
 	if ( 'give_settings' == $object_id && 'options_page' == $cmb->cmb_id ) {
 
-		return '<form class="cmb-form" method="post" id="%1$s" enctype="multipart/form-data" encoding="multipart/form-data"><input type="hidden" name="object_id" value="%2$s">%3$s<div class="give-submit-wrap"><input type="submit" name="submit-cmb" value="' . __( 'Save Settings', 'give' ) . '" class="button-primary"></div></form>';
+		return '<form class="cmb-form" method="post" id="%1$s" enctype="multipart/form-data" encoding="multipart/form-data"><input type="hidden" name="give_settings_saved" value="true"><input type="hidden" name="object_id" value="%2$s">%3$s<div class="give-submit-wrap"><input type="submit" name="submit-cmb" value="' . __( 'Save Settings', 'give' ) . '" class="button-primary"></div></form>';
 	}
 
 	return $form_format;
 
+}
+
+/**
+ * Featured Image Sizes
+ *
+ * @description: Outputs an array for the "Featured Image Size" option found under Settings > Display Options
+ *
+ * @since 1.4
+ */
+function give_get_featured_image_sizes() {
+	global $_wp_additional_image_sizes;
+	$sizes = array();
+
+	foreach ( get_intermediate_image_sizes() as $_size ) {
+		
+		if ( in_array( $_size, array( 'thumbnail', 'medium', 'medium_large', 'large' ) ) ) {
+			$sizes[ $_size ] = $_size . ' - ' . get_option( "{$_size}_size_w" ) . 'x' . get_option( "{$_size}_size_h" );
+		} elseif ( isset( $_wp_additional_image_sizes[ $_size ] ) ) {
+			$sizes[ $_size ] = $_size . ' - ' . $_wp_additional_image_sizes[ $_size ]['width'] . 'x' . $_wp_additional_image_sizes[ $_size ]['height'];
+		}
+
+	}
+
+	return apply_filters( 'give_get_featured_image_sizes', $sizes );
 }
 
 
@@ -1112,10 +1224,11 @@ function give_hook_callback( $args ) {
  * @description: Checks to see if CMB2 plugin is installed first the uses included CMB2; we can still use it even it it's not active. This prevents fatal error conflicts with other themes and users of the CMB2 WP.org plugin
  *
  */
-if ( file_exists( WP_PLUGIN_DIR . '/cmb2/init.php' ) ) {
+
+if ( file_exists( WP_PLUGIN_DIR . '/cmb2/init.php' ) && ! defined( 'CMB2_LOADED' ) ) {
 	require_once WP_PLUGIN_DIR . '/cmb2/init.php';
-} elseif ( file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/cmb2/init.php' ) ) {
+} elseif ( file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/cmb2/init.php' ) && ! defined( 'CMB2_LOADED' ) ) {
 	require_once GIVE_PLUGIN_DIR . '/includes/libraries/cmb2/init.php';
-} elseif ( file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/CMB2/init.php' ) ) {
+} elseif ( file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/CMB2/init.php' ) && ! defined( 'CMB2_LOADED' ) ) {
 	require_once GIVE_PLUGIN_DIR . '/includes/libraries/CMB2/init.php';
 }

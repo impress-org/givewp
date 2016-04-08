@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Admin/Upgrades
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  *
@@ -24,6 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function give_show_upgrade_notices() {
+
 	if ( isset( $_GET['page'] ) && $_GET['page'] == 'give-upgrades' ) {
 		return;
 	} // Don't show notices on the upgrades page
@@ -37,20 +38,6 @@ function give_show_upgrade_notices() {
 
 	$give_version = preg_replace( '/[^0-9.].*/', '', $give_version );
 
-	//	if ( Give()->session->get( 'upgrade_sequential' ) && give_get_payments() ) {
-	//		printf(
-	//			'<div class="updated"><p>' . __( 'Give needs to upgrade past order numbers to make them sequential, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
-	//			admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_sequential_payment_numbers' )
-	//		);
-	//	}
-
-//	if ( version_compare( $give_version, '1.0', '<' ) || ! give_has_upgrade_completed( 'upgrade_donor_payments_association' ) ) {
-//		printf(
-//			'<div class="updated"><p>' . __( 'Give needs to upgrade the donor database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
-//			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_donor_payments_association' ) )
-//		);
-//	}
-
 	/*
 	 *  NOTICE:
 	 *
@@ -58,6 +45,23 @@ function give_show_upgrade_notices() {
 	 *  /includes/install.php @ Appox Line 156
 	 *
 	 */
+
+	//v1.3.2 Upgrades
+	if ( version_compare( $give_version, '1.3.2', '<' ) || ! give_has_upgrade_completed( 'upgrade_give_payment_customer_id' ) ) {
+		printf(
+			'<div class="updated"><p>' . __( 'Give needs to upgrade the donor database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
+			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_give_payment_customer_id' ) )
+		);
+	}
+
+	//v1.3.4 Upgrades //ensure the user has gone through 1.3.4
+	if ( version_compare( $give_version, '1.3.4', '<' ) || ( ! give_has_upgrade_completed( 'upgrade_give_offline_status' ) && give_has_upgrade_completed( 'upgrade_give_payment_customer_id' ) ) ) {
+		printf(
+			'<div class="updated"><p>' . __( 'Give needs to upgrade the transaction database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
+			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_give_offline_status' ) )
+		);
+	}
+
 
 	// End 'Stepped' upgrade process notices
 
@@ -159,3 +163,98 @@ function give_get_completed_upgrades() {
 	return $completed_upgrades;
 
 }
+
+
+/**
+ * Upgrades the
+ *
+ * @description: Standardizes the discrepancies between two metakeys `_give_payment_customer_id` and `_give_payment_donor_id`
+ *
+ * @since      1.3.2
+ *
+ */
+function give_v132_upgrade_give_payment_customer_id() {
+	global $wpdb;
+	if ( ! current_user_can( 'manage_give_settings' ) ) {
+		wp_die( __( 'You do not have permission to do Give upgrades', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+	}
+
+	ignore_user_abort( true );
+
+	if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
+		@set_time_limit( 0 );
+	}
+
+	//UPDATE DB METAKEYS
+	$sql   = "UPDATE $wpdb->postmeta SET meta_key = '_give_payment_customer_id' WHERE meta_key = '_give_payment_donor_id'";
+	$query = $wpdb->query( $sql );
+
+	update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
+	give_set_upgrade_complete( 'upgrade_give_payment_customer_id' );
+	delete_option( 'give_doing_upgrade' );
+	wp_redirect( admin_url() );
+	exit;
+
+
+}
+
+add_action( 'give_upgrade_give_payment_customer_id', 'give_v132_upgrade_give_payment_customer_id' );
+
+/**
+ * Upgrades the Offline Status
+ *
+ * @description: Reverses the issue where offline donation transactions in "pending" status where inappropriately marked as abandoned
+ *
+ * @since      1.3.4
+ *
+ */
+function give_v134_upgrade_give_offline_status() {
+
+	global $wpdb;
+
+	if ( ! current_user_can( 'manage_give_settings' ) ) {
+		wp_die( __( 'You do not have permission to do Give upgrades', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+	}
+
+	ignore_user_abort( true );
+
+	if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
+		@set_time_limit( 0 );
+	}
+
+	// Get abandoned offline payments
+	$select = "SELECT ID FROM $wpdb->posts p ";
+	$join   = "LEFT JOIN $wpdb->postmeta m ON p.ID = m.post_id ";
+	$where  = "WHERE p.post_type = 'give_payment' ";
+	$where .= "AND ( p.post_status = 'abandoned' )";
+	$where .= "AND ( m.meta_key = '_give_payment_gateway' AND m.meta_value = 'offline' )";
+
+	$sql            = $select . $join . $where;
+	$found_payments = $wpdb->get_col( $sql );
+
+
+	foreach ( $found_payments as $payment ) {
+
+		//Only change ones marked abandoned since our release last week
+		//because the admin may have marked some abandoned themselves
+		$modified_time = get_post_modified_time( 'U', false, $payment );
+
+		//1450124863 =  12/10/2015 20:42:25
+		if ( $modified_time >= 1450124863 ) {
+
+			give_update_payment_status( $payment, 'pending' );
+
+		}
+
+	}
+
+	update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
+	give_set_upgrade_complete( 'upgrade_give_offline_status' );
+	delete_option( 'give_doing_upgrade' );
+	wp_redirect( admin_url() );
+	exit;
+
+
+}
+
+add_action( 'give_upgrade_give_offline_status', 'give_v134_upgrade_give_offline_status' );

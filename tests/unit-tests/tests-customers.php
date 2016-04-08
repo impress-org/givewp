@@ -3,7 +3,7 @@
 /**
  * @group give_customers
  */
-class Give_Tests_Customers extends WP_UnitTestCase {
+class Give_Tests_Customers extends Give_Unit_Test_Case {
 
 	protected $_post_id = null;
 
@@ -280,6 +280,9 @@ class Give_Tests_Customers extends WP_UnitTestCase {
 
 		$no_user = give_get_users_purchases( 0 );
 		$this->assertFalse( $no_user );
+
+		$no_user_count = give_count_purchases_of_customer();
+		$this->assertEquals( 0, $no_user_count );
 
 	}
 

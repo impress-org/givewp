@@ -4,11 +4,15 @@
  *
  * @package     Give
  * @subpackage  Classes/Stats
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Give_Stats Class
@@ -28,7 +32,7 @@ class Give_Payment_Stats extends Give_Stats {
 	 * @access public
 	 * @since  1.0
 	 *
-	 * @param $form_id    INT The download product to retrieve stats for. If false, gets stats for all forms
+	 * @param $form_id    INT The donation form to retrieve stats for. If false, gets stats for all forms
 	 * @param $start_date string|bool The starting date for which we'd like to filter our sale stats. If false, we'll use the default start date of `this_month`
 	 * @param $end_date   string|bool The end date for which we'd like to filter our sale stats. If false, we'll use the default end date of `this_month`
 	 * @param $status     string|array The sale status(es) to count. Only valid when retrieving global stats
@@ -89,13 +93,14 @@ class Give_Payment_Stats extends Give_Stats {
 	 * @access public
 	 * @since  1.0
 	 *
-	 * @param $form_id    INT The download product to retrieve stats for. If false, gets stats for all forms
-	 * @param $start_date string|bool The starting date for which we'd like to filter our sale stats. If false, we'll use the default start date of `this_month`
-	 * @param $end_date   string|bool The end date for which we'd like to filter our sale stats. If false, we'll use the default end date of `this_month`
+	 * @param $form_id       INT The donation form to retrieve stats for. If false, gets stats for all forms
+	 * @param $start_date    string|bool The starting date for which we'd like to filter our donation earnings stats. If false, we'll use the default start date of `this_month`
+	 * @param $end_date      string|bool The end date for which we'd like to filter our sale stats. If false, we'll use the default end date of `this_month`
+	 * @param $gateway_id    string|bool The gateway to get earnings for such as 'paypal' or 'stripe'
 	 *
 	 * @return float|int
 	 */
-	public function get_earnings( $form_id = 0, $start_date = false, $end_date = false ) {
+	public function get_earnings( $form_id = 0, $start_date = false, $end_date = false, $gateway_id = false ) {
 
 		global $wpdb;
 
@@ -110,8 +115,6 @@ class Give_Payment_Stats extends Give_Stats {
 		if ( is_wp_error( $this->end_date ) ) {
 			return $this->end_date;
 		}
-
-		$earnings = 0;
 
 		add_filter( 'posts_where', array( $this, 'payments_where' ) );
 
@@ -132,11 +135,16 @@ class Give_Payment_Stats extends Give_Stats {
 				// This is not a valid query arg, but is used for cache keying
 			);
 
+			//Filter by Gateway ID meta_key
+			if ( $gateway_id !== false ) {
+				$args['meta_key']   = '_give_payment_gateway';
+				$args['meta_value'] = $gateway_id;
+			}
+
 			$args = apply_filters( 'give_stats_earnings_args', $args );
 			$key  = 'give_stats_' . substr( md5( serialize( $args ) ), 0, 15 );
 
 			$earnings = get_transient( $key );
-			$earnings = false; //TEMPORARY
 			if ( false === $earnings ) {
 				$sales    = get_posts( $args );
 				$earnings = 0;
@@ -150,7 +158,7 @@ class Give_Payment_Stats extends Give_Stats {
 
 		} else {
 
-			// Download specific earning stats
+			// Donation form specific earning stats
 			global $give_logs, $wpdb;
 
 			$args = array(
@@ -167,9 +175,10 @@ class Give_Payment_Stats extends Give_Stats {
 			);
 
 			$args = apply_filters( 'give_stats_earnings_args', $args );
-			$key  =  'give_stats_' . substr( md5( serialize( $args ) ), 0, 15 );
-
+			$key  = 'give_stats_' . substr( md5( serialize( $args ) ), 0, 15 );
+			//Set transient for faster stats
 			$earnings = get_transient( $key );
+
 			if ( false === $earnings ) {
 
 				$log_ids  = $give_logs->get_connected_logs( $args, 'sale' );
@@ -178,7 +187,9 @@ class Give_Payment_Stats extends Give_Stats {
 				if ( $log_ids ) {
 					$log_ids     = implode( ',', $log_ids );
 					$payment_ids = $wpdb->get_col( "SELECT meta_value FROM $wpdb->postmeta WHERE meta_key='_give_log_payment_id' AND post_id IN ($log_ids);" );
-
+					foreach ( $payment_ids as $payment_id ) {
+						$earnings += give_get_payment_amount( $payment_id );
+					}
 				}
 
 				// Cache the results for one hour
@@ -186,8 +197,10 @@ class Give_Payment_Stats extends Give_Stats {
 			}
 		}
 
+		//remove our filter
 		remove_filter( 'posts_where', array( $this, 'payments_where' ) );
 
+		//return earnings
 		return round( $earnings, give_currency_decimal_filter() );
 
 	}

@@ -4,7 +4,7 @@
  * @description Styles the Give dashboard widget
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 
@@ -90,4 +90,15 @@
 	}
   }
 
+}
+
+//At a Glance Widget
+#dashboard_right_now {
+  .give-forms-count:before {
+	@include iconstyle();
+	font-size: 18px;
+	width: 18px;
+	height: 18px;
+	content: "\e800";
+  }
 }

@@ -6,7 +6,7 @@
  *
  * @package     Give
  * @subpackage  Classes/Emails
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.1.php GNU Public License
  * @since       1.0
  */
@@ -255,7 +255,6 @@ class Give_Emails {
 
 		if ( ! did_action( 'init' ) && ! did_action( 'admin_init' ) ) {
 			_doing_it_wrong( __FUNCTION__, __( 'You cannot send email with Give_Emails until init/admin_init has been reached', 'give' ), null );
-
 			return false;
 		}
 

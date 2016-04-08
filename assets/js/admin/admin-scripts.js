@@ -4,7 +4,7 @@
  * @description: The Give Admin scripts
  * @package:     Give
  * @subpackage:  Assets/JS
- * @copyright:   Copyright (c) 2015, WordImpress
+ * @copyright:   Copyright (c) 2016, WordImpress
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
@@ -183,49 +183,72 @@ jQuery.noConflict();
 
 
 	/**
-	 * Reports / Exports screen JS
+	 * Settings screen JS
 	 */
-	var Give_Reports = {
+	var Give_Settings = {
 
 		init: function () {
-			this.date_options();
-			this.donors_export();
+			this.toggle_options();
 		},
 
-		date_options: function () {
+        toggle_options: function () {
 
-			// Show hide extended date options
-			$( '#give-graphs-date-options' ).change( function () {
-				var $this = $( this );
-				if ( 'other' === $this.val() ) {
-					$( '#give-date-range-options' ).show();
-				} else {
-					$( '#give-date-range-options' ).hide();
-				}
-			} );
-
-		},
-
-		donors_export: function () {
-
-			// Show / hide Download option when exporting donors
-			$( '#give_donor_export_download' ).change( function () {
-
-				var $this = $( this ), form_id = $( 'option:selected', $this ).val();
-
-				if ( '0' === $this.val() ) {
-					$( '#give_donor_export_option' ).show();
-				} else {
-					$( '#give_donor_export_option' ).hide();
-				}
-
-				$( '.give_price_options_select' ).remove();
-
-			} );
-
-		}
+            var email_access = $('#email_access');
+            email_access.on('change', function(){
+                if ( email_access.prop('checked') ) {
+                    $( '.cmb2-id-recaptcha-key, .cmb2-id-recaptcha-secret' ).show();
+                } else {
+                    $( '.cmb2-id-recaptcha-key, .cmb2-id-recaptcha-secret' ).hide();
+                }
+            } ).change();
+        },
 
 	};
+
+    /**
+     * Reports / Exports screen JS
+     */
+    var Give_Reports = {
+
+        init: function () {
+            this.date_options();
+            this.donors_export();
+        },
+
+        date_options: function () {
+
+            // Show hide extended date options
+            $('#give-graphs-date-options').change(function () {
+                var $this = $(this);
+                if ('other' === $this.val()) {
+                    $('#give-date-range-options').show();
+                } else {
+                    $('#give-date-range-options').hide();
+                }
+            });
+
+        },
+
+        donors_export: function () {
+
+            // Show / hide Download option when exporting donors
+            $('#give_donor_export_download').change(function () {
+
+                var $this = $(this), form_id = $('option:selected', $this).val();
+
+                if ('0' === $this.val()) {
+                    $('#give_donor_export_option').show();
+                } else {
+                    $('#give_donor_export_option').hide();
+                }
+
+                $('.give_price_options_select').remove();
+
+            });
+
+        }
+
+    };
 
 
 	/**
@@ -426,6 +449,7 @@ jQuery.noConflict();
 		handle_status_change();
 		setup_chosen_give_selects();
 		Give_Edit_Payment.init();
+		Give_Settings.init();
 		Give_Reports.init();
 		Give_Customer.init();
 		API_Screen.init();

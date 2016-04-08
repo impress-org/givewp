@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Emails
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -75,15 +75,16 @@ function give_email_preview_template_tags( $message ) {
 	$message = str_replace( '{username}', $user->user_login, $message );
 	$message = str_replace( '{date}', date( get_option( 'date_format' ), current_time( 'timestamp' ) ), $message );
 	$message = str_replace( '{price}', $price, $message );
+	$message = str_replace( '{donation}', 'Sample Donation Form Title', $message );
 	$message = str_replace( '{receipt_id}', $receipt_id, $message );
 	$message = str_replace( '{payment_method}', $gateway, $message );
 	$message = str_replace( '{sitename}', get_bloginfo( 'name' ), $message );
 	$message = str_replace( '{product_notes}', $notes, $message );
 	$message = str_replace( '{payment_id}', $payment_id, $message );
-	$message = str_replace( '{receipt_link}', sprintf( __( '%1$sView it in your browser.%2$s', 'give' ), '<a href="' . esc_url( add_query_arg( array(
+	$message = str_replace( '{receipt_link}', sprintf( __( '%1$sView the receipt in your browser %2$s', 'give' ), '<a href="' . esc_url( add_query_arg( array(
 			'payment_key' => $receipt_id,
 			'give_action' => 'view_receipt'
-		), home_url() ) ) . '">', '</a>' ), $message );
+		), home_url() ) ) . '">', '&raquo;</a>' ), $message );
 
 	return wpautop( apply_filters( 'give_email_preview_template_tags', $message ) );
 }
@@ -177,11 +178,10 @@ add_action( 'template_redirect', 'give_display_email_template_preview' );
  * @return string $email_body Body of the email
  */
 function give_get_email_body_content( $payment_id = 0, $payment_data = array() ) {
+
 	global $give_options;
 
-	$default_email_body = __( "Dear", "give" ) . " {name},\n\n";
-	$default_email_body .= __( "Thank you for your donation. Your generosity is appreciated! Please click on the link below to view your receipt.", "give" ) . "\n\n" . '{receipt_link}';
-	$default_email_body .= "\n\nSincerely,\n{sitename}";
+	$default_email_body = give_get_default_donation_receipt_email();
 
 	$email = isset( $give_options['donation_receipt'] ) ? stripslashes( $give_options['donation_receipt'] ) : $default_email_body;
 
@@ -192,8 +192,11 @@ function give_get_email_body_content( $payment_id = 0, $payment_data = array() )
 	return apply_filters( 'give_donation_receipt', $email_body, $payment_id, $payment_data );
 }
 
+
+
+
 /**
- * Sale Notification Template Body
+ * Donation Notification Template Body
  *
  * @since  1.0
  *
@@ -246,7 +249,7 @@ function give_get_donation_notification_body_content( $payment_id = 0, $payment_
  */
 function give_render_receipt_in_browser() {
 	if ( ! isset( $_GET['payment_key'] ) ) {
-		wp_die( __( 'Missing donation key.', 'give' ), __( 'Error', 'give' ) );
+		wp_die( __( 'Missing donation payment key.', 'give' ), __( 'Error', 'give' ) );
 	}
 
 	$key = urlencode( $_GET['payment_key'] );
@@ -272,6 +275,7 @@ function give_render_receipt_in_browser() {
 			<meta http-equiv="expires" content="0" />
 			<meta http-equiv="expires" content="Tue, 23 Oct 1977 05:00:00 PST" />
 			<meta http-equiv="pragma" content="no-cache" />
+			<meta name="robots" content="noindex, nofollow" />
 
 			<?php wp_head(); ?>
 		</head>

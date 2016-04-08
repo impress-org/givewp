@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Functions/Errors
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -32,6 +32,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_print_errors( $form_id ) {
 
 	$errors = give_get_errors();
+
 	$request_form_id = isset( $_REQUEST['form-id'] ) ? intval( $_REQUEST['form-id'] ) : 0;
 
 	//Sanity checks first: Ensure that gateway returned errors display on the appropriate form
@@ -78,7 +79,7 @@ function give_get_errors() {
  * @since 1.0
  * @uses  Give_Session::get()
  *
- * @param int    $error_id      ID of the error being set
+ * @param int $error_id ID of the error being set
  * @param string $error_message Message to store with the error
  *
  * @return void

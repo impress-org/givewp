@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Functions
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -422,6 +422,14 @@ function give_register_post_type_statuses() {
 		'show_in_admin_status_list' => true,
 		'label_count'               => _n_noop( 'Revoked <span class="count">(%s)</span>', 'Revoked <span class="count">(%s)</span>', 'give' )
 	) );
+	register_post_status( 'cancelled', array(
+		'label'                     => _x( 'Cancelled', 'Cancelled payment status', 'give' ),
+		'public'                    => true,
+		'exclude_from_search'       => false,
+		'show_in_admin_all_list'    => true,
+		'show_in_admin_status_list' => true,
+		'label_count'               => _n_noop( 'Cancelled <span class="count">(%s)</span>', 'Cancelled <span class="count">(%s)</span>', 'give' )
+	) );
 	register_post_status( 'abandoned', array(
 		'label'                     => _x( 'Abandoned', 'Abandoned payment status', 'give' ),
 		'public'                    => true,
@@ -471,7 +479,6 @@ add_filter( 'post_updated_messages', 'give_updated_messages' );
  * Setup Post Type Images
  */
 add_action( 'after_setup_theme', 'give_add_thumbnail_support', 10 );
-add_action( 'after_setup_theme', 'give_add_image_sizes', 10 );
 
 /**
  * Ensure post thumbnail support is turned on
@@ -485,19 +492,6 @@ function give_add_thumbnail_support() {
 	}
 	add_post_type_support( 'give_forms', 'thumbnail' );
 	add_post_type_support( 'give_campaigns', 'thumbnail' );
-}
-
-/**
- * Add Give Image sizes to WP
- *
- * @since 1.0
- */
-function give_add_image_sizes() {
-	$give_form_thumbnail = give_get_image_size( 'give_form_thumbnail' );
-	$give_form_single    = give_get_image_size( 'give_form_single' );
-
-	add_image_size( 'give_form_thumbnail', $give_form_thumbnail['width'], $give_form_thumbnail['height'], $give_form_thumbnail['crop'] );
-	add_image_size( 'give_form_single', $give_form_single['width'], $give_form_single['height'], $give_form_single['crop'] );
 }
 
 /**

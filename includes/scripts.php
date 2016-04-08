@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Functions
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -40,17 +40,18 @@ function give_load_scripts() {
 		'ajaxurl'             => give_get_ajax_url(),
 		'checkout_nonce'      => wp_create_nonce( 'give_checkout_nonce' ),
 		'currency_sign'       => give_currency_filter( '' ),
-		'currency_pos'        => isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before',
+		'currency_pos'        => give_get_currency_position(),
 		'thousands_separator' => isset( $give_options['thousands_separator'] ) ? $give_options['thousands_separator'] : ',',
 		'decimal_separator'   => isset( $give_options['decimal_separator'] ) ? $give_options['decimal_separator'] : '.',
 		'no_gateway'          => __( 'Please select a payment method', 'give' ),
+		'bad_minimum'         => __( 'The minimum donation amount for this form is', 'give' ),
 		'general_loading'     => __( 'Loading...', 'give' ),
 		'purchase_loading'    => __( 'Please Wait...', 'give' ),
+		'number_decimals'  => apply_filters( 'give_format_amount_decimals', 2 ),
 		'give_version'        => GIVE_VERSION
 	) );
 	$localize_give_ajax     = apply_filters( 'give_global_ajax_vars', array(
 		'ajaxurl'          => give_get_ajax_url(),
-		'position_in_cart' => isset( $position ) ? $position : - 1,
 		'loading'          => __( 'Loading', 'give' ),
 		// General loading message
 		'select_option'    => __( 'Please select an option', 'give' ),
@@ -239,7 +240,6 @@ function give_load_admin_scripts( $hook ) {
 		'quick_edit_warning'      => __( 'Sorry, not available for variable priced forms.', 'give' ),
 		'delete_payment'          => __( 'Are you sure you wish to delete this payment?', 'give' ),
 		'delete_payment_note'     => __( 'Are you sure you wish to delete this note?', 'give' ),
-		'delete_tax_rate'         => __( 'Are you sure you wish to delete this tax rate?', 'give' ),
 		'revoke_api_key'          => __( 'Are you sure you wish to revoke this API key?', 'give' ),
 		'regenerate_api_key'      => __( 'Are you sure you wish to regenerate this API key?', 'give' ),
 		'resend_receipt'          => __( 'Are you sure you wish to resend the donation receipt?', 'give' ),

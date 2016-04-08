@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Functions/Install
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Install
  *
- * Runs on plugin install by setting up the post types, custom taxonomies, flushing rewrite rules to initiate the new 'donations' slug and also creates the plugin and populates the settings fields for those plugin pages. After successful install, the user is redirected to the Give Welcome screen.
+ * @description: Runs on plugin install by setting up the post types, custom taxonomies, flushing rewrite rules to initiate the new 'donations' slug and also creates the plugin and populates the settings fields for those plugin pages. After successful install, the user is redirected to the Give Welcome screen.
  *
  * @since 1.0
  * @global $wpdb
@@ -140,24 +140,24 @@ function give_install() {
 	// Add a temporary option to note that Give pages have been created
 	set_transient( '_give_installed', $options, 30 );
 
-	// Bail if activating from network, or bulk
-	if ( is_network_admin() || isset( $_GET['activate-multi'] ) ) {
-		return;
-	}
 
 	if ( ! $current_version ) {
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrade-functions.php';
 
 		// When new upgrade routines are added, mark them as complete on fresh install
 		$upgrade_routines = array(
-			'upgrade_donor_payments_association'
+			'upgrade_give_payment_customer_id',
+			'upgrade_give_offline_status'
 		);
 
 		foreach ( $upgrade_routines as $upgrade ) {
 			give_set_upgrade_complete( $upgrade );
 		}
 	}
-
+	// Bail if activating from network, or bulk
+	if ( is_network_admin() || isset( $_GET['activate-multi'] ) ) {
+		return;
+	}
 	// Add the transient to redirect
 	set_transient( '_give_activation_redirect', true, 30 );
 
@@ -215,7 +215,7 @@ function give_install_roles_on_network() {
 		return;
 	}
 
-	if ( ! in_array( 'give_manager', $wp_roles->roles ) ) {
+	if ( ! array_key_exists( 'give_manager', $wp_roles->roles ) ) {
 
 		// Create Give shop roles
 		$roles = new Give_Roles;
@@ -227,3 +227,27 @@ function give_install_roles_on_network() {
 }
 
 add_action( 'admin_init', 'give_install_roles_on_network' );
+
+/**
+ * Network Activated New Site Setup
+ *
+ * @description: When a new site is created when Give is network activated this function runs the appropriate install function to set up the site for Give.
+ *
+ * @since      1.3.5
+ *
+ * @param $blog_id
+ * @param $user_id
+ * @param $domain
+ * @param $path
+ * @param $site_id
+ * @param $meta
+ */
+function on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
+	if ( is_plugin_active_for_network( GIVE_PLUGIN_BASENAME ) ) {
+		switch_to_blog( $blog_id );
+		give_install();
+		restore_current_blog();
+	}
+}
+
+add_action( 'wpmu_new_blog', 'on_create_blog', 10, 6 );

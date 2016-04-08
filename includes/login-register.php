@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Functions/Login
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -29,7 +29,7 @@ function give_login_form( $redirect = '' ) {
 	global $give_options, $give_login_redirect;
 
 	if ( empty( $redirect ) ) {
-		$redirect = give_get_current_page_url();
+		$redirect = add_query_arg('give-login-success', 'true', give_get_current_page_url());
 	}
 
 	$give_login_redirect = $redirect;

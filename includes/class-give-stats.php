@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Classes/Stats
- * @copyright   Copyright (c) 2015, Give
+ * @copyright   Copyright (c) 2016, Give
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -17,7 +17,7 @@
  *
  * Primarily for setting up dates and ranges
  *
- * @since 1.8
+ * @since 1.0
  */
 class Give_Stats {
 
@@ -32,7 +32,7 @@ class Give_Stats {
 	 * this_quarter, last_quarter, this_year, last_year
 	 *
 	 * @access public
-	 * @since  1.8
+	 * @since  1.0
 	 */
 	public $start_date;
 
@@ -49,7 +49,6 @@ class Give_Stats {
 	 * The end date is optional
 	 *
 	 * @access public
-	 * @since  1.8
 	 */
 	public $end_date;
 
@@ -57,14 +56,11 @@ class Give_Stats {
 	 * Flag to determine if current query is based on timestamps
 	 *
 	 * @access public
-	 * @since  1.9
 	 */
 	public $timestamp;
 
 	/**
-	 *
 	 * @access public
-	 * @since  1.8
 	 * @return void
 	 */
 	public function __construct() { /* nothing here. Call get_sales() and get_earnings() directly */
@@ -87,7 +83,7 @@ class Give_Stats {
 			'this_month'   => __( 'This Month', 'give' ),
 			'last_month'   => __( 'Last Month', 'give' ),
 			'this_quarter' => __( 'This Quarter', 'give' ),
-			'last_quarter' => __( 'Last Quater', 'give' ),
+			'last_quarter' => __( 'Last Quarter', 'give' ),
 			'this_year'    => __( 'This Year', 'give' ),
 			'last_year'    => __( 'Last Year', 'give' )
 		);
@@ -102,6 +98,10 @@ class Give_Stats {
 	 *
 	 * @access public
 	 * @since  1.0
+	 *
+	 * @param string $_start_date
+	 * @param bool   $_end_date
+	 *
 	 * @return void
 	 */
 	public function setup_dates( $_start_date = 'this_month', $_end_date = false ) {
@@ -112,7 +112,7 @@ class Give_Stats {
 
 		$this->start_date = $_start_date;
 
-		if( empty( $_end_date ) ) {
+		if ( empty( $_end_date ) ) {
 			$_end_date = $_start_date;
 		}
 
@@ -494,6 +494,9 @@ class Give_Stats {
 	 *
 	 * @access public
 	 * @since  1.0
+	 *
+	 * @param string $where
+	 *
 	 * @return string
 	 */
 	public function payments_where( $where = '' ) {

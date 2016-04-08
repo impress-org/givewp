@@ -1012,11 +1012,19 @@ class FPDF {
 	}
 
 	function _parsepng( $file ) {
-		$f = fopen( $file, 'rb' );
-		if ( !$f )
-			$this->Error( 'Can\'t open image file: ' . $file );
-		$info = $this->_parsepngstream( $f, $file );
-		fclose( $f );
+		$ch = curl_init($file);
+		$fp = fopen('/tmp/myfile.png', 'wb');
+		curl_setopt($ch, CURLOPT_HEADER, false);
+		curl_setopt($ch, CURLOPT_FILE, $fp);
+		$image_data = curl_exec($ch);
+		curl_close($ch);
+
+		// Extract info from a PNG file
+		$f = fopen('/tmp/myfile.png','rb');
+		if(!$f)
+			$this->Error('Can\'t open image file: '.$file);
+		$info = $this->_parsepngstream($f,$file);
+		fclose($f);
 		return $info;
 	}
 

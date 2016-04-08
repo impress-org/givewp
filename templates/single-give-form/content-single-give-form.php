@@ -2,7 +2,7 @@
 /**
  * The template for displaying product content in the single-give-form.php template
  *
- * Override this template by copying it to yourtheme/give/content-single-give-form.php
+ * Override this template by copying it to yourtheme/give/single-give-form/content-single-give-form.php
  *
  * @package       Give/Templates
  * @version       1.0

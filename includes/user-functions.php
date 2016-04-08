@@ -6,7 +6,7 @@
  *
  * @package     Give
  * @subpackage  Functions
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -36,7 +36,7 @@ function give_get_users_purchases( $user = 0, $number = 20, $pagination = false,
 		$user = get_current_user_id();
 	}
 
-	if ( 0 === $user ) {
+	if ( 0 === $user && !Give()->email_access->token_exists ) {
 		return false;
 	}
 
@@ -165,7 +165,7 @@ function give_get_users_completed_donations( $user = 0, $status = 'complete' ) {
 /**
  * Has Purchases
  *
- * Checks to see if a user has purchased at least one item.
+ * Checks to see if a user has donated to at least one form.
  *
  * @access      public
  * @since       1.0
@@ -196,7 +196,6 @@ function give_has_purchases( $user_id = null ) {
  * @since       1.0
  *
  * @param       $user int|string - the ID or email of the donor to retrieve stats for
- * @param       $mode string - "test" or "live"
  *
  * @return      array
  */
@@ -212,15 +211,20 @@ function give_get_purchase_stats_by_user( $user = '' ) {
 
 	}
 
+	$stats    = array();
 	$customer = Give()->customers->get_customer_by( $field, $user );
 
-	$customer = new Give_Customer( $customer->id );
+	if ( $customer ) {
 
-	$stats                = array();
-	$stats['purchases']   = absint( $customer->purchase_count );
-	$stats['total_spent'] = give_sanitize_amount( $customer->purchase_value );
+		$customer = new Give_Customer( $customer->id );
 
-	return (array) apply_filters( 'give_donation_stats_by_user', $stats, $user );
+		$stats['purchases']   = absint( $customer->purchase_count );
+		$stats['total_spent'] = give_sanitize_amount( $customer->purchase_value );
+
+	}
+
+
+	return (array) apply_filters( 'give_purchase_stats_by_user', $stats, $user );
 }
 
 
@@ -241,7 +245,7 @@ function give_count_purchases_of_customer( $user = null ) {
 		$user = get_current_user_id();
 	}
 
-	$stats = give_get_purchase_stats_by_user( $user );
+	$stats = ! empty( $user ) ? give_get_purchase_stats_by_user( $user ) : false;
 
 	return isset( $stats['purchases'] ) ? $stats['purchases'] : 0;
 }
@@ -377,10 +381,16 @@ function give_get_donor_address( $user_id = 0 ) {
 }
 
 /**
- * Sends the new user notification email when a user registers during checkout
+ * Give New User Notification
+ *
+ * @description   : Sends the new user notification email when a user registers within the donation form
  *
  * @access        public
  * @since         1.0
+ *
+ * @param int   $user_id
+ * @param array $user_data
+ *
  * @return        void
  */
 function give_new_user_notification( $user_id = 0, $user_data = array() ) {
@@ -388,8 +398,20 @@ function give_new_user_notification( $user_id = 0, $user_data = array() ) {
 	if ( empty( $user_id ) || empty( $user_data ) ) {
 		return;
 	}
+	$blogname = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
+	$message  = sprintf( esc_attr__( 'New user registration on your site %s:' ), $blogname ) . "\r\n\r\n";
+	$message .= sprintf( esc_attr__( 'Username: %s' ), $user_data['user_login'] ) . "\r\n\r\n";
+	$message .= sprintf( esc_attr__( 'E-mail: %s' ), $user_data['user_email'] ) . "\r\n";
 
-	wp_new_user_notification( $user_id, __( '[Password entered during donation]', 'give' ) );
+	@wp_mail( get_option( 'admin_email' ), sprintf( esc_attr__( '[%s] New User Registration' ), $blogname ), $message );
+
+	$message = sprintf( esc_attr__( 'Username: %s' ), $user_data['user_login'] ) . "\r\n";
+	$message .= sprintf( esc_attr__( 'Password: %s' ), esc_attr__( '[Password entered during donation]', 'give' ) ) . "\r\n";
+
+	$message .= '<a href="' . wp_login_url() . '"> ' . esc_attr__( 'Click Here to Login', 'give' ) . ' &raquo;</a>' . "\r\n";
+
+	wp_mail( $user_data['user_email'], sprintf( esc_attr__( '[%s] Your username and password' ), $blogname ), $message );
+
 }
 
 add_action( 'give_insert_user', 'give_new_user_notification', 10, 2 );

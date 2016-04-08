@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Gateways
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -91,7 +91,7 @@ function give_process_paypal_purchase( $purchase_data ) {
 			if ( $price_level_amount != give_sanitize_amount( $purchase_data['price'] ) ) {
 				$custom_amount_text = get_post_meta( $form_id, '_give_custom_amount_text', true );
 				//user custom amount text if any, fallback to default if not
-				$item_name .= ' - ' . (! empty( $custom_amount_text ) ? $custom_amount_text : __( 'Custom Amount', 'give' ));
+				$item_name .= ' - ' . ( ! empty( $custom_amount_text ) ? $custom_amount_text : __( 'Custom Amount', 'give' ) );
 
 			} //Is there any donation level text?
 			elseif ( ! empty( $item_price_level_text ) ) {
@@ -102,7 +102,7 @@ function give_process_paypal_purchase( $purchase_data ) {
 		elseif ( give_get_form_price( $form_id ) !== give_sanitize_amount( $purchase_data['price'] ) ) {
 			$custom_amount_text = get_post_meta( $form_id, '_give_custom_amount_text', true );
 			//user custom amount text if any, fallback to default if not
-			$item_name .= ' - ' . (! empty( $custom_amount_text ) ? $custom_amount_text : __( 'Custom Amount', 'give' ));
+			$item_name .= ' - ' . ( ! empty( $custom_amount_text ) ? $custom_amount_text : __( 'Custom Amount', 'give' ) );
 		}
 
 		// Setup PayPal arguments
@@ -231,9 +231,20 @@ function give_process_paypal_ipn() {
 	// Convert collected post data to an array
 	parse_str( $encoded_data, $encoded_data_array );
 
-	if ( ! give_get_option( 'disable_paypal_verification' ) ) {
+	foreach ( $encoded_data_array as $key => $value ) {
 
-		// Validate the IPN
+		if ( false !== strpos( $key, 'amp;' ) ) {
+			$new_key = str_replace( '&amp;', '&', $key );
+			$new_key = str_replace( 'amp;', '&' , $new_key );
+
+			unset( $encoded_data_array[ $key ] );
+			$encoded_data_array[ $new_key ] = $value;
+		}
+
+	}
+	
+	//Validate IPN request w/ PayPal if user hasn't disabled this security measure
+	if ( ! give_get_option( 'disable_paypal_verification' ) ) {
 
 		$remote_post_vars = array(
 			'method'      => 'POST',
@@ -252,18 +263,16 @@ function give_process_paypal_ipn() {
 			'body'        => $encoded_data_array
 		);
 
-		// Get response
+		// Validate the IPN
 		$api_response = wp_remote_post( give_get_paypal_redirect(), $remote_post_vars );
 
 		if ( is_wp_error( $api_response ) ) {
 			give_record_gateway_error( __( 'IPN Error', 'give' ), sprintf( __( 'Invalid IPN verification response. IPN data: %s', 'give' ), json_encode( $api_response ) ) );
-
 			return; // Something went wrong
 		}
 
 		if ( $api_response['body'] !== 'VERIFIED' && give_get_option( 'disable_paypal_verification', false ) ) {
 			give_record_gateway_error( __( 'IPN Error', 'give' ), sprintf( __( 'Invalid IPN verification response. IPN data: %s', 'give' ), json_encode( $api_response ) ) );
-
 			return; // Response not okay
 		}
 
@@ -557,19 +566,21 @@ function give_get_paypal_redirect( $ssl_check = false ) {
  * @return string
  */
 function give_get_paypal_page_style() {
-
 	$page_style = trim( give_get_option( 'paypal_page_style', 'PayPal' ) );
-
 	return apply_filters( 'give_paypal_page_style', $page_style );
 }
 
 /**
- * Shows "Purchase Processing" message for PayPal payments are still pending on site return
+ * PayPal Success Page
  *
- * This helps address the Race Condition, as detailed in issue #1839
+ * @description: Shows "Donation Processing" message for PayPal payments that are still pending on site return
  *
- * @since 1.0
+ * @since      1.0
+ *
+ * @param $content
+ *
  * @return string
+ *
  */
 function give_paypal_success_page_content( $content ) {
 
@@ -588,7 +599,7 @@ function give_paypal_success_page_content( $content ) {
 
 	if ( $payment && 'pending' == $payment->post_status ) {
 
-		// Payment is still pending so show processing indicator to fix the Race Condition, issue #
+		// Payment is still pending so show processing indicator to fix the Race Condition
 		ob_start();
 
 		give_get_template_part( 'payment', 'processing' );

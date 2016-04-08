@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Classes/Forms
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -29,6 +29,13 @@ class Give_Donate_Form {
 	 * @since 1.0
 	 */
 	private $price;
+
+	/**
+	 * The minimum donation price
+	 *
+	 * @since 1.3.6
+	 */
+	private $minimum_price;
 
 	/**
 	 * The donation goal
@@ -59,9 +66,12 @@ class Give_Donate_Form {
 	private $earnings;
 
 	/**
-	 * Get things going
+	 * Give_Donate_Form constructor.
 	 *
 	 * @since 1.0
+	 *
+	 * @param bool  $_id
+	 * @param array $_args
 	 */
 	public function __construct( $_id = false, $_args = array() ) {
 
@@ -105,6 +115,11 @@ class Give_Donate_Form {
 	 * Magic __get function to dispatch a call to retrieve a private property
 	 *
 	 * @since 1.0
+	 *
+	 * @param $key
+	 *
+	 * @return mixed
+	 * @throws Exception
 	 */
 	public function __get( $key ) {
 
@@ -157,6 +172,34 @@ class Give_Donate_Form {
 		}
 
 		return apply_filters( 'give_get_set_price', $this->price, $this->ID );
+	}
+
+	/**
+	 * Retrieve the minimum price
+	 *
+	 * @since 1.3.6
+	 * @return float
+	 */
+	public function get_minimum_price() {
+
+		if ( ! isset( $this->minimum_price ) ) {
+
+			$allow_custom_amount = get_post_meta( $this->ID, '_give_custom_amount', true );
+			$this->minimum_price = get_post_meta( $this->ID, '_give_custom_amount_minimum', true );
+
+			if ( $allow_custom_amount != 'no' && $this->minimum_price ) {
+
+				$this->minimum_price = give_sanitize_amount( $this->minimum_price );
+
+			} else {
+
+				$this->minimum_price = 0;
+
+			}
+
+		}
+
+		return apply_filters( 'give_get_set_minimum_price', $this->minimum_price, $this->ID );
 	}
 
 	/**
@@ -213,7 +256,12 @@ class Give_Donate_Form {
 	 */
 	public function is_single_price_mode() {
 
-		$ret = get_post_meta( $this->ID, '_give_price_options_mode', true );
+		$option = get_post_meta( $this->ID, '_give_price_options_mode', true );
+		$ret    = 0;
+
+		if ( empty( $option ) || $option === 'set' ) {
+			$ret = 1;
+		}
 
 		return (bool) apply_filters( 'give_single_price_option_mode', $ret, $this->ID );
 

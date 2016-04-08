@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Functions
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -283,7 +283,7 @@ function give_get_country_list() {
 		'NG' => 'Nigeria',
 		'NU' => 'Niue',
 		'NF' => 'Norfolk Island',
-		'KR' => 'North Korea',
+		'KP' => 'North Korea',
 		'MP' => 'Northern Mariana Islands',
 		'NO' => 'Norway',
 		'OM' => 'Oman',
@@ -323,7 +323,7 @@ function give_get_country_list() {
 		'SO' => 'Somalia',
 		'ZA' => 'South Africa',
 		'GS' => 'South Georgia',
-		'KP' => 'South Korea',
+		'KR' => 'South Korea',
 		'ES' => 'Spain',
 		'LK' => 'Sri Lanka',
 		'SD' => 'Sudan',

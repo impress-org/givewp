@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Classes/Donators
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -381,7 +381,7 @@ class Give_Donators_Gravatars_Widget extends WP_Widget {
 	/*
 	 * widget constructor
 	 */
-	function give_donators_gravatars_widget() {
+	public function __construct() {
 
 		$give_label_singular = function_exists( 'give_get_forms_label_singular' ) ? strtolower( give_get_forms_label_singular() ) : null;
 
@@ -399,7 +399,7 @@ class Give_Donators_Gravatars_Widget extends WP_Widget {
 		);
 
 		// create the widget
-		$this->WP_Widget(
+		parent::__construct(
 			'give_donators_gravatars_widget',
 			__( 'Give Donators Gravatars', 'give' ),
 			$widget_ops,
@@ -415,6 +415,7 @@ class Give_Donators_Gravatars_Widget extends WP_Widget {
 	function widget( $args, $instance ) {
 		global $give_options;
 
+		//@TODO: Don't extract it!!!
 		extract( $args );
 
 		if ( ! is_singular( 'give_forms' ) ) {

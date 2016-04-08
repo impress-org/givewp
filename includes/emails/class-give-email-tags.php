@@ -17,7 +17,7 @@
  *
  * @package     Give
  * @subpackage  Emails
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -48,7 +48,7 @@ class Give_Email_Template_Tags {
 	 *
 	 * @since 1.0
 	 *
-	 * @param string   $tag  Email tag to be replace in email
+	 * @param string $tag Email tag to be replace in email
 	 * @param callable $func Hook to run when email tag is found
 	 */
 	public function add( $tag, $description, $func ) {
@@ -99,8 +99,8 @@ class Give_Email_Template_Tags {
 	/**
 	 * Search content for email tags and filter email tags through their hooks
 	 *
-	 * @param string $content    Content to search for email tags
-	 * @param int    $payment_id The payment id
+	 * @param string $content Content to search for email tags
+	 * @param int $payment_id The payment id
 	 *
 	 * @since 1.0
 	 *
@@ -151,7 +151,7 @@ class Give_Email_Template_Tags {
  *
  * @since 1.0
  *
- * @param string   $tag  Email tag to be replace in email
+ * @param string $tag Email tag to be replace in email
  * @param string $description Description of the email tag added
  * @param callable $func Hook to run when email tag is found
  */
@@ -228,8 +228,8 @@ function give_get_emails_tags_list() {
 /**
  * Search content for email tags and filter email tags through their hooks
  *
- * @param string $content    Content to search for email tags
- * @param int    $payment_id The payment id
+ * @param string $content Content to search for email tags
+ * @param int $payment_id The payment id
  *
  * @since 1.0
  *
@@ -269,27 +269,27 @@ function give_setup_email_tags() {
 	$email_tags = array(
 		array(
 			'tag'         => 'donation',
-			'description' => __( "The name of completed donation form.", 'give' ),
+			'description' => __( 'The name of completed donation form', 'give' ),
 			'function'    => 'give_email_tag_donation'
 		),
 		array(
 			'tag'         => 'name',
-			'description' => __( "The donor's first name", 'give' ),
+			'description' => __( 'The donor\'s first name', 'give' ),
 			'function'    => 'give_email_tag_first_name'
 		),
 		array(
 			'tag'         => 'fullname',
-			'description' => __( "The donor's full name, first and last", 'give' ),
+			'description' => __( 'The donor\'s full name, first and last', 'give' ),
 			'function'    => 'give_email_tag_fullname'
 		),
 		array(
 			'tag'         => 'username',
-			'description' => __( "The donor's user name on the site, if they registered an account", 'give' ),
+			'description' => __( 'The donor\'s user name on the site, if they registered an account', 'give' ),
 			'function'    => 'give_email_tag_username'
 		),
 		array(
 			'tag'         => 'user_email',
-			'description' => __( "The donor's email address", 'give' ),
+			'description' => __( 'The donor\'s email address', 'give' ),
 			'function'    => 'give_email_tag_user_email'
 		),
 		array(
@@ -536,15 +536,25 @@ function give_email_tag_sitename( $payment_id ) {
 
 /**
  * Email template tag: receipt_link
- * Adds a link so users can view their receipt directly on your website if they are unable to view it in the browser correctly
+ *
+ * @description: Adds a link so users can view their receipt directly on your website if they are unable to view it in the browser correctly
  *
  * @param int $payment_id
  *
  * @return string receipt_link
  */
 function give_email_tag_receipt_link( $payment_id ) {
-	return sprintf( __( '%1$sView it in your browser.%2$s', 'give' ), '<a href="' . esc_url( add_query_arg( array(
-			'payment_key' => give_get_payment_key( $payment_id ),
-			'give_action' => 'view_receipt'
-		), home_url() ) ) . '">', '</a>' );
+
+	$receipt_url = esc_url( add_query_arg( array(
+		'payment_key' => give_get_payment_key( $payment_id ),
+		'give_action' => 'view_receipt'
+	), home_url() ) );
+	$formatted   = sprintf( __( '%1$sView it in your browser %2$s', 'give' ), '<a href="' . $receipt_url . '">', '&raquo;</a>' );
+
+	if ( give_get_option( 'email_template' ) !== 'none' ) {
+		return $formatted;
+	} else {
+		return $receipt_url;
+	}
+
 }

@@ -3,7 +3,7 @@
  *
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 
@@ -11,7 +11,17 @@
 Forms CPT
 --------------------------------------*/
 /* Hide conditional fields */
-.cmb2-id--give-set-price, .cmb2-id--give-levels-header, .cmb2-id--give-levels-header + .cmb-repeat-group-wrap, .cmb2-id--give-display-style, .post-type-give_forms .tablenav #post-query-submit, .give-hidden, .cmb2-id--give-form-content, .cmb2-id--give-reveal-label, .cmb2-id--give-custom-amount-text, .cmb2-id--give-offline-checkout-notes {
+.cmb2-id--give-set-price,
+.cmb2-id--give-levels-header,
+.cmb2-id--give-levels-header + .cmb-repeat-group-wrap,
+.cmb2-id--give-display-style,
+.post-type-give_forms .tablenav #post-query-submit,
+.give-hidden,
+.cmb2-id--give-form-content,
+.cmb2-id--give-reveal-label,
+.cmb2-id--give-custom-amount-minimum,
+.cmb2-id--give-custom-amount-text,
+.cmb2-id--give-offline-checkout-notes {
   display: none;
 }
 
@@ -299,40 +309,6 @@ p.give-level-id {
 	float: left;
 	font-weight: bold;
 	margin-top: 5px;
-  }
-
-}
-
-/*-------------------------------------
-Recurring Fields in Repeater
--------------------------------------*/
-
-@media(min-width: 851px) and (max-width: 1300px) {
-
-  // Hide Table columns
-  .cmb2-id--give-levels-header .table-container > .table-row > .table-cell {
-
-	&.col-recurring, &.col-period, &.col-times {
-	  display: none;
-	}
-
-  }
-
-  // display labels for new recurring fields
-  #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row {
-
-	&.cmb2-id--give-donation-levels-0--give-recurring {
-	  clear: left;
-	}
-	&.cmb2-id--give-donation-levels-0--give-recurring, &.cmb2-id--give-donation-levels-0--give-period, &.cmb2-id--give-donation-levels-0--give-times {
-	  padding-top: 0;
-	  > .cmb-th {
-		width: 100%;
-		display: block;
-	  }
-
-	}
-
   }
 
 }

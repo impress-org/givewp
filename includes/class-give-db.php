@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Classes/Give DB
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -222,6 +222,20 @@ abstract class Give_DB {
 		}
 
 		return true;
+	}
+	
+	/**
+	 * Check if the given table exists
+	 *
+	 * @since  1.3.2
+	 * @param  string $table The table name
+	 * @return bool          If the table name exists
+	 */
+	public function table_exists( $table ) {
+		global $wpdb;
+		$table = sanitize_text_field( $table );
+		
+		return $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE '%s'", $table ) ) === $table;
 	}
 
 }

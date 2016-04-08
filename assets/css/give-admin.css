@@ -1,10 +1,10 @@
 /*!
  * Give Admin SCSS/CSS
  *
- * @description: The Main SCSS file for admin styles which is compiled and minified via Gulp taskrunner
+ * @description: The Main SCSS file for ADMIN styles which is compiled and minified via Gulp taskrunner
  * @package:     Give
  * @subpackage:  SCSS/Admin
- * @copyright:   Copyright (c) 2015, WordImpress
+ * @copyright:   Copyright (c) 2016, WordImpress
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 /**
@@ -12,8 +12,7 @@
  */
 .give-clearfix {
   *zoom: 1; }
-  .give-clearfix:before,
-  .give-clearfix:after {
+  .give-clearfix:before, .give-clearfix:after {
     content: " ";
     display: table; }
   .give-clearfix:after {
@@ -27,7 +26,7 @@
  * CSS3 Easing
  */
 .give-item-label {
-  padding: 0.2em 0.6em 0.3em;
+  padding: .2em .6em .3em;
   font-size: 85%;
   font-weight: 700;
   line-height: 1;
@@ -112,6 +111,8 @@
   direction: ltr; }
 
 .qtip-icon, .qtip-icon .ui-icon {
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
   border-radius: 3px;
   text-decoration: none; }
 
@@ -121,7 +122,7 @@
   line-height: 14px;
   text-align: center;
   text-indent: 0;
-  font: normal bold 10px/13px Tahoma, sans-serif;
+  font: normal bold 10px/13px Tahoma,sans-serif;
   color: inherit;
   background: transparent none no-repeat -100em -100em; }
 
@@ -224,26 +225,38 @@
   background-position: -2px 0; }
 
 .qtip-shadow {
+  -webkit-box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.15);
   box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.15); }
 
 /* Add rounded corners to your tooltips in: FF3+, Chrome 2+, Opera 10.6+, IE9+, Safari 2+ */
 .qtip-rounded,
 .qtip-tipsy,
 .qtip-bootstrap {
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
   border-radius: 5px; }
 
 .qtip-rounded .qtip-titlebar {
+  -moz-border-radius: 4px 4px 0 0;
+  -webkit-border-radius: 4px 4px 0 0;
   border-radius: 4px 4px 0 0; }
 
 /* Youtube tooltip style */
 .qtip-youtube {
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
   border-radius: 2px;
+  -webkit-box-shadow: 0 0 3px #333;
+  -moz-box-shadow: 0 0 3px #333;
   box-shadow: 0 0 3px #333;
   color: white;
   border: 0 solid transparent;
   background: #4A4A4A;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #4A4A4A), color-stop(100%, black));
   background-image: -webkit-linear-gradient(top, #4A4A4A 0, black 100%);
+  background-image: -moz-linear-gradient(top, #4A4A4A 0, black 100%);
+  background-image: -ms-linear-gradient(top, #4A4A4A 0, black 100%);
   background-image: -o-linear-gradient(top, #4A4A4A 0, black 100%); }
 
 .qtip-youtube .qtip-titlebar {
@@ -267,11 +280,17 @@
   background: #232323;
   background: rgba(0, 0, 0, 0.7);
   background-image: -webkit-gradient(linear, left top, left bottom, from(#717171), to(#232323));
+  background-image: -moz-linear-gradient(top, #717171, #232323);
   background-image: -webkit-linear-gradient(top, #717171, #232323);
+  background-image: -ms-linear-gradient(top, #717171, #232323);
   background-image: -o-linear-gradient(top, #717171, #232323);
   border: 2px solid #ddd;
   border: 2px solid #f1f1f1;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
   border-radius: 2px;
+  -webkit-box-shadow: 0 0 12px #333;
+  -moz-box-shadow: 0 0 12px #333;
   box-shadow: 0 0 12px #333; }
 
 /* IE Specific */
@@ -298,6 +317,8 @@
 
 /* Cluetip style */
 .qtip-cluetip {
+  -webkit-box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.4);
   box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.4);
   background-color: #D9D9C2;
   color: #111;
@@ -344,6 +365,8 @@
 /* Tipped style */
 .qtip-tipped {
   border: 3px solid #959FA9;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
   border-radius: 3px;
   background-color: #F9F9F9;
   color: #454545;
@@ -356,6 +379,8 @@
   background: #3A79B8;
   background-image: -webkit-gradient(linear, left top, left bottom, from(#3A79B8), to(#2E629D));
   background-image: -webkit-linear-gradient(top, #3A79B8, #2E629D);
+  background-image: -moz-linear-gradient(top, #3A79B8, #2E629D);
+  background-image: -ms-linear-gradient(top, #3A79B8, #2E629D);
   background-image: -o-linear-gradient(top, #3A79B8, #2E629D);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#3A79B8,endColorstr=#2E629D);
   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#3A79B8,endColorstr=#2E629D)"; }
@@ -384,8 +409,14 @@
   background-color: #ffffff;
   border: 1px solid #ccc;
   border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
   border-radius: 6px;
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
   background-clip: padding-box; }
 
 .qtip-bootstrap .qtip-titlebar {
@@ -397,6 +428,8 @@
   line-height: 18px;
   background-color: #f7f7f7;
   border-bottom: 1px solid #ebebeb;
+  -webkit-border-radius: 5px 5px 0 0;
+  -moz-border-radius: 5px 5px 0 0;
   border-radius: 5px 5px 0 0; }
 
 .qtip-bootstrap .qtip-titlebar .qtip-close {
@@ -460,8 +493,7 @@
 /* IE9 fix - removes all filters */
 .qtip:not(.ie9haxors) div.qtip-content,
 .qtip:not(.ie9haxors) div.qtip-titlebar {
-  -webkit-filter: none;
-          filter: none;
+  filter: none;
   -ms-filter: none; }
 
 .qtip .qtip-tip {
@@ -523,7 +555,7 @@ x:-o-prefocus, .qtip .qtip-tip {
  * @description: Fonts are from icomoon and the src paths need to be relative to template directory
  * @package     Give
  * @subpackage  SCSS/Frontend
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 @font-face {
@@ -595,10 +627,10 @@ x:-o-prefocus, .qtip .qtip-tip {
   content: "\e800"; }
 
 .fa-spin {
-  -webkit-animation: fa-spin 2s infinite linear;
-  animation: fa-spin 2s infinite linear; }
+  -webkit-animation: spin 1000ms infinite linear;
+  animation: spin 1000ms infinite linear; }
 
-@-webkit-keyframes fa-spin {
+@-webkit-keyframes spin {
   0% {
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg); }
@@ -606,7 +638,7 @@ x:-o-prefocus, .qtip .qtip-tip {
     -webkit-transform: rotate(359deg);
     transform: rotate(359deg); } }
 
-@keyframes fa-spin {
+@keyframes spin {
   0% {
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg); }
@@ -619,14 +651,24 @@ x:-o-prefocus, .qtip .qtip-tip {
  *
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 /*------------------------------------
 Forms CPT
 --------------------------------------*/
 /* Hide conditional fields */
-.cmb2-id--give-set-price, .cmb2-id--give-levels-header, .cmb2-id--give-levels-header + .cmb-repeat-group-wrap, .cmb2-id--give-display-style, .post-type-give_forms .tablenav #post-query-submit, .give-hidden, .cmb2-id--give-form-content, .cmb2-id--give-reveal-label, .cmb2-id--give-custom-amount-text, .cmb2-id--give-offline-checkout-notes {
+.cmb2-id--give-set-price,
+.cmb2-id--give-levels-header,
+.cmb2-id--give-levels-header + .cmb-repeat-group-wrap,
+.cmb2-id--give-display-style,
+.post-type-give_forms .tablenav #post-query-submit,
+.give-hidden,
+.cmb2-id--give-form-content,
+.cmb2-id--give-reveal-label,
+.cmb2-id--give-custom-amount-minimum,
+.cmb2-id--give-custom-amount-text,
+.cmb2-id--give-offline-checkout-notes {
   display: none; }
 
 /* Donation Levels Repeating Field */
@@ -806,20 +848,6 @@ p.give-level-id {
     margin-top: 5px; } }
 
 /*-------------------------------------
-Recurring Fields in Repeater
--------------------------------------*/
-@media (min-width: 851px) and (max-width: 1300px) {
-  .cmb2-id--give-levels-header .table-container > .table-row > .table-cell.col-recurring, .cmb2-id--give-levels-header .table-container > .table-row > .table-cell.col-period, .cmb2-id--give-levels-header .table-container > .table-row > .table-cell.col-times {
-    display: none; }
-  #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row.cmb2-id--give-donation-levels-0--give-recurring {
-    clear: left; }
-  #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row.cmb2-id--give-donation-levels-0--give-recurring, #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row.cmb2-id--give-donation-levels-0--give-period, #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row.cmb2-id--give-donation-levels-0--give-times {
-    padding-top: 0; }
-    #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row.cmb2-id--give-donation-levels-0--give-recurring > .cmb-th, #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row.cmb2-id--give-donation-levels-0--give-period > .cmb-th, #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row.cmb2-id--give-donation-levels-0--give-times > .cmb-th {
-      width: 100%;
-      display: block; } }
-
-/*-------------------------------------
 Publish Metabox
 -------------------------------------*/
 /*Shortcode Input */
@@ -890,8 +918,9 @@ Tooltips
   margin: 0 3px;
   padding: 0;
   font-size: 14px;
-  -webkit-transition: 0.2s all linear;
-          transition: 0.2s all linear;
+  -moz-transition: 0.2s all linear;
+  -o-transition: 0.2s all linear;
+  transition: 0.2s all linear;
   color: rgba(51, 51, 51, 0.5);
   position: relative;
   top: 1px; }
@@ -904,7 +933,7 @@ Tooltips
  * @description Add-on Styles
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 .type-download {
@@ -920,6 +949,7 @@ Tooltips
   min-height: 365px;
   overflow: hidden;
   background: #f5f5f5;
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
   -webkit-transition-property: border, background, color;
   transition-property: border, background, color;
@@ -935,8 +965,7 @@ Tooltips
   .type-download .addon-content {
     *zoom: 1;
     padding: 15px 20px; }
-    .type-download .addon-content:before,
-    .type-download .addon-content:after {
+    .type-download .addon-content:before, .type-download .addon-content:after {
       content: " ";
       display: table; }
     .type-download .addon-content:after {
@@ -970,7 +999,7 @@ Tooltips
  * @description Payment History Styles
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 #give-dashboard-widgets-wrap .inside {
@@ -1013,7 +1042,7 @@ Tooltips
 .give-graph .y2Axis {
   color: #546e7a !important; }
 
-body.give_forms_page_give-reports h2.nav-tab-wrapper, body.give_forms_page_give-payment-history h2.nav-tab-wrapper {
+body.give_forms_page_give-reports h1.nav-tab-wrapper, body.give_forms_page_give-payment-history h1.nav-tab-wrapper {
   margin-bottom: 10px; }
 
 body.give_forms_page_give-reports .actions, body.give_forms_page_give-payment-history .actions {
@@ -1117,7 +1146,7 @@ Logs
  * @description Displays when user activates the plugin
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 .welcome-h1 {
@@ -1168,6 +1197,7 @@ Logs
     padding: 3px; }
   .give-newsletter-form-wrap div.give-newsletter-confirmation {
     background: #fff;
+    -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
     margin: 5px 10px 4px 5px;
     padding: 1px 12px;
@@ -1183,7 +1213,7 @@ Logs
  * @description Payment History Styles
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 #give_donor_export_download {
@@ -1194,7 +1224,7 @@ Logs
  *
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 /*------------------------------------
@@ -1328,13 +1358,20 @@ a.give-delete {
   outline: none;
   background-size: 16px; }
 
+/* Tables */
+.give-table thead th {
+  padding: 8px 10px !important; }
+
+.give_settings .cmb-td hr + hr {
+  display: none; }
+
 /**
  * Give Payment History SCSS
  *
  * @description Payment History Styles
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 #give-payment-filters, .give-submit-wrap {
@@ -1437,7 +1474,7 @@ Status Colors
   background-color: #5bc0de; }
 
 #give-payments-filter .give-payment-id {
-  padding: 0.2em 0.6em 0.3em;
+  padding: .2em .6em .3em;
   font-size: 85%;
   font-weight: 700;
   line-height: 1;
@@ -1638,7 +1675,7 @@ Donation Details
  * @description Styles the Give dashboard widget
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 .give-dashboard-widget .give-dashboard-today {
@@ -1693,12 +1730,28 @@ Donation Details
 #give_dashboard_sales .give-table-stats tr#give-table-stats-tr-1 td {
   border-bottom: 1px solid #ececec; }
 
+#dashboard_right_now .give-forms-count:before {
+  font-family: 'give-icomoon';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  content: "\e800"; }
+
 /**
  * Give Forms SCSS
  *
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 /* Donors Listing Page Style
@@ -1815,6 +1868,9 @@ Donation Details
 
 #give-customer-card-wrapper .customer-address-wrapper {
   width: 202px; }
+  #give-customer-card-wrapper .customer-address-wrapper span[data-key="line2"] {
+    display: table;
+    clear: both; }
 
 #give-customer-card-wrapper .customer-address-wrapper select {
   width: 200px; }
@@ -1925,7 +1981,7 @@ Donation Details
  *
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 /*=Give Shortcode Button
@@ -2027,4 +2083,10 @@ div.sc-shortcode {
   div.sc-shortcode:hover {
     color: #fff; }
 
-/*# sourceMappingURL=give-admin.css.map */
+/* =Shortcode tinymce dialog backdrop
+-------------------------------------------------------------- */
+#mce-modal-block.mce-reset.mce-fade.mce-in {
+  opacity: 0.7;
+  filter: alpha(opacity=70); }
+
+/*# sourceMappingURL=../sourcemaps/give-admin.css.map */

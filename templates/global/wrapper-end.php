@@ -3,8 +3,8 @@
  * Content wrappers
  *
  * @package     Give
- * @subpackage  Templates/GlobaL
- * @copyright   Copyright (c) 2015, WordImpress
+ * @subpackage  Templates/Global
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -40,6 +40,15 @@ switch ( $template ) {
 		break;
 	case 'jupiter' :
 		echo '</div></div></div>';
+		break;
+	case 'philanthropy-parent' :
+		echo '</div></div></div></div>';
+		break;
+	case 'zerif-lite' :
+		echo '</main></article></div></div></div>';
+		break;
+	case 'customizr' :
+		echo '</div>';
 		break;
 	default :
 		echo apply_filters( 'give_default_wrapper_end', '</div></div>' );

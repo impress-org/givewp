@@ -5,7 +5,7 @@
  * @description Displays on plugin activation
  * @package     Give
  * @subpackage  Admin/Welcome
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -217,7 +217,7 @@ class Give_Welcome {
 	public function tabs() {
 		$selected = isset( $_GET['page'] ) ? $_GET['page'] : 'give-about';
 		?>
-		<h2 class="nav-tab-wrapper">
+		<h1 class="nav-tab-wrapper">
 			<a class="nav-tab <?php echo $selected == 'give-about' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'give-about' ), 'index.php' ) ) ); ?>">
 				<?php _e( "About Give", 'give' ); ?>
 			</a>
@@ -230,7 +230,7 @@ class Give_Welcome {
 			<a class="nav-tab <?php echo $selected == 'give-add-ons' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( null, 'index.php' ) ) . 'edit.php?post_type=give_forms&page=give-addons'; ?>">
 				<?php _e( 'Add-ons', 'give' ); ?>
 			</a>
-		</h2>
+		</h1>
 	<?php
 	}
 
@@ -358,7 +358,7 @@ class Give_Welcome {
 
 			<?php give_social_media_elements() ?>
 
-			<div class="about-text"><?php _e( 'Welcome to the getting started guide.' ); ?></div>
+			<div class="about-text"><?php _e( 'Welcome to the getting started guide.', 'give' ); ?></div>
 
 			<p class="newsletter-intro"><?php _e( 'Don\'t forget to sign up for the newsletter!', 'give' ); ?>.</p>
 
@@ -459,7 +459,7 @@ class Give_Welcome {
 
 			<div class="about-text"><?php printf( __( 'Thanks to all those who have contributed code directly or indirectly. ', 'give' ), $display_version ); ?></div>
 
-			<div class="about-text"><?php _e( 'Welcome to the getting started guide.' ); ?></div>
+			<div class="about-text"><?php _e( 'Welcome to the getting started guide.', 'give' ); ?></div>
 
 			<p class="newsletter-intro">Be sure to sign up for the Give newsletter below to stay informed of important updates and news.</p>
 

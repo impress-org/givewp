@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Admin/Add-ons
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -26,7 +26,7 @@ function give_add_ons_page() {
 	ob_start(); ?>
 	<div class="wrap" id="give-add-ons">
 		<h2><?php _e( 'Give Add-ons', 'give' ); ?>
-			&nbsp;&mdash;&nbsp;<a href="https://givewp.com/addons/" class="button-primary give-view-addons-all" title="<?php _e( 'Browse All Extensions', 'give' ); ?>" target="_blank"><?php _e( 'View All Add-ons', 'give' ); ?>
+			&nbsp;&mdash;&nbsp;<a href="https://givewp.com/addons/" class="button-primary give-view-addons-all" title="<?php _e( 'Browse All Add-ons', 'give' ); ?>" target="_blank"><?php _e( 'View All Add-ons', 'give' ); ?>
 				<span class="dashicons dashicons-external"></span></a>
 		</h2>
 
@@ -43,7 +43,7 @@ function give_add_ons_page() {
  * Gets the add-ons page feed.
  *
  * @since 1.0
- * @return void
+ * @return string $cache
  */
 function give_add_ons_get_feed() {
 

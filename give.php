@@ -1,13 +1,14 @@
 <?php
 /**
  * Plugin Name: Give - Donation Plugin
- * Plugin URI: http://givewp.com
+ * Plugin URI: https://givewp.com
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: WordImpress
- * Author URI: http://wordimpress.com
- * Version: 1.3.1.1
+ * Author URI: https://wordimpress.com
+ * Version: 1.4
  * Text Domain: give
  * Domain Path: /languages
+ * GitHub Plugin URI: https://github.com/WordImpress/Give
  *
  * Give is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,15 +33,7 @@
  * Give is a tribute to the spirit and philosophy of Open Source. We at WordImpress gladly embrace the Open Source philosophy both
  * in how Give itself was developed, and how we hope to see others build more from our code base.
  *
- * Give would not have been possible without the tireless efforts of these Open Source projects and their talented developers:
- *
- * Pippin Williamson and his wonderful development team, Easy Digital Downloads
- * Mike Jolley and the whole WooThemes Team, WooCommerce
- * Carl Hancock and his entire crew, Gravity Forms
- * Joost De Valk and the Yoast team, WordPress SEO
- * Justin Sternberg and the whole WebDevStudios team, CMB2
- *
- * Thank you all for your contribution to WordPress.
+ * Give would not have been possible without the tireless efforts of WordPress and the surrounding Open Source projects and their talented developers. Thank you all for your contribution to WordPress.
  *
  * - The WordImpress Team
  *
@@ -69,7 +62,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 		/**
 		 * Give Roles Object
 		 *
-		 * @var object
+		 * @var Give_Roles object
 		 * @since 1.0
 		 */
 		public $roles;
@@ -77,7 +70,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 		/**
 		 * Give Settings Object
 		 *
-		 * @var object
+		 * @var Give_Plugin_Settings object
 		 * @since 1.0
 		 */
 		public $give_settings;
@@ -87,7 +80,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 		 *
 		 * This holds donation data for user's session
 		 *
-		 * @var object
+		 * @var Give_Session object
 		 * @since 1.0
 		 */
 		public $session;
@@ -95,7 +88,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 		/**
 		 * Give HTML Element Helper Object
 		 *
-		 * @var object
+		 * @var Give_HTML_Elements object
 		 * @since 1.0
 		 */
 		public $html;
@@ -104,7 +97,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 		/**
 		 * Give Emails Object
 		 *
-		 * @var object
+		 * @var Give_Emails object
 		 * @since 1.0
 		 */
 		public $emails;
@@ -112,7 +105,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 		/**
 		 * Give Email Template Tags Object
 		 *
-		 * @var object
+		 * @var Give_Email_Template_Tags object
 		 * @since 1.0
 		 */
 		public $email_tags;
@@ -120,7 +113,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 		/**
 		 * Give Customers DB Object
 		 *
-		 * @var object
+		 * @var Give_Customer object
 		 * @since 1.0
 		 */
 		public $customers;
@@ -128,10 +121,26 @@ if ( ! class_exists( 'Give' ) ) : /**
 		/**
 		 * Give API Object
 		 *
-		 * @var object
+		 * @var Give_API object
 		 * @since 1.1
 		 */
 		public $api;
+
+		/**
+		 * Give Template Loader Object
+		 *
+		 * @var Give_Template_Loader object
+		 * @since 1.0
+		 */
+		public $template_loader;
+
+		/**
+		 * Give No Login Object
+		 *
+		 * @var Give_Email_Access object
+		 * @since 1.0
+		 */
+		public $email_access;
 
 		/**
 		 * Main Give Instance
@@ -156,18 +165,20 @@ if ( ! class_exists( 'Give' ) ) : /**
 				add_action( 'plugins_loaded', array( self::$instance, 'load_textdomain' ) );
 
 				self::$instance->includes();
-				self::$instance->roles              = new Give_Roles();
-				self::$instance->api                = new Give_API();
-				self::$instance->give_settings      = new Give_Plugin_Settings();
-				self::$instance->session            = new Give_Session();
-				self::$instance->html               = new Give_HTML_Elements();
-				self::$instance->emails             = new Give_Emails();
-				self::$instance->email_tags         = new Give_Email_Template_Tags();
-				self::$instance->donators_gravatars = new Give_Donators_Gravatars();
-				self::$instance->customers          = new Give_DB_Customers();
-				self::$instance->template_loader    = new Give_Template_Loader();
+				self::$instance->roles         = new Give_Roles();
+				self::$instance->api           = new Give_API();
+				self::$instance->give_settings = new Give_Plugin_Settings();
+				self::$instance->session       = new Give_Session();
+				self::$instance->html          = new Give_HTML_Elements();
+				self::$instance->emails        = new Give_Emails();
+				self::$instance->email_tags    = new Give_Email_Template_Tags();
+				//self::$instance->donators_gravatars = new Give_Donators_Gravatars();
+				self::$instance->customers       = new Give_DB_Customers();
+				self::$instance->template_loader = new Give_Template_Loader();
+				self::$instance->email_access    = new Give_Email_Access();
 
 			}
+			
 
 			return self::$instance;
 		}
@@ -210,7 +221,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 
 			// Plugin version
 			if ( ! defined( 'GIVE_VERSION' ) ) {
-				define( 'GIVE_VERSION', '1.3.1.1' );
+				define( 'GIVE_VERSION', '1.4' );
 			}
 
 			// Plugin Folder Path
@@ -221,6 +232,11 @@ if ( ! class_exists( 'Give' ) ) : /**
 			// Plugin Folder URL
 			if ( ! defined( 'GIVE_PLUGIN_URL' ) ) {
 				define( 'GIVE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+			}
+
+			// Plugin Basename aka: "give/give.php"
+			if ( ! defined( 'GIVE_PLUGIN_BASENAME' ) ) {
+				define( 'GIVE_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 			}
 
 			// Plugin Root File
@@ -264,6 +280,8 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-html-elements.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-logging.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-license-handler.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-cron.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-email-access.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/country-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/template-functions.php';
@@ -278,6 +296,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/process-purchase.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/login-register.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/user-functions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/plugin-compatibility.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/actions.php';
@@ -308,6 +327,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/system-info.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/export-functions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/add-ons.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/plugins.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/dashboard-widgets.php';
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/actions.php';
@@ -367,10 +387,10 @@ if ( ! class_exists( 'Give' ) ) : /**
 				// Look in global /wp-content/languages/give folder
 				load_textdomain( 'give', $mofile_global );
 			} elseif ( file_exists( $mofile_local ) ) {
-				// Look in local /wp-content/plugins/give/languages/ folder
+				// Look in local location from filter `give_languages_directory`
 				load_textdomain( 'give', $mofile_local );
 			} else {
-				// Load the default language files
+				// Load the default language files packaged up w/ Give
 				load_plugin_textdomain( 'give', false, $give_lang_dir );
 			}
 		}

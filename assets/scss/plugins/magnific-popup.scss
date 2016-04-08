@@ -6,13 +6,12 @@
 //
 // Contents:
 //
-// 1. Default Settings
-// 2. General styles
+// 1. General styles
 //    - Transluscent overlay
 //    - Containers, wrappers
 //    - Cursors
 //    - Helper classes
-// 3. Appearance
+// 2. Appearance
 //    - Preloader & text that displays error messages
 //    - CSS reset for buttons
 //    - Close icon
@@ -28,50 +27,7 @@
 
 
 ////////////////////////
-// 1. Default Settings
-////////////////////////
-
-$mfp-overlay-color:                   #0b0b0b !default;
-$mfp-overlay-opacity:                 0.8 !default;
-$mfp-shadow:                          0 0 8px rgba(0, 0, 0, 0.6) !default; // shadow on image or iframe
-$mfp-popup-padding-left:              8px !default; // Padding from left and from right side
-$mfp-popup-padding-left-mobile:       6px !default; // Same as above, but is applied when width of window is less than 800px
-
-$mfp-z-index-base:                    1040 !default; // Base z-index of popup
-$mfp-include-arrows:                  true !default; // include styles for nav arrows
-$mfp-controls-opacity:                0.65 !default;
-$mfp-controls-color:                  #FFF !default;
-$mfp-controls-border-color:           #3F3F3F !default;
-$mfp-inner-close-icon-color:          #333 !default;
-$mfp-controls-text-color:             #CCC !default; // Color of preloader and "1 of X" indicator
-$mfp-controls-text-color-hover:       #FFF !default;
-$mfp-IE7support:                      true !default; // Very basic IE7 support
-
-// Iframe-type options
-$mfp-include-iframe-type:             true !default;
-$mfp-iframe-padding-top:              40px !default;
-$mfp-iframe-background:               #000 !default;
-$mfp-iframe-max-width:                900px !default;
-$mfp-iframe-ratio:                    9/16 !default;
-
-// Image-type options
-$mfp-include-image-type:              true !default;
-$mfp-image-background:                #444 !default;
-$mfp-image-padding-top:               40px !default;
-$mfp-image-padding-bottom:            40px !default;
-$mfp-include-mobile-layout-for-image: true !default; // Removes paddings from top and bottom
-
-// Image caption options
-$mfp-caption-title-color:             #F3F3F3 !default;
-$mfp-caption-subtitle-color:          #BDBDBD !default;
-
-// A11y
-$mfp-use-visuallyhidden:              false !default; // Hide content from browsers, but make it available for screen readers 
-
-
-
-////////////////////////
-// 2. General styles
+// 1. General styles
 ////////////////////////
 
 // Transluscent overlay
@@ -86,9 +42,6 @@ $mfp-use-visuallyhidden:              false !default; // Hide content from brows
 
   background: $mfp-overlay-color;
   opacity: $mfp-overlay-opacity;
-  @if $mfp-IE7support {
-    filter: unquote("alpha(opacity=#{$mfp-overlay-opacity*100})");
-  }
 }
 
 // Wrapper for popup
@@ -112,8 +65,6 @@ $mfp-use-visuallyhidden:              false !default; // Hide content from brows
   left: 0;
   top: 0;
   padding: 0 $mfp-popup-padding-left;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -129,7 +80,7 @@ $mfp-use-visuallyhidden:              false !default; // Hide content from brows
 
 // Remove vertical centering when popup has class `mfp-align-top`
 .mfp-align-top {
-  .mfp-container { 
+  .mfp-container {
     &:before {
       display: none;
     }
@@ -213,7 +164,7 @@ $mfp-use-visuallyhidden:              false !default; // Hide content from brows
 
 
 ////////////////////////
-// 3. Appearance
+// 2. Appearance
 ////////////////////////
 
 // Preloader and text that displays error messages
@@ -262,8 +213,8 @@ button {
     outline: none;
     padding: 0;
     z-index: $mfp-z-index-base + 6;
-    -webkit-box-shadow: none;
     box-shadow: none;
+    touch-action: manipulation;
   }
   &::-moz-focus-inner {
       padding: 0;
@@ -284,9 +235,6 @@ button {
   text-decoration: none;
   text-align: center;
   opacity: $mfp-controls-opacity;
-  @if $mfp-IE7support {
-    filter: unquote("alpha(opacity=#{$mfp-controls-opacity*100})");
-  }
   padding: 0 0 18px 10px;
   color: $mfp-controls-color;
 
@@ -297,9 +245,6 @@ button {
   &:hover,
   &:focus {
     opacity: 1;
-    @if $mfp-IE7support {
-      filter: unquote("alpha(opacity=#{1*100})");
-    }
   }
 
   &:active {
@@ -338,9 +283,6 @@ button {
   .mfp-arrow {
     position: absolute;
     opacity: $mfp-controls-opacity;
-    @if $mfp-IE7support {
-      filter: unquote("alpha(opacity=#{$mfp-controls-opacity*100})");
-    }
     margin: 0;
     top: 50%;
     margin-top: -55px;
@@ -354,14 +296,9 @@ button {
     &:hover,
     &:focus {
       opacity: 1;
-      @if $mfp-IE7support {
-        filter: unquote("alpha(opacity=#{1*100})");
-      }
     }
     &:before,
-    &:after,
-    .mfp-b,
-    .mfp-a {
+    &:after {
       content: '';
       display: block;
       width: 0;
@@ -374,16 +311,14 @@ button {
       border: medium inset transparent;
     }
 
-    &:after,
-    .mfp-a {
+    &:after {
 
       border-top-width: 13px;
       border-bottom-width: 13px;
       top:8px;
     }
 
-    &:before,
-    .mfp-b {
+    &:before {
       border-top-width: 21px;
       border-bottom-width: 21px;
       opacity: 0.7;
@@ -393,28 +328,23 @@ button {
 
   .mfp-arrow-left {
     left: 0;
-
-    &:after,
-    .mfp-a {
+    &:after {
       border-right: 17px solid $mfp-controls-color;
       margin-left: 31px;
     }
-    &:before,
-    .mfp-b {
+    &:before {
       margin-left: 25px;
-      border-right: 27px solid $mfp-controls-border-color; 
+      border-right: 27px solid $mfp-controls-border-color;
     }
   }
 
   .mfp-arrow-right {
     right: 0;
-    &:after,
-    .mfp-a {
+    &:after {
       border-left: 17px solid $mfp-controls-color;
       margin-left: 39px
     }
-    &:before,
-    .mfp-b {
+    &:before {
       border-left: 27px solid $mfp-controls-border-color;
     }
   }
@@ -467,8 +397,6 @@ button {
       height: auto;
       display: block;
       line-height: 0;
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
       box-sizing: border-box;
       padding: $mfp-image-padding-top 0 $mfp-image-padding-bottom;
       margin: 0 auto;
@@ -566,8 +494,6 @@ button {
           top: auto;
           padding: 3px 5px;
           position: fixed;
-          -webkit-box-sizing: border-box;
-          -moz-box-sizing: border-box;
           box-sizing: border-box;
           &:empty {
             padding: 0;
@@ -615,32 +541,3 @@ button {
   }
 }
 
-
-
-// IE7 support
-// Styles that make popup look nicier in old IE
-@if $mfp-IE7support {
-  .mfp-ie7 {
-    .mfp-img {
-      padding: 0;
-    }
-    .mfp-bottom-bar {
-      width: 600px;
-      left: 50%;
-      margin-left: -300px;
-      margin-top: 5px;
-      padding-bottom: 5px;
-    }
-    .mfp-container {
-      padding: 0;
-    }
-    .mfp-content {
-      padding-top: 44px;
-    }
-    .mfp-close {
-      top: 0;
-      right: 0;
-      padding-top: 0;
-    }
-  }
-}

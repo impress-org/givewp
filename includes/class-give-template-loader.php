@@ -4,7 +4,7 @@
  * Template Loader
  *
  * @subpackage     Classes/Template-Loader
- * @copyright      Copyright (c) 2015, WordImpress
+ * @copyright      Copyright (c) 2016, WordImpress
  * @license        http://opensource.org/licenses/gpl-2.0.php GNU Public License
  *
  */
@@ -25,7 +25,7 @@ class Give_Template_Loader {
 		/**
 		 * Content Wrappers
 		 *
-		 * @see 3give_output_content_wrapper()
+		 * @see give_output_content_wrapper()
 		 * @see give_output_content_wrapper_end()
 		 */
 		add_action( 'give_before_main_content', 'give_output_content_wrapper', 10 );

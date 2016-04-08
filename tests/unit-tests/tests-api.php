@@ -3,7 +3,7 @@
 /**
  * @group give_api
  */
-class Tests_API extends WP_UnitTestCase {
+class Tests_API extends Give_Unit_Test_Case {
 	protected $_rewrite = null;
 
 	protected $query = null;
@@ -217,16 +217,16 @@ class Tests_API extends WP_UnitTestCase {
 		$this->assertEquals( '', $out['forms'][0]['info']['thumbnail'] );
 	}
 
-	public function test_get_product_stats() {
+	public function test_get_form_stats() {
 		$out = $this->_api_output;
-		// This one fails and haven't figured out why
-		$this->markTestIncomplete( 'This test needs to be fixed. The stats key doesn\'t exist due to not being able to correctly check the user\'s permissions' );
+		$this->markTestIncomplete( 'This test needs to be fixed.' );
+
 		$this->assertArrayHasKey( 'stats', $out['forms'][0] );
 		$this->assertArrayHasKey( 'total', $out['forms'][0]['stats'] );
-		$this->assertArrayHasKey( 'sales', $out['forms'][0]['stats']['total'] );
+		$this->assertArrayHasKey( 'donations', $out['forms'][0]['stats']['total'] );
 		$this->assertArrayHasKey( 'earnings', $out['forms'][0]['stats']['total'] );
 		$this->assertArrayHasKey( 'monthly_average', $out['forms'][0]['stats'] );
-		$this->assertArrayHasKey( 'sales', $out['forms'][0]['stats']['monthly_average'] );
+		$this->assertArrayHasKey( 'donations', $out['forms'][0]['stats']['monthly_average'] );
 		$this->assertArrayHasKey( 'earnings', $out['forms'][0]['stats']['monthly_average'] );
 
 		$this->assertEquals( '59', $out['forms'][0]['stats']['total']['sales'] );

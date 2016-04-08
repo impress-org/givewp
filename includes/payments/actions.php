@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Payments
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Complete a purchase
+ * Complete a purchase aka donation
  *
  * Performs all necessary actions to complete a purchase.
  * Triggered by the give_update_payment_status() function.
@@ -29,9 +29,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function give_complete_purchase( $payment_id, $new_status, $old_status ) {
+	
+	// Make sure that payments are only completed once
 	if ( $old_status == 'publish' || $old_status == 'complete' ) {
 		return;
-	} // Make sure that payments are only completed once
+	}
 
 	// Make sure the payment completion is only processed when new status is complete
 	if ( $new_status != 'publish' && $new_status != 'complete' ) {
@@ -42,7 +44,7 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 	$creation_date  = get_post_field( 'post_date', $payment_id, 'raw' );
 	$completed_date = give_get_payment_completed_date( $payment_id );
 	$user_info      = give_get_payment_meta_user_info( $payment_id );
-	$donor_id    = give_get_payment_customer_id( $payment_id );
+	$donor_id       = give_get_payment_customer_id( $payment_id );
 	$amount         = give_get_payment_amount( $payment_id );
 
 	do_action( 'give_pre_complete_purchase', $payment_id );
@@ -138,7 +140,7 @@ function give_undo_donation_on_refund( $payment_id, $new_status, $old_status ) {
 
 	// Set necessary vars
 	$payment_meta = give_get_payment_meta( $payment_id );
-	$amount = give_get_payment_amount( $payment_id );
+	$amount       = give_get_payment_amount( $payment_id );
 
 	// Undo this purchase
 	give_undo_purchase( $payment_meta['form_id'], $payment_id );
@@ -225,8 +227,8 @@ add_action( 'give_upgrade_payments', 'give_update_old_payments_with_totals' );
  * @since 1.0
  * @return void
  */
-function give_mark_abandoned_orders() {
-	$args = array(
+function give_mark_abandoned_donations() {
+	$args     = array(
 		'status' => 'pending',
 		'number' => - 1,
 		'fields' => 'ids'
@@ -240,9 +242,15 @@ function give_mark_abandoned_orders() {
 
 	if ( $payments ) {
 		foreach ( $payments as $payment ) {
+			$gateway = give_get_payment_gateway( $payment );
+			//Skip offline gateway payments
+			if ( $gateway == 'offline' ) {
+				continue;
+			}
+			//Non-offline get marked as 'abandoned'
 			give_update_payment_status( $payment, 'abandoned' );
 		}
 	}
 }
 
-add_action( 'give_weekly_scheduled_events', 'give_mark_abandoned_orders' );
+add_action( 'give_weekly_scheduled_events', 'give_mark_abandoned_donations' );

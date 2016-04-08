@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Admin/Payments
- * @copyright   Copyright (c) 2015, Give
+ * @copyright   Copyright (c) 2016, Give
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -91,6 +91,14 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * @since 1.0
 	 */
 	public $revoked_count;
+
+	/**
+	 * Total number of cancelled payments
+	 *
+	 * @var int
+	 * @since 1.4
+	 */
+	public $cancelled_count;
 
 	/**
 	 * Total number of abandoned payments
@@ -194,6 +202,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$current         = isset( $_GET['status'] ) ? $_GET['status'] : '';
 		$total_count     = '&nbsp;<span class="count">(' . $this->total_count . ')</span>';
 		$complete_count  = '&nbsp;<span class="count">(' . $this->complete_count . ')</span>';
+		$cancelled_count = '&nbsp;<span class="count">(' . $this->cancelled_count . ')</span>';
 		$pending_count   = '&nbsp;<span class="count">(' . $this->pending_count . ')</span>';
 		$refunded_count  = '&nbsp;<span class="count">(' . $this->refunded_count . ')</span>';
 		$failed_count    = '&nbsp;<span class="count">(' . $this->failed_count . ')</span>';
@@ -225,6 +234,10 @@ class Give_Payment_History_Table extends WP_List_Table {
 				'status' => 'failed',
 				'paged'  => false
 			) ) ), $current === 'failed' ? ' class="current"' : '', __( 'Failed', 'give' ) . $failed_count ),
+			'cancelled' => sprintf( '<a href="%s"%s>%s</a>', esc_url( add_query_arg( array(
+				'status' => 'cancelled',
+				'paged'  => false
+			) ) ), $current === 'cancelled' ? ' class="current"' : '', __( 'Cancelled', 'give' ) . $cancelled_count ),
 			'abandoned' => sprintf( '<a href="%s"%s>%s</a>', esc_url( add_query_arg( array(
 				'status' => 'abandoned',
 				'paged'  => false
@@ -419,6 +432,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			'set-status-refunded'  => __( 'Set To Refunded', 'give' ),
 			'set-status-revoked'   => __( 'Set To Revoked', 'give' ),
 			'set-status-failed'    => __( 'Set To Failed', 'give' ),
+			'set-status-cancelled' => __( 'Set To Cancelled', 'give' ),
 			'set-status-abandoned' => __( 'Set To Abandoned', 'give' ),
 			'resend-receipt'       => __( 'Resend Email Receipts', 'give' )
 		);
@@ -472,6 +486,10 @@ class Give_Payment_History_Table extends WP_List_Table {
 				give_update_payment_status( $id, 'failed' );
 			}
 
+			if ( 'set-status-cancelled' === $this->current_action() ) {
+				give_update_payment_status( $id, 'cancelled' );
+			}
+
 			if ( 'set-status-abandoned' === $this->current_action() ) {
 				give_update_payment_status( $id, 'abandoned' );
 			}
@@ -518,6 +536,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$this->refunded_count  = $payment_count->refunded;
 		$this->failed_count    = $payment_count->failed;
 		$this->revoked_count   = $payment_count->revoked;
+		$this->cancelled_count = $payment_count->cancelled;
 		$this->abandoned_count = $payment_count->abandoned;
 
 		foreach ( $payment_count as $count ) {
@@ -620,6 +639,9 @@ class Give_Payment_History_Table extends WP_List_Table {
 				break;
 			case 'revoked':
 				$total_items = $this->revoked_count;
+				break;
+			case 'cancelled':
+				$total_items = $this->cancelled_count;
 				break;
 			case 'abandoned':
 				$total_items = $this->abandoned_count;

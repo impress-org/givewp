@@ -4,7 +4,7 @@
  * @description: The Give Admin Forms scripts. Only enqueued on the give_forms CPT; used to validate fields, show/hide, and other functions
  * @package:     Give
  * @subpackage:  Assets/JS
- * @copyright:   Copyright (c) 2015, WordImpress
+ * @copyright:   Copyright (c) 2016, WordImpress
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
@@ -109,8 +109,10 @@ jQuery.noConflict();
 		custom_amount_option.on( 'change', function () {
 			var custom_amount_option_val = $( '.cmb2-id--give-custom-amount input:radio:checked' ).val();
 			if ( custom_amount_option_val === 'no' ) {
+				$( '.cmb2-id--give-custom-amount-minimum' ).hide();
 				$( '.cmb2-id--give-custom-amount-text' ).hide();
 			} else {
+				$( '.cmb2-id--give-custom-amount-minimum' ).show();
 				$( '.cmb2-id--give-custom-amount-text' ).show();
 			}
 		} ).change();
@@ -122,9 +124,11 @@ jQuery.noConflict();
 			if ( goal_option === 'no' ) {
 
 				$( '.cmb2-id--give-set-goal' ).hide();
+				$( '.cmb2-id--give-goal-format' ).hide();
 				$( '.cmb2-id--give-goal-color' ).hide();
 			} else {
 				$( '.cmb2-id--give-set-goal' ).show();
+				$( '.cmb2-id--give-goal-format' ).show();
 				$( '.cmb2-id--give-goal-color' ).show();
 			}
 		} ).change();

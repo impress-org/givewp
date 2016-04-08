@@ -3,12 +3,13 @@
  *
  * @package     Give
  * @subpackage  SCSS/Frontend
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 
-.goal-progress {
+.give-goal-progress {
   margin-bottom: 20px;
+  clear:both;
 
   .income {
 	font-size: 46px;
@@ -22,7 +23,7 @@
   }
 }
 
-.progress-bar {
+.give-progress-bar {
   height: 20px; 
   position: relative;
   background: #EEE;

@@ -3,7 +3,7 @@
  *
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
@@ -182,4 +182,21 @@ a.give-delete {
 	background-size: 16px;
   }
 
+}
+
+/* Tables */
+
+.give-table {
+
+  thead {
+	th {
+	  padding: 8px 10px !important;
+	}
+  }
+
+}
+
+//Fix double <hr>s for change to `give_title` in 1.3.5
+.give_settings .cmb-td hr + hr {
+  display: none;
 }

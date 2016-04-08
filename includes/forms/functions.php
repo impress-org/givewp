@@ -4,7 +4,7 @@
  *
  * @package     WordImpress
  * @subpackage  Includes/Forms
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.1
  */
@@ -457,8 +457,7 @@ function give_record_sale_in_log( $give_form_id = 0, $payment_id, $price_id = fa
 
 
 /**
- *
- * Increases the sale count of a download.
+ * Increases the donation total count of a donation form.
  *
  * @since 1.0
  *
@@ -622,7 +621,7 @@ function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 
 
 	foreach ( $prices as $price ) {
 
-		if ( $price['_give_id']['level_id'] === $price_id ) {
+		if ( intval( $price['_give_id']['level_id'] ) == intval( $price_id ) ) {
 			$price_name = isset( $price['_give_text'] ) ? $price['_give_text'] : '';
 		}
 
@@ -764,18 +763,38 @@ function give_get_form_price( $form_id = 0 ) {
 
 	$form = new Give_Donate_Form( $form_id );
 
-	return $form->price;
+	return $form->__get( 'price' );
 }
 
+/**
+ * Returns the minimum price amount of a form, only enforced for the custom amount input.
+ *
+ * @since 1.3.6
+ *
+ * @param int $form_id ID number of the form to retrieve the minimum price for
+ *
+ * @return mixed string|int Minimum price of the form
+ */
+function give_get_form_minimum_price( $form_id = 0 ) {
+
+	if ( empty( $form_id ) ) {
+		return false;
+	}
+
+	$form = new Give_Donate_Form( $form_id );
+
+	return $form->__get( 'minimum_price' );
+
+}
 
 /**
  * Displays a formatted price for a donation form
  *
  * @since 1.0
  *
- * @param int  $form_id  ID of the form price to show
- * @param bool $echo     Whether to echo or return the results
- * @param int  $price_id Optional price id for variable pricing
+ * @param int      $form_id  ID of the form price to show
+ * @param bool     $echo     Whether to echo or return the results
+ * @param bool|int $price_id Optional price id for variable pricing
  *
  * @return int $formatted_price
  */

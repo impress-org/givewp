@@ -5,7 +5,7 @@
  * @package     Give
  * @subpackage  Admin
  * @author      Paul Ryley
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @version     1.0
  * @since       1.3.0
@@ -28,7 +28,8 @@ final class Give_Shortcode_Button {
 	public function __construct() {
 
 		if ( is_admin() ) {
-			add_action( 'admin_head', array( $this, 'admin_head' ) );
+			add_filter( 'mce_external_plugins', array( $this, 'mce_external_plugins' ), 15 );
+
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_assets' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_localize_scripts' ), 13 );
 			add_action( 'media_buttons', array( $this, 'shortcode_button' ) );
@@ -36,21 +37,6 @@ final class Give_Shortcode_Button {
 
 		add_action( "wp_ajax_give_shortcode", array( $this, 'shortcode_ajax' ) );
 		add_action( "wp_ajax_nopriv_give_shortcode", array( $this, 'shortcode_ajax' ) );
-	}
-
-	/**
-	 * Trigger custom admin_head hooks
-	 *
-	 * @return void
-	 *
-	 * @since 1.0
-	 */
-	public function admin_head() {
-
-		if ( current_user_can( 'edit_posts' ) && current_user_can( 'edit_pages' ) ) {
-
-			add_filter( 'mce_external_plugins', array( $this, 'mce_external_plugins' ) );
-		}
 	}
 
 	/**
@@ -64,9 +50,12 @@ final class Give_Shortcode_Button {
 	 */
 	public function mce_external_plugins( $plugin_array ) {
 
-		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+		if ( current_user_can( 'edit_posts' ) && current_user_can( 'edit_pages' ) ) {
 
-		$plugin_array['give_shortcode'] = GIVE_PLUGIN_URL . 'assets/js/admin/tinymce/mce-plugin' . $suffix . '.js';
+			$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
+			$plugin_array['give_shortcode'] = GIVE_PLUGIN_URL . 'assets/js/admin/tinymce/mce-plugin' . $suffix . '.js';
+		}
 
 		return $plugin_array;
 	}

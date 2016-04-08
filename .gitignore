@@ -4,5 +4,9 @@
 
 # Gulp / Grunt
 .sass-cache/*
-bower/*
-node_modules/*
+/bower
+/node_modules
+
+# Unit tests
+/tmp
+/tests/bin/tmp

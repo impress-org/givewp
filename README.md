@@ -1,11 +1,9 @@
-![Give - Democratizing Generosity](https://raw.githubusercontent.com/WordImpress/Give/master/assets/images/give-logo-with-faces.png)
-
 # [Give - Democratizing Generosity](https://givewp.com "Give - Democratizing Generosity") #
-[![GitHub version](https://badge.fury.io/gh/WordImpress%2FGive.svg)](http://badge.fury.io/gh/WordImpress%2FGive) [![Build Status](https://travis-ci.org/WordImpress/Give.svg?branch=master)](https://travis-ci.org/WordImpress/Give) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/WordImpress/Give/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/WordImpress/Give/?branch=master) [![License](https://img.shields.io/badge/license-GPL--2.0%2B-green.svg)](https://github.com/WordImpress/Give/blob/master/license.txt)
+[![GitHub version](https://badge.fury.io/gh/WordImpress%2FGive.svg)](http://badge.fury.io/gh/WordImpress%2FGive) [![Build Status](https://travis-ci.org/WordImpress/Give.svg?branch=master)](https://travis-ci.org/WordImpress/Give) [![Code Coverage](https://scrutinizer-ci.com/g/WordImpress/Give/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/WordImpress/Give/?branch=master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/WordImpress/Give/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/WordImpress/Give/?branch=master) [![License](https://img.shields.io/badge/license-GPL--2.0%2B-green.svg)](https://github.com/WordImpress/Give/blob/master/license.txt)
 
 We know how important fundraising online is to accomplish your goals. For many non-profits, churches, candidates, schools and causes, online fundraising on your WordPress website is likely to be the most critical part.
 
-Announcing: Give. The most flexible, robust, and easy to use WordPress plugin for accepting donations directly on your website. Upon activation, Give provides you with powerful features geared towards helping you raise more funds for your cause.
+[Give](https://givewp.com "Give - Democratizing Generosity") is the most flexible, robust, and easy to use WordPress plugin for accepting donations directly on your website. Upon activation, Give provides you with powerful features geared towards helping you raise more funds for your cause.
 
 ### Why Give? ###
 
@@ -48,7 +46,7 @@ The easiest way to install the plugin is through the [WordPress.org plugin repos
 
 ### Minimum Requirements ###
 
-* WordPress 3.8 or greater
+* WordPress 4.0 or greater
 * PHP version 5.3 or greater
 * MySQL version 5.0.15 or greater
 * Some payment gateways require fsockopen support (for IPN access)
@@ -76,19 +74,3 @@ First off, we love Gravity Forms. It's a great plugin and has a lot of good feat
 ### How is Give better than *WooCommerce* for accepting donations on WordPress? ###
 
 It's true. We also really like WooCommerce. It's hands-down the most robust eCommerce platform for WordPress. But that's also the issue. When accepting donations you don't need a cart system, shipping, or tax calculations. Additionally, customizing the plugin functionality and terminology for nonprofit needs is often a daunting task. You never want your users to receive an "invoice" for the donation as a "product" they "purchased." Rather, you'd like for them to receive a tax deductible receipt for the donation they gave. WooCommerce *can* do donations, but it was not designed for it. Nor is it very easy to setup and maintain across the various major version releases. 
-
-## A Tribute to Open Source ##
-
-*"Open source software is software that can be freely used, changed, and shared (in modified or unmodified form) by anyone. Open source software is made by many people, and distributed under licenses that comply with the Open Source Definition."*
-
-**- The Open Source Initiative**
-
-Give is a tribute to the spirit and philosophy of open source. We at WordImpress gladly embrace the open source philosophy both in how Give itself was developed, and how we hope to see others build more from our code base.
-
-Give would not have been possible without the tireless efforts of these open source projects and their talented developers:
-
-* Pippin Williamson and his wonderful development team, Easy Digital Downloads
-* Mike Jolley and the whole WooThemes Team, WooCommerce
-* Carl Hancock and his entire crew, Gravity Forms
-* Joost De Valk and the Yoast team, WordPress SEO
-* Justin Sternberg and the whole WebDevStudios team, CMB2

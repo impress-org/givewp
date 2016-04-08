@@ -1,41 +1,111 @@
 <?php
+/**
+ * Give Unit Tests Bootstrap
+ *
+ * @since 1.3.2
+ */
+class Give_Unit_Tests_Bootstrap {
 
-$_SERVER['SERVER_PROTOCOL'] = 'HTTP/1.1';
-$_SERVER['SERVER_NAME']     = '';
-$PHP_SELF                   = $GLOBALS['PHP_SELF'] = $_SERVER['PHP_SELF'] = '/index.php';
+	/** @var \Give_Unit_Tests_Bootstrap instance */
+	protected static $instance = null;
 
-define( 'GIVE_USE_PHP_SESSIONS', false );
+	/** @var string directory where wordpress-tests-lib	is installed */
+	public $wp_tests_dir;
 
-$_tests_dir = getenv( 'WP_TESTS_DIR' );
-if ( ! $_tests_dir ) {
-	$_tests_dir = '/tmp/wordpress-tests-lib';
+	/** @var string testing directory */
+	public $tests_dir;
+
+	/** @var string plugin directory */
+	public $plugin_dir;
+
+	/**
+	 * Setup the unit testing environment
+	 *
+	 * @since 1.3.2
+	 */
+	public function __construct() {
+
+		ini_set( 'display_errors', 'on' );
+		error_reporting( E_ALL );
+		
+		$this->tests_dir 	= dirname( __FILE__ );
+		$this->plugin_dir	= dirname( $this->tests_dir );
+		$this->wp_tests_dir = getenv( 'WP_TESTS_DIR' ) ? getenv( 'WP_TESTS_DIR' ) : '/tmp/wordpress-tests-lib';
+
+		// load test function so tests_add_filter() is available
+		require_once( $this->wp_tests_dir . '/includes/functions.php' );
+
+		// load Give
+		tests_add_filter( 'muplugins_loaded', array( $this, 'load_give' ) );
+
+		// install Give
+		tests_add_filter( 'setup_theme', array( $this, 'install_give' ) );
+
+		// load the WP testing environment
+		require_once( $this->wp_tests_dir . '/includes/bootstrap.php' );
+
+		// load Give testing framework
+		$this->includes();
+	}
+
+	/**
+	 * Load Give
+	 *
+	 * @since 1.3.2
+	 */
+	public function load_give() {
+		require_once( $this->plugin_dir . '/give.php' );
+	}
+
+	/**
+	 * Install Give after the test environment and Give have been loaded.
+	 *
+	 * @since 1.3.2
+	 */
+	public function install_give() {
+
+		// clean existing install first
+		define( 'WP_UNINSTALL_PLUGIN', true );
+		include( $this->plugin_dir . '/uninstall.php' );
+
+		echo "Installing Give..." . PHP_EOL;
+
+		give_install();
+
+		// reload capabilities after install, see https://core.trac.wordpress.org/ticket/28374
+		$GLOBALS['wp_roles']->reinit();
+		
+	}
+
+	/**
+	 * Load Give-specific test cases
+	 *
+	 * @since 1.3.2
+	 */
+	public function includes() {
+
+		// test cases
+		require_once( $this->tests_dir . '/framework/class-give-unit-test-case.php' );
+
+		//Helpers
+		require_once( $this->tests_dir . '/framework/helpers/shims.php' );
+		require_once( $this->tests_dir . '/framework/helpers/class-helper-form.php' );
+		require_once( $this->tests_dir . '/framework/helpers/class-helper-payment.php' );
+	}
+
+	/**
+	 * Get the single class instance.
+	 *
+	 * @since 2.2
+	 * @return Give_Unit_Tests_Bootstrap
+	 */
+	public static function instance() {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
 }
 
-require_once $_tests_dir . '/includes/functions.php';
-
-function _manually_load_plugin() {
-	require dirname( __FILE__ ) . '/../give.php';
-}
-
-tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
-
-require $_tests_dir . '/includes/bootstrap.php';
-
-activate_plugin( 'give/give.php' );
-
-echo "Installing Give...\n";
-
-// Install Give
-give_install();
-
-global $current_user, $give_options;
-
-$give_options = get_option( 'give_settings' );
-
-$current_user = new WP_User( 1 );
-$current_user->set_role( 'administrator' );
-
-// Include helpers
-require_once 'helpers/shims.php';
-require_once 'helpers/class-helper-form.php';
-require_once 'helpers/class-helper-payment.php';
+Give_Unit_Tests_Bootstrap::instance();

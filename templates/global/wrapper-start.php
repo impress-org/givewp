@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Templates/Global
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -48,6 +48,15 @@ switch ( $template ) {
 		break;
 	case 'avada' :
 		echo '<div class="give-wrap"><div id="content" role="main" style="width:100%">';
+		break;
+	case 'philanthropy-parent' :
+		echo '<div id="main" class="site-main" role="main"><div class="container"><div class="row"><div class="col-sm-12 col-xs-12 content-area">';
+		break;
+	case 'zerif-lite' :
+		echo '</header><div id="content" class="site-content"><div class="container"><div class="content-left-wrap col-md-12"><div id="primary" class="content-area"><main id="main" class="site-main" role="main"><article>';
+		break;
+	case 'customizr' :
+		echo '<div id="main-wrapper" class="container">';
 		break;
 	default :
 		echo apply_filters( 'give_default_wrapper_start', '<div id="container" class="give-wrap container"><div id="content" role="main">' );

@@ -10,7 +10,7 @@
  *
  * @package     Give
  * @subpackage  Admin/Reports
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -36,7 +36,7 @@ function give_reports_page() {
 	$active_tab   = isset( $_GET['tab'] ) ? $_GET['tab'] : 'reports';
 	?>
 	<div class="wrap">
-		<h2 class="nav-tab-wrapper">
+		<h1 class="nav-tab-wrapper">
 			<a href="<?php echo esc_url( add_query_arg( array(
 				'tab'              => 'reports',
 				'settings-updated' => false
@@ -52,7 +52,7 @@ function give_reports_page() {
 				'settings-updated' => false
 			), $current_page ) ); ?>" class="nav-tab <?php echo $active_tab == 'logs' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Logs', 'give' ); ?></a>
 			<?php do_action( 'give_reports_tabs' ); ?>
-		</h2>
+		</h1>
 
 		<?php
 		do_action( 'give_reports_page_top' );
@@ -60,7 +60,7 @@ function give_reports_page() {
 		do_action( 'give_reports_page_bottom' );
 		?>
 	</div><!-- .wrap -->
-<?php
+	<?php
 }
 
 /**
@@ -71,10 +71,10 @@ function give_reports_page() {
  */
 function give_reports_default_views() {
 	$views = array(
-		'earnings'  => __( 'Income', 'give' ),
-		'forms'     => give_get_forms_label_plural(),
-		'donors' => __( 'Donors', 'give' ),
-		'gateways'  => __( 'Payment Methods', 'give' )
+		'earnings' => __( 'Income', 'give' ),
+		'forms'    => give_get_forms_label_plural(),
+		'donors'   => __( 'Donors', 'give' ),
+		'gateways' => __( 'Payment Methods', 'give' )
 	);
 
 	$views = apply_filters( 'give_report_views', $views );
@@ -226,7 +226,7 @@ function give_reports_donors_table() {
 		</form>
 		<?php do_action( 'give_logs_donors_table_bottom' ); ?>
 	</div>
-<?php
+	<?php
 }
 
 add_action( 'give_reports_view_donors', 'give_reports_donors_table' );
@@ -392,7 +392,7 @@ function give_reports_tab_export() {
 		</div>
 		<!-- .post-body -->
 	</div><!-- #give-dashboard-widgets-wrap -->
-<?php
+	<?php
 }
 
 add_action( 'give_reports_tab_export', 'give_reports_tab_export' );

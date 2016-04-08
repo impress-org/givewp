@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Admin/Customers
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -109,7 +109,7 @@ function give_render_customer_view( $view, $callbacks ) {
 		give_set_error( 'give-no-access', __( 'You are not permitted to view this data.', 'give' ) );
 		$render = false;
 	}
-
+ 
 	if ( ! isset( $_GET['id'] ) || ! is_numeric( $_GET['id'] ) ) {
 		give_set_error( 'give-invalid_customer', __( 'Invalid Donor ID Provided.', 'give' ) );
 		$render = false;
@@ -364,9 +364,13 @@ function give_customers_view( $customer ) {
 	<div id="customer-stats-wrapper" class="customer-section postbox clear">
 		<ul>
 			<li>
-				<a title="<?php _e( 'View All Purchases', 'give' ); ?>" href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( $customer->email ) ); ?>">
+				<a title="<?php _e( 'View All Donations', 'give' ); ?>" href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( $customer->email ) ); ?>">
 					<span class="dashicons dashicons-heart"></span>
-					<?php printf( _n( '%d Completed Donation', '%d Completed Donations', $customer->purchase_count, 'give' ), $customer->purchase_count ); ?>
+					<?php
+					//Completed Donations
+					$completed_donations_text = sprintf( _n( '%d Completed Donation', '%d Completed Donations', $customer->purchase_count, 'give' ), $customer->purchase_count );
+					echo apply_filters( 'give_donor_completed_donations', $completed_donations_text, $customer );
+					?>
 				</a>
 			</li>
 			<li>

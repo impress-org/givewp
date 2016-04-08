@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Payments
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-1.0.php GNU Public License
  * @since       1.0
  */
@@ -51,7 +51,7 @@ function give_get_payments( $args = array() ) {
  * @since       1.0
  *
  * @param       string $field The field to retrieve the payment with
- * @param       mixed  $value The value for $field
+ * @param       mixed $value The value for $field
  *
  * @return      mixed
  */
@@ -146,7 +146,7 @@ function give_insert_payment( $payment_data = array() ) {
 		'post_date'     => isset( $payment_data['post_date'] ) ? $payment_data['post_date'] : null,
 		'post_date_gmt' => isset( $payment_data['post_date'] ) ? get_gmt_from_date( $payment_data['post_date'] ) : null
 	), $payment_data );
-
+	
 	// Create a blank payment
 	$payment = wp_insert_post( $args );
 
@@ -170,7 +170,13 @@ function give_insert_payment( $payment_data = array() ) {
 		}
 
 		// Create or update a customer
-		$customer      = new Give_Customer( $payment_data['user_email'] );
+		$customer = new Give_Customer( $payment_data['user_email'] );
+
+		// If we didn't find a customer and the user is logged in, check by user_id #437
+		if ( empty( $customer->id ) && is_user_logged_in() ) {
+			$customer = new Give_Customer( get_current_user_id(), true );
+		}
+
 		$customer_data = array(
 			'name'    => $payment_data['user_info']['first_name'] . ' ' . $payment_data['user_info']['last_name'],
 			'email'   => $payment_data['user_email'],
@@ -179,13 +185,6 @@ function give_insert_payment( $payment_data = array() ) {
 
 		if ( empty( $customer->id ) ) {
 			$customer->create( $customer_data );
-		} else {
-			// Only update the customer if their name or email has changed
-			if ( $customer_data['email'] !== $customer->email || $customer_data['name'] !== $customer->name ) {
-				// We shouldn't be updating the User ID here, that is an admin task
-				unset( $customer_data['user_id'] );
-				$customer->update( $customer_data );
-			}
 		}
 
 		$customer->attach_payment( $payment, false );
@@ -193,7 +192,7 @@ function give_insert_payment( $payment_data = array() ) {
 		// Record the payment details
 		give_update_payment_meta( $payment, '_give_payment_meta', apply_filters( 'give_payment_meta', $payment_meta, $payment_data ) );
 		give_update_payment_meta( $payment, '_give_payment_user_id', $payment_data['user_info']['id'] );
-		give_update_payment_meta( $payment, '_give_payment_donor_id', $customer->id );
+		give_update_payment_meta( $payment, '_give_payment_customer_id', $customer->id );
 		give_update_payment_meta( $payment, '_give_payment_user_email', $payment_data['user_email'] );
 		give_update_payment_meta( $payment, '_give_payment_user_ip', give_get_ip() );
 		give_update_payment_meta( $payment, '_give_payment_purchase_key', $payment_data['purchase_key'] );
@@ -224,7 +223,7 @@ function give_insert_payment( $payment_data = array() ) {
  *
  * @since 1.0
  *
- * @param int    $payment_id Payment ID
+ * @param int $payment_id Payment ID
  * @param string $new_status New Payment Status (default: publish)
  *
  * @return void
@@ -344,7 +343,7 @@ function give_delete_purchase( $payment_id = 0 ) {
  *
  * @since 1.0
  *
- * @param int $form_id    Form (Post) ID
+ * @param int $form_id Form (Post) ID
  * @param int $payment_id Payment ID
  *
  * @return void
@@ -553,7 +552,7 @@ function give_check_for_existing_payment( $payment_id ) {
  * @since 1.0
  *
  * @param WP_Post $payment
- * @param bool    $return_label Whether to return the donation status or not
+ * @param bool $return_label Whether to return the donation status or not
  *
  * @return bool|mixed if payment status exists, false otherwise
  */
@@ -619,10 +618,10 @@ function give_get_payment_status_keys() {
  *
  * @since 1.0
  *
- * @param int $day       Day number
+ * @param int $day Day number
  * @param int $month_num Month number
- * @param int $year      Year
- * @param int $hour      Hour
+ * @param int $year Year
+ * @param int $hour Hour
  *
  * @return int $earnings Earnings
  */
@@ -678,10 +677,10 @@ function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour
  *
  * @since  1.0
  *
- * @param int $day       Day number
+ * @param int $day Day number
  * @param int $month_num Month number
- * @param int $year      Year
- * @param int $hour      Hour
+ * @param int $year Year
+ * @param int $hour Hour
  *
  * @return int $count Sales
  */
@@ -711,7 +710,7 @@ function give_get_sales_by_date( $day = null, $month_num = null, $year = null, $
 	}
 
 	$args = apply_filters( 'give_get_sales_by_date_args', $args );
-	$key   = 'give_stats_' . substr( md5( serialize( $args ) ), 0, 15 );
+	$key  = 'give_stats_' . substr( md5( serialize( $args ) ), 0, 15 );
 
 	if ( ! empty( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'give-refresh-reports' ) ) {
 		$count = false;
@@ -867,9 +866,9 @@ function give_decrease_total_earnings( $amount = 0 ) {
  *
  * @since 1.0
  *
- * @param int    $payment_id Payment ID
- * @param string $meta_key   The meta key to pull
- * @param bool   $single     Pull single meta entry or as an object
+ * @param int $payment_id Payment ID
+ * @param string $meta_key The meta key to pull
+ * @param bool $single Pull single meta entry or as an object
  *
  * @return mixed $meta Payment Meta
  */
@@ -901,9 +900,9 @@ function give_get_payment_meta( $payment_id = 0, $meta_key = '_give_payment_meta
  * Update the meta for a payment
  *
  * @param  integer $payment_id Payment ID
- * @param  string  $meta_key   Meta key to update
- * @param  string  $meta_value Value to update to
- * @param  string  $prev_value Previous value
+ * @param  string $meta_key Meta key to update
+ * @param  string $meta_value Value to update to
+ * @param  string $prev_value Previous value
  *
  * @return mixed               Meta ID if successful, false if unsuccessful
  */
@@ -995,7 +994,7 @@ function give_get_payment_user_email( $payment_id ) {
  *
  * @param  int $payment_id The payment ID
  *
- * @return bool            If the payment is associted with a user (false) or not (true)
+ * @return bool            If the payment is associated with a user (false) or not (true)
  */
 function give_is_guest_payment( $payment_id ) {
 	$payment_user_id  = give_get_payment_user_id( $payment_id );
@@ -1057,9 +1056,9 @@ function give_get_payment_user_id( $payment_id ) {
  * @return string $donor_id Donor ID
  */
 function give_get_payment_customer_id( $payment_id ) {
-	$customer_id = get_post_meta( $payment_id, '_give_payment_donor_id', true );
+	$customer_id = get_post_meta( $payment_id, '_give_payment_customer_id', true );
 
-	return apply_filters( 'give_payment_donor_id', $customer_id );
+	return apply_filters( '_give_payment_customer_id', $customer_id );
 }
 
 /**
@@ -1389,7 +1388,7 @@ function give_get_payment_transaction_id( $payment_id = 0 ) {
  *
  * @since  1.0
  *
- * @param int    $payment_id     Payment ID
+ * @param int $payment_id Payment ID
  * @param string $transaction_id The transaction ID from the gateway
  *
  * @return bool|mixed
@@ -1412,7 +1411,7 @@ function give_set_payment_transaction_id( $payment_id = 0, $transaction_id = '' 
  * @global object $wpdb Used to query the database using the WordPress
  *                      Database API
  *
- * @param string  $key  the purchase key to search for
+ * @param string $key the purchase key to search for
  *
  * @return int $purchase Purchase ID
  */
@@ -1436,7 +1435,7 @@ function give_get_purchase_id_by_key( $key ) {
  * @global object $wpdb Used to query the database using the WordPress
  *                      Database API
  *
- * @param string  $key  the transaction ID to search for
+ * @param string $key the transaction ID to search for
  *
  * @return int $purchase Purchase ID
  */
@@ -1457,8 +1456,8 @@ function give_get_purchase_id_by_transaction_id( $key ) {
  *
  * @since 1.0
  *
- * @param int    $payment_id The payment ID to retrieve notes for
- * @param string $search     Search for notes that contain a search term
+ * @param int $payment_id The payment ID to retrieve notes for
+ * @param string $search Search for notes that contain a search term
  *
  * @return array $notes Payment Notes
  */
@@ -1485,8 +1484,8 @@ function give_get_payment_notes( $payment_id = 0, $search = '' ) {
  *
  * @since 1.0
  *
- * @param int    $payment_id The payment ID to store a note for
- * @param string $note       The note to store
+ * @param int $payment_id The payment ID to store a note for
+ * @param string $note The note to store
  *
  * @return int The new note ID
  */
@@ -1545,7 +1544,7 @@ function give_delete_payment_note( $comment_id = 0, $payment_id = 0 ) {
  *
  * @since 1.0
  *
- * @param     object      /int $note The comment object or ID
+ * @param     object /int $note The comment object or ID
  * @param int $payment_id The payment ID the note is connected to
  *
  * @return string
@@ -1613,8 +1612,8 @@ add_action( 'pre_get_comments', 'give_hide_payment_notes', 10 );
  *
  * @since 1.0
  *
- * @param array $clauses          Comment clauses for comment query
- * @param obj   $wp_comment_query WordPress Comment Query Object
+ * @param array $clauses Comment clauses for comment query
+ * @param obj $wp_comment_query WordPress Comment Query Object
  *
  * @return array $clauses Updated comment clauses
  */
@@ -1637,7 +1636,7 @@ add_filter( 'comments_clauses', 'give_hide_payment_notes_pre_41', 10, 2 );
  * @since 1.0
  *
  * @param array $where
- * @param obj   $wp_comment_query WordPress Comment Query Object
+ * @param obj $wp_comment_query WordPress Comment Query Object
  *
  * @return array $where
  */
@@ -1658,8 +1657,8 @@ add_filter( 'comment_feed_where', 'give_hide_payment_notes_from_feeds', 10, 2 );
  * @access public
  * @since  1.0
  *
- * @param array $stats   (empty from core filter)
- * @param int   $post_id Post ID
+ * @param array $stats (empty from core filter)
+ * @param int $post_id Post ID
  *
  * @return array Array of comment counts
  */
@@ -1785,8 +1784,8 @@ function give_get_price_id( $form_id, $price ) {
  * @TODO  - Incorporate a fee-based functionality similar to below
  * @since 1.0
  *
- * @param int    $payment_id Payment ID
- * @param string $type       Fee type
+ * @param int $payment_id Payment ID
+ * @param string $type Fee type
  *
  * @return mixed array if payment fees found, false otherwise
  */
