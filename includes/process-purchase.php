@@ -499,11 +499,8 @@ function give_purchase_form_validate_new_user() {
 			// All the checks have run and it's good to go
 			$valid_user_data['user_login'] = $user_login;
 		}
-	} else {
-		if ( give_no_guest_checkout( $form_id ) ) {
-
-			give_set_error( 'registration_required', esc_html__( 'You must register or login to complete your donation', 'give' ) );
-		}
+	} elseif ( give_logged_in_only( $form_id ) ) {
+		give_set_error( 'registration_required', esc_html__( 'You must register or login to complete your donation', 'give' ) );
 	}
 
 	// Check if we have an email to verify
@@ -763,7 +760,7 @@ function give_get_purchase_form_user( $valid_data = array() ) {
 	}
 
 	// Check guest checkout
-	if ( false === $user && false === give_no_guest_checkout( $_POST['give-form-id'] ) ) {
+	if ( false === $user && false === give_logged_in_only( $_POST['give-form-id'] ) ) {
 		// Set user
 		$user = $valid_data['guest_user_data'];
 	}
