@@ -235,17 +235,17 @@ function give_is_cc_verify_enabled() {
 
 
 /**
- * Checks if users can only give when logged in
+ * Checks if users can only donate when logged in
  *
  * @since 1.0
  * @global $give_options
  * @return bool $ret Whether or not the logged_in_only setting is set
  */
-function give_logged_in_only() {
+function give_logged_in_only( $form_id ) {
+	
+	$form_option = get_post_meta( $form_id, '_give_logged_in_only', true );
 
-	global $give_options;
-
-	$ret = ! empty( $give_options['logged_in_only'] );
+	$ret = ! empty( $form_option ) ? $form_option : false;
 
 	return (bool) apply_filters( 'give_logged_in_only', $ret );
 

@@ -121,11 +121,10 @@ jQuery(document).ready(function ($) {
 
     /**
      * Donation Form AJAX Submission
-     * 
+     *
      * @description: Process the donation submit
      */
     $('body').on('click touchend', '#give-purchase-button', function (e) {
-
 
         //this form object
         var this_form = $(this).parents('form.give-form');
@@ -139,9 +138,9 @@ jQuery(document).ready(function ($) {
 
         //HTML5 required check validity
         if (typeof give_purchase_form.checkValidity === "function" && give_purchase_form.checkValidity() === false) {
-            
+
             //Don't leave any hanging loading animations
-            loading_animation.fadeOut(); 
+            loading_animation.fadeOut();
 
             //Check for Safari (doesn't support HTML5 required)
             if ((navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) === false) {
@@ -162,6 +161,7 @@ jQuery(document).ready(function ($) {
 
         //Submit form via AJAX
         $.post(give_global_vars.ajaxurl, this_form.serialize() + '&action=give_process_checkout&give_ajax=true', function (data) {
+
             if ($.trim(data) == 'success') {
                 //Remove any errors
                 this_form.find('.give_errors').remove();
@@ -174,6 +174,7 @@ jQuery(document).ready(function ($) {
                 this_form.find('.give_errors').remove();
                 this_form.find('#give_purchase_submit').before(data);
             }
+            
         });
 
     });
