@@ -124,7 +124,7 @@ jQuery(function ($) {
     /**
      * Validate cc fields on change
      */
-    doc.on('keyup change', '.card-number, .card-cvc, .card-expiry', function () {
+    doc.on( 'keyup change', '.give-form .card-number, .give-form .card-cvc, .give-form .card-expiry', function () {
         var el = $(this),
             give_form = el.parents('form.give-form'),
             id = el.attr('id'),
