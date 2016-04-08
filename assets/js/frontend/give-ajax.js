@@ -126,6 +126,7 @@ jQuery(document).ready(function ($) {
      */
     $('body').on('click touchend', '#give-purchase-button', function (e) {
 
+
         //this form object
         var this_form = $(this).parents('form.give-form');
 
@@ -161,7 +162,6 @@ jQuery(document).ready(function ($) {
 
         //Submit form via AJAX
         $.post(give_global_vars.ajaxurl, this_form.serialize() + '&action=give_process_checkout&give_ajax=true', function (data) {
-
             if ($.trim(data) == 'success') {
                 //Remove any errors
                 this_form.find('.give_errors').remove();
