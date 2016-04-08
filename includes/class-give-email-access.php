@@ -163,7 +163,8 @@ class Give_Email_Access {
 
 			$this->token_exists = true;
 			// Set cookie
-			setcookie( 'give_nl', $token );
+			$lifetime = current_time( 'timestamp' ) + Give()->session->set_expiration_time();
+			@setcookie( 'give_nl', $token, $lifetime, COOKIEPATH, COOKIE_DOMAIN, false );
 		}
 	}
 
