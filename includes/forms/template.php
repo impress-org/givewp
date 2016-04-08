@@ -155,7 +155,7 @@ function give_get_donation_form( $args = array() ) {
  * Give Show Purchase Form
  *
  * Renders the Donation Form, hooks are provided to add to the checkout form.
- * The default Purchase Form rendered displays a list of the enabled payment
+ * The default Donation Form rendered displays a list of the enabled payment
  * gateways, a user registration form (if enable) and a credit card info form
  * if credit cards are enabled
  *
