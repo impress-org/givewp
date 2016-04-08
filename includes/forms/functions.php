@@ -81,14 +81,14 @@ function give_is_float_labels_enabled( $args ) {
 /**
  * Determines if a user can checkout or not
  *
+ * @description: Allows themes and plugins to set donation checkout conditions
  * @since 1.0
  * @global $give_options Array of all the Give Options
  * @return bool Can user checkout?
  */
 function give_can_checkout() {
-	global $give_options;
 
-	$can_checkout = true; // Always true for now
+	$can_checkout = true;
 
 	return (bool) apply_filters( 'give_can_checkout', $can_checkout );
 }
@@ -124,7 +124,7 @@ function give_is_success_page() {
 /**
  * Send To Success Page
  *
- * Sends the user to the succes page.
+ * Sends the user to the success page.
  *
  * @param string $query_string
  *
@@ -133,8 +133,7 @@ function give_is_success_page() {
  * @return      void
  */
 function give_send_to_success_page( $query_string = null ) {
-	global $give_options;
-
+	
 	$redirect = give_get_success_page_uri();
 
 	if ( $query_string ) {
@@ -210,7 +209,7 @@ function give_get_success_page_url( $query_string = null ) {
  * @since 1.0
  * @global     $give_options Array of all the Give Options
  *
- * @param bool $extras       Extras to append to the URL
+ * @param bool $extras Extras to append to the URL
  *
  * @return mixed|void Full URL to the Transaction Failed page, if present, home page if it doesn't exist
  */
@@ -265,7 +264,7 @@ add_action( 'template_redirect', 'give_listen_for_failed_payments' );
  * Check if a field is required
  *
  * @param string $field
- * @param int    $form_id
+ * @param int $form_id
  *
  * @access      public
  * @since       1.0
@@ -430,10 +429,10 @@ function give_enforced_ssl_asset_filter( $content ) {
  * @since 1.0
  * @global            $give_logs
  *
- * @param int         $give_form_id Give Form ID
- * @param int         $payment_id   Payment ID
- * @param bool|int    $price_id     Price ID, if any
- * @param string|null $sale_date    The date of the sale
+ * @param int $give_form_id Give Form ID
+ * @param int $payment_id Payment ID
+ * @param bool|int $price_id Price ID, if any
+ * @param string|null $sale_date The date of the sale
  *
  * @return void
  */
@@ -492,7 +491,7 @@ function give_decrease_purchase_count( $give_form_id = 0 ) {
  * @since 1.0
  *
  * @param int $give_form_id Give Form ID
- * @param int $amount       Earnings
+ * @param int $amount Earnings
  *
  * @return bool|int
  */
@@ -508,7 +507,7 @@ function give_increase_earnings( $give_form_id = 0, $amount ) {
  * @since 1.0
  *
  * @param int $give_form_id Give Form ID
- * @param int $amount       Earnings
+ * @param int $amount Earnings
  *
  * @return bool|int
  */
@@ -608,8 +607,8 @@ function give_get_average_monthly_form_earnings( $form_id = 0 ) {
  *
  * @since       1.0
  *
- * @param int $form_id    ID of the download
- * @param int $price_id   ID of the price option
+ * @param int $form_id ID of the download
+ * @param int $price_id ID of the price option
  * @param int $payment_id optional payment ID for use in filters
  *
  * @return string $price_name Name of the price option
@@ -792,8 +791,8 @@ function give_get_form_minimum_price( $form_id = 0 ) {
  *
  * @since 1.0
  *
- * @param int      $form_id  ID of the form price to show
- * @param bool     $echo     Whether to echo or return the results
+ * @param int $form_id ID of the form price to show
+ * @param bool $echo Whether to echo or return the results
  * @param bool|int $price_id Optional price id for variable pricing
  *
  * @return int $formatted_price
@@ -851,9 +850,9 @@ add_filter( 'give_form_price', 'give_currency_filter', 20 );
  *
  * @since 1.0
  *
- * @param int $form_id  ID of the form
+ * @param int $form_id ID of the form
  * @param int $price_id ID of the price option
- * @param     int       @payment_id ID of the payment
+ * @param     int @payment_id ID of the payment
  *
  * @return float $amount Amount of the price option
  */
@@ -897,8 +896,8 @@ function give_get_form_goal( $form_id = 0 ) {
  *
  * @since 1.0
  *
- * @param int  $form_id ID of the form price to show
- * @param bool $echo    Whether to echo or return the results
+ * @param int $form_id ID of the form price to show
+ * @param bool $echo Whether to echo or return the results
  *
  * @return string $formatted_goal
  */

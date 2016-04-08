@@ -127,6 +127,8 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 == Changelog ==
 
 = 1.4.1 =
+* Fix: Member-only donation forms don't display member-only validation responses properly -  https://github.com/WordImpress/Give/issues/551
+* Tweak: Deprecated give_no_guest_checkout() in favor of give_logged_in_only() -  https://github.com/WordImpress/Give/issues/551
 * Tweak: Clean up '&amp' encoded ampersands for PayPal standard -  https://github.com/WordImpress/Give/issues/562
 * Tweak: Added a check for DOM and MBString PHP extensions in System Info tab -  https://github.com/WordImpress/Give/issues/560
 

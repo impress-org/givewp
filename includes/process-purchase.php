@@ -499,20 +499,18 @@ function give_purchase_form_validate_new_user() {
 			// All the checks have run and it's good to go
 			$valid_user_data['user_login'] = $user_login;
 		}
-	} else {
-		if ( give_no_guest_checkout( $form_id ) ) {
-			give_set_error( 'registration_required', esc_html__( 'You must register or login to complete your donation', 'give' ) );
-		}
+	} elseif ( give_logged_in_only( $form_id ) ) {
+		give_set_error( 'registration_required', esc_html__( 'You must register or login to complete your donation', 'give' ) );
 	}
 
 	// Check if we have an email to verify
 	if ( $user_email && strlen( $user_email ) > 0 ) {
 		// Validate email
 		if ( ! is_email( $user_email ) ) {
-			give_set_error( 'email_invalid', __( 'Invalid email', 'give' ) );
+			give_set_error( 'email_invalid', __( 'Sorry, that email is invalid', 'give' ) );
 			// Check if email exists
 		} else if ( email_exists( $user_email ) && $registering_new_user ) {
-			give_set_error( 'email_used', __( 'Email already used', 'give' ) );
+			give_set_error( 'email_used', __( 'Sorry, that email already active for another user', 'give' ) );
 		} else {
 			// All the checks have run and it's good to go
 			$valid_user_data['user_email'] = $user_email;
@@ -631,7 +629,7 @@ function give_purchase_form_validate_guest_user() {
 	);
 
 	// Show error message if user must be logged in
-	if ( give_logged_in_only() ) {
+	if ( give_logged_in_only( $form_id ) ) {
 		give_set_error( 'logged_in_only', __( 'You must be logged into to donate', 'give' ) );
 	}
 
@@ -723,6 +721,7 @@ function give_register_and_login_new_user( $user_data = array() ) {
  * @return  array
  */
 function give_get_purchase_form_user( $valid_data = array() ) {
+
 	// Initialize user
 	$user    = false;
 	$is_ajax = defined( 'DOING_AJAX' ) && DOING_AJAX;
@@ -761,7 +760,7 @@ function give_get_purchase_form_user( $valid_data = array() ) {
 	}
 
 	// Check guest checkout
-	if ( false === $user && false === give_no_guest_checkout( $_POST['give-form-id'] ) ) {
+	if ( false === $user && false === give_logged_in_only( $_POST['give-form-id'] ) ) {
 		// Set user
 		$user = $valid_data['guest_user_data'];
 	}
@@ -796,7 +795,7 @@ function give_get_purchase_form_user( $valid_data = array() ) {
 	} // Country will always be set if address fields are present
 
 	if ( ! empty( $user['user_id'] ) && $user['user_id'] > 0 && ! empty( $user['address'] ) ) {
-		// Store the address in the user's meta so the cart can be pre-populated with it on return purchases
+		// Store the address in the user's meta so the donation form can be pre-populated with it on return purchases
 		update_user_meta( $user['user_id'], '_give_user_address', $user['address'] );
 	}
 

@@ -23,7 +23,6 @@ do_action( 'give_before_single_form' );
 
 if ( post_password_required() ) {
 	echo get_the_password_form();
-
 	return;
 }
 ?>

@@ -78,7 +78,6 @@ jQuery(function ($) {
     doc.on('change', '#give_cc_address input.card_state, #give_cc_address select', update_billing_state_field
     );
 
-    sent_back_to_form();
 
     /**
      * Format CC Fields
@@ -431,6 +430,7 @@ jQuery(function ($) {
 
 
     }
-
+    
+    sent_back_to_form();
 
 });

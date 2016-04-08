@@ -44,11 +44,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! class_exists( 'Give' ) ) : /**
- * Main Give Class
- *
- * @since 1.0
- */ {
+if ( ! class_exists( 'Give' ) ) :
+	/**
+	 * Main Give Class
+	 *
+	 * @since 1.0
+	 */
 	final class Give {
 		/** Singleton *************************************************************/
 
@@ -178,7 +179,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 				self::$instance->email_access    = new Give_Email_Access();
 
 			}
-			
+
 
 			return self::$instance;
 		}
@@ -297,6 +298,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/login-register.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/user-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/plugin-compatibility.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/deprecated-functions.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/actions.php';
@@ -395,7 +397,6 @@ if ( ! class_exists( 'Give' ) ) : /**
 			}
 		}
 	}
-}
 
 endif; // End if class_exists check
 

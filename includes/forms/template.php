@@ -155,7 +155,7 @@ function give_get_donation_form( $args = array() ) {
  * Give Show Purchase Form
  *
  * Renders the Donation Form, hooks are provided to add to the checkout form.
- * The default Purchase Form rendered displays a list of the enabled payment
+ * The default Donation Form rendered displays a list of the enabled payment
  * gateways, a user registration form (if enable) and a credit card info form
  * if credit cards are enabled
  *
@@ -792,20 +792,20 @@ function give_get_register_fields( $form_id ) {
 
 		<fieldset id="give-register-account-fields-<?php echo $form_id; ?>">
 			<legend><?php echo apply_filters( 'give_create_account_fieldset_heading', __( 'Create an account', 'give' ) );
-				if ( ! give_no_guest_checkout( $form_id ) ) {
+				if ( ! give_logged_in_only( $form_id ) ) {
 					echo ' <span class="sub-text">' . __( '(optional)', 'give' ) . '</span>';
 				} ?></legend>
 			<?php do_action( 'give_register_account_fields_before' ); ?>
 			<p id="give-user-login-wrap-<?php echo $form_id; ?>" class="form-row form-row-one-third form-row-first">
 				<label for="give-user-login-<?php echo $form_id; ?>">
 					<?php _e( 'Username', 'give' ); ?>
-					<?php if ( give_no_guest_checkout( $form_id ) ) { ?>
+					<?php if ( give_logged_in_only( $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
 					<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'The username you will use to log into your account.', 'give' ); ?>"></span>
 				</label>
 
-				<input name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" class="<?php if ( give_no_guest_checkout( $form_id ) ) {
+				<input name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" class="<?php if ( give_logged_in_only( $form_id ) ) {
 					echo 'required ';
 				} ?>give-input" type="text" placeholder="<?php _e( 'Username', 'give' ); ?>" title="<?php _e( 'Username', 'give' ); ?>"/>
 			</p>
@@ -813,13 +813,13 @@ function give_get_register_fields( $form_id ) {
 			<p id="give-user-pass-wrap-<?php echo $form_id; ?>" class="form-row form-row-one-third">
 				<label for="give-user-pass-<?php echo $form_id; ?>">
 					<?php _e( 'Password', 'give' ); ?>
-					<?php if ( give_no_guest_checkout( $form_id ) ) { ?>
+					<?php if ( give_logged_in_only( $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
 					<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'The password used to access your account.', 'give' ); ?>"></span>
 				</label>
 
-				<input name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>" class="<?php if ( give_no_guest_checkout( $form_id ) ) {
+				<input name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>" class="<?php if ( give_logged_in_only( $form_id ) ) {
 					echo 'required ';
 				} ?>give-input" placeholder="<?php _e( 'Password', 'give' ); ?>" type="password"/>
 			</p>
@@ -827,13 +827,13 @@ function give_get_register_fields( $form_id ) {
 			<p id="give-user-pass-confirm-wrap-<?php echo $form_id; ?>" class="give-register-password form-row form-row-one-third">
 				<label for="give-user-pass-confirm-<?php echo $form_id; ?>">
 					<?php _e( 'Confirm PW', 'give' ); ?>
-					<?php if ( give_no_guest_checkout( $form_id ) ) { ?>
+					<?php if ( give_logged_in_only( $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
 					<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php _e( 'Please retype your password to confirm.', 'give' ); ?>"></span>
 				</label>
 
-				<input name="give_user_pass_confirm" id="give-user-pass-confirm-<?php echo $form_id; ?>" class="<?php if ( give_no_guest_checkout( $form_id ) ) {
+				<input name="give_user_pass_confirm" id="give-user-pass-confirm-<?php echo $form_id; ?>" class="<?php if ( give_logged_in_only( $form_id ) ) {
 					echo 'required ';
 				} ?>give-input" placeholder="<?php _e( 'Confirm password', 'give' ); ?>" type="password"/>
 			</p>
@@ -875,7 +875,7 @@ function give_get_login_fields( $form_id ) {
 	?>
 	<fieldset id="give-login-fields-<?php echo $form_id; ?>">
 		<legend><?php echo apply_filters( 'give_account_login_fieldset_heading', __( 'Login to Your Account', 'give' ) );
-			if ( ! give_no_guest_checkout( $form_id ) ) {
+			if ( ! give_logged_in_only( $form_id ) ) {
 				echo ' <span class="sub-text">' . __( '(optional)', 'give' ) . '</span>';
 			} ?>
 		</legend>
@@ -885,7 +885,7 @@ function give_get_login_fields( $form_id ) {
 				<a href="<?php echo remove_query_arg( 'login' ); ?>" class="give-checkout-register-login"
 				   data-action="give_checkout_register">
 					<?php _e( 'Register', 'give' );
-					if ( ! give_no_guest_checkout( $form_id ) ) {
+					if ( ! give_logged_in_only( $form_id ) ) {
 						echo ' ' . __( 'or checkout as a guest.', 'give' );
 					} ?>
 				</a>
@@ -897,12 +897,12 @@ function give_get_login_fields( $form_id ) {
 		<p id="give-user-login-wrap-<?php echo $form_id; ?>" class="form-row form-row-first">
 			<label class="give-label" for="give-user-login-<?php echo $form_id; ?>">
 				<?php _e( 'Username', 'give' ); ?>
-				<?php if ( give_no_guest_checkout( $form_id ) ) { ?>
+				<?php if ( give_logged_in_only( $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
 			</label>
 
-			<input class="<?php if ( give_no_guest_checkout( $form_id ) ) {
+			<input class="<?php if ( give_logged_in_only( $form_id ) ) {
 				echo 'required ';
 			} ?>give-input" type="text" name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" value="" placeholder="<?php _e( 'Your username', 'give' ); ?>"/>
 		</p>
@@ -910,11 +910,11 @@ function give_get_login_fields( $form_id ) {
 		<p id="give-user-pass-wrap-<?php echo $form_id; ?>" class="give_login_password form-row form-row-last">
 			<label class="give-label" for="give-user-pass-<?php echo $form_id; ?>">
 				<?php _e( 'Password', 'give' ); ?>
-				<?php if ( give_no_guest_checkout( $form_id ) ) { ?>
+				<?php if ( give_logged_in_only( $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
 			</label>
-			<input class="<?php if ( give_no_guest_checkout( $form_id ) ) {
+			<input class="<?php if ( give_logged_in_only( $form_id ) ) {
 				echo 'required ';
 			} ?>give-input" type="password" name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>" placeholder="<?php _e( 'Your password', 'give' ); ?>"/>
 			<input type="hidden" name="give-purchase-var" value="needs-to-login"/>
