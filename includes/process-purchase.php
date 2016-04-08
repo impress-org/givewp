@@ -501,6 +501,7 @@ function give_purchase_form_validate_new_user() {
 		}
 	} else {
 		if ( give_no_guest_checkout( $form_id ) ) {
+
 			give_set_error( 'registration_required', esc_html__( 'You must register or login to complete your donation', 'give' ) );
 		}
 	}
@@ -631,7 +632,7 @@ function give_purchase_form_validate_guest_user() {
 	);
 
 	// Show error message if user must be logged in
-	if ( give_logged_in_only() ) {
+	if ( give_logged_in_only( $form_id ) ) {
 		give_set_error( 'logged_in_only', __( 'You must be logged into to donate', 'give' ) );
 	}
 
@@ -723,6 +724,7 @@ function give_register_and_login_new_user( $user_data = array() ) {
  * @return  array
  */
 function give_get_purchase_form_user( $valid_data = array() ) {
+
 	// Initialize user
 	$user    = false;
 	$is_ajax = defined( 'DOING_AJAX' ) && DOING_AJAX;
@@ -796,7 +798,7 @@ function give_get_purchase_form_user( $valid_data = array() ) {
 	} // Country will always be set if address fields are present
 
 	if ( ! empty( $user['user_id'] ) && $user['user_id'] > 0 && ! empty( $user['address'] ) ) {
-		// Store the address in the user's meta so the cart can be pre-populated with it on return purchases
+		// Store the address in the user's meta so the donation form can be pre-populated with it on return purchases
 		update_user_meta( $user['user_id'], '_give_user_address', $user['address'] );
 	}
 
