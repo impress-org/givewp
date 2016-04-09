@@ -234,6 +234,7 @@ class Give_Session {
 	 * @description Force the cookie expiration time if set, default to 24 hours
 	 *
 	 * @access      public
+	 * 
 	 * @since       1.0
 	 *
 	 * @return int
