@@ -136,8 +136,17 @@ add_action('wp_ajax_nopriv_give_checkout_login', 'give_load_checkout_login_field
 function give_load_checkout_fields()
 {
     $form_id = isset($_POST['form_id']) ? $_POST['form_id'] : '';
-    do_action('give_purchase_form', $form_id);
-    give_die();
+
+    ob_start();
+
+    do_action( 'give_purchase_form_register_login_fields', $form_id );
+
+    $fields = ob_get_clean();
+
+    wp_send_json( array(
+        'fields' => wp_json_encode( $fields ),
+        'submit' => wp_json_encode( give_checkout_button_purchase( $form_id ) ),
+    ) );
 }
 
 add_action('wp_ajax_nopriv_give_cancel_login', 'give_load_checkout_fields');
