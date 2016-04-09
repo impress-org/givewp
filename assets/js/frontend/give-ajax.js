@@ -50,11 +50,16 @@ jQuery(document).ready(function ($) {
                 $.post(give_scripts.ajaxurl, data, function (checkout_response) {
                     //Show fields
                     $(this_form).find('[id^=give-checkout-login-register]').html('').html(checkout_response);
+                }).done(function () {
+                    // Trigger float-labels
+                    give_fl_trigger();
                 });
             });
         }).done(function () {
             // Hide the ajax loader
             loading_animation.hide();
+            // Trigger float-labels
+            give_fl_trigger();
         });
         return false;
     });

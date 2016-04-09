@@ -15,20 +15,12 @@ jQuery( function ( $ ) {
 
 	var doc = $( document );
 
-	//Float Labels
-	var options = {
-		exclude     : ['#give-amount, .give-select-level, .multiselect, .give-repeater-table input, input[type="url"]'],
-		customEvent : give_fl_custom_events
-	};
-	$( '.float-labels-enabled' ).floatlabels( options );
+	// Trigger float-labels
+	give_fl_trigger();
 
 	doc.on( 'give_gateway_loaded', function ( ev, response, form_id ) {
-
-		var form = $( 'form#' + form_id );
-
-		if ( form.hasClass( 'float-labels-enabled' ) ) {
-			form.floatlabels( options );
-		}
+		// Trigger float-labels
+		give_fl_trigger();
 	} );
 
 	doc.on( 'give_checkout_billing_address_updated', function ( ev, response, form_id ) {
@@ -54,7 +46,8 @@ jQuery( function ( $ ) {
 
 			el.parent().removeClass( 'is-active' );
 
-			form.floatlabels( options );
+			// Trigger float-labels
+			give_fl_trigger();
 		}
 	} );
 
@@ -112,6 +105,17 @@ jQuery( function ( $ ) {
 	} );
 
 } );
+
+/**
+ * Floating Labels Custom Events
+ */
+function give_fl_trigger() {
+	var options = {
+		exclude    : ['#give-amount, .give-select-level, .multiselect, .give-repeater-table input, input[type="url"]'],
+		customEvent: give_fl_custom_events
+	};
+	jQuery( '.float-labels-enabled' ).floatlabels( options );
+}
 
 /**
  * Floating Labels Custom Events
