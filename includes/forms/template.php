@@ -783,14 +783,13 @@ add_action( 'give_after_cc_fields', 'give_default_cc_address_fields' );
  */
 function give_get_register_fields( $form_id ) {
 
-	global $give_options;
 	global $user_ID;
 
 	if ( is_user_logged_in() ) {
 		$user_data = get_userdata( $user_ID );
 	}
 
-	$show_register_form = apply_filters( 'give_show_register_form', get_post_meta( $form_id, '_give_show_register_form', true ), $form_id);
+	$show_register_form = apply_filters( 'give_show_register_form', get_post_meta( $form_id, '_give_show_register_form', true ), $form_id );
 
 	ob_start(); ?>
 	<fieldset id="give-register-fields-<?php echo $form_id; ?>">
