@@ -247,7 +247,7 @@ function give_logged_in_only( $form_id ) {
 
 	$ret = ! empty( $form_option ) ? $form_option : false;
 
-	return (bool) apply_filters( 'give_logged_in_only', $ret );
+	return (bool) apply_filters( 'give_logged_in_only', $ret, $form_id );
 
 }
 
