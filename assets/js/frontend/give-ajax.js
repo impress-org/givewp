@@ -17,7 +17,7 @@ jQuery(document).ready(function ($) {
     $('.give-loading-text').hide();
 
     // Show the login form in the checkout when the user clicks the "Login" link
-    $('body').on('click', '.give-checkout-register-login', function (e) {
+    $(document).on('click', '.give-checkout-login', function (e) {
         var $this = $(this);
         var this_form = $(this).parents('form');
         var loading_animation = $(this_form).find('[id^="give-checkout-login-register"] .give-loading-text');
@@ -32,33 +32,43 @@ jQuery(document).ready(function ($) {
         $.post(give_scripts.ajaxurl, data, function (checkout_response) {
 
             //Clear form HTML and add AJAX response containing fields
-            $(this_form).find('[id^=give_purchase_submit]').remove();
-            $(this_form).find('[id^=give-checkout-login-register]').html('').html(checkout_response);
+            $(this_form).find('[id^=give-checkout-login-register]').html(checkout_response);
+            $(this_form).find('.give-submit-button-wrap').remove();
 
             //Setup tooltips again
             setup_give_tooltips();
 
-            //Activate cancel button
-            $(this_form).find('input.give-cancel-login').on('click', function (e) {
-                e.preventDefault();
-                //User cancelled login
-                var data = {
-                    action: $(this).data('action'),
-                    form_id: $(this_form).find('[name="give-form-id"]').val()
-                };
-                //AJAX get the payment fields
-                $.post(give_scripts.ajaxurl, data, function (checkout_response) {
-                    //Show fields
-                    $(this_form).find('[id^=give-checkout-login-register]').html('').html(checkout_response);
-                });
-            });
         }).done(function () {
             // Hide the ajax loader
             loading_animation.hide();
+            // Trigger float-labels
+            give_fl_trigger();
         });
         return false;
     });
 
+    // Register/Cancel Login
+    $(document).on('click', '.give-checkout-register-cancel', function (e) {
+        e.preventDefault();
+        //User cancelled login
+        var $this = $(this);
+        var this_form = $(this).parents('form');
+        var data = {
+            action: $this.data('action'),
+            form_id: $(this_form).find('[name="give-form-id"]').val()
+        };
+        //AJAX get the payment fields
+        $.post(give_scripts.ajaxurl, data, function (checkout_response) {
+
+            console.log( checkout_response );
+            //Show fields
+            $(this_form).find('[id^=give-checkout-login-register]').html($.parseJSON( checkout_response.fields ));
+            $(this_form).find('[id^=give_purchase_submit]').append($.parseJSON( checkout_response.submit ));
+        }).done(function () {
+            // Trigger float-labels
+            give_fl_trigger();
+        });
+    });
 
     // Process the login form via ajax when the user clicks "login"
     $(document).on('click', '[id^=give-login-fields] input[type=submit]', function (e) {
