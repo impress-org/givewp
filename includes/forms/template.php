@@ -180,21 +180,7 @@ function give_show_purchase_form( $form_id ) {
 
 		do_action( 'give_purchase_form_before_register_login', $form_id );
 
-		$show_register_form = apply_filters( 'give_show_register_form', get_post_meta( $form_id, '_give_show_register_form', true ) );
-
-		if ( ( $show_register_form === 'registration' || ( $show_register_form === 'both' && ! isset( $_GET['login'] ) ) ) && ! is_user_logged_in() ) : ?>
-			<div id="give-checkout-login-register-<?php echo $form_id; ?>">
-				<?php do_action( 'give_purchase_form_register_fields', $form_id ); ?>
-			</div>
-		<?php elseif ( ( $show_register_form === 'login' || ( $show_register_form === 'both' && isset( $_GET['login'] ) ) ) && ! is_user_logged_in() ) : ?>
-			<div id="give-checkout-login-register-<?php echo $form_id; ?>">
-				<?php do_action( 'give_purchase_form_login_fields', $form_id ); ?>
-			</div>
-		<?php endif; ?>
-
-		<?php if ( ( ! isset( $_GET['login'] ) && is_user_logged_in() ) || ! isset( $show_register_form ) || 'none' === $show_register_form || 'login' === $show_register_form ) {
-			do_action( 'give_purchase_form_after_user_info', $form_id );
-		}
+		do_action( 'give_purchase_form_register_login_fields', $form_id );
 
 		do_action( 'give_purchase_form_before_cc_form', $form_id );
 
@@ -217,6 +203,37 @@ function give_show_purchase_form( $form_id ) {
 }
 
 add_action( 'give_purchase_form', 'give_show_purchase_form' );
+
+/**
+ *
+ * Give Show Login/Register Form Fields
+ *
+ * @since 1.4.1
+ *
+ * @param int $form_id ID of the Give Form
+ *
+ * @return void
+ */
+function give_show_register_login_fields( $form_id ) {
+
+	$show_register_form = apply_filters( 'give_show_register_form', get_post_meta( $form_id, '_give_show_register_form', true ) );
+
+	if ( ( $show_register_form === 'registration' || ( $show_register_form === 'both' && ! isset( $_GET['login'] ) ) ) && ! is_user_logged_in() ) : ?>
+		<div id="give-checkout-login-register-<?php echo $form_id; ?>">
+			<?php do_action( 'give_purchase_form_register_fields', $form_id ); ?>
+		</div>
+	<?php elseif ( ( $show_register_form === 'login' || ( $show_register_form === 'both' && isset( $_GET['login'] ) ) ) && ! is_user_logged_in() ) : ?>
+		<div id="give-checkout-login-register-<?php echo $form_id; ?>">
+			<?php do_action( 'give_purchase_form_login_fields', $form_id ); ?>
+		</div>
+	<?php endif; ?>
+
+	<?php if ( ( ! isset( $_GET['login'] ) && is_user_logged_in() ) || ! isset( $show_register_form ) || 'none' === $show_register_form || 'login' === $show_register_form ) {
+		do_action( 'give_purchase_form_after_user_info', $form_id );
+	}
+}
+
+add_action( 'give_purchase_form_register_login_fields', 'give_show_register_login_fields' );
 
 /**
  * Donation Amount Field
@@ -781,7 +798,7 @@ function give_get_register_fields( $form_id ) {
 		<?php if ( $show_register_form == 'both' ) { ?>
 			<div class="give-login-account-wrap">
 				<p class="give-login-message"><?php _e( 'Already have an account?', 'give' ); ?>&nbsp;
-					<a href="<?php echo esc_url( add_query_arg( 'login', 1 ) ); ?>" class="give-checkout-register-login" data-action="give_checkout_login"><?php _e( 'Login', 'give' ); ?></a>
+					<a href="<?php echo esc_url( add_query_arg( 'login', 1 ) ); ?>" class="give-checkout-login" data-action="give_checkout_login"><?php _e( 'Login', 'give' ); ?></a>
 				</p>
 				<p class="give-loading-text">
 					<span class="give-loading-animation"></span> <?php _e( 'Loading...', 'give' ); ?></p>
@@ -882,7 +899,7 @@ function give_get_login_fields( $form_id ) {
 		<?php if ( $show_register_form == 'both' ) { ?>
 			<p class="give-new-account-link">
 				<?php _e( 'Need to create an account?', 'give' ); ?>&nbsp;
-				<a href="<?php echo remove_query_arg( 'login' ); ?>" class="give-checkout-register-login"
+				<a href="<?php echo remove_query_arg( 'login' ); ?>" class="give-checkout-register-cancel"
 				   data-action="give_checkout_register">
 					<?php _e( 'Register', 'give' );
 					if ( ! give_logged_in_only( $form_id ) ) {
@@ -923,7 +940,7 @@ function give_get_login_fields( $form_id ) {
 		<p id="give-user-login-submit-<?php echo $form_id; ?>" class="give-clearfix">
 			<input type="submit" class="give-submit give-btn button" name="give_login_submit" value="<?php _e( 'Login', 'give' ); ?>"/>
 			<?php if ( $show_register_form !== 'login' ) { ?>
-				<input type="button" data-action="give_cancel_login" class="give-cancel-login give-btn button" name="give_login_cancel" value="<?php _e( 'Cancel', 'give' ); ?>"/>
+				<input type="button" data-action="give_cancel_login" class="give-cancel-login give-checkout-register-cancel give-btn button" name="give_login_cancel" value="<?php _e( 'Cancel', 'give' ); ?>"/>
 			<?php } ?>
 			<span class="give-loading-animation"></span>
 		</p>
