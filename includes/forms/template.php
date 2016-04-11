@@ -788,14 +788,14 @@ function give_get_register_fields( $form_id ) {
 			</div>
 		<?php } ?>
 
-		<?php do_action( 'give_register_fields_before' ); ?>
+		<?php do_action( 'give_register_fields_before', $form_id ); ?>
 
 		<fieldset id="give-register-account-fields-<?php echo $form_id; ?>">
 			<legend><?php echo apply_filters( 'give_create_account_fieldset_heading', __( 'Create an account', 'give' ) );
 				if ( ! give_logged_in_only( $form_id ) ) {
 					echo ' <span class="sub-text">' . __( '(optional)', 'give' ) . '</span>';
 				} ?></legend>
-			<?php do_action( 'give_register_account_fields_before' ); ?>
+			<?php do_action( 'give_register_account_fields_before', $form_id ); ?>
 			<p id="give-user-login-wrap-<?php echo $form_id; ?>" class="form-row form-row-one-third form-row-first">
 				<label for="give-user-login-<?php echo $form_id; ?>">
 					<?php _e( 'Username', 'give' ); ?>
@@ -927,7 +927,7 @@ function give_get_login_fields( $form_id ) {
 			<?php } ?>
 			<span class="give-loading-animation"></span>
 		</p>
-		<?php do_action( 'give_checkout_login_fields_after' ); ?>
+		<?php do_action( 'give_checkout_login_fields_after', $form_id ); ?>
 	</fieldset><!--end #give-login-fields-->
 	<?php
 	echo ob_get_clean();
