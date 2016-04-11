@@ -216,7 +216,7 @@ add_action( 'give_purchase_form', 'give_show_purchase_form' );
  */
 function give_show_register_login_fields( $form_id ) {
 
-	$show_register_form = apply_filters( 'give_show_register_form', get_post_meta( $form_id, '_give_show_register_form', true ) );
+	$show_register_form = apply_filters( 'give_show_register_form', get_post_meta( $form_id, '_give_show_register_form', true ), $form_id );
 
 	if ( ( $show_register_form === 'registration' || ( $show_register_form === 'both' && ! isset( $_GET['login'] ) ) ) && ! is_user_logged_in() ) : ?>
 		<div id="give-checkout-login-register-<?php echo $form_id; ?>">
@@ -790,7 +790,7 @@ function give_get_register_fields( $form_id ) {
 		$user_data = get_userdata( $user_ID );
 	}
 
-	$show_register_form = apply_filters( 'give_show_register_form', get_post_meta( $form_id, '_give_show_register_form', true ) );
+	$show_register_form = apply_filters( 'give_show_register_form', get_post_meta( $form_id, '_give_show_register_form', true ), $form_id);
 
 	ob_start(); ?>
 	<fieldset id="give-register-fields-<?php echo $form_id; ?>">
@@ -883,10 +883,8 @@ add_action( 'give_purchase_form_register_fields', 'give_get_register_fields' );
  */
 function give_get_login_fields( $form_id ) {
 
-	global $give_options;
-
 	$form_id            = isset( $_POST['form_id'] ) ? $_POST['form_id'] : $form_id;
-	$show_register_form = apply_filters( 'give_show_register_form', get_post_meta( $form_id, '_give_show_register_form', true ) );
+	$show_register_form = apply_filters( 'give_show_register_form', get_post_meta( $form_id, '_give_show_register_form', true ), $form_id );
 
 	ob_start();
 	?>
