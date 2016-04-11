@@ -152,7 +152,6 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 * @return void
 	 */
 	public function bulk_actions( $which = '' ) {
-		// These aren't really bulk actions but this outputs the markup in the right place
 		give_log_views();
 	}
 
@@ -196,6 +195,38 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 		return $logs_data;
 	}
 
+	/**
+	 * Display Tablenav (extended)
+	 *
+	 * @description: Display the table navigation above or below the table even when no items in the logs, so nav doesn't disappear
+	 *
+	 * @see: https://github.com/WordImpress/Give/issues/564
+	 *
+	 * @since 1.4.1
+	 * @access protected
+	 *
+	 * @param string $which
+	 */
+	protected function display_tablenav( $which ) {
+		if ( 'top' === $which ) {
+			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
+		}
+		?>
+		<div class="tablenav <?php echo esc_attr( $which ); ?>">
+
+			<div class="alignleft actions bulkactions">
+				<?php $this->bulk_actions( $which ); ?>
+			</div>
+			<?php
+			$this->extra_tablenav( $which );
+			$this->pagination( $which );
+			?>
+
+			<br class="clear"/>
+		</div>
+		<?php
+	}
+	
 	/**
 	 * Setup the final data for the table
 	 *
