@@ -12,8 +12,8 @@
  */
 
 // Exit if accessed directly
-if (!defined('ABSPATH')) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 /**
@@ -22,74 +22,73 @@ if (!defined('ABSPATH')) {
  * @since 1.0
  * @return bool True if AJAX works, false otherwise
  */
-function give_test_ajax_works()
-{
+function give_test_ajax_works() {
 
-    // Check if the Airplane Mode plugin is installed
-    if (class_exists('Airplane_Mode_Core')) {
+	// Check if the Airplane Mode plugin is installed
+	if ( class_exists( 'Airplane_Mode_Core' ) ) {
 
-        $airplane = Airplane_Mode_Core::getInstance();
+		$airplane = Airplane_Mode_Core::getInstance();
 
-        if (method_exists($airplane, 'enabled')) {
+		if ( method_exists( $airplane, 'enabled' ) ) {
 
-            if ($airplane->enabled()) {
-                return true;
-            }
+			if ( $airplane->enabled() ) {
+				return true;
+			}
 
-        } else {
+		} else {
 
-            if ($airplane->check_status() == 'on') {
-                return true;
-            }
-        }
-    }
+			if ( $airplane->check_status() == 'on' ) {
+				return true;
+			}
+		}
+	}
 
-    add_filter('block_local_requests', '__return_false');
+	add_filter( 'block_local_requests', '__return_false' );
 
-    if (get_transient('_give_ajax_works')) {
-        return true;
-    }
+	if ( get_transient( '_give_ajax_works' ) ) {
+		return true;
+	}
 
-    $params = array(
-        'sslverify' => false,
-        'timeout' => 30,
-        'body' => array(
-            'action' => 'give_test_ajax'
-        )
-    );
+	$params = array(
+		'sslverify' => false,
+		'timeout'   => 30,
+		'body'      => array(
+			'action' => 'give_test_ajax'
+		)
+	);
 
-    $ajax = wp_remote_post(give_get_ajax_url(), $params);
-    $works = true;
+	$ajax  = wp_remote_post( give_get_ajax_url(), $params );
+	$works = true;
 
-    if (is_wp_error($ajax)) {
+	if ( is_wp_error( $ajax ) ) {
 
-        $works = false;
+		$works = false;
 
-    } else {
+	} else {
 
-        if (empty($ajax['response'])) {
-            $works = false;
-        }
+		if ( empty( $ajax['response'] ) ) {
+			$works = false;
+		}
 
-        if (empty($ajax['response']['code']) || 200 !== (int)$ajax['response']['code']) {
-            $works = false;
-        }
+		if ( empty( $ajax['response']['code'] ) || 200 !== (int) $ajax['response']['code'] ) {
+			$works = false;
+		}
 
-        if (empty($ajax['response']['message']) || 'OK' !== $ajax['response']['message']) {
-            $works = false;
-        }
+		if ( empty( $ajax['response']['message'] ) || 'OK' !== $ajax['response']['message'] ) {
+			$works = false;
+		}
 
-        if (!isset($ajax['body']) || 0 !== (int)$ajax['body']) {
-            $works = false;
-        }
+		if ( ! isset( $ajax['body'] ) || 0 !== (int) $ajax['body'] ) {
+			$works = false;
+		}
 
-    }
+	}
 
-    if ($works) {
-        set_transient('_give_ajax_works', '1', DAY_IN_SECONDS);
-    }
+	if ( $works ) {
+		set_transient( '_give_ajax_works', '1', DAY_IN_SECONDS );
+	}
 
-    return $works;
+	return $works;
 }
 
 
@@ -99,18 +98,17 @@ function give_test_ajax_works()
  * @since 1.0
  * @return string
  */
-function give_get_ajax_url()
-{
-    $scheme = defined('FORCE_SSL_ADMIN') && FORCE_SSL_ADMIN ? 'https' : 'admin';
+function give_get_ajax_url() {
+	$scheme = defined( 'FORCE_SSL_ADMIN' ) && FORCE_SSL_ADMIN ? 'https' : 'admin';
 
-    $current_url = give_get_current_page_url();
-    $ajax_url = admin_url('admin-ajax.php', $scheme);
+	$current_url = give_get_current_page_url();
+	$ajax_url    = admin_url( 'admin-ajax.php', $scheme );
 
-    if (preg_match('/^https/', $current_url) && !preg_match('/^https/', $ajax_url)) {
-        $ajax_url = preg_replace('/^http/', 'https', $ajax_url);
-    }
+	if ( preg_match( '/^https/', $current_url ) && ! preg_match( '/^https/', $ajax_url ) ) {
+		$ajax_url = preg_replace( '/^http/', 'https', $ajax_url );
+	}
 
-    return apply_filters('give_ajax_url', $ajax_url);
+	return apply_filters( 'give_ajax_url', $ajax_url );
 }
 
 /**
@@ -119,13 +117,12 @@ function give_get_ajax_url()
  * @since 1.0
  * @return void
  */
-function give_load_checkout_login_fields()
-{
-    do_action('give_purchase_form_login_fields');
-    give_die();
+function give_load_checkout_login_fields() {
+	do_action( 'give_purchase_form_login_fields' );
+	give_die();
 }
 
-add_action('wp_ajax_nopriv_give_checkout_login', 'give_load_checkout_login_fields');
+add_action( 'wp_ajax_nopriv_give_checkout_login', 'give_load_checkout_login_fields' );
 
 /**
  * Load Checkout Fields
@@ -133,24 +130,23 @@ add_action('wp_ajax_nopriv_give_checkout_login', 'give_load_checkout_login_field
  * @since 1.3.6
  * @return void
  */
-function give_load_checkout_fields()
-{
-    $form_id = isset($_POST['form_id']) ? $_POST['form_id'] : '';
+function give_load_checkout_fields() {
+	$form_id = isset( $_POST['form_id'] ) ? $_POST['form_id'] : '';
 
-    ob_start();
+	ob_start();
 
-    do_action( 'give_purchase_form_register_login_fields', $form_id );
+	do_action( 'give_purchase_form_register_login_fields', $form_id );
 
-    $fields = ob_get_clean();
+	$fields = ob_get_clean();
 
-    wp_send_json( array(
-        'fields' => wp_json_encode( $fields ),
-        'submit' => wp_json_encode( give_checkout_button_purchase( $form_id ) ),
-    ) );
+	wp_send_json( array(
+		'fields' => wp_json_encode( $fields ),
+		'submit' => wp_json_encode( give_checkout_button_purchase( $form_id ) ),
+	) );
 }
 
-add_action('wp_ajax_nopriv_give_cancel_login', 'give_load_checkout_fields');
-add_action('wp_ajax_nopriv_give_checkout_register', 'give_load_checkout_fields');
+add_action( 'wp_ajax_nopriv_give_cancel_login', 'give_load_checkout_fields' );
+add_action( 'wp_ajax_nopriv_give_checkout_register', 'give_load_checkout_fields' );
 
 /**
  * Get Form Title via AJAX (used only in WordPress Admin)
@@ -158,21 +154,20 @@ add_action('wp_ajax_nopriv_give_checkout_register', 'give_load_checkout_fields')
  * @since 1.0
  * @return void
  */
-function give_ajax_get_form_title()
-{
-    if (isset($_POST['form_id'])) {
-        $title = get_the_title($_POST['form_id']);
-        if ($title) {
-            echo $title;
-        } else {
-            echo 'fail';
-        }
-    }
-    give_die();
+function give_ajax_get_form_title() {
+	if ( isset( $_POST['form_id'] ) ) {
+		$title = get_the_title( $_POST['form_id'] );
+		if ( $title ) {
+			echo $title;
+		} else {
+			echo 'fail';
+		}
+	}
+	give_die();
 }
 
-add_action('wp_ajax_give_get_form_title', 'give_ajax_get_form_title');
-add_action('wp_ajax_nopriv_give_get_form_title', 'give_ajax_get_form_title');
+add_action( 'wp_ajax_give_get_form_title', 'give_ajax_get_form_title' );
+add_action( 'wp_ajax_nopriv_give_get_form_title', 'give_ajax_get_form_title' );
 
 /**
  * Retrieve a states drop down
@@ -180,39 +175,38 @@ add_action('wp_ajax_nopriv_give_get_form_title', 'give_ajax_get_form_title');
  * @since 1.0
  * @return void
  */
-function give_ajax_get_states_field()
-{
+function give_ajax_get_states_field() {
 
-    if (empty($_POST['country'])) {
-        $_POST['country'] = give_get_country();
-    }
-    $states = give_get_states($_POST['country']);
+	if ( empty( $_POST['country'] ) ) {
+		$_POST['country'] = give_get_country();
+	}
+	$states = give_get_states( $_POST['country'] );
 
-    if (!empty($states)) {
+	if ( ! empty( $states ) ) {
 
-        $args = array(
-            'name' => $_POST['field_name'],
-            'id' => $_POST['field_name'],
-            'class' => $_POST['field_name'] . '  give-select',
-            'options' => give_get_states($_POST['country']),
-            'show_option_all' => false,
-            'show_option_none' => false
-        );
+		$args = array(
+			'name'             => $_POST['field_name'],
+			'id'               => $_POST['field_name'],
+			'class'            => $_POST['field_name'] . '  give-select',
+			'options'          => give_get_states( $_POST['country'] ),
+			'show_option_all'  => false,
+			'show_option_none' => false
+		);
 
-        $response = Give()->html->select($args);
+		$response = Give()->html->select( $args );
 
-    } else {
+	} else {
 
-        $response = 'nostates';
-    }
+		$response = 'nostates';
+	}
 
-    echo $response;
+	echo $response;
 
-    give_die();
+	give_die();
 }
 
-add_action('wp_ajax_give_get_states', 'give_ajax_get_states_field');
-add_action('wp_ajax_nopriv_give_get_states', 'give_ajax_get_states_field');
+add_action( 'wp_ajax_give_get_states', 'give_ajax_get_states_field' );
+add_action( 'wp_ajax_nopriv_give_get_states', 'give_ajax_get_states_field' );
 
 /**
  * Retrieve a states drop down
@@ -220,44 +214,43 @@ add_action('wp_ajax_nopriv_give_get_states', 'give_ajax_get_states_field');
  * @since 1.0
  * @return void
  */
-function give_ajax_form_search()
-{
-    global $wpdb;
+function give_ajax_form_search() {
+	global $wpdb;
 
-    $search = esc_sql(sanitize_text_field($_GET['s']));
-    $results = array();
-    if (current_user_can('edit_give_forms')) {
-        $items = $wpdb->get_results("SELECT ID,post_title FROM $wpdb->posts WHERE `post_type` = 'give_forms' AND `post_title` LIKE '%$search%' LIMIT 50");
-    } else {
-        $items = $wpdb->get_results("SELECT ID,post_title FROM $wpdb->posts WHERE `post_type` = 'give_forms' AND `post_status` = 'publish' AND `post_title` LIKE '%$search%' LIMIT 50");
-    }
+	$search  = esc_sql( sanitize_text_field( $_GET['s'] ) );
+	$results = array();
+	if ( current_user_can( 'edit_give_forms' ) ) {
+		$items = $wpdb->get_results( "SELECT ID,post_title FROM $wpdb->posts WHERE `post_type` = 'give_forms' AND `post_title` LIKE '%$search%' LIMIT 50" );
+	} else {
+		$items = $wpdb->get_results( "SELECT ID,post_title FROM $wpdb->posts WHERE `post_type` = 'give_forms' AND `post_status` = 'publish' AND `post_title` LIKE '%$search%' LIMIT 50" );
+	}
 
-    if ($items) {
+	if ( $items ) {
 
-        foreach ($items as $item) {
+		foreach ( $items as $item ) {
 
-            $results[] = array(
-                'id' => $item->ID,
-                'name' => $item->post_title
-            );
-        }
+			$results[] = array(
+				'id'   => $item->ID,
+				'name' => $item->post_title
+			);
+		}
 
-    } else {
+	} else {
 
-        $items[] = array(
-            'id' => 0,
-            'name' => __('No results found', 'give')
-        );
+		$items[] = array(
+			'id'   => 0,
+			'name' => __( 'No results found', 'give' )
+		);
 
-    }
+	}
 
-    echo json_encode($results);
+	echo json_encode( $results );
 
-    give_die();
+	give_die();
 }
 
-add_action('wp_ajax_give_form_search', 'give_ajax_form_search');
-add_action('wp_ajax_nopriv_give_form_search', 'give_ajax_form_search');
+add_action( 'wp_ajax_give_form_search', 'give_ajax_form_search' );
+add_action( 'wp_ajax_nopriv_give_form_search', 'give_ajax_form_search' );
 
 /**
  * Search the donors database via Ajax
@@ -265,43 +258,42 @@ add_action('wp_ajax_nopriv_give_form_search', 'give_ajax_form_search');
  * @since 1.0
  * @return void
  */
-function give_ajax_donor_search()
-{
-    global $wpdb;
+function give_ajax_donor_search() {
+	global $wpdb;
 
-    $search = esc_sql(sanitize_text_field($_GET['s']));
-    $results = array();
-    if (!current_user_can('view_give_reports')) {
-        $donors = array();
-    } else {
-        $donors = $wpdb->get_results("SELECT id,name,email FROM {$wpdb->prefix}give_donors WHERE `name` LIKE '%$search%' OR `email` LIKE '%$search%' LIMIT 50");
-    }
+	$search  = esc_sql( sanitize_text_field( $_GET['s'] ) );
+	$results = array();
+	if ( ! current_user_can( 'view_give_reports' ) ) {
+		$donors = array();
+	} else {
+		$donors = $wpdb->get_results( "SELECT id,name,email FROM {$wpdb->prefix}give_donors WHERE `name` LIKE '%$search%' OR `email` LIKE '%$search%' LIMIT 50" );
+	}
 
-    if ($donors) {
+	if ( $donors ) {
 
-        foreach ($donors as $donor) {
+		foreach ( $donors as $donor ) {
 
-            $results[] = array(
-                'id' => $donor->id,
-                'name' => $donor->name . '(' . $donor->email . ')'
-            );
-        }
+			$results[] = array(
+				'id'   => $donor->id,
+				'name' => $donor->name . '(' . $donor->email . ')'
+			);
+		}
 
-    } else {
+	} else {
 
-        $donors[] = array(
-            'id' => 0,
-            'name' => __('No results found', 'give')
-        );
+		$donors[] = array(
+			'id'   => 0,
+			'name' => __( 'No results found', 'give' )
+		);
 
-    }
+	}
 
-    echo json_encode($results);
+	echo json_encode( $results );
 
-    give_die();
+	give_die();
 }
 
-add_action('wp_ajax_give_donor_search', 'give_ajax_donor_search');
+add_action( 'wp_ajax_give_donor_search', 'give_ajax_donor_search' );
 
 
 /**
@@ -310,33 +302,32 @@ add_action('wp_ajax_give_donor_search', 'give_ajax_donor_search');
  * @since 1.0
  * @return void
  */
-function give_ajax_search_users()
-{
+function give_ajax_search_users() {
 
-    if (current_user_can('manage_give_settings')) {
+	if ( current_user_can( 'manage_give_settings' ) ) {
 
-        $search_query = trim($_POST['user_name']);
+		$search_query = trim( $_POST['user_name'] );
 
-        $found_users = get_users(array(
-                'number' => 9999,
-                'search' => $search_query . '*'
-            )
-        );
+		$found_users = get_users( array(
+				'number' => 9999,
+				'search' => $search_query . '*'
+			)
+		);
 
-        $user_list = '<ul>';
-        if ($found_users) {
-            foreach ($found_users as $user) {
-                $user_list .= '<li><a href="#" data-login="' . esc_attr($user->user_login) . '">' . esc_html($user->user_login) . '</a></li>';
-            }
-        } else {
-            $user_list .= '<li>' . __('No users found', 'give') . '</li>';
-        }
-        $user_list .= '</ul>';
+		$user_list = '<ul>';
+		if ( $found_users ) {
+			foreach ( $found_users as $user ) {
+				$user_list .= '<li><a href="#" data-login="' . esc_attr( $user->user_login ) . '">' . esc_html( $user->user_login ) . '</a></li>';
+			}
+		} else {
+			$user_list .= '<li>' . __( 'No users found', 'give' ) . '</li>';
+		}
+		$user_list .= '</ul>';
 
-        echo json_encode(array('results' => $user_list));
+		echo json_encode( array( 'results' => $user_list ) );
 
-    }
-    die();
+	}
+	die();
 }
 
-add_action('wp_ajax_give_search_users', 'give_ajax_search_users');
+add_action( 'wp_ajax_give_search_users', 'give_ajax_search_users' );

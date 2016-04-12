@@ -133,7 +133,7 @@ function give_is_success_page() {
  * @return      void
  */
 function give_send_to_success_page( $query_string = null ) {
-	
+
 	$redirect = give_get_success_page_uri();
 
 	if ( $query_string ) {
@@ -922,3 +922,37 @@ function give_goal( $form_id = 0, $echo = true ) {
 
 add_filter( 'give_form_goal', 'give_format_amount', 10 );
 add_filter( 'give_form_goal', 'give_currency_filter', 20 );
+
+
+/**
+ * Checks if users can only donate when logged in
+ *
+ * @since 1.0
+ * @global $give_options
+ * @return bool $ret Whether or not the logged_in_only setting is set
+ */
+function give_logged_in_only( $form_id ) {
+
+	$form_option = get_post_meta( $form_id, '_give_logged_in_only', true );
+
+	$ret = ! empty( $form_option ) ? $form_option : false;
+
+	return (bool) apply_filters( 'give_logged_in_only', $ret, $form_id );
+
+}
+
+
+/**
+ * Checks the option for the "Register / Login Option"
+ *
+ * @since 1.4.1
+ *
+ * @param $form_id
+ */
+function give_show_login_register_option( $form_id ) {
+	
+	$show_register_form = get_post_meta( $form_id, '_give_show_register_form', true );
+
+	return apply_filters( 'give_show_register_form', $show_register_form, $form_id);
+	
+}

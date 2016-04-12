@@ -233,25 +233,6 @@ function give_is_cc_verify_enabled() {
 	return (bool) apply_filters( 'give_verify_credit_cards', $ret );
 }
 
-
-/**
- * Checks if users can only donate when logged in
- *
- * @since 1.0
- * @global $give_options
- * @return bool $ret Whether or not the logged_in_only setting is set
- */
-function give_logged_in_only( $form_id ) {
-
-	$form_option = get_post_meta( $form_id, '_give_logged_in_only', true );
-
-	$ret = ! empty( $form_option ) ? $form_option : false;
-
-	return (bool) apply_filters( 'give_logged_in_only', $ret, $form_id );
-
-}
-
-
 /**
  * Retrieve timezone
  *

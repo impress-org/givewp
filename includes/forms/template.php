@@ -27,14 +27,14 @@ function give_get_donation_form( $args = array() ) {
 
 	global $post;
 
-	$post_id = is_object( $post ) ? $post->ID : 0;
+	$form_id = is_object( $post ) ? $post->ID : 0;
 
 	if ( isset( $args['id'] ) ) {
-		$post_id = $args['id'];
+		$form_id = $args['id'];
 	}
 
 	$defaults = apply_filters( 'give_form_args_defaults', array(
-		'form_id' => $post_id
+		'form_id' => $form_id
 	) );
 
 	$args = wp_parse_args( $args, $defaults );
@@ -91,23 +91,24 @@ function give_get_donation_form( $args = array() ) {
 		<?php
 		if ( isset( $args['show_title'] ) && $args['show_title'] == true ) {
 
-			echo apply_filters( 'give_form_title', '<h2  class="give-form-title">' . get_the_title( $post_id ) . '</h2>' );
+			echo apply_filters( 'give_form_title', '<h2  class="give-form-title">' . get_the_title( $form_id ) . '</h2>' );
 
 		} ?>
 
 		<?php do_action( 'give_pre_form', $form->ID, $args ); ?>
 
-		<form id="give-form-<?php echo $post_id; ?>" class="give-form give-form-<?php echo absint( $form->ID ); ?><?php echo $float_labels_option; ?>" action="<?php echo $form_action; ?>" method="post">
+		<form id="give-form-<?php echo $form_id; ?>" class="give-form give-form-<?php echo absint( $form->ID ); ?><?php echo $float_labels_option; ?>" action="<?php echo $form_action; ?>" method="post">
 			<input type="hidden" name="give-form-id" value="<?php echo $form->ID; ?>"/>
 			<input type="hidden" name="give-form-title" value="<?php echo htmlentities( $form->post_title ); ?>"/>
 			<input type="hidden" name="give-current-url" value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
 			<input type="hidden" name="give-form-url" value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
 			<input type="hidden" name="give-form-minimum" value="<?php echo give_get_form_minimum_price( $form->ID ); ?>"/>
 			<?php
+
 			//Price ID hidden field for variable (mult-level) donation forms
-			if ( give_has_variable_prices( $post_id ) ) {
+			if ( give_has_variable_prices( $form_id ) ) {
 				//get default selected price ID
-				$prices   = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $post_id ), $post_id );
+				$prices   = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
 				$price_id = 0;
 				//loop through prices
 				foreach ( $prices as $price ) {
@@ -216,7 +217,7 @@ add_action( 'give_purchase_form', 'give_show_purchase_form' );
  */
 function give_show_register_login_fields( $form_id ) {
 
-	$show_register_form = apply_filters( 'give_show_register_form', get_post_meta( $form_id, '_give_show_register_form', true ), $form_id );
+	$show_register_form = give_show_login_register_option( $form_id );
 
 	if ( ( $show_register_form === 'registration' || ( $show_register_form === 'both' && ! isset( $_GET['login'] ) ) ) && ! is_user_logged_in() ) : ?>
 		<div id="give-checkout-login-register-<?php echo $form_id; ?>">
@@ -302,7 +303,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 	<?php }
 
 	do_action( 'give_after_donation_amount', $form_id, $args );
-	
+
 	//Custom Amount Text
 	if ( ! $variable_pricing && $allow_custom_amount == 'yes' && ! empty( $custom_amount_text ) ) { ?>
 		<p class="give-custom-amount-text"><?php echo $custom_amount_text; ?></p>
@@ -789,7 +790,7 @@ function give_get_register_fields( $form_id ) {
 		$user_data = get_userdata( $user_ID );
 	}
 
-	$show_register_form = apply_filters( 'give_show_register_form', get_post_meta( $form_id, '_give_show_register_form', true ), $form_id );
+	$show_register_form = give_show_login_register_option( $form_id );
 
 	ob_start(); ?>
 	<fieldset id="give-register-fields-<?php echo $form_id; ?>">
@@ -812,7 +813,7 @@ function give_get_register_fields( $form_id ) {
 					echo ' <span class="sub-text">' . __( '(optional)', 'give' ) . '</span>';
 				} ?></legend>
 			<?php do_action( 'give_register_account_fields_before', $form_id ); ?>
-			<p id="give-user-login-wrap-<?php echo $form_id; ?>" class="form-row form-row-one-third form-row-first">
+			<div id="give-user-login-wrap-<?php echo $form_id; ?>" class="form-row form-row-one-third form-row-first">
 				<label for="give-user-login-<?php echo $form_id; ?>">
 					<?php _e( 'Username', 'give' ); ?>
 					<?php if ( give_logged_in_only( $form_id ) ) { ?>
@@ -824,9 +825,9 @@ function give_get_register_fields( $form_id ) {
 				<input name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" class="<?php if ( give_logged_in_only( $form_id ) ) {
 					echo 'required ';
 				} ?>give-input" type="text" placeholder="<?php _e( 'Username', 'give' ); ?>" title="<?php _e( 'Username', 'give' ); ?>"/>
-			</p>
+			</div>
 
-			<p id="give-user-pass-wrap-<?php echo $form_id; ?>" class="form-row form-row-one-third">
+			<div id="give-user-pass-wrap-<?php echo $form_id; ?>" class="form-row form-row-one-third">
 				<label for="give-user-pass-<?php echo $form_id; ?>">
 					<?php _e( 'Password', 'give' ); ?>
 					<?php if ( give_logged_in_only( $form_id ) ) { ?>
@@ -838,9 +839,9 @@ function give_get_register_fields( $form_id ) {
 				<input name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>" class="<?php if ( give_logged_in_only( $form_id ) ) {
 					echo 'required ';
 				} ?>give-input" placeholder="<?php _e( 'Password', 'give' ); ?>" type="password"/>
-			</p>
+			</div>
 
-			<p id="give-user-pass-confirm-wrap-<?php echo $form_id; ?>" class="give-register-password form-row form-row-one-third">
+			<div id="give-user-pass-confirm-wrap-<?php echo $form_id; ?>" class="give-register-password form-row form-row-one-third">
 				<label for="give-user-pass-confirm-<?php echo $form_id; ?>">
 					<?php _e( 'Confirm PW', 'give' ); ?>
 					<?php if ( give_logged_in_only( $form_id ) ) { ?>
@@ -852,7 +853,7 @@ function give_get_register_fields( $form_id ) {
 				<input name="give_user_pass_confirm" id="give-user-pass-confirm-<?php echo $form_id; ?>" class="<?php if ( give_logged_in_only( $form_id ) ) {
 					echo 'required ';
 				} ?>give-input" placeholder="<?php _e( 'Confirm password', 'give' ); ?>" type="password"/>
-			</p>
+			</div>
 			<?php do_action( 'give_register_account_fields_after', $form_id ); ?>
 		</fieldset>
 
@@ -883,7 +884,7 @@ add_action( 'give_purchase_form_register_fields', 'give_get_register_fields' );
 function give_get_login_fields( $form_id ) {
 
 	$form_id            = isset( $_POST['form_id'] ) ? $_POST['form_id'] : $form_id;
-	$show_register_form = apply_filters( 'give_show_register_form', get_post_meta( $form_id, '_give_show_register_form', true ), $form_id );
+	$show_register_form = give_show_login_register_option( $form_id );
 
 	ob_start();
 	?>
@@ -896,8 +897,7 @@ function give_get_login_fields( $form_id ) {
 		<?php if ( $show_register_form == 'both' ) { ?>
 			<p class="give-new-account-link">
 				<?php _e( 'Need to create an account?', 'give' ); ?>&nbsp;
-				<a href="<?php echo remove_query_arg( 'login' ); ?>" class="give-checkout-register-cancel"
-				   data-action="give_checkout_register">
+				<a href="<?php echo remove_query_arg( 'login' ); ?>" class="give-checkout-register-cancel" data-action="give_checkout_register">
 					<?php _e( 'Register', 'give' );
 					if ( ! give_logged_in_only( $form_id ) ) {
 						echo ' ' . __( 'or checkout as a guest.', 'give' );
@@ -908,7 +908,7 @@ function give_get_login_fields( $form_id ) {
 				<span class="give-loading-animation"></span> <?php _e( 'Loading...', 'give' ); ?> </p>
 		<?php } ?>
 		<?php do_action( 'give_checkout_login_fields_before', $form_id ); ?>
-		<p id="give-user-login-wrap-<?php echo $form_id; ?>" class="form-row form-row-first">
+		<div id="give-user-login-wrap-<?php echo $form_id; ?>" class="form-row form-row-first">
 			<label class="give-label" for="give-user-login-<?php echo $form_id; ?>">
 				<?php _e( 'Username', 'give' ); ?>
 				<?php if ( give_logged_in_only( $form_id ) ) { ?>
@@ -919,9 +919,9 @@ function give_get_login_fields( $form_id ) {
 			<input class="<?php if ( give_logged_in_only( $form_id ) ) {
 				echo 'required ';
 			} ?>give-input" type="text" name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" value="" placeholder="<?php _e( 'Your username', 'give' ); ?>"/>
-		</p>
+		</div>
 
-		<p id="give-user-pass-wrap-<?php echo $form_id; ?>" class="give_login_password form-row form-row-last">
+		<div id="give-user-pass-wrap-<?php echo $form_id; ?>" class="give_login_password form-row form-row-last">
 			<label class="give-label" for="give-user-pass-<?php echo $form_id; ?>">
 				<?php _e( 'Password', 'give' ); ?>
 				<?php if ( give_logged_in_only( $form_id ) ) { ?>
@@ -932,15 +932,15 @@ function give_get_login_fields( $form_id ) {
 				echo 'required ';
 			} ?>give-input" type="password" name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>" placeholder="<?php _e( 'Your password', 'give' ); ?>"/>
 			<input type="hidden" name="give-purchase-var" value="needs-to-login"/>
-		</p>
+		</div>
 
-		<p id="give-user-login-submit-<?php echo $form_id; ?>" class="give-clearfix">
+		<div id="give-user-login-submit-<?php echo $form_id; ?>" class="give-clearfix">
 			<input type="submit" class="give-submit give-btn button" name="give_login_submit" value="<?php _e( 'Login', 'give' ); ?>"/>
 			<?php if ( $show_register_form !== 'login' ) { ?>
 				<input type="button" data-action="give_cancel_login" class="give-cancel-login give-checkout-register-cancel give-btn button" name="give_login_cancel" value="<?php _e( 'Cancel', 'give' ); ?>"/>
 			<?php } ?>
 			<span class="give-loading-animation"></span>
-		</p>
+		</div>
 		<?php do_action( 'give_checkout_login_fields_after', $form_id ); ?>
 	</fieldset><!--end #give-login-fields-->
 	<?php
@@ -1138,7 +1138,6 @@ function give_checkout_button_purchase( $form_id ) {
 }
 
 /**
- *
  * Give Agree to Terms
  *
  * @description Outputs the JavaScript code for the Agree to Terms section to toggle the T&Cs text
@@ -1370,3 +1369,35 @@ function give_test_mode_frontend_warning() {
 }
 
 add_action( 'give_pre_form', 'give_test_mode_frontend_warning', 10 );
+
+
+/**
+ * Members-only Form
+ *
+ * @description If "Disable Guest Donations" a and "Display Register / Login" is set to none
+ * @since       1.4.1
+ */
+
+function give_members_only_form( $final_output, $args ) {
+
+	$form_id = isset( $args['form_id'] ) ? $args['form_id'] : 0;
+
+	//Sanity Check: Must have form_id & not be logged in
+	if ( empty( $form_id ) || is_user_logged_in() ) {
+		return $final_output;
+	}
+
+	//Logged in only and Register / Login set to none
+	if ( give_logged_in_only( $form_id ) && give_show_login_register_option( $form_id ) == 'none' ) {
+
+		$final_output = give_output_error( __( 'Please login in order to complete your donation.', 'give' ), false );
+
+		return apply_filters( 'give_members_only_output', $final_output, $form_id );
+
+	}
+
+	return $final_output;
+
+}
+
+add_filter( 'give_donate_form', 'give_members_only_form', 10, 2 );
