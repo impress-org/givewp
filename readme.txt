@@ -63,7 +63,7 @@ Do you have some development experience? We've built in an advanced templating s
 Stay in touch with us for important plugin news and updates:
 
 * **[Give Website](https://givewp.com "Visit the the Give website")**
-* **[Give Add-ons](https://givewp.com/addons "View all Give add-ons")**
+* **[Give Add-ons](https://givewp.com/addons "View all Give Add-ons")**
 * **[Newsletter](http://eepurl.com/bggG99 "Subscribe to Give via MailChimp")**
 * **[Facebook](http://facebook.com/wpgive "Visit the Give on Facebook")**
 * **[GitHub](https://github.com/WordImpress/Give "Visit the the developers of Give - WordImpress")**
@@ -116,13 +116,27 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 == Screenshots ==
 
-1. The donation fields as a responsive modal pop-up
+1. Creating powerful donation forms is easy with Give. Simply install the plugin, create a new donation form, set the desired giving options, and publish!
 
-2. A sample stylized Give form
+2. Donation form fields can appear within a modal window (as shown here), be revealed with a nice sliding animation, or display entirely on the page (default).
 
-3. Bar graph charting
+3. Give makes the donation process simple and easy for your donors. This helps maximize coversion rates and further empower your cause.
 
-4. Multi-level donations
+4. The multi-level donation amount functionality allows you to set different giving levels for your donors to choose from. In addition, you can allow donors to specify custom donation amounts and even set donation goals.
+
+5. The admin view of a donation form with multi-level amounts configured. Give's flexible options allow you to control whether the amounts output as radio buttons, a select field, or input buttons.
+
+6. Don't need donation levels? No problem. You can set a default amount and allow your donor's to configure a custom donation amount to create a simple, yet powerful, donation form.
+
+7. In-depth donation reports allow you to track just how much your cause has raised over time. You can even export the data to CSV or PDF formats.
+
+8. Extend Give with a robust suite of powerful [Add-ons](https://givewp.com/addons "View all Give Add-ons"). Accept recurring donations, credit cards, add custom form fields, and more!
+
+9. Give is thoroughly [documented](https://givewp.com/documentation "Visit the Give documentation") to help you get started quickly and learn basic to advanced features and functionalities.
+
+10. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
+
+11. We are proud to build Give in collaboration with many of the WordPress communities' top developers.
 
 == Changelog ==
 
