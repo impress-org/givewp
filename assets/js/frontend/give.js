@@ -98,7 +98,7 @@ jQuery( function ( $ ) {
 					//Remove popup class
 					this_form.removeClass( 'mfp-hide' );
 					//Show all fields again
-					this_form.children().not( '#give_purchase_form_wrap, #give-payment-mode-select, .mfp-close' ).show();
+					this_form.children().not( '#give_purchase_form_wrap, #give-payment-mode-select, .mfp-close, .give-hidden' ).show();
 				}
 			}
 		} );

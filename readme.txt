@@ -140,6 +140,9 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 == Changelog ==
 
+= 1.4.2 =
+* Fix: Closing Give Donation Modal Displays "give-hidden" elements in form imcorrectly - https://github.com/WordImpress/Give/issues/582
+
 = 1.4.1 =
 * Fix: Member-only donation forms don't display member-only validation responses properly -  https://github.com/WordImpress/Give/issues/551
 * Fix: Email access cookie path set incorrectly breaks viewing details -  https://github.com/WordImpress/Give/issues/570
