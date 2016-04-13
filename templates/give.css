@@ -1116,7 +1116,8 @@ form[id*='give-form'] select.give-select-level {
   min-width: 155px;
   border: 1px solid #ccc;
   margin: 0 0 15px;
-  display: block; }
+  display: block;
+  clear: both; }
 
 /*---------------------------------
 Buttons
