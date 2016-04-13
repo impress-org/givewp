@@ -123,7 +123,7 @@ jQuery(function ($) {
     /**
      * Validate cc fields on change
      */
-    doc.on( 'keyup change', '.give-form .card-number, .give-form .card-cvc, .give-form .card-expiry', function () {
+    doc.on('keyup change', '.give-form .card-number, .give-form .card-cvc, .give-form .card-expiry', function () {
         var el = $(this),
             give_form = el.parents('form.give-form'),
             id = el.attr('id'),
@@ -330,8 +330,15 @@ jQuery(function ($) {
         var currency_symbol = parent_form.find('.give-currency-symbol').text();
 
         //remove old selected class & add class for CSS purposes
-        $(selected_field).parents('.give-donation-levels-wrap').find('.give-default-level').removeClass('give-default-level');
-        $(selected_field).addClass('give-default-level');
+        selected_field.parents('.give-donation-levels-wrap').find('.give-default-level').removeClass('give-default-level');
+        selected_field.find('option').removeClass('give-default-level');
+        
+        if (selected_field.is('select')) {
+            selected_field.find(':selected').addClass('give-default-level');
+        } else {
+            selected_field.addClass('give-default-level');
+        }
+
         parent_form.find('.give-amount-top').removeClass('invalid-amount');
 
         //Is this a custom amount selection?
@@ -430,7 +437,7 @@ jQuery(function ($) {
 
 
     }
-    
+
     sent_back_to_form();
 
 });
