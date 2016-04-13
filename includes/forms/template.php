@@ -54,8 +54,9 @@ function give_get_donation_form( $args = array() ) {
 		give_get_current_page_url()
 	) );
 
-	if ( 'publish' !== $form->post_status && ! current_user_can( 'edit_product', $form->ID ) ) {
-		return false; // Product not published or user doesn't have permission to view drafts
+	//Sanity Check: Donation form not published or user doesn't have permission to view drafts
+	if ( 'publish' !== $form->post_status && ! current_user_can( 'edit_give_forms', $form->ID ) ) {
+		return false;
 	}
 
 	$display_option = ( isset( $args['display_style'] ) && ! empty( $args['display_style'] ) )
@@ -66,13 +67,21 @@ function give_get_donation_form( $args = array() ) {
 		? ' float-labels-enabled'
 		: '';
 
-
-	$form_classes_array = apply_filters( 'give_form_classes', array(
+	//Form Wrap Classes
+	$form_wrap_classes_array = apply_filters( 'give_form_wrap_classes', array(
 		'give-form-wrap',
 		'give-display-' . $display_option
 	), $form->ID, $args );
+	$form_wrap_classes = implode( ' ', $form_wrap_classes_array );
 
+	//Form Classes
+	$form_classes_array = apply_filters( 'give_form_classes', array(
+		'give-form',
+		'give-form-' . $form->ID,
+		$float_labels_option
+	), $form->ID, $args );
 	$form_classes = implode( ' ', $form_classes_array );
+
 
 	ob_start();
 
@@ -86,18 +95,18 @@ function give_get_donation_form( $args = array() ) {
 	 */
 	do_action( 'give_pre_form_output', $form->ID, $args ); ?>
 
-	<div id="give-form-<?php echo $form->ID; ?>-wrap" class="<?php echo $form_classes; ?>">
+	<div id="give-form-<?php echo $form->ID; ?>-wrap" class="<?php echo $form_wrap_classes; ?>">
 
 		<?php
 		if ( isset( $args['show_title'] ) && $args['show_title'] == true ) {
 
-			echo apply_filters( 'give_form_title', '<h2  class="give-form-title">' . get_the_title( $form_id ) . '</h2>' );
+			echo apply_filters( 'give_form_title', '<h2 class="give-form-title">' . get_the_title( $form_id ) . '</h2>' );
 
 		} ?>
 
 		<?php do_action( 'give_pre_form', $form->ID, $args ); ?>
 
-		<form id="give-form-<?php echo $form_id; ?>" class="give-form give-form-<?php echo absint( $form->ID ); ?><?php echo $float_labels_option; ?>" action="<?php echo $form_action; ?>" method="post">
+		<form id="give-form-<?php echo $form_id; ?>" class="<?php echo $form_classes; ?>" action="<?php echo $form_action; ?>" method="post">
 			<input type="hidden" name="give-form-id" value="<?php echo $form->ID; ?>"/>
 			<input type="hidden" name="give-form-title" value="<?php echo htmlentities( $form->post_title ); ?>"/>
 			<input type="hidden" name="give-current-url" value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
@@ -410,7 +419,7 @@ function give_output_levels( $form_id ) {
 			//first loop through prices
 			foreach ( $prices as $price ) {
 				$level_text    = apply_filters( 'give_form_level_text', ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( give_format_amount( $price['_give_amount'] ) ), $form_id, $price );
-				$level_classes = apply_filters( 'give_form_level_classes', 'give-donation-level-' . $form_id, $form_id, $price );
+				$level_classes = apply_filters( 'give_form_level_classes', 'give-donation-level-' . $form_id . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? ' give-default-level' : '' ), $form_id, $price );
 
 				$output .= '<option data-price-id="' . $price['_give_id']['level_id'] . '" class="' . $level_classes . '" ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'selected="selected"' : '' ) . ' value="' . give_format_amount( $price['_give_amount'] ) . '">';
 				$output .= $level_text;
