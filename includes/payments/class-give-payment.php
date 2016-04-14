@@ -278,7 +278,7 @@ final class Give_Payment {
 	protected $parent_payment = 0;
 
 	/**
-	 * Setup the EDD Payments class
+	 * Setup the Give Payments class
 	 *
 	 * @since 1.0
 	 *
@@ -518,11 +518,11 @@ final class Give_Payment {
 			$customer = new stdClass;
 
 			if ( did_action( 'give_pre_process_purchase' ) && is_user_logged_in() ) {
-				$customer = new EDD_customer( get_current_user_id(), true );
+				$customer = new Give_customer( get_current_user_id(), true );
 			}
 
 			if ( empty( $customer->id ) ) {
-				$customer = new EDD_Customer( $this->email );
+				$customer = new Give_Customer( $this->email );
 			}
 
 			if ( empty( $customer->id ) ) {
@@ -645,9 +645,9 @@ final class Give_Payment {
 									}
 
 									if ( 'publish' === $this->status || 'complete' === $this->status || 'revoked' === $this->status ) {
-										$download = new EDD_Download( $item['id'] );
-										$download->decrease_sales( $item['quantity'] );
-										$download->decrease_earnings( $item['amount'] );
+										$form = new Give_Donate_Form( $item['id'] );
+										$form->decrease_sales( $item['quantity'] );
+										$form->decrease_earnings( $item['amount'] );
 
 										$total_decrease += $item['amount'];
 									}
@@ -770,7 +770,7 @@ final class Give_Payment {
 
 			if ( 'pending' !== $this->status ) {
 
-				$customer = new EDD_Customer( $this->customer_id );
+				$customer = new Give_Customer( $this->customer_id );
 
 				$total_change = $total_increase - $total_decrease;
 				if ( $total_change < 0 ) {
@@ -1327,7 +1327,7 @@ final class Give_Payment {
 		// Decrement the stats for the customer
 		if ( ! empty( $this->customer_id ) ) {
 
-			$customer = new EDD_Customer( $this->customer_id );
+			$customer = new Give_Customer( $this->customer_id );
 
 			if ( true === $alter_customer_value ) {
 				$customer->decrease_value( $this->total );
