@@ -1383,7 +1383,7 @@ add_action( 'give_pre_form', 'give_test_mode_frontend_warning', 10 );
 /**
  * Members-only Form
  *
- * @description If "Disable Guest Donations" a and "Display Register / Login" is set to none
+ * @description If "Disable Guest Donations" and "Display Register / Login" is set to none
  * @since       1.4.1
  */
 
