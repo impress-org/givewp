@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string Login form
  */
 function give_login_form( $redirect = '' ) {
-	global $give_options, $give_login_redirect;
+	global $give_login_redirect;
 
 	if ( empty( $redirect ) ) {
 		$redirect = add_query_arg('give-login-success', 'true', give_get_current_page_url());
