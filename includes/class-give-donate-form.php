@@ -70,7 +70,7 @@ class Give_Donate_Form {
 	 *
 	 * @since 1.0
 	 *
-	 * @param bool  $_id
+	 * @param bool $_id
 	 * @param array $_args
 	 */
 	public function __construct( $_id = false, $_args = array() ) {
@@ -320,14 +320,18 @@ class Give_Donate_Form {
 	 * Increment the sale count by one
 	 *
 	 * @since 1.0
-	 * @return int|false
+	 *
+	 * @param int $quantity
+	 *
+	 * @return bool|int
 	 */
-	public function increase_sales() {
+	public function increase_sales( $quantity = 1 ) {
 
-		$sales = give_get_form_sales_stats( $this->ID );
-		$sales = $sales + 1;
+		$sales       = give_get_form_sales_stats( $this->ID );
+		$quantity    = absint( $quantity );
+		$total_sales = $sales + $quantity;
 
-		if ( update_post_meta( $this->ID, '_give_form_sales', $sales ) ) {
+		if ( update_post_meta( $this->ID, '_give_form_sales', $total_sales ) ) {
 			$this->sales = $sales;
 
 			return $sales;
@@ -342,18 +346,22 @@ class Give_Donate_Form {
 	 * @since 1.0
 	 * @return int|false
 	 */
-	public function decrease_sales() {
+	public function decrease_sales( $quantity = 1 ) {
 
 		$sales = give_get_form_sales_stats( $this->ID );
-		if ( $sales > 0 ) // Only decrease if not already zero
-		{
-			$sales = $sales - 1;
-		}
+		// Only decrease if not already zero
+		if ( $sales > 0 ) {
+			$quantity    = absint( $quantity );
+			$total_sales = $sales - $quantity;
 
-		if ( update_post_meta( $this->ID, '_give_form_sales', $sales ) ) {
-			$this->sales = $sales;
+			if ( $this->update_meta( '_give_form_sales', $total_sales ) ) {
 
-			return $sales;
+				$this->sales = $total_sales;
+
+				return $this->sales;
+
+			}
+
 		}
 
 		return false;
@@ -456,6 +464,47 @@ class Give_Donate_Form {
 
 		return (bool) apply_filters( 'give_is_free_donation', $is_free, $this->ID, $price_id );
 
+	}
+
+	/**
+	 * Updates a single meta entry for the donation form
+	 *
+	 * @since  1.5
+	 * @access private
+	 *
+	 * @param  string $meta_key The meta_key to update
+	 * @param  string|array|object $meta_value The value to put into the meta
+	 *
+	 * @return bool             The result of the update query
+	 */
+	private function update_meta( $meta_key = '', $meta_value = '' ) {
+
+		global $wpdb;
+
+		if ( empty( $meta_key ) || empty( $meta_value ) ) {
+			return false;
+		}
+
+		// Make sure if it needs to be serialized, we do
+		$meta_value = maybe_serialize( $meta_value );
+
+		if ( is_numeric( $meta_value ) ) {
+			$value_type = is_float( $meta_value ) ? '%f' : '%d';
+		} else {
+			$value_type = "'%s'";
+		}
+
+		$sql = $wpdb->prepare( "UPDATE $wpdb->postmeta SET meta_value = $value_type WHERE post_id = $this->ID AND meta_key = '%s'", $meta_value, $meta_key );
+
+		if ( $wpdb->query( $sql ) ) {
+
+			clean_post_cache( $this->ID );
+
+			return true;
+
+		}
+
+		return false;
 	}
 
 }
