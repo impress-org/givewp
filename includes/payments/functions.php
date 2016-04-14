@@ -119,103 +119,52 @@ function give_get_payment_by( $field = '', $value = '' ) {
  * @return int|bool Payment ID if payment is inserted, false otherwise
  */
 function give_insert_payment( $payment_data = array() ) {
+
 	if ( empty( $payment_data ) ) {
 		return false;
 	}
 
-	// Make sure the payment is inserted with the correct timezone
-	date_default_timezone_set( give_get_timezone_id() );
+	$payment = new Give_Payment();
 
-	// Construct the payment title
-	if ( isset( $payment_data['user_info']['first_name'] ) || isset( $payment_data['user_info']['last_name'] ) ) {
-		$payment_title = $payment_data['user_info']['first_name'] . ' ' . $payment_data['user_info']['last_name'];
-	} else {
-		$payment_title = $payment_data['user_email'];
-	}
+
+	$gateway = ! empty( $payment_data['gateway'] ) ? $payment_data['gateway'] : '';
+	$gateway = empty( $gateway ) && isset( $_POST['give-gateway'] ) ? $_POST['give-gateway'] : $gateway;
+
+	$payment->status         = ! empty( $payment_data['status'] ) ? $payment_data['status'] : 'pending';
+	$payment->currency       = ! empty( $payment_data['currency'] ) ? $payment_data['currency'] : give_get_currency();
+	$payment->user_info      = $payment_data['user_info'];
+	$payment->gateway        = $gateway;
+	$payment->user_id        = $payment_data['user_info']['id'];
+	$payment->email          = $payment_data['user_email'];
+	$payment->first_name     = $payment_data['user_info']['first_name'];
+	$payment->last_name      = $payment_data['user_info']['last_name'];
+	$payment->email          = $payment_data['user_info']['email'];
+	$payment->ip             = give_get_ip();
+	$payment->key            = $payment_data['purchase_key'];
+	$payment->mode           = give_is_test_mode() ? 'test' : 'live';
+	$payment->parent_payment = ! empty( $payment_data['parent'] ) ? absint( $payment_data['parent'] ) : '';
+
 
 	// Find the next payment number, if enabled
 	if ( give_get_option( 'enable_sequential' ) ) {
-		$number = give_get_next_payment_number();
+		$number          = give_get_next_payment_number();
+		$payment->number = give_format_payment_number( $number );
+		update_option( 'give_last_payment_number', $number );
 	}
 
-	$args = apply_filters( 'give_insert_payment_args', array(
-		'post_title'    => $payment_title,
-		'post_status'   => isset( $payment_data['status'] ) ? $payment_data['status'] : 'pending',
-		'post_type'     => 'give_payment',
-		'post_parent'   => isset( $payment_data['parent'] ) ? $payment_data['parent'] : null,
-		'post_date'     => isset( $payment_data['post_date'] ) ? $payment_data['post_date'] : null,
-		'post_date_gmt' => isset( $payment_data['post_date'] ) ? get_gmt_from_date( $payment_data['post_date'] ) : null
-	), $payment_data );
-	
-	// Create a blank payment
-	$payment = wp_insert_post( $args );
+	// Clear the user's purchased cache
+	delete_transient( 'give_user_' . $payment_data['user_info']['id'] . '_purchases' );
+	$payment->save();
 
-	if ( $payment ) {
+	do_action( 'give_insert_payment', $payment->ID, $payment_data );
 
-		$payment_meta = array(
-			'currency'   => $payment_data['currency'],
-			'form_title' => $payment_data['give_form_title'],
-			'form_id'    => $payment_data['give_form_id'],
-			'price_id'   => give_get_price_id( $payment_data['give_form_id'], $payment_data['price'] ),
-			'user_info'  => $payment_data['user_info'],
-		);
-
-		$mode    = give_is_test_mode() ? 'test' : 'live';
-		$gateway = ! empty( $payment_data['gateway'] ) ? $payment_data['gateway'] : '';
-		$gateway = empty( $gateway ) && isset( $_POST['give-gateway'] ) ? $_POST['give-gateway'] : $gateway;
-
-		if ( ! $payment_data['price'] ) {
-			// Ensures the _give_payment_total meta key is created for donations with an amount of 0
-			$payment_data['price'] = '0.00';
-		}
-
-		// Create or update a customer
-		$customer = new Give_Customer( $payment_data['user_email'] );
-
-		// If we didn't find a customer and the user is logged in, check by user_id #437
-		if ( empty( $customer->id ) && is_user_logged_in() ) {
-			$customer = new Give_Customer( get_current_user_id(), true );
-		}
-
-		$customer_data = array(
-			'name'    => $payment_data['user_info']['first_name'] . ' ' . $payment_data['user_info']['last_name'],
-			'email'   => $payment_data['user_email'],
-			'user_id' => $payment_data['user_info']['id']
-		);
-
-		if ( empty( $customer->id ) ) {
-			$customer->create( $customer_data );
-		}
-
-		$customer->attach_payment( $payment, false );
-
-		// Record the payment details
-		give_update_payment_meta( $payment, '_give_payment_meta', apply_filters( 'give_payment_meta', $payment_meta, $payment_data ) );
-		give_update_payment_meta( $payment, '_give_payment_user_id', $payment_data['user_info']['id'] );
-		give_update_payment_meta( $payment, '_give_payment_customer_id', $customer->id );
-		give_update_payment_meta( $payment, '_give_payment_user_email', $payment_data['user_email'] );
-		give_update_payment_meta( $payment, '_give_payment_user_ip', give_get_ip() );
-		give_update_payment_meta( $payment, '_give_payment_purchase_key', $payment_data['purchase_key'] );
-		give_update_payment_meta( $payment, '_give_payment_total', $payment_data['price'] );
-		give_update_payment_meta( $payment, '_give_payment_mode', $mode );
-		give_update_payment_meta( $payment, '_give_payment_gateway', $gateway );
-
-		if ( give_get_option( 'enable_sequential' ) ) {
-			give_update_payment_meta( $payment, '_give_payment_number', give_format_payment_number( $number ) );
-			update_option( 'give_last_payment_number', $number );
-		}
-
-		// Clear the user's purchased cache
-		delete_transient( 'give_user_' . $payment_data['user_info']['id'] . '_purchases' );
-
-		do_action( 'give_insert_payment', $payment, $payment_data );
-
-		return $payment; // Return the ID
-
+	if ( ! empty( $payment->ID ) ) {
+		return $payment->ID;
 	}
 
 	// Return false if no payment was inserted
 	return false;
+
 }
 
 /**
