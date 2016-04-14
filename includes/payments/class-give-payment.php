@@ -75,6 +75,22 @@ final class Give_Payment {
 	protected $key = '';
 
 	/**
+	 * The Donation Form ID
+	 *
+	 * @since  1.5
+	 * @var string
+	 */
+	protected $form_id = 0;
+
+	/**
+	 * The Donation Form Price ID
+	 *
+	 * @since  1.5
+	 * @var string
+	 */
+	protected $price_id = 0;
+
+	/**
 	 * The total amount the payment is for
 	 * Includes donation amount and fees
 	 *
@@ -419,8 +435,10 @@ final class Give_Payment {
 		$this->last_name   = $this->user_info['last_name'];
 
 		// Other Identifiers
-		$this->key    = $this->setup_payment_key();
-		$this->number = $this->setup_payment_number();
+		$this->form_id = $this->setup_form_id();
+		$this->form_id = $this->setup_price_id();
+		$this->key     = $this->setup_payment_key();
+		$this->number  = $this->setup_payment_number();
 
 		// Allow extensions to add items to this object via hook
 		do_action( 'give_setup_payment', $this, $payment_id );
@@ -466,8 +484,9 @@ final class Give_Payment {
 			'date'         => $this->date,
 			'user_email'   => $this->email,
 			'purchase_key' => $this->key,
+			'form_id'      => $this->form_id,
+			'price_id'     => $this->price_id,
 			'currency'     => $this->currency,
-			'downloads'    => $this->downloads,
 			'user_info'    => array(
 				'id'         => $this->user_id,
 				'email'      => $this->email,
@@ -475,7 +494,6 @@ final class Give_Payment {
 				'last_name'  => $this->last_name,
 				'address'    => $this->address,
 			),
-			'cart_details' => $this->cart_details,
 			'status'       => $this->status,
 			'fees'         => $this->fees,
 		);
@@ -573,8 +591,8 @@ final class Give_Payment {
 
 			foreach ( $this->pending as $key => $value ) {
 				switch ( $key ) {
-					case 'downloads':
-						// Update totals for pending downloads
+					case 'give_forms':
+						// Update totals for pending donations
 						foreach ( $this->pending[ $key ] as $item ) {
 
 							switch ( $item['action'] ) {
@@ -594,9 +612,9 @@ final class Give_Payment {
 											$y ++;
 										}
 
-										$download = new EDD_Download( $item['id'] );
-										$download->increase_sales( $item['quantity'] );
-										$download->increase_earnings( $price );
+										$form = new Give_Donate_Form( $item['id'] );
+										$form->increase_sales( $item['quantity'] );
+										$form->increase_earnings( $price );
 
 										$total_increase += $price;
 									}
@@ -735,10 +753,6 @@ final class Give_Payment {
 						$this->update_meta( '_give_completed_date', $this->completed_date );
 						break;
 
-					case 'has_unlimited_downloads':
-						$this->update_meta( '_give_payment_unlimited_downloads', $this->has_unlimited_downloads );
-						break;
-
 					case 'parent_payment':
 						$args = array(
 							'ID'          => $this->ID,
@@ -778,14 +792,10 @@ final class Give_Payment {
 
 			$this->update_meta( '_give_payment_total', $this->total );
 
-			$this->downloads = array_values( $this->downloads );
-
 			$new_meta = array(
-				'downloads'    => $this->downloads,
-				'cart_details' => $this->cart_details,
-				'fees'         => $this->fees,
-				'currency'     => $this->currency,
-				'user_info'    => $this->user_info,
+				'fees'      => $this->fees,
+				'currency'  => $this->currency,
+				'user_info' => $this->user_info,
 			);
 
 			$meta        = $this->get_meta();
@@ -823,11 +833,11 @@ final class Give_Payment {
 	public function add_fee( $args, $global = true ) {
 
 		$default_args = array(
-			'label'       => '',
-			'amount'      => 0,
-			'type'        => 'fee',
-			'id'          => '',
-			'download_id' => 0,
+			'label'    => '',
+			'amount'   => 0,
+			'type'     => 'fee',
+			'id'       => '',
+			'price_id' => 0,
 		);
 
 		$fee          = wp_parse_args( $args, $default_args );
@@ -1418,7 +1428,8 @@ final class Give_Payment {
 	 * @return float The subtotal of the payment
 	 */
 	private function setup_subtotal() {
-		$subtotal  = $this->total;
+		$subtotal = $this->total;
+
 		return $subtotal;
 	}
 
@@ -1559,7 +1570,6 @@ final class Give_Payment {
 		$defaults = array(
 			'first_name' => $this->first_name,
 			'last_name'  => $this->last_name,
-			'discount'   => $this->discounts,
 		);
 
 		$user_info = isset( $this->payment_meta['user_info'] ) ? maybe_unserialize( $this->payment_meta['user_info'] ) : array();
@@ -1585,6 +1595,28 @@ final class Give_Payment {
 		);
 
 		return $address;
+	}
+
+	/**
+	 * Setup the form ID
+	 *
+	 * @since  1.5
+	 * @return int The Form ID
+	 */
+	private function setup_form_id() {
+		$form_id = isset( $this->payment_meta['give_form_id'] ) ? $this->payment_meta['give_form_id'] : 0;
+
+		return $form_id;
+	}
+
+	/**
+	 * Setup the price ID
+	 *
+	 * @since  1.5
+	 * @return int The Form Price ID
+	 */
+	private function setup_price_id() {
+		return give_get_price_id( $this->payment_meta['give_form_id'], $this->payment_meta['price'] );
 	}
 
 	/**
@@ -1750,6 +1782,16 @@ final class Give_Payment {
 	 */
 	private function get_key() {
 		return apply_filters( 'give_payment_key', $this->key, $this->ID, $this );
+	}
+
+	/**
+	 * Retrieve payment key
+	 *
+	 * @since  1.5
+	 * @return string Payment key
+	 */
+	private function get_form_id() {
+		return apply_filters( 'give_payment_form_id', $this->form_id, $this->ID, $this );
 	}
 
 	/**
