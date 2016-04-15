@@ -125,8 +125,6 @@ function give_insert_payment( $payment_data = array() ) {
 	}
 
 	$payment = new Give_Payment();
-
-
 	$gateway = ! empty( $payment_data['gateway'] ) ? $payment_data['gateway'] : '';
 	$gateway = empty( $gateway ) && isset( $_POST['give-gateway'] ) ? $_POST['give-gateway'] : $gateway;
 

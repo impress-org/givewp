@@ -1604,7 +1604,7 @@ final class Give_Payment {
 	 * @return int The Form ID
 	 */
 	private function setup_form_id() {
-		$form_id = isset( $this->payment_meta['give_form_id'] ) ? $this->payment_meta['give_form_id'] : 0;
+		$form_id = isset( $this->payment_meta['form_id'] ) ? $this->payment_meta['form_id'] : 0;
 
 		return $form_id;
 	}
@@ -1616,7 +1616,7 @@ final class Give_Payment {
 	 * @return int The Form Price ID
 	 */
 	private function setup_price_id() {
-		return give_get_price_id( $this->payment_meta['give_form_id'], $this->payment_meta['price'] );
+		return give_get_price_id( $this->payment_meta['form_id'], $this->payment_meta['price'] );
 	}
 
 	/**
