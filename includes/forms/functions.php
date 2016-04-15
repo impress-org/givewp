@@ -184,7 +184,7 @@ function give_send_back_to_checkout( $args = array() ) {
 /**
  * Get Success Page URL
  *
- * Gets the success page URL.
+ * @description Gets the success page URL.
  *
  * @param string $query_string
  *
@@ -193,14 +193,16 @@ function give_send_back_to_checkout( $args = array() ) {
  * @return      string
  */
 function give_get_success_page_url( $query_string = null ) {
-	global $give_options;
 
-	$success_page = get_permalink( $give_options['success_page'] );
+	$success_page = give_get_option( 'success_page', 0 );
+	$success_page = get_permalink( $success_page );
+
 	if ( $query_string ) {
 		$success_page .= $query_string;
 	}
 
 	return apply_filters( 'give_success_page_url', $success_page );
+
 }
 
 /**
@@ -950,9 +952,9 @@ function give_logged_in_only( $form_id ) {
  * @param $form_id
  */
 function give_show_login_register_option( $form_id ) {
-	
+
 	$show_register_form = get_post_meta( $form_id, '_give_show_register_form', true );
 
-	return apply_filters( 'give_show_register_form', $show_register_form, $form_id);
-	
+	return apply_filters( 'give_show_register_form', $show_register_form, $form_id );
+
 }
