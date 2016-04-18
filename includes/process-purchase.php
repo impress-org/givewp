@@ -113,6 +113,7 @@ function give_process_purchase_form() {
 
 	// Make sure credit card numbers are never stored in sessions
 	unset( $session_data['card_info']['card_number'] );
+	unset( $session_data['post_data']['card_number'] );
 
 	// Used for showing data to non logged-in users after purchase, and for other plugins needing purchase data.
 	give_set_purchase_session( $session_data );
