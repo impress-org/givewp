@@ -27,7 +27,6 @@ function give_donation_history() {
 
 	$email_access = give_get_option( 'email_access' );
 
-
 	//Is user logged in? Does a session exist? Does an email-access token exist?
 	if ( is_user_logged_in() || Give()->session->get_session_expiration() || ( $email_access == 'on' && Give()->email_access->token_exists ) ) {
 		ob_start();
