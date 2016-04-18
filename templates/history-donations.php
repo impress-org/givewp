@@ -11,6 +11,12 @@ if(Give()->email_access->token_exists) {
 	$donations = give_get_users_purchases( 0, 20, true, 'any' );
 }
 
+//Session active?
+if(Give()->session->get_session_expiration()){
+	$email = Give()->session->get('give_email');
+	$donations = give_get_users_purchases( $email, 20, true, 'any' );
+}
+
 if ( $donations ) : ?>
 	<table id="give_user_history" class="give-table">
 		<thead>
