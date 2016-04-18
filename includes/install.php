@@ -50,7 +50,7 @@ function give_install() {
 		$success = wp_insert_post(
 			array(
 				'post_title'     => __( 'Donation Confirmation', 'give' ),
-				'post_content'   => __( 'Thank you for your donation! [give_receipt]', 'give' ),
+				'post_content'   => __( '[give_receipt]', 'give' ),
 				'post_status'    => 'publish',
 				'post_author'    => 1,
 				'post_type'      => 'page',
@@ -69,7 +69,7 @@ function give_install() {
 		$failed = wp_insert_post(
 			array(
 				'post_title'     => __( 'Transaction Failed', 'give' ),
-				'post_content'   => __( 'Your transaction failed, please try again or contact site support.', 'give' ),
+				'post_content'   => __( 'We\'re sorry, your transaction failed to process. Please try again or contact site support.', 'give' ),
 				'post_status'    => 'publish',
 				'post_author'    => 1,
 				'post_type'      => 'page',
