@@ -134,9 +134,13 @@ add_action( 'give_update_payment_status', 'give_record_status_change', 100, 3 );
  * @param $old_status the status of the payment prior to being marked as "complete", probably "pending"
  */
 function give_clear_user_history_cache( $payment_id, $new_status, $old_status ) {
-	$user_info = give_get_payment_meta_user_info( $payment_id );
 
-	delete_transient( 'give_user_' . $user_info['id'] . '_purchases' );
+	$payment = new Give_Payment( $payment_id );
+
+	if ( ! empty( $payment->user_id ) ) {
+		delete_transient( 'give_user_' . $payment->user_id . '_purchases' );
+	}
+
 }
 
 add_action( 'give_update_payment_status', 'give_clear_user_history_cache', 10, 3 );
@@ -170,8 +174,13 @@ function give_update_old_payments_with_totals( $data ) {
 
 	if ( $payments ) {
 		foreach ( $payments as $payment ) {
-			$meta = give_get_payment_meta( $payment->ID );
-			give_update_payment_meta( $payment->ID, '_give_payment_total', $meta['amount'] );
+
+			$payment = new Give_Payment( $payment->ID );
+			$meta    = $payment->get_meta();
+
+			$payment->total = $meta['amount'];
+			$payment->save();
+
 		}
 	}
 
@@ -190,7 +199,7 @@ function give_mark_abandoned_donations() {
 	$args = array(
 		'status' => 'pending',
 		'number' => - 1,
-		'fields' => 'ids'
+		'output' => 'give_payments',
 	);
 
 	add_filter( 'posts_where', 'give_filter_where_older_than_week' );
@@ -206,8 +215,8 @@ function give_mark_abandoned_donations() {
 			if ( $gateway == 'offline' ) {
 				continue;
 			}
-			//Non-offline get marked as 'abandoned'
-			give_update_payment_status( $payment, 'abandoned' );
+			$payment->status = 'abandoned';
+			$payment->save();
 		}
 	}
 }
