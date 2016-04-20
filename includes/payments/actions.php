@@ -22,14 +22,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0
  *
- * @param int    $payment_id the ID number of the payment
+ * @param int $payment_id the ID number of the payment
  * @param string $new_status the status of the payment, probably "publish"
  * @param string $old_status the status of the payment prior to being marked as "complete", probably "pending"
  *
  * @return void
  */
 function give_complete_purchase( $payment_id, $new_status, $old_status ) {
-	
+
 	// Make sure that payments are only completed once
 	if ( $old_status == 'publish' || $old_status == 'complete' ) {
 		return;
@@ -40,29 +40,32 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 		return;
 	}
 
-	$payment_meta   = give_get_payment_meta( $payment_id );
-	$creation_date  = get_post_field( 'post_date', $payment_id, 'raw' );
-	$completed_date = give_get_payment_completed_date( $payment_id );
-	$user_info      = give_get_payment_meta_user_info( $payment_id );
-	$donor_id       = give_get_payment_customer_id( $payment_id );
-	$amount         = give_get_payment_amount( $payment_id );
+	$payment = new Give_Payment( $payment_id );
+
+	$creation_date = get_post_field( 'post_date', $payment_id, 'raw' );
+
+	$payment_meta   = $payment->payment_meta;
+	$completed_date = $payment->completed_date;
+	$user_info      = $payment->user_info;
+	$customer_id    = $payment->customer_id;
+	$amount         = $payment->total;
+	$price_id       = $payment->price_id;
+	$form_id        = $payment->form_id;
 
 	do_action( 'give_pre_complete_purchase', $payment_id );
-
-	$price_id = isset( $_POST['give-price-id'] ) ? (int) $_POST['give-price-id'] : false;
 
 	// Ensure these actions only run once, ever
 	if ( empty( $completed_date ) ) {
 
 		if ( ! give_is_test_mode() || apply_filters( 'give_log_test_payment_stats', false ) ) {
 
-			give_record_sale_in_log( $payment_meta['form_id'], $payment_id, $price_id, $creation_date );
-			give_increase_purchase_count( $payment_meta['form_id'] );
-			give_increase_earnings( $payment_meta['form_id'], $amount );
+			give_record_sale_in_log( $form_id, $payment_id, $price_id, $creation_date );
+			give_increase_purchase_count( $form_id );
+			give_increase_earnings( $form_id, $amount );
 
 		}
 
-		do_action( 'give_complete_form_donation', $payment_meta['form_id'], $payment_id, $payment_meta );
+		do_action( 'give_complete_form_donation', $form_id, $payment_id, $payment_meta );
 	}
 
 
@@ -74,7 +77,9 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 
 
 	// Increase the donor's purchase stats
-	Give()->customers->increment_stats( $donor_id, $amount );
+	$customer = new Give_Customer( $customer_id );
+	$customer->increase_purchase_count();
+	$customer->increase_value( $amount );
 
 	give_increase_total_earnings( $amount );
 
@@ -82,8 +87,8 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 	if ( empty( $completed_date ) ) {
 
 		// Save the completed date
-		give_update_payment_meta( $payment_id, '_give_completed_date', current_time( 'mysql' ) );
-
+		$payment->completed_date = current_time( 'mysql' );
+		$payment->save();
 		do_action( 'give_complete_purchase', $payment_id );
 	}
 
@@ -97,7 +102,7 @@ add_action( 'give_update_payment_status', 'give_complete_purchase', 100, 3 );
  *
  * @since 1.0
  *
- * @param int    $payment_id the ID number of the payment
+ * @param int $payment_id the ID number of the payment
  * @param string $new_status the status of the payment, probably "publish"
  * @param string $old_status the status of the payment prior to being marked as "complete", probably "pending"
  *
@@ -149,11 +154,11 @@ function give_undo_donation_on_refund( $payment_id, $new_status, $old_status ) {
 	give_decrease_total_earnings( $amount );
 
 	// Decrement the stats for the donor
-	$donor_id = give_get_payment_customer_id( $payment_id );
+	$customer_id = give_get_payment_customer_id( $payment_id );
 
-	if ( $donor_id ) {
+	if ( $customer_id ) {
 
-		Give()->customers->decrement_stats( $donor_id, $amount );
+		Give()->customers->decrement_stats( $customer_id, $amount );
 
 	}
 
@@ -228,7 +233,7 @@ add_action( 'give_upgrade_payments', 'give_update_old_payments_with_totals' );
  * @return void
  */
 function give_mark_abandoned_donations() {
-	$args     = array(
+	$args = array(
 		'status' => 'pending',
 		'number' => - 1,
 		'fields' => 'ids'
