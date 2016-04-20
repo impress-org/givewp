@@ -35,19 +35,18 @@ jQuery(document).ready(function ($) {
             $(this_form).find('[id^=give-checkout-login-register]').html(checkout_response);
             $(this_form).find('.give-submit-button-wrap').remove();
 
-            //Setup tooltips again
-            setup_give_tooltips();
-
         }).done(function () {
             // Hide the ajax loader
             loading_animation.hide();
             // Trigger float-labels
             give_fl_trigger();
+            //Setup tooltips again
+            setup_give_tooltips();
         });
         return false;
     });
 
-    // Register/Cancel Login
+    // Register/Login Cancel
     $(document).on('click', '.give-checkout-register-cancel', function (e) {
         e.preventDefault();
         //User cancelled login
@@ -59,14 +58,14 @@ jQuery(document).ready(function ($) {
         };
         //AJAX get the payment fields
         $.post(give_scripts.ajaxurl, data, function (checkout_response) {
-
-            console.log( checkout_response );
             //Show fields
-            $(this_form).find('[id^=give-checkout-login-register]').html($.parseJSON( checkout_response.fields ));
-            $(this_form).find('[id^=give_purchase_submit]').append($.parseJSON( checkout_response.submit ));
+            $(this_form).find('[id^=give-checkout-login-register]').html($.parseJSON(checkout_response.fields));
+            $(this_form).find('[id^=give_purchase_submit]').append($.parseJSON(checkout_response.submit));
         }).done(function () {
             // Trigger float-labels
             give_fl_trigger();
+            //Setup tooltips again
+            setup_give_tooltips();
         });
     });
 
@@ -184,7 +183,7 @@ jQuery(document).ready(function ($) {
                 this_form.find('.give_errors').remove();
                 this_form.find('#give_purchase_submit').before(data);
             }
-            
+
         });
 
     });
