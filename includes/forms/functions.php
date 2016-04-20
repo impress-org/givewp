@@ -477,12 +477,12 @@ function give_increase_purchase_count( $give_form_id = 0 ) {
  *
  * @since 1.0
  *
- * @param int $give_form_id Give Form ID
+ * @param int $form_id Give Form ID
  *
  * @return bool|int
  */
-function give_decrease_purchase_count( $give_form_id = 0 ) {
-	$form = new Give_Donate_Form( $give_form_id );
+function give_decrease_purchase_count( $form_id = 0 ) {
+	$form = new Give_Donate_Form( $form_id );
 
 	return $form->decrease_sales();
 }
@@ -508,13 +508,13 @@ function give_increase_earnings( $give_form_id = 0, $amount ) {
  *
  * @since 1.0
  *
- * @param int $give_form_id Give Form ID
+ * @param int $form_id Give Form ID
  * @param int $amount Earnings
  *
  * @return bool|int
  */
-function give_decrease_earnings( $give_form_id = 0, $amount ) {
-	$form = new Give_Donate_Form( $give_form_id );
+function give_decrease_earnings( $form_id = 0, $amount ) {
+	$form = new Give_Donate_Form( $form_id );
 
 	return $form->decrease_earnings( $amount );
 }
@@ -525,12 +525,12 @@ function give_decrease_earnings( $give_form_id = 0, $amount ) {
  *
  * @since 1.0
  *
- * @param int $give_form_id Give Form ID
+ * @param int $form_id Give Form ID
  *
  * @return int $earnings Earnings for a certain form
  */
-function give_get_form_earnings_stats( $give_form_id = 0 ) {
-	$give_form = new Give_Donate_Form( $give_form_id );
+function give_get_form_earnings_stats( $form_id = 0 ) {
+	$give_form = new Give_Donate_Form( $form_id );
 
 	return $give_form->earnings;
 }

@@ -64,9 +64,10 @@ function give_get_payment_by( $field = '', $value = '' ) {
 	switch ( strtolower( $field ) ) {
 
 		case 'id':
-			$payment = get_post( $value );
+			$payment = new Give_Payment( $value );
+			$id      = $payment->ID;
 
-			if ( get_post_type( $payment ) != 'give_payment' ) {
+			if ( empty( $id ) ) {
 				return false;
 			}
 
@@ -76,11 +77,12 @@ function give_get_payment_by( $field = '', $value = '' ) {
 			$payment = give_get_payments( array(
 				'meta_key'       => '_give_payment_purchase_key',
 				'meta_value'     => $value,
-				'posts_per_page' => 1
+				'posts_per_page' => 1,
+				'fields'         => 'ids',
 			) );
 
 			if ( $payment ) {
-				$payment = $payment[0];
+				$payment = new Give_Payment( $payment[0] );
 			}
 
 			break;
@@ -89,11 +91,12 @@ function give_get_payment_by( $field = '', $value = '' ) {
 			$payment = give_get_payments( array(
 				'meta_key'       => '_give_payment_number',
 				'meta_value'     => $value,
-				'posts_per_page' => 1
+				'posts_per_page' => 1,
+				'fields'         => 'ids',
 			) );
 
 			if ( $payment ) {
-				$payment = $payment[0];
+				$payment = new Give_Payment( $payment[0] );
 			}
 
 			break;
@@ -144,8 +147,10 @@ function give_insert_payment( $payment_data = array() ) {
 	$payment->mode           = give_is_test_mode() ? 'test' : 'live';
 	$payment->parent_payment = ! empty( $payment_data['parent'] ) ? absint( $payment_data['parent'] ) : '';
 
+	if ( isset( $payment_data['post_date'] ) ) {
+		$payment->date = $payment_data['post_date'];
+	}
 
-	// Find the next payment number, if enabled
 	if ( give_get_option( 'enable_sequential' ) ) {
 		$number          = give_get_next_payment_number();
 		$payment->number = give_format_payment_number( $number );
@@ -154,6 +159,7 @@ function give_insert_payment( $payment_data = array() ) {
 
 	// Clear the user's purchased cache
 	delete_transient( 'give_user_' . $payment_data['user_info']['id'] . '_purchases' );
+
 	$payment->save();
 
 	do_action( 'give_insert_payment', $payment->ID, $payment_data );
@@ -179,43 +185,11 @@ function give_insert_payment( $payment_data = array() ) {
  */
 function give_update_payment_status( $payment_id, $new_status = 'publish' ) {
 
-	if ( $new_status == 'completed' || $new_status == 'complete' ) {
-		$new_status = 'publish';
-	}
+	$payment         = new Give_Payment( $payment_id );
+	$payment->status = $new_status;
+	$updated         = $payment->save();
 
-	if ( empty( $payment_id ) ) {
-		return;
-	}
-
-	$payment = get_post( $payment_id );
-
-	if ( is_wp_error( $payment ) || ! is_object( $payment ) ) {
-		return;
-	}
-
-	$old_status = $payment->post_status;
-
-	if ( $old_status === $new_status ) {
-		return; // Don't permit status changes that aren't changes
-	}
-
-	$do_change = apply_filters( 'give_should_update_payment_status', true, $payment_id, $new_status, $old_status );
-
-	if ( $do_change ) {
-
-		do_action( 'give_before_payment_status_change', $payment_id, $new_status, $old_status );
-
-		$update_fields = array(
-			'ID'          => $payment_id,
-			'post_status' => $new_status,
-			'edit_date'   => current_time( 'mysql' )
-		);
-
-		wp_update_post( apply_filters( 'give_update_payment_status_fields', $update_fields ) );
-
-		do_action( 'give_update_payment_status', $payment_id, $new_status, $old_status );
-
-	}
+	return $updated;
 }
 
 /**
@@ -226,25 +200,21 @@ function give_update_payment_status( $payment_id, $new_status = 'publish' ) {
  * @uses  Give_Logging::delete_logs()
  *
  * @param int $payment_id Payment ID (default: 0)
+ * @param bool $update_customer If we should update the customer stats (default:true)
  *
  * @return void
  */
-function give_delete_purchase( $payment_id = 0 ) {
+function edd_delete_purchase( $payment_id = 0, $update_customer = true ) {
 	global $give_logs;
 
-	$post = get_post( $payment_id );
+	$payment = new Give_Payment( $payment_id );
 
-	if ( ! $post ) {
-		return;
-	}
+	give_undo_purchase( false, $payment_id );
 
-	$form_id = give_get_payment_form_id( $payment_id );
-
-	give_undo_purchase( $form_id, $payment_id );
-
-	$amount   = give_get_payment_amount( $payment_id );
-	$status   = $post->post_status;
-	$donor_id = give_get_payment_customer_id( $payment_id );
+	$amount      = give_get_payment_amount( $payment_id );
+	$status      = $payment->post_status;
+	$customer_id = give_get_payment_customer_id( $payment_id );
+	$customer    = new Give_Customer( $customer_id );
 
 	if ( $status == 'revoked' || $status == 'publish' ) {
 		// Only decrease earnings if they haven't already been decreased (or were never increased for this payment)
@@ -252,20 +222,21 @@ function give_delete_purchase( $payment_id = 0 ) {
 		// Clear the This Month earnings (this_monththis_month is NOT a typo)
 		delete_transient( md5( 'give_earnings_this_monththis_month' ) );
 
-		if ( $donor_id ) {
+		if( $customer->id && $update_customer ) {
 
-			// Decrement the stats for the donor
-			Give()->customers->decrement_stats( $donor_id, $amount );
+			// Decrement the stats for the customer
+			$customer->decrease_purchase_count();
+			$customer->decrease_value( $amount );
 
 		}
 	}
 
 	do_action( 'give_payment_delete', $payment_id );
 
-	if ( $donor_id ) {
+	if( $customer->id && $update_customer ) {
 
-		// Remove the payment ID from the donor
-		Give()->customers->remove_payment( $donor_id, $payment_id );
+		// Remove the payment ID from the customer
+		$customer->remove_payment( $payment_id );
 
 	}
 
@@ -297,19 +268,40 @@ function give_delete_purchase( $payment_id = 0 ) {
  *
  * @return void
  */
-function give_undo_purchase( $form_id, $payment_id ) {
+function give_undo_purchase( $form_id = false, $payment_id ) {
+	
+	if ( ! empty( $form_id ) ) {
+		$form_id = false;
+		_give_deprected_argument( 'form_id', 'give_undo_purchase', '1.5' );
+	}
+	
+	$payment = new Give_Payment( $payment_id );
 
-	if ( give_is_test_mode() ) {
-		return;
+
+	$maybe_decrease_earnings = apply_filters( 'give_decrease_earnings_on_undo', true, $payment, $payment->form_id );
+	if ( true === $maybe_decrease_earnings ) {
+		// decrease earnings
+		give_decrease_earnings( $payment->form_id, $payment->total );
 	}
 
+	$maybe_decrease_sales = apply_filters( 'give_decrease_sales_on_undo', true, $payment, $payment->form_id );
+	if ( true === $maybe_decrease_sales ) {
+		// decrease purchase count
+		give_decrease_purchase_count( $payment->form_id );
+	}
+	
+	
+//	if ( give_is_test_mode() ) {
+//		return;
+//	}
+//
 	$amount = give_get_payment_amount( $payment_id );
-
-	// decrease earnings
-	give_decrease_earnings( $form_id, $amount );
-
-	// decrease purchase count
-	give_decrease_purchase_count( $form_id );
+//
+//	// decrease earnings
+//	give_decrease_earnings( $form_id, $amount );
+//
+//	// decrease purchase count
+//	give_decrease_purchase_count( $form_id );
 
 
 }
@@ -822,27 +814,9 @@ function give_decrease_total_earnings( $amount = 0 ) {
  * @return mixed $meta Payment Meta
  */
 function give_get_payment_meta( $payment_id = 0, $meta_key = '_give_payment_meta', $single = true ) {
+	$payment = new Give_Payment( $payment_id );
 
-	$meta = get_post_meta( $payment_id, $meta_key, $single );
-
-	if ( $meta_key === '_give_payment_meta' ) {
-
-		if ( empty( $meta['key'] ) ) {
-			$meta['key'] = give_get_payment_key( $payment_id );
-		}
-
-		if ( empty( $meta['email'] ) ) {
-			$meta['email'] = give_get_payment_user_email( $payment_id );
-		}
-
-		if ( empty( $meta['date'] ) ) {
-			$meta['date'] = get_post_field( 'post_date', $payment_id );
-		}
-	}
-
-	$meta = apply_filters( 'give_get_payment_meta_' . $meta_key, $meta, $payment_id );
-
-	return apply_filters( 'give_get_payment_meta', $meta, $payment_id, $meta_key );
+	return $payment->get_meta( $meta_key, $single );
 }
 
 /**
@@ -856,35 +830,9 @@ function give_get_payment_meta( $payment_id = 0, $meta_key = '_give_payment_meta
  * @return mixed               Meta ID if successful, false if unsuccessful
  */
 function give_update_payment_meta( $payment_id = 0, $meta_key = '', $meta_value = '', $prev_value = '' ) {
+	$payment = new Give_Payment( $payment_id );
 
-	if ( empty( $payment_id ) || empty( $meta_key ) ) {
-		return;
-	}
-
-	if ( $meta_key == 'key' || $meta_key == 'date' ) {
-
-		$current_meta              = give_get_payment_meta( $payment_id );
-		$current_meta[ $meta_key ] = $meta_value;
-
-		$meta_key   = '_give_payment_meta';
-		$meta_value = $current_meta;
-
-	} else if ( $meta_key == 'email' || $meta_key == '_give_payment_user_email' ) {
-
-		$meta_value = apply_filters( 'give_give_update_payment_meta_' . $meta_key, $meta_value, $payment_id );
-		update_post_meta( $payment_id, '_give_payment_user_email', $meta_value );
-
-		$current_meta                       = give_get_payment_meta( $payment_id );
-		$current_meta['user_info']['email'] = $meta_value;
-
-		$meta_key   = '_give_payment_meta';
-		$meta_value = $current_meta;
-
-	}
-
-	$meta_value = apply_filters( 'give_give_update_payment_meta_' . $meta_key, $meta_value, $payment_id );
-
-	return update_post_meta( $payment_id, $meta_key, $meta_value, $prev_value );
+	return $payment->update_meta( $meta_key, $meta_value, $prev_value );
 }
 
 /**
