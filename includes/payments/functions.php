@@ -204,7 +204,7 @@ function give_update_payment_status( $payment_id, $new_status = 'publish' ) {
  *
  * @return void
  */
-function edd_delete_purchase( $payment_id = 0, $update_customer = true ) {
+function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
 	global $give_logs;
 
 	$payment = new Give_Payment( $payment_id );
@@ -222,7 +222,7 @@ function edd_delete_purchase( $payment_id = 0, $update_customer = true ) {
 		// Clear the This Month earnings (this_monththis_month is NOT a typo)
 		delete_transient( md5( 'give_earnings_this_monththis_month' ) );
 
-		if( $customer->id && $update_customer ) {
+		if ( $customer->id && $update_customer ) {
 
 			// Decrement the stats for the customer
 			$customer->decrease_purchase_count();
@@ -233,7 +233,7 @@ function edd_delete_purchase( $payment_id = 0, $update_customer = true ) {
 
 	do_action( 'give_payment_delete', $payment_id );
 
-	if( $customer->id && $update_customer ) {
+	if ( $customer->id && $update_customer ) {
 
 		// Remove the payment ID from the customer
 		$customer->remove_payment( $payment_id );
@@ -269,12 +269,12 @@ function edd_delete_purchase( $payment_id = 0, $update_customer = true ) {
  * @return void
  */
 function give_undo_purchase( $form_id = false, $payment_id ) {
-	
+
 	if ( ! empty( $form_id ) ) {
 		$form_id = false;
 		_give_deprected_argument( 'form_id', 'give_undo_purchase', '1.5' );
 	}
-	
+
 	$payment = new Give_Payment( $payment_id );
 
 
@@ -290,20 +290,6 @@ function give_undo_purchase( $form_id = false, $payment_id ) {
 		give_decrease_purchase_count( $payment->form_id );
 	}
 	
-	
-//	if ( give_is_test_mode() ) {
-//		return;
-//	}
-//
-	$amount = give_get_payment_amount( $payment_id );
-//
-//	// decrease earnings
-//	give_decrease_earnings( $form_id, $amount );
-//
-//	// decrease purchase count
-//	give_decrease_purchase_count( $form_id );
-
-
 }
 
 
@@ -331,8 +317,9 @@ function give_count_payments( $args = array() ) {
 
 	$args = wp_parse_args( $args, $defaults );
 
-	$join  = '';
-	$where = "WHERE p.post_type = 'give_payment'";
+	$select = "SELECT p.post_status,count( * ) AS num_posts";
+	$join   = '';
+	$where  = "WHERE p.post_type = 'give_payment'";
 
 	// Count payments for a specific user
 	if ( ! empty( $args['user'] ) ) {
@@ -366,19 +353,38 @@ function give_count_payments( $args = array() ) {
 
 
 			$join = "LEFT JOIN $wpdb->postmeta m ON (p.ID = m.post_id)";
-			$where .= "
-				AND m.meta_key = '{$field}'
-				AND m.meta_value = '{$args['s']}'";
+			$where .= $wpdb->prepare( "
+				AND m.meta_key = %s
+				AND m.meta_value = %s",
+				$field,
+				$args['s']
+			);
+
+		} elseif ( '#' == substr( $args['s'], 0, 1 ) ) {
+
+			$search = str_replace( '#:', '', $args['s'] );
+			$search = str_replace( '#', '', $search );
+
+			$select = "SELECT p2.post_status,count( * ) AS num_posts ";
+			$join   = "LEFT JOIN $wpdb->postmeta m ON m.meta_key = '_give_log_payment_id' AND m.post_id = p.ID ";
+			$join .= "INNER JOIN $wpdb->posts p2 ON m.meta_value = p2.ID ";
+			$where = "WHERE p.post_type = 'give_log' ";
+			$where .= $wpdb->prepare( "AND p.post_parent = %d} ", $search );
 
 		} elseif ( is_numeric( $args['s'] ) ) {
 
 			$join = "LEFT JOIN $wpdb->postmeta m ON (p.ID = m.post_id)";
-			$where .= "
+			$where .= $wpdb->prepare( "
 				AND m.meta_key = '_give_payment_user_id'
-				AND m.meta_value = '{$args['s']}'";
+				AND m.meta_value = %d",
+				$args['s']
+			);
 
 		} else {
-			$where .= "AND ((p.post_title LIKE '%{$args['s']}%') OR (p.post_content LIKE '%{$args['s']}%'))";
+			$search = $wpdb->esc_like( $args['s'] );
+			$search = '%' . $search . '%';
+
+			$where .= $wpdb->prepare( "AND ((p.post_title LIKE %s) OR (p.post_content LIKE %s))", $search, $search );
 		}
 
 	}
@@ -427,14 +433,14 @@ function give_count_payments( $args = array() ) {
 	$where = apply_filters( 'give_count_payments_where', $where );
 	$join  = apply_filters( 'give_count_payments_join', $join );
 
-	$query = "SELECT p.post_status,count( * ) AS num_posts
+	$query = "$select
 		FROM $wpdb->posts p
 		$join
 		$where
 		GROUP BY p.post_status
 	";
 
-	$cache_key = md5( implode( '|', $args ) . $where );
+	$cache_key = md5( $query );
 
 	$count = wp_cache_get( $cache_key, 'counts' );
 	if ( false !== $count ) {
@@ -454,6 +460,7 @@ function give_count_payments( $args = array() ) {
 	}
 
 	foreach ( (array) $count as $row ) {
+
 		if ( 'private' == $row['post_status'] && empty( $args['s'] ) ) {
 			continue;
 		}
@@ -478,13 +485,15 @@ function give_count_payments( $args = array() ) {
  * @return bool true if payment exists, false otherwise
  */
 function give_check_for_existing_payment( $payment_id ) {
-	$payment = get_post( $payment_id );
+	$exists  = false;
+	$payment = new Give_Payment( $payment_id );
 
-	if ( $payment && $payment->post_status == 'publish' ) {
-		return true; // Payment exists
+
+	if ( $payment_id === $payment->ID && 'publish' === $payment->status ) {
+		$exists = true;
 	}
 
-	return false; // This payment doesn't exist
+	return $exists;
 }
 
 /**
@@ -498,20 +507,28 @@ function give_check_for_existing_payment( $payment_id ) {
  * @return bool|mixed if payment status exists, false otherwise
  */
 function give_get_payment_status( $payment, $return_label = false ) {
+
 	if ( ! is_object( $payment ) || ! isset( $payment->post_status ) ) {
 		return false;
 	}
 
 	$statuses = give_get_payment_statuses();
+
 	if ( ! is_array( $statuses ) || empty( $statuses ) ) {
 		return false;
 	}
 
-	if ( array_key_exists( $payment->post_status, $statuses ) ) {
+	$payment = new Give_Payment( $payment->ID );
+
+	if ( array_key_exists( $payment->status, $statuses ) ) {
 		if ( true === $return_label ) {
-			return $statuses[ $payment->post_status ];
+			return $statuses[ $payment->status ];
 		} else {
-			return array_search( $payment->post_status, $statuses );
+			// Account that our 'publish' status is labeled 'Complete'
+			$post_status = 'publish' == $payment->status ? 'Complete' : $payment->post_status;
+
+			// Make sure we're matching cases, since they matter
+			return array_search( strtolower( $post_status ), array_map( 'strtolower', $statuses ) );
 		}
 	}
 
@@ -603,7 +620,8 @@ function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour
 		$earnings = 0;
 		if ( $sales ) {
 			$sales = implode( ',', $sales );
-			$earnings += $wpdb->get_var( "SELECT SUM(meta_value) FROM $wpdb->postmeta WHERE meta_key = '_give_payment_total' AND post_id IN({$sales})" );
+
+			$earnings = $wpdb->get_var( "SELECT SUM(meta_value) FROM $wpdb->postmeta WHERE meta_key = '_give_payment_total' AND post_id IN ({$sales})" );
 
 		}
 		// Cache the results for one hour
@@ -651,6 +669,7 @@ function give_get_sales_by_date( $day = null, $month_num = null, $year = null, $
 	}
 
 	$args = apply_filters( 'give_get_sales_by_date_args', $args );
+
 	$key  = 'give_stats_' . substr( md5( serialize( $args ) ), 0, 15 );
 
 	if ( ! empty( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'give-refresh-reports' ) ) {
@@ -679,10 +698,16 @@ function give_get_sales_by_date( $day = null, $month_num = null, $year = null, $
  * @return bool true if complete, false otherwise
  */
 function give_is_payment_complete( $payment_id ) {
-	$payment = get_post( $payment_id );
-	$ret     = false;
-	if ( $payment && $payment->post_status == 'publish' ) {
-		$ret = true;
+	$payment = new Give_Payment( $payment_id );
+
+	$ret = false;
+
+	if( $payment->ID > 0 ) {
+
+		if ( (int) $payment_id === (int) $payment->ID && 'publish' == $payment->status ) {
+			$ret = true;
+		}
+
 	}
 
 	return apply_filters( 'give_is_payment_complete', $ret, $payment_id, $payment->post_status );
@@ -709,10 +734,10 @@ function give_get_total_sales() {
  */
 function give_get_total_earnings() {
 
-	$total = get_option( 'give_earnings_total', 0 );
+	$total = get_option( 'give_earnings_total', false );
 
 	// If no total stored in DB, use old method of calculating total earnings
-	if ( ! $total ) {
+	if( false === $total ) {
 
 		global $wpdb;
 
@@ -845,10 +870,8 @@ function give_update_payment_meta( $payment_id = 0, $meta_key = '', $meta_value 
  * @return array $user_info User Info Meta Values
  */
 function give_get_payment_meta_user_info( $payment_id ) {
-	$payment_meta = give_get_payment_meta( $payment_id );
-	$user_info    = isset( $payment_meta['user_info'] ) ? maybe_unserialize( $payment_meta['user_info'] ) : false;
-
-	return apply_filters( 'give_payment_meta_user_info', $user_info );
+	$payment = new Give_Payment( $payment_id );
+	return $payment->user_info;
 }
 
 /**
@@ -862,11 +885,8 @@ function give_get_payment_meta_user_info( $payment_id ) {
  * @return int $form_id
  */
 function give_get_payment_form_id( $payment_id ) {
-	$payment_meta = give_get_payment_meta( $payment_id );
-
-	$form_id = isset( $payment_meta['form_id'] ) ? $payment_meta['form_id'] : 0;
-
-	return apply_filters( 'give_get_payment_form_id', $form_id );
+	$payment = new Give_Payment( $payment_id );
+	return $payment->form_id;
 }
 
 /**
@@ -879,9 +899,8 @@ function give_get_payment_form_id( $payment_id ) {
  * @return string $email User Email
  */
 function give_get_payment_user_email( $payment_id ) {
-	$email = give_get_payment_meta( $payment_id, '_give_payment_user_email', true );
-
-	return apply_filters( 'give_payment_user_email', $email );
+	$payment = new Give_Payment( $payment_id );
+	return $payment->email;
 }
 
 /**
@@ -910,37 +929,8 @@ function give_is_guest_payment( $payment_id ) {
  * @return string $user_id User ID
  */
 function give_get_payment_user_id( $payment_id ) {
-
-	$user_id = - 1;
-
-	// check the customer record first
-	$customer_id = give_get_payment_customer_id( $payment_id );
-	$customer    = new Give_Customer( $customer_id );
-
-	if ( ! empty( $customer->user_id ) && $customer->user_id > 0 ) {
-		$user_id = $customer->user_id;
-	}
-
-	// check the payment meta if we're still not finding a user with the customer record
-	if ( empty( $user_id ) || $user_id < 1 ) {
-		$payment_meta_user_id = give_get_payment_meta( $payment_id, '_give_payment_user_id', true );
-
-		if ( ! empty( $payment_meta_user_id ) ) {
-			$user_id = $payment_meta_user_id;
-		}
-	}
-
-	// Last ditch effort is to connect payment email with a user in the user table
-	if ( empty( $user_id ) || $user_id < 1 ) {
-		$payment_email = give_get_payment_user_email( $payment_id );
-		$user          = get_user_by( 'email', $payment_email );
-
-		if ( false !== $user ) {
-			$user_id = $user->ID;
-		}
-	}
-
-	return apply_filters( 'give_payment_user_id', (int) $user_id );
+	$payment = new Give_Payment( $payment_id );
+	return $payment->user_id;
 }
 
 /**
@@ -950,12 +940,11 @@ function give_get_payment_user_id( $payment_id ) {
  *
  * @param int $payment_id Payment ID
  *
- * @return string $donor_id Donor ID
+ * @return string $customer_id Customer ID
  */
 function give_get_payment_customer_id( $payment_id ) {
-	$customer_id = get_post_meta( $payment_id, '_give_payment_customer_id', true );
-
-	return apply_filters( '_give_payment_customer_id', $customer_id );
+	$payment = new Give_Payment( $payment_id );
+	return $payment->customer_id;
 }
 
 /**
@@ -968,9 +957,8 @@ function give_get_payment_customer_id( $payment_id ) {
  * @return string $ip User IP
  */
 function give_get_payment_user_ip( $payment_id ) {
-	$ip = give_get_payment_meta( $payment_id, '_give_payment_user_ip', true );
-
-	return apply_filters( 'give_payment_user_ip', $ip );
+	$payment = new Give_Payment( $payment_id );
+	return $payment->ip;
 }
 
 /**
@@ -983,16 +971,8 @@ function give_get_payment_user_ip( $payment_id ) {
  * @return string $date The date the payment was completed
  */
 function give_get_payment_completed_date( $payment_id = 0 ) {
-
-	$payment = get_post( $payment_id );
-
-	if ( 'pending' == $payment->post_status || 'preapproved' == $payment->post_status ) {
-		return false; // This payment was never completed
-	}
-
-	$date = ( $date = give_get_payment_meta( $payment_id, '_give_completed_date', true ) ) ? $date : $payment->modified_date;
-
-	return apply_filters( 'give_payment_completed_date', $date, $payment_id );
+	$payment = new Give_Payment( $payment_id );
+	return $payment->completed_date;
 }
 
 /**
@@ -1005,9 +985,8 @@ function give_get_payment_completed_date( $payment_id = 0 ) {
  * @return string $gateway Gateway
  */
 function give_get_payment_gateway( $payment_id ) {
-	$gateway = give_get_payment_meta( $payment_id, '_give_payment_gateway', true );
-
-	return apply_filters( 'give_payment_gateway', $gateway );
+	$payment = new Give_Payment( $payment_id );
+	return $payment->gateway;
 }
 
 /**
@@ -1020,10 +999,8 @@ function give_get_payment_gateway( $payment_id ) {
  * @return string $currency The currency code
  */
 function give_get_payment_currency_code( $payment_id = 0 ) {
-	$meta     = give_get_payment_meta( $payment_id );
-	$currency = isset( $meta['currency'] ) ? $meta['currency'] : give_get_currency();
-
-	return apply_filters( 'give_payment_currency_code', $currency, $payment_id );
+	$payment = new Give_Payment( $payment_id );
+	return $payment->currency;
 }
 
 /**
@@ -1051,9 +1028,8 @@ function give_get_payment_currency( $payment_id = 0 ) {
  * @return string $key Purchase key
  */
 function give_get_payment_key( $payment_id = 0 ) {
-	$key = give_get_payment_meta( $payment_id, '_give_payment_purchase_key', true );
-
-	return apply_filters( 'give_payment_key', $key, $payment_id );
+	$payment = new Give_Payment( $payment_id );
+	return $payment->key;
 }
 
 /**
@@ -1068,22 +1044,8 @@ function give_get_payment_key( $payment_id = 0 ) {
  * @return string $number Payment order number
  */
 function give_get_payment_number( $payment_id = 0 ) {
-
-	$number = $payment_id;
-
-	if ( give_get_option( 'enable_sequential' ) ) {
-
-		$number = give_get_payment_meta( $payment_id, '_give_payment_number', true );
-
-		if ( ! $number ) {
-
-			$number = $payment_id;
-
-		}
-
-	}
-
-	return apply_filters( 'give_payment_number', $number, $payment_id );
+	$payment = new Give_Payment( $payment_id );
+	return $payment->number;
 }
 
 /**
@@ -1241,20 +1203,23 @@ function give_payment_amount( $payment_id = 0 ) {
  */
 function give_get_payment_amount( $payment_id ) {
 
-	$amount = give_get_payment_meta( $payment_id, '_give_payment_total', true );
+	$payment = new Give_Payment( $payment_id );
 
-	if ( empty( $amount ) && '0.00' != $amount ) {
-		$meta = give_get_payment_meta( $payment_id, '_give_payment_meta', true );
-		$meta = maybe_unserialize( $meta );
-
-		if ( isset( $meta['amount'] ) ) {
-			$amount = $meta['amount'];
-		}
-	}
-
-	return apply_filters( 'give_payment_amount', floatval( $amount ), $payment_id );
+	return apply_filters( 'give_payment_amount', floatval( $payment->total ), $payment_id );
 }
 
+/**
+ * Retrieves arbitrary fees for the payment
+ *
+ * @since 1.5
+ * @param int $payment_id Payment ID
+ * @param string $type Fee type
+ * @return mixed array if payment fees found, false otherwise
+ */
+function give_get_payment_fees( $payment_id = 0, $type = 'all' ) {
+	$payment = new Give_Payment( $payment_id );
+	return $payment->get_fees( $type );
+}
 
 /**
  * Retrieves the transaction ID for the given payment
@@ -1266,18 +1231,8 @@ function give_get_payment_amount( $payment_id ) {
  * @return string The Transaction ID
  */
 function give_get_payment_transaction_id( $payment_id = 0 ) {
-
-	$transaction_id = false;
-	$transaction_id = give_get_payment_meta( $payment_id, '_give_payment_transaction_id', true );
-
-	if ( empty( $transaction_id ) ) {
-
-		$gateway        = give_get_payment_gateway( $payment_id );
-		$transaction_id = apply_filters( 'give_get_payment_transaction_id-' . $gateway, $payment_id );
-
-	}
-
-	return apply_filters( 'give_get_payment_transaction_id', $transaction_id, $payment_id );
+	$payment = new Give_Payment( $payment_id );
+	return $payment->transaction_id;
 }
 
 /**
