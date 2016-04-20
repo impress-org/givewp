@@ -27,16 +27,13 @@ add_action( 'give_manual_cc_form', '__return_false' );
  * the transaction in the Purchase History
  *
  * @since 1.0
- * @global      $give_options  Array of all the Give Options
- *
+ * 
  * @param array $purchase_data Purchase Data
  *
  * @return void
  */
 function give_manual_payment( $purchase_data ) {
-
-	global $give_options;
-
+	
 	if ( ! wp_verify_nonce( $purchase_data['gateway_nonce'], 'give-gateway' ) ) {
 		wp_die( __( 'Nonce verification has failed', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
@@ -62,7 +59,7 @@ function give_manual_payment( $purchase_data ) {
 		give_update_payment_status( $payment, 'publish' );
 		give_send_to_success_page();
 	} else {
-		give_record_gateway_error( __( 'Payment Error', 'give' ), sprintf( __( 'Payment creation failed while processing a manual (free or test) purchase. Payment data: %s', 'give' ), json_encode( $payment_data ) ), $payment );
+		give_record_gateway_error( __( 'Payment Error', 'give' ), sprintf( __( 'The payment creation failed while processing a manual (free or test) donation. Payment data: %s', 'give' ), json_encode( $payment_data ) ), $payment );
 		// If errors are present, send the user back to the purchase page so they can be corrected
 		give_send_back_to_checkout( '?payment-mode=' . $purchase_data['post_data']['give-gateway'] );
 	}

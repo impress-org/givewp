@@ -435,10 +435,10 @@ final class Give_Payment {
 		$this->last_name   = $this->user_info['last_name'];
 
 		// Other Identifiers
-		$this->form_id = $this->setup_form_id();
-		$this->form_id = $this->setup_price_id();
-		$this->key     = $this->setup_payment_key();
-		$this->number  = $this->setup_payment_number();
+		$this->form_id  = $this->setup_form_id();
+		$this->price_id = $this->setup_price_id();
+		$this->key      = $this->setup_payment_key();
+		$this->number   = $this->setup_payment_number();
 
 		// Allow extensions to add items to this object via hook
 		do_action( 'give_setup_payment', $this, $payment_id );
@@ -590,6 +590,7 @@ final class Give_Payment {
 			$total_decrease = 0;
 
 			foreach ( $this->pending as $key => $value ) {
+
 				switch ( $key ) {
 					case 'give_forms':
 						// Update totals for pending donations
@@ -703,7 +704,6 @@ final class Give_Payment {
 						break;
 
 					case 'ip':
-
 						$this->update_meta( '_give_payment_user_ip', $this->ip );
 						break;
 
@@ -713,6 +713,14 @@ final class Give_Payment {
 
 					case 'user_id':
 						$this->update_meta( '_give_payment_user_id', $this->user_id );
+						break;
+
+					case 'form_id':
+						$this->update_meta( '_give_payment_form_id', $this->user_id );
+						break;
+
+					case 'price_id':
+						$this->update_meta( '_give_payment_price_id', $this->user_id );
 						break;
 
 					case 'first_name':
@@ -1604,7 +1612,8 @@ final class Give_Payment {
 	 * @return int The Form ID
 	 */
 	private function setup_form_id() {
-		$form_id = isset( $this->payment_meta['form_id'] ) ? $this->payment_meta['form_id'] : 0;
+
+		$form_id = $this->get_meta( '_give_payment_form_id', true );
 
 		return $form_id;
 	}
@@ -1616,7 +1625,9 @@ final class Give_Payment {
 	 * @return int The Form Price ID
 	 */
 	private function setup_price_id() {
-		return give_get_price_id( $this->payment_meta['form_id'], $this->payment_meta['price'] );
+		$price_id = $this->get_meta( '_give_payment_price_id', true );
+
+		return $price_id;
 	}
 
 	/**
