@@ -122,52 +122,6 @@ function give_record_status_change( $payment_id, $new_status, $old_status ) {
 
 add_action( 'give_update_payment_status', 'give_record_status_change', 100, 3 );
 
-/**
- * Reduces earnings and donation stats when a donation is refunded
- *
- * @since 1.0
- *
- * @param $payment_id
- * @param $new_status
- * @param $old_status
- *
- * @return void
- */
-function give_undo_donation_on_refund( $payment_id, $new_status, $old_status ) {
-
-	if ( 'publish' != $old_status && 'revoked' != $old_status ) {
-		return;
-	}
-
-	if ( 'refunded' != $new_status ) {
-		return;
-	}
-
-	// Set necessary vars
-	$payment_meta = give_get_payment_meta( $payment_id );
-	$amount       = give_get_payment_amount( $payment_id );
-
-	// Undo this purchase
-	give_undo_purchase( $payment_meta['form_id'], $payment_id );
-
-	// Decrease total earnings
-	give_decrease_total_earnings( $amount );
-
-	// Decrement the stats for the donor
-	$customer_id = give_get_payment_customer_id( $payment_id );
-
-	if ( $customer_id ) {
-
-		Give()->customers->decrement_stats( $customer_id, $amount );
-
-	}
-
-	// Clear the This Month earnings (this_monththis_month is NOT a typo)
-	delete_transient( md5( 'give_earnings_this_monththis_month' ) );
-}
-
-add_action( 'give_update_payment_status', 'give_undo_donation_on_refund', 100, 3 );
-
 
 /**
  * Flushes the current user's purchase history transient when a payment status
