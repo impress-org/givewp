@@ -289,7 +289,7 @@ function give_undo_purchase( $form_id = false, $payment_id ) {
 		// decrease purchase count
 		give_decrease_purchase_count( $payment->form_id );
 	}
-	
+
 }
 
 
@@ -1629,35 +1629,4 @@ function give_get_price_id( $form_id, $price ) {
 
 	return $price_id;
 
-}
-
-/**
- * Retrieves arbitrary fees for the donation (Currently not in use!!)
- * @TODO  - Incorporate a fee-based functionality similar to below
- * @since 1.0
- *
- * @param int $payment_id Payment ID
- * @param string $type Fee type
- *
- * @return mixed array if payment fees found, false otherwise
- */
-function give_get_payment_fees( $payment_id = 0, $type = 'all' ) {
-	$payment_meta = give_get_payment_meta( $payment_id );
-	$fees         = array();
-	$payment_fees = isset( $payment_meta['fees'] ) ? $payment_meta['fees'] : false;
-	if ( ! empty( $payment_fees ) && is_array( $payment_fees ) ) {
-		foreach ( $payment_fees as $fee_id => $fee ) {
-			if ( 'all' != $type && ! empty( $fee['type'] ) && $type != $fee['type'] ) {
-				unset( $payment_fees[ $fee_id ] );
-			} else {
-				$fees[] = array(
-					'id'     => $fee_id,
-					'amount' => $fee['amount'],
-					'label'  => $fee['label']
-				);
-			}
-		}
-	}
-
-	return apply_filters( 'give_get_payment_fees', $fees, $payment_id );
 }
