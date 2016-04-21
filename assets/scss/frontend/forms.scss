@@ -189,7 +189,11 @@ form[id*='give-form'], #give-recurring-form, form.give-form {
       border-radius: 0;
       outline: none;
       color: $dark;
+      background-color: #FDFDFD;
 
+      &:focus {
+        background-color: #fff;
+      }
       &.required {
         color: $dark;
       }

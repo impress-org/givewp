@@ -866,7 +866,10 @@ form[id*='give-form'], #give-recurring-form, form.give-form {
       width: 100%;
       border-radius: 0;
       outline: none;
-      color: #333; }
+      color: #333;
+      background-color: #FDFDFD; }
+      form[id*='give-form'] .form-row select:focus, form[id*='give-form'] .form-row textarea:focus, form[id*='give-form'] .form-row input[type="text"]:focus, form[id*='give-form'] .form-row input[type="tel"]:focus, form[id*='give-form'] .form-row input[type="email"]:focus, form[id*='give-form'] .form-row input[type="password"]:focus, #give-recurring-form .form-row select:focus, #give-recurring-form .form-row textarea:focus, #give-recurring-form .form-row input[type="text"]:focus, #give-recurring-form .form-row input[type="tel"]:focus, #give-recurring-form .form-row input[type="email"]:focus, #give-recurring-form .form-row input[type="password"]:focus, form.give-form .form-row select:focus, form.give-form .form-row textarea:focus, form.give-form .form-row input[type="text"]:focus, form.give-form .form-row input[type="tel"]:focus, form.give-form .form-row input[type="email"]:focus, form.give-form .form-row input[type="password"]:focus {
+        background-color: #fff; }
       form[id*='give-form'] .form-row select.required, form[id*='give-form'] .form-row textarea.required, form[id*='give-form'] .form-row input[type="text"].required, form[id*='give-form'] .form-row input[type="tel"].required, form[id*='give-form'] .form-row input[type="email"].required, form[id*='give-form'] .form-row input[type="password"].required, #give-recurring-form .form-row select.required, #give-recurring-form .form-row textarea.required, #give-recurring-form .form-row input[type="text"].required, #give-recurring-form .form-row input[type="tel"].required, #give-recurring-form .form-row input[type="email"].required, #give-recurring-form .form-row input[type="password"].required, form.give-form .form-row select.required, form.give-form .form-row textarea.required, form.give-form .form-row input[type="text"].required, form.give-form .form-row input[type="tel"].required, form.give-form .form-row input[type="email"].required, form.give-form .form-row input[type="password"].required {
         color: #333; }
   form[id*='give-form'] .form-row-first,
@@ -943,6 +946,7 @@ form[id*='give-form'] .give-donation-amount {
   form[id*='give-form'] .give-donation-amount #give-amount-text {
     float: left;
     border: 1px solid #ccc;
+    background: #FFF;
     border-radius: 0;
     height: 35px;
     line-height: 35px;
@@ -959,6 +963,7 @@ form[id*='give-form'] .give-donation-amount {
   form[id*='give-form'] .give-donation-amount span.give-final-total-amount {
     float: left;
     border: 1px solid #ccc;
+    background: #FFF;
     border-radius: 0;
     height: 35px;
     line-height: 35px;
@@ -999,6 +1004,7 @@ form[id*='give-form'] #give-final-total-wrap {
     font-size: 18px;
     float: left;
     border: 1px solid #ccc;
+    background: #FFF;
     border-radius: 0;
     height: 35px;
     line-height: 35px;
