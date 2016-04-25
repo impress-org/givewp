@@ -72,7 +72,7 @@ function give_get_donation_form( $args = array() ) {
 		'give-form-wrap',
 		'give-display-' . $display_option
 	), $form->ID, $args );
-	$form_wrap_classes = implode( ' ', $form_wrap_classes_array );
+	$form_wrap_classes       = implode( ' ', $form_wrap_classes_array );
 
 	//Form Classes
 	$form_classes_array = apply_filters( 'give_form_classes', array(
@@ -80,7 +80,7 @@ function give_get_donation_form( $args = array() ) {
 		'give-form-' . $form->ID,
 		$float_labels_option
 	), $form->ID, $args );
-	$form_classes = implode( ' ', $form_classes_array );
+	$form_classes       = implode( ' ', $form_classes_array );
 
 
 	ob_start();
@@ -111,7 +111,7 @@ function give_get_donation_form( $args = array() ) {
 			<input type="hidden" name="give-form-title" value="<?php echo htmlentities( $form->post_title ); ?>"/>
 			<input type="hidden" name="give-current-url" value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
 			<input type="hidden" name="give-form-url" value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
-			<input type="hidden" name="give-form-minimum" value="<?php echo give_get_form_minimum_price( $form->ID ); ?>"/>
+			<input type="hidden" name="give-form-minimum" value="<?php echo give_format_amount( give_get_form_minimum_price( $form->ID ) ); ?>"/>
 			<?php
 
 			//Price ID hidden field for variable (mult-level) donation forms
