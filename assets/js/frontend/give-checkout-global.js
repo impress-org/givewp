@@ -186,6 +186,7 @@ jQuery(function ($) {
      * @returns {number}
      */
     function give_unformat_currency(price) {
+        console.log(give_global_vars.decimal_separator);
         return Math.abs(parseFloat(accounting.unformat(price, give_global_vars.decimal_separator)));
     }
 
@@ -249,6 +250,9 @@ jQuery(function ($) {
 
         //Set the custom amount input value formatted properly
         $(this).val(formatted_total);
+
+        console.log(minimum_amount);
+        console.log(value_min);
 
         parent_form.find('*[data-price-id]').each(function () {
             if (this.value !== 'custom' && give_unformat_currency(this.value) === value_now) {
@@ -332,7 +336,7 @@ jQuery(function ($) {
         //remove old selected class & add class for CSS purposes
         selected_field.parents('.give-donation-levels-wrap').find('.give-default-level').removeClass('give-default-level');
         selected_field.find('option').removeClass('give-default-level');
-        
+
         if (selected_field.is('select')) {
             selected_field.find(':selected').addClass('give-default-level');
         } else {

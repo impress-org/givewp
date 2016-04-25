@@ -141,6 +141,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 == Changelog ==
 
 = 1.4.2 =
+* Fix: Bug with Custom Amount minimum and currencies with "," for decimal separator miscalculating the amounts - https://github.com/WordImpress/Give/issues/591
 * Fix: Tooltips weren't loading properly when clicking the "Cancel" button after opting to create an account - https://github.com/WordImpress/Give/issues/500
 * Fix: Closing Give Donation Modal Displays "give-hidden" elements in form incorrectly - https://github.com/WordImpress/Give/issues/582
 
