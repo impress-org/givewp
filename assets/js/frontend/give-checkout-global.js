@@ -186,7 +186,6 @@ jQuery(function ($) {
      * @returns {number}
      */
     function give_unformat_currency(price) {
-        console.log(give_global_vars.decimal_separator);
         return Math.abs(parseFloat(accounting.unformat(price, give_global_vars.decimal_separator)));
     }
 
@@ -250,9 +249,6 @@ jQuery(function ($) {
 
         //Set the custom amount input value formatted properly
         $(this).val(formatted_total);
-
-        console.log(minimum_amount);
-        console.log(value_min);
 
         parent_form.find('*[data-price-id]').each(function () {
             if (this.value !== 'custom' && give_unformat_currency(this.value) === value_now) {
