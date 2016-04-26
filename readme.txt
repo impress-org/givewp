@@ -148,6 +148,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Tweak: Removing the top loading animation when changing donation amounts to reduce theme compatibility issues with it - https://github.com/WordImpress/Give/issues/556
 * Tweak: Replaced JS get query parameter function with better function that doesn't throw unreachable code warning in console and works similarly - https://github.com/WordImpress/Give/issues/586
 * Tweak: New changelog.txt file to offload older version changelogs; also added release dates to versions for better tracking - https://github.com/WordImpress/Give/issues/596
+* Tweak: Hid the "ID" column from the multi-level repeater table because it served no real purpose for admins - https://github.com/WordImpress/Give/issues/554
 
 = 1.4.1: April 12, 2016 =
 * Fix: Member-only donation forms don't display member-only validation responses properly -  https://github.com/WordImpress/Give/issues/551
