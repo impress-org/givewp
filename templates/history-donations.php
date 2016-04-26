@@ -7,13 +7,13 @@
 $donations = give_get_users_purchases( get_current_user_id(), 20, true, 'any' );
 
 //Email Access Token?
-if(Give()->email_access->token_exists) {
+if ( Give()->email_access->token_exists ) {
 	$donations = give_get_users_purchases( 0, 20, true, 'any' );
 }
 
 //Session active?
-if(Give()->session->get_session_expiration()){
-	$email = Give()->session->get('give_email');
+if ( Give()->session->get_session_expiration() !== false ) {
+	$email     = Give()->session->get( 'give_email' );
 	$donations = give_get_users_purchases( $email, 20, true, 'any' );
 }
 
