@@ -312,6 +312,7 @@ function give_get_ip() {
  */
 function give_set_purchase_session( $purchase_data = array() ) {
 	Give()->session->set( 'give_purchase', $purchase_data );
+	Give()->session->set( 'give_email', $purchase_data['user_email'] );
 }
 
 /**
