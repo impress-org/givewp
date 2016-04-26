@@ -278,7 +278,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 		<label class="give-hidden" for="give-amount-hidden"><?php echo __( 'Donation Amount:', 'give' ); ?></label>
 		<input id="give-amount" class="give-amount-hidden" type="hidden" name="give-amount"
 		       value="<?php echo $default_amount; ?>" required>
-		<p class="set-price give-donation-amount form-row-wide">
+		<div class="set-price give-donation-amount form-row-wide">
 			<?php if ( $currency_position == 'before' ) {
 				echo $currency_output;
 			} ?>
@@ -286,10 +286,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 			<?php if ( $currency_position == 'after' ) {
 				echo $currency_output;
 			} ?>
-			<span class="give-loading-text give-updating-price-loader">
-				<span class="give-loading-animation"></span> <?php _e( 'Updating Amount...', 'give' ); ?>
-			</span>
-		</p>
+		</div>
 		<?php
 	} else {
 		//Custom Amount Allowed
@@ -304,9 +301,6 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 				<?php if ( $currency_position == 'after' ) {
 					echo $currency_output;
 				} ?>
-				<span class="give-loading-text give-updating-price-loader">
-					<span class="give-loading-animation"></span> <?php _e( 'Updating Amount...', 'give' ); ?>
-				</span>
 			</div>
 		</div>
 	<?php }
