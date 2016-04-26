@@ -9,24 +9,6 @@
  */
 var give_scripts, give_global_vars;
 
-
-//Get Query function used to grab URL params
-(function ($) {
-    $.getQuery = function (query) {
-        query = query.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-        var expr = "[\\?&]" + query + "=([^&#]*)";
-        var regex = new RegExp(expr);
-        var results = regex.exec(window.location.href);
-        if (results !== null) {
-            return results[1];
-            return decodeURIComponent(results[1].replace(/\+/g, " "));
-        } else {
-            return false;
-        }
-    };
-})(jQuery);
-
-
 jQuery(function ($) {
 
     var doc = $(document);
@@ -288,9 +270,6 @@ jQuery(function ($) {
             format_args.symbol = give_global_vars.currency_sign;
             parent_form.find('.give-final-total-amount').data('total', value_now).text(give_format_currency(value_now, format_args));
 
-            //fade in/out updating text
-            $(this).next('.give-updating-price-loader').stop().fadeIn().fadeOut();
-
         }
 
         //This class is used for CSS purposes
@@ -332,7 +311,7 @@ jQuery(function ($) {
         //remove old selected class & add class for CSS purposes
         selected_field.parents('.give-donation-levels-wrap').find('.give-default-level').removeClass('give-default-level');
         selected_field.find('option').removeClass('give-default-level');
-        
+
         if (selected_field.is('select')) {
             selected_field.find(':selected').addClass('give-default-level');
         } else {
@@ -353,9 +332,6 @@ jQuery(function ($) {
             price_id = selected_field.find('option:selected').data('price-id');
         }
 
-        //Fade in/out price loading updating image
-        parent_form.find('.give-updating-price-loader').stop().fadeIn().fadeOut();
-
         //update price id field for variable products
         parent_form.find('input[name=give-price-id]').val(price_id);
 
@@ -375,6 +351,9 @@ jQuery(function ($) {
 
         $('.give-donation-amount .give-text-input').trigger('blur');
 
+        // trigger an event for hooks
+        $(document).trigger('give_donation_value_updated', [parent_form, this_amount, price_id]);
+
         //Update donation form bottom total data attr and text
         parent_form.find('.give-final-total-amount').data('total', this_amount).text(formatted_total);
     }
@@ -384,8 +363,8 @@ jQuery(function ($) {
      */
     function sent_back_to_form() {
 
-        var form_id = $.getQuery('form-id');
-        var payment_mode = $.getQuery('payment-mode');
+        var form_id = give_get_parameter_by_name('form-id');
+        var payment_mode = give_get_parameter_by_name('payment-mode');
 
         //Sanity check - only proceed if query strings in place
         if (!form_id || !payment_mode) {
@@ -439,5 +418,24 @@ jQuery(function ($) {
     }
 
     sent_back_to_form();
+
+    /**
+     * Get Parameter by Name
+     *
+     * @see: http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
+     * @param name
+     * @param url
+     * @since 1.4.2
+     * @returns {*}
+     */
+    function give_get_parameter_by_name(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
 
 });

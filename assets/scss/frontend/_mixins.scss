@@ -81,6 +81,7 @@
 @mixin give-input() {
   float: left;
   border: 1px solid $borders;
+  background: #FFF;
   border-radius: 0;
   height: 35px;
   line-height: 35px;
