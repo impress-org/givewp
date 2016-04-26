@@ -72,7 +72,7 @@ function give_get_donation_form( $args = array() ) {
 		'give-form-wrap',
 		'give-display-' . $display_option
 	), $form->ID, $args );
-	$form_wrap_classes = implode( ' ', $form_wrap_classes_array );
+	$form_wrap_classes       = implode( ' ', $form_wrap_classes_array );
 
 	//Form Classes
 	$form_classes_array = apply_filters( 'give_form_classes', array(
@@ -80,7 +80,7 @@ function give_get_donation_form( $args = array() ) {
 		'give-form-' . $form->ID,
 		$float_labels_option
 	), $form->ID, $args );
-	$form_classes = implode( ' ', $form_classes_array );
+	$form_classes       = implode( ' ', $form_classes_array );
 
 
 	ob_start();
@@ -111,7 +111,7 @@ function give_get_donation_form( $args = array() ) {
 			<input type="hidden" name="give-form-title" value="<?php echo htmlentities( $form->post_title ); ?>"/>
 			<input type="hidden" name="give-current-url" value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
 			<input type="hidden" name="give-form-url" value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
-			<input type="hidden" name="give-form-minimum" value="<?php echo give_get_form_minimum_price( $form->ID ); ?>"/>
+			<input type="hidden" name="give-form-minimum" value="<?php echo give_format_amount( give_get_form_minimum_price( $form->ID ) ); ?>"/>
 			<?php
 
 			//Price ID hidden field for variable (mult-level) donation forms
@@ -278,7 +278,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 		<label class="give-hidden" for="give-amount-hidden"><?php echo __( 'Donation Amount:', 'give' ); ?></label>
 		<input id="give-amount" class="give-amount-hidden" type="hidden" name="give-amount"
 		       value="<?php echo $default_amount; ?>" required>
-		<p class="set-price give-donation-amount form-row-wide">
+		<div class="set-price give-donation-amount form-row-wide">
 			<?php if ( $currency_position == 'before' ) {
 				echo $currency_output;
 			} ?>
@@ -286,10 +286,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 			<?php if ( $currency_position == 'after' ) {
 				echo $currency_output;
 			} ?>
-			<span class="give-loading-text give-updating-price-loader">
-				<span class="give-loading-animation"></span> <?php _e( 'Updating Amount...', 'give' ); ?>
-			</span>
-		</p>
+		</div>
 		<?php
 	} else {
 		//Custom Amount Allowed
@@ -304,9 +301,6 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 				<?php if ( $currency_position == 'after' ) {
 					echo $currency_output;
 				} ?>
-				<span class="give-loading-text give-updating-price-loader">
-					<span class="give-loading-animation"></span> <?php _e( 'Updating Amount...', 'give' ); ?>
-				</span>
 			</div>
 		</div>
 	<?php }

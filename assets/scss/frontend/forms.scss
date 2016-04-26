@@ -189,7 +189,11 @@ form[id*='give-form'], #give-recurring-form, form.give-form {
       border-radius: 0;
       outline: none;
       color: $dark;
+      background-color: #FDFDFD;
 
+      &:focus {
+        background-color: #fff;
+      }
       &.required {
         color: $dark;
       }
@@ -590,12 +594,6 @@ form[id*='give-form'] {
     line-height: 20px;
     font-size: 16px;
     font-weight: normal;
-
-    &.give-updating-price-loader {
-      float: left;
-      margin: 6px 0 0 20px;
-    }
-
   }
   .give-loading-animation {
     @include iconstyle();

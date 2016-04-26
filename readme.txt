@@ -141,7 +141,10 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 == Changelog ==
 
 = 1.4.2 =
-* Fix: Closing Give Donation Modal Displays "give-hidden" elements in form imcorrectly - https://github.com/WordImpress/Give/issues/582
+* Fix: Bug with Custom Amount minimum and currencies with "," for decimal separator miscalculating the amounts - https://github.com/WordImpress/Give/issues/591
+* Fix: Tooltips weren't loading properly when clicking the "Cancel" button after opting to create an account - https://github.com/WordImpress/Give/issues/500
+* Fix: Closing Give Donation Modal Displays "give-hidden" elements in form incorrectly - https://github.com/WordImpress/Give/issues/582
+* Tweak: Removing the top loading animation when changing donation amounts to reduce theme compatibility issues with it - https://github.com/WordImpress/Give/issues/556
 
 = 1.4.1 =
 * Fix: Member-only donation forms don't display member-only validation responses properly -  https://github.com/WordImpress/Give/issues/551

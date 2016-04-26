@@ -287,10 +287,7 @@ jQuery(function ($) {
             //update donation total (include currency symbol)
             format_args.symbol = give_global_vars.currency_sign;
             parent_form.find('.give-final-total-amount').data('total', value_now).text(give_format_currency(value_now, format_args));
-
-            //fade in/out updating text
-            $(this).next('.give-updating-price-loader').stop().fadeIn().fadeOut();
-
+            
         }
 
         //This class is used for CSS purposes
@@ -332,7 +329,7 @@ jQuery(function ($) {
         //remove old selected class & add class for CSS purposes
         selected_field.parents('.give-donation-levels-wrap').find('.give-default-level').removeClass('give-default-level');
         selected_field.find('option').removeClass('give-default-level');
-        
+
         if (selected_field.is('select')) {
             selected_field.find(':selected').addClass('give-default-level');
         } else {
@@ -353,9 +350,6 @@ jQuery(function ($) {
             price_id = selected_field.find('option:selected').data('price-id');
         }
 
-        //Fade in/out price loading updating image
-        parent_form.find('.give-updating-price-loader').stop().fadeIn().fadeOut();
-
         //update price id field for variable products
         parent_form.find('input[name=give-price-id]').val(price_id);
 
@@ -374,6 +368,9 @@ jQuery(function ($) {
         }
 
         $('.give-donation-amount .give-text-input').trigger('blur');
+
+        // trigger an event for hooks
+        $(document).trigger('give_donation_value_updated', [parent_form, this_amount, price_id]);
 
         //Update donation form bottom total data attr and text
         parent_form.find('.give-final-total-amount').data('total', this_amount).text(formatted_total);
