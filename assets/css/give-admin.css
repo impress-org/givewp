@@ -784,9 +784,9 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
     width: 105px; }
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list input.cmb2-text-money {
     width: 65px; }
-  #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .give-multilevel-text-field {
-    width: 180px; }
-  #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-type-radio-inline {
+  #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list .give-multilevel-text-field {
+    width: 160px; }
+  #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list .cmb-type-radio-inline {
     margin-left: 20px; }
   .col-amount {
     width: 70px; }
