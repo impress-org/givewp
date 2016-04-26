@@ -5,6 +5,7 @@
 * Fix: Ensure email is set in PHP session to view donation history after donating properly without having to preform additional email access request - https://github.com/WordImpress/Give/issues/587
 * Tweak: Removing the top loading animation when changing donation amounts to reduce theme compatibility issues with it - https://github.com/WordImpress/Give/issues/556
 * Tweak: Replaced JS get query parameter function with better function that doesn't throw unreachable code warning in console and works similarly - https://github.com/WordImpress/Give/issues/586
+* Tweak: New changelog.txt file to offload older version changelogs; also added release dates to versions for better tracking - https://github.com/WordImpress/Give/issues/596
 
 = 1.4.1: April 12, 2016 =
 * Fix: Member-only donation forms don't display member-only validation responses properly -  https://github.com/WordImpress/Give/issues/551
