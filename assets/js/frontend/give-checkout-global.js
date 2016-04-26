@@ -9,24 +9,6 @@
  */
 var give_scripts, give_global_vars;
 
-
-//Get Query function used to grab URL params
-(function ($) {
-    $.getQuery = function (query) {
-        query = query.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-        var expr = "[\\?&]" + query + "=([^&#]*)";
-        var regex = new RegExp(expr);
-        var results = regex.exec(window.location.href);
-        if (results !== null) {
-            return results[1];
-            return decodeURIComponent(results[1].replace(/\+/g, " "));
-        } else {
-            return false;
-        }
-    };
-})(jQuery);
-
-
 jQuery(function ($) {
 
     var doc = $(document);
@@ -287,7 +269,7 @@ jQuery(function ($) {
             //update donation total (include currency symbol)
             format_args.symbol = give_global_vars.currency_sign;
             parent_form.find('.give-final-total-amount').data('total', value_now).text(give_format_currency(value_now, format_args));
-            
+
         }
 
         //This class is used for CSS purposes
@@ -381,8 +363,8 @@ jQuery(function ($) {
      */
     function sent_back_to_form() {
 
-        var form_id = $.getQuery('form-id');
-        var payment_mode = $.getQuery('payment-mode');
+        var form_id = give_get_parameter_by_name('form-id');
+        var payment_mode = give_get_parameter_by_name('payment-mode');
 
         //Sanity check - only proceed if query strings in place
         if (!form_id || !payment_mode) {
@@ -436,5 +418,24 @@ jQuery(function ($) {
     }
 
     sent_back_to_form();
+
+    /**
+     * Get Parameter by Name
+     *
+     * @see: http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
+     * @param name
+     * @param url
+     * @since 1.4.2
+     * @returns {*}
+     */
+    function give_get_parameter_by_name(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
 
 });
