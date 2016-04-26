@@ -287,10 +287,7 @@ jQuery(function ($) {
             //update donation total (include currency symbol)
             format_args.symbol = give_global_vars.currency_sign;
             parent_form.find('.give-final-total-amount').data('total', value_now).text(give_format_currency(value_now, format_args));
-
-            //fade in/out updating text
-            $(this).next('.give-updating-price-loader').stop().fadeIn().fadeOut();
-
+            
         }
 
         //This class is used for CSS purposes
@@ -352,9 +349,6 @@ jQuery(function ($) {
         if (!price_id) {
             price_id = selected_field.find('option:selected').data('price-id');
         }
-
-        //Fade in/out price loading updating image
-        parent_form.find('.give-updating-price-loader').stop().fadeIn().fadeOut();
 
         //update price id field for variable products
         parent_form.find('input[name=give-price-id]').val(price_id);

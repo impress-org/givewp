@@ -1248,9 +1248,6 @@ form[id*='give-form'] p.give-loading-text, form[id*='give-form'] span.give-loadi
   line-height: 20px;
   font-size: 16px;
   font-weight: normal; }
-  form[id*='give-form'] p.give-loading-text.give-updating-price-loader, form[id*='give-form'] span.give-loading-text.give-updating-price-loader {
-    float: left;
-    margin: 6px 0 0 20px; }
 
 form[id*='give-form'] .give-loading-animation {
   font-family: 'give-icomoon';
