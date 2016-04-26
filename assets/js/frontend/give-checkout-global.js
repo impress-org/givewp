@@ -369,6 +369,9 @@ jQuery(function ($) {
 
         $('.give-donation-amount .give-text-input').trigger('blur');
 
+        // trigger an event for hooks
+        $(document).trigger('give_donation_value_updated', [parent_form, this_amount, price_id]);
+
         //Update donation form bottom total data attr and text
         parent_form.find('.give-final-total-amount').data('total', this_amount).text(formatted_total);
     }
