@@ -4,15 +4,13 @@
  */
 
 //User's Donations
-$donations = give_get_users_purchases( get_current_user_id(), 20, true, 'any' );
-
-//Email Access Token?
-if ( Give()->email_access->token_exists ) {
+if ( is_user_logged_in() ) {
+	$donations = give_get_users_purchases( get_current_user_id(), 20, true, 'any' );
+} elseif ( Give()->email_access->token_exists ) {
+	//Email Access Token?
 	$donations = give_get_users_purchases( 0, 20, true, 'any' );
-}
-
-//Session active?
-if ( Give()->session->get_session_expiration() !== false ) {
+} elseif ( Give()->session->get_session_expiration() !== false ) {
+	//Session active?
 	$email     = Give()->session->get( 'give_email' );
 	$donations = give_get_users_purchases( $email, 20, true, 'any' );
 }
