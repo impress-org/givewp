@@ -23,9 +23,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since  1.0
  *
- * @param int    $user   User ID or email address
- * @param int    $number Number of purchases to retrieve
- * @param bool   $pagination
+ * @param int $user User ID or email address
+ * @param int $number Number of purchases to retrieve
+ * @param bool $pagination
  * @param string $status
  *
  * @return bool|object List of all user purchases
@@ -36,7 +36,7 @@ function give_get_users_purchases( $user = 0, $number = 20, $pagination = false,
 		$user = get_current_user_id();
 	}
 
-	if ( 0 === $user && !Give()->email_access->token_exists ) {
+	if ( 0 === $user && ! Give()->email_access->token_exists ) {
 		return false;
 	}
 
@@ -96,7 +96,7 @@ function give_get_users_purchases( $user = 0, $number = 20, $pagination = false,
  *
  * @since  1.0
  *
- * @param int    $user User ID or email address
+ * @param int $user User ID or email address
  * @param string $status
  *
  * @return bool|object List of unique forms purchased by user
@@ -231,7 +231,7 @@ function give_get_purchase_stats_by_user( $user = '' ) {
 /**
  * Count number of purchases of a donor
  *
- * Returns total number of purchases a donor has made
+ * @description: Returns total number of purchases a donor has made
  *
  * @access      public
  * @since       1.0
@@ -241,9 +241,17 @@ function give_get_purchase_stats_by_user( $user = '' ) {
  * @return      int - the total number of purchases
  */
 function give_count_purchases_of_customer( $user = null ) {
+
+	//Logged in?
 	if ( empty( $user ) ) {
 		$user = get_current_user_id();
 	}
+
+	//Email access?
+	if ( empty( $user ) && Give()->email_access->token_email ) {
+		$user = Give()->email_access->token_email;
+	}
+
 
 	$stats = ! empty( $user ) ? give_get_purchase_stats_by_user( $user ) : false;
 
@@ -388,7 +396,7 @@ function give_get_donor_address( $user_id = 0 ) {
  * @access        public
  * @since         1.0
  *
- * @param int   $user_id
+ * @param int $user_id
  * @param array $user_data
  *
  * @return        void
