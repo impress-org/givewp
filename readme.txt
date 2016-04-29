@@ -142,6 +142,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 = 1.4.3:  =
 * Fix: Bug with email access and the Donation History shortcode pagination not counting properly - https://github.com/WordImpress/Give/issues/600
+* Fix: Fixed incorrect meta_key usage within is_single_price_mode() method which was returning false positives - https://github.com/WordImpress/Give/issues/602
 
 = 1.4.2: April 26, 2016 =
 * Fix: Bug with Custom Amount minimum and currencies with "," for decimal separator miscalculating the amounts - https://github.com/WordImpress/Give/issues/591
