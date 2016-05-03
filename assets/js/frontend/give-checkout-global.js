@@ -232,6 +232,7 @@ jQuery(function ($) {
         //Set the custom amount input value formatted properly
         $(this).val(formatted_total);
 
+        //Flag Multi-levels for min. donation conditional
         parent_form.find('*[data-price-id]').each(function () {
             if (this.value !== 'custom' && give_unformat_currency(this.value) === value_now) {
                 is_level = true;
@@ -239,7 +240,7 @@ jQuery(function ($) {
         });
 
         //Does this number have an accepted minimum value?
-        if (( !$.isNumeric(value_now) || value_now < value_min || value_now < 1 ) && !is_level) {
+        if (( !$.isNumeric(value_now) || value_now < value_min || value_now < 1 ) && !is_level && value_min !== 0) {
 
             //It doesn't... Invalid Minimum
             $(this).addClass('give-invalid-amount');
@@ -251,16 +252,18 @@ jQuery(function ($) {
             //If no error present, create it, insert, slide down (show)
             if (invalid_minimum.length === 0) {
                 var error = $('<div class="give_error give-invalid-minimum">' + minimum_amount + '</div>').hide();
-                error.insertAfter(parent_form.find('.give-total-wrap')).slideDown();
+                error.insertAfter(parent_form.find('.give-total-wrap')).show();
             }
 
         } else {
+
             //Minimum amount met - slide up error & remove it from DOM
-            parent_form.find('.give-invalid-minimum').slideUp(400, function () {
+            parent_form.find('.give-invalid-minimum').slideUp(300, function () {
                 $(this).remove();
             });
             //Re-enable submit
             parent_form.find('.give-submit').prop('disabled', false);
+
         }
 
         //If values don't match up then proceed with updating donation total value
