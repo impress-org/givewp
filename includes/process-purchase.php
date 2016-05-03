@@ -224,34 +224,38 @@ function give_purchase_form_validate_fields() {
 /**
  * Purchase Form Validate Gateway
  *
+ * @description: Validate the gateway and donation amount
+ *
  * @access      private
  * @since       1.0
  * @return      string
  */
 function give_purchase_form_validate_gateway() {
 
-	$gateway = give_get_default_gateway( $_REQUEST['give-form-id'] );
+	$form_id = isset( $_REQUEST['give-form-id'] ) ? $_REQUEST['give-form-id'] : 0;
+	$amount  = isset( $_REQUEST['give-amount'] ) ? give_format_amount( give_get_form_minimum_price( $_REQUEST['give-amount'] ) ) : 0;
+	$gateway = give_get_default_gateway( $form_id );
 
 	// Check if a gateway value is present
 	if ( ! empty( $_REQUEST['give-gateway'] ) ) {
 
 		$gateway = sanitize_text_field( $_REQUEST['give-gateway'] );
 
-		//Is amount being donated in LIVE mode above 0.00?
-		if ( '0.00' == $_REQUEST['give-amount'] && ! give_is_test_mode() ) {
+		//Is amount being donated in LIVE mode 0.00? If so, error:
+		if ( $amount == 0 && ! give_is_test_mode() ) {
 
 			give_set_error( 'invalid_donation_amount', __( 'Please insert a valid donation amount.', 'give' ) );
 
 		} //Check for a minimum custom amount
 		elseif ( ! give_verify_minimum_price() ) {
 
-			$minimum       = give_currency_filter( give_format_amount( give_get_form_minimum_price( $_REQUEST['give-form-id'] ) ) );
+			$minimum       = give_currency_filter( give_format_amount( give_get_form_minimum_price( $form_id ) ) );
 			$error_message = __( 'This form has a minimum donation amount of %s', 'give' );
 
 			give_set_error( 'invalid_donation_minimum', sprintf( $error_message, $minimum ) );
 
 		} //Is this test mode zero donation? Let it through but set to manual gateway
-		elseif ( '0.00' == $_REQUEST['give-amount'] && give_is_test_mode() ) {
+		elseif ( $amount == 0 && give_is_test_mode() ) {
 
 			$gateway = 'manual';
 
@@ -278,7 +282,7 @@ function give_purchase_form_validate_gateway() {
 function give_verify_minimum_price() {
 
 	$amount          = give_sanitize_amount( $_REQUEST['give-amount'] );
-	$form_id         = $_REQUEST['give-form-id'];
+	$form_id         = isset( $_REQUEST['give-form-id'] ) ? $_REQUEST['give-form-id'] : 0;
 	$price_id        = isset( $_REQUEST['give-price-id'] ) ? $_REQUEST['give-price-id'] : 0;
 	$variable_prices = give_has_variable_prices( $form_id );
 
