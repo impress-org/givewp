@@ -36,6 +36,8 @@ class Give_DB_Customers extends Give_DB {
 		$this->table_name  = $wpdb->prefix . 'give_customers';
 		$this->primary_key = 'id';
 		$this->version     = '1.0';
+		
+		add_action( 'profile_update', array( $this, 'update_customer_email_on_user_update' ), 10, 2 );
 
 	}
 
@@ -172,14 +174,19 @@ class Give_DB_Customers extends Give_DB {
 	}
 
 	/**
-	 * Checks if a customer exists by email
+	 * Checks if a customer exists
 	 *
 	 * @access  public
 	 * @since   1.0
 	 */
-	public function exists( $email = '' ) {
+	public function exists( $value = '', $field = 'email' ) {
+		
+		$columns = $this->get_columns();
+		if ( ! array_key_exists( $field, $columns ) ) {
+			return false;
+		}
 
-		return (bool) $this->get_column_by( 'id', 'email', $email );
+		return (bool) $this->get_column_by( 'id', $field, $value );
 
 	}
 
@@ -265,6 +272,58 @@ class Give_DB_Customers extends Give_DB {
 
 	}
 
+	/**
+	 * Updates the email address of a customer record when the email on a user is updated
+	 *
+	 * @access  public
+	 * 
+	 * @since   1.4.3
+	 * 
+	 * @param int $user_id
+	 * @param $old_user_data
+	 *
+	 * @return bool
+	 */
+	public function update_customer_email_on_user_update( $user_id = 0, $old_user_data ) {
+
+		$customer = new Give_Customer( $user_id, true );
+
+		if( ! $customer ) {
+			return false;
+		}
+
+		$user = get_userdata( $user_id );
+
+		if( ! empty( $user ) && $user->user_email !== $customer->email ) {
+
+			if( ! $this->get_customer_by( 'email', $user->user_email ) ) {
+
+				$success = $this->update( $customer->id, array( 'email' => $user->user_email ) );
+
+				if( $success ) {
+					// Update some payment meta if we need to
+					$payments_array = explode( ',', $customer->payment_ids );
+
+					if( ! empty( $payments_array ) ) {
+
+						foreach ( $payments_array as $payment_id ) {
+
+							give_update_payment_meta( $payment_id, 'email', $user->user_email );
+
+						}
+
+					}
+
+					do_action( 'give_update_customer_email_on_user_update', $user, $customer );
+
+				}
+
+			}
+
+		}
+
+	}
+	
 	/**
 	 * Retrieves a single customer from the database
 	 *
@@ -384,30 +443,23 @@ class Give_DB_Customers extends Give_DB {
 		}
 
 		//specific customers by email
-		if ( ! empty( $args['email'] ) ) {
+		if( ! empty( $args['email'] ) ) {
 
-			if ( is_array( $args['email'] ) ) {
-				$emails = "'" . implode( "', '", $args['email'] ) . "'";
+			if( is_array( $args['email'] ) ) {
+
+				$emails_count       = count( $args['email'] );
+				$emails_placeholder = array_fill( 0, $emails_count, '%s' );
+				$emails             = implode( ', ', $emails_placeholder );
+
+				$where .= $wpdb->prepare( " AND `email` IN( $emails ) ", $args['email'] );
 			} else {
-				$emails = "'" . $args['email'] . "'";
+				$where .= $wpdb->prepare( " AND `email` = %s ", $args['email'] );
 			}
-
-			if ( ! empty( $where ) ) {
-				$where .= " AND `email` IN( {$emails} ) ";
-			} else {
-				$where .= "WHERE `email` IN( {$emails} ) ";
-			}
-
 		}
 
 		// specific customers by name
-		if ( ! empty( $args['name'] ) ) {
-
-			if ( ! empty( $where ) ) {
-				$where .= " AND `name` LIKE '%%" . $args['name'] . "%%' ";
-			} else {
-				$where .= "WHERE `name` LIKE '%%" . $args['name'] . "%%' ";
-			}
+		if( ! empty( $args['name'] ) ) {
+			$where .= $wpdb->prepare( " AND `name` LIKE '%%%%" . '%s' . "%%%%' ", $args['name'] );
 		}
 
 		// Customers created for a specific date or in a date range
