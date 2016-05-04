@@ -594,4 +594,14 @@ class Give_DB_Customers extends Give_DB {
 
 		update_option( $this->table_name . '_db_version', $this->version );
 	}
+	
+	/**
+	 * Check if the Customers table was ever installed
+	 *
+	 * @since  1.4.3
+	 * @return bool Returns if the customers table was installed and upgrade routine run
+	 */
+	public function installed() {
+		return $this->table_exists( $this->table_name );
+	}
 }
