@@ -25,6 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function give_install( $network_wide = false ) {
+
 	global $wpdb;
 
 	if ( is_multisite() && $network_wide ) {
@@ -55,7 +56,7 @@ register_activation_hook( GIVE_PLUGIN_FILE, 'give_install' );
  */
 function give_run_install() {
 
-	global $wpdb, $give_options, $wp_version;
+	global $give_options;
 
 	// Setup the Give Custom Post Types
 	give_setup_post_types();

@@ -570,9 +570,7 @@ class Give_DB_Customers extends Give_DB {
 	 * @since   1.0
 	 */
 	public function create_table() {
-
-		global $wpdb;
-
+		
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
 		$sql = "CREATE TABLE " . $this->table_name . " (
