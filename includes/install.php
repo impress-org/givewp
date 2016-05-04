@@ -169,9 +169,9 @@ function give_run_install() {
 
 	// Add a temporary option to note that Give pages have been created
 	set_transient( '_give_installed', $options, 30 );
-
-
+	
 	if ( ! $current_version ) {
+
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrade-functions.php';
 
 		// When new upgrade routines are added, mark them as complete on fresh install
