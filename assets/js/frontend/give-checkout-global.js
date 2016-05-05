@@ -164,6 +164,7 @@ jQuery(function ($) {
 
     /**
      * Unformat Currency
+     *
      * @param price
      * @returns {number}
      */
@@ -187,7 +188,9 @@ jQuery(function ($) {
     });
 
     /**
-     * Custom Donation Amount - If user focuses on field & changes value then updates price
+     * Custom Donation Amount Focus In
+     *
+     * @description: If user focuses on field & changes value then updates price
      */
     doc.on('focus', '.give-donation-amount .give-text-input', function (e) {
 
@@ -197,7 +200,10 @@ jQuery(function ($) {
         $(this).removeClass('invalid-amount');
 
         //Set data amount
-        $(this).data('amount', give_unformat_currency($(this).val()));
+        var current_total = parent_form.find('.give-final-total-amount').data('total');
+        $(this).data('amount', give_unformat_currency(current_total));
+
+
         //This class is used for CSS purposes
         $(this).parent('.give-donation-amount').addClass('give-custom-amount-focus-in');
 
@@ -208,19 +214,25 @@ jQuery(function ($) {
         parent_form.find('.give-radio-input.give-radio-level-custom').prop('checked', true); //Radio
         parent_form.find('.give-select-level').prop('selected', false); //Select
         parent_form.find('.give-select-level .give-donation-level-custom').prop('selected', true); //Select
+
     });
 
     /**
-     * Custom Donation (fires on focus end aka "blur")
+     * Custom Donation Focus Out
+     *
+     * @description: Fires on focus end aka "blur"
+     *
      */
     doc.on('blur', '.give-donation-amount .give-text-input', function (e) {
 
         var parent_form = $(this).closest('form');
         var pre_focus_amount = $(this).data('amount');
+        var this_value = $(this).val();
         var minimum_amount = parent_form.find('input[name="give-form-minimum"]');
         var value_min = give_unformat_currency(minimum_amount.val());
-        var is_level = false;
-        var value_now = give_unformat_currency($(this).val());
+        var value_now = (this_value == 0) ? value_min : give_unformat_currency(this_value);
+
+        //Set the custom amount input value format properly
         var format_args = {
             symbol: '',
             decimal: give_global_vars.decimal_separator,
@@ -228,11 +240,10 @@ jQuery(function ($) {
             precision: give_global_vars.number_decimals
         };
         var formatted_total = give_format_currency(value_now, format_args);
-
-        //Set the custom amount input value formatted properly
         $(this).val(formatted_total);
 
         //Flag Multi-levels for min. donation conditional
+        var is_level = false;
         parent_form.find('*[data-price-id]').each(function () {
             if (this.value !== 'custom' && give_unformat_currency(this.value) === value_now) {
                 is_level = true;
@@ -240,7 +251,7 @@ jQuery(function ($) {
         });
 
         //Does this number have an accepted minimum value?
-        if (( !$.isNumeric(value_now) || value_now < value_min || value_now < 1 ) && !is_level && value_min !== 0) {
+        if (( value_now < value_min || value_now < 1 ) && !is_level && value_min !== 0) {
 
             //It doesn't... Invalid Minimum
             $(this).addClass('give-invalid-amount');
@@ -252,7 +263,7 @@ jQuery(function ($) {
             //If no error present, create it, insert, slide down (show)
             if (invalid_minimum.length === 0) {
                 var error = $('<div class="give_error give-invalid-minimum">' + minimum_amount + '</div>').hide();
-                error.insertAfter(parent_form.find('.give-total-wrap')).show();
+                error.insertBefore(parent_form.find('.give-total-wrap')).show();
             }
 
         } else {
@@ -265,7 +276,6 @@ jQuery(function ($) {
             parent_form.find('.give-submit').prop('disabled', false);
 
         }
-
         //If values don't match up then proceed with updating donation total value
         if (pre_focus_amount !== value_now) {
 
@@ -279,6 +289,7 @@ jQuery(function ($) {
         $(this).parent('.give-donation-amount').removeClass('give-custom-amount-focus-in');
 
     });
+
 
     //Multi-level Buttons: Update Amount Field based on Multi-level Donation Select
     doc.on('click touchend', '.give-donation-level-btn', function (e) {
@@ -359,6 +370,7 @@ jQuery(function ($) {
 
         //Update donation form bottom total data attr and text
         parent_form.find('.give-final-total-amount').data('total', this_amount).text(formatted_total);
+
     }
 
     /**
@@ -440,5 +452,6 @@ jQuery(function ($) {
         if (!results[2]) return '';
         return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
+
 
 });
