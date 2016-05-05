@@ -229,7 +229,7 @@ add_action( 'wpmu_new_blog', 'on_create_blog', 10, 6 );
 /**
  * Drop Give's custom tables when a mu site is deleted
  *
- * @since  2.5
+ * @since  1.4.3
  *
  * @param  array $tables The tables to drop
  * @param  int $blog_id The Blog ID being deleted
@@ -311,7 +311,7 @@ function give_install_roles_on_network() {
 	if ( ! array_key_exists( 'give_manager', $wp_roles->roles ) ) {
 
 		// Create Give plugin roles
-		$roles = new Give_Roles;
+		$roles = new Give_Roles();
 		$roles->add_roles();
 		$roles->add_caps();
 
