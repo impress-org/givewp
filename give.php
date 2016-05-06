@@ -114,7 +114,7 @@ if ( ! class_exists( 'Give' ) ) :
 		/**
 		 * Give Customers DB Object
 		 *
-		 * @var Give_Customer object
+		 * @var object|Give_DB_Customers object
 		 * @since 1.0
 		 */
 		public $customers;
@@ -166,13 +166,13 @@ if ( ! class_exists( 'Give' ) ) :
 				add_action( 'plugins_loaded', array( self::$instance, 'load_textdomain' ) );
 
 				self::$instance->includes();
-				self::$instance->roles         = new Give_Roles();
-				self::$instance->api           = new Give_API();
-				self::$instance->give_settings = new Give_Plugin_Settings();
-				self::$instance->session       = new Give_Session();
-				self::$instance->html          = new Give_HTML_Elements();
-				self::$instance->emails        = new Give_Emails();
-				self::$instance->email_tags    = new Give_Email_Template_Tags();
+				self::$instance->roles           = new Give_Roles();
+				self::$instance->api             = new Give_API();
+				self::$instance->give_settings   = new Give_Plugin_Settings();
+				self::$instance->session         = new Give_Session();
+				self::$instance->html            = new Give_HTML_Elements();
+				self::$instance->emails          = new Give_Emails();
+				self::$instance->email_tags      = new Give_Email_Template_Tags();
 				self::$instance->customers       = new Give_DB_Customers();
 				self::$instance->template_loader = new Give_Template_Loader();
 				self::$instance->email_access    = new Give_Email_Access();
@@ -401,8 +401,9 @@ endif; // End if class_exists check
 
 
 /**
- * The main function responsible for returning the one true Give
- * Instance to functions everywhere.
+ * Start Give 
+ * 
+ * The main function responsible for returning the one true Give instance to functions everywhere.
  *
  * Use this function like you would a global variable, except without needing
  * to declare the global.
@@ -410,7 +411,7 @@ endif; // End if class_exists check
  * Example: <?php $give = Give(); ?>
  *
  * @since 1.0
- * @return object - The one true Give Instance
+ * @return object|Give 
  */
 function Give() {
 	return Give::instance();

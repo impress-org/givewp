@@ -570,9 +570,7 @@ class Give_DB_Customers extends Give_DB {
 	 * @since   1.0
 	 */
 	public function create_table() {
-
-		global $wpdb;
-
+		
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
 		$sql = "CREATE TABLE " . $this->table_name . " (
@@ -593,5 +591,15 @@ class Give_DB_Customers extends Give_DB {
 		dbDelta( $sql );
 
 		update_option( $this->table_name . '_db_version', $this->version );
+	}
+	
+	/**
+	 * Check if the Customers table was ever installed
+	 *
+	 * @since  1.4.3
+	 * @return bool Returns if the customers table was installed and upgrade routine run
+	 */
+	public function installed() {
+		return $this->table_exists( $this->table_name );
 	}
 }
