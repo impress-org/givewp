@@ -168,7 +168,6 @@ if ( ! class_exists( 'Give' ) ) :
 				self::$instance->includes();
 				self::$instance->roles           = new Give_Roles();
 				self::$instance->api             = new Give_API();
-				self::$instance->give_settings   = new Give_Plugin_Settings();
 				self::$instance->session         = new Give_Session();
 				self::$instance->html            = new Give_HTML_Elements();
 				self::$instance->emails          = new Give_Emails();
@@ -260,7 +259,8 @@ if ( ! class_exists( 'Give' ) ) :
 		private function includes() {
 			global $give_options;
 
-			require_once GIVE_PLUGIN_DIR . 'includes/admin/register-settings.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/admin/class-give-settings.php';
+//			require_once GIVE_PLUGIN_DIR . 'includes/admin/register-settings.php';
 			$give_options = give_get_settings();
 
 			require_once GIVE_PLUGIN_DIR . 'includes/post-types.php';
