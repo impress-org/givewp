@@ -77,6 +77,7 @@ class Give_Plugin_Settings {
 
 	function tinymce_height( $initArray ) {
 		$initArray['height'] = '400px';
+
 		return $initArray;
 	}
 
@@ -148,9 +149,14 @@ class Give_Plugin_Settings {
 		?>
 
 		<div class="wrap give_settings_page cmb2_options_page <?php echo $this->key; ?>">
+
 			<h1 class="nav-tab-wrapper">
 				<?php
 				foreach ( $this->give_get_settings_tabs() as $tab_id => $tab_name ) {
+
+					//Support legacy tab creation conditions based off $_GET parameter
+					//We 'trick' the conditions into thinking this is the tab
+					$_GET['tab'] = $tab_id;
 
 					$tab_url = esc_url( add_query_arg( array(
 						'settings-updated' => false,
@@ -159,24 +165,23 @@ class Give_Plugin_Settings {
 
 					$active       = $active_tab == $tab_id ? ' nav-tab-active' : '';
 					$tab_settings = $this->give_settings( $tab_id );
-					$tab_form_id  = isset( $tab_settings['id'] ) ? $tab_settings['id'] : $tab_id;
 
-					echo '<a href="' . esc_url( $tab_url ) . '" title="' . esc_attr( $tab_name ) . '" class="nav-tab' . $active . '" id="tab-' . $tab_form_id . '">';
-					echo esc_html( $tab_name );
+					$tab_form_id = isset( $tab_settings['id'] ) ? $tab_settings['id'] : $tab_id;
 
-					echo '</a>';
+					echo '<a href="' . esc_url( $tab_url ) . '" title="' . esc_attr( $tab_name ) . '" class="nav-tab' . $active . '" id="tab-' . $tab_form_id . '">' . esc_html( $tab_name ) . '</a>';
+
 				}
 				?>
 			</h1>
 
 			<?php
-
 			//Loop through and output settings
 			foreach ( $this->give_get_settings_tabs() as $tab_id => $tab_name ) {
 
 				//Support legacy tab creation conditions based off $_GET parameter
 				//We 'trick' the conditions into thinking this is the tab
-				$_GET['tab']  = $tab_id;
+				$_GET['tab'] = $tab_id;
+
 				$tab_settings = $this->give_settings( $tab_id );
 
 				//Pass active tab within $tab_settings so we can hide with CSS via PHP
@@ -186,9 +191,7 @@ class Give_Plugin_Settings {
 
 				cmb2_metabox_form( $tab_settings, $this->key );
 
-			}
-
-			?>
+			} ?>
 
 		</div><!-- .wrap -->
 

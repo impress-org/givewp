@@ -34,6 +34,7 @@ jQuery(document).ready(function ($) {
 
         var id, tab;
 
+
         // if $tab was not set, get the tab from the query string
         // default to 'general' if no query string present
         if (typeof($tab) === 'undefined') {
@@ -44,9 +45,6 @@ jQuery(document).ready(function ($) {
             id = id.replace('tab-', '');
         }
 
-        console.log($tab);
-        console.log(id);
-
         $tab = $( '#' + id );
 
         // hide all tabs and show current tab
@@ -56,9 +54,9 @@ jQuery(document).ready(function ($) {
         // remove and set the Wordpress active tab class on the tab navigation
         $( '.nav-tab').removeClass( 'nav-tab-active' );
         $( '#tab-' + id ).addClass( 'nav-tab-active' ).blur();
-
-
-        // change the browser URL to reflect the current tab; this allows WordPress to change to this tab on save
+        
+        // change the browser URL to reflect the current tab; 
+        // this allows WordPress to change to this tab on save
         if (history.pushState) {
 
             var stateObject = {dummy: true},
