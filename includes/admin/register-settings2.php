@@ -26,6 +26,12 @@ class Give_Plugin_Settings {
 	protected $option_metabox = array();
 
 	/**
+	 * Array of active tabs
+	 * @var array
+	 */
+	protected $registered_tabs = array();
+
+	/**
 	 * Options Page title
 	 * @var string
 	 */
@@ -61,6 +67,9 @@ class Give_Plugin_Settings {
 
 		// Include CMB CSS in the head to avoid FOUC
 		add_action( "admin_print_styles-give_forms_page_give-settings", array( 'CMB2_hookup', 'enqueue_cmb_css' ) );
+
+
+		add_filter( 'cmb2_get_metabox_form_format', array( $this, 'give_modify_cmb2_form_output' ), 10, 3 );
 
 	}
 
@@ -152,21 +161,61 @@ class Give_Plugin_Settings {
 			</h1>
 
 			<?php
+
 			//Loop through and output settings
 			foreach ( $this->give_get_settings_tabs() as $tab_id => $tab_name ) {
 
+				//Support legacy tab creation conditions based off $_GET parameter
+				//We 'trick' the conditions into thinking this is the tab
+				$_GET['tab']  = $tab_id;
 				$tab_settings = $this->give_settings( $tab_id );
+
+				//Pass active tab within $tab_settings so we can hide with CSS via PHP
+				if ( $active_tab == $tab_id ) {
+					$tab_settings['active_tab'] = true;
+				}
 
 				cmb2_metabox_form( $tab_settings, $this->key );
 
+			}
 
-			} ?>
+			?>
 
 		</div><!-- .wrap -->
 
 		<?php
 	}
 
+
+	/**
+	 * Modify CMB2 Default Form Output
+	 *
+	 * @param string @args
+	 *
+	 * @since 1.5 Modified to CSS hide non-active tabs
+	 * @since 1.0
+	 */
+	function give_modify_cmb2_form_output( $form_format, $object_id, $cmb ) {
+
+
+		$pagenow = isset( $_GET['page'] ) ? $_GET['page'] : '';
+
+		//only modify the give settings form
+		if ( 'give_settings' == $object_id && $pagenow == 'give-settings' ) {
+
+			$style = '';
+			if ( !isset($cmb->meta_box['active_tab']) ) {
+				$style = 'style="display:none;"';
+			}
+
+			$form_format = '<form class="cmb-form" method="post" id="%1$s" enctype="multipart/form-data" encoding="multipart/form-data" ' . $style . '><input type="hidden" name="give_settings_saved" value="true"><input type="hidden" name="object_id" value="%2$s">%3$s<div class="give-submit-wrap"><input type="submit" name="submit-cmb" value="' . __( 'Save Settings', 'give' ) . '" class="button-primary"></div></form>';
+		}
+
+//	$form_format  .= '<noscript>JavaScript is required to use Give.</noscript>';
+
+		return $form_format;
+
+	}
 
 	/**
 	 * Define General Settings Metabox and field configurations.
@@ -1003,8 +1052,8 @@ function give_default_gateway_callback( $field_object, $escaped_value, $object_i
 }
 
 /**
-* Give Title
-       *
+ * Give Title
+ *
  * Renders custom section titles output; Really only an  because CMB2's output is a bit funky
  *
  * @since 1.0
@@ -1079,40 +1128,6 @@ function give_cmb2_get_post_options( $query_args, $force = false ) {
 
 	return $post_options;
 }
-
-
-/**
- * Modify CMB2 Default Form Output
- *
- * @param string @args
- *
- * @since 1.0
- */
-function give_modify_cmb2_form_output( $form_format, $object_id, $cmb ) {
-
-	$pagenow = isset( $_GET['page'] ) ? $_GET['page'] : '';
-
-	//only modify the give settings form
-	if ( 'give_settings' == $object_id && $pagenow == 'give-settings' ) {
-
-		$tab_displayed = isset( $_GET['tab'] ) ? $_GET['tab'] : '';
-
-		$style = '';
-		if ( $cmb->meta_box['id'] !== $tab_displayed ) {
-			$style = 'style="display:none;"';
-		}
-
-
-		$form_format = '<form class="cmb-form" method="post" id="%1$s" enctype="multipart/form-data" encoding="multipart/form-data" ' . $style . '><input type="hidden" name="give_settings_saved" value="true"><input type="hidden" name="object_id" value="%2$s">%3$s<div class="give-submit-wrap"><input type="submit" name="submit-cmb" value="' . __( 'Save Settings', 'give' ) . '" class="button-primary"></div></form>';
-	}
-
-//	$form_format  .= '<noscript>JavaScript is required to use Give.</noscript>';
-
-	return $form_format;
-
-}
-
-add_filter( 'cmb2_get_metabox_form_format', 'give_modify_cmb2_form_output', 10, 3 );
 
 
 /**
