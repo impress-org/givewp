@@ -127,7 +127,7 @@ class Give_Plugin_Settings {
 	 */
 	public function admin_page_display() {
 
-		$active_tab = isset( $_GET['tab'] ) && array_key_exists( $_GET['tab'], $this->give_get_settings_tabs() ) ? $_GET['tab'] : 'general';
+		$active_tab = isset( $_GET['tab'] ) && array_key_exists( $_GET['tab'], $this->give_get_settings_tabs() ) ? $_GET['tab'] : 'general_settings';
 
 		?>
 
@@ -152,19 +152,28 @@ class Give_Plugin_Settings {
 			</h1>
 
 			<?php
-			cmb2_metabox_form( $this->give_settings( $active_tab ), $this->key ); ?>
+			//Loop through and output settings
+			foreach ( $this->give_get_settings_tabs() as $tab_id => $tab_name ) {
+
+				$tab_settings = $this->give_settings( $tab_id );
+
+				cmb2_metabox_form( $tab_settings, $this->key );
+
+
+			} ?>
 
 		</div><!-- .wrap -->
 
 		<?php
 	}
 
+
 	/**
 	 * Define General Settings Metabox and field configurations.
 	 *
 	 * Filters are provided for each settings section to allow add-ons and other plugins to add their own settings
 	 *
-	 * @param $active_tab active tab settings; null returns full array
+	 * @param $active_tab |string active tab settings; null returns full array
 	 *
 	 * @return array
 	 */
@@ -175,7 +184,7 @@ class Give_Plugin_Settings {
 			 * General Settings
 			 */
 			'general'     => array(
-				'id'         => 'options_page',
+				'id'         => 'general_settings',
 				'give_title' => __( 'General Settings', 'give' ),
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
 				'fields'     => apply_filters( 'give_settings_general', array(
@@ -268,7 +277,7 @@ class Give_Plugin_Settings {
 			 * Payment Gateways
 			 */
 			'gateways'    => array(
-				'id'         => 'options_page',
+				'id'         => 'payment_gateways',
 				'give_title' => __( 'Payment Gateways', 'give' ),
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
 				'fields'     => apply_filters( 'give_settings_gateways', array(
@@ -375,7 +384,7 @@ class Give_Plugin_Settings {
 			),
 			/** Display Settings */
 			'display'     => array(
-				'id'         => 'options_page',
+				'id'         => 'display_settings',
 				'give_title' => __( 'Display Settings', 'give' ),
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
 				'fields'     => apply_filters( 'give_settings_display', array(
@@ -474,8 +483,8 @@ class Give_Plugin_Settings {
 			 * Emails Options
 			 */
 			'emails'      => array(
-				'id'         => 'options_page',
-				'give_title' => __( 'Give Email Settings', 'give' ),
+				'id'         => 'email_settings',
+				'give_title' => __( 'Email Settings', 'give' ),
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
 				'fields'     => apply_filters( 'give_settings_emails', array(
 						array(
@@ -569,7 +578,7 @@ class Give_Plugin_Settings {
 			),
 			/** Extension Settings */
 			'addons'      => array(
-				'id'         => 'options_page',
+				'id'         => 'addons',
 				'give_title' => __( 'Give Add-ons Settings', 'give' ),
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
 				'fields'     => apply_filters( 'give_settings_addons', array()
@@ -577,7 +586,7 @@ class Give_Plugin_Settings {
 			),
 			/** Licenses Settings */
 			'licenses'    => array(
-				'id'         => 'options_page',
+				'id'         => 'licenses',
 				'give_title' => __( 'Give Licenses', 'give' ),
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
 				'fields'     => apply_filters( 'give_settings_licenses', array()
@@ -585,7 +594,7 @@ class Give_Plugin_Settings {
 			),
 			/** Advanced Options */
 			'advanced'    => array(
-				'id'         => 'options_page',
+				'id'         => 'advanced_options',
 				'give_title' => __( 'Advanced Options', 'give' ),
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
 				'fields'     => apply_filters( 'give_settings_advanced', array(
@@ -668,7 +677,7 @@ class Give_Plugin_Settings {
 			),
 			/** API Settings */
 			'api'         => array(
-				'id'         => 'options_page',
+				'id'         => 'api',
 				'give_title' => __( 'API', 'give' ),
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
 				'show_names' => false, // Hide field names on the left
@@ -683,7 +692,7 @@ class Give_Plugin_Settings {
 			),
 			/** Licenses Settings */
 			'system_info' => array(
-				'id'         => 'options_page',
+				'id'         => 'system_info',
 				'give_title' => __( 'System Info', 'give' ),
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
 				'fields'     => apply_filters( 'give_settings_system', array(
@@ -994,8 +1003,8 @@ function give_default_gateway_callback( $field_object, $escaped_value, $object_i
 }
 
 /**
- * Give Title
- *
+* Give Title
+       *
  * Renders custom section titles output; Really only an  because CMB2's output is a bit funky
  *
  * @since 1.0
@@ -1079,20 +1088,32 @@ function give_cmb2_get_post_options( $query_args, $force = false ) {
  *
  * @since 1.0
  */
-
-add_filter( 'cmb2_get_metabox_form_format', 'give_modify_cmb2_form_output', 10, 3 );
-
 function give_modify_cmb2_form_output( $form_format, $object_id, $cmb ) {
 
-	//only modify the give settings form
-	if ( 'give_settings' == $object_id && 'options_page' == $cmb->cmb_id ) {
+	$pagenow = isset( $_GET['page'] ) ? $_GET['page'] : '';
 
-		return '<form class="cmb-form" method="post" id="%1$s" enctype="multipart/form-data" encoding="multipart/form-data"><input type="hidden" name="give_settings_saved" value="true"><input type="hidden" name="object_id" value="%2$s">%3$s<div class="give-submit-wrap"><input type="submit" name="submit-cmb" value="' . __( 'Save Settings', 'give' ) . '" class="button-primary"></div></form>';
+	//only modify the give settings form
+	if ( 'give_settings' == $object_id && $pagenow == 'give-settings' ) {
+
+		$tab_displayed = isset( $_GET['tab'] ) ? $_GET['tab'] : '';
+
+		$style = '';
+		if ( $cmb->meta_box['id'] !== $tab_displayed ) {
+			$style = 'style="display:none;"';
+		}
+
+
+		$form_format = '<form class="cmb-form" method="post" id="%1$s" enctype="multipart/form-data" encoding="multipart/form-data" ' . $style . '><input type="hidden" name="give_settings_saved" value="true"><input type="hidden" name="object_id" value="%2$s">%3$s<div class="give-submit-wrap"><input type="submit" name="submit-cmb" value="' . __( 'Save Settings', 'give' ) . '" class="button-primary"></div></form>';
 	}
+
+//	$form_format  .= '<noscript>JavaScript is required to use Give.</noscript>';
 
 	return $form_format;
 
 }
+
+add_filter( 'cmb2_get_metabox_form_format', 'give_modify_cmb2_form_output', 10, 3 );
+
 
 /**
  * Featured Image Sizes
@@ -1106,7 +1127,7 @@ function give_get_featured_image_sizes() {
 	$sizes = array();
 
 	foreach ( get_intermediate_image_sizes() as $_size ) {
-		
+
 		if ( in_array( $_size, array( 'thumbnail', 'medium', 'medium_large', 'large' ) ) ) {
 			$sizes[ $_size ] = $_size . ' - ' . get_option( "{$_size}_size_w" ) . 'x' . get_option( "{$_size}_size_h" );
 		} elseif ( isset( $_wp_additional_image_sizes[ $_size ] ) ) {
@@ -1129,38 +1150,36 @@ function give_get_featured_image_sizes() {
  *
  * @return void
  */
-if ( ! function_exists( 'give_license_key_callback' ) ) {
-	function give_license_key_callback( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
+function give_license_key_callback( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
 
-		$id                = $field_type_object->field->args['id'];
-		$field_description = $field_type_object->field->args['desc'];
-		$license_status    = get_option( $field_type_object->field->args['options']['is_valid_license_option'] );
-		$field_classes     = 'regular-text give-license-field';
-		$type              = empty( $escaped_value ) ? 'text' : 'password';
+	$id                = $field_type_object->field->args['id'];
+	$field_description = $field_type_object->field->args['desc'];
+	$license_status    = get_option( $field_type_object->field->args['options']['is_valid_license_option'] );
+	$field_classes     = 'regular-text give-license-field';
+	$type              = empty( $escaped_value ) ? 'text' : 'password';
 
-		if ( $license_status === 'valid' ) {
-			$field_classes .= ' give-license-active';
-		}
-
-		$html = $field_type_object->input( array(
-			'class' => $field_classes,
-			'type'  => $type
-		) );
-
-		//License is active so show deactivate button
-		if ( $license_status === 'valid' ) {
-			$html .= '<input type="submit" class="button-secondary give-license-deactivate" name="' . $id . '_deactivate" value="' . __( 'Deactivate License', 'give' ) . '"/>';
-		} else {
-			//This license is not valid so delete it
-			give_delete_option( $id );
-		}
-
-		$html .= '<label for="give_settings[' . $id . ']"> ' . $field_description . '</label>';
-
-		wp_nonce_field( $id . '-nonce', $id . '-nonce' );
-
-		echo $html;
+	if ( $license_status === 'valid' ) {
+		$field_classes .= ' give-license-active';
 	}
+
+	$html = $field_type_object->input( array(
+		'class' => $field_classes,
+		'type'  => $type
+	) );
+
+	//License is active so show deactivate button
+	if ( $license_status === 'valid' ) {
+		$html .= '<input type="submit" class="button-secondary give-license-deactivate" name="' . $id . '_deactivate" value="' . __( 'Deactivate License', 'give' ) . '"/>';
+	} else {
+		//This license is not valid so delete it
+		give_delete_option( $id );
+	}
+
+	$html .= '<label for="give_settings[' . $id . ']"> ' . $field_description . '</label>';
+
+	wp_nonce_field( $id . '-nonce', $id . '-nonce' );
+
+	echo $html;
 }
 
 
@@ -1192,11 +1211,6 @@ function give_api_callback() {
 		); ?>
 	</p>
 
-	<style>
-		.give_forms_page_give-settings .give-submit-wrap {
-			display: none; /* Hide Save settings button on System Info Tab (not needed) */
-		}
-	</style>
 	<?php
 
 	do_action( 'give_tools_api_keys_after' );
