@@ -68,7 +68,6 @@ class Give_Plugin_Settings {
 		// Include CMB CSS in the head to avoid FOUC
 		add_action( "admin_print_styles-give_forms_page_give-settings", array( 'CMB2_hookup', 'enqueue_cmb_css' ) );
 
-
 		add_filter( 'cmb2_get_metabox_form_format', array( $this, 'give_modify_cmb2_form_output' ), 10, 3 );
 
 	}
@@ -150,9 +149,11 @@ class Give_Plugin_Settings {
 						'tab'              => $tab_id
 					) ) );
 
-					$active = $active_tab == $tab_id ? ' nav-tab-active' : '';
+					$active       = $active_tab == $tab_id ? ' nav-tab-active' : '';
+					$tab_settings = $this->give_settings( $tab_id );
+					$tab_form_id = isset($tab_settings['id']) ? $tab_settings['id'] : $tab_id;
 
-					echo '<a href="' . esc_url( $tab_url ) . '" title="' . esc_attr( $tab_name ) . '" class="nav-tab' . $active . '">';
+					echo '<a href="' . esc_url( $tab_url ) . '" title="' . esc_attr( $tab_name ) . '" class="nav-tab' . $active . '" id="tab-' . $tab_form_id . '">';
 					echo esc_html( $tab_name );
 
 					echo '</a>';
@@ -204,7 +205,7 @@ class Give_Plugin_Settings {
 		if ( 'give_settings' == $object_id && $pagenow == 'give-settings' ) {
 
 			$style = '';
-			if ( !isset($cmb->meta_box['active_tab']) ) {
+			if ( ! isset( $cmb->meta_box['active_tab'] ) ) {
 				$style = 'style="display:none;"';
 			}
 
