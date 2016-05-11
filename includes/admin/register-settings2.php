@@ -65,11 +65,19 @@ class Give_Plugin_Settings {
 		add_action( 'cmb2_render_license_key', 'give_license_key_callback', 10, 5 );
 		add_action( 'admin_notices', array( $this, 'settings_notices' ) );
 
+		//TinyMCE Height
+//		add_filter( 'tiny_mce_before_init', array( $this, 'tinymce_height' ) );
+
 		// Include CMB CSS in the head to avoid FOUC
-		add_action( "admin_print_styles-give_forms_page_give-settings", array( 'CMB2_hookup', 'enqueue_cmb_css' ) );
+		add_action( 'admin_print_styles-give_forms_page_give-settings', array( 'CMB2_hookup', 'enqueue_cmb_css' ) );
 
 		add_filter( 'cmb2_get_metabox_form_format', array( $this, 'give_modify_cmb2_form_output' ), 10, 3 );
 
+	}
+
+	function tinymce_height( $initArray ) {
+		$initArray['height'] = '400px';
+		return $initArray;
 	}
 
 	/**
@@ -151,7 +159,7 @@ class Give_Plugin_Settings {
 
 					$active       = $active_tab == $tab_id ? ' nav-tab-active' : '';
 					$tab_settings = $this->give_settings( $tab_id );
-					$tab_form_id = isset($tab_settings['id']) ? $tab_settings['id'] : $tab_id;
+					$tab_form_id  = isset( $tab_settings['id'] ) ? $tab_settings['id'] : $tab_id;
 
 					echo '<a href="' . esc_url( $tab_url ) . '" title="' . esc_attr( $tab_name ) . '" class="nav-tab' . $active . '" id="tab-' . $tab_form_id . '">';
 					echo esc_html( $tab_name );

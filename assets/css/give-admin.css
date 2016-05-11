@@ -1332,6 +1332,9 @@ a.give-delete {
 .give_settings .cmb-td hr + hr {
   display: none; }
 
+.mce-container iframe {
+  min-height: 400px; }
+
 /**
  * Give Payment History SCSS
  *

@@ -13,24 +13,24 @@ Settings
 .give_settings_page {
 
   .nav-tab-wrapper {
-	margin-bottom: 5px;
+    margin-bottom: 5px;
   }
 
   span.cmb2-metabox-description {
-	font-size: 13px;
+    font-size: 13px;
   }
 
   .cmb2-wrap .cmb-type-checkbox input[type="checkbox"] {
-	display: block;
-	margin-bottom: 5px;
+    display: block;
+    margin-bottom: 5px;
   }
 
   div.give-submit-wrap {
-	margin: 20px 0;
+    margin: 20px 0;
   }
 
   .give_forms_page_give-payment-history .postbox .hndle {
-	cursor: default;
+    cursor: default;
   }
 
 }
@@ -57,33 +57,33 @@ Settings
 .cmb-type-checkbox .cmb-td {
   width: 80%;
   label {
-	font-size: 13px;
+    font-size: 13px;
   }
 }
 
 /* Responsive Settings Rows */
 .give_settings {
   .cmb2-wrap .cmb-row {
-	display: table-row;
-	> .cmb-th, > .cmb-td {
-	  display: table-cell;
-	  float: none;
-	}
+    display: table-row;
+    > .cmb-th, > .cmb-td {
+      display: table-cell;
+      float: none;
+    }
   }
 }
 
 /* Custom Title Separators */
 .cmb2-id-give-title {
   label {
-	font-style: italic;
-	color: #AAA;
-	cursor: default;
+    font-style: italic;
+    color: #AAA;
+    cursor: default;
   }
   > div.cmb-th {
-	padding-bottom: 10px;
+    padding-bottom: 10px;
   }
   > div.cmb-td {
-	padding-bottom: 5px;
+    padding-bottom: 5px;
   }
 }
 
@@ -109,14 +109,14 @@ Settings
 .cmb2-id-api {
 
   .cmb-td {
-	padding: 0;
+    padding: 0;
   }
   table th {
-	padding: 10px 8px;
+    padding: 10px 8px;
   }
 
   .give-ajax-user-search {
-	padding: 3px 5px;
+    padding: 3px 5px;
 
   }
 
@@ -133,18 +133,18 @@ Settings
   top: 27px;
 
   a.give-ajax-user-cancel {
-	position: absolute;
-	right: 6px;
-	top: 2px;
+    position: absolute;
+    right: 6px;
+    top: 2px;
   }
   ul {
-	padding: 10px 10px 4px;
-	margin: 0;
-	background: #f0f0f0;
-	border: 1px solid #DFDFDF;
-	width: 300px;
-	max-height: 200px;
-	overflow-y: scroll;
+    padding: 10px 10px 4px;
+    margin: 0;
+    background: #f0f0f0;
+    border: 1px solid #DFDFDF;
+    width: 300px;
+    max-height: 200px;
+    overflow-y: scroll;
   }
 
 }
@@ -161,25 +161,25 @@ a.give-delete {
 -------------------------------------------------------------- */
 .cmb2-wrap {
   .give-license-deactivate {
-	margin: 1px 0 0 10px;
-	height: 30px;
+    margin: 1px 0 0 10px;
+    height: 30px;
   }
 
   .give-license-field {
-	background-image: url('../images/close.png');
-	background-color: #FFF;
-	background-repeat: no-repeat;
-	background-position: 98.5% center;
-	background-size: 18px;
+    background-image: url('../images/close.png');
+    background-color: #FFF;
+    background-repeat: no-repeat;
+    background-position: 98.5% center;
+    background-size: 18px;
   }
 
   .give-license-active, .give-license-active:focus {
-	background-image: url('../images/tick.png');
-	background-color: #FFF;
-	background-repeat: no-repeat;
-	background-position: 98.5% center;
-	outline: none;
-	background-size: 16px;
+    background-image: url('../images/tick.png');
+    background-color: #FFF;
+    background-repeat: no-repeat;
+    background-position: 98.5% center;
+    outline: none;
+    background-size: 16px;
   }
 
 }
@@ -189,9 +189,9 @@ a.give-delete {
 .give-table {
 
   thead {
-	th {
-	  padding: 8px 10px !important;
-	}
+    th {
+      padding: 8px 10px !important;
+    }
   }
 
 }
@@ -199,4 +199,9 @@ a.give-delete {
 //Fix double <hr>s for change to `give_title` in 1.3.5
 .give_settings .cmb-td hr + hr {
   display: none;
+}
+
+//Set a min-height for TinyMCE so it's not too small when hidden in a tab and then revealed
+.mce-container iframe {
+  min-height: 400px;
 }
