@@ -215,8 +215,6 @@ class Give_Plugin_Settings {
 			$form_format = '<form class="cmb-form" method="post" id="%1$s" enctype="multipart/form-data" encoding="multipart/form-data" ' . $style . '><input type="hidden" name="give_settings_saved" value="true"><input type="hidden" name="object_id" value="%2$s">%3$s<div class="give-submit-wrap"><input type="submit" name="submit-cmb" value="' . __( 'Save Settings', 'give' ) . '" class="button-primary"></div></form>';
 		}
 
-//	$form_format  .= '<noscript>JavaScript is required to use Give.</noscript>';
-
 		return $form_format;
 
 	}
