@@ -80,10 +80,13 @@ function give_process_purchase_form() {
 
 	$auth_key = defined( 'AUTH_KEY' ) ? AUTH_KEY : '';
 
+	$price = isset( $_POST['give-amount'] ) ? (float) apply_filters( 'give_donation_total', give_sanitize_amount( give_format_amount( $_POST['give-amount'] ) ) ) : '0.00';
+	$purchase_key = strtolower( md5( $user['user_email'] . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) );
+	
 	// Setup purchase information
 	$purchase_data = array(
-		'price'        => ( isset( $_POST['give-amount'] ) ? (float) apply_filters( 'give_donation_total', give_sanitize_amount( give_format_amount( $_POST['give-amount'] ) ) ) : '0.00' ),
-		'purchase_key' => strtolower( md5( $user['user_email'] . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) ),
+		'price'        => $price,
+		'purchase_key' => $purchase_key,
 		'user_email'   => $user['user_email'],
 		'date'         => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
 		'user_info'    => stripslashes_deep( $user_info ),
