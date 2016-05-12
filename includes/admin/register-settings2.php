@@ -65,9 +65,6 @@ class Give_Plugin_Settings {
 		add_action( 'cmb2_render_license_key', 'give_license_key_callback', 10, 5 );
 		add_action( 'admin_notices', array( $this, 'settings_notices' ) );
 
-		//TinyMCE Height
-//		add_filter( 'tiny_mce_before_init', array( $this, 'tinymce_height' ) );
-
 		// Include CMB CSS in the head to avoid FOUC
 		add_action( 'admin_print_styles-give_forms_page_give-settings', array( 'CMB2_hookup', 'enqueue_cmb_css' ) );
 
@@ -75,11 +72,6 @@ class Give_Plugin_Settings {
 
 	}
 
-	function tinymce_height( $initArray ) {
-		$initArray['height'] = '400px';
-
-		return $initArray;
-	}
 
 	/**
 	 * Register our setting to WP
