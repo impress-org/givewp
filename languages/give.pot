@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Give - Donation Plugin package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Give - Donation Plugin 1.4.2\n"
+"Project-Id-Version: Give - Donation Plugin 1.4.3\n"
 "Report-Msgid-Bugs-To: https://givewp.com/\n"
-"POT-Creation-Date: 2016-04-26 22:51:09+00:00\n"
+"POT-Creation-Date: 2016-05-12 21:18:33+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -503,14 +503,14 @@ msgstr ""
 #: includes/admin/reporting/class-donor-reports-table.php:202
 #: includes/admin/reporting/class-export-payments.php:66
 #: includes/admin/reporting/class-export.php:72
-#: templates/history-donations.php:25
+#: templates/history-donations.php:23
 msgid "ID"
 msgstr ""
 
 #: includes/admin/customers/customers.php:400
 #: includes/admin/forms/metabox.php:107 includes/admin/forms/metabox.php:412
 #: includes/admin/payments/class-payments-table.php:262
-#: includes/emails/functions.php:225 templates/history-donations.php:27
+#: includes/emails/functions.php:225 templates/history-donations.php:25
 msgid "Amount"
 msgstr ""
 
@@ -523,7 +523,7 @@ msgstr ""
 #: includes/admin/reporting/class-export.php:73
 #: includes/admin/reporting/class-gateway-error-logs-list-table.php:130
 #: includes/admin/reporting/class-sales-logs-list-table.php:102
-#: templates/history-donations.php:26 templates/shortcode-receipt.php:71
+#: templates/history-donations.php:24 templates/shortcode-receipt.php:71
 msgid "Date"
 msgstr ""
 
@@ -543,7 +543,7 @@ msgid "View Details for Donation"
 msgstr ""
 
 #: includes/admin/customers/customers.php:417
-#: templates/history-donations.php:47
+#: templates/history-donations.php:45
 msgid "View Details"
 msgstr ""
 
@@ -1115,7 +1115,7 @@ msgid "Abandoned"
 msgstr ""
 
 #: includes/admin/payments/class-payments-table.php:261
-#: templates/history-donations.php:28 templates/shortcode-receipt.php:39
+#: templates/history-donations.php:26 templates/shortcode-receipt.php:39
 msgid "Details"
 msgstr ""
 
@@ -2519,7 +2519,7 @@ msgid "Okay"
 msgstr ""
 
 #: includes/admin/shortcodes/shortcode-give-donation-history.php:21
-#: includes/install.php:88
+#: includes/install.php:118
 msgid "Donation History"
 msgstr ""
 
@@ -4028,19 +4028,19 @@ msgstr ""
 msgid "PayPal Refund Transaction ID: %s"
 msgstr ""
 
-#: includes/install.php:52
+#: includes/install.php:82
 msgid "Donation Confirmation"
 msgstr ""
 
-#: includes/install.php:53
+#: includes/install.php:83
 msgid "[give_receipt]"
 msgstr ""
 
-#: includes/install.php:71
+#: includes/install.php:101
 msgid "Transaction Failed"
 msgstr ""
 
-#: includes/install.php:72
+#: includes/install.php:102
 msgid ""
 "We're sorry, your transaction failed to process. Please try again or "
 "contact site support."
@@ -4050,16 +4050,16 @@ msgstr ""
 msgid "The password you entered is incorrect"
 msgstr ""
 
-#: includes/login-register.php:97 includes/process-purchase.php:609
+#: includes/login-register.php:97 includes/process-purchase.php:613
 msgid "The username you entered does not exist"
 msgstr ""
 
 #: includes/login-register.php:156 includes/login-register.php:164
-#: includes/process-purchase.php:497
+#: includes/process-purchase.php:501
 msgid "Invalid username"
 msgstr ""
 
-#: includes/login-register.php:160 includes/process-purchase.php:490
+#: includes/login-register.php:160 includes/process-purchase.php:494
 msgid "Username already taken"
 msgstr ""
 
@@ -4067,8 +4067,8 @@ msgstr ""
 msgid "Email address already taken"
 msgstr ""
 
-#: includes/login-register.php:172 includes/process-purchase.php:435
-#: includes/process-purchase.php:645
+#: includes/login-register.php:172 includes/process-purchase.php:439
+#: includes/process-purchase.php:649
 msgid "Invalid email"
 msgstr ""
 
@@ -4520,107 +4520,107 @@ msgid ""
 "This sidebar will not display for embedded forms."
 msgstr ""
 
-#: includes/process-purchase.php:243
+#: includes/process-purchase.php:247
 msgid "Please insert a valid donation amount."
 msgstr ""
 
-#: includes/process-purchase.php:249
+#: includes/process-purchase.php:253
 msgid "This form has a minimum donation amount of %s"
 msgstr ""
 
-#: includes/process-purchase.php:261
+#: includes/process-purchase.php:265
 msgid "The selected payment gateway is not enabled"
 msgstr ""
 
-#: includes/process-purchase.php:314
+#: includes/process-purchase.php:318
 msgid "You must agree to the terms of use"
 msgstr ""
 
-#: includes/process-purchase.php:335
+#: includes/process-purchase.php:339
 msgid "Please enter a valid email address"
 msgstr ""
 
-#: includes/process-purchase.php:339
+#: includes/process-purchase.php:343
 msgid "Please enter your first name"
 msgstr ""
 
-#: includes/process-purchase.php:348
+#: includes/process-purchase.php:352
 msgid "Please enter your primary billing address"
 msgstr ""
 
-#: includes/process-purchase.php:352
+#: includes/process-purchase.php:356
 msgid "Please enter your zip / postal code"
 msgstr ""
 
-#: includes/process-purchase.php:356
+#: includes/process-purchase.php:360
 msgid "Please enter your billing city"
 msgstr ""
 
-#: includes/process-purchase.php:360
+#: includes/process-purchase.php:364
 msgid "Please select your billing country"
 msgstr ""
 
-#: includes/process-purchase.php:364
+#: includes/process-purchase.php:368
 msgid "Please enter billing state / province"
 msgstr ""
 
-#: includes/process-purchase.php:440
+#: includes/process-purchase.php:444
 msgid "The user information is invalid"
 msgstr ""
 
-#: includes/process-purchase.php:495
+#: includes/process-purchase.php:499
 msgid "Invalid username. Only lowercase letters (a-z) and numbers are allowed"
 msgstr ""
 
-#: includes/process-purchase.php:504
+#: includes/process-purchase.php:508
 msgid "You must register or login to complete your donation"
 msgstr ""
 
-#: includes/process-purchase.php:511
+#: includes/process-purchase.php:515
 msgid "Sorry, that email is invalid"
 msgstr ""
 
-#: includes/process-purchase.php:514
+#: includes/process-purchase.php:518
 msgid "Sorry, that email already active for another user"
 msgstr ""
 
-#: includes/process-purchase.php:521 includes/process-purchase.php:652
+#: includes/process-purchase.php:525 includes/process-purchase.php:656
 msgid "Enter an email"
 msgstr ""
 
-#: includes/process-purchase.php:529
+#: includes/process-purchase.php:533
 msgid "Passwords don't match"
 msgstr ""
 
-#: includes/process-purchase.php:538 includes/process-purchase.php:605
+#: includes/process-purchase.php:542 includes/process-purchase.php:609
 msgid "Enter a password"
 msgstr ""
 
-#: includes/process-purchase.php:541
+#: includes/process-purchase.php:545
 msgid "Enter the password confirmation"
 msgstr ""
 
-#: includes/process-purchase.php:565
+#: includes/process-purchase.php:569
 msgid "You must login or register to complete your donation"
 msgstr ""
 
-#: includes/process-purchase.php:586
+#: includes/process-purchase.php:590
 msgid "The password you entered is incorrect. %sReset Password%s"
 msgstr ""
 
-#: includes/process-purchase.php:587 templates/shortcode-login.php:31
+#: includes/process-purchase.php:591 templates/shortcode-login.php:31
 msgid "Lost Password"
 msgstr ""
 
-#: includes/process-purchase.php:634
+#: includes/process-purchase.php:638
 msgid "You must be logged into to donate"
 msgstr ""
 
-#: includes/process-purchase.php:821
+#: includes/process-purchase.php:825
 msgid "The zip / postal code you entered for your billing address is invalid"
 msgstr ""
 
-#: includes/process-purchase.php:1091
+#: includes/process-purchase.php:1095
 msgid "An internal error has occurred, please try again or contact support."
 msgstr ""
 
@@ -4747,35 +4747,35 @@ msgstr ""
 msgid "Give Placeholder Image"
 msgstr ""
 
-#: includes/user-functions.php:402
+#: includes/user-functions.php:410
 msgid "New user registration on your site %s:"
 msgstr ""
 
-#: includes/user-functions.php:403 includes/user-functions.php:408
+#: includes/user-functions.php:411 includes/user-functions.php:416
 msgid "Username: %s"
 msgstr ""
 
-#: includes/user-functions.php:404
+#: includes/user-functions.php:412
 msgid "E-mail: %s"
 msgstr ""
 
-#: includes/user-functions.php:406
+#: includes/user-functions.php:414
 msgid "[%s] New User Registration"
 msgstr ""
 
-#: includes/user-functions.php:409
+#: includes/user-functions.php:417
 msgid "Password: %s"
 msgstr ""
 
-#: includes/user-functions.php:409
+#: includes/user-functions.php:417
 msgid "[Password entered during donation]"
 msgstr ""
 
-#: includes/user-functions.php:411
+#: includes/user-functions.php:419
 msgid "Click Here to Login"
 msgstr ""
 
-#: includes/user-functions.php:413
+#: includes/user-functions.php:421
 msgid "[%s] Your username and password"
 msgstr ""
 
@@ -4817,7 +4817,7 @@ msgstr ""
 msgid "An email with an access link has been sent to %1$s"
 msgstr ""
 
-#: templates/history-donations.php:67
+#: templates/history-donations.php:65
 msgid "It looks like you haven't made any donations"
 msgstr ""
 
