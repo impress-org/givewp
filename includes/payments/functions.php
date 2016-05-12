@@ -131,6 +131,7 @@ function give_insert_payment( $payment_data = array() ) {
 	$gateway = ! empty( $payment_data['gateway'] ) ? $payment_data['gateway'] : '';
 	$gateway = empty( $gateway ) && isset( $_POST['give-gateway'] ) ? $_POST['give-gateway'] : $gateway;
 
+	$payment->price          = $payment_data['price'];
 	$payment->status         = ! empty( $payment_data['status'] ) ? $payment_data['status'] : 'pending';
 	$payment->currency       = ! empty( $payment_data['currency'] ) ? $payment_data['currency'] : give_get_currency();
 	$payment->user_info      = $payment_data['user_info'];
@@ -670,7 +671,7 @@ function give_get_sales_by_date( $day = null, $month_num = null, $year = null, $
 
 	$args = apply_filters( 'give_get_sales_by_date_args', $args );
 
-	$key  = 'give_stats_' . substr( md5( serialize( $args ) ), 0, 15 );
+	$key = 'give_stats_' . substr( md5( serialize( $args ) ), 0, 15 );
 
 	if ( ! empty( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'give-refresh-reports' ) ) {
 		$count = false;
@@ -702,7 +703,7 @@ function give_is_payment_complete( $payment_id ) {
 
 	$ret = false;
 
-	if( $payment->ID > 0 ) {
+	if ( $payment->ID > 0 ) {
 
 		if ( (int) $payment_id === (int) $payment->ID && 'publish' == $payment->status ) {
 			$ret = true;
@@ -737,7 +738,7 @@ function give_get_total_earnings() {
 	$total = get_option( 'give_earnings_total', false );
 
 	// If no total stored in DB, use old method of calculating total earnings
-	if( false === $total ) {
+	if ( false === $total ) {
 
 		global $wpdb;
 
@@ -871,6 +872,7 @@ function give_update_payment_meta( $payment_id = 0, $meta_key = '', $meta_value 
  */
 function give_get_payment_meta_user_info( $payment_id ) {
 	$payment = new Give_Payment( $payment_id );
+
 	return $payment->user_info;
 }
 
@@ -886,6 +888,7 @@ function give_get_payment_meta_user_info( $payment_id ) {
  */
 function give_get_payment_form_id( $payment_id ) {
 	$payment = new Give_Payment( $payment_id );
+
 	return $payment->form_id;
 }
 
@@ -900,6 +903,7 @@ function give_get_payment_form_id( $payment_id ) {
  */
 function give_get_payment_user_email( $payment_id ) {
 	$payment = new Give_Payment( $payment_id );
+
 	return $payment->email;
 }
 
@@ -930,6 +934,7 @@ function give_is_guest_payment( $payment_id ) {
  */
 function give_get_payment_user_id( $payment_id ) {
 	$payment = new Give_Payment( $payment_id );
+
 	return $payment->user_id;
 }
 
@@ -944,6 +949,7 @@ function give_get_payment_user_id( $payment_id ) {
  */
 function give_get_payment_customer_id( $payment_id ) {
 	$payment = new Give_Payment( $payment_id );
+
 	return $payment->customer_id;
 }
 
@@ -958,6 +964,7 @@ function give_get_payment_customer_id( $payment_id ) {
  */
 function give_get_payment_user_ip( $payment_id ) {
 	$payment = new Give_Payment( $payment_id );
+
 	return $payment->ip;
 }
 
@@ -972,6 +979,7 @@ function give_get_payment_user_ip( $payment_id ) {
  */
 function give_get_payment_completed_date( $payment_id = 0 ) {
 	$payment = new Give_Payment( $payment_id );
+
 	return $payment->completed_date;
 }
 
@@ -986,6 +994,7 @@ function give_get_payment_completed_date( $payment_id = 0 ) {
  */
 function give_get_payment_gateway( $payment_id ) {
 	$payment = new Give_Payment( $payment_id );
+
 	return $payment->gateway;
 }
 
@@ -1000,6 +1009,7 @@ function give_get_payment_gateway( $payment_id ) {
  */
 function give_get_payment_currency_code( $payment_id = 0 ) {
 	$payment = new Give_Payment( $payment_id );
+
 	return $payment->currency;
 }
 
@@ -1029,6 +1039,7 @@ function give_get_payment_currency( $payment_id = 0 ) {
  */
 function give_get_payment_key( $payment_id = 0 ) {
 	$payment = new Give_Payment( $payment_id );
+
 	return $payment->key;
 }
 
@@ -1045,6 +1056,7 @@ function give_get_payment_key( $payment_id = 0 ) {
  */
 function give_get_payment_number( $payment_id = 0 ) {
 	$payment = new Give_Payment( $payment_id );
+
 	return $payment->number;
 }
 
@@ -1212,12 +1224,15 @@ function give_get_payment_amount( $payment_id ) {
  * Retrieves arbitrary fees for the payment
  *
  * @since 1.5
+ *
  * @param int $payment_id Payment ID
  * @param string $type Fee type
+ *
  * @return mixed array if payment fees found, false otherwise
  */
 function give_get_payment_fees( $payment_id = 0, $type = 'all' ) {
 	$payment = new Give_Payment( $payment_id );
+
 	return $payment->get_fees( $type );
 }
 
@@ -1232,6 +1247,7 @@ function give_get_payment_fees( $payment_id = 0, $type = 'all' ) {
  */
 function give_get_payment_transaction_id( $payment_id = 0 ) {
 	$payment = new Give_Payment( $payment_id );
+
 	return $payment->transaction_id;
 }
 
