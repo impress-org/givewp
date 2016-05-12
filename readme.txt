@@ -118,9 +118,13 @@ Automatic updates should work like a charm; as always though, ensure you backup 
 
 We have extensive documentation on installing and configuring Give [on our website](https://givewp.com/documentation/). We suggest starting with the [Give 101 article](https://givewp.com/documentation/core/give-101/).
 
-= Do you have live examples? =
+= How can I get support for Give? =
 
-Yes! We have several live examples of Give with [popular WordPress Themes here](https://givewp.com/demos/).
+We work hard to the best support possible for Give. The [WordPress.org Support Forum](https://wordpress.org/support/plugin/give) is used for free community based support. We continually monitor the forum and do our best to provide ensure everyone gets an answer. [Priority support](https://givewp.com/support/) is given to users who have an active license for one of Give's [Add-ons](https://givewp.com/addons/) or [Bundles](https://givewp.com/addon-bundles/). This is email based support
+
+= Do you have any demos? =
+
+Yes! We have several live examples of Give displaying usage with many [popular WordPress Themes here](https://givewp.com/demos/).
 
 = Do you have Case Studies of Nonprofits using Give? =
 
