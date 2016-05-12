@@ -22,6 +22,7 @@ class Tests_Activation extends Give_Unit_Test_Case {
 	 */
 	public function test_settings() {
 		global $give_options;
+		$this->assertArrayHasKey( 'history_page', $give_options );
 		$this->assertArrayHasKey( 'success_page', $give_options );
 		$this->assertArrayHasKey( 'failure_page', $give_options );
 	}
@@ -29,7 +30,7 @@ class Tests_Activation extends Give_Unit_Test_Case {
 	/**
 	 * Test the install function, installing pages and setting option values.
 	 *
-	 * @since 2.2.4
+	 * @since 1.3.3
 	 */
 	public function test_install() {
 
@@ -40,7 +41,8 @@ class Tests_Activation extends Give_Unit_Test_Case {
 		$origin_give_version		= get_option( 'give_version' );
 
 		// Prepare values for testing
-		update_option( 'give_version', '2.1' );
+		delete_option( 'give_settings' ); 
+		update_option( 'give_version', '2.0' );
 		$give_options = array();
 
 
@@ -48,7 +50,7 @@ class Tests_Activation extends Give_Unit_Test_Case {
 
 
 		// Test the give_version_upgraded_from value
-		$this->assertEquals( get_option( 'give_version_upgraded_from' ), '2.1' );
+		$this->assertEquals( get_option( 'give_version_upgraded_from' ), '2.0' );
 
 		// Test that new pages are created, and not the same as the already created ones.
 		// This is to make sure the test is giving the most accurate results.
