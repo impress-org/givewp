@@ -1313,7 +1313,7 @@ class Give_API {
 	}
 
 	/**
-	 * Retrieves Recent Sales
+	 * Retrieves Recent Donation
 	 *
 	 * @access public
 	 * @since  1.1
@@ -1330,7 +1330,7 @@ class Give_API {
 
 		if ( isset( $wp_query->query_vars['id'] ) ) {
 			$query   = array();
-			$query[] = give_get_payment_by( 'id', $wp_query->query_vars['id'] );
+			$query[] = new Give_Payment( $wp_query->query_vars['id'] );
 		} elseif ( isset( $wp_query->query_vars['purchasekey'] ) ) {
 			$query   = array();
 			$query[] = give_get_payment_by( 'key', $wp_query->query_vars['purchasekey'] );
@@ -1357,6 +1357,11 @@ class Give_API {
 				$user_info    = give_get_payment_meta_user_info( $payment->ID );
 				$first_name   = isset( $user_info['first_name'] ) ? $user_info['first_name'] : '';
 				$last_name    = isset( $user_info['last_name'] ) ? $user_info['last_name'] : '';
+
+				echo '<pre>';
+				var_dump($payment_meta);
+				echo '</pre>';
+				die();
 
 				$sales['donations'][ $i ]['ID']             = give_get_payment_number( $payment->ID );
 				$sales['donations'][ $i ]['transaction_id'] = give_get_payment_transaction_id( $payment->ID );
