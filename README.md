@@ -67,6 +67,18 @@ Automatic updates should work like a charm; as always though, ensure you backup 
 
 ## Frequently Asked Questions ##
 
+### Where can I learn more about how to use Give? ###
+
+We have extensive documentation on installing and configuring Give [on our website](https://givewp.com/documentation/). We suggest starting with the [Give 101 article](https://givewp.com/documentation/core/give-101/).
+
+### Do you have live examples? ###
+
+Yes! We have several live examples of Give with [popular WordPress Themes here](https://givewp.com/demos/).
+
+### Do you have Case Studies of Nonprofits using Give? ###
+
+Yes! We call them "Give Stories". [You can read them all here](https://givewp.com/give-stories/).
+
 ### How is Give better than *Gravity Forms* for accepting donations through WordPress? ###
 
 First off, we love Gravity Forms. It's a great plugin and has a lot of good features for accepting donations. That being said, it lacks substantial reporting features many nonprofits find crucial to cause. In addition, there's a larger barrier to entry than Give. It's a premium only plugin and requires a developer license ($199/yr) to accept credit card and recurring payments on site.
