@@ -45,16 +45,16 @@ jQuery(document).ready(function ($) {
             id = id.replace('tab-', '');
         }
 
-        $tab = $( '#' + id );
+        $tab = $('.give_settings_page').find("[data-tab='" + id + "']");
 
         // hide all tabs and show current tab
         $('.cmb-form').hide();
         $tab.show();
 
         // remove and set the Wordpress active tab class on the tab navigation
-        $( '.nav-tab').removeClass( 'nav-tab-active' );
-        $( '#tab-' + id ).addClass( 'nav-tab-active' ).blur();
-        
+        $('.nav-tab').removeClass('nav-tab-active');
+        $('#tab-' + id).addClass('nav-tab-active').blur();
+
         // change the browser URL to reflect the current tab; 
         // this allows WordPress to change to this tab on save
         if (history.pushState) {

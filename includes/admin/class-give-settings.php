@@ -54,16 +54,6 @@ class Give_Plugin_Settings {
 		//Customize CMB2 URL
 		add_filter( 'cmb2_meta_box_url', array( $this, 'give_update_cmb_meta_box_url' ) );
 
-		//Custom CMB2 Settings Fields
-		add_action( 'cmb2_render_give_title', 'give_title_callback', 10, 5 );
-		add_action( 'cmb2_render_give_description', 'give_description_callback', 10, 5 );
-		add_action( 'cmb2_render_enabled_gateways', 'give_enabled_gateways_callback', 10, 5 );
-		add_action( 'cmb2_render_default_gateway', 'give_default_gateway_callback', 10, 5 );
-		add_action( 'cmb2_render_email_preview_buttons', 'give_email_preview_buttons_callback', 10, 5 );
-		add_action( 'cmb2_render_system_info', 'give_system_info_callback', 10, 5 );
-		add_action( 'cmb2_render_api', 'give_api_callback', 10, 5 );
-		add_action( 'cmb2_render_license_key', 'give_license_key_callback', 10, 5 );
-		add_action( 'admin_notices', array( $this, 'settings_notices' ) );
 
 		// Include CMB CSS in the head to avoid FOUC
 		add_action( 'admin_print_styles-give_forms_page_give-settings', array( 'CMB2_hookup', 'enqueue_cmb_css' ) );
@@ -158,9 +148,11 @@ class Give_Plugin_Settings {
 					$active       = $active_tab == $tab_id ? ' nav-tab-active' : '';
 					$tab_settings = $this->give_settings( $tab_id );
 
-					$tab_form_id = isset( $tab_settings['id'] ) ? $tab_settings['id'] : $tab_id;
+					//Ensure proper tab ID is set - don't allow legacy 'options_page' for an ID
+					//This prevents duplicate tab IDs which causes only the first tab to be displayed
+					$tab_form_id = ( isset( $tab_settings['id'] ) && $tab_settings['id'] !== 'options_page' ) ? $tab_settings['id'] : $tab_id;
 
-					echo '<a href="' . esc_url( $tab_url ) . '" title="' . esc_attr( $tab_name ) . '" class="nav-tab' . $active . '" id="tab-' . $tab_form_id . '">' . esc_html( $tab_name ) . '</a>';
+					echo '<a href="' . esc_url( $tab_url ) . '" title="' . esc_attr( $tab_name ) . '" class="nav-tab' . $active . '" id="tab-' . $tab_id . '">' . esc_html( $tab_name ) . '</a>';
 
 				}
 				?>
@@ -175,11 +167,11 @@ class Give_Plugin_Settings {
 				$_GET['tab'] = $tab_id;
 
 				$tab_settings = $this->give_settings( $tab_id );
-
-				//Pass active tab within $tab_settings so we can hide with CSS via PHP
-				if ( $active_tab == $tab_id ) {
-					$tab_settings['active_tab'] = true;
-				}
+//
+//				//Pass active tab within $tab_settings so we can hide with CSS via PHP
+//				if ( $active_tab == $tab_id ) {
+//					$tab_settings['active_tab'] = true;
+//				}
 
 				cmb2_metabox_form( $tab_settings, $this->key );
 
@@ -212,7 +204,22 @@ class Give_Plugin_Settings {
 				$style = 'style="display:none;"';
 			}
 
-			$form_format = '<form class="cmb-form" method="post" id="%1$s" enctype="multipart/form-data" encoding="multipart/form-data" ' . $style . '><input type="hidden" name="give_settings_saved" value="true"><input type="hidden" name="object_id" value="%2$s">%3$s<div class="give-submit-wrap"><input type="submit" name="submit-cmb" value="' . __( 'Save Settings', 'give' ) . '" class="button-primary"></div></form>';
+			//Set ID based off tab name - protects backwards compatibility
+			$tab_id = isset( $_GET['tab'] ) ? $_GET['tab'] : $cmb->meta_box['id'];
+
+			$save_button = apply_filters( 'give_save_button_markup', '<div class="give-submit-wrap"><input type="submit" name="submit-cmb" value="' . __( 'Save Settings', 'give' ) . '" class="button-primary"></div>' );
+
+			//Filter so some tabs won't have save settings
+			$no_save_button = apply_filters( 'give_settings_no_save_output', array(
+				'system_info'
+			) );
+
+			if ( in_array( $tab_id, $no_save_button ) ) {
+				$save_button = '';
+			}
+
+			$form_format = '<form class="cmb-form" method="post" id="%1$s" enctype="multipart/form-data" encoding="multipart/form-data" ' . $style . ' data-tab="' . $tab_id . '"><input type="hidden" name="give_settings_saved" value="true"><input type="hidden" name="object_id" value="%2$s">%3$s' . $save_button . '</form>';
+
 		}
 
 		return $form_format;
@@ -758,10 +765,13 @@ class Give_Plugin_Settings {
 			),
 		);
 
-		//Return all settings array if necessary
+		//Return all settings array if no active tab
 		if ( $active_tab === null || ! isset( $give_settings[ $active_tab ] ) ) {
+
 			return apply_filters( 'give_registered_settings', $give_settings );
+			
 		}
+
 
 		// Add other tabs and settings fields as needed
 		return apply_filters( 'give_registered_settings', $give_settings[ $active_tab ] );
