@@ -128,10 +128,13 @@ function give_insert_payment( $payment_data = array() ) {
 	}
 
 	$payment = new Give_Payment();
+
+
 	$gateway = ! empty( $payment_data['gateway'] ) ? $payment_data['gateway'] : '';
 	$gateway = empty( $gateway ) && isset( $_POST['give-gateway'] ) ? $_POST['give-gateway'] : $gateway;
 
-	$payment->price          = $payment_data['price'];
+	//Set properties
+	$payment->total          = $payment_data['price'];
 	$payment->status         = ! empty( $payment_data['status'] ) ? $payment_data['status'] : 'pending';
 	$payment->currency       = ! empty( $payment_data['currency'] ) ? $payment_data['currency'] : give_get_currency();
 	$payment->user_info      = $payment_data['user_info'];
@@ -148,10 +151,20 @@ function give_insert_payment( $payment_data = array() ) {
 	$payment->mode           = give_is_test_mode() ? 'test' : 'live';
 	$payment->parent_payment = ! empty( $payment_data['parent'] ) ? absint( $payment_data['parent'] ) : '';
 
+	//Add the donation
+	$args = array(
+		'price'    => $payment->total,
+		'price_id' => $payment->price_id,
+		'fees'     => isset( $payment_data['fees'] ) ? $payment_data['fees'] : array()
+	);
+	$payment->add_donation( $payment->form_id, $args );
+
+	//Set date if present
 	if ( isset( $payment_data['post_date'] ) ) {
 		$payment->date = $payment_data['post_date'];
 	}
 
+	//Handle sequential payments
 	if ( give_get_option( 'enable_sequential' ) ) {
 		$number          = give_get_next_payment_number();
 		$payment->number = give_format_payment_number( $number );
@@ -161,10 +174,13 @@ function give_insert_payment( $payment_data = array() ) {
 	// Clear the user's purchased cache
 	delete_transient( 'give_user_' . $payment_data['user_info']['id'] . '_purchases' );
 
+	//Save payment
 	$payment->save();
 
+	//Hook it
 	do_action( 'give_insert_payment', $payment->ID, $payment_data );
 
+	//Return payment ID upon success
 	if ( ! empty( $payment->ID ) ) {
 		return $payment->ID;
 	}

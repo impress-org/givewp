@@ -498,12 +498,6 @@ final class Give_Payment {
 			'fees'         => $this->fees,
 		);
 
-		echo '<pre>';
-		var_dump($this);
-		var_dump($payment_data);
-		echo '</pre>';
-		die();
-
 		$args = apply_filters( 'give_insert_payment_args', array(
 			'post_title'    => $payment_title,
 			'post_status'   => $this->status,
@@ -571,6 +565,7 @@ final class Give_Payment {
 	 * @return bool  True of the save occurred, false if it failed or wasn't needed
 	 */
 	public function save() {
+
 		$saved = false;
 
 		if ( empty( $this->ID ) ) {
@@ -588,9 +583,6 @@ final class Give_Payment {
 		if ( $this->ID !== $this->_ID ) {
 			$this->ID = $this->_ID;
 		}
-
-
-
 
 		// If we have something pending, let's save it
 		if ( ! empty( $this->pending ) ) {
@@ -852,7 +844,6 @@ final class Give_Payment {
 
 		$donation = new Give_Donate_Form( $form_id );
 
-
 		// Bail if this post isn't a give donation form
 		if ( ! $donation || $donation->post_type !== 'give_forms' ) {
 			return false;
@@ -860,19 +851,21 @@ final class Give_Payment {
 
 		// Set some defaults
 		$defaults = array(
-			'price_id'   => false,
-			'item_price' => false,
-			'fees'       => array(),
+			'price'    => false,
+			'price_id' => false,
+			'fees'     => array(),
 		);
 
 		$args = wp_parse_args( apply_filters( 'give_payment_add_donation_args', $args, $donation->ID ), $defaults );
 
 		// Allow overriding the price
-		if ( false !== $args['item_price'] ) {
-			$item_price = $args['item_price'];
+		if ( false !== $args['price'] ) {
+			$item_price = $args['price'];
 		} else {
+
 			// Deal with variable pricing
 			if ( give_has_variable_prices( $donation->ID ) ) {
+
 				$prices = get_post_meta( $donation->ID, 'give_variable_prices', true );
 
 				if ( $args['price_id'] && array_key_exists( $args['price_id'], (array) $prices ) ) {
@@ -890,54 +883,33 @@ final class Give_Payment {
 		$item_price = give_sanitize_amount( $item_price );
 		$amount     = round( $item_price, give_currency_decimal_filter() );
 
-		// Setup the downloads meta item
-		$new_donation = array(
-			'id' => $donation->ID,
-		);
-
-		if ( false !== $args['price_id'] ) {
-			$default_options['price_id'] = (int) $args['price_id'];
-		}
-
+		//Add Options
 		$default_options = array();
-
 		if ( false !== $args['price_id'] ) {
 			$default_options['price_id'] = (int) $args['price_id'];
 		}
+		$options = wp_parse_args( $options, $default_options );
 
-		$options                 = wp_parse_args( $options, $default_options );
-		$new_donation['options'] = $options;
-
-		$this->donations[] = $new_donation;
-		$subtotal          = $amount;
-		$total             = $subtotal;
+		//Setup totals
+		$subtotal = $amount;
+		$total    = $subtotal;
 
 		// Do not allow totals to go negative
 		if ( $total < 0 ) {
 			$total = 0;
 		}
 
-		// Silly item_number array
-		$item_number = array(
-			'id'      => $donation->ID,
-			'options' => $options,
+		$donation = array(
+			'name'     => $donation->post_title,
+			'id'       => $donation->ID,
+			'price'    => round( $total, give_currency_decimal_filter() ),
+			'subtotal' => round( $subtotal, give_currency_decimal_filter() ),
+			'fees'     => $args['fees'],
+			'action'   => 'add',
+			'options'  => $options
 		);
 
-		$this->donation_details[] = array(
-			'name'        => $donation->post_title,
-			'id'          => $donation->ID,
-			'item_number' => $item_number,
-			'item_price'  => round( $item_price, give_currency_decimal_filter() ),
-			'subtotal'    => round( $subtotal, give_currency_decimal_filter() ),
-			'fees'        => $args['fees'],
-			'price'       => round( $total, give_currency_decimal_filter() ),
-		);
-
-		$added_donation           = end( $this->cart_details );
-		$added_donation['action'] = 'add';
-
-		$this->pending['donations'][] = $added_donation;
-		reset( $this->cart_details );
+		$this->pending['donations'][] = $donation;
 
 		$this->increase_subtotal( $subtotal );
 
