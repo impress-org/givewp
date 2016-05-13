@@ -236,7 +236,7 @@ function give_purchase_form_validate_fields() {
 function give_purchase_form_validate_gateway() {
 
 	$form_id = isset( $_REQUEST['give-form-id'] ) ? $_REQUEST['give-form-id'] : 0;
-	$amount  = isset( $_REQUEST['give-amount'] ) ? give_format_amount( give_get_form_minimum_price( $_REQUEST['give-amount'] ) ) : 0;
+	$amount  = isset( $_REQUEST['give-amount'] ) ? give_sanitize_amount( $_REQUEST['give-amount'] ) : 0;
 	$gateway = give_get_default_gateway( $form_id );
 
 	// Check if a gateway value is present
