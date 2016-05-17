@@ -75,6 +75,14 @@ final class Give_Payment {
 	protected $key = '';
 
 	/**
+	 * The Donation Form Title
+	 *
+	 * @since  1.5
+	 * @var string
+	 */
+	protected $form_title = 0;
+
+	/**
 	 * The Donation Form ID
 	 *
 	 * @since  1.5
@@ -435,6 +443,7 @@ final class Give_Payment {
 		$this->last_name   = $this->user_info['last_name'];
 
 		// Other Identifiers
+		$this->form_id  = $this->setup_form_title();
 		$this->form_id  = $this->setup_form_id();
 		$this->price_id = $this->setup_price_id();
 		$this->key      = $this->setup_payment_key();
@@ -714,6 +723,10 @@ final class Give_Payment {
 
 					case 'user_id':
 						$this->update_meta( '_give_payment_user_id', $this->user_id );
+						break;
+
+					case 'form_title':
+						$this->update_meta( '_give_payment_form_title', $this->user_id );
 						break;
 
 					case 'form_id':
@@ -1849,6 +1862,7 @@ final class Give_Payment {
 	 * @return array               The Address information for the payment
 	 */
 	private function setup_address() {
+
 		$address = ! empty( $this->payment_meta['user_info']['address'] ) ? $this->payment_meta['user_info']['address'] : array(
 			'line1'   => '',
 			'line2'   => '',
@@ -1858,7 +1872,24 @@ final class Give_Payment {
 			'zip'     => ''
 		);
 
+		echo '<pre>';
+		var_dump( give_get_payment_meta() );
+		echo '</pre>';
+
 		return $address;
+	}
+
+	/**
+	 * Setup the form ID
+	 *
+	 * @since  1.5
+	 * @return int The Form ID
+	 */
+	private function setup_form_title() {
+
+		$form_id = $this->get_meta( '_give_payment_form_title', true );
+
+		return $form_id;
 	}
 
 	/**
