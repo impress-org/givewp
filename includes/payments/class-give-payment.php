@@ -493,6 +493,7 @@ final class Give_Payment {
 			'date'         => $this->date,
 			'user_email'   => $this->email,
 			'purchase_key' => $this->key,
+			'form_title'   => $this->form_title,
 			'form_id'      => $this->form_id,
 			'price_id'     => $this->price_id,
 			'currency'     => $this->currency,
@@ -815,9 +816,12 @@ final class Give_Payment {
 			$this->update_meta( '_give_payment_total', $this->total );
 
 			$new_meta = array(
-				'fees'      => $this->fees,
-				'currency'  => $this->currency,
-				'user_info' => $this->user_info,
+				'form_title' => $this->form_title,
+				'form_id'    => $this->form_id,
+				'price_id'   => $this->price_id,
+				'fees'       => $this->fees,
+				'currency'   => $this->currency,
+				'user_info'  => $this->user_info,
 			);
 
 			$meta        = $this->get_meta();
@@ -1872,18 +1876,14 @@ final class Give_Payment {
 			'zip'     => ''
 		);
 
-		echo '<pre>';
-		var_dump( give_get_payment_meta() );
-		echo '</pre>';
-
 		return $address;
 	}
 
 	/**
-	 * Setup the form ID
+	 * Setup the form title
 	 *
 	 * @since  1.5
-	 * @return int The Form ID
+	 * @return string The Form Title
 	 */
 	private function setup_form_title() {
 

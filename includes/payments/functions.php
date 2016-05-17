@@ -128,8 +128,6 @@ function give_insert_payment( $payment_data = array() ) {
 	}
 
 	$payment = new Give_Payment();
-
-
 	$gateway = ! empty( $payment_data['gateway'] ) ? $payment_data['gateway'] : '';
 	$gateway = empty( $gateway ) && isset( $_POST['give-gateway'] ) ? $_POST['give-gateway'] : $gateway;
 
@@ -139,6 +137,7 @@ function give_insert_payment( $payment_data = array() ) {
 	$payment->currency       = ! empty( $payment_data['currency'] ) ? $payment_data['currency'] : give_get_currency();
 	$payment->user_info      = $payment_data['user_info'];
 	$payment->gateway        = $gateway;
+	$payment->form_title     = $payment_data['give_form_title'];
 	$payment->form_id        = $payment_data['give_form_id'];
 	$payment->price_id       = give_get_price_id( $payment_data['give_form_id'], $payment_data['price'] );
 	$payment->user_id        = $payment_data['user_info']['id'];
