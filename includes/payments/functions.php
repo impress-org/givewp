@@ -127,9 +127,12 @@ function give_insert_payment( $payment_data = array() ) {
 		return false;
 	}
 
-	$payment = new Give_Payment();
-	$gateway = ! empty( $payment_data['gateway'] ) ? $payment_data['gateway'] : '';
-	$gateway = empty( $gateway ) && isset( $_POST['give-gateway'] ) ? $_POST['give-gateway'] : $gateway;
+	$payment    = new Give_Payment();
+	$gateway    = ! empty( $payment_data['gateway'] ) ? $payment_data['gateway'] : '';
+	$gateway    = empty( $gateway ) && isset( $_POST['give-gateway'] ) ? $_POST['give-gateway'] : $gateway;
+	$price_id   = isset( $payment_data['give_price_id'] ) ? $payment_data['give_price_id'] : give_get_price_id( $payment_data['give_form_id'], $payment_data['price'] );
+	$form_title = give_get_payment_form_title( $payment_data );
+
 
 	//Set properties
 	$payment->total          = $payment_data['price'];
@@ -137,9 +140,9 @@ function give_insert_payment( $payment_data = array() ) {
 	$payment->currency       = ! empty( $payment_data['currency'] ) ? $payment_data['currency'] : give_get_currency();
 	$payment->user_info      = $payment_data['user_info'];
 	$payment->gateway        = $gateway;
-	$payment->form_title     = $payment_data['give_form_title'];
+	$payment->form_title     = $form_title;
 	$payment->form_id        = $payment_data['give_form_id'];
-	$payment->price_id       = give_get_price_id( $payment_data['give_form_id'], $payment_data['price'] );
+	$payment->price_id       = $price_id;
 	$payment->user_id        = $payment_data['user_info']['id'];
 	$payment->email          = $payment_data['user_email'];
 	$payment->first_name     = $payment_data['user_info']['first_name'];
@@ -197,7 +200,7 @@ function give_insert_payment( $payment_data = array() ) {
  * @param int $payment_id Payment ID
  * @param string $new_status New Payment Status (default: publish)
  *
- * @return void
+ * @return bool
  */
 function give_update_payment_status( $payment_id, $new_status = 'publish' ) {
 
@@ -207,6 +210,7 @@ function give_update_payment_status( $payment_id, $new_status = 'publish' ) {
 
 	return $updated;
 }
+
 
 /**
  * Deletes a Donation
@@ -1471,7 +1475,7 @@ function give_get_payment_note_html( $note, $payment_id = 0 ) {
  *
  * @since 1.0
  *
- * @param obj $query WordPress Comment Query Object
+ * @param object $query WordPress Comment Query Object
  *
  * @return void
  */
@@ -1496,7 +1500,7 @@ add_action( 'pre_get_comments', 'give_hide_payment_notes', 10 );
  * @since 1.0
  *
  * @param array $clauses Comment clauses for comment query
- * @param obj $wp_comment_query WordPress Comment Query Object
+ * @param object $wp_comment_query WordPress Comment Query Object
  *
  * @return array $clauses Updated comment clauses
  */
@@ -1519,7 +1523,7 @@ add_filter( 'comments_clauses', 'give_hide_payment_notes_pre_41', 10, 2 );
  * @since 1.0
  *
  * @param array $where
- * @param obj $wp_comment_query WordPress Comment Query Object
+ * @param object $wp_comment_query WordPress Comment Query Object
  *
  * @return array $where
  */
@@ -1624,6 +1628,33 @@ function give_filter_where_older_than_week( $where = '' ) {
 	return $where;
 }
 
+
+/**
+ * Get Payment Form ID
+ *
+ * @description: Retrieves the form title and appends the price ID title if applicable
+ *
+ * @since 1.5
+ *
+ * @param array $payment_meta
+ *
+ * @return string $form_title
+ */
+function give_get_payment_form_title( $payment_meta ) {
+
+	$form_id    = isset( $payment_meta['give_form_id'] ) ? $payment_meta['give_form_id'] : 0;
+	$form_title = isset( $payment_meta['give_form_title'] ) ? $payment_meta['give_form_title'] : '';
+	$price_id   = isset( $payment_meta['give_price_id'] ) ? $payment_meta['give_price_id'] : give_get_price_id( $payment_meta['give_form_id'], $payment_meta['price'] );
+
+	if ( give_has_variable_prices( $form_id ) ) {
+
+		$form_title .= ' - ' . give_get_price_option_name( $form_id, $price_id );
+
+	}
+
+	return $form_title;
+
+}
 
 /**
  * Get Price ID

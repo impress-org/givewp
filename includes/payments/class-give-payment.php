@@ -528,7 +528,7 @@ final class Give_Payment {
 			$customer = new stdClass;
 
 			if ( did_action( 'give_pre_process_purchase' ) && is_user_logged_in() ) {
-				$customer = new Give_customer( get_current_user_id(), true );
+				$customer = new Give_Customer( get_current_user_id(), true );
 			}
 
 			if ( empty( $customer->id ) ) {
@@ -550,8 +550,8 @@ final class Give_Payment {
 			$this->customer_id            = $customer->id;
 			$this->pending['customer_id'] = $this->customer_id;
 			$customer->attach_payment( $this->ID, false );
-
 			$this->payment_meta = apply_filters( 'give_payment_meta', $this->payment_meta, $payment_data );
+
 			if ( ! empty( $this->payment_meta['fees'] ) ) {
 				$this->fees = array_merge( $this->fees, $this->payment_meta['fees'] );
 				foreach ( $this->fees as $fee ) {
@@ -727,15 +727,15 @@ final class Give_Payment {
 						break;
 
 					case 'form_title':
-						$this->update_meta( '_give_payment_form_title', $this->user_id );
+						$this->update_meta( '_give_payment_form_title', $this->form_title );
 						break;
 
 					case 'form_id':
-						$this->update_meta( '_give_payment_form_id', $this->user_id );
+						$this->update_meta( '_give_payment_form_id', $this->form_id );
 						break;
 
 					case 'price_id':
-						$this->update_meta( '_give_payment_price_id', $this->user_id );
+						$this->update_meta( '_give_payment_price_id', $this->price_id );
 						break;
 
 					case 'first_name':
@@ -1445,6 +1445,10 @@ final class Give_Payment {
 			if ( empty( $meta['key'] ) ) {
 				$meta['key'] = $this->setup_payment_key();
 			}
+			
+			if ( empty( $meta['form_title'] ) ) {
+				$meta['form_title'] = $this->setup_form_title();
+			}
 
 			if ( empty( $meta['email'] ) ) {
 				$meta['email'] = $this->setup_email();
@@ -1469,7 +1473,7 @@ final class Give_Payment {
 	 * @param  string $meta_value The meta value
 	 * @param  string $prev_value Previous meta value
 	 *
-	 * @return int|bool           Meta ID if the key didn't exist, true on successful update, false on failure
+	 * @return int|bool Meta ID if the key didn't exist, true on successful update, false on failure
 	 */
 	public function update_meta( $meta_key = '', $meta_value = '', $prev_value = '' ) {
 		if ( empty( $meta_key ) ) {
