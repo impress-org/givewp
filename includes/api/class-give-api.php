@@ -1350,14 +1350,14 @@ class Give_API {
 				'status' => 'publish'
 			) );
 		}
-
+		echo '<pre>';
+		var_dump( $query );
+		echo '</pre>';
+		die();
 		if ( $query ) {
 			$i = 0;
 			foreach ( $query as $payment ) {
-echo '<pre>';
-var_dump($payment);
-echo '</pre>';
-				die();
+				
 				if ( is_numeric( $payment ) ) {
 					$payment      = new Give_Payment( $payment );
 					$payment_meta = $payment->get_meta();

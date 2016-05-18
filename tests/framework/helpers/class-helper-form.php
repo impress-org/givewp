@@ -37,18 +37,17 @@ class Give_Helper_Form extends WP_UnitTestCase {
 
 		$meta = array(
 			'_give_price_option'                => 'set',
-			'_give_set_price'                   => '50.00',
-			'_variable_pricing'                 => 0,
+			'_give_set_price'                   => '20.00',
 			'_give_custom_amount'               => 'yes',
-			'_give_custom_amount_minimum'        => '1.00',
+			'_give_custom_amount_minimum'       => '1',
 			'_give_custom_amount_text'          => 'Would you like to set a custom amount?',
 			'_give_goal_option'                 => 'no',
 			'_give_payment_display'             => 'onpage',
 			'_give_show_register_form'          => 'none',
 			'_give_customize_offline_donations' => 'no',
 			'_give_terms_option'                => 'none',
-			'_give_form_earnings'               => '150',
-			'_give_form_sales'                  => '3',
+			'_give_form_earnings'               => '40',
+			'_give_form_sales'                  => '2',
 			'_give_default_gateway'             => 'global'
 		);
 		foreach ( $meta as $key => $value ) {
@@ -76,30 +75,35 @@ class Give_Helper_Form extends WP_UnitTestCase {
 		$_multi_level_donations = array(
 			array(
 				'_give_id'     => array( 'level_id' => '1' ),
-				'_give_amount' => '10.00',
-				'_give_text'   => 'Basic Level'
+				'_give_amount' => '10',
+				'_give_text'   => 'Small Gift'
 			),
 			array(
 				'_give_id'      => array( 'level_id' => '2' ),
-				'_give_amount'  => '20.00',
-				'_give_text'    => 'Intermediate Level',
+				'_give_amount'  => '25',
+				'_give_text'    => 'Mid-size Gift',
 				'_give_default' => 'default'
 			),
 			array(
 				'_give_id'     => array( 'level_id' => '3' ),
-				'_give_amount' => '40.00',
-				'_give_text'   => 'Advanced Level'
+				'_give_amount' => '50',
+				'_give_text'   => 'Large Gift'
+			),
+			array(
+				'_give_id'     => array( 'level_id' => '4' ),
+				'_give_amount' => '100',
+				'_give_text'   => 'Big Gift'
 			),
 		);
 
 		$meta = array(
-			'give_price'               => '0.00',
+			'_give_set_price'          => '0.00', //Multi-level Pricing; not set
 			'_give_price_option'       => 'multi',
 			'_give_display_style'      => 'buttons',
 			'_give_price_options_mode' => 'on',
 			'_give_donation_levels'    => array_values( $_multi_level_donations ),
-			'give_product_notes'       => 'Donation Notes',
-			'_give_product_type'       => 'default'
+			'_give_form_earnings'      => 120,
+			'_give_form_sales'         => 6,
 		);
 
 
