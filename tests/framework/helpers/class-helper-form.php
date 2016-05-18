@@ -46,7 +46,7 @@ class Give_Helper_Form extends WP_UnitTestCase {
 			'_give_show_register_form'          => 'none',
 			'_give_customize_offline_donations' => 'no',
 			'_give_terms_option'                => 'none',
-			'_give_form_earnings'               => '40',
+			'_give_form_earnings'               => '40.00',
 			'_give_form_sales'                  => '2',
 			'_give_default_gateway'             => 'global'
 		);

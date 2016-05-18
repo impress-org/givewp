@@ -578,6 +578,7 @@ final class Give_Payment {
 
 		$saved = false;
 
+		//Must have an ID 
 		if ( empty( $this->ID ) ) {
 
 			$payment_id = $this->insert_payment();
@@ -590,6 +591,7 @@ final class Give_Payment {
 
 		}
 
+		//Set ID if not matching
 		if ( $this->ID !== $this->_ID ) {
 			$this->ID = $this->_ID;
 		}
@@ -603,6 +605,7 @@ final class Give_Payment {
 			foreach ( $this->pending as $key => $value ) {
 
 				switch ( $key ) {
+
 					case 'donations':
 						// Update totals for pending donations
 						foreach ( $this->pending[ $key ] as $item ) {
@@ -610,13 +613,14 @@ final class Give_Payment {
 							switch ( $item['action'] ) {
 
 								case 'add':
+
 									$price = $item['price'];
 
 									if ( 'publish' === $this->status || 'complete' === $this->status || 'revoked' === $this->status ) {
 
 										// Add sales logs
 										$log_date = date_i18n( 'Y-m-d G:i:s', current_time( 'timestamp' ) );
-										$price_id = isset( $item['item_number']['options']['price_id'] ) ? $item['item_number']['options']['price_id'] : 0;
+										$price_id = isset( $item['price_id'] ) ? $item['price_id'] : 0;
 
 										$y = 0;
 										while ( $y < $item['quantity'] ) {
@@ -882,31 +886,33 @@ final class Give_Payment {
 
 			// Deal with variable pricing
 			if ( give_has_variable_prices( $donation->ID ) ) {
-				$prices = maybe_unserialize( get_post_meta( $form_id, '_give_donation_levels', true ) );
+				$prices     = maybe_unserialize( get_post_meta( $form_id, '_give_donation_levels', true ) );
 				$item_price = '';
 				//Loop through prices
 				foreach ( $prices as $price ) {
 					//Find a match between price_id and level_id
 					//First verify array keys exists THEN make the match
 					if ( ( isset( $args['price_id'] ) && isset( $price['_give_id']['level_id'] ) )
-					     && $args['price_id'] == $price['_give_id']['level_id'] ) {
+					     && $args['price_id'] == $price['_give_id']['level_id']
+					) {
 						$item_price = $price['_give_amount'];
 					}
 				}
 				//Fallback to the lowest price point
-				if ( $item_price == '') {
+				if ( $item_price == '' ) {
 					$item_price       = give_get_lowest_price_option( $donation->ID );
 					$args['price_id'] = give_get_lowest_price_id( $donation->ID );
 				}
 			} else {
+				//Simple form price
 				$item_price = give_get_form_price( $donation->ID );
 			}
-			
+
 		}
 
 		// Sanitizing the price here so we don't have a dozen calls later
 		$item_price = give_sanitize_amount( $item_price );
-		$amount     = round( $item_price, give_currency_decimal_filter() );
+		$total      = round( $item_price, give_currency_decimal_filter() );
 
 		//Add Options
 		$default_options = array();
@@ -914,10 +920,6 @@ final class Give_Payment {
 			$default_options['price_id'] = (int) $args['price_id'];
 		}
 		$options = wp_parse_args( $options, $default_options );
-
-		//Setup totals
-		$subtotal = $amount;
-		$total    = $subtotal;
 
 		// Do not allow totals to go negative
 		if ( $total < 0 ) {
@@ -928,7 +930,7 @@ final class Give_Payment {
 			'name'     => $donation->post_title,
 			'id'       => $donation->ID,
 			'price'    => round( $total, give_currency_decimal_filter() ),
-			'subtotal' => round( $subtotal, give_currency_decimal_filter() ),
+			'subtotal' => round( $total, give_currency_decimal_filter() ),
 			'fees'     => $args['fees'],
 			'action'   => 'add',
 			'options'  => $options
@@ -936,7 +938,7 @@ final class Give_Payment {
 
 		$this->pending['donations'][] = $donation;
 
-		$this->increase_subtotal( $subtotal );
+		$this->increase_subtotal( $total );
 
 		return true;
 
@@ -947,164 +949,38 @@ final class Give_Payment {
 	 *
 	 * @since  1.5
 	 *
-	 * @param  int $donation_id The download ID to remove
+	 * @param  int $form_id The form ID to remove
 	 * @param  array $args Arguments to pass to identify (quantity, amount, price_id)
 	 *
-	 * @return bool               If the item was removed or not
+	 * @return bool If the item was removed or not
 	 */
-	public function remove_donation( $donation_id, $args = array() ) {
+	public function remove_donation( $form_id, $args = array() ) {
 
 		// Set some defaults
 		$defaults = array(
-			'quantity'   => 1,
-			'item_price' => false,
-			'price_id'   => false,
-			'cart_index' => false,
+			'quantity' => 1,
+			'price'    => false,
+			'price_id' => false,
 		);
 		$args     = wp_parse_args( $args, $defaults );
 
-		$donation = new give_Download( $donation_id );
+		$form = new Give_Donate_Form( $form_id );
 
-		// Bail if this post isn't a download
-		if ( ! $donation || $donation->post_type !== 'download' ) {
+		// Bail if this post isn't a valid give donation form
+		if ( ! $form || $form->post_type !== 'give_forms' ) {
 			return false;
 		}
 
-		foreach ( $this->downloads as $key => $item ) {
-
-			if ( $donation_id != $item['id'] ) {
-				continue;
-			}
-
-			if ( false !== $args['price_id'] ) {
-
-				if ( isset( $item['options']['price_id'] ) && $args['price_id'] != $item['options']['price_id'] ) {
-					continue;
-				}
-
-			} elseif ( false !== $args['cart_index'] ) {
-
-				$cart_index = absint( $args['cart_index'] );
-				$cart_item  = ! empty( $this->cart_details[ $cart_index ] ) ? $this->cart_details[ $cart_index ] : false;
-
-				if ( ! empty( $cart_item ) ) {
-
-					// If the cart index item isn't the same download ID, don't remove it
-					if ( $cart_item['id'] != $item['id'] ) {
-						continue;
-					}
-
-					// If this item has a price ID, make sure it matches the cart indexed item's price ID before removing
-					if ( isset( $item['options']['price_id'] ) && $item['options']['price_id'] != $cart_item['item_number']['options']['price_id'] ) {
-						continue;
-					}
-
-				}
-
-			}
-
-			$item_quantity = $this->downloads[ $key ]['quantity'];
-
-			if ( $item_quantity > $args['quantity'] ) {
-
-				$this->downloads[ $key ]['quantity'] -= $args['quantity'];
-				break;
-
-			} else {
-
-				unset( $this->downloads[ $key ] );
-				break;
-
-			}
-
-		}
-
-		$found_cart_key = false;
-
-		if ( false === $args['cart_index'] ) {
-
-			foreach ( $this->cart_details as $cart_key => $item ) {
-
-				if ( $donation_id != $item['id'] ) {
-					continue;
-				}
-
-				if ( false !== $args['price_id'] ) {
-					if ( isset( $item['item_number']['options']['price_id'] ) && $args['price_id'] != $item['item_number']['options']['price_id'] ) {
-						continue;
-					}
-				}
-
-				if ( false !== $args['item_price'] ) {
-					if ( isset( $item['item_price'] ) && $args['item_price'] != $item['item_price'] ) {
-						continue;
-					}
-				}
-
-				$found_cart_key = $cart_key;
-				break;
-			}
-
-		} else {
-
-			$cart_index = absint( $args['cart_index'] );
-
-			if ( ! array_key_exists( $cart_index, $this->cart_details ) ) {
-				return false; // Invalid cart index passed.
-			}
-
-			if ( $this->cart_details[ $cart_index ]['id'] !== $donation_id ) {
-				return false; // We still need the proper Download ID to be sure.
-			}
-
-			$found_cart_key = $cart_index;
-		}
-
-		$orig_quantity = $this->cart_details[ $found_cart_key ]['quantity'];
-
-		if ( $orig_quantity > $args['quantity'] ) {
-
-			$this->cart_details[ $found_cart_key ]['quantity'] -= $args['quantity'];
-
-			$item_price = $this->cart_details[ $found_cart_key ]['item_price'];
-			$tax        = $this->cart_details[ $found_cart_key ]['tax'];
-			$discount   = ! empty( $this->cart_details[ $found_cart_key ]['discount'] ) ? $this->cart_details[ $found_cart_key ]['discount'] : 0;
-
-			// The total reduction equals the number removed * the item_price
-			$total_reduced = round( $item_price * $args['quantity'], give_currency_decimal_filter() );
-			$tax_reduced   = round( ( $tax / $orig_quantity ) * $args['quantity'], give_currency_decimal_filter() );
-
-			$new_quantity = $this->cart_details[ $found_cart_key ]['quantity'];
-			$new_tax      = $this->cart_details[ $found_cart_key ]['tax'] - $tax_reduced;
-			$new_subtotal = $new_quantity * $item_price;
-			$new_discount = 0;
-			$new_total    = 0;
-
-			$this->cart_details[ $found_cart_key ]['subtotal'] = $new_subtotal;
-			$this->cart_details[ $found_cart_key ]['discount'] = $new_discount;
-			$this->cart_details[ $found_cart_key ]['tax']      = $new_tax;
-			$this->cart_details[ $found_cart_key ]['price']    = $new_subtotal - $new_discount + $new_tax;
-
-		} else {
-
-			$total_reduced = $this->cart_details[ $found_cart_key ]['item_price'];
-			$tax_reduced   = $this->cart_details[ $found_cart_key ]['tax'];
-
-			unset( $this->cart_details[ $found_cart_key ] );
-
-		}
-
 		$pending_args             = $args;
-		$pending_args['id']       = $donation_id;
-		$pending_args['amount']   = $total_reduced;
+		$pending_args['id']       = $form_id;
+		$pending_args['amount']   = $this->total;
 		$pending_args['price_id'] = false !== $args['price_id'] ? $args['price_id'] : false;
 		$pending_args['quantity'] = $args['quantity'];
 		$pending_args['action']   = 'remove';
 
-		$this->pending['downloads'][] = $pending_args;
+		$this->pending['donations'][] = $pending_args;
 
-		$this->decrease_subtotal( $total_reduced );
-		$this->decrease_tax( $tax_reduced );
+		$this->decrease_subtotal( $this->total );
 
 		return true;
 	}
@@ -1453,7 +1329,7 @@ final class Give_Payment {
 			if ( empty( $meta['key'] ) ) {
 				$meta['key'] = $this->setup_payment_key();
 			}
-			
+
 			if ( empty( $meta['form_title'] ) ) {
 				$meta['form_title'] = $this->setup_form_title();
 			}
@@ -1762,7 +1638,7 @@ final class Give_Payment {
 	 * Setup any fees associated with the payment
 	 *
 	 * @since  1.5
-	 * @return array               The Fees
+	 * @return array The Fees
 	 */
 	private function setup_fees() {
 		$payment_fees = isset( $this->payment_meta['fees'] ) ? $this->payment_meta['fees'] : array();

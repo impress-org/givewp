@@ -50,7 +50,7 @@ class Give_Helper_Payment extends WP_UnitTestCase {
 
 		$purchase_data = array(
 			'price'           => number_format( (float) $simple_price, 2 ),
-			'give_form_title' => 'Test Dona',
+			'give_form_title' => 'Test Donation Form',
 			'give_form_id'    => $simple_form->ID,
 			'date'            => date( 'Y-m-d H:i:s', strtotime( '-1 day' ) ),
 			'purchase_key'    => strtolower( md5( uniqid() ) ),
