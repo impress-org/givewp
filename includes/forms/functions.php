@@ -654,6 +654,55 @@ function give_price_range( $form_id = 0 ) {
 
 
 /**
+ * Get Lowest Price ID
+ *
+ * @description: Retrieves the ID for the cheapest price option of a variable donation form
+ *
+ * @since 1.5
+ *
+ * @param int $form_id ID of the donation
+ *
+ * @return int ID of the lowest price
+ */
+function give_get_lowest_price_id( $form_id = 0 ) {
+
+	if ( empty( $form_id ) ) {
+		$form_id = get_the_ID();
+	}
+
+	if ( ! give_has_variable_prices( $form_id ) ) {
+		return give_get_form_price( $form_id );
+	}
+
+	$prices = give_get_variable_prices( $form_id );
+
+	$low    = 0.00;
+	$min_id = 1;
+
+	if ( ! empty( $prices ) ) {
+
+		foreach ( $prices as $key => $price ) {
+
+			if ( empty( $price['_give_amount'] ) ) {
+				continue;
+			}
+
+			if ( ! isset( $min ) ) {
+				$min = $price['_give_amount'];
+			} else {
+				$min = min( $min, $price['_give_amount'] );
+			}
+
+			if ( $price['_give_amount'] == $min ) {
+				$min_id = $price['_give_id']['level_id'];
+			}
+		}
+	}
+
+	return (int) $min_id;
+}
+
+/**
  * Retrieves cheapest price option of a variable priced form
  *
  * @since 1.0
