@@ -171,37 +171,7 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		$this->assertEquals( 1, count( $payment->donations ) );
 		$this->assertEquals( 20.00, $payment->total );
 	}
-
-	public function test_remove_donation_with_quantity() {
-		global $give_options;
-		
-		Give_Helper_Payment::delete_payment( $this->_payment_id );
-		$payment_id = Give_Helper_Payment::create_simple_payment_with_quantity();
-
-		$payment = new Give_Payment( $payment_id );
-
-		$this->assertEquals( 2, count( $payment->donations ) );
-		$this->assertEquals( 240.00, $payment->subtotal );
-
-		$this->assertEquals( 240.00, $payment->total );
-
-		$testing_index = 1;
-		$form_id       = $payment->payment_details[ $testing_index ]['id'];
-
-		$remove_args = array( 'quantity' => 1 );
-		$payment->remove_donation( $form_id, $remove_args );
-		$payment->save();
-
-		$payment = new Give_Payment( $payment_id );
-		$this->assertEquals( 2, count( $payment->donations ) );
-		$this->assertEquals( 1, $payment->payment_details[ $testing_index ]['quantity'] );
-		$this->assertEquals( 140.00, $payment->subtotal );
-		$this->assertEquals( 140.00, $payment->total );
-
-		Give_Helper_Payment::delete_payment( $payment_id );
-		unset( $give_options['item_quantities'] );
-	}
-
+	
 	public function test_payment_add_fee() {
 		$payment = new Give_Payment( $this->_payment_id );
 		$this->assertEmpty( $payment->fees );

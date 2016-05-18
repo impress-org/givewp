@@ -1350,10 +1350,7 @@ class Give_API {
 				'status' => 'publish'
 			) );
 		}
-		echo '<pre>';
-		var_dump( $query );
-		echo '</pre>';
-		die();
+
 		if ( $query ) {
 			$i = 0;
 			foreach ( $query as $payment ) {

@@ -882,18 +882,26 @@ final class Give_Payment {
 
 			// Deal with variable pricing
 			if ( give_has_variable_prices( $donation->ID ) ) {
-
-				$prices = get_post_meta( $donation->ID, 'give_variable_prices', true );
-
-				if ( $args['price_id'] && array_key_exists( $args['price_id'], (array) $prices ) ) {
-					$item_price = $prices[ $args['price_id'] ]['amount'];
-				} else {
+				$prices = maybe_unserialize( get_post_meta( $form_id, '_give_donation_levels', true ) );
+				$item_price = '';
+				//Loop through prices
+				foreach ( $prices as $price ) {
+					//Find a match between price_id and level_id
+					//First verify array keys exists THEN make the match
+					if ( ( isset( $args['price_id'] ) && isset( $price['_give_id']['level_id'] ) )
+					     && $args['price_id'] == $price['_give_id']['level_id'] ) {
+						$item_price = $price['_give_amount'];
+					}
+				}
+				//Fallback to the lowest price point
+				if ( $item_price == '') {
 					$item_price       = give_get_lowest_price_option( $donation->ID );
 					$args['price_id'] = give_get_lowest_price_id( $donation->ID );
 				}
 			} else {
 				$item_price = give_get_form_price( $donation->ID );
 			}
+			
 		}
 
 		// Sanitizing the price here so we don't have a dozen calls later
