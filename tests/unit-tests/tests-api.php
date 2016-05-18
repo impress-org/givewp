@@ -70,7 +70,6 @@ class Tests_API extends Give_Unit_Test_Case {
 			'_give_price_option'       => 'multi',
 			'_give_price_options_mode' => 'on',
 			'_give_donation_levels'    => array_values( $_multi_level_donations ),
-			'give_product_notes'       => 'Donation Notes',
 			'_give_product_type'       => 'default'
 		);
 		foreach ( $meta as $key => $value ) {
@@ -135,6 +134,7 @@ class Tests_API extends Give_Unit_Test_Case {
 	public function tearDown() {
 		parent::tearDown();
 		remove_action( 'give_api_output_override_xml', array( $this, 'override_api_xml_format' ) );
+		Give_Helper_Payment::delete_payment( $this->_payment_id );
 	}
 
 	public function test_endpoints() {

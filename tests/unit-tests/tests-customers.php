@@ -17,12 +17,12 @@ class Give_Tests_Customers extends Give_Unit_Test_Case {
 	public function setUp() {
 		parent::setUp();
 
-		//Create a Donation Form
-		$this->_post_id = $this->factory->post->create( array(
+		$args           = array(
 			'post_title'  => 'Test Form',
 			'post_type'   => 'give_forms',
 			'post_status' => 'publish'
-		) );
+		);
+		$this->_post_id = $this->factory->post->create( $args );
 
 		$_multi_level_donations = array(
 			array(
@@ -40,21 +40,28 @@ class Give_Tests_Customers extends Give_Unit_Test_Case {
 				'_give_amount' => '40.00',
 				'_give_text'   => 'Advanced Level'
 			),
+			array(
+				'_give_id'     => array( 'level_id' => '4' ),
+				'_give_amount' => '100.00',
+				'_give_text'   => 'Huge Level'
+			),
 		);
 
 		$meta = array(
-			'give_price'               => '0.00',
+			'_give_price'              => '0.00',
 			'_give_price_option'       => 'multi',
 			'_give_price_options_mode' => 'on',
 			'_give_donation_levels'    => array_values( $_multi_level_donations ),
-			'give_product_notes'       => 'Donation Notes',
-			'_give_product_type'       => 'default'
+			'_give_product_type'       => 'default',
+			'_give_form_earnings'      => 120,
+			'_give_form_sales'         => 6,
 		);
+
 		foreach ( $meta as $key => $value ) {
 			update_post_meta( $this->_post_id, $key, $value );
 		}
 
-		//Generate Donations
+		// Generate some sales
 		$this->_user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
 		$user           = get_userdata( $this->_user_id );
 
@@ -62,7 +69,8 @@ class Give_Tests_Customers extends Give_Unit_Test_Case {
 			'id'         => $user->ID,
 			'email'      => 'testadmin@domain.com',
 			'first_name' => $user->first_name,
-			'last_name'  => $user->last_name
+			'last_name'  => $user->last_name,
+			'discount'   => 'none'
 		);
 
 		$donation_details = array(
@@ -74,24 +82,35 @@ class Give_Tests_Customers extends Give_Unit_Test_Case {
 			)
 		);
 
-		$total = 0;
 
+		$total      = 0;
 		$prices     = get_post_meta( $donation_details[0]['id'], '_give_donation_levels', true );
 		$item_price = $prices[1]['_give_amount'];
 
 		$total += $item_price;
 
+		$payment_details = array(
+			array(
+				'name'    => 'Test Donation',
+				'id'      => $this->_post_id,
+				'options' => array(
+					'price_id' => 1
+				),
+				'price'       => 100,
+				'quantity'    => 1,
+			)
+		);
+
 		$purchase_data = array(
 			'price'           => number_format( (float) $total, 2 ),
-			'give_form_title' => get_the_title( $this->_post_id ),
-			'give_form_id'    => $this->_post_id,
 			'date'            => date( 'Y-m-d H:i:s', strtotime( '-1 day' ) ),
 			'purchase_key'    => strtolower( md5( uniqid() ) ),
 			'user_email'      => $user_info['email'],
 			'user_info'       => $user_info,
 			'currency'        => 'USD',
+			'donations'       => $donation_details,
+			'payment_details' => $payment_details,
 			'status'          => 'pending',
-			'gateway'         => 'manual'
 		);
 
 		$_SERVER['REMOTE_ADDR'] = '10.0.0.0';
@@ -112,6 +131,7 @@ class Give_Tests_Customers extends Give_Unit_Test_Case {
 		$test_email = 'testaccount@domain.com';
 
 		$customer = new Give_Customer( $test_email );
+
 		$this->assertEquals( 0, $customer->id );
 
 		$data = array( 'email' => $test_email );
@@ -151,15 +171,19 @@ class Give_Tests_Customers extends Give_Unit_Test_Case {
 
 	public function test_attach_payment() {
 
+		$payment_id = Give_Helper_Payment::create_simple_payment();
+
 		$customer = new Give_Customer( 'testadmin@domain.com' );
-		$customer->attach_payment( 5222222 );
+		$customer->attach_payment( $payment_id );
 
 		$payment_ids = array_map( 'absint', explode( ',', $customer->payment_ids ) );
 
-		$this->assertTrue( in_array( 5222222, $payment_ids ) );
+		$this->assertTrue( in_array( $payment_id, $payment_ids ) );
 
 		// Verify if we don't send a payment, we get false
 		$this->assertFalse( $customer->attach_payment() );
+
+		Give_Helper_Payment::delete_payment( $payment_id );
 
 	}
 
@@ -169,44 +193,49 @@ class Give_Tests_Customers extends Give_Unit_Test_Case {
 		$customer = new Give_Customer( 'testadmin@domain.com' );
 		$payments = array_map( 'absint', explode( ',', $customer->payment_ids ) );
 
-		$expected_purcahse_count = $customer->purchase_count;
-		$expected_purcahse_value = $customer->purchase_value;
+		$expected_purchase_count = $customer->purchase_count;
+		$expected_purchase_value = $customer->purchase_value;
 
 		$customer->attach_payment( $payments[0] );
-		$this->assertEquals( $expected_purcahse_count, $customer->purchase_count );
-		$this->assertEquals( $expected_purcahse_value, $customer->purchase_value );
+		$this->assertEquals( $expected_purchase_count, $customer->purchase_count );
+		$this->assertEquals( $expected_purchase_value, $customer->purchase_value );
 
 	}
 
 	public function test_remove_payment() {
 
+		$payment_id = Give_Helper_Payment::create_simple_payment();
+
 		$customer = new Give_Customer( 'testadmin@domain.com' );
-		$customer->attach_payment( 5222223, false );
+		$customer->attach_payment( $payment_id, false );
 
 		$payment_ids = array_map( 'absint', explode( ',', $customer->payment_ids ) );
-		$this->assertTrue( in_array( 5222223, $payment_ids ) );
+		$this->assertTrue( in_array( $payment_id, $payment_ids ) );
 
-		$customer->remove_payment( 5222223, false );
+		$customer->remove_payment( $payment_id, false );
 
 		$payment_ids = array_map( 'absint', explode( ',', $customer->payment_ids ) );
-		$this->assertFalse( in_array( 5222223, $payment_ids ) );
+		$this->assertFalse( in_array( $payment_id, $payment_ids ) );
+
+		Give_Helper_Payment::delete_payment( $payment_id );
+
 	}
 
 	public function test_increment_stats() {
 
 		$customer = new Give_Customer( 'testadmin@domain.com' );
 
-		$this->assertEquals( '20', $customer->purchase_value );
+		$this->assertEquals( '100', $customer->purchase_value );
 		$this->assertEquals( '1', $customer->purchase_count );
 
 		$customer->increase_purchase_count();
 		$customer->increase_value( 10 );
 
-		$this->assertEquals( '30', $customer->purchase_value );
+		$this->assertEquals( '110', $customer->purchase_value );
 		$this->assertEquals( '2', $customer->purchase_count );
 
 		$this->assertEquals( give_count_purchases_of_customer( $this->_user_id ), '2' );
-		$this->assertEquals( give_purchase_total_of_user( $this->_user_id ), '30' );
+		$this->assertEquals( give_purchase_total_of_user( $this->_user_id ), '110' );
 
 		// Make sure we hit the false conditions
 		$this->assertFalse( $customer->increase_purchase_count( - 1 ) );
@@ -221,11 +250,11 @@ class Give_Tests_Customers extends Give_Unit_Test_Case {
 		$customer->decrease_purchase_count();
 		$customer->decrease_value( 10 );
 
-		$this->assertEquals( $customer->purchase_value, '10' );
+		$this->assertEquals( $customer->purchase_value, '90' );
 		$this->assertEquals( $customer->purchase_count, '0' );
 
 		$this->assertEquals( give_count_purchases_of_customer( $this->_user_id ), '0' );
-		$this->assertEquals( give_purchase_total_of_user( $this->_user_id ), '10' );
+		$this->assertEquals( give_purchase_total_of_user( $this->_user_id ), '90' );
 
 		// Make sure we hit the false conditions
 		$this->assertFalse( $customer->decrease_purchase_count( - 1 ) );
@@ -297,6 +326,15 @@ class Give_Tests_Customers extends Give_Unit_Test_Case {
 
 	}
 
+	public function test_has_user_purchased() {
+
+		$this->assertTrue( give_has_user_purchased( $this->_user_id, array( $this->_post_id ), 1 ) );
+		$this->assertFalse( give_has_user_purchased( $this->_user_id, array( 888 ), 1 ) );
+		$this->assertFalse( give_has_user_purchased( 0, $this->_post_id ) );
+		$this->assertFalse( give_has_user_purchased( 0, 888 ) );
+
+	}
+
 	public function test_get_purchase_stats_by_user() {
 
 		$purchase_stats = give_get_purchase_stats_by_user( $this->_user_id );
@@ -312,7 +350,7 @@ class Give_Tests_Customers extends Give_Unit_Test_Case {
 
 		$donation_total = give_purchase_total_of_user( $this->_user_id );
 
-		$this->assertEquals( 20, $donation_total );
+		$this->assertEquals( 100, $donation_total );
 	}
 
 	public function test_validate_username() {

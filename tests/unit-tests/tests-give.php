@@ -60,7 +60,6 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/forms/widget.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/shortcodes.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/formatting.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/price-functions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/error-tracking.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/process-purchase.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/login-register.php' );
@@ -69,7 +68,6 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/payments/actions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/payments/class-payment-stats.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/payments/class-payments-query.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/payments/class-donators-gravatars.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/gateways/functions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/gateways/actions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/gateways/paypal-standard.php' );

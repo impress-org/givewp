@@ -38,7 +38,7 @@ class Tests_Donate_Form_Class extends Give_Unit_Test_Case {
 
 		$this->assertTrue( $simple_form->is_single_price_mode() );
 		$this->assertFalse( $simple_form->has_variable_prices() );
-		$this->assertEquals( '50.00', $simple_form->get_price() );
+		$this->assertEquals( '20.00', $simple_form->get_price() );
 	}
 
 	public function test_get_prices() {
@@ -48,7 +48,7 @@ class Tests_Donate_Form_Class extends Give_Unit_Test_Case {
 		$this->assertFalse( $multi_form->is_single_price_mode() );
 
 		$prices = $multi_form->get_prices();
-		$this->assertEquals( 3, count( $prices ) );
+		$this->assertEquals( 4, count( $prices ) );
 	}
 
 	public function test_minimum_price() {

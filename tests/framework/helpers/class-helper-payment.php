@@ -38,7 +38,7 @@ class Give_Helper_Payment extends WP_UnitTestCase {
 		$simple_form     = Give_Helper_Form::create_simple_form();
 		$multilevel_form = Give_Helper_Form::create_multilevel_form();
 
-		/** Generate some donations */
+		// Generate some donations
 		$user      = get_userdata( 1 );
 		$user_info = array(
 			'id'         => $user->ID,

@@ -346,7 +346,7 @@ class Give_API {
 	 * @global object $wpdb Used to query the database using the WordPress
 	 *                      Database API
 	 *
-	 * @param string  $key  Public Key
+	 * @param string $key Public Key
 	 *
 	 * @return bool if user ID is found, false otherwise
 	 */
@@ -614,7 +614,8 @@ class Give_API {
 			$error['error'] = __( 'Invalid query!', 'give' );
 
 			$this->data = $error;
-			$this->output();
+			// 400 is Bad Request
+			$this->output( 400 );
 		}
 
 		$this->endpoint = $query;
@@ -841,10 +842,10 @@ class Give_API {
 	 *
 	 * @access public
 	 * @since  1.1
-	 * @global object $wpdb     Used to query the database using the WordPress
+	 * @global object $wpdb Used to query the database using the WordPress
 	 *                          Database API
 	 *
-	 * @param int     $customer Customer ID
+	 * @param int $customer Customer ID
 	 *
 	 * @return array $customers Multidimensional array of the customers
 	 */
@@ -1047,7 +1048,7 @@ class Give_API {
 	 *
 	 * @global object $wpdb Used to query the database using the WordPress
 	 *
-	 * @param array   $args Arguments provided by API Request
+	 * @param array $args Arguments provided by API Request
 	 *
 	 * @return array
 	 */
@@ -1064,14 +1065,14 @@ class Give_API {
 
 		$dates = $this->get_dates( $args );
 
-		$stats     = array();
-		$earnings  = array(
+		$stats    = array();
+		$earnings = array(
 			'earnings' => array()
 		);
-		$sales = array(
+		$sales    = array(
 			'donations' => array()
 		);
-		$error     = array();
+		$error    = array();
 
 		if ( ! user_can( $this->user_id, 'view_give_reports' ) && ! $this->override ) {
 			return $stats;
@@ -1353,26 +1354,34 @@ class Give_API {
 		if ( $query ) {
 			$i = 0;
 			foreach ( $query as $payment ) {
-				$payment_meta = give_get_payment_meta( $payment->ID );
-				$user_info    = give_get_payment_meta_user_info( $payment->ID );
-				$first_name   = isset( $user_info['first_name'] ) ? $user_info['first_name'] : '';
-				$last_name    = isset( $user_info['last_name'] ) ? $user_info['last_name'] : '';
-
-				echo '<pre>';
-				var_dump($payment_meta);
-				echo '</pre>';
+echo '<pre>';
+var_dump($payment);
+echo '</pre>';
 				die();
+				if ( is_numeric( $payment ) ) {
+					$payment      = new Give_Payment( $payment );
+					$payment_meta = $payment->get_meta();
+					$user_info    = $payment->user_info;
+				} else {
+					continue;
+				}
 
-				$sales['donations'][ $i ]['ID']             = give_get_payment_number( $payment->ID );
-				$sales['donations'][ $i ]['transaction_id'] = give_get_payment_transaction_id( $payment->ID );
-				$sales['donations'][ $i ]['key']            = give_get_payment_key( $payment->ID );
-				$sales['donations'][ $i ]['total']          = give_get_payment_amount( $payment->ID );
-				$sales['donations'][ $i ]['gateway']        = give_get_payment_gateway( $payment->ID );
+				$payment_meta = $payment->get_meta();
+				$user_info    = $payment->user_info;
+
+				$first_name = isset( $user_info['first_name'] ) ? $user_info['first_name'] : '';
+				$last_name  = isset( $user_info['last_name'] ) ? $user_info['last_name'] : '';
+
+				$sales['donations'][ $i ]['ID']             = $payment->number;
+				$sales['donations'][ $i ]['transaction_id'] = $payment->transaction_id;
+				$sales['donations'][ $i ]['key']            = $payment->key;
+				$sales['donations'][ $i ]['total']          = $payment->total;
+				$sales['donations'][ $i ]['gateway']        = $payment->gateway;
 				$sales['donations'][ $i ]['name']           = $first_name . ' ' . $last_name;
 				$sales['donations'][ $i ]['fname']          = $first_name;
 				$sales['donations'][ $i ]['lname']          = $last_name;
-				$sales['donations'][ $i ]['email']          = give_get_payment_user_email( $payment->ID );
-				$sales['donations'][ $i ]['date']           = $payment->post_date;
+				$sales['donations'][ $i ]['email']          = $payment->number;
+				$sales['donations'][ $i ]['date']           = $payment->number;
 
 				$form_id  = isset( $payment_meta['form_id'] ) ? $payment_meta['form_id'] : $payment_meta;
 				$price    = isset( $payment_meta['form_id'] ) ? give_get_form_price( $payment_meta['form_id'] ) : false;
@@ -1587,19 +1596,19 @@ class Give_API {
 						$secret_key = $this->get_user_secret_key( $user->ID );
 						?>
 						<?php if ( empty( $user->give_user_public_key ) ) { ?>
-							<input name="give_set_api_key" type="checkbox" id="give_set_api_key" value="0" />
+							<input name="give_set_api_key" type="checkbox" id="give_set_api_key" value="0"/>
 							<span class="description"><?php esc_attr_e( 'Generate API Key', 'give' ); ?></span>
 						<?php } else { ?>
 							<strong style="display:inline-block; width: 125px;"><?php _e( 'Public key:', 'give' ); ?>&nbsp;</strong>
-							<input type="text" disabled="disabled" class="regular-text" id="publickey" value="<?php echo esc_attr( $public_key ); ?>" />
-							<br />
+							<input type="text" disabled="disabled" class="regular-text" id="publickey" value="<?php echo esc_attr( $public_key ); ?>"/>
+							<br/>
 							<strong style="display:inline-block; width: 125px;"><?php esc_attr_e( 'Secret key:', 'give' ); ?>&nbsp;</strong>
-							<input type="text" disabled="disabled" class="regular-text" id="privatekey" value="<?php echo esc_attr( $secret_key ); ?>" />
-							<br />
+							<input type="text" disabled="disabled" class="regular-text" id="privatekey" value="<?php echo esc_attr( $secret_key ); ?>"/>
+							<br/>
 							<strong style="display:inline-block; width: 125px;"><?php esc_attr_e( 'Token:', 'give' ); ?>&nbsp;</strong>
-							<input type="text" disabled="disabled" class="regular-text" id="token" value="<?php echo esc_attr( $this->get_token( $user->ID ) ); ?>" />
-							<br />
-							<input name="give_set_api_key" type="checkbox" id="give_set_api_key" value="0" />
+							<input type="text" disabled="disabled" class="regular-text" id="token" value="<?php echo esc_attr( $this->get_token( $user->ID ) ); ?>"/>
+							<br/>
+							<input name="give_set_api_key" type="checkbox" id="give_set_api_key" value="0"/>
 							<span class="description"><label for="give_set_api_key"><?php esc_attr_e( 'Revoke API Keys', 'give' ); ?></label></span>
 						<?php } ?>
 					</td>
@@ -1628,7 +1637,7 @@ class Give_API {
 		}
 
 		if ( empty( $args['user_id'] ) ) {
-			wp_die(  esc_attr__( 'User ID Required', 'give' ), esc_attr__( 'Error', 'give' ), array( 'response' => 401 ) );
+			wp_die( esc_attr__( 'User ID Required', 'give' ), esc_attr__( 'Error', 'give' ), array( 'response' => 401 ) );
 		}
 
 		if ( is_numeric( $args['user_id'] ) ) {
@@ -1679,7 +1688,7 @@ class Give_API {
 	 * @access public
 	 * @since  1.1
 	 *
-	 * @param int     $user_id    User ID the key is being generated for
+	 * @param int $user_id User ID the key is being generated for
 	 * @param boolean $regenerate Regenerate the key for the user
 	 *
 	 * @return boolean True if (re)generated succesfully, false otherwise.
@@ -1803,6 +1812,7 @@ class Give_API {
 	private function generate_public_key( $user_email = '' ) {
 		$auth_key = defined( 'AUTH_KEY' ) ? AUTH_KEY : '';
 		$public   = hash( 'md5', $user_email . $auth_key . date( 'U' ) );
+
 		return $public;
 	}
 
@@ -1882,10 +1892,10 @@ class Give_API {
 	 *
 	 * @since       1.3.6
 	 *
-	 * @param  string $check     Whether to check the cache or not
-	 * @param  int    $object_id The User ID being passed
-	 * @param  string $meta_key  The user meta key
-	 * @param  bool   $single    If it should return a single value or array
+	 * @param  string $check Whether to check the cache or not
+	 * @param  int $object_id The User ID being passed
+	 * @param  string $meta_key The user meta key
+	 * @param  bool $single If it should return a single value or array
 	 *
 	 * @return string            The API key/secret for the user supplied
 	 */
