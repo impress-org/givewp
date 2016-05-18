@@ -230,12 +230,16 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		$this->assertEquals( $new_date, $date2 );
 	}
 
+	/**
+	 * Test Refund Payment
+	 */
 	public function test_refund_payment() {
+
 		$payment         = new Give_Payment( $this->_payment_id );
 		$payment->status = 'complete';
 		$payment->save();
 
-		$form     = new Give_Donate_Form( $payment->donations[0]['id'] );
+		$form     = new Give_Donate_Form( $payment->form_id );
 		$earnings = $form->earnings;
 		$sales    = $form->sales;
 
@@ -259,13 +263,16 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		$this->assertEquals( $site_sales - 1, give_get_total_sales() );
 	}
 
+	/**
+	 * Test Refund Legacy Payment
+	 */
 	public function test_refund_payment_legacy() {
 
 		$payment         = new Give_Payment( $this->_payment_id );
 		$payment->status = 'complete';
 		$payment->save();
 
-		$form     = new Give_Donate_Form( $payment->donations[0]['id'] );
+		$form     = new Give_Donate_Form( $payment->form_id );
 		$earnings = $form->earnings;
 		$sales    = $form->sales;
 

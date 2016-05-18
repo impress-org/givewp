@@ -333,6 +333,7 @@ function give_count_payments( $args = array() ) {
 		's'          => null,
 		'start-date' => null,
 		'end-date'   => null,
+		'form_id'    => null,
 	);
 
 	$args = wp_parse_args( $args, $defaults );
@@ -371,7 +372,6 @@ function give_count_payments( $args = array() ) {
 				$field = '_give_payment_purchase_key';
 			}
 
-
 			$join = "LEFT JOIN $wpdb->postmeta m ON (p.ID = m.post_id)";
 			$where .= $wpdb->prepare( "
 				AND m.meta_key = %s
@@ -409,6 +409,11 @@ function give_count_payments( $args = array() ) {
 
 	}
 
+	if ( ! empty( $args['form_id'] ) && is_numeric( $args['form_id'] ) ) {
+
+		$where .= $wpdb->prepare( " AND p.post_parent = %d", $args['download'] );
+
+	}
 	// Limit payments count by date
 	if ( ! empty( $args['start-date'] ) && false !== strpos( $args['start-date'], '/' ) ) {
 
@@ -675,6 +680,19 @@ function give_get_sales_by_date( $day = null, $month_num = null, $year = null, $
 		'update_post_meta_cache' => false,
 		'update_post_term_cache' => false
 	);
+
+	$show_free = apply_filters( 'give_sales_by_date_show_free', true, $args );
+
+	if ( false === $show_free ) {
+		$args['meta_query'] = array(
+			array(
+				'key'     => '_give_payment_total',
+				'value'   => 0,
+				'compare' => '>',
+				'type'    => 'NUMERIC',
+			),
+		);
+	}
 
 	if ( ! empty( $month_num ) ) {
 		$args['monthnum'] = $month_num;
@@ -1237,6 +1255,42 @@ function give_get_payment_amount( $payment_id ) {
 	$payment = new Give_Payment( $payment_id );
 
 	return apply_filters( 'give_payment_amount', floatval( $payment->total ), $payment_id );
+}
+
+/**
+ * Payment Subtotal
+ *
+ * @description: Retrieves subtotal for payment (this is the amount before fees) and then returns a full formatted amount. This function essentially calls give_get_payment_subtotal()
+ *
+ * @since 1.5
+ *
+ * @param int $payment_id Payment ID
+ *
+ * @see give_get_payment_subtotal()
+ *
+ * @return array Fully formatted payment subtotal
+ */
+function give_payment_subtotal( $payment_id = 0 ) {
+	$subtotal = give_get_payment_subtotal( $payment_id );
+
+	return give_currency_filter( give_format_amount( $subtotal ), give_get_payment_currency_code( $payment_id ) );
+}
+
+/**
+ * Get Payment Subtotal
+ * 
+ * @description: Retrieves subtotal for payment (this is the amount before fees) and then returns a non formatted amount.
+ *
+ * @since 1.5
+ *
+ * @param int $payment_id Payment ID
+ *
+ * @return float $subtotal Subtotal for payment (non formatted)
+ */
+function give_get_payment_subtotal( $payment_id = 0 ) {
+	$payment = new Give_Payment( $payment_id );
+
+	return $payment->subtotal;
 }
 
 /**
