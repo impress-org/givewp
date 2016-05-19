@@ -38,9 +38,7 @@ function give_manual_payment( $purchase_data ) {
 		wp_die( __( 'Nonce verification has failed', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
-	/**
-	 * Purchase data comes in like this
-	 */
+	//Create payment_data array
 	$payment_data = array(
 		'price'           => $purchase_data['price'],
 		'give_form_title' => $purchase_data['post_data']['give-form-title'],

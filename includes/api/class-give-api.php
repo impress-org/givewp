@@ -1314,7 +1314,7 @@ class Give_API {
 	}
 
 	/**
-	 * Retrieves Recent Donation
+	 * Retrieves Recent Donations
 	 *
 	 * @access public
 	 * @since  1.1
@@ -1336,25 +1336,28 @@ class Give_API {
 			$query   = array();
 			$query[] = give_get_payment_by( 'key', $wp_query->query_vars['purchasekey'] );
 		} elseif ( isset( $wp_query->query_vars['email'] ) ) {
-			$query = give_get_payments( array(
+			$args  = array(
+				'fields'     => 'ids',
 				'meta_key'   => '_give_payment_user_email',
 				'meta_value' => $wp_query->query_vars['email'],
 				'number'     => $this->per_page(),
 				'page'       => $this->get_paged(),
 				'status'     => 'publish'
-			) );
+			);
+			$query = give_get_payments( $args );
 		} else {
-			$query = give_get_payments( array(
+			$args  = array(
+				'fields' => 'ids',
 				'number' => $this->per_page(),
 				'page'   => $this->get_paged(),
 				'status' => 'publish'
-			) );
+			);
+			$query = give_get_payments( $args );
 		}
-
 		if ( $query ) {
 			$i = 0;
 			foreach ( $query as $payment ) {
-				
+
 				if ( is_numeric( $payment ) ) {
 					$payment      = new Give_Payment( $payment );
 					$payment_meta = $payment->get_meta();

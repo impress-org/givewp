@@ -411,7 +411,7 @@ function give_count_payments( $args = array() ) {
 
 	if ( ! empty( $args['form_id'] ) && is_numeric( $args['form_id'] ) ) {
 
-		$where .= $wpdb->prepare( " AND p.post_parent = %d", $args['download'] );
+		$where .= $wpdb->prepare( " AND p.post_parent = %d", $args['form_id'] );
 
 	}
 	// Limit payments count by date
@@ -1164,13 +1164,13 @@ function give_get_next_payment_number() {
 		) );
 		$last_payment = $payments->get_payments();
 
-		if ( $last_payment ) {
+		if ( ! empty( $last_payment ) ) {
 
 			$number = give_get_payment_number( $last_payment[0] );
 
 		}
 
-		if ( ! empty( $number ) && $number !== $last_payment[0] ) {
+		if ( ! empty( $number ) && $number !== (int) $last_payment[0] ) {
 
 			$number = give_remove_payment_prefix_postfix( $number );
 
@@ -1278,7 +1278,7 @@ function give_payment_subtotal( $payment_id = 0 ) {
 
 /**
  * Get Payment Subtotal
- * 
+ *
  * @description: Retrieves subtotal for payment (this is the amount before fees) and then returns a non formatted amount.
  *
  * @since 1.5
@@ -1288,7 +1288,7 @@ function give_payment_subtotal( $payment_id = 0 ) {
  * @return float $subtotal Subtotal for payment (non formatted)
  */
 function give_get_payment_subtotal( $payment_id = 0 ) {
-	$payment = new Give_Payment( $payment_id );
+	$payment = new G_Payment( $payment_id );
 
 	return $payment->subtotal;
 }

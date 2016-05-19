@@ -610,6 +610,9 @@ final class Give_Payment {
 						// Update totals for pending donations
 						foreach ( $this->pending[ $key ] as $item ) {
 
+							$quantity = isset( $item['quantity'] ) ? $item['quantity'] : 1;
+							$price_id = isset( $item['price_id'] ) ? $item['price_id'] : 0;
+
 							switch ( $item['action'] ) {
 
 								case 'add':
@@ -620,16 +623,15 @@ final class Give_Payment {
 
 										// Add sales logs
 										$log_date = date_i18n( 'Y-m-d G:i:s', current_time( 'timestamp' ) );
-										$price_id = isset( $item['price_id'] ) ? $item['price_id'] : 0;
 
 										$y = 0;
-										while ( $y < $item['quantity'] ) {
+										while ( $y < $quantity ) {
 											give_record_sale_in_log( $item['id'], $this->ID, $price_id, $log_date );
 											$y ++;
 										}
 
 										$form = new Give_Donate_Form( $item['id'] );
-										$form->increase_sales( $item['quantity'] );
+										$form->increase_sales( $quantity );
 										$form->increase_earnings( $price );
 
 										$total_increase += $price;
@@ -640,7 +642,7 @@ final class Give_Payment {
 									$log_args = array(
 										'post_type'   => 'give_log',
 										'post_parent' => $item['id'],
-										'numberposts' => $item['quantity'],
+										'numberposts' => $quantity,
 										'meta_query'  => array(
 											array(
 												'key'     => '_give_log_payment_id',
@@ -649,7 +651,7 @@ final class Give_Payment {
 											),
 											array(
 												'key'     => '_give_log_price_id',
-												'value'   => $item['price_id'],
+												'value'   => $price_id,
 												'compare' => '='
 											)
 										)
@@ -662,7 +664,7 @@ final class Give_Payment {
 
 									if ( 'publish' === $this->status || 'complete' === $this->status || 'revoked' === $this->status ) {
 										$form = new Give_Donate_Form( $item['id'] );
-										$form->decrease_sales( $item['quantity'] );
+										$form->decrease_sales( $quantity );
 										$form->decrease_earnings( $item['amount'] );
 
 										$total_decrease += $item['amount'];
@@ -879,6 +881,7 @@ final class Give_Payment {
 
 		$args = wp_parse_args( apply_filters( 'give_payment_add_donation_args', $args, $donation->ID ), $defaults );
 
+
 		// Allow overriding the price
 		if ( false !== $args['price'] ) {
 			$item_price = $args['price'];
@@ -931,7 +934,8 @@ final class Give_Payment {
 			'id'       => $donation->ID,
 			'price'    => round( $total, give_currency_decimal_filter() ),
 			'subtotal' => round( $total, give_currency_decimal_filter() ),
-			'fees'     => $args['fees'],
+			'fees'     => isset( $args['fees'] ) ? $args['fees'] : array(),
+			'price_id' => isset( $args['price_id'] ) ? $args['price_id'] : array(),
 			'action'   => 'add',
 			'options'  => $options
 		);
@@ -974,7 +978,7 @@ final class Give_Payment {
 		$pending_args             = $args;
 		$pending_args['id']       = $form_id;
 		$pending_args['amount']   = $this->total;
-		$pending_args['price_id'] = false !== $args['price_id'] ? $args['price_id'] : false;
+		$pending_args['price_id'] = false !== $args['price_id'] ? (int) $args['price_id'] : false;
 		$pending_args['quantity'] = $args['quantity'];
 		$pending_args['action']   = 'remove';
 
@@ -1744,7 +1748,53 @@ final class Give_Payment {
 		$user_info = isset( $this->payment_meta['user_info'] ) ? maybe_unserialize( $this->payment_meta['user_info'] ) : array();
 		$user_info = wp_parse_args( $user_info, $defaults );
 
+		if ( empty( $user_info ) ) {
+			// Get the customer, but only if it's been created
+			$customer = new Give_Customer( $this->customer_id );
+
+			if ( $customer->id > 0 ) {
+				$name      = explode( ' ', $customer->name, 2 );
+				$user_info = array(
+					'first_name' => $name[0],
+					'last_name'  => $name[1],
+					'email'      => $customer->email,
+					'discount'   => 'none',
+				);
+			}
+		} else {
+			// Get the customer, but only if it's been created
+			$customer = new Give_Customer( $this->customer_id );
+			if ( $customer->id > 0 ) {
+				foreach ( $user_info as $key => $value ) {
+					if ( ! empty( $value ) ) {
+						continue;
+					}
+
+					switch ( $key ) {
+						case 'first_name':
+							$name = explode( ' ', $customer->name, 2 );
+
+							$user_info[ $key ] = $name[0];
+							break;
+
+						case 'last_name':
+							$name      = explode( ' ', $customer->name, 2 );
+							$last_name = ! empty( $name[1] ) ? $name[1] : '';
+
+							$user_info[ $key ] = $last_name;
+							break;
+
+						case 'email':
+							$user_info[ $key ] = $customer->email;
+							break;
+					}
+				}
+
+			}
+		}
+
 		return $user_info;
+
 	}
 
 	/**
