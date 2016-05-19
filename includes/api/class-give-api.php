@@ -1380,8 +1380,8 @@ class Give_API {
 				$sales['donations'][ $i ]['name']           = $first_name . ' ' . $last_name;
 				$sales['donations'][ $i ]['fname']          = $first_name;
 				$sales['donations'][ $i ]['lname']          = $last_name;
-				$sales['donations'][ $i ]['email']          = $payment->number;
-				$sales['donations'][ $i ]['date']           = $payment->number;
+				$sales['donations'][ $i ]['email']          = $payment->email;
+				$sales['donations'][ $i ]['date']           = $payment->date;
 
 				$form_id  = isset( $payment_meta['form_id'] ) ? $payment_meta['form_id'] : $payment_meta;
 				$price    = isset( $payment_meta['form_id'] ) ? give_get_form_price( $payment_meta['form_id'] ) : false;

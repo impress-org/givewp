@@ -105,7 +105,6 @@ class Tests_API extends Give_Unit_Test_Case {
 		);
 
 		$_SERVER['REMOTE_ADDR'] = '10.0.0.0';
-		$_SERVER['SERVER_NAME'] = 'give_virtual';
 
 		$payment_id = give_insert_payment( $purchase_data );
 
@@ -239,9 +238,9 @@ class Tests_API extends Give_Unit_Test_Case {
 		$this->assertArrayHasKey( 'donations', $out['forms'][0]['stats']['monthly_average'] );
 		$this->assertArrayHasKey( 'earnings', $out['forms'][0]['stats']['monthly_average'] );
 
-		$this->assertEquals( '59', $out['forms'][0]['stats']['total']['sales'] );
+		$this->assertEquals( '59', $out['forms'][0]['stats']['total']['donations'] );
 		$this->assertEquals( '120', $out['forms'][0]['stats']['total']['earnings'] );
-		$this->assertEquals( '59', $out['forms'][0]['stats']['monthly_average']['sales'] );
+		$this->assertEquals( '59', $out['forms'][0]['stats']['monthly_average']['donations'] );
 		$this->assertEquals( '120', $out['forms'][0]['stats']['monthly_average']['earnings'] );
 	}
 
@@ -336,9 +335,8 @@ class Tests_API extends Give_Unit_Test_Case {
 		$this->assertArrayHasKey( 'total_spent', $out['donors'][0]['stats'] );
 
 		$this->assertEquals( 1, $out['donors'][0]['info']['user_id'] );
-		$this->assertEquals( '', $out['donors'][0]['info']['first_name'] );
-		$this->assertEquals( '', $out['donors'][0]['info']['first_name'] );
-		$this->assertEquals( '', $out['donors'][0]['info']['last_name'] );
+		$this->assertEquals( 'Admin', $out['donors'][0]['info']['first_name'] );
+		$this->assertEquals( 'User', $out['donors'][0]['info']['last_name'] );
 		$this->assertEquals( 'testadmin@domain.com', $out['donors'][0]['info']['email'] );
 		$this->assertEquals( 1, $out['donors'][0]['stats']['total_donations'] );
 		$this->assertEquals( 20.0, $out['donors'][0]['stats']['total_spent'] );

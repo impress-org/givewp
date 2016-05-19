@@ -265,7 +265,7 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 												//Level ID
 												$level_title = give_get_payment_form_title( $payment_meta, true );
 												if ( empty( $level_title ) ) {
-													echo 'N/A';
+													echo __( 'n/a', 'give' );
 												} else {
 													echo $level_title;
 												} ?>
