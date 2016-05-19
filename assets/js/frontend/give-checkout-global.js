@@ -334,13 +334,6 @@ jQuery(function ($) {
 
         parent_form.find('.give-amount-top').removeClass('invalid-amount');
 
-        //Is this a custom amount selection?
-        if (this_amount === 'custom') {
-            //It is, so focus on the custom amount input
-            parent_form.find('.give-amount-top').val('').focus();
-            return false; //Bounce out
-        }
-
         //check if price ID blank because of dropdown type
         if (!price_id) {
             price_id = selected_field.find('option:selected').data('price-id');
@@ -351,6 +344,13 @@ jQuery(function ($) {
 
         //Update hidden price field
         parent_form.find('.give-amount-hidden').val(this_amount);
+
+        //Is this a custom amount selection?
+        if (this_amount === 'custom') {
+            //It is, so focus on the custom amount input
+            parent_form.find('.give-amount-top').val('').focus();
+            return false; //Bounce out
+        }
 
         //update custom amount field
         parent_form.find('.give-amount-top').val(this_amount);

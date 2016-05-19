@@ -45,7 +45,7 @@ function give_process_paypal_purchase( $purchase_data ) {
 		'price'           => $purchase_data['price'],
 		'give_form_title' => $purchase_data['post_data']['give-form-title'],
 		'give_form_id'    => $form_id,
-		'give_price_id'   => intval( $purchase_data['post_data']['give-price-id'] ),
+		'give_price_id'   => $purchase_data['post_data']['give-price-id'],
 		'date'            => $purchase_data['date'],
 		'user_email'      => $purchase_data['user_email'],
 		'purchase_key'    => $purchase_data['purchase_key'],

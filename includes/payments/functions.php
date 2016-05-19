@@ -1702,7 +1702,17 @@ function give_get_payment_form_title( $payment_meta ) {
 
 	if ( give_has_variable_prices( $form_id ) ) {
 
-		$form_title .= ' - ' . give_get_price_option_name( $form_id, $price_id );
+		$form_title .= ' - ';
+
+		if ( $price_id == 'custom' ) {
+
+			$custom_amount_text = get_post_meta( $form_id, '_give_custom_amount_text', true );
+			$form_title .= ! empty( $custom_amount_text ) ? $custom_amount_text : __( 'Custom Amount', 'give' );
+
+		} else {
+			$form_title .= give_get_price_option_name( $form_id, $price_id );
+		}
+
 
 	}
 
@@ -1713,7 +1723,7 @@ function give_get_payment_form_title( $payment_meta ) {
 /**
  * Get Price ID
  *
- * @description Retrieves the Price ID given a proper form ID and price (donation) total
+ * @description Retrieves the Price ID when provided a proper form ID and price (donation) total
  *
  * @param $form_id
  * @param $price

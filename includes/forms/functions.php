@@ -479,7 +479,11 @@ function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 
 	foreach ( $prices as $price ) {
 
 		if ( intval( $price['_give_id']['level_id'] ) == intval( $price_id ) ) {
-			$price_name = isset( $price['_give_text'] ) ? $price['_give_text'] : '';
+
+			$price_text     = isset( $price['_give_text'] ) ? $price['_give_text'] : '';
+			$price_fallback = give_currency_filter( give_format_amount( $price['_give_amount'] ) );
+			$price_name     = ! empty( $price_text ) ? $price_text : $price_fallback;
+
 		}
 
 	}
