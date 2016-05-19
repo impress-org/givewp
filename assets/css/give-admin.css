@@ -1555,22 +1555,18 @@ Responsiveness
   vertical-align: top;
   margin-right: 5%; }
 
-#give-donation-overview li.actions {
-  text-align: right;
-  min-width: 200px; }
-
-#give-donation-overview ul li.remove {
-  text-align: right; }
-
-#give-donation-overview .row {
-  padding: 12px;
-  border-bottom: 1px solid #eee; }
-
 #give-donation-overview ul {
   font-size: 0; }
-
-#give-donation-overview ul li {
-  font-size: 13px; }
+  #give-donation-overview ul li {
+    font-size: 13px; }
+    #give-donation-overview ul li.actions {
+      text-align: right;
+      min-width: 200px; }
+    #give-donation-overview ul li.remove {
+      text-align: right; }
+  #give-donation-overview ul .row {
+    padding: 12px;
+    border-bottom: 1px solid #eee; }
 
 #give-order-data .data span {
   color: #666;
@@ -1579,13 +1575,9 @@ Responsiveness
 #give-donation-overview .inside {
   padding: 12px; }
 
-.give-price-field {
-  width: 80px; }
-
-.give_repeatable_upload_wrapper .pricing select, .give_repeatable_product_wrapper .give-select,
-#give_products .give-select {
-  min-width: 100%;
-  max-width: 200px; }
+input.give-price-field {
+  width: 80px;
+  padding: 3px 5px; }
 
 .give_forms_page_give-payment-history.js .postbox .hndle {
   cursor: default; }
@@ -1635,6 +1627,9 @@ Donation Details
 #give-customer-details .inside {
   padding-top: 15px;
   padding-bottom: 15px; }
+
+.give_forms_page_give-payment-history #give-dashboard-widgets-wrap #side-sortables {
+  padding-top: 0; }
 
 /**
  * Give Admin Dashboard SCSS

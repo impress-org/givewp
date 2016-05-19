@@ -130,9 +130,9 @@ function give_insert_payment( $payment_data = array() ) {
 	$payment    = new Give_Payment();
 	$gateway    = ! empty( $payment_data['gateway'] ) ? $payment_data['gateway'] : '';
 	$gateway    = empty( $gateway ) && isset( $_POST['give-gateway'] ) ? $_POST['give-gateway'] : $gateway;
+	$form_id    = isset( $payment_data['give_form_id'] ) ? $payment_data['give_form_id'] : 0;
 	$price_id   = isset( $payment_data['give_price_id'] ) ? $payment_data['give_price_id'] : give_get_price_id( $payment_data['give_form_id'], $payment_data['price'] );
-	$form_title = give_get_payment_form_title( $payment_data );
-
+	$form_title = isset( $payment_data['give_form_title'] ) ? $payment_data['give_form_title'] : get_the_title( $form_id );
 
 	//Set properties
 	$payment->total          = $payment_data['price'];
@@ -141,7 +141,7 @@ function give_insert_payment( $payment_data = array() ) {
 	$payment->user_info      = $payment_data['user_info'];
 	$payment->gateway        = $gateway;
 	$payment->form_title     = $form_title;
-	$payment->form_id        = $payment_data['give_form_id'];
+	$payment->form_id        = $form_id;
 	$payment->price_id       = $price_id;
 	$payment->user_id        = $payment_data['user_info']['id'];
 	$payment->email          = $payment_data['user_email'];
@@ -1690,19 +1690,24 @@ function give_filter_where_older_than_week( $where = '' ) {
  *
  * @since 1.5
  *
- * @param array $payment_meta
+ * @param array $payment_meta 
+ * @param bool $level_title Whether you want the entire title or just the level title
  *
- * @return string $form_title
+ * @return string $form_title Returns the full title if $level_title false, otherwise returns the levels title
  */
-function give_get_payment_form_title( $payment_meta ) {
+function give_get_payment_form_title( $payment_meta, $level_title = false ) {
 
-	$form_id    = isset( $payment_meta['give_form_id'] ) ? $payment_meta['give_form_id'] : 0;
-	$form_title = isset( $payment_meta['give_form_title'] ) ? $payment_meta['give_form_title'] : '';
-	$price_id   = isset( $payment_meta['give_price_id'] ) ? $payment_meta['give_price_id'] : give_get_price_id( $payment_meta['give_form_id'], $payment_meta['price'] );
+	$form_id    = isset( $payment_meta['form_id'] ) ? $payment_meta['form_id'] : 0;
+	$form_title = isset( $payment_meta['form_title'] ) ? $payment_meta['form_title'] : '';
+	$price_id   = isset( $payment_meta['price_id'] ) ? $payment_meta['price_id'] : give_get_price_id( $form_id, $payment_meta['price'] );
 
+	if($level_title == true ) {
+		$form_title = '';
+	}
+	
 	if ( give_has_variable_prices( $form_id ) ) {
 
-		$form_title .= ' - ';
+		$form_title .= ' <span class="donation-level-text-wrap">';
 
 		if ( $price_id == 'custom' ) {
 
@@ -1713,10 +1718,11 @@ function give_get_payment_form_title( $payment_meta ) {
 			$form_title .= give_get_price_option_name( $form_id, $price_id );
 		}
 
+		$form_title .= '</span>';
 
 	}
 
-	return $form_title;
+	return apply_filters( 'give_get_payment_form_title', $form_title, $payment_meta );
 
 }
 

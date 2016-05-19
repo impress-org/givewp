@@ -91,15 +91,15 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 										<div class="give-admin-box-inside">
 											<p>
 												<span class="label"><?php _e( 'Date:', 'give' ); ?></span>&nbsp;
-												<input type="text" name="give-payment-date" value="<?php echo esc_attr( date( 'm/d/Y', $payment_date ) ); ?>" class="medium-text give_datepicker" />
+												<input type="text" name="give-payment-date" value="<?php echo esc_attr( date( 'm/d/Y', $payment_date ) ); ?>" class="medium-text give_datepicker"/>
 											</p>
 										</div>
 
 										<div class="give-admin-box-inside">
 											<p>
 												<span class="label"><?php _e( 'Time:', 'give' ); ?></span>&nbsp;
-												<input type="number" step="1" max="24" name="give-payment-time-hour" value="<?php echo esc_attr( date_i18n( 'H', $payment_date ) ); ?>" class="small-text give-payment-time-hour" />&nbsp;:&nbsp;
-												<input type="number" step="1" max="59" name="give-payment-time-min" value="<?php echo esc_attr( date( 'i', $payment_date ) ); ?>" class="small-text give-payment-time-min" />
+												<input type="number" step="1" max="24" name="give-payment-time-hour" value="<?php echo esc_attr( date_i18n( 'H', $payment_date ) ); ?>" class="small-text give-payment-time-hour"/>&nbsp;:&nbsp;
+												<input type="number" step="1" max="59" name="give-payment-time-min" value="<?php echo esc_attr( date( 'i', $payment_date ) ); ?>" class="small-text give-payment-time-min"/>
 											</p>
 										</div>
 
@@ -124,7 +124,7 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 										<div class="give-order-payment give-admin-box-inside">
 											<p>
 												<span class="label"><?php _e( 'Total Donation', 'give' ); ?>:</span>&nbsp;
-												<?php echo give_currency_symbol( $payment_meta['currency'] ); ?>&nbsp;<input name="give-payment-total" type="text" class="small-text" value="<?php echo esc_attr( give_format_amount( give_get_payment_amount( $payment_id ) ) ); ?>" />
+												<?php echo give_currency_symbol( $payment_meta['currency'] ); ?>&nbsp;<input name="give-payment-total" type="text" class="small-text give-price-field" value="<?php echo esc_attr( give_format_amount( give_get_payment_amount( $payment_id ) ) ); ?>"/>
 											</p>
 										</div>
 
@@ -140,7 +140,7 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 									<?php do_action( 'give_view_order_details_update_before', $payment_id ); ?>
 									<div id="major-publishing-actions">
 										<div id="publishing-action">
-											<input type="submit" class="button button-primary right" value="<?php esc_attr_e( 'Save Payment', 'give' ); ?>" />
+											<input type="submit" class="button button-primary right" value="<?php esc_attr_e( 'Save Payment', 'give' ); ?>"/>
 											<?php if ( give_is_payment_complete( $payment_id ) ) : ?>
 												<a href="<?php echo esc_url( add_query_arg( array(
 													'give-action' => 'email_links',
@@ -244,9 +244,10 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 										<thead>
 										<tr>
 											<?php do_action( 'give_donation_details_thead_before', $payment_id ); ?>
-											<th><?php _e( 'Form ID', 'give' ) ?></th>
-											<th><?php _e( 'Form Title', 'give' ) ?></th>
-											<th><?php _e( 'Date and Time', 'give' ) ?></th>
+											<th><?php _e( 'Donation Form ID', 'give' ) ?></th>
+											<th><?php _e( 'Donation Form Title', 'give' ) ?></th>
+											<th><?php _e( 'Donation Level', 'give' ) ?></th>
+											<th><?php _e( 'Donation Date', 'give' ) ?></th>
 											<th><?php _e( 'Total Donation', 'give' ) ?></th>
 											<?php do_action( 'give_donation_details_thead_after', $payment_id ); ?>
 										</tr>
@@ -259,8 +260,25 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 											<td>
 												<a href="<?php echo get_permalink( $payment_meta['form_id'] ); ?>"><?php echo $payment_meta['form_title']; ?></a>
 											</td>
-											<td><?php echo date( 'm/d/Y', $payment_date ) . ' ' . date_i18n( 'H:i', $payment_date ); ?></td>
-											<td><?php echo esc_html( give_currency_filter( give_format_amount( give_get_payment_amount( $payment_id ) ) ) ); ?></td>
+											<td>
+												<?php
+												//Level ID
+												$level_title = give_get_payment_form_title( $payment_meta, true );
+												if ( empty( $level_title ) ) {
+													echo 'N/A';
+												} else {
+													echo $level_title;
+												} ?>
+											</td>
+											<td>
+												<?php
+												//Transaction Date
+												$date_format = get_option( 'date_format' );
+												echo date_i18n( $date_format, strtotime( $payment_date ) );
+												?>
+											</td>
+											<td>
+												<?php echo esc_html( give_currency_filter( give_format_amount( give_get_payment_amount( $payment_id ) ) ) ); ?></td>
 											<?php do_action( 'give_donation_details_tbody_after', $payment_id ); ?>
 
 										</tr>
@@ -295,7 +313,7 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 											) ); ?>
 										</div>
 										<div class="column">
-											<input type="hidden" name="give-current-customer" value="<?php echo $customer->id; ?>" />
+											<input type="hidden" name="give-current-customer" value="<?php echo $customer->id; ?>"/>
 										</div>
 										<div class="column">
 											<?php if ( ! empty( $customer->id ) ) : ?>
@@ -310,14 +328,14 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 									<div class="column-container new-customer" style="display: none">
 										<div class="column">
 											<strong><?php _e( 'Name:', 'give' ); ?></strong>&nbsp;
-											<input type="text" name="give-new-customer-name" value="" class="medium-text" />
+											<input type="text" name="give-new-customer-name" value="" class="medium-text"/>
 										</div>
 										<div class="column">
 											<strong><?php _e( 'Email:', 'give' ); ?></strong>&nbsp;
-											<input type="email" name="give-new-customer-email" value="" class="medium-text" />
+											<input type="email" name="give-new-customer-email" value="" class="medium-text"/>
 										</div>
 										<div class="column">
-											<input type="hidden" id="give-new-customer" name="give-new-customer" value="0" />
+											<input type="hidden" id="give-new-customer" name="give-new-customer" value="0"/>
 											<a href="#cancel" class="give-payment-new-customer-cancel give-delete"><?php _e( 'Cancel', 'give' ); ?></a>
 										</div>
 										<div class="column">
@@ -352,32 +370,32 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 											<div class="data column-container">
 												<div class="column">
 													<p>
-														<strong class="order-data-address-line"><?php _e( 'Street Address Line 1:', 'give' ); ?></strong><br />
-														<input type="text" name="give-payment-address[0][line1]" value="<?php echo esc_attr( $address['line1'] ); ?>" class="medium-text" />
+														<strong class="order-data-address-line"><?php _e( 'Street Address Line 1:', 'give' ); ?></strong><br/>
+														<input type="text" name="give-payment-address[0][line1]" value="<?php echo esc_attr( $address['line1'] ); ?>" class="medium-text"/>
 													</p>
 
 													<p>
-														<strong class="order-data-address-line"><?php _e( 'Street Address Line 2:', 'give' ); ?></strong><br />
-														<input type="text" name="give-payment-address[0][line2]" value="<?php echo esc_attr( $address['line2'] ); ?>" class="medium-text" />
+														<strong class="order-data-address-line"><?php _e( 'Street Address Line 2:', 'give' ); ?></strong><br/>
+														<input type="text" name="give-payment-address[0][line2]" value="<?php echo esc_attr( $address['line2'] ); ?>" class="medium-text"/>
 													</p>
 
 												</div>
 												<div class="column">
 													<p>
-														<strong class="order-data-address-line"><?php echo _x( 'City:', 'Address City', 'give' ); ?></strong><br />
-														<input type="text" name="give-payment-address[0][city]" value="<?php echo esc_attr( $address['city'] ); ?>" class="medium-text" />
+														<strong class="order-data-address-line"><?php echo _x( 'City:', 'Address City', 'give' ); ?></strong><br/>
+														<input type="text" name="give-payment-address[0][city]" value="<?php echo esc_attr( $address['city'] ); ?>" class="medium-text"/>
 
 													</p>
 
 													<p>
-														<strong class="order-data-address-line"><?php echo _x( 'Zip / Postal Code:', 'Zip / Postal code of address', 'give' ); ?></strong><br />
-														<input type="text" name="give-payment-address[0][zip]" value="<?php echo esc_attr( $address['zip'] ); ?>" class="medium-text" />
+														<strong class="order-data-address-line"><?php echo _x( 'Zip / Postal Code:', 'Zip / Postal code of address', 'give' ); ?></strong><br/>
+														<input type="text" name="give-payment-address[0][zip]" value="<?php echo esc_attr( $address['zip'] ); ?>" class="medium-text"/>
 
 													</p>
 												</div>
 												<div class="column">
 													<p id="give-order-address-country-wrap">
-														<strong class="order-data-address-line"><?php echo _x( 'Country:', 'Address country', 'give' ); ?></strong><br />
+														<strong class="order-data-address-line"><?php echo _x( 'Country:', 'Address country', 'give' ); ?></strong><br/>
 														<?php
 														echo Give()->html->select( array(
 															'options'          => give_get_country_list(),
@@ -392,7 +410,7 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 													</p>
 
 													<p id="give-order-address-state-wrap">
-														<strong class="order-data-address-line"><?php echo _x( 'State / Province:', 'State / province of address', 'give' ); ?></strong><br />
+														<strong class="order-data-address-line"><?php echo _x( 'State / Province:', 'State / province of address', 'give' ); ?></strong><br/>
 														<?php
 														$states = give_get_states( $address['country'] );
 														if ( ! empty( $states ) ) {
@@ -407,8 +425,8 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 															) );
 														} else {
 															?>
-															<input type="text" name="give-payment-address[0][state]" value="<?php echo esc_attr( $address['state'] ); ?>" class="medium-text" />
-														<?php
+															<input type="text" name="give-payment-address[0][state]" value="<?php echo esc_attr( $address['state'] ); ?>" class="medium-text"/>
+															<?php
 														} ?>
 													</p>
 												</div>
@@ -471,8 +489,8 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 		<!-- /#post-stuff -->
 		<?php do_action( 'give_view_order_details_form_bottom', $payment_id ); ?>
 		<?php wp_nonce_field( 'give_update_payment_details_nonce' ); ?>
-		<input type="hidden" name="give_payment_id" value="<?php echo esc_attr( $payment_id ); ?>" />
-		<input type="hidden" name="give_action" value="update_payment_details" />
+		<input type="hidden" name="give_payment_id" value="<?php echo esc_attr( $payment_id ); ?>"/>
+		<input type="hidden" name="give_action" value="update_payment_details"/>
 	</form>
 	<?php do_action( 'give_view_order_details_after', $payment_id ); ?>
 </div><!-- /.wrap -->
