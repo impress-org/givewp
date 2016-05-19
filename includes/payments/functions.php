@@ -159,6 +159,7 @@ function give_insert_payment( $payment_data = array() ) {
 		'price_id' => $payment->price_id,
 		'fees'     => isset( $payment_data['fees'] ) ? $payment_data['fees'] : array()
 	);
+	
 	$payment->add_donation( $payment->form_id, $args );
 
 	//Set date if present

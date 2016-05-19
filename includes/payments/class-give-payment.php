@@ -338,7 +338,7 @@ final class Give_Payment {
 	 * @param mixed $value The value of the property
 	 */
 	public function __set( $key, $value ) {
-		$ignore = array( 'fees', '_ID' );
+		$ignore = array( '_ID' );
 
 		if ( $key === 'status' ) {
 			$this->old_status = $this->status;
@@ -443,11 +443,11 @@ final class Give_Payment {
 		$this->last_name   = $this->user_info['last_name'];
 
 		// Other Identifiers
-		$this->form_id  = $this->setup_form_title();
-		$this->form_id  = $this->setup_form_id();
-		$this->price_id = $this->setup_price_id();
-		$this->key      = $this->setup_payment_key();
-		$this->number   = $this->setup_payment_number();
+		$this->form_title = $this->setup_form_title();
+		$this->form_id    = $this->setup_form_id();
+		$this->price_id   = $this->setup_price_id();
+		$this->key        = $this->setup_payment_key();
+		$this->number     = $this->setup_payment_number();
 
 		// Allow extensions to add items to this object via hook
 		do_action( 'give_setup_payment', $this, $payment_id );
@@ -465,7 +465,6 @@ final class Give_Payment {
 
 		// Construct the payment title
 		$payment_title = '';
-
 		if ( ! empty( $this->first_name ) && ! empty( $this->last_name ) ) {
 			$payment_title = $this->first_name . ' ' . $this->last_name;
 		} else if ( ! empty( $this->first_name ) && empty( $this->last_name ) ) {
@@ -474,6 +473,7 @@ final class Give_Payment {
 			$payment_title = $this->email;
 		}
 
+		//Set Key
 		if ( empty( $this->key ) ) {
 
 			$auth_key             = defined( 'AUTH_KEY' ) ? AUTH_KEY : '';
@@ -481,6 +481,7 @@ final class Give_Payment {
 			$this->pending['key'] = $this->key;
 		}
 
+		//Set IP
 		if ( empty( $this->ip ) ) {
 
 			$this->ip            = give_get_ip();
@@ -603,7 +604,7 @@ final class Give_Payment {
 			$total_decrease = 0;
 
 			foreach ( $this->pending as $key => $value ) {
-
+				
 				switch ( $key ) {
 
 					case 'donations':
@@ -881,7 +882,6 @@ final class Give_Payment {
 
 		$args = wp_parse_args( apply_filters( 'give_payment_add_donation_args', $args, $donation->ID ), $defaults );
 
-
 		// Allow overriding the price
 		if ( false !== $args['price'] ) {
 			$item_price = $args['price'];
@@ -934,8 +934,8 @@ final class Give_Payment {
 			'id'       => $donation->ID,
 			'price'    => round( $total, give_currency_decimal_filter() ),
 			'subtotal' => round( $total, give_currency_decimal_filter() ),
-			'fees'     => isset( $args['fees'] ) ? $args['fees'] : array(),
-			'price_id' => isset( $args['price_id'] ) ? $args['price_id'] : array(),
+			'fees'     => $args['fees'],
+			'price_id' => $args['price_id'],
 			'action'   => 'add',
 			'options'  => $options
 		);

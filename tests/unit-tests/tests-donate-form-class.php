@@ -8,6 +8,9 @@ class Tests_Donate_Form_Class extends Give_Unit_Test_Case {
 
 	protected $_post;
 
+	/**
+	 * Set it Up
+	 */
 	public function setUp() {
 		parent::setUp();
 
@@ -16,12 +19,18 @@ class Tests_Donate_Form_Class extends Give_Unit_Test_Case {
 
 	}
 
+	/**
+	 * Tear it Down
+	 */
 	public function tearDown() {
 		parent::tearDown();
 		Give_Helper_Form::delete_form( $this->_simple_form->ID );
 		Give_Helper_Form::delete_form( $this->_multi_form->ID );
 	}
 
+	/**
+	 * Test Get Form
+	 */
 	public function test_get_form() {
 		$simple_form = new Give_Donate_Form( $this->_simple_form->ID );
 		$this->assertEquals( $this->_simple_form->ID, $simple_form->ID );
@@ -33,6 +42,9 @@ class Tests_Donate_Form_Class extends Give_Unit_Test_Case {
 		$this->assertEquals( $this->_multi_form->ID, $multi_form->get_ID() );
 	}
 
+	/**
+	 * Test Get Price
+	 */
 	public function test_get_price() {
 		$simple_form = new Give_Donate_Form( $this->_simple_form->ID );
 
@@ -41,6 +53,9 @@ class Tests_Donate_Form_Class extends Give_Unit_Test_Case {
 		$this->assertEquals( '20.00', $simple_form->get_price() );
 	}
 
+	/**
+	 * Test Get Prices
+	 */
 	public function test_get_prices() {
 		$multi_form = new Give_Donate_Form( $this->_multi_form->ID );
 
@@ -51,12 +66,18 @@ class Tests_Donate_Form_Class extends Give_Unit_Test_Case {
 		$this->assertEquals( 4, count( $prices ) );
 	}
 
+	/**
+	 * Test Min Price
+	 */
 	public function test_minimum_price() {
 		$simple_form = new Give_Donate_Form( $this->_simple_form->ID );
 
 		$this->assertEquals( '1.00', $simple_form->get_minimum_price() );
 	}
 
+	/**
+	 * Test Set Goal
+	 */
 	public function test_get_goal() {
 		$simple_form = new Give_Donate_Form( $this->_simple_form->ID );
 		$this->assertEquals( 0, $simple_form->get_goal() );

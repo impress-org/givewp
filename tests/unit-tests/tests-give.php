@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * Class Tests_Give
+ */
 class Tests_Give extends Give_Unit_Test_Case {
 	protected $object;
 
@@ -11,6 +15,9 @@ class Tests_Give extends Give_Unit_Test_Case {
 		parent::tearDown();
 	}
 
+	/**
+	 * @covers Give::give_instance::instance
+	 */
 	public function test_give_instance() {
 		$this->assertClassHasStaticAttribute( 'instance', 'Give' );
 	}

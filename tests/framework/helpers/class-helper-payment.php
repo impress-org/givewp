@@ -35,7 +35,7 @@ class Give_Helper_Payment extends WP_UnitTestCase {
 		$give_options['sequential_prefix'] = 'GIVE-'; //Not yet in use
 		update_option( 'give_settings', $give_options );
 
-		$simple_form     = Give_Helper_Form::create_simple_form();
+		$simple_form = Give_Helper_Form::create_simple_form();
 
 		// Generate some donations
 		$user      = get_userdata( 1 );
@@ -46,7 +46,7 @@ class Give_Helper_Payment extends WP_UnitTestCase {
 			'last_name'  => $user->last_name
 		);
 
-		$simple_price        = get_post_meta( $simple_form->ID, '_give_set_price', true );
+		$simple_price = get_post_meta( $simple_form->ID, '_give_set_price', true );
 
 		$purchase_data = array(
 			'price'           => number_format( (float) $simple_price, 2 ),
@@ -75,7 +75,63 @@ class Give_Helper_Payment extends WP_UnitTestCase {
 		return $payment_id;
 
 	}
-	
+
+	/**
+	 * Creates a multi-level (variable) donation payment.
+	 *
+	 * @since 1.0
+	 */
+	public static function create_multilevel_payment() {
+
+		global $give_options;
+
+		// Enable a few options
+		$give_options['enable_sequential'] = '1'; //Not yet in use
+		$give_options['sequential_prefix'] = 'GIVE-'; //Not yet in use
+		update_option( 'give_settings', $give_options );
+
+		$multilevel_form = Give_Helper_Form::create_multilevel_form();
+
+		// Generate some donations
+		$user      = get_userdata( 1 );
+		$user_info = array(
+			'id'         => $user->ID,
+			'email'      => $user->user_email,
+			'first_name' => $user->first_name,
+			'last_name'  => $user->last_name
+		);
+
+		$multilevel_price = maybe_unserialize( get_post_meta( $multilevel_form->ID, '_give_donation_levels', true ) );
+
+		$purchase_data = array(
+			'price'           => number_format( (float) $multilevel_price[1]['_give_amount'], 2 ), //$25
+			'give_form_title' => $multilevel_form->post_title,
+			'give_form_id'    => $multilevel_form->ID,
+			'give_price_id'   => $multilevel_price[1]['_give_id']['level_id'],
+			'date'            => date( 'Y-m-d H:i:s', strtotime( '-1 day' ) ),
+			'purchase_key'    => strtolower( md5( uniqid() ) ),
+			'user_email'      => $user_info['email'],
+			'user_info'       => $user_info,
+			'currency'        => 'USD',
+			'status'          => 'pending'
+		);
+
+		$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+		$_SERVER['SERVER_NAME'] = 'give_virtual';
+
+		$payment_id = give_insert_payment( $purchase_data );
+
+		$transaction_id          = 'FIR3SID3';
+		$payment                 = new Give_Payment( $payment_id );
+		$payment->transaction_id = $transaction_id;
+		$payment->save();
+
+		give_insert_payment_note( $payment_id, sprintf( __( 'PayPal Transaction ID: %s', 'give' ), $transaction_id ) );
+
+		return $payment_id;
+
+	}
+
 	/**
 	 * Create Simple Donation w/ Fee
 	 *

@@ -127,29 +127,6 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test Add Donation with Fee
-	 */
-	public function test_add_donation_with_fee() {
-
-		$payment = new Give_Payment( $this->_payment_id );
-		$args    = array(
-			'fees' => array(
-				array(
-					'amount' => 5,
-					'label'  => 'Test Fee',
-				),
-			),
-		);
-
-		$new_form = Give_Helper_Form::create_simple_form();
-
-		$payment->add_donation( $new_form->ID, $args );
-		$payment->save();
-
-		$this->assertFalse( empty( $payment->fees ) );
-	}
-
-	/**
 	 * Test Remove Donation
 	 */
 	public function test_remove_donation() {
@@ -299,7 +276,7 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 
 		Give_Helper_Payment::delete_payment( $this->_payment_id );
 
-		$form    = Give_Helper_Form::create_multilevel_form_with_multi_price_purchase();
+		$form    = Give_Helper_Form::create_multilevel_form();
 		$payment = new Give_Payment();
 
 		//Add a multi-level donation amount
