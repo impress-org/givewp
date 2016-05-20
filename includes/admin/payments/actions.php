@@ -35,17 +35,16 @@ function give_update_payment_details( $data ) {
 	check_admin_referer( 'give_update_payment_details_nonce' );
 
 	// Retrieve the payment ID
-	$payment_id = absint( $data['give_payment_id'] );
+	$payment_id = absint( $data['edd_payment_id'] );
+	$payment    = new Give_Payment( $payment_id );
 
 	// Retrieve existing payment meta
-	$meta      = give_get_payment_meta( $payment_id );
-	$user_info = give_get_payment_meta_user_info( $payment_id );
+	$meta      = $payment->get_meta();
+	$user_info = $payment->user_info;
 
-	$status  = $data['give-payment-status'];
-	$user_id = isset( $data['give-payment-user-id'] ) ? intval( $data['give-payment-user-id'] ) : '';
-	$date    = sanitize_text_field( $data['give-payment-date'] );
-	$hour    = sanitize_text_field( $data['give-payment-time-hour'] );
-	$form_id = give_get_payment_form_id($payment_id);
+	$status = $data['give-payment-status'];
+	$date   = sanitize_text_field( $data['give-payment-date'] );
+	$hour   = sanitize_text_field( $data['give-payment-time-hour'] );
 
 	// Restrict to our high and low
 	if ( $hour > 23 ) {
@@ -63,21 +62,19 @@ function give_update_payment_details( $data ) {
 		$minute = 00;
 	}
 
-	$address          = array_map( 'trim', $data['give-payment-address'][0] );
-	$date             = date( 'Y-m-d', strtotime( $date ) ) . ' ' . $hour . ':' . $minute . ':00';
-	$curr_total       = give_sanitize_amount( give_get_payment_amount( $payment_id ) );
-	$new_total        = give_sanitize_amount( $_POST['give-payment-total'] );
+	$address = array_map( 'trim', $data['give-payment-address'][0] );
+
+	$curr_total = give_sanitize_amount( $payment->total );
+	$new_total  = give_sanitize_amount( $_POST['give-payment-total'] );
+	$date       = date( 'Y-m-d', strtotime( $date ) ) . ' ' . $hour . ':' . $minute . ':00';
+
 	$curr_customer_id = sanitize_text_field( $data['give-current-customer'] );
 	$new_customer_id  = sanitize_text_field( $data['customer-id'] );
 
 	do_action( 'give_update_edited_purchase', $payment_id );
 
-	// Update main payment record
-	$updated = wp_update_post( array(
-		'ID'        => $payment_id,
-		'edit_date' => true,
-		'post_date' => $date
-	) );
+	$payment->date = $date;
+	$updated       = $payment->save();
 
 	if ( 0 === $updated ) {
 		wp_die( esc_attr__( 'Error Updating Payment', 'give' ), esc_attr__( 'Error', 'give' ), array( 'response' => 400 ) );
@@ -161,18 +158,16 @@ function give_update_payment_details( $data ) {
 			$customer->increase_value( $new_total );
 		}
 
-		update_post_meta( $payment_id, '_give_payment_customer_id', $customer->id );
-
+		$payment->customer_id = $customer->id;
 	}
 
-
 	// Set new meta values
-	$user_info['id']         = $customer->user_id;
-	$user_info['email']      = $customer->email;
-	$user_info['first_name'] = $first_name;
-	$user_info['last_name']  = $last_name;
-	$user_info['address']    = $address;
-	$meta['user_info']       = $user_info;
+	$payment->user_id    = $customer->user_id;
+	$payment->email      = $customer->email;
+	$payment->first_name = $first_name;
+	$payment->last_name  = $last_name;
+	$payment->address    = $address;
+	$payment->total      = $new_total;
 
 
 	// Check for payment notes
@@ -184,12 +179,7 @@ function give_update_payment_details( $data ) {
 	}
 
 	// Set new status
-	give_update_payment_status( $payment_id, $status );
-
-	give_update_payment_meta( $payment_id, '_give_payment_user_id', $customer->user_id );
-	give_update_payment_meta( $payment_id, '_give_payment_user_email', $customer->email );
-	give_update_payment_meta( $payment_id, '_give_payment_meta', $meta );
-	give_update_payment_meta( $payment_id, '_give_payment_total', $new_total );
+	$payment->status = $status;
 
 	// Adjust total store earnings if the payment total has been changed
 	if ( $new_total !== $curr_total && ( 'publish' == $status || 'revoked' == $status ) ) {
@@ -198,17 +188,17 @@ function give_update_payment_details( $data ) {
 			// Increase if our new total is higher
 			$difference = $new_total - $curr_total;
 			give_increase_total_earnings( $difference );
-			$form = new Give_Donate_Form( $form_id );
-			$form->increase_earnings( $difference );
+
 		} elseif ( $curr_total > $new_total ) {
 			// Decrease if our new total is lower
 			$difference = $curr_total - $new_total;
 			give_decrease_total_earnings( $difference );
-			$form = new Give_Donate_Form( $form_id );
-			$form->decrease_earnings( $difference );
+
 		}
 
 	}
+
+	$payment->save();
 
 	do_action( 'give_updated_edited_purchase', $payment_id );
 
@@ -244,6 +234,9 @@ function give_trigger_purchase_delete( $data ) {
 
 add_action( 'give_delete_payment', 'give_trigger_purchase_delete' );
 
+/**
+ * AJAX Store Payment Note
+ */
 function give_ajax_store_payment_note() {
 
 	$payment_id = absint( $_POST['payment_id'] );

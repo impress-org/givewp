@@ -3,7 +3,15 @@
  * @group scripts
  */
 class Tests_Scripts extends Give_Unit_Test_Case {
+	
+	public function setUp() {
+		parent::setUp();
+	}
 
+	public function tearDown() {
+		parent::tearDown();
+	}
+	
 	/**
 	 * Test if all the file hooks are working.
 	 *

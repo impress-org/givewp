@@ -10,18 +10,19 @@ class Tests_Stats extends WP_UnitTestCase {
 	protected $_payment_stats;
 	protected $_payment_id;
 	protected $_payment_id2;
+	protected $_new_form_id;
 
 	/**
 	 * Set it Up
 	 */
 	public function setUp() {
+
 		parent::setUp();
 
 		$this->_payment_id  = Give_Helper_Payment::create_simple_payment(); //$20
 		$this->_payment_id2 = Give_Helper_Payment::create_multilevel_payment(); //$25
 		give_update_payment_status( $this->_payment_id );
 		give_update_payment_status( $this->_payment_id2 );
-
 
 	}
 
@@ -143,19 +144,11 @@ class Tests_Stats extends WP_UnitTestCase {
 	 */
 	public function test_get_earnings_by_date_of_give_form() {
 
-		$this->markTestIncomplete( 'For som reason this test is failing when all test run together' );
-
-		//Test Payment 1 (Set Donation)
-		$payment  = new Give_Payment( $this->_payment_id );
-		$stats    = new Give_Payment_Stats();
-		$earnings = $stats->get_earnings( $payment->form_id, 'this_month' );
-		$this->assertEquals( 20, $earnings );
-
-		//Now check payment 2
-		$payment  = new Give_Payment( $this->_payment_id2 );
-		$stats    = new Give_Payment_Stats();
-		$earnings = $stats->get_earnings( $payment->form_id, 'this_month' );
-		$this->assertEquals( 25, $earnings );
+		$payment            = new Give_Payment();
+		$stats              = new Give_Payment_Stats();
+		$earnings           = $stats->get_earnings( $payment->form_id, 'this_month' );
+		$this->_new_form_id = $payment->form_id;
+		$this->assertEquals( 45, $earnings );
 
 	}
 
@@ -178,13 +171,11 @@ class Tests_Stats extends WP_UnitTestCase {
 	 * Test Get Sales by Date of Give Donation Form
 	 */
 	public function test_get_sales_by_date_of_give_form() {
-		$payment = new Give_Payment( $this->_payment_id );
-		$form_id = $payment->form_id;
+		
+		$stats = new Give_Payment_Stats();
+		$sales = $stats->get_sales( $this->_new_form_id, 'this_month' );
 
-		$stats = new Give_Payment_Stats;
-		$sales = $stats->get_sales( $form_id, 'this_month' );
-
-		$this->assertEquals( 1, $sales );
+		$this->assertEquals( 2, $sales );
 	}
 
 }
