@@ -139,13 +139,13 @@ class Give_Payment_History_Table extends WP_List_Table {
 		<div id="give-payment-filters">
 			<span id="give-payment-date-filters">
 				<label for="start-date" class="give-start-date-label"><?php _e( 'Start Date:', 'give' ); ?></label>
-				<input type="text" id="start-date" name="start-date" class="give_datepicker" value="<?php echo $start_date; ?>" placeholder="mm/dd/yyyy" />
+				<input type="text" id="start-date" name="start-date" class="give_datepicker" value="<?php echo $start_date; ?>" placeholder="mm/dd/yyyy"/>
 				<label for="end-date" class="give-end-date-label"><?php _e( 'End Date:', 'give' ); ?></label>
-				<input type="text" id="end-date" name="end-date" class="give_datepicker" value="<?php echo $end_date; ?>" placeholder="mm/dd/yyyy" />
-				<input type="submit" class="button-secondary" value="<?php _e( 'Apply', 'give' ); ?>" />
+				<input type="text" id="end-date" name="end-date" class="give_datepicker" value="<?php echo $end_date; ?>" placeholder="mm/dd/yyyy"/>
+				<input type="submit" class="button-secondary" value="<?php _e( 'Apply', 'give' ); ?>"/>
 			</span>
 			<?php if ( ! empty( $status ) ) : ?>
-				<input type="hidden" name="status" value="<?php echo esc_attr( $status ); ?>" />
+				<input type="hidden" name="status" value="<?php echo esc_attr( $status ); ?>"/>
 			<?php endif; ?>
 			<?php if ( ! empty( $start_date ) || ! empty( $end_date ) ) : ?>
 				<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ); ?>" class="button-secondary"><?php _e( 'Clear Filter', 'give' ); ?></a>
@@ -162,7 +162,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param string $text     Label for the search box
+	 * @param string $text Label for the search box
 	 * @param string $input_id ID of the search box
 	 *
 	 * @return void
@@ -184,8 +184,8 @@ class Give_Payment_History_Table extends WP_List_Table {
 		<p class="search-box">
 			<?php do_action( 'give_payment_history_search' ); ?>
 			<label class="screen-reader-text" for="<?php echo $input_id ?>"><?php echo $text; ?>:</label>
-			<input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>" />
-			<?php submit_button( $text, 'button', false, false, array( 'ID' => 'search-submit' ) ); ?><br />
+			<input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>"/>
+			<?php submit_button( $text, 'button', false, false, array( 'ID' => 'search-submit' ) ); ?><br/>
 		</p>
 		<?php
 	}
@@ -292,7 +292,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * @access public
 	 * @since  1.0
 	 *
-	 * @param array  $item        Contains all the data of the discount code
+	 * @param array $item Contains all the data of the discount code
 	 * @param string $column_name The name of the column
 	 *
 	 * @return string Column Name
@@ -308,8 +308,10 @@ class Give_Payment_History_Table extends WP_List_Table {
 				$value = date_i18n( get_option( 'date_format' ), $date );
 				break;
 			case 'status' :
-				$payment = get_post( $payment->ID );
 				$value   = '<div class="give-donation-status status-' . sanitize_title( give_get_payment_status( $payment, true ) ) . '"><span class="give-donation-status-icon"></span> ' . give_get_payment_status( $payment, true ) . '</div>';
+				if ( $payment->mode == 'test' ) {
+					$value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label" data-tooltip="' . __( 'This payment was made in test mode', 'give' ) . '">' . __( 'Test', 'give' ) . '</span>';
+				}
 				break;
 			case 'details' :
 				$value = '<div class="give-payment-details-link-wrap"><a href="' . esc_url( add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details' ) ) ) . '" class="give-payment-details-link button button-small">' . __( 'View Details', 'give' ) . '</a></div>';

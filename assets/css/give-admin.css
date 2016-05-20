@@ -27,7 +27,7 @@
  */
 .give-item-label {
   padding: .2em .6em .3em;
-  font-size: 85%;
+  font-size: 11px;
   font-weight: 700;
   line-height: 1;
   color: #fff;
@@ -36,8 +36,22 @@
   vertical-align: baseline;
   border-radius: .25em; }
 
-.give-item-label-gray {
+.give-item-label-gray, #give-payments-filter .give-payment-id {
   background-color: #929292; }
+
+.give-item-label-orange {
+  background-color: #ffba00; }
+
+.give-item-label {
+  padding: .2em .6em .3em;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25em; }
 
 /**
  * Give CSS Variables
@@ -1406,9 +1420,6 @@ tr.status-refunded td {
   height: auto;
   float: left; }
 
-/*---------------------
-Status Colors
----------------------------*/
 .give-donation-status > span {
   float: left;
   width: 12px;
@@ -1440,9 +1451,9 @@ Status Colors
 .give-donation-status.status-subscription > span, .give-donation-status.status-give_subscription > span {
   background-color: #5bc0de; }
 
-#give-payments-filter .give-payment-id {
+#test-payment-label {
   padding: .2em .6em .3em;
-  font-size: 85%;
+  font-size: 11px;
   font-weight: 700;
   line-height: 1;
   color: #fff;
@@ -1450,12 +1461,33 @@ Status Colors
   white-space: nowrap;
   vertical-align: baseline;
   border-radius: .25em;
-  background-color: #929292; }
+  background-color: #ffba00;
+  margin: 0 0 0 15px;
+  position: relative;
+  top: -4px; }
+
+#give-payments-filter .give-payment-id {
+  padding: .2em .6em .3em;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25em; }
 
 #give-payments-filter .column-details {
   padding-right: 30px; }
 
-/* Payment View Metabox */
+#give-payments-filter .give-donation-status {
+  float: left; }
+
+#give-payments-filter span.give-test-mode-transactions-label {
+  padding: 1px 4px;
+  font-size: 10px;
+  margin-left: 8px; }
+
 #give-order-update .give-donation-status {
   display: inline-block;
   float: none;

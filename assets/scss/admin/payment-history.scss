@@ -96,9 +96,9 @@ tr.status-refunded td {
   float: left;
 }
 
-/*---------------------
-Status Colors
----------------------------*/
+//------------------------------------
+// Status Colors
+//------------------------------------
 
 .give-donation-status {
   > span {
@@ -145,21 +145,43 @@ Status Colors
 
 }
 
+//Test Payment Label
+#test-payment-label {
+  @include give-label();
+  background-color: $orange;
+  margin: 0 0 0 15px;
+  position: relative;
+  top: -4px;
+}
+
+
 //ID & link field
 #give-payments-filter {
+
   .give-payment-id {
     @include give-label();
-    @include give-label-gray();
+    @extend .give-item-label-gray;
   }
 
   .column-details {
     padding-right: 30px;
   }
 
+  .give-donation-status {
+    float:left;
+  }
+
+
+  span.give-test-mode-transactions-label {
+    padding: 1px 4px;
+    font-size:10px;
+    margin-left:8px;
+  }
+
+
 }
 
-/* Payment View Metabox */
-
+//Payment View Metabox
 #give-order-update {
   .give-donation-status {
     display: inline-block;
@@ -169,6 +191,9 @@ Status Colors
     top: 3px;
   }
 }
+
+
+
 
 /*---------------------
 Responsiveness
