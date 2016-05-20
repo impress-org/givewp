@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Admin/Payments
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -103,10 +103,10 @@ function give_update_payment_details( $data ) {
 			}
 
 			if ( ! $customer->create( $customer_data ) ) {
-				// Failed to crete the new customer, assume the previous customer
+				// Failed to crete the new donor, assume the previous donor
 				$customer_changed = false;
 				$customer         = new Give_Customer( $curr_customer_id );
-				give_set_error( 'give-payment-new-customer-fail', __( 'Error creating new customer', 'give' ) );
+				give_set_error( 'give-payment-new-customer-fail', __( 'Error creating new donor', 'give' ) );
 			}
 		}
 

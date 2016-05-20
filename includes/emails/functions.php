@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Emails
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0
  *
- * @param int  $payment_id   Payment ID
+ * @param int $payment_id Payment ID
  * @param bool $admin_notice Whether to send the admin email notification or not (default: true)
  *
  * @return void
@@ -100,7 +100,7 @@ function give_email_test_donation_receipt() {
  *
  * @since 1.0
  *
- * @param int   $payment_id   Payment ID (default: 0)
+ * @param int $payment_id Payment ID (default: 0)
  * @param array $payment_data Payment Meta and Data
  *
  * @return void
@@ -183,7 +183,7 @@ function give_admin_notices_disabled( $payment_id = 0 ) {
 }
 
 /**
- * Get sale notification email text
+ * Get default donation notification email text
  *
  * Returns the stored email text if available, the standard email text if not
  *
@@ -202,7 +202,39 @@ function give_get_default_donation_notification_email() {
 
 	$message = ( isset( $give_options['donation_notification'] ) && ! empty( $give_options['donation_notification'] ) ) ? $give_options['donation_notification'] : $default_email_body;
 
-	return $message;
+	return apply_filters( 'give_default_donation_notification_email', $message );
+}
+
+
+/**
+ * Get default donation receipt email text
+ *
+ * Returns the stored email text if available, the standard email text if not
+ *
+ * @since  1.3.7
+ * @return string $message
+ */
+function give_get_default_donation_receipt_email() {
+	global $give_options;
+
+	$default_email_body = __( 'Dear', 'give' ) . " {name},\n\n";
+	$default_email_body .= __( 'Thank you for your donation. Your generosity is appreciated! Here are the details of your donation:', 'give' ) . "\n\n";
+	$default_email_body .= '<strong>' . __( 'Donor', 'give' ) . ':</strong> ' . '{fullname}' . "\n";
+	$default_email_body .= '<strong>' . __( 'Donation', 'give' ) . ':</strong> ' . '{donation}' . "\n";
+	$default_email_body .= '<strong>' . __( 'Donation Date', 'give' ) . ':</strong> ' . '{date}' . "\n";
+	$default_email_body .= '<strong>' . __( 'Amount', 'give' ) . ':</strong> ' . '{price}' . "\n";
+	$default_email_body .= '<strong>' . __( 'Payment Method', 'give' ) . ':</strong> ' . '{payment_method}' . "\n";
+	$default_email_body .= '<strong>' . __( 'Payment ID', 'give' ) . ':</strong> ' . '{payment_id}' . "\n";
+	$default_email_body .= '<strong>' . __( 'Receipt ID', 'give' ) . ':</strong> ' . '{receipt_id}' . "\n\n";
+	$default_email_body .= '{receipt_link}' . "\n\n";
+
+	$default_email_body .= "\n\n";
+	$default_email_body .= __( 'Sincerely,', 'give' );
+	$default_email_body .= "\n" . '{sitename}' . "\n";
+
+	$message = ( isset( $give_options['donation_receipt'] ) && ! empty( $give_options['donation_receipt'] ) ) ? $give_options['donation_receipt'] : $default_email_body;
+
+	return apply_filters( 'give_default_donation_receipt_email', $message );
 }
 
 /**

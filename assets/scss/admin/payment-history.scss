@@ -4,7 +4,7 @@
  * @description Payment History Styles
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 
@@ -23,18 +23,18 @@
 
 #give-payment-filters {
   p {
-	color: #777;
+    color: #777;
   }
   ul.subsubsub {
-	margin-bottom: 8px;
+    margin-bottom: 8px;
   }
   label {
-	font-style: italic;
-	margin: 0 10px;
+    font-style: italic;
+    margin: 0 10px;
 
-	&.give-start-date-label {
-	  margin-left: 5px;
-	}
+    &.give-start-date-label {
+      margin-left: 5px;
+    }
 
   }
 
@@ -42,24 +42,24 @@
 
 #give-payments-filter {
   ul.subsubsub {
-	margin: 0 0 12px;
+    margin: 0 0 12px;
   }
   .tablenav.top {
-	float: none;
-	.bulkactions {
-	  margin-top: 1px;
-	  padding-top: 0;
-	}
+    float: none;
+    .bulkactions {
+      margin-top: 1px;
+      padding-top: 0;
+    }
 
   }
 
   .give-email-column-value {
-	font-size: 14px;
-	font-weight: bold;
+    font-size: 14px;
+    font-weight: bold;
   }
 
   #the-list .check-column input {
-	margin-top: 1px;
+    margin-top: 1px;
   }
 
 }
@@ -102,45 +102,45 @@ Status Colors
 
 .give-donation-status {
   > span {
-	float: left;
-	width: 12px;
-	height: 12px;
-	margin: 3px 4px 0 0;
-	padding: 0;
-	border-radius: 50%;
-	background: #888;
-	line-height: 16px;
+    float: left;
+    width: 12px;
+    height: 12px;
+    margin: 3px 4px 0 0;
+    padding: 0;
+    border-radius: 50%;
+    background: #888;
+    line-height: 16px;
   }
 
   //Pending
   &.status-pending > span {
-	background-color: $orange;
+    background-color: $orange;
   }
 
   //Complete
   &.status-complete > span, &.status-publish > span {
-	background-color: $status-complete;
+    background-color: $status-complete;
   }
 
   //Refunded
   &.status-refunded > span {
-	background-color: $status-default;
+    background-color: $status-default;
   }
 
   &.status-failed > span {
-	background-color: $red;
+    background-color: $red;
   }
 
   &.status-abandoned > span {
-	background-color: $dark;
+    background-color: $dark;
   }
 
   &.status-revoked > span {
-	background-color: $status-revoked;
+    background-color: $status-revoked;
   }
 
   &.status-subscription > span, &.status-give_subscription > span {
-	background-color: $status-subscription;
+    background-color: $status-subscription;
   }
 
 }
@@ -148,12 +148,12 @@ Status Colors
 //ID & link field
 #give-payments-filter {
   .give-payment-id {
-	@include give-label();
-	@include give-label-gray();
+    @include give-label();
+    @include give-label-gray();
   }
 
   .column-details {
-	padding-right:30px;
+    padding-right: 30px;
   }
 
 }
@@ -162,11 +162,11 @@ Status Colors
 
 #give-order-update {
   .give-donation-status {
-	display: inline-block;
-	float: none;
-	margin: 0 0 0 10px;
-	position: relative;
-	top: 3px;
+    display: inline-block;
+    float: none;
+    margin: 0 0 0 10px;
+    position: relative;
+    top: 3px;
   }
 }
 
@@ -175,7 +175,7 @@ Responsiveness
 ---------------------------*/
 @media handheld, only screen and (max-width: 640px) {
   .wp-list-table.forms th {
-	width: auto !important;
+    width: auto !important;
   }
 }
 
@@ -285,26 +285,28 @@ Responsiveness
   margin-right: 5%;
 }
 
-#give-donation-overview li.actions {
-  text-align: right;
-  min-width: 200px;
-}
-
-#give-donation-overview ul li.remove {
-  text-align: right;
-}
-
-#give-donation-overview .row {
-  padding: 12px;
-  border-bottom: 1px solid #eee;
-}
-
 #give-donation-overview ul {
   font-size: 0;
-}
 
-#give-donation-overview ul li {
-  font-size: 13px;
+  li {
+    font-size: 13px;
+
+    &.actions {
+      text-align: right;
+      min-width: 200px;
+    }
+
+    &.remove {
+      text-align: right;
+    }
+
+  }
+
+  .row {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+  }
+
 }
 
 #give-order-data .data span {
@@ -316,15 +318,11 @@ Responsiveness
   padding: 12px;
 }
 
-.give-price-field {
+input.give-price-field {
   width: 80px;
+  padding: 3px 5px;
 }
 
-.give_repeatable_upload_wrapper .pricing select, .give_repeatable_product_wrapper .give-select,
-#give_products .give-select {
-  min-width: 100%;
-  max-width: 200px;
-}
 
 .give_forms_page_give-payment-history.js .postbox .hndle {
   cursor: default;
@@ -332,61 +330,61 @@ Responsiveness
 
 @media screen and (max-width: 782px) {
   .order-data-column input[type="email"] {
-	padding: 6px 10px;
+    padding: 6px 10px;
   }
 }
 
 @media screen and (max-width: 1024px) {
   #give-edit-order-form .column {
-	width: 49%;
+    width: 49%;
   }
 }
 
 @media screen and (max-width: 1280px) and (min-width: 1279px) {
 
   #give-edit-order-form .column {
-	width: 32%;
+    width: 32%;
   }
 }
 
 @media screen and (min-width: 1280px) {
   #give-edit-order-form .column {
-	width: 32%;
-	margin-right: 3%;
+    width: 32%;
+    margin-right: 3%;
   }
 
   #give-edit-order-form .columns-4 .column, #give-donation-overview.columns-4 .row > ul > li,
   #give-donation-overview.columns-4 .inside > ul > li {
-	width: 22%;
-	margin-right: 2%;
+    width: 22%;
+    margin-right: 2%;
   }
 
   #give-edit-order-form .columns-3 .column:nth-child(2n+1),
   #give-edit-order-form .columns-4 .column:nth-child(3n+1),
   #give-edit-order-form .column:nth-child(2n+1) {
-	margin-right: 0;
+    margin-right: 0;
   }
 
   #give-donation-overview.columns-4 li.download {
-	width: 33%;
+    width: 33%;
   }
 
   #give-donation-overview.columns-4 li.price,
   #give-donation-overview.columns-3 .row > ul > li.price,
   #give-donation-overview.columns-3 .inside > ul > li.price {
-	width: 14%;
+    width: 14%;
   }
 
   #give-donation-overview.columns-4 li.actions {
-	width: 25%;
-	margin-top: 0;
-	margin-right: 0;
+    width: 25%;
+    margin-top: 0;
+    margin-right: 0;
   }
 }
 
 @media screen and (max-width: 1284px) {
   #give-edit-order-form .column strong {
-	display: block;
+    display: block;
   }
 }
 
@@ -397,8 +395,12 @@ Donation Details
 #give-customer-details {
 
   .inside {
-	padding-top: 15px;
-	padding-bottom: 15px;
+    padding-top: 15px;
+    padding-bottom: 15px;
   }
 
+}
+
+.give_forms_page_give-payment-history #give-dashboard-widgets-wrap #side-sortables {
+  padding-top: 0;
 }

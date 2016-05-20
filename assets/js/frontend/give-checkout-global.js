@@ -9,24 +9,6 @@
  */
 var give_scripts, give_global_vars;
 
-
-//Get Query function used to grab URL params
-(function ($) {
-    $.getQuery = function (query) {
-        query = query.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-        var expr = "[\\?&]" + query + "=([^&#]*)";
-        var regex = new RegExp(expr);
-        var results = regex.exec(window.location.href);
-        if (results !== null) {
-            return results[1];
-            return decodeURIComponent(results[1].replace(/\+/g, " "));
-        } else {
-            return false;
-        }
-    };
-})(jQuery);
-
-
 jQuery(function ($) {
 
     var doc = $(document);
@@ -78,7 +60,6 @@ jQuery(function ($) {
     doc.on('change', '#give_cc_address input.card_state, #give_cc_address select', update_billing_state_field
     );
 
-    sent_back_to_form();
 
     /**
      * Format CC Fields
@@ -124,7 +105,7 @@ jQuery(function ($) {
     /**
      * Validate cc fields on change
      */
-    doc.on('keyup change', '.card-number, .card-cvc, .card-expiry', function () {
+    doc.on('keyup change', '.give-form .card-number, .give-form .card-cvc, .give-form .card-expiry', function () {
         var el = $(this),
             give_form = el.parents('form.give-form'),
             id = el.attr('id'),
@@ -183,6 +164,7 @@ jQuery(function ($) {
 
     /**
      * Unformat Currency
+     *
      * @param price
      * @returns {number}
      */
@@ -206,7 +188,9 @@ jQuery(function ($) {
     });
 
     /**
-     * Custom Donation Amount - If user focuses on field & changes value then updates price
+     * Custom Donation Amount Focus In
+     *
+     * @description: If user focuses on field & changes value then updates price
      */
     doc.on('focus', '.give-donation-amount .give-text-input', function (e) {
 
@@ -216,7 +200,10 @@ jQuery(function ($) {
         $(this).removeClass('invalid-amount');
 
         //Set data amount
-        $(this).data('amount', give_unformat_currency($(this).val()));
+        var current_total = parent_form.find('.give-final-total-amount').data('total');
+        $(this).data('amount', give_unformat_currency(current_total));
+
+
         //This class is used for CSS purposes
         $(this).parent('.give-donation-amount').addClass('give-custom-amount-focus-in');
 
@@ -227,19 +214,25 @@ jQuery(function ($) {
         parent_form.find('.give-radio-input.give-radio-level-custom').prop('checked', true); //Radio
         parent_form.find('.give-select-level').prop('selected', false); //Select
         parent_form.find('.give-select-level .give-donation-level-custom').prop('selected', true); //Select
+
     });
 
     /**
-     * Custom Donation (fires on focus end aka "blur")
+     * Custom Donation Focus Out
+     *
+     * @description: Fires on focus end aka "blur"
+     *
      */
     doc.on('blur', '.give-donation-amount .give-text-input', function (e) {
 
         var parent_form = $(this).closest('form');
         var pre_focus_amount = $(this).data('amount');
+        var this_value = $(this).val();
         var minimum_amount = parent_form.find('input[name="give-form-minimum"]');
         var value_min = give_unformat_currency(minimum_amount.val());
-        var is_level = false;
-        var value_now = give_unformat_currency($(this).val());
+        var value_now = (this_value == 0) ? value_min : give_unformat_currency(this_value);
+
+        //Set the custom amount input value format properly
         var format_args = {
             symbol: '',
             decimal: give_global_vars.decimal_separator,
@@ -247,10 +240,10 @@ jQuery(function ($) {
             precision: give_global_vars.number_decimals
         };
         var formatted_total = give_format_currency(value_now, format_args);
-
-        //Set the custom amount input value formatted properly
         $(this).val(formatted_total);
 
+        //Flag Multi-levels for min. donation conditional
+        var is_level = false;
         parent_form.find('*[data-price-id]').each(function () {
             if (this.value !== 'custom' && give_unformat_currency(this.value) === value_now) {
                 is_level = true;
@@ -258,7 +251,7 @@ jQuery(function ($) {
         });
 
         //Does this number have an accepted minimum value?
-        if (( !$.isNumeric(value_now) || value_now < value_min || value_now < 1 ) && !is_level) {
+        if (( value_now < value_min || value_now < 1 ) && !is_level && value_min !== 0) {
 
             //It doesn't... Invalid Minimum
             $(this).addClass('give-invalid-amount');
@@ -270,18 +263,19 @@ jQuery(function ($) {
             //If no error present, create it, insert, slide down (show)
             if (invalid_minimum.length === 0) {
                 var error = $('<div class="give_error give-invalid-minimum">' + minimum_amount + '</div>').hide();
-                error.insertAfter(parent_form.find('.give-total-wrap')).slideDown();
+                error.insertBefore(parent_form.find('.give-total-wrap')).show();
             }
 
         } else {
+
             //Minimum amount met - slide up error & remove it from DOM
-            parent_form.find('.give-invalid-minimum').slideUp(400, function () {
+            parent_form.find('.give-invalid-minimum').slideUp(300, function () {
                 $(this).remove();
             });
             //Re-enable submit
             parent_form.find('.give-submit').prop('disabled', false);
-        }
 
+        }
         //If values don't match up then proceed with updating donation total value
         if (pre_focus_amount !== value_now) {
 
@@ -289,15 +283,13 @@ jQuery(function ($) {
             format_args.symbol = give_global_vars.currency_sign;
             parent_form.find('.give-final-total-amount').data('total', value_now).text(give_format_currency(value_now, format_args));
 
-            //fade in/out updating text
-            $(this).next('.give-updating-price-loader').stop().fadeIn().fadeOut();
-
         }
 
         //This class is used for CSS purposes
         $(this).parent('.give-donation-amount').removeClass('give-custom-amount-focus-in');
 
     });
+
 
     //Multi-level Buttons: Update Amount Field based on Multi-level Donation Select
     doc.on('click touchend', '.give-donation-level-btn', function (e) {
@@ -331,9 +323,27 @@ jQuery(function ($) {
         var currency_symbol = parent_form.find('.give-currency-symbol').text();
 
         //remove old selected class & add class for CSS purposes
-        $(selected_field).parents('.give-donation-levels-wrap').find('.give-default-level').removeClass('give-default-level');
-        $(selected_field).addClass('give-default-level');
+        selected_field.parents('.give-donation-levels-wrap').find('.give-default-level').removeClass('give-default-level');
+        selected_field.find('option').removeClass('give-default-level');
+
+        if (selected_field.is('select')) {
+            selected_field.find(':selected').addClass('give-default-level');
+        } else {
+            selected_field.addClass('give-default-level');
+        }
+
         parent_form.find('.give-amount-top').removeClass('invalid-amount');
+
+        //check if price ID blank because of dropdown type
+        if (!price_id) {
+            price_id = selected_field.find('option:selected').data('price-id');
+        }
+
+        //update price id field for variable products
+        parent_form.find('input[name=give-price-id]').val(price_id);
+
+        //Update hidden price field
+        parent_form.find('.give-amount-hidden').val(this_amount);
 
         //Is this a custom amount selection?
         if (this_amount === 'custom') {
@@ -341,20 +351,6 @@ jQuery(function ($) {
             parent_form.find('.give-amount-top').val('').focus();
             return false; //Bounce out
         }
-
-        //check if price ID blank because of dropdown type
-        if (!price_id) {
-            price_id = selected_field.find('option:selected').data('price-id');
-        }
-
-        //Fade in/out price loading updating image
-        parent_form.find('.give-updating-price-loader').stop().fadeIn().fadeOut();
-
-        //update price id field for variable products
-        parent_form.find('input[name=give-price-id]').val(price_id);
-
-        //Update hidden price field
-        parent_form.find('.give-amount-hidden').val(this_amount);
 
         //update custom amount field
         parent_form.find('.give-amount-top').val(this_amount);
@@ -369,8 +365,12 @@ jQuery(function ($) {
 
         $('.give-donation-amount .give-text-input').trigger('blur');
 
+        // trigger an event for hooks
+        $(document).trigger('give_donation_value_updated', [parent_form, this_amount, price_id]);
+
         //Update donation form bottom total data attr and text
         parent_form.find('.give-final-total-amount').data('total', this_amount).text(formatted_total);
+
     }
 
     /**
@@ -378,8 +378,8 @@ jQuery(function ($) {
      */
     function sent_back_to_form() {
 
-        var form_id = $.getQuery('form-id');
-        var payment_mode = $.getQuery('payment-mode');
+        var form_id = give_get_parameter_by_name('form-id');
+        var payment_mode = give_get_parameter_by_name('payment-mode');
 
         //Sanity check - only proceed if query strings in place
         if (!form_id || !payment_mode) {
@@ -430,6 +430,27 @@ jQuery(function ($) {
         }
 
 
+    }
+
+    sent_back_to_form();
+
+    /**
+     * Get Parameter by Name
+     *
+     * @see: http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
+     * @param name
+     * @param url
+     * @since 1.4.2
+     * @returns {*}
+     */
+    function give_get_parameter_by_name(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
 
 

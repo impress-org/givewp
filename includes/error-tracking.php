@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Functions/Errors
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -79,7 +79,7 @@ function give_get_errors() {
  * @since 1.0
  * @uses  Give_Session::get()
  *
- * @param int    $error_id      ID of the error being set
+ * @param int $error_id ID of the error being set
  * @param string $error_message Message to store with the error
  *
  * @return void

@@ -555,7 +555,7 @@ x:-o-prefocus, .qtip .qtip-tip {
  * @description: Fonts are from icomoon and the src paths need to be relative to template directory
  * @package     Give
  * @subpackage  SCSS/Frontend
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 @font-face {
@@ -651,7 +651,7 @@ x:-o-prefocus, .qtip .qtip-tip {
  *
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 /*------------------------------------
@@ -668,17 +668,17 @@ Forms CPT
 .cmb2-id--give-reveal-label,
 .cmb2-id--give-custom-amount-minimum,
 .cmb2-id--give-custom-amount-text,
-.cmb2-id--give-offline-checkout-notes {
+.cmb2-id--give-offline-checkout-notes,
+.cmb-type-levels-id,
+#_give_donation_levels_repeat .cmb-group-title,
+#_give_donation_levels_repeat .cmb-row > .cmb-remove-group-row,
+#_give_donation_levels_repeat .cmb-row > .handlediv {
   display: none; }
 
 /* Donation Levels Repeating Field */
 #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row .cmb2-radio-list label {
   font-size: 12px; }
 
-#_give_donation_levels_repeat .cmb-group-title, #_give_donation_levels_repeat .cmb-row > .cmb-remove-group-row, #_give_donation_levels_repeat .cmb-row > .handlediv {
-  display: none; }
-
-/* Table Rows */
 div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
   padding: 0 !important;
   margin: 0 !important;
@@ -704,6 +704,8 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
         vertical-align: middle;
         padding: 10px 15px;
         border-right: 1px solid #e9e9e9; }
+        .cmb2-id--give-levels-header .table-container > .table-row > .table-cell.col-id {
+          display: none; }
 
 #_give_donation_levels_repeat {
   background: #F7F7F7;
@@ -732,7 +734,7 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
   margin-left: 0; }
 
 .give-money-symbol {
-  border: 1px solid #e9e9e9;
+  border: 1px solid #DDD;
   background: #FCFCFC;
   margin: 0;
   font-size: 14px;
@@ -743,13 +745,6 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
 
 .give-money-symbol-after {
   border-left: 0; }
-
-p.give-level-id {
-  border-radius: 50%;
-  border: 1px solid #e9e9e9;
-  background: #FCFCFC;
-  padding: 2px 7px;
-  font-size: 11px; }
 
 .give-underline {
   text-decoration: underline; }
@@ -767,21 +762,21 @@ p.give-level-id {
   .postbox-container .cmb-row .cmb-th label {
     padding-left: 8px; }
 
-/* Smaller Resolution Desktops AND UP */
 @media only screen and (min-width: 851px) {
-  #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row > .cmb-th {
-    display: none; }
-  #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row > .cmb-td {
-    float: left;
-    width: 100%; }
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row {
     float: left;
-    border-bottom: none; }
+    border-bottom: none;
+    padding-right: 10px; }
+    #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row > .cmb-th {
+      display: none; }
+    #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row > .cmb-td {
+      float: left;
+      width: 100%; }
   .cmb-type-give-default-radio-inline .cmb-td {
     margin-top: 5px; } }
 
 /* Smaller Resolution Desktops */
-@media only screen and (min-width: 851px) and (max-width: 1285px) {
+@media only screen and (min-width: 851px) and (max-width: 1201px) {
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-remove-field-row {
     width: 100%;
     padding-top: 0; }
@@ -789,28 +784,18 @@ p.give-level-id {
     width: 105px; }
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list input.cmb2-text-money {
     width: 65px; }
-  #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-type-text {
-    width: 180px;
-    padding-right: 20px; }
-  #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-type-radio-inline {
+  #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list .give-multilevel-text-field {
+    width: 160px; }
+  #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list .cmb-type-radio-inline {
     margin-left: 20px; }
-  .col-id {
-    width: 15px; }
-  p.give-level-id {
-    margin: 7px 15px 0 0; }
   .col-amount {
     width: 70px; }
   .col-text {
-    width: 165px; }
+    width: 140px; }
   .col-sort {
-    display: none !important; } }
-
-@media only screen and (min-width: 1000px) {
-  #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-type-text {
-    width: 220px;
-    padding-right: 20px; }
-  .col-text {
-    width: 205px; } }
+    display: none !important; }
+  .give-money-field {
+    width: 55px; } }
 
 @media only screen and (min-width: 1201px) {
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-remove-field-row {
@@ -819,37 +804,19 @@ p.give-level-id {
     padding-right: 20px; }
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-remove-field-row.cmb-row {
     padding-right: 0; }
-  #_give_donation_levels_repeat .regular-text {
-    width: 100%; }
-  .col-id {
-    width: 20px; }
-  p.give-level-id {
-    margin: 6px 0 0; }
   .col-amount {
-    width: 85px; }
+    width: 93px; }
   .col-text {
     width: 195px; }
   .col-sort {
-    width: 100px; } }
+    width: 100px; }
+  .give-multilevel-text-field {
+    width: 205px; } }
 
-@media only screen and (min-width: 1375px) {
-  .col-text {
-    width: 270px; }
-  #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-type-text {
-    width: 290px; } }
-
-/* Small Resolution Repeater */
 @media only screen and (max-width: 850px) {
   div.cmb-type-levels-repeater-header {
-    display: none !important; }
-  p.give-level-id {
-    float: left;
-    font-weight: bold;
-    margin-top: 5px; } }
+    display: none !important; } }
 
-/*-------------------------------------
-Publish Metabox
--------------------------------------*/
 /*Shortcode Input */
 .shortcode-wrap {
   margin: 1px 14px 12px 11px; }
@@ -933,7 +900,7 @@ Tooltips
  * @description Add-on Styles
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 .type-download {
@@ -999,7 +966,7 @@ Tooltips
  * @description Payment History Styles
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 #give-dashboard-widgets-wrap .inside {
@@ -1146,7 +1113,7 @@ Logs
  * @description Displays when user activates the plugin
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 .welcome-h1 {
@@ -1213,7 +1180,7 @@ Logs
  * @description Payment History Styles
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 #give_donor_export_download {
@@ -1224,7 +1191,7 @@ Logs
  *
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 /*------------------------------------
@@ -1371,7 +1338,7 @@ a.give-delete {
  * @description Payment History Styles
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 #give-payment-filters, .give-submit-wrap {
@@ -1588,22 +1555,18 @@ Responsiveness
   vertical-align: top;
   margin-right: 5%; }
 
-#give-donation-overview li.actions {
-  text-align: right;
-  min-width: 200px; }
-
-#give-donation-overview ul li.remove {
-  text-align: right; }
-
-#give-donation-overview .row {
-  padding: 12px;
-  border-bottom: 1px solid #eee; }
-
 #give-donation-overview ul {
   font-size: 0; }
-
-#give-donation-overview ul li {
-  font-size: 13px; }
+  #give-donation-overview ul li {
+    font-size: 13px; }
+    #give-donation-overview ul li.actions {
+      text-align: right;
+      min-width: 200px; }
+    #give-donation-overview ul li.remove {
+      text-align: right; }
+  #give-donation-overview ul .row {
+    padding: 12px;
+    border-bottom: 1px solid #eee; }
 
 #give-order-data .data span {
   color: #666;
@@ -1612,13 +1575,9 @@ Responsiveness
 #give-donation-overview .inside {
   padding: 12px; }
 
-.give-price-field {
-  width: 80px; }
-
-.give_repeatable_upload_wrapper .pricing select, .give_repeatable_product_wrapper .give-select,
-#give_products .give-select {
-  min-width: 100%;
-  max-width: 200px; }
+input.give-price-field {
+  width: 80px;
+  padding: 3px 5px; }
 
 .give_forms_page_give-payment-history.js .postbox .hndle {
   cursor: default; }
@@ -1669,13 +1628,16 @@ Donation Details
   padding-top: 15px;
   padding-bottom: 15px; }
 
+.give_forms_page_give-payment-history #give-dashboard-widgets-wrap #side-sortables {
+  padding-top: 0; }
+
 /**
  * Give Admin Dashboard SCSS
  *
  * @description Styles the Give dashboard widget
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 .give-dashboard-widget .give-dashboard-today {
@@ -1751,7 +1713,7 @@ Donation Details
  *
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 /* Donors Listing Page Style
@@ -1981,7 +1943,7 @@ Donation Details
  *
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 /*=Give Shortcode Button

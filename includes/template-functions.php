@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Functions/Templates
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -180,7 +180,7 @@ add_action( 'wp_head', 'give_version_in_header' );
  */
 function give_is_donation_history_page() {
 
-	$ret = is_page( give_get_option( 'purchase_history_page' ) );
+	$ret = is_page( give_get_option( 'history_page' ) );
 
 	return apply_filters( 'give_is_donation_history_page', $ret );
 }

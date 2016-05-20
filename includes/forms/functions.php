@@ -4,7 +4,7 @@
  *
  * @package     WordImpress
  * @subpackage  Includes/Forms
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.1
  */
@@ -81,14 +81,14 @@ function give_is_float_labels_enabled( $args ) {
 /**
  * Determines if a user can checkout or not
  *
+ * @description: Allows themes and plugins to set donation checkout conditions
  * @since 1.0
  * @global $give_options Array of all the Give Options
  * @return bool Can user checkout?
  */
 function give_can_checkout() {
-	global $give_options;
 
-	$can_checkout = true; // Always true for now
+	$can_checkout = true;
 
 	return (bool) apply_filters( 'give_can_checkout', $can_checkout );
 }
@@ -124,7 +124,7 @@ function give_is_success_page() {
 /**
  * Send To Success Page
  *
- * Sends the user to the succes page.
+ * Sends the user to the success page.
  *
  * @param string $query_string
  *
@@ -133,7 +133,6 @@ function give_is_success_page() {
  * @return      void
  */
 function give_send_to_success_page( $query_string = null ) {
-	global $give_options;
 
 	$redirect = give_get_success_page_uri();
 
@@ -185,7 +184,7 @@ function give_send_back_to_checkout( $args = array() ) {
 /**
  * Get Success Page URL
  *
- * Gets the success page URL.
+ * @description Gets the success page URL.
  *
  * @param string $query_string
  *
@@ -194,14 +193,16 @@ function give_send_back_to_checkout( $args = array() ) {
  * @return      string
  */
 function give_get_success_page_url( $query_string = null ) {
-	global $give_options;
 
-	$success_page = get_permalink( $give_options['success_page'] );
+	$success_page = give_get_option( 'success_page', 0 );
+	$success_page = get_permalink( $success_page );
+
 	if ( $query_string ) {
 		$success_page .= $query_string;
 	}
 
 	return apply_filters( 'give_success_page_url', $success_page );
+
 }
 
 /**
@@ -210,7 +211,7 @@ function give_get_success_page_url( $query_string = null ) {
  * @since 1.0
  * @global     $give_options Array of all the Give Options
  *
- * @param bool $extras       Extras to append to the URL
+ * @param bool $extras Extras to append to the URL
  *
  * @return mixed|void Full URL to the Transaction Failed page, if present, home page if it doesn't exist
  */
@@ -265,7 +266,7 @@ add_action( 'template_redirect', 'give_listen_for_failed_payments' );
  * Check if a field is required
  *
  * @param string $field
- * @param int    $form_id
+ * @param int $form_id
  *
  * @access      public
  * @since       1.0
@@ -279,150 +280,6 @@ function give_field_is_required( $field = '', $form_id ) {
 }
 
 /**
- * Retrieve an array of banned_emails
- *
- * @since       1.0
- * @return      array
- */
-function give_get_banned_emails() {
-	$emails = array_map( 'trim', give_get_option( 'banned_emails', array() ) );
-
-	return apply_filters( 'give_get_banned_emails', $emails );
-}
-
-/**
- * Determines if an email is banned
- *
- * @since       2.0
- * @return      bool
- */
-function give_is_email_banned( $email = '' ) {
-
-	if ( empty( $email ) ) {
-		return false;
-	}
-
-	$ret = in_array( trim( $email ), give_get_banned_emails() );
-
-	return apply_filters( 'give_is_email_banned', $ret, $email );
-}
-
-/**
- * Determines if secure checkout pages are enforced
- *
- * @since       1.0
- * @return      bool True if enforce SSL is enabled, false otherwise
- */
-function give_is_ssl_enforced() {
-	$ssl_enforced = give_get_option( 'enforce_ssl', false );
-
-	return (bool) apply_filters( 'give_is_ssl_enforced', $ssl_enforced );
-}
-
-/**
- * Handle redirections for SSL enforced checkouts
- *
- * @since 1.0
- * @global $give_options Array of all the Give Options
- * @return void
- */
-function give_enforced_ssl_redirect_handler() {
-	if ( ! give_is_ssl_enforced() || is_admin() || is_ssl() ) {
-		return;
-	}
-
-	if ( isset( $_SERVER["HTTPS"] ) && $_SERVER["HTTPS"] == "on" ) {
-		return;
-	}
-
-	$uri = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-
-	wp_safe_redirect( $uri );
-	exit;
-}
-
-//add_action( 'template_redirect', 'give_enforced_ssl_redirect_handler' );
-
-/**
- * Handle rewriting asset URLs for SSL enforced checkouts
- *
- * @since 1.0
- * @return void
- */
-function give_enforced_ssl_asset_handler() {
-	if ( ! give_is_ssl_enforced() || is_admin() ) {
-		return;
-	}
-
-	$filters = array(
-		'post_thumbnail_html',
-		'wp_get_attachment_url',
-		'wp_get_attachment_image_attributes',
-		'wp_get_attachment_url',
-		'option_stylesheet_url',
-		'option_template_url',
-		'script_loader_src',
-		'style_loader_src',
-		'template_directory_uri',
-		'stylesheet_directory_uri',
-		'site_url'
-	);
-
-	$filters = apply_filters( 'give_enforced_ssl_asset_filters', $filters );
-
-	foreach ( $filters as $filter ) {
-		add_filter( $filter, 'give_enforced_ssl_asset_filter', 1 );
-	}
-}
-
-//add_action( 'template_redirect', 'give_enforced_ssl_asset_handler' );
-
-/**
- * Filter filters and convert http to https
- *
- * @since 1.0
- *
- * @param mixed $content
- *
- * @return mixed
- */
-function give_enforced_ssl_asset_filter( $content ) {
-
-	if ( is_array( $content ) ) {
-
-		$content = array_map( 'give_enforced_ssl_asset_filter', $content );
-
-	} else {
-
-		// Detect if URL ends in a common domain suffix. We want to only affect assets
-		$suffixes = array(
-			'br',
-			'ca',
-			'cn',
-			'com',
-			'de',
-			'dev',
-			'edu',
-			'fr',
-			'in',
-			'info',
-			'jp',
-			'local',
-			'mobi',
-			'name',
-			'net',
-			'nz',
-			'org',
-			'ru',
-		);
-
-	}
-
-	return $content;
-}
-
-
-/**
  * Record Sale In Log
  *
  * Stores log information for a form sale.
@@ -430,10 +287,10 @@ function give_enforced_ssl_asset_filter( $content ) {
  * @since 1.0
  * @global            $give_logs
  *
- * @param int         $give_form_id Give Form ID
- * @param int         $payment_id   Payment ID
- * @param bool|int    $price_id     Price ID, if any
- * @param string|null $sale_date    The date of the sale
+ * @param int $give_form_id Give Form ID
+ * @param int $payment_id Payment ID
+ * @param bool|int $price_id Price ID, if any
+ * @param string|null $sale_date The date of the sale
  *
  * @return void
  */
@@ -476,12 +333,12 @@ function give_increase_purchase_count( $give_form_id = 0 ) {
  *
  * @since 1.0
  *
- * @param int $give_form_id Give Form ID
+ * @param int $form_id Give Form ID
  *
  * @return bool|int
  */
-function give_decrease_purchase_count( $give_form_id = 0 ) {
-	$form = new Give_Donate_Form( $give_form_id );
+function give_decrease_purchase_count( $form_id = 0 ) {
+	$form = new Give_Donate_Form( $form_id );
 
 	return $form->decrease_sales();
 }
@@ -492,7 +349,7 @@ function give_decrease_purchase_count( $give_form_id = 0 ) {
  * @since 1.0
  *
  * @param int $give_form_id Give Form ID
- * @param int $amount       Earnings
+ * @param int $amount Earnings
  *
  * @return bool|int
  */
@@ -507,13 +364,13 @@ function give_increase_earnings( $give_form_id = 0, $amount ) {
  *
  * @since 1.0
  *
- * @param int $give_form_id Give Form ID
- * @param int $amount       Earnings
+ * @param int $form_id Give Form ID
+ * @param int $amount Earnings
  *
  * @return bool|int
  */
-function give_decrease_earnings( $give_form_id = 0, $amount ) {
-	$form = new Give_Donate_Form( $give_form_id );
+function give_decrease_earnings( $form_id = 0, $amount ) {
+	$form = new Give_Donate_Form( $form_id );
 
 	return $form->decrease_earnings( $amount );
 }
@@ -524,12 +381,12 @@ function give_decrease_earnings( $give_form_id = 0, $amount ) {
  *
  * @since 1.0
  *
- * @param int $give_form_id Give Form ID
+ * @param int $form_id Give Form ID
  *
  * @return int $earnings Earnings for a certain form
  */
-function give_get_form_earnings_stats( $give_form_id = 0 ) {
-	$give_form = new Give_Donate_Form( $give_form_id );
+function give_get_form_earnings_stats( $form_id = 0 ) {
+	$give_form = new Give_Donate_Form( $form_id );
 
 	return $give_form->earnings;
 }
@@ -608,8 +465,8 @@ function give_get_average_monthly_form_earnings( $form_id = 0 ) {
  *
  * @since       1.0
  *
- * @param int $form_id    ID of the download
- * @param int $price_id   ID of the price option
+ * @param int $form_id ID of the download
+ * @param int $price_id ID of the price option
  * @param int $payment_id optional payment ID for use in filters
  *
  * @return string $price_name Name of the price option
@@ -622,7 +479,11 @@ function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 
 	foreach ( $prices as $price ) {
 
 		if ( intval( $price['_give_id']['level_id'] ) == intval( $price_id ) ) {
-			$price_name = isset( $price['_give_text'] ) ? $price['_give_text'] : '';
+
+			$price_text     = isset( $price['_give_text'] ) ? $price['_give_text'] : '';
+			$price_fallback = give_currency_filter( give_format_amount( $price['_give_amount'] ) );
+			$price_name     = ! empty( $price_text ) ? $price_text : $price_fallback;
+
 		}
 
 	}
@@ -651,6 +512,55 @@ function give_price_range( $form_id = 0 ) {
 	return apply_filters( 'give_price_range', $range, $form_id, $low, $high );
 }
 
+
+/**
+ * Get Lowest Price ID
+ *
+ * @description: Retrieves the ID for the cheapest price option of a variable donation form
+ *
+ * @since 1.5
+ *
+ * @param int $form_id ID of the donation
+ *
+ * @return int ID of the lowest price
+ */
+function give_get_lowest_price_id( $form_id = 0 ) {
+
+	if ( empty( $form_id ) ) {
+		$form_id = get_the_ID();
+	}
+
+	if ( ! give_has_variable_prices( $form_id ) ) {
+		return give_get_form_price( $form_id );
+	}
+
+	$prices = give_get_variable_prices( $form_id );
+
+	$low    = 0.00;
+	$min_id = 1;
+
+	if ( ! empty( $prices ) ) {
+
+		foreach ( $prices as $key => $price ) {
+
+			if ( empty( $price['_give_amount'] ) ) {
+				continue;
+			}
+
+			if ( ! isset( $min ) ) {
+				$min = $price['_give_amount'];
+			} else {
+				$min = min( $min, $price['_give_amount'] );
+			}
+
+			if ( $price['_give_amount'] == $min ) {
+				$min_id = $price['_give_id']['level_id'];
+			}
+		}
+	}
+
+	return (int) $min_id;
+}
 
 /**
  * Retrieves cheapest price option of a variable priced form
@@ -792,8 +702,8 @@ function give_get_form_minimum_price( $form_id = 0 ) {
  *
  * @since 1.0
  *
- * @param int      $form_id  ID of the form price to show
- * @param bool     $echo     Whether to echo or return the results
+ * @param int $form_id ID of the form price to show
+ * @param bool $echo Whether to echo or return the results
  * @param bool|int $price_id Optional price id for variable pricing
  *
  * @return int $formatted_price
@@ -851,9 +761,9 @@ add_filter( 'give_form_price', 'give_currency_filter', 20 );
  *
  * @since 1.0
  *
- * @param int $form_id  ID of the form
+ * @param int $form_id ID of the form
  * @param int $price_id ID of the price option
- * @param     int       @payment_id ID of the payment
+ * @param     int @payment_id ID of the payment
  *
  * @return float $amount Amount of the price option
  */
@@ -897,8 +807,8 @@ function give_get_form_goal( $form_id = 0 ) {
  *
  * @since 1.0
  *
- * @param int  $form_id ID of the form price to show
- * @param bool $echo    Whether to echo or return the results
+ * @param int $form_id ID of the form price to show
+ * @param bool $echo Whether to echo or return the results
  *
  * @return string $formatted_goal
  */
@@ -923,3 +833,37 @@ function give_goal( $form_id = 0, $echo = true ) {
 
 add_filter( 'give_form_goal', 'give_format_amount', 10 );
 add_filter( 'give_form_goal', 'give_currency_filter', 20 );
+
+
+/**
+ * Checks if users can only donate when logged in
+ *
+ * @since 1.0
+ * @global $give_options
+ * @return bool $ret Whether or not the logged_in_only setting is set
+ */
+function give_logged_in_only( $form_id ) {
+
+	$form_option = get_post_meta( $form_id, '_give_logged_in_only', true );
+
+	$ret = ! empty( $form_option ) ? $form_option : false;
+
+	return (bool) apply_filters( 'give_logged_in_only', $ret, $form_id );
+
+}
+
+
+/**
+ * Checks the option for the "Register / Login Option"
+ *
+ * @since 1.4.1
+ *
+ * @param $form_id
+ */
+function give_show_login_register_option( $form_id ) {
+
+	$show_register_form = get_post_meta( $form_id, '_give_show_register_form', true );
+
+	return apply_filters( 'give_show_register_form', $show_register_form, $form_id );
+
+}

@@ -17,7 +17,7 @@
  *
  * @package     Give
  * @subpackage  Emails
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -27,6 +27,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Class Give_Email_Template_Tags
+ */
 class Give_Email_Template_Tags {
 
 	/**
@@ -48,7 +51,7 @@ class Give_Email_Template_Tags {
 	 *
 	 * @since 1.0
 	 *
-	 * @param string   $tag  Email tag to be replace in email
+	 * @param string $tag Email tag to be replace in email
 	 * @param callable $func Hook to run when email tag is found
 	 */
 	public function add( $tag, $description, $func ) {
@@ -99,8 +102,8 @@ class Give_Email_Template_Tags {
 	/**
 	 * Search content for email tags and filter email tags through their hooks
 	 *
-	 * @param string $content    Content to search for email tags
-	 * @param int    $payment_id The payment id
+	 * @param string $content Content to search for email tags
+	 * @param int $payment_id The payment id
 	 *
 	 * @since 1.0
 	 *
@@ -151,9 +154,9 @@ class Give_Email_Template_Tags {
  *
  * @since 1.0
  *
- * @param string   $tag         Email tag to be replace in email
- * @param string   $description Description of the email tag added
- * @param callable $func        Hook to run when email tag is found
+ * @param string $tag Email tag to be replace in email
+ * @param string $description Description of the email tag added
+ * @param callable $func Hook to run when email tag is found
  */
 function give_add_email_tag( $tag, $description, $func ) {
 	Give()->email_tags->add( $tag, $description, $func );
@@ -228,8 +231,8 @@ function give_get_emails_tags_list() {
 /**
  * Search content for email tags and filter email tags through their hooks
  *
- * @param string $content    Content to search for email tags
- * @param int    $payment_id The payment id
+ * @param string $content Content to search for email tags
+ * @param int $payment_id The payment id
  *
  * @since 1.0
  *
@@ -356,11 +359,14 @@ add_action( 'give_add_email_tags', 'give_setup_email_tags' );
  * @return string name
  */
 function give_email_tag_first_name( $payment_id ) {
-	$payment_data = give_get_payment_meta( $payment_id );
-	if ( empty( $payment_data['user_info'] ) ) {
+	$payment   = new Give_Payment( $payment_id );
+	$user_info = $payment->user_info;
+
+	if ( empty( $user_info ) ) {
 		return '';
 	}
-	$email_name = give_get_email_names( $payment_data['user_info'] );
+
+	$email_name = give_get_email_names( $user_info );
 
 	return $email_name['name'];
 }
@@ -374,11 +380,14 @@ function give_email_tag_first_name( $payment_id ) {
  * @return string fullname
  */
 function give_email_tag_fullname( $payment_id ) {
-	$payment_data = give_get_payment_meta( $payment_id );
-	if ( empty( $payment_data['user_info'] ) ) {
+	$payment   = new Give_Payment( $payment_id );
+	$user_info = $payment->user_info;
+
+	if ( empty( $user_info ) ) {
 		return '';
 	}
-	$email_name = give_get_email_names( $payment_data['user_info'] );
+
+	$email_name = give_get_email_names( $user_info );
 
 	return $email_name['fullname'];
 }
@@ -392,11 +401,14 @@ function give_email_tag_fullname( $payment_id ) {
  * @return string username
  */
 function give_email_tag_username( $payment_id ) {
-	$payment_data = give_get_payment_meta( $payment_id );
-	if ( empty( $payment_data['user_info'] ) ) {
+	$payment   = new Give_Payment( $payment_id );
+	$user_info = $payment->user_info;
+
+	if ( empty( $user_info ) ) {
 		return '';
 	}
-	$email_name = give_get_email_names( $payment_data['user_info'] );
+
+	$email_name = give_get_email_names( $user_info );
 
 	return $email_name['username'];
 }
@@ -410,7 +422,9 @@ function give_email_tag_username( $payment_id ) {
  * @return string user_email
  */
 function give_email_tag_user_email( $payment_id ) {
-	return give_get_payment_user_email( $payment_id );
+	$payment = new Give_Payment( $payment_id );
+
+	return $payment->email;
 }
 
 /**
@@ -452,9 +466,9 @@ function give_email_tag_billing_address( $payment_id ) {
  * @return string date
  */
 function give_email_tag_date( $payment_id ) {
-	$payment_data = give_get_payment_meta( $payment_id );
+	$payment = new Give_Payment( $payment_id );
 
-	return date_i18n( get_option( 'date_format' ), strtotime( $payment_data['date'] ) );
+	return date_i18n( get_option( 'date_format' ), strtotime( $payment->date ) );
 }
 
 /**
@@ -466,7 +480,8 @@ function give_email_tag_date( $payment_id ) {
  * @return string price
  */
 function give_email_tag_price( $payment_id ) {
-	$price = give_currency_filter( give_format_amount( give_get_payment_amount( $payment_id ) ), give_get_payment_currency_code( $payment_id ) );
+	$payment = new Give_Payment( $payment_id );
+	$price   = give_currency_filter( give_format_amount( $payment->total ), $payment->currency );
 
 	return html_entity_decode( $price, ENT_COMPAT, 'UTF-8' );
 }
@@ -480,7 +495,9 @@ function give_email_tag_price( $payment_id ) {
  * @return int payment_id
  */
 function give_email_tag_payment_id( $payment_id ) {
-	return give_get_payment_number( $payment_id );
+	$payment = new Give_Payment( $payment_id );
+
+	return $payment->number;
 }
 
 /**
@@ -492,7 +509,9 @@ function give_email_tag_payment_id( $payment_id ) {
  * @return string receipt_id
  */
 function give_email_tag_receipt_id( $payment_id ) {
-	return give_get_payment_key( $payment_id );
+	$payment = new Give_Payment( $payment_id );
+
+	return $payment->key;
 }
 
 /**
@@ -504,10 +523,11 @@ function give_email_tag_receipt_id( $payment_id ) {
  * @return string $form_title
  */
 function give_email_tag_donation( $payment_id ) {
-	$payment_data = give_get_payment_meta( $payment_id );
-	$form_title   = ( ! empty( $payment_data['form_title'] ) ? $payment_data['form_title'] : __( 'There was an error retrieving this donation title', 'give' ) );
+	$payment    = new Give_Payment( $payment_id );
+	$form_title = get_the_title( $payment->form_id );
 
-	return $form_title;
+	return ! empty( $form_title ) ? $form_title : __( 'There was an error retrieving this donation title', 'give' );
+
 }
 
 /**
@@ -519,7 +539,8 @@ function give_email_tag_donation( $payment_id ) {
  * @return string gateway
  */
 function give_email_tag_payment_method( $payment_id ) {
-	return give_get_gateway_checkout_label( give_get_payment_gateway( $payment_id ) );
+	$payment = new Give_Payment( $payment_id );
+	return give_get_gateway_checkout_label( $payment->gateway );
 }
 
 /**
@@ -545,13 +566,13 @@ function give_email_tag_sitename( $payment_id ) {
  */
 function give_email_tag_receipt_link( $payment_id ) {
 
-	$receipt_url       = esc_url( add_query_arg( array(
+	$receipt_url = esc_url( add_query_arg( array(
 		'payment_key' => give_get_payment_key( $payment_id ),
 		'give_action' => 'view_receipt'
 	), home_url() ) );
-	$formatted = sprintf( __( '%1$sView it in your browser.%2$s', 'give' ), '<a href="' . $receipt_url . '">', '</a>' );
+	$formatted   = sprintf( __( '%1$sView it in your browser %2$s', 'give' ), '<a href="' . $receipt_url . '">', '&raquo;</a>' );
 
-	if(give_get_option('email_template') !== 'none') {
+	if ( give_get_option( 'email_template' ) !== 'none' ) {
 		return $formatted;
 	} else {
 		return $receipt_url;

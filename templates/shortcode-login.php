@@ -3,7 +3,7 @@
  * This template is used to display the login form with [give_login]
  */
 global $give_login_redirect;
-if ( ! is_user_logged_in() ) :
+if ( ! is_user_logged_in() ) {
 
 	// Show any error messages after form submission
 	give_print_errors( 0 ); ?>
@@ -33,6 +33,8 @@ if ( ! is_user_logged_in() ) :
 			<?php do_action( 'give_login_fields_after' ); ?>
 		</fieldset>
 	</form>
-<?php else : ?>
-	<?php give_output_error( __( 'You are already logged in', 'give' ), true, 'success' ); ?>
-<?php endif; ?>
+<?php } elseif( isset( $_GET['give-login-success'] ) && $_GET['give-login-success'] == true ) { ?>
+	<?php give_output_error( apply_filters('give_successful_login_message', __( 'Login successful. Welcome!', 'give' )), true, 'success' ); ?>
+<?php } else { ?>
+	<?php give_output_error( apply_filters('give_already_logged_in_message', __( 'You are already logged in to the site.', 'give' )), true, 'warning' ); ?>
+<?php } ?>

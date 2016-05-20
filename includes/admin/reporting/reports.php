@@ -10,7 +10,7 @@
  *
  * @package     Give
  * @subpackage  Admin/Reports
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -30,8 +30,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function give_reports_page() {
-	global $give_options;
-
 	$current_page = admin_url( 'edit.php?post_type=give_forms&page=give-reports' );
 	$active_tab   = isset( $_GET['tab'] ) ? $_GET['tab'] : 'reports';
 	?>

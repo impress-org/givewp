@@ -3,7 +3,7 @@
  *
  * @package     Give
  * @subpackage  SCSS/Frontend
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 
@@ -44,6 +44,10 @@ Layout
       height: auto;
       box-shadow: none;
     }
+  }
+
+  .give-custom-amount-text {
+    clear: both;
   }
 
   div.summary {
@@ -185,7 +189,11 @@ form[id*='give-form'], #give-recurring-form, form.give-form {
       border-radius: 0;
       outline: none;
       color: $dark;
+      background-color: #FDFDFD;
 
+      &:focus {
+        background-color: #fff;
+      }
       &.required {
         color: $dark;
       }
@@ -335,12 +343,14 @@ Notices, Warnings & Errors
     @include iconstyle();
     position: absolute;
     top: 50%;
+    font-size: 16px;
     margin-top: -15px;
     left: -17px;
     background-color: $red;
     color: #FFF;
     width: 30px;
     height: 30px;
+    font-size: 16px;
     border-radius: 100%;
     text-align: center;
     line-height: 30px;
@@ -388,7 +398,7 @@ Radio Lists
 
     label {
       cursor: pointer;
-      display:inline-block;
+      display: inline-block;
     }
 
     input[type="radio"] {
@@ -439,7 +449,8 @@ form[id*='give-form'] {
     min-width: 155px;
     border: 1px solid $borders;
     margin: 0 0 15px;
-    display:block;
+    display: block;
+    clear: both;
   }
 }
 
@@ -582,12 +593,7 @@ form[id*='give-form'] {
     font-style: italic;
     line-height: 20px;
     font-size: 16px;
-
-    &.give-updating-price-loader {
-      float: left;
-      margin: 6px 0 0 20px;
-    }
-
+    font-weight: normal;
   }
   .give-loading-animation {
     @include iconstyle();
@@ -704,6 +710,19 @@ Basic Button Style
     background: #dbdbdb;
   }
 
+}
+
+/*---------------------------------
+Email Access Form
+-----------------------------------*/
+
+form#give-email-access-form {
+  div.g-recaptcha, input#give-email {
+    margin: 0 0 15px;
+  }
+  input#give-email {
+    width: 305px;
+  }
 }
 
 /*---------------------------------

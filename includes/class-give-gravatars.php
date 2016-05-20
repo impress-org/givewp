@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Classes/Donators
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -197,9 +197,6 @@ class Give_Donators_Gravatars {
 
 		// unique $payment_ids 
 		$payment_ids = $this->get_payment_ids( $form_id );
-
-		//			var_dump( $payment_ids );
-		//			 var_dump( $this->get_log_ids( get_the_ID() ) );
 
 		global $give_options;
 

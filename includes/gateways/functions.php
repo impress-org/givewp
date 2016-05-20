@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Gateways
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -114,7 +114,7 @@ function give_get_default_gateway( $form_id ) {
 /**
  * Returns the admin label for the specified gateway
  *
- * @since 1.0.8.3
+ * @since 1.0
  *
  * @param string $gateway Name of the gateway to retrieve a label for
  *

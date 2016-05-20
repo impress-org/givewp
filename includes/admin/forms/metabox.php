@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Admin/Forms
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -121,7 +121,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 							'type'       => 'text',
 							'attributes' => array(
 								'placeholder' => __( 'Donation Level', 'give' ),
-								'rows'        => 3,
+								'class'       => 'give-multilevel-text-field',
 							),
 						),
 						array(
@@ -281,7 +281,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 			'fields'       => apply_filters( 'give_forms_display_options_metabox_fields', array(
 					array(
 						'name'    => __( 'Payment Fields', 'give' ),
-						'desc'    => __( 'How would you like to display payment information for this form? The "Show on Page" option will display the entire form when the page loads. "Reveal Upon Click" places a button below the donation fields and upon clicks slides into view the rest of the fields. "Modal Window Upon Click" is a similar option, rather than sliding into view the fields they will open in a shadow box or "modal" window.', 'give' ),
+						'desc'    => __( 'How would you like to display payment information for this form? The "Show on Page" option will display the entire form when the page loads. "Reveal Upon Click" places a button below the donation fields and upon click slides into view the rest of the fields. "Modal Window Upon Click" is a similar option, rather than sliding into view the fields they will open in a shadow box or "modal" window.', 'give' ),
 						'id'      => $prefix . 'payment_display',
 						'type'    => 'select',
 						'options' => array(
@@ -404,13 +404,11 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 /**
  * Repeatable Levels Custom Field
  */
-add_action( 'cmb2_render_levels_repeater_header', 'give_cmb_render_levels_repeater_header', 10 );
 function give_cmb_render_levels_repeater_header() {
 	?>
 
 	<div class="table-container">
 		<div class="table-row">
-			<div class="table-cell col-id"><?php _e( 'ID', 'give' ); ?></div>
 			<div class="table-cell col-amount"><?php _e( 'Amount', 'give' ); ?></div>
 			<div class="table-cell col-text"><?php _e( 'Text', 'give' ); ?></div>
 			<div class="table-cell col-default"><?php _e( 'Default', 'give' ); ?></div>
@@ -422,15 +420,23 @@ function give_cmb_render_levels_repeater_header() {
 
 	<?php
 }
+add_action( 'cmb2_render_levels_repeater_header', 'give_cmb_render_levels_repeater_header', 10 );
 
 
 /**
+ *
  * CMB2 Repeatable ID Field
  *
  * @description: Custom CMB2 incremental Levels ID Field
+ * 
  * @since      1.0
+ * 
+ * @param $field_object
+ * @param $escaped_value
+ * @param $object_id
+ * @param $object_type
+ * @param $field_type_object
  */
-add_action( 'cmb2_render_levels_id', 'give_cmb_render_levels_id', 10, 5 );
 function give_cmb_render_levels_id( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
 
 	$escaped_value = ( isset( $escaped_value['level_id'] ) ? $escaped_value['level_id'] : '' );
@@ -448,17 +454,25 @@ function give_cmb_render_levels_id( $field_object, $escaped_value, $object_id, $
 	echo $field_type_object->input( $field_options_array );
 
 }
+add_action( 'cmb2_render_levels_id', 'give_cmb_render_levels_id', 10, 5 );
 
 
 /**
- * CMB2 Repeatable Default ID Field
+ * Default Radio Inline
+ *
+ * @param $field_object
+ * @param $escaped_value
+ * @param $object_id
+ * @param $object_type
+ * @param $field_type_object
  */
-add_action( 'cmb2_render_give_default_radio_inline', 'give_cmb_give_default_radio_inline', 10, 5 );
 function give_cmb_give_default_radio_inline( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
 	echo '<input type="radio" class="cmb2-option donation-level-radio" name="' . $field_object->args['_name'] . '" id="' . $field_object->args['id'] . '" value="default" ' . checked( 'default', $escaped_value, false ) . '>';
 	echo '<label for="' . $field_object->args['id'] . '">Default</label>';
 
 }
+
+add_action( 'cmb2_render_give_default_radio_inline', 'give_cmb_give_default_radio_inline', 10, 5 );
 
 
 /**

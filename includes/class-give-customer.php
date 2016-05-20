@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Classes/Customer
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -396,7 +396,7 @@ class Give_Customer {
 	 *
 	 * @since  1.0
 	 *
-	 * @param  integer $count The number to imcrement by
+	 * @param  integer $count The number to increment by
 	 *
 	 * @return int            The purchase count
 	 */

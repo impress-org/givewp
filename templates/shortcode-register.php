@@ -30,7 +30,7 @@ give_print_errors( 0 ); ?>
 		</div>
 
 		<div class="form-row form-row-last">
-			<label for="give-user-pass2"><?php _e( 'Confirm Password', 'give' ); ?></label>
+			<label for="give-user-pass2"><?php _e( 'Confirm PW', 'give' ); ?></label>
 			<input id="give-user-pass2" class="password required give-input" type="password" name="give_user_pass2" />
 		</div>
 

@@ -49,7 +49,7 @@
  * @description: Fonts are from icomoon and the src paths need to be relative to template directory
  * @package     Give
  * @subpackage  SCSS/Frontend
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 @font-face {
@@ -652,7 +652,7 @@ x:-o-prefocus, .qtip .qtip-tip {
  *
  * @package     Give
  * @subpackage  SCSS/Frontend
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 /* =Receipt Page
@@ -714,12 +714,16 @@ table#give_donation_receipt .give_receipt_payment_status.revoked,
 table#give_donation_receipt .give_receipt_payment_status.failed {
   color: #f73f2e; }
 
+table#give_donation_receipt span.donation-level-text-wrap {
+  font-style: italic;
+  display: block; }
+
 /**
  * Give Frontend Forms SCSS
  *
  * @package     Give
  * @subpackage  SCSS/Frontend
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 /*------------------------------------
@@ -756,6 +760,9 @@ Layout
     width: 100%;
     height: auto;
     box-shadow: none; }
+
+[id*='give-form'] .give-custom-amount-text {
+  clear: both; }
 
 [id*='give-form'] div.summary {
   width: 58%;
@@ -863,7 +870,10 @@ form[id*='give-form'], #give-recurring-form, form.give-form {
       width: 100%;
       border-radius: 0;
       outline: none;
-      color: #333; }
+      color: #333;
+      background-color: #FDFDFD; }
+      form[id*='give-form'] .form-row select:focus, form[id*='give-form'] .form-row textarea:focus, form[id*='give-form'] .form-row input[type="text"]:focus, form[id*='give-form'] .form-row input[type="tel"]:focus, form[id*='give-form'] .form-row input[type="email"]:focus, form[id*='give-form'] .form-row input[type="password"]:focus, #give-recurring-form .form-row select:focus, #give-recurring-form .form-row textarea:focus, #give-recurring-form .form-row input[type="text"]:focus, #give-recurring-form .form-row input[type="tel"]:focus, #give-recurring-form .form-row input[type="email"]:focus, #give-recurring-form .form-row input[type="password"]:focus, form.give-form .form-row select:focus, form.give-form .form-row textarea:focus, form.give-form .form-row input[type="text"]:focus, form.give-form .form-row input[type="tel"]:focus, form.give-form .form-row input[type="email"]:focus, form.give-form .form-row input[type="password"]:focus {
+        background-color: #fff; }
       form[id*='give-form'] .form-row select.required, form[id*='give-form'] .form-row textarea.required, form[id*='give-form'] .form-row input[type="text"].required, form[id*='give-form'] .form-row input[type="tel"].required, form[id*='give-form'] .form-row input[type="email"].required, form[id*='give-form'] .form-row input[type="password"].required, #give-recurring-form .form-row select.required, #give-recurring-form .form-row textarea.required, #give-recurring-form .form-row input[type="text"].required, #give-recurring-form .form-row input[type="tel"].required, #give-recurring-form .form-row input[type="email"].required, #give-recurring-form .form-row input[type="password"].required, form.give-form .form-row select.required, form.give-form .form-row textarea.required, form.give-form .form-row input[type="text"].required, form.give-form .form-row input[type="tel"].required, form.give-form .form-row input[type="email"].required, form.give-form .form-row input[type="password"].required {
         color: #333; }
   form[id*='give-form'] .form-row-first,
@@ -940,6 +950,7 @@ form[id*='give-form'] .give-donation-amount {
   form[id*='give-form'] .give-donation-amount #give-amount-text {
     float: left;
     border: 1px solid #ccc;
+    background: #FFF;
     border-radius: 0;
     height: 35px;
     line-height: 35px;
@@ -956,6 +967,7 @@ form[id*='give-form'] .give-donation-amount {
   form[id*='give-form'] .give-donation-amount span.give-final-total-amount {
     float: left;
     border: 1px solid #ccc;
+    background: #FFF;
     border-radius: 0;
     height: 35px;
     line-height: 35px;
@@ -996,6 +1008,7 @@ form[id*='give-form'] #give-final-total-wrap {
     font-size: 18px;
     float: left;
     border: 1px solid #ccc;
+    background: #FFF;
     border-radius: 0;
     height: 35px;
     line-height: 35px;
@@ -1033,12 +1046,14 @@ Notices, Warnings & Errors
     -moz-osx-font-smoothing: grayscale;
     position: absolute;
     top: 50%;
+    font-size: 16px;
     margin-top: -15px;
     left: -17px;
     background-color: #a00;
     color: #FFF;
     width: 30px;
     height: 30px;
+    font-size: 16px;
     border-radius: 100%;
     text-align: center;
     line-height: 30px;
@@ -1111,7 +1126,8 @@ form[id*='give-form'] select.give-select-level {
   min-width: 155px;
   border: 1px solid #ccc;
   margin: 0 0 15px;
-  display: block; }
+  display: block;
+  clear: both; }
 
 /*---------------------------------
 Buttons
@@ -1234,10 +1250,8 @@ form[id*='give-form'] p.give-loading-text, form[id*='give-form'] span.give-loadi
   padding: 0;
   font-style: italic;
   line-height: 20px;
-  font-size: 16px; }
-  form[id*='give-form'] p.give-loading-text.give-updating-price-loader, form[id*='give-form'] span.give-loading-text.give-updating-price-loader {
-    float: left;
-    margin: 6px 0 0 20px; }
+  font-size: 16px;
+  font-weight: normal; }
 
 form[id*='give-form'] .give-loading-animation {
   font-family: 'give-icomoon';
@@ -1328,6 +1342,15 @@ Basic Button Style
   font-size: 14px; }
   .give-btn:hover {
     background: #dbdbdb; }
+
+/*---------------------------------
+Email Access Form
+-----------------------------------*/
+form#give-email-access-form div.g-recaptcha, form#give-email-access-form input#give-email {
+  margin: 0 0 15px; }
+
+form#give-email-access-form input#give-email {
+  width: 305px; }
 
 /*---------------------------------
 Responsiveness
@@ -1692,7 +1715,7 @@ img.mfp-img {
  * @description: This file provides layout styles for various themes such as the default WordPress themes and others if applicable; Most themes handle Give's template system just fine ;)
  * @package:     Give
  * @subpackage:  SCSS/Frontend
- * @copyright:   Copyright (c) 2015, WordImpress
+ * @copyright:   Copyright (c) 2016, WordImpress
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 /**
@@ -1777,7 +1800,7 @@ Avada
  *
  * @package     Give
  * @subpackage  SCSS/Frontend
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 .give-goal-progress {
@@ -1889,7 +1912,7 @@ form.floated-labels .styled.select {
  *
  * @package     Give
  * @subpackage  SCSS/Frontend
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 .give-modal {
@@ -1975,7 +1998,7 @@ form.floated-labels .styled.select {
  *
  * @package     Give
  * @subpackage  SCSS/Frontend
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 table.give-table {
@@ -2023,7 +2046,7 @@ table.give-table {
  * @description: The following styles help Give look good and fixes CSS conflicts with popular WordPress themes
  * @package     Give
  * @subpackage  SCSS/Frontend
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 .give-divi .qtip-tipsy {

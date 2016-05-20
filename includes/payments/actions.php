@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Payments
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -15,52 +15,57 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Complete a purchase
+ * Complete a purchase aka donation
  *
  * Performs all necessary actions to complete a purchase.
  * Triggered by the give_update_payment_status() function.
  *
  * @since 1.0
  *
- * @param int    $payment_id the ID number of the payment
+ * @param int $payment_id the ID number of the payment
  * @param string $new_status the status of the payment, probably "publish"
  * @param string $old_status the status of the payment prior to being marked as "complete", probably "pending"
  *
  * @return void
  */
 function give_complete_purchase( $payment_id, $new_status, $old_status ) {
+
+	// Make sure that payments are only completed once
 	if ( $old_status == 'publish' || $old_status == 'complete' ) {
 		return;
-	} // Make sure that payments are only completed once
+	}
 
 	// Make sure the payment completion is only processed when new status is complete
 	if ( $new_status != 'publish' && $new_status != 'complete' ) {
 		return;
 	}
 
-	$payment_meta   = give_get_payment_meta( $payment_id );
-	$creation_date  = get_post_field( 'post_date', $payment_id, 'raw' );
-	$completed_date = give_get_payment_completed_date( $payment_id );
-	$user_info      = give_get_payment_meta_user_info( $payment_id );
-	$donor_id       = give_get_payment_customer_id( $payment_id );
-	$amount         = give_get_payment_amount( $payment_id );
+	$payment = new Give_Payment( $payment_id );
+
+	$creation_date = get_post_field( 'post_date', $payment_id, 'raw' );
+
+	$payment_meta   = $payment->payment_meta;
+	$completed_date = $payment->completed_date;
+	$user_info      = $payment->user_info;
+	$customer_id    = $payment->customer_id;
+	$amount         = $payment->total;
+	$price_id       = $payment->price_id;
+	$form_id        = $payment->form_id;
 
 	do_action( 'give_pre_complete_purchase', $payment_id );
-
-	$price_id = isset( $_POST['give-price-id'] ) ? (int) $_POST['give-price-id'] : false;
 
 	// Ensure these actions only run once, ever
 	if ( empty( $completed_date ) ) {
 
 		if ( ! give_is_test_mode() || apply_filters( 'give_log_test_payment_stats', false ) ) {
 
-			give_record_sale_in_log( $payment_meta['form_id'], $payment_id, $price_id, $creation_date );
-			give_increase_purchase_count( $payment_meta['form_id'] );
-			give_increase_earnings( $payment_meta['form_id'], $amount );
+			give_record_sale_in_log( $form_id, $payment_id, $price_id, $creation_date );
+			give_increase_purchase_count( $form_id );
+			give_increase_earnings( $form_id, $amount );
 
 		}
 
-		do_action( 'give_complete_form_donation', $payment_meta['form_id'], $payment_id, $payment_meta );
+		do_action( 'give_complete_form_donation', $form_id, $payment_id, $payment_meta );
 	}
 
 
@@ -72,7 +77,9 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 
 
 	// Increase the donor's purchase stats
-	Give()->customers->increment_stats( $donor_id, $amount );
+	$customer = new Give_Customer( $customer_id );
+	$customer->increase_purchase_count();
+	$customer->increase_value( $amount );
 
 	give_increase_total_earnings( $amount );
 
@@ -80,8 +87,8 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 	if ( empty( $completed_date ) ) {
 
 		// Save the completed date
-		give_update_payment_meta( $payment_id, '_give_completed_date', current_time( 'mysql' ) );
-
+		$payment->completed_date = current_time( 'mysql' );
+		$payment->save();
 		do_action( 'give_complete_purchase', $payment_id );
 	}
 
@@ -95,7 +102,7 @@ add_action( 'give_update_payment_status', 'give_complete_purchase', 100, 3 );
  *
  * @since 1.0
  *
- * @param int    $payment_id the ID number of the payment
+ * @param int $payment_id the ID number of the payment
  * @param string $new_status the status of the payment, probably "publish"
  * @param string $old_status the status of the payment prior to being marked as "complete", probably "pending"
  *
@@ -115,52 +122,6 @@ function give_record_status_change( $payment_id, $new_status, $old_status ) {
 
 add_action( 'give_update_payment_status', 'give_record_status_change', 100, 3 );
 
-/**
- * Reduces earnings and donation stats when a donation is refunded
- *
- * @since 1.0
- *
- * @param $payment_id
- * @param $new_status
- * @param $old_status
- *
- * @return void
- */
-function give_undo_donation_on_refund( $payment_id, $new_status, $old_status ) {
-
-	if ( 'publish' != $old_status && 'revoked' != $old_status ) {
-		return;
-	}
-
-	if ( 'refunded' != $new_status ) {
-		return;
-	}
-
-	// Set necessary vars
-	$payment_meta = give_get_payment_meta( $payment_id );
-	$amount       = give_get_payment_amount( $payment_id );
-
-	// Undo this purchase
-	give_undo_purchase( $payment_meta['form_id'], $payment_id );
-
-	// Decrease total earnings
-	give_decrease_total_earnings( $amount );
-
-	// Decrement the stats for the donor
-	$donor_id = give_get_payment_customer_id( $payment_id );
-
-	if ( $donor_id ) {
-
-		Give()->customers->decrement_stats( $donor_id, $amount );
-
-	}
-
-	// Clear the This Month earnings (this_monththis_month is NOT a typo)
-	delete_transient( md5( 'give_earnings_this_monththis_month' ) );
-}
-
-add_action( 'give_update_payment_status', 'give_undo_donation_on_refund', 100, 3 );
-
 
 /**
  * Flushes the current user's purchase history transient when a payment status
@@ -173,9 +134,13 @@ add_action( 'give_update_payment_status', 'give_undo_donation_on_refund', 100, 3
  * @param $old_status the status of the payment prior to being marked as "complete", probably "pending"
  */
 function give_clear_user_history_cache( $payment_id, $new_status, $old_status ) {
-	$user_info = give_get_payment_meta_user_info( $payment_id );
 
-	delete_transient( 'give_user_' . $user_info['id'] . '_purchases' );
+	$payment = new Give_Payment( $payment_id );
+
+	if ( ! empty( $payment->user_id ) ) {
+		delete_transient( 'give_user_' . $payment->user_id . '_purchases' );
+	}
+
 }
 
 add_action( 'give_update_payment_status', 'give_clear_user_history_cache', 10, 3 );
@@ -209,8 +174,13 @@ function give_update_old_payments_with_totals( $data ) {
 
 	if ( $payments ) {
 		foreach ( $payments as $payment ) {
-			$meta = give_get_payment_meta( $payment->ID );
-			give_update_payment_meta( $payment->ID, '_give_payment_total', $meta['amount'] );
+
+			$payment = new Give_Payment( $payment->ID );
+			$meta    = $payment->get_meta();
+
+			$payment->total = $meta['amount'];
+			$payment->save();
+
 		}
 	}
 
@@ -226,10 +196,10 @@ add_action( 'give_upgrade_payments', 'give_update_old_payments_with_totals' );
  * @return void
  */
 function give_mark_abandoned_donations() {
-	$args     = array(
+	$args = array(
 		'status' => 'pending',
 		'number' => - 1,
-		'fields' => 'ids'
+		'output' => 'give_payments',
 	);
 
 	add_filter( 'posts_where', 'give_filter_where_older_than_week' );
@@ -245,8 +215,8 @@ function give_mark_abandoned_donations() {
 			if ( $gateway == 'offline' ) {
 				continue;
 			}
-			//Non-offline get marked as 'abandoned'
-			give_update_payment_status( $payment, 'abandoned' );
+			$payment->status = 'abandoned';
+			$payment->save();
 		}
 	}
 }

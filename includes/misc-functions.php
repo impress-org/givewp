@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Functions
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -233,25 +233,6 @@ function give_is_cc_verify_enabled() {
 	return (bool) apply_filters( 'give_verify_credit_cards', $ret );
 }
 
-
-/**
- * Checks if users can only give when logged in
- *
- * @since 1.0
- * @global $give_options
- * @return bool $ret Whether or not the logged_in_only setting is set
- */
-function give_logged_in_only() {
-
-	global $give_options;
-
-	$ret = ! empty( $give_options['logged_in_only'] );
-
-	return (bool) apply_filters( 'give_logged_in_only', $ret );
-
-}
-
-
 /**
  * Retrieve timezone
  *
@@ -331,6 +312,7 @@ function give_get_ip() {
  */
 function give_set_purchase_session( $purchase_data = array() ) {
 	Give()->session->set( 'give_purchase', $purchase_data );
+	Give()->session->set( 'give_email', $purchase_data['user_email'] );
 }
 
 /**
@@ -495,6 +477,45 @@ function give_is_host( $host = false ) {
 	return $return;
 }
 
+/**
+ * Marks a function as deprecated and informs when it has been used.
+ *
+ * There is a hook edd_deprecated_function_run that will be called that can be used
+ * to get the backtrace up to what file and function called the deprecated
+ * function.
+ *
+ * The current behavior is to trigger a user error if WP_DEBUG is true.
+ *
+ * This function is to be used in every function that is deprecated.
+ *
+ * @uses do_action() Calls 'give_deprecated_function_run' and passes the function name, what to use instead,
+ *   and the version the function was deprecated in.
+ * @uses apply_filters() Calls 'give_deprecated_function_trigger_error' and expects boolean value of true to do
+ *   trigger or false to not trigger error.
+ *
+ * @param string $function The function that was called
+ * @param string $version The version of Give that deprecated the function
+ * @param string $replacement Optional. The function that should have been called
+ * @param array $backtrace Optional. Contains stack backtrace of deprecated function
+ */
+function _give_deprecated_function( $function, $version, $replacement = null, $backtrace = null ) {
+	do_action( 'give_deprecated_function_run', $function, $replacement, $version );
+
+	$show_errors = current_user_can( 'manage_options' );
+
+	// Allow plugin to filter the output error trigger
+	if ( WP_DEBUG && apply_filters( 'give_deprecated_function_trigger_error', $show_errors ) ) {
+		if ( ! is_null( $replacement ) ) {
+			trigger_error( sprintf( __( '%1$s is <strong>deprecated</strong> since Give version %2$s! Use %3$s instead.', 'give' ), $function, $version, $replacement ) );
+			trigger_error( print_r( $backtrace, 1 ) ); // Limited to previous 1028 characters, but since we only need to move back 1 in stack that should be fine.
+			// Alternatively we could dump this to a file.
+		} else {
+			trigger_error( sprintf( __( '%1$s is <strong>deprecated</strong> since Give version %2$s with no alternative available.', 'give' ), $function, $version ) );
+			trigger_error( print_r( $backtrace, 1 ) );// Limited to previous 1028 characters, but since we only need to move back 1 in stack that should be fine.
+			// Alternatively we could dump this to a file.
+		}
+	}
+}
 
 /**
  * Give Get Admin ID
@@ -511,25 +532,6 @@ function give_get_admin_post_id() {
 
 	return $post_id;
 }
-
-
-/**
- * Checks if Guest checkout is enabled for a particular donation form
- *
- * @since 1.0
- * @global    $give_options
- *
- * @param int $form_id
- *
- * @return bool $ret True if guest checkout is enabled, false otherwise
- */
-function give_no_guest_checkout( $form_id ) {
-
-	$ret = get_post_meta( $form_id, '_give_logged_in_only', true );
-
-	return (bool) apply_filters( 'give_no_guest_checkout', $ret );
-}
-
 
 /**
  * Get PHP Arg Separator Output
