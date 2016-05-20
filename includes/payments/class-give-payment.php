@@ -551,8 +551,8 @@ final class Give_Payment {
 			$this->customer_id            = $customer->id;
 			$this->pending['customer_id'] = $this->customer_id;
 			$customer->attach_payment( $this->ID, false );
-			$this->payment_meta = apply_filters( 'give_payment_meta', $this->payment_meta, $payment_data );
 
+			$this->payment_meta = apply_filters( 'give_payment_meta', $this->payment_meta, $payment_data );
 			if ( ! empty( $this->payment_meta['fees'] ) ) {
 				$this->fees = array_merge( $this->fees, $this->payment_meta['fees'] );
 				foreach ( $this->fees as $fee ) {
@@ -604,7 +604,7 @@ final class Give_Payment {
 			$total_decrease = 0;
 
 			foreach ( $this->pending as $key => $value ) {
-				
+
 				switch ( $key ) {
 
 					case 'donations':
@@ -627,6 +627,10 @@ final class Give_Payment {
 
 										$y = 0;
 										while ( $y < $quantity ) {
+											echo '<pre>';
+											var_dump($item['id']);
+											var_dump($this->ID);
+											echo '</pre>';
 											give_record_sale_in_log( $item['id'], $this->ID, $price_id, $log_date );
 											$y ++;
 										}

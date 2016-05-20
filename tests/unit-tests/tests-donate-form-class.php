@@ -30,6 +30,8 @@ class Tests_Donate_Form_Class extends Give_Unit_Test_Case {
 
 	/**
 	 * Test Get Form
+	 *
+	 * @covers Give_Donate_Form::get_form
 	 */
 	public function test_get_form() {
 		$simple_form = new Give_Donate_Form( $this->_simple_form->ID );
@@ -44,6 +46,8 @@ class Tests_Donate_Form_Class extends Give_Unit_Test_Case {
 
 	/**
 	 * Test Get Price
+	 *
+	 * @covers Give_Donate_Form::get_price
 	 */
 	public function test_get_price() {
 		$simple_form = new Give_Donate_Form( $this->_simple_form->ID );
@@ -55,6 +59,8 @@ class Tests_Donate_Form_Class extends Give_Unit_Test_Case {
 
 	/**
 	 * Test Get Prices
+	 *
+	 * @covers Give_Donate_Form::get_prices
 	 */
 	public function test_get_prices() {
 		$multi_form = new Give_Donate_Form( $this->_multi_form->ID );
@@ -68,6 +74,8 @@ class Tests_Donate_Form_Class extends Give_Unit_Test_Case {
 
 	/**
 	 * Test Min Price
+	 *
+	 * @covers Give_Donate_Form::get_minimum_price
 	 */
 	public function test_minimum_price() {
 		$simple_form = new Give_Donate_Form( $this->_simple_form->ID );
@@ -77,6 +85,8 @@ class Tests_Donate_Form_Class extends Give_Unit_Test_Case {
 
 	/**
 	 * Test Set Goal
+	 *
+	 * @covers Give_Donate_Form::get_goal
 	 */
 	public function test_get_goal() {
 		$simple_form = new Give_Donate_Form( $this->_simple_form->ID );

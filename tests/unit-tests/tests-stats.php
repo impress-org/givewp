@@ -63,6 +63,8 @@ class Tests_Stats extends WP_UnitTestCase {
 
 	/**
 	 * Test Setup Dates
+	 *
+	 * @covers Give_Payment_Stats::setup_dates
 	 */
 	public function test_setup_dates() {
 
@@ -108,6 +110,8 @@ class Tests_Stats extends WP_UnitTestCase {
 
 	/**
 	 * Test Get Earnings by Date
+	 *
+	 * @covers Give_Payment_Stats::get_earnings
 	 */
 	public function test_get_earnings_by_date() {
 
@@ -120,6 +124,8 @@ class Tests_Stats extends WP_UnitTestCase {
 
 	/**
 	 * Test Get Sales by Date
+	 *
+	 * @covers Give_Payment_Stats::get_sales
 	 */
 	public function test_get_sales_by_date() {
 
@@ -131,6 +137,8 @@ class Tests_Stats extends WP_UnitTestCase {
 
 	/**
 	 * Test Get Earnings by Date of Give Donation Form
+	 *
+	 * @covers Give_Payment_Stats::get_earnings
 	 */
 	public function test_get_earnings_by_date_of_give_form() {
 
@@ -139,6 +147,16 @@ class Tests_Stats extends WP_UnitTestCase {
 		$form_id = $payment->form_id;
 
 		$stats    = new Give_Payment_Stats();
+		$earnings2 = $stats->get_earnings( $form_id, 'this_month' );
+
+		$earnings = $stats->get_earnings( false, 'this_month' );
+
+		echo '<pre>';
+		var_dump($this->_payment_id);
+		var_dump($payment);
+		echo '</pre>';
+		die();
+
 		$earnings = $stats->get_earnings( $form_id, 'this_month' );
 		$this->assertEquals( 20, $earnings );
 
@@ -154,6 +172,8 @@ class Tests_Stats extends WP_UnitTestCase {
 
 	/**
 	 * Test Get Best Selling Donation Forms
+	 *
+	 * @covers Give_Payment_Stats::get_best_selling
 	 */
 	public function test_get_best_selling() {
 

@@ -103,10 +103,18 @@ class Give_Tests_Customers extends Give_Unit_Test_Case {
 
 	}
 
+	/**
+	 * Tear it Down
+	 */
 	public function tearDown() {
 		parent::tearDown();
 	}
 
+	/**
+	 * Test Add Customer
+	 *
+	 * @covers Give_Customer::create
+	 */
 	public function test_add_customer() {
 
 		$test_email = 'testaccount@domain.com';
@@ -123,6 +131,11 @@ class Give_Tests_Customers extends Give_Unit_Test_Case {
 
 	}
 
+	/**
+	 * Test Update Customer
+	 *
+	 * @covers Give_Customer::update
+	 */
 	public function test_update_customer() {
 
 		$test_email = 'testaccount2@domain.com';
@@ -141,6 +154,11 @@ class Give_Tests_Customers extends Give_Unit_Test_Case {
 
 	}
 
+	/**
+	 * Test Magic Get Method
+	 *
+	 * @covers Give_Customer::__get
+	 */
 	public function test_magic_get_method() {
 
 		$customer = new Give_Customer( 'testadmin@domain.com' );
