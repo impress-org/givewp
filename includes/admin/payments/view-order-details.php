@@ -26,30 +26,26 @@ if ( ! isset( $_GET['id'] ) || ! is_numeric( $_GET['id'] ) ) {
 
 // Setup the variables
 $payment_id = absint( $_GET['id'] );
-$number     = give_get_payment_number( $payment_id );
-$item       = get_post( $payment_id );
+$payment    = new Give_Payment( $payment_id );
 
 // Sanity check... fail if purchase ID is invalid
-if ( ! is_object( $item ) || $item->post_type != 'give_payment' ) {
+$payment_exists = $payment->ID;
+if ( empty( $payment_exists ) ) {
 	wp_die( __( 'The specified ID does not belong to a payment. Please try again', 'give' ), __( 'Error', 'give' ) );
 }
 
-$payment_meta   = give_get_payment_meta( $payment_id );
-$transaction_id = esc_attr( give_get_payment_transaction_id( $payment_id ) );
-$user_id        = give_get_payment_user_id( $payment_id );
-$donor_id       = give_get_payment_customer_id( $payment_id );
-$payment_date   = strtotime( $item->post_date );
+$number         = $payment->number;
+$payment_meta   = $payment->get_meta();
+$transaction_id = esc_attr( $payment->transaction_id );
+$user_id        = $payment->user_id;
+$customer_id    = $payment->customer_id;
+$payment_date   = strtotime( $payment->date );
 $user_info      = give_get_payment_meta_user_info( $payment_id );
-$address        = ! empty( $user_info['address'] ) ? $user_info['address'] : array(
-	'line1'   => '',
-	'line2'   => '',
-	'city'    => '',
-	'country' => '',
-	'state'   => '',
-	'zip'     => ''
-);
-$gateway        = give_get_payment_gateway( $payment_id );
-$currency_code  = give_get_payment_currency_code( $payment_id );
+$address        = $payment->address;
+$gateway        = $payment->gateway;
+$currency_code  = $payment->currency;
+$gateway        = $payment->gateway;
+$currency_code  = $payment->currency;
 ?>
 <div class="wrap give-wrap">
 	<h2><?php printf( __( 'Payment %s', 'give' ), $number ); ?></h2>
@@ -81,10 +77,10 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 												<span class="label"><?php _e( 'Status:', 'give' ); ?></span>&nbsp;
 												<select name="give-payment-status" class="medium-text">
 													<?php foreach ( give_get_payment_statuses() as $key => $status ) : ?>
-														<option value="<?php echo esc_attr( $key ); ?>"<?php selected( give_get_payment_status( $item, true ), $status ); ?>><?php echo esc_html( $status ); ?></option>
+														<option value="<?php echo esc_attr( $key ); ?>"<?php selected( $payment->status, $key, true ); ?>><?php echo esc_html( $status ); ?></option>
 													<?php endforeach; ?>
 												</select>
-												<span class="give-donation-status status-<?php echo sanitize_title( give_get_payment_status( $item, true ) ); ?>"><span class="give-donation-status-icon"></span></span>
+												<span class="give-donation-status status-<?php echo sanitize_title( $payment->status ); ?>"><span class="give-donation-status-icon"></span></span>
 											</p>
 										</div>
 
@@ -106,6 +102,7 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 										<?php do_action( 'give_view_order_details_update_inner', $payment_id ); ?>
 
 										<?php
+										//@TODO: Fees
 										$fees = give_get_payment_fees( $payment_id );
 										if ( ! empty( $fees ) ) : ?>
 											<div class="give-order-fees give-admin-box-inside">
@@ -124,7 +121,7 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 										<div class="give-order-payment give-admin-box-inside">
 											<p>
 												<span class="label"><?php _e( 'Total Donation', 'give' ); ?>:</span>&nbsp;
-												<?php echo give_currency_symbol( $payment_meta['currency'] ); ?>&nbsp;<input name="give-payment-total" type="text" class="small-text give-price-field" value="<?php echo esc_attr( give_format_amount( give_get_payment_amount( $payment_id ) ) ); ?>"/>
+												<?php echo give_currency_symbol( $payment->currency ); ?>&nbsp;<input name="give-payment-total" type="text" class="small-text give-price-field" value="<?php echo esc_attr( give_format_amount( give_get_payment_amount( $payment_id ) ) ); ?>"/>
 											</p>
 										</div>
 
@@ -303,7 +300,7 @@ $currency_code  = give_get_payment_currency_code( $payment_id );
 
 								<div class="inside give-clearfix">
 
-									<?php $customer = new Give_Customer( give_get_payment_customer_id( $payment_id ) ); ?>
+									<?php $customer = new Give_Customer( $customer_id ); ?>
 
 									<div class="column-container customer-info">
 										<div class="column">
