@@ -126,7 +126,7 @@ class Give_Payment_Stats extends Give_Stats {
 			$args = array(
 				'post_type'              => 'give_payment',
 				'nopaging'               => true,
-				'post_status'            => array( 'publish', 'revoked' ),
+				'post_status'            => array( 'publish' ),
 				'fields'                 => 'ids',
 				'update_post_term_cache' => false,
 				'suppress_filters'       => false,
@@ -179,12 +179,11 @@ class Give_Payment_Stats extends Give_Stats {
 			$key  = 'give_stats_' . substr( md5( serialize( $args ) ), 0, 15 );
 			//Set transient for faster stats
 			$earnings = get_transient( $key );
-			
+
 			if ( false === $earnings ) {
 
 				$this->timestamp = false;
 				$log_ids  = $give_logs->get_connected_logs( $args, 'sale' );
-
 				$earnings = 0;
 
 				if ( $log_ids ) {

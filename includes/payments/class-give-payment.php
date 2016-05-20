@@ -627,10 +627,7 @@ final class Give_Payment {
 
 										$y = 0;
 										while ( $y < $quantity ) {
-											echo '<pre>';
-											var_dump($item['id']);
-											var_dump($this->ID);
-											echo '</pre>';
+										
 											give_record_sale_in_log( $item['id'], $this->ID, $price_id, $log_date );
 											$y ++;
 										}
