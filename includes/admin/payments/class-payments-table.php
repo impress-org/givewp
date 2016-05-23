@@ -287,6 +287,18 @@ class Give_Payment_History_Table extends WP_List_Table {
 	}
 
 	/**
+	 * Gets the name of the primary column.
+	 *
+	 * @since 1.5
+	 * @access protected
+	 *
+	 * @return string Name of the primary column.
+	 */
+	protected function get_primary_column_name() {
+		return 'ID';
+	}
+
+	/**
 	 * This function renders most of the columns in the list table.
 	 *
 	 * @access public
@@ -339,7 +351,15 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 		$row_actions = array();
 
-		if ( give_is_payment_complete( $payment->ID ) ) {
+		$email = give_get_payment_user_email( $payment->ID );
+
+		// Add search term string back to base URL
+		$search_terms = ( isset( $_GET['s'] ) ? trim( $_GET['s'] ) : '' );
+		if ( ! empty( $search_terms ) ) {
+			$this->base_url = add_query_arg( 's', $search_terms, $this->base_url );
+		}
+
+		if ( give_is_payment_complete( $payment->ID ) && ! empty( $email ) ) {
 			$row_actions['email_links'] = '<a href="' . add_query_arg( array(
 					'give-action' => 'email_links',
 					'purchase_id' => $payment->ID
@@ -354,11 +374,11 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 		$row_actions = apply_filters( 'give_payment_row_actions', $row_actions, $payment );
 
-		if ( ! isset( $payment->user_info['email'] ) ) {
-			$payment->user_info['email'] = __( '(unknown)', 'give' );
+		if ( empty($email) ) {
+			$email = __( '(unknown)', 'give' );
 		}
 
-		$value = '<span class="give-email-column-value">' . $payment->user_info['email'] . '</span>' . $this->row_actions( $row_actions );
+		$value = '<span class="give-email-column-value">' . $email . '</span>' . $this->row_actions( $row_actions );
 
 		return apply_filters( 'give_payments_table_column', $value, $payment->ID, 'email' );
 	}
@@ -407,14 +427,15 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 */
 	public function column_donor( $payment ) {
 
-		//		$user_id = give_get_payment_user_id( $payment->ID );
-
 		$customer_id = give_get_payment_customer_id( $payment->ID );
-		$customer    = new Give_Customer( $customer_id );
 
-		$view_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $customer_id );
-
-		$value = '<a href="' . esc_url( $view_url ) . '" data-tooltip="' . __( 'Click here to view this Donor\'s profile', 'give' ) . '">' . $customer->name . '</a>';
+		if( ! empty( $customer_id ) ) {
+			$customer    = new Give_Customer( $customer_id );
+			$value = '<a href="' . esc_url( admin_url( "edit.php?post_type=give_forms&page=give-customers&view=overview&id=$customer_id" ) ) . '">' . $customer->name . '</a>';
+		} else {
+			$email = give_get_payment_user_email( $payment->ID );
+			$value = '<a href="' . esc_url( admin_url( "edit.php?post_type=give_forms&page=give-payment-history&s=$email" ) ) . '">' . __( '(donor missing)', 'give' ) . '</a>';
+		}
 
 		return apply_filters( 'give_payments_table_column', $value, $payment->ID, 'donor' );
 	}
@@ -496,6 +517,10 @@ class Give_Payment_History_Table extends WP_List_Table {
 				give_update_payment_status( $id, 'abandoned' );
 			}
 
+			if ( 'set-status-preapproval' === $this->current_action() ) {
+				give_update_payment_status( $id, 'preapproval' );
+			}
+
 			if ( 'resend-receipt' === $this->current_action() ) {
 				give_email_donation_receipt( $id, false );
 			}
@@ -521,7 +546,13 @@ class Give_Payment_History_Table extends WP_List_Table {
 		if ( isset( $_GET['user'] ) ) {
 			$args['user'] = urldecode( $_GET['user'] );
 		} elseif ( isset( $_GET['s'] ) ) {
-			$args['s'] = urldecode( $_GET['s'] );
+			$is_user  = strpos( $_GET['s'], strtolower( 'user:' ) ) !== false;
+			if ( $is_user ) {
+				$args['user'] = absint( trim( str_replace( 'user:', '', strtolower( $_GET['s'] ) ) ) );
+				unset( $args['s'] );
+			} else {
+				$args['s'] = sanitize_text_field( $_GET['s'] );
+			}
 		}
 
 		if ( ! empty( $_GET['start-date'] ) ) {

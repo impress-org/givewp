@@ -318,14 +318,16 @@ function give_record_sale_in_log( $give_form_id = 0, $payment_id, $price_id = fa
  *
  * @since 1.0
  *
- * @param int $give_form_id Give Form ID
+ * @param int $form_id Give Form ID
+ * @param int $quantity Quantity to increase purchase count by
  *
  * @return bool|int
  */
-function give_increase_purchase_count( $give_form_id = 0 ) {
-	$form = new Give_Donate_Form( $give_form_id );
+function give_increase_purchase_count( $form_id = 0, $quantity = 1 ) {
+	$quantity = (int) $quantity;
+	$form     = new Give_Donate_Form( $form_id );
 
-	return $form->increase_sales();
+	return $form->increase_sales( $quantity );
 }
 
 /**
@@ -334,13 +336,15 @@ function give_increase_purchase_count( $give_form_id = 0 ) {
  * @since 1.0
  *
  * @param int $form_id Give Form ID
+ * @param int $quantity Quantity to increase purchase count by
  *
  * @return bool|int
  */
-function give_decrease_purchase_count( $form_id = 0 ) {
-	$form = new Give_Donate_Form( $form_id );
+function give_decrease_purchase_count( $form_id = 0, $quantity = 1 ) {
+	$quantity = (int) $quantity;
+	$form     = new Give_Donate_Form( $form_id );
 
-	return $form->decrease_sales();
+	return $form->decrease_sales( $quantity );
 }
 
 /**

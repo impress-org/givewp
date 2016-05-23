@@ -91,6 +91,7 @@ class Tests_API extends Give_Unit_Test_Case {
 		$prices = get_post_meta( $post_id, '_give_donation_levels', true );
 		$total  = $prices[1]['_give_amount'];
 
+		//Add a payment
 		$purchase_data = array(
 			'price'           => number_format( (float) $total, 2 ),
 			'give_form_title' => get_the_title( $post_id ),
@@ -238,10 +239,10 @@ class Tests_API extends Give_Unit_Test_Case {
 		$this->assertArrayHasKey( 'donations', $out['forms'][0]['stats']['monthly_average'] );
 		$this->assertArrayHasKey( 'earnings', $out['forms'][0]['stats']['monthly_average'] );
 
-		$this->assertEquals( '59', $out['forms'][0]['stats']['total']['donations'] );
-		$this->assertEquals( '120', $out['forms'][0]['stats']['total']['earnings'] );
-		$this->assertEquals( '59', $out['forms'][0]['stats']['monthly_average']['donations'] );
-		$this->assertEquals( '120', $out['forms'][0]['stats']['monthly_average']['earnings'] );
+		$this->assertEquals( '60', $out['forms'][0]['stats']['total']['donations'] );
+		$this->assertEquals( '140', $out['forms'][0]['stats']['total']['earnings'] );
+		$this->assertEquals( '60', $out['forms'][0]['stats']['monthly_average']['donations'] );
+		$this->assertEquals( '140', $out['forms'][0]['stats']['monthly_average']['earnings'] );
 	}
 
 	/**

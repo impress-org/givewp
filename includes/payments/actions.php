@@ -40,10 +40,10 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 		return;
 	}
 
+
 	$payment = new Give_Payment( $payment_id );
 
-	$creation_date = get_post_field( 'post_date', $payment_id, 'raw' );
-
+	$creation_date  = get_post_field( 'post_date', $payment_id, 'raw' );
 	$payment_meta   = $payment->payment_meta;
 	$completed_date = $payment->completed_date;
 	$user_info      = $payment->user_info;
@@ -57,17 +57,14 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 	// Ensure these actions only run once, ever
 	if ( empty( $completed_date ) ) {
 
-		if ( ! give_is_test_mode() || apply_filters( 'give_log_test_payment_stats', false ) ) {
-
-			give_record_sale_in_log( $form_id, $payment_id, $price_id, $creation_date );
-			give_increase_purchase_count( $form_id );
-			give_increase_earnings( $form_id, $amount );
-
-		}
-
+		give_record_sale_in_log( $form_id, $payment_id, $price_id, $creation_date );
 		do_action( 'give_complete_form_donation', $form_id, $payment_id, $payment_meta );
+
 	}
 
+	// Increase the earnings for this form ID
+	give_increase_earnings( $form_id, $amount );
+	give_increase_purchase_count( $form_id );
 
 	// Clear the total earnings cache
 	delete_transient( 'give_earnings_total' );

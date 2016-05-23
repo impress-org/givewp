@@ -1251,6 +1251,7 @@ final class Give_Payment {
 	 */
 	public function update_status( $status = false ) {
 
+		//standardize the 'complete(d)' status
 		if ( $status == 'completed' || $status == 'complete' ) {
 			$status = 'publish';
 		}
@@ -1264,6 +1265,7 @@ final class Give_Payment {
 		$do_change = apply_filters( 'give_should_update_payment_status', true, $this->ID, $status, $old_status );
 
 		$updated = false;
+
 
 		if ( $do_change ) {
 
