@@ -1082,8 +1082,6 @@ body.give_forms_page_give-reports table.export-options-table .give-export-form {
   position: relative; }
 
 body.give_forms_page_give-reports table.export-options-table .give-export-form .give-progress {
-  position: absolute;
-  bottom: 15px;
   height: 15px;
   width: 95%;
   border-radius: 4px;
@@ -1096,11 +1094,11 @@ body.give_forms_page_give-reports table.export-options-table .give-export-form .
 body.give_forms_page_give-reports table.export-options-table .give-export-form .notice-wrap {
   background-color: transparent;
   padding: 12px 12px 4px;
-  margin: 20px -12px -23px;
+  margin: 2px 0 -16px -11px;
   overflow: auto; }
 
 body.give_forms_page_give-reports table.export-options-table .give-export-form .notice-wrap .spinner {
-  margin: 4px 10px 8px; }
+  margin: -2px -12px 8px 0; }
 
 body.give_forms_page_give-reports table.export-options-table span#give-start-wrap input, body.give_forms_page_give-reports table.export-options-table span#give-end-wrap input {
   width: 100px; }
@@ -1125,6 +1123,21 @@ body.give_forms_page_give-reports table.export-options-table span#give-start-wra
 
 .admin-color-sunrise .give-export-form .give-progress div {
   background: #dd823b; }
+
+.recount-stats-controls form {
+  display: inline; }
+
+.give-recount-stats-descriptions {
+  margin: 8px 0 0;
+  display: block; }
+  .give-recount-stats-descriptions span {
+    line-height: 24px;
+    font-size: 13px;
+    font-style: italic;
+    font-weight: normal;
+    color: #aaa;
+    margin: 0;
+    display: none; }
 
 .gateways-report-tablenav .actions.bulkactions {
   padding-right: 0; }

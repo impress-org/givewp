@@ -213,6 +213,7 @@ jQuery.noConflict();
         init: function () {
             this.date_options();
             this.donors_export();
+            this.recount_stats();
         },
 
         date_options: function () {
@@ -246,7 +247,99 @@ jQuery.noConflict();
 
             });
 
-        }
+        },
+
+        recount_stats: function () {
+
+            $('body').on('change', '#recount-stats-type', function () {
+
+                var export_form = $('#give-tools-recount-form');
+                var selected_type = $('option:selected', this).data('type');
+                var submit_button = $('#recount-stats-submit');
+                var forms = $('#tools-form-dropdown');
+
+                // Reset the form
+                export_form.find('.notice-wrap').remove();
+                submit_button.removeClass('button-disabled').attr('disabled', false);
+                forms.hide();
+                $('.give-recount-stats-descriptions span').hide();
+
+                if ('recount-form' === selected_type) {
+
+                    forms.show();
+                    forms.find('.give-select-chosen').css('width', 'auto');
+
+                } else if ('reset-stats' === selected_type) {
+
+                    export_form.append('<div class="notice-wrap"></div>');
+                    var notice_wrap = export_form.find('.notice-wrap');
+                    notice_wrap.html('<div class="notice notice-warning"><p><input type="checkbox" id="confirm-reset" name="confirm_reset_store" value="1" /> <label for="confirm-reset">' + give_vars.reset_stats_warn + '</label></p></div>');
+
+                    submit_button.addClass('button-disabled').attr('disabled', 'disabled');
+
+                } else {
+
+                    forms.hide();
+                    forms.val(0);
+
+                }
+
+                $('#' + selected_type).show();
+            });
+
+            $('body').on('change', '#confirm-reset', function () {
+                var checked = $(this).is(':checked');
+                if (checked) {
+                    $('#recount-stats-submit').removeClass('button-disabled').removeAttr('disabled');
+                } else {
+                    $('#recount-stats-submit').addClass('button-disabled').attr('disabled', 'disabled');
+                }
+            });
+
+            $('#give-tools-recount-form').submit(function (e) {
+                var selection = $('#recount-stats-type').val();
+                var export_form = $(this);
+                var selected_type = $('option:selected', this).data('type');
+
+
+                if ('reset-stats' === selected_type) {
+                    var is_confirmed = $('#confirm-reset').is(':checked');
+                    if (is_confirmed) {
+                        return true;
+                    } else {
+                        has_errors = true;
+                    }
+                }
+
+                export_form.find('.notice-wrap').remove();
+
+                export_form.append('<div class="notice-wrap"></div>');
+                var notice_wrap = export_form.find('.notice-wrap');
+                var has_errors = false;
+
+                if (null === selection || 0 === selection) {
+                    // Needs to pick a method give_vars.batch_export_no_class
+                    notice_wrap.html('<div class="updated error"><p>' + give_vars.batch_export_no_class + '</p></div>');
+                    has_errors = true;
+                }
+
+                if ('recount-form' === selected_type) {
+
+                    var selected_form = $('select[name="form_id"]').val();
+                    if (selected_form == 0) {
+                        // Needs to pick download give_vars.batch_export_no_reqs
+                        notice_wrap.html('<div class="updated error"><p>' + give_vars.batch_export_no_reqs + '</p></div>');
+                        has_errors = true;
+                    }
+
+                }
+
+                if (has_errors) {
+                    export_form.find('.button-disabled').removeClass('button-disabled');
+                    return false;
+                }
+            });
+        },
 
     };
 
@@ -449,7 +542,7 @@ jQuery.noConflict();
 
                     submitButton.addClass('button-disabled');
                     $(this).find('.notice-wrap').remove();
-                    $(this).append('<div class="notice-wrap"><span class="spinner is-active"></span><div class="give-progress"><div></div></div></div>');
+                    $(this).append('<div class="notice-wrap give-clearfix"><span class="spinner is-active"></span><div class="give-progress"><div></div></div></div>');
 
                     // start the process
                     self.process_step(1, data, self);
@@ -471,7 +564,7 @@ jQuery.noConflict();
                 },
                 dataType: "json",
                 success: function (response) {
-                    
+
                     if ('done' == response.step || response.error || response.success) {
 
                         // We need to get the actual in progress form, not all forms on the page
@@ -492,7 +585,7 @@ jQuery.noConflict();
 
                         } else {
 
-                            // notice_wrap.remove();
+                            notice_wrap.remove();
                             window.location = response.url;
 
                         }

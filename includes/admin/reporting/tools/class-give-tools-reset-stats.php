@@ -198,7 +198,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 			}
 
 			$this->done    = true;
-			$this->message = __( 'Customers, earnings, sales, discounts and logs successfully reset.', 'give' );
+			$this->message = __( 'Customers, income, donations, and logs successfully reset.', 'give' );
 			return false;
 		}
 	}
@@ -229,6 +229,9 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 		give_die();
 	}
 
+	/**
+	 * Pre Fetch
+	 */
 	public function pre_fetch() {
 
 		if ( $this->step == 1 ) {
@@ -240,7 +243,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 		if ( false === $items ) {
 			$items = array();
 
-			$give_types_for_reset = array( 'download', 'give_log', 'give_payment', 'give_discount' );
+			$give_types_for_reset = array( 'give_forms', 'give_log', 'give_payment' );
 			$give_types_for_reset = apply_filters( 'give_reset_store_post_types', $give_types_for_reset );
 
 			$args = apply_filters( 'give_tools_reset_stats_total_args', array(
@@ -258,7 +261,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 			}
 
 			$customer_args = array( 'number' => -1 );
-			$customers     = EDD()->customers->get_customers( $customer_args );
+			$customers     = Give()->customers->get_customers( $customer_args );
 			foreach ( $customers as $customer ) {
 				$items[] = array(
 					'id'   => (int) $customer->id,

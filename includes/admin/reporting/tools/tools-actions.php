@@ -39,13 +39,13 @@ function give_include_recount_store_earnings_tool_batch_processer( $class ) {
 }
 
 /**
- * Register the recount download batch processor
+ * Register the recount form batch processor
  * @since  1.5
  */
-function give_register_batch_recount_download_tool() {
-	add_action( 'give_batch_export_class_include', 'give_include_recount_download_tool_batch_processer', 10, 1 );
+function give_register_batch_recount_form_tool() {
+	add_action( 'give_batch_export_class_include', 'give_include_recount_form_tool_batch_processor', 10, 1 );
 }
-add_action( 'give_register_batch_exporter', 'give_register_batch_recount_download_tool', 10 );
+add_action( 'give_register_batch_exporter', 'give_register_batch_recount_form_tool', 10 );
 
 /**
  * Loads the tools batch processing class for recounting download stats
@@ -54,10 +54,10 @@ add_action( 'give_register_batch_exporter', 'give_register_batch_recount_downloa
  * @param  string $class The class being requested to run for the batch export
  * @return void
  */
-function give_include_recount_download_tool_batch_processer( $class ) {
+function give_include_recount_form_tool_batch_processor( $class ) {
 
-	if ( 'Give_Tools_Recount_Download_Stats' === $class ) {
-		require_once GIVE_PLUGIN_DIR . 'includes/admin/reports/tools/class-give-tools-recount-download-stats.php';
+	if ( 'Give_Tools_Recount_Form_Stats' === $class ) {
+		require_once GIVE_PLUGIN_DIR . 'includes/admin/reports/tools/class-give-tools-recount-form-stats.php';
 	}
 
 }

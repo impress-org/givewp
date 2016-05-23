@@ -165,8 +165,6 @@ body.give_forms_page_give-reports table.export-options-table {
     position: relative;
   }
   .give-export-form .give-progress {
-    position: absolute;
-    bottom: 15px;
     height: 15px;
     width: 95%;
     border-radius: 4px;
@@ -179,11 +177,11 @@ body.give_forms_page_give-reports table.export-options-table {
   .give-export-form .notice-wrap {
     background-color: transparent;
     padding: 12px 12px 4px;
-    margin: 20px -12px -23px;
+    margin: 2px 0 -16px -11px;
     overflow: auto;
   }
   .give-export-form .notice-wrap .spinner {
-    margin: 4px 10px 8px;
+    margin: -2px -12px 8px 0;
   }
 
   span#give-start-wrap, span#give-end-wrap {
@@ -220,7 +218,29 @@ body.give_forms_page_give-reports table.export-options-table {
 
 .admin-color-sunrise .give-export-form .give-progress div {
   background: #dd823b;
+}
 
+//---------------------------------------------------------
+//Tools
+//---------------------------------------------------------
+
+.recount-stats-controls form {
+  display: inline;
+}
+
+.give-recount-stats-descriptions {
+  margin: 8px 0 0;
+  display: block;
+
+  span {
+    line-height: 24px;
+    font-size: 13px;
+    font-style: italic;
+    font-weight: normal;
+    color: #aaa;
+    margin: 0;
+    display: none;
+  }
 }
 
 //---------------------------------------------------------

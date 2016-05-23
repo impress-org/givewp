@@ -1,42 +1,44 @@
 <?php
 /**
- * Recount download earnings and stats
+ * Recount donation form income and donations
  *
  * This class handles batch processing of recounting earnings and stats
  *
- * @subpackage  Admin/Tools/EDD_Tools_Recount_Stats
- * @copyright   Copyright (c) 2015, Chris Klosowski
+ * @subpackage  Admin/Tools/Give_Tools_Recount_Stats
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       2.5
+ * @since       1.5
  */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
- * EDD_Tools_Recount_Stats Class
+ * Give_Tools_Recount_Form_Stats Class
  *
- * @since 2.5
+ * @since 1.5
  */
-class EDD_Tools_Recount_Download_Stats extends EDD_Batch_Export {
+class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 
 	/**
 	 * Our export type. Used for export-type specific filters/actions
 	 * @var string
-	 * @since 2.5
+	 * @since 1.5
 	 */
 	public $export_type = '';
 
 	/**
 	 * Allows for a non-download batch processing to be run.
-	 * @since  2.5
+	 * @since  1.5
 	 * @var boolean
 	 */
 	public $is_void = true;
 
 	/**
 	 * Sets the number of items to pull on each step
-	 * @since  2.5
+	 * @since  1.5
 	 * @var integer
 	 */
 	public $per_step = 30;
@@ -45,33 +47,33 @@ class EDD_Tools_Recount_Download_Stats extends EDD_Batch_Export {
 	 * Get the Export Data
 	 *
 	 * @access public
-	 * @since 2.5
+	 * @since 1.5
 	 * @global object $wpdb Used to query the database using the WordPress
 	 *   Database API
 	 * @return array $data The data for the CSV file
 	 */
 	public function get_data() {
-		global $edd_logs, $wpdb;
+		global $give_logs, $wpdb;
 
-		$accepted_statuses  = apply_filters( 'edd_recount_accepted_statuses', array( 'publish', 'revoked' ) );
+		$accepted_statuses = apply_filters( 'give_recount_accepted_statuses', array( 'publish', 'revoked' ) );
 
 		if ( $this->step == 1 ) {
-			$this->delete_data( 'edd_temp_recount_download_stats' );
+			$this->delete_data( 'give_temp_recount_form_stats' );
 		}
 
-		$totals = $this->get_stored_data( 'edd_temp_recount_download_stats' );
+		$totals = $this->get_stored_data( 'give_temp_recount_form_stats' );
 
 		if ( false === $totals ) {
 			$totals = array(
 				'earnings' => (float) 0,
 				'sales'    => 0,
 			);
-			$this->store_data( 'edd_temp_recount_download_stats', $totals );
+			$this->store_data( 'give_temp_recount_form_stats', $totals );
 		}
 
-		$args = apply_filters( 'edd_recount_download_stats_args', array(
-			'post_parent'    => $this->download_id,
-			'post_type'      => 'edd_log',
+		$args = apply_filters( 'give_recount_form_stats_args', array(
+			'post_parent'    => $this->form_id,
+			'post_type'      => 'give_log',
 			'posts_per_page' => $this->per_step,
 			'post_status'    => 'publish',
 			'paged'          => $this->step,
@@ -79,15 +81,15 @@ class EDD_Tools_Recount_Download_Stats extends EDD_Batch_Export {
 			'fields'         => 'ids',
 		) );
 
-		$log_ids = $edd_logs->get_connected_logs( $args, 'sale' );
+		$log_ids              = $give_logs->get_connected_logs( $args, 'sale' );
 		$this->_log_ids_debug = array();
 		if ( $log_ids ) {
 			$log_ids     = implode( ',', $log_ids );
-			$payment_ids = $wpdb->get_col( "SELECT meta_value FROM $wpdb->postmeta WHERE meta_key='_edd_log_payment_id' AND post_id IN ($log_ids)" );
+			$payment_ids = $wpdb->get_col( "SELECT meta_value FROM $wpdb->postmeta WHERE meta_key='_give_log_payment_id' AND post_id IN ($log_ids)" );
 			unset( $log_ids );
 
 			$payment_ids = implode( ',', $payment_ids );
-			$payments = $wpdb->get_results( "SELECT ID, post_status FROM $wpdb->posts WHERE ID IN (" . $payment_ids . ")" );
+			$payments    = $wpdb->get_results( "SELECT ID, post_status FROM $wpdb->posts WHERE ID IN (" . $payment_ids . ")" );
 			unset( $payment_ids );
 
 			foreach ( $payments as $payment ) {
@@ -96,31 +98,31 @@ class EDD_Tools_Recount_Download_Stats extends EDD_Batch_Export {
 					continue;
 				}
 
-				$items = edd_get_payment_meta_cart_details( $payment->ID );
+				$items = give_get_payment_meta_cart_details( $payment->ID );
 
 				foreach ( $items as $item ) {
 
-					if ( $item['id'] != $this->download_id ) {
+					if ( $item['id'] != $this->form_id ) {
 						continue;
 					}
 
 					$this->_log_ids_debug[] = $payment->ID;
 
-					$totals['sales']++;
+					$totals['sales'] ++;
 					$totals['earnings'] += $item['price'];
 
 				}
 
 			}
 
-			$this->store_data( 'edd_temp_recount_download_stats', $totals );
+			$this->store_data( 'give_temp_recount_form_stats', $totals );
 
 			return true;
 		}
 
 
-		update_post_meta( $this->download_id, '_edd_download_sales'   , $totals['sales'] );
-		update_post_meta( $this->download_id, '_edd_download_earnings', $totals['earnings'] );
+		update_post_meta( $this->form_id, '_give_form_sales', $totals['sales'] );
+		update_post_meta( $this->form_id, '_give_form_earnings', $totals['earnings'] );
 
 		return false;
 
@@ -129,39 +131,39 @@ class EDD_Tools_Recount_Download_Stats extends EDD_Batch_Export {
 	/**
 	 * Return the calculated completion percentage
 	 *
-	 * @since 2.5
+	 * @since 1.5
 	 * @return int
 	 */
 	public function get_percentage_complete() {
-		global $edd_logs, $wpdb;
+		global $give_logs, $wpdb;
 
 		if ( $this->step == 1 ) {
-			$this->delete_data( 'edd_recount_total_' . $this->download_id );
+			$this->delete_data( 'give_recount_total_' . $this->form_id );
 		}
 
-		$accepted_statuses  = apply_filters( 'edd_recount_accepted_statuses', array( 'publish', 'revoked' ) );
-		$total   = $this->get_stored_data( 'edd_recount_total_' . $this->download_id );
+		$accepted_statuses = apply_filters( 'give_recount_accepted_statuses', array( 'publish', 'revoked' ) );
+		$total             = $this->get_stored_data( 'give_recount_total_' . $this->form_id );
 
 		if ( false === $total ) {
 			$total = 0;
-			$args  = apply_filters( 'edd_recount_download_stats_total_args', array(
-				'post_parent'    => $this->download_id,
-				'post_type'      => 'edd_log',
-				'post_status'    => 'publish',
-				'log_type'       => 'sale',
-				'fields'         => 'ids',
-				'nopaging'       => true,
+			$args  = apply_filters( 'give_recount_form_stats_total_args', array(
+				'post_parent' => $this->form_id,
+				'post_type'   => 'give_log',
+				'post_status' => 'publish',
+				'log_type'    => 'sale',
+				'fields'      => 'ids',
+				'nopaging'    => true,
 			) );
 
-			$log_ids = $edd_logs->get_connected_logs( $args, 'sale' );
+			$log_ids = $give_logs->get_connected_logs( $args, 'sale' );
 
 			if ( $log_ids ) {
 				$log_ids     = implode( ',', $log_ids );
-				$payment_ids = $wpdb->get_col( "SELECT meta_value FROM $wpdb->postmeta WHERE meta_key='_edd_log_payment_id' AND post_id IN ($log_ids)" );
+				$payment_ids = $wpdb->get_col( "SELECT meta_value FROM $wpdb->postmeta WHERE meta_key='_give_log_payment_id' AND post_id IN ($log_ids)" );
 				unset( $log_ids );
 
 				$payment_ids = implode( ',', $payment_ids );
-				$payments = $wpdb->get_results( "SELECT ID, post_status FROM $wpdb->posts WHERE ID IN (" . $payment_ids . ")" );
+				$payments    = $wpdb->get_results( "SELECT ID, post_status FROM $wpdb->posts WHERE ID IN (" . $payment_ids . ")" );
 				unset( $payment_ids );
 
 				foreach ( $payments as $payment ) {
@@ -169,20 +171,20 @@ class EDD_Tools_Recount_Download_Stats extends EDD_Batch_Export {
 						continue;
 					}
 
-					$total++;
+					$total ++;
 				}
 			}
 
-			$this->store_data( 'edd_recount_total_' . $this->download_id, $total );
+			$this->store_data( 'give_recount_total_' . $this->form_id, $total );
 		}
 
 		$percentage = 100;
 
-		if( $total > 0 ) {
+		if ( $total > 0 ) {
 			$percentage = ( ( $this->per_step * $this->step ) / $total ) * 100;
 		}
 
-		if( $percentage > 100 ) {
+		if ( $percentage > 100 ) {
 			$percentage = 100;
 		}
 
@@ -192,35 +194,38 @@ class EDD_Tools_Recount_Download_Stats extends EDD_Batch_Export {
 	/**
 	 * Set the properties specific to the payments export
 	 *
-	 * @since 2.5
+	 * @since 1.5
+	 *
 	 * @param array $request The Form Data passed into the batch processing
 	 */
 	public function set_properties( $request ) {
-		$this->download_id = isset( $request['download_id'] ) ? sanitize_text_field( $request['download_id'] ) : false;
+		$this->form_id = isset( $request['form_id'] ) ? sanitize_text_field( $request['form_id'] ) : false;
 	}
 
 	/**
 	 * Process a step
 	 *
-	 * @since 2.5
+	 * @since 1.5
 	 * @return bool
 	 */
 	public function process_step() {
 
 		if ( ! $this->can_export() ) {
-			wp_die( __( 'You do not have permission to export data.', 'easy-digital-downloads' ), __( 'Error', 'easy-digital-downloads' ), array( 'response' => 403 ) );
+			wp_die( __( 'You do not have permission to export data.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 		}
 
 		$had_data = $this->get_data();
 
-		if( $had_data ) {
+		if ( $had_data ) {
 			$this->done = false;
+
 			return true;
 		} else {
-			$this->delete_data( 'edd_recount_total_' . $this->download_id );
-			$this->delete_data( 'edd_temp_recount_download_stats' );
+			$this->delete_data( 'give_recount_total_' . $this->form_id );
+			$this->delete_data( 'give_temp_recount_form_stats' );
 			$this->done    = true;
-			$this->message = sprintf( __( 'Earnings and sales stats successfully recounted for %s.', 'easy-digital-downloads' ), get_the_title( $this->download_id ) );
+			$this->message = sprintf( __( 'Earnings and sales stats successfully recounted for %s.', 'give' ), get_the_title( $this->form_id ) );
+
 			return false;
 		}
 	}
@@ -228,7 +233,7 @@ class EDD_Tools_Recount_Download_Stats extends EDD_Batch_Export {
 	public function headers() {
 		ignore_user_abort( true );
 
-		if ( ! edd_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
+		if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
 			set_time_limit( 0 );
 		}
 	}
@@ -237,7 +242,7 @@ class EDD_Tools_Recount_Download_Stats extends EDD_Batch_Export {
 	 * Perform the export
 	 *
 	 * @access public
-	 * @since 2.5
+	 * @since 1.5
 	 * @return void
 	 */
 	public function export() {
@@ -245,14 +250,16 @@ class EDD_Tools_Recount_Download_Stats extends EDD_Batch_Export {
 		// Set headers
 		$this->headers();
 
-		edd_die();
+		give_die();
 	}
 
 	/**
 	 * Given a key, get the information from the Database Directly
 	 *
-	 * @since  2.5
+	 * @since  1.5
+	 *
 	 * @param  string $key The option_name
+	 *
 	 * @return mixed       Returns the data from the database
 	 */
 	private function get_stored_data( $key ) {
@@ -265,9 +272,11 @@ class EDD_Tools_Recount_Download_Stats extends EDD_Batch_Export {
 	/**
 	 * Give a key, store the value
 	 *
-	 * @since  2.5
-	 * @param  string $key   The option_name
-	 * @param  mixed  $value  The value to store
+	 * @since  1.5
+	 *
+	 * @param  string $key The option_name
+	 * @param  mixed $value The value to store
+	 *
 	 * @return void
 	 */
 	private function store_data( $key, $value ) {
@@ -282,7 +291,9 @@ class EDD_Tools_Recount_Download_Stats extends EDD_Batch_Export {
 		);
 
 		$formats = array(
-			'%s', '%s', '%s',
+			'%s',
+			'%s',
+			'%s',
 		);
 
 		$wpdb->replace( $wpdb->options, $data, $formats );
@@ -291,8 +302,10 @@ class EDD_Tools_Recount_Download_Stats extends EDD_Batch_Export {
 	/**
 	 * Delete an option
 	 *
-	 * @since  2.5
+	 * @since  1.5
+	 *
 	 * @param  string $key The option_name to delete
+	 *
 	 * @return void
 	 */
 	private function delete_data( $key ) {
