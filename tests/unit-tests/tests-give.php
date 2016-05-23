@@ -16,7 +16,7 @@ class Tests_Give extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * @covers Give::give_instance::instance
+	 * @covers Give
 	 */
 	public function test_give_instance() {
 		$this->assertClassHasStaticAttribute( 'instance', 'Give' );
@@ -92,7 +92,6 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/class-admin-notices.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/admin-actions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/system-info.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/export-functions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/add-ons.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/dashboard-widgets.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/payments/actions.php' );
@@ -102,6 +101,7 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/customers/customer-actions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/forms/metabox.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/forms/dashboard-columns.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/reporting/export/export-functions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/reporting/reports.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/reporting/pdf-reports.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/reporting/class-give-graph.php' );

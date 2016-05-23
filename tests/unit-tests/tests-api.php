@@ -371,6 +371,9 @@ class Tests_API extends Give_Unit_Test_Case {
 		//$this->assertEquals( 'Invalid API key!', $out['error'] );
 	}
 
+	/**
+	 * Test Process Query
+	 */
 	public function test_process_query() {
 		global $wp_query;
 
