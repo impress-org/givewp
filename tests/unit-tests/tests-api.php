@@ -70,8 +70,8 @@ class Tests_API extends Give_Unit_Test_Case {
 			'_give_price_option'       => 'multi',
 			'_give_price_options_mode' => 'on',
 			'_give_donation_levels'    => array_values( $_multi_level_donations ),
-			'give_product_notes'       => 'Donation Notes',
-			'_give_product_type'       => 'default'
+			'_give_form_earnings'      => 120,
+			'_give_form_sales'         => 59,
 		);
 		foreach ( $meta as $key => $value ) {
 			update_post_meta( $post_id, $key, $value );
@@ -79,7 +79,6 @@ class Tests_API extends Give_Unit_Test_Case {
 
 		$this->_post = get_post( $post_id );
 
-		//Generate Donations
 		$user = get_userdata( 1 );
 
 		$user_info = array(
@@ -89,22 +88,10 @@ class Tests_API extends Give_Unit_Test_Case {
 			'last_name'  => $user->last_name
 		);
 
-		$donation_details = array(
-			array(
-				'id'      => $post_id,
-				'options' => array(
-					'price_id' => 1
-				)
-			)
-		);
+		$prices = get_post_meta( $post_id, '_give_donation_levels', true );
+		$total  = $prices[1]['_give_amount'];
 
-		$total = 0;
-
-		$prices     = get_post_meta( $donation_details[0]['id'], '_give_donation_levels', true );
-		$item_price = $prices[1]['_give_amount'];
-
-		$total += $item_price;
-
+		//Add a payment
 		$purchase_data = array(
 			'price'           => number_format( (float) $total, 2 ),
 			'give_form_title' => get_the_title( $post_id ),
@@ -119,7 +106,6 @@ class Tests_API extends Give_Unit_Test_Case {
 		);
 
 		$_SERVER['REMOTE_ADDR'] = '10.0.0.0';
-		$_SERVER['SERVER_NAME'] = 'give_virtual';
 
 		$payment_id = give_insert_payment( $purchase_data );
 
@@ -132,15 +118,25 @@ class Tests_API extends Give_Unit_Test_Case {
 		$wp_query->query_vars['format'] = 'override';
 	}
 
+	/**
+	 * Tear it Down
+	 */
 	public function tearDown() {
 		parent::tearDown();
 		remove_action( 'give_api_output_override_xml', array( $this, 'override_api_xml_format' ) );
+		Give_Helper_Payment::delete_payment( $this->_payment_id );
 	}
 
+	/**
+	 * Test Endpoints
+	 */
 	public function test_endpoints() {
 		$this->assertEquals( 'give-api', $this->_rewrite->endpoints[0][1] );
 	}
 
+	/**
+	 * Test Query Vars
+	 */
 	public function test_query_vars() {
 		global $wp_filter;
 
@@ -166,11 +162,17 @@ class Tests_API extends Give_Unit_Test_Case {
 		$this->assertEquals( 'format', $out[10] );
 	}
 
+	/**
+	 * Test Get Versions
+	 */
 	public function test_get_versions() {
 		$this->assertInternalType( 'array', $this->_api->get_versions() );
 		$this->assertArrayHasKey( 'v1', $this->_api->get_versions() );
 	}
 
+	/**
+	 * Test Get Default Version
+	 */
 	public function test_get_default_version() {
 
 		$this->assertEquals( 'v1', $this->_api->get_default_version() );
@@ -180,6 +182,9 @@ class Tests_API extends Give_Unit_Test_Case {
 
 	}
 
+	/**
+	 * Test Get Queried Version
+	 */
 	public function test_get_queried_version() {
 		$this->markTestIncomplete( 'This test is causing the suite to die for some reason' );
 		global $wp_query;
@@ -198,6 +203,9 @@ class Tests_API extends Give_Unit_Test_Case {
 
 	}
 
+	/**
+	 * Test Get Forms
+	 */
 	public function test_get_forms() {
 		$out = $this->_api_output;
 		$this->assertArrayHasKey( 'id', $out['forms'][0]['info'] );
@@ -217,10 +225,12 @@ class Tests_API extends Give_Unit_Test_Case {
 		$this->assertEquals( '', $out['forms'][0]['info']['thumbnail'] );
 	}
 
+	/**
+	 * Test Get Form Stats
+	 */
 	public function test_get_form_stats() {
 		$out = $this->_api_output;
-		$this->markTestIncomplete( 'This test needs to be fixed.' );
-
+		
 		$this->assertArrayHasKey( 'stats', $out['forms'][0] );
 		$this->assertArrayHasKey( 'total', $out['forms'][0]['stats'] );
 		$this->assertArrayHasKey( 'donations', $out['forms'][0]['stats']['total'] );
@@ -229,12 +239,15 @@ class Tests_API extends Give_Unit_Test_Case {
 		$this->assertArrayHasKey( 'donations', $out['forms'][0]['stats']['monthly_average'] );
 		$this->assertArrayHasKey( 'earnings', $out['forms'][0]['stats']['monthly_average'] );
 
-		$this->assertEquals( '59', $out['forms'][0]['stats']['total']['sales'] );
-		$this->assertEquals( '129.43', $out['forms'][0]['stats']['total']['earnings'] );
-		$this->assertEquals( '59', $out['forms'][0]['stats']['monthly_average']['sales'] );
-		$this->assertEquals( '129.43', $out['forms'][0]['stats']['monthly_average']['earnings'] );
+		$this->assertEquals( '60', $out['forms'][0]['stats']['total']['donations'] );
+		$this->assertEquals( '140', $out['forms'][0]['stats']['total']['earnings'] );
+		$this->assertEquals( '60', $out['forms'][0]['stats']['monthly_average']['donations'] );
+		$this->assertEquals( '140', $out['forms'][0]['stats']['monthly_average']['earnings'] );
 	}
 
+	/**
+	 * Test Get Forms Pricing
+	 */
 	public function test_get_forms_pricing() {
 		$out = $this->_api_output;
 
@@ -248,6 +261,9 @@ class Tests_API extends Give_Unit_Test_Case {
 		$this->assertEquals( '40', $out['forms'][0]['pricing']['advancedlevel'] );
 	}
 
+	/**
+	 * Test Get Recent Donations
+	 */
 	public function test_get_recent_donations() {
 		$out = $this->_api_output_sales;
 
@@ -272,6 +288,9 @@ class Tests_API extends Give_Unit_Test_Case {
 		$this->assertEquals( 'Intermediate Level', $out['donations'][0]['form']['price_name'] );
 	}
 
+	/**
+	 * Test Update Key
+	 */
 	public function test_update_key() {
 
 		$_POST['give_set_api_key'] = 1;
@@ -286,6 +305,9 @@ class Tests_API extends Give_Unit_Test_Case {
 
 	}
 
+	/**
+	 * Test Get User
+	 */
 	public function test_get_user() {
 
 		$_POST['give_set_api_key'] = 1;
@@ -296,6 +318,9 @@ class Tests_API extends Give_Unit_Test_Case {
 
 	}
 
+	/**
+	 * Test Get Donors
+	 */
 	public function test_get_donors() {
 		$out = $this->_api->get_customers();
 
@@ -311,14 +336,16 @@ class Tests_API extends Give_Unit_Test_Case {
 		$this->assertArrayHasKey( 'total_spent', $out['donors'][0]['stats'] );
 
 		$this->assertEquals( 1, $out['donors'][0]['info']['user_id'] );
-		$this->assertEquals( '', $out['donors'][0]['info']['first_name'] );
-		$this->assertEquals( '', $out['donors'][0]['info']['first_name'] );
-		$this->assertEquals( '', $out['donors'][0]['info']['last_name'] );
+		$this->assertEquals( 'Admin', $out['donors'][0]['info']['first_name'] );
+		$this->assertEquals( 'User', $out['donors'][0]['info']['last_name'] );
 		$this->assertEquals( 'testadmin@domain.com', $out['donors'][0]['info']['email'] );
 		$this->assertEquals( 1, $out['donors'][0]['stats']['total_donations'] );
 		$this->assertEquals( 20.0, $out['donors'][0]['stats']['total_spent'] );
 	}
 
+	/**
+	 * Test Missing Authorization
+	 */
 	public function test_missing_auth() {
 		$this->markTestIncomplete( 'Needs to be rewritten since this outputs xml that kills travis with a 255 error (fatal PHP error)' );
 		//$this->_api->missing_auth();

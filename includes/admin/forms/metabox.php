@@ -58,7 +58,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 				//Donation Option
 				array(
 					'name'        => __( 'Donation Option', 'give' ),
-					'description' => __( 'Would you like this form to have one set donation price or multiple levels (for example, $10 silver, $20 gold, $50 platinum)?', 'give' ),
+					'description' => __( 'Would you like this form to have one set donation price or multiple levels (for example, $10, $20, $50)?', 'give' ),
 					'id'          => $prefix . 'price_option',
 					'type'        => 'radio_inline',
 					'default'     => 'set',
@@ -183,7 +183,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 				),
 				//Goals
 				array(
-					'name'        => __( 'Set Goal?', 'give' ),
+					'name'        => __( 'Goal', 'give' ),
 					'description' => __( 'Do you want to set a donation goal for this form?', 'give' ),
 					'id'          => $prefix . 'goal_option',
 					'type'        => 'radio_inline',
@@ -194,7 +194,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					),
 				),
 				array(
-					'name'         => __( 'Set Goal', 'give' ),
+					'name'         => __( 'Goal Amount', 'give' ),
 					'description'  => __( 'This is the monetary goal amount you want to reach for this donation form.', 'give' ),
 					'id'           => $prefix . 'set_goal',
 					'type'         => 'text_small',
@@ -281,7 +281,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 			'fields'       => apply_filters( 'give_forms_display_options_metabox_fields', array(
 					array(
 						'name'    => __( 'Payment Fields', 'give' ),
-						'desc'    => __( 'How would you like to display payment information for this form? The "Show on Page" option will display the entire form when the page loads. "Reveal Upon Click" places a button below the donation fields and upon clicks slides into view the rest of the fields. "Modal Window Upon Click" is a similar option, rather than sliding into view the fields they will open in a shadow box or "modal" window.', 'give' ),
+						'desc'    => __( 'How would you like to display payment information for this form? The "Show on Page" option will display the entire form when the page loads. "Reveal Upon Click" places a button below the donation fields and upon click slides into view the rest of the fields. "Modal Window Upon Click" is a similar option, rather than sliding into view the fields they will open in a shadow box or "modal" window.', 'give' ),
 						'id'      => $prefix . 'payment_display',
 						'type'    => 'select',
 						'options' => array(

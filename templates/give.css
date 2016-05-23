@@ -31,7 +31,7 @@
  */
 .give-item-label {
   padding: .2em .6em .3em;
-  font-size: 85%;
+  font-size: 11px;
   font-weight: 700;
   line-height: 1;
   color: #fff;
@@ -42,6 +42,20 @@
 
 .give-item-label-gray {
   background-color: #929292; }
+
+.give-item-label-orange {
+  background-color: #ffba00; }
+
+.give-item-label {
+  padding: .2em .6em .3em;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25em; }
 
 /**
  * Give Frontend Fonts SCSS
@@ -713,6 +727,10 @@ table#give_donation_receipt .give_receipt_payment_status.pending,
 table#give_donation_receipt .give_receipt_payment_status.revoked,
 table#give_donation_receipt .give_receipt_payment_status.failed {
   color: #f73f2e; }
+
+table#give_donation_receipt span.donation-level-text-wrap {
+  font-style: italic;
+  display: block; }
 
 /**
  * Give Frontend Forms SCSS

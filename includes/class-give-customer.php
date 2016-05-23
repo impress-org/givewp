@@ -396,7 +396,7 @@ class Give_Customer {
 	 *
 	 * @since  1.0
 	 *
-	 * @param  integer $count The number to imcrement by
+	 * @param  integer $count The number to increment by
 	 *
 	 * @return int            The purchase count
 	 */

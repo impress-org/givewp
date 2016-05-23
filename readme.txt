@@ -3,8 +3,8 @@ Contributors: wordimpress, dlocc, webdevmattcrom
 Donate link: http://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 4.0
-Tested up to: 4.5.1
-Stable tag: 1.4.2
+Tested up to: 4.5.2
+Stable tag: 1.4.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -58,6 +58,14 @@ Give is built by [WordImpress](http://wordimpress.com "Visit the the developers 
 
 Do you have some development experience? We've built in an advanced templating system similar to the ones found in many of WordPress' top plugins that makes customizing many of Give's frontend elements upgrade proof and extremely flexible. Run into some trouble? We're here to help! Along with the plugin is a support team that is dedicated, fast to respond, and always willing to squash bugs and help troubleshoot.
 
+Here's some great developer-oriented tutorials and docs to help you customize Give to your liking:
+
+* [Create Dramatic Donation Email Receipts](https://givewp.com/create-dramatic-donation-email-receipts/)
+* [Load a Whole Donation Form in a Popup](https://givewp.com/load-donation-form-popup-give/)
+* [Useing the Give API to Create Charts with ChartJS](https://givewp.com/using-give-api-create-charts-chartjs/)
+* [Themeing with Give](https://givewp.com/documentation/developers/themeing-with-give/)
+* [How to Create Custom Form Fields](https://givewp.com/documentation/developers/how-to-create-custom-form-fields/)
+
 = Connect with Give =
 
 Stay in touch with us for important plugin news and updates:
@@ -106,6 +114,22 @@ Automatic updates should work like a charm; as always though, ensure you backup 
 
 == Frequently Asked Questions ==
 
+= Where can I learn more about how to use Give? =
+
+We have extensive documentation on installing and configuring Give [on our website](https://givewp.com/documentation/). We suggest starting with the [Give 101 article](https://givewp.com/documentation/core/give-101/).
+
+= How can I get support for Give? =
+
+We work hard to the best support possible for Give. The [WordPress.org Support Forum](https://wordpress.org/support/plugin/give) is used for free community based support. We continually monitor the forum and do our best to provide ensure everyone gets an answer. [Priority support](https://givewp.com/support/) is given to users who have an active license for one of Give's [Add-ons](https://givewp.com/addons/) or [Bundles](https://givewp.com/addon-bundles/). This is email based support
+
+= Do you have any demos? =
+
+Yes! We have several live examples of Give displaying usage with many [popular WordPress Themes here](https://givewp.com/demos/).
+
+= Do you have Case Studies of Nonprofits using Give? =
+
+Yes! We call them "Give Stories". [You can read them all here](https://givewp.com/give-stories/).
+
 = How is Give better than *Gravity Forms* for accepting donations through WordPress? =
 
 First off, we love Gravity Forms. It's a great plugin and has a lot of good features for accepting donations. That being said, it lacks substantial donation reporting features and requires a developer license ($199/yr) to accept credit card payments on site.
@@ -120,7 +144,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 2. Donation form fields can appear within a modal window (as shown here), be revealed with a nice sliding animation, or display entirely on the page (default).
 
-3. Give makes the donation process simple and easy for your donors. This helps maximize coversion rates and further empower your cause.
+3. Give makes the donation process simple and easy for your donors. This helps maximize conversion rates and further empower your cause.
 
 4. The multi-level donation amount functionality allows you to set different giving levels for your donors to choose from. In addition, you can allow donors to specify custom donation amounts and even set donation goals.
 
@@ -140,7 +164,19 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 == Changelog ==
 
-= 1.4.3:  =
+= 1.5: =
+* New: Added "Test Mode" labels to more easily identify donations made while Give is in Test Mode - https://github.com/WordImpress/Give/issues/188
+
+= 1.4.6:  =
+* Fix: Reports graph tooltips not displaying currency properly formatted @see https://github.com/WordImpress/Give/issues/620
+
+= 1.4.5: May 12, 2016  =
+* Hotfix: Fixed a bug introduced which causes the custom amount minimum to be improperly calculated - https://github.com/WordImpress/Give/issues/616
+
+= 1.4.4: May 12, 2016  =
+* Hotfix: Version 1.4.3 breaks modal popup display method - https://github.com/WordImpress/Give/issues/615
+
+= 1.4.3: May 12, 2016  =
 * Fix: Update the email address of a customer record when the email of a user is updated via the WordPress profile updater - https://github.com/WordImpress/Give/issues/607
 * Fix: Bug if the donation form's custom amount minimum is set to 0.00 the warning message would still display - https://github.com/WordImpress/Give/issues/604
 * Fix: Bug with email access and the Donation History shortcode pagination not counting properly - https://github.com/WordImpress/Give/issues/600
@@ -188,3 +224,9 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Fix: Allow for $0 set donations to be saved properly - https://github.com/WordImpress/Give/issues/529
 * Fix: Transactions with a "cancelled" status are not shown in the wp-admin Transactions table - thanks @pryley - https://github.com/WordImpress/Give/issues/514
 * Fix: Alternative to fopen provided for PDF exports - https://github.com/WordImpress/Give/issues/511
+
+[See full changelog here](https://plugins.svn.wordpress.org/give/trunk/changelog.txt)
+
+== Upgrade Notice ==
+= 1.4.3 =
+Fixes for user profile emails, custom minimum amounts, donation history pagination, and multi-site install process.

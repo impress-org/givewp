@@ -1127,11 +1127,7 @@ function give_checkout_button_purchase( $form_id ) {
 
 	$display_label_field = get_post_meta( $form_id, '_give_checkout_label', true );
 	$display_label       = ( ! empty( $display_label_field ) ? $display_label_field : __( 'Donate Now', 'give' ) );
-
-	ob_start();
-
-	?>
-
+	ob_start();  ?>
 	<div class="give-submit-button-wrap give-clearfix">
 		<input type="submit" class="give-submit give-btn" id="give-purchase-button" name="give-purchase" value="<?php echo $display_label; ?>"/>
 		<span class="give-loading-animation"></span>
@@ -1236,7 +1232,7 @@ function give_show_goal_progress( $form_id, $args ) {
 
 	$progress = round( ( $income / $goal ) * 100, 2 );
 
-	if ( $income > $goal ) {
+	if ( $income >= $goal ) {
 		$progress = 100;
 	}
 

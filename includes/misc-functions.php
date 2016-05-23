@@ -488,13 +488,13 @@ function give_is_host( $host = false ) {
  *
  * This function is to be used in every function that is deprecated.
  *
- * @uses do_action() Calls 'edd_deprecated_function_run' and passes the function name, what to use instead,
+ * @uses do_action() Calls 'give_deprecated_function_run' and passes the function name, what to use instead,
  *   and the version the function was deprecated in.
- * @uses apply_filters() Calls 'edd_deprecated_function_trigger_error' and expects boolean value of true to do
+ * @uses apply_filters() Calls 'give_deprecated_function_trigger_error' and expects boolean value of true to do
  *   trigger or false to not trigger error.
  *
  * @param string $function The function that was called
- * @param string $version The version of EDD that deprecated the function
+ * @param string $version The version of Give that deprecated the function
  * @param string $replacement Optional. The function that should have been called
  * @param array $backtrace Optional. Contains stack backtrace of deprecated function
  */

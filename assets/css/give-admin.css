@@ -27,7 +27,7 @@
  */
 .give-item-label {
   padding: .2em .6em .3em;
-  font-size: 85%;
+  font-size: 11px;
   font-weight: 700;
   line-height: 1;
   color: #fff;
@@ -36,8 +36,22 @@
   vertical-align: baseline;
   border-radius: .25em; }
 
-.give-item-label-gray {
+.give-item-label-gray, #give-payments-filter .give-payment-id {
   background-color: #929292; }
+
+.give-item-label-orange {
+  background-color: #ffba00; }
+
+.give-item-label {
+  padding: .2em .6em .3em;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25em; }
 
 /**
  * Give CSS Variables
@@ -1409,9 +1423,6 @@ tr.status-refunded td {
   height: auto;
   float: left; }
 
-/*---------------------
-Status Colors
----------------------------*/
 .give-donation-status > span {
   float: left;
   width: 12px;
@@ -1443,9 +1454,9 @@ Status Colors
 .give-donation-status.status-subscription > span, .give-donation-status.status-give_subscription > span {
   background-color: #5bc0de; }
 
-#give-payments-filter .give-payment-id {
+#test-payment-label {
   padding: .2em .6em .3em;
-  font-size: 85%;
+  font-size: 11px;
   font-weight: 700;
   line-height: 1;
   color: #fff;
@@ -1453,12 +1464,33 @@ Status Colors
   white-space: nowrap;
   vertical-align: baseline;
   border-radius: .25em;
-  background-color: #929292; }
+  background-color: #ffba00;
+  margin: 0 0 0 15px;
+  position: relative;
+  top: -4px; }
+
+#give-payments-filter .give-payment-id {
+  padding: .2em .6em .3em;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25em; }
 
 #give-payments-filter .column-details {
   padding-right: 30px; }
 
-/* Payment View Metabox */
+#give-payments-filter .give-donation-status {
+  float: left; }
+
+#give-payments-filter span.give-test-mode-transactions-label {
+  padding: 1px 4px;
+  font-size: 10px;
+  margin-left: 8px; }
+
 #give-order-update .give-donation-status {
   display: inline-block;
   float: none;
@@ -1558,22 +1590,18 @@ Responsiveness
   vertical-align: top;
   margin-right: 5%; }
 
-#give-donation-overview li.actions {
-  text-align: right;
-  min-width: 200px; }
-
-#give-donation-overview ul li.remove {
-  text-align: right; }
-
-#give-donation-overview .row {
-  padding: 12px;
-  border-bottom: 1px solid #eee; }
-
 #give-donation-overview ul {
   font-size: 0; }
-
-#give-donation-overview ul li {
-  font-size: 13px; }
+  #give-donation-overview ul li {
+    font-size: 13px; }
+    #give-donation-overview ul li.actions {
+      text-align: right;
+      min-width: 200px; }
+    #give-donation-overview ul li.remove {
+      text-align: right; }
+  #give-donation-overview ul .row {
+    padding: 12px;
+    border-bottom: 1px solid #eee; }
 
 #give-order-data .data span {
   color: #666;
@@ -1582,13 +1610,9 @@ Responsiveness
 #give-donation-overview .inside {
   padding: 12px; }
 
-.give-price-field {
-  width: 80px; }
-
-.give_repeatable_upload_wrapper .pricing select, .give_repeatable_product_wrapper .give-select,
-#give_products .give-select {
-  min-width: 100%;
-  max-width: 200px; }
+input.give-price-field {
+  width: 80px;
+  padding: 3px 5px; }
 
 .give_forms_page_give-payment-history.js .postbox .hndle {
   cursor: default; }
@@ -1638,6 +1662,9 @@ Donation Details
 #give-customer-details .inside {
   padding-top: 15px;
   padding-bottom: 15px; }
+
+.give_forms_page_give-payment-history #give-dashboard-widgets-wrap #side-sortables {
+  padding-top: 0; }
 
 /**
  * Give Admin Dashboard SCSS
