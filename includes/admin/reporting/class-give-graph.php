@@ -265,6 +265,7 @@ class Give_Graph {
 
 				var previousPoint = null;
 				$( "#give-graph-<?php echo $this->id; ?>" ).bind( "plothover", function ( event, pos, item ) {
+
 					$( "#x" ).text( pos.x.toFixed( 2 ) );
 					$( "#y" ).text( pos.y.toFixed( 2 ) );
 					if ( item ) {
@@ -273,8 +274,10 @@ class Give_Graph {
 							$( "#give-flot-tooltip" ).remove();
 							var x = item.datapoint[0].toFixed( 2 ),
 								y = item.datapoint[1].toFixed( 2 );
-							if ( item.series.id == 'earnings' ) {
+							if ( item.series.id == 'income' ) {
+
 								if ( give_vars.currency_pos == 'before' ) {
+
 									give_flot_tooltip( item.pageX, item.pageY, item.series.label + ' ' + give_vars.currency_sign + y );
 								} else {
 									give_flot_tooltip( item.pageX, item.pageY, item.series.label + ' ' + y + give_vars.currency_sign );

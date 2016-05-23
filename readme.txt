@@ -167,6 +167,9 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 = 1.5: =
 * New: Added "Test Mode" labels to more easily identify donations made while Give is in Test Mode - https://github.com/WordImpress/Give/issues/188
 
+= 1.4.6:  =
+* Fix: Reports graph tooltips not displaying currency properly formatted @see https://github.com/WordImpress/Give/issues/620
+
 = 1.4.5: May 12, 2016  =
 * Hotfix: Fixed a bug introduced which causes the custom amount minimum to be improperly calculated - https://github.com/WordImpress/Give/issues/616
 
