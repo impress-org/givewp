@@ -198,7 +198,7 @@ function give_get_current_page_url() {
 	if ( is_front_page() ) {
 		$current_url = home_url( '/' );
 	} else {
-		$page_url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . untrailingslashit( $_SERVER['REQUEST_URI'] ) );
+		$current_url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . untrailingslashit( $_SERVER['REQUEST_URI'] ) );
 	}
 
 	return apply_filters( 'give_get_current_page_url', esc_url( $current_url ) );
