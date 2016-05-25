@@ -233,6 +233,12 @@ function give_load_admin_scripts( $hook ) {
 		wp_enqueue_script( 'give-admin-forms-scripts' );
 	}
 
+	//Settings Scripts
+	if (isset($_GET['page']) && $_GET['page'] == 'give-settings'  ) {
+		wp_register_script( 'give-admin-settings-scripts', $js_dir . 'admin-settings' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
+		wp_enqueue_script( 'give-admin-settings-scripts' );
+	}
+
 	//Localize strings & variables for JS
 	wp_localize_script( 'give-admin-scripts', 'give_vars', array(
 		'post_id'                 => isset( $post->ID ) ? $post->ID : null,
