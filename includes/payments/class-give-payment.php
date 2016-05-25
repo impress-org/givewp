@@ -138,6 +138,7 @@ final class Give_Payment {
 	 * @var string
 	 */
 	protected $date = '';
+	protected $post_date = '';
 
 	/**
 	 * The date the payment was marked as 'complete'
@@ -410,6 +411,7 @@ final class Give_Payment {
 
 		// Status and Dates
 		$this->date           = $payment->post_date;
+		$this->post_date      = $payment->post_date;
 		$this->completed_date = $this->setup_completed_date();
 		$this->status         = $payment->post_status;
 		$this->post_status    = $this->status;
@@ -627,7 +629,7 @@ final class Give_Payment {
 
 										$y = 0;
 										while ( $y < $quantity ) {
-										
+
 											give_record_sale_in_log( $item['id'], $this->ID, $price_id, $log_date );
 											$y ++;
 										}
