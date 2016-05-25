@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Classes/Forms
- * @copyright   Copyright (c) 2016, WordImpress
+ * @copyright   Copyright (c) 2015, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -66,48 +66,84 @@ class Give_Donate_Form {
 	private $earnings;
 
 	/**
+	 * Declare the default properties in WP_Post as we can't extend it
+	 * Anything we've declared above has been removed.
+	 */
+	public $post_author = 0;
+	public $post_date = '0000-00-00 00:00:00';
+	public $post_date_gmt = '0000-00-00 00:00:00';
+	public $post_content = '';
+	public $post_title = '';
+	public $post_excerpt = '';
+	public $post_status = 'publish';
+	public $comment_status = 'open';
+	public $ping_status = 'open';
+	public $post_password = '';
+	public $post_name = '';
+	public $to_ping = '';
+	public $pinged = '';
+	public $post_modified = '0000-00-00 00:00:00';
+	public $post_modified_gmt = '0000-00-00 00:00:00';
+	public $post_content_filtered = '';
+	public $post_parent = 0;
+	public $guid = '';
+	public $menu_order = 0;
+	public $post_mime_type = '';
+	public $comment_count = 0;
+	public $filter;
+
+	/**
 	 * Give_Donate_Form constructor.
 	 *
 	 * @since 1.0
 	 *
-	 * @param bool  $_id
+	 * @param bool $_id
 	 * @param array $_args
 	 */
 	public function __construct( $_id = false, $_args = array() ) {
 
-		if ( false === $_id ) {
 
-			$defaults = array(
-				'post_type'   => 'give_forms',
-				'post_status' => 'draft',
-				'post_title'  => __( 'New Give Form', 'give' )
-			);
+		$donation_form = WP_Post::get_instance( $_id );
 
-			$args = wp_parse_args( $_args, $defaults );
+		return $this->setup_donation_form( $donation_form );
+	}
 
-			$_id = wp_insert_post( $args, true );
+	/**
+	 * Given the donation form data, let's set the variables
+	 *
+	 * @since  1.5
+	 *
+	 * @param  object $donation_form The Donation Form Object
+	 *
+	 * @return bool             If the setup was successful or not
+	 */
+	private function setup_donation_form( $donation_form ) {
 
-		}
-
-		$donate_form = WP_Post::get_instance( $_id );
-
-		if ( ! is_object( $donate_form ) ) {
+		if ( ! is_object( $donation_form ) ) {
 			return false;
 		}
 
-		if ( ! is_a( $donate_form, 'WP_Post' ) ) {
+		if ( ! is_a( $donation_form, 'WP_Post' ) ) {
 			return false;
 		}
 
-		if ( 'give_forms' !== $donate_form->post_type ) {
+		if ( 'give_forms' !== $donation_form->post_type ) {
 			return false;
 		}
 
-		foreach ( $donate_form as $key => $value ) {
+		foreach ( $donation_form as $key => $value ) {
 
-			$this->$key = $value;
+			switch ( $key ) {
+
+				default:
+					$this->$key = $value;
+					break;
+
+			}
 
 		}
+
+		return true;
 
 	}
 
@@ -129,9 +165,56 @@ class Give_Donate_Form {
 
 		} else {
 
-			throw new Exception( 'Can\'t get property ' . $key );
+			return new WP_Error( 'give-form-invalid-property', sprintf( __( 'Can\'t get property %s', 'give' ), $key ) );
 
 		}
+
+	}
+
+
+	/**
+	 * Creates a donation form
+	 *
+	 * @since  1.5
+	 *
+	 * @param  array $data Array of attributes for a donation form
+	 *
+	 * @return mixed  false if data isn't passed and class not instantiated for creation, or New Form ID
+	 */
+	public function create( $data = array() ) {
+
+		if ( $this->id != 0 ) {
+			return false;
+		}
+
+		$defaults = array(
+			'post_type'   => 'give_forms',
+			'post_status' => 'draft',
+			'post_title'  => __( 'New Donation Form', 'give' )
+		);
+
+		$args = wp_parse_args( $data, $defaults );
+
+		/**
+		 * Fired before a donation form is created
+		 *
+		 * @param array $args The post object arguments used for creation.
+		 */
+		do_action( 'give_form_pre_create', $args );
+
+		$id = wp_insert_post( $args, true );
+
+		$donation_form = WP_Post::get_instance( $id );
+
+		/**
+		 * Fired after a donation form is created
+		 *
+		 * @param int $id The post ID of the created item.
+		 * @param array $args The post object arguments used for creation.
+		 */
+		do_action( 'give_form_post_create', $id, $args );
+
+		return $this->setup_donation_form( $donation_form );
 
 	}
 
@@ -145,6 +228,16 @@ class Give_Donate_Form {
 
 		return $this->ID;
 
+	}
+
+	/**
+	 * Retrieve the donation form name
+	 *
+	 * @since 1.5
+	 * @return string Name of the donation form
+	 */
+	public function get_name() {
+		return get_the_title( $this->ID );
 	}
 
 	/**
@@ -171,6 +264,14 @@ class Give_Donate_Form {
 
 		}
 
+		/**
+		 * Override the donation form set price.
+		 *
+		 * @since 1.0
+		 *
+		 * @param string $price The donation form price.
+		 * @param string|int $id The form ID.
+		 */
 		return apply_filters( 'give_get_set_price', $this->price, $this->ID );
 	}
 
@@ -216,6 +317,14 @@ class Give_Donate_Form {
 
 		}
 
+		/**
+		 * Override multi-level prices
+		 *
+		 * @since 1.0
+		 *
+		 * @param array $prices The array of mulit-level prices.
+		 * @param int|string The ID of the form.
+		 */
 		return apply_filters( 'give_get_donation_levels', $this->prices, $this->ID );
 
 	}
@@ -256,13 +365,21 @@ class Give_Donate_Form {
 	 */
 	public function is_single_price_mode() {
 
-		$option = get_post_meta( $this->ID, '_give_price_option', true );
+		$option = get_post_meta( $this->ID, '_give_price_options_mode', true );
 		$ret    = 0;
 
 		if ( empty( $option ) || $option === 'set' ) {
 			$ret = 1;
 		}
-
+		
+		/**
+		 * Override the price mode for a donation when checking if is in single price mode.
+		 *
+		 * @since 1.0
+		 *
+		 * @param bool $ret Is donation form in single price mode?
+		 * @param int|string The ID of the donation form.
+		 */
 		return (bool) apply_filters( 'give_single_price_option_mode', $ret, $this->ID );
 
 	}
@@ -284,13 +401,40 @@ class Give_Donate_Form {
 			$ret = 1;
 		}
 
+		/**
+		 * Filter: Override whether the donation form has variables prices.
+		 *
+		 * @param bool $ret Does donation form have variable prices?
+		 * @param int|string The ID of the donation form.
+		 */
 		return (bool) apply_filters( 'give_has_variable_prices', $ret, $this->ID );
 
 	}
 
+	/**
+	 * Retrieve the donation form type, set or multi-level
+	 *
+	 * @since 1.5
+	 * @return string Type of donation form, either 'set' or 'multi'
+	 */
+	public function get_type() {
+
+		if ( ! isset( $this->type ) ) {
+
+			$this->type = get_post_meta( $this->ID, '_give_price_option', true );
+
+			if ( empty( $this->type ) ) {
+				$this->type = 'set';
+			}
+
+		}
+
+		return apply_filters( 'give_get_form_type', $this->type, $this->ID );
+
+	}
 
 	/**
-	 * Retrieve the sale count for the download
+	 * Retrieve the sale count for the donation form
 	 *
 	 * @since 1.0
 	 * @return int
@@ -320,17 +464,23 @@ class Give_Donate_Form {
 	 * Increment the sale count by one
 	 *
 	 * @since 1.0
-	 * @return int|false
+	 *
+	 * @param int $quantity The quantity to increase the donations by
+	 *
+	 * @return int|false  New number of total sales
 	 */
-	public function increase_sales() {
+	public function increase_sales( $quantity = 1 ) {
 
-		$sales = give_get_form_sales_stats( $this->ID );
-		$sales = $sales + 1;
+		$sales       = give_get_form_sales_stats( $this->ID );
+		$quantity    = absint( $quantity );
+		$total_sales = $sales + $quantity;
 
-		if ( update_post_meta( $this->ID, '_give_form_sales', $sales ) ) {
-			$this->sales = $sales;
+		if ( $this->update_meta( '_give_form_sales', $total_sales ) ) {
 
-			return $sales;
+			$this->sales = $total_sales;
+
+			return $this->sales;
+
 		}
 
 		return false;
@@ -340,20 +490,29 @@ class Give_Donate_Form {
 	 * Decrement the sale count by one
 	 *
 	 * @since 1.0
-	 * @return int|false
+	 *
+	 * @param int $quantity The quantity to decrease by
+	 *
+	 * @return int|false  New number of total sales
 	 */
-	public function decrease_sales() {
+	public function decrease_sales( $quantity = 1 ) {
 
 		$sales = give_get_form_sales_stats( $this->ID );
-		if ( $sales > 0 ) // Only decrease if not already zero
-		{
-			$sales = $sales - 1;
-		}
 
-		if ( update_post_meta( $this->ID, '_give_form_sales', $sales ) ) {
-			$this->sales = $sales;
+		// Only decrease if not already zero
+		if ( $sales > 0 ) {
 
-			return $sales;
+			$quantity    = absint( $quantity );
+			$total_sales = $sales - $quantity;
+
+			if ( $this->update_meta( '_give_form_sales', $total_sales ) ) {
+
+				$this->sales = $sales;
+
+				return $sales;
+
+			}
+
 		}
 
 		return false;
@@ -395,13 +554,15 @@ class Give_Donate_Form {
 	 */
 	public function increase_earnings( $amount = 0 ) {
 
-		$earnings = give_get_form_earnings_stats( $this->ID );
-		$earnings = $earnings + (float) $amount;
+		$earnings   = give_get_form_earnings_stats( $this->ID );
+		$new_amount = $earnings + (float) $amount;
 
-		if ( update_post_meta( $this->ID, '_give_form_earnings', $earnings ) ) {
-			$this->earnings = $earnings;
+		if ( $this->update_meta( '_give_form_earnings', $new_amount ) ) {
 
-			return $earnings;
+			$this->earnings = $new_amount;
+
+			return $this->earnings;
+
 		}
 
 		return false;
@@ -418,15 +579,19 @@ class Give_Donate_Form {
 
 		$earnings = give_get_form_earnings_stats( $this->ID );
 
-		if ( $earnings > 0 ) // Only decrease if greater than zero
-		{
-			$earnings = $earnings - (float) $amount;
-		}
+		if ( $earnings > 0 ) {
+			// Only decrease if greater than zero
+			$new_amount = $earnings - (float) $amount;
 
-		if ( update_post_meta( $this->ID, '_give_form_earnings', $earnings ) ) {
-			$this->earnings = $earnings;
 
-			return $earnings;
+			if ( $this->update_meta( '_give_form_earnings', $new_amount ) ) {
+
+				$this->earnings = $new_amount;
+
+				return $this->earnings;
+
+			}
+
 		}
 
 		return false;
@@ -457,5 +622,48 @@ class Give_Donate_Form {
 		return (bool) apply_filters( 'give_is_free_donation', $is_free, $this->ID, $price_id );
 
 	}
+
+
+	/**
+	 * Updates a single meta entry for the donation form
+	 *
+	 * @since  1.5
+	 * @access private
+	 *
+	 * @param  string $meta_key The meta_key to update
+	 * @param  string|array|object $meta_value The value to put into the meta
+	 *
+	 * @return bool             The result of the update query
+	 */
+	private function update_meta( $meta_key = '', $meta_value = '' ) {
+
+		global $wpdb;
+
+		if ( empty( $meta_key ) || empty( $meta_value ) ) {
+			return false;
+		}
+
+		// Make sure if it needs to be serialized, we do
+		$meta_value = maybe_serialize( $meta_value );
+
+		if ( is_numeric( $meta_value ) ) {
+			$value_type = is_float( $meta_value ) ? '%f' : '%d';
+		} else {
+			$value_type = "'%s'";
+		}
+
+		$sql = $wpdb->prepare( "UPDATE $wpdb->postmeta SET meta_value = $value_type WHERE post_id = $this->ID AND meta_key = '%s'", $meta_value, $meta_key );
+
+		if ( $wpdb->query( $sql ) ) {
+
+			clean_post_cache( $this->ID );
+
+			return true;
+
+		}
+
+		return false;
+	}
+
 
 }

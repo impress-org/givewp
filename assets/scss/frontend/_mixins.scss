@@ -6,12 +6,12 @@
 
   &:before,
   &:after {
-	content: " ";
-	display: table;
+    content: " ";
+    display: table;
   }
 
   &:after {
-	clear: both;
+    clear: both;
   }
 }
 
@@ -41,7 +41,7 @@
 //Labels
 @mixin give-label() {
   padding: .2em .6em .3em;
-  font-size: 85%;
+  font-size: 11px;
   font-weight: 700;
   line-height: 1;
   color: #fff;
@@ -54,6 +54,9 @@
 @mixin give-label-gray() {
   background-color: #929292;
 }
+@mixin give-label-orange() {
+  background-color: #ffba00;
+}
 
 .give-item-label {
   @include give-label();
@@ -63,12 +66,21 @@
   @include give-label-gray();
 }
 
+.give-item-label-orange {
+  @include give-label-orange();
+}
+
+
+.give-item-label {
+  @include give-label();
+}
+
 //Fields
 @mixin give-currency() {
   background-color: lighten($light-gray, 2%);
   border-top: 1px solid $borders;
   border-bottom: 1px solid $borders;
-  color:$dark;
+  color: $dark;
   margin: 0;
   padding: 0 12px;
   float: left;

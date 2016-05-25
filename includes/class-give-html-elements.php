@@ -175,8 +175,8 @@ class Give_HTML_Elements {
 	 * @access public
 	 * @since  1.0
 	 *
-	 * @param string $name     Name attribute of the dropdown
-	 * @param int    $selected Category to select automatically
+	 * @param string $name Name attribute of the dropdown
+	 * @param int $selected Category to select automatically
 	 *
 	 * @return string $output Category dropdown
 	 */
@@ -205,10 +205,10 @@ class Give_HTML_Elements {
 	 * @access public
 	 * @since  1.0
 	 *
-	 * @param string $name         Name attribute of the dropdown
-	 * @param int    $selected     Year to select automatically
-	 * @param int    $years_before Number of years before the current year the dropdown should start with
-	 * @param int    $years_after  Number of years after the current year the dropdown should finish at
+	 * @param string $name Name attribute of the dropdown
+	 * @param int $selected Year to select automatically
+	 * @param int $years_before Number of years before the current year the dropdown should start with
+	 * @param int $years_after Number of years after the current year the dropdown should finish at
 	 *
 	 * @return string $output Year dropdown
 	 */
@@ -242,8 +242,8 @@ class Give_HTML_Elements {
 	 * @access public
 	 * @since  1.0
 	 *
-	 * @param string $name     Name attribute of the dropdown
-	 * @param int    $selected Month to select automatically
+	 * @param string $name Name attribute of the dropdown
+	 * @param int $selected Month to select automatically
 	 *
 	 * @return string $output Month dropdown
 	 */
@@ -443,6 +443,27 @@ class Give_HTML_Elements {
 
 		return $output;
 	}
+
+	/**
+	 * Renders a date picker
+	 *
+	 * @since 1.5
+	 *
+	 * @param array $args Arguments for the text field
+	 *
+	 * @return string Datepicker field
+	 */
+	public function date_field( $args = array() ) {
+
+		if ( empty( $args['class'] ) ) {
+			$args['class'] = 'give_datepicker';
+		} elseif ( ! strpos( $args['class'], 'give_datepicker' ) ) {
+			$args['class'] .= ' give_datepicker';
+		}
+
+		return $this->text( $args );
+	}
+
 
 	/**
 	 * Renders an HTML textarea

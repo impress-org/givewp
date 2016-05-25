@@ -45,6 +45,7 @@ function give_process_paypal_purchase( $purchase_data ) {
 		'price'           => $purchase_data['price'],
 		'give_form_title' => $purchase_data['post_data']['give-form-title'],
 		'give_form_id'    => $form_id,
+		'give_price_id'   => $purchase_data['post_data']['give-price-id'],
 		'date'            => $purchase_data['date'],
 		'user_email'      => $purchase_data['user_email'],
 		'purchase_key'    => $purchase_data['purchase_key'],
@@ -147,8 +148,6 @@ function give_process_paypal_purchase( $purchase_data ) {
 		}
 
 		$paypal_args = array_merge( $paypal_extra_args, $paypal_args );
-
-
 		$paypal_args = apply_filters( 'give_paypal_redirect_args', $paypal_args, $purchase_data );
 
 		// Build query
