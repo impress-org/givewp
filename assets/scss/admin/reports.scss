@@ -163,31 +163,70 @@ body.give_forms_page_give-reports table.export-options-table {
   }
   .give-export-form {
     position: relative;
-  }
-  .give-export-form .give-progress {
-    height: 15px;
-    width: 95%;
-    border-radius: 4px;
-    overflow: hidden;
-  }
-  .give-export-form .give-progress div {
-    height: 100%;
-    width: 0;
-  }
-  .give-export-form .notice-wrap {
-    background-color: transparent;
-    padding: 12px 12px 4px;
-    margin: 2px 0 -16px -11px;
-    overflow: auto;
-  }
-  .give-export-form .notice-wrap .spinner {
-    margin: -2px -12px 8px 0;
+    .notice-wrap {
+      background-color: transparent;
+      padding: 12px 12px 4px;
+      margin: 2px 0 -16px -11px;
+      overflow: auto;
+      .spinner {
+        margin: -2px -12px 8px 0;
+      }
+    }
   }
 
   span#give-start-wrap, span#give-end-wrap {
     input {
       width: 100px;
     }
+  }
+
+}
+
+//---------------------------------------------------------
+//Recount Stats Form
+//---------------------------------------------------------
+
+#give-tools-recount-form {
+
+  .notice-wrap {
+    position: relative;
+    min-height: 25px;
+    margin: 10px -12px -12px;
+    background: #EFEFEF;
+    padding: 10px 12px 12px;
+    border-top: 1px solid #E5E5E5;
+
+    .give-progress {
+      position: absolute;
+      top: 15px;
+    }
+
+    .spinner {
+      position: absolute;
+      right: 14px;
+      top: 13px;
+      margin: 0;
+    }
+
+    #give-batch-success {
+      margin-bottom: 6px;
+    }
+
+  }
+
+}
+
+//---------------------------------------------------------
+//Progress Bar Styles
+//---------------------------------------------------------
+.give-progress {
+  height: 15px;
+  width: 95%;
+  border-radius: 4px;
+  overflow: hidden;
+  > div {
+    height: 100%;
+    width: 0;
   }
 
 }

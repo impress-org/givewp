@@ -32,7 +32,6 @@ function give_do_ajax_export() {
 
 	$_REQUEST = $form = (array) $form;
 
-
 	if ( ! wp_verify_nonce( $_REQUEST['give_ajax_export'], 'give_ajax_export' ) ) {
 		die( '-2' );
 	}
@@ -41,6 +40,7 @@ function give_do_ajax_export() {
 
 	$step   = absint( $_POST['step'] );
 	$class  = sanitize_text_field( $form['give-export-class'] );
+
 	$export = new $class( $step );
 
 	if ( ! $export->can_export() ) {
@@ -58,7 +58,6 @@ function give_do_ajax_export() {
 
 	$export->set_properties( $_REQUEST );
 
-	// Added in 1.5 to allow a bulk processor to pre-fetch some data to speed up the remaining steps and cache data
 	$export->pre_fetch();
 
 	$ret = $export->process_step( $step );
@@ -86,12 +85,12 @@ function give_do_ajax_export() {
 		exit;
 
 	} else {
-
+		
 		$args = array_merge( $_REQUEST, array(
 			'step'        => $step,
 			'class'       => $class,
 			'nonce'       => wp_create_nonce( 'give-batch-export' ),
-			'give_action' => 'download_batch_export',
+			'give_action' => 'form_batch_export',
 		) );
 
 		$download_url = add_query_arg( $args, admin_url() );

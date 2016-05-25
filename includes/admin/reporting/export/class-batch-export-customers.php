@@ -44,8 +44,8 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 			'id'        => __( 'ID', 'give' ),
 			'name'      => __( 'Name', 'give' ),
 			'email'     => __( 'Email', 'give' ),
-			'purchases' => __( 'Number of Purchases', 'give' ),
-			'amount'    => __( 'Customer Value', 'give' )
+			'purchases' => __( 'Number of Donations', 'give' ),
+			'amount'    => __( 'Donor Value', 'give' )
 		);
 
 		return $cols;
@@ -64,13 +64,13 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 
 		$data = array();
 
-		if ( ! empty( $this->download ) ) {
+		if ( ! empty( $this->form ) ) {
 
 			// Export customers of a specific product
 			global $give_logs;
 
 			$args = array(
-				'post_parent'    => absint( $this->download ),
+				'post_parent'    => absint( $this->form ),
 				'log_type'       => 'sale',
 				'posts_per_page' => 30,
 				'paged'          => $this->step
@@ -108,7 +108,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 
 			// Export all customers
 			$offset    = 30 * ( $this->step - 1 );
-			$customers = EDD()->customers->get_customers( array( 'number' => 30, 'offset' => $offset ) );
+			$customers = Give()->customers->get_customers( array( 'number' => 30, 'offset' => $offset ) );
 
 			$i = 0;
 
@@ -140,8 +140,8 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 
 		$percentage = 0;
 
-		// We can't count the number when getting them for a specific download
-		if ( empty( $this->download ) ) {
+		// We can't count the number when getting them for a specific form
+		if ( empty( $this->form ) ) {
 
 			$total = Give()->customers->count();
 
@@ -170,7 +170,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 	public function set_properties( $request ) {
 		$this->start    = isset( $request['start'] ) ? sanitize_text_field( $request['start'] ) : '';
 		$this->end      = isset( $request['end'] ) ? sanitize_text_field( $request['end'] ) : '';
-		$this->download = isset( $request['download'] ) ? absint( $request['download'] ) : null;
+		$this->form = isset( $request['form'] ) ? absint( $request['form'] ) : null;
 		$this->price_id = ! empty( $request['give_price_option'] ) && 0 !== $request['give_price_option'] ? absint( $request['give_price_option'] ) : null;
 	}
 }

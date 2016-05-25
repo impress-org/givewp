@@ -30,7 +30,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 	public $export_type = '';
 
 	/**
-	 * Allows for a non-download batch processing to be run.
+	 * Allows for a non-form batch processing to be run.
 	 * @since  1.5
 	 * @var boolean
 	 */
@@ -42,6 +42,13 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 	 * @var integer
 	 */
 	public $per_step = 30;
+
+	/**
+	 * Sets the donation form ID to recalculate
+	 * @since  1.5
+	 * @var integer
+	 */
+	protected $form_id = null;
 
 	/**
 	 * Get the Export Data
@@ -83,6 +90,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 
 		$log_ids              = $give_logs->get_connected_logs( $args, 'sale' );
 		$this->_log_ids_debug = array();
+
 		if ( $log_ids ) {
 			$log_ids     = implode( ',', $log_ids );
 			$payment_ids = $wpdb->get_col( "SELECT meta_value FROM $wpdb->postmeta WHERE meta_key='_give_log_payment_id' AND post_id IN ($log_ids)" );
@@ -94,24 +102,22 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 
 			foreach ( $payments as $payment ) {
 
+				$payment = new Give_Payment( $payment->ID );
+
+				//Ensure acceptible status only
 				if ( ! in_array( $payment->post_status, $accepted_statuses ) ) {
 					continue;
 				}
 
-				$items = give_get_payment_meta_cart_details( $payment->ID );
-
-				foreach ( $items as $item ) {
-
-					if ( $item['id'] != $this->form_id ) {
-						continue;
-					}
-
-					$this->_log_ids_debug[] = $payment->ID;
-
-					$totals['sales'] ++;
-					$totals['earnings'] += $item['price'];
-
+				//Ensure only payments for this form are counted
+				if ( $payment->form_id != $this->form_id ) {
+					continue;
 				}
+
+				$this->_log_ids_debug[] = $payment->ID;
+
+				$totals['sales'] ++;
+				$totals['earnings'] += $payment->total;
 
 			}
 
@@ -224,7 +230,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 			$this->delete_data( 'give_recount_total_' . $this->form_id );
 			$this->delete_data( 'give_temp_recount_form_stats' );
 			$this->done    = true;
-			$this->message = sprintf( __( 'Earnings and sales stats successfully recounted for %s.', 'give' ), get_the_title( $this->form_id ) );
+			$this->message = sprintf( __( 'Donation counts and income amount statistics successfully recounted for "%s".', 'give' ), get_the_title( $this->form_id ) );
 
 			return false;
 		}

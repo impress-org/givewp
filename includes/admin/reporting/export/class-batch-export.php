@@ -71,14 +71,14 @@ class Give_Batch_Export extends Give_Export {
 	public $status;
 
 	/**
-	 * Download to export data for
+	 * Form to export data for
 	 *
 	 * @since 1.5
 	 */
-	public $download = null;
+	public $form = null;
 
 	/**
-	 * Download Price ID to export data for
+	 * Form Price ID to export data for
 	 *
 	 * @since 1.5
 	 */
@@ -108,7 +108,7 @@ class Give_Batch_Export extends Give_Export {
 
 		$upload_dir       = wp_upload_dir();
 		$this->filetype   = '.csv';
-		$this->filename   = 'edd-' . $this->export_type . $this->filetype;
+		$this->filename   = 'give-' . $this->export_type . $this->filetype;
 		$this->file       = trailingslashit( $upload_dir['basedir'] ) . $this->filename;
 
 		if ( ! is_writeable( $upload_dir['basedir'] ) ) {
@@ -288,7 +288,7 @@ class Give_Batch_Export extends Give_Export {
 
 		echo $file;
 
-		edd_die();
+		give_die();
 	}
 
 	/*

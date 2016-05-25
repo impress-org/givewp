@@ -1080,28 +1080,43 @@ body.give_forms_page_give-reports table.export-options-table tbody td {
 
 body.give_forms_page_give-reports table.export-options-table .give-export-form {
   position: relative; }
+  body.give_forms_page_give-reports table.export-options-table .give-export-form .notice-wrap {
+    background-color: transparent;
+    padding: 12px 12px 4px;
+    margin: 2px 0 -16px -11px;
+    overflow: auto; }
+    body.give_forms_page_give-reports table.export-options-table .give-export-form .notice-wrap .spinner {
+      margin: -2px -12px 8px 0; }
 
-body.give_forms_page_give-reports table.export-options-table .give-export-form .give-progress {
+body.give_forms_page_give-reports table.export-options-table span#give-start-wrap input, body.give_forms_page_give-reports table.export-options-table span#give-end-wrap input {
+  width: 100px; }
+
+#give-tools-recount-form .notice-wrap {
+  position: relative;
+  min-height: 25px;
+  margin: 10px -12px -12px;
+  background: #EFEFEF;
+  padding: 10px 12px 12px;
+  border-top: 1px solid #E5E5E5; }
+  #give-tools-recount-form .notice-wrap .give-progress {
+    position: absolute;
+    top: 15px; }
+  #give-tools-recount-form .notice-wrap .spinner {
+    position: absolute;
+    right: 14px;
+    top: 13px;
+    margin: 0; }
+  #give-tools-recount-form .notice-wrap #give-batch-success {
+    margin-bottom: 6px; }
+
+.give-progress {
   height: 15px;
   width: 95%;
   border-radius: 4px;
   overflow: hidden; }
-
-body.give_forms_page_give-reports table.export-options-table .give-export-form .give-progress div {
-  height: 100%;
-  width: 0; }
-
-body.give_forms_page_give-reports table.export-options-table .give-export-form .notice-wrap {
-  background-color: transparent;
-  padding: 12px 12px 4px;
-  margin: 2px 0 -16px -11px;
-  overflow: auto; }
-
-body.give_forms_page_give-reports table.export-options-table .give-export-form .notice-wrap .spinner {
-  margin: -2px -12px 8px 0; }
-
-body.give_forms_page_give-reports table.export-options-table span#give-start-wrap input, body.give_forms_page_give-reports table.export-options-table span#give-end-wrap input {
-  width: 100px; }
+  .give-progress > div {
+    height: 100%;
+    width: 0; }
 
 .admin-color-fresh .give-export-form .give-progress div, .give-export-form .give-progress div {
   background: #0073aa; }

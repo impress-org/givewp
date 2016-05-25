@@ -9,6 +9,7 @@
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -19,10 +20,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 1.5
  * @return void
  */
-function give_process_batch_export_download() {
+function give_process_batch_export_form() {
 
 	if ( ! wp_verify_nonce( $_REQUEST['nonce'], 'give-batch-export' ) ) {
-		wp_die( __( 'Nonce verification failed', 'easy-digital-downloads' ), __( 'Error', 'easy-digital-downloads' ), array( 'response' => 403 ) );
+		wp_die( __( 'Nonce verification failed', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/export/class-batch-export.php';
@@ -34,11 +35,11 @@ function give_process_batch_export_download() {
 
 }
 
-add_action( 'give_download_batch_export', 'give_process_batch_export_download' );
+add_action( 'give_form_batch_export', 'give_process_batch_export_form' );
 
 /**
  * Exports earnings for a specified time period
- * 
+ *
  * Give_Earnings_Export class.
  *
  * @since 1.5
@@ -163,11 +164,11 @@ function give_include_customers_batch_processer( $class ) {
  *
  * @since  1.5
  */
-function give_register_downloads_batch_export() {
-	add_action( 'give_batch_export_class_include', 'give_include_downloads_batch_processer', 10, 1 );
+function give_register_forms_batch_export() {
+	add_action( 'give_batch_export_class_include', 'give_include_forms_batch_processor', 10, 1 );
 }
 
-add_action( 'give_register_batch_exporter', 'give_register_downloads_batch_export', 10 );
+add_action( 'give_register_batch_exporter', 'give_register_forms_batch_export', 10 );
 
 /**
  * Loads the file downloads batch process if needed
@@ -178,10 +179,10 @@ add_action( 'give_register_batch_exporter', 'give_register_downloads_batch_expor
  *
  * @return void
  */
-function give_include_downloads_batch_processer( $class ) {
+function give_include_forms_batch_processor( $class ) {
 
 	if ( 'Give_Batch_Forms_Export' === $class ) {
-		require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/export/class-batch-export-downloads.php';
+		require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/export/class-batch-export-forms.php';
 	}
 
 }

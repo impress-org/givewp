@@ -19,45 +19,56 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since  1.5
  */
 function give_register_batch_recount_store_earnings_tool() {
-	add_action( 'give_batch_export_class_include', 'give_include_recount_store_earnings_tool_batch_processer', 10, 1 );
+	add_action( 'give_batch_export_class_include', 'give_include_recount_income_tool_batch_processor', 10, 1 );
 }
+
 add_action( 'give_register_batch_exporter', 'give_register_batch_recount_store_earnings_tool', 10 );
 
 /**
  * Loads the tools batch processing class for recounting store earnings
  *
  * @since  1.5
+ *
  * @param  string $class The class being requested to run for the batch export
+ *
  * @return void
  */
-function give_include_recount_store_earnings_tool_batch_processer( $class ) {
+function give_include_recount_income_tool_batch_processor( $class ) {
 
-	if ( 'Give_Tools_Recount_Store_Earnings' === $class ) {
-		require_once GIVE_PLUGIN_DIR . 'includes/admin/reports/tools/class-give-tools-recount-store-earnings.php';
+	$file_path = GIVE_PLUGIN_DIR . 'includes/admin/reporting/tools/class-give-tools-recount-income.php';
+
+	if ( 'Give_Tools_Recount_Income' === $class && file_exists( $file_path ) ) {
+		require_once $file_path;
 	}
 
 }
 
 /**
  * Register the recount form batch processor
+ *
  * @since  1.5
  */
 function give_register_batch_recount_form_tool() {
 	add_action( 'give_batch_export_class_include', 'give_include_recount_form_tool_batch_processor', 10, 1 );
 }
+
 add_action( 'give_register_batch_exporter', 'give_register_batch_recount_form_tool', 10 );
 
 /**
  * Loads the tools batch processing class for recounting download stats
  *
  * @since  1.5
+ *
  * @param  string $class The class being requested to run for the batch export
+ *
  * @return void
  */
 function give_include_recount_form_tool_batch_processor( $class ) {
 
-	if ( 'Give_Tools_Recount_Form_Stats' === $class ) {
-		require_once GIVE_PLUGIN_DIR . 'includes/admin/reports/tools/class-give-tools-recount-form-stats.php';
+	$file_path = GIVE_PLUGIN_DIR . 'includes/admin/reporting/tools/class-give-tools-recount-form-stats.php';
+
+	if ( 'Give_Tools_Recount_Form_Stats' === $class && file_exists( $file_path ) ) {
+		require_once $file_path;
 	}
 
 }
@@ -67,21 +78,24 @@ function give_include_recount_form_tool_batch_processor( $class ) {
  * @since  1.5
  */
 function give_register_batch_recount_all_tool() {
-	add_action( 'give_batch_export_class_include', 'give_include_recount_all_tool_batch_processer', 10, 1 );
+	add_action( 'give_batch_export_class_include', 'give_include_recount_all_tool_batch_processor', 10, 1 );
 }
+
 add_action( 'give_register_batch_exporter', 'give_register_batch_recount_all_tool', 10 );
 
 /**
  * Loads the tools batch processing class for recounting all stats
  *
  * @since  1.5
+ *
  * @param  string $class The class being requested to run for the batch export
+ *
  * @return void
  */
-function give_include_recount_all_tool_batch_processer( $class ) {
-
-	if ( 'Give_Tools_Recount_All_Stats' === $class ) {
-		require_once GIVE_PLUGIN_DIR . 'includes/admin/reports/tools/class-give-tools-recount-all-stats.php';
+function give_include_recount_all_tool_batch_processor( $class ) {
+	$file_path = GIVE_PLUGIN_DIR . 'includes/admin/reporting/tools/class-give-tools-recount-all-stats.php';
+	if ( 'Give_Tools_Recount_All_Stats' === $class && file_exists( $file_path ) ) {
+		require_once $file_path;
 	}
 
 }
@@ -93,13 +107,16 @@ function give_include_recount_all_tool_batch_processer( $class ) {
 function give_register_batch_reset_tool() {
 	add_action( 'give_batch_export_class_include', 'give_include_reset_tool_batch_processer', 10, 1 );
 }
+
 add_action( 'give_register_batch_exporter', 'give_register_batch_reset_tool', 10 );
 
 /**
  * Loads the tools batch processing class for resetting store and product earnings
  *
  * @since  1.5
+ *
  * @param  string $class The class being requested to run for the batch export
+ *
  * @return void
  */
 function give_include_reset_tool_batch_processer( $class ) {
@@ -117,13 +134,16 @@ function give_include_reset_tool_batch_processer( $class ) {
 function give_register_batch_customer_recount_tool() {
 	add_action( 'give_batch_export_class_include', 'give_include_customer_recount_tool_batch_processer', 10, 1 );
 }
+
 add_action( 'give_register_batch_exporter', 'give_register_batch_customer_recount_tool', 10 );
 
 /**
  * Loads the tools batch processing class for resetting all customer stats
  *
  * @since  1.5
+ *
  * @param  string $class The class being requested to run for the batch export
+ *
  * @return void
  */
 function give_include_customer_recount_tool_batch_processer( $class ) {
