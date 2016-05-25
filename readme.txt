@@ -165,7 +165,8 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 == Changelog ==
 
 = 1.4.6:  =
-* Fix: Reports graph tooltips not displaying currency properly formatted @see https://github.com/WordImpress/Give/issues/620
+* Fix: Reports graph tooltips not displaying currency properly formatted - https://github.com/WordImpress/Give/issues/620
+* Tweak: Removed the French translation files included because, thanks to all French polyglots, we have been translated in full - https://translate.wordpress.org/locale/fr/default/wp-plugins/give
 
 = 1.4.5: May 12, 2016  =
 * Hotfix: Fixed a bug introduced which causes the custom amount minimum to be improperly calculated - https://github.com/WordImpress/Give/issues/616
