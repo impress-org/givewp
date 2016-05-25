@@ -31,7 +31,7 @@ class Tests_Donate_Form_Class extends Give_Unit_Test_Case {
 	/**
 	 * Test Get Form
 	 *
-	 * @covers Give_Donate_Form::get_form
+	 * @covers Give_Donate_Form
 	 */
 	public function test_get_form() {
 		$simple_form = new Give_Donate_Form( $this->_simple_form->ID );

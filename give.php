@@ -326,7 +326,6 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/class-api-keys-table.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-actions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/system-info.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/export-functions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/add-ons.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/plugins.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/dashboard-widgets.php';
@@ -340,7 +339,10 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/metabox.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/dashboard-columns.php';
 
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/export/export-functions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/reports.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/tools.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/tools/tools-actions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/pdf-reports.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/class-give-graph.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/graphing.php';

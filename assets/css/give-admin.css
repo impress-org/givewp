@@ -1015,8 +1015,6 @@ Tooltips
   clear: right;
   margin: 8px 0 0; }
 
-/* Global Graph Styles
--------------------------------------------------------------- */
 .give-graph .y1Axis {
   color: #66bb6a !important; }
 
@@ -1077,21 +1075,88 @@ body.give_forms_page_give-reports .widefat tbody td, body.give_forms_page_give-r
   padding-top: 12px;
   padding-bottom: 12px; }
 
-/*---------------------
-Export Options Styles
----------------------------*/
 body.give_forms_page_give-reports table.export-options-table tbody td {
   padding: 20px 12px; }
 
-/*---------------------
-Payment Methods
----------------------------*/
+body.give_forms_page_give-reports table.export-options-table .give-export-form {
+  position: relative; }
+  body.give_forms_page_give-reports table.export-options-table .give-export-form .notice-wrap {
+    background-color: transparent;
+    padding: 12px 12px 4px;
+    margin: 2px 0 -16px -11px;
+    overflow: auto; }
+    body.give_forms_page_give-reports table.export-options-table .give-export-form .notice-wrap .spinner {
+      margin: -2px -12px 8px 0; }
+
+body.give_forms_page_give-reports table.export-options-table span#give-start-wrap input, body.give_forms_page_give-reports table.export-options-table span#give-end-wrap input {
+  width: 100px; }
+
+#give-tools-recount-form .notice-wrap {
+  position: relative;
+  min-height: 25px;
+  margin: 10px -12px -12px;
+  background: #EFEFEF;
+  padding: 10px 12px 12px;
+  border-top: 1px solid #E5E5E5; }
+  #give-tools-recount-form .notice-wrap .give-progress {
+    position: absolute;
+    top: 15px; }
+  #give-tools-recount-form .notice-wrap .spinner {
+    position: absolute;
+    right: 14px;
+    top: 13px;
+    margin: 0; }
+  #give-tools-recount-form .notice-wrap #give-batch-success {
+    margin-bottom: 6px; }
+
+.give-progress {
+  height: 15px;
+  width: 95%;
+  border-radius: 4px;
+  overflow: hidden; }
+  .give-progress > div {
+    height: 100%;
+    width: 0; }
+
+.admin-color-fresh .give-export-form .give-progress div, .give-export-form .give-progress div {
+  background: #0073aa; }
+
+.admin-color-light .give-export-form .give-progress div {
+  background: #888; }
+
+.admin-color-blue .give-export-form .give-progress div {
+  background: #096484; }
+
+.admin-color-coffee .give-export-form .give-progress div {
+  background: #c7a589; }
+
+.admin-color-ectoplasm .give-export-form .give-progress div {
+  background: #a3b745; }
+
+.admin-color-midnight .give-export-form .give-progress div {
+  background: #e14d43; }
+
+.admin-color-sunrise .give-export-form .give-progress div {
+  background: #dd823b; }
+
+.recount-stats-controls form {
+  display: inline; }
+
+.give-recount-stats-descriptions {
+  margin: 8px 0 0;
+  display: block; }
+  .give-recount-stats-descriptions span {
+    line-height: 24px;
+    font-size: 13px;
+    font-style: italic;
+    font-weight: normal;
+    color: #aaa;
+    margin: 0;
+    display: none; }
+
 .gateways-report-tablenav .actions.bulkactions {
   padding-right: 0; }
 
-/*---------------------
-Table List Styles
----------------------------*/
 .widefat .column-name, .widefat .column-label {
   font-size: 14px;
   font-weight: bold; }
@@ -1110,9 +1175,6 @@ table.give-table td.row-title p {
   color: #aaa;
   margin: 0; }
 
-/*-------------------------
-Logs
-----------------------------*/
 #give-logs-filter .search-box {
   float: right; }
 

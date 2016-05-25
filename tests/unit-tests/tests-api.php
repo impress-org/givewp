@@ -17,6 +17,8 @@ class Tests_API extends Give_Unit_Test_Case {
 	protected $_api_output_sales = null;
 
 	protected $_user_id = null;
+	
+	protected $_payment_id = null;
 
 	public function setUp() {
 		parent::setUp();
@@ -107,9 +109,9 @@ class Tests_API extends Give_Unit_Test_Case {
 
 		$_SERVER['REMOTE_ADDR'] = '10.0.0.0';
 
-		$payment_id = give_insert_payment( $purchase_data );
+		$this->_payment_id = give_insert_payment( $purchase_data );
 
-		give_update_payment_status( $payment_id, 'complete' );
+		give_update_payment_status( $this->_payment_id, 'complete' );
 
 		$this->_api_output       = $this->_api->get_forms();
 		$this->_api_output_sales = $this->_api->get_recent_donations();
@@ -230,7 +232,7 @@ class Tests_API extends Give_Unit_Test_Case {
 	 */
 	public function test_get_form_stats() {
 		$out = $this->_api_output;
-		
+
 		$this->assertArrayHasKey( 'stats', $out['forms'][0] );
 		$this->assertArrayHasKey( 'total', $out['forms'][0]['stats'] );
 		$this->assertArrayHasKey( 'donations', $out['forms'][0]['stats']['total'] );
@@ -371,6 +373,9 @@ class Tests_API extends Give_Unit_Test_Case {
 		//$this->assertEquals( 'Invalid API key!', $out['error'] );
 	}
 
+	/**
+	 * Test Process Query
+	 */
 	public function test_process_query() {
 		global $wp_query;
 
