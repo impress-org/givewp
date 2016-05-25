@@ -1,10 +1,10 @@
 <?php
 /**
- * Recount income and stats
+ * Delete Test Transactions
  *
- * This class handles batch processing of resetting donations and income stats
+ * This class handles batch processing of deleting test transactions
  *
- * @subpackage  Admin/Tools/Give_Tools_Reset_Stats
+ * @subpackage  Admin/Tools/Give_Tools_Delete_Test_Transactions
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.5
@@ -16,11 +16,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Give_Tools_Reset_Stats Class
+ * Give_Tools_Delete_Test_Transactions Class
  *
  * @since 1.5
  */
-class Give_Tools_Reset_Stats extends Give_Batch_Export {
+class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 
 	/**
 	 * Our export type. Used for export-type specific filters/actions
@@ -67,25 +67,12 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 		if ( $step_items ) {
 
 			$step_ids = array(
-				'customers'  => array(),
-				'forms' => array(),
-				'other'      => array(),
+				'other' => array(),
 			);
 
 			foreach ( $step_items as $item ) {
 
-				switch ( $item['type'] ) {
-					case 'customer':
-						$step_ids['customers'][] = $item['id'];
-						break;
-					case 'forms':
-						$step_ids['give_forms'][] = $item['id'];
-						break;
-					default:
-						$item_type                = apply_filters( 'give_reset_item_type', 'other', $item );
-						$step_ids[ $item_type ][] = $item['id'];
-						break;
-				}
+				$step_ids['other'][] = $item['id'];
 
 			}
 
@@ -100,26 +87,12 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 				$ids = implode( ',', $ids );
 
 				switch ( $type ) {
-					case 'customers':
-						$table_name = $wpdb->prefix . 'give_customers';
-						$sql[]      = "DELETE FROM $table_name WHERE id IN ($ids)";
-						break;
-					case 'forms':
-						$sql[] = "UPDATE $wpdb->postmeta SET meta_value = 0 WHERE meta_key = '_give_form_sales' AND post_id IN ($ids)";
-						$sql[] = "UPDATE $wpdb->postmeta SET meta_value = 0.00 WHERE meta_key = '_give_form_earnings' AND post_id IN ($ids)";
-						break;
 					case 'other':
 						$sql[] = "DELETE FROM $wpdb->posts WHERE id IN ($ids)";
 						$sql[] = "DELETE FROM $wpdb->postmeta WHERE post_id IN ($ids)";
 						$sql[] = "DELETE FROM $wpdb->comments WHERE comment_post_ID IN ($ids)";
 						$sql[] = "DELETE FROM $wpdb->commentmeta WHERE comment_id NOT IN (SELECT comment_ID FROM $wpdb->comments)";
 						break;
-				}
-
-				if ( ! in_array( $type, array( 'customers', 'forms', 'other' ) ) ) {
-					// Allows other types of custom post types to filter on their own post_type
-					// and add items to the query list, for the IDs found in their post type.
-					$sql = apply_filters( 'give_reset_add_queries_' . $type, $sql, $ids );
 				}
 
 			}
@@ -203,7 +176,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 			}
 
 			$this->done    = true;
-			$this->message = __( 'Donation forms, income, donations counts, and logs successfully reset.', 'give' );
+			$this->message = __( 'Test transactions successfully deleted.', 'give' );
 
 			return false;
 		}
@@ -249,13 +222,13 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 		if ( false === $items ) {
 			$items = array();
 
-			$give_types_for_reset = array( 'give_forms', 'give_log', 'give_payment' );
-			$give_types_for_reset = apply_filters( 'give_reset_store_post_types', $give_types_for_reset );
-
 			$args = apply_filters( 'give_tools_reset_stats_total_args', array(
-				'post_type'      => $give_types_for_reset,
+				'post_type'      => 'give_payment',
 				'post_status'    => 'any',
 				'posts_per_page' => - 1,
+				//ONLY TEST MODE!!!
+				'meta_key'   => '_give_payment_mode',
+				'meta_value' => 'test'
 			) );
 
 			$posts = get_posts( $args );
@@ -263,15 +236,6 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 				$items[] = array(
 					'id'   => (int) $post->ID,
 					'type' => $post->post_type,
-				);
-			}
-
-			$customer_args = array( 'number' => - 1 );
-			$customers     = Give()->customers->get_customers( $customer_args );
-			foreach ( $customers as $customer ) {
-				$items[] = array(
-					'id'   => (int) $customer->id,
-					'type' => 'customer',
 				);
 			}
 

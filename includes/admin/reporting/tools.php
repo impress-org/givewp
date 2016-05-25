@@ -41,12 +41,13 @@ function give_tools_recount_stats_display() {
 
 					<select name="give-export-class" id="recount-stats-type">
 						<option value="0" selected="selected" disabled="disabled"><?php _e( 'Please select an option', 'give' ); ?></option>
-						<option data-type="recount-stats" value="Give_Tools_Recount_Income"><?php _e( 'Recount Total Donation Income Amount', 'give' ); ?></option>
-						<option data-type="recount-form" value="Give_Tools_Recount_Form_Stats"><?php _e( 'Recount Income Amount and Donation Counts for a Specific Form', 'give' ); ?></option>
-						<option data-type="recount-all" value="Give_Tools_Recount_All_Stats"><?php _e( 'Recount Income Amount and Donation Counts for All Forms', 'give' ); ?></option>
-						<option data-type="recount-customer-stats" value="Give_Tools_Recount_Customer_Stats"><?php _e( 'Recount Customer Stats', 'give' ); ?></option>
+						<option data-type="recount-stats" value="Give_Tools_Recount_Income"><?php _e( 'Recalculate Total Donation Income Amount', 'give' ); ?></option>
+						<option data-type="recount-form" value="Give_Tools_Recount_Form_Stats"><?php _e( 'Recalculate Income Amount and Donation Counts for a Form', 'give' ); ?></option>
+						<option data-type="recount-all" value="Give_Tools_Recount_All_Stats"><?php _e( 'Recalculate Income Amount and Donation Counts for All Forms', 'give' ); ?></option>
+						<option data-type="recount-customer-stats" value="Give_Tools_Recount_Customer_Stats"><?php _e( 'Recalculate Donor Statistics', 'give' ); ?></option>
+						<option data-type="delete-test-transactions" value="Give_Tools_Delete_Test_Transactions"><?php _e( 'Delete Test Transactions', 'give' ); ?></option>
+						<option data-type="reset-stats" value="Give_Tools_Reset_Stats"><?php _e( 'Delete All Data', 'give' ); ?></option>
 						<?php do_action( 'give_recount_tool_options' ); ?>
-						<option data-type="reset-stats" value="Give_Tools_Reset_Stats"><?php _e( 'Reset Store', 'give' ); ?></option>
 					</select>
 
 					<span id="tools-form-dropdown" style="display: none">
@@ -70,7 +71,8 @@ function give_tools_recount_stats_display() {
 						<span id="recount-all"><?php printf( __( 'Recalculates the earnings and sales stats for all %s.', 'give' ), give_get_forms_label_plural( true ) ); ?></span>
 						<span id="recount-customer-stats"><?php _e( 'Recalculates the lifetime value and donation counts for all donors.', 'give' ); ?></span>
 						<?php do_action( 'give_recount_tool_descriptions' ); ?>
-						<span id="reset-stats"><?php _e( '<strong>Deletes</strong> all payment records, customers, and related log entries.', 'give' ); ?></span>
+						<span id="delete-test-transactions"><?php _e( '<strong>Deletes</strong> all TEST payment records, donors, and related log entries.', 'give' ); ?></span>
+						<span id="reset-stats"><?php _e( '<strong>Deletes</strong> ALL transaction records, donors, and related log entries regardless of test or live mode.', 'give' ); ?></span>
 					</span>
 
 					<span class="spinner"></span>
