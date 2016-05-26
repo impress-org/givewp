@@ -54,6 +54,16 @@ class Give_Plugin_Settings {
 		//Customize CMB2 URL
 		add_filter( 'cmb2_meta_box_url', array( $this, 'give_update_cmb_meta_box_url' ) );
 
+		//Custom CMB2 Settings Fields
+		add_action( 'cmb2_render_give_title', 'give_title_callback', 10, 5 );
+		add_action( 'cmb2_render_give_description', 'give_description_callback', 10, 5 );
+		add_action( 'cmb2_render_enabled_gateways', 'give_enabled_gateways_callback', 10, 5 );
+		add_action( 'cmb2_render_default_gateway', 'give_default_gateway_callback', 10, 5 );
+		add_action( 'cmb2_render_email_preview_buttons', 'give_email_preview_buttons_callback', 10, 5 );
+		add_action( 'cmb2_render_system_info', 'give_system_info_callback', 10, 5 );
+		add_action( 'cmb2_render_api', 'give_api_callback', 10, 5 );
+		add_action( 'cmb2_render_license_key', 'give_license_key_callback', 10, 5 );
+		add_action( 'admin_notices', array( $this, 'settings_notices' ) );
 
 		// Include CMB CSS in the head to avoid FOUC
 		add_action( 'admin_print_styles-give_forms_page_give-settings', array( 'CMB2_hookup', 'enqueue_cmb_css' ) );
@@ -137,7 +147,7 @@ class Give_Plugin_Settings {
 				foreach ( $this->give_get_settings_tabs() as $tab_id => $tab_name ) {
 
 					//Support legacy tab creation conditions based off $_GET parameter
-					//We 'trick' the conditions into thinking this is the tab
+					//We pass the $_GET['tab'] to conditions executed later
 					$_GET['tab'] = $tab_id;
 
 					$tab_url = esc_url( add_query_arg( array(
@@ -167,11 +177,11 @@ class Give_Plugin_Settings {
 				$_GET['tab'] = $tab_id;
 
 				$tab_settings = $this->give_settings( $tab_id );
-//
-//				//Pass active tab within $tab_settings so we can hide with CSS via PHP
-//				if ( $active_tab == $tab_id ) {
-//					$tab_settings['active_tab'] = true;
-//				}
+
+				//Pass active tab within $tab_settings so we can hide with CSS via PHP
+				if ( $active_tab == $tab_id ) {
+					$tab_settings['active_tab'] = true;
+				}
 
 				cmb2_metabox_form( $tab_settings, $this->key );
 
