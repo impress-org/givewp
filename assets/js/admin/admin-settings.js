@@ -34,11 +34,10 @@ jQuery(document).ready(function ($) {
 
         var id, tab;
 
-
         // if $tab was not set, get the tab from the query string
         // default to 'general' if no query string present
         if (typeof($tab) === 'undefined') {
-            id = get_query_string('tab').length ? get_query_string('tab') : 'general_settings';
+            id = get_query_string('tab').length ? get_query_string('tab') : 'general';
         } else {
             // get id and content location from the chosen tab
             id = $tab.attr('id');

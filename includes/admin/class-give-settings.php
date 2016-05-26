@@ -136,7 +136,7 @@ class Give_Plugin_Settings {
 	 */
 	public function admin_page_display() {
 
-		$active_tab = isset( $_GET['tab'] ) && array_key_exists( $_GET['tab'], $this->give_get_settings_tabs() ) ? $_GET['tab'] : 'general_settings';
+		$active_tab = isset( $_GET['tab'] ) && array_key_exists( $_GET['tab'], $this->give_get_settings_tabs() ) ? $_GET['tab'] : 'general';
 
 		?>
 
@@ -156,11 +156,6 @@ class Give_Plugin_Settings {
 					) ) );
 
 					$active       = $active_tab == $tab_id ? ' nav-tab-active' : '';
-					$tab_settings = $this->give_settings( $tab_id );
-
-					//Ensure proper tab ID is set - don't allow legacy 'options_page' for an ID
-					//This prevents duplicate tab IDs which causes only the first tab to be displayed
-					$tab_form_id = ( isset( $tab_settings['id'] ) && $tab_settings['id'] !== 'options_page' ) ? $tab_settings['id'] : $tab_id;
 
 					echo '<a href="' . esc_url( $tab_url ) . '" title="' . esc_attr( $tab_name ) . '" class="nav-tab' . $active . '" id="tab-' . $tab_id . '">' . esc_html( $tab_name ) . '</a>';
 
