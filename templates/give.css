@@ -1,4 +1,3 @@
-@charset "UTF-8";
 /*!
  * Give Frontend SCSS/CSS
  *
@@ -669,11 +668,9 @@ x:-o-prefocus, .qtip .qtip-tip {
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
-/* =Receipt Page
--------------------------------------------------------------- */
 body.give_receipt_page {
   background-color: #fff;
-  color:   #141412;
+  color: #141412;
   margin: 0;
   font-family: Helvetica, sans-serif;
   font-size: 12px; }
@@ -706,14 +703,19 @@ body.give_receipt_page {
     display: block;
     font-weight: bold; }
 
-/* =Purchase Summary Tables
--------------------------------------------------------------- */
 table#give_donation_receipt_products,
 table#give_donation_receipt {
   width: 100%; }
 
 table#give_donation_receipt td, table#give_donation_receipt th, table#give_donation_receipt td, table#give_donation_receipt th {
   text-align: left; }
+
+table#give_donation_receipt .give-receipt-thead-text {
+  font-size: 18px;
+  text-align: center;
+  display: block; }
+  table#give_donation_receipt .give-receipt-thead-text > span {
+    font-size: 16px; }
 
 table#give_donation_receipt li {
   list-style: none;
@@ -2047,7 +2049,8 @@ table.give-table {
       border-top: 1px solid #ffffff;
       border-bottom: 1px solid #e0e0e0;
       border-left: 1px solid #e0e0e0;
-      background: #FFF; }
+      background: #FFF;
+      text-align: center; }
     table.give-table tbody tr td:first-child {
       text-align: left;
       border-left: 0; }

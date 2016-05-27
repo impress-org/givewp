@@ -7,11 +7,12 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 
-/* =Receipt Page
--------------------------------------------------------------- */
+//------------------------------------------------------------
+// Email Browser Receipt Page
+//------------------------------------------------------------
 body.give_receipt_page {
   background-color: #fff;
-  color:   #141412;
+  color: #141412;
   margin: 0;
   font-family: Helvetica, sans-serif;
   font-size: 12px;
@@ -52,8 +53,10 @@ body.give_receipt_page {
 
 }
 
-/* =Purchase Summary Tables
--------------------------------------------------------------- */
+//------------------------------------------------------------
+// On Site Donation Summary Tables
+//------------------------------------------------------------
+
 table#give_donation_receipt_products,
 table#give_donation_receipt {
   width: 100%;
@@ -62,6 +65,15 @@ table#give_donation_receipt {
 table#give_donation_receipt {
   td, th, td, th {
     text-align: left;
+  }
+
+  .give-receipt-thead-text {
+    font-size:18px;
+    text-align:center;
+    display: block;
+    > span {
+      font-size:16px;
+    }
   }
 
   li {

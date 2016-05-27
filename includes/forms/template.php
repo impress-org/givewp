@@ -269,7 +269,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 	$default_amount      = give_format_amount( give_get_default_form_amount( $form_id ) );
 	$custom_amount_text  = get_post_meta( $form_id, '_give_custom_amount_text', true );
 
-	do_action( 'give_before_donation_levels', $form_id );
+	do_action( 'give_before_donation_levels', $form_id, $args );
 
 	//Set Price, No Custom Amount Allowed means hidden price field
 	if ( $allow_custom_amount == 'no' ) {
