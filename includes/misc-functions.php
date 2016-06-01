@@ -198,7 +198,7 @@ function give_get_current_page_url() {
 	if ( is_front_page() ) {
 		$current_url = home_url( '/' );
 	} else {
-		$current_url = ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+		$current_url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . untrailingslashit( $_SERVER['REQUEST_URI'] ) );
 	}
 
 	return apply_filters( 'give_get_current_page_url', esc_url( $current_url ) );
@@ -488,13 +488,13 @@ function give_is_host( $host = false ) {
  *
  * This function is to be used in every function that is deprecated.
  *
- * @uses do_action() Calls 'give_deprecated_function_run' and passes the function name, what to use instead,
+ * @uses do_action() Calls 'edd_deprecated_function_run' and passes the function name, what to use instead,
  *   and the version the function was deprecated in.
- * @uses apply_filters() Calls 'give_deprecated_function_trigger_error' and expects boolean value of true to do
+ * @uses apply_filters() Calls 'edd_deprecated_function_trigger_error' and expects boolean value of true to do
  *   trigger or false to not trigger error.
  *
  * @param string $function The function that was called
- * @param string $version The version of Give that deprecated the function
+ * @param string $version The version of EDD that deprecated the function
  * @param string $replacement Optional. The function that should have been called
  * @param array $backtrace Optional. Contains stack backtrace of deprecated function
  */
@@ -883,16 +883,4 @@ function give_can_view_receipt( $payment_key = '' ) {
 
 	return (bool) apply_filters( 'give_can_view_receipt', $return, $payment_key );
 
-}
-
-/**
- * Fallback in case the calendar extension is not loaded in PHP
- *
- * @since 1.5
- */
-if ( ! function_exists( 'cal_days_in_month' ) ) {
-	// Only supports Gregorian calendar
-	function cal_days_in_month( $calendar, $month, $year ) {
-		return date( 't', mktime( 0, 0, 0, $month, 1, $year ) );
-	}
 }
