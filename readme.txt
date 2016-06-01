@@ -166,8 +166,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 = 1.5: =
 * New: Added "Test Mode" labels to more easily identify donations made while Give is in Test Mode - https://github.com/WordImpress/Give/issues/188
-
-= 1.4.6:  =
+* New: Template wrapper support for the "Catch Evolution" theme added - https://github.com/WordImpress/Give/issues/632
 * Fix: Reports graph tooltips not displaying currency properly formatted - https://github.com/WordImpress/Give/issues/620
 * Tweak: Removed the French translation files included because, thanks to all French polyglots, we have been translated in full - https://translate.wordpress.org/locale/fr/default/wp-plugins/give
 
