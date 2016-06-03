@@ -885,12 +885,10 @@ function give_can_view_receipt( $payment_key = '' ) {
 
 }
 
-
 /**
  * Fallback for cal_days_in_month
  *
  * @description: Fallback in case the calendar extension is not loaded in PHP; Only supports Gregorian calendar
- *
  */
 if ( ! function_exists( 'cal_days_in_month' ) ) {
 	/**
