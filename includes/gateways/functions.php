@@ -322,12 +322,12 @@ function give_count_sales_by_gateway( $gateway_id = 'paypal', $status = 'publish
  * Returns a ordered list of all available gateways.
  *
  * @since 1.4.5
+ * 
+ * @param array $gateways List of payment gateways
  * @return array $gateways All the available gateways
  */
-function give_get_ordered_payment_gateways() {
-	// Get payment gateways.
-	$gateways = give_get_payment_gateways();
-
+function give_get_ordered_payment_gateways( $gateways ) {
+	
 	// Get give plugin settings.
 	$give_plugin_settings = get_option( 'give_settings' );
 
