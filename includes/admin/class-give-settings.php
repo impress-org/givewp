@@ -1003,7 +1003,7 @@ function give_enabled_gateways_callback( $field_object, $escaped_value, $object_
 
 	$id                = $field_type_object->field->args['id'];
 	$field_description = $field_type_object->field->args['desc'];
-	$gateways          = give_get_payment_gateways();
+	$gateways          = give_get_ordered_payment_gateways( give_get_payment_gateways() );
 
 	echo '<ul class="cmb2-checkbox-list cmb2-list">';
 
