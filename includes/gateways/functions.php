@@ -61,6 +61,9 @@ function give_get_enabled_payment_gateways() {
 		}
 	}
 
+	// Set order of payment gateway in list.
+	$gateway_list = give_get_ordered_payment_gateways( $gateway_list );
+
 	return apply_filters( 'give_enabled_payment_gateways', $gateway_list );
 }
 
