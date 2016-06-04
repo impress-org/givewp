@@ -358,7 +358,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Enabled Gateways', 'give' ),
-							'desc' => __( 'Choose the payment gateways you would like enabled.', 'give' ),
+							'desc' => __( 'Choose the payment gateways you would like enabled. You can drag and drop any payment gateway in list to set order. Payment gateway will appear in same order on frontend', 'give' ),
 							'id'   => 'gateways',
 							'type' => 'enabled_gateways'
 						),
