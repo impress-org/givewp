@@ -90,4 +90,12 @@ jQuery(document).ready(function ($) {
             "" : decodeURIComponent(results[1].replace(/\+/g, " "));
     }
 
+	/**
+	 *  Sortable payment gateways
+	 */
+	var $payment_gateways = jQuery( '.cmb-type-enabled-gateways ul', '#cmb2-metabox-payment_gateways' );
+	if( $payment_gateways.length ){
+		$payment_gateways.sortable();
+	}
+
 });
