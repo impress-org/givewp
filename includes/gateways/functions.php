@@ -61,6 +61,9 @@ function give_get_enabled_payment_gateways() {
 		}
 	}
 
+	// Set order of payment gateway in list.
+	$gateway_list = give_get_ordered_payment_gateways( $gateway_list );
+
 	return apply_filters( 'give_enabled_payment_gateways', $gateway_list );
 }
 
@@ -315,4 +318,48 @@ function give_count_sales_by_gateway( $gateway_id = 'paypal', $status = 'publish
 	}
 
 	return $ret;
+}
+
+
+/**
+ * Returns a ordered list of all available gateways.
+ *
+ * @since 1.4.5
+ * 
+ * @param array $gateways List of payment gateways
+ * @return array $gateways All the available gateways
+ */
+function give_get_ordered_payment_gateways( $gateways ) {
+	
+	// Get give plugin settings.
+	$give_plugin_settings = get_option( 'give_settings' );
+
+	// Get gateways setting.
+	$gateways_setting = array_key_exists( 'gateways', $give_plugin_settings ) ?
+		$give_plugin_settings['gateways'] :
+		array();
+
+	// Return from here if we do not have gateways setting.
+	if( empty( $gateways_setting ) ) {
+		return $gateways;
+	}
+
+	// Reverse array to order payment gateways.
+	$gateways_setting = array_reverse( $gateways_setting );
+
+	// Reorder gateways array
+	foreach ( $gateways_setting as $gateway_key => $value ) {
+		$new_gateway_value = $gateways[ $gateway_key ];
+		unset( $gateways[ $gateway_key ] );
+		$gateways = array_merge( array( $gateway_key => $new_gateway_value ),  $gateways );
+	}
+
+	/**
+	 * Filter payment gateways order.
+	 *
+	 * @since 1.4.5
+	 *
+	 * @param array $gateways All the available gateways
+	 */
+	return apply_filters( 'give_payment_gateways_order', $gateways );
 }
