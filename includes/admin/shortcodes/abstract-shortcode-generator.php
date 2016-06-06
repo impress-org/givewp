@@ -92,8 +92,11 @@ abstract class Give_Shortcode_Generator {
 				'title'     => __( 'Insert Shortcode', 'give' ),
 			);
 
-			Give_Shortcode_Button::$shortcodes[ $this->shortcode_tag ] = wp_parse_args( $this->shortcode, $defaults );
-
+			if( user_can_richedit() ) {
+				
+				Give_Shortcode_Button::$shortcodes[ $this->shortcode_tag ] = wp_parse_args( $this->shortcode, $defaults );
+			
+			}	
 			//
 
 		}
