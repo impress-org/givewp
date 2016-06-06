@@ -112,6 +112,7 @@ function give_get_donation_form( $args = array() ) {
 			<input type="hidden" name="give-current-url" value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
 			<input type="hidden" name="give-form-url" value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
 			<input type="hidden" name="give-form-minimum" value="<?php echo give_format_amount( give_get_form_minimum_price( $form->ID ) ); ?>"/>
+			<input type="text" name="give-honeypot" class="give-honeypot give-hidden">
 			<?php
 
 			//Price ID hidden field for variable (mult-level) donation forms
@@ -136,7 +137,6 @@ function give_get_donation_form( $args = array() ) {
 			do_action( 'give_checkout_form_bottom', $form->ID, $args );
 
 			?>
-
 		</form>
 
 		<?php do_action( 'give_post_form', $form->ID, $args ); ?>
