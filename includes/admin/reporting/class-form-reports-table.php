@@ -191,7 +191,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 		?>
 		<div class="tablenav give-clearfix <?php echo esc_attr( $which ); ?>">
 
-			<h3 class="alignleft reports-earnings-title"><span><?php _e( 'Form Report', 'give' ); ?></span></h3>
+			<h3 class="alignleft reports-earnings-title"><span><?php _e( 'Donation Forms Report', 'give' ); ?></span></h3>
 
 			<div class="alignright tablenav-right">
 				<div class="actions bulkactions">

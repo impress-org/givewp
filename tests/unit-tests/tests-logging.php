@@ -7,23 +7,35 @@
 class Tests_Logging extends Give_Unit_Test_Case {
 	protected $_object = null;
 
+	/**
+	 * Set it Up
+	 */
 	public function setUp() {
 		parent::setUp();
 
-		$this->_object = new Give_Logging;
+		$this->_object = new Give_Logging();
 		$this->_object->register_post_type();
 		$this->_object->register_taxonomy();
 	}
 
+	/**
+	 * Tear it Down
+	 */
 	public function tearDown() {
 		parent::tearDown();
 	}
 
+	/**
+	 * Test Post Type
+	 */
 	public function test_post_type() {
 		global $wp_post_types;
 		$this->assertArrayHasKey( 'give_log', $wp_post_types );
 	}
 
+	/**
+	 * Test Logs CPT Labels
+	 */
 	public function test_post_type_labels() {
 		global $wp_post_types;
 		$this->assertEquals( 'Logs', $wp_post_types['give_log']->labels->name );
@@ -46,11 +58,17 @@ class Tests_Logging extends Give_Unit_Test_Case {
 		$this->assertEquals( 'Logs', $wp_post_types['give_log']->label );
 	}
 
+	/**
+	 * Test Taxonomy Exist
+	 */
 	public function test_taxonomy_exist() {
 		global $wp_taxonomies;
 		$this->assertArrayHasKey( 'give_log_type', $wp_taxonomies );
 	}
 
+	/**
+	 * Test Log Types
+	 */
 	public function test_log_types() {
 		$types = $this->_object->log_types();
 		$this->assertEquals( 'sale', $types[0] );
@@ -58,23 +76,54 @@ class Tests_Logging extends Give_Unit_Test_Case {
 		$this->assertEquals( 'api_request', $types[2] );
 	}
 
+	/**
+	 * Test Valid Log
+	 */
+	public function test_valid_log() {
+		$this->assertTrue( $this->_object->valid_type( 'sale' ) );
+	}
+
+	/**
+	 * Test Fake Log
+	 */
 	public function test_fake_log() {
 		$this->assertFalse( $this->_object->valid_type( 'foo' ) );
 	}
 
+	/**
+	 * Test Add
+	 * 
+	 * @covers Give_Logging::add
+	 */
 	public function test_add() {
 		$this->assertNotNull( $this->_object->add() );
 		$this->assertInternalType( 'integer', $this->_object->add() );
 	}
 
+	/**
+	 * Test Insert Log
+	 * 
+	 * @covers Give_Logging::insert_log 
+	 */
 	public function test_insert_log() {
 		$this->assertNotNull( $this->_object->insert_log( array( 'log_type' => 'sale' ) ) );
 		$this->assertInternalType( 'integer', $this->_object->insert_log( array( 'log_type' => 'sale' ) ) );
 	}
 
+	/**
+	 * Test Get Logs
+	 *
+	 * @covers Give_Logging::get_logs
+	 */
 	public function test_get_logs() {
-		$log_id = $this->_object->insert_log( array( 'log_type' => 'sale', 'post_parent' => 1, 'post_title' => 'Test Log', 'post_content' => 'This is a test log inserted from PHPUnit' ) );
-		$out = $this->_object->get_logs( 1, 'sale' );
+		$args   = array(
+			'log_type'     => 'sale',
+			'post_parent'  => 1,
+			'post_title'   => 'Test Log',
+			'post_content' => 'This is a test log inserted from PHPUnit'
+		);
+		$log_id = $this->_object->insert_log( $args );
+		$out    = $this->_object->get_logs( 1, 'sale' );
 
 		$this->assertObjectHasAttribute( 'ID', $out[0] );
 		$this->assertObjectHasAttribute( 'post_author', $out[0] );
@@ -106,9 +155,19 @@ class Tests_Logging extends Give_Unit_Test_Case {
 		$this->assertEquals( 'give_log', $out[0]->post_type );
 	}
 
+	/**
+	 * Test Get Connected Logs
+	 *
+	 * @covers Give_Logging::get_connected_logs
+	 */
 	public function test_get_connected_logs() {
-		$log_id = $this->_object->insert_log( array( 'log_type' => 'sale', 'post_parent' => 1, 'post_title' => 'Test Log', 'post_content' => 'This is a test log inserted from PHPUnit' ) );
-		$out = $this->_object->get_connected_logs( array( 'post_parent' => 1, 'log_type' => 'sale' ) );
+		$log_id = $this->_object->insert_log( array(
+			'log_type'     => 'sale',
+			'post_parent'  => 1,
+			'post_title'   => 'Test Log',
+			'post_content' => 'This is a test log inserted from PHPUnit'
+		) );
+		$out    = $this->_object->get_connected_logs( array( 'post_parent' => 1, 'log_type' => 'sale' ) );
 
 		$this->assertObjectHasAttribute( 'ID', $out[0] );
 		$this->assertObjectHasAttribute( 'post_author', $out[0] );
@@ -140,23 +199,83 @@ class Tests_Logging extends Give_Unit_Test_Case {
 		$this->assertEquals( 'give_log', $out[0]->post_type );
 	}
 
+	/**
+	 * Test Get Log Count
+	 *
+	 * @covers Give_Logging::get_log_count
+	 */
 	public function test_get_log_count() {
-		$this->_object->insert_log( array( 'log_type' => 'sale', 'post_parent' => 1, 'post_title' => 'Test Log', 'post_content' => 'This is a test log inserted from PHPUnit' ) );
-		$this->_object->insert_log( array( 'log_type' => 'sale', 'post_parent' => 1, 'post_title' => 'Test Log', 'post_content' => 'This is a test log inserted from PHPUnit' ) );
-		$this->_object->insert_log( array( 'log_type' => 'sale', 'post_parent' => 1, 'post_title' => 'Test Log', 'post_content' => 'This is a test log inserted from PHPUnit' ) );
-		$this->_object->insert_log( array( 'log_type' => 'sale', 'post_parent' => 1, 'post_title' => 'Test Log', 'post_content' => 'This is a test log inserted from PHPUnit' ) );
-		$this->_object->insert_log( array( 'log_type' => 'sale', 'post_parent' => 1, 'post_title' => 'Test Log', 'post_content' => 'This is a test log inserted from PHPUnit' ) );
+		$this->_object->insert_log( array(
+			'log_type'     => 'sale',
+			'post_parent'  => 1,
+			'post_title'   => 'Test Log',
+			'post_content' => 'This is a test log inserted from PHPUnit'
+		) );
+		$this->_object->insert_log( array(
+			'log_type'     => 'sale',
+			'post_parent'  => 1,
+			'post_title'   => 'Test Log',
+			'post_content' => 'This is a test log inserted from PHPUnit'
+		) );
+		$this->_object->insert_log( array(
+			'log_type'     => 'sale',
+			'post_parent'  => 1,
+			'post_title'   => 'Test Log',
+			'post_content' => 'This is a test log inserted from PHPUnit'
+		) );
+		$this->_object->insert_log( array(
+			'log_type'     => 'sale',
+			'post_parent'  => 1,
+			'post_title'   => 'Test Log',
+			'post_content' => 'This is a test log inserted from PHPUnit'
+		) );
+		$this->_object->insert_log( array(
+			'log_type'     => 'sale',
+			'post_parent'  => 1,
+			'post_title'   => 'Test Log',
+			'post_content' => 'This is a test log inserted from PHPUnit'
+		) );
 
 		$this->assertInternalType( 'integer', $this->_object->get_log_count( 1, 'sale' ) );
 		$this->assertEquals( 5, $this->_object->get_log_count( 1, 'sale' ) );
 	}
 
+	/**
+	 * Test Delete Logs
+	 *
+	 * @covers Give_Logging::delete_logs
+	 */
 	public function test_delete_logs() {
-		$this->_object->insert_log( array( 'log_type' => 'sale', 'post_parent' => 1, 'post_title' => 'Test Log', 'post_content' => 'This is a test log inserted from PHPUnit' ) );
-		$this->_object->insert_log( array( 'log_type' => 'sale', 'post_parent' => 1, 'post_title' => 'Test Log', 'post_content' => 'This is a test log inserted from PHPUnit' ) );
-		$this->_object->insert_log( array( 'log_type' => 'sale', 'post_parent' => 1, 'post_title' => 'Test Log', 'post_content' => 'This is a test log inserted from PHPUnit' ) );
-		$this->_object->insert_log( array( 'log_type' => 'sale', 'post_parent' => 1, 'post_title' => 'Test Log', 'post_content' => 'This is a test log inserted from PHPUnit' ) );
-		$this->_object->insert_log( array( 'log_type' => 'sale', 'post_parent' => 1, 'post_title' => 'Test Log', 'post_content' => 'This is a test log inserted from PHPUnit' ) );
+		$this->_object->insert_log( array(
+			'log_type'     => 'sale',
+			'post_parent'  => 1,
+			'post_title'   => 'Test Log',
+			'post_content' => 'This is a test log inserted from PHPUnit'
+		) );
+		$this->_object->insert_log( array(
+			'log_type'     => 'sale',
+			'post_parent'  => 1,
+			'post_title'   => 'Test Log',
+			'post_content' => 'This is a test log inserted from PHPUnit'
+		) );
+		$this->_object->insert_log( array(
+			'log_type'     => 'sale',
+			'post_parent'  => 1,
+			'post_title'   => 'Test Log',
+			'post_content' => 'This is a test log inserted from PHPUnit'
+		) );
+		$this->_object->insert_log( array(
+			'log_type'     => 'sale',
+			'post_parent'  => 1,
+			'post_title'   => 'Test Log',
+			'post_content' => 'This is a test log inserted from PHPUnit'
+		) );
+		$this->_object->insert_log( array(
+			'log_type'     => 'sale',
+			'post_parent'  => 1,
+			'post_title'   => 'Test Log',
+			'post_content' => 'This is a test log inserted from PHPUnit'
+		) );
 
 		$this->assertNull( $this->_object->delete_logs( 1 ) );
 	}

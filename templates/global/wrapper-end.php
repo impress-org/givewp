@@ -50,6 +50,9 @@ switch ( $template ) {
 	case 'customizr' :
 		echo '</div>';
 		break;
+	case 'catch-evolution' :
+		echo '</div>';
+		break;
 	default :
 		echo apply_filters( 'give_default_wrapper_end', '</div></div>' );
 		break;

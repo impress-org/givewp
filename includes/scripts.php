@@ -233,6 +233,12 @@ function give_load_admin_scripts( $hook ) {
 		wp_enqueue_script( 'give-admin-forms-scripts' );
 	}
 
+	//Settings Scripts
+	if (isset($_GET['page']) && $_GET['page'] == 'give-settings'  ) {
+		wp_register_script( 'give-admin-settings-scripts', $js_dir . 'admin-settings' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
+		wp_enqueue_script( 'give-admin-settings-scripts' );
+	}
+
 	//Localize strings & variables for JS
 	wp_localize_script( 'give-admin-scripts', 'give_vars', array(
 		'post_id'                 => isset( $post->ID ) ? $post->ID : null,
@@ -258,6 +264,9 @@ function give_load_admin_scripts( $hook ) {
 		'new_media_ui'            => apply_filters( 'give_use_35_media_ui', 1 ),
 		'remove_text'             => __( 'Remove', 'give' ),
 		'type_to_search'          => sprintf( __( 'Type to search %s', 'give' ), give_get_forms_label_plural() ),
+		'batch_export_no_class'   => __( 'You must choose a method.', 'give' ),
+		'batch_export_no_reqs'    => __( 'Required fields not completed.', 'give' ),
+		'reset_stats_warn'        => __( 'Are you sure you want to reset Give? This process is <strong><em>not reversible</em></strong> and will delete all data regardless of test or live mode. Please be sure you have a recent backup before proceeding.', 'give' ),
 	) );
 
 	if ( function_exists( 'wp_enqueue_media' ) && version_compare( $wp_version, '3.5', '>=' ) ) {

@@ -197,10 +197,6 @@ class Give_Emails {
 	 * @return mixed
 	 */
 	public function parse_tags( $content ) {
-
-		// The email tags are parsed during setup for purchase receipts and sale notifications
-		// Once tags are not restricted to payments, we'll expand this. @see https://github.com/easydigitaldownloads/Easy-Digital-Downloads/issues/2151
-
 		return $content;
 	}
 
@@ -244,9 +240,9 @@ class Give_Emails {
 	/**
 	 * Send the email
 	 *
-	 * @param  string       $to          The To address to send to.
-	 * @param  string       $subject     The subject line of the email to send.
-	 * @param  string       $message     The body of the email to send.
+	 * @param  string $to The To address to send to.
+	 * @param  string $subject The subject line of the email to send.
+	 * @param  string $message The body of the email to send.
 	 * @param  string|array $attachments Attachments to the email in a format supported by wp_mail()
 	 *
 	 * @return bool
@@ -255,6 +251,7 @@ class Give_Emails {
 
 		if ( ! did_action( 'init' ) && ! did_action( 'admin_init' ) ) {
 			_doing_it_wrong( __FUNCTION__, __( 'You cannot send email with Give_Emails until init/admin_init has been reached', 'give' ), null );
+
 			return false;
 		}
 

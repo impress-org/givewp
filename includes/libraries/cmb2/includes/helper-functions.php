@@ -217,7 +217,7 @@ if ( ! function_exists( 'cmb2_get_metabox' ) ) {
 		if ( $meta_box instanceof CMB2 ) {
 			return $meta_box;
 		}
-
+		
 		if ( is_string( $meta_box ) ) {
 			$cmb = CMB2_Boxes::get( $meta_box );
 		} else {

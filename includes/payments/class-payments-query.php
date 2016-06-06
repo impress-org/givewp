@@ -9,6 +9,10 @@
  * @since       1.0
  */
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Give_Payments_Query Class
@@ -61,7 +65,7 @@ class Give_Payments_Query extends Give_Stats {
 			'orderby'         => 'ID',
 			'order'           => 'DESC',
 			'user'            => null,
-			'status'          => 'any',
+			'status'          => give_get_payment_status_keys(),
 			'meta_key'        => null,
 			'year'            => null,
 			'month'           => null,
@@ -143,7 +147,12 @@ class Give_Payments_Query extends Give_Stats {
 
 		$query = new WP_Query( $this->args );
 
-		if ( 'payments' != $this->args['output'] ) {
+		$custom_output = array(
+			'payments',
+			'give_payments',
+		);
+
+		if ( ! in_array( $this->args['output'], $custom_output ) ) {
 			return $query->posts;
 		}
 
@@ -151,24 +160,10 @@ class Give_Payments_Query extends Give_Stats {
 			while ( $query->have_posts() ) {
 				$query->the_post();
 
-				$details = new stdClass;
-
 				$payment_id = get_post()->ID;
+				$payment    = new Give_Payment( $payment_id );
 
-				$details->ID          = $payment_id;
-				$details->date        = get_post()->post_date;
-				$details->post_status = get_post()->post_status;
-				$details->total       = give_get_payment_amount( $payment_id );
-				$details->fees        = give_get_payment_fees( $payment_id );
-				$details->key         = give_get_payment_key( $payment_id );
-				$details->gateway     = give_get_payment_gateway( $payment_id );
-				$details->user_info   = give_get_payment_meta_user_info( $payment_id );
-
-				if ( give_get_option( 'enable_sequential' ) ) {
-					$details->payment_number = give_get_payment_number( $payment_id );
-				}
-
-				$this->payments[] = apply_filters( 'give_payment', $details, $payment_id, $this );
+				$this->payments[] = apply_filters( 'give_payment', $payment, $payment_id, $this );
 			}
 
 			wp_reset_postdata();
@@ -283,7 +278,7 @@ class Give_Payments_Query extends Give_Stats {
 	}
 
 	/**
-	 * Order
+	 * Order by
 	 *
 	 * @access public
 	 * @since  1.0
@@ -428,7 +423,9 @@ class Give_Payments_Query extends Give_Stats {
 
 		} elseif ( '#' == substr( $search, 0, 1 ) ) {
 
-			$this->__set( 'give_forms', str_replace( '#', '', $search ) );
+			$search = str_replace( '#:', '', $search );
+			$search = str_replace( '#', '', $search );
+			$this->__set( 'give_forms', $search );
 			$this->__unset( 's' );
 
 		} else {
@@ -488,7 +485,7 @@ class Give_Payments_Query extends Give_Stats {
 		global $give_logs;
 
 		$args = array(
-			//			'post_id'                => $this->args['give_forms'],
+			'post_parent'            => $this->args['give_forms'],
 			'log_type'               => 'sale',
 			'post_status'            => array( 'publish' ),
 			'nopaging'               => true,

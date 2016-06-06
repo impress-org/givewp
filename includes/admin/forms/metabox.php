@@ -58,7 +58,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 				//Donation Option
 				array(
 					'name'        => __( 'Donation Option', 'give' ),
-					'description' => __( 'Would you like this form to have one set donation price or multiple levels (for example, $10 silver, $20 gold, $50 platinum)?', 'give' ),
+					'description' => __( 'Would you like this form to have one set donation price or multiple levels (for example, $10, $20, $50)?', 'give' ),
 					'id'          => $prefix . 'price_option',
 					'type'        => 'radio_inline',
 					'default'     => 'set',
@@ -183,7 +183,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 				),
 				//Goals
 				array(
-					'name'        => __( 'Set Goal?', 'give' ),
+					'name'        => __( 'Goal', 'give' ),
 					'description' => __( 'Do you want to set a donation goal for this form?', 'give' ),
 					'id'          => $prefix . 'goal_option',
 					'type'        => 'radio_inline',
@@ -194,7 +194,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					),
 				),
 				array(
-					'name'         => __( 'Set Goal', 'give' ),
+					'name'         => __( 'Goal Amount', 'give' ),
 					'description'  => __( 'This is the monetary goal amount you want to reach for this donation form.', 'give' ),
 					'id'           => $prefix . 'set_goal',
 					'type'         => 'text_small',

@@ -26,7 +26,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Renders the reports page contents.
  *
  * @since 1.0
- * @global $give_options Array of all the Give Options
  * @return void
  */
 function give_reports_page() {
@@ -49,6 +48,10 @@ function give_reports_page() {
 				'tab'              => 'logs',
 				'settings-updated' => false
 			), $current_page ) ); ?>" class="nav-tab <?php echo $active_tab == 'logs' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Logs', 'give' ); ?></a>
+			<a href="<?php echo esc_url( add_query_arg( array(
+				'tab'              => 'tools',
+				'settings-updated' => false
+			), $current_page ) ); ?>" class="nav-tab <?php echo $active_tab == 'tools' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Tools', 'give' ); ?></a>
 			<?php do_action( 'give_reports_tabs' ); ?>
 		</h1>
 
@@ -142,8 +145,8 @@ function give_report_views() {
 
 		<?php do_action( 'give_report_view_actions' ); ?>
 
-		<input type="hidden" name="post_type" value="give_forms" />
-		<input type="hidden" name="page" value="give-reports" />
+		<input type="hidden" name="post_type" value="give_forms"/>
+		<input type="hidden" name="page" value="give-reports"/>
 		<?php submit_button( __( 'Show', 'give' ), 'secondary', 'submit', false ); ?>
 	</form>
 	<?php
@@ -218,9 +221,9 @@ function give_reports_donors_table() {
 			$give_table->search_box( __( 'Search', 'give' ), 'give-donors' );
 			$give_table->display();
 			?>
-			<input type="hidden" name="post_type" value="give_forms" />
-			<input type="hidden" name="page" value="give-reports" />
-			<input type="hidden" name="view" value="donors" />
+			<input type="hidden" name="post_type" value="give_forms"/>
+			<input type="hidden" name="page" value="give-reports"/>
+			<input type="hidden" name="view" value="donors"/>
 		</form>
 		<?php do_action( 'give_logs_donors_table_bottom' ); ?>
 	</div>
@@ -316,8 +319,8 @@ function give_reports_tab_export() {
 								<?php echo _x( 'to', 'Date one to date two', 'give' ); ?>
 								<?php echo Give()->html->year_dropdown( 'end_year' ); ?>
 								<?php echo Give()->html->month_dropdown( 'end_month' ); ?>
-								<input type="hidden" name="give-action" value="earnings_export" />
-								<input type="submit" value="<?php _e( 'Generate CSV', 'give' ); ?>" class="button-secondary" />
+								<input type="hidden" name="give-action" value="earnings_export"/>
+								<input type="submit" value="<?php _e( 'Generate CSV', 'give' ); ?>" class="button-secondary"/>
 							</form>
 						</td>
 					</tr>
@@ -328,12 +331,23 @@ function give_reports_tab_export() {
 							<p><?php _e( 'Download a CSV of all donations recorded.', 'give' ); ?></p>
 						</td>
 						<td>
-
-							<form method="post">
-								<?php echo Give()->html->year_dropdown(); ?>
-								<?php echo Give()->html->month_dropdown(); ?>
-								<select name="give_export_payment_status">
-									<option value="0"><?php _e( 'All Statuses', 'give' ); ?></option>
+							<form id="give-export-payments" class="give-export-form"  method="post">
+								<?php
+								$args = array(
+									'id'          => 'give-payment-export-start',
+									'name'        => 'start',
+									'placeholder' => __( 'Start date', 'give' )
+								);
+								echo Give()->html->date_field( $args ); ?>
+								<?php
+								$args = array(
+									'id'          => 'give-payment-export-end',
+									'name'        => 'end',
+									'placeholder' => __( 'End date', 'give' )
+								);
+								echo Give()->html->date_field( $args ); ?>
+								<select name="status">
+									<option value="any"><?php _e( 'All Statuses', 'give' ); ?></option>
 									<?php
 									$statuses = give_get_payment_statuses();
 									foreach ( $statuses as $status => $label ) {
@@ -341,13 +355,17 @@ function give_reports_tab_export() {
 									}
 									?>
 								</select>
-								<input type="hidden" name="give-action" value="payment_export" />
-								<input type="submit" value="<?php _e( 'Generate CSV', 'give' ); ?>" class="button-secondary" />
+								<?php wp_nonce_field( 'give_ajax_export', 'give_ajax_export' ); ?>
+								<input type="hidden" name="give-export-class" value="Give_Batch_Payments_Export"/>
+								<span>
+									<input type="submit" value="<?php _e( 'Generate CSV', 'give' ); ?>" class="button-secondary" />
+									<span class="spinner"></span>
+								</span>
 							</form>
 
 						</td>
 					</tr>
-					<tr class="alt give-export-donors">
+					<tr class="alternate give-export-donors">
 						<td class="row-title">
 							<h3><span><?php _e( 'Export Donors in CSV', 'give' ); ?></span></h3>
 
@@ -374,8 +392,8 @@ function give_reports_tab_export() {
 									<option value="emails_and_names"><?php _e( 'Emails and Names', 'give' ); ?></option>
 									<option value="full"><?php _e( 'Emails, Names, and Purchase Stats', 'give' ); ?></option>
 								</select>
-								<input type="hidden" name="give-action" value="email_export" />
-								<input type="submit" value="<?php _e( 'Generate CSV', 'give' ); ?>" class="button-secondary" />
+								<input type="hidden" name="give-action" value="email_export"/>
+								<input type="submit" value="<?php _e( 'Generate CSV', 'give' ); ?>" class="button-secondary"/>
 							</form>
 						</td>
 					</tr>

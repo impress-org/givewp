@@ -138,6 +138,14 @@ jQuery(document).ready(function ($) {
         //this form object
         var this_form = $(this).parents('form.give-form');
 
+	    // this honeypot filed.
+	    var honeypot_field = jQuery( '.give-honeypot', this_form );
+
+	    // Spam protection.
+	    if( honeypot_field.val() ) {
+		    return false;
+	    }
+
         //loading animation
         var loading_animation = this_form.find('#give_purchase_submit .give-loading-animation');
         loading_animation.fadeIn();

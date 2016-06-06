@@ -43,7 +43,7 @@ function give_process_purchase_form() {
 	// Validate the user
 	$user = give_get_purchase_form_user( $valid_data );
 
-	if ( give_get_errors() || ! $user ) {
+	if ( false === $valid_data || give_get_errors() || ! $user ) {
 		if ( $is_ajax ) {
 			do_action( 'give_ajax_checkout_errors' );
 			give_die();
@@ -80,10 +80,13 @@ function give_process_purchase_form() {
 
 	$auth_key = defined( 'AUTH_KEY' ) ? AUTH_KEY : '';
 
+	$price = isset( $_POST['give-amount'] ) ? (float) apply_filters( 'give_donation_total', give_sanitize_amount( give_format_amount( $_POST['give-amount'] ) ) ) : '0.00';
+	$purchase_key = strtolower( md5( $user['user_email'] . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) );
+	
 	// Setup purchase information
 	$purchase_data = array(
-		'price'        => ( isset( $_POST['give-amount'] ) ? (float) apply_filters( 'give_donation_total', give_sanitize_amount( give_format_amount( $_POST['give-amount'] ) ) ) : '0.00' ),
-		'purchase_key' => strtolower( md5( $user['user_email'] . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) ),
+		'price'        => $price,
+		'purchase_key' => $purchase_key,
 		'user_email'   => $user['user_email'],
 		'date'         => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
 		'user_info'    => stripslashes_deep( $user_info ),
@@ -778,12 +781,12 @@ function give_get_purchase_form_user( $valid_data = array() ) {
 
 	// Get user first name
 	if ( ! isset( $user['user_first'] ) || strlen( trim( $user['user_first'] ) ) < 1 ) {
-		$user['user_first'] = isset( $_POST["give_first"] ) ? strip_tags( trim( $_POST["give_first"] ) ) : '';
+		$user['user_first'] = isset( $_POST['give_first'] ) ? strip_tags( trim( $_POST['give_first'] ) ) : '';
 	}
 
 	// Get user last name
 	if ( ! isset( $user['user_last'] ) || strlen( trim( $user['user_last'] ) ) < 1 ) {
-		$user['user_last'] = isset( $_POST["give_last"] ) ? strip_tags( trim( $_POST["give_last"] ) ) : '';
+		$user['user_last'] = isset( $_POST['give_last'] ) ? strip_tags( trim( $_POST['give_last'] ) ) : '';
 	}
 
 	// Get the user's billing address details
@@ -1044,56 +1047,3 @@ function give_purchase_form_validate_cc_zip( $zip = 0, $country_code = '' ) {
 
 	return apply_filters( 'give_is_zip_valid', $ret, $zip, $country_code );
 }
-
-
-/**
- * Check the purchase to ensure a banned email is not allowed through
- *
- * @since       1.0
- * @return      void
- */
-function give_check_purchase_email( $valid_data, $posted ) {
-	$is_banned = false;
-	$banned    = give_get_banned_emails();
-
-	if ( empty( $banned ) ) {
-		return;
-	}
-
-	if ( is_user_logged_in() ) {
-
-		// The user is logged in, check that their account email is not banned
-		$user_data = get_userdata( get_current_user_id() );
-		if ( give_is_email_banned( $user_data->user_email ) ) {
-
-			$is_banned = true;
-		}
-
-		if ( give_is_email_banned( $posted['give_email'] ) ) {
-			$is_banned = true;
-		}
-
-	} elseif ( isset( $posted['give-purchase-var'] ) && $posted['give-purchase-var'] == 'needs-to-login' ) {
-
-		// The user is logging in, check that their email is not banned
-		$user_data = get_user_by( 'login', $posted['give_user_login'] );
-		if ( $user_data && give_is_email_banned( $user_data->user_email ) ) {
-			$is_banned = true;
-		}
-
-	} else {
-
-		// Guest purchase, check that the email is not banned
-		if ( give_is_email_banned( $posted['give_email'] ) ) {
-			$is_banned = true;
-		}
-
-	}
-
-	if ( $is_banned ) {
-		// Set an error and give the donor a general error (don't alert them that they were banned)
-		give_set_error( 'email_banned', __( 'An internal error has occurred, please try again or contact support.', 'give' ) );
-	}
-}
-
-add_action( 'give_checkout_error_checks', 'give_check_purchase_email', 10, 2 );
