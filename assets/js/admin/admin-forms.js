@@ -133,6 +133,17 @@ jQuery.noConflict();
 			}
 		} ).change();
 
+		//Close Form when Goal Achieved
+		var close_form_when_goal_achieved_option = $( '.cmb2-id--give-close-form-when-goal-achieved input:radio' );
+		close_form_when_goal_achieved_option.on( 'change', function () {
+			var close_form_when_goal_achieved_option_val = $( '.cmb2-id--give-close-form-when-goal-achieved input:radio:checked' ).val();
+			if ( close_form_when_goal_achieved_option_val === 'no' ) {
+				$( '.cmb2-id--give-form-goal-achieved-message' ).hide();
+			} else {
+				$( '.cmb2-id--give-form-goal-achieved-message' ).show();
+			}
+		} ).change();
+
 		//Offline Donations
 		var offline_customization_option = $( '.cmb2-id--give-customize-offline-donations input:radio' );
 		offline_customization_option.on( 'change', function () {
