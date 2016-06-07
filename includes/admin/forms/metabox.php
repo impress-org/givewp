@@ -346,6 +346,27 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 							'disabled' => __( 'Disabled', 'give' ),
 						),
 						'default' => 'none',
+					),
+					array(
+						'name'    => __( 'Close Form when Goal Achieved', 'give' ),
+						'desc'    => __( 'Would you like to close the donation forms and stop accepting donations once this goal has been met?', 'give' ),
+						'id'      => $prefix . 'close_form_when_goal_achieved',
+						'type'    => 'radio_inline',
+						'options' => array(
+							'yes' => __( 'Yes', 'give' ),
+							'no'  => __( 'No', 'give' ),
+						),
+						'default' => 'no',
+					),
+					array(
+						'name'    => __( 'Goal Achieved Message', 'give' ),
+						'desc'    => __( 'Would you like to display a custom message when the goal is closed? If none is provided the default message will be displayed', 'give' ),
+						'id'      => $prefix . 'form_goal_achieved_message',
+						'type'    => 'textarea',
+						'row_classes' => 'give-subfield',
+						'attributes' => array(
+							'placeholder' => __( 'Thank you to all our donors, we have met our goal.', 'give' ),
+						),
 					)
 				)
 			)
