@@ -625,6 +625,25 @@ class Give_Donate_Form {
 
 
 	/**
+	 * Determine if donation form closed or not
+	 * Form will be close if:
+	 *  a. form has fixed goal
+	 *  b. close form when goal achieved cmb2 setting is set to 'Yes'
+	 *  c. goal has been achieved
+	 *
+	 * @since 1.4.5
+	 * @return bool
+	 */
+	public function is_close_donation_form() {
+		return (
+				'yes' === get_post_meta( $this->ID, '_give_goal_option', true ) )
+				&& ( 'yes' === get_post_meta( $this->ID, '_give_close_form_when_goal_achieved', true ) )
+				&& ( $this->get_goal() <= $this->get_earnings()
+		);
+	}
+
+
+	/**
 	 * Updates a single meta entry for the donation form
 	 *
 	 * @since  1.5

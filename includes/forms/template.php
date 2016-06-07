@@ -97,8 +97,7 @@ function give_get_donation_form( $args = array() ) {
 
 	<div id="give-form-<?php echo $form->ID; ?>-wrap" class="<?php echo $form_wrap_classes; ?>">
 
-		<?php // Close form if form has fixed goal and setting to close form when goal achieved and goal has been achieved. ?>
-		<?php if( ( 'yes' === get_post_meta( $form->ID, '_give_goal_option', true ) ) && ( 'yes' === get_post_meta( $form->ID, '_give_close_form_when_goal_achieved', true ) ) && ( $form->get_goal() <= $form->get_earnings() ) ) : ?>
+		<?php if( $form->is_close_donation_form() ) : ?>
 			<?php
 			//Get thank you message.
 			$display_thankyou_message = get_post_meta( $form->ID, '_give_form_goal_achieved_message', true );
