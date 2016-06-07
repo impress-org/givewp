@@ -97,49 +97,62 @@ function give_get_donation_form( $args = array() ) {
 
 	<div id="give-form-<?php echo $form->ID; ?>-wrap" class="<?php echo $form_wrap_classes; ?>">
 
-		<?php
-		if ( isset( $args['show_title'] ) && $args['show_title'] == true ) {
-
-			echo apply_filters( 'give_form_title', '<h2 class="give-form-title">' . get_the_title( $form_id ) . '</h2>' );
-
-		} ?>
-
-		<?php do_action( 'give_pre_form', $form->ID, $args ); ?>
-
-		<form id="give-form-<?php echo $form_id; ?>" class="<?php echo $form_classes; ?>" action="<?php echo $form_action; ?>" method="post">
-			<input type="hidden" name="give-form-id" value="<?php echo $form->ID; ?>"/>
-			<input type="hidden" name="give-form-title" value="<?php echo htmlentities( $form->post_title ); ?>"/>
-			<input type="hidden" name="give-current-url" value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
-			<input type="hidden" name="give-form-url" value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
-			<input type="hidden" name="give-form-minimum" value="<?php echo give_format_amount( give_get_form_minimum_price( $form->ID ) ); ?>"/>
-			<input type="text" name="give-honeypot" class="give-honeypot give-hidden">
+		<?php // Close form if form has fixed goal and setting to close form when goal achieved and goal has been achieved. ?>
+		<?php if( ( 'yes' === get_post_meta( $form->ID, '_give_goal_option', true ) ) && ( 'yes' === get_post_meta( $form->ID, '_give_close_form_when_goal_achieved', true ) ) && ( $form->get_goal() <= $form->get_earnings() ) ) : ?>
 			<?php
+			//Get thank you message.
+			$display_thankyou_message = get_post_meta( $form->ID, '_give_form_goal_achieved_message', true );
+			$display_thankyou_message = ! empty( $display_thankyou_message ) ? $display_thankyou_message : __( 'Thank you to all our donors, we have met our goal.', 'give' );
 
-			//Price ID hidden field for variable (mult-level) donation forms
-			if ( give_has_variable_prices( $form_id ) ) {
-				//get default selected price ID
-				$prices   = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
-				$price_id = 0;
-				//loop through prices
-				foreach ( $prices as $price ) {
-					if ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) {
-						$price_id = $price['_give_id']['level_id'];
-					};
-				}
-				?>
-				<input type="hidden" name="give-price-id" value="<?php echo $price_id; ?>"/>
-			<?php }
-
-			do_action( 'give_checkout_form_top', $form->ID, $args );
-
-			do_action( 'give_payment_mode_select', $form->ID, $args );
-
-			do_action( 'give_checkout_form_bottom', $form->ID, $args );
-
+			//Print thank you message.
+			echo "<p class=\"give-from-thankyou-msg\">{$display_thankyou_message}</p>";
 			?>
-		</form>
+		<?php else : ?>
+			<?php
+			if ( isset( $args['show_title'] ) && $args['show_title'] == true ) {
 
-		<?php do_action( 'give_post_form', $form->ID, $args ); ?>
+				echo apply_filters( 'give_form_title', '<h2 class="give-form-title">' . get_the_title( $form_id ) . '</h2>' );
+
+			} ?>
+
+			<?php do_action( 'give_pre_form', $form->ID, $args ); ?>
+
+			<form id="give-form-<?php echo $form_id; ?>" class="<?php echo $form_classes; ?>" action="<?php echo $form_action; ?>" method="post">
+				<input type="hidden" name="give-form-id" value="<?php echo $form->ID; ?>"/>
+				<input type="hidden" name="give-form-title" value="<?php echo htmlentities( $form->post_title ); ?>"/>
+				<input type="hidden" name="give-current-url" value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
+				<input type="hidden" name="give-form-url" value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
+				<input type="hidden" name="give-form-minimum" value="<?php echo give_format_amount( give_get_form_minimum_price( $form->ID ) ); ?>"/>
+				<input type="text" name="give-honeypot" class="give-honeypot give-hidden">
+				<?php
+
+				//Price ID hidden field for variable (mult-level) donation forms
+				if ( give_has_variable_prices( $form_id ) ) {
+					//get default selected price ID
+					$prices   = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
+					$price_id = 0;
+					//loop through prices
+					foreach ( $prices as $price ) {
+						if ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) {
+							$price_id = $price['_give_id']['level_id'];
+						};
+					}
+					?>
+					<input type="hidden" name="give-price-id" value="<?php echo $price_id; ?>"/>
+				<?php }
+
+				do_action( 'give_checkout_form_top', $form->ID, $args );
+
+				do_action( 'give_payment_mode_select', $form->ID, $args );
+
+				do_action( 'give_checkout_form_bottom', $form->ID, $args );
+
+				?>
+			</form>
+
+			<?php do_action( 'give_post_form', $form->ID, $args ); ?>
+
+		<?php endif; ?>
 
 		<!--end #give-form-<?php echo absint( $form->ID ); ?>--></div>
 	<?php
