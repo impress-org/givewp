@@ -480,7 +480,7 @@ function give_is_host( $host = false ) {
 /**
  * Marks a function as deprecated and informs when it has been used.
  *
- * There is a hook edd_deprecated_function_run that will be called that can be used
+ * There is a hook give_deprecated_function_run that will be called that can be used
  * to get the backtrace up to what file and function called the deprecated
  * function.
  *
@@ -488,9 +488,9 @@ function give_is_host( $host = false ) {
  *
  * This function is to be used in every function that is deprecated.
  *
- * @uses do_action() Calls 'edd_deprecated_function_run' and passes the function name, what to use instead,
+ * @uses do_action() Calls 'give_deprecated_function_run' and passes the function name, what to use instead,
  *   and the version the function was deprecated in.
- * @uses apply_filters() Calls 'edd_deprecated_function_trigger_error' and expects boolean value of true to do
+ * @uses apply_filters() Calls 'give_deprecated_function_trigger_error' and expects boolean value of true to do
  *   trigger or false to not trigger error.
  *
  * @param string $function The function that was called

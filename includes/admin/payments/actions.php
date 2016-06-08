@@ -35,7 +35,7 @@ function give_update_payment_details( $data ) {
 	check_admin_referer( 'give_update_payment_details_nonce' );
 
 	// Retrieve the payment ID
-	$payment_id = absint( $data['edd_payment_id'] );
+	$payment_id = absint( $data['give_payment_id'] );
 	$payment    = new Give_Payment( $payment_id );
 
 	// Retrieve existing payment meta

@@ -152,7 +152,7 @@ class Give_Batch_Export extends Give_Export {
 	 *
 	 * @access public
 	 * @since 1.5
-	 * @uses EDD_Export::get_csv_cols()
+	 * @uses Give_Export::get_csv_cols()
 	 * @return string
 	 */
 	public function print_csv_cols() {

@@ -77,7 +77,7 @@ class Give_Unit_Tests_Bootstrap {
 		$current_user = new WP_User(1);
 		$current_user->set_role('administrator');
 		wp_update_user( array( 'ID' => 1, 'first_name' => 'Admin', 'last_name' => 'User' ) );
-		add_filter( 'edd_log_email_errors', '__return_false' );
+		add_filter( 'give_log_email_errors', '__return_false' );
 		
 	}
 

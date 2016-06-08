@@ -43,7 +43,7 @@ function give_process_purchase_form() {
 	// Validate the user
 	$user = give_get_purchase_form_user( $valid_data );
 
-	if ( false === $valid_data || edd_get_errors() || ! $user ) {
+	if ( false === $valid_data || give_get_errors() || ! $user ) {
 		if ( $is_ajax ) {
 			do_action( 'give_ajax_checkout_errors' );
 			give_die();
