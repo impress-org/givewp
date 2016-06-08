@@ -100,7 +100,7 @@ function give_offline_process_payment( $purchase_data ) {
 		'price'           => $purchase_data['price'],
 		'give_form_title' => $purchase_data['post_data']['give-form-title'],
 		'give_form_id'    => intval( $purchase_data['post_data']['give-form-id'] ),
-		'give_price_id'   => $purchase_data['post_data']['give-price-id'],
+		'give_price_id'   => isset($purchase_data['post_data']['give-price-id']) ? $purchase_data['post_data']['give-price-id'] : '',
 		'date'            => $purchase_data['date'],
 		'user_email'      => $purchase_data['user_email'],
 		'purchase_key'    => $purchase_data['purchase_key'],
