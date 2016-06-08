@@ -332,7 +332,7 @@ add_action( 'give_checkout_form_top', 'give_output_donation_amount_top', 10, 2 )
  *
  * @return string
  */
-function give_output_levels( $form_id ) {
+function give_output_levels( $form_id, $args = array() ) {
 
 	//Get variable pricing
 	$prices             = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
@@ -343,7 +343,7 @@ function give_output_levels( $form_id ) {
 		$custom_amount_text = __( 'Give a Custom Amount', 'give' );
 	}
 
-	$output  = '';
+	$output  = do_action( 'give_between_donation_levels_and_options', $form_id, $args ) .'';
 	$counter = 0;
 
 	switch ( $display_style ) {
