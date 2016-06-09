@@ -174,7 +174,7 @@ class Give_Tools_Recount_Single_Customer_Stats extends Give_Batch_Export {
 				}
 
 				$payment = get_post( $payment_id );
-				if ( apply_filters( 'give_customer_recount_sholud_increase_count', true, $payment ) ) {
+				if ( apply_filters( 'give_customer_recount_should_increase_count', true, $payment ) ) {
 					$purchase_count ++;
 				}
 			}
