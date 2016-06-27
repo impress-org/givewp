@@ -184,6 +184,8 @@ function give_currency_filter( $price = '', $currency = '' ) {
 			case 'DKK' :
 			case 'HUF' :
 			case 'ILS' :
+			case 'MAD' :
+			case 'KRW' :
 				$formatted = $symbol . $price;
 				break;
 			case 'NOK' :
@@ -220,6 +222,8 @@ function give_currency_filter( $price = '', $currency = '' ) {
 			case 'HUF' :
 			case 'MYR' :
 			case 'ILS' :
+			case 'MAD' :
+			case 'KRW' :
 				$formatted = $price . $symbol;
 				break;
 			default :

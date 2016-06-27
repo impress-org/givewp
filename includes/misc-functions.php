@@ -63,6 +63,7 @@ function give_get_currency_position() {
  * @since 1.0
  * @return array $currencies A list of the available currencies
  */
+
 function give_get_currencies() {
 	$currencies = array(
 		'USD'  => __( 'US Dollars ($)', 'give' ),
@@ -79,6 +80,7 @@ function give_get_currencies() {
 		'JPY'  => __( 'Japanese Yen (¥)', 'give' ),
 		'MYR'  => __( 'Malaysian Ringgits (RM)', 'give' ),
 		'MXN'  => __( 'Mexican Peso ($)', 'give' ),
+		'MAD'  => __( 'Moroccan Dirham (&#x2e;&#x62f;&#x2e;&#x645;)', 'give' ),
 		'NZD'  => __( 'New Zealand Dollar ($)', 'give' ),
 		'NOK'  => __( 'Norwegian Krone (Kr.)', 'give' ),
 		'PHP'  => __( 'Philippine Pesos (₱)', 'give' ),
@@ -182,10 +184,14 @@ function give_currency_symbol( $currency = '' ) {
 		case 'KRW' :
 			$symbol = '₩';
 			break;
+		case 'MAD' :
+			$symbol = '&#x2e;&#x62f;&#x2e;&#x645;';
+			break;
 		default :
 			$symbol = $currency;
 			break;
 	endswitch;
+
 
 	return apply_filters( 'give_currency_symbol', $symbol, $currency );
 }

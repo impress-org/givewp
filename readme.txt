@@ -168,6 +168,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * New: Added "Test Mode" labels to more easily identify donations made while Give is in Test Mode - https://github.com/WordImpress/Give/issues/188
 * New: Template wrapper support for the "Catch Evolution" theme added - https://github.com/WordImpress/Give/issues/632
 * New: South Korean Won added to list of currencies - https://github.com/WordImpress/Give/issues/624
+* New: Moroccan Dirham added to list of currencies - https://github.com/WordImpress/Give/issues/381
 * Fix: Reports graph tooltips not displaying currency properly formatted - https://github.com/WordImpress/Give/issues/620
 * Tweak: Removed the French translation files included because, thanks to all French polyglots, we have been translated in full - https://translate.wordpress.org/locale/fr/default/wp-plugins/give
 * Tweak: Rewrite of give_get_current_page_url to fix issues with domain mapped server with $_SERVER['SERVER_PORT'] - https://github.com/WordImpress/Give/issues/622
