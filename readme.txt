@@ -165,6 +165,9 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 == Changelog ==
 
 = 1.5: =
+* New: Export donation history based on a date range exports - https://github.com/WordImpress/Give/issues/414
+* New: Recalculate stats tool now available to recount individual donor statistics, delete test transactions, or reset all your statistics entirely -
+* New: New Give_Payments class added which allows easier development for donation payments - https://github.com/WordImpress/Give/issues/504
 * New: Added "Test Mode" labels to more easily identify donations made while Give is in Test Mode - https://github.com/WordImpress/Give/issues/188
 * New: Added the ability to delete all test transactions under Donations > Reports > Tools - https://github.com/WordImpress/Give/issues/263
 * New: Template wrapper support for the "Catch Evolution" theme added - https://github.com/WordImpress/Give/issues/632
@@ -175,6 +178,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Tweak: Added donor name to the donation receipt - https://github.com/WordImpress/Give/issues/645
 * Tweak: Removed the French translation files included because, thanks to all French polyglots, we have been translated in full - https://translate.wordpress.org/locale/fr/default/wp-plugins/give
 * Tweak: Rewrite of give_get_current_page_url to fix issues with domain mapped server with $_SERVER['SERVER_PORT'] - https://github.com/WordImpress/Give/issues/622
+* Fix: Transactions Status Changes Causes Donation Form Income Amounts + Goals to Not Calculate Correctly - https://github.com/WordImpress/Give/issues/188
 * Fix: Per form Offline donations gateway's "Request Billing Information" checkbox doesn't properly override the global setting - https://github.com/WordImpress/Give/issues/649
 * Fix: Reports filter custom date range option  when selected causes the refresh reports button to overlap - https://github.com/WordImpress/Give/issues/626
 * Fix: Reports graph tooltips not displaying currency properly formatted - https://github.com/WordImpress/Give/issues/620
