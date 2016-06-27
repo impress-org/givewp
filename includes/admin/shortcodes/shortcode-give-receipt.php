@@ -39,7 +39,16 @@ class Give_Shortcode_Donation_Receipt extends Give_Shortcode_Generator {
 			array(
 				'type'    => 'listbox',
 				'name'    => 'price',
-				'label'   => __( 'Show Price:', 'give' ),
+				'label'   => __( 'Show Donation Amount:', 'give' ),
+				'options' => array(
+					'true'  => __( 'Show', 'give' ),
+					'false' => __( 'Hide', 'give' ),
+				),
+			),
+			array(
+				'type'    => 'listbox',
+				'name'    => 'donor',
+				'label'   => __( 'Show Donor Name:', 'give' ),
 				'options' => array(
 					'true'  => __( 'Show', 'give' ),
 					'false' => __( 'Hide', 'give' ),

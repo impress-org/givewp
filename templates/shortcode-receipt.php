@@ -55,6 +55,14 @@ $status   = give_get_payment_status( $payment, true );
 			</tr>
 
 		<?php endif; ?>
+		<?php if ( filter_var( $give_receipt_args['donor'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
+
+			<tr>
+				<td><strong><?php _e( 'Donor', 'give' ); ?>:</strong></td>
+				<td><?php echo $user['first_name'] . ' ' . $user['last_name']; ?></td>
+			</tr>
+
+		<?php endif; ?>
 
 		<?php if ( filter_var( $give_receipt_args['payment_id'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
 			<tr>
