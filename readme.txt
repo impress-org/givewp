@@ -174,6 +174,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Tweak: Now when a multi-level donation is made the multi-level labels will display on the confirmation page, within the transactions listing page, and also attached to the {donation} email tag - https://github.com/WordImpress/Give/issues/175
 * Tweak: Removed the French translation files included because, thanks to all French polyglots, we have been translated in full - https://translate.wordpress.org/locale/fr/default/wp-plugins/give
 * Tweak: Rewrite of give_get_current_page_url to fix issues with domain mapped server with $_SERVER['SERVER_PORT'] - https://github.com/WordImpress/Give/issues/622
+* Fix: Reports filter custom date range option  when selected causes the refresh reports button to overlap - https://github.com/WordImpress/Give/issues/626
 * Fix: Reports graph tooltips not displaying currency properly formatted - https://github.com/WordImpress/Give/issues/620
 * Fix: Attaching a new user to a donor isn't updating - https://github.com/WordImpress/Give/issues/644
 * Fix: Remove shortcode generator button when visual editor disabled - https://github.com/WordImpress/Give/issues/638

@@ -1175,6 +1175,9 @@ table.give-table td.row-title p {
   color: #aaa;
   margin: 0; }
 
+#give-graphs-filter > .tablenav {
+  height: auto; }
+
 #give-logs-filter .search-box {
   float: right; }
 
