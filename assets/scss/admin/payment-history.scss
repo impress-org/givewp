@@ -192,8 +192,13 @@ tr.status-refunded td {
   }
 }
 
-
-
+//Donation Column
+.column-donation {
+  .donation-level-text-wrap {
+    font-style: italic;
+    display: block;
+  }
+}
 
 /*---------------------
 Responsiveness

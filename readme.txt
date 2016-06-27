@@ -171,12 +171,14 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * New: South Korean Won added to list of currencies - https://github.com/WordImpress/Give/issues/624
 * New: Moroccan Dirham added to list of currencies - https://github.com/WordImpress/Give/issues/381
 * New: South African Rand added to list of currencies - https://github.com/WordImpress/Give/issues/624
+* Tweak: Now when a multi-level donation is made the multi-level labels will display on the confirmation page, within the transactions listing page, and also attached to the {donation} email tag - https://github.com/WordImpress/Give/issues/175
+* Tweak: Removed the French translation files included because, thanks to all French polyglots, we have been translated in full - https://translate.wordpress.org/locale/fr/default/wp-plugins/give
+* Tweak: Rewrite of give_get_current_page_url to fix issues with domain mapped server with $_SERVER['SERVER_PORT'] - https://github.com/WordImpress/Give/issues/622
 * Fix: Reports graph tooltips not displaying currency properly formatted - https://github.com/WordImpress/Give/issues/620
 * Fix: Attaching a new user to a donor isn't updating - https://github.com/WordImpress/Give/issues/644
 * Fix: Remove shortcode generator button when visual editor disabled - https://github.com/WordImpress/Give/issues/638
 * Fix: Bug with shortcode & show_content argument when two of the same forms on a page displaying the content incorrectly when set to none - https://github.com/WordImpress/Give/issues/634
-* Tweak: Removed the French translation files included because, thanks to all French polyglots, we have been translated in full - https://translate.wordpress.org/locale/fr/default/wp-plugins/give
-* Tweak: Rewrite of give_get_current_page_url to fix issues with domain mapped server with $_SERVER['SERVER_PORT'] - https://github.com/WordImpress/Give/issues/622
+
 
 = 1.4.5: May 12, 2016  =
 * Hotfix: Fixed a bug introduced which causes the custom amount minimum to be improperly calculated - https://github.com/WordImpress/Give/issues/616
