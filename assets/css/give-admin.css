@@ -1360,7 +1360,8 @@ Settings
 .give_user_search_results {
   position: absolute;
   left: 0;
-  top: 27px; }
+  top: 27px;
+  z-index: 100; }
   .give_user_search_results a.give-ajax-user-cancel {
     position: absolute;
     right: 6px;
