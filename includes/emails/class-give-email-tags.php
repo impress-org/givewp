@@ -272,7 +272,7 @@ function give_setup_email_tags() {
 	$email_tags = array(
 		array(
 			'tag'         => 'donation',
-			'description' => __( 'The name of completed donation form', 'give' ),
+			'description' => __( 'The name of completed donation form and the donation level chosen if applicable.', 'give' ),
 			'function'    => 'give_email_tag_donation'
 		),
 		array(
@@ -515,8 +515,9 @@ function give_email_tag_receipt_id( $payment_id ) {
 }
 
 /**
- * Email template tag: donation
- * The form submitted to make the donation
+ * Email template tag: {donation}
+ *
+ * @description:  Output the donation form name used to make the donation along with the donation level (if applicable)
  *
  * @param int $payment_id
  *
@@ -524,7 +525,7 @@ function give_email_tag_receipt_id( $payment_id ) {
  */
 function give_email_tag_donation( $payment_id ) {
 	$payment    = new Give_Payment( $payment_id );
-	$form_title = get_the_title( $payment->form_id );
+	$form_title = give_get_payment_form_title( $payment->meta, false, '-' );
 
 	return ! empty( $form_title ) ? $form_title : __( 'There was an error retrieving this donation title', 'give' );
 
@@ -540,6 +541,7 @@ function give_email_tag_donation( $payment_id ) {
  */
 function give_email_tag_payment_method( $payment_id ) {
 	$payment = new Give_Payment( $payment_id );
+
 	return give_get_gateway_checkout_label( $payment->gateway );
 }
 
