@@ -175,6 +175,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Tweak: Added donor name to the donation receipt - https://github.com/WordImpress/Give/issues/645
 * Tweak: Removed the French translation files included because, thanks to all French polyglots, we have been translated in full - https://translate.wordpress.org/locale/fr/default/wp-plugins/give
 * Tweak: Rewrite of give_get_current_page_url to fix issues with domain mapped server with $_SERVER['SERVER_PORT'] - https://github.com/WordImpress/Give/issues/622
+* Fix: Per form Offline donations gateway's "Request Billing Information" checkbox doesn't properly override the global setting - https://github.com/WordImpress/Give/issues/649
 * Fix: Reports filter custom date range option  when selected causes the refresh reports button to overlap - https://github.com/WordImpress/Give/issues/626
 * Fix: Reports graph tooltips not displaying currency properly formatted - https://github.com/WordImpress/Give/issues/620
 * Fix: Attaching a new user to a donor isn't updating - https://github.com/WordImpress/Give/issues/644
