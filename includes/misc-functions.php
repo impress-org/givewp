@@ -84,6 +84,7 @@ function give_get_currencies() {
 		'PHP'  => __( 'Philippine Pesos (₱)', 'give' ),
 		'PLN'  => __( 'Polish Zloty (zł)', 'give' ),
 		'SGD'  => __( 'Singapore Dollar ($)', 'give' ),
+		'KRW'  => __( 'South Korean Won (₩)', 'give' ),
 		'SEK'  => __( 'Swedish Krona (kr)', 'give' ),
 		'CHF'  => __( 'Swiss Franc (CHF)', 'give' ),
 		'TWD'  => __( 'Taiwan New Dollars (NT$)', 'give' ),
@@ -177,6 +178,9 @@ function give_currency_symbol( $currency = '' ) {
 			break;
 		case 'CZK' :
 			$symbol = 'Kč';
+			break;
+		case 'KRW' :
+			$symbol = '₩';
 			break;
 		default :
 			$symbol = $currency;
