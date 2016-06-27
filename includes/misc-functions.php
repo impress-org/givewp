@@ -87,6 +87,7 @@ function give_get_currencies() {
 		'PLN'  => __( 'Polish Zloty (zł)', 'give' ),
 		'SGD'  => __( 'Singapore Dollar ($)', 'give' ),
 		'KRW'  => __( 'South Korean Won (₩)', 'give' ),
+		'ZAR'  => __( 'South African Rand (R)', 'give' ),
 		'SEK'  => __( 'Swedish Krona (kr)', 'give' ),
 		'CHF'  => __( 'Swiss Franc (CHF)', 'give' ),
 		'TWD'  => __( 'Taiwan New Dollars (NT$)', 'give' ),
@@ -183,6 +184,9 @@ function give_currency_symbol( $currency = '' ) {
 			break;
 		case 'KRW' :
 			$symbol = '₩';
+			break;
+		case 'ZAR' :
+			$symbol = 'R';
 			break;
 		case 'MAD' :
 			$symbol = '&#x2e;&#x62f;&#x2e;&#x645;';
