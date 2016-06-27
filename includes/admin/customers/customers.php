@@ -432,7 +432,7 @@ function give_customers_view( $customer ) {
 		<?php
 		$donations = give_get_users_completed_donations( $customer->email );
 		?>
-		<table class="wp-list-table widefat striped downloads">
+		<table class="wp-list-table widefat striped donations">
 			<thead>
 			<tr>
 				<th><?php echo give_get_forms_label_singular(); ?></th>
