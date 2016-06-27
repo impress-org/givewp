@@ -68,28 +68,12 @@ add_action( 'give_earnings_export', 'give_export_earnings' );
 function give_export_all_customers() {
 	require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/class-export-customers.php';
 
-	$customer_export = new Give_Customers_Export();
+	$customer_export = new Give_Donors_Export();
 
 	$customer_export->export();
 }
 
 add_action( 'give_email_export', 'give_export_all_customers' );
-
-/**
- * Exports all the downloads to a CSV file using the Give_Export class.
- *
- * @since 1.5
- * @return void
- */
-function give_export_all_downloads_history() {
-	require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/class-export-download-history.php';
-
-	$file_download_export = new Give_Download_History_Export();
-
-	$file_download_export->export();
-}
-
-add_action( 'give_downloads_history_export', 'give_export_all_downloads_history' );
 
 /**
  * Add a hook allowing extensions to register a hook on the batch export process
@@ -110,7 +94,7 @@ add_action( 'plugins_loaded', 'give_register_batch_exporters' );
  * @since  1.5
  */
 function give_register_payments_batch_export() {
-	add_action( 'give_batch_export_class_include', 'give_include_payments_batch_processer', 10, 1 );
+	add_action( 'give_batch_export_class_include', 'give_include_payments_batch_processor', 10, 1 );
 }
 
 add_action( 'give_register_batch_exporter', 'give_register_payments_batch_export', 10 );
@@ -124,7 +108,7 @@ add_action( 'give_register_batch_exporter', 'give_register_payments_batch_export
  *
  * @return void
  */
-function give_include_payments_batch_processer( $class ) {
+function give_include_payments_batch_processor( $class ) {
 
 	if ( 'Give_Batch_Payments_Export' === $class ) {
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/export/class-batch-export-payments.php';
