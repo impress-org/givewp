@@ -1560,6 +1560,10 @@ tr.status-refunded td {
   position: relative;
   top: 3px; }
 
+.column-donation .donation-level-text-wrap {
+  font-style: italic;
+  display: block; }
+
 /*---------------------
 Responsiveness
 ---------------------------*/
