@@ -175,6 +175,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Tweak: Removed the French translation files included because, thanks to all French polyglots, we have been translated in full - https://translate.wordpress.org/locale/fr/default/wp-plugins/give
 * Tweak: Rewrite of give_get_current_page_url to fix issues with domain mapped server with $_SERVER['SERVER_PORT'] - https://github.com/WordImpress/Give/issues/622
 * Fix: Reports graph tooltips not displaying currency properly formatted - https://github.com/WordImpress/Give/issues/620
+* Fix: Attaching a new user to a donor isn't updating - https://github.com/WordImpress/Give/issues/644
 * Fix: Remove shortcode generator button when visual editor disabled - https://github.com/WordImpress/Give/issues/638
 * Fix: Bug with shortcode & show_content argument when two of the same forms on a page displaying the content incorrectly when set to none - https://github.com/WordImpress/Give/issues/634
 
