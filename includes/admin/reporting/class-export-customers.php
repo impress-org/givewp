@@ -203,7 +203,7 @@ class Give_Donors_Export extends Give_Export {
 			$data[ $i ]['address_country'] = isset( $address['country'] ) ? $address['country'] : '';
 		}
 		if ( ! empty( $columns['userid'] ) ) {
-			$data[ $i ]['userid'] = $donor->user_id;
+			$data[ $i ]['userid'] = ! empty( $donor->user_id ) ? $donor->user_id : '';
 		}
 		if ( ! empty( $columns['date_first_donated'] ) ) {
 			$data[ $i ]['date_first_donated'] = date_i18n( get_option( 'date_format' ), strtotime( $donor->date_created ) );

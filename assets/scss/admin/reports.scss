@@ -189,9 +189,13 @@ body.give_forms_page_give-reports table.export-options-table {
     margin:0;
     font-weight: bold;
   }
-  ul li {
-    display: inline-block;
-    padding: 3px 10px 0 0;
+  ul {
+    max-width: 900px;
+    li {
+      float:left;
+      padding: 3px 10px 0 0;
+      width:30%;
+    }
   }
 
 }
