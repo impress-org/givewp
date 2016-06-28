@@ -35,7 +35,30 @@ Settings
 
 }
 
-/* Section Titles */
+// Payment Gateways
+.cmb-type-enabled-gateways {
+
+  ul li.ui-sortable-handle {
+
+    span.give-drag-handle {
+      padding: 3px 4px 0 0;
+      font-size: 15px;
+      font-weight: normal;
+      color: #bdbdbd;
+      cursor: move;
+
+      &:hover {
+        color:#333;
+      }
+
+    }
+
+  }
+
+
+}
+
+// Section Titles
 
 .cmb-type-give-title label {
   float: left;

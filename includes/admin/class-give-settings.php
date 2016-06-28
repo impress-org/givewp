@@ -358,7 +358,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Enabled Gateways', 'give' ),
-							'desc' => __( 'Choose the payment gateways you would like enabled.', 'give' ),
+							'desc' => __( 'Choose the payment gateways you would like enabled. You can drag-and-drop payment gateways to reorder them.', 'give' ),
 							'id'   => 'gateways',
 							'type' => 'enabled_gateways'
 						),
@@ -1003,7 +1003,7 @@ function give_enabled_gateways_callback( $field_object, $escaped_value, $object_
 
 	$id                = $field_type_object->field->args['id'];
 	$field_description = $field_type_object->field->args['desc'];
-	$gateways          = give_get_payment_gateways();
+	$gateways          = give_get_ordered_payment_gateways( give_get_payment_gateways() );
 
 	echo '<ul class="cmb2-checkbox-list cmb2-list">';
 
@@ -1015,17 +1015,16 @@ function give_enabled_gateways_callback( $field_object, $escaped_value, $object_
 			$enabled = null;
 		}
 
-		echo '<li><input name="' . $id . '[' . $key . ']" id="' . $id . '[' . $key . ']" type="checkbox" value="1" ' . checked( '1', $enabled, false ) . '/>&nbsp;';
+		echo '<li><span class="give-drag-handle"><span class="dashicons dashicons-menu"></span></span><input name="' . $id . '[' . $key . ']" id="' . $id . '[' . $key . ']" type="checkbox" value="1" ' . checked( '1', $enabled, false ) . '/>&nbsp;';
 		echo '<label for="' . $id . '[' . $key . ']">' . $option['admin_label'] . '</label></li>';
 
 	endforeach;
 
+	echo '</ul>';
+
 	if ( $field_description ) {
 		echo '<p class="cmb2-metabox-description">' . $field_description . '</p>';
 	}
-
-	echo '</ul>';
-
 
 }
 

@@ -235,6 +235,7 @@ function give_load_admin_scripts( $hook ) {
 
 	//Settings Scripts
 	if (isset($_GET['page']) && $_GET['page'] == 'give-settings'  ) {
+		wp_enqueue_script('jquery-ui-sortable');
 		wp_register_script( 'give-admin-settings-scripts', $js_dir . 'admin-settings' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
 		wp_enqueue_script( 'give-admin-settings-scripts' );
 	}

@@ -80,9 +80,9 @@ function give_process_purchase_form() {
 
 	$auth_key = defined( 'AUTH_KEY' ) ? AUTH_KEY : '';
 
-	$price = isset( $_POST['give-amount'] ) ? (float) apply_filters( 'give_donation_total', give_sanitize_amount( give_format_amount( $_POST['give-amount'] ) ) ) : '0.00';
+	$price        = isset( $_POST['give-amount'] ) ? (float) apply_filters( 'give_donation_total', give_sanitize_amount( give_format_amount( $_POST['give-amount'] ) ) ) : '0.00';
 	$purchase_key = strtolower( md5( $user['user_email'] . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) );
-	
+
 	// Setup purchase information
 	$purchase_data = array(
 		'price'        => $price,
@@ -194,6 +194,11 @@ function give_purchase_form_validate_fields() {
 		'guest_user_data'  => array(),   // Guest user collected data
 		'cc_info'          => give_purchase_form_validate_cc()    // Credit card info
 	);
+
+	//Validate Honeypot First
+	if ( ! empty( $_POST['give-honeypot'] ) ) {
+		give_set_error( 'invalid_honeypot', __( 'Honeypot field detected. Go away bad bot!', 'give' ) );
+	}
 
 	// Validate agree to terms
 	$terms_option = get_post_meta( $form_id, '_give_terms_option', true );

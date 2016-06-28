@@ -1305,7 +1305,15 @@ Settings
 .give_settings_page .give_forms_page_give-payment-history .postbox .hndle {
   cursor: default; }
 
-/* Section Titles */
+.cmb-type-enabled-gateways ul li.ui-sortable-handle span.give-drag-handle {
+  padding: 3px 4px 0 0;
+  font-size: 15px;
+  font-weight: normal;
+  color: #bdbdbd;
+  cursor: move; }
+  .cmb-type-enabled-gateways ul li.ui-sortable-handle span.give-drag-handle:hover {
+    color: #333; }
+
 .cmb-type-give-title label {
   float: left;
   width: 220px;
