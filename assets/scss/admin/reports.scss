@@ -160,6 +160,7 @@ body.give_forms_page_give-reports, body.give_forms_page_give-payment-history {
 body.give_forms_page_give-reports table.export-options-table {
   tbody td {
     padding: 20px 12px;
+    vertical-align: top;
   }
   .give-export-form {
     position: relative;
@@ -177,6 +178,24 @@ body.give_forms_page_give-reports table.export-options-table {
   span#give-start-wrap, span#give-end-wrap {
     input {
       width: 100px;
+    }
+  }
+
+}
+
+#export-donor-options-wrap {
+
+  p {
+    padding: 20px 0 0;
+    margin:0;
+    font-weight: bold;
+  }
+  ul {
+    max-width: 900px;
+    li {
+      float:left;
+      padding: 3px 10px 0 0;
+      width:30%;
     }
   }
 
@@ -324,7 +343,7 @@ table.give-table {
 }
 
 #give-graphs-filter > .tablenav {
-  height:auto;
+  height: auto;
 }
 
 //---------------------------------------------------------

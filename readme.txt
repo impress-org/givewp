@@ -171,6 +171,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * New: Added "Test Mode" labels to more easily identify donations made while Give is in Test Mode - https://github.com/WordImpress/Give/issues/188
 * New: Added the ability to delete all test transactions under Donations > Reports > Tools - https://github.com/WordImpress/Give/issues/263
 * New: Template wrapper support for the "Catch Evolution" theme added - https://github.com/WordImpress/Give/issues/632
+* New: Export additional data and control the export columns for donors under Reports > Export >  Export Donors in CSV - https://github.com/WordImpress/Give/issues/630
 * New: South Korean Won added to list of currencies - https://github.com/WordImpress/Give/issues/624
 * New: Moroccan Dirham added to list of currencies - https://github.com/WordImpress/Give/issues/381
 * New: South African Rand added to list of currencies - https://github.com/WordImpress/Give/issues/624

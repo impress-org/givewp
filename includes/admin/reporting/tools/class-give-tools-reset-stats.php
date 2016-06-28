@@ -122,6 +122,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 					$sql = apply_filters( 'give_reset_add_queries_' . $type, $sql, $ids );
 				}
 
+		
 			}
 
 			if ( ! empty( $sql ) ) {

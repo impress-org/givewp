@@ -1,6 +1,6 @@
 <?php
 /**
- * The template for displaying product content in the single-give-form.php template
+ * The template for displaying form content in the single-give-form.php template
  *
  * Override this template by copying it to yourtheme/give/single-give-form/content-single-give-form.php
  *
@@ -15,9 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <?php
 /**
- * give_before_single_product hook
+ * give_before_single_form hook
  *
- * @hooked wc_print_notices - 10
+ * 
  */
 do_action( 'give_before_single_form' );
 
@@ -31,9 +31,9 @@ if ( post_password_required() ) {
 
 		<?php
 		/**
-		 * give_before_single_product_summary hook
+		 * give_before_single_form_summary hook
 		 *
-		 * @hooked give_show_product_images - 10
+		 * @hooked give_show_form_images - 10
 		 */
 		do_action( 'give_before_single_form_summary' );
 		?>
