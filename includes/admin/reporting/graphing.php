@@ -501,7 +501,6 @@ function give_reports_graph_controls() {
 		$dates['day_end'] = cal_days_in_month( CAL_GREGORIAN, date( 'n' ), date( 'Y' ) );
 	}
 
-	//echo '<pre>'; print_r( $dates ); echo '</pre>';
 	do_action( 'give_report_graph_controls_before' );
 	?>
 	<form id="give-graphs-filter" method="get" class="alignright">

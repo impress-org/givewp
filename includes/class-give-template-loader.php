@@ -56,7 +56,7 @@ class Give_Template_Loader {
 
 
 	/**
-	 * Give Set Single Simmary Classes
+	 * Give Set Single Summary Classes
 	 * @description determines if the single form should be full width or with a sidebar
 	 * @see
 	 *

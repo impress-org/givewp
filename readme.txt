@@ -165,11 +165,27 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 == Changelog ==
 
 = 1.5: =
+* New: Export donation history based on a date range exports - https://github.com/WordImpress/Give/issues/414
+* New: Recalculate stats tool now available to recount individual donor statistics, delete test transactions, or reset all your statistics entirely -
+* New: New Give_Payments class added which allows easier development for donation payments - https://github.com/WordImpress/Give/issues/504
 * New: Added "Test Mode" labels to more easily identify donations made while Give is in Test Mode - https://github.com/WordImpress/Give/issues/188
+* New: Added the ability to delete all test transactions under Donations > Reports > Tools - https://github.com/WordImpress/Give/issues/263
 * New: Template wrapper support for the "Catch Evolution" theme added - https://github.com/WordImpress/Give/issues/632
-* Fix: Reports graph tooltips not displaying currency properly formatted - https://github.com/WordImpress/Give/issues/620
+* New: South Korean Won added to list of currencies - https://github.com/WordImpress/Give/issues/624
+* New: Moroccan Dirham added to list of currencies - https://github.com/WordImpress/Give/issues/381
+* New: South African Rand added to list of currencies - https://github.com/WordImpress/Give/issues/624
+* Tweak: Now when a multi-level donation is made the multi-level labels will display on the confirmation page, within the transactions listing page, and also attached to the {donation} email tag - https://github.com/WordImpress/Give/issues/175
+* Tweak: Added donor name to the donation receipt - https://github.com/WordImpress/Give/issues/645
 * Tweak: Removed the French translation files included because, thanks to all French polyglots, we have been translated in full - https://translate.wordpress.org/locale/fr/default/wp-plugins/give
 * Tweak: Rewrite of give_get_current_page_url to fix issues with domain mapped server with $_SERVER['SERVER_PORT'] - https://github.com/WordImpress/Give/issues/622
+* Fix: Transactions Status Changes Causes Donation Form Income Amounts + Goals to Not Calculate Correctly - https://github.com/WordImpress/Give/issues/188
+* Fix: Per form Offline donations gateway's "Request Billing Information" checkbox doesn't properly override the global setting - https://github.com/WordImpress/Give/issues/649
+* Fix: Reports filter custom date range option  when selected causes the refresh reports button to overlap - https://github.com/WordImpress/Give/issues/626
+* Fix: Reports graph tooltips not displaying currency properly formatted - https://github.com/WordImpress/Give/issues/620
+* Fix: Attaching a new user to a donor isn't updating - https://github.com/WordImpress/Give/issues/644
+* Fix: Remove shortcode generator button when visual editor disabled - https://github.com/WordImpress/Give/issues/638
+* Fix: Bug with shortcode & show_content argument when two of the same forms on a page displaying the content incorrectly when set to none - https://github.com/WordImpress/Give/issues/634
+
 
 = 1.4.5: May 12, 2016  =
 * Hotfix: Fixed a bug introduced which causes the custom amount minimum to be improperly calculated - https://github.com/WordImpress/Give/issues/616

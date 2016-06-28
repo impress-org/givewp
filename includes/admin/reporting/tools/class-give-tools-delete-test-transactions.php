@@ -154,7 +154,7 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 	public function process_step() {
 
 		if ( ! $this->can_export() ) {
-			wp_die( __( 'You do not have permission to export data.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die( __( 'You do not have permission to delete test transactions.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 		}
 
 		$had_data = $this->get_data();
@@ -226,7 +226,7 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 				'post_type'      => 'give_payment',
 				'post_status'    => 'any',
 				'posts_per_page' => - 1,
-				//ONLY TEST MODE!!!
+				//ONLY TEST MODE TRANSACTIONS!!!
 				'meta_key'   => '_give_payment_mode',
 				'meta_value' => 'test'
 			) );

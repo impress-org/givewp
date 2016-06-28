@@ -256,14 +256,15 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'cb'      => '<input type="checkbox" />', //Render a checkbox instead of text
-			'email'   => __( 'Email', 'give' ),
-			'details' => __( 'Details', 'give' ),
-			'amount'  => __( 'Amount', 'give' ),
-			'status'  => __( 'Status', 'give' ),
-			'date'    => __( 'Date', 'give' ),
-			'donor'   => __( 'Donor', 'give' ),
-			'ID'      => __( 'ID', 'give' ),
+			'cb'       => '<input type="checkbox" />', //Render a checkbox instead of text
+			'email'    => __( 'Email', 'give' ),
+			'details'  => __( 'Details', 'give' ),
+			'amount'   => __( 'Amount', 'give' ),
+			'donation' => __( 'Donation', 'give' ),
+			'status'   => __( 'Status', 'give' ),
+			'date'     => __( 'Date', 'give' ),
+			'donor'    => __( 'Donor', 'give' ),
+			'ID'       => __( 'ID', 'give' ),
 		);
 
 		return apply_filters( 'give_payments_table_columns', $columns );
@@ -315,12 +316,21 @@ class Give_Payment_History_Table extends WP_List_Table {
 				$amount = ! empty( $payment->total ) ? $payment->total : 0;
 				$value  = give_currency_filter( give_format_amount( $amount ), give_get_payment_currency_code( $payment->ID ) );
 				break;
+			case 'donation' :
+				$value = '<a href="' . get_permalink( $payment->form_id ) . '">' . $payment->form_title . '</a>';
+				$level = give_get_payment_form_title( $payment->meta, true );
+
+				if ( ! empty( $level ) ) {
+					$value .= $level;
+				}
+
+				break;
 			case 'date' :
 				$date  = strtotime( $payment->date );
 				$value = date_i18n( get_option( 'date_format' ), $date );
 				break;
 			case 'status' :
-				$value   = '<div class="give-donation-status status-' . sanitize_title( give_get_payment_status( $payment, true ) ) . '"><span class="give-donation-status-icon"></span> ' . give_get_payment_status( $payment, true ) . '</div>';
+				$value = '<div class="give-donation-status status-' . sanitize_title( give_get_payment_status( $payment, true ) ) . '"><span class="give-donation-status-icon"></span> ' . give_get_payment_status( $payment, true ) . '</div>';
 				if ( $payment->mode == 'test' ) {
 					$value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label" data-tooltip="' . __( 'This payment was made in test mode', 'give' ) . '">' . __( 'Test', 'give' ) . '</span>';
 				}
@@ -374,7 +384,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 		$row_actions = apply_filters( 'give_payment_row_actions', $row_actions, $payment );
 
-		if ( empty($email) ) {
+		if ( empty( $email ) ) {
 			$email = __( '(unknown)', 'give' );
 		}
 
@@ -429,9 +439,9 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 		$customer_id = give_get_payment_customer_id( $payment->ID );
 
-		if( ! empty( $customer_id ) ) {
-			$customer    = new Give_Customer( $customer_id );
-			$value = '<a href="' . esc_url( admin_url( "edit.php?post_type=give_forms&page=give-customers&view=overview&id=$customer_id" ) ) . '">' . $customer->name . '</a>';
+		if ( ! empty( $customer_id ) ) {
+			$customer = new Give_Customer( $customer_id );
+			$value    = '<a href="' . esc_url( admin_url( "edit.php?post_type=give_forms&page=give-customers&view=overview&id=$customer_id" ) ) . '">' . $customer->name . '</a>';
 		} else {
 			$email = give_get_payment_user_email( $payment->ID );
 			$value = '<a href="' . esc_url( admin_url( "edit.php?post_type=give_forms&page=give-payment-history&s=$email" ) ) . '">' . __( '(donor missing)', 'give' ) . '</a>';
@@ -546,7 +556,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 		if ( isset( $_GET['user'] ) ) {
 			$args['user'] = urldecode( $_GET['user'] );
 		} elseif ( isset( $_GET['s'] ) ) {
-			$is_user  = strpos( $_GET['s'], strtolower( 'user:' ) ) !== false;
+			$is_user = strpos( $_GET['s'], strtolower( 'user:' ) ) !== false;
 			if ( $is_user ) {
 				$args['user'] = absint( trim( str_replace( 'user:', '', strtolower( $_GET['s'] ) ) ) );
 				unset( $args['s'] );

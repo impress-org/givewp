@@ -1139,7 +1139,7 @@ function give_checkout_button_purchase( $form_id ) {
 
 	$display_label_field = get_post_meta( $form_id, '_give_checkout_label', true );
 	$display_label       = ( ! empty( $display_label_field ) ? $display_label_field : __( 'Donate Now', 'give' ) );
-	ob_start();  ?>
+	ob_start(); ?>
 	<div class="give-submit-button-wrap give-clearfix">
 		<input type="submit" class="give-submit give-btn" id="give-purchase-button" name="give-purchase" value="<?php echo $display_label; ?>"/>
 		<span class="give-loading-animation"></span>
@@ -1179,31 +1179,6 @@ function give_agree_to_terms_js( $form_id ) {
 }
 
 add_action( 'give_checkout_form_top', 'give_agree_to_terms_js', 10, 2 );
-
-
-/**
- * Adds Actions to Render Form Content
- *
- * @since 1.0
- *
- * @param int $form_id
- * @param array $args
- *
- * @return void
- */
-function give_form_content( $form_id, $args ) {
-
-	$show_content = ( isset( $args['show_content'] ) && ! empty( $args['show_content'] ) )
-		? $args['show_content']
-		: get_post_meta( $form_id, '_give_content_option', true );
-
-	if ( $show_content !== 'none' ) {
-		//add action according to value
-		add_action( $show_content, 'give_form_display_content' );
-	}
-}
-
-add_action( 'give_pre_form_output', 'give_form_content', 10, 2 );
 
 /**
  * Show Give Goals
@@ -1291,6 +1266,30 @@ function give_show_goal_progress( $form_id, $args ) {
 add_action( 'give_pre_form', 'give_show_goal_progress', 10, 2 );
 
 /**
+ * Adds Actions to Render Form Content
+ *
+ * @since 1.0
+ *
+ * @param int $form_id
+ * @param array $args
+ *
+ * @return void
+ */
+function give_form_content( $form_id, $args ) {
+
+	$show_content = ( isset( $args['show_content'] ) && ! empty( $args['show_content'] ) )
+		? $args['show_content']
+		: get_post_meta( $form_id, '_give_content_option', true );
+
+	if ( $show_content !== 'none' ) {
+		//add action according to value
+		add_action( $show_content, 'give_form_display_content', 10, 2 );
+	}
+}
+
+add_action( 'give_pre_form_output', 'give_form_content', 10, 2 );
+
+/**
  * Renders Post Form Content
  *
  * @description: Displays content for Give forms; fired by action from give_form_content
@@ -1300,9 +1299,12 @@ add_action( 'give_pre_form', 'give_show_goal_progress', 10, 2 );
  * @return void
  * @since      1.0
  */
-function give_form_display_content( $form_id ) {
+function give_form_display_content( $form_id, $args ) {
 
 	$content = wpautop( get_post_meta( $form_id, '_give_form_content', true ) );
+	$show_content = ( isset( $args['show_content'] ) && ! empty( $args['show_content'] ) )
+		? $args['show_content']
+		: get_post_meta( $form_id, '_give_content_option', true );
 
 	if ( give_get_option( 'disable_the_content_filter' ) !== 'on' ) {
 		$content = apply_filters( 'the_content', $content );
@@ -1311,6 +1313,10 @@ function give_form_display_content( $form_id ) {
 	$output = '<div id="give-form-content-' . $form_id . '" class="give-form-content-wrap" >' . $content . '</div>';
 
 	echo apply_filters( 'give_form_content_output', $output );
+
+	//remove action to prevent content output on addition forms on page
+	//@see: https://github.com/WordImpress/Give/issues/634
+	remove_action( $show_content, 'give_form_display_content' );
 }
 
 

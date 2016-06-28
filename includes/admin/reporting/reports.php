@@ -369,7 +369,7 @@ function give_reports_tab_export() {
 						<td class="row-title">
 							<h3><span><?php _e( 'Export Donors in CSV', 'give' ); ?></span></h3>
 
-							<p><?php _e( 'Download a CSV of all donors\' emails. Optionally export only donors that have donated to a particular form. Note: if you have a large number of donors, exporting the donation stats may fail.', 'give' ); ?></p>
+							<p><?php _e( 'Download a CSV of all donors\' emails. Optionally export only donors that have donated to a particular form.', 'give' ); ?></p>
 						</td>
 						<td>
 							<form method="post" id="give_donor_export">
@@ -390,7 +390,7 @@ function give_reports_tab_export() {
 								<select name="give_export_option" id="give_donor_export_option">
 									<option value="emails"><?php _e( 'Emails', 'give' ); ?></option>
 									<option value="emails_and_names"><?php _e( 'Emails and Names', 'give' ); ?></option>
-									<option value="full"><?php _e( 'Emails, Names, and Purchase Stats', 'give' ); ?></option>
+									<option value="full"><?php _e( 'Emails, Names, and Donation Stats', 'give' ); ?></option>
 								</select>
 								<input type="hidden" name="give-action" value="email_export"/>
 								<input type="submit" value="<?php _e( 'Generate CSV', 'give' ); ?>" class="button-secondary"/>

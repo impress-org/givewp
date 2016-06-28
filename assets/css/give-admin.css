@@ -1175,6 +1175,9 @@ table.give-table td.row-title p {
   color: #aaa;
   margin: 0; }
 
+#give-graphs-filter > .tablenav {
+  height: auto; }
+
 #give-logs-filter .search-box {
   float: right; }
 
@@ -1360,7 +1363,8 @@ Settings
 .give_user_search_results {
   position: absolute;
   left: 0;
-  top: 27px; }
+  top: 27px;
+  z-index: 100; }
   .give_user_search_results a.give-ajax-user-cancel {
     position: absolute;
     right: 6px;
@@ -1559,6 +1563,10 @@ tr.status-refunded td {
   margin: 0 0 0 10px;
   position: relative;
   top: 3px; }
+
+.column-donation .donation-level-text-wrap {
+  font-style: italic;
+  display: block; }
 
 /*---------------------
 Responsiveness
@@ -1995,10 +2003,10 @@ Donation Details
 #customer-tables-wrapper th {
   text-align: center; }
 
-#customer-tables-wrapper .downloads tr > th:first-child, #customer-tables-wrapper .downloads tr > td:first-child {
+#customer-tables-wrapper .donations tr > th:first-child, #customer-tables-wrapper .donations tr > td:first-child {
   text-align: left; }
 
-#customer-tables-wrapper .downloads tr > td:only-child {
+#customer-tables-wrapper .donations tr > td:only-child {
   text-align: center; }
 
 #customer-notes-wrapper {

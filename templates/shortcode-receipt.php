@@ -30,12 +30,17 @@ $status   = give_get_payment_status( $payment, true );
 		<?php do_action( 'give_payment_receipt_before', $payment, $give_receipt_args ); ?>
 		<tr>
 			<th colspan="2">
-				<span class="give-receipt-thead-text"><?php echo apply_filters( 'give_donation_receipt_thead_text', $donation ); ?></span>
+				<span class="give-receipt-thead-text"><?php _e('Donation Receipt', 'give') ?></span>
 			</th>
 		</tr>
 		</thead>
 
 		<tbody>
+
+		<tr>
+			<td class="give_receipt_payment_status"><strong><?php _e( 'Donation', 'give' ); ?>:</strong></td>
+			<td class="give_receipt_payment_status"><?php echo $donation; ?></td>
+		</tr>
 
 		<tr>
 			<td class="give_receipt_payment_status"><strong><?php _e( 'Donation Status', 'give' ); ?>:</strong></td>
@@ -47,6 +52,14 @@ $status   = give_get_payment_status( $payment, true );
 			<tr>
 				<td><strong><?php _e( 'Total Donation', 'give' ); ?>:</strong></td>
 				<td><?php echo give_payment_amount( $payment->ID ); ?></td>
+			</tr>
+
+		<?php endif; ?>
+		<?php if ( filter_var( $give_receipt_args['donor'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
+
+			<tr>
+				<td><strong><?php _e( 'Donor', 'give' ); ?>:</strong></td>
+				<td><?php echo $user['first_name'] . ' ' . $user['last_name']; ?></td>
 			</tr>
 
 		<?php endif; ?>

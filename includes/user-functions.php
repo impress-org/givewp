@@ -136,8 +136,9 @@ function give_get_users_completed_donations( $user = 0, $status = 'complete' ) {
 	// Grab only the post ids "form_id" of the forms purchased on this order
 	$completed_donations_ids = array();
 	foreach ( $donation_data as $purchase_meta ) {
-		$completed_donations_ids[] = $purchase_meta['form_id'];
+		$completed_donations_ids[] = isset($purchase_meta['form_id']) ? $purchase_meta['form_id'] : '';
 	}
+
 	if ( empty( $completed_donations_ids ) ) {
 		return false;
 	}

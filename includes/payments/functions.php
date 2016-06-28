@@ -159,7 +159,7 @@ function give_insert_payment( $payment_data = array() ) {
 		'price_id' => $payment->price_id,
 		'fees'     => isset( $payment_data['fees'] ) ? $payment_data['fees'] : array()
 	);
-	
+
 	$payment->add_donation( $payment->form_id, $args );
 
 	//Set date if present
@@ -1691,23 +1691,26 @@ function give_filter_where_older_than_week( $where = '' ) {
  *
  * @since 1.5
  *
- * @param array $payment_meta 
+ * @param array $payment_meta
  * @param bool $level_title Whether you want the entire title or just the level title
  *
  * @return string $form_title Returns the full title if $level_title false, otherwise returns the levels title
  */
-function give_get_payment_form_title( $payment_meta, $level_title = false ) {
+function give_get_payment_form_title( $payment_meta, $level_title = false, $separator = '' ) {
 
 	$form_id    = isset( $payment_meta['form_id'] ) ? $payment_meta['form_id'] : 0;
 	$form_title = isset( $payment_meta['form_title'] ) ? $payment_meta['form_title'] : '';
 	$price_id   = isset( $payment_meta['price_id'] ) ? $payment_meta['price_id'] : give_get_price_id( $form_id, $payment_meta['price'] );
 
-	if($level_title == true ) {
+	if ( $level_title == true ) {
 		$form_title = '';
 	}
-	
+
 	if ( give_has_variable_prices( $form_id ) ) {
 
+		if ( ! empty( $separator ) ) {
+			$form_title .= ' ' . $separator;
+		}
 		$form_title .= ' <span class="donation-level-text-wrap">';
 
 		if ( $price_id == 'custom' ) {
