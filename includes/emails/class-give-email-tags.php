@@ -27,6 +27,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Class Give_Email_Template_Tags
+ */
 class Give_Email_Template_Tags {
 
 	/**
@@ -269,7 +272,7 @@ function give_setup_email_tags() {
 	$email_tags = array(
 		array(
 			'tag'         => 'donation',
-			'description' => __( 'The name of completed donation form', 'give' ),
+			'description' => __( 'The name of completed donation form and the donation level chosen if applicable.', 'give' ),
 			'function'    => 'give_email_tag_donation'
 		),
 		array(
@@ -356,11 +359,14 @@ add_action( 'give_add_email_tags', 'give_setup_email_tags' );
  * @return string name
  */
 function give_email_tag_first_name( $payment_id ) {
-	$payment_data = give_get_payment_meta( $payment_id );
-	if ( empty( $payment_data['user_info'] ) ) {
+	$payment   = new Give_Payment( $payment_id );
+	$user_info = $payment->user_info;
+
+	if ( empty( $user_info ) ) {
 		return '';
 	}
-	$email_name = give_get_email_names( $payment_data['user_info'] );
+
+	$email_name = give_get_email_names( $user_info );
 
 	return $email_name['name'];
 }
@@ -374,11 +380,14 @@ function give_email_tag_first_name( $payment_id ) {
  * @return string fullname
  */
 function give_email_tag_fullname( $payment_id ) {
-	$payment_data = give_get_payment_meta( $payment_id );
-	if ( empty( $payment_data['user_info'] ) ) {
+	$payment   = new Give_Payment( $payment_id );
+	$user_info = $payment->user_info;
+
+	if ( empty( $user_info ) ) {
 		return '';
 	}
-	$email_name = give_get_email_names( $payment_data['user_info'] );
+
+	$email_name = give_get_email_names( $user_info );
 
 	return $email_name['fullname'];
 }
@@ -392,11 +401,14 @@ function give_email_tag_fullname( $payment_id ) {
  * @return string username
  */
 function give_email_tag_username( $payment_id ) {
-	$payment_data = give_get_payment_meta( $payment_id );
-	if ( empty( $payment_data['user_info'] ) ) {
+	$payment   = new Give_Payment( $payment_id );
+	$user_info = $payment->user_info;
+
+	if ( empty( $user_info ) ) {
 		return '';
 	}
-	$email_name = give_get_email_names( $payment_data['user_info'] );
+
+	$email_name = give_get_email_names( $user_info );
 
 	return $email_name['username'];
 }
@@ -410,7 +422,9 @@ function give_email_tag_username( $payment_id ) {
  * @return string user_email
  */
 function give_email_tag_user_email( $payment_id ) {
-	return give_get_payment_user_email( $payment_id );
+	$payment = new Give_Payment( $payment_id );
+
+	return $payment->email;
 }
 
 /**
@@ -452,9 +466,9 @@ function give_email_tag_billing_address( $payment_id ) {
  * @return string date
  */
 function give_email_tag_date( $payment_id ) {
-	$payment_data = give_get_payment_meta( $payment_id );
+	$payment = new Give_Payment( $payment_id );
 
-	return date_i18n( get_option( 'date_format' ), strtotime( $payment_data['date'] ) );
+	return date_i18n( get_option( 'date_format' ), strtotime( $payment->date ) );
 }
 
 /**
@@ -466,7 +480,8 @@ function give_email_tag_date( $payment_id ) {
  * @return string price
  */
 function give_email_tag_price( $payment_id ) {
-	$price = give_currency_filter( give_format_amount( give_get_payment_amount( $payment_id ) ), give_get_payment_currency_code( $payment_id ) );
+	$payment = new Give_Payment( $payment_id );
+	$price   = give_currency_filter( give_format_amount( $payment->total ), $payment->currency );
 
 	return html_entity_decode( $price, ENT_COMPAT, 'UTF-8' );
 }
@@ -480,7 +495,9 @@ function give_email_tag_price( $payment_id ) {
  * @return int payment_id
  */
 function give_email_tag_payment_id( $payment_id ) {
-	return give_get_payment_number( $payment_id );
+	$payment = new Give_Payment( $payment_id );
+
+	return $payment->number;
 }
 
 /**
@@ -492,22 +509,26 @@ function give_email_tag_payment_id( $payment_id ) {
  * @return string receipt_id
  */
 function give_email_tag_receipt_id( $payment_id ) {
-	return give_get_payment_key( $payment_id );
+	$payment = new Give_Payment( $payment_id );
+
+	return $payment->key;
 }
 
 /**
- * Email template tag: donation
- * The form submitted to make the donation
+ * Email template tag: {donation}
+ *
+ * @description:  Output the donation form name used to make the donation along with the donation level (if applicable)
  *
  * @param int $payment_id
  *
  * @return string $form_title
  */
 function give_email_tag_donation( $payment_id ) {
-	$payment_data = give_get_payment_meta( $payment_id );
-	$form_title   = ( ! empty( $payment_data['form_title'] ) ? $payment_data['form_title'] : __( 'There was an error retrieving this donation title', 'give' ) );
+	$payment    = new Give_Payment( $payment_id );
+	$form_title = give_get_payment_form_title( $payment->meta, false, '-' );
 
-	return $form_title;
+	return ! empty( $form_title ) ? $form_title : __( 'There was an error retrieving this donation title', 'give' );
+
 }
 
 /**
@@ -519,7 +540,9 @@ function give_email_tag_donation( $payment_id ) {
  * @return string gateway
  */
 function give_email_tag_payment_method( $payment_id ) {
-	return give_get_gateway_checkout_label( give_get_payment_gateway( $payment_id ) );
+	$payment = new Give_Payment( $payment_id );
+
+	return give_get_gateway_checkout_label( $payment->gateway );
 }
 
 /**

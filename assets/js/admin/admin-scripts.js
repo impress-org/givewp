@@ -9,210 +9,211 @@
  */
 
 jQuery.noConflict();
-(function ( $ ) {
+(function ($) {
 
-	/**
-	 * Setup Admin Datepicker
-	 * @since: 1.0
-	 */
-	var enable_admin_datepicker = function () {
-		// Date picker
-		if ( $( '.give_datepicker' ).length > 0 ) {
-			var dateFormat = 'mm/dd/yy';
-			$( '.give_datepicker' ).datepicker( {
-				dateFormat: dateFormat
-			} );
-		}
-	};
-
-
-	/**
-	 * Setup Pretty Chosen Select Fields
-	 */
-	var setup_chosen_give_selects = function () {
-		// Setup Chosen Selects
-		$( '.give-select-chosen' ).chosen( {
-			inherit_select_classes   : true,
-			placeholder_text_single  : give_vars.one_option,
-			placeholder_text_multiple: give_vars.one_or_more_option
-		} );
-
-		// This fixes the Chosen box being 0px wide when the thickbox is opened
-		$( '#post' ).on( 'click', '.give-thickbox', function () {
-			$( '.give-select-chosen', '#choose-give-form' ).css( 'width', '100%' );
-		} );
-
-	};
+    /**
+     * Setup Admin Datepicker
+     * @since: 1.0
+     */
+    var enable_admin_datepicker = function () {
+        // Date picker
+        if ($('.give_datepicker').length > 0) {
+            var dateFormat = 'mm/dd/yy';
+            $('.give_datepicker').datepicker({
+                dateFormat: dateFormat
+            });
+        }
+    };
 
 
-	/**
-	 * Edit payment screen JS
-	 */
-	var Give_Edit_Payment = {
+    /**
+     * Setup Pretty Chosen Select Fields
+     */
+    var setup_chosen_give_selects = function () {
+        // Setup Chosen Selects
+        $('.give-select-chosen').chosen({
+            inherit_select_classes: true,
+            placeholder_text_single: give_vars.one_option,
+            placeholder_text_multiple: give_vars.one_or_more_option
+        });
 
-		init: function () {
-			this.edit_address();
-			this.add_note();
-			this.remove_note();
-			this.new_donor();
-			this.resend_receipt();
-		},
+        // This fixes the Chosen box being 0px wide when the thickbox is opened
+        $('#post').on('click', '.give-thickbox', function () {
+            $('.give-select-chosen', '#choose-give-form').css('width', '100%');
+        });
 
-
-		edit_address: function () {
-
-			// Update base state field based on selected base country
-			$( 'select[name="give-payment-address[0][country]"]' ).change( function () {
-				var $this = $( this );
-				data = {
-					action    : 'give_get_states',
-					country   : $this.val(),
-					field_name: 'give-payment-address[0][state]'
-				};
-				$.post( ajaxurl, data, function ( response ) {
-					if ( 'nostates' == response ) {
-						$( '#give-order-address-state-wrap select, #give-order-address-state-wrap input' ).replaceWith( '<input type="text" name="give-payment-address[0][state]" value="" class="give-edit-toggles medium-text"/>' );
-					} else {
-						$( '#give-order-address-state-wrap select, #give-order-address-state-wrap input' ).replaceWith( response );
-					}
-				} );
-
-				return false;
-			} );
-
-		},
-
-		add_note: function () {
-
-			$( '#give-add-payment-note' ).on( 'click', function ( e ) {
-				e.preventDefault();
-				var postData = {
-					action    : 'give_insert_payment_note',
-					payment_id: $( this ).data( 'payment-id' ),
-					note      : $( '#give-payment-note' ).val()
-				};
-
-				if ( postData.note ) {
-
-					$.ajax( {
-						type   : "POST",
-						data   : postData,
-						url    : ajaxurl,
-						success: function ( response ) {
-							$( '#give-payment-notes-inner' ).append( response );
-							$( '.give-no-payment-notes' ).hide();
-							$( '#give-payment-note' ).val( '' );
-						}
-					} ).fail( function ( data ) {
-						if ( window.console && window.console.log ) {
-							console.log( data );
-						}
-					} );
-
-				} else {
-					var border_color = $( '#give-payment-note' ).css( 'border-color' );
-					$( '#give-payment-note' ).css( 'border-color', 'red' );
-					setTimeout( function () {
-						$( '#give-payment-note' ).css( 'border-color', border_color );
-					}, 500 );
-				}
-
-			} );
-
-		},
-
-		remove_note   : function () {
-
-			$( 'body' ).on( 'click', '.give-delete-payment-note', function ( e ) {
-
-				e.preventDefault();
-
-				if ( confirm( give_vars.delete_payment_note ) ) {
-
-					var postData = {
-						action    : 'give_delete_payment_note',
-						payment_id: $( this ).data( 'payment-id' ),
-						note_id   : $( this ).data( 'note-id' )
-					};
-
-					$.ajax( {
-						type   : "POST",
-						data   : postData,
-						url    : ajaxurl,
-						success: function ( response ) {
-							$( '#give-payment-note-' + postData.note_id ).remove();
-							if ( !$( '.give-payment-note' ).length ) {
-								$( '.give-no-payment-notes' ).show();
-							}
-							return false;
-						}
-					} ).fail( function ( data ) {
-						if ( window.console && window.console.log ) {
-							console.log( data );
-						}
-					} );
-					return true;
-				}
-
-			} );
-
-		},
-		new_donor     : function () {
-
-			$( '#give-customer-details' ).on( 'click', '.give-payment-new-customer, .give-payment-new-customer-cancel', function ( e ) {
-				e.preventDefault();
-				$( '.customer-info' ).toggle();
-				$( '.new-customer' ).toggle();
-
-				if ( $( '.new-customer' ).is( ":visible" ) ) {
-					$( '#give-new-customer' ).val( 1 );
-				} else {
-					$( '#give-new-customer' ).val( 0 );
-				}
-
-			} );
-
-		},
-		resend_receipt: function () {
-			$( 'body' ).on( 'click', '#give-resend-receipt', function ( e ) {
-				return confirm( give_vars.resend_receipt );
-			} );
-		}
-
-	};
+    };
 
 
-	/**
-	 * Settings screen JS
-	 */
-	var Give_Settings = {
+    /**
+     * Edit payment screen JS
+     */
+    var Give_Edit_Payment = {
 
-		init: function () {
-			this.toggle_options();
-		},
+        init: function () {
+            this.edit_address();
+            this.add_note();
+            this.remove_note();
+            this.new_donor();
+            this.resend_receipt();
+        },
+
+
+        edit_address: function () {
+
+            // Update base state field based on selected base country
+            $('select[name="give-payment-address[0][country]"]').change(function () {
+                var $this = $(this);
+                data = {
+                    action: 'give_get_states',
+                    country: $this.val(),
+                    field_name: 'give-payment-address[0][state]'
+                };
+                $.post(ajaxurl, data, function (response) {
+                    if ('nostates' == response) {
+                        $('#give-order-address-state-wrap select, #give-order-address-state-wrap input').replaceWith('<input type="text" name="give-payment-address[0][state]" value="" class="give-edit-toggles medium-text"/>');
+                    } else {
+                        $('#give-order-address-state-wrap select, #give-order-address-state-wrap input').replaceWith(response);
+                    }
+                });
+
+                return false;
+            });
+
+        },
+
+        add_note: function () {
+
+            $('#give-add-payment-note').on('click', function (e) {
+                e.preventDefault();
+                var postData = {
+                    action: 'give_insert_payment_note',
+                    payment_id: $(this).data('payment-id'),
+                    note: $('#give-payment-note').val()
+                };
+
+                if (postData.note) {
+
+                    $.ajax({
+                        type: 'POST',
+                        data: postData,
+                        url: ajaxurl,
+                        success: function (response) {
+                            $('#give-payment-notes-inner').append(response);
+                            $('.give-no-payment-notes').hide();
+                            $('#give-payment-note').val('');
+                        }
+                    }).fail(function (data) {
+                        if (window.console && window.console.log) {
+                            console.log(data);
+                        }
+                    });
+
+                } else {
+                    var border_color = $('#give-payment-note').css('border-color');
+                    $('#give-payment-note').css('border-color', 'red');
+                    setTimeout(function () {
+                        $('#give-payment-note').css('border-color', border_color);
+                    }, 500);
+                }
+
+            });
+
+        },
+
+        remove_note: function () {
+
+            $('body').on('click', '.give-delete-payment-note', function (e) {
+
+                e.preventDefault();
+
+                if (confirm(give_vars.delete_payment_note)) {
+
+                    var postData = {
+                        action: 'give_delete_payment_note',
+                        payment_id: $(this).data('payment-id'),
+                        note_id: $(this).data('note-id')
+                    };
+
+                    $.ajax({
+                        type: "POST",
+                        data: postData,
+                        url: ajaxurl,
+                        success: function (response) {
+                            $('#give-payment-note-' + postData.note_id).remove();
+                            if (!$('.give-payment-note').length) {
+                                $('.give-no-payment-notes').show();
+                            }
+                            return false;
+                        }
+                    }).fail(function (data) {
+                        if (window.console && window.console.log) {
+                            console.log(data);
+                        }
+                    });
+                    return true;
+                }
+
+            });
+
+        },
+        new_donor: function () {
+
+            $('#give-customer-details').on('click', '.give-payment-new-customer, .give-payment-new-customer-cancel', function (e) {
+                e.preventDefault();
+                $('.customer-info').toggle();
+                $('.new-customer').toggle();
+
+                if ($('.new-customer').is(":visible")) {
+                    $('#give-new-customer').val(1);
+                } else {
+                    $('#give-new-customer').val(0);
+                }
+
+            });
+
+        },
+        resend_receipt: function () {
+            $('body').on('click', '#give-resend-receipt', function (e) {
+                return confirm(give_vars.resend_receipt);
+            });
+        }
+
+    };
+
+
+    /**
+     * Settings screen JS
+     */
+    var Give_Settings = {
+
+        init: function () {
+            this.toggle_options();
+        },
 
         toggle_options: function () {
 
             var email_access = $('#email_access');
-            email_access.on('change', function(){
-                if ( email_access.prop('checked') ) {
-                    $( '.cmb2-id-recaptcha-key, .cmb2-id-recaptcha-secret' ).show();
+            email_access.on('change', function () {
+                if (email_access.prop('checked')) {
+                    $('.cmb2-id-recaptcha-key, .cmb2-id-recaptcha-secret').show();
                 } else {
-                    $( '.cmb2-id-recaptcha-key, .cmb2-id-recaptcha-secret' ).hide();
+                    $('.cmb2-id-recaptcha-key, .cmb2-id-recaptcha-secret').hide();
                 }
-            } ).change();
+            }).change();
         },
 
-	};
+    };
 
     /**
-     * Reports / Exports screen JS
+     * Reports / Exports / Tools screen JS
      */
     var Give_Reports = {
 
         init: function () {
             this.date_options();
             this.donors_export();
+            this.recount_stats();
         },
 
         date_options: function () {
@@ -231,284 +232,504 @@ jQuery.noConflict();
 
         donors_export: function () {
 
-            // Show / hide Download option when exporting donors
-            $('#give_donor_export_download').change(function () {
+            // Show / hide Donation Form option when exporting donors
+            $('#give_customer_export_form').change(function () {
 
-                var $this = $(this), form_id = $('option:selected', $this).val();
+                var $this = $(this),
+                    form_id = $('option:selected', $this).val(),
+                    customer_export_option = $('#give_customer_export_option');
 
                 if ('0' === $this.val()) {
-                    $('#give_donor_export_option').show();
+                    customer_export_option.show();
                 } else {
-                    $('#give_donor_export_option').hide();
+                    customer_export_option.hide();
                 }
 
-                $('.give_price_options_select').remove();
+                var price_options_select = $('.give_price_options_select');
+
+                // On Form Select, Check if Variable Prices Exist
+                if (parseInt(form_id) != 0) {
+                    var data = {
+                        action: 'give_check_for_form_price_variations',
+                        form_id: form_id,
+                        all_prices: true
+                    };
+
+                    $.post(ajaxurl, data, function (response) {
+                        price_options_select.remove();
+                        $('#give_customer_export_form_chosen').after(response);
+                    });
+                } else {
+                    price_options_select.remove();
+                }
 
             });
 
+        },
+
+        recount_stats: function () {
+
+            $('body').on('change', '#recount-stats-type', function () {
+
+                var export_form = $('#give-tools-recount-form');
+                var selected_type = $('option:selected', this).data('type');
+                var submit_button = $('#recount-stats-submit');
+                var forms = $('#tools-form-dropdown');
+
+                // Reset the form
+                export_form.find('.notice-wrap').remove();
+                submit_button.removeClass('button-disabled').attr('disabled', false);
+                forms.hide();
+                $('.give-recount-stats-descriptions span').hide();
+
+                if ('recount-form' === selected_type) {
+
+                    forms.show();
+                    forms.find('.give-select-chosen').css({
+                        'width': 'auto',
+                        'min-width': '250px'
+                    });
+
+                } else if ('reset-stats' === selected_type) {
+
+                    export_form.append('<div class="notice-wrap"></div>');
+                    var notice_wrap = export_form.find('.notice-wrap');
+                    notice_wrap.html('<div class="notice notice-warning"><p><input type="checkbox" id="confirm-reset" name="confirm_reset_store" value="1" /> <label for="confirm-reset">' + give_vars.reset_stats_warn + '</label></p></div>');
+
+                    submit_button.addClass('button-disabled').attr('disabled', 'disabled');
+
+                } else {
+
+                    forms.hide();
+                    forms.val(0);
+
+                }
+
+                $('#' + selected_type).show();
+            });
+
+            $('body').on('change', '#confirm-reset', function () {
+                var checked = $(this).is(':checked');
+                if (checked) {
+                    $('#recount-stats-submit').removeClass('button-disabled').removeAttr('disabled');
+                } else {
+                    $('#recount-stats-submit').addClass('button-disabled').attr('disabled', 'disabled');
+                }
+            });
+
+            $('#give-tools-recount-form').submit(function (e) {
+                var selection = $('#recount-stats-type').val();
+                var export_form = $(this);
+                var selected_type = $('option:selected', this).data('type');
+
+
+                if ('reset-stats' === selected_type) {
+                    var is_confirmed = $('#confirm-reset').is(':checked');
+                    if (is_confirmed) {
+                        return true;
+                    } else {
+                        has_errors = true;
+                    }
+                }
+
+                export_form.find('.notice-wrap').remove();
+
+                export_form.append('<div class="notice-wrap"></div>');
+                var notice_wrap = export_form.find('.notice-wrap');
+                var has_errors = false;
+
+                if (null === selection || 0 === selection) {
+                    // Needs to pick a method give_vars.batch_export_no_class
+                    notice_wrap.html('<div class="updated error"><p>' + give_vars.batch_export_no_class + '</p></div>');
+                    has_errors = true;
+                }
+
+                if ('recount-form' === selected_type) {
+
+                    var selected_form = $('select[name="form_id"]').val();
+                    if (selected_form == 0) {
+                        // Needs to pick give_vars.batch_export_no_reqs
+                        notice_wrap.html('<div class="updated error"><p>' + give_vars.batch_export_no_reqs + '</p></div>');
+                        has_errors = true;
+                    }
+
+                }
+
+                if (has_errors) {
+                    export_form.find('.button-disabled').removeClass('button-disabled');
+                    return false;
+                }
+            });
         }
 
     };
 
+    /**
+     * Export screen JS
+     */
+    var Give_Export = {
 
-	/**
-	 * Admin Status Select Field Change
-	 *
-	 * @description: Handle status switching
-	 * @since: 1.0
-	 */
-	var handle_status_change = function () {
+        init: function () {
+            this.submit();
+            this.dismiss_message();
+        },
 
-		//When sta
-		$( 'select[name="give-payment-status"]' ).on( 'change', function () {
+        submit: function () {
 
-			var status = $( this ).val();
-			console.log( status );
-			$( '.give-donation-status' ).removeClass( function ( index, css ) {
-				return (css.match( /\bstatus-\S+/g ) || []).join( ' ' );
-			} ).addClass( 'status-' + status );
+            var self = this;
 
+            $(document.body).on('submit', '.give-export-form', function (e) {
+                e.preventDefault();
 
-		} );
+                var submitButton = $(this).find('input[type="submit"]');
 
-	};
+                if (!submitButton.hasClass('button-disabled')) {
 
-	/**
-	 * Customer management screen JS
-	 */
-	var Give_Customer = {
+                    var data = $(this).serialize();
 
-		init          : function () {
-			this.edit_customer();
-			this.user_search();
-			this.remove_user();
-			this.cancel_edit();
-			this.change_country();
-			this.add_note();
-			this.delete_checked();
-		},
-		edit_customer : function () {
-			$( 'body' ).on( 'click', '#edit-customer', function ( e ) {
-				e.preventDefault();
-				$( '#give-customer-card-wrapper .editable' ).hide();
-				$( '#give-customer-card-wrapper .edit-item' ).fadeIn().css( 'display', 'block' );
-			} );
-		},
-		user_search   : function () {
-			// Upon selecting a user from the dropdown, we need to update the User ID
-			$( 'body' ).on( 'click.giveSelectUser', '.give_user_search_results a', function ( e ) {
-				e.preventDefault();
-				var user_id = $( this ).data( 'userid' );
-				$( 'input[name="customerinfo[user_id]"]' ).val( user_id );
-			} );
-		},
-		remove_user   : function () {
-			$( 'body' ).on( 'click', '#disconnect-customer', function ( e ) {
-				e.preventDefault();
-				var customer_id = $( 'input[name="customerinfo[id]"]' ).val();
+                    submitButton.addClass('button-disabled');
+                    $(this).find('.notice-wrap').remove();
+                    $(this).append('<div class="notice-wrap give-clearfix"><span class="spinner is-active"></span><div class="give-progress"><div></div></div></div>');
 
-				var postData = {
-					give_action: 'disconnect-userid',
-					customer_id: customer_id,
-					_wpnonce   : $( '#edit-customer-info #_wpnonce' ).val()
-				};
+                    // start the process
+                    self.process_step(1, data, self);
 
-				$.post( ajaxurl, postData, function ( response ) {
+                }
 
-					window.location.href = window.location.href;
+            });
+        },
 
-				}, 'json' );
+        process_step: function (step, data, self) {
 
-			} );
-		},
-		cancel_edit   : function () {
-			$( 'body' ).on( 'click', '#give-edit-customer-cancel', function ( e ) {
-				e.preventDefault();
-				$( '#give-customer-card-wrapper .edit-item' ).hide();
-				$( '#give-customer-card-wrapper .editable' ).show();
-				$( '.give_user_search_results' ).html( '' );
-			} );
-		},
-		change_country: function () {
-			$( 'select[name="customerinfo[country]"]' ).change( function () {
-				var $this = $( this );
-				var data = {
-					action    : 'give_get_states',
-					country   : $this.val(),
-					field_name: 'customerinfo[state]'
-				};
-				$.post( ajaxurl, data, function ( response ) {
-					if ( 'nostates' == response ) {
-						$( ':input[name="customerinfo[state]"]' ).replaceWith( '<input type="text" name="' + data.field_name + '" value="" class="give-edit-toggles medium-text"/>' );
-					} else {
-						$( ':input[name="customerinfo[state]"]' ).replaceWith( response );
-					}
-				} );
+            $.ajax({
+                type: 'POST',
+                url: ajaxurl,
+                data: {
+                    form: data,
+                    action: 'give_do_ajax_export',
+                    step: step,
+                },
+                dataType: 'json',
+                success: function (response) {
 
-				return false;
-			} );
-		},
-		add_note      : function () {
-			$( 'body' ).on( 'click', '#add-customer-note', function ( e ) {
-				e.preventDefault();
-				var postData = {
-					give_action            : 'add-customer-note',
-					customer_id            : $( '#customer-id' ).val(),
-					customer_note          : $( '#customer-note' ).val(),
-					add_customer_note_nonce: $( '#add_customer_note_nonce' ).val()
-				};
+                    console.log(response);
 
-				if ( postData.customer_note ) {
+                    if ('done' == response.step || response.error || response.success) {
 
-					$.ajax( {
-						type   : "POST",
-						data   : postData,
-						url    : ajaxurl,
-						success: function ( response ) {
-							$( '#give-customer-notes' ).prepend( response );
-							$( '.give-no-customer-notes' ).hide();
-							$( '#customer-note' ).val( '' );
-						}
-					} ).fail( function ( data ) {
-						if ( window.console && window.console.log ) {
-							console.log( data );
-						}
-					} );
+                        // We need to get the actual in progress form, not all forms on the page
+                        var export_form = $('.give-export-form').find('.give-progress').parent().parent();
+                        var notice_wrap = export_form.find('.notice-wrap');
 
-				} else {
-					var border_color = $( '#customer-note' ).css( 'border-color' );
-					$( '#customer-note' ).css( 'border-color', 'red' );
-					setTimeout( function () {
-						$( '#customer-note' ).css( 'border-color', border_color );
-					}, 500 );
-				}
-			} );
-		},
-		delete_checked: function () {
-			$( '#give-customer-delete-confirm' ).change( function () {
-				var records_input = $( '#give-customer-delete-records' );
-				var submit_button = $( '#give-delete-customer' );
+                        export_form.find('.button-disabled').removeClass('button-disabled');
 
-				if ( $( this ).prop( 'checked' ) ) {
-					records_input.attr( 'disabled', false );
-					submit_button.attr( 'disabled', false );
-				} else {
-					records_input.attr( 'disabled', true );
-					records_input.prop( 'checked', false );
-					submit_button.attr( 'disabled', true );
-				}
-			} );
-		}
+                        if (response.error) {
 
-	};
-	/**
-	 * API screen JS
-	 */
-	var API_Screen = {
+                            var error_message = response.message;
+                            notice_wrap.html('<div class="updated error"><p>' + error_message + '</p></div>');
 
-		init: function () {
-			this.revoke_api_key();
-			this.regenerate_api_key();
-		},
+                        } else if (response.success) {
 
-		revoke_api_key    : function () {
-			$( 'body' ).on( 'click', '.give-revoke-api-key', function ( e ) {
-				return confirm( give_vars.revoke_api_key );
-			} );
-		},
-		regenerate_api_key: function () {
-			$( 'body' ).on( 'click', '.give-regenerate-api-key', function ( e ) {
-				return confirm( give_vars.regenerate_api_key );
-			} );
-		}
-	};
+                            var success_message = response.message;
+                            notice_wrap.html('<div id="give-batch-success" class="updated notice is-dismissible"><p>' + success_message + '<span class="notice-dismiss"></span></p></div>');
 
-	/**
-	 * Initialize qTips
-	 */
-	var initialize_qtips = function () {
-		jQuery( '[data-tooltip!=""]' ).qtip( { // Grab all elements with a non-blank data-tooltip attr.
-			content: {
-				attr: 'data-tooltip' // Tell qTip2 to look inside this attr for its content
-			},
-			style  : {classes: 'qtip-rounded qtip-tipsy'},
-			events : {
-				show: function ( event, api ) {
-					var $el = $( api.elements.target[0] );
-					$el.qtip( 'option', 'position.my', ($el.data( 'tooltip-my-position' ) == undefined) ? 'bottom center' : $el.data( 'tooltip-my-position' ) );
-					$el.qtip( 'option', 'position.at', ($el.data( 'tooltip-target-position' ) == undefined) ? 'top center' : $el.data( 'tooltip-target-position' ) );
-				}
-			}
-		} )
-	};
+                        } else {
 
-	//On DOM Ready
-	$( function () {
+                            notice_wrap.remove();
+                            window.location = response.url;
 
-		enable_admin_datepicker();
-		handle_status_change();
-		setup_chosen_give_selects();
-		Give_Edit_Payment.init();
-		Give_Settings.init();
-		Give_Reports.init();
-		Give_Customer.init();
-		API_Screen.init();
-		initialize_qtips();
+                        }
 
-		//Footer
-		$( 'a.give-rating-link' ).click( function () {
-			jQuery( this ).parent().text( jQuery( this ).data( 'rated' ) );
-		} );
+                    } else {
+                        $('.give-progress div').animate({
+                            width: response.percentage + '%',
+                        }, 50, function () {
+                            // Animation complete.
+                        });
+                        self.process_step(parseInt(response.step), data, self);
+                    }
 
-		// Ajax user search
-		$( '.give-ajax-user-search' ).on( 'keyup', function () {
-			var user_search = $( this ).val();
-			var exclude = '';
+                }
+            }).fail(function (response) {
+                if (window.console && window.console.log) {
+                    console.log(response);
+                }
 
-			if ( $( this ).data( 'exclude' ) ) {
-				exclude = $( this ).data( 'exclude' );
-			}
+                $('.notice-wrap').append(response.responseText);
 
-			$( '.give-ajax' ).show();
-			data = {
-				action   : 'give_search_users',
-				user_name: user_search,
-				exclude  : exclude
-			};
+            });
 
-			document.body.style.cursor = 'wait';
+        },
 
-			$.ajax( {
-				type    : "POST",
-				data    : data,
-				dataType: "json",
-				url     : ajaxurl,
-				success : function ( search_response ) {
-					$( '.give-ajax' ).hide();
-					$( '.give_user_search_results' ).removeClass( 'hidden' );
-					$( '.give_user_search_results span' ).html( '' );
-					$( search_response.results ).appendTo( '.give_user_search_results span' );
-					document.body.style.cursor = 'default';
-				}
-			} );
-		} );
+        dismiss_message: function () {
+            $('body').on('click', '#give-batch-success .notice-dismiss', function () {
+                $('#give-batch-success').parent().slideUp('fast');
+            });
+        }
 
-		$( 'body' ).on( 'click.giveSelectUser', '.give_user_search_results span a', function ( e ) {
-			e.preventDefault();
-			var login = $( this ).data( 'login' );
-			$( '.give-ajax-user-search' ).val( login );
-			$( '.give_user_search_results' ).addClass( 'hidden' );
-			$( '.give_user_search_results span' ).html( '' );
-		} );
+    };
 
-		$( 'body' ).on( 'click.giveCancelUserSearch', '.give_user_search_results a.give-ajax-user-cancel', function ( e ) {
-			e.preventDefault();
-			$( '.give-ajax-user-search' ).val( '' );
-			$( '.give_user_search_results' ).addClass( 'hidden' );
-			$( '.give_user_search_results span' ).html( '' );
-		} );
+    /**
+     * Admin Status Select Field Change
+     *
+     * @description: Handle status switching
+     * @since: 1.0
+     */
+    var handle_status_change = function () {
 
-	} );
+        //When sta
+        $('select[name="give-payment-status"]').on('change', function () {
+
+            var status = $(this).val();
+            console.log(status);
+            $('.give-donation-status').removeClass(function (index, css) {
+                return (css.match(/\bstatus-\S+/g) || []).join(' ');
+            }).addClass('status-' + status);
 
 
-})( jQuery );
+        });
+
+    };
+
+    /**
+     * Customer management screen JS
+     */
+    var Give_Customer = {
+
+        init: function () {
+            this.edit_customer();
+            this.user_search();
+            this.remove_user();
+            this.cancel_edit();
+            this.change_country();
+            this.add_note();
+            this.delete_checked();
+        },
+        edit_customer: function () {
+            $('body').on('click', '#edit-customer', function (e) {
+                e.preventDefault();
+                $('#give-customer-card-wrapper .editable').hide();
+                $('#give-customer-card-wrapper .edit-item').fadeIn().css('display', 'block');
+            });
+        },
+        user_search: function () {
+            // Upon selecting a user from the dropdown, we need to update the User ID
+            $('body').on('click.giveSelectUser', '.give_user_search_results a', function (e) {
+                e.preventDefault();
+                var user_id = $(this).data('userid');
+                $('input[name="customerinfo[user_id]"]').val(user_id);
+            });
+        },
+        remove_user: function () {
+            $('body').on('click', '#disconnect-customer', function (e) {
+                e.preventDefault();
+                var customer_id = $('input[name="customerinfo[id]"]').val();
+
+                var postData = {
+                    give_action: 'disconnect-userid',
+                    customer_id: customer_id,
+                    _wpnonce: $('#edit-customer-info #_wpnonce').val()
+                };
+
+                $.post(ajaxurl, postData, function (response) {
+
+                    window.location.href = window.location.href;
+
+                }, 'json');
+
+            });
+        },
+        cancel_edit: function () {
+            $('body').on('click', '#give-edit-customer-cancel', function (e) {
+                e.preventDefault();
+                $('#give-customer-card-wrapper .edit-item').hide();
+                $('#give-customer-card-wrapper .editable').show();
+                $('.give_user_search_results').html('');
+            });
+        },
+        change_country: function () {
+            $('select[name="customerinfo[country]"]').change(function () {
+                var $this = $(this);
+                var data = {
+                    action: 'give_get_states',
+                    country: $this.val(),
+                    field_name: 'customerinfo[state]'
+                };
+                $.post(ajaxurl, data, function (response) {
+                    if ('nostates' == response) {
+                        $(':input[name="customerinfo[state]"]').replaceWith('<input type="text" name="' + data.field_name + '" value="" class="give-edit-toggles medium-text"/>');
+                    } else {
+                        $(':input[name="customerinfo[state]"]').replaceWith(response);
+                    }
+                });
+
+                return false;
+            });
+        },
+        add_note: function () {
+            $('body').on('click', '#add-customer-note', function (e) {
+                e.preventDefault();
+                var postData = {
+                    give_action: 'add-customer-note',
+                    customer_id: $('#customer-id').val(),
+                    customer_note: $('#customer-note').val(),
+                    add_customer_note_nonce: $('#add_customer_note_nonce').val()
+                };
+
+                if (postData.customer_note) {
+
+                    $.ajax({
+                        type: "POST",
+                        data: postData,
+                        url: ajaxurl,
+                        success: function (response) {
+                            $('#give-customer-notes').prepend(response);
+                            $('.give-no-customer-notes').hide();
+                            $('#customer-note').val('');
+                        }
+                    }).fail(function (data) {
+                        if (window.console && window.console.log) {
+                            console.log(data);
+                        }
+                    });
+
+                } else {
+                    var border_color = $('#customer-note').css('border-color');
+                    $('#customer-note').css('border-color', 'red');
+                    setTimeout(function () {
+                        $('#customer-note').css('border-color', border_color);
+                    }, 500);
+                }
+            });
+        },
+        delete_checked: function () {
+            $('#give-customer-delete-confirm').change(function () {
+                var records_input = $('#give-customer-delete-records');
+                var submit_button = $('#give-delete-customer');
+
+                if ($(this).prop('checked')) {
+                    records_input.attr('disabled', false);
+                    submit_button.attr('disabled', false);
+                } else {
+                    records_input.attr('disabled', true);
+                    records_input.prop('checked', false);
+                    submit_button.attr('disabled', true);
+                }
+            });
+        }
+
+    };
+
+    /**
+     * API screen JS
+     */
+    var API_Screen = {
+
+        init: function () {
+            this.revoke_api_key();
+            this.regenerate_api_key();
+        },
+
+        revoke_api_key: function () {
+            $('body').on('click', '.give-revoke-api-key', function (e) {
+                return confirm(give_vars.revoke_api_key);
+            });
+        },
+        regenerate_api_key: function () {
+            $('body').on('click', '.give-regenerate-api-key', function (e) {
+                return confirm(give_vars.regenerate_api_key);
+            });
+        }
+    };
+
+
+    /**
+     * Initialize qTips
+     */
+    var initialize_qtips = function () {
+        jQuery('[data-tooltip!=""]').qtip({ // Grab all elements with a non-blank data-tooltip attr.
+            content: {
+                attr: 'data-tooltip' // Tell qTip2 to look inside this attr for its content
+            },
+            style: {classes: 'qtip-rounded qtip-tipsy'},
+            events: {
+                show: function (event, api) {
+                    var $el = $(api.elements.target[0]);
+                    $el.qtip('option', 'position.my', ($el.data('tooltip-my-position') == undefined) ? 'bottom center' : $el.data('tooltip-my-position'));
+                    $el.qtip('option', 'position.at', ($el.data('tooltip-target-position') == undefined) ? 'top center' : $el.data('tooltip-target-position'));
+                }
+            }
+        })
+    };
+
+    //On DOM Ready
+    $(function () {
+
+        enable_admin_datepicker();
+        handle_status_change();
+        setup_chosen_give_selects();
+        Give_Edit_Payment.init();
+        Give_Settings.init();
+        Give_Reports.init();
+        Give_Customer.init();
+        API_Screen.init();
+        Give_Export.init();
+
+        initialize_qtips();
+
+        //Footer
+        $('a.give-rating-link').click(function () {
+            jQuery(this).parent().text(jQuery(this).data('rated'));
+        });
+
+        // Ajax user search
+        $('.give-ajax-user-search').on('keyup', function () {
+            var user_search = $(this).val();
+            var exclude = '';
+
+            if ($(this).data('exclude')) {
+                exclude = $(this).data('exclude');
+            }
+
+            $('.give-ajax').show();
+            data = {
+                action: 'give_search_users',
+                user_name: user_search,
+                exclude: exclude
+            };
+
+            document.body.style.cursor = 'wait';
+
+            $.ajax({
+                type: "POST",
+                data: data,
+                dataType: "json",
+                url: ajaxurl,
+                success: function (search_response) {
+                    $('.give-ajax').hide();
+                    $('.give_user_search_results').removeClass('hidden');
+                    $('.give_user_search_results span').html('');
+                    $(search_response.results).appendTo('.give_user_search_results span');
+                    document.body.style.cursor = 'default';
+                }
+            });
+        });
+
+        $('body').on('click.giveSelectUser', '.give_user_search_results span a', function (e) {
+            e.preventDefault();
+            var login = $(this).data('login');
+            $('.give-ajax-user-search').val(login);
+            $('.give_user_search_results').addClass('hidden');
+            $('.give_user_search_results span').html('');
+        });
+
+        $('body').on('click.giveCancelUserSearch', '.give_user_search_results a.give-ajax-user-cancel', function (e) {
+            e.preventDefault();
+            $('.give-ajax-user-search').val('');
+            $('.give_user_search_results').addClass('hidden');
+            $('.give_user_search_results span').html('');
+        });
+
+    });
+
+
+})(jQuery);

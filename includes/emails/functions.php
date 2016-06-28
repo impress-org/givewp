@@ -15,7 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Email the payment confirmation to the buyer in a customizable Donation Receipt
+ * Email Donation Receipt
+ *
+ * @description: Email the donation confirmation to the donor via the customizable "Donation Receipt" settings
  *
  * @since 1.0
  *
@@ -64,7 +66,7 @@ function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
  * Email the donation confirmation to the admin accounts for testing.
  *
  * @since 1.0
- * @global $give_options Array of all the Give Options
+ *
  * @return void
  */
 function give_email_test_donation_receipt() {
@@ -81,7 +83,7 @@ function give_email_test_donation_receipt() {
 
 	$attachments = apply_filters( 'give_receipt_attachments', array(), 0, array() );
 
-	$message = give_email_preview_template_tags( give_get_email_body_content( 0, array() ), 0 );
+	$message = give_email_preview_template_tags( give_get_email_body_content( 0, array() ) );
 
 	$emails = Give()->emails;
 	$emails->__set( 'from_name', $from_name );

@@ -63,6 +63,7 @@ function give_get_currency_position() {
  * @since 1.0
  * @return array $currencies A list of the available currencies
  */
+
 function give_get_currencies() {
 	$currencies = array(
 		'USD'  => __( 'US Dollars ($)', 'give' ),
@@ -79,11 +80,14 @@ function give_get_currencies() {
 		'JPY'  => __( 'Japanese Yen (¥)', 'give' ),
 		'MYR'  => __( 'Malaysian Ringgits (RM)', 'give' ),
 		'MXN'  => __( 'Mexican Peso ($)', 'give' ),
+		'MAD'  => __( 'Moroccan Dirham (&#x2e;&#x62f;&#x2e;&#x645;)', 'give' ),
 		'NZD'  => __( 'New Zealand Dollar ($)', 'give' ),
 		'NOK'  => __( 'Norwegian Krone (Kr.)', 'give' ),
 		'PHP'  => __( 'Philippine Pesos (₱)', 'give' ),
 		'PLN'  => __( 'Polish Zloty (zł)', 'give' ),
 		'SGD'  => __( 'Singapore Dollar ($)', 'give' ),
+		'KRW'  => __( 'South Korean Won (₩)', 'give' ),
+		'ZAR'  => __( 'South African Rand (R)', 'give' ),
 		'SEK'  => __( 'Swedish Krona (kr)', 'give' ),
 		'CHF'  => __( 'Swiss Franc (CHF)', 'give' ),
 		'TWD'  => __( 'Taiwan New Dollars (NT$)', 'give' ),
@@ -178,10 +182,20 @@ function give_currency_symbol( $currency = '' ) {
 		case 'CZK' :
 			$symbol = 'Kč';
 			break;
+		case 'KRW' :
+			$symbol = '₩';
+			break;
+		case 'ZAR' :
+			$symbol = 'R';
+			break;
+		case 'MAD' :
+			$symbol = '&#x2e;&#x62f;&#x2e;&#x645;';
+			break;
 		default :
 			$symbol = $currency;
 			break;
 	endswitch;
+
 
 	return apply_filters( 'give_currency_symbol', $symbol, $currency );
 }
@@ -480,7 +494,7 @@ function give_is_host( $host = false ) {
 /**
  * Marks a function as deprecated and informs when it has been used.
  *
- * There is a hook edd_deprecated_function_run that will be called that can be used
+ * There is a hook give_deprecated_function_run that will be called that can be used
  * to get the backtrace up to what file and function called the deprecated
  * function.
  *
@@ -488,9 +502,9 @@ function give_is_host( $host = false ) {
  *
  * This function is to be used in every function that is deprecated.
  *
- * @uses do_action() Calls 'edd_deprecated_function_run' and passes the function name, what to use instead,
+ * @uses do_action() Calls 'give_deprecated_function_run' and passes the function name, what to use instead,
  *   and the version the function was deprecated in.
- * @uses apply_filters() Calls 'edd_deprecated_function_trigger_error' and expects boolean value of true to do
+ * @uses apply_filters() Calls 'give_deprecated_function_trigger_error' and expects boolean value of true to do
  *   trigger or false to not trigger error.
  *
  * @param string $function The function that was called

@@ -12,11 +12,12 @@ if ( empty( $payment ) && isset( $give_receipt_args['id'] ) ) {
 //Double-Validation: Check for $payment global
 if ( empty( $payment ) ) {
 	give_output_error( __( 'The specified receipt ID appears to be invalid', 'give' ) );
+
 	return;
 }
 
 $meta     = give_get_payment_meta( $payment->ID );
-$donation = $meta['form_title'];
+$donation = give_get_payment_form_title( $meta );
 $user     = give_get_payment_meta_user_info( $payment->ID );
 $email    = give_get_payment_user_email( $payment->ID );
 $status   = give_get_payment_status( $payment, true );
@@ -27,31 +28,53 @@ $status   = give_get_payment_status( $payment, true );
 	<table id="give_donation_receipt" class="give-table">
 		<thead>
 		<?php do_action( 'give_payment_receipt_before', $payment, $give_receipt_args ); ?>
-
-		<?php if ( filter_var( $give_receipt_args['payment_id'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
-			<tr>
-				<th><strong><?php _e( 'Payment', 'give' ); ?>:</strong></th>
-				<th><?php echo give_get_payment_number( $payment->ID ); ?></th>
-			</tr>
-		<?php else : ?>
-			<tr>
-				<th><strong><?php _e( 'Payment', 'give' ); ?>:</strong></th>
-				<th><?php _e( 'Details', 'give' ); ?>:</th>
-			</tr>
-		<?php endif; ?>
+		<tr>
+			<th colspan="2">
+				<span class="give-receipt-thead-text"><?php _e('Donation Receipt', 'give') ?></span>
+			</th>
+		</tr>
 		</thead>
 
 		<tbody>
 
 		<tr>
-			<td class="give_receipt_payment_status"><strong><?php _e( 'Payment Status', 'give' ); ?>:</strong></td>
-			<td class="give_receipt_payment_status <?php echo strtolower( $status ); ?>"><?php echo $status; ?></td>
-		</tr>
-
-		<tr>
 			<td class="give_receipt_payment_status"><strong><?php _e( 'Donation', 'give' ); ?>:</strong></td>
 			<td class="give_receipt_payment_status"><?php echo $donation; ?></td>
 		</tr>
+
+		<tr>
+			<td class="give_receipt_payment_status"><strong><?php _e( 'Donation Status', 'give' ); ?>:</strong></td>
+			<td class="give_receipt_payment_status <?php echo strtolower( $status ); ?>"><?php echo $status; ?></td>
+		</tr>
+
+		<?php if ( filter_var( $give_receipt_args['price'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
+
+			<tr>
+				<td><strong><?php _e( 'Total Donation', 'give' ); ?>:</strong></td>
+				<td><?php echo give_payment_amount( $payment->ID ); ?></td>
+			</tr>
+
+		<?php endif; ?>
+		<?php if ( filter_var( $give_receipt_args['donor'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
+
+			<tr>
+				<td><strong><?php _e( 'Donor', 'give' ); ?>:</strong></td>
+				<td><?php echo $user['first_name'] . ' ' . $user['last_name']; ?></td>
+			</tr>
+
+		<?php endif; ?>
+
+		<?php if ( filter_var( $give_receipt_args['payment_id'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
+			<tr>
+				<td><strong><?php _e( 'Transaction ID', 'give' ); ?>:</strong></td>
+				<td><?php echo give_get_payment_number( $payment->ID ); ?></td>
+			</tr>
+		<?php else : ?>
+			<tr>
+				<td><strong><?php _e( 'Payment', 'give' ); ?>:</strong></td>
+				<td><?php _e( 'Details', 'give' ); ?>:</td>
+			</tr>
+		<?php endif; ?>
 
 		<?php if ( filter_var( $give_receipt_args['payment_key'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
 			<tr>
@@ -91,15 +114,6 @@ $status   = give_get_payment_status( $payment, true );
 					</ul>
 				</td>
 			</tr>
-		<?php endif; ?>
-
-		<?php if ( filter_var( $give_receipt_args['price'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
-
-			<tr>
-				<td><strong><?php _e( 'Total Donation', 'give' ); ?>:</strong></td>
-				<td><?php echo give_payment_amount( $payment->ID ); ?></td>
-			</tr>
-
 		<?php endif; ?>
 
 		<?php do_action( 'give_payment_receipt_after', $payment, $give_receipt_args ); ?>

@@ -65,7 +65,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 * @access public
 	 * @since  1.1
 	 *
-	 * @param array  $item        Contains all the data of the keys
+	 * @param array $item Contains all the data of the keys
 	 * @param string $column_name The name of the column
 	 *
 	 * @return string Column Name
@@ -80,7 +80,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 * @access public
 	 * @since  1.1
 	 *
-	 * @param array  $item        Contains all the data of the keys
+	 * @param array $item Contains all the data of the keys
 	 * @param string $column_name The name of the column
 	 *
 	 * @return string Column Name
@@ -95,7 +95,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 * @access public
 	 * @since  1.1
 	 *
-	 * @param array  $item        Contains all the data of the keys
+	 * @param array $item Contains all the data of the keys
 	 * @param string $column_name The name of the column
 	 *
 	 * @return string Column Name
@@ -110,7 +110,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 * @access public
 	 * @since  1.1
 	 *
-	 * @param array  $item        Contains all the data of the keys
+	 * @param array $item Contains all the data of the keys
 	 * @param string $column_name The name of the column
 	 *
 	 * @return string Column Name
@@ -133,11 +133,12 @@ class Give_API_Keys_Table extends WP_List_Table {
 		if ( apply_filters( 'give_api_log_requests', true ) ) {
 			$actions['view'] = sprintf(
 				'<a href="%s">%s</a>',
-				esc_url( add_query_arg( array( 'view'      => 'api_requests',
-				                               'post_type' => 'give_forms',
-				                               'page'      => 'give-reports',
-				                               'tab'       => 'logs',
-				                               's'         => $item['email']
+				esc_url( add_query_arg( array(
+					'view'      => 'api_requests',
+					'post_type' => 'give_forms',
+					'page'      => 'give-reports',
+					'tab'       => 'logs',
+					's'         => $item['email']
 				), 'edit.php' ) ),
 				__( 'View API Log', 'give' )
 			);
@@ -145,17 +146,19 @@ class Give_API_Keys_Table extends WP_List_Table {
 
 		$actions['reissue'] = sprintf(
 			'<a href="%s" class="give-regenerate-api-key">%s</a>',
-			esc_url( wp_nonce_url( add_query_arg( array( 'user_id'          => $item['id'],
-			                                             'give_action'      => 'process_api_key',
-			                                             'give_api_process' => 'regenerate'
+			esc_url( wp_nonce_url( add_query_arg( array(
+				'user_id'          => $item['id'],
+				'give_action'      => 'process_api_key',
+				'give_api_process' => 'regenerate'
 			) ), 'give-api-nonce' ) ),
 			__( 'Reissue', 'give' )
 		);
 		$actions['revoke']  = sprintf(
 			'<a href="%s" class="give-revoke-api-key give-delete">%s</a>',
-			esc_url( wp_nonce_url( add_query_arg( array( 'user_id'          => $item['id'],
-			                                             'give_action'      => 'process_api_key',
-			                                             'give_api_process' => 'revoke'
+			esc_url( wp_nonce_url( add_query_arg( array(
+				'user_id'          => $item['id'],
+				'give_action'      => 'process_api_key',
+				'give_api_process' => 'revoke'
 			) ), 'give-api-nonce' ) ),
 			__( 'Revoke', 'give' )
 		);
@@ -198,13 +201,11 @@ class Give_API_Keys_Table extends WP_List_Table {
 			return;
 		}
 		?>
-		<form method="post" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=api' ); ?>">
-			<input type="hidden" name="give_action" value="process_api_key" />
-			<input type="hidden" name="give_api_process" value="generate" />
-			<?php wp_nonce_field( 'give-api-nonce' ); ?>
-			<?php echo Give()->html->ajax_user_search(); ?>
-			<?php submit_button( __( 'Generate New API Keys', 'give' ), 'secondary', 'submit', false ); ?>
-		</form>
+		<input type="hidden" name="give_action" value="process_api_key"/>
+		<input type="hidden" name="give_api_process" value="generate"/>
+		<?php wp_nonce_field( 'give-api-nonce' ); ?>
+		<?php echo Give()->html->ajax_user_search(); ?>
+		<?php submit_button( __( 'Generate New API Keys', 'give' ), 'secondary', 'submit', false ); ?>
 		<?php
 		$give_api_is_bottom = true;
 	}
@@ -225,7 +226,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.1
-	 * @return void
+	 * @return array
 	 */
 	public function query() {
 		$users = get_users( array(

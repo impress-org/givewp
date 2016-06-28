@@ -68,14 +68,22 @@ function give_offline_payment_cc_form( $form_id ) {
 
 add_action( 'give_offline_cc_form', 'give_offline_payment_cc_form' );
 
-
+/**
+ * Give Offline Billing Field
+ *
+ * @param $form_id
+ */
 function give_offline_billing_fields( $form_id ) {
 	//Enable Default CC fields (billing info)
-	$post_offline_cc_fields   = get_post_meta( $form_id, '_give_offline_donation_enable_billing_fields_single', true );
-	$global_offline_cc_fields = give_get_option( 'give_offline_donation_enable_billing_fields' );
+	$post_offline_cc_fields        = get_post_meta( $form_id, '_give_offline_donation_enable_billing_fields_single', true );
+	$post_offline_customize_option = get_post_meta( $form_id, '_give_customize_offline_donations', true );
 
+	$global_offline_cc_fields      = give_get_option( 'give_offline_donation_enable_billing_fields' );
 
-	if ( $global_offline_cc_fields == 'on' || $post_offline_cc_fields == 'on' ) {
+	//Output CC Address fields if global option is on and user hasn't elected to customize this form's offline donation options
+	if ( $global_offline_cc_fields == 'on' && $post_offline_customize_option !== 'yes' ) {
+		give_default_cc_address_fields( $form_id );
+	} elseif($post_offline_customize_option == 'yes' && $post_offline_cc_fields == 'on') {
 		give_default_cc_address_fields( $form_id );
 	}
 }
@@ -100,6 +108,7 @@ function give_offline_process_payment( $purchase_data ) {
 		'price'           => $purchase_data['price'],
 		'give_form_title' => $purchase_data['post_data']['give-form-title'],
 		'give_form_id'    => intval( $purchase_data['post_data']['give-form-id'] ),
+		'give_price_id'   => isset( $purchase_data['post_data']['give-price-id'] ) ? $purchase_data['post_data']['give-price-id'] : '',
 		'date'            => $purchase_data['date'],
 		'user_email'      => $purchase_data['user_email'],
 		'purchase_key'    => $purchase_data['purchase_key'],

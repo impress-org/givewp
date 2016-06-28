@@ -27,7 +27,7 @@
  */
 .give-item-label {
   padding: .2em .6em .3em;
-  font-size: 85%;
+  font-size: 11px;
   font-weight: 700;
   line-height: 1;
   color: #fff;
@@ -36,8 +36,22 @@
   vertical-align: baseline;
   border-radius: .25em; }
 
-.give-item-label-gray {
+.give-item-label-gray, #give-payments-filter .give-payment-id {
   background-color: #929292; }
+
+.give-item-label-orange {
+  background-color: #ffba00; }
+
+.give-item-label {
+  padding: .2em .6em .3em;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25em; }
 
 /**
  * Give CSS Variables
@@ -1001,8 +1015,6 @@ Tooltips
   clear: right;
   margin: 8px 0 0; }
 
-/* Global Graph Styles
--------------------------------------------------------------- */
 .give-graph .y1Axis {
   color: #66bb6a !important; }
 
@@ -1063,21 +1075,101 @@ body.give_forms_page_give-reports .widefat tbody td, body.give_forms_page_give-r
   padding-top: 12px;
   padding-bottom: 12px; }
 
-/*---------------------
-Export Options Styles
----------------------------*/
 body.give_forms_page_give-reports table.export-options-table tbody td {
-  padding: 20px 12px; }
+  padding: 20px 12px;
+  vertical-align: top; }
 
-/*---------------------
-Payment Methods
----------------------------*/
+body.give_forms_page_give-reports table.export-options-table .give-export-form {
+  position: relative; }
+  body.give_forms_page_give-reports table.export-options-table .give-export-form .notice-wrap {
+    background-color: transparent;
+    padding: 12px 12px 4px;
+    margin: 2px 0 -16px -11px;
+    overflow: auto; }
+    body.give_forms_page_give-reports table.export-options-table .give-export-form .notice-wrap .spinner {
+      margin: -2px -12px 8px 0; }
+
+body.give_forms_page_give-reports table.export-options-table span#give-start-wrap input, body.give_forms_page_give-reports table.export-options-table span#give-end-wrap input {
+  width: 100px; }
+
+#export-donor-options-wrap p {
+  padding: 20px 0 0;
+  margin: 0;
+  font-weight: bold; }
+
+#export-donor-options-wrap ul {
+  max-width: 900px; }
+  #export-donor-options-wrap ul li {
+    float: left;
+    padding: 3px 10px 0 0;
+    width: 30%; }
+
+#give-tools-recount-form .notice-wrap {
+  position: relative;
+  min-height: 25px;
+  margin: 10px -12px -12px;
+  background: #EFEFEF;
+  padding: 10px 12px 12px;
+  border-top: 1px solid #E5E5E5; }
+  #give-tools-recount-form .notice-wrap .give-progress {
+    position: absolute;
+    top: 15px; }
+  #give-tools-recount-form .notice-wrap .spinner {
+    position: absolute;
+    right: 14px;
+    top: 13px;
+    margin: 0; }
+  #give-tools-recount-form .notice-wrap #give-batch-success {
+    margin-bottom: 6px; }
+
+.give-progress {
+  height: 15px;
+  width: 95%;
+  border-radius: 4px;
+  overflow: hidden; }
+  .give-progress > div {
+    height: 100%;
+    width: 0; }
+
+.admin-color-fresh .give-export-form .give-progress div, .give-export-form .give-progress div {
+  background: #0073aa; }
+
+.admin-color-light .give-export-form .give-progress div {
+  background: #888; }
+
+.admin-color-blue .give-export-form .give-progress div {
+  background: #096484; }
+
+.admin-color-coffee .give-export-form .give-progress div {
+  background: #c7a589; }
+
+.admin-color-ectoplasm .give-export-form .give-progress div {
+  background: #a3b745; }
+
+.admin-color-midnight .give-export-form .give-progress div {
+  background: #e14d43; }
+
+.admin-color-sunrise .give-export-form .give-progress div {
+  background: #dd823b; }
+
+.recount-stats-controls form {
+  display: inline; }
+
+.give-recount-stats-descriptions {
+  margin: 8px 0 0;
+  display: block; }
+  .give-recount-stats-descriptions span {
+    line-height: 24px;
+    font-size: 13px;
+    font-style: italic;
+    font-weight: normal;
+    color: #aaa;
+    margin: 0;
+    display: none; }
+
 .gateways-report-tablenav .actions.bulkactions {
   padding-right: 0; }
 
-/*---------------------
-Table List Styles
----------------------------*/
 .widefat .column-name, .widefat .column-label {
   font-size: 14px;
   font-weight: bold; }
@@ -1096,9 +1188,9 @@ table.give-table td.row-title p {
   color: #aaa;
   margin: 0; }
 
-/*-------------------------
-Logs
-----------------------------*/
+#give-graphs-filter > .tablenav {
+  height: auto; }
+
 #give-logs-filter .search-box {
   float: right; }
 
@@ -1183,7 +1275,7 @@ Logs
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
-#give_donor_export_download {
+#give_donor_export_form {
   margin: 0 0 5px; }
 
 /**
@@ -1284,7 +1376,8 @@ Settings
 .give_user_search_results {
   position: absolute;
   left: 0;
-  top: 27px; }
+  top: 27px;
+  z-index: 100; }
   .give_user_search_results a.give-ajax-user-cancel {
     position: absolute;
     right: 6px;
@@ -1331,6 +1424,9 @@ a.give-delete {
 
 .give_settings .cmb-td hr + hr {
   display: none; }
+
+.mce-container iframe {
+  min-height: 400px; }
 
 /**
  * Give Payment History SCSS
@@ -1406,9 +1502,6 @@ tr.status-refunded td {
   height: auto;
   float: left; }
 
-/*---------------------
-Status Colors
----------------------------*/
 .give-donation-status > span {
   float: left;
   width: 12px;
@@ -1440,9 +1533,9 @@ Status Colors
 .give-donation-status.status-subscription > span, .give-donation-status.status-give_subscription > span {
   background-color: #5bc0de; }
 
-#give-payments-filter .give-payment-id {
+#test-payment-label {
   padding: .2em .6em .3em;
-  font-size: 85%;
+  font-size: 11px;
   font-weight: 700;
   line-height: 1;
   color: #fff;
@@ -1450,18 +1543,43 @@ Status Colors
   white-space: nowrap;
   vertical-align: baseline;
   border-radius: .25em;
-  background-color: #929292; }
+  background-color: #ffba00;
+  margin: 0 0 0 15px;
+  position: relative;
+  top: -4px; }
+
+#give-payments-filter .give-payment-id {
+  padding: .2em .6em .3em;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25em; }
 
 #give-payments-filter .column-details {
   padding-right: 30px; }
 
-/* Payment View Metabox */
+#give-payments-filter .give-donation-status {
+  float: left; }
+
+#give-payments-filter span.give-test-mode-transactions-label {
+  padding: 1px 4px;
+  font-size: 10px;
+  margin-left: 8px; }
+
 #give-order-update .give-donation-status {
   display: inline-block;
   float: none;
   margin: 0 0 0 10px;
   position: relative;
   top: 3px; }
+
+.column-donation .donation-level-text-wrap {
+  font-style: italic;
+  display: block; }
 
 /*---------------------
 Responsiveness
@@ -1555,22 +1673,18 @@ Responsiveness
   vertical-align: top;
   margin-right: 5%; }
 
-#give-donation-overview li.actions {
-  text-align: right;
-  min-width: 200px; }
-
-#give-donation-overview ul li.remove {
-  text-align: right; }
-
-#give-donation-overview .row {
-  padding: 12px;
-  border-bottom: 1px solid #eee; }
-
 #give-donation-overview ul {
   font-size: 0; }
-
-#give-donation-overview ul li {
-  font-size: 13px; }
+  #give-donation-overview ul li {
+    font-size: 13px; }
+    #give-donation-overview ul li.actions {
+      text-align: right;
+      min-width: 200px; }
+    #give-donation-overview ul li.remove {
+      text-align: right; }
+  #give-donation-overview ul .row {
+    padding: 12px;
+    border-bottom: 1px solid #eee; }
 
 #give-order-data .data span {
   color: #666;
@@ -1579,13 +1693,9 @@ Responsiveness
 #give-donation-overview .inside {
   padding: 12px; }
 
-.give-price-field {
-  width: 80px; }
-
-.give_repeatable_upload_wrapper .pricing select, .give_repeatable_product_wrapper .give-select,
-#give_products .give-select {
-  min-width: 100%;
-  max-width: 200px; }
+input.give-price-field {
+  width: 80px;
+  padding: 3px 5px; }
 
 .give_forms_page_give-payment-history.js .postbox .hndle {
   cursor: default; }
@@ -1635,6 +1745,9 @@ Donation Details
 #give-customer-details .inside {
   padding-top: 15px;
   padding-bottom: 15px; }
+
+.give_forms_page_give-payment-history #give-dashboard-widgets-wrap #side-sortables {
+  padding-top: 0; }
 
 /**
  * Give Admin Dashboard SCSS
@@ -1903,10 +2016,10 @@ Donation Details
 #customer-tables-wrapper th {
   text-align: center; }
 
-#customer-tables-wrapper .downloads tr > th:first-child, #customer-tables-wrapper .downloads tr > td:first-child {
+#customer-tables-wrapper .donations tr > th:first-child, #customer-tables-wrapper .donations tr > td:first-child {
   text-align: left; }
 
-#customer-tables-wrapper .downloads tr > td:only-child {
+#customer-tables-wrapper .donations tr > td:only-child {
   text-align: center; }
 
 #customer-notes-wrapper {

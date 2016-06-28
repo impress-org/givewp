@@ -26,7 +26,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Renders the reports page contents.
  *
  * @since 1.0
- * @global $give_options Array of all the Give Options
  * @return void
  */
 function give_reports_page() {
@@ -49,6 +48,10 @@ function give_reports_page() {
 				'tab'              => 'logs',
 				'settings-updated' => false
 			), $current_page ) ); ?>" class="nav-tab <?php echo $active_tab == 'logs' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Logs', 'give' ); ?></a>
+			<a href="<?php echo esc_url( add_query_arg( array(
+				'tab'              => 'tools',
+				'settings-updated' => false
+			), $current_page ) ); ?>" class="nav-tab <?php echo $active_tab == 'tools' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Tools', 'give' ); ?></a>
 			<?php do_action( 'give_reports_tabs' ); ?>
 		</h1>
 
@@ -142,8 +145,8 @@ function give_report_views() {
 
 		<?php do_action( 'give_report_view_actions' ); ?>
 
-		<input type="hidden" name="post_type" value="give_forms" />
-		<input type="hidden" name="page" value="give-reports" />
+		<input type="hidden" name="post_type" value="give_forms"/>
+		<input type="hidden" name="page" value="give-reports"/>
 		<?php submit_button( __( 'Show', 'give' ), 'secondary', 'submit', false ); ?>
 	</form>
 	<?php
@@ -218,9 +221,9 @@ function give_reports_donors_table() {
 			$give_table->search_box( __( 'Search', 'give' ), 'give-donors' );
 			$give_table->display();
 			?>
-			<input type="hidden" name="post_type" value="give_forms" />
-			<input type="hidden" name="page" value="give-reports" />
-			<input type="hidden" name="view" value="donors" />
+			<input type="hidden" name="post_type" value="give_forms"/>
+			<input type="hidden" name="page" value="give-reports"/>
+			<input type="hidden" name="view" value="donors"/>
 		</form>
 		<?php do_action( 'give_logs_donors_table_bottom' ); ?>
 	</div>
@@ -283,7 +286,6 @@ function give_reports_tab_export() {
 
 				<?php do_action( 'give_reports_tab_export_content_top' ); ?>
 
-
 				<table class="widefat export-options-table give-table">
 					<thead>
 					<tr>
@@ -316,8 +318,8 @@ function give_reports_tab_export() {
 								<?php echo _x( 'to', 'Date one to date two', 'give' ); ?>
 								<?php echo Give()->html->year_dropdown( 'end_year' ); ?>
 								<?php echo Give()->html->month_dropdown( 'end_month' ); ?>
-								<input type="hidden" name="give-action" value="earnings_export" />
-								<input type="submit" value="<?php _e( 'Generate CSV', 'give' ); ?>" class="button-secondary" />
+								<input type="hidden" name="give-action" value="earnings_export"/>
+								<input type="submit" value="<?php _e( 'Generate CSV', 'give' ); ?>" class="button-secondary"/>
 							</form>
 						</td>
 					</tr>
@@ -328,12 +330,23 @@ function give_reports_tab_export() {
 							<p><?php _e( 'Download a CSV of all donations recorded.', 'give' ); ?></p>
 						</td>
 						<td>
-
-							<form method="post">
-								<?php echo Give()->html->year_dropdown(); ?>
-								<?php echo Give()->html->month_dropdown(); ?>
-								<select name="give_export_payment_status">
-									<option value="0"><?php _e( 'All Statuses', 'give' ); ?></option>
+							<form id="give-export-payments" class="give-export-form" method="post">
+								<?php
+								$args = array(
+									'id'          => 'give-payment-export-start',
+									'name'        => 'start',
+									'placeholder' => __( 'Start date', 'give' )
+								);
+								echo Give()->html->date_field( $args ); ?>
+								<?php
+								$args = array(
+									'id'          => 'give-payment-export-end',
+									'name'        => 'end',
+									'placeholder' => __( 'End date', 'give' )
+								);
+								echo Give()->html->date_field( $args ); ?>
+								<select name="status">
+									<option value="any"><?php _e( 'All Statuses', 'give' ); ?></option>
 									<?php
 									$statuses = give_get_payment_statuses();
 									foreach ( $statuses as $status => $label ) {
@@ -341,41 +354,71 @@ function give_reports_tab_export() {
 									}
 									?>
 								</select>
-								<input type="hidden" name="give-action" value="payment_export" />
-								<input type="submit" value="<?php _e( 'Generate CSV', 'give' ); ?>" class="button-secondary" />
+								<?php wp_nonce_field( 'give_ajax_export', 'give_ajax_export' ); ?>
+								<input type="hidden" name="give-export-class" value="Give_Batch_Payments_Export"/>
+								<span>
+									<input type="submit" value="<?php _e( 'Generate CSV', 'give' ); ?>" class="button-secondary"/>
+									<span class="spinner"></span>
+								</span>
 							</form>
 
 						</td>
 					</tr>
-					<tr class="alt give-export-donors">
+					<tr class="alternate give-export-donors">
 						<td class="row-title">
 							<h3><span><?php _e( 'Export Donors in CSV', 'give' ); ?></span></h3>
 
-							<p><?php _e( 'Download a CSV of all donors\' emails. Optionally export only donors that have donated to a particular form. Note: if you have a large number of donors, exporting the donation stats may fail.', 'give' ); ?></p>
+							<p><?php _e( 'Download an export of donors for all donation forms or only those who have given to a particular form.', 'give' ); ?></p>
 						</td>
 						<td>
-							<form method="post" id="give_donor_export">
-								<select name="give_export_download" id="give_donor_export_download">
-									<option value="0"><?php printf( __( 'All %s', 'give' ), give_get_forms_label_plural() ); ?></option>
+							<form method="post" id="give_donor_export" class="give-export-form">
+
 									<?php
-									$forms = get_posts( array(
-										'post_type'      => 'give_forms',
-										'posts_per_page' => - 1
-									) );
-									if ( $forms ) {
-										foreach ( $forms as $form ) {
-											echo '<option value="' . $form->ID . '">' . get_the_title( $form->ID ) . '</option>';
-										}
-									}
-									?>
-								</select>
-								<select name="give_export_option" id="give_donor_export_option">
-									<option value="emails"><?php _e( 'Emails', 'give' ); ?></option>
-									<option value="emails_and_names"><?php _e( 'Emails and Names', 'give' ); ?></option>
-									<option value="full"><?php _e( 'Emails, Names, and Purchase Stats', 'give' ); ?></option>
-								</select>
-								<input type="hidden" name="give-action" value="email_export" />
-								<input type="submit" value="<?php _e( 'Generate CSV', 'give' ); ?>" class="button-secondary" />
+									$args = array(
+										'name'   => 'forms',
+										'id'     => 'give_customer_export_form',
+										'chosen' => true
+									);
+									echo Give()->html->forms_dropdown( $args ); ?>
+								
+								<input type="submit" value="<?php _e( 'Generate CSV', 'give' ); ?>" class="button-secondary"/>
+
+								<div id="export-donor-options-wrap" class="give-clearfix">
+									<p><?php _e( 'Export Columns', 'give' ); ?>:</p>
+									<ul id="give-export-option-ul">
+										<li>
+											<label for="give-export-fullname"><input type="checkbox" checked name="give_export_option[full_name]" id="give-export-fullname"><?php _e( 'Name', 'give' ); ?>
+											</label>
+										</li>
+										<li>
+											<label for="give-export-email"><input type="checkbox" checked name="give_export_option[email]" id="give-export-email"><?php _e( 'Email', 'give' ); ?>
+											</label>
+										</li>
+										<li>
+											<label for="give-export-address"><input type="checkbox" checked name="give_export_option[address]" id="give-export-address"><?php _e( 'Address', 'give' ); ?>
+											</label>
+										</li>
+										<li>
+											<label for="give-export-userid"><input type="checkbox" checked name="give_export_option[userid]" id="give-export-userid"><?php _e( 'User ID', 'give' ); ?>
+											</label>
+										</li>
+										<li>
+											<label for="give-export-first-donation-date"><input type="checkbox" checked name="give_export_option[date_first_donated]" id="give-export-first-donation-date"><?php _e( 'First Donation Date', 'give' ); ?>
+											</label>
+										</li>
+										<li>
+											<label for="give-export-donation-number"><input type="checkbox" checked name="give_export_option[donations]" id="give-export-donation-number"><?php _e( 'Number of Donations', 'give' ); ?>
+											</label>
+										</li>
+										<li>
+											<label for="give-export-donation-sum"><input type="checkbox" checked name="give_export_option[donation_sum]" id="give-export-donation-sum"><?php _e( 'Total Donated', 'give' ); ?>
+											</label>
+										</li>
+									</ul>
+								</div>
+								<?php wp_nonce_field( 'give_ajax_export', 'give_ajax_export' ); ?>
+								<input type="hidden" name="give-export-class" value="Give_Batch_Customers_Export"/>
+								<input type="hidden" name="give-action" value="email_export"/>
 							</form>
 						</td>
 					</tr>
@@ -402,6 +445,7 @@ add_action( 'give_reports_tab_export', 'give_reports_tab_export' );
  * @return void
  */
 function give_reports_tab_logs() {
+
 	require( GIVE_PLUGIN_DIR . 'includes/admin/reporting/logs.php' );
 
 	$current_view = 'sales';

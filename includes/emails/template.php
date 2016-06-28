@@ -49,14 +49,12 @@ function give_email_template_tags( $message, $payment_data, $payment_id, $admin_
  * Email Preview Template Tags
  *
  * @since 1.0
- * @global       $give_options Array of all the Give Options
  *
  * @param string $message      Email message with template tags
  *
  * @return string $message Fully formatted message
  */
 function give_email_preview_template_tags( $message ) {
-	global $give_options;
 
 	$price = give_currency_filter( give_format_amount( 10.50 ) );
 

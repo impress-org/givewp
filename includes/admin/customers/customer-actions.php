@@ -19,11 +19,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since  1.0
  *
- * @param  array $args The $_POST array being passeed
+ * @param  array $args The $_POST array being passed
  *
  * @return array $output Response messages
  */
 function give_edit_customer( $args ) {
+	
 	$customer_edit_role = apply_filters( 'give_edit_customers_role', 'edit_give_payments' );
 
 	if ( ! is_admin() || ! current_user_can( $customer_edit_role ) ) {
@@ -341,9 +342,9 @@ add_action( 'give_delete-customer', 'give_customer_delete', 10, 1 );
  *
  * @since  1.0
  *
- * @param  array $args Array of arguements
+ * @param  array $args Array of arguments
  *
- * @return bool        If the disconnect was sucessful
+ * @return bool        If the disconnect was successful
  */
 function give_disconnect_customer_user_id( $args ) {
 
