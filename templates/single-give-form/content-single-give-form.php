@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * give_before_single_form hook
  *
- * @hooked wc_print_notices - 10
+ * 
  */
 do_action( 'give_before_single_form' );
 
