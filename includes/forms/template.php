@@ -97,7 +97,7 @@ function give_get_donation_form( $args = array() ) {
 
 	<div id="give-form-<?php echo $form->ID; ?>-wrap" class="<?php echo $form_wrap_classes; ?>">
 
-		<?php if( $form->is_close_donation_form() ) : ?>
+		<?php if ( $form->is_close_donation_form() ) : ?>
 			<?php
 			//Get thank you message.
 			$display_thankyou_message = get_post_meta( $form->ID, '_give_form_goal_achieved_message', true );
@@ -122,7 +122,13 @@ function give_get_donation_form( $args = array() ) {
 				<input type="hidden" name="give-current-url" value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
 				<input type="hidden" name="give-form-url" value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
 				<input type="hidden" name="give-form-minimum" value="<?php echo give_format_amount( give_get_form_minimum_price( $form->ID ) ); ?>"/>
-				<input type="text" name="give-honeypot" class="give-honeypot give-hidden">
+
+				<!-- The following field is for robots only, invisible to humans: -->
+				<span class="give-hidden" style="display: none !important;">
+					<label for="give-form-honeypot-<?php echo $form_id; ?>"></label>
+					<input id="give-form-honeypot-<?php echo $form_id; ?>" type="text" name="give-honeypot" class="give-honeypot give-hidden"/>
+				</span>
+
 				<?php
 
 				//Price ID hidden field for variable (mult-level) donation forms
@@ -1301,7 +1307,7 @@ add_action( 'give_pre_form_output', 'give_form_content', 10, 2 );
  */
 function give_form_display_content( $form_id, $args ) {
 
-	$content = wpautop( get_post_meta( $form_id, '_give_form_content', true ) );
+	$content      = wpautop( get_post_meta( $form_id, '_give_form_content', true ) );
 	$show_content = ( isset( $args['show_content'] ) && ! empty( $args['show_content'] ) )
 		? $args['show_content']
 		: get_post_meta( $form_id, '_give_content_option', true );
