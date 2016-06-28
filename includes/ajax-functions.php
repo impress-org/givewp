@@ -350,7 +350,7 @@ add_action( 'wp_ajax_give_search_users', 'give_ajax_search_users' );
  */
 function give_check_for_form_price_variations() {
 
-	if ( ! current_user_can( 'edit_give_forms' ) ) {
+	if ( ! current_user_can( 'edit_give_forms', get_current_user_id() ) ) {
 		die( '-1' );
 	}
 
