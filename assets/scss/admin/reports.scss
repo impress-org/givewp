@@ -182,6 +182,20 @@ body.give_forms_page_give-reports table.export-options-table {
 
 }
 
+#export-donor-options-wrap {
+
+  p {
+    padding: 20px 0 0;
+    margin:0;
+    font-weight: bold;
+  }
+  ul li {
+    display: inline-block;
+    padding: 3px 10px 0 0;
+  }
+
+}
+
 //---------------------------------------------------------
 //Recount Stats Form
 //---------------------------------------------------------
@@ -324,7 +338,7 @@ table.give-table {
 }
 
 #give-graphs-filter > .tablenav {
-  height:auto;
+  height: auto;
 }
 
 //---------------------------------------------------------

@@ -237,12 +237,6 @@ jQuery.noConflict();
 
                 var $this = $(this), form_id = $('option:selected', $this).val();
 
-                if ('0' === $this.val()) {
-                    $('#give_donor_export_option').show();
-                } else {
-                    $('#give_donor_export_option').hide();
-                }
-
                 $('.give_price_options_select').remove();
 
             });

@@ -46,8 +46,8 @@ class Give_Donors_Export extends Give_Export {
 
 		$extra = '';
 
-		if ( ! empty( $_POST['give_export_download'] ) ) {
-			$extra = sanitize_title( get_the_title( absint( $_POST['give_export_download'] ) ) ) . '-';
+		if ( ! empty( $_POST['give_export_form'] ) ) {
+			$extra = sanitize_title( get_the_title( absint( $_POST['give_export_form'] ) ) ) . '-';
 		}
 
 		nocache_headers();
@@ -64,31 +64,43 @@ class Give_Donors_Export extends Give_Export {
 	 * @return array $cols All the columns
 	 */
 	public function csv_cols() {
-		if ( ! empty( $_POST['give_export_download'] ) ) {
-			$cols = array(
-				'first_name' => __( 'First Name', 'give' ),
-				'last_name'  => __( 'Last Name', 'give' ),
-				'email'      => __( 'Email', 'give' ),
-				'date'       => __( 'Date Donated', 'give' )
-			);
-		} else {
 
-			$cols = array();
+		$cols = array();
 
-			if ( 'emails' != $_POST['give_export_option'] ) {
-				$cols['name'] = __( 'Name', 'give' );
-			}
+		$columns = isset( $_POST['give_export_option'] ) ? $_POST['give_export_option'] : array();
 
-			$cols['email'] = __( 'Email', 'give' );
-
-			if ( 'full' == $_POST['give_export_option'] ) {
-				$cols['purchases'] = __( 'Total Donations', 'give' );
-				$cols['amount']    = __( 'Total Donated', 'give' ) . ' (' . html_entity_decode( give_currency_filter( '' ) ) . ')';
-			}
-
+		if ( empty( $columns ) ) {
+			return false;
+		}
+		if ( ! empty( $columns['full_name'] ) ) {
+			$cols['full_name'] = __( 'Full Name', 'give' );
+		}
+		if ( ! empty( $columns['email'] ) ) {
+			$cols['email'] = __( 'Email Address', 'give' );
+		}
+		if ( ! empty( $columns['address'] ) ) {
+			$cols['address_line1']   = __( 'Address Line 1', 'give' );
+			$cols['address_line2']   = __( 'Address Line 2', 'give' );
+			$cols['address_city']    = __( 'City', 'give' );
+			$cols['address_state']   = __( 'State', 'give' );
+			$cols['address_zip']     = __( 'Zip', 'give' );
+			$cols['address_country'] = __( 'Country', 'give' );
+		}
+		if ( ! empty( $columns['userid'] ) ) {
+			$cols['userid'] = __( 'User ID', 'give' );
+		}
+		if ( ! empty( $columns['date_first_donated'] ) ) {
+			$cols['date_first_donated'] = __( 'First Donation Date', 'give' );
+		}
+		if ( ! empty( $columns['donations'] ) ) {
+			$cols['donations'] = __( 'Number of Donations', 'give' );
+		}
+		if ( ! empty( $columns['donation_sum'] ) ) {
+			$cols['donation_sum'] = __( 'Sum of Donations', 'give' );
 		}
 
 		return $cols;
+
 	}
 
 	/**
@@ -96,27 +108,30 @@ class Give_Donors_Export extends Give_Export {
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @global object $wpdb      Used to query the database using the WordPress Database API
 	 * @global object $give_logs Give Logs Object
 	 * @return array $data The data for the CSV file
 	 */
 	public function get_data() {
-		global $wpdb;
 
 		$data = array();
 
-		if ( ! empty( $_POST['give_export_download'] ) ) {
+		$i = 0;
+
+		if ( ! empty( $_POST['give_export_form'] ) ) {
 
 			// Export donors of a specific product
 			global $give_logs;
 
 			$args = array(
-				'post_parent' => absint( $_POST['give_export_download'] ),
+				'post_parent' => absint( $_POST['give_export_form'] ),
 				'log_type'    => 'sale',
 				'nopaging'    => true
 			);
 
+			//Check for price option
 			if ( isset( $_POST['give_price_option'] ) ) {
+
+				//Add meta query for this price id
 				$args['meta_query'] = array(
 					array(
 						'key'   => '_give_log_price_id',
@@ -127,16 +142,14 @@ class Give_Donors_Export extends Give_Export {
 
 			$logs = $give_logs->get_connected_logs( $args );
 
+
 			if ( $logs ) {
 				foreach ( $logs as $log ) {
 					$payment_id = get_post_meta( $log->ID, '_give_log_payment_id', true );
-					$user_info  = give_get_payment_meta_user_info( $payment_id );
-					$data[]     = array(
-						'first_name' => $user_info['first_name'],
-						'last_name'  => $user_info['last_name'],
-						'email'      => $user_info['email'],
-						'date'       => $log->post_date
-					);
+					$payment    = new Give_Payment( $payment_id );
+					$donor      = Give()->customers->get_customer_by( 'id', $payment->customer_id );
+					$data[]     = $this->set_donor_data( $i, $data, $donor );
+					$i ++;
 				}
 			}
 
@@ -145,22 +158,9 @@ class Give_Donors_Export extends Give_Export {
 			// Export all donors
 			$donors = Give()->customers->get_customers( array( 'number' => - 1 ) );
 
-			$i = 0;
-
 			foreach ( $donors as $donor ) {
 
-				if ( 'emails' != $_POST['give_export_option'] ) {
-					$data[ $i ]['name'] = $donor->name;
-				}
-
-				$data[ $i ]['email'] = $donor->email;
-
-				if ( 'full' == $_POST['give_export_option'] ) {
-
-					$data[ $i ]['purchases'] = $donor->purchase_count;
-					$data[ $i ]['amount']    = give_format_amount( $donor->purchase_value );
-
-				}
+				$data[] = $this->set_donor_data( $i, $data, $donor );
 				$i ++;
 			}
 		}
@@ -170,4 +170,54 @@ class Give_Donors_Export extends Give_Export {
 
 		return $data;
 	}
+
+	/**
+	 * Set Donor Data
+	 *
+	 * @param $donor
+	 */
+	private function set_donor_data( $i, $data, $donor ) {
+
+		$columns = $this->csv_cols();
+
+		//Set address variable
+		$address = '';
+		if ( isset( $donor->user_id ) && $donor->user_id > 0 ) {
+			$address = give_get_donor_address( $donor->user_id );
+		}
+
+		//Set columns
+		if ( ! empty( $columns['full_name'] ) ) {
+			$data[ $i ]['full_name'] = $donor->name;
+		}
+		if ( ! empty( $columns['email'] ) ) {
+			$data[ $i ]['email'] = $donor->email;
+		}
+		if ( ! empty( $columns['address_line1'] ) ) {
+
+			$data[ $i ]['address_line1']   = isset( $address['line1'] ) ? $address['line1'] : '';
+			$data[ $i ]['address_line2']   = isset( $address['line2'] ) ? $address['line2'] : '';
+			$data[ $i ]['address_city']    = isset( $address['city'] ) ? $address['city'] : '';
+			$data[ $i ]['address_state']   = isset( $address['state'] ) ? $address['state'] : '';
+			$data[ $i ]['address_zip']     = isset( $address['zip'] ) ? $address['zip'] : '';
+			$data[ $i ]['address_country'] = isset( $address['country'] ) ? $address['country'] : '';
+		}
+		if ( ! empty( $columns['userid'] ) ) {
+			$data[ $i ]['userid'] = $donor->user_id;
+		}
+		if ( ! empty( $columns['date_first_donated'] ) ) {
+			$data[ $i ]['date_first_donated'] = date_i18n( get_option( 'date_format' ), strtotime( $donor->date_created ) );
+		}
+		if ( ! empty( $columns['donations'] ) ) {
+			$data[ $i ]['donations'] = $donor->purchase_count;
+		}
+		if ( ! empty( $columns['donation_sum'] ) ) {
+			$data[ $i ]['donation_sum'] = give_format_amount( $donor->purchase_value );
+		}
+
+		return $data[ $i ];
+
+	}
+
+
 }

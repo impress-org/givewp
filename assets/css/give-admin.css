@@ -1091,6 +1091,15 @@ body.give_forms_page_give-reports table.export-options-table .give-export-form {
 body.give_forms_page_give-reports table.export-options-table span#give-start-wrap input, body.give_forms_page_give-reports table.export-options-table span#give-end-wrap input {
   width: 100px; }
 
+#export-donor-options-wrap p {
+  padding: 20px 0 0;
+  margin: 0;
+  font-weight: bold; }
+
+#export-donor-options-wrap ul li {
+  display: inline-block;
+  padding: 3px 10px 0 0; }
+
 #give-tools-recount-form .notice-wrap {
   position: relative;
   min-height: 25px;
