@@ -166,6 +166,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 = 1.6: =
 * New: Easily reorder payment gateways with the new drag-and-drop gateway reorder capability within settings - https://github.com/WordImpress/Give/issues/391
+* New: Implement honeypot hidden field to help prevent spam donation form submissions - https://github.com/WordImpress/Give/issues/424
 
 = 1.5: =
 * New: Export donation history based on a date range exports - https://github.com/WordImpress/Give/issues/414
