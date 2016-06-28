@@ -340,3 +340,50 @@ function give_ajax_search_users() {
 }
 
 add_action( 'wp_ajax_give_search_users', 'give_ajax_search_users' );
+
+
+/**
+ * Check for Price Variations (Multi-level donation forms)
+ *
+ * @since 1.5
+ * @return void
+ */
+function give_check_for_form_price_variations() {
+
+	if ( ! current_user_can( 'edit_give_forms' ) ) {
+		die( '-1' );
+	}
+
+	$form_id = intval( $_POST['form_id'] );
+	$form    = get_post( $form_id );
+
+	if ( 'give_forms' != $form->post_type ) {
+		die( '-2' );
+	}
+
+	if ( give_has_variable_prices( $form_id ) ) {
+		$variable_prices = give_get_variable_prices( $form_id );
+
+		if ( $variable_prices ) {
+			$ajax_response = '<select class="give_price_options_select give-select give-select" name="give_price_option">';
+
+			if ( isset( $_POST['all_prices'] ) ) {
+				$ajax_response .= '<option value="">' . __( 'All Levels', 'give' ) . '</option>';
+			}
+
+			foreach ( $variable_prices as $key => $price ) {
+
+				$level_text = ! empty( $price['_give_text'] ) ? esc_html( $price['_give_text'] ) : give_format_amount( give_currency_filter( $price['_give_amount'] ) );
+
+				$ajax_response .= '<option value="' . esc_attr( $price['_give_id']['level_id'] ) . '">' . $level_text . '</option>';
+			}
+			$ajax_response .= '</select>';
+			echo $ajax_response;
+		}
+
+	}
+
+	give_die();
+}
+
+add_action( 'wp_ajax_give_check_for_form_price_variations', 'give_check_for_form_price_variations' );

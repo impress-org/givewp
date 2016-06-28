@@ -232,12 +232,36 @@ jQuery.noConflict();
 
         donors_export: function () {
 
-            // Show / hide Download option when exporting donors
-            $('#give_donor_export_download').change(function () {
+            // Show / hide Donation Form option when exporting donors
+            $('#give_customer_export_form').change(function () {
 
-                var $this = $(this), form_id = $('option:selected', $this).val();
+                var $this = $(this),
+                    form_id = $('option:selected', $this).val(),
+                    customer_export_option = $( '#give_customer_export_option' );
 
-                $('.give_price_options_select').remove();
+                if ( '0' === $this.val() ) {
+                    customer_export_option.show();
+                } else {
+                    customer_export_option.hide();
+                }
+
+                var price_options_select = $('.give_price_options_select');
+
+                // On Form Select, Check if Variable Prices Exist
+                if ( parseInt( form_id ) != 0 ) {
+                    var data = {
+                        action : 'give_check_for_form_price_variations',
+                        form_id: form_id,
+                        all_prices: true
+                    };
+
+                    $.post(ajaxurl, data, function(response) {
+                        price_options_select.remove();
+                        $('#give_customer_export_form_chosen').after( response );
+                    });
+                } else {
+                    price_options_select.remove();
+                }
 
             });
 

@@ -142,7 +142,7 @@ class Give_Roles {
 	public function get_core_caps() {
 		$capabilities = array();
 
-		$capability_types = array( 'give_forms', 'give_campaigns', 'give_payments' );
+		$capability_types = array( 'give_forms', 'give_payments' );
 
 		foreach ( $capability_types as $capability_type ) {
 			$capabilities[ $capability_type ] = array(

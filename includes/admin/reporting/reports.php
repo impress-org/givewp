@@ -373,40 +373,49 @@ function give_reports_tab_export() {
 						</td>
 						<td>
 							<form method="post" id="give_donor_export">
-								<select name="give_export_form" id="give_donor_export_download">
-									<option value="0"><?php printf( __( 'All %s', 'give' ), give_get_forms_label_plural() ); ?></option>
+
 									<?php
-									$forms = get_posts( array(
-										'post_type'      => 'give_forms',
-										'posts_per_page' => - 1
-									) );
-									if ( $forms ) {
-										foreach ( $forms as $form ) {
-											echo '<option value="' . $form->ID . '">' . get_the_title( $form->ID ) . '</option>';
-										}
-									}
-									?>
-								</select>
+									$args = array(
+										'name'   => 'forms',
+										'id'     => 'give_customer_export_form',
+										'chosen' => true
+									);
+									echo Give()->html->forms_dropdown( $args ); ?>
+								
 								<input type="submit" value="<?php _e( 'Generate CSV', 'give' ); ?>" class="button-secondary"/>
 
 								<div id="export-donor-options-wrap">
-								<p><?php _e('Export Columns', 'give'); ?>:</p>
-								<ul id="give-export-option-ul">
-									<li><label for="give-export-fullname"><input type="checkbox" checked name="give_export_option[full_name]" id="give-export-fullname"><?php _e('Name', 'give'); ?></label>
-									</li>
-									<li><label for="give-export-email"><input type="checkbox" checked name="give_export_option[email]" id="give-export-email"><?php _e('Email', 'give'); ?></label>
-									</li>
-									<li><label for="give-export-address"><input type="checkbox" checked name="give_export_option[address]" id="give-export-address"><?php _e('Address', 'give'); ?></label>
-									</li>
-									<li><label for="give-export-userid"><input type="checkbox" checked name="give_export_option[userid]" id="give-export-userid"><?php _e('User ID', 'give'); ?></label>
-									</li>
-									<li><label for="give-export-first-donation-date"><input type="checkbox" checked name="give_export_option[date_first_donated]" id="give-export-first-donation-date"><?php _e('First Donation Date', 'give'); ?></label>
-									</li>
-									<li><label for="give-export-donation-number"><input type="checkbox" checked name="give_export_option[donations]" id="give-export-donation-number"><?php _e('Number of Donations', 'give'); ?></label>
-									</li>
-									<li><label for="give-export-donation-sum"><input type="checkbox" checked name="give_export_option[donation_sum]" id="give-export-donation-sum"><?php _e('Total Donated', 'give'); ?></label>
-									</li>
-								</ul>
+									<p><?php _e( 'Export Columns', 'give' ); ?>:</p>
+									<ul id="give-export-option-ul">
+										<li>
+											<label for="give-export-fullname"><input type="checkbox" checked name="give_export_option[full_name]" id="give-export-fullname"><?php _e( 'Name', 'give' ); ?>
+											</label>
+										</li>
+										<li>
+											<label for="give-export-email"><input type="checkbox" checked name="give_export_option[email]" id="give-export-email"><?php _e( 'Email', 'give' ); ?>
+											</label>
+										</li>
+										<li>
+											<label for="give-export-address"><input type="checkbox" checked name="give_export_option[address]" id="give-export-address"><?php _e( 'Address', 'give' ); ?>
+											</label>
+										</li>
+										<li>
+											<label for="give-export-userid"><input type="checkbox" checked name="give_export_option[userid]" id="give-export-userid"><?php _e( 'User ID', 'give' ); ?>
+											</label>
+										</li>
+										<li>
+											<label for="give-export-first-donation-date"><input type="checkbox" checked name="give_export_option[date_first_donated]" id="give-export-first-donation-date"><?php _e( 'First Donation Date', 'give' ); ?>
+											</label>
+										</li>
+										<li>
+											<label for="give-export-donation-number"><input type="checkbox" checked name="give_export_option[donations]" id="give-export-donation-number"><?php _e( 'Number of Donations', 'give' ); ?>
+											</label>
+										</li>
+										<li>
+											<label for="give-export-donation-sum"><input type="checkbox" checked name="give_export_option[donation_sum]" id="give-export-donation-sum"><?php _e( 'Total Donated', 'give' ); ?>
+											</label>
+										</li>
+									</ul>
 								</div>
 
 								<input type="hidden" name="give-action" value="email_export"/>
@@ -436,7 +445,7 @@ add_action( 'give_reports_tab_export', 'give_reports_tab_export' );
  * @return void
  */
 function give_reports_tab_logs() {
-	
+
 	require( GIVE_PLUGIN_DIR . 'includes/admin/reporting/logs.php' );
 
 	$current_view = 'sales';
