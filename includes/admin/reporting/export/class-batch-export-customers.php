@@ -32,6 +32,34 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 	public $export_type = 'customers';
 
 	/**
+	 * Form submission data
+	 *
+	 * @var array
+	 * @since 1.5
+	 */
+	private $data = array();
+
+	/**
+	 * Set the properties specific to the Customers export
+	 *
+	 * @since 1.5
+	 *
+	 * @param array $request The Form Data passed into the batch processing
+	 */
+	public function set_properties( $request ) {
+
+		//Set data from form submission
+		if ( isset( $_POST['form'] ) ) {
+			parse_str( $_POST['form'], $this->data );
+		}
+
+		$this->form = $this->data['forms'];
+
+		$this->price_id = ! empty( $request['give_price_option'] ) && 0 !== $request['give_price_option'] ? absint( $request['give_price_option'] ) : null;
+
+	}
+
+	/**
 	 * Set the CSV columns
 	 *
 	 * @access public
@@ -40,13 +68,39 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 	 */
 	public function csv_cols() {
 
-		$cols = array(
-			'id'        => __( 'ID', 'give' ),
-			'name'      => __( 'Name', 'give' ),
-			'email'     => __( 'Email', 'give' ),
-			'purchases' => __( 'Number of Donations', 'give' ),
-			'amount'    => __( 'Donor Value', 'give' )
-		);
+		$cols = array();
+
+		$columns = isset( $this->data['give_export_option'] ) ? $this->data['give_export_option'] : array();
+
+		if ( empty( $columns ) ) {
+			return false;
+		}
+		if ( ! empty( $columns['full_name'] ) ) {
+			$cols['full_name'] = __( 'Full Name', 'give' );
+		}
+		if ( ! empty( $columns['email'] ) ) {
+			$cols['email'] = __( 'Email Address', 'give' );
+		}
+		if ( ! empty( $columns['address'] ) ) {
+			$cols['address_line1']   = __( 'Address', 'give' );
+			$cols['address_line2']   = __( 'Address (Line 2)', 'give' );
+			$cols['address_city']    = __( 'City', 'give' );
+			$cols['address_state']   = __( 'State', 'give' );
+			$cols['address_zip']     = __( 'Zip', 'give' );
+			$cols['address_country'] = __( 'Country', 'give' );
+		}
+		if ( ! empty( $columns['userid'] ) ) {
+			$cols['userid'] = __( 'User ID', 'give' );
+		}
+		if ( ! empty( $columns['date_first_donated'] ) ) {
+			$cols['date_first_donated'] = __( 'First Donation Date', 'give' );
+		}
+		if ( ! empty( $columns['donations'] ) ) {
+			$cols['donations'] = __( 'Number of Donations', 'give' );
+		}
+		if ( ! empty( $columns['donation_sum'] ) ) {
+			$cols['donation_sum'] = __( 'Sum of Donations', 'give' );
+		}
 
 		return $cols;
 	}
@@ -55,8 +109,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 	 * Get the Export Data
 	 *
 	 * @access public
-	 * @since 1.5
-	 *   Database API
+	 * @since  1.0
 	 * @global object $give_logs Give Logs Object
 	 * @return array $data The data for the CSV file
 	 */
@@ -64,9 +117,11 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 
 		$data = array();
 
+		$i = 0;
+
 		if ( ! empty( $this->form ) ) {
 
-			// Export customers of a specific product
+			// Export donors of a specific product
 			global $give_logs;
 
 			$args = array(
@@ -76,6 +131,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 				'paged'          => $this->step
 			);
 
+			//Check for price option
 			if ( null !== $this->price_id ) {
 				$args['meta_query'] = array(
 					array(
@@ -89,37 +145,23 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 
 			if ( $logs ) {
 				foreach ( $logs as $log ) {
-
-					$payment_id  = get_post_meta( $log->ID, '_give_log_payment_id', true );
-					$customer_id = give_get_payment_customer_id( $payment_id );
-					$customer    = new Give_Customer( $customer_id );
-
-					$data[] = array(
-						'id'        => $customer->id,
-						'name'      => $customer->name,
-						'email'     => $customer->email,
-						'purchases' => $customer->purchase_count,
-						'amount'    => give_format_amount( $customer->purchase_value ),
-					);
+					$payment_id = get_post_meta( $log->ID, '_give_log_payment_id', true );
+					$payment    = new Give_Payment( $payment_id );
+					$donor      = Give()->customers->get_customer_by( 'id', $payment->customer_id );
+					$data[]     = $this->set_donor_data( $i, $data, $donor );
+					$i ++;
 				}
 			}
 
 		} else {
 
 			// Export all customers
-			$offset    = 30 * ( $this->step - 1 );
-			$customers = Give()->customers->get_customers( array( 'number' => 30, 'offset' => $offset ) );
+			$offset = 30 * ( $this->step - 1 );
+			$donors = Give()->customers->get_customers( array( 'number' => 30, 'offset' => $offset ) );
 
-			$i = 0;
+			foreach ( $donors as $donor ) {
 
-			foreach ( $customers as $customer ) {
-
-				$data[ $i ]['id']        = $customer->id;
-				$data[ $i ]['name']      = $customer->name;
-				$data[ $i ]['email']     = $customer->email;
-				$data[ $i ]['purchases'] = $customer->purchase_count;
-				$data[ $i ]['amount']    = give_format_amount( $customer->purchase_value );
-
+				$data[] = $this->set_donor_data( $i, $data, $donor );
 				$i ++;
 			}
 		}
@@ -161,16 +203,51 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 	}
 
 	/**
-	 * Set the properties specific to the Customers export
+	 * Set Donor Data
 	 *
-	 * @since 1.5
-	 *
-	 * @param array $request The Form Data passed into the batch processing
+	 * @param $donor
 	 */
-	public function set_properties( $request ) {
-		$this->start    = isset( $request['start'] ) ? sanitize_text_field( $request['start'] ) : '';
-		$this->end      = isset( $request['end'] ) ? sanitize_text_field( $request['end'] ) : '';
-		$this->form = isset( $request['form'] ) ? absint( $request['form'] ) : null;
-		$this->price_id = ! empty( $request['give_price_option'] ) && 0 !== $request['give_price_option'] ? absint( $request['give_price_option'] ) : null;
+	private function set_donor_data( $i, $data, $donor ) {
+
+		$columns = $this->csv_cols();
+
+		//Set address variable
+		$address = '';
+		if ( isset( $donor->user_id ) && $donor->user_id > 0 ) {
+			$address = give_get_donor_address( $donor->user_id );
+		}
+
+		//Set columns
+		if ( ! empty( $columns['full_name'] ) ) {
+			$data[ $i ]['full_name'] = $donor->name;
+		}
+		if ( ! empty( $columns['email'] ) ) {
+			$data[ $i ]['email'] = $donor->email;
+		}
+		if ( ! empty( $columns['address_line1'] ) ) {
+
+			$data[ $i ]['address_line1']   = isset( $address['line1'] ) ? $address['line1'] : '';
+			$data[ $i ]['address_line2']   = isset( $address['line2'] ) ? $address['line2'] : '';
+			$data[ $i ]['address_city']    = isset( $address['city'] ) ? $address['city'] : '';
+			$data[ $i ]['address_state']   = isset( $address['state'] ) ? $address['state'] : '';
+			$data[ $i ]['address_zip']     = isset( $address['zip'] ) ? $address['zip'] : '';
+			$data[ $i ]['address_country'] = isset( $address['country'] ) ? $address['country'] : '';
+		}
+		if ( ! empty( $columns['userid'] ) ) {
+			$data[ $i ]['userid'] = ! empty( $donor->user_id ) ? $donor->user_id : '';
+		}
+		if ( ! empty( $columns['date_first_donated'] ) ) {
+			$data[ $i ]['date_first_donated'] = date_i18n( get_option( 'date_format' ), strtotime( $donor->date_created ) );
+		}
+		if ( ! empty( $columns['donations'] ) ) {
+			$data[ $i ]['donations'] = $donor->purchase_count;
+		}
+		if ( ! empty( $columns['donation_sum'] ) ) {
+			$data[ $i ]['donation_sum'] = give_format_amount( $donor->purchase_value );
+		}
+
+		return $data[ $i ];
+
 	}
+
 }
