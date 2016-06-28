@@ -82,8 +82,8 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 			$cols['email'] = __( 'Email Address', 'give' );
 		}
 		if ( ! empty( $columns['address'] ) ) {
-			$cols['address_line1']   = __( 'Address Line 1', 'give' );
-			$cols['address_line2']   = __( 'Address Line 2', 'give' );
+			$cols['address_line1']   = __( 'Address', 'give' );
+			$cols['address_line2']   = __( 'Address (Line 2)', 'give' );
 			$cols['address_city']    = __( 'City', 'give' );
 			$cols['address_state']   = __( 'State', 'give' );
 			$cols['address_zip']     = __( 'Zip', 'give' );
@@ -104,7 +104,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 
 		return $cols;
 	}
-	
+
 	/**
 	 * Get the Export Data
 	 *
