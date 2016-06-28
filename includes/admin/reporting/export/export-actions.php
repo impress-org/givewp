@@ -121,7 +121,7 @@ function give_include_payments_batch_processor( $class ) {
  * @since  1.5.2
  */
 function give_register_customers_batch_export() {
-	add_action( 'give_batch_export_class_include', 'give_include_customers_batch_processer', 10, 1 );
+	add_action( 'give_batch_export_class_include', 'give_include_customers_batch_processor', 10, 1 );
 }
 
 add_action( 'give_register_batch_exporter', 'give_register_customers_batch_export', 10 );
@@ -135,7 +135,7 @@ add_action( 'give_register_batch_exporter', 'give_register_customers_batch_expor
  *
  * @return void
  */
-function give_include_customers_batch_processer( $class ) {
+function give_include_customers_batch_processor( $class ) {
 
 	if ( 'Give_Batch_Customers_Export' === $class ) {
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/export/class-batch-export-customers.php';

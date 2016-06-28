@@ -95,7 +95,7 @@ jQuery.noConflict();
                 if (postData.note) {
 
                     $.ajax({
-                        type: "POST",
+                        type: 'POST',
                         data: postData,
                         url: ajaxurl,
                         success: function (response) {
@@ -237,9 +237,9 @@ jQuery.noConflict();
 
                 var $this = $(this),
                     form_id = $('option:selected', $this).val(),
-                    customer_export_option = $( '#give_customer_export_option' );
+                    customer_export_option = $('#give_customer_export_option');
 
-                if ( '0' === $this.val() ) {
+                if ('0' === $this.val()) {
                     customer_export_option.show();
                 } else {
                     customer_export_option.hide();
@@ -248,16 +248,16 @@ jQuery.noConflict();
                 var price_options_select = $('.give_price_options_select');
 
                 // On Form Select, Check if Variable Prices Exist
-                if ( parseInt( form_id ) != 0 ) {
+                if (parseInt(form_id) != 0) {
                     var data = {
-                        action : 'give_check_for_form_price_variations',
+                        action: 'give_check_for_form_price_variations',
                         form_id: form_id,
                         all_prices: true
                     };
 
-                    $.post(ajaxurl, data, function(response) {
+                    $.post(ajaxurl, data, function (response) {
                         price_options_select.remove();
-                        $('#give_customer_export_form_chosen').after( response );
+                        $('#give_customer_export_form_chosen').after(response);
                     });
                 } else {
                     price_options_select.remove();
@@ -409,8 +409,10 @@ jQuery.noConflict();
                     action: 'give_do_ajax_export',
                     step: step,
                 },
-                dataType: "json",
+                dataType: 'json',
                 success: function (response) {
+
+                    console.log(response);
 
                     if ('done' == response.step || response.error || response.success) {
 

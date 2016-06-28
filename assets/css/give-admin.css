@@ -1076,7 +1076,8 @@ body.give_forms_page_give-reports .widefat tbody td, body.give_forms_page_give-r
   padding-bottom: 12px; }
 
 body.give_forms_page_give-reports table.export-options-table tbody td {
-  padding: 20px 12px; }
+  padding: 20px 12px;
+  vertical-align: top; }
 
 body.give_forms_page_give-reports table.export-options-table .give-export-form {
   position: relative; }

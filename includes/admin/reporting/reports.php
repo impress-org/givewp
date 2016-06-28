@@ -286,7 +286,6 @@ function give_reports_tab_export() {
 
 				<?php do_action( 'give_reports_tab_export_content_top' ); ?>
 
-
 				<table class="widefat export-options-table give-table">
 					<thead>
 					<tr>
@@ -372,7 +371,7 @@ function give_reports_tab_export() {
 							<p><?php _e( 'Download an export of donors for all donation forms or only those who have given to a particular form.', 'give' ); ?></p>
 						</td>
 						<td>
-							<form method="post" id="give_donor_export">
+							<form method="post" id="give_donor_export" class="give-export-form">
 
 									<?php
 									$args = array(
@@ -384,7 +383,7 @@ function give_reports_tab_export() {
 								
 								<input type="submit" value="<?php _e( 'Generate CSV', 'give' ); ?>" class="button-secondary"/>
 
-								<div id="export-donor-options-wrap">
+								<div id="export-donor-options-wrap" class="give-clearfix">
 									<p><?php _e( 'Export Columns', 'give' ); ?>:</p>
 									<ul id="give-export-option-ul">
 										<li>
@@ -417,7 +416,8 @@ function give_reports_tab_export() {
 										</li>
 									</ul>
 								</div>
-
+								<?php wp_nonce_field( 'give_ajax_export', 'give_ajax_export' ); ?>
+								<input type="hidden" name="give-export-class" value="Give_Batch_Customers_Export"/>
 								<input type="hidden" name="give-action" value="email_export"/>
 							</form>
 						</td>
