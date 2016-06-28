@@ -373,8 +373,8 @@ function give_check_for_form_price_variations() {
 
 			foreach ( $variable_prices as $key => $price ) {
 
-				$level_text = ! empty( $price['_give_text'] ) ? esc_html( $price['_give_text'] ) : give_format_amount( give_currency_filter( $price['_give_amount'] ) );
-
+				$level_text = ! empty( $price['_give_text'] ) ? esc_html( $price['_give_text'] ) : give_currency_filter( give_format_amount( $price['_give_amount'] ) );
+				
 				$ajax_response .= '<option value="' . esc_attr( $price['_give_id']['level_id'] ) . '">' . $level_text . '</option>';
 			}
 			$ajax_response .= '</select>';
