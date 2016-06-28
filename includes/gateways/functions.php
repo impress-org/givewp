@@ -216,8 +216,8 @@ function give_give_supports_buy_now() {
  *
  * @since 1.0
  *
- * @param string $gateway      Name of the gateway
- * @param array  $payment_data All the payment data to be sent to the gateway
+ * @param string $gateway Name of the gateway
+ * @param array $payment_data All the payment data to be sent to the gateway
  *
  * @return void
  */
@@ -279,9 +279,9 @@ function give_get_chosen_gateway( $form_id ) {
  * @access public
  * @since  1.0
  *
- * @param string $title   Title of the log entry (default: empty)
+ * @param string $title Title of the log entry (default: empty)
  * @param string $message Message to store in the log entry (default: empty)
- * @param int    $parent  Parent log entry (default: 0)
+ * @param int $parent Parent log entry (default: 0)
  *
  * @return int ID of the new log entry
  */
@@ -325,22 +325,18 @@ function give_count_sales_by_gateway( $gateway_id = 'paypal', $status = 'publish
  * Returns a ordered list of all available gateways.
  *
  * @since 1.4.5
- * 
+ *
  * @param array $gateways List of payment gateways
+ *
  * @return array $gateways All the available gateways
  */
 function give_get_ordered_payment_gateways( $gateways ) {
+
+	//  Get gateways setting.
+	$gateways_setting = give_get_option( 'gateways' );
 	
-	// Get give plugin settings.
-	$give_plugin_settings = get_option( 'give_settings' );
-
-	// Get gateways setting.
-	$gateways_setting = array_key_exists( 'gateways', $give_plugin_settings ) ?
-		$give_plugin_settings['gateways'] :
-		array();
-
 	// Return from here if we do not have gateways setting.
-	if( empty( $gateways_setting ) ) {
+	if ( empty( $gateways_setting ) ) {
 		return $gateways;
 	}
 
@@ -349,9 +345,10 @@ function give_get_ordered_payment_gateways( $gateways ) {
 
 	// Reorder gateways array
 	foreach ( $gateways_setting as $gateway_key => $value ) {
-		$new_gateway_value = $gateways[ $gateway_key ];
+
+		$new_gateway_value = isset( $gateways[ $gateway_key ] ) ? $gateways[ $gateway_key ] : '';
 		unset( $gateways[ $gateway_key ] );
-		$gateways = array_merge( array( $gateway_key => $new_gateway_value ),  $gateways );
+		$gateways = array_merge( array( $gateway_key => $new_gateway_value ), $gateways );
 	}
 
 	/**
