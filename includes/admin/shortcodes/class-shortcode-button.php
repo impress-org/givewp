@@ -13,6 +13,9 @@
 
 defined( 'ABSPATH' ) or exit;
 
+/**
+ * Class Give_Shortcode_Button
+ */
 final class Give_Shortcode_Button {
 
 	/**
