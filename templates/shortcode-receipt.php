@@ -37,15 +37,21 @@ $status   = give_get_payment_status( $payment, true );
 
 		<tbody>
 
-		<tr>
-			<td class="give_receipt_payment_status"><strong><?php _e( 'Donation', 'give' ); ?>:</strong></td>
-			<td class="give_receipt_payment_status"><?php echo $donation; ?></td>
-		</tr>
+		<?php if ( filter_var( $give_receipt_args['donor'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
 
-		<tr>
-			<td class="give_receipt_payment_status"><strong><?php _e( 'Donation Status', 'give' ); ?>:</strong></td>
-			<td class="give_receipt_payment_status <?php echo strtolower( $status ); ?>"><?php echo $status; ?></td>
-		</tr>
+			<tr>
+				<td><strong><?php _e( 'Donor', 'give' ); ?>:</strong></td>
+				<td><?php echo $user['first_name'] . ' ' . $user['last_name']; ?></td>
+			</tr>
+
+		<?php endif; ?>
+
+		<?php if ( filter_var( $give_receipt_args['date'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
+			<tr>
+				<td><strong><?php _e( 'Date', 'give' ); ?>:</strong></td>
+				<td><?php echo date_i18n( get_option( 'date_format' ), strtotime( $meta['date'] ) ); ?></td>
+			</tr>
+		<?php endif; ?>
 
 		<?php if ( filter_var( $give_receipt_args['price'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
 
@@ -55,14 +61,16 @@ $status   = give_get_payment_status( $payment, true );
 			</tr>
 
 		<?php endif; ?>
-		<?php if ( filter_var( $give_receipt_args['donor'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
+		
+		<tr>
+			<td class="give_receipt_payment_status"><strong><?php _e( 'Donation', 'give' ); ?>:</strong></td>
+			<td class="give_receipt_payment_status"><?php echo $donation; ?></td>
+		</tr>
 
-			<tr>
-				<td><strong><?php _e( 'Donor', 'give' ); ?>:</strong></td>
-				<td><?php echo $user['first_name'] . ' ' . $user['last_name']; ?></td>
-			</tr>
-
-		<?php endif; ?>
+		<tr>
+			<td class="give_receipt_payment_status"><strong><?php _e( 'Donation Status', 'give' ); ?>:</strong></td>
+			<td class="give_receipt_payment_status <?php echo strtolower( $status ); ?>"><?php echo $status; ?></td>
+		</tr>
 
 		<?php if ( filter_var( $give_receipt_args['payment_id'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
 			<tr>
@@ -87,12 +95,6 @@ $status   = give_get_payment_status( $payment, true );
 			<tr>
 				<td><strong><?php _e( 'Payment Method', 'give' ); ?>:</strong></td>
 				<td><?php echo give_get_gateway_checkout_label( give_get_payment_gateway( $payment->ID ) ); ?></td>
-			</tr>
-		<?php endif; ?>
-		<?php if ( filter_var( $give_receipt_args['date'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
-			<tr>
-				<td><strong><?php _e( 'Date', 'give' ); ?>:</strong></td>
-				<td><?php echo date_i18n( get_option( 'date_format' ), strtotime( $meta['date'] ) ); ?></td>
 			</tr>
 		<?php endif; ?>
 
