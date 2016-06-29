@@ -1061,9 +1061,10 @@ function give_terms_agreement( $form_id ) {
 				<a href="#" class="give_terms_links" style="display:none;"><?php _e( 'Hide Terms', 'give' ); ?></a>
 			</div>
 
+			<input name="give_agree_to_terms" class="required" type="checkbox" id="give_agree_to_terms" value="1"/>
 			<label
 				for="give_agree_to_terms"><?php echo ! empty( $label ) ? stripslashes( $label ) : __( 'Agree to Terms?', 'give' ); ?></label>
-			<input name="give_agree_to_terms" class="required" type="checkbox" id="give_agree_to_terms" value="1"/>
+
 		</fieldset>
 		<?php
 	}
