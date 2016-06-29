@@ -167,19 +167,21 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 = 1.5: =
 * New: Easily reorder payment gateways with the new drag-and-drop gateway reorder capability within settings - https://github.com/WordImpress/Give/issues/391
 * New: Implement honeypot hidden field to help prevent spam donation form submissions - https://github.com/WordImpress/Give/issues/424
-* New: Export donation history based on a date range exports - https://github.com/WordImpress/Give/issues/414
-* New: Recalculate stats tool now available to recount individual donor statistics, delete test transactions, or reset all your statistics entirely -
+* New: Export donation history based on a date range exports in "Reports > Export > Export Donation History"- https://github.com/WordImpress/Give/issues/414
+* New: Added the ability to delete all test transactions under "Donations > Reports > Tools" - https://github.com/WordImpress/Give/issues/263
+* New: Recalculate stats tool now available to recount individual donor statistics, delete test transactions, or reset all your statistics entirely - https://github.com/WordImpress/Give/issues/441
 * New: New Give_Payments class added which allows easier development for donation payments - https://github.com/WordImpress/Give/issues/504
 * New: Added "Test Mode" labels to more easily identify donations made while Give is in Test Mode - https://github.com/WordImpress/Give/issues/188
-* New: Added the ability to delete all test transactions under Donations > Reports > Tools - https://github.com/WordImpress/Give/issues/263
 * New: Template wrapper support for the "Catch Evolution" theme added - https://github.com/WordImpress/Give/issues/632
 * New: Export additional data and control the export columns for donors under Reports > Export >  Export Donors in CSV - https://github.com/WordImpress/Give/issues/630
 * New: South Korean Won added to list of currencies - https://github.com/WordImpress/Give/issues/624
 * New: Moroccan Dirham added to list of currencies - https://github.com/WordImpress/Give/issues/381
 * New: South African Rand added to list of currencies - https://github.com/WordImpress/Give/issues/624
-* Tweak: Now when a multi-level donation is made the multi-level labels will display on the confirmation page, within the transactions listing page, and also attached to the {donation} email tag - https://github.com/WordImpress/Give/issues/175
-* Tweak: Added donor name to the donation receipt - https://github.com/WordImpress/Give/issues/645
+* Tweak: Now when a multi-level donation is made the multi-level labels will display on the confirmation page, within the transactions listing page, and also attached to the {donation} email tag which outputs the email receipts - https://github.com/WordImpress/Give/issues/175
+* Tweak: Added donor name to the donation receipt and reordered the rows for a more logical flow - https://github.com/WordImpress/Give/issues/645
 * Tweak: Removed the French translation files included because, thanks to all French polyglots, we have been translated in full - https://translate.wordpress.org/locale/fr/default/wp-plugins/give
+* Tweak: Removed Grunt in favor of Gulp for compiling pot files - https://github.com/WordImpress/Give/issues/666
+* Tweak: Removed hosted translations in favor of public GlotPress translations
 * Tweak: Rewrite of give_get_current_page_url to fix issues with domain mapped server with $_SERVER['SERVER_PORT'] - https://github.com/WordImpress/Give/issues/622
 * Fix: Transactions Status Changes Causes Donation Form Income Amounts + Goals to Not Calculate Correctly - https://github.com/WordImpress/Give/issues/188
 * Fix: Per form Offline donations gateway's "Request Billing Information" checkbox doesn't properly override the global setting - https://github.com/WordImpress/Give/issues/649
