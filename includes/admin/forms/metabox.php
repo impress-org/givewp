@@ -227,6 +227,29 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'row_classes' => 'give-subfield',
 					'default'     => '#2bc253',
 				),
+
+				array(
+					'name'        => __( 'Close Form when Goal Achieved', 'give' ),
+					'desc'        => __( 'Would you like to close the donation forms and stop accepting donations once this goal has been met?', 'give' ),
+					'id'          => $prefix . 'close_form_when_goal_achieved',
+					'type'        => 'radio_inline',
+					'row_classes' => 'give-subfield',
+					'options'     => array(
+						'yes' => __( 'Yes', 'give' ),
+						'no'  => __( 'No', 'give' ),
+					),
+					'default'     => 'no',
+				),
+				array(
+					'name'        => __( 'Goal Achieved Message', 'give' ),
+					'desc'        => __( 'Would you like to display a custom message when the goal is closed? If none is provided the default message will be displayed', 'give' ),
+					'id'          => $prefix . 'form_goal_achieved_message',
+					'type'        => 'textarea',
+					'row_classes' => 'give-subfield',
+					'attributes'  => array(
+						'placeholder' => __( 'Thank you to all our donors, we have met our fundraising goal.', 'give' ),
+					),
+				)
 			)
 		)
 	) );
@@ -346,27 +369,6 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 							'disabled' => __( 'Disabled', 'give' ),
 						),
 						'default' => 'none',
-					),
-					array(
-						'name'    => __( 'Close Form when Goal Achieved', 'give' ),
-						'desc'    => __( 'Would you like to close the donation forms and stop accepting donations once this goal has been met?', 'give' ),
-						'id'      => $prefix . 'close_form_when_goal_achieved',
-						'type'    => 'radio_inline',
-						'options' => array(
-							'yes' => __( 'Yes', 'give' ),
-							'no'  => __( 'No', 'give' ),
-						),
-						'default' => 'no',
-					),
-					array(
-						'name'    => __( 'Goal Achieved Message', 'give' ),
-						'desc'    => __( 'Would you like to display a custom message when the goal is closed? If none is provided the default message will be displayed', 'give' ),
-						'id'      => $prefix . 'form_goal_achieved_message',
-						'type'    => 'textarea',
-						'row_classes' => 'give-subfield',
-						'attributes' => array(
-							'placeholder' => __( 'Thank you to all our donors, we have met our goal.', 'give' ),
-						),
 					)
 				)
 			)
@@ -441,6 +443,7 @@ function give_cmb_render_levels_repeater_header() {
 
 	<?php
 }
+
 add_action( 'cmb2_render_levels_repeater_header', 'give_cmb_render_levels_repeater_header', 10 );
 
 
@@ -449,9 +452,9 @@ add_action( 'cmb2_render_levels_repeater_header', 'give_cmb_render_levels_repeat
  * CMB2 Repeatable ID Field
  *
  * @description: Custom CMB2 incremental Levels ID Field
- * 
+ *
  * @since      1.0
- * 
+ *
  * @param $field_object
  * @param $escaped_value
  * @param $object_id
@@ -475,6 +478,7 @@ function give_cmb_render_levels_id( $field_object, $escaped_value, $object_id, $
 	echo $field_type_object->input( $field_options_array );
 
 }
+
 add_action( 'cmb2_render_levels_id', 'give_cmb_render_levels_id', 10, 5 );
 
 

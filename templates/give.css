@@ -1290,8 +1290,7 @@ form[id*='give-form'] .give-loading-animation {
   background-repeat: no-repeat;
   background-color: transparent; }
 
-form[id*='give-form'] .give-payment-mode-label
-.give-loading-text {
+form[id*='give-form'] .give-payment-mode-label .give-loading-text {
   float: right; }
 
 /* Login Wrap */

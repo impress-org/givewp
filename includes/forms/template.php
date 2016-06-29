@@ -97,24 +97,24 @@ function give_get_donation_form( $args = array() ) {
 
 	<div id="give-form-<?php echo $form->ID; ?>-wrap" class="<?php echo $form_wrap_classes; ?>">
 
-		<?php if ( $form->is_close_donation_form() ) : ?>
-			<?php
-			//Get thank you message.
+		<?php if ( $form->is_close_donation_form() ) {
+
+			//Get Goal thank you message.
 			$display_thankyou_message = get_post_meta( $form->ID, '_give_form_goal_achieved_message', true );
-			$display_thankyou_message = ! empty( $display_thankyou_message ) ? $display_thankyou_message : __( 'Thank you to all our donors, we have met our goal.', 'give' );
+			$display_thankyou_message = ! empty( $display_thankyou_message ) ? $display_thankyou_message : __( 'Thank you to all our donors, we have met our fundraising goal.', 'give' );
 
 			//Print thank you message.
-			echo "<p class=\"give-from-thankyou-msg\">{$display_thankyou_message}</p>";
-			?>
-		<?php else : ?>
-			<?php
+			apply_filters( 'give_goal_closed_output', give_output_error( $display_thankyou_message, true, 'success' ) );
+
+		} else {
+
 			if ( isset( $args['show_title'] ) && $args['show_title'] == true ) {
 
 				echo apply_filters( 'give_form_title', '<h2 class="give-form-title">' . get_the_title( $form_id ) . '</h2>' );
 
-			} ?>
+			}
 
-			<?php do_action( 'give_pre_form', $form->ID, $args ); ?>
+			do_action( 'give_pre_form', $form->ID, $args ); ?>
 
 			<form id="give-form-<?php echo $form_id; ?>" class="<?php echo $form_classes; ?>" action="<?php echo $form_action; ?>" method="post">
 				<input type="hidden" name="give-form-id" value="<?php echo $form->ID; ?>"/>
@@ -157,7 +157,7 @@ function give_get_donation_form( $args = array() ) {
 
 			<?php do_action( 'give_post_form', $form->ID, $args ); ?>
 
-		<?php endif; ?>
+		<?php } ?>
 
 		<!--end #give-form-<?php echo absint( $form->ID ); ?>--></div>
 	<?php
