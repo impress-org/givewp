@@ -45,13 +45,10 @@ function give_get_payment_gateways() {
  * @return array $gateway_list All the available gateways
  */
 function give_get_enabled_payment_gateways() {
-	global $give_options;
 
 	$gateways = give_get_payment_gateways();
 
-	$enabled = isset( $_POST['gateways'] )
-		? $_POST['gateways']
-		: ( isset( $give_options['gateways'] ) ? $give_options['gateways'] : false );
+	$enabled = isset( $_POST['gateways'] ) ? $_POST['gateways'] : give_get_option( 'gateways' );
 
 	$gateway_list = array();
 
@@ -333,8 +330,8 @@ function give_count_sales_by_gateway( $gateway_id = 'paypal', $status = 'publish
 function give_get_ordered_payment_gateways( $gateways ) {
 
 	//  Get gateways setting.
-	$gateways_setting = give_get_option( 'gateways' );
-	
+	$gateways_setting = isset( $_POST['gateways'] ) ? $_POST['gateways'] : give_get_option( 'gateways' );
+
 	// Return from here if we do not have gateways setting.
 	if ( empty( $gateways_setting ) ) {
 		return $gateways;
@@ -348,7 +345,10 @@ function give_get_ordered_payment_gateways( $gateways ) {
 
 		$new_gateway_value = isset( $gateways[ $gateway_key ] ) ? $gateways[ $gateway_key ] : '';
 		unset( $gateways[ $gateway_key ] );
-		$gateways = array_merge( array( $gateway_key => $new_gateway_value ), $gateways );
+
+		if(!empty($new_gateway_value)) {
+			$gateways = array_merge( array( $gateway_key => $new_gateway_value ), $gateways );
+		}
 	}
 
 	/**
