@@ -19,6 +19,8 @@ var bower = require('gulp-bower'),
     sass = require('gulp-sass'),
     sourcemaps = require('gulp-sourcemaps'),
     uglify = require('gulp-uglify'),
+    sort = require('gulp-sort'),
+    wpPot = require('gulp-wp-pot'),
     watch = require('gulp-watch');
 
 /* Paths
@@ -131,6 +133,22 @@ gulp.task('watch', function () {
     gulp.watch('templates/*.php', function () {
         livereload(); //and reload when changed
     });
+});
+
+/* POT file task
+ ------------------------------------- */
+gulp.task('pot', function () {
+    return gulp.src('**/*.php')
+        .pipe(sort())
+        .pipe(wpPot({
+            package: 'Give',
+            domain: 'give',
+            destFile: 'give.pot',
+            bugReport: 'https://github.com/WordImpress/Give/issues/new',
+            lastTranslator: '',
+            team: 'WordImpress <info@wordimpress.com>'
+        }))
+        .pipe(gulp.dest('languages'));
 });
 
 /* Default Gulp task
