@@ -4,7 +4,7 @@ Donate link: http://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 4.0
 Tested up to: 4.5.3
-Stable tag: 1.5
+Stable tag: 1.5.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -164,7 +164,10 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 == Changelog ==
 
-= 1.5: =
+= 1.5.1: June 30, 2016 =
+* Fix: The give_forms post type doesn't register correctly on new installs therefore users weren't seeing the "Add Form" or "Edit Form" options within WP-Admin - https://github.com/WordImpress/Give/issues/671 and https://wordpress.org/support/topic/the-add-forum-tab-not-showing?replies=4#post-8587308
+
+= 1.5: June 29, 2016 =
 * New: Easily reorder payment gateways with the new drag-and-drop gateway reorder capability within settings - https://github.com/WordImpress/Give/issues/391
 * New: Implement honeypot hidden field to help prevent spam donation form submissions - https://github.com/WordImpress/Give/issues/424
 * New: Export donation history based on a date range exports in "Reports > Export > Export Donation History"- https://github.com/WordImpress/Give/issues/414
