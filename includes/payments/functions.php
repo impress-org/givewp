@@ -1700,8 +1700,8 @@ function give_get_payment_form_title( $payment_meta, $level_title = false, $sepa
 
 	$form_id    = isset( $payment_meta['form_id'] ) ? $payment_meta['form_id'] : 0;
 	$form_title = isset( $payment_meta['form_title'] ) ? $payment_meta['form_title'] : '';
-	$price_id   = isset( $payment_meta['price_id'] ) ? $payment_meta['price_id'] : give_get_price_id( $form_id, $payment_meta['price'] );
-
+	$price_id   = isset( $payment_meta['price_id'] ) ? $payment_meta['price_id'] : null;
+	
 	if ( $level_title == true ) {
 		$form_title = '';
 	}
