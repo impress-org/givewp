@@ -22,7 +22,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @global $give_settings_page
  * @global $give_payments_page
- * @global $give_campaigns_page
  *
  * @return void
  */
