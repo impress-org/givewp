@@ -164,6 +164,9 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 == Changelog ==
 
+= 1.5.2: =
+* Fix: Broken link when clicking on donors name from transactions list in wp-admin - https://github.com/WordImpress/Give/issues/680
+
 = 1.5.1: June 30, 2016 =
 * Fix: The give_forms post type doesn't register correctly on new installs therefore users weren't seeing the "Add Form" or "Edit Form" options within WP-Admin - https://github.com/WordImpress/Give/issues/671 and https://wordpress.org/support/topic/the-add-forum-tab-not-showing?replies=4#post-8587308
 
