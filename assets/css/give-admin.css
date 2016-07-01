@@ -1408,7 +1408,10 @@ Settings
     max-height: 200px;
     overflow-y: scroll; }
 
-.give_forms_page_give-settings .tablenav .actions {
+#api .give-submit-wrap {
+  display: none; }
+
+#api .tablenav .actions {
   overflow: visible; }
 
 a.give-delete {
