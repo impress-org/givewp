@@ -242,21 +242,6 @@ function give_get_default_form_labels() {
 }
 
 /**
- * Get Default Campaign Labels
- *
- * @since 1.0
- * @return array $defaults Default labels
- */
-function give_get_default_campaign_labels() {
-	$defaults = array(
-		'singular' => __( 'Campaign', 'give' ),
-		'plural'   => __( 'Campaigns', 'give' )
-	);
-
-	return apply_filters( 'give_default_campaign_name', $defaults );
-}
-
-/**
  * Get Singular Forms Label
  *
  * @since 1.0
@@ -279,33 +264,6 @@ function give_get_forms_label_singular( $lowercase = false ) {
  */
 function give_get_forms_label_plural( $lowercase = false ) {
 	$defaults = give_get_default_form_labels();
-
-	return ( $lowercase ) ? strtolower( $defaults['plural'] ) : $defaults['plural'];
-}
-
-/**
- * Get Singular Campaigns Label
- *
- * @since 1.0
- *
- * @param bool $lowercase
- *
- * @return string $defaults['singular'] Singular label
- */
-function give_get_campaigns_label_singular( $lowercase = false ) {
-	$defaults = give_get_default_campaign_labels();
-
-	return ( $lowercase ) ? strtolower( $defaults['singular'] ) : $defaults['singular'];
-}
-
-/**
- * Get Plural Campaigns Label
- *
- * @since 1.0
- * @return string $defaults['plural'] Plural label
- */
-function give_get_campaigns_label_plural( $lowercase = false ) {
-	$defaults = give_get_default_campaign_labels();
 
 	return ( $lowercase ) ? strtolower( $defaults['plural'] ) : $defaults['plural'];
 }
@@ -441,7 +399,6 @@ function give_add_thumbnail_support() {
 		add_theme_support( 'post-thumbnails' );
 	}
 	add_post_type_support( 'give_forms', 'thumbnail' );
-	add_post_type_support( 'give_campaigns', 'thumbnail' );
 }
 
 /**
