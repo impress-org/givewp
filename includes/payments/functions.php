@@ -228,16 +228,24 @@ function give_update_payment_status( $payment_id, $new_status = 'publish' ) {
 function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
 	global $give_logs;
 
-	$payment = new Give_Payment( $payment_id );
-
-	give_undo_purchase( false, $payment_id );
-
+	$payment     = new Give_Payment( $payment_id );
 	$amount      = give_get_payment_amount( $payment_id );
 	$status      = $payment->post_status;
 	$customer_id = give_get_payment_customer_id( $payment_id );
 	$customer    = new Give_Customer( $customer_id );
 
-	if ( $status == 'revoked' || $status == 'publish' ) {
+	//Only undo purchases that aren't these statuses
+	$dont_undo_statuses = apply_filters( 'give_undo_purchase_statuses', array(
+		'pending',
+		'cancelled'
+	) );
+
+	if ( ! in_array( $status, $dont_undo_statuses ) ) {
+		give_undo_purchase( false, $payment_id );
+	}
+
+	if ( $status == 'publish' ) {
+
 		// Only decrease earnings if they haven't already been decreased (or were never increased for this payment)
 		give_decrease_total_earnings( $amount );
 		// Clear the This Month earnings (this_monththis_month is NOT a typo)
@@ -297,7 +305,6 @@ function give_undo_purchase( $form_id = false, $payment_id ) {
 	}
 
 	$payment = new Give_Payment( $payment_id );
-
 
 	$maybe_decrease_earnings = apply_filters( 'give_decrease_earnings_on_undo', true, $payment, $payment->form_id );
 	if ( true === $maybe_decrease_earnings ) {
@@ -1701,7 +1708,7 @@ function give_get_payment_form_title( $payment_meta, $level_title = false, $sepa
 	$form_id    = isset( $payment_meta['form_id'] ) ? $payment_meta['form_id'] : 0;
 	$form_title = isset( $payment_meta['form_title'] ) ? $payment_meta['form_title'] : '';
 	$price_id   = isset( $payment_meta['price_id'] ) ? $payment_meta['price_id'] : null;
-	
+
 	if ( $level_title == true ) {
 		$form_title = '';
 	}
