@@ -166,6 +166,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 = 1.5.2: June 31, 2016 =
 * Fix: Deleted unnecessary user capabilities and resolved ones with typos causing issues with viewing and publishing donation forms for admins on new installs - https://github.com/WordImpress/Give/issues/671 and https://github.com/WordImpress/Give/issues/662
+* Fix: Donation amount and count get reduced when delete pending donation - thanks @farookibrahim - https://github.com/WordImpress/Give/issues/677
 * Fix: Broken link when clicking on donors name from transactions list in wp-admin - https://github.com/WordImpress/Give/issues/680
 
 = 1.5.1: June 30, 2016 =

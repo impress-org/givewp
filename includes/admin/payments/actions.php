@@ -213,7 +213,7 @@ add_action( 'give_update_payment_details', 'give_update_payment_details' );
  *
  * @since 1.0
  *
- * @param $data Arguments passed
+ * @param $data array Arguments passed
  *
  * @return void
  */
