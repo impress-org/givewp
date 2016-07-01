@@ -20,7 +20,7 @@ msgstr ""
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#: includes/admin/add-ons.php:28, includes/admin/admin-pages.php:49
+#: includes/admin/add-ons.php:28, includes/admin/admin-pages.php:48
 msgid "Give Add-ons"
 msgstr ""
 
@@ -48,31 +48,31 @@ msgstr ""
 msgid "Thanks :)"
 msgstr ""
 
-#: includes/admin/admin-pages.php:37, includes/admin/admin-pages.php:37, includes/admin/customers/class-customer-table.php:67, includes/admin/customers/customers.php:76, includes/admin/reporting/class-donor-reports-table.php:67, includes/admin/reporting/reports.php:77
+#: includes/admin/admin-pages.php:36, includes/admin/admin-pages.php:36, includes/admin/customers/class-customer-table.php:67, includes/admin/customers/customers.php:76, includes/admin/reporting/class-donor-reports-table.php:67, includes/admin/reporting/reports.php:77
 msgid "Donors"
 msgstr ""
 
-#: includes/admin/admin-pages.php:40
+#: includes/admin/admin-pages.php:39
 msgid "Donation Reports"
 msgstr ""
 
-#: includes/admin/admin-pages.php:40, includes/admin/reporting/reports.php:40
+#: includes/admin/admin-pages.php:39, includes/admin/reporting/reports.php:40
 msgid "Reports"
 msgstr ""
 
-#: includes/admin/admin-pages.php:43
+#: includes/admin/admin-pages.php:42
 msgid "Give Settings"
 msgstr ""
 
-#: includes/admin/admin-pages.php:43, includes/admin/plugins.php:30
+#: includes/admin/admin-pages.php:42, includes/admin/plugins.php:30
 msgid "Settings"
 msgstr ""
 
-#: includes/admin/admin-pages.php:49, includes/admin/class-give-settings.php:235, includes/admin/plugins.php:72, includes/admin/welcome.php:231
+#: includes/admin/admin-pages.php:48, includes/admin/class-give-settings.php:235, includes/admin/plugins.php:72, includes/admin/welcome.php:231
 msgid "Add-ons"
 msgstr ""
 
-#: includes/admin/admin-pages.php:52, includes/admin/admin-pages.php:52
+#: includes/admin/admin-pages.php:51, includes/admin/admin-pages.php:51
 msgid "Give Upgrades"
 msgstr ""
 
@@ -368,7 +368,7 @@ msgstr ""
 msgid "Nonprofits must verify their status to withdraw donations they receive via PayPal. PayPal users that are not verified nonprofits must demonstrate how their donations will be used, once they raise more than $10,000. By default, Give transactions are sent to PayPal as donations. You may change the transaction type using this option if you feel you may not meet PayPal's donation requirements."
 msgstr ""
 
-#: includes/admin/class-give-settings.php:789, includes/admin/payments/class-payments-table.php:263, includes/emails/functions.php:225, templates/shortcode-receipt.php:66
+#: includes/admin/class-give-settings.php:789, includes/admin/payments/class-payments-table.php:263, includes/emails/functions.php:224, templates/shortcode-receipt.php:66
 msgid "Donation"
 msgstr ""
 
@@ -733,10 +733,10 @@ msgid "Deactivate License"
 msgstr ""
 
 #: includes/admin/class-give-settings.php:2477
-msgid "API keys allow users to use the <a href=\"%s\">Give REST API</a> to retrieve donation data in JSON or XML for external applications or devices, such as <a href=\"%s\">Zapier</a>."
+msgid "You can create API keys for individual users within their profile edit screen. API keys allow users to use the %2$sGive REST API%1$s to retrieve donation data in JSON or XML for external applications or devices, such as %3$sZapier%1$s."
 msgstr ""
 
-#: includes/admin/customers/class-customer-table.php:66, includes/admin/payments/class-payments-table.php:266, includes/admin/reporting/class-donor-reports-table.php:66, includes/emails/functions.php:224, templates/shortcode-receipt.php:43
+#: includes/admin/customers/class-customer-table.php:66, includes/admin/payments/class-payments-table.php:266, includes/admin/reporting/class-donor-reports-table.php:66, includes/admin/reporting/class-sales-logs-list-table.php:111, includes/emails/functions.php:223, templates/shortcode-receipt.php:43
 msgid "Donor"
 msgstr ""
 
@@ -926,15 +926,15 @@ msgstr ""
 msgid "ID"
 msgstr ""
 
-#: includes/admin/customers/customers.php:400, includes/admin/forms/metabox.php:213, includes/admin/forms/metabox.php:869, includes/admin/payments/class-payments-table.php:262, includes/admin/reporting/export/class-batch-export-payments.php:54, includes/emails/functions.php:227, templates/history-donations.php:25
+#: includes/admin/customers/customers.php:400, includes/admin/forms/metabox.php:213, includes/admin/forms/metabox.php:869, includes/admin/payments/class-payments-table.php:262, includes/admin/reporting/export/class-batch-export-payments.php:54, includes/emails/functions.php:226, templates/history-donations.php:25
 msgid "Amount"
 msgstr ""
 
-#: includes/admin/customers/customers.php:401, includes/admin/forms/dashboard-columns.php:43, includes/admin/payments/class-payments-table.php:265, includes/admin/reporting/class-api-requests-logs-list-table.php:96, includes/admin/reporting/class-export-earnings.php:64, includes/admin/reporting/class-export.php:73, includes/admin/reporting/class-gateway-error-logs-list-table.php:130, includes/admin/reporting/class-sales-logs-list-table.php:102, includes/admin/reporting/export/class-batch-export-payments.php:58, templates/history-donations.php:24, templates/shortcode-receipt.php:51
+#: includes/admin/customers/customers.php:401, includes/admin/forms/dashboard-columns.php:43, includes/admin/payments/class-payments-table.php:265, includes/admin/reporting/class-api-requests-logs-list-table.php:96, includes/admin/reporting/class-export-earnings.php:64, includes/admin/reporting/class-export.php:73, includes/admin/reporting/class-gateway-error-logs-list-table.php:130, includes/admin/reporting/class-sales-logs-list-table.php:116, includes/admin/reporting/export/class-batch-export-payments.php:58, templates/history-donations.php:24, templates/shortcode-receipt.php:51
 msgid "Date"
 msgstr ""
 
-#: includes/admin/customers/customers.php:402, includes/admin/payments/class-payments-table.php:264, includes/admin/reporting/export/class-batch-export-forms.php:51, includes/admin/reporting/export/class-batch-export-payments.php:60
+#: includes/admin/customers/customers.php:402, includes/admin/payments/class-payments-table.php:264, includes/admin/reporting/class-sales-logs-list-table.php:114, includes/admin/reporting/export/class-batch-export-forms.php:51, includes/admin/reporting/export/class-batch-export-payments.php:60
 msgid "Status"
 msgstr ""
 
@@ -1137,7 +1137,7 @@ msgstr ""
 msgid "Dropdown"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:297, includes/gateways/paypal-standard.php:96, includes/gateways/paypal-standard.php:107, includes/payments/functions.php:1719
+#: includes/admin/forms/metabox.php:297, includes/gateways/paypal-standard.php:96, includes/gateways/paypal-standard.php:107, includes/payments/functions.php:1726
 msgid "Custom Amount"
 msgstr ""
 
@@ -1429,7 +1429,7 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:216, includes/admin/reporting/class-sales-logs-list-table.php:291
+#: includes/admin/payments/class-payments-table.php:216, includes/admin/reporting/class-sales-logs-list-table.php:305
 msgid "All"
 msgstr ""
 
@@ -1437,27 +1437,27 @@ msgstr ""
 msgid "Completed"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:224, includes/payments/functions.php:572
+#: includes/admin/payments/class-payments-table.php:224, includes/payments/functions.php:579
 msgid "Pending"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:228, includes/payments/functions.php:574
+#: includes/admin/payments/class-payments-table.php:228, includes/payments/functions.php:581
 msgid "Refunded"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:232, includes/payments/functions.php:579
+#: includes/admin/payments/class-payments-table.php:232, includes/payments/functions.php:586
 msgid "Revoked"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:236, includes/payments/functions.php:575
+#: includes/admin/payments/class-payments-table.php:236, includes/payments/functions.php:582
 msgid "Failed"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:240, includes/payments/functions.php:576
+#: includes/admin/payments/class-payments-table.php:240, includes/payments/functions.php:583
 msgid "Cancelled"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:244, includes/payments/functions.php:577
+#: includes/admin/payments/class-payments-table.php:244, includes/payments/functions.php:584
 msgid "Abandoned"
 msgstr ""
 
@@ -1465,11 +1465,11 @@ msgstr ""
 msgid "Details"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:335
+#: includes/admin/payments/class-payments-table.php:335, includes/admin/reporting/class-sales-logs-list-table.php:88
 msgid "This payment was made in test mode"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:335
+#: includes/admin/payments/class-payments-table.php:335, includes/admin/reporting/class-sales-logs-list-table.php:88
 msgid "Test"
 msgstr ""
 
@@ -1477,7 +1477,7 @@ msgstr ""
 msgid "Resend Donation Receipt"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:383, includes/admin/payments/class-payments-table.php:462, includes/payments/functions.php:1519
+#: includes/admin/payments/class-payments-table.php:383, includes/admin/payments/class-payments-table.php:462, includes/payments/functions.php:1526
 msgid "Delete"
 msgstr ""
 
@@ -1617,7 +1617,7 @@ msgstr ""
 msgid "Donation Form Title"
 msgstr ""
 
-#: includes/admin/payments/view-order-details.php:251, includes/emails/functions.php:226
+#: includes/admin/payments/view-order-details.php:251, includes/emails/functions.php:225
 msgid "Donation Date"
 msgstr ""
 
@@ -1705,7 +1705,7 @@ msgstr ""
 msgid "Documentation"
 msgstr ""
 
-#: includes/admin/reporting/class-api-requests-logs-list-table.php:93, includes/admin/reporting/class-gateway-error-logs-list-table.php:125, includes/admin/reporting/class-sales-logs-list-table.php:97
+#: includes/admin/reporting/class-api-requests-logs-list-table.php:93, includes/admin/reporting/class-gateway-error-logs-list-table.php:125, includes/admin/reporting/class-sales-logs-list-table.php:110
 msgid "Log ID"
 msgstr ""
 
@@ -1789,7 +1789,7 @@ msgstr ""
 msgid "<strong>Log data:</strong>"
 msgstr ""
 
-#: includes/admin/reporting/class-gateway-error-logs-list-table.php:126, includes/admin/reporting/class-sales-logs-list-table.php:101, includes/emails/functions.php:229
+#: includes/admin/reporting/class-gateway-error-logs-list-table.php:126, includes/emails/functions.php:228
 msgid "Payment ID"
 msgstr ""
 
@@ -1821,12 +1821,12 @@ msgstr ""
 msgid "Payment Methods Report"
 msgstr ""
 
-#: includes/admin/reporting/class-sales-logs-list-table.php:98, includes/admin/reporting/export/class-batch-export-payments.php:59
-msgid "User"
+#: includes/admin/reporting/class-sales-logs-list-table.php:113
+msgid "Donation Amount"
 msgstr ""
 
-#: includes/admin/reporting/class-sales-logs-list-table.php:100
-msgid "Item Amount"
+#: includes/admin/reporting/class-sales-logs-list-table.php:115, includes/admin/reporting/export/class-batch-export-payments.php:56, templates/shortcode-receipt.php:77
+msgid "Transaction ID"
 msgstr ""
 
 #: includes/admin/reporting/export/class-batch-export-customers.php:79
@@ -1905,16 +1905,16 @@ msgstr ""
 msgid "Products"
 msgstr ""
 
-#: includes/admin/reporting/export/class-batch-export-payments.php:55, includes/emails/functions.php:228, templates/shortcode-receipt.php:96
+#: includes/admin/reporting/export/class-batch-export-payments.php:55, includes/emails/functions.php:227, templates/shortcode-receipt.php:96
 msgid "Payment Method"
-msgstr ""
-
-#: includes/admin/reporting/export/class-batch-export-payments.php:56, templates/shortcode-receipt.php:77
-msgid "Transaction ID"
 msgstr ""
 
 #: includes/admin/reporting/export/class-batch-export-payments.php:57
 msgid "Purchase Key"
+msgstr ""
+
+#: includes/admin/reporting/export/class-batch-export-payments.php:59
+msgid "User"
 msgstr ""
 
 #: includes/admin/reporting/export/class-batch-export-payments.php:194
@@ -2790,7 +2790,7 @@ msgstr ""
 msgid "Access My Donation Details"
 msgstr ""
 
-#: includes/class-give-email-access.php:132, includes/emails/functions.php:234, includes/gateways/offline-donations.php:377
+#: includes/class-give-email-access.php:132, includes/emails/functions.php:233, includes/gateways/offline-donations.php:377
 msgid "Sincerely,"
 msgstr ""
 
@@ -3228,43 +3228,43 @@ msgstr ""
 msgid "New Donation!"
 msgstr ""
 
-#: includes/emails/functions.php:198
+#: includes/emails/functions.php:197
 msgid "Hi there,"
 msgstr ""
 
-#: includes/emails/functions.php:198
+#: includes/emails/functions.php:197
 msgid "This email is to inform you that a new donation has been made on your website: "
 msgstr ""
 
-#: includes/emails/functions.php:199, includes/emails/template.php:226, includes/gateways/offline-donations.php:230
+#: includes/emails/functions.php:198, includes/emails/template.php:226, includes/gateways/offline-donations.php:230
 msgid "Donor: "
 msgstr ""
 
-#: includes/emails/functions.php:200
+#: includes/emails/functions.php:199
 msgid "Donation: "
 msgstr ""
 
-#: includes/emails/functions.php:201, includes/emails/template.php:227, includes/gateways/offline-donations.php:231
+#: includes/emails/functions.php:200, includes/emails/template.php:227, includes/gateways/offline-donations.php:231
 msgid "Amount: "
 msgstr ""
 
-#: includes/emails/functions.php:202, includes/emails/template.php:228
+#: includes/emails/functions.php:201, includes/emails/template.php:228
 msgid "Payment Method: "
 msgstr ""
 
-#: includes/emails/functions.php:203
+#: includes/emails/functions.php:202
 msgid "Thank you,"
 msgstr ""
 
-#: includes/emails/functions.php:222
+#: includes/emails/functions.php:221
 msgid "Dear"
 msgstr ""
 
-#: includes/emails/functions.php:223
+#: includes/emails/functions.php:222
 msgid "Thank you for your donation. Your generosity is appreciated! Here are the details of your donation:"
 msgstr ""
 
-#: includes/emails/functions.php:230
+#: includes/emails/functions.php:229
 msgid "Receipt ID"
 msgstr ""
 
@@ -3973,23 +3973,23 @@ msgstr ""
 msgid "Thanks for Subscribing!"
 msgstr ""
 
-#: includes/payments/actions.php:115
+#: includes/payments/actions.php:113
 msgid "Status changed from %s to %s"
 msgstr ""
 
-#: includes/payments/functions.php:573
+#: includes/payments/functions.php:580
 msgid "Complete"
 msgstr ""
 
-#: includes/payments/functions.php:578
+#: includes/payments/functions.php:585
 msgid "Pre-Approved"
 msgstr ""
 
-#: includes/payments/functions.php:1504
+#: includes/payments/functions.php:1511
 msgid "System"
 msgstr ""
 
-#: includes/payments/functions.php:1519
+#: includes/payments/functions.php:1526
 msgid "Delete this payment note"
 msgstr ""
 
@@ -4175,94 +4175,86 @@ msgstr ""
 msgid "Forms"
 msgstr ""
 
-#: includes/post-types.php:252
-msgid "Campaign"
-msgstr ""
-
-#: includes/post-types.php:253
-msgid "Campaigns"
-msgstr ""
-
-#: includes/post-types.php:326, includes/post-types.php:335
+#: includes/post-types.php:284, includes/post-types.php:293
 msgid "Enter %s title here"
 msgstr ""
 
-#: includes/post-types.php:352
+#: includes/post-types.php:310
 msgctxt "Refunded payment status"
 msgid "Refunded"
 msgstr ""
 
-#: includes/post-types.php:357
+#: includes/post-types.php:315
 msgid "Refunded <span class=\"count\">(%s)</span>"
 msgid_plural "Refunded <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/post-types.php:360
+#: includes/post-types.php:318
 msgctxt "Failed payment status"
 msgid "Failed"
 msgstr ""
 
-#: includes/post-types.php:365
+#: includes/post-types.php:323
 msgid "Failed <span class=\"count\">(%s)</span>"
 msgid_plural "Failed <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/post-types.php:368
+#: includes/post-types.php:326
 msgctxt "Revoked payment status"
 msgid "Revoked"
 msgstr ""
 
-#: includes/post-types.php:373
+#: includes/post-types.php:331
 msgid "Revoked <span class=\"count\">(%s)</span>"
 msgid_plural "Revoked <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/post-types.php:376
+#: includes/post-types.php:334
 msgctxt "Cancelled payment status"
 msgid "Cancelled"
 msgstr ""
 
-#: includes/post-types.php:381
+#: includes/post-types.php:339
 msgid "Cancelled <span class=\"count\">(%s)</span>"
 msgid_plural "Cancelled <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/post-types.php:384
+#: includes/post-types.php:342
 msgctxt "Abandoned payment status"
 msgid "Abandoned"
 msgstr ""
 
-#: includes/post-types.php:389
+#: includes/post-types.php:347
 msgid "Abandoned <span class=\"count\">(%s)</span>"
 msgid_plural "Abandoned <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/post-types.php:415, includes/post-types.php:416
+#: includes/post-types.php:373, includes/post-types.php:374
 msgid "%2$s updated. %1$sView %2$s%3$s."
 msgstr ""
 
-#: includes/post-types.php:417
+#: includes/post-types.php:375
 msgid "%2$s published. %1$sView %2$s%3$s."
 msgstr ""
 
-#: includes/post-types.php:418
+#: includes/post-types.php:376
 msgid "%2$s saved. %1$sView %2$s%3$s."
 msgstr ""
 
-#: includes/post-types.php:419
+#: includes/post-types.php:377
 msgid "%2$s submitted. %1$sView %2$s%3$s."
 msgstr ""
 
-#: includes/post-types.php:459
+#: includes/post-types.php:416
 msgid "Give Single Form Sidebar"
 msgstr ""
 
-#: includes/post-types.php:461
+#: includes/post-types.php:418
 msgid "Widgets in this area will be shown on the single Give forms aside area. This sidebar will not display for embedded forms."
 msgstr ""
 
