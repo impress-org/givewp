@@ -1278,6 +1278,15 @@ table.give-table td.row-title p {
 #give_donor_export_form {
   margin: 0 0 5px; }
 
+#give-payments-filter .give-donation-status {
+  float: left; }
+
+.column-status .give-donation-status, .column-status .give-test-mode-transactions-label {
+  float: left; }
+
+.column-status .give-test-mode-transactions-label {
+  margin: 2px 0 0 8px; }
+
 /**
  * Give Settings SCSS
  *
@@ -1572,11 +1581,6 @@ tr.status-refunded td {
 
 #give-payments-filter .give-donation-status {
   float: left; }
-
-#give-payments-filter span.give-test-mode-transactions-label {
-  padding: 1px 4px;
-  font-size: 10px;
-  margin-left: 8px; }
 
 #give-order-update .give-donation-status {
   display: inline-block;
