@@ -173,8 +173,16 @@ Settings
 
 }
 
-.give_forms_page_give-settings .tablenav .actions {
-  overflow: visible;
+#api {
+  
+  .give-submit-wrap {
+    display: none;
+  }
+
+  .tablenav .actions {
+    overflow: visible;
+  }
+
 }
 
 a.give-delete {
