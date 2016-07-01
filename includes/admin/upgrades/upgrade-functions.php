@@ -258,3 +258,92 @@ function give_v134_upgrade_give_offline_status() {
 }
 
 add_action( 'give_upgrade_give_offline_status', 'give_v134_upgrade_give_offline_status' );
+
+
+/**
+ * Cleanup User Roles
+ *
+ * @description: This upgrade routine removes unused roles and roles with typos
+ *
+ * @since      1.5.2
+ */
+function give_v152_cleanup_users() {
+
+	$give_version = get_option( 'give_version' );
+
+	if ( ! $give_version ) {
+		// 1.0 is the first version to use this option so we must add it
+		$give_version = '1.0';
+	}
+
+	$give_version = preg_replace( '/[^0-9.].*/', '', $give_version );
+
+	//v1.5.2 Upgrades
+	if ( version_compare( $give_version, '1.5.2', '<' ) || ! give_has_upgrade_completed( 'upgrade_give_user_caps_cleanup' ) ) {
+
+		//Delete all caps with "ss"
+		//Also delete all unused "campaign" roles
+		$delete_caps = array(
+			'delete_give_formss',
+			'delete_others_give_formss',
+			'delete_private_give_formss',
+			'delete_published_give_formss',
+			'read_private_forms',
+			'edit_give_formss',
+			'edit_others_give_formss',
+			'edit_private_give_formss',
+			'edit_published_give_formss',
+			'publish_give_formss',
+			'read_private_give_formss',
+			'assign_give_campaigns_terms',
+			'delete_give_campaigns',
+			'delete_give_campaigns_terms',
+			'delete_give_campaignss',
+			'delete_others_give_campaignss',
+			'delete_private_give_campaignss',
+			'delete_published_give_campaignss',
+			'edit_give_campaigns',
+			'edit_give_campaigns_terms',
+			'edit_give_campaignss',
+			'edit_others_give_campaignss',
+			'edit_private_give_campaignss',
+			'edit_published_give_campaignss',
+			'manage_give_campaigns_terms',
+			'publish_give_campaignss',
+			'read_give_campaigns',
+			'read_private_give_campaignss',
+			'view_give_campaigns_stats',
+			'delete_give_paymentss',
+			'delete_others_give_paymentss',
+			'delete_private_give_paymentss',
+			'delete_published_give_paymentss',
+			'edit_give_paymentss',
+			'edit_others_give_paymentss',
+			'edit_private_give_paymentss',
+			'edit_published_give_paymentss',
+			'publish_give_paymentss',
+			'read_private_give_paymentss',
+		);
+	
+		global $wp_roles;
+		foreach ( $delete_caps as $cap ) {
+			foreach ( array_keys( $wp_roles->roles ) as $role ) {
+				$wp_roles->remove_cap( $role, $cap );
+			}
+		}
+	
+		// Create Give plugin roles
+		$roles = new Give_Roles();
+		$roles->add_roles();
+		$roles->add_caps();
+		
+		//The Update Ran
+		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
+		give_set_upgrade_complete( 'upgrade_give_user_caps_cleanup' );
+		delete_option( 'give_doing_upgrade' );
+
+	}
+
+}
+
+add_action( 'admin_init', 'give_v152_cleanup_users' );
