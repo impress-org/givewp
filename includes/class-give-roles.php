@@ -124,7 +124,7 @@ class Give_Roles {
 			}
 
 			$wp_roles->add_cap( 'give_accountant', 'edit_give_forms' );
-			$wp_roles->add_cap( 'give_accountant', 'read_private_forms' );
+			$wp_roles->add_cap( 'give_accountant', 'read_private_give_forms' );
 			$wp_roles->add_cap( 'give_accountant', 'view_give_reports' );
 			$wp_roles->add_cap( 'give_accountant', 'export_give_reports' );
 			$wp_roles->add_cap( 'give_accountant', 'edit_give_payments' );
@@ -251,7 +251,7 @@ class Give_Roles {
 
 			/** Give Accountant Capabilities */
 			$wp_roles->remove_cap( 'give_accountant', 'edit_give_forms' );
-			$wp_roles->remove_cap( 'give_accountant', 'read_private_forms' );
+			$wp_roles->remove_cap( 'give_accountant', 'read_private_give_forms' );
 			$wp_roles->remove_cap( 'give_accountant', 'view_give_reports' );
 			$wp_roles->remove_cap( 'give_accountant', 'export_give_reports' );
 
