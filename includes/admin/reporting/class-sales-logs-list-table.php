@@ -95,10 +95,10 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	public function get_columns() {
 		$columns = array(
 			'ID'         => __( 'Log ID', 'give' ),
-			'user_id'    => __( 'User', 'give' ),
+			'user_id'    => __( 'Donor', 'give' ),
 			'form'       => give_get_forms_label_singular(),
-			'amount'     => __( 'Item Amount', 'give' ),
-			'payment_id' => __( 'Payment ID', 'give' ),
+			'amount'     => __( 'Donation Amount', 'give' ),
+			'payment_id' => __( 'Transaction ID', 'give' ),
 			'date'       => __( 'Date', 'give' )
 		);
 
