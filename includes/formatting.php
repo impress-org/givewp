@@ -160,7 +160,6 @@ function give_format_amount( $amount, $decimals = true ) {
  * @since 1.6
  *
  * @param string $amount formatted amount number.
- *
  * @return float|string  formatted amount number with large number names.
  */
 function give_human_format_amount( $amount ) {
