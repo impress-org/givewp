@@ -4,7 +4,7 @@ Donate link: http://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 4.0
 Tested up to: 4.5.3
-Stable tag: 1.5.1
+Stable tag: 1.5.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -163,6 +163,13 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 11. We are proud to build Give in collaboration with many of the WordPress communities' top developers.
 
 == Changelog ==
+
+= 1.5.2: June 31, 2016 =
+* New: Added an addition "status" column for donation logs - https://github.com/WordImpress/Give/issues/684
+* Tweak: Hide the submit button for the API Tab in Settings & improved the field description - https://github.com/WordImpress/Give/issues/681
+* Fix: Deleted unnecessary user capabilities and resolved ones with typos causing issues with viewing and publishing donation forms for admins on new installs - https://github.com/WordImpress/Give/issues/671 and https://github.com/WordImpress/Give/issues/662
+* Fix: Donation amount and count get reduced when delete pending donation - thanks @farookibrahim - https://github.com/WordImpress/Give/issues/677
+* Fix: Broken link when clicking on donors name from transactions list in wp-admin - https://github.com/WordImpress/Give/issues/680
 
 = 1.5.1: June 30, 2016 =
 * Fix: The give_forms post type doesn't register correctly on new installs therefore users weren't seeing the "Add Form" or "Edit Form" options within WP-Admin - https://github.com/WordImpress/Give/issues/671 and https://wordpress.org/support/topic/the-add-forum-tab-not-showing?replies=4#post-8587308

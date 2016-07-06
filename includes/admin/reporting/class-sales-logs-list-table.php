@@ -65,6 +65,9 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 * @return string Column Name
 	 */
 	public function column_default( $item, $column_name ) {
+
+		$payment = give_get_payment_by( 'id', $item['payment_id'] );
+
 		switch ( $column_name ) {
 			case 'form' :
 				return '<a href="' . esc_url( add_query_arg( 'form', $item[ $column_name ] ) ) . '" >' . get_the_title( $item[ $column_name ] ) . '</a>';
@@ -76,6 +79,16 @@ class Give_Sales_Log_Table extends WP_List_Table {
 
 			case 'amount' :
 				return give_currency_filter( give_format_amount( $item['amount'] ) );
+
+			case 'status' :
+
+				$value = '<div class="give-donation-status status-' . sanitize_title( give_get_payment_status( $payment, true ) ) . '"><span class="give-donation-status-icon"></span> ' . give_get_payment_status( $payment, true ) . '</div>';
+
+				if ( $payment->mode == 'test' ) {
+					$value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label" data-tooltip="' . __( 'This payment was made in test mode', 'give' ) . '">' . __( 'Test', 'give' ) . '</span>';
+				}
+
+				return $value;
 
 			case 'payment_id' :
 				return '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $item['payment_id'] ) . '">' . give_get_payment_number( $item['payment_id'] ) . '</a>';
@@ -95,10 +108,11 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	public function get_columns() {
 		$columns = array(
 			'ID'         => __( 'Log ID', 'give' ),
-			'user_id'    => __( 'User', 'give' ),
+			'user_id'    => __( 'Donor', 'give' ),
 			'form'       => give_get_forms_label_singular(),
-			'amount'     => __( 'Item Amount', 'give' ),
-			'payment_id' => __( 'Payment ID', 'give' ),
+			'amount'     => __( 'Donation Amount', 'give' ),
+			'status'     => __( 'Status', 'give' ),
+			'payment_id' => __( 'Transaction ID', 'give' ),
 			'date'       => __( 'Date', 'give' )
 		);
 
@@ -152,9 +166,9 @@ class Give_Sales_Log_Table extends WP_List_Table {
 
 	/**
 	 * Display Tablenav (extended)
-	 * 
+	 *
 	 * @description: Display the table navigation above or below the table even when no items in the logs, so nav doesn't disappear
-	 * 
+	 *
 	 * @see: https://github.com/WordImpress/Give/issues/564
 	 *
 	 * @since 1.4.1

@@ -39,8 +39,7 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 	if ( $new_status != 'publish' && $new_status != 'complete' ) {
 		return;
 	}
-
-
+	
 	$payment = new Give_Payment( $payment_id );
 
 	$creation_date  = get_post_field( 'post_date', $payment_id, 'raw' );
@@ -71,8 +70,7 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 	// Clear the This Month earnings (this_monththis_month is NOT a typo)
 	delete_transient( md5( 'give_earnings_this_monththis_month' ) );
 	delete_transient( md5( 'give_earnings_todaytoday' ) );
-
-
+	
 	// Increase the donor's purchase stats
 	$customer = new Give_Customer( $customer_id );
 	$customer->increase_purchase_count();

@@ -1234,14 +1234,14 @@ function give_api_callback() {
 	$api_keys_table->prepare_items();
 	$api_keys_table->display();
 	?>
-	<p>
-		<?php printf(
-			__( 'API keys allow users to use the <a href="%s">Give REST API</a> to retrieve donation data in JSON or XML for external applications or devices, such as <a href="%s">Zapier</a>.', 'give' ),
-			'https://givewp.com/documentation/give-api-reference/',
-			'https://givewp.com/addons/zapier/'
+	<span class="cmb2-metabox-description api-description">
+		<?php echo sprintf(
+			__( 'You can create API keys for individual users within their profile edit screen. API keys allow users to use the %2$sGive REST API%1$s to retrieve donation data in JSON or XML for external applications or devices, such as %3$sZapier%1$s.', 'give' ),
+			'</a>',
+			'<a href="https://givewp.com/documentation/give-api-reference/" target="_blank">',
+			'<a href="https://givewp.com/addons/zapier/" target="_blank">'
 		); ?>
-	</p>
-
+	</span>
 	<?php
 
 	do_action( 'give_tools_api_keys_after' );

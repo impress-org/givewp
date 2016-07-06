@@ -441,7 +441,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 		if ( ! empty( $customer_id ) ) {
 			$customer = new Give_Customer( $customer_id );
-			$value    = '<a href="' . esc_url( admin_url( "edit.php?post_type=give_forms&page=give-customers&view=overview&id=$customer_id" ) ) . '">' . $customer->name . '</a>';
+			$value    = '<a href="' . esc_url( admin_url( "edit.php?post_type=give_forms&page=give-donors&view=overview&id=$customer_id" ) ) . '">' . $customer->name . '</a>';
 		} else {
 			$email = give_get_payment_user_email( $payment->ID );
 			$value = '<a href="' . esc_url( admin_url( "edit.php?post_type=give_forms&page=give-payment-history&s=$email" ) ) . '">' . __( '(donor missing)', 'give' ) . '</a>';

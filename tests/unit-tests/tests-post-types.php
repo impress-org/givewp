@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @group give_cpt
+ * Class Tests_Post_Types
  */
 class Tests_Post_Types extends Give_Unit_Test_Case {
 	
@@ -21,6 +21,9 @@ class Tests_Post_Types extends Give_Unit_Test_Case {
 		$this->assertArrayHasKey( 'give_forms', $wp_post_types );
 	}
 
+	/**
+	 * Test Post Type Labels
+	 */
 	public function test_give_post_type_labels() {
 		global $wp_post_types;
 		$this->assertEquals( 'Donation Forms', $wp_post_types['give_forms']->labels->name );
@@ -36,7 +39,7 @@ class Tests_Post_Types extends Give_Unit_Test_Case {
 		$this->assertEquals( 'Donations', $wp_post_types['give_forms']->labels->menu_name );
 		$this->assertEquals( 'Donation Form', $wp_post_types['give_forms']->labels->name_admin_bar );
 		$this->assertEquals( 1, $wp_post_types['give_forms']->publicly_queryable );
-		$this->assertEquals( 'give_forms', $wp_post_types['give_forms']->capability_type );
+		$this->assertEquals( 'give_form', $wp_post_types['give_forms']->capability_type );
 		$this->assertEquals( 1, $wp_post_types['give_forms']->map_meta_cap );
 		$this->assertEquals( 'donations', $wp_post_types['give_forms']->rewrite['slug'] );
 		$this->assertEquals( 1, $wp_post_types['give_forms']->has_archive );
@@ -44,11 +47,17 @@ class Tests_Post_Types extends Give_Unit_Test_Case {
 		$this->assertEquals( 'Donation Forms', $wp_post_types['give_forms']->label );
 	}
 
+	/**
+	 * Test Payment CPT Exists
+	 */
 	public function test_payment_post_type() {
 		global $wp_post_types;
 		$this->assertArrayHasKey( 'give_payment', $wp_post_types );
 	}
 
+	/**
+	 * Test Payments CPT Labels
+	 */
 	public function test_payment_post_type_labels() {
 		global $wp_post_types;
 		$this->assertEquals( 'Donations', $wp_post_types['give_payment']->labels->name );
@@ -70,6 +79,9 @@ class Tests_Post_Types extends Give_Unit_Test_Case {
 		$this->assertEquals( 'Donations', $wp_post_types['give_payment']->label );
 	}
 
+	/**
+	 * Test Registering Post Statuses
+	 */
 	public function test_register_post_statuses() {
 		give_register_post_type_statuses();
 

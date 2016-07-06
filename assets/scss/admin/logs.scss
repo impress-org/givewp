@@ -11,3 +11,17 @@
 #give_donor_export_form {
   margin: 0 0 5px;
 }
+
+
+#give-payments-filter .give-donation-status {
+  float: left;
+}
+
+.column-status {
+  .give-donation-status, .give-test-mode-transactions-label {
+    float:left;
+  }
+  .give-test-mode-transactions-label {
+    margin: 2px 0 0 8px;
+  }
+}

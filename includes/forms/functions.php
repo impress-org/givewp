@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Filter: Do not show the Give shortcut button on Give Forms or Campaign posts
+ * Filter: Do not show the Give shortcut button on Give Forms CPT
  *
  * @return bool
  */
@@ -23,7 +23,7 @@ function give_shortcode_button_condition() {
 
 	global $typenow;
 
-	if ( $typenow != 'give_forms' && $typenow != 'give_campaigns' ) {
+	if ( $typenow != 'give_forms' ) {
 		return true;
 	}
 
