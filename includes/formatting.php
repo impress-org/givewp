@@ -152,6 +152,43 @@ function give_format_amount( $amount, $decimals = true ) {
 	return apply_filters( 'give_format_amount', $formatted, $amount, $decimals, $decimal_sep, $thousands_sep );
 }
 
+
+/**
+ * Get a nicely formatted human readable amount.
+ * Note: This function only support large number formatting from million to trillion
+ *
+ * @since 1.6
+ *
+ * @param string $amount formatted amount number.
+ *
+ * @return float|string  formatted amount number with large number names.
+ */
+function give_human_format_amount( $amount ) {
+
+    // Get thousand separator.
+    $thousands_sep = give_get_price_thousand_separator();
+
+    // Sanitize amount.
+    $sanitize_amount = give_sanitize_amount( $amount );
+
+    // Explode amount to calculate name of large numbers.
+	$amount_array = explode( $thousands_sep, $amount );
+
+    // Calculate amount parts count.
+    $amount_count_parts = count( $amount_array );
+
+    // Calculate large number formatted amount.
+    if ( 4 < $amount_count_parts ){
+        return sprintf( __( '%s trillion', 'give' ), round( ( $sanitize_amount / 1000000000000 ), 2 ) );
+    } elseif ( 3 < $amount_count_parts ){
+        return sprintf( __( '%s billion', 'give' ), round( ( $sanitize_amount / 1000000000 ), 2 ));
+    } elseif ( 2 < $amount_count_parts  ) {
+        return sprintf( __( '%s million', 'give' ), round( ( $sanitize_amount / 1000000), 2 ) );
+    }
+
+    return apply_filters( 'give_human_format_amount', $sanitize_amount, $amount );
+}
+
 /**
  * Returns a nicely formatted amount with custom decimal separator.
  *

@@ -1244,7 +1244,18 @@ function give_show_goal_progress( $form_id, $args ) {
 
 		if ( $goal_format !== 'percentage' ) {
 
-			$output .= sprintf( _x( '%s of %s raised', 'This text displays the amount of income raised compared to the goal.', 'give' ), '<span class="income">' . apply_filters( 'give_goal_amount_raised_output', give_currency_filter( give_format_amount( $income ) ) ) . '</span>', '<span class="goal-text">' . apply_filters( 'give_goal_amount_target_output', give_currency_filter( give_format_amount( $goal ) ) ) ) . '</span>';
+            // Get formatted amount.
+            $income = give_format_amount( $income );
+            $goal = give_format_amount( $goal );
+
+            // Add human readable amount formatting.
+            // @see https://github.com/WordImpress/Give/issues/650
+			if( apply_filters( 'give_show_human_format_amount', true ) ) {
+                $income = give_human_format_amount( $income );
+                $goal = give_human_format_amount( $goal );
+            }
+
+			$output .= sprintf( _x( '%s of %s raised', 'This text displays the amount of income raised compared to the goal.', 'give' ), '<span class="income">' . apply_filters( 'give_goal_amount_raised_output', give_currency_filter( $income ) ) . '</span>', '<span class="goal-text">' . apply_filters( 'give_goal_amount_target_output', give_currency_filter( $goal ) ) ) . '</span>';
 
 		} elseif ( $goal_format == 'percentage' ) {
 
