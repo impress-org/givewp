@@ -73,11 +73,39 @@ class CMB2_Field {
 	protected $field_options = array();
 
 	/**
+	 * Array of provided field text strings
+	 * @var   array
+	 * @since 2.0.0
+	 */
+	protected $strings;
+
+	/**
 	 * Array of field param callback results
 	 * @var   array
 	 * @since 2.0.0
 	 */
 	protected $callback_results = array();
+
+	/**
+	 * Array of key => value data for saving. Likely $_POST data.
+	 * @var   array
+	 * @since 2.0.0
+	 */
+	public $data_to_save = array();
+
+	/**
+	 * Current field's CMB2 instance ID
+	 * @var   string
+	 * @since 2.2.2
+	 */
+	public $cmb_id = '';
+
+	/**
+	 * The field's render context. In most cases, 'edit', but can be 'display'.
+	 * @var   string
+	 * @since 2.2.2
+	 */
+	public $render_context = 'edit';
 
 	/**
 	 * Constructs our field object
@@ -90,9 +118,14 @@ class CMB2_Field {
 			$this->group       = $args['group_field'];
 			$this->object_id   = $this->group->object_id;
 			$this->object_type = $this->group->object_type;
+			$this->cmb_id      = $this->group->cmb_id;
 		} else {
 			$this->object_id   = isset( $args['object_id'] ) && '_' !== $args['object_id'] ? $args['object_id'] : 0;
 			$this->object_type = isset( $args['object_type'] ) ? $args['object_type'] : 'post';
+
+			if ( isset( $args['cmb_id'] ) ) {
+				$this->cmb_id = $args['cmb_id'];
+			}
 		}
 
 		$this->args = $this->_set_field_defaults( $args['field_args'] );
@@ -135,9 +168,9 @@ class CMB2_Field {
 	public function args( $key = '', $_key = '' ) {
 		$arg = $this->_data( 'args', $key );
 
-		if ( 'default' == $key ) {
+		if ( in_array( $key, array( 'default', 'default_cb' ), true ) ) {
 
-			$arg = $this->get_param_callback_result( 'default', false );
+			$arg = $this->get_default();
 
 		} elseif ( $_key ) {
 
@@ -416,9 +449,31 @@ class CMB2_Field {
 			return call_user_func( $cb, $meta_value, $this->args(), $this );
 		}
 
-		$clean = new CMB2_Sanitize( $this, $meta_value );
-		// Validation via 'CMB2_Sanitize' (with fallback filter)
-		return $clean->{$this->type()}();
+		$sanitizer = new CMB2_Sanitize( $this, $meta_value );
+
+		/**
+		 * Filter the value before it is saved.
+		 *
+		 * The dynamic portion of the hook name, $this->type(), refers to the field type.
+		 *
+		 * Passing a non-null value to the filter will short-circuit saving
+		 * the field value, saving the passed value instead.
+		 *
+		 * @param bool|mixed $override_value Sanitization/Validation override value to return.
+		 *                                   Default false to skip it.
+		 * @param mixed      $value      The value to be saved to this field.
+		 * @param int        $object_id  The ID of the object where the value will be saved
+		 * @param array      $field_args The current field's arguments
+		 * @param object     $sanitizer  This `CMB2_Sanitize` object
+		 */
+		$override_value = apply_filters( "cmb2_sanitize_{$this->type()}", null, $sanitizer->value, $this->object_id, $this->args(), $sanitizer );
+
+		if ( null !== $override_value ) {
+			return $override_value;
+		}
+
+		// Sanitization via 'CMB2_Sanitize'
+		return $sanitizer->{$this->type()}();
 	}
 
 	/**
@@ -427,10 +482,11 @@ class CMB2_Field {
 	 * @param  array $data_to_save $_POST data to check
 	 * @return bool                Result of save
 	 */
-	public function save_field_from_data( $data_to_save ) {
+	public function save_field_from_data( array $data_to_save ) {
+		$this->data_to_save = $data_to_save;
 
-		$meta_value = isset( $data_to_save[ $this->id( true ) ] )
-			? $data_to_save[ $this->id( true ) ]
+		$meta_value = isset( $this->data_to_save[ $this->id( true ) ] )
+			? $this->data_to_save[ $this->id( true ) ]
 			: null;
 
 		return $this->save_field( $meta_value );
@@ -447,6 +503,7 @@ class CMB2_Field {
 		$new_value = $this->sanitization_cb( $meta_value );
 		$old       = $this->get_data();
 		$updated   = false;
+		$action    = '';
 
 		if ( $this->args( 'multiple' ) && ! $this->args( 'repeatable' ) && ! $this->group ) {
 
@@ -462,12 +519,47 @@ class CMB2_Field {
 			}
 
 			$updated = $count ? $count : false;
+			$action  = 'repeatable';
 
 		} elseif ( ! cmb2_utils()->isempty( $new_value ) && $new_value !== $old ) {
 			$updated = $this->update_data( $new_value );
+			$action  = 'updated';
 		} elseif ( cmb2_utils()->isempty( $new_value ) ) {
 			$updated = $this->remove_data();
+			$action  = 'removed';
 		}
+
+		if ( $updated ) {
+			$this->value = $this->get_data();
+		}
+
+		$field_id = $this->id( true );
+
+		/**
+		 * Hooks after save field action.
+		 *
+		 * @since 2.2.0
+		 *
+		 * @param string            $field_id the current field id paramater.
+		 * @param bool              $updated  Whether the metadata update action occurred.
+		 * @param string            $action   Action performed. Could be "repeatable", "updated", or "removed".
+		 * @param CMB2_Field object $field    This field object
+		 */
+		do_action( 'cmb2_save_field', $field_id, $updated, $action, $this );
+
+		/**
+		 * Hooks after save field action.
+		 *
+		 * The dynamic portion of the hook, $field_id, refers to the
+		 * current field id paramater.
+		 *
+		 * @since 2.2.0
+		 *
+		 * @param bool              $updated Whether the metadata update action occurred.
+		 * @param string            $action  Action performed. Could be "repeatable", "updated", or "removed".
+		 * @param CMB2_Field object $field   This field object
+		 */
+		do_action( "cmb2_save_field_{$field_id}", $updated, $action, $this );
 
 		return $updated;
 	}
@@ -498,7 +590,7 @@ class CMB2_Field {
 	}
 
 	/**
-	 * Determine if current type is excempt from escaping
+	 * Determine if current type is exempt from escaping
 	 * @since  1.1.0
 	 * @return bool  True if exempt
 	 */
@@ -603,7 +695,7 @@ class CMB2_Field {
 	 * @return mixed             Field value, or default value
 	 */
 	public function val_or_default( $meta_value ) {
-		return ! cmb2_utils()->isempty( $meta_value ) ? $meta_value : $this->get_param_callback_result( 'default', false );
+		return ! cmb2_utils()->isempty( $meta_value ) ? $meta_value : $this->get_default();
 	}
 
 	/**
@@ -667,15 +759,26 @@ class CMB2_Field {
 	}
 
 	/**
+	 * Get timestamp from text date
+	 * @since  2.2.0
+	 * @param  string $value Date value
+	 * @return mixed         Unix timestamp representing the date.
+	 */
+	public function get_timestamp_from_value( $value ) {
+		return cmb2_utils()->get_timestamp_from_value( $value, $this->args( 'date_format' ) );
+	}
+
+	/**
 	 * Get field render callback and Render the field row
 	 * @since 1.0.0
 	 */
 	public function render_field() {
-		// Check if the field has a registered render_field callback
-		if ( $cb = $this->maybe_callback( 'render_row_cb' ) ) {
-			// Ok, callback is good, let's run it.
-			return call_user_func( $cb, $this->args(), $this );
-		}
+		$this->render_context = 'edit';
+
+		$this->peform_param_callback( 'render_row_cb' );
+
+		// For chaining
+		return $this;
 	}
 
 	/**
@@ -696,7 +799,7 @@ class CMB2_Field {
 
 		$this->peform_param_callback( 'before_row' );
 
-		printf( "<div class=\"cmb-row %s\">\n", $this->row_classes() );
+		printf( "<div class=\"cmb-row %s\" data-fieldtype=\"%s\">\n", $this->row_classes(), $this->type() );
 
 		if ( ! $this->args( 'show_names' ) ) {
 			echo "\n\t<div class=\"cmb-td\">\n";
@@ -705,7 +808,7 @@ class CMB2_Field {
 
 		} else {
 
-			if ( $this->get_param_callback_result( 'label_cb', false ) ) {
+			if ( $this->get_param_callback_result( 'label_cb' ) ) {
 				echo '<div class="cmb-th">', $this->peform_param_callback( 'label_cb' ), '</div>';
 			}
 
@@ -770,7 +873,7 @@ class CMB2_Field {
 			'cmb-repeat'             => $this->args( 'repeatable' ),
 			'cmb-repeat-group-field' => $this->group,
 			'cmb-inline'             => $this->args( 'inline' ),
-			'table-layout'           => in_array( $this->type(), $repeat_table_rows_types ),
+			'table-layout'           => 'edit' === $this->render_context && in_array( $this->type(), $repeat_table_rows_types ),
 		);
 
 		foreach ( $conditional_classes as $class => $condition ) {
@@ -779,7 +882,7 @@ class CMB2_Field {
 			}
 		}
 
-		if ( $added_classes = $this->get_param_callback_result( 'row_classes', false ) ) {
+		if ( $added_classes = $this->get_param_callback_result( 'row_classes' ) ) {
 			$added_classes = is_array( $added_classes ) ? implode( ' ', $added_classes ) : (string) $added_classes;
 		}
 
@@ -796,6 +899,69 @@ class CMB2_Field {
 		 * @param CMB2_Field object $field   This field object
 		 */
 		return apply_filters( 'cmb2_row_classes', implode( ' ', $classes ), $this );
+	}
+
+
+
+	/**
+	 * Get field display callback and render the display value in the column.
+	 * @since 2.2.2
+	 */
+	public function render_column() {
+		$this->render_context = 'display';
+
+		$this->peform_param_callback( 'display_cb' );
+
+		// For chaining
+		return $this;
+	}
+
+	/**
+	 * Default callback to outputs field value in a display format.
+	 * @since 2.2.2
+	 */
+	public function display_value_callback() {
+		// If field is requesting to be conditionally shown
+		if ( ! $this->should_show() ) {
+			return;
+		}
+
+		$display = new CMB2_Field_Display( $this );
+
+		/**
+		 * A filter to bypass the default display.
+		 *
+		 * The dynamic portion of the hook name, $this->type(), refers to the field type.
+		 *
+		 * Passing a non-null value to the filter will short-circuit the default display.
+		 *
+		 * @param bool|mixed         $pre_output Default null value.
+		 * @param CMB2_Field         $field      This field object.
+		 * @param CMB2_Field_Display $display    The `CMB2_Field_Display` object.
+		 */
+		$pre_output = apply_filters( "cmb2_pre_field_display_{$this->type()}", null, $this, $display );
+
+		if ( null !== $pre_output ) {
+			echo $pre_output;
+			return;
+		}
+
+		$this->peform_param_callback( 'before_display_wrap' );
+
+		printf( "<div class=\"cmb-column %s\" data-fieldtype=\"%s\">\n", $this->row_classes( 'display' ), $this->type() );
+
+		$this->peform_param_callback( 'before_display' );
+
+		CMB2_Field_Display::get( $this )->display();
+
+		$this->peform_param_callback( 'after_display' );
+
+		echo "\n</div>";
+
+		$this->peform_param_callback( 'after_display_wrap' );
+
+		// For chaining
+		return $this;
 	}
 
 	/**
@@ -831,34 +997,36 @@ class CMB2_Field {
 	 * Store results of the param callbacks for continual access
 	 * @since  2.0.0
 	 * @param  string $param Field parameter
-	 * @param  bool   $echo  Whether field should be 'echoed'
 	 * @return mixed         Results of param/param callback
 	 */
-	public function get_param_callback_result( $param, $echo = true ) {
+	public function get_param_callback_result( $param ) {
 
 		// If we've already retrieved this param's value,
 		if ( array_key_exists( $param, $this->callback_results ) ) {
+
 			// send it back
 			return $this->callback_results[ $param ];
 		}
 
+		// Check if parameter has registered a callback.
 		if ( $cb = $this->maybe_callback( $param ) ) {
-			if ( $echo ) {
-				// Ok, callback is good, let's run it and store the result
-				ob_start();
-				echo call_user_func( $cb, $this->args(), $this );
-				// grab the result from the output buffer and store it
-				$this->callback_results[ $param ] = ob_get_contents();
-				ob_end_clean();
-			} else {
-				$this->callback_results[ $param ] = call_user_func( $cb, $this->args(), $this );
-			}
 
-			return $this->callback_results[ $param ];
+			// Ok, callback is good, let's run it and store the result.
+			ob_start();
+			$returned = call_user_func( $cb, $this->args(), $this );
+
+			// Grab the result from the output buffer and store it.
+			$echoed = ob_get_clean();
+
+			// This checks if the user returned or echoed their callback.
+			// Defaults to using the echoed value.
+			$this->callback_results[ $param ] = $echoed ? $echoed : $returned;
+
+		} else {
+
+			// Otherwise just get whatever is there.
+			$this->callback_results[ $param ] = isset( $this->args[ $param ] ) ? $this->args[ $param ] : false;
 		}
-
-		// Otherwise just get whatever is there
-		$this->callback_results[ $param ] = isset( $this->args[ $param ] ) ? $this->args[ $param ] : false;
 
 		return $this->callback_results[ $param ];
 	}
@@ -872,6 +1040,40 @@ class CMB2_Field {
 	public function replace_hash( $value ) {
 		// Replace hash with 1 based count
 		return str_ireplace( '{#}', ( $this->index + 1 ), $value );
+	}
+
+	/**
+	 * Retrieve text parameter from field's text array (if it has one), or use fallback text
+	 * For back-compatibility, falls back to checking the options array.
+	 *
+	 * @since  2.2.2
+	 * @param  string  $text_key Key in field's text array
+	 * @param  string  $fallback Fallback text
+	 * @return string            Text
+	 */
+	public function string( $text_key, $fallback ) {
+		// If null, populate with our field strings values.
+		if ( null === $this->strings ) {
+			$this->strings = (array) $this->args['text'];
+
+			if ( is_callable( $this->args['text_cb'] ) ) {
+				$strings = call_user_func( $this->args['text_cb'], $this );
+
+				if ( $strings && is_array( $strings ) ) {
+					$this->strings += $strings;
+				}
+			}
+		}
+
+		// If we have that string value, send it back.
+		if ( isset( $this->strings[ $text_key ] ) ) {
+			return $this->strings[ $text_key ];
+		}
+
+		// Check options for back-compat.
+		$string = $this->options( $text_key );
+
+		return $string ? $string : $fallback;
 	}
 
 	/**
@@ -895,7 +1097,7 @@ class CMB2_Field {
 			$options = call_user_func( $this->args['options_cb'], $this );
 
 			if ( $options && is_array( $options ) ) {
-				$this->field_options += $options;
+				$this->field_options = $options + $this->field_options;
 			}
 		}
 
@@ -904,6 +1106,27 @@ class CMB2_Field {
 		}
 
 		return $this->field_options;
+	}
+
+	/**
+	 * Get CMB2_Field default value, either from default param or default_cb param.
+	 *
+	 * @since  0.2.2
+	 *
+	 * @return mixed  Default field value
+	 */
+	public function get_default() {
+		if ( null !== $this->args['default'] ) {
+			return $this->args['default'];
+		}
+
+		$param = is_callable( $this->args['default_cb'] ) ? 'default_cb' : 'default';
+		$default = $this->get_param_callback_result( $param );
+
+		// Allow a filter override of the default value
+		$this->args['default'] = apply_filters( 'cmb2_default_filter', $default, $this );
+
+		return $this->args['default'];
 	}
 
 	/**
@@ -920,11 +1143,14 @@ class CMB2_Field {
 			'desc'              => '',
 			'before'            => '',
 			'after'             => '',
-			'options_cb'        => '',
 			'options'           => array(),
+			'options_cb'        => '',
+			'text'              => array(),
+			'text_cb'           => '',
 			'attributes'        => array(),
 			'protocols'         => null,
 			'default'           => null,
+			'default_cb'        => '',
 			'select_all_button' => true,
 			'multiple'          => false,
 			'repeatable'        => isset( $args['type'] ) && 'group' == $args['type'],
@@ -936,12 +1162,17 @@ class CMB2_Field {
 			'description'       => isset( $args['desc'] ) ? $args['desc'] : '',
 			'preview_size'      => 'file' == $args['type'] ? array( 350, 350 ) : array( 50, 50 ),
 			'render_row_cb'     => array( $this, 'render_field_callback' ),
+			'display_cb'        => array( $this, 'display_value_callback' ),
 			'label_cb'          => 'title' != $args['type'] ? array( $this, 'label' ) : '',
+			'column'            => false,
 		) );
 
-		// Allow a filter override of the default value
-		$args['default']    = apply_filters( 'cmb2_default_filter', $args['default'], $this );
-		// $args['multiple']   = isset( $args['multiple'] ) ? $args['multiple'] : ( 'multicheck' == $args['type'] ? true : false );
+		// default param can be passed a callback as well
+		if ( is_callable( $args['default'] ) ) {
+			$args['default_cb'] = $args['default'];
+			$args['default'] = null;
+		}
+
 		$args['repeatable'] = $args['repeatable'] && ! $this->repeatable_exception( $args['type'] );
 		$args['inline']     = $args['inline'] || false !== stripos( $args['type'], '_inline' );
 
@@ -974,26 +1205,71 @@ class CMB2_Field {
 
 		if ( in_array( $args['type'], $option_types, true ) ) {
 
-			$args['show_option_none'] = isset( $args['show_option_none'] ) ? $args['show_option_none'] : false;
+			$args['show_option_none'] = isset( $args['show_option_none'] ) ? $args['show_option_none'] : null;
 			$args['show_option_none'] = true === $args['show_option_none'] ? __( 'None', 'cmb2' ) : $args['show_option_none'];
 
-			if ( ! $args['show_option_none'] ) {
+			if ( null === $args['show_option_none'] ) {
 				$off_by_default = in_array( $args['type'], array( 'select', 'radio', 'radio_inline' ), true );
 				$args['show_option_none'] = $off_by_default ? false : __( 'None', 'cmb2' );
 			}
 
 		}
 
+		$args['has_supporting_data'] = in_array(
+			$args['type'],
+			array(
+				// CMB2_Sanitize::_save_file_id_value()/CMB2_Sanitize::_get_group_file_value_array()
+				'file',
+				// See CMB2_Sanitize::_save_utc_value()
+				'text_datetime_timestamp_timezone',
+			),
+			true
+		);
+
 		return $args;
 	}
 
 	/**
-	 * Updates attributes array values unless they exist from the field config array
-	 * @since 1.1.0
-	 * @param array $attrs Array of attributes to update
+	 * Returns a cloned version of this field object with, but with
+	 * modified/overridden field arguments.
+	 *
+	 * @since  2.2.2
+	 * @param  array  $field_args Array of field arguments, or entire array of
+	 *                            arguments for CMB2_Field
+	 *
+	 * @return CMB2_Field         The new CMB2_Field instance.
 	 */
-	public function maybe_set_attributes( $attrs = array() ) {
-		return wp_parse_args( $this->args['attributes'], $attrs );
+	public function get_field_clone( $field_args ) {
+		$args = array(
+			'field_args'  => array(),
+			'group_field' => $this->group,
+			'object_id'   => $this->object_id,
+			'object_type' => $this->object_type,
+			'cmb_id'      => $this->cmb_id,
+		);
+
+		if ( isset( $field_args['field_args'] ) ) {
+			$args = wp_parse_args( $field_args, $args );
+		} else {
+			$args['field_args'] = wp_parse_args( $field_args, $this->args );
+		}
+
+		return new CMB2_Field( $args );
+	}
+
+	/**
+	 * Returns the CMB2 instance this field is registered to.
+	 *
+	 * @since  2.2.2
+	 *
+	 * @return CMB2|WP_Error If new CMB2_Field is called without cmb_id arg, returns error.
+	 */
+	public function get_cmb() {
+		if ( ! $this->cmb_id ) {
+			return new WP_Error( 'no_cmb_id', __( 'Sorry, this field does not have a cmb_id specified.', 'cmb2' ) );
+		}
+
+		return cmb2_get_metabox( $this->cmb_id, $this->object_id, $this->object_type );
 	}
 
 }
