@@ -1773,3 +1773,27 @@ function give_get_price_id( $form_id, $price ) {
 	return $price_id;
 
 }
+
+/**
+ * Get/Print give form dropdown html
+ * 
+ * This function is wrapper to public method forms_dropdown of Give_HTML_Elements class to get/print form dropdown html.
+ * Give_HTML_Elements is defind in includes/class-give-html-elements.php
+ *
+ * @since 1.6
+ * 
+ * @param array $args Arguments for form dropdown
+ * @param bool $echo  This parameter decide if print form dropdown html output or not
+ * 
+ * @return string
+ */
+function give_get_form_dropdown( $args = array(), $echo = false ){
+    $give_html_element = new Give_HTML_Elements();
+    $form_dropdown_html = $give_html_element->forms_dropdown( $args );
+
+    if( $echo ) {
+        return $form_dropdown_html;
+    }
+
+    echo $form_dropdown_html;
+}
