@@ -126,7 +126,7 @@ function give_unset_error( $error_id ) {
  * Register die handler for give_die()
  *
  * @since  1.0
- * @return void
+ * @return string/void
  */
 function _give_die_handler() {
 	if ( defined( 'GIVE_UNIT_TESTS' ) ) {
