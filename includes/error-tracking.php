@@ -140,8 +140,13 @@ function _give_die_handler() {
  * Wrapper function for wp_die(). This function adds filters for wp_die() which
  * kills execution of the script using wp_die(). This allows us to then to work
  * with functions using give_die() in the unit tests.
- *
- * @since  1.0
+ * 
+ * @since 1.0
+ * 
+ * @param string $message
+ * @param string $title
+ * @param int $status
+ * 
  * @return void
  */
 function give_die( $message = '', $title = '', $status = 400 ) {
