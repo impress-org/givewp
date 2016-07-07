@@ -293,8 +293,6 @@ add_action( 'give_delete_payment_note', 'give_trigger_payment_note_deletion' );
  *
  * @since 1.0
  *
- * @param array $data Arguments passed
- *
  * @return void
  */
 function give_ajax_delete_payment_note() {
