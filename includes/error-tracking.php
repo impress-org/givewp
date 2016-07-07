@@ -161,9 +161,9 @@ function give_die( $message = '', $title = '', $status = 400 ) {
  * @description: Helper function to easily output an error message properly wrapped; used commonly with shortcodes
  * @since      1.3
  *
- * @param $message
- * @param $echo
- * @param $error_id
+ * @param string $message
+ * @param bool   $echo
+ * @param string $error_id
  *
  * @return   string  $error
  */
