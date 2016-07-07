@@ -43,7 +43,7 @@ class Give_API {
 	 * Log API requests?
 	 *
 	 * @var bool
-	 * @access private
+	 * @access public
 	 * @since  1.1
 	 */
 	public $log_requests = true;
@@ -61,7 +61,7 @@ class Give_API {
 	 * User ID Performing the API Request
 	 *
 	 * @var int
-	 * @access private
+	 * @access public
 	 * @since  1.1
 	 */
 	public $user_id = 0;
@@ -87,7 +87,7 @@ class Give_API {
 	/**
 	 *
 	 * @var bool
-	 * @access private
+	 * @access public
 	 * @since  1.1
 	 */
 	public $override = true;
@@ -105,7 +105,7 @@ class Give_API {
 	 * All versions of the API
 	 *
 	 * @var string
-	 * @access public
+	 * @access protected
 	 * @since  1.1
 	 */
 	protected $versions = array();
@@ -114,7 +114,7 @@ class Give_API {
 	 * Queried endpoint
 	 *
 	 * @var string
-	 * @access public
+	 * @access private
 	 * @since  1.1
 	 */
 	private $endpoint;
@@ -123,7 +123,7 @@ class Give_API {
 	 * Endpoints routes
 	 *
 	 * @var object
-	 * @access public
+	 * @access private
 	 * @since  1.1
 	 */
 	private $routes;
@@ -132,6 +132,7 @@ class Give_API {
 	 * Setup the Give API
 	 *
 	 * @since 1.1
+	 * @access public
 	 */
 	public function __construct() {
 
@@ -234,7 +235,7 @@ class Give_API {
 	/**
 	 * Retrieves the default version of the API to use
 	 *
-	 * @access private
+	 * @access public
 	 * @since  1.1
 	 * @return string
 	 */
@@ -343,7 +344,7 @@ class Give_API {
 	 *
 	 * @access public
 	 * @since  1.1
-	 * @global object $wpdb Used to query the database using the WordPress
+	 * @global WPDB $wpdb Used to query the database using the WordPress
 	 *                      Database API
 	 *
 	 * @param string $key Public Key
@@ -576,7 +577,7 @@ class Give_API {
 	/**
 	 * Returns the API endpoint requested
 	 *
-	 * @access private
+	 * @access public
 	 * @since  1.1
 	 * @return string $query Query mode
 	 */
@@ -588,7 +589,7 @@ class Give_API {
 	/**
 	 * Determines the kind of query requested and also ensure it is a valid query
 	 *
-	 * @access private
+	 * @access public
 	 * @since  1.1
 	 * @global $wp_query
 	 */
@@ -624,7 +625,7 @@ class Give_API {
 	/**
 	 * Get page number
 	 *
-	 * @access private
+	 * @access public
 	 * @since  1.1
 	 * @global $wp_query
 	 * @return int $wp_query->query_vars['page'] if page number returned (default: 1)
@@ -639,7 +640,7 @@ class Give_API {
 	/**
 	 * Number of results to display per page
 	 *
-	 * @access private
+	 * @access public
 	 * @since  1.1
 	 * @global $wp_query
 	 * @return int $per_page Results to display per page (default: 10)
@@ -827,11 +828,11 @@ class Give_API {
 		}
 
 		/**
-		 * Returns the filters for the dates used to retreive earnings/donations
+		 * Returns the filters for the dates used to retrieve earnings/donations
 		 *
 		 * @since 1.2
 		 *
-		 * @param object $dates The dates used for retreiving earnings/donations
+		 * @param object $dates The dates used for retrieving earnings/donations
 		 */
 
 		return apply_filters( 'give_api_stat_dates', $dates );
@@ -842,7 +843,7 @@ class Give_API {
 	 *
 	 * @access public
 	 * @since  1.1
-	 * @global object $wpdb Used to query the database using the WordPress
+	 * @global WPDB $wpdb Used to query the database using the WordPress
 	 *                          Database API
 	 *
 	 * @param int $customer Customer ID
@@ -1046,7 +1047,7 @@ class Give_API {
 	 *
 	 * @since 1.1
 	 *
-	 * @global object $wpdb Used to query the database using the WordPress
+	 * @global WPDB $wpdb Used to query the database using the WordPress
 	 *
 	 * @param array $args Arguments provided by API Request
 	 *
@@ -1436,6 +1437,7 @@ class Give_API {
 	 * Determines whether results should be displayed in XML or JSON
 	 *
 	 * @since 1.1
+     * @access public
 	 *
 	 * @return mixed|void
 	 */
@@ -1453,8 +1455,9 @@ class Give_API {
 	 *
 	 * @access private
 	 * @since  1.1
-	 * @global      $give_logs
-	 * @global      $wp_query
+     *
+	 * @global Give_Logging $give_logs
+	 * @global WP_Query     $wp_query
 	 *
 	 * @param array $data
 	 *
@@ -1465,7 +1468,15 @@ class Give_API {
 			return;
 		}
 
-		global $give_logs, $wp_query;
+        /**
+         * @var Give_Logging $give_logs
+         */
+		global $give_logs;
+
+        /**
+         * @var WP_Query $wp_query
+         */
+        global $wp_query;
 
 		$query = array(
 			'give-api'    => $wp_query->query_vars['give-api'],
@@ -1518,11 +1529,14 @@ class Give_API {
 	 * by default
 	 *
 	 * @since 1.1
-	 * @global    $wp_query
+	 * @global WP_Query $wp_query
 	 *
 	 * @param int $status_code
 	 */
 	public function output( $status_code = 200 ) {
+        /**
+         * @var WP_Query $wp_query
+         */
 		global $wp_query;
 
 		$format = $this->get_output_format();
@@ -1890,12 +1904,12 @@ class Give_API {
 	 *
 	 * @description A Backwards Compatibility call for the change of meta_key/value for users API Keys
 	 *
-	 * @since       1.3.6
+	 * @since  1.3.6
 	 *
-	 * @param  string $check Whether to check the cache or not
-	 * @param  int $object_id The User ID being passed
-	 * @param  string $meta_key The user meta key
-	 * @param  bool $single If it should return a single value or array
+	 * @param  string $check     Whether to check the cache or not
+	 * @param  int    $object_id The User ID being passed
+	 * @param  string $meta_key  The user meta key
+	 * @param  bool   $single    If it should return a single value or array
 	 *
 	 * @return string            The API key/secret for the user supplied
 	 */
