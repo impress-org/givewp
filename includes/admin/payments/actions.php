@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @access      private
  *
- * @param $data
+ * @param array $data
  *
  * @since       1.0
  * @return      void
@@ -213,7 +213,7 @@ add_action( 'give_update_payment_details', 'give_update_payment_details' );
  *
  * @since 1.0
  *
- * @param $data array Arguments passed
+ * @param array $data Arguments passed
  *
  * @return void
  */
@@ -292,8 +292,6 @@ add_action( 'give_delete_payment_note', 'give_trigger_payment_note_deletion' );
  * Delete a payment note deletion with ajax
  *
  * @since 1.0
- *
- * @param array $data Arguments passed
  *
  * @return void
  */
