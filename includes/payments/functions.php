@@ -1788,8 +1788,7 @@ function give_get_price_id( $form_id, $price ) {
  * @return string
  */
 function give_get_form_dropdown( $args = array(), $echo = false ){
-    $give_html_element = new Give_HTML_Elements();
-    $form_dropdown_html = $give_html_element->forms_dropdown( $args );
+    $form_dropdown_html = Give()->html->forms_dropdown( $args );
 
     if( $echo ) {
         return $form_dropdown_html;
