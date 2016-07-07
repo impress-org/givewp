@@ -480,7 +480,7 @@ jQuery.noConflict();
         $('select[name="give-payment-status"]').on('change', function () {
 
             var status = $(this).val();
-            console.log(status);
+            
             $('.give-donation-status').removeClass(function (index, css) {
                 return (css.match(/\bstatus-\S+/g) || []).join(' ');
             }).addClass('status-' + status);
