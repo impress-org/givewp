@@ -412,8 +412,6 @@ jQuery.noConflict();
                 dataType: 'json',
                 success: function (response) {
 
-                    console.log(response);
-
                     if ('done' == response.step || response.error || response.success) {
 
                         // We need to get the actual in progress form, not all forms on the page
