@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @access      private
  *
- * @param $data
+ * @param array $data
  *
  * @since       1.0
  * @return      void
