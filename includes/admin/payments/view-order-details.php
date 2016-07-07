@@ -259,7 +259,7 @@ $payment_mode   = $payment->mode;
 												<?php echo $payment_meta['form_id']; ?>
 											</td>
 											<td>
-												<a href="<?php echo get_permalink( $payment_meta['form_id'] ); ?>"><?php echo $payment_meta['form_title']; ?></a>
+												<?php give_get_form_dropdown( array( 'id' => $payment_meta['form_id'], 'selected' => $payment_meta['form_id'], 'chosen' => true ) ); ?>
 											</td>
 											<td>
 												<?php
