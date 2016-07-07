@@ -955,6 +955,12 @@ function give_get_login_fields( $form_id ) {
 			<input type="hidden" name="give-purchase-var" value="needs-to-login"/>
 		</div>
 
+		<div id="give-forgot-password-wrap-<?php echo $form_id; ?>" class="give_login_forgot_password">
+			 <span class="give-forgot-password ">
+				 <a href="<?php echo wp_lostpassword_url( $redirect )?>"> <?php _e( 'Forgot password?' ) ?> </a>
+			 </span>
+		</div>
+		
 		<div id="give-user-login-submit-<?php echo $form_id; ?>" class="give-clearfix">
 			<input type="submit" class="give-submit give-btn button" name="give_login_submit" value="<?php _e( 'Login', 'give' ); ?>"/>
 			<?php if ( $show_register_form !== 'login' ) { ?>
