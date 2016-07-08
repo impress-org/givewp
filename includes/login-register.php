@@ -27,13 +27,18 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string Login form
  */
 function give_login_form( $login_redirect = '', $logout_redirect = '' ) {
-	global $give_login_redirect;
+	global $give_login_redirect, $give_logout_redirect;;
 
 	if ( empty( $login_redirect ) ) {
 		$login_redirect = add_query_arg('give-login-success', 'true', give_get_current_page_url());
 	}
 
+    if ( empty( $logout_redirect ) ) {
+        $logout_redirect = add_query_arg('give-logout-success', 'true', give_get_current_page_url());
+    }
+
 	$give_login_redirect = $login_redirect;
+	$give_logout_redirect = $logout_redirect;
 
 	ob_start();
 
