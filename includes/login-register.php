@@ -105,7 +105,7 @@ function give_process_login_form( $data ) {
 		// Check for errors and redirect if none present
 		$errors = give_get_errors();
 		if ( ! $errors ) {
-			$redirect = apply_filters( 'give_login_redirect', $data['give_redirect'], $user_ID );
+			$redirect = apply_filters( 'give_login_redirect', $data['give_login_redirect'], $user_ID );
 			wp_redirect( $redirect );
 			give_die();
 		}
