@@ -21,18 +21,19 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @global       $give_options
  * @global       $post
  *
- * @param string $redirect Redirect page URL
+ * @param string $login_redirect Login redirect page URL
+ * @param string $logout_redirect Logout redirect page URL
  *
  * @return string Login form
  */
-function give_login_form( $redirect = '' ) {
+function give_login_form( $login_redirect = '', $logout_redirect = '' ) {
 	global $give_login_redirect;
 
-	if ( empty( $redirect ) ) {
-		$redirect = add_query_arg('give-login-success', 'true', give_get_current_page_url());
+	if ( empty( $login_redirect ) ) {
+		$login_redirect = add_query_arg('give-login-success', 'true', give_get_current_page_url());
 	}
 
-	$give_login_redirect = $redirect;
+	$give_login_redirect = $login_redirect;
 
 	ob_start();
 
