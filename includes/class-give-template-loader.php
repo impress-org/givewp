@@ -60,7 +60,7 @@ class Give_Template_Loader {
 	 * @description determines if the single form should be full width or with a sidebar
 	 * @see
 	 *
-	 * @param $classes
+	 * @param string $classes List of space separated class names
 	 *
 	 * @return string
 	 */
