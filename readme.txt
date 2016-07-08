@@ -164,6 +164,9 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 == Changelog ==
 
+= 1.6:  =
+* Tweak: Updated to the latest version of CMB2 & tested compatibility - https://github.com/WordImpress/Give/issues/670
+
 = 1.5.2: June 31, 2016 =
 * New: Added an addition "status" column for donation logs - https://github.com/WordImpress/Give/issues/684
 * Tweak: Hide the submit button for the API Tab in Settings & improved the field description - https://github.com/WordImpress/Give/issues/681

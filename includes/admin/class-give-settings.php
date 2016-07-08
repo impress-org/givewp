@@ -191,10 +191,13 @@ class Give_Plugin_Settings {
 	/**
 	 * Modify CMB2 Default Form Output
 	 *
-	 * @param string @args
-	 *
-	 * @since 1.5 Modified to CSS hide non-active tabs
 	 * @since 1.0
+	 *
+	 * @param string $form_format Form output format
+	 * @param string $object_id   In the case of an options page, this will be the option key
+	 * @param CMB2   $cmb         CMB2 object. Can use $cmb->cmb_id to retrieve the metabox ID
+	 *
+	 * @return string Possibly modified form output
 	 */
 	function give_modify_cmb2_form_output( $form_format, $object_id, $cmb ) {
 
