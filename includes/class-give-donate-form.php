@@ -113,7 +113,9 @@ class Give_Donate_Form {
 	 *
 	 * @since  1.5
 	 *
-	 * @param  object $donation_form The Donation Form Object
+	 * @access private
+	 *
+	 * @param  WP_Post $donation_form WP_Post Object
 	 *
 	 * @return bool             If the setup was successful or not
 	 */
@@ -152,7 +154,7 @@ class Give_Donate_Form {
 	 *
 	 * @since 1.0
 	 *
-	 * @param $key
+	 * @param string $key
 	 *
 	 * @return mixed
 	 * @throws Exception
@@ -550,6 +552,9 @@ class Give_Donate_Form {
 	 * Increase the earnings by the given amount
 	 *
 	 * @since 1.0
+	 * 
+	 * @param int $amount Amount of donation
+	 * 
 	 * @return float|false
 	 */
 	public function increase_earnings( $amount = 0 ) {
@@ -649,13 +654,14 @@ class Give_Donate_Form {
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @param  string $meta_key The meta_key to update
-	 * @param  string|array|object $meta_value The value to put into the meta
+	 * @param  string               $meta_key   The meta_key to update
+	 * @param  string|array|object  $meta_value The value to put into the meta
 	 *
-	 * @return bool             The result of the update query
+	 * @return bool                             The result of the update query
 	 */
 	private function update_meta( $meta_key = '', $meta_value = '' ) {
 
+		/* @var WPDB $wpdb */
 		global $wpdb;
 
 		if ( empty( $meta_key ) || empty( $meta_value ) ) {
