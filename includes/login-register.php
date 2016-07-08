@@ -125,6 +125,38 @@ function give_process_login_form( $data ) {
 
 add_action( 'give_user_login', 'give_process_login_form' );
 
+
+/**
+ * Process User Logout
+ *
+ * @since 1.0
+ *
+ * @param array $data Data sent from the give login form page
+ *
+ * @return void
+ */
+function give_process_user_logout( $data ) {
+    if ( wp_verify_nonce( $data['give_logout_nonce'], 'give-logout-nonce' ) && is_user_logged_in() ) {
+
+        // Prevent occurring of any custom action on wp_logout.
+        remove_all_actions( 'wp_logout' );
+
+        // Before logout give action.
+        do_action( 'give_before_user_logout' );
+
+        // Logout user.
+        wp_logout();
+
+        // After logout give action.
+        do_action( 'give_after_user_logout' );
+
+        wp_redirect( $data['give_logout_redirect'] );
+        give_die();
+    }
+}
+
+add_action( 'give_user_logout', 'give_process_user_logout' );
+
 /**
  * Log User In
  *
