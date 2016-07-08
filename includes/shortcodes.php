@@ -169,10 +169,11 @@ add_shortcode( 'give_goal', 'give_goal_shortcode' );
  */
 function give_login_form_shortcode( $atts, $content = null ) {
 	$atts = shortcode_atts( array(
-		'redirect' => '',
+		'login-redirect' => '',
+		'logout-redirect' => '',
 	), $atts, 'give_login' );
 
-	return give_login_form( $atts['redirect'] );
+	return give_login_form( $atts['login-redirect'] );
 }
 
 add_shortcode( 'give_login', 'give_login_form_shortcode' );
