@@ -173,7 +173,7 @@ function give_login_form_shortcode( $atts, $content = null ) {
 		'logout-redirect' => '',
 	), $atts, 'give_login' );
 
-	return give_login_form( $atts['login-redirect'] );
+	return give_login_form( $atts['login-redirect'], $atts['logout-redirect'] );
 }
 
 add_shortcode( 'give_login', 'give_login_form_shortcode' );
