@@ -80,6 +80,27 @@ function give_update_payment_details( $data ) {
 		wp_die( esc_attr__( 'Error Updating Payment.', 'give' ), esc_attr__( 'Error', 'give' ), array( 'response' => 400 ) );
 	}
 
+    // Get new give form ID.
+    $new_form_id = absint( $data['forms'] );
+    $current_form_id = absint( $payment->get_meta( '_give_payment_form_id' ) );
+
+    /* Check if user want to transfer current payment to new give form id. */
+    if( $new_form_id != $current_form_id  ) {
+
+        // Get new give form title.
+        $new_form_title = get_the_title( $new_form_id );
+
+        // Update new give form data in payment data.
+        $payment_meta['form_title'] = $new_form_title;
+        $payment_meta['form_id']    = $new_form_id;
+
+        // Update payment give form meta data.
+        $payment->update_meta( '_give_payment_form_id', $new_form_id );
+        $payment->update_meta( '_give_payment_form_title', $new_form_title );
+        $payment->update_meta( '_give_payment_meta', $payment_meta );
+    }
+
+
 	$customer_changed = false;
 
 	if ( isset( $data['give-new-customer'] ) && $data['give-new-customer'] == '1' ) {
