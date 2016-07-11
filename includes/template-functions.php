@@ -243,17 +243,17 @@ add_filter( 'body_class', 'give_add_body_classes' );
 /**
  * Add Post Class Filter
  *
- * @description Adds extra post classes for forms
+ * Adds extra post classes for forms
  *
  * @since       1.0
  *
- * @param array $classes
+ * @param array        $classes
  * @param string|array $class
- * @param int $post_id
+ * @param int          $post_id
  *
  * @return array
  */
-function give_add_post_class( $classes, $class = '', $post_id = '' ) {
+function give_add_post_class( $classes, $class = '', $post_id = 0 ) {
 	if ( ! $post_id || 'give_forms' !== get_post_type( $post_id ) ) {
 		return $classes;
 	}
