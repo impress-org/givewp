@@ -100,6 +100,16 @@ function give_update_payment_details( $data ) {
         $payment->update_meta( '_give_payment_form_title', $new_form_title );
         $payment->update_meta( '_give_payment_meta', $payment_meta );
 
+        // Decrease sale of old give form.
+        $current_form = new Give_Donate_Form( $current_form_id );
+        $current_form->decrease_sales();
+        $current_form->decrease_earnings( $curr_total );
+
+        // Increase sale of new give form.
+        $new_form = new Give_Donate_Form( $new_form_id );
+        $new_form->increase_sales();
+        $new_form->increase_earnings( $new_total );
+
         // Re setup payment to update new meta value in object.
         $payment->update_payment_setup( $payment->ID );
     }
