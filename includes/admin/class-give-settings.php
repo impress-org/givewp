@@ -259,7 +259,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name'    => __( 'Success Page', 'give' ),
-							'desc'    => sprintf( __( 'This is the page donors are sent to after completing their donations. The %1$s[give_receipt]%2$s shortcode should be on this page.', 'give' ), '<code>', '</code>' ),
+							'desc'    => sprintf( __( 'This is the page donors are sent to after completing their donations. The %s shortcode should be on this page.', 'give' ), '<code>[give_receipt]</code>' ),
 							'id'      => 'success_page',
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
@@ -279,7 +279,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name'    => __( 'Donation History Page', 'give' ),
-							'desc'    => sprintf( __( 'This page shows a complete donation history for the current user. The %1$s[donation_history]%2$s shortcode should be on this page.', 'give' ), '<code>', '</code>' ),
+							'desc'    => sprintf( __( 'This page shows a complete donation history for the current user. The %s shortcode should be on this page.', 'give' ), '<code>[donation_history]</code>' ),
 							'id'      => 'history_page',
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
@@ -314,8 +314,8 @@ class Give_Plugin_Settings {
 							'id'      => 'currency_position',
 							'type'    => 'select',
 							'options' => array(
-								'before' => sprintf( __( 'Before - %1$s10', 'give' ), give_currency_symbol( give_get_currency() ) ),
-								'after'  => sprintf( __( 'After - 10%1$s', 'give' ), give_currency_symbol( give_get_currency() ) )
+								'before' => sprintf( __( 'Before - %s10', 'give' ), give_currency_symbol( give_get_currency() ) ),
+								'after'  => sprintf( __( 'After - 10%s', 'give' ), give_currency_symbol( give_get_currency() ) )
 							),
 							'default' => 'before',
 						),
@@ -471,7 +471,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Disable Welcome Screen', 'give' ),
-							'desc' => sprintf( esc_html__( 'Enable this option if you would like to disable the Give Welcome screen every time Give is activated and/or updated. You can always access the Welcome Screen %1$shere%2$s if you want in the future.', 'give' ), '<a href="' . esc_url( admin_url( 'index.php?page=give-about' ) ) . '">', '</a>' ),
+							'desc' => sprintf( esc_html__( 'Enable this option if you would like to disable the Give Welcome screen every time Give is activated and/or updated. You can always access the <a href="%s">Welcome Screen</a> if you want in the future.', 'give' ), esc_url( admin_url( 'index.php?page=give-about' ) ) ),
 							'id'   => 'disable_welcome',
 							'type' => 'checkbox'
 						),
