@@ -595,9 +595,10 @@ function give_purchase_form_validate_user_login() {
 				give_set_error(
 					'password_incorrect',
 					sprintf(
-						__( 'The password you entered is incorrect. %sReset Password%s', 'give' ),
-						'<a href="' . wp_lostpassword_url( "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]" ) . '" title="' . __( 'Lost Password', 'give' ) . '">',
-						'</a>'
+						'%1$s <a href="%2$s">%3$s</a>',
+						__( 'The password you entered is incorrect.', 'give' ),
+						wp_lostpassword_url( "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]" ),
+						__( 'Reset Password', 'give' )
 					)
 				);
 				// All is correct
