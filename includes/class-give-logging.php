@@ -121,10 +121,10 @@ class Give_Logging {
 	 * @since 1.0
 	 * @uses Give_Logging::insert_log()
 	 *
-	 * @param string $title Log entry title
+	 * @param string $title   Log entry title
 	 * @param string $message Log entry message
-	 * @param int $parent Log entry parent
-	 * @param string $type Log type (default: null)
+	 * @param int    $parent  Log entry parent
+	 * @param string $type    Log type (default: null)
 	 *
 	 * @return int Log ID
 	 */
@@ -146,9 +146,9 @@ class Give_Logging {
 	 * @since 1.0
 	 * @uses Give_Logging::get_connected_logs()
 	 *
-	 * @param int $object_id (default: 0)
-	 * @param string $type Log type (default: null)
-	 * @param int $paged Page number (default: null)
+	 * @param int    $object_id (default: 0)
+	 * @param string $type      Log type (default: null)
+	 * @param int    $paged     Page number (default: null)
 	 *
 	 * @return array Array of the connected logs
 	 */
@@ -247,8 +247,8 @@ class Give_Logging {
 	 *
 	 * Used for retrieving logs related to particular items, such as a specific donation.
 	 *
-	 * @access private
-	 * @since 1.0
+	 * @access public
+	 * @since  1.0
 	 *
 	 * @param array $args Query arguments
 	 *
@@ -292,10 +292,10 @@ class Give_Logging {
 	 * @access public
 	 * @since 1.0
 	 *
-	 * @param int $object_id (default: 0)
-	 * @param string $type Log type (default: null)
-	 * @param array $meta_query Log meta query (default: null)
-	 * @param array $date_query Log data query (default: null) (since 1.9)
+	 * @param int    $object_id  (default: 0)
+	 * @param string $type       Log type (default: null)
+	 * @param array  $meta_query Log meta query (default: null)
+	 * @param array  $date_query Log data query (default: null) (since 1.9)
 	 *
 	 * @return int Log count
 	 */
@@ -339,9 +339,9 @@ class Give_Logging {
 	 * @since 1.0
 	 * @uses Give_Logging::valid_type
 	 *
-	 * @param int $object_id (default: 0)
-	 * @param string $type Log type (default: null)
-	 * @param array $meta_query Log meta query (default: null)
+	 * @param int    $object_id  (default: 0)
+	 * @param string $type       Log type (default: null)
+	 * @param array  $meta_query Log meta query (default: null)
 	 *
 	 * @return void
 	 */
@@ -401,6 +401,7 @@ $GLOBALS['give_logs'] = new Give_Logging();
  * @return mixed ID of the new log entry
  */
 function give_record_log( $title = '', $message = '', $parent = 0, $type = null ) {
+	/* @var Give_Logging $give_logs */
 	global $give_logs;
 	$log = $give_logs->add( $title, $message, $parent, $type );
 
