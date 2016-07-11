@@ -111,6 +111,6 @@ if ( $show_form ) { ?>
 
 <?php } else { ?>
 
-	<?php give_output_error( sprintf( __( 'An email with an access link has been sent to %1$s', 'give' ), $email ), true, 'success' ); ?>
+	<?php give_output_error( sprintf( __( 'An email with an access link has been sent to %s', 'give' ), $email ), true, 'success' ); ?>
 
 <?php } ?>
