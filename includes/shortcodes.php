@@ -169,10 +169,17 @@ add_shortcode( 'give_goal', 'give_goal_shortcode' );
  */
 function give_login_form_shortcode( $atts, $content = null ) {
 	$atts = shortcode_atts( array(
-		'redirect' => '',
+        // Add backward compatibility for redirect attribute.
+        'redirect'          => '',
+
+		'login-redirect'    => '',
+		'logout-redirect'   => '',
 	), $atts, 'give_login' );
 
-	return give_login_form( $atts['redirect'] );
+    // Check login-redirect attribute first, if it empty or not found then check for redirect attribute and add value of this to login-redirect attribute.
+    $atts['login-redirect'] = ! empty( $atts['login-redirect'] ) ? $atts['login-redirect'] : ( ! empty( $atts['redirect' ] ) ? $atts['redirect'] : '' );
+
+	return give_login_form( $atts['login-redirect'], $atts['logout-redirect'] );
 }
 
 add_shortcode( 'give_login', 'give_login_form_shortcode' );

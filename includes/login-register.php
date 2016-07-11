@@ -21,18 +21,35 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @global       $give_options
  * @global       $post
  *
- * @param string $redirect Redirect page URL
+ * @param string $login_redirect Login redirect page URL
+ * @param string $logout_redirect Logout redirect page URL
  *
  * @return string Login form
  */
-function give_login_form( $redirect = '' ) {
-	global $give_login_redirect;
+function give_login_form( $login_redirect = '', $logout_redirect = '' ) {
+	global $give_login_redirect, $give_logout_redirect;;
 
-	if ( empty( $redirect ) ) {
-		$redirect = add_query_arg('give-login-success', 'true', give_get_current_page_url());
+	if ( empty( $login_redirect ) ) {
+		$login_redirect = add_query_arg('give-login-success', 'true', give_get_current_page_url());
 	}
 
-	$give_login_redirect = $redirect;
+    if ( empty( $logout_redirect ) ) {
+        $logout_redirect = add_query_arg( 'give-logout-success', 'true', give_get_current_page_url() );
+    }
+
+
+    // Add user_logout action to logout url.
+    $logout_redirect = add_query_arg(
+        array(
+            'give_action'       => 'user_logout',
+            'give_logout_nonce' => wp_create_nonce( 'give-logout-nonce' ),
+            'give_logout_redirect' => urlencode( $logout_redirect )
+        ),
+        home_url('/')
+    );
+
+	$give_login_redirect = $login_redirect;
+	$give_logout_redirect = $logout_redirect;
 
 	ob_start();
 
@@ -99,7 +116,7 @@ function give_process_login_form( $data ) {
 		// Check for errors and redirect if none present
 		$errors = give_get_errors();
 		if ( ! $errors ) {
-			$redirect = apply_filters( 'give_login_redirect', $data['give_redirect'], $user_ID );
+			$redirect = apply_filters( 'give_login_redirect', $data['give_login_redirect'], $user_ID );
 			wp_redirect( $redirect );
 			give_die();
 		}
@@ -107,6 +124,38 @@ function give_process_login_form( $data ) {
 }
 
 add_action( 'give_user_login', 'give_process_login_form' );
+
+
+/**
+ * Process User Logout
+ *
+ * @since 1.0
+ *
+ * @param array $data Data sent from the give login form page
+ *
+ * @return void
+ */
+function give_process_user_logout( $data ) {
+    if ( wp_verify_nonce( $data['give_logout_nonce'], 'give-logout-nonce' ) && is_user_logged_in() ) {
+
+        // Prevent occurring of any custom action on wp_logout.
+        remove_all_actions( 'wp_logout' );
+
+        // Before logout give action.
+        do_action( 'give_before_user_logout' );
+
+        // Logout user.
+        wp_logout();
+
+        // After logout give action.
+        do_action( 'give_after_user_logout' );
+
+        wp_redirect( $data['give_logout_redirect'] );
+        give_die();
+    }
+}
+
+add_action( 'give_user_logout', 'give_process_user_logout' );
 
 /**
  * Log User In
