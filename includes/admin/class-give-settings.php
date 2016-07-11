@@ -721,8 +721,8 @@ class Give_Plugin_Settings {
 							'type' => 'give_title'
 						),
 						array(
-							'name' => __( 'Disable <code>the_content</code> filter', 'give' ),
-							'desc' => sprintf( __( 'If you are seeing extra social buttons, related posts, or other unwanted elements appearing within your forms then you can disable WordPress\' content filter. <a href="%s" target="_blank">Learn more</a> about the_content filter.', 'give' ), esc_url( 'https://codex.wordpress.org/Plugin_API/Filter_Reference/the_content' ) ),
+							'name' => sprintf( __( 'Disable %s filter', 'give' ), '<code>the_content</code>' ),
+							'desc' => sprintf( __( 'If you are seeing extra social buttons, related posts, or other unwanted elements appearing within your forms then you can disable WordPress\' content filter. <a href="%1$s" target="_blank">Learn more</a> about %2$s filter.', 'give' ), esc_url( 'https://codex.wordpress.org/Plugin_API/Filter_Reference/the_content' ), '<code>the_content</code>' ),
 							'id'   => 'disable_the_content_filter',
 							'type' => 'checkbox'
 						),
