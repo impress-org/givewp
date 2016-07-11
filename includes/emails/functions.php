@@ -125,7 +125,7 @@ function give_admin_email_notice( $payment_id = 0, $payment_data = array() ) {
 	$from_email = give_get_option( 'from_email', get_bloginfo( 'admin_email' ) );
 	$from_email = apply_filters( 'give_purchase_from_address', $from_email, $payment_id, $payment_data );
 
-	$subject = give_get_option( 'donation_notification_subject', sprintf( __( 'New Donation - Payment #%1$s', 'give' ), $payment_id ) );
+	$subject = give_get_option( 'donation_notification_subject', sprintf( __( 'New Donation - Payment #%s', 'give' ), $payment_id ) );
 	$subject = apply_filters( 'give_admin_donation_notification_subject', wp_strip_all_tags( $subject ), $payment_id );
 	$subject = give_do_email_tags( $subject, $payment_id );
 
