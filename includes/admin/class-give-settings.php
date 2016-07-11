@@ -1236,10 +1236,9 @@ function give_api_callback() {
 	?>
 	<span class="cmb2-metabox-description api-description">
 		<?php echo sprintf(
-			__( 'You can create API keys for individual users within their profile edit screen. API keys allow users to use the %2$sGive REST API%1$s to retrieve donation data in JSON or XML for external applications or devices, such as %3$sZapier%1$s.', 'give' ),
-			'</a>',
-			'<a href="https://givewp.com/documentation/give-api-reference/" target="_blank">',
-			'<a href="https://givewp.com/addons/zapier/" target="_blank">'
+			__( 'You can create API keys for individual users within their profile edit screen. API keys allow users to use the <a href="%1$s" target="_blank">Give REST API</a> to retrieve donation data in JSON or XML for external applications or devices, such as <a href="%2$s" target="_blank">Zapier</a>.', 'give' ),
+			esc_url( 'https://givewp.com/documentation/give-api-reference/' ),
+			esc_url( 'https://givewp.com/addons/zapier/' )
 		); ?>
 	</span>
 	<?php
