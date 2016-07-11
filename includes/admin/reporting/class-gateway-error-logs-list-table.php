@@ -102,7 +102,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 				$data   = substr( $log_message, $serialized, strlen( $log_message ) - 1 );
 
 				echo wpautop( $intro );
-				echo wpautop( __( '<strong>Log data:</strong>', 'give' ) );
+				echo wpautop( '<strong>' . __( 'Log data:', 'give' ) . '</strong>' );
 				echo '<div style="word-wrap: break-word;">' . wpautop( $data ) . '</div>';
 			} else {
 				// No serialized data found

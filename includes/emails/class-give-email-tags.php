@@ -572,7 +572,11 @@ function give_email_tag_receipt_link( $payment_id ) {
 		'payment_key' => give_get_payment_key( $payment_id ),
 		'give_action' => 'view_receipt'
 	), home_url() ) );
-	$formatted   = sprintf( __( '%1$sView it in your browser %2$s', 'give' ), '<a href="' . $receipt_url . '">', '&raquo;</a>' );
+	$formatted   = sprintf(
+		'<a href="%1$s">%2$s</a>',
+		$receipt_url,
+		__( 'View it in your browser', 'give' )
+	);
 
 	if ( give_get_option( 'email_template' ) !== 'none' ) {
 		return $formatted;

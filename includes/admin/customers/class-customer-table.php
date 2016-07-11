@@ -141,8 +141,8 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 		$name .= ! empty( $item['name'] ) ? $item['name'] : '<em>' . __( 'Unnamed Donor', 'give' ) . '</em>';
 		$view_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $item['id'] );
 		$actions  = array(
-			'view'   => sprintf( __( '<a href="%s">View Donor</a>', 'give' ), $view_url ),
-			'delete' => sprintf( __( '<a href="%s">Delete</a>', 'give' ), admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id=' . $item['id'] ) )
+			'view'   => sprintf( '<a href="%1$s">%2$s</a>', $view_url, __( 'View Donor', 'give' ) ),
+			'delete' => sprintf( '<a href="%1$s">%2$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id=' . $item['id'] ), __( 'Delete', 'give' ) )
 		);
 
 		return '<a href="' . esc_url( $view_url ) . '">' . $name . '</a>' . $this->row_actions( $actions );
