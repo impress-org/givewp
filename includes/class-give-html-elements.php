@@ -396,7 +396,7 @@ class Give_HTML_Elements {
 	 * @return string Text field
 	 */
 	public function text( $args = array() ) {
-		// Backwards compatabliity
+		// Backwards compatibility
 		if ( func_num_args() > 1 ) {
 			$args = func_get_args();
 
