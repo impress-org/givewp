@@ -65,7 +65,7 @@ function give_update_payment_details( $data ) {
 	$address = array_map( 'trim', $data['give-payment-address'][0] );
 
 	$curr_total = give_sanitize_amount( $payment->total );
-	$new_total  = give_sanitize_amount( $_POST['give-payment-total'] );
+	$new_total  = give_sanitize_amount( $data['give-payment-total'] );
 	$date       = date( 'Y-m-d', strtotime( $date ) ) . ' ' . $hour . ':' . $minute . ':00';
 
 	$curr_customer_id = sanitize_text_field( $data['give-current-customer'] );
