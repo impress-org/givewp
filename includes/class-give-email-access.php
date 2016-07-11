@@ -121,7 +121,7 @@ class Give_Email_Access {
 		), get_permalink( $page_id ) );
 
 		//Nice subject and message
-		$subject = apply_filters( 'give_email_access_token_subject', sprintf( __( 'Your Access Link to %1$s', 'give' ), get_bloginfo( 'name' ) ) );
+		$subject = apply_filters( 'give_email_access_token_subject', sprintf( __( 'Your Access Link to %s', 'give' ), get_bloginfo( 'name' ) ) );
 
 		$message = __( 'You or someone in your organization requested an access link be sent to this email address. This is a temporary access link for you to view your donation information. Click on the link below to view:', 'give' ) . "\n\n";
 
