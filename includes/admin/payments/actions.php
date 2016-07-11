@@ -91,6 +91,7 @@ function give_update_payment_details( $data ) {
         $new_form_title = get_the_title( $new_form_id );
 
         // Update new give form data in payment data.
+        $payment_meta = $payment->get_meta();
         $payment_meta['form_title'] = $new_form_title;
         $payment_meta['form_id']    = $new_form_id;
 
@@ -98,6 +99,9 @@ function give_update_payment_details( $data ) {
         $payment->update_meta( '_give_payment_form_id', $new_form_id );
         $payment->update_meta( '_give_payment_form_title', $new_form_title );
         $payment->update_meta( '_give_payment_meta', $payment_meta );
+
+        // Re setup payment to update new meta value in object.
+        $payment->update_payment_setup( $payment->ID );
     }
 
 
