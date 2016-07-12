@@ -152,7 +152,7 @@ function give_update_payment_details( $data ) {
 		if ( 'revoked' == $status || 'publish' == $status ) {
 
 			$previous_customer->decrease_purchase_count();
-			$previous_customer->decrease_value( $new_total );
+			$previous_customer->decrease_value( $curr_total );
 
 			$customer->increase_purchase_count();
 			$customer->increase_value( $new_total );
