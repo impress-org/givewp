@@ -105,10 +105,13 @@ function give_update_payment_details( $data ) {
         $current_form->decrease_sales();
         $current_form->decrease_earnings( $curr_total );
 
-        // Increase sale of new give form.
-        $new_form = new Give_Donate_Form( $new_form_id );
-        $new_form->increase_sales();
-        $new_form->increase_earnings( $new_total );
+        // If purchase was completed and not ever refunded, adjust stats of forms
+        if ( 'revoked' == $status || 'publish' == $status ) {
+            // Increase sale of new give form.
+            $new_form = new Give_Donate_Form($new_form_id);
+            $new_form->increase_sales();
+            $new_form->increase_earnings($new_total);
+        }
 
         // Re setup payment to update new meta value in object.
         $payment->update_payment_setup( $payment->ID );
