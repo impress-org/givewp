@@ -230,9 +230,11 @@ function give_offline_send_admin_notice( $payment_id = 0 ) {
 	$admin_message .= '<strong>' . esc_attr__( 'Donor: ', 'give' ) . '</strong>' . html_entity_decode( $name, ENT_COMPAT, 'UTF-8' ) . "\n";
 	$admin_message .= '<strong>' . esc_attr__( 'Amount: ', 'give' ) . '</strong>' . html_entity_decode( $amount, ENT_COMPAT, 'UTF-8' ) . "\n\n";
 
-	//Order URL
-	$order_url = '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $payment_id ) . '">';
-	$admin_message .= sprintf( __( '%sClick Here to View and/or Update Donation Details%s', 'give' ), $order_url, ' &raquo;</a>' ) . "\n\n";
+	$admin_message .= sprintf(
+		'<a href="%1$s">%2$s</a>',
+		admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $payment_id ),
+		__( 'Click Here to View and/or Update Donation Details', 'give' )
+	) . "\n\n";
 
 	$admin_message = apply_filters( 'give_offline_admin_donation_notification', $admin_message, $payment_id );
 	$attachments   = apply_filters( 'give_offline_admin_donation_notification_attachments', array(), $payment_id );

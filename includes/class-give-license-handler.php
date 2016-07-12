@@ -131,7 +131,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			$give_license_settings = array(
 				array(
-					'name'    => sprintf( __( '%1$s', 'give' ), $this->item_name ),
+					'name'    => $this->item_name,
 					'id'      => $this->item_shortname . '_license_key',
 					'desc'    => '',
 					'type'    => 'license_key',

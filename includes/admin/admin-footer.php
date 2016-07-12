@@ -28,7 +28,10 @@ function give_admin_rate_us( $footer_text ) {
 	global $typenow;
 
 	if ( $typenow == 'give_forms' ) {
-		$rate_text = sprintf( __( 'If you like <strong>Give</strong> please leave us a %s&#9733;&#9733;&#9733;&#9733;&#9733;%s rating. It takes a minute and helps a lot. Thanks in advance!', 'give' ), '<a href="https://wordpress.org/support/view/plugin-reviews/give?filter=5#postform" target="_blank" class="give-rating-link" data-rated="' . __( 'Thanks :)', 'give' ) . '">', '</a>' );
+		$rate_text = sprintf(
+			__( 'If you like <strong>Give</strong> please leave us a %s rating. It takes a minute and helps a lot. Thanks in advance!', 'give' ),
+			'<a href="https://wordpress.org/support/view/plugin-reviews/give?filter=5#postform" target="_blank" class="give-rating-link" data-rated="' . __( 'Thanks :)', 'give' ) . '">&#9733;&#9733;&#9733;&#9733;&#9733;</a>'
+		);
 
 		return $rate_text;
 	} else {
