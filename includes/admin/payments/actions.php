@@ -36,6 +36,8 @@ function give_update_payment_details( $data ) {
 
 	// Retrieve the payment ID
 	$payment_id = absint( $data['give_payment_id'] );
+
+    /* @var Give_Payment $payment */
 	$payment    = new Give_Payment( $payment_id );
 
 	// Retrieve existing payment meta
@@ -242,6 +244,19 @@ function give_update_payment_details( $data ) {
 
         // Re setup payment to update new meta value in object.
         $payment->update_payment_setup( $payment->ID );
+    }
+
+    // Update price id if current form is variable form and variable price id is non negative.
+    if( ! empty( $data['give-variable-price'] ) &&  ( $data['give-variable-price'] > 0 ) && give_has_variable_prices( $payment->form_id ) ) {
+
+        // Update new give form data in payment data.
+        $payment_meta = $payment->get_meta();
+        $payment_meta['price_id'] = $data['give-variable-price'];
+
+        // Update payment give form meta data.
+        $payment->update_meta( '_give_payment_price_id', $data['give-variable-price'] );
+        $payment->update_meta( '_give_payment_meta', $payment_meta );
+
     }
 
 	do_action( 'give_updated_edited_purchase', $payment_id );
