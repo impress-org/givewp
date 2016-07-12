@@ -271,6 +271,7 @@ class Give_HTML_Elements {
 	/**
 	 * Renders an HTML Dropdown
 	 *
+	 * @access public
 	 * @since 1.0
 	 *
 	 * @param array $args
@@ -352,7 +353,8 @@ class Give_HTML_Elements {
 	/**
 	 * Renders an HTML Checkbox
 	 *
-	 * @since 1.0
+	 * @access public
+	 * @since  1.0
 	 *
 	 * @param array $args
 	 *
@@ -386,14 +388,15 @@ class Give_HTML_Elements {
 	/**
 	 * Renders an HTML Text field
 	 *
-	 * @since 1.0
+	 * @access public
+	 * @since  1.0
 	 *
 	 * @param array $args
 	 *
 	 * @return string Text field
 	 */
 	public function text( $args = array() ) {
-		// Backwards compatabliity
+		// Backwards compatibility
 		if ( func_num_args() > 1 ) {
 			$args = func_get_args();
 
@@ -447,7 +450,8 @@ class Give_HTML_Elements {
 	/**
 	 * Renders a date picker
 	 *
-	 * @since 1.5
+	 * @access public
+	 * @since  1.5
 	 *
 	 * @param array $args Arguments for the text field
 	 *
@@ -468,7 +472,8 @@ class Give_HTML_Elements {
 	/**
 	 * Renders an HTML textarea
 	 *
-	 * @since 1.0
+	 * @access public
+	 * @since  1.0
 	 *
 	 * @param array $args Arguments for the textarea
 	 *
@@ -509,7 +514,8 @@ class Give_HTML_Elements {
 	/**
 	 * Renders an ajax user search field
 	 *
-	 * @since 1.0
+	 * @access public
+	 * @since  1.0
 	 *
 	 * @param array $args
 	 *

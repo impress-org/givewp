@@ -565,7 +565,7 @@ function give_get_php_arg_separator_output() {
  *
  * @since 1.0
  *
- * @param unknown $n
+ * @param int $n
  *
  * @return string Short month name
  */

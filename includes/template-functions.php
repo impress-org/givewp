@@ -243,13 +243,13 @@ add_filter( 'body_class', 'give_add_body_classes' );
 /**
  * Add Post Class Filter
  *
- * @description Adds extra post classes for forms
+ * Adds extra post classes for forms
  *
  * @since       1.0
  *
- * @param array $classes
+ * @param array        $classes
  * @param string|array $class
- * @param int $post_id
+ * @param int|string   $post_id
  *
  * @return array
  */
