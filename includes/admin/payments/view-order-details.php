@@ -273,7 +273,6 @@ $payment_mode   = $payment->mode;
                                                         'chosen'            => true,
                                                         'show_option_all'   => '',
                                                         'selected'          => $payment_meta['price_id'],
-                                                        'show_option_none'  => ''
                                                     );
 
                                                     // Check if multi donation form support custom donation or not.
