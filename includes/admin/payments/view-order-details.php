@@ -259,17 +259,25 @@ $payment_mode   = $payment->mode;
 												<?php echo $payment_meta['form_id']; ?>
 											</td>
 											<td>
-												<?php give_get_form_dropdown( array( 'id' => $payment_meta['form_id'], 'selected' => $payment_meta['form_id'], 'chosen' => true ) ); ?>
+												<?php give_get_form_dropdown( array( 'id' => $payment_meta['form_id'], 'selected' => $payment_meta['form_id'], 'chosen' => true ), true ); ?>
 											</td>
 											<td>
 												<?php
-												//Level ID
-												$level_title = give_get_payment_form_title( $payment_meta, true );
-												if ( empty( $level_title ) ) {
+												if ( empty( give_has_variable_prices( $payment_meta['form_id'] ) ) ) {
 													echo __( 'n/a', 'give' );
 												} else {
-													echo $level_title;
-												} ?>
+                                                    give_get_form_variable_price_dropdown(
+                                                        array(
+                                                            'id'                => $payment_meta['form_id'],
+                                                            'name'              => 'variable-prices',
+                                                            'chosen'            => true,
+                                                            'show_option_all'   => '',
+                                                            'show_option_none'  => _x( 'Custom', 'custom donation dropdown item', 'give' )
+                                                        ),
+                                                        true
+                                                    );
+                                                }
+                                                ?>
 											</td>
 											<td>
 												<?php
