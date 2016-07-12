@@ -272,6 +272,7 @@ $payment_mode   = $payment->mode;
                                                             'name'              => 'give-variable-price',
                                                             'chosen'            => true,
                                                             'show_option_all'   => '',
+                                                            'selected'          => $payment_meta['price_id'],
                                                             'show_option_none'  => _x( 'Custom', 'custom donation dropdown item', 'give' )
                                                         ),
                                                         true
