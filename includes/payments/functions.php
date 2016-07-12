@@ -1785,12 +1785,56 @@ function give_get_price_id( $form_id, $price ) {
  * @param array $args Arguments for form dropdown
  * @param bool $echo  This parameter decide if print form dropdown html output or not
  * 
- * @return string
+ * @return string/void
  */
 function give_get_form_dropdown( $args = array(), $echo = false ){
     $form_dropdown_html = Give()->html->forms_dropdown( $args );
 
-    if( $echo ) {
+    if( ! $echo ) {
+        return $form_dropdown_html;
+    }
+
+    echo $form_dropdown_html;
+}
+
+/**
+ * Get/Print give form variable price dropdown html
+ *
+ * @since 1.6
+ *
+ * @param array $args Arguments for form dropdown
+ * @param bool $echo  This parameter decide if print form dropdown html output or not
+ *
+ * @return string/void
+ */
+function give_get_form_variable_price_dropdown( $args = array(), $echo = false ){
+    
+    // Check for give form id.
+    if( empty( $args['id'] ) ) {
+        return false;
+    }
+
+    // Check if form has variable prices or not.
+    if( ! ( $variable_prices = give_has_variable_prices( $args['id'] ) ) ) {
+        return false;
+    }
+    
+    $variable_prices = give_get_variable_prices( absint( $args['id'] ) );
+    $variable_price_options = array();
+
+    // Get variable price and ID from variable price array.
+    foreach ( $variable_prices as $variable_price ) {
+        $variable_price_options[ $variable_price['_give_id']['level_id'] ] =  $variable_price['_give_text'];
+    }
+
+
+    // Update options.
+    $args = array_merge( $args, array( 'options' => $variable_price_options ) );
+
+    // Generate select html.
+    $form_dropdown_html = Give()->html->select( $args );
+
+    if( ! $echo ) {
         return $form_dropdown_html;
     }
 
