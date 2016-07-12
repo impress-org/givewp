@@ -223,10 +223,21 @@ function give_update_payment_details( $data ) {
         $payment_meta['form_title'] = $new_form_title;
         $payment_meta['form_id']    = $new_form_id;
 
+        // Update price id post meta data for set donation form.
+        if( ! give_has_variable_prices( $new_form_id ) ) {
+            $payment_meta['price_id'] = '';
+        }
+
         // Update payment give form meta data.
         $payment->update_meta( '_give_payment_form_id', $new_form_id );
         $payment->update_meta( '_give_payment_form_title', $new_form_title );
         $payment->update_meta( '_give_payment_meta', $payment_meta );
+
+        // Update price id payment metadata.
+        if( ! give_has_variable_prices( $new_form_id ) ) {
+            $payment->update_meta( '_give_payment_price_id', '' );
+        }
+
 
         // If purchase was completed and not ever refunded, adjust stats of forms
         if ( 'revoked' == $status || 'publish' == $status ) {
@@ -246,11 +257,16 @@ function give_update_payment_details( $data ) {
         $payment->update_payment_setup( $payment->ID );
     }
 
-    // Update price id if current form is variable form and variable price id is non negative.
-    if( ! empty( $data['give-variable-price'] ) &&  ( $data['give-variable-price'] > 0 ) && give_has_variable_prices( $payment->form_id ) ) {
+    // Update price id if current form is variable form.
+    if( ! empty( $data['give-variable-price'] ) && give_has_variable_prices( $payment->form_id ) ) {
 
-        // Update new give form data in payment data.
+        // Get payment meta data.
         $payment_meta = $payment->get_meta();
+
+        // Set payment id to empty string if variable price id is negative ( i.e. custom amount feature enabled ).
+        $data['give-variable-price'] = ( 0 < $data['give-variable-price'] ) ? $data['give-variable-price'] : '';
+
+        // Update payment meta data.
         $payment_meta['price_id'] = $data['give-variable-price'];
 
         // Update payment give form meta data.
@@ -259,7 +275,6 @@ function give_update_payment_details( $data ) {
 
         // Re setup payment to update new meta value in object.
         $payment->update_payment_setup( $payment->ID );
-
     }
 
 	do_action( 'give_updated_edited_purchase', $payment_id );
