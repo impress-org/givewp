@@ -257,6 +257,9 @@ function give_update_payment_details( $data ) {
         $payment->update_meta( '_give_payment_price_id', $data['give-variable-price'] );
         $payment->update_meta( '_give_payment_meta', $payment_meta );
 
+        // Re setup payment to update new meta value in object.
+        $payment->update_payment_setup( $payment->ID );
+
     }
 
 	do_action( 'give_updated_edited_purchase', $payment_id );
