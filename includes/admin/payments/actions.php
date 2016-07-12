@@ -80,43 +80,6 @@ function give_update_payment_details( $data ) {
 		wp_die( esc_attr__( 'Error Updating Payment.', 'give' ), esc_attr__( 'Error', 'give' ), array( 'response' => 400 ) );
 	}
 
-    // Get new give form ID.
-    $new_form_id = absint( $data['forms'] );
-    $current_form_id = absint( $payment->get_meta( '_give_payment_form_id' ) );
-
-    /* Check if user want to transfer current payment to new give form id. */
-    if( $new_form_id != $current_form_id  ) {
-
-        // Get new give form title.
-        $new_form_title = get_the_title( $new_form_id );
-
-        // Update new give form data in payment data.
-        $payment_meta = $payment->get_meta();
-        $payment_meta['form_title'] = $new_form_title;
-        $payment_meta['form_id']    = $new_form_id;
-
-        // Update payment give form meta data.
-        $payment->update_meta( '_give_payment_form_id', $new_form_id );
-        $payment->update_meta( '_give_payment_form_title', $new_form_title );
-        $payment->update_meta( '_give_payment_meta', $payment_meta );
-
-        // Decrease sale of old give form.
-        $current_form = new Give_Donate_Form( $current_form_id );
-        $current_form->decrease_sales();
-        $current_form->decrease_earnings( $curr_total );
-
-        // If purchase was completed and not ever refunded, adjust stats of forms
-        if ( 'revoked' == $status || 'publish' == $status ) {
-            // Increase sale of new give form.
-            $new_form = new Give_Donate_Form($new_form_id);
-            $new_form->increase_sales();
-            $new_form->increase_earnings($new_total);
-        }
-
-        // Re setup payment to update new meta value in object.
-        $payment->update_payment_setup( $payment->ID );
-    }
-
 
 	$customer_changed = false;
 
@@ -240,6 +203,46 @@ function give_update_payment_details( $data ) {
 	}
 
 	$payment->save();
+
+    // Get new give form ID.
+    $new_form_id = absint( $data['forms'] );
+    $current_form_id = absint( $payment->get_meta( '_give_payment_form_id' ) );
+
+    // We are adding payment transfer code in last to remove any conflict with above functionality.
+    // For example: above code will automatically handle form stat (increase/decrease) when payment status changes.
+    /* Check if user want to transfer current payment to new give form id. */
+    if( $new_form_id != $current_form_id  ) {
+
+        // Get new give form title.
+        $new_form_title = get_the_title( $new_form_id );
+
+        // Update new give form data in payment data.
+        $payment_meta = $payment->get_meta();
+        $payment_meta['form_title'] = $new_form_title;
+        $payment_meta['form_id']    = $new_form_id;
+
+        // Update payment give form meta data.
+        $payment->update_meta( '_give_payment_form_id', $new_form_id );
+        $payment->update_meta( '_give_payment_form_title', $new_form_title );
+        $payment->update_meta( '_give_payment_meta', $payment_meta );
+
+        // If purchase was completed and not ever refunded, adjust stats of forms
+        if ( 'revoked' == $status || 'publish' == $status ) {
+
+            // Decrease sale of old give form. For other payment status 
+            $current_form = new Give_Donate_Form( $current_form_id );
+            $current_form->decrease_sales();
+            $current_form->decrease_earnings( $curr_total );
+            
+            // Increase sale of new give form.
+            $new_form = new Give_Donate_Form($new_form_id);
+            $new_form->increase_sales();
+            $new_form->increase_earnings($new_total);
+        }
+
+        // Re setup payment to update new meta value in object.
+        $payment->update_payment_setup( $payment->ID );
+    }
 
 	do_action( 'give_updated_edited_purchase', $payment_id );
 
