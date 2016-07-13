@@ -781,6 +781,7 @@ function give_get_price_option_amount( $form_id = 0, $price_id = 0 ) {
 	foreach ( $prices as $price ) {
 		if ( isset( $price['_give_id']['level_id'] ) && $price['_give_id']['level_id'] == $price_id ) {
 			$amount = isset( $price['_give_amount'] ) ? $price['_give_amount'] : 0.00;
+            break;
 		};
 	}
 
