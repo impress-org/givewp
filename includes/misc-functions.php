@@ -350,8 +350,8 @@ function give_get_purchase_session() {
  *
  * @since       1.0
  *
- * @param      $purchase_data
- * @param bool $email
+ * @param array $purchase_data
+ * @param bool  $email
  *
  * @return string
  */
@@ -374,7 +374,7 @@ function give_get_purchase_summary( $purchase_data, $email = true ) {
  * Returns the webhost this site is using if possible
  *
  * @since 1.0
- * @return mixed string $host if detected, false otherwise
+ * @return string $host if detected, false otherwise
  */
 function give_get_host() {
 	$host = false;
@@ -415,7 +415,7 @@ function give_get_host() {
  *
  * @since 1.0
  *
- * @param $host The host to check
+ * @param bool/string $host The host to check
  *
  * @return bool true if host matches, false if not
  */
