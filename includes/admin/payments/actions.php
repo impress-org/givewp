@@ -66,7 +66,17 @@ function give_update_payment_details( $data ) {
 
 	$curr_total = give_sanitize_amount( $payment->total );
 	$new_total  = give_sanitize_amount( $_POST['give-payment-total'] );
-	$date       = date( 'Y-m-d', strtotime( $date ) ) . ' ' . $hour . ':' . $minute . ':00';
+
+    /**
+     * Payment total difference value can be:
+     *  zero ( in case amount not change)
+     *  or -ve (in case amount decrease)
+     *  or +ve (in case amount increase)
+     */
+    $payment_total_diff = $new_total - $curr_total;
+
+
+    $date       = date( 'Y-m-d', strtotime( $date ) ) . ' ' . $hour . ':' . $minute . ':00';
 
 	$curr_customer_id = sanitize_text_field( $data['give-current-customer'] );
 	$new_customer_id  = sanitize_text_field( $data['customer-id'] );
@@ -159,7 +169,15 @@ function give_update_payment_details( $data ) {
 		}
 
 		$payment->customer_id = $customer->id;
-	}
+	} elseif( $payment_total_diff ){
+
+        if( $payment_total_diff > 0 ) {
+            $customer->increase_value( $payment_total_diff );
+        }else{
+            // Pass payment total difference as +ve value to decrease amount from user lifetime stat.
+            $customer->decrease_value( -$payment_total_diff );
+        }
+    }
 
 	// Set new meta values
 	$payment->user_id    = $customer->user_id;
