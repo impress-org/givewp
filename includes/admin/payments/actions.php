@@ -158,12 +158,12 @@ function give_update_payment_details( $data ) {
 		$previous_customer->remove_payment( $payment_id, false );
 		$customer->attach_payment( $payment_id, false );
 
-		// If purchase was completed and not ever refunded, adjust stats of customers
+        // Reduce previous user donation count and amoount.
+        $previous_customer->decrease_purchase_count();
+        $previous_customer->decrease_value( $curr_total );
+
+		// If purchase was completed and not ever refunded, adjust stats of new customers.
 		if ( 'revoked' == $status || 'publish' == $status ) {
-
-			$previous_customer->decrease_purchase_count();
-			$previous_customer->decrease_value( $curr_total );
-
 			$customer->increase_purchase_count();
 			$customer->increase_value( $new_total );
 		}
