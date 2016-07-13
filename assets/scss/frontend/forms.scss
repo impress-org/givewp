@@ -631,6 +631,10 @@ form[id*='give-form'] {
     margin-right: 10px;
   }
 
+  .give_login_forgot_password {
+    float:right;
+  }
+
 }
 
 /* User Login */
@@ -648,7 +652,6 @@ form[id*='give-form'] {
     margin: 3px 6px;
     display: none;
   }
-
 }
 
 p.give-recurring-login-toggle {

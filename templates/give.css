@@ -1307,6 +1307,8 @@ form[id*='give-form'] .give-payment-mode-label .give-loading-text {
     padding: 0; }
   .give-login-account-wrap p.give-login-message, [id^="give-login-fields"] p.give-login-message {
     margin-right: 10px; }
+  .give-login-account-wrap .give_login_forgot_password, [id^="give-login-fields"] .give_login_forgot_password {
+    float: right; }
 
 /* User Login */
 [id^='give-user-login-submit'] input.give-submit, [id^='give-user-login-submit'] input.give-btn, [id^='give-user-login-submit'] span.give-loading-animation, .give-submit-button-wrap input.give-submit, .give-submit-button-wrap input.give-btn, .give-submit-button-wrap span.give-loading-animation {
