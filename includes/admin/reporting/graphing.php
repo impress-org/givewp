@@ -454,13 +454,13 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 			</tr>
 			<tr>
 				<td class="row-title">
-					<label for="tablecell"><?php _e( 'Average monthly income: %s', 'give' ); ?></label>
+					<label for="tablecell"><?php _e( 'Average monthly income: ', 'give' ); ?></label>
 				</td>
 				<td><?php echo give_currency_filter( give_format_amount( give_get_average_monthly_form_earnings( $form_id ) ) ); ?></td>
 			</tr>
 			<tr class="alternate">
 				<td class="row-title">
-					<label for="tablecell"><?php _e( 'Average monthly donations: %s', 'give' ); ?></label>
+					<label for="tablecell"><?php _e( 'Average monthly donations: ', 'give' ); ?></label>
 				</td>
 				<td><?php echo number_format( give_get_average_monthly_form_sales( $form_id ), 0 ); ?></td>
 			</tr>
