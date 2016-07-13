@@ -204,7 +204,7 @@ $payment_mode   = $payment->mode;
 										<?php endif; ?>
 
 										<div class="give-admin-box-inside">
-											<p><?php $purchase_url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . esc_attr( give_get_payment_user_email( $payment_id ) ) ); ?>
+											<p><?php $purchase_url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( esc_attr( give_get_payment_user_email( $payment_id ) ) ) ); ?>
 												<a href="<?php echo $purchase_url; ?>"><?php _e( 'View all donations for this donor', 'give' ); ?> &raquo;</a>
 											</p>
 										</div>
