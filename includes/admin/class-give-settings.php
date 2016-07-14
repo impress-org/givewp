@@ -475,7 +475,7 @@ class Give_Plugin_Settings {
 						array(
 							'name' => __( 'Disable Welcome Screen', 'give' ),
 							/* translators: %s: about page URL */
-							'desc' => sprintf( esc_html__( 'Enable this option if you would like to disable the Give Welcome screen every time Give is activated and/or updated. You can always access the <a href="%s">Welcome Screen</a> if you want in the future.', 'give' ), esc_url( admin_url( 'index.php?page=give-about' ) ) ),
+							'desc' => sprintf( wp_kses ( __( 'Enable this option if you would like to disable the Give Welcome screen every time Give is activated and/or updated. You can always access the <a href="%s">Welcome Screen</a> if you want in the future.', 'give' ), array(  'a' => array( 'href' => array() ) ) ), esc_url( admin_url( 'index.php?page=give-about' ) ) ),
 							'id'   => 'disable_welcome',
 							'type' => 'checkbox'
 						),
