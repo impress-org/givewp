@@ -51,11 +51,11 @@ add_shortcode( 'donation_history', 'give_donation_history' );
 /**
  * Donation Form Shortcode
  *
- * @description Show the Give donation form.
+ * Show the Give donation form.
  *
  * @since       1.0
  *
- * @param array $atts Shortcode attributes
+ * @param array $atts     Shortcode attributes
  * @param string $content
  *
  * @return string
@@ -111,7 +111,7 @@ add_shortcode( 'give_form', 'give_form_shortcode' );
 /**
  * Donation Form Goal Shortcode
  *
- * @description Show the Give donation form goals.
+ * Show the Give donation form goals.
  *
  * @since       1.0
  *
@@ -161,7 +161,7 @@ add_shortcode( 'give_goal', 'give_goal_shortcode' );
  *
  * @since 1.0
  *
- * @param array $atts Shortcode attributes
+ * @param array  $atts     Shortcode attributes
  * @param string $content
  *
  * @uses  give_login_form()
@@ -191,7 +191,7 @@ add_shortcode( 'give_login', 'give_login_form_shortcode' );
  *
  * @since 1.0
  *
- * @param array $atts Shortcode attributes
+ * @param array  $atts     Shortcode attributes
  * @param string $content
  *
  * @uses  give_register_form()
@@ -215,7 +215,7 @@ add_shortcode( 'give_register', 'give_register_form_shortcode' );
  *
  * @since 1.0
  *
- * @param array $atts Shortcode attributes
+ * @param array  $atts    Shortcode attributes
  * @param string $content
  *
  * @return string
@@ -332,8 +332,8 @@ add_shortcode( 'give_receipt', 'give_receipt_shortcode' );
  *
  * @since  1.0
  *
- * @param array $atts attributes
- * @param null $content
+ * @param array   $atts    attributes
+ * @param string  $content
  *
  * @return string Output generated from the profile editor
  */
@@ -359,7 +359,7 @@ add_shortcode( 'give_profile_editor', 'give_profile_editor_shortcode' );
  *
  * @param array $data Data sent from the profile editor
  *
- * @return false
+ * @return bool
  */
 function give_process_profile_editor_updates( $data ) {
 	// Profile field change request
