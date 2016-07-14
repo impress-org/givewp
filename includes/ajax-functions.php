@@ -427,11 +427,6 @@ function give_check_for_form_price_variations_html() {
             'selected'          => $payment_meta['price_id'],
         );
 
-        // Check if multi donation form support custom donation or not.
-        if( give_is_custom_price_mode( absint( $form_id ) ) ) {
-            $variable_price_dropdown_option['show_option_none']  = _x( 'Custom', 'custom donation dropdown item', 'give' );
-        }
-
         // Render variable prices select tag html.
         give_get_form_variable_price_dropdown( $variable_price_dropdown_option, true );
     }
