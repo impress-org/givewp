@@ -287,8 +287,8 @@ class Give_HTML_Elements {
 			'chosen'           => false,
 			'placeholder'      => null,
 			'multiple'         => false,
-			'show_option_all'  => _x( 'All', 'all dropdown items', 'give' ),
-			'show_option_none' => _x( 'None', 'no dropdown items', 'give' )
+			'show_option_all'  => _x( 'All', 'dropdown items', 'give' ),
+			'show_option_none' => _x( 'None', 'dropdown items', 'give' )
 		);
 
 		$args = wp_parse_args( $args, $defaults );
