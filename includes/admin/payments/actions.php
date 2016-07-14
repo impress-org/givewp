@@ -264,7 +264,7 @@ function give_update_payment_details( $data ) {
         $payment_meta = $payment->get_meta();
 
         // Set payment id to empty string if variable price id is negative ( i.e. custom amount feature enabled ).
-        $data['give-variable-price'] = ( 0 < $data['give-variable-price'] ) ? $data['give-variable-price'] : '';
+        $data['give-variable-price'] = ( 'custom' === $data['give-variable-price'] ) ? 'custom' : ( 0 < $data['give-variable-price'] ) ? $data['give-variable-price'] : '';
 
         // Update payment meta data.
         $payment_meta['price_id'] = $data['give-variable-price'];
