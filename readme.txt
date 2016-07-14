@@ -166,6 +166,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 = 1.6:  =
 * New: Added a "Reset Password" option to the donation form if the user is prompted to login - https://github.com/WordImpress/Give/issues/723
+* Fix: easier and more understandable strings according for translations i18n - thanks @ramiy! - https://github.com/WordImpress/Give/issues/451
 * Fix: Unable to view payment history for donors with unusual characters in the email  - https://github.com/WordImpress/Give/issues/717
 * Tweak: Update the country dropdown to use the new ISO country codes for islands in Dutch West Indies - https://github.com/WordImpress/Give/issues/698
 * Tweak: Updated to the latest version of CMB2 & tested compatibility - https://github.com/WordImpress/Give/issues/670
