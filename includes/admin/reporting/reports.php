@@ -313,11 +313,13 @@ function give_reports_tab_export() {
 						</td>
 						<td>
 							<form method="post">
-								<?php echo Give()->html->year_dropdown( 'start_year' ); ?>
-								<?php echo Give()->html->month_dropdown( 'start_month' ); ?>
-								<?php echo _x( 'to', 'Date one to date two', 'give' ); ?>
-								<?php echo Give()->html->year_dropdown( 'end_year' ); ?>
-								<?php echo Give()->html->month_dropdown( 'end_month' ); ?>
+								<?php
+									printf(
+										__( '%1$s to %2$s', 'give' ),
+										Give()->html->year_dropdown( 'start_year' ) . ' ' . Give()->html->month_dropdown( 'start_month' ),
+										Give()->html->year_dropdown( 'end_year' )   . ' ' . Give()->html->month_dropdown( 'end_month' )
+									);
+								?>
 								<input type="hidden" name="give-action" value="earnings_export"/>
 								<input type="submit" value="<?php _e( 'Generate CSV', 'give' ); ?>" class="button-secondary"/>
 							</form>
