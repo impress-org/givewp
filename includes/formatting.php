@@ -200,8 +200,7 @@ function give_format_admin_multilevel_amount( $field_args, $field ) {
 		return false;
 	}
 
-	$field->value = give_format_amount( $field->value );
-
+	$field->value = give_maybe_unformat_amount( $field->value );
 }
 
 /**

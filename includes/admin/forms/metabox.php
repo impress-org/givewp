@@ -110,7 +110,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 							'before_field' => give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol  give-money-symbol-before">' . give_currency_symbol() . '</span>' : '',
 							'after_field'  => give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol  give-money-symbol-after">' . give_currency_symbol() . '</span>' : '',
 							'attributes'   => array(
-								'placeholder' => give_format_amount( '1.00' ),
+								'placeholder' => '1.00',
 								'class'       => 'cmb-type-text-small give-money-field',
 							),
 							'before'       => 'give_format_admin_multilevel_amount',
