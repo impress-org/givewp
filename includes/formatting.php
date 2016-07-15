@@ -164,9 +164,7 @@ function give_format_amount( $amount, $decimals = true ) {
 function give_format_decimal( $amount ){
     $decimal_separator = give_get_price_decimal_separator();
     $formatted_amount = $amount;
-
-    error_log(print_r( $decimal_separator, true) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log');
-
+    
     if( false !== strpos( $amount, '.' ) ) {
         $formatted_amount = str_replace( '.', $decimal_separator, $formatted_amount );
     }
