@@ -73,7 +73,7 @@ add_action( 'admin_notices', 'give_show_upgrade_notices' );
 /**
  * Triggers all upgrade functions
  *
- * This function is usually triggered via AJAX
+ * @description: This function is usually triggered via AJAX
  *
  * @since 1.0
  * @return void
@@ -127,7 +127,7 @@ function give_has_upgrade_completed( $upgrade_action = '' ) {
  *
  * @since  1.0
  *
- * @param  string $upgrade_action The action to add to the copmleted upgrades array
+ * @param  string $upgrade_action The action to add to the completed upgrades array
  *
  * @return bool                   If the function was successfully added
  */
@@ -324,19 +324,19 @@ function give_v152_cleanup_users() {
 			'publish_give_paymentss',
 			'read_private_give_paymentss',
 		);
-	
+
 		global $wp_roles;
 		foreach ( $delete_caps as $cap ) {
 			foreach ( array_keys( $wp_roles->roles ) as $role ) {
 				$wp_roles->remove_cap( $role, $cap );
 			}
 		}
-	
+
 		// Create Give plugin roles
 		$roles = new Give_Roles();
 		$roles->add_roles();
 		$roles->add_caps();
-		
+
 		//The Update Ran
 		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
 		give_set_upgrade_complete( 'upgrade_give_user_caps_cleanup' );
