@@ -164,8 +164,8 @@ function give_format_amount( $amount, $decimals = true ) {
 function give_format_decimal( $amount ){
     $decimal_separator = give_get_price_decimal_separator();
     $formatted_amount  = give_sanitize_amount( $amount );
-    
-    if( false !== strpos( $amount, '.' ) ) {
+
+    if( false !== strpos( $formatted_amount, '.' ) ) {
         $formatted_amount = str_replace( '.', $decimal_separator, $formatted_amount );
     }
 
