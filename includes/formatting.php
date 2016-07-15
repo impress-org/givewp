@@ -114,7 +114,7 @@ function give_format_amount( $amount, $decimals = true ) {
 /**
  * Format Multi-level Amount
  *
- * @description Loops through CMB2 repeater field and updates amount field using give_format_amount()
+ * Loops through CMB2 repeater field and updates amount field using give_format_amount()
  *
  * @param $field_args
  * @param $field

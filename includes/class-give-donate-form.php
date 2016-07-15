@@ -389,7 +389,7 @@ class Give_Donate_Form {
 	/**
 	 * Has Variable Prices
 	 *
-	 * @description Determine if the donation form has variable prices enabled
+	 * Determine if the donation form has variable prices enabled
 	 *
 	 * @since       1.0
 	 * @return bool

@@ -1902,7 +1902,7 @@ class Give_API {
 	/**
 	 * API Key Backwards Compatibility
 	 *
-	 * @description A Backwards Compatibility call for the change of meta_key/value for users API Keys
+	 * A Backwards Compatibility call for the change of meta_key/value for users API Keys
 	 *
 	 * @since  1.3.6
 	 *

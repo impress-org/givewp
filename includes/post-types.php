@@ -404,7 +404,7 @@ function give_add_thumbnail_support() {
 /**
  * Give Sidebars
  *
- * @description This option adds Give sidebars; registered late so it display last in list
+ * This option adds Give sidebars; registered late so it display last in list
  *
  */
 function give_widgets_init() {
