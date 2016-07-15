@@ -260,7 +260,7 @@ function give_customer_delete( $args ) {
 	$customer_edit_role = apply_filters( 'give_edit_customers_role', 'edit_give_payments' );
 
 	if ( ! is_admin() || ! current_user_can( $customer_edit_role ) ) {
-		wp_die( __( 'You do not have permission to delete this donor.', 'give' ) );
+		wp_die( __( 'You do not have permission to delete donors.', 'give' ) );
 	}
 
 	if ( empty( $args ) ) {
