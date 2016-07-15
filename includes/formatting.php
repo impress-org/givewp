@@ -78,7 +78,12 @@ function give_sanitize_amount( $number, $trim_zeros = false ) {
         $number = str_replace( $thousand_separator, '', $number );
     }
 
-    $decimals = apply_filters( 'give_format_amount_decimals', $decimals ? 2 : 0, $number );
+    // Remove non numeric entity before decimal separator.
+    $number   = preg_replace( '/[^0-9\.]/', '', $number );
+
+    $decimals = give_get_price_decimals();
+    $decimals = apply_filters( 'give_format_amount_decimals', $decimals ? $decimals : 0, $number );
+
     $number = number_format( floatval( $number ), $decimals, '.', '' );
 
     // Reset negative amount to zero.
