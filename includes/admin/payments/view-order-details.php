@@ -383,20 +383,20 @@ $payment_mode   = $payment->mode;
 												</div>
 												<div class="column">
 													<p>
-														<strong class="order-data-address-line"><?php echo _x( 'City:', 'Address City', 'give' ); ?></strong><br/>
+														<strong class="order-data-address-line"><?php _e( 'City:', 'give' ); ?></strong><br/>
 														<input type="text" name="give-payment-address[0][city]" value="<?php echo esc_attr( $address['city'] ); ?>" class="medium-text"/>
 
 													</p>
 
 													<p>
-														<strong class="order-data-address-line"><?php echo _x( 'Zip / Postal Code:', 'Zip / Postal code of address', 'give' ); ?></strong><br/>
+														<strong class="order-data-address-line"><?php _e( 'Zip / Postal Code:', 'give' ); ?></strong><br/>
 														<input type="text" name="give-payment-address[0][zip]" value="<?php echo esc_attr( $address['zip'] ); ?>" class="medium-text"/>
 
 													</p>
 												</div>
 												<div class="column">
 													<p id="give-order-address-country-wrap">
-														<strong class="order-data-address-line"><?php echo _x( 'Country:', 'Address country', 'give' ); ?></strong><br/>
+														<strong class="order-data-address-line"><?php _e( 'Country:', 'give' ); ?></strong><br/>
 														<?php
 														echo Give()->html->select( array(
 															'options'          => give_get_country_list(),
@@ -411,7 +411,7 @@ $payment_mode   = $payment->mode;
 													</p>
 
 													<p id="give-order-address-state-wrap">
-														<strong class="order-data-address-line"><?php echo _x( 'State / Province:', 'State / province of address', 'give' ); ?></strong><br/>
+														<strong class="order-data-address-line"><?php _e( 'State / Province:', 'give' ); ?></strong><br/>
 														<?php
 														$states = give_get_states( $address['country'] );
 														if ( ! empty( $states ) ) {

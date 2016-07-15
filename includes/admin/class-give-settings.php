@@ -595,7 +595,7 @@ class Give_Plugin_Settings {
 						array(
 							'id'      => 'donation_subject',
 							'name'    => __( 'Donation Email Subject', 'give' ),
-							'desc'    => __( 'Enter the subject line for the donation receipt email', 'give' ),
+							'desc'    => __( 'Enter the subject line for the donation receipt email.', 'give' ),
 							'default' => __( 'Donation Receipt', 'give' ),
 							'type'    => 'text'
 						),
