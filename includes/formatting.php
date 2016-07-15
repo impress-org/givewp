@@ -14,6 +14,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+
+/**
+ * Get thousand separator
+ *
+ * @since 1.6
+ *
+ * @return mixed
+ */
+function give_get_price_thousand_separator() {
+    return give_get_option( 'thousands_separator', ',' );
+}
+
+/**
+ * Get decimal separator
+ *
+ * @since 1.6
+ *
+ * @return mixed
+ */
+function give_get_price_decimal_separator() {
+    return give_get_option( 'decimal_separator', '.' );
+}
+
 /**
  * Sanitize Amount
  *
