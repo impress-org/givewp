@@ -592,7 +592,7 @@ function give_get_payment_statuses() {
 /**
  * Get Payment Status Keys
  *
- * @description Retrieves keys for all available statuses for payments
+ * Retrieves keys for all available statuses for payments
  *
  * @since       1.0
  * @return array $payment_status All the available payment statuses
@@ -924,7 +924,7 @@ function give_get_payment_meta_user_info( $payment_id ) {
 /**
  * Get the donations Key from Payment Meta
  *
- * @description Retrieves the form_id from a (Previously titled give_get_payment_meta_donations)
+ * Retrieves the form_id from a (Previously titled give_get_payment_meta_donations)
  * @since       1.0
  *
  * @param int $payment_id Payment ID
@@ -1234,7 +1234,7 @@ function give_remove_payment_prefix_postfix( $number ) {
 /**
  * Get Payment Amount
  *
- * @description Get the fully formatted payment amount. The payment amount is retrieved using give_get_payment_amount() and is then sent through give_currency_filter() and  give_format_amount() to format the amount correctly.
+ * Get the fully formatted payment amount. The payment amount is retrieved using give_get_payment_amount() and is then sent through give_currency_filter() and  give_format_amount() to format the amount correctly.
  *
  * @since       1.0
  *
@@ -1740,7 +1740,7 @@ function give_get_payment_form_title( $payment_meta, $level_title = false, $sepa
 /**
  * Get Price ID
  *
- * @description Retrieves the Price ID when provided a proper form ID and price (donation) total
+ * Retrieves the Price ID when provided a proper form ID and price (donation) total
  *
  * @param $form_id
  * @param $price

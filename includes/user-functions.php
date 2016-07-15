@@ -392,7 +392,7 @@ function give_get_donor_address( $user_id = 0 ) {
 /**
  * Give New User Notification
  *
- * @description   : Sends the new user notification email when a user registers within the donation form
+ * Sends the new user notification email when a user registers within the donation form
  *
  * @access        public
  * @since         1.0

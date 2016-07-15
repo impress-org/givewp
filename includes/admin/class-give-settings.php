@@ -1177,7 +1177,7 @@ function give_get_featured_image_sizes() {
 /**
  * Give License Key Callback
  *
- * @description Registers the license field callback for EDD's Software Licensing
+ * Registers the license field callback for EDD's Software Licensing
  * @since       1.0
  *
  * @param array $field_object , $escaped_value, $object_id, $object_type, $field_type_object Arguments passed by CMB2

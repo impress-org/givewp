@@ -2,8 +2,9 @@
 /**
  * Single Form Featured Image
  *
+ * Displays the featured image for the single donation form - Override this template by copying it to yourtheme/give/single-give-form/featured-image.php
+ * 
  * @package       Give/Templates
- * @description Displays the featured image for the single donation form - Override this template by copying it to yourtheme/give/single-give-form/featured-image.php
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
