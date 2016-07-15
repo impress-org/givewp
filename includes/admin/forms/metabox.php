@@ -78,7 +78,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
                     'sanitization_cb'   => 'give_sanitize_amount',
 					'attributes'   => array(
 						'placeholder' => '1.00',
-						'value'       => give_format_decimal( $price ),
+						'value'       => give_format_amount( $price, true ),
 						'class'       => 'cmb-type-text-small give-money-field',
 					),
 				),
@@ -169,7 +169,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
                     'sanitization_cb'   => 'give_sanitize_amount',
 					'attributes'   => array(
 						'placeholder' => '1.00',
-						'value'       => give_format_decimal( $custom_amount_minimum ),
+						'value'       => give_format_amount( $custom_amount_minimum, true ),
 						'class'       => 'cmb-type-text-small give-money-field',
 					)
 				),
@@ -206,7 +206,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'after_field'  => give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '',
 					'attributes'   => array(
 						'placeholder' => '0.00',
-						'value'       => isset( $goal ) ? give_format_decimal( $goal ) : '',
+						'value'       => give_format_amount( $goal, 0 ),
 						'class'       => 'cmb-type-text-small give-money-field',
 					),
 				),
