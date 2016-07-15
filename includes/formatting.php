@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return mixed
  */
 function give_get_price_decimals() {
-    return 2;
+    return apply_filters( 'give_sanitize_amount_decimals', 2 );
 }
 
 /**
@@ -145,7 +145,7 @@ function give_format_amount( $amount, $decimals = true ) {
 		$amount = 0;
 	}
 
-	$decimals = apply_filters( 'give_format_amount_decimals', $decimals ? 2 : 0, $amount );
+	$decimals = give_get_price_decimals();
 
 	$formatted = number_format( $amount, $decimals, $decimal_sep, $thousands_sep );
 
