@@ -181,7 +181,7 @@ function give_process_register_form( $data ) {
 	}
 
 	if ( ( ! empty( $_POST['give_user_pass'] ) && empty( $_POST['give_user_pass2'] ) ) || ( $_POST['give_user_pass'] !== $_POST['give_user_pass2'] ) ) {
-		give_set_error( 'password_mismatch', __( 'Passwords do not match', 'give' ) );
+		give_set_error( 'password_mismatch', __( 'Passwords don\'t match', 'give' ) );
 	}
 
 	do_action( 'give_process_register_form' );

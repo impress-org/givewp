@@ -342,9 +342,9 @@ function give_get_default_offline_donation_content() {
 
 	$default_text = '<p>' . esc_attr__( 'In order to make an offline donation we ask that you please follow these instructions', 'give' ) . ': </p>';
 	$default_text .= '<ol>';
-	$default_text .= '<li>' . _x( 'Make a check payable to ', 'Step 1 for donating offline by check', 'give' ) . '"' . $sitename . '"' . '</li>';
-	$default_text .= '<li>' . _x( 'On the memo line of the check, please indicate that the donation is for ', 'Step 2 for donating by check; this explains who the check should be written to', 'give' ) . '"' . $sitename . '"' . '</li>';
-	$default_text .= '<li>' . _x( 'Please mail your check to:', 'Step 3; where to mail the check', 'give' ) . '</li>';
+	$default_text .= '<li>' . sprintf( __( 'Make a check payable to "%s"', 'give' ), $sitename ) . '</li>';
+	$default_text .= '<li>' . sprintf( __( 'On the memo line of the check, please indicate that the donation is for "%s"', 'give' ), $sitename ) . '</li>';
+	$default_text .= '<li>' . __( 'Please mail your check to:', 'give' ) . '</li>';
 	$default_text .= '</ol>';
 	$default_text .= '&nbsp;&nbsp;&nbsp;&nbsp;<em>' . $sitename . '</em><br>';
 	$default_text .= '&nbsp;&nbsp;&nbsp;&nbsp;<em>123 G Street </em><br>';
@@ -368,9 +368,9 @@ function give_get_default_offline_donation_email_content() {
 	$default_text = '<p>' . esc_attr__( 'Dear {name},', 'give' ) . '</p>';
 	$default_text .= '<p>' . esc_attr__( 'Thank you for your offline donation request! Your generosity is greatly appreciated. In order to make an offline donation we ask that you please follow these instructions', 'give' ) . ': </p>';
 	$default_text .= '<ol>';
-	$default_text .= '<li>' . _x( 'Make a check payable to ', 'Step 1 for donating offline by check', 'give' ) . '"' . $sitename . '"' . '</li>';
-	$default_text .= '<li>' . _x( 'On the memo line of the check, please indicate that the donation is for ', 'Step 2 for donating by check; this explains who the check should be written to', 'give' ) . '"' . $sitename . '"' . '</li>';
-	$default_text .= '<li>' . _x( 'Please mail your check to:', 'Step 3; where to mail the check', 'give' ) . '</li>';
+	$default_text .= '<li>' . sprintf( __( 'Make a check payable to "%s"', 'give' ), $sitename ) . '</li>';
+	$default_text .= '<li>' . sprintf( __( 'On the memo line of the check, please indicate that the donation is for "%s"', 'give' ), $sitename ) . '</li>';
+	$default_text .= '<li>' . __( 'Please mail your check to:', 'give' ) . '</li>';
 	$default_text .= '</ol>';
 	$default_text .= '&nbsp;&nbsp;&nbsp;&nbsp;<em>' . $sitename . '</em><br>';
 	$default_text .= '&nbsp;&nbsp;&nbsp;&nbsp;<em>123 G Street </em><br>';

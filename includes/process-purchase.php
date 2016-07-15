@@ -344,11 +344,11 @@ function give_purchase_form_required_fields( $form_id ) {
 	$required_fields = array(
 		'give_email' => array(
 			'error_id'      => 'invalid_email',
-			'error_message' => __( 'Please enter a valid email address', 'give' )
+			'error_message' => __( 'Please enter a valid email address.', 'give' )
 		),
 		'give_first' => array(
 			'error_id'      => 'invalid_first_name',
-			'error_message' => __( 'Please enter your first name', 'give' )
+			'error_message' => __( 'Please enter your first name.', 'give' )
 		)
 	);
 
@@ -357,23 +357,23 @@ function give_purchase_form_required_fields( $form_id ) {
 	if ( $require_address ) {
 		$required_fields['card_address']    = array(
 			'error_id'      => 'invalid_card_address',
-			'error_message' => __( 'Please enter your primary billing address', 'give' )
+			'error_message' => __( 'Please enter your primary billing address.', 'give' )
 		);
 		$required_fields['card_zip']        = array(
 			'error_id'      => 'invalid_zip_code',
-			'error_message' => __( 'Please enter your zip / postal code', 'give' )
+			'error_message' => __( 'Please enter your zip / postal code.', 'give' )
 		);
 		$required_fields['card_city']       = array(
 			'error_id'      => 'invalid_city',
-			'error_message' => __( 'Please enter your billing city', 'give' )
+			'error_message' => __( 'Please enter your billing city.', 'give' )
 		);
 		$required_fields['billing_country'] = array(
 			'error_id'      => 'invalid_country',
-			'error_message' => __( 'Please select your billing country', 'give' )
+			'error_message' => __( 'Please select your billing country.', 'give' )
 		);
 		$required_fields['card_state']      = array(
 			'error_id'      => 'invalid_state',
-			'error_message' => __( 'Please enter billing state / province', 'give' )
+			'error_message' => __( 'Please enter billing state / province.', 'give' )
 		);
 	}
 
