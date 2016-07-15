@@ -408,7 +408,7 @@ function give_check_for_form_price_variations_html() {
 		die( '-2' );
 	}
 
-    if ( empty( give_has_variable_prices( $form_id ) ) ) {
+    if ( ! give_has_variable_prices( $form_id ) ) {
         echo __( 'n/a', 'give' );
     } else {
         // Payment object.
