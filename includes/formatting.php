@@ -136,6 +136,28 @@ function give_format_amount( $amount, $decimals = true ) {
 	return apply_filters( 'give_format_amount', $formatted, $amount, $decimals, $decimal_sep, $thousands_sep );
 }
 
+/**
+ * Returns a nicely formatted amount with custom decimal separator.
+ *
+ * @since 1.0
+ *
+ * @param string      $amount   Price amount to format
+ *
+ * @return string $amount Newly formatted amount or Price Not Available
+ */
+function give_format_decimal( $amount ){
+    $decimal_separator = give_get_price_decimal_separator();
+    $formatted_amount = $amount;
+
+    error_log(print_r( $decimal_separator, true) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log');
+
+    if( false !== strpos( $amount, '.' ) ) {
+        $formatted_amount = str_replace( '.', $decimal_separator, $formatted_amount );
+    }
+
+    return apply_filters( 'give_format_decimal', $formatted_amount, $amount, $decimal_separator );
+}
+
 
 /**
  * Format Multi-level Amount
