@@ -44,20 +44,43 @@ function give_get_price_decimal_separator() {
  *
  * @since      1.0
  *
- * @param string $amount Price amount to format
+ * @param  float|string $number     Expects either a float or a string with a decimal separator only (no thousands)
+ * @param  bool         $trim_zeros From end of string
+ *
  *
  * @return string $amount Newly sanitized amount
  */
-function give_sanitize_amount( $amount ) {
-    // Remove formatting from amount.
-    $amount = give_format_decimal( $amount );
+function give_sanitize_amount( $number, $trim_zeros = false ) {
+    $thousand_separator = give_get_price_thousand_separator();
+
+    $locale   = localeconv();
+    $decimals = array( give_get_price_decimal_separator(), $locale['decimal_point'], $locale['mon_decimal_point'] );
+
+    // Remove locale from string
+    if ( ! is_float( $number ) ) {
+        $number = str_replace( $decimals, '.', $number );
+    }
+
+    // Remove thousand amount formatting if amount has.
+    // This condition use to add backward compatibility to version before 1.6, because before version 1.6 we were saving formatted amount to db.
+    if( false !== strpos( $number, $thousand_separator ) ) {
+        $number = str_replace( $thousand_separator, '', $number );
+    }
+
+    $decimals = apply_filters( 'give_format_amount_decimals', $decimals ? 2 : 0, $number );
+    $number = number_format( floatval( $number ), $decimals, '.', '' );
 
     // Reset negative amount to zero.
-	if ( 0 > $amount ) {
-		$amount = number_format( 0, 2, '.' );
+	if ( 0 > $number ) {
+		$number = number_format( 0, 2, '.' );
 	}
 
-	return apply_filters( 'give_sanitize_amount', $amount );
+    // Trim zeros.
+    if ( $trim_zeros && strstr( $number, '.' ) ) {
+        $number = rtrim( rtrim( $number, '0' ), '.' );
+    }
+
+	return apply_filters( 'give_sanitize_amount', $number );
 }
 
 /**
@@ -115,39 +138,6 @@ function give_format_amount( $amount, $decimals = true ) {
 
 
 /**
- * Format decimal numbers ready for DB storage.
- *
- * Sanitize, remove locale formatting, and optionally round + trim off zeros.
- *
- * @param  float|string $number     Expects either a float or a string with a decimal separator only (no thousands)
- * @param  bool         $trim_zeros From end of string
- *
- * @return string
- */
-function give_format_decimal( $number, $trim_zeros = false ) {
-    $thousand_separator = give_get_price_thousand_separator();
-
-    $locale   = localeconv();
-    $decimals = array( give_get_price_decimal_separator(), $locale['decimal_point'], $locale['mon_decimal_point'] );
-
-    // Remove locale from string
-    if ( ! is_float( $number ) ) {
-        $number = str_replace( $decimals, '.', $number );
-    }
-
-    // Remove thousand amount formatting if amount has.
-    // This condition use to add backward compatibility to version before 1.6, because before version 1.6 we were saving formatted amount to db.
-    if( false !== strpos( $number, $thousand_separator ) ) {
-        $number = str_replace( $thousand_separator, '', $number );
-    }
-
-    $decimals = apply_filters( 'give_format_amount_decimals', $decimals ? 2 : 0, $number );
-    $number = number_format( floatval( $number ), $decimals, '.', '' );
-
-    return $number;
-}
-
-/**
  * Format Multi-level Amount
  *
  * @description Loops through CMB2 repeater field and updates amount field using give_format_amount()
@@ -163,7 +153,7 @@ function give_format_admin_multilevel_amount( $field_args, $field ) {
 		return false;
 	}
 
-	$field->value = give_format_decimal( $field->value );
+	$field->value = give_format_amount( $field->value, true );
 }
 
 /**
