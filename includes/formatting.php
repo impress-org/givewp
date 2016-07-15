@@ -146,6 +146,14 @@ function give_format_amount( $amount, $decimals = true ) {
  * @return string
  */
 function give_format_decimal( $number, $trim_zeros = false ) {
+    $thousand_separator = give_get_price_thousand_separator();
+
+    // Remove thousand amount formatting if amount has.
+    // This condition use to add backward compatibility to version before 1.6, because before version 1.6 we were saving formatted amount to db.
+    if( false !== strpos( $number, $thousand_separator ) ) {
+        $number = str_replace( $thousand_separator, '', $number );
+    }
+
     $locale   = localeconv();
     $decimals = array( give_get_price_decimal_separator(), $locale['decimal_point'], $locale['mon_decimal_point'] );
 
@@ -156,30 +164,6 @@ function give_format_decimal( $number, $trim_zeros = false ) {
 
     $decimals = apply_filters( 'give_format_amount_decimals', $decimals ? 2 : 0, $number );
     $number = number_format( floatval( $number ), $decimals, '.', '' );
-
-    return $number;
-}
-
-/**
- * Remove exiting thousand and decimal separator formatting and
- * Format decimal numbers ready for DB storage.
- *
- * @use give_format_decimal format number with decimal
- *
- * @param  float|string $number Expects either a float or a string with a decimal separator only (no thousands)
- *
- * @return string
- */
-function give_maybe_unformat_amount( $number ) {
-    $thousand_separator = give_get_price_thousand_separator();
-
-    // Remove thousand separator.
-    if( false !== strpos( $number, $thousand_separator ) ) {
-        $number = str_replace( $thousand_separator, '', $number );
-    }
-
-    // Remove custom decimal separator.
-    $number = give_format_decimal( $number );
 
     return $number;
 }
@@ -200,7 +184,7 @@ function give_format_admin_multilevel_amount( $field_args, $field ) {
 		return false;
 	}
 
-	$field->value = give_maybe_unformat_amount( $field->value );
+	$field->value = give_format_decimal( $field->value );
 }
 
 /**
