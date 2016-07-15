@@ -127,18 +127,18 @@ function give_format_amount( $amount, $decimals = true ) {
 function give_format_decimal( $number, $trim_zeros = false ) {
     $thousand_separator = give_get_price_thousand_separator();
 
-    // Remove thousand amount formatting if amount has.
-    // This condition use to add backward compatibility to version before 1.6, because before version 1.6 we were saving formatted amount to db.
-    if( false !== strpos( $number, $thousand_separator ) ) {
-        $number = str_replace( $thousand_separator, '', $number );
-    }
-
     $locale   = localeconv();
     $decimals = array( give_get_price_decimal_separator(), $locale['decimal_point'], $locale['mon_decimal_point'] );
 
     // Remove locale from string
     if ( ! is_float( $number ) ) {
         $number = str_replace( $decimals, '.', $number );
+    }
+
+    // Remove thousand amount formatting if amount has.
+    // This condition use to add backward compatibility to version before 1.6, because before version 1.6 we were saving formatted amount to db.
+    if( false !== strpos( $number, $thousand_separator ) ) {
+        $number = str_replace( $thousand_separator, '', $number );
     }
 
     $decimals = apply_filters( 'give_format_amount_decimals', $decimals ? 2 : 0, $number );
