@@ -82,7 +82,7 @@ function give_sanitize_amount( $number, $trim_zeros = false ) {
     $number   = preg_replace( '/[^0-9\.]/', '', $number );
 
     $decimals = give_get_price_decimals();
-    $decimals = apply_filters( 'give_format_amount_decimals', $decimals ? $decimals : 0, $number );
+    $decimals = apply_filters( 'give_sanitize_amount_decimals', $decimals, $number );
 
     $number = number_format( floatval( $number ), $decimals, '.', '' );
 
