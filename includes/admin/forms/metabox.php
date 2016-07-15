@@ -76,9 +76,9 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'before_field' => give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol give-money-symbol-before">' . give_currency_symbol() . '</span>' : '',
 					'after_field'  => give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '',
                     'sanitization_cb'   => 'give_sanitize_amount',
-					'attributes'   => array(
-						'placeholder' => '1.00',
-						'value'       => give_format_amount( $price, true ),
+                    'attributes'   => array(
+						'placeholder' => give_format_decimal( '1.00' ),
+						'value'       => give_format_decimal( $price ),
 						'class'       => 'cmb-type-text-small give-money-field',
 					),
 				),
@@ -112,7 +112,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 							'after_field'       => give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol  give-money-symbol-after">' . give_currency_symbol() . '</span>' : '',
 							'sanitization_cb'   => 'give_sanitize_amount',
                             'attributes'        => array(
-								'placeholder' => '1.00',
+								'placeholder' => give_format_decimal( '1.00' ),
 								'class'       => 'cmb-type-text-small give-money-field',
 							),
 							'before'       => 'give_format_admin_multilevel_amount',
@@ -167,9 +167,9 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'before_field' => give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol give-money-symbol-before">' . give_currency_symbol() . '</span>' : '',
 					'after_field'  => give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '',
                     'sanitization_cb'   => 'give_sanitize_amount',
-					'attributes'   => array(
-						'placeholder' => '1.00',
-						'value'       => give_format_amount( $custom_amount_minimum, true ),
+                    'attributes'   => array(
+						'placeholder' => give_format_decimal('1.00'),
+						'value'       => give_format_decimal( $custom_amount_minimum ),
 						'class'       => 'cmb-type-text-small give-money-field',
 					)
 				),
@@ -197,16 +197,17 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					),
 				),
 				array(
-					'name'         => __( 'Goal Amount', 'give' ),
-					'description'  => __( 'This is the monetary goal amount you want to reach for this donation form.', 'give' ),
-					'id'           => $prefix . 'set_goal',
-					'type'         => 'text_small',
-					'row_classes'  => 'give-subfield',
-					'before_field' => give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol give-money-symbol-before">' . give_currency_symbol() . '</span>' : '',
-					'after_field'  => give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '',
-					'attributes'   => array(
-						'placeholder' => '0.00',
-						'value'       => give_format_amount( $goal, 0 ),
+					'name'              => __( 'Goal Amount', 'give' ),
+					'description'       => __( 'This is the monetary goal amount you want to reach for this donation form.', 'give' ),
+					'id'                => $prefix . 'set_goal',
+					'type'              => 'text_small',
+					'row_classes'       => 'give-subfield',
+					'before_field'      => give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol give-money-symbol-before">' . give_currency_symbol() . '</span>' : '',
+					'after_field'       => give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '',
+					'sanitization_cb'   => 'give_sanitize_amount',
+					'attributes'        => array(
+						'placeholder' => give_format_decimal( '0.00' ),
+						'value'       => give_format_decimal( $goal ),
 						'class'       => 'cmb-type-text-small give-money-field',
 					),
 				),
