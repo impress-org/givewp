@@ -717,7 +717,7 @@ function give_default_cc_address_fields( $form_id ) {
 
 			<input type="text" size="4" id="card_zip" name="card_zip" class="card-zip give-input<?php if ( give_field_is_required( 'card_zip', $form_id ) ) {
 				echo ' required';
-			} ?>" placeholder="<?php _e( 'Zip / Postal code', 'give' ); ?>" value="<?php echo $zip; ?>" <?php if ( give_field_is_required( 'card_zip', $form_id ) ) {
+			} ?>" placeholder="<?php _e( 'Zip / Postal Code', 'give' ); ?>" value="<?php echo $zip; ?>" <?php if ( give_field_is_required( 'card_zip', $form_id ) ) {
 				echo ' required ';
 			} ?>/>
 		</p>
