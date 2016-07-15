@@ -161,6 +161,30 @@ function give_format_decimal( $number, $trim_zeros = false ) {
 }
 
 /**
+ * Remove exiting thousand and decimal separator formatting and
+ * Format decimal numbers ready for DB storage.
+ *
+ * @use give_format_decimal format number with decimal
+ *
+ * @param  float|string $number Expects either a float or a string with a decimal separator only (no thousands)
+ *
+ * @return string
+ */
+function give_maybe_unformat_amount( $number ) {
+    $thousand_separator = give_get_price_thousand_separator();
+
+    // Remove thousand separator.
+    if( false !== strpos( $number, $thousand_separator ) ) {
+        $number = str_replace( $thousand_separator, '', $number );
+    }
+
+    // Remove custom decimal separator.
+    $number = give_format_decimal( $number );
+
+    return $number;
+}
+
+/**
  * Format Multi-level Amount
  *
  * @description Loops through CMB2 repeater field and updates amount field using give_format_amount()
