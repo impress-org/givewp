@@ -16,6 +16,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 /**
+ * Get decimal count
+ *
+ * @since 1.6
+ *
+ * @return mixed
+ */
+function give_get_price_decimals() {
+    return 2;
+}
+
+/**
  * Get thousand separator
  *
  * @since 1.6
