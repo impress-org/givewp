@@ -49,33 +49,12 @@ function give_get_price_decimal_separator() {
  * @return string $amount Newly sanitized amount
  */
 function give_sanitize_amount( $amount ) {
-	$is_negative   = false;
-	$thousands_sep = give_get_option( 'thousands_separator', ',' );
-	$decimal_sep   = give_get_option( 'decimal_separator', '.' );
+    // Remove formatting from amount.
+    $amount = give_format_decimal( $amount );
 
-	// Sanitize the amount
-	if ( $decimal_sep == ',' && false !== ( $found = strpos( $amount, $decimal_sep ) ) ) {
-		if ( ( $thousands_sep == '.' || $thousands_sep == ' ' ) && false !== ( $found = strpos( $amount, $thousands_sep ) ) ) {
-			$amount = str_replace( $thousands_sep, '', $amount );
-		} elseif ( empty( $thousands_sep ) && false !== ( $found = strpos( $amount, '.' ) ) ) {
-			$amount = str_replace( '.', '', $amount );
-		}
-
-		$amount = str_replace( $decimal_sep, '.', $amount );
-	} elseif ( $thousands_sep == ',' && false !== ( $found = strpos( $amount, $thousands_sep ) ) ) {
-		$amount = str_replace( $thousands_sep, '', $amount );
-	}
-
-	if ( $amount < 0 ) {
-		$is_negative = true;
-	}
-
-	$amount   = preg_replace( '/[^0-9\.]/', '', $amount );
-	$decimals = apply_filters( 'give_sanitize_amount_decimals', 2, $amount );
-	$amount   = number_format( (double) $amount, $decimals, '.', '' );
-
-	if ( $is_negative ) {
-		$amount *= - 1;
+    // Reset negative amount to zero.
+	if ( 0 > $amount ) {
+		$amount = number_format( 0, 2, '.' );
 	}
 
 	return apply_filters( 'give_sanitize_amount', $amount );
