@@ -157,13 +157,13 @@ function give_format_amount( $amount, $decimals = true ) {
  *
  * @since 1.0
  *
- * @param string      $amount   Price amount to format
+ * @param string      $amount   Formatted or sanitized price
  *
  * @return string $amount Newly formatted amount or Price Not Available
  */
 function give_format_decimal( $amount ){
     $decimal_separator = give_get_price_decimal_separator();
-    $formatted_amount = $amount;
+    $formatted_amount  = give_sanitize_amount( $amount );
     
     if( false !== strpos( $amount, '.' ) ) {
         $formatted_amount = str_replace( '.', $decimal_separator, $formatted_amount );
