@@ -202,8 +202,8 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'before_field' => give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol give-money-symbol-before">' . give_currency_symbol() . '</span>' : '',
 					'after_field'  => give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '',
 					'attributes'   => array(
-						'placeholder' => give_format_amount( '0.00' ),
-						'value'       => isset( $goal ) ? esc_attr( give_format_amount( $goal ) ) : '',
+						'placeholder' => '0.00',
+						'value'       => isset( $goal ) ? give_format_decimal( $goal ) : '',
 						'class'       => 'cmb-type-text-small give-money-field',
 					),
 				),
