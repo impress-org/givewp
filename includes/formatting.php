@@ -191,7 +191,7 @@ function give_format_admin_multilevel_amount( $field_args, $field ) {
 		return false;
 	}
 
-	$field->value = give_format_amount( $field->value, true );
+	$field->value = give_format_decimal( $field->value );
 }
 
 /**
