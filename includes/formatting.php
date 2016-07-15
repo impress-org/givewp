@@ -134,6 +134,32 @@ function give_format_amount( $amount, $decimals = true ) {
 	return apply_filters( 'give_format_amount', $formatted, $amount, $decimals, $decimal_sep, $thousands_sep );
 }
 
+
+/**
+ * Format decimal numbers ready for DB storage.
+ *
+ * Sanitize, remove locale formatting, and optionally round + trim off zeros.
+ *
+ * @param  float|string $number     Expects either a float or a string with a decimal separator only (no thousands)
+ * @param  bool         $trim_zeros From end of string
+ *
+ * @return string
+ */
+function give_format_decimal( $number, $trim_zeros = false ) {
+    $locale   = localeconv();
+    $decimals = array( give_get_price_decimal_separator(), $locale['decimal_point'], $locale['mon_decimal_point'] );
+
+    // Remove locale from string
+    if ( ! is_float( $number ) ) {
+        $number = str_replace( $decimals, '.', $number );
+    }
+
+    $decimals = apply_filters( 'give_format_amount_decimals', $decimals ? 2 : 0, $number );
+    $number = number_format( floatval( $number ), $decimals, '.', '' );
+
+    return $number;
+}
+
 /**
  * Format Multi-level Amount
  *
