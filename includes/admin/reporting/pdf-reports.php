@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_generate_pdf( $data ) {
 
 	if ( ! current_user_can( 'view_give_reports' ) ) {
-		wp_die( __( 'You do not have permission to generate PDF sales reports', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( __( 'You do not have permission to generate PDF sales reports.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'give_generate_pdf' ) ) {
