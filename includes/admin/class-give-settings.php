@@ -327,6 +327,7 @@ class Give_Plugin_Settings {
 							'desc'    => __( 'The symbol (typically , or .) to separate thousands', 'give' ),
 							'id'      => 'thousands_separator',
 							'type'    => 'text_small',
+							'sanitization_cb' => 'give_sanitize_thousand_separator',
 							'default' => ',',
 						),
 						array(
