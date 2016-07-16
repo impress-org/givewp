@@ -277,52 +277,52 @@ function give_setup_email_tags() {
 		),
 		array(
 			'tag'         => 'name',
-			'description' => __( 'The donor\'s first name', 'give' ),
+			'description' => __( 'The donor\'s first name.', 'give' ),
 			'function'    => 'give_email_tag_first_name'
 		),
 		array(
 			'tag'         => 'fullname',
-			'description' => __( 'The donor\'s full name, first and last', 'give' ),
+			'description' => __( 'The donor\'s full name, first and last.', 'give' ),
 			'function'    => 'give_email_tag_fullname'
 		),
 		array(
 			'tag'         => 'username',
-			'description' => __( 'The donor\'s user name on the site, if they registered an account', 'give' ),
+			'description' => __( 'The donor\'s user name on the site, if they registered an account.', 'give' ),
 			'function'    => 'give_email_tag_username'
 		),
 		array(
 			'tag'         => 'user_email',
-			'description' => __( 'The donor\'s email address', 'give' ),
+			'description' => __( 'The donor\'s email address.', 'give' ),
 			'function'    => 'give_email_tag_user_email'
 		),
 		array(
 			'tag'         => 'billing_address',
-			'description' => __( 'The donor\'s billing address', 'give' ),
+			'description' => __( 'The donor\'s billing address.', 'give' ),
 			'function'    => 'give_email_tag_billing_address'
 		),
 		array(
 			'tag'         => 'date',
-			'description' => __( 'The date of the donation', 'give' ),
+			'description' => __( 'The date of the donation.', 'give' ),
 			'function'    => 'give_email_tag_date'
 		),
 		array(
 			'tag'         => 'price',
-			'description' => __( 'The total price of the donation', 'give' ),
+			'description' => __( 'The total price of the donation.', 'give' ),
 			'function'    => 'give_email_tag_price'
 		),
 		array(
 			'tag'         => 'payment_id',
-			'description' => __( 'The unique ID number for this donation', 'give' ),
+			'description' => __( 'The unique ID number for this donation.', 'give' ),
 			'function'    => 'give_email_tag_payment_id'
 		),
 		array(
 			'tag'         => 'receipt_id',
-			'description' => __( 'The unique ID number for this donation receipt', 'give' ),
+			'description' => __( 'The unique ID number for this donation receipt.', 'give' ),
 			'function'    => 'give_email_tag_receipt_id'
 		),
 		array(
 			'tag'         => 'payment_method',
-			'description' => __( 'The method of payment used for this donation', 'give' ),
+			'description' => __( 'The method of payment used for this donation.', 'give' ),
 			'function'    => 'give_email_tag_payment_method'
 		),
 		array(
@@ -527,7 +527,7 @@ function give_email_tag_donation( $payment_id ) {
 	$payment    = new Give_Payment( $payment_id );
 	$form_title = give_get_payment_form_title( $payment->meta, false, '-' );
 
-	return ! empty( $form_title ) ? $form_title : __( 'There was an error retrieving this donation title', 'give' );
+	return ! empty( $form_title ) ? $form_title : __( 'There was an error retrieving this donation title.', 'give' );
 
 }
 

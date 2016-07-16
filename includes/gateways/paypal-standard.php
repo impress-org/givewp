@@ -35,7 +35,7 @@ add_action( 'give_paypal_cc_form', '__return_false' );
 function give_process_paypal_purchase( $purchase_data ) {
 
 	if ( ! wp_verify_nonce( $purchase_data['gateway_nonce'], 'give-gateway' ) ) {
-		wp_die( __( 'Nonce verification has failed', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( __( 'Nonce verification has failed.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	$form_id = intval( $purchase_data['post_data']['give-form-id'] );
@@ -427,32 +427,32 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 
 				case 'echeck' :
 
-					$note = __( 'Payment made via eCheck and will clear automatically in 5-8 days', 'give' );
+					$note = __( 'Payment made via eCheck and will clear automatically in 5-8 days.', 'give' );
 
 					break;
 
 				case 'address' :
 
-					$note = __( 'Payment requires a confirmed donor address and must be accepted manually through PayPal', 'give' );
+					$note = __( 'Payment requires a confirmed donor address and must be accepted manually through PayPal.', 'give' );
 
 					break;
 
 				case 'intl' :
 
-					$note = __( 'Payment must be accepted manually through PayPal due to international account regulations', 'give' );
+					$note = __( 'Payment must be accepted manually through PayPal due to international account regulations.', 'give' );
 
 					break;
 
 				case 'multi-currency' :
 
-					$note = __( 'Payment received in non-shop currency and must be accepted manually through PayPal', 'give' );
+					$note = __( 'Payment received in non-shop currency and must be accepted manually through PayPal.', 'give' );
 
 					break;
 
 				case 'paymentreview' :
 				case 'regulatory_review' :
 
-					$note = __( 'Payment is being reviewed by PayPal staff as high-risk or in possible violation of government regulations', 'give' );
+					$note = __( 'Payment is being reviewed by PayPal staff as high-risk or in possible violation of government regulations.', 'give' );
 
 					break;
 
@@ -464,19 +464,19 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 
 				case 'upgrade' :
 
-					$note = __( 'PayPal account must be upgraded before this payment can be accepted', 'give' );
+					$note = __( 'PayPal account must be upgraded before this payment can be accepted.', 'give' );
 
 					break;
 
 				case 'verify' :
 
-					$note = __( 'PayPal account is not verified. Verify account in order to accept this payment', 'give' );
+					$note = __( 'PayPal account is not verified. Verify account in order to accept this payment.', 'give' );
 
 					break;
 
 				case 'other' :
 
-					$note = __( 'Payment is pending for unknown reasons. Contact PayPal support for assistance', 'give' );
+					$note = __( 'Payment is pending for unknown reasons. Contact PayPal support for assistance.', 'give' );
 
 					break;
 
