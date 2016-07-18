@@ -139,7 +139,7 @@ class Give_Notices {
 			if ( current_user_can( 'edit_give_payments' ) ) {
 				switch ( $_GET['give-message'] ) {
 					case 'customer-deleted' :
-						$notices['updated']['give-customer-deleted'] = esc_attr__( 'Donor successfully deleted', 'give' );
+						$notices['updated']['give-customer-deleted'] = esc_attr__( 'Donor successfully deleted.', 'give' );
 						break;
 				}
 			}

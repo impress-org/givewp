@@ -321,14 +321,14 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name'    => __( 'Thousands Separator', 'give' ),
-							'desc'    => __( 'The symbol (typically , or .) to separate thousands', 'give' ),
+							'desc'    => __( 'The symbol (typically , or .) to separate thousands.', 'give' ),
 							'id'      => 'thousands_separator',
 							'type'    => 'text_small',
 							'default' => ',',
 						),
 						array(
 							'name'    => __( 'Decimal Separator', 'give' ),
-							'desc'    => __( 'The symbol (usually , or .) to separate decimal points', 'give' ),
+							'desc'    => __( 'The symbol (usually , or .) to separate decimal points.', 'give' ),
 							'id'      => 'decimal_separator',
 							'type'    => 'text_small',
 							'default' => '.',
@@ -376,13 +376,13 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'PayPal Email', 'give' ),
-							'desc' => __( 'Enter your PayPal account\'s email', 'give' ),
+							'desc' => __( 'Enter your PayPal account\'s email.', 'give' ),
 							'id'   => 'paypal_email',
 							'type' => 'text_email',
 						),
 						array(
 							'name' => __( 'PayPal Page Style', 'give' ),
-							'desc' => __( 'Enter the name of the page style to use, or leave blank to use the default', 'give' ),
+							'desc' => __( 'Enter the name of the page style to use, or leave blank to use the default.', 'give' ),
 							'id'   => 'paypal_page_style',
 							'type' => 'text',
 						),
@@ -612,7 +612,7 @@ class Give_Plugin_Settings {
 						array(
 							'id'      => 'donation_notification_subject',
 							'name'    => __( 'Donation Notification Subject', 'give' ),
-							'desc'    => __( 'Enter the subject line for the donation notification email', 'give' ),
+							'desc'    => __( 'Enter the subject line for the donation notification email.', 'give' ),
 							'type'    => 'text',
 							'default' => __( 'New Donation - #{payment_id}', 'give' )
 						),

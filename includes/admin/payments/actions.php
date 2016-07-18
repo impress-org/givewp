@@ -77,7 +77,7 @@ function give_update_payment_details( $data ) {
 	$updated       = $payment->save();
 
 	if ( 0 === $updated ) {
-		wp_die( esc_attr__( 'Error Updating Payment', 'give' ), esc_attr__( 'Error', 'give' ), array( 'response' => 400 ) );
+		wp_die( esc_attr__( 'Error Updating Payment.', 'give' ), esc_attr__( 'Error', 'give' ), array( 'response' => 400 ) );
 	}
 
 	$customer_changed = false;
@@ -88,7 +88,7 @@ function give_update_payment_details( $data ) {
 		$names = isset( $data['give-new-customer-name'] ) ? sanitize_text_field( $data['give-new-customer-name'] ) : '';
 
 		if ( empty( $email ) || empty( $names ) ) {
-			wp_die( esc_attr__( 'New Customers require a name and email address', 'give' ) );
+			wp_die( esc_attr__( 'New Customers require a name and email address.', 'give' ) );
 		}
 
 		$customer = new Give_Customer( $email );
@@ -103,7 +103,7 @@ function give_update_payment_details( $data ) {
 				// Failed to crete the new donor, assume the previous donor
 				$customer_changed = false;
 				$customer         = new Give_Customer( $curr_customer_id );
-				give_set_error( 'give-payment-new-customer-fail', __( 'Error creating new donor', 'give' ) );
+				give_set_error( 'give-payment-new-customer-fail', __( 'Error creating new donor.', 'give' ) );
 			}
 		}
 

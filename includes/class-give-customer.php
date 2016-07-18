@@ -176,7 +176,7 @@ class Give_Customer {
 
 		} else {
 
-			return new WP_Error( 'give-customer-invalid-property', sprintf( __( 'Can\'t get property %s', 'give' ), $key ) );
+			return new WP_Error( 'give-customer-invalid-property', sprintf( __( 'Can\'t get property %s.', 'give' ), $key ) );
 
 		}
 
