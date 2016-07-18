@@ -175,7 +175,9 @@ add_action( 'wp_enqueue_scripts', 'give_register_styles' );
  * Enqueues the required admin scripts.
  *
  * @since 1.0
+ *
  * @global       $post
+ * @global       $give_options
  *
  * @param string $hook Page hook
  *
@@ -183,7 +185,7 @@ add_action( 'wp_enqueue_scripts', 'give_register_styles' );
  */
 function give_load_admin_scripts( $hook ) {
 
-	global $wp_version, $post, $post_type;
+	global $wp_version, $post, $post_type, $give_options;
 
 	//Directories of assets
 	$js_dir     = GIVE_PLUGIN_URL . 'assets/js/admin/';
@@ -240,11 +242,17 @@ function give_load_admin_scripts( $hook ) {
 		wp_enqueue_script( 'give-admin-settings-scripts' );
 	}
 
-	//Localize strings & variables for JS
+    // Price Separators.
+    $thousand_separator = isset( $give_options['thousands_separator'] ) ? $give_options['thousands_separator'] : ',';
+    $decimal_separator  = isset( $give_options['decimal_separator'] ) ? $give_options['decimal_separator'] : '.';
+
+    //Localize strings & variables for JS
 	wp_localize_script( 'give-admin-scripts', 'give_vars', array(
 		'post_id'                 => isset( $post->ID ) ? $post->ID : null,
 		'give_version'            => GIVE_VERSION,
-		'quick_edit_warning'      => __( 'Sorry, not available for variable priced forms.', 'give' ),
+        'thousands_separator'     => $thousand_separator,
+        'decimal_separator'       => $decimal_separator,
+        'quick_edit_warning'      => __( 'Sorry, not available for variable priced forms.', 'give' ),
 		'delete_payment'          => __( 'Are you sure you wish to delete this payment?', 'give' ),
 		'delete_payment_note'     => __( 'Are you sure you wish to delete this note?', 'give' ),
 		'revoke_api_key'          => __( 'Are you sure you wish to revoke this API key?', 'give' ),
