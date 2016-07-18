@@ -73,7 +73,7 @@ add_action( 'admin_notices', 'give_show_upgrade_notices' );
 /**
  * Triggers all upgrade functions
  *
- * @description: This function is usually triggered via AJAX
+ * This function is usually triggered via AJAX
  *
  * @since 1.0
  * @return void
@@ -168,7 +168,7 @@ function give_get_completed_upgrades() {
 /**
  * Upgrades the
  *
- * @description: Standardizes the discrepancies between two metakeys `_give_payment_customer_id` and `_give_payment_donor_id`
+ * Standardizes the discrepancies between two metakeys `_give_payment_customer_id` and `_give_payment_donor_id`
  *
  * @since      1.3.2
  *
@@ -203,7 +203,7 @@ add_action( 'give_upgrade_give_payment_customer_id', 'give_v132_upgrade_give_pay
 /**
  * Upgrades the Offline Status
  *
- * @description: Reverses the issue where offline donation transactions in "pending" status where inappropriately marked as abandoned
+ * Reverses the issue where offline donation transactions in "pending" status where inappropriately marked as abandoned
  *
  * @since      1.3.4
  *
@@ -263,7 +263,7 @@ add_action( 'give_upgrade_give_offline_status', 'give_v134_upgrade_give_offline_
 /**
  * Cleanup User Roles
  *
- * @description: This upgrade routine removes unused roles and roles with typos
+ * This upgrade routine removes unused roles and roles with typos
  *
  * @since      1.5.2
  */

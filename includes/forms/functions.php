@@ -523,7 +523,7 @@ function give_price_range( $form_id = 0 ) {
 /**
  * Get Lowest Price ID
  *
- * @description: Retrieves the ID for the cheapest price option of a variable donation form
+ * Retrieves the ID for the cheapest price option of a variable donation form
  *
  * @since 1.5
  *

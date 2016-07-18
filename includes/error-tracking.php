@@ -158,7 +158,7 @@ function give_die( $message = '', $title = '', $status = 400 ) {
 /**
  * Give Output Error
  *
- * @description: Helper function to easily output an error message properly wrapped; used commonly with shortcodes
+ * Helper function to easily output an error message properly wrapped; used commonly with shortcodes
  * @since      1.3
  *
  * @param string $message

@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Email Donation Receipt
  *
- * @description: Email the donation confirmation to the donor via the customizable "Donation Receipt" settings
+ * Email the donation confirmation to the donor via the customizable "Donation Receipt" settings
  *
  * @since 1.0
  *

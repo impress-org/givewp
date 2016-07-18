@@ -1268,7 +1268,7 @@ function give_get_payment_amount( $payment_id ) {
 /**
  * Payment Subtotal
  *
- * @description: Retrieves subtotal for payment (this is the amount before fees) and then returns a full formatted amount. This function essentially calls give_get_payment_subtotal()
+ * Retrieves subtotal for payment (this is the amount before fees) and then returns a full formatted amount. This function essentially calls give_get_payment_subtotal()
  *
  * @since 1.5
  *
@@ -1287,7 +1287,7 @@ function give_payment_subtotal( $payment_id = 0 ) {
 /**
  * Get Payment Subtotal
  *
- * @description: Retrieves subtotal for payment (this is the amount before fees) and then returns a non formatted amount.
+ * Retrieves subtotal for payment (this is the amount before fees) and then returns a non formatted amount.
  *
  * @since 1.5
  *
@@ -1694,7 +1694,7 @@ function give_filter_where_older_than_week( $where = '' ) {
 /**
  * Get Payment Form ID
  *
- * @description: Retrieves the form title and appends the price ID title if applicable
+ * Retrieves the form title and appends the price ID title if applicable
  *
  * @since 1.5
  *

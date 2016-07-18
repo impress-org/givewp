@@ -86,7 +86,7 @@ class Give_Plugin_Settings {
 	/**
 	 * Filter CMB2 URL
 	 *
-	 * @description: Required for CMB2 to properly load CSS/JS
+	 * Required for CMB2 to properly load CSS/JS
 	 *
 	 * @param $url
 	 *
@@ -951,7 +951,7 @@ function give_get_settings() {
 /**
  * Give Settings Array Insert
  *
- * @description: Allows other Add-ons and plugins to insert Give settings at a desired position
+ * Allows other Add-ons and plugins to insert Give settings at a desired position
  *
  * @since      1.3.5
  *
@@ -1094,7 +1094,7 @@ function give_title_callback( $field_object, $escaped_value, $object_id, $object
 /**
  * Give Description
  *
- * @description: Renders custom description text which any plugin can use to output content, html, php, etc.
+ * Renders custom description text which any plugin can use to output content, html, php, etc.
  *
  * @since      1.3.5
  *
@@ -1152,7 +1152,7 @@ function give_cmb2_get_post_options( $query_args, $force = false ) {
 /**
  * Featured Image Sizes
  *
- * @description: Outputs an array for the "Featured Image Size" option found under Settings > Display Options
+ * Outputs an array for the "Featured Image Size" option found under Settings > Display Options
  *
  * @since 1.4
  */
@@ -1269,7 +1269,7 @@ function give_hook_callback( $args ) {
 /**
  * Get the CMB2 bootstrap!
  *
- * @description: Checks to see if CMB2 plugin is installed first the uses included CMB2; we can still use it even it it's not active. This prevents fatal error conflicts with other themes and users of the CMB2 WP.org plugin
+ * Checks to see if CMB2 plugin is installed first the uses included CMB2; we can still use it even it it's not active. This prevents fatal error conflicts with other themes and users of the CMB2 WP.org plugin
  *
  */
 

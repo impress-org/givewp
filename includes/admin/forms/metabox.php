@@ -451,7 +451,7 @@ add_action( 'cmb2_render_levels_repeater_header', 'give_cmb_render_levels_repeat
  *
  * CMB2 Repeatable ID Field
  *
- * @description: Custom CMB2 incremental Levels ID Field
+ * Custom CMB2 incremental Levels ID Field
  *
  * @since      1.0
  *
