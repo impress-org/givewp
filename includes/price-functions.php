@@ -87,7 +87,7 @@ function give_get_default_multilevel_amount( $form_id ) {
 /**
  * Get Default Form Amount
  *
- * @description: Grabs the default amount for set and level forms
+ * Grabs the default amount for set and level forms
  *
  * @param int $form_id
  *

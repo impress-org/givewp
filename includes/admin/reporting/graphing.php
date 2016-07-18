@@ -783,8 +783,10 @@ add_action( 'give_filter_reports', 'give_parse_report_dates' );
 
 /**
  * Give Reports Refresh Button
+ *
+ * Outputs a "Refresh Reports" button for graphs
+ *
  * @since      1.3
- * @description: Outputs a "Refresh Reports" button for graphs
  */
 function give_reports_refresh_button() {
 

@@ -573,7 +573,7 @@ final class Give_Payment {
 	/**
 	 * Save
 	 *
-	 * @description: Once items have been set, an update is needed to save them to the database.
+	 * Once items have been set, an update is needed to save them to the database.
 	 *
 	 * @return bool  True of the save occurred, false if it failed or wasn't needed
 	 */

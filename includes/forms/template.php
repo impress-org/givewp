@@ -1304,7 +1304,7 @@ add_action( 'give_pre_form_output', 'give_form_content', 10, 2 );
 /**
  * Renders Post Form Content
  *
- * @description: Displays content for Give forms; fired by action from give_form_content
+ * Displays content for Give forms; fired by action from give_form_content
  *
  * @param int $form_id
  *

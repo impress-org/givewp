@@ -133,7 +133,7 @@ add_action( 'init', 'give_setup_post_types', 1 );
 /**
  * Give Setup Taxonomies
  *
- * @description: Registers the custom taxonomies for the give_forms custom post type
+ * Registers the custom taxonomies for the give_forms custom post type
  *
  * @since      1.0
  * @return void

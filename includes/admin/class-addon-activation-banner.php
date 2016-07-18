@@ -201,7 +201,7 @@ class Give_Addon_Activation_Banner {
 
 	/**
 	 * Ignore Nag
-	 * @description: This is the action that allows the user to dismiss the banner it basically sets a tag to their user meta data
+	 * This is the action that allows the user to dismiss the banner it basically sets a tag to their user meta data
 	 */
 	public function give_addon_notice_ignore() {
 

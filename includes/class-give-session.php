@@ -63,7 +63,7 @@ class Give_Session {
 	/**
 	 * Get things started
 	 *
-	 * @description: Defines our session constants, includes the necessary libraries and retrieves the session instance
+	 * Defines our session constants, includes the necessary libraries and retrieves the session instance
 	 *
 	 * @since 1.0
 	 */

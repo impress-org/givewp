@@ -232,7 +232,7 @@ function give_get_purchase_stats_by_user( $user = '' ) {
 /**
  * Count number of purchases of a donor
  *
- * @description: Returns total number of purchases a donor has made
+ * Returns total number of purchases a donor has made
  *
  * @access      public
  * @since       1.0

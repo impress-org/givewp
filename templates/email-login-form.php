@@ -2,7 +2,7 @@
 /**
  * Session Refresh Form
  *
- * @description: This template is used to display an email form which will when submitted send an update donation receipt and also refresh the users session
+ * This template is used to display an email form which will when submitted send an update donation receipt and also refresh the users session
  */
 
 $show_form = true;

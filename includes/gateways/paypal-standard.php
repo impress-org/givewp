@@ -573,7 +573,7 @@ function give_get_paypal_page_style() {
 /**
  * PayPal Success Page
  *
- * @description: Shows "Donation Processing" message for PayPal payments that are still pending on site return
+ * Shows "Donation Processing" message for PayPal payments that are still pending on site return
  *
  * @since      1.0
  *
