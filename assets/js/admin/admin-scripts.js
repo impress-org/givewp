@@ -756,7 +756,7 @@ jQuery.noConflict();
             });
 
 
-            $give_money_fields.bind( 'focus keyup change', function(){
+            $give_money_fields.bind( 'keyup', function(){
                 // Count thousand separator in price string.
                 thousand_separator_count = ( $(this).val().match( new RegExp( thousand_separator, 'g' ) ) || [] ).length;
 
