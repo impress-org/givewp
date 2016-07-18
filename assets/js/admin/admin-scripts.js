@@ -730,7 +730,7 @@ jQuery.noConflict();
         /**
          *  Amount format validation form price field setting
          */
-        var $give_money_fields = $('input.give-money-field');
+        var $give_money_fields = $('input.give-money-field, input.give-price-field');
         if( $give_money_fields.length ) {
             var thousand_separator = give_vars.thousands_separator.trim(),
                 decimal_separator = give_vars.decimal_separator.trim(),
