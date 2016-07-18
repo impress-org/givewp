@@ -1063,8 +1063,8 @@ function give_terms_agreement( $form_id ) {
 				?>
 			</div>
 			<div id="give_show_terms">
-				<a href="#" class="give_terms_links-<?php echo $form_id;?>"><?php _e( 'Show Terms', 'give' ); ?></a>
-				<a href="#" class="give_terms_links-<?php echo $form_id;?>" style="display:none;"><?php _e( 'Hide Terms', 'give' ); ?></a>
+				<a href="#" class="give_terms_links" id="give_terms-<?php echo $form_id;?>"><?php _e( 'Show Terms', 'give' ); ?></a>
+				<a href="#" class="give_terms_links" id="give_terms-<?php echo $form_id;?>" style="display:none;"><?php _e( 'Hide Terms', 'give' ); ?></a>
 			</div>
 
 			<input name="give_agree_to_terms" class="required" type="checkbox" id="give_agree_to_terms" value="1"/>
@@ -1179,7 +1179,7 @@ function give_agree_to_terms_js( $form_id ) {
 		?>
 		<script type="text/javascript">
 			jQuery(document).ready(function ($) {
-				$('body').on('click', '.give_terms_links-<?php echo $form_id; ?>', function (e) {
+				$('body').on('click', '#give_terms-<?php echo $form_id;?>', function (e) {
 					e.preventDefault();
 					$('#give_terms').slideToggle();
 					$('.give_terms_links').toggle();
