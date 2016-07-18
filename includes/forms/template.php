@@ -1063,7 +1063,7 @@ function give_terms_agreement( $form_id ) {
 				?>
 			</div>
 			<div id="give_show_terms">
-				<a href="#" class="give_terms_links"><?php _e( 'Show Terms', 'give' ); ?></a>
+				<a href="#" class="give_terms_links-<?php echo $form_id;?>"><?php _e( 'Show Terms', 'give' ); ?></a>
 				<a href="#" class="give_terms_links" style="display:none;"><?php _e( 'Hide Terms', 'give' ); ?></a>
 			</div>
 
@@ -1179,7 +1179,7 @@ function give_agree_to_terms_js( $form_id ) {
 		?>
 		<script type="text/javascript">
 			jQuery(document).ready(function ($) {
-				$('body').on('click', '.give_terms_links', function (e) {
+				$('body').on('click', '.give_terms_links-<?php echo $form_id; ?>', function (e) {
 					e.preventDefault();
 					$('#give_terms').slideToggle();
 					$('.give_terms_links').toggle();
