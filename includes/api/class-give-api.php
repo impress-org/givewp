@@ -1646,12 +1646,12 @@ class Give_API {
 
 		if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'give-api-nonce' ) ) {
 
-			wp_die( esc_attr__( 'Nonce verification failed', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die( esc_attr__( 'Nonce verification failed.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 
 		}
 
 		if ( empty( $args['user_id'] ) ) {
-			wp_die( esc_attr__( 'User ID Required', 'give' ), esc_attr__( 'Error', 'give' ), array( 'response' => 401 ) );
+			wp_die( esc_attr__( 'User ID Required.', 'give' ), esc_attr__( 'Error', 'give' ), array( 'response' => 401 ) );
 		}
 
 		if ( is_numeric( $args['user_id'] ) ) {
@@ -1663,9 +1663,9 @@ class Give_API {
 		$process = isset( $args['give_api_process'] ) ? strtolower( $args['give_api_process'] ) : false;
 
 		if ( $user_id == get_current_user_id() && ! give_get_option( 'allow_user_api_keys' ) && ! current_user_can( 'manage_give_settings' ) ) {
-			wp_die( sprintf( __( 'You do not have permission to %s API keys for this user', 'give' ), $process ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die( sprintf( __( 'You do not have permission to %s API keys for this user.', 'give' ), $process ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 		} elseif ( ! current_user_can( 'manage_give_settings' ) ) {
-			wp_die( sprintf( __( 'You do not have permission to %s API keys for this user', 'give' ), $process ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die( sprintf( __( 'You do not have permission to %s API keys for this user.', 'give' ), $process ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 		}
 
 		switch ( $process ) {

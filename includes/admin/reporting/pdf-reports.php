@@ -32,7 +32,7 @@ function give_generate_pdf( $data ) {
 	}
 
 	if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'give_generate_pdf' ) ) {
-		wp_die( __( 'Nonce verification failed', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( __( 'Nonce verification failed.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	require_once GIVE_PLUGIN_DIR . '/includes/libraries/fpdf/fpdf.php';

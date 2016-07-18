@@ -50,7 +50,7 @@ function give_do_ajax_export() {
 	if ( ! $export->is_writable ) {
 		$json_args = array(
 			'error'   => true,
-			'message' => __( 'Export location or file not writable', 'give' )
+			'message' => __( 'Export location or file not writable.', 'give' )
 		);
 		echo json_encode($json_args);
 		exit;
@@ -74,7 +74,7 @@ function give_do_ajax_export() {
 
 		echo json_encode( array(
 			'error'   => true,
-			'message' => __( 'No data found for export parameters', 'give' )
+			'message' => __( 'No data found for export parameters.', 'give' )
 		) );
 		exit;
 

@@ -196,7 +196,7 @@ function give_setup_taxonomies() {
 		'add_new_item'          => __( 'Add New Tag', 'give' ),
 		'new_item_name'         => __( 'New Tag Name', 'give' ),
 		'menu_name'             => __( 'Tags', 'give' ),
-		'choose_from_most_used' => sprintf( __( 'Choose from most used %s tags', 'give' ), give_get_forms_label_singular() ),
+		'choose_from_most_used' => sprintf( __( 'Choose from most used %s tags.', 'give' ), give_get_forms_label_singular() ),
 	);
 
 	$tag_args = apply_filters( 'give_forms_tag_args', array(
