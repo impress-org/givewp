@@ -37,7 +37,7 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 		) );
 
 		$this->assertArrayHasKey( 'username_incorrect', give_get_errors() );
-		$this->assertContains( 'The username you entered does not exist', give_get_errors() );
+		$this->assertContains( 'The username you entered does not exist.', give_get_errors() );
 
 		// Clear errors for other test
 		give_clear_errors();
@@ -58,7 +58,7 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 		) );
 
 		$this->assertArrayHasKey( 'password_incorrect', give_get_errors() );
-		$this->assertContains( 'The password you entered is incorrect', give_get_errors() );
+		$this->assertContains( 'The password you entered is incorrect.', give_get_errors() );
 
 		// Clear errors for other test
 		give_clear_errors();
