@@ -229,18 +229,23 @@ function give_load_admin_scripts( $hook ) {
 	wp_enqueue_script( 'jquery-ui-datepicker' );
 	wp_enqueue_script( 'thickbox' );
 
-	//Forms CPT Script
+	// Forms CPT Script.
 	if ( $post_type === 'give_forms' ) {
 		wp_register_script( 'give-admin-forms-scripts', $js_dir . 'admin-forms' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
 		wp_enqueue_script( 'give-admin-forms-scripts' );
 	}
 
-	//Settings Scripts
-	if (isset($_GET['page']) && $_GET['page'] == 'give-settings'  ) {
-		wp_enqueue_script('jquery-ui-sortable');
-		wp_register_script( 'give-admin-settings-scripts', $js_dir . 'admin-settings' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
-		wp_enqueue_script( 'give-admin-settings-scripts' );
+	// Report Scripts.
+	if ( isset($_GET['page']) && $_GET['page'] == 'give-reports'  ) {
+		wp_register_script( 'give-accounting', $js_plugins . 'accounting' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
+		wp_enqueue_script( 'give-accounting' );
 	}
+
+    //Settings Scripts
+    if (isset($_GET['page']) && $_GET['page'] == 'give-settings'  ) {
+        wp_register_script( 'give-admin-settings-scripts', $js_dir . 'admin-settings' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
+        wp_enqueue_script( 'give-admin-settings-scripts' );
+    }
 
     // Price Separators.
     $thousand_separator = isset( $give_options['thousands_separator'] ) ? $give_options['thousands_separator'] : ',';
