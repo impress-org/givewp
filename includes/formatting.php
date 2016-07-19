@@ -160,6 +160,8 @@ function give_format_amount( $amount, $decimals = true ) {
  *
  * @since 1.6
  *
+ * @use  give_get_price_thousand_separator Get thousand separator.
+ *
  * @param string $amount formatted amount number.
  * @return float|string  formatted amount number with large number names.
  */
