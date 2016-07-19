@@ -461,7 +461,7 @@ class Give_Welcome {
 
 			<div class="about-text"><?php _e( 'Welcome to the getting started guide.', 'give' ); ?></div>
 
-			<p class="newsletter-intro">Be sure to sign up for the Give newsletter below to stay informed of important updates and news.</p>
+			<p class="newsletter-intro"><?php _e( 'Be sure to sign up for the Give newsletter below to stay informed of important updates and news.', 'give' ); ?></p>
 
 			<?php give_get_newsletter() ?>
 
