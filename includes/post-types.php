@@ -280,8 +280,10 @@ function give_get_forms_label_plural( $lowercase = false ) {
 function give_change_default_title( $title ) {
 	// If a frontend plugin uses this filter (check extensions before changing this function)
 	if ( ! is_admin() ) {
-		$label = give_get_forms_label_singular();
-		$title = sprintf( __( 'Enter %s title here', 'give' ), $label );
+		$title = sprintf(
+			__( 'Enter %s title here', 'give' ),
+			give_get_forms_label_singular()
+		);
 
 		return $title;
 	}
@@ -289,8 +291,10 @@ function give_change_default_title( $title ) {
 	$screen = get_current_screen();
 
 	if ( 'give_forms' == $screen->post_type ) {
-		$label = give_get_forms_label_singular();
-		$title = sprintf( __( 'Enter %s title here', 'give' ), $label );
+		$title = sprintf(
+			__( 'Enter %s title here', 'give' ),
+			give_get_forms_label_singular()
+		);
 	}
 
 	return $title;
