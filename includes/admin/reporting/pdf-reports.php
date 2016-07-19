@@ -38,11 +38,13 @@ function give_generate_pdf( $data ) {
 	require_once GIVE_PLUGIN_DIR . '/includes/libraries/fpdf/fpdf.php';
 	require_once GIVE_PLUGIN_DIR . '/includes/libraries/fpdf/give_pdf.php';
 
-	$daterange = sprintf(
-		/* translators: 1: start date 2: end date */
-		__( '%1$s to %2$s', 'give' ),
-		date_i18n( get_option( 'date_format' ), mktime( 0, 0, 0, 1, 1, date( 'Y' ) ) ),
-		date_i18n( get_option( 'date_format' ) )
+	$daterange = utf8_decode(
+		sprintf(
+			/* translators: 1: start date 2: end date */
+			__( '%1$s to %2$s', 'give' ),
+			date_i18n( get_option( 'date_format' ), mktime( 0, 0, 0, 1, 1, date( 'Y' ) ) ),
+			date_i18n( get_option( 'date_format' ) )
+		)
 	);	
 
 	$pdf = new give_pdf();
