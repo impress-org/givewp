@@ -1445,7 +1445,7 @@ a.give-delete {
 .give_settings .cmb-td hr + hr {
   display: none; }
 
-.mce-container iframe {
+.post-type-give_forms .mce-container iframe, .post-type-give_forms .wp-editor-area {
   min-height: 400px; }
 
 /**
