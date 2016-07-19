@@ -44,7 +44,7 @@ class Give_Shortcode_Donation_Form_Goal extends Give_Shortcode_Generator {
 				),
 				'name'        => 'id',
 				'tooltip'     => __( 'Select a Donation Form', 'give' ),
-				'placeholder' => sprintf( '– %s –', __( 'Select a Form', 'give' ) ),
+				'placeholder' => __( '- Select a Form -', 'give' ),
 				'required'    => array(
 					'alert' => __( 'You must first select a Form!', 'give' ),
 					'error' => sprintf( '<p class="strong">%s</p><p class="no-margin">%s</p>', __( 'No donation forms were found!', 'give' ), $create_form_link ),
