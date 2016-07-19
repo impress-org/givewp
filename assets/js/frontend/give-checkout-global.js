@@ -172,6 +172,20 @@ jQuery(function ($) {
         return Math.abs(parseFloat(accounting.unformat(price, give_global_vars.decimal_separator)));
     }
 
+    /**
+     * Get Price ID and levels for multi donation form
+     *
+     * @returns object
+     */
+    function give_get_variable_prices() {
+
+        return [];
+    }
+
+    // Get variable prices.
+    var give_variable_prices = give_get_variable_prices();
+    console.log( give_variable_prices );
+
     // Make sure a gateway is selected
     doc.on('submit', '#give_payment_mode', function () {
         var gateway = $('#give-gateway option:selected').val();

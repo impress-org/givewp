@@ -64,7 +64,7 @@ function give_get_donation_form( $args = array() ) {
 		: get_post_meta( $form->ID, '_give_payment_display', true );
 
 	$float_labels_option = give_is_float_labels_enabled( $args )
-		? ' float-labels-enabled'
+		? 'float-labels-enabled'
 		: '';
 
 	//Form Wrap Classes
@@ -80,6 +80,15 @@ function give_get_donation_form( $args = array() ) {
 		'give-form-' . $form->ID,
 		$float_labels_option
 	), $form->ID, $args );
+
+    // Remove empty class names.
+    $form_classes_array = array_filter(
+        $form_classes_array,
+        function( $class ){
+            return $class;
+        }
+    );
+
 	$form_classes       = implode( ' ', $form_classes_array );
 
 
