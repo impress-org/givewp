@@ -351,7 +351,11 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 					default :
 
-						$message = sprintf( __( 'There was a problem activating your license key, please try again or contact support. Error code: %s', 'give' ), $license_error->error );
+						$message = sprintf(
+							/* translators: %s: license error */
+							__( 'There was a problem activating your license key, please try again or contact support. Error code: %s', 'give' ),
+							$license_error->error
+						);
 						break;
 
 				}

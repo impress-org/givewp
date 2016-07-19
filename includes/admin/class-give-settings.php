@@ -259,6 +259,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name'    => __( 'Success Page', 'give' ),
+							/* translators: %s: [give_receipt] */
 							'desc'    => sprintf( __( 'This is the page donors are sent to after completing their donations. The %s shortcode should be on this page.', 'give' ), '<code>[give_receipt]</code>' ),
 							'id'      => 'success_page',
 							'type'    => 'select',
@@ -279,6 +280,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name'    => __( 'Donation History Page', 'give' ),
+							/* translators: %s: [donation_history] */
 							'desc'    => sprintf( __( 'This page shows a complete donation history for the current user. The %s shortcode should be on this page.', 'give' ), '<code>[donation_history]</code>' ),
 							'id'      => 'history_page',
 							'type'    => 'select',
@@ -314,7 +316,9 @@ class Give_Plugin_Settings {
 							'id'      => 'currency_position',
 							'type'    => 'select',
 							'options' => array(
+								/* translators: %s: currency symbol */
 								'before' => sprintf( __( 'Before - %s10', 'give' ), give_currency_symbol( give_get_currency() ) ),
+								/* translators: %s: currency symbol */
 								'after'  => sprintf( __( 'After - 10%s', 'give' ), give_currency_symbol( give_get_currency() ) )
 							),
 							'default' => 'before',
@@ -465,12 +469,14 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Enable Floating Labels', 'give' ),
-							'desc' => sprintf( esc_html__( 'Enable this option if you would like to enable %1$sfloating labels%2$s in Give\'s donation forms. %3$sBe aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), '<a href="' . esc_url( "http://bradfrost.com/blog/post/float-label-pattern/" ) . '" target="_blank">', '</a>', '<br />' ),
+							/* translators: %s: http://bradfrost.com/blog/post/float-label-pattern/ */
+							'desc' => sprintf( esc_html__( 'Enable this option if you would like to enable <a href="%s" target="_blank">floating labels</a> in Give\'s donation forms. <br />Be aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), esc_url( 'http://bradfrost.com/blog/post/float-label-pattern/' ) ),
 							'id'   => 'enable_floatlabels',
 							'type' => 'checkbox'
 						),
 						array(
 							'name' => __( 'Disable Welcome Screen', 'give' ),
+							/* translators: %s: about page URL */
 							'desc' => sprintf( esc_html__( 'Enable this option if you would like to disable the Give Welcome screen every time Give is activated and/or updated. You can always access the <a href="%s">Welcome Screen</a> if you want in the future.', 'give' ), esc_url( admin_url( 'index.php?page=give-about' ) ) ),
 							'id'   => 'disable_welcome',
 							'type' => 'checkbox'
@@ -599,6 +605,7 @@ class Give_Plugin_Settings {
 						array(
 							'id'      => 'donation_receipt',
 							'name'    => __( 'Donation Receipt', 'give' ),
+							/* translators: %s: emails tags list */
 							'desc'    => sprintf( __( 'Enter the email that is sent to users after completing a successful donation. HTML is accepted. Available template tags: %s', 'give' ), give_get_emails_tags_list() ) . '<br/>',
 							'type'    => 'wysiwyg',
 							'default' => give_get_default_donation_receipt_email()
@@ -619,6 +626,7 @@ class Give_Plugin_Settings {
 						array(
 							'id'      => 'donation_notification',
 							'name'    => __( 'Donation Notification', 'give' ),
+							/* translators: %s: emails tags list */
 							'desc'    => sprintf( __( 'Enter the email that is sent to donation notification emails after completion of a donation. HTML is accepted. Available template tags: %s', 'give' ), give_get_emails_tags_list() ) . '<br/>',
 							'type'    => 'wysiwyg',
 							'default' => give_get_default_donation_notification_email()
@@ -688,7 +696,8 @@ class Give_Plugin_Settings {
 						array(
 							'id'      => 'recaptcha_key',
 							'name'    => __( 'reCAPTCHA Site Key', 'give' ),
-							'desc'    => sprintf( __( 'If you would like to prevent spam on the email access form navigate to %1$sthe reCAPTCHA website%2$s and sign up for an API key. The reCAPTCHA uses Google\'s user-friendly single click verification method.', 'give' ), '<a href="https://www.google.com/recaptcha/" target="_blank">', '</a>' ),
+							/* translators: %s: https://www.google.com/recaptcha/ */
+							'desc'    => sprintf( __( 'If you would like to prevent spam on the email access form navigate to <a href="%s" target="_blank">the reCAPTCHA website</a> and sign up for an API key. The reCAPTCHA uses Google\'s user-friendly single click verification method.', 'give' ), esc_url( 'https://www.google.com/recaptcha/' ) ),
 							'default' => '',
 							'type'    => 'text'
 						),
@@ -718,7 +727,9 @@ class Give_Plugin_Settings {
 							'type' => 'give_title'
 						),
 						array(
+							/* translators: %s: the_content */
 							'name' => sprintf( __( 'Disable %s filter', 'give' ), '<code>the_content</code>' ),
+							/* translators: 1: https://codex.wordpress.org/Plugin_API/Filter_Reference/the_content 2: the_content */
 							'desc' => sprintf( __( 'If you are seeing extra social buttons, related posts, or other unwanted elements appearing within your forms then you can disable WordPress\' content filter. <a href="%1$s" target="_blank">Learn more</a> about %2$s filter.', 'give' ), esc_url( 'https://codex.wordpress.org/Plugin_API/Filter_Reference/the_content' ), '<code>the_content</code>' ),
 							'id'   => 'disable_the_content_filter',
 							'type' => 'checkbox'
@@ -1236,6 +1247,7 @@ function give_api_callback() {
 	?>
 	<span class="cmb2-metabox-description api-description">
 		<?php echo sprintf(
+			/* translators: 1: https://givewp.com/documentation/give-api-reference/ 2: https://givewp.com/addons/zapier/ */
 			__( 'You can create API keys for individual users within their profile edit screen. API keys allow users to use the <a href="%1$s" target="_blank">Give REST API</a> to retrieve donation data in JSON or XML for external applications or devices, such as <a href="%2$s" target="_blank">Zapier</a>.', 'give' ),
 			esc_url( 'https://givewp.com/documentation/give-api-reference/' ),
 			esc_url( 'https://givewp.com/addons/zapier/' )

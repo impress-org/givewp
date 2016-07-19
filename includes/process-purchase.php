@@ -260,6 +260,7 @@ function give_purchase_form_validate_gateway() {
 			give_set_error(
 				'invalid_donation_minimum',
 				sprintf(
+					/* translators: %s: minimum donation amount */
 					__( 'This form has a minimum donation amount of %s.', 'give' ),
 					give_currency_filter( give_format_amount( give_get_form_minimum_price( $form_id ) ) )
 				)

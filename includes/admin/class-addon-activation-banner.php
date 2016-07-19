@@ -156,6 +156,7 @@ class Give_Addon_Activation_Banner {
 				<!-- Your Message -->
 				<h3><?php
 					printf(
+						/* translators: %s: Add-on name */
 						__( "Thank you for installing Give's %s Add-on!", 'give' ),
 						'<span>' . $this->banner_details['name'] . '</span>'
 					);
@@ -181,7 +182,15 @@ class Give_Addon_Activation_Banner {
 					<?php
 					// Show them how to configure the Addon
 					if ( isset( $this->banner_details['documentation_url'] ) ) { ?>
-						<a href="<?php echo $this->banner_details['documentation_url'] ?>" target="_blank"><span class="dashicons dashicons-media-text"></span><?php echo sprintf( __( 'Documentation: %s Add-on', 'give' ), $this->banner_details['name'] ); ?>
+						<a href="<?php echo $this->banner_details['documentation_url'] ?>" target="_blank">
+							<span class="dashicons dashicons-media-text"></span>
+							<?php
+								printf(
+									/* translators: %s: Add-on name */
+									__( 'Documentation: %s Add-on', 'give' ),
+									$this->banner_details['name']
+								);
+							?>
 						</a>
 					<?php } ?>
 					<?php

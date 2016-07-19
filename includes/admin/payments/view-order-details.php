@@ -49,9 +49,16 @@ $currency_code  = $payment->currency;
 $payment_mode   = $payment->mode;
 ?>
 <div class="wrap give-wrap">
-	<h1 id="transaction-details-heading"><?php printf( __( 'Payment %s', 'give' ), $number ); ?><?php if ( $payment_mode == 'test' ) {
+	<h1 id="transaction-details-heading"><?php
+		printf(
+			/* translators: %s: payment number */
+			__( 'Payment %s', 'give' ),
+			$number
+		);
+		if ( $payment_mode == 'test' ) {
 			echo '<span id="test-payment-label" class="give-item-label give-item-label-orange" data-tooltip="' . __( 'This payment was made in Test Mode', 'give' ) . '" data-tooltip-my-position="center left" data-tooltip-target-position="center right">' . __( 'Test Payment', 'give' ) . '</span>';
-		} ?></h1>
+		}
+	?></h1>
 
 	<?php do_action( 'give_view_order_details_before', $payment_id ); ?>
 	<form id="give-edit-order-form" method="post">

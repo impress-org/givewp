@@ -48,7 +48,13 @@ function give_dashboard_sales_widget() {
 		<div class="give-dashboard-today give-clearfix">
 			<h3 class="give-dashboard-date-today"><?php echo date( 'F j, Y' ); ?></h3>
 
-			<p class="give-dashboard-happy-day"><?php printf( __( 'Happy %1$s!', 'give' ), date( 'l', current_time( 'timestamp' ) ) ); ?></p>
+			<p class="give-dashboard-happy-day"><?php
+				printf(
+					/* translators: %s: day of the week */
+					__( 'Happy %s!', 'give' ),
+					date( 'l', current_time( 'timestamp' ) )
+				);
+			?></p>
 
 			<?php $earnings_today = $stats->get_earnings( 0, 'today', false ); ?>
 
@@ -120,7 +126,13 @@ function give_dashboard_at_a_glance_widget( $items ) {
 
 	if ( $num_posts && $num_posts->publish ) {
         
-		$text = sprintf( _n( '%1$s Give %2$s', '%1$s Give %3$s', $num_posts->publish, 'give' ), $num_posts->publish, give_get_forms_label_singular(), give_get_forms_label_plural() );
+		$text = sprintf(
+			/* translators: 1: number of posts published 2: forms singular label 3: forms plural label */
+			_n( '%1$s Give %2$s', '%1$s Give %3$s', $num_posts->publish, 'give' ),
+			$num_posts->publish,
+			give_get_forms_label_singular(),
+			give_get_forms_label_plural()
+		);
 
 		$text = sprintf( $text, number_format_i18n( $num_posts->publish ) );
 
