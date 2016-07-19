@@ -175,16 +175,40 @@ jQuery(function ($) {
     /**
      * Get Price ID and levels for multi donation form
      *
-     * @returns object
+     * @param   {Object} $form Form jQuery object
+     *
+     * @returns {Object}
      */
-    function give_get_variable_prices() {
+    function give_get_variable_prices( $form ) {
+        var variable_prices = [],
 
-        return [];
+            //Set the custom amount input value format properly
+            format_args = {
+                symbol: '',
+                decimal: give_global_vars.decimal_separator,
+                thousand: give_global_vars.thousands_separator,
+                precision: give_global_vars.number_decimals
+            };
+
+        // check if currect form type is muti or not.
+        if( ! $form.hasClass('give-form-type-multi') ) {
+            return variable_prices;
+        }
+
+        $.each( $form.find('.give-donation-levels-wrap [data-price-id] '), function( index, item ){
+            // Get Jquery instance for item.
+            item = ( ! ( item instanceof jQuery ) ? jQuery( item ) : item );
+
+
+            // Add price id and amount to collector.
+            variable_prices.push({
+                price_id: item.data('price-id'),
+                amount  : accounting.formatMoney( item.val(), format_args )
+            });
+        });
+
+        return variable_prices;
     }
-
-    // Get variable prices.
-    var give_variable_prices = give_get_variable_prices();
-    console.log( give_variable_prices );
 
     // Make sure a gateway is selected
     doc.on('submit', '#give_payment_mode', function () {
@@ -245,6 +269,7 @@ jQuery(function ($) {
         var minimum_amount = parent_form.find('input[name="give-form-minimum"]');
         var value_min = give_unformat_currency(minimum_amount.val());
         var value_now = (this_value == 0) ? value_min : give_unformat_currency(this_value);
+        var variable_prices = give_get_variable_prices( $(this).parents('form') );
 
         //Set the custom amount input value format properly
         var format_args = {
