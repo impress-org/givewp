@@ -732,8 +732,8 @@ jQuery.noConflict();
          */
         var $give_money_fields = $('input.give-money-field, input.give-price-field');
         if( $give_money_fields.length ) {
-            var thousand_separator = give_vars.thousands_separator.trim(),
-                decimal_separator = give_vars.decimal_separator.trim(),
+            var thousand_separator = give_vars.thousands_separator,
+                decimal_separator = give_vars.decimal_separator,
                 thousand_separator_count = '',
                 price_string = '',
 
