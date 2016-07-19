@@ -125,7 +125,7 @@ $payment_mode   = $payment->mode;
 										<div class="give-order-payment give-admin-box-inside">
 											<p>
 												<span class="label"><?php _e( 'Total Donation', 'give' ); ?>:</span>&nbsp;
-												<?php echo give_currency_symbol( $payment->currency ); ?>&nbsp;<input name="give-payment-total" type="text" class="small-text give-price-field" value="<?php echo esc_attr( give_format_amount( give_get_payment_amount( $payment_id ) ) ); ?>"/>
+												<?php echo give_currency_symbol( $payment->currency ); ?>&nbsp;<input name="give-payment-total" type="text" class="small-text give-price-field" value="<?php echo esc_attr( give_format_decimal( give_get_payment_amount( $payment_id ) ) ); ?>"/>
 											</p>
 										</div>
 

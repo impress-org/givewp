@@ -47,7 +47,7 @@ function give_load_scripts() {
 		'bad_minimum'         => __( 'The minimum donation amount for this form is', 'give' ),
 		'general_loading'     => __( 'Loading...', 'give' ),
 		'purchase_loading'    => __( 'Please Wait...', 'give' ),
-		'number_decimals'  => apply_filters( 'give_format_amount_decimals', 2 ),
+		'number_decimals'  => give_get_price_decimals(),
 		'give_version'        => GIVE_VERSION
 	) );
 	$localize_give_ajax     = apply_filters( 'give_global_ajax_vars', array(
@@ -58,7 +58,7 @@ function give_load_scripts() {
 		// Variable pricing error with multi-purchase option enabled
 		'default_gateway'  => give_get_default_gateway( null ),
 		'permalinks'       => get_option( 'permalink_structure' ) ? '1' : '0',
-		'number_decimals'  => apply_filters( 'give_format_amount_decimals', 2 )
+		'number_decimals'  => give_get_price_decimals()
 	) );
 
 	//DEBUG is On
@@ -175,7 +175,9 @@ add_action( 'wp_enqueue_scripts', 'give_register_styles' );
  * Enqueues the required admin scripts.
  *
  * @since 1.0
+ *
  * @global       $post
+ * @global       $give_options
  *
  * @param string $hook Page hook
  *
@@ -183,7 +185,7 @@ add_action( 'wp_enqueue_scripts', 'give_register_styles' );
  */
 function give_load_admin_scripts( $hook ) {
 
-	global $wp_version, $post, $post_type;
+	global $wp_version, $post, $post_type, $give_options;
 
 	//Directories of assets
 	$js_dir     = GIVE_PLUGIN_URL . 'assets/js/admin/';
@@ -240,11 +242,17 @@ function give_load_admin_scripts( $hook ) {
 		wp_enqueue_script( 'give-admin-settings-scripts' );
 	}
 
-	//Localize strings & variables for JS
+    // Price Separators.
+    $thousand_separator = isset( $give_options['thousands_separator'] ) ? $give_options['thousands_separator'] : ',';
+    $decimal_separator  = isset( $give_options['decimal_separator'] ) ? $give_options['decimal_separator'] : '.';
+
+    //Localize strings & variables for JS
 	wp_localize_script( 'give-admin-scripts', 'give_vars', array(
 		'post_id'                 => isset( $post->ID ) ? $post->ID : null,
 		'give_version'            => GIVE_VERSION,
-		'quick_edit_warning'      => __( 'Sorry, not available for variable priced forms.', 'give' ),
+        'thousands_separator'     => $thousand_separator,
+        'decimal_separator'       => $decimal_separator,
+        'quick_edit_warning'      => __( 'Sorry, not available for variable priced forms.', 'give' ),
 		'delete_payment'          => __( 'Are you sure you wish to delete this payment?', 'give' ),
 		'delete_payment_note'     => __( 'Are you sure you wish to delete this note?', 'give' ),
 		'revoke_api_key'          => __( 'Are you sure you wish to revoke this API key?', 'give' ),
@@ -268,7 +276,8 @@ function give_load_admin_scripts( $hook ) {
 		'batch_export_no_class'   => __( 'You must choose a method.', 'give' ),
 		'batch_export_no_reqs'    => __( 'Required fields not completed.', 'give' ),
 		'reset_stats_warn'        => __( 'Are you sure you want to reset Give? This process is <strong><em>not reversible</em></strong> and will delete all data regardless of test or live mode. Please be sure you have a recent backup before proceeding.', 'give' ),
-	) );
+        'price_format_guide'      => sprintf( __( 'Please enter amount in monetary decimal ( %1$s ) format without thousand separator ( %2$s ) .', 'give' ), $decimal_separator, $thousand_separator )
+    ) );
 
 	if ( function_exists( 'wp_enqueue_media' ) && version_compare( $wp_version, '3.5', '>=' ) ) {
 		//call for new media manager

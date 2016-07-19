@@ -727,7 +727,70 @@ jQuery.noConflict();
             $('.give_user_search_results span').html('');
         });
 
-    });
+        /**
+         *  Amount format validation form price field setting
+         */
+        var $give_money_fields = $('input.give-money-field, input.give-price-field');
+        if( $give_money_fields.length ) {
+            var thousand_separator = give_vars.thousands_separator.trim(),
+                decimal_separator = give_vars.decimal_separator.trim(),
+                thousand_separator_count = '',
+                price_string = '',
 
+                // Thousand separation limit in price depends upon decimal separator symbol.
+                // If thousand separator is equal to decimal separator then price does not have more then 1 thousand separator otherwise limit is zero.
+                thousand_separator_limit = ( decimal_separator === thousand_separator ? 1 : 0 );
+
+            // Add qtip to all money input fields.
+            $give_money_fields.each(function() {
+                $(this).qtip({
+                    style: 'qtip-dark qtip-tipsy',
+                    content: {
+                        text: give_vars.price_format_guide.trim()
+                    },
+                    show: '',
+                    position: {
+                        my: 'bottom center',
+                        at: 'top center'
+                    }
+                });
+            });
+
+            // Check & show message on keyup event.
+            $give_money_fields.bind( 'keyup', function(){
+                // Count thousand separator in price string.
+                thousand_separator_count = ( $(this).val().match( new RegExp( thousand_separator, 'g' ) ) || [] ).length;
+
+                // Show qtip conditionally if thousand separator detected on price string.
+                if(
+                    ( -1 !== $(this).val().indexOf( thousand_separator ) )
+                    && ( thousand_separator_limit < thousand_separator_count )
+                ) {
+                    $(this).qtip('show');
+                }else{
+                    $(this).qtip('hide');
+                }
+
+                // Reset thousand separator count.
+                thousand_separator_count = '';
+            });
+
+            // Format price sting of input field on focuout.
+            $give_money_fields.on( 'focusout', function(){
+                price_string = $(this).val();
+                thousand_separator_count = ( price_string.match( new RegExp( thousand_separator, 'g' ) ) || [] ).length;
+
+                // Replace all thousand separator except one.
+                while ( thousand_separator_limit < thousand_separator_count ) {
+                    price_string = price_string.replace( thousand_separator, '' );
+                    --thousand_separator_count;
+                }
+
+                // Update format price string in input field.
+                $(this).val( price_string );
+            });
+        }
+
+    });
 
 })(jQuery);
