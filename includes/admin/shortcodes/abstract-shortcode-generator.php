@@ -388,7 +388,9 @@ abstract class Give_Shortcode_Generator {
 
 				} else if ( ! empty( $label ) ) {
 
-					$alert = sprintf( __( 'The "%s" option is required.', 'give' ),
+					$alert = sprintf(
+						/* translators: %s: option lable */
+						__( 'The "%s" option is required.', 'give' ),
 						str_replace( ':', '', $label )
 					);
 				}

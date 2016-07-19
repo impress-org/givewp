@@ -58,7 +58,15 @@ function give_manual_payment( $purchase_data ) {
 		give_update_payment_status( $payment, 'publish' );
 		give_send_to_success_page();
 	} else {
-		give_record_gateway_error( __( 'Payment Error', 'give' ), sprintf( __( 'The payment creation failed while processing a manual (free or test) donation. Payment data: %s', 'give' ), json_encode( $payment_data ) ), $payment );
+		give_record_gateway_error(
+			__( 'Payment Error', 'give' ),
+			sprintf(
+				/* translators: %s: payment data */
+				__( 'The payment creation failed while processing a manual (free or test) donation. Payment data: %s', 'give' ),
+				json_encode( $payment_data )
+			),
+			$payment
+		);
 		// If errors are present, send the user back to the purchase page so they can be corrected
 		give_send_back_to_checkout( '?payment-mode=' . $purchase_data['post_data']['give-gateway'] );
 	}

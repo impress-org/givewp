@@ -71,7 +71,8 @@ class Give_Notices {
 		if ( ! give_test_ajax_works() && ! get_user_meta( get_current_user_id(), '_give_admin_ajax_inaccessible_dismissed', true ) && current_user_can( 'manage_give_settings' ) ) {
 			echo '<div class="error">';
 			echo '<p>' . __( 'Your site appears to be blocking the WordPress ajax interface. This may cause issues with Give.', 'give' ) . '</p>';
-			echo '<p>' . sprintf( esc_attr__( 'Please see %1$sthis reference%2$s for possible solutions.', 'give' ), '<a href="https://givewp.com/documentation/core/troubleshooting/admin-ajax-blocked/" target="_blank">', '</a>' ) . '</p>';
+			/* translators: %s: https://givewp.com/documentation/core/troubleshooting/admin-ajax-blocked/ */
+			echo '<p>' . sprintf( esc_attr__( 'Please see <a href="%s" target="_blank">this reference</a> for possible solutions.', 'give' ), esc_url( 'https://givewp.com/documentation/core/troubleshooting/admin-ajax-blocked/' ) ) . '</p>';
 			echo '<p><a href="' . add_query_arg( array(
 					'give_action' => 'dismiss_notices',
 					'give_notice' => 'admin_ajax_inaccessible'

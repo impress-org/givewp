@@ -229,18 +229,23 @@ function give_load_admin_scripts( $hook ) {
 	wp_enqueue_script( 'jquery-ui-datepicker' );
 	wp_enqueue_script( 'thickbox' );
 
-	//Forms CPT Script
+	// Forms CPT Script.
 	if ( $post_type === 'give_forms' ) {
 		wp_register_script( 'give-admin-forms-scripts', $js_dir . 'admin-forms' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
 		wp_enqueue_script( 'give-admin-forms-scripts' );
 	}
 
-	//Settings Scripts
-	if (isset($_GET['page']) && $_GET['page'] == 'give-settings'  ) {
-		wp_enqueue_script('jquery-ui-sortable');
-		wp_register_script( 'give-admin-settings-scripts', $js_dir . 'admin-settings' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
-		wp_enqueue_script( 'give-admin-settings-scripts' );
+	// Report Scripts.
+	if ( isset($_GET['page']) && $_GET['page'] == 'give-reports'  ) {
+		wp_register_script( 'give-accounting', $js_plugins . 'accounting' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
+		wp_enqueue_script( 'give-accounting' );
 	}
+
+    //Settings Scripts
+    if (isset($_GET['page']) && $_GET['page'] == 'give-settings'  ) {
+        wp_register_script( 'give-admin-settings-scripts', $js_dir . 'admin-settings' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
+        wp_enqueue_script( 'give-admin-settings-scripts' );
+    }
 
     // Price Separators.
     $thousand_separator = isset( $give_options['thousands_separator'] ) ? $give_options['thousands_separator'] : ',';
@@ -259,11 +264,14 @@ function give_load_admin_scripts( $hook ) {
 		'regenerate_api_key'      => __( 'Are you sure you wish to regenerate this API key?', 'give' ),
 		'resend_receipt'          => __( 'Are you sure you wish to resend the donation receipt?', 'give' ),
 		'copy_download_link_text' => __( 'Copy these links to your clipboard and give them to your donor.', 'give' ),
+		/* translators: %s: form singular label */
 		'delete_payment_download' => sprintf( __( 'Are you sure you wish to delete this %s?', 'give' ), give_get_forms_label_singular() ),
 		'one_price_min'           => __( 'You must have at least one price.', 'give' ),
 		'one_file_min'            => __( 'You must have at least one file.', 'give' ),
 		'one_field_min'           => __( 'You must have at least one field.', 'give' ),
+		/* translators: %s: form singular label */
 		'one_option'              => sprintf( __( 'Choose a %s', 'give' ), give_get_forms_label_singular() ),
+		/* translators: %s: form plural label */
 		'one_or_more_option'      => sprintf( __( 'Choose one or more %s', 'give' ), give_get_forms_label_plural() ),
 		'numeric_item_price'      => __( 'Item price must be numeric.', 'give' ),
 		'numeric_quantity'        => __( 'Quantity must be numeric.', 'give' ),
@@ -272,6 +280,7 @@ function give_load_admin_scripts( $hook ) {
 		'currency_decimals'       => give_currency_decimal_filter(),
 		'new_media_ui'            => apply_filters( 'give_use_35_media_ui', 1 ),
 		'remove_text'             => __( 'Remove', 'give' ),
+		/* translators: %s: form plural label */
 		'type_to_search'          => sprintf( __( 'Type to search %s', 'give' ), give_get_forms_label_plural() ),
 		'batch_export_no_class'   => __( 'You must choose a method.', 'give' ),
 		'batch_export_no_reqs'    => __( 'Required fields not completed.', 'give' ),
