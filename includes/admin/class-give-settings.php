@@ -599,7 +599,7 @@ class Give_Plugin_Settings {
 						array(
 							'id'      => 'donation_receipt',
 							'name'    => __( 'Donation Receipt', 'give' ),
-							'desc'    => __( 'Enter the email that is sent to users after completing a successful donation. HTML is accepted. Available template tags:', 'give' ) . '<br/>' . give_get_emails_tags_list(),
+							'desc'    => sprintf( __( 'Enter the email that is sent to users after completing a successful donation. HTML is accepted. Available template tags: %s', 'give' ), give_get_emails_tags_list() ) . '<br/>',
 							'type'    => 'wysiwyg',
 							'default' => give_get_default_donation_receipt_email()
 						),
@@ -619,7 +619,7 @@ class Give_Plugin_Settings {
 						array(
 							'id'      => 'donation_notification',
 							'name'    => __( 'Donation Notification', 'give' ),
-							'desc'    => __( 'Enter the email that is sent to donation notification emails after completion of a donation. HTML is accepted. Available template tags:', 'give' ) . '<br/>' . give_get_emails_tags_list(),
+							'desc'    => sprintf( __( 'Enter the email that is sent to donation notification emails after completion of a donation. HTML is accepted. Available template tags: %s', 'give' ), give_get_emails_tags_list() ) . '<br/>',
 							'type'    => 'wysiwyg',
 							'default' => give_get_default_donation_notification_email()
 						),

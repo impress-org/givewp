@@ -385,7 +385,7 @@ class Give_Donators_Gravatars_Widget extends WP_Widget {
 		// widget settings
 		$widget_ops = array(
 			'classname'   => 'give-donators-gravatars',
-			'description' => sprintf( __( 'Displays gravatars of people who have donated using your your %s. Will only show on the single %s page.', 'give' ), $give_label_singular, $give_label_singular )
+			'description' => sprintf( __( 'Displays gravatars of people who have donated using your your %1$s. Will only show on the single %2$s page.', 'give' ), $give_label_singular, $give_label_singular )
 		);
 
 		// widget control settings
