@@ -1245,8 +1245,8 @@ function give_show_goal_progress( $form_id, $args ) {
 		if ( $goal_format !== 'percentage' ) {
 
 			 // Get formatted amount.
-            $income = give_human_format_amount( give_format_amount( $income ) );
-            $goal = give_human_format_amount( give_format_amount( $goal ) );
+            $income = give_human_format_large_amount( give_format_amount( $income ) );
+            $goal = give_human_format_large_amount( give_format_amount( $goal ) );
 
 			$output .= sprintf(
 				/* translators: 1: amount of income raised 2: goal target ammount */

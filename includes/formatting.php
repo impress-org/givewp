@@ -165,7 +165,7 @@ function give_format_amount( $amount, $decimals = true ) {
  * @param string $amount formatted amount number.
  * @return float|string  formatted amount number with large number names.
  */
-function give_human_format_amount( $amount ) {
+function give_human_format_large_amount( $amount ) {
 
     // Get thousand separator.
     $thousands_sep = give_get_price_thousand_separator();
@@ -188,7 +188,7 @@ function give_human_format_amount( $amount ) {
         $sanitize_amount =  sprintf( __( '%s million', 'give' ), round( ( $sanitize_amount / 1000000), 2 ) );
     }
 
-    return apply_filters( 'give_human_format_amount', $sanitize_amount, $amount );
+    return apply_filters( 'give_human_format_large_amount', $sanitize_amount, $amount );
 }
 
 /**
