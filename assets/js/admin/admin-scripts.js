@@ -56,6 +56,7 @@ jQuery.noConflict();
             this.remove_note();
             this.new_donor();
             this.resend_receipt();
+            this.variable_price_list();
         },
 
 
@@ -177,8 +178,40 @@ jQuery.noConflict();
             $('body').on('click', '#give-resend-receipt', function (e) {
                 return confirm(give_vars.resend_receipt);
             });
-        }
+        },
+        variable_price_list: function(){
+            $('select[name="forms"]').chosen().change(function(){
+                var give_form_id,
+                    variable_prices_html_container = $(this).closest('td').next('td');
 
+                // Check for form ID.
+                if( ! ( give_form_id = $(this).val() ) ) {
+                    return false;
+                }
+
+                // Ajax.
+                $.ajax({
+                    type: 'POST',
+                    url: ajaxurl,
+                    data: {
+                        form_id: give_form_id,
+                        payment_id: $('input[name="give_payment_id"]').val(),
+                        action: 'give_check_for_form_price_variations_html'
+                    },
+                    success: function (response) {
+                        response = response.trim();
+                        if( response ) {
+
+                            // Update Variable price html.
+                            variable_prices_html_container.html( response );
+
+                            // Add chosen feature to select tag.
+                            $('select[name="give-variable-price"]').chosen();
+                        }
+                    }
+                });
+            });
+        }
     };
 
 
