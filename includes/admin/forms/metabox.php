@@ -93,7 +93,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'row_classes' => 'give-subfield',
 					'options'     => array(
 						'add_button'    => __( 'Add Level', 'give' ),
-						'remove_button' => __( '<span class="dashicons dashicons-no"></span>', 'give' ),
+						'remove_button' => '<span class="dashicons dashicons-no"></span>',
 						'sortable'      => true, // beta
 					),
 					// Fields array works the same, except id's only need to be unique for this group. Prefix is not needed.
