@@ -1244,12 +1244,17 @@ function give_show_goal_progress( $form_id, $args ) {
 
 		if ( $goal_format !== 'percentage' ) {
 
+			 // Get formatted amount.
+            $income = give_human_format_large_amount( give_format_amount( $income ) );
+            $goal = give_human_format_large_amount( give_format_amount( $goal ) );
+
 			$output .= sprintf(
 				/* translators: 1: amount of income raised 2: goal target ammount */
 				__( '%1$s of %2$s raised', 'give' ),
-				'<span class="income">' . apply_filters( 'give_goal_amount_raised_output', give_currency_filter( give_format_amount( $income ) ) ) . '</span>',
-				'<span class="goal-text">' . apply_filters( 'give_goal_amount_target_output', give_currency_filter( give_format_amount( $goal ) ) ) . '</span>'
+				'<span class="income">' . apply_filters( 'give_goal_amount_raised_output', give_currency_filter( $income ) ) . '</span>',
+				'<span class="goal-text">' . apply_filters( 'give_goal_amount_target_output', give_currency_filter( $goal ) ) . '</span>'
 			);
+
 
 		} elseif ( $goal_format == 'percentage' ) {
 
@@ -1258,7 +1263,6 @@ function give_show_goal_progress( $form_id, $args ) {
 				__( '%s%% funded', 'give' ),
 				'<span class="give-percentage">' . apply_filters( 'give_goal_amount_funded_percentage_output', round( $progress ) ) . '</span>'
 			);
-
 		}
 
 		$output .= '</div>';
