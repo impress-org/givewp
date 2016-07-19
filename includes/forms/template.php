@@ -78,6 +78,7 @@ function give_get_donation_form( $args = array() ) {
 	$form_classes_array = apply_filters( 'give_form_classes', array(
 		'give-form',
 		'give-form-' . $form->ID,
+        'give-form-type-' . $form->get_type(),
 		$float_labels_option
 	), $form->ID, $args );
 
