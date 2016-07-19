@@ -71,7 +71,8 @@ if ( is_email( $email ) && wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
 give_print_errors( 0 );
 
 //Show the email login form?
-if ( $show_form ) { ?>
+if ( $show_form ) {
+?>
 
 	<div class="give-form">
 
@@ -109,8 +110,18 @@ if ( $show_form ) { ?>
 		</form>
 	</div>
 
-<?php } else { ?>
+<?php
+} else {
 
-	<?php give_output_error( sprintf( __( 'An email with an access link has been sent to %s.', 'give' ), $email ), true, 'success' ); ?>
+	give_output_error(
+		sprintf(
+			/* translators: %s: user email address */
+			__( 'An email with an access link has been sent to %s.', 'give' ),
+			$email
+		),
+		true,
+		'success'
+	);
 
-<?php } ?>
+}
+?>

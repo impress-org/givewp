@@ -315,6 +315,7 @@ function give_reports_tab_export() {
 							<form method="post">
 								<?php
 									printf(
+										/* translators: 1: start date dropdown 2: end date dropdown */
 										__( '%1$s to %2$s', 'give' ),
 										Give()->html->year_dropdown( 'start_year' ) . ' ' . Give()->html->month_dropdown( 'start_month' ),
 										Give()->html->year_dropdown( 'end_year' )   . ' ' . Give()->html->month_dropdown( 'end_month' )

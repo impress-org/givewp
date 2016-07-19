@@ -224,7 +224,11 @@ function give_get_donation_notification_body_content( $payment_id = 0, $payment_
 	$gateway = give_get_gateway_admin_label( get_post_meta( $payment_id, '_give_payment_gateway', true ) );
 
 	$default_email_body = __( 'Hello', 'give' ) . "\n\n" . __( 'A donation has been made', 'give' ) . ".\n\n";
-	$default_email_body .= sprintf( __( '%s sold:', 'give' ), give_get_forms_label_plural() ) . "\n\n";
+	$default_email_body .= sprintf(
+		/* translators: %s: form plural label */
+		__( '%s sold:', 'give' ),
+		give_get_forms_label_plural()
+	) . "\n\n";
 
 	$default_email_body .= __( 'Donor: ', 'give' ) . " " . html_entity_decode( $name, ENT_COMPAT, 'UTF-8' ) . "\n";
 	$default_email_body .= __( 'Amount: ', 'give' ) . " " . html_entity_decode( give_currency_filter( give_format_amount( give_get_payment_amount( $payment_id ) ) ), ENT_COMPAT, 'UTF-8' ) . "\n";

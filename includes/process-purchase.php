@@ -257,10 +257,14 @@ function give_purchase_form_validate_gateway() {
 		} //Check for a minimum custom amount
 		elseif ( ! give_verify_minimum_price() ) {
 
-			$minimum       = give_currency_filter( give_format_amount( give_get_form_minimum_price( $form_id ) ) );
-			$error_message = __( 'This form has a minimum donation amount of %s.', 'give' );
-
-			give_set_error( 'invalid_donation_minimum', sprintf( $error_message, $minimum ) );
+			give_set_error(
+				'invalid_donation_minimum',
+				sprintf(
+					/* translators: %s: minimum donation amount */
+					__( 'This form has a minimum donation amount of %s.', 'give' ),
+					give_currency_filter( give_format_amount( give_get_form_minimum_price( $form_id ) ) )
+				)
+			);
 
 		} //Is this test mode zero donation? Let it through but set to manual gateway
 		elseif ( $amount == 0 && give_is_test_mode() ) {

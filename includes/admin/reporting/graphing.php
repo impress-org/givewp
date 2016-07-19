@@ -425,7 +425,13 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 	);
 
 	?>
-	<h3><span><?php printf( __( 'Income Over Time for %s', 'give' ), get_the_title( $form_id ) ); ?></span></h3>
+	<h3><span><?php
+		printf(
+			/* translators: %s: form title */
+			__( 'Income Over Time for %s', 'give' ),
+			get_the_title( $form_id )
+		);
+	?></span></h3>
 
 	<div class="metabox-holder" style="padding-top: 0;">
 		<div class="postbox">

@@ -93,7 +93,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'row_classes' => 'give-subfield',
 					'options'     => array(
 						'add_button'    => __( 'Add Level', 'give' ),
-						'remove_button' => __( '<span class="dashicons dashicons-no"></span>', 'give' ),
+						'remove_button' => '<span class="dashicons dashicons-no"></span>',
 						'sortable'      => true, // beta
 					),
 					// Fields array works the same, except id's only need to be unique for this group. Prefix is not needed.
@@ -360,6 +360,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					),
 					array(
 						'name'    => __( 'Floating Labels', 'give' ),
+						/* translators: %s: forms http://bradfrost.com/blog/post/float-label-pattern/ */
 						'desc'    => sprintf( __( 'Select the <a href="%s" target="_blank">floating labels</a> setting for this Give form.<br>Be aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), esc_url( "http://bradfrost.com/blog/post/float-label-pattern/" ) ),
 						'id'      => $prefix . 'form_floating_labels',
 						'type'    => 'select',

@@ -43,6 +43,7 @@ class Give_HTML_Elements {
 			'selected'    => 0,
 			'chosen'      => false,
 			'number'      => 30,
+			/* translators: %s: form singular label */
 			'placeholder' => sprintf( __( 'Select a %s', 'give' ), give_get_forms_label_singular() )
 		);
 
@@ -58,7 +59,11 @@ class Give_HTML_Elements {
 		$options = array();
 
 		if ( $forms ) {
-			$options[0] = sprintf( __( 'Select a %s', 'give' ), give_get_forms_label_singular() );
+			$options[0] = sprintf(
+				/* translators: %s: form singular label */
+				__( 'Select a %s', 'give' ),
+				give_get_forms_label_singular()
+			);
 			foreach ( $forms as $form ) {
 				$options[ absint( $form->ID ) ] = esc_html( $form->post_title );
 			}
