@@ -154,7 +154,8 @@ function give_format_amount( $amount, $decimals = true ) {
 
 
 /**
- * Get a nicely formatted human readable amount.
+ * Get human readable amount.
+ *
  * Note: This function only support large number formatting from million to trillion
  *
  * @since 1.6
@@ -178,11 +179,11 @@ function give_human_format_amount( $amount ) {
 
     // Calculate large number formatted amount.
     if ( 4 < $amount_count_parts ){
-        $sanitize_amount = sprintf( __( '%s trillion', 'give' ), round( ( $sanitize_amount / 1000000000000 ), 2 ) );
+        $sanitize_amount =  sprintf( __( '%s trillion', 'give' ), round( ( $sanitize_amount / 1000000000000 ), 2 ) );
     } elseif ( 3 < $amount_count_parts ){
-        $sanitize_amount = sprintf( __( '%s billion', 'give' ), round( ( $sanitize_amount / 1000000000 ), 2 ));
+        $sanitize_amount =  sprintf( __( '%s billion', 'give' ), round( ( $sanitize_amount / 1000000000 ), 2 ));
     } elseif ( 2 < $amount_count_parts  ) {
-        $sanitize_amount = sprintf( __( '%s million', 'give' ), round( ( $sanitize_amount / 1000000), 2 ) );
+        $sanitize_amount =  sprintf( __( '%s million', 'give' ), round( ( $sanitize_amount / 1000000), 2 ) );
     }
 
     return apply_filters( 'give_human_format_amount', $sanitize_amount, $amount );
