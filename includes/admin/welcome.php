@@ -457,7 +457,7 @@ class Give_Welcome {
 
 			<?php give_social_media_elements() ?>
 
-			<div class="about-text"><?php printf( __( 'Thanks to all those who have contributed code directly or indirectly. ', 'give' ), $display_version ); ?></div>
+			<div class="about-text"><?php _e( 'Thanks to all those who have contributed code directly or indirectly. ', 'give' ); ?></div>
 
 			<div class="about-text"><?php _e( 'Welcome to the getting started guide.', 'give' ); ?></div>
 
