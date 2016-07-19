@@ -525,7 +525,7 @@ function give_email_tag_receipt_id( $payment_id ) {
  */
 function give_email_tag_donation( $payment_id ) {
 	$payment    = new Give_Payment( $payment_id );
-	$form_title = give_get_payment_form_title( $payment->meta, false, '-' );
+	$form_title = strip_tags( give_get_payment_form_title( $payment->meta, false, '-' ) );
 
 	return ! empty( $form_title ) ? $form_title : __( 'There was an error retrieving this donation title.', 'give' );
 
