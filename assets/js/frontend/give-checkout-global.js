@@ -172,6 +172,26 @@ jQuery(function ($) {
         return Math.abs(parseFloat(accounting.unformat(price, give_global_vars.decimal_separator)));
     }
 
+
+    /**
+     * Get formatted amount
+     *
+     * @param {string} amount
+     */
+    function give_format_amount( amount ){
+
+        //Set the custom amount input value format properly
+        var format_args = {
+            symbol: '',
+            decimal: give_global_vars.decimal_separator,
+            thousand: give_global_vars.thousands_separator,
+            precision: give_global_vars.number_decimals
+        };
+
+        return accounting.formatMoney( amount, format_args );
+    }
+
+
     /**
      * Get Price ID and levels for multi donation form
      *
@@ -180,15 +200,7 @@ jQuery(function ($) {
      * @returns {Object}
      */
     function give_get_variable_prices( $form ) {
-        var variable_prices = [],
-
-            //Set the custom amount input value format properly
-            format_args = {
-                symbol: '',
-                decimal: give_global_vars.decimal_separator,
-                thousand: give_global_vars.thousands_separator,
-                precision: give_global_vars.number_decimals
-            };
+        var variable_prices = [];
 
         // check if currect form type is muti or not.
         if( ! $form.hasClass('give-form-type-multi') ) {
@@ -203,7 +215,7 @@ jQuery(function ($) {
             // Add price id and amount to collector.
             variable_prices.push({
                 price_id: item.data('price-id'),
-                amount  : accounting.formatMoney( item.val(), format_args )
+                amount  : give_format_amount( item.val() )
             });
         });
 
