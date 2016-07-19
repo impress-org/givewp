@@ -213,7 +213,7 @@ function give_reports_graph() {
 					<td class="row-title">
 						<label for="tablecell"><?php _e( 'Total donations for period shown: ', 'give' ); ?></label>
 					</td>
-					<td><?php echo give_format_amount( $sales_totals, false ); ?></td>
+					<td><?php echo $sales_totals; ?></td>
 				</tr>
 				<?php if ( 'this_month' == $dates['range'] ) : ?>
 					<tr>
@@ -226,7 +226,7 @@ function give_reports_graph() {
 						<td class="row-title">
 							<label for="tablecell"><?php _e( 'Estimated monthly donations: ', 'give' ); ?></label>
 						</td>
-						<td><?php echo give_format_amount( $estimated['sales'], false ); ?></td>
+						<td><?php echo $estimated['sales']; ?></td>
 					</tr>
 				<?php endif; ?>
 			</table>
