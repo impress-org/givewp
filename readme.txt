@@ -173,6 +173,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Tweak: Updated to the latest version of CMB2 & tested compatibility - https://github.com/WordImpress/Give/issues/670
 * Fix: Unrendered html in multi-level donation confirmation emails - https://github.com/WordImpress/Give/issues/754
 * Fix: Text editor do not have same height for visual mode and text mode - https://github.com/WordImpress/Give/issues/688
+* Fix:  Auto populate state list is not working on transaction detail page - https://github.com/WordImpress/Give/issues/715
 * Fix: Unable to view payment history for donors with unusual characters in the email - https://github.com/WordImpress/Give/issues/717
 
 = 1.5.2: June 31, 2016 =
