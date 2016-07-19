@@ -266,17 +266,26 @@ $payment_mode   = $payment->mode;
 												<?php echo $payment_meta['form_id']; ?>
 											</td>
 											<td>
-												<a href="<?php echo get_permalink( $payment_meta['form_id'] ); ?>"><?php echo $payment_meta['form_title']; ?></a>
+												<?php give_get_form_dropdown( array( 'id' => $payment_meta['form_id'], 'selected' => $payment_meta['form_id'], 'chosen' => true ), true ); ?>
 											</td>
 											<td>
 												<?php
-												//Level ID
-												$level_title = give_get_payment_form_title( $payment_meta, true );
-												if ( empty( $level_title ) ) {
+												if ( empty( give_has_variable_prices( $payment_meta['form_id'] ) ) ) {
 													echo __( 'n/a', 'give' );
 												} else {
-													echo $level_title;
-												} ?>
+                                                    // Variable price dropdown options.
+                                                    $variable_price_dropdown_option =  array(
+                                                        'id'                => $payment_meta['form_id'],
+                                                        'name'              => 'give-variable-price',
+                                                        'chosen'            => true,
+                                                        'show_option_all'   => '',
+                                                        'selected'          => $payment_meta['price_id'],
+                                                    );
+
+                                                    // Render variable prices select tag html.
+                                                    give_get_form_variable_price_dropdown( $variable_price_dropdown_option, true );
+                                                }
+                                                ?>
 											</td>
 											<td>
 												<?php

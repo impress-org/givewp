@@ -457,6 +457,23 @@ final class Give_Payment {
 		return true;
 	}
 
+    /**
+     * Payment class object is storing various meta value in object parameter.
+     * So if user is updating payment meta but not updating payment object, then payment meta values will not reflect/changes on payment meta automatically
+     * and you can still access payment meta old value in any old payment object ( previously created ) which can cause to show or save wrong payment data.
+     * To prevent that user can use this function after updating any payment meta value ( in bulk or single update ).
+     *  
+     * @since 1.6
+     * @access public
+     * 
+     * @param int $payment_id Payment ID.
+     * 
+     * @return void
+     */
+    public function update_payment_setup( $payment_id ){
+        $this->setup_payment( $payment_id );
+    }
+
 	/**
 	 * Create the base of a payment.
 	 *
