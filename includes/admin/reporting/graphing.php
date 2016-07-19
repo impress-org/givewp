@@ -226,7 +226,7 @@ function give_reports_graph() {
 						<td class="row-title">
 							<label for="tablecell"><?php _e( 'Estimated monthly donations: ', 'give' ); ?></label>
 						</td>
-						<td><?php echo $estimated['sales']; ?></td>
+						<td><?php echo floor( $estimated['sales'] ); ?></td>
 					</tr>
 				<?php endif; ?>
 			</table>
