@@ -86,7 +86,7 @@ class Give_Plugin_Settings {
 	/**
 	 * Filter CMB2 URL
 	 *
-	 * Required for CMB2 to properly load CSS/JS
+	 * @description: Required for CMB2 to properly load CSS/JS
 	 *
 	 * @param $url
 	 *
@@ -191,13 +191,10 @@ class Give_Plugin_Settings {
 	/**
 	 * Modify CMB2 Default Form Output
 	 *
+	 * @param string @args
+	 *
+	 * @since 1.5 Modified to CSS hide non-active tabs
 	 * @since 1.0
-	 *
-	 * @param string $form_format Form output format
-	 * @param string $object_id   In the case of an options page, this will be the option key
-	 * @param CMB2   $cmb         CMB2 object. Can use $cmb->cmb_id to retrieve the metabox ID
-	 *
-	 * @return string Possibly modified form output
 	 */
 	function give_modify_cmb2_form_output( $form_format, $object_id, $cmb ) {
 
@@ -262,6 +259,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name'    => __( 'Success Page', 'give' ),
+							/* translators: %s: [give_receipt] */
 							'desc'    => sprintf( __( 'This is the page donors are sent to after completing their donations. The %s shortcode should be on this page.', 'give' ), '<code>[give_receipt]</code>' ),
 							'id'      => 'success_page',
 							'type'    => 'select',
@@ -282,6 +280,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name'    => __( 'Donation History Page', 'give' ),
+							/* translators: %s: [donation_history] */
 							'desc'    => sprintf( __( 'This page shows a complete donation history for the current user. The %s shortcode should be on this page.', 'give' ), '<code>[donation_history]</code>' ),
 							'id'      => 'history_page',
 							'type'    => 'select',
@@ -317,7 +316,9 @@ class Give_Plugin_Settings {
 							'id'      => 'currency_position',
 							'type'    => 'select',
 							'options' => array(
+								/* translators: %s: currency symbol */
 								'before' => sprintf( __( 'Before - %s10', 'give' ), give_currency_symbol( give_get_currency() ) ),
+								/* translators: %s: currency symbol */
 								'after'  => sprintf( __( 'After - 10%s', 'give' ), give_currency_symbol( give_get_currency() ) )
 							),
 							'default' => 'before',
@@ -327,7 +328,6 @@ class Give_Plugin_Settings {
 							'desc'    => __( 'The symbol (typically , or .) to separate thousands.', 'give' ),
 							'id'      => 'thousands_separator',
 							'type'    => 'text_small',
-							'sanitization_cb' => 'give_sanitize_thousand_separator',
 							'default' => ',',
 						),
 						array(
@@ -469,13 +469,15 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => __( 'Enable Floating Labels', 'give' ),
-							'desc' => sprintf( esc_html__( 'Enable this option if you would like to enable %1$sfloating labels%2$s in Give\'s donation forms. %3$sBe aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), '<a href="' . esc_url( "http://bradfrost.com/blog/post/float-label-pattern/" ) . '" target="_blank">', '</a>', '<br />' ),
+							/* translators: %s: http://bradfrost.com/blog/post/float-label-pattern/ */
+							'desc' => sprintf( esc_html__( 'Enable this option if you would like to enable <a href="%s" target="_blank">floating labels</a> in Give\'s donation forms. <br />Be aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), esc_url( 'http://bradfrost.com/blog/post/float-label-pattern/' ) ),
 							'id'   => 'enable_floatlabels',
 							'type' => 'checkbox'
 						),
 						array(
 							'name' => __( 'Disable Welcome Screen', 'give' ),
-							'desc' => sprintf( wp_kses ( __( 'Enable this option if you would like to disable the Give Welcome screen every time Give is activated and/or updated. You can always access the <a href="%s">Welcome Screen</a> if you want in the future.', 'give' ), array(  'a' => array( 'href' => array() ) ) ), esc_url( admin_url( 'index.php?page=give-about' ) ) ),
+							/* translators: %s: about page URL */
+							'desc' => sprintf( esc_html__( 'Enable this option if you would like to disable the Give Welcome screen every time Give is activated and/or updated. You can always access the <a href="%s">Welcome Screen</a> if you want in the future.', 'give' ), esc_url( admin_url( 'index.php?page=give-about' ) ) ),
 							'id'   => 'disable_welcome',
 							'type' => 'checkbox'
 						),
@@ -603,6 +605,7 @@ class Give_Plugin_Settings {
 						array(
 							'id'      => 'donation_receipt',
 							'name'    => __( 'Donation Receipt', 'give' ),
+							/* translators: %s: emails tags list */
 							'desc'    => sprintf( __( 'Enter the email that is sent to users after completing a successful donation. HTML is accepted. Available template tags: %s', 'give' ), give_get_emails_tags_list() ) . '<br/>',
 							'type'    => 'wysiwyg',
 							'default' => give_get_default_donation_receipt_email()
@@ -623,6 +626,7 @@ class Give_Plugin_Settings {
 						array(
 							'id'      => 'donation_notification',
 							'name'    => __( 'Donation Notification', 'give' ),
+							/* translators: %s: emails tags list */
 							'desc'    => sprintf( __( 'Enter the email that is sent to donation notification emails after completion of a donation. HTML is accepted. Available template tags: %s', 'give' ), give_get_emails_tags_list() ) . '<br/>',
 							'type'    => 'wysiwyg',
 							'default' => give_get_default_donation_notification_email()
@@ -630,7 +634,7 @@ class Give_Plugin_Settings {
 						array(
 							'id'      => 'admin_notice_emails',
 							'name'    => __( 'Donation Notification Emails', 'give' ),
-							'desc'    => sprintf( __( 'Enter the email address(es) that should receive a notification anytime a donation is made, please only enter %1$sone email address per line%2$s and not separated by commas.', 'give' ), '<span class="give-underline">', '</span>' ),
+							'desc'    => __( 'Enter the email address(es) that should receive a notification anytime a donation is made, please only enter <span class="give-underline">one email address per line</span> and not separated by commas.', 'give' ),
 							'type'    => 'textarea',
 							'default' => get_bloginfo( 'admin_email' )
 						),
@@ -692,7 +696,8 @@ class Give_Plugin_Settings {
 						array(
 							'id'      => 'recaptcha_key',
 							'name'    => __( 'reCAPTCHA Site Key', 'give' ),
-							'desc'    => sprintf( __( 'If you would like to prevent spam on the email access form navigate to %1$sthe reCAPTCHA website%2$s and sign up for an API key. The reCAPTCHA uses Google\'s user-friendly single click verification method.', 'give' ), '<a href="https://www.google.com/recaptcha/" target="_blank">', '</a>' ),
+							/* translators: %s: https://www.google.com/recaptcha/ */
+							'desc'    => sprintf( __( 'If you would like to prevent spam on the email access form navigate to <a href="%s" target="_blank">the reCAPTCHA website</a> and sign up for an API key. The reCAPTCHA uses Google\'s user-friendly single click verification method.', 'give' ), esc_url( 'https://www.google.com/recaptcha/' ) ),
 							'default' => '',
 							'type'    => 'text'
 						),
@@ -722,7 +727,9 @@ class Give_Plugin_Settings {
 							'type' => 'give_title'
 						),
 						array(
+							/* translators: %s: the_content */
 							'name' => sprintf( __( 'Disable %s filter', 'give' ), '<code>the_content</code>' ),
+							/* translators: 1: https://codex.wordpress.org/Plugin_API/Filter_Reference/the_content 2: the_content */
 							'desc' => sprintf( __( 'If you are seeing extra social buttons, related posts, or other unwanted elements appearing within your forms then you can disable WordPress\' content filter. <a href="%1$s" target="_blank">Learn more</a> about %2$s filter.', 'give' ), esc_url( 'https://codex.wordpress.org/Plugin_API/Filter_Reference/the_content' ), '<code>the_content</code>' ),
 							'id'   => 'disable_the_content_filter',
 							'type' => 'checkbox'
@@ -952,7 +959,7 @@ function give_get_settings() {
 /**
  * Give Settings Array Insert
  *
- * Allows other Add-ons and plugins to insert Give settings at a desired position
+ * @description: Allows other Add-ons and plugins to insert Give settings at a desired position
  *
  * @since      1.3.5
  *
@@ -1095,7 +1102,7 @@ function give_title_callback( $field_object, $escaped_value, $object_id, $object
 /**
  * Give Description
  *
- * Renders custom description text which any plugin can use to output content, html, php, etc.
+ * @description: Renders custom description text which any plugin can use to output content, html, php, etc.
  *
  * @since      1.3.5
  *
@@ -1153,7 +1160,7 @@ function give_cmb2_get_post_options( $query_args, $force = false ) {
 /**
  * Featured Image Sizes
  *
- * Outputs an array for the "Featured Image Size" option found under Settings > Display Options
+ * @description: Outputs an array for the "Featured Image Size" option found under Settings > Display Options
  *
  * @since 1.4
  */
@@ -1178,7 +1185,7 @@ function give_get_featured_image_sizes() {
 /**
  * Give License Key Callback
  *
- * Registers the license field callback for EDD's Software Licensing
+ * @description Registers the license field callback for EDD's Software Licensing
  * @since       1.0
  *
  * @param array $field_object , $escaped_value, $object_id, $object_type, $field_type_object Arguments passed by CMB2
@@ -1240,6 +1247,7 @@ function give_api_callback() {
 	?>
 	<span class="cmb2-metabox-description api-description">
 		<?php echo sprintf(
+			/* translators: 1: https://givewp.com/documentation/give-api-reference/ 2: https://givewp.com/addons/zapier/ */
 			__( 'You can create API keys for individual users within their profile edit screen. API keys allow users to use the <a href="%1$s" target="_blank">Give REST API</a> to retrieve donation data in JSON or XML for external applications or devices, such as <a href="%2$s" target="_blank">Zapier</a>.', 'give' ),
 			esc_url( 'https://givewp.com/documentation/give-api-reference/' ),
 			esc_url( 'https://givewp.com/addons/zapier/' )
@@ -1270,7 +1278,7 @@ function give_hook_callback( $args ) {
 /**
  * Get the CMB2 bootstrap!
  *
- * Checks to see if CMB2 plugin is installed first the uses included CMB2; we can still use it even it it's not active. This prevents fatal error conflicts with other themes and users of the CMB2 WP.org plugin
+ * @description: Checks to see if CMB2 plugin is installed first the uses included CMB2; we can still use it even it it's not active. This prevents fatal error conflicts with other themes and users of the CMB2 WP.org plugin
  *
  */
 

@@ -70,7 +70,14 @@ class Give_Helper_Payment extends WP_UnitTestCase {
 		$payment->transaction_id = $transaction_id;
 		$payment->save();
 
-		give_insert_payment_note( $payment_id, sprintf( __( 'PayPal Transaction ID: %s', 'give' ), $transaction_id ) );
+		give_insert_payment_note(
+			$payment_id,
+			sprintf(
+				/* translators: %s: Paypal transaction id */
+				__( 'PayPal Transaction ID: %s', 'give' ),
+				$transaction_id
+			)
+		);
 
 		return $payment_id;
 
@@ -126,7 +133,14 @@ class Give_Helper_Payment extends WP_UnitTestCase {
 		$payment->transaction_id = $transaction_id;
 		$payment->save();
 
-		give_insert_payment_note( $payment_id, sprintf( __( 'PayPal Transaction ID: %s', 'give' ), $transaction_id ) );
+		give_insert_payment_note(
+			$payment_id,
+			sprintf(
+				/* translators: %s: Paypal transaction id */
+				__( 'PayPal Transaction ID: %s', 'give' ),
+				$transaction_id
+			)
+		);
 
 		return $payment_id;
 
@@ -214,7 +228,14 @@ class Give_Helper_Payment extends WP_UnitTestCase {
 		$payment->transaction_id = $transaction_id;
 		$payment->save();
 
-		give_insert_payment_note( $payment_id, sprintf( __( 'PayPal Transaction ID: %s', 'give' ), $transaction_id ) );
+		give_insert_payment_note(
+			$payment_id,
+			sprintf(
+				/* translators: %s: Paypal transaction id */
+				__( 'PayPal Transaction ID: %s', 'give' ),
+				$transaction_id
+			)
+		);
 
 		return $payment_id;
 

@@ -57,6 +57,7 @@ function give_offline_payment_cc_form( $form_id ) {
 	<fieldset id="give_offline_payment_info">
 		<?php
 		$settings_url         = admin_url( 'post.php?post=' . $form_id . '&action=edit&message=1' );
+		/* translators: %s: form settings url */
 		$offline_instructions = ! empty( $offline_instructions ) ? $offline_instructions : sprintf( esc_attr__( 'Please enter offline donation instructions in <a href="%s">this form\'s settings</a>.', 'give' ), $settings_url );
 		echo wpautop( stripslashes( $offline_instructions ) );
 		?>
@@ -342,8 +343,20 @@ function give_get_default_offline_donation_content() {
 
 	$default_text = '<p>' . esc_attr__( 'In order to make an offline donation we ask that you please follow these instructions', 'give' ) . ': </p>';
 	$default_text .= '<ol>';
-	$default_text .= '<li>' . sprintf( __( 'Make a check payable to "%s"', 'give' ), $sitename ) . '</li>';
-	$default_text .= '<li>' . sprintf( __( 'On the memo line of the check, please indicate that the donation is for "%s"', 'give' ), $sitename ) . '</li>';
+	$default_text .= '<li>';
+	$default_text .= sprintf(
+		/* translators: %s: site name */
+		__( 'Make a check payable to "%s"', 'give' ),
+		$sitename
+	);
+	$default_text .= '</li>';
+	$default_text .= '<li>';
+	$default_text .= sprintf(
+		/* translators: %s: site name */
+		__( 'On the memo line of the check, please indicate that the donation is for "%s"', 'give' ),
+		$sitename
+	);
+	$default_text .= '</li>';
 	$default_text .= '<li>' . __( 'Please mail your check to:', 'give' ) . '</li>';
 	$default_text .= '</ol>';
 	$default_text .= '&nbsp;&nbsp;&nbsp;&nbsp;<em>' . $sitename . '</em><br>';
@@ -368,8 +381,20 @@ function give_get_default_offline_donation_email_content() {
 	$default_text = '<p>' . esc_attr__( 'Dear {name},', 'give' ) . '</p>';
 	$default_text .= '<p>' . esc_attr__( 'Thank you for your offline donation request! Your generosity is greatly appreciated. In order to make an offline donation we ask that you please follow these instructions', 'give' ) . ': </p>';
 	$default_text .= '<ol>';
-	$default_text .= '<li>' . sprintf( __( 'Make a check payable to "%s"', 'give' ), $sitename ) . '</li>';
-	$default_text .= '<li>' . sprintf( __( 'On the memo line of the check, please indicate that the donation is for "%s"', 'give' ), $sitename ) . '</li>';
+	$default_text .= '<li>';
+	$default_text .= sprintf(
+		/* translators: %s: site name */
+		__( 'Make a check payable to "%s"', 'give' ),
+		$sitename
+	);
+	$default_text .= '</li>';
+	$default_text .= '<li>';
+	$default_text .= sprintf(
+		/* translators: %s: site name */
+		__( 'On the memo line of the check, please indicate that the donation is for "%s"', 'give' ),
+		$sitename
+	);
+	$default_text .= '</li>';
 	$default_text .= '<li>' . __( 'Please mail your check to:', 'give' ) . '</li>';
 	$default_text .= '</ol>';
 	$default_text .= '&nbsp;&nbsp;&nbsp;&nbsp;<em>' . $sitename . '</em><br>';

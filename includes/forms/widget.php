@@ -130,7 +130,13 @@ class Give_Forms_Widget extends WP_Widget{
 		// Widget: Give Form
 
 		?><p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'id' ) ); ?>"><?php printf( __( 'Give %s:', 'give' ), give_get_forms_label_singular() ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'id' ) ); ?>"><?php
+				printf(
+					/* translators: %s: form singular label */
+					__( 'Give %s:', 'give' ),
+					give_get_forms_label_singular()
+				);
+			?></label>
 			<select class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'id' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'id' ) ); ?>">
 				<option value="current"><?php _e( '— Select —', 'give' ); ?></option>
 				<?php foreach ( $give_forms as $give_form ) { ?>
@@ -149,7 +155,13 @@ class Give_Forms_Widget extends WP_Widget{
 				<option value="enabled" <?php selected( esc_attr( $instance['float_labels'] ), 'enabled' ) ?>><?php _e( 'Enabled', 'give' ); ?></option>
 				<option value="disabled" <?php selected( esc_attr( $instance['float_labels'] ), 'disabled' ) ?>><?php _e( 'Disabled', 'give' ); ?></option>
 			</select><br>
-			<small><?php printf( __( 'Override the <a href="%s" target="_blank">floating labels</a> setting for this Give form.', 'give' ), esc_url( "http://bradfrost.com/blog/post/float-label-pattern/" ) ); ?></small>
+			<small><?php
+				printf(
+					/* translators: %s: http://bradfrost.com/blog/post/float-label-pattern/ */
+					__( 'Override the <a href="%s" target="_blank">floating labels</a> setting for this Give form.', 'give' ),
+					esc_url( 'http://bradfrost.com/blog/post/float-label-pattern/' )
+				);
+			?></small>
 		</p><?php
 	}
 
