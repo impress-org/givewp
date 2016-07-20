@@ -175,6 +175,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Fix: Text editor do not have same height for visual mode and text mode - https://github.com/WordImpress/Give/issues/688
 * Fix:  Auto populate state list is not working on transaction detail page - https://github.com/WordImpress/Give/issues/715
 * Fix: Unable to view payment history for donors with unusual characters in the email - https://github.com/WordImpress/Give/issues/717
+* Fix: Mixed content warning with placeholder image - https://github.com/WordImpress/Give/issues/768
 
 = 1.5.2: June 31, 2016 =
 * New: Added an addition "status" column for donation logs - https://github.com/WordImpress/Give/issues/684
