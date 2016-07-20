@@ -66,36 +66,36 @@ function give_get_currency_position() {
 
 function give_get_currencies() {
 	$currencies = array(
-		'USD'  => __( 'US Dollars ($)', 'give' ),
-		'EUR'  => __( 'Euros (€)', 'give' ),
-		'GBP'  => __( 'Pounds Sterling (£)', 'give' ),
-		'AUD'  => __( 'Australian Dollars ($)', 'give' ),
-		'BRL'  => __( 'Brazilian Real (R$)', 'give' ),
-		'CAD'  => __( 'Canadian Dollars ($)', 'give' ),
-		'CZK'  => __( 'Czech Koruna (Kč)', 'give' ),
-		'DKK'  => __( 'Danish Krone (kr)', 'give' ),
-		'HKD'  => __( 'Hong Kong Dollar ($)', 'give' ),
-		'HUF'  => __( 'Hungarian Forint (Ft)', 'give' ),
-		'ILS'  => __( 'Israeli Shekel (₪)', 'give' ),
-		'JPY'  => __( 'Japanese Yen (¥)', 'give' ),
-		'MYR'  => __( 'Malaysian Ringgits (RM)', 'give' ),
-		'MXN'  => __( 'Mexican Peso ($)', 'give' ),
-		'MAD'  => __( 'Moroccan Dirham (&#x2e;&#x62f;&#x2e;&#x645;)', 'give' ),
-		'NZD'  => __( 'New Zealand Dollar ($)', 'give' ),
-		'NOK'  => __( 'Norwegian Krone (Kr.)', 'give' ),
-		'PHP'  => __( 'Philippine Pesos (₱)', 'give' ),
-		'PLN'  => __( 'Polish Zloty (zł)', 'give' ),
-		'SGD'  => __( 'Singapore Dollar ($)', 'give' ),
-		'KRW'  => __( 'South Korean Won (₩)', 'give' ),
-		'ZAR'  => __( 'South African Rand (R)', 'give' ),
-		'SEK'  => __( 'Swedish Krona (kr)', 'give' ),
-		'CHF'  => __( 'Swiss Franc (CHF)', 'give' ),
-		'TWD'  => __( 'Taiwan New Dollars (NT$)', 'give' ),
-		'THB'  => __( 'Thai Baht (฿)', 'give' ),
-		'INR'  => __( 'Indian Rupee (₹)', 'give' ),
-		'TRY'  => __( 'Turkish Lira (₺)', 'give' ),
-		'RIAL' => __( 'Iranian Rial (﷼)', 'give' ),
-		'RUB'  => __( 'Russian Rubles (руб)', 'give' )
+		'USD'  => esc_html( 'US Dollars ($)', 'give' ),
+		'EUR'  => esc_html( 'Euros (€)', 'give' ),
+		'GBP'  => esc_html( 'Pounds Sterling (£)', 'give' ),
+		'AUD'  => esc_html( 'Australian Dollars ($)', 'give' ),
+		'BRL'  => esc_html( 'Brazilian Real (R$)', 'give' ),
+		'CAD'  => esc_html( 'Canadian Dollars ($)', 'give' ),
+		'CZK'  => esc_html( 'Czech Koruna (Kč)', 'give' ),
+		'DKK'  => esc_html( 'Danish Krone (kr)', 'give' ),
+		'HKD'  => esc_html( 'Hong Kong Dollar ($)', 'give' ),
+		'HUF'  => esc_html( 'Hungarian Forint (Ft)', 'give' ),
+		'ILS'  => esc_html( 'Israeli Shekel (₪)', 'give' ),
+		'JPY'  => esc_html( 'Japanese Yen (¥)', 'give' ),
+		'MYR'  => esc_html( 'Malaysian Ringgits (RM)', 'give' ),
+		'MXN'  => esc_html( 'Mexican Peso ($)', 'give' ),
+		'MAD'  => esc_html( 'Moroccan Dirham (&#x2e;&#x62f;&#x2e;&#x645;)', 'give' ),
+		'NZD'  => esc_html( 'New Zealand Dollar ($)', 'give' ),
+		'NOK'  => esc_html( 'Norwegian Krone (Kr.)', 'give' ),
+		'PHP'  => esc_html( 'Philippine Pesos (₱)', 'give' ),
+		'PLN'  => esc_html( 'Polish Zloty (zł)', 'give' ),
+		'SGD'  => esc_html( 'Singapore Dollar ($)', 'give' ),
+		'KRW'  => esc_html( 'South Korean Won (₩)', 'give' ),
+		'ZAR'  => esc_html( 'South African Rand (R)', 'give' ),
+		'SEK'  => esc_html( 'Swedish Krona (kr)', 'give' ),
+		'CHF'  => esc_html( 'Swiss Franc (CHF)', 'give' ),
+		'TWD'  => esc_html( 'Taiwan New Dollars (NT$)', 'give' ),
+		'THB'  => esc_html( 'Thai Baht (฿)', 'give' ),
+		'INR'  => esc_html( 'Indian Rupee (₹)', 'give' ),
+		'TRY'  => esc_html( 'Turkish Lira (₺)', 'give' ),
+		'RIAL' => esc_html( 'Iranian Rial (﷼)', 'give' ),
+		'RUB'  => esc_html( 'Russian Rubles (руб)', 'give' )
 	);
 
 	return apply_filters( 'give_currencies', $currencies );
@@ -603,7 +603,7 @@ function give_get_newsletter() { ?>
 
 		<form action="//givewp.us3.list-manage.com/subscribe/post?u=3ccb75d68bda4381e2f45794c&amp;id=12a081aa13" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
 			<div class="give-newsletter-confirmation">
-				<p><?php _e( 'Thanks for Subscribing!', 'give' ); ?> :)</p>
+				<p><?php esc_html_e( 'Thanks for Subscribing!', 'give' ); ?> :)</p>
 			</div>
 
 			<table class="form-table give-newsletter-form">

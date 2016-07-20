@@ -56,7 +56,7 @@ function give_no_gateway_error() {
 	$gateways = give_get_enabled_payment_gateways();
 
 	if ( empty( $gateways ) ) {
-		give_set_error( 'no_gateways', __( 'You must enable a payment gateway to use Give.', 'give' ) );
+		give_set_error( 'no_gateways', esc_html( 'You must enable a payment gateway to use Give.', 'give' ) );
 	} else {
 		give_unset_error( 'no_gateways' );
 	}

@@ -156,7 +156,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			$give_license_settings = array(
 				array(
-					'name' => __( 'Add-on Licenses', 'give' ),
+					'name' => esc_html( 'Add-on Licenses', 'give' ),
 					'desc' => '<hr>',
 					'type' => 'give_title',
 					'id'   => 'give_title'
@@ -188,7 +188,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			if ( ! wp_verify_nonce( $_REQUEST[ $this->item_shortname . '_license_key-nonce' ], $this->item_shortname . '_license_key-nonce' ) ) {
 
-				wp_die( __( 'Nonce verification failed.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+				wp_die( esc_html( 'Nonce verification failed.', 'give' ), esc_html( 'Error', 'give' ), array( 'response' => 403 ) );
 
 			}
 
@@ -259,7 +259,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			if ( ! wp_verify_nonce( $_REQUEST[ $this->item_shortname . '_license_key-nonce' ], $this->item_shortname . '_license_key-nonce' ) ) {
 
-				wp_die( __( 'Nonce verification failed.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+				wp_die( esc_html( 'Nonce verification failed.', 'give' ), esc_html( 'Error', 'give' ), array( 'response' => 403 ) );
 
 			}
 
@@ -336,24 +336,24 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 					case 'item_name_mismatch' :
 
-						$message = __( 'This license does not belong to the product you have entered it for.', 'give' );
+						$message = esc_html( 'This license does not belong to the product you have entered it for.', 'give' );
 						break;
 
 					case 'no_activations_left' :
 
-						$message = __( 'This license does not have any activations left.', 'give' );
+						$message = esc_html( 'This license does not have any activations left.', 'give' );
 						break;
 
 					case 'expired' :
 
-						$message = __( 'This license key is expired. Please renew it.', 'give' );
+						$message = esc_html( 'This license key is expired. Please renew it.', 'give' );
 						break;
 
 					default :
 
 						$message = sprintf(
 							/* translators: %s: license error */
-							__( 'There was a problem activating your license key, please try again or contact support. Error code: %s', 'give' ),
+							esc_html( 'There was a problem activating your license key, please try again or contact support. Error code: %s', 'give' ),
 							$license_error->error
 						);
 						break;
