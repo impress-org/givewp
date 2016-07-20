@@ -363,12 +363,10 @@ jQuery(function ($) {
         }
 
         // Set price id for current amount.
-        if( variable_prices.length ) {
+        if( -1 !== price_id ) {
 
             // Auto set give price id.
-            if( -1 !== price_id ) {
-                $('input[name="give-price-id"]', parent_form ).val( price_id );
-            }
+            $('input[name="give-price-id"]', parent_form ).val( price_id );
 
             // Auto select variable price items ( Radio/Button/Select ).
             switch ( true ){
