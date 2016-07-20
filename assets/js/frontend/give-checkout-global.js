@@ -273,11 +273,11 @@ jQuery(function ($) {
      * @description: Fires on focus end aka "blur"
      *
      */
-    doc.on('blur', '.give-donation-amount .give-text-input', function ( e, $parent_form, price_id ) {
+    doc.on('blur', '.give-donation-amount .give-text-input', function ( e, $parent_form, donation_amount, price_id ) {
 
         var parent_form = ( $parent_form != undefined ) ? $parent_form : $(this).closest('form'),
             pre_focus_amount = $(this).data('amount'),
-            this_value = $(this).val(),
+            this_value = ( donation_amount != undefined ) ? donation_amount : $(this).val(),
             $minimum_amount = parent_form.find('input[name="give-form-minimum"]'),
             value_min = give_unformat_currency( $minimum_amount.val() ),
             value_now = (this_value == 0) ? value_min : give_unformat_currency(this_value),
@@ -442,7 +442,7 @@ jQuery(function ($) {
      */
     function update_multiselect_vals( selected_field ) {
 
-        var parent_form = selected_field.parents('form'),
+        var $parent_form = selected_field.parents('form'),
             this_amount = selected_field.val(),
             price_id = selected_field.data('price-id');
 
@@ -459,16 +459,17 @@ jQuery(function ($) {
         }
 
         //update custom amount field
-        parent_form.find('.give-amount-top').val(this_amount);
-        parent_form.find('span.give-amount-top').text(this_amount);
+        $parent_form.find('.give-amount-top').val(this_amount);
+        $parent_form.find('span.give-amount-top').text(this_amount);
 
         // Manually trigger blur event with two params:
         // (a) form jquery object
         // (b) price id
-        $('.give-donation-amount .give-text-input').trigger('blur', [ parent_form, price_id ] );
+        // (c) donation amount
+        $parent_form.find('.give-donation-amount .give-text-input').trigger( 'blur', [ $parent_form, this_amount, price_id ] );
 
         // trigger an event for hooks
-        $(document).trigger('give_donation_value_updated', [parent_form, this_amount, price_id]);
+        $(document).trigger('give_donation_value_updated', [ $parent_form, this_amount, price_id ]);
     }
 
     /**
