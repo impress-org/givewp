@@ -281,6 +281,8 @@ jQuery(function ($) {
         var minimum_amount = parent_form.find('input[name="give-form-minimum"]');
         var value_min = give_unformat_currency(minimum_amount.val());
         var value_now = (this_value == 0) ? value_min : give_unformat_currency(this_value);
+        var variable_prices = give_get_variable_prices( $(this).parents('form') );
+
 
         //Set the custom amount input value format properly
         var format_args = {
@@ -289,16 +291,27 @@ jQuery(function ($) {
             thousand: give_global_vars.thousands_separator,
             precision: give_global_vars.number_decimals
         };
+
         var formatted_total = give_format_currency(value_now, format_args);
         $(this).val(formatted_total);
 
-        //Flag Multi-levels for min. donation conditional
-        var is_level = false;
-        parent_form.find('*[data-price-id]').each(function () {
-            if (this.value !== 'custom' && give_unformat_currency(this.value) === value_now) {
-                is_level = true;
+        //Flag Multi-levels for min. donation conditional.
+        var is_level = -1;
+
+        // Find price id with amount in variable prices.
+        if( variable_prices.length ) {
+            $.each(variable_prices, function (index, variable_price) {
+                if (variable_price.amount === value_now) {
+                    is_level = variable_price.price_id;
+                    return false;
+                }
+            });
+
+            // Set level to custom.
+            if( ! ( -1 < is_level ) && ( value_min < value_now ) ) {
+                is_level = 'custom';
             }
-        });
+        }
 
         //Does this number have an accepted minimum value?
         if (( value_now < value_min || value_now < 1 ) && !is_level && value_min !== 0) {
@@ -333,6 +346,21 @@ jQuery(function ($) {
             format_args.symbol = give_global_vars.currency_sign;
             parent_form.find('.give-final-total-amount').data('total', value_now).text(give_format_currency(value_now, format_args));
 
+        }
+
+        // Set price id for current amount.
+        if( variable_prices.length ) {
+
+            // Auto set give price id.
+            if( -1 !== is_level ) {
+                $('input[name="give-price-id"]', parent_form ).val( is_level );
+            }
+
+            // Auto Select radio button if radio button is using fro variable prices.
+            if( parent_form.find('.give-radio-input').length ) {
+                parent_form.find('.give-radio-input').prop('checked', false); //Radio
+                parent_form.find('.give-radio-input[data-price-id="'+is_level+'"]').prop('checked', true); //Radio
+            }
         }
 
         //This class is used for CSS purposes
