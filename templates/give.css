@@ -117,7 +117,7 @@
 .give-icon-minus:before {
   content: "\e041"; }
 
-.give-icon-locked:before, #give_secure_site_wrapper span.padlock:before {
+.give-icon-locked:before, [id*='give_secure_site_wrapper'] span.padlock:before {
   content: "\e600"; }
 
 .dashicons-give:before {
@@ -1171,11 +1171,11 @@ Buttons
 /*---------------------------------
 CC Validation
 -----------------------------------*/
-#give_secure_site_wrapper {
+[id*='give_secure_site_wrapper'] {
   padding: 4px 4px 15px 0;
   font-size: 16px;
   line-height: 20px; }
-  #give_secure_site_wrapper span.padlock {
+  [id*='give_secure_site_wrapper'] span.padlock {
     font-family: 'give-icomoon';
     speak: none;
     font-style: normal;
@@ -1188,7 +1188,7 @@ CC Validation
     -moz-osx-font-smoothing: grayscale;
     font-size: 16px;
     line-height: 20px; }
-    #give_secure_site_wrapper span.padlock :before {
+    [id*='give_secure_site_wrapper'] span.padlock :before {
       display: inline-block; }
 
 #give_purchase_form_wrap input.give-input.card-number.valid {
