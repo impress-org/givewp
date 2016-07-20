@@ -176,7 +176,7 @@ jQuery(function ($) {
     /**
      * Get formatted amount
      *
-     * @param {string} amount
+     * @param {string/number} amount
      */
     function give_format_amount( amount ){
 
@@ -345,14 +345,20 @@ jQuery(function ($) {
 
         } else {
 
+            // Remove error massage class from price field.
+            $(this).removeClass('give-invalid-amount');
+
             //Minimum amount met - slide up error & remove it from DOM
             parent_form.find('.give-invalid-minimum').slideUp(300, function () {
                 $(this).remove();
             });
+
             //Re-enable submit
             parent_form.find('.give-submit').prop('disabled', false);
 
         }
+
+
         //If values don't match up then proceed with updating donation total value
         if (pre_focus_amount !== value_now) {
 
@@ -367,6 +373,9 @@ jQuery(function ($) {
 
             // Auto set give price id.
             $('input[name="give-price-id"]', parent_form ).val( price_id );
+
+            // Update hidden amount field
+            parent_form.find('.give-amount-hidden').val( give_format_amount( value_now ) );
 
             // Remove old selected class & add class for CSS purposes
             parent_form.find('.give-default-level').removeClass('give-default-level');
@@ -431,39 +440,20 @@ jQuery(function ($) {
      * @param selected_field
      * @returns {boolean}
      */
-    function update_multiselect_vals(selected_field) {
+    function update_multiselect_vals( selected_field ) {
 
         var parent_form = selected_field.parents('form'),
             this_amount = selected_field.val(),
             price_id = selected_field.data('price-id'),
             currency_symbol = give_global_vars.currency_sign;
 
-        //remove old selected class & add class for CSS purposes
-        selected_field.parents('.give-donation-levels-wrap').find('.give-default-level').removeClass('give-default-level');
-        selected_field.find('option').removeClass('give-default-level');
-
-        if (selected_field.is('select')) {
-            selected_field.find(':selected').addClass('give-default-level');
-        } else {
-            selected_field.addClass('give-default-level');
-        }
-
-        // Remove error massage container.
-        parent_form.find('.give-amount-top').removeClass('invalid-amount');
-
-        //check if price ID blank because of dropdown type
-        if (!price_id) {
+        // Check if price ID blank because of dropdown type
+        if ( ! price_id ) {
             price_id = selected_field.find('option:selected').data('price-id');
         }
 
-        //update price id field for variable products
-        parent_form.find('input[name=give-price-id]').val(price_id);
-
-        //Update hidden price field
-        parent_form.find('.give-amount-hidden').val(this_amount);
-
-        //Is this a custom amount selection?
-        if (this_amount === 'custom') {
+        // Is this a custom amount selection?
+        if ( this_amount === 'custom' ) {
             //It is, so focus on the custom amount input
             parent_form.find('.give-amount-top').val('').focus();
             return false; //Bounce out
@@ -473,13 +463,6 @@ jQuery(function ($) {
         parent_form.find('.give-amount-top').val(this_amount);
         parent_form.find('span.give-amount-top').text(this_amount);
 
-        //update checkout total
-        var formatted_total = currency_symbol + this_amount;
-
-        if (give_global_vars.currency_pos == 'after') {
-            formatted_total = this_amount + currency_symbol;
-        }
-
         // Manually trigger blur event with two params:
         // (a) form jquery object
         // (b) price id
@@ -487,10 +470,6 @@ jQuery(function ($) {
 
         // trigger an event for hooks
         $(document).trigger('give_donation_value_updated', [parent_form, this_amount, price_id]);
-
-        //Update donation form bottom total data attr and text
-        parent_form.find('.give-final-total-amount').data('total', this_amount).text(formatted_total);
-
     }
 
     /**
