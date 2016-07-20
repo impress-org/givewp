@@ -140,7 +140,7 @@ add_action( 'give_gateway_offline', 'give_offline_process_payment' );
 /**
  * Send Offline Donation Instructions
  *
- * @description Sends a notice to the donor with offline instructions; can be customized per form
+ * Sends a notice to the donor with offline instructions; can be customized per form
  *
  * @param int $payment_id
  *
@@ -195,7 +195,7 @@ function give_offline_send_donor_instructions( $payment_id = 0 ) {
 /**
  * Send Offline Donation Admin Notice
  *
- * @description Sends a notice to site admins about the pending donation
+ * Sends a notice to site admins about the pending donation
  *
  * @since       1.0
  *
@@ -333,7 +333,7 @@ add_filter( 'give_forms_display_options_metabox_fields', 'give_offline_add_setti
 /**
  * Offline Donation Content
  *
- * @description Get default offline donation text
+ * Get default offline donation text
  *
  * @return mixed|void
  */
@@ -371,7 +371,7 @@ function give_get_default_offline_donation_content() {
 /**
  * Offline Donation Email Content
  *
- * @description Gets the default offline donation email content
+ * Gets the default offline donation email content
  *
  * @return mixed|void
  */

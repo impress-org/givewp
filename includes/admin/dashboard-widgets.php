@@ -31,7 +31,7 @@ add_action( 'wp_dashboard_setup', 'give_register_dashboard_widgets', 10 );
 /**
  * Sales Summary Dashboard Widget
  *
- * @descriptions: Builds and renders the statistics dashboard widget. This widget displays the current month's donations.
+ * Builds and renders the statistics dashboard widget. This widget displays the current month's donations.
  *
  * @since       1.0
  * @return void

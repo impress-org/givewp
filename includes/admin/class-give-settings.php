@@ -1,10 +1,8 @@
 <?php
-
 /**
+ * Class Give_Plugin_Settings
  *
- * Register Settings
- *
- * Include and setup custom metaboxes and fields.
+ * Register settings Include and setup custom metaboxes and fields.
  *
  * @package    Give
  * @subpackage Admin
@@ -44,8 +42,7 @@ class Give_Plugin_Settings {
 	protected $options_page = '';
 
 	/**
-	 * Constructor
-	 * @since 1.0
+	 * Give_Plugin_Settings constructor.
 	 */
 	public function __construct() {
 
@@ -75,6 +72,7 @@ class Give_Plugin_Settings {
 
 	/**
 	 * Register our setting to WP
+	 *
 	 * @since  1.0
 	 */
 	public function init() {
@@ -86,7 +84,7 @@ class Give_Plugin_Settings {
 	/**
 	 * Filter CMB2 URL
 	 *
-	 * @description: Required for CMB2 to properly load CSS/JS
+	 * Required for CMB2 to properly load CSS/JS.
 	 *
 	 * @param $url
 	 *
@@ -155,7 +153,7 @@ class Give_Plugin_Settings {
 						'tab'              => $tab_id
 					) ) );
 
-					$active       = $active_tab == $tab_id ? ' nav-tab-active' : '';
+					$active = $active_tab == $tab_id ? ' nav-tab-active' : '';
 
 					echo '<a href="' . esc_url( $tab_url ) . '" title="' . esc_attr( $tab_name ) . '" class="nav-tab' . $active . '" id="tab-' . $tab_id . '">' . esc_html( $tab_name ) . '</a>';
 
@@ -785,7 +783,7 @@ class Give_Plugin_Settings {
 		if ( $active_tab === null || ! isset( $give_settings[ $active_tab ] ) ) {
 
 			return apply_filters( 'give_registered_settings', $give_settings );
-			
+
 		}
 
 
@@ -959,7 +957,7 @@ function give_get_settings() {
 /**
  * Give Settings Array Insert
  *
- * @description: Allows other Add-ons and plugins to insert Give settings at a desired position
+ * Allows other Add-ons and plugins to insert Give settings at a desired position.
  *
  * @since      1.3.5
  *
@@ -1102,7 +1100,7 @@ function give_title_callback( $field_object, $escaped_value, $object_id, $object
 /**
  * Give Description
  *
- * @description: Renders custom description text which any plugin can use to output content, html, php, etc.
+ * Renders custom description text which any plugin can use to output content, html, php, etc.
  *
  * @since      1.3.5
  *
@@ -1160,7 +1158,7 @@ function give_cmb2_get_post_options( $query_args, $force = false ) {
 /**
  * Featured Image Sizes
  *
- * @description: Outputs an array for the "Featured Image Size" option found under Settings > Display Options
+ * Outputs an array for the "Featured Image Size" option found under Settings > Display Options.
  *
  * @since 1.4
  */
@@ -1185,7 +1183,8 @@ function give_get_featured_image_sizes() {
 /**
  * Give License Key Callback
  *
- * @description Registers the license field callback for EDD's Software Licensing
+ * Registers the license field callback for EDD's Software Licensing.
+ *
  * @since       1.0
  *
  * @param array $field_object , $escaped_value, $object_id, $object_type, $field_type_object Arguments passed by CMB2
@@ -1247,7 +1246,7 @@ function give_api_callback() {
 	?>
 	<span class="cmb2-metabox-description api-description">
 		<?php echo sprintf(
-			/* translators: 1: https://givewp.com/documentation/give-api-reference/ 2: https://givewp.com/addons/zapier/ */
+		/* translators: 1: https://givewp.com/documentation/give-api-reference/ 2: https://givewp.com/addons/zapier/ */
 			__( 'You can create API keys for individual users within their profile edit screen. API keys allow users to use the <a href="%1$s" target="_blank">Give REST API</a> to retrieve donation data in JSON or XML for external applications or devices, such as <a href="%2$s" target="_blank">Zapier</a>.', 'give' ),
 			esc_url( 'https://givewp.com/documentation/give-api-reference/' ),
 			esc_url( 'https://givewp.com/addons/zapier/' )
@@ -1263,7 +1262,7 @@ add_action( 'give_settings_tab_api_keys', 'give_api_callback' );
 /**
  * Hook Callback
  *
- * Adds a do_action() hook in place of the field
+ * Adds a do_action() hook in place of the field.
  *
  * @since 1.0
  *
@@ -1278,8 +1277,9 @@ function give_hook_callback( $args ) {
 /**
  * Get the CMB2 bootstrap!
  *
- * @description: Checks to see if CMB2 plugin is installed first the uses included CMB2; we can still use it even it it's not active. This prevents fatal error conflicts with other themes and users of the CMB2 WP.org plugin
- *
+ * Checks to see if CMB2 plugin is installed first the uses included CMB2.
+ * We can still use it even it it's not active.
+ * This prevents fatal error conflicts with other themes and users of the CMB2 WP.org plugin.
  */
 
 if ( file_exists( WP_PLUGIN_DIR . '/cmb2/init.php' ) && ! defined( 'CMB2_LOADED' ) ) {

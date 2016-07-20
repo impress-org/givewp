@@ -105,7 +105,7 @@ function give_get_currencies() {
 /**
  * Give Currency Symbol
  *
- * @description: Given a currency determine the symbol to use. If no currency given, site default is used. If no symbol is determine, the currency string is returned.
+ * Given a currency determine the symbol to use. If no currency given, site default is used. If no symbol is determine, the currency string is returned.
  *
  * @since      1.0
  *
@@ -350,8 +350,8 @@ function give_get_purchase_session() {
  *
  * @since       1.0
  *
- * @param      $purchase_data
- * @param bool $email
+ * @param array $purchase_data
+ * @param bool  $email
  *
  * @return string
  */
@@ -374,7 +374,7 @@ function give_get_purchase_summary( $purchase_data, $email = true ) {
  * Returns the webhost this site is using if possible
  *
  * @since 1.0
- * @return mixed string $host if detected, false otherwise
+ * @return string $host if detected, false otherwise
  */
 function give_get_host() {
 	$host = false;
@@ -415,7 +415,7 @@ function give_get_host() {
  *
  * @since 1.0
  *
- * @param $host The host to check
+ * @param bool/string $host The host to check
  *
  * @return bool true if host matches, false if not
  */
@@ -565,7 +565,7 @@ function give_get_php_arg_separator_output() {
  *
  * @since 1.0
  *
- * @param unknown $n
+ * @param int $n
  *
  * @return string Short month name
  */
@@ -595,7 +595,7 @@ function give_is_func_disabled( $function ) {
 /**
  * Give Newsletter
  *
- * @description: Returns the main Give newsletter form
+ * Returns the main Give newsletter form
  */
 function give_get_newsletter() { ?>
 
@@ -667,7 +667,7 @@ function give_get_newsletter() { ?>
 /**
  * Social Media Like Buttons
  *
- * @description: Various social media elements to Give
+ * Various social media elements to Give
  */
 function give_social_media_elements() { ?>
 
@@ -902,7 +902,7 @@ function give_can_view_receipt( $payment_key = '' ) {
 /**
  * Fallback for cal_days_in_month
  *
- * @description: Fallback in case the calendar extension is not loaded in PHP; Only supports Gregorian calendar
+ * Fallback in case the calendar extension is not loaded in PHP; Only supports Gregorian calendar
  */
 if ( ! function_exists( 'cal_days_in_month' ) ) {
 	/**

@@ -133,7 +133,7 @@ add_action( 'init', 'give_setup_post_types', 1 );
 /**
  * Give Setup Taxonomies
  *
- * @description: Registers the custom taxonomies for the give_forms custom post type
+ * Registers the custom taxonomies for the give_forms custom post type
  *
  * @since      1.0
  * @return void
@@ -414,7 +414,7 @@ function give_add_thumbnail_support() {
 /**
  * Give Sidebars
  *
- * @description This option adds Give sidebars; registered late so it display last in list
+ * This option adds Give sidebars; registered late so it display last in list
  *
  */
 function give_widgets_init() {

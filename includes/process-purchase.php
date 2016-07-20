@@ -232,7 +232,7 @@ function give_purchase_form_validate_fields() {
 /**
  * Purchase Form Validate Gateway
  *
- * @description: Validate the gateway and donation amount
+ * Validate the gateway and donation amount
  *
  * @access      private
  * @since       1.0

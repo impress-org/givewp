@@ -2,7 +2,7 @@
 /**
  * Give Welcome Page Class
  *
- * @description Displays on plugin activation
+ * Displays on plugin activation
  * @package     Give
  * @subpackage  Admin/Welcome
  * @copyright   Copyright (c) 2016, WordImpress

@@ -23,6 +23,7 @@ class Give_Email_Access {
 	public $error = '';
 
 	private $verify_throttle;
+    private $token_expiration;
 
 	/**
 	 * Give_Email_Access constructor.
@@ -74,6 +75,7 @@ class Give_Email_Access {
 	 * @return bool
 	 */
 	function can_send_email( $customer_id ) {
+		/* @var WPDB $wpdb */
 		global $wpdb;
 
 		// Prevent multiple emails within X minutes
@@ -241,6 +243,7 @@ class Give_Email_Access {
 	 * @return bool
 	 */
 	function is_valid_verify_key( $token ) {
+        /* @var WPDB $wpdb */
 		global $wpdb;
 
 		// See if the verify_key exists
@@ -282,7 +285,7 @@ class Give_Email_Access {
 	/**
 	 * Create Columns
 	 *
-	 * @description Create the necessary columns for email access
+	 * Create the necessary columns for email access
 	 */
 	function create_columns() {
 

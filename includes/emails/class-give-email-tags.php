@@ -517,7 +517,7 @@ function give_email_tag_receipt_id( $payment_id ) {
 /**
  * Email template tag: {donation}
  *
- * @description:  Output the donation form name used to make the donation along with the donation level (if applicable)
+ * Output the donation form name used to make the donation along with the donation level (if applicable)
  *
  * @param int $payment_id
  *
@@ -560,7 +560,7 @@ function give_email_tag_sitename( $payment_id ) {
 /**
  * Email template tag: receipt_link
  *
- * @description: Adds a link so users can view their receipt directly on your website if they are unable to view it in the browser correctly
+ * Adds a link so users can view their receipt directly on your website if they are unable to view it in the browser correctly
  *
  * @param int $payment_id
  *

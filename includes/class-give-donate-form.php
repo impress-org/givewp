@@ -113,7 +113,9 @@ class Give_Donate_Form {
 	 *
 	 * @since  1.5
 	 *
-	 * @param  object $donation_form The Donation Form Object
+	 * @access private
+	 *
+	 * @param  WP_Post $donation_form WP_Post Object
 	 *
 	 * @return bool             If the setup was successful or not
 	 */
@@ -152,7 +154,7 @@ class Give_Donate_Form {
 	 *
 	 * @since 1.0
 	 *
-	 * @param $key
+	 * @param string $key
 	 *
 	 * @return mixed
 	 * @throws Exception
@@ -386,9 +388,36 @@ class Give_Donate_Form {
 	}
 
 	/**
+	 * Determine if custom price mode is enabled or disabled
+	 *
+	 * @since 1.6
+	 * @return bool
+	 */
+	public function is_custom_price_mode() {
+
+		$option = get_post_meta( $this->ID, '_give_custom_amount', true );
+		$ret    = 0;
+
+		if ( $option === 'yes' ) {
+			$ret = 1;
+		}
+
+		/**
+		 * Override the price mode for a donation when checking if is in custom price mode.
+		 *
+		 * @since 1.6
+		 *
+		 * @param bool $ret Is donation form in custom price mode?
+		 * @param int|string The ID of the donation form.
+		 */
+		return (bool) apply_filters( 'give_custom_price_option_mode', $ret, $this->ID );
+
+	}
+
+	/**
 	 * Has Variable Prices
 	 *
-	 * @description Determine if the donation form has variable prices enabled
+	 * Determine if the donation form has variable prices enabled
 	 *
 	 * @since       1.0
 	 * @return bool
@@ -551,6 +580,9 @@ class Give_Donate_Form {
 	 * Increase the earnings by the given amount
 	 *
 	 * @since 1.0
+	 * 
+	 * @param int $amount Amount of donation
+	 * 
 	 * @return float|false
 	 */
 	public function increase_earnings( $amount = 0 ) {
@@ -650,13 +682,14 @@ class Give_Donate_Form {
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @param  string $meta_key The meta_key to update
-	 * @param  string|array|object $meta_value The value to put into the meta
+	 * @param  string               $meta_key   The meta_key to update
+	 * @param  string|array|object  $meta_value The value to put into the meta
 	 *
-	 * @return bool             The result of the update query
+	 * @return bool                             The result of the update query
 	 */
 	private function update_meta( $meta_key = '', $meta_value = '' ) {
 
+		/* @var WPDB $wpdb */
 		global $wpdb;
 
 		if ( empty( $meta_key ) || empty( $meta_value ) ) {

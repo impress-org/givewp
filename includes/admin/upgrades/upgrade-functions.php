@@ -129,7 +129,7 @@ function give_has_upgrade_completed( $upgrade_action = '' ) {
  *
  * @since  1.0
  *
- * @param  string $upgrade_action The action to add to the copmleted upgrades array
+ * @param  string $upgrade_action The action to add to the completed upgrades array
  *
  * @return bool                   If the function was successfully added
  */
@@ -170,7 +170,7 @@ function give_get_completed_upgrades() {
 /**
  * Upgrades the
  *
- * @description: Standardizes the discrepancies between two metakeys `_give_payment_customer_id` and `_give_payment_donor_id`
+ * Standardizes the discrepancies between two metakeys `_give_payment_customer_id` and `_give_payment_donor_id`
  *
  * @since      1.3.2
  *
@@ -205,7 +205,7 @@ add_action( 'give_upgrade_give_payment_customer_id', 'give_v132_upgrade_give_pay
 /**
  * Upgrades the Offline Status
  *
- * @description: Reverses the issue where offline donation transactions in "pending" status where inappropriately marked as abandoned
+ * Reverses the issue where offline donation transactions in "pending" status where inappropriately marked as abandoned
  *
  * @since      1.3.4
  *
@@ -265,7 +265,7 @@ add_action( 'give_upgrade_give_offline_status', 'give_v134_upgrade_give_offline_
 /**
  * Cleanup User Roles
  *
- * @description: This upgrade routine removes unused roles and roles with typos
+ * This upgrade routine removes unused roles and roles with typos
  *
  * @since      1.5.2
  */
@@ -326,19 +326,19 @@ function give_v152_cleanup_users() {
 			'publish_give_paymentss',
 			'read_private_give_paymentss',
 		);
-	
+
 		global $wp_roles;
 		foreach ( $delete_caps as $cap ) {
 			foreach ( array_keys( $wp_roles->roles ) as $role ) {
 				$wp_roles->remove_cap( $role, $cap );
 			}
 		}
-	
+
 		// Create Give plugin roles
 		$roles = new Give_Roles();
 		$roles->add_roles();
 		$roles->add_caps();
-		
+
 		//The Update Ran
 		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
 		give_set_upgrade_complete( 'upgrade_give_user_caps_cleanup' );

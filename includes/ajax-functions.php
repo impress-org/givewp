@@ -387,3 +387,51 @@ function give_check_for_form_price_variations() {
 }
 
 add_action( 'wp_ajax_give_check_for_form_price_variations', 'give_check_for_form_price_variations' );
+
+
+/**
+ * Check for Variation Prices HTML  (Multi-level donation forms)
+ *
+ * @since 1.6
+ * @return void
+ */
+function give_check_for_form_price_variations_html() {
+	if ( ! current_user_can( 'edit_give_payments', get_current_user_id() ) ) {
+		die( '-1' );
+	}
+
+	$form_id = intval( $_POST['form_id'] );
+	$payment_id = intval( $_POST['payment_id'] );
+	$form    = get_post( $form_id );
+
+	if ( 'give_forms' != $form->post_type ) {
+		die( '-2' );
+	}
+
+    if ( ! give_has_variable_prices( $form_id ) ) {
+        echo __( 'n/a', 'give' );
+    } else {
+        // Payment object.
+        $payment = new Give_Payment( $payment_id );
+
+        // Payment meta.
+        $payment_meta = $payment->get_meta();
+
+
+        // Variable price dropdown options.
+        $variable_price_dropdown_option =  array(
+            'id'                => $form_id,
+            'name'              => 'give-variable-price',
+            'chosen'            => true,
+            'show_option_all'   => '',
+            'selected'          => $payment_meta['price_id'],
+        );
+
+        // Render variable prices select tag html.
+        give_get_form_variable_price_dropdown( $variable_price_dropdown_option, true );
+    }
+
+    give_die();
+}
+
+add_action( 'wp_ajax_give_check_for_form_price_variations_html', 'give_check_for_form_price_variations_html' );

@@ -40,7 +40,7 @@ function give_system_info_callback() {
 /**
  * Allow Sessions for System Info Tab
  *
- * @description: In 1.3.6 we prevented sessions within wp-admin, this allows them and allows the system info to properly detect
+ * In 1.3.6 we prevented sessions within wp-admin, this allows them and allows the system info to properly detect
  *
  * @since: 1.4
  *

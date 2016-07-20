@@ -73,7 +73,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	/**
 	 * Remove default search field in favor for repositioned location
 	 *
-	 * @description Reposition the search field
+	 * Reposition the search field
 	 *
 	 * @since       1.0
 	 * @access      public
