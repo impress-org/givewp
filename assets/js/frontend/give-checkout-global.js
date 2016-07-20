@@ -368,25 +368,34 @@ jQuery(function ($) {
             // Auto set give price id.
             $('input[name="give-price-id"]', parent_form ).val( price_id );
 
+            // Remove old selected class & add class for CSS purposes
+            parent_form.find('.give-default-level').removeClass('give-default-level');
+
             // Auto select variable price items ( Radio/Button/Select ).
             switch ( true ){
 
                 // Auto select radio button.
                 case ( !! parent_form.find('.give-radio-input').length ) :
                     parent_form.find('.give-radio-input').prop('checked', false);
-                    parent_form.find('.give-radio-input[data-price-id="'+price_id+'"]').prop('checked', true);
+                    parent_form.find('.give-radio-input[data-price-id="'+price_id+'"]')
+                        .prop('checked', true)
+                        .addClass('give-default-level');
                     break;
 
                 // Set focus to price id button.
                 case ( !! parent_form.find('button.give-donation-level-btn').length ) :
                     parent_form.find('button.give-donation-level-btn').blur();
-                    parent_form.find('button.give-donation-level-btn[data-price-id="'+price_id+'"]').focus();
+                    parent_form.find('button.give-donation-level-btn[data-price-id="'+price_id+'"]')
+                        .focus()
+                        .addClass('give-default-level');
                     break;
 
                 // Auto select option.
                 case ( !! parent_form.find('select.give-select-level').length ) :
                     parent_form.find('select.give-select-level option').prop( 'selected', false );
-                    parent_form.find('select.give-select-level option[data-price-id="'+price_id+'"]').prop( 'selected', true );
+                    parent_form.find('select.give-select-level option[data-price-id="'+price_id+'"]')
+                        .prop( 'selected', true )
+                        .addClass('give-default-level');
                     break;
 
             }
