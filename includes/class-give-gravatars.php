@@ -222,9 +222,9 @@ class Give_Donators_Gravatars {
 		if ( isset ( $title ) ) {
 
 			if ( $title ) {
-				echo apply_filters( 'give_donators_gravatars_title', '<h3 class="give-gravatars-title">' . esc_attr( $title ) . '</h3>' );
+				echo apply_filters( 'give_donators_gravatars_title', '<h3 class="give-gravatars-title">' . esc_html( $title ) . '</h3>' );
 			} elseif ( isset( $give_options['give_donators_gravatars_heading'] ) ) {
-				echo apply_filters( 'give_donators_gravatars_title', '<h3 class="give-gravatars-title">' . esc_attr( $give_options['give_donators_gravatars_heading'] ) . '</h2>' );
+				echo apply_filters( 'give_donators_gravatars_title', '<h3 class="give-gravatars-title">' . esc_html( $give_options['give_donators_gravatars_heading'] ) . '</h2>' );
 			}
 
 		}
@@ -317,47 +317,47 @@ class Give_Donators_Gravatars {
 
 		$give_gravatar_settings = array(
 			array(
-				'name' => __( 'Donator Gravatars', 'give' ),
+				'name' => esc_html( 'Donator Gravatars', 'give' ),
 				'desc' => '<hr>',
 				'id'   => 'give_title',
 				'type' => 'give_title'
 			),
 			array(
-				'name' => __( 'Heading', 'give' ),
-				'desc' => __( 'The heading to display above the Gravatars', 'give' ),
+				'name' => esc_html( 'Heading', 'give' ),
+				'desc' => esc_html( 'The heading to display above the Gravatars', 'give' ),
 				'type' => 'text',
 				'id'   => 'give_donators_gravatars_heading'
 			),
 			array(
-				'name'    => __( 'Gravatar Size', 'give' ),
-				'desc'    => __( 'The size of each Gravatar in pixels (512px maximum)', 'give' ),
+				'name'    => esc_html( 'Gravatar Size', 'give' ),
+				'desc'    => esc_html( 'The size of each Gravatar in pixels (512px maximum)', 'give' ),
 				'type'    => 'text_small',
 				'id'      => 'give_donators_gravatars_gravatar_size',
 				'default' => '64'
 			),
 			array(
-				'name' => __( 'Minimum Unique Purchases Required', 'give' ),
+				'name' => esc_html( 'Minimum Unique Purchases Required', 'give' ),
 				/* translators: %s: form singular label */
-				'desc' => sprintf( __( 'The minimum number of unique purchases a %s must have before the Gravatars are shown. Leave blank for no minimum.', 'give' ), strtolower( give_get_forms_label_singular() ) ),
+				'desc' => sprintf( esc_html( 'The minimum number of unique purchases a %s must have before the Gravatars are shown. Leave blank for no minimum.', 'give' ), strtolower( give_get_forms_label_singular() ) ),
 				'type' => 'text_small',
 				'id'   => 'give_donators_gravatars_min_purchases_required',
 			),
 			array(
-				'name'    => __( 'Maximum Gravatars To Show', 'give' ),
-				'desc'    => __( 'The maximum number of gravatars to show. Leave blank for no limit.', 'give' ),
+				'name'    => esc_html( 'Maximum Gravatars To Show', 'give' ),
+				'desc'    => esc_html( 'The maximum number of gravatars to show. Leave blank for no limit.', 'give' ),
 				'type'    => 'text',
 				'id'      => 'give_donators_gravatars_maximum_number',
 				'default' => '20',
 			),
 			array(
-				'name' => __( 'Gravatar Visibility', 'give' ),
-				'desc' => __( 'Only show donators with a Gravatar account', 'give' ),
+				'name' => esc_html( 'Gravatar Visibility', 'give' ),
+				'desc' => esc_html( 'Only show donators with a Gravatar account', 'give' ),
 				'id'   => 'give_donators_gravatars_has_gravatar_account',
 				'type' => 'checkbox',
 			),
 			array(
-				'name' => __( 'Randomize Gravatars', 'give' ),
-				'desc' => __( 'Randomize the Gravatars', 'give' ),
+				'name' => esc_html( 'Randomize Gravatars', 'give' ),
+				'desc' => esc_html( 'Randomize the Gravatars', 'give' ),
 				'id'   => 'give_donators_gravatars_random_gravatars',
 				'type' => 'checkbox',
 			),
@@ -387,7 +387,7 @@ class Give_Donators_Gravatars_Widget extends WP_Widget {
 		$widget_ops = array(
 			'classname'   => 'give-donators-gravatars',
 			/* translators: 1: form singular label 2: form singular label */
-			'description' => sprintf( __( 'Displays gravatars of people who have donated using your your %1$s. Will only show on the single %2$s page.', 'give' ), $give_label_singular, $give_label_singular )
+			'description' => sprintf( esc_html( 'Displays gravatars of people who have donated using your your %1$s. Will only show on the single %2$s page.', 'give' ), $give_label_singular, $give_label_singular )
 		);
 
 		// widget control settings
@@ -400,7 +400,7 @@ class Give_Donators_Gravatars_Widget extends WP_Widget {
 		// create the widget
 		parent::__construct(
 			'give_donators_gravatars_widget',
-			__( 'Give Donators Gravatars', 'give' ),
+			esc_html( 'Give Donators Gravatars', 'give' ),
 			$widget_ops,
 			$control_ops
 		);
@@ -468,7 +468,7 @@ class Give_Donators_Gravatars_Widget extends WP_Widget {
 
 		<!-- Title -->
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'give' ) ?></label>
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php esc_html_e( 'Title:', 'give' ) ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo $instance['title']; ?>" />
 		</p>
 

@@ -47,7 +47,7 @@ class Give_Logging {
 	public function register_post_type() {
 		/* Logs post type */
 		$log_args = array(
-			'labels'              => array( 'name' => __( 'Logs', 'give' ) ),
+			'labels'              => array( 'name' => esc_html( 'Logs', 'give' ) ),
 			'public'              => false,
 			'exclude_from_search' => true,
 			'publicly_queryable'  => false,

@@ -35,7 +35,7 @@ add_action( 'give_manual_cc_form', '__return_false' );
 function give_manual_payment( $purchase_data ) {
 
 	if ( ! wp_verify_nonce( $purchase_data['gateway_nonce'], 'give-gateway' ) ) {
-		wp_die( __( 'Nonce verification has failed', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( esc_html( 'Nonce verification has failed', 'give' ), esc_html( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 	
 	//Create payment_data array
@@ -59,10 +59,10 @@ function give_manual_payment( $purchase_data ) {
 		give_send_to_success_page();
 	} else {
 		give_record_gateway_error(
-			__( 'Payment Error', 'give' ),
+			esc_html( 'Payment Error', 'give' ),
 			sprintf(
 				/* translators: %s: payment data */
-				__( 'The payment creation failed while processing a manual (free or test) donation. Payment data: %s', 'give' ),
+				esc_html( 'The payment creation failed while processing a manual (free or test) donation. Payment data: %s', 'give' ),
 				json_encode( $payment_data )
 			),
 			$payment

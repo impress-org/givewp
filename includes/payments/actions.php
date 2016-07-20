@@ -112,7 +112,7 @@ function give_record_status_change( $payment_id, $new_status, $old_status ) {
 
 	$status_change = sprintf(
 		/* translators: 1: old status 2: new status */
-		__( 'Status changed from %1$s to %2$s.', 'give' ),
+		esc_html( 'Status changed from %1$s to %2$s.', 'give' ),
 		$old_status,
 		$new_status
 	);

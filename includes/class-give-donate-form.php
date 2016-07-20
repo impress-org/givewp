@@ -168,7 +168,7 @@ class Give_Donate_Form {
 		} else {
 
 			/* translators: %s: property key */
-			return new WP_Error( 'give-form-invalid-property', sprintf( __( 'Can\'t get property %s.', 'give' ), $key ) );
+			return new WP_Error( 'give-form-invalid-property', sprintf( esc_html( 'Can\'t get property %s.', 'give' ), $key ) );
 
 		}
 
@@ -193,7 +193,7 @@ class Give_Donate_Form {
 		$defaults = array(
 			'post_type'   => 'give_forms',
 			'post_status' => 'draft',
-			'post_title'  => __( 'New Donation Form', 'give' )
+			'post_title'  => esc_html( 'New Donation Form', 'give' )
 		);
 
 		$args = wp_parse_args( $data, $defaults );

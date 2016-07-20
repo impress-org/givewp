@@ -243,13 +243,13 @@ add_filter( 'body_class', 'give_add_body_classes' );
 /**
  * Add Post Class Filter
  *
- * Adds extra post classes for forms
+ * @description Adds extra post classes for forms
  *
  * @since       1.0
  *
- * @param array        $classes
+ * @param array $classes
  * @param string|array $class
- * @param int|string   $post_id
+ * @param int $post_id
  *
  * @return array
  */
@@ -278,7 +278,7 @@ add_filter( 'post_class', 'give_add_post_class', 20, 3 );
  */
 function give_get_placeholder_img_src() {
 
-	$placeholder_url = '//placehold.it/600x600&text=' . urlencode( esc_attr__( 'Give Placeholder Image', 'give' ) );
+	$placeholder_url = 'http://placehold.it/600x600&text=' . urlencode( esc_attr( 'Give Placeholder Image', 'give' ) );
 
 	return apply_filters( 'give_placeholder_img_src', $placeholder_url );
 }

@@ -47,7 +47,7 @@ function give_print_errors( $form_id ) {
 		echo '<div class="' . implode( ' ', $classes ) . '">';
 		// Loop error codes and display errors
 		foreach ( $errors as $error_id => $error ) {
-			echo '<div class="give_error" id="give_error_' . $error_id . '"><p><strong>' . __( 'Error', 'give' ) . '</strong>: ' . $error . '</p></div>';
+			echo '<div class="give_error" id="give_error_' . $error_id . '"><p><strong>' . esc_html( 'Error', 'give' ) . '</strong>: ' . $error . '</p></div>';
 		}
 		echo '</div>';
 		give_clear_errors();

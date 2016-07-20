@@ -68,7 +68,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 			case 'ID' :
 				return $item['ID_label'];
 			case 'error' :
-				return get_the_title( $item['ID'] ) ? get_the_title( $item['ID'] ) : __( 'Payment Error', 'give' );
+				return get_the_title( $item['ID'] ) ? get_the_title( $item['ID'] ) : esc_html( 'Payment Error', 'give' );
 			default:
 				return $item[ $column_name ];
 		}
@@ -87,7 +87,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	public function column_message( $item ) {
 
 		?>
-		<a href="#TB_inline?width=640&amp;inlineId=log-message-<?php echo $item['ID']; ?>" class="thickbox" title="<?php _e( 'View Log Message', 'give' ); ?> "><?php _e( 'View Log Message', 'give' ); ?></a>
+		<a href="#TB_inline?width=640&amp;inlineId=log-message-<?php echo $item['ID']; ?>" class="thickbox" title="<?php esc_attr_e( 'View Log Message', 'give' ); ?> "><?php esc_html_e( 'View Log Message', 'give' ); ?></a>
 		<div id="log-message-<?php echo $item['ID']; ?>" style="display:none;">
 			<?php
 
@@ -102,7 +102,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 				$data   = substr( $log_message, $serialized, strlen( $log_message ) - 1 );
 
 				echo wpautop( $intro );
-				echo wpautop( '<strong>' . __( 'Log data:', 'give' ) . '</strong>' );
+				echo wpautop( '<strong>' . esc_html( 'Log data:', 'give' ) . '</strong>' );
 				echo '<div style="word-wrap: break-word;">' . wpautop( $data ) . '</div>';
 			} else {
 				// No serialized data found
@@ -122,12 +122,12 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'ID'         => __( 'Log ID', 'give' ),
-			'payment_id' => __( 'Payment ID', 'give' ),
-			'error'      => __( 'Error', 'give' ),
-			'message'    => __( 'Error Message', 'give' ),
-			'gateway'    => __( 'Gateway', 'give' ),
-			'date'       => __( 'Date', 'give' )
+			'ID'         => esc_html( 'Log ID', 'give' ),
+			'payment_id' => esc_html( 'Payment ID', 'give' ),
+			'error'      => esc_html( 'Error', 'give' ),
+			'message'    => esc_html( 'Error Message', 'give' ),
+			'gateway'    => esc_html( 'Gateway', 'give' ),
+			'date'       => esc_html( 'Date', 'give' )
 		);
 
 		return $columns;
@@ -212,7 +212,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
 		}
 		?>
-		<div class="tablenav <?php echo esc_attr( $which ); ?>">
+		<div class="tablenav <?php esc_attr_e( $which ); ?>">
 
 			<div class="alignleft actions bulkactions">
 				<?php $this->bulk_actions( $which ); ?>

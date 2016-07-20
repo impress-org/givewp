@@ -28,7 +28,7 @@ function give_edit_customer( $args ) {
 	$customer_edit_role = apply_filters( 'give_edit_customers_role', 'edit_give_payments' );
 
 	if ( ! is_admin() || ! current_user_can( $customer_edit_role ) ) {
-		wp_die( __( 'You do not have permission to edit this donor.', 'give' ) );
+		wp_die( esc_html( 'You do not have permission to edit this donor.', 'give' ) );
 	}
 
 	if ( empty( $args ) ) {
@@ -40,7 +40,7 @@ function give_edit_customer( $args ) {
 	$nonce         = $args['_wpnonce'];
 
 	if ( ! wp_verify_nonce( $nonce, 'edit-customer' ) ) {
-		wp_die( __( 'Cheatin\' eh?!', 'give' ) );
+		wp_die( esc_html( 'Cheatin\' eh?!', 'give' ) );
 	}
 
 	$customer = new Give_Customer( $customer_id );
@@ -57,20 +57,20 @@ function give_edit_customer( $args ) {
 	$customer_info = wp_parse_args( $customer_info, $defaults );
 
 	if ( ! is_email( $customer_info['email'] ) ) {
-		give_set_error( 'give-invalid-email', __( 'Please enter a valid email address.', 'give' ) );
+		give_set_error( 'give-invalid-email', esc_html( 'Please enter a valid email address.', 'give' ) );
 	}
 
 	if ( (int) $customer_info['user_id'] != (int) $customer->user_id ) {
 
 		// Make sure we don't already have this user attached to a customer
 		if ( ! empty( $customer_info['user_id'] ) && false !== Give()->customers->get_customer_by( 'user_id', $customer_info['user_id'] ) ) {
-			give_set_error( 'give-invalid-customer-user_id', sprintf( __( 'The User ID %d is already associated with a different donor.', 'give' ), $customer_info['user_id'] ) );
+			give_set_error( 'give-invalid-customer-user_id', sprintf( esc_html( 'The User ID %d is already associated with a different donor.', 'give' ), $customer_info['user_id'] ) );
 		}
 
 		// Make sure it's actually a user
 		$user = get_user_by( 'id', $customer_info['user_id'] );
 		if ( ! empty( $customer_info['user_id'] ) && false === $user ) {
-			give_set_error( 'give-invalid-user_id', sprintf( __( 'The User ID %d does not exist. Please assign an existing user.', 'give' ), $customer_info['user_id'] ) );
+			give_set_error( 'give-invalid-user_id', sprintf( esc_html( 'The User ID %d does not exist. Please assign an existing user.', 'give' ), $customer_info['user_id'] ) );
 		}
 
 	}
@@ -190,7 +190,7 @@ function give_customer_save_note( $args ) {
 	$customer_view_role = apply_filters( 'give_view_customers_role', 'view_give_reports' );
 
 	if ( ! is_admin() || ! current_user_can( $customer_view_role ) ) {
-		wp_die( __( 'You do not have permission to edit this donor.', 'give' ) );
+		wp_die( esc_html( 'You do not have permission to edit this donor.', 'give' ) );
 	}
 
 	if ( empty( $args ) ) {
@@ -202,11 +202,11 @@ function give_customer_save_note( $args ) {
 	$nonce         = $args['add_customer_note_nonce'];
 
 	if ( ! wp_verify_nonce( $nonce, 'add-customer-note' ) ) {
-		wp_die( __( 'Cheatin\' eh?!', 'give' ) );
+		wp_die( esc_html( 'Cheatin\' eh?!', 'give' ) );
 	}
 
 	if ( empty( $customer_note ) ) {
-		give_set_error( 'empty-customer-note', __( 'A note is required.', 'give' ) );
+		give_set_error( 'empty-customer-note', esc_html( 'A note is required.', 'give' ) );
 	}
 
 	if ( give_get_errors() ) {
@@ -260,7 +260,7 @@ function give_customer_delete( $args ) {
 	$customer_edit_role = apply_filters( 'give_edit_customers_role', 'edit_give_payments' );
 
 	if ( ! is_admin() || ! current_user_can( $customer_edit_role ) ) {
-		wp_die( __( 'You do not have permission to delete donors.', 'give' ) );
+		wp_die( esc_html( 'You do not have permission to delete donors.', 'give' ) );
 	}
 
 	if ( empty( $args ) ) {
@@ -273,11 +273,11 @@ function give_customer_delete( $args ) {
 	$nonce       = $args['_wpnonce'];
 
 	if ( ! wp_verify_nonce( $nonce, 'delete-customer' ) ) {
-		wp_die( __( 'Cheatin\' eh?!', 'give' ) );
+		wp_die( esc_html( 'Cheatin\' eh?!', 'give' ) );
 	}
 
 	if ( ! $confirm ) {
-		give_set_error( 'customer-delete-no-confirm', __( 'Please confirm you want to delete this donor.', 'give' ) );
+		give_set_error( 'customer-delete-no-confirm', esc_html( 'Please confirm you want to delete this donor.', 'give' ) );
 	}
 
 	if ( give_get_errors() ) {
@@ -318,14 +318,14 @@ function give_customer_delete( $args ) {
 
 		} else {
 
-			give_set_error( 'give-donor-delete-failed', __( 'Error deleting donor.', 'give' ) );
+			give_set_error( 'give-donor-delete-failed', esc_html( 'Error deleting donor.', 'give' ) );
 			$redirect = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id=' . $customer_id );
 
 		}
 
 	} else {
 
-		give_set_error( 'give-customer-delete-invalid-id', __( 'Invalid Donor ID.', 'give' ) );
+		give_set_error( 'give-customer-delete-invalid-id', esc_html( 'Invalid Donor ID.', 'give' ) );
 		$redirect = admin_url( 'edit.php?post_type=give_forms&page=give-donors' );
 
 	}
@@ -351,7 +351,7 @@ function give_disconnect_customer_user_id( $args ) {
 	$customer_edit_role = apply_filters( 'give_edit_customers_role', 'edit_give_payments' );
 
 	if ( ! is_admin() || ! current_user_can( $customer_edit_role ) ) {
-		wp_die( __( 'You do not have permission to edit this donor.', 'give' ) );
+		wp_die( esc_html( 'You do not have permission to edit this donor.', 'give' ) );
 	}
 
 	if ( empty( $args ) ) {
@@ -362,7 +362,7 @@ function give_disconnect_customer_user_id( $args ) {
 	$nonce       = $args['_wpnonce'];
 
 	if ( ! wp_verify_nonce( $nonce, 'edit-customer' ) ) {
-		wp_die( __( 'Cheatin\' eh?!', 'give' ) );
+		wp_die( esc_html( 'Cheatin\' eh?!', 'give' ) );
 	}
 
 	$customer = new Give_Customer( $customer_id );
@@ -386,7 +386,7 @@ function give_disconnect_customer_user_id( $args ) {
 	} else {
 
 		$output['success'] = false;
-		give_set_error( 'give-disconnect-user-fail', __( 'Failed to disconnect user from donor.', 'give' ) );
+		give_set_error( 'give-disconnect-user-fail', esc_html( 'Failed to disconnect user from donor.', 'give' ) );
 	}
 
 	do_action( 'give_post_customer_disconnect_user_id', $customer_id );
