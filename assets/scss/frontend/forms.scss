@@ -286,7 +286,7 @@ form[id*='give-form'] {
     #give-amount,
     #give-amount-text {
       @include give-input();
-      width: 125px;
+      min-width: 125px;
 
       &.invalid-amount {
         border: 1px solid red;
