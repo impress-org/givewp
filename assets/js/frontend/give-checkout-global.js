@@ -275,13 +275,14 @@ jQuery(function ($) {
      */
     doc.on('blur', '.give-donation-amount .give-text-input', function (e) {
 
-        var parent_form = $(this).closest('form');
-        var pre_focus_amount = $(this).data('amount');
-        var this_value = $(this).val();
-        var minimum_amount = parent_form.find('input[name="give-form-minimum"]');
-        var value_min = give_unformat_currency(minimum_amount.val());
-        var value_now = (this_value == 0) ? value_min : give_unformat_currency(this_value);
-        var variable_prices = give_get_variable_prices( $(this).parents('form') );
+        var parent_form = $(this).closest('form'),
+            pre_focus_amount = $(this).data('amount'),
+            this_value = $(this).val(),
+            $minimum_amount = parent_form.find('input[name="give-form-minimum"]'),
+            value_min = give_unformat_currency( $minimum_amount.val() ),
+            value_now = (this_value == 0) ? value_min : give_unformat_currency(this_value),
+            variable_prices = give_get_variable_prices( $(this).parents('form') ),
+            error_msg = '';
 
 
         //Set the custom amount input value format properly
@@ -300,6 +301,8 @@ jQuery(function ($) {
 
         // Find price id with amount in variable prices.
         if( variable_prices.length ) {
+
+            // Find amount in donation levels.
             $.each(variable_prices, function (index, variable_price) {
                 if (variable_price.amount === value_now) {
                     is_level = variable_price.price_id;
@@ -319,13 +322,15 @@ jQuery(function ($) {
             //It doesn't... Invalid Minimum
             $(this).addClass('give-invalid-amount');
             format_args.symbol = give_global_vars.currency_sign;
-            minimum_amount = give_global_vars.bad_minimum + ' ' + give_format_currency(value_min, format_args);
+            error_msg = give_global_vars.bad_minimum + ' ' + give_format_currency( value_min, format_args );
+
             //Disable submit
             parent_form.find('.give-submit').prop('disabled', true);
             var invalid_minimum = parent_form.find('.give-invalid-minimum');
+
             //If no error present, create it, insert, slide down (show)
             if (invalid_minimum.length === 0) {
-                var error = $('<div class="give_error give-invalid-minimum">' + minimum_amount + '</div>').hide();
+                var error = $('<div class="give_error give-invalid-minimum">' + error_msg + '</div>').hide();
                 error.insertBefore(parent_form.find('.give-total-wrap')).show();
             }
 
