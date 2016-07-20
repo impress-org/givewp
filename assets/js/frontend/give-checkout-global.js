@@ -444,8 +444,7 @@ jQuery(function ($) {
 
         var parent_form = selected_field.parents('form'),
             this_amount = selected_field.val(),
-            price_id = selected_field.data('price-id'),
-            currency_symbol = give_global_vars.currency_sign;
+            price_id = selected_field.data('price-id');
 
         // Check if price ID blank because of dropdown type
         if ( ! price_id ) {
