@@ -296,7 +296,16 @@ jQuery(function ($) {
         var formatted_total = give_format_currency(value_now, format_args);
         $(this).val(formatted_total);
 
-        //Flag Multi-levels for min. donation conditional.
+        /**
+         * Flag Multi-levels for min. donation conditional.
+         *
+         * Note: Value of this variable will be:
+         *  a. -1      if no any level found.
+         *  b. [0-*]   Any number from zero if donation level found.
+         *  c  custom  if donation level not found and donation amount is greater then the custom minimum amount.
+         *
+         * @type {number/string} Donation level ID.
+         */
         var is_level = -1;
 
         // Find price id with amount in variable prices.
@@ -317,7 +326,7 @@ jQuery(function ($) {
         }
 
         //Does this number have an accepted minimum value?
-        if (( value_now < value_min || value_now < 1 ) && !is_level && value_min !== 0) {
+        if ( ( value_now < value_min || value_now < 1 ) && ( -1 === is_level ) && value_min !== 0 ) {
 
             //It doesn't... Invalid Minimum
             $(this).addClass('give-invalid-amount');
