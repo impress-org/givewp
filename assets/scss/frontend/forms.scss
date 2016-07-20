@@ -482,7 +482,7 @@ Buttons
 CC Validation
 -----------------------------------*/
 
-#give_secure_site_wrapper {
+[id*='give_secure_site_wrapper'] {
   padding: 4px 4px 15px 0;
   font-size: 16px;
   line-height: 20px;
