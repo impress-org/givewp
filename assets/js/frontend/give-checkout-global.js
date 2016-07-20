@@ -215,7 +215,7 @@ jQuery(function ($) {
             // Add price id and amount to collector.
             variable_prices.push({
                 price_id: item.data('price-id'),
-                amount  : give_format_amount( item.val() )
+                amount  : give_unformat_currency( item.val() )
             });
         });
 
@@ -281,7 +281,6 @@ jQuery(function ($) {
         var minimum_amount = parent_form.find('input[name="give-form-minimum"]');
         var value_min = give_unformat_currency(minimum_amount.val());
         var value_now = (this_value == 0) ? value_min : give_unformat_currency(this_value);
-        var variable_prices = give_get_variable_prices( $(this).parents('form') );
 
         //Set the custom amount input value format properly
         var format_args = {
@@ -339,6 +338,38 @@ jQuery(function ($) {
         //This class is used for CSS purposes
         $(this).parent('.give-donation-amount').removeClass('give-custom-amount-focus-in');
 
+    });
+
+    /**
+     * Set focus to donation level if custom amount match with any donation level amount.
+     *
+     * If user focuses on field & changes value then updates price.
+     */
+    doc.on( 'keyup', '.give-donation-amount .give-text-input', function (e) {
+        var parent_form = $(this).parents('form'),
+            variable_prices = give_get_variable_prices( $(this).parents('form') ),
+            current_amount  = give_unformat_currency( $(this).val() ),
+            found_donation_level = -1,
+            minimum_amount = give_unformat_currency( parent_form.find('input[name="give-form-minimum"]') );
+
+        // Do not process if we do not have any variable price.
+        if( ! variable_prices.length ) {
+            return false;
+        }
+
+        // Find price id with amount in variable prices.
+        $.each( variable_prices, function( index, variable_price ){
+            if( variable_price.amount === current_amount ) {
+                found_donation_level = variable_price.price_id;
+            }
+        });
+
+        // Auto set give price id.
+        if( -1 < found_donation_level ) {
+            $('input[name="give-price-id"]', parent_form ).val( found_donation_level );
+        } else if( minimum_amount < current_amount ) {
+            $('input[name="give-price-id"]', parent_form ).val( 'custom' );
+        }
     });
 
 
