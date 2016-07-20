@@ -273,9 +273,9 @@ jQuery(function ($) {
      * @description: Fires on focus end aka "blur"
      *
      */
-    doc.on('blur', '.give-donation-amount .give-text-input', function (e) {
+    doc.on('blur', '.give-donation-amount .give-text-input', function ( e, $parent_form, price_id ) {
 
-        var parent_form = $(this).closest('form'),
+        var parent_form = ( $parent_form != undefined ) ? $parent_form : $(this).closest('form'),
             pre_focus_amount = $(this).data('amount'),
             this_value = $(this).val(),
             $minimum_amount = parent_form.find('input[name="give-form-minimum"]'),
@@ -283,6 +283,18 @@ jQuery(function ($) {
             value_now = (this_value == 0) ? value_min : give_unformat_currency(this_value),
             variable_prices = give_get_variable_prices( $(this).parents('form') ),
             error_msg = '';
+
+        /**
+         * Flag Multi-levels for min. donation conditional.
+         *
+         * Note: Value of this variable will be:
+         *  a. -1      if no any level found.
+         *  b. [0-*]   Any number from zero if donation level found.
+         *  c  custom  if donation level not found and donation amount is greater then the custom minimum amount.
+         *
+         * @type {number/string} Donation level ID.
+         */
+        price_id = ( undefined != price_id ) ? price_id : -1;
 
 
         //Set the custom amount input value format properly
@@ -296,32 +308,20 @@ jQuery(function ($) {
         var formatted_total = give_format_currency(value_now, format_args);
         $(this).val(formatted_total);
 
-        /**
-         * Flag Multi-levels for min. donation conditional.
-         *
-         * Note: Value of this variable will be:
-         *  a. -1      if no any level found.
-         *  b. [0-*]   Any number from zero if donation level found.
-         *  c  custom  if donation level not found and donation amount is greater then the custom minimum amount.
-         *
-         * @type {number/string} Donation level ID.
-         */
-        var is_level = -1;
-
         // Find price id with amount in variable prices.
-        if( variable_prices.length ) {
+        if( variable_prices.length && ! (  -1 < price_id ) ) {
 
             // Find amount in donation levels.
             $.each(variable_prices, function (index, variable_price) {
                 if (variable_price.amount === value_now) {
-                    is_level = variable_price.price_id;
+                    price_id = variable_price.price_id;
                     return false;
                 }
             });
 
             // Set level to custom.
-            if( ! ( -1 < is_level ) && ( value_min < value_now ) ) {
-                is_level = 'custom';
+            if( ! ( -1 < price_id ) && ( value_min < value_now ) ) {
+                price_id = 'custom';
             }
         }
 
@@ -366,14 +366,14 @@ jQuery(function ($) {
         if( variable_prices.length ) {
 
             // Auto set give price id.
-            if( -1 !== is_level ) {
-                $('input[name="give-price-id"]', parent_form ).val( is_level );
+            if( -1 !== price_id ) {
+                $('input[name="give-price-id"]', parent_form ).val( price_id );
             }
 
             // Auto Select radio button if radio button is using fro variable prices.
             if( parent_form.find('.give-radio-input').length ) {
                 parent_form.find('.give-radio-input').prop('checked', false); //Radio
-                parent_form.find('.give-radio-input[data-price-id="'+is_level+'"]').prop('checked', true); //Radio
+                parent_form.find('.give-radio-input[data-price-id="'+price_id+'"]').prop('checked', true); //Radio
             }
         }
 
@@ -409,10 +409,10 @@ jQuery(function ($) {
      */
     function update_multiselect_vals(selected_field) {
 
-        var parent_form = selected_field.parents('form');
-        var this_amount = selected_field.val();
-        var price_id = selected_field.data('price-id');
-        var currency_symbol = parent_form.find('.give-currency-symbol').text();
+        var parent_form = selected_field.parents('form'),
+            this_amount = selected_field.val(),
+            price_id = selected_field.data('price-id'),
+            currency_symbol = give_global_vars.currency_sign;
 
         //remove old selected class & add class for CSS purposes
         selected_field.parents('.give-donation-levels-wrap').find('.give-default-level').removeClass('give-default-level');
@@ -424,6 +424,7 @@ jQuery(function ($) {
             selected_field.addClass('give-default-level');
         }
 
+        // Remove error massage container.
         parent_form.find('.give-amount-top').removeClass('invalid-amount');
 
         //check if price ID blank because of dropdown type
@@ -455,7 +456,10 @@ jQuery(function ($) {
             formatted_total = this_amount + currency_symbol;
         }
 
-        $('.give-donation-amount .give-text-input').trigger('blur');
+        // Manually trigger blur event with two params:
+        // (a) form jquery object
+        // (b) price id
+        $('.give-donation-amount .give-text-input').trigger('blur', [ parent_form, price_id ] );
 
         // trigger an event for hooks
         $(document).trigger('give_donation_value_updated', [parent_form, this_amount, price_id]);
