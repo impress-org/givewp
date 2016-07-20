@@ -819,7 +819,7 @@ jQuery.noConflict();
                 thousand_separator_count = '';
             });
 
-            // Format price sting of input field on focuout.
+            // Format price sting of input field on focusout.
             $give_money_fields.on('focusout', function () {
                 price_string = $(this).val();
                 thousand_separator_count = ( price_string.match(new RegExp(thousand_separator, 'g')) || [] ).length;
