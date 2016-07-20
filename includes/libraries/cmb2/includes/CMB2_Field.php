@@ -952,8 +952,8 @@ class CMB2_Field {
 		}
 
 		$args['options']    = 'group' == $args['type'] ? wp_parse_args( $args['options'], array(
-			'add_button'    => __( 'Add Group', 'cmb2' ),
-			'remove_button' => __( 'Remove Group', 'cmb2' ),
+			'add_button'    => esc_html( 'Add Group', 'cmb2' ),
+			'remove_button' => esc_html( 'Remove Group', 'cmb2' ),
 		) ) : $args['options'];
 
 		$args['_id']        = $args['id'];
@@ -975,11 +975,11 @@ class CMB2_Field {
 		if ( in_array( $args['type'], $option_types, true ) ) {
 
 			$args['show_option_none'] = isset( $args['show_option_none'] ) ? $args['show_option_none'] : false;
-			$args['show_option_none'] = true === $args['show_option_none'] ? __( 'None', 'cmb2' ) : $args['show_option_none'];
+			$args['show_option_none'] = true === $args['show_option_none'] ? esc_html( 'None', 'cmb2' ) : $args['show_option_none'];
 
 			if ( ! $args['show_option_none'] ) {
 				$off_by_default = in_array( $args['type'], array( 'select', 'radio', 'radio_inline' ), true );
-				$args['show_option_none'] = $off_by_default ? false : __( 'None', 'cmb2' );
+				$args['show_option_none'] = $off_by_default ? false : esc_html( 'None', 'cmb2' );
 			}
 
 		}

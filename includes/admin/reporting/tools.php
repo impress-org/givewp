@@ -31,22 +31,22 @@ function give_tools_recount_stats_display() {
 	<div id="poststuff">
 		<div class="postbox">
 
-			<h2 class="hndle ui-sortable-handle"><span><?php _e( 'Recount Stats', 'give' ); ?></span></h2>
+			<h2 class="hndle ui-sortable-handle"><span><?php esc_html_e( 'Recount Stats', 'give' ); ?></span></h2>
 
 			<div class="inside recount-stats-controls">
-				<p><?php _e( 'Use these tools to recount stats, delete test transactions, or reset stats.', 'give' ); ?></p>
+				<p><?php esc_html_e( 'Use these tools to recount stats, delete test transactions, or reset stats.', 'give' ); ?></p>
 				<form method="post" id="give-tools-recount-form" class="give-export-form">
 
 					<?php wp_nonce_field( 'give_ajax_export', 'give_ajax_export' ); ?>
 
 					<select name="give-export-class" id="recount-stats-type">
-						<option value="0" selected="selected" disabled="disabled"><?php _e( 'Please select an option', 'give' ); ?></option>
-						<option data-type="recount-stats" value="Give_Tools_Recount_Income"><?php _e( 'Recalculate Total Donation Income Amount', 'give' ); ?></option>
-						<option data-type="recount-form" value="Give_Tools_Recount_Form_Stats"><?php _e( 'Recalculate Income Amount and Donation Counts for a Form', 'give' ); ?></option>
-						<option data-type="recount-all" value="Give_Tools_Recount_All_Stats"><?php _e( 'Recalculate Income Amount and Donation Counts for All Forms', 'give' ); ?></option>
-						<option data-type="recount-customer-stats" value="Give_Tools_Recount_Customer_Stats"><?php _e( 'Recalculate Donor Statistics', 'give' ); ?></option>
-						<option data-type="delete-test-transactions" value="Give_Tools_Delete_Test_Transactions"><?php _e( 'Delete Test Transactions', 'give' ); ?></option>
-						<option data-type="reset-stats" value="Give_Tools_Reset_Stats"><?php _e( 'Delete All Data', 'give' ); ?></option>
+						<option value="0" selected="selected" disabled="disabled"><?php esc_html_e( 'Please select an option', 'give' ); ?></option>
+						<option data-type="recount-stats" value="Give_Tools_Recount_Income"><?php esc_html_e( 'Recalculate Total Donation Income Amount', 'give' ); ?></option>
+						<option data-type="recount-form" value="Give_Tools_Recount_Form_Stats"><?php esc_html_e( 'Recalculate Income Amount and Donation Counts for a Form', 'give' ); ?></option>
+						<option data-type="recount-all" value="Give_Tools_Recount_All_Stats"><?php esc_html_e( 'Recalculate Income Amount and Donation Counts for All Forms', 'give' ); ?></option>
+						<option data-type="recount-customer-stats" value="Give_Tools_Recount_Customer_Stats"><?php esc_html_e( 'Recalculate Donor Statistics', 'give' ); ?></option>
+						<option data-type="delete-test-transactions" value="Give_Tools_Delete_Test_Transactions"><?php esc_html_e( 'Delete Test Transactions', 'give' ); ?></option>
+						<option data-type="reset-stats" value="Give_Tools_Reset_Stats"><?php esc_html_e( 'Delete All Data', 'give' ); ?></option>
 						<?php do_action( 'give_recount_tool_options' ); ?>
 					</select>
 
@@ -61,30 +61,30 @@ function give_tools_recount_stats_display() {
 						?>
 					</span>
 
-					<input type="submit" id="recount-stats-submit" value="<?php _e( 'Submit', 'give' ); ?>" class="button-secondary"/>
+					<input type="submit" id="recount-stats-submit" value="<?php esc_attr_e( 'Submit', 'give' ); ?>" class="button-secondary"/>
 
 					<br/>
 
 					<span class="give-recount-stats-descriptions">
-						<span id="recount-stats"><?php _e( 'Recalculates the overall donation income amount.', 'give' ); ?></span>
+						<span id="recount-stats"><?php esc_html_e( 'Recalculates the overall donation income amount.', 'give' ); ?></span>
 						<span id="recount-form"><?php
 							printf(
 								/* translators: %s: form singular label */
-								__( 'Recalculates the donation and income stats for a specific %s.', 'give' ),
+								esc_html( 'Recalculates the donation and income stats for a specific %s.', 'give' ),
 								give_get_forms_label_singular( true )
 							);
 						?></span>
 						<span id="recount-all"><?php
 							printf(
 								/* translators: %s: form plural label */
-								__( 'Recalculates the earnings and sales stats for all %s.', 'give' ),
+								esc_html( 'Recalculates the earnings and sales stats for all %s.', 'give' ),
 								give_get_forms_label_plural( true )
 							);
 						?></span>
-						<span id="recount-customer-stats"><?php _e( 'Recalculates the lifetime value and donation counts for all donors.', 'give' ); ?></span>
+						<span id="recount-customer-stats"><?php esc_html_e( 'Recalculates the lifetime value and donation counts for all donors.', 'give' ); ?></span>
 						<?php do_action( 'give_recount_tool_descriptions' ); ?>
-						<span id="delete-test-transactions"><?php _e( '<strong>Deletes</strong> all TEST payment records, donors, and related log entries.', 'give' ); ?></span>
-						<span id="reset-stats"><?php _e( '<strong>Deletes</strong> ALL transaction records, donors, and related log entries regardless of test or live mode.', 'give' ); ?></span>
+						<span id="delete-test-transactions"><?php esc_html_e( '<strong>Deletes</strong> all TEST payment records, donors, and related log entries.', 'give' ); ?></span>
+						<span id="reset-stats"><?php esc_html_e( '<strong>Deletes</strong> ALL transaction records, donors, and related log entries regardless of test or live mode.', 'give' ); ?></span>
 					</span>
 
 					<span class="spinner"></span>

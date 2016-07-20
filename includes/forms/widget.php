@@ -35,9 +35,9 @@ class Give_Forms_Widget extends WP_Widget
 
 		parent::__construct(
 			strtolower( $this->self ),
-			__( 'Give - Donation Form', 'give' ),
+			esc_html( 'Give - Donation Form', 'give' ),
 			array(
-				'description' => __( 'Display a Give Donation Form in your theme\'s widget powered sidebar.', 'give' )
+				'description' => esc_html( 'Display a Give Donation Form in your theme\'s widget powered sidebar.', 'give' )
 			)
 		);
 
@@ -132,38 +132,38 @@ class Give_Forms_Widget extends WP_Widget
 		// Widget: Title
 
 		?><p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'give' ); ?></label>
-			<input type="text" class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php echo esc_attr( $title ); ?>" /><br>
-			<small><?php _e( 'Leave blank to hide the widget title.', 'give' ); ?></small>
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php esc_html_e( 'Title:', 'give' ); ?></label>
+			<input type="text" class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php esc_attr_e( $title ); ?>" /><br>
+			<small><?php esc_html_e( 'Leave blank to hide the widget title.', 'give' ); ?></small>
 		</p><?php
 
 		// Widget: Give Form
 
 		?><p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'id' ) ); ?>"><?php
+			<label for="<?php esc_attr_e( $this->get_field_id( 'id' ) ); ?>"><?php
 				printf(
 					/* translators: %s: form singular label */
-					__( 'Give %s:', 'give' ),
+					esc_html( 'Give %s:', 'give' ),
 					give_get_forms_label_singular()
 				);
 			?></label>
-			<select class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'id' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'id' ) ); ?>">
-				<option value="current"><?php _e( '— Select —', 'give' ); ?></option>
+			<select class="widefat" name="<?php esc_attr_e( $this->get_field_name( 'id' ) ); ?>" id="<?php esc_attr_e( $this->get_field_id( 'id' ) ); ?>">
+				<option value="current"><?php esc_html_e( '— Select —', 'give' ); ?></option>
 				<?php foreach ( $give_forms as $give_form ) { ?>
-					<option <?php selected( absint( $id ), $give_form->ID ); ?> value="<?php echo esc_attr( $give_form->ID ); ?>"><?php echo $give_form->post_title; ?></option>
+					<option <?php selected( absint( $id ), $give_form->ID ); ?> value="<?php esc_attr_e( $give_form->ID ); ?>"><?php echo $give_form->post_title; ?></option>
 				<?php } ?>
 			</select><br>
-			<small><?php _e( 'Select a Give Form to embed in this widget.', 'give' ); ?></small>
+			<small><?php esc_html_e( 'Select a Give Form to embed in this widget.', 'give' ); ?></small>
 		</p><?php
 
 		// Widget: Floating Labels
 
 		?><p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'float_labels' ) ); ?>"><?php _e( 'Floating Labels (optional):', 'give' ); ?></label>
-			<select class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'float_labels' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'float_labels' ) ); ?>">
-				<option value="" <?php selected( esc_attr( $float_labels ), '' ) ?>>– <?php _e( 'Select', 'give' ); ?> –</option>
-				<option value="enabled" <?php selected( esc_attr( $float_labels ), 'enabled' ) ?>><?php _e( 'Enabled', 'give' ); ?></option>
-				<option value="disabled" <?php selected( esc_attr( $float_labels ), 'disabled' ) ?>><?php _e( 'Disabled', 'give' ); ?></option>
+			<label for="<?php esc_attr_e( $this->get_field_id( 'float_labels' ) ); ?>"><?php esc_html_e( 'Floating Labels (optional):', 'give' ); ?></label>
+			<select class="widefat" name="<?php esc_attr_e( $this->get_field_name( 'float_labels' ) ); ?>" id="<?php esc_attr_e( $this->get_field_id( 'float_labels' ) ); ?>">
+				<option value="" <?php selected( esc_attr( $float_labels ), '' ) ?>><?php esc_html_e( '- Select -', 'give' ); ?></option>
+				<option value="enabled" <?php selected( esc_attr( $float_labels ), 'enabled' ) ?>><?php esc_html_e( 'Enabled', 'give' ); ?></option>
+				<option value="disabled" <?php selected( esc_attr( $float_labels ), 'disabled' ) ?>><?php esc_html_e( 'Disabled', 'give' ); ?></option>
 			</select><br>
 			<small><?php
 				printf(

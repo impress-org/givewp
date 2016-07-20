@@ -80,11 +80,11 @@ class Give_Gateawy_Reports_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'label'           => esc_attr__( 'Gateway', 'give' ),
-			'complete_sales'  => esc_attr__( 'Complete Transactions', 'give' ),
-			'pending_sales'   => esc_attr__( 'Pending / Failed Transactions', 'give' ),
-			'total_sales'     => esc_attr__( 'Total Transactions', 'give' ),
-			'total_donations' => esc_attr__( 'Total Donations', 'give' )
+			'label'           => esc_attr( 'Gateway', 'give' ),
+			'complete_sales'  => esc_attr( 'Complete Transactions', 'give' ),
+			'pending_sales'   => esc_attr( 'Pending / Failed Transactions', 'give' ),
+			'total_sales'     => esc_attr( 'Total Transactions', 'give' ),
+			'total_donations' => esc_attr( 'Total Donations', 'give' )
 		);
 
 		return $columns;
@@ -129,9 +129,9 @@ class Give_Gateawy_Reports_Table extends WP_List_Table {
 			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
 		}
 		?>
-		<div class="tablenav gateways-report-tablenav give-clearfix <?php echo esc_attr( $which ); ?>">
+		<div class="tablenav gateways-report-tablenav give-clearfix <?php esc_attr_e( $which ); ?>">
 
-			<h3 class="alignleft reports-earnings-title"><span><?php _e( 'Payment Methods Report', 'give' ); ?></span></h3>
+			<h3 class="alignleft reports-earnings-title"><span><?php esc_html_e( 'Payment Methods Report', 'give' ); ?></span></h3>
 
 			<div class="alignright tablenav-right">
 				<div class="actions bulkactions">

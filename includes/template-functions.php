@@ -278,7 +278,7 @@ add_filter( 'post_class', 'give_add_post_class', 20, 3 );
  */
 function give_get_placeholder_img_src() {
 
-	$placeholder_url = 'http://placehold.it/600x600&text=' . urlencode( esc_attr__( 'Give Placeholder Image', 'give' ) );
+	$placeholder_url = 'http://placehold.it/600x600&text=' . urlencode( esc_attr( 'Give Placeholder Image', 'give' ) );
 
 	return apply_filters( 'give_placeholder_img_src', $placeholder_url );
 }

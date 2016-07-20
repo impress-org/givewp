@@ -41,7 +41,7 @@ function give_donation_history() {
 
 		return ob_get_clean();
 	} else {
-		$message = __( 'You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with.', 'give' );
+		$message = esc_html( 'You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with.', 'give' );
 		echo apply_filters( 'give_donation_history_nonuser_message', give_output_error( $message, false ), $message );
 	}
 }
@@ -133,13 +133,13 @@ function give_goal_shortcode( $atts, $content = null ) {
 
 	//Sanity check 1: ensure there is an ID Provided
 	if ( empty( $atts['id'] ) ) {
-		give_output_error( __( 'Error: No Donation form ID for the shortcode provided.', 'give' ), true );
+		give_output_error( esc_html( 'Error: No Donation form ID for the shortcode provided.', 'give' ), true );
 	}
 
 	//Sanity check 2: Check that this form even has Goals enabled
 	$goal_option = get_post_meta( $atts['id'], '_give_goal_option', true );
 	if ( empty( $goal_option ) || $goal_option !== 'yes' ) {
-		give_output_error( __( 'Error: This form does not have Goals enabled.', 'give' ), true );
+		give_output_error( esc_html( 'Error: This form does not have Goals enabled.', 'give' ), true );
 	} else {
 		//Passed all sanity checks: output Goal
 		give_show_goal_progress( $atts['id'], $atts );
@@ -218,7 +218,7 @@ function give_receipt_shortcode( $atts, $content = null ) {
 	global $give_receipt_args, $payment;
 
 	$give_receipt_args = shortcode_atts( array(
-		'error'          => esc_html__( 'Sorry, you are missing the payment key to view this donation receipt.', 'give' ),
+		'error'          => esc_html( 'Sorry, you are missing the payment key to view this donation receipt.', 'give' ),
 		'price'          => true,
 		'donor'          => true,
 		'date'           => true,
@@ -276,7 +276,7 @@ function give_receipt_shortcode( $atts, $content = null ) {
 
 		ob_start();
 
-		give_output_error( apply_filters( 'give_must_be_logged_in_error_message', esc_html__( 'You must be logged in to view this donation payment receipt.', 'give' ) ) );
+		give_output_error( apply_filters( 'give_must_be_logged_in_error_message', esc_html( 'You must be logged in to view this donation payment receipt.', 'give' ) ) );
 
 		give_get_template_part( 'shortcode', 'login' );
 
@@ -402,7 +402,7 @@ function give_process_profile_editor_updates( $data ) {
 	// New password
 	if ( ! empty( $data['give_new_user_pass1'] ) ) {
 		if ( $data['give_new_user_pass1'] !== $data['give_new_user_pass2'] ) {
-			give_set_error( 'password_mismatch', __( 'The passwords you entered do not match. Please try again.', 'give' ) );
+			give_set_error( 'password_mismatch', esc_html( 'The passwords you entered do not match. Please try again.', 'give' ) );
 		} else {
 			$userdata['user_pass'] = $data['give_new_user_pass1'];
 		}
@@ -411,7 +411,7 @@ function give_process_profile_editor_updates( $data ) {
 	// Make sure the new email doesn't belong to another user
 	if ( $email != $old_user_data->user_email ) {
 		if ( email_exists( $email ) ) {
-			give_set_error( 'email_exists', __( 'The email you entered belongs to another user. Please use another.', 'give' ) );
+			give_set_error( 'email_exists', esc_html( 'The email you entered belongs to another user. Please use another.', 'give' ) );
 		}
 	}
 
