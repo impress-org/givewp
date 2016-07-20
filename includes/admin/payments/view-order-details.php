@@ -51,14 +51,14 @@ $payment_mode   = $payment->mode;
 <div class="wrap give-wrap">
 	<h1 id="transaction-details-heading"><?php
 		printf(
-			/* translators: %s: payment number */
+		/* translators: %s: payment number */
 			esc_html( 'Payment %s', 'give' ),
 			$number
 		);
 		if ( $payment_mode == 'test' ) {
 			echo '<span id="test-payment-label" class="give-item-label give-item-label-orange" data-tooltip="' . esc_attr( 'This payment was made in Test Mode', 'give' ) . '" data-tooltip-my-position="center left" data-tooltip-target-position="center right">' . esc_html( 'Test Payment', 'give' ) . '</span>';
 		}
-	?></h1>
+		?></h1>
 
 	<?php do_action( 'give_view_order_details_before', $payment_id ); ?>
 	<form id="give-edit-order-form" method="post">
@@ -266,17 +266,31 @@ $payment_mode   = $payment->mode;
 												<?php echo $payment_meta['form_id']; ?>
 											</td>
 											<td>
-												<a href="<?php echo get_permalink( $payment_meta['form_id'] ); ?>"><?php echo $payment_meta['form_title']; ?></a>
+												<?php give_get_form_dropdown( array(
+													'id'       => $payment_meta['form_id'],
+													'selected' => $payment_meta['form_id'],
+													'chosen'   => true
+												), true ); ?>
 											</td>
 											<td>
 												<?php
-												//Level ID
-												$level_title = give_get_payment_form_title( $payment_meta, true );
-												if ( empty( $level_title ) ) {
-													esc_html_e( 'n/a', 'give' );
+												if ( empty( give_has_variable_prices( $payment_meta['form_id'] ) ) ) {
+													echo __( 'n/a', 'give' );
 												} else {
-													echo $level_title;
-												} ?>
+
+													// Variable price dropdown options.
+													$variable_price_dropdown_option = array(
+														'id'              => $payment_meta['form_id'],
+														'name'            => 'give-variable-price',
+														'chosen'          => true,
+														'show_option_all' => '',
+														'selected'        => $payment_meta['price_id'],
+													);
+
+													// Render variable prices select tag html.
+													give_get_form_variable_price_dropdown( $variable_price_dropdown_option, true );
+												}
+												?>
 											</td>
 											<td>
 												<?php
@@ -377,35 +391,38 @@ $payment_mode   = $payment->mode;
 										<div class="order-data-address">
 											<div class="data column-container">
 												<div class="column">
-													<p>
-														<strong class="order-data-address-line"><?php esc_html_e( 'Street Address Line 1:', 'give' ); ?></strong><br/>
-														<input type="text" name="give-payment-address[0][line1]" value="<?php esc_attr_e( $address['line1'] ); ?>" class="medium-text"/>
-													</p>
+													<div class="give-wrap-address-line1">
+														<label for="give-payment-address-line1" class="order-data-address"><?php esc_html_e( 'Street Address Line 1:', 'give' ); ?></label>
+														<input id="give-payment-address-line1" type="text" name="give-payment-address[0][line1]" value="<?php echo esc_attr_e( $address['line1'] ); ?>" class="medium-text"/>
+													</div>
 
-													<p>
-														<strong class="order-data-address-line"><?php esc_html_e( 'Street Address Line 2:', 'give' ); ?></strong><br/>
-														<input type="text" name="give-payment-address[0][line2]" value="<?php esc_attr_e( $address['line2'] ); ?>" class="medium-text"/>
-													</p>
+
+													<div class="give-wrap-address-line2">
+														<label for="give-payment-address-line2" class="order-data-address-line"><?php esc_html_e( 'Street Address Line 2:', 'give' ); ?></label>
+														<input id="give-payment-address-line2" type="text" name="give-payment-address[0][line2]" value="<?php echo esc_attr_e( $address['line2'] ); ?>" class="medium-text"/>
+													</div>
+
 
 												</div>
 												<div class="column">
-													<p>
-														<strong class="order-data-address-line"><?php esc_html_e( 'City:', 'give' ); ?></strong><br/>
-														<input type="text" name="give-payment-address[0][city]" value="<?php esc_attr_e( $address['city'] ); ?>" class="medium-text"/>
+													<div class="give-wrap-address-city">
+														<label for="give-payment-address-city" class="order-data-address-line"><?php esc_html_e( 'City:', 'give' ); ?></label>
+														<input id="give-payment-address-city" type="text" name="give-payment-address[0][city]" value="<?php echo esc_attr_e( $address['city'] ); ?>" class="medium-text"/>
 
-													</p>
+													</div>
 
-													<p>
-														<strong class="order-data-address-line"><?php esc_html_e( 'Zip / Postal Code:', 'give' ); ?></strong><br/>
-														<input type="text" name="give-payment-address[0][zip]" value="<?php esc_attr_e( $address['zip'] ); ?>" class="medium-text"/>
+													<div class="give-wrap-address-zip">
+														<label for="give-payment-address-zip" class="order-data-address-line"><?php esc_html_e( 'Zip / Postal Code:', 'give' ); ?></label>
+														<input id="give-payment-address-zip" type="text" name="give-payment-address[0][zip]" value="<?php echo esc_attr_e( $address['zip'] ); ?>" class="medium-text"/>
 
-													</p>
+													</div>
+
 												</div>
 												<div class="column">
-													<p id="give-order-address-country-wrap">
-														<strong class="order-data-address-line"><?php esc_html_e( 'Country:', 'give' ); ?></strong><br/>
-														<?php
-														echo Give()->html->select( array(
+													<div id="give-order-address-country-wrap">
+														<label class="order-data-address-line"><?php esc_html_e( 'Country:', 'give' ); ?></label>
+														<?php echo Give()->html->select( array(
+															'id'               => 'order-data-address-line',
 															'options'          => give_get_country_list(),
 															'name'             => 'give-payment-address[0][country]',
 															'selected'         => $address['country'],
@@ -415,14 +432,16 @@ $payment_mode   = $payment->mode;
 															'placeholder'      => esc_attr( 'Select a country', 'give' )
 														) );
 														?>
-													</p>
+													</div>
 
-													<p id="give-order-address-state-wrap">
-														<strong class="order-data-address-line"><?php esc_html_e( 'State / Province:', 'give' ); ?></strong><br/>
+													<div id="give-order-address-state-wrap">
+														<label for="give-payment-address-state" class="order-data-address-line"><?php _e( 'State / Province:', 'give' ); ?></label>
+
 														<?php
 														$states = give_get_states( $address['country'] );
 														if ( ! empty( $states ) ) {
 															echo Give()->html->select( array(
+																'id'               => 'give-payment-address-state',
 																'options'          => $states,
 																'name'             => 'give-payment-address[0][state]',
 																'selected'         => $address['state'],
@@ -433,10 +452,11 @@ $payment_mode   = $payment->mode;
 															) );
 														} else {
 															?>
-															<input type="text" name="give-payment-address[0][state]" value="<?php esc_attr_e( $address['state'] ); ?>" class="medium-text"/>
+															<input id="give-payment-address-state" type="text" name="give-payment-address[0][state]" value="<?php esc_attr_e( $address['state'] ); ?>" class="medium-text"/>
 															<?php
 														} ?>
-													</p>
+													</div>
+
 												</div>
 											</div>
 										</div>
