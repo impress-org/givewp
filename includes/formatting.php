@@ -186,6 +186,8 @@ function give_human_format_large_amount( $amount ) {
         $sanitize_amount =  sprintf( __( '%s billion', 'give' ), round( ( $sanitize_amount / 1000000000 ), 2 ));
     } elseif ( 2 < $amount_count_parts  ) {
         $sanitize_amount =  sprintf( __( '%s million', 'give' ), round( ( $sanitize_amount / 1000000), 2 ) );
+    } else{
+        $sanitize_amount = give_format_amount( $amount );
     }
 
     return apply_filters( 'give_human_format_large_amount', $sanitize_amount, $amount );
