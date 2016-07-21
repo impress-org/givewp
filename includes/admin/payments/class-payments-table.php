@@ -175,10 +175,10 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$input_id = $input_id . '-search-input';
 
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
-			echo '<input type="hidden" name="orderby" value="' . esc_attr( $_REQUEST['orderby'] ) . '" />';
+			echo '<input type="hidden" name="orderby" value="' . esc_attr__( $_REQUEST['orderby'] ) . '" />';
 		}
 		if ( ! empty( $_REQUEST['order'] ) ) {
-			echo '<input type="hidden" name="order" value="' . esc_attr( $_REQUEST['order'] ) . '" />';
+			echo '<input type="hidden" name="order" value="' . esc_attr__( $_REQUEST['order'] ) . '" />';
 		}
 		?>
 		<p class="search-box">
@@ -332,7 +332,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			case 'status' :
 				$value = '<div class="give-donation-status status-' . sanitize_title( give_get_payment_status( $payment, true ) ) . '"><span class="give-donation-status-icon"></span> ' . give_get_payment_status( $payment, true ) . '</div>';
 				if ( $payment->mode == 'test' ) {
-					$value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label" data-tooltip="' . esc_attr( 'This payment was made in test mode', 'give' ) . '">' . esc_html__( 'Test', 'give' ) . '</span>';
+					$value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label" data-tooltip="' . esc_attr__( 'This payment was made in test mode', 'give' ) . '">' . esc_html__( 'Test', 'give' ) . '</span>';
 				}
 				break;
 			case 'details' :

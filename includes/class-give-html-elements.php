@@ -44,7 +44,7 @@ class Give_HTML_Elements {
 			'chosen'      => false,
 			'number'      => 30,
 			/* translators: %s: form singular label */
-			'placeholder' => sprintf( esc_attr( 'Select a %s', 'give' ), give_get_forms_label_singular() )
+			'placeholder' => sprintf( esc_attr__( 'Select a %s', 'give' ), give_get_forms_label_singular() )
 		);
 
 		$args = wp_parse_args( $args, $defaults );
@@ -119,7 +119,7 @@ class Give_HTML_Elements {
 			'multiple'    => false,
 			'selected'    => 0,
 			'chosen'      => true,
-			'placeholder' => esc_attr( 'Select a Donor', 'give' ),
+			'placeholder' => esc_attr__( 'Select a Donor', 'give' ),
 			'number'      => 30
 		);
 
@@ -315,7 +315,7 @@ class Give_HTML_Elements {
 			$placeholder = '';
 		}
 
-		$output = '<select name="' . esc_attr( $args['name'] ) . '" id="' . esc_attr( sanitize_key( str_replace( '-', '_', $args['id'] ) ) ) . '" class="give-select ' . esc_attr( $args['class'] ) . '"' . $multiple . ' data-placeholder="' . $placeholder . '">';
+		$output = '<select name="' . esc_attr__( $args['name'] ) . '" id="' . esc_attr__( sanitize_key( str_replace( '-', '_', $args['id'] ) ) ) . '" class="give-select ' . esc_attr__( $args['class'] ) . '"' . $multiple . ' data-placeholder="' . $placeholder . '">';
 
 		if ( $args['show_option_all'] ) {
 			if ( $args['multiple'] ) {
@@ -345,7 +345,7 @@ class Give_HTML_Elements {
 					$selected = selected( $args['selected'], $key, false );
 				}
 
-				$output .= '<option value="' . esc_attr( $key ) . '"' . $selected . '>' . esc_html__( $option ) . '</option>';
+				$output .= '<option value="' . esc_attr__( $key ) . '"' . $selected . '>' . esc_html__( $option ) . '</option>';
 			}
 		}
 
@@ -383,7 +383,7 @@ class Give_HTML_Elements {
 			$options .= ' readonly';
 		}
 
-		$output = '<input type="checkbox"' . $options . ' name="' . esc_attr( $args['name'] ) . '" id="' . esc_attr( $args['name'] ) . '" class="' . $args['class'] . ' ' . esc_attr( $args['name'] ) . '" ' . checked( 1, $args['current'], false ) . ' />';
+		$output = '<input type="checkbox"' . $options . ' name="' . esc_attr__( $args['name'] ) . '" id="' . esc_attr__( $args['name'] ) . '" class="' . $args['class'] . ' ' . esc_attr__( $args['name'] ) . '" ' . checked( 1, $args['current'], false ) . ' />';
 
 		return $output;
 	}
@@ -442,7 +442,7 @@ class Give_HTML_Elements {
 			$output .= '<span class="give-description">' . esc_html__( $args['desc'] ) . '</span>';
 		}
 
-		$output .= '<input type="text" name="' . esc_attr( $args['name'] ) . '" id="' . esc_attr( $args['name'] ) . '" autocomplete="' . esc_attr( $args['autocomplete'] ) . '" value="' . esc_attr( $args['value'] ) . '" placeholder="' . esc_attr( $args['placeholder'] ) . '" class="' . $args['class'] . '" ' . $data . '' . $disabled . '/>';
+		$output .= '<input type="text" name="' . esc_attr__( $args['name'] ) . '" id="' . esc_attr__( $args['name'] ) . '" autocomplete="' . esc_attr__( $args['autocomplete'] ) . '" value="' . esc_attr__( $args['value'] ) . '" placeholder="' . esc_attr__( $args['placeholder'] ) . '" class="' . $args['class'] . '" ' . $data . '' . $disabled . '/>';
 
 		$output .= '</span>';
 
@@ -500,7 +500,7 @@ class Give_HTML_Elements {
 
 		$output .= '<label class="give-label" for="give-' . sanitize_key( $args['name'] ) . '">' . esc_html__( $args['label'] ) . '</label>';
 
-		$output .= '<textarea name="' . esc_attr( $args['name'] ) . '" id="' . esc_attr( $args['name'] ) . '" class="' . $args['class'] . '"' . $disabled . '>' . esc_html__( $args['value'] ) . '</textarea>';
+		$output .= '<textarea name="' . esc_attr__( $args['name'] ) . '" id="' . esc_attr__( $args['name'] ) . '" class="' . $args['class'] . '"' . $disabled . '>' . esc_html__( $args['value'] ) . '</textarea>';
 
 		if ( ! empty( $args['desc'] ) ) {
 			$output .= '<span class="give-description">' . esc_html__( $args['desc'] ) . '</span>';
@@ -525,7 +525,7 @@ class Give_HTML_Elements {
 		$defaults = array(
 			'name'         => 'user_id',
 			'value'        => null,
-			'placeholder'  => esc_attr( 'Enter username', 'give' ),
+			'placeholder'  => esc_attr__( 'Enter username', 'give' ),
 			'label'        => null,
 			'desc'         => null,
 			'class'        => '',
@@ -540,7 +540,7 @@ class Give_HTML_Elements {
 
 		$output = '<span class="give_user_search_wrap">';
 		$output .= $this->text( $args );
-		$output .= '<span class="give_user_search_results hidden"><a class="give-ajax-user-cancel" title="' . esc_attr( 'Cancel', 'give' ) . '" aria-label="' . esc_attr( 'Cancel', 'give' ) . '" href="#">x</a><span></span></span>';
+		$output .= '<span class="give_user_search_results hidden"><a class="give-ajax-user-cancel" title="' . esc_attr__( 'Cancel', 'give' ) . '" aria-label="' . esc_attr__( 'Cancel', 'give' ) . '" href="#">x</a><span></span></span>';
 		$output .= '</span>';
 
 		return $output;

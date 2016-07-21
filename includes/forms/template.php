@@ -746,7 +746,7 @@ function give_default_cc_address_fields( $form_id ) {
 
 				$countries = give_get_country_list();
 				foreach ( $countries as $country_code => $country ) {
-					echo '<option value="' . esc_attr( $country_code ) . '"' . selected( $country_code, $selected_country, false ) . '>' . $country . '</option>';
+					echo '<option value="' . esc_attr__( $country_code ) . '"' . selected( $country_code, $selected_country, false ) . '>' . $country . '</option>';
 				}
 				?>
 			</select>
@@ -1010,8 +1010,8 @@ function give_payment_mode_select( $form_id ) {
 				<?php foreach ( $gateways as $gateway_id => $gateway ) :
 					$checked       = checked( $gateway_id, give_get_default_gateway( $form_id ), false );
 					$checked_class = $checked ? ' give-gateway-option-selected' : '';
-					echo '<li><label for="give-gateway-' . esc_attr( $gateway_id ) . '-' . $form_id . '" class="give-gateway-option' . $checked_class . '" id="give-gateway-option-' . esc_attr( $gateway_id ) . '">';
-					echo '<input type="radio" name="payment-mode" class="give-gateway" id="give-gateway-' . esc_attr( $gateway_id ) . '-' . $form_id . '" value="' . esc_attr( $gateway_id ) . '"' . $checked . '>' . esc_html__( $gateway['checkout_label'] );
+					echo '<li><label for="give-gateway-' . esc_attr__( $gateway_id ) . '-' . $form_id . '" class="give-gateway-option' . $checked_class . '" id="give-gateway-option-' . esc_attr__( $gateway_id ) . '">';
+					echo '<input type="radio" name="payment-mode" class="give-gateway" id="give-gateway-' . esc_attr__( $gateway_id ) . '-' . $form_id . '" value="' . esc_attr__( $gateway_id ) . '"' . $checked . '>' . esc_html__( $gateway['checkout_label'] );
 					echo '</label></li>';
 				endforeach; ?>
 			</ul>
@@ -1269,7 +1269,7 @@ function give_show_goal_progress( $form_id, $args ) {
 	//Goal Progress Bar
 	if ( ! empty( $show_bar ) ) {
 		$output .= '<div class="give-progress-bar">';
-		$output .= '<span style="width: ' . esc_attr( $progress ) . '%;';
+		$output .= '<span style="width: ' . esc_attr__( $progress ) . '%;';
 		if ( ! empty( $color ) ) {
 			$output .= 'background-color:' . $color;
 		}

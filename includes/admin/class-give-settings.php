@@ -157,7 +157,7 @@ class Give_Plugin_Settings {
 
 					$active       = $active_tab == $tab_id ? ' nav-tab-active' : '';
 
-					echo '<a href="' . esc_url( $tab_url ) . '" title="' . esc_attr( $tab_name ) . '" class="nav-tab' . $active . '" id="tab-' . $tab_id . '">' . esc_html__( $tab_name ) . '</a>';
+					echo '<a href="' . esc_url( $tab_url ) . '" title="' . esc_attr__( $tab_name ) . '" class="nav-tab' . $active . '" id="tab-' . $tab_id . '">' . esc_html__( $tab_name ) . '</a>';
 
 				}
 				?>
@@ -212,7 +212,7 @@ class Give_Plugin_Settings {
 			//Set ID based off tab name - protects backwards compatibility
 			$tab_id = isset( $_GET['tab'] ) ? $_GET['tab'] : $cmb->meta_box['id'];
 
-			$save_button = apply_filters( 'give_save_button_markup', '<div class="give-submit-wrap"><input type="submit" name="submit-cmb" value="' . esc_attr( 'Save Settings', 'give' ) . '" class="button-primary"></div>' );
+			$save_button = apply_filters( 'give_save_button_markup', '<div class="give-submit-wrap"><input type="submit" name="submit-cmb" value="' . esc_attr__( 'Save Settings', 'give' ) . '" class="button-primary"></div>' );
 
 			//Filter so some tabs won't have save settings
 			$no_save_button = apply_filters( 'give_settings_no_save_output', array(
@@ -1068,7 +1068,7 @@ function give_default_gateway_callback( $field_object, $escaped_value, $object_i
 		$selected = isset( $escaped_value ) ? selected( $key, $escaped_value, false ) : '';
 
 
-		echo '<option value="' . esc_attr( $key ) . '"' . $selected . '>' . esc_html__( $option['admin_label'] ) . '</option>';
+		echo '<option value="' . esc_attr__( $key ) . '"' . $selected . '>' . esc_html__( $option['admin_label'] ) . '</option>';
 
 	endforeach;
 
@@ -1211,7 +1211,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 
 	//License is active so show deactivate button
 	if ( $license_status === 'valid' ) {
-		$html .= '<input type="submit" class="button-secondary give-license-deactivate" name="' . $id . '_deactivate" value="' . esc_attr( 'Deactivate License', 'give' ) . '"/>';
+		$html .= '<input type="submit" class="button-secondary give-license-deactivate" name="' . $id . '_deactivate" value="' . esc_attr__( 'Deactivate License', 'give' ) . '"/>';
 	} else {
 		//This license is not valid so delete it
 		give_delete_option( $id );

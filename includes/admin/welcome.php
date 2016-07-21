@@ -260,7 +260,7 @@ class Give_Welcome {
 					/* translators: 1: https://givewp.com/documenation/ 2: title attribute text */
 					__( 'Thank you for activating or updating to the latest version of Give! If you\'re a first time user, welcome! You\'re well on your way to empowering your cause. </You>We encourage you to check out the <a href="%1$s" title="%2$s" target="_blank">plugin documentation</a> and getting started guide below.', 'give' ),
 					esc_url( 'https://givewp.com/documenation/' ),
-					esc_attr( 'View the Give plugin documentation online', 'give' )
+					esc_attr__( 'View the Give plugin documentation online', 'give' )
 				);
 			?></div>
 

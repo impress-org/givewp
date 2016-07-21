@@ -40,7 +40,7 @@ class Give_Shortcode_Register extends Give_Shortcode_Generator {
 				'type'     => 'textbox',
 				'name'     => 'redirect',
 				'minWidth' => 320,
-				'tooltip'  => esc_attr( 'Enter an URL here to redirect to after registering.', 'give' ),
+				'tooltip'  => esc_attr__( 'Enter an URL here to redirect to after registering.', 'give' ),
 			),
 		);
 	}

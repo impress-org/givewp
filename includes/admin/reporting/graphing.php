@@ -780,7 +780,7 @@ function give_parse_report_dates( $data ) {
 	$view = give_get_reporting_view();
 	$id   = isset( $_GET['form-id'] ) ? $_GET['form-id'] : null;
 
-	wp_redirect( add_query_arg( $dates, admin_url( 'edit.php?post_type=give_forms&page=give-reports&view=' . esc_attr( $view ) . '&form-id=' . absint( $id ) ) ) );
+	wp_redirect( add_query_arg( $dates, admin_url( 'edit.php?post_type=give_forms&page=give-reports&view=' . esc_attr__( $view ) . '&form-id=' . absint( $id ) ) ) );
 	give_die();
 }
 
@@ -799,7 +799,7 @@ function give_reports_refresh_button() {
 		'give-message' => 'refreshed-reports'
 	) ), 'give-refresh-reports' );
 
-	echo '<a href="' . $url . '" data-tooltip="' . esc_attr( 'Clicking this will clear the reports cache.', 'give' ) . '" data-tooltip-my-position="right center"  data-tooltip-target-position="left center" class="button alignright give-refresh-reports-button give-tooltip">' . esc_html__( 'Refresh Reports', 'give' ) . '</a>';
+	echo '<a href="' . $url . '" data-tooltip="' . esc_attr__( 'Clicking this will clear the reports cache.', 'give' ) . '" data-tooltip-my-position="right center"  data-tooltip-target-position="left center" class="button alignright give-refresh-reports-button give-tooltip">' . esc_html__( 'Refresh Reports', 'give' ) . '</a>';
 
 }
 

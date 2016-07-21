@@ -34,12 +34,12 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 
 	//No empty prices - min. 1.00 for new forms
 	if ( empty( $price ) && is_null( $post_id ) ) {
-		$price = esc_attr( give_format_amount( '1.00' ) );
+		$price = esc_attr__( give_format_amount( '1.00' ) );
 	}
 
 	//Min. $1.00 for new forms
 	if ( empty( $custom_amount_minimum ) ) {
-		$custom_amount_minimum = esc_attr( give_format_amount( '1.00' ) );
+		$custom_amount_minimum = esc_attr__( give_format_amount( '1.00' ) );
 	}
 
 	// Start with an underscore to hide fields from custom fields list
@@ -120,7 +120,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 							'id'         => $prefix . 'text',
 							'type'       => 'text',
 							'attributes' => array(
-								'placeholder' => esc_attr( 'Donation Level', 'give' ),
+								'placeholder' => esc_attr__( 'Donation Level', 'give' ),
 								'class'       => 'give-multilevel-text-field',
 							),
 						),
@@ -178,7 +178,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'row_classes' => 'give-subfield',
 					'attributes'  => array(
 						'rows'        => 3,
-						'placeholder' => esc_attr( 'Give a Custom Amount', 'give' ),
+						'placeholder' => esc_attr__( 'Give a Custom Amount', 'give' ),
 					),
 				),
 				//Goals
@@ -203,7 +203,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'after_field'  => give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '',
 					'attributes'   => array(
 						'placeholder' => give_format_amount( '0.00' ),
-						'value'       => isset( $goal ) ? esc_attr( give_format_amount( $goal ) ) : '',
+						'value'       => isset( $goal ) ? esc_attr__( give_format_amount( $goal ) ) : '',
 						'class'       => 'cmb-type-text-small give-money-field',
 					),
 				),
@@ -247,7 +247,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'type'        => 'textarea',
 					'row_classes' => 'give-subfield',
 					'attributes'  => array(
-						'placeholder' => esc_attr( 'Thank you to all our donors, we have met our fundraising goal.', 'give' ),
+						'placeholder' => esc_attr__( 'Thank you to all our donors, we have met our fundraising goal.', 'give' ),
 					),
 				)
 			)
@@ -321,7 +321,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 						'type'        => 'text_small',
 						'row_classes' => 'give-subfield',
 						'attributes'  => array(
-							'placeholder' => esc_attr( 'Donate Now', 'give' ),
+							'placeholder' => esc_attr__( 'Donate Now', 'give' ),
 						),
 					),
 					array(
@@ -330,7 +330,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 						'desc'       => esc_html__( 'The button label for completing a donation.', 'give' ),
 						'type'       => 'text_small',
 						'attributes' => array(
-							'placeholder' => esc_attr( 'Donate Now', 'give' ),
+							'placeholder' => esc_attr__( 'Donate Now', 'give' ),
 						),
 					),
 					array(
@@ -407,7 +407,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'row_classes' => 'give-subfield',
 					'size'        => 'regular',
 					'attributes'  => array(
-						'placeholder' => esc_attr( 'Agree to Terms?', 'give' ),
+						'placeholder' => esc_attr__( 'Agree to Terms?', 'give' ),
 					),
 				),
 				array(

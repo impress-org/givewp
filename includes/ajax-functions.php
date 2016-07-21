@@ -326,7 +326,7 @@ function give_ajax_search_users() {
 		$user_list = '<ul>';
 		if ( $found_users ) {
 			foreach ( $found_users as $user ) {
-				$user_list .= '<li><a href="#" data-userid="' . esc_attr( $user->ID ) . '" data-login="' . esc_attr( $user->user_login ) . '">' . esc_html__( $user->user_login ) . '</a></li>';
+				$user_list .= '<li><a href="#" data-userid="' . esc_attr__( $user->ID ) . '" data-login="' . esc_attr__( $user->user_login ) . '">' . esc_html__( $user->user_login ) . '</a></li>';
 			}
 		} else {
 			$user_list .= '<li>' . esc_html__( 'No users found', 'give' ) . '</li>';
@@ -375,7 +375,7 @@ function give_check_for_form_price_variations() {
 
 				$level_text = ! empty( $price['_give_text'] ) ? esc_html__( $price['_give_text'] ) : give_currency_filter( give_format_amount( $price['_give_amount'] ) );
 				
-				$ajax_response .= '<option value="' . esc_attr( $price['_give_id']['level_id'] ) . '">' . $level_text . '</option>';
+				$ajax_response .= '<option value="' . esc_attr__( $price['_give_id']['level_id'] ) . '">' . $level_text . '</option>';
 			}
 			$ajax_response .= '</select>';
 			echo $ajax_response;

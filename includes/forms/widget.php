@@ -161,9 +161,9 @@ class Give_Forms_Widget extends WP_Widget
 		?><p>
 			<label for="<?php esc_attr_e( $this->get_field_id( 'float_labels' ) ); ?>"><?php esc_html_e( 'Floating Labels (optional):', 'give' ); ?></label>
 			<select class="widefat" name="<?php esc_attr_e( $this->get_field_name( 'float_labels' ) ); ?>" id="<?php esc_attr_e( $this->get_field_id( 'float_labels' ) ); ?>">
-				<option value="" <?php selected( esc_attr( $float_labels ), '' ) ?>><?php esc_html_e( '- Select -', 'give' ); ?></option>
-				<option value="enabled" <?php selected( esc_attr( $float_labels ), 'enabled' ) ?>><?php esc_html_e( 'Enabled', 'give' ); ?></option>
-				<option value="disabled" <?php selected( esc_attr( $float_labels ), 'disabled' ) ?>><?php esc_html_e( 'Disabled', 'give' ); ?></option>
+				<option value="" <?php selected( esc_attr__( $float_labels ), '' ) ?>><?php esc_html_e( '- Select -', 'give' ); ?></option>
+				<option value="enabled" <?php selected( esc_attr__( $float_labels ), 'enabled' ) ?>><?php esc_html_e( 'Enabled', 'give' ); ?></option>
+				<option value="disabled" <?php selected( esc_attr__( $float_labels ), 'disabled' ) ?>><?php esc_html_e( 'Disabled', 'give' ); ?></option>
 			</select><br>
 			<small><?php
 				printf(

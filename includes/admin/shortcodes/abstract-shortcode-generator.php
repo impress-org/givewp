@@ -90,7 +90,7 @@ abstract class Give_Shortcode_Generator {
 				'fields'    => $fields,
 				'label'     => '[' . $this->shortcode_tag . ']',
 				'required'  => $this->required,
-				'title'     => esc_attr( 'Insert Shortcode', 'give' ),
+				'title'     => esc_attr__( 'Insert Shortcode', 'give' ),
 			);
 
 			if ( user_can_richedit() ) {

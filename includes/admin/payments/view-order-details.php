@@ -36,7 +36,7 @@ if ( empty( $payment_exists ) ) {
 
 $number         = $payment->number;
 $payment_meta   = $payment->get_meta();
-$transaction_id = esc_attr( $payment->transaction_id );
+$transaction_id = esc_attr__( $payment->transaction_id );
 $user_id        = $payment->user_id;
 $customer_id    = $payment->customer_id;
 $payment_date   = strtotime( $payment->date );
@@ -56,7 +56,7 @@ $payment_mode   = $payment->mode;
 			$number
 		);
 		if ( $payment_mode == 'test' ) {
-			echo '<span id="test-payment-label" class="give-item-label give-item-label-orange" data-tooltip="' . esc_attr( 'This payment was made in Test Mode', 'give' ) . '" data-tooltip-my-position="center left" data-tooltip-target-position="center right">' . esc_html__( 'Test Payment', 'give' ) . '</span>';
+			echo '<span id="test-payment-label" class="give-item-label give-item-label-orange" data-tooltip="' . esc_attr__( 'This payment was made in Test Mode', 'give' ) . '" data-tooltip-my-position="center left" data-tooltip-target-position="center right">' . esc_html__( 'Test Payment', 'give' ) . '</span>';
 		}
 	?></h1>
 
@@ -121,7 +121,7 @@ $payment_mode   = $payment->mode;
 												<ul class="give-payment-fees">
 													<?php foreach ( $fees as $fee ) : ?>
 														<li>
-															<span class="fee-label"><?php echo $fee['label'] . ':</span> ' . '<span class="fee-amount" data-fee="' . esc_attr( $fee['amount'] ) . '">' . give_currency_filter( $fee['amount'], $currency_code ); ?></span>
+															<span class="fee-label"><?php echo $fee['label'] . ':</span> ' . '<span class="fee-amount" data-fee="' . esc_attr__( $fee['amount'] ) . '">' . give_currency_filter( $fee['amount'], $currency_code ); ?></span>
 														</li>
 													<?php endforeach; ?>
 												</ul>
@@ -211,7 +211,7 @@ $payment_mode   = $payment->mode;
 										<?php endif; ?>
 
 										<div class="give-admin-box-inside">
-											<p><?php $purchase_url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . esc_attr( give_get_payment_user_email( $payment_id ) ) ); ?>
+											<p><?php $purchase_url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . esc_attr__( give_get_payment_user_email( $payment_id ) ) ); ?>
 												<a href="<?php echo $purchase_url; ?>"><?php esc_html_e( 'View all donations for this donor', 'give' ); ?> &raquo;</a>
 											</p>
 										</div>
@@ -412,7 +412,7 @@ $payment_mode   = $payment->mode;
 															'show_option_all'  => false,
 															'show_option_none' => false,
 															'chosen'           => true,
-															'placeholder'      => esc_attr( 'Select a country', 'give' )
+															'placeholder'      => esc_attr__( 'Select a country', 'give' )
 														) );
 														?>
 													</p>
@@ -429,7 +429,7 @@ $payment_mode   = $payment->mode;
 																'show_option_all'  => false,
 																'show_option_none' => false,
 																'chosen'           => true,
-																'placeholder'      => esc_attr( 'Select a state', 'give' )
+																'placeholder'      => esc_attr__( 'Select a state', 'give' )
 															) );
 														} else {
 															?>

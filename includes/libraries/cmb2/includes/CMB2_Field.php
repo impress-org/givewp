@@ -549,9 +549,9 @@ class CMB2_Field {
 	}
 
 	/**
-	 * Escape the value before output. Defaults to 'esc_attr()'
+	 * Escape the value before output. Defaults to 'esc_attr__()'
 	 * @since  1.0.1
-	 * @param  callable $func       Escaping function (if not esc_attr())
+	 * @param  callable $func       Escaping function (if not esc_attr__())
 	 * @param  mixed    $meta_value Meta value
 	 * @return mixed                Final value
 	 */
@@ -784,7 +784,7 @@ class CMB2_Field {
 		}
 
 		if ( $added_classes ) {
-			$classes[] = esc_attr( $added_classes );
+			$classes[] = esc_attr__( $added_classes );
 		}
 
 		/**

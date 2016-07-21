@@ -311,7 +311,7 @@ function give_customers_view( $customer ) {
 
 												$countries = give_get_country_list();
 												foreach ( $countries as $country_code => $country ) {
-													echo '<option value="' . esc_attr( $country_code ) . '"' . selected( $country_code, $selected_country, false ) . '>' . $country . '</option>';
+													echo '<option value="' . esc_attr__( $country_code ) . '"' . selected( $country_code, $selected_country, false ) . '>' . $country . '</option>';
 												}
 												?>
 											</select>
@@ -448,7 +448,7 @@ function give_customers_view( $customer ) {
 							<a title="<?php
 								printf(
 									/* translators: %s: post title */
-									esc_attr( 'View %s', 'give' ),
+									esc_attr__( 'View %s', 'give' ),
 									$donation->post_title
 								); ?>" href="<?php echo esc_url( admin_url( 'post.php?action=edit&post=' . $donation->ID ) );
 							?>">

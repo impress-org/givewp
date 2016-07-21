@@ -338,14 +338,14 @@ function give_reports_tab_export() {
 								$args = array(
 									'id'          => 'give-payment-export-start',
 									'name'        => 'start',
-									'placeholder' => esc_attr( 'Start date', 'give' )
+									'placeholder' => esc_attr__( 'Start date', 'give' )
 								);
 								echo Give()->html->date_field( $args ); ?>
 								<?php
 								$args = array(
 									'id'          => 'give-payment-export-end',
 									'name'        => 'end',
-									'placeholder' => esc_attr( 'End date', 'give' )
+									'placeholder' => esc_attr__( 'End date', 'give' )
 								);
 								echo Give()->html->date_field( $args ); ?>
 								<select name="status">

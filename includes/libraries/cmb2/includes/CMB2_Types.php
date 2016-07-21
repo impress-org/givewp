@@ -923,7 +923,7 @@ class CMB2_Types {
 			'data-queryargs'   => ! empty( $query_args ) ? json_encode( $query_args ) : '',
 		) );
 
-		printf( '<input class="cmb2-upload-button button" type="button" value="%s" />', esc_attr( $this->_text( 'add_upload_file_text', __( 'Add or Upload File', 'cmb2' ) ) ) );
+		printf( '<input class="cmb2-upload-button button" type="button" value="%s" />', esc_attr__( $this->_text( 'add_upload_file_text', __( 'Add or Upload File', 'cmb2' ) ) ) );
 
 		$this->_desc( true, true );
 
