@@ -85,7 +85,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 				$value = '<div class="give-donation-status status-' . sanitize_title( give_get_payment_status( $payment, true ) ) . '"><span class="give-donation-status-icon"></span> ' . give_get_payment_status( $payment, true ) . '</div>';
 
 				if ( $payment->mode == 'test' ) {
-					$value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label" data-tooltip="' . esc_attr( 'This payment was made in test mode', 'give' ) . '">' . esc_html( 'Test', 'give' ) . '</span>';
+					$value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label" data-tooltip="' . __( 'This payment was made in test mode', 'give' ) . '">' . __( 'Test', 'give' ) . '</span>';
 				}
 
 				return $value;
@@ -107,13 +107,13 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'ID'         => esc_html( 'Log ID', 'give' ),
-			'user_id'    => esc_html( 'Donor', 'give' ),
+			'ID'         => __( 'Log ID', 'give' ),
+			'user_id'    => __( 'Donor', 'give' ),
 			'form'       => give_get_forms_label_singular(),
-			'amount'     => esc_html( 'Donation Amount', 'give' ),
-			'status'     => esc_html( 'Status', 'give' ),
-			'payment_id' => esc_html( 'Transaction ID', 'give' ),
-			'date'       => esc_html( 'Date', 'give' )
+			'amount'     => __( 'Donation Amount', 'give' ),
+			'status'     => __( 'Status', 'give' ),
+			'payment_id' => __( 'Transaction ID', 'give' ),
+			'date'       => __( 'Date', 'give' )
 		);
 
 		return $columns;
@@ -182,7 +182,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
 		}
 		?>
-		<div class="tablenav <?php esc_attr_e( $which ); ?>">
+		<div class="tablenav <?php echo esc_attr( $which ); ?>">
 
 			<div class="alignleft actions bulkactions">
 				<?php $this->bulk_actions( $which ); ?>
@@ -302,7 +302,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 
 		if ( $give_forms ) {
 			echo '<select name="form" id="give-log-form-filter">';
-			echo '<option value="0">' . esc_html( 'All', 'give' ) . '</option>';
+			echo '<option value="0">' . __( 'All', 'give' ) . '</option>';
 			foreach ( $give_forms as $form ) {
 				echo '<option value="' . $form . '"' . selected( $form, $this->get_filtered_give_form() ) . '>' . esc_html( get_the_title( $form ) ) . '</option>';
 			}

@@ -79,8 +79,8 @@ function give_run_install() {
 		// Purchase Confirmation (Success) Page
 		$success = wp_insert_post(
 			array(
-				'post_title'     => esc_html( 'Donation Confirmation', 'give' ),
-				'post_content'   => '[give_receipt]',
+				'post_title'     => __( 'Donation Confirmation', 'give' ),
+				'post_content'   => __( '[give_receipt]', 'give' ),
 				'post_status'    => 'publish',
 				'post_author'    => 1,
 				'post_type'      => 'page',
@@ -98,8 +98,8 @@ function give_run_install() {
 		// Failed Purchase Page
 		$failed = wp_insert_post(
 			array(
-				'post_title'     => esc_html( 'Transaction Failed', 'give' ),
-				'post_content'   => esc_html( 'We\'re sorry, your transaction failed to process. Please try again or contact site support.', 'give' ),
+				'post_title'     => __( 'Transaction Failed', 'give' ),
+				'post_content'   => __( 'We\'re sorry, your transaction failed to process. Please try again or contact site support.', 'give' ),
 				'post_status'    => 'publish',
 				'post_author'    => 1,
 				'post_type'      => 'page',
@@ -115,7 +115,7 @@ function give_run_install() {
 		// Purchase History (History) Page
 		$history = wp_insert_post(
 			array(
-				'post_title'     => esc_html( 'Donation History', 'give' ),
+				'post_title'     => __( 'Donation History', 'give' ),
 				'post_content'   => '[donation_history]',
 				'post_status'    => 'publish',
 				'post_author'    => 1,

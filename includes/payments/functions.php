@@ -576,14 +576,14 @@ function give_get_payment_status( $payment, $return_label = false ) {
  */
 function give_get_payment_statuses() {
 	$payment_statuses = array(
-		'pending'     => esc_html( 'Pending', 'give' ),
-		'publish'     => esc_html( 'Complete', 'give' ),
-		'refunded'    => esc_html( 'Refunded', 'give' ),
-		'failed'      => esc_html( 'Failed', 'give' ),
-		'cancelled'   => esc_html( 'Cancelled', 'give' ),
-		'abandoned'   => esc_html( 'Abandoned', 'give' ),
-		'preapproval' => esc_html( 'Pre-Approved', 'give' ),
-		'revoked'     => esc_html( 'Revoked', 'give' )
+		'pending'     => __( 'Pending', 'give' ),
+		'publish'     => __( 'Complete', 'give' ),
+		'refunded'    => __( 'Refunded', 'give' ),
+		'failed'      => __( 'Failed', 'give' ),
+		'cancelled'   => __( 'Cancelled', 'give' ),
+		'abandoned'   => __( 'Abandoned', 'give' ),
+		'preapproval' => __( 'Pre-Approved', 'give' ),
+		'revoked'     => __( 'Revoked', 'give' )
 	);
 
 	return apply_filters( 'give_payment_statuses', $payment_statuses );
@@ -1508,7 +1508,7 @@ function give_get_payment_note_html( $note, $payment_id = 0 ) {
 		$user = get_userdata( $note->user_id );
 		$user = $user->display_name;
 	} else {
-		$user = esc_html( 'System', 'give' );
+		$user = __( 'System', 'give' );
 	}
 
 	$date_format = get_option( 'date_format' ) . ', ' . get_option( 'time_format' );
@@ -1523,7 +1523,7 @@ function give_get_payment_note_html( $note, $payment_id = 0 ) {
 	$note_html .= '<p>';
 	$note_html .= '<strong>' . $user . '</strong>&nbsp;&ndash;&nbsp;<span style="color:#aaa;font-style:italic;">' . date_i18n( $date_format, strtotime( $note->comment_date ) ) . '</span><br/>';
 	$note_html .= $note->comment_content;
-	$note_html .= '&nbsp;&ndash;&nbsp;<a href="' . esc_url( $delete_note_url ) . '" class="give-delete-payment-note" data-note-id="' . absint( $note->comment_ID ) . '" data-payment-id="' . absint( $payment_id ) . '" title="' . esc_attr( 'Delete this payment note', 'give' ) . '">' . esc_html( 'Delete', 'give' ) . '</a>';
+	$note_html .= '&nbsp;&ndash;&nbsp;<a href="' . esc_url( $delete_note_url ) . '" class="give-delete-payment-note" data-note-id="' . absint( $note->comment_ID ) . '" data-payment-id="' . absint( $payment_id ) . '" title="' . __( 'Delete this payment note', 'give' ) . '">' . __( 'Delete', 'give' ) . '</a>';
 	$note_html .= '</p>';
 	$note_html .= '</div>';
 
@@ -1723,7 +1723,7 @@ function give_get_payment_form_title( $payment_meta, $level_title = false, $sepa
 		if ( $price_id == 'custom' ) {
 
 			$custom_amount_text = get_post_meta( $form_id, '_give_custom_amount_text', true );
-			$form_title .= ! empty( $custom_amount_text ) ? $custom_amount_text : esc_html( 'Custom Amount', 'give' );
+			$form_title .= ! empty( $custom_amount_text ) ? $custom_amount_text : __( 'Custom Amount', 'give' );
 
 		} else {
 			$form_title .= give_get_price_option_name( $form_id, $price_id );

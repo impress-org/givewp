@@ -92,7 +92,7 @@ class Give_Email_Access {
 			);
 
 			if ( $row_id < 1 ) {
-				give_set_error( 'give_email_access_attempts_exhausted', esc_html( 'Please wait a few minutes before requesting a new email access link.', 'give' ) );
+				give_set_error( 'give_email_access_attempts_exhausted', __( 'Please wait a few minutes before requesting a new email access link.', 'give' ) );
 
 				return false;
 			}
@@ -123,22 +123,22 @@ class Give_Email_Access {
 		), get_permalink( $page_id ) );
 
 		//Nice subject and message
-		$subject = apply_filters( 'give_email_access_token_subject', sprintf( esc_html( 'Your Access Link to %s', 'give' ), get_bloginfo( 'name' ) ) );
+		$subject = apply_filters( 'give_email_access_token_subject', sprintf( __( 'Your Access Link to %s', 'give' ), get_bloginfo( 'name' ) ) );
 
-		$message = esc_html( 'You or someone in your organization requested an access link be sent to this email address. This is a temporary access link for you to view your donation information. Click on the link below to view:', 'give' ) . "\n\n";
+		$message = __( 'You or someone in your organization requested an access link be sent to this email address. This is a temporary access link for you to view your donation information. Click on the link below to view:', 'give' ) . "\n\n";
 
-		$message .= '<a href="' . esc_url( $access_url ) . '" target="_blank">' . esc_html( 'Access My Donation Details', 'give' ) . ' &raquo;</a>';
+		$message .= '<a href="' . esc_url( $access_url ) . '" target="_blank">' . __( 'Access My Donation Details', 'give' ) . ' &raquo;</a>';
 
 		$message .= "\n\n";
 		$message .= "\n\n";
-		$message .= esc_html( 'Sincerely,', 'give' );
+		$message .= __( 'Sincerely,', 'give' );
 		$message .= "\n" . get_bloginfo( 'name' ) . "\n";
 
 		$message = apply_filters( 'give_email_access_token_message', $message );
 
 
 		// Send the email
-		Give()->emails->__set( 'heading', apply_filters( 'give_email_access_token_heading', esc_html( 'Your Access Link', 'give' ) ) );
+		Give()->emails->__set( 'heading', apply_filters( 'give_email_access_token_heading', __( 'Your Access Link', 'give' ) ) );
 		Give()->emails->send( $email, $subject, $message );
 
 	}

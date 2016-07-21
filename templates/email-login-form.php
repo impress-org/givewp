@@ -33,20 +33,20 @@ if ( is_email( $email ) && wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
 
 				// reCAPTCHA fail
 				if ( ! $response['success'] ) {
-					give_set_error( 'give_recaptcha_test_failed', apply_filters( 'give_recaptcha_test_failed_message', esc_html( 'reCAPTCHA test failed.', 'give' ) ) );
+					give_set_error( 'give_recaptcha_test_failed', apply_filters( 'give_recaptcha_test_failed_message', __( 'reCAPTCHA test failed.', 'give' ) ) );
 				}
 
 			} else {
 
 				//Connection issue
-				give_set_error( 'give_recaptcha_connection_issue', apply_filters( 'give_recaptcha_connection_issue_message', esc_html( 'Unable to connect to reCAPTCHA server.', 'give' ) ) );
+				give_set_error( 'give_recaptcha_connection_issue', apply_filters( 'give_recaptcha_connection_issue_message', __( 'Unable to connect to reCAPTCHA server.', 'give' ) ) );
 
 			}
 
 		} // reCAPTCHA empty
 		else {
 
-			give_set_error( 'give_recaptcha_failed', apply_filters( 'give_recaptcha_failed_message', esc_html( 'Sorry, it looks like the reCAPTCHA test has failed.', 'give' ) ) );
+			give_set_error( 'give_recaptcha_failed', apply_filters( 'give_recaptcha_failed_message', __( 'Sorry, it looks like the reCAPTCHA test has failed.', 'give' ) ) );
 
 		}
 	}
@@ -62,7 +62,7 @@ if ( is_email( $email ) && wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
 				$show_form = false;
 			}
 		} else {
-			give_set_error( 'give_no_donor_email_exists', apply_filters( 'give_no_donor_email_exists_message', esc_html( 'Sorry, it looks like that donor email address does not exist.', 'give' ) ) );
+			give_set_error( 'give_no_donor_email_exists', apply_filters( 'give_no_donor_email_exists_message', __( 'Sorry, it looks like that donor email address does not exist.', 'give' ) ) );
 		}
 	}
 }
@@ -78,12 +78,12 @@ if ( $show_form ) {
 
 		<?php
 		if ( ! give_get_errors() ) {
-			give_output_error( esc_html( 'Please enter the email address you used for your donation. A verification email containing an access link will be sent to you.', 'give' ), true );
+			give_output_error( __( 'Please enter the email address you used for your donation. A verification email containing an access link will be sent to you.', 'give' ), true );
 		} ?>
 
 		<form method="post" action="" id="give-email-access-form">
-			<label for="give_email"><?php esc_html( 'Donation Email:', 'give' ); ?></label>
-			<input id="give-email" type="email" name="give_email" value="" placeholder="<?php esc_attr_e( 'Your donation email', 'give' ); ?>"/>
+			<label for="give_email"><?php __( 'Donation Email:', 'give' ); ?></label>
+			<input id="give-email" type="email" name="give_email" value="" placeholder="<?php _e( 'Your donation email', 'give' ); ?>"/>
 			<input type="hidden" name="_wpnonce" value="<?php echo wp_create_nonce( 'give' ); ?>"/>
 
 			<?php
@@ -106,7 +106,7 @@ if ( $show_form ) {
 				<input type="hidden" name="give_ip" class="give_ip" value=""/>
 			<?php } ?>
 
-			<input type="submit" class="give-submit" value="<?php esc_attr_e( 'Email access token', 'give' ); ?>"/>
+			<input type="submit" class="give-submit" value="<?php _e( 'Email access token', 'give' ); ?>"/>
 		</form>
 	</div>
 
@@ -116,7 +116,7 @@ if ( $show_form ) {
 	give_output_error(
 		sprintf(
 			/* translators: %s: user email address */
-			esc_html( 'An email with an access link has been sent to %s.', 'give' ),
+			__( 'An email with an access link has been sent to %s.', 'give' ),
 			$email
 		),
 		true,

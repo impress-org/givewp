@@ -193,7 +193,7 @@ class Give_Tools_Recount_Customer_Stats extends Give_Batch_Export {
 	public function process_step() {
 
 		if ( ! $this->can_export() ) {
-			wp_die( esc_html( 'You do not have permission to export data.', 'give' ), esc_html( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die( __( 'You do not have permission to export data.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 		}
 
 		$had_data = $this->get_data();
@@ -204,7 +204,7 @@ class Give_Tools_Recount_Customer_Stats extends Give_Batch_Export {
 			return true;
 		} else {
 			$this->done    = true;
-			$this->message = esc_html( 'Donor stats successfully recounted.', 'give' );
+			$this->message = __( 'Donor stats successfully recounted.', 'give' );
 
 			return false;
 		}

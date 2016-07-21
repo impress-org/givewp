@@ -29,10 +29,9 @@ function give_admin_rate_us( $footer_text ) {
 
 	if ( $typenow == 'give_forms' ) {
 		$rate_text = sprintf(
-			/* translators: 1: plugin name - "Give". 2: Link to 5 star rating */
-			esc_html( 'If you like %1$s please leave us a %2$s rating. It takes a minute and helps a lot. Thanks in advance!', 'give' ),
-			sprintf( '<strong>%s</strong>', esc_html( 'Give', 'give' ) ),
-			'<a href="https://wordpress.org/support/view/plugin-reviews/give?filter=5#postform" target="_blank" class="give-rating-link" data-rated="' . esc_attr( 'Thanks :)', 'give' ) . '">&#9733;&#9733;&#9733;&#9733;&#9733;</a>'
+			/* translators: %s: Link to 5 star rating */
+			__( 'If you like <strong>Give</strong> please leave us a %s rating. It takes a minute and helps a lot. Thanks in advance!', 'give' ),
+			'<a href="https://wordpress.org/support/view/plugin-reviews/give?filter=5#postform" target="_blank" class="give-rating-link" data-rated="' . __( 'Thanks :)', 'give' ) . '">&#9733;&#9733;&#9733;&#9733;&#9733;</a>'
 		);
 
 		return $rate_text;

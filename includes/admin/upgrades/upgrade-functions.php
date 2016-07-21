@@ -83,7 +83,7 @@ add_action( 'admin_notices', 'give_show_upgrade_notices' );
 function give_trigger_upgrades() {
 
 	if ( ! current_user_can( 'manage_give_settings' ) ) {
-		wp_die( esc_html( 'You do not have permission to do Give upgrades.', 'give' ), esc_html( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( __( 'You do not have permission to do Give upgrades.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	$give_version = get_option( 'give_version' );
@@ -178,7 +178,7 @@ function give_get_completed_upgrades() {
 function give_v132_upgrade_give_payment_customer_id() {
 	global $wpdb;
 	if ( ! current_user_can( 'manage_give_settings' ) ) {
-		wp_die( esc_html( 'You do not have permission to do Give upgrades.', 'give' ), esc_html( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( __( 'You do not have permission to do Give upgrades.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	ignore_user_abort( true );
@@ -215,7 +215,7 @@ function give_v134_upgrade_give_offline_status() {
 	global $wpdb;
 
 	if ( ! current_user_can( 'manage_give_settings' ) ) {
-		wp_die( esc_html( 'You do not have permission to do Give upgrades.', 'give' ), esc_html( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( __( 'You do not have permission to do Give upgrades.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	ignore_user_abort( true );

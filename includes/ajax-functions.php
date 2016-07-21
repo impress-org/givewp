@@ -239,7 +239,7 @@ function give_ajax_form_search() {
 
 		$items[] = array(
 			'id'   => 0,
-			'name' => esc_html( 'No results found', 'give' )
+			'name' => __( 'No results found', 'give' )
 		);
 
 	}
@@ -283,7 +283,7 @@ function give_ajax_donor_search() {
 
 		$donors[] = array(
 			'id'   => 0,
-			'name' => esc_html( 'No results found', 'give' )
+			'name' => __( 'No results found', 'give' )
 		);
 
 	}
@@ -329,7 +329,7 @@ function give_ajax_search_users() {
 				$user_list .= '<li><a href="#" data-userid="' . esc_attr( $user->ID ) . '" data-login="' . esc_attr( $user->user_login ) . '">' . esc_html( $user->user_login ) . '</a></li>';
 			}
 		} else {
-			$user_list .= '<li>' . esc_html( 'No users found', 'give' ) . '</li>';
+			$user_list .= '<li>' . __( 'No users found', 'give' ) . '</li>';
 		}
 		$user_list .= '</ul>';
 
@@ -368,7 +368,7 @@ function give_check_for_form_price_variations() {
 			$ajax_response = '<select class="give_price_options_select give-select give-select" name="give_price_option">';
 
 			if ( isset( $_POST['all_prices'] ) ) {
-				$ajax_response .= '<option value="">' . esc_html( 'All Levels', 'give' ) . '</option>';
+				$ajax_response .= '<option value="">' . __( 'All Levels', 'give' ) . '</option>';
 			}
 
 			foreach ( $variable_prices as $key => $price ) {

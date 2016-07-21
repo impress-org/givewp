@@ -39,20 +39,20 @@ function give_setup_post_types() {
 	);
 
 	$give_forms_labels = apply_filters( 'give_forms_labels', array(
-		'name'               => esc_html( 'Donation %2$s', 'give' ),
+		'name'               => __( 'Donation %2$s', 'give' ),
 		'singular_name'      => '%1$s',
-		'add_new'            => esc_html( 'Add %1$s', 'give' ),
-		'add_new_item'       => esc_html( 'Add New Donation %1$s', 'give' ),
-		'edit_item'          => esc_html( 'Edit Donation %1$s', 'give' ),
-		'new_item'           => esc_html( 'New %1$s', 'give' ),
-		'all_items'          => esc_html( 'All %2$s', 'give' ),
-		'view_item'          => esc_html( 'View %1$s', 'give' ),
-		'search_items'       => esc_html( 'Search %2$s', 'give' ),
-		'not_found'          => esc_html( 'No %2$s found', 'give' ),
-		'not_found_in_trash' => esc_html( 'No %2$s found in Trash', 'give' ),
+		'add_new'            => __( 'Add %1$s', 'give' ),
+		'add_new_item'       => __( 'Add New Donation %1$s', 'give' ),
+		'edit_item'          => __( 'Edit Donation %1$s', 'give' ),
+		'new_item'           => __( 'New %1$s', 'give' ),
+		'all_items'          => __( 'All %2$s', 'give' ),
+		'view_item'          => __( 'View %1$s', 'give' ),
+		'search_items'       => __( 'Search %2$s', 'give' ),
+		'not_found'          => __( 'No %2$s found', 'give' ),
+		'not_found_in_trash' => __( 'No %2$s found in Trash', 'give' ),
 		'parent_item_colon'  => '',
-		'menu_name'          => apply_filters( 'give_menu_name', esc_html( 'Donations', 'give' ) ),
-		'name_admin_bar'     => apply_filters( 'give_name_admin_bar_name', esc_html( 'Donation Form', 'give' ) )
+		'menu_name'          => apply_filters( 'give_menu_name', __( 'Donations', 'give' ) ),
+		'name_admin_bar'     => apply_filters( 'give_name_admin_bar_name', __( 'Donation Form', 'give' ) )
 	) );
 
 	foreach ( $give_forms_labels as $key => $value ) {
@@ -100,17 +100,17 @@ function give_setup_post_types() {
 	$payment_labels = array(
 		'name'               => _x( 'Donations', 'post type general name', 'give' ),
 		'singular_name'      => _x( 'Donation', 'post type singular name', 'give' ),
-		'add_new'            => esc_html( 'Add New', 'give' ),
-		'add_new_item'       => esc_html( 'Add New Donation', 'give' ),
-		'edit_item'          => esc_html( 'Edit Donation', 'give' ),
-		'new_item'           => esc_html( 'New Donation', 'give' ),
-		'all_items'          => esc_html( 'All Donations', 'give' ),
-		'view_item'          => esc_html( 'View Donation', 'give' ),
-		'search_items'       => esc_html( 'Search Donations', 'give' ),
-		'not_found'          => esc_html( 'No Donations found', 'give' ),
-		'not_found_in_trash' => esc_html( 'No Donations found in Trash', 'give' ),
+		'add_new'            => __( 'Add New', 'give' ),
+		'add_new_item'       => __( 'Add New Donation', 'give' ),
+		'edit_item'          => __( 'Edit Donation', 'give' ),
+		'new_item'           => __( 'New Donation', 'give' ),
+		'all_items'          => __( 'All Donations', 'give' ),
+		'view_item'          => __( 'View Donation', 'give' ),
+		'search_items'       => __( 'Search Donations', 'give' ),
+		'not_found'          => __( 'No Donations found', 'give' ),
+		'not_found_in_trash' => __( 'No Donations found in Trash', 'give' ),
 		'parent_item_colon'  => '',
-		'menu_name'          => esc_html( 'Transactions', 'give' )
+		'menu_name'          => __( 'Transactions', 'give' )
 	);
 
 	$payment_args = array(
@@ -147,16 +147,16 @@ function give_setup_taxonomies() {
 		/* translators: %s: form singular label */
 		'name'              => sprintf( _x( '%s Categories', 'taxonomy general name', 'give' ), give_get_forms_label_singular() ),
 		'singular_name'     => _x( 'Category', 'taxonomy singular name', 'give' ),
-		'search_items'      => esc_html( 'Search Categories', 'give' ),
-		'all_items'         => esc_html( 'All Categories', 'give' ),
-		'parent_item'       => esc_html( 'Parent Category', 'give' ),
-		'parent_item_colon' => esc_html( 'Parent Category:', 'give' ),
-		'edit_item'         => esc_html( 'Edit Category', 'give' ),
-		'update_item'       => esc_html( 'Update Category', 'give' ),
+		'search_items'      => __( 'Search Categories', 'give' ),
+		'all_items'         => __( 'All Categories', 'give' ),
+		'parent_item'       => __( 'Parent Category', 'give' ),
+		'parent_item_colon' => __( 'Parent Category:', 'give' ),
+		'edit_item'         => __( 'Edit Category', 'give' ),
+		'update_item'       => __( 'Update Category', 'give' ),
 		/* translators: %s: form singular label */
-		'add_new_item'      => sprintf( esc_html( 'Add New %s Category', 'give' ), give_get_forms_label_singular() ),
-		'new_item_name'     => esc_html( 'New Category Name', 'give' ),
-		'menu_name'         => esc_html( 'Categories', 'give' ),
+		'add_new_item'      => sprintf( __( 'Add New %s Category', 'give' ), give_get_forms_label_singular() ),
+		'new_item_name'     => __( 'New Category Name', 'give' ),
+		'menu_name'         => __( 'Categories', 'give' ),
 	);
 
 	$category_args = apply_filters( 'give_forms_category_args', array(
@@ -190,17 +190,17 @@ function give_setup_taxonomies() {
 		/* translators: %s: form singular label */
 		'name'                  => sprintf( _x( '%s Tags', 'taxonomy general name', 'give' ), give_get_forms_label_singular() ),
 		'singular_name'         => _x( 'Tag', 'taxonomy singular name', 'give' ),
-		'search_items'          => esc_html( 'Search Tags', 'give' ),
-		'all_items'             => esc_html( 'All Tags', 'give' ),
-		'parent_item'           => esc_html( 'Parent Tag', 'give' ),
-		'parent_item_colon'     => esc_html( 'Parent Tag:', 'give' ),
-		'edit_item'             => esc_html( 'Edit Tag', 'give' ),
-		'update_item'           => esc_html( 'Update Tag', 'give' ),
-		'add_new_item'          => esc_html( 'Add New Tag', 'give' ),
-		'new_item_name'         => esc_html( 'New Tag Name', 'give' ),
-		'menu_name'             => esc_html( 'Tags', 'give' ),
+		'search_items'          => __( 'Search Tags', 'give' ),
+		'all_items'             => __( 'All Tags', 'give' ),
+		'parent_item'           => __( 'Parent Tag', 'give' ),
+		'parent_item_colon'     => __( 'Parent Tag:', 'give' ),
+		'edit_item'             => __( 'Edit Tag', 'give' ),
+		'update_item'           => __( 'Update Tag', 'give' ),
+		'add_new_item'          => __( 'Add New Tag', 'give' ),
+		'new_item_name'         => __( 'New Tag Name', 'give' ),
+		'menu_name'             => __( 'Tags', 'give' ),
 		/* translators: %s: form singular label */
-		'choose_from_most_used' => sprintf( esc_html( 'Choose from most used %s tags.', 'give' ), give_get_forms_label_singular() ),
+		'choose_from_most_used' => sprintf( __( 'Choose from most used %s tags.', 'give' ), give_get_forms_label_singular() ),
 	);
 
 	$tag_args = apply_filters( 'give_forms_tag_args', array(
@@ -238,8 +238,8 @@ add_action( 'init', 'give_setup_taxonomies', 0 );
  */
 function give_get_default_form_labels() {
 	$defaults = array(
-		'singular' => esc_html( 'Form', 'give' ),
-		'plural'   => esc_html( 'Forms', 'give' )
+		'singular' => __( 'Form', 'give' ),
+		'plural'   => __( 'Forms', 'give' )
 	);
 
 	return apply_filters( 'give_default_form_name', $defaults );
@@ -286,7 +286,7 @@ function give_change_default_title( $title ) {
 	if ( ! is_admin() ) {
 		$title = sprintf(
 			/* translators: %s: form singular label */
-			esc_html( 'Enter %s title here', 'give' ),
+			__( 'Enter %s title here', 'give' ),
 			give_get_forms_label_singular()
 		);
 
@@ -298,7 +298,7 @@ function give_change_default_title( $title ) {
 	if ( 'give_forms' == $screen->post_type ) {
 		$title = sprintf(
 			/* translators: %s: form singular label */
-			esc_html( 'Enter %s title here', 'give' ),
+			__( 'Enter %s title here', 'give' ),
 			give_get_forms_label_singular()
 		);
 	}
@@ -423,9 +423,9 @@ function give_widgets_init() {
 	if ( give_get_option( 'disable_forms_singular' ) !== 'on' && give_get_option( 'disable_form_sidebar' ) !== 'on' ) {
 
 		register_sidebar( apply_filters( 'give_forms_single_sidebar', array(
-			'name'          => esc_html( 'Give Single Form Sidebar', 'give' ),
+			'name'          => __( 'Give Single Form Sidebar', 'give' ),
 			'id'            => 'give-forms-sidebar',
-			'description'   => esc_html( 'Widgets in this area will be shown on the single Give forms aside area. This sidebar will not display for embedded forms.', 'give' ),
+			'description'   => __( 'Widgets in this area will be shown on the single Give forms aside area. This sidebar will not display for embedded forms.', 'give' ),
 			'before_widget' => '<div id="%1$s" class="widget %2$s">',
 			'after_widget'  => '</div>',
 			'before_title'  => '<h3 class="widgettitle widget-title">',

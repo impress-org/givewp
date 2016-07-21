@@ -63,8 +63,8 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 
 		// Set parent defaults
 		parent::__construct( array(
-			'singular' => esc_html( 'Donor', 'give' ),     // Singular name of the listed records
-			'plural'   => esc_html( 'Donors', 'give' ),    // Plural name of the listed records
+			'singular' => __( 'Donor', 'give' ),     // Singular name of the listed records
+			'plural'   => __( 'Donors', 'give' ),    // Plural name of the listed records
 			'ajax'     => false                        // Does this table support ajax?
 		) );
 
@@ -130,15 +130,15 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
 		}
 		?>
-		<div class="tablenav give-clearfix <?php esc_attr_e( $which ); ?>">
+		<div class="tablenav give-clearfix <?php echo esc_attr( $which ); ?>">
 
-			<h3 class="alignleft reports-earnings-title"><span><?php esc_html_e( 'Donors Report', 'give' ); ?></span></h3>
+			<h3 class="alignleft reports-earnings-title"><span><?php _e( 'Donors Report', 'give' ); ?></span></h3>
 
 			<div class="alignright tablenav-right">
 				<div class="actions bulkactions">
 					<?php
 					if ( 'top' == $which ) {
-						$this->give_search_box( esc_html( 'Search Donors', 'give' ), 'give-donors-report-search' );
+						$this->give_search_box( __( 'Search Donors', 'give' ), 'give-donors-report-search' );
 					}
 
 					$this->bulk_actions( $which ); ?>
@@ -198,11 +198,11 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'name'          => esc_html( 'Name', 'give' ),
-			'id'            => esc_html( 'ID', 'give' ),
-			'email'         => esc_html( 'Email', 'give' ),
-			'num_purchases' => esc_html( 'Purchases', 'give' ),
-			'amount_spent'  => esc_html( 'Total Spent', 'give' )
+			'name'          => __( 'Name', 'give' ),
+			'id'            => __( 'ID', 'give' ),
+			'email'         => __( 'Email', 'give' ),
+			'num_purchases' => __( 'Purchases', 'give' ),
+			'amount_spent'  => __( 'Total Spent', 'give' )
 		);
 
 		return apply_filters( 'give_report_donor_columns', $columns );

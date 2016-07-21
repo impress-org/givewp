@@ -90,10 +90,10 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'ID'      => esc_html( 'Log ID', 'give' ),
-			'details' => esc_html( 'Request Details', 'give' ),
-			'ip'      => esc_html( 'Request IP', 'give' ),
-			'date'    => esc_html( 'Date', 'give' )
+			'ID'      => __( 'Log ID', 'give' ),
+			'details' => __( 'Request Details', 'give' ),
+			'ip'      => __( 'Request IP', 'give' ),
+			'date'    => __( 'Date', 'give' )
 		);
 
 		return $columns;
@@ -129,23 +129,23 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 */
 	public function column_details( $item ) {
 		?>
-		<a href="#TB_inline?width=640&amp;inlineId=log-details-<?php echo $item['ID']; ?>" class="thickbox" title="<?php esc_attr_e( 'View Request Details', 'give' ); ?> "><?php esc_html_e( 'View Request', 'give' ); ?></a>
+		<a href="#TB_inline?width=640&amp;inlineId=log-details-<?php echo $item['ID']; ?>" class="thickbox" title="<?php _e( 'View Request Details', 'give' ); ?> "><?php _e( 'View Request', 'give' ); ?></a>
 		<div id="log-details-<?php echo $item['ID']; ?>" style="display:none;">
 			<?php
 
 			$request = get_post_field( 'post_excerpt', $item['ID'] );
 			$error   = get_post_field( 'post_content', $item['ID'] );
-			echo '<p><strong>' . esc_html( 'API Request:', 'give' ) . '</strong></p>';
+			echo '<p><strong>' . __( 'API Request:', 'give' ) . '</strong></p>';
 			echo '<div>' . $request . '</div>';
 			if ( ! empty( $error ) ) {
-				echo '<p><strong>' . esc_html( 'Error', 'give' ) . '</strong></p>';
+				echo '<p><strong>' . __( 'Error', 'give' ) . '</strong></p>';
 				echo '<div>' . esc_html( $error ) . '</div>';
 			}
-			echo '<p><strong>' . esc_html( 'API User:', 'give' ) . '</strong></p>';
+			echo '<p><strong>' . __( 'API User:', 'give' ) . '</strong></p>';
 			echo '<div>' . get_post_meta( $item['ID'], '_give_log_user', true ) . '</div>';
-			echo '<p><strong>' . esc_html( 'API Key:', 'give' ) . '</strong></p>';
+			echo '<p><strong>' . __( 'API Key:', 'give' ) . '</strong></p>';
 			echo '<div>' . get_post_meta( $item['ID'], '_give_log_key', true ) . '</div>';
-			echo '<p><strong>' . esc_html( 'Request Date:', 'give' ) . '</strong></p>';
+			echo '<p><strong>' . __( 'Request Date:', 'give' ) . '</strong></p>';
 			echo '<div>' . get_post_field( 'post_date', $item['ID'] ) . '</div>';
 			?>
 		</div>
@@ -181,7 +181,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
 		}
 		?>
-		<div class="tablenav <?php esc_attr_e( $which ); ?>">
+		<div class="tablenav <?php echo esc_attr( $which ); ?>">
 
 			<div class="alignleft actions bulkactions">
 				<?php $this->bulk_actions( $which ); ?>

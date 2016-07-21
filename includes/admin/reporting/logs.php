@@ -71,7 +71,7 @@ function give_logs_view_api_requests() {
 		<?php do_action( 'give_logs_api_requests_top' ); ?>
 		<form id="give-logs-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=logs' ); ?>">
 			<?php
-			$logs_table->search_box( esc_html( 'Search', 'give' ), 'give-api-requests' );
+			$logs_table->search_box( __( 'Search', 'give' ), 'give-api-requests' );
 			$logs_table->display();
 			?>
 			<input type="hidden" name="post_type" value="give_forms"/>
@@ -94,9 +94,9 @@ add_action( 'give_logs_view_api_requests', 'give_logs_view_api_requests' );
  */
 function give_log_default_views() {
 	$views = array(
-		'sales'          => esc_html( 'Donations', 'give' ),
-		'gateway_errors' => esc_html( 'Payment Errors', 'give' ),
-		'api_requests'   => esc_html( 'API Requests', 'give' )
+		'sales'          => __( 'Donations', 'give' ),
+		'gateway_errors' => __( 'Payment Errors', 'give' ),
+		'api_requests'   => __( 'API Requests', 'give' )
 	);
 
 	$views = apply_filters( 'give_log_views', $views );
@@ -118,7 +118,7 @@ function give_log_views() {
 		<select id="give-logs-view" name="view">
 			<optgroup label="Log Type:">
 				<?php foreach ( $views as $view_id => $label ): ?>
-					<option value="<?php esc_attr_e( $view_id ); ?>" <?php selected( $view_id, $current_view ); ?>><?php echo $label; ?></option>
+					<option value="<?php echo esc_attr( $view_id ); ?>" <?php selected( $view_id, $current_view ); ?>><?php echo $label; ?></option>
 				<?php endforeach; ?>
 			</optgroup>
 		</select>
@@ -129,7 +129,7 @@ function give_log_views() {
 		<input type="hidden" name="page" value="give-reports"/>
 		<input type="hidden" name="tab" value="logs"/>
 
-		<?php submit_button( esc_html( 'Apply', 'give' ), 'secondary', 'submit', false ); ?>
+		<?php submit_button( __( 'Apply', 'give' ), 'secondary', 'submit', false ); ?>
 	</form>
 	<?php
 }

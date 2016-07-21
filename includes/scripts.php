@@ -43,22 +43,22 @@ function give_load_scripts() {
 		'currency_pos'        => give_get_currency_position(),
 		'thousands_separator' => isset( $give_options['thousands_separator'] ) ? $give_options['thousands_separator'] : ',',
 		'decimal_separator'   => isset( $give_options['decimal_separator'] ) ? $give_options['decimal_separator'] : '.',
-		'no_gateway'          => esc_html( 'Please select a payment method.', 'give' ),
-		'bad_minimum'         => esc_html( 'The minimum donation amount for this form is', 'give' ),
-		'general_loading'     => esc_html( 'Loading...', 'give' ),
-		'purchase_loading'    => esc_html( 'Please Wait...', 'give' ),
-		'number_decimals'     => give_get_price_decimals(),
+		'no_gateway'          => __( 'Please select a payment method.', 'give' ),
+		'bad_minimum'         => __( 'The minimum donation amount for this form is', 'give' ),
+		'general_loading'     => __( 'Loading...', 'give' ),
+		'purchase_loading'    => __( 'Please Wait...', 'give' ),
+		'number_decimals'  => give_get_price_decimals(),
 		'give_version'        => GIVE_VERSION
 	) );
 	$localize_give_ajax     = apply_filters( 'give_global_ajax_vars', array(
-		'ajaxurl'         => give_get_ajax_url(),
-		'loading'         => esc_html( 'Loading', 'give' ),
+		'ajaxurl'          => give_get_ajax_url(),
+		'loading'          => __( 'Loading', 'give' ),
 		// General loading message
-		'select_option'   => esc_html( 'Please select an option', 'give' ),
+		'select_option'    => __( 'Please select an option', 'give' ),
 		// Variable pricing error with multi-purchase option enabled
-		'default_gateway' => give_get_default_gateway( null ),
-		'permalinks'      => get_option( 'permalink_structure' ) ? '1' : '0',
-		'number_decimals' => give_get_price_decimals()
+		'default_gateway'  => give_get_default_gateway( null ),
+		'permalinks'       => get_option( 'permalink_structure' ) ? '1' : '0',
+		'number_decimals'  => give_get_price_decimals()
 	) );
 
 	//DEBUG is On
@@ -175,7 +175,9 @@ add_action( 'wp_enqueue_scripts', 'give_register_styles' );
  * Enqueues the required admin scripts.
  *
  * @since 1.0
+ *
  * @global       $post
+ * @global       $give_options
  *
  * @param string $hook Page hook
  *
@@ -183,7 +185,7 @@ add_action( 'wp_enqueue_scripts', 'give_register_styles' );
  */
 function give_load_admin_scripts( $hook ) {
 
-	global $wp_version, $post, $post_type;
+	global $wp_version, $post, $post_type, $give_options;
 
 	//Directories of assets
 	$js_dir     = GIVE_PLUGIN_URL . 'assets/js/admin/';
@@ -227,60 +229,64 @@ function give_load_admin_scripts( $hook ) {
 	wp_enqueue_script( 'jquery-ui-datepicker' );
 	wp_enqueue_script( 'thickbox' );
 
-	//Forms CPT Script
+	// Forms CPT Script.
 	if ( $post_type === 'give_forms' ) {
 		wp_register_script( 'give-admin-forms-scripts', $js_dir . 'admin-forms' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
 		wp_enqueue_script( 'give-admin-forms-scripts' );
 	}
+
 	// Report Scripts.
-	if ( isset( $_GET['page'] ) && $_GET['page'] == 'give-reports' ) {
+	if ( isset($_GET['page']) && $_GET['page'] == 'give-reports'  ) {
 		wp_register_script( 'give-accounting', $js_plugins . 'accounting' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
 		wp_enqueue_script( 'give-accounting' );
 	}
 
-	//Settings Scripts
-	if ( isset( $_GET['page'] ) && $_GET['page'] == 'give-settings' ) {
-		wp_enqueue_script( 'jquery-ui-sortable' );
-		wp_register_script( 'give-admin-settings-scripts', $js_dir . 'admin-settings' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
-		wp_enqueue_script( 'give-admin-settings-scripts' );
-	}
+    //Settings Scripts
+    if (isset($_GET['page']) && $_GET['page'] == 'give-settings'  ) {
+        wp_register_script( 'give-admin-settings-scripts', $js_dir . 'admin-settings' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
+        wp_enqueue_script( 'give-admin-settings-scripts' );
+    }
 
-	//Localize strings & variables for JS
+    // Price Separators.
+    $thousand_separator = isset( $give_options['thousands_separator'] ) ? $give_options['thousands_separator'] : ',';
+    $decimal_separator  = isset( $give_options['decimal_separator'] ) ? $give_options['decimal_separator'] : '.';
+
+    //Localize strings & variables for JS
 	wp_localize_script( 'give-admin-scripts', 'give_vars', array(
 		'post_id'                 => isset( $post->ID ) ? $post->ID : null,
 		'give_version'            => GIVE_VERSION,
-		'thousands_separator'     => give_get_option( 'thousands_separator' ),
-		'decimal_separator'       => give_get_option( 'decimal_separator' ),
-		'quick_edit_warning'      => esc_html( 'Sorry, not available for variable priced forms.', 'give' ),
-		'delete_payment'          => esc_html( 'Are you sure you wish to delete this payment?', 'give' ),
-		'delete_payment_note'     => esc_html( 'Are you sure you wish to delete this note?', 'give' ),
-		'revoke_api_key'          => esc_html( 'Are you sure you wish to revoke this API key?', 'give' ),
-		'regenerate_api_key'      => esc_html( 'Are you sure you wish to regenerate this API key?', 'give' ),
-		'resend_receipt'          => esc_html( 'Are you sure you wish to resend the donation receipt?', 'give' ),
-		'copy_download_link_text' => esc_html( 'Copy these links to your clipboard and give them to your donor.', 'give' ),
+        'thousands_separator'     => $thousand_separator,
+        'decimal_separator'       => $decimal_separator,
+        'quick_edit_warning'      => __( 'Sorry, not available for variable priced forms.', 'give' ),
+		'delete_payment'          => __( 'Are you sure you wish to delete this payment?', 'give' ),
+		'delete_payment_note'     => __( 'Are you sure you wish to delete this note?', 'give' ),
+		'revoke_api_key'          => __( 'Are you sure you wish to revoke this API key?', 'give' ),
+		'regenerate_api_key'      => __( 'Are you sure you wish to regenerate this API key?', 'give' ),
+		'resend_receipt'          => __( 'Are you sure you wish to resend the donation receipt?', 'give' ),
+		'copy_download_link_text' => __( 'Copy these links to your clipboard and give them to your donor.', 'give' ),
 		/* translators: %s: form singular label */
-		'delete_payment_download' => sprintf( esc_html( 'Are you sure you wish to delete this %s?', 'give' ), give_get_forms_label_singular() ),
-		'one_price_min'           => esc_html( 'You must have at least one price.', 'give' ),
-		'one_file_min'            => esc_html( 'You must have at least one file.', 'give' ),
-		'one_field_min'           => esc_html( 'You must have at least one field.', 'give' ),
+		'delete_payment_download' => sprintf( __( 'Are you sure you wish to delete this %s?', 'give' ), give_get_forms_label_singular() ),
+		'one_price_min'           => __( 'You must have at least one price.', 'give' ),
+		'one_file_min'            => __( 'You must have at least one file.', 'give' ),
+		'one_field_min'           => __( 'You must have at least one field.', 'give' ),
 		/* translators: %s: form singular label */
-		'one_option'              => sprintf( esc_html( 'Choose a %s', 'give' ), give_get_forms_label_singular() ),
+		'one_option'              => sprintf( __( 'Choose a %s', 'give' ), give_get_forms_label_singular() ),
 		/* translators: %s: form plural label */
-		'one_or_more_option'      => sprintf( esc_html( 'Choose one or more %s', 'give' ), give_get_forms_label_plural() ),
-		'numeric_item_price'      => esc_html( 'Item price must be numeric.', 'give' ),
-		'numeric_quantity'        => esc_html( 'Quantity must be numeric.', 'give' ),
+		'one_or_more_option'      => sprintf( __( 'Choose one or more %s', 'give' ), give_get_forms_label_plural() ),
+		'numeric_item_price'      => __( 'Item price must be numeric.', 'give' ),
+		'numeric_quantity'        => __( 'Quantity must be numeric.', 'give' ),
 		'currency_sign'           => give_currency_filter( '' ),
 		'currency_pos'            => isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before',
 		'currency_decimals'       => give_currency_decimal_filter(),
 		'new_media_ui'            => apply_filters( 'give_use_35_media_ui', 1 ),
-		'remove_text'             => esc_html( 'Remove', 'give' ),
+		'remove_text'             => __( 'Remove', 'give' ),
 		/* translators: %s: form plural label */
-		'type_to_search'          => sprintf( esc_html( 'Type to search %s', 'give' ), give_get_forms_label_plural() ),
-		'batch_export_no_class'   => esc_html( 'You must choose a method.', 'give' ),
-		'batch_export_no_reqs'    => esc_html( 'Required fields not completed.', 'give' ),
-		'reset_stats_warn'        => esc_html( 'Are you sure you want to reset Give? This process is <strong><em>not reversible</em></strong> and will delete all data regardless of test or live mode. Please be sure you have a recent backup before proceeding.', 'give' ),
-		'price_format_guide'      => sprintf( esc_html( 'Please enter amount in monetary decimal ( %1$s ) format without thousand separator ( %2$s ) .', 'give' ), give_get_option( 'decimal_separator' ), give_get_option( 'thousands_separator' ) )
-	) );
+		'type_to_search'          => sprintf( __( 'Type to search %s', 'give' ), give_get_forms_label_plural() ),
+		'batch_export_no_class'   => __( 'You must choose a method.', 'give' ),
+		'batch_export_no_reqs'    => __( 'Required fields not completed.', 'give' ),
+		'reset_stats_warn'        => __( 'Are you sure you want to reset Give? This process is <strong><em>not reversible</em></strong> and will delete all data regardless of test or live mode. Please be sure you have a recent backup before proceeding.', 'give' ),
+        'price_format_guide'      => sprintf( __( 'Please enter amount in monetary decimal ( %1$s ) format without thousand separator ( %2$s ) .', 'give' ), $decimal_separator, $thousand_separator )
+    ) );
 
 	if ( function_exists( 'wp_enqueue_media' ) && version_compare( $wp_version, '3.5', '>=' ) ) {
 		//call for new media manager
@@ -320,9 +326,9 @@ function give_admin_icon() {
 
 		.dashicons-give:before, #adminmenu div.wp-menu-image.dashicons-give:before {
 			font-family: 'give-icomoon';
-			font-size: 18px;
-			width: 18px;
-			height: 18px;
+			font-size:18px;
+			width:18px;
+			height:18px;
 			content: "\e800";
 		}
 

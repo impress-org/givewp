@@ -424,7 +424,7 @@ class Give_API {
 	 */
 	private function missing_auth() {
 		$error          = array();
-		$error['error'] = esc_html( 'You must specify both a token and API key!', 'give' );
+		$error['error'] = esc_attr__( 'You must specify both a token and API key!', 'give' );
 
 		$this->data = $error;
 		$this->output( 401 );
@@ -441,7 +441,7 @@ class Give_API {
 	 */
 	private function invalid_auth() {
 		$error          = array();
-		$error['error'] = esc_html( 'Your request could not be authenticated!', 'give' );
+		$error['error'] = esc_attr__( 'Your request could not be authenticated!', 'give' );
 
 		$this->data = $error;
 		$this->output( 403 );
@@ -458,7 +458,7 @@ class Give_API {
 	 */
 	private function invalid_key() {
 		$error          = array();
-		$error['error'] = esc_html( 'Invalid API key!', 'give' );
+		$error['error'] = esc_attr__( 'Invalid API key!', 'give' );
 
 		$this->data = $error;
 		$this->output( 403 );
@@ -474,7 +474,7 @@ class Give_API {
 	 */
 	private function invalid_version() {
 		$error          = array();
-		$error['error'] = esc_html( 'Invalid API version!', 'give' );
+		$error['error'] = esc_attr__( 'Invalid API version!', 'give' );
 
 		$this->data = $error;
 		$this->output( 404 );
@@ -612,7 +612,7 @@ class Give_API {
 
 		// Make sure our query is valid
 		if ( ! in_array( $query, $accepted ) ) {
-			$error['error'] = esc_html( 'Invalid query!', 'give' );
+			$error['error'] = __( 'Invalid query!', 'give' );
 
 			$this->data = $error;
 			// 400 is Bad Request
@@ -919,7 +919,7 @@ class Give_API {
 
 			$error['error'] = sprintf(
 				/* translators: %s: customer */
-				esc_html( 'Donor %s not found!', 'give' ),
+				__( 'Donor %s not found!', 'give' ),
 				$customer
 			);
 
@@ -927,7 +927,7 @@ class Give_API {
 
 		} else {
 
-			$error['error'] = esc_html( 'No donors found!', 'give' );
+			$error['error'] = __( 'No donors found!', 'give' );
 
 			return $error;
 
@@ -977,7 +977,7 @@ class Give_API {
 			} else {
 				$error['error'] = sprintf(
 					/* translators: %s: form */
-					esc_html( 'Form %s not found!', 'give' ),
+					__( 'Form %s not found!', 'give' ),
 					$form
 				);
 
@@ -1097,12 +1097,12 @@ class Give_API {
 
 					// Ensure the end date is later than the start date
 					if ( $args['enddate'] < $args['startdate'] ) {
-						$error['error'] = esc_html( 'The end date must be later than the start date!', 'give' );
+						$error['error'] = __( 'The end date must be later than the start date!', 'give' );
 					}
 
 					// Ensure both the start and end date are specified
 					if ( empty( $args['startdate'] ) || empty( $args['enddate'] ) ) {
-						$error['error'] = esc_html( 'Invalid or no date range specified!', 'give' );
+						$error['error'] = __( 'Invalid or no date range specified!', 'give' );
 					}
 
 					$total = 0;
@@ -1188,7 +1188,7 @@ class Give_API {
 				} else {
 					$error['error'] = sprintf(
 						/* translators: %s: form */
-						esc_html( 'Product %s not found!', 'give' ),
+						__( 'Product %s not found!', 'give' ),
 						$args['form']
 					);
 				}
@@ -1209,12 +1209,12 @@ class Give_API {
 
 					// Ensure the end date is later than the start date
 					if ( $args['enddate'] < $args['startdate'] ) {
-						$error['error'] = esc_html( 'The end date must be later than the start date!', 'give' );
+						$error['error'] = __( 'The end date must be later than the start date!', 'give' );
 					}
 
 					// Ensure both the start and end date are specified
 					if ( empty( $args['startdate'] ) || empty( $args['enddate'] ) ) {
-						$error['error'] = esc_html( 'Invalid or no date range specified!', 'give' );
+						$error['error'] = __( 'Invalid or no date range specified!', 'give' );
 					}
 
 					$total = (float) 0.00;
@@ -1305,7 +1305,7 @@ class Give_API {
 				} else {
 					$error['error'] = sprintf(
 						/* translators: %s: form */
-						esc_html( 'Form %s not found!', 'give' ),
+						__( 'Form %s not found!', 'give' ),
 						$args['form']
 					);
 				}
@@ -1618,7 +1618,7 @@ class Give_API {
 				<tbody>
 				<tr>
 					<th>
-						<?php esc_html_e( 'Give API Keys', 'give' ); ?>
+						<?php esc_attr_e( 'Give API Keys', 'give' ); ?>
 					</th>
 					<td>
 						<?php
@@ -1627,19 +1627,19 @@ class Give_API {
 						?>
 						<?php if ( empty( $user->give_user_public_key ) ) { ?>
 							<input name="give_set_api_key" type="checkbox" id="give_set_api_key" value="0"/>
-							<span class="description"><?php esc_html_e( 'Generate API Key', 'give' ); ?></span>
+							<span class="description"><?php esc_attr_e( 'Generate API Key', 'give' ); ?></span>
 						<?php } else { ?>
-							<strong style="display:inline-block; width: 125px;"><?php esc_html_e( 'Public key:', 'give' ); ?>&nbsp;</strong>
-							<input type="text" disabled="disabled" class="regular-text" id="publickey" value="<?php esc_attr_e( $public_key ); ?>"/>
+							<strong style="display:inline-block; width: 125px;"><?php _e( 'Public key:', 'give' ); ?>&nbsp;</strong>
+							<input type="text" disabled="disabled" class="regular-text" id="publickey" value="<?php echo esc_attr( $public_key ); ?>"/>
 							<br/>
-							<strong style="display:inline-block; width: 125px;"><?php esc_html_e( 'Secret key:', 'give' ); ?>&nbsp;</strong>
-							<input type="text" disabled="disabled" class="regular-text" id="privatekey" value="<?php esc_attr_e( $secret_key ); ?>"/>
+							<strong style="display:inline-block; width: 125px;"><?php esc_attr_e( 'Secret key:', 'give' ); ?>&nbsp;</strong>
+							<input type="text" disabled="disabled" class="regular-text" id="privatekey" value="<?php echo esc_attr( $secret_key ); ?>"/>
 							<br/>
-							<strong style="display:inline-block; width: 125px;"><?php esc_html_e( 'Token:', 'give' ); ?>&nbsp;</strong>
-							<input type="text" disabled="disabled" class="regular-text" id="token" value="<?php esc_attr_e( $this->get_token( $user->ID ) ); ?>"/>
+							<strong style="display:inline-block; width: 125px;"><?php esc_attr_e( 'Token:', 'give' ); ?>&nbsp;</strong>
+							<input type="text" disabled="disabled" class="regular-text" id="token" value="<?php echo esc_attr( $this->get_token( $user->ID ) ); ?>"/>
 							<br/>
 							<input name="give_set_api_key" type="checkbox" id="give_set_api_key" value="0"/>
-							<span class="description"><label for="give_set_api_key"><?php esc_html_e( 'Revoke API Keys', 'give' ); ?></label></span>
+							<span class="description"><label for="give_set_api_key"><?php esc_attr_e( 'Revoke API Keys', 'give' ); ?></label></span>
 						<?php } ?>
 					</td>
 				</tr>
@@ -1662,12 +1662,12 @@ class Give_API {
 
 		if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'give-api-nonce' ) ) {
 
-			wp_die( esc_html( 'Nonce verification failed.', 'give' ), esc_html( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die( esc_attr__( 'Nonce verification failed.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 
 		}
 
 		if ( empty( $args['user_id'] ) ) {
-			wp_die( esc_html( 'User ID Required.', 'give' ), esc_html( 'Error', 'give' ), array( 'response' => 401 ) );
+			wp_die( esc_attr__( 'User ID Required.', 'give' ), esc_attr__( 'Error', 'give' ), array( 'response' => 401 ) );
 		}
 
 		if ( is_numeric( $args['user_id'] ) ) {
@@ -1682,20 +1682,20 @@ class Give_API {
 			wp_die(
 				sprintf(
 					/* translators: %s: process */
-					esc_html( 'You do not have permission to %s API keys for this user.', 'give' ),
+					__( 'You do not have permission to %s API keys for this user.', 'give' ),
 					$process
 				),
-				esc_html( 'Error', 'give' ),
+				__( 'Error', 'give' ),
 				array( 'response' => 403 )
 			);
 		} elseif ( ! current_user_can( 'manage_give_settings' ) ) {
 			wp_die(
 				sprintf(
 					/* translators: %s: process */
-					esc_html( 'You do not have permission to %s API keys for this user.', 'give' ),
+					__( 'You do not have permission to %s API keys for this user.', 'give' ),
 					$process
 				),
-				esc_html( 'Error', 'give' ),
+				__( 'Error', 'give' ),
 				array( 'response' => 403 )
 			);
 		}

@@ -188,7 +188,7 @@ class Give_Graph {
 							foreach( $this->get_data() as $label => $data ) :
 						?>
 						{
-							label : "<?php esc_attr_e( $label ); ?>",
+							label : "<?php echo esc_attr( $label ); ?>",
 							id    : "<?php echo sanitize_key( $label ); ?>",
 							// data format is: [ point on x, value on y ]
 							data  : [<?php foreach( $data as $point ) { echo '[' . implode( ',', $point ) . '],'; } ?>],
