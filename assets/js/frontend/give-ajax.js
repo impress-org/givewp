@@ -193,8 +193,7 @@ jQuery(document).ready(function ($) {
 /**
  * Load the Payment Gateways
  *
- * AJAX load appropriate gateway fields.
- *
+ * @description: AJAX load appropriate gateway fields
  * @param form_object Obj The specific form to load a gateway for
  * @param payment_mode
  */
@@ -218,13 +217,15 @@ function give_load_gateway(form_object, payment_mode) {
             }
         });
     }
+
     //Post via AJAX to Give
     jQuery.post(give_scripts.ajaxurl + '?payment-mode=' + payment_mode, {
             action: 'give_load_gateway',
             give_total: give_total,
             give_form_id: give_form_id,
             give_payment_mode: payment_mode
-        }, function (response) {
+        },
+        function (response) {
             //Success: let's output the gateway fields in the appropriate form space
             jQuery(form_object).unblock();
             jQuery(form_object).find('#give_purchase_form_wrap').html(response);
