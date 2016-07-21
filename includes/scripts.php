@@ -271,7 +271,7 @@ function give_load_admin_scripts( $hook ) {
 		'type_to_search'          => sprintf( esc_html( 'Type to search %s', 'give' ), give_get_forms_label_plural() ),
 		'batch_export_no_class'   => esc_html( 'You must choose a method.', 'give' ),
 		'batch_export_no_reqs'    => esc_html( 'Required fields not completed.', 'give' ),
-		'reset_stats_warn'        => esc_html( 'Are you sure you want to reset Give? This process is <strong><em>not reversible</em></strong> and will delete all data regardless of test or live mode. Please be sure you have a recent backup before proceeding.', 'give' ),
+		'reset_stats_warn'        => __( 'Are you sure you want to reset Give? This process is <strong><em>not reversible</em></strong> and will delete all data regardless of test or live mode. Please be sure you have a recent backup before proceeding.', 'give' ),
 	) );
 
 	if ( function_exists( 'wp_enqueue_media' ) && version_compare( $wp_version, '3.5', '>=' ) ) {

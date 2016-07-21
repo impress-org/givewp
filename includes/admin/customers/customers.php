@@ -73,7 +73,7 @@ function give_customers_list() {
 	$customers_table->prepare_items();
 	?>
 	<div class="wrap">
-		<h2><?php esc_html( 'Donors', 'give' ); ?></h2>
+		<h2><?php esc_html_e( 'Donors', 'give' ); ?></h2>
 		<?php do_action( 'give_donors_table_top' ); ?>
 		<form id="give-donors-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors' ); ?>">
 			<?php
