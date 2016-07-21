@@ -248,7 +248,7 @@ abstract class Give_Shortcode_Generator {
 
 			// do not reindex array!
 			$field['options'] = array(
-				                    '' => ( $field['placeholder'] ? $field['placeholder'] : sprintf( '– %s –', __( 'Select', 'give' ) ) ),
+				                    '' => ( $field['placeholder'] ? $field['placeholder'] : __( '- Select -', 'give' ) ),
 			                    ) + $field['options'];
 
 			foreach ( $field['options'] as $value => $text ) {
@@ -388,7 +388,9 @@ abstract class Give_Shortcode_Generator {
 
 				} else if ( ! empty( $label ) ) {
 
-					$alert = sprintf( __( 'The "%s" option is required.', 'give' ),
+					$alert = sprintf(
+						/* translators: %s: option lable */
+						__( 'The "%s" option is required.', 'give' ),
 						str_replace( ':', '', $label )
 					);
 				}

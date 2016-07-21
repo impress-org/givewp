@@ -206,7 +206,7 @@ function give_customer_save_note( $args ) {
 	}
 
 	if ( empty( $customer_note ) ) {
-		give_set_error( 'empty-customer-note', __( 'A note is required', 'give' ) );
+		give_set_error( 'empty-customer-note', __( 'A note is required.', 'give' ) );
 	}
 
 	if ( give_get_errors() ) {
@@ -260,7 +260,7 @@ function give_customer_delete( $args ) {
 	$customer_edit_role = apply_filters( 'give_edit_customers_role', 'edit_give_payments' );
 
 	if ( ! is_admin() || ! current_user_can( $customer_edit_role ) ) {
-		wp_die( __( 'You do not have permission to delete this donor.', 'give' ) );
+		wp_die( __( 'You do not have permission to delete donors.', 'give' ) );
 	}
 
 	if ( empty( $args ) ) {
@@ -277,7 +277,7 @@ function give_customer_delete( $args ) {
 	}
 
 	if ( ! $confirm ) {
-		give_set_error( 'customer-delete-no-confirm', __( 'Please confirm you want to delete this donor', 'give' ) );
+		give_set_error( 'customer-delete-no-confirm', __( 'Please confirm you want to delete this donor.', 'give' ) );
 	}
 
 	if ( give_get_errors() ) {
@@ -318,14 +318,14 @@ function give_customer_delete( $args ) {
 
 		} else {
 
-			give_set_error( 'give-donor-delete-failed', __( 'Error deleting donor', 'give' ) );
+			give_set_error( 'give-donor-delete-failed', __( 'Error deleting donor.', 'give' ) );
 			$redirect = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id=' . $customer_id );
 
 		}
 
 	} else {
 
-		give_set_error( 'give-customer-delete-invalid-id', __( 'Invalid Donor ID', 'give' ) );
+		give_set_error( 'give-customer-delete-invalid-id', __( 'Invalid Donor ID.', 'give' ) );
 		$redirect = admin_url( 'edit.php?post_type=give_forms&page=give-donors' );
 
 	}
@@ -386,7 +386,7 @@ function give_disconnect_customer_user_id( $args ) {
 	} else {
 
 		$output['success'] = false;
-		give_set_error( 'give-disconnect-user-fail', __( 'Failed to disconnect user from donor', 'give' ) );
+		give_set_error( 'give-disconnect-user-fail', __( 'Failed to disconnect user from donor.', 'give' ) );
 	}
 
 	do_action( 'give_post_customer_disconnect_user_id', $customer_id );

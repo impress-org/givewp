@@ -165,8 +165,18 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 == Changelog ==
 
 = 1.6:  =
+* New: Added a "Reset Password" option to the donation form if the user is prompted to login - https://github.com/WordImpress/Give/issues/723
+* New: Switch a transaction to a different form - https://github.com/WordImpress/Give/issues/429
+* New: Human readable large monetary goal formats - https://github.com/WordImpress/Give/issues/650
+* Tweak: Easier and more understandable strings according for translations i18n - thanks @ramiy! - https://github.com/WordImpress/Give/issues/451
 * Tweak: Update the country dropdown to use the new ISO country codes for islands in Dutch West Indies - https://github.com/WordImpress/Give/issues/698
 * Tweak: Updated to the latest version of CMB2 & tested compatibility - https://github.com/WordImpress/Give/issues/670
+* Fix: Unrendered html in multi-level donation confirmation emails - https://github.com/WordImpress/Give/issues/754
+* Fix: Text editor do not have same height for visual mode and text mode - https://github.com/WordImpress/Give/issues/688
+* Fix:  Auto populate state list is not working on transaction detail page - https://github.com/WordImpress/Give/issues/715
+* Fix: Unable to view payment history for donors with unusual characters in the email - https://github.com/WordImpress/Give/issues/717
+* Fix: Mixed content warning with placeholder image - https://github.com/WordImpress/Give/issues/768
+* Fix: Secure SSL padlock icon and style is broken due to a11y changes in #325 - https://github.com/WordImpress/Give/issues/769
 
 = 1.5.2: June 31, 2016 =
 * New: Added an addition "status" column for donation logs - https://github.com/WordImpress/Give/issues/684

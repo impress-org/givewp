@@ -457,6 +457,23 @@ final class Give_Payment {
 		return true;
 	}
 
+    /**
+     * Payment class object is storing various meta value in object parameter.
+     * So if user is updating payment meta but not updating payment object, then payment meta values will not reflect/changes on payment meta automatically
+     * and you can still access payment meta old value in any old payment object ( previously created ) which can cause to show or save wrong payment data.
+     * To prevent that user can use this function after updating any payment meta value ( in bulk or single update ).
+     *  
+     * @since 1.6
+     * @access public
+     * 
+     * @param int $payment_id Payment ID.
+     * 
+     * @return void
+     */
+    public function update_payment_setup( $payment_id ){
+        $this->setup_payment( $payment_id );
+    }
+
 	/**
 	 * Create the base of a payment.
 	 *
@@ -573,7 +590,7 @@ final class Give_Payment {
 	/**
 	 * Save
 	 *
-	 * @description: Once items have been set, an update is needed to save them to the database.
+	 * Once items have been set, an update is needed to save them to the database.
 	 *
 	 * @return bool  True of the save occurred, false if it failed or wasn't needed
 	 */
@@ -1295,6 +1312,9 @@ final class Give_Payment {
 				case 'pending':
 					$this->process_pending();
 					break;
+                case 'cancelled':
+                    $this->process_cancelled();
+                    break;
 			}
 
 			do_action( 'give_update_payment_status', $this->ID, $status, $old_status );
@@ -1481,6 +1501,41 @@ final class Give_Payment {
 		// Clear the This Month earnings (this_monththis_month is NOT a typo)
 		delete_transient( md5( 'give_earnings_this_monththis_month' ) );
 	}
+
+    /**
+     * Process when a payment moves to cancelled
+     *
+     * @since  1.5
+     * @return void
+     */
+    private function process_cancelled() {
+        $process_cancelled = true;
+
+        // If the payment was not in publish or revoked status, don't decrement stats as they were never incremented
+        if ( ( 'publish' != $this->old_status && 'revoked' != $this->old_status ) || 'cancelled' != $this->status ) {
+            $process_cancelled = false;
+        }
+
+        // Allow extensions to filter for their own payment types, Example: Recurring Payments
+        $process_cancelled = apply_filters( 'give_should_process_cancelled', $process_cancelled, $this );
+
+        if ( false === $process_cancelled ) {
+            return;
+        }
+
+        $decrease_store_earnings = apply_filters( 'give_decrease_store_earnings_on_cancelled', true, $this );
+        $decrease_customer_value = apply_filters( 'give_decrease_customer_value_on_cancelled', true, $this );
+        $decrease_purchase_count = apply_filters( 'give_decrease_customer_purchase_count_on_cancelled', true, $this );
+
+        $this->maybe_alter_stats( $decrease_store_earnings, $decrease_customer_value, $decrease_purchase_count );
+        $this->delete_sales_logs();
+
+        $this->completed_date = false;
+        $this->update_meta( '_give_completed_date', '' );
+
+        // Clear the This Month earnings (this_monththis_month is NOT a typo)
+        delete_transient( md5( 'give_earnings_this_monththis_month' ) );
+    }
 
 	/**
 	 * Used during the process of moving to refunded or pending, to decrement stats

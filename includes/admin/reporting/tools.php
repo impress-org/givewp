@@ -67,8 +67,20 @@ function give_tools_recount_stats_display() {
 
 					<span class="give-recount-stats-descriptions">
 						<span id="recount-stats"><?php _e( 'Recalculates the overall donation income amount.', 'give' ); ?></span>
-						<span id="recount-form"><?php printf( __( 'Recalculates the donation and income stats for a specific %s.', 'give' ), give_get_forms_label_singular( true ) ); ?></span>
-						<span id="recount-all"><?php printf( __( 'Recalculates the earnings and sales stats for all %s.', 'give' ), give_get_forms_label_plural( true ) ); ?></span>
+						<span id="recount-form"><?php
+							printf(
+								/* translators: %s: form singular label */
+								__( 'Recalculates the donation and income stats for a specific %s.', 'give' ),
+								give_get_forms_label_singular( true )
+							);
+						?></span>
+						<span id="recount-all"><?php
+							printf(
+								/* translators: %s: form plural label */
+								__( 'Recalculates the earnings and sales stats for all %s.', 'give' ),
+								give_get_forms_label_plural( true )
+							);
+						?></span>
 						<span id="recount-customer-stats"><?php _e( 'Recalculates the lifetime value and donation counts for all donors.', 'give' ); ?></span>
 						<?php do_action( 'give_recount_tool_descriptions' ); ?>
 						<span id="delete-test-transactions"><?php _e( '<strong>Deletes</strong> all TEST payment records, donors, and related log entries.', 'give' ); ?></span>

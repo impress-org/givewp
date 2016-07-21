@@ -110,7 +110,12 @@ function give_record_status_change( $payment_id, $new_status, $old_status ) {
 	$old_status = isset( $stati[ $old_status ] ) ? $stati[ $old_status ] : $old_status;
 	$new_status = isset( $stati[ $new_status ] ) ? $stati[ $new_status ] : $new_status;
 
-	$status_change = sprintf( __( 'Status changed from %s to %s', 'give' ), $old_status, $new_status );
+	$status_change = sprintf(
+		/* translators: 1: old status 2: new status */
+		__( 'Status changed from %1$s to %2$s.', 'give' ),
+		$old_status,
+		$new_status
+	);
 
 	give_insert_payment_note( $payment_id, $status_change );
 }

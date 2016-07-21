@@ -2,7 +2,7 @@
 /**
  * Give Welcome Page Class
  *
- * @description Displays on plugin activation
+ * Displays on plugin activation
  * @package     Give
  * @subpackage  Admin/Welcome
  * @copyright   Copyright (c) 2016, WordImpress
@@ -245,17 +245,36 @@ class Give_Welcome {
 		list( $display_version ) = explode( '-', GIVE_VERSION );
 		?>
 		<div class="wrap about-wrap">
-			<h1 class="welcome-h1"><?php printf( __( 'Welcome to Give %s', 'give' ), $display_version ); ?></h1>
+			<h1 class="welcome-h1"><?php
+				printf(
+					/* translators: %s: Give version */
+					__( 'Welcome to Give %s', 'give' ),
+					$display_version
+				);
+			?></h1>
 
 			<?php give_social_media_elements() ?>
 
-			<div class="about-text"><?php printf( __( 'Thank you for activating or updating to the latest version of Give! If you\'re a first time user, welcome! You\'re well on your way to empowering your cause. </You>We encourage you to check out the <a href="%s" title="View the Give plugin documentation online" target="_blank">plugin documentation</a> and getting started guide below.', 'give' ), 'https://givewp.com/documenation/' ); ?></div>
+			<div class="about-text"><?php
+				printf(
+					/* translators: 1: https://givewp.com/documenation/ 2: title attribute text */
+					__( 'Thank you for activating or updating to the latest version of Give! If you\'re a first time user, welcome! You\'re well on your way to empowering your cause. </You>We encourage you to check out the <a href="%1$s" title="%2$s" target="_blank">plugin documentation</a> and getting started guide below.', 'give' ),
+					esc_url( 'https://givewp.com/documenation/' ),
+					esc_attr( 'View the Give plugin documentation online', 'give' )
+				);
+			?></div>
 
 			<p class="newsletter-intro"><?php _e( 'Be sure to sign up for the Give newsletter below to stay informed of important updates and news.', 'give' ); ?></p>
 
 			<?php give_get_newsletter() ?>
 
-			<div class="give-badge"><?php printf( __( 'Version %s', 'give' ), $display_version ); ?></div>
+			<div class="give-badge"><?php
+				printf(
+					/* translators: %s: Give version */
+					__( 'Version %s', 'give' ),
+					$display_version
+				);
+			?></div>
 
 
 
@@ -320,8 +339,20 @@ class Give_Welcome {
 		<div class="wrap about-wrap">
 			<h1><?php _e( 'Give Changelog', 'give' ); ?></h1>
 
-			<div class="about-text"><?php printf( __( 'Thank you for updating to the latest version! Give %s is ready to make your online store faster, safer, and better!', 'give' ), $display_version ); ?></div>
-			<div class="give-badge"><?php printf( __( 'Version %s', 'give' ), $display_version ); ?></div>
+			<div class="about-text"><?php
+				printf(
+					/* translators: %s: Give version */
+					__( 'Thank you for updating to the latest version! Give %s is ready to make your online store faster, safer, and better!', 'give' ),
+					$display_version
+				);
+			?></div>
+			<div class="give-badge"><?php
+				printf(
+					/* translators: %s: Give version */
+					__( 'Version %s', 'give' ),
+					$display_version
+				);
+			?></div>
 
 			<?php $this->tabs(); ?>
 
@@ -354,7 +385,13 @@ class Give_Welcome {
 		list( $display_version ) = explode( '-', GIVE_VERSION );
 		?>
 		<div class="wrap about-wrap get-started">
-			<h1 class="welcome-h1"><?php printf( __( 'Give %s - Getting Started Guide', 'give' ), $display_version ); ?></h1>
+			<h1 class="welcome-h1"><?php
+				printf(
+					/* translators: %s: Give version */
+					__( 'Give %s - Getting Started Guide', 'give' ),
+					$display_version
+				);
+			?></h1>
 
 			<?php give_social_media_elements() ?>
 
@@ -364,7 +401,13 @@ class Give_Welcome {
 
 			<?php give_get_newsletter() ?>
 
-			<div class="give-badge"><?php printf( __( 'Version %s', 'give' ), $display_version ); ?></div>
+			<div class="give-badge"><?php
+				printf(
+					/* translators: %s: Give version */
+					__( 'Version %s', 'give' ),
+					$display_version
+				);
+			?></div>
 
 			<?php $this->tabs(); ?>
 
@@ -453,19 +496,31 @@ class Give_Welcome {
 		list( $display_version ) = explode( '-', GIVE_VERSION );
 		?>
 		<div class="wrap about-wrap">
-			<h1 class="welcome-h1"><?php printf( __( 'Give %s - Credits', 'give' ), $display_version ); ?></h1>
+			<h1 class="welcome-h1"><?php
+				printf(
+					/* translators: %s: Give version */
+					__( 'Give %s - Credits', 'give' ),
+					$display_version
+				);
+			?></h1>
 
 			<?php give_social_media_elements() ?>
 
-			<div class="about-text"><?php printf( __( 'Thanks to all those who have contributed code directly or indirectly. ', 'give' ), $display_version ); ?></div>
+			<div class="about-text"><?php _e( 'Thanks to all those who have contributed code directly or indirectly. ', 'give' ); ?></div>
 
 			<div class="about-text"><?php _e( 'Welcome to the getting started guide.', 'give' ); ?></div>
 
-			<p class="newsletter-intro">Be sure to sign up for the Give newsletter below to stay informed of important updates and news.</p>
+			<p class="newsletter-intro"><?php _e( 'Be sure to sign up for the Give newsletter below to stay informed of important updates and news.', 'give' ); ?></p>
 
 			<?php give_get_newsletter() ?>
 
-			<div class="give-badge"><?php printf( __( 'Version %s', 'give' ), $display_version ); ?></div>
+			<div class="give-badge"><?php
+				printf(
+					/* translators: %s: Give version */
+					__( 'Version %s', 'give' ),
+					$display_version
+				);
+			?></div>
 
 			<?php $this->tabs(); ?>
 
@@ -525,7 +580,13 @@ class Give_Welcome {
 			$contributor_list .= '<li class="wp-person">';
 			$contributor_list .= sprintf( '<a href="%s" title="%s">',
 				esc_url( 'https://github.com/' . $contributor->login ),
-				esc_html( sprintf( __( 'View %s', 'give' ), $contributor->login ) )
+				esc_html(
+					sprintf(
+						/* translators: %s: github contributor */
+						__( 'View %s', 'give' ),
+						$contributor->login
+					)
+				)
 			);
 			$contributor_list .= sprintf( '<img src="%s" width="64" height="64" class="gravatar" alt="%s" />', esc_url( $contributor->avatar_url ), esc_html( $contributor->login ) );
 			$contributor_list .= '</a>';

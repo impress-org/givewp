@@ -260,7 +260,7 @@ function give_customers_view( $customer ) {
 									<?php if ( intval( $customer->user_id ) > 0 ) : ?>
 										<span data-key="user_id"><?php echo $customer->user_id; ?></span>
 									<?php else : ?>
-										<span data-key="user_id"><?php _e( 'none', 'give' ); ?></span>
+										<span data-key="user_id"><?php _e( 'None', 'give' ); ?></span>
 									<?php endif; ?>
 									<?php if ( current_user_can( $customer_edit_role ) && intval( $customer->user_id ) > 0 ) : ?>
 										<span class="disconnect-user"> - <a id="disconnect-customer" href="#disconnect" title="<?php _e( 'Disconnects the current user ID from this customer record', 'give' ); ?>"><?php _e( 'Disconnect User', 'give' ); ?></a></span>
@@ -445,8 +445,22 @@ function give_customers_view( $customer ) {
 					<tr>
 						<td><?php echo $donation->post_title; ?></td>
 						<td>
-							<a title="<?php echo esc_attr( sprintf( __( 'View %s', 'give' ), $donation->post_title ) ); ?>" href="<?php echo esc_url( admin_url( 'post.php?action=edit&post=' . $donation->ID ) ); ?>">
-								<?php printf( __( 'View %s', 'give' ), give_get_forms_label_singular() ); ?>
+							<a title="<?php
+								echo esc_attr(
+									sprintf(
+										/* translators: %s: post title */
+										__( 'View %s', 'give' ),
+										$donation->post_title
+									)
+								); ?>" href="<?php echo esc_url( admin_url( 'post.php?action=edit&post=' . $donation->ID ) );
+							?>">
+								<?php
+									printf(
+										/* translators: %s: forms singular label */
+										__( 'View %s', 'give' ),
+										give_get_forms_label_singular()
+									);
+								?>
 							</a>
 						</td>
 					</tr>

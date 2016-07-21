@@ -43,6 +43,7 @@ class Give_HTML_Elements {
 			'selected'    => 0,
 			'chosen'      => false,
 			'number'      => 30,
+			/* translators: %s: form singular label */
 			'placeholder' => sprintf( __( 'Select a %s', 'give' ), give_get_forms_label_singular() )
 		);
 
@@ -58,7 +59,11 @@ class Give_HTML_Elements {
 		$options = array();
 
 		if ( $forms ) {
-			$options[0] = sprintf( __( 'Select a %s', 'give' ), give_get_forms_label_singular() );
+			$options[0] = sprintf(
+				/* translators: %s: form singular label */
+				__( 'Select a %s', 'give' ),
+				give_get_forms_label_singular()
+			);
 			foreach ( $forms as $form ) {
 				$options[ absint( $form->ID ) ] = esc_html( $form->post_title );
 			}
@@ -271,6 +276,7 @@ class Give_HTML_Elements {
 	/**
 	 * Renders an HTML Dropdown
 	 *
+	 * @access public
 	 * @since 1.0
 	 *
 	 * @param array $args
@@ -287,8 +293,8 @@ class Give_HTML_Elements {
 			'chosen'           => false,
 			'placeholder'      => null,
 			'multiple'         => false,
-			'show_option_all'  => _x( 'All', 'all dropdown items', 'give' ),
-			'show_option_none' => _x( 'None', 'no dropdown items', 'give' )
+			'show_option_all'  => __( 'All', 'give' ),
+			'show_option_none' => __( 'None', 'give' )
 		);
 
 		$args = wp_parse_args( $args, $defaults );
@@ -352,7 +358,8 @@ class Give_HTML_Elements {
 	/**
 	 * Renders an HTML Checkbox
 	 *
-	 * @since 1.0
+	 * @access public
+	 * @since  1.0
 	 *
 	 * @param array $args
 	 *
@@ -386,14 +393,15 @@ class Give_HTML_Elements {
 	/**
 	 * Renders an HTML Text field
 	 *
-	 * @since 1.0
+	 * @access public
+	 * @since  1.0
 	 *
 	 * @param array $args
 	 *
 	 * @return string Text field
 	 */
 	public function text( $args = array() ) {
-		// Backwards compatabliity
+		// Backwards compatibility
 		if ( func_num_args() > 1 ) {
 			$args = func_get_args();
 
@@ -447,7 +455,8 @@ class Give_HTML_Elements {
 	/**
 	 * Renders a date picker
 	 *
-	 * @since 1.5
+	 * @access public
+	 * @since  1.5
 	 *
 	 * @param array $args Arguments for the text field
 	 *
@@ -468,7 +477,8 @@ class Give_HTML_Elements {
 	/**
 	 * Renders an HTML textarea
 	 *
-	 * @since 1.0
+	 * @access public
+	 * @since  1.0
 	 *
 	 * @param array $args Arguments for the textarea
 	 *
@@ -509,7 +519,8 @@ class Give_HTML_Elements {
 	/**
 	 * Renders an ajax user search field
 	 *
-	 * @since 1.0
+	 * @access public
+	 * @since  1.0
 	 *
 	 * @param array $args
 	 *

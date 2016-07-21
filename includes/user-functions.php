@@ -232,7 +232,7 @@ function give_get_purchase_stats_by_user( $user = '' ) {
 /**
  * Count number of purchases of a donor
  *
- * @description: Returns total number of purchases a donor has made
+ * Returns total number of purchases a donor has made
  *
  * @access      public
  * @since       1.0
@@ -392,7 +392,7 @@ function give_get_donor_address( $user_id = 0 ) {
 /**
  * Give New User Notification
  *
- * @description   : Sends the new user notification email when a user registers within the donation form
+ * Sends the new user notification email when a user registers within the donation form
  *
  * @access        public
  * @since         1.0
@@ -408,18 +408,40 @@ function give_new_user_notification( $user_id = 0, $user_data = array() ) {
 		return;
 	}
 	$blogname = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
+
+	/* translators: %s: site name */
 	$message  = sprintf( esc_attr__( 'New user registration on your site %s:' ), $blogname ) . "\r\n\r\n";
+	/* translators: %s: user login */
 	$message .= sprintf( esc_attr__( 'Username: %s' ), $user_data['user_login'] ) . "\r\n\r\n";
+	/* translators: %s: user email */
 	$message .= sprintf( esc_attr__( 'E-mail: %s' ), $user_data['user_email'] ) . "\r\n";
 
-	@wp_mail( get_option( 'admin_email' ), sprintf( esc_attr__( '[%s] New User Registration' ), $blogname ), $message );
+	@wp_mail(
+		get_option( 'admin_email' ),
+		sprintf(
+			/* translators: %s: site name */
+			esc_attr__( '[%s] New User Registration' ),
+			$blogname
+		),
+		$message
+	);
 
-	$message = sprintf( esc_attr__( 'Username: %s' ), $user_data['user_login'] ) . "\r\n";
+	/* translators: %s: user login */
+	$message  = sprintf( esc_attr__( 'Username: %s' ), $user_data['user_login'] ) . "\r\n";
+	/* translators: %s: paswword */
 	$message .= sprintf( esc_attr__( 'Password: %s' ), esc_attr__( '[Password entered during donation]', 'give' ) ) . "\r\n";
 
 	$message .= '<a href="' . wp_login_url() . '"> ' . esc_attr__( 'Click Here to Login', 'give' ) . ' &raquo;</a>' . "\r\n";
 
-	wp_mail( $user_data['user_email'], sprintf( esc_attr__( '[%s] Your username and password' ), $blogname ), $message );
+	wp_mail(
+		$user_data['user_email'],
+		sprintf(
+			/* translators: %s: site name */
+			esc_attr__( '[%s] Your username and password' ),
+			$blogname
+		),
+		$message
+	);
 
 }
 

@@ -56,6 +56,7 @@ jQuery.noConflict();
             this.remove_note();
             this.new_donor();
             this.resend_receipt();
+            this.variable_price_list();
         },
 
 
@@ -64,16 +65,23 @@ jQuery.noConflict();
             // Update base state field based on selected base country
             $('select[name="give-payment-address[0][country]"]').change(function () {
                 var $this = $(this);
+
                 data = {
                     action: 'give_get_states',
                     country: $this.val(),
                     field_name: 'give-payment-address[0][state]'
                 };
                 $.post(ajaxurl, data, function (response) {
+
+                    var state_wrap = $('#give-order-address-state-wrap');
+
+                    state_wrap.find('*').not('.order-data-address-line').remove();
+
                     if ('nostates' == response) {
-                        $('#give-order-address-state-wrap select, #give-order-address-state-wrap input').replaceWith('<input type="text" name="give-payment-address[0][state]" value="" class="give-edit-toggles medium-text"/>');
+                        state_wrap.append('<input type="text" name="give-payment-address[0][state]" value="" class="give-edit-toggles medium-text"/>');
                     } else {
-                        $('#give-order-address-state-wrap select, #give-order-address-state-wrap input').replaceWith(response);
+                        state_wrap.append(response);
+                        state_wrap.find('select').chosen();
                     }
                 });
 
@@ -157,6 +165,7 @@ jQuery.noConflict();
             });
 
         },
+
         new_donor: function () {
 
             $('#give-customer-details').on('click', '.give-payment-new-customer, .give-payment-new-customer-cancel', function (e) {
@@ -173,9 +182,44 @@ jQuery.noConflict();
             });
 
         },
+
         resend_receipt: function () {
             $('body').on('click', '#give-resend-receipt', function (e) {
                 return confirm(give_vars.resend_receipt);
+            });
+        },
+
+        variable_price_list: function () {
+            $('select[name="forms"]').chosen().change(function () {
+                var give_form_id,
+                    variable_prices_html_container = $(this).closest('td').next('td');
+
+                // Check for form ID.
+                if (!( give_form_id = $(this).val() )) {
+                    return false;
+                }
+
+                // Ajax.
+                $.ajax({
+                    type: 'POST',
+                    url: ajaxurl,
+                    data: {
+                        form_id: give_form_id,
+                        payment_id: $('input[name="give_payment_id"]').val(),
+                        action: 'give_check_for_form_price_variations_html'
+                    },
+                    success: function (response) {
+                        response = response.trim();
+                        if (response) {
+
+                            // Update Variable price html.
+                            variable_prices_html_container.html(response);
+
+                            // Add chosen feature to select tag.
+                            $('select[name="give-variable-price"]').chosen();
+                        }
+                    }
+                });
             });
         }
 
@@ -478,7 +522,7 @@ jQuery.noConflict();
         $('select[name="give-payment-status"]').on('change', function () {
 
             var status = $(this).val();
-            
+
             $('.give-donation-status').removeClass(function (index, css) {
                 return (css.match(/\bstatus-\S+/g) || []).join(' ');
             }).addClass('status-' + status);
@@ -727,7 +771,70 @@ jQuery.noConflict();
             $('.give_user_search_results span').html('');
         });
 
-    });
+        /**
+         *  Amount format validation form price field setting
+         */
+        var $give_money_fields = $('input.give-money-field, input.give-price-field');
+        if ($give_money_fields.length) {
+            var thousand_separator = give_vars.thousands_separator,
+                decimal_separator = give_vars.decimal_separator,
+                thousand_separator_count = '',
+                price_string = '',
 
+                // Thousand separation limit in price depends upon decimal separator symbol.
+                // If thousand separator is equal to decimal separator then price does not have more then 1 thousand separator otherwise limit is zero.
+                thousand_separator_limit = ( decimal_separator === thousand_separator ? 1 : 0 );
+
+            // Add qtip to all money input fields.
+            $give_money_fields.each(function () {
+                $(this).qtip({
+                    style: 'qtip-dark qtip-tipsy',
+                    content: {
+                        text: give_vars.price_format_guide.trim()
+                    },
+                    show: '',
+                    position: {
+                        my: 'bottom center',
+                        at: 'top center'
+                    }
+                });
+            });
+
+            // Check & show message on keyup event.
+            $give_money_fields.bind('keyup', function () {
+                // Count thousand separator in price string.
+                thousand_separator_count = ( $(this).val().match(new RegExp(thousand_separator, 'g')) || [] ).length;
+
+                // Show qtip conditionally if thousand separator detected on price string.
+                if (
+                    ( -1 !== $(this).val().indexOf(thousand_separator) )
+                    && ( thousand_separator_limit < thousand_separator_count )
+                ) {
+                    $(this).qtip('show');
+                } else {
+                    $(this).qtip('hide');
+                }
+
+                // Reset thousand separator count.
+                thousand_separator_count = '';
+            });
+
+            // Format price sting of input field on focusout.
+            $give_money_fields.on('focusout', function () {
+                price_string = $(this).val();
+                thousand_separator_count = ( price_string.match(new RegExp(thousand_separator, 'g')) || [] ).length;
+
+                // Replace all thousand separator except one.
+                while (thousand_separator_limit < thousand_separator_count) {
+                    price_string = price_string.replace(thousand_separator, '');
+                    --thousand_separator_count;
+                }
+
+                // Update format price string in input field.
+                $(this).val(price_string);
+            });
+        }
+
+    });
 
 })(jQuery);

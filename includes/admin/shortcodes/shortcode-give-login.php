@@ -34,14 +34,24 @@ class Give_Shortcode_Login extends Give_Shortcode_Generator {
 		return array(
 			array(
 				'type' => 'container',
-				'html' => sprintf( '<p class="no-margin">%s</p>', __( 'Redirect URL (optional):', 'give' ) ),
+				'html' => sprintf( '<p class="no-margin">%s</p>', __( 'Login Redirect URL (optional):', 'give' ) ),
 			),
 			array(
 				'type'     => 'textbox',
-				'name'     => 'redirect',
+				'name'     => 'login-redirect',
 				'minWidth' => 320,
 				'tooltip'  => __( 'Enter an URL here to redirect to after login.', 'give' ),
 			),
+            array(
+                'type' => 'container',
+                'html' => sprintf( '<p class="no-margin">%s</p>', __( 'Logout Redirect URL (optional):', 'give' ) ),
+            ),
+            array(
+                'type'     => 'textbox',
+                'name'     => 'logout-redirect',
+                'minWidth' => 320,
+                'tooltip'  => __( 'Enter an URL here to redirect to after logout.', 'give' ),
+            ),
 		);
 	}
 }

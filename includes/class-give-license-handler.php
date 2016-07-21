@@ -131,7 +131,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			$give_license_settings = array(
 				array(
-					'name'    => sprintf( __( '%1$s', 'give' ), $this->item_name ),
+					'name'    => $this->item_name,
 					'id'      => $this->item_shortname . '_license_key',
 					'desc'    => '',
 					'type'    => 'license_key',
@@ -188,7 +188,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			if ( ! wp_verify_nonce( $_REQUEST[ $this->item_shortname . '_license_key-nonce' ], $this->item_shortname . '_license_key-nonce' ) ) {
 
-				wp_die( __( 'Nonce verification failed', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+				wp_die( __( 'Nonce verification failed.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 
 			}
 
@@ -259,7 +259,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			if ( ! wp_verify_nonce( $_REQUEST[ $this->item_shortname . '_license_key-nonce' ], $this->item_shortname . '_license_key-nonce' ) ) {
 
-				wp_die( __( 'Nonce verification failed', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+				wp_die( __( 'Nonce verification failed.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 
 			}
 
@@ -341,7 +341,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 					case 'no_activations_left' :
 
-						$message = __( 'This license does not have any activations left', 'give' );
+						$message = __( 'This license does not have any activations left.', 'give' );
 						break;
 
 					case 'expired' :
@@ -351,7 +351,11 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 					default :
 
-						$message = sprintf( __( 'There was a problem activating your license key, please try again or contact support. Error code: %s', 'give' ), $license_error->error );
+						$message = sprintf(
+							/* translators: %s: license error */
+							__( 'There was a problem activating your license key, please try again or contact support. Error code: %s', 'give' ),
+							$license_error->error
+						);
 						break;
 
 				}

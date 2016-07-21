@@ -133,7 +133,7 @@ add_action( 'init', 'give_setup_post_types', 1 );
 /**
  * Give Setup Taxonomies
  *
- * @description: Registers the custom taxonomies for the give_forms custom post type
+ * Registers the custom taxonomies for the give_forms custom post type
  *
  * @since      1.0
  * @return void
@@ -144,6 +144,7 @@ function give_setup_taxonomies() {
 
 	/** Categories */
 	$category_labels = array(
+		/* translators: %s: form singular label */
 		'name'              => sprintf( _x( '%s Categories', 'taxonomy general name', 'give' ), give_get_forms_label_singular() ),
 		'singular_name'     => _x( 'Category', 'taxonomy singular name', 'give' ),
 		'search_items'      => __( 'Search Categories', 'give' ),
@@ -152,6 +153,7 @@ function give_setup_taxonomies() {
 		'parent_item_colon' => __( 'Parent Category:', 'give' ),
 		'edit_item'         => __( 'Edit Category', 'give' ),
 		'update_item'       => __( 'Update Category', 'give' ),
+		/* translators: %s: form singular label */
 		'add_new_item'      => sprintf( __( 'Add New %s Category', 'give' ), give_get_forms_label_singular() ),
 		'new_item_name'     => __( 'New Category Name', 'give' ),
 		'menu_name'         => __( 'Categories', 'give' ),
@@ -185,6 +187,7 @@ function give_setup_taxonomies() {
 
 	/** Tags */
 	$tag_labels = array(
+		/* translators: %s: form singular label */
 		'name'                  => sprintf( _x( '%s Tags', 'taxonomy general name', 'give' ), give_get_forms_label_singular() ),
 		'singular_name'         => _x( 'Tag', 'taxonomy singular name', 'give' ),
 		'search_items'          => __( 'Search Tags', 'give' ),
@@ -196,7 +199,8 @@ function give_setup_taxonomies() {
 		'add_new_item'          => __( 'Add New Tag', 'give' ),
 		'new_item_name'         => __( 'New Tag Name', 'give' ),
 		'menu_name'             => __( 'Tags', 'give' ),
-		'choose_from_most_used' => sprintf( __( 'Choose from most used %s tags', 'give' ), give_get_forms_label_singular() ),
+		/* translators: %s: form singular label */
+		'choose_from_most_used' => sprintf( __( 'Choose from most used %s tags.', 'give' ), give_get_forms_label_singular() ),
 	);
 
 	$tag_args = apply_filters( 'give_forms_tag_args', array(
@@ -280,8 +284,11 @@ function give_get_forms_label_plural( $lowercase = false ) {
 function give_change_default_title( $title ) {
 	// If a frontend plugin uses this filter (check extensions before changing this function)
 	if ( ! is_admin() ) {
-		$label = give_get_forms_label_singular();
-		$title = sprintf( __( 'Enter %s title here', 'give' ), $label );
+		$title = sprintf(
+			/* translators: %s: form singular label */
+			__( 'Enter %s title here', 'give' ),
+			give_get_forms_label_singular()
+		);
 
 		return $title;
 	}
@@ -289,8 +296,11 @@ function give_change_default_title( $title ) {
 	$screen = get_current_screen();
 
 	if ( 'give_forms' == $screen->post_type ) {
-		$label = give_get_forms_label_singular();
-		$title = sprintf( __( 'Enter %s title here', 'give' ), $label );
+		$title = sprintf(
+			/* translators: %s: form singular label */
+			__( 'Enter %s title here', 'give' ),
+			give_get_forms_label_singular()
+		);
 	}
 
 	return $title;
@@ -404,7 +414,7 @@ function give_add_thumbnail_support() {
 /**
  * Give Sidebars
  *
- * @description This option adds Give sidebars; registered late so it display last in list
+ * This option adds Give sidebars; registered late so it display last in list
  *
  */
 function give_widgets_init() {

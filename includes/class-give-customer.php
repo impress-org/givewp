@@ -176,7 +176,8 @@ class Give_Customer {
 
 		} else {
 
-			return new WP_Error( 'give-customer-invalid-property', sprintf( __( 'Can\'t get property %s', 'give' ), $key ) );
+			/* translators: %s: property key */
+			return new WP_Error( 'give-customer-invalid-property', sprintf( __( 'Can\'t get property %s.', 'give' ), $key ) );
 
 		}
 
@@ -509,6 +510,46 @@ class Give_Customer {
 		do_action( 'give_customer_post_decrease_value', $this->purchase_value, $value, $this->id );
 
 		return $this->purchase_value;
+	}
+
+	/**
+	 * Decrease/Increase a customer's lifetime value
+     *
+     * This function will update donation stat on basis of current amount and new amount donation difference.
+     * Difference value can positive or negative. Negative value will decrease user donation stat while positive value increase donation stat.
+     *
+     *
+     * @access public
+	 * @since  1.0
+	 *
+	 * @param  float $curr_amount Current Donation amount
+	 * @param  float $new_amount  New ( changed ) Donation amount
+	 *
+	 * @return mixed              If successful, the new donation stat value, otherwise false
+	 */
+	public function update_donation_value( $curr_amount, $new_amount ) {
+        /**
+         * Payment total difference value can be:
+         *  zero   (in case amount not change)
+         *  or -ve (in case amount decrease)
+         *  or +ve (in case amount increase)
+         */
+        $payment_total_diff = $new_amount - $curr_amount;
+
+        // We do not need to update donation stat if donation did not change.
+        if( ! $payment_total_diff ) {
+            return false;
+        }
+
+
+        if( $payment_total_diff > 0 ) {
+            $this->increase_value( $payment_total_diff );
+        }else{
+            // Pass payment total difference as +ve value to decrease amount from user lifetime stat.
+            $this->decrease_value( -$payment_total_diff );
+        }
+
+        return $this->purchase_value;
 	}
 
 	/**

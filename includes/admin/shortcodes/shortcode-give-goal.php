@@ -31,9 +31,10 @@ class Give_Shortcode_Donation_Form_Goal extends Give_Shortcode_Generator {
 	 */
 	public function define_fields() {
 
-		$create_form_link = sprintf( __( '%sClick here%s to create a new Donation Form.', 'give' ),
-			'<a href="' . admin_url( 'post-new.php?post_type=give_forms' ) . '">',
-			'</a>'
+		$create_form_link = sprintf(
+			/* translators: %s: create new form URL */
+			__( '<a href="%s">Create</a> a new Donation Form.', 'give' ),
+			admin_url( 'post-new.php?post_type=give_forms' )
 		);
 
 		return array(
@@ -44,7 +45,7 @@ class Give_Shortcode_Donation_Form_Goal extends Give_Shortcode_Generator {
 				),
 				'name'        => 'id',
 				'tooltip'     => __( 'Select a Donation Form', 'give' ),
-				'placeholder' => sprintf( '– %s –', __( 'Select a Form', 'give' ) ),
+				'placeholder' => __( '- Select a Form -', 'give' ),
 				'required'    => array(
 					'alert' => __( 'You must first select a Form!', 'give' ),
 					'error' => sprintf( '<p class="strong">%s</p><p class="no-margin">%s</p>', __( 'No donation forms were found!', 'give' ), $create_form_link ),

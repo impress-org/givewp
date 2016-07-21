@@ -75,9 +75,10 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'row_classes'  => 'give-subfield',
 					'before_field' => give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol give-money-symbol-before">' . give_currency_symbol() . '</span>' : '',
 					'after_field'  => give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '',
-					'attributes'   => array(
-						'placeholder' => give_format_amount( '1.00' ),
-						'value'       => give_format_amount( $price ),
+                    'sanitization_cb'   => 'give_sanitize_amount',
+                    'attributes'   => array(
+						'placeholder' => give_format_decimal( '1.00' ),
+						'value'       => give_format_decimal( $price ),
 						'class'       => 'cmb-type-text-small give-money-field',
 					),
 				),
@@ -93,7 +94,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'row_classes' => 'give-subfield',
 					'options'     => array(
 						'add_button'    => __( 'Add Level', 'give' ),
-						'remove_button' => __( '<span class="dashicons dashicons-no"></span>', 'give' ),
+						'remove_button' => '<span class="dashicons dashicons-no"></span>',
 						'sortable'      => true, // beta
 					),
 					// Fields array works the same, except id's only need to be unique for this group. Prefix is not needed.
@@ -104,13 +105,14 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 							'type' => 'levels_id',
 						),
 						array(
-							'name'         => __( 'Amount', 'give' ),
-							'id'           => $prefix . 'amount',
-							'type'         => 'text_small',
-							'before_field' => give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol  give-money-symbol-before">' . give_currency_symbol() . '</span>' : '',
-							'after_field'  => give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol  give-money-symbol-after">' . give_currency_symbol() . '</span>' : '',
-							'attributes'   => array(
-								'placeholder' => give_format_amount( '1.00' ),
+							'name'              => __( 'Amount', 'give' ),
+							'id'                => $prefix . 'amount',
+							'type'              => 'text_small',
+							'before_field'      => give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol  give-money-symbol-before">' . give_currency_symbol() . '</span>' : '',
+							'after_field'       => give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol  give-money-symbol-after">' . give_currency_symbol() . '</span>' : '',
+							'sanitization_cb'   => 'give_sanitize_amount',
+                            'attributes'        => array(
+								'placeholder' => '1.00',
 								'class'       => 'cmb-type-text-small give-money-field',
 							),
 							'before'       => 'give_format_admin_multilevel_amount',
@@ -164,9 +166,10 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'row_classes'  => 'give-subfield',
 					'before_field' => give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol give-money-symbol-before">' . give_currency_symbol() . '</span>' : '',
 					'after_field'  => give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '',
-					'attributes'   => array(
-						'placeholder' => give_format_amount( '1.00' ),
-						'value'       => give_format_amount( $custom_amount_minimum ),
+                    'sanitization_cb'   => 'give_sanitize_amount',
+                    'attributes'   => array(
+						'placeholder' => give_format_decimal('1.00'),
+						'value'       => give_format_decimal( $custom_amount_minimum ),
 						'class'       => 'cmb-type-text-small give-money-field',
 					),
 				),
@@ -194,16 +197,17 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					),
 				),
 				array(
-					'name'         => __( 'Goal Amount', 'give' ),
-					'description'  => __( 'This is the monetary goal amount you want to reach for this donation form.', 'give' ),
-					'id'           => $prefix . 'set_goal',
-					'type'         => 'text_small',
-					'row_classes'  => 'give-subfield',
-					'before_field' => give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol give-money-symbol-before">' . give_currency_symbol() . '</span>' : '',
-					'after_field'  => give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '',
-					'attributes'   => array(
-						'placeholder' => give_format_amount( '0.00' ),
-						'value'       => isset( $goal ) ? esc_attr( give_format_amount( $goal ) ) : '',
+					'name'              => __( 'Goal Amount', 'give' ),
+					'description'       => __( 'This is the monetary goal amount you want to reach for this donation form.', 'give' ),
+					'id'                => $prefix . 'set_goal',
+					'type'              => 'text_small',
+					'row_classes'       => 'give-subfield',
+					'before_field'      => give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol give-money-symbol-before">' . give_currency_symbol() . '</span>' : '',
+					'after_field'       => give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '',
+					'sanitization_cb'   => 'give_sanitize_amount',
+					'attributes'        => array(
+						'placeholder' => give_format_decimal( '0.00' ),
+						'value'       => give_format_decimal( $goal ),
 						'class'       => 'cmb-type-text-small give-money-field',
 					),
 				),
@@ -360,6 +364,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					),
 					array(
 						'name'    => __( 'Floating Labels', 'give' ),
+						/* translators: %s: forms http://bradfrost.com/blog/post/float-label-pattern/ */
 						'desc'    => sprintf( __( 'Select the <a href="%s" target="_blank">floating labels</a> setting for this Give form.<br>Be aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), esc_url( "http://bradfrost.com/blog/post/float-label-pattern/" ) ),
 						'id'      => $prefix . 'form_floating_labels',
 						'type'    => 'select',
@@ -451,7 +456,7 @@ add_action( 'cmb2_render_levels_repeater_header', 'give_cmb_render_levels_repeat
  *
  * CMB2 Repeatable ID Field
  *
- * @description: Custom CMB2 incremental Levels ID Field
+ * Custom CMB2 incremental Levels ID Field
  *
  * @since      1.0
  *

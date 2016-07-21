@@ -167,7 +167,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	/**
 	 * Display Tablenav (extended)
 	 *
-	 * @description: Display the table navigation above or below the table even when no items in the logs, so nav doesn't disappear
+	 * Display the table navigation above or below the table even when no items in the logs, so nav doesn't disappear
 	 *
 	 * @see: https://github.com/WordImpress/Give/issues/564
 	 *

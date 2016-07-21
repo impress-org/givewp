@@ -10,8 +10,8 @@ class Tests_Errors extends Give_Unit_Test_Case {
 
 		give_set_error( 'invalid_email', 'Please enter a valid email address.' );
 		give_set_error( 'invalid_user', 'The user information is invalid.' );
-		give_set_error( 'username_incorrect', 'The username you entered does not exist' );
-		give_set_error( 'password_incorrect', 'The password you entered is incorrect' );
+		give_set_error( 'username_incorrect', 'The username you entered does not exist.' );
+		give_set_error( 'password_incorrect', 'The password you entered is incorrect.' );
 	}
 
 	public function tearDown() {
@@ -38,8 +38,8 @@ class Tests_Errors extends Give_Unit_Test_Case {
 
 		$expected = array(
 			'invalid_user' => 'The user information is invalid.',
-			'username_incorrect' => 'The username you entered does not exist',
-			'password_incorrect' => 'The password you entered is incorrect'
+			'username_incorrect' => 'The username you entered does not exist.',
+			'password_incorrect' => 'The password you entered is incorrect.'
 		);
 
 		$this->assertEquals( $expected, $errors );

@@ -298,7 +298,13 @@ function give_price_field_quick_edit( $column_name, $post_type ) {
 	?>
 	<fieldset class="inline-edit-col-left">
 		<div id="give-give-data" class="inline-edit-col">
-			<h4><?php echo sprintf( __( '%s Configuration', 'give' ), give_get_forms_label_singular() ); ?></h4>
+			<h4><?php 
+				printf(
+					/* translators: %s: forms singular label */
+					__( '%s Configuration', 'give' ),
+					give_get_forms_label_singular()
+				);
+			?></h4>
 			<label>
 				<span class="title"><?php _e( 'Price', 'give' ); ?></span>
 				<span class="input-text-wrap">

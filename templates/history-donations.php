@@ -62,5 +62,5 @@ if ( $donations ) : ?>
 	</div>
 	<?php wp_reset_postdata(); ?>
 <?php else : ?>
-	<?php give_output_error( __( 'It looks like you haven\'t made any donations', 'give' ), true, 'success' ); ?>
+	<?php give_output_error( __( 'It looks like you haven\'t made any donations.', 'give' ), true, 'success' ); ?>
 <?php endif;

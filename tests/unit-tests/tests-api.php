@@ -188,7 +188,7 @@ class Tests_API extends Give_Unit_Test_Case {
 	 * Test Get Queried Version
 	 */
 	public function test_get_queried_version() {
-		$this->markTestIncomplete( 'This test is causing the suite to die for some reason' );
+		$this->markTestIncomplete( 'This test is causing the suite to die for some reason.' );
 		global $wp_query;
 
 		$wp_query->query_vars['give-api'] = 'donations';
@@ -349,7 +349,7 @@ class Tests_API extends Give_Unit_Test_Case {
 	 * Test Missing Authorization
 	 */
 	public function test_missing_auth() {
-		$this->markTestIncomplete( 'Needs to be rewritten since this outputs xml that kills travis with a 255 error (fatal PHP error)' );
+		$this->markTestIncomplete( 'Needs to be rewritten since this outputs xml that kills travis with a 255 error (fatal PHP error).' );
 		//$this->_api->missing_auth();
 		//$out = $this->_api->get_output();
 		//$this->assertArrayHasKey( 'error', $out );
@@ -358,7 +358,7 @@ class Tests_API extends Give_Unit_Test_Case {
 	}
 
 	public function test_invalid_auth() {
-		$this->markTestIncomplete( 'Needs to be rewritten since this outputs xml that kills travis with a 255 error (fatal PHP error)' );
+		$this->markTestIncomplete( 'Needs to be rewritten since this outputs xml that kills travis with a 255 error (fatal PHP error).' );
 		//$this->_api->invalid_auth();
 		//$out = $this->_api->get_output();
 		//$this->assertArrayHasKey( 'error', $out );
@@ -366,7 +366,7 @@ class Tests_API extends Give_Unit_Test_Case {
 	}
 
 	public function test_invalid_key() {
-		$this->markTestIncomplete( 'Needs to be rewritten since this outputs xml that kills travis with a 255 error (fatal PHP error)' );
+		$this->markTestIncomplete( 'Needs to be rewritten since this outputs xml that kills travis with a 255 error (fatal PHP error).' );
 		//$out = $this->_api->invalid_key();
 		//$out = $this->_api->get_output();
 		//$this->assertArrayHasKey( 'error', $out );
@@ -379,7 +379,7 @@ class Tests_API extends Give_Unit_Test_Case {
 	public function test_process_query() {
 		global $wp_query;
 
-		$this->markTestIncomplete( 'Needs to be rewritten since this outputs xml that kills travis with a 255 error (fatal PHP error)' );
+		$this->markTestIncomplete( 'Needs to be rewritten since this outputs xml that kills travis with a 255 error (fatal PHP error).' );
 		$_POST['give_set_api_key'] = 1;
 
 		$this->_api->update_key( $this->_user_id );
@@ -407,7 +407,7 @@ class Tests_API extends Give_Unit_Test_Case {
 		$this->assertEquals( 'Post content 1', $out['forms'][0]['info']['content'] );
 		$this->assertArrayHasKey( 'thumbnail', $out['forms'][0]['info'] );
 
-		$this->markTestIncomplete( 'This test needs to be fixed. The stats key doesn\'t exist due to not being able to correctly check the user\'s permissions' );
+		$this->markTestIncomplete( 'This test needs to be fixed. The stats key doesn\'t exist due to not being able to correctly check the user\'s permissions.' );
 		$this->assertArrayHasKey( 'stats', $out['forms'][0] );
 		$this->assertArrayHasKey( 'total', $out['forms'][0]['stats'] );
 		$this->assertArrayHasKey( 'donations', $out['forms'][0]['stats']['total'] );

@@ -53,7 +53,7 @@ function give_resend_donation_receipt( $data ) {
 	}
 
 	if ( ! current_user_can( 'edit_give_payments', $purchase_id ) ) {
-		wp_die( __( 'You do not have permission to edit this payment record', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( __( 'You do not have permission to edit payment records.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	give_email_donation_receipt( $purchase_id, false );

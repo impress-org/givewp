@@ -61,7 +61,6 @@ class Give_Stats {
 
 	/**
 	 * @access public
-	 * @return void
 	 */
 	public function __construct() { /* nothing here. Call get_sales() and get_earnings() directly */
 	}
@@ -123,6 +122,10 @@ class Give_Stats {
 	 *
 	 * @access public
 	 * @since  1.0
+	 *
+	 * @param string $date
+	 * @param bool   $end_date
+	 *
 	 * @return array|WP_Error If the date is invalid, a WP_Error object will be returned
 	 */
 	public function convert_date( $date, $end_date = false ) {
@@ -451,6 +454,9 @@ class Give_Stats {
 	 *
 	 * @access public
 	 * @since  1.0
+	 *
+	 * @param string $where
+	 * 
 	 * @return string
 	 */
 	public function count_where( $where = '' ) {

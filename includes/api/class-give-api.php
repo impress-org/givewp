@@ -917,7 +917,11 @@ class Give_API {
 
 		} elseif ( $customer ) {
 
-			$error['error'] = sprintf( __( 'Donor %s not found!', 'give' ), $customer );
+			$error['error'] = sprintf(
+				/* translators: %s: customer */
+				__( 'Donor %s not found!', 'give' ),
+				$customer
+			);
 
 			return $error;
 
@@ -971,7 +975,11 @@ class Give_API {
 				$forms['forms'][0] = $this->get_form_data( $form_info );
 
 			} else {
-				$error['error'] = sprintf( __( 'Form %s not found!', 'give' ), $form );
+				$error['error'] = sprintf(
+					/* translators: %s: form */
+					__( 'Form %s not found!', 'give' ),
+					$form
+				);
 
 				return $error;
 			}
@@ -1178,7 +1186,11 @@ class Give_API {
 					$form_info             = get_post( $args['form'] );
 					$sales['donations'][0] = array( $form_info->post_name => give_get_form_sales_stats( $args['form'] ) );
 				} else {
-					$error['error'] = sprintf( __( 'Product %s not found!', 'give' ), $args['form'] );
+					$error['error'] = sprintf(
+						/* translators: %s: form */
+						__( 'Product %s not found!', 'give' ),
+						$args['form']
+					);
 				}
 			}
 
@@ -1291,7 +1303,11 @@ class Give_API {
 					$form_info               = get_post( $args['form'] );
 					$earnings['earnings'][0] = array( $form_info->post_name => give_get_form_earnings_stats( $args['form'] ) );
 				} else {
-					$error['error'] = sprintf( __( 'Form %s not found!', 'give' ), $args['form'] );
+					$error['error'] = sprintf(
+						/* translators: %s: form */
+						__( 'Form %s not found!', 'give' ),
+						$args['form']
+					);
 				}
 			}
 
@@ -1646,12 +1662,12 @@ class Give_API {
 
 		if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'give-api-nonce' ) ) {
 
-			wp_die( esc_attr__( 'Nonce verification failed', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die( esc_attr__( 'Nonce verification failed.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 
 		}
 
 		if ( empty( $args['user_id'] ) ) {
-			wp_die( esc_attr__( 'User ID Required', 'give' ), esc_attr__( 'Error', 'give' ), array( 'response' => 401 ) );
+			wp_die( esc_attr__( 'User ID Required.', 'give' ), esc_attr__( 'Error', 'give' ), array( 'response' => 401 ) );
 		}
 
 		if ( is_numeric( $args['user_id'] ) ) {
@@ -1663,9 +1679,25 @@ class Give_API {
 		$process = isset( $args['give_api_process'] ) ? strtolower( $args['give_api_process'] ) : false;
 
 		if ( $user_id == get_current_user_id() && ! give_get_option( 'allow_user_api_keys' ) && ! current_user_can( 'manage_give_settings' ) ) {
-			wp_die( sprintf( __( 'You do not have permission to %s API keys for this user', 'give' ), $process ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die(
+				sprintf(
+					/* translators: %s: process */
+					__( 'You do not have permission to %s API keys for this user.', 'give' ),
+					$process
+				),
+				__( 'Error', 'give' ),
+				array( 'response' => 403 )
+			);
 		} elseif ( ! current_user_can( 'manage_give_settings' ) ) {
-			wp_die( sprintf( __( 'You do not have permission to %s API keys for this user', 'give' ), $process ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die(
+				sprintf(
+					/* translators: %s: process */
+					__( 'You do not have permission to %s API keys for this user.', 'give' ),
+					$process
+				),
+				__( 'Error', 'give' ),
+				array( 'response' => 403 )
+			);
 		}
 
 		switch ( $process ) {
@@ -1902,7 +1934,7 @@ class Give_API {
 	/**
 	 * API Key Backwards Compatibility
 	 *
-	 * @description A Backwards Compatibility call for the change of meta_key/value for users API Keys
+	 * A Backwards Compatibility call for the change of meta_key/value for users API Keys
 	 *
 	 * @since  1.3.6
 	 *

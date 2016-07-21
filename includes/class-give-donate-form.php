@@ -167,7 +167,8 @@ class Give_Donate_Form {
 
 		} else {
 
-			return new WP_Error( 'give-form-invalid-property', sprintf( __( 'Can\'t get property %s', 'give' ), $key ) );
+			/* translators: %s: property key */
+			return new WP_Error( 'give-form-invalid-property', sprintf( __( 'Can\'t get property %s.', 'give' ), $key ) );
 
 		}
 
@@ -387,9 +388,36 @@ class Give_Donate_Form {
 	}
 
 	/**
+	 * Determine if custom price mode is enabled or disabled
+	 *
+	 * @since 1.6
+	 * @return bool
+	 */
+	public function is_custom_price_mode() {
+
+		$option = get_post_meta( $this->ID, '_give_custom_amount', true );
+		$ret    = 0;
+
+		if ( $option === 'yes' ) {
+			$ret = 1;
+		}
+
+		/**
+		 * Override the price mode for a donation when checking if is in custom price mode.
+		 *
+		 * @since 1.6
+		 *
+		 * @param bool $ret Is donation form in custom price mode?
+		 * @param int|string The ID of the donation form.
+		 */
+		return (bool) apply_filters( 'give_custom_price_option_mode', $ret, $this->ID );
+
+	}
+
+	/**
 	 * Has Variable Prices
 	 *
-	 * @description Determine if the donation form has variable prices enabled
+	 * Determine if the donation form has variable prices enabled
 	 *
 	 * @since       1.0
 	 * @return bool

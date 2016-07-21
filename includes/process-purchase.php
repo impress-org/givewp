@@ -232,7 +232,7 @@ function give_purchase_form_validate_fields() {
 /**
  * Purchase Form Validate Gateway
  *
- * @description: Validate the gateway and donation amount
+ * Validate the gateway and donation amount
  *
  * @access      private
  * @since       1.0
@@ -257,10 +257,14 @@ function give_purchase_form_validate_gateway() {
 		} //Check for a minimum custom amount
 		elseif ( ! give_verify_minimum_price() ) {
 
-			$minimum       = give_currency_filter( give_format_amount( give_get_form_minimum_price( $form_id ) ) );
-			$error_message = __( 'This form has a minimum donation amount of %s', 'give' );
-
-			give_set_error( 'invalid_donation_minimum', sprintf( $error_message, $minimum ) );
+			give_set_error(
+				'invalid_donation_minimum',
+				sprintf(
+					/* translators: %s: minimum donation amount */
+					__( 'This form has a minimum donation amount of %s.', 'give' ),
+					give_currency_filter( give_format_amount( give_get_form_minimum_price( $form_id ) ) )
+				)
+			);
 
 		} //Is this test mode zero donation? Let it through but set to manual gateway
 		elseif ( $amount == 0 && give_is_test_mode() ) {
@@ -270,7 +274,7 @@ function give_purchase_form_validate_gateway() {
 		} //Check if this gateway is active
 		elseif ( ! give_is_gateway_active( $gateway ) ) {
 
-			give_set_error( 'invalid_gateway', __( 'The selected payment gateway is not enabled', 'give' ) );
+			give_set_error( 'invalid_gateway', __( 'The selected payment gateway is not enabled.', 'give' ) );
 
 		}
 
@@ -323,7 +327,7 @@ function give_purchase_form_validate_agree_to_terms() {
 	// Validate agree to terms
 	if ( ! isset( $_POST['give_agree_to_terms'] ) || $_POST['give_agree_to_terms'] != 1 ) {
 		// User did not agree
-		give_set_error( 'agree_to_terms', apply_filters( 'give_agree_to_terms_text', __( 'You must agree to the terms of use', 'give' ) ) );
+		give_set_error( 'agree_to_terms', apply_filters( 'give_agree_to_terms_text', __( 'You must agree to the terms of use.', 'give' ) ) );
 	}
 }
 
@@ -344,11 +348,11 @@ function give_purchase_form_required_fields( $form_id ) {
 	$required_fields = array(
 		'give_email' => array(
 			'error_id'      => 'invalid_email',
-			'error_message' => __( 'Please enter a valid email address', 'give' )
+			'error_message' => __( 'Please enter a valid email address.', 'give' )
 		),
 		'give_first' => array(
 			'error_id'      => 'invalid_first_name',
-			'error_message' => __( 'Please enter your first name', 'give' )
+			'error_message' => __( 'Please enter your first name.', 'give' )
 		)
 	);
 
@@ -357,23 +361,23 @@ function give_purchase_form_required_fields( $form_id ) {
 	if ( $require_address ) {
 		$required_fields['card_address']    = array(
 			'error_id'      => 'invalid_card_address',
-			'error_message' => __( 'Please enter your primary billing address', 'give' )
+			'error_message' => __( 'Please enter your primary billing address.', 'give' )
 		);
 		$required_fields['card_zip']        = array(
 			'error_id'      => 'invalid_zip_code',
-			'error_message' => __( 'Please enter your zip / postal code', 'give' )
+			'error_message' => __( 'Please enter your zip / postal code.', 'give' )
 		);
 		$required_fields['card_city']       = array(
 			'error_id'      => 'invalid_city',
-			'error_message' => __( 'Please enter your billing city', 'give' )
+			'error_message' => __( 'Please enter your billing city.', 'give' )
 		);
 		$required_fields['billing_country'] = array(
 			'error_id'      => 'invalid_country',
-			'error_message' => __( 'Please select your billing country', 'give' )
+			'error_message' => __( 'Please select your billing country.', 'give' )
 		);
 		$required_fields['card_state']      = array(
 			'error_id'      => 'invalid_state',
-			'error_message' => __( 'Please enter billing state / province', 'give' )
+			'error_message' => __( 'Please enter billing state / province.', 'give' )
 		);
 	}
 
@@ -449,7 +453,7 @@ function give_purchase_form_validate_logged_in_user() {
 
 		} else {
 			// Set invalid user error
-			give_set_error( 'invalid_user', __( 'The user information is invalid', 'give' ) );
+			give_set_error( 'invalid_user', __( 'The user information is invalid.', 'give' ) );
 		}
 	}
 
@@ -499,38 +503,38 @@ function give_purchase_form_validate_new_user() {
 		// We have an user name, check if it already exists
 		if ( username_exists( $user_login ) ) {
 			// Username already registered
-			give_set_error( 'username_unavailable', __( 'Username already taken', 'give' ) );
+			give_set_error( 'username_unavailable', __( 'Username already taken.', 'give' ) );
 			// Check if it's valid
 		} else if ( ! give_validate_username( $user_login ) ) {
 			// Invalid username
 			if ( is_multisite() ) {
-				give_set_error( 'username_invalid', __( 'Invalid username. Only lowercase letters (a-z) and numbers are allowed', 'give' ) );
+				give_set_error( 'username_invalid', __( 'Invalid username. Only lowercase letters (a-z) and numbers are allowed.', 'give' ) );
 			} else {
-				give_set_error( 'username_invalid', __( 'Invalid username', 'give' ) );
+				give_set_error( 'username_invalid', __( 'Invalid username.', 'give' ) );
 			}
 		} else {
 			// All the checks have run and it's good to go
 			$valid_user_data['user_login'] = $user_login;
 		}
 	} elseif ( give_logged_in_only( $form_id ) ) {
-		give_set_error( 'registration_required', esc_html__( 'You must register or login to complete your donation', 'give' ) );
+		give_set_error( 'registration_required', esc_html__( 'You must register or login to complete your donation.', 'give' ) );
 	}
 
 	// Check if we have an email to verify
 	if ( $user_email && strlen( $user_email ) > 0 ) {
 		// Validate email
 		if ( ! is_email( $user_email ) ) {
-			give_set_error( 'email_invalid', __( 'Sorry, that email is invalid', 'give' ) );
+			give_set_error( 'email_invalid', __( 'Sorry, that email is invalid.', 'give' ) );
 			// Check if email exists
 		} else if ( email_exists( $user_email ) && $registering_new_user ) {
-			give_set_error( 'email_used', __( 'Sorry, that email already active for another user', 'give' ) );
+			give_set_error( 'email_used', __( 'Sorry, that email already active for another user.', 'give' ) );
 		} else {
 			// All the checks have run and it's good to go
 			$valid_user_data['user_email'] = $user_email;
 		}
 	} else {
 		// No email
-		give_set_error( 'email_empty', __( 'Enter an email', 'give' ) );
+		give_set_error( 'email_empty', __( 'Enter an email.', 'give' ) );
 	}
 
 	// Check password
@@ -538,7 +542,7 @@ function give_purchase_form_validate_new_user() {
 		// Verify confirmation matches
 		if ( $user_pass != $pass_confirm ) {
 			// Passwords do not match
-			give_set_error( 'password_mismatch', __( 'Passwords don\'t match', 'give' ) );
+			give_set_error( 'password_mismatch', __( 'Passwords don\'t match.', 'give' ) );
 		} else {
 			// All is good to go
 			$valid_user_data['user_pass'] = $user_pass;
@@ -547,10 +551,10 @@ function give_purchase_form_validate_new_user() {
 		// Password or confirmation missing
 		if ( ! $user_pass && $registering_new_user ) {
 			// The password is invalid
-			give_set_error( 'password_empty', __( 'Enter a password', 'give' ) );
+			give_set_error( 'password_empty', __( 'Enter a password.', 'give' ) );
 		} else if ( ! $pass_confirm && $registering_new_user ) {
 			// Confirmation password is invalid
-			give_set_error( 'confirmation_empty', __( 'Enter the password confirmation', 'give' ) );
+			give_set_error( 'confirmation_empty', __( 'Enter the password confirmation.', 'give' ) );
 		}
 	}
 
@@ -574,7 +578,7 @@ function give_purchase_form_validate_user_login() {
 
 	// Username
 	if ( ! isset( $_POST['give_user_login'] ) || $_POST['give_user_login'] == '' ) {
-		give_set_error( 'must_log_in', __( 'You must login or register to complete your donation', 'give' ) );
+		give_set_error( 'must_log_in', __( 'You must login or register to complete your donation.', 'give' ) );
 
 		return $valid_user_data;
 	}
@@ -595,9 +599,10 @@ function give_purchase_form_validate_user_login() {
 				give_set_error(
 					'password_incorrect',
 					sprintf(
-						__( 'The password you entered is incorrect. %sReset Password%s', 'give' ),
-						'<a href="' . wp_lostpassword_url( "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]" ) . '" title="' . __( 'Lost Password', 'give' ) . '">',
-						'</a>'
+						'%1$s <a href="%2$s">%3$s</a>',
+						__( 'The password you entered is incorrect.', 'give' ),
+						wp_lostpassword_url( "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]" ),
+						__( 'Reset Password', 'give' )
 					)
 				);
 				// All is correct
@@ -614,11 +619,11 @@ function give_purchase_form_validate_user_login() {
 			}
 		} else {
 			// Empty password
-			give_set_error( 'password_empty', __( 'Enter a password', 'give' ) );
+			give_set_error( 'password_empty', __( 'Enter a password.', 'give' ) );
 		}
 	} else {
 		// no username
-		give_set_error( 'username_incorrect', __( 'The username you entered does not exist', 'give' ) );
+		give_set_error( 'username_incorrect', __( 'The username you entered does not exist.', 'give' ) );
 	}
 
 	return $valid_user_data;
@@ -643,7 +648,7 @@ function give_purchase_form_validate_guest_user() {
 
 	// Show error message if user must be logged in
 	if ( give_logged_in_only( $form_id ) ) {
-		give_set_error( 'logged_in_only', __( 'You must be logged into to donate', 'give' ) );
+		give_set_error( 'logged_in_only', __( 'You must be logged into to donate.', 'give' ) );
 	}
 
 	// Get the guest email
@@ -654,14 +659,14 @@ function give_purchase_form_validate_guest_user() {
 		// Validate email
 		if ( ! is_email( $guest_email ) ) {
 			// Invalid email
-			give_set_error( 'email_invalid', __( 'Invalid email', 'give' ) );
+			give_set_error( 'email_invalid', __( 'Invalid email.', 'give' ) );
 		} else {
 			// All is good to go
 			$valid_user_data['user_email'] = $guest_email;
 		}
 	} else {
 		// No email
-		give_set_error( 'email_empty', __( 'Enter an email', 'give' ) );
+		give_set_error( 'email_empty', __( 'Enter an email.', 'give' ) );
 	}
 
 	// Loop through required fields and show error messages
@@ -830,7 +835,7 @@ function give_purchase_form_validate_cc() {
 	// Validate the card zip
 	if ( ! empty( $card_data['card_zip'] ) ) {
 		if ( ! give_purchase_form_validate_cc_zip( $card_data['card_zip'], $card_data['card_country'] ) ) {
-			give_set_error( 'invalid_cc_zip', __( 'The zip / postal code you entered for your billing address is invalid', 'give' ) );
+			give_set_error( 'invalid_cc_zip', __( 'The zip / postal code you entered for your billing address is invalid.', 'give' ) );
 		}
 	}
 

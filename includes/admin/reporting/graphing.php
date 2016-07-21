@@ -213,7 +213,7 @@ function give_reports_graph() {
 					<td class="row-title">
 						<label for="tablecell"><?php _e( 'Total donations for period shown: ', 'give' ); ?></label>
 					</td>
-					<td><?php echo give_format_amount( $sales_totals, false ); ?></td>
+					<td><?php echo $sales_totals; ?></td>
 				</tr>
 				<?php if ( 'this_month' == $dates['range'] ) : ?>
 					<tr>
@@ -226,7 +226,7 @@ function give_reports_graph() {
 						<td class="row-title">
 							<label for="tablecell"><?php _e( 'Estimated monthly donations: ', 'give' ); ?></label>
 						</td>
-						<td><?php echo give_format_amount( $estimated['sales'], false ); ?></td>
+						<td><?php echo floor( $estimated['sales'] ); ?></td>
 					</tr>
 				<?php endif; ?>
 			</table>
@@ -425,7 +425,13 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 	);
 
 	?>
-	<h3><span><?php printf( __( 'Income Over Time for %s', 'give' ), get_the_title( $form_id ) ); ?></span></h3>
+	<h3><span><?php
+		printf(
+			/* translators: %s: form title */
+			__( 'Income Over Time for %s', 'give' ),
+			get_the_title( $form_id )
+		);
+	?></span></h3>
 
 	<div class="metabox-holder" style="padding-top: 0;">
 		<div class="postbox">
@@ -454,13 +460,13 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 			</tr>
 			<tr>
 				<td class="row-title">
-					<label for="tablecell"><?php _e( 'Average monthly income: %s', 'give' ); ?></label>
+					<label for="tablecell"><?php _e( 'Average monthly income: ', 'give' ); ?></label>
 				</td>
 				<td><?php echo give_currency_filter( give_format_amount( give_get_average_monthly_form_earnings( $form_id ) ) ); ?></td>
 			</tr>
 			<tr class="alternate">
 				<td class="row-title">
-					<label for="tablecell"><?php _e( 'Average monthly donations: %s', 'give' ); ?></label>
+					<label for="tablecell"><?php _e( 'Average monthly donations: ', 'give' ); ?></label>
 				</td>
 				<td><?php echo number_format( give_get_average_monthly_form_sales( $form_id ), 0 ); ?></td>
 			</tr>
@@ -783,8 +789,10 @@ add_action( 'give_filter_reports', 'give_parse_report_dates' );
 
 /**
  * Give Reports Refresh Button
+ *
+ * Outputs a "Refresh Reports" button for graphs
+ *
  * @since      1.3
- * @description: Outputs a "Refresh Reports" button for graphs
  */
 function give_reports_refresh_button() {
 
