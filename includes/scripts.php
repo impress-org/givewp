@@ -217,6 +217,9 @@ function give_load_admin_scripts( $hook ) {
 	wp_register_script( 'jquery-chosen', $js_plugins . 'chosen.jquery' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
 	wp_enqueue_script( 'jquery-chosen' );
 
+	wp_register_script( 'give-accounting', $js_plugins . 'accounting' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
+	wp_enqueue_script( 'give-accounting' );
+
 	wp_register_script( 'give-admin-scripts', $js_dir . 'admin-scripts' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
 	wp_enqueue_script( 'give-admin-scripts' );
 
@@ -233,12 +236,6 @@ function give_load_admin_scripts( $hook ) {
 	if ( $post_type === 'give_forms' ) {
 		wp_register_script( 'give-admin-forms-scripts', $js_dir . 'admin-forms' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
 		wp_enqueue_script( 'give-admin-forms-scripts' );
-	}
-
-	// Report Scripts.
-	if ( isset($_GET['page']) && $_GET['page'] == 'give-reports'  ) {
-		wp_register_script( 'give-accounting', $js_plugins . 'accounting' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
-		wp_enqueue_script( 'give-accounting' );
 	}
 
     //Settings Scripts

@@ -44,6 +44,16 @@ jQuery.noConflict();
 
     };
 
+    /**
+     * Unformat Currency
+     *
+     * @param price
+     * @returns {number}
+     */
+    function give_unformat_currency(price) {
+        return Math.abs( parseFloat( accounting.unformat( price, give_vars.decimal_separator ) ) );
+    }
+
 
     /**
      * Edit payment screen JS
@@ -821,13 +831,12 @@ jQuery.noConflict();
 
             // Format price sting of input field on focusout.
             $give_money_fields.on('focusout', function () {
-                price_string = $(this).val();
-                thousand_separator_count = ( price_string.match(new RegExp(thousand_separator, 'g')) || [] ).length;
+                price_string = give_unformat_currency( $(this).val() );
 
-                // Replace all thousand separator except one.
-                while (thousand_separator_limit < thousand_separator_count) {
-                    price_string = price_string.replace(thousand_separator, '');
-                    --thousand_separator_count;
+                // Back out.
+                if( ! price_string ) {
+                    $(this).val('');
+                    return false;
                 }
 
                 // Update format price string in input field.
