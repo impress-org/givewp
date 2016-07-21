@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 if ( ! isset( $_GET['id'] ) || ! is_numeric( $_GET['id'] ) ) {
-	wp_die( esc_html( 'Donation ID not supplied. Please try again', 'give' ), esc_html( 'Error', 'give' ) );
+	wp_die( esc_html__( 'Donation ID not supplied. Please try again', 'give' ), esc_html__( 'Error', 'give' ) );
 }
 
 // Setup the variables
@@ -31,7 +31,7 @@ $payment    = new Give_Payment( $payment_id );
 // Sanity check... fail if purchase ID is invalid
 $payment_exists = $payment->ID;
 if ( empty( $payment_exists ) ) {
-	wp_die( esc_html( 'The specified ID does not belong to a payment. Please try again', 'give' ), esc_html( 'Error', 'give' ) );
+	wp_die( esc_html__( 'The specified ID does not belong to a payment. Please try again', 'give' ), esc_html__( 'Error', 'give' ) );
 }
 
 $number         = $payment->number;
@@ -52,11 +52,11 @@ $payment_mode   = $payment->mode;
 	<h1 id="transaction-details-heading"><?php
 		printf(
 			/* translators: %s: payment number */
-			esc_html( 'Payment %s', 'give' ),
+			esc_html__( 'Payment %s', 'give' ),
 			$number
 		);
 		if ( $payment_mode == 'test' ) {
-			echo '<span id="test-payment-label" class="give-item-label give-item-label-orange" data-tooltip="' . esc_attr( 'This payment was made in Test Mode', 'give' ) . '" data-tooltip-my-position="center left" data-tooltip-target-position="center right">' . esc_html( 'Test Payment', 'give' ) . '</span>';
+			echo '<span id="test-payment-label" class="give-item-label give-item-label-orange" data-tooltip="' . esc_attr( 'This payment was made in Test Mode', 'give' ) . '" data-tooltip-my-position="center left" data-tooltip-target-position="center right">' . esc_html__( 'Test Payment', 'give' ) . '</span>';
 		}
 	?></h1>
 
@@ -469,7 +469,7 @@ $payment_mode   = $payment->mode;
 										else :
 											$no_notes_display = '';
 										endif;
-										echo '<p class="give-no-payment-notes"' . $no_notes_display . '>' . esc_html( 'No payment notes', 'give' ) . '</p>';
+										echo '<p class="give-no-payment-notes"' . $no_notes_display . '>' . esc_html__( 'No payment notes', 'give' ) . '</p>';
 										?>
 									</div>
 									<textarea name="give-payment-note" id="give-payment-note" class="large-text"></textarea>

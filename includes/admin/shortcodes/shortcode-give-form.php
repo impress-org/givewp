@@ -21,8 +21,8 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 	 */
 	public function __construct() {
 
-		$this->shortcode['title']   = esc_html( 'Donation Form', 'give' );
-		$this->shortcode['label']   = esc_html( 'Donation Form', 'give' );
+		$this->shortcode['title']   = esc_html__( 'Donation Form', 'give' );
+		$this->shortcode['label']   = esc_html__( 'Donation Form', 'give' );
 
 		parent::__construct( 'give_form' );
 	}
@@ -50,65 +50,65 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 				'tooltip'     => esc_attr( 'Select a Donation Form', 'give' ),
 				'placeholder' => esc_attr( '- Select a Form -', 'give' ),
 				'required'    => array(
-					'alert' => esc_html( 'You must first select a Form!', 'give' ),
-					'error' => sprintf( '<p class="strong">%s</p><p class="no-margin">%s</p>', esc_html( 'No donation forms were found!', 'give' ), $create_form_link ),
+					'alert' => esc_html__( 'You must first select a Form!', 'give' ),
+					'error' => sprintf( '<p class="strong">%s</p><p class="no-margin">%s</p>', esc_html__( 'No donation forms were found!', 'give' ), $create_form_link ),
 				),
 			),
 			array(
 				'type' => 'container',
-				'html' => sprintf( '<p class="strong margin-top">%s</p>', esc_html( 'Optional form settings', 'give' ) ),
+				'html' => sprintf( '<p class="strong margin-top">%s</p>', esc_html__( 'Optional form settings', 'give' ) ),
 			),
 			array(
 				'type'    => 'listbox',
 				'name'    => 'show_title',
-				'label'   => esc_html( 'Show Title:', 'give' ),
+				'label'   => esc_html__( 'Show Title:', 'give' ),
 				'tooltip' => esc_attr( 'Do you want to display the form title?', 'give' ),
 				'options' => array(
-					'true'  => esc_html( 'Show', 'give' ),
-					'false' => esc_html( 'Hide', 'give' ),
+					'true'  => esc_html__( 'Show', 'give' ),
+					'false' => esc_html__( 'Hide', 'give' ),
 				),
 			),
 			array(
 				'type'    => 'listbox',
 				'name'    => 'show_goal',
-				'label'   => esc_html( 'Show Goal:', 'give' ),
+				'label'   => esc_html__( 'Show Goal:', 'give' ),
 				'tooltip' => esc_attr( 'Do you want to display the donation goal?', 'give' ),
 				'options' => array(
-					'true'  => esc_html( 'Show', 'give' ),
-					'false' => esc_html( 'Hide', 'give' ),
+					'true'  => esc_html__( 'Show', 'give' ),
+					'false' => esc_html__( 'Hide', 'give' ),
 				),
 			),
 			array(
 				'type'    => 'listbox',
 				'name'    => 'show_content',
 				'minWidth' => 240,
-				'label'   => esc_html( 'Display Content:', 'give' ),
+				'label'   => esc_html__( 'Display Content:', 'give' ),
 				'tooltip' => esc_attr( 'Do you want to display the form content?', 'give' ),
 				'options' => array(
-					'none'  => esc_html( 'No Content', 'give' ),
-					'above' => esc_html( 'Display above the form fields', 'give' ),
-					'below' => esc_html( 'Display below the form fields', 'give' ),
+					'none'  => esc_html__( 'No Content', 'give' ),
+					'above' => esc_html__( 'Display above the form fields', 'give' ),
+					'below' => esc_html__( 'Display below the form fields', 'give' ),
 				),
 			),
 			array(
 				'type'    => 'listbox',
 				'name'    => 'display_style',
-				'label'   => esc_html( 'Payment Fields:', 'give' ),
+				'label'   => esc_html__( 'Payment Fields:', 'give' ),
 				'tooltip' => esc_attr( 'How would you like to display payment information?', 'give' ),
 				'options' => array(
-					'onpage' => esc_html( 'Show on Page', 'give' ),
-					'reveal' => esc_html( 'Reveal Upon Click', 'give' ),
-					'modal'  => esc_html( 'Modal Window Upon Click', 'give' ),
+					'onpage' => esc_html__( 'Show on Page', 'give' ),
+					'reveal' => esc_html__( 'Reveal Upon Click', 'give' ),
+					'modal'  => esc_html__( 'Modal Window Upon Click', 'give' ),
 				),
 			),
 			array(
 				'type'    => 'listbox',
 				'name'    => 'float_labels',
-				'label'   => esc_html( 'Floating Labels:', 'give' ),
+				'label'   => esc_html__( 'Floating Labels:', 'give' ),
 				'tooltip' => esc_attr( 'Override the default floating labels setting for this form?', 'give' ),
 				'options' => array(
-					'enabled'  => esc_html( 'Enabled', 'give' ),
-					'disabled' => esc_html( 'Disabled', 'give' ),
+					'enabled'  => esc_html__( 'Enabled', 'give' ),
+					'disabled' => esc_html__( 'Disabled', 'give' ),
 				),
 			),
 		);

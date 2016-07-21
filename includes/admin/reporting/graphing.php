@@ -177,8 +177,8 @@ function give_reports_graph() {
 	}
 
 	$data = array(
-		esc_html( 'Income', 'give' )    => $earnings_data,
-		esc_html( 'Donations', 'give' ) => $sales_data
+		esc_html__( 'Income', 'give' )    => $earnings_data,
+		esc_html__( 'Donations', 'give' ) => $sales_data
 	);
 
 	// start our own output buffer
@@ -420,15 +420,15 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 	}
 
 	$data = array(
-		esc_html( 'Income', 'give' )    => $earnings_data,
-		esc_html( 'Donations', 'give' ) => $sales_data
+		esc_html__( 'Income', 'give' )    => $earnings_data,
+		esc_html__( 'Donations', 'give' ) => $sales_data
 	);
 
 	?>
 	<h3><span><?php
 		printf(
 			/* translators: %s: form title */
-			esc_html( 'Income Over Time for %s', 'give' ),
+			esc_html__( 'Income Over Time for %s', 'give' ),
 			get_the_title( $form_id )
 		);
 	?></span></h3>
@@ -486,17 +486,17 @@ function give_reports_graph_of_form( $form_id = 0 ) {
  */
 function give_reports_graph_controls() {
 	$date_options = apply_filters( 'give_report_date_options', array(
-		'today'        => esc_html( 'Today', 'give' ),
-		'yesterday'    => esc_html( 'Yesterday', 'give' ),
-		'this_week'    => esc_html( 'This Week', 'give' ),
-		'last_week'    => esc_html( 'Last Week', 'give' ),
-		'this_month'   => esc_html( 'This Month', 'give' ),
-		'last_month'   => esc_html( 'Last Month', 'give' ),
-		'this_quarter' => esc_html( 'This Quarter', 'give' ),
-		'last_quarter' => esc_html( 'Last Quarter', 'give' ),
-		'this_year'    => esc_html( 'This Year', 'give' ),
-		'last_year'    => esc_html( 'Last Year', 'give' ),
-		'other'        => esc_html( 'Custom', 'give' )
+		'today'        => esc_html__( 'Today', 'give' ),
+		'yesterday'    => esc_html__( 'Yesterday', 'give' ),
+		'this_week'    => esc_html__( 'This Week', 'give' ),
+		'last_week'    => esc_html__( 'Last Week', 'give' ),
+		'this_month'   => esc_html__( 'This Month', 'give' ),
+		'last_month'   => esc_html__( 'Last Month', 'give' ),
+		'this_quarter' => esc_html__( 'This Quarter', 'give' ),
+		'last_quarter' => esc_html__( 'Last Quarter', 'give' ),
+		'this_year'    => esc_html__( 'This Year', 'give' ),
+		'last_year'    => esc_html__( 'Last Year', 'give' ),
+		'other'        => esc_html__( 'Custom', 'give' )
 	) );
 
 	$dates   = give_get_report_dates();
@@ -799,7 +799,7 @@ function give_reports_refresh_button() {
 		'give-message' => 'refreshed-reports'
 	) ), 'give-refresh-reports' );
 
-	echo '<a href="' . $url . '" data-tooltip="' . esc_attr( 'Clicking this will clear the reports cache.', 'give' ) . '" data-tooltip-my-position="right center"  data-tooltip-target-position="left center" class="button alignright give-refresh-reports-button give-tooltip">' . esc_html( 'Refresh Reports', 'give' ) . '</a>';
+	echo '<a href="' . $url . '" data-tooltip="' . esc_attr( 'Clicking this will clear the reports cache.', 'give' ) . '" data-tooltip-my-position="right center"  data-tooltip-target-position="left center" class="button alignright give-refresh-reports-button give-tooltip">' . esc_html__( 'Refresh Reports', 'give' ) . '</a>';
 
 }
 

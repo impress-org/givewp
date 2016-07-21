@@ -59,7 +59,7 @@ function give_add_ons_get_feed() {
 				set_transient( 'give_add_ons_feed', $cache, 3600 );
 			}
 		} else {
-			$cache = '<div class="error"><p>' . esc_html( 'There was an error retrieving the Give Add-ons list from the server. Please try again later.', 'give' ) . '</div>';
+			$cache = '<div class="error"><p>' . esc_html__( 'There was an error retrieving the Give Add-ons list from the server. Please try again later.', 'give' ) . '</div>';
 		}
 	}
 

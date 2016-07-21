@@ -72,10 +72,10 @@ function give_reports_page() {
  */
 function give_reports_default_views() {
 	$views = array(
-		'earnings' => esc_html( 'Income', 'give' ),
+		'earnings' => esc_html__( 'Income', 'give' ),
 		'forms'    => give_get_forms_label_plural(),
-		'donors'   => esc_html( 'Donors', 'give' ),
-		'gateways' => esc_html( 'Payment Methods', 'give' )
+		'donors'   => esc_html__( 'Donors', 'give' ),
+		'gateways' => esc_html__( 'Payment Methods', 'give' )
 	);
 
 	$views = apply_filters( 'give_report_views', $views );
@@ -147,7 +147,7 @@ function give_report_views() {
 
 		<input type="hidden" name="post_type" value="give_forms"/>
 		<input type="hidden" name="page" value="give-reports"/>
-		<?php submit_button( esc_html( 'Show', 'give' ), 'secondary', 'submit', false ); ?>
+		<?php submit_button( esc_html__( 'Show', 'give' ), 'secondary', 'submit', false ); ?>
 	</form>
 	<?php
 	do_action( 'give_report_view_actions_after' );
@@ -218,7 +218,7 @@ function give_reports_donors_table() {
 		<?php do_action( 'give_logs_donors_table_top' ); ?>
 		<form id="give-donors-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-reports&view=donors' ); ?>">
 			<?php
-			$give_table->search_box( esc_html( 'Search', 'give' ), 'give-donors' );
+			$give_table->search_box( esc_html__( 'Search', 'give' ), 'give-donors' );
 			$give_table->display();
 			?>
 			<input type="hidden" name="post_type" value="give_forms"/>
@@ -316,7 +316,7 @@ function give_reports_tab_export() {
 								<?php
 									printf(
 										/* translators: 1: start date dropdown 2: end date dropdown */
-										esc_html( '%1$s to %2$s', 'give' ),
+										esc_html__( '%1$s to %2$s', 'give' ),
 										Give()->html->year_dropdown( 'start_year' ) . ' ' . Give()->html->month_dropdown( 'start_month' ),
 										Give()->html->year_dropdown( 'end_year' )   . ' ' . Give()->html->month_dropdown( 'end_month' )
 									);

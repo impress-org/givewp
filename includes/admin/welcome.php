@@ -51,8 +51,8 @@ class Give_Welcome {
 	public function admin_menus() {
 		// About Page
 		add_dashboard_page(
-			esc_html( 'Welcome to Give', 'give' ),
-			esc_html( 'Welcome to Give', 'give' ),
+			esc_html__( 'Welcome to Give', 'give' ),
+			esc_html__( 'Welcome to Give', 'give' ),
 			$this->minimum_capability,
 			'give-about',
 			array( $this, 'about_screen' )
@@ -60,8 +60,8 @@ class Give_Welcome {
 
 		// Changelog Page
 		add_dashboard_page(
-			esc_html( 'Give Changelog', 'give' ),
-			esc_html( 'Give Changelog', 'give' ),
+			esc_html__( 'Give Changelog', 'give' ),
+			esc_html__( 'Give Changelog', 'give' ),
 			$this->minimum_capability,
 			'give-changelog',
 			array( $this, 'changelog_screen' )
@@ -69,8 +69,8 @@ class Give_Welcome {
 
 		// Getting Started Page
 		add_dashboard_page(
-			esc_html( 'Getting started with Give', 'give' ),
-			esc_html( 'Getting started with Give', 'give' ),
+			esc_html__( 'Getting started with Give', 'give' ),
+			esc_html__( 'Getting started with Give', 'give' ),
 			$this->minimum_capability,
 			'give-getting-started',
 			array( $this, 'getting_started_screen' )
@@ -78,8 +78,8 @@ class Give_Welcome {
 
 		// Credits Page
 		add_dashboard_page(
-			esc_html( 'The people that build Give', 'give' ),
-			esc_html( 'The people that build Give', 'give' ),
+			esc_html__( 'The people that build Give', 'give' ),
+			esc_html__( 'The people that build Give', 'give' ),
 			$this->minimum_capability,
 			'give-credits',
 			array( $this, 'credits_screen' )
@@ -248,7 +248,7 @@ class Give_Welcome {
 			<h1 class="welcome-h1"><?php
 				printf(
 					/* translators: %s: Give version */
-					esc_html( 'Welcome to Give %s', 'give' ),
+					esc_html__( 'Welcome to Give %s', 'give' ),
 					$display_version
 				);
 			?></h1>
@@ -271,7 +271,7 @@ class Give_Welcome {
 			<div class="give-badge"><?php
 				printf(
 					/* translators: %s: Give version */
-					esc_html( 'Version %s', 'give' ),
+					esc_html__( 'Version %s', 'give' ),
 					$display_version
 				);
 			?></div>
@@ -342,14 +342,14 @@ class Give_Welcome {
 			<div class="about-text"><?php
 				printf(
 					/* translators: %s: Give version */
-					esc_html( 'Thank you for updating to the latest version! Give %s is ready to make your online store faster, safer, and better!', 'give' ),
+					esc_html__( 'Thank you for updating to the latest version! Give %s is ready to make your online store faster, safer, and better!', 'give' ),
 					$display_version
 				);
 			?></div>
 			<div class="give-badge"><?php
 				printf(
 					/* translators: %s: Give version */
-					esc_html( 'Version %s', 'give' ),
+					esc_html__( 'Version %s', 'give' ),
 					$display_version
 				);
 			?></div>
@@ -388,7 +388,7 @@ class Give_Welcome {
 			<h1 class="welcome-h1"><?php
 				printf(
 					/* translators: %s: Give version */
-					esc_html( 'Give %s - Getting Started Guide', 'give' ),
+					esc_html__( 'Give %s - Getting Started Guide', 'give' ),
 					$display_version
 				);
 			?></h1>
@@ -404,7 +404,7 @@ class Give_Welcome {
 			<div class="give-badge"><?php
 				printf(
 					/* translators: %s: Give version */
-					esc_html( 'Version %s', 'give' ),
+					esc_html__( 'Version %s', 'give' ),
 					$display_version
 				);
 			?></div>
@@ -412,7 +412,7 @@ class Give_Welcome {
 			<?php $this->tabs(); ?>
 
 
-			<div class="about-text"><?php printf( esc_html( 'Getting started with Give is easy! We put together this quick start guide to help first time users of the plugin. Our goal is to get you up and running in no time. Let\'s begin!', 'give' ), $display_version ); ?></div>
+			<div class="about-text"><?php printf( esc_html__( 'Getting started with Give is easy! We put together this quick start guide to help first time users of the plugin. Our goal is to get you up and running in no time. Let\'s begin!', 'give' ), $display_version ); ?></div>
 
 
 			<div class="feature-section clearfix">
@@ -499,7 +499,7 @@ class Give_Welcome {
 			<h1 class="welcome-h1"><?php
 				printf(
 					/* translators: %s: Give version */
-					esc_html( 'Give %s - Credits', 'give' ),
+					esc_html__( 'Give %s - Credits', 'give' ),
 					$display_version
 				);
 			?></h1>
@@ -517,7 +517,7 @@ class Give_Welcome {
 			<div class="give-badge"><?php
 				printf(
 					/* translators: %s: Give version */
-					esc_html( 'Version %s', 'give' ),
+					esc_html__( 'Version %s', 'give' ),
 					$display_version
 				);
 			?></div>
@@ -542,10 +542,10 @@ class Give_Welcome {
 		$file = file_exists( GIVE_PLUGIN_DIR . 'readme.txt' ) ? GIVE_PLUGIN_DIR . 'readme.txt' : null;
 
 		if ( ! $file ) {
-			$readme = '<p>' . esc_html( 'No valid changlog was found.', 'give' ) . '</p>';
+			$readme = '<p>' . esc_html__( 'No valid changlog was found.', 'give' ) . '</p>';
 		} else {
 			$readme = file_get_contents( $file );
-			$readme = nl2br( esc_html( $readme ) );
+			$readme = nl2br( esc_html__( $readme ) );
 			$readme = explode( '== Changelog ==', $readme );
 			$readme = end( $readme );
 
@@ -580,17 +580,17 @@ class Give_Welcome {
 			$contributor_list .= '<li class="wp-person">';
 			$contributor_list .= sprintf( '<a href="%s" title="%s">',
 				esc_url( 'https://github.com/' . $contributor->login ),
-				esc_html(
+				esc_html__(
 					sprintf(
 						/* translators: %s: github contributor */
-						esc_html( 'View %s', 'give' ),
+						esc_html__( 'View %s', 'give' ),
 						$contributor->login
 					)
 				)
 			);
-			$contributor_list .= sprintf( '<img src="%s" width="64" height="64" class="gravatar" alt="%s" />', esc_url( $contributor->avatar_url ), esc_html( $contributor->login ) );
+			$contributor_list .= sprintf( '<img src="%s" width="64" height="64" class="gravatar" alt="%s" />', esc_url( $contributor->avatar_url ), esc_html__( $contributor->login ) );
 			$contributor_list .= '</a>';
-			$contributor_list .= sprintf( '<a class="web" href="%s">%s</a>', esc_url( 'https://github.com/' . $contributor->login ), esc_html( $contributor->login ) );
+			$contributor_list .= sprintf( '<a class="web" href="%s">%s</a>', esc_url( 'https://github.com/' . $contributor->login ), esc_html__( $contributor->login ) );
 			$contributor_list .= '</a>';
 			$contributor_list .= '</li>';
 		}

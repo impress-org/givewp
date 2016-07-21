@@ -35,9 +35,9 @@ class Give_Forms_Widget extends WP_Widget
 
 		parent::__construct(
 			strtolower( $this->self ),
-			esc_html( 'Give - Donation Form', 'give' ),
+			esc_html__( 'Give - Donation Form', 'give' ),
 			array(
-				'description' => esc_html( 'Display a Give Donation Form in your theme\'s widget powered sidebar.', 'give' )
+				'description' => esc_html__( 'Display a Give Donation Form in your theme\'s widget powered sidebar.', 'give' )
 			)
 		);
 
@@ -143,7 +143,7 @@ class Give_Forms_Widget extends WP_Widget
 			<label for="<?php esc_attr_e( $this->get_field_id( 'id' ) ); ?>"><?php
 				printf(
 					/* translators: %s: form singular label */
-					esc_html( 'Give %s:', 'give' ),
+					esc_html__( 'Give %s:', 'give' ),
 					give_get_forms_label_singular()
 				);
 			?></label>

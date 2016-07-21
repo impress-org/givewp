@@ -31,7 +31,7 @@ function give_system_info_callback() {
 	<textarea readonly="readonly" onclick="this.focus(); this.select()" id="system-info-textarea" name="give-sysinfo" title="<?php esc_attr_e( 'To copy the system info, click below then press Ctrl + C (PC) or Cmd + C (Mac).', 'give' ); ?>"><?php echo give_tools_sysinfo_get(); ?></textarea>
 	<p class="submit">
 		<input type="hidden" name="give-action" value="download_sysinfo"/>
-		<?php submit_button( esc_html( 'Download System Info File', 'give' ), 'secondary', 'give-download-sysinfo', false ); ?>
+		<?php submit_button( esc_html__( 'Download System Info File', 'give' ), 'secondary', 'give-download-sysinfo', false ); ?>
 	</p>
 	<?php
 }
@@ -321,9 +321,9 @@ function give_tools_sysinfo_get() {
 
 	// The rest of this is only relevant is session is enabled
 	if ( isset( $_SESSION ) ) {
-		$return .= 'Session Name:             ' . esc_html( ini_get( 'session.name' ) ) . "\n";
-		$return .= 'Cookie Path:              ' . esc_html( ini_get( 'session.cookie_path' ) ) . "\n";
-		$return .= 'Save Path:                ' . esc_html( ini_get( 'session.save_path' ) ) . "\n";
+		$return .= 'Session Name:             ' . esc_html__( ini_get( 'session.name' ) ) . "\n";
+		$return .= 'Cookie Path:              ' . esc_html__( ini_get( 'session.cookie_path' ) ) . "\n";
+		$return .= 'Save Path:                ' . esc_html__( ini_get( 'session.save_path' ) ) . "\n";
 		$return .= 'Use Cookies:              ' . ( ini_get( 'session.use_cookies' ) ? 'On' : 'Off' ) . "\n";
 		$return .= 'Use Only Cookies:         ' . ( ini_get( 'session.use_only_cookies' ) ? 'On' : 'Off' ) . "\n";
 	}
