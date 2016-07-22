@@ -454,7 +454,7 @@ jQuery(function ($) {
         // Is this a custom amount selection?
         if ( this_amount === 'custom' ) {
             //It is, so focus on the custom amount input
-            parent_form.find('.give-amount-top').val('').focus();
+            $parent_form.find('.give-amount-top').val('').focus();
             return false; //Bounce out
         }
 
