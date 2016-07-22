@@ -112,7 +112,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 							'after_field'       => give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol  give-money-symbol-after">' . give_currency_symbol() . '</span>' : '',
 							'sanitization_cb'   => 'give_sanitize_amount',
                             'attributes'        => array(
-								'placeholder' => '1.00',
+								'placeholder' => give_format_decimal( '1.00' ),
 								'class'       => 'cmb-type-text-small give-money-field',
 							),
 							'before'       => 'give_format_admin_multilevel_amount',
@@ -171,7 +171,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 						'placeholder' => give_format_decimal('1.00'),
 						'value'       => give_format_decimal( $custom_amount_minimum ),
 						'class'       => 'cmb-type-text-small give-money-field',
-					),
+					)
 				),
 				array(
 					'name'        => __( 'Custom Amount Text', 'give' ),
