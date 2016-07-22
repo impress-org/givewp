@@ -320,7 +320,7 @@ jQuery(function ($) {
             });
 
             // Set level to custom.
-            if( ! ( -1 < price_id ) && ( value_min < value_now ) ) {
+            if( ! ( -1 < price_id ) && ( value_min <= value_now ) ) {
                 price_id = 'custom';
             }
         }

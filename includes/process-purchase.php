@@ -1108,7 +1108,7 @@ function give_validate_multi_donation_form_level(  $valid_data, $data ) {
             // Sanitize custom minimum amount.
             $custom_minimum_amount = give_sanitize_amount( get_post_meta( $data['give-form-id'], '_give_custom_amount_minimum', true ) );
 
-            if( $data['give-amount'] > $custom_minimum_amount ) {
+            if( $data['give-amount'] >= $custom_minimum_amount ) {
                 $_POST['give-price-id'] = 'custom';
                 $donation_level_matched  = true;
             }
