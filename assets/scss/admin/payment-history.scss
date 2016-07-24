@@ -102,10 +102,10 @@ tr.status-refunded td {
 
 .give-donation-status {
   > span {
-    float: left;
+    display: inline-block;
     width: 12px;
     height: 12px;
-    margin: 3px 4px 0 0;
+    margin: 0 4px;
     padding: 0;
     border-radius: 50%;
     background: #888;
@@ -149,9 +149,8 @@ tr.status-refunded td {
 #test-payment-label {
   @include give-label();
   background-color: $orange;
-  margin: 0 0 0 15px;
-  position: relative;
-  top: -4px;
+  margin: 0 15px;
+  vertical-align: middle;
 }
 
 //ID & link field
@@ -177,7 +176,7 @@ tr.status-refunded td {
   .give-donation-status {
     display: inline-block;
     float: none;
-    margin: 0 0 0 10px;
+    margin: 0 10px;
     position: relative;
     top: 3px;
   }
@@ -213,13 +212,9 @@ Responsiveness
 
 .give-admin-box-inside {
   margin: 0;
-  padding: 3px 12px;
+  padding: 3px 10px;
   clear: both;
   border-bottom: 1px solid #eee;
-}
-
-.rtl .give-admin-box-inside {
-  padding: 5px 10px 5px 0;
 }
 
 .give-admin-box-inside .strong {
