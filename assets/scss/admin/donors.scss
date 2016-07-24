@@ -111,6 +111,7 @@
 	padding: 0 15px 15px 0;
 	text-align: center;
 	float: left;
+
 	img {
 	  border-radius: 3px;
 	}
@@ -125,8 +126,6 @@
 
   //Donor Header (non-avatar content)
   .donor-bio-header {
-	float: left;
-	width: 33%;
 
 	.customer-since {
 	  margin: 10px 0;
@@ -148,6 +147,20 @@
 	  margin-bottom: 15px;
 	}
 
+  }
+
+}
+
+.rtl #give-customer-card-wrapper {
+
+  .avatar-wrap {
+    padding: 0 0 15px 15px;
+    float: right;
+  }
+
+  .customer-id {
+    margin-right: 0;
+    margin-left: 10px;
   }
 
 }
@@ -183,6 +196,14 @@
 	font-size: 100px;
 	color: #F0F0F0;
 	z-index: 0;
+  }
+
+}
+.rtl #donor-summary {
+
+  &:after {
+	left: 10px;
+    right: initial;
   }
 
 }
