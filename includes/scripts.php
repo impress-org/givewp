@@ -41,8 +41,8 @@ function give_load_scripts() {
 		'checkout_nonce'      => wp_create_nonce( 'give_checkout_nonce' ),
 		'currency_sign'       => give_currency_filter( '' ),
 		'currency_pos'        => give_get_currency_position(),
-		'thousands_separator' => isset( $give_options['thousands_separator'] ) ? $give_options['thousands_separator'] : ',',
-		'decimal_separator'   => isset( $give_options['decimal_separator'] ) ? $give_options['decimal_separator'] : '.',
+		'thousands_separator' => give_get_price_thousand_separator(),
+		'decimal_separator'   => give_get_price_decimal_separator(),
 		'no_gateway'          => __( 'Please select a payment method.', 'give' ),
 		'bad_minimum'         => __( 'The minimum donation amount for this form is', 'give' ),
 		'general_loading'     => __( 'Loading...', 'give' ),
@@ -217,6 +217,9 @@ function give_load_admin_scripts( $hook ) {
 	wp_register_script( 'jquery-chosen', $js_plugins . 'chosen.jquery' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
 	wp_enqueue_script( 'jquery-chosen' );
 
+	wp_register_script( 'give-accounting', $js_plugins . 'accounting' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
+	wp_enqueue_script( 'give-accounting' );
+
 	wp_register_script( 'give-admin-scripts', $js_dir . 'admin-scripts' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
 	wp_enqueue_script( 'give-admin-scripts' );
 
@@ -235,12 +238,6 @@ function give_load_admin_scripts( $hook ) {
 		wp_enqueue_script( 'give-admin-forms-scripts' );
 	}
 
-	// Report Scripts.
-	if ( isset($_GET['page']) && $_GET['page'] == 'give-reports'  ) {
-		wp_register_script( 'give-accounting', $js_plugins . 'accounting' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
-		wp_enqueue_script( 'give-accounting' );
-	}
-
     //Settings Scripts
     if (isset($_GET['page']) && $_GET['page'] == 'give-settings'  ) {
         wp_register_script( 'give-admin-settings-scripts', $js_dir . 'admin-settings' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
@@ -248,8 +245,8 @@ function give_load_admin_scripts( $hook ) {
     }
 
     // Price Separators.
-    $thousand_separator = isset( $give_options['thousands_separator'] ) ? $give_options['thousands_separator'] : ',';
-    $decimal_separator  = isset( $give_options['decimal_separator'] ) ? $give_options['decimal_separator'] : '.';
+    $thousand_separator = give_get_price_thousand_separator();
+    $decimal_separator  = give_get_price_decimal_separator();
 
     //Localize strings & variables for JS
 	wp_localize_script( 'give-admin-scripts', 'give_vars', array(
