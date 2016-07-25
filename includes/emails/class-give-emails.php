@@ -160,8 +160,8 @@ class Give_Emails {
 	 */
 	public function get_templates() {
 		$templates = array(
-			'default' => esc_html( 'Default Template', 'give' ),
-			'none'    => esc_html( 'No template, plain text only', 'give' )
+			'default' => esc_html__( 'Default Template', 'give' ),
+			'none'    => esc_html__( 'No template, plain text only', 'give' )
 		);
 
 		return apply_filters( 'give_email_templates', $templates );
@@ -250,7 +250,7 @@ class Give_Emails {
 	public function send( $to, $subject, $message, $attachments = '' ) {
 
 		if ( ! did_action( 'init' ) && ! did_action( 'admin_init' ) ) {
-			_doing_it_wrong( __FUNCTION__, esc_html( 'You cannot send email with Give_Emails until init/admin_init has been reached.', 'give' ), null );
+			_doing_it_wrong( __FUNCTION__, esc_html__( 'You cannot send email with Give_Emails until init/admin_init has been reached.', 'give' ), null );
 
 			return false;
 		}

@@ -77,10 +77,15 @@ abstract class Give_DB {
 	 * Retrieve a row by the primary key
 	 *
 	 * @access  public
+	 *
 	 * @since   1.0
+	 *
+	 * @param int $row_id Row ID
+	 *
 	 * @return  object
 	 */
 	public function get( $row_id ) {
+		/* @var WPDB $wpdb */
 		global $wpdb;
 
 		return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $this->table_name WHERE $this->primary_key = %s LIMIT 1;", $row_id ) );
@@ -90,11 +95,18 @@ abstract class Give_DB {
 	 * Retrieve a row by a specific column / value
 	 *
 	 * @access  public
+     *
 	 * @since   1.0
-	 * @return  object
+	 *
+     * @param int $column Column ID
+     * @param int $row_id Row ID
+     *
+     * @return  object
 	 */
 	public function get_by( $column, $row_id ) {
-		global $wpdb;
+        /* @var WPDB $wpdb */
+        global $wpdb;
+
 		$column = esc_sql( $column );
 		return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $this->table_name WHERE $column = %s LIMIT 1;", $row_id ) );
 	}
@@ -103,11 +115,18 @@ abstract class Give_DB {
 	 * Retrieve a specific column's value by the primary key
 	 *
 	 * @access  public
+     *
 	 * @since   1.0
+     *
+     * @param int $column Column ID
+     * @param int $row_id Row ID
+     *
 	 * @return  string
 	 */
 	public function get_column( $column, $row_id ) {
-		global $wpdb;
+        /* @var WPDB $wpdb */
+        global $wpdb;
+
 		$column = esc_sql( $column );
 		return $wpdb->get_var( $wpdb->prepare( "SELECT $column FROM $this->table_name WHERE $this->primary_key = %s LIMIT 1;", $row_id ) );
 	}
@@ -116,11 +135,19 @@ abstract class Give_DB {
 	 * Retrieve a specific column's value by the the specified column / value
 	 *
 	 * @access  public
+     *
 	 * @since   1.0
+     *
+     * @param int       $column         Column ID
+     * @param string    $column_where   Column name
+     * @param string    $column_value   Column value
+     *
 	 * @return  string
 	 */
 	public function get_column_by( $column, $column_where, $column_value ) {
-		global $wpdb;
+        /* @var WPDB $wpdb */
+        global $wpdb;
+
 		$column_where = esc_sql( $column_where );
 		$column       = esc_sql( $column );
 		return $wpdb->get_var( $wpdb->prepare( "SELECT $column FROM $this->table_name WHERE $column_where = %s LIMIT 1;", $column_value ) );
@@ -130,11 +157,17 @@ abstract class Give_DB {
 	 * Insert a new row
 	 *
 	 * @access  public
+     *
 	 * @since   1.0
+     *
+     * @param array  $data
+     * @param string $type
+     *
 	 * @return  int
 	 */
 	public function insert( $data, $type = '' ) {
-		global $wpdb;
+        /* @var WPDB $wpdb */
+        global $wpdb;
 
 		// Set default values
 		$data = wp_parse_args( $data, $this->get_column_defaults() );
@@ -165,12 +198,18 @@ abstract class Give_DB {
 	 * Update a row
 	 *
 	 * @access  public
+     *
 	 * @since   1.0
+     *
+     * @param int       $row_id     Column ID
+     * @param array     $data
+     * @param string    $where      Column value
+     *
 	 * @return  bool
 	 */
 	public function update( $row_id, $data = array(), $where = '' ) {
-
-		global $wpdb;
+        /* @var WPDB $wpdb */
+        global $wpdb;
 
 		// Row ID must be positive integer
 		$row_id = absint( $row_id );
@@ -207,12 +246,16 @@ abstract class Give_DB {
 	 * Delete a row identified by the primary key
 	 *
 	 * @access  public
+     *
 	 * @since   1.0
+     *
+     * @param int $row_id Column ID
+     *
 	 * @return  bool
 	 */
 	public function delete( $row_id = 0 ) {
-
-		global $wpdb;
+        /* @var WPDB $wpdb */
+        global $wpdb;
 
 		// Row ID must be positive integer
 		$row_id = absint( $row_id );
@@ -236,7 +279,9 @@ abstract class Give_DB {
 	 * @return bool          If the table name exists
 	 */
 	public function table_exists( $table ) {
+        /* @var WPDB $wpdb */
 		global $wpdb;
+
 		$table = sanitize_text_field( $table );
 
 		return $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE '%s'", $table ) ) === $table;

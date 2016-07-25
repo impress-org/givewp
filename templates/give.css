@@ -117,7 +117,7 @@
 .give-icon-minus:before {
   content: "\e041"; }
 
-.give-icon-locked:before, #give_secure_site_wrapper span.padlock:before {
+.give-icon-locked:before, [id*='give_secure_site_wrapper'] span.padlock:before {
   content: "\e600"; }
 
 .dashicons-give:before {
@@ -875,8 +875,7 @@ form[id*='give-form'], #give-recurring-form, form.give-form {
       display: block;
       margin: 0 0 5px;
       position: relative;
-      line-height: 1.7;
-      text-align: left; }
+      line-height: 1.7; }
       form[id*='give-form'] .form-row label.checkbox, #give-recurring-form .form-row label.checkbox, form.give-form .form-row label.checkbox {
         display: inline; }
     form[id*='give-form'] .form-row select, form[id*='give-form'] .form-row textarea, form[id*='give-form'] .form-row input[type="text"], form[id*='give-form'] .form-row input[type="tel"], form[id*='give-form'] .form-row input[type="email"], form[id*='give-form'] .form-row input[type="password"], #give-recurring-form .form-row select, #give-recurring-form .form-row textarea, #give-recurring-form .form-row input[type="text"], #give-recurring-form .form-row input[type="tel"], #give-recurring-form .form-row input[type="email"], #give-recurring-form .form-row input[type="password"], form.give-form .form-row select, form.give-form .form-row textarea, form.give-form .form-row input[type="text"], form.give-form .form-row input[type="tel"], form.give-form .form-row input[type="email"], form.give-form .form-row input[type="password"] {
@@ -976,7 +975,7 @@ form[id*='give-form'] .give-donation-amount {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    width: 125px; }
+    min-width: 125px; }
     form[id*='give-form'] .give-donation-amount #give-amount.invalid-amount,
     form[id*='give-form'] .give-donation-amount #give-amount-text.invalid-amount {
       border: 1px solid red; }
@@ -1111,7 +1110,6 @@ Radio Lists
 
 #give-gateway-radio-list {
   *zoom: 1;
-  float: left;
   margin: 0 0 25px;
   padding: 0;
   list-style: none; }
@@ -1121,7 +1119,7 @@ Radio Lists
   #give-gateway-radio-list:after {
     clear: both; }
   #give-gateway-radio-list > li {
-    float: left;
+    display: inline-block;
     margin-right: 15px;
     margin-left: 0;
     list-style-type: none;
@@ -1171,11 +1169,11 @@ Buttons
 /*---------------------------------
 CC Validation
 -----------------------------------*/
-#give_secure_site_wrapper {
+[id*='give_secure_site_wrapper'] {
   padding: 4px 4px 15px 0;
   font-size: 16px;
   line-height: 20px; }
-  #give_secure_site_wrapper span.padlock {
+  [id*='give_secure_site_wrapper'] span.padlock {
     font-family: 'give-icomoon';
     speak: none;
     font-style: normal;
@@ -1188,7 +1186,7 @@ CC Validation
     -moz-osx-font-smoothing: grayscale;
     font-size: 16px;
     line-height: 20px; }
-    #give_secure_site_wrapper span.padlock :before {
+    [id*='give_secure_site_wrapper'] span.padlock :before {
       display: inline-block; }
 
 #give_purchase_form_wrap input.give-input.card-number.valid {
@@ -1307,11 +1305,10 @@ form[id*='give-form'] .give-payment-mode-label .give-loading-text {
     padding: 0; }
   .give-login-account-wrap p.give-login-message, [id^="give-login-fields"] p.give-login-message {
     margin-right: 10px; }
+  .give-login-account-wrap .give_login_forgot_password, [id^="give-login-fields"] .give_login_forgot_password {
+    float: right; }
 
 /* User Login */
-[id^='give-user-login-submit'] input.give-submit, [id^='give-user-login-submit'] input.give-btn, [id^='give-user-login-submit'] span.give-loading-animation, .give-submit-button-wrap input.give-submit, .give-submit-button-wrap input.give-btn, .give-submit-button-wrap span.give-loading-animation {
-  float: left; }
-
 [id^='give-user-login-submit'] input.give-cancel-login, .give-submit-button-wrap input.give-cancel-login {
   margin-left: 5px; }
 
@@ -2082,5 +2079,33 @@ body.give-twentysixteen form[id*="give"] fieldset {
 
 body.give-twentysixteen fieldset#give_terms_agreement {
   padding-left: 0; }
+
+/**
+ * Give Right to Left Support
+ *
+ * @package     Give
+ * @subpackage  SCSS/Frontend
+ * @copyright   Copyright (c) 2016, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+body.rtl #give-gateway-radio-list > li {
+  margin-left: 20px;
+  margin-right: 0; }
+  body.rtl #give-gateway-radio-list > li .give-gateway-option input[type="radio"] {
+    margin: 0 0 0 5px; }
+
+body.rtl .qtip-content {
+  text-align: right; }
+
+body.rtl form[id*='give-form'] #give-final-total-wrap .give-donation-total-label, body.rtl form[id*='give-form'] .give-donation-amount .give-donation-total-label {
+  float: right;
+  border-left: none; }
+
+body.rtl form[id*='give-form'] #give-final-total-wrap .give-final-total-amount, body.rtl form[id*='give-form'] .give-donation-amount .give-final-total-amount {
+  float: right;
+  border-left: 1px solid #ccc; }
+
+body.rtl #give-payment-mode-wrap span.give-loading-text {
+  float: left; }
 
 /*# sourceMappingURL=../assets/sourcemaps/give.css.map */

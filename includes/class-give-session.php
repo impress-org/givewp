@@ -26,7 +26,7 @@ class Give_Session {
 	/**
 	 * Holds our session data
 	 *
-	 * @var array
+	 * @var WP_Session/array
 	 * @access private
 	 * @since  1.0
 	 */
@@ -63,7 +63,7 @@ class Give_Session {
 	/**
 	 * Get things started
 	 *
-	 * @description: Defines our session constants, includes the necessary libraries and retrieves the session instance
+	 * Defines our session constants, includes the necessary libraries and retrieves the session instance
 	 *
 	 * @since 1.0
 	 */
@@ -171,7 +171,8 @@ class Give_Session {
 
 	/**
 	 * Set a session variable
-	 *
+     *
+	 * @access public
 	 * @since 1.0
 	 *
 	 * @param $key $_SESSION key
@@ -198,8 +199,7 @@ class Give_Session {
 
 	/**
 	 * Set Session Cookies
-	 *
-	 * @description: Cookies are used to increase the session lifetime using the give setting; this is helpful for when a user closes their browser after making a donation and comes back to the site.
+	 * Cookies are used to increase the session lifetime using the give setting; this is helpful for when a user closes their browser after making a donation and comes back to the site.
 	 *
 	 * @access public
 	 * @hook
@@ -215,8 +215,7 @@ class Give_Session {
 
 	/**
 	 * Set Cookie Variant Time
-	 *
-	 * @description Force the cookie expiration variant time to custom expiration option, less and hour; defaults to 23 hours (set_expiration_variant_time used in WP_Session)
+	 * Force the cookie expiration variant time to custom expiration option, less and hour; defaults to 23 hours (set_expiration_variant_time used in WP_Session)
 	 *
 	 * @access      public
 	 * @since       1.0
@@ -231,7 +230,7 @@ class Give_Session {
 	/**
 	 * Set the Cookie Expiration
 	 *
-	 * @description Force the cookie expiration time if set, default to 24 hours
+	 * Force the cookie expiration time if set, default to 24 hours
 	 *
 	 * @access      public
 	 * 
@@ -246,8 +245,6 @@ class Give_Session {
 
 	/**
 	 * Starts a new session if one has not started yet.
-	 *
-	 * @return null
 	 * Checks to see if the server supports PHP sessions or if the GIVE_USE_PHP_SESSIONS constant is defined
 	 *
 	 * @access public
@@ -297,6 +294,7 @@ class Give_Session {
 	/**
 	 * Determines if we should start sessions
 	 *
+     * @access public
 	 * @since  1.4
 	 * @return bool
 	 */
@@ -333,9 +331,10 @@ class Give_Session {
 
 	/**
 	 * Maybe Start Session
-	 *
-	 * @description Starts a new session if one hasn't started yet.
-	 * @see         http://php.net/manual/en/function.session-set-cookie-params.php
+	 * Starts a new session if one hasn't started yet.
+     *
+     * @access public
+	 * @see    http://php.net/manual/en/function.session-set-cookie-params.php
 	 */
 	public function maybe_start_session() {
 
@@ -352,8 +351,11 @@ class Give_Session {
 
 	/**
 	 * Get Session Expiration
-	 *
-	 * @description  Looks at the session cookies and returns the expiration date for this session if applicable
+	 * Looks at the session cookies and returns the expiration date for this session if applicable
+     *
+     * @access public
+     *
+     * @return string Formatted date string
 	 */
 	public function get_session_expiration() {
 

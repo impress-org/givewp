@@ -113,7 +113,9 @@ class Give_Donate_Form {
 	 *
 	 * @since  1.5
 	 *
-	 * @param  object $donation_form The Donation Form Object
+	 * @access private
+	 *
+	 * @param  WP_Post $donation_form WP_Post Object
 	 *
 	 * @return bool             If the setup was successful or not
 	 */
@@ -152,7 +154,7 @@ class Give_Donate_Form {
 	 *
 	 * @since 1.0
 	 *
-	 * @param $key
+	 * @param string $key
 	 *
 	 * @return mixed
 	 * @throws Exception
@@ -166,7 +168,7 @@ class Give_Donate_Form {
 		} else {
 
 			/* translators: %s: property key */
-			return new WP_Error( 'give-form-invalid-property', sprintf( esc_html( 'Can\'t get property %s.', 'give' ), $key ) );
+			return new WP_Error( 'give-form-invalid-property', sprintf( esc_html__( 'Can\'t get property %s.', 'give' ), $key ) );
 
 		}
 
@@ -191,7 +193,7 @@ class Give_Donate_Form {
 		$defaults = array(
 			'post_type'   => 'give_forms',
 			'post_status' => 'draft',
-			'post_title'  => esc_html( 'New Donation Form', 'give' )
+			'post_title'  => esc_html__( 'New Donation Form', 'give' )
 		);
 
 		$args = wp_parse_args( $data, $defaults );
@@ -386,9 +388,36 @@ class Give_Donate_Form {
 	}
 
 	/**
+	 * Determine if custom price mode is enabled or disabled
+	 *
+	 * @since 1.6
+	 * @return bool
+	 */
+	public function is_custom_price_mode() {
+
+		$option = get_post_meta( $this->ID, '_give_custom_amount', true );
+		$ret    = 0;
+
+		if ( $option === 'yes' ) {
+			$ret = 1;
+		}
+
+		/**
+		 * Override the price mode for a donation when checking if is in custom price mode.
+		 *
+		 * @since 1.6
+		 *
+		 * @param bool $ret Is donation form in custom price mode?
+		 * @param int|string The ID of the donation form.
+		 */
+		return (bool) apply_filters( 'give_custom_price_option_mode', $ret, $this->ID );
+
+	}
+
+	/**
 	 * Has Variable Prices
 	 *
-	 * @description Determine if the donation form has variable prices enabled
+	 * Determine if the donation form has variable prices enabled
 	 *
 	 * @since       1.0
 	 * @return bool
@@ -433,6 +462,32 @@ class Give_Donate_Form {
 		return apply_filters( 'give_get_form_type', $this->type, $this->ID );
 
 	}
+
+    /**
+     * Get if form type set or not.
+     *
+     * @since 1.6
+     * @return bool true if form type is 'multi' and false otherwise.
+     */
+    public function is_set_type_donation_form() {
+        $form_type = $this->get_type();
+
+        return ( 'set' === $form_type ? true : false );
+
+    }
+
+    /**
+     * Get if form type multi or not.
+     *
+     * @since 1.6
+     * @return bool true if form type is 'multi' and false otherwise.
+     */
+    public function is_multi_type_donation_form() {
+        $form_type = $this->get_type();
+
+        return ( 'multi' === $form_type ? true : false );
+
+    }
 
 	/**
 	 * Retrieve the sale count for the donation form
@@ -551,6 +606,9 @@ class Give_Donate_Form {
 	 * Increase the earnings by the given amount
 	 *
 	 * @since 1.0
+	 * 
+	 * @param int $amount Amount of donation
+	 * 
 	 * @return float|false
 	 */
 	public function increase_earnings( $amount = 0 ) {
@@ -650,13 +708,14 @@ class Give_Donate_Form {
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @param  string $meta_key The meta_key to update
-	 * @param  string|array|object $meta_value The value to put into the meta
+	 * @param  string               $meta_key   The meta_key to update
+	 * @param  string|array|object  $meta_value The value to put into the meta
 	 *
-	 * @return bool             The result of the update query
+	 * @return bool                             The result of the update query
 	 */
 	private function update_meta( $meta_key = '', $meta_value = '' ) {
 
+		/* @var WPDB $wpdb */
 		global $wpdb;
 
 		if ( empty( $meta_key ) || empty( $meta_value ) ) {

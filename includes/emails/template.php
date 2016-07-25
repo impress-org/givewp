@@ -62,14 +62,14 @@ function give_email_preview_template_tags( $message ) {
 
 	$receipt_id = strtolower( md5( uniqid() ) );
 
-	$notes = esc_html( 'These are some sample notes added to a donation.', 'give' );
+	$notes = esc_html__( 'These are some sample notes added to a donation.', 'give' );
 
 	$payment_id = rand( 1, 100 );
 
 	$receipt_link = sprintf(
 		'<a href="%1$s">%2$s</a>',
 		esc_url( add_query_arg( array( 'payment_key' => $receipt_id, 'give_action' => 'view_receipt' ), home_url() ) ),
-		esc_html( 'View the receipt in your browser', 'give' )
+		esc_html__( 'View the receipt in your browser', 'give' )
 	);
 
 	$user = wp_get_current_user();
@@ -108,8 +108,8 @@ function give_email_template_preview( $array ) {
 		return false;
 	}
 	$custom_field = array(
-		'name' => esc_html( 'Preview Email', 'give' ),
-		'desc' => esc_html( 'Click the buttons to preview emails.', 'give' ),
+		'name' => esc_html__( 'Preview Email', 'give' ),
+		'desc' => esc_html__( 'Click the buttons to preview emails.', 'give' ),
 		'id'   => 'give_email_preview_buttons',
 		'type' => 'email_preview_buttons'
 	);
@@ -158,7 +158,7 @@ function give_display_email_template_preview() {
 		return;
 	}
 
-	Give()->emails->heading = esc_html( 'Donation Receipt', 'give' );
+	Give()->emails->heading = esc_html__( 'Donation Receipt', 'give' );
 
 	echo Give()->emails->build_email( give_email_preview_template_tags( give_get_email_body_content( 0, array() ) ) );
 
@@ -223,18 +223,19 @@ function give_get_donation_notification_body_content( $payment_id = 0, $payment_
 
 	$gateway = give_get_gateway_admin_label( get_post_meta( $payment_id, '_give_payment_gateway', true ) );
 
-	$default_email_body = esc_html( 'Hello', 'give' ) . "\n\n" . esc_html( 'A donation has been made', 'give' ) . ".\n\n";
+	$default_email_body = esc_html__( 'Hello', 'give' ) . "\n\n";
+	$default_email_body .= esc_html__( 'A donation has been made', 'give' ) . ".\n\n";
 	$default_email_body .= sprintf(
 		/* translators: %s: form plural label */
-		esc_html( '%s sold:', 'give' ),
+		esc_html__( '%s sold:', 'give' ),
 		give_get_forms_label_plural()
 	) . "\n\n";
 
-	$default_email_body .= esc_html( 'Donor: ', 'give' ) . " " . html_entity_decode( $name, ENT_COMPAT, 'UTF-8' ) . "\n";
-	$default_email_body .= esc_html( 'Amount: ', 'give' ) . " " . html_entity_decode( give_currency_filter( give_format_amount( give_get_payment_amount( $payment_id ) ) ), ENT_COMPAT, 'UTF-8' ) . "\n";
-	$default_email_body .= esc_html( 'Payment Method: ', 'give' ) . " " . $gateway . "\n\n";
+	$default_email_body .= esc_html__( 'Donor: ', 'give' ) . " " . html_entity_decode( $name, ENT_COMPAT, 'UTF-8' ) . "\n";
+	$default_email_body .= esc_html__( 'Amount: ', 'give' ) . " " . html_entity_decode( give_currency_filter( give_format_amount( give_get_payment_amount( $payment_id ) ) ), ENT_COMPAT, 'UTF-8' ) . "\n";
+	$default_email_body .= esc_html__( 'Payment Method: ', 'give' ) . " " . $gateway . "\n\n";
 
-	$default_email_body .= esc_html( 'Thank you', 'give' );
+	$default_email_body .= esc_html__( 'Thank you', 'give' );
 
 	$email = isset( $give_options['donation_notification'] ) ? stripslashes( $give_options['donation_notification'] ) : $default_email_body;
 
@@ -254,7 +255,7 @@ function give_get_donation_notification_body_content( $payment_id = 0, $payment_
  */
 function give_render_receipt_in_browser() {
 	if ( ! isset( $_GET['payment_key'] ) ) {
-		wp_die( esc_html( 'Missing donation payment key.', 'give' ), esc_html( 'Error', 'give' ) );
+		wp_die( esc_html__( 'Missing donation payment key.', 'give' ), esc_html__( 'Error', 'give' ) );
 	}
 
 	$key = urlencode( $_GET['payment_key'] );

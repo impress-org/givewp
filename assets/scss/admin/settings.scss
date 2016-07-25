@@ -120,6 +120,7 @@ Settings
   white-space: pre;
   overflow: auto;
   display: block;
+  direction: ltr;
 }
 
 #give-download-sysinfo {
@@ -234,6 +235,6 @@ a.give-delete {
 }
 
 //Set a min-height for TinyMCE so it's not too small when hidden in a tab and then revealed
-.mce-container iframe {
+.post-type-give_forms .mce-container iframe, .post-type-give_forms .wp-editor-area{
   min-height: 400px;
 }

@@ -576,14 +576,14 @@ function give_get_payment_status( $payment, $return_label = false ) {
  */
 function give_get_payment_statuses() {
 	$payment_statuses = array(
-		'pending'     => esc_html( 'Pending', 'give' ),
-		'publish'     => esc_html( 'Complete', 'give' ),
-		'refunded'    => esc_html( 'Refunded', 'give' ),
-		'failed'      => esc_html( 'Failed', 'give' ),
-		'cancelled'   => esc_html( 'Cancelled', 'give' ),
-		'abandoned'   => esc_html( 'Abandoned', 'give' ),
-		'preapproval' => esc_html( 'Pre-Approved', 'give' ),
-		'revoked'     => esc_html( 'Revoked', 'give' )
+		'pending'     => esc_html__( 'Pending', 'give' ),
+		'publish'     => esc_html__( 'Complete', 'give' ),
+		'refunded'    => esc_html__( 'Refunded', 'give' ),
+		'failed'      => esc_html__( 'Failed', 'give' ),
+		'cancelled'   => esc_html__( 'Cancelled', 'give' ),
+		'abandoned'   => esc_html__( 'Abandoned', 'give' ),
+		'preapproval' => esc_html__( 'Pre-Approved', 'give' ),
+		'revoked'     => esc_html__( 'Revoked', 'give' )
 	);
 
 	return apply_filters( 'give_payment_statuses', $payment_statuses );
@@ -592,7 +592,7 @@ function give_get_payment_statuses() {
 /**
  * Get Payment Status Keys
  *
- * @description Retrieves keys for all available statuses for payments
+ * Retrieves keys for all available statuses for payments
  *
  * @since       1.0
  * @return array $payment_status All the available payment statuses
@@ -924,7 +924,7 @@ function give_get_payment_meta_user_info( $payment_id ) {
 /**
  * Get the donations Key from Payment Meta
  *
- * @description Retrieves the form_id from a (Previously titled give_get_payment_meta_donations)
+ * Retrieves the form_id from a (Previously titled give_get_payment_meta_donations)
  * @since       1.0
  *
  * @param int $payment_id Payment ID
@@ -1234,7 +1234,7 @@ function give_remove_payment_prefix_postfix( $number ) {
 /**
  * Get Payment Amount
  *
- * @description Get the fully formatted payment amount. The payment amount is retrieved using give_get_payment_amount() and is then sent through give_currency_filter() and  give_format_amount() to format the amount correctly.
+ * Get the fully formatted payment amount. The payment amount is retrieved using give_get_payment_amount() and is then sent through give_currency_filter() and  give_format_amount() to format the amount correctly.
  *
  * @since       1.0
  *
@@ -1268,7 +1268,7 @@ function give_get_payment_amount( $payment_id ) {
 /**
  * Payment Subtotal
  *
- * @description: Retrieves subtotal for payment (this is the amount before fees) and then returns a full formatted amount. This function essentially calls give_get_payment_subtotal()
+ * Retrieves subtotal for payment (this is the amount before fees) and then returns a full formatted amount. This function essentially calls give_get_payment_subtotal()
  *
  * @since 1.5
  *
@@ -1287,7 +1287,7 @@ function give_payment_subtotal( $payment_id = 0 ) {
 /**
  * Get Payment Subtotal
  *
- * @description: Retrieves subtotal for payment (this is the amount before fees) and then returns a non formatted amount.
+ * Retrieves subtotal for payment (this is the amount before fees) and then returns a non formatted amount.
  *
  * @since 1.5
  *
@@ -1333,7 +1333,7 @@ function give_get_payment_transaction_id( $payment_id = 0 ) {
 }
 
 /**
- * Sets a Transaction ID in post meta for the given Payment ID
+ * Sets a Transaction ID in post meta for the given Payment ID.
  *
  * @since  1.0
  *
@@ -1508,7 +1508,7 @@ function give_get_payment_note_html( $note, $payment_id = 0 ) {
 		$user = get_userdata( $note->user_id );
 		$user = $user->display_name;
 	} else {
-		$user = esc_html( 'System', 'give' );
+		$user = esc_html__( 'System', 'give' );
 	}
 
 	$date_format = get_option( 'date_format' ) . ', ' . get_option( 'time_format' );
@@ -1523,7 +1523,7 @@ function give_get_payment_note_html( $note, $payment_id = 0 ) {
 	$note_html .= '<p>';
 	$note_html .= '<strong>' . $user . '</strong>&nbsp;&ndash;&nbsp;<span style="color:#aaa;font-style:italic;">' . date_i18n( $date_format, strtotime( $note->comment_date ) ) . '</span><br/>';
 	$note_html .= $note->comment_content;
-	$note_html .= '&nbsp;&ndash;&nbsp;<a href="' . esc_url( $delete_note_url ) . '" class="give-delete-payment-note" data-note-id="' . absint( $note->comment_ID ) . '" data-payment-id="' . absint( $payment_id ) . '" title="' . esc_attr( 'Delete this payment note', 'give' ) . '">' . esc_html( 'Delete', 'give' ) . '</a>';
+	$note_html .= '&nbsp;&ndash;&nbsp;<a href="' . esc_url( $delete_note_url ) . '" class="give-delete-payment-note" data-note-id="' . absint( $note->comment_ID ) . '" data-payment-id="' . absint( $payment_id ) . '" title="' . esc_attr__( 'Delete this payment note', 'give' ) . '">' . esc_html__( 'Delete', 'give' ) . '</a>';
 	$note_html .= '</p>';
 	$note_html .= '</div>';
 
@@ -1694,7 +1694,7 @@ function give_filter_where_older_than_week( $where = '' ) {
 /**
  * Get Payment Form ID
  *
- * @description: Retrieves the form title and appends the price ID title if applicable
+ * Retrieves the form title and appends the price ID title if applicable
  *
  * @since 1.5
  *
@@ -1723,7 +1723,7 @@ function give_get_payment_form_title( $payment_meta, $level_title = false, $sepa
 		if ( $price_id == 'custom' ) {
 
 			$custom_amount_text = get_post_meta( $form_id, '_give_custom_amount_text', true );
-			$form_title .= ! empty( $custom_amount_text ) ? $custom_amount_text : esc_html( 'Custom Amount', 'give' );
+			$form_title .= ! empty( $custom_amount_text ) ? $custom_amount_text : esc_html__( 'Custom Amount', 'give' );
 
 		} else {
 			$form_title .= give_get_price_option_name( $form_id, $price_id );
@@ -1740,7 +1740,7 @@ function give_get_payment_form_title( $payment_meta, $level_title = false, $sepa
 /**
  * Get Price ID
  *
- * @description Retrieves the Price ID when provided a proper form ID and price (donation) total
+ * Retrieves the Price ID when provided a proper form ID and price (donation) total
  *
  * @param $form_id
  * @param $price
@@ -1772,4 +1772,76 @@ function give_get_price_id( $form_id, $price ) {
 
 	return $price_id;
 
+}
+
+/**
+ * Get/Print give form dropdown html
+ * 
+ * This function is wrapper to public method forms_dropdown of Give_HTML_Elements class to get/print form dropdown html.
+ * Give_HTML_Elements is defind in includes/class-give-html-elements.php
+ *
+ * @since 1.6
+ * 
+ * @param array $args Arguments for form dropdown
+ * @param bool $echo  This parameter decide if print form dropdown html output or not
+ * 
+ * @return string/void
+ */
+function give_get_form_dropdown( $args = array(), $echo = false ){
+    $form_dropdown_html = Give()->html->forms_dropdown( $args );
+
+    if( ! $echo ) {
+        return $form_dropdown_html;
+    }
+
+    echo $form_dropdown_html;
+}
+
+/**
+ * Get/Print give form variable price dropdown html
+ *
+ * @since 1.6
+ *
+ * @param array $args Arguments for form dropdown
+ * @param bool $echo  This parameter decide if print form dropdown html output or not
+ *
+ * @return string/void
+ */
+function give_get_form_variable_price_dropdown( $args = array(), $echo = false ){
+    
+    // Check for give form id.
+    if( empty( $args['id'] ) ) {
+        return false;
+    }
+
+    // Check if form has variable prices or not.
+    if( ! ( $variable_prices = give_has_variable_prices( $args['id'] ) ) ) {
+        return false;
+    }
+    
+    $variable_prices = give_get_variable_prices( absint( $args['id'] ) );
+    $variable_price_options = array();
+
+    // Check if multi donation form support custom donation or not.
+    if( give_is_custom_price_mode( absint( $args['id'] ) ) ) {
+        $variable_price_options['custom']  = _x( 'Custom', 'custom donation dropdown item', 'give' );
+    }
+
+    // Get variable price and ID from variable price array.
+    foreach ( $variable_prices as $variable_price ) {
+        $variable_price_options[ $variable_price['_give_id']['level_id'] ] =  $variable_price['_give_text'];
+    }
+
+
+    // Update options.
+    $args = array_merge( $args, array( 'options' => $variable_price_options ) );
+
+    // Generate select html.
+    $form_dropdown_html = Give()->html->select( $args );
+
+    if( ! $echo ) {
+        return $form_dropdown_html;
+    }
+
+    echo $form_dropdown_html;
 }

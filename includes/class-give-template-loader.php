@@ -57,10 +57,10 @@ class Give_Template_Loader {
 
 	/**
 	 * Give Set Single Summary Classes
-	 * @description determines if the single form should be full width or with a sidebar
+	 * determines if the single form should be full width or with a sidebar
 	 * @see
 	 *
-	 * @param $classes
+	 * @param string $classes List of space separated class names
 	 *
 	 * @return string
 	 */
@@ -81,7 +81,7 @@ class Give_Template_Loader {
 
 	/**
 	 * Output sidebar option
-	 * @description Determines whether the user has enabled or disabled the sidebar for Single Give forms
+	 * Determines whether the user has enabled or disabled the sidebar for Single Give forms
 	 * @since       1.3
 	 *
 	 */

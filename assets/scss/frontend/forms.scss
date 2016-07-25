@@ -175,7 +175,6 @@ form[id*='give-form'], #give-recurring-form, form.give-form {
       margin: 0 0 5px;
       position: relative;
       line-height: 1.7;
-      text-align: left;
 
       &.checkbox {
         display: inline;
@@ -286,7 +285,7 @@ form[id*='give-form'] {
     #give-amount,
     #give-amount-text {
       @include give-input();
-      width: 125px;
+      min-width: 125px;
 
       &.invalid-amount {
         border: 1px solid red;
@@ -413,13 +412,12 @@ Radio Lists
 #give-gateway-radio-list {
   //this is the radio list for to select a gateway
   @include clearfix();
-  float: left;
   margin: 0 0 25px;
   padding: 0;
   list-style: none;
 
   > li {
-    float: left;
+    display: inline-block;
     margin-right: 15px;
     margin-left: 0;
     list-style-type: none;
@@ -433,6 +431,7 @@ Radio Lists
         outline: none;
         width: auto;
       }
+
     }
 
   }
@@ -482,7 +481,7 @@ Buttons
 CC Validation
 -----------------------------------*/
 
-#give_secure_site_wrapper {
+[id*='give_secure_site_wrapper'] {
   padding: 4px 4px 15px 0;
   font-size: 16px;
   line-height: 20px;
@@ -631,14 +630,14 @@ form[id*='give-form'] {
     margin-right: 10px;
   }
 
+  .give_login_forgot_password {
+    float:right;
+  }
+
 }
 
 /* User Login */
 [id^='give-user-login-submit'], .give-submit-button-wrap {
-
-  input.give-submit, input.give-btn, span.give-loading-animation {
-    float: left;
-  }
 
   input.give-cancel-login {
     margin-left: 5px;
@@ -648,7 +647,6 @@ form[id*='give-form'] {
     margin: 3px 6px;
     display: none;
   }
-
 }
 
 p.give-recurring-login-toggle {

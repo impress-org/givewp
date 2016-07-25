@@ -965,6 +965,13 @@ Tooltips
     background-color: #FFF;
     padding: 15px 20px; }
 
+.rtl .type-download {
+  float: right;
+  margin-right: 0 !important;
+  margin-left: 1em !important; }
+  .rtl .type-download .addon-footer-wrap {
+    right: 0; }
+
 .give-view-addons-all span.dashicons, .type-download span.dashicons {
   width: 16px;
   height: 16px;
@@ -973,6 +980,10 @@ Tooltips
 
 .give-view-addons-all span.dashicons {
   margin-left: 3px; }
+
+.rtl .give-view-addons-all span.dashicons {
+  margin-left: 0;
+  margin-right: 3px; }
 
 /**
  * Give Reports SCSS
@@ -1100,9 +1111,8 @@ body.give_forms_page_give-reports table.export-options-table span#give-start-wra
 #export-donor-options-wrap ul {
   max-width: 900px; }
   #export-donor-options-wrap ul li {
-    float: left;
-    padding: 3px 10px 0 0;
-    width: 30%; }
+    margin: 0;
+    padding: 5px; }
 
 #give-tools-recount-form .notice-wrap {
   position: relative;
@@ -1279,13 +1289,14 @@ table.give-table td.row-title p {
   margin: 0 0 5px; }
 
 #give-payments-filter .give-donation-status {
-  float: left; }
+  display: inline-block; }
 
 .column-status .give-donation-status, .column-status .give-test-mode-transactions-label {
-  float: left; }
+  display: inline-block; }
 
 .column-status .give-test-mode-transactions-label {
-  margin: 2px 0 0 8px; }
+  margin: 0 5px;
+  vertical-align: middle; }
 
 /**
  * Give Settings SCSS
@@ -1370,7 +1381,8 @@ Settings
   background: #FFF;
   white-space: pre;
   overflow: auto;
-  display: block; }
+  display: block;
+  direction: ltr; }
 
 #give-download-sysinfo {
   margin: 0; }
@@ -1445,7 +1457,7 @@ a.give-delete {
 .give_settings .cmb-td hr + hr {
   display: none; }
 
-.mce-container iframe {
+.post-type-give_forms .mce-container iframe, .post-type-give_forms .wp-editor-area {
   min-height: 400px; }
 
 /**
@@ -1523,10 +1535,10 @@ tr.status-refunded td {
   float: left; }
 
 .give-donation-status > span {
-  float: left;
+  display: inline-block;
   width: 12px;
   height: 12px;
-  margin: 3px 4px 0 0;
+  margin: 0 4px;
   padding: 0;
   border-radius: 50%;
   background: #888;
@@ -1564,9 +1576,8 @@ tr.status-refunded td {
   vertical-align: baseline;
   border-radius: .25em;
   background-color: #ffba00;
-  margin: 0 0 0 15px;
-  position: relative;
-  top: -4px; }
+  margin: 0 15px;
+  vertical-align: middle; }
 
 #give-payments-filter .give-payment-id {
   padding: .2em .6em .3em;
@@ -1583,12 +1594,12 @@ tr.status-refunded td {
   padding-right: 30px; }
 
 #give-payments-filter .give-donation-status {
-  float: left; }
+  display: inline-block; }
 
 #give-order-update .give-donation-status {
   display: inline-block;
   float: none;
-  margin: 0 0 0 10px;
+  margin: 0 10px;
   position: relative;
   top: 3px; }
 
@@ -1614,12 +1625,9 @@ Responsiveness
 
 .give-admin-box-inside {
   margin: 0;
-  padding: 3px 12px;
+  padding: 3px 10px;
   clear: both;
   border-bottom: 1px solid #eee; }
-
-.rtl .give-admin-box-inside {
-  padding: 5px 10px 5px 0; }
 
 .give-admin-box-inside .strong {
   font-weight: 600; }
@@ -1656,6 +1664,9 @@ Responsiveness
 .give-order-update-box #major-publishing-actions .button-secondary {
   margin-right: 10px; }
 
+#give-donation-overview th {
+  text-align: left; }
+
 #give-donation-overview .give-select-chosen {
   width: 196px; }
 
@@ -1685,8 +1696,7 @@ Responsiveness
 #give-donation-overview .inside > ul > li {
   display: inline-block;
   position: relative;
-  vertical-align: top;
-  margin-right: 5%; }
+  vertical-align: top; }
 
 #give-donation-overview ul {
   font-size: 0; }
@@ -1715,48 +1725,43 @@ input.give-price-field {
 .give_forms_page_give-payment-history.js .postbox .hndle {
   cursor: default; }
 
-@media screen and (max-width: 782px) {
-  .order-data-column input[type="email"] {
-    padding: 6px 10px; } }
+#give-payment-notes textarea {
+  min-height: 150px; }
 
-@media screen and (max-width: 1024px) {
-  #give-edit-order-form .column {
-    width: 49%; } }
+#give-payment-notes #give-add-payment-note {
+  margin: 6px 0 15px; }
 
-@media screen and (max-width: 1280px) and (min-width: 1279px) {
-  #give-edit-order-form .column {
-    width: 32%; } }
+#give-billing-details .column > div {
+  margin: 0 0 10px; }
 
-@media screen and (min-width: 1280px) {
+#give-billing-details label {
+  display: block; }
+
+#give-billing-details .column-container {
+  padding: 5px 0 10px; }
+
+#give-billing-details input[type="text"] {
+  width: 95%; }
+
+#give-billing-details .chosen-container {
+  width: 98% !important; }
+
+@media screen and (min-width: 1200px) {
   #give-edit-order-form .column {
-    width: 32%;
-    margin-right: 3%; }
-  #give-edit-order-form .columns-4 .column, #give-donation-overview.columns-4 .row > ul > li,
-  #give-donation-overview.columns-4 .inside > ul > li {
-    width: 22%;
-    margin-right: 2%; }
-  #give-edit-order-form .columns-3 .column:nth-child(2n+1),
-  #give-edit-order-form .columns-4 .column:nth-child(3n+1),
-  #give-edit-order-form .column:nth-child(2n+1) {
-    margin-right: 0; }
-  #give-donation-overview.columns-4 li.download {
     width: 33%; }
-  #give-donation-overview.columns-4 li.price,
-  #give-donation-overview.columns-3 .row > ul > li.price,
-  #give-donation-overview.columns-3 .inside > ul > li.price {
-    width: 14%; }
   #give-donation-overview.columns-4 li.actions {
     width: 25%;
     margin-top: 0;
     margin-right: 0; } }
 
-@media screen and (max-width: 1284px) {
-  #give-edit-order-form .column strong {
-    display: block; } }
+@media screen and (max-width: 1199px) {
+  #give-edit-order-form .column {
+    width: 49%; } }
 
-/*------------------------------------------
-Donation Details
---------------------------------------------*/
+@media screen and (max-width: 782px) {
+  .order-data-column input[type="email"] {
+    padding: 6px 10px; } }
+
 #give-customer-details .inside {
   padding-top: 15px;
   padding-bottom: 15px; }
@@ -1924,22 +1929,29 @@ Donation Details
     text-decoration: none;
     color: #ff0000;
     margin-right: 5px; }
-  #give-customer-card-wrapper .donor-bio-header {
-    float: left;
-    width: 33%; }
-    #give-customer-card-wrapper .donor-bio-header .customer-since {
-      margin: 10px 0;
-      font-size: 16px; }
-    #give-customer-card-wrapper .donor-bio-header .customer-id {
-      font-size: 24px;
-      font-weight: 600;
-      float: left;
-      margin-right: 10px; }
-    #give-customer-card-wrapper .donor-bio-header .customer-edit-link {
-      margin-bottom: 15px;
-      float: left; }
+  #give-customer-card-wrapper .donor-bio-header .customer-since {
+    margin: 10px 0;
+    font-size: 16px; }
+  #give-customer-card-wrapper .donor-bio-header .customer-id {
+    display: inline-block;
+    font-size: 24px;
+    font-weight: 600;
+    margin-right: 10px; }
+  #give-customer-card-wrapper .donor-bio-header .customer-name-wrap {
+    display: inline-block; }
+  #give-customer-card-wrapper .donor-bio-header .customer-edit-link {
+    margin-bottom: 15px; }
+
+.rtl #give-customer-card-wrapper .avatar-wrap {
+  padding: 0 0 15px 15px;
+  float: right; }
+
+.rtl #give-customer-card-wrapper .customer-id {
+  margin-right: 0;
+  margin-left: 10px; }
 
 .customer-main-wrapper {
+  clear: both;
   margin: 0 0 20px; }
   @media (max-width: 655px) {
     .customer-main-wrapper {
@@ -1961,6 +1973,10 @@ Donation Details
     color: #F0F0F0;
     z-index: 0; }
 
+.rtl #donor-summary:after {
+  left: 10px;
+  right: initial; }
+
 #give-customer-card-wrapper .customer-address-wrapper {
   width: 202px; }
   #give-customer-card-wrapper .customer-address-wrapper span[data-key="line2"] {
@@ -1971,7 +1987,6 @@ Donation Details
   width: 200px; }
 
 #give-customer-card-wrapper .customer-info {
-  margin-top: 1px;
   min-height: 185px; }
 
 #give-customer-card-wrapper .info-wrapper {
@@ -2183,5 +2198,16 @@ div.sc-shortcode {
 #mce-modal-block.mce-reset.mce-fade.mce-in {
   opacity: 0.7;
   filter: alpha(opacity=70); }
+
+/**
+ * Give Right to Left Support
+ *
+ * @package     Give
+ * @subpackage  SCSS/Admin
+ * @copyright   Copyright (c) 2016, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+body.rtl #give-donation-overview th {
+  text-align: right; }
 
 /*# sourceMappingURL=../sourcemaps/give-admin.css.map */

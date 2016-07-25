@@ -64,7 +64,7 @@ function give_get_donation_form( $args = array() ) {
 		: get_post_meta( $form->ID, '_give_payment_display', true );
 
 	$float_labels_option = give_is_float_labels_enabled( $args )
-		? ' float-labels-enabled'
+		? 'float-labels-enabled'
 		: '';
 
 	//Form Wrap Classes
@@ -78,8 +78,18 @@ function give_get_donation_form( $args = array() ) {
 	$form_classes_array = apply_filters( 'give_form_classes', array(
 		'give-form',
 		'give-form-' . $form->ID,
+        'give-form-type-' . $form->get_type(),
 		$float_labels_option
 	), $form->ID, $args );
+
+    // Remove empty class names.
+    $form_classes_array = array_filter(
+        $form_classes_array,
+        function( $class ){
+            return $class;
+        }
+    );
+
 	$form_classes       = implode( ' ', $form_classes_array );
 
 
@@ -101,7 +111,7 @@ function give_get_donation_form( $args = array() ) {
 
 			//Get Goal thank you message.
 			$display_thankyou_message = get_post_meta( $form->ID, '_give_form_goal_achieved_message', true );
-			$display_thankyou_message = ! empty( $display_thankyou_message ) ? $display_thankyou_message : esc_html( 'Thank you to all our donors, we have met our fundraising goal.', 'give' );
+			$display_thankyou_message = ! empty( $display_thankyou_message ) ? $display_thankyou_message : esc_html__( 'Thank you to all our donors, we have met our fundraising goal.', 'give' );
 
 			//Print thank you message.
 			apply_filters( 'give_goal_closed_output', give_output_error( $display_thankyou_message, true, 'success' ) );
@@ -189,9 +199,8 @@ function give_get_donation_form( $args = array() ) {
  *
  * @since 1.0
  *
- * @param int $form_id ID of the Give Form
+ * @param  int $form_id ID of the Give Form
  *
- * @global    $give_options Array of all the Give options
  * @return string
  */
 function give_show_purchase_form( $form_id ) {
@@ -236,9 +245,9 @@ add_action( 'give_purchase_form', 'give_show_purchase_form' );
  *
  * Give Show Login/Register Form Fields
  *
- * @since 1.4.1
+ * @since  1.4.1
  *
- * @param int $form_id ID of the Give Form
+ * @param  int   $form_id ID of the Give Form
  *
  * @return void
  */
@@ -266,12 +275,12 @@ add_action( 'give_purchase_form_register_login_fields', 'give_show_register_logi
 /**
  * Donation Amount Field
  *
- * @description Outputs the donation amount field that appears at the top of the donation forms. If the user has custom amount enabled the field will output as a customizable input
+ * Outputs the donation amount field that appears at the top of the donation forms. If the user has custom amount enabled the field will output as a customizable input
  *
- * @since       1.0
+ * @since  1.0
  *
- * @param int $form_id Give Form ID
- * @param array $args
+ * @param  int   $form_id Give Form ID
+ * @param  array $args
  *
  * @return void
  */
@@ -293,7 +302,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 	if ( $allow_custom_amount == 'no' ) {
 		?>
 
-		<label class="give-hidden" for="give-amount-hidden"><?php esc_html_e( 'Donation Amount:', 'give' ); ?></label>
+		<label class="give-hidden" for="give-amount-hidden"><?php echo esc_html__( 'Donation Amount:', 'give' ); ?></label>
 		<input id="give-amount" class="give-amount-hidden" type="hidden" name="give-amount"
 		       value="<?php echo $default_amount; ?>" required>
 		<div class="set-price give-donation-amount form-row-wide">
@@ -314,7 +323,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 				<?php if ( $currency_position == 'before' ) {
 					echo $currency_output;
 				} ?>
-				<label class="give-hidden" for="give-amount"><?php esc_html_e( 'Donation Amount:', 'give' ); ?></label>
+				<label class="give-hidden" for="give-amount"><?php echo esc_html__( 'Donation Amount:', 'give' ); ?></label>
 				<input class="give-text-input give-amount-top" id="give-amount" name="give-amount" type="tel" placeholder="" value="<?php echo $default_amount; ?>" autocomplete="off">
 				<?php if ( $currency_position == 'after' ) {
 					echo $currency_output;
@@ -344,9 +353,9 @@ add_action( 'give_checkout_form_top', 'give_output_donation_amount_top', 10, 2 )
 /**
  * Outputs the Donation Levels in various formats such as dropdown, radios, and buttons
  *
- * @since 1.0
+ * @since  1.0
  *
- * @param int $form_id Give Form ID
+ * @param  int $form_id Give Form ID
  *
  * @return string
  */
@@ -358,7 +367,7 @@ function give_output_levels( $form_id ) {
 	$custom_amount      = get_post_meta( $form_id, '_give_custom_amount', true );
 	$custom_amount_text = get_post_meta( $form_id, '_give_custom_amount_text', true );
 	if ( empty( $custom_amount_text ) ) {
-		$custom_amount_text = esc_html( 'Give a Custom Amount', 'give' );
+		$custom_amount_text = esc_html__( 'Give a Custom Amount', 'give' );
 	}
 
 	$output  = '';
@@ -425,8 +434,8 @@ function give_output_levels( $form_id ) {
 
 		case 'dropdown':
 
-			$output .= '<label for="give-donation-level" class="give-hidden">' . esc_html( 'Choose Your Donation Amount', 'give' ) . ':</label>';
-			$output .= '<select id="give-donation-level-' . $form_id . '" class="give-select give-select-level">';
+			$output .= '<label for="give-donation-level" class="give-hidden">' . esc_html__( 'Choose Your Donation Amount', 'give' ) . ':</label>';
+			$output .= '<select id="give-donation-level-' . $form_id . '" class="give-select give-select-level give-donation-levels-wrap">';
 
 			//first loop through prices
 			foreach ( $prices as $price ) {
@@ -455,9 +464,9 @@ function give_output_levels( $form_id ) {
 /**
  * Display Reveal & Lightbox Button
  *
- * @description: Outputs a button to reveal form fields
+ * Outputs a button to reveal form fields
  *
- * @param int $form_id
+ * @param int   $form_id
  * @param array $args
  *
  */
@@ -473,7 +482,7 @@ function give_display_checkout_button( $form_id, $args ) {
 	}
 
 	$display_label_field = get_post_meta( $form_id, '_give_reveal_label', true );
-	$display_label       = ( ! empty( $display_label_field ) ? $display_label_field : esc_html( 'Donate Now', 'give' ) );
+	$display_label       = ( ! empty( $display_label_field ) ? $display_label_field : esc_html__( 'Donate Now', 'give' ) );
 
 	$output = '<button type="button" class="give-btn give-btn-' . $display_option . '">' . $display_label . '</button>';
 
@@ -485,9 +494,9 @@ add_action( 'give_after_donation_levels', 'give_display_checkout_button', 10, 2 
 /**
  * Shows the User Info fields in the Personal Info box, more fields can be added via the hooks provided.
  *
- * @since 1.0
+ * @since  1.0
  *
- * @param int $form_id
+ * @param  int $form_id
  *
  * @return void
  */
@@ -500,7 +509,7 @@ function give_user_info_fields( $form_id ) {
 	do_action( 'give_purchase_form_before_personal_info', $form_id );
 	?>
 	<fieldset id="give_checkout_user_info">
-		<legend><?php echo apply_filters( 'give_checkout_personal_info_text', esc_html( 'Personal Info', 'give' ) ); ?></legend>
+		<legend><?php echo apply_filters( 'give_checkout_personal_info_text', esc_html__( 'Personal Info', 'give' ) ); ?></legend>
 		<p id="give-first-name-wrap" class="form-row form-row-first">
 			<label class="give-label" for="give-first">
 				<?php esc_html_e( 'First Name', 'give' ); ?>
@@ -509,7 +518,7 @@ function give_user_info_fields( $form_id ) {
 				<?php } ?>
 				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'We will use this to personalize your account experience.', 'give' ); ?>"></span>
 			</label>
-			<input class="give-input required" type="text" name="give_first" placeholder="<?php esc_attr_e( 'First name', 'give' ); ?>" id="give-first" value="<?php echo is_user_logged_in() ? $user_data->first_name : ''; ?>"<?php if ( give_field_is_required( 'give_first', $form_id ) ) {
+			<input class="give-input required" type="text" name="give_first" placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" id="give-first" value="<?php echo is_user_logged_in() ? $user_data->first_name : ''; ?>"<?php if ( give_field_is_required( 'give_first', $form_id ) ) {
 				echo ' required ';
 			} ?>/>
 		</p>
@@ -525,7 +534,7 @@ function give_user_info_fields( $form_id ) {
 
 			<input class="give-input<?php if ( give_field_is_required( 'give_last', $form_id ) ) {
 				echo ' required';
-			} ?>" type="text" name="give_last" id="give-last" placeholder="<?php esc_attr_e( 'Last name', 'give' ); ?>" value="<?php echo is_user_logged_in() ? $user_data->last_name : ''; ?>"<?php if ( give_field_is_required( 'give_last', $form_id ) ) {
+			} ?>" type="text" name="give_last" id="give-last" placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" value="<?php echo is_user_logged_in() ? $user_data->last_name : ''; ?>"<?php if ( give_field_is_required( 'give_last', $form_id ) ) {
 				echo ' required ';
 			} ?> />
 		</p>
@@ -560,9 +569,9 @@ add_action( 'give_register_fields_before', 'give_user_info_fields' );
 /**
  * Renders the credit card info form.
  *
- * @since 1.0
+ * @since  1.0
  *
- * @param int $form_id
+ * @param  int $form_id
  *
  * @return void
  */
@@ -573,7 +582,7 @@ function give_get_cc_form( $form_id ) {
 	do_action( 'give_before_cc_fields', $form_id ); ?>
 
 	<fieldset id="give_cc_fields-<?php echo $form_id ?>" class="give-do-validate">
-		<legend><?php echo apply_filters( 'give_credit_card_fieldset_heading', esc_html( 'Credit Card Info', 'give' ) ); ?></legend>
+		<legend><?php echo apply_filters( 'give_credit_card_fieldset_heading', esc_html__( 'Credit Card Info', 'give' ) ); ?></legend>
 		<?php if ( is_ssl() ) : ?>
 			<div id="give_secure_site_wrapper-<?php echo $form_id ?>">
 				<span class="give-icon padlock"></span>
@@ -637,9 +646,9 @@ add_action( 'give_cc_form', 'give_get_cc_form' );
 /**
  * Outputs the default credit card address fields
  *
- * @since 1.0
+ * @since  1.0
  *
- * @param int $form_id
+ * @param  int $form_id
  *
  * @return void
  */
@@ -656,7 +665,7 @@ function give_default_cc_address_fields( $form_id ) {
 	$zip   = $logged_in && ! empty( $user_address['zip'] ) ? $user_address['zip'] : '';
 	ob_start(); ?>
 	<fieldset id="give_cc_address" class="cc-address">
-		<legend><?php echo apply_filters( 'give_billing_details_fieldset_heading', esc_html( 'Billing Details', 'give' ) ); ?></legend>
+		<legend><?php echo apply_filters( 'give_billing_details_fieldset_heading', esc_html__( 'Billing Details', 'give' ) ); ?></legend>
 		<?php do_action( 'give_cc_billing_top' ); ?>
 		<p id="give-card-address-wrap" class="form-row form-row-two-thirds">
 			<label for="card_address" class="give-label">
@@ -797,9 +806,9 @@ add_action( 'give_after_cc_fields', 'give_default_cc_address_fields' );
 /**
  * Renders the user registration fields. If the user is logged in, a login form is displayed other a registration form is provided for the user to create an account.
  *
- * @since 1.0
+ * @since  1.0
  *
- * @param int $form_id
+ * @param  int $form_id
  *
  * @return string
  */
@@ -829,9 +838,9 @@ function give_get_register_fields( $form_id ) {
 		<?php do_action( 'give_register_fields_before', $form_id ); ?>
 
 		<fieldset id="give-register-account-fields-<?php echo $form_id; ?>">
-			<legend><?php echo apply_filters( 'give_create_account_fieldset_heading', esc_html( 'Create an account', 'give' ) );
+			<legend><?php echo apply_filters( 'give_create_account_fieldset_heading', esc_html__( 'Create an account', 'give' ) );
 				if ( ! give_logged_in_only( $form_id ) ) {
-					echo ' <span class="sub-text">' . esc_html( '(optional)', 'give' ) . '</span>';
+					echo ' <span class="sub-text">' . esc_html__( '(optional)', 'give' ) . '</span>';
 				} ?></legend>
 			<?php do_action( 'give_register_account_fields_before', $form_id ); ?>
 			<div id="give-user-login-wrap-<?php echo $form_id; ?>" class="form-row form-row-one-third form-row-first">
@@ -896,9 +905,9 @@ add_action( 'give_purchase_form_register_fields', 'give_get_register_fields' );
  * on the give_purchase_form_login_fields to display the login form if a user already
  * had an account.
  *
- * @since 1.0
+ * @since  1.0
  *
- * @param int $form_id
+ * @param  int $form_id
  *
  * @return string
  */
@@ -910,9 +919,9 @@ function give_get_login_fields( $form_id ) {
 	ob_start();
 	?>
 	<fieldset id="give-login-fields-<?php echo $form_id; ?>">
-		<legend><?php echo apply_filters( 'give_account_login_fieldset_heading', esc_html( 'Login to Your Account', 'give' ) );
+		<legend><?php echo apply_filters( 'give_account_login_fieldset_heading', esc_html__( 'Login to Your Account', 'give' ) );
 			if ( ! give_logged_in_only( $form_id ) ) {
-				echo ' <span class="sub-text">' . esc_html( '(optional)', 'give' ) . '</span>';
+				echo ' <span class="sub-text">' . esc_html__( '(optional)', 'give' ) . '</span>';
 			} ?>
 		</legend>
 		<?php if ( $show_register_form == 'both' ) { ?>
@@ -921,7 +930,7 @@ function give_get_login_fields( $form_id ) {
 				<a href="<?php echo remove_query_arg( 'login' ); ?>" class="give-checkout-register-cancel" data-action="give_checkout_register">
 					<?php esc_html_e( 'Register', 'give' );
 					if ( ! give_logged_in_only( $form_id ) ) {
-						echo ' ' . esc_html( 'or checkout as a guest.', 'give' );
+						echo ' ' . esc_html__( 'or checkout as a guest', 'give' ) . ' &raquo;';
 					} ?>
 				</a>
 			</p>
@@ -957,7 +966,7 @@ function give_get_login_fields( $form_id ) {
 
 		<div id="give-forgot-password-wrap-<?php echo $form_id; ?>" class="give_login_forgot_password">
 			 <span class="give-forgot-password ">
-				 <a href="<?php echo wp_lostpassword_url( $redirect )?>"> <?php esc_html_e( 'Forgot password?' ) ?> </a>
+				 <a href="<?php echo wp_lostpassword_url() ?>" target="_blank"><?php esc_html_e( 'Reset password?' ) ?></a>
 			 </span>
 		</div>
 
@@ -984,9 +993,9 @@ add_action( 'give_purchase_form_login_fields', 'give_get_login_fields', 10, 1 );
  * a default payment gateway has been chosen from the Give Settings, it will be
  * automatically selected.
  *
- * @since 1.0
+ * @since  1.0
  *
- * @param int $form_id
+ * @param  int $form_id
  *
  * @return void
  */
@@ -999,7 +1008,7 @@ function give_payment_mode_select( $form_id ) {
 	<fieldset id="give-payment-mode-select">
 		<?php do_action( 'give_payment_mode_before_gateways_wrap' ); ?>
 		<div id="give-payment-mode-wrap">
-			<legend class="give-payment-mode-label"><?php echo apply_filters( 'give_checkout_payment_method_text', esc_html( 'Select Payment Method', 'give' ) ); ?>
+			<legend class="give-payment-mode-label"><?php echo apply_filters( 'give_checkout_payment_method_text', esc_html__( 'Select Payment Method', 'give' ) ); ?>
 				<span class="give-loading-text"><span class="give-loading-animation"></span> <?php esc_html_e( 'Loading...', 'give' ); ?></span>
 			</legend>
 			<?php
@@ -1040,10 +1049,9 @@ add_action( 'give_payment_mode_select', 'give_payment_mode_select' );
  * agree the T&Cs set in the Give Settings. This is only displayed if T&Cs are
  * set in the Give Settings.
  *
- * @since 1.0
- * @global    $give_options Array of all the Give Options
+ * @since  1.0
  *
- * @param int $form_id
+ * @param  int   $form_id
  *
  * @return void
  */
@@ -1069,7 +1077,7 @@ function give_terms_agreement( $form_id ) {
 
 			<input name="give_agree_to_terms" class="required" type="checkbox" id="give_agree_to_terms" value="1"/>
 			<label
-				for="give_agree_to_terms"><?php echo ! empty( $label ) ? stripslashes( $label ) : esc_html( 'Agree to Terms?', 'give' ); ?></label>
+				for="give_agree_to_terms"><?php echo ! empty( $label ) ? stripslashes( $label ) : esc_html__( 'Agree to Terms?', 'give' ); ?></label>
 
 		</fieldset>
 		<?php
@@ -1081,11 +1089,12 @@ add_action( 'give_purchase_form_before_submit', 'give_terms_agreement', 10, 1 );
 /**
  * Checkout Final Total
  *
- * @description: Shows the final purchase total at the bottom of the checkout page
+ * Shows the final purchase total at the bottom of the checkout page
  *
- * @param int $form_id
+ * @since  1.0
  *
- * @since      1.0
+ * @param int   $form_id
+ *
  * @return void
  */
 function give_checkout_final_total( $form_id ) {
@@ -1102,7 +1111,7 @@ function give_checkout_final_total( $form_id ) {
 	}
 	?>
 	<p id="give-final-total-wrap" class="form-wrap ">
-		<span class="give-donation-total-label"><?php echo apply_filters( 'give_donation_total_label', esc_html( 'Donation Total:', 'give' ) ); ?></span>
+		<span class="give-donation-total-label"><?php echo apply_filters( 'give_donation_total_label', esc_html__( 'Donation Total:', 'give' ) ); ?></span>
 		<span class="give-final-total-amount" data-total="<?php echo give_format_amount( $total ); ?>"><?php echo give_currency_filter( give_format_amount( $total ) ); ?></span>
 	</p>
 	<?php
@@ -1114,9 +1123,9 @@ add_action( 'give_purchase_form_before_submit', 'give_checkout_final_total', 999
 /**
  * Renders the Checkout Submit section
  *
- * @since 1.0
+ * @since  1.0
  *
- * @param int $form_id
+ * @param  int $form_id
  *
  * @return void
  */
@@ -1141,17 +1150,17 @@ add_action( 'give_purchase_form_after_cc_form', 'give_checkout_submit', 9999 );
 /**
  * Give Checkout Button Purchase
  *
- * @description Renders the Purchase button on the Checkout
- * @since       1.0
+ * Renders the Purchase button on the Checkout
+ * @since  1.0
  *
- * @param int $form_id
+ * @param  int $form_id
  *
  * @return string
  */
 function give_checkout_button_purchase( $form_id ) {
 
 	$display_label_field = get_post_meta( $form_id, '_give_checkout_label', true );
-	$display_label       = ( ! empty( $display_label_field ) ? $display_label_field : esc_html( 'Donate Now', 'give' ) );
+	$display_label       = ( ! empty( $display_label_field ) ? $display_label_field : esc_html__( 'Donate Now', 'give' ) );
 	ob_start(); ?>
 	<div class="give-submit-button-wrap give-clearfix">
 		<input type="submit" class="give-submit give-btn" id="give-purchase-button" name="give-purchase" value="<?php echo $display_label; ?>"/>
@@ -1164,10 +1173,10 @@ function give_checkout_button_purchase( $form_id ) {
 /**
  * Give Agree to Terms
  *
- * @description Outputs the JavaScript code for the Agree to Terms section to toggle the T&Cs text
- * @since       1.0
+ * Outputs the JavaScript code for the Agree to Terms section to toggle the T&Cs text
+ * @since  1.0
  *
- * @param int $form_id
+ * @param  int $form_id
  *
  * @return void
  */
@@ -1198,8 +1207,8 @@ add_action( 'give_checkout_form_top', 'give_agree_to_terms_js', 10, 2 );
  *
  * @since 1.0
  *
- * @param int $form_id
- * @param array $args
+ * @param  int   $form_id
+ * @param  array $args
  *
  * @return mixed
  */
@@ -1245,21 +1254,25 @@ function give_show_goal_progress( $form_id, $args ) {
 
 		if ( $goal_format !== 'percentage' ) {
 
+			 // Get formatted amount.
+            $income = give_human_format_large_amount( give_format_amount( $income ) );
+            $goal = give_human_format_large_amount( give_format_amount( $goal ) );
+
 			$output .= sprintf(
 				/* translators: 1: amount of income raised 2: goal target ammount */
-				esc_html( '%1$s of %2$s raised', 'give' ),
-				'<span class="income">' . apply_filters( 'give_goal_amount_raised_output', give_currency_filter( give_format_amount( $income ) ) ) . '</span>',
-				'<span class="goal-text">' . apply_filters( 'give_goal_amount_target_output', give_currency_filter( give_format_amount( $goal ) ) ) . '</span>'
+				__( '%1$s of %2$s raised', 'give' ),
+				'<span class="income">' . apply_filters( 'give_goal_amount_raised_output', give_currency_filter( $income ) ) . '</span>',
+				'<span class="goal-text">' . apply_filters( 'give_goal_amount_target_output', give_currency_filter( $goal ) ) . '</span>'
 			);
+
 
 		} elseif ( $goal_format == 'percentage' ) {
 
 			$output .= sprintf(
 				/* translators: %s: percentage of the amount raised compared to the goal target */
-				esc_html( '%s%% funded', 'give' ),
+				__( '%s%% funded', 'give' ),
 				'<span class="give-percentage">' . apply_filters( 'give_goal_amount_funded_percentage_output', round( $progress ) ) . '</span>'
 			);
-
 		}
 
 		$output .= '</div>';
@@ -1290,10 +1303,10 @@ add_action( 'give_pre_form', 'give_show_goal_progress', 10, 2 );
 /**
  * Adds Actions to Render Form Content
  *
- * @since 1.0
+ * @since  1.0
  *
- * @param int $form_id
- * @param array $args
+ * @param  int   $form_id
+ * @param  array $args
  *
  * @return void
  */
@@ -1314,7 +1327,7 @@ add_action( 'give_pre_form_output', 'give_form_content', 10, 2 );
 /**
  * Renders Post Form Content
  *
- * @description: Displays content for Give forms; fired by action from give_form_content
+ * Displays content for Give forms; fired by action from give_form_content
  *
  * @param int $form_id
  *
@@ -1394,8 +1407,8 @@ add_filter( 'the_content', 'give_filter_success_page_content' );
 /**
  * Test Mode Frontend Warning
  *
- * @description Displays a notice on the frontend for donation forms
- * @since       1.1
+ * Displays a notice on the frontend for donation forms
+ * @since 1.1
  */
 
 function give_test_mode_frontend_warning() {
@@ -1403,7 +1416,7 @@ function give_test_mode_frontend_warning() {
 	$test_mode = give_get_option( 'test_mode' );
 
 	if ( $test_mode == 'on' ) {
-		echo '<div class="give_error give_warning" id="give_error_test_mode"><p><strong>' . esc_html( 'Notice', 'give' ) . '</strong>: ' . esc_html( 'Test mode is enabled. While in test mode no live transactions are processed.', 'give' ) . '</p></div>';
+		echo '<div class="give_error give_warning" id="give_error_test_mode"><p><strong>' . esc_html__( 'Notice', 'give' ) . '</strong>: ' . esc_html__( 'Test mode is enabled. While in test mode no live transactions are processed.', 'give' ) . '</p></div>';
 	}
 }
 
@@ -1413,8 +1426,14 @@ add_action( 'give_pre_form', 'give_test_mode_frontend_warning', 10 );
 /**
  * Members-only Form
  *
- * @description If "Disable Guest Donations" and "Display Register / Login" is set to none
- * @since       1.4.1
+ * If "Disable Guest Donations" and "Display Register / Login" is set to none
+ *
+ * @since  1.4.1
+ *
+ * @param  string $final_output
+ * @param  array  $args
+ *
+ * @return string
  */
 
 function give_members_only_form( $final_output, $args ) {
@@ -1429,7 +1448,7 @@ function give_members_only_form( $final_output, $args ) {
 	//Logged in only and Register / Login set to none
 	if ( give_logged_in_only( $form_id ) && give_show_login_register_option( $form_id ) == 'none' ) {
 
-		$final_output = give_output_error( esc_html( 'Please login in order to complete your donation.', 'give' ), false );
+		$final_output = give_output_error( esc_html__( 'Please login in order to complete your donation.', 'give' ), false );
 
 		return apply_filters( 'give_members_only_output', $final_output, $form_id );
 

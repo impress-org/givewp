@@ -54,7 +54,7 @@ function give_upgrades_screen() {
 
 				<?php if ( ! empty( $total ) ) : ?>
 					<p>
-						<strong><?php printf( esc_html( 'Step %d of approximately %d running', 'give' ), $step, $steps ); ?></strong>
+						<strong><?php printf( esc_html__( 'Step %d of approximately %d running', 'give' ), $step, $steps ); ?></strong>
 					</p>
 				<?php endif; ?>
 			</div>

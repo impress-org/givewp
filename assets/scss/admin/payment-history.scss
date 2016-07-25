@@ -102,10 +102,10 @@ tr.status-refunded td {
 
 .give-donation-status {
   > span {
-    float: left;
+    display: inline-block;
     width: 12px;
     height: 12px;
-    margin: 3px 4px 0 0;
+    margin: 0 4px;
     padding: 0;
     border-radius: 50%;
     background: #888;
@@ -149,11 +149,9 @@ tr.status-refunded td {
 #test-payment-label {
   @include give-label();
   background-color: $orange;
-  margin: 0 0 0 15px;
-  position: relative;
-  top: -4px;
+  margin: 0 15px;
+  vertical-align: middle;
 }
-
 
 //ID & link field
 #give-payments-filter {
@@ -168,7 +166,7 @@ tr.status-refunded td {
   }
 
   .give-donation-status {
-    float:left;
+    display: inline-block;
   }
 
 }
@@ -178,7 +176,7 @@ tr.status-refunded td {
   .give-donation-status {
     display: inline-block;
     float: none;
-    margin: 0 0 0 10px;
+    margin: 0 10px;
     position: relative;
     top: 3px;
   }
@@ -214,13 +212,9 @@ Responsiveness
 
 .give-admin-box-inside {
   margin: 0;
-  padding: 3px 12px;
+  padding: 3px 10px;
   clear: both;
   border-bottom: 1px solid #eee;
-}
-
-.rtl .give-admin-box-inside {
-  padding: 5px 10px 5px 0;
 }
 
 .give-admin-box-inside .strong {
@@ -268,6 +262,10 @@ Responsiveness
   margin-right: 10px;
 }
 
+#give-donation-overview th {
+  text-align: left;
+}
+
 #give-donation-overview .give-select-chosen {
   width: 196px;
 }
@@ -304,7 +302,6 @@ Responsiveness
   display: inline-block;
   position: relative;
   vertical-align: top;
-  margin-right: 5%;
 }
 
 #give-donation-overview ul {
@@ -345,9 +342,73 @@ input.give-price-field {
   padding: 3px 5px;
 }
 
-
 .give_forms_page_give-payment-history.js .postbox .hndle {
   cursor: default;
+}
+
+//------------------------------------------
+//Payment Notes Section
+//------------------------------------------
+
+#give-payment-notes {
+  textarea {
+    min-height: 150px;
+  }
+  #give-add-payment-note {
+    margin: 6px 0 15px;
+  }
+
+}
+
+//------------------------------------------
+//Edit Order Form
+//------------------------------------------
+
+#give-billing-details {
+
+  .column > div {
+    margin: 0 0 10px;
+  }
+
+  label {
+    display: block;
+  }
+
+  .column-container {
+    padding: 5px 0 10px;
+  }
+
+  input[type="text"] {
+    width: 95%;
+  }
+
+  .chosen-container {
+    width: 98% !important;
+  }
+
+}
+
+//------------------------------------------
+//Responsive
+//------------------------------------------
+
+@media screen and (min-width: 1200px) {
+  #give-edit-order-form .column {
+    width: 33%;
+  }
+
+  #give-donation-overview.columns-4 li.actions {
+    width: 25%;
+    margin-top: 0;
+    margin-right: 0;
+  }
+
+}
+
+@media screen and (max-width: 1199px) {
+  #give-edit-order-form .column {
+    width: 49%;
+  }
 }
 
 @media screen and (max-width: 782px) {
@@ -356,63 +417,10 @@ input.give-price-field {
   }
 }
 
-@media screen and (max-width: 1024px) {
-  #give-edit-order-form .column {
-    width: 49%;
-  }
-}
 
-@media screen and (max-width: 1280px) and (min-width: 1279px) {
-
-  #give-edit-order-form .column {
-    width: 32%;
-  }
-}
-
-@media screen and (min-width: 1280px) {
-  #give-edit-order-form .column {
-    width: 32%;
-    margin-right: 3%;
-  }
-
-  #give-edit-order-form .columns-4 .column, #give-donation-overview.columns-4 .row > ul > li,
-  #give-donation-overview.columns-4 .inside > ul > li {
-    width: 22%;
-    margin-right: 2%;
-  }
-
-  #give-edit-order-form .columns-3 .column:nth-child(2n+1),
-  #give-edit-order-form .columns-4 .column:nth-child(3n+1),
-  #give-edit-order-form .column:nth-child(2n+1) {
-    margin-right: 0;
-  }
-
-  #give-donation-overview.columns-4 li.download {
-    width: 33%;
-  }
-
-  #give-donation-overview.columns-4 li.price,
-  #give-donation-overview.columns-3 .row > ul > li.price,
-  #give-donation-overview.columns-3 .inside > ul > li.price {
-    width: 14%;
-  }
-
-  #give-donation-overview.columns-4 li.actions {
-    width: 25%;
-    margin-top: 0;
-    margin-right: 0;
-  }
-}
-
-@media screen and (max-width: 1284px) {
-  #give-edit-order-form .column strong {
-    display: block;
-  }
-}
-
-/*------------------------------------------
-Donation Details
---------------------------------------------*/
+//------------------------------------------
+//Donation Details
+//------------------------------------------
 
 #give-customer-details {
 

@@ -21,18 +21,35 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @global       $give_options
  * @global       $post
  *
- * @param string $redirect Redirect page URL
+ * @param string $login_redirect Login redirect page URL
+ * @param string $logout_redirect Logout redirect page URL
  *
  * @return string Login form
  */
-function give_login_form( $redirect = '' ) {
-	global $give_login_redirect;
+function give_login_form( $login_redirect = '', $logout_redirect = '' ) {
+	global $give_login_redirect, $give_logout_redirect;;
 
-	if ( empty( $redirect ) ) {
-		$redirect = add_query_arg('give-login-success', 'true', give_get_current_page_url());
+	if ( empty( $login_redirect ) ) {
+		$login_redirect = add_query_arg('give-login-success', 'true', give_get_current_page_url());
 	}
 
-	$give_login_redirect = $redirect;
+    if ( empty( $logout_redirect ) ) {
+        $logout_redirect = add_query_arg( 'give-logout-success', 'true', give_get_current_page_url() );
+    }
+
+
+    // Add user_logout action to logout url.
+    $logout_redirect = add_query_arg(
+        array(
+            'give_action'       => 'user_logout',
+            'give_logout_nonce' => wp_create_nonce( 'give-logout-nonce' ),
+            'give_logout_redirect' => urlencode( $logout_redirect )
+        ),
+        home_url('/')
+    );
+
+	$give_login_redirect = $login_redirect;
+	$give_logout_redirect = $logout_redirect;
 
 	ob_start();
 
@@ -91,15 +108,15 @@ function give_process_login_form( $data ) {
 			if ( wp_check_password( $data['give_user_pass'], $user_data->user_pass, $user_data->ID ) ) {
 				give_log_user_in( $user_data->ID, $data['give_user_login'], $data['give_user_pass'] );
 			} else {
-				give_set_error( 'password_incorrect', esc_html( 'The password you entered is incorrect.', 'give' ) );
+				give_set_error( 'password_incorrect', esc_html__( 'The password you entered is incorrect.', 'give' ) );
 			}
 		} else {
-			give_set_error( 'username_incorrect', esc_html( 'The username you entered does not exist.', 'give' ) );
+			give_set_error( 'username_incorrect', esc_html__( 'The username you entered does not exist.', 'give' ) );
 		}
 		// Check for errors and redirect if none present
 		$errors = give_get_errors();
 		if ( ! $errors ) {
-			$redirect = apply_filters( 'give_login_redirect', $data['give_redirect'], $user_ID );
+			$redirect = apply_filters( 'give_login_redirect', $data['give_login_redirect'], $user_ID );
 			wp_redirect( $redirect );
 			give_die();
 		}
@@ -107,6 +124,38 @@ function give_process_login_form( $data ) {
 }
 
 add_action( 'give_user_login', 'give_process_login_form' );
+
+
+/**
+ * Process User Logout
+ *
+ * @since 1.0
+ *
+ * @param array $data Data sent from the give login form page
+ *
+ * @return void
+ */
+function give_process_user_logout( $data ) {
+    if ( wp_verify_nonce( $data['give_logout_nonce'], 'give-logout-nonce' ) && is_user_logged_in() ) {
+
+        // Prevent occurring of any custom action on wp_logout.
+        remove_all_actions( 'wp_logout' );
+
+        // Before logout give action.
+        do_action( 'give_before_user_logout' );
+
+        // Logout user.
+        wp_logout();
+
+        // After logout give action.
+        do_action( 'give_after_user_logout' );
+
+        wp_redirect( $data['give_logout_redirect'] );
+        give_die();
+    }
+}
+
+add_action( 'give_user_logout', 'give_process_user_logout' );
 
 /**
  * Log User In
@@ -153,35 +202,35 @@ function give_process_register_form( $data ) {
 	do_action( 'give_pre_process_register_form' );
 
 	if ( empty( $data['give_user_login'] ) ) {
-		give_set_error( 'empty_username', esc_html( 'Invalid username.', 'give' ) );
+		give_set_error( 'empty_username', esc_html__( 'Invalid username.', 'give' ) );
 	}
 
 	if ( username_exists( $data['give_user_login'] ) ) {
-		give_set_error( 'username_unavailable', esc_html( 'Username already taken.', 'give' ) );
+		give_set_error( 'username_unavailable', esc_html__( 'Username already taken.', 'give' ) );
 	}
 
 	if ( ! validate_username( $data['give_user_login'] ) ) {
-		give_set_error( 'username_invalid', esc_html( 'Invalid username.', 'give' ) );
+		give_set_error( 'username_invalid', esc_html__( 'Invalid username.', 'give' ) );
 	}
 
 	if ( email_exists( $data['give_user_email'] ) ) {
-		give_set_error( 'email_unavailable', esc_html( 'Email address already taken.', 'give' ) );
+		give_set_error( 'email_unavailable', esc_html__( 'Email address already taken.', 'give' ) );
 	}
 
 	if ( empty( $data['give_user_email'] ) || ! is_email( $data['give_user_email'] ) ) {
-		give_set_error( 'email_invalid', esc_html( 'Invalid email.', 'give' ) );
+		give_set_error( 'email_invalid', esc_html__( 'Invalid email.', 'give' ) );
 	}
 
 	if ( ! empty( $data['give_payment_email'] ) && $data['give_payment_email'] != $data['give_user_email'] && ! is_email( $data['give_payment_email'] ) ) {
-		give_set_error( 'payment_email_invalid', esc_html( 'Invalid payment email.', 'give' ) );
+		give_set_error( 'payment_email_invalid', esc_html__( 'Invalid payment email.', 'give' ) );
 	}
 
 	if ( empty( $_POST['give_user_pass'] ) ) {
-		give_set_error( 'empty_password', esc_html( 'Please enter a password.', 'give' ) );
+		give_set_error( 'empty_password', esc_html__( 'Please enter a password.', 'give' ) );
 	}
 
 	if ( ( ! empty( $_POST['give_user_pass'] ) && empty( $_POST['give_user_pass2'] ) ) || ( $_POST['give_user_pass'] !== $_POST['give_user_pass2'] ) ) {
-		give_set_error( 'password_mismatch', esc_html( 'Passwords don\'t match.', 'give' ) );
+		give_set_error( 'password_mismatch', esc_html__( 'Passwords don\'t match.', 'give' ) );
 	}
 
 	do_action( 'give_process_register_form' );

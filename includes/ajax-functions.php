@@ -239,7 +239,7 @@ function give_ajax_form_search() {
 
 		$items[] = array(
 			'id'   => 0,
-			'name' => esc_html( 'No results found', 'give' )
+			'name' => esc_html__( 'No results found', 'give' )
 		);
 
 	}
@@ -283,7 +283,7 @@ function give_ajax_donor_search() {
 
 		$donors[] = array(
 			'id'   => 0,
-			'name' => esc_html( 'No results found', 'give' )
+			'name' => esc_html__( 'No results found', 'give' )
 		);
 
 	}
@@ -329,7 +329,7 @@ function give_ajax_search_users() {
 				$user_list .= '<li><a href="#" data-userid="' . esc_attr( $user->ID ) . '" data-login="' . esc_attr( $user->user_login ) . '">' . esc_html( $user->user_login ) . '</a></li>';
 			}
 		} else {
-			$user_list .= '<li>' . esc_html( 'No users found', 'give' ) . '</li>';
+			$user_list .= '<li>' . esc_html__( 'No users found', 'give' ) . '</li>';
 		}
 		$user_list .= '</ul>';
 
@@ -368,7 +368,7 @@ function give_check_for_form_price_variations() {
 			$ajax_response = '<select class="give_price_options_select give-select give-select" name="give_price_option">';
 
 			if ( isset( $_POST['all_prices'] ) ) {
-				$ajax_response .= '<option value="">' . esc_html( 'All Levels', 'give' ) . '</option>';
+				$ajax_response .= '<option value="">' . esc_html__( 'All Levels', 'give' ) . '</option>';
 			}
 
 			foreach ( $variable_prices as $key => $price ) {
@@ -387,3 +387,51 @@ function give_check_for_form_price_variations() {
 }
 
 add_action( 'wp_ajax_give_check_for_form_price_variations', 'give_check_for_form_price_variations' );
+
+
+/**
+ * Check for Variation Prices HTML  (Multi-level donation forms)
+ *
+ * @since 1.6
+ * @return void
+ */
+function give_check_for_form_price_variations_html() {
+	if ( ! current_user_can( 'edit_give_payments', get_current_user_id() ) ) {
+		die( '-1' );
+	}
+
+	$form_id = intval( $_POST['form_id'] );
+	$payment_id = intval( $_POST['payment_id'] );
+	$form    = get_post( $form_id );
+
+	if ( 'give_forms' != $form->post_type ) {
+		die( '-2' );
+	}
+
+    if ( ! give_has_variable_prices( $form_id ) ) {
+        echo esc_html__( 'n/a', 'give' );
+    } else {
+        // Payment object.
+        $payment = new Give_Payment( $payment_id );
+
+        // Payment meta.
+        $payment_meta = $payment->get_meta();
+
+
+        // Variable price dropdown options.
+        $variable_price_dropdown_option =  array(
+            'id'                => $form_id,
+            'name'              => 'give-variable-price',
+            'chosen'            => true,
+            'show_option_all'   => '',
+            'selected'          => $payment_meta['price_id'],
+        );
+
+        // Render variable prices select tag html.
+        give_get_form_variable_price_dropdown( $variable_price_dropdown_option, true );
+    }
+
+    give_die();
+}
+
+add_action( 'wp_ajax_give_check_for_form_price_variations_html', 'give_check_for_form_price_variations_html' );

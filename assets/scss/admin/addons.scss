@@ -65,6 +65,17 @@
 
 }
 
+.rtl .type-download {
+  float: right;
+  margin-right: 0 !important;
+  margin-left: 1em !important;
+
+  .addon-footer-wrap {
+	right: 0;
+  }
+
+}
+
 .give-view-addons-all, .type-download {
 
   span.dashicons {
@@ -78,4 +89,9 @@
 
 .give-view-addons-all span.dashicons {
   margin-left: 3px;
+}
+
+.rtl .give-view-addons-all span.dashicons {
+  margin-left: 0;
+  margin-right: 3px;
 }
