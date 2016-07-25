@@ -1070,12 +1070,17 @@ function give_purchase_form_validate_cc_zip( $zip = 0, $country_code = '' ) {
  * @return bool
  */
 function give_validate_multi_donation_form_level(  $valid_data, $data ) {
-    // Get donation form.
+    /* @var Give_Donate_Form $form*/
     $form = new Give_Donate_Form( $data['give-form-id'] );
 
     $donation_level_matched = false;
 
-    if( $variable_prices = $form->get_prices() ) {
+    if( $form->is_multi_donation_form() ) {
+
+        // Bailout.
+        if( ! ( $variable_prices = $form->get_prices() ) ) {
+            return false;
+        }
 
         // Sanitize donation amount.
         $data['give-amount'] = give_sanitize_amount( $data['give-amount'] );
