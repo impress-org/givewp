@@ -14,14 +14,15 @@
 
 
 #give-payments-filter .give-donation-status {
-  float: left;
+  display: inline-block;
 }
 
 .column-status {
   .give-donation-status, .give-test-mode-transactions-label {
-    float:left;
+    display: inline-block;
   }
   .give-test-mode-transactions-label {
-    margin: 2px 0 0 8px;
+    margin: 0 5px;
+    vertical-align: middle;
   }
 }

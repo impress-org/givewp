@@ -71,10 +71,12 @@
 	background: #f1f1f1;
 	color: #000;
   }
+
   .dashicons {
 	font-size: 20px;
 	line-height: 26px;
   }
+
 }
 
 #give-customer-card-wrapper {
@@ -85,10 +87,12 @@
   input {
 	font-weight: normal;
   }
+
   .customer-section {
 	border-bottom: 1px solid #eee;
 	margin-bottom: 10px;
   }
+
   .customer-section table {
 	margin-bottom: 0;
   }
@@ -96,6 +100,7 @@
   > div:first-child {
 	padding-top: 20px;
   }
+
   > div:last-child {
 	padding-bottom: 20px;
 	border: none;
@@ -106,6 +111,7 @@
 	padding: 0 15px 15px 0;
 	text-align: center;
 	float: left;
+
 	img {
 	  border-radius: 3px;
 	}
@@ -120,8 +126,6 @@
 
   //Donor Header (non-avatar content)
   .donor-bio-header {
-	float: left;
-	width: 33%;
 
 	.customer-since {
 	  margin: 10px 0;
@@ -129,23 +133,40 @@
 	}
 
 	.customer-id {
+      display: inline-block;
 	  font-size: 24px;
 	  font-weight: 600;
-	  float: left;
 	  margin-right: 10px;
 	}
 
+    .customer-name-wrap {
+      display: inline-block;
+    }
+
 	.customer-edit-link {
 	  margin-bottom: 15px;
-	  float: left;
-
 	}
 
   }
 
 }
 
+.rtl #give-customer-card-wrapper {
+
+  .avatar-wrap {
+    padding: 0 0 15px 15px;
+    float: right;
+  }
+
+  .customer-id {
+    margin-right: 0;
+    margin-left: 10px;
+  }
+
+}
+
 .customer-main-wrapper {
+  clear: both;
   margin: 0 0 20px;
 
   @media(max-width: 655px) {
@@ -155,6 +176,7 @@
   table {
 	margin: 0;
   }
+
   input {
 	width: 200px;
   }
@@ -177,6 +199,14 @@
   }
 
 }
+.rtl #donor-summary {
+
+  &:after {
+	left: 10px;
+    right: initial;
+  }
+
+}
 
 #give-customer-card-wrapper .customer-address-wrapper {
   width: 202px;
@@ -192,7 +222,6 @@
 }
 
 #give-customer-card-wrapper .customer-info {
-  margin-top: 1px;
   min-height: 185px;
 }
 
