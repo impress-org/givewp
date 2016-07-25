@@ -61,7 +61,6 @@ class Give_Stats {
 
 	/**
 	 * @access public
-	 * @return void
 	 */
 	public function __construct() { /* nothing here. Call get_sales() and get_earnings() directly */
 	}
@@ -76,16 +75,16 @@ class Give_Stats {
 	 */
 	public function get_predefined_dates() {
 		$predefined = array(
-			'today'        => esc_html( 'Today', 'give' ),
-			'yesterday'    => esc_html( 'Yesterday', 'give' ),
-			'this_week'    => esc_html( 'This Week', 'give' ),
-			'last_week'    => esc_html( 'Last Week', 'give' ),
-			'this_month'   => esc_html( 'This Month', 'give' ),
-			'last_month'   => esc_html( 'Last Month', 'give' ),
-			'this_quarter' => esc_html( 'This Quarter', 'give' ),
-			'last_quarter' => esc_html( 'Last Quarter', 'give' ),
-			'this_year'    => esc_html( 'This Year', 'give' ),
-			'last_year'    => esc_html( 'Last Year', 'give' )
+			'today'        => __( 'Today', 'give' ),
+			'yesterday'    => __( 'Yesterday', 'give' ),
+			'this_week'    => __( 'This Week', 'give' ),
+			'last_week'    => __( 'Last Week', 'give' ),
+			'this_month'   => __( 'This Month', 'give' ),
+			'last_month'   => __( 'Last Month', 'give' ),
+			'this_quarter' => __( 'This Quarter', 'give' ),
+			'last_quarter' => __( 'Last Quarter', 'give' ),
+			'this_year'    => __( 'This Year', 'give' ),
+			'last_year'    => __( 'Last Year', 'give' )
 		);
 
 		return apply_filters( 'give_stats_predefined_dates', $predefined );
@@ -123,6 +122,10 @@ class Give_Stats {
 	 *
 	 * @access public
 	 * @since  1.0
+	 *
+	 * @param string $date
+	 * @param bool   $end_date
+	 *
 	 * @return array|WP_Error If the date is invalid, a WP_Error object will be returned
 	 */
 	public function convert_date( $date, $end_date = false ) {
@@ -433,7 +436,7 @@ class Give_Stats {
 
 		} else {
 
-			return new WP_Error( 'invalid_date', esc_html( 'Improper date provided.', 'give' ) );
+			return new WP_Error( 'invalid_date', __( 'Improper date provided.', 'give' ) );
 
 		}
 
@@ -451,6 +454,9 @@ class Give_Stats {
 	 *
 	 * @access public
 	 * @since  1.0
+	 *
+	 * @param string $where
+	 * 
 	 * @return string
 	 */
 	public function count_where( $where = '' ) {

@@ -1445,7 +1445,7 @@ a.give-delete {
 .give_settings .cmb-td hr + hr {
   display: none; }
 
-.mce-container iframe {
+.post-type-give_forms .mce-container iframe, .post-type-give_forms .wp-editor-area {
   min-height: 400px; }
 
 /**
@@ -1685,8 +1685,7 @@ Responsiveness
 #give-donation-overview .inside > ul > li {
   display: inline-block;
   position: relative;
-  vertical-align: top;
-  margin-right: 5%; }
+  vertical-align: top; }
 
 #give-donation-overview ul {
   font-size: 0; }
@@ -1715,48 +1714,43 @@ input.give-price-field {
 .give_forms_page_give-payment-history.js .postbox .hndle {
   cursor: default; }
 
-@media screen and (max-width: 782px) {
-  .order-data-column input[type="email"] {
-    padding: 6px 10px; } }
+#give-payment-notes textarea {
+  min-height: 150px; }
 
-@media screen and (max-width: 1024px) {
-  #give-edit-order-form .column {
-    width: 49%; } }
+#give-payment-notes #give-add-payment-note {
+  margin: 6px 0 15px; }
 
-@media screen and (max-width: 1280px) and (min-width: 1279px) {
-  #give-edit-order-form .column {
-    width: 32%; } }
+#give-billing-details .column > div {
+  margin: 0 0 10px; }
 
-@media screen and (min-width: 1280px) {
+#give-billing-details label {
+  display: block; }
+
+#give-billing-details .column-container {
+  padding: 5px 0 10px; }
+
+#give-billing-details input[type="text"] {
+  width: 95%; }
+
+#give-billing-details .chosen-container {
+  width: 98% !important; }
+
+@media screen and (min-width: 1200px) {
   #give-edit-order-form .column {
-    width: 32%;
-    margin-right: 3%; }
-  #give-edit-order-form .columns-4 .column, #give-donation-overview.columns-4 .row > ul > li,
-  #give-donation-overview.columns-4 .inside > ul > li {
-    width: 22%;
-    margin-right: 2%; }
-  #give-edit-order-form .columns-3 .column:nth-child(2n+1),
-  #give-edit-order-form .columns-4 .column:nth-child(3n+1),
-  #give-edit-order-form .column:nth-child(2n+1) {
-    margin-right: 0; }
-  #give-donation-overview.columns-4 li.download {
     width: 33%; }
-  #give-donation-overview.columns-4 li.price,
-  #give-donation-overview.columns-3 .row > ul > li.price,
-  #give-donation-overview.columns-3 .inside > ul > li.price {
-    width: 14%; }
   #give-donation-overview.columns-4 li.actions {
     width: 25%;
     margin-top: 0;
     margin-right: 0; } }
 
-@media screen and (max-width: 1284px) {
-  #give-edit-order-form .column strong {
-    display: block; } }
+@media screen and (max-width: 1199px) {
+  #give-edit-order-form .column {
+    width: 49%; } }
 
-/*------------------------------------------
-Donation Details
---------------------------------------------*/
+@media screen and (max-width: 782px) {
+  .order-data-column input[type="email"] {
+    padding: 6px 10px; } }
+
 #give-customer-details .inside {
   padding-top: 15px;
   padding-bottom: 15px; }

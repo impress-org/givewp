@@ -30,7 +30,7 @@ class Give_DB_Customers extends Give_DB {
 	 * @since   1.0
 	 */
 	public function __construct() {
-
+		/* @var WPDB $wpdb */
 		global $wpdb;
 
 		$this->table_name  = $wpdb->prefix . 'give_customers';
@@ -84,7 +84,13 @@ class Give_DB_Customers extends Give_DB {
 	 * Add a customer
 	 *
 	 * @access  public
+	 *
 	 * @since   1.0
+	 *
+	 * @param array $data
+	 *
+	 * @return int/bool
+	 *
 	 */
 	public function add( $data = array() ) {
 
@@ -148,9 +154,9 @@ class Give_DB_Customers extends Give_DB {
 	 * @access  public
 	 * @since   1.0
 	 *
-	 * @param bool|false $_id_or_email
+	 * @param bool|string|int $_id_or_email
 	 *
-	 * @return bool|false|int
+	 * @return bool|int
 	 */
 	public function delete( $_id_or_email = false ) {
 
@@ -178,6 +184,11 @@ class Give_DB_Customers extends Give_DB {
 	 *
 	 * @access  public
 	 * @since   1.0
+	 *
+	 * @param string $value
+	 * @param string $field
+	 *
+	 * @return bool
 	 */
 	public function exists( $value = '', $field = 'email' ) {
 		
@@ -195,6 +206,11 @@ class Give_DB_Customers extends Give_DB {
 	 *
 	 * @access  public
 	 * @since   1.0
+	 *
+	 * @param int $customer_id 	Customer ID
+	 * @param int $payment_id 	Payment ID
+	 *
+	 * @return bool
 	 */
 	public function attach_payment( $customer_id = 0, $payment_id = 0 ) {
 
@@ -214,6 +230,11 @@ class Give_DB_Customers extends Give_DB {
 	 *
 	 * @access  public
 	 * @since   1.0
+	 *
+	 * @param int $customer_id 	Customer ID
+	 * @param int $payment_id 	Payment ID
+	 *
+	 * @return bool
 	 */
 	public function remove_payment( $customer_id = 0, $payment_id = 0 ) {
 
@@ -256,6 +277,11 @@ class Give_DB_Customers extends Give_DB {
 	 *
 	 * @access  public
 	 * @since   1.0
+	 *
+	 * @param int 	$customer_id 	Customer ID
+	 * @param float $amount 		Amount
+	 *
+	 * @return bool
 	 */
 	public function decrement_stats( $customer_id = 0, $amount = 0.00 ) {
 
@@ -279,8 +305,8 @@ class Give_DB_Customers extends Give_DB {
 	 * 
 	 * @since   1.4.3
 	 * 
-	 * @param int $user_id
-	 * @param $old_user_data
+	 * @param int 		$user_id		User ID
+	 * @param WP_User	$old_user_data 	User data
 	 *
 	 * @return bool
 	 */
@@ -336,6 +362,7 @@ class Give_DB_Customers extends Give_DB {
 	 * @return mixed          Upon success, an object of the customer. Upon failure, NULL
 	 */
 	public function get_customer_by( $field = 'id', $value = 0 ) {
+		/* @var WPDB $wpdb */
 		global $wpdb;
 
 		if ( empty( $field ) || empty( $value ) ) {
@@ -395,9 +422,13 @@ class Give_DB_Customers extends Give_DB {
 	 *
 	 * @access  public
 	 * @since   1.0
+     *
+     * @param array $args
+     *
+     * @return array|object|null
 	 */
 	public function get_customers( $args = array() ) {
-
+        /* @var WPDB $wpdb */
 		global $wpdb;
 
 		$defaults = array(
@@ -522,9 +553,13 @@ class Give_DB_Customers extends Give_DB {
 	 *
 	 * @access  public
 	 * @since   1.0
+     *
+     * @param array $args
+     *
+     * @return int
 	 */
 	public function count( $args = array() ) {
-
+        /* @var WPDB $wpdb */
 		global $wpdb;
 
 		$where = ' WHERE 1=1 ';

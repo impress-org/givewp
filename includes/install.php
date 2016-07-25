@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Install
  *
- * @description: Runs on plugin install by setting up the post types, custom taxonomies, flushing rewrite rules to initiate the new 'donations' slug and also creates the plugin and populates the settings fields for those plugin pages. After successful install, the user is redirected to the Give Welcome screen.
+ * Runs on plugin install by setting up the post types, custom taxonomies, flushing rewrite rules to initiate the new 'donations' slug and also creates the plugin and populates the settings fields for those plugin pages. After successful install, the user is redirected to the Give Welcome screen.
  *
  * @since 1.0
  * @global $wpdb
@@ -79,8 +79,8 @@ function give_run_install() {
 		// Purchase Confirmation (Success) Page
 		$success = wp_insert_post(
 			array(
-				'post_title'     => esc_html( 'Donation Confirmation', 'give' ),
-				'post_content'   => '[give_receipt]',
+				'post_title'     => __( 'Donation Confirmation', 'give' ),
+				'post_content'   => __( '[give_receipt]', 'give' ),
 				'post_status'    => 'publish',
 				'post_author'    => 1,
 				'post_type'      => 'page',
@@ -98,8 +98,8 @@ function give_run_install() {
 		// Failed Purchase Page
 		$failed = wp_insert_post(
 			array(
-				'post_title'     => esc_html( 'Transaction Failed', 'give' ),
-				'post_content'   => esc_html( 'We\'re sorry, your transaction failed to process. Please try again or contact site support.', 'give' ),
+				'post_title'     => __( 'Transaction Failed', 'give' ),
+				'post_content'   => __( 'We\'re sorry, your transaction failed to process. Please try again or contact site support.', 'give' ),
 				'post_status'    => 'publish',
 				'post_author'    => 1,
 				'post_type'      => 'page',
@@ -115,7 +115,7 @@ function give_run_install() {
 		// Purchase History (History) Page
 		$history = wp_insert_post(
 			array(
-				'post_title'     => esc_html( 'Donation History', 'give' ),
+				'post_title'     => __( 'Donation History', 'give' ),
 				'post_content'   => '[donation_history]',
 				'post_status'    => 'publish',
 				'post_author'    => 1,
@@ -201,7 +201,7 @@ register_activation_hook( GIVE_PLUGIN_FILE, 'give_install' );
 /**
  * Network Activated New Site Setup
  *
- * @description: When a new site is created when Give is network activated this function runs the appropriate install function to set up the site for Give.
+ * When a new site is created when Give is network activated this function runs the appropriate install function to set up the site for Give.
  *
  * @since      1.3.5
  *

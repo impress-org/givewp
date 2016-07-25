@@ -18,8 +18,8 @@ class Give_Shortcode_Donation_Form_Goal extends Give_Shortcode_Generator {
 	 */
 	public function __construct() {
 
-		$this->shortcode['title'] = esc_html( 'Donation Form Goal', 'give' );
-		$this->shortcode['label'] = esc_html( 'Donation Form Goal', 'give' );
+		$this->shortcode['title'] = __( 'Donation Form Goal', 'give' );
+		$this->shortcode['label'] = __( 'Donation Form Goal', 'give' );
 
 		parent::__construct( 'give_goal' );
 	}
@@ -44,35 +44,35 @@ class Give_Shortcode_Donation_Form_Goal extends Give_Shortcode_Generator {
 					'post_type' => 'give_forms',
 				),
 				'name'        => 'id',
-				'tooltip'     => esc_attr( 'Select a Donation Form', 'give' ),
-				'placeholder' => esc_attr( '- Select a Form -', 'give' ),
+				'tooltip'     => __( 'Select a Donation Form', 'give' ),
+				'placeholder' => __( '- Select a Form -', 'give' ),
 				'required'    => array(
-					'alert' => esc_html( 'You must first select a Form!', 'give' ),
-					'error' => sprintf( '<p class="strong">%s</p><p class="no-margin">%s</p>', esc_html( 'No donation forms were found!', 'give' ), $create_form_link ),
+					'alert' => __( 'You must first select a Form!', 'give' ),
+					'error' => sprintf( '<p class="strong">%s</p><p class="no-margin">%s</p>', __( 'No donation forms were found!', 'give' ), $create_form_link ),
 				),
 			),
 			array(
 				'type' => 'container',
-				'html' => sprintf( '<p class="strong margin-top">%s</p>', esc_html( 'Optional settings', 'give' ) ),
+				'html' => sprintf( '<p class="strong margin-top">%s</p>', __( 'Optional settings', 'give' ) ),
 			),
 			array(
 				'type'    => 'listbox',
 				'name'    => 'show_text',
-				'label'   => esc_html( 'Show Text:', 'give' ),
-				'tooltip' => esc_attr( 'This text displays the amount of income raised compared to the goal.', 'give' ),
+				'label'   => __( 'Show Text:', 'give' ),
+				'tooltip' => __( 'This text displays the amount of income raised compared to the goal.', 'give' ),
 				'options' => array(
-					'true'  => esc_html( 'Show', 'give' ),
-					'false' => esc_html( 'Hide', 'give' ),
+					'true'  => __( 'Show', 'give' ),
+					'false' => __( 'Hide', 'give' ),
 				),
 			),
 			array(
 				'type'    => 'listbox',
 				'name'    => 'show_bar',
-				'label'   => esc_html( 'Show Progress Bar:', 'give' ),
-				'tooltip' => esc_attr( 'Do you want to display the goal\'s progress bar?', 'give' ),
+				'label'   => __( 'Show Progress Bar:', 'give' ),
+				'tooltip' => __( 'Do you want to display the goal\'s progress bar?', 'give' ),
 				'options' => array(
-					'true'  => esc_html( 'Show', 'give' ),
-					'false' => esc_html( 'Hide', 'give' ),
+					'true'  => __( 'Show', 'give' ),
+					'false' => __( 'Hide', 'give' ),
 				),
 			),
 		);

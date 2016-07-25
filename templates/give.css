@@ -117,7 +117,7 @@
 .give-icon-minus:before {
   content: "\e041"; }
 
-.give-icon-locked:before, #give_secure_site_wrapper span.padlock:before {
+.give-icon-locked:before, [id*='give_secure_site_wrapper'] span.padlock:before {
   content: "\e600"; }
 
 .dashicons-give:before {
@@ -976,7 +976,7 @@ form[id*='give-form'] .give-donation-amount {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    width: 125px; }
+    min-width: 125px; }
     form[id*='give-form'] .give-donation-amount #give-amount.invalid-amount,
     form[id*='give-form'] .give-donation-amount #give-amount-text.invalid-amount {
       border: 1px solid red; }
@@ -1171,11 +1171,11 @@ Buttons
 /*---------------------------------
 CC Validation
 -----------------------------------*/
-#give_secure_site_wrapper {
+[id*='give_secure_site_wrapper'] {
   padding: 4px 4px 15px 0;
   font-size: 16px;
   line-height: 20px; }
-  #give_secure_site_wrapper span.padlock {
+  [id*='give_secure_site_wrapper'] span.padlock {
     font-family: 'give-icomoon';
     speak: none;
     font-style: normal;
@@ -1188,7 +1188,7 @@ CC Validation
     -moz-osx-font-smoothing: grayscale;
     font-size: 16px;
     line-height: 20px; }
-    #give_secure_site_wrapper span.padlock :before {
+    [id*='give_secure_site_wrapper'] span.padlock :before {
       display: inline-block; }
 
 #give_purchase_form_wrap input.give-input.card-number.valid {
@@ -1307,6 +1307,8 @@ form[id*='give-form'] .give-payment-mode-label .give-loading-text {
     padding: 0; }
   .give-login-account-wrap p.give-login-message, [id^="give-login-fields"] p.give-login-message {
     margin-right: 10px; }
+  .give-login-account-wrap .give_login_forgot_password, [id^="give-login-fields"] .give_login_forgot_password {
+    float: right; }
 
 /* User Login */
 [id^='give-user-login-submit'] input.give-submit, [id^='give-user-login-submit'] input.give-btn, [id^='give-user-login-submit'] span.give-loading-animation, .give-submit-button-wrap input.give-submit, .give-submit-button-wrap input.give-btn, .give-submit-button-wrap span.give-loading-animation {

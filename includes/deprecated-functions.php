@@ -2,7 +2,7 @@
 /**
  * Deprecated Functions
  *
- * @description: All functions that have been deprecated.
+ * All functions that have been deprecated.
  *
  * @package     Give
  * @subpackage  Deprecated

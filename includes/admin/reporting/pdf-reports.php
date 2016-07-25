@@ -28,11 +28,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_generate_pdf( $data ) {
 
 	if ( ! current_user_can( 'view_give_reports' ) ) {
-		wp_die( esc_html( 'You do not have permission to generate PDF sales reports.', 'give' ), esc_html( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( __( 'You do not have permission to generate PDF sales reports.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'give_generate_pdf' ) ) {
-		wp_die( esc_html( 'Nonce verification failed.', 'give' ), esc_html( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( __( 'Nonce verification failed.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	require_once GIVE_PLUGIN_DIR . '/includes/libraries/fpdf/fpdf.php';

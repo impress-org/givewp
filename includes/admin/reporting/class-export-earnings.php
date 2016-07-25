@@ -61,10 +61,10 @@ class Give_Earnings_Export extends Give_Export {
 	public function csv_cols() {
 
 		$cols = array(
-			'date'      => esc_html( 'Date', 'give' ),
-			'donations' => esc_html( 'Donations', 'give' ),
+			'date'      => __( 'Date', 'give' ),
+			'donations' => __( 'Donations', 'give' ),
 			/* translators: %s: currency */
-			'earnings'  => sprintf( esc_html( 'Income (%s)', 'give' ), html_entity_decode( give_currency_filter( '' ) ) )
+			'earnings'  => sprintf( __( 'Income (%s)', 'give' ), html_entity_decode( give_currency_filter( '' ) ) )
 		);
 
 		return $cols;
