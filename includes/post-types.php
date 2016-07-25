@@ -215,7 +215,6 @@ function give_setup_taxonomies() {
 				'assign_terms' => 'assign_give_form_terms',
 				'delete_terms' => 'delete_give_form_terms'
 			)
-
 		)
 	);
 
