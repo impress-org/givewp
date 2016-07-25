@@ -12,7 +12,7 @@ Democratizing Generosity - Empower your cause: start accepting donations on Word
 
 == Description ==
 
-**[Give's](https://givewp.com "Visit the the Give website")** goal is to "Democratize Generosity". Give is the most robust WordPress plugin available for accepting donations. Upon activation, Give provides you with powerful features  towards helping your raise more funds for your cause.
+**[Give's](https://givewp.com "Visit the Give website")** goal is to "Democratize Generosity". Give is the most robust WordPress plugin available for accepting donations. Upon activation, Give provides you with powerful features towards helping your raise more funds for your cause.
 
 [youtube https://www.youtube.com/watch?v=gNdEelhjoKE]
 
@@ -54,7 +54,7 @@ We earn money by selling [premium add-ons](https://givewp.com/addons/ "View all 
 
 = Easy to Customize and Enhance =
 
-Give is built by [WordImpress](http://wordimpress.com "Visit the the developers of Give - WordImpress"), our plugins are built from the ground up to be intuitive and easy to use. By following along with our [Getting Stated Guide](https://givewp.com/documentation/core/give-101/ "Give 101 - Getting started using Give to accept donations on WordPress"), setting up Give to accept donations on WordPress is simple and easy.
+Give is built by [WordImpress](http://wordimpress.com "Visit the developers of Give - WordImpress"), our plugins are built from the ground up to be intuitive and easy to use. By following along with our [Getting Stated Guide](https://givewp.com/documentation/core/give-101/ "Give 101 - Getting started using Give to accept donations on WordPress"), setting up Give to accept donations on WordPress is simple and easy.
 
 Do you have some development experience? We've built in an advanced templating system similar to the ones found in many of WordPress' top plugins that makes customizing many of Give's frontend elements upgrade proof and extremely flexible. Run into some trouble? We're here to help! Along with the plugin is a support team that is dedicated, fast to respond, and always willing to squash bugs and help troubleshoot.
 
@@ -70,16 +70,16 @@ Here's some great developer-oriented tutorials and docs to help you customize Gi
 
 Stay in touch with us for important plugin news and updates:
 
-* **[Give Website](https://givewp.com "Visit the the Give website")**
+* **[Give Website](https://givewp.com "Visit the Give website")**
 * **[Give Add-ons](https://givewp.com/addons "View all Give Add-ons")**
 * **[Newsletter](http://eepurl.com/bggG99 "Subscribe to Give via MailChimp")**
 * **[Facebook](http://facebook.com/wpgive "Visit the Give on Facebook")**
-* **[GitHub](https://github.com/WordImpress/Give "Visit the the developers of Give - WordImpress")**
-* **[WordImpress](http://wordimpress.com "Visit the the developers of Give - WordImpress")**
+* **[GitHub](https://github.com/WordImpress/Give "Visit the developers of Give - WordImpress")**
+* **[WordImpress](http://wordimpress.com "Visit the developers of Give - WordImpress")**
 
 = Contribute to Give =
 
-This plugin is open source and we're always looking for more contributors. Whether you know another language, can code like no ones business, or just have an idea, we would love your help and input. To contribute to Give please head over to [our website](https://givewp.com "Visit the the Give website") or view/fork/watch the [GitHub repository](https://github.com/WordImpress/Give "Visit the the Give GitHub Repo") to learn more about what issues we're tackling and the project is developing.
+This plugin is open source and we're always looking for more contributors. Whether you know another language, can code like no ones business, or just have an idea, we would love your help and input. To contribute to Give please head over to [our website](https://givewp.com "Visit the Give website") or view/fork/watch the [GitHub repository](https://github.com/WordImpress/Give "Visit the Give GitHub Repo") to learn more about what issues we're tackling and the project is developing.
 
 = A Tribute to Open Source =
 
@@ -102,7 +102,7 @@ Give is a tribute to the spirit and philosophy of open source. We at WordImpress
 
 Automatic installation is the easiest option as WordPress handles the file transfers itself and you don't need to leave your web browser. To do an automatic install of Give, log in to your WordPress dashboard, navigate to the Plugins menu and click "Add New".
 
-In the search field type "Give" and click Search Plugins. Once you have found the plugin you can view details about it such as the the point release, rating and description. Most importantly of course, you can install it by simply clicking "Install Now".
+In the search field type "Give" and click Search Plugins. Once you have found the plugin you can view details about it such as the point release, rating and description. Most importantly of course, you can install it by simply clicking "Install Now".
 
 = Manual installation =
 
@@ -173,7 +173,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Tweak: Updated to the latest version of CMB2 & tested compatibility - https://github.com/WordImpress/Give/issues/670
 * Fix: Unrendered html in multi-level donation confirmation emails - https://github.com/WordImpress/Give/issues/754
 * Fix: Text editor do not have same height for visual mode and text mode - https://github.com/WordImpress/Give/issues/688
-* Fix:  Auto populate state list is not working on transaction detail page - https://github.com/WordImpress/Give/issues/715
+* Fix: Auto populate state list is not working on transaction detail page - https://github.com/WordImpress/Give/issues/715
 * Fix: Unable to view payment history for donors with unusual characters in the email - https://github.com/WordImpress/Give/issues/717
 * Fix: Mixed content warning with placeholder image - https://github.com/WordImpress/Give/issues/768
 * Fix: Secure SSL padlock icon and style is broken due to a11y changes in #325 - https://github.com/WordImpress/Give/issues/769
@@ -198,7 +198,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * New: New Give_Payments class added which allows easier development for donation payments - https://github.com/WordImpress/Give/issues/504
 * New: Added "Test Mode" labels to more easily identify donations made while Give is in Test Mode - https://github.com/WordImpress/Give/issues/188
 * New: Template wrapper support for the "Catch Evolution" theme added - https://github.com/WordImpress/Give/issues/632
-* New: Export additional data and control the export columns for donors under Reports > Export >  Export Donors in CSV - https://github.com/WordImpress/Give/issues/630
+* New: Export additional data and control the export columns for donors under Reports > Export > Export Donors in CSV - https://github.com/WordImpress/Give/issues/630
 * New: South Korean Won added to list of currencies - https://github.com/WordImpress/Give/issues/624
 * New: Moroccan Dirham added to list of currencies - https://github.com/WordImpress/Give/issues/381
 * New: South African Rand added to list of currencies - https://github.com/WordImpress/Give/issues/624
@@ -210,20 +210,19 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Tweak: Rewrite of give_get_current_page_url to fix issues with domain mapped server with $_SERVER['SERVER_PORT'] - https://github.com/WordImpress/Give/issues/622
 * Fix: Transactions Status Changes Causes Donation Form Income Amounts + Goals to Not Calculate Correctly - https://github.com/WordImpress/Give/issues/188
 * Fix: Per form Offline donations gateway's "Request Billing Information" checkbox doesn't properly override the global setting - https://github.com/WordImpress/Give/issues/649
-* Fix: Reports filter custom date range option  when selected causes the refresh reports button to overlap - https://github.com/WordImpress/Give/issues/626
+* Fix: Reports filter custom date range option when selected causes the refresh reports button to overlap - https://github.com/WordImpress/Give/issues/626
 * Fix: Reports graph tooltips not displaying currency properly formatted - https://github.com/WordImpress/Give/issues/620
 * Fix: Attaching a new user to a donor isn't updating - https://github.com/WordImpress/Give/issues/644
 * Fix: Remove shortcode generator button when visual editor disabled - https://github.com/WordImpress/Give/issues/638
 * Fix: Bug with shortcode & show_content argument when two of the same forms on a page displaying the content incorrectly when set to none - https://github.com/WordImpress/Give/issues/634
 
-
-= 1.4.5: May 12, 2016  =
+= 1.4.5: May 12, 2016 =
 * Hotfix: Fixed a bug introduced which causes the custom amount minimum to be improperly calculated - https://github.com/WordImpress/Give/issues/616
 
-= 1.4.4: May 12, 2016  =
+= 1.4.4: May 12, 2016 =
 * Hotfix: Version 1.4.3 breaks modal popup display method - https://github.com/WordImpress/Give/issues/615
 
-= 1.4.3: May 12, 2016  =
+= 1.4.3: May 12, 2016 =
 * Fix: Update the email address of a customer record when the email of a user is updated via the WordPress profile updater - https://github.com/WordImpress/Give/issues/607
 * Fix: Bug if the donation form's custom amount minimum is set to 0.00 the warning message would still display - https://github.com/WordImpress/Give/issues/604
 * Fix: Bug with email access and the Donation History shortcode pagination not counting properly - https://github.com/WordImpress/Give/issues/600
@@ -241,15 +240,15 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Tweak: Hid the "ID" column from the multi-level repeater table because it served no real purpose for admins - https://github.com/WordImpress/Give/issues/554
 
 = 1.4.1: April 12, 2016 =
-* Fix: Member-only donation forms don't display member-only validation responses properly -  https://github.com/WordImpress/Give/issues/551
-* Fix: Email access cookie path set incorrectly breaks viewing details -  https://github.com/WordImpress/Give/issues/570
-* Fix: Validation conflicts with MemberPress - thanks @jimwebb -  https://github.com/WordImpress/Give/issues/568
-* Fix: If no Give logs under Settings > Reports > Logs then the log navigation does not display -  https://github.com/WordImpress/Give/issues/564
+* Fix: Member-only donation forms don't display member-only validation responses properly - https://github.com/WordImpress/Give/issues/551
+* Fix: Email access cookie path set incorrectly breaks viewing details - https://github.com/WordImpress/Give/issues/570
+* Fix: Validation conflicts with MemberPress - thanks @jimwebb - https://github.com/WordImpress/Give/issues/568
+* Fix: If no Give logs under Settings > Reports > Logs then the log navigation does not display - https://github.com/WordImpress/Give/issues/564
 * Fix: Login/Cancel/Register within donation form don't trigger float-labels - https://github.com/WordImpress/Give/issues/574
 * Fix: Login/Cancel/Register within donation form has problems maintaining gateway-specific fields when changing gateways - https://github.com/WordImpress/Give/issues/574
-* Tweak: Deprecated give_no_guest_checkout() in favor of give_logged_in_only() -  https://github.com/WordImpress/Give/issues/551
-* Tweak: Clean up '&amp' encoded ampersands for PayPal standard -  https://github.com/WordImpress/Give/issues/562
-* Tweak: Added a check for DOM and MBString PHP extensions in System Info tab -  https://github.com/WordImpress/Give/issues/560
+* Tweak: Deprecated give_no_guest_checkout() in favor of give_logged_in_only() - https://github.com/WordImpress/Give/issues/551
+* Tweak: Clean up '&amp' encoded ampersands for PayPal standard - https://github.com/WordImpress/Give/issues/562
+* Tweak: Added a check for DOM and MBString PHP extensions in System Info tab - https://github.com/WordImpress/Give/issues/560
 
 = 1.4: April 5, 2016 =
 * New: Donors now have the ability to view their donation history using only the email they donated with via the new "Email Access" functionality that can be enabled under Settings > Advanced - https://github.com/WordImpress/Give/pull/496
@@ -275,5 +274,6 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 [See full changelog here](https://plugins.svn.wordpress.org/give/trunk/changelog.txt)
 
 == Upgrade Notice ==
+
 = 1.4.3 =
 Fixes for user profile emails, custom minimum amounts, donation history pagination, and multi-site install process.
