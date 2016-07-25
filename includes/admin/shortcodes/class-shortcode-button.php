@@ -159,9 +159,10 @@ final class Give_Shortcode_Button {
 					printf(
 						'<button class="button sc-shortcode" data-shortcode="%s">%s</button>',
 						$shortcode,
-						sprintf( '%s %s %s',
+						sprintf(
+							'%s %s %s',
 							$img,
-							__( 'Insert', 'give' ),
+							esc_html__( 'Insert', 'give' ),
 							self::$shortcodes[ $shortcode ]['label']
 						)
 					);
@@ -172,7 +173,7 @@ final class Give_Shortcode_Button {
 						'<div class="sc-menu mce-menu">%s</div>' .
 						'</div>',
 						$img,
-						__( 'Give Shortcodes', 'give' ),
+						esc_html__( 'Give Shortcodes', 'give' ),
 						implode( '', array_values( $shortcodes ) )
 					);
 				}
@@ -197,7 +198,7 @@ final class Give_Shortcode_Button {
 			$data = self::$shortcodes[ $shortcode ];
 
 			if ( ! empty( $data['errors'] ) ) {
-				$data['btn_okay'] = array( __( 'Okay', 'give' ) );
+				$data['btn_okay'] = array( esc_html__( 'Okay', 'give' ) );
 			}
 
 			$response = array(

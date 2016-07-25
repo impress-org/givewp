@@ -31,7 +31,7 @@ function give_system_info_callback() {
 	<textarea readonly="readonly" onclick="this.focus(); this.select()" id="system-info-textarea" name="give-sysinfo" title="<?php esc_attr_e( 'To copy the system info, click below then press Ctrl + C (PC) or Cmd + C (Mac).', 'give' ); ?>"><?php echo give_tools_sysinfo_get(); ?></textarea>
 	<p class="submit">
 		<input type="hidden" name="give-action" value="download_sysinfo"/>
-		<?php submit_button( __( 'Download System Info File', 'give' ), 'secondary', 'give-download-sysinfo', false ); ?>
+		<?php submit_button( esc_html__( 'Download System Info File', 'give' ), 'secondary', 'give-download-sysinfo', false ); ?>
 	</p>
 	<?php
 }

@@ -326,7 +326,7 @@ class EDD_SL_Plugin_Updater {
         }
 
         if( ! current_user_can( 'update_plugins' ) ) {
-            wp_die( __( 'You do not have permission to install plugin updates.', 'edd' ), __( 'Error', 'edd' ), array( 'response' => 403 ) );
+            wp_die( esc_html__( 'You do not have permission to install plugin updates.', 'edd' ), esc_html__( 'Error', 'edd' ), array( 'response' => 403 ) );
         }
 
         $response = $this->api_request( 'plugin_latest_version', array( 'slug' => $_REQUEST['slug'] ) );

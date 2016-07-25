@@ -63,8 +63,8 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 
 		// Set parent defaults
 		parent::__construct( array(
-			'singular' => __( 'Donor', 'give' ),     // Singular name of the listed records
-			'plural'   => __( 'Donors', 'give' ),    // Plural name of the listed records
+			'singular' => esc_html__( 'Donor', 'give' ),     // Singular name of the listed records
+			'plural'   => esc_html__( 'Donors', 'give' ),    // Plural name of the listed records
 			'ajax'     => false                       // Does this table support ajax?
 		) );
 
@@ -138,11 +138,11 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 
 	public function column_name( $item ) {
 		$name = '#' . $item['id'] . ' ';
-		$name .= ! empty( $item['name'] ) ? $item['name'] : '<em>' . __( 'Unnamed Donor', 'give' ) . '</em>';
+		$name .= ! empty( $item['name'] ) ? $item['name'] : '<em>' . esc_html__( 'Unnamed Donor', 'give' ) . '</em>';
 		$view_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $item['id'] );
 		$actions  = array(
-			'view'   => sprintf( '<a href="%1$s">%2$s</a>', $view_url, __( 'View Donor', 'give' ) ),
-			'delete' => sprintf( '<a href="%1$s">%2$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id=' . $item['id'] ), __( 'Delete', 'give' ) )
+			'view'   => sprintf( '<a href="%1$s">%2$s</a>', $view_url, esc_html__( 'View Donor', 'give' ) ),
+			'delete' => sprintf( '<a href="%1$s">%2$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id=' . $item['id'] ), esc_html__( 'Delete', 'give' ) )
 		);
 
 		return '<a href="' . esc_url( $view_url ) . '">' . $name . '</a>' . $this->row_actions( $actions );
@@ -157,11 +157,11 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'name'          => __( 'Name', 'give' ),
-			'email'         => __( 'Email', 'give' ),
-			'num_purchases' => __( 'Donations', 'give' ),
-			'amount_spent'  => __( 'Total Donated', 'give' ),
-			'date_created'  => __( 'Date Created', 'give' )
+			'name'          => esc_html__( 'Name', 'give' ),
+			'email'         => esc_html__( 'Email', 'give' ),
+			'num_purchases' => esc_html__( 'Donations', 'give' ),
+			'amount_spent'  => esc_html__( 'Total Donated', 'give' ),
+			'date_created'  => esc_html__( 'Date Created', 'give' )
 		);
 
 		return apply_filters( 'give_report_customer_columns', $columns );
