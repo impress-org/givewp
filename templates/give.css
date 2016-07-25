@@ -2094,4 +2094,18 @@ body.rtl #give-gateway-radio-list > li {
   body.rtl #give-gateway-radio-list > li .give-gateway-option input[type="radio"] {
     margin: 0 0 0 5px; }
 
+body.rtl .qtip-content {
+  text-align: right; }
+
+body.rtl form[id*='give-form'] #give-final-total-wrap .give-donation-total-label, body.rtl form[id*='give-form'] .give-donation-amount .give-donation-total-label {
+  float: right;
+  border-left: none; }
+
+body.rtl form[id*='give-form'] #give-final-total-wrap .give-final-total-amount, body.rtl form[id*='give-form'] .give-donation-amount .give-final-total-amount {
+  float: right;
+  border-left: 1px solid #ccc; }
+
+body.rtl #give-payment-mode-wrap span.give-loading-text {
+  float: left; }
+
 /*# sourceMappingURL=../assets/sourcemaps/give.css.map */

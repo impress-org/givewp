@@ -20,4 +20,27 @@ body.rtl {
     }
   }
 
+  .qtip-content {
+    text-align: right;
+  }
+
+  form[id*='give-form'] #give-final-total-wrap, form[id*='give-form'] .give-donation-amount  {
+
+    .give-donation-total-label {
+      float: right;
+      border-left: none;
+    }
+
+    .give-final-total-amount {
+      float:right;
+      border-left: 1px solid $borders;
+    }
+
+
+  }
+
+  #give-payment-mode-wrap span.give-loading-text {
+    float:left;
+  }
+
 }
