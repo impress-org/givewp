@@ -170,10 +170,10 @@ function give_setup_taxonomies() {
 				'hierarchical' => true
 			),
 			'capabilities' => array(
-				'manage_terms' => 'manage_give_forms_terms',
-				'edit_terms'   => 'edit_give_forms_terms',
-				'assign_terms' => 'assign_give_forms_terms',
-				'delete_terms' => 'delete_give_forms_terms'
+				'manage_terms' => 'manage_give_form_terms',
+				'edit_terms'   => 'edit_give_form_terms',
+				'assign_terms' => 'assign_give_form_terms',
+				'delete_terms' => 'delete_give_form_terms'
 			)
 		)
 	);
@@ -210,12 +210,11 @@ function give_setup_taxonomies() {
 			'query_var'    => 'give_forms_tag',
 			'rewrite'      => array( 'slug' => $slug . '/tag', 'with_front' => false, 'hierarchical' => true ),
 			'capabilities' => array(
-				'manage_terms' => 'manage_give_forms_terms',
-				'edit_terms'   => 'edit_give_forms_terms',
-				'assign_terms' => 'assign_give_forms_terms',
-				'delete_terms' => 'delete_give_forms_terms'
+				'manage_terms' => 'manage_give_form_terms',
+				'edit_terms'   => 'edit_give_form_terms',
+				'assign_terms' => 'assign_give_form_terms',
+				'delete_terms' => 'delete_give_form_terms'
 			)
-
 		)
 	);
 
