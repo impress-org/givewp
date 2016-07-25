@@ -965,6 +965,13 @@ Tooltips
     background-color: #FFF;
     padding: 15px 20px; }
 
+.rtl .type-download {
+  float: right;
+  margin-right: 0 !important;
+  margin-left: 1em !important; }
+  .rtl .type-download .addon-footer-wrap {
+    right: 0; }
+
 .give-view-addons-all span.dashicons, .type-download span.dashicons {
   width: 16px;
   height: 16px;
@@ -973,6 +980,10 @@ Tooltips
 
 .give-view-addons-all span.dashicons {
   margin-left: 3px; }
+
+.rtl .give-view-addons-all span.dashicons {
+  margin-left: 0;
+  margin-right: 3px; }
 
 /**
  * Give Reports SCSS
@@ -1100,9 +1111,8 @@ body.give_forms_page_give-reports table.export-options-table span#give-start-wra
 #export-donor-options-wrap ul {
   max-width: 900px; }
   #export-donor-options-wrap ul li {
-    float: left;
-    padding: 3px 10px 0 0;
-    width: 30%; }
+    margin: 0;
+    padding: 5px; }
 
 #give-tools-recount-form .notice-wrap {
   position: relative;
@@ -1279,13 +1289,14 @@ table.give-table td.row-title p {
   margin: 0 0 5px; }
 
 #give-payments-filter .give-donation-status {
-  float: left; }
+  display: inline-block; }
 
 .column-status .give-donation-status, .column-status .give-test-mode-transactions-label {
-  float: left; }
+  display: inline-block; }
 
 .column-status .give-test-mode-transactions-label {
-  margin: 2px 0 0 8px; }
+  margin: 0 5px;
+  vertical-align: middle; }
 
 /**
  * Give Settings SCSS
@@ -1370,7 +1381,8 @@ Settings
   background: #FFF;
   white-space: pre;
   overflow: auto;
-  display: block; }
+  display: block;
+  direction: ltr; }
 
 #give-download-sysinfo {
   margin: 0; }
@@ -1523,10 +1535,10 @@ tr.status-refunded td {
   float: left; }
 
 .give-donation-status > span {
-  float: left;
+  display: inline-block;
   width: 12px;
   height: 12px;
-  margin: 3px 4px 0 0;
+  margin: 0 4px;
   padding: 0;
   border-radius: 50%;
   background: #888;
@@ -1564,9 +1576,8 @@ tr.status-refunded td {
   vertical-align: baseline;
   border-radius: .25em;
   background-color: #ffba00;
-  margin: 0 0 0 15px;
-  position: relative;
-  top: -4px; }
+  margin: 0 15px;
+  vertical-align: middle; }
 
 #give-payments-filter .give-payment-id {
   padding: .2em .6em .3em;
@@ -1583,12 +1594,12 @@ tr.status-refunded td {
   padding-right: 30px; }
 
 #give-payments-filter .give-donation-status {
-  float: left; }
+  display: inline-block; }
 
 #give-order-update .give-donation-status {
   display: inline-block;
   float: none;
-  margin: 0 0 0 10px;
+  margin: 0 10px;
   position: relative;
   top: 3px; }
 
@@ -1614,12 +1625,9 @@ Responsiveness
 
 .give-admin-box-inside {
   margin: 0;
-  padding: 3px 12px;
+  padding: 3px 10px;
   clear: both;
   border-bottom: 1px solid #eee; }
-
-.rtl .give-admin-box-inside {
-  padding: 5px 10px 5px 0; }
 
 .give-admin-box-inside .strong {
   font-weight: 600; }
@@ -1655,6 +1663,9 @@ Responsiveness
 
 .give-order-update-box #major-publishing-actions .button-secondary {
   margin-right: 10px; }
+
+#give-donation-overview th {
+  text-align: initial; }
 
 #give-donation-overview .give-select-chosen {
   width: 196px; }
@@ -1918,22 +1929,29 @@ input.give-price-field {
     text-decoration: none;
     color: #ff0000;
     margin-right: 5px; }
-  #give-customer-card-wrapper .donor-bio-header {
-    float: left;
-    width: 33%; }
-    #give-customer-card-wrapper .donor-bio-header .customer-since {
-      margin: 10px 0;
-      font-size: 16px; }
-    #give-customer-card-wrapper .donor-bio-header .customer-id {
-      font-size: 24px;
-      font-weight: 600;
-      float: left;
-      margin-right: 10px; }
-    #give-customer-card-wrapper .donor-bio-header .customer-edit-link {
-      margin-bottom: 15px;
-      float: left; }
+  #give-customer-card-wrapper .donor-bio-header .customer-since {
+    margin: 10px 0;
+    font-size: 16px; }
+  #give-customer-card-wrapper .donor-bio-header .customer-id {
+    display: inline-block;
+    font-size: 24px;
+    font-weight: 600;
+    margin-right: 10px; }
+  #give-customer-card-wrapper .donor-bio-header .customer-name-wrap {
+    display: inline-block; }
+  #give-customer-card-wrapper .donor-bio-header .customer-edit-link {
+    margin-bottom: 15px; }
+
+.rtl #give-customer-card-wrapper .avatar-wrap {
+  padding: 0 0 15px 15px;
+  float: right; }
+
+.rtl #give-customer-card-wrapper .customer-id {
+  margin-right: 0;
+  margin-left: 10px; }
 
 .customer-main-wrapper {
+  clear: both;
   margin: 0 0 20px; }
   @media (max-width: 655px) {
     .customer-main-wrapper {
@@ -1955,6 +1973,10 @@ input.give-price-field {
     color: #F0F0F0;
     z-index: 0; }
 
+.rtl #donor-summary:after {
+  left: 10px;
+  right: initial; }
+
 #give-customer-card-wrapper .customer-address-wrapper {
   width: 202px; }
   #give-customer-card-wrapper .customer-address-wrapper span[data-key="line2"] {
@@ -1965,7 +1987,6 @@ input.give-price-field {
   width: 200px; }
 
 #give-customer-card-wrapper .customer-info {
-  margin-top: 1px;
   min-height: 185px; }
 
 #give-customer-card-wrapper .info-wrapper {

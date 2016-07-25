@@ -248,7 +248,7 @@ $payment_mode   = $payment->mode;
 
 								<div class="inside">
 
-									<table style="width:100%;text-align:left;">
+									<table style="width:100%;">
 										<thead>
 										<tr>
 											<?php do_action( 'give_donation_details_thead_before', $payment_id ); ?>
