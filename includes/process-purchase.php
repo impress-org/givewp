@@ -1075,7 +1075,7 @@ function give_validate_multi_donation_form_level(  $valid_data, $data ) {
 
     $donation_level_matched = false;
 
-    if( $form->is_multi_donation_form() ) {
+    if( $form->is_multi_type_donation_form() ) {
 
         // Bailout.
         if( ! ( $variable_prices = $form->get_prices() ) ) {

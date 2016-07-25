@@ -469,7 +469,7 @@ class Give_Donate_Form {
      * @since 1.6
      * @return bool true if form type is 'multi' and false otherwise.
      */
-    public function is_set_donation_form() {
+    public function is_set_type_donation_form() {
         $form_type = $this->get_type();
 
         return ( 'set' === $form_type ? true : false );
@@ -482,7 +482,7 @@ class Give_Donate_Form {
      * @since 1.6
      * @return bool true if form type is 'multi' and false otherwise.
      */
-    public function is_multi_donation_form() {
+    public function is_multi_type_donation_form() {
         $form_type = $this->get_type();
 
         return ( 'multi' === $form_type ? true : false );
