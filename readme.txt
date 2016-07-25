@@ -180,6 +180,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Fix: Mixed content warning with placeholder image - https://github.com/WordImpress/Give/issues/768
 * Fix: Secure SSL padlock icon and style is broken due to a11y changes in #325 - https://github.com/WordImpress/Give/issues/769
 * Fix: Categories and tags are registering incorrectly upon install - https://github.com/WordImpress/Give/issues/725
+* Fix: Amount field not formatting on focus out & lingering validation tooltip issues - https://github.com/WordImpress/Give/issues/778
 
 = 1.5.2: June 31, 2016 =
 * New: Added an addition "status" column for donation logs - https://github.com/WordImpress/Give/issues/684
