@@ -446,7 +446,7 @@ function give_customers_view( $customer ) {
 							<a title="<?php
 								printf(
 									/* translators: %s: post title */
-									esc_attr( 'View %s', 'give' ),
+									esc_attr__( 'View %s', 'give' ),
 									$donation->post_title
 								); ?>" href="<?php echo esc_url( admin_url( 'post.php?action=edit&post=' . $donation->ID ) );
 							?>">
