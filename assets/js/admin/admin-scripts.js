@@ -44,6 +44,17 @@ jQuery.noConflict();
 
     };
 
+    /**
+     * Unformat Currency
+     *
+     * @param   {number} price
+     * @returns {string}
+     */
+    function give_unformat_currency( price ) {
+        return parseFloat( accounting.unformat( price, give_vars.decimal_separator ) )
+                .toFixed( give_vars.currency_decimals );
+    }
+
 
     /**
      * Edit payment screen JS
@@ -779,6 +790,7 @@ jQuery.noConflict();
             var thousand_separator = give_vars.thousands_separator,
                 decimal_separator = give_vars.decimal_separator,
                 thousand_separator_count = '',
+                alphabet_count = '',
                 price_string = '',
 
                 // Thousand separation limit in price depends upon decimal separator symbol.
@@ -804,30 +816,33 @@ jQuery.noConflict();
             $give_money_fields.bind('keyup', function () {
                 // Count thousand separator in price string.
                 thousand_separator_count = ( $(this).val().match(new RegExp(thousand_separator, 'g')) || [] ).length;
+                alphabet_count = ( $(this).val().match(new RegExp( '[a-z]', 'g')) || [] ).length;
 
                 // Show qtip conditionally if thousand separator detected on price string.
                 if (
-                    ( -1 !== $(this).val().indexOf(thousand_separator) )
+                    ( -1 !== $(this).val().indexOf( thousand_separator ) )
                     && ( thousand_separator_limit < thousand_separator_count )
                 ) {
+                    $(this).qtip('show');
+                } else if( alphabet_count ) {
+                    // Show qtip if user entered a number with alphabet letter.
                     $(this).qtip('show');
                 } else {
                     $(this).qtip('hide');
                 }
 
                 // Reset thousand separator count.
-                thousand_separator_count = '';
+                thousand_separator_count = alphabat_count = '';
             });
 
             // Format price sting of input field on focusout.
             $give_money_fields.on('focusout', function () {
-                price_string = $(this).val();
-                thousand_separator_count = ( price_string.match(new RegExp(thousand_separator, 'g')) || [] ).length;
+                price_string = give_unformat_currency( $(this).val() );
 
-                // Replace all thousand separator except one.
-                while (thousand_separator_limit < thousand_separator_count) {
-                    price_string = price_string.replace(thousand_separator, '');
-                    --thousand_separator_count;
+                // Back out.
+                if( ! price_string ) {
+                    $(this).val('');
+                    return false;
                 }
 
                 // Update format price string in input field.

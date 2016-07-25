@@ -64,7 +64,7 @@ function give_get_donation_form( $args = array() ) {
 		: get_post_meta( $form->ID, '_give_payment_display', true );
 
 	$float_labels_option = give_is_float_labels_enabled( $args )
-		? ' float-labels-enabled'
+		? 'float-labels-enabled'
 		: '';
 
 	//Form Wrap Classes
@@ -78,8 +78,18 @@ function give_get_donation_form( $args = array() ) {
 	$form_classes_array = apply_filters( 'give_form_classes', array(
 		'give-form',
 		'give-form-' . $form->ID,
+        'give-form-type-' . $form->get_type(),
 		$float_labels_option
 	), $form->ID, $args );
+
+    // Remove empty class names.
+    $form_classes_array = array_filter(
+        $form_classes_array,
+        function( $class ){
+            return $class;
+        }
+    );
+
 	$form_classes       = implode( ' ', $form_classes_array );
 
 
@@ -425,7 +435,7 @@ function give_output_levels( $form_id ) {
 		case 'dropdown':
 
 			$output .= '<label for="give-donation-level" class="give-hidden">' . esc_html__( 'Choose Your Donation Amount', 'give' ) . ':</label>';
-			$output .= '<select id="give-donation-level-' . $form_id . '" class="give-select give-select-level">';
+			$output .= '<select id="give-donation-level-' . $form_id . '" class="give-select give-select-level give-donation-levels-wrap">';
 
 			//first loop through prices
 			foreach ( $prices as $price ) {
@@ -508,7 +518,7 @@ function give_user_info_fields( $form_id ) {
 				<?php } ?>
 				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'We will use this to personalize your account experience.', 'give' ); ?>"></span>
 			</label>
-			<input class="give-input required" type="text" name="give_first" placeholder="<?php esc_attr_e( 'First name', 'give' ); ?>" id="give-first" value="<?php echo is_user_logged_in() ? $user_data->first_name : ''; ?>"<?php if ( give_field_is_required( 'give_first', $form_id ) ) {
+			<input class="give-input required" type="text" name="give_first" placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" id="give-first" value="<?php echo is_user_logged_in() ? $user_data->first_name : ''; ?>"<?php if ( give_field_is_required( 'give_first', $form_id ) ) {
 				echo ' required ';
 			} ?>/>
 		</p>
@@ -524,7 +534,7 @@ function give_user_info_fields( $form_id ) {
 
 			<input class="give-input<?php if ( give_field_is_required( 'give_last', $form_id ) ) {
 				echo ' required';
-			} ?>" type="text" name="give_last" id="give-last" placeholder="<?php esc_attr_e( 'Last name', 'give' ); ?>" value="<?php echo is_user_logged_in() ? $user_data->last_name : ''; ?>"<?php if ( give_field_is_required( 'give_last', $form_id ) ) {
+			} ?>" type="text" name="give_last" id="give-last" placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" value="<?php echo is_user_logged_in() ? $user_data->last_name : ''; ?>"<?php if ( give_field_is_required( 'give_last', $form_id ) ) {
 				echo ' required ';
 			} ?> />
 		</p>

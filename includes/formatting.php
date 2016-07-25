@@ -74,7 +74,8 @@ function give_sanitize_amount( $number, $trim_zeros = false ) {
 
     // Remove thousand amount formatting if amount has.
     // This condition use to add backward compatibility to version before 1.6, because before version 1.6 we were saving formatted amount to db.
-    if( false !== strpos( $number, $thousand_separator ) ) {
+    // Do not replace thousand separator from price if it is same as decimal separator, because it will be already replace by above code.
+    if(  ! in_array( $thousand_separator, $decimals ) && ( false !== strpos( $number, $thousand_separator ) ) ) {
         $number = str_replace( $thousand_separator, '', $number );
     }
 
