@@ -142,6 +142,9 @@ function give_run_install() {
 
 		//Emails
 		$options['donation_notification'] = give_get_default_donation_notification_email();
+
+		//Number of Decimals
+		$options['number_decimals'] = 2;
 	}
 
 	// Populate some default values
