@@ -1,6 +1,6 @@
 === Give - WordPress Donation Plugin ===
 Contributors: wordimpress, dlocc, webdevmattcrom
-Donate link: http://givewp.com/
+Donate link: https://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 4.0
 Tested up to: 4.5.3
@@ -54,7 +54,7 @@ We earn money by selling [premium add-ons](https://givewp.com/addons/ "View all 
 
 = Easy to Customize and Enhance =
 
-Give is built by [WordImpress](http://wordimpress.com "Visit the developers of Give - WordImpress"), our plugins are built from the ground up to be intuitive and easy to use. By following along with our [Getting Stated Guide](https://givewp.com/documentation/core/give-101/ "Give 101 - Getting started using Give to accept donations on WordPress"), setting up Give to accept donations on WordPress is simple and easy.
+Give is built by [WordImpress](https://wordimpress.com "Visit the developers of Give - WordImpress"), our plugins are built from the ground up to be intuitive and easy to use. By following along with our [Getting Stated Guide](https://givewp.com/documentation/core/give-101/ "Give 101 - Getting started using Give to accept donations on WordPress"), setting up Give to accept donations on WordPress is simple and easy.
 
 Do you have some development experience? We've built in an advanced templating system similar to the ones found in many of WordPress' top plugins that makes customizing many of Give's frontend elements upgrade proof and extremely flexible. Run into some trouble? We're here to help! Along with the plugin is a support team that is dedicated, fast to respond, and always willing to squash bugs and help troubleshoot.
 
@@ -73,9 +73,9 @@ Stay in touch with us for important plugin news and updates:
 * **[Give Website](https://givewp.com "Visit the Give website")**
 * **[Give Add-ons](https://givewp.com/addons "View all Give Add-ons")**
 * **[Newsletter](http://eepurl.com/bggG99 "Subscribe to Give via MailChimp")**
-* **[Facebook](http://facebook.com/wpgive "Visit the Give on Facebook")**
+* **[Facebook](https://facebook.com/wpgive "Visit the Give on Facebook")**
 * **[GitHub](https://github.com/WordImpress/Give "Visit the developers of Give - WordImpress")**
-* **[WordImpress](http://wordimpress.com "Visit the developers of Give - WordImpress")**
+* **[WordImpress](https://wordimpress.com "Visit the developers of Give - WordImpress")**
 
 = Contribute to Give =
 
@@ -106,7 +106,7 @@ In the search field type "Give" and click Search Plugins. Once you have found th
 
 = Manual installation =
 
-The manual installation method involves downloading our donation plugin and uploading it to your server via your favorite FTP application. The WordPress codex contains [instructions on how to do this here](http://codex.wordpress.org/Managing_Plugins#Manual_Plugin_Installation).
+The manual installation method involves downloading our donation plugin and uploading it to your server via your favorite FTP application. The WordPress codex contains [instructions on how to do this here](https://codex.wordpress.org/Managing_Plugins#Manual_Plugin_Installation).
 
 = Updating =
 
