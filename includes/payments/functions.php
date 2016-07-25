@@ -1333,7 +1333,7 @@ function give_get_payment_transaction_id( $payment_id = 0 ) {
 }
 
 /**
- * Sets a Transaction ID in post meta for the given Payment ID
+ * Sets a Transaction ID in post meta for the given Payment ID.
  *
  * @since  1.0
  *
