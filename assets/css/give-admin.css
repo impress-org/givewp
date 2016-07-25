@@ -1665,7 +1665,7 @@ Responsiveness
   margin-right: 10px; }
 
 #give-donation-overview th {
-  text-align: initial; }
+  text-align: left; }
 
 #give-donation-overview .give-select-chosen {
   width: 196px; }
@@ -2198,5 +2198,16 @@ div.sc-shortcode {
 #mce-modal-block.mce-reset.mce-fade.mce-in {
   opacity: 0.7;
   filter: alpha(opacity=70); }
+
+/**
+ * Give Right to Left Support
+ *
+ * @package     Give
+ * @subpackage  SCSS/Admin
+ * @copyright   Copyright (c) 2016, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+body.rtl #give-donation-overview th {
+  text-align: right; }
 
 /*# sourceMappingURL=../sourcemaps/give-admin.css.map */
