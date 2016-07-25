@@ -47,11 +47,12 @@ jQuery.noConflict();
     /**
      * Unformat Currency
      *
-     * @param price
-     * @returns {number}
+     * @param   {number} price
+     * @returns {string}
      */
-    function give_unformat_currency(price) {
-        return Math.abs( parseFloat( accounting.unformat( price, give_vars.decimal_separator ) ) );
+    function give_unformat_currency( price ) {
+        return parseFloat( accounting.unformat( price, give_vars.decimal_separator ) )
+                .toFixed( give_vars.currency_decimals );
     }
 
 
