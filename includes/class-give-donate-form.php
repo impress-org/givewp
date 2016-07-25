@@ -463,6 +463,32 @@ class Give_Donate_Form {
 
 	}
 
+    /**
+     * Get if form type set or not.
+     *
+     * @since 1.6
+     * @return bool true if form type is 'multi' and false otherwise.
+     */
+    public function is_set_donation_form() {
+        $form_type = $this->get_type();
+
+        return ( 'set' === $form_type ? true : false );
+
+    }
+
+    /**
+     * Get if form type multi or not.
+     *
+     * @since 1.6
+     * @return bool true if form type is 'multi' and false otherwise.
+     */
+    public function is_multi_donation_form() {
+        $form_type = $this->get_type();
+
+        return ( 'multi' === $form_type ? true : false );
+
+    }
+
 	/**
 	 * Retrieve the sale count for the donation form
 	 *
