@@ -77,7 +77,7 @@ function give_customers_list() {
 		<?php do_action( 'give_donors_table_top' ); ?>
 		<form id="give-donors-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors' ); ?>">
 			<?php
-			$customers_table->search_box( esc_html( 'Search Donors', 'give' ), 'give-donors' );
+			$customers_table->search_box( esc_html__( 'Search Donors', 'give' ), 'give-donors' );
 			$customers_table->display();
 			?>
 			<input type="hidden" name="post_type" value="give_forms" />
@@ -106,12 +106,12 @@ function give_render_customer_view( $view, $callbacks ) {
 	$customer_view_role = apply_filters( 'give_view_customers_role', 'view_give_reports' );
 
 	if ( ! current_user_can( $customer_view_role ) ) {
-		give_set_error( 'give-no-access', esc_html( 'You are not permitted to view this data.', 'give' ) );
+		give_set_error( 'give-no-access', esc_html__( 'You are not permitted to view this data.', 'give' ) );
 		$render = false;
 	}
  
 	if ( ! isset( $_GET['id'] ) || ! is_numeric( $_GET['id'] ) ) {
-		give_set_error( 'give-invalid_customer', esc_html( 'Invalid Donor ID Provided.', 'give' ) );
+		give_set_error( 'give-invalid_customer', esc_html__( 'Invalid Donor ID Provided.', 'give' ) );
 		$render = false;
 	}
 
@@ -119,7 +119,7 @@ function give_render_customer_view( $view, $callbacks ) {
 	$customer    = new Give_Customer( $customer_id );
 
 	if ( empty( $customer->id ) ) {
-		give_set_error( 'give-invalid_customer', esc_html( 'Invalid Donor ID Provided.', 'give' ) );
+		give_set_error( 'give-invalid_customer', esc_html__( 'Invalid Donor ID Provided.', 'give' ) );
 		$render = false;
 	}
 
@@ -453,7 +453,7 @@ function give_customers_view( $customer ) {
 								<?php
 									printf(
 										/* translators: %s: forms singular label */
-										esc_html( 'View %s', 'give' ),
+										esc_html__( 'View %s', 'give' ),
 										give_get_forms_label_singular()
 									);
 								?>
