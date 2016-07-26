@@ -1205,7 +1205,9 @@ add_action( 'give_checkout_form_top', 'give_agree_to_terms_js', 10, 2 );
 /**
  * Show Give Goals
  *
- * @since 1.0
+ * @since  1.0
+ * @since  1.6   Add template for Give Goals Shortcode.
+ *               More info is on https://github.com/WordImpress/Give/issues/411
  *
  * @param  int   $form_id
  * @param  array $args
@@ -1215,87 +1217,15 @@ add_action( 'give_checkout_form_top', 'give_agree_to_terms_js', 10, 2 );
 
 function give_show_goal_progress( $form_id, $args ) {
 
-	$goal_option = get_post_meta( $form_id, '_give_goal_option', true );
-	$form        = new Give_Donate_Form( $form_id );
-	$goal        = $form->goal;
-	$goal_format = get_post_meta( $form_id, '_give_goal_format', true );
-	$income      = $form->get_earnings();
-	$color       = get_post_meta( $form_id, '_give_goal_color', true );
-	$show_text   = (bool) isset( $args['show_text'] ) ? filter_var( $args['show_text'], FILTER_VALIDATE_BOOLEAN ) : true;
-	$show_bar    = (bool) isset( $args['show_bar'] ) ? filter_var( $args['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
+    ob_start();
+    give_get_template( 'shortcode-goal' , array( 'form_id' => $form_id, 'args' => $args ) );
 
-	//Sanity check - respect shortcode args
-	if ( isset( $args['show_goal'] ) && $args['show_goal'] === false ) {
-		return false;
-	}
+    $output = ob_get_contents();
+    ob_get_clean();
 
-	//Sanity check - ensure form has goal set to output
-	if ( empty( $form->ID )
-	     || ( is_singular( 'give_forms' ) && $goal_option !== 'yes' )
-	     || $goal_option !== 'yes'
-	     || $goal == 0
-	) {
-		//not this form, bail
-		return false;
-	}
+    echo apply_filters( 'give_goal_output', $output );
 
-	$progress = round( ( $income / $goal ) * 100, 2 );
-
-	if ( $income >= $goal ) {
-		$progress = 100;
-	}
-
-	$output = '<div class="give-goal-progress">';
-
-	//Goal Progress Text
-	if ( ! empty( $show_text ) ) {
-
-		$output .= '<div class="raised">';
-
-		if ( $goal_format !== 'percentage' ) {
-
-			 // Get formatted amount.
-            $income = give_human_format_large_amount( give_format_amount( $income ) );
-            $goal = give_human_format_large_amount( give_format_amount( $goal ) );
-
-			$output .= sprintf(
-				/* translators: 1: amount of income raised 2: goal target ammount */
-				__( '%1$s of %2$s raised', 'give' ),
-				'<span class="income">' . apply_filters( 'give_goal_amount_raised_output', give_currency_filter( $income ) ) . '</span>',
-				'<span class="goal-text">' . apply_filters( 'give_goal_amount_target_output', give_currency_filter( $goal ) ) . '</span>'
-			);
-
-
-		} elseif ( $goal_format == 'percentage' ) {
-
-			$output .= sprintf(
-				/* translators: %s: percentage of the amount raised compared to the goal target */
-				__( '%s%% funded', 'give' ),
-				'<span class="give-percentage">' . apply_filters( 'give_goal_amount_funded_percentage_output', round( $progress ) ) . '</span>'
-			);
-		}
-
-		$output .= '</div>';
-
-	}
-
-	//Goal Progress Bar
-	if ( ! empty( $show_bar ) ) {
-		$output .= '<div class="give-progress-bar">';
-		$output .= '<span style="width: ' . esc_attr( $progress ) . '%;';
-		if ( ! empty( $color ) ) {
-			$output .= 'background-color:' . $color;
-		}
-		$output .= '"></span>';
-		$output .= '</div><!-- /.give-progress-bar -->';
-	}
-
-	$output .= '</div><!-- /.goal-progress -->';
-
-	echo apply_filters( 'give_goal_output', $output );
-
-	return false;
-
+	return true;
 }
 
 add_action( 'give_pre_form', 'give_show_goal_progress', 10, 2 );
