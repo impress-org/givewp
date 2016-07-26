@@ -43,6 +43,8 @@ function give_do_ajax_export() {
 
 	$export = new $class( $step );
 
+    error_log(print_r( $export, true) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log');
+
 	if ( ! $export->can_export() ) {
 		die( '-1' );
 	}
