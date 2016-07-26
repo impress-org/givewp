@@ -273,7 +273,7 @@ class Give_Graph {
 							previousPoint = item.dataIndex;
 							$( "#give-flot-tooltip" ).remove();
 							var x = item.datapoint[0].toFixed( 2 ),
-                                y = accounting.formatMoney( item.datapoint[1].toFixed( 2 ), '', 2, give_vars.thousands_separator, give_vars.decimal_separator );
+                                y = accounting.formatMoney( item.datapoint[1].toFixed( give_vars.currency_decimals ), '', give_vars.currency_decimals, give_vars.thousands_separator, give_vars.decimal_separator );
 
 							if ( item.series.id == 'income' ) {
 

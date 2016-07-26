@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return mixed
  */
 function give_get_price_decimals() {
-    return apply_filters( 'give_sanitize_amount_decimals', 2 );
+    return apply_filters( 'give_sanitize_amount_decimals', give_get_option( 'number_decimals', 0 ) );
 }
 
 /**
@@ -388,4 +388,20 @@ add_filter( 'give_format_amount_decimals', 'give_currency_decimal_filter' );
  */
 function give_sanitize_thousand_separator( $value, $field_args, $field ){
     return $value;
+}
+
+
+/**
+ * Sanitize number of decimals
+ *
+ * @since 1.6
+ *
+ * @param string $value
+ * @param array  $field_args
+ * @param object $field
+ *
+ * @return mixed
+ */
+function give_sanitize_number_decimals( $value, $field_args, $field ){
+	return absint($value);
 }

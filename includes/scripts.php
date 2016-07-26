@@ -47,7 +47,7 @@ function give_load_scripts() {
 		'bad_minimum'         => __( 'The minimum donation amount for this form is', 'give' ),
 		'general_loading'     => __( 'Loading...', 'give' ),
 		'purchase_loading'    => __( 'Please Wait...', 'give' ),
-		'number_decimals'  => give_get_price_decimals(),
+		'number_decimals'     => give_get_price_decimals(),
 		'give_version'        => GIVE_VERSION
 	) );
 	$localize_give_ajax     = apply_filters( 'give_global_ajax_vars', array(
@@ -274,7 +274,7 @@ function give_load_admin_scripts( $hook ) {
 		'numeric_quantity'        => __( 'Quantity must be numeric.', 'give' ),
 		'currency_sign'           => give_currency_filter( '' ),
 		'currency_pos'            => isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before',
-		'currency_decimals'       => give_currency_decimal_filter(),
+		'currency_decimals'       => give_currency_decimal_filter( give_get_price_decimals() ),
 		'new_media_ui'            => apply_filters( 'give_use_35_media_ui', 1 ),
 		'remove_text'             => __( 'Remove', 'give' ),
 		/* translators: %s: form plural label */
