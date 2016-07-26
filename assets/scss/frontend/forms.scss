@@ -270,6 +270,7 @@ form[id*='give-form'] {
 
     .give-currency-symbol {
       @include give-currency();
+      float: left;
 
       &.give-currency-position-before {
         border-left: 1px solid $borders;
@@ -286,6 +287,7 @@ form[id*='give-form'] {
     #give-amount-text {
       @include give-input();
       min-width: 125px;
+      float: left;
 
       &.invalid-amount {
         border: 1px solid red;
@@ -297,6 +299,7 @@ form[id*='give-form'] {
       @include give-input();
       cursor: not-allowed;
       background: #FFF;
+      float: left;
     }
 
   }
@@ -308,6 +311,7 @@ form[id*='give-form'] {
 
     .give-donation-total-label {
       @include give-currency();
+      float: left;
       border: 1px solid $borders;
     }
 
@@ -315,6 +319,7 @@ form[id*='give-form'] {
       font-size: $font-size-medium;
       @include give-input();
       border-left: none;
+      float: left;
     }
 
   }
