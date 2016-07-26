@@ -170,10 +170,11 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * New: Human readable large monetary goal formats - https://github.com/WordImpress/Give/issues/650
 * New: Address the plugin's RTL issues with a complete audit & resolution - thanks @ramiy! - https://github.com/WordImpress/Give/issues/736
 * New: New template added for for Give goals - https://github.com/WordImpress/Give/issues/411
-* Tweak: Easier and more understandable strings according for translations i18n - thanks @ramiy! - https://github.com/WordImpress/Give/issues/451
+* New: Easier and more understandable strings according for translations i18n - thanks @ramiy! - https://github.com/WordImpress/Give/issues/451
 * Tweak: Update the country dropdown to use the new ISO country codes for islands in Dutch West Indies - https://github.com/WordImpress/Give/issues/698
 * Tweak: Updated to the latest version of CMB2 & tested compatibility - https://github.com/WordImpress/Give/issues/670
 * Tweak: Remove invalid @description from PHP inline doc blocks - https://github.com/WordImpress/Give/issues/733
+* Tweak: Incorporate proper sanitization for i18n strings - https://github.com/WordImpress/Give/issues/471
 * Fix: Unrendered html in multi-level donation confirmation emails - https://github.com/WordImpress/Give/issues/754
 * Fix: Text editor do not have same height for visual mode and text mode - https://github.com/WordImpress/Give/issues/688
 * Fix: Auto populate state list is not working on transaction detail page - https://github.com/WordImpress/Give/issues/715
