@@ -96,6 +96,25 @@ body.rtl {
 
   }
 
+  .give_error, .give_success {
+    border-left: 0;
+    border-right: 4px solid $red;
+
+    &:before {
+      right: -17px;
+    }
+
+    &.give_warning {
+      border-color: $orange;
+
+      &:before {
+        background-color: $orange;
+      }
+
+    }
+
+  }
+
   #give-donation-level-radio-list {
 
     > li {
