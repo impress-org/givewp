@@ -39,25 +39,26 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 	 */
 	public function csv_cols() {
 		$cols = array(
-			'id'       => __( 'ID', 'give' ), // unaltered payment ID (use for querying)
-			'seq_id'   => __( 'Payment Number', 'give' ), // sequential payment ID
-			'email'    => __( 'Email', 'give' ),
-			'first'    => __( 'First Name', 'give' ),
-			'last'     => __( 'Last Name', 'give' ),
-			'address1' => __( 'Address', 'give' ),
-			'address2' => __( 'Address (Line 2)', 'give' ),
-			'city'     => __( 'City', 'give' ),
-			'state'    => __( 'State', 'give' ),
-			'country'  => __( 'Country', 'give' ),
-			'zip'      => __( 'Zip / Postal Code', 'give' ),
-			'products' => __( 'Products', 'give' ),
-			'amount'   => __( 'Amount', 'give' ) . ' (' . html_entity_decode( give_currency_filter( '' ) ) . ')',
-			'gateway'  => __( 'Payment Method', 'give' ),
-			'trans_id' => __( 'Transaction ID', 'give' ),
-			'key'      => __( 'Purchase Key', 'give' ),
-			'date'     => __( 'Date', 'give' ),
-			'user'     => __( 'User', 'give' ),
-			'status'   => __( 'Status', 'give' )
+			'id'        => __( 'ID', 'give' ), // unaltered payment ID (use for querying)
+			'seq_id'    => __( 'Payment Number', 'give' ), // sequential payment ID
+			'email'     => __( 'Email', 'give' ),
+			'first'     => __( 'First Name', 'give' ),
+			'last'      => __( 'Last Name', 'give' ),
+			'address1'  => __( 'Address', 'give' ),
+			'address2'  => __( 'Address (Line 2)', 'give' ),
+			'city'      => __( 'City', 'give' ),
+			'state'     => __( 'State', 'give' ),
+			'country'   => __( 'Country', 'give' ),
+			'zip'       => __( 'Zip / Postal Code', 'give' ),
+			'form_id'   => __( 'Form ID', 'give' ),
+			'form_name' => __( 'Form Name', 'give' ),
+			'amount'    => __( 'Amount', 'give' ) . ' (' . html_entity_decode( give_currency_filter( '' ) ) . ')',
+			'gateway'   => __( 'Payment Method', 'give' ),
+			'trans_id'  => __( 'Transaction ID', 'give' ),
+			'key'       => __( 'Purchase Key', 'give' ),
+			'date'      => __( 'Date', 'give' ),
+			'user'      => __( 'User', 'give' ),
+			'status'    => __( 'Status', 'give' )
 		);
 
 		if ( ! give_get_option( 'enable_sequential' ) ) {
@@ -113,59 +114,6 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 				$products     = '';
 				$skus         = '';
 
-				if ( $downloads ) {
-					foreach ( $downloads as $key => $download ) {
-
-						// Form ID
-						$id  = isset( $payment_meta['cart_details'] ) ? $download['id'] : $download;
-						$qty = isset( $download['quantity'] ) ? $download['quantity'] : 1;
-
-						if ( isset( $download['price'] ) ) {
-							$price = $download['price'];
-						} else {
-							// If the download has variable prices, override the default price
-							$price_override = isset( $payment_meta['cart_details'] ) ? $download['price'] : null;
-							$price          = give_get_download_final_price( $id, $user_info, $price_override );
-						}
-
-
-						// Display the Downoad Name
-						$products .= html_entity_decode( get_the_title( $id ) );
-
-						if ( $qty > 1 ) {
-							$products .= html_entity_decode( ' (' . $qty . ')' );
-						}
-
-						$products .= ' - ';
-
-						if ( give_use_skus() ) {
-							$sku = give_get_download_sku( $id );
-
-							if ( ! empty( $sku ) ) {
-								$skus .= $sku;
-							}
-						}
-
-						if ( isset( $downloads[ $key ]['item_number'] ) && isset( $downloads[ $key ]['item_number']['options'] ) ) {
-							$price_options = $downloads[ $key ]['item_number']['options'];
-
-							if ( isset( $price_options['price_id'] ) ) {
-								$products .= html_entity_decode( give_get_price_option_name( $id, $price_options['price_id'], $payment->ID ) ) . ' - ';
-							}
-						}
-
-						$products .= html_entity_decode( give_currency_filter( give_format_amount( $price ) ) );
-
-						if ( $key != ( count( $downloads ) - 1 ) ) {
-							$products .= ' / ';
-
-							if ( give_use_skus() ) {
-								$skus .= ' / ';
-							}
-						}
-					}
-				}
-
 				if ( is_numeric( $user_id ) ) {
 					$user = get_userdata( $user_id );
 				} else {
@@ -173,26 +121,27 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 				}
 
 				$data[] = array(
-					'id'       => $payment->ID,
-					'seq_id'   => give_get_payment_number( $payment->ID ),
-					'email'    => $payment_meta['email'],
-					'first'    => $user_info['first_name'],
-					'last'     => $user_info['last_name'],
-					'address1' => isset( $user_info['address']['line1'] ) ? $user_info['address']['line1'] : '',
-					'address2' => isset( $user_info['address']['line2'] ) ? $user_info['address']['line2'] : '',
-					'city'     => isset( $user_info['address']['city'] ) ? $user_info['address']['city'] : '',
-					'state'    => isset( $user_info['address']['state'] ) ? $user_info['address']['state'] : '',
-					'country'  => isset( $user_info['address']['country'] ) ? $user_info['address']['country'] : '',
-					'zip'      => isset( $user_info['address']['zip'] ) ? $user_info['address']['zip'] : '',
-					'products' => $products,
-					'skus'     => $skus,
-					'amount'   => html_entity_decode( give_format_amount( $total ) ),
-					'gateway'  => give_get_gateway_admin_label( get_post_meta( $payment->ID, '_give_payment_gateway', true ) ),
-					'trans_id' => give_get_payment_transaction_id( $payment->ID ),
-					'key'      => $payment_meta['key'],
-					'date'     => $payment->post_date,
-					'user'     => $user ? $user->display_name : __( 'guest', 'give' ),
-					'status'   => give_get_payment_status( $payment, true )
+					'id'        => $payment->ID,
+					'seq_id'    => give_get_payment_number( $payment->ID ),
+					'email'     => $payment_meta['email'],
+					'first'     => $user_info['first_name'],
+					'last'      => $user_info['last_name'],
+					'address1'  => isset( $user_info['address']['line1'] ) ? $user_info['address']['line1'] : '',
+					'address2'  => isset( $user_info['address']['line2'] ) ? $user_info['address']['line2'] : '',
+					'city'      => isset( $user_info['address']['city'] ) ? $user_info['address']['city'] : '',
+					'state'     => isset( $user_info['address']['state'] ) ? $user_info['address']['state'] : '',
+					'country'   => isset( $user_info['address']['country'] ) ? $user_info['address']['country'] : '',
+					'zip'       => isset( $user_info['address']['zip'] ) ? $user_info['address']['zip'] : '',
+					'form_id'   => isset( $payment_meta['form_id'] ) ? $payment_meta['form_id'] : '',
+					'form_name' => isset( $payment_meta['form_title'] ) ? $payment_meta['form_title'] : '',
+					'skus'      => $skus,
+					'amount'    => html_entity_decode( give_format_amount( $total ) ),
+					'gateway'   => give_get_gateway_admin_label( get_post_meta( $payment->ID, '_give_payment_gateway', true ) ),
+					'trans_id'  => give_get_payment_transaction_id( $payment->ID ),
+					'key'       => $payment_meta['key'],
+					'date'      => $payment->post_date,
+					'user'      => $user ? $user->display_name : __( 'guest', 'give' ),
+					'status'    => give_get_payment_status( $payment, true )
 				);
 
 			}
