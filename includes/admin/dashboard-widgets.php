@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_register_dashboard_widgets() {
 	if ( current_user_can( apply_filters( 'give_dashboard_stats_cap', 'view_give_reports' ) ) ) {
-		wp_add_dashboard_widget( 'give_dashboard_sales', __( 'Give: Donation Statistics', 'give' ), 'give_dashboard_sales_widget' );
+		wp_add_dashboard_widget( 'give_dashboard_sales', esc_html__( 'Give: Donation Statistics', 'give' ), 'give_dashboard_sales_widget' );
 	}
 }
 
@@ -51,7 +51,7 @@ function give_dashboard_sales_widget() {
 			<p class="give-dashboard-happy-day"><?php
 				printf(
 					/* translators: %s: day of the week */
-					__( 'Happy %s!', 'give' ),
+					esc_html__( 'Happy %s!', 'give' ),
 					date( 'l', current_time( 'timestamp' ) )
 				);
 			?></p>
@@ -74,9 +74,9 @@ function give_dashboard_sales_widget() {
 		<table class="give-table-stats">
 			<thead style="display: none;">
 			<tr>
-				<th><?php _e( 'This Week', 'give' ); ?></th>
-				<th><?php _e( 'This Month', 'give' ); ?></th>
-				<th><?php _e( 'Past 30 Days', 'give' ); ?></th>
+				<th><?php esc_html_e( 'This Week', 'give' ); ?></th>
+				<th><?php esc_html_e( 'This Month', 'give' ); ?></th>
+				<th><?php esc_html_e( 'Past 30 Days', 'give' ); ?></th>
 			</tr>
 			</thead>
 			<tbody>
@@ -84,24 +84,24 @@ function give_dashboard_sales_widget() {
 				<td>
 					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_week' ) ) ); ?></p>
 
-					<p class="give-dashboard-stat-total-label"><?php _e( 'this week', 'give' ); ?></p>
+					<p class="give-dashboard-stat-total-label"><?php esc_html_e( 'this week', 'give' ); ?></p>
 				</td>
 				<td>
 					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_month' ) ) ); ?></p>
 
-					<p class="give-dashboard-stat-total-label"><?php _e( 'this month', 'give' ); ?></p>
+					<p class="give-dashboard-stat-total-label"><?php esc_html_e( 'this month', 'give' ); ?></p>
 				</td>
 			</tr>
 			<tr id="give-table-stats-tr-2">
 				<td>
 					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'last_month' ) ) ) ?></p>
 
-					<p class="give-dashboard-stat-total-label"><?php _e( 'last month', 'give' ); ?></p>
+					<p class="give-dashboard-stat-total-label"><?php esc_html_e( 'last month', 'give' ); ?></p>
 				</td>
 				<td>
 					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_year', false ) ) ) ?></p>
 
-					<p class="give-dashboard-stat-total-label"><?php _e( 'this year', 'give' ); ?></p>
+					<p class="give-dashboard-stat-total-label"><?php esc_html_e( 'this year', 'give' ); ?></p>
 				</td>
 			</tr>
 			</tbody>

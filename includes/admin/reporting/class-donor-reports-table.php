@@ -63,8 +63,8 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 
 		// Set parent defaults
 		parent::__construct( array(
-			'singular' => __( 'Donor', 'give' ),     // Singular name of the listed records
-			'plural'   => __( 'Donors', 'give' ),    // Plural name of the listed records
+			'singular' => esc_html__( 'Donor', 'give' ),     // Singular name of the listed records
+			'plural'   => esc_html__( 'Donors', 'give' ),    // Plural name of the listed records
 			'ajax'     => false                        // Does this table support ajax?
 		) );
 
@@ -132,13 +132,13 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 		?>
 		<div class="tablenav give-clearfix <?php echo esc_attr( $which ); ?>">
 
-			<h3 class="alignleft reports-earnings-title"><span><?php _e( 'Donors Report', 'give' ); ?></span></h3>
+			<h3 class="alignleft reports-earnings-title"><span><?php esc_html_e( 'Donors Report', 'give' ); ?></span></h3>
 
 			<div class="alignright tablenav-right">
 				<div class="actions bulkactions">
 					<?php
 					if ( 'top' == $which ) {
-						$this->give_search_box( __( 'Search Donors', 'give' ), 'give-donors-report-search' );
+						$this->give_search_box( esc_html__( 'Search Donors', 'give' ), 'give-donors-report-search' );
 					}
 
 					$this->bulk_actions( $which ); ?>
@@ -198,11 +198,11 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'name'          => __( 'Name', 'give' ),
-			'id'            => __( 'ID', 'give' ),
-			'email'         => __( 'Email', 'give' ),
-			'num_purchases' => __( 'Purchases', 'give' ),
-			'amount_spent'  => __( 'Total Spent', 'give' )
+			'name'          => esc_html__( 'Name', 'give' ),
+			'id'            => esc_html__( 'ID', 'give' ),
+			'email'         => esc_html__( 'Email', 'give' ),
+			'num_purchases' => esc_html__( 'Purchases', 'give' ),
+			'amount_spent'  => esc_html__( 'Total Spent', 'give' )
 		);
 
 		return apply_filters( 'give_report_donor_columns', $columns );

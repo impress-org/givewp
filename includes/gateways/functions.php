@@ -24,13 +24,13 @@ function give_get_payment_gateways() {
 	// Default, built-in gateways
 	$gateways = array(
 		'paypal' => array(
-			'admin_label'    => __( 'PayPal Standard', 'give' ),
-			'checkout_label' => __( 'PayPal', 'give' ),
+			'admin_label'    => esc_html__( 'PayPal Standard', 'give' ),
+			'checkout_label' => esc_html__( 'PayPal', 'give' ),
 			'supports'       => array( 'buy_now' )
 		),
 		'manual' => array(
-			'admin_label'    => __( 'Test Payment', 'give' ),
-			'checkout_label' => __( 'Test Payment', 'give' )
+			'admin_label'    => esc_html__( 'Test Payment', 'give' ),
+			'checkout_label' => esc_html__( 'Test Payment', 'give' )
 		),
 	);
 
@@ -127,7 +127,7 @@ function give_get_gateway_admin_label( $gateway ) {
 
 	if ( $gateway == 'manual' && $payment ) {
 		if ( give_get_payment_amount( $payment ) == 0 ) {
-			$label = __( 'Test Donation', 'give' );
+			$label = esc_html__( 'Test Donation', 'give' );
 		}
 	}
 
@@ -148,7 +148,7 @@ function give_get_gateway_checkout_label( $gateway ) {
 	$label    = isset( $gateways[ $gateway ] ) ? $gateways[ $gateway ]['checkout_label'] : $gateway;
 
 	if ( $gateway == 'manual' ) {
-		$label = __( 'Test Donation', 'give' );
+		$label = esc_html__( 'Test Donation', 'give' );
 	}
 
 	return apply_filters( 'give_gateway_checkout_label', $label, $gateway );

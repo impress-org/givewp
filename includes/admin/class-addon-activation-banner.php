@@ -157,7 +157,7 @@ class Give_Addon_Activation_Banner {
 				<h3><?php
 					printf(
 						/* translators: %s: Add-on name */
-						__( "Thank you for installing Give's %s Add-on!", 'give' ),
+						esc_html__( "Thank you for installing Give's %s Add-on!", 'give' ),
 						'<span>' . $this->banner_details['name'] . '</span>'
 					);
 				?></h3>
@@ -175,7 +175,7 @@ class Give_Addon_Activation_Banner {
 					<?php //Point them to your settings page
 					if ( isset( $this->banner_details['settings_url'] ) ) { ?>
 						<a href="<?php echo $this->banner_details['settings_url']; ?>">
-							<span class="dashicons dashicons-admin-settings"></span><?php _e( 'Go to Settings', 'give' ); ?>
+							<span class="dashicons dashicons-admin-settings"></span><?php esc_html_e( 'Go to Settings', 'give' ); ?>
 						</a>
 					<?php } ?>
 
@@ -187,7 +187,7 @@ class Give_Addon_Activation_Banner {
 							<?php
 								printf(
 									/* translators: %s: Add-on name */
-									__( 'Documentation: %s Add-on', 'give' ),
+									esc_html__( 'Documentation: %s Add-on', 'give' ),
 									$this->banner_details['name']
 								);
 							?>
@@ -198,7 +198,7 @@ class Give_Addon_Activation_Banner {
 					if ( isset( $this->banner_details['support_url'] ) ) { ?>
 
 						<a href="<?php echo $this->banner_details['support_url'] ?>" target="_blank">
-							<span class="dashicons dashicons-sos"></span><?php _e( 'Get Support', 'give' ); ?>
+							<span class="dashicons dashicons-sos"></span><?php esc_html_e( 'Get Support', 'give' ); ?>
 						</a>
 
 					<?php } ?>

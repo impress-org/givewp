@@ -84,13 +84,13 @@ abstract class Give_Shortcode_Generator {
 			$fields = $this->get_fields();
 
 			$defaults = array(
-				'btn_close' => __( 'Close', 'give' ),
-				'btn_okay'  => __( 'Insert Shortcode', 'give' ),
+				'btn_close' => esc_html__( 'Close', 'give' ),
+				'btn_okay'  => esc_html__( 'Insert Shortcode', 'give' ),
 				'errors'    => $this->errors,
 				'fields'    => $fields,
 				'label'     => '[' . $this->shortcode_tag . ']',
 				'required'  => $this->required,
-				'title'     => __( 'Insert Shortcode', 'give' ),
+				'title'     => esc_html__( 'Insert Shortcode', 'give' ),
 			);
 
 			if ( user_can_richedit() ) {
@@ -248,7 +248,7 @@ abstract class Give_Shortcode_Generator {
 
 			// do not reindex array!
 			$field['options'] = array(
-				                    '' => ( $field['placeholder'] ? $field['placeholder'] : __( '- Select -', 'give' ) ),
+				                    '' => ( $field['placeholder'] ? $field['placeholder'] : esc_attr__( '- Select -', 'give' ) ),
 			                    ) + $field['options'];
 
 			foreach ( $field['options'] as $value => $text ) {
@@ -380,7 +380,7 @@ abstract class Give_Shortcode_Generator {
 
 			if ( ! ! $required || is_array( $required ) ) {
 
-				$alert = __( 'Some of the Shortcode options are required.', 'give' );
+				$alert = esc_html__( 'Some of the Shortcode options are required.', 'give' );
 
 				if ( isset( $required['alert'] ) ) {
 
@@ -390,7 +390,7 @@ abstract class Give_Shortcode_Generator {
 
 					$alert = sprintf(
 						/* translators: %s: option lable */
-						__( 'The "%s" option is required.', 'give' ),
+						esc_html__( 'The "%s" option is required.', 'give' ),
 						str_replace( ':', '', $label )
 					);
 				}

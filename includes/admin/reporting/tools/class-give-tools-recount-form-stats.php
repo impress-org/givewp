@@ -217,7 +217,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 	public function process_step() {
 
 		if ( ! $this->can_export() ) {
-			wp_die( __( 'You do not have permission to recount stats.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die( esc_html__( 'You do not have permission to recount stats.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 		}
 
 		$had_data = $this->get_data();
@@ -230,7 +230,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 			$this->delete_data( 'give_recount_total_' . $this->form_id );
 			$this->delete_data( 'give_temp_recount_form_stats' );
 			$this->done    = true;
-			$this->message = sprintf( __( 'Donation counts and income amount statistics successfully recounted for "%s".', 'give' ), get_the_title( $this->form_id ) );
+			$this->message = sprintf( esc_html__( 'Donation counts and income amount statistics successfully recounted for "%s".', 'give' ), get_the_title( $this->form_id ) );
 
 			return false;
 		}

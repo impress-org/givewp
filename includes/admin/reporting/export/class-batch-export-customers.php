@@ -76,30 +76,30 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 			return false;
 		}
 		if ( ! empty( $columns['full_name'] ) ) {
-			$cols['full_name'] = __( 'Full Name', 'give' );
+			$cols['full_name'] = esc_html__( 'Full Name', 'give' );
 		}
 		if ( ! empty( $columns['email'] ) ) {
-			$cols['email'] = __( 'Email Address', 'give' );
+			$cols['email'] = esc_html__( 'Email Address', 'give' );
 		}
 		if ( ! empty( $columns['address'] ) ) {
-			$cols['address_line1']   = __( 'Address', 'give' );
-			$cols['address_line2']   = __( 'Address (Line 2)', 'give' );
-			$cols['address_city']    = __( 'City', 'give' );
-			$cols['address_state']   = __( 'State', 'give' );
-			$cols['address_zip']     = __( 'Zip', 'give' );
-			$cols['address_country'] = __( 'Country', 'give' );
+			$cols['address_line1']   = esc_html__( 'Address', 'give' );
+			$cols['address_line2']   = esc_html__( 'Address (Line 2)', 'give' );
+			$cols['address_city']    = esc_html__( 'City', 'give' );
+			$cols['address_state']   = esc_html__( 'State', 'give' );
+			$cols['address_zip']     = esc_html__( 'Zip', 'give' );
+			$cols['address_country'] = esc_html__( 'Country', 'give' );
 		}
 		if ( ! empty( $columns['userid'] ) ) {
-			$cols['userid'] = __( 'User ID', 'give' );
+			$cols['userid'] = esc_html__( 'User ID', 'give' );
 		}
 		if ( ! empty( $columns['date_first_donated'] ) ) {
-			$cols['date_first_donated'] = __( 'First Donation Date', 'give' );
+			$cols['date_first_donated'] = esc_html__( 'First Donation Date', 'give' );
 		}
 		if ( ! empty( $columns['donations'] ) ) {
-			$cols['donations'] = __( 'Number of Donations', 'give' );
+			$cols['donations'] = esc_html__( 'Number of Donations', 'give' );
 		}
 		if ( ! empty( $columns['donation_sum'] ) ) {
-			$cols['donation_sum'] = __( 'Sum of Donations', 'give' );
+			$cols['donation_sum'] = esc_html__( 'Sum of Donations', 'give' );
 		}
 
 		return $cols;

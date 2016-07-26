@@ -51,7 +51,7 @@ class Give_Notices {
 			'id'     => 'give-test-notice',
 			'href'   => admin_url() . 'edit.php?post_type=give_forms&page=give-settings&tab=gateways',
 			'parent' => 'top-secondary',
-			'title'  => __( 'Give Test Mode Active', 'give' ),
+			'title'  => esc_html__( 'Give Test Mode Active', 'give' ),
 			'meta'   => array( 'class' => 'give-test-mode-active' ),
 		) );
 
@@ -70,7 +70,7 @@ class Give_Notices {
 
 		if ( ! give_test_ajax_works() && ! get_user_meta( get_current_user_id(), '_give_admin_ajax_inaccessible_dismissed', true ) && current_user_can( 'manage_give_settings' ) ) {
 			echo '<div class="error">';
-			echo '<p>' . __( 'Your site appears to be blocking the WordPress ajax interface. This may cause issues with Give.', 'give' ) . '</p>';
+			echo '<p>' . esc_html__( 'Your site appears to be blocking the WordPress ajax interface. This may cause issues with Give.', 'give' ) . '</p>';
 			/* translators: %s: https://givewp.com/documentation/core/troubleshooting/admin-ajax-blocked/ */
 			echo '<p>' . sprintf( __( 'Please see <a href="%s" target="_blank">this reference</a> for possible solutions.', 'give' ), esc_url( 'https://givewp.com/documentation/core/troubleshooting/admin-ajax-blocked/' ) ) . '</p>';
 			echo '<p><a href="' . add_query_arg( array(

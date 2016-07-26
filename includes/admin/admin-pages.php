@@ -33,22 +33,22 @@ function give_add_options_links() {
 	$give_payments_page = add_submenu_page( 'edit.php?post_type=give_forms', $give_payment->labels->name, $give_payment->labels->menu_name, 'edit_give_payments', 'give-payment-history', 'give_payment_history_page' );
 
 	//Donors
-	$give_donors_page = add_submenu_page( 'edit.php?post_type=give_forms', __( 'Donors', 'give' ), __( 'Donors', 'give' ), 'view_give_reports', 'give-donors', 'give_customers_page' );
+	$give_donors_page = add_submenu_page( 'edit.php?post_type=give_forms', esc_html__( 'Donors', 'give' ), esc_html__( 'Donors', 'give' ), 'view_give_reports', 'give-donors', 'give_customers_page' );
 
 	//Reports`
-	$give_reports_page = add_submenu_page( 'edit.php?post_type=give_forms', __( 'Donation Reports', 'give' ), __( 'Reports', 'give' ), 'view_give_reports', 'give-reports', 'give_reports_page' );
+	$give_reports_page = add_submenu_page( 'edit.php?post_type=give_forms', esc_html__( 'Donation Reports', 'give' ), esc_html__( 'Reports', 'give' ), 'view_give_reports', 'give-reports', 'give_reports_page' );
 
 	//Settings
-	$give_settings_page = add_submenu_page( 'edit.php?post_type=give_forms', __( 'Give Settings', 'give' ), __( 'Settings', 'give' ), 'manage_give_settings', 'give-settings', array(
+	$give_settings_page = add_submenu_page( 'edit.php?post_type=give_forms', esc_html__( 'Give Settings', 'give' ), esc_html__( 'Settings', 'give' ), 'manage_give_settings', 'give-settings', array(
 		Give()->give_settings,
 		'admin_page_display'
 	) );
 
 	//Add-ons
-	$give_add_ons_page = add_submenu_page( 'edit.php?post_type=give_forms', __( 'Give Add-ons', 'give' ), __( 'Add-ons', 'give' ), 'install_plugins', 'give-addons', 'give_add_ons_page' );
+	$give_add_ons_page = add_submenu_page( 'edit.php?post_type=give_forms', esc_html__( 'Give Add-ons', 'give' ), esc_html__( 'Add-ons', 'give' ), 'install_plugins', 'give-addons', 'give_add_ons_page' );
 
 	//Upgrades
-	$give_upgrades_screen = add_submenu_page( null, __( 'Give Upgrades', 'give' ), __( 'Give Upgrades', 'give' ), 'manage_give_settings', 'give-upgrades', 'give_upgrades_screen' );
+	$give_upgrades_screen = add_submenu_page( null, esc_html__( 'Give Upgrades', 'give' ), esc_html__( 'Give Upgrades', 'give' ), 'manage_give_settings', 'give-upgrades', 'give_upgrades_screen' );
 
 
 }
