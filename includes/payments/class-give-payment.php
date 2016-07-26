@@ -1315,6 +1315,9 @@ final class Give_Payment {
                 case 'cancelled':
                     $this->process_cancelled();
                     break;
+                case 'revoked':
+                    $this->process_revoked();
+                    break;
 			}
 
 			do_action( 'give_update_payment_status', $this->ID, $status, $old_status );
@@ -1526,6 +1529,41 @@ final class Give_Payment {
         $decrease_store_earnings = apply_filters( 'give_decrease_store_earnings_on_cancelled', true, $this );
         $decrease_customer_value = apply_filters( 'give_decrease_customer_value_on_cancelled', true, $this );
         $decrease_purchase_count = apply_filters( 'give_decrease_customer_purchase_count_on_cancelled', true, $this );
+
+        $this->maybe_alter_stats( $decrease_store_earnings, $decrease_customer_value, $decrease_purchase_count );
+        $this->delete_sales_logs();
+
+        $this->completed_date = false;
+        $this->update_meta( '_give_completed_date', '' );
+
+        // Clear the This Month earnings (this_monththis_month is NOT a typo)
+        delete_transient( md5( 'give_earnings_this_monththis_month' ) );
+    }
+
+    /**
+     * Process when a payment moves to revoked
+     *
+     * @since  1.5
+     * @return void
+     */
+    private function process_revoked() {
+        $process_revoked = true;
+
+        // If the payment was not in publish, don't decrement stats as they were never incremented
+        if ( 'publish' != $this->old_status || 'revoked' != $this->status ) {
+            $process_revoked = false;
+        }
+
+        // Allow extensions to filter for their own payment types, Example: Recurring Payments
+        $process_revoked = apply_filters( 'give_should_process_revoked', $process_revoked, $this );
+
+        if ( false === $process_revoked ) {
+            return;
+        }
+
+        $decrease_store_earnings = apply_filters( 'give_decrease_store_earnings_on_revoked', true, $this );
+        $decrease_customer_value = apply_filters( 'give_decrease_customer_value_on_revoked', true, $this );
+        $decrease_purchase_count = apply_filters( 'give_decrease_customer_purchase_count_on_revoked', true, $this );
 
         $this->maybe_alter_stats( $decrease_store_earnings, $decrease_customer_value, $decrease_purchase_count );
         $this->delete_sales_logs();
