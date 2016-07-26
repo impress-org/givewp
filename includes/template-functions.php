@@ -35,6 +35,41 @@ function give_get_templates_url() {
 }
 
 /**
+ * Get other templates  passing attributes and including the file.
+ *
+ * @since 1.6
+ * @access public
+ *
+ * @param string $template_name
+ * @param array $args (default: array())
+ * @param string $template_path (default: '')
+ * @param string $default_path (default: '')
+ */
+function give_get_template( $template_name, $args = array(), $template_path = '', $default_path = '' ) {
+    if ( ! empty( $args ) && is_array( $args ) ) {
+        extract( $args );
+    }
+
+    $template_names = array( $template_name . '.php' );
+
+    $located = give_locate_template( $template_names, $template_path, $default_path );
+
+    if ( ! file_exists( $located ) ) {
+        give_output_error( sprintf( __( 'Error: %s template does not find.', 'give' ), $located ), true );
+        return;
+    }
+
+    // Allow 3rd party plugin filter template file from their plugin.
+    $located = apply_filters( 'give_get_template', $located, $template_name, $args, $template_path, $default_path );
+
+    do_action( 'give_before_template_part', $template_name, $template_path, $located, $args );
+
+    include( $located );
+
+    do_action( 'give_after_template_part', $template_name, $template_path, $located, $args );
+}
+
+/**
  * Retrieves a template part
  *
  * @since v1.0

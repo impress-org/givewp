@@ -1417,7 +1417,7 @@ function give_get_payment_notes( $payment_id = 0, $search = '' ) {
 	}
 
 	remove_action( 'pre_get_comments', 'give_hide_payment_notes', 10 );
-	remove_filter( 'comments_clauses', 'give_hide_payment_notes_pre_41', 10, 2 );
+	remove_filter( 'comments_clauses', 'give_hide_payment_notes_pre_41', 10 );
 
 	$notes = get_comments( array( 'post_id' => $payment_id, 'order' => 'ASC', 'search' => $search ) );
 

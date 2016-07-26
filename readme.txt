@@ -169,10 +169,12 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * New: Switch a transaction to a different form - https://github.com/WordImpress/Give/issues/429
 * New: Human readable large monetary goal formats - https://github.com/WordImpress/Give/issues/650
 * New: Address the plugin's RTL issues with a complete audit & resolution - thanks @ramiy! - https://github.com/WordImpress/Give/issues/736
-* Tweak: Easier and more understandable strings according for translations i18n - thanks @ramiy! - https://github.com/WordImpress/Give/issues/451
+* New: New template added for for Give goals - https://github.com/WordImpress/Give/issues/411
+* New: Easier and more understandable strings according for translations i18n - thanks @ramiy! - https://github.com/WordImpress/Give/issues/451
 * Tweak: Update the country dropdown to use the new ISO country codes for islands in Dutch West Indies - https://github.com/WordImpress/Give/issues/698
 * Tweak: Updated to the latest version of CMB2 & tested compatibility - https://github.com/WordImpress/Give/issues/670
 * Tweak: Remove invalid @description from PHP inline doc blocks - https://github.com/WordImpress/Give/issues/733
+* Tweak: Incorporate proper sanitization for i18n strings - https://github.com/WordImpress/Give/issues/471
 * Fix: Unrendered html in multi-level donation confirmation emails - https://github.com/WordImpress/Give/issues/754
 * Fix: Text editor do not have same height for visual mode and text mode - https://github.com/WordImpress/Give/issues/688
 * Fix: Auto populate state list is not working on transaction detail page - https://github.com/WordImpress/Give/issues/715
@@ -182,6 +184,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Fix: Categories and tags are registering incorrectly upon install - https://github.com/WordImpress/Give/issues/725
 * Fix: Amount field not formatting on focus out & lingering validation tooltip issues - https://github.com/WordImpress/Give/issues/778
 * Fix: Auto populate correct donation level when user adds a matching custom amount - https://github.com/WordImpress/Give/issues/730
+* Fix: Export Donation History no longer has Form Title and also has unnecessary columns  - https://github.com/WordImpress/Give/issues/757
 
 = 1.5.2: June 31, 2016 =
 * New: Added an addition "status" column for donation logs - https://github.com/WordImpress/Give/issues/684

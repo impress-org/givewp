@@ -516,9 +516,9 @@ function give_user_info_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'give_first', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
-				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'We will use this to personalize your account experience.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'We will use this to personalize your account experience.', 'give' ); ?>"></span>
 			</label>
-			<input class="give-input required" type="text" name="give_first" placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" id="give-first" value="<?php echo is_user_logged_in() ? $user_data->first_name : ''; ?>"<?php if ( give_field_is_required( 'give_first', $form_id ) ) {
+			<input class="give-input required" type="text" name="give_first" placeholder="<?php esc_html_e( 'First Name', 'give' ); ?>" id="give-first" value="<?php echo is_user_logged_in() ? $user_data->first_name : ''; ?>"<?php if ( give_field_is_required( 'give_first', $form_id ) ) {
 				echo ' required ';
 			} ?>/>
 		</p>
@@ -529,12 +529,12 @@ function give_user_info_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'give_last', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
-				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'We will use this as well to personalize your account experience.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'We will use this as well to personalize your account experience.', 'give' ); ?>"></span>
 			</label>
 
 			<input class="give-input<?php if ( give_field_is_required( 'give_last', $form_id ) ) {
 				echo ' required';
-			} ?>" type="text" name="give_last" id="give-last" placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" value="<?php echo is_user_logged_in() ? $user_data->last_name : ''; ?>"<?php if ( give_field_is_required( 'give_last', $form_id ) ) {
+			} ?>" type="text" name="give_last" id="give-last" placeholder="<?php esc_html_e( 'Last Name', 'give' ); ?>" value="<?php echo is_user_logged_in() ? $user_data->last_name : ''; ?>"<?php if ( give_field_is_required( 'give_last', $form_id ) ) {
 				echo ' required ';
 			} ?> />
 		</p>
@@ -546,10 +546,10 @@ function give_user_info_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'give_email', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
-				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'We will send the purchase receipt to this address.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'We will send the purchase receipt to this address.', 'give' ); ?>"></span>
 			</label>
 
-			<input class="give-input required" type="email" name="give_email" placeholder="<?php esc_attr_e( 'Email address', 'give' ); ?>" id="give-email" value="<?php echo is_user_logged_in() ? $user_data->user_email : ''; ?>"<?php if ( give_field_is_required( 'give_email', $form_id ) ) {
+			<input class="give-input required" type="email" name="give_email" placeholder="<?php esc_html_e( 'Email address', 'give' ); ?>" id="give-email" value="<?php echo is_user_logged_in() ? $user_data->user_email : ''; ?>"<?php if ( give_field_is_required( 'give_email', $form_id ) ) {
 				echo ' required ';
 			} ?>/>
 
@@ -593,44 +593,44 @@ function give_get_cc_form( $form_id ) {
 			<label for="card_number-<?php echo $form_id ?>" class="give-label">
 				<?php esc_html_e( 'Card Number', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
-				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The (typically) 16 digits on the front of your credit card.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'The (typically) 16 digits on the front of your credit card.', 'give' ); ?>"></span>
 				<span class="card-type"></span>
 			</label>
 
-			<input type="tel" autocomplete="off" name="card_number" id="card_number-<?php echo $form_id ?>" class="card-number give-input required" placeholder="<?php esc_attr_e( 'Card number', 'give' ); ?>" required/>
+			<input type="tel" autocomplete="off" name="card_number" id="card_number-<?php echo $form_id ?>" class="card-number give-input required" placeholder="<?php esc_html_e( 'Card number', 'give' ); ?>" required/>
 		</p>
 
 		<p id="give-card-cvc-wrap-<?php echo $form_id ?>" class="form-row form-row-one-third">
 			<label for="card_cvc-<?php echo $form_id ?>" class="give-label">
 				<?php esc_html_e( 'CVC', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
-				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The 3 digit (back) or 4 digit (front) value on your card.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'The 3 digit (back) or 4 digit (front) value on your card.', 'give' ); ?>"></span>
 			</label>
 
-			<input type="tel" size="4" autocomplete="off" name="card_cvc" id="card_cvc-<?php echo $form_id ?>" class="card-cvc give-input required" placeholder="<?php esc_attr_e( 'Security code', 'give' ); ?>" required/>
+			<input type="tel" size="4" autocomplete="off" name="card_cvc" id="card_cvc-<?php echo $form_id ?>" class="card-cvc give-input required" placeholder="<?php esc_html_e( 'Security code', 'give' ); ?>" required/>
 		</p>
 
 		<p id="give-card-name-wrap-<?php echo $form_id ?>" class="form-row form-row-two-thirds">
 			<label for="card_name-<?php echo $form_id ?>" class="give-label">
 				<?php esc_html_e( 'Name on the Card', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
-				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The name printed on the front of your credit card.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'The name printed on the front of your credit card.', 'give' ); ?>"></span>
 			</label>
 
-			<input type="text" autocomplete="off" name="card_name" id="card_name-<?php echo $form_id ?>" class="card-name give-input required" placeholder="<?php esc_attr_e( 'Card name', 'give' ); ?>" required/>
+			<input type="text" autocomplete="off" name="card_name" id="card_name-<?php echo $form_id ?>" class="card-name give-input required" placeholder="<?php esc_html_e( 'Card name', 'give' ); ?>" required/>
 		</p>
 		<?php do_action( 'give_before_cc_expiration' ); ?>
 		<p class="card-expiration form-row form-row-one-third">
 			<label for="card_expiry-<?php echo $form_id ?>" class="give-label">
 				<?php esc_html_e( 'Expiration', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
-				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The date your credit card expires, typically on the front of the card.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'The date your credit card expires, typically on the front of the card.', 'give' ); ?>"></span>
 			</label>
 
 			<input type="hidden" id="card_exp_month-<?php echo $form_id ?>" name="card_exp_month" class="card-expiry-month"/>
 			<input type="hidden" id="card_exp_year-<?php echo $form_id ?>" name="card_exp_year" class="card-expiry-year"/>
 
-			<input type="tel" autocomplete="off" name="card_expiry" id="card_expiry-<?php echo $form_id ?>" class="card-expiry give-input required" placeholder="<?php esc_attr_e( 'MM / YY', 'give' ); ?>" required/>
+			<input type="tel" autocomplete="off" name="card_expiry" id="card_expiry-<?php echo $form_id ?>" class="card-expiry give-input required" placeholder="<?php esc_html_e( 'MM / YY', 'give' ); ?>" required/>
 		</p>
 		<?php do_action( 'give_after_cc_expiration', $form_id ); ?>
 
@@ -674,12 +674,12 @@ function give_default_cc_address_fields( $form_id ) {
 				if ( give_field_is_required( 'card_address', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
-				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The primary billing address for your credit card.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'The primary billing address for your credit card.', 'give' ); ?>"></span>
 			</label>
 
 			<input type="text" id="card_address" name="card_address" class="card-address give-input<?php if ( give_field_is_required( 'card_address', $form_id ) ) {
 				echo ' required';
-			} ?>" placeholder="<?php esc_attr_e( 'Address line 1', 'give' ); ?>" value="<?php echo $line1; ?>"<?php if ( give_field_is_required( 'card_address', $form_id ) ) {
+			} ?>" placeholder="<?php esc_html_e( 'Address line 1', 'give' ); ?>" value="<?php echo $line1; ?>"<?php if ( give_field_is_required( 'card_address', $form_id ) ) {
 				echo '  required ';
 			} ?>/>
 		</p>
@@ -690,12 +690,12 @@ function give_default_cc_address_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'card_address_2', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
-				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( '(optional) The suite, apt no, PO box, etc, associated with your billing address.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( '(optional) The suite, apt no, PO box, etc, associated with your billing address.', 'give' ); ?>"></span>
 			</label>
 
 			<input type="text" id="card_address_2" name="card_address_2" class="card-address-2 give-input<?php if ( give_field_is_required( 'card_address_2', $form_id ) ) {
 				echo ' required';
-			} ?>" placeholder="<?php esc_attr_e( 'Address line 2', 'give' ); ?>" value="<?php echo $line2; ?>"<?php if ( give_field_is_required( 'card_address_2', $form_id ) ) {
+			} ?>" placeholder="<?php esc_html_e( 'Address line 2', 'give' ); ?>" value="<?php echo $line2; ?>"<?php if ( give_field_is_required( 'card_address_2', $form_id ) ) {
 				echo ' required ';
 			} ?>/>
 		</p>
@@ -706,11 +706,11 @@ function give_default_cc_address_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'card_city', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
-				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The city for your billing address.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'The city for your billing address.', 'give' ); ?>"></span>
 			</label>
 			<input type="text" id="card_city" name="card_city" class="card-city give-input<?php if ( give_field_is_required( 'card_city', $form_id ) ) {
 				echo ' required';
-			} ?>" placeholder="<?php esc_attr_e( 'City', 'give' ); ?>" value="<?php echo $city; ?>"<?php if ( give_field_is_required( 'card_city', $form_id ) ) {
+			} ?>" placeholder="<?php esc_html_e( 'City', 'give' ); ?>" value="<?php echo $city; ?>"<?php if ( give_field_is_required( 'card_city', $form_id ) ) {
 				echo ' required ';
 			} ?>/>
 		</p>
@@ -721,12 +721,12 @@ function give_default_cc_address_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'card_zip', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
-				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The zip or postal code for your billing address.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'The zip or postal code for your billing address.', 'give' ); ?>"></span>
 			</label>
 
 			<input type="text" size="4" id="card_zip" name="card_zip" class="card-zip give-input<?php if ( give_field_is_required( 'card_zip', $form_id ) ) {
 				echo ' required';
-			} ?>" placeholder="<?php esc_attr_e( 'Zip / Postal Code', 'give' ); ?>" value="<?php echo $zip; ?>" <?php if ( give_field_is_required( 'card_zip', $form_id ) ) {
+			} ?>" placeholder="<?php esc_html_e( 'Zip / Postal Code', 'give' ); ?>" value="<?php echo $zip; ?>" <?php if ( give_field_is_required( 'card_zip', $form_id ) ) {
 				echo ' required ';
 			} ?>/>
 		</p>
@@ -737,7 +737,7 @@ function give_default_cc_address_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'billing_country', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
-				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The country for your billing address.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'The country for your billing address.', 'give' ); ?>"></span>
 			</label>
 
 			<select name="billing_country" id="billing_country" class="billing-country billing_country give-select<?php if ( give_field_is_required( 'billing_country', $form_id ) ) {
@@ -767,7 +767,7 @@ function give_default_cc_address_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'card_state', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
-				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The state or province for your billing address.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'The state or province for your billing address.', 'give' ); ?>"></span>
 			</label>
 
 			<?php
@@ -791,7 +791,7 @@ function give_default_cc_address_fields( $form_id ) {
 					?>
 				</select>
 			<?php else : ?>
-				<input type="text" size="6" name="card_state" id="card_state" class="card_state give-input" placeholder="<?php esc_attr_e( 'State / Province', 'give' ); ?>"/>
+				<input type="text" size="6" name="card_state" id="card_state" class="card_state give-input" placeholder="<?php esc_html_e( 'State / Province', 'give' ); ?>"/>
 			<?php endif; ?>
 		</p>
 		<?php do_action( 'give_cc_billing_bottom' ); ?>
@@ -849,12 +849,12 @@ function give_get_register_fields( $form_id ) {
 					<?php if ( give_logged_in_only( $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
-					<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The username you will use to log into your account.', 'give' ); ?>"></span>
+					<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'The username you will use to log into your account.', 'give' ); ?>"></span>
 				</label>
 
 				<input name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" class="<?php if ( give_logged_in_only( $form_id ) ) {
 					echo 'required ';
-				} ?>give-input" type="text" placeholder="<?php esc_attr_e( 'Username', 'give' ); ?>" title="<?php esc_attr_e( 'Username', 'give' ); ?>"/>
+				} ?>give-input" type="text" placeholder="<?php esc_html_e( 'Username', 'give' ); ?>" title="<?php esc_html_e( 'Username', 'give' ); ?>"/>
 			</div>
 
 			<div id="give-user-pass-wrap-<?php echo $form_id; ?>" class="form-row form-row-one-third">
@@ -863,12 +863,12 @@ function give_get_register_fields( $form_id ) {
 					<?php if ( give_logged_in_only( $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
-					<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The password used to access your account.', 'give' ); ?>"></span>
+					<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'The password used to access your account.', 'give' ); ?>"></span>
 				</label>
 
 				<input name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>" class="<?php if ( give_logged_in_only( $form_id ) ) {
 					echo 'required ';
-				} ?>give-input" placeholder="<?php esc_attr_e( 'Password', 'give' ); ?>" type="password"/>
+				} ?>give-input" placeholder="<?php esc_html_e( 'Password', 'give' ); ?>" type="password"/>
 			</div>
 
 			<div id="give-user-pass-confirm-wrap-<?php echo $form_id; ?>" class="give-register-password form-row form-row-one-third">
@@ -877,12 +877,12 @@ function give_get_register_fields( $form_id ) {
 					<?php if ( give_logged_in_only( $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
-					<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'Please retype your password to confirm.', 'give' ); ?>"></span>
+					<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'Please retype your password to confirm.', 'give' ); ?>"></span>
 				</label>
 
 				<input name="give_user_pass_confirm" id="give-user-pass-confirm-<?php echo $form_id; ?>" class="<?php if ( give_logged_in_only( $form_id ) ) {
 					echo 'required ';
-				} ?>give-input" placeholder="<?php esc_attr_e( 'Confirm password', 'give' ); ?>" type="password"/>
+				} ?>give-input" placeholder="<?php esc_html_e( 'Confirm password', 'give' ); ?>" type="password"/>
 			</div>
 			<?php do_action( 'give_register_account_fields_after', $form_id ); ?>
 		</fieldset>
@@ -948,7 +948,7 @@ function give_get_login_fields( $form_id ) {
 
 			<input class="<?php if ( give_logged_in_only( $form_id ) ) {
 				echo 'required ';
-			} ?>give-input" type="text" name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" value="" placeholder="<?php esc_attr_e( 'Your username', 'give' ); ?>"/>
+			} ?>give-input" type="text" name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" value="" placeholder="<?php esc_html_e( 'Your username', 'give' ); ?>"/>
 		</div>
 
 		<div id="give-user-pass-wrap-<?php echo $form_id; ?>" class="give_login_password form-row form-row-last">
@@ -960,7 +960,7 @@ function give_get_login_fields( $form_id ) {
 			</label>
 			<input class="<?php if ( give_logged_in_only( $form_id ) ) {
 				echo 'required ';
-			} ?>give-input" type="password" name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>" placeholder="<?php esc_attr_e( 'Your password', 'give' ); ?>"/>
+			} ?>give-input" type="password" name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>" placeholder="<?php esc_html_e( 'Your password', 'give' ); ?>"/>
 			<input type="hidden" name="give-purchase-var" value="needs-to-login"/>
 		</div>
 
@@ -971,9 +971,9 @@ function give_get_login_fields( $form_id ) {
 		</div>
 
 		<div id="give-user-login-submit-<?php echo $form_id; ?>" class="give-clearfix">
-			<input type="submit" class="give-submit give-btn button" name="give_login_submit" value="<?php esc_attr_e( 'Login', 'give' ); ?>"/>
+			<input type="submit" class="give-submit give-btn button" name="give_login_submit" value="<?php esc_html_e( 'Login', 'give' ); ?>"/>
 			<?php if ( $show_register_form !== 'login' ) { ?>
-				<input type="button" data-action="give_cancel_login" class="give-cancel-login give-checkout-register-cancel give-btn button" name="give_login_cancel" value="<?php esc_attr_e( 'Cancel', 'give' ); ?>"/>
+				<input type="button" data-action="give_cancel_login" class="give-cancel-login give-checkout-register-cancel give-btn button" name="give_login_cancel" value="<?php esc_html_e( 'Cancel', 'give' ); ?>"/>
 			<?php } ?>
 			<span class="give-loading-animation"></span>
 		</div>
@@ -1111,7 +1111,7 @@ function give_checkout_final_total( $form_id ) {
 	}
 	?>
 	<p id="give-final-total-wrap" class="form-wrap ">
-		<span class="give-donation-total-label"><?php echo apply_filters( 'give_donation_total_label', esc_attr__( 'Donation Total:', 'give' ) ); ?></span>
+		<span class="give-donation-total-label"><?php echo apply_filters( 'give_donation_total_label', esc_html__( 'Donation Total:', 'give' ) ); ?></span>
 		<span class="give-final-total-amount" data-total="<?php echo give_format_amount( $total ); ?>"><?php echo give_currency_filter( give_format_amount( $total ) ); ?></span>
 	</p>
 	<?php
@@ -1205,7 +1205,9 @@ add_action( 'give_checkout_form_top', 'give_agree_to_terms_js', 10, 2 );
 /**
  * Show Give Goals
  *
- * @since 1.0
+ * @since  1.0
+ * @since  1.6   Add template for Give Goals Shortcode.
+ *               More info is on https://github.com/WordImpress/Give/issues/411
  *
  * @param  int   $form_id
  * @param  array $args
@@ -1215,87 +1217,12 @@ add_action( 'give_checkout_form_top', 'give_agree_to_terms_js', 10, 2 );
 
 function give_show_goal_progress( $form_id, $args ) {
 
-	$goal_option = get_post_meta( $form_id, '_give_goal_option', true );
-	$form        = new Give_Donate_Form( $form_id );
-	$goal        = $form->goal;
-	$goal_format = get_post_meta( $form_id, '_give_goal_format', true );
-	$income      = $form->get_earnings();
-	$color       = get_post_meta( $form_id, '_give_goal_color', true );
-	$show_text   = (bool) isset( $args['show_text'] ) ? filter_var( $args['show_text'], FILTER_VALIDATE_BOOLEAN ) : true;
-	$show_bar    = (bool) isset( $args['show_bar'] ) ? filter_var( $args['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
+    ob_start();
+    give_get_template( 'shortcode-goal' , array( 'form_id' => $form_id, 'args' => $args ) );
 
-	//Sanity check - respect shortcode args
-	if ( isset( $args['show_goal'] ) && $args['show_goal'] === false ) {
-		return false;
-	}
+    echo apply_filters( 'give_goal_output', ob_get_clean() );
 
-	//Sanity check - ensure form has goal set to output
-	if ( empty( $form->ID )
-	     || ( is_singular( 'give_forms' ) && $goal_option !== 'yes' )
-	     || $goal_option !== 'yes'
-	     || $goal == 0
-	) {
-		//not this form, bail
-		return false;
-	}
-
-	$progress = round( ( $income / $goal ) * 100, 2 );
-
-	if ( $income >= $goal ) {
-		$progress = 100;
-	}
-
-	$output = '<div class="give-goal-progress">';
-
-	//Goal Progress Text
-	if ( ! empty( $show_text ) ) {
-
-		$output .= '<div class="raised">';
-
-		if ( $goal_format !== 'percentage' ) {
-
-			 // Get formatted amount.
-            $income = give_human_format_large_amount( give_format_amount( $income ) );
-            $goal = give_human_format_large_amount( give_format_amount( $goal ) );
-
-			$output .= sprintf(
-				/* translators: 1: amount of income raised 2: goal target ammount */
-				esc_html__( '%1$s of %2$s raised', 'give' ),
-				'<span class="income">' . apply_filters( 'give_goal_amount_raised_output', give_currency_filter( $income ) ) . '</span>',
-				'<span class="goal-text">' . apply_filters( 'give_goal_amount_target_output', give_currency_filter( $goal ) ) . '</span>'
-			);
-
-
-		} elseif ( $goal_format == 'percentage' ) {
-
-			$output .= sprintf(
-				/* translators: %s: percentage of the amount raised compared to the goal target */
-				esc_html__( '%s%% funded', 'give' ),
-				'<span class="give-percentage">' . apply_filters( 'give_goal_amount_funded_percentage_output', round( $progress ) ) . '</span>'
-			);
-		}
-
-		$output .= '</div>';
-
-	}
-
-	//Goal Progress Bar
-	if ( ! empty( $show_bar ) ) {
-		$output .= '<div class="give-progress-bar">';
-		$output .= '<span style="width: ' . esc_attr( $progress ) . '%;';
-		if ( ! empty( $color ) ) {
-			$output .= 'background-color:' . $color;
-		}
-		$output .= '"></span>';
-		$output .= '</div><!-- /.give-progress-bar -->';
-	}
-
-	$output .= '</div><!-- /.goal-progress -->';
-
-	echo apply_filters( 'give_goal_output', $output );
-
-	return false;
-
+	return true;
 }
 
 add_action( 'give_pre_form', 'give_show_goal_progress', 10, 2 );
@@ -1416,7 +1343,7 @@ function give_test_mode_frontend_warning() {
 	$test_mode = give_get_option( 'test_mode' );
 
 	if ( $test_mode == 'on' ) {
-		echo '<div class="give_error give_warning" id="give_error_test_mode"><p><strong>' . esc_html__( 'Notice', 'give' ) . '</strong>: ' . esc_attr__( 'Test mode is enabled. While in test mode no live transactions are processed.', 'give' ) . '</p></div>';
+		echo '<div class="give_error give_warning" id="give_error_test_mode"><p><strong>' . esc_html__( 'Notice', 'give' ) . '</strong>: ' . esc_html__( 'Test mode is enabled. While in test mode no live transactions are processed.', 'give' ) . '</p></div>';
 	}
 }
 
