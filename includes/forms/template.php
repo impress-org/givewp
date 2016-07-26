@@ -1220,10 +1220,7 @@ function give_show_goal_progress( $form_id, $args ) {
     ob_start();
     give_get_template( 'shortcode-goal' , array( 'form_id' => $form_id, 'args' => $args ) );
 
-    $output = ob_get_contents();
-    ob_get_clean();
-
-    echo apply_filters( 'give_goal_output', $output );
+    echo apply_filters( 'give_goal_output', ob_get_clean() );
 
 	return true;
 }
