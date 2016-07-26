@@ -114,59 +114,6 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 				$products     = '';
 				$skus         = '';
 
-				if ( $downloads ) {
-					foreach ( $downloads as $key => $download ) {
-
-						// Form ID
-						$id  = isset( $payment_meta['cart_details'] ) ? $download['id'] : $download;
-						$qty = isset( $download['quantity'] ) ? $download['quantity'] : 1;
-
-						if ( isset( $download['price'] ) ) {
-							$price = $download['price'];
-						} else {
-							// If the download has variable prices, override the default price
-							$price_override = isset( $payment_meta['cart_details'] ) ? $download['price'] : null;
-							$price          = give_get_download_final_price( $id, $user_info, $price_override );
-						}
-
-
-						// Display the Downoad Name
-						$products .= html_entity_decode( get_the_title( $id ) );
-
-						if ( $qty > 1 ) {
-							$products .= html_entity_decode( ' (' . $qty . ')' );
-						}
-
-						$products .= ' - ';
-
-						if ( give_use_skus() ) {
-							$sku = give_get_download_sku( $id );
-
-							if ( ! empty( $sku ) ) {
-								$skus .= $sku;
-							}
-						}
-
-						if ( isset( $downloads[ $key ]['item_number'] ) && isset( $downloads[ $key ]['item_number']['options'] ) ) {
-							$price_options = $downloads[ $key ]['item_number']['options'];
-
-							if ( isset( $price_options['price_id'] ) ) {
-								$products .= html_entity_decode( give_get_price_option_name( $id, $price_options['price_id'], $payment->ID ) ) . ' - ';
-							}
-						}
-
-						$products .= html_entity_decode( give_currency_filter( give_format_amount( $price ) ) );
-
-						if ( $key != ( count( $downloads ) - 1 ) ) {
-							$products .= ' / ';
-
-							if ( give_use_skus() ) {
-								$skus .= ' / ';
-							}
-						}
-					}
-				}
-
 				if ( is_numeric( $user_id ) ) {
 					$user = get_userdata( $user_id );
 				} else {
