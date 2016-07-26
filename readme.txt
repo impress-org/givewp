@@ -182,6 +182,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Fix: Categories and tags are registering incorrectly upon install - https://github.com/WordImpress/Give/issues/725
 * Fix: Amount field not formatting on focus out & lingering validation tooltip issues - https://github.com/WordImpress/Give/issues/778
 * Fix: Auto populate correct donation level when user adds a matching custom amount - https://github.com/WordImpress/Give/issues/730
+* Fix: Export Donation History no longer has Form Title and also has unnecessary columns  - https://github.com/WordImpress/Give/issues/757
 
 = 1.5.2: June 31, 2016 =
 * New: Added an addition "status" column for donation logs - https://github.com/WordImpress/Give/issues/684
