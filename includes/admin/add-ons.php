@@ -25,12 +25,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_add_ons_page() {
 	ob_start(); ?>
 	<div class="wrap" id="give-add-ons">
-		<h2><?php _e( 'Give Add-ons', 'give' ); ?>
-			&nbsp;&mdash;&nbsp;<a href="https://givewp.com/addons/" class="button-primary give-view-addons-all" title="<?php _e( 'Browse All Add-ons', 'give' ); ?>" target="_blank"><?php _e( 'View All Add-ons', 'give' ); ?>
+		<h2><?php esc_html_e( 'Give Add-ons', 'give' ); ?>
+			&nbsp;&mdash;&nbsp;<a href="https://givewp.com/addons/" class="button-primary give-view-addons-all" title="<?php esc_attr_e( 'Browse All Add-ons', 'give' ); ?>" target="_blank"><?php esc_html_e( 'View All Add-ons', 'give' ); ?>
 				<span class="dashicons dashicons-external"></span></a>
 		</h2>
 
-		<p><?php _e( 'The following Add-ons extend the functionality of Give.', 'give' ); ?></p>
+		<p><?php esc_html_e( 'The following Add-ons extend the functionality of Give.', 'give' ); ?></p>
 		<?php echo give_add_ons_get_feed(); ?>
 	</div>
 	<?php
@@ -59,7 +59,7 @@ function give_add_ons_get_feed() {
 				set_transient( 'give_add_ons_feed', $cache, 3600 );
 			}
 		} else {
-			$cache = '<div class="error"><p>' . __( 'There was an error retrieving the Give Add-ons list from the server. Please try again later.', 'give' ) . '</div>';
+			$cache = '<div class="error"><p>' . esc_html__( 'There was an error retrieving the Give Add-ons list from the server. Please try again later.', 'give' ) . '</div>';
 		}
 	}
 

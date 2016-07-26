@@ -272,67 +272,67 @@ function give_setup_email_tags() {
 	$email_tags = array(
 		array(
 			'tag'         => 'donation',
-			'description' => __( 'The name of completed donation form and the donation level chosen if applicable.', 'give' ),
+			'description' => esc_html__( 'The name of completed donation form and the donation level chosen if applicable.', 'give' ),
 			'function'    => 'give_email_tag_donation'
 		),
 		array(
 			'tag'         => 'name',
-			'description' => __( 'The donor\'s first name.', 'give' ),
+			'description' => esc_html__( 'The donor\'s first name.', 'give' ),
 			'function'    => 'give_email_tag_first_name'
 		),
 		array(
 			'tag'         => 'fullname',
-			'description' => __( 'The donor\'s full name, first and last.', 'give' ),
+			'description' => esc_html__( 'The donor\'s full name, first and last.', 'give' ),
 			'function'    => 'give_email_tag_fullname'
 		),
 		array(
 			'tag'         => 'username',
-			'description' => __( 'The donor\'s user name on the site, if they registered an account.', 'give' ),
+			'description' => esc_html__( 'The donor\'s user name on the site, if they registered an account.', 'give' ),
 			'function'    => 'give_email_tag_username'
 		),
 		array(
 			'tag'         => 'user_email',
-			'description' => __( 'The donor\'s email address.', 'give' ),
+			'description' => esc_html__( 'The donor\'s email address.', 'give' ),
 			'function'    => 'give_email_tag_user_email'
 		),
 		array(
 			'tag'         => 'billing_address',
-			'description' => __( 'The donor\'s billing address.', 'give' ),
+			'description' => esc_html__( 'The donor\'s billing address.', 'give' ),
 			'function'    => 'give_email_tag_billing_address'
 		),
 		array(
 			'tag'         => 'date',
-			'description' => __( 'The date of the donation.', 'give' ),
+			'description' => esc_html__( 'The date of the donation.', 'give' ),
 			'function'    => 'give_email_tag_date'
 		),
 		array(
 			'tag'         => 'price',
-			'description' => __( 'The total price of the donation.', 'give' ),
+			'description' => esc_html__( 'The total price of the donation.', 'give' ),
 			'function'    => 'give_email_tag_price'
 		),
 		array(
 			'tag'         => 'payment_id',
-			'description' => __( 'The unique ID number for this donation.', 'give' ),
+			'description' => esc_html__( 'The unique ID number for this donation.', 'give' ),
 			'function'    => 'give_email_tag_payment_id'
 		),
 		array(
 			'tag'         => 'receipt_id',
-			'description' => __( 'The unique ID number for this donation receipt.', 'give' ),
+			'description' => esc_html__( 'The unique ID number for this donation receipt.', 'give' ),
 			'function'    => 'give_email_tag_receipt_id'
 		),
 		array(
 			'tag'         => 'payment_method',
-			'description' => __( 'The method of payment used for this donation.', 'give' ),
+			'description' => esc_html__( 'The method of payment used for this donation.', 'give' ),
 			'function'    => 'give_email_tag_payment_method'
 		),
 		array(
 			'tag'         => 'sitename',
-			'description' => __( 'Your site name', 'give' ),
+			'description' => esc_html__( 'Your site name', 'give' ),
 			'function'    => 'give_email_tag_sitename'
 		),
 		array(
 			'tag'         => 'receipt_link',
-			'description' => __( 'Adds a link so users can view their receipt directly on your website if they are unable to view it in the browser correctly.', 'give' ),
+			'description' => esc_html__( 'Adds a link so users can view their receipt directly on your website if they are unable to view it in the browser correctly.', 'give' ),
 			'function'    => 'give_email_tag_receipt_link'
 		),
 	);
@@ -527,7 +527,7 @@ function give_email_tag_donation( $payment_id ) {
 	$payment    = new Give_Payment( $payment_id );
 	$form_title = strip_tags( give_get_payment_form_title( $payment->meta, false, '-' ) );
 
-	return ! empty( $form_title ) ? $form_title : __( 'There was an error retrieving this donation title.', 'give' );
+	return ! empty( $form_title ) ? $form_title : esc_html__( 'There was an error retrieving this donation title.', 'give' );
 
 }
 
@@ -575,7 +575,7 @@ function give_email_tag_receipt_link( $payment_id ) {
 	$formatted   = sprintf(
 		'<a href="%1$s">%2$s</a>',
 		$receipt_url,
-		__( 'View it in your browser', 'give' )
+		esc_html__( 'View it in your browser', 'give' )
 	);
 
 	if ( give_get_option( 'email_template' ) !== 'none' ) {

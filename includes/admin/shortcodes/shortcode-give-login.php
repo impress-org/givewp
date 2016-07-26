@@ -18,8 +18,8 @@ class Give_Shortcode_Login extends Give_Shortcode_Generator {
 	 */
 	public function __construct() {
 
-		$this->shortcode['title'] = __( 'Login', 'give' );
-		$this->shortcode['label'] = __( 'Login', 'give' );
+		$this->shortcode['title'] = esc_html__( 'Login', 'give' );
+		$this->shortcode['label'] = esc_html__( 'Login', 'give' );
 
 		parent::__construct( 'give_login' );
 	}
@@ -34,23 +34,23 @@ class Give_Shortcode_Login extends Give_Shortcode_Generator {
 		return array(
 			array(
 				'type' => 'container',
-				'html' => sprintf( '<p class="no-margin">%s</p>', __( 'Login Redirect URL (optional):', 'give' ) ),
+				'html' => sprintf( '<p class="no-margin">%s</p>', esc_html__( 'Login Redirect URL (optional):', 'give' ) ),
 			),
 			array(
 				'type'     => 'textbox',
 				'name'     => 'login-redirect',
 				'minWidth' => 320,
-				'tooltip'  => __( 'Enter an URL here to redirect to after login.', 'give' ),
+				'tooltip'  => esc_attr__( 'Enter an URL here to redirect to after login.', 'give' ),
 			),
             array(
                 'type' => 'container',
-                'html' => sprintf( '<p class="no-margin">%s</p>', __( 'Logout Redirect URL (optional):', 'give' ) ),
+                'html' => sprintf( '<p class="no-margin">%s</p>', esc_html__( 'Logout Redirect URL (optional):', 'give' ) ),
             ),
             array(
                 'type'     => 'textbox',
                 'name'     => 'logout-redirect',
                 'minWidth' => 320,
-                'tooltip'  => __( 'Enter an URL here to redirect to after logout.', 'give' ),
+                'tooltip'  => esc_attr__( 'Enter an URL here to redirect to after logout.', 'give' ),
             ),
 		);
 	}

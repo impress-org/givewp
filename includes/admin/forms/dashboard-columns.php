@@ -32,15 +32,15 @@ function give_form_columns( $give_form_columns ) {
 	//Standard columns
 	$give_form_columns = array(
 		'cb'            => '<input type="checkbox"/>',
-		'title'         => __( 'Name', 'give' ),
-		'form_category' => __( 'Categories', 'give' ),
-		'form_tag'      => __( 'Tags', 'give' ),
-		'price'         => __( 'Price', 'give' ),
-		'goal'          => __( 'Goal', 'give' ),
-		'donations'     => __( 'Donations', 'give' ),
-		'earnings'      => __( 'Income', 'give' ),
-		'shortcode'     => __( 'Shortcode', 'give' ),
-		'date'          => __( 'Date', 'give' )
+		'title'         => esc_html__( 'Name', 'give' ),
+		'form_category' => esc_html__( 'Categories', 'give' ),
+		'form_tag'      => esc_html__( 'Tags', 'give' ),
+		'price'         => esc_html__( 'Price', 'give' ),
+		'goal'          => esc_html__( 'Goal', 'give' ),
+		'donations'     => esc_html__( 'Donations', 'give' ),
+		'earnings'      => esc_html__( 'Income', 'give' ),
+		'shortcode'     => esc_html__( 'Shortcode', 'give' ),
+		'date'          => esc_html__( 'Date', 'give' )
 	);
 
 	//Does the user want categories / tags?
@@ -74,7 +74,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 		$color = isset( $give_options['checkout_color'] ) ? $give_options['checkout_color'] : 'blue';
 		$color = ( $color == 'inherit' ) ? '' : $color;
 
-		$purchase_text = ! empty( $give_options['add_to_cart_text'] ) ? $give_options['add_to_cart_text'] : __( 'Purchase', 'give' );
+		$purchase_text = ! empty( $give_options['add_to_cart_text'] ) ? $give_options['add_to_cart_text'] : esc_html__( 'Purchase', 'give' );
 
 		switch ( $column_name ) {
 			case 'form_category':
@@ -96,7 +96,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 				if ( ! empty( $goal_option ) && $goal_option === 'yes' ) {
 					echo give_goal( $post_id, false );
 				} else {
-					echo __( 'No Goal Set', 'give' );
+					echo esc_html__( 'No Goal Set', 'give' );
 				}
 
 				echo '<input type="hidden" class="formgoal-' . $post_id . '" value="' . give_get_form_goal( $post_id ) . '" />';
@@ -226,7 +226,7 @@ function give_filter_forms( $vars ) {
 			$author_id = $_REQUEST['author'];
 			if ( (int) $author_id !== get_current_user_id() ) {
 				// Tried to view the products of another person, sorry
-				wp_die( __( 'You do not have permission to view this data.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+				wp_die( esc_html__( 'You do not have permission to view this data.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 			}
 			$vars = array_merge(
 				$vars,
@@ -301,12 +301,12 @@ function give_price_field_quick_edit( $column_name, $post_type ) {
 			<h4><?php 
 				printf(
 					/* translators: %s: forms singular label */
-					__( '%s Configuration', 'give' ),
+					esc_html__( '%s Configuration', 'give' ),
 					give_get_forms_label_singular()
 				);
 			?></h4>
 			<label>
-				<span class="title"><?php _e( 'Price', 'give' ); ?></span>
+				<span class="title"><?php esc_html_e( 'Price', 'give' ); ?></span>
 				<span class="input-text-wrap">
 					<input type="text" name="_give_regprice" class="text regprice" />
 				</span>
