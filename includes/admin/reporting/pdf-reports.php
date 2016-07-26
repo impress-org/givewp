@@ -28,11 +28,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_generate_pdf( $data ) {
 
 	if ( ! current_user_can( 'view_give_reports' ) ) {
-		wp_die( __( 'You do not have permission to generate PDF sales reports.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( esc_html__( 'You do not have permission to generate PDF sales reports.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'give_generate_pdf' ) ) {
-		wp_die( __( 'Nonce verification failed.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( esc_html__( 'Nonce verification failed.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	require_once GIVE_PLUGIN_DIR . '/includes/libraries/fpdf/fpdf.php';
@@ -41,7 +41,7 @@ function give_generate_pdf( $data ) {
 	$daterange = utf8_decode(
 		sprintf(
 			/* translators: 1: start date 2: end date */
-			__( '%1$s to %2$s', 'give' ),
+			esc_html__( '%1$s to %2$s', 'give' ),
 			date_i18n( get_option( 'date_format' ), mktime( 0, 0, 0, 1, 1, date( 'Y' ) ) ),
 			date_i18n( get_option( 'date_format' ) )
 		)
@@ -136,7 +136,7 @@ function give_generate_pdf( $data ) {
 		$title = utf8_decode(
 			sprintf(
 				/* translators: %s: form plural label */
-				__( 'No %s found.', 'give' ),
+				esc_html__( 'No %s found.', 'give' ),
 				give_get_forms_label_plural()
 			)
 		);
@@ -221,7 +221,7 @@ function give_draw_chart_image() {
 		$earnings_array[11]
 	) );
 
-	$data->setLegend( __( 'Income', 'give' ) );
+	$data->setLegend( esc_html__( 'Income', 'give' ) );
 	$data->setColor( '1b58a3' );
 	$chart->addData( $data );
 
@@ -251,11 +251,11 @@ function give_draw_chart_image() {
 		$sales_array[10],
 		$sales_array[11]
 	) );
-	$data->setLegend( __( 'Donations', 'give' ) );
+	$data->setLegend( esc_html__( 'Donations', 'give' ) );
 	$data->setColor( 'ff6c1c' );
 	$chart->addData( $data );
 
-	$chart->setTitle( __( 'Donations by Month for all Give Forms', 'give' ), '336699', 18 );
+	$chart->setTitle( esc_html__( 'Donations by Month for all Give Forms', 'give' ), '336699', 18 );
 
 	$chart->setScale( 0, $max_earnings );
 
@@ -266,18 +266,18 @@ function give_draw_chart_image() {
 	$x_axis = new GoogleChartAxis( 'x' );
 	$x_axis->setTickMarks( 5 );
 	$x_axis->setLabels( array(
-		__( 'Jan', 'give' ),
-		__( 'Feb', 'give' ),
-		__( 'Mar', 'give' ),
-		__( 'Apr', 'give' ),
-		__( 'May', 'give' ),
-		__( 'June', 'give' ),
-		__( 'July', 'give' ),
-		__( 'Aug', 'give' ),
-		__( 'Sept', 'give' ),
-		__( 'Oct', 'give' ),
-		__( 'Nov', 'give' ),
-		__( 'Dec', 'give' )
+		esc_html__( 'Jan', 'give' ),
+		esc_html__( 'Feb', 'give' ),
+		esc_html__( 'Mar', 'give' ),
+		esc_html__( 'Apr', 'give' ),
+		esc_html__( 'May', 'give' ),
+		esc_html__( 'June', 'give' ),
+		esc_html__( 'July', 'give' ),
+		esc_html__( 'Aug', 'give' ),
+		esc_html__( 'Sept', 'give' ),
+		esc_html__( 'Oct', 'give' ),
+		esc_html__( 'Nov', 'give' ),
+		esc_html__( 'Dec', 'give' )
 	) );
 	$chart->addAxis( $x_axis );
 

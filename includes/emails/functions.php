@@ -38,7 +38,7 @@ function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 
 	$to_email = give_get_payment_user_email( $payment_id );
 
-	$subject = give_get_option( 'donation_subject', __( 'Donation Receipt', 'give' ) );
+	$subject = give_get_option( 'donation_subject', esc_html__( 'Donation Receipt', 'give' ) );
 	$subject = apply_filters( 'give_donation_subject', wp_strip_all_tags( $subject ), $payment_id );
 	$subject = give_do_email_tags( $subject, $payment_id );
 
@@ -49,7 +49,7 @@ function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 
 	$emails->__set( 'from_name', $from_name );
 	$emails->__set( 'from_email', $from_email );
-	$emails->__set( 'heading', __( 'Donation Receipt', 'give' ) );
+	$emails->__set( 'heading', esc_html__( 'Donation Receipt', 'give' ) );
 
 
 	$headers = apply_filters( 'give_receipt_headers', $emails->get_headers(), $payment_id, $payment_data );
@@ -77,7 +77,7 @@ function give_email_test_donation_receipt() {
 	$from_email = give_get_option( 'from_email', get_bloginfo( 'admin_email' ) );
 	$from_email = apply_filters( 'give_purchase_from_address', $from_email, 0, array() );
 
-	$subject = give_get_option( 'donation_subject', __( 'Donation Receipt', 'give' ) );
+	$subject = give_get_option( 'donation_subject', esc_html__( 'Donation Receipt', 'give' ) );
 	$subject = apply_filters( 'give_donation_subject', wp_strip_all_tags( $subject ), 0 );
 	$subject = give_do_email_tags( $subject, 0 );
 
@@ -88,7 +88,7 @@ function give_email_test_donation_receipt() {
 	$emails = Give()->emails;
 	$emails->__set( 'from_name', $from_name );
 	$emails->__set( 'from_email', $from_email );
-	$emails->__set( 'heading', __( 'Donation Receipt', 'give' ) );
+	$emails->__set( 'heading', esc_html__( 'Donation Receipt', 'give' ) );
 
 	$headers = apply_filters( 'give_receipt_headers', $emails->get_headers(), 0, array() );
 	$emails->__set( 'headers', $headers );
@@ -126,7 +126,7 @@ function give_admin_email_notice( $payment_id = 0, $payment_data = array() ) {
 	$from_email = apply_filters( 'give_purchase_from_address', $from_email, $payment_id, $payment_data );
 
 	/* translators: %s: payment id */
-	$subject = give_get_option( 'donation_notification_subject', sprintf( __( 'New Donation - Payment #%s', 'give' ), $payment_id ) );
+	$subject = give_get_option( 'donation_notification_subject', sprintf( esc_html__( 'New Donation - Payment #%s', 'give' ), $payment_id ) );
 	$subject = apply_filters( 'give_admin_donation_notification_subject', wp_strip_all_tags( $subject ), $payment_id );
 	$subject = give_do_email_tags( $subject, $payment_id );
 
@@ -144,7 +144,7 @@ function give_admin_email_notice( $payment_id = 0, $payment_data = array() ) {
 	$emails->__set( 'from_name', $from_name );
 	$emails->__set( 'from_email', $from_email );
 	$emails->__set( 'headers', $headers );
-	$emails->__set( 'heading', __( 'New Donation!', 'give' ) );
+	$emails->__set( 'heading', esc_html__( 'New Donation!', 'give' ) );
 
 	$emails->send( give_get_admin_notice_emails(), $subject, $message, $attachments );
 
@@ -195,12 +195,14 @@ function give_admin_notices_disabled( $payment_id = 0 ) {
  */
 function give_get_default_donation_notification_email() {
 
-	$default_email_body = __( 'Hi there,', 'give' ) . "\n\n" . __( 'This email is to inform you that a new donation has been made on your website: ', 'give' ) . '<a href="' . get_bloginfo( 'url' ) . '" target="_blank">' . get_bloginfo( 'url' ) . '</a>' . ".\n\n";
-	$default_email_body .= '<strong>' . __( 'Donor: ', 'give' ) . '</strong> ' . ' {name}' . "\n";
-	$default_email_body .= '<strong>' . __( 'Donation: ', 'give' ) . '</strong> ' . ' {donation}' . "\n";
-	$default_email_body .= '<strong>' . __( 'Amount: ', 'give' ) . '</strong> ' . ' {price}' . "\n";
-	$default_email_body .= '<strong>' . __( 'Payment Method: ', 'give' ) . '</strong> ' . ' {payment_method}' . "\n\n";
-	$default_email_body .= __( 'Thank you,', 'give' ) . "\n\n" . '{sitename}';
+	$default_email_body  = esc_html__( 'Hi there,', 'give' ) . "\n\n";
+	$default_email_body .= esc_html__( 'This email is to inform you that a new donation has been made on your website: ', 'give' ) . ' <a href="' . get_bloginfo( 'url' ) . '" target="_blank">' . get_bloginfo( 'url' ) . '</a>' . ".\n\n";
+	$default_email_body .= '<strong>' . esc_html__( 'Donor:', 'give' ) . '</strong> {name}' . "\n";
+	$default_email_body .= '<strong>' . esc_html__( 'Donation:', 'give' ) . '</strong> {donation}' . "\n";
+	$default_email_body .= '<strong>' . esc_html__( 'Amount:', 'give' ) . '</strong> {price}' . "\n";
+	$default_email_body .= '<strong>' . esc_html__( 'Payment Method:', 'give' ) . '</strong> {payment_method}' . "\n\n";
+	$default_email_body .= esc_html__( 'Thank you,', 'give' ) . "\n\n";
+	$default_email_body .= '{sitename}' . "\n";
 
 	$custom_message = give_get_option( 'donation_notification' );
 	$message        = ! empty( $custom_message ) ? $custom_message : $default_email_body;
@@ -219,20 +221,19 @@ function give_get_default_donation_notification_email() {
  */
 function give_get_default_donation_receipt_email() {
 
-	$default_email_body = __( 'Dear', 'give' ) . " {name},\n\n";
-	$default_email_body .= __( 'Thank you for your donation. Your generosity is appreciated! Here are the details of your donation:', 'give' ) . "\n\n";
-	$default_email_body .= '<strong>' . __( 'Donor', 'give' ) . ':</strong> ' . '{fullname}' . "\n";
-	$default_email_body .= '<strong>' . __( 'Donation', 'give' ) . ':</strong> ' . '{donation}' . "\n";
-	$default_email_body .= '<strong>' . __( 'Donation Date', 'give' ) . ':</strong> ' . '{date}' . "\n";
-	$default_email_body .= '<strong>' . __( 'Amount', 'give' ) . ':</strong> ' . '{price}' . "\n";
-	$default_email_body .= '<strong>' . __( 'Payment Method', 'give' ) . ':</strong> ' . '{payment_method}' . "\n";
-	$default_email_body .= '<strong>' . __( 'Payment ID', 'give' ) . ':</strong> ' . '{payment_id}' . "\n";
-	$default_email_body .= '<strong>' . __( 'Receipt ID', 'give' ) . ':</strong> ' . '{receipt_id}' . "\n\n";
+	$default_email_body  = esc_html__( 'Dear', 'give' ) . " {name},\n\n";
+	$default_email_body .= esc_html__( 'Thank you for your donation. Your generosity is appreciated! Here are the details of your donation:', 'give' ) . "\n\n";
+	$default_email_body .= '<strong>' . esc_html__( 'Donor:', 'give' ) . '</strong> {fullname}' . "\n";
+	$default_email_body .= '<strong>' . esc_html__( 'Donation:', 'give' ) . '</strong> {donation}' . "\n";
+	$default_email_body .= '<strong>' . esc_html__( 'Donation Date:', 'give' ) . '</strong> {date}' . "\n";
+	$default_email_body .= '<strong>' . esc_html__( 'Amount:', 'give' ) . '</strong> {price}' . "\n";
+	$default_email_body .= '<strong>' . esc_html__( 'Payment Method:', 'give' ) . '</strong> {payment_method}' . "\n";
+	$default_email_body .= '<strong>' . esc_html__( 'Payment ID:', 'give' ) . '</strong> {payment_id}' . "\n";
+	$default_email_body .= '<strong>' . esc_html__( 'Receipt ID:', 'give' ) . '</strong> {receipt_id}' . "\n\n";
 	$default_email_body .= '{receipt_link}' . "\n\n";
-
 	$default_email_body .= "\n\n";
-	$default_email_body .= __( 'Sincerely,', 'give' );
-	$default_email_body .= "\n" . '{sitename}' . "\n";
+	$default_email_body .= esc_html__( 'Sincerely,', 'give' ) . "\n";
+	$default_email_body .= '{sitename}' . "\n";
 
 	$custom_message = give_get_option( 'donation_receipt' );
 

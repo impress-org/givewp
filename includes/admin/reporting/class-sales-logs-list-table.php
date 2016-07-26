@@ -85,7 +85,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 				$value = '<div class="give-donation-status status-' . sanitize_title( give_get_payment_status( $payment, true ) ) . '"><span class="give-donation-status-icon"></span> ' . give_get_payment_status( $payment, true ) . '</div>';
 
 				if ( $payment->mode == 'test' ) {
-					$value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label" data-tooltip="' . __( 'This payment was made in test mode', 'give' ) . '">' . __( 'Test', 'give' ) . '</span>';
+					$value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label" data-tooltip="' . esc_attr__( 'This payment was made in test mode', 'give' ) . '">' . esc_html__( 'Test', 'give' ) . '</span>';
 				}
 
 				return $value;
@@ -107,13 +107,13 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'ID'         => __( 'Log ID', 'give' ),
-			'user_id'    => __( 'Donor', 'give' ),
+			'ID'         => esc_html__( 'Log ID', 'give' ),
+			'user_id'    => esc_html__( 'Donor', 'give' ),
 			'form'       => give_get_forms_label_singular(),
-			'amount'     => __( 'Donation Amount', 'give' ),
-			'status'     => __( 'Status', 'give' ),
-			'payment_id' => __( 'Transaction ID', 'give' ),
-			'date'       => __( 'Date', 'give' )
+			'amount'     => esc_html__( 'Donation Amount', 'give' ),
+			'status'     => esc_html__( 'Status', 'give' ),
+			'payment_id' => esc_html__( 'Transaction ID', 'give' ),
+			'date'       => esc_html__( 'Date', 'give' )
 		);
 
 		return $columns;
@@ -302,7 +302,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 
 		if ( $give_forms ) {
 			echo '<select name="form" id="give-log-form-filter">';
-			echo '<option value="0">' . __( 'All', 'give' ) . '</option>';
+			echo '<option value="0">' . esc_html__( 'All', 'give' ) . '</option>';
 			foreach ( $give_forms as $form ) {
 				echo '<option value="' . $form . '"' . selected( $form, $this->get_filtered_give_form() ) . '>' . esc_html( get_the_title( $form ) ) . '</option>';
 			}

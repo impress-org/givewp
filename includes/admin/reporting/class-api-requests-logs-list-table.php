@@ -90,10 +90,10 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'ID'      => __( 'Log ID', 'give' ),
-			'details' => __( 'Request Details', 'give' ),
-			'ip'      => __( 'Request IP', 'give' ),
-			'date'    => __( 'Date', 'give' )
+			'ID'      => esc_html__( 'Log ID', 'give' ),
+			'details' => esc_html__( 'Request Details', 'give' ),
+			'ip'      => esc_html__( 'Request IP', 'give' ),
+			'date'    => esc_html__( 'Date', 'give' )
 		);
 
 		return $columns;
@@ -129,23 +129,23 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 */
 	public function column_details( $item ) {
 		?>
-		<a href="#TB_inline?width=640&amp;inlineId=log-details-<?php echo $item['ID']; ?>" class="thickbox" title="<?php _e( 'View Request Details', 'give' ); ?> "><?php _e( 'View Request', 'give' ); ?></a>
+		<a href="#TB_inline?width=640&amp;inlineId=log-details-<?php echo $item['ID']; ?>" class="thickbox" title="<?php esc_attr_e( 'View Request Details', 'give' ); ?> "><?php esc_html_e( 'View Request', 'give' ); ?></a>
 		<div id="log-details-<?php echo $item['ID']; ?>" style="display:none;">
 			<?php
 
 			$request = get_post_field( 'post_excerpt', $item['ID'] );
 			$error   = get_post_field( 'post_content', $item['ID'] );
-			echo '<p><strong>' . __( 'API Request:', 'give' ) . '</strong></p>';
+			echo '<p><strong>' . esc_html__( 'API Request:', 'give' ) . '</strong></p>';
 			echo '<div>' . $request . '</div>';
 			if ( ! empty( $error ) ) {
-				echo '<p><strong>' . __( 'Error', 'give' ) . '</strong></p>';
+				echo '<p><strong>' . esc_html__( 'Error', 'give' ) . '</strong></p>';
 				echo '<div>' . esc_html( $error ) . '</div>';
 			}
-			echo '<p><strong>' . __( 'API User:', 'give' ) . '</strong></p>';
+			echo '<p><strong>' . esc_html__( 'API User:', 'give' ) . '</strong></p>';
 			echo '<div>' . get_post_meta( $item['ID'], '_give_log_user', true ) . '</div>';
-			echo '<p><strong>' . __( 'API Key:', 'give' ) . '</strong></p>';
+			echo '<p><strong>' . esc_html__( 'API Key:', 'give' ) . '</strong></p>';
 			echo '<div>' . get_post_meta( $item['ID'], '_give_log_key', true ) . '</div>';
-			echo '<p><strong>' . __( 'Request Date:', 'give' ) . '</strong></p>';
+			echo '<p><strong>' . esc_html__( 'Request Date:', 'give' ) . '</strong></p>';
 			echo '<div>' . get_post_field( 'post_date', $item['ID'] ) . '</div>';
 			?>
 		</div>

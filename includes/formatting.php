@@ -182,11 +182,11 @@ function give_human_format_large_amount( $amount ) {
 
     // Calculate large number formatted amount.
     if ( 4 < $amount_count_parts ){
-        $sanitize_amount =  sprintf( __( '%s trillion', 'give' ), round( ( $sanitize_amount / 1000000000000 ), 2 ) );
+        $sanitize_amount =  sprintf( esc_html__( '%s trillion', 'give' ), round( ( $sanitize_amount / 1000000000000 ), 2 ) );
     } elseif ( 3 < $amount_count_parts ){
-        $sanitize_amount =  sprintf( __( '%s billion', 'give' ), round( ( $sanitize_amount / 1000000000 ), 2 ));
+        $sanitize_amount =  sprintf( esc_html__( '%s billion', 'give' ), round( ( $sanitize_amount / 1000000000 ), 2 ));
     } elseif ( 2 < $amount_count_parts  ) {
-        $sanitize_amount =  sprintf( __( '%s million', 'give' ), round( ( $sanitize_amount / 1000000), 2 ) );
+        $sanitize_amount =  sprintf( esc_html__( '%s million', 'give' ), round( ( $sanitize_amount / 1000000), 2 ) );
     } else{
         $sanitize_amount = give_format_amount( $amount );
     }

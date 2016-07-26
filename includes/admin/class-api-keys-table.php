@@ -51,8 +51,8 @@ class Give_API_Keys_Table extends WP_List_Table {
 
 		// Set parent defaults
 		parent::__construct( array(
-			'singular' => __( 'API Key', 'give' ),     // Singular name of the listed records
-			'plural'   => __( 'API Keys', 'give' ),    // Plural name of the listed records
+			'singular' => esc_html__( 'API Key', 'give' ),     // Singular name of the listed records
+			'plural'   => esc_html__( 'API Keys', 'give' ),    // Plural name of the listed records
 			'ajax'     => false                       // Does this table support ajax?
 		) );
 
@@ -140,7 +140,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 					'tab'       => 'logs',
 					's'         => $item['email']
 				), 'edit.php' ) ),
-				__( 'View API Log', 'give' )
+				esc_html__( 'View API Log', 'give' )
 			);
 		}
 
@@ -151,7 +151,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 				'give_action'      => 'process_api_key',
 				'give_api_process' => 'regenerate'
 			) ), 'give-api-nonce' ) ),
-			__( 'Reissue', 'give' )
+			esc_html__( 'Reissue', 'give' )
 		);
 		$actions['revoke']  = sprintf(
 			'<a href="%s" class="give-revoke-api-key give-delete">%s</a>',
@@ -160,7 +160,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 				'give_action'      => 'process_api_key',
 				'give_api_process' => 'revoke'
 			) ), 'give-api-nonce' ) ),
-			__( 'Revoke', 'give' )
+			esc_html__( 'Revoke', 'give' )
 		);
 
 		$actions = apply_filters( 'give_api_row_actions', array_filter( $actions ) );
@@ -177,10 +177,10 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'user'   => __( 'Username', 'give' ),
-			'key'    => __( 'Public Key', 'give' ),
-			'token'  => __( 'Token', 'give' ),
-			'secret' => __( 'Secret Key', 'give' )
+			'user'   => esc_html__( 'Username', 'give' ),
+			'key'    => esc_html__( 'Public Key', 'give' ),
+			'token'  => esc_html__( 'Token', 'give' ),
+			'secret' => esc_html__( 'Secret Key', 'give' )
 		);
 
 		return $columns;
@@ -205,7 +205,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 		<input type="hidden" name="give_api_process" value="generate"/>
 		<?php wp_nonce_field( 'give-api-nonce' ); ?>
 		<?php echo Give()->html->ajax_user_search(); ?>
-		<?php submit_button( __( 'Generate New API Keys', 'give' ), 'secondary', 'submit', false ); ?>
+		<?php submit_button( esc_html__( 'Generate New API Keys', 'give' ), 'secondary', 'submit', false ); ?>
 		<?php
 		$give_api_is_bottom = true;
 	}

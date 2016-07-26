@@ -75,16 +75,16 @@ class Give_Stats {
 	 */
 	public function get_predefined_dates() {
 		$predefined = array(
-			'today'        => __( 'Today', 'give' ),
-			'yesterday'    => __( 'Yesterday', 'give' ),
-			'this_week'    => __( 'This Week', 'give' ),
-			'last_week'    => __( 'Last Week', 'give' ),
-			'this_month'   => __( 'This Month', 'give' ),
-			'last_month'   => __( 'Last Month', 'give' ),
-			'this_quarter' => __( 'This Quarter', 'give' ),
-			'last_quarter' => __( 'Last Quarter', 'give' ),
-			'this_year'    => __( 'This Year', 'give' ),
-			'last_year'    => __( 'Last Year', 'give' )
+			'today'        => esc_html__( 'Today', 'give' ),
+			'yesterday'    => esc_html__( 'Yesterday', 'give' ),
+			'this_week'    => esc_html__( 'This Week', 'give' ),
+			'last_week'    => esc_html__( 'Last Week', 'give' ),
+			'this_month'   => esc_html__( 'This Month', 'give' ),
+			'last_month'   => esc_html__( 'Last Month', 'give' ),
+			'this_quarter' => esc_html__( 'This Quarter', 'give' ),
+			'last_quarter' => esc_html__( 'Last Quarter', 'give' ),
+			'this_year'    => esc_html__( 'This Year', 'give' ),
+			'last_year'    => esc_html__( 'Last Year', 'give' )
 		);
 
 		return apply_filters( 'give_stats_predefined_dates', $predefined );
@@ -436,7 +436,7 @@ class Give_Stats {
 
 		} else {
 
-			return new WP_Error( 'invalid_date', __( 'Improper date provided.', 'give' ) );
+			return new WP_Error( 'invalid_date', esc_html__( 'Improper date provided.', 'give' ) );
 
 		}
 

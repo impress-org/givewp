@@ -154,7 +154,7 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 	public function process_step() {
 
 		if ( ! $this->can_export() ) {
-			wp_die( __( 'You do not have permission to delete test transactions.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die( esc_html__( 'You do not have permission to delete test transactions.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 		}
 
 		$had_data = $this->get_data();
@@ -176,7 +176,7 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 			}
 
 			$this->done    = true;
-			$this->message = __( 'Test transactions successfully deleted.', 'give' );
+			$this->message = esc_html__( 'Test transactions successfully deleted.', 'give' );
 
 			return false;
 		}
