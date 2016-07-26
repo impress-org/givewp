@@ -169,6 +169,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * New: Switch a transaction to a different form - https://github.com/WordImpress/Give/issues/429
 * New: Human readable large monetary goal formats - https://github.com/WordImpress/Give/issues/650
 * New: Address the plugin's RTL issues with a complete audit & resolution - thanks @ramiy! - https://github.com/WordImpress/Give/issues/736
+* New: New template added for for Give goals - https://github.com/WordImpress/Give/issues/411
 * Tweak: Easier and more understandable strings according for translations i18n - thanks @ramiy! - https://github.com/WordImpress/Give/issues/451
 * Tweak: Update the country dropdown to use the new ISO country codes for islands in Dutch West Indies - https://github.com/WordImpress/Give/issues/698
 * Tweak: Updated to the latest version of CMB2 & tested compatibility - https://github.com/WordImpress/Give/issues/670
