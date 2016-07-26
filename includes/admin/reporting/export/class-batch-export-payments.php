@@ -1,8 +1,8 @@
 <?php
 /**
- * Payments Export Class
+ * Payments Export Class.
  *
- * This class handles payment export in batches
+ * This class handles payment export in batches.
  *
  * @package     Give
  * @subpackage  Admin/Reports
@@ -11,7 +11,7 @@
  * @since       1.5
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -24,41 +24,41 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Give_Batch_Payments_Export extends Give_Batch_Export {
 
 	/**
-	 * Our export type. Used for export-type specific filters/actions
+	 * Our export type. Used for export-type specific filters/actions.
 	 * @var string
 	 * @since 1.5
 	 */
 	public $export_type = 'payments';
 
 	/**
-	 * Set the CSV columns
+	 * Set the CSV columns.
 	 *
 	 * @access public
 	 * @since 1.5
-	 * @return array $cols All the columns
+	 * @return array $cols All the columns.
 	 */
 	public function csv_cols() {
 		$cols = array(
-			'id'        => __( 'ID', 'give' ), // unaltered payment ID (use for querying)
-			'seq_id'    => __( 'Payment Number', 'give' ), // sequential payment ID
-			'email'     => __( 'Email', 'give' ),
-			'first'     => __( 'First Name', 'give' ),
-			'last'      => __( 'Last Name', 'give' ),
-			'address1'  => __( 'Address', 'give' ),
-			'address2'  => __( 'Address (Line 2)', 'give' ),
-			'city'      => __( 'City', 'give' ),
-			'state'     => __( 'State', 'give' ),
-			'country'   => __( 'Country', 'give' ),
-			'zip'       => __( 'Zip / Postal Code', 'give' ),
-			'form_id'   => __( 'Form ID', 'give' ),
-			'form_name' => __( 'Form Name', 'give' ),
-			'amount'    => __( 'Amount', 'give' ) . ' (' . html_entity_decode( give_currency_filter( '' ) ) . ')',
-			'gateway'   => __( 'Payment Method', 'give' ),
-			'trans_id'  => __( 'Transaction ID', 'give' ),
-			'key'       => __( 'Purchase Key', 'give' ),
-			'date'      => __( 'Date', 'give' ),
-			'user'      => __( 'User', 'give' ),
-			'status'    => __( 'Status', 'give' )
+			'id'        => esc_html__( 'ID', 'give' ), // unaltered payment ID (use for querying).
+			'seq_id'    => esc_html__( 'Payment Number', 'give' ), // sequential payment ID.
+			'email'     => esc_html__( 'Email', 'give' ),
+			'first'     => esc_html__( 'First Name', 'give' ),
+			'last'      => esc_html__( 'Last Name', 'give' ),
+			'address1'  => esc_html__( 'Address', 'give' ),
+			'address2'  => esc_html__( 'Address (Line 2)', 'give' ),
+			'city'      => esc_html__( 'City', 'give' ),
+			'state'     => esc_html__( 'State', 'give' ),
+			'country'   => esc_html__( 'Country', 'give' ),
+			'zip'       => esc_html__( 'Zip / Postal Code', 'give' ),
+			'form_id'   => esc_html__( 'Form ID', 'give' ),
+			'form_name' => esc_html__( 'Form Name', 'give' ),
+			'amount'    => esc_html__( 'Amount', 'give' ) . ' (' . html_entity_decode( give_currency_filter( '' ) ) . ')',
+			'gateway'   => esc_html__( 'Payment Method', 'give' ),
+			'trans_id'  => esc_html__( 'Transaction ID', 'give' ),
+			'key'       => esc_html__( 'Purchase Key', 'give' ),
+			'date'      => esc_html__( 'Date', 'give' ),
+			'user'      => esc_html__( 'User', 'give' ),
+			'status'    => esc_html__( 'Status', 'give' )
 		);
 
 		if ( ! give_get_option( 'enable_sequential' ) ) {
@@ -69,13 +69,12 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 	}
 
 	/**
-	 * Get the Export Data
+	 * Get the Export Data.
 	 *
 	 * @access public
 	 * @since 1.5
-	 * @global object $wpdb Used to query the database using the WordPress
-	 *   Database API
-	 * @return array $data The data for the CSV file
+	 * @global object $wpdb Used to query the database using the WordPress database API.
+	 * @return array $data The data for the CSV file.
 	 */
 	public function get_data() {
 		global $wpdb;
@@ -158,7 +157,7 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 	}
 
 	/**
-	 * Return the calculated completion percentage
+	 * Return the calculated completion percentage.
 	 *
 	 * @since 1.5
 	 * @return int
@@ -195,11 +194,11 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 	}
 
 	/**
-	 * Set the properties specific to the payments export
+	 * Set the properties specific to the payments export.
 	 *
 	 * @since 1.5
 	 *
-	 * @param array $request The Form Data passed into the batch processing
+	 * @param array $request The Form Data passed into the batch processing.
 	 */
 	public function set_properties( $request ) {
 		$this->start  = isset( $request['start'] ) ? sanitize_text_field( $request['start'] ) : '';
