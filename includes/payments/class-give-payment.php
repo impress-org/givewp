@@ -639,7 +639,7 @@ final class Give_Payment {
 
 									$price = $item['price'];
 
-									if ( 'publish' === $this->status || 'complete' === $this->status || 'revoked' === $this->status ) {
+									if ( 'publish' === $this->status || 'complete' === $this->status ) {
 
 										// Add sales logs
 										$log_date = date_i18n( 'Y-m-d G:i:s', current_time( 'timestamp' ) );
@@ -683,7 +683,7 @@ final class Give_Payment {
 										wp_delete_post( $log->ID, true );
 									}
 
-									if ( 'publish' === $this->status || 'complete' === $this->status || 'revoked' === $this->status ) {
+									if ( 'publish' === $this->status || 'complete' === $this->status ) {
 										$form = new Give_Donate_Form( $item['id'] );
 										$form->decrease_sales( $quantity );
 										$form->decrease_earnings( $item['amount'] );
