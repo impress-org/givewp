@@ -739,9 +739,9 @@ function give_get_sales_by_date( $day = null, $month_num = null, $year = null, $
  *
  * @since 1.0
  *
- * @param int $payment_id Payment ID to check against
+ * @param int $payment_id Payment ID to check against.
  *
- * @return bool true if complete, false otherwise
+ * @return bool true if complete, false otherwise.
  */
 function give_is_payment_complete( $payment_id ) {
 	$payment = new Give_Payment( $payment_id );
@@ -760,7 +760,7 @@ function give_is_payment_complete( $payment_id ) {
 }
 
 /**
- * Get Total Sales (Donations)
+ * Get Total Donations.
  *
  * @since 1.0
  * @return int $count Total sales

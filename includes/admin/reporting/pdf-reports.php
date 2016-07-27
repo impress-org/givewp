@@ -1,6 +1,6 @@
 <?php
 /**
- * PDF Report Generation Functions
+ * PDF Report Generation Functions.
  *
  * @package     Give
  * @subpackage  Admin/Reports
@@ -9,13 +9,13 @@
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
- * Generate PDF Reports
+ * Generate PDF Reports.
  *
  * Generates PDF report on donations and income for all forms for the current year.
  *
@@ -40,12 +40,12 @@ function give_generate_pdf( $data ) {
 
 	$daterange = utf8_decode(
 		sprintf(
-			/* translators: 1: start date 2: end date */
+		/* translators: 1: start date 2: end date */
 			esc_html__( '%1$s to %2$s', 'give' ),
 			date_i18n( get_option( 'date_format' ), mktime( 0, 0, 0, 1, 1, date( 'Y' ) ) ),
 			date_i18n( get_option( 'date_format' ) )
 		)
-	);	
+	);
 
 	$pdf = new give_pdf();
 	$pdf->AddPage( 'L', 'A4' );
@@ -54,7 +54,7 @@ function give_generate_pdf( $data ) {
 	$pdf->SetAuthor( utf8_decode( __( 'Give - Democratizing Generosity', 'give' ) ) );
 	$pdf->SetCreator( utf8_decode( __( 'Give - Democratizing Generosity', 'give' ) ) );
 
-	$pdf->Image( GIVE_PLUGIN_URL . 'assets/images/give-logo-small.png', 247, 8 );
+	$pdf->Image( apply_filters( 'give_pdf_export_logo', GIVE_PLUGIN_URL . 'assets/images/give-logo-small.png' ), 247, 8 );
 
 	$pdf->SetMargins( 8, 8, 8 );
 	$pdf->SetX( 8 );
@@ -135,7 +135,7 @@ function give_generate_pdf( $data ) {
 		$pdf->SetWidths( array( 280 ) );
 		$title = utf8_decode(
 			sprintf(
-				/* translators: %s: form plural label */
+			/* translators: %s: form plural label */
 				esc_html__( 'No %s found.', 'give' ),
 				give_get_forms_label_plural()
 			)
@@ -161,10 +161,10 @@ function give_generate_pdf( $data ) {
 add_action( 'give_generate_pdf', 'give_generate_pdf' );
 
 /**
- * Draws Chart for PDF Report
+ * Draws Chart for PDF Report.
  *
  * Draws the sales and earnings chart for the PDF report and then retrieves the
- * URL of that chart to display on the PDF Report
+ * URL of that chart to display on the PDF Report.
  *
  * @since  1.1.4.0
  * @uses   GoogleChart

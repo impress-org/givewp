@@ -652,6 +652,9 @@ form[id*='give-form'] {
     margin: 3px 6px;
     display: none;
   }
+  .give-submit {
+    float:left;
+  }
 }
 
 p.give-recurring-login-toggle {

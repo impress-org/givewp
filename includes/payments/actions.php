@@ -209,12 +209,23 @@ function give_mark_abandoned_donations() {
 	remove_filter( 'posts_where', 'give_filter_where_older_than_week' );
 
 	if ( $payments ) {
+        /**
+         * Filter payment gateways:  Used to set payment gateways which can be skip while transferring pending payment to abandon.
+         *
+         * @since 1.6
+         *
+         * @param array $skip_payment_gateways Array of payment gateways
+         */
+	    $skip_payment_gateways = apply_filters( 'give_mark_abandoned_donation_gateways', array( 'offline' ) );
+
 		foreach ( $payments as $payment ) {
 			$gateway = give_get_payment_gateway( $payment );
-			//Skip offline gateway payments
-			if ( $gateway == 'offline' ) {
+
+			// Skip payment gateways.
+			if ( in_array( $gateway, $skip_payment_gateways ) ) {
 				continue;
 			}
+
 			$payment->status = 'abandoned';
 			$payment->save();
 		}

@@ -78,6 +78,8 @@ body.rtl {
         float: right;
       }
 
+
+
     }
 
     #give-final-total-wrap {
@@ -95,9 +97,16 @@ body.rtl {
 
     }
 
+    //Purchase button
+    [id*='give-purchase-button'] {
+      float: right;
+      margin: 0 0 0 10px;
+    }
+
   }
 
   .give_error, .give_success {
+    padding: 1em 2em 1em 1em;
     border-left: 0;
     border-right: 4px solid $red;
 
@@ -303,5 +312,11 @@ body.rtl {
   .qtip-content {
     text-align: right;
   }
+
+  //Recurring
+  [id*='give-form'].give-recurring-form-admin div.give-donation-amount, [id*='give-form'].give-recurring-form-admin p.give-donation-amount {
+    float: right;
+  }
+
 
 }
