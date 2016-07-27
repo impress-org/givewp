@@ -168,7 +168,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * New: Added a "Reset Password" option to the donation form if the user is prompted to login - https://github.com/WordImpress/Give/issues/723
 * New: Switch a transaction to a different form - https://github.com/WordImpress/Give/issues/429
 * New: Human readable large monetary goal formats - https://github.com/WordImpress/Give/issues/650
-* New: Address the plugin's RTL issues with a complete audit & resolution - thanks @ramiy! - https://github.com/WordImpress/Give/issues/736
+* New: Address the plugin's right-to-left issues with a complete audit & resolution - thanks @ramiy! - https://github.com/WordImpress/Give/issues/736
 * New: New template added for for Give goals - https://github.com/WordImpress/Give/issues/411
 * New: Easier and more understandable strings according for translations i18n - thanks @ramiy! - https://github.com/WordImpress/Give/issues/451
 * New: Added a new filter "give_pdf_export_logo" to easily customize the export logo - https://github.com/WordImpress/Give/issues/802

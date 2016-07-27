@@ -106,6 +106,7 @@ body.rtl {
   }
 
   .give_error, .give_success {
+    padding: 1em 2em 1em 1em;
     border-left: 0;
     border-right: 4px solid $red;
 
