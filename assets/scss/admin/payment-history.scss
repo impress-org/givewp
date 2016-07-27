@@ -139,7 +139,7 @@ tr.status-refunded td {
     background-color: $status-revoked;
   }
 
-  &.status-subscription > span, &.status-give_subscription > span {
+  &.status-subscription > span, &.status-renewal > span, &.status-give_subscription > span {
     background-color: $status-subscription;
   }
 
