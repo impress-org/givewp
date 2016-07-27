@@ -188,7 +188,7 @@ function give_update_payment_details( $data ) {
 	$payment->status = $status;
 
 	// Adjust total store earnings if the payment total has been changed
-	if ( $new_total !== $curr_total && ( 'publish' == $status || 'revoked' == $status ) ) {
+	if ( $new_total !== $curr_total && 'publish' == $status ) {
 
 		if ( $new_total > $curr_total ) {
 			// Increase if our new total is higher
