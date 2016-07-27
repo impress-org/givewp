@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Class Give_Plugin_Settings
  *
@@ -322,12 +323,12 @@ class Give_Plugin_Settings {
 							'default' => 'before',
 						),
 						array(
-							'name'    => esc_html__( 'Thousands Separator', 'give' ),
-							'desc'    => esc_html__( 'The symbol (typically , or .) to separate thousands.', 'give' ),
-							'id'      => 'thousands_separator',
-							'type'    => 'text_small',
+							'name'            => esc_html__( 'Thousands Separator', 'give' ),
+							'desc'            => esc_html__( 'The symbol (typically , or .) to separate thousands.', 'give' ),
+							'id'              => 'thousands_separator',
+							'type'            => 'text_small',
 							'sanitization_cb' => 'give_sanitize_thousand_separator',
-							'default' => ',',
+							'default'         => ',',
 						),
 						array(
 							'name'    => esc_html__( 'Decimal Separator', 'give' ),
@@ -469,14 +470,14 @@ class Give_Plugin_Settings {
 						array(
 							'name' => esc_html__( 'Enable Floating Labels', 'give' ),
 							/* translators: %s: http://bradfrost.com/blog/post/float-label-pattern/ */
-							'desc' => sprintf( wp_kses ( __( 'Enable this option if you would like to enable <a href="%s" target="_blank">floating labels</a> in Give\'s donation forms. <br />Be aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ) , array(  'a' => array( 'href' => array() ) ) ), esc_url( 'http://bradfrost.com/blog/post/float-label-pattern/' ) ),
+							'desc' => sprintf( wp_kses( __( 'Enable this option if you would like to enable <a href="%s" target="_blank">floating labels</a> in Give\'s donation forms. <br />Be aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), array( 'a' => array( 'href' => array() ) ) ), esc_url( 'http://bradfrost.com/blog/post/float-label-pattern/' ) ),
 							'id'   => 'enable_floatlabels',
 							'type' => 'checkbox'
 						),
 						array(
 							'name' => esc_html__( 'Disable Welcome Screen', 'give' ),
 							/* translators: %s: about page URL */
-							'desc' => sprintf( wp_kses ( __( 'Enable this option if you would like to disable the Give Welcome screen every time Give is activated and/or updated. You can always access the <a href="%s">Welcome Screen</a> if you want in the future.', 'give' ), array(  'a' => array( 'href' => array() ) ) ), esc_url( admin_url( 'index.php?page=give-about' ) ) ),
+							'desc' => sprintf( wp_kses( __( 'Enable this option if you would like to disable the Give Welcome screen every time Give is activated and/or updated. You can always access the <a href="%s">Welcome Screen</a> if you want in the future.', 'give' ), array( 'a' => array( 'href' => array() ) ) ), esc_url( admin_url( 'index.php?page=give-about' ) ) ),
 							'id'   => 'disable_welcome',
 							'type' => 'checkbox'
 						),
@@ -633,7 +634,7 @@ class Give_Plugin_Settings {
 						array(
 							'id'      => 'admin_notice_emails',
 							'name'    => esc_html__( 'Donation Notification Emails', 'give' ),
-							'desc'    => __( 'Enter the email address(es) that should receive a notification anytime a donation is made, please only enter <span class="give-underline">one email address per line</span> and not separated by commas.', 'give' ),
+							'desc'    => __( 'Enter the email address(es) that should receive a notification anytime a donation is made, please only enter <span class="give-underline">one email address per line</span> and <strong>not separated by commas</strong>.', 'give' ),
 							'type'    => 'textarea',
 							'default' => get_bloginfo( 'admin_email' )
 						),
@@ -861,7 +862,7 @@ function give_get_option( $key = '', $default = false ) {
  *
  * @since 1.0
  *
- * @param string $key The Key to update
+ * @param string          $key The Key to update
  * @param string|bool|int $value The value to set the key to
  *
  * @return boolean True if updated, false if not.
@@ -1124,7 +1125,7 @@ function give_description_callback( $field_object, $escaped_value, $object_id, $
  * Gets a number of posts and displays them as options
  *
  * @param  array $query_args Optional. Overrides defaults.
- * @param  bool $force Force the pages to be loaded even if not on settings
+ * @param  bool  $force Force the pages to be loaded even if not on settings
  *
  * @see: https://github.com/WebDevStudios/CMB2/wiki/Adding-your-own-field-types
  * @return array An array of options that matches the CMB2 options array
