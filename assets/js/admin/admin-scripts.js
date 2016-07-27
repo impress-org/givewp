@@ -47,12 +47,23 @@ jQuery.noConflict();
     /**
      * Unformat Currency
      *
-     * @param   {number} price
+     * @use string give_vars.currency_decimals Number of decimals
+     *
+     * @param   {number}      price Price
+     * @param   {number|bool} dp    Number of decimals
+     *
      * @returns {string}
      */
-    function give_unformat_currency( price ) {
-        return parseFloat( accounting.unformat( price, give_vars.decimal_separator ) )
-                .toFixed( give_vars.currency_decimals );
+    function give_unformat_currency( price, dp ) {
+        price = parseFloat( accounting.unformat( price, give_vars.decimal_separator ) );
+
+        // Set default value for number of decimals.
+        if( undefined != dp) {
+            dp = ! parseInt( dp ) ? give_vars.currency_decimals : dp;
+            price = parseFloat( price.toFixed( dp ) );
+        }
+
+        return price.toString();
     }
 
 
