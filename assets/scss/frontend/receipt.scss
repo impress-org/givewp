@@ -16,11 +16,13 @@ body.give_receipt_page {
   margin: 0;
   font-family: Helvetica, sans-serif;
   font-size: 12px;
+
   #give_receipt_wrapper {
     width: 660px;
     margin: 0 auto;
     padding: 50px 0;
   }
+
   table {
     display: table;
     width: 100%;
@@ -39,10 +41,12 @@ body.give_receipt_page {
     padding: 6px 10px 6px 0;
     font-weight: normal;
   }
+
   th {
     font-weight: bold;
     text-transform: uppercase;
   }
+
   h3 {
     font-size: 22px;
     margin: 40px 0 5px;
@@ -63,6 +67,7 @@ table#give_donation_receipt {
 }
 
 table#give_donation_receipt {
+
   td, th, td, th {
     text-align: left;
   }
@@ -71,9 +76,11 @@ table#give_donation_receipt {
     font-size:18px;
     text-align:center;
     display: block;
+
     > span {
       font-size:16px;
     }
+
   }
 
   li {
