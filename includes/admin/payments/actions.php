@@ -239,8 +239,8 @@ function give_update_payment_details( $data ) {
         }
 
 
-        // If purchase was completed and not ever refunded, adjust stats of forms
-        if ( 'revoked' == $status || 'publish' == $status ) {
+        // If purchase was completed, adjust stats of forms
+        if ( 'publish' == $status ) {
 
             // Decrease sale of old give form. For other payment status 
             $current_form = new Give_Donate_Form( $current_form_id );
