@@ -864,6 +864,11 @@ jQuery.noConflict();
                     return false;
                 }
 
+                // Check if current number is negative or not.
+                if( -1 !== price_string.indexOf('-') ) {
+                    price_string = price_string.replace('-', '' );
+                }
+
                 // Update format price string in input field.
                 $(this).val(price_string);
             });
