@@ -1433,7 +1433,7 @@ final class Give_Payment {
 		$process_refund = true;
 
 		// If the payment was not in publish or revoked status, don't decrement stats as they were never incremented
-		if ( ( 'publish' != $this->old_status && 'revoked' != $this->old_status ) || 'refunded' != $this->status ) {
+		if ( 'publish' != $this->old_status || 'refunded' != $this->status ) {
 			$process_refund = false;
 		}
 
@@ -1480,7 +1480,7 @@ final class Give_Payment {
 		$process_pending = true;
 
 		// If the payment was not in publish or revoked status, don't decrement stats as they were never incremented
-		if ( ( 'publish' != $this->old_status && 'revoked' != $this->old_status ) || 'pending' != $this->status ) {
+		if ( 'publish' != $this->old_status || 'pending' != $this->status ) {
 			$process_pending = false;
 		}
 
@@ -1515,7 +1515,7 @@ final class Give_Payment {
         $process_cancelled = true;
 
         // If the payment was not in publish or revoked status, don't decrement stats as they were never incremented
-        if ( ( 'publish' != $this->old_status && 'revoked' != $this->old_status ) || 'cancelled' != $this->status ) {
+        if ( 'publish' != $this->old_status || 'cancelled' != $this->status ) {
             $process_cancelled = false;
         }
 
