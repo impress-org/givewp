@@ -33,7 +33,10 @@ function give_reports_page() {
 	$active_tab   = isset( $_GET['tab'] ) ? $_GET['tab'] : 'reports';
 	?>
 	<div class="wrap">
-		<h1 class="nav-tab-wrapper">
+
+		<h1><?php esc_html_e( 'Give Reports', 'give' ); ?></h1>
+
+		<h2 class="nav-tab-wrapper">
 			<a href="<?php echo esc_url( add_query_arg( array(
 				'tab'              => 'reports',
 				'settings-updated' => false
@@ -53,7 +56,7 @@ function give_reports_page() {
 				'settings-updated' => false
 			), $current_page ) ); ?>" class="nav-tab <?php echo $active_tab == 'tools' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Tools', 'give' ); ?></a>
 			<?php do_action( 'give_reports_tabs' ); ?>
-		</h1>
+		</h2>
 
 		<?php
 		do_action( 'give_reports_page_top' );

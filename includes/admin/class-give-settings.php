@@ -141,7 +141,9 @@ class Give_Plugin_Settings {
 
 		<div class="wrap give_settings_page cmb2_options_page <?php echo $this->key; ?>">
 
-			<h1 class="nav-tab-wrapper">
+			<h1><?php esc_html_e( 'Give Settings', 'give' ); ?></h1>
+
+			<h2 class="nav-tab-wrapper">
 				<?php
 				foreach ( $this->give_get_settings_tabs() as $tab_id => $tab_name ) {
 
@@ -160,7 +162,7 @@ class Give_Plugin_Settings {
 
 				}
 				?>
-			</h1>
+			</h2>
 
 			<?php
 			//Loop through and output settings

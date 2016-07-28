@@ -217,7 +217,7 @@ class Give_Welcome {
 	public function tabs() {
 		$selected = isset( $_GET['page'] ) ? $_GET['page'] : 'give-about';
 		?>
-		<h1 class="nav-tab-wrapper">
+		<h2 class="nav-tab-wrapper">
 			<a class="nav-tab <?php echo $selected == 'give-about' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'give-about' ), 'index.php' ) ) ); ?>">
 				<?php esc_html_e( "About Give", 'give' ); ?>
 			</a>
@@ -230,7 +230,7 @@ class Give_Welcome {
 			<a class="nav-tab <?php echo $selected == 'give-add-ons' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( null, 'index.php' ) ) . 'edit.php?post_type=give_forms&page=give-addons'; ?>">
 				<?php esc_html_e( 'Add-ons', 'give' ); ?>
 			</a>
-		</h1>
+		</h2>
 	<?php
 	}
 
