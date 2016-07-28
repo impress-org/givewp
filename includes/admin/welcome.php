@@ -219,7 +219,7 @@ class Give_Welcome {
 		?>
 		<h2 class="nav-tab-wrapper">
 			<a class="nav-tab <?php echo $selected == 'give-about' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'give-about' ), 'index.php' ) ) ); ?>">
-				<?php esc_html_e( "About Give", 'give' ); ?>
+				<?php esc_html_e( 'About Give', 'give' ); ?>
 			</a>
 			<a class="nav-tab <?php echo $selected == 'give-getting-started' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'give-getting-started' ), 'index.php' ) ) ); ?>">
 				<?php esc_html_e( 'Getting Started', 'give' ); ?>
@@ -275,8 +275,6 @@ class Give_Welcome {
 					$display_version
 				);
 			?></div>
-
-
 
 			<?php $this->tabs(); ?>
 

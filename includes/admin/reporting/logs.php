@@ -68,7 +68,9 @@ function give_logs_view_api_requests() {
 	$logs_table->prepare_items();
 	?>
 	<div class="wrap">
+
 		<?php do_action( 'give_logs_api_requests_top' ); ?>
+
 		<form id="give-logs-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=logs' ); ?>">
 			<?php
 			$logs_table->search_box( esc_html__( 'Search', 'give' ), 'give-api-requests' );
@@ -79,6 +81,7 @@ function give_logs_view_api_requests() {
 			<input type="hidden" name="tab" value="logs"/>
 		</form>
 		<?php do_action( 'give_logs_api_requests_bottom' ); ?>
+
 	</div>
 	<?php
 }
