@@ -21,8 +21,8 @@
 function give_offline_register_gateway( $gateways ) {
 	// Format: ID => Name
 	$gateways['offline'] = array(
-		'admin_label'    => esc_attr__( 'Offline Donation', 'give' ),
-		'checkout_label' => esc_attr__( 'Offline Donation', 'give' )
+		'admin_label'    => apply_filters( 'give-offline-label-admin-text', esc_html( 'Offline Donation', 'give' ) ),
+		'checkout_label' => apply_filters( 'give-offline-label-checkout-text', esc_html( 'Offline Donation', 'give' ) )
 	);
 
 	return $gateways;
