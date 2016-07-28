@@ -55,13 +55,20 @@ function give_get_price_decimal_separator() {
  *
  * @since      1.0
  *
- * @param  float|string $number     Expects either a float or a string with a decimal separator only (no thousands)
+ * @param  int|float|string $number     Expects either a float or a string with a decimal separator only (no thousands)
+ * @param  int|bool     $dp         Number of decimals
  * @param  bool         $trim_zeros From end of string
  *
  *
  * @return string $amount Newly sanitized amount
  */
-function give_sanitize_amount( $number, $trim_zeros = false ) {
+function give_sanitize_amount( $number, $dp = false, $trim_zeros = false ) {
+
+    // Bailout.
+    if( empty( $number ) ) {
+        return $number;
+    }
+
     $thousand_separator = give_get_price_thousand_separator();
 
     $locale   = localeconv();
@@ -80,16 +87,19 @@ function give_sanitize_amount( $number, $trim_zeros = false ) {
     }
 
     // Remove non numeric entity before decimal separator.
-    $number   = preg_replace( '/[^0-9\.]/', '', $number );
+    $number     = preg_replace( '/[^0-9\.]/', '', $number );
+    $default_dp = give_get_price_decimals();
 
-    $decimals = give_get_price_decimals();
-    $decimals = apply_filters( 'give_sanitize_amount_decimals', $decimals, $number );
-
-    $number = number_format( floatval( $number ), $decimals, '.', '' );
+    // Format number of decimals in number.
+    if( false !== $dp ) {
+        $dp     = intval(  empty( $dp ) ? $default_dp : $dp );
+        $dp     = apply_filters( 'give_sanitize_amount_decimals', $dp, $number );
+        $number = number_format( floatval( $number ), $dp, '.', '' );
+    }
 
     // Reset negative amount to zero.
 	if ( 0 > $number ) {
-		$number = number_format( 0, 2, '.' );
+		$number = number_format( 0, $default_dp, '.' );
 	}
 
     // Trim zeros.
@@ -97,7 +107,12 @@ function give_sanitize_amount( $number, $trim_zeros = false ) {
         $number = rtrim( rtrim( $number, '0' ), '.' );
     }
 
-	return apply_filters( 'give_sanitize_amount', $number );
+    // If nuber does not have decimal then add number of decimals to it.
+    if( false === strpos( $number, '.' ) ) {
+        $number = number_format( $number, $default_dp, '.', '' );
+    }
+
+    return apply_filters( 'give_sanitize_amount', $number );
 }
 
 /**
