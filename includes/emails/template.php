@@ -15,13 +15,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Gets all the email templates that have been registerd. The list is extendable
+ * Gets all the email templates that have been registered. The list is extendable
  * and more templates can be added.
  *
  * This is simply a wrapper to Give_Email_Templates->get_templates()
  *
  * @since 1.0
- * @return array $templates All the registered email templates
+ * @return array $templates All the registered email templates.
  */
 function give_get_email_templates() {
 	$templates = new Give_Emails;
@@ -30,14 +30,14 @@ function give_get_email_templates() {
 }
 
 /**
- * Email Template Tags
+ * Email Template Tags.
  *
  * @since 1.0
  *
- * @param string $message      Message with the template tags
- * @param array  $payment_data Payment Data
- * @param int    $payment_id   Payment ID
- * @param bool   $admin_notice Whether or not this is a notification email
+ * @param string $message      Message with the template tags.
+ * @param array  $payment_data Payment Data.
+ * @param int    $payment_id   Payment ID.
+ * @param bool   $admin_notice Whether or not this is a notification email.
  *
  * @return string $message Fully formatted message
  */
@@ -46,7 +46,7 @@ function give_email_template_tags( $message, $payment_data, $payment_id, $admin_
 }
 
 /**
- * Email Preview Template Tags
+ * Email Preview Template Tags.
  *
  * @since 1.0
  *
@@ -91,17 +91,14 @@ function give_email_preview_template_tags( $message ) {
 }
 
 /**
- * Filter for Email Template Preview Buttons
+ * Filter for Email Template Preview Buttons.
  *
  * @param array $array
  *
  * @access private
- * @global      $give_options Array of all the Give Options
  * @since  1.0
  * @return array|bool
  */
-add_filter( 'give_settings_emails', 'give_email_template_preview' );
-
 function give_email_template_preview( $array ) {
 
 	if ( ! current_user_can( 'manage_give_settings' ) ) {
@@ -118,11 +115,12 @@ function give_email_template_preview( $array ) {
 	return $array; // splice in at position 3;
 }
 
+add_filter( 'give_settings_emails', 'give_email_template_preview' );
+
 /**
- * Output Email Template Preview Buttons
+ * Output Email Template Preview Buttons.
  *
  * @access private
- * @global      $give_options Array of all the Give Options
  * @since  1.0
  * @return array
  */
@@ -169,7 +167,7 @@ function give_display_email_template_preview() {
 add_action( 'template_redirect', 'give_display_email_template_preview' );
 
 /**
- * Email Template Body
+ * Email Template Body.
  *
  * @since 1.0
  *
@@ -193,11 +191,8 @@ function give_get_email_body_content( $payment_id = 0, $payment_data = array() )
 	return apply_filters( 'give_donation_receipt', $email_body, $payment_id, $payment_data );
 }
 
-
-
-
 /**
- * Donation Notification Template Body
+ * Donation Notification Template Body.
  *
  * @since  1.0
  *
@@ -240,7 +235,7 @@ function give_get_donation_notification_body_content( $payment_id = 0, $payment_
 }
 
 /**
- * Render Receipt in the Browser
+ * Render Receipt in the Browser.
  *
  * A link is added to the Donation Receipt to view the email in the browser and
  * this function renders the Donation Receipt in the browser. It overrides the

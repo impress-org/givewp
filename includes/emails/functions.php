@@ -153,17 +153,16 @@ function give_admin_email_notice( $payment_id = 0, $payment_data = array() ) {
 add_action( 'give_admin_sale_notice', 'give_admin_email_notice', 10, 2 );
 
 /**
- * Retrieves the emails for which admin notifications are sent to (these can be
- * changed in the Give Settings)
+ * Retrieves the emails for which admin notifications are sent to (these can be changed in the Give Settings).
  *
  * @since 1.0
- * @global $give_options Array of all the Give Options
  * @return mixed
  */
 function give_get_admin_notice_emails() {
-	global $give_options;
 
-	$emails = isset( $give_options['admin_notice_emails'] ) && strlen( trim( $give_options['admin_notice_emails'] ) ) > 0 ? $give_options['admin_notice_emails'] : get_bloginfo( 'admin_email' );
+	$email_option = give_get_option('admin_notice_emails');
+
+	$emails = !empty( $email_option ) && strlen( trim( $email_option ) ) > 0 ? $email_option : get_bloginfo( 'admin_email' );
 	$emails = array_map( 'trim', explode( "\n", $emails ) );
 
 	return apply_filters( 'give_admin_notice_emails', $emails );
