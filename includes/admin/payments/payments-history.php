@@ -72,10 +72,18 @@ function give_view_order_details_title( $admin_title, $title ) {
 	switch( $_GET['give-action'] ) :
 
 		case 'view-order-details' :
-			$title = __( 'View Donation Details', 'give' ) . ' - ' . $admin_title;
+			$title = sprintf(
+				/* translators: %s: admin title */
+				esc_html__( 'View Donation Details - %s', 'give' ),
+				$admin_title
+			);
 			break;
 		case 'edit-payment' :
-			$title = __( 'Edit Payment', 'give' ) . ' - ' . $admin_title;
+			$title = sprintf(
+				/* translators: %s: admin title */
+				esc_html__( 'Edit Payment - %s', 'give' ),
+				$admin_title
+			);
 			break;
 		default:
 			$title = $admin_title;
