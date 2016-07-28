@@ -102,14 +102,17 @@ function give_sanitize_amount( $number, $dp = false, $trim_zeros = false ) {
 		$number = number_format( 0, $default_dp, '.' );
 	}
 
+    // If number does not have decimal then add number of decimals to it.
+    if(
+        false === strpos( $number, '.' )
+        || ( $default_dp > strlen( substr( $number, strpos( $number , '.' ) + 1 ) ) )
+    ) {
+        $number = number_format( $number, $default_dp, '.', '' );
+    }
+
     // Trim zeros.
     if ( $trim_zeros && strstr( $number, '.' ) ) {
         $number = rtrim( rtrim( $number, '0' ), '.' );
-    }
-
-    // If nuber does not have decimal then add number of decimals to it.
-    if( false === strpos( $number, '.' ) ) {
-        $number = number_format( $number, $default_dp, '.', '' );
     }
 
     return apply_filters( 'give_sanitize_amount', $number );
