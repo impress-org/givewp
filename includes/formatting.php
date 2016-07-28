@@ -214,13 +214,14 @@ function give_human_format_large_amount( $amount ) {
  *
  * @since 1.0
  *
- * @param string      $amount   Formatted or sanitized price
+ * @param int|float|string      $amount   Formatted or sanitized price
+ * @param int|bool    $dp       number of decimals
  *
  * @return string $amount Newly formatted amount or Price Not Available
  */
-function give_format_decimal( $amount ){
+function give_format_decimal( $amount, $dp = false ){
     $decimal_separator = give_get_price_decimal_separator();
-    $formatted_amount  = give_sanitize_amount( $amount );
+    $formatted_amount  = give_sanitize_amount( $amount, $dp );
 
     if( false !== strpos( $formatted_amount, '.' ) ) {
         $formatted_amount = str_replace( '.', $decimal_separator, $formatted_amount );
