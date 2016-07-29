@@ -44,7 +44,7 @@ class Give_HTML_Elements {
 			'chosen'      => false,
 			'number'      => 30,
 			/* translators: %s: form singular label */
-			'placeholder' => sprintf( esc_attr( 'Select a %s', 'give' ), give_get_forms_label_singular() )
+			'placeholder' => sprintf( esc_attr__( 'Select a %s', 'give' ), give_get_forms_label_singular() )
 		);
 
 		$args = wp_parse_args( $args, $defaults );
@@ -61,14 +61,14 @@ class Give_HTML_Elements {
 		if ( $forms ) {
 			$options[0] = sprintf(
 				/* translators: %s: form singular label */
-				esc_html( 'Select a %s', 'give' ),
+				esc_html__( 'Select a %s', 'give' ),
 				give_get_forms_label_singular()
 			);
 			foreach ( $forms as $form ) {
-				$options[ absint( $form->ID ) ] = esc_html( $form->post_title );
+				$options[ absint( $form->ID ) ] = esc_html__( $form->post_title );
 			}
 		} else {
-			$options[0] = esc_html( 'No Give Forms Found', 'give' );
+			$options[0] = esc_html__( 'No Give Forms Found', 'give' );
 		}
 
 		// This ensures that any selected forms are included in the drop down
@@ -119,7 +119,7 @@ class Give_HTML_Elements {
 			'multiple'    => false,
 			'selected'    => 0,
 			'chosen'      => true,
-			'placeholder' => esc_attr( 'Select a Donor', 'give' ),
+			'placeholder' => esc_attr__( 'Select a Donor', 'give' ),
 			'number'      => 30
 		);
 
@@ -132,12 +132,12 @@ class Give_HTML_Elements {
 		$options = array();
 
 		if ( $customers ) {
-			$options[0] = esc_html( 'No donor attached', 'give' );
+			$options[0] = esc_html__( 'No donor attached', 'give' );
 			foreach ( $customers as $customer ) {
-				$options[ absint( $customer->id ) ] = esc_html( $customer->name . ' (' . $customer->email . ')' );
+				$options[ absint( $customer->id ) ] = esc_html__( $customer->name . ' (' . $customer->email . ')' );
 			}
 		} else {
-			$options[0] = esc_html( 'No donors found', 'give' );
+			$options[0] = esc_html__( 'No donors found', 'give' );
 		}
 
 		if ( ! empty( $args['selected'] ) ) {
@@ -150,7 +150,7 @@ class Give_HTML_Elements {
 
 				if ( $customer ) {
 
-					$options[ absint( $args['selected'] ) ] = esc_html( $customer->name . ' (' . $customer->email . ')' );
+					$options[ absint( $args['selected'] ) ] = esc_html__( $customer->name . ' (' . $customer->email . ')' );
 
 				}
 
@@ -190,14 +190,14 @@ class Give_HTML_Elements {
 		$options    = array();
 
 		foreach ( $categories as $category ) {
-			$options[ absint( $category->term_id ) ] = esc_html( $category->name );
+			$options[ absint( $category->term_id ) ] = esc_html__( $category->name );
 		}
 
 		$output = $this->select( array(
 			'name'             => $name,
 			'selected'         => $selected,
 			'options'          => $options,
-			'show_option_all'  => esc_html( 'All Categories', 'give' ),
+			'show_option_all'  => esc_html__( 'All Categories', 'give' ),
 			'show_option_none' => false
 		) );
 
@@ -292,8 +292,8 @@ class Give_HTML_Elements {
 			'chosen'           => false,
 			'placeholder'      => null,
 			'multiple'         => false,
-			'show_option_all'  => esc_html( 'All', 'give' ),
-			'show_option_none' => esc_html( 'None', 'give' )
+			'show_option_all'  => esc_html__( 'All', 'give' ),
+			'show_option_none' => esc_html__( 'None', 'give' )
 		);
 
 		$args = wp_parse_args( $args, $defaults );
@@ -315,7 +315,7 @@ class Give_HTML_Elements {
 			$placeholder = '';
 		}
 
-		$output = '<select name="' . esc_attr( $args['name'] ) . '" id="' . esc_attr( sanitize_key( str_replace( '-', '_', $args['id'] ) ) ) . '" class="give-select ' . esc_attr( $args['class'] ) . '"' . $multiple . ' data-placeholder="' . $placeholder . '">';
+		$output = '<select name="' . esc_attr__( $args['name'] ) . '" id="' . esc_attr__( sanitize_key( str_replace( '-', '_', $args['id'] ) ) ) . '" class="give-select ' . esc_attr__( $args['class'] ) . '"' . $multiple . ' data-placeholder="' . $placeholder . '">';
 
 		if ( $args['show_option_all'] ) {
 			if ( $args['multiple'] ) {
@@ -323,7 +323,7 @@ class Give_HTML_Elements {
 			} else {
 				$selected = selected( $args['selected'], 0, false );
 			}
-			$output .= '<option value="all"' . $selected . '>' . esc_html( $args['show_option_all'] ) . '</option>';
+			$output .= '<option value="all"' . $selected . '>' . esc_html__( $args['show_option_all'] ) . '</option>';
 		}
 
 		if ( ! empty( $args['options'] ) ) {
@@ -334,7 +334,7 @@ class Give_HTML_Elements {
 				} else {
 					$selected = selected( $args['selected'], - 1, false );
 				}
-				$output .= '<option value="-1"' . $selected . '>' . esc_html( $args['show_option_none'] ) . '</option>';
+				$output .= '<option value="-1"' . $selected . '>' . esc_html__( $args['show_option_none'] ) . '</option>';
 			}
 
 			foreach ( $args['options'] as $key => $option ) {
@@ -345,7 +345,7 @@ class Give_HTML_Elements {
 					$selected = selected( $args['selected'], $key, false );
 				}
 
-				$output .= '<option value="' . esc_attr( $key ) . '"' . $selected . '>' . esc_html( $option ) . '</option>';
+				$output .= '<option value="' . esc_attr__( $key ) . '"' . $selected . '>' . esc_html__( $option ) . '</option>';
 			}
 		}
 
@@ -383,7 +383,7 @@ class Give_HTML_Elements {
 			$options .= ' readonly';
 		}
 
-		$output = '<input type="checkbox"' . $options . ' name="' . esc_attr( $args['name'] ) . '" id="' . esc_attr( $args['name'] ) . '" class="' . $args['class'] . ' ' . esc_attr( $args['name'] ) . '" ' . checked( 1, $args['current'], false ) . ' />';
+		$output = '<input type="checkbox"' . $options . ' name="' . esc_attr__( $args['name'] ) . '" id="' . esc_attr__( $args['name'] ) . '" class="' . $args['class'] . ' ' . esc_attr__( $args['name'] ) . '" ' . checked( 1, $args['current'], false ) . ' />';
 
 		return $output;
 	}
@@ -436,13 +436,13 @@ class Give_HTML_Elements {
 
 		$output = '<span id="give-' . sanitize_key( $args['name'] ) . '-wrap">';
 
-		$output .= '<label class="give-label" for="give-' . sanitize_key( $args['name'] ) . '">' . esc_html( $args['label'] ) . '</label>';
+		$output .= '<label class="give-label" for="give-' . sanitize_key( $args['name'] ) . '">' . esc_html__( $args['label'] ) . '</label>';
 
 		if ( ! empty( $args['desc'] ) ) {
-			$output .= '<span class="give-description">' . esc_html( $args['desc'] ) . '</span>';
+			$output .= '<span class="give-description">' . esc_html__( $args['desc'] ) . '</span>';
 		}
 
-		$output .= '<input type="text" name="' . esc_attr( $args['name'] ) . '" id="' . esc_attr( $args['name'] ) . '" autocomplete="' . esc_attr( $args['autocomplete'] ) . '" value="' . esc_attr( $args['value'] ) . '" placeholder="' . esc_attr( $args['placeholder'] ) . '" class="' . $args['class'] . '" ' . $data . '' . $disabled . '/>';
+		$output .= '<input type="text" name="' . esc_attr__( $args['name'] ) . '" id="' . esc_attr__( $args['name'] ) . '" autocomplete="' . esc_attr__( $args['autocomplete'] ) . '" value="' . esc_attr__( $args['value'] ) . '" placeholder="' . esc_attr__( $args['placeholder'] ) . '" class="' . $args['class'] . '" ' . $data . '' . $disabled . '/>';
 
 		$output .= '</span>';
 
@@ -498,12 +498,12 @@ class Give_HTML_Elements {
 
 		$output = '<span id="give-' . sanitize_key( $args['name'] ) . '-wrap">';
 
-		$output .= '<label class="give-label" for="give-' . sanitize_key( $args['name'] ) . '">' . esc_html( $args['label'] ) . '</label>';
+		$output .= '<label class="give-label" for="give-' . sanitize_key( $args['name'] ) . '">' . esc_html__( $args['label'] ) . '</label>';
 
-		$output .= '<textarea name="' . esc_attr( $args['name'] ) . '" id="' . esc_attr( $args['name'] ) . '" class="' . $args['class'] . '"' . $disabled . '>' . esc_html( $args['value'] ) . '</textarea>';
+		$output .= '<textarea name="' . esc_attr__( $args['name'] ) . '" id="' . esc_attr__( $args['name'] ) . '" class="' . $args['class'] . '"' . $disabled . '>' . esc_html__( $args['value'] ) . '</textarea>';
 
 		if ( ! empty( $args['desc'] ) ) {
-			$output .= '<span class="give-description">' . esc_html( $args['desc'] ) . '</span>';
+			$output .= '<span class="give-description">' . esc_html__( $args['desc'] ) . '</span>';
 		}
 
 		$output .= '</span>';
@@ -525,7 +525,7 @@ class Give_HTML_Elements {
 		$defaults = array(
 			'name'         => 'user_id',
 			'value'        => null,
-			'placeholder'  => esc_attr( 'Enter username', 'give' ),
+			'placeholder'  => esc_attr__( 'Enter username', 'give' ),
 			'label'        => null,
 			'desc'         => null,
 			'class'        => '',
@@ -540,7 +540,7 @@ class Give_HTML_Elements {
 
 		$output = '<span class="give_user_search_wrap">';
 		$output .= $this->text( $args );
-		$output .= '<span class="give_user_search_results hidden"><a class="give-ajax-user-cancel" title="' . esc_attr( 'Cancel', 'give' ) . '" aria-label="' . esc_attr( 'Cancel', 'give' ) . '" href="#">x</a><span></span></span>';
+		$output .= '<span class="give_user_search_results hidden"><a class="give-ajax-user-cancel" title="' . esc_attr__( 'Cancel', 'give' ) . '" aria-label="' . esc_attr__( 'Cancel', 'give' ) . '" href="#">x</a><span></span></span>';
 		$output .= '</span>';
 
 		return $output;

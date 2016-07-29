@@ -35,9 +35,9 @@ class Give_Forms_Widget extends WP_Widget
 
 		parent::__construct(
 			strtolower( $this->self ),
-			esc_html( 'Give - Donation Form', 'give' ),
+			esc_html__( 'Give - Donation Form', 'give' ),
 			array(
-				'description' => esc_html( 'Display a Give Donation Form in your theme\'s widget powered sidebar.', 'give' )
+				'description' => esc_html__( 'Display a Give Donation Form in your theme\'s widget powered sidebar.', 'give' )
 			)
 		);
 
@@ -143,7 +143,7 @@ class Give_Forms_Widget extends WP_Widget
 			<label for="<?php esc_attr_e( $this->get_field_id( 'id' ) ); ?>"><?php
 				printf(
 					/* translators: %s: form singular label */
-					esc_html( 'Give %s:', 'give' ),
+					esc_html__( 'Give %s:', 'give' ),
 					give_get_forms_label_singular()
 				);
 			?></label>
@@ -161,9 +161,9 @@ class Give_Forms_Widget extends WP_Widget
 		?><p>
 			<label for="<?php esc_attr_e( $this->get_field_id( 'float_labels' ) ); ?>"><?php esc_html_e( 'Floating Labels (optional):', 'give' ); ?></label>
 			<select class="widefat" name="<?php esc_attr_e( $this->get_field_name( 'float_labels' ) ); ?>" id="<?php esc_attr_e( $this->get_field_id( 'float_labels' ) ); ?>">
-				<option value="" <?php selected( esc_attr( $float_labels ), '' ) ?>><?php esc_html_e( '- Select -', 'give' ); ?></option>
-				<option value="enabled" <?php selected( esc_attr( $float_labels ), 'enabled' ) ?>><?php esc_html_e( 'Enabled', 'give' ); ?></option>
-				<option value="disabled" <?php selected( esc_attr( $float_labels ), 'disabled' ) ?>><?php esc_html_e( 'Disabled', 'give' ); ?></option>
+				<option value="" <?php selected( esc_attr__( $float_labels ), '' ) ?>><?php esc_html_e( '- Select -', 'give' ); ?></option>
+				<option value="enabled" <?php selected( esc_attr__( $float_labels ), 'enabled' ) ?>><?php esc_html_e( 'Enabled', 'give' ); ?></option>
+				<option value="disabled" <?php selected( esc_attr__( $float_labels ), 'disabled' ) ?>><?php esc_html_e( 'Disabled', 'give' ); ?></option>
 			</select><br>
 			<small><?php
 				printf(

@@ -91,10 +91,10 @@ function give_process_login_form( $data ) {
 			if ( wp_check_password( $data['give_user_pass'], $user_data->user_pass, $user_data->ID ) ) {
 				give_log_user_in( $user_data->ID, $data['give_user_login'], $data['give_user_pass'] );
 			} else {
-				give_set_error( 'password_incorrect', esc_html( 'The password you entered is incorrect.', 'give' ) );
+				give_set_error( 'password_incorrect', esc_html__( 'The password you entered is incorrect.', 'give' ) );
 			}
 		} else {
-			give_set_error( 'username_incorrect', esc_html( 'The username you entered does not exist.', 'give' ) );
+			give_set_error( 'username_incorrect', esc_html__( 'The username you entered does not exist.', 'give' ) );
 		}
 		// Check for errors and redirect if none present
 		$errors = give_get_errors();
@@ -153,35 +153,35 @@ function give_process_register_form( $data ) {
 	do_action( 'give_pre_process_register_form' );
 
 	if ( empty( $data['give_user_login'] ) ) {
-		give_set_error( 'empty_username', esc_html( 'Invalid username.', 'give' ) );
+		give_set_error( 'empty_username', esc_html__( 'Invalid username.', 'give' ) );
 	}
 
 	if ( username_exists( $data['give_user_login'] ) ) {
-		give_set_error( 'username_unavailable', esc_html( 'Username already taken.', 'give' ) );
+		give_set_error( 'username_unavailable', esc_html__( 'Username already taken.', 'give' ) );
 	}
 
 	if ( ! validate_username( $data['give_user_login'] ) ) {
-		give_set_error( 'username_invalid', esc_html( 'Invalid username.', 'give' ) );
+		give_set_error( 'username_invalid', esc_html__( 'Invalid username.', 'give' ) );
 	}
 
 	if ( email_exists( $data['give_user_email'] ) ) {
-		give_set_error( 'email_unavailable', esc_html( 'Email address already taken.', 'give' ) );
+		give_set_error( 'email_unavailable', esc_html__( 'Email address already taken.', 'give' ) );
 	}
 
 	if ( empty( $data['give_user_email'] ) || ! is_email( $data['give_user_email'] ) ) {
-		give_set_error( 'email_invalid', esc_html( 'Invalid email.', 'give' ) );
+		give_set_error( 'email_invalid', esc_html__( 'Invalid email.', 'give' ) );
 	}
 
 	if ( ! empty( $data['give_payment_email'] ) && $data['give_payment_email'] != $data['give_user_email'] && ! is_email( $data['give_payment_email'] ) ) {
-		give_set_error( 'payment_email_invalid', esc_html( 'Invalid payment email.', 'give' ) );
+		give_set_error( 'payment_email_invalid', esc_html__( 'Invalid payment email.', 'give' ) );
 	}
 
 	if ( empty( $_POST['give_user_pass'] ) ) {
-		give_set_error( 'empty_password', esc_html( 'Please enter a password.', 'give' ) );
+		give_set_error( 'empty_password', esc_html__( 'Please enter a password.', 'give' ) );
 	}
 
 	if ( ( ! empty( $_POST['give_user_pass'] ) && empty( $_POST['give_user_pass2'] ) ) || ( $_POST['give_user_pass'] !== $_POST['give_user_pass2'] ) ) {
-		give_set_error( 'password_mismatch', esc_html( 'Passwords don\'t match.', 'give' ) );
+		give_set_error( 'password_mismatch', esc_html__( 'Passwords don\'t match.', 'give' ) );
 	}
 
 	do_action( 'give_process_register_form' );

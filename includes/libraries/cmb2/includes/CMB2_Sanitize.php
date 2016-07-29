@@ -150,11 +150,11 @@ class CMB2_Sanitize {
 			$this->value = array();
 			foreach ( $check as $key => $val ) {
 				if ( $val && '#' != $val ) {
-					$this->value[ $key ] = esc_attr( $val );
+					$this->value[ $key ] = esc_attr__( $val );
 				}
 			}
 		} else {
-			$this->value = ! $this->value || '#' == $this->value ? '' : esc_attr( $this->value );
+			$this->value = ! $this->value || '#' == $this->value ? '' : esc_attr__( $this->value );
 		}
 		return $this->value;
 	}

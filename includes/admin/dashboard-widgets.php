@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_register_dashboard_widgets() {
 	if ( current_user_can( apply_filters( 'give_dashboard_stats_cap', 'view_give_reports' ) ) ) {
-		wp_add_dashboard_widget( 'give_dashboard_sales', esc_html( 'Give: Donation Statistics', 'give' ), 'give_dashboard_sales_widget' );
+		wp_add_dashboard_widget( 'give_dashboard_sales', esc_html__( 'Give: Donation Statistics', 'give' ), 'give_dashboard_sales_widget' );
 	}
 }
 
@@ -51,7 +51,7 @@ function give_dashboard_sales_widget() {
 			<p class="give-dashboard-happy-day"><?php
 				printf(
 					/* translators: %s: day of the week */
-					esc_html( 'Happy %s!', 'give' ),
+					esc_html__( 'Happy %s!', 'give' ),
 					date( 'l', current_time( 'timestamp' ) )
 				);
 			?></p>

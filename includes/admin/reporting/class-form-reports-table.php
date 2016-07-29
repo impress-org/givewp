@@ -81,7 +81,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 			case 'average_earnings' :
 				return give_currency_filter( give_format_amount( $item[ $column_name ] ) );
 			case 'details' :
-				return '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-reports&view=forms&form-id=' . $item['ID'] ) . '">' . esc_html( 'View Detailed Report', 'give' ) . '</a>';
+				return '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-reports&view=forms&form-id=' . $item['ID'] ) . '">' . esc_html__( 'View Detailed Report', 'give' ) . '</a>';
 			default:
 				return $item[ $column_name ];
 		}
@@ -97,11 +97,11 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	public function get_columns() {
 		$columns = array(
 			'title'            => give_get_forms_label_singular(),
-			'sales'            => esc_html( 'Donations', 'give' ),
-			'earnings'         => esc_html( 'Income', 'give' ),
-			'average_sales'    => esc_html( 'Monthly Average Donations', 'give' ),
-			'average_earnings' => esc_html( 'Monthly Average Income', 'give' ),
-			'details'          => esc_html( 'Detailed Report', 'give' )
+			'sales'            => esc_html__( 'Donations', 'give' ),
+			'earnings'         => esc_html__( 'Income', 'give' ),
+			'average_sales'    => esc_html__( 'Monthly Average Donations', 'give' ),
+			'average_earnings' => esc_html__( 'Monthly Average Income', 'give' ),
+			'details'          => esc_html__( 'Detailed Report', 'give' )
 		);
 
 		return $columns;
