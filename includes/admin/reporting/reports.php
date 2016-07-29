@@ -34,7 +34,7 @@ function give_reports_page() {
 	?>
 	<div class="wrap">
 
-		<h1><?php esc_html_e( 'Give Reports', 'give' ); ?></h1>
+		<h1 class="give-hide-heading"><?php esc_html_e( 'Give Reports', 'give' ); ?></h1>
 
 		<h2 class="nav-tab-wrapper">
 			<a href="<?php echo esc_url( add_query_arg( array(

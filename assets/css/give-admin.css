@@ -1032,7 +1032,7 @@ Tooltips
 .give-graph .y2Axis {
   color: #546e7a !important; }
 
-body.give_forms_page_give-reports h1.nav-tab-wrapper, body.give_forms_page_give-payment-history h1.nav-tab-wrapper {
+body.give_forms_page_give-reports h1.nav-tab-wrapper, body.give_forms_page_give-reports h2.nav-tab-wrapper, body.give_forms_page_give-payment-history h1.nav-tab-wrapper, body.give_forms_page_give-payment-history h2.nav-tab-wrapper {
   margin-bottom: 10px; }
 
 body.give_forms_page_give-reports .actions, body.give_forms_page_give-payment-history .actions {
@@ -1109,10 +1109,14 @@ body.give_forms_page_give-reports table.export-options-table span#give-start-wra
   font-weight: bold; }
 
 #export-donor-options-wrap ul {
-  max-width: 900px; }
+  max-width: 900px;
+  overflow: hidden; }
   #export-donor-options-wrap ul li {
     margin: 0;
-    padding: 5px; }
+    padding: 0 5px 5px 0;
+    box-sizing: border-box;
+    float: left;
+    width: 33%; }
 
 #give-tools-recount-form .notice-wrap {
   position: relative;
@@ -1333,6 +1337,9 @@ Settings
   cursor: move; }
   .cmb-type-enabled-gateways ul li.ui-sortable-handle span.give-drag-handle:hover {
     color: #333; }
+
+.give-hide-heading {
+  display: none; }
 
 .cmb-type-give-title label {
   float: left;
@@ -1562,7 +1569,7 @@ tr.status-refunded td {
 .give-donation-status.status-revoked > span {
   background-color: #d9534f; }
 
-.give-donation-status.status-subscription > span, .give-donation-status.status-give_subscription > span {
+.give-donation-status.status-subscription > span, .give-donation-status.status-renewal > span, .give-donation-status.status-give_subscription > span {
   background-color: #5bc0de; }
 
 #test-payment-label {
@@ -2209,5 +2216,8 @@ div.sc-shortcode {
 */
 body.rtl #give-donation-overview th {
   text-align: right; }
+
+body.rtl #export-donor-options-wrap ul li {
+  padding: 0 0 5px 5px; }
 
 /*# sourceMappingURL=../sourcemaps/give-admin.css.map */
