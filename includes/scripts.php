@@ -26,8 +26,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_load_scripts() {
 
-	global $give_options;
-
 	$js_dir         = GIVE_PLUGIN_URL . 'assets/js/frontend/';
 	$js_plugins     = GIVE_PLUGIN_URL . 'assets/js/plugins/';
 	$scripts_footer = ( give_get_option( 'scripts_footer' ) == 'on' ) ? true : false;
