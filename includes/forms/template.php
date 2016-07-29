@@ -930,7 +930,7 @@ function give_get_login_fields( $form_id ) {
 				<a href="<?php echo remove_query_arg( 'login' ); ?>" class="give-checkout-register-cancel" data-action="give_checkout_register">
 					<?php esc_html_e( 'Register', 'give' );
 					if ( ! give_logged_in_only( $form_id ) ) {
-						echo ' ' . esc_html__( 'or checkout as a guest', 'give' ) . ' &raquo;';
+						echo ' ' . esc_html__( 'or checkout as a guest &raquo;', 'give' );
 					} ?>
 				</a>
 			</p>

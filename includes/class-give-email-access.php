@@ -126,7 +126,7 @@ class Give_Email_Access {
 		$subject = apply_filters( 'give_email_access_token_subject', sprintf( esc_html__( 'Your Access Link to %s', 'give' ), get_bloginfo( 'name' ) ) );
 
 		$message  = esc_html__( 'You or someone in your organization requested an access link be sent to this email address. This is a temporary access link for you to view your donation information. Click on the link below to view:', 'give' ) . "\n\n";
-		$message .= '<a href="' . esc_url( $access_url ) . '" target="_blank">' . esc_html__( 'Access My Donation Details', 'give' ) . ' &raquo;</a>' . "\n\n";
+		$message .= '<a href="' . esc_url( $access_url ) . '" target="_blank">' . esc_html__( 'Access My Donation Details &raquo;', 'give' ) . '</a>' . "\n\n";
 		$message .= "\n\n";
 		$message .= esc_html__( 'Sincerely,', 'give' ) . "\n";
 		$message .= get_bloginfo( 'name' ) . "\n";

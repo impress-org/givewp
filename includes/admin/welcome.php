@@ -217,9 +217,9 @@ class Give_Welcome {
 	public function tabs() {
 		$selected = isset( $_GET['page'] ) ? $_GET['page'] : 'give-about';
 		?>
-		<h1 class="nav-tab-wrapper">
+		<h2 class="nav-tab-wrapper">
 			<a class="nav-tab <?php echo $selected == 'give-about' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'give-about' ), 'index.php' ) ) ); ?>">
-				<?php esc_html_e( "About Give", 'give' ); ?>
+				<?php esc_html_e( 'About Give', 'give' ); ?>
 			</a>
 			<a class="nav-tab <?php echo $selected == 'give-getting-started' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'give-getting-started' ), 'index.php' ) ) ); ?>">
 				<?php esc_html_e( 'Getting Started', 'give' ); ?>
@@ -230,7 +230,7 @@ class Give_Welcome {
 			<a class="nav-tab <?php echo $selected == 'give-add-ons' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( null, 'index.php' ) ) . 'edit.php?post_type=give_forms&page=give-addons'; ?>">
 				<?php esc_html_e( 'Add-ons', 'give' ); ?>
 			</a>
-		</h1>
+		</h2>
 	<?php
 	}
 
@@ -255,14 +255,14 @@ class Give_Welcome {
 
 			<?php give_social_media_elements() ?>
 
-			<div class="about-text"><?php
+			<p class="about-text"><?php
 				printf(
 					/* translators: 1: https://givewp.com/documenation/ 2: title attribute text */
 					__( 'Thank you for activating or updating to the latest version of Give! If you\'re a first time user, welcome! You\'re well on your way to empowering your cause. </You>We encourage you to check out the <a href="%1$s" title="%2$s" target="_blank">plugin documentation</a> and getting started guide below.', 'give' ),
 					esc_url( 'https://givewp.com/documenation/' ),
 					esc_attr__( 'View the Give plugin documentation online', 'give' )
 				);
-			?></div>
+			?></p>
 
 			<p class="newsletter-intro"><?php esc_html_e( 'Be sure to sign up for the Give newsletter below to stay informed of important updates and news.', 'give' ); ?></p>
 
@@ -275,8 +275,6 @@ class Give_Welcome {
 					$display_version
 				);
 			?></div>
-
-
 
 			<?php $this->tabs(); ?>
 
@@ -339,13 +337,13 @@ class Give_Welcome {
 		<div class="wrap about-wrap">
 			<h1><?php esc_html_e( 'Give Changelog', 'give' ); ?></h1>
 
-			<div class="about-text"><?php
+			<p class="about-text"><?php
 				printf(
 					/* translators: %s: Give version */
 					esc_html__( 'Thank you for updating to the latest version! Give %s is ready to make your online store faster, safer, and better!', 'give' ),
 					$display_version
 				);
-			?></div>
+			?></p>
 			<div class="give-badge"><?php
 				printf(
 					/* translators: %s: Give version */
@@ -395,7 +393,7 @@ class Give_Welcome {
 
 			<?php give_social_media_elements() ?>
 
-			<div class="about-text"><?php esc_html_e( 'Welcome to the getting started guide.', 'give' ); ?></div>
+			<p class="about-text"><?php esc_html_e( 'Welcome to the getting started guide.', 'give' ); ?></p>
 
 			<p class="newsletter-intro"><?php esc_html_e( 'Don\'t forget to sign up for the newsletter!', 'give' ); ?>.</p>
 
@@ -411,9 +409,7 @@ class Give_Welcome {
 
 			<?php $this->tabs(); ?>
 
-
-			<div class="about-text"><?php printf( esc_html__( 'Getting started with Give is easy! We put together this quick start guide to help first time users of the plugin. Our goal is to get you up and running in no time. Let\'s begin!', 'give' ), $display_version ); ?></div>
-
+			<p class="about-text"><?php printf( esc_html__( 'Getting started with Give is easy! We put together this quick start guide to help first time users of the plugin. Our goal is to get you up and running in no time. Let\'s begin!', 'give' ), $display_version ); ?></p>
 
 			<div class="feature-section clearfix">
 
@@ -506,9 +502,9 @@ class Give_Welcome {
 
 			<?php give_social_media_elements() ?>
 
-			<div class="about-text"><?php esc_html_e( 'Thanks to all those who have contributed code directly or indirectly. ', 'give' ); ?></div>
+			<p class="about-text"><?php esc_html_e( 'Thanks to all those who have contributed code directly or indirectly. ', 'give' ); ?></p>
 
-			<div class="about-text"><?php esc_html_e( 'Welcome to the getting started guide.', 'give' ); ?></div>
+			<p class="about-text"><?php esc_html_e( 'Welcome to the getting started guide.', 'give' ); ?></p>
 
 			<p class="newsletter-intro"><?php esc_html_e( 'Be sure to sign up for the Give newsletter below to stay informed of important updates and news.', 'give' ); ?></p>
 

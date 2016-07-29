@@ -39,10 +39,10 @@ if ( $donations ) : ?>
 				<td class="give_purchase_details">
 					<?php
 					if ( $post->post_status != 'publish' && $post->post_status != 'subscription' ) : ?>
-						<a href="<?php echo esc_url( add_query_arg( 'payment_key', give_get_payment_key( $post->ID ), give_get_success_page_uri() ) ); ?>"><span class="give_purchase_status <?php echo $post->post_status; ?>"><?php echo give_get_payment_status( $post, true ); ?></span> &raquo;
+						<a href="<?php echo esc_url( add_query_arg( 'payment_key', give_get_payment_key( $post->ID ), give_get_success_page_uri() ) ); ?>"><span class="give_purchase_status <?php echo $post->post_status; ?>"><?php echo give_get_payment_status( $post, true ); ?></span>
 						</a>
 					<?php else: ?>
-						<a href="<?php echo esc_url( add_query_arg( 'payment_key', give_get_payment_key( $post->ID ), give_get_success_page_uri() ) ); ?>"><?php esc_html_e( 'View Details', 'give' ); ?>&raquo;</a>
+						<a href="<?php echo esc_url( add_query_arg( 'payment_key', give_get_payment_key( $post->ID ), give_get_success_page_uri() ) ); ?>"><?php esc_html_e( 'View Details &raquo;', 'give' ); ?></a>
 					<?php endif; ?>
 				</td>
 				<?php do_action( 'give_purchase_history_row_end', $post->ID, $donation_data ); ?>

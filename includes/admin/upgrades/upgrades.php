@@ -43,7 +43,7 @@ function give_upgrades_screen() {
 	}
 	?>
 	<div class="wrap">
-		<h2><?php esc_html_e( 'Give - Upgrades', 'give' ); ?></h2>
+		<h1><?php esc_html_e( 'Give - Upgrades', 'give' ); ?></h1>
 
 		<?php if ( ! empty( $action ) ) : ?>
 
