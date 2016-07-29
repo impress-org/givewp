@@ -47,12 +47,31 @@ jQuery.noConflict();
     /**
      * Unformat Currency
      *
-     * @param   {number} price
+     * @use string give_vars.currency_decimals Number of decimals
+     *
+     * @param   {string}      price Price
+     * @param   {number|bool} dp    Number of decimals
+     *
      * @returns {string}
      */
-    function give_unformat_currency( price ) {
-        return parseFloat( accounting.unformat( price, give_vars.decimal_separator ) )
-                .toFixed( give_vars.currency_decimals );
+    function give_unformat_currency( price, dp ) {
+        price = accounting.unformat( price, give_vars.decimal_separator ).toString();
+        var decimal_position = price.indexOf('.');
+
+        // Set default value for number of decimals.
+        if( false != dp ) {
+            price = parseFloat( price ).toFixed( dp );
+
+        // If price do not have decimal value then set default number of decimals.
+        } else if(
+            ( - 1 === decimal_position )
+            || ( give_vars.currency_decimals > price.substr( decimal_position + 1 ).length )
+        ){
+            price = parseFloat( price ).toFixed(  give_vars.currency_decimals );
+        }
+
+
+        return price;
     }
 
 
@@ -837,12 +856,17 @@ jQuery.noConflict();
 
             // Format price sting of input field on focusout.
             $give_money_fields.on('focusout', function () {
-                price_string = give_unformat_currency( $(this).val() );
+                price_string = give_unformat_currency( $(this).val(), false );
 
                 // Back out.
                 if( ! price_string ) {
                     $(this).val('');
                     return false;
+                }
+
+                // Check if current number is negative or not.
+                if( -1 !== price_string.indexOf('-') ) {
+                    price_string = price_string.replace('-', '' );
                 }
 
                 // Update format price string in input field.
