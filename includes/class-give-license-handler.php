@@ -248,39 +248,49 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @return void
 		 */
 		public function activate_license() {
-
+            // Bailout: Check if license key set of not.
 			if ( ! isset( $_POST[ $this->item_shortname . '_license_key' ] ) ) {
 				return;
 			}
 
-			foreach ( $_POST as $key => $value ) {
-				if ( false !== strpos( $key, 'license_key_deactivate' ) ) {
-					// Don't activate a key when deactivating a different key
-					return;
-				}
-			}
-
+			// Security check.
 			if ( ! wp_verify_nonce( $_REQUEST[ $this->item_shortname . '_license_key-nonce' ], $this->item_shortname . '_license_key-nonce' ) ) {
 
 				wp_die( esc_html__( 'Nonce verification failed.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 
 			}
 
-			if ( ! current_user_can( 'manage_give_settings' ) ) {
-				return;
-			}
+			// Check if user have correct permissions.
+            if ( ! current_user_can( 'manage_give_settings' ) ) {
+                return;
+            }
 
-			if ( 'valid' === get_option( $this->item_shortname . '_license_active' ) ) {
-				return;
-			}
+            // Delete previous license setting if a empty license key submitted.
+            if ( empty( $_POST[ $this->item_shortname . '_license_key' ] ) ) {
+                give_delete_option( $this->item_shortname . '_license_active' );
+                return;
+            }
 
-			$license = sanitize_text_field( $_POST[ $this->item_shortname . '_license_key' ] );
+            // Do not simultaneously activate any addon if user want to deactivate any addon.
+            foreach ( $_POST as $key => $value ) {
+                if ( false !== strpos( $key, 'license_key_deactivate' ) ) {
+                    // Don't activate a key when deactivating a different key
+                    return;
+                }
+            }
 
-			if ( empty( $license ) ) {
-				return;
-			}
+            // Get previous license setting.
+            $license_details = get_option( $this->item_shortname . '_license_active' );
 
-			// Data to send to the API
+            // Check if plugin previously installed.
+            if ( is_object( $license_details ) && 'valid' === $license_details->license ) {
+                return;
+            }
+
+            // Get license key.
+            $license = sanitize_text_field( $_POST[ $this->item_shortname . '_license_key' ] );
+
+            // Data to send to the API
 			$api_params = array(
 				'edd_action' => 'activate_license', //never change from "edd_" to "give_"!
 				'license'    => $license,
@@ -307,10 +317,10 @@ if ( ! class_exists( 'Give_License' ) ) :
 			set_site_transient( 'update_plugins', null );
 
 			// Decode license data
-			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
+            $license_data = json_decode( wp_remote_retrieve_body( $response ) );
+            update_option( $this->item_shortname . '_license_active', $license_data );
 
-			update_option( $this->item_shortname . '_license_active', $license_data->license );
-
+            // Create transient in case error occurred.
 			if ( ! (bool) $license_data->success ) {
 				set_transient( 'give_license_error', $license_data, 1000 );
 			} else {
@@ -373,8 +383,11 @@ if ( ! class_exists( 'Give_License' ) ) :
 				// Decode the license data
 				$license_data = json_decode( wp_remote_retrieve_body( $response ) );
 
+
+                // Remove license data.
 				delete_option( $this->item_shortname . '_license_active' );
 
+                // Create transient if error occurred.
 				if ( ! (bool) $license_data->success ) {
 					set_transient( 'give_license_error', $license_data, 1000 );
 				} else {
