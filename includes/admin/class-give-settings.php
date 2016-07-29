@@ -1162,35 +1162,53 @@ function give_get_featured_image_sizes() {
  * @return void
  */
 function give_license_key_callback( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
+    /* @var CMB2_Types $field_type_object*/
 
-	$id                = $field_type_object->field->args['id'];
+    $id                = $field_type_object->field->args['id'];
 	$field_description = $field_type_object->field->args['desc'];
-	$license_status    = get_option( $field_type_object->field->args['options']['is_valid_license_option'] );
+	$license_detail    = $field_type_object->field->args['options']['license'];
+    $shortname         = $field_type_object->field->args['options']['shortname'];
 	$field_classes     = 'regular-text give-license-field';
 	$type              = empty( $escaped_value ) ? 'text' : 'password';
+    $custom_html       = '';
 
-	if ( $license_status === 'valid' ) {
+    // Add class if license is active.
+	if ( is_object( $license_detail ) && 'valid' === $license_detail->license ) {
 		$field_classes .= ' give-license-active';
 	}
 
-	$html = $field_type_object->input( array(
+	// Get input filed html.
+	$input_field_html = $field_type_object->input( array(
 		'class' => $field_classes,
 		'type'  => $type
 	) );
 
-	//License is active so show deactivate button
-	if ( $license_status === 'valid' ) {
-		$html .= '<input type="submit" class="button-secondary give-license-deactivate" name="' . $id . '_deactivate" value="' . esc_attr__( 'Deactivate License', 'give' ) . '"/>';
+	// If license is active so show deactivate button
+	if ( is_object( $license_detail ) && 'valid' === $license_detail->license ) {
+		$custom_html = '<input type="submit" class="button-secondary give-license-deactivate" name="' . $id . '_deactivate" value="' . esc_attr__( 'Deactivate License', 'give' ) . '"/>';
 	} else {
 		//This license is not valid so delete it
 		give_delete_option( $id );
+
+		// Remove license data.
+		delete_option( "{$shortname}_license_active" );
+
+        // Remove license key from field value and genarate new html.
+        $input_field_html = $field_type_object->input( array(
+            'class' => $field_classes,
+            'type'  => $type,
+            'value' => ''
+        ) );
 	}
 
-	$html .= '<label for="give_settings[' . $id . ']"> ' . $field_description . '</label>';
+	// Field description.
+	$custom_html .= '<label for="give_settings[' . $id . ']"> ' . $field_description . '</label>';
 
+    // Nonce.
 	wp_nonce_field( $id . '-nonce', $id . '-nonce' );
 
-	echo $html;
+    // Print filed html.
+	echo $input_field_html.$custom_html;
 }
 
 
