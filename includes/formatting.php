@@ -255,91 +255,67 @@ function give_currency_filter( $price = '', $currency = '' ) {
 	$negative = $price < 0;
 
 	if ( $negative ) {
-		$price = substr( $price, 1 ); // Remove proceeding "-" -
+        // Remove proceeding "-".
+		$price = substr( $price, 1 );
 	}
 
 	$symbol = give_currency_symbol( $currency );
 
-	if ( $position == 'before' ):
-		switch ( $currency ):
-			case 'GBP' :
-			case 'BRL' :
-			case 'EUR' :
-			case 'USD' :
-			case 'AUD' :
-			case 'CAD' :
-			case 'HKD' :
-			case 'MXN' :
-			case 'NZD' :
-			case 'SGD' :
-			case 'JPY' :
-			case 'THB' :
-			case 'INR' :
-			case 'RIAL' :
-			case 'TRY' :
-			case 'RUB' :
-			case 'SEK' :
-			case 'PLN' :
-			case 'PHP' :
-			case 'TWD' :
-			case 'MYR' :
-			case 'CZK' :
-			case 'DKK' :
-			case 'HUF' :
-			case 'ILS' :
-			case 'MAD' :
-			case 'KRW' :
-			case 'ZAR' :
-				$formatted = $symbol . $price;
-				break;
-			case 'NOK' :
-				$formatted = $symbol . ' ' . $price;
-				break;
-			default :
-				$formatted = $currency . ' ' . $price;
-				break;
-		endswitch;
-		$formatted = apply_filters( 'give_' . strtolower( $currency ) . '_currency_filter_before', $formatted, $currency, $price );
-	else :
-		switch ( $currency ) :
-			case 'GBP' :
-			case 'BRL' :
-			case 'EUR' :
-			case 'USD' :
-			case 'AUD' :
-			case 'CAD' :
-			case 'HKD' :
-			case 'MXN' :
-			case 'SGD' :
-			case 'JPY' :
-			case 'THB' :
-			case 'INR' :
-			case 'RIAL' :
-			case 'TRY' :
-			case 'RUB' :
-			case 'SEK' :
-			case 'PLN' :
-			case 'PHP' :
-			case 'TWD' :
-			case 'CZK' :
-			case 'DKK' :
-			case 'HUF' :
-			case 'MYR' :
-			case 'ILS' :
-			case 'MAD' :
-			case 'KRW' :
-			case 'ZAR' :
-				$formatted = $price . $symbol;
-				break;
-			default :
-				$formatted = $price . ' ' . $currency;
-				break;
-		endswitch;
-		$formatted = apply_filters( 'give_' . strtolower( $currency ) . '_currency_filter_after', $formatted, $currency, $price );
-	endif;
+    switch ( $currency ):
+        case 'GBP' :
+        case 'BRL' :
+        case 'EUR' :
+        case 'USD' :
+        case 'AUD' :
+        case 'CAD' :
+        case 'HKD' :
+        case 'MXN' :
+        case 'NZD' :
+        case 'SGD' :
+        case 'JPY' :
+        case 'THB' :
+        case 'INR' :
+        case 'RIAL' :
+        case 'TRY' :
+        case 'RUB' :
+        case 'SEK' :
+        case 'PLN' :
+        case 'PHP' :
+        case 'TWD' :
+        case 'MYR' :
+        case 'CZK' :
+        case 'DKK' :
+        case 'HUF' :
+        case 'ILS' :
+        case 'MAD' :
+        case 'KRW' :
+        case 'ZAR' :
+            $formatted = ( 'before' === $position ? $symbol . $price : $price . $symbol );
+            break;
+        case 'NOK' :
+            $formatted = ( 'before' === $position ? $symbol . ' ' . $price : $price . ' ' . $symbol );
+            break;
+        default :
+            $formatted = ( 'before' === $position ? $currency . ' ' . $price : $price . ' ' . $currency );
+            break;
+    endswitch;
 
-	if ( $negative ) {
-		// Prepend the mins sign before the currency sign
+    /**
+     * Filter formatted amount with currency
+     *
+     * Filter name depends upon current value of currency and currency position.
+     * For example :
+     *           if currency is USD and currency position is before then
+     *           filter name will be give_usd_currency_filter_before
+     *
+     *           and if currency is USD and currency position is after then
+     *           filter name will be give_usd_currency_filter_after
+     *
+     */
+    $formatted = apply_filters( 'give_' . strtolower( $currency ) . "_currency_filter_{$position}", $formatted, $currency, $price );
+
+    if ( $negative ) {
+		// Prepend the minus sign before the currency sign.
 		$formatted = '-' . $formatted;
 	}
 

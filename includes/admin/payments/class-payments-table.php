@@ -494,46 +494,48 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 		foreach ( $ids as $id ) {
 
-			// Detect when a bulk action is being triggered...
-			if ( 'delete' === $this->current_action() ) {
-				give_delete_purchase( $id );
-			}
+            // Detect when a bulk action is being triggered...
+            switch ( $this->current_action() ) {
 
-			if ( 'set-status-publish' === $this->current_action() ) {
-				give_update_payment_status( $id, 'publish' );
-			}
+                case'delete':
+                    give_delete_purchase($id);
+                    break;
 
-			if ( 'set-status-pending' === $this->current_action() ) {
-				give_update_payment_status( $id, 'pending' );
-			}
+                case 'set-status-publish':
+                    give_update_payment_status($id, 'publish');
+                    break;
 
-			if ( 'set-status-refunded' === $this->current_action() ) {
-				give_update_payment_status( $id, 'refunded' );
-			}
+                case 'set-status-pending':
+                    give_update_payment_status($id, 'pending');
+                    break;
 
-			if ( 'set-status-revoked' === $this->current_action() ) {
-				give_update_payment_status( $id, 'revoked' );
-			}
+                case 'set-status-refunded':
+                    give_update_payment_status($id, 'refunded');
+                    break;
+                case 'set-status-revoked':
+                    give_update_payment_status($id, 'revoked');
+                    break;
 
-			if ( 'set-status-failed' === $this->current_action() ) {
-				give_update_payment_status( $id, 'failed' );
-			}
+                case 'set-status-failed':
+                    give_update_payment_status($id, 'failed');
+                    break;
 
-			if ( 'set-status-cancelled' === $this->current_action() ) {
-				give_update_payment_status( $id, 'cancelled' );
-			}
+                case 'set-status-cancelled':
+                    give_update_payment_status($id, 'cancelled');
+                    break;
 
-			if ( 'set-status-abandoned' === $this->current_action() ) {
-				give_update_payment_status( $id, 'abandoned' );
-			}
+                case 'set-status-abandoned':
+                    give_update_payment_status($id, 'abandoned');
+                    break;
 
-			if ( 'set-status-preapproval' === $this->current_action() ) {
-				give_update_payment_status( $id, 'preapproval' );
-			}
+                case 'set-status-preapproval':
+                    give_update_payment_status($id, 'preapproval');
+                    break;
 
-			if ( 'resend-receipt' === $this->current_action() ) {
-				give_email_donation_receipt( $id, false );
-			}
+                case 'resend-receipt':
+                    give_email_donation_receipt($id, false);
+                    break;
+            }
 
 			do_action( 'give_payments_table_do_bulk_action', $id, $this->current_action() );
 		}
