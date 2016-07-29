@@ -1164,16 +1164,104 @@ function give_get_featured_image_sizes() {
 function give_license_key_callback( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
     /* @var CMB2_Types $field_type_object*/
 
-    $id                = $field_type_object->field->args['id'];
-	$field_description = $field_type_object->field->args['desc'];
-	$license_detail    = $field_type_object->field->args['options']['license'];
-    $shortname         = $field_type_object->field->args['options']['shortname'];
-	$field_classes     = 'regular-text give-license-field';
-	$type              = empty( $escaped_value ) ? 'text' : 'password';
-    $custom_html       = '';
+    $id                 = $field_type_object->field->args['id'];
+	$field_description  = $field_type_object->field->args['desc'];
+	$license            = $field_type_object->field->args['options']['license'];
+    $is_valid_license   = ( is_object( $license ) && ! empty( $license) && 'valid' === $license->license );
+    $shortname          = $field_type_object->field->args['options']['shortname'];
+	$field_classes      = 'regular-text give-license-field';
+	$type               = empty( $escaped_value ) ? 'text' : 'password';
+    $custom_html        = '';
+    $value              = $escaped_value;
+    $messages           = array();
+    $class              = '';
+    $account_page_link  = 'https://givewp.com/my-account/';
+    $checkout_page_link = 'https://givewp.com/checkout/';
+    $addon_name         =  $is_valid_license ? str_replace( array( '+' ), ' ', $license->item_name ) : '';
 
-    // Add class if license is active.
-	if ( is_object( $license_detail ) && 'valid' === $license_detail->license ) {
+
+    if( is_object( $license ) && ! empty( $license) ) {
+
+        // activate_license 'invalid' on anything other than valid, so if there was an error capture it
+        if ( empty( $license->success ) ) {
+            switch( $license->error ) {
+                case 'expired' :
+                    $class = 'error';
+                    $messages[] = sprintf(
+                        __( 'Your license key expired on %s. Please <a href="%s" target="_blank" title="Renew your license key">renew your license key</a>.', 'give' ),
+                        date_i18n( get_option( 'date_format' ), strtotime( $license->expires, current_time( 'timestamp' ) ) ),
+                        'https://easydigitaldownloads.com/checkout/?edd_license_key=' . $value . '&utm_campaign=admin&utm_source=licenses&utm_medium=expired'
+                    );
+                    $license_status = 'license-' . $class . '-notice';
+                    break;
+
+                case 'missing' :
+                    $class = 'error';
+                    $messages[] = sprintf(
+                        __( 'Invalid license. Please <a href="%s" target="_blank" title="Visit account page">visit your account page</a> and verify it.', 'give' ),
+                        $account_page_link . '?utm_campaign=admin&utm_source=licenses&utm_medium=missing'
+                    );
+                    $license_status = 'license-' . $class . '-notice';
+                    break;
+
+                case 'invalid' :
+                case 'site_inactive' :
+                    $class = 'error';
+                    $messages[] = sprintf(
+                        __( 'Your %s is not active for this URL. Please <a href="%s" target="_blank" title="Visit account page">visit your account page</a> to manage your license key URLs.', 'give' ),
+                        $addon_name,
+                        $account_page_link . '?utm_campaign=admin&utm_source=licenses&utm_medium=invalid'
+                    );
+                    $license_status = 'license-' . $class . '-notice';
+                    break;
+
+                case 'item_name_mismatch' :
+                    $class = 'error';
+                    $messages[] = sprintf( __( 'This license %s does not belong to %s.', 'give' ), $value, $addon_name );
+                    $license_status = 'license-' . $class . '-notice';
+                    break;
+
+                case 'no_activations_left':
+                    $class = 'error';
+                    $messages[] = sprintf( __( 'Your license key has reached it\'s activation limit. <a href="%s">View possible upgrades</a> now.', 'give' ), $account_page_link );
+                    $license_status = 'license-' . $class . '-notice';
+                    break;
+            }
+        } else {
+            switch( $license->license ) {
+                case 'valid' :
+                default:
+                    $class = 'valid';
+                    $now        = current_time( 'timestamp' );
+                    $expiration = strtotime( $license->expires, current_time( 'timestamp' ) );
+
+                    if( 'lifetime' === $license->expires ) {
+                        $messages[] = __( 'License key never expires.', 'give' );
+                        $license_status = 'license-lifetime-notice';
+                    } elseif( $expiration > $now && $expiration - $now < ( DAY_IN_SECONDS * 30 ) ) {
+                        $messages[] = sprintf(
+                            __( 'Your license key expires soon! It expires on %s. <a href="%s" target="_blank" title="Renew license">Renew your license key</a>.', 'give' ),
+                            date_i18n( get_option( 'date_format' ), strtotime( $license->expires, current_time( 'timestamp' ) ) ),
+                            $checkout_page_link . '?edd_license_key=' . $value . '&utm_campaign=admin&utm_source=licenses&utm_medium=renew'
+                        );
+                        $license_status = 'license-expires-soon-notice';
+                    } else {
+                        $messages[] = sprintf(
+                            __( 'Your license key expires on %s.', 'give' ),
+                            date_i18n( get_option( 'date_format' ), strtotime( $license->expires, current_time( 'timestamp' ) ) )
+                        );
+                        $license_status = 'license-expiration-date-notice';
+                    }
+                    break;
+            }
+        }
+    } else {
+        $license_status = null;
+    }
+
+
+    // Add class for input field if license is active.
+	if ( $is_valid_license ) {
 		$field_classes .= ' give-license-active';
 	}
 
@@ -1184,14 +1272,14 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 	) );
 
 	// If license is active so show deactivate button
-	if ( is_object( $license_detail ) && 'valid' === $license_detail->license ) {
+	if ( $is_valid_license ) {
 		$custom_html = '<input type="submit" class="button-secondary give-license-deactivate" name="' . $id . '_deactivate" value="' . esc_attr__( 'Deactivate License', 'give' ) . '"/>';
 	} else {
 		//This license is not valid so delete it
 		give_delete_option( $id );
 
 		// Remove license data.
-		delete_option( "{$shortname}_license_active" );
+		//delete_option( "{$shortname}_license_active" );
 
         // Remove license key from field value and genarate new html.
         $input_field_html = $field_type_object->input( array(
@@ -1204,11 +1292,25 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 	// Field description.
 	$custom_html .= '<label for="give_settings[' . $id . ']"> ' . $field_description . '</label>';
 
+    if ( ! empty( $messages ) ) {
+        foreach( $messages as $message ) {
+            $custom_html .= '<div class="give-license-data give-license-' . $class . '">';
+            $custom_html .= '<p>' . $message . '</p>';
+            $custom_html .= '</div>';
+        }
+    }
+
+    // Field html.
+    $custom_html = $input_field_html.$custom_html;
+
     // Nonce.
 	wp_nonce_field( $id . '-nonce', $id . '-nonce' );
 
+    // License status class.
+    $license_status = isset( $license_status ) ? $license_status : 'license-null';
+
     // Print filed html.
-	echo $input_field_html.$custom_html;
+    echo '<div class="' . $license_status . '">' . $custom_html . '</div>';
 }
 
 
