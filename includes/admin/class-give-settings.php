@@ -141,7 +141,7 @@ class Give_Plugin_Settings {
 
 		<div class="wrap give_settings_page cmb2_options_page <?php echo $this->key; ?>">
 
-			<h1><?php esc_html_e( 'Give Settings', 'give' ); ?></h1>
+			<h1 class="give-hide-heading"><?php esc_html_e( 'Give Settings', 'give' ); ?></h1>
 
 			<h2 class="nav-tab-wrapper">
 				<?php
@@ -338,6 +338,14 @@ class Give_Plugin_Settings {
 							'id'      => 'decimal_separator',
 							'type'    => 'text_small',
 							'default' => '.',
+						),
+						array(
+							'name'            => __( 'Number of Decimals', 'give' ),
+							'desc'            => __( 'This sets the number of decimal points shown in displayed prices.', 'give' ),
+							'id'              => 'number_decimals',
+							'type'            => 'text_small',
+							'default'         => 2,
+							'sanitization_cb' => 'give_sanitize_number_decimals',
 						),
 					)
 				)

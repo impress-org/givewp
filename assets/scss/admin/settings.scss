@@ -48,17 +48,19 @@ Settings
       cursor: move;
 
       &:hover {
-        color:#333;
+        color: #333;
       }
 
     }
 
   }
 
-
 }
 
 // Section Titles
+.give-hide-heading {
+  display: none;
+}
 
 .cmb-type-give-title label {
   float: left;
@@ -175,7 +177,7 @@ Settings
 }
 
 #api {
-  
+
   .give-submit-wrap {
     display: none;
   }
@@ -235,6 +237,6 @@ a.give-delete {
 }
 
 //Set a min-height for TinyMCE so it's not too small when hidden in a tab and then revealed
-.post-type-give_forms .mce-container iframe, .post-type-give_forms .wp-editor-area{
+.post-type-give_forms .mce-container iframe, .post-type-give_forms .wp-editor-area {
   min-height: 400px;
 }

@@ -1703,7 +1703,7 @@ class Give_API {
 		switch ( $process ) {
 			case 'generate':
 				if ( $this->generate_api_key( $user_id ) ) {
-					delete_transient( 'give-total-api-keys' );
+					delete_transient( 'give_total_api_keys' );
 					wp_redirect( add_query_arg( 'give-message', 'api-key-generated', 'edit.php?post_type=give_forms&page=give-settings&tab=api' ) );
 					exit();
 				} else {
@@ -1713,13 +1713,13 @@ class Give_API {
 				break;
 			case 'regenerate':
 				$this->generate_api_key( $user_id, true );
-				delete_transient( 'give-total-api-keys' );
+				delete_transient( 'give_total_api_keys' );
 				wp_redirect( add_query_arg( 'give-message', 'api-key-regenerated', 'edit.php?post_type=give_forms&page=give-settings&tab=api' ) );
 				exit();
 				break;
 			case 'revoke':
 				$this->revoke_api_key( $user_id );
-				delete_transient( 'give-total-api-keys' );
+				delete_transient( 'give_total_api_keys' );
 				wp_redirect( add_query_arg( 'give-message', 'api-key-revoked', 'edit.php?post_type=give_forms&page=give-settings&tab=api' ) );
 				exit();
 				break;

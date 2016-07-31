@@ -1085,8 +1085,10 @@ function give_validate_multi_donation_form_level(  $valid_data, $data ) {
         // Sanitize donation amount.
         $data['give-amount'] = give_sanitize_amount( $data['give-amount'] );
 
-        // Do not auto select level for donation amount if we already have correct price id and donation amount.
-        if( $data['give-amount'] === give_get_price_option_amount( $data['give-form-id'], $data['give-price-id'] ) ){
+        // Get number of decimals.
+        $default_decimals = give_get_price_decimals();
+
+        if( $data['give-amount'] === give_sanitize_amount( give_get_price_option_amount( $data['give-form-id'], $data['give-price-id'] ), $default_decimals ) ){
             return true;
         }
 
@@ -1094,7 +1096,7 @@ function give_validate_multi_donation_form_level(  $valid_data, $data ) {
         // Find correct donation level from all donation levels.
         foreach ( $variable_prices as $variable_price ) {
             // Sanitize level amount.
-            $variable_price['_give_amount'] = give_sanitize_amount( $variable_price['_give_amount'] );
+            $variable_price['_give_amount'] = give_sanitize_amount( $variable_price['_give_amount'], $default_decimals );
 
             // Set first match donation level ID.
             if( $data['give-amount'] === $variable_price['_give_amount'] ) {
@@ -1111,7 +1113,7 @@ function give_validate_multi_donation_form_level(  $valid_data, $data ) {
             && ( 'yes' === get_post_meta( $data['give-form-id'], '_give_custom_amount', true ) )
         ) {
             // Sanitize custom minimum amount.
-            $custom_minimum_amount = give_sanitize_amount( get_post_meta( $data['give-form-id'], '_give_custom_amount_minimum', true ) );
+            $custom_minimum_amount = give_sanitize_amount( get_post_meta( $data['give-form-id'], '_give_custom_amount_minimum', true ), $default_decimals );
 
             if( $data['give-amount'] >= $custom_minimum_amount ) {
                 $_POST['give-price-id'] = 'custom';

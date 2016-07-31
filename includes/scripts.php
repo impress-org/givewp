@@ -26,8 +26,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_load_scripts() {
 
-	global $give_options;
-
 	$js_dir         = GIVE_PLUGIN_URL . 'assets/js/frontend/';
 	$js_plugins     = GIVE_PLUGIN_URL . 'assets/js/plugins/';
 	$scripts_footer = ( give_get_option( 'scripts_footer' ) == 'on' ) ? true : false;
@@ -274,7 +272,7 @@ function give_load_admin_scripts( $hook ) {
 		'numeric_quantity'        => esc_html__( 'Quantity must be numeric.', 'give' ),
 		'currency_sign'           => give_currency_filter( '' ),
 		'currency_pos'            => isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before',
-		'currency_decimals'       => give_currency_decimal_filter(),
+		'currency_decimals'       => give_currency_decimal_filter( give_get_price_decimals() ),
 		'new_media_ui'            => apply_filters( 'give_use_35_media_ui', 1 ),
 		'remove_text'             => esc_html__( 'Remove', 'give' ),
 		/* translators: %s: form plural label */

@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return mixed
  */
 function give_get_price_decimals() {
-    return apply_filters( 'give_sanitize_amount_decimals', 2 );
+    return apply_filters( 'give_sanitize_amount_decimals', give_get_option( 'number_decimals', 0 ) );
 }
 
 /**
@@ -55,13 +55,20 @@ function give_get_price_decimal_separator() {
  *
  * @since      1.0
  *
- * @param  float|string $number     Expects either a float or a string with a decimal separator only (no thousands)
+ * @param  int|float|string $number     Expects either a float or a string with a decimal separator only (no thousands)
+ * @param  int|bool     $dp         Number of decimals
  * @param  bool         $trim_zeros From end of string
  *
  *
  * @return string $amount Newly sanitized amount
  */
-function give_sanitize_amount( $number, $trim_zeros = false ) {
+function give_sanitize_amount( $number, $dp = false, $trim_zeros = false ) {
+
+    // Bailout.
+    if( empty( $number ) ) {
+        return $number;
+    }
+
     $thousand_separator = give_get_price_thousand_separator();
 
     $locale   = localeconv();
@@ -80,24 +87,35 @@ function give_sanitize_amount( $number, $trim_zeros = false ) {
     }
 
     // Remove non numeric entity before decimal separator.
-    $number   = preg_replace( '/[^0-9\.]/', '', $number );
+    $number     = preg_replace( '/[^0-9\.]/', '', $number );
+    $default_dp = give_get_price_decimals();
 
-    $decimals = give_get_price_decimals();
-    $decimals = apply_filters( 'give_sanitize_amount_decimals', $decimals, $number );
-
-    $number = number_format( floatval( $number ), $decimals, '.', '' );
+    // Format number of decimals in number.
+    if( false !== $dp ) {
+        $dp     = intval(  empty( $dp ) ? $default_dp : $dp );
+        $dp     = apply_filters( 'give_sanitize_amount_decimals', $dp, $number );
+        $number = number_format( floatval( $number ), $dp, '.', '' );
+    }
 
     // Reset negative amount to zero.
 	if ( 0 > $number ) {
-		$number = number_format( 0, 2, '.' );
+		$number = number_format( 0, $default_dp, '.' );
 	}
+
+    // If number does not have decimal then add number of decimals to it.
+    if(
+        false === strpos( $number, '.' )
+        || ( $default_dp > strlen( substr( $number, strpos( $number , '.' ) + 1 ) ) )
+    ) {
+        $number = number_format( $number, $default_dp, '.', '' );
+    }
 
     // Trim zeros.
     if ( $trim_zeros && strstr( $number, '.' ) ) {
         $number = rtrim( rtrim( $number, '0' ), '.' );
     }
 
-	return apply_filters( 'give_sanitize_amount', $number );
+    return apply_filters( 'give_sanitize_amount', $number );
 }
 
 /**
@@ -199,13 +217,14 @@ function give_human_format_large_amount( $amount ) {
  *
  * @since 1.0
  *
- * @param string      $amount   Formatted or sanitized price
+ * @param int|float|string      $amount   Formatted or sanitized price
+ * @param int|bool    $dp       number of decimals
  *
  * @return string $amount Newly formatted amount or Price Not Available
  */
-function give_format_decimal( $amount ){
+function give_format_decimal( $amount, $dp = false ){
     $decimal_separator = give_get_price_decimal_separator();
-    $formatted_amount  = give_sanitize_amount( $amount );
+    $formatted_amount  = give_sanitize_amount( $amount, $dp );
 
     if( false !== strpos( $formatted_amount, '.' ) ) {
         $formatted_amount = str_replace( '.', $decimal_separator, $formatted_amount );
@@ -255,91 +274,67 @@ function give_currency_filter( $price = '', $currency = '' ) {
 	$negative = $price < 0;
 
 	if ( $negative ) {
-		$price = substr( $price, 1 ); // Remove proceeding "-" -
+        // Remove proceeding "-".
+		$price = substr( $price, 1 );
 	}
 
 	$symbol = give_currency_symbol( $currency );
 
-	if ( $position == 'before' ):
-		switch ( $currency ):
-			case 'GBP' :
-			case 'BRL' :
-			case 'EUR' :
-			case 'USD' :
-			case 'AUD' :
-			case 'CAD' :
-			case 'HKD' :
-			case 'MXN' :
-			case 'NZD' :
-			case 'SGD' :
-			case 'JPY' :
-			case 'THB' :
-			case 'INR' :
-			case 'RIAL' :
-			case 'TRY' :
-			case 'RUB' :
-			case 'SEK' :
-			case 'PLN' :
-			case 'PHP' :
-			case 'TWD' :
-			case 'MYR' :
-			case 'CZK' :
-			case 'DKK' :
-			case 'HUF' :
-			case 'ILS' :
-			case 'MAD' :
-			case 'KRW' :
-			case 'ZAR' :
-				$formatted = $symbol . $price;
-				break;
-			case 'NOK' :
-				$formatted = $symbol . ' ' . $price;
-				break;
-			default :
-				$formatted = $currency . ' ' . $price;
-				break;
-		endswitch;
-		$formatted = apply_filters( 'give_' . strtolower( $currency ) . '_currency_filter_before', $formatted, $currency, $price );
-	else :
-		switch ( $currency ) :
-			case 'GBP' :
-			case 'BRL' :
-			case 'EUR' :
-			case 'USD' :
-			case 'AUD' :
-			case 'CAD' :
-			case 'HKD' :
-			case 'MXN' :
-			case 'SGD' :
-			case 'JPY' :
-			case 'THB' :
-			case 'INR' :
-			case 'RIAL' :
-			case 'TRY' :
-			case 'RUB' :
-			case 'SEK' :
-			case 'PLN' :
-			case 'PHP' :
-			case 'TWD' :
-			case 'CZK' :
-			case 'DKK' :
-			case 'HUF' :
-			case 'MYR' :
-			case 'ILS' :
-			case 'MAD' :
-			case 'KRW' :
-			case 'ZAR' :
-				$formatted = $price . $symbol;
-				break;
-			default :
-				$formatted = $price . ' ' . $currency;
-				break;
-		endswitch;
-		$formatted = apply_filters( 'give_' . strtolower( $currency ) . '_currency_filter_after', $formatted, $currency, $price );
-	endif;
+    switch ( $currency ):
+        case 'GBP' :
+        case 'BRL' :
+        case 'EUR' :
+        case 'USD' :
+        case 'AUD' :
+        case 'CAD' :
+        case 'HKD' :
+        case 'MXN' :
+        case 'NZD' :
+        case 'SGD' :
+        case 'JPY' :
+        case 'THB' :
+        case 'INR' :
+        case 'RIAL' :
+        case 'TRY' :
+        case 'RUB' :
+        case 'SEK' :
+        case 'PLN' :
+        case 'PHP' :
+        case 'TWD' :
+        case 'MYR' :
+        case 'CZK' :
+        case 'DKK' :
+        case 'HUF' :
+        case 'ILS' :
+        case 'MAD' :
+        case 'KRW' :
+        case 'ZAR' :
+            $formatted = ( 'before' === $position ? $symbol . $price : $price . $symbol );
+            break;
+        case 'NOK' :
+            $formatted = ( 'before' === $position ? $symbol . ' ' . $price : $price . ' ' . $symbol );
+            break;
+        default :
+            $formatted = ( 'before' === $position ? $currency . ' ' . $price : $price . ' ' . $currency );
+            break;
+    endswitch;
 
-	if ( $negative ) {
-		// Prepend the mins sign before the currency sign
+    /**
+     * Filter formatted amount with currency
+     *
+     * Filter name depends upon current value of currency and currency position.
+     * For example :
+     *           if currency is USD and currency position is before then
+     *           filter name will be give_usd_currency_filter_before
+     *
+     *           and if currency is USD and currency position is after then
+     *           filter name will be give_usd_currency_filter_after
+     *
+     */
+    $formatted = apply_filters( 'give_' . strtolower( $currency ) . "_currency_filter_{$position}", $formatted, $currency, $price );
+
+    if ( $negative ) {
+		// Prepend the minus sign before the currency sign.
 		$formatted = '-' . $formatted;
 	}
 
@@ -350,12 +345,24 @@ function give_currency_filter( $price = '', $currency = '' ) {
  * Set the number of decimal places per currency
  *
  * @since 1.0
- *
- * @param int $decimals Number of decimal places
- *
+ * @since 1.6 $decimals parameter removed from function params
+ **
  * @return int $decimals
  */
-function give_currency_decimal_filter( $decimals = 2 ) {
+function give_currency_decimal_filter() {
+
+    remove_filter( 'give_sanitize_amount_decimals', 'give_currency_decimal_filter' );
+
+    // Set default number of decimals.
+    $decimals = give_get_price_decimals();
+
+    add_filter( 'give_sanitize_amount_decimals', 'give_currency_decimal_filter' );
+
+
+    // Get number of decimals with backward compatibility ( version < 1.6 )
+    if( 1 <= func_num_args() ){
+        $decimals = ( false === func_get_arg( 0 ) ? $decimals : absint( func_get_arg( 0 ) ) );
+    }
 
 	$currency = give_get_currency();
 
@@ -388,4 +395,35 @@ add_filter( 'give_format_amount_decimals', 'give_currency_decimal_filter' );
  */
 function give_sanitize_thousand_separator( $value, $field_args, $field ){
     return $value;
+}
+
+
+/**
+ * Sanitize number of decimals
+ *
+ * @since 1.6
+ *
+ * @param string $value
+ * @param array  $field_args
+ * @param object $field
+ *
+ * @return mixed
+ */
+function give_sanitize_number_decimals( $value, $field_args, $field ){
+	return absint($value);
+}
+
+/**
+ * Sanitize price file value
+ *
+ * @since 1.6
+ *
+ * @param string $value
+ * @param array  $field_args
+ * @param object $field
+ *
+ * @return mixed
+ */
+function give_sanitize_price_field_value( $value, $field_args, $field ){
+    return give_sanitize_amount( $value );
 }
