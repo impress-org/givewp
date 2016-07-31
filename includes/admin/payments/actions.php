@@ -79,7 +79,7 @@ function give_update_payment_details( $data ) {
 	$updated       = $payment->save();
 
 	if ( 0 === $updated ) {
-		wp_die( esc_attr__( 'Error Updating Payment.', 'give' ), esc_attr__( 'Error', 'give' ), array( 'response' => 400 ) );
+		wp_die( esc_html__( 'Error Updating Payment.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
 	}
 
 
@@ -91,7 +91,7 @@ function give_update_payment_details( $data ) {
 		$names = isset( $data['give-new-customer-name'] ) ? sanitize_text_field( $data['give-new-customer-name'] ) : '';
 
 		if ( empty( $email ) || empty( $names ) ) {
-			wp_die( esc_attr__( 'New Customers require a name and email address.', 'give' ) );
+			wp_die( esc_html__( 'New Customers require a name and email address.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
 		}
 
 		$customer = new Give_Customer( $email );

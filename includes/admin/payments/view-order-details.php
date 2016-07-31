@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 if ( ! isset( $_GET['id'] ) || ! is_numeric( $_GET['id'] ) ) {
-	wp_die( esc_html__( 'Donation ID not supplied. Please try again', 'give' ), esc_html__( 'Error', 'give' ) );
+	wp_die( esc_html__( 'Donation ID not supplied. Please try again.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
 }
 
 // Setup the variables
@@ -31,7 +31,7 @@ $payment    = new Give_Payment( $payment_id );
 // Sanity check... fail if purchase ID is invalid
 $payment_exists = $payment->ID;
 if ( empty( $payment_exists ) ) {
-	wp_die( esc_html__( 'The specified ID does not belong to a payment. Please try again', 'give' ), esc_html__( 'Error', 'give' ) );
+	wp_die( esc_html__( 'The specified ID does not belong to a payment. Please try again.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
 }
 
 $number         = $payment->number;
