@@ -120,6 +120,14 @@ if ( ! class_exists( 'Give' ) ) :
 		public $customers;
 
 		/**
+		 * Give Customer meta DB Object.
+		 *
+		 * @var object|Give_DB_Customer_Meta
+		 * @since 1.6
+		 */
+		public $customer_meta;
+
+		/**
 		 * Give API Object
 		 *
 		 * @var Give_API object
@@ -273,6 +281,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donate-form.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-customers.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-customer-meta.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-customer.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-stats.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-session.php';
@@ -402,8 +411,8 @@ endif; // End if class_exists check
 
 
 /**
- * Start Give 
- * 
+ * Start Give
+ *
  * The main function responsible for returning the one true Give instance to functions everywhere.
  *
  * Use this function like you would a global variable, except without needing
@@ -412,7 +421,7 @@ endif; // End if class_exists check
  * Example: <?php $give = Give(); ?>
  *
  * @since 1.0
- * @return object|Give 
+ * @return object|Give
  */
 function Give() {
 	return Give::instance();
