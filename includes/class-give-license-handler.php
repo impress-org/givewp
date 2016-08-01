@@ -169,16 +169,14 @@ if ( ! class_exists( 'Give_License' ) ) :
 		/**
 		 * Auto Updater
 		 *
-		 * Setup the license auto updater.
-		 *
-		 * @access public
-		 *
-		 * @return void
+		 * @access  private
+		 * @global  array $give_options
+		 * @return  bool
 		 */
 		public function auto_updater() {
 
-			if ( 'valid' !== get_option( $this->item_shortname . '_license_active' ) ) {
-				return;
+			if ( ! $this->is_valid_license() ) {
+				return false;
 			}
 
 			// Setup the updater
@@ -290,11 +288,9 @@ if ( ! class_exists( 'Give_License' ) ) :
                 }
             }
 
-            // Get previous license setting.
-            $license_details = get_option( $this->item_shortname . '_license_active' );
 
             // Check if plugin previously installed.
-            if ( is_object( $license_details ) && 'valid' === $license_details->license ) {
+            if ( $this->is_valid_license() ) {
                 return;
             }
 
