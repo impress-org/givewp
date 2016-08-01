@@ -118,8 +118,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 			$this->includes();
 			$this->hooks();
 			//$this->auto_updater();
-
-            error_log(print_r( $this->license, true) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log');
 		}
 
 		/**
