@@ -351,8 +351,9 @@ add_action( 'give_add_email_tags', 'give_setup_email_tags' );
 
 
 /**
- * Email template tag: name
- * The donor's first name
+ * Email template tag: name.
+ *
+ * The donor's first name.
  *
  * @param int $payment_id
  *
@@ -372,8 +373,9 @@ function give_email_tag_first_name( $payment_id ) {
 }
 
 /**
- * Email template tag: fullname
- * The donor's full name, first and last
+ * Email template tag: fullname.
+ *
+ * The donor's full name, first and last.
  *
  * @param int $payment_id
  *
