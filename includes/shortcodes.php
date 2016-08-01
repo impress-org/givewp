@@ -109,13 +109,13 @@ function give_form_shortcode( $atts, $content = null ) {
 add_shortcode( 'give_form', 'give_form_shortcode' );
 
 /**
- * Donation Form Goal Shortcode
+ * Donation Form Goal Shortcode.
  *
  * Show the Give donation form goals.
  *
  * @since       1.0
  *
- * @param array $atts Shortcode attributes
+ * @param array $atts Shortcode attributes.
  * @param string $content
  *
  * @return string
@@ -128,20 +128,20 @@ function give_goal_shortcode( $atts, $content = null ) {
 	), $atts, 'give_goal' );
 
 
-	//get the Give Form
+	//get the Give Form.
 	ob_start();
 
-	//Sanity check 1: ensure there is an ID Provided
+	//Sanity check 1: ensure there is an ID Provided.
 	if ( empty( $atts['id'] ) ) {
 		give_output_error( esc_html__( 'Error: No Donation form ID for the shortcode provided.', 'give' ), true );
 	}
 
-	//Sanity check 2: Check that this form even has Goals enabled
+	//Sanity check 2: Check that this form even has Goals enabled.
 	$goal_option = get_post_meta( $atts['id'], '_give_goal_option', true );
 	if ( empty( $goal_option ) || $goal_option !== 'yes' ) {
 		give_output_error( esc_html__( 'Error: This form does not have Goals enabled.', 'give' ), true );
 	} else {
-		//Passed all sanity checks: output Goal
+		//Passed all sanity checks: output Goal.
 		give_show_goal_progress( $atts['id'], $atts );
 	}
 
@@ -154,7 +154,7 @@ add_shortcode( 'give_goal', 'give_goal_shortcode' );
 
 
 /**
- * Login Shortcode
+ * Login Shortcode.
  *
  * Shows a login form allowing users to users to log in. This function simply
  * calls the give_login_form function to display the login form.
@@ -185,13 +185,13 @@ function give_login_form_shortcode( $atts, $content = null ) {
 add_shortcode( 'give_login', 'give_login_form_shortcode' );
 
 /**
- * Register Shortcode
+ * Register Shortcode.
  *
- * Shows a registration form allowing users to users to register for the site
+ * Shows a registration form allowing users to users to register for the site.
  *
  * @since 1.0
  *
- * @param array  $atts     Shortcode attributes
+ * @param array  $atts     Shortcode attributes.
  * @param string $content
  *
  * @uses  give_register_form()
@@ -209,13 +209,13 @@ add_shortcode( 'give_register', 'give_register_form_shortcode' );
 
 
 /**
- * Receipt Shortcode
+ * Receipt Shortcode.
  *
- * Shows an order receipt.
+ * Shows a donation receipt.
  *
  * @since 1.0
  *
- * @param array  $atts    Shortcode attributes
+ * @param array  $atts    Shortcode attributes.
  * @param string $content
  *
  * @return string
@@ -266,7 +266,7 @@ function give_receipt_shortcode( $atts, $content = null ) {
 	$payment_id    = give_get_purchase_id_by_key( $payment_key );
 	$user_can_view = give_can_view_receipt( $payment_key );
 
-	// Key was provided, but user is logged out. Offer them the ability to login and view the receipt
+	// Key was provided, but user is logged out. Offer them the ability to login and view the receipt.
 	if ( ! $user_can_view && $email_access == 'on' && ! Give()->email_access->token_exists ) {
 
 		ob_start();
@@ -293,13 +293,11 @@ function give_receipt_shortcode( $atts, $content = null ) {
 	}
 
 	/*
-	 * Check if the user has permission to view the receipt
+	 * Check if the user has permission to view the receipt.
 	 *
 	 * If user is logged in, user ID is compared to user ID of ID stored in payment meta
-	 *
-	 * Or if user is logged out and purchase was made as a guest, the purchase session is checked for
-	 *
-	 * Or if user is logged in and the user can view sensitive shop data
+	 * or if user is logged out and purchase was made as a guest, the purchase session is checked for
+	 * or if user is logged in and the user can view sensitive shop data.
 	 *
 	 */
 	if ( ! apply_filters( 'give_user_can_view_receipt', $user_can_view, $give_receipt_args ) ) {
@@ -320,7 +318,7 @@ function give_receipt_shortcode( $atts, $content = null ) {
 add_shortcode( 'give_receipt', 'give_receipt_shortcode' );
 
 /**
- * Profile Editor Shortcode
+ * Profile Editor Shortcode.
  *
  * Outputs the Give Profile Editor to allow users to amend their details from the
  * front-end. This function uses the Give templating system allowing users to
@@ -351,13 +349,13 @@ function give_profile_editor_shortcode( $atts, $content = null ) {
 add_shortcode( 'give_profile_editor', 'give_profile_editor_shortcode' );
 
 /**
- * Process Profile Updater Form
+ * Process Profile Updater Form.
  *
- * Processes the profile updater form by updating the necessary fields
+ * Processes the profile updater form by updating the necessary fields.
  *
  * @since  1.0
  *
- * @param array $data Data sent from the profile editor
+ * @param array $data Data sent from the profile editor.
  *
  * @return bool
  */
