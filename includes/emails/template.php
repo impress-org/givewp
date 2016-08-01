@@ -132,7 +132,8 @@ function give_email_preview_buttons_callback() {
 	<a href="<?php echo esc_url( add_query_arg( array( 'give_action' => 'preview_email' ), home_url() ) ); ?>" class="button-secondary" target="_blank" title="<?php esc_attr_e( 'Donation Receipt Preview', 'give' ); ?> "><?php esc_html_e( 'Preview Donation Receipt', 'give' ); ?></a>
 	<a href="<?php echo wp_nonce_url( add_query_arg( array(
 		'give_action'  => 'send_test_email',
-		'give-message' => 'sent-test-email'
+		'give-message' => 'sent-test-email',
+		'tag'          => 'emails'
 	) ), 'give-test-email' ); ?>" title="<?php esc_attr_e( 'This will send a demo donation receipt to the emails listed below.', 'give' ); ?>" class="button-secondary"><?php esc_html_e( 'Send Test Email', 'give' ); ?></a>
 	<?php
 	echo ob_get_clean();
@@ -161,7 +162,7 @@ function give_display_email_template_preview() {
 	Give()->emails->heading = esc_html__( 'Donation Receipt', 'give' );
 
 	$preview_content = give_email_preview_template_tags( give_get_email_body_content( 0, array() ) );
-	
+
 	echo Give()->emails->build_email( $preview_content );
 
 	exit;
