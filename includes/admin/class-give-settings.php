@@ -141,7 +141,7 @@ class Give_Plugin_Settings {
 
 		<div class="wrap give_settings_page cmb2_options_page <?php echo $this->key; ?>">
 
-			<h1 class="give-hide-heading"><?php esc_html_e( 'Give Settings', 'give' ); ?></h1>
+			<h1 class="screen-reader-text"><?php esc_html_e( 'Give Settings', 'give' ); ?></h1>
 
 			<h2 class="nav-tab-wrapper">
 				<?php
