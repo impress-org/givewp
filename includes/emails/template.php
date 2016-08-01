@@ -289,8 +289,6 @@ function give_render_receipt_in_browser() {
 		<meta http-equiv="expires" content="Tue, 23 Oct 1977 05:00:00 PST"/>
 		<meta http-equiv="pragma" content="no-cache"/>
 		<meta name="robots" content="noindex, nofollow"/>
-
-		<?php wp_head(); ?>
 	</head>
 	<body class="<?php echo apply_filters( 'give_receipt_page_body_class', 'give_receipt_page' ); ?>">
 
@@ -300,7 +298,6 @@ function give_render_receipt_in_browser() {
 		<?php do_action( 'give_render_receipt_in_browser_after' ); ?>
 	</div>
 
-	<?php wp_footer(); ?>
 	</body>
 	</html>
 	<?php
