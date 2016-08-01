@@ -109,15 +109,13 @@ class Give_Payment_History_Table extends WP_List_Table {
 	public $abandoned_count;
 
 	/**
-	 * Get things started
+	 * Get things started.
 	 *
 	 * @since 1.0
 	 * @uses  Give_Payment_History_Table::get_payment_counts()
 	 * @see   WP_List_Table::__construct()
 	 */
 	public function __construct() {
-
-		global $status, $page;
 
 		// Set parent defaults
 		parent::__construct( array(

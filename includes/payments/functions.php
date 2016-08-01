@@ -322,7 +322,7 @@ function give_undo_purchase( $form_id = false, $payment_id ) {
 
 
 /**
- * Count Payments
+ * Count Payments.
  *
  * Returns the total number of payments recorded.
  *
@@ -330,7 +330,7 @@ function give_undo_purchase( $form_id = false, $payment_id ) {
  *
  * @param array $args
  *
- * @return array $count Number of payments sorted by payment status
+ * @return array $count Number of payments sorted by payment status.
  */
 function give_count_payments( $args = array() ) {
 
