@@ -11,6 +11,9 @@
 
 defined( 'ABSPATH' ) or exit;
 
+/**
+ * Class Give_Shortcode_Donation_Receipt
+ */
 class Give_Shortcode_Donation_Receipt extends Give_Shortcode_Generator {
 
 	/**
