@@ -245,7 +245,7 @@ function give_get_donation_notification_body_content( $payment_id = 0, $payment_
  */
 function give_render_receipt_in_browser() {
 	if ( ! isset( $_GET['payment_key'] ) ) {
-		wp_die( esc_html__( 'Missing donation payment key.', 'give' ), esc_html__( 'Error', 'give' ) );
+		wp_die( esc_html__( 'Missing donation payment key.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
 	}
 
 	$key = urlencode( $_GET['payment_key'] );
