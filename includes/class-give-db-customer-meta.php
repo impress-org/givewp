@@ -12,7 +12,9 @@
  */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Class Give_DB_Customer_Meta
@@ -24,8 +26,9 @@ class Give_DB_Customer_Meta extends Give_DB {
 	 *
 	 * @access  public
 	 * @since   1.6
-	*/
+	 */
 	public function __construct() {
+		/* @var WPDB $wpdb */
 		global $wpdb;
 
 		$this->table_name  = $wpdb->prefix . 'give_customermeta';
@@ -41,7 +44,7 @@ class Give_DB_Customer_Meta extends Give_DB {
 	 *
 	 * @access  public
 	 * @since   1.6
-	*/
+	 */
 	public function get_columns() {
 		return array(
 			'meta_id'     => '%d',
@@ -56,7 +59,7 @@ class Give_DB_Customer_Meta extends Give_DB {
 	 *
 	 * @access  public
 	 * @since   1.6
-	*/
+	 */
 	public function register_table() {
 		global $wpdb;
 		$wpdb->customermeta = $this->table_name;
@@ -67,9 +70,10 @@ class Give_DB_Customer_Meta extends Give_DB {
 	 *
 	 * For internal use only. Use Give_Customer->get_meta() for public usage.
 	 *
-	 * @param   int    $customer_id   Customer ID.
-	 * @param   string $meta_key      The meta key to retrieve.
-	 * @param   bool   $single        Whether to return a single value.
+	 * @param   int    $customer_id Customer ID.
+	 * @param   string $meta_key The meta key to retrieve.
+	 * @param   bool   $single Whether to return a single value.
+	 *
 	 * @return  mixed                 Will be an array if $single is false. Will be value of meta data field if $single is true.
 	 *
 	 * @access  private
@@ -89,10 +93,11 @@ class Give_DB_Customer_Meta extends Give_DB {
 	 *
 	 * For internal use only. Use Give_Customer->add_meta() for public usage.
 	 *
-	 * @param   int    $customer_id   Customer ID.
-	 * @param   string $meta_key      Metadata name.
-	 * @param   mixed  $meta_value    Metadata value.
-	 * @param   bool   $unique        Optional, default is false. Whether the same key should not be added.
+	 * @param   int    $customer_id Customer ID.
+	 * @param   string $meta_key Metadata name.
+	 * @param   mixed  $meta_value Metadata value.
+	 * @param   bool   $unique Optional, default is false. Whether the same key should not be added.
+	 *
 	 * @return  bool                  False for failure. True for success.
 	 *
 	 * @access  private
@@ -117,10 +122,11 @@ class Give_DB_Customer_Meta extends Give_DB {
 	 *
 	 * If the meta field for the customer does not exist, it will be added.
 	 *
-	 * @param   int    $customer_id   Customer ID.
-	 * @param   string $meta_key      Metadata key.
-	 * @param   mixed  $meta_value    Metadata value.
-	 * @param   mixed  $prev_value    Optional. Previous value to check before removing.
+	 * @param   int    $customer_id Customer ID.
+	 * @param   string $meta_key Metadata key.
+	 * @param   mixed  $meta_value Metadata value.
+	 * @param   mixed  $prev_value Optional. Previous value to check before removing.
+	 *
 	 * @return  bool                  False on failure, true if success.
 	 *
 	 * @access  private
@@ -144,9 +150,10 @@ class Give_DB_Customer_Meta extends Give_DB {
 	 * value, will keep from removing duplicate metadata with the same key. It also
 	 * allows removing all metadata matching key, if needed.
 	 *
-	 * @param   int    $customer_id   Customer ID.
-	 * @param   string $meta_key      Metadata name.
-	 * @param   mixed  $meta_value    Optional. Metadata value.
+	 * @param   int    $customer_id Customer ID.
+	 * @param   string $meta_key Metadata name.
+	 * @param   mixed  $meta_value Optional. Metadata value.
+	 *
 	 * @return  bool                  False for failure. True for success.
 	 *
 	 * @access  private
@@ -161,7 +168,7 @@ class Give_DB_Customer_Meta extends Give_DB {
 	 *
 	 * @access  public
 	 * @since   1.6
-	*/
+	 */
 	public function create_table() {
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -185,7 +192,9 @@ class Give_DB_Customer_Meta extends Give_DB {
 	 * Given a customer ID, make sure it's a positive number, greater than zero before inserting or adding.
 	 *
 	 * @since  1.6
+	 *
 	 * @param  int|stripe $customer_id A passed customer ID.
+	 *
 	 * @return int|bool                The normalized customer ID or false if it's found to not be valid.
 	 */
 	private function sanitize_customer_id( $customer_id ) {
