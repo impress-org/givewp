@@ -534,7 +534,7 @@ if ( ! class_exists( 'Give_License' ) ) :
          * @return bool
          */
         public function is_expired_license() {
-            if( ( ! $this->is_valid_license() && is_object( $this->license_data ) && ! empty( $this->license_data ) && 'expired' === $this->license_data->license ) ) {
+            if( ( ! $this->is_valid_license() && is_object( $this->license_data ) && ! empty( $this->license_data ) && ( 'expired' == $this->license_data->license ||  'expired' == $this->license_data->error ) ) ) {
                 return true;
             }
 

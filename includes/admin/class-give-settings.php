@@ -1168,7 +1168,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 	$field_description  = $field_type_object->field->args['desc'];
 	$license            = $field_type_object->field->args['options']['license'];
     $is_valid_license   = ( is_object( $license ) && ! empty( $license ) && 'valid' === $license->license );
-    $is_expired_license = ( ! $is_valid_license && is_object( $license ) && ! empty( $license ) && 'expired' === $license->error );
+    $is_expired_license = ( ! $is_valid_license && is_object( $license ) && ! empty( $license ) && (  'expired' == $license->license ||  'expired' == $license->error ) );
     $shortname          = $field_type_object->field->args['options']['shortname'];
 	$field_classes      = 'regular-text give-license-field';
 	$type               = empty( $escaped_value ) ? 'text' : 'password';
