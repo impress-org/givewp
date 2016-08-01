@@ -178,8 +178,9 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Tweak: Remove invalid @description from PHP inline doc blocks - https://github.com/WordImpress/Give/issues/733
 * Tweak: Incorporate proper sanitization for i18n strings - https://github.com/WordImpress/Give/issues/471
 * Tweak: Accessibility page headings added to screens in wp-admin - https://github.com/WordImpress/Give/issues/820
+* Tweak: Unify wp_die() throughout codebase and add title and HTML status response codes - https://github.com/WordImpress/Give/issues/828
 * Fix: Unrendered html in multi-level donation confirmation emails - https://github.com/WordImpress/Give/issues/754
-* Fix: Text editor do not have same height for visual mode and text mode - https://github.com/WordImpress/Give/issues/688
+* Fix: Text editor does not have same height for visual mode and text mode - https://github.com/WordImpress/Give/issues/688
 * Fix: Auto populate state list is not working on transaction detail page - https://github.com/WordImpress/Give/issues/715
 * Fix: Unable to view payment history for donors with unusual characters in the email - https://github.com/WordImpress/Give/issues/717
 * Fix: Mixed content warning with placeholder image - https://github.com/WordImpress/Give/issues/768
