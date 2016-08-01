@@ -158,9 +158,23 @@ function give_display_email_template_preview() {
 		return;
 	}
 
+	$payment_id = (int) isset( $_GET['preview_payment'] ) ? $_GET['preview_payment'] : '';
+
 	Give()->emails->heading = esc_html__( 'Donation Receipt', 'give' );
 
-	$preview_content = give_email_preview_template_tags( give_get_email_body_content( 0, array() ) );
+	//Are we previewing an actual payment?
+	if ( ! empty( $payment_id ) ) {
+
+		$content = give_get_email_body_content( $payment_id );
+
+		$preview_content = give_do_email_tags( $content, $payment_id );
+
+	} else {
+
+		//No payment ID, use sample preview content
+		$preview_content = give_email_preview_template_tags( give_get_email_body_content( 0, array() ) );
+	}
+
 
 	echo Give()->emails->build_email( $preview_content );
 
