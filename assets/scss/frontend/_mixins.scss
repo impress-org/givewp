@@ -83,7 +83,6 @@
   color: $dark;
   margin: 0;
   padding: 0 12px;
-  float: left;
   height: 35px;
   line-height: 35px;
   font-size: $font-size-medium;
@@ -91,7 +90,6 @@
 }
 
 @mixin give-input() {
-  float: left;
   border: 1px solid $borders;
   background: #FFF;
   border-radius: 0;

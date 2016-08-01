@@ -73,11 +73,11 @@ function give_customers_list() {
 	$customers_table->prepare_items();
 	?>
 	<div class="wrap">
-		<h2><?php esc_html_e( 'Donors', 'give' ); ?></h2>
+		<h1><?php esc_html_e( 'Donors', 'give' ); ?></h1>
 		<?php do_action( 'give_donors_table_top' ); ?>
 		<form id="give-donors-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors' ); ?>">
 			<?php
-			$customers_table->search_box( esc_html( 'Search Donors', 'give' ), 'give-donors' );
+			$customers_table->search_box( esc_html__( 'Search Donors', 'give' ), 'give-donors' );
 			$customers_table->display();
 			?>
 			<input type="hidden" name="post_type" value="give_forms" />
@@ -106,12 +106,12 @@ function give_render_customer_view( $view, $callbacks ) {
 	$customer_view_role = apply_filters( 'give_view_customers_role', 'view_give_reports' );
 
 	if ( ! current_user_can( $customer_view_role ) ) {
-		give_set_error( 'give-no-access', esc_html( 'You are not permitted to view this data.', 'give' ) );
+		give_set_error( 'give-no-access', esc_html__( 'You are not permitted to view this data.', 'give' ) );
 		$render = false;
 	}
  
 	if ( ! isset( $_GET['id'] ) || ! is_numeric( $_GET['id'] ) ) {
-		give_set_error( 'give-invalid_customer', esc_html( 'Invalid Donor ID Provided.', 'give' ) );
+		give_set_error( 'give-invalid_customer', esc_html__( 'Invalid Donor ID Provided.', 'give' ) );
 		$render = false;
 	}
 
@@ -119,7 +119,7 @@ function give_render_customer_view( $view, $callbacks ) {
 	$customer    = new Give_Customer( $customer_id );
 
 	if ( empty( $customer->id ) ) {
-		give_set_error( 'give-invalid_customer', esc_html( 'Invalid Donor ID Provided.', 'give' ) );
+		give_set_error( 'give-invalid_customer', esc_html__( 'Invalid Donor ID Provided.', 'give' ) );
 		$render = false;
 	}
 
@@ -201,10 +201,8 @@ function give_customers_view( $customer ) {
 						<?php echo get_avatar( $customer->email ); ?>
 					</div>
 
-					<div class="customer-id" class="left">
-						#<?php echo $customer->id; ?>
-					</div>
 					<div id="customer-name-wrap" class="left">
+						<span class="customer-id">#<?php echo $customer->id; ?></span>
 						<span class="customer-name info-item edit-item"><input size="15" data-key="name" name="customerinfo[name]" type="text" value="<?php esc_attr_e( $customer->name ); ?>" placeholder="<?php esc_attr_e( 'Donor Name', 'give' ); ?>" /></span>
 						<span class="customer-name info-item editable"><span data-key="name"><?php echo $customer->name; ?></span></span>
 					</div>
@@ -448,14 +446,14 @@ function give_customers_view( $customer ) {
 							<a title="<?php
 								printf(
 									/* translators: %s: post title */
-									esc_attr( 'View %s', 'give' ),
+									esc_attr__( 'View %s', 'give' ),
 									$donation->post_title
 								); ?>" href="<?php echo esc_url( admin_url( 'post.php?action=edit&post=' . $donation->ID ) );
 							?>">
 								<?php
 									printf(
 										/* translators: %s: forms singular label */
-										esc_html( 'View %s', 'give' ),
+										esc_html__( 'View %s', 'give' ),
 										give_get_forms_label_singular()
 									);
 								?>

@@ -43,7 +43,7 @@ function give_upgrades_screen() {
 	}
 	?>
 	<div class="wrap">
-		<h2><?php esc_html_e( 'Give - Upgrades', 'give' ); ?></h2>
+		<h1><?php esc_html_e( 'Give - Upgrades', 'give' ); ?></h1>
 
 		<?php if ( ! empty( $action ) ) : ?>
 
@@ -54,7 +54,7 @@ function give_upgrades_screen() {
 
 				<?php if ( ! empty( $total ) ) : ?>
 					<p>
-						<strong><?php printf( esc_html( 'Step %d of approximately %d running', 'give' ), $step, $steps ); ?></strong>
+						<strong><?php printf( esc_html__( 'Step %d of approximately %d running', 'give' ), $step, $steps ); ?></strong>
 					</p>
 				<?php endif; ?>
 			</div>

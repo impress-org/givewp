@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Install
  *
- * @description: Runs on plugin install by setting up the post types, custom taxonomies, flushing rewrite rules to initiate the new 'donations' slug and also creates the plugin and populates the settings fields for those plugin pages. After successful install, the user is redirected to the Give Welcome screen.
+ * Runs on plugin install by setting up the post types, custom taxonomies, flushing rewrite rules to initiate the new 'donations' slug and also creates the plugin and populates the settings fields for those plugin pages. After successful install, the user is redirected to the Give Welcome screen.
  *
  * @since 1.0
  * @global $wpdb
@@ -79,7 +79,7 @@ function give_run_install() {
 		// Purchase Confirmation (Success) Page
 		$success = wp_insert_post(
 			array(
-				'post_title'     => esc_html( 'Donation Confirmation', 'give' ),
+				'post_title'     => esc_html__( 'Donation Confirmation', 'give' ),
 				'post_content'   => '[give_receipt]',
 				'post_status'    => 'publish',
 				'post_author'    => 1,
@@ -98,8 +98,8 @@ function give_run_install() {
 		// Failed Purchase Page
 		$failed = wp_insert_post(
 			array(
-				'post_title'     => esc_html( 'Transaction Failed', 'give' ),
-				'post_content'   => esc_html( 'We\'re sorry, your transaction failed to process. Please try again or contact site support.', 'give' ),
+				'post_title'     => esc_html__( 'Transaction Failed', 'give' ),
+				'post_content'   => esc_html__( 'We\'re sorry, your transaction failed to process. Please try again or contact site support.', 'give' ),
 				'post_status'    => 'publish',
 				'post_author'    => 1,
 				'post_type'      => 'page',
@@ -115,7 +115,7 @@ function give_run_install() {
 		// Purchase History (History) Page
 		$history = wp_insert_post(
 			array(
-				'post_title'     => esc_html( 'Donation History', 'give' ),
+				'post_title'     => esc_html__( 'Donation History', 'give' ),
 				'post_content'   => '[donation_history]',
 				'post_status'    => 'publish',
 				'post_author'    => 1,
@@ -142,6 +142,9 @@ function give_run_install() {
 
 		//Emails
 		$options['donation_notification'] = give_get_default_donation_notification_email();
+
+		//Number of Decimals
+		$options['number_decimals'] = 2;
 	}
 
 	// Populate some default values
@@ -161,15 +164,16 @@ function give_run_install() {
 	$api = new Give_API();
 	update_option( 'give_default_api_version', 'v' . $api->get_version() );
 
-	// Create the customers database
+	// Create the customers databases
 	@Give()->customers->create_table();
+	@Give()->customer_meta->create_table();
 
 	// Check for PHP Session support, and enable if available
 	Give()->session->use_php_sessions();
 
 	// Add a temporary option to note that Give pages have been created
 	set_transient( '_give_installed', $options, 30 );
-	
+
 	if ( ! $current_version ) {
 
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrade-functions.php';
@@ -199,18 +203,18 @@ function give_run_install() {
 register_activation_hook( GIVE_PLUGIN_FILE, 'give_install' );
 
 /**
- * Network Activated New Site Setup
+ * Network Activated New Site Setup.
  *
- * @description: When a new site is created when Give is network activated this function runs the appropriate install function to set up the site for Give.
+ * When a new site is created when Give is network activated this function runs the appropriate install function to set up the site for Give.
  *
  * @since      1.3.5
  *
- * @param  int    $blog_id The Blog ID created
- * @param  int    $user_id The User ID set as the admin
- * @param  string $domain  The URL
- * @param  string $path    Site Path
- * @param  int    $site_id The Site ID
- * @param  array  $meta    Blog Meta
+ * @param  int    $blog_id The Blog ID created.
+ * @param  int    $user_id The User ID set as the admin.
+ * @param  string $domain The URL.
+ * @param  string $path Site Path.
+ * @param  int    $site_id The Site ID.
+ * @param  array  $meta Blog Meta.
  */
 function on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
 
@@ -228,21 +232,24 @@ add_action( 'wpmu_new_blog', 'on_create_blog', 10, 6 );
 
 
 /**
- * Drop Give's custom tables when a mu site is deleted
+ * Drop Give's custom tables when a mu site is deleted.
  *
  * @since  1.4.3
  *
- * @param  array $tables The tables to drop
- * @param  int $blog_id The Blog ID being deleted
+ * @param  array $tables The tables to drop.
+ * @param  int   $blog_id The Blog ID being deleted.
  *
- * @return array          The tables to drop
+ * @return array          The tables to drop.
  */
 function give_wpmu_drop_tables( $tables, $blog_id ) {
 
 	switch_to_blog( $blog_id );
-	$customers_db = new Give_DB_Customers();
+	$customers_db     = new Give_DB_Customers();
+	$customer_meta_db = new Give_DB_Customer_Meta();
+
 	if ( $customers_db->installed() ) {
 		$tables[] = $customers_db->table_name;
+		$tables[] = $customer_meta_db->table_name;
 	}
 	restore_current_blog();
 
@@ -271,8 +278,17 @@ function give_after_install() {
 
 	if ( false === $give_table_check || current_time( 'timestamp' ) > $give_table_check ) {
 
+		if ( ! @Give()->customer_meta->installed() ) {
+
+			// Create the customer meta database
+			// (this ensures it creates it on multisite instances where it is network activated).
+			@Give()->customer_meta->create_table();
+
+		}
+
 		if ( ! @Give()->customers->installed() ) {
-			// Create the customers database (this ensures it creates it on multisite instances where it is network activated)
+			// Create the customers database
+			// (this ensures it creates it on multisite instances where it is network activated).
 			@Give()->customers->create_table();
 
 			do_action( 'give_after_install', $give_options );

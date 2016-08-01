@@ -2,7 +2,7 @@
 /**
  * This template is used to display the login form with [give_login]
  */
-global $give_login_redirect;
+global $give_login_redirect, $give_logout_redirect;
 if ( ! is_user_logged_in() ) {
 
 	// Show any error messages after form submission
@@ -21,7 +21,7 @@ if ( ! is_user_logged_in() ) {
 			</div>
 
 			<div class="give-login-submit give-login">
-				<input type="hidden" name="give_redirect" value="<?php echo esc_url( $give_login_redirect ); ?>" />
+				<input type="hidden" name="give_login_redirect" value="<?php echo esc_url( $give_login_redirect ); ?>" />
 				<input type="hidden" name="give_login_nonce" value="<?php echo wp_create_nonce( 'give-login-nonce' ); ?>" />
 				<input type="hidden" name="give_action" value="user_login" />
 				<input id="give_login_submit" type="submit" class="give_submit" value="<?php esc_attr_e( 'Log In', 'give' ); ?>" />
@@ -34,7 +34,7 @@ if ( ! is_user_logged_in() ) {
 		</fieldset>
 	</form>
 <?php } elseif( isset( $_GET['give-login-success'] ) && $_GET['give-login-success'] == true ) { ?>
-	<?php give_output_error( apply_filters('give_successful_login_message', esc_html( 'Login successful. Welcome!', 'give' )), true, 'success' ); ?>
+	<?php give_output_error( apply_filters('give_successful_login_message', esc_html__( 'Login successful. Welcome!', 'give' )), true, 'success' ); ?>
 <?php } else { ?>
-	<?php give_output_error( apply_filters('give_already_logged_in_message', esc_html( 'You are already logged in to the site.', 'give' )), true, 'warning' ); ?>
+	<?php give_output_error( apply_filters('give_already_logged_in_message', sprintf( __( 'You are already logged in to the site. <a href="%s">Click here</a> to logout.', 'give' ), esc_url( $give_logout_redirect ) ) ), true, 'warning' ); ?>
 <?php } ?>

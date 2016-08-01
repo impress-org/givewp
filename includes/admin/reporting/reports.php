@@ -33,7 +33,10 @@ function give_reports_page() {
 	$active_tab   = isset( $_GET['tab'] ) ? $_GET['tab'] : 'reports';
 	?>
 	<div class="wrap">
-		<h1 class="nav-tab-wrapper">
+
+		<h1 class="screen-reader-text"><?php esc_html_e( 'Give Reports', 'give' ); ?></h1>
+
+		<h2 class="nav-tab-wrapper">
 			<a href="<?php echo esc_url( add_query_arg( array(
 				'tab'              => 'reports',
 				'settings-updated' => false
@@ -53,7 +56,7 @@ function give_reports_page() {
 				'settings-updated' => false
 			), $current_page ) ); ?>" class="nav-tab <?php echo $active_tab == 'tools' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Tools', 'give' ); ?></a>
 			<?php do_action( 'give_reports_tabs' ); ?>
-		</h1>
+		</h2>
 
 		<?php
 		do_action( 'give_reports_page_top' );
@@ -72,10 +75,10 @@ function give_reports_page() {
  */
 function give_reports_default_views() {
 	$views = array(
-		'earnings' => esc_html( 'Income', 'give' ),
+		'earnings' => esc_html__( 'Income', 'give' ),
 		'forms'    => give_get_forms_label_plural(),
-		'donors'   => esc_html( 'Donors', 'give' ),
-		'gateways' => esc_html( 'Payment Methods', 'give' )
+		'donors'   => esc_html__( 'Donors', 'give' ),
+		'gateways' => esc_html__( 'Payment Methods', 'give' )
 	);
 
 	$views = apply_filters( 'give_report_views', $views );
@@ -139,7 +142,7 @@ function give_report_views() {
 		<select id="give-reports-view" name="view">
 			<option value="-1"><?php esc_html_e( 'Report Type', 'give' ); ?></option>
 			<?php foreach ( $views as $view_id => $label ) : ?>
-				<option value="<?php esc_attr_e( $view_id ); ?>" <?php selected( $view_id, $current_view ); ?>><?php echo $label; ?></option>
+				<option value="<?php echo esc_attr( $view_id ); ?>" <?php selected( $view_id, $current_view ); ?>><?php echo $label; ?></option>
 			<?php endforeach; ?>
 		</select>
 
@@ -147,7 +150,7 @@ function give_report_views() {
 
 		<input type="hidden" name="post_type" value="give_forms"/>
 		<input type="hidden" name="page" value="give-reports"/>
-		<?php submit_button( esc_html( 'Show', 'give' ), 'secondary', 'submit', false ); ?>
+		<?php submit_button( esc_html__( 'Show', 'give' ), 'secondary', 'submit', false ); ?>
 	</form>
 	<?php
 	do_action( 'give_report_view_actions_after' );
@@ -218,7 +221,7 @@ function give_reports_donors_table() {
 		<?php do_action( 'give_logs_donors_table_top' ); ?>
 		<form id="give-donors-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-reports&view=donors' ); ?>">
 			<?php
-			$give_table->search_box( esc_html( 'Search', 'give' ), 'give-donors' );
+			$give_table->search_box( esc_html__( 'Search', 'give' ), 'give-donors' );
 			$give_table->display();
 			?>
 			<input type="hidden" name="post_type" value="give_forms"/>
@@ -316,7 +319,7 @@ function give_reports_tab_export() {
 								<?php
 									printf(
 										/* translators: 1: start date dropdown 2: end date dropdown */
-										esc_html( '%1$s to %2$s', 'give' ),
+										esc_html__( '%1$s to %2$s', 'give' ),
 										Give()->html->year_dropdown( 'start_year' ) . ' ' . Give()->html->month_dropdown( 'start_month' ),
 										Give()->html->year_dropdown( 'end_year' )   . ' ' . Give()->html->month_dropdown( 'end_month' )
 									);
@@ -338,14 +341,14 @@ function give_reports_tab_export() {
 								$args = array(
 									'id'          => 'give-payment-export-start',
 									'name'        => 'start',
-									'placeholder' => esc_attr( 'Start date', 'give' )
+									'placeholder' => esc_attr__( 'Start date', 'give' )
 								);
 								echo Give()->html->date_field( $args ); ?>
 								<?php
 								$args = array(
 									'id'          => 'give-payment-export-end',
 									'name'        => 'end',
-									'placeholder' => esc_attr( 'End date', 'give' )
+									'placeholder' => esc_attr__( 'End date', 'give' )
 								);
 								echo Give()->html->date_field( $args ); ?>
 								<select name="status">

@@ -41,20 +41,20 @@ class Give_Batch_Forms_Export extends Give_Batch_Export {
 	public function csv_cols() {
 
 		$cols = array(
-			'ID'                      => esc_html( 'ID', 'give' ),
-			'post_name'               => esc_html( 'Slug', 'give' ),
-			'post_title'              => esc_html( 'Name', 'give' ),
-			'post_date'               => esc_html( 'Date Created', 'give' ),
-			'post_author'             => esc_html( 'Author', 'give' ),
-			'post_content'            => esc_html( 'Description', 'give' ),
-			'post_excerpt'            => esc_html( 'Excerpt', 'give' ),
-			'post_status'             => esc_html( 'Status', 'give' ),
-			'categories'              => esc_html( 'Categories', 'give' ),
-			'tags'                    => esc_html( 'Tags', 'give' ),
-			'give_price'              => esc_html( 'Price', 'give' ),
-			'_thumbnail_id'           => esc_html( 'Featured Image', 'give' ),
-			'_give_form_sales'        => esc_html( 'Donations', 'give' ),
-			'_give_download_earnings' => esc_html( 'Income', 'give' ),
+			'ID'                      => esc_html__( 'ID', 'give' ),
+			'post_name'               => esc_html__( 'Slug', 'give' ),
+			'post_title'              => esc_html__( 'Name', 'give' ),
+			'post_date'               => esc_html__( 'Date Created', 'give' ),
+			'post_author'             => esc_html__( 'Author', 'give' ),
+			'post_content'            => esc_html__( 'Description', 'give' ),
+			'post_excerpt'            => esc_html__( 'Excerpt', 'give' ),
+			'post_status'             => esc_html__( 'Status', 'give' ),
+			'categories'              => esc_html__( 'Categories', 'give' ),
+			'tags'                    => esc_html__( 'Tags', 'give' ),
+			'give_price'              => esc_html__( 'Price', 'give' ),
+			'_thumbnail_id'           => esc_html__( 'Featured Image', 'give' ),
+			'_give_form_sales'        => esc_html__( 'Donations', 'give' ),
+			'_give_download_earnings' => esc_html__( 'Income', 'give' ),
 		);
 
 		return $cols;

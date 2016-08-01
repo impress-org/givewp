@@ -28,7 +28,7 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 			$payment_id,
 			sprintf(
 				/* translators: %s: Paypal transaction id */
-				esc_html( 'PayPal Transaction ID: %s', 'give' ),
+				esc_html__( 'PayPal Transaction ID: %s', 'give' ),
 				$this->_transaction_id
 			)
 		);
