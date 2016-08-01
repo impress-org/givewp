@@ -289,6 +289,9 @@ function give_render_receipt_in_browser() {
 		<meta http-equiv="expires" content="Tue, 23 Oct 1977 05:00:00 PST"/>
 		<meta http-equiv="pragma" content="no-cache"/>
 		<meta name="robots" content="noindex, nofollow"/>
+
+		<?php do_action( 'give_receipt_head' ); ?>
+
 	</head>
 	<body class="<?php echo apply_filters( 'give_receipt_page_body_class', 'give_receipt_page' ); ?>">
 
@@ -297,7 +300,8 @@ function give_render_receipt_in_browser() {
 		<?php echo do_shortcode( '[give_receipt payment_key=' . $key . ']' ); ?>
 		<?php do_action( 'give_render_receipt_in_browser_after' ); ?>
 	</div>
-
+	
+	<?php do_action( 'give_receipt_footer' ); ?>
 	</body>
 	</html>
 	<?php
