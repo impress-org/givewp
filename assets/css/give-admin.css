@@ -1529,7 +1529,8 @@ a.give-delete {
 
 @media screen and (max-width: 600px) {
   #licenses .cmb2-wrap .cmb-row {
-    width: 100%; } }
+    width: 100%;
+    max-width: 320px; } }
 
 /* Tables */
 .give-table thead th {
