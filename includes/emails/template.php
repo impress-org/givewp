@@ -160,7 +160,9 @@ function give_display_email_template_preview() {
 
 	Give()->emails->heading = esc_html__( 'Donation Receipt', 'give' );
 
-	echo Give()->emails->build_email( give_email_preview_template_tags( give_get_email_body_content( 0, array() ) ) );
+	$preview_content = give_email_preview_template_tags( give_get_email_body_content( 0, array() ) );
+	
+	echo Give()->emails->build_email( $preview_content );
 
 	exit;
 
