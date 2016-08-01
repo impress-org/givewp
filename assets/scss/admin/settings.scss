@@ -222,7 +222,89 @@ a.give-delete {
 
 }
 
-// Tables
+/* Addon grid design */
+#licenses .cmb2-wrap{
+  margin-top: 20px;
+
+  .cmb-row {
+    display: block;
+    position: relative;
+    float: left;
+    width: 30.5%;
+    background: white;
+    margin-right: 9px!important;
+    margin-bottom: 10px !important;
+    min-height: 220px;
+    border: 1px solid #ccc;
+  }
+
+  // Common css for cmb-th and cmb-td.
+  .cmb-row > div {
+    display: block;
+    width: auto;
+    padding: 0;
+    float: none;
+  }
+
+  .cmb-th {
+    background: #f9f9f9;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 20px;
+
+    label{
+      margin: 0 0 0 10px;
+      padding: 10px 0;
+    }
+  }
+
+  .cmb-td {
+    > div {
+      margin: 0 10px;
+
+      input[type="text"]{
+        width: 100%;
+      }
+
+      input[type="submit"]{
+        margin: 15px 0 10px 0;
+      }
+    }
+  }
+
+  .give-license-notice {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: whitesmoke;
+    border-top: 1px solid #ececec;
+    min-height: 65px;
+
+    p {
+      padding: 0 10px;
+    }
+  }
+}
+
+/* Responsive fixes: Addon grid design */
+@media screen and ( max-width: 1100px ) {
+  #licenses .cmb2-wrap{
+    .cmb-row{
+      width:45%;
+      min-height: 230px;
+    }
+  }
+}
+
+@media screen and ( max-width: 600px ){
+  #licenses .cmb2-wrap{
+    .cmb-row{
+      width:100%;
+    }
+  }
+}
+
+/* Tables */
 
 .give-table {
 
