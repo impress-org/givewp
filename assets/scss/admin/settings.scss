@@ -283,6 +283,47 @@ a.give-delete {
     p {
       padding: 0 10px;
     }
+
+    a{
+      color: #444;
+      cursor: pointer;
+    }
+
+    a:hover{
+      text-decoration: none;
+
+    }
+  }
+
+  .give-license-notice.give-license-expires-soon {
+    background-color: #00a0d2;
+    color: #fff;
+    border-color: #00a0d2;
+  }
+
+  .give-license-notice.give-license-expired {
+    background-color: #e24e4e;
+    color: #fff;
+    border-color: #e24e4e;
+  }
+
+  .give-license-notice.give-license-error,
+  .give-license-notice.give-license-missing,
+  .give-license-notice.give-license-invalid,
+  .give-license-notice.give-license-site_inactive,
+  .give-license-notice.give-license-item_name_mismatch {
+    background-color: #ffebcd;
+    border-color: #ffebcd;
+  }
+
+  .give-license-notice.give-license-expires-soon a,
+  .give-license-notice.give-license-expired a {
+    color: #fff;
+  }
+
+  .give-license-notice.give-license-expires-soon a:hover,
+  .give-license-notice.give-license-expired a:hover {
+    text-decoration: none;
   }
 }
 
