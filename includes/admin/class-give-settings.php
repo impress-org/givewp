@@ -1284,11 +1284,12 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 	if ( $is_valid_license ) {
 		$custom_html = '<input type="submit" class="button-secondary give-license-deactivate" name="' . $id . '_deactivate" value="' . esc_attr__( 'Deactivate License', 'give' ) . '"/>';
 	} else {
-		//This license is not valid so delete it
-		give_delete_option( $id );
-
 		// Remove license data.
         if( ! $is_expired_license ) {
+            // This license is not valid so delete it
+            give_delete_option( $id );
+
+            // Delete license infomation.
             delete_option( "{$shortname}_license_active" );
         }
 
