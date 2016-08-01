@@ -1167,7 +1167,8 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
     $id                 = $field_type_object->field->args['id'];
 	$field_description  = $field_type_object->field->args['desc'];
 	$license            = $field_type_object->field->args['options']['license'];
-    $is_valid_license   = ( is_object( $license ) && ! empty( $license) && 'valid' === $license->license );
+    $is_valid_license   = ( is_object( $license ) && ! empty( $license ) && 'valid' === $license->license );
+    $is_expired_license = ( ! $is_valid_license && is_object( $license ) && ! empty( $license ) && 'expired' === $license->error );
     $shortname          = $field_type_object->field->args['options']['shortname'];
 	$field_classes      = 'regular-text give-license-field';
 	$type               = empty( $escaped_value ) ? 'text' : 'password';
@@ -1287,7 +1288,9 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 		give_delete_option( $id );
 
 		// Remove license data.
-		//delete_option( "{$shortname}_license_active" );
+        if( ! $is_expired_license ) {
+            delete_option( "{$shortname}_license_active" );
+        }
 
         // Remove license key from field value and genarate new html.
         $input_field_html = $field_type_object->input( array(
