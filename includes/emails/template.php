@@ -160,13 +160,9 @@ function give_display_email_template_preview() {
 
 	Give()->emails->heading = esc_html__( 'Donation Receipt', 'give' );
 
-	//Payment receipt switcher
-	$payment_count = give_count_payments()->publish;
-	$payment_id    = (int) isset( $_GET['preview_id'] ) ? $_GET['preview_id'] : '';
+	$payment_id = (int) isset( $_GET['preview_id'] ) ? $_GET['preview_id'] : '';
 
-	if ( $payment_count > 0 ) {
-		echo give_get_preview_email_header( $payment_id );
-	}
+	echo give_get_preview_email_header();
 
 	//Are we previewing an actual payment?
 	if ( ! empty( $payment_id ) ) {
@@ -319,11 +315,22 @@ add_action( 'give_view_receipt', 'give_render_receipt_in_browser' );
 
 
 /**
- * @param $payment_id
+ * Give Preview Email Header.
+ *
+ * Displays a header bar with the ability to change transactions to preview actual data within the preview. Will not display if
+ *
+ * @since 1.6
+ *
  */
-function give_get_preview_email_header( $payment_id = false ) {
+function give_get_preview_email_header() {
 
-	$transaction_header = '<div style="margin:0;padding:10px 0;width:100%;background-color:#FFF;border-bottom:1px solid #eee; text-align:center;">';
+	//Payment receipt switcher
+	$payment_count = give_count_payments()->publish;
+	$payment_id    = (int) isset( $_GET['preview_id'] ) ? $_GET['preview_id'] : '';
+
+	if ( $payment_count <= 0 ) {
+		return false;
+	}
 
 	//Get payments.
 	$payments = new Give_Payments_Query( array(
@@ -336,7 +343,7 @@ function give_get_preview_email_header( $payment_id = false ) {
 	if ( $payments ) {
 		$options[0] =
 			/* translators: %s: transaction singular label */
-			esc_html__( 'Select a transaction', 'give' );
+			esc_html__( '- Select a transaction -', 'give' );
 		foreach ( $payments as $payment ) {
 
 			$options[ $payment->ID ] = esc_html( '#' . $payment->ID . ' - ' . $payment->email . ' - ' . $payment->form_title );
@@ -346,18 +353,39 @@ function give_get_preview_email_header( $payment_id = false ) {
 		$options[0] = esc_html__( 'No Transactions Found', 'give' );
 	}
 
+	//Start constructing HTML output.
+	$transaction_header = '<div style="margin:0;padding:10px 0;width:100%;background-color:#FFF;border-bottom:1px solid #eee; text-align:center;">';
+
+
+	//Inline JS function for switching transactions.
+	$transaction_header .= '<script>
+				 function change_preview(){
+				  var transactions = document.getElementById("give_preview_email_payment_id");
+			        var selected_trans = transactions.options[transactions.selectedIndex];
+				        console.log(selected_trans);
+				        if (selected_trans){
+				            var url_string = "' . get_bloginfo( 'url' ) . '?give_action=preview_email&preview_id=" + selected_trans.value;
+				                window.location = url_string;
+				        }
+				    }
+			    </script>';
+
+	$transaction_header .= '<label for="give_preview_email_payment_id" style="font-size:12px;color:#333;margin:0 4px 0 0;">' . esc_html__( 'Preview email with a transaction:', 'give' ) . '</label>';
+
+	//The select field with 100 latest transactions
 	$transaction_header .= Give()->html->select( array(
 		'name'             => 'preview_email_payment_id',
 		'selected'         => $payment_id,
-		'id'               => 'give-preview-email-payment-id',
+		'id'               => 'give_preview_email_payment_id',
 		'class'            => 'give-preview-email-payment-id',
 		'options'          => $options,
 		'chosen'           => false,
-		'select_atts'      => 'onchange="if (this.value) window.location.href=' . get_bloginfo( 'url' ) . '?give_action=preview_email&preview_id=this.value">',
+		'select_atts'      => 'onchange="change_preview()">',
 		'show_option_all'  => false,
 		'show_option_none' => false
 	) );
 
+	//Closing tag
 	$transaction_header .= '</div>';
 
 	return apply_filters( 'give_preview_email_receipt_header', $transaction_header );
