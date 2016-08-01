@@ -46,6 +46,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 */
 		private $item_name;
 
+		private $license_data;
+
 		/**
 		 * Item shortname
 		 *
@@ -108,13 +110,16 @@ if ( ! class_exists( 'Give_License' ) ) :
 			$this->item_shortname = 'give_' . preg_replace( '/[^a-zA-Z0-9_\s]/', '', str_replace( ' ', '_', strtolower( $this->item_name ) ) );
 			$this->version        = $_version;
 			$this->license        = isset( $give_options[ $this->item_shortname . '_license_key' ] ) ? trim( $give_options[ $this->item_shortname . '_license_key' ] ) : '';
-			$this->author         = $_author;
+			$this->license_data   = get_option( $this->item_shortname . '_license_active' );
+            $this->author         = $_author;
 			$this->api_url        = is_null( $_api_url ) ? $this->api_url : $_api_url;
 
 			// Setup hooks
 			$this->includes();
 			$this->hooks();
 			//$this->auto_updater();
+
+            error_log(print_r( $this->license, true) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log');
 		}
 
 		/**
@@ -156,6 +161,9 @@ if ( ! class_exists( 'Give_License' ) ) :
 			add_action( 'admin_init', array( $this, 'auto_updater' ), 0 );
 
 			add_action( 'admin_notices', array( $this, 'notices' ) );
+
+            // Check license weekly.
+            add_action( 'admin_init', array( $this, 'weekly_license_check' ) );
 		}
 
 		/**
@@ -399,6 +407,52 @@ if ( ! class_exists( 'Give_License' ) ) :
 			}
 		}
 
+
+        /**
+         * Check if license key is valid once per week
+         *
+         * @access  public
+         * @since   1.6
+         * @return  bool/void
+         */
+        public function weekly_license_check() {
+
+            if( ! empty( $_POST['give_settings'] ) ) {
+                // Don't fire when saving settings
+                return false;
+            }
+
+            if( empty( $this->license ) ) {
+                return false;
+            }
+
+            // Data to send in our API request.
+            $api_params = array(
+                'edd_action'=> 'check_license',
+                'license' 	=> $this->license,
+                'item_name' => urlencode( $this->item_name ),
+                'url'       => home_url()
+            );
+
+            // Call the API
+            $response = wp_remote_post(
+                $this->api_url,
+                array(
+                    'timeout'   => 15,
+                    'sslverify' => false,
+                    'body'      => $api_params
+                )
+            );
+
+            // Make sure the response came back okay.
+            if ( is_wp_error( $response ) ) {
+                return false;
+            }
+
+            $license_data = json_decode( wp_remote_retrieve_body( $response ) );
+            update_option( $this->item_shortname . '_license_active', $license_data );
+        }
+
 		/**
 		 * License Notices
 		 *
@@ -468,6 +522,30 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 		}
 
+        /**
+         * Check if license is valid or not.
+         * @return bool
+         */
+		public function is_valid_license() {
+            if( ( is_object( $this->license_data ) && ! empty( $this->license_data ) && 'valid' === $this->license_data->license ) ) {
+                return true;
+            }
+
+            return false;
+        }
+
+
+        /**
+         * Check if license expired or not.
+         * @return bool
+         */
+        public function is_expired_license() {
+            if( ( ! $this->is_valid_license() && is_object( $this->license_data ) && ! empty( $this->license_data ) && 'expired' === $this->license_data->license ) ) {
+                return true;
+            }
+
+            return false;
+        }
 	}
 
 endif; // end class_exists check
