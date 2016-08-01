@@ -316,9 +316,21 @@ a.give-delete {
     border-color: #ffebcd;
   }
 
-  .give-license-notice.give-license-expires-soon a,
-  .give-license-notice.give-license-expired a {
+  .give-license-notice.give-license-lifetime-notice,
+  .give-license-notice.give-license-expiration-date{
+    background-color: #46b450;
+    border-color: #46b450;
+  }
+
+  .give-license-notice.give-license-lifetime-notice,
+  .give-license-notice.give-license-expiration-date,
+  .give-license-notice.give-license-expires-soon,
+  .give-license-notice.give-license-expired {
     color: #fff;
+
+    a{
+      color: #fff;
+    }
   }
 
   .give-license-notice.give-license-expires-soon a:hover,
