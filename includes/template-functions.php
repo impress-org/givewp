@@ -394,3 +394,79 @@ if ( ! function_exists( 'give_show_avatars' ) ) {
 		echo do_shortcode( '[give_donators_gravatars]' );
 	}
 }
+
+/**
+ * Conditional Functions
+ */
+
+if ( ! function_exists( 'is_give_form' ) ) {
+
+	/**
+	 * is_give_form
+	 *
+	 * Returns true when viewing a single form.
+	 *
+	 * @since 1.6
+	 *
+	 * @return bool
+	 */
+	function is_give_form() {
+		return is_singular( array( 'give_form' ) );
+	}
+}
+
+if ( ! function_exists( 'is_give_category' ) ) {
+
+	/**
+	 * is_give_category
+	 *
+	 * Returns true when viewing give form category archive.
+	 *
+	 * @since 1.6
+	 *
+	 * @param string $term The term slug your checking for.
+	 *                     Leave blank to return true on any.
+	 *                     Default is blank.
+	 *
+	 * @return bool
+	 */
+	function is_give_category( $term = '' ) {
+		return is_tax( 'give_forms_category', $term );
+	}
+}
+
+if ( ! function_exists( 'is_give_tag' ) ) {
+
+	/**
+	 * is_give_tag
+	 *
+	 * Returns true when viewing give form tag archive.
+	 *
+	 * @since 1.6
+	 *
+	 * @param string $term The term slug your checking for.
+	 *                     Leave blank to return true on any.
+	 *                     Default is blank.
+	 *
+	 * @return bool
+	 */
+	function is_give_tag( $term = '' ) {
+		return is_tax( 'give_forms_tag', $term );
+	}
+}
+
+if ( ! function_exists( 'is_give_taxonomy' ) ) {
+
+	/**
+	 * is_give_taxonomy
+	 *
+	 * Returns true when viewing a give form taxonomy archive.
+	 *
+	 * @since 1.6
+	 *
+	 * @return bool
+	 */
+	function is_give_taxonomy() {
+		return is_tax( get_object_taxonomies( 'give_form' ) );
+	}
+}
