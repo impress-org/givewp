@@ -1,8 +1,8 @@
 <?php
 /**
- * Customers DB class
+ * Customers DB class.
  *
- * This class is for interacting with the customers' database table
+ * This class is for interacting with the customers' database table.
  *
  * @package     Give
  * @subpackage  Classes/DB Customers
@@ -605,7 +605,7 @@ class Give_DB_Customers extends Give_DB {
 	 * @since   1.0
 	 */
 	public function create_table() {
-		
+
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
 		$sql = "CREATE TABLE " . $this->table_name . " (
