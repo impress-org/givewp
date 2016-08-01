@@ -64,14 +64,12 @@ function give_email_preview_template_tags( $message ) {
 
 	$receipt_id = strtolower( md5( uniqid() ) );
 
-	$notes = esc_html__( 'These are some sample notes added to a donation.', 'give' );
-
 	$payment_id = rand( 1, 100 );
 
 	$receipt_link = sprintf(
 		'<a href="%1$s">%2$s</a>',
 		esc_url( add_query_arg( array( 'payment_key' => $receipt_id, 'give_action' => 'view_receipt' ), home_url() ) ),
-		esc_html__( 'View the receipt in your browser', 'give' )
+		esc_html__( 'View the receipt in your browser &raquo;', 'give' )
 	);
 
 	$user = wp_get_current_user();
@@ -81,12 +79,13 @@ function give_email_preview_template_tags( $message ) {
 	$message = str_replace( '{username}', $user->user_login, $message );
 	$message = str_replace( '{date}', date( get_option( 'date_format' ), current_time( 'timestamp' ) ), $message );
 	$message = str_replace( '{price}', $price, $message );
-	$message = str_replace( '{donation}', 'Sample Donation Form Title', $message );
+	$message = str_replace( '{donation}', esc_html__( 'Sample Donation Form Title', 'give' ), $message );
 	$message = str_replace( '{receipt_id}', $receipt_id, $message );
 	$message = str_replace( '{payment_method}', $gateway, $message );
 	$message = str_replace( '{sitename}', get_bloginfo( 'name' ), $message );
 	$message = str_replace( '{payment_id}', $payment_id, $message );
 	$message = str_replace( '{receipt_link}', $receipt_link, $message );
+	$message = str_replace( '{pdf_receipt}', '<a href="#">Download Receipt</a>', $message );
 
 	return wpautop( apply_filters( 'give_email_preview_template_tags', $message ) );
 }
@@ -111,9 +110,9 @@ function give_email_template_preview( $array ) {
 		'id'   => 'give_email_preview_buttons',
 		'type' => 'email_preview_buttons'
 	);
-	array_splice( $array, 5, 0, array( $custom_field ) );
 
-	return $array; // splice in at position 3;
+	return give_settings_array_insert( $array, 'donation_subject', array( $custom_field ) );
+
 }
 
 add_filter( 'give_settings_emails', 'give_email_template_preview' );
@@ -158,9 +157,16 @@ function give_display_email_template_preview() {
 		return;
 	}
 
-	$payment_id = (int) isset( $_GET['preview_payment'] ) ? $_GET['preview_payment'] : '';
 
 	Give()->emails->heading = esc_html__( 'Donation Receipt', 'give' );
+
+	//Payment receipt switcher
+	$payment_count = give_count_payments()->publish;
+	$payment_id    = (int) isset( $_GET['preview_id'] ) ? $_GET['preview_id'] : '';
+
+	if ( $payment_count > 0 ) {
+		echo give_get_preview_email_header( $payment_id );
+	}
 
 	//Are we previewing an actual payment?
 	if ( ! empty( $payment_id ) ) {
@@ -300,7 +306,7 @@ function give_render_receipt_in_browser() {
 		<?php echo do_shortcode( '[give_receipt payment_key=' . $key . ']' ); ?>
 		<?php do_action( 'give_render_receipt_in_browser_after' ); ?>
 	</div>
-	
+
 	<?php do_action( 'give_receipt_footer' ); ?>
 	</body>
 	</html>
@@ -310,3 +316,50 @@ function give_render_receipt_in_browser() {
 }
 
 add_action( 'give_view_receipt', 'give_render_receipt_in_browser' );
+
+
+/**
+ * @param $payment_id
+ */
+function give_get_preview_email_header( $payment_id = false ) {
+
+	$transaction_header = '<div style="margin:0;padding:10px 0;width:100%;background-color:#FFF;border-bottom:1px solid #eee; text-align:center;">';
+
+	//Get payments.
+	$payments = new Give_Payments_Query( array(
+		'number' => 100
+	) );
+	$payments = $payments->get_payments();
+	$options  = array();
+
+	//Provide nice human readable options.
+	if ( $payments ) {
+		$options[0] =
+			/* translators: %s: transaction singular label */
+			esc_html__( 'Select a transaction', 'give' );
+		foreach ( $payments as $payment ) {
+
+			$options[ $payment->ID ] = esc_html( '#' . $payment->ID . ' - ' . $payment->email . ' - ' . $payment->form_title );
+
+		}
+	} else {
+		$options[0] = esc_html__( 'No Transactions Found', 'give' );
+	}
+
+	$transaction_header .= Give()->html->select( array(
+		'name'             => 'preview_email_payment_id',
+		'selected'         => $payment_id,
+		'id'               => 'give-preview-email-payment-id',
+		'class'            => 'give-preview-email-payment-id',
+		'options'          => $options,
+		'chosen'           => false,
+		'select_atts'      => 'onchange="if (this.value) window.location.href=' . get_bloginfo( 'url' ) . '?give_action=preview_email&preview_id=this.value">',
+		'show_option_all'  => false,
+		'show_option_none' => false
+	) );
+
+	$transaction_header .= '</div>';
+
+	return apply_filters( 'give_preview_email_receipt_header', $transaction_header );
+
+}
