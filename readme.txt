@@ -3,8 +3,8 @@ Contributors: wordimpress, dlocc, webdevmattcrom
 Donate link: https://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 4.0
-Tested up to: 4.5.3
-Stable tag: 1.5.2
+Tested up to: 4.6
+Stable tag: 1.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -173,6 +173,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * New: New template added for for Give goals - https://github.com/WordImpress/Give/issues/411
 * New: Easier and more understandable strings according for translations i18n - thanks @ramiy! - https://github.com/WordImpress/Give/issues/451
 * New: Added a new filter "give_pdf_export_logo" to easily customize the export logo - https://github.com/WordImpress/Give/issues/802
+* New: Customer meta class added for updating and saving donor data for non-users outside usermeta - https://github.com/WordImpress/Give/issues/653
 * Tweak: Update the country dropdown to use the new ISO country codes for islands in Dutch West Indies - https://github.com/WordImpress/Give/issues/698
 * Tweak: Updated to the latest version of CMB2 & tested compatibility - https://github.com/WordImpress/Give/issues/670
 * Tweak: Remove invalid @description from PHP inline doc blocks - https://github.com/WordImpress/Give/issues/733
