@@ -34,9 +34,9 @@ function give_get_email_templates() {
  *
  * @since 1.0
  *
- * @param string $message      Message with the template tags.
+ * @param string $message Message with the template tags.
  * @param array  $payment_data Payment Data.
- * @param int    $payment_id   Payment ID.
+ * @param int    $payment_id Payment ID.
  * @param bool   $admin_notice Whether or not this is a notification email.
  *
  * @return string $message Fully formatted message
@@ -48,9 +48,11 @@ function give_email_template_tags( $message, $payment_data, $payment_id, $admin_
 /**
  * Email Preview Template Tags.
  *
+ * Provides sample content for the preview email functionality within settings > email.
+ *
  * @since 1.0
  *
- * @param string $message      Email message with template tags
+ * @param string $message Email message with template tags
  *
  * @return string $message Fully formatted message
  */
@@ -164,27 +166,26 @@ function give_display_email_template_preview() {
 
 }
 
-add_action( 'template_redirect', 'give_display_email_template_preview' );
+add_action( 'init', 'give_display_email_template_preview' );
 
 /**
  * Email Template Body.
  *
  * @since 1.0
  *
- * @param int   $payment_id   Payment ID
+ * @param int   $payment_id Payment ID
  * @param array $payment_data Payment Data
  *
  * @return string $email_body Body of the email
  */
 function give_get_email_body_content( $payment_id = 0, $payment_data = array() ) {
 
-	global $give_options;
-
 	$default_email_body = give_get_default_donation_receipt_email();
 
-	$email = isset( $give_options['donation_receipt'] ) ? stripslashes( $give_options['donation_receipt'] ) : $default_email_body;
+	$email_content = give_get_option( 'donation_receipt' );
+	$email_content = isset( $email_content ) ? stripslashes( $email_content ) : $default_email_body;
 
-	$email_body = wpautop( $email );
+	$email_body = wpautop( $email_content );
 
 	$email_body = apply_filters( 'give_donation_receipt_' . Give()->emails->get_template(), $email_body, $payment_id, $payment_data );
 
@@ -196,13 +197,12 @@ function give_get_email_body_content( $payment_id = 0, $payment_data = array() )
  *
  * @since  1.0
  *
- * @param int   $payment_id   Payment ID
+ * @param int   $payment_id Payment ID
  * @param array $payment_data Payment Data
  *
  * @return string $email_body Body of the email
  */
 function give_get_donation_notification_body_content( $payment_id = 0, $payment_data = array() ) {
-	global $give_options;
 
 	$user_info = maybe_unserialize( $payment_data['user_info'] );
 	$email     = give_get_payment_user_email( $payment_id );
@@ -218,7 +218,7 @@ function give_get_donation_notification_body_content( $payment_id = 0, $payment_
 
 	$gateway = give_get_gateway_admin_label( get_post_meta( $payment_id, '_give_payment_gateway', true ) );
 
-	$default_email_body  = esc_html__( 'Hello', 'give' ) . "\n\n";
+	$default_email_body = esc_html__( 'Hello', 'give' ) . "\n\n";
 	$default_email_body .= esc_html__( 'A donation has been made.', 'give' ) . "\n\n";
 	/* translators: %s: form plural label */
 	$default_email_body .= sprintf( esc_html__( '%s sold:', 'give' ), give_get_forms_label_plural() ) . "\n\n";
@@ -227,7 +227,8 @@ function give_get_donation_notification_body_content( $payment_id = 0, $payment_
 	$default_email_body .= esc_html__( 'Payment Method:', 'give' ) . ' ' . $gateway . "\n\n";
 	$default_email_body .= esc_html__( 'Thank you', 'give' );
 
-	$email = isset( $give_options['donation_notification'] ) ? stripslashes( $give_options['donation_notification'] ) : $default_email_body;
+	$email = give_get_option( 'donation_notification' );
+	$email = isset( $email ) ? stripslashes( $email ) : $default_email_body;
 
 	$email_body = give_do_email_tags( $email, $payment_id );
 
@@ -252,39 +253,39 @@ function give_render_receipt_in_browser() {
 
 	ob_start();
 	//Disallows caching of the page
-	header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-	header("Cache-Control: no-store, no-cache, must-revalidate"); // HTTP/1.1
-	header("Cache-Control: post-check=0, pre-check=0", false);
-	header("Pragma: no-cache"); // HTTP/1.0
-	header("Expires: Sat, 23 Oct 1977 05:00:00 PST"); // Date in the past
+	header( "Last-Modified: " . gmdate( "D, d M Y H:i:s" ) . " GMT" );
+	header( "Cache-Control: no-store, no-cache, must-revalidate" ); // HTTP/1.1
+	header( "Cache-Control: post-check=0, pre-check=0", false );
+	header( "Pragma: no-cache" ); // HTTP/1.0
+	header( "Expires: Sat, 23 Oct 1977 05:00:00 PST" ); // Date in the past
 	?>
 	<!DOCTYPE html>
 	<html lang="en">
-		<head>
-			<title><?php esc_html_e( 'Donation Receipt', 'give' ); ?></title>
-			<meta charset="utf-8" />
+	<head>
+		<title><?php esc_html_e( 'Donation Receipt', 'give' ); ?></title>
+		<meta charset="utf-8"/>
 
-			<!-- Further disallowing of caching of this page -->
-			<meta charset="utf-8" />
-			<meta http-equiv="cache-control" content="max-age=0" />
-			<meta http-equiv="cache-control" content="no-cache" />
-			<meta http-equiv="expires" content="0" />
-			<meta http-equiv="expires" content="Tue, 23 Oct 1977 05:00:00 PST" />
-			<meta http-equiv="pragma" content="no-cache" />
-			<meta name="robots" content="noindex, nofollow" />
+		<!-- Further disallowing of caching of this page -->
+		<meta charset="utf-8"/>
+		<meta http-equiv="cache-control" content="max-age=0"/>
+		<meta http-equiv="cache-control" content="no-cache"/>
+		<meta http-equiv="expires" content="0"/>
+		<meta http-equiv="expires" content="Tue, 23 Oct 1977 05:00:00 PST"/>
+		<meta http-equiv="pragma" content="no-cache"/>
+		<meta name="robots" content="noindex, nofollow"/>
 
-			<?php wp_head(); ?>
-		</head>
-		<body class="<?php echo apply_filters( 'give_receipt_page_body_class', 'give_receipt_page' ); ?>">
+		<?php wp_head(); ?>
+	</head>
+	<body class="<?php echo apply_filters( 'give_receipt_page_body_class', 'give_receipt_page' ); ?>">
 
-			<div id="give_receipt_wrapper">
-				<?php do_action( 'give_render_receipt_in_browser_before' ); ?>
-				<?php echo do_shortcode( '[give_receipt payment_key=' . $key . ']' ); ?>
-				<?php do_action( 'give_render_receipt_in_browser_after' ); ?>
-			</div>
+	<div id="give_receipt_wrapper">
+		<?php do_action( 'give_render_receipt_in_browser_before' ); ?>
+		<?php echo do_shortcode( '[give_receipt payment_key=' . $key . ']' ); ?>
+		<?php do_action( 'give_render_receipt_in_browser_after' ); ?>
+	</div>
 
-			<?php wp_footer(); ?>
-		</body>
+	<?php wp_footer(); ?>
+	</body>
 	</html>
 	<?php
 	echo ob_get_clean();
