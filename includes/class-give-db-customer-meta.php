@@ -209,5 +209,3 @@ class Give_DB_Customer_Meta extends Give_DB {
 	}
 
 }
-
-c
