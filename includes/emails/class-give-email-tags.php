@@ -229,10 +229,10 @@ function give_get_emails_tags_list() {
 }
 
 /**
- * Search content for email tags and filter email tags through their hooks
+ * Search content for email tags and filter email tags through their hooks.
  *
- * @param string $content Content to search for email tags
- * @param int $payment_id The payment id
+ * @param string $content Content to search for email tags.
+ * @param int $payment_id The payment id.
  *
  * @since 1.0
  *
@@ -251,7 +251,7 @@ function give_do_email_tags( $content, $payment_id ) {
 }
 
 /**
- * Load email tags
+ * Load email tags.
  *
  * @since 1.0
  */
@@ -262,7 +262,7 @@ function give_load_email_tags() {
 add_action( 'init', 'give_load_email_tags', - 999 );
 
 /**
- * Add default Give email template tags
+ * Add default Give email template tags.
  *
  * @since 1.0
  */
@@ -395,12 +395,12 @@ function give_email_tag_fullname( $payment_id ) {
 }
 
 /**
- * Email template tag: username
- * The donor's user name on the site, if they registered an account
+ * Email template tag: username.
+ * The donor's user name on the site, if they registered an account.
  *
  * @param int $payment_id
  *
- * @return string username
+ * @return string username.
  */
 function give_email_tag_username( $payment_id ) {
 	$payment   = new Give_Payment( $payment_id );
@@ -474,8 +474,8 @@ function give_email_tag_date( $payment_id ) {
 }
 
 /**
- * Email template tag: price
- * The total price of the donation
+ * Email template tag: price.
+ * The total price of the donation.
  *
  * @param int $payment_id
  *
@@ -489,8 +489,8 @@ function give_email_tag_price( $payment_id ) {
 }
 
 /**
- * Email template tag: payment_id
- * The unique ID number for this donation
+ * Email template tag: payment_id.
+ * The unique ID number for this donation.
  *
  * @param int $payment_id
  *
@@ -519,7 +519,7 @@ function give_email_tag_receipt_id( $payment_id ) {
 /**
  * Email template tag: {donation}
  *
- * Output the donation form name used to make the donation along with the donation level (if applicable)
+ * Output the donation form name used to make the donation along with the donation level (if applicable).
  *
  * @param int $payment_id
  *
@@ -534,8 +534,9 @@ function give_email_tag_donation( $payment_id ) {
 }
 
 /**
- * Email template tag: payment_method
- * The method of payment used for this donation
+ * Email template tag: payment_method.
+ *
+ * The method of payment used for this donation.
  *
  * @param int $payment_id
  *
@@ -548,8 +549,9 @@ function give_email_tag_payment_method( $payment_id ) {
 }
 
 /**
- * Email template tag: sitename
- * Your site name
+ * Email template tag: sitename.
+ *
+ * Your site name.
  *
  * @param int $payment_id
  *
@@ -560,9 +562,9 @@ function give_email_tag_sitename( $payment_id ) {
 }
 
 /**
- * Email template tag: receipt_link
+ * Email template tag: receipt_link.
  *
- * Adds a link so users can view their receipt directly on your website if they are unable to view it in the browser correctly
+ * Adds a link so users can view their receipt directly on your website if they are unable to view it in the browser correctly.
  *
  * @param int $payment_id
  *
