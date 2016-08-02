@@ -26,7 +26,7 @@ before_script:
 - bash tests/bin/install.sh wordpress_test root '' localhost $WP_VERSION
 - bash tests/bin/travis.sh before
 
-script: phpunit -c phpunit.xml.dist
+script: phpunit -c phpunit.xml
 
 after_script:
 - bash tests/bin/travis.sh after
