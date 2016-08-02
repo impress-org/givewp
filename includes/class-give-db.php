@@ -287,4 +287,14 @@ abstract class Give_DB {
 		return $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE '%s'", $table ) ) === $table;
 	}
 
+	/**
+	 * Check if the table was ever installed
+	 *
+	 * @since  1.6
+	 * @return bool Returns if the customers table was installed and upgrade routine run
+	 */
+	public function installed() {
+		return $this->table_exists( $this->table_name );
+	}
+
 }

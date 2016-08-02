@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Perform automatic database upgrades when necessary
  *
- * @since 2.6
+ * @since 1.6
  * @return void
  */
 function give_do_automatic_upgrades() {
