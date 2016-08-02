@@ -72,6 +72,8 @@ function give_get_donation_form( $args = array() ) {
 		'give-form-wrap',
 		'give-display-' . $display_option
 	), $form->ID, $args );
+
+
 	$form_wrap_classes       = implode( ' ', $form_wrap_classes_array );
 
 	//Form Classes
