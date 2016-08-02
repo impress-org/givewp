@@ -161,7 +161,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			add_action( 'admin_notices', array( $this, 'notices' ) );
 
             // Check license weekly.
-            //add_action( 'admin_init', array( $this, 'weekly_license_check' ) );
+            add_action( 'give_weekly_scheduled_events', array( $this, 'weekly_license_check' ) );
 		}
 
 		/**
