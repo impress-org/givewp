@@ -10,7 +10,7 @@
 	syntaxCheck="true"
 	>
 	<testsuites>
-		<testsuite>
+		<testsuite name="Give Test Suite">
 			<directory prefix="tests-" suffix=".php">./tests/unit-tests</directory>
 		</testsuite>
 	</testsuites>
