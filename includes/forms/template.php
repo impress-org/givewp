@@ -59,40 +59,16 @@ function give_get_donation_form( $args = array() ) {
 		return false;
 	}
 
-	$display_option = ( isset( $args['display_style'] ) && ! empty( $args['display_style'] ) )
-		? $args['display_style']
-		: get_post_meta( $form->ID, '_give_payment_display', true );
-
-	$float_labels_option = give_is_float_labels_enabled( $args )
-		? 'float-labels-enabled'
-		: '';
-
-	//Form Wrap Classes
-	$form_wrap_classes_array = apply_filters( 'give_form_wrap_classes', array(
-		'give-form-wrap',
-		'give-display-' . $display_option
-	), $form->ID, $args );
 
 
-	$form_wrap_classes       = implode( ' ', $form_wrap_classes_array );
 
-	//Form Classes
-	$form_classes_array = apply_filters( 'give_form_classes', array(
-		'give-form',
-		'give-form-' . $form->ID,
-        'give-form-type-' . $form->get_type(),
-		$float_labels_option
-	), $form->ID, $args );
+	//Get the form wrap CSS classes.
+	$form_wrap_classes       = $form->get_form_wrap_classes($args);
 
-    // Remove empty class names.
-    $form_classes_array = array_filter(
-        $form_classes_array,
-        function( $class ){
-            return $class;
-        }
-    );
+	//Get the <form> tag wrap CSS classes.
+	$form_classes       = $form->get_form_classes($args);
 
-	$form_classes       = implode( ' ', $form_classes_array );
+
 
 
 	ob_start();
