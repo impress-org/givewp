@@ -7,6 +7,7 @@
 	convertNoticesToExceptions="true"
 	convertWarningsToExceptions="true"
 	verbose="true"
+	syntaxCheck="true"
 	>
 	<testsuites>
 		<testsuite>
@@ -18,6 +19,12 @@
 			<directory suffix=".php">./templates/</directory>
 			<directory suffix=".php">./tests/</directory>
 			<directory suffix=".php">./tmp/</directory>
+			<directory suffix=".php">./languages/</directory>
+			<directory suffix=".php">./tests/</directory>
+			<directory suffix=".php">./templates/</directory>
+			<directory suffix=".php">./includes/libraries/</directory>
+			<directory suffix=".php">./includes/admin/reporting/export</directory>
+			<directory suffix=".php">./includes/admin/reporting/tools/</directory>
 		</blacklist>
 	</filter>
 	<logging>
