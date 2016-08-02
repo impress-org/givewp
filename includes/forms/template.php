@@ -59,17 +59,11 @@ function give_get_donation_form( $args = array() ) {
 		return false;
 	}
 
-
-
-
 	//Get the form wrap CSS classes.
 	$form_wrap_classes       = $form->get_form_wrap_classes($args);
 
 	//Get the <form> tag wrap CSS classes.
 	$form_classes       = $form->get_form_classes($args);
-
-
-
 
 	ob_start();
 
