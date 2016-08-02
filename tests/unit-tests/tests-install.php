@@ -45,9 +45,7 @@ class Tests_Activation extends Give_Unit_Test_Case {
 		update_option( 'give_version', '2.0' );
 		$give_options = array();
 
-
 		give_install();
-
 
 		// Test the give_version_upgraded_from value
 		$this->assertEquals( get_option( 'give_version_upgraded_from' ), '2.0' );
@@ -82,7 +80,7 @@ class Tests_Activation extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Test that the install doesn't redirect when activating multiple plugins.
+	 * Test that the install does not redirect when activating multiple plugins.
 	 *
 	 * @since 1.3.2
 	 */
@@ -101,7 +99,7 @@ class Tests_Activation extends Give_Unit_Test_Case {
 	 *
 	 * Since 1.3.2
 	 */
-	public function test_give_ater_install() {
+	public function test_give_after_install() {
 
 		// Prepare for test
 		set_transient( '_give_installed', $GLOBALS['give_options'], 30 );

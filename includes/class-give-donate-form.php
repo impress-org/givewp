@@ -97,7 +97,7 @@ class Give_Donate_Form {
 	 *
 	 * @since 1.0
 	 *
-	 * @param bool $_id
+	 * @param bool  $_id
 	 * @param array $_args
 	 */
 	public function __construct( $_id = false, $_args = array() ) {
@@ -212,7 +212,7 @@ class Give_Donate_Form {
 		/**
 		 * Fired after a donation form is created
 		 *
-		 * @param int $id The post ID of the created item.
+		 * @param int   $id The post ID of the created item.
 		 * @param array $args The post object arguments used for creation.
 		 */
 		do_action( 'give_form_post_create', $id, $args );
@@ -272,7 +272,7 @@ class Give_Donate_Form {
 		 *
 		 * @since 1.0
 		 *
-		 * @param string $price The donation form price.
+		 * @param string     $price The donation form price.
 		 * @param string|int $id The form ID.
 		 */
 		return apply_filters( 'give_get_set_price', $this->price, $this->ID );
@@ -325,7 +325,7 @@ class Give_Donate_Form {
 		 *
 		 * @since 1.0
 		 *
-		 * @param array $prices The array of mulit-level prices.
+		 * @param array      $prices The array of mulit-level prices.
 		 * @param int|string The ID of the form.
 		 */
 		return apply_filters( 'give_get_donation_levels', $this->prices, $this->ID );
@@ -374,13 +374,13 @@ class Give_Donate_Form {
 		if ( empty( $option ) || $option === 'set' ) {
 			$ret = 1;
 		}
-		
+
 		/**
 		 * Override the price mode for a donation when checking if is in single price mode.
 		 *
 		 * @since 1.0
 		 *
-		 * @param bool $ret Is donation form in single price mode?
+		 * @param bool       $ret Is donation form in single price mode?
 		 * @param int|string The ID of the donation form.
 		 */
 		return (bool) apply_filters( 'give_single_price_option_mode', $ret, $this->ID );
@@ -407,7 +407,7 @@ class Give_Donate_Form {
 		 *
 		 * @since 1.6
 		 *
-		 * @param bool $ret Is donation form in custom price mode?
+		 * @param bool       $ret Is donation form in custom price mode?
 		 * @param int|string The ID of the donation form.
 		 */
 		return (bool) apply_filters( 'give_custom_price_option_mode', $ret, $this->ID );
@@ -434,7 +434,7 @@ class Give_Donate_Form {
 		/**
 		 * Filter: Override whether the donation form has variables prices.
 		 *
-		 * @param bool $ret Does donation form have variable prices?
+		 * @param bool       $ret Does donation form have variable prices?
 		 * @param int|string The ID of the donation form.
 		 */
 		return (bool) apply_filters( 'give_has_variable_prices', $ret, $this->ID );
@@ -463,31 +463,86 @@ class Give_Donate_Form {
 
 	}
 
-    /**
-     * Get if form type set or not.
-     *
-     * @since 1.6
-     * @return bool true if form type is 'multi' and false otherwise.
-     */
-    public function is_set_type_donation_form() {
-        $form_type = $this->get_type();
+	/**
+	 * Get form tag classes.
+	 *
+	 * Provides the classes for the donation <form> html tag and filters for customization.
+	 *
+	 * @since 1.6
+	 * @param $args
+	 *
+	 * @return string
+	 */
+	public function get_form_classes( $args ) {
 
-        return ( 'set' === $form_type ? true : false );
+		$float_labels_option = give_is_float_labels_enabled( $args )
+			? 'float-labels-enabled'
+			: '';
 
-    }
+		$form_classes_array = apply_filters( 'give_form_classes', array(
+			'give-form',
+			'give-form-' . $this->ID,
+			'give-form-type-' . $this->get_type(),
+			$float_labels_option
+		), $this->ID, $args );
 
-    /**
-     * Get if form type multi or not.
-     *
-     * @since 1.6
-     * @return bool true if form type is 'multi' and false otherwise.
-     */
-    public function is_multi_type_donation_form() {
-        $form_type = $this->get_type();
+		// Remove empty class names.
+		$form_classes_array = array_filter( $form_classes_array );
 
-        return ( 'multi' === $form_type ? true : false );
+		return implode( ' ', $form_classes_array );
 
-    }
+	}
+
+	/**
+	 * Get form wrap Classes.
+	 *
+	 * Provides the classes for the donation form div wrapper and filters for customization.
+	 *
+	 * @param $args
+	 *
+	 * @return string
+	 */
+	public function get_form_wrap_classes( $args ) {
+
+		$display_option = ( isset( $args['display_style'] ) && ! empty( $args['display_style'] ) )
+			? $args['display_style']
+			: get_post_meta( $this->ID, '_give_payment_display', true );
+
+		$form_wrap_classes_array = apply_filters( 'give_form_wrap_classes', array(
+			'give-form-wrap',
+			'give-display-' . $display_option
+		), $this->ID, $args );
+
+
+		return implode( ' ', $form_wrap_classes_array );
+
+	}
+
+	/**
+	 * Get if form type set or not.
+	 *
+	 * @since 1.6
+	 * @return bool true if form type is 'multi' and false otherwise.
+	 */
+	public function is_set_type_donation_form() {
+		$form_type = $this->get_type();
+
+		return ( 'set' === $form_type ? true : false );
+
+	}
+
+	/**
+	 * Get if form type multi or not.
+	 *
+	 * @since 1.6
+	 * @return bool true if form type is 'multi' and false otherwise.
+	 */
+	public function is_multi_type_donation_form() {
+		$form_type = $this->get_type();
+
+		return ( 'multi' === $form_type ? true : false );
+
+	}
 
 	/**
 	 * Retrieve the sale count for the donation form
@@ -606,9 +661,9 @@ class Give_Donate_Form {
 	 * Increase the earnings by the given amount
 	 *
 	 * @since 1.0
-	 * 
+	 *
 	 * @param int $amount Amount of donation
-	 * 
+	 *
 	 * @return float|false
 	 */
 	public function increase_earnings( $amount = 0 ) {
@@ -695,10 +750,10 @@ class Give_Donate_Form {
 	 */
 	public function is_close_donation_form() {
 		return (
-				'yes' === get_post_meta( $this->ID, '_give_goal_option', true ) )
-				&& ( 'yes' === get_post_meta( $this->ID, '_give_close_form_when_goal_achieved', true ) )
-				&& ( $this->get_goal() <= $this->get_earnings()
-		);
+			       'yes' === get_post_meta( $this->ID, '_give_goal_option', true ) )
+		       && ( 'yes' === get_post_meta( $this->ID, '_give_close_form_when_goal_achieved', true ) )
+		       && ( $this->get_goal() <= $this->get_earnings()
+		       );
 	}
 
 
@@ -708,8 +763,8 @@ class Give_Donate_Form {
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @param  string               $meta_key   The meta_key to update
-	 * @param  string|array|object  $meta_value The value to put into the meta
+	 * @param  string              $meta_key The meta_key to update
+	 * @param  string|array|object $meta_value The value to put into the meta
 	 *
 	 * @return bool                             The result of the update query
 	 */
