@@ -280,20 +280,7 @@ function give_render_receipt_in_browser() {
 	<!DOCTYPE html>
 	<html lang="en">
 	<head>
-		<title><?php esc_html_e( 'Donation Receipt', 'give' ); ?></title>
-		<meta charset="utf-8"/>
-
-		<!-- Further disallowing of caching of this page -->
-		<meta charset="utf-8"/>
-		<meta http-equiv="cache-control" content="max-age=0"/>
-		<meta http-equiv="cache-control" content="no-cache"/>
-		<meta http-equiv="expires" content="0"/>
-		<meta http-equiv="expires" content="Tue, 23 Oct 1977 05:00:00 PST"/>
-		<meta http-equiv="pragma" content="no-cache"/>
-		<meta name="robots" content="noindex, nofollow"/>
-
 		<?php do_action( 'give_receipt_head' ); ?>
-
 	</head>
 	<body class="<?php echo apply_filters( 'give_receipt_page_body_class', 'give_receipt_page' ); ?>">
 
@@ -356,7 +343,6 @@ function give_get_preview_email_header() {
 	//Start constructing HTML output.
 	$transaction_header = '<div style="margin:0;padding:10px 0;width:100%;background-color:#FFF;border-bottom:1px solid #eee; text-align:center;">';
 
-
 	//Inline JS function for switching transactions.
 	$transaction_header .= '<script>
 				 function change_preview(){
@@ -391,3 +377,35 @@ function give_get_preview_email_header() {
 	return apply_filters( 'give_preview_email_receipt_header', $transaction_header );
 
 }
+
+
+/**
+ * Give Receipt Head Content
+ *
+ * @since 1.6
+ * @return string
+ */
+function give_receipt_head_content() {
+
+	//Title.
+	$output = '<title>' . esc_html__( 'Donation Receipt', 'give' ) . '</title>';
+
+	//Meta.
+	$output .= '<meta charset="utf-8"/>
+		<!-- Further disallowing of caching of this page -->
+		<meta charset="utf-8"/>
+		<meta http-equiv="cache-control" content="max-age=0"/>
+		<meta http-equiv="cache-control" content="no-cache"/>
+		<meta http-equiv="expires" content="0"/>
+		<meta http-equiv="expires" content="Tue, 23 Oct 1977 05:00:00 PST"/>
+		<meta http-equiv="pragma" content="no-cache"/>
+		<meta name="robots" content="noindex, nofollow"/>';
+
+	//CSS
+	$output .= '<link rel="stylesheet" href="' . give_get_stylesheet_uri() . '?ver=' . GIVE_VERSION . '">';
+
+	echo apply_filters( 'give_receipt_head_content', $output );
+
+}
+
+add_action( 'give_receipt_head', 'give_receipt_head_content' );
