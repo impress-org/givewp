@@ -1338,9 +1338,6 @@ Settings
   .cmb-type-enabled-gateways ul li.ui-sortable-handle span.give-drag-handle:hover {
     color: #333; }
 
-.give-hide-heading {
-  display: none; }
-
 .cmb-type-give-title label {
   float: left;
   width: 220px;
@@ -1512,6 +1509,7 @@ a.give-delete {
     color: #fff;
     border-color: #e24e4e; }
   #licenses .cmb2-wrap .give-license-notice.give-license-error,
+  #licenses .cmb2-wrap .give-license-notice.give-license-no_activations_left,
   #licenses .cmb2-wrap .give-license-notice.give-license-missing,
   #licenses .cmb2-wrap .give-license-notice.give-license-invalid,
   #licenses .cmb2-wrap .give-license-notice.give-license-site_inactive,
