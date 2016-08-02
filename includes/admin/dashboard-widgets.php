@@ -60,7 +60,7 @@ function give_dashboard_sales_widget() {
 
 			<p class="give-dashboard-today-earnings"><?php echo give_currency_filter( give_format_amount( $earnings_today ) ); ?></p>
 
-			<p class="give-orders-today"><?php echo $stats->get_sales( 0, 'today', false, array( 'publish' ) ); ?>
+			<p class="give-donations-today"><?php echo $stats->get_sales( 0, 'today', false, array( 'publish' ) ); ?>
 				<span><?php echo esc_html_x( 'donations today', 'Displays in WP admin dashboard widget after the day\'s total donations', 'give' ); ?></span>
 			</p>
 
