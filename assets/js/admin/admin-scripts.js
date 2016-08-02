@@ -901,6 +901,26 @@ jQuery.noConflict();
             $(this).val(price_string);
         });
 
+        // Hide license notice for 24 hours if usr already read notice.
+        if ( 'true' === document.cookie.replace( /(?:(?:^|.*;\s*)giveLicenseNotice\s*\=\s*([^;]*).*$)|^.*$/, '$1' ) ) {
+            // Do not show license notice.
+            $('.give-license-notice').remove();
+        }
+
+        // Show/Hide license notice.
+        $('.give-license-notice').on( 'click', 'button.notice-dismiss', function(e){
+            e.preventDefault();
+
+            if ( 'true' !== document.cookie.replace( /(?:(?:^|.*;\s*)giveLicenseNotice\s*\=\s*([^;]*).*$)|^.*$/, '$1' ) ) {
+                var date = new Date( Date.now() );
+                date.setDate( date.getDate() + 1 );
+
+                document.cookie = 'giveLicenseNotice=true; expires=' + date.toUTCString();
+            }
+
+            return false;
+        });
+
     });
 
 })(jQuery);

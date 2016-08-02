@@ -162,7 +162,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
             // Check license weekly.
             add_action( 'give_weekly_scheduled_events', array( $this, 'weekly_license_check' ) );
-		}
+        }
 
 		/**
 		 * Auto Updater
@@ -324,13 +324,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 			// Decode license data
             $license_data = json_decode( wp_remote_retrieve_body( $response ) );
             update_option( $this->item_shortname . '_license_active', $license_data );
-
-            // Create transient in case error occurred.
-			if ( ! (bool) $license_data->success ) {
-				set_transient( 'give_license_error', $license_data, 1000 );
-			} else {
-				delete_transient( 'give_license_error' );
-			}
 		}
 
 		/**
@@ -391,13 +384,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 
                 // Remove license data.
 				delete_option( $this->item_shortname . '_license_active' );
-
-                // Create transient if error occurred.
-				if ( ! (bool) $license_data->success ) {
-					set_transient( 'give_license_error', $license_data, 1000 );
-				} else {
-					delete_transient( 'give_license_error' );
-				}
 			}
 		}
 
@@ -447,74 +433,47 @@ if ( ! class_exists( 'Give_License' ) ) :
             update_option( $this->item_shortname . '_license_active', $license_data );
         }
 
-		/**
-		 * License Notices
-		 *
-		 * Admin notices for license errors.
-		 *
-		 * @access public
-		 *
-		 * @return void
-		 */
-		public function notices() {
+        /**
+         * Admin notices for errors
+         *
+         * @access  public
+         * @return  void
+         */
+        public function notices() {
+            static $showed_invalid_message;
 
-			if ( ! isset( $_GET['page'] ) || 'give-settings' !== $_GET['page'] ) {
-				return;
-			}
+            if( empty( $this->license ) ) {
+                return;
+            }
 
-			if ( ! isset( $_GET['tab'] ) || 'licenses' !== $_GET['tab'] ) {
-				return;
-			}
+            if( ! current_user_can( 'manage_shop_settings' ) ) {
+                return;
+            }
 
-			$license_error = get_transient( 'give_license_error' );
+            $messages = array();
 
-			if ( false === $license_error ) {
-				return;
-			}
+            if( ! $this->is_valid_license() && empty( $showed_invalid_message ) ) {
 
-			if ( ! empty( $license_error->error ) ) {
+                if( empty( $_GET['tab'] ) || 'licenses' !== $_GET['tab'] ) {
+                    $messages[] = sprintf(
+                        __( 'You have invalid or expired license keys for Give Addon. Please go to the <a href="%s">Licenses page</a> to correct this issue.', 'give' ),
+                        admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' )
+                    );
+                    $showed_invalid_message = true;
+                }
 
-				switch ( $license_error->error ) {
+            }
 
-					case 'item_name_mismatch' :
 
-						$message = esc_html__( 'This license does not belong to the product you have entered it for.', 'give' );
-						break;
+            if( ! empty( $messages ) ) {
+                foreach( $messages as $message ) {
+                    echo '<div class="notice notice-error is-dismissible give-license-notice">';
+                    echo '<p>' . $message . '</p>';
+                    echo '</div>';
+                }
+            }
+        }
 
-					case 'no_activations_left' :
-
-						$message = esc_html__( 'This license does not have any activations left.', 'give' );
-						break;
-
-					case 'expired' :
-
-						$message = esc_html__( 'This license key is expired. Please renew it.', 'give' );
-						break;
-
-					default :
-
-						$message = sprintf(
-							/* translators: %s: license error */
-							esc_html__( 'There was a problem activating your license key, please try again or contact support. Error code: %s', 'give' ),
-							$license_error->error
-						);
-						break;
-
-				}
-
-			}
-
-			if ( ! empty( $message ) ) {
-
-				echo '<div class="error">';
-				echo '<p>' . $message . '</p>';
-				echo '</div>';
-
-			}
-
-			delete_transient( 'give_license_error' );
-
-		}
 
         /**
          * Check if license is valid or not.
