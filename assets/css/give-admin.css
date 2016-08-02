@@ -1508,6 +1508,7 @@ a.give-delete {
     color: #fff;
     border-color: #e24e4e; }
   #licenses .cmb2-wrap .give-license-notice.give-license-error,
+  #licenses .cmb2-wrap .give-license-notice.give-license-no_activations_left,
   #licenses .cmb2-wrap .give-license-notice.give-license-missing,
   #licenses .cmb2-wrap .give-license-notice.give-license-invalid,
   #licenses .cmb2-wrap .give-license-notice.give-license-site_inactive,
