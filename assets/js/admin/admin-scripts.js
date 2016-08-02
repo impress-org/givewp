@@ -901,13 +901,17 @@ jQuery.noConflict();
             $(this).val(price_string);
         });
 
+
+        /**
+         * Show/Hide License notice
+         */
         // Hide license notice for 24 hours if usr already read notice.
         if ( 'true' === document.cookie.replace( /(?:(?:^|.*;\s*)giveLicenseNotice\s*\=\s*([^;]*).*$)|^.*$/, '$1' ) ) {
             // Do not show license notice.
             $('.give-license-notice').remove();
         }
 
-        // Show/Hide license notice.
+        // Add click event to license notice dismiss button.
         $('.give-license-notice').on( 'click', 'button.notice-dismiss', function(e){
             e.preventDefault();
 
