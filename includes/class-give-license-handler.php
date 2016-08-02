@@ -443,7 +443,7 @@ if ( ! class_exists( 'Give_License' ) ) :
          * @return bool
          */
 		public function is_valid_license() {
-            if( ( is_object( $this->license_data ) && ! empty( $this->license_data ) && 'valid' === $this->license_data->license ) ) {
+            if( apply_filters( 'give_is_license_valid' , ( is_object( $this->license_data ) && ! empty( $this->license_data ) && 'valid' === $this->license_data->license ) ) ) {
                 return true;
             }
 
@@ -456,7 +456,7 @@ if ( ! class_exists( 'Give_License' ) ) :
          * @return bool
          */
         public function is_expired_license() {
-            if( ( ! $this->is_valid_license() && is_object( $this->license_data ) && ! empty( $this->license_data ) && ( 'expired' == $this->license_data->license ||  'expired' == $this->license_data->error ) ) ) {
+            if( apply_filters( 'give_is_license_expired', ( ! $this->is_valid_license() && is_object( $this->license_data ) && ! empty( $this->license_data ) && ( 'expired' == $this->license_data->license ||  'expired' == $this->license_data->error ) ) ) ) {
                 return true;
             }
 
