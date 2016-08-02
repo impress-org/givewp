@@ -32,6 +32,8 @@ before_script:
 script:
 - if [[ $TRAVIS_PHP_VERSION != 'hhvm' && ( $TRAVIS_PHP_VERSION != '5.5'|| $WP_VERSION != 'latest'
   || $WP_MULTISITE != '0' ) ]]; then phpenv config-rm xdebug.ini; fi
+- if [[ $TRAVIS_PHP_VERSION = '5.5' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0'
+  ]]; then phpunit --coverage-clover=coverage.clover; else phpunit; fi
 
 after_script:
 - if [[ $TRAVIS_PHP_VERSION = '5.5' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0'
