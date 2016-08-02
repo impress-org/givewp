@@ -109,15 +109,13 @@ class Give_Payment_History_Table extends WP_List_Table {
 	public $abandoned_count;
 
 	/**
-	 * Get things started
+	 * Get things started.
 	 *
 	 * @since 1.0
 	 * @uses  Give_Payment_History_Table::get_payment_counts()
 	 * @see   WP_List_Table::__construct()
 	 */
 	public function __construct() {
-
-		global $status, $page;
 
 		// Set parent defaults
 		parent::__construct( array(
@@ -305,7 +303,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * @access public
 	 * @since  1.0
 	 *
-	 * @param array $item Contains all the data of the discount code
+	 * @param array  $item Contains all the data of the discount code
 	 * @param string $column_name The name of the column
 	 *
 	 * @return string Column Name
@@ -494,48 +492,48 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 		foreach ( $ids as $id ) {
 
-            // Detect when a bulk action is being triggered...
-            switch ( $this->current_action() ) {
+			// Detect when a bulk action is being triggered...
+			switch ( $this->current_action() ) {
 
-                case'delete':
-                    give_delete_purchase($id);
-                    break;
+				case'delete':
+					give_delete_purchase( $id );
+					break;
 
-                case 'set-status-publish':
-                    give_update_payment_status($id, 'publish');
-                    break;
+				case 'set-status-publish':
+					give_update_payment_status( $id, 'publish' );
+					break;
 
-                case 'set-status-pending':
-                    give_update_payment_status($id, 'pending');
-                    break;
+				case 'set-status-pending':
+					give_update_payment_status( $id, 'pending' );
+					break;
 
-                case 'set-status-refunded':
-                    give_update_payment_status($id, 'refunded');
-                    break;
-                case 'set-status-revoked':
-                    give_update_payment_status($id, 'revoked');
-                    break;
+				case 'set-status-refunded':
+					give_update_payment_status( $id, 'refunded' );
+					break;
+				case 'set-status-revoked':
+					give_update_payment_status( $id, 'revoked' );
+					break;
 
-                case 'set-status-failed':
-                    give_update_payment_status($id, 'failed');
-                    break;
+				case 'set-status-failed':
+					give_update_payment_status( $id, 'failed' );
+					break;
 
-                case 'set-status-cancelled':
-                    give_update_payment_status($id, 'cancelled');
-                    break;
+				case 'set-status-cancelled':
+					give_update_payment_status( $id, 'cancelled' );
+					break;
 
-                case 'set-status-abandoned':
-                    give_update_payment_status($id, 'abandoned');
-                    break;
+				case 'set-status-abandoned':
+					give_update_payment_status( $id, 'abandoned' );
+					break;
 
-                case 'set-status-preapproval':
-                    give_update_payment_status($id, 'preapproval');
-                    break;
+				case 'set-status-preapproval':
+					give_update_payment_status( $id, 'preapproval' );
+					break;
 
-                case 'resend-receipt':
-                    give_email_donation_receipt($id, false);
-                    break;
-            }
+				case 'resend-receipt':
+					give_email_donation_receipt( $id, false );
+					break;
+			}
 
 			do_action( 'give_payments_table_do_bulk_action', $id, $this->current_action() );
 		}
@@ -590,11 +588,11 @@ class Give_Payment_History_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Retrieve all the data for all the payments
+	 * Retrieve all the data for all the payments.
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @return array $payment_data Array of all the data for the payments
+	 * @return object all the data for the payments
 	 */
 	public function payments_data() {
 

@@ -322,7 +322,7 @@ function give_undo_purchase( $form_id = false, $payment_id ) {
 
 
 /**
- * Count Payments
+ * Count Payments.
  *
  * Returns the total number of payments recorded.
  *
@@ -330,7 +330,7 @@ function give_undo_purchase( $form_id = false, $payment_id ) {
  *
  * @param array $args
  *
- * @return array $count Number of payments sorted by payment status
+ * @return array $count Number of payments sorted by payment status.
  */
 function give_count_payments( $args = array() ) {
 
@@ -1775,15 +1775,15 @@ function give_get_price_id( $form_id, $price ) {
 }
 
 /**
- * Get/Print give form dropdown html
+ * Get/Print give form dropdown html.
  * 
  * This function is wrapper to public method forms_dropdown of Give_HTML_Elements class to get/print form dropdown html.
- * Give_HTML_Elements is defind in includes/class-give-html-elements.php
+ * Give_HTML_Elements is defined in includes/class-give-html-elements.php.
  *
  * @since 1.6
  * 
  * @param array $args Arguments for form dropdown
- * @param bool $echo  This parameter decide if print form dropdown html output or not
+ * @param bool $echo  This parameter decides if print form dropdown html output or not.
  * 
  * @return string/void
  */
@@ -1798,12 +1798,12 @@ function give_get_form_dropdown( $args = array(), $echo = false ){
 }
 
 /**
- * Get/Print give form variable price dropdown html
+ * Get/Print give form variable price dropdown html.
  *
  * @since 1.6
  *
  * @param array $args Arguments for form dropdown
- * @param bool $echo  This parameter decide if print form dropdown html output or not
+ * @param bool $echo  This parameter decide if print form dropdown html output or not.
  *
  * @return string/void
  */

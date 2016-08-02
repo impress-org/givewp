@@ -967,7 +967,7 @@ function give_get_settings() {
 
 
 /**
- * Give Settings Array Insert
+ * Give Settings Array Insert.
  *
  * Allows other Add-ons and plugins to insert Give settings at a desired position.
  *
