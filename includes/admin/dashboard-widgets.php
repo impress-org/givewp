@@ -50,21 +50,18 @@ function give_dashboard_sales_widget() {
 
 			<p class="give-dashboard-happy-day"><?php
 				printf(
-					/* translators: %s: day of the week */
+				/* translators: %s: day of the week */
 					esc_html__( 'Happy %s!', 'give' ),
 					date( 'l', current_time( 'timestamp' ) )
 				);
-			?></p>
+				?></p>
 
 			<?php $earnings_today = $stats->get_earnings( 0, 'today', false ); ?>
 
 			<p class="give-dashboard-today-earnings"><?php echo give_currency_filter( give_format_amount( $earnings_today ) ); ?></p>
 
-			<p class="give-orders-today"><?php $donations_today = $stats->get_sales( 0, 'today', false, array(
-					'publish',
-					'revoked'
-				) ); ?><?php echo give_format_amount( $donations_today, false ); ?>
-				<span><?php echo _x( 'donations today', 'Displays in WP admin dashboard widget after the day\'s total donations', 'give' ); ?></span>
+			<p class="give-orders-today"><?php echo $stats->get_sales( 0, 'today', false, array( 'publish' ) ); ?>
+				<span><?php echo esc_html_x( 'donations today', 'Displays in WP admin dashboard widget after the day\'s total donations', 'give' ); ?></span>
 			</p>
 
 
@@ -109,7 +106,7 @@ function give_dashboard_sales_widget() {
 
 	</div>
 
-<?php
+	<?php
 }
 
 /**
@@ -125,9 +122,9 @@ function give_dashboard_at_a_glance_widget( $items ) {
 	$num_posts = wp_count_posts( 'give_forms' );
 
 	if ( $num_posts && $num_posts->publish ) {
-        
+
 		$text = sprintf(
-			/* translators: 1: number of posts published 2: forms singular label 3: forms plural label */
+		/* translators: 1: number of posts published 2: forms singular label 3: forms plural label */
 			_n( '%1$s Give %2$s', '%1$s Give %3$s', $num_posts->publish, 'give' ),
 			$num_posts->publish,
 			give_get_forms_label_singular(),
@@ -148,4 +145,4 @@ function give_dashboard_at_a_glance_widget( $items ) {
 	return $items;
 }
 
-add_filter( 'dashboard_glance_items', 'give_dashboard_at_a_glance_widget', 1, 1);
+add_filter( 'dashboard_glance_items', 'give_dashboard_at_a_glance_widget', 1, 1 );
