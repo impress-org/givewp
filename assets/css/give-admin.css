@@ -1515,17 +1515,14 @@ a.give-delete {
   #licenses .cmb2-wrap .give-license-notice.give-license-item_name_mismatch {
     background-color: #ffebcd;
     border-color: #ffebcd; }
-  #licenses .cmb2-wrap .give-license-notice.give-license-lifetime-notice,
-  #licenses .cmb2-wrap .give-license-notice.give-license-expiration-date {
+  #licenses .cmb2-wrap .give-license-notice.give-license-lifetime-notice {
     background-color: #46b450;
     border-color: #46b450; }
   #licenses .cmb2-wrap .give-license-notice.give-license-lifetime-notice,
-  #licenses .cmb2-wrap .give-license-notice.give-license-expiration-date,
   #licenses .cmb2-wrap .give-license-notice.give-license-expires-soon,
   #licenses .cmb2-wrap .give-license-notice.give-license-expired {
     color: #fff; }
     #licenses .cmb2-wrap .give-license-notice.give-license-lifetime-notice a,
-    #licenses .cmb2-wrap .give-license-notice.give-license-expiration-date a,
     #licenses .cmb2-wrap .give-license-notice.give-license-expires-soon a,
     #licenses .cmb2-wrap .give-license-notice.give-license-expired a {
       color: #fff; }
