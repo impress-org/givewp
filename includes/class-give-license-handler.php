@@ -486,19 +486,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 
             return false;
         }
-
-
-        /**
-         * Check if license expired or not.
-         * @return bool
-         */
-        public function is_expired_license() {
-            if( apply_filters( 'give_is_expired_license', ( ! $this->is_valid_license() && is_object( $this->license_data ) && ! empty( $this->license_data ) && ( 'expired' == $this->license_data->license ||  'expired' == $this->license_data->error ) ) ) ) {
-                return true;
-            }
-
-            return false;
-        }
 	}
 
 endif; // end class_exists check
