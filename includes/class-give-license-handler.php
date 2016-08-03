@@ -142,7 +142,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 					'type'    => 'license_key',
 					'options' => array(
 					    'license'   => get_option( $this->item_shortname . '_license_active' ),
-                        'shortname' => $this->item_shortname
+                        'shortname' => $this->item_shortname,
+                        'item_name' => $this->item_name
                     ),
 					'size'    => 'regular'
 				)
