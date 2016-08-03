@@ -906,7 +906,7 @@ jQuery.noConflict();
          * Show/Hide License notice
          */
         // Hide license notice for 24 hours if usr already read notice.
-        if ( 'true' === document.cookie.replace( /(?:(?:^|.*;\s*)giveLicenseNotice\s*\=\s*([^;]*).*$)|^.*$/, '$1' ) ) {
+        if ( 'true' === document.cookie.replace( /(?:(?:^|.*;\s*)give_license_notice\s*\=\s*([^;]*).*$)|^.*$/, '$1' ) ) {
             // Do not show license notice.
             $('.give-license-notice').remove();
         }
@@ -915,11 +915,11 @@ jQuery.noConflict();
         $('.give-license-notice').on( 'click', 'button.notice-dismiss', function(e){
             e.preventDefault();
 
-            if ( 'true' !== document.cookie.replace( /(?:(?:^|.*;\s*)giveLicenseNotice\s*\=\s*([^;]*).*$)|^.*$/, '$1' ) ) {
+            if ( 'true' !== document.cookie.replace( /(?:(?:^|.*;\s*)give_license_notice\s*\=\s*([^;]*).*$)|^.*$/, '$1' ) ) {
                 var date = new Date( Date.now() );
                 date.setDate( date.getDate() + 1 );
 
-                document.cookie = 'giveLicenseNotice=true; expires=' + date.toUTCString();
+                document.cookie = 'give_license_notice=true; expires=' + date.toUTCString();
             }
 
             return false;
