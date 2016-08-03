@@ -58,7 +58,7 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 		$totals             = $this->get_stored_data( 'give_temp_recount_all_stats' );
 		$payment_items      = $this->get_stored_data( 'give_temp_payment_items' );
 		$processed_payments = $this->get_stored_data( 'give_temp_processed_payments' );
-		$accepted_statuses  = apply_filters( 'give_recount_accepted_statuses', array( 'publish', 'revoked' ) );
+		$accepted_statuses  = apply_filters( 'give_recount_accepted_statuses', array( 'publish' ) );
 
 		if ( false === $totals ) {
 			$totals = array();
@@ -265,7 +265,7 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 			$this->delete_data( 'give_temp_processed_payments' );
 		}
 
-		$accepted_statuses = apply_filters( 'give_recount_accepted_statuses', array( 'publish', 'revoked' ) );
+		$accepted_statuses = apply_filters( 'give_recount_accepted_statuses', array( 'publish' ) );
 		$total             = $this->get_stored_data( 'give_temp_recount_all_total' );
 
 		if ( false === $total ) {

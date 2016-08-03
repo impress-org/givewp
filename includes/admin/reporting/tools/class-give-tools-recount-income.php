@@ -65,7 +65,7 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 			$this->store_data( 'give_temp_recount_income', $total );
 		}
 
-		$accepted_statuses = apply_filters( 'give_recount_accepted_statuses', array( 'publish', 'revoked' ) );
+		$accepted_statuses = apply_filters( 'give_recount_accepted_statuses', array( 'publish' ) );
 
 		$args = apply_filters( 'give_recount_income_args', array(
 			'number' => $this->per_step,
@@ -117,7 +117,7 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 			$args = apply_filters( 'give_recount_income_total_args', array() );
 
 			$counts = give_count_payments( $args );
-			$total  = absint( $counts->publish ) + absint( $counts->revoked );
+			$total  = absint( $counts->publish );
 			$total  = apply_filters( 'give_recount_store_income_total', $total );
 
 			$this->store_data( 'give_recount_income_total', $total );
