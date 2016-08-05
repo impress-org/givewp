@@ -1170,7 +1170,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
     $is_valid_license   = apply_filters( 'give_is_valid_license', ( is_object( $license ) && ! empty( $license ) && 'valid' === $license->license ) );
     $shortname          = $field_type_object->field->args['options']['shortname'];
 	$field_classes      = 'regular-text give-license-field';
-	$type               = empty( $escaped_value ) ? 'text' : 'password';
+	$type               = empty( $escaped_value ) || ! $is_valid_license ? 'text' : 'password';
     $custom_html        = '';
     $value              = $escaped_value;
     $messages           = array();
@@ -1282,13 +1282,6 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 	// If license is active so show deactivate button
 	if ( $is_valid_license ) {
 		$custom_html = '<input type="submit" class="button-secondary give-license-deactivate" name="' . $id . '_deactivate" value="' . esc_attr__( 'Deactivate License', 'give' ) . '"/>';
-	} else {
-		// Remove license key from field value and genarate new html.
-        $input_field_html = $field_type_object->input( array(
-            'class' => $field_classes,
-            'type'  => $type,
-            'value' => ''
-        ) );
 	}
 
 	// Field description.
