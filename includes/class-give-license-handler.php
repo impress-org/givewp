@@ -585,10 +585,14 @@ if ( ! class_exists( 'Give_License' ) ) :
 			        }
 
 			        if( 'active' === $subscription['status'] ) {
-				        $messages[$subscription['id']] = sprintf( __( 'Your license will renew in %s', 'give' ), human_time_diff( current_time( 'timestamp', 1 ), $subscription_expires ) );
+				        $messages[$subscription['id']] = sprintf(
+				        	__( 'Your Give addon license will renew in %s. <a href="%s" target="_blank">Click here for more information</a>', 'give' ),
+					        human_time_diff( current_time( 'timestamp', 1 ), $subscription_expires ),
+					        $this->account_url
+				        );
 			        } else{
 				        $messages[$subscription['id']] = sprintf(
-				        	__( 'You license will expire in %s, <a href="%s">click here to renew your license</a>.', 'give' ),
+				        	__( 'You Give addon license will expire in %s, <a href="%s" target="_blank">click here to renew your license</a>.', 'give' ),
 					        human_time_diff( current_time( 'timestamp', 1 ), strtotime( $subscription['expires'] ) ),
 					        "{$this->checkout_url}?edd_license_key={$subscription['license_key']}&utm_campaign=admin&utm_source=licenses&utm_medium=expired"
 				        );
