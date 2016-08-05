@@ -288,7 +288,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
             // Delete previous license setting if a empty license key submitted.
             if ( empty( $_POST[ $this->item_shortname . '_license_key' ] ) ) {
-                give_delete_option( $this->item_shortname . '_license_active' );
+                delete_option( $this->item_shortname . '_license_active' );
                 return;
             }
 
@@ -308,6 +308,11 @@ if ( ! class_exists( 'Give_License' ) ) :
 
             // Get license key.
             $license = sanitize_text_field( $_POST[ $this->item_shortname . '_license_key' ] );
+
+			// Bailout.
+			if( empty( $license ) ) {
+				return;
+			}
 
             // Data to send to the API
 			$api_params = array(

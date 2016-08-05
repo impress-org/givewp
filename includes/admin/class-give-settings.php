@@ -1265,7 +1265,14 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
                     break;
             }
         }
-    }
+    } else{
+		$class = 'empty';
+		$messages[] = sprintf(
+			__( 'To receive updates, please enter your valid %s license key.', 'give' ),
+			$addon_name
+		);
+		$license_status = null;
+	}
 
 
     // Add class for input field if license is active.
