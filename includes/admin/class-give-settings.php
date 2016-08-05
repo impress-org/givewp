@@ -1175,8 +1175,8 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
     $value              = $escaped_value;
     $messages           = array();
     $class              = '';
-    $account_page_link  = 'https://givewp.com/my-account/';
-    $checkout_page_link = 'https://givewp.com/checkout/';
+    $account_page_link  = $field_type_object->field->args['options']['account_url'];
+    $checkout_page_link = $field_type_object->field->args['options']['checkout_url'];
     $addon_name         =  $field_type_object->field->args['options']['item_name'];
     $license_status     = null;
 
