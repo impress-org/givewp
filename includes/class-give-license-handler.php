@@ -549,6 +549,10 @@ if ( ! class_exists( 'Give_License' ) ) :
         public function notices() {
             static $showed_invalid_message;
             static $showed_subscriptions_message;
+            static $addon_lincense_key_in_subscriptions;
+
+	        // Set default value.
+	        $addon_lincense_key_in_subscriptions = ! empty( $addon_lincense_key_in_subscriptions ) ? $addon_lincense_key_in_subscriptions : array();
 
             if( empty( $this->license ) ) {
                 return;
@@ -564,7 +568,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 	        $subscriptions = get_option( 'give_subscriptions' );
 
 
-	        // Show renew message to user.
+	        // Show subscription messages.
 	        if( ! empty( $subscriptions ) && ! $showed_subscriptions_message ) {
 	        	foreach ( $subscriptions as $subscription ) {
 	        		// Subscription expires timestamp.
@@ -590,12 +594,15 @@ if ( ! class_exists( 'Give_License' ) ) :
 				        );
 			        }
 
+			        // Stop validation for these licencse keys.
+			        $addon_lincense_key_in_subscriptions = array_merge( $addon_lincense_key_in_subscriptions, $subscription['licenses'] );
 	        	}
 		        $showed_subscriptions_message = true;
 	        }
 
 
-            if( ! $this->is_valid_license() && empty( $showed_invalid_message ) ) {
+	        // Show non subscription addon messages.
+            if( ! in_array( $this->license, $addon_lincense_key_in_subscriptions )&& ! $this->is_valid_license() && empty( $showed_invalid_message ) ) {
 
                 if( empty( $_GET['tab'] ) || 'licenses' !== $_GET['tab'] ) {
                     $messages[] = sprintf(
@@ -607,7 +614,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
             }
 
-
+			// Print messages.
             if( ! empty( $messages ) ) {
                 foreach( $messages as $message ) {
                     echo '<div class="notice notice-error is-dismissible give-license-notice">';
