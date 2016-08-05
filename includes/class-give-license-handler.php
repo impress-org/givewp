@@ -162,6 +162,9 @@ if ( ! class_exists( 'Give_License' ) ) :
 
             // Check license weekly.
             add_action( 'give_weekly_scheduled_events', array( $this, 'weekly_license_check' ) );
+
+			// Check subscription weekly.
+			add_action( 'give_weekly_scheduled_events', array( $this, 'weekly_subscription_check' ) );
         }
 
 		/**
@@ -433,6 +436,70 @@ if ( ! class_exists( 'Give_License' ) ) :
             $license_data = json_decode( wp_remote_retrieve_body( $response ) );
             update_option( $this->item_shortname . '_license_active', $license_data );
         }
+
+
+		/**
+		 * Check if license key is valid once per week
+		 *
+		 * @access  public
+		 * @since   1.6
+		 * @return  bool/void
+		 */
+		public function weekly_subscription_check() {
+
+			if( ! empty( $_POST['give_settings'] ) ) {
+				// Don't fire when saving settings
+				return false;
+			}
+
+			if( empty( $this->license ) ) {
+				return false;
+			}
+
+			// Allow third party addon developers to handle there subscription check.
+			if( false === strpos( $this->api_url, 'give' ) ){
+				do_action( 'give_weekly_subscription_check', $this );
+				return false;
+			}
+
+			// Data to send in our API request.
+			$api_params = array(
+				// Do not get confuse with edd_action check_subscription.
+				// By default edd software licensing api does not have api to check subscription.
+				// This is custom feature to check subscriptions.
+				'edd_action'=> 'check_subscription',
+				'license' 	=> $this->license,
+				'item_name' => urlencode( $this->item_name ),
+				'url'       => home_url()
+			);
+
+			// Call the API
+			$response = wp_remote_post(
+				$this->api_url,
+				array(
+					'timeout'   => 15,
+					'sslverify' => false,
+					'body'      => $api_params
+				)
+			);
+
+			// Make sure the response came back okay.
+			if ( is_wp_error( $response ) ) {
+				return false;
+			}
+
+			$subscription_data = json_decode( wp_remote_retrieve_body( $response ), true );
+
+			if( ! empty( $subscription_data['success'] ) && absint( $subscription_data['success'] ) ) {
+				$subscriptions = get_option( 'give_subscriptions', array() );
+				$subscriptions[ $subscription_data['id'] ] = $subscription_data;
+
+				update_option( 'give_subscriptions', $subscriptions );
+			}
+
+			error_log(print_r( $subscription_data, true) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log');
+		}
+
 
         /**
          * Admin notices for errors
