@@ -510,12 +510,20 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			if( ! empty( $subscription_data['success'] ) && absint( $subscription_data['success'] ) ) {
 				$subscriptions = get_option( 'give_subscriptions', array() );
-				$subscriptions[ $subscription_data['id'] ] = $subscription_data;
+
+				// Update subscript data only if subscription does not exist already.
+				if( ! array_key_exists( $subscription_data['id'], $subscriptions ) ) {
+					$subscriptions[ $subscription_data['id'] ] = $subscription_data;
+					$subscriptions[ $subscription_data['id'] ]['licenses'] = array();
+				}
+
+				// Store licenses for subscription.
+				if( ! in_array( $this->license, $subscriptions[ $subscription_data['id'] ]['licenses'] ) ) {
+					$subscriptions[ $subscription_data['id'] ]['licenses'][] = $this->license;
+				}
 
 				update_option( 'give_subscriptions', $subscriptions );
 			}
-
-			error_log(print_r( $subscription_data, true) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log');
 		}
 
 
