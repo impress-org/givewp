@@ -40,6 +40,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @param string  $_author
 		 * @param string  $_optname
 		 * @param string  $_api_url
+		 * @param string  $_checkout_url
+		 * @param string  $_account_url
 		 */
 		public function __construct( $_file, $_item_name, $_version, $_author, $_optname = null, $_api_url = null, $_checkout_url = null, $_account_url = null ) {
 			global $give_options;
