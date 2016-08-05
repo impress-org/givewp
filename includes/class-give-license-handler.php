@@ -549,10 +549,10 @@ if ( ! class_exists( 'Give_License' ) ) :
         public function notices() {
             static $showed_invalid_message;
             static $showed_subscriptions_message;
-            static $addon_lincense_key_in_subscriptions;
+            static $addon_license_key_in_subscriptions;
 
 	        // Set default value.
-	        $addon_lincense_key_in_subscriptions = ! empty( $addon_lincense_key_in_subscriptions ) ? $addon_lincense_key_in_subscriptions : array();
+	        $addon_license_key_in_subscriptions = ! empty( $addon_license_key_in_subscriptions ) ? $addon_license_key_in_subscriptions : array();
 
             if( empty( $this->license ) ) {
                 return;
@@ -599,14 +599,14 @@ if ( ! class_exists( 'Give_License' ) ) :
 			        }
 
 			        // Stop validation for these licencse keys.
-			        $addon_lincense_key_in_subscriptions = array_merge( $addon_lincense_key_in_subscriptions, $subscription['licenses'] );
+			        $addon_license_key_in_subscriptions = array_merge( $addon_license_key_in_subscriptions, $subscription['licenses'] );
 	        	}
 		        $showed_subscriptions_message = true;
 	        }
 
 
 	        // Show non subscription addon messages.
-            if( ! in_array( $this->license, $addon_lincense_key_in_subscriptions )&& ! $this->is_valid_license() && empty( $showed_invalid_message ) ) {
+            if( ! in_array( $this->license, $addon_license_key_in_subscriptions )&& ! $this->is_valid_license() && empty( $showed_invalid_message ) ) {
 
                 if( empty( $_GET['tab'] ) || 'licenses' !== $_GET['tab'] ) {
                     $messages[] = sprintf(
