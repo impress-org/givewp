@@ -535,6 +535,7 @@ if ( ! class_exists( 'Give_License' ) ) :
          */
         public function notices() {
             static $showed_invalid_message;
+            static $showed_subscriptions_message;
 
             if( empty( $this->license ) ) {
                 return;
@@ -545,6 +546,33 @@ if ( ! class_exists( 'Give_License' ) ) :
             }
 
             $messages = array();
+
+	        // Get subscriptions.
+	        $subscriptions = get_option( 'give_subscriptions' );
+
+
+	        // Show renew message to user.
+	        if( ! empty( $subscriptions ) && ! $showed_subscriptions_message ) {
+	        	foreach ( $subscriptions as $subscription ) {
+
+	        		if( array_key_exists( $subscription['id'], $messages ) ) {
+	        			continue;
+			        }
+
+			        if( 'active' === $subscription['status'] ) {
+				        $messages[$subscription['id']] = sprintf( __( 'Your license will renew in %s', 'give' ), human_time_diff( current_time( 'timestamp', 1 ), strtotime( $subscription['expires'] ) ) );
+			        } else{
+				        $messages[$subscription['id']] = sprintf(
+				        	__( 'You license will expire in %s, <a href="%s">click here to renew your license</a>.', 'give' ),
+					        human_time_diff( current_time( 'timestamp', 1 ), strtotime( $subscription['expires'] ) ),
+					        "{$this->checkout_url}?edd_license_key={$subscription['license_key']}&utm_campaign=admin&utm_source=licenses&utm_medium=expired"
+				        );
+			        }
+
+	        	}
+		        $showed_subscriptions_message = true;
+	        }
+
 
             if( ! $this->is_valid_license() && empty( $showed_invalid_message ) ) {
 
