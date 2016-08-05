@@ -410,6 +410,12 @@ if ( ! class_exists( 'Give_License' ) ) :
                 return false;
             }
 
+	        // Allow third party addon developers to handle there subscription check.
+	        if( false === strpos( $this->api_url, 'give' ) ){
+		        do_action( 'give_weekly_license_check', $this );
+		        return false;
+	        }
+
             // Data to send in our API request.
             $api_params = array(
                 'edd_action'=> 'check_license',
