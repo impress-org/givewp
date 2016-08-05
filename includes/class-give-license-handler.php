@@ -25,7 +25,9 @@ if ( ! class_exists( 'Give_License' ) ) :
 		private $item_shortname;
 		private $version;
 		private $author;
-		private $api_url = 'https://givewp.com/give-sl-api/';
+		private $api_url      = 'http://givewp.com/give-sl-api/';
+		private $account_url  = 'http://givewp.com/my-account/';
+		private $checkout_url = 'http://givewp.com/checkout/';
 
 		/**
 		 * Class constructor
@@ -39,7 +41,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @param string  $_optname
 		 * @param string  $_api_url
 		 */
-		public function __construct( $_file, $_item_name, $_version, $_author, $_optname = null, $_api_url = null ) {
+		public function __construct( $_file, $_item_name, $_version, $_author, $_optname = null, $_api_url = null, $_checkout_url = null, $_account_url = null ) {
 			global $give_options;
 
 			$this->file           = $_file;
@@ -50,6 +52,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 			$this->license_data   = get_option( $this->item_shortname . '_license_active' );
             $this->author         = $_author;
 			$this->api_url        = is_null( $_api_url ) ? $this->api_url : $_api_url;
+			$this->checkout_url   = is_null( $_checkout_url ) ? $this->checkout_url : $_checkout_url;
+			$this->account_url    = is_null( $_account_url ) ? $this->account_url : $_account_url;
 
 
 			// Setup hooks
@@ -144,9 +148,12 @@ if ( ! class_exists( 'Give_License' ) ) :
 					'desc'    => '',
 					'type'    => 'license_key',
 					'options' => array(
-					    'license'   => get_option( $this->item_shortname . '_license_active' ),
-                        'shortname' => $this->item_shortname,
-                        'item_name' => $this->item_name
+					    'license'       => get_option( $this->item_shortname . '_license_active' ),
+                        'shortname'     => $this->item_shortname,
+                        'item_name'     => $this->item_name,
+                        'api_url'       => $this->api_url,
+                        'checkout_url'  => $this->checkout_url,
+                        'account_url'   => $this->account_url
                     ),
 					'size'    => 'regular'
 				)
