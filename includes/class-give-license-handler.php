@@ -646,7 +646,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @return bool
 		 */
 		public function is_third_party_addon() {
-			return ( false === strpos( $this->api_url, 'give' ) );
+			return ( false === strpos( $this->api_url, 'givewp.com/' ) );
 		}
 	}
 
