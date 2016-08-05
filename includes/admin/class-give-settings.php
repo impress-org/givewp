@@ -1177,7 +1177,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
     $class              = '';
     $account_page_link  = $field_type_object->field->args['options']['account_url'];
     $checkout_page_link = $field_type_object->field->args['options']['checkout_url'];
-    $addon_name         =  $field_type_object->field->args['options']['item_name'];
+    $addon_name         = $field_type_object->field->args['options']['item_name'];
     $license_status     = null;
 
 
@@ -1308,7 +1308,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 
 
     // Field html.
-    $custom_html = $input_field_html.$custom_html;
+    $custom_html = apply_filters('give_license_key_field_html', $input_field_html.$custom_html, $field_type_object );
 
     // Nonce.
 	wp_nonce_field( $id . '-nonce', $id . '-nonce' );
