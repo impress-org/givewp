@@ -554,13 +554,21 @@ if ( ! class_exists( 'Give_License' ) ) :
 	        // Show renew message to user.
 	        if( ! empty( $subscriptions ) && ! $showed_subscriptions_message ) {
 	        	foreach ( $subscriptions as $subscription ) {
+	        		// Subscription expires timestamp.
+	        		$subscription_expires = strtotime( $subscription['expires'] );
+			        
+					// Start showing subscriptions message before one week of renewal date.
+			        if( strtotime( '- 7 days', $subscription_expires ) > current_time( 'timestamp', 1 ) ) {
+			        	continue;
+			        }
 
+	        		// Check if subscription message already exist in messages.
 	        		if( array_key_exists( $subscription['id'], $messages ) ) {
 	        			continue;
 			        }
 
 			        if( 'active' === $subscription['status'] ) {
-				        $messages[$subscription['id']] = sprintf( __( 'Your license will renew in %s', 'give' ), human_time_diff( current_time( 'timestamp', 1 ), strtotime( $subscription['expires'] ) ) );
+				        $messages[$subscription['id']] = sprintf( __( 'Your license will renew in %s', 'give' ), human_time_diff( current_time( 'timestamp', 1 ), $subscription_expires ) );
 			        } else{
 				        $messages[$subscription['id']] = sprintf(
 				        	__( 'You license will expire in %s, <a href="%s">click here to renew your license</a>.', 'give' ),
