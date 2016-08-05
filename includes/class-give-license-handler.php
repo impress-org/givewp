@@ -276,6 +276,12 @@ if ( ! class_exists( 'Give_License' ) ) :
                 return;
             }
 
+			// Allow third party addon developers to handle license activation.
+			if( $this->is_third_party_addon() ){
+				do_action( 'give_activate_license', $this );
+				return;
+			}
+
             // Delete previous license setting if a empty license key submitted.
             if ( empty( $_POST[ $this->item_shortname . '_license_key' ] ) ) {
                 give_delete_option( $this->item_shortname . '_license_active' );
@@ -355,6 +361,12 @@ if ( ! class_exists( 'Give_License' ) ) :
 				return;
 			}
 
+			// Allow third party addon developers to handle license deactivation.
+			if( $this->is_third_party_addon() ){
+				do_action( 'give_deactivate_license', $this );
+				return;
+			}
+
 			// Run on deactivate button press
 			if ( isset( $_POST[ $this->item_shortname . '_license_key_deactivate' ] ) ) {
 
@@ -410,8 +422,8 @@ if ( ! class_exists( 'Give_License' ) ) :
                 return false;
             }
 
-	        // Allow third party addon developers to handle there subscription check.
-	        if( false === strpos( $this->api_url, 'give' ) ){
+	        // Allow third party addon developers to handle there license check.
+	        if( $this->is_third_party_addon() ){
 		        do_action( 'give_weekly_license_check', $this );
 		        return false;
 	        }
@@ -463,7 +475,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			}
 
 			// Allow third party addon developers to handle there subscription check.
-			if( false === strpos( $this->api_url, 'give' ) ){
+			if( $this->is_third_party_addon() ){
 				do_action( 'give_weekly_subscription_check', $this );
 				return false;
 			}
@@ -560,6 +572,14 @@ if ( ! class_exists( 'Give_License' ) ) :
 
             return false;
         }
+
+		/**
+		 * Check if license is valid or not.
+		 * @return bool
+		 */
+		public function is_third_party_addon() {
+			return ( false === strpos( $this->api_url, 'give' ) );
+		}
 	}
 
 endif; // end class_exists check
