@@ -82,9 +82,9 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @var    string
 		 */
-		private $api_url = 'https://givewp.com/give-sl-api/';
-		private $account_url  = 'http://givewp.com/my-account/';
-		private $checkout_url = 'http://givewp.com/checkout/';
+		private $api_url      = 'http://give-playground.dev/give-sl-api/';
+		private $account_url  = 'http://give-playground.dev/my-account/';
+		private $checkout_url = 'http://give-playground.dev/checkout/';
 
 		/**
 		 * Class Constructor
@@ -586,13 +586,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 	        			continue;
 			        }
 
-			        if( 'active' === $subscription['status'] ) {
-				        $messages[$subscription['id']] = sprintf(
-				        	__( 'Your Give addon license will renew in %s. <a href="%s" target="_blank">Click here for more information</a>', 'give' ),
-					        human_time_diff( current_time( 'timestamp', 1 ), $subscription_expires ),
-					        $this->account_url
-				        );
-			        } else{
+			        if( ( 'active' !== $subscription['status'] ) && ( 'pending' !== $subscription['status'] ) ) {
 				        $messages[$subscription['id']] = sprintf(
 				        	__( 'You Give addon license will expire in %s, <a href="%s" target="_blank">click here to renew your license</a>.', 'give' ),
 					        human_time_diff( current_time( 'timestamp', 1 ), strtotime( $subscription['expires'] ) ),
@@ -648,7 +642,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @return bool
 		 */
 		public function is_third_party_addon() {
-			return ( false === strpos( $this->api_url, 'givewp.com/' ) );
+			return ( false === strpos( $this->api_url, 'give-playground.dev/' ) );
 		}
 	}
 
