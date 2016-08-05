@@ -477,6 +477,12 @@ if ( ! class_exists( 'Give_License' ) ) :
 				return false;
 			}
 
+			// Remove old subscription data.
+			if( absint( get_option( '_give_subscriptions_edit_last', true ) ) < current_time( 'timestamp' , 1 ) ){
+				delete_option( 'give_subscriptions' );
+				update_option( '_give_subscriptions_edit_last', strtotime( '+ 1 day', current_time( 'timestamp' , 1 ) ) );
+			}
+
 			if( empty( $this->license ) ) {
 				return false;
 			}
@@ -485,12 +491,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 			if( $this->is_third_party_addon() ){
 				do_action( 'give_weekly_subscription_check', $this );
 				return false;
-			}
-
-			// Remove old subscription data.
-			if( absint( get_option( '_give_subscriptions_edit_last', true ) ) < current_time( 'timestamp' , 1 ) ){
-				delete_option( 'give_subscriptions' );
-				update_option( '_give_subscriptions_edit_last', strtotime( '+ 1 day', current_time( 'timestamp' , 1 ) ) );
 			}
 
 			// Data to send in our API request.
