@@ -487,6 +487,12 @@ if ( ! class_exists( 'Give_License' ) ) :
 				return false;
 			}
 
+			// Remove old subscription data.
+			if( absint( get_option( '_give_subscriptions_edit_last', true ) ) < current_time( 'timestamp' , 1 ) ){
+				delete_option( 'give_subscriptions' );
+				update_option( '_give_subscriptions_edit_last', strtotime( '+ 1 day', current_time( 'timestamp' , 1 ) ) );
+			}
+
 			// Data to send in our API request.
 			$api_params = array(
 				// Do not get confuse with edd_action check_subscription.
