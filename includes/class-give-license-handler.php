@@ -495,6 +495,9 @@ if ( ! class_exists( 'Give_License' ) ) :
 				return false;
 			}
 
+			// Delete subscription notices show blocker.
+			$this->_delete_subscription_notices_show_blocker();
+
 			// Data to send in our API request.
 			$api_params = array(
 				// Do not get confuse with edd_action check_subscription.
@@ -586,11 +589,12 @@ if ( ! class_exists( 'Give_License' ) ) :
 	        			continue;
 			        }
 
-			        if( ( 'active' !== $subscription['status'] ) && ( 'pending' !== $subscription['status'] ) ) {
+			        if( ( 'active' !== $subscription['status'] ) && ( 'pending' !== $subscription['status'] ) && ! in_array( $subscription['id'], get_option( '_give_hide_subscription_notices', array() ) ) ) {
 				        $messages[$subscription['id']] = sprintf(
-				        	__( 'You Give addon license will expire in %s, <a href="%s" target="_blank">click here to renew your license</a>.', 'give' ),
+				        	__( 'You Give addon license will expire in %s. <a href="%s" target="_blank">Click to renew an existing license</a> or <a href="?_give_hide_subscription_notices=%d">Click here if already renewed</a>.', 'give' ),
 					        human_time_diff( current_time( 'timestamp', 1 ), strtotime( $subscription['expires'] ) ),
-					        "{$this->checkout_url}?edd_license_key={$subscription['license_key']}&utm_campaign=admin&utm_source=licenses&utm_medium=expired"
+					        "{$this->checkout_url}?edd_license_key={$subscription['license_key']}&utm_campaign=admin&utm_source=licenses&utm_medium=expired",
+                            $subscription['id']
 				        );
 			        }
 
@@ -644,6 +648,18 @@ if ( ! class_exists( 'Give_License' ) ) :
 		public function is_third_party_addon() {
 			return ( false === strpos( $this->api_url, 'give-playground.dev/' ) );
 		}
+
+		/**
+         * Delete subscription notices show blocker
+         *
+         * @since 1.6
+         * @access private
+         *
+         * @return void
+         */
+		private function _delete_subscription_notices_show_blocker(){
+            delete_option( '_give_hide_subscription_notices' );
+        }
 	}
 
 endif; // end class_exists check
