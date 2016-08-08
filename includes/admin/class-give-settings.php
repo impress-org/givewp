@@ -1208,9 +1208,10 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 
             if( $subscription_expires < current_time( 'timestamp', 1 ) ) {
                 $messages[] = sprintf(
-                    __( 'Your subscription (<a href="%s" target="_blank">#%d</a>) expired.', 'give' ),
+                    __( 'Your subscription (<a href="%s" target="_blank">#%d</a>) expired. Please <a href="%s" target="_blank" title="Renew your license key">renew your license key</a>', 'give' ),
                     urldecode( $subscriptions[$is_in_subscription]['invoice_url'] ),
-                    $subscriptions[$is_in_subscription]['payment_id']
+                    $subscriptions[$is_in_subscription]['payment_id'],
+                    $checkout_page_link . '?edd_license_key=' . $subscriptions[$is_in_subscription]['license_key'] . '&utm_campaign=admin&utm_source=licenses&utm_medium=expired'
                 );
                 $license_status = 'license-expired';
             } elseif( strtotime( '- 7 days', $subscription_expires ) < current_time( 'timestamp', 1 ) ) {
