@@ -567,6 +567,11 @@ if ( ! class_exists( 'Give_License' ) ) :
                 return;
             }
 
+            // Do not show licenses notices on license tab.
+            if( ! empty( $_GET['tab'] ) && 'licenses' === $_GET['tab'] ) {
+                return;
+            }
+
             $messages = array();
 
 	        // Get subscriptions.
@@ -610,13 +615,11 @@ if ( ! class_exists( 'Give_License' ) ) :
 	        // Show non subscription addon messages.
             if( ! in_array( $this->license, $addon_license_key_in_subscriptions ) && ! $this->is_valid_license() && empty( $showed_invalid_message ) ) {
 
-                if( empty( $_GET['tab'] ) || 'licenses' !== $_GET['tab'] ) {
-                    $messages['general'] = sprintf(
-                        __( 'You have invalid or expired license keys for Give Addon. Please go to the <a href="%s">Licenses page</a> to correct this issue.', 'give' ),
-                        admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' )
-                    );
-                    $showed_invalid_message = true;
-                }
+                $messages['general'] = sprintf(
+                    __( 'You have invalid or expired license keys for Give Addon. Please go to the <a href="%s">Licenses page</a> to correct this issue.', 'give' ),
+                    admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' )
+                );
+                $showed_invalid_message = true;
 
             }
 
