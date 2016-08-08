@@ -1167,7 +1167,9 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
     $id                 = $field_type_object->field->args['id'];
 	$field_description  = $field_type_object->field->args['desc'];
 	$license            = $field_type_object->field->args['options']['license'];
-    $is_valid_license   = apply_filters( 'give_is_valid_license', ( is_object( $license ) && ! empty( $license ) && 'valid' === $license->license ) );
+    $license_key        = $escaped_value;
+    $is_license_key     = apply_filters( 'give_is_license_key', ( is_object( $license ) && ! empty( $license ) ) );
+    $is_valid_license   = apply_filters( 'give_is_valid_license', ( $is_license_key && 'valid' === $license->license ) );
     $shortname          = $field_type_object->field->args['options']['shortname'];
 	$field_classes      = 'regular-text give-license-field';
 	$type               = empty( $escaped_value ) || ! $is_valid_license ? 'text' : 'password';
@@ -1179,12 +1181,60 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
     $checkout_page_link = $field_type_object->field->args['options']['checkout_url'];
     $addon_name         = $field_type_object->field->args['options']['item_name'];
     $license_status     = null;
+    $is_in_subscription   = null;
 
 
-    if( is_object( $license ) && ! empty( $license) ) {
+    // Check if current license is part of subscription or not.
+    $subscriptions = get_option( 'give_subscriptions' );
 
-        // activate_license 'invalid' on anything other than valid, so if there was an error capture it
-        if ( empty( $license->success ) ) {
+    if( $is_license_key && $subscriptions ) {
+        foreach ( $subscriptions as $subscription ) {
+            if( in_array( $license_key, $subscription['licenses'] ) ) {
+                $is_in_subscription = $subscription['id'];
+                break;
+            }
+        }
+    }
+
+
+    if( $is_license_key ) {
+        if( $is_in_subscription ) {
+            $subscription_expires = strtotime( $subscriptions[$is_in_subscription]['expires'] );
+            $subscription_status  = 'renew';
+            if( ( 'active' !== $subscriptions[$is_in_subscription]['expires'] ) && ( 'pending' !== $subscriptions[$is_in_subscription]['expires'] ) ){
+                $subscription_status = 'expire';
+            }
+
+            if( $subscription_expires < current_time( 'timestamp', 1 ) ) {
+                $messages[] = sprintf(
+                    __( 'Your subscription (<a href="%s" target="_blank">#%d</a>) expired.', 'give' ),
+                    urldecode( $subscriptions[$is_in_subscription]['invoice_url'] ),
+                    $subscriptions[$is_in_subscription]['payment_id']
+                );
+                $license_status = 'license-expired';
+            } elseif( strtotime( '- 7 days', $subscription_expires ) < current_time( 'timestamp', 1 ) ) {
+                $messages[] = sprintf(
+                    __( 'Your subscription (<a href="%s" target="_blank">#%d</a>) will %s in %s.', 'give' ),
+                    urldecode( $subscriptions[$is_in_subscription]['invoice_url'] ),
+                    $subscriptions[$is_in_subscription]['payment_id'],
+                    $subscription_status,
+                    human_time_diff( current_time( 'timestamp', 1 ), strtotime( $subscriptions[$is_in_subscription]['expires'] ) )
+                );
+                $license_status = 'license-expires-soon';
+            } else {
+                $messages[] = sprintf(
+                    __( 'Your subscription (<a href="%s" target="_blank">#%d</a>) will %s on %s.', 'give' ),
+                    urldecode( $subscriptions[$is_in_subscription]['invoice_url'] ),
+                    $subscriptions[$is_in_subscription]['payment_id'],
+                    $subscription_status,
+                    date_i18n( get_option( 'date_format' ), strtotime( $subscriptions[$is_in_subscription]['expires'], current_time( 'timestamp' ) ) )
+                );
+                $license_status = 'license-expiration-date';
+            }
+
+
+        } elseif ( empty( $license->success ) ) {
+            // activate_license 'invalid' on anything other than valid, so if there was an error capture it
             switch( $license->error ) {
                 case 'expired' :
                     $class = $license->error;
