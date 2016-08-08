@@ -19,7 +19,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * present in $_GET is called using WordPress's do_action function. These
  * functions are called on init.
  *
- * @since 1.0
+ * @since  1.0
+ *
  * @return void
  */
 function give_get_actions() {
@@ -35,7 +36,8 @@ add_action( 'init', 'give_get_actions' );
  * present in $_POST is called using WordPress's do_action function. These
  * functions are called on init.
  *
- * @since 1.0
+ * @since  1.0
+ *
  * @return void
  */
 function give_post_actions() {

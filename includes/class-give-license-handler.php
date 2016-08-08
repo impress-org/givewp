@@ -18,25 +18,87 @@ if ( ! class_exists( 'Give_License' ) ) :
 	 * Give_License Class
 	 */
 	class Give_License {
+
+		/**
+		 * File
+		 *
+		 * @access private
+		 *
+		 * @var    string
+		 */
 		private $file;
+
+		/**
+		 * License
+		 *
+		 * @access private
+		 *
+		 * @var    string
+		 */
 		private $license;
+
+		/**
+		 * Item name
+		 *
+		 * @access private
+		 *
+		 * @var    string
+		 */
 		private $item_name;
+
+		/**
+		 * Item shortname
+		 *
+		 * @access private
+		 *
+		 * @var    string
+		 */
 		private $item_shortname;
+
+		/**
+		 * Version
+		 *
+		 * @access private
+		 *
+		 * @var    string
+		 */
 		private $version;
+
+		/**
+		 * Author
+		 *
+		 * @access private
+		 *
+		 * @var    string
+		 */
 		private $author;
+
+		/**
+		 * API URL
+		 *
+		 * @access private
+		 *
+		 * @var    string
+		 */
 		private $api_url = 'https://givewp.com/give-sl-api/';
 
 		/**
-		 * Class constructor
+		 * Class Constructor
 		 *
-		 * @global  array $give_options
+		 * Set up the Give License Class.
 		 *
-		 * @param string  $_file
-		 * @param string  $_item_name
-		 * @param string  $_version
-		 * @param string  $_author
-		 * @param string  $_optname
-		 * @param string  $_api_url
+		 * @access public
+		 *
+		 * @global array  $give_options
+		 *
+		 * @param  string $_file
+		 * @param  string $_item_name
+		 * @param  string $_version
+		 * @param  string $_author
+		 * @param  string $_optname
+		 * @param  string $_api_url
+		 *
+		 * @return void
 		 */
 		public function __construct( $_file, $_item_name, $_version, $_author, $_optname = null, $_api_url = null ) {
 			global $give_options;
@@ -49,7 +111,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 			$this->author         = $_author;
 			$this->api_url        = is_null( $_api_url ) ? $this->api_url : $_api_url;
 
-
 			// Setup hooks
 			$this->includes();
 			$this->hooks();
@@ -57,10 +118,13 @@ if ( ! class_exists( 'Give_License' ) ) :
 		}
 
 		/**
-		 * Include the updater class
+		 * Includes
 		 *
-		 * @access  private
-		 * @return  void
+		 * Include the updater class.
+		 *
+		 * @access private
+		 *
+		 * @return void
 		 */
 		private function includes() {
 			if ( ! class_exists( 'EDD_SL_Plugin_Updater' ) ) {
@@ -69,10 +133,13 @@ if ( ! class_exists( 'Give_License' ) ) :
 		}
 
 		/**
-		 * Setup hooks
+		 * Hooks
 		 *
-		 * @access  private
-		 * @return  void
+		 * Setup license hooks.
+		 *
+		 * @access private
+		 *
+		 * @return void
 		 */
 		private function hooks() {
 
@@ -92,11 +159,13 @@ if ( ! class_exists( 'Give_License' ) ) :
 		}
 
 		/**
-		 * Auto updater
+		 * Auto Updater
 		 *
-		 * @access  private
-		 * @global  array $give_options
-		 * @return  void
+		 * Setup the license auto updater.
+		 *
+		 * @access public
+		 *
+		 * @return void
 		 */
 		public function auto_updater() {
 
@@ -117,15 +186,16 @@ if ( ! class_exists( 'Give_License' ) ) :
 			);
 		}
 
-
 		/**
-		 * Add license field to settings
+		 * License Settings
 		 *
-		 * @access  public
+		 * Add license field to settings.
 		 *
-		 * @param array $settings
+		 * @access public
 		 *
-		 * @return  array
+		 * @param  array $settings License settings.
+		 *
+		 * @return array           License settings.
 		 */
 		public function settings( $settings ) {
 
@@ -144,13 +214,15 @@ if ( ! class_exists( 'Give_License' ) ) :
 		}
 
 		/**
-		 * Add Some Content to the Licensing Settings
+		 * License Settings Content
 		 *
-		 * @access  public
+		 * Add Some Content to the Licensing Settings.
 		 *
-		 * @param array $settings
+		 * @access public
 		 *
-		 * @return  array
+		 * @param  array $settings License settings content.
+		 *
+		 * @return array           License settings content.
 		 */
 		public function license_settings_content( $settings ) {
 
@@ -166,12 +238,14 @@ if ( ! class_exists( 'Give_License' ) ) :
 			return array_merge( $settings, $give_license_settings );
 		}
 
-
 		/**
-		 * Activate the license key
+		 * Activate License
 		 *
-		 * @access  public
-		 * @return  void
+		 * Activate the license key.
+		 *
+		 * @access public
+		 *
+		 * @return void
 		 */
 		public function activate_license() {
 
@@ -244,12 +318,14 @@ if ( ! class_exists( 'Give_License' ) ) :
 			}
 		}
 
-
 		/**
-		 * Deactivate the license key
+		 * Deactivate License
 		 *
-		 * @access  public
-		 * @return  void
+		 * Deactivate the license key.
+		 *
+		 * @access public
+		 *
+		 * @return void
 		 */
 		public function deactivate_license() {
 
@@ -307,12 +383,14 @@ if ( ! class_exists( 'Give_License' ) ) :
 			}
 		}
 
-
 		/**
-		 * Admin notices for errors
+		 * License Notices
 		 *
-		 * @access  public
-		 * @return  void
+		 * Admin notices for license errors.
+		 *
+		 * @access public
+		 *
+		 * @return void
 		 */
 		public function notices() {
 
@@ -373,6 +451,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			delete_transient( 'give_license_error' );
 
 		}
+
 	}
 
 endif; // end class_exists check

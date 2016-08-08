@@ -3,11 +3,16 @@
  * Roles and Capabilities
  *
  * @package     Give
- * @subpackage  Classes/Roles
+ * @subpackage  Classes/Give_Roles
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
-*/
+ */
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Give_Roles Class
@@ -15,27 +20,34 @@
  * This class handles the role creation and assignment of capabilities for those roles.
  *
  * These roles let us have Give Accountants, Give Workers, etc, each of whom can do
- * certain things within the plugin
+ * certain things within the plugin.
  *
- * @since 1.0.0
+ * @since 1.0
  */
 class Give_Roles {
 
 	/**
-	 * Get things going
+	 * Class Constructor
 	 *
-	 * @since 1.0.0
+	 * Set up the Give Roles Class.
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @return void
 	 */
 	public function __construct() {
-
 		add_filter( 'give_map_meta_cap', array( $this, 'meta_caps' ), 10, 4 );
 	}
 
 	/**
-	 * Add new shop roles with default WP caps
+	 * Add Roles
 	 *
+	 * Add new shop roles with default WordPress capabilities.
+	 *
+	 * @since  1.0
 	 * @access public
-	 * @since 1.0.0
+	 *
 	 * @return void
 	 */
 	public function add_roles() {
@@ -86,11 +98,15 @@ class Give_Roles {
 	}
 
 	/**
-	 * Add new shop-specific capabilities
+	 * Add Capabilities
 	 *
+	 * Add new shop-specific capabilities.
+	 *
+	 * @since  1.0
 	 * @access public
-	 * @since  1.0.0
+	 *
 	 * @global WP_Roles $wp_roles
+	 *
 	 * @return void
 	 */
 	public function add_caps() {
@@ -133,11 +149,14 @@ class Give_Roles {
 	}
 
 	/**
-	 * Gets the core post type capabilities
+	 * Get Core Capabilities
 	 *
+	 * Retrieve core post type capabilities.
+	 *
+	 * @since  1.0
 	 * @access public
-	 * @since  1.0.0
-	 * @return array $capabilities Core post type capabilities
+	 *
+	 * @return array $capabilities Core post type capabilities.
 	 */
 	public function get_core_caps() {
 		$capabilities = array();
@@ -176,11 +195,14 @@ class Give_Roles {
 	}
 
 	/**
-	 * Map meta caps to primitive caps
+	 * Meta Capabilities
 	 *
-	 * @access public
+	 * Map meta capabilities to primitive capabilities.
+	 *
 	 * @since  1.0
-	 * @return array $caps
+	 * @access public
+	 *
+	 * @return array $caps Meta capabilities.
 	 */
 	public function meta_caps( $caps, $cap, $user_id, $args ) {
 
@@ -209,10 +231,13 @@ class Give_Roles {
 	}
 
 	/**
-	 * Remove core post type capabilities (called on uninstall)
+	 * Remove Capabilities
 	 *
+	 * Remove core post type capabilities (called on uninstall).
+	 *
+	 * @since  1.0
 	 * @access public
-	 * @since 1.0
+	 *
 	 * @return void
 	 */
 	public function remove_caps() {
@@ -257,4 +282,5 @@ class Give_Roles {
 
 		}
 	}
+
 }

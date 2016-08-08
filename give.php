@@ -45,18 +45,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! class_exists( 'Give' ) ) :
+
 	/**
-	 * Main Give Class.
+	 * Main Give Class
 	 *
 	 * @since 1.0
 	 */
 	final class Give {
 		/** Singleton *************************************************************/
 
-
 		/**
-		 * @var Give The one true Give.
-		 * @since 1.0
+		 * Give Instance
+		 *
+		 * @since  1.0
+		 * @access private
+		 *
+		 * @var    Give The one true Give
 		 */
 		private static $instance;
 
@@ -199,6 +203,7 @@ if ( ! class_exists( 'Give' ) ) :
 		 *
 		 * @since  1.0
 		 * @access protected
+		 *
 		 * @return void
 		 */
 		public function __clone() {
@@ -211,6 +216,7 @@ if ( ! class_exists( 'Give' ) ) :
 		 *
 		 * @since  1.0
 		 * @access protected
+		 *
 		 * @return void
 		 */
 		public function __wakeup() {
@@ -219,10 +225,11 @@ if ( ! class_exists( 'Give' ) ) :
 		}
 
 		/**
-		 * Setup plugin constants.
+		 * Setup plugin constants
 		 *
-		 * @access private
 		 * @since  1.0
+		 * @access private
+		 *
 		 * @return void
 		 */
 		private function setup_constants() {
@@ -259,10 +266,11 @@ if ( ! class_exists( 'Give' ) ) :
 		}
 
 		/**
-		 * Include required files.
+		 * Include required files
 		 *
-		 * @access private
 		 * @since  1.0
+		 * @access private
+		 *
 		 * @return void
 		 */
 		private function includes() {
@@ -376,10 +384,11 @@ if ( ! class_exists( 'Give' ) ) :
 		}
 
 		/**
-		 * Loads the plugin language files.
+		 * Loads the plugin language files
 		 *
-		 * @access public
 		 * @since  1.0
+		 * @access public
+		 *
 		 * @return void
 		 */
 		public function load_textdomain() {
@@ -406,14 +415,15 @@ if ( ! class_exists( 'Give' ) ) :
 				load_plugin_textdomain( 'give', false, $give_lang_dir );
 			}
 		}
+
 	}
 
 endif; // End if class_exists check
 
 
 /**
- * Start Give.
- *
+ * Start Give 
+ * 
  * The main function responsible for returning the one true Give instance to functions everywhere.
  *
  * Use this function like you would a global variable, except without needing
@@ -422,7 +432,7 @@ endif; // End if class_exists check
  * Example: <?php $give = Give(); ?>
  *
  * @since 1.0
- * @return object|Give
+ * @return object|Give 
  */
 function Give() {
 	return Give::instance();
