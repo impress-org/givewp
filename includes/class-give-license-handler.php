@@ -25,9 +25,9 @@ if ( ! class_exists( 'Give_License' ) ) :
 		private $item_shortname;
 		private $version;
 		private $author;
-		private $api_url      = 'http://givewp.com/give-sl-api/';
-		private $account_url  = 'http://givewp.com/my-account/';
-		private $checkout_url = 'http://givewp.com/checkout/';
+		private $api_url      = 'http://give-playground.dev/give-sl-api/';
+		private $account_url  = 'http://give-playground.dev/my-account/';
+		private $checkout_url = 'http://give-playground.dev/checkout/';
 
 		/**
 		 * Class constructor
@@ -523,7 +523,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 	        			continue;
 			        }
 
-			        if( ( 'active' !== $subscription['status'] ) && ( 'pending' !== $subscription['status'] ) && ! in_array( $subscription['id'], get_option( '_give_hide_subscription_notices', array() ) ) ) {
+			        if( ( 'active' !== $subscription['status'] ) && ! in_array( $subscription['id'], get_option( '_give_hide_subscription_notices', array() ) ) ) {
 				        $messages[$subscription['id']] = sprintf(
 				        	__( 'You Give addon license will expire in %s for payment <a href="%s" target="_blank">#%d</a>. <a href="%s" target="_blank">Click to renew an existing license</a> or <a href="?_give_hide_subscription_notices=%d">Click here if already renewed</a>.', 'give' ),
 					        human_time_diff( current_time( 'timestamp', 1 ), strtotime( $subscription['expires'] ) ),
@@ -580,7 +580,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @return bool
 		 */
 		public function is_third_party_addon() {
-			return ( false === strpos( $this->api_url, 'givewp.com/' ) );
+			return ( false === strpos( $this->api_url, 'give-playground.dev/' ) );
 		}
 
 		/**
