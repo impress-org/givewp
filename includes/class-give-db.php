@@ -1,6 +1,6 @@
 <?php
 /**
- * Give DB base class
+ * Give DB
  *
  * @package     Give
  * @subpackage  Classes/Give_DB
@@ -9,44 +9,57 @@
  * @since       1.0
  */
 
+// Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
-} // Exit if accessed directly
+}
 
 /**
- * Class Give_DB
+ * Give_DB Class
+ *
+ * This class is for interacting with the database table.
+ *
+ * @since 1.0
  */
 abstract class Give_DB {
 
 	/**
 	 * The name of our database table
 	 *
-	 * @access  public
-	 * @since   1.0
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @var    string
 	 */
 	public $table_name;
 
 	/**
 	 * The version of our database table
 	 *
-	 * @access  public
-	 * @since   1.0
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @var    string
 	 */
 	public $version;
 
 	/**
 	 * The name of the primary column
 	 *
-	 * @access  public
-	 * @since   1.0
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @var    string
 	 */
 	public $primary_key;
 
 	/**
-	 * Get things started
+	 * Class Constructor
 	 *
-	 * @access  public
-	 * @since   1.0
+	 * Set up the Give DB Class.
+	 *
+	 * @since  1.0
+	 * @access public
 	 */
 	public function __construct() {
 	}
@@ -54,9 +67,10 @@ abstract class Give_DB {
 	/**
 	 * Whitelist of columns
 	 *
-	 * @access  public
-	 * @since   1.0
-	 * @return  array
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @return array Columns
 	 */
 	public function get_columns() {
 		return array();
@@ -65,9 +79,10 @@ abstract class Give_DB {
 	/**
 	 * Default column values
 	 *
-	 * @access  public
-	 * @since   1.0
-	 * @return  array
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @return array  Default column values.
 	 */
 	public function get_column_defaults() {
 		return array();
@@ -76,13 +91,12 @@ abstract class Give_DB {
 	/**
 	 * Retrieve a row by the primary key
 	 *
-	 * @access  public
+	 * @since  1.0
+	 * @access public
 	 *
-	 * @since   1.0
+	 * @param  int $row_id Row ID.
 	 *
-	 * @param int $row_id Row ID
-	 *
-	 * @return  object
+	 * @return object
 	 */
 	public function get( $row_id ) {
 		/* @var WPDB $wpdb */
@@ -94,14 +108,13 @@ abstract class Give_DB {
 	/**
 	 * Retrieve a row by a specific column / value
 	 *
-	 * @access  public
-     *
-	 * @since   1.0
+	 * @since  1.0
+	 * @access public
 	 *
-     * @param int $column Column ID
-     * @param int $row_id Row ID
+     * @param  int $column Column ID.
+     * @param  int $row_id Row ID.
      *
-     * @return  object
+     * @return object
 	 */
 	public function get_by( $column, $row_id ) {
         /* @var WPDB $wpdb */
@@ -114,14 +127,13 @@ abstract class Give_DB {
 	/**
 	 * Retrieve a specific column's value by the primary key
 	 *
-	 * @access  public
+	 * @since  1.0
+	 * @access public
      *
-	 * @since   1.0
+     * @param  int $column Column ID.
+     * @param  int $row_id Row ID.
      *
-     * @param int $column Column ID
-     * @param int $row_id Row ID
-     *
-	 * @return  string
+	 * @return string      Column value.
 	 */
 	public function get_column( $column, $row_id ) {
         /* @var WPDB $wpdb */
@@ -134,15 +146,14 @@ abstract class Give_DB {
 	/**
 	 * Retrieve a specific column's value by the the specified column / value
 	 *
-	 * @access  public
+	 * @since  1.0
+	 * @access public
      *
-	 * @since   1.0
+     * @param  int    $column       Column ID.
+     * @param  string $column_where Column name.
+     * @param  string $column_value Column value.
      *
-     * @param int       $column         Column ID
-     * @param string    $column_where   Column name
-     * @param string    $column_value   Column value
-     *
-	 * @return  string
+	 * @return string
 	 */
 	public function get_column_by( $column, $column_where, $column_value ) {
         /* @var WPDB $wpdb */
@@ -156,14 +167,13 @@ abstract class Give_DB {
 	/**
 	 * Insert a new row
 	 *
-	 * @access  public
+	 * @since  1.0
+	 * @access public
      *
-	 * @since   1.0
+     * @param  array  $data
+     * @param  string $type
      *
-     * @param array  $data
-     * @param string $type
-     *
-	 * @return  int
+	 * @return int
 	 */
 	public function insert( $data, $type = '' ) {
         /* @var WPDB $wpdb */
@@ -197,15 +207,14 @@ abstract class Give_DB {
 	/**
 	 * Update a row
 	 *
-	 * @access  public
+	 * @since  1.0
+	 * @access public
      *
-	 * @since   1.0
+     * @param  int    $row_id Column ID
+     * @param  array  $data
+     * @param  string $where  Column value
      *
-     * @param int       $row_id     Column ID
-     * @param array     $data
-     * @param string    $where      Column value
-     *
-	 * @return  bool
+	 * @return bool
 	 */
 	public function update( $row_id, $data = array(), $where = '' ) {
         /* @var WPDB $wpdb */
@@ -245,13 +254,12 @@ abstract class Give_DB {
 	/**
 	 * Delete a row identified by the primary key
 	 *
-	 * @access  public
+	 * @since  1.0
+	 * @access public
      *
-	 * @since   1.0
+     * @param  int $row_id Column ID.
      *
-     * @param int $row_id Column ID
-     *
-	 * @return  bool
+	 * @return bool
 	 */
 	public function delete( $row_id = 0 ) {
         /* @var WPDB $wpdb */
@@ -275,8 +283,11 @@ abstract class Give_DB {
 	 * Check if the given table exists
 	 *
 	 * @since  1.3.2
-	 * @param  string $table The table name
-	 * @return bool          If the table name exists
+	 * @access public
+     *
+	 * @param  string $table The table name.
+     *
+	 * @return bool          If the table name exists.
 	 */
 	public function table_exists( $table ) {
         /* @var WPDB $wpdb */
@@ -291,10 +302,13 @@ abstract class Give_DB {
 	 * Check if the table was ever installed
 	 *
 	 * @since  1.6
-	 * @return bool Returns if the customers table was installed and upgrade routine run
+	 * @access public
+	 *
+	 * @return bool Returns if the customers table was installed and upgrade routine run.
 	 */
 	public function installed() {
 		return $this->table_exists( $this->table_name );
 	}
 
 }
+

@@ -1,11 +1,9 @@
 <?php
 /**
- * Customers DB class.
- *
- * This class is for interacting with the customers' database table.
+ * Customers DB
  *
  * @package     Give
- * @subpackage  Classes/DB Customers
+ * @subpackage  Classes/Give_DB_Customers
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
@@ -19,15 +17,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Give_DB_Customers Class
  *
+ * This class is for interacting with the customers' database table.
+ *
  * @since 1.0
  */
 class Give_DB_Customers extends Give_DB {
 
 	/**
-	 * Get things started
+	 * Class Constructor
 	 *
-	 * @access  public
-	 * @since   1.0
+	 * Set up the Give DB Customer Class.
+	 *
+	 * @since  1.0
+	 * @access public
 	 */
 	public function __construct() {
 		/* @var WPDB $wpdb */
@@ -44,8 +46,10 @@ class Give_DB_Customers extends Give_DB {
 	/**
 	 * Get columns and formats
 	 *
-	 * @access  public
-	 * @since   1.0
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @return array  Columns and formats.
 	 */
 	public function get_columns() {
 		return array(
@@ -64,8 +68,10 @@ class Give_DB_Customers extends Give_DB {
 	/**
 	 * Get default column values
 	 *
-	 * @access  public
-	 * @since   1.0
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @return array  Default column values.
 	 */
 	public function get_column_defaults() {
 		return array(
@@ -83,14 +89,12 @@ class Give_DB_Customers extends Give_DB {
 	/**
 	 * Add a customer
 	 *
-	 * @access  public
+	 * @since  1.0
+	 * @access public
 	 *
-	 * @since   1.0
-	 *
-	 * @param array $data
+	 * @param  array $data
 	 *
 	 * @return int/bool
-	 *
 	 */
 	public function add( $data = array() ) {
 
@@ -149,12 +153,12 @@ class Give_DB_Customers extends Give_DB {
 	 * Delete a customer
 	 *
 	 * NOTE: This should not be called directly as it does not make necessary changes to
-	 * the payment meta and logs. Use give_customer_delete() instead
+	 * the payment meta and logs. Use give_customer_delete() instead.
 	 *
-	 * @access  public
-	 * @since   1.0
+	 * @since  1.0
+	 * @access public
 	 *
-	 * @param bool|string|int $_id_or_email
+	 * @param  bool|string|int $_id_or_email
 	 *
 	 * @return bool|int
 	 */
@@ -182,13 +186,13 @@ class Give_DB_Customers extends Give_DB {
 	/**
 	 * Checks if a customer exists
 	 *
-	 * @access  public
-	 * @since   1.0
+	 * @since  1.0
+	 * @access public
 	 *
-	 * @param string $value
-	 * @param string $field
+	 * @param  string $value The value to search for. Default is empty.
+	 * @param  string $field The Customer ID or email to search in. Default is 'email'.
 	 *
-	 * @return bool
+	 * @return bool          True is exists, false otherwise.
 	 */
 	public function exists( $value = '', $field = 'email' ) {
 		
@@ -204,11 +208,11 @@ class Give_DB_Customers extends Give_DB {
 	/**
 	 * Attaches a payment ID to a customer
 	 *
-	 * @access  public
-	 * @since   1.0
+	 * @since  1.0
+	 * @access public
 	 *
-	 * @param int $customer_id 	Customer ID
-	 * @param int $payment_id 	Payment ID
+	 * @param  int $customer_id Customer ID.
+	 * @param  int $payment_id  Payment ID.
 	 *
 	 * @return bool
 	 */
@@ -228,11 +232,11 @@ class Give_DB_Customers extends Give_DB {
 	/**
 	 * Removes a payment ID from a customer
 	 *
-	 * @access  public
-	 * @since   1.0
+	 * @since  1.0
+	 * @access public
 	 *
-	 * @param int $customer_id 	Customer ID
-	 * @param int $payment_id 	Payment ID
+	 * @param  int $customer_id Customer ID.
+	 * @param  int $payment_id  Payment ID.
 	 *
 	 * @return bool
 	 */
@@ -252,8 +256,10 @@ class Give_DB_Customers extends Give_DB {
 	/**
 	 * Increments customer purchase stats
 	 *
-	 * @param int   $customer_id
-	 * @param float $amount
+	 * @access public
+	 *
+	 * @param int   $customer_id Customer ID.
+	 * @param float $amount      Amoumt.
 	 *
 	 * @return bool
 	 */
@@ -275,11 +281,11 @@ class Give_DB_Customers extends Give_DB {
 	/**
 	 * Decrements customer purchase stats
 	 *
-	 * @access  public
-	 * @since   1.0
+	 * @since  1.0
+	 * @access public
 	 *
-	 * @param int 	$customer_id 	Customer ID
-	 * @param float $amount 		Amount
+	 * @param  int   $customer_id Customer ID.
+	 * @param  float $amount      Amount.
 	 *
 	 * @return bool
 	 */
@@ -301,12 +307,11 @@ class Give_DB_Customers extends Give_DB {
 	/**
 	 * Updates the email address of a customer record when the email on a user is updated
 	 *
-	 * @access  public
+	 * @since  1.4.3
+	 * @access public
 	 * 
-	 * @since   1.4.3
-	 * 
-	 * @param int 		$user_id		User ID
-	 * @param WP_User	$old_user_data 	User data
+	 * @param  int     $user_id       User ID.
+	 * @param  WP_User $old_user_data User data.
 	 *
 	 * @return bool
 	 */
@@ -353,13 +358,13 @@ class Give_DB_Customers extends Give_DB {
 	/**
 	 * Retrieves a single customer from the database
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param  string $field id or email
-	 * @param  mixed  $value The Customer ID or email to search
+	 * @param  string $field ID or email. Default is 'id'.
+	 * @param  mixed  $value The Customer ID or email to search. Default is 0.
 	 *
-	 * @return mixed          Upon success, an object of the customer. Upon failure, NULL
+	 * @return mixed         Upon success, an object of the customer. Upon failure, NULL
 	 */
 	public function get_customer_by( $field = 'id', $value = 0 ) {
 		/* @var WPDB $wpdb */
@@ -420,12 +425,12 @@ class Give_DB_Customers extends Give_DB {
 	/**
 	 * Retrieve customers from the database
 	 *
-	 * @access  public
-	 * @since   1.0
+	 * @since  1.0
+	 * @access public
      *
-     * @param array $args
+     * @param  array $args
      *
-     * @return array|object|null
+     * @return array|object|null Customers array or object. Null if not found.
 	 */
 	public function get_customers( $args = array() ) {
         /* @var WPDB $wpdb */
@@ -551,12 +556,12 @@ class Give_DB_Customers extends Give_DB {
 	/**
 	 * Count the total number of customers in the database
 	 *
-	 * @access  public
-	 * @since   1.0
+	 * @since  1.0
+	 * @access public
      *
-     * @param array $args
+     * @param  array $args
      *
-     * @return int
+     * @return int         Total number of customers.
 	 */
 	public function count( $args = array() ) {
         /* @var WPDB $wpdb */
@@ -601,8 +606,10 @@ class Give_DB_Customers extends Give_DB {
 	/**
 	 * Create the table
 	 *
-	 * @access  public
-	 * @since   1.0
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @return void
 	 */
 	public function create_table() {
 
@@ -632,9 +639,12 @@ class Give_DB_Customers extends Give_DB {
 	 * Check if the Customers table was ever installed
 	 *
 	 * @since  1.4.3
-	 * @return bool Returns if the customers table was installed and upgrade routine run
+	 * @access public
+	 *
+	 * @return bool Returns if the customers table was installed and upgrade routine run.
 	 */
 	public function installed() {
 		return $this->table_exists( $this->table_name );
 	}
+
 }

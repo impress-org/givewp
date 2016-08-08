@@ -65,18 +65,22 @@ if ( ! class_exists( 'Give' ) ) :
 		private static $instance;
 
 		/**
-		 * Give Roles Object.
+		 * Give Roles Object
 		 *
-		 * @var Give_Roles object
-		 * @since 1.0
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_Roles object
 		 */
 		public $roles;
 
 		/**
-		 * Give Settings Object.
+		 * Give Settings Object
 		 *
-		 * @var Give_Plugin_Settings object
-		 * @since 1.0
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_Plugin_Settings object
 		 */
 		public $give_settings;
 
@@ -85,89 +89,109 @@ if ( ! class_exists( 'Give' ) ) :
 		 *
 		 * This holds donation data for user's session.
 		 *
-		 * @var Give_Session object
-		 * @since 1.0
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_Session object
 		 */
 		public $session;
 
 		/**
-		 * Give HTML Element Helper Object.
+		 * Give HTML Element Helper Object
 		 *
-		 * @var Give_HTML_Elements object
-		 * @since 1.0
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_HTML_Elements object
 		 */
 		public $html;
-
 
 		/**
 		 * Give Emails Object
 		 *
-		 * @var Give_Emails object
-		 * @since 1.0
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_Emails object
 		 */
 		public $emails;
 
 		/**
-		 * Give Email Template Tags Object.
+		 * Give Email Template Tags Object
 		 *
-		 * @var Give_Email_Template_Tags object
-		 * @since 1.0
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_Email_Template_Tags object
 		 */
 		public $email_tags;
 
 		/**
-		 * Give Customers DB Object.
+		 * Give Customers DB Object
 		 *
-		 * @var object|Give_DB_Customers object
-		 * @since 1.0
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_DB_Customers object
 		 */
 		public $customers;
 
 		/**
-		 * Give Customer meta DB Object.
+		 * Give Customer meta DB Object
 		 *
-		 * @var object|Give_DB_Customer_Meta
-		 * @since 1.6
+		 * @since  1.6
+		 * @access public
+		 *
+		 * @var    Give_DB_Customer_Meta object
 		 */
 		public $customer_meta;
 
 		/**
-		 * Give API Object.
+		 * Give API Object
 		 *
-		 * @var Give_API object
-		 * @since 1.1
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_API object
 		 */
 		public $api;
 
 		/**
-		 * Give Template Loader Object.
+		 * Give Template Loader Object
 		 *
-		 * @var Give_Template_Loader object
-		 * @since 1.0
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_Template_Loader object
 		 */
 		public $template_loader;
 
 		/**
 		 * Give No Login Object
 		 *
-		 * @var Give_Email_Access object
-		 * @since 1.0
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_Email_Access object
 		 */
 		public $email_access;
 
 		/**
-		 * Main Give Instance.
+		 * Main Give Instance
 		 *
 		 * Insures that only one instance of Give exists in memory at any one
 		 * time. Also prevents needing to define globals all over the place.
 		 *
 		 * @since     1.0
+		 * @access    public
+		 *
 		 * @static
 		 * @staticvar array $instance
 		 * @uses      Give::setup_constants() Setup the constants needed.
 		 * @uses      Give::includes() Include the required files.
 		 * @uses      Give::load_textdomain() load the language files.
 		 * @see       Give()
+		 *
 		 * @return    Give
 		 */
 		public static function instance() {
