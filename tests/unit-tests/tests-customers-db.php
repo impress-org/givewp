@@ -11,7 +11,7 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 	protected $_customer_id = null;
 
 	/**
-	 * Set it Up
+	 * Set it Up.
 	 */
 	public function setUp() {
 		parent::setUp();
@@ -103,12 +103,15 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Tear Down
+	 * Tear Down.
 	 */
 	public function tearDown() {
 		parent::tearDown();
 	}
 
+	/**
+	 * Test get customer columns.
+	 */
 	public function test_get_customer_columns() {
 		$columns = array(
 			'id'             => '%d',
@@ -126,7 +129,7 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Test Get By
+	 * Test Get By.
 	 */
 	public function test_get_by() {
 
@@ -138,7 +141,7 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Test Get Column By
+	 * Test Get Column By.
 	 */
 	public function test_get_column_by() {
 
@@ -149,7 +152,7 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Test Exists Method
+	 * Test Exists Method.
 	 */
 	public function test_exists() {
 
@@ -158,7 +161,7 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Test Legacy Attach Payment
+	 * Test Legacy Attach Payment.
 	 */
 	public function test_legacy_attach_payment() {
 
@@ -173,7 +176,7 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Test Legacy Remove Payment
+	 * Test Legacy Remove Payment.
 	 */
 	public function test_legacy_remove_payment() {
 
@@ -193,7 +196,7 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Test Legacy Increment Stats
+	 * Test Legacy Increment Stats.
 	 */
 	public function test_legacy_increment_stats() {
 
@@ -211,7 +214,7 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Test Legacy Decrement Stats
+	 * Test Legacy Decrement Stats.
 	 */
 	public function test_legacy_decrement_stats() {
 
@@ -229,7 +232,7 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Test Get Customers
+	 * Test Get Customers.
 	 */
 	public function test_get_customers() {
 
@@ -240,7 +243,7 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Test Count Customers
+	 * Test Count Customers.
 	 */
 	public function test_count_customers() {
 

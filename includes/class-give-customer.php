@@ -399,17 +399,17 @@ class Give_Customer {
 	}
 
 	/**
-	 * Increase the purchase count of a customer
+	 * Increase the purchase count of a customer.
 	 *
 	 * @since  1.0
 	 *
-	 * @param  integer $count The number to increment by
+	 * @param  integer $count The number to increment by.
 	 *
-	 * @return int            The purchase count
+	 * @return int            The purchase count.
 	 */
 	public function increase_purchase_count( $count = 1 ) {
 
-		// Make sure it's numeric and not negative
+		// Make sure it's numeric and not negative.
 		if ( ! is_numeric( $count ) || $count != absint( $count ) ) {
 			return false;
 		}
@@ -428,13 +428,13 @@ class Give_Customer {
 	}
 
 	/**
-	 * Decrease the customer purchase count
+	 * Decrease the customer purchase count.
 	 *
 	 * @since  1.0
 	 *
-	 * @param  integer $count The amount to decrease by
+	 * @param  integer $count The amount to decrease by.
 	 *
-	 * @return mixed          If successful, the new count, otherwise false
+	 * @return mixed          If successful, the new count, otherwise false.
 	 */
 	public function decrease_purchase_count( $count = 1 ) {
 
@@ -461,13 +461,13 @@ class Give_Customer {
 	}
 
 	/**
-	 * Increase the customer's lifetime value
+	 * Increase the customer's lifetime value.
 	 *
 	 * @since  1.0
 	 *
-	 * @param  float $value The value to increase by
+	 * @param  float $value The value to increase by.
 	 *
-	 * @return mixed         If successful, the new value, otherwise false
+	 * @return mixed         If successful, the new value, otherwise false.
 	 */
 	public function increase_value( $value = 0.00 ) {
 
@@ -485,13 +485,13 @@ class Give_Customer {
 	}
 
 	/**
-	 * Decrease a customer's lifetime value
+	 * Decrease a customer's lifetime value.
 	 *
 	 * @since  1.0
 	 *
-	 * @param  float $value The value to decrease by
+	 * @param  float $value The value to decrease by.
 	 *
-	 * @return mixed         If successful, the new value, otherwise false
+	 * @return mixed         If successful, the new value, otherwise false.
 	 */
 	public function decrease_value( $value = 0.00 ) {
 
@@ -513,7 +513,7 @@ class Give_Customer {
 	}
 
 	/**
-	 * Decrease/Increase a customer's lifetime value
+	 * Decrease/Increase a customer's lifetime value.
      *
      * This function will update donation stat on basis of current amount and new amount donation difference.
      * Difference value can positive or negative. Negative value will decrease user donation stat while positive value increase donation stat.
@@ -522,10 +522,10 @@ class Give_Customer {
      * @access public
 	 * @since  1.0
 	 *
-	 * @param  float $curr_amount Current Donation amount
-	 * @param  float $new_amount  New ( changed ) Donation amount
+	 * @param  float $curr_amount Current Donation amount.
+	 * @param  float $new_amount  New ( changed ) Donation amount.
 	 *
-	 * @return mixed              If successful, the new donation stat value, otherwise false
+	 * @return mixed              If successful, the new donation stat value, otherwise false.
 	 */
 	public function update_donation_value( $curr_amount, $new_amount ) {
         /**
@@ -553,14 +553,14 @@ class Give_Customer {
 	}
 
 	/**
-	 * Get the parsed notes for a customer as an array
+	 * Get the parsed notes for a customer as an array.
 	 *
 	 * @since  1.0
 	 *
-	 * @param  integer $length The number of notes to get
-	 * @param  integer $paged  What note to start at
+	 * @param  integer $length The number of notes to get.
+	 * @param  integer $paged  What note to start at.
 	 *
-	 * @return array           The notes requsted
+	 * @return array           The notes requested.
 	 */
 	public function get_notes( $length = 20, $paged = 1 ) {
 
@@ -577,10 +577,10 @@ class Give_Customer {
 	}
 
 	/**
-	 * Get the total number of notes we have after parsing
+	 * Get the total number of notes we have after parsing.
 	 *
 	 * @since  1.0
-	 * @return int The number of notes for the customer
+	 * @return int The number of notes for the customer.
 	 */
 	public function get_notes_count() {
 
@@ -592,13 +592,13 @@ class Give_Customer {
 	}
 
 	/**
-	 * Add a note for the customer
+	 * Add a note for the customer.
 	 *
 	 * @since  1.0
 	 *
-	 * @param string $note The note to add
+	 * @param string $note The note to add.
 	 *
-	 * @return string|boolean The new note if added succesfully, false otherwise
+	 * @return string|boolean The new note if added successfully, false otherwise.
 	 */
 	public function add_note( $note = '' ) {
 
@@ -644,6 +644,64 @@ class Give_Customer {
 
 		return $all_notes;
 
+	}
+
+	/**
+	 * Retrieve customer meta field for a customer.
+	 *
+	 * @param   string $meta_key      The meta key to retrieve.
+	 * @param   bool   $single        Whether to return a single value.
+	 * @return  mixed                 Will be an array if $single is false. Will be value of meta data field if $single is true.
+	 *
+	 * @access  public
+	 * @since   1.6
+	 */
+	public function get_meta( $meta_key = '', $single = true ) {
+		return Give()->customer_meta->get_meta( $this->id, $meta_key, $single );
+	}
+
+	/**
+	 * Add meta data field to a customer.
+	 *
+	 * @param   string $meta_key      Metadata name.
+	 * @param   mixed  $meta_value    Metadata value.
+	 * @param   bool   $unique        Optional, default is false. Whether the same key should not be added.
+	 * @return  bool                  False for failure. True for success.
+	 *
+	 * @access  public
+	 * @since   1.6
+	 */
+	public function add_meta( $meta_key = '', $meta_value, $unique = false ) {
+		return Give()->customer_meta->add_meta( $this->id, $meta_key, $meta_value, $unique );
+	}
+
+	/**
+	 * Update customer meta field based on customer ID.
+	 *
+	 * @param   string $meta_key      Metadata key.
+	 * @param   mixed  $meta_value    Metadata value.
+	 * @param   mixed  $prev_value    Optional. Previous value to check before removing.
+	 * @return  bool                  False on failure, true if success.
+	 *
+	 * @access  public
+	 * @since   1.6
+	 */
+	public function update_meta( $meta_key = '', $meta_value, $prev_value = '' ) {
+		return Give()->customer_meta->update_meta( $this->id, $meta_key, $meta_value, $prev_value );
+	}
+
+	/**
+	 * Remove metadata matching criteria from a customer.
+	 *
+	 * @param   string $meta_key      Metadata name.
+	 * @param   mixed  $meta_value    Optional. Metadata value.
+	 * @return  bool                  False for failure. True for success.
+	 *
+	 * @access  public
+	 * @since   1.6
+	 */
+	public function delete_meta( $meta_key = '', $meta_value = '' ) {
+		return Give()->customer_meta->delete_meta( $this->id, $meta_key, $meta_value );
 	}
 
 	/**

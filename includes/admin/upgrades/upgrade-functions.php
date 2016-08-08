@@ -17,6 +17,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+
+/**
+ * Perform automatic database upgrades when necessary
+ *
+ * @since 1.6
+ * @return void
+ */
+function give_do_automatic_upgrades() {
+	$did_upgrade  = false;
+	$give_version = preg_replace( '/[^0-9.].*/', '', get_option( 'give_version' ) );
+	if ( version_compare( $give_version, GIVE_VERSION, '<' ) ) {
+		give_v16_upgrades();
+		$did_upgrade = true;
+	}
+	if ( $did_upgrade ) {
+		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
+	}
+}
+
+add_action( 'admin_init', 'give_do_automatic_upgrades' );
+
 /**
  * Display Upgrade Notices
  *
@@ -49,7 +70,7 @@ function give_show_upgrade_notices() {
 	//v1.3.2 Upgrades
 	if ( version_compare( $give_version, '1.3.2', '<' ) || ! give_has_upgrade_completed( 'upgrade_give_payment_customer_id' ) ) {
 		printf(
-			/* translators: %s: upgrade URL */
+		/* translators: %s: upgrade URL */
 			'<div class="updated"><p>' . __( 'Give needs to upgrade the donor database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
 			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_give_payment_customer_id' ) )
 		);
@@ -58,7 +79,7 @@ function give_show_upgrade_notices() {
 	//v1.3.4 Upgrades //ensure the user has gone through 1.3.4
 	if ( version_compare( $give_version, '1.3.4', '<' ) || ( ! give_has_upgrade_completed( 'upgrade_give_offline_status' ) && give_has_upgrade_completed( 'upgrade_give_payment_customer_id' ) ) ) {
 		printf(
-			/* translators: %s: upgrade URL */
+		/* translators: %s: upgrade URL */
 			'<div class="updated"><p>' . __( 'Give needs to upgrade the transaction database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
 			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_give_offline_status' ) )
 		);
@@ -166,7 +187,6 @@ function give_get_completed_upgrades() {
 
 }
 
-
 /**
  * Upgrades the
  *
@@ -261,7 +281,6 @@ function give_v134_upgrade_give_offline_status() {
 
 add_action( 'give_upgrade_give_offline_status', 'give_v134_upgrade_give_offline_status' );
 
-
 /**
  * Cleanup User Roles
  *
@@ -349,3 +368,14 @@ function give_v152_cleanup_users() {
 }
 
 add_action( 'admin_init', 'give_v152_cleanup_users' );
+
+/**
+ * 1.6 Upgrade routine to create the customer meta table.
+ *
+ * @since  1.6
+ * @return void
+ */
+function give_v16_upgrades() {
+	@Give()->customers->create_table();
+	@Give()->customer_meta->create_table();
+}

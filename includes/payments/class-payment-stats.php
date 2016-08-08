@@ -27,7 +27,7 @@ class Give_Payment_Stats extends Give_Stats {
 
 
 	/**
-	 * Retrieve sale stats
+	 * Retrieve sale stats.
 	 *
 	 * @access public
 	 * @since  1.0

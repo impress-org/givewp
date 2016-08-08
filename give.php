@@ -5,7 +5,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: WordImpress
  * Author URI: https://wordimpress.com
- * Version: 1.5.2
+ * Version: 1.6
  * Text Domain: give
  * Domain Path: /languages
  * GitHub Plugin URI: https://github.com/WordImpress/Give
@@ -46,7 +46,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if ( ! class_exists( 'Give' ) ) :
 	/**
-	 * Main Give Class
+	 * Main Give Class.
 	 *
 	 * @since 1.0
 	 */
@@ -55,13 +55,13 @@ if ( ! class_exists( 'Give' ) ) :
 
 
 		/**
-		 * @var Give The one true Give
+		 * @var Give The one true Give.
 		 * @since 1.0
 		 */
 		private static $instance;
 
 		/**
-		 * Give Roles Object
+		 * Give Roles Object.
 		 *
 		 * @var Give_Roles object
 		 * @since 1.0
@@ -69,7 +69,7 @@ if ( ! class_exists( 'Give' ) ) :
 		public $roles;
 
 		/**
-		 * Give Settings Object
+		 * Give Settings Object.
 		 *
 		 * @var Give_Plugin_Settings object
 		 * @since 1.0
@@ -79,7 +79,7 @@ if ( ! class_exists( 'Give' ) ) :
 		/**
 		 * Give Session Object
 		 *
-		 * This holds donation data for user's session
+		 * This holds donation data for user's session.
 		 *
 		 * @var Give_Session object
 		 * @since 1.0
@@ -87,7 +87,7 @@ if ( ! class_exists( 'Give' ) ) :
 		public $session;
 
 		/**
-		 * Give HTML Element Helper Object
+		 * Give HTML Element Helper Object.
 		 *
 		 * @var Give_HTML_Elements object
 		 * @since 1.0
@@ -104,7 +104,7 @@ if ( ! class_exists( 'Give' ) ) :
 		public $emails;
 
 		/**
-		 * Give Email Template Tags Object
+		 * Give Email Template Tags Object.
 		 *
 		 * @var Give_Email_Template_Tags object
 		 * @since 1.0
@@ -112,7 +112,7 @@ if ( ! class_exists( 'Give' ) ) :
 		public $email_tags;
 
 		/**
-		 * Give Customers DB Object
+		 * Give Customers DB Object.
 		 *
 		 * @var object|Give_DB_Customers object
 		 * @since 1.0
@@ -120,7 +120,15 @@ if ( ! class_exists( 'Give' ) ) :
 		public $customers;
 
 		/**
-		 * Give API Object
+		 * Give Customer meta DB Object.
+		 *
+		 * @var object|Give_DB_Customer_Meta
+		 * @since 1.6
+		 */
+		public $customer_meta;
+
+		/**
+		 * Give API Object.
 		 *
 		 * @var Give_API object
 		 * @since 1.1
@@ -128,7 +136,7 @@ if ( ! class_exists( 'Give' ) ) :
 		public $api;
 
 		/**
-		 * Give Template Loader Object
+		 * Give Template Loader Object.
 		 *
 		 * @var Give_Template_Loader object
 		 * @since 1.0
@@ -144,7 +152,7 @@ if ( ! class_exists( 'Give' ) ) :
 		public $email_access;
 
 		/**
-		 * Main Give Instance
+		 * Main Give Instance.
 		 *
 		 * Insures that only one instance of Give exists in memory at any one
 		 * time. Also prevents needing to define globals all over the place.
@@ -152,9 +160,9 @@ if ( ! class_exists( 'Give' ) ) :
 		 * @since     1.0
 		 * @static
 		 * @staticvar array $instance
-		 * @uses      Give::setup_constants() Setup the constants needed
-		 * @uses      Give::includes() Include the required files
-		 * @uses      Give::load_textdomain() load the language files
+		 * @uses      Give::setup_constants() Setup the constants needed.
+		 * @uses      Give::includes() Include the required files.
+		 * @uses      Give::load_textdomain() load the language files.
 		 * @see       Give()
 		 * @return    Give
 		 */
@@ -174,6 +182,7 @@ if ( ! class_exists( 'Give' ) ) :
 				self::$instance->emails          = new Give_Emails();
 				self::$instance->email_tags      = new Give_Email_Template_Tags();
 				self::$instance->customers       = new Give_DB_Customers();
+				self::$instance->customer_meta   = new Give_DB_Customer_Meta();
 				self::$instance->template_loader = new Give_Template_Loader();
 				self::$instance->email_access    = new Give_Email_Access();
 
@@ -205,12 +214,12 @@ if ( ! class_exists( 'Give' ) ) :
 		 * @return void
 		 */
 		public function __wakeup() {
-			// Unserializing instances of the class is forbidden
+			// Unserializing instances of the class is forbidden.
 			_doing_it_wrong( __FUNCTION__, esc_html__( 'Cheatin&#8217; huh?', 'give' ), '1.0' );
 		}
 
 		/**
-		 * Setup plugin constants
+		 * Setup plugin constants.
 		 *
 		 * @access private
 		 * @since  1.0
@@ -220,7 +229,7 @@ if ( ! class_exists( 'Give' ) ) :
 
 			// Plugin version
 			if ( ! defined( 'GIVE_VERSION' ) ) {
-				define( 'GIVE_VERSION', '1.5.2' );
+				define( 'GIVE_VERSION', '1.6' );
 			}
 
 			// Plugin Folder Path
@@ -250,7 +259,7 @@ if ( ! class_exists( 'Give' ) ) :
 		}
 
 		/**
-		 * Include required files
+		 * Include required files.
 		 *
 		 * @access private
 		 * @since  1.0
@@ -273,6 +282,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donate-form.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-customers.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-customer-meta.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-customer.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-stats.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-session.php';
@@ -366,7 +376,7 @@ if ( ! class_exists( 'Give' ) ) :
 		}
 
 		/**
-		 * Loads the plugin language files
+		 * Loads the plugin language files.
 		 *
 		 * @access public
 		 * @since  1.0
@@ -402,8 +412,8 @@ endif; // End if class_exists check
 
 
 /**
- * Start Give 
- * 
+ * Start Give.
+ *
  * The main function responsible for returning the one true Give instance to functions everywhere.
  *
  * Use this function like you would a global variable, except without needing
@@ -412,7 +422,7 @@ endif; // End if class_exists check
  * Example: <?php $give = Give(); ?>
  *
  * @since 1.0
- * @return object|Give 
+ * @return object|Give
  */
 function Give() {
 	return Give::instance();
