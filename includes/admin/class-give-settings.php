@@ -1200,10 +1200,10 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
     if( $is_license_key ) {
         if( $is_in_subscription ) {
             $subscription_expires = strtotime( $subscriptions[$is_in_subscription]['expires'] );
-            $subscription_status  = 'renew';
+            $subscription_status  = __( 'renew', 'give' );
 
             if( ( 'active' !== $subscriptions[$is_in_subscription]['status'] ) ){
-                $subscription_status = 'expire';
+                $subscription_status = __( 'expire', 'give' );
             }
 
             if( $subscription_expires < current_time( 'timestamp', 1 ) ) {
