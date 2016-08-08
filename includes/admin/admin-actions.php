@@ -32,3 +32,22 @@ function give_process_actions() {
 }
 
 add_action( 'admin_init', 'give_process_actions' );
+
+
+/**
+ * Hide subscription notice if admin click on "Click here if already renewed" in subscription notice.
+ *
+ * @since 1.6
+ * @return void
+ */
+function give_hide_subscription_notices() {
+    if ( ! empty( $_GET['_give_hide_subscription_notices'] ) ) {
+        $data = get_option( '_give_hide_subscription_notices', array() );
+        $data[] = absint( $_GET['_give_hide_subscription_notices'] );
+
+        // Store subscription ids.
+        update_option( '_give_hide_subscription_notices', $data );
+    }
+}
+
+add_action( 'admin_init', 'give_hide_subscription_notices' );
