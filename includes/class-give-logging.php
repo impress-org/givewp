@@ -306,7 +306,7 @@ class Give_Logging {
 	 * @param  int    $object_id  Log object ID. Default is 0.
 	 * @param  string $type       Log type. Default is null.
 	 * @param  array  $meta_query Log meta query. Default is null.
-	 * @param  array  $date_query Log data query. Default is null. (Since 1.9)
+	 * @param  array  $date_query Log data query. Default is null.
 	 *
 	 * @return int                Log count.
 	 */

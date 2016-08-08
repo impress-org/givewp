@@ -78,7 +78,7 @@ class Give_Stats {
 	 *
 	 * Retrieve the predefined date periods permitted.
 	 *
-	 * @since  1.8
+	 * @since  1.0
 	 * @access public
 	 *
 	 * @return array  Predefined dates.
