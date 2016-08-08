@@ -1201,7 +1201,8 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
         if( $is_in_subscription ) {
             $subscription_expires = strtotime( $subscriptions[$is_in_subscription]['expires'] );
             $subscription_status  = 'renew';
-            if( ( 'active' !== $subscriptions[$is_in_subscription]['expires'] ) && ( 'pending' !== $subscriptions[$is_in_subscription]['expires'] ) ){
+
+            if( ( 'active' !== $subscriptions[$is_in_subscription]['status'] ) ){
                 $subscription_status = 'expire';
             }
 
