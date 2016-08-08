@@ -380,14 +380,13 @@ function give_upgrade_addon_license_data(){
     $api_url = 'https://givewp.com/give-sl-api/';
 
     // Get addons license key.
-    $addons = array_filter(
-        $give_options,
-        function( $key ){
-            return ( false !== strpos( $key, '_license_key' ) ? true : false );
-        },
-        ARRAY_FILTER_USE_KEY
-    );
-    
+    $addons = array();
+    foreach ( $give_options as $key => $value ) {
+        if( false !== strpos( $key, '_license_key' ) ) {
+            $addons[$key] = $value;
+        }
+    }
+
     // Bailout: We do not have any addon license data to upgrade.
     if( empty( $addons ) ) {
         return false;
