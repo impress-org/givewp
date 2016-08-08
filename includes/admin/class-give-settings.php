@@ -1164,23 +1164,23 @@ function give_get_featured_image_sizes() {
 function give_license_key_callback( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
     /* @var CMB2_Types $field_type_object*/
 
-    $id                 = $field_type_object->field->args['id'];
-	$field_description  = $field_type_object->field->args['desc'];
-	$license            = $field_type_object->field->args['options']['license'];
-    $license_key        = $escaped_value;
-    $is_license_key     = apply_filters( 'give_is_license_key', ( is_object( $license ) && ! empty( $license ) ) );
-    $is_valid_license   = apply_filters( 'give_is_valid_license', ( $is_license_key && 'valid' === $license->license ) );
-    $shortname          = $field_type_object->field->args['options']['shortname'];
-	$field_classes      = 'regular-text give-license-field';
-	$type               = empty( $escaped_value ) || ! $is_valid_license ? 'text' : 'password';
-    $custom_html        = '';
-    $value              = $escaped_value;
-    $messages           = array();
-    $class              = '';
-    $account_page_link  = $field_type_object->field->args['options']['account_url'];
-    $checkout_page_link = $field_type_object->field->args['options']['checkout_url'];
-    $addon_name         = $field_type_object->field->args['options']['item_name'];
-    $license_status     = null;
+    $id                   = $field_type_object->field->args['id'];
+	$field_description    = $field_type_object->field->args['desc'];
+	$license              = $field_type_object->field->args['options']['license'];
+    $license_key          = $escaped_value;
+    $is_license_key       = apply_filters( 'give_is_license_key', ( is_object( $license ) && ! empty( $license ) ) );
+    $is_valid_license     = apply_filters( 'give_is_valid_license', ( $is_license_key && 'valid' === $license->license ) );
+    $shortname            = $field_type_object->field->args['options']['shortname'];
+	$field_classes        = 'regular-text give-license-field';
+	$type                 = empty( $escaped_value ) || ! $is_valid_license ? 'text' : 'password';
+    $custom_html          = '';
+    $value                = $escaped_value;
+    $messages             = array();
+    $class                = '';
+    $account_page_link    = $field_type_object->field->args['options']['account_url'];
+    $checkout_page_link   = $field_type_object->field->args['options']['checkout_url'];
+    $addon_name           = $field_type_object->field->args['options']['item_name'];
+    $license_status       = null;
     $is_in_subscription   = null;
 
 
