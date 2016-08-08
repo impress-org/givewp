@@ -591,8 +591,10 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			        if( ( 'active' !== $subscription['status'] ) && ( 'pending' !== $subscription['status'] ) && ! in_array( $subscription['id'], get_option( '_give_hide_subscription_notices', array() ) ) ) {
 				        $messages[$subscription['id']] = sprintf(
-				        	__( 'You Give addon license will expire in %s. <a href="%s" target="_blank">Click to renew an existing license</a> or <a href="?_give_hide_subscription_notices=%d">Click here if already renewed</a>.', 'give' ),
+				        	__( 'You Give addon license will expire in %s for payment <a href="%s" target="_blank">#%d</a>. <a href="%s" target="_blank">Click to renew an existing license</a> or <a href="?_give_hide_subscription_notices=%d">Click here if already renewed</a>.', 'give' ),
 					        human_time_diff( current_time( 'timestamp', 1 ), strtotime( $subscription['expires'] ) ),
+                            urldecode( $subscription['invoice_url'] ),
+                            $subscription['payment_id'],
 					        "{$this->checkout_url}?edd_license_key={$subscription['license_key']}&utm_campaign=admin&utm_source=licenses&utm_medium=expired",
                             $subscription['id']
 				        );
