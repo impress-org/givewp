@@ -575,7 +575,7 @@ function give_email_tag_receipt_link( $payment_id ) {
 	$receipt_url = esc_url( add_query_arg( array(
 		'payment_key' => give_get_payment_key( $payment_id ),
 		'give_action' => 'view_receipt'
-	), home_url() ) );
+	), home_url('/') ) );
 	$formatted   = sprintf(
 		'<a href="%1$s">%2$s</a>',
 		$receipt_url,

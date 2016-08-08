@@ -238,6 +238,7 @@ function give_offline_send_admin_notice( $payment_id = 0 ) {
 	) . "\n\n";
 
 	$admin_message = apply_filters( 'give_offline_admin_donation_notification', $admin_message, $payment_id );
+	$admin_message = give_do_email_tags($admin_message, $payment_id);
 	$attachments   = apply_filters( 'give_offline_admin_donation_notification_attachments', array(), $payment_id );
 	$admin_headers = apply_filters( 'give_offline_admin_donation_notification_headers', array(), $payment_id );
 
