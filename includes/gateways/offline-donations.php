@@ -228,8 +228,8 @@ function give_offline_send_admin_notice( $payment_id = 0 ) {
 	$admin_message .= esc_attr__( 'Hooray! The donation is in a pending status and is awaiting payment. Donation instructions have been emailed to the donor. Once you receive payment, be sure to mark the donation as complete using the link below.', 'give' ) . "\n\n";
 
 
-	$admin_message .= '<strong>' . esc_attr__( 'Donor: ', 'give' ) . '</strong>' . html_entity_decode( $name, ENT_COMPAT, 'UTF-8' ) . "\n";
-	$admin_message .= '<strong>' . esc_attr__( 'Amount: ', 'give' ) . '</strong>' . html_entity_decode( $amount, ENT_COMPAT, 'UTF-8' ) . "\n\n";
+	$admin_message .= '<strong>' . esc_attr__( 'Donor: ', 'give' ) . '</strong>' . '{fullname}' . "\n";
+	$admin_message .= '<strong>' . esc_attr__( 'Amount: ', 'give' ) . '</strong>' . '{price}' . "\n\n";
 
 	$admin_message .= sprintf(
 		'<a href="%1$s">%2$s</a>',
@@ -238,6 +238,8 @@ function give_offline_send_admin_notice( $payment_id = 0 ) {
 	) . "\n\n";
 
 	$admin_message = apply_filters( 'give_offline_admin_donation_notification', $admin_message, $payment_id );
+	$admin_message = give_do_email_tags( $admin_message, $payment_id );
+
 	$attachments   = apply_filters( 'give_offline_admin_donation_notification_attachments', array(), $payment_id );
 	$admin_headers = apply_filters( 'give_offline_admin_donation_notification_headers', array(), $payment_id );
 
