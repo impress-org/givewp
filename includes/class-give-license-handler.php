@@ -606,10 +606,10 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 
 	        // Show non subscription addon messages.
-            if( ! in_array( $this->license, $addon_license_key_in_subscriptions )&& ! $this->is_valid_license() && empty( $showed_invalid_message ) ) {
+            if( ! in_array( $this->license, $addon_license_key_in_subscriptions ) && ! $this->is_valid_license() && empty( $showed_invalid_message ) ) {
 
                 if( empty( $_GET['tab'] ) || 'licenses' !== $_GET['tab'] ) {
-                    $messages[] = sprintf(
+                    $messages['general'] = sprintf(
                         __( 'You have invalid or expired license keys for Give Addon. Please go to the <a href="%s">Licenses page</a> to correct this issue.', 'give' ),
                         admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' )
                     );
@@ -620,8 +620,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			// Print messages.
             if( ! empty( $messages ) ) {
-                foreach( $messages as $message ) {
-                    echo '<div class="notice notice-error is-dismissible give-license-notice">';
+                foreach( $messages as $id => $message ) {
+                    echo '<div class="notice notice-error is-dismissible give-license-notice" data-notice-id="' . $id . '">';
                     echo '<p>' . $message . '</p>';
                     echo '</div>';
                 }
