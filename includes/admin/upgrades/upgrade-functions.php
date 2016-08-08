@@ -407,19 +407,20 @@ function give_upgrade_addon_license_data(){
         }
 
         // Get addon name.
-        $addon_name = array_map(
-            function( $name_part ){
-                // Fix addon name
-                switch ( $name_part ) {
-                    case 'authorizenet' :
-                        $name_part = 'authorize.net';
-                        break;
-                }
+        $addon_name = array();
+        $addon_name_parts = explode( '_', str_replace( 'give_', '', $shortname ) );
+        foreach ( $addon_name_parts as $name_part ) {
 
-                return ucfirst( $name_part );
-            },
-            explode( '_', str_replace( 'give_', '', $shortname ) )
-        );
+            // Fix addon name
+            switch ( $name_part ) {
+                case 'authorizenet' :
+                    $name_part = 'authorize.net';
+                    break;
+            }
+
+            $addon_name[] = ucfirst( $name_part );
+        }
+
         $addon_name = implode( ' ', $addon_name );
 
         // Data to send to the API
