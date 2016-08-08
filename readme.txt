@@ -165,6 +165,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 == Changelog ==
 
 = 1.6:  =
+* New: Added email tag support to Offline Donation Admin Notification - https://github.com/WordImpress/Give/issues/846
 * New: Added a "Reset Password" option to the donation form if the user is prompted to login - https://github.com/WordImpress/Give/issues/723
 * New: Switch a transaction to a different form - https://github.com/WordImpress/Give/issues/429
 * New: Setting to adjust the number of decimal spaces - https://github.com/WordImpress/Give/issues/738
