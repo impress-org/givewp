@@ -25,9 +25,9 @@ if ( ! class_exists( 'Give_License' ) ) :
 		private $item_shortname;
 		private $version;
 		private $author;
-		private $api_url      = 'http://give-playground.dev/give-sl-api/';
-		private $account_url  = 'http://give-playground.dev/my-account/';
-		private $checkout_url = 'http://give-playground.dev/checkout/';
+		private $api_url      = 'http://givewp.com/give-sl-api/';
+		private $account_url  = 'http://givewp.com/my-account/';
+		private $checkout_url = 'http://givewp.com/checkout/';
 
 		/**
 		 * Class constructor
@@ -580,7 +580,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @return bool
 		 */
 		public function is_third_party_addon() {
-			return ( false === strpos( $this->api_url, 'give-playground.dev/' ) );
+			return ( false === strpos( $this->api_url, 'givewp.com/' ) );
 		}
 
 		/**
