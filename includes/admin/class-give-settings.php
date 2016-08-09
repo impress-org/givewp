@@ -1239,7 +1239,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 /**
  * Display the API Keys
  *
- * @since       2.0
+ * @since       1.0
  * @return      void
  */
 function give_api_callback() {
@@ -1251,7 +1251,7 @@ function give_api_callback() {
 	/**
 	 * Fires before displaying API keys.
 	 *
-	 * @since ?
+	 * @since 1.0
 	 */
 	do_action( 'give_tools_api_keys_before' );
 
@@ -1274,7 +1274,7 @@ function give_api_callback() {
 	/**
 	 * Fires after displaying API keys.
 	 *
-	 * @since ?
+	 * @since 1.0
 	 */
 	do_action( 'give_tools_api_keys_after' );
 }
