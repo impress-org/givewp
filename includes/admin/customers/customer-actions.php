@@ -405,6 +405,8 @@ function give_disconnect_customer_user_id( $args ) {
 		return false;
 	}
 
+	$user_id = $customer->user_id;
+
 	/**
 	 * Fires before disconnecting user ID from a donor.
 	 *
@@ -413,7 +415,7 @@ function give_disconnect_customer_user_id( $args ) {
 	 * @param int $customer_id The ID of the customer.
 	 * @param int $user_id     The ID of the user.
 	 */
-	do_action( 'give_pre_customer_disconnect_user_id', $customer_id, $customer->user_id );
+	do_action( 'give_pre_customer_disconnect_user_id', $customer_id, $user_id );
 
 	$customer_args = array( 'user_id' => 0 );
 
