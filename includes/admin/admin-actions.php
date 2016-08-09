@@ -42,11 +42,22 @@ add_action( 'admin_init', 'give_process_actions' );
  */
 function give_hide_subscription_notices() {
     if ( ! empty( $_GET['_give_hide_subscription_notices'] ) ) {
-        $data = get_option( '_give_hide_subscription_notices', array() );
-        $data[] = absint( $_GET['_give_hide_subscription_notices'] );
+        global $current_user;
+
+        // check previously disabled notice ids.
+        $already_dismiss_notices = ( $already_dismiss_notices = get_user_meta( $current_user->ID, '_give_hide_subscription_notices', true ) )
+            ? $already_dismiss_notices
+            : array();
+
+        // Get notice id.
+        $notice_id = absint( $_GET['_give_hide_subscription_notices'] );
+
+        if( ! in_array( $notice_id, $already_dismiss_notices ) ) {
+            $already_dismiss_notices[] = $notice_id;
+        }
 
         // Store subscription ids.
-        update_option( '_give_hide_subscription_notices', $data );
+        update_user_meta( $current_user->ID, '_give_hide_subscription_notices', $already_dismiss_notices );
     }
 }
 
