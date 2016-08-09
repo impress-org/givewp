@@ -660,7 +660,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 	        // Show subscription messages.
 	        if( ! empty( $subscriptions ) && ! $showed_subscriptions_message ) {
 
-	            $already_dismiss_notices = ( $already_dismiss_notices = get_user_meta( $current_user->ID, '_give_hide_subscription_notices', true ) )
+	            $already_dismiss_notices = ( $already_dismiss_notices = get_user_meta( $current_user->ID, '_give_hide_license_notices_permanently', true ) )
                     ? $already_dismiss_notices
                     : array();
 
@@ -686,7 +686,7 @@ if ( ! class_exists( 'Give_License' ) ) :
                                 urldecode( $subscription['invoice_url'] ),
                                 $subscription['payment_id'],
                                 "{$this->checkout_url}?edd_license_key={$subscription['license_key']}&utm_campaign=admin&utm_source=licenses&utm_medium=expired",
-                                esc_url( add_query_arg( '_give_hide_subscription_notices', $subscription['id'], $_SERVER['REQUEST_URI'] ) )
+                                esc_url( add_query_arg( '_give_hide_license_notices_permanently', $subscription['id'], $_SERVER['REQUEST_URI'] ) )
                             );
                         }else{
                             $messages[$subscription['id']] = sprintf(
@@ -695,7 +695,7 @@ if ( ! class_exists( 'Give_License' ) ) :
                                 urldecode( $subscription['invoice_url'] ),
                                 $subscription['payment_id'],
                                 "{$this->checkout_url}?edd_license_key={$subscription['license_key']}&utm_campaign=admin&utm_source=licenses&utm_medium=expired",
-                                esc_url( add_query_arg( '_give_hide_subscription_notices', $subscription['id'], $_SERVER['REQUEST_URI'] ) )
+                                esc_url( add_query_arg( '_give_hide_license_notices_permanently', $subscription['id'], $_SERVER['REQUEST_URI'] ) )
                             );
                         }
 			        }
@@ -758,7 +758,7 @@ if ( ! class_exists( 'Give_License' ) ) :
          * @return void
          */
 		private function _delete_subscription_notices_show_blocker(){
-            delete_option( '_give_hide_subscription_notices' );
+            delete_option( '_give_hide_license_notices_permanently' );
         }
 	}
 
