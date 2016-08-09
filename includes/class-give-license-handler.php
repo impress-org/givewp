@@ -502,7 +502,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			}
 
 			// Delete subscription notices show blocker.
-			$this->_delete_subscription_notices_show_blocker();
+			$this->__remove_license_notices_show_blocker();
 
 			// Data to send in our API request.
 			$api_params = array(
@@ -568,9 +568,6 @@ if ( ! class_exists( 'Give_License' ) ) :
             if( empty( $this->license ) ) {
                 return false;
             }
-
-            // Delete subscription notices show blocker.
-            $this->_delete_subscription_notices_show_blocker();
 
             // Data to send in our API request.
             $api_params = array(
@@ -779,15 +776,39 @@ if ( ! class_exists( 'Give_License' ) ) :
         }
 
 		/**
-         * Delete subscription notices show blocker.
+         * Remove license notices show blocker.
          *
          * @since 1.6
          * @access private
          *
          * @return void
          */
-		private function _delete_subscription_notices_show_blocker(){
-            delete_option( '_give_hide_license_notices_permanently' );
+		private function __remove_license_notices_show_blocker(){
+            global $wpdb;
+
+            // Delete permanent notice blocker.
+            $wpdb->query(
+                $wpdb->prepare(
+                    "
+                    DELETE FROM $wpdb->usermeta
+                    WHERE meta_key
+                    LIKE '%%%s%%'
+                    ",
+                    '_give_hide_license_notices_permanently'
+                )
+            );
+
+            // Delete short notice blocker.
+            $wpdb->query(
+                $wpdb->prepare(
+                    "
+                    DELETE FROM $wpdb->options
+                    WHERE option_name
+                    LIKE '%%%s%%'
+                    ",
+                    '__give_hide_license_notices_shortly_'
+                )
+            );
         }
 
         /**
