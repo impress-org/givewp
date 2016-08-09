@@ -29,11 +29,20 @@ class GIVE_CLI_COMMAND {
 	 */
 	private static $counter;
 
+	/**
+	 * This helps to get information give plugin data.
+	 *
+	 * @var Give_API Object.
+	 */
+	private $api;
+
 
 	/**
 	 * GIVE_CLI_Command constructor.
 	 */
-	public function __construct() {}
+	public function __construct() {
+		$this->api = new Give_API();
+	}
 
 
 	/**
@@ -118,7 +127,7 @@ class GIVE_CLI_COMMAND {
 	 *
 	 * ## EXAMPLES
 	 *
-	 * wp give form 103
+	 * wp give form --id=103
 	 *
 	 * @since       1.7
 	 * @access		public
@@ -131,25 +140,64 @@ class GIVE_CLI_COMMAND {
 	 * @subcommand form
 	 */
 	public function form( $args, $assoc_args ) {
+		$form_id = isset( $assoc_args ) && array_key_exists( 'id', $assoc_args ) ? absint( $assoc_args['id'] ) : false;
+		$form = $this->api->get_forms( $form_id );
+
 		// Bailout.
-		if ( empty( $args[0] ) ) {
-			WP_CLI::warning( __( 'Form id is missing.', 'give' ) );
+		if ( array_key_exists( 'error', $form ) ) {
+			WP_CLI::warning( $form['error'] );
 			return;
 		}
 
-		$form_id = absint( $args[0] );
+        if( empty( $form['forms'] ) ) {
+            WP_CLI::error( __( 'No form found.', 'give' ) );
+            return;
+        }
 
-		/* @var Give_Donate_Form $form Donation form object. */
-		$form  = new Give_Donate_Form( $form_id );
+
+        // Get form.
+		$form = current( $form['forms'] );
 
 		// Heading.
 		WP_CLI::log( $this->color_message( sprintf( __( 'Report for form id %d', 'give' ), $form_id ) ) );
 
-		// Form information.
-		WP_CLI::log( $this->color_message( __( 'Form Title: ', 'give' ), $form->post_title ) );
-		WP_CLI::log( $this->color_message( __( 'Income: ', 'give' ), give_currency_filter( $form->get_earnings() ) ) );
-		WP_CLI::log( $this->color_message( __( 'Monthly Average Donations: ', 'give' ), give_currency_filter( give_get_average_monthly_form_sales( $form->ID ) ) ) );
-		WP_CLI::log( $this->color_message( __( 'Monthly Average Income: ', 'give' ), give_currency_filter( give_get_average_monthly_form_earnings( $form->ID ) ) ) );
+		foreach ( $form as $key => $info ) {
+			switch ( $key ) {
+				case 'stats':
+					$this->color_main_heading( ucfirst( $key ) );
+					foreach ( $info as $heading => $data ) {
+						$this->color_sub_heading( ucfirst( $heading ) );
+						switch ( $heading ) {
+							default:
+								foreach ( $data as $subheading => $subdata ) {
+
+									switch ( $subheading ) {
+										default:
+											WP_CLI::log( $this->color_message( ucfirst( $subheading ) . ': ', $subdata ) );
+									}
+								}
+						}
+					}
+					break;
+
+				case 'pricing':
+				case 'info':
+				default:
+					$this->color_main_heading( ucfirst( $key ) );
+					foreach ( $info as $heading => $data ) {
+
+						switch ( $heading ) {
+							case 'id':
+								WP_CLI::log( $this->color_message( strtoupper( $heading ) . ': ', $data ) );
+								break;
+
+							default:
+								$data = empty( $data ) ? __( 'Not set', 'give' ) : $data;
+								WP_CLI::log( $this->color_message( ucfirst( $heading ) . ': ', $data ) );
+						}
+					}
+			}
+		}
 	}
 
 
@@ -290,6 +338,8 @@ class GIVE_CLI_COMMAND {
 	 *
 	 * @since  1.7
 	 * @access private
+	 *
+	 * @return bool
 	 */
 	private function delete_all_stats() {
 		global $wpdb;
@@ -339,5 +389,34 @@ class GIVE_CLI_COMMAND {
 	 */
 	private function color_message( $heading, $message = '' ) {
 		return WP_CLI::colorize( '%g' . $heading . '%n' ) . $message;
+	}
+
+
+	/**
+	 * Output section heading.
+	 *
+	 * @since  1.7
+	 * @access private
+	 *
+	 * @param string $heading Heading.
+	 *
+	 * @return void
+	 */
+	private function color_main_heading( $heading ) {
+		WP_CLI::log( "\n----   " . $this->color_message( $heading ) . '   ----' );
+	}
+
+	/**
+	 * Output section sub heading.
+	 *
+	 * @since  1.7
+	 * @access private
+	 *
+	 * @param string $subheading Sub heading.
+	 *
+	 * @return void
+	 */
+	private function color_sub_heading( $subheading ) {
+		WP_CLI::log( "\n" . $subheading . '' );
 	}
 }
