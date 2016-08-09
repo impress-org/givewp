@@ -166,9 +166,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			// Check subscription weekly.
 			add_action( 'give_weekly_scheduled_events', array( $this, 'weekly_subscription_check' ) );
-
-            // Check subscription status after license key activated.
-			add_action( 'give_license_activated', array( $this, 'single_subscription_check' ) );
         }
 
 		/**
@@ -347,7 +344,8 @@ if ( ! class_exists( 'Give_License' ) ) :
             $license_data = json_decode( wp_remote_retrieve_body( $response ) );
             update_option( $this->item_shortname . '_license_active', $license_data );
 
-            do_action( 'give_license_activated' );
+            // Check subscription for license key and store this to db (if any).
+            $this->single_subscription_check();
 		}
 
 		/**
@@ -414,6 +412,9 @@ if ( ! class_exists( 'Give_License' ) ) :
 
                 // Remove license data.
 				delete_option( $this->item_shortname . '_license_active' );
+
+                // Remove license key from subscriptions if exist.
+                $this->remove_license_key_from_subscriptions();
 			}
 		}
 
@@ -744,6 +745,39 @@ if ( ! class_exists( 'Give_License' ) ) :
 		public function is_third_party_addon() {
 			return ( false === strpos( $this->api_url, 'give-playground.dev/' ) );
 		}
+
+
+        /**
+         * Remove license keyy from subscription
+         *
+         * This function mainly uses when admin user deactivate license key,
+         * then we do not need subscription information for that license key.
+         *
+         * @since  1.6
+         * @access public
+         *
+         * @return void
+         */
+		public function remove_license_key_from_subscriptions(){
+            $subscriptions = get_option( 'give_subscriptions', array() );
+
+            if( ! empty( $subscriptions ) ) {
+                foreach ( $subscriptions as $subscription_id => $subscription ) {
+                    $license_index = array_search( $this->license, $subscription['licenses'] );
+                    if( false !== $license_index ) {
+                        // Remove license key.
+                        unset( $subscriptions[ $subscription_id ]['licenses'][$license_index] );
+
+                        // Rearrange license keys.
+                        $subscriptions[ $subscription_id ]['licenses'] = array_values( $subscriptions[ $subscription_id ]['licenses'] );
+
+                        // Update subscription information.
+                        update_option( 'give_subscriptions', $subscriptions );
+                        break;
+                    }
+                }
+            }
+        }
 
 		/**
          * Delete subscription notices show blocker.
