@@ -43,26 +43,26 @@ add_action( 'admin_init', 'give_process_actions' );
 function give_hide_subscription_notices() {
 
     // Hide subscription notices permanently.
-    if ( ! empty( $_GET['_give_hide_subscription_notices'] ) ) {
+    if ( ! empty( $_GET['_give_hide_license_notices_permanently'] ) ) {
         global $current_user;
 
         // check previously disabled notice ids.
-        $already_dismiss_notices = ( $already_dismiss_notices = get_user_meta( $current_user->ID, '_give_hide_subscription_notices', true ) )
+        $already_dismiss_notices = ( $already_dismiss_notices = get_user_meta( $current_user->ID, '_give_hide_license_notices_permanently', true ) )
             ? $already_dismiss_notices
             : array();
 
         // Get notice id.
-        $notice_id = absint( $_GET['_give_hide_subscription_notices'] );
+        $notice_id = absint( $_GET['_give_hide_license_notices_permanently'] );
 
         if( ! in_array( $notice_id, $already_dismiss_notices ) ) {
             $already_dismiss_notices[] = $notice_id;
         }
 
         // Store subscription ids.
-        update_user_meta( $current_user->ID, '_give_hide_subscription_notices', $already_dismiss_notices );
+        update_user_meta( $current_user->ID, '_give_hide_license_notices_permanently', $already_dismiss_notices );
 
         // Redirect user.
-        wp_safe_redirect( remove_query_arg( '_give_hide_subscription_notices', $_SERVER['REQUEST_URI'] ) );
+        wp_safe_redirect( remove_query_arg( '_give_hide_license_notices_permanently', $_SERVER['REQUEST_URI'] ) );
         exit();
     }
 }
