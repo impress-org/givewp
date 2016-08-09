@@ -82,9 +82,9 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @var    string
 		 */
-		private $api_url      = 'http://givewp.com/give-sl-api/';
-		private $account_url  = 'http://givewp.com/my-account/';
-		private $checkout_url = 'http://givewp.com/checkout/';
+		private $api_url      = 'http://give-playground.dev/give-sl-api/';
+		private $account_url  = 'http://give-playground.dev/my-account/';
+		private $checkout_url = 'http://give-playground.dev/checkout/';
 
 		/**
 		 * Class Constructor
@@ -166,6 +166,9 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			// Check subscription weekly.
 			add_action( 'give_weekly_scheduled_events', array( $this, 'weekly_subscription_check' ) );
+
+            // Check subscription status after license key activated.
+			add_action( 'give_license_activated', array( $this, 'single_subscription_check' ) );
         }
 
 		/**
@@ -343,6 +346,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 			// Decode license data
             $license_data = json_decode( wp_remote_retrieve_body( $response ) );
             update_option( $this->item_shortname . '_license_active', $license_data );
+
+            do_action( 'give_license_activated' );
 		}
 
 		/**
@@ -466,7 +471,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 
 		/**
-		 * Check if license key is valid once per week
+		 * Check subscription validation once per week
 		 *
 		 * @access  public
 		 * @since   1.6
@@ -529,7 +534,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			if( ! empty( $subscription_data['success'] ) && absint( $subscription_data['success'] ) ) {
 				$subscriptions = get_option( 'give_subscriptions', array() );
 
-				// Update subscript data only if subscription does not exist already.
+				// Update subscription data only if subscription does not exist already.
 				if( ! array_key_exists( $subscription_data['id'], $subscriptions ) ) {
 					$subscriptions[ $subscription_data['id'] ] = $subscription_data;
 					$subscriptions[ $subscription_data['id'] ]['licenses'] = array();
@@ -543,6 +548,79 @@ if ( ! class_exists( 'Give_License' ) ) :
 				update_option( 'give_subscriptions', $subscriptions );
 			}
 		}
+
+        /**
+         * Check if license key is part of subscription or not
+         *
+         * @access  public
+         * @since   1.6
+         * @return  bool/void
+         */
+        public function single_subscription_check() {
+
+            if( ! empty( $_POST['give_settings'] ) ) {
+                // Don't fire when saving settings
+                return false;
+            }
+
+            if( empty( $this->license ) ) {
+                return false;
+            }
+
+            // Allow third party addon developers to handle there subscription check.
+            if( $this->is_third_party_addon() ){
+                do_action( 'give_subscription_check', $this );
+                return false;
+            }
+
+            // Delete subscription notices show blocker.
+            $this->_delete_subscription_notices_show_blocker();
+
+            // Data to send in our API request.
+            $api_params = array(
+                // Do not get confuse with edd_action check_subscription.
+                // By default edd software licensing api does not have api to check subscription.
+                // This is custom feature to check subscriptions.
+                'edd_action'=> 'check_subscription',
+                'license' 	=> $this->license,
+                'item_name' => urlencode( $this->item_name ),
+                'url'       => home_url()
+            );
+
+            // Call the API
+            $response = wp_remote_post(
+                $this->api_url,
+                array(
+                    'timeout'   => 15,
+                    'sslverify' => false,
+                    'body'      => $api_params
+                )
+            );
+
+            // Make sure the response came back okay.
+            if ( is_wp_error( $response ) ) {
+                return false;
+            }
+
+            $subscription_data = json_decode( wp_remote_retrieve_body( $response ), true );
+
+            if( ! empty( $subscription_data['success'] ) && absint( $subscription_data['success'] ) ) {
+                $subscriptions = get_option( 'give_subscriptions', array() );
+
+                // Update subscription data only if subscription does not exist already.
+                if( ! array_key_exists( $subscription_data['id'], $subscriptions ) ) {
+                    $subscriptions[ $subscription_data['id'] ] = $subscription_data;
+                    $subscriptions[ $subscription_data['id'] ]['licenses'] = array();
+                }
+
+                // Store licenses for subscription.
+                if( ! in_array( $this->license, $subscriptions[ $subscription_data['id'] ]['licenses'] ) ) {
+                    $subscriptions[ $subscription_data['id'] ]['licenses'][] = $this->license;
+                }
+
+                update_option( 'give_subscriptions', $subscriptions );
+            }
+        }
 
 
         /**
@@ -669,7 +747,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @return bool
 		 */
 		public function is_third_party_addon() {
-			return ( false === strpos( $this->api_url, 'givewp.com/' ) );
+			return ( false === strpos( $this->api_url, 'give-playground.dev/' ) );
 		}
 
 		/**
