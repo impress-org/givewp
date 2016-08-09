@@ -552,6 +552,7 @@ if ( ! class_exists( 'Give_License' ) ) :
          * @return  void
          */
         public function notices() {
+            global $current_user;
             static $showed_invalid_message;
             static $showed_subscriptions_message;
             static $addon_license_key_in_subscriptions;
@@ -580,6 +581,11 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 	        // Show subscription messages.
 	        if( ! empty( $subscriptions ) && ! $showed_subscriptions_message ) {
+
+	            $already_dismiss_notices = ( $already_dismiss_notices = get_user_meta( $current_user->ID, '_give_hide_subscription_notices', true ) )
+                    ? $already_dismiss_notices
+                    : array();
+
 	        	foreach ( $subscriptions as $subscription ) {
 	        		// Subscription expires timestamp.
 	        		$subscription_expires = strtotime( $subscription['expires'] );
@@ -594,7 +600,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 	        			continue;
 			        }
 
-			        if( ( 'active' !== $subscription['status'] ) && ! in_array( $subscription['id'], get_option( '_give_hide_subscription_notices', array() ) ) ) {
+			        if( ( 'active' !== $subscription['status'] ) && ! in_array( $subscription['id'], $already_dismiss_notices ) ) {
 
 			            if( strtotime( $subscription['expires'] ) < current_time( 'timestamp', 1 ) ) {
 			                // Check if license already expired.
