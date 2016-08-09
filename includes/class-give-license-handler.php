@@ -213,7 +213,7 @@ if ( ! class_exists( 'Give_License' ) ) :
             }
 
 			// Allow third party addon developers to handle license activation.
-			if( $this->is_third_party_addon() ){
+			if( $this->__is_third_party_addon() ){
 				do_action( 'give_activate_license', $this );
 				return;
 			}
@@ -277,7 +277,7 @@ if ( ! class_exists( 'Give_License' ) ) :
             update_option( $this->item_shortname . '_license_active', $license_data );
 
             // Check subscription for license key and store this to db (if any).
-            $this->single_subscription_check();
+            $this->__single_subscription_check();
 		}
 
 
@@ -304,7 +304,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			}
 
 			// Allow third party addon developers to handle license deactivation.
-			if( $this->is_third_party_addon() ){
+			if( $this->__is_third_party_addon() ){
 				do_action( 'give_deactivate_license', $this );
 				return;
 			}
@@ -344,7 +344,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 				delete_option( $this->item_shortname . '_license_active' );
 
                 // Remove license key from subscriptions if exist.
-                $this->remove_license_key_from_subscriptions();
+                $this->__remove_license_key_from_subscriptions();
 			}
 		}
 
@@ -367,7 +367,7 @@ if ( ! class_exists( 'Give_License' ) ) :
             }
 
 	        // Allow third party addon developers to handle there license check.
-	        if( $this->is_third_party_addon() ){
+	        if( $this->__is_third_party_addon() ){
 		        do_action( 'give_weekly_license_check', $this );
 		        return false;
 	        }
@@ -425,7 +425,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			}
 
 			// Allow third party addon developers to handle there subscription check.
-			if( $this->is_third_party_addon() ){
+			if( $this->__is_third_party_addon() ){
 				do_action( 'give_weekly_subscription_check', $this );
 				return false;
 			}
@@ -482,11 +482,12 @@ if ( ! class_exists( 'Give_License' ) ) :
         /**
          * Check if license key is part of subscription or not
          *
-         * @access  public
          * @since   1.6
+         * @access  private
          * @return  bool/void
+         *
          */
-        public function single_subscription_check() {
+        private function __single_subscription_check() {
 
             if( ! empty( $_POST['give_settings'] ) ) {
                 // Don't fire when saving settings
@@ -494,12 +495,6 @@ if ( ! class_exists( 'Give_License' ) ) :
             }
 
             if( empty( $this->license ) ) {
-                return false;
-            }
-
-            // Allow third party addon developers to handle there subscription check.
-            if( $this->is_third_party_addon() ){
-                do_action( 'give_subscription_check', $this );
                 return false;
             }
 
@@ -604,7 +599,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 	        			continue;
 			        }
 
-			        if( ( ! $this->is_notice_dismissed( $subscription['id'] ) && 'active' !== $subscription['status'] ) ) {
+			        if( ( ! $this->__is_notice_dismissed( $subscription['id'] ) && 'active' !== $subscription['status'] ) ) {
 
 			            if( strtotime( $subscription['expires'] ) < current_time( 'timestamp', 1 ) ) {// Check if license already expired.
                             $messages[$subscription['id']] = sprintf(
@@ -634,7 +629,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 
 	        // Show non subscription addon messages.
-            if( ! in_array( $this->license, $addon_license_key_in_subscriptions ) && ! $this->is_notice_dismissed( 'general' ) && ! $this->is_valid_license() && empty( $showed_invalid_message ) ) {
+            if( ! in_array( $this->license, $addon_license_key_in_subscriptions ) && ! $this->__is_notice_dismissed( 'general' ) && ! $this->is_valid_license() && empty( $showed_invalid_message ) ) {
 
                 $messages['general'] = sprintf(
                     __( 'You have invalid or expired license keys for Give Addon. Please go to the <a href="%s">Licenses page</a> to correct this issue.', 'give' ),
@@ -669,9 +664,13 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 		/**
 		 * Check if license is valid or not.
+         *
+         * @since  1.6
+         * @access private
+         *
 		 * @return bool
 		 */
-		public function is_third_party_addon() {
+		private function __is_third_party_addon() {
 			return ( false === strpos( $this->api_url, 'give-playground.dev/' ) );
 		}
 
@@ -683,11 +682,11 @@ if ( ! class_exists( 'Give_License' ) ) :
          * then we do not need subscription information for that license key.
          *
          * @since  1.6
-         * @access public
+         * @access private
          *
          * @return void
          */
-		public function remove_license_key_from_subscriptions(){
+		private function __remove_license_key_from_subscriptions(){
             $subscriptions = get_option( 'give_subscriptions', array() );
 
             if( ! empty( $subscriptions ) ) {
@@ -723,11 +722,13 @@ if ( ! class_exists( 'Give_License' ) ) :
         /**
          * Check if notice dismissed by admin user or not.
          *
+         * @since  1.6
+         * @access private
          * @param int $notice_id notice ID.
          *
          * @return bool
          */
-        public function is_notice_dismissed( $notice_id ){
+        private function __is_notice_dismissed( $notice_id ){
             global $current_user;
             $is_notice_dismissed = false;
 
@@ -741,7 +742,7 @@ if ( ! class_exists( 'Give_License' ) ) :
                 $is_notice_dismissed =  true;
             }
 
-            return apply_filters( 'give_is_license_notice_dismissed', $is_notice_dismissed, $notice_id, $current_user );
+            return $is_notice_dismissed;
         }
 	}
 
