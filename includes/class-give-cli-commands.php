@@ -81,6 +81,8 @@ class GIVE_CLI_COMMAND {
         /**
          * Currency Information.
          */
+        $default_gateway = give_get_option( 'default_gateway' );
+
         WP_CLI::log( "\n####   " . $this->color_message( __( 'Currency Information', 'give' ) ) . "   ####" );
 
         WP_CLI::log( $this->color_message( __( 'Currency: ', 'give' ), give_get_currency() ) );
@@ -88,11 +90,10 @@ class GIVE_CLI_COMMAND {
         WP_CLI::log( $this->color_message( __( 'Thousand Separator: ', 'give' ), give_get_price_thousand_separator() ) );
         WP_CLI::log( $this->color_message( __( 'Decimal Separator: ', 'give' ), give_get_price_decimal_separator() ) );
         WP_CLI::log( $this->color_message( __( 'Number of Decimals: ', 'give' ), give_get_price_decimals() ) );
+        WP_CLI::log( $this->color_message( __( 'Test Mode: ', 'give' ), ( give_get_option( 'test_mode' ) ? __( 'Yes', 'give' ) : __( 'No', 'give' )  ) ) );
+        WP_CLI::log( $this->color_message( __( 'Default Gateway: ', 'give' ), ( $default_gateway ? $default_gateway : __( 'Not Set', 'give' )  ) ) );
 
-
-        /**
-         * Payment gateways Information.
-         */
+        // Payment gateways Information.
         $gateways = give_get_ordered_payment_gateways( give_get_payment_gateways() );
         WP_CLI::log( $this->color_message( __( 'Enabled Gateways: ', 'give' ) ) );
 
