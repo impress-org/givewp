@@ -752,12 +752,13 @@ class Give_Customer {
 	/**
 	 * Remove metadata matching criteria from a customer.
 	 *
-	 * @param   string $meta_key      Metadata name.
-	 * @param   mixed  $meta_value    Optional. Metadata value.
-	 * @return  bool                  False for failure. True for success.
+	 * @since  1.6
+	 * @access public
 	 *
-	 * @access  public
-	 * @since   1.6
+	 * @param  string $meta_key   Metadata name. Default is empty.
+	 * @param  mixed  $meta_value Optional. Metadata value. Default is empty.
+	 *
+	 * @return bool               False for failure. True for success.
 	 */
 	public function delete_meta( $meta_key = '', $meta_value = '' ) {
 		return Give()->customer_meta->delete_meta( $this->id, $meta_key, $meta_value );
