@@ -1340,6 +1340,13 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 
 	// If license is active so show deactivate button
 	if ( $is_valid_license ) {
+        // Get input filed html.
+        $input_field_html = $field_type_object->input( array(
+            'class' => $field_classes,
+            'type'  => $type,
+            'readonly' => 'readonly',
+        ) );
+
 		$custom_html = '<input type="submit" class="button-secondary give-license-deactivate" name="' . $id . '_deactivate" value="' . esc_attr__( 'Deactivate License', 'give' ) . '"/>';
 	}
 
