@@ -58,6 +58,10 @@ function give_hide_subscription_notices() {
 
         // Store subscription ids.
         update_user_meta( $current_user->ID, '_give_hide_subscription_notices', $already_dismiss_notices );
+
+        // Redirect user.
+        wp_safe_redirect( remove_query_arg( '_give_hide_subscription_notices', $_SERVER['REQUEST_URI'] ) );
+        exit();
     }
 }
 
