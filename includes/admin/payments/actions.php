@@ -151,20 +151,24 @@ function give_update_payment_details( $data ) {
 		$previous_customer->remove_payment( $payment_id, false );
 		$customer->attach_payment( $payment_id, false );
 
-        // Reduce previous user donation count and amoount.
-        $previous_customer->decrease_purchase_count();
-        $previous_customer->decrease_value( $curr_total );
+		if ( 'publish' == $status ) {
 
-		// If purchase was completed and not ever refunded, adjust stats of new customers.
-		if ( 'revoked' == $status || 'publish' == $status ) {
-			$customer->increase_purchase_count();
+            // Reduce previous user donation count and amount.
+            $previous_customer->decrease_purchase_count();
+            $previous_customer->decrease_value( $curr_total );
+
+            // If purchase was completed adjust stats of new customers.
+            $customer->increase_purchase_count();
 			$customer->increase_value( $new_total );
 		}
 
 		$payment->customer_id = $customer->id;
 	} else{
-		// Update user donation stat.
-		$customer->update_donation_value( $curr_total, $new_total );
+
+	    if( 'publish' === $status ){
+            // Update user donation stat.
+            $customer->update_donation_value( $curr_total, $new_total );
+        }
     }
 
 	// Set new meta values
@@ -188,7 +192,7 @@ function give_update_payment_details( $data ) {
 	$payment->status = $status;
 
 	// Adjust total store earnings if the payment total has been changed
-	if ( $new_total !== $curr_total && ( 'publish' == $status || 'revoked' == $status ) ) {
+	if ( $new_total !== $curr_total && 'publish' == $status ) {
 
 		if ( $new_total > $curr_total ) {
 			// Increase if our new total is higher
@@ -239,8 +243,8 @@ function give_update_payment_details( $data ) {
         }
 
 
-        // If purchase was completed and not ever refunded, adjust stats of forms
-        if ( 'revoked' == $status || 'publish' == $status ) {
+        // If purchase was completed, adjust stats of forms
+        if ( 'publish' == $status ) {
 
             // Decrease sale of old give form. For other payment status 
             $current_form = new Give_Donate_Form( $current_form_id );
