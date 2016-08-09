@@ -361,3 +361,34 @@ function give_admin_icon() {
 }
 
 add_action( 'admin_head', 'give_admin_icon' );
+
+/**
+ * Admin js code
+ *
+ * This code helps to hide license notices for 24 hour if admin user dismissed notice.
+ *
+ * @since 1.0
+ * @global $post_type
+ * @global $wp_version
+ * @return void
+ */
+function give_admin_hide_notice_shortly_js() {
+	?>
+    <script>
+        jQuery(document).ready(function($){
+           $('.give-license-notice').on( 'click', 'button.notice-dismiss', function(e){
+               e.preventDefault();
+
+               var parent = $(this).parents('.give-license-notice'),
+                   dismiss_notice_url = parent.data('dismiss-notice-shortly');
+
+               if( dismiss_notice_url ) {
+                   window.location.assign( dismiss_notice_url );
+               }
+           });
+        });
+    </script>
+	<?php
+}
+
+add_action( 'admin_head', 'give_admin_hide_notice_shortly_js' );

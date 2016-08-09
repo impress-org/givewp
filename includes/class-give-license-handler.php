@@ -660,10 +660,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 	        // Show subscription messages.
 	        if( ! empty( $subscriptions ) && ! $showed_subscriptions_message ) {
 
-	            $already_dismiss_notices = ( $already_dismiss_notices = get_user_meta( $current_user->ID, '_give_hide_license_notices_permanently', true ) )
-                    ? $already_dismiss_notices
-                    : array();
-
 	        	foreach ( $subscriptions as $subscription ) {
 	        		// Subscription expires timestamp.
 	        		$subscription_expires = strtotime( $subscription['expires'] );
@@ -678,7 +674,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 	        			continue;
 			        }
 
-			        if( ( 'active' !== $subscription['status'] ) && ! in_array( $subscription['id'], $already_dismiss_notices ) ) {
+			        if( ( ! $this->is_notice_dismissed( $subscription['id'] ) && 'active' !== $subscription['status'] ) ) {
 
 			            if( strtotime( $subscription['expires'] ) < current_time( 'timestamp', 1 ) ) {// Check if license already expired.
                             $messages[$subscription['id']] = sprintf(
@@ -708,7 +704,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 
 	        // Show non subscription addon messages.
-            if( ! in_array( $this->license, $addon_license_key_in_subscriptions ) && ! $this->is_valid_license() && empty( $showed_invalid_message ) ) {
+            if( ! in_array( $this->license, $addon_license_key_in_subscriptions ) && ! $this->is_notice_dismissed( 'general' ) && ! $this->is_valid_license() && empty( $showed_invalid_message ) ) {
 
                 $messages['general'] = sprintf(
                     __( 'You have invalid or expired license keys for Give Addon. Please go to the <a href="%s">Licenses page</a> to correct this issue.', 'give' ),
@@ -720,8 +716,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			// Print messages.
             if( ! empty( $messages ) ) {
-                foreach( $messages as $id => $message ) {
-                    echo '<div class="notice notice-error is-dismissible give-license-notice" data-notice-id="' . $id . '">';
+                foreach( $messages as $notice_id => $message ) {
+                    echo '<div class="notice notice-error is-dismissible give-license-notice" data-dismiss-notice-shortly="' . esc_url( add_query_arg( '_give_hide_license_notices_shortly', $notice_id, $_SERVER['REQUEST_URI'] ) ) . '">';
                     echo '<p>' . $message . '</p>';
                     echo '</div>';
                 }
@@ -750,7 +746,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		}
 
 		/**
-         * Delete subscription notices show blocker
+         * Delete subscription notices show blocker.
          *
          * @since 1.6
          * @access private
@@ -759,6 +755,30 @@ if ( ! class_exists( 'Give_License' ) ) :
          */
 		private function _delete_subscription_notices_show_blocker(){
             delete_option( '_give_hide_license_notices_permanently' );
+        }
+
+        /**
+         * Check if notice dismissed by admin user or not.
+         *
+         * @param int $notice_id notice ID.
+         *
+         * @return bool
+         */
+        public function is_notice_dismissed( $notice_id ){
+            global $current_user;
+            $is_notice_dismissed = false;
+
+            // Ge is notice dismissed permanently.
+            $already_dismiss_notices = ( $already_dismiss_notices = get_user_meta( $current_user->ID, '_give_hide_license_notices_permanently', true ) )
+                ? $already_dismiss_notices
+                : array();
+
+
+            if( in_array( $notice_id, $already_dismiss_notices ) || get_transient( "_give_hide_license_notices_shortly_{$current_user->ID}_{$notice_id}" ) ) {
+                $is_notice_dismissed =  true;
+            }
+
+            return apply_filters( 'give_is_license_notice_dismissed', $is_notice_dismissed, $notice_id, $current_user );
         }
 	}
 
