@@ -41,6 +41,8 @@ add_action( 'admin_init', 'give_process_actions' );
  * @return void
  */
 function give_hide_subscription_notices() {
+
+    // Hide subscription notices permanently.
     if ( ! empty( $_GET['_give_hide_subscription_notices'] ) ) {
         global $current_user;
 
