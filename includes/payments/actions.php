@@ -84,6 +84,14 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 		// Save the completed date
 		$payment->completed_date = current_time( 'mysql' );
 		$payment->save();
+
+		/**
+		 * Fires after a purchase/donation successfully complete.
+		 *
+		 * @since 1.6
+		 *
+		 * @param int $payment_id The ID of the payment.
+		 */
 		do_action( 'give_complete_purchase', $payment_id );
 	}
 
