@@ -370,6 +370,93 @@ function give_v152_cleanup_users() {
 add_action( 'admin_init', 'give_v152_cleanup_users' );
 
 /**
+ * Upgrade license data
+ *
+ * @since 1.6
+ */
+function give_upgrade_addon_license_data(){
+    global $give_options;
+
+    $api_url = 'https://givewp.com/give-sl-api/';
+
+    // Get addons license key.
+    $addons = array();
+    foreach ( $give_options as $key => $value ) {
+        if( false !== strpos( $key, '_license_key' ) ) {
+            $addons[$key] = $value;
+        }
+    }
+
+    // Bailout: We do not have any addon license data to upgrade.
+    if( empty( $addons ) ) {
+        return false;
+    }
+    
+    foreach ( $addons as $key => $addon_license ) {
+
+        // Get addon shortname.
+        $shortname = str_replace( '_license_key', '', $key );
+
+        // Addon license option name.
+        $addon_license_option_name = $shortname . '_license_active';
+
+        // bailout if license is empty.
+        if( empty( $addon_license ) ) {
+            delete_option( $addon_license_option_name );
+            continue;
+        }
+
+        // Get addon name.
+        $addon_name = array();
+        $addon_name_parts = explode( '_', str_replace( 'give_', '', $shortname ) );
+        foreach ( $addon_name_parts as $name_part ) {
+
+            // Fix addon name
+            switch ( $name_part ) {
+                case 'authorizenet' :
+                    $name_part = 'authorize.net';
+                    break;
+            }
+
+            $addon_name[] = ucfirst( $name_part );
+        }
+
+        $addon_name = implode( ' ', $addon_name );
+
+        // Data to send to the API
+        $api_params = array(
+            'edd_action' => 'activate_license', //never change from "edd_" to "give_"!
+            'license'    => $addon_license,
+            'item_name'  => urlencode( $addon_name ),
+            'url'        => home_url()
+        );
+
+        // Call the API
+        $response = wp_remote_post(
+            $api_url,
+            array(
+                'timeout'   => 15,
+                'sslverify' => false,
+                'body'      => $api_params
+            )
+        );
+
+        // Make sure there are no errors
+        if ( is_wp_error( $response ) ) {
+            delete_option( $addon_license_option_name );
+            continue;
+        }
+
+        // Tell WordPress to look for updates
+        set_site_transient( 'update_plugins', null );
+
+        // Decode license data
+        $license_data = json_decode( wp_remote_retrieve_body( $response ) );
+        update_option( $addon_license_option_name, $license_data );
+    }
+}
+
+/**
  * 1.6 Upgrade routine to create the customer meta table.
  *
  * @since  1.6
@@ -378,4 +465,7 @@ add_action( 'admin_init', 'give_v152_cleanup_users' );
 function give_v16_upgrades() {
 	@Give()->customers->create_table();
 	@Give()->customer_meta->create_table();
+
+    // Upgrade license data.
+    give_upgrade_addon_license_data();
 }

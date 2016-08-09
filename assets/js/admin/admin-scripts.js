@@ -873,7 +873,6 @@ jQuery.noConflict();
                 $(this).val(price_string);
             });
         }
-
     });
 
 })(jQuery);
