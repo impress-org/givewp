@@ -47,18 +47,19 @@ final class Give_Shortcode_Button {
 	 *
 	 * @param array $plugin_array
 	 *
-	 * @return array
+	 * @return array|bool
 	 *
 	 * @since 1.0
 	 */
 	public function mce_external_plugins( $plugin_array ) {
 
-		if ( current_user_can( 'edit_posts' ) && current_user_can( 'edit_pages' ) ) {
-
-			$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-
-			$plugin_array['give_shortcode'] = GIVE_PLUGIN_URL . 'assets/js/admin/tinymce/mce-plugin' . $suffix . '.js';
+		if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) {
+			return false;
 		}
+
+		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
+		$plugin_array['give_shortcode'] = GIVE_PLUGIN_URL . 'assets/js/admin/tinymce/mce-plugin' . $suffix . '.js';
 
 		return $plugin_array;
 	}
