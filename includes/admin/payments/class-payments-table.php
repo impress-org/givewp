@@ -323,7 +323,7 @@ class Give_Payment_History_Table extends WP_List_Table {
                 <a href="<?php echo get_permalink( $payment->ID ); ?>">#<?php echo $payment->ID; ?></a>
                 &nbsp;<?php _e( 'by', 'give' ); ?>&nbsp;<?php echo $this->get_donor( $payment ); ?><br>
                 <?php echo $this->get_donor_email( $payment ); ?>
-                <?
+                <?php
                 $value = ob_get_clean();
 				break;
 
@@ -743,6 +743,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 				// Retrieve the count of the non-default-Give status
 				$count       = wp_count_posts( 'give_payment' );
 				$total_items = $count->{$status};
+				break;
 		}
 
 		$this->items = $data;
