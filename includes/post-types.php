@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Registers and sets up the Downloads custom post type
+ * Registers and sets up the Donation Forms (give_forms) custom post type
  *
  * @since 1.0
  * @return void
