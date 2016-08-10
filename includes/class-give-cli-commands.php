@@ -126,7 +126,8 @@ class GIVE_CLI_COMMAND {
 	 *
 	 * ## OPTIONS
 	 *
-	 * --id=<form_id>: A specific form ID to retrieve
+	 * [--id=<form_id>]
+	 * : A specific form ID to retrieve
 	 *
 	 * ## EXAMPLES
 	 *
@@ -218,10 +219,17 @@ class GIVE_CLI_COMMAND {
 	 *
 	 * ## OPTIONS
 	 *
-	 * --id=<donor_id>: A specific donor ID to retrieve
-	 * --email=<donor_email>: The email address of the donor to retrieve
-	 * --number=<donor_count>: The number of donor to retrieve
-	 * --create=<number>: The number of arbitrary donors to create. Leave as 1 or blank to create a donor with a specific email
+	 * [--id=<donor_id>]
+	 * : A specific donor ID to retrieve
+	 *
+	 * [--email=<donor_email>]
+	 * : The email address of the donor to retrieve
+	 *
+	 * [--number=<donor_count>]
+	 * : The number of donor to retrieve
+	 *
+	 * [--create=<number>]
+	 * : The number of arbitrary donors to create. Leave as 1 or blank to create a donor with a specific email
 	 *
 	 * ## EXAMPLES
 	 *
@@ -319,7 +327,7 @@ class GIVE_CLI_COMMAND {
 			}
 
 			if ( empty( $donors ) ) {
-				WP_CLI::error( __( 'No donors found', 'easy-digital-downloads' ) );
+				WP_CLI::error( __( 'No donors found', 'give' ) );
 				return;
 			}
 
@@ -385,19 +393,18 @@ class GIVE_CLI_COMMAND {
 
 
 	/**
-	 * Create sample donation data for your Give site
+	 * Get the recent donations for your Give site
 	 *
 	 * ## OPTIONS
 	 *
-	 * --number: The number of purchases to create
-	 * --status=<status>: The status to create purchases as
-	 * --id=<product_id>: A specific product to create purchase data for
-	 * --price_id=<price_id>: A price ID of the specified product
+	 * [--number=<donation_count>]
+	 * : The number of donations to retrieve
+	 *
 	 *
 	 * ## EXAMPLES
 	 *
-	 * wp give donations create --number=10 --status=completed
-	 * wp give donations create --number=10 --id=103
+	 * wp give donations
+	 * wp give donations --number=100
 	 *
 	 * @since       1.7
 	 * @access		public
@@ -409,7 +416,94 @@ class GIVE_CLI_COMMAND {
 	 *
 	 * @subcommand  donations
 	 */
-	public function donations( $args, $assoc_args ) {}
+	public function donations( $args, $assoc_args ) {
+	    global $wp_query;
+		$number = isset( $assoc_args ) && array_key_exists( 'number', $assoc_args ) ? $assoc_args['number'] : 10;
+
+		// Cache previous number query var.
+		$is_set_number = $cache_per_page = false;
+		if ( isset( $wp_query->query_vars['number'] ) ) {
+			$cache_per_page = $wp_query->query_vars['number'];
+			$is_set_number = true;
+		}
+
+		// Change number query var.
+		$wp_query->query_vars['number'] = $number;
+
+		// Get donations.
+		$donations = $this->api->get_recent_donations();
+
+		// Reset number query var.
+		if ( $is_set_number ) {
+			$wp_query->query_vars['number'] = $cache_per_page;
+		}
+
+		if ( empty( $donations ) ) {
+			WP_CLI::error( __( 'No sales found', 'give' ) );
+			return;
+		}
+
+		self::$counter = 1;
+
+		foreach ( $donations['donations'] as $key => $donation ) {
+			$this->color_main_heading( sprintf( __( '%1$s. Payment #%1$s', 'give' ), self::$counter, $donation['ID'] ), 'Y' );
+			self::$counter++;
+
+			foreach ( $donation as $column => $data ) {
+
+				if ( is_array( $data ) ) {
+					$this->color_sub_heading( $column );
+					foreach ( $data as $subcolumn => $subdata ) {
+
+						// Decode html codes.
+						switch ( $subcolumn ) {
+							case 'name':
+								$subdata = html_entity_decode( $subdata );
+								break;
+						}
+
+						// @TODO Check if multi dimension array information is importent to show or not. For example inside donation array we have array for fees data inside payment meta.
+						if ( is_array( $subdata ) ) {
+							continue;
+						}
+
+						WP_CLI::log( $this->color_message( $subcolumn, $subdata ) );
+					}
+					continue;
+				}
+
+				WP_CLI::log( $this->color_message( $column, $data ) );
+			}
+		}
+	}
+
+
+	/**
+	 * Create sample purchase data for your Give site
+	 *
+	 * ## OPTIONS
+	 *
+	 * --number: The number of purchases to create
+	 * --status=<status>: The status to create purchases as
+	 * --id=<product_id>: A specific product to create purchase data for
+	 * --price_id=<price_id>: A price ID of the specified product
+	 *
+	 * ## EXAMPLES
+	 *
+	 * wp give payments create --number=10 --status=completed
+	 * wp give payments create --number=10 --id=103
+	 *
+	 * @since   1.7
+	 * @access  public
+	 *
+	 * @param	string $args        Command Data.
+	 * @param	array  $assoc_args  List of command data.
+	 *
+	 * @return  void
+	 *
+	 * @subcommand payments
+	 */
+	public function payments( $args, $assoc_args ) {}
 
 	/**
 	 * Get give plugin report.
@@ -422,14 +516,15 @@ class GIVE_CLI_COMMAND {
 	 * [--type=<report_type>]
 	 * : Name of report type, value of this parameter can be [form].
 	 *
-	 * @since 1.7
+	 * @since       1.7
+	 * @access      public
 	 *
 	 * @param		string $args        Command Data.
 	 * @param		array  $assoc_args  List of command data.
 	 *
-	 * @subcommand report
+	 * @subcommand  report
 	 *
-	 * @return void
+	 * @return      void
 	 */
 	public function report( $args, $assoc_args ) {}
 
@@ -536,11 +631,17 @@ class GIVE_CLI_COMMAND {
 	 *
 	 * @param string $heading Message heading.
 	 * @param string $message Message content.
+	 * @param bool   $colon   Check if add colon between heading and message.
+	 * @param string $color   Heading color.
 	 *
 	 * @return mixed
 	 */
-	private function color_message( $heading, $message = '' ) {
-		return WP_CLI::colorize( '%g' . $heading . '%n' ) . $message;
+	private function color_message( $heading, $message = '', $colon = true, $color = 'g' ) {
+	    // Add colon.
+	    if ( $colon ) {
+	        $heading = $heading . ': ';
+		}
+		return WP_CLI::colorize( "%{$color}" . $heading . '%n' ) . $message;
 	}
 
 
@@ -551,11 +652,12 @@ class GIVE_CLI_COMMAND {
 	 * @access private
 	 *
 	 * @param string $heading Heading.
+	 * @param string $color   Color.
 	 *
 	 * @return void
 	 */
-	private function color_main_heading( $heading ) {
-		WP_CLI::log( "\n----   " . $this->color_message( $heading ) . '   ----' );
+	private function color_main_heading( $heading, $color = 'g' ) {
+		WP_CLI::log( "\n######   " . $this->color_message( $heading, '', false, $color ) . '   ######' );
 	}
 
 	/**
@@ -569,7 +671,7 @@ class GIVE_CLI_COMMAND {
 	 * @return void
 	 */
 	private function color_sub_heading( $subheading ) {
-		WP_CLI::log( "\n" . $subheading . '' );
+		WP_CLI::log( "\n--->" . $subheading . '', '', false );
 	}
 
 
