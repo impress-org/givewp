@@ -11,13 +11,13 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
-?>
 
-<?php
 /**
- * give_before_single_form hook
+ * Fires in single form template, before the form.
  *
- * 
+ * Allows you to add elements before the form.
+ *
+ * @since 1.0
  */
 do_action( 'give_before_single_form' );
 
@@ -31,9 +31,11 @@ if ( post_password_required() ) {
 
 		<?php
 		/**
-		 * give_before_single_form_summary hook
+		 * Fires in single form template, before the form summary.
 		 *
-		 * @hooked give_show_form_images - 10
+		 * Allows you to add elements before the form summary.
+		 *
+		 * @since 1.0
 		 */
 		do_action( 'give_before_single_form_summary' );
 		?>
@@ -42,10 +44,11 @@ if ( post_password_required() ) {
 
 			<?php
 			/**
-			 * give_single_form_summary hook
+			 * Fires in single form template, to the form summary.
 			 *
-			 * @hooked give_template_single_title - 5
-			 * @hooked give_get_donation_form - 10
+			 * Allows you to add elements to the form summary.
+			 *
+			 * @since 1.0
 			 */
 			do_action( 'give_single_form_summary' );
 			?>
@@ -55,12 +58,24 @@ if ( post_password_required() ) {
 
 		<?php
 		/**
-		 * give_after_single_form_summary hook
+		 * Fires in single form template, after the form summary.
+		 *
+		 * Allows you to add elements after the form summary.
+		 *
+		 * @since 1.0
 		 */
 		do_action( 'give_after_single_form_summary' );
 		?>
 
-
 	</div><!-- #give-form-<?php the_ID(); ?> -->
 
-<?php do_action( 'give_after_single_form' ); ?>
+<?php
+/**
+ * Fires in single form template, after the form.
+ *
+ * Allows you to add elements after the form.
+ *
+ * @since 1.0
+ */
+do_action( 'give_after_single_form' );
+?>
