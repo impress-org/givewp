@@ -34,12 +34,12 @@ give_print_errors( 0 ); ?>
 
 		<div class="form-row form-row-first">
 			<label for="give-user-login"><?php esc_html_e( 'Username', 'give' ); ?></label>
-			<input id="give-user-login" class="required give-input" type="text" name="give_user_login" title="<?php esc_attr_e( 'Username', 'give' ); ?>" />
+			<input id="give-user-login" class="required give-input" type="text" name="give_user_login" />
 		</div>
 
 		<div class="form-row form-row-last">
 			<label for="give-user-email"><?php esc_html_e( 'Email', 'give' ); ?></label>
-			<input id="give-user-email" class="required give-input" type="email" name="give_user_email" title="<?php esc_attr_e( 'Email Address', 'give' ); ?>" />
+			<input id="give-user-email" class="required give-input" type="email" name="give_user_email" />
 		</div>
 
 		<div class="form-row form-row-first">

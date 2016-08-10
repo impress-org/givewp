@@ -22,8 +22,9 @@ if ( ! is_user_logged_in() ) {
 			?>
 			<div class="give-login-username give-login">
 				<label for="give_user_login"><?php esc_html_e( 'Username', 'give' ); ?></label>
-				<input name="give_user_login" id="give_user_login" class="give-required give-input" type="text" title="<?php esc_attr_e( 'Username', 'give' ); ?>" />
+				<input name="give_user_login" id="give_user_login" class="give-required give-input" type="text" />
 			</div>
+
 			<div class="give-login-password give-login">
 				<label for="give_user_pass"><?php esc_html_e( 'Password', 'give' ); ?></label>
 				<input name="give_user_pass" id="give_user_pass" class="give-password give-required give-input" type="password" />
@@ -37,7 +38,7 @@ if ( ! is_user_logged_in() ) {
 			</div>
 
 			<div class="give-lost-password give-login">
-				<a href="<?php echo wp_lostpassword_url(); ?>" title="<?php esc_attr_e( 'Lost Password', 'give' ); ?>"><?php esc_html_e( 'Lost Password?', 'give' ); ?></a>
+				<a href="<?php echo wp_lostpassword_url(); ?>"><?php esc_html_e( 'Lost Password?', 'give' ); ?></a>
 			</div>
 			<?php
 			/**
