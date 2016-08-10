@@ -402,6 +402,14 @@ function give_process_profile_editor_updates( $data ) {
 		'country' => $country
 	);
 
+	/**
+	 * Fires before updating user profile.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int   $user_id  The ID of the user.
+	 * @param array $userdata User info, including ID, first name, last name, display name and email.
+	 */
 	do_action( 'give_pre_update_user_profile', $user_id, $userdata );
 
 	// New password
@@ -434,6 +442,15 @@ function give_process_profile_editor_updates( $data ) {
 	$updated = wp_update_user( $userdata );
 
 	if ( $updated ) {
+
+		/**
+		 * Fires after updating user profile.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int   $user_id  The ID of the user.
+		 * @param array $userdata User info, including ID, first name, last name, display name and email.
+		 */
 		do_action( 'give_user_profile_updated', $user_id, $userdata );
 		wp_redirect( add_query_arg( 'updated', 'true', $data['give_redirect'] ) );
 		give_die();

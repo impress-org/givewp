@@ -45,34 +45,42 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! class_exists( 'Give' ) ) :
+
 	/**
-	 * Main Give Class.
+	 * Main Give Class
 	 *
 	 * @since 1.0
 	 */
 	final class Give {
 		/** Singleton *************************************************************/
 
-
 		/**
-		 * @var Give The one true Give.
-		 * @since 1.0
+		 * Give Instance
+		 *
+		 * @since  1.0
+		 * @access private
+		 *
+		 * @var    Give The one true Give
 		 */
 		private static $instance;
 
 		/**
-		 * Give Roles Object.
+		 * Give Roles Object
 		 *
-		 * @var Give_Roles object
-		 * @since 1.0
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_Roles object
 		 */
 		public $roles;
 
 		/**
-		 * Give Settings Object.
+		 * Give Settings Object
 		 *
-		 * @var Give_Plugin_Settings object
-		 * @since 1.0
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_Plugin_Settings object
 		 */
 		public $give_settings;
 
@@ -81,89 +89,109 @@ if ( ! class_exists( 'Give' ) ) :
 		 *
 		 * This holds donation data for user's session.
 		 *
-		 * @var Give_Session object
-		 * @since 1.0
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_Session object
 		 */
 		public $session;
 
 		/**
-		 * Give HTML Element Helper Object.
+		 * Give HTML Element Helper Object
 		 *
-		 * @var Give_HTML_Elements object
-		 * @since 1.0
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_HTML_Elements object
 		 */
 		public $html;
-
 
 		/**
 		 * Give Emails Object
 		 *
-		 * @var Give_Emails object
-		 * @since 1.0
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_Emails object
 		 */
 		public $emails;
 
 		/**
-		 * Give Email Template Tags Object.
+		 * Give Email Template Tags Object
 		 *
-		 * @var Give_Email_Template_Tags object
-		 * @since 1.0
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_Email_Template_Tags object
 		 */
 		public $email_tags;
 
 		/**
-		 * Give Customers DB Object.
+		 * Give Customers DB Object
 		 *
-		 * @var object|Give_DB_Customers object
-		 * @since 1.0
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_DB_Customers object
 		 */
 		public $customers;
 
 		/**
-		 * Give Customer meta DB Object.
+		 * Give Customer meta DB Object
 		 *
-		 * @var object|Give_DB_Customer_Meta
-		 * @since 1.6
+		 * @since  1.6
+		 * @access public
+		 *
+		 * @var    Give_DB_Customer_Meta object
 		 */
 		public $customer_meta;
 
 		/**
-		 * Give API Object.
+		 * Give API Object
 		 *
-		 * @var Give_API object
-		 * @since 1.1
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_API object
 		 */
 		public $api;
 
 		/**
-		 * Give Template Loader Object.
+		 * Give Template Loader Object
 		 *
-		 * @var Give_Template_Loader object
-		 * @since 1.0
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_Template_Loader object
 		 */
 		public $template_loader;
 
 		/**
 		 * Give No Login Object
 		 *
-		 * @var Give_Email_Access object
-		 * @since 1.0
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_Email_Access object
 		 */
 		public $email_access;
 
 		/**
-		 * Main Give Instance.
+		 * Main Give Instance
 		 *
 		 * Insures that only one instance of Give exists in memory at any one
 		 * time. Also prevents needing to define globals all over the place.
 		 *
 		 * @since     1.0
+		 * @access    public
+		 *
 		 * @static
 		 * @staticvar array $instance
 		 * @uses      Give::setup_constants() Setup the constants needed.
 		 * @uses      Give::includes() Include the required files.
 		 * @uses      Give::load_textdomain() load the language files.
 		 * @see       Give()
+		 *
 		 * @return    Give
 		 */
 		public static function instance() {
@@ -199,6 +227,7 @@ if ( ! class_exists( 'Give' ) ) :
 		 *
 		 * @since  1.0
 		 * @access protected
+		 *
 		 * @return void
 		 */
 		public function __clone() {
@@ -211,6 +240,7 @@ if ( ! class_exists( 'Give' ) ) :
 		 *
 		 * @since  1.0
 		 * @access protected
+		 *
 		 * @return void
 		 */
 		public function __wakeup() {
@@ -219,10 +249,11 @@ if ( ! class_exists( 'Give' ) ) :
 		}
 
 		/**
-		 * Setup plugin constants.
+		 * Setup plugin constants
 		 *
-		 * @access private
 		 * @since  1.0
+		 * @access private
+		 *
 		 * @return void
 		 */
 		private function setup_constants() {
@@ -259,10 +290,11 @@ if ( ! class_exists( 'Give' ) ) :
 		}
 
 		/**
-		 * Include required files.
+		 * Include required files
 		 *
-		 * @access private
 		 * @since  1.0
+		 * @access private
+		 *
 		 * @return void
 		 */
 		private function includes() {
@@ -376,10 +408,11 @@ if ( ! class_exists( 'Give' ) ) :
 		}
 
 		/**
-		 * Loads the plugin language files.
+		 * Loads the plugin language files
 		 *
-		 * @access public
 		 * @since  1.0
+		 * @access public
+		 *
 		 * @return void
 		 */
 		public function load_textdomain() {
@@ -406,14 +439,15 @@ if ( ! class_exists( 'Give' ) ) :
 				load_plugin_textdomain( 'give', false, $give_lang_dir );
 			}
 		}
+
 	}
 
 endif; // End if class_exists check
 
 
 /**
- * Start Give.
- *
+ * Start Give 
+ * 
  * The main function responsible for returning the one true Give instance to functions everywhere.
  *
  * Use this function like you would a global variable, except without needing
@@ -422,7 +456,7 @@ endif; // End if class_exists check
  * Example: <?php $give = Give(); ?>
  *
  * @since 1.0
- * @return object|Give
+ * @return object|Give 
  */
 function Give() {
 	return Give::instance();

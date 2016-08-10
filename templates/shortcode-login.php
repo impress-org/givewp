@@ -10,7 +10,16 @@ if ( ! is_user_logged_in() ) {
 	<form id="give-login-form" class="give-form" action="" method="post">
 		<fieldset>
 			<legend><?php esc_html_e( 'Log into Your Account', 'give' ); ?></legend>
-			<?php do_action( 'give_login_fields_before' ); ?>
+			<?php
+			/**
+			 * Fires in the login shortcode, before the login fields.
+			 *
+			 * Allows you to add new fields before the default fields.
+			 *
+			 * @since 1.0
+			 */
+			do_action( 'give_login_fields_before' );
+			?>
 			<div class="give-login-username give-login">
 				<label for="give_user_login"><?php esc_html_e( 'Username', 'give' ); ?></label>
 				<input name="give_user_login" id="give_user_login" class="give-required give-input" type="text" title="<?php esc_attr_e( 'Username', 'give' ); ?>" />
@@ -30,7 +39,16 @@ if ( ! is_user_logged_in() ) {
 			<div class="give-lost-password give-login">
 				<a href="<?php echo wp_lostpassword_url(); ?>" title="<?php esc_attr_e( 'Lost Password', 'give' ); ?>"><?php esc_html_e( 'Lost Password?', 'give' ); ?></a>
 			</div>
-			<?php do_action( 'give_login_fields_after' ); ?>
+			<?php
+			/**
+			 * Fires in the login shortcode, after the login fields.
+			 *
+			 * Allows you to add new fields after the default fields.
+			 *
+			 * @since 1.0
+			 */
+			do_action( 'give_login_fields_after' );
+			?>
 		</fieldset>
 	</form>
 <?php } elseif( isset( $_GET['give-login-success'] ) && $_GET['give-login-success'] == true ) { ?>

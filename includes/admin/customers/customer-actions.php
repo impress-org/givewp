@@ -126,6 +126,16 @@ function give_edit_customer( $args ) {
 	$customer_data = array_map( 'sanitize_text_field', $customer_data );
 	$address       = array_map( 'sanitize_text_field', $address );
 
+
+	/**
+	 * Fires before editing customer.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int   $customer_id   The ID of the customer.
+	 * @param array $customer_data The customer data.
+	 * @param array $address       The customer address.
+	 */
 	do_action( 'give_pre_edit_customer', $customer_id, $customer_data, $address );
 
 	$output         = array();
@@ -162,6 +172,14 @@ function give_edit_customer( $args ) {
 
 	}
 
+	/**
+	 * Fires after editing customer.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int   $customer_id   The ID of the customer.
+	 * @param array $customer_data The customer data.
+	 */
 	do_action( 'give_post_edit_customer', $customer_id, $customer_data );
 
 	if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
@@ -216,6 +234,14 @@ function give_customer_save_note( $args ) {
 	$customer = new Give_Customer( $customer_id );
 	$new_note = $customer->add_note( $customer_note );
 
+	/**
+	 * Fires before inserting customer note.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int    $customer_id The ID of the customer.
+	 * @param string $new_note    Note content.
+	 */
 	do_action( 'give_pre_insert_customer_note', $customer_id, $new_note );
 
 	if ( ! empty( $new_note ) && ! empty( $customer->id ) ) {
@@ -287,6 +313,15 @@ function give_customer_delete( $args ) {
 
 	$customer = new Give_Customer( $customer_id );
 
+	/**
+	 * Fires before deleting customer.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int  $customer_id The ID of the customer.
+	 * @param bool $confirm     Delete confirmation.
+	 * @param bool $remove_data Records delete confirmation.
+	 */
 	do_action( 'give_pre_delete_customer', $customer_id, $confirm, $remove_data );
 
 	$success = false;
@@ -370,7 +405,17 @@ function give_disconnect_customer_user_id( $args ) {
 		return false;
 	}
 
-	do_action( 'give_pre_customer_disconnect_user_id', $customer_id, $customer->user_id );
+	$user_id = $customer->user_id;
+
+	/**
+	 * Fires before disconnecting user ID from a donor.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int $customer_id The ID of the customer.
+	 * @param int $user_id     The ID of the user.
+	 */
+	do_action( 'give_pre_customer_disconnect_user_id', $customer_id, $user_id );
 
 	$customer_args = array( 'user_id' => 0 );
 
@@ -389,6 +434,13 @@ function give_disconnect_customer_user_id( $args ) {
 		give_set_error( 'give-disconnect-user-fail', esc_html__( 'Failed to disconnect user from donor.', 'give' ) );
 	}
 
+	/**
+	 * Fires after disconnecting user ID from a donor.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int $customer_id The ID of the customer.
+	 */
 	do_action( 'give_post_customer_disconnect_user_id', $customer_id );
 
 	if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {

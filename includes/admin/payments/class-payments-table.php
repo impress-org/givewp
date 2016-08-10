@@ -180,7 +180,16 @@ class Give_Payment_History_Table extends WP_List_Table {
 		}
 		?>
 		<p class="search-box">
-			<?php do_action( 'give_payment_history_search' ); ?>
+			<?php
+			/**
+			 * Fires in the payment history search box.
+			 *
+			 * Allows you to add new elements before the search box.
+			 *
+			 * @since 1.0
+			 */
+			do_action( 'give_payment_history_search' );
+			?>
 			<label class="screen-reader-text" for="<?php echo $input_id ?>"><?php echo $text; ?>:</label>
 			<input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>"/>
 			<?php submit_button( $text, 'button', false, false, array( 'ID' => 'search-submit' ) ); ?><br/>
@@ -535,6 +544,14 @@ class Give_Payment_History_Table extends WP_List_Table {
 					break;
 			}
 
+			/**
+			 * Fires after triggering bulk action on payments table.
+			 *
+			 * @since 1.0
+			 *
+			 * @param int    $id             The ID of the payment.
+			 * @param string $current_action The action that is being triggered.
+			 */
 			do_action( 'give_payments_table_do_bulk_action', $id, $this->current_action() );
 		}
 

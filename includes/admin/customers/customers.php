@@ -74,7 +74,14 @@ function give_customers_list() {
 	?>
 	<div class="wrap">
 		<h1><?php esc_html_e( 'Donors', 'give' ); ?></h1>
-		<?php do_action( 'give_donors_table_top' ); ?>
+		<?php
+		/**
+		 * Fires in donors screen, above the table.
+		 *
+		 * @since 1.0
+		 */
+		do_action( 'give_donors_table_top' );
+		?>
 		<form id="give-donors-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors' ); ?>">
 			<?php
 			$customers_table->search_box( esc_html__( 'Search Donors', 'give' ), 'give-donors' );
@@ -84,7 +91,14 @@ function give_customers_list() {
 			<input type="hidden" name="page" value="give-donors" />
 			<input type="hidden" name="view" value="customers" />
 		</form>
-		<?php do_action( 'give_donors_table_bottom' ); ?>
+		<?php
+		/**
+		 * Fires in donors screen, below the table.
+		 *
+		 * @since 1.0
+		 */
+		do_action( 'give_donors_table_bottom' );
+		?>
 	</div>
 	<?php
 }
@@ -176,7 +190,7 @@ function give_render_customer_view( $view, $callbacks ) {
  *
  * @since  1.0
  *
- * @param  $customer The Customer object being displayed
+ * @param  object $customer The Customer object being displayed.
  *
  * @return void
  */
@@ -184,16 +198,21 @@ function give_customers_view( $customer ) {
 
 	$customer_edit_role = apply_filters( 'give_edit_customers_role', 'edit_give_payments' );
 
+	/**
+	 * Fires in donor profile screen, above the donor card.
+	 *
+	 * @since 1.0
+	 *
+	 * @param object $customer The customer object being displayed.
+	 */
+	do_action( 'give_donor_card_top', $customer );
 	?>
-
-	<?php do_action( 'give_donor_card_top', $customer ); ?>
 
 	<div id="donor-summary" class="info-wrapper customer-section postbox">
 
 		<form id="edit-customer-info" method="post" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $customer->id ); ?>">
 
 			<div class="customer-info">
-
 
 				<div class="donor-bio-header clearfix">
 
@@ -343,7 +362,6 @@ function give_customers_view( $customer ) {
 
 				</div>
 
-
 			</div>
 
 			<span id="customer-edit-actions" class="edit-item">
@@ -355,9 +373,19 @@ function give_customers_view( $customer ) {
 			</span>
 
 		</form>
+
 	</div>
 
-	<?php do_action( 'give_donor_before_stats', $customer ); ?>
+	<?php
+	/**
+	 * Fires in donor profile screen, above the stats list.
+	 *
+	 * @since 1.0
+	 *
+	 * @param object $customer The customer object being displayed.
+	 */
+	do_action( 'give_donor_before_stats', $customer );
+	?>
 
 	<div id="customer-stats-wrapper" class="customer-section postbox clear">
 		<ul>
@@ -375,15 +403,44 @@ function give_customers_view( $customer ) {
 				<span class="dashicons dashicons-chart-area"></span>
 				<?php echo give_currency_filter( give_format_amount( $customer->purchase_value ) ); ?> <?php esc_html_e( 'Lifetime Donations', 'give' ); ?>
 			</li>
-			<?php do_action( 'give_donor_stats_list', $customer ); ?>
+			<?php
+			/**
+			 * Fires in donor profile screen, in the stats list.
+			 *
+			 * Allows you to add more list items to the stats list.
+			 *
+			 * @since 1.0
+			 *
+			 * @param object $customer The customer object being displayed.
+			 */
+			do_action( 'give_donor_stats_list', $customer );
+			?>
 		</ul>
 	</div>
 
-	<?php do_action( 'give_donor_before_tables_wrapper', $customer ); ?>
+	<?php
+	/**
+	 * Fires in donor profile screen, above the tables wrapper.
+	 *
+	 * @since 1.0
+	 *
+	 * @param object $customer The customer object being displayed.
+	 */
+	do_action( 'give_donor_before_tables_wrapper', $customer );
+	?>
 
 	<div id="customer-tables-wrapper" class="customer-section">
 
-		<?php do_action( 'give_donor_before_tables', $customer ); ?>
+		<?php
+		/**
+		 * Fires in donor profile screen, above the tables.
+		 *
+		 * @since 1.0
+		 *
+		 * @param object $customer The customer object being displayed.
+		 */
+		do_action( 'give_donor_before_tables', $customer );
+		?>
 
 		<h3><?php esc_html_e( 'Recent Donations', 'give' ); ?></h3>
 		<?php
@@ -414,7 +471,19 @@ function give_customers_view( $customer ) {
 							echo ' ' . $payment->ID; ?>" href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $payment->ID ); ?>">
 								<?php esc_html_e( 'View Details', 'give' ); ?>
 							</a>
-							<?php do_action( 'give_donor_recent_purchases_actions', $customer, $payment ); ?>
+							<?php
+							/**
+							 * Fires in donor profile screen, in the recent donations tables action links.
+							 *
+							 * Allows you to add more action links for each payment, after the 'View Details' action link.
+							 *
+							 * @since 1.0
+							 *
+							 * @param object $customer The customer object being displayed.
+							 * @param object $payment  The payment object being displayed.
+							 */
+							do_action( 'give_donor_recent_purchases_actions', $customer, $payment );
+							?>
 						</td>
 					</tr>
 				<?php endforeach; ?>
@@ -469,13 +538,29 @@ function give_customers_view( $customer ) {
 			</tbody>
 		</table>
 
-		<?php do_action( 'give_donor_after_tables', $customer ); ?>
+		<?php
+		/**
+		 * Fires in donor profile screen, below the tables.
+		 *
+		 * @since 1.0
+		 *
+		 * @param object $customer The customer object being displayed.
+		 */
+		do_action( 'give_donor_after_tables', $customer );
+		?>
 
 	</div>
 
-	<?php do_action( 'give_donor_card_bottom', $customer ); ?>
-
 	<?php
+	/**
+	 * Fires in donor profile screen, below the donor card.
+	 *
+	 * @since 1.0
+	 *
+	 * @param object $customer The customer object being displayed.
+	 */
+	do_action( 'give_donor_card_bottom', $customer );
+
 }
 
 /**
@@ -483,7 +568,7 @@ function give_customers_view( $customer ) {
  *
  * @since  1.0
  *
- * @param  $customer The Donor being displayed
+ * @param  object $customer The customer object being displayed.
  *
  * @return void
  */
@@ -551,13 +636,28 @@ function give_customer_notes_view( $customer ) {
 	<?php
 }
 
+/**
+ * Thw customer delete view
+ *
+ * @since  1.0
+ *
+ * @param  object $customer The customer object being displayed.
+ *
+ * @return void
+ */
 function give_customers_delete_view( $customer ) {
 
 	$customer_edit_role = apply_filters( 'give_edit_customers_role', 'edit_give_payments' );
 
+	/**
+	 * Fires in donor delete screen, above the content.
+	 *
+	 * @since 1.0
+	 *
+	 * @param object $customer The customer object being displayed.
+	 */
+	do_action( 'give_customer_delete_top', $customer );
 	?>
-
-	<?php do_action( 'give_customer_delete_top', $customer ); ?>
 
 	<div class="info-wrapper customer-section">
 
@@ -584,7 +684,18 @@ function give_customers_delete_view( $customer ) {
 						<label for="give-customer-delete-records"><?php esc_html_e( 'Delete all associated payments and records?', 'give' ); ?></label>
 					</p>
 
-					<?php do_action( 'give_customer_delete_inputs', $customer ); ?>
+					<?php
+					/**
+					 * Fires in donor delete screen, bellow the delete inputs.
+					 *
+					 * Allows you to add custom delete inputs.
+					 *
+					 * @since 1.0
+					 *
+					 * @param object $customer The customer object being displayed.
+					 */
+					do_action( 'give_customer_delete_inputs', $customer );
+					?>
 				</span>
 
 				<span id="customer-edit-actions">
@@ -601,6 +712,12 @@ function give_customers_delete_view( $customer ) {
 	</div>
 
 	<?php
-
+	/**
+	 * Fires in donor delete screen, bellow the content.
+	 *
+	 * @since 1.0
+	 *
+	 * @param object $customer The customer object being displayed.
+	 */
 	do_action( 'give_customer_delete_bottom', $customer );
 }

@@ -1239,7 +1239,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 /**
  * Display the API Keys
  *
- * @since       2.0
+ * @since       1.0
  * @return      void
  */
 function give_api_callback() {
@@ -1248,6 +1248,11 @@ function give_api_callback() {
 		return;
 	}
 
+	/**
+	 * Fires before displaying API keys.
+	 *
+	 * @since 1.0
+	 */
 	do_action( 'give_tools_api_keys_before' );
 
 	require_once GIVE_PLUGIN_DIR . 'includes/admin/class-api-keys-table.php';
@@ -1266,6 +1271,11 @@ function give_api_callback() {
 	</span>
 	<?php
 
+	/**
+	 * Fires after displaying API keys.
+	 *
+	 * @since 1.0
+	 */
 	do_action( 'give_tools_api_keys_after' );
 }
 

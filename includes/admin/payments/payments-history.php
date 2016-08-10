@@ -37,7 +37,14 @@ function give_payment_history_page() {
 
 		<h1><?php echo $give_payment->labels->menu_name ?></h1>
 
-		<?php do_action( 'give_payments_page_top' ); ?>
+		<?php
+		/**
+		 * Fires in payment history screen, at the top of the page.
+		 *
+		 * @since 1.0
+		 */
+		do_action( 'give_payments_page_top' );
+		?>
 
 		<form id="give-payments-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ); ?>">
 			<input type="hidden" name="post_type" value="give_forms" />
@@ -47,7 +54,14 @@ function give_payment_history_page() {
 			<?php $payments_table->display() ?>
 		</form>
 
-		<?php do_action( 'give_payments_page_bottom' ); ?>
+		<?php
+		/**
+		 * Fires in payment history screen, at the bottom of the page.
+		 *
+		 * @since 1.0
+		 */
+		do_action( 'give_payments_page_bottom' );
+		?>
 
 	</div>
 <?php

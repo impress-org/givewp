@@ -73,6 +73,13 @@ function give_update_payment_details( $data ) {
 	$curr_customer_id = sanitize_text_field( $data['give-current-customer'] );
 	$new_customer_id  = sanitize_text_field( $data['customer-id'] );
 
+	/**
+	 * Fires before updating edited purchase.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int $payment_id The ID of the payment.
+	 */
 	do_action( 'give_update_edited_purchase', $payment_id );
 
 	$payment->date = $date;
@@ -281,6 +288,13 @@ function give_update_payment_details( $data ) {
         $payment->update_payment_setup( $payment->ID );
     }
 
+	/**
+	 * Fires after updating edited purchase.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int $payment_id The ID of the payment.
+	 */
 	do_action( 'give_updated_edited_purchase', $payment_id );
 
 	wp_safe_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&give-message=payment-updated&id=' . $payment_id ) );

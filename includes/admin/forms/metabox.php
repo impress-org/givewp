@@ -440,7 +440,19 @@ function give_cmb_render_levels_repeater_header() {
 			<div class="table-cell col-amount"><?php esc_html_e( 'Amount', 'give' ); ?></div>
 			<div class="table-cell col-text"><?php esc_html_e( 'Text', 'give' ); ?></div>
 			<div class="table-cell col-default"><?php esc_html_e( 'Default', 'give' ); ?></div>
-			<?php do_action( 'give_donation_levels_table_head' ); ?>
+			<?php
+			/**
+			 * Fires in repeatable donation levels table head.
+			 *
+			 * When selecting the "Multi-level Donation" options, the user see a repeatable fields.
+			 * The field is a table with four headers: Amount, Text, Default, Sort.
+			 * This action allows you to add more colomn headers to the donation levels table.
+			 * New header will be presented before the "Sort" header.
+			 *
+			 * @since 1.0
+			 */
+			do_action( 'give_donation_levels_table_head' );
+			?>
 			<div class="table-cell col-sort"><?php esc_html_e( 'Sort', 'give' ); ?></div>
 
 		</div>

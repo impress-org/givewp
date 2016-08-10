@@ -3,7 +3,7 @@
  * Donators Gravatars
  *
  * @package     Give
- * @subpackage  Classes/Donators
+ * @subpackage  Classes/Give_Donators_Gravatars
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
@@ -14,12 +14,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Give_Donators_Gravatars Class
+ *
+ * This class handles donators gravatars.
+ *
+ * @since 1.0
+ */
 class Give_Donators_Gravatars {
 
 	/**
-	 * Start your engines
+	 * Class Constructor
 	 *
-	 * @since 1.0
+	 * Set up the Give Donators Gravatars Class.
+	 *
+	 * @since  1.0
+	 * @access public
 	 *
 	 * @return void
 	 */
@@ -30,7 +40,8 @@ class Give_Donators_Gravatars {
 	/**
 	 * Setup the default hooks and actions
 	 *
-	 * @since 1.0
+	 * @since  1.0
+	 * @access private
 	 *
 	 * @return void
 	 */
@@ -44,13 +55,16 @@ class Give_Donators_Gravatars {
 	/**
 	 * Utility function to check if a gravatar exists for a given email or id
 	 *
-	 * @param int|string|object $id_or_email A user ID, email address, or comment object
+	 * @see: https://gist.github.com/justinph/5197810
 	 *
-	 * @return bool if the gravatar exists or not
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @param  int|string|object $id_or_email A user ID, email address, or comment object
+	 *
+	 * @return bool If the gravatar exists or not
 	 */
-
-	// https://gist.github.com/justinph/5197810
-	function validate_gravatar( $id_or_email ) {
+	public function validate_gravatar( $id_or_email ) {
 		//id or email code borrowed from wp-includes/pluggable.php
 		$email = '';
 		if ( is_numeric( $id_or_email ) ) {
@@ -103,12 +117,14 @@ class Give_Donators_Gravatars {
 	/**
 	 * Get an array of all the log IDs using the Give Logging Class
 	 *
-	 * @since 1.0
-	 * @return array if logs, false otherwise
+	 * @since  1.0
+	 * @access public
 	 *
-	 * @param int $form_id
+	 * @param  int $form_id Donation form id
+	 *
+	 * @return array        IDs if logs, false otherwise
 	 */
-	function get_log_ids( $form_id = '' ) {
+	public function get_log_ids( $form_id = '' ) {
 
 		// get Give_Logging class
 		global $give_logs;
@@ -129,13 +145,17 @@ class Give_Donators_Gravatars {
 
 	}
 
-
 	/**
 	 * Get payment ID
 	 *
-	 * @since 1.0
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @param  int $form_id Donation form id
+	 *
+	 * @return mixed
 	 */
-	function get_payment_ids( $form_id = '' ) {
+	public function get_payment_ids( $form_id = '' ) {
 
 		global $give_options;
 
@@ -187,13 +207,18 @@ class Give_Donators_Gravatars {
 
 	}
 
-
 	/**
 	 * Gravatars
 	 *
-	 * @since 1.0
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @param  int    $form_id Donation form id.
+	 * @param  string $title   Donators gravatars title.
+	 *
+	 * @return string
 	 */
-	function gravatars( $form_id = false, $title = '' ) {
+	public function gravatars( $form_id = false, $title = '' ) {
 
 		// unique $payment_ids 
 		$payment_ids = $this->get_payment_ids( $form_id );
@@ -278,19 +303,29 @@ class Give_Donators_Gravatars {
 	/**
 	 * Register widget
 	 *
-	 * @since 1.0
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @return void
 	 */
-	function register_widget() {
+	public function register_widget() {
 		register_widget( 'Give_Donators_Gravatars_Widget' );
 	}
 
 	/**
 	 * Shortcode
 	 *
-	 * @since 1.0
-	 * @todo  set the ID to get_the_ID() if ID parameter is not passed through. Otherwise it will incorrectly get other gravatars
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @param  array  $atts    Shortcode attribures.
+	 * @param  string $content Shortcode content.
+	 *
+	 * @return string
+	 *
+	 * @todo   Set the ID to get_the_ID() if ID parameter is not passed through. Otherwise it will incorrectly get other gravatars
 	 */
-	function shortcode( $atts, $content = null ) {
+	public function shortcode( $atts, $content = null ) {
 
 		$atts = shortcode_atts( array(
 			'id'    => '',
@@ -311,9 +346,14 @@ class Give_Donators_Gravatars {
 	/**
 	 * Settings
 	 *
-	 * @since 1.0
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @param  array $settings Gravatar settings.
+	 *
+	 * @return array           Gravatar settings.
 	 */
-	function settings( $settings ) {
+	public function settings( $settings ) {
 
 		$give_gravatar_settings = array(
 			array(
@@ -370,14 +410,21 @@ class Give_Donators_Gravatars {
 
 
 /**
- * Widget
+ * Give_Donators_Gravatars_Widget Class
+ *
+ * This class handles donators gravatars
  *
  * @since 1.0
  */
 class Give_Donators_Gravatars_Widget extends WP_Widget {
 
-	/*
-	 * widget constructor
+	/**
+	 * Widget constructor
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @return void
 	 */
 	public function __construct() {
 
@@ -405,13 +452,22 @@ class Give_Donators_Gravatars_Widget extends WP_Widget {
 			$control_ops
 		);
 
-	} // end constructor
+	}
 
-
-	/*
+	/**
+	 * Donators gravatars widget content
+	 *
 	 * Outputs the content of the widget
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @param  array $args     Display arguments including 'before_title', 'after_title', 'before_widget', and 'after_widget'.
+	 * @param  array $instance Settings for the current Links widget instance.
+	 *
+	 * @return void
 	 */
-	function widget( $args, $instance ) {
+	public function widget( $args, $instance ) {
 		global $give_options;
 
 		//@TODO: Don't extract it!!!
@@ -439,12 +495,22 @@ class Give_Donators_Gravatars_Widget extends WP_Widget {
 		// Used by themes. Closes the widget
 		echo $after_widget;
 
-	} // end WIDGET function
+	}
 
-	/*
-	 * Update function. Processes widget options to be saved
+	/**
+	 * Update donators gravatars
+	 *
+	 * Processes widget options to be saved.
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @param  array $new_instance New settings for this instance as input by the user via WP_Widget::form().
+	 * @param  array $old_instance Old settings for this instance.
+	 *
+	 * @return array Updated settings to save.
 	 */
-	function update( $new_instance, $old_instance ) {
+	public function update( $new_instance, $old_instance ) {
 
 		$instance = $old_instance;
 
@@ -452,12 +518,21 @@ class Give_Donators_Gravatars_Widget extends WP_Widget {
 
 		return $instance;
 
-	} // end UPDATE function
+	}
 
-	/*
-	 * Form function. Displays the actual form on the widget page
+	/**
+	 * Output donators gravatars
+	 *
+	 * Displays the actual form on the widget page.
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @param  array $instance Current settings.
+	 *
+	 * @return void
 	 */
-	function form( $instance ) {
+	public function form( $instance ) {
 
 		// Set up some default widget settings.
 		$defaults = array(
@@ -472,8 +547,7 @@ class Give_Donators_Gravatars_Widget extends WP_Widget {
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo $instance['title']; ?>" />
 		</p>
 
-
 		<?php
-	} // end FORM function
+	}
 
 }

@@ -2,41 +2,32 @@
 /**
  * Payments
  *
- * This class is for working with payments in Give.
- *
  * @package     Give
- * @subpackage  Classes/Payment
+ * @subpackage  Classes/Give_Payment
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.5
  */
-
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-
 /**
  * Give_Payment Class
+ *
+ * This class is for working with payments in Give.
  *
  * @since 1.5
  */
 final class Give_Payment {
 
 	/**
-	 * The Payment we are working with
-	 *
-	 * @var int
-	 * @access private
-	 * @since 1.0
-	 */
-
-	/**
 	 * The Payment ID
 	 *
 	 * @since  1.5
+	 *
 	 * @var    integer
 	 */
 	public $ID = 0;
@@ -46,7 +37,9 @@ final class Give_Payment {
 	 * Identify if the payment is a new one or existing
 	 *
 	 * @since  1.5
-	 * @var boolean
+	 * @access protected
+	 *
+	 * @var    boolean
 	 */
 	protected $new = false;
 
@@ -54,7 +47,9 @@ final class Give_Payment {
 	 * The Payment number (for use with sequential payments)
 	 *
 	 * @since  1.5
-	 * @var string
+	 * @access protected
+	 *
+	 * @var    string
 	 */
 	protected $number = '';
 
@@ -62,7 +57,9 @@ final class Give_Payment {
 	 * The Gateway mode the payment was made in
 	 *
 	 * @since  1.5
-	 * @var string
+	 * @access protected
+	 *
+	 * @var    string
 	 */
 	protected $mode = 'live';
 
@@ -70,7 +67,9 @@ final class Give_Payment {
 	 * The Unique Payment Key
 	 *
 	 * @since  1.5
-	 * @var string
+	 * @access protected
+	 *
+	 * @var    string
 	 */
 	protected $key = '';
 
@@ -78,7 +77,9 @@ final class Give_Payment {
 	 * The Donation Form Title
 	 *
 	 * @since  1.5
-	 * @var string
+	 * @access protected
+	 *
+	 * @var    string
 	 */
 	protected $form_title = 0;
 
@@ -86,7 +87,9 @@ final class Give_Payment {
 	 * The Donation Form ID
 	 *
 	 * @since  1.5
-	 * @var string
+	 * @access protected
+	 *
+	 * @var    string
 	 */
 	protected $form_id = 0;
 
@@ -94,7 +97,9 @@ final class Give_Payment {
 	 * The Donation Form Price ID
 	 *
 	 * @since  1.5
-	 * @var string
+	 * @access protected
+	 *
+	 * @var    string
 	 */
 	protected $price_id = 0;
 
@@ -103,7 +108,9 @@ final class Give_Payment {
 	 * Includes donation amount and fees
 	 *
 	 * @since  1.5
-	 * @var float
+	 * @access protected
+	 *
+	 * @var    float
 	 */
 	protected $total = 0.00;
 
@@ -111,7 +118,9 @@ final class Give_Payment {
 	 * The Subtotal fo the payment before fees
 	 *
 	 * @since  1.5
-	 * @var float
+	 * @access protected
+	 *
+	 * @var    float
 	 */
 	protected $subtotal = 0;
 
@@ -119,7 +128,9 @@ final class Give_Payment {
 	 * Array of global fees for this payment
 	 *
 	 * @since  1.5
-	 * @var array
+	 * @access protected
+	 *
+	 * @var    array
 	 */
 	protected $fees = array();
 
@@ -127,7 +138,9 @@ final class Give_Payment {
 	 * The sum of the fee amounts
 	 *
 	 * @since  1.5
-	 * @var float
+	 * @access protected
+	 *
+	 * @var    float
 	 */
 	protected $fees_total = 0;
 
@@ -135,7 +148,9 @@ final class Give_Payment {
 	 * The date the payment was created
 	 *
 	 * @since  1.5
-	 * @var string
+	 * @access protected
+	 *
+	 * @var    string
 	 */
 	protected $date = '';
 	protected $post_date = '';
@@ -144,7 +159,9 @@ final class Give_Payment {
 	 * The date the payment was marked as 'complete'
 	 *
 	 * @since  1.5
-	 * @var string
+	 * @access protected
+	 *
+	 * @var    string
 	 */
 	protected $completed_date = '';
 
@@ -152,7 +169,9 @@ final class Give_Payment {
 	 * The status of the payment
 	 *
 	 * @since  1.5
-	 * @var string
+	 * @access protected
+	 *
+	 * @var    string
 	 */
 	protected $status = 'pending';
 	protected $post_status = 'pending'; // Same as $status but here for backwards compat
@@ -161,7 +180,9 @@ final class Give_Payment {
 	 * When updating, the old status prior to the change
 	 *
 	 * @since  1.5
-	 * @var string
+	 * @access protected
+	 *
+	 * @var    string
 	 */
 	protected $old_status = '';
 
@@ -169,7 +190,9 @@ final class Give_Payment {
 	 * The display name of the current payment status
 	 *
 	 * @since  1.5
-	 * @var string
+	 * @access protected
+	 *
+	 * @var    string
 	 */
 	protected $status_nicename = '';
 
@@ -177,7 +200,9 @@ final class Give_Payment {
 	 * The customer ID that made the payment
 	 *
 	 * @since  1.5
-	 * @var integer
+	 * @access protected
+	 *
+	 * @var    integer
 	 */
 	protected $customer_id = null;
 
@@ -185,7 +210,9 @@ final class Give_Payment {
 	 * The User ID (if logged in) that made the payment
 	 *
 	 * @since  1.5
-	 * @var integer
+	 * @access protected
+	 *
+	 * @var    integer
 	 */
 	protected $user_id = 0;
 
@@ -193,7 +220,9 @@ final class Give_Payment {
 	 * The first name of the payee
 	 *
 	 * @since  1.5
-	 * @var string
+	 * @access protected
+	 *
+	 * @var    string
 	 */
 	protected $first_name = '';
 
@@ -201,7 +230,9 @@ final class Give_Payment {
 	 * The last name of the payee
 	 *
 	 * @since  1.5
-	 * @var string
+	 * @access protected
+	 *
+	 * @var    string
 	 */
 	protected $last_name = '';
 
@@ -209,7 +240,9 @@ final class Give_Payment {
 	 * The email used for the payment
 	 *
 	 * @since  1.5
-	 * @var string
+	 * @access protected
+	 *
+	 * @var    string
 	 */
 	protected $email = '';
 
@@ -217,7 +250,9 @@ final class Give_Payment {
 	 * Legacy (not to be accessed) array of user information
 	 *
 	 * @since  1.5
-	 * @var array
+	 * @access private
+	 *
+	 * @var    array
 	 */
 	private $user_info = array();
 
@@ -225,7 +260,9 @@ final class Give_Payment {
 	 * Legacy (not to be accessed) payment meta array
 	 *
 	 * @since  1.5
-	 * @var array
+	 * @access private
+	 *
+	 * @var    array
 	 */
 	private $payment_meta = array();
 
@@ -233,7 +270,9 @@ final class Give_Payment {
 	 * The physical address used for the payment if provided
 	 *
 	 * @since  1.5
-	 * @var array
+	 * @access protected
+	 *
+	 * @var    array
 	 */
 	protected $address = array();
 
@@ -241,7 +280,9 @@ final class Give_Payment {
 	 * The transaction ID returned by the gateway
 	 *
 	 * @since  1.5
-	 * @var string
+	 * @access protected
+	 *
+	 * @var    string
 	 */
 	protected $transaction_id = '';
 
@@ -249,7 +290,9 @@ final class Give_Payment {
 	 * IP Address payment was made from
 	 *
 	 * @since  1.5
-	 * @var string
+	 * @access protected
+	 *
+	 * @var    string
 	 */
 	protected $ip = '';
 
@@ -257,7 +300,9 @@ final class Give_Payment {
 	 * The gateway used to process the payment
 	 *
 	 * @since  1.5
-	 * @var string
+	 * @access protected
+	 *
+	 * @var    string
 	 */
 	protected $gateway = '';
 
@@ -265,7 +310,9 @@ final class Give_Payment {
 	 * The the payment was made with
 	 *
 	 * @since  1.5
-	 * @var string
+	 * @access protected
+	 *
+	 * @var    string
 	 */
 	protected $currency = '';
 
@@ -274,7 +321,9 @@ final class Give_Payment {
 	 * This is for internal use, to allow fewer update_payment_meta calls to be run
 	 *
 	 * @since  1.5
-	 * @var array
+	 * @access private
+	 *
+	 * @var    array
 	 */
 	private $pending;
 
@@ -282,16 +331,19 @@ final class Give_Payment {
 	 * The parent payment (if applicable)
 	 *
 	 * @since  1.5
-	 * @var integer
+	 * @access protected
+	 *
+	 * @var    integer
 	 */
 	protected $parent_payment = 0;
 
 	/**
 	 * Setup the Give Payments class
 	 *
-	 * @since 1.0
+	 * @since  1.0
+	 * @access public
 	 *
-	 * @param int $payment_id A given payment
+	 * @param  int   $payment_id A given payment
 	 *
 	 * @return mixed void|false
 	 */
@@ -308,6 +360,7 @@ final class Give_Payment {
 	 * Magic GET function
 	 *
 	 * @since  1.5
+	 * @access public
 	 *
 	 * @param  string $key The property
 	 *
@@ -334,9 +387,10 @@ final class Give_Payment {
 	 * Sets up the pending array for the save method
 	 *
 	 * @since  1.5
+	 * @access public
 	 *
-	 * @param string $key The property name
-	 * @param mixed $value The value of the property
+	 * @param  string $key The property name
+	 * @param  mixed $value The value of the property
 	 */
 	public function __set( $key, $value ) {
 		$ignore = array( '_ID' );
@@ -358,6 +412,7 @@ final class Give_Payment {
 	 * Magic ISSET function, which allows empty checks on protected elements
 	 *
 	 * @since  1.5
+	 * @access public
 	 *
 	 * @param  string $name The attribute to get
 	 *
@@ -375,6 +430,7 @@ final class Give_Payment {
 	 * Setup payment properties
 	 *
 	 * @since  1.5
+	 * @access private
 	 *
 	 * @param  int $payment_id The payment ID
 	 *
@@ -463,10 +519,10 @@ final class Give_Payment {
      * and you can still access payment meta old value in any old payment object ( previously created ) which can cause to show or save wrong payment data.
      * To prevent that user can use this function after updating any payment meta value ( in bulk or single update ).
      *  
-     * @since 1.6
+     * @since  1.6
      * @access public
      * 
-     * @param int $payment_id Payment ID.
+     * @param  int $payment_id Payment ID.
      * 
      * @return void
      */
@@ -478,6 +534,8 @@ final class Give_Payment {
 	 * Create the base of a payment.
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return int|bool False on failure, the payment ID on success.
 	 */
 	private function insert_payment() {
@@ -591,6 +649,8 @@ final class Give_Payment {
 	 * Save
 	 *
 	 * Once items have been set, an update is needed to save them to the database.
+	 *
+     * @access public
 	 *
 	 * @return bool  True of the save occurred, false if it failed or wasn't needed
 	 */
@@ -876,13 +936,14 @@ final class Give_Payment {
 	/**
 	 * Add a donation to a given payment
 	 *
-	 * @since 1.5
+	 * @since  1.5
+     * @access public
 	 *
-	 * @param int $form_id The donation form to add
-	 * @param array $args Other arguments to pass to the function
-	 * @param array $options List of donation options
+	 * @param  int   $form_id The donation form to add
+	 * @param  array $args    Other arguments to pass to the function
+	 * @param  array $options List of donation options
 	 *
-	 * @return bool True when successful, false otherwise
+	 * @return bool           True when successful, false otherwise
 	 */
 	public function add_donation( $form_id = 0, $args = array(), $options = array() ) {
 
@@ -972,11 +1033,12 @@ final class Give_Payment {
 	 * Remove a donation from the payment
 	 *
 	 * @since  1.5
+     * @access public
 	 *
-	 * @param  int $form_id The form ID to remove
-	 * @param  array $args Arguments to pass to identify (quantity, amount, price_id)
+	 * @param  int   $form_id The form ID to remove
+	 * @param  array $args    Arguments to pass to identify (quantity, amount, price_id)
 	 *
-	 * @return bool If the item was removed or not
+	 * @return bool           If the item was removed or not
 	 */
 	public function remove_donation( $form_id, $args = array() ) {
 
@@ -1013,11 +1075,12 @@ final class Give_Payment {
 	 * Add a fee to a given payment
 	 *
 	 * @since  1.5
+     * @access public
 	 *
-	 * @param  array $args Array of arguments for the fee to add
-	 * @param bool $global
+	 * @param  array $args   Array of arguments for the fee to add
+	 * @param  bool  $global
 	 *
-	 * @return bool If the fee was added
+	 * @return bool          If the fee was added
 	 */
 	public function add_fee( $args, $global = true ) {
 
@@ -1047,6 +1110,7 @@ final class Give_Payment {
 	 * Remove a fee from the payment
 	 *
 	 * @since  1.5
+     * @access public
 	 *
 	 * @param  int $key The array key index to remove
 	 *
@@ -1066,12 +1130,14 @@ final class Give_Payment {
 	 * Remove a fee by the defined attributed
 	 *
 	 * @since  1.5
+     * @access public
 	 *
-	 * @param  string $key The key to remove by
-	 * @param  int|string $value The value to search for
-	 * @param  boolean $global False - removes the first value it fines, True - removes all matches
+	 * @param  string     $key    The key to remove by
+	 * @param  int|string $value  The value to search for
+	 * @param  boolean    $global False - removes the first value it fines,
+	 *                            True - removes all matches.
 	 *
-	 * @return boolean             If the item is removed
+	 * @return boolean            If the item is removed
 	 */
 	public function remove_fee_by( $key, $value, $global = false ) {
 
@@ -1134,6 +1200,7 @@ final class Give_Payment {
 	 * Get the fees, filterable by type
 	 *
 	 * @since  1.5
+     * @access public
 	 *
 	 * @param  string $type All, item, fee
 	 *
@@ -1162,9 +1229,10 @@ final class Give_Payment {
 	/**
 	 * Add a note to a payment
 	 *
-	 * @since 1.0
+	 * @since  1.0
+     * @access public
 	 *
-	 * @param string $note The note to add
+	 * @param  string $note The note to add
 	 *
 	 * @return void
 	 */
@@ -1181,6 +1249,7 @@ final class Give_Payment {
 	 * Increase the payment's subtotal
 	 *
 	 * @since  1.5
+     * @access private
 	 *
 	 * @param  float $amount The amount to increase the payment subtotal by
 	 *
@@ -1197,6 +1266,7 @@ final class Give_Payment {
 	 * Decrease the payment's subtotal
 	 *
 	 * @since  1.5
+     * @access private
 	 *
 	 * @param  float $amount The amount to decrease the payment subtotal by
 	 *
@@ -1217,6 +1287,7 @@ final class Give_Payment {
 	 * Increase the payment's subtotal
 	 *
 	 * @since  1.5
+     * @access private
 	 *
 	 * @param  float $amount The amount to increase the payment subtotal by
 	 *
@@ -1233,6 +1304,7 @@ final class Give_Payment {
 	 * Decrease the payment's subtotal
 	 *
 	 * @since  1.5
+     * @access private
 	 *
 	 * @param  float $amount The amount to decrease the payment subtotal by
 	 *
@@ -1252,7 +1324,9 @@ final class Give_Payment {
 	/**
 	 * Set or update the total for a payment
 	 *
-	 * @since 1.0
+	 * @since  1.0
+     * @access private
+	 *
 	 * @return void
 	 */
 	private function recalculate_total() {
@@ -1262,11 +1336,12 @@ final class Give_Payment {
 	/**
 	 * Set the payment status and run any status specific changes necessary
 	 *
-	 * @since 1.0
+	 * @since  1.0
+     * @access public
 	 *
-	 * @param  string $status The status to set the payment to
+	 * @param  string $status  The status to set the payment to
 	 *
-	 * @return bool Returns if the status was successfully updated
+	 * @return bool   $updated Returns if the status was successfully updated
 	 */
 	public function update_status( $status = false ) {
 
@@ -1332,6 +1407,8 @@ final class Give_Payment {
 	 * Change the status of the payment to refunded, and run the necessary changes
 	 *
 	 * @since  1.5
+     * @access public
+	 *
 	 * @return void
 	 */
 	public function refund() {
@@ -1346,9 +1423,10 @@ final class Give_Payment {
 	 * Get a post meta item for the payment
 	 *
 	 * @since  1.5
+     * @access public
 	 *
-	 * @param  string $meta_key The Meta Key
-	 * @param  boolean $single Return single item or array
+	 * @param  string  $meta_key The Meta Key
+	 * @param  boolean $single   Return single item or array
 	 *
 	 * @return mixed             The value from the post meta
 	 */
@@ -1384,12 +1462,13 @@ final class Give_Payment {
 	 * Update the post meta
 	 *
 	 * @since  1.5
+     * @access public
 	 *
-	 * @param  string $meta_key The meta key to update
+	 * @param  string $meta_key   The meta key to update
 	 * @param  string $meta_value The meta value
 	 * @param  string $prev_value Previous meta value
 	 *
-	 * @return int|bool Meta ID if the key didn't exist, true on successful update, false on failure
+	 * @return int|bool           Meta ID if the key didn't exist, true on successful update, false on failure
 	 */
 	public function update_meta( $meta_key = '', $meta_value = '', $prev_value = '' ) {
 		if ( empty( $meta_key ) ) {
@@ -1427,6 +1506,7 @@ final class Give_Payment {
 	 *
 	 * @since  1.5
 	 * @access private
+	 *
 	 * @return void
 	 */
 	private function process_refund() {
@@ -1463,10 +1543,11 @@ final class Give_Payment {
 	 * Process when a payment is set to failed
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return void
 	 */
 	private function process_failure() {
-
 
 	}
 
@@ -1474,6 +1555,8 @@ final class Give_Payment {
 	 * Process when a payment moves to pending
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return void
 	 */
 	private function process_pending() {
@@ -1509,6 +1592,8 @@ final class Give_Payment {
      * Process when a payment moves to cancelled
      *
      * @since  1.5
+	 * @access private
+	 *
      * @return void
      */
     private function process_cancelled() {
@@ -1579,9 +1664,10 @@ final class Give_Payment {
 	 * Used during the process of moving to refunded or pending, to decrement stats
 	 *
 	 * @since  1.5
+	 * @access private
 	 *
-	 * @param  bool $alter_store_earnings If the method should alter the store earnings
-	 * @param  bool $alter_customer_value If the method should reduce the customer value
+	 * @param  bool $alter_store_earnings          If the method should alter the store earnings
+	 * @param  bool $alter_customer_value          If the method should reduce the customer value
 	 * @param  bool $alter_customer_purchase_count If the method should reduce the customer's purchase count
 	 *
 	 * @return void
@@ -1616,6 +1702,8 @@ final class Give_Payment {
 	 * Delete sales logs for this purchase
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return void
 	 */
 	private function delete_sales_logs() {
@@ -1647,6 +1735,8 @@ final class Give_Payment {
 	 * Setup the payment completed date
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return string The date the payment was completed
 	 */
 	private function setup_completed_date() {
@@ -1665,6 +1755,8 @@ final class Give_Payment {
 	 * Setup the payment mode
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return string The payment mode
 	 */
 	private function setup_mode() {
@@ -1675,6 +1767,8 @@ final class Give_Payment {
 	 * Setup the payment total
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return float The payment total
 	 */
 	private function setup_total() {
@@ -1696,6 +1790,8 @@ final class Give_Payment {
 	 * Setup the payment subtotal
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return float The subtotal of the payment
 	 */
 	private function setup_subtotal() {
@@ -1708,6 +1804,8 @@ final class Give_Payment {
 	 * Setup the payment fees
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return float The fees total for the payment
 	 */
 	private function setup_fees_total() {
@@ -1728,7 +1826,9 @@ final class Give_Payment {
 	 * Setup the currency code
 	 *
 	 * @since  1.5
-	 * @return string              The currency for the payment
+	 * @access private
+	 *
+	 * @return string The currency for the payment
 	 */
 	private function setup_currency() {
 		$currency = isset( $this->payment_meta['currency'] ) ? $this->payment_meta['currency'] : apply_filters( 'give_payment_currency_default', give_get_currency(), $this );
@@ -1740,6 +1840,8 @@ final class Give_Payment {
 	 * Setup any fees associated with the payment
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return array The Fees
 	 */
 	private function setup_fees() {
@@ -1752,6 +1854,8 @@ final class Give_Payment {
 	 * Setup the gateway used for the payment
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return string The gateway
 	 */
 	private function setup_gateway() {
@@ -1764,6 +1868,8 @@ final class Give_Payment {
 	 * Setup the transaction ID
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return string The transaction ID for the payment
 	 */
 	private function setup_transaction_id() {
@@ -1783,6 +1889,8 @@ final class Give_Payment {
 	 * Setup the IP Address for the payment
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return string The IP address for the payment
 	 */
 	private function setup_ip() {
@@ -1795,6 +1903,8 @@ final class Give_Payment {
 	 * Setup the customer ID
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return int The Customer ID
 	 */
 	private function setup_customer_id() {
@@ -1807,6 +1917,8 @@ final class Give_Payment {
 	 * Setup the User ID associated with the purchase
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return int The User ID
 	 */
 	private function setup_user_id() {
@@ -1819,6 +1931,8 @@ final class Give_Payment {
 	 * Setup the email address for the purchase
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return string The email address for the payment
 	 */
 	private function setup_email() {
@@ -1835,7 +1949,9 @@ final class Give_Payment {
 	 * Setup the user info
 	 *
 	 * @since  1.5
-	 * @return array               The user info associated with the payment
+	 * @access private
+	 *
+	 * @return array The user info associated with the payment
 	 */
 	private function setup_user_info() {
 		$defaults = array(
@@ -1899,7 +2015,9 @@ final class Give_Payment {
 	 * Setup the Address for the payment
 	 *
 	 * @since  1.5
-	 * @return array               The Address information for the payment
+	 * @access private
+	 *
+	 * @return array The Address information for the payment
 	 */
 	private function setup_address() {
 
@@ -1919,6 +2037,8 @@ final class Give_Payment {
 	 * Setup the form title
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return string The Form Title
 	 */
 	private function setup_form_title() {
@@ -1932,6 +2052,8 @@ final class Give_Payment {
 	 * Setup the form ID
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return int The Form ID
 	 */
 	private function setup_form_id() {
@@ -1945,6 +2067,8 @@ final class Give_Payment {
 	 * Setup the price ID
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return int The Form Price ID
 	 */
 	private function setup_price_id() {
@@ -1957,6 +2081,8 @@ final class Give_Payment {
 	 * Setup the payment key
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return string The Payment Key
 	 */
 	private function setup_payment_key() {
@@ -1969,6 +2095,8 @@ final class Give_Payment {
 	 * Setup the payment number
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return int|string Integer by default, or string if sequential order numbers is enabled
 	 */
 	private function setup_payment_number() {
@@ -1992,6 +2120,8 @@ final class Give_Payment {
 	/**
 	 * Converts this object into an array for special cases
 	 *
+	 * @access public
+	 *
 	 * @return array The payment object as an array
 	 */
 	public function array_convert() {
@@ -2002,6 +2132,8 @@ final class Give_Payment {
 	 * Retrieve payment completion date
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return string Date payment was completed
 	 */
 	private function get_completed_date() {
@@ -2012,6 +2144,8 @@ final class Give_Payment {
 	 * Retrieve payment subtotal
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return float Payment subtotal
 	 */
 	private function get_subtotal() {
@@ -2022,6 +2156,8 @@ final class Give_Payment {
 	 * Retrieve payment currency
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return string Payment currency code
 	 */
 	private function get_currency() {
@@ -2032,6 +2168,8 @@ final class Give_Payment {
 	 * Retrieve payment gateway
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return string Gateway used
 	 */
 	private function get_gateway() {
@@ -2042,6 +2180,8 @@ final class Give_Payment {
 	 * Retrieve payment transaction ID
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return string Transaction ID from merchant processor
 	 */
 	private function get_transaction_id() {
@@ -2052,6 +2192,8 @@ final class Give_Payment {
 	 * Retrieve payment IP
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return string Payment IP address
 	 */
 	private function get_ip() {
@@ -2062,6 +2204,8 @@ final class Give_Payment {
 	 * Retrieve payment customer ID
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return int Payment customer ID
 	 */
 	private function get_customer_id() {
@@ -2072,6 +2216,8 @@ final class Give_Payment {
 	 * Retrieve payment user ID
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return int Payment user ID
 	 */
 	private function get_user_id() {
@@ -2082,6 +2228,8 @@ final class Give_Payment {
 	 * Retrieve payment email
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return string Payment customer email
 	 */
 	private function get_email() {
@@ -2092,6 +2240,8 @@ final class Give_Payment {
 	 * Retrieve payment user info
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return array Payment user info
 	 */
 	private function get_user_info() {
@@ -2102,6 +2252,8 @@ final class Give_Payment {
 	 * Retrieve payment billing address
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return array Payment billing address
 	 */
 	private function get_address() {
@@ -2112,6 +2264,8 @@ final class Give_Payment {
 	 * Retrieve payment key
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return string Payment key
 	 */
 	private function get_key() {
@@ -2119,10 +2273,12 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Retrieve payment key
+	 * Retrieve payment form id
 	 *
 	 * @since  1.5
-	 * @return string Payment key
+	 * @access private
+	 *
+	 * @return string Payment form id
 	 */
 	private function get_form_id() {
 		return apply_filters( 'give_payment_form_id', $this->form_id, $this->ID, $this );
@@ -2132,6 +2288,8 @@ final class Give_Payment {
 	 * Retrieve payment number
 	 *
 	 * @since  1.5
+	 * @access private
+	 *
 	 * @return int|string Payment number
 	 */
 	private function get_number() {

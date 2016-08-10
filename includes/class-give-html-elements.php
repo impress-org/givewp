@@ -2,10 +2,8 @@
 /**
  * HTML elements
  *
- * A helper class for outputting common HTML elements, such as product drop downs
- *
  * @package     Give
- * @subpackage  Classes/HTML
+ * @subpackage  Classes/Give_HTML_Elements
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
@@ -19,19 +17,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Give_HTML_Elements Class
  *
+ * A helper class for outputting common HTML elements, such as product drop downs.
+ *
  * @since 1.0
  */
 class Give_HTML_Elements {
 
 	/**
+	 * Transactions Dropdown
+	 *
 	 * Renders an HTML Dropdown of all the donation transactions.
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param array $args Arguments for the dropdown.
+	 * @param  array  $args Arguments for the dropdown.
 	 *
-	 * @return string $output Give transactions dropdown
+	 * @return string       Transactions dropdown.
 	 */
 	public function transactions_dropdown( $args = array() ) {
 
@@ -91,14 +93,16 @@ class Give_HTML_Elements {
 	}
 
 	/**
-	 * Renders an HTML Dropdown of all the Give donation forms.
+	 * Give Forms Dropdown
 	 *
-	 * @access public
+	 * Renders an HTML Dropdown of all the Give Forms.
+	 *
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param array $args Arguments for the dropdown.
+	 * @param  array $args Arguments for the dropdown.
 	 *
-	 * @return string $output Give forms dropdown
+	 * @return string      Give forms dropdown.
 	 */
 	public function forms_dropdown( $args = array() ) {
 
@@ -168,14 +172,16 @@ class Give_HTML_Elements {
 	}
 
 	/**
+	 * Donors Dropdown
+	 *
 	 * Renders an HTML Dropdown of all customers.
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param array $args
+	 * @param  array $args Arguments for the dropdown.
 	 *
-	 * @return string $output Donor dropdown
+	 * @return string      Donors dropdown.
 	 */
 	public function donor_dropdown( $args = array() ) {
 
@@ -240,17 +246,18 @@ class Give_HTML_Elements {
 		return $output;
 	}
 
-
 	/**
+	 * Categories Dropdown
+	 *
 	 * Renders an HTML Dropdown of all the Categories.
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param string $name Name attribute of the dropdown.
-	 * @param int    $selected Category to select automatically.
+	 * @param  string $name     Name attribute of the dropdown. Default is 'give_forms_categories'.
+	 * @param  int    $selected Category to select automatically. Default is 0.
 	 *
-	 * @return string $output Category dropdown.
+	 * @return string           Categories dropdown.
 	 */
 	public function category_dropdown( $name = 'give_forms_categories', $selected = 0 ) {
 		$categories = get_terms( 'give_forms_category', apply_filters( 'give_forms_category_dropdown', array() ) );
@@ -272,17 +279,19 @@ class Give_HTML_Elements {
 	}
 
 	/**
+	 * Years Dropdown
+	 *
 	 * Renders an HTML Dropdown of years.
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param string $name Name attribute of the dropdown.
-	 * @param int    $selected Year to select automatically.
-	 * @param int    $years_before Number of years before the current year the dropdown should start with.
-	 * @param int    $years_after Number of years after the current year the dropdown should finish at.
+	 * @param  string $name         Name attribute of the dropdown. Default is 'year'.
+	 * @param  int    $selected     Year to select automatically. Default is 0.
+	 * @param  int    $years_before Number of years before the current year the dropdown should start with. Default is 5.
+	 * @param  int    $years_after  Number of years after the current year the dropdown should finish at. Default is 0.
 	 *
-	 * @return string $output Year dropdown.
+	 * @return string               Years dropdown.
 	 */
 	public function year_dropdown( $name = 'year', $selected = 0, $years_before = 5, $years_after = 0 ) {
 		$current    = date( 'Y' );
@@ -307,17 +316,18 @@ class Give_HTML_Elements {
 		return $output;
 	}
 
-
 	/**
+	 * Months Dropdown
+	 *
 	 * Renders an HTML Dropdown of months.
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param string $name Name attribute of the dropdown.
-	 * @param int    $selected Month to select automatically.
+	 * @param  string $name     Name attribute of the dropdown. Default is 'month'.
+	 * @param  int    $selected Month to select automatically. Default is 0.
 	 *
-	 * @return string $output Month dropdown.
+	 * @return string           Months dropdown.
 	 */
 	public function month_dropdown( $name = 'month', $selected = 0 ) {
 		$month    = 1;
@@ -341,14 +351,16 @@ class Give_HTML_Elements {
 	}
 
 	/**
+	 * Dropdown
+	 *
 	 * Renders an HTML Dropdown.
 	 *
+	 * @since  1.0
 	 * @access public
-	 * @since 1.0
 	 *
-	 * @param array $args
+	 * @param  array $args Arguments for the dropdown.
 	 *
-	 * @return string
+	 * @return string      The dropdown.
 	 */
 	public function select( $args = array() ) {
 		$defaults = array(
@@ -366,7 +378,6 @@ class Give_HTML_Elements {
 		);
 
 		$args = wp_parse_args( $args, $defaults );
-
 
 		if ( $args['multiple'] ) {
 			$multiple = ' MULTIPLE';
@@ -425,14 +436,16 @@ class Give_HTML_Elements {
 	}
 
 	/**
+	 * Checkbox
+	 *
 	 * Renders an HTML Checkbox.
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param array $args
+	 * @param  array $args Arguments for the Checkbox.
 	 *
-	 * @return string
+	 * @return string      The checkbox.
 	 */
 	public function checkbox( $args = array() ) {
 		$defaults = array(
@@ -460,14 +473,16 @@ class Give_HTML_Elements {
 	}
 
 	/**
+	 * Text Field
+	 *
 	 * Renders an HTML Text field.
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param array $args
+	 * @param  array $args Arguments for the text field.
 	 *
-	 * @return string Text field.
+	 * @return string      The text field.
 	 */
 	public function text( $args = array() ) {
 		// Backwards compatibility
@@ -522,14 +537,16 @@ class Give_HTML_Elements {
 	}
 
 	/**
-	 * Renders a date picker.
+	 * Date Picker
 	 *
-	 * @access public
+	 * Renders a date picker field.
+	 *
 	 * @since  1.5
+	 * @access public
 	 *
-	 * @param array $args Arguments for the text field.
+	 * @param  array $args Arguments for the date picker.
 	 *
-	 * @return string Datepicker field.
+	 * @return string      The date picker.
 	 */
 	public function date_field( $args = array() ) {
 
@@ -542,16 +559,17 @@ class Give_HTML_Elements {
 		return $this->text( $args );
 	}
 
-
 	/**
-	 * Renders an HTML textarea
+	 * Textarea
 	 *
-	 * @access public
+	 * Renders an HTML textarea.
+	 *
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param array $args Arguments for the textarea
+	 * @param  array $args Arguments for the textarea.
 	 *
-	 * @return string textarea
+	 * @return string      The textarea.
 	 */
 	public function textarea( $args = array() ) {
 		$defaults = array(
@@ -586,14 +604,16 @@ class Give_HTML_Elements {
 	}
 
 	/**
+	 * User Search Field
+	 *
 	 * Renders an ajax user search field.
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param array $args
+	 * @param  array $args Arguments for the search field.
 	 *
-	 * @return string text field with ajax search.
+	 * @return string      The text field with ajax search.
 	 */
 	public function ajax_user_search( $args = array() ) {
 
@@ -620,4 +640,5 @@ class Give_HTML_Elements {
 
 		return $output;
 	}
+
 }

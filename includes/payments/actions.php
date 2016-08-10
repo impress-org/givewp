@@ -20,11 +20,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Performs all necessary actions to complete a purchase.
  * Triggered by the give_update_payment_status() function.
  *
- * @since 1.0
+ * @since  1.0
  *
- * @param int $payment_id the ID number of the payment
- * @param string $new_status the status of the payment, probably "publish"
- * @param string $old_status the status of the payment prior to being marked as "complete", probably "pending"
+ * @param  int    $payment_id The ID number of the payment.
+ * @param  string $new_status The status of the payment, probably "publish".
+ * @param  string $old_status The status of the payment prior to being marked as "complete", probably "pending".
  *
  * @return void
  */
@@ -84,6 +84,14 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 		// Save the completed date
 		$payment->completed_date = current_time( 'mysql' );
 		$payment->save();
+
+		/**
+		 * Fires after a purchase/donation successfully complete.
+		 *
+		 * @since 1.6
+		 *
+		 * @param int $payment_id The ID of the payment.
+		 */
 		do_action( 'give_complete_purchase', $payment_id );
 	}
 
@@ -95,11 +103,11 @@ add_action( 'give_update_payment_status', 'give_complete_purchase', 100, 3 );
 /**
  * Record payment status change
  *
- * @since 1.0
+ * @since  1.0
  *
- * @param int $payment_id the ID number of the payment
- * @param string $new_status the status of the payment, probably "publish"
- * @param string $old_status the status of the payment prior to being marked as "complete", probably "pending"
+ * @param  int    $payment_id The ID number of the payment.
+ * @param  string $new_status The status of the payment, probably "publish".
+ * @param  string $old_status The status of the payment prior to being marked as "complete", probably "pending".
  *
  * @return void
  */
@@ -124,14 +132,18 @@ add_action( 'give_update_payment_status', 'give_record_status_change', 100, 3 );
 
 
 /**
+ * Clear User History Cache
+ *
  * Flushes the current user's purchase history transient when a payment status
- * is updated
+ * is updated.
  *
- * @since 1.0
+ * @since  1.0
  *
- * @param $payment_id
- * @param $new_status the status of the payment, probably "publish"
- * @param $old_status the status of the payment prior to being marked as "complete", probably "pending"
+ * @param  int    $payment_id The ID number of the payment.
+ * @param  string $new_status The status of the payment, probably "publish".
+ * @param  string $old_status The status of the payment prior to being marked as "complete", probably "pending".
+ *
+ * @return void
  */
 function give_clear_user_history_cache( $payment_id, $new_status, $old_status ) {
 
@@ -146,14 +158,15 @@ function give_clear_user_history_cache( $payment_id, $new_status, $old_status ) 
 add_action( 'give_update_payment_status', 'give_clear_user_history_cache', 10, 3 );
 
 /**
- * Updates all old payments, prior to 1.2, with new
- * meta for the total purchase amount
+ * Update Old Payments Totals
  *
- * This is so that payments can be queried by their totals
+ * Updates all old payments, prior to 1.2, with new meta for the total purchase amount.
  *
- * @since 1.0
+ * It's done to query payments by their totals.
  *
- * @param array $data Arguments passed
+ * @since  1.0
+ *
+ * @param  array $data Arguments passed.
  *
  * @return void
  */
@@ -190,9 +203,12 @@ function give_update_old_payments_with_totals( $data ) {
 add_action( 'give_upgrade_payments', 'give_update_old_payments_with_totals' );
 
 /**
- * Updates week-old+ 'pending' orders to 'abandoned'
+ * Mark Abandoned Donations
  *
- * @since 1.0
+ * Updates over a week-old 'pending' donations to 'abandoned' status.
+ *
+ * @since  1.0
+ *
  * @return void
  */
 function give_mark_abandoned_donations() {

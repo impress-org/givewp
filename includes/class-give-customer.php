@@ -1,9 +1,9 @@
 <?php
 /**
- * Customer (Donor) Object
+ * Customer (Donor)
  *
  * @package     Give
- * @subpackage  Classes/Customer
+ * @subpackage  Classes/Give_Customer
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
@@ -17,6 +17,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Give_Customer Class
  *
+ * This class handles customers.
+ *
  * @since 1.0
  */
 class Give_Customer {
@@ -24,42 +26,60 @@ class Give_Customer {
 	/**
 	 * The customer ID
 	 *
-	 * @since 1.0
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @var    int
 	 */
 	public $id = 0;
 
 	/**
 	 * The customer's purchase count
 	 *
-	 * @since 1.0
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @var    int
 	 */
 	public $purchase_count = 0;
 
 	/**
 	 * The customer's lifetime value
 	 *
-	 * @since 1.0
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @var    int
 	 */
 	public $purchase_value = 0;
 
 	/**
 	 * The customer's email
 	 *
-	 * @since 1.0
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @var    string
 	 */
 	public $email;
 
 	/**
 	 * The customer's name
 	 *
-	 * @since 1.0
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @var    string
 	 */
 	public $name;
 
 	/**
 	 * The customer's creation date
 	 *
-	 * @since 1.0
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @var    string
 	 */
 	public $date_created;
 
@@ -67,6 +87,9 @@ class Give_Customer {
 	 * The payment IDs associated with the customer
 	 *
 	 * @since  1.0
+	 * @access public
+	 *
+	 * @var    array
 	 */
 	public $payment_ids;
 
@@ -74,6 +97,9 @@ class Give_Customer {
 	 * The user ID associated with the customer
 	 *
 	 * @since  1.0
+	 * @access public
+	 *
+	 * @var    int
 	 */
 	public $user_id;
 
@@ -81,6 +107,9 @@ class Give_Customer {
 	 * Customer Notes
 	 *
 	 * @since  1.0
+	 * @access public
+	 *
+	 * @var    string
 	 */
 	public $notes;
 
@@ -88,14 +117,22 @@ class Give_Customer {
 	 * The Database Abstraction
 	 *
 	 * @since  1.0
+	 * @access protected
+	 *
+	 * @var    Give_DB_Customers
 	 */
 	protected $db;
 
 	/**
-	 * Give_Customer constructor.
+	 * Class Constructor
 	 *
-	 * @param bool $_id_or_email
-	 * @param bool $by_user_id
+	 * Set up the Give Customer Class.
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @param  bool $_id_or_email 
+	 * @param  bool $by_user_id
 	 */
 	public function __construct( $_id_or_email = false, $by_user_id = false ) {
 
@@ -124,13 +161,16 @@ class Give_Customer {
 	}
 
 	/**
-	 * Given the customer data, let's set the variables
+	 * Setup Customer
+	 *
+	 * Given the customer data, let's set the variables.
 	 *
 	 * @since  1.0
+	 * @access private
 	 *
-	 * @param  object $customer The Customer Object
+	 * @param  object $customer The Customer Object.
 	 *
-	 * @return bool             If the setup was successful or not
+	 * @return bool             If the setup was successful or not.
 	 */
 	private function setup_customer( $customer ) {
 
@@ -164,9 +204,10 @@ class Give_Customer {
 	}
 
 	/**
-	 * Magic __get function to dispatch a call to retrieve a private property
+	 * Magic __get function to dispatch a call to retrieve a private property.
 	 *
-	 * @since 1.0
+	 * @since  1.0
+	 * @access public
 	 */
 	public function __get( $key ) {
 
@@ -187,10 +228,11 @@ class Give_Customer {
 	 * Creates a customer
 	 *
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param  array $data Array of attributes for a customer
+	 * @param  array $data Array of attributes for a customer.
 	 *
-	 * @return mixed        False if not a valid creation, Customer ID if user is found or valid creation
+	 * @return mixed       False if not a valid creation, Customer ID if user is found or valid creation.
 	 */
 	public function create( $data = array() ) {
 
@@ -239,10 +281,11 @@ class Give_Customer {
 	 * Update a customer record
 	 *
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param  array $data Array of data attributes for a customer (checked via whitelist)
+	 * @param  array $data Array of data attributes for a customer (checked via whitelist).
 	 *
-	 * @return bool         If the update was successful or not
+	 * @return bool        If the update was successful or not.
 	 */
 	public function update( $data = array() ) {
 
@@ -269,16 +312,18 @@ class Give_Customer {
 		return $updated;
 	}
 
-
 	/**
-	 * Attach payment to the customer then triggers increasing stats
+	 * Attach Payment
+	 *
+	 * Attach payment to the customer then triggers increasing stats.
 	 *
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param  int  $payment_id   The payment ID to attach to the customer
-	 * @param  bool $update_stats For backwards compatibility, if we should increase the stats or not
+	 * @param  int  $payment_id   The payment ID to attach to the customer.
+	 * @param  bool $update_stats For backwards compatibility, if we should increase the stats or not.
 	 *
-	 * @return bool            If the attachment was successfuly
+	 * @return bool            If the attachment was successfuly.
 	 */
 	public function attach_payment( $payment_id = 0, $update_stats = true ) {
 
@@ -330,16 +375,18 @@ class Give_Customer {
 		return $payment_added;
 	}
 
-
 	/**
-	 * Remove a payment from this customer, then triggers reducing stats
+	 * Remove Payment
+	 *
+	 * Remove a payment from this customer, then triggers reducing stats.
 	 *
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param  integer $payment_id   The Payment ID to remove
-	 * @param  bool    $update_stats For backwards compatibility, if we should increase the stats or not
+	 * @param  integer $payment_id   The Payment ID to remove.
+	 * @param  bool    $update_stats For backwards compatibility, if we should increase the stats or not.
 	 *
-	 * @return boolean             If the removal was successful
+	 * @return boolean               If the removal was successful.
 	 */
 	public function remove_payment( $payment_id = 0, $update_stats = true ) {
 
@@ -402,6 +449,7 @@ class Give_Customer {
 	 * Increase the purchase count of a customer.
 	 *
 	 * @since  1.0
+	 * @access public
 	 *
 	 * @param  integer $count The number to increment by.
 	 *
@@ -431,6 +479,7 @@ class Give_Customer {
 	 * Decrease the customer purchase count.
 	 *
 	 * @since  1.0
+	 * @access public
 	 *
 	 * @param  integer $count The amount to decrease by.
 	 *
@@ -464,10 +513,11 @@ class Give_Customer {
 	 * Increase the customer's lifetime value.
 	 *
 	 * @since  1.0
+	 * @access public
 	 *
 	 * @param  float $value The value to increase by.
 	 *
-	 * @return mixed         If successful, the new value, otherwise false.
+	 * @return mixed        If successful, the new value, otherwise false.
 	 */
 	public function increase_value( $value = 0.00 ) {
 
@@ -488,10 +538,11 @@ class Give_Customer {
 	 * Decrease a customer's lifetime value.
 	 *
 	 * @since  1.0
+	 * @access public
 	 *
 	 * @param  float $value The value to decrease by.
 	 *
-	 * @return mixed         If successful, the new value, otherwise false.
+	 * @return mixed        If successful, the new value, otherwise false.
 	 */
 	public function decrease_value( $value = 0.00 ) {
 
@@ -518,12 +569,11 @@ class Give_Customer {
      * This function will update donation stat on basis of current amount and new amount donation difference.
      * Difference value can positive or negative. Negative value will decrease user donation stat while positive value increase donation stat.
      *
-     *
-     * @access public
 	 * @since  1.0
+     * @access public
 	 *
 	 * @param  float $curr_amount Current Donation amount.
-	 * @param  float $new_amount  New ( changed ) Donation amount.
+	 * @param  float $new_amount  New (changed) Donation amount.
 	 *
 	 * @return mixed              If successful, the new donation stat value, otherwise false.
 	 */
@@ -556,6 +606,7 @@ class Give_Customer {
 	 * Get the parsed notes for a customer as an array.
 	 *
 	 * @since  1.0
+     * @access public
 	 *
 	 * @param  integer $length The number of notes to get.
 	 * @param  integer $paged  What note to start at.
@@ -580,6 +631,8 @@ class Give_Customer {
 	 * Get the total number of notes we have after parsing.
 	 *
 	 * @since  1.0
+     * @access public
+	 *
 	 * @return int The number of notes for the customer.
 	 */
 	public function get_notes_count() {
@@ -595,8 +648,9 @@ class Give_Customer {
 	 * Add a note for the customer.
 	 *
 	 * @since  1.0
+     * @access public
 	 *
-	 * @param string $note The note to add.
+	 * @param  string $note   The note to add. Default is empty.
 	 *
 	 * @return string|boolean The new note if added successfully, false otherwise.
 	 */
@@ -636,7 +690,9 @@ class Give_Customer {
 	 * Get the notes column for the customer
 	 *
 	 * @since  1.0
-	 * @return string The Notes for the customer, non-parsed
+     * @access private
+	 *
+	 * @return string The Notes for the customer, non-parsed.
 	 */
 	private function get_raw_notes() {
 
@@ -649,12 +705,13 @@ class Give_Customer {
 	/**
 	 * Retrieve customer meta field for a customer.
 	 *
-	 * @param   string $meta_key      The meta key to retrieve.
-	 * @param   bool   $single        Whether to return a single value.
-	 * @return  mixed                 Will be an array if $single is false. Will be value of meta data field if $single is true.
+	 * @since  1.6
+	 * @access public
 	 *
-	 * @access  public
-	 * @since   1.6
+	 * @param  string $meta_key The meta key to retrieve. Default is empty.
+	 * @param  bool   $single   Whether to return a single value. Default is true.
+	 *
+	 * @return mixed            Will be an array if $single is false. Will be value of meta data field if $single is true.
 	 */
 	public function get_meta( $meta_key = '', $single = true ) {
 		return Give()->customer_meta->get_meta( $this->id, $meta_key, $single );
@@ -663,13 +720,14 @@ class Give_Customer {
 	/**
 	 * Add meta data field to a customer.
 	 *
-	 * @param   string $meta_key      Metadata name.
-	 * @param   mixed  $meta_value    Metadata value.
-	 * @param   bool   $unique        Optional, default is false. Whether the same key should not be added.
-	 * @return  bool                  False for failure. True for success.
+	 * @since  1.6
+	 * @access public
 	 *
-	 * @access  public
-	 * @since   1.6
+	 * @param  string $meta_key   Metadata name. Default is empty.
+	 * @param  mixed  $meta_value Metadata value.
+	 * @param  bool   $unique     Optional. Whether the same key should not be added. Default is false.
+	 *
+	 * @return bool               False for failure. True for success.
 	 */
 	public function add_meta( $meta_key = '', $meta_value, $unique = false ) {
 		return Give()->customer_meta->add_meta( $this->id, $meta_key, $meta_value, $unique );
@@ -678,13 +736,14 @@ class Give_Customer {
 	/**
 	 * Update customer meta field based on customer ID.
 	 *
-	 * @param   string $meta_key      Metadata key.
-	 * @param   mixed  $meta_value    Metadata value.
-	 * @param   mixed  $prev_value    Optional. Previous value to check before removing.
-	 * @return  bool                  False on failure, true if success.
+	 * @since  1.6
+	 * @access public
 	 *
-	 * @access  public
-	 * @since   1.6
+	 * @param  string $meta_key   Metadata key. Default is empty.
+	 * @param  mixed  $meta_value Metadata value.
+	 * @param  mixed  $prev_value Optional. Previous value to check before removing. Default is empty.
+	 *
+	 * @return bool               False on failure, true if success.
 	 */
 	public function update_meta( $meta_key = '', $meta_value, $prev_value = '' ) {
 		return Give()->customer_meta->update_meta( $this->id, $meta_key, $meta_value, $prev_value );
@@ -693,12 +752,13 @@ class Give_Customer {
 	/**
 	 * Remove metadata matching criteria from a customer.
 	 *
-	 * @param   string $meta_key      Metadata name.
-	 * @param   mixed  $meta_value    Optional. Metadata value.
-	 * @return  bool                  False for failure. True for success.
+	 * @since  1.6
+	 * @access public
 	 *
-	 * @access  public
-	 * @since   1.6
+	 * @param  string $meta_key   Metadata name. Default is empty.
+	 * @param  mixed  $meta_value Optional. Metadata value. Default is empty.
+	 *
+	 * @return bool               False for failure. True for success.
 	 */
 	public function delete_meta( $meta_key = '', $meta_value = '' ) {
 		return Give()->customer_meta->delete_meta( $this->id, $meta_key, $meta_value );
@@ -708,10 +768,11 @@ class Give_Customer {
 	 * Sanitize the data for update/create
 	 *
 	 * @since  1.0
+     * @access private
 	 *
-	 * @param  array $data The data to sanitize
+	 * @param  array $data The data to sanitize.
 	 *
-	 * @return array       The sanitized data, based off column defaults
+	 * @return array       The sanitized data, based off column defaults.
 	 */
 	private function sanitize_columns( $data ) {
 
