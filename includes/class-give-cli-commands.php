@@ -144,6 +144,13 @@ class GIVE_CLI_COMMAND {
 	 */
 	public function form( $args, $assoc_args ) {
 		$form_id = isset( $assoc_args ) && array_key_exists( 'id', $assoc_args ) ? absint( $assoc_args['id'] ) : false;
+
+		// Bailout.
+		if ( ! $form_id ) {
+			WP_CLI::error( __( 'Form id is not set.', 'give' ) );
+			return;
+		}
+
 		$form = $this->api->get_forms( $form_id );
 
 		// Bailout.
