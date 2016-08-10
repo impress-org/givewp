@@ -75,6 +75,10 @@ abstract class Give_Shortcode_Generator {
 	 */
 	public function init() {
 
+		if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) {
+			return;
+		}
+
 		if ( $this->shortcode_tag ) {
 
 			$this->self = get_class( $this );
@@ -382,7 +386,7 @@ abstract class Give_Shortcode_Generator {
 
 			if ( ! ! $required || is_array( $required ) ) {
 
-				$alert = esc_html__( 'Some of the Shortcode options are required.', 'give' );
+				$alert = esc_html__( 'Some of the shortcode options are required.', 'give' );
 
 				if ( isset( $required['alert'] ) ) {
 
@@ -391,7 +395,7 @@ abstract class Give_Shortcode_Generator {
 				} else if ( ! empty( $label ) ) {
 
 					$alert = sprintf(
-					/* translators: %s: option lable */
+					/* translators: %s: option label */
 						esc_html__( 'The "%s" option is required.', 'give' ),
 						str_replace( ':', '', $label )
 					);
