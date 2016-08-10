@@ -177,12 +177,14 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * New: Customer meta class added for updating and saving donor data for non-users outside usermeta - https://github.com/WordImpress/Give/issues/653
 * New: Conditional functions introduced is_give_form(), is_give_category(), is_give_tag(), and is_give_taxonomy() - https://github.com/WordImpress/Give/issues/832
 * New: Donation receipt email previews now allow you to view actual payment data and switch between transactions. Add-on specific email tags will render when actual data is previewed. - https://github.com/WordImpress/Give/issues/274
+* New: Consolidated the number of columns within the transaction details screen. - https://github.com/WordImpress/Give/issues/814
 * Tweak: Update the country dropdown to use the new ISO country codes for islands in Dutch West Indies - https://github.com/WordImpress/Give/issues/698
 * Tweak: Updated to the latest version of CMB2 & tested compatibility - https://github.com/WordImpress/Give/issues/670
 * Tweak: Remove invalid @description from PHP inline doc blocks - https://github.com/WordImpress/Give/issues/733
 * Tweak: Incorporate proper sanitization for i18n strings - https://github.com/WordImpress/Give/issues/471
 * Tweak: Accessibility page headings added to screens in wp-admin - https://github.com/WordImpress/Give/issues/820
 * Tweak: Unify wp_die() throughout codebase and add title and HTML status response codes - https://github.com/WordImpress/Give/issues/828
+* Fix: Transaction list and donor donation list design break on tablet and mobile - https://github.com/WordImpress/Give/issues/813
 * Fix: Unrendered html in multi-level donation confirmation emails - https://github.com/WordImpress/Give/issues/754
 * Fix: Text editor does not have same height for visual mode and text mode - https://github.com/WordImpress/Give/issues/688
 * Fix: Auto populate state list is not working on transaction detail page - https://github.com/WordImpress/Give/issues/715
