@@ -38,7 +38,7 @@ if ( ! is_user_logged_in() ) {
 			</div>
 
 			<div class="give-lost-password give-login">
-				<a href="<?php echo wp_lostpassword_url(); ?>" title="<?php esc_attr_e( 'Lost Password', 'give' ); ?>"><?php esc_html_e( 'Lost Password?', 'give' ); ?></a>
+				<a href="<?php echo wp_lostpassword_url(); ?>"><?php esc_html_e( 'Lost Password?', 'give' ); ?></a>
 			</div>
 			<?php
 			/**
