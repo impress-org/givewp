@@ -67,7 +67,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * @access public
 	 * @since  1.0
 	 *
-	 * @param array  $item        Contains all the data of the downloads
+	 * @param array  $item        Contains all the data of the donation form
 	 * @param string $column_name The name of the column
 	 *
 	 * @return string Column Name

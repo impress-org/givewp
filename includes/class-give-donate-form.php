@@ -1045,7 +1045,7 @@ class Give_Donate_Form {
 		/* @var WPDB $wpdb */
 		global $wpdb;
 
-		if ( empty( $meta_key ) || empty( $meta_value ) ) {
+		if ( empty( $meta_key ) ) {
 			return false;
 		}
 

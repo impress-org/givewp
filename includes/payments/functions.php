@@ -643,7 +643,7 @@ function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour
 		'nopaging'               => true,
 		'year'                   => $year,
 		'monthnum'               => $month_num,
-		'post_status'            => array( 'publish', 'revoked' ),
+		'post_status'            => array( 'publish' ),
 		'fields'                 => 'ids',
 		'update_post_term_cache' => false
 	);
@@ -700,7 +700,7 @@ function give_get_sales_by_date( $day = null, $month_num = null, $year = null, $
 		'nopaging'               => true,
 		'year'                   => $year,
 		'fields'                 => 'ids',
-		'post_status'            => array( 'publish', 'revoked' ),
+		'post_status'            => array( 'publish' ),
 		'update_post_meta_cache' => false,
 		'update_post_term_cache' => false
 	);
@@ -786,7 +786,7 @@ function give_get_total_sales() {
 
 	$payments = give_count_payments();
 
-	return $payments->revoked + $payments->publish;
+	return $payments->publish;
 }
 
 /**
@@ -814,7 +814,7 @@ function give_get_total_earnings() {
 			$args = apply_filters( 'give_get_total_earnings_args', array(
 				'offset' => 0,
 				'number' => - 1,
-				'status' => array( 'publish', 'revoked' ),
+				'status' => array( 'publish' ),
 				'fields' => 'ids'
 			) );
 

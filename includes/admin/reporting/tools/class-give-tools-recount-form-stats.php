@@ -62,7 +62,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 	public function get_data() {
 		global $give_logs, $wpdb;
 
-		$accepted_statuses = apply_filters( 'give_recount_accepted_statuses', array( 'publish', 'revoked' ) );
+		$accepted_statuses = apply_filters( 'give_recount_accepted_statuses', array( 'publish' ) );
 
 		if ( $this->step == 1 ) {
 			$this->delete_data( 'give_temp_recount_form_stats' );
@@ -147,7 +147,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 			$this->delete_data( 'give_recount_total_' . $this->form_id );
 		}
 
-		$accepted_statuses = apply_filters( 'give_recount_accepted_statuses', array( 'publish', 'revoked' ) );
+		$accepted_statuses = apply_filters( 'give_recount_accepted_statuses', array( 'publish' ) );
 		$total             = $this->get_stored_data( 'give_recount_total_' . $this->form_id );
 
 		if ( false === $total ) {

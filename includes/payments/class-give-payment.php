@@ -699,7 +699,7 @@ final class Give_Payment {
 
 									$price = $item['price'];
 
-									if ( 'publish' === $this->status || 'complete' === $this->status || 'revoked' === $this->status ) {
+									if ( 'publish' === $this->status || 'complete' === $this->status ) {
 
 										// Add sales logs
 										$log_date = date_i18n( 'Y-m-d G:i:s', current_time( 'timestamp' ) );
@@ -743,7 +743,7 @@ final class Give_Payment {
 										wp_delete_post( $log->ID, true );
 									}
 
-									if ( 'publish' === $this->status || 'complete' === $this->status || 'revoked' === $this->status ) {
+									if ( 'publish' === $this->status || 'complete' === $this->status ) {
 										$form = new Give_Donate_Form( $item['id'] );
 										$form->decrease_sales( $quantity );
 										$form->decrease_earnings( $item['amount'] );
@@ -759,7 +759,7 @@ final class Give_Payment {
 
 					case 'fees':
 
-						if ( 'publish' !== $this->status && 'complete' !== $this->status && 'revoked' !== $this->status ) {
+						if ( 'publish' !== $this->status && 'complete' !== $this->status ) {
 							break;
 						}
 
@@ -1390,6 +1390,9 @@ final class Give_Payment {
                 case 'cancelled':
                     $this->process_cancelled();
                     break;
+                case 'revoked':
+                    $this->process_revoked();
+                    break;
 			}
 
 			do_action( 'give_update_payment_status', $this->ID, $status, $old_status );
@@ -1510,7 +1513,7 @@ final class Give_Payment {
 		$process_refund = true;
 
 		// If the payment was not in publish or revoked status, don't decrement stats as they were never incremented
-		if ( ( 'publish' != $this->old_status && 'revoked' != $this->old_status ) || 'refunded' != $this->status ) {
+		if ( 'publish' != $this->old_status || 'refunded' != $this->status ) {
 			$process_refund = false;
 		}
 
@@ -1560,7 +1563,7 @@ final class Give_Payment {
 		$process_pending = true;
 
 		// If the payment was not in publish or revoked status, don't decrement stats as they were never incremented
-		if ( ( 'publish' != $this->old_status && 'revoked' != $this->old_status ) || 'pending' != $this->status ) {
+		if ( 'publish' != $this->old_status || 'pending' != $this->status ) {
 			$process_pending = false;
 		}
 
@@ -1597,7 +1600,7 @@ final class Give_Payment {
         $process_cancelled = true;
 
         // If the payment was not in publish or revoked status, don't decrement stats as they were never incremented
-        if ( ( 'publish' != $this->old_status && 'revoked' != $this->old_status ) || 'cancelled' != $this->status ) {
+        if ( 'publish' != $this->old_status || 'cancelled' != $this->status ) {
             $process_cancelled = false;
         }
 
@@ -1611,6 +1614,41 @@ final class Give_Payment {
         $decrease_store_earnings = apply_filters( 'give_decrease_store_earnings_on_cancelled', true, $this );
         $decrease_customer_value = apply_filters( 'give_decrease_customer_value_on_cancelled', true, $this );
         $decrease_purchase_count = apply_filters( 'give_decrease_customer_purchase_count_on_cancelled', true, $this );
+
+        $this->maybe_alter_stats( $decrease_store_earnings, $decrease_customer_value, $decrease_purchase_count );
+        $this->delete_sales_logs();
+
+        $this->completed_date = false;
+        $this->update_meta( '_give_completed_date', '' );
+
+        // Clear the This Month earnings (this_monththis_month is NOT a typo)
+        delete_transient( md5( 'give_earnings_this_monththis_month' ) );
+    }
+
+    /**
+     * Process when a payment moves to revoked
+     *
+     * @since  1.5
+     * @return void
+     */
+    private function process_revoked() {
+        $process_revoked = true;
+
+        // If the payment was not in publish, don't decrement stats as they were never incremented
+        if ( 'publish' != $this->old_status || 'revoked' != $this->status ) {
+            $process_revoked = false;
+        }
+
+        // Allow extensions to filter for their own payment types, Example: Recurring Payments
+        $process_revoked = apply_filters( 'give_should_process_revoked', $process_revoked, $this );
+
+        if ( false === $process_revoked ) {
+            return;
+        }
+
+        $decrease_store_earnings = apply_filters( 'give_decrease_store_earnings_on_revoked', true, $this );
+        $decrease_customer_value = apply_filters( 'give_decrease_customer_value_on_revoked', true, $this );
+        $decrease_purchase_count = apply_filters( 'give_decrease_customer_purchase_count_on_revoked', true, $this );
 
         $this->maybe_alter_stats( $decrease_store_earnings, $decrease_customer_value, $decrease_purchase_count );
         $this->delete_sales_logs();
