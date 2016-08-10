@@ -75,10 +75,6 @@ abstract class Give_Shortcode_Generator {
 	 */
 	public function init() {
 
-		if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) {
-			return;
-		}
-
 		if ( $this->shortcode_tag ) {
 
 			$this->self = get_class( $this );
