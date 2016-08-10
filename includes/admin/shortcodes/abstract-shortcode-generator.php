@@ -93,7 +93,7 @@ abstract class Give_Shortcode_Generator {
 				'title'     => esc_html__( 'Insert Shortcode', 'give' ),
 			);
 
-			if ( user_can_richedit() ) {
+			if ( user_can_richedit() && current_user_can('edit_give_forms') ) {
 
 				Give_Shortcode_Button::$shortcodes[ $this->shortcode_tag ] = wp_parse_args( $this->shortcode, $defaults );
 
