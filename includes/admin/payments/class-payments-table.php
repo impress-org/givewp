@@ -292,7 +292,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * @return string Name of the primary column.
 	 */
 	protected function get_primary_column_name() {
-		return 'ID';
+		return 'donation';
 	}
 
 	/**
@@ -339,10 +339,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 				break;
 
 			case 'status' :
-				$value = '<div class="give-donation-status status-' . sanitize_title( give_get_payment_status( $payment, true ) ) . '"><span class="give-donation-status-icon"></span> ' . give_get_payment_status( $payment, true ) . '</div>';
-				if ( $payment->mode == 'test' ) {
-					$value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label" data-tooltip="' . esc_attr__( 'This payment was made in test mode', 'give' ) . '">' . esc_html__( 'Test', 'give' ) . '</span>';
-				}
+                $value = $this->get_payment_status( $payment );
 				break;
 
 			case 'details' :
@@ -359,7 +356,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Render the Email Column
+	 * Get donor email html.
 	 *
 	 * @access public
 	 * @since  1.0
@@ -404,8 +401,28 @@ class Give_Payment_History_Table extends WP_List_Table {
 		return apply_filters( 'give_payments_table_column', $value, $payment->ID, 'email' );
 	}
 
+
+    /**
+     *  Get payment status html.
+     *
+     * @access public
+     * @since  1.0
+     *
+     * @param  Give_Payment $payment Contains all the data of the payment
+     *
+     * @return string                Data shown in the Email column
+     */
+	function get_payment_status( $payment ) {
+        $value = '<div class="give-donation-status status-' . sanitize_title( give_get_payment_status( $payment, true ) ) . '"><span class="give-donation-status-icon"></span> ' . give_get_payment_status( $payment, true ) . '</div>';
+        if ( $payment->mode == 'test' ) {
+            $value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label" data-tooltip="' . esc_attr__( 'This payment was made in test mode', 'give' ) . '">' . esc_html__( 'Test', 'give' ) . '</span>';
+        }
+
+        return $value;
+    }
+
 	/**
-	 * Render the checkbox column
+	 * Get checkbox html.
 	 *
 	 * @access public
 	 * @since  1.0
@@ -423,7 +440,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Render the ID column
+	 * Get payment ID html.
 	 *
 	 * @access public
 	 * @since  1.0
@@ -437,7 +454,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Render the User Column
+	 * Get donor html.
 	 *
 	 * @access public
 	 * @since  1.0
