@@ -1338,9 +1338,6 @@ Settings
   .cmb-type-enabled-gateways ul li.ui-sortable-handle span.give-drag-handle:hover {
     color: #333; }
 
-.give-hide-heading {
-  display: none; }
-
 .cmb-type-give-title label {
   float: left;
   width: 220px;
@@ -1516,21 +1513,18 @@ a.give-delete {
 #give-payments-filter #the-list .check-column input {
   margin-top: 1px; }
 
+#give-payments-filter .column-details {
+  width: 50px; }
+
+#give-payments-filter .column-amount {
+  width: 120px; }
+
 tr.status-refunded td {
   background: #cecece;
   border-top-color: #ccc; }
 
-.wp-list-table.forms th#ID {
-  width: 80px; }
-
-.wp-list-table.forms th#details {
-  width: 130px; }
-
 .wp-list-table.forms th#date {
   width: 140px; }
-
-.wp-list-table.forms th#user {
-  width: 130px; }
 
 .give-mobile-link {
   line-height: 32px;
@@ -1799,7 +1793,7 @@ input.give-price-field {
     font-weight: bold;
     margin: 15px 0 0;
     line-height: 1; }
-  .give-dashboard-widget .give-dashboard-today .give-orders-today {
+  .give-dashboard-widget .give-dashboard-today .give-donations-today {
     font-size: 18px;
     font-weight: bold;
     margin: 0 0 30px;
