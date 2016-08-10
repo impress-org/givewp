@@ -118,7 +118,13 @@ final class Give_Shortcode_Button {
 
 		global $pagenow, $wp_version;
 
-		$shortcode_button_pages = array( 'post.php', 'page.php', 'post-new.php', 'post-edit.php' );
+		$shortcode_button_pages = apply_filters( 'give_shortcode_button_pages', array(
+			'post.php',
+			'page.php',
+			'post-new.php',
+			'post-edit.php'
+		) );
+
 		// Only run in admin post/page creation and edit screens
 		if ( in_array( $pagenow, $shortcode_button_pages )
 		     && apply_filters( 'give_shortcode_button_condition', true )
@@ -128,6 +134,7 @@ final class Give_Shortcode_Button {
 			$shortcodes = array();
 
 			foreach ( self::$shortcodes as $shortcode => $values ) {
+
 				/**
 				 * Filters the condition for including the current shortcode
 				 *
