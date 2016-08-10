@@ -42,6 +42,9 @@ class GIVE_CLI_COMMAND {
 	 */
 	public function __construct() {
 		$this->api = new Give_API();
+
+		// Set default params.
+		$this->per_page = 10;
 	}
 
 
@@ -149,13 +152,12 @@ class GIVE_CLI_COMMAND {
 			return;
 		}
 
-        if( empty( $form['forms'] ) ) {
-            WP_CLI::error( __( 'No form found.', 'give' ) );
-            return;
-        }
+		if ( empty( $form['forms'] ) ) {
+			WP_CLI::error( __( 'No form found.', 'give' ) );
+			return;
+		}
 
-
-        // Get form.
+		// Get form.
 		$form = current( $form['forms'] );
 
 		// Heading.
@@ -172,6 +174,9 @@ class GIVE_CLI_COMMAND {
 								foreach ( $data as $subheading => $subdata ) {
 
 									switch ( $subheading ) {
+										case 'earnings':
+											WP_CLI::log( $this->color_message( ucfirst( $subheading ) . ': ', give_currency_filter( $subdata ) ) );
+											break;
 										default:
 											WP_CLI::log( $this->color_message( ucfirst( $subheading ) . ': ', $subdata ) );
 									}
@@ -208,15 +213,16 @@ class GIVE_CLI_COMMAND {
 	 *
 	 * --id=<donor_id>: A specific donor ID to retrieve
 	 * --email=<donor_email>: The email address of the donor to retrieve
+	 * --number=<donor_count>: The number of donor to retrieve
 	 * --create=<number>: The number of arbitrary donors to create. Leave as 1 or blank to create a donor with a specific email
 	 *
 	 * ## EXAMPLES
 	 *
 	 * wp give donors --id=103
+	 * wp give donors --id=103 --number=100
 	 * wp give donors --email=john@test.com
 	 * wp give donors --create=1 --email=john@test.com
 	 * wp give donors --create=1 --email=john@test.com --name="John Doe"
-	 * wp give donors --create=1 --email=john@test.com --name="John Doe" user_id=1
 	 * wp give donors --create=1000
 	 *
 	 * @since       1.7
@@ -229,7 +235,146 @@ class GIVE_CLI_COMMAND {
 	 *
 	 * @subcommand  donors
 	 */
-	public function donors( $args, $assoc_args ) {}
+	public function donors( $args, $assoc_args ) {
+	    global $wp_query;
+		$donor_id    = isset( $assoc_args ) && array_key_exists( 'id', $assoc_args )      ? absint( $assoc_args['id'] ) : false;
+		$email       = isset( $assoc_args ) && array_key_exists( 'email', $assoc_args )   ? $assoc_args['email']        : false;
+		$name        = isset( $assoc_args ) && array_key_exists( 'name', $assoc_args )    ? $assoc_args['name']         : '';
+		$create      = isset( $assoc_args ) && array_key_exists( 'create', $assoc_args )  ? $assoc_args['create']       : false;
+		$number      = isset( $assoc_args ) && array_key_exists( 'number', $assoc_args )  ? $assoc_args['number']       : 10;
+		$start       = time();
+
+		if ( $create ) {
+			$number = 1;
+
+			// Create one or more donors.
+			if ( ! $email ) {
+				// If no email is specified, look to see if we are generating arbitrary donor accounts.
+				$number = is_numeric( $create ) ? absint( $create ) : 1;
+			}
+
+			for ( $i = 0; $i < $number; $i++ ) {
+				if ( ! $email ) {
+
+					// Generate fake email.
+					$email = 'customer-' . uniqid() . '@test.com';
+				}
+
+				$args = array(
+					'email'   => $email,
+					'name'    => $name,
+				);
+
+				$customer_id = Give()->customers->add( $args );
+
+				if ( $customer_id ) {
+					WP_CLI::line( $this->color_message( sprintf( __( 'Donor %d created successfully', 'give' ), $customer_id ) ) );
+				} else {
+					WP_CLI::error( __( 'Failed to create donor', 'give' ) );
+				}
+
+				// Reset email to false so it is generated on the next loop (if creating donors).
+				$email = false;
+			}
+
+			WP_CLI::line( $this->color_message( sprintf( __( '%1$d donors created in %1$d seconds', 'give' ), $number, time() - $start ) ) );
+
+		} else {
+			// Counter.
+			self::$counter = 1;
+
+			// Search for customers.
+			$search    = $donor_id ? $donor_id : $email;
+
+			/**
+			 * Get donors.
+			 */
+			// Cache previous number query var.
+			$is_set_number = $cache_per_page = false;
+			if ( isset( $wp_query->query_vars['number'] ) ) {
+				$cache_per_page = $wp_query->query_vars['number'];
+				$is_set_number = true;
+			}
+
+			// Change number query var.
+			$wp_query->query_vars['number'] = $number;
+
+			// Get donors.
+			$donors = $this->api->get_customers( $search );
+
+			// Reset number query var.
+			if ( $is_set_number ) {
+				$wp_query->query_vars['number'] = $cache_per_page;
+			}
+
+			if ( isset( $donors['error'] ) ) {
+				WP_CLI::error( $donors['error'] );
+			}
+
+			if ( empty( $donors ) ) {
+				WP_CLI::error( __( 'No donors found', 'easy-digital-downloads' ) );
+				return;
+			}
+
+			$table_data = array();
+			$is_table_first_row_set = false;
+
+			foreach ( $donors['donors'] as $donor_data ) {
+				// Set default table row data.
+				$table_first_row = array( __( 'S. No.', 'give' ) );
+				$table_row = array( self::$counter );
+
+				foreach ( $donor_data as $key => $donor ) {
+					switch ( $key ) {
+						case 'stats':
+							foreach ( $donor as $heading => $data ) {
+
+								// Get first row.
+								if ( ! $is_table_first_row_set ) {
+									$table_first_row[] = $heading;
+								}
+
+								switch ( $heading ) {
+									case 'total_spent':
+										$table_row[] = give_currency_filter( $data );
+										break;
+
+									default:
+										$table_row[] = $data;
+								}
+							}
+							break;
+
+						case 'info':
+						default:
+							foreach ( $donor as $heading => $data ) {
+
+								// Get first row.
+								if ( ! $is_table_first_row_set ) {
+									$table_first_row[] = $heading;
+								}
+
+								$table_row[] = $data;
+							}
+					}
+				}
+
+				// Add first row data to table data.
+				if ( ! $is_table_first_row_set ) {
+					$table_data[] = $table_first_row;
+					$is_table_first_row_set = true;
+				}
+
+				// Add table row data.
+				$table_data[] = $table_row;
+
+				// Increase counter.
+				self::$counter++;
+			}
+
+			$this->display_table( $table_data );
+		}
+	}
 
 
 	/**
@@ -418,5 +563,32 @@ class GIVE_CLI_COMMAND {
 	 */
 	private function color_sub_heading( $subheading ) {
 		WP_CLI::log( "\n" . $subheading . '' );
+	}
+
+
+	/**
+	 * Display data in table format.
+	 *
+	 * @since  1.7
+	 * @access private
+	 *
+	 * @param array $data Array of table data.
+	 *
+	 * @return void
+	 */
+	private function display_table( $data ) {
+		$table = new \cli\Table();
+
+		// Set table header.
+		$table->setHeaders( $data[0] );
+
+		// Remove table header.
+		unset( $data[0] );
+
+		// Set table data.
+		$table->setRows( $data );
+
+		// Display table.
+		$table->display();
 	}
 }
