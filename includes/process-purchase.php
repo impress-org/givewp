@@ -197,7 +197,7 @@ function give_purchase_form_validate_fields() {
 
 	//Validate Honeypot First
 	if ( ! empty( $_POST['give-honeypot'] ) ) {
-		give_set_error( 'invalid_honeypot', esc_html( 'Honeypot field detected. Go away bad bot!', 'give' ) );
+		give_set_error( 'invalid_honeypot', esc_html__( 'Honeypot field detected. Go away bad bot!', 'give' ) );
 	}
 
 	// Validate agree to terms
@@ -232,7 +232,7 @@ function give_purchase_form_validate_fields() {
 /**
  * Purchase Form Validate Gateway
  *
- * @description: Validate the gateway and donation amount
+ * Validate the gateway and donation amount
  *
  * @access      private
  * @since       1.0
@@ -252,7 +252,7 @@ function give_purchase_form_validate_gateway() {
 		//Is amount being donated in LIVE mode 0.00? If so, error:
 		if ( $amount == 0 && ! give_is_test_mode() ) {
 
-			give_set_error( 'invalid_donation_amount', esc_html( 'Please insert a valid donation amount.', 'give' ) );
+			give_set_error( 'invalid_donation_amount', esc_html__( 'Please insert a valid donation amount.', 'give' ) );
 
 		} //Check for a minimum custom amount
 		elseif ( ! give_verify_minimum_price() ) {
@@ -261,7 +261,7 @@ function give_purchase_form_validate_gateway() {
 				'invalid_donation_minimum',
 				sprintf(
 					/* translators: %s: minimum donation amount */
-					esc_html( 'This form has a minimum donation amount of %s.', 'give' ),
+					esc_html__( 'This form has a minimum donation amount of %s.', 'give' ),
 					give_currency_filter( give_format_amount( give_get_form_minimum_price( $form_id ) ) )
 				)
 			);
@@ -274,7 +274,7 @@ function give_purchase_form_validate_gateway() {
 		} //Check if this gateway is active
 		elseif ( ! give_is_gateway_active( $gateway ) ) {
 
-			give_set_error( 'invalid_gateway', esc_html( 'The selected payment gateway is not enabled.', 'give' ) );
+			give_set_error( 'invalid_gateway', esc_html__( 'The selected payment gateway is not enabled.', 'give' ) );
 
 		}
 
@@ -327,7 +327,7 @@ function give_purchase_form_validate_agree_to_terms() {
 	// Validate agree to terms
 	if ( ! isset( $_POST['give_agree_to_terms'] ) || $_POST['give_agree_to_terms'] != 1 ) {
 		// User did not agree
-		give_set_error( 'agree_to_terms', apply_filters( 'give_agree_to_terms_text', esc_html( 'You must agree to the terms of use.', 'give' ) ) );
+		give_set_error( 'agree_to_terms', apply_filters( 'give_agree_to_terms_text', esc_html__( 'You must agree to the terms of use.', 'give' ) ) );
 	}
 }
 
@@ -348,11 +348,11 @@ function give_purchase_form_required_fields( $form_id ) {
 	$required_fields = array(
 		'give_email' => array(
 			'error_id'      => 'invalid_email',
-			'error_message' => esc_html( 'Please enter a valid email address.', 'give' )
+			'error_message' => esc_html__( 'Please enter a valid email address.', 'give' )
 		),
 		'give_first' => array(
 			'error_id'      => 'invalid_first_name',
-			'error_message' => esc_html( 'Please enter your first name.', 'give' )
+			'error_message' => esc_html__( 'Please enter your first name.', 'give' )
 		)
 	);
 
@@ -361,23 +361,23 @@ function give_purchase_form_required_fields( $form_id ) {
 	if ( $require_address ) {
 		$required_fields['card_address']    = array(
 			'error_id'      => 'invalid_card_address',
-			'error_message' => esc_html( 'Please enter your primary billing address.', 'give' )
+			'error_message' => esc_html__( 'Please enter your primary billing address.', 'give' )
 		);
 		$required_fields['card_zip']        = array(
 			'error_id'      => 'invalid_zip_code',
-			'error_message' => esc_html( 'Please enter your zip / postal code.', 'give' )
+			'error_message' => esc_html__( 'Please enter your zip / postal code.', 'give' )
 		);
 		$required_fields['card_city']       = array(
 			'error_id'      => 'invalid_city',
-			'error_message' => esc_html( 'Please enter your billing city.', 'give' )
+			'error_message' => esc_html__( 'Please enter your billing city.', 'give' )
 		);
 		$required_fields['billing_country'] = array(
 			'error_id'      => 'invalid_country',
-			'error_message' => esc_html( 'Please select your billing country.', 'give' )
+			'error_message' => esc_html__( 'Please select your billing country.', 'give' )
 		);
 		$required_fields['card_state']      = array(
 			'error_id'      => 'invalid_state',
-			'error_message' => esc_html( 'Please enter billing state / province.', 'give' )
+			'error_message' => esc_html__( 'Please enter billing state / province.', 'give' )
 		);
 	}
 
@@ -448,12 +448,12 @@ function give_purchase_form_validate_logged_in_user() {
 			);
 
 			if ( ! is_email( $valid_user_data['user_email'] ) ) {
-				give_set_error( 'email_invalid', esc_html( 'Invalid email', 'give' ) );
+				give_set_error( 'email_invalid', esc_html__( 'Invalid email', 'give' ) );
 			}
 
 		} else {
 			// Set invalid user error
-			give_set_error( 'invalid_user', esc_html( 'The user information is invalid.', 'give' ) );
+			give_set_error( 'invalid_user', esc_html__( 'The user information is invalid.', 'give' ) );
 		}
 	}
 
@@ -503,38 +503,38 @@ function give_purchase_form_validate_new_user() {
 		// We have an user name, check if it already exists
 		if ( username_exists( $user_login ) ) {
 			// Username already registered
-			give_set_error( 'username_unavailable', esc_html( 'Username already taken.', 'give' ) );
+			give_set_error( 'username_unavailable', esc_html__( 'Username already taken.', 'give' ) );
 			// Check if it's valid
 		} else if ( ! give_validate_username( $user_login ) ) {
 			// Invalid username
 			if ( is_multisite() ) {
-				give_set_error( 'username_invalid', esc_html( 'Invalid username. Only lowercase letters (a-z) and numbers are allowed.', 'give' ) );
+				give_set_error( 'username_invalid', esc_html__( 'Invalid username. Only lowercase letters (a-z) and numbers are allowed.', 'give' ) );
 			} else {
-				give_set_error( 'username_invalid', esc_html( 'Invalid username.', 'give' ) );
+				give_set_error( 'username_invalid', esc_html__( 'Invalid username.', 'give' ) );
 			}
 		} else {
 			// All the checks have run and it's good to go
 			$valid_user_data['user_login'] = $user_login;
 		}
 	} elseif ( give_logged_in_only( $form_id ) ) {
-		give_set_error( 'registration_required', esc_html( 'You must register or login to complete your donation.', 'give' ) );
+		give_set_error( 'registration_required', esc_html__( 'You must register or login to complete your donation.', 'give' ) );
 	}
 
 	// Check if we have an email to verify
 	if ( $user_email && strlen( $user_email ) > 0 ) {
 		// Validate email
 		if ( ! is_email( $user_email ) ) {
-			give_set_error( 'email_invalid', esc_html( 'Sorry, that email is invalid.', 'give' ) );
+			give_set_error( 'email_invalid', esc_html__( 'Sorry, that email is invalid.', 'give' ) );
 			// Check if email exists
 		} else if ( email_exists( $user_email ) && $registering_new_user ) {
-			give_set_error( 'email_used', esc_html( 'Sorry, that email already active for another user.', 'give' ) );
+			give_set_error( 'email_used', esc_html__( 'Sorry, that email already active for another user.', 'give' ) );
 		} else {
 			// All the checks have run and it's good to go
 			$valid_user_data['user_email'] = $user_email;
 		}
 	} else {
 		// No email
-		give_set_error( 'email_empty', esc_html( 'Enter an email.', 'give' ) );
+		give_set_error( 'email_empty', esc_html__( 'Enter an email.', 'give' ) );
 	}
 
 	// Check password
@@ -542,7 +542,7 @@ function give_purchase_form_validate_new_user() {
 		// Verify confirmation matches
 		if ( $user_pass != $pass_confirm ) {
 			// Passwords do not match
-			give_set_error( 'password_mismatch', esc_html( 'Passwords don\'t match.', 'give' ) );
+			give_set_error( 'password_mismatch', esc_html__( 'Passwords don\'t match.', 'give' ) );
 		} else {
 			// All is good to go
 			$valid_user_data['user_pass'] = $user_pass;
@@ -551,10 +551,10 @@ function give_purchase_form_validate_new_user() {
 		// Password or confirmation missing
 		if ( ! $user_pass && $registering_new_user ) {
 			// The password is invalid
-			give_set_error( 'password_empty', esc_html( 'Enter a password.', 'give' ) );
+			give_set_error( 'password_empty', esc_html__( 'Enter a password.', 'give' ) );
 		} else if ( ! $pass_confirm && $registering_new_user ) {
 			// Confirmation password is invalid
-			give_set_error( 'confirmation_empty', esc_html( 'Enter the password confirmation.', 'give' ) );
+			give_set_error( 'confirmation_empty', esc_html__( 'Enter the password confirmation.', 'give' ) );
 		}
 	}
 
@@ -578,7 +578,7 @@ function give_purchase_form_validate_user_login() {
 
 	// Username
 	if ( ! isset( $_POST['give_user_login'] ) || $_POST['give_user_login'] == '' ) {
-		give_set_error( 'must_log_in', esc_html( 'You must login or register to complete your donation.', 'give' ) );
+		give_set_error( 'must_log_in', esc_html__( 'You must login or register to complete your donation.', 'give' ) );
 
 		return $valid_user_data;
 	}
@@ -600,9 +600,9 @@ function give_purchase_form_validate_user_login() {
 					'password_incorrect',
 					sprintf(
 						'%1$s <a href="%2$s">%3$s</a>',
-						esc_html( 'The password you entered is incorrect.', 'give' ),
+						esc_html__( 'The password you entered is incorrect.', 'give' ),
 						wp_lostpassword_url( "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]" ),
-						esc_html( 'Reset Password', 'give' )
+						esc_html__( 'Reset Password', 'give' )
 					)
 				);
 				// All is correct
@@ -619,11 +619,11 @@ function give_purchase_form_validate_user_login() {
 			}
 		} else {
 			// Empty password
-			give_set_error( 'password_empty', esc_html( 'Enter a password.', 'give' ) );
+			give_set_error( 'password_empty', esc_html__( 'Enter a password.', 'give' ) );
 		}
 	} else {
 		// no username
-		give_set_error( 'username_incorrect', esc_html( 'The username you entered does not exist.', 'give' ) );
+		give_set_error( 'username_incorrect', esc_html__( 'The username you entered does not exist.', 'give' ) );
 	}
 
 	return $valid_user_data;
@@ -648,7 +648,7 @@ function give_purchase_form_validate_guest_user() {
 
 	// Show error message if user must be logged in
 	if ( give_logged_in_only( $form_id ) ) {
-		give_set_error( 'logged_in_only', esc_html( 'You must be logged into to donate.', 'give' ) );
+		give_set_error( 'logged_in_only', esc_html__( 'You must be logged into to donate.', 'give' ) );
 	}
 
 	// Get the guest email
@@ -659,14 +659,14 @@ function give_purchase_form_validate_guest_user() {
 		// Validate email
 		if ( ! is_email( $guest_email ) ) {
 			// Invalid email
-			give_set_error( 'email_invalid', esc_html( 'Invalid email.', 'give' ) );
+			give_set_error( 'email_invalid', esc_html__( 'Invalid email.', 'give' ) );
 		} else {
 			// All is good to go
 			$valid_user_data['user_email'] = $guest_email;
 		}
 	} else {
 		// No email
-		give_set_error( 'email_empty', esc_html( 'Enter an email.', 'give' ) );
+		give_set_error( 'email_empty', esc_html__( 'Enter an email.', 'give' ) );
 	}
 
 	// Loop through required fields and show error messages
@@ -835,7 +835,7 @@ function give_purchase_form_validate_cc() {
 	// Validate the card zip
 	if ( ! empty( $card_data['card_zip'] ) ) {
 		if ( ! give_purchase_form_validate_cc_zip( $card_data['card_zip'], $card_data['card_country'] ) ) {
-			give_set_error( 'invalid_cc_zip', esc_html( 'The zip / postal code you entered for your billing address is invalid.', 'give' ) );
+			give_set_error( 'invalid_cc_zip', esc_html__( 'The zip / postal code you entered for your billing address is invalid.', 'give' ) );
 		}
 	}
 
@@ -1057,3 +1057,71 @@ function give_purchase_form_validate_cc_zip( $zip = 0, $country_code = '' ) {
 
 	return apply_filters( 'give_is_zip_valid', $ret, $zip, $country_code );
 }
+
+
+/**
+ * Auto set correct donation level id on basis of amount.
+ *
+ * Note: If amount does not match to donation level amount then level id will be auto select to first match level id on basis of amount.
+ *
+ * @param array $valid_data
+ * @param array $data
+ *
+ * @return bool
+ */
+function give_validate_multi_donation_form_level(  $valid_data, $data ) {
+    /* @var Give_Donate_Form $form*/
+    $form = new Give_Donate_Form( $data['give-form-id'] );
+
+    $donation_level_matched = false;
+
+    if( $form->is_multi_type_donation_form() ) {
+
+        // Bailout.
+        if( ! ( $variable_prices = $form->get_prices() ) ) {
+            return false;
+        }
+
+        // Sanitize donation amount.
+        $data['give-amount'] = give_sanitize_amount( $data['give-amount'] );
+
+        // Get number of decimals.
+        $default_decimals = give_get_price_decimals();
+
+        if( $data['give-amount'] === give_sanitize_amount( give_get_price_option_amount( $data['give-form-id'], $data['give-price-id'] ), $default_decimals ) ){
+            return true;
+        }
+
+        
+        // Find correct donation level from all donation levels.
+        foreach ( $variable_prices as $variable_price ) {
+            // Sanitize level amount.
+            $variable_price['_give_amount'] = give_sanitize_amount( $variable_price['_give_amount'], $default_decimals );
+
+            // Set first match donation level ID.
+            if( $data['give-amount'] === $variable_price['_give_amount'] ) {
+                $_POST['give-price-id'] = $variable_price['_give_id']['level_id'];
+                $donation_level_matched = true;
+                break;
+            }
+        }
+
+        // If donation amount is not find in donation levels then check if form has custom donation feature enable or not.
+        // If yes then set price id to custom if amount is greater then custom minimum amount (if any).
+        if(
+            ! $donation_level_matched
+            && ( 'yes' === get_post_meta( $data['give-form-id'], '_give_custom_amount', true ) )
+        ) {
+            // Sanitize custom minimum amount.
+            $custom_minimum_amount = give_sanitize_amount( get_post_meta( $data['give-form-id'], '_give_custom_amount_minimum', true ), $default_decimals );
+
+            if( $data['give-amount'] >= $custom_minimum_amount ) {
+                $_POST['give-price-id'] = 'custom';
+                $donation_level_matched  = true;
+            }
+        }
+    }
+
+    return ( $donation_level_matched ? true : false );
+}
+add_action( 'give_checkout_error_checks', 'give_validate_multi_donation_form_level', 10, 2 );

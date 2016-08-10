@@ -3,41 +3,33 @@ language: php
 sudo: false
 
 php:
+- 5.2
 - 5.3
 - 5.4
 - 5.5
 - 5.6
+- 7.0
 - hhvm
 
 env:
 - WP_VERSION=latest WP_MULTISITE=0
-- WP_VERSION=4.1 WP_MULTISITE=0
-- WP_VERSION=4.0 WP_MULTISITE=0
-- WP_VERSION=3.9.2 WP_MULTISITE=0
+- WP_VERSION=4.5 WP_MULTISITE=0
+- WP_VERSION=4.4 WP_MULTISITE=0
+- WP_VERSION=4.3 WP_MULTISITE=0
 
 matrix:
   include:
-    - php: 5.3
+    - php: 5.6
       env: WP_VERSION=latest WP_MULTISITE=1
-  exclude:
-    - php: hhvm
-      env: WP_VERSION=3.9.2 WP_MULTISITE=0
-    - php: hhvm
-      env: WP_VERSION=4.0 WP_MULTISITE=0
 
 before_script:
-- bash tests/bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
+- bash tests/bin/install.sh wordpress_test root '' localhost $WP_VERSION
+- bash tests/bin/travis.sh before
 
-script:
-- if [[ $TRAVIS_PHP_VERSION = '5.5' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0'
-  ]]; then phpunit --coverage-clover=coverage.clover; else phpunit; fi
+script: phpunit -c phpunit.xml
 
 after_script:
-- if [[ $TRAVIS_PHP_VERSION = '5.5' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0'
-  ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
-- if [[ $TRAVIS_PHP_VERSION = '5.5' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0'
-  ]]; then php ocular.phar code-coverage:upload --format=php-clover coverage.clover;
-  fi
+- bash tests/bin/travis.sh after
 
 notifications:
  slack: givewp:AgWxvdTjTkSjd8FHM5ndeSH5

@@ -1,26 +1,27 @@
 <?php
 /**
- * Stats Base
+ * Stats
  *
  * @package     Give
- * @subpackage  Classes/Stats
+ * @subpackage  Classes/Give_Stats
  * @copyright   Copyright (c) 2016, Give
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Give_Stats Class
  *
- * Base class for other stats classes
- *
- * Primarily for setting up dates and ranges
+ * Base class for other stats classes. Primarily for setting up dates and ranges.
  *
  * @since 1.0
  */
 class Give_Stats {
-
 
 	/**
 	 * The start date for the period we're getting stats for
@@ -31,11 +32,10 @@ class Give_Stats {
 	 * Predefined date options are: today, yesterday, this_week, last_week, this_month, last_month
 	 * this_quarter, last_quarter, this_year, last_year
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
 	 */
 	public $start_date;
-
 
 	/**
 	 * The end date for the period we're getting stats for
@@ -60,32 +60,41 @@ class Give_Stats {
 	public $timestamp;
 
 	/**
+	 * Class Constructor
+	 *
+	 * Set up the Give Stats Class.
+	 *
+	 * @since  1.0
 	 * @access public
+	 *
 	 * @return void
 	 */
-	public function __construct() { /* nothing here. Call get_sales() and get_earnings() directly */
+	public function __construct() {
+		/* nothing here. Call get_sales() and get_earnings() directly */
 	}
 
-
 	/**
-	 * Get the predefined date periods permitted
+	 * Get Predefined Dates
 	 *
+	 * Retrieve the predefined date periods permitted.
+	 *
+	 * @since  1.0
 	 * @access public
-	 * @since  1.8
-	 * @return array
+	 *
+	 * @return array  Predefined dates.
 	 */
 	public function get_predefined_dates() {
 		$predefined = array(
-			'today'        => esc_html( 'Today', 'give' ),
-			'yesterday'    => esc_html( 'Yesterday', 'give' ),
-			'this_week'    => esc_html( 'This Week', 'give' ),
-			'last_week'    => esc_html( 'Last Week', 'give' ),
-			'this_month'   => esc_html( 'This Month', 'give' ),
-			'last_month'   => esc_html( 'Last Month', 'give' ),
-			'this_quarter' => esc_html( 'This Quarter', 'give' ),
-			'last_quarter' => esc_html( 'Last Quarter', 'give' ),
-			'this_year'    => esc_html( 'This Year', 'give' ),
-			'last_year'    => esc_html( 'Last Year', 'give' )
+			'today'        => esc_html__( 'Today', 'give' ),
+			'yesterday'    => esc_html__( 'Yesterday', 'give' ),
+			'this_week'    => esc_html__( 'This Week', 'give' ),
+			'last_week'    => esc_html__( 'Last Week', 'give' ),
+			'this_month'   => esc_html__( 'This Month', 'give' ),
+			'last_month'   => esc_html__( 'Last Month', 'give' ),
+			'this_quarter' => esc_html__( 'This Quarter', 'give' ),
+			'last_quarter' => esc_html__( 'Last Quarter', 'give' ),
+			'this_year'    => esc_html__( 'This Year', 'give' ),
+			'last_year'    => esc_html__( 'Last Year', 'give' )
 		);
 
 		return apply_filters( 'give_stats_predefined_dates', $predefined );
@@ -94,13 +103,13 @@ class Give_Stats {
 	/**
 	 * Setup the dates passed to our constructor.
 	 *
-	 * This calls the convert_date() member function to ensure the dates are formatted correctly
+	 * This calls the convert_date() member function to ensure the dates are formatted correctly.
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param string $_start_date
-	 * @param bool $_end_date
+	 * @param  string $_start_date Start date. Default is 'this_month'.
+	 * @param  bool   $_end_date   End date. Default is false.
 	 *
 	 * @return void
 	 */
@@ -119,11 +128,17 @@ class Give_Stats {
 	}
 
 	/**
-	 * Converts a date to a timestamp
+	 * Convert Date
 	 *
-	 * @access public
+	 * Converts a date to a timestamp.
+	 *
 	 * @since  1.0
-	 * @return array|WP_Error If the date is invalid, a WP_Error object will be returned
+	 * @access public
+	 *
+	 * @param  string $date     Date.
+	 * @param  bool   $end_date End date. Default is false.
+	 *
+	 * @return array|WP_Error   If the date is invalid, a WP_Error object will be returned.
 	 */
 	public function convert_date( $date, $end_date = false ) {
 
@@ -433,7 +448,7 @@ class Give_Stats {
 
 		} else {
 
-			return new WP_Error( 'invalid_date', esc_html( 'Improper date provided.', 'give' ) );
+			return new WP_Error( 'invalid_date', esc_html__( 'Improper date provided.', 'give' ) );
 
 		}
 
@@ -447,10 +462,15 @@ class Give_Stats {
 	}
 
 	/**
-	 * Modifies the WHERE flag for payment counts
+	 * Count Where
 	 *
-	 * @access public
+	 * Modifies the WHERE flag for payment counts.
+	 *
 	 * @since  1.0
+	 * @access public
+	 *
+	 * @param  string $where SQL WHERE statment.
+	 * 
 	 * @return string
 	 */
 	public function count_where( $where = '' ) {
@@ -490,12 +510,14 @@ class Give_Stats {
 	}
 
 	/**
-	 * Modifies the WHERE flag for payment queries
+	 * Payment Where
 	 *
-	 * @access public
+	 * Modifies the WHERE flag for payment queries.
+	 *
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param string $where
+	 * @param  string $where SQL WHERE statment.
 	 *
 	 * @return string
 	 */

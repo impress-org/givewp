@@ -68,7 +68,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 			case 'ID' :
 				return $item['ID_label'];
 			case 'error' :
-				return get_the_title( $item['ID'] ) ? get_the_title( $item['ID'] ) : esc_html( 'Payment Error', 'give' );
+				return get_the_title( $item['ID'] ) ? get_the_title( $item['ID'] ) : esc_html__( 'Payment Error', 'give' );
 			default:
 				return $item[ $column_name ];
 		}
@@ -102,7 +102,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 				$data   = substr( $log_message, $serialized, strlen( $log_message ) - 1 );
 
 				echo wpautop( $intro );
-				echo wpautop( '<strong>' . esc_html( 'Log data:', 'give' ) . '</strong>' );
+				echo wpautop( '<strong>' . esc_html__( 'Log data:', 'give' ) . '</strong>' );
 				echo '<div style="word-wrap: break-word;">' . wpautop( $data ) . '</div>';
 			} else {
 				// No serialized data found
@@ -122,12 +122,12 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'ID'         => esc_html( 'Log ID', 'give' ),
-			'payment_id' => esc_html( 'Payment ID', 'give' ),
-			'error'      => esc_html( 'Error', 'give' ),
-			'message'    => esc_html( 'Error Message', 'give' ),
-			'gateway'    => esc_html( 'Gateway', 'give' ),
-			'date'       => esc_html( 'Date', 'give' )
+			'ID'         => esc_html__( 'Log ID', 'give' ),
+			'payment_id' => esc_html__( 'Payment ID', 'give' ),
+			'error'      => esc_html__( 'Error', 'give' ),
+			'message'    => esc_html__( 'Error Message', 'give' ),
+			'gateway'    => esc_html__( 'Gateway', 'give' ),
+			'date'       => esc_html__( 'Date', 'give' )
 		);
 
 		return $columns;
@@ -198,7 +198,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	/**
 	 * Display Tablenav (extended)
 	 *
-	 * @description: Display the table navigation above or below the table even when no items in the logs, so nav doesn't disappear
+	 * Display the table navigation above or below the table even when no items in the logs, so nav doesn't disappear
 	 *
 	 * @see: https://github.com/WordImpress/Give/issues/564
 	 *
@@ -212,7 +212,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
 		}
 		?>
-		<div class="tablenav <?php esc_attr_e( $which ); ?>">
+		<div class="tablenav <?php echo esc_attr( $which ); ?>">
 
 			<div class="alignleft actions bulkactions">
 				<?php $this->bulk_actions( $which ); ?>

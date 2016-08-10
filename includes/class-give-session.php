@@ -1,11 +1,9 @@
 <?php
 /**
- * Give Session
- *
- * This is a wrapper class for WP_Session / PHP $_SESSION and handles the storage of Give sessions
+ * Session
  *
  * @package     Give
- * @subpackage  Classes/Session
+ * @subpackage  Classes/Give_Session
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
@@ -19,6 +17,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Give_Session Class
  *
+ * This is a wrapper class for WP_Session / PHP $_SESSION and handles the storage of Give sessions.
+ *
  * @since 1.0
  */
 class Give_Session {
@@ -26,46 +26,52 @@ class Give_Session {
 	/**
 	 * Holds our session data
 	 *
-	 * @var array
-	 * @access private
 	 * @since  1.0
+	 * @access private
+	 *
+	 * @var    WP_Session/array
 	 */
 	private $session;
-
 
 	/**
 	 * Whether to use PHP $_SESSION or WP_Session
 	 *
-	 * @var bool
-	 * @access private
 	 * @since  1.0
+	 * @access private
+	 *
+	 * @var    bool
 	 */
 	private $use_php_sessions = false;
 
 	/**
 	 * Expiration Time
 	 *
-	 * @var int
-	 * @access private
 	 * @since  1.0
+	 * @access private
+	 *
+	 * @var    int
 	 */
 	private $exp_option = false;
 
 	/**
 	 * Session index prefix
 	 *
-	 * @var string
-	 * @access private
 	 * @since  1.0
+	 * @access private
+	 *
+	 * @var    string
 	 */
 	private $prefix = '';
 
 	/**
-	 * Get things started
+	 * Class Constructor
 	 *
-	 * @description: Defines our session constants, includes the necessary libraries and retrieves the session instance
+	 * Defines our session constants, includes the necessary libraries and retrieves the session instance.
 	 *
-	 * @since 1.0
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @return void
 	 */
 	public function __construct() {
 
@@ -121,11 +127,14 @@ class Give_Session {
 	}
 
 	/**
-	 * Setup the Session instance
+	 * Session Init
 	 *
-	 * @access public
+	 * Setup the Session instance.
+	 *
 	 * @since  1.0
-	 * @return array $this->session
+	 * @access public
+	 *
+	 * @return array Session instance
 	 */
 	public function init() {
 
@@ -139,28 +148,31 @@ class Give_Session {
 
 	}
 
-
 	/**
-	 * Retrieve session ID
+	 * Get Session ID
 	 *
-	 * @access public
+	 * Retrieve session ID.
+	 *
 	 * @since  1.0
-	 * @return string Session ID
+	 * @access public
+	 *
+	 * @return string Session ID.
 	 */
 	public function get_id() {
 		return $this->session->session_id;
 	}
 
-
 	/**
-	 * Retrieve a session variable
+	 * Get Session
 	 *
-	 * @access public
+	 * Retrieve session variable for a given session key.
+	 *
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param string $key Session key
+	 * @param  string $key Session key.
 	 *
-	 * @return string Session variable
+	 * @return string      Session variable.
 	 */
 	public function get( $key ) {
 		$key = sanitize_key( $key );
@@ -170,14 +182,17 @@ class Give_Session {
 	}
 
 	/**
-	 * Set a session variable
+     * Set Session
+     *
+	 * Create a new session.
+     *
+	 * @since  1.0
+	 * @access public
 	 *
-	 * @since 1.0
+	 * @param  string $key   Session key.
+	 * @param  string $value Session variable.
 	 *
-	 * @param $key $_SESSION key
-	 * @param $value $_SESSION variable
-	 *
-	 * @return mixed Session variable
+	 * @return mixed         Session variable.
 	 */
 	public function set( $key, $value ) {
 
@@ -199,11 +214,12 @@ class Give_Session {
 	/**
 	 * Set Session Cookies
 	 *
-	 * @description: Cookies are used to increase the session lifetime using the give setting; this is helpful for when a user closes their browser after making a donation and comes back to the site.
+	 * Cookies are used to increase the session lifetime using the give setting. This is helpful for when a user closes their browser after making a donation and comes back to the site.
 	 *
+	 * @since  1.4
 	 * @access public
+	 *
 	 * @hook
-	 * @since 1.4
 	 */
 	public function set_session_cookies() {
 		if( ! headers_sent() ) {
@@ -216,10 +232,10 @@ class Give_Session {
 	/**
 	 * Set Cookie Variant Time
 	 *
-	 * @description Force the cookie expiration variant time to custom expiration option, less and hour; defaults to 23 hours (set_expiration_variant_time used in WP_Session)
+	 * Force the cookie expiration variant time to custom expiration option, less and hour. defaults to 23 hours (set_expiration_variant_time used in WP_Session).
 	 *
-	 * @access      public
-	 * @since       1.0
+	 * @since  1.0
+	 * @access public
 	 *
 	 * @return int
 	 */
@@ -229,13 +245,12 @@ class Give_Session {
 	}
 
 	/**
-	 * Set the Cookie Expiration
+	 * Set Cookie Expiration
 	 *
-	 * @description Force the cookie expiration time if set, default to 24 hours
+	 * Force the cookie expiration time if set, default to 24 hours.
 	 *
-	 * @access      public
-	 * 
-	 * @since       1.0
+	 * @since  1.0
+	 * @access public
 	 *
 	 * @return int
 	 */
@@ -247,12 +262,12 @@ class Give_Session {
 	/**
 	 * Starts a new session if one has not started yet.
 	 *
-	 * @return null
-	 * Checks to see if the server supports PHP sessions or if the GIVE_USE_PHP_SESSIONS constant is defined
+	 * Checks to see if the server supports PHP sessions or if the GIVE_USE_PHP_SESSIONS constant is defined.
 	 *
-	 * @access public
 	 * @since  1.0
-	 * @return bool $ret True if we are using PHP sessions, false otherwise
+	 * @access public
+	 *
+	 * @return bool $ret True if we are using PHP sessions, false otherwise.
 	 */
 	public function use_php_sessions() {
 
@@ -295,9 +310,13 @@ class Give_Session {
 	}
 
 	/**
-	 * Determines if we should start sessions
+	 * Should Start Session
+	 *
+	 * Determines if we should start sessions.
 	 *
 	 * @since  1.4
+     * @access public
+	 *
 	 * @return bool
 	 */
 	public function should_start_session() {
@@ -333,9 +352,14 @@ class Give_Session {
 
 	/**
 	 * Maybe Start Session
+     *
+	 * Starts a new session if one hasn't started yet.
+     *
+     * @access public
+     *
+	 * @see    http://php.net/manual/en/function.session-set-cookie-params.php
 	 *
-	 * @description Starts a new session if one hasn't started yet.
-	 * @see         http://php.net/manual/en/function.session-set-cookie-params.php
+	 * @return void
 	 */
 	public function maybe_start_session() {
 
@@ -349,11 +373,14 @@ class Give_Session {
 
 	}
 
-
 	/**
 	 * Get Session Expiration
-	 *
-	 * @description  Looks at the session cookies and returns the expiration date for this session if applicable
+     *
+	 * Looks at the session cookies and returns the expiration date for this session if applicable
+     *
+     * @access public
+     *
+     * @return string Formatted expiration date string.
 	 */
 	public function get_session_expiration() {
 
@@ -370,4 +397,3 @@ class Give_Session {
 	}
 
 }
-

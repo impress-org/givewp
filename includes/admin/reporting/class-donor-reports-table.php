@@ -63,8 +63,8 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 
 		// Set parent defaults
 		parent::__construct( array(
-			'singular' => esc_html( 'Donor', 'give' ),     // Singular name of the listed records
-			'plural'   => esc_html( 'Donors', 'give' ),    // Plural name of the listed records
+			'singular' => esc_html__( 'Donor', 'give' ),     // Singular name of the listed records
+			'plural'   => esc_html__( 'Donors', 'give' ),    // Plural name of the listed records
 			'ajax'     => false                        // Does this table support ajax?
 		) );
 
@@ -73,7 +73,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	/**
 	 * Remove default search field in favor for repositioned location
 	 *
-	 * @description Reposition the search field
+	 * Reposition the search field
 	 *
 	 * @since       1.0
 	 * @access      public
@@ -130,7 +130,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
 		}
 		?>
-		<div class="tablenav give-clearfix <?php esc_attr_e( $which ); ?>">
+		<div class="tablenav give-clearfix <?php echo esc_attr( $which ); ?>">
 
 			<h3 class="alignleft reports-earnings-title"><span><?php esc_html_e( 'Donors Report', 'give' ); ?></span></h3>
 
@@ -138,7 +138,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 				<div class="actions bulkactions">
 					<?php
 					if ( 'top' == $which ) {
-						$this->give_search_box( esc_html( 'Search Donors', 'give' ), 'give-donors-report-search' );
+						$this->give_search_box( esc_html__( 'Search Donors', 'give' ), 'give-donors-report-search' );
 					}
 
 					$this->bulk_actions( $which ); ?>
@@ -198,11 +198,11 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'name'          => esc_html( 'Name', 'give' ),
-			'id'            => esc_html( 'ID', 'give' ),
-			'email'         => esc_html( 'Email', 'give' ),
-			'num_purchases' => esc_html( 'Purchases', 'give' ),
-			'amount_spent'  => esc_html( 'Total Spent', 'give' )
+			'name'          => esc_html__( 'Name', 'give' ),
+			'id'            => esc_html__( 'ID', 'give' ),
+			'email'         => esc_html__( 'Email', 'give' ),
+			'num_purchases' => esc_html__( 'Purchases', 'give' ),
+			'amount_spent'  => esc_html__( 'Total Spent', 'give' )
 		);
 
 		return apply_filters( 'give_report_donor_columns', $columns );
