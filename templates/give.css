@@ -979,6 +979,8 @@ form[id*='give-form'] .give-donation-amount {
     form[id*='give-form'] .give-donation-amount #give-amount.invalid-amount,
     form[id*='give-form'] .give-donation-amount #give-amount-text.invalid-amount {
       border: 1px solid red; }
+  form[id*='give-form'] .give-donation-amount input.give-amount-top {
+    width: 125px; }
   form[id*='give-form'] .give-donation-amount span.give-final-total-amount {
     border: 1px solid #ccc;
     background: #FFF;
