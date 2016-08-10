@@ -229,10 +229,10 @@ function give_get_emails_tags_list() {
 }
 
 /**
- * Search content for email tags and filter email tags through their hooks
+ * Search content for email tags and filter email tags through their hooks.
  *
- * @param string $content Content to search for email tags
- * @param int $payment_id The payment id
+ * @param string $content Content to search for email tags.
+ * @param int $payment_id The payment id.
  *
  * @since 1.0
  *
@@ -251,7 +251,7 @@ function give_do_email_tags( $content, $payment_id ) {
 }
 
 /**
- * Load email tags
+ * Load email tags.
  *
  * @since 1.0
  */
@@ -262,7 +262,7 @@ function give_load_email_tags() {
 add_action( 'init', 'give_load_email_tags', - 999 );
 
 /**
- * Add default Give email template tags
+ * Add default Give email template tags.
  *
  * @since 1.0
  */
@@ -272,67 +272,67 @@ function give_setup_email_tags() {
 	$email_tags = array(
 		array(
 			'tag'         => 'donation',
-			'description' => esc_html( 'The name of completed donation form and the donation level chosen if applicable.', 'give' ),
+			'description' => esc_html__( 'The name of completed donation form and the donation level chosen if applicable.', 'give' ),
 			'function'    => 'give_email_tag_donation'
 		),
 		array(
 			'tag'         => 'name',
-			'description' => esc_html( 'The donor\'s first name.', 'give' ),
+			'description' => esc_html__( 'The donor\'s first name.', 'give' ),
 			'function'    => 'give_email_tag_first_name'
 		),
 		array(
 			'tag'         => 'fullname',
-			'description' => esc_html( 'The donor\'s full name, first and last.', 'give' ),
+			'description' => esc_html__( 'The donor\'s full name, first and last.', 'give' ),
 			'function'    => 'give_email_tag_fullname'
 		),
 		array(
 			'tag'         => 'username',
-			'description' => esc_html( 'The donor\'s user name on the site, if they registered an account.', 'give' ),
+			'description' => esc_html__( 'The donor\'s user name on the site, if they registered an account.', 'give' ),
 			'function'    => 'give_email_tag_username'
 		),
 		array(
 			'tag'         => 'user_email',
-			'description' => esc_html( 'The donor\'s email address.', 'give' ),
+			'description' => esc_html__( 'The donor\'s email address.', 'give' ),
 			'function'    => 'give_email_tag_user_email'
 		),
 		array(
 			'tag'         => 'billing_address',
-			'description' => esc_html( 'The donor\'s billing address.', 'give' ),
+			'description' => esc_html__( 'The donor\'s billing address.', 'give' ),
 			'function'    => 'give_email_tag_billing_address'
 		),
 		array(
 			'tag'         => 'date',
-			'description' => esc_html( 'The date of the donation.', 'give' ),
+			'description' => esc_html__( 'The date of the donation.', 'give' ),
 			'function'    => 'give_email_tag_date'
 		),
 		array(
 			'tag'         => 'price',
-			'description' => esc_html( 'The total price of the donation.', 'give' ),
+			'description' => esc_html__( 'The total price of the donation.', 'give' ),
 			'function'    => 'give_email_tag_price'
 		),
 		array(
 			'tag'         => 'payment_id',
-			'description' => esc_html( 'The unique ID number for this donation.', 'give' ),
+			'description' => esc_html__( 'The unique ID number for this donation.', 'give' ),
 			'function'    => 'give_email_tag_payment_id'
 		),
 		array(
 			'tag'         => 'receipt_id',
-			'description' => esc_html( 'The unique ID number for this donation receipt.', 'give' ),
+			'description' => esc_html__( 'The unique ID number for this donation receipt.', 'give' ),
 			'function'    => 'give_email_tag_receipt_id'
 		),
 		array(
 			'tag'         => 'payment_method',
-			'description' => esc_html( 'The method of payment used for this donation.', 'give' ),
+			'description' => esc_html__( 'The method of payment used for this donation.', 'give' ),
 			'function'    => 'give_email_tag_payment_method'
 		),
 		array(
 			'tag'         => 'sitename',
-			'description' => esc_html( 'Your site name', 'give' ),
+			'description' => esc_html__( 'Your site name', 'give' ),
 			'function'    => 'give_email_tag_sitename'
 		),
 		array(
 			'tag'         => 'receipt_link',
-			'description' => esc_html( 'Adds a link so users can view their receipt directly on your website if they are unable to view it in the browser correctly.', 'give' ),
+			'description' => esc_html__( 'Adds a link so users can view their receipt directly on your website if they are unable to view it in the browser correctly.', 'give' ),
 			'function'    => 'give_email_tag_receipt_link'
 		),
 	);
@@ -351,8 +351,9 @@ add_action( 'give_add_email_tags', 'give_setup_email_tags' );
 
 
 /**
- * Email template tag: name
- * The donor's first name
+ * Email template tag: name.
+ *
+ * The donor's first name.
  *
  * @param int $payment_id
  *
@@ -372,8 +373,9 @@ function give_email_tag_first_name( $payment_id ) {
 }
 
 /**
- * Email template tag: fullname
- * The donor's full name, first and last
+ * Email template tag: fullname.
+ *
+ * The donor's full name, first and last.
  *
  * @param int $payment_id
  *
@@ -393,12 +395,12 @@ function give_email_tag_fullname( $payment_id ) {
 }
 
 /**
- * Email template tag: username
- * The donor's user name on the site, if they registered an account
+ * Email template tag: username.
+ * The donor's user name on the site, if they registered an account.
  *
  * @param int $payment_id
  *
- * @return string username
+ * @return string username.
  */
 function give_email_tag_username( $payment_id ) {
 	$payment   = new Give_Payment( $payment_id );
@@ -472,8 +474,8 @@ function give_email_tag_date( $payment_id ) {
 }
 
 /**
- * Email template tag: price
- * The total price of the donation
+ * Email template tag: price.
+ * The total price of the donation.
  *
  * @param int $payment_id
  *
@@ -487,8 +489,8 @@ function give_email_tag_price( $payment_id ) {
 }
 
 /**
- * Email template tag: payment_id
- * The unique ID number for this donation
+ * Email template tag: payment_id.
+ * The unique ID number for this donation.
  *
  * @param int $payment_id
  *
@@ -517,7 +519,7 @@ function give_email_tag_receipt_id( $payment_id ) {
 /**
  * Email template tag: {donation}
  *
- * @description:  Output the donation form name used to make the donation along with the donation level (if applicable)
+ * Output the donation form name used to make the donation along with the donation level (if applicable).
  *
  * @param int $payment_id
  *
@@ -527,13 +529,14 @@ function give_email_tag_donation( $payment_id ) {
 	$payment    = new Give_Payment( $payment_id );
 	$form_title = strip_tags( give_get_payment_form_title( $payment->meta, false, '-' ) );
 
-	return ! empty( $form_title ) ? $form_title : esc_html( 'There was an error retrieving this donation title.', 'give' );
+	return ! empty( $form_title ) ? $form_title : esc_html__( 'There was an error retrieving this donation title.', 'give' );
 
 }
 
 /**
- * Email template tag: payment_method
- * The method of payment used for this donation
+ * Email template tag: payment_method.
+ *
+ * The method of payment used for this donation.
  *
  * @param int $payment_id
  *
@@ -546,8 +549,9 @@ function give_email_tag_payment_method( $payment_id ) {
 }
 
 /**
- * Email template tag: sitename
- * Your site name
+ * Email template tag: sitename.
+ *
+ * Your site name.
  *
  * @param int $payment_id
  *
@@ -558,9 +562,9 @@ function give_email_tag_sitename( $payment_id ) {
 }
 
 /**
- * Email template tag: receipt_link
+ * Email template tag: receipt_link.
  *
- * @description: Adds a link so users can view their receipt directly on your website if they are unable to view it in the browser correctly
+ * Adds a link so users can view their receipt directly on your website if they are unable to view it in the browser correctly.
  *
  * @param int $payment_id
  *
@@ -575,7 +579,7 @@ function give_email_tag_receipt_link( $payment_id ) {
 	$formatted   = sprintf(
 		'<a href="%1$s">%2$s</a>',
 		$receipt_url,
-		esc_html( 'View it in your browser', 'give' )
+		esc_html__( 'View it in your browser', 'give' )
 	);
 
 	if ( give_get_option( 'email_template' ) !== 'none' ) {

@@ -7,9 +7,10 @@
 	convertNoticesToExceptions="true"
 	convertWarningsToExceptions="true"
 	verbose="true"
+	syntaxCheck="true"
 	>
 	<testsuites>
-		<testsuite>
+		<testsuite name="Give Test Suite">
 			<directory prefix="tests-" suffix=".php">./tests/unit-tests</directory>
 		</testsuite>
 	</testsuites>
@@ -18,9 +19,15 @@
 			<directory suffix=".php">./templates/</directory>
 			<directory suffix=".php">./tests/</directory>
 			<directory suffix=".php">./tmp/</directory>
+			<directory suffix=".php">./languages/</directory>
+			<directory suffix=".php">./tests/</directory>
+			<directory suffix=".php">./templates/</directory>
+			<directory suffix=".php">./includes/libraries/</directory>
+			<directory suffix=".php">./includes/admin/reporting/export</directory>
+			<directory suffix=".php">./includes/admin/reporting/tools/</directory>
 		</blacklist>
 	</filter>
 	<logging>
-		<log type="coverage-html" target="./tmp/coverage" charset="UTF-8" />
+		<log type="coverage-clover" target="./tmp/clover.xml" charset="UTF-8" />
 	</logging>
 </phpunit>

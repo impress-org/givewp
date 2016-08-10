@@ -34,6 +34,7 @@ add_action( 'give_gateway_select', 'give_process_gateway_select' );
  * Loads a payment gateway via AJAX
  *
  * @since 1.0
+ *
  * @return void
  */
 function give_load_ajax_gateway() {
@@ -50,13 +51,14 @@ add_action( 'wp_ajax_nopriv_give_load_gateway', 'give_load_ajax_gateway' );
  * Sets an error on checkout if no gateways are enabled
  *
  * @since 1.0
+ *
  * @return void
  */
 function give_no_gateway_error() {
 	$gateways = give_get_enabled_payment_gateways();
 
 	if ( empty( $gateways ) ) {
-		give_set_error( 'no_gateways', esc_html( 'You must enable a payment gateway to use Give.', 'give' ) );
+		give_set_error( 'no_gateways', esc_html__( 'You must enable a payment gateway to use Give.', 'give' ) );
 	} else {
 		give_unset_error( 'no_gateways' );
 	}

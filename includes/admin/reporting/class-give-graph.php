@@ -188,7 +188,7 @@ class Give_Graph {
 							foreach( $this->get_data() as $label => $data ) :
 						?>
 						{
-							label : "<?php esc_attr_e( $label ); ?>",
+							label : "<?php echo esc_attr( $label ); ?>",
 							id    : "<?php echo sanitize_key( $label ); ?>",
 							// data format is: [ point on x, value on y ]
 							data  : [<?php foreach( $data as $point ) { echo '[' . implode( ',', $point ) . '],'; } ?>],
@@ -273,7 +273,8 @@ class Give_Graph {
 							previousPoint = item.dataIndex;
 							$( "#give-flot-tooltip" ).remove();
 							var x = item.datapoint[0].toFixed( 2 ),
-								y = item.datapoint[1].toFixed( 2 );
+                                y = accounting.formatMoney( item.datapoint[1].toFixed( give_vars.currency_decimals ), '', give_vars.currency_decimals, give_vars.thousands_separator, give_vars.decimal_separator );
+
 							if ( item.series.id == 'income' ) {
 
 								if ( give_vars.currency_pos == 'before' ) {
@@ -283,7 +284,7 @@ class Give_Graph {
 									give_flot_tooltip( item.pageX, item.pageY, item.series.label + ' ' + y + give_vars.currency_sign );
 								}
 							} else {
-								give_flot_tooltip( item.pageX, item.pageY, item.series.label + ' ' + y.replace( '.00', '' ) );
+								give_flot_tooltip( item.pageX, item.pageY, item.series.label + ' ' + parseInt( y ) );
 							}
 						}
 					} else {

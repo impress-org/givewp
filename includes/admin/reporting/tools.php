@@ -70,14 +70,14 @@ function give_tools_recount_stats_display() {
 						<span id="recount-form"><?php
 							printf(
 								/* translators: %s: form singular label */
-								esc_html( 'Recalculates the donation and income stats for a specific %s.', 'give' ),
+								esc_html__( 'Recalculates the donation and income stats for a specific %s.', 'give' ),
 								give_get_forms_label_singular( true )
 							);
 						?></span>
 						<span id="recount-all"><?php
 							printf(
 								/* translators: %s: form plural label */
-								esc_html( 'Recalculates the earnings and sales stats for all %s.', 'give' ),
+								esc_html__( 'Recalculates the earnings and sales stats for all %s.', 'give' ),
 								give_get_forms_label_plural( true )
 							);
 						?></span>

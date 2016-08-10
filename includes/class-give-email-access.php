@@ -1,43 +1,117 @@
 <?php
 /**
- * Class for allowing donors access to their donation w/o logging in;
- *
- * Based on the work from Matt Gibbs - https://github.com/FacetWP/edd-no-logins
+ * Email Access
  *
  * @package     Give
+ * @subpackage  Classes/Give_Email_Access
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.4
  */
 
-defined( 'ABSPATH' ) or exit;
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
- * Class Give_Email_Access
+ * Give_Email_Access class
+ *
+ * This class handles email access, allowing donors access to their donation w/o logging in;
+ *
+ * Based on the work from Matt Gibbs - https://github.com/FacetWP/edd-no-logins
+ *
+ * @since 1.0
  */
 class Give_Email_Access {
 
+	/**
+	 * Token exists
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @var    bool
+	 */
 	public $token_exists = false;
+
+	/**
+	 * Token email
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @var    bool
+	 */
 	public $token_email = false;
+
+	/**
+	 * Token
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @var    bool
+	 */
 	public $token = false;
+
+	/**
+	 * Error
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @var    string
+	 */
 	public $error = '';
 
+	/**
+	 * Verify throttle
+	 *
+	 * @since  1.0
+	 * @access private
+	 *
+	 * @var    
+	 */
 	private $verify_throttle;
 
 	/**
-	 * Give_Email_Access constructor.
+	 * Verify expiration
+	 *
+	 * @since  1.0
+	 * @access private
+	 *
+	 * @var    string
 	 */
-	function __construct() {
+    private $token_expiration;
+
+	/**
+	 * Class Constructor
+	 *
+	 * Set up the Give Email Access Class.
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @return void
+	 */
+	public function __construct() {
 
 		// get it started
 		add_action( 'init', array( $this, 'init' ) );
 	}
 
-
 	/**
+	 * Init
+	 *
 	 * Register defaults and filters
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @return void
 	 */
-	function init() {
+	public function init() {
 
 		$is_enabled = give_get_option( 'email_access' );
 
@@ -69,11 +143,15 @@ class Give_Email_Access {
 	/**
 	 * Prevent email spamming
 	 *
-	 * @param $customer_id
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @param  $customer_id Customer id.
 	 *
 	 * @return bool
 	 */
-	function can_send_email( $customer_id ) {
+	public function can_send_email( $customer_id ) {
+		/* @var WPDB $wpdb */
 		global $wpdb;
 
 		// Prevent multiple emails within X minutes
@@ -90,7 +168,7 @@ class Give_Email_Access {
 			);
 
 			if ( $row_id < 1 ) {
-				give_set_error( 'give_email_access_attempts_exhausted', esc_html( 'Please wait a few minutes before requesting a new email access link.', 'give' ) );
+				give_set_error( 'give_email_access_attempts_exhausted', esc_html__( 'Please wait a few minutes before requesting a new email access link.', 'give' ) );
 
 				return false;
 			}
@@ -99,14 +177,18 @@ class Give_Email_Access {
 		return true;
 	}
 
-
 	/**
 	 * Send the user's token
 	 *
-	 * @param $customer_id
-	 * @param $email
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @param  $customer_id Customer id.
+	 * @param  $email       Customer email.
+	 *
+	 * @return void
 	 */
-	function send_email( $customer_id, $email ) {
+	public function send_email( $customer_id, $email ) {
 
 		$verify_key = wp_generate_password( 20, false );
 
@@ -121,31 +203,31 @@ class Give_Email_Access {
 		), get_permalink( $page_id ) );
 
 		//Nice subject and message
-		$subject = apply_filters( 'give_email_access_token_subject', sprintf( esc_html( 'Your Access Link to %s', 'give' ), get_bloginfo( 'name' ) ) );
+		$subject = apply_filters( 'give_email_access_token_subject', sprintf( esc_html__( 'Your Access Link to %s', 'give' ), get_bloginfo( 'name' ) ) );
 
-		$message = esc_html( 'You or someone in your organization requested an access link be sent to this email address. This is a temporary access link for you to view your donation information. Click on the link below to view:', 'give' ) . "\n\n";
-
-		$message .= '<a href="' . esc_url( $access_url ) . '" target="_blank">' . esc_html( 'Access My Donation Details', 'give' ) . ' &raquo;</a>';
-
+		$message  = esc_html__( 'You or someone in your organization requested an access link be sent to this email address. This is a temporary access link for you to view your donation information. Click on the link below to view:', 'give' ) . "\n\n";
+		$message .= '<a href="' . esc_url( $access_url ) . '" target="_blank">' . esc_html__( 'Access My Donation Details &raquo;', 'give' ) . '</a>' . "\n\n";
 		$message .= "\n\n";
-		$message .= "\n\n";
-		$message .= esc_html( 'Sincerely,', 'give' );
-		$message .= "\n" . get_bloginfo( 'name' ) . "\n";
+		$message .= esc_html__( 'Sincerely,', 'give' ) . "\n";
+		$message .= get_bloginfo( 'name' ) . "\n";
 
 		$message = apply_filters( 'give_email_access_token_message', $message );
 
-
 		// Send the email
-		Give()->emails->__set( 'heading', apply_filters( 'give_email_access_token_heading', esc_html( 'Your Access Link', 'give' ) ) );
+		Give()->emails->__set( 'heading', apply_filters( 'give_email_access_token_heading', esc_html__( 'Your Access Link', 'give' ) ) );
 		Give()->emails->send( $email, $subject, $message );
 
 	}
 
-
 	/**
 	 * Has the user authenticated?
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @return void
 	 */
-	function check_for_token() {
+	public function check_for_token() {
 
 		$token = isset( $_GET['give_nl'] ) ? $_GET['give_nl'] : '';
 
@@ -171,11 +253,14 @@ class Give_Email_Access {
 	/**
 	 * Is this a valid token?
 	 *
-	 * @param $token
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @param  $token The token.
 	 *
 	 * @return bool
 	 */
-	function is_valid_token( $token ) {
+	public function is_valid_token( $token ) {
 
 		global $wpdb;
 
@@ -206,11 +291,16 @@ class Give_Email_Access {
 	/**
 	 * Add the verify key to DB
 	 *
-	 * @param $customer_id
-	 * @param $email
-	 * @param $verify_key
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @param  $customer_id Customer id.
+	 * @param  $email       Customer email.
+	 * @param  $verify_key  The verification key.
+	 *
+	 * @return void
 	 */
-	function set_verify_key( $customer_id, $email, $verify_key ) {
+	public function set_verify_key( $customer_id, $email, $verify_key ) {
 		global $wpdb;
 
 		$now = date( 'Y-m-d H:i:s' );
@@ -236,11 +326,15 @@ class Give_Email_Access {
 	/**
 	 * Is this a valid verify key?
 	 *
-	 * @param $token
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @param  $token The token.
 	 *
 	 * @return bool
 	 */
-	function is_valid_verify_key( $token ) {
+	public function is_valid_verify_key( $token ) {
+        /* @var WPDB $wpdb */
 		global $wpdb;
 
 		// See if the verify_key exists
@@ -266,25 +360,34 @@ class Give_Email_Access {
 	}
 
 	/**
+	 * Users purchases args
+	 *
 	 * Force Give to find transactions by donation email, not user ID
 	 *
-	 * @param $args
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @param  $args User Purchases arguments.
 	 *
 	 * @return mixed
 	 */
-	function users_purchases_args( $args ) {
+	public function users_purchases_args( $args ) {
 		$args['user'] = $this->token_email;
 
 		return $args;
 	}
 
-
 	/**
-	 * Create Columns
+	 * Create בolumns
 	 *
-	 * @description Create the necessary columns for email access
+	 * Create the necessary columns for email access
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @return void
 	 */
-	function create_columns() {
+	public function create_columns() {
 
 		global $wpdb;
 
@@ -297,6 +400,5 @@ class Give_Email_Access {
 		}
 
 	}
-
 
 }

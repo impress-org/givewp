@@ -62,7 +62,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 	public function get_data() {
 		global $give_logs, $wpdb;
 
-		$accepted_statuses = apply_filters( 'give_recount_accepted_statuses', array( 'publish', 'revoked' ) );
+		$accepted_statuses = apply_filters( 'give_recount_accepted_statuses', array( 'publish' ) );
 
 		if ( $this->step == 1 ) {
 			$this->delete_data( 'give_temp_recount_form_stats' );
@@ -147,7 +147,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 			$this->delete_data( 'give_recount_total_' . $this->form_id );
 		}
 
-		$accepted_statuses = apply_filters( 'give_recount_accepted_statuses', array( 'publish', 'revoked' ) );
+		$accepted_statuses = apply_filters( 'give_recount_accepted_statuses', array( 'publish' ) );
 		$total             = $this->get_stored_data( 'give_recount_total_' . $this->form_id );
 
 		if ( false === $total ) {
@@ -217,7 +217,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 	public function process_step() {
 
 		if ( ! $this->can_export() ) {
-			wp_die( esc_html( 'You do not have permission to recount stats.', 'give' ), esc_html( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die( esc_html__( 'You do not have permission to recount stats.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 		}
 
 		$had_data = $this->get_data();
@@ -230,7 +230,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 			$this->delete_data( 'give_recount_total_' . $this->form_id );
 			$this->delete_data( 'give_temp_recount_form_stats' );
 			$this->done    = true;
-			$this->message = sprintf( esc_html( 'Donation counts and income amount statistics successfully recounted for "%s".', 'give' ), get_the_title( $this->form_id ) );
+			$this->message = sprintf( esc_html__( 'Donation counts and income amount statistics successfully recounted for "%s".', 'give' ), get_the_title( $this->form_id ) );
 
 			return false;
 		}

@@ -35,6 +35,41 @@ function give_get_templates_url() {
 }
 
 /**
+ * Get other templates  passing attributes and including the file.
+ *
+ * @since 1.6
+ * @access public
+ *
+ * @param string $template_name
+ * @param array $args (default: array())
+ * @param string $template_path (default: '')
+ * @param string $default_path (default: '')
+ */
+function give_get_template( $template_name, $args = array(), $template_path = '', $default_path = '' ) {
+    if ( ! empty( $args ) && is_array( $args ) ) {
+        extract( $args );
+    }
+
+    $template_names = array( $template_name . '.php' );
+
+    $located = give_locate_template( $template_names, $template_path, $default_path );
+
+    if ( ! file_exists( $located ) ) {
+        give_output_error( sprintf( __( 'Error: %s template does not find.', 'give' ), $located ), true );
+        return;
+    }
+
+    // Allow 3rd party plugin filter template file from their plugin.
+    $located = apply_filters( 'give_get_template', $located, $template_name, $args, $template_path, $default_path );
+
+    do_action( 'give_before_template_part', $template_name, $template_path, $located, $args );
+
+    include( $located );
+
+    do_action( 'give_after_template_part', $template_name, $template_path, $located, $args );
+}
+
+/**
  * Retrieves a template part
  *
  * @since v1.0
@@ -243,13 +278,13 @@ add_filter( 'body_class', 'give_add_body_classes' );
 /**
  * Add Post Class Filter
  *
- * @description Adds extra post classes for forms
+ * Adds extra post classes for forms
  *
  * @since       1.0
  *
- * @param array $classes
+ * @param array        $classes
  * @param string|array $class
- * @param int $post_id
+ * @param int|string   $post_id
  *
  * @return array
  */
@@ -278,7 +313,7 @@ add_filter( 'post_class', 'give_add_post_class', 20, 3 );
  */
 function give_get_placeholder_img_src() {
 
-	$placeholder_url = 'http://placehold.it/600x600&text=' . urlencode( esc_attr( 'Give Placeholder Image', 'give' ) );
+	$placeholder_url = '//placehold.it/600x600&text=' . urlencode( esc_attr__( 'Give Placeholder Image', 'give' ) );
 
 	return apply_filters( 'give_placeholder_img_src', $placeholder_url );
 }
@@ -357,5 +392,81 @@ if ( ! function_exists( 'give_show_avatars' ) ) {
 	 */
 	function give_show_avatars() {
 		echo do_shortcode( '[give_donators_gravatars]' );
+	}
+}
+
+/**
+ * Conditional Functions
+ */
+
+if ( ! function_exists( 'is_give_form' ) ) {
+
+	/**
+	 * is_give_form
+	 *
+	 * Returns true when viewing a single form.
+	 *
+	 * @since 1.6
+	 *
+	 * @return bool
+	 */
+	function is_give_form() {
+		return is_singular( array( 'give_form' ) );
+	}
+}
+
+if ( ! function_exists( 'is_give_category' ) ) {
+
+	/**
+	 * is_give_category
+	 *
+	 * Returns true when viewing give form category archive.
+	 *
+	 * @since 1.6
+	 *
+	 * @param string $term The term slug your checking for.
+	 *                     Leave blank to return true on any.
+	 *                     Default is blank.
+	 *
+	 * @return bool
+	 */
+	function is_give_category( $term = '' ) {
+		return is_tax( 'give_forms_category', $term );
+	}
+}
+
+if ( ! function_exists( 'is_give_tag' ) ) {
+
+	/**
+	 * is_give_tag
+	 *
+	 * Returns true when viewing give form tag archive.
+	 *
+	 * @since 1.6
+	 *
+	 * @param string $term The term slug your checking for.
+	 *                     Leave blank to return true on any.
+	 *                     Default is blank.
+	 *
+	 * @return bool
+	 */
+	function is_give_tag( $term = '' ) {
+		return is_tax( 'give_forms_tag', $term );
+	}
+}
+
+if ( ! function_exists( 'is_give_taxonomy' ) ) {
+
+	/**
+	 * is_give_taxonomy
+	 *
+	 * Returns true when viewing a give form taxonomy archive.
+	 *
+	 * @since 1.6
+	 *
+	 * @return bool
+	 */
+	function is_give_taxonomy() {
+		return is_tax( get_object_taxonomies( 'give_form' ) );
 	}
 }

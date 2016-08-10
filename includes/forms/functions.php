@@ -36,7 +36,7 @@ add_filter( 'give_shortcode_button_condition', 'give_shortcode_button_condition'
 /**
  * Get the form ID from the form $args
  *
- * @param $args
+ * @param array $args
  *
  * @return int|false
  */
@@ -81,9 +81,10 @@ function give_is_float_labels_enabled( $args ) {
 /**
  * Determines if a user can checkout or not
  *
- * @description: Allows themes and plugins to set donation checkout conditions
+ * Allows themes and plugins to set donation checkout conditions
+ * 
  * @since 1.0
- * @global $give_options Array of all the Give Options
+ * @global array $give_options Array of all the Give Options
  * @return bool Can user checkout?
  */
 function give_can_checkout() {
@@ -98,6 +99,7 @@ function give_can_checkout() {
  *
  * @access      public
  * @since       1.0
+ * @global array $give_options Array of all the Give Options
  * @return      string
  */
 function give_get_success_page_uri() {
@@ -112,6 +114,7 @@ function give_get_success_page_uri() {
  * Determines if we're currently on the Success page.
  *
  * @since 1.0
+ * @global array $give_options Array of all the Give Options
  * @return bool True if on the Success page, false otherwise.
  */
 function give_is_success_page() {
@@ -184,7 +187,7 @@ function give_send_back_to_checkout( $args = array() ) {
 /**
  * Get Success Page URL
  *
- * @description Gets the success page URL.
+ * Gets the success page URL.
  *
  * @param string $query_string
  *
@@ -266,7 +269,7 @@ add_action( 'template_redirect', 'give_listen_for_failed_payments' );
  * Check if a field is required
  *
  * @param string $field
- * @param int $form_id
+ * @param int    $form_id
  *
  * @access      public
  * @since       1.0
@@ -287,10 +290,10 @@ function give_field_is_required( $field = '', $form_id ) {
  * @since 1.0
  * @global            $give_logs
  *
- * @param int $give_form_id Give Form ID
- * @param int $payment_id Payment ID
- * @param bool|int $price_id Price ID, if any
- * @param string|null $sale_date The date of the sale
+ * @param int         $give_form_id Give Form ID
+ * @param int         $payment_id   Payment ID
+ * @param bool|int    $price_id     Price ID, if any
+ * @param string|null $sale_date    The date of the sale
  *
  * @return void
  */
@@ -335,7 +338,7 @@ function give_increase_purchase_count( $form_id = 0, $quantity = 1 ) {
  *
  * @since 1.0
  *
- * @param int $form_id Give Form ID
+ * @param int $form_id  Give Form ID
  * @param int $quantity Quantity to increase purchase count by
  *
  * @return bool|int
@@ -353,7 +356,7 @@ function give_decrease_purchase_count( $form_id = 0, $quantity = 1 ) {
  * @since 1.0
  *
  * @param int $give_form_id Give Form ID
- * @param int $amount Earnings
+ * @param int $amount 		Earnings
  *
  * @return bool|int
  */
@@ -368,8 +371,8 @@ function give_increase_earnings( $give_form_id = 0, $amount ) {
  *
  * @since 1.0
  *
- * @param int $form_id Give Form ID
- * @param int $amount Earnings
+ * @param int $form_id 	Give Form ID
+ * @param int $amount 	Earnings
  *
  * @return bool|int
  */
@@ -465,13 +468,13 @@ function give_get_average_monthly_form_earnings( $form_id = 0 ) {
 /**
  * Get Price Option Name (Text)
  *
- * @description Retrieves the name of a variable price option
+ * Retrieves the name of a variable price option
  *
  * @since       1.0
  *
- * @param int $form_id ID of the download
- * @param int $price_id ID of the price option
- * @param int $payment_id optional payment ID for use in filters
+ * @param int $form_id 		ID of the download
+ * @param int $price_id 	ID of the price option
+ * @param int $payment_id 	payment ID for use in filters ( optional )
  *
  * @return string $price_name Name of the price option
  */
@@ -520,7 +523,7 @@ function give_price_range( $form_id = 0 ) {
 /**
  * Get Lowest Price ID
  *
- * @description: Retrieves the ID for the cheapest price option of a variable donation form
+ * Retrieves the ID for the cheapest price option of a variable donation form
  *
  * @since 1.5
  *
@@ -706,9 +709,9 @@ function give_get_form_minimum_price( $form_id = 0 ) {
  *
  * @since 1.0
  *
- * @param int $form_id ID of the form price to show
- * @param bool $echo Whether to echo or return the results
- * @param bool|int $price_id Optional price id for variable pricing
+ * @param int 		$form_id 	ID of the form price to show
+ * @param bool 		$echo 		Whether to echo or return the results
+ * @param bool|int 	$price_id 	Optional price id for variable pricing
  *
  * @return int $formatted_price
  */
@@ -765,9 +768,8 @@ add_filter( 'give_form_price', 'give_currency_filter', 20 );
  *
  * @since 1.0
  *
- * @param int $form_id ID of the form
- * @param int $price_id ID of the price option
- * @param     int @payment_id ID of the payment
+ * @param int $form_id 	 ID of the form
+ * @param int $price_id  ID of the price option
  *
  * @return float $amount Amount of the price option
  */
@@ -779,6 +781,7 @@ function give_get_price_option_amount( $form_id = 0, $price_id = 0 ) {
 	foreach ( $prices as $price ) {
 		if ( isset( $price['_give_id']['level_id'] ) && $price['_give_id']['level_id'] == $price_id ) {
 			$amount = isset( $price['_give_amount'] ) ? $price['_give_amount'] : 0.00;
+            break;
 		};
 	}
 
@@ -807,12 +810,12 @@ function give_get_form_goal( $form_id = 0 ) {
 }
 
 /**
- * Displays a formatted goal for a donation form
+ * Display/Return a formatted goal for a donation form
  *
  * @since 1.0
  *
- * @param int $form_id ID of the form price to show
- * @param bool $echo Whether to echo or return the results
+ * @param int  $form_id ID of the form price to show
+ * @param bool $echo    Whether to echo or return the results
  *
  * @return string $formatted_goal
  */
@@ -842,9 +845,13 @@ add_filter( 'give_form_goal', 'give_currency_filter', 20 );
 /**
  * Checks if users can only donate when logged in
  *
- * @since 1.0
- * @global $give_options
- * @return bool $ret Whether or not the logged_in_only setting is set
+ * @since  1.0
+ *
+ * @global array $give_options
+ *
+ * @param  int   $form_id Give form ID
+ *
+ * @return bool  $ret Whether or not the logged_in_only setting is set
  */
 function give_logged_in_only( $form_id ) {
 
@@ -862,7 +869,9 @@ function give_logged_in_only( $form_id ) {
  *
  * @since 1.4.1
  *
- * @param $form_id
+ * @param int $form_id
+ *
+ * @return string
  */
 function give_show_login_register_option( $form_id ) {
 

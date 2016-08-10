@@ -34,19 +34,35 @@ function give_payment_history_page() {
 		$payments_table->prepare_items();
 	?>
 	<div class="wrap">
-		<h2><?php echo $give_payment->labels->menu_name ?></h2>
-		<?php do_action( 'give_payments_page_top' ); ?>
+
+		<h1><?php echo $give_payment->labels->menu_name ?></h1>
+
+		<?php
+		/**
+		 * Fires in payment history screen, at the top of the page.
+		 *
+		 * @since 1.0
+		 */
+		do_action( 'give_payments_page_top' );
+		?>
+
 		<form id="give-payments-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ); ?>">
 			<input type="hidden" name="post_type" value="give_forms" />
 			<input type="hidden" name="page" value="give-payment-history" />
-
 			<?php $payments_table->views() ?>
-
 			<?php $payments_table->advanced_filters(); ?>
-			
 			<?php $payments_table->display() ?>
 		</form>
-		<?php do_action( 'give_payments_page_bottom' ); ?>
+
+		<?php
+		/**
+		 * Fires in payment history screen, at the bottom of the page.
+		 *
+		 * @since 1.0
+		 */
+		do_action( 'give_payments_page_bottom' );
+		?>
+
 	</div>
 <?php
 	}
@@ -72,10 +88,18 @@ function give_view_order_details_title( $admin_title, $title ) {
 	switch( $_GET['give-action'] ) :
 
 		case 'view-order-details' :
-			$title = esc_html( 'View Donation Details', 'give' ) . ' - ' . $admin_title;
+			$title = sprintf(
+				/* translators: %s: admin title */
+				esc_html__( 'View Donation Details - %s', 'give' ),
+				$admin_title
+			);
 			break;
 		case 'edit-payment' :
-			$title = esc_html( 'Edit Payment', 'give' ) . ' - ' . $admin_title;
+			$title = sprintf(
+				/* translators: %s: admin title */
+				esc_html__( 'Edit Payment - %s', 'give' ),
+				$admin_title
+			);
 			break;
 		default:
 			$title = $admin_title;

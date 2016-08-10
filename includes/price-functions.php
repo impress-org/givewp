@@ -87,7 +87,7 @@ function give_get_default_multilevel_amount( $form_id ) {
 /**
  * Get Default Form Amount
  *
- * @description: Grabs the default amount for set and level forms
+ * Grabs the default amount for set and level forms
  *
  * @param int $form_id
  *
@@ -108,4 +108,28 @@ function give_get_default_form_amount( $form_id ) {
 
 	return apply_filters('give_default_form_amount', $default_amount);
 
+}
+
+
+/**
+ * Determine if custom price mode is enabled or disabled
+ * This function is wrapper function to Give_Donate_Form::is_custom_price_mode()
+ *
+ * @since 1.6
+ * 
+ * @param int $form_id Form ID.
+ *
+ * @use Give_Donate_Form::is_custom_price_mode()
+ * 
+ * @return bool
+ */
+function give_is_custom_price_mode( $form_id = 0 ) {
+
+	if ( empty( $form_id ) ) {
+		return false;
+	}
+
+	$form = new Give_Donate_Form( $form_id );
+
+	return $form->is_custom_price_mode();
 }

@@ -67,7 +67,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * @access public
 	 * @since  1.0
 	 *
-	 * @param array  $item        Contains all the data of the downloads
+	 * @param array  $item        Contains all the data of the donation form
 	 * @param string $column_name The name of the column
 	 *
 	 * @return string Column Name
@@ -81,7 +81,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 			case 'average_earnings' :
 				return give_currency_filter( give_format_amount( $item[ $column_name ] ) );
 			case 'details' :
-				return '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-reports&view=forms&form-id=' . $item['ID'] ) . '">' . esc_html( 'View Detailed Report', 'give' ) . '</a>';
+				return '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-reports&view=forms&form-id=' . $item['ID'] ) . '">' . esc_html__( 'View Detailed Report', 'give' ) . '</a>';
 			default:
 				return $item[ $column_name ];
 		}
@@ -97,11 +97,11 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	public function get_columns() {
 		$columns = array(
 			'title'            => give_get_forms_label_singular(),
-			'sales'            => esc_html( 'Donations', 'give' ),
-			'earnings'         => esc_html( 'Income', 'give' ),
-			'average_sales'    => esc_html( 'Monthly Average Donations', 'give' ),
-			'average_earnings' => esc_html( 'Monthly Average Income', 'give' ),
-			'details'          => esc_html( 'Detailed Report', 'give' )
+			'sales'            => esc_html__( 'Donations', 'give' ),
+			'earnings'         => esc_html__( 'Income', 'give' ),
+			'average_sales'    => esc_html__( 'Monthly Average Donations', 'give' ),
+			'average_earnings' => esc_html__( 'Monthly Average Income', 'give' ),
+			'details'          => esc_html__( 'Detailed Report', 'give' )
 		);
 
 		return $columns;
@@ -189,7 +189,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
 		}
 		?>
-		<div class="tablenav give-clearfix <?php esc_attr_e( $which ); ?>">
+		<div class="tablenav give-clearfix <?php echo esc_attr( $which ); ?>">
 
 			<h3 class="alignleft reports-earnings-title"><span><?php esc_html_e( 'Donation Forms Report', 'give' ); ?></span></h3>
 
