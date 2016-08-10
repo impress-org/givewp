@@ -21,29 +21,75 @@ $donation = give_get_payment_form_title( $meta );
 $user     = give_get_payment_meta_user_info( $payment->ID );
 $email    = give_get_payment_user_email( $payment->ID );
 $status   = give_get_payment_status( $payment, true );
-?>
 
-<?php do_action( 'give_payment_receipt_before_table', $payment, $give_receipt_args ); ?>
+/**
+ * Fires in the payment receipt shortcode, before the receipt main table.
+ *
+ * Allows you to add elements before the table.
+ *
+ * @since 1.0
+ *
+ * @param object $payment           The payment object.
+ * @param array  $give_receipt_args Receipt_argument.
+ */
+do_action( 'give_payment_receipt_before_table', $payment, $give_receipt_args );
+?>
 
 	<table id="give_donation_receipt" class="give-table">
 		<thead>
-		<?php do_action( 'give_payment_receipt_before', $payment, $give_receipt_args ); ?>
+		<?php
+		/**
+		 * Fires in the payment receipt shortcode, before the receipt first header item.
+		 *
+		 * Allows you to add new <th> elements before the receipt first header item.
+		 *
+		 * @since 1.0
+		 *
+		 * @param object $payment           The payment object.
+		 * @param array  $give_receipt_args Receipt_argument.
+		 */
+		do_action( 'give_payment_receipt_header_before', $payment, $give_receipt_args );
+		?>
 		<tr>
 			<th colspan="2">
 				<span class="give-receipt-thead-text"><?php esc_html_e('Donation Receipt', 'give') ?></span>
 			</th>
 		</tr>
+		<?php
+		/**
+		 * Fires in the payment receipt shortcode, after the receipt last header item.
+		 *
+		 * Allows you to add new <th> elements after the receipt last header item.
+		 *
+		 * @since 1.0
+		 *
+		 * @param object $payment           The payment object.
+		 * @param array  $give_receipt_args Receipt_argument.
+		 */
+		do_action( 'give_payment_receipt_header_after', $payment, $give_receipt_args );
+		?>
 		</thead>
 
 		<tbody>
+		<?php
+		/**
+		 * Fires in the payment receipt shortcode, before the receipt first item.
+		 *
+		 * Allows you to add new <td> elements before the receipt first item.
+		 *
+		 * @since 1.0
+		 *
+		 * @param object $payment           The payment object.
+		 * @param array  $give_receipt_args Receipt_argument.
+		 */
+		do_action( 'give_payment_receipt_before', $payment, $give_receipt_args );
+		?>
 
 		<?php if ( filter_var( $give_receipt_args['donor'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
-
 			<tr>
 				<td><strong><?php esc_html_e( 'Donor', 'give' ); ?>:</strong></td>
 				<td><?php echo $user['first_name'] . ' ' . $user['last_name']; ?></td>
 			</tr>
-
 		<?php endif; ?>
 
 		<?php if ( filter_var( $give_receipt_args['date'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
@@ -54,12 +100,10 @@ $status   = give_get_payment_status( $payment, true );
 		<?php endif; ?>
 
 		<?php if ( filter_var( $give_receipt_args['price'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
-
 			<tr>
 				<td><strong><?php esc_html_e( 'Total Donation', 'give' ); ?>:</strong></td>
 				<td><?php echo give_payment_amount( $payment->ID ); ?></td>
 			</tr>
-
 		<?php endif; ?>
 		
 		<tr>
@@ -118,8 +162,32 @@ $status   = give_get_payment_status( $payment, true );
 			</tr>
 		<?php endif; ?>
 
-		<?php do_action( 'give_payment_receipt_after', $payment, $give_receipt_args ); ?>
+		<?php
+		/**
+		 * Fires in the payment receipt shortcode, after the receipt last item.
+		 *
+		 * Allows you to add new <td> elements after the receipt last item.
+		 *
+		 * @since 1.0
+		 *
+		 * @param object $payment           The payment object.
+		 * @param array  $give_receipt_args Receipt_argument.
+		 */
+		do_action( 'give_payment_receipt_after', $payment, $give_receipt_args );
+		?>
 		</tbody>
 	</table>
 
-<?php do_action( 'give_payment_receipt_after_table', $payment, $give_receipt_args ); ?>
+<?php
+/**
+ * Fires in the payment receipt shortcode, after the receipt main table.
+ *
+ * Allows you to add elements after the table.
+ *
+ * @since 1.0
+ *
+ * @param object $payment           The payment object.
+ * @param array  $give_receipt_args Receipt_argument.
+ */
+do_action( 'give_payment_receipt_after_table', $payment, $give_receipt_args );
+?>
