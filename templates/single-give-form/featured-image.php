@@ -17,12 +17,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 global $post;
 
 /**
- * Fires before the featured thumbnail
+ * Fires in single form template, before the form featured image.
+ *
+ * Allows you to add elements before the image.
  *
  * @since 1.0
  */
 do_action( 'give_pre_featured_thumbnail' );
 ?>
+
 <div class="images">
 	<?php //Featured Thumbnail
 	if ( has_post_thumbnail() ) {
@@ -40,4 +43,13 @@ do_action( 'give_pre_featured_thumbnail' );
 	} ?>
 </div>
 
-<?php do_action( 'give_post_featured_thumbnail' ); ?>
+<?php
+/**
+ * Fires in single form template, after the form featured image.
+ *
+ * Allows you to add elements after the image.
+ *
+ * @since 1.0
+ */
+do_action( 'give_post_featured_thumbnail' );
+?>
