@@ -446,7 +446,7 @@ class GIVE_CLI_COMMAND {
 		self::$counter = 1;
 
 		foreach ( $donations['donations'] as $key => $donation ) {
-			$this->color_main_heading( sprintf( __( '%1$s. Payment #%1$s', 'give' ), self::$counter, $donation['ID'] ), 'Y' );
+			$this->color_main_heading( sprintf( __( '%1$s. Payment #%2$s', 'give' ), self::$counter, $donation['ID'] ), 'Y' );
 			self::$counter++;
 
 			foreach ( $donation as $column => $data ) {
@@ -476,34 +476,6 @@ class GIVE_CLI_COMMAND {
 			}
 		}
 	}
-
-
-	/**
-	 * Create sample purchase data for your Give site
-	 *
-	 * ## OPTIONS
-	 *
-	 * --number: The number of purchases to create
-	 * --status=<status>: The status to create purchases as
-	 * --id=<product_id>: A specific product to create purchase data for
-	 * --price_id=<price_id>: A price ID of the specified product
-	 *
-	 * ## EXAMPLES
-	 *
-	 * wp give payments create --number=10 --status=completed
-	 * wp give payments create --number=10 --id=103
-	 *
-	 * @since		1.7
-	 * @access		public
-	 *
-	 * @param		string $args        Command Data.
-	 * @param		array  $assoc_args  List of command data.
-	 *
-	 * @return		void
-	 *
-	 * @subcommand 	payments
-	 */
-	public function payments( $args, $assoc_args ) {}
 
 	/**
 	 * Get give plugin report.
