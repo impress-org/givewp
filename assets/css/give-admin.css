@@ -1313,6 +1313,9 @@ table.give-table td.row-title p {
 /*------------------------------------
 Settings
 --------------------------------------*/
+.give_settings_page .give-recurring-no-license {
+  display: none; }
+
 .give_settings_page .nav-tab-wrapper {
   margin-bottom: 5px; }
 
