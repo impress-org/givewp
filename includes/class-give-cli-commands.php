@@ -112,7 +112,7 @@ class GIVE_CLI_COMMAND {
 		if ( ! empty( $gateways ) ) {
 			self::$counter = 1;
 			foreach ( $gateways as $gateway ) {
-				WP_CLI::log( '  ' . $this->color_message( self::$counter, $gateway['admin_label'] )  );
+				WP_CLI::log( '  ' . $this->color_message( self::$counter, $gateway['admin_label'] ) );
 				self::$counter++;
 			}
 		} else {
@@ -129,9 +129,14 @@ class GIVE_CLI_COMMAND {
 	 * [--id=<form_id>]
 	 * : A specific form ID to retrieve
 	 *
+	 * [--number=<form_count>]
+	 * : Number of form to retrieve
+	 *
 	 * ## EXAMPLES
 	 *
-	 * wp give form --id=103
+	 * wp give forms
+	 * wp give forms --id=103
+	 * wp give forms --number=103
 	 *
 	 * @since		1.7
 	 * @access		public
@@ -141,87 +146,148 @@ class GIVE_CLI_COMMAND {
 	 *
 	 * @return		void
 	 *
-	 * @subcommand	form
+	 * @subcommand	forms
 	 */
-	public function form( $args, $assoc_args ) {
-		$form_id = isset( $assoc_args ) && array_key_exists( 'id', $assoc_args ) ? absint( $assoc_args['id'] ) : false;
+	public function forms( $args, $assoc_args ) {
+		global $wp_query;
+		$form_id = isset( $assoc_args ) && array_key_exists( 'id', $assoc_args )     ? absint( $assoc_args['id'] )     : false;
+		$number  = isset( $assoc_args ) && array_key_exists( 'number', $assoc_args ) ? absint( $assoc_args['number'] ) : 10;
+		$start   = time();
 
-		// Bailout.
-		if ( ! $form_id ) {
-			WP_CLI::error( __( 'Form id is not set.', 'give' ) );
-			return;
+		// Cache previous number query var.
+		$is_set_number = $cache_per_page = false;
+		if ( isset( $wp_query->query_vars['number'] ) ) {
+			$cache_per_page = $wp_query->query_vars['number'];
+			$is_set_number = true;
 		}
 
-		$form = $this->api->get_forms( $form_id );
+		// Change number query var.
+		$wp_query->query_vars['number'] = $number;
 
-		// Bailout.
-		if ( array_key_exists( 'error', $form ) ) {
-			WP_CLI::warning( $form['error'] );
-			return;
+		// Get forms.
+		$forms = $form_id ? $this->api->get_forms( $form_id ) : $this->api->get_forms();
+
+		// Reset number query var.
+		if ( $is_set_number ) {
+			$wp_query->query_vars['number'] = $cache_per_page;
 		}
 
-		if ( empty( $form['forms'] ) ) {
+		// Bailout.
+		if ( array_key_exists( 'error', $forms ) ) {
+
+			WP_CLI::warning( $forms['error'] );
+			return;
+		} elseif ( empty( $forms['forms'] ) ) {
+
 			WP_CLI::error( __( 'No form found.', 'give' ) );
 			return;
 		}
 
-		// Get form.
-		$form = current( $form['forms'] );
-
-		// Heading.
-		WP_CLI::log( $this->color_message( sprintf( __( 'Report for form id %d', 'give' ), $form_id ) ) );
-
+		// Param to check if form typeis already showed or not.
 		$is_show_form_type = false;
 
-		foreach ( $form as $key => $info ) {
-			switch ( $key ) {
-				case 'stats':
-					$this->color_main_heading( ucfirst( $key ) );
+		if ( 1 === count( $forms ) && $form_id ) {
+			// Show single form.
+			foreach ( $forms['forms'][0] as $key => $info ) {
+				switch ( $key ) {
+					case 'stats':
+						$this->color_main_heading( ucfirst( $key ) );
 
-					foreach ( $info as $heading => $data ) {
-						$this->color_sub_heading( ucfirst( $heading ) );
-						switch ( $heading ) {
-							default:
-								foreach ( $data as $subheading => $subdata ) {
+						foreach ( $info as $heading => $data ) {
+							$this->color_sub_heading( ucfirst( $heading ) );
+							switch ( $heading ) {
+								default:
+									foreach ( $data as $subheading => $subdata ) {
 
-									switch ( $subheading ) {
-										case 'earnings':
-											WP_CLI::log( $this->color_message( $subheading . ': ', give_currency_filter( $subdata ) ) );
-											break;
-										default:
-											WP_CLI::log( $this->color_message( $subheading . ': ', $subdata ) );
+										switch ( $subheading ) {
+											case 'earnings':
+												WP_CLI::log( $this->color_message( $subheading . ': ', give_currency_filter( $subdata ) ) );
+												break;
+											default:
+												WP_CLI::log( $this->color_message( $subheading . ': ', $subdata ) );
+										}
 									}
-								}
+							}
 						}
-					}
-					break;
+						break;
 
-				case 'pricing':
-				case 'info':
-				default:
-					$this->color_main_heading( ucfirst( $key ) );
+					case 'pricing':
+					case 'info':
+					default:
+						$this->color_main_heading( ucfirst( $key ) );
 
-					// Show form type.
-					if ( ! $is_show_form_type ) {
-						$form = new Give_Donate_Form( $form_id );
-						$is_show_form_type = true;
+						// Show form type.
+						if ( ! $is_show_form_type ) {
+							$form = new Give_Donate_Form( $form_id );
+							$is_show_form_type = true;
 
-						WP_CLI::log( $this->color_message( __( 'form type', 'give' ), $form->get_type() ) );
-					}
-
-					foreach ( $info as $heading => $data ) {
-
-						switch ( $heading ) {
-							case 'id':
-								WP_CLI::log( $this->color_message( $heading, $data ) );
-								break;
-
-							default:
-								$data = empty( $data ) ? __( 'Not set', 'give' ) : $data;
-								WP_CLI::log( $this->color_message( $heading, $data ) );
+							WP_CLI::log( $this->color_message( __( 'form type', 'give' ), $form->get_type() ) );
 						}
-					}
+
+						foreach ( $info as $heading => $data ) {
+
+							switch ( $heading ) {
+								case 'id':
+									WP_CLI::log( $this->color_message( $heading, $data ) );
+									break;
+
+								default:
+									$data = empty( $data ) ? __( 'Not set', 'give' ) : $data;
+									WP_CLI::log( $this->color_message( $heading, $data ) );
+							}
+						}
+				}
 			}
+		} else {
+			// Show multiple form.
+			$table_data = array();
+			$is_table_first_row_set = false;
+			$table_column_count = 0;
+
+			WP_CLI::line( $this->color_message( sprintf( __( '%1$d donation forms found', 'give' ), count( $forms['forms'] ) ), '', false ) );
+
+			foreach ( $forms['forms'] as $index => $form_data ) {
+
+				// Default table data.
+				$table_first_row = array();
+				$table_row = array();
+
+				foreach ( $form_data['info'] as $key => $form ) {
+
+					// Do not show thumbnail, content and link in table.
+					if ( in_array( $key, array( 'content', 'thumbnail', 'link' ) ) ) {
+						continue;
+					}
+
+					if ( ! $is_table_first_row_set ) {
+						$table_first_row[] = $key;
+					}
+
+					$table_row[] = $form;
+
+					if ( 'status' === $key ) {
+						// First array item will be an form id in our case.
+						$form = new Give_Donate_Form( absint( $table_row[0] ) );
+
+						$table_row[] = $form->get_type();
+					}
+				}
+
+				// Set table first row.
+				if ( ! $is_table_first_row_set ) {
+
+					// Add extra column to table.
+					$table_first_row[]      = 'type';
+
+					$table_data[]           = $table_first_row;
+					$is_table_first_row_set = true;
+				}
+
+				// set table data.
+				$table_data[] = $table_row;
+			}
+
+			$this->display_table( $table_data );
 		}
 	}
 
@@ -304,7 +370,7 @@ class GIVE_CLI_COMMAND {
 				$email = false;
 			}
 
-			WP_CLI::line( $this->color_message( sprintf( __( '%1$d donors created in %1$d seconds', 'give' ), $number, time() - $start ) ) );
+			WP_CLI::line( $this->color_message( sprintf( __( '%1$d donors created in %2$d seconds', 'give' ), $number, time() - $start ) ) );
 
 		} else {
 			// Counter.
