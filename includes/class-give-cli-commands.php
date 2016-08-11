@@ -255,7 +255,7 @@ class GIVE_CLI_COMMAND {
 				foreach ( $form_data['info'] as $key => $form ) {
 
 					// Do not show thumbnail, content and link in table.
-					if ( in_array( $key, array( 'content', 'thumbnail', 'link' ) ) ) {
+					if ( in_array( $key, array( 'content', 'thumbnail', 'link' ), true ) ) {
 						continue;
 					}
 
@@ -560,11 +560,24 @@ class GIVE_CLI_COMMAND {
 	 *
 	 * ## OPTIONS
 	 *
-	 * [<formID>]
-	 * : Donation form id, This can be used only if you want to see report for single form.
+	 * [--id=<donation_form_id>]
+	 * : The ID of a specific donation_form to retrieve stats for, or all
 	 *
-	 * [--type=<report_type>]
-	 * : Name of report type, value of this parameter can be [form].
+	 * [--date=<range|this_month|last_month|today|yesterday|this_quarter|last_quarter|this_year|last_year>]
+	 * : A specific date range to retrieve stats for
+	 *
+	 * [--start-date=<date>]
+	 * : The start date of a date range to retrieve stats for
+	 *
+	 * [--end-date=<date>]
+	 * : The end date of a date range to retrieve stats for
+	 *
+	 * ## EXAMPLES
+	 *
+	 * wp give report --date=this_month
+	 * wp give report --start-date=01/02/2014 --end-date=02/23/2014
+	 * wp give report --date=last_year
+	 * wp give report --date=last_year --id=15
 	 *
 	 * @since		1.7
 	 * @access		public
@@ -576,7 +589,28 @@ class GIVE_CLI_COMMAND {
 	 *
 	 * @return		void
 	 */
-	public function report( $args, $assoc_args ) {}
+	public function report( $args, $assoc_args ) {
+		$stats      = new Give_Payment_Stats();
+		$date       = isset( $assoc_args ) && array_key_exists( 'date', $assoc_args )      ? $assoc_args['date']      : false;
+		$start_date = isset( $assoc_args ) && array_key_exists( 'start-date', $assoc_args ) ? $assoc_args['start-date'] : false;
+		$end_date   = isset( $assoc_args ) && array_key_exists( 'end-date', $assoc_args )   ? $assoc_args['end-date']   : false;
+		$form_id    = isset( $assoc_args ) && array_key_exists( 'id', $assoc_args )        ? $assoc_args['id']        : 0;
+
+		if ( ! empty( $date ) ) {
+			$start_date = $date;
+			$end_date   = false;
+		} elseif ( empty( $date ) && empty( $start_date ) ) {
+			$start_date = 'this_month';
+			$end_date   = false;
+		}
+
+		// Get stats.
+		$earnings   = $stats->get_earnings( $form_id, $start_date, $end_date );
+		$sales      = $stats->get_sales( $form_id, $start_date, $end_date );
+
+		WP_CLI::line( $this->color_message( __( 'Earnings', 'give' ), give_currency_filter( $earnings ) ) );
+		WP_CLI::line( $this->color_message( __( 'Sales', 'give' ), $sales ) );
+	}
 
 
 	/**
