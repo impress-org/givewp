@@ -510,7 +510,7 @@ add_action( 'cmb2_render_levels_id', 'give_cmb_render_levels_id', 10, 5 );
  */
 function give_cmb_give_default_radio_inline( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
 	echo '<input type="radio" class="cmb2-option donation-level-radio" name="' . $field_object->args['_name'] . '" id="' . $field_object->args['id'] . '" value="default" ' . checked( 'default', $escaped_value, false ) . '>';
-	echo '<label for="' . $field_object->args['id'] . '">Default</label>';
+	echo '<label for="' . $field_object->args['id'] . '">' . esc_html__( 'Default', 'give' ) . '</label>';
 
 }
 
