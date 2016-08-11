@@ -128,10 +128,10 @@ class Give_Notices {
 			if ( current_user_can( 'edit_give_payments' ) ) {
 				switch ( $_GET['give-message'] ) {
 					case 'note-added' :
-						$notices['updated']['give-note-added'] = esc_attr__( 'The payment note has been added successfully.', 'give' );
+						$notices['updated']['give-note-added'] = esc_attr__( 'The payment note has been added.', 'give' );
 						break;
 					case 'payment-updated' :
-						$notices['updated']['give-payment-updated'] = esc_attr__( 'The payment has been successfully updated.', 'give' );
+						$notices['updated']['give-payment-updated'] = esc_attr__( 'The payment has been updated.', 'give' );
 						break;
 				}
 			}
@@ -140,7 +140,7 @@ class Give_Notices {
 			if ( current_user_can( 'edit_give_payments' ) ) {
 				switch ( $_GET['give-message'] ) {
 					case 'customer-deleted' :
-						$notices['updated']['give-customer-deleted'] = esc_attr__( 'Donor successfully deleted.', 'give' );
+						$notices['updated']['give-customer-deleted'] = esc_attr__( 'The donor has been deleted.', 'give' );
 						break;
 				}
 			}
