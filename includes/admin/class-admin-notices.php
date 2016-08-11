@@ -108,16 +108,16 @@ class Give_Notices {
 						$notices['updated']['give-settings-imported'] = esc_attr__( 'The settings have been imported.', 'give' );
 						break;
 					case 'api-key-generated' :
-						$notices['updated']['give-api-key-generated'] = esc_attr__( 'API keys successfully generated.', 'give' );
+						$notices['updated']['give-api-key-generated'] = esc_attr__( 'API keys have been generated.', 'give' );
 						break;
 					case 'api-key-exists' :
 						$notices['error']['give-api-key-exists'] = esc_attr__( 'The specified user already has API keys.', 'give' );
 						break;
 					case 'api-key-regenerated' :
-						$notices['updated']['give-api-key-regenerated'] = esc_attr__( 'API keys successfully regenerated.', 'give' );
+						$notices['updated']['give-api-key-regenerated'] = esc_attr__( 'API keys have been regenerated.', 'give' );
 						break;
 					case 'api-key-revoked' :
-						$notices['updated']['give-api-key-revoked'] = esc_attr__( 'API keys successfully revoked.', 'give' );
+						$notices['updated']['give-api-key-revoked'] = esc_attr__( 'API keys have been revoked.', 'give' );
 						break;
 					case 'sent-test-email' :
 						$notices['updated']['give-sent-test-email'] = esc_attr__( 'The test email has been sent.', 'give' );
