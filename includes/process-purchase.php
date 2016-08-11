@@ -25,12 +25,26 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_process_purchase_form() {
 
+	/**
+	 * Fires before processing the purchase form.
+	 *
+	 * @since 1.0
+	 */
 	do_action( 'give_pre_process_purchase' );
 
 	// Validate the form $_POST data
 	$valid_data = give_purchase_form_validate_fields();
 
-	// Allow themes and plugins to hook to errors
+	/**
+	 * Fires after validating purchase form fields.
+	 *
+	 * Allow you to hook to purchase form errors.
+	 *
+	 * @since 1.0
+	 *
+	 * @param bool|array $valid_data Validate fields.
+	 * @param array      $_POST      Array of variables passed via the HTTP POST.
+	 */
 	do_action( 'give_checkout_error_checks', $valid_data, $_POST );
 
 	$is_ajax = isset( $_POST['give_ajax'] );
@@ -45,6 +59,11 @@ function give_process_purchase_form() {
 
 	if ( false === $valid_data || give_get_errors() || ! $user ) {
 		if ( $is_ajax ) {
+			/**
+			 * Fires when AJAX sends back errors from the purchase form.
+			 *
+			 * @since 1.0
+			 */
 			do_action( 'give_ajax_checkout_errors' );
 			give_die();
 		} else {
@@ -98,7 +117,17 @@ function give_process_purchase_form() {
 	// Add the user data for hooks
 	$valid_data['user'] = $user;
 
-	// Allow themes and plugins to hook before the gateway
+	/**
+	 * Fires before purchase form gateway.
+	 *
+	 * Allow you to hook to purchase form before the gateway.
+	 *
+	 * @since 1.0
+	 *
+	 * @param array      $_POST      Array of variables passed via the HTTP POST.
+	 * @param array      $user_info  Array containing basic user information.
+	 * @param bool|array $valid_data Validate fields.
+	 */
 	do_action( 'give_checkout_before_gateway', $_POST, $user_info, $valid_data );
 
 	//Sanity check for price
@@ -146,6 +175,11 @@ function give_process_form_login() {
 
 	if ( give_get_errors() || $user_data['user_id'] < 1 ) {
 		if ( $is_ajax ) {
+			/**
+			 * Fires when AJAX sends back errors from the purchase form.
+			 *
+			 * @since 1.0
+			 */
 			do_action( 'give_ajax_checkout_errors' );
 			give_die();
 		} else {
@@ -719,7 +753,14 @@ function give_register_and_login_new_user( $user_data = array() ) {
 	// Allow themes and plugins to filter the user data
 	$user_data = apply_filters( 'give_insert_user_data', $user_data, $user_args );
 
-	// Allow themes and plugins to hook
+	/**
+	 * Fires after inserting user.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int   $user_id   User id.
+	 * @param array $user_data Array containing user data.
+	 */
 	do_action( 'give_insert_user', $user_id, $user_data );
 
 	// Login new user
