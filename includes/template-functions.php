@@ -35,15 +35,14 @@ function give_get_templates_url() {
 }
 
 /**
- * Get other templates  passing attributes and including the file.
+ * Get other templates, passing attributes and including the file.
  *
  * @since 1.6
- * @access public
  *
- * @param string $template_name
- * @param array $args (default: array())
- * @param string $template_path (default: '')
- * @param string $default_path (default: '')
+ * @param string $template_name Template file name.
+ * @param array  $args          Passed arguments. Default is empty array().
+ * @param string $template_path Template file path. Default is empty.
+ * @param string $default_path  Default path. Default is empty.
  */
 function give_get_template( $template_name, $args = array(), $template_path = '', $default_path = '' ) {
     if ( ! empty( $args ) && is_array( $args ) ) {
@@ -62,33 +61,62 @@ function give_get_template( $template_name, $args = array(), $template_path = ''
     // Allow 3rd party plugin filter template file from their plugin.
     $located = apply_filters( 'give_get_template', $located, $template_name, $args, $template_path, $default_path );
 
+	/**
+	 * Fires in give template, before the file is included.
+	 *
+	 * Allows you to execute code before the file is included.
+	 *
+	 * @since 1.6
+	 *
+	 * @param string $template_name Template file name.
+	 * @param string $template_path Template file path.
+	 * @param string $located       Template file filter by 3rd party plugin.
+	 * @param array  $args          Passed arguments.
+	 */
     do_action( 'give_before_template_part', $template_name, $template_path, $located, $args );
 
     include( $located );
 
+	/**
+	 * Fires in give template, after the file is included.
+	 *
+	 * Allows you to execute code after the file is included.
+	 *
+	 * @since 1.6
+	 *
+	 * @param string $template_name Template file name.
+	 * @param string $template_path Template file path.
+	 * @param string $located       Template file filter by 3rd party plugin.
+	 * @param array  $args          Passed arguments.
+	 */
     do_action( 'give_after_template_part', $template_name, $template_path, $located, $args );
 }
 
 /**
  * Retrieves a template part
  *
- * @since v1.0
+ * Taken from bbPress.
  *
- * Taken from bbPress
+ * @since 1.0
  *
- * @param string $slug
- * @param string $name Optional. Default null
- * @param bool $load
+ * @param string $slug Template part file slug {slug}.php.
+ * @param string $name Optional. Template part file name {slug}-{name}.php. Default is null.
+ * @param bool   $load If true the template file will be loaded, if it is found.
  *
- * @return string
- *
- * @uses  give_locate_template()
- * @uses  load_template()
- * @uses  get_template_part()
+ * @return string 
  */
 function give_get_template_part( $slug, $name = null, $load = true ) {
 
-	// Execute code for this part
+	/**
+	 * Fires in give template part, before the template part is retrieved.
+	 *
+	 * Allows you to execute code before retrieving the template part.
+	 *
+	 * @since 1.0
+	 *
+	 * @param string $slug Template part file slug {slug}.php.
+	 * @param string $name Template part file name {slug}-{name}.php.
+	 */
 	do_action( 'get_template_part_' . $slug, $slug, $name );
 
 	// Setup possible parts
