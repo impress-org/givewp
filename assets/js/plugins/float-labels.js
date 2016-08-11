@@ -31,7 +31,7 @@
  *   instruction.
  *
  * Links:
- * - http://bradfrost.com/blog/post/float-label-pattern/
+ * - https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels
  * - https://dribbble.com/shots/1254439--GIF-Mobile-Form-Interaction
  */
 
