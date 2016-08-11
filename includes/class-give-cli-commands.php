@@ -42,9 +42,6 @@ class GIVE_CLI_COMMAND {
 	 */
 	public function __construct() {
 		$this->api = new Give_API();
-
-		// Set default params.
-		$this->per_page = 10;
 	}
 
 
