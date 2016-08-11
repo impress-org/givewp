@@ -112,7 +112,7 @@ class GIVE_CLI_COMMAND {
 		if ( ! empty( $gateways ) ) {
 			self::$counter = 1;
 			foreach ( $gateways as $gateway ) {
-				WP_CLI::log( '    ' . $this->color_message( self::$counter, '. ' ) . $gateway['admin_label'] );
+				WP_CLI::log( '  ' . $this->color_message( self::$counter, $gateway['admin_label'] )  );
 				self::$counter++;
 			}
 		} else {
