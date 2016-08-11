@@ -118,11 +118,11 @@ if ( is_user_logged_in() ):
 			<legend id="give_profile_password_label"><?php esc_html_e( 'Change your Password', 'give' ); ?></legend>
 
 			<p id="give_profile_password_wrap_1" class="form-row form-row-first">
-				<label for="give_user_pass"><?php esc_html_e( 'New Password', 'give' ); ?></label>
+				<label for="give_new_user_pass1"><?php esc_html_e( 'New Password', 'give' ); ?></label>
 				<input name="give_new_user_pass1" id="give_new_user_pass1" class="password give-input" type="password" />
 			</p>
 			<p id="give_profile_password_wrap_2" class="form-row form-row-last">
-				<label for="give_user_pass"><?php esc_html_e( 'Re-enter Password', 'give' ); ?></label>
+				<label for="give_new_user_pass2"><?php esc_html_e( 'Re-enter Password', 'give' ); ?></label>
 				<input name="give_new_user_pass2" id="give_new_user_pass2" class="password give-input" type="password" />
 				<?php do_action( 'give_profile_editor_password' ); ?>
 			</p>

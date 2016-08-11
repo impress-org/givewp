@@ -82,7 +82,7 @@ if ( $show_form ) {
 		} ?>
 
 		<form method="post" action="" id="give-email-access-form">
-			<label for="give_email"><?php esc_html__( 'Donation Email:', 'give' ); ?></label>
+			<label for="give-email"><?php esc_html__( 'Donation Email:', 'give' ); ?></label>
 			<input id="give-email" type="email" name="give_email" value="" placeholder="<?php esc_attr_e( 'Your donation email', 'give' ); ?>"/>
 			<input type="hidden" name="_wpnonce" value="<?php echo wp_create_nonce( 'give' ); ?>"/>
 
