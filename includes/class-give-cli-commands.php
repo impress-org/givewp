@@ -584,16 +584,13 @@ class GIVE_CLI_COMMAND {
 	 *
 	 * ## OPTIONS
 	 *
-	 * [<formID>]
-	 * : Donation form id, This can be used only if you want to delete stat cache for single form.
-	 *
-	 * [--type=<stat_type>]
-	 * : Value of this parameter can be all (in case you want to delete all stat cache).
+	 * [--action=<cache_action>]
+	 * : Value of this parameter can be delete (in case you want to delete all stat cache).
 	 *
 	 * ## EXAMPLES
 	 *
 	 *	# See form report
-	 *	wp give cache delete
+	 *	wp give cache --action=delete
 	 *
 	 * @since		1.7
 	 * @access		public
@@ -601,25 +598,25 @@ class GIVE_CLI_COMMAND {
 	 * @param		string $args        Command Data.
 	 * @param		array  $assoc_args  List of command data.
 	 *
-	 * @return void
+	 * @return		void
 	 *
 	 * @subcommand cache
 	 */
 	public function cache( $args, $assoc_args ) {
+		$action = isset( $assoc_args ) && array_key_exists( 'action', $assoc_args ) ? $assoc_args['action'] : false;
+
 		// Bailout.
-		if ( empty( $args[0] ) ) {
-			WP_CLI::warning( __( 'Cache action is missing.', 'give' ) );
+		if ( ! $action || ! in_array( $action, array( 'delete' ), true ) ) {
+			WP_CLI::warning( __( 'Type wp give cache --action=delete to delete all stat transients', 'give' ) );
 			return;
 		}
-
-		$action = $args[0];
 
 		switch ( $action ) {
 			case 'delete' :
 				// Reset counter.
 				self::$counter = 1;
 
-				if ( $this->delete_all_stats() ) {
+				if ( $this->delete_stats_transients() ) {
 					// Report .eading.
 					WP_CLI::success( 'All form stat transient cache deleted.' );
 				} else {
@@ -639,7 +636,7 @@ class GIVE_CLI_COMMAND {
 	 *
 	 * @return	bool
 	 */
-	private function delete_all_stats() {
+	private function delete_stats_transients() {
 		global $wpdb;
 
 		$stat_option_names = $wpdb->get_results(
@@ -663,10 +660,10 @@ class GIVE_CLI_COMMAND {
 			foreach ( $stat_option_names as $option_name ) {
 				if ( delete_transient( $option_name ) ) {
 
-					WP_CLI::log( $this->color_message( self::$counter . '. ', $option_name ) );
+					WP_CLI::log( $this->color_message( self::$counter, $option_name ) );
 					self::$counter++;
 				} else {
-					WP_CLI::log( $this->color_message( __( 'Error while deleting this transient: ', 'give' ), $option_name ) );
+					WP_CLI::log( $this->color_message( __( 'Error while deleting this transient', 'give' ), $option_name ) );
 				}
 			}
 
