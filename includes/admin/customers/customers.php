@@ -288,7 +288,7 @@ function give_customers_view( $customer ) {
 						<?php if ( isset( $customer->user_id ) && $customer->user_id > 0 ) : ?>
 
 							<tr>
-								<td><?php esc_html_e( 'Address', 'give' ); ?>:</td>
+								<td><?php esc_html_e( 'Address:', 'give' ); ?></td>
 								<td class="row-title">
 
 									<div class="customer-address-wrapper">

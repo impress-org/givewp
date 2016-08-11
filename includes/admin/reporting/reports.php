@@ -390,7 +390,7 @@ function give_reports_tab_export() {
 								<input type="submit" value="<?php esc_attr_e( 'Generate CSV', 'give' ); ?>" class="button-secondary"/>
 
 								<div id="export-donor-options-wrap" class="give-clearfix">
-									<p><?php esc_html_e( 'Export Columns', 'give' ); ?>:</p>
+									<p><?php esc_html_e( 'Export Columns:', 'give' ); ?></p>
 									<ul id="give-export-option-ul">
 										<li>
 											<label for="give-export-fullname"><input type="checkbox" checked name="give_export_option[full_name]" id="give-export-fullname"><?php esc_html_e( 'Name', 'give' ); ?>
