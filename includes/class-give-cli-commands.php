@@ -171,10 +171,13 @@ class GIVE_CLI_COMMAND {
 		// Heading.
 		WP_CLI::log( $this->color_message( sprintf( __( 'Report for form id %d', 'give' ), $form_id ) ) );
 
+		$is_show_form_type = false;
+
 		foreach ( $form as $key => $info ) {
 			switch ( $key ) {
 				case 'stats':
 					$this->color_main_heading( ucfirst( $key ) );
+
 					foreach ( $info as $heading => $data ) {
 						$this->color_sub_heading( ucfirst( $heading ) );
 						switch ( $heading ) {
@@ -183,10 +186,10 @@ class GIVE_CLI_COMMAND {
 
 									switch ( $subheading ) {
 										case 'earnings':
-											WP_CLI::log( $this->color_message( ucfirst( $subheading ) . ': ', give_currency_filter( $subdata ) ) );
+											WP_CLI::log( $this->color_message( $subheading . ': ', give_currency_filter( $subdata ) ) );
 											break;
 										default:
-											WP_CLI::log( $this->color_message( ucfirst( $subheading ) . ': ', $subdata ) );
+											WP_CLI::log( $this->color_message( $subheading . ': ', $subdata ) );
 									}
 								}
 						}
@@ -197,16 +200,25 @@ class GIVE_CLI_COMMAND {
 				case 'info':
 				default:
 					$this->color_main_heading( ucfirst( $key ) );
+
+					// Show form type.
+					if ( ! $is_show_form_type ) {
+						$form = new Give_Donate_Form( $form_id );
+						$is_show_form_type = true;
+
+						WP_CLI::log( $this->color_message( __( 'form type', 'give' ), $form->get_type() ) );
+					}
+
 					foreach ( $info as $heading => $data ) {
 
 						switch ( $heading ) {
 							case 'id':
-								WP_CLI::log( $this->color_message( strtoupper( $heading ) . ': ', $data ) );
+								WP_CLI::log( $this->color_message( $heading, $data ) );
 								break;
 
 							default:
 								$data = empty( $data ) ? __( 'Not set', 'give' ) : $data;
-								WP_CLI::log( $this->color_message( ucfirst( $heading ) . ': ', $data ) );
+								WP_CLI::log( $this->color_message( $heading, $data ) );
 						}
 					}
 			}
