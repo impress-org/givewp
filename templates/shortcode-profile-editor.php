@@ -24,9 +24,19 @@ if ( is_user_logged_in() ):
 
 	<?php give_print_errors( 0 ); ?>
 
-	<?php do_action( 'give_profile_editor_before' ); ?>
+	<?php
+	/**
+	 * Fires in the profile editor shortcode, before the form.
+	 *
+	 * Allows you to add new elements before the form.
+	 *
+	 * @since 1.0
+	 */
+	do_action( 'give_profile_editor_before' );
+	?>
 
 	<form id="give_profile_editor_form" class="give-form" action="<?php echo give_get_current_page_url(); ?>" method="post">
+
 		<fieldset>
 
 			<legend id="give_profile_name_label"><?php esc_html_e( 'Change your Name', 'give' ); ?></legend>
@@ -56,17 +66,54 @@ if ( is_user_logged_in() ):
 						<option <?php selected( $display_name, $current_user->last_name . ' ' . $current_user->first_name ); ?> value="<?php echo esc_attr( $current_user->last_name . ' ' . $current_user->first_name ); ?>"><?php echo esc_html( $current_user->last_name . ' ' . $current_user->first_name ); ?></option>
 					<?php endif; ?>
 				</select>
-				<?php do_action( 'give_profile_editor_name' ); ?>
+				<?php
+				/**
+				 * Fires in the profile editor shortcode, to the name section.
+				 *
+				 * Allows you to add new elements to the name section.
+				 *
+				 * @since 1.0
+				 */
+				do_action( 'give_profile_editor_name' );
+				?>
 			</p>
-			<?php do_action( 'give_profile_editor_after_name' ); ?>
+
+			<?php
+			/**
+			 * Fires in the profile editor shortcode, after the name field.
+			 *
+			 * Allows you to add new fields after the name field.
+			 *
+			 * @since 1.0
+			 */
+			do_action( 'give_profile_editor_after_name' );
+			?>
 
 			<p class="form-row form-row-last">
 				<label for="give_email"><?php esc_html_e( 'Email Address', 'give' ); ?></label>
 				<input name="give_email" id="give_email" class="text give-input required" type="email" value="<?php echo esc_attr( $current_user->user_email ); ?>" />
-				<?php do_action( 'give_profile_editor_email' ); ?>
+				<?php
+				/**
+				 * Fires in the profile editor shortcode, to the email section.
+				 *
+				 * Allows you to add new elements to the email section.
+				 *
+				 * @since 1.0
+				 */
+				do_action( 'give_profile_editor_email' );
+				?>
 			</p>
 
-			<?php do_action( 'give_profile_editor_after_email' ); ?>
+			<?php
+			/**
+			 * Fires in the profile editor shortcode, after the email field.
+			 *
+			 * Allows you to add new fields after the email field.
+			 *
+			 * @since 1.0
+			 */
+			do_action( 'give_profile_editor_after_email' );
+			?>
 
 			<legend id="give_profile_billing_address_label"><?php esc_html_e( 'Change your Billing Address', 'give' ); ?></legend>
 
@@ -77,24 +124,20 @@ if ( is_user_logged_in() ):
 					<input name="give_address_line1" id="give_address_line1" class="text give-input" type="text" value="<?php echo esc_attr( $address['line1'] ); ?>" />
 				</p>
 
-
 				<p id="give-card-address-2-wrap" class="form-row form-row-one-third">
 					<label for="give_address_line2"><?php esc_html_e( 'Address Line 2', 'give' ); ?></label>
 					<input name="give_address_line2" id="give_address_line2" class="text give-input" type="text" value="<?php echo esc_attr( $address['line2'] ); ?>" />
 				</p>
-
 
 				<p id="give-card-city-wrap" class="form-row form-row-two-thirds">
 					<label for="give_address_city"><?php esc_html_e( 'City', 'give' ); ?></label>
 					<input name="give_address_city" id="give_address_city" class="text give-input" type="text" value="<?php echo esc_attr( $address['city'] ); ?>" />
 				</p>
 
-
 				<p id="give-card-zip-wrap" class="form-row form-row-one-third">
 					<label for="give_address_zip"><?php esc_html_e( 'Zip / Postal Code', 'give' ); ?></label>
 					<input name="give_address_zip" id="give_address_zip" class="text give-input" type="text" value="<?php echo esc_attr( $address['zip'] ); ?>" />
 				</p>
-
 
 				<p id="give-card-country-wrap" class="form-row form-row-first">
 					<label for="give_address_country"><?php esc_html_e( 'Country', 'give' ); ?></label>
@@ -102,34 +145,72 @@ if ( is_user_logged_in() ):
 						<?php foreach ( give_get_country_list() as $key => $country ) : ?>
 							<option value="<?php echo $key; ?>"<?php selected( $address['country'], $key ); ?>><?php echo esc_html( $country ); ?></option>
 						<?php endforeach; ?>
-					</select></p>
-
+					</select>
+				</p>
 
 				<p id="give-card-state-wrap" class="form-row form-row-last">
 					<label for="give_address_state"><?php esc_html_e( 'State / Province', 'give' ); ?></label>
 					<input name="give_address_state" id="give_address_state" class="text give-input" type="text" value="<?php echo esc_attr( $address['state'] ); ?>" />
 				</p>
 
-				<?php do_action( 'give_profile_editor_address' ); ?>
+				<?php
+				/**
+				 * Fires in the profile editor shortcode, to the address section.
+				 *
+				 * Allows you to add new elements to the address section.
+				 *
+				 * @since 1.0
+				 */
+				do_action( 'give_profile_editor_address' );
+				?>
 
 			</div>
 
-			<?php do_action( 'give_profile_editor_after_address' ); ?>
+			<?php
+			/**
+			 * Fires in the profile editor shortcode, after the address field.
+			 *
+			 * Allows you to add new fields after the address field.
+			 *
+			 * @since 1.0
+			 */
+			do_action( 'give_profile_editor_after_address' );
+			?>
+
 			<legend id="give_profile_password_label"><?php esc_html_e( 'Change your Password', 'give' ); ?></legend>
 
 			<p id="give_profile_password_wrap_1" class="form-row form-row-first">
 				<label for="give_new_user_pass1"><?php esc_html_e( 'New Password', 'give' ); ?></label>
 				<input name="give_new_user_pass1" id="give_new_user_pass1" class="password give-input" type="password" />
 			</p>
+
 			<p id="give_profile_password_wrap_2" class="form-row form-row-last">
 				<label for="give_new_user_pass2"><?php esc_html_e( 'Re-enter Password', 'give' ); ?></label>
 				<input name="give_new_user_pass2" id="give_new_user_pass2" class="password give-input" type="password" />
-				<?php do_action( 'give_profile_editor_password' ); ?>
+				<?php
+				/**
+				 * Fires in the profile editor shortcode, to the password section.
+				 *
+				 * Allows you to add new elements to the password section.
+				 *
+				 * @since 1.0
+				 */
+				do_action( 'give_profile_editor_password' );
+				?>
 			</p>
 
 			<p class="give_password_change_notice" class=""><?php esc_html_e( 'Please note after changing your password, you must log back in.', 'give' ); ?></p>
 
-			<?php do_action( 'give_profile_editor_after_password' ); ?>
+			<?php
+			/**
+			 * Fires in the profile editor shortcode, after the password field.
+			 *
+			 * Allows you to add new fields after the password field.
+			 *
+			 * @since 1.0
+			 */
+			do_action( 'give_profile_editor_after_password' );
+			?>
 
 			<p id="give_profile_submit_wrap">
 				<input type="hidden" name="give_profile_editor_nonce" value="<?php echo wp_create_nonce( 'give-profile-editor-nonce' ); ?>" />
@@ -137,10 +218,21 @@ if ( is_user_logged_in() ):
 				<input type="hidden" name="give_redirect" value="<?php echo esc_url( give_get_current_page_url() ); ?>" />
 				<input name="give_profile_editor_submit" id="give_profile_editor_submit" type="submit" class="give_submit" value="<?php esc_attr_e( 'Save Changes', 'give' ); ?>" />
 			</p>
+
 		</fieldset>
+
 	</form><!-- #give_profile_editor_form -->
 
-	<?php do_action( 'give_profile_editor_after' ); ?>
+	<?php
+	/**
+	 * Fires in the profile editor shortcode, after the form.
+	 *
+	 * Allows you to add new elements after the form.
+	 *
+	 * @since 1.0
+	 */
+	do_action( 'give_profile_editor_after' );
+	?>
 
 <?php
 else:

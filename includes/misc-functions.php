@@ -507,12 +507,24 @@ function give_is_host( $host = false ) {
  * @uses apply_filters() Calls 'give_deprecated_function_trigger_error' and expects boolean value of true to do
  *   trigger or false to not trigger error.
  *
- * @param string $function The function that was called
- * @param string $version The version of EDD that deprecated the function
- * @param string $replacement Optional. The function that should have been called
- * @param array $backtrace Optional. Contains stack backtrace of deprecated function
+ * @param string $function    The function that was called.
+ * @param string $version     The plugin version that deprecated the function.
+ * @param string $replacement Optional. The function that should have been called.
+ * @param array  $backtrace   Optional. Contains stack backtrace of deprecated function.
  */
 function _give_deprecated_function( $function, $version, $replacement = null, $backtrace = null ) {
+
+	/**
+	 * Fires while give deprecated function call occurs.
+	 *
+	 * Allow you to hook to deprecated function call.
+	 *
+	 * @since 1.0
+	 *
+	 * @param string $function    The function that was called.
+	 * @param string $replacement Optional. The function that should have been called.
+	 * @param string $version     The plugin version that deprecated the function.
+	 */
 	do_action( 'give_deprecated_function_run', $function, $replacement, $version );
 
 	$show_errors = current_user_can( 'manage_options' );
