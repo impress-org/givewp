@@ -760,7 +760,7 @@ msgstr ""
 msgid "View Donor"
 msgstr ""
 
-#: includes/admin/customers/class-customer-table.php:145, includes/admin/payments/class-payments-table.php:400, includes/admin/payments/class-payments-table.php:499, includes/payments/functions.php:1545
+#: includes/admin/customers/class-customer-table.php:145, includes/admin/payments/class-payments-table.php:425, includes/admin/payments/class-payments-table.php:515, includes/payments/functions.php:1545
 msgid "Delete"
 msgstr ""
 
@@ -788,7 +788,7 @@ msgstr ""
 msgid "You do not have permission to edit this donor."
 msgstr ""
 
-#: includes/admin/customers/customer-actions.php:31, includes/admin/customers/customer-actions.php:43, includes/admin/customers/customer-actions.php:211, includes/admin/customers/customer-actions.php:223, includes/admin/customers/customer-actions.php:289, includes/admin/customers/customer-actions.php:302, includes/admin/customers/customer-actions.php:389, includes/admin/customers/customer-actions.php:400, includes/admin/forms/dashboard-columns.php:229, includes/admin/payments/actions.php:32, includes/admin/payments/actions.php:89, includes/admin/payments/actions.php:101, includes/admin/payments/actions.php:321, includes/admin/payments/actions.php:341, includes/admin/payments/actions.php:374, includes/admin/payments/actions.php:396, includes/admin/payments/view-order-details.php:24, includes/admin/payments/view-order-details.php:34, includes/admin/reporting/class-api-requests-logs-list-table.php:141, includes/admin/reporting/class-export.php:177, includes/admin/reporting/class-gateway-error-logs-list-table.php:127, includes/admin/reporting/export/class-batch-export.php:131, includes/admin/reporting/export/export-actions.php:26, includes/admin/reporting/pdf-reports.php:31, includes/admin/reporting/pdf-reports.php:35, includes/admin/reporting/tools/class-give-tools-delete-test-transactions.php:157, includes/admin/reporting/tools/class-give-tools-recount-all-stats.php:206, includes/admin/reporting/tools/class-give-tools-recount-customer-stats.php:196, includes/admin/reporting/tools/class-give-tools-recount-form-stats.php:220, includes/admin/reporting/tools/class-give-tools-recount-income.php:158, includes/admin/reporting/tools/class-give-tools-recount-single-customer-stats.php:152, includes/admin/reporting/tools/class-give-tools-reset-stats.php:185, includes/admin/upgrades/upgrade-functions.php:107, includes/admin/upgrades/upgrade-functions.php:201, includes/admin/upgrades/upgrade-functions.php:238, includes/api/class-give-api.php:1665, includes/api/class-give-api.php:1670, includes/api/class-give-api.php:1688, includes/api/class-give-api.php:1698, includes/class-give-license-handler.php:265, includes/class-give-license-handler.php:338, includes/emails/actions.php:56, includes/emails/template.php:267, includes/error-tracking.php:50, includes/gateways/manual.php:38, includes/gateways/paypal-standard.php:38
+#: includes/admin/customers/customer-actions.php:31, includes/admin/customers/customer-actions.php:43, includes/admin/customers/customer-actions.php:211, includes/admin/customers/customer-actions.php:223, includes/admin/customers/customer-actions.php:289, includes/admin/customers/customer-actions.php:302, includes/admin/customers/customer-actions.php:389, includes/admin/customers/customer-actions.php:400, includes/admin/forms/dashboard-columns.php:222, includes/admin/payments/actions.php:32, includes/admin/payments/actions.php:89, includes/admin/payments/actions.php:101, includes/admin/payments/actions.php:321, includes/admin/payments/actions.php:341, includes/admin/payments/actions.php:374, includes/admin/payments/actions.php:396, includes/admin/payments/view-order-details.php:24, includes/admin/payments/view-order-details.php:34, includes/admin/reporting/class-api-requests-logs-list-table.php:141, includes/admin/reporting/class-export.php:177, includes/admin/reporting/class-gateway-error-logs-list-table.php:127, includes/admin/reporting/export/class-batch-export.php:131, includes/admin/reporting/export/export-actions.php:26, includes/admin/reporting/pdf-reports.php:31, includes/admin/reporting/pdf-reports.php:35, includes/admin/reporting/tools/class-give-tools-delete-test-transactions.php:157, includes/admin/reporting/tools/class-give-tools-recount-all-stats.php:206, includes/admin/reporting/tools/class-give-tools-recount-customer-stats.php:196, includes/admin/reporting/tools/class-give-tools-recount-form-stats.php:220, includes/admin/reporting/tools/class-give-tools-recount-income.php:158, includes/admin/reporting/tools/class-give-tools-recount-single-customer-stats.php:152, includes/admin/reporting/tools/class-give-tools-reset-stats.php:185, includes/admin/upgrades/upgrade-functions.php:107, includes/admin/upgrades/upgrade-functions.php:201, includes/admin/upgrades/upgrade-functions.php:238, includes/api/class-give-api.php:1665, includes/api/class-give-api.php:1670, includes/api/class-give-api.php:1688, includes/api/class-give-api.php:1698, includes/class-give-license-handler.php:265, includes/class-give-license-handler.php:338, includes/emails/actions.php:56, includes/emails/template.php:267, includes/error-tracking.php:50, includes/gateways/manual.php:38, includes/gateways/paypal-standard.php:38
 msgid "Error"
 msgstr ""
 
@@ -916,7 +916,7 @@ msgstr ""
 msgid "Update Donor"
 msgstr ""
 
-#: includes/admin/customers/customers.php:372, includes/admin/customers/customers.php:706, includes/admin/payments/view-order-details.php:360, includes/class-give-html-elements.php:638, includes/class-give-html-elements.php:638, includes/forms/template.php:948
+#: includes/admin/customers/customers.php:372, includes/admin/customers/customers.php:706, includes/admin/payments/view-order-details.php:361, includes/class-give-html-elements.php:638, includes/class-give-html-elements.php:638, includes/forms/template.php:948
 msgid "Cancel"
 msgstr ""
 
@@ -962,7 +962,7 @@ msgstr ""
 msgid "View Details for Donation"
 msgstr ""
 
-#: includes/admin/customers/customers.php:472, includes/admin/payments/class-payments-table.php:355
+#: includes/admin/customers/customers.php:472, includes/admin/payments/class-payments-table.php:361
 msgid "View Details"
 msgstr ""
 
@@ -1053,7 +1053,7 @@ msgstr ""
 msgid "Tags"
 msgstr ""
 
-#: includes/admin/forms/dashboard-columns.php:38, includes/admin/forms/dashboard-columns.php:309, includes/admin/reporting/export/class-batch-export-forms.php:54, includes/admin/reporting/pdf-reports.php:78
+#: includes/admin/forms/dashboard-columns.php:38, includes/admin/forms/dashboard-columns.php:302, includes/admin/reporting/export/class-batch-export-forms.php:54, includes/admin/reporting/pdf-reports.php:78
 msgid "Price"
 msgstr ""
 
@@ -1069,19 +1069,15 @@ msgstr ""
 msgid "Shortcode"
 msgstr ""
 
-#: includes/admin/forms/dashboard-columns.php:77
-msgid "Purchase"
-msgstr ""
-
-#: includes/admin/forms/dashboard-columns.php:99
+#: includes/admin/forms/dashboard-columns.php:92
 msgid "No Goal Set"
 msgstr ""
 
-#: includes/admin/forms/dashboard-columns.php:229
+#: includes/admin/forms/dashboard-columns.php:222
 msgid "You do not have permission to view this data."
 msgstr ""
 
-#: includes/admin/forms/dashboard-columns.php:304
+#: includes/admin/forms/dashboard-columns.php:297
 msgid "%s Configuration"
 msgstr ""
 
@@ -1473,59 +1469,67 @@ msgstr ""
 msgid "Details"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:324
+#: includes/admin/payments/class-payments-table.php:328
 msgid "by"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:393
-msgid "Resend Donation Receipt"
+#: includes/admin/payments/class-payments-table.php:361
+msgid "View details"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:405
+#: includes/admin/payments/class-payments-table.php:388
 msgid "(unknown)"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:427, includes/admin/reporting/class-sales-logs-list-table.php:88
+#: includes/admin/payments/class-payments-table.php:391
+msgid "Email donor"
+msgstr ""
+
+#: includes/admin/payments/class-payments-table.php:418
+msgid "Resend Donation Receipt"
+msgstr ""
+
+#: includes/admin/payments/class-payments-table.php:443, includes/admin/reporting/class-sales-logs-list-table.php:88
 msgid "This payment was made in test mode"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:427, includes/admin/reporting/class-sales-logs-list-table.php:88
+#: includes/admin/payments/class-payments-table.php:443, includes/admin/reporting/class-sales-logs-list-table.php:88
 msgid "Test"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:484
+#: includes/admin/payments/class-payments-table.php:500
 msgid "(donor missing)"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:500
+#: includes/admin/payments/class-payments-table.php:516
 msgid "Set To Completed"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:501
+#: includes/admin/payments/class-payments-table.php:517
 msgid "Set To Pending"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:502
+#: includes/admin/payments/class-payments-table.php:518
 msgid "Set To Refunded"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:503
+#: includes/admin/payments/class-payments-table.php:519
 msgid "Set To Revoked"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:504
+#: includes/admin/payments/class-payments-table.php:520
 msgid "Set To Failed"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:505
+#: includes/admin/payments/class-payments-table.php:521
 msgid "Set To Cancelled"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:506
+#: includes/admin/payments/class-payments-table.php:522
 msgid "Set To Abandoned"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:507
+#: includes/admin/payments/class-payments-table.php:523
 msgid "Resend Email Receipts"
 msgstr ""
 
@@ -1629,79 +1633,79 @@ msgstr ""
 msgid "Donation Date"
 msgstr ""
 
-#: includes/admin/payments/view-order-details.php:278, includes/ajax-functions.php:423
+#: includes/admin/payments/view-order-details.php:279, includes/ajax-functions.php:423
 msgid "n/a"
 msgstr ""
 
-#: includes/admin/payments/view-order-details.php:322
+#: includes/admin/payments/view-order-details.php:323
 msgid "Donor Details"
 msgstr ""
 
-#: includes/admin/payments/view-order-details.php:342, includes/admin/payments/view-order-details.php:342
+#: includes/admin/payments/view-order-details.php:343, includes/admin/payments/view-order-details.php:343
 msgid "View Donor Details"
 msgstr ""
 
-#: includes/admin/payments/view-order-details.php:345, includes/admin/payments/view-order-details.php:345
+#: includes/admin/payments/view-order-details.php:346, includes/admin/payments/view-order-details.php:346
 msgid "New Donor"
 msgstr ""
 
-#: includes/admin/payments/view-order-details.php:351
+#: includes/admin/payments/view-order-details.php:352
 msgid "Name:"
 msgstr ""
 
-#: includes/admin/payments/view-order-details.php:355
+#: includes/admin/payments/view-order-details.php:356
 msgid "Email:"
 msgstr ""
 
-#: includes/admin/payments/view-order-details.php:364
+#: includes/admin/payments/view-order-details.php:365
 msgid "Click \"Save Payment\" to create new donor"
 msgstr ""
 
-#: includes/admin/payments/view-order-details.php:383
+#: includes/admin/payments/view-order-details.php:384
 msgid "Billing Address"
 msgstr ""
 
-#: includes/admin/payments/view-order-details.php:394
+#: includes/admin/payments/view-order-details.php:395
 msgid "Street Address Line 1:"
 msgstr ""
 
-#: includes/admin/payments/view-order-details.php:399
+#: includes/admin/payments/view-order-details.php:400
 msgid "Street Address Line 2:"
 msgstr ""
 
-#: includes/admin/payments/view-order-details.php:406
+#: includes/admin/payments/view-order-details.php:407
 msgid "City:"
 msgstr ""
 
-#: includes/admin/payments/view-order-details.php:412
+#: includes/admin/payments/view-order-details.php:413
 msgid "Zip / Postal Code:"
 msgstr ""
 
-#: includes/admin/payments/view-order-details.php:419
+#: includes/admin/payments/view-order-details.php:420
 msgid "Country:"
 msgstr ""
 
-#: includes/admin/payments/view-order-details.php:428
+#: includes/admin/payments/view-order-details.php:429
 msgid "Select a country"
 msgstr ""
 
-#: includes/admin/payments/view-order-details.php:434
+#: includes/admin/payments/view-order-details.php:435
 msgid "State / Province:"
 msgstr ""
 
-#: includes/admin/payments/view-order-details.php:445
+#: includes/admin/payments/view-order-details.php:446
 msgid "Select a state"
 msgstr ""
 
-#: includes/admin/payments/view-order-details.php:469
+#: includes/admin/payments/view-order-details.php:470
 msgid "Payment Notes"
 msgstr ""
 
-#: includes/admin/payments/view-order-details.php:485
+#: includes/admin/payments/view-order-details.php:486
 msgid "No payment notes"
 msgstr ""
 
-#: includes/admin/payments/view-order-details.php:490
+#: includes/admin/payments/view-order-details.php:491
 msgid "Add Note"
 msgstr ""
 
