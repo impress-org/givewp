@@ -59,7 +59,7 @@ class GIVE_CLI_COMMAND {
 	 *
 	 * wp give details
 	 *
-	 * @since       1.7
+	 * @since		1.7
 	 * @access		public
 	 *
 	 * @param		string $args        Command Data.
@@ -133,15 +133,15 @@ class GIVE_CLI_COMMAND {
 	 *
 	 * wp give form --id=103
 	 *
-	 * @since       1.7
+	 * @since		1.7
 	 * @access		public
 	 *
 	 * @param		string $args        Command Data.
 	 * @param		array  $assoc_args  List of command data.
 	 *
-	 * @return     void
+	 * @return		void
 	 *
-	 * @subcommand form
+	 * @subcommand	form
 	 */
 	public function form( $args, $assoc_args ) {
 		$form_id = isset( $assoc_args ) && array_key_exists( 'id', $assoc_args ) ? absint( $assoc_args['id'] ) : false;
@@ -240,15 +240,15 @@ class GIVE_CLI_COMMAND {
 	 * wp give donors --create=1 --email=john@test.com --name="John Doe"
 	 * wp give donors --create=1000
 	 *
-	 * @since       1.7
+	 * @since		1.7
 	 * @access		public
 	 *
 	 * @param		string $args        Command Data.
 	 * @param		array  $assoc_args  List of command data.
 	 *
-	 * @return      void
+	 * @return		void
 	 *
-	 * @subcommand  donors
+	 * @subcommand	donors
 	 */
 	public function donors( $args, $assoc_args ) {
 	    global $wp_query;
@@ -406,15 +406,15 @@ class GIVE_CLI_COMMAND {
 	 * wp give donations
 	 * wp give donations --number=100
 	 *
-	 * @since       1.7
+	 * @since		1.7
 	 * @access		public
 	 *
 	 * @param		string $args        Command Data.
 	 * @param		array  $assoc_args  List of command data.
 	 *
-	 * @return      void
+	 * @return		void
 	 *
-	 * @subcommand  donations
+	 * @subcommand	donations
 	 */
 	public function donations( $args, $assoc_args ) {
 	    global $wp_query;
@@ -493,15 +493,15 @@ class GIVE_CLI_COMMAND {
 	 * wp give payments create --number=10 --status=completed
 	 * wp give payments create --number=10 --id=103
 	 *
-	 * @since   1.7
-	 * @access  public
+	 * @since		1.7
+	 * @access		public
 	 *
-	 * @param	string $args        Command Data.
-	 * @param	array  $assoc_args  List of command data.
+	 * @param		string $args        Command Data.
+	 * @param		array  $assoc_args  List of command data.
 	 *
-	 * @return  void
+	 * @return		void
 	 *
-	 * @subcommand payments
+	 * @subcommand 	payments
 	 */
 	public function payments( $args, $assoc_args ) {}
 
@@ -516,15 +516,15 @@ class GIVE_CLI_COMMAND {
 	 * [--type=<report_type>]
 	 * : Name of report type, value of this parameter can be [form].
 	 *
-	 * @since       1.7
-	 * @access      public
+	 * @since		1.7
+	 * @access		public
 	 *
 	 * @param		string $args        Command Data.
 	 * @param		array  $assoc_args  List of command data.
 	 *
-	 * @subcommand  report
+	 * @subcommand	report
 	 *
-	 * @return      void
+	 * @return		void
 	 */
 	public function report( $args, $assoc_args ) {}
 
@@ -542,10 +542,11 @@ class GIVE_CLI_COMMAND {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     # See form report
-	 *     wp give cache delete
+	 *	# See form report
+	 *	wp give cache delete
 	 *
-	 * @since  1.7
+	 * @since		1.7
+	 * @access		public
 	 *
 	 * @param		string $args        Command Data.
 	 * @param		array  $assoc_args  List of command data.
@@ -583,10 +584,10 @@ class GIVE_CLI_COMMAND {
 	/**
 	 * Delete all form stat transient
 	 *
-	 * @since  1.7
-	 * @access private
+	 * @since	1.7
+	 * @access	private
 	 *
-	 * @return bool
+	 * @return	bool
 	 */
 	private function delete_all_stats() {
 		global $wpdb;
@@ -629,12 +630,12 @@ class GIVE_CLI_COMMAND {
 	/**
 	 * Return colored message
 	 *
-	 * @param string $heading Message heading.
-	 * @param string $message Message content.
-	 * @param bool   $colon   Check if add colon between heading and message.
-	 * @param string $color   Heading color.
+	 * @param	string $heading Message heading.
+	 * @param	string $message Message content.
+	 * @param	bool   $colon   Check if add colon between heading and message.
+	 * @param	string $color   Heading color.
 	 *
-	 * @return mixed
+	 * @return	mixed
 	 */
 	private function color_message( $heading, $message = '', $colon = true, $color = 'g' ) {
 	    // Add colon.
@@ -648,13 +649,13 @@ class GIVE_CLI_COMMAND {
 	/**
 	 * Output section heading.
 	 *
-	 * @since  1.7
-	 * @access private
+	 * @since	1.7
+	 * @access	private
 	 *
-	 * @param string $heading Heading.
-	 * @param string $color   Color.
+	 * @param	string $heading Heading.
+	 * @param	string $color   Color.
 	 *
-	 * @return void
+	 * @return	void
 	 */
 	private function color_main_heading( $heading, $color = 'g' ) {
 		WP_CLI::log( "\n######   " . $this->color_message( $heading, '', false, $color ) . '   ######' );
@@ -663,12 +664,12 @@ class GIVE_CLI_COMMAND {
 	/**
 	 * Output section sub heading.
 	 *
-	 * @since  1.7
-	 * @access private
+	 * @since	1.7
+	 * @access	private
 	 *
-	 * @param string $subheading Sub heading.
+	 * @param	string $subheading Sub heading.
 	 *
-	 * @return void
+	 * @return	void
 	 */
 	private function color_sub_heading( $subheading ) {
 		WP_CLI::log( "\n--->" . $subheading . '', '', false );
@@ -678,12 +679,12 @@ class GIVE_CLI_COMMAND {
 	/**
 	 * Display data in table format.
 	 *
-	 * @since  1.7
-	 * @access private
+	 * @since	1.7
+	 * @access	private
 	 *
-	 * @param array $data Array of table data.
+	 * @param	array $data Array of table data.
 	 *
-	 * @return void
+	 * @return	void
 	 */
 	private function display_table( $data ) {
 		$table = new \cli\Table();
