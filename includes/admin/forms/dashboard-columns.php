@@ -305,10 +305,10 @@ function give_price_field_quick_edit( $column_name, $post_type ) {
 					give_get_forms_label_singular()
 				);
 			?></h4>
-			<label>
+			<label for="_give_regprice">
 				<span class="title"><?php esc_html_e( 'Price', 'give' ); ?></span>
 				<span class="input-text-wrap">
-					<input type="text" name="_give_regprice" class="text regprice" />
+					<input type="text" name="_give_regprice" id="_give_regprice" class="text regprice" />
 				</span>
 			</label>
 			<br class="clear" />
