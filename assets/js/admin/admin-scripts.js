@@ -247,6 +247,9 @@ jQuery.noConflict();
 
                             // Add chosen feature to select tag.
                             $('select[name="give-variable-price"]').chosen();
+                        } else {
+                            // Update Variable price html.
+                            variable_prices_html_container.html('');
                         }
                     }
                 });

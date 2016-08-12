@@ -408,7 +408,7 @@ add_action( 'wp_ajax_give_check_for_form_price_variations', 'give_check_for_form
  */
 function give_check_for_form_price_variations_html() {
 	if ( ! current_user_can( 'edit_give_payments', get_current_user_id() ) ) {
-		die( '-1' );
+		wp_die();
 	}
 
 	$form_id = intval( $_POST['form_id'] );
@@ -416,7 +416,7 @@ function give_check_for_form_price_variations_html() {
 	$form    = get_post( $form_id );
 
 	if ( 'give_forms' != $form->post_type ) {
-		die( '-2' );
+		wp_die();
 	}
 
     if ( ! give_has_variable_prices( $form_id ) ) {
