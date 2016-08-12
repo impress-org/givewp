@@ -521,7 +521,7 @@ function give_user_info_fields( $form_id ) {
 				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'We will send the purchase receipt to this address.', 'give' ); ?>"></span>
 			</label>
 
-			<input class="give-input required" type="email" name="give_email" placeholder="<?php esc_attr_e( 'Email address', 'give' ); ?>" id="give-email" value="<?php echo is_user_logged_in() ? $user_data->user_email : ''; ?>"<?php if ( give_field_is_required( 'give_email', $form_id ) ) {
+			<input class="give-input required" type="email" name="give_email" placeholder="<?php esc_attr_e( 'Email Address', 'give' ); ?>" id="give-email" value="<?php echo is_user_logged_in() ? $user_data->user_email : ''; ?>"<?php if ( give_field_is_required( 'give_email', $form_id ) ) {
 				echo ' required ';
 			} ?>/>
 
