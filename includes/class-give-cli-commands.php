@@ -3,7 +3,7 @@
  * GIVE WP_CLI commands
  *
  * @package give
- * @since 1.6
+ * @since 1.7
  */
 
 // Exit if accessed directly.
@@ -18,7 +18,7 @@ WP_CLI::add_command( 'give', 'GIVE_CLI_COMMAND' );
  *
  * Adds CLI support to Give through WP-CLI
  *
- * @since 1.6
+ * @since 1.7
  */
 class GIVE_CLI_COMMAND {
 
@@ -56,7 +56,7 @@ class GIVE_CLI_COMMAND {
 	 *
 	 * wp give details
 	 *
-	 * @since		1.6
+	 * @since		1.7
 	 * @access		public
 	 *
 	 * @param		string $args        Command Data.
@@ -135,7 +135,7 @@ class GIVE_CLI_COMMAND {
 	 * wp give forms --id=103
 	 * wp give forms --number=103
 	 *
-	 * @since		1.6
+	 * @since		1.7
 	 * @access		public
 	 *
 	 * @param		string $args        Command Data.
@@ -315,7 +315,7 @@ class GIVE_CLI_COMMAND {
 	 * wp give donors --create=1 --email=john@test.com --name="John Doe"
 	 * wp give donors --create=1000
 	 *
-	 * @since		1.6
+	 * @since		1.7
 	 * @access		public
 	 *
 	 * @param		string $args        Command Data.
@@ -481,7 +481,7 @@ class GIVE_CLI_COMMAND {
 	 * wp give donations
 	 * wp give donations --number=100
 	 *
-	 * @since		1.6
+	 * @since		1.7
 	 * @access		public
 	 *
 	 * @param		string $args        Command Data.
@@ -576,7 +576,7 @@ class GIVE_CLI_COMMAND {
 	 * wp give report --date=last_year
 	 * wp give report --date=last_year --id=15
 	 *
-	 * @since		1.6
+	 * @since		1.7
 	 * @access		public
 	 *
 	 * @param		string $args        Command Data.
@@ -623,7 +623,7 @@ class GIVE_CLI_COMMAND {
 	 *	# See form report
 	 *	wp give cache --action=delete
 	 *
-	 * @since		1.6
+	 * @since		1.7
 	 * @access		public
 	 *
 	 * @param		string $args        Command Data.
@@ -662,7 +662,7 @@ class GIVE_CLI_COMMAND {
 	/**
 	 * Delete all form stat transient
 	 *
-	 * @since	1.6
+	 * @since	1.7
 	 * @access	private
 	 *
 	 * @return	bool
@@ -727,7 +727,7 @@ class GIVE_CLI_COMMAND {
 	/**
 	 * Output section heading.
 	 *
-	 * @since	1.6
+	 * @since	1.7
 	 * @access	private
 	 *
 	 * @param	string $heading Heading.
@@ -742,7 +742,7 @@ class GIVE_CLI_COMMAND {
 	/**
 	 * Output section sub heading.
 	 *
-	 * @since	1.6
+	 * @since	1.7
 	 * @access	private
 	 *
 	 * @param	string $subheading Sub heading.
@@ -757,7 +757,7 @@ class GIVE_CLI_COMMAND {
 	/**
 	 * Display data in table format.
 	 *
-	 * @since	1.6
+	 * @since	1.7
 	 * @access	private
 	 *
 	 * @param	array $data Array of table data.
