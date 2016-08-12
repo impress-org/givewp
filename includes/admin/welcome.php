@@ -281,8 +281,7 @@ class Give_Welcome {
 			<div class="feature-section clearfix introduction">
 
 				<div class="video feature-section-item">
-					<img src="<?php echo GIVE_PLUGIN_URL . '/assets/images/give-form-mockup.png' ?>" title="A Give donation form" alt="A Give donation form">
-
+					<img src="<?php echo GIVE_PLUGIN_URL . '/assets/images/give-form-mockup.png' ?>" title="<?php esc_attr_e( 'A Give donation form', 'give' ); ?>" alt="<?php esc_attr_e( 'A Give donation form', 'give' ); ?>">
 				</div>
 
 				<div class="content feature-section-item last-feature">
@@ -290,8 +289,10 @@ class Give_Welcome {
 					<h3><?php esc_html_e( 'Give - Democratizing Generosity', 'give' ); ?></h3>
 
 					<p><?php esc_html_e( 'Give empowers you to easily accept donations and setup fundraising campaigns, directly within WordPress. We created Give to provide a better donation experience for you and your users. Robust, flexible, and intuitive, the plugin is built from the ground up to be the goto donation solution for WordPress. Create powerful donation forms, embed them throughout your website, start a campaign, and exceed your fundraising goals with Give. This plugin is actively developed and proudly supported by folks who are dedicated to helping you and your cause.', 'give' ); ?></p>
-					<a href="https://givewp.com" target="_blank" class="button-secondary" title="Visit the Give Website">Learn More
-						<span class="dashicons dashicons-external"></span></a>
+					<a href="https://givewp.com" target="_blank" class="button-secondary" title="<?php esc_attr_e( 'Visit the Give Website', 'give' ); ?>">
+						<?php esc_html_e( 'Learn More', 'give' ); ?>
+						<span class="dashicons dashicons-external"></span>
+					</a>
 
 				</div>
 
@@ -305,14 +306,16 @@ class Give_Welcome {
 					<h3><?php esc_html_e( 'Getting to Know Give', 'give' ); ?></h3>
 
 					<p><?php esc_html_e( 'Before you get started with Give we suggest you take a look at the online documentation. There you will find the getting started guide which will help you get up and running quickly. If you have an question, issue or bug with the Core plugin please submit an issue on the Give website. We also welcome your feedback and feature requests. Welcome to Give. We hope you much success with your cause.', 'give' ); ?></p>
-					<a href="https://givewp.com/documentation" target="_blank" class="button-secondary" title="Visit the Give Website">View Documentation
-						<span class="dashicons dashicons-external"></span></a>
+					<a href="https://givewp.com/documentation" target="_blank" class="button-secondary" title="<?php esc_attr_e( 'Visit the Give Website', 'give' ); ?>">
+						<?php esc_html_e( 'View Documentation', 'give' ); ?>
+						<span class="dashicons dashicons-external"></span>
+					</a>
 
 				</div>
 
 				<div class="content  feature-section-item last-feature">
 
-					<img src="<?php echo GIVE_PLUGIN_URL . '/assets/images/give-logo-photo-mashup.png' ?>" title="Give" alt="Give">
+					<img src="<?php echo GIVE_PLUGIN_URL . '/assets/images/give-logo-photo-mashup.png' ?>" title="<?php esc_attr_e( 'Give', 'give' ); ?>" alt="<?php esc_attr_e( 'Give', 'give' ); ?>">
 
 				</div>
 
