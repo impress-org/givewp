@@ -352,7 +352,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 				break;
 
 			case 'details' :
-				$value = '<div class="give-payment-details-link-wrap"><a href="' . esc_url( add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details' ) ) ) . '" class="give-payment-details-link button button-small" title="'. __( 'View Details', 'give' ) . '"><span class="dashicons dashicons-visibility"></span></a></div>';
+				$value = '<div class="give-payment-details-link-wrap"><a href="' . esc_url( add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details' ) ) ) . '" class="give-payment-details-link button button-small" title="'. esc_attr__( 'View Details', 'give' ) . '"><span class="dashicons dashicons-visibility"></span></a></div>';
 				break;
 
 			default:

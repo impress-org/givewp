@@ -195,7 +195,7 @@ function give_admin_notices_disabled( $payment_id = 0 ) {
 function give_get_default_donation_notification_email() {
 
 	$default_email_body  = esc_html__( 'Hi there,', 'give' ) . "\n\n";
-	$default_email_body .= esc_html__( 'This email is to inform you that a new donation has been made on your website: ', 'give' ) . ' <a href="' . get_bloginfo( 'url' ) . '" target="_blank">' . get_bloginfo( 'url' ) . '</a>' . ".\n\n";
+	$default_email_body .= esc_html__( 'This email is to inform you that a new donation has been made on your website:', 'give' ) . ' <a href="' . get_bloginfo( 'url' ) . '" target="_blank">' . get_bloginfo( 'url' ) . '</a>' . ".\n\n";
 	$default_email_body .= '<strong>' . esc_html__( 'Donor:', 'give' ) . '</strong> {name}' . "\n";
 	$default_email_body .= '<strong>' . esc_html__( 'Donation:', 'give' ) . '</strong> {donation}' . "\n";
 	$default_email_body .= '<strong>' . esc_html__( 'Amount:', 'give' ) . '</strong> {price}' . "\n";

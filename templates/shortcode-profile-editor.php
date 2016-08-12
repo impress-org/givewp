@@ -18,7 +18,7 @@ if ( is_user_logged_in() ):
 
 	if ( isset( $_GET['updated'] ) && $_GET['updated'] == true && ! give_get_errors() ): ?>
 		<p class="give_success">
-			<strong><?php esc_html_e( 'Success', 'give' ); ?>:</strong> <?php esc_html_e( 'Your profile has been edited successfully.', 'give' ); ?>
+			<strong><?php esc_html_e( 'Success:', 'give' ); ?></strong> <?php esc_html_e( 'Your profile has been edited successfully.', 'give' ); ?>
 		</p>
 	<?php endif; ?>
 

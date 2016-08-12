@@ -224,12 +224,12 @@ function give_offline_send_admin_notice( $payment_id = 0 ) {
 	$admin_subject = apply_filters( 'give_offline_admin_donation_notification_subject', esc_attr__( 'New Pending Donation', 'give' ), $payment_id );
 
 	$admin_message = esc_attr__( 'Dear Admin,', 'give' ) . "\n\n";
-	$admin_message .= esc_attr__( 'An offline donation has been made on your website: ', 'give' ) . get_bloginfo( 'name' ) . ' ';
+	$admin_message .= esc_attr__( 'An offline donation has been made on your website:', 'give' ) . ' ' . get_bloginfo( 'name' ) . ' ';
 	$admin_message .= esc_attr__( 'Hooray! The donation is in a pending status and is awaiting payment. Donation instructions have been emailed to the donor. Once you receive payment, be sure to mark the donation as complete using the link below.', 'give' ) . "\n\n";
 
 
-	$admin_message .= '<strong>' . esc_attr__( 'Donor: ', 'give' ) . '</strong>' . '{fullname}' . "\n";
-	$admin_message .= '<strong>' . esc_attr__( 'Amount: ', 'give' ) . '</strong>' . '{price}' . "\n\n";
+	$admin_message .= '<strong>' . esc_attr__( 'Donor:', 'give' ) . '</strong> {fullname}' . "\n";
+	$admin_message .= '<strong>' . esc_attr__( 'Amount:', 'give' ) . '</strong> {price}' . "\n\n";
 
 	$admin_message .= sprintf(
 		'<a href="%1$s">%2$s</a>',

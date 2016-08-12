@@ -117,7 +117,7 @@ $payment_mode   = $payment->mode;
 										$fees = give_get_payment_fees( $payment_id );
 										if ( ! empty( $fees ) ) : ?>
 											<div class="give-order-fees give-admin-box-inside">
-												<p class="strong"><?php esc_html_e( 'Fees', 'give' ); ?>:</p>
+												<p class="strong"><?php esc_html_e( 'Fees:', 'give' ); ?></p>
 												<ul class="give-payment-fees">
 													<?php foreach ( $fees as $fee ) : ?>
 														<li>
@@ -131,7 +131,7 @@ $payment_mode   = $payment->mode;
 
 										<div class="give-order-payment give-admin-box-inside">
 											<p>
-												<span class="label"><?php esc_html_e( 'Total Donation', 'give' ); ?>:</span>&nbsp;
+												<span class="label"><?php esc_html_e( 'Total Donation:', 'give' ); ?></span>&nbsp;
 												<?php echo give_currency_symbol( $payment->currency ); ?>&nbsp;<input name="give-payment-total" type="text" class="small-text give-price-field" value="<?php echo esc_attr( give_format_decimal( give_get_payment_amount( $payment_id ) ) ); ?>"/>
 											</p>
 										</div>
