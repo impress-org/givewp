@@ -424,7 +424,7 @@ class Give_API {
 	 */
 	private function missing_auth() {
 		$error          = array();
-		$error['error'] = esc_html__( 'You must specify both a token and API key!', 'give' );
+		$error['error'] = esc_html__( 'You must specify both a token and API key.', 'give' );
 
 		$this->data = $error;
 		$this->output( 401 );
@@ -441,7 +441,7 @@ class Give_API {
 	 */
 	private function invalid_auth() {
 		$error          = array();
-		$error['error'] = esc_html__( 'Your request could not be authenticated!', 'give' );
+		$error['error'] = esc_html__( 'Your request could not be authenticated.', 'give' );
 
 		$this->data = $error;
 		$this->output( 403 );
@@ -458,7 +458,7 @@ class Give_API {
 	 */
 	private function invalid_key() {
 		$error          = array();
-		$error['error'] = esc_html__( 'Invalid API key!', 'give' );
+		$error['error'] = esc_html__( 'Invalid API key.', 'give' );
 
 		$this->data = $error;
 		$this->output( 403 );
@@ -474,7 +474,7 @@ class Give_API {
 	 */
 	private function invalid_version() {
 		$error          = array();
-		$error['error'] = esc_html__( 'Invalid API version!', 'give' );
+		$error['error'] = esc_html__( 'Invalid API version.', 'give' );
 
 		$this->data = $error;
 		$this->output( 404 );
@@ -612,7 +612,7 @@ class Give_API {
 
 		// Make sure our query is valid
 		if ( ! in_array( $query, $accepted ) ) {
-			$error['error'] = esc_html__( 'Invalid query!', 'give' );
+			$error['error'] = esc_html__( 'Invalid query.', 'give' );
 
 			$this->data = $error;
 			// 400 is Bad Request
@@ -1097,12 +1097,12 @@ class Give_API {
 
 					// Ensure the end date is later than the start date
 					if ( $args['enddate'] < $args['startdate'] ) {
-						$error['error'] = esc_html__( 'The end date must be later than the start date!', 'give' );
+						$error['error'] = esc_html__( 'The end date must be later than the start date.', 'give' );
 					}
 
 					// Ensure both the start and end date are specified
 					if ( empty( $args['startdate'] ) || empty( $args['enddate'] ) ) {
-						$error['error'] = esc_html__( 'Invalid or no date range specified!', 'give' );
+						$error['error'] = esc_html__( 'Invalid or no date range specified.', 'give' );
 					}
 
 					$total = 0;
@@ -1209,12 +1209,12 @@ class Give_API {
 
 					// Ensure the end date is later than the start date
 					if ( $args['enddate'] < $args['startdate'] ) {
-						$error['error'] = esc_html__( 'The end date must be later than the start date!', 'give' );
+						$error['error'] = esc_html__( 'The end date must be later than the start date.', 'give' );
 					}
 
 					// Ensure both the start and end date are specified
 					if ( empty( $args['startdate'] ) || empty( $args['enddate'] ) ) {
-						$error['error'] = esc_html__( 'Invalid or no date range specified!', 'give' );
+						$error['error'] = esc_html__( 'Invalid or no date range specified.', 'give' );
 					}
 
 					$total = (float) 0.00;
