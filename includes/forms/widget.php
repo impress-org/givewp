@@ -157,9 +157,9 @@ class Give_Forms_Widget extends WP_Widget{
 			</select><br>
 			<small><?php
 				printf(
-					/* translators: %s: http://bradfrost.com/blog/post/float-label-pattern/ */
+					/* translators: %s: https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels */
 					__( 'Override the <a href="%s" target="_blank">floating labels</a> setting for this Give form.', 'give' ),
-					esc_url( 'http://bradfrost.com/blog/post/float-label-pattern/' )
+					esc_url( 'https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels' )
 				);
 			?></small>
 		</p><?php

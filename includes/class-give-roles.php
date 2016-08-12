@@ -208,7 +208,7 @@ class Give_Roles {
 
 		switch( $cap ) {
 
-			case 'view_give_forms_stats' :
+			case 'view_give_form_stats' :
 				
 				if( empty( $args[0] ) ) {
 					break;

@@ -68,14 +68,7 @@ add_filter( 'manage_edit-give_forms_columns', 'give_form_columns' );
  */
 function give_render_form_columns( $column_name, $post_id ) {
 	if ( get_post_type( $post_id ) == 'give_forms' ) {
-		global $give_options;
-
-		$style = isset( $give_options['button_style'] ) ? $give_options['button_style'] : 'button';
-		$color = isset( $give_options['checkout_color'] ) ? $give_options['checkout_color'] : 'blue';
-		$color = ( $color == 'inherit' ) ? '' : $color;
-
-		$purchase_text = ! empty( $give_options['add_to_cart_text'] ) ? $give_options['add_to_cart_text'] : esc_html__( 'Purchase', 'give' );
-
+		
 		switch ( $column_name ) {
 			case 'form_category':
 				echo get_the_term_list( $post_id, 'give_forms_category', '', ', ', '' );
@@ -102,7 +95,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 				echo '<input type="hidden" class="formgoal-' . $post_id . '" value="' . give_get_form_goal( $post_id ) . '" />';
 				break;
 			case 'donations':
-				if ( current_user_can( 'view_give_forms_stats', $post_id ) ) {
+				if ( current_user_can( 'view_give_form_stats', $post_id ) ) {
 					echo '<a href="' . esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=logs&view=sales&form=' . $post_id ) ) . '">';
 					echo give_get_form_sales_stats( $post_id );
 					echo '</a>';
@@ -111,7 +104,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 				}
 				break;
 			case 'earnings':
-				if ( current_user_can( 'view_give_forms_stats', $post_id ) ) {
+				if ( current_user_can( 'view_give_form_stats', $post_id ) ) {
 					echo '<a href="' . esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-reports&view=forms&form-id=' . $post_id ) ) . '">';
 					echo give_currency_filter( give_format_amount( give_get_form_earnings_stats( $post_id ) ) );
 					echo '</a>';
