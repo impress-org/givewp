@@ -206,25 +206,25 @@ function give_reports_graph() {
 				<tbody>
 				<tr>
 					<td class="row-title">
-						<label for="tablecell"><?php esc_html_e( 'Total income for period: ', 'give' ); ?></label></td>
+						<label for="tablecell"><?php esc_html_e( 'Total income for period:', 'give' ); ?></label></td>
 					<td><?php echo give_currency_filter( give_format_amount( $earnings_totals ) ); ?></td>
 				</tr>
 				<tr class="alternate">
 					<td class="row-title">
-						<label for="tablecell"><?php esc_html_e( 'Total donations for period shown: ', 'give' ); ?></label>
+						<label for="tablecell"><?php esc_html_e( 'Total donations for period:', 'give' ); ?></label>
 					</td>
 					<td><?php echo $sales_totals; ?></td>
 				</tr>
 				<?php if ( 'this_month' == $dates['range'] ) : ?>
 					<tr>
 						<td class="row-title">
-							<label for="tablecell"><?php esc_html_e( 'Estimated monthly income: ', 'give' ); ?></label>
+							<label for="tablecell"><?php esc_html_e( 'Estimated monthly income:', 'give' ); ?></label>
 						</td>
 						<td><?php echo give_currency_filter( give_format_amount( $estimated['earnings'] ) ); ?></td>
 					</tr>
 					<tr class="alternate">
 						<td class="row-title">
-							<label for="tablecell"><?php esc_html_e( 'Estimated monthly donations: ', 'give' ); ?></label>
+							<label for="tablecell"><?php esc_html_e( 'Estimated monthly donations:', 'give' ); ?></label>
 						</td>
 						<td><?php echo floor( $estimated['sales'] ); ?></td>
 					</tr>
@@ -449,24 +449,24 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 			<tbody>
 			<tr>
 				<td class="row-title">
-					<label for="tablecell"><?php esc_html_e( 'Total income for period: ', 'give' ); ?></label></td>
+					<label for="tablecell"><?php esc_html_e( 'Total income for period:', 'give' ); ?></label></td>
 				<td><?php echo give_currency_filter( give_format_amount( $earnings_totals ) ); ?></td>
 			</tr>
 			<tr class="alternate">
 				<td class="row-title">
-					<label for="tablecell"><?php esc_html_e( 'Total donations for period: ', 'give' ); ?></label>
+					<label for="tablecell"><?php esc_html_e( 'Total donations for period:', 'give' ); ?></label>
 				</td>
 				<td><?php echo $sales_totals; ?></td>
 			</tr>
 			<tr>
 				<td class="row-title">
-					<label for="tablecell"><?php esc_html_e( 'Average monthly income: ', 'give' ); ?></label>
+					<label for="tablecell"><?php esc_html_e( 'Average monthly income:', 'give' ); ?></label>
 				</td>
 				<td><?php echo give_currency_filter( give_format_amount( give_get_average_monthly_form_earnings( $form_id ) ) ); ?></td>
 			</tr>
 			<tr class="alternate">
 				<td class="row-title">
-					<label for="tablecell"><?php esc_html_e( 'Average monthly donations: ', 'give' ); ?></label>
+					<label for="tablecell"><?php esc_html_e( 'Average monthly donations:', 'give' ); ?></label>
 				</td>
 				<td><?php echo number_format( give_get_average_monthly_form_sales( $form_id ), 0 ); ?></td>
 			</tr>

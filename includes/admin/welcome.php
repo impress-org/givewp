@@ -502,7 +502,7 @@ class Give_Welcome {
 
 			<?php give_social_media_elements() ?>
 
-			<p class="about-text"><?php esc_html_e( 'Thanks to all those who have contributed code directly or indirectly. ', 'give' ); ?></p>
+			<p class="about-text"><?php esc_html_e( 'Thanks to all those who have contributed code directly or indirectly.', 'give' ); ?></p>
 
 			<p class="about-text"><?php esc_html_e( 'Welcome to the getting started guide.', 'give' ); ?></p>
 
