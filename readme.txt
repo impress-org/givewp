@@ -167,36 +167,36 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 = 1.6:  =
 * New: Added email tag support to Offline Donation Admin Notification - https://github.com/WordImpress/Give/issues/846
 * New: Added a "Reset Password" option to the donation form if the user is prompted to login - https://github.com/WordImpress/Give/issues/723
-* New: Switch a transaction to a different form - https://github.com/WordImpress/Give/issues/429
-* New: Setting to adjust the number of decimal spaces - https://github.com/WordImpress/Give/issues/738
-* New: Human readable large monetary goal formats - https://github.com/WordImpress/Give/issues/650
-* New: Address the plugin's right-to-left issues with a complete audit & resolution - thanks @ramiy! - https://github.com/WordImpress/Give/issues/736
-* New: New template added for for Give goals - https://github.com/WordImpress/Give/issues/411
-* New: Easier and more understandable strings according for translations i18n - thanks @ramiy! - https://github.com/WordImpress/Give/issues/451
-* New: Added a new filter "give_pdf_export_logo" to easily customize the export logo - https://github.com/WordImpress/Give/issues/802
-* New: Customer meta class added for updating and saving donor data for non-users outside usermeta - https://github.com/WordImpress/Give/issues/653
+* New: Add the ability for admins to switch a transaction to a different form - https://github.com/WordImpress/Give/issues/429
+* New: Setting to adjust the number of decimal spaces. Give now support zero and three decimal currencies. - https://github.com/WordImpress/Give/issues/738
+* New: Human readable large monetary goal formats. For instance, if you have a goal of $2 million it will not display as "2,000,000" but rather "2 million". - https://github.com/WordImpress/Give/issues/650
+* New: Address Give's right-to-left issues with a complete audit & resolution - thanks @ramiy! - https://github.com/WordImpress/Give/issues/736
+* New: New template added for Give goals. - https://github.com/WordImpress/Give/issues/411
+* New: Easier and more understandable strings according for translators. - thanks @ramiy! - https://github.com/WordImpress/Give/issues/451
+* New: Added a new filter "give_pdf_export_logo" to easily customize the export logo. - https://github.com/WordImpress/Give/issues/802
+* New: Customer meta class added for updating and saving donor data for non-users outside usermeta. - https://github.com/WordImpress/Give/issues/653
 * New: Conditional functions introduced is_give_form(), is_give_category(), is_give_tag(), and is_give_taxonomy() - https://github.com/WordImpress/Give/issues/832
 * New: Donation receipt email previews now allow you to view actual payment data and switch between transactions. Add-on specific email tags will render when actual data is previewed. - https://github.com/WordImpress/Give/issues/274
 * New: Consolidated the number of columns within the transaction details screen. - https://github.com/WordImpress/Give/issues/814
-* Tweak: Update the country dropdown to use the new ISO country codes for islands in Dutch West Indies - https://github.com/WordImpress/Give/issues/698
-* Tweak: Updated to the latest version of CMB2 & tested compatibility - https://github.com/WordImpress/Give/issues/670
-* Tweak: Remove invalid @description from PHP inline doc blocks - https://github.com/WordImpress/Give/issues/733
-* Tweak: Incorporate proper sanitization for i18n strings - https://github.com/WordImpress/Give/issues/471
-* Tweak: Accessibility page headings added to screens in wp-admin - https://github.com/WordImpress/Give/issues/820
-* Tweak: Unify wp_die() throughout codebase and add title and HTML status response codes - https://github.com/WordImpress/Give/issues/828
-* Fix: Transaction list and donor donation list design break on tablet and mobile - https://github.com/WordImpress/Give/issues/813
-* Fix: Unrendered html in multi-level donation confirmation emails - https://github.com/WordImpress/Give/issues/754
-* Fix: Text editor does not have same height for visual mode and text mode - https://github.com/WordImpress/Give/issues/688
-* Fix: Auto populate state list is not working on transaction detail page - https://github.com/WordImpress/Give/issues/715
-* Fix: Unable to view payment history for donors with unusual characters in the email - https://github.com/WordImpress/Give/issues/717
-* Fix: Mixed content warning with placeholder image - https://github.com/WordImpress/Give/issues/768
-* Fix: Secure SSL padlock icon and style is broken due to a11y changes in #325 - https://github.com/WordImpress/Give/issues/769
-* Fix: Categories and tags are registering incorrectly upon install - https://github.com/WordImpress/Give/issues/725
-* Fix: Amount field not formatting on focus out & lingering validation tooltip issues - https://github.com/WordImpress/Give/issues/778
-* Fix: Auto populate correct donation level when user adds a matching custom amount - https://github.com/WordImpress/Give/issues/730
-* Fix: Export Donation History no longer has Form Title and also has unnecessary columns  - https://github.com/WordImpress/Give/issues/757
-* Fix: A CSS conflict appears with some themes when users view the donation receipt in browser and admins preview emails in wp-admin - https://github.com/WordImpress/Give/issues/818
-* Fix: Prevent editor shortcode generator from displaying for users who don't have access to Give Donation Form editing. - https://github.com/WordImpress/Give/issues/845
+* Tweak: Update the country dropdown to use the new ISO country codes for islands in Dutch West Indies. - https://github.com/WordImpress/Give/issues/698
+* Tweak: Updated to the latest version of CMB2 & tested compatibility. - https://github.com/WordImpress/Give/issues/670
+* Tweak: Remove invalid @description from PHP inline doc blocks. - https://github.com/WordImpress/Give/issues/733
+* Tweak: Incorporate proper sanitization for i18n strings. - https://github.com/WordImpress/Give/issues/471
+* Tweak: Accessibility page headings added to screens in wp-admin. - https://github.com/WordImpress/Give/issues/820
+* Tweak: Unify wp_die() throughout codebase and add title and HTML status response codes. - https://github.com/WordImpress/Give/issues/828
+* Fix: Transaction list and donor donation list design break on tablet and mobile. - https://github.com/WordImpress/Give/issues/813
+* Fix: Unrendered html in multi-level donation confirmation emails. - https://github.com/WordImpress/Give/issues/754
+* Fix: Text editor does not have same height for visual mode and text mode. - https://github.com/WordImpress/Give/issues/688
+* Fix: Auto populate state list is not working on transaction detail page. - https://github.com/WordImpress/Give/issues/715
+* Fix: Unable to view payment history for donors with unusual characters in the email. - https://github.com/WordImpress/Give/issues/717
+* Fix: Mixed content warning with single donation form thumbnail placeholder image. - https://github.com/WordImpress/Give/issues/768
+* Fix: Secure SSL padlock icon and style no longer broken. - https://github.com/WordImpress/Give/issues/769
+* Fix: Categories and tags are registering permissions incorrectly upon install. - https://github.com/WordImpress/Give/issues/725
+* Fix: Amount field not formatting on focus out & lingering validation tooltip issues. - https://github.com/WordImpress/Give/issues/778
+* Fix: Auto populate the correct donation level when user adds a matching custom amount. - https://github.com/WordImpress/Give/issues/730
+* Fix: The "Export Donation History" csv no longer had the "Form Title" column and contained unnecessary columns. - https://github.com/WordImpress/Give/issues/757
+* Fix: A CSS conflict appeared with some themes when users view the donation receipt in browser and admins preview emails in wp-admin. - https://github.com/WordImpress/Give/issues/818
+* Fix: Prevent editor shortcode generator from displaying for users who don't have access to Give donation form editing. - https://github.com/WordImpress/Give/issues/845
 
 = 1.5.2: June 31, 2016 =
 * New: Added an addition "status" column for donation logs - https://github.com/WordImpress/Give/issues/684

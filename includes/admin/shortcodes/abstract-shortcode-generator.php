@@ -2,17 +2,19 @@
 /**
  * Shortcode Dialog Generator abstract class
  *
- * @package     Give
- * @subpackage  Admin
+ * @package     Give/Admin
  * @author      Paul Ryley
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @version     1.0
- * @since       1.3.0
+ * @since       1.3
  */
 
 defined( 'ABSPATH' ) or exit;
 
+/**
+ * Class Give_Shortcode_Generator
+ */
 abstract class Give_Shortcode_Generator {
 
 	/**
@@ -93,7 +95,7 @@ abstract class Give_Shortcode_Generator {
 				'title'     => esc_html__( 'Insert Shortcode', 'give' ),
 			);
 
-			if ( user_can_richedit() && current_user_can('edit_give_forms') ) {
+			if ( user_can_richedit() ) {
 
 				Give_Shortcode_Button::$shortcodes[ $this->shortcode_tag ] = wp_parse_args( $this->shortcode, $defaults );
 
@@ -380,7 +382,7 @@ abstract class Give_Shortcode_Generator {
 
 			if ( ! ! $required || is_array( $required ) ) {
 
-				$alert = esc_html__( 'Some of the Shortcode options are required.', 'give' );
+				$alert = esc_html__( 'Some of the shortcode options are required.', 'give' );
 
 				if ( isset( $required['alert'] ) ) {
 
@@ -389,7 +391,7 @@ abstract class Give_Shortcode_Generator {
 				} else if ( ! empty( $label ) ) {
 
 					$alert = sprintf(
-						/* translators: %s: option lable */
+					/* translators: %s: option label */
 						esc_html__( 'The "%s" option is required.', 'give' ),
 						str_replace( ':', '', $label )
 					);

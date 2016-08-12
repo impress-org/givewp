@@ -47,18 +47,19 @@ final class Give_Shortcode_Button {
 	 *
 	 * @param array $plugin_array
 	 *
-	 * @return array
+	 * @return array|bool
 	 *
 	 * @since 1.0
 	 */
 	public function mce_external_plugins( $plugin_array ) {
 
-		if ( current_user_can( 'edit_posts' ) && current_user_can( 'edit_pages' ) ) {
-
-			$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-
-			$plugin_array['give_shortcode'] = GIVE_PLUGIN_URL . 'assets/js/admin/tinymce/mce-plugin' . $suffix . '.js';
+		if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) {
+			return false;
 		}
+
+		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
+		$plugin_array['give_shortcode'] = GIVE_PLUGIN_URL . 'assets/js/admin/tinymce/mce-plugin' . $suffix . '.js';
 
 		return $plugin_array;
 	}
@@ -117,7 +118,13 @@ final class Give_Shortcode_Button {
 
 		global $pagenow, $wp_version;
 
-		$shortcode_button_pages = array( 'post.php', 'page.php', 'post-new.php', 'post-edit.php' );
+		$shortcode_button_pages = apply_filters( 'give_shortcode_button_pages', array(
+			'post.php',
+			'page.php',
+			'post-new.php',
+			'post-edit.php'
+		) );
+
 		// Only run in admin post/page creation and edit screens
 		if ( in_array( $pagenow, $shortcode_button_pages )
 		     && apply_filters( 'give_shortcode_button_condition', true )
@@ -127,6 +134,7 @@ final class Give_Shortcode_Button {
 			$shortcodes = array();
 
 			foreach ( self::$shortcodes as $shortcode => $values ) {
+
 				/**
 				 * Filters the condition for including the current shortcode
 				 *
