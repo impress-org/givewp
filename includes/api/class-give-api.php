@@ -919,7 +919,7 @@ class Give_API {
 
 			$error['error'] = sprintf(
 				/* translators: %s: customer */
-				esc_html__( 'Donor %s not found!', 'give' ),
+				esc_html__( 'Donor %s not found.', 'give' ),
 				$customer
 			);
 
@@ -927,7 +927,7 @@ class Give_API {
 
 		} else {
 
-			$error['error'] = esc_html__( 'No donors found!', 'give' );
+			$error['error'] = esc_html__( 'No donors found.', 'give' );
 
 			return $error;
 
@@ -977,7 +977,7 @@ class Give_API {
 			} else {
 				$error['error'] = sprintf(
 					/* translators: %s: form */
-					esc_html__( 'Form %s not found!', 'give' ),
+					esc_html__( 'Form %s not found.', 'give' ),
 					$form
 				);
 
@@ -1188,7 +1188,7 @@ class Give_API {
 				} else {
 					$error['error'] = sprintf(
 						/* translators: %s: form */
-						esc_html__( 'Product %s not found!', 'give' ),
+						esc_html__( 'Product %s not found.', 'give' ),
 						$args['form']
 					);
 				}
@@ -1305,7 +1305,7 @@ class Give_API {
 				} else {
 					$error['error'] = sprintf(
 						/* translators: %s: form */
-						esc_html__( 'Form %s not found!', 'give' ),
+						esc_html__( 'Form %s not found.', 'give' ),
 						$args['form']
 					);
 				}

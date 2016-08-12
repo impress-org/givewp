@@ -107,7 +107,7 @@ function give_setup_post_types() {
 		'all_items'          => esc_html__( 'All Donations', 'give' ),
 		'view_item'          => esc_html__( 'View Donation', 'give' ),
 		'search_items'       => esc_html__( 'Search Donations', 'give' ),
-		'not_found'          => esc_html__( 'No Donations found', 'give' ),
+		'not_found'          => esc_html__( 'No Donations Found', 'give' ),
 		'not_found_in_trash' => esc_html__( 'No Donations found in Trash', 'give' ),
 		'parent_item_colon'  => '',
 		'menu_name'          => esc_html__( 'Transactions', 'give' )
