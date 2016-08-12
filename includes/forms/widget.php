@@ -138,7 +138,7 @@ class Give_Forms_Widget extends WP_Widget{
 				);
 			?></label>
 			<select class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'id' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'id' ) ); ?>">
-				<option value="current"><?php esc_html_e( '— Select —', 'give' ); ?></option>
+				<option value="current"><?php esc_html_e( '- Select -', 'give' ); ?></option>
 				<?php foreach ( $give_forms as $give_form ) { ?>
 					<option <?php selected( absint( $instance['id'] ), $give_form->ID ); ?> value="<?php echo esc_attr( $give_form->ID ); ?>"><?php echo $give_form->post_title; ?></option>
 				<?php } ?>
