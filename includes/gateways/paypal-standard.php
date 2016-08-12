@@ -596,9 +596,10 @@ function give_process_paypal_refund( $data, $payment_id = 0 ) {
 	give_insert_payment_note(
 		$payment_id,
 		sprintf(
-			/* translators: %s: Paypal parent transaction ID */
-			esc_html__( 'PayPal Payment #%s Refunded for reason: %s', 'give' ),
-			$data['parent_txn_id'], $data['reason_code']
+			/* translators: 1: Paypal parent transaction ID 2. Paypal reason code */
+			esc_html__( 'PayPal Payment #%1$s Refunded for reason: %2$s', 'give' ),
+			$data['parent_txn_id'],
+			$data['reason_code']
 		)
 	);
 	give_insert_payment_note(

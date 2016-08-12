@@ -520,7 +520,13 @@ class Give_Welcome {
 
 			<?php $this->tabs(); ?>
 
-			<p class="about-description"><?php printf( __( 'Give is created by a dedicated team of developers. If you are interested in contributing please visit the <a href="%s" target="_blank">GitHub Repo</a>.', 'give' ), esc_url( 'https://github.com/WordImpress/give' ) ); ?></p>
+			<p class="about-description"><?php
+				printf(
+					/* translators: %s: https://github.com/WordImpress/give */
+					__( 'Give is created by a dedicated team of developers. If you are interested in contributing please visit the <a href="%s" target="_blank">GitHub Repo</a>.', 'give' ),
+					esc_url( 'https://github.com/WordImpress/give' )
+				);
+			?></p>
 
 			<?php echo $this->contributors(); ?>
 		</div>
