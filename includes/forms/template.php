@@ -826,7 +826,7 @@ function give_get_register_fields( $form_id ) {
 
 				<input name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" class="<?php if ( give_logged_in_only( $form_id ) ) {
 					echo 'required ';
-				} ?>give-input" type="text" placeholder="<?php esc_attr_e( 'Username', 'give' ); ?>" title="<?php esc_html_e( 'Username', 'give' ); ?>"/>
+				} ?>give-input" type="text" placeholder="<?php esc_attr_e( 'Username', 'give' ); ?>" title="<?php esc_attr_e( 'Username', 'give' ); ?>"/>
 			</div>
 
 			<div id="give-user-pass-wrap-<?php echo $form_id; ?>" class="form-row form-row-one-third">
@@ -943,9 +943,9 @@ function give_get_login_fields( $form_id ) {
 		</div>
 
 		<div id="give-user-login-submit-<?php echo $form_id; ?>" class="give-clearfix">
-			<input type="submit" class="give-submit give-btn button" name="give_login_submit" value="<?php esc_html_e( 'Login', 'give' ); ?>"/>
+			<input type="submit" class="give-submit give-btn button" name="give_login_submit" value="<?php esc_attr_e( 'Login', 'give' ); ?>"/>
 			<?php if ( $show_register_form !== 'login' ) { ?>
-				<input type="button" data-action="give_cancel_login" class="give-cancel-login give-checkout-register-cancel give-btn button" name="give_login_cancel" value="<?php esc_html_e( 'Cancel', 'give' ); ?>"/>
+				<input type="button" data-action="give_cancel_login" class="give-cancel-login give-checkout-register-cancel give-btn button" name="give_login_cancel" value="<?php esc_attr_e( 'Cancel', 'give' ); ?>"/>
 			<?php } ?>
 			<span class="give-loading-animation"></span>
 		</div>
