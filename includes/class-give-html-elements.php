@@ -71,7 +71,7 @@ class Give_HTML_Elements {
 
 			}
 		} else {
-			$options[0] = esc_html__( 'No Transactions Found', 'give' );
+			$options[0] = esc_html__( 'No transactions found.', 'give' );
 		}
 
 
@@ -139,7 +139,7 @@ class Give_HTML_Elements {
 				$options[ absint( $form->ID ) ] = esc_html( $form->post_title );
 			}
 		} else {
-			$options[0] = esc_html__( 'No Give Donation Forms Found', 'give' );
+			$options[0] = esc_html__( 'No donation forms found.', 'give' );
 		}
 
 		// This ensures that any selected forms are included in the drop down
@@ -210,7 +210,7 @@ class Give_HTML_Elements {
 				$options[ absint( $customer->id ) ] = esc_html( $customer->name . ' (' . $customer->email . ')' );
 			}
 		} else {
-			$options[0] = esc_html__( 'No donors found', 'give' );
+			$options[0] = esc_html__( 'No donors found.', 'give' );
 		}
 
 		if ( ! empty( $args['selected'] ) ) {

@@ -521,7 +521,7 @@ function give_user_info_fields( $form_id ) {
 				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'We will send the purchase receipt to this address.', 'give' ); ?>"></span>
 			</label>
 
-			<input class="give-input required" type="email" name="give_email" placeholder="<?php esc_attr_e( 'Email address', 'give' ); ?>" id="give-email" value="<?php echo is_user_logged_in() ? $user_data->user_email : ''; ?>"<?php if ( give_field_is_required( 'give_email', $form_id ) ) {
+			<input class="give-input required" type="email" name="give_email" placeholder="<?php esc_attr_e( 'Email Address', 'give' ); ?>" id="give-email" value="<?php echo is_user_logged_in() ? $user_data->user_email : ''; ?>"<?php if ( give_field_is_required( 'give_email', $form_id ) ) {
 				echo ' required ';
 			} ?>/>
 
@@ -641,7 +641,7 @@ function give_default_cc_address_fields( $form_id ) {
 		<?php do_action( 'give_cc_billing_top' ); ?>
 		<p id="give-card-address-wrap" class="form-row form-row-two-thirds">
 			<label for="card_address" class="give-label">
-				<?php esc_html_e( 'Address', 'give' ); ?>
+				<?php esc_html_e( 'Address 1', 'give' ); ?>
 				<?php
 				if ( give_field_is_required( 'card_address', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
@@ -658,7 +658,7 @@ function give_default_cc_address_fields( $form_id ) {
 
 		<p id="give-card-address-2-wrap" class="form-row form-row-one-third">
 			<label for="card_address_2" class="give-label">
-				<?php esc_html_e( 'Address Line 2', 'give' ); ?>
+				<?php esc_html_e( 'Address 2', 'give' ); ?>
 				<?php if ( give_field_is_required( 'card_address_2', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>

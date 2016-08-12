@@ -225,7 +225,7 @@ function give_receipt_shortcode( $atts, $content = null ) {
 	global $give_receipt_args, $payment;
 
 	$give_receipt_args = shortcode_atts( array(
-		'error'          => esc_html__( 'Sorry, you are missing the payment key to view this donation receipt.', 'give' ),
+		'error'          => esc_html__( 'You are missing the payment key to view this donation receipt.', 'give' ),
 		'price'          => true,
 		'donor'          => true,
 		'date'           => true,

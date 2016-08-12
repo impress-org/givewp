@@ -220,7 +220,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'default'     => 'amount',
 					'row_classes' => 'give-subfield',
 					'options'     => array(
-						'amount'     => esc_html__( 'Amount ', 'give' ),
+						'amount'     => esc_html__( 'Amount', 'give' ),
 						'percentage' => esc_html__( 'Percentage', 'give' ),
 					),
 				),

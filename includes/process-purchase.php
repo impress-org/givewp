@@ -482,7 +482,7 @@ function give_purchase_form_validate_logged_in_user() {
 			);
 
 			if ( ! is_email( $valid_user_data['user_email'] ) ) {
-				give_set_error( 'email_invalid', esc_html__( 'Invalid email', 'give' ) );
+				give_set_error( 'email_invalid', esc_html__( 'Invalid email.', 'give' ) );
 			}
 
 		} else {
@@ -558,10 +558,10 @@ function give_purchase_form_validate_new_user() {
 	if ( $user_email && strlen( $user_email ) > 0 ) {
 		// Validate email
 		if ( ! is_email( $user_email ) ) {
-			give_set_error( 'email_invalid', esc_html__( 'Sorry, that email is invalid.', 'give' ) );
+			give_set_error( 'email_invalid', esc_html__( 'Invalid email.', 'give' ) );
 			// Check if email exists
 		} else if ( email_exists( $user_email ) && $registering_new_user ) {
-			give_set_error( 'email_used', esc_html__( 'Sorry, that email already active for another user.', 'give' ) );
+			give_set_error( 'email_used', esc_html__( 'The email already active for another user.', 'give' ) );
 		} else {
 			// All the checks have run and it's good to go
 			$valid_user_data['user_email'] = $user_email;
@@ -612,7 +612,7 @@ function give_purchase_form_validate_user_login() {
 
 	// Username
 	if ( ! isset( $_POST['give_user_login'] ) || $_POST['give_user_login'] == '' ) {
-		give_set_error( 'must_log_in', esc_html__( 'You must login or register to complete your donation.', 'give' ) );
+		give_set_error( 'must_log_in', esc_html__( 'You must register or login to complete your donation.', 'give' ) );
 
 		return $valid_user_data;
 	}

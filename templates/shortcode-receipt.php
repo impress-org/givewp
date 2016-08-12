@@ -11,7 +11,7 @@ if ( empty( $payment ) && isset( $give_receipt_args['id'] ) ) {
 
 //Double-Validation: Check for $payment global
 if ( empty( $payment ) ) {
-	give_output_error( esc_html__( 'The specified receipt ID appears to be invalid', 'give' ) );
+	give_output_error( esc_html__( 'The specified receipt ID appears to be invalid.', 'give' ) );
 
 	return;
 }

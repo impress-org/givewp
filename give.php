@@ -232,7 +232,7 @@ if ( ! class_exists( 'Give' ) ) :
 		 */
 		public function __clone() {
 			// Cloning instances of the class is forbidden
-			_doing_it_wrong( __FUNCTION__, esc_html__( 'Cheatin&#8217; huh?', 'give' ), '1.0' );
+			_doing_it_wrong( __FUNCTION__, esc_html__( 'Cheatin&#8217; uh?', 'give' ), '1.0' );
 		}
 
 		/**
@@ -245,7 +245,7 @@ if ( ! class_exists( 'Give' ) ) :
 		 */
 		public function __wakeup() {
 			// Unserializing instances of the class is forbidden.
-			_doing_it_wrong( __FUNCTION__, esc_html__( 'Cheatin&#8217; huh?', 'give' ), '1.0' );
+			_doing_it_wrong( __FUNCTION__, esc_html__( 'Cheatin&#8217; uh?', 'give' ), '1.0' );
 		}
 
 		/**

@@ -120,12 +120,12 @@ if ( is_user_logged_in() ):
 			<div id="give_profile_billing_address_wrap">
 
 				<p id="give-card-address-wrap" class="form-row form-row-two-thirds">
-					<label for="give_address_line1"><?php esc_html_e( 'Address', 'give' ); ?></label>
+					<label for="give_address_line1"><?php esc_html_e( 'Address 1', 'give' ); ?></label>
 					<input name="give_address_line1" id="give_address_line1" class="text give-input" type="text" value="<?php echo esc_attr( $address['line1'] ); ?>" />
 				</p>
 
 				<p id="give-card-address-2-wrap" class="form-row form-row-one-third">
-					<label for="give_address_line2"><?php esc_html_e( 'Address Line 2', 'give' ); ?></label>
+					<label for="give_address_line2"><?php esc_html_e( 'Address 2', 'give' ); ?></label>
 					<input name="give_address_line2" id="give_address_line2" class="text give-input" type="text" value="<?php echo esc_attr( $address['line2'] ); ?>" />
 				</p>
 

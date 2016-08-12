@@ -67,7 +67,7 @@ class Tests_Post_Types extends Give_Unit_Test_Case {
 		$this->assertEquals( 'Edit Donation', $wp_post_types['give_payment']->labels->edit_item );
 		$this->assertEquals( 'View Donation', $wp_post_types['give_payment']->labels->view_item );
 		$this->assertEquals( 'Search Donations', $wp_post_types['give_payment']->labels->search_items );
-		$this->assertEquals( 'No Donations found', $wp_post_types['give_payment']->labels->not_found );
+		$this->assertEquals( 'No Donations Found', $wp_post_types['give_payment']->labels->not_found );
 		$this->assertEquals( 'No Donations found in Trash', $wp_post_types['give_payment']->labels->not_found_in_trash );
 		$this->assertEquals( 'All Donations', $wp_post_types['give_payment']->labels->all_items );
 		$this->assertEquals( 'Transactions', $wp_post_types['give_payment']->labels->menu_name );

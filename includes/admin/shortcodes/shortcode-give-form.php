@@ -51,12 +51,12 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 				'placeholder' => esc_attr__( '- Select a Form -', 'give' ),
 				'required'    => array(
 					'alert' => esc_html__( 'You must first select a Form!', 'give' ),
-					'error' => sprintf( '<p class="strong">%s</p><p class="no-margin">%s</p>', esc_html__( 'No donation forms were found!', 'give' ), $create_form_link ),
+					'error' => sprintf( '<p class="strong">%s</p><p class="no-margin">%s</p>', esc_html__( 'No donation forms found.', 'give' ), $create_form_link ),
 				),
 			),
 			array(
 				'type' => 'container',
-				'html' => sprintf( '<p class="strong margin-top">%s</p>', esc_html__( 'Optional form settings', 'give' ) ),
+				'html' => sprintf( '<p class="strong margin-top">%s</p>', esc_html__( 'Optional settings', 'give' ) ),
 			),
 			array(
 				'type'    => 'listbox',

@@ -125,7 +125,7 @@ function give_render_customer_view( $view, $callbacks ) {
 	}
  
 	if ( ! isset( $_GET['id'] ) || ! is_numeric( $_GET['id'] ) ) {
-		give_set_error( 'give-invalid_customer', esc_html__( 'Invalid Donor ID Provided.', 'give' ) );
+		give_set_error( 'give-invalid_customer', esc_html__( 'Invalid Donor ID.', 'give' ) );
 		$render = false;
 	}
 
@@ -133,7 +133,7 @@ function give_render_customer_view( $view, $callbacks ) {
 	$customer    = new Give_Customer( $customer_id );
 
 	if ( empty( $customer->id ) ) {
-		give_set_error( 'give-invalid_customer', esc_html__( 'Invalid Donor ID Provided.', 'give' ) );
+		give_set_error( 'give-invalid_customer', esc_html__( 'Invalid Donor ID.', 'give' ) );
 		$render = false;
 	}
 
@@ -489,7 +489,7 @@ function give_customers_view( $customer ) {
 				<?php endforeach; ?>
 			<?php else: ?>
 				<tr>
-					<td colspan="5"><?php esc_html_e( 'No Donations Found', 'give' ); ?></td>
+					<td colspan="5"><?php esc_html_e( 'No donations found.', 'give' ); ?></td>
 				</tr>
 			<?php endif; ?>
 			</tbody>
@@ -532,7 +532,7 @@ function give_customers_view( $customer ) {
 				<?php endforeach; ?>
 			<?php else: ?>
 				<tr>
-					<td colspan="2"><?php esc_html_e( 'No Completed Donations Found', 'give' ); ?></td>
+					<td colspan="2"><?php esc_html_e( 'No completed donations found.', 'give' ); ?></td>
 				</tr>
 			<?php endif; ?>
 			</tbody>
@@ -624,7 +624,7 @@ function give_customer_notes_view( $customer ) {
 				<?php endforeach; ?>
 			<?php else: ?>
 				<div class="give-no-customer-notes">
-					<?php esc_html_e( 'No Donor Notes', 'give' ); ?>
+					<?php esc_html_e( 'No donor notes found.', 'give' ); ?>
 				</div>
 			<?php endif; ?>
 		</div>

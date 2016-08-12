@@ -366,7 +366,7 @@ class Give_Welcome {
 				<a href="<?php echo esc_url( admin_url( add_query_arg( array(
 					'post_type' => 'give_forms',
 					'page'      => 'give-settings'
-				), 'edit.php' ) ) ); ?>"><?php esc_html_e( 'Go to Give Settings', 'give' ); ?></a>
+				), 'edit.php' ) ) ); ?>"><?php esc_html_e( 'Give Settings', 'give' ); ?></a>
 			</div>
 		</div>
 	<?php
