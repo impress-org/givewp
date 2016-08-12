@@ -267,7 +267,7 @@ function give_load_admin_scripts( $hook ) {
 		'give_version'            => GIVE_VERSION,
 		'thousands_separator'     => $thousand_separator,
 		'decimal_separator'       => $decimal_separator,
-		'quick_edit_warning'      => esc_html__( 'Sorry, not available for variable priced forms.', 'give' ),
+		'quick_edit_warning'      => esc_html__( 'Not available for variable priced forms.', 'give' ),
 		'delete_payment'          => esc_html__( 'Are you sure you wish to delete this payment?', 'give' ),
 		'delete_payment_note'     => esc_html__( 'Are you sure you wish to delete this note?', 'give' ),
 		'revoke_api_key'          => esc_html__( 'Are you sure you wish to revoke this API key?', 'give' ),

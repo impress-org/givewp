@@ -561,7 +561,7 @@ function give_purchase_form_validate_new_user() {
 			give_set_error( 'email_invalid', esc_html__( 'Invalid email.', 'give' ) );
 			// Check if email exists
 		} else if ( email_exists( $user_email ) && $registering_new_user ) {
-			give_set_error( 'email_used', esc_html__( 'Sorry, that email already active for another user.', 'give' ) );
+			give_set_error( 'email_used', esc_html__( 'The email already active for another user.', 'give' ) );
 		} else {
 			// All the checks have run and it's good to go
 			$valid_user_data['user_email'] = $user_email;
