@@ -612,7 +612,7 @@ function give_purchase_form_validate_user_login() {
 
 	// Username
 	if ( ! isset( $_POST['give_user_login'] ) || $_POST['give_user_login'] == '' ) {
-		give_set_error( 'must_log_in', esc_html__( 'You must login or register to complete your donation.', 'give' ) );
+		give_set_error( 'must_log_in', esc_html__( 'You must register or login to complete your donation.', 'give' ) );
 
 		return $valid_user_data;
 	}
