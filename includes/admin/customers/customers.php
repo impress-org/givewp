@@ -349,7 +349,7 @@ function give_customers_view( $customer ) {
 											<?php else : ?>
 												<input type="text" size="6" data-key="state" name="customerinfo[state]" id="card_state" class="card_state give-input info-item" placeholder="<?php esc_attr_e( 'State / Province', 'give' ); ?>" />
 											<?php endif; ?>
-											<input class="info-item" type="text" data-key="zip" name="customerinfo[zip]" placeholder="<?php esc_attr_e( 'Postal', 'give' ); ?>" value="<?php echo $address['zip']; ?>" />
+											<input class="info-item" type="text" data-key="zip" name="customerinfo[zip]" placeholder="<?php esc_attr_e( 'Zip / Postal Code', 'give' ); ?>" value="<?php echo $address['zip']; ?>" />
 													</span>
 
 									</div>
