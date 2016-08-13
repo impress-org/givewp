@@ -398,7 +398,7 @@ class Give_Welcome {
 
 			<p class="about-text"><?php esc_html_e( 'Welcome to the getting started guide.', 'give' ); ?></p>
 
-			<p class="newsletter-intro"><?php esc_html_e( 'Don\'t forget to sign up for the newsletter!', 'give' ); ?>.</p>
+			<p class="newsletter-intro"><?php esc_html_e( 'Don\'t forget to sign up for the newsletter!', 'give' ); ?></p>
 
 			<?php give_get_newsletter() ?>
 
