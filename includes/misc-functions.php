@@ -746,7 +746,7 @@ function give_svg_icons( $icon ) {
  */
 function modify_nav_menu_meta_box_object( $post_type ) {
 	if ( isset( $post_type->name ) && $post_type->name == 'give_forms' ) {
-		$post_type->labels->name = 'Donation Forms';
+		$post_type->labels->name = esc_html__( 'Donation Forms', 'give' );
 	}
 
 	return $post_type;
