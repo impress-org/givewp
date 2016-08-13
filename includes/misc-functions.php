@@ -621,17 +621,17 @@ function give_get_newsletter() { ?>
 			<table class="form-table give-newsletter-form">
 				<tr valign="middle">
 					<td>
-						<input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL" placeholder="Email Address (required)">
+						<input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL" placeholder="<?php esc_attr_e( 'Email Address (required)', 'give' ); ?>">
 					</td>
 
 					<td scope="row">
-						<input type="text" value="" placeholder="First Name" name="FNAME" class="" id="mce-FNAME"></td>
+						<input type="text" value="" placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" name="FNAME" class="" id="mce-FNAME"></td>
 
 					<td scope="row">
-						<input type="text" value="" placeholder="Last Name" name="LNAME" class="" id="mce-LNAME"></td>
+						<input type="text" value="" placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" name="LNAME" class="" id="mce-LNAME"></td>
 
 					<td scope="row">
-						<input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button">
+						<input type="submit" value="<?php esc_attr_e( 'Subscribe', 'give' ); ?>" name="subscribe" id="mc-embedded-subscribe" class="button">
 					</td>
 				</tr>
 			</table>
