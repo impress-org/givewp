@@ -361,7 +361,7 @@ $payment_mode   = $payment->mode;
 										</div>
 										<div class="column">
 											<small>
-												<em>*<?php esc_html_e( 'Click "Save Payment" to create new donor', 'give' ); ?></em>
+												<em><?php esc_html_e( '* Click "Save Payment" to create new donor.', 'give' ); ?></em>
 											</small>
 										</div>
 									</div>
