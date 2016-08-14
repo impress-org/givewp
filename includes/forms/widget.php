@@ -149,19 +149,13 @@ class Give_Forms_Widget extends WP_Widget{
 		// Widget: Floating Labels
 
 		?><p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'float_labels' ) ); ?>"><?php esc_html_e( 'Floating Labels (optional):', 'give' ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'float_labels' ) ); ?>"><?php esc_html_e( 'Floating Labels:', 'give' ); ?></label>
 			<select class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'float_labels' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'float_labels' ) ); ?>">
 				<option value="" <?php selected( esc_attr( $instance['float_labels'] ), '' ) ?>><?php esc_html_e( '- Select -', 'give' ); ?></option>
 				<option value="enabled" <?php selected( esc_attr( $instance['float_labels'] ), 'enabled' ) ?>><?php esc_html_e( 'Enabled', 'give' ); ?></option>
 				<option value="disabled" <?php selected( esc_attr( $instance['float_labels'] ), 'disabled' ) ?>><?php esc_html_e( 'Disabled', 'give' ); ?></option>
 			</select><br>
-			<small><?php
-				printf(
-					/* translators: %s: http://bradfrost.com/blog/post/float-label-pattern/ */
-					__( 'Override the <a href="%s" target="_blank">floating labels</a> setting for this Give form.', 'give' ),
-					esc_url( 'http://bradfrost.com/blog/post/float-label-pattern/' )
-				);
-			?></small>
+			<small><?php esc_html_e( 'Override the default floating labels setting for this form.', 'give' ); ?></small>
 		</p><?php
 	}
 
