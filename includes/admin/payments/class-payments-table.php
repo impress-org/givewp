@@ -318,13 +318,20 @@ class Give_Payment_History_Table extends WP_List_Table {
 	public function column_default( $payment, $column_name ) {
 		switch ( $column_name ) {
 			case 'donation' :
-			    ob_start();
-				?>
-                <a href="<?php echo get_permalink( $payment->ID ); ?>">#<?php echo $payment->ID; ?></a>
-                &nbsp;<?php _e( 'by', 'give' ); ?>&nbsp;<?php echo $this->get_donor( $payment ); ?><br>
-                <?php echo $this->get_donor_email( $payment ); ?>
-                <?php
-                $value = ob_get_clean();
+				$value = sprintf(
+					/* translators: 1: Payment link 2: Donor link */
+					esc_html__( '%1$s by %2$s', 'give' ),
+					sprintf(
+						'<a href="%1$s">#%2$s</a>',
+						get_permalink( $payment->ID ),
+						$payment->ID
+					),
+					sprintf(
+						'%1$s<br>%2$s',
+						$this->get_donor( $payment ),
+						$this->get_donor_email( $payment )
+					)
+				);
 				break;
 
 			case 'amount' :
