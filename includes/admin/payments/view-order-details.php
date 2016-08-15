@@ -85,8 +85,8 @@ $payment_mode   = $payment->mode;
 
 										<div class="give-admin-box-inside">
 											<p>
-												<span class="label"><?php esc_html_e( 'Status:', 'give' ); ?></span>&nbsp;
-												<select name="give-payment-status" class="medium-text">
+												<label for="give-payment-status" class="strong"><?php esc_html_e( 'Status:', 'give' ); ?></label>&nbsp;
+												<select id="give-payment-status" name="give-payment-status" class="medium-text">
 													<?php foreach ( give_get_payment_statuses() as $key => $status ) : ?>
 														<option value="<?php echo esc_attr( $key ); ?>"<?php selected( $payment->status, $key, true ); ?>><?php echo esc_html( $status ); ?></option>
 													<?php endforeach; ?>
@@ -97,16 +97,16 @@ $payment_mode   = $payment->mode;
 
 										<div class="give-admin-box-inside">
 											<p>
-												<span class="label"><?php esc_html_e( 'Date:', 'give' ); ?></span>&nbsp;
-												<input type="text" name="give-payment-date" value="<?php echo esc_attr( date( 'm/d/Y', $payment_date ) ); ?>" class="medium-text give_datepicker"/>
+												<label for="give-payment-date" class="strong"><?php esc_html_e( 'Date:', 'give' ); ?></label>&nbsp;
+												<input type="text" id="give-payment-date" name="give-payment-date" value="<?php echo esc_attr( date( 'm/d/Y', $payment_date ) ); ?>" class="medium-text give_datepicker"/>
 											</p>
 										</div>
 
 										<div class="give-admin-box-inside">
 											<p>
-												<span class="label"><?php esc_html_e( 'Time:', 'give' ); ?></span>&nbsp;
-												<input type="number" step="1" max="24" name="give-payment-time-hour" value="<?php echo esc_attr( date_i18n( 'H', $payment_date ) ); ?>" class="small-text give-payment-time-hour"/>&nbsp;:&nbsp;
-												<input type="number" step="1" max="59" name="give-payment-time-min" value="<?php echo esc_attr( date( 'i', $payment_date ) ); ?>" class="small-text give-payment-time-min"/>
+												<label for="give-payment-time-hour" class="strong"><?php esc_html_e( 'Time:', 'give' ); ?></label>&nbsp;
+												<input type="number" step="1" max="24" id="give-payment-time-hour" name="give-payment-time-hour" value="<?php echo esc_attr( date_i18n( 'H', $payment_date ) ); ?>" class="small-text give-payment-time-hour"/>&nbsp;:&nbsp;
+												<input type="number" step="1" max="59" id="give-payment-time-min" name="give-payment-time-min" value="<?php echo esc_attr( date( 'i', $payment_date ) ); ?>" class="small-text give-payment-time-min"/>
 											</p>
 										</div>
 
@@ -128,11 +128,10 @@ $payment_mode   = $payment->mode;
 											</div>
 										<?php endif; ?>
 
-
 										<div class="give-order-payment give-admin-box-inside">
 											<p>
-												<span class="label"><?php esc_html_e( 'Total Donation:', 'give' ); ?></span>&nbsp;
-												<?php echo give_currency_symbol( $payment->currency ); ?>&nbsp;<input name="give-payment-total" type="text" class="small-text give-price-field" value="<?php echo esc_attr( give_format_decimal( give_get_payment_amount( $payment_id ) ) ); ?>"/>
+												<label for="give-payment-total" class="strong"><?php esc_html_e( 'Total Donation:', 'give' ); ?></label>&nbsp;
+												<?php echo give_currency_symbol( $payment->currency ); ?>&nbsp;<input id="give-payment-total" name="give-payment-total" type="text" class="small-text give-price-field" value="<?php echo esc_attr( give_format_decimal( give_get_payment_amount( $payment_id ) ) ); ?>"/>
 											</p>
 										</div>
 
