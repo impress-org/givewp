@@ -133,13 +133,13 @@ function give_goal_shortcode( $atts, $content = null ) {
 
 	//Sanity check 1: ensure there is an ID Provided.
 	if ( empty( $atts['id'] ) ) {
-		give_output_error( esc_html__( 'Error: No Donation form ID for the shortcode provided.', 'give' ), true );
+		give_output_error( esc_html__( 'The shortcode is missing Donation Form ID attribute.', 'give' ), true );
 	}
 
-	//Sanity check 2: Check that this form even has Goals enabled.
+	//Sanity check 2: Check the form even has Goals enabled.
 	$goal_option = get_post_meta( $atts['id'], '_give_goal_option', true );
 	if ( empty( $goal_option ) || $goal_option !== 'yes' ) {
-		give_output_error( esc_html__( 'Error: This form does not have Goals enabled.', 'give' ), true );
+		give_output_error( esc_html__( 'The form does not have Goals enabled.', 'give' ), true );
 	} else {
 		//Passed all sanity checks: output Goal.
 		give_show_goal_progress( $atts['id'], $atts );

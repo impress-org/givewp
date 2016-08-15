@@ -57,7 +57,7 @@ $payment_mode   = $payment->mode;
 			$number
 		);
 		if ( $payment_mode == 'test' ) {
-			echo '<span id="test-payment-label" class="give-item-label give-item-label-orange" data-tooltip="' . esc_attr__( 'This payment was made in Test Mode.', 'give' ) . '" data-tooltip-my-position="center left" data-tooltip-target-position="center right">' . esc_html__( 'Test Payment', 'give' ) . '</span>';
+			echo '<span id="test-payment-label" class="give-item-label give-item-label-orange" data-tooltip="' . esc_attr__( 'This payment was made in test mode.', 'give' ) . '" data-tooltip-my-position="center left" data-tooltip-target-position="center right">' . esc_html__( 'Test Payment', 'give' ) . '</span>';
 		}
 		?></h1>
 
@@ -362,7 +362,7 @@ $payment_mode   = $payment->mode;
 										</div>
 										<div class="column">
 											<small>
-												<em>*<?php esc_html_e( 'Click "Save Payment" to create new donor', 'give' ); ?></em>
+												<em><?php esc_html_e( '* Click "Save Payment" to create new donor.', 'give' ); ?></em>
 											</small>
 										</div>
 									</div>

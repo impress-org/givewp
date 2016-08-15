@@ -328,9 +328,7 @@ function give_get_preview_email_header() {
 
 	//Provide nice human readable options.
 	if ( $payments ) {
-		$options[0] =
-			/* translators: %s: transaction singular label */
-			esc_html__( '- Select a transaction -', 'give' );
+		$options[0] = esc_html__( '- Select a transaction -', 'give' );
 		foreach ( $payments as $payment ) {
 
 			$options[ $payment->ID ] = esc_html( '#' . $payment->ID . ' - ' . $payment->email . ' - ' . $payment->form_title );

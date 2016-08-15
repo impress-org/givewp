@@ -45,7 +45,6 @@ class Give_HTML_Elements {
 			'selected'    => 0,
 			'chosen'      => false,
 			'number'      => 30,
-			/* translators: %s: transaction singular label */
 			'placeholder' => esc_html__( 'Select a transaction', 'give' )
 		);
 
@@ -62,9 +61,7 @@ class Give_HTML_Elements {
 
 		//Provide nice human readable options.
 		if ( $payments ) {
-			$options[0] =
-				/* translators: %s: transaction singular label */
-				esc_html__( 'Select a transaction', 'give' );
+			$options[0] = esc_html__( 'Select a transaction', 'give' );
 			foreach ( $payments as $payment ) {
 
 				$options[ absint( $payment->ID ) ] = esc_html( '#' . $payment->ID . ' - ' . $payment->email . ' - ' . $payment->form_title);
@@ -114,8 +111,11 @@ class Give_HTML_Elements {
 			'selected'    => 0,
 			'chosen'      => false,
 			'number'      => 30,
-			/* translators: %s: form singular label */
-			'placeholder' => sprintf( esc_html__( 'Select a %s', 'give' ), give_get_forms_label_singular() )
+			'placeholder' => sprintf(
+				/* translators: %s: form singular label */
+				esc_attr__( 'Select a %s', 'give' ),
+				give_get_forms_label_singular()
+			)
 		);
 
 		$args = wp_parse_args( $args, $defaults );
@@ -131,7 +131,7 @@ class Give_HTML_Elements {
 
 		if ( $forms ) {
 			$options[0] = sprintf(
-			/* translators: %s: form singular label */
+				/* translators: %s: form singular label */
 				esc_html__( 'Select a %s', 'give' ),
 				give_get_forms_label_singular()
 			);

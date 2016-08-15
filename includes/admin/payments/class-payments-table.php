@@ -266,11 +266,11 @@ class Give_Payment_History_Table extends WP_List_Table {
 			'cb'       		=> '<input type="checkbox" />', //Render a checkbox instead of text
 			'donation' 		=> esc_html__( 'Donation', 'give' ),
 			'donation_form' => esc_html__( 'Donation Form', 'give' ),
-			'status'        => esc_html__( 'Status', 'give' ),
-			'date'          => esc_html__( 'Date', 'give' ),
-			'amount'        => esc_html__( 'Amount', 'give' ),
-			'details'       => esc_html__( 'Details', 'give' ),
-		);
+			'status'   		=> esc_html__( 'Status', 'give' ),
+            'date'     		=> esc_html__( 'Date', 'give' ),
+            'amount'   		=> esc_html__( 'Amount', 'give' ),
+            'details'  		=> esc_html__( 'Details', 'give' ),
+        );
 
 		return apply_filters( 'give_payments_table_columns', $columns );
 	}
@@ -322,14 +322,20 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 		switch ( $column_name ) {
 			case 'donation' :
-				ob_start();
-				?>
-				<a href="<?php echo $single_transaction_url; ?>">#<?php echo $payment->ID; ?></a>
-				&nbsp;<?php _e( 'by', 'give' ); ?>&nbsp;<?php echo $this->get_donor( $payment ); ?><br>
-				<?php echo $this->get_donor_email( $payment ); ?>
-				<?php echo $this->row_actions( $row_actions ); ?>
-				<?php
-				$value = ob_get_clean();
+				$value = sprintf(
+					/* translators: 1: Payment link 2: Donor link */
+					esc_html__( '%1$s by %2$s', 'give' ),
+					sprintf(
+						'<a href="%1$s">#%2$s</a>',
+						get_permalink( $payment->ID ),
+						$payment->ID
+					),
+					sprintf(
+						'%1$s<br>%2$s',
+						$this->get_donor( $payment ),
+						$this->get_donor_email( $payment )
+					)
+				);
 				break;
 
 			case 'amount' :
@@ -441,7 +447,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	function get_payment_status( $payment ) {
 		$value = '<div class="give-donation-status status-' . sanitize_title( give_get_payment_status( $payment, true ) ) . '"><span class="give-donation-status-icon"></span> ' . give_get_payment_status( $payment, true ) . '</div>';
 		if ( $payment->mode == 'test' ) {
-			$value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label" data-tooltip="' . esc_attr__( 'This payment was made in test mode', 'give' ) . '">' . esc_html__( 'Test', 'give' ) . '</span>';
+			$value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label" data-tooltip="' . esc_attr__( 'This payment was made in test mode.', 'give' ) . '">' . esc_html__( 'Test', 'give' ) . '</span>';
 		}
 
 		return $value;

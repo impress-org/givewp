@@ -272,13 +272,13 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 				//Donation Option
 				array(
 					'name'        => esc_html__( 'Display Content', 'give' ),
-					'description' => esc_html__( 'Do you want to display content? If you select "Yes" a WYSIWYG editor will appear which you will be able to enter content to display above or below the form.', 'give' ),
+					'description' => esc_html__( 'Do you want to display content? If you choose to display content, a WYSIWYG editor will appear which you will be able to enter content.', 'give' ),
 					'id'          => $prefix . 'content_option',
 					'type'        => 'select',
 					'options'     => apply_filters( 'give_forms_content_options_select', array(
-							'none'           => esc_html__( 'No content', 'give' ),
-							'give_pre_form'  => esc_html__( 'Yes, display content ABOVE the form fields', 'give' ),
-							'give_post_form' => esc_html__( 'Yes, display content BELOW the form fields', 'give' ),
+							'none'           => esc_html__( 'No Content', 'give' ),
+							'give_pre_form'  => esc_html__( 'Display content ABOVE the fields', 'give' ),
+							'give_post_form' => esc_html__( 'Display content BELOW the fields', 'give' ),
 						)
 					),
 					'default'     => 'none',

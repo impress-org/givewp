@@ -54,7 +54,8 @@ function give_get_template( $template_name, $args = array(), $template_path = ''
     $located = give_locate_template( $template_names, $template_path, $default_path );
 
     if ( ! file_exists( $located ) ) {
-        give_output_error( sprintf( __( 'Error: %s template does not find.', 'give' ), $located ), true );
+		/* translators: %s: the template */
+        give_output_error( sprintf( __( 'The %s template was not found.', 'give' ), $located ), true );
         return;
     }
 

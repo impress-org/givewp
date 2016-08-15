@@ -86,8 +86,8 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 				'tooltip' => esc_attr__( 'Do you want to display the form content?', 'give' ),
 				'options' => array(
 					'none'  => esc_html__( 'No Content', 'give' ),
-					'above' => esc_html__( 'Display above the form fields', 'give' ),
-					'below' => esc_html__( 'Display below the form fields', 'give' ),
+					'above' => esc_html__( 'Display content ABOVE the fields', 'give' ),
+					'below' => esc_html__( 'Display content BELOW the fields', 'give' ),
 				),
 			),
 			array(
@@ -105,7 +105,7 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 				'type'    => 'listbox',
 				'name'    => 'float_labels',
 				'label'   => esc_attr__( 'Floating Labels:', 'give' ),
-				'tooltip' => esc_attr__( 'Override the default floating labels setting for this form?', 'give' ),
+				'tooltip' => esc_attr__( 'Override the default floating labels setting for this form.', 'give' ),
 				'options' => array(
 					'enabled'  => esc_html__( 'Enabled', 'give' ),
 					'disabled' => esc_html__( 'Disabled', 'give' ),
