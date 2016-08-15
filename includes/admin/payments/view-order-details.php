@@ -61,16 +61,43 @@ $payment_mode   = $payment->mode;
 		}
 		?></h1>
 
-	<?php do_action( 'give_view_order_details_before', $payment_id ); ?>
+	<?php
+	/**
+	 * Fires in order details page, before the order form.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int $payment_id Payment id.
+	 */
+	do_action( 'give_view_order_details_before', $payment_id );
+	?>
 	<form id="give-edit-order-form" method="post">
-		<?php do_action( 'give_view_order_details_form_top', $payment_id ); ?>
+		<?php
+		/**
+		 * Fires in order details page, in the form before the order details.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int $payment_id Payment id.
+		 */
+		do_action( 'give_view_order_details_form_top', $payment_id );
+		?>
 		<div id="poststuff">
 			<div id="give-dashboard-widgets-wrap">
 				<div id="post-body" class="metabox-holder columns-2">
 					<div id="postbox-container-1" class="postbox-container">
 						<div id="side-sortables" class="meta-box-sortables ui-sortable">
 
-							<?php do_action( 'give_view_order_details_sidebar_before', $payment_id ); ?>
+							<?php
+							/**
+							 * Fires in order details page, before the sidebar.
+							 *
+							 * @since 1.0
+							 *
+							 * @param int $payment_id Payment id.
+							 */
+							do_action( 'give_view_order_details_sidebar_before', $payment_id );
+							?>
 
 							<div id="give-order-update" class="postbox give-order-data">
 
@@ -81,7 +108,16 @@ $payment_mode   = $payment->mode;
 								<div class="inside">
 									<div class="give-admin-box">
 
-										<?php do_action( 'give_view_order_details_totals_before', $payment_id ); ?>
+										<?php
+										/**
+										 * Fires in order details page, before the sidebar update-payment metabox.
+										 *
+										 * @since 1.0
+										 *
+										 * @param int $payment_id Payment id.
+										 */
+										do_action( 'give_view_order_details_totals_before', $payment_id );
+										?>
 
 										<div class="give-admin-box-inside">
 											<p>
@@ -110,9 +146,18 @@ $payment_mode   = $payment->mode;
 											</p>
 										</div>
 
-										<?php do_action( 'give_view_order_details_update_inner', $payment_id ); ?>
-
 										<?php
+										/**
+										 * Fires in order details page, in the sidebar update-payment metabox.
+										 *
+										 * Allows you to add new inner items.
+										 *
+										 * @since 1.0
+										 *
+										 * @param int $payment_id Payment id.
+										 */
+										do_action( 'give_view_order_details_update_inner', $payment_id );
+
 										//@TODO: Fees
 										$fees = give_get_payment_fees( $payment_id );
 										if ( ! empty( $fees ) ) : ?>
@@ -136,7 +181,16 @@ $payment_mode   = $payment->mode;
 											</p>
 										</div>
 
-										<?php do_action( 'give_view_order_details_totals_after', $payment_id ); ?>
+										<?php
+										/**
+										 * Fires in order details page, after the sidebar update-payment metabox.
+										 *
+										 * @since 1.0
+										 *
+										 * @param int $payment_id Payment id.
+										 */
+										do_action( 'give_view_order_details_totals_after', $payment_id );
+										?>
 
 									</div>
 									<!-- /.give-admin-box -->
@@ -145,7 +199,17 @@ $payment_mode   = $payment->mode;
 								<!-- /.inside -->
 
 								<div class="give-order-update-box give-admin-box">
-									<?php do_action( 'give_view_order_details_update_before', $payment_id ); ?>
+									<?php
+									/**
+									 * Fires in order details page, before the sidebar update-peyment metabox actions buttons.
+									 *
+									 * @since 1.0
+									 *
+									 * @param int $payment_id Payment id.
+									 */
+									do_action( 'give_view_order_details_update_before', $payment_id );
+									?>
+
 									<div id="major-publishing-actions">
 										<div id="publishing-action">
 											<input type="submit" class="button button-primary right" value="<?php esc_attr_e( 'Save Payment', 'give' ); ?>"/>
@@ -158,7 +222,18 @@ $payment_mode   = $payment->mode;
 										</div>
 										<div class="clear"></div>
 									</div>
-									<?php do_action( 'give_view_order_details_update_after', $payment_id ); ?>
+
+									<?php
+									/**
+									 * Fires in order details page, after the sidebar update-peyment metabox actions buttons.
+									 *
+									 * @since 1.0
+									 *
+									 * @param int $payment_id Payment id.
+									 */
+									do_action( 'give_view_order_details_update_after', $payment_id );
+									?>
+
 								</div>
 								<!-- /.give-order-update-box -->
 
@@ -174,9 +249,16 @@ $payment_mode   = $payment->mode;
 								<div class="inside">
 									<div class="give-admin-box">
 
-										<?php do_action( 'give_view_order_details_payment_meta_before', $payment_id ); ?>
-
 										<?php
+										/**
+										 * Fires in order details page, before the payment-meta metabox.
+										 *
+										 * @since 1.0
+										 *
+										 * @param int $payment_id Payment id.
+										 */
+										do_action( 'give_view_order_details_payment_meta_before', $payment_id );
+
 										$gateway = give_get_payment_gateway( $payment_id );
 										if ( $gateway ) : ?>
 											<div class="give-order-gateway give-admin-box-inside">
@@ -216,7 +298,16 @@ $payment_mode   = $payment->mode;
 											</p>
 										</div>
 
-										<?php do_action( 'give_view_order_details_payment_meta_after', $payment_id ); ?>
+										<?php
+										/**
+										 * Fires in order details page, after the payment-meta metabox.
+										 *
+										 * @since 1.0
+										 *
+										 * @param int $payment_id Payment id.
+										 */
+										do_action( 'give_view_order_details_payment_meta_after', $payment_id );
+										?>
 
 									</div>
 									<!-- /.column-container -->
@@ -227,7 +318,16 @@ $payment_mode   = $payment->mode;
 							</div>
 							<!-- /#give-order-data -->
 
-							<?php do_action( 'give_view_order_details_sidebar_after', $payment_id ); ?>
+							<?php
+							/**
+							 * Fires in order details page, after the sidebar.
+							 *
+							 * @since 1.0
+							 *
+							 * @param int $payment_id Payment id.
+							 */
+							do_action( 'give_view_order_details_sidebar_after', $payment_id );
+							?>
 
 						</div>
 						<!-- /#side-sortables -->
@@ -238,7 +338,16 @@ $payment_mode   = $payment->mode;
 
 						<div id="normal-sortables" class="meta-box-sortables ui-sortable">
 
-							<?php do_action( 'give_view_order_details_main_before', $payment_id ); ?>
+							<?php
+							/**
+							 * Fires in order details page, before the main area.
+							 *
+							 * @since 1.0
+							 *
+							 * @param int $payment_id Payment id.
+							 */
+							do_action( 'give_view_order_details_main_before', $payment_id );
+							?>
 
 							<?php $column_count = 'columns-3'; ?>
 							<div id="give-donation-overview" class="postbox <?php echo $column_count; ?>">
@@ -251,17 +360,50 @@ $payment_mode   = $payment->mode;
 									<table style="width:100%;">
 										<thead>
 										<tr>
-											<?php do_action( 'give_donation_details_thead_before', $payment_id ); ?>
+											<?php
+											/**
+											 * Fires in order details page, in the donation-information metabox, before the head elements.
+											 *
+											 * Allows you to add new TH elements at the beginning.
+											 *
+											 * @since 1.0
+											 *
+											 * @param int $payment_id Payment id.
+											 */
+											do_action( 'give_donation_details_thead_before', $payment_id );
+											?>
 											<th><?php esc_html_e( 'Donation Form ID', 'give' ) ?></th>
 											<th><?php esc_html_e( 'Donation Form Title', 'give' ) ?></th>
 											<th><?php esc_html_e( 'Donation Level', 'give' ) ?></th>
 											<th><?php esc_html_e( 'Donation Date', 'give' ) ?></th>
 											<th><?php esc_html_e( 'Total Donation', 'give' ) ?></th>
-											<?php do_action( 'give_donation_details_thead_after', $payment_id ); ?>
+											<?php
+											/**
+											 * Fires in order details page, in the donation-information metabox, after the head elements.
+											 *
+											 * Allows you to add new TH elements at the end.
+											 *
+											 * @since 1.0
+											 *
+											 * @param int $payment_id Payment id.
+											 */
+											do_action( 'give_donation_details_thead_after', $payment_id );
+											?>
 										</tr>
 										</thead>
 										<tr>
-											<?php do_action( 'give_donation_details_tbody_before', $payment_id ); ?>
+											<?php
+											/**
+											 * Fires in order details page, in the donation-information metabox, before the body elements.
+											 *
+											 * Allows you to add new TD elements at the beginning.
+											 *
+											 * @since 1.0
+											 *
+											 * @param int $payment_id Payment id.
+											 */
+											do_action( 'give_donation_details_tbody_before', $payment_id );
+											?>
 											<td>
 												<?php echo $payment_meta['form_id']; ?>
 											</td>
@@ -300,9 +442,20 @@ $payment_mode   = $payment->mode;
 												?>
 											</td>
 											<td>
-												<?php echo esc_html( give_currency_filter( give_format_amount( give_get_payment_amount( $payment_id ) ) ) ); ?></td>
-											<?php do_action( 'give_donation_details_tbody_after', $payment_id ); ?>
-
+												<?php echo esc_html( give_currency_filter( give_format_amount( give_get_payment_amount( $payment_id ) ) ) ); ?>
+											</td>
+											<?php
+											/**
+											 * Fires in order details page, in the donation-information metabox, after the body elements.
+											 *
+											 * Allows you to add new TD elements at the end.
+											 *
+											 * @since 1.0
+											 *
+											 * @param int $payment_id Payment id.
+											 */
+											do_action( 'give_donation_details_tbody_after', $payment_id );
+											?>
 										</tr>
 									</table>
 
@@ -313,10 +466,16 @@ $payment_mode   = $payment->mode;
 							</div>
 							<!-- /#give-donation-overview -->
 
-							<?php do_action( 'give_view_order_details_files_after', $payment_id ); ?>
-
-							<?php do_action( 'give_view_order_details_billing_before', $payment_id ); ?>
-
+							<?php
+							/**
+							 * Fires in order details page, after the files metabox.
+							 *
+							 * @since 1.0
+							 *
+							 * @param int $payment_id Payment id.
+							 */
+							do_action( 'give_view_order_details_files_after', $payment_id );
+							?>
 
 							<div id="give-customer-details" class="postbox">
 								<h3 class="hndle">
@@ -368,8 +527,25 @@ $payment_mode   = $payment->mode;
 									</div>
 
 									<?php
-									// The give_payment_personal_details_list hook is left here for backwards compatibility
+									/**
+									 * Fires in order details page, in the donor-details metabox.
+									 *
+									 * The hook is left here for backwards compatibility.
+									 *
+									 * @since 1.0
+									 *
+									 * @param array $payment_meta Payment meta.
+									 * @param array $user_info    User information.
+									 */
 									do_action( 'give_payment_personal_details_list', $payment_meta, $user_info );
+
+									/**
+									 * Fires in order details page, in the donor-details metabox.
+									 *
+									 * @since 1.0
+									 *
+									 * @param int $payment_id Payment id.
+									 */
 									do_action( 'give_payment_view_details', $payment_id );
 									?>
 
@@ -378,6 +554,16 @@ $payment_mode   = $payment->mode;
 							</div>
 							<!-- /#give-customer-details -->
 
+							<?php
+							/**
+							 * Fires in order details page, before the billing metabox.
+							 *
+							 * @since 1.0
+							 *
+							 * @param int $payment_id Payment id.
+							 */
+							do_action( 'give_view_order_details_billing_before', $payment_id );
+							?>
 
 							<div id="give-billing-details" class="postbox">
 								<h3 class="hndle">
@@ -457,14 +643,34 @@ $payment_mode   = $payment->mode;
 									</div>
 									<!-- /#give-order-address -->
 
-									<?php do_action( 'give_payment_billing_details', $payment_id ); ?>
+									<?php
+									/**
+									 * Fires in order details page, in the billing metabox, after all the fields.
+									 *
+									 * Allows you to insert new billing address fields.
+									 *
+									 * @since 1.0
+									 *
+									 * @param int $payment_id Payment id.
+									 */
+									do_action( 'give_payment_billing_details', $payment_id );
+									?>
 
 								</div>
 								<!-- /.inside -->
 							</div>
 							<!-- /#give-billing-details -->
 
-							<?php do_action( 'give_view_order_details_billing_after', $payment_id ); ?>
+							<?php
+							/**
+							 * Fires in order details page, after the billing metabox.
+							 *
+							 * @since 1.0
+							 *
+							 * @param int $payment_id Payment id.
+							 */
+							do_action( 'give_view_order_details_billing_after', $payment_id );
+							?>
 
 							<div id="give-payment-notes" class="postbox">
 								<h3 class="hndle"><span><?php esc_html_e( 'Payment Notes', 'give' ); ?></span></h3>
@@ -496,7 +702,17 @@ $payment_mode   = $payment->mode;
 							</div>
 							<!-- /#give-payment-notes -->
 
-							<?php do_action( 'give_view_order_details_main_after', $payment_id ); ?>
+							<?php
+							/**
+							 * Fires in order details page, after the main area.
+							 *
+							 * @since 1.0
+							 *
+							 * @param int $payment_id Payment id.
+							 */
+							do_action( 'give_view_order_details_main_after', $payment_id );
+							?>
+
 						</div>
 						<!-- /#normal-sortables -->
 					</div>
@@ -507,10 +723,30 @@ $payment_mode   = $payment->mode;
 			<!-- #give-dashboard-widgets-wrap -->
 		</div>
 		<!-- /#post-stuff -->
-		<?php do_action( 'give_view_order_details_form_bottom', $payment_id ); ?>
-		<?php wp_nonce_field( 'give_update_payment_details_nonce' ); ?>
+
+		<?php
+		/**
+		 * Fires in order details page, in the form after the order details.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int $payment_id Payment id.
+		 */
+		do_action( 'give_view_order_details_form_bottom', $payment_id );
+
+		wp_nonce_field( 'give_update_payment_details_nonce' );
+		?>
 		<input type="hidden" name="give_payment_id" value="<?php echo esc_attr( $payment_id ); ?>"/>
 		<input type="hidden" name="give_action" value="update_payment_details"/>
 	</form>
-	<?php do_action( 'give_view_order_details_after', $payment_id ); ?>
+	<?php
+	/**
+	 * Fires in order details page, after the order form.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int $payment_id Payment id.
+	 */
+	do_action( 'give_view_order_details_after', $payment_id );
+	?>
 </div><!-- /.wrap -->

@@ -145,9 +145,11 @@ function give_load_checkout_fields() {
 	ob_start();
 
 	/**
-	 * Fires while processing checkout fields.
+	 * Fires while loading checkout fields.
 	 *
 	 * @since 1.3.6
+	 *
+	 * @param int $form_id The form ID.
 	 */
 	do_action( 'give_purchase_form_register_login_fields', $form_id );
 
