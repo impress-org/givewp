@@ -851,6 +851,7 @@ $Give_Settings = new Give_Plugin_Settings();
  * @since  0.1.0
  *
  * @param  string $key Options array key
+ * @param  string $default The default option if the option isn't set
  *
  * @return mixed        Option value
  */
