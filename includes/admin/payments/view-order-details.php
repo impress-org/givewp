@@ -180,7 +180,7 @@ $payment_mode   = $payment->mode;
 										if ( $gateway ) : ?>
 											<div class="give-order-gateway give-admin-box-inside">
 												<p>
-													<span class="label"><?php esc_html_e( 'Gateway:', 'give' ); ?></span>&nbsp;
+													<strong><?php esc_html_e( 'Gateway:', 'give' ); ?></strong>&nbsp;
 													<?php echo give_get_gateway_admin_label( $gateway ); ?>
 												</p>
 											</div>
@@ -188,23 +188,23 @@ $payment_mode   = $payment->mode;
 
 										<div class="give-order-payment-key give-admin-box-inside">
 											<p>
-												<span class="label"><?php esc_html_e( 'Key:', 'give' ); ?></span>&nbsp;
-												<span><?php echo give_get_payment_key( $payment_id ); ?></span>
+												<strong><?php esc_html_e( 'Key:', 'give' ); ?></strong>&nbsp;
+												<?php echo give_get_payment_key( $payment_id ); ?>
 											</p>
 										</div>
 
 										<div class="give-order-ip give-admin-box-inside">
 											<p>
-												<span class="label"><?php esc_html_e( 'IP:', 'give' ); ?></span>&nbsp;
-												<span><?php echo esc_html( give_get_payment_user_ip( $payment_id ) ); ?></span>
+												<strong><?php esc_html_e( 'IP:', 'give' ); ?></strong>&nbsp;
+												<?php echo esc_html( give_get_payment_user_ip( $payment_id ) ); ?>
 											</p>
 										</div>
 
 										<?php if ( $transaction_id ) : ?>
 											<div class="give-order-tx-id give-admin-box-inside">
 												<p>
-													<span class="label"><?php esc_html_e( 'Transaction ID:', 'give' ); ?></span>&nbsp;
-													<span><?php echo apply_filters( 'give_payment_details_transaction_id-' . $gateway, $transaction_id, $payment_id ); ?></span>
+													<strong><?php esc_html_e( 'Transaction ID:', 'give' ); ?></strong>&nbsp;
+													<?php echo apply_filters( 'give_payment_details_transaction_id-' . $gateway, $transaction_id, $payment_id ); ?>
 												</p>
 											</div>
 										<?php endif; ?>
