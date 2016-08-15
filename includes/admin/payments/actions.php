@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_update_payment_details( $data ) {
 
 	if ( ! current_user_can( 'edit_give_payments', $data['give_payment_id'] ) ) {
-		wp_die( esc_html__( 'You do not have permission to edit payment records.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( esc_html__( 'You do not have permission to edit payments.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	check_admin_referer( 'give_update_payment_details_nonce' );
@@ -318,7 +318,7 @@ function give_trigger_purchase_delete( $data ) {
 		$payment_id = absint( $data['purchase_id'] );
 
 		if ( ! current_user_can( 'edit_give_payments', $payment_id ) ) {
-			wp_die( esc_html__( 'You do not have permission to edit payment records.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die( esc_html__( 'You do not have permission to edit payments.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 		}
 
 		give_delete_purchase( $payment_id );
@@ -338,7 +338,7 @@ function give_ajax_store_payment_note() {
 	$note       = wp_kses( $_POST['note'], array() );
 
 	if ( ! current_user_can( 'edit_give_payments', $payment_id ) ) {
-		wp_die( esc_html__( 'You do not have permission to edit payment records.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( esc_html__( 'You do not have permission to edit payments.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	if ( empty( $payment_id ) ) {
@@ -371,7 +371,7 @@ function give_trigger_payment_note_deletion( $data ) {
 	}
 
 	if ( ! current_user_can( 'edit_give_payments', $data['payment_id'] ) ) {
-		wp_die( esc_html__( 'You do not have permission to edit payment records.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( esc_html__( 'You do not have permission to edit payments.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	$edit_order_url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&give-message=payment-note-deleted&id=' . absint( $data['payment_id'] ) );
@@ -393,7 +393,7 @@ add_action( 'give_delete_payment_note', 'give_trigger_payment_note_deletion' );
 function give_ajax_delete_payment_note() {
 
 	if ( ! current_user_can( 'edit_give_payments', $_POST['payment_id'] ) ) {
-		wp_die( esc_html__( 'You do not have permission to edit payment records.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( esc_html__( 'You do not have permission to edit payments.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	if ( give_delete_payment_note( $_POST['note_id'], $_POST['payment_id'] ) ) {

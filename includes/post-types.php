@@ -107,7 +107,7 @@ function give_setup_post_types() {
 		'all_items'          => esc_html__( 'All Donations', 'give' ),
 		'view_item'          => esc_html__( 'View Donation', 'give' ),
 		'search_items'       => esc_html__( 'Search Donations', 'give' ),
-		'not_found'          => esc_html__( 'No Donations found', 'give' ),
+		'not_found'          => esc_html__( 'No Donations Found', 'give' ),
 		'not_found_in_trash' => esc_html__( 'No Donations found in Trash', 'give' ),
 		'parent_item_colon'  => '',
 		'menu_name'          => esc_html__( 'Transactions', 'give' )
@@ -316,7 +316,7 @@ add_filter( 'enter_title_here', 'give_change_default_title' );
 function give_register_post_type_statuses() {
 	// Payment Statuses
 	register_post_status( 'refunded', array(
-		'label'                     => _x( 'Refunded', 'payment status', 'give' ),
+		'label'                     => __( 'Refunded', 'give' ),
 		'public'                    => true,
 		'exclude_from_search'       => false,
 		'show_in_admin_all_list'    => true,
@@ -324,7 +324,7 @@ function give_register_post_type_statuses() {
 		'label_count'               => _n_noop( 'Refunded <span class="count">(%s)</span>', 'Refunded <span class="count">(%s)</span>', 'give' )
 	) );
 	register_post_status( 'failed', array(
-		'label'                     => _x( 'Failed', 'payment status', 'give' ),
+		'label'                     => __( 'Failed', 'give' ),
 		'public'                    => true,
 		'exclude_from_search'       => false,
 		'show_in_admin_all_list'    => true,
@@ -332,7 +332,7 @@ function give_register_post_type_statuses() {
 		'label_count'               => _n_noop( 'Failed <span class="count">(%s)</span>', 'Failed <span class="count">(%s)</span>', 'give' )
 	) );
 	register_post_status( 'revoked', array(
-		'label'                     => _x( 'Revoked', 'payment status', 'give' ),
+		'label'                     => __( 'Revoked', 'give' ),
 		'public'                    => true,
 		'exclude_from_search'       => false,
 		'show_in_admin_all_list'    => true,
@@ -340,7 +340,7 @@ function give_register_post_type_statuses() {
 		'label_count'               => _n_noop( 'Revoked <span class="count">(%s)</span>', 'Revoked <span class="count">(%s)</span>', 'give' )
 	) );
 	register_post_status( 'cancelled', array(
-		'label'                     => _x( 'Cancelled', 'payment status', 'give' ),
+		'label'                     => __( 'Cancelled', 'give' ),
 		'public'                    => true,
 		'exclude_from_search'       => false,
 		'show_in_admin_all_list'    => true,
@@ -348,7 +348,7 @@ function give_register_post_type_statuses() {
 		'label_count'               => _n_noop( 'Cancelled <span class="count">(%s)</span>', 'Cancelled <span class="count">(%s)</span>', 'give' )
 	) );
 	register_post_status( 'abandoned', array(
-		'label'                     => _x( 'Abandoned', 'payment status', 'give' ),
+		'label'                     => __( 'Abandoned', 'give' ),
 		'public'                    => true,
 		'exclude_from_search'       => false,
 		'show_in_admin_all_list'    => true,

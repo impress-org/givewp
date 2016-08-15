@@ -129,7 +129,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 */
 	public function column_details( $item ) {
 		?>
-		<a href="#TB_inline?width=640&amp;inlineId=log-details-<?php echo $item['ID']; ?>" class="thickbox" title="<?php esc_attr_e( 'View Request Details', 'give' ); ?> "><?php esc_html_e( 'View Request', 'give' ); ?></a>
+		<a href="#TB_inline?width=640&amp;inlineId=log-details-<?php echo $item['ID']; ?>" class="thickbox"><?php esc_html_e( 'View Request', 'give' ); ?></a>
 		<div id="log-details-<?php echo $item['ID']; ?>" style="display:none;">
 			<?php
 

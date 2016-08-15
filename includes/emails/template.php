@@ -127,7 +127,7 @@ add_filter( 'give_settings_emails', 'give_email_template_preview' );
 function give_email_preview_buttons_callback() {
 	ob_start();
 	?>
-	<a href="<?php echo esc_url( add_query_arg( array( 'give_action' => 'preview_email' ), home_url() ) ); ?>" class="button-secondary" target="_blank" title="<?php esc_attr_e( 'Donation Receipt Preview', 'give' ); ?> "><?php esc_html_e( 'Preview Donation Receipt', 'give' ); ?></a>
+	<a href="<?php echo esc_url( add_query_arg( array( 'give_action' => 'preview_email' ), home_url() ) ); ?>" class="button-secondary" target="_blank"><?php esc_html_e( 'Preview Donation Receipt', 'give' ); ?></a>
 	<a href="<?php echo wp_nonce_url( add_query_arg( array(
 		'give_action'  => 'send_test_email',
 		'give-message' => 'sent-test-email',
@@ -328,9 +328,7 @@ function give_get_preview_email_header() {
 
 	//Provide nice human readable options.
 	if ( $payments ) {
-		$options[0] =
-			/* translators: %s: transaction singular label */
-			esc_html__( '- Select a transaction -', 'give' );
+		$options[0] = esc_html__( '- Select a transaction -', 'give' );
 		foreach ( $payments as $payment ) {
 
 			$options[ $payment->ID ] = esc_html( '#' . $payment->ID . ' - ' . $payment->email . ' - ' . $payment->form_title );

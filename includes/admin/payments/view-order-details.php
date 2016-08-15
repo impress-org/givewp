@@ -57,7 +57,7 @@ $payment_mode   = $payment->mode;
 			$number
 		);
 		if ( $payment_mode == 'test' ) {
-			echo '<span id="test-payment-label" class="give-item-label give-item-label-orange" data-tooltip="' . esc_attr__( 'This payment was made in Test Mode', 'give' ) . '" data-tooltip-my-position="center left" data-tooltip-target-position="center right">' . esc_html__( 'Test Payment', 'give' ) . '</span>';
+			echo '<span id="test-payment-label" class="give-item-label give-item-label-orange" data-tooltip="' . esc_attr__( 'This payment was made in test mode.', 'give' ) . '" data-tooltip-my-position="center left" data-tooltip-target-position="center right">' . esc_html__( 'Test Payment', 'give' ) . '</span>';
 		}
 		?></h1>
 
@@ -85,8 +85,8 @@ $payment_mode   = $payment->mode;
 
 										<div class="give-admin-box-inside">
 											<p>
-												<span class="label"><?php esc_html_e( 'Status:', 'give' ); ?></span>&nbsp;
-												<select name="give-payment-status" class="medium-text">
+												<label for="give-payment-status" class="strong"><?php esc_html_e( 'Status:', 'give' ); ?></label>&nbsp;
+												<select id="give-payment-status" name="give-payment-status" class="medium-text">
 													<?php foreach ( give_get_payment_statuses() as $key => $status ) : ?>
 														<option value="<?php echo esc_attr( $key ); ?>"<?php selected( $payment->status, $key, true ); ?>><?php echo esc_html( $status ); ?></option>
 													<?php endforeach; ?>
@@ -97,16 +97,16 @@ $payment_mode   = $payment->mode;
 
 										<div class="give-admin-box-inside">
 											<p>
-												<span class="label"><?php esc_html_e( 'Date:', 'give' ); ?></span>&nbsp;
-												<input type="text" name="give-payment-date" value="<?php echo esc_attr( date( 'm/d/Y', $payment_date ) ); ?>" class="medium-text give_datepicker"/>
+												<label for="give-payment-date" class="strong"><?php esc_html_e( 'Date:', 'give' ); ?></label>&nbsp;
+												<input type="text" id="give-payment-date" name="give-payment-date" value="<?php echo esc_attr( date( 'm/d/Y', $payment_date ) ); ?>" class="medium-text give_datepicker"/>
 											</p>
 										</div>
 
 										<div class="give-admin-box-inside">
 											<p>
-												<span class="label"><?php esc_html_e( 'Time:', 'give' ); ?></span>&nbsp;
-												<input type="number" step="1" max="24" name="give-payment-time-hour" value="<?php echo esc_attr( date_i18n( 'H', $payment_date ) ); ?>" class="small-text give-payment-time-hour"/>&nbsp;:&nbsp;
-												<input type="number" step="1" max="59" name="give-payment-time-min" value="<?php echo esc_attr( date( 'i', $payment_date ) ); ?>" class="small-text give-payment-time-min"/>
+												<label for="give-payment-time-hour" class="strong"><?php esc_html_e( 'Time:', 'give' ); ?></label>&nbsp;
+												<input type="number" step="1" max="24" id="give-payment-time-hour" name="give-payment-time-hour" value="<?php echo esc_attr( date_i18n( 'H', $payment_date ) ); ?>" class="small-text give-payment-time-hour"/>&nbsp;:&nbsp;
+												<input type="number" step="1" max="59" id="give-payment-time-min" name="give-payment-time-min" value="<?php echo esc_attr( date( 'i', $payment_date ) ); ?>" class="small-text give-payment-time-min"/>
 											</p>
 										</div>
 
@@ -117,22 +117,22 @@ $payment_mode   = $payment->mode;
 										$fees = give_get_payment_fees( $payment_id );
 										if ( ! empty( $fees ) ) : ?>
 											<div class="give-order-fees give-admin-box-inside">
-												<p class="strong"><?php esc_html_e( 'Fees', 'give' ); ?>:</p>
+												<p class="strong"><?php esc_html_e( 'Fees:', 'give' ); ?></p>
 												<ul class="give-payment-fees">
 													<?php foreach ( $fees as $fee ) : ?>
 														<li>
-															<span class="fee-label"><?php echo $fee['label'] . ':</span> ' . '<span class="fee-amount" data-fee="' . esc_attr( $fee['amount'] ) . '">' . give_currency_filter( $fee['amount'], $currency_code ); ?></span>
+															<span class="fee-label"><?php echo $fee['label']; ?>:</span>
+															<span class="fee-amount" data-fee="<?php echo esc_attr( $fee['amount'] ); ?>"><?php echo give_currency_filter( $fee['amount'], $currency_code ); ?></span>
 														</li>
 													<?php endforeach; ?>
 												</ul>
 											</div>
 										<?php endif; ?>
 
-
 										<div class="give-order-payment give-admin-box-inside">
 											<p>
-												<span class="label"><?php esc_html_e( 'Total Donation', 'give' ); ?>:</span>&nbsp;
-												<?php echo give_currency_symbol( $payment->currency ); ?>&nbsp;<input name="give-payment-total" type="text" class="small-text give-price-field" value="<?php echo esc_attr( give_format_decimal( give_get_payment_amount( $payment_id ) ) ); ?>"/>
+												<label for="give-payment-total" class="strong"><?php esc_html_e( 'Total Donation:', 'give' ); ?></label>&nbsp;
+												<?php echo give_currency_symbol( $payment->currency ); ?>&nbsp;<input id="give-payment-total" name="give-payment-total" type="text" class="small-text give-price-field" value="<?php echo esc_attr( give_format_decimal( give_get_payment_amount( $payment_id ) ) ); ?>"/>
 											</p>
 										</div>
 
@@ -181,7 +181,7 @@ $payment_mode   = $payment->mode;
 										if ( $gateway ) : ?>
 											<div class="give-order-gateway give-admin-box-inside">
 												<p>
-													<span class="label"><?php esc_html_e( 'Gateway:', 'give' ); ?></span>&nbsp;
+													<strong><?php esc_html_e( 'Gateway:', 'give' ); ?></strong>&nbsp;
 													<?php echo give_get_gateway_admin_label( $gateway ); ?>
 												</p>
 											</div>
@@ -189,23 +189,23 @@ $payment_mode   = $payment->mode;
 
 										<div class="give-order-payment-key give-admin-box-inside">
 											<p>
-												<span class="label"><?php esc_html_e( 'Key:', 'give' ); ?></span>&nbsp;
-												<span><?php echo give_get_payment_key( $payment_id ); ?></span>
+												<strong><?php esc_html_e( 'Key:', 'give' ); ?></strong>&nbsp;
+												<?php echo give_get_payment_key( $payment_id ); ?>
 											</p>
 										</div>
 
 										<div class="give-order-ip give-admin-box-inside">
 											<p>
-												<span class="label"><?php esc_html_e( 'IP:', 'give' ); ?></span>&nbsp;
-												<span><?php echo esc_html( give_get_payment_user_ip( $payment_id ) ); ?></span>
+												<strong><?php esc_html_e( 'IP:', 'give' ); ?></strong>&nbsp;
+												<?php echo esc_html( give_get_payment_user_ip( $payment_id ) ); ?>
 											</p>
 										</div>
 
 										<?php if ( $transaction_id ) : ?>
 											<div class="give-order-tx-id give-admin-box-inside">
 												<p>
-													<span class="label"><?php esc_html_e( 'Transaction ID:', 'give' ); ?></span>&nbsp;
-													<span><?php echo apply_filters( 'give_payment_details_transaction_id-' . $gateway, $transaction_id, $payment_id ); ?></span>
+													<strong><?php esc_html_e( 'Transaction ID:', 'give' ); ?></strong>&nbsp;
+													<?php echo apply_filters( 'give_payment_details_transaction_id-' . $gateway, $transaction_id, $payment_id ); ?>
 												</p>
 											</div>
 										<?php endif; ?>
@@ -340,10 +340,10 @@ $payment_mode   = $payment->mode;
 										<div class="column">
 											<?php if ( ! empty( $customer->id ) ) : ?>
 												<?php $customer_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $customer->id ); ?>
-												<a href="<?php echo $customer_url; ?>" title="<?php esc_attr_e( 'View Donor Details', 'give' ); ?>"><?php esc_html_e( 'View Donor Details', 'give' ); ?></a>
+												<a href="<?php echo $customer_url; ?>"><?php esc_html_e( 'View Donor Details', 'give' ); ?></a>
 												&nbsp;|&nbsp;
 											<?php endif; ?>
-											<a href="#new" class="give-payment-new-customer" title="<?php esc_attr_e( 'New Donor', 'give' ); ?>"><?php esc_html_e( 'New Donor', 'give' ); ?></a>
+											<a href="#new" class="give-payment-new-customer"><?php esc_html_e( 'New Donor', 'give' ); ?></a>
 										</div>
 									</div>
 
@@ -362,7 +362,7 @@ $payment_mode   = $payment->mode;
 										</div>
 										<div class="column">
 											<small>
-												<em>*<?php esc_html_e( 'Click "Save Payment" to create new donor', 'give' ); ?></em>
+												<em><?php esc_html_e( '* Click "Save Payment" to create new donor.', 'give' ); ?></em>
 											</small>
 										</div>
 									</div>
@@ -392,12 +392,12 @@ $payment_mode   = $payment->mode;
 											<div class="data column-container">
 												<div class="column">
 													<div class="give-wrap-address-line1">
-														<label for="give-payment-address-line1" class="order-data-address"><?php esc_html_e( 'Street Address Line 1:', 'give' ); ?></label>
+														<label for="give-payment-address-line1" class="order-data-address"><?php esc_html_e( 'Address 1:', 'give' ); ?></label>
 														<input id="give-payment-address-line1" type="text" name="give-payment-address[0][line1]" value="<?php echo esc_attr( $address['line1'] ); ?>" class="medium-text"/>
 													</div>
 
 													<div class="give-wrap-address-line2">
-														<label for="give-payment-address-line2" class="order-data-address-line"><?php esc_html_e( 'Street Address Line 2:', 'give' ); ?></label>
+														<label for="give-payment-address-line2" class="order-data-address-line"><?php esc_html_e( 'Address 2:', 'give' ); ?></label>
 														<input id="give-payment-address-line2" type="text" name="give-payment-address[0][line2]" value="<?php echo esc_attr( $address['line2'] ); ?>" class="medium-text"/>
 													</div>
 

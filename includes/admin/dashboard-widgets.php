@@ -83,24 +83,24 @@ function give_dashboard_sales_widget() {
 				<td>
 					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_week' ) ) ); ?></p>
 
-					<p class="give-dashboard-stat-total-label"><?php esc_html_e( 'this week', 'give' ); ?></p>
+					<p class="give-dashboard-stat-total-label"><?php esc_html_e( 'This Week', 'give' ); ?></p>
 				</td>
 				<td>
 					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_month' ) ) ); ?></p>
 
-					<p class="give-dashboard-stat-total-label"><?php esc_html_e( 'this month', 'give' ); ?></p>
+					<p class="give-dashboard-stat-total-label"><?php esc_html_e( 'This Month', 'give' ); ?></p>
 				</td>
 			</tr>
 			<tr id="give-table-stats-tr-2">
 				<td>
 					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'last_month' ) ) ) ?></p>
 
-					<p class="give-dashboard-stat-total-label"><?php esc_html_e( 'last month', 'give' ); ?></p>
+					<p class="give-dashboard-stat-total-label"><?php esc_html_e( 'Last Month', 'give' ); ?></p>
 				</td>
 				<td>
 					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_year', false ) ) ) ?></p>
 
-					<p class="give-dashboard-stat-total-label"><?php esc_html_e( 'this year', 'give' ); ?></p>
+					<p class="give-dashboard-stat-total-label"><?php esc_html_e( 'This Year', 'give' ); ?></p>
 				</td>
 			</tr>
 			</tbody>

@@ -108,16 +108,16 @@ class Give_Notices {
 						$notices['updated']['give-settings-imported'] = esc_attr__( 'The settings have been imported.', 'give' );
 						break;
 					case 'api-key-generated' :
-						$notices['updated']['give-api-key-generated'] = esc_attr__( 'API keys successfully generated.', 'give' );
+						$notices['updated']['give-api-key-generated'] = esc_attr__( 'API keys have been generated.', 'give' );
 						break;
 					case 'api-key-exists' :
 						$notices['error']['give-api-key-exists'] = esc_attr__( 'The specified user already has API keys.', 'give' );
 						break;
 					case 'api-key-regenerated' :
-						$notices['updated']['give-api-key-regenerated'] = esc_attr__( 'API keys successfully regenerated.', 'give' );
+						$notices['updated']['give-api-key-regenerated'] = esc_attr__( 'API keys have been regenerated.', 'give' );
 						break;
 					case 'api-key-revoked' :
-						$notices['updated']['give-api-key-revoked'] = esc_attr__( 'API keys successfully revoked.', 'give' );
+						$notices['updated']['give-api-key-revoked'] = esc_attr__( 'API keys have been revoked.', 'give' );
 						break;
 					case 'sent-test-email' :
 						$notices['updated']['give-sent-test-email'] = esc_attr__( 'The test email has been sent.', 'give' );
@@ -128,10 +128,10 @@ class Give_Notices {
 			if ( current_user_can( 'edit_give_payments' ) ) {
 				switch ( $_GET['give-message'] ) {
 					case 'note-added' :
-						$notices['updated']['give-note-added'] = esc_attr__( 'The payment note has been added successfully.', 'give' );
+						$notices['updated']['give-note-added'] = esc_attr__( 'The payment note has been added.', 'give' );
 						break;
 					case 'payment-updated' :
-						$notices['updated']['give-payment-updated'] = esc_attr__( 'The payment has been successfully updated.', 'give' );
+						$notices['updated']['give-payment-updated'] = esc_attr__( 'The payment has been updated.', 'give' );
 						break;
 				}
 			}
@@ -140,7 +140,7 @@ class Give_Notices {
 			if ( current_user_can( 'edit_give_payments' ) ) {
 				switch ( $_GET['give-message'] ) {
 					case 'customer-deleted' :
-						$notices['updated']['give-customer-deleted'] = esc_attr__( 'Donor successfully deleted.', 'give' );
+						$notices['updated']['give-customer-deleted'] = esc_attr__( 'The donor has been deleted.', 'give' );
 						break;
 				}
 			}

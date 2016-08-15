@@ -291,6 +291,13 @@ function give_after_install() {
 			// (this ensures it creates it on multisite instances where it is network activated).
 			@Give()->customers->create_table();
 
+			/**
+			 * Fires after plugin installation.
+			 *
+			 * @since 1.0
+			 *
+			 * @param array $give_options Give plugin options.
+			 */
 			do_action( 'give_after_install', $give_options );
 		}
 

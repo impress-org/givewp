@@ -364,13 +364,13 @@ class Give_Donators_Gravatars {
 			),
 			array(
 				'name' => esc_html__( 'Heading', 'give' ),
-				'desc' => esc_html__( 'The heading to display above the Gravatars', 'give' ),
+				'desc' => esc_html__( 'The heading to display above the Gravatars.', 'give' ),
 				'type' => 'text',
 				'id'   => 'give_donators_gravatars_heading'
 			),
 			array(
 				'name'    => esc_html__( 'Gravatar Size', 'give' ),
-				'desc'    => esc_html__( 'The size of each Gravatar in pixels (512px maximum)', 'give' ),
+				'desc'    => esc_html__( 'The size of each Gravatar in pixels (512px maximum).', 'give' ),
 				'type'    => 'text_small',
 				'id'      => 'give_donators_gravatars_gravatar_size',
 				'default' => '64'
@@ -391,13 +391,13 @@ class Give_Donators_Gravatars {
 			),
 			array(
 				'name' => esc_html__( 'Gravatar Visibility', 'give' ),
-				'desc' => esc_html__( 'Only show donators with a Gravatar account', 'give' ),
+				'desc' => esc_html__( 'Show only donators with a Gravatar account.', 'give' ),
 				'id'   => 'give_donators_gravatars_has_gravatar_account',
 				'type' => 'checkbox',
 			),
 			array(
 				'name' => esc_html__( 'Randomize Gravatars', 'give' ),
-				'desc' => esc_html__( 'Randomize the Gravatars', 'give' ),
+				'desc' => esc_html__( 'Randomize the Gravatars.', 'give' ),
 				'id'   => 'give_donators_gravatars_random_gravatars',
 				'type' => 'checkbox',
 			),

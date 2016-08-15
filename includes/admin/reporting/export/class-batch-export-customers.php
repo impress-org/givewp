@@ -82,8 +82,8 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 			$cols['email'] = esc_html__( 'Email Address', 'give' );
 		}
 		if ( ! empty( $columns['address'] ) ) {
-			$cols['address_line1']   = esc_html__( 'Address', 'give' );
-			$cols['address_line2']   = esc_html__( 'Address (Line 2)', 'give' );
+			$cols['address_line1']   = esc_html__( 'Address 1', 'give' );
+			$cols['address_line2']   = esc_html__( 'Address 2', 'give' );
 			$cols['address_city']    = esc_html__( 'City', 'give' );
 			$cols['address_state']   = esc_html__( 'State', 'give' );
 			$cols['address_zip']     = esc_html__( 'Zip', 'give' );
