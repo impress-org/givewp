@@ -121,7 +121,8 @@ $payment_mode   = $payment->mode;
 												<ul class="give-payment-fees">
 													<?php foreach ( $fees as $fee ) : ?>
 														<li>
-															<span class="fee-label"><?php echo $fee['label'] . ':</span> ' . '<span class="fee-amount" data-fee="' . esc_attr( $fee['amount'] ) . '">' . give_currency_filter( $fee['amount'], $currency_code ); ?></span>
+															<span class="fee-label"><?php echo $fee['label']; ?>:</span>
+															<span class="fee-amount" data-fee="<?php echo esc_attr( $fee['amount'] ); ?>"><?php echo give_currency_filter( $fee['amount'], $currency_code ); ?></span>
 														</li>
 													<?php endforeach; ?>
 												</ul>
