@@ -284,9 +284,11 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 */
 	public function get_sortable_columns() {
 		$columns = array(
-			'donation'  => array( 'ID', true ),
-			'amount'    => array( 'amount', false ),
-			'date'      => array( 'date', false )
+			'donation'      => array( 'ID', true ),
+			'donation_form' => array( 'donation_form', false ),
+			'status'        => array( 'status', false ),
+			'amount'        => array( 'amount', false ),
+			'date'          => array( 'date', false )
 		);
 
 		return apply_filters( 'give_payments_table_sortable_columns', $columns );
