@@ -826,7 +826,7 @@ function give_get_register_fields( $form_id ) {
 
 				<input name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" class="<?php if ( give_logged_in_only( $form_id ) ) {
 					echo 'required ';
-				} ?>give-input" type="text" placeholder="<?php esc_attr_e( 'Username', 'give' ); ?>" title="<?php esc_attr_e( 'Username', 'give' ); ?>"/>
+				} ?>give-input" type="text" placeholder="<?php esc_attr_e( 'Username', 'give' ); ?>"/>
 			</div>
 
 			<div id="give-user-pass-wrap-<?php echo $form_id; ?>" class="form-row form-row-one-third">
