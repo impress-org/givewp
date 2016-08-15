@@ -87,7 +87,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	public function column_message( $item ) {
 
 		?>
-		<a href="#TB_inline?width=640&amp;inlineId=log-message-<?php echo $item['ID']; ?>" class="thickbox" title="<?php esc_attr_e( 'View Log Message', 'give' ); ?> "><?php esc_html_e( 'View Log Message', 'give' ); ?></a>
+		<a href="#TB_inline?width=640&amp;inlineId=log-message-<?php echo $item['ID']; ?>" class="thickbox"><?php esc_html_e( 'View Log Message', 'give' ); ?></a>
 		<div id="log-message-<?php echo $item['ID']; ?>" style="display:none;">
 			<?php
 

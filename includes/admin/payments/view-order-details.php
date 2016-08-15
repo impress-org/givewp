@@ -340,10 +340,10 @@ $payment_mode   = $payment->mode;
 										<div class="column">
 											<?php if ( ! empty( $customer->id ) ) : ?>
 												<?php $customer_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $customer->id ); ?>
-												<a href="<?php echo $customer_url; ?>" title="<?php esc_attr_e( 'View Donor Details', 'give' ); ?>"><?php esc_html_e( 'View Donor Details', 'give' ); ?></a>
+												<a href="<?php echo $customer_url; ?>"><?php esc_html_e( 'View Donor Details', 'give' ); ?></a>
 												&nbsp;|&nbsp;
 											<?php endif; ?>
-											<a href="#new" class="give-payment-new-customer" title="<?php esc_attr_e( 'New Donor', 'give' ); ?>"><?php esc_html_e( 'New Donor', 'give' ); ?></a>
+											<a href="#new" class="give-payment-new-customer"><?php esc_html_e( 'New Donor', 'give' ); ?></a>
 										</div>
 									</div>
 

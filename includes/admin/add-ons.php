@@ -26,7 +26,7 @@ function give_add_ons_page() {
 	ob_start(); ?>
 	<div class="wrap" id="give-add-ons">
 		<h1><?php esc_html_e( 'Give Add-ons', 'give' ); ?>
-			&nbsp;&mdash;&nbsp;<a href="https://givewp.com/addons/" class="button-primary give-view-addons-all" title="<?php esc_attr_e( 'Browse All Add-ons', 'give' ); ?>" target="_blank"><?php esc_html_e( 'View All Add-ons', 'give' ); ?>
+			&nbsp;&mdash;&nbsp;<a href="https://givewp.com/addons/" class="button-primary give-view-addons-all" target="_blank"><?php esc_html_e( 'View All Add-ons', 'give' ); ?>
 				<span class="dashicons dashicons-external"></span></a>
 		</h1>
 
