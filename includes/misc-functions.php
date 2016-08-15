@@ -22,11 +22,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return bool $ret True if return mode is enabled, false otherwise
  */
 function give_is_test_mode() {
-	global $give_options;
 
-	$ret = ! empty( $give_options['test_mode'] );
+	$ret = give_get_option('test_mode', false);
 
 	return (bool) apply_filters( 'give_is_test_mode', $ret );
+
 }
 
 /**
@@ -36,8 +36,8 @@ function give_is_test_mode() {
  * @return string The currency code
  */
 function give_get_currency() {
-	global $give_options;
-	$currency = isset( $give_options['currency'] ) ? $give_options['currency'] : 'USD';
+
+	$currency = give_get_option( 'currency', 'USD' );
 
 	return apply_filters( 'give_currency', $currency );
 }
@@ -50,8 +50,8 @@ function give_get_currency() {
  * @return string The currency code
  */
 function give_get_currency_position() {
-	global $give_options;
-	$currency_pos = isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before';
+
+	$currency_pos = give_get_option( 'currency_position', 'before' );
 
 	return apply_filters( 'give_currency_position', $currency_pos );
 }
@@ -415,7 +415,7 @@ function give_get_host() {
  *
  * @since 1.0
  *
- * @param bool/string $host The host to check
+ * @param bool /string $host The host to check
  *
  * @return bool true if host matches, false if not
  */
