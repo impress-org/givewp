@@ -1007,7 +1007,7 @@ function give_payment_mode_select( $form_id ) {
 
 		<?php do_action( 'give_purchase_form', $form_id ); ?>
 
-	</div><!-- the checkout fields are loaded into this-->
+	</div>
 
 	<?php do_action( 'give_purchase_form_wrap_bottom', $form_id );
 
