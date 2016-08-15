@@ -295,6 +295,10 @@ form[id*='give-form'] {
 
     }
 
+    input.give-amount-top {
+      width: 125px;
+    }
+
     span.give-final-total-amount {
       @include give-input();
       cursor: not-allowed;
@@ -636,7 +640,7 @@ form[id*='give-form'] {
   }
 
   .give_login_forgot_password {
-    float:right;
+    float: right;
   }
 
 }
@@ -653,7 +657,7 @@ form[id*='give-form'] {
     display: none;
   }
   .give-submit {
-    float:left;
+    float: left;
   }
 }
 

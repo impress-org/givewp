@@ -274,7 +274,8 @@ $payment_mode   = $payment->mode;
 											</td>
 											<td>
 												<?php
-												if ( empty( give_has_variable_prices( $payment_meta['form_id'] ) ) ) {
+												$var_prices = give_has_variable_prices( $payment_meta['form_id'] );
+												if ( empty( $var_prices ) ) {
 													echo esc_html__( 'n/a', 'give' );
 												} else {
 													// Variable price dropdown options.

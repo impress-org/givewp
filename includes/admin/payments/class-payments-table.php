@@ -310,12 +310,16 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * @access public
 	 * @since  1.0
 	 *
-	 * @param Give_Payment    $payment Payment ID.
-	 * @param string $column_name The name of the column
+	 * @param Give_Payment $payment Payment ID.
+	 * @param string       $column_name The name of the column
 	 *
 	 * @return string Column Name
 	 */
 	public function column_default( $payment, $column_name ) {
+
+		$single_transaction_url = esc_url( add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details' ) ) );
+		$row_actions            = $this->get_row_actions( $payment );
+
 		switch ( $column_name ) {
 			case 'donation' :
 				$value = sprintf(
@@ -340,7 +344,8 @@ class Give_Payment_History_Table extends WP_List_Table {
 				break;
 
 			case 'donation_form' :
-				$value = '<a href="' . get_permalink( $payment->form_id ) . '">' . $payment->form_title . '</a>';
+
+				$value = '<a href="' . admin_url( 'post.php?post=' . $payment->form_id . '&action=edit' ) . '">' . $payment->form_title . '</a>';
 				$level = give_get_payment_form_title( $payment->meta, true );
 
 				if ( ! empty( $level ) ) {
@@ -355,11 +360,11 @@ class Give_Payment_History_Table extends WP_List_Table {
 				break;
 
 			case 'status' :
-                $value = $this->get_payment_status( $payment );
+				$value = $this->get_payment_status( $payment );
 				break;
 
 			case 'details' :
-				$value = '<div class="give-payment-details-link-wrap"><a href="' . esc_url( add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details' ) ) ) . '" class="give-payment-details-link button button-small" title="'. esc_attr__( 'View Details', 'give' ) . '"><span class="dashicons dashicons-visibility"></span></a></div>';
+				$value = '<div class="give-payment-details-link-wrap"><a href="' . $single_transaction_url . '" data-tooltip="' . __( 'View details', 'give' ) . '" class="give-payment-details-link button button-small" title="' . __( 'View Details', 'give' ) . '"><span class="dashicons dashicons-visibility"></span></a></div>';
 				break;
 
 			default:
@@ -383,9 +388,28 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 */
 	public function get_donor_email( $payment ) {
 
-		$row_actions = array();
-
 		$email = give_get_payment_user_email( $payment->ID );
+
+		if ( empty( $email ) ) {
+			$email = esc_html__( '(unknown)', 'give' );
+		}
+
+		$value = '<a href="mailto:' . $email . '" data-tooltip="' . __( 'Email donor', 'give' ) . '">' . $email . '</a>';
+
+		return apply_filters( 'give_payments_table_column', $value, $payment->ID, 'email' );
+	}
+
+	/**
+	 * Get Row Actions
+	 *
+	 * @since 1.6
+	 *
+	 * @return mixed|void
+	 */
+	function get_row_actions( $payment ) {
+
+		$row_actions = array();
+		$email       = give_get_payment_user_email( $payment->ID );
 
 		// Add search term string back to base URL
 		$search_terms = ( isset( $_GET['s'] ) ? trim( $_GET['s'] ) : '' );
@@ -406,36 +430,28 @@ class Give_Payment_History_Table extends WP_List_Table {
 				'purchase_id' => $payment->ID
 			), $this->base_url ), 'give_payment_nonce' ) . '">' . esc_html__( 'Delete', 'give' ) . '</a>';
 
-		$row_actions = apply_filters( 'give_payment_row_actions', $row_actions, $payment );
-
-		if ( empty( $email ) ) {
-			$email = esc_html__( '(unknown)', 'give' );
-		}
-
-		$value = '<a href="mailto:' . $email . '">' . $email . '</a>' . $this->row_actions( $row_actions );
-
-		return apply_filters( 'give_payments_table_column', $value, $payment->ID, 'email' );
+		return apply_filters( 'give_payment_row_actions', $row_actions, $payment );
 	}
 
 
-    /**
-     *  Get payment status html.
-     *
-     * @access public
-     * @since  1.0
-     *
-     * @param  Give_Payment $payment Contains all the data of the payment
-     *
-     * @return string                Data shown in the Email column
-     */
+	/**
+	 *  Get payment status html.
+	 *
+	 * @access public
+	 * @since  1.0
+	 *
+	 * @param  Give_Payment $payment Contains all the data of the payment
+	 *
+	 * @return string                Data shown in the Email column
+	 */
 	function get_payment_status( $payment ) {
-        $value = '<div class="give-donation-status status-' . sanitize_title( give_get_payment_status( $payment, true ) ) . '"><span class="give-donation-status-icon"></span> ' . give_get_payment_status( $payment, true ) . '</div>';
-        if ( $payment->mode == 'test' ) {
-            $value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label" data-tooltip="' . esc_attr__( 'This payment was made in Test Mode.', 'give' ) . '">' . esc_html__( 'Test', 'give' ) . '</span>';
-        }
+		$value = '<div class="give-donation-status status-' . sanitize_title( give_get_payment_status( $payment, true ) ) . '"><span class="give-donation-status-icon"></span> ' . give_get_payment_status( $payment, true ) . '</div>';
+		if ( $payment->mode == 'test' ) {
+			$value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label" data-tooltip="' . esc_attr__( 'This payment was made in test mode', 'give' ) . '">' . esc_html__( 'Test', 'give' ) . '</span>';
+		}
 
-        return $value;
-    }
+		return $value;
+	}
 
 	/**
 	 * Get checkbox html.
@@ -586,7 +602,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			 *
 			 * @since 1.0
 			 *
-			 * @param int    $id             The ID of the payment.
+			 * @param int    $id The ID of the payment.
 			 * @param string $current_action The action that is being triggered.
 			 */
 			do_action( 'give_payments_table_do_bulk_action', $id, $this->current_action() );
@@ -602,8 +618,6 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * @return void
 	 */
 	public function get_payment_counts() {
-
-		global $wp_query;
 
 		$args = array();
 

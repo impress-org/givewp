@@ -723,7 +723,7 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
 
 #_give_donation_levels_repeat {
   background: #F7F7F7;
-  padding: 0 12px 20px;
+  padding: 0 1px 20px 12px;
   box-sizing: border-box; }
   #_give_donation_levels_repeat .cmb-row, #_give_donation_levels_repeat .inside {
     margin: 0; }
@@ -1313,6 +1313,9 @@ table.give-table td.row-title p {
 /*------------------------------------
 Settings
 --------------------------------------*/
+.give_settings_page .give-recurring-no-license {
+  display: none; }
+
 .give_settings_page .nav-tab-wrapper {
   margin-bottom: 5px; }
 

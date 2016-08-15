@@ -12,6 +12,12 @@ Settings
 --------------------------------------*/
 .give_settings_page {
 
+  //Temporarily hide the recurring notice that's
+  //no longer needed as over version 1.6 since it checks all licenses.
+  //This will be removed eventually.
+  .give-recurring-no-license {
+    display:none;
+  }
   .nav-tab-wrapper {
     margin-bottom: 5px;
   }
