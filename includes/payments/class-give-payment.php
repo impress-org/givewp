@@ -340,7 +340,7 @@ final class Give_Payment {
 	/**
 	 * Setup the Give Payments class
 	 *
-	 * @since  1.0
+	 * @since  1.5
 	 * @access public
 	 *
 	 * @param  int   $payment_id A given payment
@@ -453,7 +453,16 @@ final class Give_Payment {
 			return false;
 		}
 
-		// Allow extensions to perform actions before the payment is loaded
+		/**
+		 * Fires before payment setup.
+		 *
+		 * Allow extensions to perform actions before the payment is loaded.
+		 *
+		 * @since 1.5
+		 *
+		 * @param Give_Payment $this       Payment object.
+		 * @param int          $payment_id The ID of the payment.
+		 */
 		do_action( 'give_pre_setup_payment', $this, $payment_id );
 
 		// Primary Identifier
@@ -507,7 +516,16 @@ final class Give_Payment {
 		$this->key        = $this->setup_payment_key();
 		$this->number     = $this->setup_payment_number();
 
-		// Allow extensions to add items to this object via hook
+		/**
+		 * Fires after payment setup.
+		 *
+		 * Allow extensions to add items to this object via hook.
+		 *
+		 * @since 1.5
+		 *
+		 * @param Give_Payment $this       Payment object.
+		 * @param int          $payment_id The ID of the payment.
+		 */
 		do_action( 'give_setup_payment', $this, $payment_id );
 
 		return true;
@@ -873,6 +891,13 @@ final class Give_Payment {
 						break;
 
 					default:
+						/**
+						 * Fires while saving payment.
+						 *
+						 * @since 1.5
+						 *
+						 * @param Give_Payment $this Payment object.
+						 */
 						do_action( 'give_payment_save', $this, $key );
 						break;
 				}
@@ -1229,7 +1254,7 @@ final class Give_Payment {
 	/**
 	 * Add a note to a payment
 	 *
-	 * @since  1.0
+	 * @since  1.5
      * @access public
 	 *
 	 * @param  string $note The note to add
@@ -1324,7 +1349,7 @@ final class Give_Payment {
 	/**
 	 * Set or update the total for a payment
 	 *
-	 * @since  1.0
+	 * @since  1.5
      * @access private
 	 *
 	 * @return void
@@ -1336,7 +1361,7 @@ final class Give_Payment {
 	/**
 	 * Set the payment status and run any status specific changes necessary
 	 *
-	 * @since  1.0
+	 * @since  1.5
      * @access public
 	 *
 	 * @param  string $status  The status to set the payment to
@@ -1363,6 +1388,15 @@ final class Give_Payment {
 
 		if ( $do_change ) {
 
+			/**
+			 * Fires before changing payment status.
+			 *
+			 * @since 1.5
+			 *
+			 * @param int    $payment_id Payments ID.
+			 * @param string $status     The new status.
+			 * @param string $old_status The old status.
+			 */
 			do_action( 'give_before_payment_status_change', $this->ID, $status, $old_status );
 
 			$update_fields = array(
@@ -1395,6 +1429,15 @@ final class Give_Payment {
                     break;
 			}
 
+			/**
+			 * Fires after changing payment status.
+			 *
+			 * @since 1.5
+			 *
+			 * @param int    $payment_id Payment ID.
+			 * @param string $status     The new status.
+			 * @param string $old_status The old status.
+			 */
 			do_action( 'give_update_payment_status', $this->ID, $status, $old_status );
 
 		}
@@ -1524,6 +1567,13 @@ final class Give_Payment {
 			return;
 		}
 
+		/**
+		 * Fires before refunding payment.
+		 *
+		 * @since 1.5
+		 *
+		 * @param Give_Payment $this Payment object.
+		 */
 		do_action( 'give_pre_refund_payment', $this );
 
 		$decrease_store_earnings = apply_filters( 'give_decrease_store_earnings_on_refund', true, $this );
@@ -1536,6 +1586,13 @@ final class Give_Payment {
 		// Clear the This Month earnings (this_monththis_month is NOT a typo)
 		delete_transient( md5( 'give_earnings_this_monththis_month' ) );
 
+		/**
+		 * Fires after refunding payment.
+		 *
+		 * @since 1.5
+		 *
+		 * @param Give_Payment $this Payment object.
+		 */
 		do_action( 'give_post_refund_payment', $this );
 	}
 

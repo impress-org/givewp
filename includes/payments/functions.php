@@ -191,7 +191,14 @@ function give_insert_payment( $payment_data = array() ) {
 	//Save payment
 	$payment->save();
 
-	//Hook it
+	/**
+	 * Fires while inserting payments.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int   $payment_id   The payment ID.
+	 * @param array $payment_data Arguments passed.
+	 */
 	do_action( 'give_insert_payment', $payment->ID, $payment_data );
 
 	//Return payment ID upon success
@@ -271,6 +278,13 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
 		}
 	}
 
+	/**
+	 * Fires before deleting payment.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int $payment_id Payment ID.
+	 */
 	do_action( 'give_payment_delete', $payment_id );
 
 	if ( $customer->id && $update_customer ) {
@@ -295,6 +309,13 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
 		)
 	);
 
+	/**
+	 * Fires after payment deleted.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int $payment_id Payment ID.
+	 */
 	do_action( 'give_payment_deleted', $payment_id );
 }
 
@@ -1462,6 +1483,14 @@ function give_insert_payment_note( $payment_id = 0, $note = '' ) {
 		return false;
 	}
 
+	/**
+	 * Fires before inserting payment note.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int    $payment_id Payment ID.
+	 * @param string $note       The note.
+	 */
 	do_action( 'give_pre_insert_payment_note', $payment_id, $note );
 
 	$note_id = wp_insert_comment( wp_filter_comment( array(
@@ -1480,6 +1509,15 @@ function give_insert_payment_note( $payment_id = 0, $note = '' ) {
 
 	) ) );
 
+	/**
+	 * Fires after payment note inserted.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int    $note_id    Note ID.
+	 * @param int    $payment_id Payment ID.
+	 * @param string $note       The note.
+	 */
 	do_action( 'give_insert_payment_note', $note_id, $payment_id, $note );
 
 	return $note_id;
@@ -1500,8 +1538,26 @@ function give_delete_payment_note( $comment_id = 0, $payment_id = 0 ) {
 		return false;
 	}
 
+	/**
+	 * Fires before deleting payment note.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int $comment_id Note ID.
+	 * @param int $payment_id Payment ID.
+	 */
 	do_action( 'give_pre_delete_payment_note', $comment_id, $payment_id );
+
 	$ret = wp_delete_comment( $comment_id, true );
+
+	/**
+	 * Fires after payment note deleted.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int $comment_id Note ID.
+	 * @param int $payment_id Payment ID.
+	 */
 	do_action( 'give_post_delete_payment_note', $comment_id, $payment_id );
 
 	return $ret;

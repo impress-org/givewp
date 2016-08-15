@@ -51,12 +51,29 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 	$price_id       = $payment->price_id;
 	$form_id        = $payment->form_id;
 
+	/**
+	 * Fires before completing purchase/donation.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int $payment_id The ID of the payment.
+	 */
 	do_action( 'give_pre_complete_purchase', $payment_id );
 
 	// Ensure these actions only run once, ever
 	if ( empty( $completed_date ) ) {
 
 		give_record_sale_in_log( $form_id, $payment_id, $price_id, $creation_date );
+
+		/**
+		 * Fires after logging purchase/donation record.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int   $form_id      The ID number of the form.
+		 * @param int   $payment_id   The ID number of the payment.
+		 * @param array $payment_meta The payment meta.
+		 */
 		do_action( 'give_complete_form_donation', $form_id, $payment_id, $payment_meta );
 
 	}
@@ -86,9 +103,9 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 		$payment->save();
 
 		/**
-		 * Fires after a purchase/donation successfully complete.
+		 * Fires after completing purchase/donation.
 		 *
-		 * @since 1.6
+		 * @since 1.0
 		 *
 		 * @param int $payment_id The ID of the payment.
 		 */
