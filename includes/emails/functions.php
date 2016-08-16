@@ -58,6 +58,16 @@ function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 	$emails->send( $to_email, $subject, $message, $attachments );
 
 	if ( $admin_notice && ! give_admin_notices_disabled( $payment_id ) ) {
+		/**
+		 * Fires in the email donation receipt.
+		 *
+		 * When admin notices are not disabled, you can add new sale notices.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int   $payment_id   Payment id.
+		 * @param mixed $payment_data Payment meta data.
+		 */
 		do_action( 'give_admin_sale_notice', $payment_id, $payment_data );
 	}
 }

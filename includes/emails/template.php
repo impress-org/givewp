@@ -280,17 +280,45 @@ function give_render_receipt_in_browser() {
 	<!DOCTYPE html>
 	<html lang="en">
 	<head>
-		<?php do_action( 'give_receipt_head' ); ?>
+		<?php
+		/**
+		 * Fires in the receipt HEAD.
+		 *
+		 * @since 1.0
+		 */
+		do_action( 'give_receipt_head' );
+		?>
 	</head>
 	<body class="<?php echo apply_filters( 'give_receipt_page_body_class', 'give_receipt_page' ); ?>">
 
 	<div id="give_receipt_wrapper">
-		<?php do_action( 'give_render_receipt_in_browser_before' ); ?>
-		<?php echo do_shortcode( '[give_receipt payment_key=' . $key . ']' ); ?>
-		<?php do_action( 'give_render_receipt_in_browser_after' ); ?>
+		<?php
+		/**
+		 * Fires in the receipt template before the content.
+		 *
+		 * @since 1.0
+		 */
+		do_action( 'give_render_receipt_in_browser_before' );
+
+		echo do_shortcode( '[give_receipt payment_key=' . $key . ']' );
+
+		/**
+		 * Fires in the receipt template after the content.
+		 *
+		 * @since 1.0
+		 */
+		do_action( 'give_render_receipt_in_browser_after' );
+		?>
 	</div>
 
-	<?php do_action( 'give_receipt_footer' ); ?>
+	<?php
+	/**
+	 * Fires in the receipt footer.
+	 *
+	 * @since 1.0
+	 */
+	do_action( 'give_receipt_footer' );
+	?>
 	</body>
 	</html>
 	<?php
