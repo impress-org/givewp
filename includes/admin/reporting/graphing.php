@@ -231,7 +231,16 @@ function give_reports_graph() {
 				<?php endif; ?>
 			</table>
 
-			<?php do_action( 'give_reports_graph_additional_stats' ); ?>
+			<?php
+			/**
+			 * Fires on report graphs widget.
+			 *
+			 * Allows you to add additional stats to the widget.
+			 *
+			 * @since 1.0
+			 */
+			do_action( 'give_reports_graph_additional_stats' );
+			?>
 
 		</div>
 	</div>
@@ -507,6 +516,11 @@ function give_reports_graph_controls() {
 		$dates['day_end'] = cal_days_in_month( CAL_GREGORIAN, date( 'n' ), date( 'Y' ) );
 	}
 
+	/**
+	 * Fires before displaying report graph date filters.
+	 *
+	 * @since 1.0
+	 */
 	do_action( 'give_report_graph_controls_before' );
 	?>
 	<form id="give-graphs-filter" method="get" class="alignright">
@@ -571,6 +585,11 @@ function give_reports_graph_controls() {
 		</div>
 	</form>
 	<?php
+	/**
+	 * Fires after displaying report graph date filters.
+	 *
+	 * @since 1.0
+	 */
 	do_action( 'give_report_graph_controls_after' );
 }
 

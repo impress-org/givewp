@@ -69,7 +69,14 @@ function give_logs_view_api_requests() {
 	?>
 	<div class="wrap">
 
-		<?php do_action( 'give_logs_api_requests_top' ); ?>
+		<?php
+		/**
+		 * Fires before displaying API requests logs.
+		 *
+		 * @since 1.0
+		 */
+		do_action( 'give_logs_api_requests_top' );
+		?>
 
 		<form id="give-logs-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=logs' ); ?>">
 			<?php
@@ -80,7 +87,14 @@ function give_logs_view_api_requests() {
 			<input type="hidden" name="page" value="give-reports"/>
 			<input type="hidden" name="tab" value="logs"/>
 		</form>
-		<?php do_action( 'give_logs_api_requests_bottom' ); ?>
+		<?php
+		/**
+		 * Fires after displaying API requests logs.
+		 *
+		 * @since 1.0
+		 */
+		do_action( 'give_logs_api_requests_bottom' );
+		?>
 
 	</div>
 	<?php
@@ -126,7 +140,16 @@ function give_log_views() {
 			</optgroup>
 		</select>
 
-		<?php do_action( 'give_log_view_actions' ); ?>
+		<?php
+		/**
+		 * Fires after displaying the reports page views drop down.
+		 *
+		 * Allows you to add view actions.
+		 *
+		 * @since 1.0
+		 */
+		do_action( 'give_log_view_actions' );
+		?>
 
 		<input type="hidden" name="post_type" value="give_forms"/>
 		<input type="hidden" name="page" value="give-reports"/>

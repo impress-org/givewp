@@ -83,6 +83,11 @@ class Give_Forms_Widget extends WP_Widget{
 
 		echo $args['before_widget'];
 
+		/**
+		 * Fires before widget settings form in the admin area.
+		 *
+		 * @since 1.0
+		 */
 		do_action( 'give_before_forms_widget' );
 
 		echo $title ? $args['before_title'] . $title . $args['after_title'] : '';
@@ -91,6 +96,11 @@ class Give_Forms_Widget extends WP_Widget{
 
 		echo $args['after_widget'];
 
+		/**
+		 * Fires after widget settings form in the admin area.
+		 *
+		 * @since 1.0
+		 */
 		do_action( 'give_after_forms_widget' );
 	}
 

@@ -222,7 +222,15 @@ function give_send_to_gateway( $gateway, $payment_data ) {
 
 	$payment_data['gateway_nonce'] = wp_create_nonce( 'give-gateway' );
 
-	// $gateway must match the ID used when registering the gateway
+	/**
+	 * Fires while loading payment gateway via AJAX.
+	 *
+	 * The dynamic portion of the hook name '$gateway' must match the ID used when registering the gateway.
+	 *
+	 * @since 1.0
+	 *
+	 * @param array $payment_data All the payment data to be sent to the gateway.
+	 */
 	do_action( 'give_gateway_' . $gateway, $payment_data );
 }
 

@@ -217,18 +217,44 @@ class Give_Emails {
 
 		give_get_template_part( 'emails/header', $this->get_template(), true );
 
+		/**
+		 * Fires in the email head.
+		 *
+		 * @since 1.0
+		 *
+		 * @param Give_Emails $this The email object.
+		 */
 		do_action( 'give_email_header', $this );
 
 		if ( has_action( 'give_email_template_' . $this->get_template() ) ) {
+			/**
+			 * Fires in a specific email template.
+			 *
+			 * @since 1.0
+			 */
 			do_action( 'give_email_template_' . $this->get_template() );
 		} else {
 			give_get_template_part( 'emails/body', $this->get_template(), true );
 		}
 
+		/**
+		 * Fires in the email body.
+		 *
+		 * @since 1.0
+		 *
+		 * @param Give_Emails $this The email object.
+		 */
 		do_action( 'give_email_body', $this );
 
 		give_get_template_part( 'emails/footer', $this->get_template(), true );
 
+		/**
+		 * Fires in the email footer.
+		 *
+		 * @since 1.0
+		 *
+		 * @param Give_Emails $this The email object.
+		 */
 		do_action( 'give_email_footer', $this );
 
 		$body    = ob_get_clean();
@@ -255,6 +281,13 @@ class Give_Emails {
 			return false;
 		}
 
+		/**
+		 * Fires before sending an email.
+		 *
+		 * @since 1.0
+		 *
+		 * @param Give_Emails $this The email object.
+		 */
 		do_action( 'give_email_send_before', $this );
 
 		$subject = $this->parse_tags( $subject );
@@ -266,6 +299,13 @@ class Give_Emails {
 
 		$sent = wp_mail( $to, $subject, $message, $this->get_headers(), $attachments );
 
+		/**
+		 * Fires after sending an email.
+		 *
+		 * @since 1.0
+		 *
+		 * @param Give_Emails $this The email object.
+		 */
 		do_action( 'give_email_send_after', $this );
 
 		return $sent;

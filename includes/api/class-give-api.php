@@ -1041,7 +1041,11 @@ class Give_API {
 
 		if ( user_can( $this->user_id, 'view_give_sensitive_data' ) || $this->override ) {
 
-			//Sensitive data here
+			/**
+			 * Fires when generating API sensitive data.
+			 *
+			 * @since 1.1
+			 */
 			do_action( 'give_api_sensitive_data' );
 
 		}
@@ -1559,6 +1563,15 @@ class Give_API {
 
 		status_header( $status_code );
 
+		/**
+		 * Fires before outputing the API.
+		 *
+		 * @since 1.1
+		 *
+		 * @param array    $data   Response data to return.
+		 * @param Give_API $this   The Give_API object.
+		 * @param string   $format Output format, XML or JSON. Default is JSON.
+		 */
 		do_action( 'give_api_output_before', $this->data, $this, $format );
 
 		switch ( $format ) :
@@ -1585,13 +1598,29 @@ class Give_API {
 
 			default :
 
-				// Allow other formats to be added via extensions
+				/**
+				 * Fires by the API while outputing other formats.
+				 *
+				 * @since 1.1
+				 *
+				 * @param array    $data Response data to return.
+				 * @param Give_API $this The Give_API object.
+				 */
 				do_action( 'give_api_output_' . $format, $this->data, $this );
 
 				break;
 
 		endswitch;
 
+		/**
+		 * Fires after outputing the API.
+		 *
+		 * @since 1.1
+		 *
+		 * @param array    $data   Response data to return.
+		 * @param Give_API $this   The Give_API object.
+		 * @param string   $format Output format, XML or JSON. Default is JSON.
+		 */
 		do_action( 'give_api_output_after', $this->data, $this, $format );
 
 		give_die();
