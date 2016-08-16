@@ -36,7 +36,7 @@ add_filter( 'give_payment_gateways', 'give_offline_register_gateway', 1 );
  *
  * @since  1.0
  *
- * @param int $form_id
+ * @param  int $form_id Give form id.
  *
  * @return void
  */
@@ -51,9 +51,17 @@ function give_offline_payment_cc_form( $form_id ) {
 		$offline_instructions = $post_offline_instructions;
 	}
 
+	ob_start();
 
-	ob_start(); ?>
-	<?php do_action( 'give_before_offline_info_fields', $form_id ); ?>
+	/**
+	 * Fires before the offline info fields.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int $form_id Give form id.
+	 */
+	do_action( 'give_before_offline_info_fields', $form_id );
+	?>
 	<fieldset id="give_offline_payment_info">
 		<?php
 		$settings_url         = admin_url( 'post.php?post=' . $form_id . '&action=edit&message=1' );
@@ -62,8 +70,16 @@ function give_offline_payment_cc_form( $form_id ) {
 		echo wpautop( stripslashes( $offline_instructions ) );
 		?>
 	</fieldset>
-	<?php do_action( 'give_after_offline_info_fields', $form_id ); ?>
 	<?php
+	/**
+	 * Fires after the offline info fields.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int $form_id Give form id.
+	 */
+	do_action( 'give_after_offline_info_fields', $form_id );
+
 	echo ob_get_clean();
 }
 

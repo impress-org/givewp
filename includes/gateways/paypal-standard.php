@@ -183,6 +183,11 @@ add_action( 'give_gateway_paypal', 'give_process_paypal_purchase' );
 function give_listen_for_paypal_ipn() {
 	// Regular PayPal IPN
 	if ( isset( $_GET['give-listener'] ) && $_GET['give-listener'] == 'IPN' ) {
+		/**
+		 * Fires while verifying PayPal IPN
+		 *
+		 * @since 1.0
+		 */
 		do_action( 'give_verify_paypal_ipn' );
 	}
 }
@@ -315,10 +320,28 @@ function give_process_paypal_ipn() {
 	$payment_id = isset( $encoded_data_array['custom'] ) ? absint( $encoded_data_array['custom'] ) : 0;
 
 	if ( has_action( 'give_paypal_' . $encoded_data_array['txn_type'] ) ) {
-		// Allow PayPal IPN types to be processed separately
+		/**
+		 * Fires while processing PayPal IPN $txn_type.
+		 *
+		 * Allow PayPal IPN types to be processed separately.
+		 *
+		 * @since 1.0
+		 *
+		 * @param array $encoded_data_array Encoded data.
+		 * @param int   $payment_id         Payment id.
+		 */
 		do_action( 'give_paypal_' . $encoded_data_array['txn_type'], $encoded_data_array, $payment_id );
 	} else {
-		// Fallback to web accept just in case the txn_type isn't present
+		/**
+		 * Fires while process PayPal IPN.
+		 *
+		 * Fallback to web accept just in case the txn_type isn't present.
+		 *
+		 * @since 1.0
+		 *
+		 * @param array $encoded_data_array Encoded data.
+		 * @param int   $payment_id         Payment id.
+		 */
 		do_action( 'give_paypal_web_accept', $encoded_data_array, $payment_id );
 	}
 	exit;
