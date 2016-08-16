@@ -345,6 +345,14 @@ class Give_DB_Customers extends Give_DB {
 
 					}
 
+					/**
+					 * Fires after updating customer email on user update.
+					 *
+					 * @since 1.4.3
+					 * 
+					 * @param  WP_User       $user     WordPress User object.
+					 * @param  Give_Customer $customer Give customer object.
+					 */
 					do_action( 'give_update_customer_email_on_user_update', $user, $customer );
 
 				}
