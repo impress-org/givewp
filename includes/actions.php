@@ -24,9 +24,20 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function give_get_actions() {
-	if ( isset( $_GET['give_action'] ) ) {
-		do_action( 'give_' . $_GET['give_action'], $_GET );
+
+	$_get_action = $_GET['give_action'];
+
+	if ( isset( $_get_action ) ) {
+		/**
+		 * Fires in WordPress init, when give_action is present in $_GET.
+		 *
+		 * @since 1.0
+		 *
+		 * @param array $_GET Array of HTTP GET variables.
+		 */
+		do_action( "give_{$_get_action}", $_GET );
 	}
+
 }
 
 add_action( 'init', 'give_get_actions' );
@@ -41,9 +52,20 @@ add_action( 'init', 'give_get_actions' );
  * @return void
  */
 function give_post_actions() {
-	if ( isset( $_POST['give_action'] ) ) {
-		do_action( 'give_' . $_POST['give_action'], $_POST );
+
+	$_post_action = $_POST['give_action'];
+
+	if ( isset( $_post_action ) ) {
+		/**
+		 * Fires in WordPress init, when give_action is present in $_POST.
+		 *
+		 * @since 1.0
+		 *
+		 * @param array $_POST Array of HTTP POST variables.
+		 */
+		do_action( "give_{$_post_action}", $_POST );
 	}
+
 }
 
 add_action( 'init', 'give_post_actions' );
