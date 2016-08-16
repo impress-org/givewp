@@ -296,7 +296,7 @@ $payment_mode   = $payment->mode;
 												<?php
 												//Transaction Date
 												$date_format = get_option( 'date_format' );
-												echo date_i18n( $date_format, strtotime( $payment_date ) );
+												echo date_i18n( $date_format, $payment_date );
 												?>
 											</td>
 											<td>
