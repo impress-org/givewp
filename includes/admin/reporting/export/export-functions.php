@@ -36,6 +36,13 @@ function give_do_ajax_export() {
 		die( '-2' );
 	}
 
+	/**
+	 * Fires before batch export.
+	 *
+	 * @since 1.5
+	 *
+	 * @param string $class Export class.
+	 */
 	do_action( 'give_batch_export_class_include', $form['give-export-class'] );
 
 	$step   = absint( $_POST['step'] );

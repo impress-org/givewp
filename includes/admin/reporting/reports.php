@@ -55,12 +55,38 @@ function give_reports_page() {
 				'tab'              => 'tools',
 				'settings-updated' => false
 			), $current_page ) ); ?>" class="nav-tab <?php echo $active_tab == 'tools' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Tools', 'give' ); ?></a>
-			<?php do_action( 'give_reports_tabs' ); ?>
+			<?php
+			/**
+			 * Fires in the report tabs.
+			 *
+			 * Allows you to add new report tabs.
+			 *
+			 * @since 1.0
+			 */
+			do_action( 'give_reports_tabs' );
+			?>
 		</h2>
 
 		<?php
+		/**
+		 * Fires before the report page.
+		 *
+		 * @since 1.0
+		 */
 		do_action( 'give_reports_page_top' );
+
+		/**
+		 * Fires the report page active tab.
+		 *
+		 * @since 1.0
+		 */
 		do_action( 'give_reports_tab_' . $active_tab );
+
+		/**
+		 * Fires after the report page.
+		 *
+		 * @since 1.0
+		 */
 		do_action( 'give_reports_page_bottom' );
 		?>
 	</div><!-- .wrap -->
@@ -122,6 +148,11 @@ function give_reports_tab_reports() {
 		$current_view = $_GET['view'];
 	}
 
+	/**
+	 * Fires the report page view.
+	 *
+	 * @since 1.0
+	 */
 	do_action( 'give_reports_view_' . $current_view );
 }
 
@@ -136,6 +167,11 @@ add_action( 'give_reports_tab_reports', 'give_reports_tab_reports' );
 function give_report_views() {
 	$views        = give_reports_default_views();
 	$current_view = isset( $_GET['view'] ) ? $_GET['view'] : 'earnings';
+	/**
+	 * Fires before the report page actions form.
+	 *
+	 * @since 1.0
+	 */
 	do_action( 'give_report_view_actions_before' );
 	?>
 	<form id="give-reports-filter" method="get">
@@ -146,13 +182,27 @@ function give_report_views() {
 			<?php endforeach; ?>
 		</select>
 
-		<?php do_action( 'give_report_view_actions' ); ?>
+		<?php
+		/**
+		 * Fires in the report page actions area.
+		 *
+		 * Allows you to add new elements/actions after the "Report Type" drop down.
+		 *
+		 * @since 1.0
+		 */
+		do_action( 'give_report_view_actions' );
+		?>
 
 		<input type="hidden" name="post_type" value="give_forms"/>
 		<input type="hidden" name="page" value="give-reports"/>
 		<?php submit_button( esc_html__( 'Show', 'give' ), 'secondary', 'submit', false ); ?>
 	</form>
 	<?php
+	/**
+	 * Fires after the report page actions form.
+	 *
+	 * @since 1.0
+	 */
 	do_action( 'give_report_view_actions_after' );
 }
 
@@ -218,7 +268,14 @@ function give_reports_donors_table() {
 	$give_table->prepare_items();
 	?>
 	<div class="wrap give-reports-donors-wrap">
-		<?php do_action( 'give_logs_donors_table_top' ); ?>
+		<?php
+		/**
+		 * Fires before the donors log actions form.
+		 *
+		 * @since 1.0
+		 */
+		do_action( 'give_logs_donors_table_top' );
+		?>
 		<form id="give-donors-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-reports&view=donors' ); ?>">
 			<?php
 			$give_table->search_box( esc_html__( 'Search', 'give' ), 'give-donors' );
@@ -228,7 +285,14 @@ function give_reports_donors_table() {
 			<input type="hidden" name="page" value="give-reports"/>
 			<input type="hidden" name="view" value="donors"/>
 		</form>
-		<?php do_action( 'give_logs_donors_table_bottom' ); ?>
+		<?php
+		/**
+		 * Fires after the donors log actions form.
+		 *
+		 * @since 1.0
+		 */
+		do_action( 'give_logs_donors_table_bottom' );
+		?>
 	</div>
 	<?php
 }
@@ -287,7 +351,14 @@ function give_reports_tab_export() {
 		<div id="post-body">
 			<div id="post-body-content">
 
-				<?php do_action( 'give_reports_tab_export_content_top' ); ?>
+				<?php
+				/**
+				 * Fires before the reports export tab.
+				 *
+				 * @since 1.0
+				 */
+				do_action( 'give_reports_tab_export_content_top' );
+				?>
 
 				<table class="widefat export-options-table give-table">
 					<thead>
@@ -297,7 +368,16 @@ function give_reports_tab_export() {
 					</tr>
 					</thead>
 					<tbody>
-					<?php do_action( 'give_reports_tab_export_table_top' ); ?>
+					<?php
+					/**
+					 * Fires in the reports export tab.
+					 *
+					 * Allows you to add new TR elements to the table before other elements.
+					 *
+					 * @since 1.0
+					 */
+					do_action( 'give_reports_tab_export_table_top' );
+					?>
 					<tr class="give-export-pdf-sales-earnings">
 						<td class="row-title">
 							<h3><span><?php esc_html_e( 'Export PDF of Donations and Income', 'give' ); ?></span></h3>
@@ -428,11 +508,27 @@ function give_reports_tab_export() {
 							</form>
 						</td>
 					</tr>
-					<?php do_action( 'give_reports_tab_export_table_bottom' ); ?>
+					<?php
+					/**
+					 * Fires in the reports export tab.
+					 *
+					 * Allows you to add new TR elements to the table after other elements.
+					 *
+					 * @since 1.0
+					 */
+					do_action( 'give_reports_tab_export_table_bottom' );
+					?>
 					</tbody>
 				</table>
 
-				<?php do_action( 'give_reports_tab_export_content_bottom' ); ?>
+				<?php
+				/**
+				 * Fires after the reports export tab.
+				 *
+				 * @since 1.0
+				 */
+				do_action( 'give_reports_tab_export_content_bottom' );
+				?>
 
 			</div>
 			<!-- .post-body-content -->
@@ -461,6 +557,11 @@ function give_reports_tab_logs() {
 		$current_view = $_GET['view'];
 	}
 
+	/**
+	 * Fires the in report page logs view.
+	 *
+	 * @since 1.0
+	 */
 	do_action( 'give_logs_view_' . $current_view );
 }
 
