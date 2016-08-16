@@ -189,7 +189,7 @@ abstract class Give_DB {
 		 *
 		 * @param array $data
 		 */
-		do_action( 'give_pre_insert_' . $type, $data );
+		do_action( "give_pre_insert_{$type}", $data );
 
 		// Initialise column format array
 		$column_formats = $this->get_columns();
@@ -214,7 +214,7 @@ abstract class Give_DB {
 		 * @param int   $insert_id
 		 * @param array $data
 		 */
-		do_action( 'give_post_insert_' . $type, $wpdb->insert_id, $data );
+		do_action( "give_post_insert_{$type}", $wpdb->insert_id, $data );
 
 		return $wpdb->insert_id;
 	}

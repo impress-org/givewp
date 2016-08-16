@@ -118,7 +118,7 @@ function give_get_template_part( $slug, $name = null, $load = true ) {
 	 * @param string $slug Template part file slug {slug}.php.
 	 * @param string $name Template part file name {slug}-{name}.php.
 	 */
-	do_action( 'get_template_part_' . $slug, $slug, $name );
+	do_action( "get_template_part_{$slug}", $slug, $name );
 
 	// Setup possible parts
 	$templates = array();

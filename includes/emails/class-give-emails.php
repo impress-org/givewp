@@ -213,9 +213,11 @@ class Give_Emails {
 
 		$message = $this->text_to_html( $message );
 
+		$template = $this->get_template();
+
 		ob_start();
 
-		give_get_template_part( 'emails/header', $this->get_template(), true );
+		give_get_template_part( 'emails/header', $template, true );
 
 		/**
 		 * Fires in the email head.
@@ -226,15 +228,15 @@ class Give_Emails {
 		 */
 		do_action( 'give_email_header', $this );
 
-		if ( has_action( 'give_email_template_' . $this->get_template() ) ) {
+		if ( has_action( 'give_email_template_' . $template ) ) {
 			/**
 			 * Fires in a specific email template.
 			 *
 			 * @since 1.0
 			 */
-			do_action( 'give_email_template_' . $this->get_template() );
+			do_action( "give_email_template_{$template}" );
 		} else {
-			give_get_template_part( 'emails/body', $this->get_template(), true );
+			give_get_template_part( 'emails/body', $template, true );
 		}
 
 		/**
@@ -246,7 +248,7 @@ class Give_Emails {
 		 */
 		do_action( 'give_email_body', $this );
 
-		give_get_template_part( 'emails/footer', $this->get_template(), true );
+		give_get_template_part( 'emails/footer', $template, true );
 
 		/**
 		 * Fires in the email footer.
