@@ -482,47 +482,76 @@ $payment_mode   = $payment->mode;
 									<span><?php esc_html_e( 'Donor Details', 'give' ); ?></span>
 								</h3>
 
-								<div class="inside give-clearfix">
+								<div class="inside">
 
 									<?php $customer = new Give_Customer( $customer_id ); ?>
 
 									<div class="column-container customer-info">
 										<div class="column">
-											<?php echo Give()->html->donor_dropdown( array(
-												'selected' => $customer->id,
-												'name'     => 'customer-id'
-											) ); ?>
+											<p>
+												<strong><?php esc_html_e( 'Donor ID:', 'give' ); ?></strong><br>
+												<?php
+												if ( ! empty( $customer->id ) ) :
+													printf(
+														'<a href="%1$s" target="_blank">#%2$s</a>',
+														admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $customer->id ),
+														$customer->id
+													);
+												endif;
+												?>
+											</p>
+											<p>
+												<strong><?php esc_html_e( 'Donor Since:', 'give' ); ?></strong><br>
+												<?php echo date_i18n( get_option( 'date_format' ), strtotime( $customer->date_created ) ) ?>
+											</p>
 										</div>
 										<div class="column">
-											<input type="hidden" name="give-current-customer" value="<?php echo $customer->id; ?>"/>
+											<p>
+												<strong><?php esc_html_e( 'Donor Name:', 'give' ); ?></strong><br>
+												<?php echo $customer->name; ?>
+											</p>
+											<p>
+												<strong><?php esc_html_e( 'Donor Email:', 'give' ); ?></strong><br>
+												<?php echo $customer->email; ?>
+											</p>
 										</div>
 										<div class="column">
-											<?php if ( ! empty( $customer->id ) ) : ?>
-												<?php $customer_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $customer->id ); ?>
-												<a href="<?php echo $customer_url; ?>"><?php esc_html_e( 'View Donor Details', 'give' ); ?></a>
-												&nbsp;|&nbsp;
-											<?php endif; ?>
-											<a href="#new" class="give-payment-new-customer"><?php esc_html_e( 'New Donor', 'give' ); ?></a>
+											<p>
+												<strong><?php esc_html_e( 'Change Donor:', 'give' ); ?></strong><br>
+												<?php
+												echo Give()->html->donor_dropdown( array(
+													'selected' => $customer->id,
+													'name'     => 'customer-id'
+												) );
+												?>
+											</p>
+											<p>
+												<a href="#new" class="give-payment-new-customer"><?php esc_html_e( 'Create New Donor', 'give' ); ?></a>
+											</p>
 										</div>
 									</div>
 
 									<div class="column-container new-customer" style="display: none">
 										<div class="column">
-											<label for="give-new-customer-name"><?php esc_html_e( 'Name:', 'give' ); ?></label>&nbsp;
-											<input id="give-new-customer-name" type="text" name="give-new-customer-name" value="" class="medium-text"/>
+											<p>
+												<label for="give-new-customer-name"><?php esc_html_e( 'New Donor Name:', 'give' ); ?></label>
+												<input id="give-new-customer-name" type="text" name="give-new-customer-name" value="" class="medium-text"/>
+											</p>
 										</div>
 										<div class="column">
-											<label for="give-new-customer-email"><?php esc_html_e( 'Email:', 'give' ); ?></label>&nbsp;
-											<input id="give-new-customer-email" type="email" name="give-new-customer-email" value="" class="medium-text"/>
+											<p>
+												<label for="give-new-customer-email"><?php esc_html_e( 'New Donor Email:', 'give' ); ?></label>
+												<input id="give-new-customer-email" type="email" name="give-new-customer-email" value="" class="medium-text"/>
+											</p>
 										</div>
 										<div class="column">
-											<input type="hidden" id="give-new-customer" name="give-new-customer" value="0"/>
-											<a href="#cancel" class="give-payment-new-customer-cancel give-delete"><?php esc_html_e( 'Cancel', 'give' ); ?></a>
-										</div>
-										<div class="column">
-											<small>
-												<em><?php esc_html_e( '* Click "Save Payment" to create new donor.', 'give' ); ?></em>
-											</small>
+											<p>
+												<input type="hidden" name="give-current-customer" value="<?php echo $customer->id; ?>"/>
+												<input type="hidden" id="give-new-customer" name="give-new-customer" value="0"/>
+												<a href="#cancel" class="give-payment-new-customer-cancel give-delete"><?php esc_html_e( 'Cancel', 'give' ); ?></a>
+												<br>
+												<em><?php esc_html_e( 'Click "Save Payment" to create new donor.', 'give' ); ?></em>
+											</p>
 										</div>
 									</div>
 
