@@ -380,7 +380,7 @@ $payment_mode   = $payment->mode;
 												<?php
 												//Transaction Date
 												$date_format = get_option( 'date_format' );
-												echo date_i18n( $date_format, strtotime( $payment_date ) );
+												echo date_i18n( $date_format, $payment_date );
 												?>
 											</p>
 											<p>
@@ -422,6 +422,7 @@ $payment_mode   = $payment->mode;
 												 */
 												do_action( 'give_donation_details_thead_before', $payment_id );
 
+												
 												/**
 												 * Fires in order details page, in the donation-information metabox, after the head elements.
 												 *
