@@ -80,7 +80,7 @@ function give_reports_page() {
 		 *
 		 * @since 1.0
 		 */
-		do_action( 'give_reports_tab_' . $active_tab );
+		do_action( "give_reports_tab_{$active_tab}" );
 
 		/**
 		 * Fires after the report page.
@@ -153,7 +153,7 @@ function give_reports_tab_reports() {
 	 *
 	 * @since 1.0
 	 */
-	do_action( 'give_reports_view_' . $current_view );
+	do_action( "give_reports_view_{$current_view}" );
 }
 
 add_action( 'give_reports_tab_reports', 'give_reports_tab_reports' );
@@ -562,7 +562,7 @@ function give_reports_tab_logs() {
 	 *
 	 * @since 1.0
 	 */
-	do_action( 'give_logs_view_' . $current_view );
+	do_action( "give_logs_view_{$current_view}" );
 }
 
 add_action( 'give_reports_tab_logs', 'give_reports_tab_logs' );

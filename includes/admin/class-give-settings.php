@@ -1294,7 +1294,16 @@ add_action( 'give_settings_tab_api_keys', 'give_api_callback' );
  * @return void
  */
 function give_hook_callback( $args ) {
-	do_action( 'give_' . $args['id'] );
+
+	$id = $args['id'];
+
+	/**
+	 * Fires in give field.
+	 *
+	 * @since 1.0
+	 */
+	do_action( "give_{$id}" );
+
 }
 
 /**

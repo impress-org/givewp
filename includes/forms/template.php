@@ -195,7 +195,7 @@ function give_show_purchase_form( $form_id ) {
 
 		// Load the credit card form and allow gateways to load their own if they wish
 		if ( has_action( 'give_' . $payment_mode . '_cc_form' ) ) {
-			do_action( 'give_' . $payment_mode . '_cc_form', $form_id );
+			do_action( "give_{$payment_mode}_cc_form", $form_id );
 		} else {
 			do_action( 'give_cc_form', $form_id );
 		}

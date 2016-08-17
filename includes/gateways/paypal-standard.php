@@ -318,8 +318,9 @@ function give_process_paypal_ipn() {
 	$encoded_data_array = wp_parse_args( $encoded_data_array, $defaults );
 
 	$payment_id = isset( $encoded_data_array['custom'] ) ? absint( $encoded_data_array['custom'] ) : 0;
+	$txn_type = $encoded_data_array['txn_type'];
 
-	if ( has_action( 'give_paypal_' . $encoded_data_array['txn_type'] ) ) {
+	if ( has_action( 'give_paypal_' . $txn_type ) ) {
 		/**
 		 * Fires while processing PayPal IPN $txn_type.
 		 *
@@ -330,7 +331,7 @@ function give_process_paypal_ipn() {
 		 * @param array $encoded_data_array Encoded data.
 		 * @param int   $payment_id         Payment id.
 		 */
-		do_action( 'give_paypal_' . $encoded_data_array['txn_type'], $encoded_data_array, $payment_id );
+		do_action( "give_paypal_{$txn_type}", $encoded_data_array, $payment_id );
 	} else {
 		/**
 		 * Fires while process PayPal IPN.

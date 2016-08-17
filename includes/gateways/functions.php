@@ -231,7 +231,7 @@ function give_send_to_gateway( $gateway, $payment_data ) {
 	 *
 	 * @param array $payment_data All the payment data to be sent to the gateway.
 	 */
-	do_action( 'give_gateway_' . $gateway, $payment_data );
+	do_action( "give_gateway_{$gateway}", $payment_data );
 }
 
 

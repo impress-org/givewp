@@ -1606,7 +1606,7 @@ class Give_API {
 				 * @param array    $data Response data to return.
 				 * @param Give_API $this The Give_API object.
 				 */
-				do_action( 'give_api_output_' . $format, $this->data, $this );
+				do_action( "give_api_output_{$format}", $this->data, $this );
 
 				break;
 
