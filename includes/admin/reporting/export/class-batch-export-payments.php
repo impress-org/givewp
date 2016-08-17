@@ -55,7 +55,7 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 			'amount'    => esc_html__( 'Amount', 'give' ) . ' (' . html_entity_decode( give_currency_filter( '' ) ) . ')',
 			'gateway'   => esc_html__( 'Payment Method', 'give' ),
 			'trans_id'  => esc_html__( 'Transaction ID', 'give' ),
-			'key'       => esc_html__( 'Purchase Key', 'give' ),
+			'key'       => esc_html__( 'Key', 'give' ),
 			'date'      => esc_html__( 'Date', 'give' ),
 			'user'      => esc_html__( 'User', 'give' ),
 			'status'    => esc_html__( 'Status', 'give' )

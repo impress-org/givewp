@@ -65,7 +65,7 @@ function give_load_scripts() {
 		'loading'         => esc_html__( 'Loading', 'give' ),
 		// General loading message
 		'select_option'   => esc_html__( 'Please select an option', 'give' ),
-		// Variable pricing error with multi-purchase option enabled
+		// Variable pricing error with multi-donation option enabled
 		'default_gateway' => give_get_default_gateway( null ),
 		'permalinks'      => get_option( 'permalink_structure' ) ? '1' : '0',
 		'number_decimals' => give_get_price_decimals()

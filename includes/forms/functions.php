@@ -153,7 +153,7 @@ function give_send_to_success_page( $query_string = null ) {
 /**
  * Send back to checkout.
  *
- * Used to redirect a user back to the purchase
+ * Used to redirect a user back to the checkout
  * page if there are errors present.
  *
  * @param array $args
@@ -322,7 +322,7 @@ function give_record_sale_in_log( $give_form_id = 0, $payment_id, $price_id = fa
  * @since 1.0
  *
  * @param int $form_id Give Form ID
- * @param int $quantity Quantity to increase purchase count by
+ * @param int $quantity Quantity to increase donation count by
  *
  * @return bool|int
  */
@@ -339,7 +339,7 @@ function give_increase_purchase_count( $form_id = 0, $quantity = 1 ) {
  * @since 1.0
  *
  * @param int $form_id  Give Form ID
- * @param int $quantity Quantity to increase purchase count by
+ * @param int $quantity Quantity to increase donation count by
  *
  * @return bool|int
  */
@@ -367,7 +367,7 @@ function give_increase_earnings( $give_form_id = 0, $amount ) {
 }
 
 /**
- * Decreases the total earnings of a form. Primarily for when a purchase is refunded.
+ * Decreases the total earnings of a form. Primarily for when a donation is refunded.
  *
  * @since 1.0
  *

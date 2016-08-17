@@ -28,7 +28,7 @@ if ( ! isset( $_GET['id'] ) || ! is_numeric( $_GET['id'] ) ) {
 $payment_id = absint( $_GET['id'] );
 $payment    = new Give_Payment( $payment_id );
 
-// Sanity check... fail if purchase ID is invalid
+// Sanity check... fail if donation ID is invalid
 $payment_exists = $payment->ID;
 if ( empty( $payment_exists ) ) {
 	wp_die( esc_html__( 'The specified ID does not belong to a payment. Please try again.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );

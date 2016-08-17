@@ -162,7 +162,7 @@ function give_get_donation_form( $args = array() ) {
 
 /**
  *
- * Give Show Purchase Form
+ * Give Show Donation Form
  *
  * Renders the Donation Form, hooks are provided to add to the checkout form.
  * The default Donation Form rendered displays a list of the enabled payment
@@ -518,7 +518,7 @@ function give_user_info_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'give_email', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
-				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'We will send the purchase receipt to this address.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'We will send the donation receipt to this address.', 'give' ); ?>"></span>
 			</label>
 
 			<input class="give-input required" type="email" name="give_email" placeholder="<?php esc_attr_e( 'Email Address', 'give' ); ?>" id="give-email" value="<?php echo is_user_logged_in() ? $user_data->user_email : ''; ?>"<?php if ( give_field_is_required( 'give_email', $form_id ) ) {
@@ -1059,7 +1059,7 @@ add_action( 'give_purchase_form_before_submit', 'give_terms_agreement', 10, 1 );
 /**
  * Checkout Final Total
  *
- * Shows the final purchase total at the bottom of the checkout page
+ * Shows the final total at the bottom of the checkout page
  *
  * @since  1.0
  *
@@ -1118,9 +1118,9 @@ add_action( 'give_purchase_form_after_cc_form', 'give_checkout_submit', 9999 );
 
 
 /**
- * Give Checkout Button Purchase
+ * Give Checkout Button
  *
- * Renders the Purchase button on the Checkout
+ * Renders the donation button on the Checkout
  * @since  1.0
  *
  * @param  int $form_id

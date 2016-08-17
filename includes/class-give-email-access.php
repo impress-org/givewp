@@ -195,7 +195,7 @@ class Give_Email_Access {
 		// Generate a new verify key
 		$this->set_verify_key( $customer_id, $email, $verify_key );
 
-		// Get the purchase history URL
+		// Get the donation history page
 		$page_id = give_get_option( 'history_page' );
 
 		$access_url = add_query_arg( array(
@@ -360,7 +360,7 @@ class Give_Email_Access {
 	}
 
 	/**
-	 * Users purchases args
+	 * Users donations args
 	 *
 	 * Force Give to find donations by email, not user ID.
 	 *

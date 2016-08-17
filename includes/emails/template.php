@@ -258,7 +258,7 @@ function give_get_donation_notification_body_content( $payment_id = 0, $payment_
  *
  * A link is added to the Donation Receipt to view the email in the browser and
  * this function renders the Donation Receipt in the browser. It overrides the
- * Purchase Receipt template and provides its only styling.
+ * Donation Receipt template and provides its only styling.
  *
  * @since  1.0
  */

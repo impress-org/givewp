@@ -295,7 +295,7 @@ function give_record_gateway_error( $title = '', $message = '', $parent = 0 ) {
 }
 
 /**
- * Counts the number of purchases made with a gateway
+ * Counts the number of donations made with a gateway
  *
  * @since 1.0
  *

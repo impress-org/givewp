@@ -15,9 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Complete a purchase aka donation
+ * Complete a donation
  *
- * Performs all necessary actions to complete a purchase.
+ * Performs all necessary actions to complete a donation.
  * Triggered by the give_update_payment_status() function.
  *
  * @since  1.0
@@ -52,7 +52,7 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 	$form_id        = $payment->form_id;
 
 	/**
-	 * Fires before completing purchase/donation.
+	 * Fires before completing donation.
 	 *
 	 * @since 1.0
 	 *
@@ -66,7 +66,7 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 		give_record_sale_in_log( $form_id, $payment_id, $price_id, $creation_date );
 
 		/**
-		 * Fires after logging purchase/donation record.
+		 * Fires after logging donation record.
 		 *
 		 * @since 1.0
 		 *
@@ -88,7 +88,7 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 	delete_transient( md5( 'give_earnings_this_monththis_month' ) );
 	delete_transient( md5( 'give_earnings_todaytoday' ) );
 	
-	// Increase the donor's purchase stats
+	// Increase the donor's donation stats
 	$customer = new Give_Customer( $customer_id );
 	$customer->increase_purchase_count();
 	$customer->increase_value( $amount );
@@ -103,7 +103,7 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 		$payment->save();
 
 		/**
-		 * Fires after completing purchase/donation.
+		 * Fires after completing donation.
 		 *
 		 * @since 1.0
 		 *
@@ -151,7 +151,7 @@ add_action( 'give_update_payment_status', 'give_record_status_change', 100, 3 );
 /**
  * Clear User History Cache
  *
- * Flushes the current user's purchase history transient when a payment status
+ * Flushes the current user's donation history transient when a payment status
  * is updated.
  *
  * @since  1.0
@@ -177,7 +177,7 @@ add_action( 'give_update_payment_status', 'give_clear_user_history_cache', 10, 3
 /**
  * Update Old Payments Totals
  *
- * Updates all old payments, prior to 1.2, with new meta for the total purchase amount.
+ * Updates all old payments, prior to 1.2, with new meta for the total donation amount.
  *
  * It's done to query payments by their totals.
  *

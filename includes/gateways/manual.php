@@ -23,12 +23,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 add_action( 'give_manual_cc_form', '__return_false' );
 
 /**
- * Processes the purchase data and uses the Manual Payment gateway to record
- * the donation in the Purchase History
+ * Processes the donation data and uses the Manual Payment gateway to record
+ * the donation in the Donation History
  *
  * @since 1.0
  *
- * @param array $purchase_data Purchase Data
+ * @param array $purchase_data Donation Data
  *
  * @return void
  */
@@ -67,7 +67,7 @@ function give_manual_payment( $purchase_data ) {
 			),
 			$payment
 		);
-		// If errors are present, send the user back to the purchase page so they can be corrected
+		// If errors are present, send the user back to the donation page so they can be corrected
 		give_send_back_to_checkout( '?payment-mode=' . $purchase_data['post_data']['give-gateway'] );
 	}
 }

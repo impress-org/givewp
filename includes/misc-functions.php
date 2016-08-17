@@ -314,9 +314,9 @@ function give_get_ip() {
 
 
 /**
- * Store Purchase Data in Sessions
+ * Store Donation Data in Sessions
  *
- * Used for storing info about purchase
+ * Used for storing info about donation
  *
  * @since 1.0
  *
@@ -330,10 +330,10 @@ function give_set_purchase_session( $purchase_data = array() ) {
 }
 
 /**
- * Retrieve Purchase Data from Session
+ * Retrieve Donation Data from Session
  *
- * Used for retrieving info about purchase
- * after completing a purchase
+ * Used for retrieving info about donation
+ * after completing a donation
  *
  * @since 1.0
  * @uses  Give()->session->get()
@@ -344,9 +344,9 @@ function give_get_purchase_session() {
 }
 
 /**
- * Get Purchase Summary
+ * Get Donation Summary
  *
- * Retrieves the purchase summary.
+ * Retrieves the donation summary.
  *
  * @since       1.0
  *
