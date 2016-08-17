@@ -810,10 +810,14 @@ function give_get_register_fields( $form_id ) {
 		<?php do_action( 'give_register_fields_before', $form_id ); ?>
 
 		<fieldset id="give-register-account-fields-<?php echo $form_id; ?>">
-			<legend><?php echo apply_filters( 'give_create_account_fieldset_heading', esc_html__( 'Create an account', 'give' ) );
+			<legend>
+				<?php
+				echo apply_filters( 'give_create_account_fieldset_heading', esc_html__( 'Create an account', 'give' ) );
 				if ( ! give_logged_in_only( $form_id ) ) {
 					echo ' <span class="sub-text">' . esc_html__( '(optional)', 'give' ) . '</span>';
-				} ?></legend>
+				}
+				?>
+			</legend>
 			<?php do_action( 'give_register_account_fields_before', $form_id ); ?>
 			<div id="give-user-login-wrap-<?php echo $form_id; ?>" class="form-row form-row-one-third form-row-first">
 				<label for="give-user-login-<?php echo $form_id; ?>">
@@ -824,9 +828,7 @@ function give_get_register_fields( $form_id ) {
 					<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The username you will use to log into your account.', 'give' ); ?>"></span>
 				</label>
 
-				<input name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" class="<?php if ( give_logged_in_only( $form_id ) ) {
-					echo 'required ';
-				} ?>give-input" type="text" placeholder="<?php esc_attr_e( 'Username', 'give' ); ?>"/>
+				<input name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" class="give-input" type="text" placeholder="<?php esc_attr_e( 'Username', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required ' : ''; ?>/>
 			</div>
 
 			<div id="give-user-pass-wrap-<?php echo $form_id; ?>" class="form-row form-row-one-third">
@@ -838,9 +840,7 @@ function give_get_register_fields( $form_id ) {
 					<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The password used to access your account.', 'give' ); ?>"></span>
 				</label>
 
-				<input name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>" class="<?php if ( give_logged_in_only( $form_id ) ) {
-					echo 'required ';
-				} ?>give-input" placeholder="<?php esc_attr_e( 'Password', 'give' ); ?>" type="password"/>
+				<input name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>" class="give-input" placeholder="<?php esc_attr_e( 'Password', 'give' ); ?>" type="password"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required ' : ''; ?>/>
 			</div>
 
 			<div id="give-user-pass-confirm-wrap-<?php echo $form_id; ?>" class="give-register-password form-row form-row-one-third">
@@ -852,9 +852,7 @@ function give_get_register_fields( $form_id ) {
 					<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'Please retype your password to confirm.', 'give' ); ?>"></span>
 				</label>
 
-				<input name="give_user_pass_confirm" id="give-user-pass-confirm-<?php echo $form_id; ?>" class="<?php if ( give_logged_in_only( $form_id ) ) {
-					echo 'required ';
-				} ?>give-input" placeholder="<?php esc_attr_e( 'Confirm password', 'give' ); ?>" type="password"/>
+				<input name="give_user_pass_confirm" id="give-user-pass-confirm-<?php echo $form_id; ?>" class="give-input" placeholder="<?php esc_attr_e( 'Confirm password', 'give' ); ?>" type="password"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required ' : ''; ?>/>
 			</div>
 			<?php do_action( 'give_register_account_fields_after', $form_id ); ?>
 		</fieldset>
