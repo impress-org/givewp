@@ -27,9 +27,14 @@ function give_get_actions() {
 
 	$_get_action = ! empty( $_GET['give_action'] ) ? $_GET['give_action'] : null;
 
+	// Add backward compatibility to give-action param ( $_GET or $_POST )
+	if(  doing_action( 'admin_init' ) && empty( $_get_action ) ) {
+		$_get_action = ! empty( $_GET['give-action'] ) ? $_GET['give-action'] : null;
+	}
+
 	if ( isset( $_get_action ) ) {
 		/**
-		 * Fires in WordPress init, when give_action is present in $_GET.
+		 * Fires in WordPress init or admin init, when give_action is present in $_GET.
 		 *
 		 * @since 1.0
 		 *
@@ -41,6 +46,7 @@ function give_get_actions() {
 }
 
 add_action( 'init', 'give_get_actions' );
+add_action( 'admin_init', 'give_get_actions' );
 
 /**
  * Hooks Give actions, when present in the $_POST superglobal. Every give_action
@@ -55,9 +61,15 @@ function give_post_actions() {
 
 	$_post_action = ! empty( $_POST['give_action'] ) ? $_POST['give_action'] : null;
 
+
+	// Add backward compatibility to give-action param ( $_GET or $_POST )
+	if(  doing_action( 'admin_init' ) && empty( $_post_action ) ) {
+		$_post_action = ! empty( $_POST['give-action'] ) ? $_POST['give-action'] : null;
+	}
+
 	if ( isset( $_post_action ) ) {
 		/**
-		 * Fires in WordPress init, when give_action is present in $_POST.
+		 * Fires in WordPress init or admin init, when give_action is present in $_POST.
 		 *
 		 * @since 1.0
 		 *
@@ -69,3 +81,4 @@ function give_post_actions() {
 }
 
 add_action( 'init', 'give_post_actions' );
+add_action( 'admin_init', 'give_post_actions' );
