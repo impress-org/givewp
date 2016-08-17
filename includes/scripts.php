@@ -46,7 +46,19 @@ function give_load_scripts() {
 		'general_loading'     => esc_html__( 'Loading...', 'give' ),
 		'purchase_loading'    => esc_html__( 'Please Wait...', 'give' ),
 		'number_decimals'     => give_get_price_decimals(),
-		'give_version'        => GIVE_VERSION
+		'give_version'        => GIVE_VERSION,
+		'form_translation'    => apply_filters(
+			'give_form_translation_js',
+			array(
+				// Field name               Validation message.
+				'payment-mode'           => esc_html__( 'Please select payment mode.', 'give' ),
+				'give_first'             => esc_html__( 'Please enter your first name.', 'give' ),
+				'give_email'             => esc_html__( 'Please enter a valid email address.', 'give' ),
+				'give_user_login'        => esc_html__( 'Invalid username. Only lowercase letters (a-z) and numbers are allowed.', 'give' ),
+				'give_user_pass'         => esc_html__( 'Enter a password.', 'give' ),
+				'give_user_pass_confirm' => esc_html__( 'Enter a confirm password.', 'give' ),
+			)
+		)
 	) );
 	$localize_give_ajax     = apply_filters( 'give_global_ajax_vars', array(
 		'ajaxurl'         => give_get_ajax_url(),

@@ -164,6 +164,10 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 == Changelog ==
 
+= 1.6.1 =
+* Fix: Donation date discrepancy in transaction details view - https://github.com/WordImpress/Give/issues/898
+
+
 = 1.6: August 11, 2016 =
 * New: Added email tag support to Offline Donation Admin Notification - https://github.com/WordImpress/Give/issues/846
 * New: Added a "Reset Password" option to the donation form if the user is prompted to login - https://github.com/WordImpress/Give/issues/723

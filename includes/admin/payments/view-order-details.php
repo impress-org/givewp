@@ -380,7 +380,7 @@ $payment_mode   = $payment->mode;
 												<?php
 												//Transaction Date
 												$date_format = get_option( 'date_format' );
-												echo date_i18n( $date_format, strtotime( $payment_date ) );
+												echo date_i18n( $date_format, $payment_date );
 												?>
 											</p>
 											<p>
@@ -422,6 +422,7 @@ $payment_mode   = $payment->mode;
 												 */
 												do_action( 'give_donation_details_thead_before', $payment_id );
 
+												
 												/**
 												 * Fires in order details page, in the donation-information metabox, after the head elements.
 												 *
@@ -476,7 +477,7 @@ $payment_mode   = $payment->mode;
 							do_action( 'give_view_order_details_files_after', $payment_id );
 							?>
 
-							<div id="give-customer-details" class="postbox">
+							<div id="give-donor-details" class="postbox">
 								<h3 class="hndle"><?php esc_html_e( 'Donor Details', 'give' ); ?></h3>
 
 								<div class="inside">
@@ -578,7 +579,7 @@ $payment_mode   = $payment->mode;
 								</div>
 								<!-- /.inside -->
 							</div>
-							<!-- /#give-customer-details -->
+							<!-- /#give-donor-details -->
 
 							<?php
 							/**
