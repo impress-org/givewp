@@ -583,13 +583,13 @@ class Give_Welcome {
 		foreach ( $contributors as $contributor ) {
 			$contributor_list .= '<li class="wp-person">';
 			$contributor_list .= sprintf(
-				'<a href="%1$s"><img src="%2$s" width="64" height="64" class="gravatar" alt="%3$s" /></a>',
+				'<a href="%1$s" target="_blank"><img src="%2$s" width="64" height="64" class="gravatar" alt="%3$s" /></a>',
 				esc_url( 'https://github.com/' . $contributor->login ),
 				esc_url( $contributor->avatar_url ),
 				esc_attr( $contributor->login )
 			);
 			$contributor_list .= sprintf(
-				'<a class="web" href="%1$s">%2$s</a>',
+				'<a class="web" target="_blank" href="%1$s">%2$s</a>',
 				esc_url( 'https://github.com/' . $contributor->login ),
 				esc_html( $contributor->login )
 			);
