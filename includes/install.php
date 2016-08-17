@@ -98,8 +98,8 @@ function give_run_install() {
 		// Failed Purchase Page
 		$failed = wp_insert_post(
 			array(
-				'post_title'     => esc_html__( 'Transaction Failed', 'give' ),
-				'post_content'   => esc_html__( 'We\'re sorry, your transaction failed to process. Please try again or contact site support.', 'give' ),
+				'post_title'     => esc_html__( 'Donation Failed', 'give' ),
+				'post_content'   => esc_html__( 'We\'re sorry, your donation failed to process. Please try again or contact site support.', 'give' ),
 				'post_status'    => 'publish',
 				'post_author'    => 1,
 				'post_type'      => 'page',

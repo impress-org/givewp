@@ -1358,13 +1358,13 @@ function give_get_payment_fees( $payment_id = 0, $type = 'all' ) {
 }
 
 /**
- * Retrieves the transaction ID for the given payment
+ * Retrieves the donation ID
  *
  * @since  1.0
  *
  * @param int $payment_id Payment ID
  *
- * @return string The Transaction ID
+ * @return string The donation ID
  */
 function give_get_payment_transaction_id( $payment_id = 0 ) {
 	$payment = new Give_Payment( $payment_id );

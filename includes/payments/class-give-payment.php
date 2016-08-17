@@ -1922,12 +1922,12 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Setup the transaction ID
+	 * Setup the donation ID
 	 *
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @return string The transaction ID for the payment
+	 * @return string The donation ID
 	 */
 	private function setup_transaction_id() {
 		$transaction_id = $this->get_meta( '_give_payment_transaction_id', true );
@@ -2234,12 +2234,12 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Retrieve payment transaction ID
+	 * Retrieve donation ID
 	 *
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @return string Transaction ID from merchant processor
+	 * @return string Donation ID from merchant processor
 	 */
 	private function get_transaction_id() {
 		return apply_filters( 'give_get_payment_transaction_id', $this->transaction_id, $this->ID, $this );

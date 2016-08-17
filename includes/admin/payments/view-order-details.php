@@ -282,7 +282,7 @@ $payment_mode   = $payment->mode;
 										<?php if ( $transaction_id ) : ?>
 											<div class="give-order-tx-id give-admin-box-inside">
 												<p>
-													<strong><?php esc_html_e( 'Transaction ID:', 'give' ); ?></strong>&nbsp;
+													<strong><?php esc_html_e( 'Donation ID:', 'give' ); ?></strong>&nbsp;
 													<?php echo apply_filters( 'give_payment_details_transaction_id-' . $gateway, $transaction_id, $payment_id ); ?>
 												</p>
 											</div>
@@ -377,11 +377,7 @@ $payment_mode   = $payment->mode;
 										<div class="column">
 											<p>
 												<strong><?php esc_html_e( 'Donation Date:', 'give' ); ?></strong><br>
-												<?php
-												//Transaction Date
-												$date_format = get_option( 'date_format' );
-												echo date_i18n( $date_format, $payment_date );
-												?>
+												<?php echo date_i18n( get_option( 'date_format' ), $payment_date ); ?>
 											</p>
 											<p>
 												<strong><?php esc_html_e( 'Donation Level:', 'give' ); ?></strong><br>

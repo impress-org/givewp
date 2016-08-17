@@ -362,7 +362,7 @@ class Give_Email_Access {
 	/**
 	 * Users purchases args
 	 *
-	 * Force Give to find transactions by donation email, not user ID
+	 * Force Give to find donations by email, not user ID.
 	 *
 	 * @since  1.0
 	 * @access public

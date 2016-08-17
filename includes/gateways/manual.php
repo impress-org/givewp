@@ -24,7 +24,7 @@ add_action( 'give_manual_cc_form', '__return_false' );
 
 /**
  * Processes the purchase data and uses the Manual Payment gateway to record
- * the transaction in the Purchase History
+ * the donation in the Purchase History
  *
  * @since 1.0
  *

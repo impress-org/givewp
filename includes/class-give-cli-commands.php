@@ -83,7 +83,7 @@ class GIVE_CLI_COMMAND {
 		$history_page = give_get_option( 'history_page' );
 
 		WP_CLI::log( $this->color_message( sprintf( __( 'Success Page: ', 'give' ) ) ) . ( $success_page ? "[{$success_page}] " . get_permalink( $success_page ) : __( 'Not Set', 'give' ) ) );
-		WP_CLI::log( $this->color_message( __( 'Failed Transaction Page: ', 'give' ) ) . ( $failure_page ? "[{$failure_page}] " . get_permalink( $failure_page ) : __( 'Not Set', 'give' ) ) );
+		WP_CLI::log( $this->color_message( __( 'Failed Donation Page: ', 'give' ) ) . ( $failure_page ? "[{$failure_page}] " . get_permalink( $failure_page ) : __( 'Not Set', 'give' ) ) );
 		WP_CLI::log( $this->color_message( __( 'Donation History Page: ', 'give' ) ) . ( $history_page ? "[{$history_page}] " . get_permalink( $history_page ) : __( 'Not Set', 'give' ) ) );
 		WP_CLI::log( $this->color_message( __( 'Country: ', 'give' ) ) . give_get_country() );
 

@@ -332,7 +332,7 @@ add_action( 'give_view_receipt', 'give_render_receipt_in_browser' );
 /**
  * Give Preview Email Header.
  *
- * Displays a header bar with the ability to change transactions to preview actual data within the preview. Will not display if
+ * Displays a header bar with the ability to change donations to preview actual data within the preview. Will not display if
  *
  * @since 1.6
  *
@@ -356,20 +356,20 @@ function give_get_preview_email_header() {
 
 	//Provide nice human readable options.
 	if ( $payments ) {
-		$options[0] = esc_html__( '- Select a transaction -', 'give' );
+		$options[0] = esc_html__( '- Select a donation -', 'give' );
 		foreach ( $payments as $payment ) {
 
 			$options[ $payment->ID ] = esc_html( '#' . $payment->ID . ' - ' . $payment->email . ' - ' . $payment->form_title );
 
 		}
 	} else {
-		$options[0] = esc_html__( 'No Transactions Found', 'give' );
+		$options[0] = esc_html__( 'No donations found.', 'give' );
 	}
 
 	//Start constructing HTML output.
 	$transaction_header = '<div style="margin:0;padding:10px 0;width:100%;background-color:#FFF;border-bottom:1px solid #eee; text-align:center;">';
 
-	//Inline JS function for switching transactions.
+	//Inline JS function for switching donations.
 	$transaction_header .= '<script>
 				 function change_preview(){
 				  var transactions = document.getElementById("give_preview_email_payment_id");
@@ -382,7 +382,7 @@ function give_get_preview_email_header() {
 				    }
 			    </script>';
 
-	$transaction_header .= '<label for="give_preview_email_payment_id" style="font-size:12px;color:#333;margin:0 4px 0 0;">' . esc_html__( 'Preview email with a transaction:', 'give' ) . '</label>';
+	$transaction_header .= '<label for="give_preview_email_payment_id" style="font-size:12px;color:#333;margin:0 4px 0 0;">' . esc_html__( 'Preview email with a donation:', 'give' ) . '</label>';
 
 	//The select field with 100 latest transactions
 	$transaction_header .= Give()->html->select( array(
