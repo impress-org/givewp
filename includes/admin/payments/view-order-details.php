@@ -59,7 +59,7 @@ $payment_mode   = $payment->mode;
 		if ( $payment_mode == 'test' ) {
 			echo '<span id="test-payment-label" class="give-item-label give-item-label-orange" data-tooltip="' . esc_attr__( 'This payment was made in test mode.', 'give' ) . '" data-tooltip-my-position="center left" data-tooltip-target-position="center right">' . esc_html__( 'Test Payment', 'give' ) . '</span>';
 		}
-		?></h1>
+	?></h1>
 
 	<?php
 	/**
@@ -101,9 +101,7 @@ $payment_mode   = $payment->mode;
 
 							<div id="give-order-update" class="postbox give-order-data">
 
-								<h3 class="hndle">
-									<span><?php esc_html_e( 'Update Payment', 'give' ); ?></span>
-								</h3>
+								<h3 class="hndle"><?php esc_html_e( 'Update Payment', 'give' ); ?></h3>
 
 								<div class="inside">
 									<div class="give-admin-box">
@@ -242,9 +240,7 @@ $payment_mode   = $payment->mode;
 
 							<div id="give-order-details" class="postbox give-order-data">
 
-								<h3 class="hndle">
-									<span><?php esc_html_e( 'Payment Meta', 'give' ); ?></span>
-								</h3>
+								<h3 class="hndle"><?php esc_html_e( 'Payment Meta', 'give' ); ?></h3>
 
 								<div class="inside">
 									<div class="give-admin-box">
@@ -351,9 +347,7 @@ $payment_mode   = $payment->mode;
 
 							<?php $column_count = 'columns-3'; ?>
 							<div id="give-donation-overview" class="postbox <?php echo $column_count; ?>">
-								<h3 class="hndle">
-									<span><?php esc_html_e( 'Donation Information', 'give' ); ?></span>
-								</h3>
+								<h3 class="hndle"><?php esc_html_e( 'Donation Information', 'give' ); ?></h3>
 
 								<div class="inside">
 
@@ -483,9 +477,7 @@ $payment_mode   = $payment->mode;
 							?>
 
 							<div id="give-customer-details" class="postbox">
-								<h3 class="hndle">
-									<span><?php esc_html_e( 'Donor Details', 'give' ); ?></span>
-								</h3>
+								<h3 class="hndle"><?php esc_html_e( 'Donor Details', 'give' ); ?></h3>
 
 								<div class="inside">
 
@@ -600,11 +592,9 @@ $payment_mode   = $payment->mode;
 							?>
 
 							<div id="give-billing-details" class="postbox">
-								<h3 class="hndle">
-									<span><?php esc_html_e( 'Billing Address', 'give' ); ?></span>
-								</h3>
+								<h3 class="hndle"><?php esc_html_e( 'Billing Address', 'give' ); ?></h3>
 
-								<div class="inside give-clearfix">
+								<div class="inside">
 
 									<div id="give-order-address">
 
@@ -615,20 +605,16 @@ $payment_mode   = $payment->mode;
 														<label for="give-payment-address-line1" class="order-data-address"><?php esc_html_e( 'Address 1:', 'give' ); ?></label>
 														<input id="give-payment-address-line1" type="text" name="give-payment-address[0][line1]" value="<?php echo esc_attr( $address['line1'] ); ?>" class="medium-text"/>
 													</div>
-
 													<div class="give-wrap-address-line2">
 														<label for="give-payment-address-line2" class="order-data-address-line"><?php esc_html_e( 'Address 2:', 'give' ); ?></label>
 														<input id="give-payment-address-line2" type="text" name="give-payment-address[0][line2]" value="<?php echo esc_attr( $address['line2'] ); ?>" class="medium-text"/>
 													</div>
-
 												</div>
 												<div class="column">
 													<div class="give-wrap-address-city">
 														<label for="give-payment-address-city" class="order-data-address-line"><?php esc_html_e( 'City:', 'give' ); ?></label>
 														<input id="give-payment-address-city" type="text" name="give-payment-address[0][city]" value="<?php echo esc_attr( $address['city'] ); ?>" class="medium-text"/>
-
 													</div>
-
 													<div class="give-wrap-address-zip">
 														<label for="give-payment-address-zip" class="order-data-address-line"><?php esc_html_e( 'Zip / Postal Code:', 'give' ); ?></label>
 														<input id="give-payment-address-zip" type="text" name="give-payment-address[0][zip]" value="<?php echo esc_attr( $address['zip'] ); ?>" class="medium-text"/>
@@ -650,7 +636,6 @@ $payment_mode   = $payment->mode;
 														) );
 														?>
 													</div>
-
 													<div id="give-order-address-state-wrap">
 														<label for="give-payment-address-state" class="order-data-address-line"><?php esc_html_e( 'State / Province:', 'give' ); ?></label>
 														<?php
@@ -707,7 +692,7 @@ $payment_mode   = $payment->mode;
 							?>
 
 							<div id="give-payment-notes" class="postbox">
-								<h3 class="hndle"><span><?php esc_html_e( 'Payment Notes', 'give' ); ?></span></h3>
+								<h3 class="hndle"><?php esc_html_e( 'Payment Notes', 'give' ); ?></h3>
 
 								<div class="inside">
 									<div id="give-payment-notes-inner">
