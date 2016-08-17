@@ -477,7 +477,7 @@ $payment_mode   = $payment->mode;
 							do_action( 'give_view_order_details_files_after', $payment_id );
 							?>
 
-							<div id="give-customer-details" class="postbox">
+							<div id="give-donor-details" class="postbox">
 								<h3 class="hndle"><?php esc_html_e( 'Donor Details', 'give' ); ?></h3>
 
 								<div class="inside">
@@ -579,7 +579,7 @@ $payment_mode   = $payment->mode;
 								</div>
 								<!-- /.inside -->
 							</div>
-							<!-- /#give-customer-details -->
+							<!-- /#give-donor-details -->
 
 							<?php
 							/**
