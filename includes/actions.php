@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_get_actions() {
 
-	$_get_action = $_GET['give_action'];
+	$_get_action = ! empty( $_GET['give_action'] ) ? $_GET['give_action'] : null;
 
 	if ( isset( $_get_action ) ) {
 		/**
@@ -53,7 +53,7 @@ add_action( 'init', 'give_get_actions' );
  */
 function give_post_actions() {
 
-	$_post_action = $_POST['give_action'];
+	$_post_action = ! empty( $_POST['give_action'] ) ? $_POST['give_action'] : null;
 
 	if ( isset( $_post_action ) ) {
 		/**
