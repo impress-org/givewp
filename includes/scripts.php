@@ -50,9 +50,13 @@ function give_load_scripts() {
 		'form_translation'    => apply_filters(
 			'give_form_translation_js',
 			array(
-				'payment-mode'      => esc_html__( 'Please choose valid payment method' ),
-				'give_first'        => esc_html__( 'Please enter valid first name' ),
-				'give_email'        => esc_html__( 'Please enter valid email address' )
+				// Field name               Validation message.
+				'payment-mode'           => esc_html__( 'Please fill out this field' ),
+				'give_first'             => esc_html__( 'Please fill out this field' ),
+				'give_email'             => esc_html__( 'Please fill out this field' ),
+				'give_user_login'        => esc_html__( 'Please fill out this field' ),
+				'give_user_pass'         => esc_html__( 'Please fill out this field' ),
+				'give_user_pass_confirm' => esc_html__( 'Please fill out this field' ),
 			)
 		)
 	) );
