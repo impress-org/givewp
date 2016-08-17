@@ -51,7 +51,7 @@ function give_load_scripts() {
 			'give_form_translation_js',
 			array(
 				// Field name               Validation message.
-				'payment-mode'           => esc_html__( 'Please select payment mode', 'give' ),
+				'payment-mode'           => esc_html__( 'Please select payment mode.', 'give' ),
 				'give_first'             => esc_html__( 'Please enter your first name.', 'give' ),
 				'give_email'             => esc_html__( 'Please enter a valid email address.', 'give' ),
 				'give_user_login'        => esc_html__( 'Invalid username. Only lowercase letters (a-z) and numbers are allowed.', 'give' ),
