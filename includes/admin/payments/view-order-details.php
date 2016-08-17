@@ -59,7 +59,7 @@ $payment_mode   = $payment->mode;
 		if ( $payment_mode == 'test' ) {
 			echo '<span id="test-payment-label" class="give-item-label give-item-label-orange" data-tooltip="' . esc_attr__( 'This payment was made in test mode.', 'give' ) . '" data-tooltip-my-position="center left" data-tooltip-target-position="center right">' . esc_html__( 'Test Payment', 'give' ) . '</span>';
 		}
-	?></h1>
+		?></h1>
 
 	<?php
 	/**
@@ -385,23 +385,25 @@ $payment_mode   = $payment->mode;
 											</p>
 											<p>
 												<strong><?php esc_html_e( 'Donation Level:', 'give' ); ?></strong><br>
-												<?php
-												$var_prices = give_has_variable_prices( $payment_meta['form_id'] );
-												if ( empty( $var_prices ) ) {
-													echo esc_html__( 'n/a', 'give' );
-												} else {
-													// Variable price dropdown options.
-													$variable_price_dropdown_option = array(
-														'id'              => $payment_meta['form_id'],
-														'name'            => 'give-variable-price',
-														'chosen'          => true,
-														'show_option_all' => '',
-														'selected'        => $payment_meta['price_id'],
-													);
-													// Render variable prices select tag html.
-													give_get_form_variable_price_dropdown( $variable_price_dropdown_option, true );
-												}
-												?>
+												<span class="give-donation-level">
+													<?php
+													$var_prices = give_has_variable_prices( $payment_meta['form_id'] );
+													if ( empty( $var_prices ) ) {
+														echo esc_html__( 'n/a', 'give' );
+													} else {
+														// Variable price dropdown options.
+														$variable_price_dropdown_option = array(
+															'id'              => $payment_meta['form_id'],
+															'name'            => 'give-variable-price',
+															'chosen'          => true,
+															'show_option_all' => '',
+															'selected'        => $payment_meta['price_id'],
+														);
+														// Render variable prices select tag html.
+														give_get_form_variable_price_dropdown( $variable_price_dropdown_option, true );
+													}
+													?>
+												</span>
 											</p>
 										</div>
 										<div class="column">
@@ -422,7 +424,7 @@ $payment_mode   = $payment->mode;
 												 */
 												do_action( 'give_donation_details_thead_before', $payment_id );
 
-												
+
 												/**
 												 * Fires in order details page, in the donation-information metabox, after the head elements.
 												 *
@@ -562,7 +564,7 @@ $payment_mode   = $payment->mode;
 									 * @since 1.0
 									 *
 									 * @param array $payment_meta Payment meta.
-									 * @param array $user_info    User information.
+									 * @param array $user_info User information.
 									 */
 									do_action( 'give_payment_personal_details_list', $payment_meta, $user_info );
 

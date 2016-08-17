@@ -76,9 +76,9 @@ jQuery.noConflict();
 
 
     /**
-     * Edit payment screen JS
+     * Edit donation screen JS
      */
-    var Give_Edit_Payment = {
+    var Give_Edit_Donation = {
 
         init: function () {
             this.edit_address();
@@ -222,7 +222,7 @@ jQuery.noConflict();
         variable_price_list: function () {
             $('select[name="forms"]').chosen().change(function () {
                 var give_form_id,
-                    variable_prices_html_container = $(this).closest('td').next('td');
+                    variable_prices_html_container = $('.give-donation-level');
 
                 // Check for form ID.
                 if (!( give_form_id = $(this).val() )) {
@@ -566,7 +566,7 @@ jQuery.noConflict();
     };
 
     /**
-     * Customer management screen JS
+     * Donor management screen JS
      */
     var Give_Customer = {
 
@@ -742,7 +742,7 @@ jQuery.noConflict();
         enable_admin_datepicker();
         handle_status_change();
         setup_chosen_give_selects();
-        Give_Edit_Payment.init();
+        Give_Edit_Donation.init();
         Give_Settings.init();
         Give_Reports.init();
         Give_Customer.init();
