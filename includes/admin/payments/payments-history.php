@@ -22,7 +22,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @return      void
 */
 function give_payment_history_page() {
-	global $give_options;
 
 	$give_payment = get_post_type_object( 'give_payment' );
 
