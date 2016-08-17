@@ -411,21 +411,49 @@ $payment_mode   = $payment->mode;
 											</p>
 											<p>
 												<?php
-												do_action_deprecated( 'give_donation_details_thead_before', array( $payment_id ), 'give_donation_details_after', esc_html__( 'This action hook was replaced with `give_donation_details_after` ation.', 'give' ) );
-												do_action_deprecated( 'give_donation_details_thead_after',  array( $payment_id ), 'give_donation_details_after', esc_html__( 'This action hook was replaced with `give_donation_details_after` ation.', 'give' ) );
-												do_action_deprecated( 'give_donation_details_tbody_before', array( $payment_id ), 'give_donation_details_after', esc_html__( 'This action hook was replaced with `give_donation_details_after` ation.', 'give' ) );
-												do_action_deprecated( 'give_donation_details_tbody_after',  array( $payment_id ), 'give_donation_details_after', esc_html__( 'This action hook was replaced with `give_donation_details_after` ation.', 'give' ) );
-
 												/**
-												 * Fires in order details page, in the donation-information metabox.
+												 * Fires in order details page, in the donation-information metabox, before the head elements.
 												 *
-												 * Allows you to add new donation details elements, at the end.
+												 * Allows you to add new TH elements at the beginning.
 												 *
-												 * @since 1.7
+												 * @since 1.0
 												 *
 												 * @param int $payment_id Payment id.
 												 */
-												do_action( 'give_donation_details_after', $payment_id );
+												do_action( 'give_donation_details_thead_before', $payment_id );
+
+												/**
+												 * Fires in order details page, in the donation-information metabox, after the head elements.
+												 *
+												 * Allows you to add new TH elements at the end.
+												 *
+												 * @since 1.0
+												 *
+												 * @param int $payment_id Payment id.
+												 */
+												do_action( 'give_donation_details_thead_after', $payment_id );
+
+												/**
+												 * Fires in order details page, in the donation-information metabox, before the body elements.
+												 *
+												 * Allows you to add new TD elements at the beginning.
+												 *
+												 * @since 1.0
+												 *
+												 * @param int $payment_id Payment id.
+												 */
+												do_action( 'give_donation_details_tbody_before', $payment_id );
+
+												/**
+												 * Fires in order details page, in the donation-information metabox, after the body elements.
+												 *
+												 * Allows you to add new TD elements at the end.
+												 *
+												 * @since 1.0
+												 *
+												 * @param int $payment_id Payment id.
+												 */
+												do_action( 'give_donation_details_tbody_after', $payment_id );
 												?>
 											</p>
 										</div>
