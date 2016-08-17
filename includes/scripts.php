@@ -51,12 +51,12 @@ function give_load_scripts() {
 			'give_form_translation_js',
 			array(
 				// Field name               Validation message.
-				'payment-mode'           => esc_html__( 'Please select payment mode' ),
-				'give_first'             => esc_html__( 'Please fill out firstname' ),
-				'give_email'             => esc_html__( 'Please fill out email address' ),
-				'give_user_login'        => esc_html__( 'Please fill out username' ),
-				'give_user_pass'         => esc_html__( 'Please fill out user password' ),
-				'give_user_pass_confirm' => esc_html__( 'Please fill out user password' ),
+				'payment-mode'           => esc_html__( 'Please select payment mode', 'give' ),
+				'give_first'             => esc_html__( 'Please enter your first name.', 'give' ),
+				'give_email'             => esc_html__( 'Please enter a valid email address.', 'give' ),
+				'give_user_login'        => esc_html__( 'Invalid username. Only lowercase letters (a-z) and numbers are allowed.', 'give' ),
+				'give_user_pass'         => esc_html__( 'Enter a password.', 'give' ),
+				'give_user_pass_confirm' => esc_html__( 'Enter a confirm password.', 'give' ),
 			)
 		)
 	) );
