@@ -439,3 +439,54 @@ function give_sanitize_number_decimals( $value, $field_args, $field ){
 function give_sanitize_price_field_value( $value, $field_args, $field ){
     return give_sanitize_amount( $value );
 }
+
+
+/**
+ * Manually render amount field.
+ *
+ * @since  1.7
+ *
+ * @param  array      $field_args Array of field arguments.
+ * @param  CMB2_Field $field      The field object
+ *
+ * @return void
+ */
+function give_cmb_amount_field_render_row_cb( $field_args, $field ) {
+
+	// Get args.
+	$id          = $field->args('id');
+	$label       = $field->args( 'name' );
+	$name        = $field->args( '_name' );
+	$description = $field->args( 'description' );
+	$attributes  = $field->args( 'attributes' );
+	$attributes_string  = '';
+	$row_class          = $field->row_classes();
+
+	// Get attributes.
+	if( ! empty( $attributes ) ) {
+		foreach ( $attributes as $attribute_name => $attribute_val ) {
+			$attributes_string[] = "$attribute_name=\"$attribute_val\"";
+		}
+
+		$attributes_string = implode( ' ', $attributes_string );
+	}
+
+	// Get row class.
+	if( ! empty( $row_class ) && is_array( $row_class ) ) {
+		$row_class = implode( ' ', $row_class );
+	}
+	?>
+	<div class="cmb-row <?php echo $row_class; ?>">
+		<div class="cmb-th">
+			<label for="<?php echo $id; ?>"><?php echo $label; ?></label>
+		</div>
+		<div class="cmb-td">
+			<?php echo ( give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol give-money-symbol-before">' . give_currency_symbol() . '</span>' : '' ); ?>
+			<input id="<?php echo $id; ?>" type="text" name="<?php echo $name; ?>" <?php echo $attributes_string?>/>
+			<?php echo ( give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '' ); ?>
+
+			<span class="cmb2-metabox-description"><?php echo $description; ?></span>
+		</div>
+	</div>
+	<?php
+}

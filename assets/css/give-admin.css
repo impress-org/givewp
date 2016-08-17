@@ -758,7 +758,8 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
   border-right: 0; }
 
 .give-money-symbol-after {
-  border-left: 0; }
+  border-left: 0;
+  margin-left: -4px; }
 
 .give-underline {
   text-decoration: underline; }
