@@ -582,20 +582,17 @@ class Give_Welcome {
 
 		foreach ( $contributors as $contributor ) {
 			$contributor_list .= '<li class="wp-person">';
-			$contributor_list .= sprintf( '<a href="%s" title="%s">',
+			$contributor_list .= sprintf(
+				'<a href="%1$s"><img src="%2$s" width="64" height="64" class="gravatar" alt="%3$s" /></a>',
 				esc_url( 'https://github.com/' . $contributor->login ),
-				esc_html(
-					sprintf(
-						/* translators: %s: github contributor */
-						esc_html__( 'View %s', 'give' ),
-						$contributor->login
-					)
-				)
+				esc_url( $contributor->avatar_url ),
+				esc_attr( $contributor->login )
 			);
-			$contributor_list .= sprintf( '<img src="%s" width="64" height="64" class="gravatar" alt="%s" />', esc_url( $contributor->avatar_url ), esc_html( $contributor->login ) );
-			$contributor_list .= '</a>';
-			$contributor_list .= sprintf( '<a class="web" href="%s">%s</a>', esc_url( 'https://github.com/' . $contributor->login ), esc_html( $contributor->login ) );
-			$contributor_list .= '</a>';
+			$contributor_list .= sprintf(
+				'<a class="web" href="%1$s">%2$s</a>',
+				esc_url( 'https://github.com/' . $contributor->login ),
+				esc_html( $contributor->login )
+			);
 			$contributor_list .= '</li>';
 		}
 
