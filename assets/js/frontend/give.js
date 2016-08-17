@@ -19,7 +19,7 @@ jQuery( function ( $ ) {
 	give_fl_trigger();
 
     // Set custom validation message.
-    give_change_html5_form_field_validation_message( 'give-form', '' );
+    give_change_html5_form_field_validation_message();
 
 	doc.on( 'give_gateway_loaded', function ( ev, response, form_id ) {
 		// Trigger float-labels
