@@ -139,7 +139,7 @@ function give_change_html5_form_field_validation_message() {
         $input_fields;
 
     // Bailout if no any donation from exist.
-    if( ! $forms.length() ) {
+    if( ! $forms.length ) {
         return;
     }
 
