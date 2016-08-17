@@ -357,64 +357,40 @@ $payment_mode   = $payment->mode;
 
 								<div class="inside">
 
-									<table style="width:100%;">
-										<thead>
-										<tr>
-											<?php
-											/**
-											 * Fires in order details page, in the donation-information metabox, before the head elements.
-											 *
-											 * Allows you to add new TH elements at the beginning.
-											 *
-											 * @since 1.0
-											 *
-											 * @param int $payment_id Payment id.
-											 */
-											do_action( 'give_donation_details_thead_before', $payment_id );
-											?>
-											<th><?php esc_html_e( 'Donation Form ID', 'give' ) ?></th>
-											<th><?php esc_html_e( 'Donation Form Title', 'give' ) ?></th>
-											<th><?php esc_html_e( 'Donation Level', 'give' ) ?></th>
-											<th><?php esc_html_e( 'Donation Date', 'give' ) ?></th>
-											<th><?php esc_html_e( 'Total Donation', 'give' ) ?></th>
-											<?php
-											/**
-											 * Fires in order details page, in the donation-information metabox, after the head elements.
-											 *
-											 * Allows you to add new TH elements at the end.
-											 *
-											 * @since 1.0
-											 *
-											 * @param int $payment_id Payment id.
-											 */
-											do_action( 'give_donation_details_thead_after', $payment_id );
-											?>
-										</tr>
-										</thead>
-										<tr>
-											<?php
-											/**
-											 * Fires in order details page, in the donation-information metabox, before the body elements.
-											 *
-											 * Allows you to add new TD elements at the beginning.
-											 *
-											 * @since 1.0
-											 *
-											 * @param int $payment_id Payment id.
-											 */
-											do_action( 'give_donation_details_tbody_before', $payment_id );
-											?>
-											<td>
-												<?php echo $payment_meta['form_id']; ?>
-											</td>
-											<td>
+									<div class="column-container">
+										<div class="column">
+											<p>
+												<strong><?php esc_html_e( 'Donation Form ID:', 'give' ); ?></strong><br>
+												<?php
+												if ( $payment_meta['form_id'] ) :
+													printf(
+														'<a href="%1$s" target="_blank">#%2$s</a>',
+														admin_url( 'post.php?action=edit&post=' . $payment_meta['form_id'] ),
+														$payment_meta['form_id']
+													);
+												endif;
+												?>
+											</p>
+											<p>
+												<strong><?php esc_html_e( 'Donation Form Title:', 'give' ); ?></strong><br>
 												<?php give_get_form_dropdown( array(
 													'id'       => $payment_meta['form_id'],
 													'selected' => $payment_meta['form_id'],
 													'chosen'   => true
 												), true ); ?>
-											</td>
-											<td>
+											</p>
+										</div>
+										<div class="column">
+											<p>
+												<strong><?php esc_html_e( 'Donation Date:', 'give' ); ?></strong><br>
+												<?php
+												//Transaction Date
+												$date_format = get_option( 'date_format' );
+												echo date_i18n( $date_format, strtotime( $payment_date ) );
+												?>
+											</p>
+											<p>
+												<strong><?php esc_html_e( 'Donation Level:', 'give' ); ?></strong><br>
 												<?php
 												$var_prices = give_has_variable_prices( $payment_meta['form_id'] );
 												if ( empty( $var_prices ) ) {
@@ -428,40 +404,69 @@ $payment_mode   = $payment->mode;
 														'show_option_all' => '',
 														'selected'        => $payment_meta['price_id'],
 													);
-
 													// Render variable prices select tag html.
 													give_get_form_variable_price_dropdown( $variable_price_dropdown_option, true );
 												}
 												?>
-											</td>
-											<td>
-												<?php
-												//Transaction Date
-												$date_format = get_option( 'date_format' );
-												echo date_i18n( $date_format, strtotime( $payment_date ) );
-												?>
-											</td>
-											<td>
+											</p>
+										</div>
+										<div class="column">
+											<p>
+												<strong><?php esc_html_e( 'Total Donation:', 'give' ); ?></strong><br>
 												<?php echo esc_html( give_currency_filter( give_format_amount( give_get_payment_amount( $payment_id ) ) ) ); ?>
-											</td>
-											<?php
-											/**
-											 * Fires in order details page, in the donation-information metabox, after the body elements.
-											 *
-											 * Allows you to add new TD elements at the end.
-											 *
-											 * @since 1.0
-											 *
-											 * @param int $payment_id Payment id.
-											 */
-											do_action( 'give_donation_details_tbody_after', $payment_id );
-											?>
-										</tr>
-									</table>
+											</p>
+											<p>
+												<?php
+												/**
+												 * Fires in order details page, in the donation-information metabox, before the head elements.
+												 *
+												 * Allows you to add new TH elements at the beginning.
+												 *
+												 * @since 1.0
+												 *
+												 * @param int $payment_id Payment id.
+												 */
+												do_action( 'give_donation_details_thead_before', $payment_id );
+
+												/**
+												 * Fires in order details page, in the donation-information metabox, after the head elements.
+												 *
+												 * Allows you to add new TH elements at the end.
+												 *
+												 * @since 1.0
+												 *
+												 * @param int $payment_id Payment id.
+												 */
+												do_action( 'give_donation_details_thead_after', $payment_id );
+
+												/**
+												 * Fires in order details page, in the donation-information metabox, before the body elements.
+												 *
+												 * Allows you to add new TD elements at the beginning.
+												 *
+												 * @since 1.0
+												 *
+												 * @param int $payment_id Payment id.
+												 */
+												do_action( 'give_donation_details_tbody_before', $payment_id );
+
+												/**
+												 * Fires in order details page, in the donation-information metabox, after the body elements.
+												 *
+												 * Allows you to add new TD elements at the end.
+												 *
+												 * @since 1.0
+												 *
+												 * @param int $payment_id Payment id.
+												 */
+												do_action( 'give_donation_details_tbody_after', $payment_id );
+												?>
+											</p>
+										</div>
+									</div>
 
 								</div>
 								<!-- /.inside -->
-
 
 							</div>
 							<!-- /#give-donation-overview -->
