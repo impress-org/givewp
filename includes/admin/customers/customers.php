@@ -474,7 +474,7 @@ function give_customers_view( $customer ) {
 							/**
 							 * Fires in donor profile screen, in the recent donations tables action links.
 							 *
-							 * Allows you to add more action links for each payment, after the 'View Details' action link.
+							 * Allows you to add more action links for each donation, after the 'View Details' action link.
 							 *
 							 * @since 1.0
 							 *
@@ -680,7 +680,7 @@ function give_customers_delete_view( $customer ) {
 							'name'    => 'give-customer-delete-records',
 							'options' => array( 'disabled' => true )
 						) ); ?>
-						<label for="give-customer-delete-records"><?php esc_html_e( 'Delete all associated payments and records?', 'give' ); ?></label>
+						<label for="give-customer-delete-records"><?php esc_html_e( 'Delete all associated donations and records?', 'give' ); ?></label>
 					</p>
 
 					<?php

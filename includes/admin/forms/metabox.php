@@ -305,7 +305,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 			'fields'       => apply_filters( 'give_forms_display_options_metabox_fields', array(
 					array(
 						'name'    => esc_html__( 'Payment Fields', 'give' ),
-						'desc'    => esc_html__( 'How would you like to display payment information for this form? The "Show on Page" option will display the entire form when the page loads. "Reveal Upon Click" places a button below the donation fields and upon click slides into view the rest of the fields. "Modal Window Upon Click" is a similar option, rather than sliding into view the fields they will open in a shadow box or "modal" window.', 'give' ),
+						'desc'    => esc_html__( 'How would you like to display donation information for this form? The "Show on Page" option will display the entire form when the page loads. "Reveal Upon Click" places a button below the donation fields and upon click slides into view the rest of the fields. "Modal Window Upon Click" is a similar option, rather than sliding into view the fields they will open in a shadow box or "modal" window.', 'give' ),
 						'id'      => $prefix . 'payment_display',
 						'type'    => 'select',
 						'options' => array(
