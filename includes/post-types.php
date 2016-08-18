@@ -96,7 +96,7 @@ function give_setup_post_types() {
 	);
 	register_post_type( 'give_forms', apply_filters( 'give_forms_post_type_args', $give_forms_args ) );
 	
-	/** Payment Post Type */
+	/** Donation Post Type */
 	$payment_labels = array(
 		'name'               => _x( 'Donations', 'post type general name', 'give' ),
 		'singular_name'      => _x( 'Donation', 'post type singular name', 'give' ),

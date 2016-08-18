@@ -86,7 +86,7 @@ function give_update_payment_details( $data ) {
 	$updated       = $payment->save();
 
 	if ( 0 === $updated ) {
-		wp_die( esc_html__( 'Error Updating Payment.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
+		wp_die( esc_html__( 'Error Updating Donation.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
 	}
 
 
@@ -330,7 +330,7 @@ function give_trigger_purchase_delete( $data ) {
 add_action( 'give_delete_payment', 'give_trigger_purchase_delete' );
 
 /**
- * AJAX Store Payment Note
+ * AJAX Store Donation Note
  */
 function give_ajax_store_payment_note() {
 

@@ -29,8 +29,8 @@ function give_get_payment_gateways() {
 			'supports'       => array( 'buy_now' )
 		),
 		'manual' => array(
-			'admin_label'    => esc_html__( 'Test Payment', 'give' ),
-			'checkout_label' => esc_html__( 'Test Payment', 'give' )
+			'admin_label'    => esc_html__( 'Test Donation', 'give' ),
+			'checkout_label' => esc_html__( 'Test Donation', 'give' )
 		),
 	);
 

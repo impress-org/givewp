@@ -48,7 +48,7 @@ class Tests_Post_Types extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Test Payment CPT Exists
+	 * Test Donation CPT Exists
 	 */
 	public function test_payment_post_type() {
 		global $wp_post_types;
@@ -56,7 +56,7 @@ class Tests_Post_Types extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Test Payments CPT Labels
+	 * Test Donation CPT Labels
 	 */
 	public function test_payment_post_type_labels() {
 		global $wp_post_types;

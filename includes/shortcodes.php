@@ -283,7 +283,7 @@ function give_receipt_shortcode( $atts, $content = null ) {
 
 		ob_start();
 
-		give_output_error( apply_filters( 'give_must_be_logged_in_error_message', esc_html__( 'You must be logged in to view this donation payment receipt.', 'give' ) ) );
+		give_output_error( apply_filters( 'give_must_be_logged_in_error_message', esc_html__( 'You must be logged in to view this donation receipt.', 'give' ) ) );
 
 		give_get_template_part( 'shortcode', 'login' );
 

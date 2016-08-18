@@ -183,7 +183,7 @@ function give_tools_sysinfo_get() {
 			$default_gateway = give_get_default_gateway( null );
 			$default_gateway = $active_gateways[ $default_gateway ]['admin_label'];
 		} else {
-			$default_gateway = 'Test Payment';
+			$default_gateway = 'Test Donation';
 		}
 
 		$gateways = array();
