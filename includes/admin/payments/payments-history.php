@@ -96,7 +96,7 @@ function give_view_order_details_title( $admin_title, $title ) {
 		case 'edit-payment' :
 			$title = sprintf(
 				/* translators: %s: admin title */
-				esc_html__( 'Edit Payment - %s', 'give' ),
+				esc_html__( 'Edit Donation - %s', 'give' ),
 				$admin_title
 			);
 			break;

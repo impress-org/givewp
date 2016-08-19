@@ -74,7 +74,7 @@ function give_update_payment_details( $data ) {
 	$new_customer_id  = sanitize_text_field( $data['customer-id'] );
 
 	/**
-	 * Fires before updating edited purchase.
+	 * Fires before updating edited donation.
 	 *
 	 * @since 1.0
 	 *
@@ -86,7 +86,7 @@ function give_update_payment_details( $data ) {
 	$updated       = $payment->save();
 
 	if ( 0 === $updated ) {
-		wp_die( esc_html__( 'Error Updating Payment.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
+		wp_die( esc_html__( 'Error Updating Donation.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
 	}
 
 
@@ -164,7 +164,7 @@ function give_update_payment_details( $data ) {
             $previous_customer->decrease_purchase_count();
             $previous_customer->decrease_value( $curr_total );
 
-            // If purchase was completed adjust stats of new customers.
+            // If donation was completed adjust stats of new customers.
             $customer->increase_purchase_count();
 			$customer->increase_value( $new_total );
 		}
@@ -250,7 +250,7 @@ function give_update_payment_details( $data ) {
         }
 
 
-        // If purchase was completed, adjust stats of forms
+        // If donation was completed, adjust stats of forms
         if ( 'publish' == $status ) {
 
             // Decrease sale of old give form. For other payment status 
@@ -289,7 +289,7 @@ function give_update_payment_details( $data ) {
     }
 
 	/**
-	 * Fires after updating edited purchase.
+	 * Fires after updating edited donation.
 	 *
 	 * @since 1.0
 	 *
@@ -304,7 +304,7 @@ function give_update_payment_details( $data ) {
 add_action( 'give_update_payment_details', 'give_update_payment_details' );
 
 /**
- * Trigger a Purchase Deletion
+ * Trigger a Donation Deletion
  *
  * @since 1.0
  *
@@ -330,7 +330,7 @@ function give_trigger_purchase_delete( $data ) {
 add_action( 'give_delete_payment', 'give_trigger_purchase_delete' );
 
 /**
- * AJAX Store Payment Note
+ * AJAX Store Donation Note
  */
 function give_ajax_store_payment_note() {
 

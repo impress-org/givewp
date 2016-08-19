@@ -170,7 +170,7 @@ class Give_Donators_Gravatars {
 				$payment_ids[] = get_post_meta( $id, '_give_log_payment_id', true );
 			}
 
-			// remove donors who have purchased more than once so we can have unique avatars
+			// remove donors who have donated more than once so we can have unique avatars
 			$unique_emails = array();
 
 			foreach ( $payment_ids as $key => $id ) {
@@ -230,7 +230,7 @@ class Give_Donators_Gravatars {
 			return;
 		}
 
-		// minimum amount of purchases before showing gravatars
+		// minimum amount of donations before showing gravatars
 		// if the number of items in array is not greater or equal to the number specified, then exit
 		if ( isset( $give_options['give_donators_gravatars_min_purchases_required'] ) && '' != $give_options['give_donators_gravatars_min_purchases_required'] ) {
 			if ( ! ( count( $payment_ids ) >= $give_options['give_donators_gravatars_min_purchases_required'] ) ) {
@@ -376,9 +376,9 @@ class Give_Donators_Gravatars {
 				'default' => '64'
 			),
 			array(
-				'name' => esc_html__( 'Minimum Unique Purchases Required', 'give' ),
+				'name' => esc_html__( 'Minimum Unique Donations Required', 'give' ),
 				/* translators: %s: form singular label */
-				'desc' => sprintf( esc_html__( 'The minimum number of unique purchases a %s must have before the Gravatars are shown. Leave blank for no minimum.', 'give' ), strtolower( give_get_forms_label_singular() ) ),
+				'desc' => sprintf( esc_html__( 'The minimum number of unique donations a %s must have before the Gravatars are shown. Leave blank for no minimum.', 'give' ), strtolower( give_get_forms_label_singular() ) ),
 				'type' => 'text_small',
 				'id'   => 'give_donators_gravatars_min_purchases_required',
 			),

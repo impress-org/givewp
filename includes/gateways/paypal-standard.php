@@ -420,7 +420,7 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 
 	if ( ! give_get_payment_user_email( $payment_id ) ) {
 
-		// No email associated with purchase, so store from PayPal
+		// No email associated with the donation, so store from PayPal
 		give_update_payment_meta( $payment_id, '_give_payment_user_email', $data['payer_email'] );
 
 		// Setup and store the donors's details
@@ -455,7 +455,7 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 			return; // Only complete payments once
 		}
 
-		// Retrieve the total purchase amount (before PayPal)
+		// Retrieve the total donation amount (before PayPal)
 		$payment_amount = give_get_payment_amount( $payment_id );
 
 		if ( number_format( (float) $paypal_amount, 2 ) < number_format( (float) $payment_amount, 2 ) ) {
@@ -475,18 +475,18 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 			return;
 		}
 		if ( $purchase_key != give_get_payment_key( $payment_id ) ) {
-			// Purchase keys don't match
+			// Keys don't match
 			give_record_gateway_error(
 				esc_html__( 'IPN Error', 'give' ),
 				sprintf(
 					/* translators: %s: Paypal IPN response */
-					esc_html__( 'Invalid purchase key in IPN response. IPN data: %s', 'give' ),
+					esc_html__( 'Invalid key in IPN response. IPN data: %s', 'give' ),
 					json_encode( $data )
 				),
 				$payment_id
 			);
 			give_update_payment_status( $payment_id, 'failed' );
-			give_insert_payment_note( $payment_id, esc_html__( 'Payment failed due to invalid purchase key in PayPal IPN.', 'give' ) );
+			give_insert_payment_note( $payment_id, esc_html__( 'Payment failed due to invalid key in PayPal IPN.', 'give' ) );
 
 			return;
 		}

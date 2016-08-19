@@ -1,6 +1,6 @@
 <?php
 /**
- * This template is used to display the purchase summary with [give_receipt]
+ * This template is used to display the donation summary with [give_receipt]
  */
 global $give_receipt_args, $payment;
 
@@ -118,7 +118,7 @@ do_action( 'give_payment_receipt_before_table', $payment, $give_receipt_args );
 
 		<?php if ( filter_var( $give_receipt_args['payment_id'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
 			<tr>
-				<td><strong><?php esc_html_e( 'Transaction ID:', 'give' ); ?></strong></td>
+				<td><strong><?php esc_html_e( 'Donation ID:', 'give' ); ?></strong></td>
 				<td><?php echo give_get_payment_number( $payment->ID ); ?></td>
 			</tr>
 		<?php else : ?>

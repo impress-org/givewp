@@ -153,7 +153,7 @@ function give_send_to_success_page( $query_string = null ) {
 /**
  * Send back to checkout.
  *
- * Used to redirect a user back to the purchase
+ * Used to redirect a user back to the checkout
  * page if there are errors present.
  *
  * @param array $args
@@ -209,14 +209,14 @@ function give_get_success_page_url( $query_string = null ) {
 }
 
 /**
- * Get the URL of the Transaction Failed page
+ * Get the URL of the Failed Donation Page
  *
  * @since 1.0
  * @global     $give_options Array of all the Give Options
  *
  * @param bool $extras Extras to append to the URL
  *
- * @return mixed|void Full URL to the Transaction Failed page, if present, home page if it doesn't exist
+ * @return mixed|void Full URL to the Failed Donation Page, if present, home page if it doesn't exist
  */
 function give_get_failed_transaction_uri( $extras = false ) {
 	global $give_options;
@@ -230,10 +230,10 @@ function give_get_failed_transaction_uri( $extras = false ) {
 }
 
 /**
- * Determines if we're currently on the Failed Transaction page.
+ * Determines if we're currently on the Failed Donation Page.
  *
  * @since 1.0
- * @return bool True if on the Failed Transaction page, false otherwise.
+ * @return bool True if on the Failed Donation Page, false otherwise.
  */
 function give_is_failed_transaction_page() {
 	global $give_options;
@@ -243,7 +243,7 @@ function give_is_failed_transaction_page() {
 }
 
 /**
- * Mark payments as Failed when returning to the Failed Transaction page
+ * Mark payments as Failed when returning to the Failed Donation Page
  *
  * @access      public
  * @since       1.0
@@ -322,7 +322,7 @@ function give_record_sale_in_log( $give_form_id = 0, $payment_id, $price_id = fa
  * @since 1.0
  *
  * @param int $form_id Give Form ID
- * @param int $quantity Quantity to increase purchase count by
+ * @param int $quantity Quantity to increase donation count by
  *
  * @return bool|int
  */
@@ -339,7 +339,7 @@ function give_increase_purchase_count( $form_id = 0, $quantity = 1 ) {
  * @since 1.0
  *
  * @param int $form_id  Give Form ID
- * @param int $quantity Quantity to increase purchase count by
+ * @param int $quantity Quantity to increase donation count by
  *
  * @return bool|int
  */
@@ -367,7 +367,7 @@ function give_increase_earnings( $give_form_id = 0, $amount ) {
 }
 
 /**
- * Decreases the total earnings of a form. Primarily for when a purchase is refunded.
+ * Decreases the total earnings of a form. Primarily for when a donation is refunded.
  *
  * @since 1.0
  *

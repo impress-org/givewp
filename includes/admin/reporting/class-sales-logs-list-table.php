@@ -85,7 +85,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 				$value = '<div class="give-donation-status status-' . sanitize_title( give_get_payment_status( $payment, true ) ) . '"><span class="give-donation-status-icon"></span> ' . give_get_payment_status( $payment, true ) . '</div>';
 
 				if ( $payment->mode == 'test' ) {
-					$value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label" data-tooltip="' . esc_attr__( 'This payment was made in test mode.', 'give' ) . '">' . esc_html__( 'Test', 'give' ) . '</span>';
+					$value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label" data-tooltip="' . esc_attr__( 'This donation was made in test mode.', 'give' ) . '">' . esc_html__( 'Test', 'give' ) . '</span>';
 				}
 
 				return $value;

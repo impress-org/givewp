@@ -28,10 +28,10 @@ if ( ! isset( $_GET['id'] ) || ! is_numeric( $_GET['id'] ) ) {
 $payment_id = absint( $_GET['id'] );
 $payment    = new Give_Payment( $payment_id );
 
-// Sanity check... fail if purchase ID is invalid
+// Sanity check... fail if donation ID is invalid
 $payment_exists = $payment->ID;
 if ( empty( $payment_exists ) ) {
-	wp_die( esc_html__( 'The specified ID does not belong to a payment. Please try again.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
+	wp_die( esc_html__( 'The specified ID does not belong to a donation. Please try again.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
 }
 
 $number         = $payment->number;
@@ -52,12 +52,12 @@ $payment_mode   = $payment->mode;
 
 	<h1 id="transaction-details-heading"><?php
 		printf(
-		/* translators: %s: payment number */
-			esc_html__( 'Payment %s', 'give' ),
+		/* translators: %s: donation number */
+			esc_html__( 'Donation %s', 'give' ),
 			$number
 		);
 		if ( $payment_mode == 'test' ) {
-			echo '<span id="test-payment-label" class="give-item-label give-item-label-orange" data-tooltip="' . esc_attr__( 'This payment was made in test mode.', 'give' ) . '" data-tooltip-my-position="center left" data-tooltip-target-position="center right">' . esc_html__( 'Test Payment', 'give' ) . '</span>';
+			echo '<span id="test-payment-label" class="give-item-label give-item-label-orange" data-tooltip="' . esc_attr__( 'This donation was made in test mode.', 'give' ) . '" data-tooltip-my-position="center left" data-tooltip-target-position="center right">' . esc_html__( 'Test Donation', 'give' ) . '</span>';
 		}
 		?></h1>
 
@@ -101,7 +101,7 @@ $payment_mode   = $payment->mode;
 
 							<div id="give-order-update" class="postbox give-order-data">
 
-								<h3 class="hndle"><?php esc_html_e( 'Update Payment', 'give' ); ?></h3>
+								<h3 class="hndle"><?php esc_html_e( 'Update Donation', 'give' ); ?></h3>
 
 								<div class="inside">
 									<div class="give-admin-box">
@@ -181,7 +181,7 @@ $payment_mode   = $payment->mode;
 
 										<?php
 										/**
-										 * Fires in order details page, after the sidebar update-payment metabox.
+										 * Fires in order details page, after the sidebar update-donation metabox.
 										 *
 										 * @since 1.0
 										 *
@@ -210,7 +210,7 @@ $payment_mode   = $payment->mode;
 
 									<div id="major-publishing-actions">
 										<div id="publishing-action">
-											<input type="submit" class="button button-primary right" value="<?php esc_attr_e( 'Save Payment', 'give' ); ?>"/>
+											<input type="submit" class="button button-primary right" value="<?php esc_attr_e( 'Save Donation', 'give' ); ?>"/>
 											<?php if ( give_is_payment_complete( $payment_id ) ) : ?>
 												<a href="<?php echo esc_url( add_query_arg( array(
 													'give-action' => 'email_links',
@@ -240,14 +240,14 @@ $payment_mode   = $payment->mode;
 
 							<div id="give-order-details" class="postbox give-order-data">
 
-								<h3 class="hndle"><?php esc_html_e( 'Payment Meta', 'give' ); ?></h3>
+								<h3 class="hndle"><?php esc_html_e( 'Donation Meta', 'give' ); ?></h3>
 
 								<div class="inside">
 									<div class="give-admin-box">
 
 										<?php
 										/**
-										 * Fires in order details page, before the payment-meta metabox.
+										 * Fires in order details page, before the donation-meta metabox.
 										 *
 										 * @since 1.0
 										 *
@@ -282,7 +282,7 @@ $payment_mode   = $payment->mode;
 										<?php if ( $transaction_id ) : ?>
 											<div class="give-order-tx-id give-admin-box-inside">
 												<p>
-													<strong><?php esc_html_e( 'Transaction ID:', 'give' ); ?></strong>&nbsp;
+													<strong><?php esc_html_e( 'Donation ID:', 'give' ); ?></strong>&nbsp;
 													<?php echo apply_filters( 'give_payment_details_transaction_id-' . $gateway, $transaction_id, $payment_id ); ?>
 												</p>
 											</div>
@@ -296,7 +296,7 @@ $payment_mode   = $payment->mode;
 
 										<?php
 										/**
-										 * Fires in order details page, after the payment-meta metabox.
+										 * Fires in order details page, after the donation-meta metabox.
 										 *
 										 * @since 1.0
 										 *
@@ -377,11 +377,7 @@ $payment_mode   = $payment->mode;
 										<div class="column">
 											<p>
 												<strong><?php esc_html_e( 'Donation Date:', 'give' ); ?></strong><br>
-												<?php
-												//Transaction Date
-												$date_format = get_option( 'date_format' );
-												echo date_i18n( $date_format, $payment_date );
-												?>
+												<?php echo date_i18n( get_option( 'date_format' ), $payment_date ); ?>
 											</p>
 											<p>
 												<strong><?php esc_html_e( 'Donation Level:', 'give' ); ?></strong><br>
@@ -550,7 +546,7 @@ $payment_mode   = $payment->mode;
 												<input type="hidden" id="give-new-customer" name="give-new-customer" value="0"/>
 												<a href="#cancel" class="give-payment-new-customer-cancel give-delete"><?php esc_html_e( 'Cancel', 'give' ); ?></a>
 												<br>
-												<em><?php esc_html_e( 'Click "Save Payment" to create new donor.', 'give' ); ?></em>
+												<em><?php esc_html_e( 'Click "Save Donation" to create new donor.', 'give' ); ?></em>
 											</p>
 										</div>
 									</div>
@@ -695,7 +691,7 @@ $payment_mode   = $payment->mode;
 							?>
 
 							<div id="give-payment-notes" class="postbox">
-								<h3 class="hndle"><?php esc_html_e( 'Payment Notes', 'give' ); ?></h3>
+								<h3 class="hndle"><?php esc_html_e( 'Donation Notes', 'give' ); ?></h3>
 
 								<div class="inside">
 									<div id="give-payment-notes-inner">
@@ -711,7 +707,7 @@ $payment_mode   = $payment->mode;
 										else :
 											$no_notes_display = '';
 										endif;
-										echo '<p class="give-no-payment-notes"' . $no_notes_display . '>' . esc_html__( 'No payment notes', 'give' ) . '</p>'; ?>
+										echo '<p class="give-no-payment-notes"' . $no_notes_display . '>' . esc_html__( 'No donation notes.', 'give' ) . '</p>'; ?>
 									</div>
 									<textarea name="give-payment-note" id="give-payment-note" class="large-text"></textarea>
 

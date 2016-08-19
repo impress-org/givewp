@@ -185,7 +185,7 @@ function give_insert_payment( $payment_data = array() ) {
 		update_option( 'give_last_payment_number', $number );
 	}
 
-	// Clear the user's purchased cache
+	// Clear the user's donation cache
 	delete_transient( 'give_user_' . $payment_data['user_info']['id'] . '_purchases' );
 
 	//Save payment
@@ -252,7 +252,7 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
 	$customer_id = give_get_payment_customer_id( $payment_id );
 	$customer    = new Give_Customer( $customer_id );
 
-	//Only undo purchases that aren't these statuses
+	//Only undo donations that aren't these statuses
 	$dont_undo_statuses = apply_filters( 'give_undo_purchase_statuses', array(
 		'pending',
 		'cancelled'
@@ -320,7 +320,7 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
 }
 
 /**
- * Undo Purchase
+ * Undo Donation
  *
  * Undoes a donation, including the decrease of donations and earning stats.
  * Used for when refunding or deleting a donation.
@@ -349,7 +349,7 @@ function give_undo_purchase( $form_id = false, $payment_id ) {
 
 	$maybe_decrease_sales = apply_filters( 'give_decrease_sales_on_undo', true, $payment, $payment->form_id );
 	if ( true === $maybe_decrease_sales ) {
-		// decrease purchase count
+		// decrease donation count
 		give_decrease_purchase_count( $payment->form_id );
 	}
 
@@ -844,9 +844,9 @@ function give_get_total_earnings() {
 			if ( $payments ) {
 
 				/*
-				 * If performing a purchase, we need to skip the very last payment in the database, since it calls
+				 * If performing a donation, we need to skip the very last payment in the database, since it calls
 				 * give_increase_total_earnings() on completion, which results in duplicated earnings for the very
-				 * first purchase
+				 * first donation
 				 */
 
 				if ( did_action( 'give_update_payment_status' ) ) {
@@ -1039,7 +1039,7 @@ function give_get_payment_customer_id( $payment_id ) {
 }
 
 /**
- * Get the IP address used to make a purchase
+ * Get the IP address used to make a donation
  *
  * @since 1.0
  *
@@ -1114,13 +1114,13 @@ function give_get_payment_currency( $payment_id = 0 ) {
 }
 
 /**
- * Get the purchase key for a purchase
+ * Get the key for a donation
  *
  * @since 1.0
  *
  * @param int $payment_id Payment ID
  *
- * @return string $key Purchase key
+ * @return string $key Donation key
  */
 function give_get_payment_key( $payment_id = 0 ) {
 	$payment = new Give_Payment( $payment_id );
@@ -1358,13 +1358,13 @@ function give_get_payment_fees( $payment_id = 0, $type = 'all' ) {
 }
 
 /**
- * Retrieves the transaction ID for the given payment
+ * Retrieves the donation ID
  *
  * @since  1.0
  *
  * @param int $payment_id Payment ID
  *
- * @return string The Transaction ID
+ * @return string The donation ID
  */
 function give_get_payment_transaction_id( $payment_id = 0 ) {
 	$payment = new Give_Payment( $payment_id );
@@ -1394,15 +1394,15 @@ function give_set_payment_transaction_id( $payment_id = 0, $transaction_id = '' 
 }
 
 /**
- * Retrieve the purchase ID based on the purchase key
+ * Retrieve the donation ID based on the key
  *
  * @since 1.0
  * @global object $wpdb Used to query the database using the WordPress
  *                      Database API
  *
- * @param string $key the purchase key to search for
+ * @param string $key the key to search for
  *
- * @return int $purchase Purchase ID
+ * @return int $purchase Donation ID
  */
 function give_get_purchase_id_by_key( $key ) {
 	global $wpdb;
@@ -1418,7 +1418,7 @@ function give_get_purchase_id_by_key( $key ) {
 
 
 /**
- * Retrieve the purchase ID based on the transaction ID
+ * Retrieve the donation ID based on the transaction ID
  *
  * @since 1.3
  * @global object $wpdb Used to query the database using the WordPress
@@ -1426,7 +1426,7 @@ function give_get_purchase_id_by_key( $key ) {
  *
  * @param string $key the transaction ID to search for
  *
- * @return int $purchase Purchase ID
+ * @return int $purchase Donation ID
  */
 function give_get_purchase_id_by_transaction_id( $key ) {
 	global $wpdb;
@@ -1441,14 +1441,14 @@ function give_get_purchase_id_by_transaction_id( $key ) {
 }
 
 /**
- * Retrieve all notes attached to a purchase
+ * Retrieve all notes attached to a donation
  *
  * @since 1.0
  *
- * @param int $payment_id The payment ID to retrieve notes for
+ * @param int $payment_id The donation ID to retrieve notes for
  * @param string $search Search for notes that contain a search term
  *
- * @return array $notes Payment Notes
+ * @return array $notes Donation Notes
  */
 function give_get_payment_notes( $payment_id = 0, $search = '' ) {
 
@@ -1598,7 +1598,7 @@ function give_get_payment_note_html( $note, $payment_id = 0 ) {
 	$note_html .= '<p>';
 	$note_html .= '<strong>' . $user . '</strong>&nbsp;&ndash;&nbsp;<span style="color:#aaa;font-style:italic;">' . date_i18n( $date_format, strtotime( $note->comment_date ) ) . '</span><br/>';
 	$note_html .= $note->comment_content;
-	$note_html .= '&nbsp;&ndash;&nbsp;<a href="' . esc_url( $delete_note_url ) . '" class="give-delete-payment-note" data-note-id="' . absint( $note->comment_ID ) . '" data-payment-id="' . absint( $payment_id ) . '" title="' . esc_attr__( 'Delete this payment note', 'give' ) . '">' . esc_html__( 'Delete', 'give' ) . '</a>';
+	$note_html .= '&nbsp;&ndash;&nbsp;<a href="' . esc_url( $delete_note_url ) . '" class="give-delete-payment-note" data-note-id="' . absint( $note->comment_ID ) . '" data-payment-id="' . absint( $payment_id ) . '" title="' . esc_attr__( 'Delete this donation note', 'give' ) . '">' . esc_html__( 'Delete', 'give' ) . '</a>';
 	$note_html .= '</p>';
 	$note_html .= '</div>';
 
