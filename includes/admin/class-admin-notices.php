@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin Notices Class
+ * Admin Notices Class.
  *
  * @package     Give
  * @subpackage  Admin/Notices
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Give_Notices {
 
 	/**
-	 * Get things started
+	 * Get things started.
 	 *
 	 * @since 1.0
 	 */
@@ -34,8 +34,7 @@ class Give_Notices {
 
 
 	/**
-	 *
-	 * Display admin bar when active
+	 * Display admin bar when active.
 	 *
 	 * @return bool
 	 */
@@ -46,7 +45,7 @@ class Give_Notices {
 			return false;
 		}
 
-		//Add the main siteadmin menu item
+		//Add the main siteadmin menu item.
 		$wp_admin_bar->add_menu( array(
 			'id'     => 'give-test-notice',
 			'href'   => admin_url() . 'edit.php?post_type=give_forms&page=give-settings&tab=gateways',
@@ -58,7 +57,7 @@ class Give_Notices {
 	}
 
 	/**
-	 * Show relevant notices
+	 * Show relevant notices.
 	 *
 	 * @since 1.0
 	 */
@@ -83,7 +82,7 @@ class Give_Notices {
 
 		if ( isset( $_GET['give-message'] ) ) {
 
-			// Donation reports errors
+			// Donation reports errors.
 			if ( current_user_can( 'view_give_reports' ) ) {
 				switch ( $_GET['give-message'] ) {
 					case 'payment_deleted' :
@@ -101,7 +100,7 @@ class Give_Notices {
 				}
 			}
 
-			// Give settings notices and errors
+			// Give settings notices and errors.
 			if ( current_user_can( 'manage_give_settings' ) ) {
 				switch ( $_GET['give-message'] ) {
 					case 'settings-imported' :
@@ -124,7 +123,7 @@ class Give_Notices {
 						break;
 				}
 			}
-			// Payments errors
+			// Payments errors.
 			if ( current_user_can( 'edit_give_payments' ) ) {
 				switch ( $_GET['give-message'] ) {
 					case 'note-added' :
@@ -136,7 +135,7 @@ class Give_Notices {
 				}
 			}
 
-			// Customer Notices
+			// Customer Notices.
 			if ( current_user_can( 'edit_give_payments' ) ) {
 				switch ( $_GET['give-message'] ) {
 					case 'customer-deleted' :
@@ -165,7 +164,7 @@ class Give_Notices {
 
 
 	/**
-	 * Admin Add-ons Notices
+	 * Admin Add-ons Notices.
 	 *
 	 * @since 1.0
 	 * @return void
@@ -177,7 +176,7 @@ class Give_Notices {
 
 
 	/**
-	 * Dismiss admin notices when Dismiss links are clicked
+	 * Dismiss admin notices when Dismiss links are clicked.
 	 *
 	 * @since 1.0
 	 * @return void

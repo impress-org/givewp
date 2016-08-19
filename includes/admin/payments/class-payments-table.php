@@ -263,14 +263,14 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'cb'       		=> '<input type="checkbox" />', //Render a checkbox instead of text
-			'donation' 		=> esc_html__( 'Donation', 'give' ),
+			'cb'            => '<input type="checkbox" />', //Render a checkbox instead of text
+			'donation'      => esc_html__( 'Donation', 'give' ),
 			'donation_form' => esc_html__( 'Donation Form', 'give' ),
-			'status'   		=> esc_html__( 'Status', 'give' ),
-            'date'     		=> esc_html__( 'Date', 'give' ),
-            'amount'   		=> esc_html__( 'Amount', 'give' ),
-            'details'  		=> esc_html__( 'Details', 'give' ),
-        );
+			'status'        => esc_html__( 'Status', 'give' ),
+			'date'          => esc_html__( 'Date', 'give' ),
+			'amount'        => esc_html__( 'Amount', 'give' ),
+			'details'       => esc_html__( 'Details', 'give' ),
+		);
 
 		return apply_filters( 'give_payments_table_columns', $columns );
 	}
@@ -324,20 +324,14 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 		switch ( $column_name ) {
 			case 'donation' :
-				$value = sprintf(
-					/* translators: 1: Payment link 2: Donor link */
-					esc_html__( '%1$s by %2$s', 'give' ),
-					sprintf(
-						'<a href="%1$s">#%2$s</a>',
-						get_permalink( $payment->ID ),
-						$payment->ID
-					),
-					sprintf(
-						'%1$s<br>%2$s',
-						$this->get_donor( $payment ),
-						$this->get_donor_email( $payment )
-					)
-				);
+				ob_start();
+				?>
+				<a href="<?php echo $single_transaction_url; ?>" data-tooltip="<?php esc_html_e( 'View details', 'give' ) ?>">#<?php echo $payment->ID; ?></a>
+				&nbsp;<?php _e( 'by', 'give' ); ?>&nbsp;<?php echo $this->get_donor( $payment ); ?><br>
+				<?php echo $this->get_donor_email( $payment ); ?>
+				<?php echo $this->row_actions( $row_actions ); ?>
+				<?php
+				$value = ob_get_clean();
 				break;
 
 			case 'amount' :
