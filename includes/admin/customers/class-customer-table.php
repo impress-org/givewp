@@ -37,7 +37,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	public $per_page = 30;
 
 	/**
-	 * Number of customers found
+	 * Number of donors found
 	 *
 	 * @var int
 	 * @since 1.0
@@ -45,7 +45,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	public $count = 0;
 
 	/**
-	 * Total customers
+	 * Total donors
 	 *
 	 * @var int
 	 * @since 1.0
@@ -71,13 +71,13 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Show the search field
+	 * Show the search field.
 	 *
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param string $text     Label for the search box
-	 * @param string $input_id ID of the search box
+	 * @param  string $text     Label for the search box.
+	 * @param  string $input_id ID of the search box.
 	 *
 	 * @return void
 	 */
@@ -100,13 +100,13 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	}
 
 	/**
-	 * This function renders most of the columns in the list table.
+	 * Render the columns in the list table.
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param array  $item        Contains all the data of the customers
-	 * @param string $column_name The name of the column
+	 * @param  array  $item        Contains all the data of the donors.
+	 * @param  string $column_name The name of the column.
 	 *
 	 * @return string Column Name
 	 */
@@ -148,11 +148,12 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Retrieve the table columns
+	 * Retrieve the table columns.
 	 *
-	 * @access public
 	 * @since  1.0
-	 * @return array $columns Array of all the list table columns
+	 * @access public
+	 *
+	 * @return array $columns An array of all the list table columns.
 	 */
 	public function get_columns() {
 		$columns = array(
@@ -169,11 +170,12 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Get the sortable columns
+	 * Retrieve the sortable columns.
 	 *
+	 * @since  1.0
 	 * @access public
-	 * @since  2.1
-	 * @return array Array of all the sortable columns
+	 *
+	 * @return array An array of all the sortable columns.
 	 */
 	public function get_sortable_columns() {
 		return array(
@@ -188,13 +190,26 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Get Row Actions
+	 * Retrieve the name of the primary column.
 	 *
 	 * @since 1.7
+	 * @access protected
 	 *
-	 * @return array Array of action links.
+	 * @return string Name of the primary column.
 	 */
-	function get_row_actions( $item ) {
+	protected function get_primary_column_name() {
+		return 'id';
+	}
+
+	/**
+	 * Retrieve row actions.
+	 *
+	 * @since  1.7
+	 * @access public
+	 *
+	 * @return array An array of action links.
+	 */
+	public function get_row_actions( $item ) {
 
 		$actions  = array(
 			'view'   => sprintf( '<a href="%1$s">%2$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $item['id'] ), esc_html__( 'View Donor', 'give' ) ),
@@ -207,10 +222,11 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Outputs the reporting views
+	 * Outputs the reporting views.
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
+	 *
 	 * @return void
 	 */
 	public function bulk_actions( $which = '' ) {
@@ -218,35 +234,39 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Retrieve the current page number
+	 * Retrieve the current page number.
 	 *
-	 * @access public
 	 * @since  1.0
-	 * @return int Current page number
+	 * @access public
+	 *
+	 * @return int Current page number.
 	 */
 	public function get_paged() {
 		return isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1;
 	}
 
 	/**
-	 * Retrieves the search query string
+	 * Retrieve the search query string.
 	 *
-	 * @access public
 	 * @since  1.0
-	 * @return mixed string If search is present, false otherwise
+	 * @access public
+	 *
+	 * @return mixed string If search is present, false otherwise.
 	 */
 	public function get_search() {
 		return ! empty( $_GET['s'] ) ? urldecode( trim( $_GET['s'] ) ) : false;
 	}
 
 	/**
-	 * Build all the reports data
+	 * Retrieve all the reports data.
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
+	 *
 	 * @global object $wpdb Used to query the database using the WordPress
 	 *                      Database API
-	 * @return array $reports_data All the data for customer reports
+	 *
+	 * @return array $reports_data All the data for donor reports.
 	 */
 	public function reports_data() {
 		global $wpdb;
@@ -297,14 +317,16 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Setup the final data for the table
+	 * Setup the final data for the table.
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
+	 *
 	 * @uses   Give_Customer_Reports_Table::get_columns()
 	 * @uses   WP_List_Table::get_sortable_columns()
 	 * @uses   Give_Customer_Reports_Table::get_pagenum()
 	 * @uses   Give_Customer_Reports_Table::get_total_customers()
+	 *
 	 * @return void
 	 */
 	public function prepare_items() {
