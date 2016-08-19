@@ -111,10 +111,17 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * @return string Column Name
 	 */
 	public function column_default( $item, $column_name ) {
+
 		switch ( $column_name ) {
 
 			case 'id' :
-				$value = '<span class="give-item-label give-item-label-gray">' . $item['id'] . '</span>';
+				$value = '<span class="give-item-label give-item-label-gray">' . $item['id'] . '</span>' . $this->row_actions( $this->get_row_actions( $item ) );
+				break;
+
+			case 'name' :
+				$name  = ! empty( $item['name'] ) ? $item['name'] : '<em>' . esc_html__( 'Unnamed Donor', 'give' ) . '</em>';
+				$url   = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $item['id'] );
+				$value = '<a href="' . esc_url( $url ) . '">' . $name . '</a>';
 				break;
 
 			case 'num_purchases' :
@@ -138,17 +145,6 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 
 		return apply_filters( 'give_report_column_' . $column_name, $value, $item['id'] );
 
-	}
-
-	public function column_name( $item ) {
-		$name     = ! empty( $item['name'] ) ? $item['name'] : '<em>' . esc_html__( 'Unnamed Donor', 'give' ) . '</em>';
-		$view_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $item['id'] );
-		$actions  = array(
-			'view'   => sprintf( '<a href="%1$s">%2$s</a>', $view_url, esc_html__( 'View Donor', 'give' ) ),
-			'delete' => sprintf( '<a href="%1$s">%2$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id=' . $item['id'] ), esc_html__( 'Delete', 'give' ) )
-		);
-
-		return '<a href="' . esc_url( $view_url ) . '">' . $name . '</a>' . $this->row_actions( $actions );
 	}
 
 	/**
@@ -188,6 +184,26 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 			'amount_spent'  => array( 'purchase_value', false ),
 			'date_created'  => array( 'date_created', true )
 		);
+
+	}
+
+	/**
+	 * Get Row Actions
+	 *
+	 * @since 1.7
+	 *
+	 * @return array Array of action links.
+	 */
+	function get_row_actions( $item ) {
+
+		$actions  = array(
+			'view'   => sprintf( '<a href="%1$s">%2$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $item['id'] ), esc_html__( 'View Donor', 'give' ) ),
+			'notes'  => sprintf( '<a href="%1$s">%2$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=notes&id='    . $item['id'] ), esc_html__( 'Notes', 'give' ) ),
+			'delete' => sprintf( '<a href="%1$s">%2$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id='   . $item['id'] ), esc_html__( 'Delete', 'give' ) )
+		);
+
+		return apply_filters( 'give_donor_row_actions', $actions, $item );
+
 	}
 
 	/**
