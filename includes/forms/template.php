@@ -15,13 +15,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Get Donation Form
+ * Get Donation Form.
  *
- * @since 1.0
+ * @since  1.0
  *
- * @param array $args Arguments for display
+ * @param  array  $args An array of form arguments.
  *
- * @return string $purchase_form
+ * @return string Donation form.
  */
 function give_get_donation_form( $args = array() ) {
 
@@ -203,19 +203,17 @@ function give_get_donation_form( $args = array() ) {
 	echo apply_filters( 'give_donate_form', $final_output, $args );
 }
 
-
 /**
- *
- * Give Show Donation Form
+ * Give Show Donation Form.
  *
  * Renders the Donation Form, hooks are provided to add to the checkout form.
  * The default Donation Form rendered displays a list of the enabled payment
  * gateways, a user registration form (if enable) and a credit card info form
- * if credit cards are enabled
+ * if credit cards are enabled.
  *
- * @since 1.0
+ * @since  1.0
  *
- * @param  int $form_id ID of the Give Form
+ * @param  int    $form_id The form ID.
  *
  * @return string
  */
@@ -320,12 +318,11 @@ function give_show_purchase_form( $form_id ) {
 add_action( 'give_purchase_form', 'give_show_purchase_form' );
 
 /**
- *
- * Give Show Login/Register Form Fields
+ * Give Show Login/Register Form Fields.
  *
  * @since  1.4.1
  *
- * @param  int   $form_id ID of the Give Form
+ * @param  int  $form_id The form ID.
  *
  * @return void
  */
@@ -380,14 +377,14 @@ function give_show_register_login_fields( $form_id ) {
 add_action( 'give_purchase_form_register_login_fields', 'give_show_register_login_fields' );
 
 /**
- * Donation Amount Field
+ * Donation Amount Field.
  *
- * Outputs the donation amount field that appears at the top of the donation forms. If the user has custom amount enabled the field will output as a customizable input
+ * Outputs the donation amount field that appears at the top of the donation forms. If the user has custom amount enabled the field will output as a customizable input.
  *
  * @since  1.0
  *
- * @param  int   $form_id Give Form ID
- * @param  array $args
+ * @param  int   $form_id The form ID.
+ * @param  array $args    An array of form arguments.
  *
  * @return void
  */
@@ -590,13 +587,16 @@ function give_output_levels( $form_id ) {
 }
 
 /**
- * Display Reveal & Lightbox Button
+ * Display Reveal & Lightbox Button.
  *
- * Outputs a button to reveal form fields
+ * Outputs a button to reveal form fields.
  *
- * @param int   $form_id
- * @param array $args
+ * @since  1.0
  *
+ * @param  int   $form_id The form ID.
+ * @param  array $args    An array of form arguments.
+ *
+ * @return string Checkout button.
  */
 function give_display_checkout_button( $form_id, $args ) {
 
@@ -624,7 +624,7 @@ add_action( 'give_after_donation_levels', 'give_display_checkout_button', 10, 2 
  *
  * @since  1.0
  *
- * @param  int $form_id
+ * @param  int  $form_id The form ID.
  *
  * @return void
  */
@@ -738,7 +738,7 @@ add_action( 'give_register_fields_before', 'give_user_info_fields' );
  *
  * @since  1.0
  *
- * @param  int $form_id
+ * @param  int  $form_id The form ID.
  *
  * @return void
  */
@@ -842,11 +842,11 @@ function give_get_cc_form( $form_id ) {
 add_action( 'give_cc_form', 'give_get_cc_form' );
 
 /**
- * Outputs the default credit card address fields
+ * Outputs the default credit card address fields.
  *
  * @since  1.0
  *
- * @param  int $form_id
+ * @param  int  $form_id The form ID.
  *
  * @return void
  */
@@ -1026,7 +1026,7 @@ add_action( 'give_after_cc_fields', 'give_default_cc_address_fields' );
  *
  * @since  1.0
  *
- * @param  int $form_id
+ * @param  int   $form_id The form ID.
  *
  * @return string
  */
@@ -1168,7 +1168,7 @@ add_action( 'give_purchase_form_register_fields', 'give_get_register_fields' );
  *
  * @since  1.0
  *
- * @param  int $form_id
+ * @param  int   $form_id The form ID.
  *
  * @return string
  */
@@ -1265,7 +1265,7 @@ function give_get_login_fields( $form_id ) {
 add_action( 'give_purchase_form_login_fields', 'give_get_login_fields', 10, 1 );
 
 /**
- * Payment Mode Select
+ * Payment Mode Select.
  *
  * Renders the payment mode form by getting all the enabled payment gateways and
  * outputting them as radio buttons for the user to choose the payment gateway. If
@@ -1274,7 +1274,7 @@ add_action( 'give_purchase_form_login_fields', 'give_get_login_fields', 10, 1 );
  *
  * @since  1.0
  *
- * @param  int $form_id
+ * @param  int  $form_id The form ID.
  *
  * @return void
  */
@@ -1391,7 +1391,7 @@ add_action( 'give_payment_mode_select', 'give_payment_mode_select' );
  *
  * @since  1.0
  *
- * @param  int   $form_id
+ * @param  int  $form_id The form ID.
  *
  * @return void
  */
@@ -1437,13 +1437,13 @@ function give_terms_agreement( $form_id ) {
 add_action( 'give_purchase_form_before_submit', 'give_terms_agreement', 10, 1 );
 
 /**
- * Checkout Final Total
+ * Checkout Final Total.
  *
- * Shows the final total at the bottom of the checkout page
+ * Shows the final donation total at the bottom of the checkout page.
  *
  * @since  1.0
  *
- * @param int   $form_id
+ * @param  int  $form_id The form ID.
  *
  * @return void
  */
@@ -1469,13 +1469,12 @@ function give_checkout_final_total( $form_id ) {
 
 add_action( 'give_purchase_form_before_submit', 'give_checkout_final_total', 999 );
 
-
 /**
- * Renders the Checkout Submit section
+ * Renders the Checkout Submit section.
  *
  * @since  1.0
  *
- * @param  int $form_id
+ * @param  int  $form_id The form ID.
  *
  * @return void
  */
@@ -1511,14 +1510,14 @@ function give_checkout_submit( $form_id ) {
 
 add_action( 'give_purchase_form_after_cc_form', 'give_checkout_submit', 9999 );
 
-
 /**
- * Give Checkout Button
+ * Give Checkout Button.
  *
- * Renders the donation button on the Checkout
+ * Renders the button on the Checkout.
+ *
  * @since  1.0
  *
- * @param  int $form_id
+ * @param  int   $form_id The form ID.
  *
  * @return string
  */
@@ -1536,12 +1535,13 @@ function give_checkout_button_purchase( $form_id ) {
 }
 
 /**
- * Give Agree to Terms
+ * Give Agree to Terms.
  *
- * Outputs the JavaScript code for the Agree to Terms section to toggle the T&Cs text
+ * Outputs the JavaScript code for the Agree to Terms section to toggle the T&Cs text.
+ *
  * @since  1.0
  *
- * @param  int $form_id
+ * @param  int  $form_id The form ID.
  *
  * @return void
  */
@@ -1568,18 +1568,17 @@ function give_agree_to_terms_js( $form_id ) {
 add_action( 'give_checkout_form_top', 'give_agree_to_terms_js', 10, 2 );
 
 /**
- * Show Give Goals
+ * Show Give Goals.
  *
  * @since  1.0
  * @since  1.6   Add template for Give Goals Shortcode.
  *               More info is on https://github.com/WordImpress/Give/issues/411
  *
- * @param  int   $form_id
- * @param  array $args
+ * @param  int   $form_id The form ID.
+ * @param  array $args    An array of form arguments.
  *
  * @return mixed
  */
-
 function give_show_goal_progress( $form_id, $args ) {
 
     ob_start();
@@ -1593,12 +1592,12 @@ function give_show_goal_progress( $form_id, $args ) {
 add_action( 'give_pre_form', 'give_show_goal_progress', 10, 2 );
 
 /**
- * Adds Actions to Render Form Content
+ * Adds Actions to Render Form Content.
  *
  * @since  1.0
  *
- * @param  int   $form_id
- * @param  array $args
+ * @param  int   $form_id The form ID.
+ * @param  array $args    An array of form arguments.
  *
  * @return void
  */
@@ -1617,14 +1616,16 @@ function give_form_content( $form_id, $args ) {
 add_action( 'give_pre_form_output', 'give_form_content', 10, 2 );
 
 /**
- * Renders Post Form Content
+ * Renders Post Form Content.
  *
- * Displays content for Give forms; fired by action from give_form_content
+ * Displays content for Give forms; fired by action from give_form_content.
  *
- * @param int $form_id
+ * @since  1.0
+ *
+ * @param  int   $form_id The form ID.
+ * @param  array $args    An array of form arguments.
  *
  * @return void
- * @since      1.0
  */
 function give_form_display_content( $form_id, $args ) {
 
@@ -1646,13 +1647,12 @@ function give_form_display_content( $form_id, $args ) {
 	remove_action( $show_content, 'give_form_display_content' );
 }
 
-
 /**
- * Renders the hidden Checkout fields
+ * Renders the hidden Checkout fields.
  *
  * @since 1.0
  *
- * @param int $form_id
+ * @param  int   $form_id The form ID.
  *
  * @return void
  */
@@ -1685,15 +1685,15 @@ function give_checkout_hidden_fields( $form_id ) {
 }
 
 /**
- * Filter Success Page Content
+ * Filter Success Page Content.
  *
  * Applies filters to the success page content.
  *
  * @since 1.0
  *
- * @param string $content Content before filters
+ * @param  string $content Content before filters.
  *
- * @return string $content Filtered content
+ * @return string $content Filtered content.
  */
 function give_filter_success_page_content( $content ) {
 
@@ -1710,14 +1710,13 @@ function give_filter_success_page_content( $content ) {
 
 add_filter( 'the_content', 'give_filter_success_page_content' );
 
-
 /**
- * Test Mode Frontend Warning
+ * Test Mode Frontend Warning.
  *
- * Displays a notice on the frontend for donation forms
+ * Displays a notice on the frontend for donation forms.
+ *
  * @since 1.1
  */
-
 function give_test_mode_frontend_warning() {
 
 	$test_mode = give_get_option( 'test_mode' );
@@ -1729,11 +1728,10 @@ function give_test_mode_frontend_warning() {
 
 add_action( 'give_pre_form', 'give_test_mode_frontend_warning', 10 );
 
-
 /**
- * Members-only Form
+ * Members-only Form.
  *
- * If "Disable Guest Donations" and "Display Register / Login" is set to none
+ * If "Disable Guest Donations" and "Display Register / Login" is set to none.
  *
  * @since  1.4.1
  *
@@ -1742,7 +1740,6 @@ add_action( 'give_pre_form', 'give_test_mode_frontend_warning', 10 );
  *
  * @return string
  */
-
 function give_members_only_form( $final_output, $args ) {
 
 	$form_id = isset( $args['form_id'] ) ? $args['form_id'] : 0;
