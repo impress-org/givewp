@@ -24,16 +24,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Give_HTML_Elements {
 
 	/**
-	 * Transactions Dropdown
+	 * Donations Dropdown
 	 *
-	 * Renders an HTML Dropdown of all the donation transactions.
+	 * Renders an HTML Dropdown of all the donations.
 	 *
 	 * @since  1.0
 	 * @access public
 	 *
 	 * @param  array  $args Arguments for the dropdown.
 	 *
-	 * @return string       Transactions dropdown.
+	 * @return string       Donations dropdown.
 	 */
 	public function transactions_dropdown( $args = array() ) {
 
@@ -61,14 +61,14 @@ class Give_HTML_Elements {
 
 		//Provide nice human readable options.
 		if ( $payments ) {
-			$options[0] = esc_html__( 'Select a transaction', 'give' );
+			$options[0] = esc_html__( 'Select a donation', 'give' );
 			foreach ( $payments as $payment ) {
 
 				$options[ absint( $payment->ID ) ] = esc_html( '#' . $payment->ID . ' - ' . $payment->email . ' - ' . $payment->form_title);
 
 			}
 		} else {
-			$options[0] = esc_html__( 'No transactions found.', 'give' );
+			$options[0] = esc_html__( 'No donations found.', 'give' );
 		}
 
 

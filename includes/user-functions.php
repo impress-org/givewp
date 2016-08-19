@@ -17,18 +17,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Get Users Purchases
+ * Get Users Donations
  *
- * Retrieves a list of all purchases by a specific user.
+ * Retrieves a list of all donations by a specific user.
  *
  * @since  1.0
  *
  * @param int $user User ID or email address
- * @param int $number Number of purchases to retrieve
+ * @param int $number Number of donations to retrieve
  * @param bool $pagination
  * @param string $status
  *
- * @return bool|object List of all user purchases
+ * @return bool|object List of all user donations
  */
 function give_get_users_purchases( $user = 0, $number = 20, $pagination = false, $status = 'complete' ) {
 
@@ -81,7 +81,7 @@ function give_get_users_purchases( $user = 0, $number = 20, $pagination = false,
 
 	$purchases = give_get_payments( apply_filters( 'give_get_users_purchases_args', $args ) );
 
-	// No purchases
+	// No donations
 	if ( ! $purchases ) {
 		return false;
 	}
@@ -99,7 +99,7 @@ function give_get_users_purchases( $user = 0, $number = 20, $pagination = false,
  * @param int $user User ID or email address
  * @param string $status
  *
- * @return bool|object List of unique forms purchased by user
+ * @return bool|object List of unique forms donated by user
  */
 function give_get_users_completed_donations( $user = 0, $status = 'complete' ) {
 	if ( empty( $user ) ) {
@@ -118,7 +118,7 @@ function give_get_users_completed_donations( $user = 0, $status = 'complete' ) {
 		return false;
 	}
 
-	// Get all the items purchased
+	// Get all the items donated
 	$payment_ids    = array_reverse( explode( ',', $customer->payment_ids ) );
 	$limit_payments = apply_filters( 'give_users_completed_donations_payments', 50 );
 	if ( ! empty( $limit_payments ) ) {
@@ -133,7 +133,7 @@ function give_get_users_completed_donations( $user = 0, $status = 'complete' ) {
 		return false;
 	}
 
-	// Grab only the post ids "form_id" of the forms purchased on this order
+	// Grab only the post ids "form_id" of the forms donated on this order
 	$completed_donations_ids = array();
 	foreach ( $donation_data as $purchase_meta ) {
 		$completed_donations_ids[] = isset($purchase_meta['form_id']) ? $purchase_meta['form_id'] : '';
@@ -143,7 +143,7 @@ function give_get_users_completed_donations( $user = 0, $status = 'complete' ) {
 		return false;
 	}
 
-	// Only include each product purchased once
+	// Only include each donation once
 	$form_ids = array_unique( $completed_donations_ids );
 
 	// Make sure we still have some products and a first item
@@ -164,7 +164,7 @@ function give_get_users_completed_donations( $user = 0, $status = 'complete' ) {
 
 
 /**
- * Has Purchases
+ * Has donations
  *
  * Checks to see if a user has donated to at least one form.
  *
@@ -173,7 +173,7 @@ function give_get_users_completed_donations( $user = 0, $status = 'complete' ) {
  *
  * @param       $user_id int - the ID of the user to check
  *
- * @return      bool - true if has purchased, false other wise.
+ * @return      bool - true if has donated, false other wise.
  */
 function give_has_purchases( $user_id = null ) {
 	if ( empty( $user_id ) ) {
@@ -181,17 +181,17 @@ function give_has_purchases( $user_id = null ) {
 	}
 
 	if ( give_get_users_purchases( $user_id, 1 ) ) {
-		return true; // User has at least one purchase
+		return true; // User has at least one donation
 	}
 
-	return false; // User has never purchased anything
+	return false; // User has never donated anything
 }
 
 
 /**
- * Get Purchase Status for User
+ * Get Donation Status for User
  *
- * Retrieves the purchase count and the total amount spent for a specific user
+ * Retrieves the donation count and the total amount spent for a specific user
  *
  * @access      public
  * @since       1.0
@@ -230,16 +230,16 @@ function give_get_purchase_stats_by_user( $user = '' ) {
 
 
 /**
- * Count number of purchases of a donor
+ * Count number of donations of a donor
  *
- * Returns total number of purchases a donor has made
+ * Returns total number of donations a donor has made
  *
  * @access      public
  * @since       1.0
  *
  * @param       $user mixed - ID or email
  *
- * @return      int - the total number of purchases
+ * @return      int - the total number of donations
  */
 function give_count_purchases_of_customer( $user = null ) {
 
@@ -296,9 +296,9 @@ function give_validate_username( $username ) {
 
 
 /**
- * Looks up purchases by email that match the registering user
+ * Looks up donations by email that match the registering user
  *
- * This is for users that purchased as a guest and then came
+ * This is for users that donated as a guest and then came
  * back and created an account.
  *
  * @access      public

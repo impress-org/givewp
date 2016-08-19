@@ -34,7 +34,7 @@ class Give_Customer {
 	public $id = 0;
 
 	/**
-	 * The customer's purchase count
+	 * The customer's donation count
 	 *
 	 * @since  1.0
 	 * @access public
@@ -513,14 +513,14 @@ class Give_Customer {
 	}
 
 	/**
-	 * Increase the purchase count of a customer.
+	 * Increase the donation count of a customer.
 	 *
 	 * @since  1.0
 	 * @access public
 	 *
 	 * @param  int $count The number to increase by.
 	 *
-	 * @return int        The purchase count.
+	 * @return int        The donation count.
 	 */
 	public function increase_purchase_count( $count = 1 ) {
 
@@ -532,7 +532,7 @@ class Give_Customer {
 		$new_total = (int) $this->purchase_count + (int) $count;
 
 		/**
-		 * Fires before increasing customer purchase count.
+		 * Fires before increasing customer donation count.
 		 *
 		 * @since 1.0
 		 *
@@ -546,11 +546,11 @@ class Give_Customer {
 		}
 
 		/**
-		 * Fires after increasing customer purchase count.
+		 * Fires after increasing customer donation count.
 		 *
 		 * @since 1.0
 		 *
-		 * @param int $purchase_count Customer purchase count.
+		 * @param int $purchase_count Customer donation count.
 		 * @param int $count          The number increased by.
 		 * @param int $customer_id    Customer id.
 		 */
@@ -560,7 +560,7 @@ class Give_Customer {
 	}
 
 	/**
-	 * Decrease the customer purchase count.
+	 * Decrease the customer donation count.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -583,7 +583,7 @@ class Give_Customer {
 		}
 
 		/**
-		 * Fires before decreasing customer purchase count.
+		 * Fires before decreasing customer donation count.
 		 *
 		 * @since 1.0
 		 *
@@ -597,11 +597,11 @@ class Give_Customer {
 		}
 
 		/**
-		 * Fires after decreasing customer purchase count.
+		 * Fires after decreasing customer donation count.
 		 *
 		 * @since 1.0
 		 *
-		 * @param int $purchase_count Customer purchase count.
+		 * @param int $purchase_count Customer donation count.
 		 * @param int $count          The number decreased by.
 		 * @param int $customer_id    Customer id.
 		 */

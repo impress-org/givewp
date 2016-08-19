@@ -86,7 +86,7 @@ class Give_Notices {
 			if ( current_user_can( 'view_give_reports' ) ) {
 				switch ( $_GET['give-message'] ) {
 					case 'payment_deleted' :
-						$notices['updated']['give-payment-deleted'] = esc_attr__( 'The payment has been deleted.', 'give' );
+						$notices['updated']['give-payment-deleted'] = esc_attr__( 'The donation has been deleted.', 'give' );
 						break;
 					case 'email_sent' :
 						$notices['updated']['give-payment-sent'] = esc_attr__( 'The donation receipt has been resent.', 'give' );
@@ -95,7 +95,7 @@ class Give_Notices {
 						$notices['updated']['give-refreshed-reports'] = esc_attr__( 'The reports cache has been cleared.', 'give' );
 						break;
 					case 'payment-note-deleted' :
-						$notices['updated']['give-payment-note-deleted'] = esc_attr__( 'The payment note has been deleted.', 'give' );
+						$notices['updated']['give-payment-note-deleted'] = esc_attr__( 'The donation note has been deleted.', 'give' );
 						break;
 				}
 			}
@@ -127,10 +127,10 @@ class Give_Notices {
 			if ( current_user_can( 'edit_give_payments' ) ) {
 				switch ( $_GET['give-message'] ) {
 					case 'note-added' :
-						$notices['updated']['give-note-added'] = esc_attr__( 'The payment note has been added.', 'give' );
+						$notices['updated']['give-note-added'] = esc_attr__( 'The donation note has been added.', 'give' );
 						break;
 					case 'payment-updated' :
-						$notices['updated']['give-payment-updated'] = esc_attr__( 'The payment has been updated.', 'give' );
+						$notices['updated']['give-payment-updated'] = esc_attr__( 'The donation has been updated.', 'give' );
 						break;
 				}
 			}

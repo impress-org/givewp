@@ -48,7 +48,7 @@ class Tests_Post_Types extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Test Payment CPT Exists
+	 * Test Donation CPT Exists
 	 */
 	public function test_payment_post_type() {
 		global $wp_post_types;
@@ -56,7 +56,7 @@ class Tests_Post_Types extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Test Payments CPT Labels
+	 * Test Donation CPT Labels
 	 */
 	public function test_payment_post_type_labels() {
 		global $wp_post_types;
@@ -70,7 +70,7 @@ class Tests_Post_Types extends Give_Unit_Test_Case {
 		$this->assertEquals( 'No Donations Found', $wp_post_types['give_payment']->labels->not_found );
 		$this->assertEquals( 'No Donations found in Trash', $wp_post_types['give_payment']->labels->not_found_in_trash );
 		$this->assertEquals( 'All Donations', $wp_post_types['give_payment']->labels->all_items );
-		$this->assertEquals( 'Transactions', $wp_post_types['give_payment']->labels->menu_name );
+		$this->assertEquals( 'Donations', $wp_post_types['give_payment']->labels->menu_name );
 		$this->assertEquals( 'Donation', $wp_post_types['give_payment']->labels->name_admin_bar );
 		$this->assertEquals( '', $wp_post_types['give_payment']->publicly_queryable );
 		$this->assertEquals( 'give_payment', $wp_post_types['give_payment']->capability_type );

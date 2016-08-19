@@ -270,8 +270,8 @@ class Give_Plugin_Settings {
 							) ),
 						),
 						array(
-							'name'    => esc_html__( 'Failed Transaction Page', 'give' ),
-							'desc'    => esc_html__( 'This is the page donors are sent to if their transaction is cancelled or fails.', 'give' ),
+							'name'    => esc_html__( 'Failed Donation Page', 'give' ),
+							'desc'    => esc_html__( 'This is the page donors are sent to if their donation is cancelled or fails.', 'give' ),
 							'id'      => 'failure_page',
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
@@ -366,7 +366,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => esc_html__( 'Test Mode', 'give' ),
-							'desc' => esc_html__( 'While in test mode no live transactions are processed. To fully use test mode, you must have a sandbox (test) account for the payment gateway you are testing.', 'give' ),
+							'desc' => esc_html__( 'While in test mode no live donations are processed. To fully use test mode, you must have a sandbox (test) account for the payment gateway you are testing.', 'give' ),
 							'id'   => 'test_mode',
 							'type' => 'checkbox'
 						),

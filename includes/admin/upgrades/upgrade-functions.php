@@ -80,7 +80,7 @@ function give_show_upgrade_notices() {
 	if ( version_compare( $give_version, '1.3.4', '<' ) || ( ! give_has_upgrade_completed( 'upgrade_give_offline_status' ) && give_has_upgrade_completed( 'upgrade_give_payment_customer_id' ) ) ) {
 		printf(
 		/* translators: %s: upgrade URL */
-			'<div class="updated"><p>' . __( 'Give needs to upgrade the transaction database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
+			'<div class="updated"><p>' . __( 'Give needs to upgrade the donations database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
 			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_give_offline_status' ) )
 		);
 	}
@@ -225,7 +225,7 @@ add_action( 'give_upgrade_give_payment_customer_id', 'give_v132_upgrade_give_pay
 /**
  * Upgrades the Offline Status
  *
- * Reverses the issue where offline donation transactions in "pending" status where inappropriately marked as abandoned
+ * Reverses the issue where offline donations in "pending" status where inappropriately marked as abandoned
  *
  * @since      1.3.4
  *

@@ -147,7 +147,7 @@ function give_edit_customer( $args ) {
 			update_user_meta( $customer->user_id, '_give_user_address', $address );
 		}
 
-		// Update some payment meta if we need to
+		// Update some donation meta if we need to
 		$payments_array = explode( ',', $customer->payment_ids );
 
 		if ( $customer->email != $previous_email ) {
@@ -335,14 +335,14 @@ function give_customer_delete( $args ) {
 
 			if ( $remove_data ) {
 
-				// Remove all payments, logs, etc
+				// Remove all donations, logs, etc
 				foreach ( $payments_array as $payment_id ) {
 					give_delete_purchase( $payment_id );
 				}
 
 			} else {
 
-				// Just set the payments to customer_id of 0
+				// Just set the donations to customer_id of 0
 				foreach ( $payments_array as $payment_id ) {
 					give_update_payment_meta( $payment_id, '_give_payment_customer_id', 0 );
 				}

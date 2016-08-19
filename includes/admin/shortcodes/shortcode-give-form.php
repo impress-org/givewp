@@ -93,8 +93,8 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 			array(
 				'type'    => 'listbox',
 				'name'    => 'display_style',
-				'label'   => esc_attr__( 'Payment Fields:', 'give' ),
-				'tooltip' => esc_attr__( 'How would you like to display payment information?', 'give' ),
+				'label'   => esc_attr__( 'Donation Fields:', 'give' ),
+				'tooltip' => esc_attr__( 'How would you like to display donation information?', 'give' ),
 				'options' => array(
 					'onpage' => esc_html__( 'Show on Page', 'give' ),
 					'reveal' => esc_html__( 'Reveal Upon Click', 'give' ),

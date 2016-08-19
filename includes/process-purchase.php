@@ -1,6 +1,6 @@
 <?php
 /**
- * Process Purchase
+ * Process Donation
  *
  * @package     Give
  * @subpackage  Functions
@@ -15,9 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Process Purchase Form
+ * Process Donation Form
  *
- * Handles the purchase form process.
+ * Handles the donation form process.
  *
  * @access      private
  * @since       1.0
@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_process_purchase_form() {
 
 	/**
-	 * Fires before processing the purchase form.
+	 * Fires before processing the donation form.
 	 *
 	 * @since 1.0
 	 */
@@ -36,9 +36,9 @@ function give_process_purchase_form() {
 	$valid_data = give_purchase_form_validate_fields();
 
 	/**
-	 * Fires after validating purchase form fields.
+	 * Fires after validating donation form fields.
 	 *
-	 * Allow you to hook to purchase form errors.
+	 * Allow you to hook to donation form errors.
 	 *
 	 * @since 1.0
 	 *
@@ -60,7 +60,7 @@ function give_process_purchase_form() {
 	if ( false === $valid_data || give_get_errors() || ! $user ) {
 		if ( $is_ajax ) {
 			/**
-			 * Fires when AJAX sends back errors from the purchase form.
+			 * Fires when AJAX sends back errors from the donation form.
 			 *
 			 * @since 1.0
 			 */
@@ -102,7 +102,7 @@ function give_process_purchase_form() {
 	$price        = isset( $_POST['give-amount'] ) ? (float) apply_filters( 'give_donation_total', give_sanitize_amount( give_format_amount( $_POST['give-amount'] ) ) ) : '0.00';
 	$purchase_key = strtolower( md5( $user['user_email'] . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) );
 
-	// Setup purchase information
+	// Setup donation information
 	$purchase_data = array(
 		'price'        => $price,
 		'purchase_key' => $purchase_key,
@@ -118,9 +118,9 @@ function give_process_purchase_form() {
 	$valid_data['user'] = $user;
 
 	/**
-	 * Fires before purchase form gateway.
+	 * Fires before donation form gateway.
 	 *
-	 * Allow you to hook to purchase form before the gateway.
+	 * Allow you to hook to donation form before the gateway.
 	 *
 	 * @since 1.0
 	 *
@@ -137,17 +137,17 @@ function give_process_purchase_form() {
 		$_POST['give-gateway']    = 'manual';
 	}
 
-	// Allow the purchase data to be modified before it is sent to the gateway
+	// Allow the donation data to be modified before it is sent to the gateway
 	$purchase_data = apply_filters( 'give_purchase_data_before_gateway', $purchase_data, $valid_data );
 
-	// Setup the data we're storing in the purchase session
+	// Setup the data we're storing in the donation session
 	$session_data = $purchase_data;
 
 	// Make sure credit card numbers are never stored in sessions
 	unset( $session_data['card_info']['card_number'] );
 	unset( $session_data['post_data']['card_number'] );
 
-	// Used for showing data to non logged-in users after purchase, and for other plugins needing purchase data.
+	// Used for showing data to non logged-in users after donation, and for other plugins needing donation data.
 	give_set_purchase_session( $session_data );
 
 	// Send info to the gateway for payment processing
@@ -176,7 +176,7 @@ function give_process_form_login() {
 	if ( give_get_errors() || $user_data['user_id'] < 1 ) {
 		if ( $is_ajax ) {
 			/**
-			 * Fires when AJAX sends back errors from the purchase form.
+			 * Fires when AJAX sends back errors from the donation form.
 			 *
 			 * @since 1.0
 			 */
@@ -202,7 +202,7 @@ add_action( 'wp_ajax_give_process_checkout_login', 'give_process_form_login' );
 add_action( 'wp_ajax_nopriv_give_process_checkout_login', 'give_process_form_login' );
 
 /**
- * Purchase Form Validate Fields
+ * Donation Form Validate Fields
  *
  * @access      private
  * @since       1.0
@@ -264,7 +264,7 @@ function give_purchase_form_validate_fields() {
 }
 
 /**
- * Purchase Form Validate Gateway
+ * Donation Form Validate Gateway
  *
  * Validate the gateway and donation amount
  *
@@ -351,7 +351,7 @@ function give_verify_minimum_price() {
 }
 
 /**
- * Purchase Form Validate Agree To Terms
+ * Donation Form Validate Agree To Terms
  *
  * @access      private
  * @since       1.0
@@ -366,7 +366,7 @@ function give_purchase_form_validate_agree_to_terms() {
 }
 
 /**
- * Purchase Form Required Fields
+ * Donation Form Required Fields
  *
  * @access      private
  * @since       1.0
@@ -442,7 +442,7 @@ function give_require_billing_address( $payment_mode ) {
 }
 
 /**
- * Purchase Form Validate Logged In User
+ * Donation Form Validate Logged In User
  *
  * @access      private
  * @since       1.0
@@ -664,7 +664,7 @@ function give_purchase_form_validate_user_login() {
 }
 
 /**
- * Purchase Form Validate Guest User
+ * Donation Form Validate Guest User
  *
  * @access  private
  * @since   1.0
@@ -771,7 +771,7 @@ function give_register_and_login_new_user( $user_data = array() ) {
 }
 
 /**
- * Get Purchase Form User
+ * Get Donation Form User
  *
  * @param array $valid_data
  *
@@ -807,8 +807,8 @@ function give_get_purchase_form_user( $valid_data = array() ) {
 			 * This also allows the old login process to still work if a user removes the
 			 * checkout login submit button.
 			 *
-			 * This also ensures that the donor is logged in correctly if they click "Purchase"
-			 * instead of submitting the login form, meaning the donor is logged in during the purchase process.
+			 * This also ensures that the donor is logged in correctly if they click "Donation"
+			 * instead of submitting the login form, meaning the donor is logged in during the donation process.
 			 */
 
 			// Set user

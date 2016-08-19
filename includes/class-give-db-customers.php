@@ -254,7 +254,7 @@ class Give_DB_Customers extends Give_DB {
 	}
 
 	/**
-	 * Increments customer purchase stats
+	 * Increments customer donation stats
 	 *
 	 * @access public
 	 *
@@ -279,7 +279,7 @@ class Give_DB_Customers extends Give_DB {
 	}
 
 	/**
-	 * Decrements customer purchase stats
+	 * Decrements customer donation stats
 	 *
 	 * @since  1.0
 	 * @access public

@@ -319,14 +319,14 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 */
 	public function column_default( $payment, $column_name ) {
 
-		$single_transaction_url = esc_url( add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details' ) ) );
-		$row_actions            = $this->get_row_actions( $payment );
+		$single_donation_url = esc_url( add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details' ) ) );
+		$row_actions         = $this->get_row_actions( $payment );
 
 		switch ( $column_name ) {
 			case 'donation' :
 				ob_start();
 				?>
-				<a href="<?php echo $single_transaction_url; ?>" data-tooltip="<?php esc_html_e( 'View details', 'give' ) ?>">#<?php echo $payment->ID; ?></a>
+				<a href="<?php echo $single_donation_url; ?>" data-tooltip="<?php esc_html_e( 'View details', 'give' ) ?>">#<?php echo $payment->ID; ?></a>
 				&nbsp;<?php _e( 'by', 'give' ); ?>&nbsp;<?php echo $this->get_donor( $payment ); ?><br>
 				<?php echo $this->get_donor_email( $payment ); ?>
 				<?php echo $this->row_actions( $row_actions ); ?>
@@ -360,7 +360,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 				break;
 
 			case 'details' :
-				$value = '<div class="give-payment-details-link-wrap"><a href="' . $single_transaction_url . '" data-tooltip="' . __( 'View details', 'give' ) . '" class="give-payment-details-link button button-small" title="' . __( 'View Details', 'give' ) . '"><span class="dashicons dashicons-visibility"></span></a></div>';
+				$value = '<div class="give-payment-details-link-wrap"><a href="' . $single_donation_url . '" data-tooltip="' . __( 'View Details', 'give' ) . '" class="give-payment-details-link button button-small" title="' . __( 'View Details', 'give' ) . '"><span class="dashicons dashicons-visibility"></span></a></div>';
 				break;
 
 			default:
@@ -443,7 +443,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	function get_payment_status( $payment ) {
 		$value = '<div class="give-donation-status status-' . sanitize_title( give_get_payment_status( $payment, true ) ) . '"><span class="give-donation-status-icon"></span> ' . give_get_payment_status( $payment, true ) . '</div>';
 		if ( $payment->mode == 'test' ) {
-			$value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label" data-tooltip="' . esc_attr__( 'This payment was made in test mode.', 'give' ) . '">' . esc_html__( 'Test', 'give' ) . '</span>';
+			$value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label" data-tooltip="' . esc_attr__( 'This donation was made in test mode.', 'give' ) . '">' . esc_html__( 'Test', 'give' ) . '</span>';
 		}
 
 		return $value;

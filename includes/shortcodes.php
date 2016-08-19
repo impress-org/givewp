@@ -16,9 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 /**
- * Purchase History Shortcode
+ * Donation History Shortcode
  *
- * Displays a user's purchase history.
+ * Displays a user's donation history.
  *
  * @since 1.0
  * @return string
@@ -283,7 +283,7 @@ function give_receipt_shortcode( $atts, $content = null ) {
 
 		ob_start();
 
-		give_output_error( apply_filters( 'give_must_be_logged_in_error_message', esc_html__( 'You must be logged in to view this donation payment receipt.', 'give' ) ) );
+		give_output_error( apply_filters( 'give_must_be_logged_in_error_message', esc_html__( 'You must be logged in to view this donation receipt.', 'give' ) ) );
 
 		give_get_template_part( 'shortcode', 'login' );
 
@@ -296,7 +296,7 @@ function give_receipt_shortcode( $atts, $content = null ) {
 	 * Check if the user has permission to view the receipt.
 	 *
 	 * If user is logged in, user ID is compared to user ID of ID stored in payment meta
-	 * or if user is logged out and purchase was made as a guest, the purchase session is checked for
+	 * or if user is logged out and donation was made as a guest, the donation session is checked for
 	 * or if user is logged in and the user can view sensitive shop data.
 	 *
 	 */

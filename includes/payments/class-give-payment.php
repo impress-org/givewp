@@ -911,13 +911,13 @@ final class Give_Payment {
 				if ( $total_change < 0 ) {
 
 					$total_change = - ( $total_change );
-					// Decrease the customer's purchase stats
+					// Decrease the customer's donation stats
 					$customer->decrease_value( $total_change );
 					give_decrease_total_earnings( $total_change );
 
 				} else if ( $total_change > 0 ) {
 
-					// Increase the customer's purchase stats
+					// Increase the customer's donation stats
 					$customer->increase_value( $total_change );
 					give_increase_total_earnings( $total_change );
 
@@ -1725,7 +1725,7 @@ final class Give_Payment {
 	 *
 	 * @param  bool $alter_store_earnings          If the method should alter the store earnings
 	 * @param  bool $alter_customer_value          If the method should reduce the customer value
-	 * @param  bool $alter_customer_purchase_count If the method should reduce the customer's purchase count
+	 * @param  bool $alter_customer_purchase_count If the method should reduce the customer's donation count
 	 *
 	 * @return void
 	 */
@@ -1756,7 +1756,7 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Delete sales logs for this purchase
+	 * Delete sales logs for this donation
 	 *
 	 * @since  1.5
 	 * @access private
@@ -1922,12 +1922,12 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Setup the transaction ID
+	 * Setup the donation ID
 	 *
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @return string The transaction ID for the payment
+	 * @return string The donation ID
 	 */
 	private function setup_transaction_id() {
 		$transaction_id = $this->get_meta( '_give_payment_transaction_id', true );
@@ -1971,7 +1971,7 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Setup the User ID associated with the purchase
+	 * Setup the User ID associated with the donation
 	 *
 	 * @since  1.5
 	 * @access private
@@ -1985,7 +1985,7 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Setup the email address for the purchase
+	 * Setup the email address for the donation
 	 *
 	 * @since  1.5
 	 * @access private
@@ -2234,12 +2234,12 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Retrieve payment transaction ID
+	 * Retrieve donation ID
 	 *
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @return string Transaction ID from merchant processor
+	 * @return string Donation ID from merchant processor
 	 */
 	private function get_transaction_id() {
 		return apply_filters( 'give_get_payment_transaction_id', $this->transaction_id, $this->ID, $this );

@@ -106,8 +106,8 @@ function give_tools_recount_stats_display() {
 						 */
 						do_action( 'give_recount_tool_descriptions' );
 						?>
-						<span id="delete-test-transactions"><?php _e( '<strong>Deletes</strong> all TEST payment records, donors, and related log entries.', 'give' ); ?></span>
-						<span id="reset-stats"><?php _e( '<strong>Deletes</strong> ALL transaction records, donors, and related log entries regardless of test or live mode.', 'give' ); ?></span>
+						<span id="delete-test-transactions"><?php _e( '<strong>Deletes</strong> all TEST donations, donors, and related log entries.', 'give' ); ?></span>
+						<span id="reset-stats"><?php _e( '<strong>Deletes</strong> ALL donations, donors, and related log entries regardless of test or live mode.', 'give' ); ?></span>
 					</span>
 
 					<span class="spinner"></span>

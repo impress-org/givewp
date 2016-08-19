@@ -68,7 +68,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 			case 'ID' :
 				return $item['ID_label'];
 			case 'error' :
-				return get_the_title( $item['ID'] ) ? get_the_title( $item['ID'] ) : esc_html__( 'Payment Error', 'give' );
+				return get_the_title( $item['ID'] ) ? get_the_title( $item['ID'] ) : esc_html__( 'Donation Error', 'give' );
 			default:
 				return $item[ $column_name ];
 		}
@@ -123,7 +123,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	public function get_columns() {
 		$columns = array(
 			'ID'         => esc_html__( 'Log ID', 'give' ),
-			'payment_id' => esc_html__( 'Payment ID', 'give' ),
+			'payment_id' => esc_html__( 'Donation ID', 'give' ),
 			'error'      => esc_html__( 'Error', 'give' ),
 			'message'    => esc_html__( 'Error Message', 'give' ),
 			'gateway'    => esc_html__( 'Gateway', 'give' ),
