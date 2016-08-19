@@ -179,11 +179,11 @@ abstract class Give_DB {
         /* @var WPDB $wpdb */
         global $wpdb;
 
-		// Set default values
+		// Set default values.
 		$data = wp_parse_args( $data, $this->get_column_defaults() );
 
 		/**
-		 * Fires before inseting data to the databese.
+		 * Fires before inserting data to the database.
 		 *
 		 * @since 1.0
 		 *
@@ -207,7 +207,7 @@ abstract class Give_DB {
 		$wpdb->insert( $this->table_name, $data, $column_formats );
 
 		/**
-		 * Fires after inseting data to the databese.
+		 * Fires after inserting data to the database.
 		 *
 		 * @since 1.0
 		 *
