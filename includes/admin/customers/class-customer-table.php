@@ -113,6 +113,10 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	public function column_default( $item, $column_name ) {
 		switch ( $column_name ) {
 
+			case 'id' :
+				$value = '<span class="give-item-label give-item-label-gray">' . $item['id'] . '</span>';
+				break;
+
 			case 'num_purchases' :
 				$value = '<a href="' .
 				         admin_url( '/edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( $item['email'] )
@@ -137,8 +141,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	}
 
 	public function column_name( $item ) {
-		$name = '#' . $item['id'] . ' ';
-		$name .= ! empty( $item['name'] ) ? $item['name'] : '<em>' . esc_html__( 'Unnamed Donor', 'give' ) . '</em>';
+		$name     = ! empty( $item['name'] ) ? $item['name'] : '<em>' . esc_html__( 'Unnamed Donor', 'give' ) . '</em>';
 		$view_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $item['id'] );
 		$actions  = array(
 			'view'   => sprintf( '<a href="%1$s">%2$s</a>', $view_url, esc_html__( 'View Donor', 'give' ) ),
@@ -157,6 +160,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
+			'id'            => esc_html__( 'ID', 'give' ),
 			'name'          => esc_html__( 'Name', 'give' ),
 			'email'         => esc_html__( 'Email', 'give' ),
 			'num_purchases' => esc_html__( 'Donations', 'give' ),
@@ -177,10 +181,12 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 */
 	public function get_sortable_columns() {
 		return array(
-			'date_created'  => array( 'date_created', true ),
+			'id'            => array( 'id', true ),
 			'name'          => array( 'name', true ),
+			'email'         => array( 'email', true ),
 			'num_purchases' => array( 'purchase_count', false ),
 			'amount_spent'  => array( 'purchase_value', false ),
+			'date_created'  => array( 'date_created', true )
 		);
 	}
 
