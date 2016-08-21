@@ -74,7 +74,7 @@ class Give_Helper_Payment extends WP_UnitTestCase {
 			$payment_id,
 			sprintf(
 				/* translators: %s: Paypal transaction id */
-				esc_html( 'PayPal Transaction ID: %s', 'give' ),
+				esc_html__( 'PayPal Transaction ID: %s', 'give' ),
 				$transaction_id
 			)
 		);
@@ -137,7 +137,7 @@ class Give_Helper_Payment extends WP_UnitTestCase {
 			$payment_id,
 			sprintf(
 				/* translators: %s: Paypal transaction id */
-				esc_html( 'PayPal Transaction ID: %s', 'give' ),
+				esc_html__( 'PayPal Transaction ID: %s', 'give' ),
 				$transaction_id
 			)
 		);
@@ -232,7 +232,7 @@ class Give_Helper_Payment extends WP_UnitTestCase {
 			$payment_id,
 			sprintf(
 				/* translators: %s: Paypal transaction id */
-				esc_html( 'PayPal Transaction ID: %s', 'give' ),
+				esc_html__( 'PayPal Transaction ID: %s', 'give' ),
 				$transaction_id
 			)
 		);

@@ -22,11 +22,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return bool $ret True if return mode is enabled, false otherwise
  */
 function give_is_test_mode() {
-	global $give_options;
 
-	$ret = ! empty( $give_options['test_mode'] );
+	$ret = give_get_option('test_mode', false);
 
 	return (bool) apply_filters( 'give_is_test_mode', $ret );
+
 }
 
 /**
@@ -36,8 +36,8 @@ function give_is_test_mode() {
  * @return string The currency code
  */
 function give_get_currency() {
-	global $give_options;
-	$currency = isset( $give_options['currency'] ) ? $give_options['currency'] : 'USD';
+
+	$currency = give_get_option( 'currency', 'USD' );
 
 	return apply_filters( 'give_currency', $currency );
 }
@@ -50,8 +50,8 @@ function give_get_currency() {
  * @return string The currency code
  */
 function give_get_currency_position() {
-	global $give_options;
-	$currency_pos = isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before';
+
+	$currency_pos = give_get_option( 'currency_position', 'before' );
 
 	return apply_filters( 'give_currency_position', $currency_pos );
 }
@@ -66,36 +66,36 @@ function give_get_currency_position() {
 
 function give_get_currencies() {
 	$currencies = array(
-		'USD'  => esc_html( 'US Dollars ($)', 'give' ),
-		'EUR'  => esc_html( 'Euros (€)', 'give' ),
-		'GBP'  => esc_html( 'Pounds Sterling (£)', 'give' ),
-		'AUD'  => esc_html( 'Australian Dollars ($)', 'give' ),
-		'BRL'  => esc_html( 'Brazilian Real (R$)', 'give' ),
-		'CAD'  => esc_html( 'Canadian Dollars ($)', 'give' ),
-		'CZK'  => esc_html( 'Czech Koruna (Kč)', 'give' ),
-		'DKK'  => esc_html( 'Danish Krone (kr)', 'give' ),
-		'HKD'  => esc_html( 'Hong Kong Dollar ($)', 'give' ),
-		'HUF'  => esc_html( 'Hungarian Forint (Ft)', 'give' ),
-		'ILS'  => esc_html( 'Israeli Shekel (₪)', 'give' ),
-		'JPY'  => esc_html( 'Japanese Yen (¥)', 'give' ),
-		'MYR'  => esc_html( 'Malaysian Ringgits (RM)', 'give' ),
-		'MXN'  => esc_html( 'Mexican Peso ($)', 'give' ),
-		'MAD'  => esc_html( 'Moroccan Dirham (&#x2e;&#x62f;&#x2e;&#x645;)', 'give' ),
-		'NZD'  => esc_html( 'New Zealand Dollar ($)', 'give' ),
-		'NOK'  => esc_html( 'Norwegian Krone (Kr.)', 'give' ),
-		'PHP'  => esc_html( 'Philippine Pesos (₱)', 'give' ),
-		'PLN'  => esc_html( 'Polish Zloty (zł)', 'give' ),
-		'SGD'  => esc_html( 'Singapore Dollar ($)', 'give' ),
-		'KRW'  => esc_html( 'South Korean Won (₩)', 'give' ),
-		'ZAR'  => esc_html( 'South African Rand (R)', 'give' ),
-		'SEK'  => esc_html( 'Swedish Krona (kr)', 'give' ),
-		'CHF'  => esc_html( 'Swiss Franc (CHF)', 'give' ),
-		'TWD'  => esc_html( 'Taiwan New Dollars (NT$)', 'give' ),
-		'THB'  => esc_html( 'Thai Baht (฿)', 'give' ),
-		'INR'  => esc_html( 'Indian Rupee (₹)', 'give' ),
-		'TRY'  => esc_html( 'Turkish Lira (₺)', 'give' ),
-		'RIAL' => esc_html( 'Iranian Rial (﷼)', 'give' ),
-		'RUB'  => esc_html( 'Russian Rubles (руб)', 'give' )
+		'USD'  => esc_html__( 'US Dollars ($)', 'give' ),
+		'EUR'  => esc_html__( 'Euros (€)', 'give' ),
+		'GBP'  => esc_html__( 'Pounds Sterling (£)', 'give' ),
+		'AUD'  => esc_html__( 'Australian Dollars ($)', 'give' ),
+		'BRL'  => esc_html__( 'Brazilian Real (R$)', 'give' ),
+		'CAD'  => esc_html__( 'Canadian Dollars ($)', 'give' ),
+		'CZK'  => esc_html__( 'Czech Koruna (Kč)', 'give' ),
+		'DKK'  => esc_html__( 'Danish Krone (kr)', 'give' ),
+		'HKD'  => esc_html__( 'Hong Kong Dollar ($)', 'give' ),
+		'HUF'  => esc_html__( 'Hungarian Forint (Ft)', 'give' ),
+		'ILS'  => esc_html__( 'Israeli Shekel (₪)', 'give' ),
+		'JPY'  => esc_html__( 'Japanese Yen (¥)', 'give' ),
+		'MYR'  => esc_html__( 'Malaysian Ringgits (RM)', 'give' ),
+		'MXN'  => esc_html__( 'Mexican Peso ($)', 'give' ),
+		'MAD'  => esc_html__( 'Moroccan Dirham (&#x2e;&#x62f;&#x2e;&#x645;)', 'give' ),
+		'NZD'  => esc_html__( 'New Zealand Dollar ($)', 'give' ),
+		'NOK'  => esc_html__( 'Norwegian Krone (Kr.)', 'give' ),
+		'PHP'  => esc_html__( 'Philippine Pesos (₱)', 'give' ),
+		'PLN'  => esc_html__( 'Polish Zloty (zł)', 'give' ),
+		'SGD'  => esc_html__( 'Singapore Dollar ($)', 'give' ),
+		'KRW'  => esc_html__( 'South Korean Won (₩)', 'give' ),
+		'ZAR'  => esc_html__( 'South African Rand (R)', 'give' ),
+		'SEK'  => esc_html__( 'Swedish Krona (kr)', 'give' ),
+		'CHF'  => esc_html__( 'Swiss Franc (CHF)', 'give' ),
+		'TWD'  => esc_html__( 'Taiwan New Dollars (NT$)', 'give' ),
+		'THB'  => esc_html__( 'Thai Baht (฿)', 'give' ),
+		'INR'  => esc_html__( 'Indian Rupee (₹)', 'give' ),
+		'TRY'  => esc_html__( 'Turkish Lira (₺)', 'give' ),
+		'RIAL' => esc_html__( 'Iranian Rial (﷼)', 'give' ),
+		'RUB'  => esc_html__( 'Russian Rubles (руб)', 'give' )
 	);
 
 	return apply_filters( 'give_currencies', $currencies );
@@ -105,7 +105,7 @@ function give_get_currencies() {
 /**
  * Give Currency Symbol
  *
- * @description: Given a currency determine the symbol to use. If no currency given, site default is used. If no symbol is determine, the currency string is returned.
+ * Given a currency determine the symbol to use. If no currency given, site default is used. If no symbol is determine, the currency string is returned.
  *
  * @since      1.0
  *
@@ -350,8 +350,8 @@ function give_get_purchase_session() {
  *
  * @since       1.0
  *
- * @param      $purchase_data
- * @param bool $email
+ * @param array $purchase_data
+ * @param bool  $email
  *
  * @return string
  */
@@ -374,7 +374,7 @@ function give_get_purchase_summary( $purchase_data, $email = true ) {
  * Returns the webhost this site is using if possible
  *
  * @since 1.0
- * @return mixed string $host if detected, false otherwise
+ * @return string $host if detected, false otherwise
  */
 function give_get_host() {
 	$host = false;
@@ -415,7 +415,7 @@ function give_get_host() {
  *
  * @since 1.0
  *
- * @param $host The host to check
+ * @param bool /string $host The host to check
  *
  * @return bool true if host matches, false if not
  */
@@ -510,7 +510,7 @@ function give_is_host( $host = false ) {
  * @param string $function The function that was called
  * @param string $version The version of EDD that deprecated the function
  * @param string $replacement Optional. The function that should have been called
- * @param array $backtrace Optional. Contains stack backtrace of deprecated function
+ * @param array  $backtrace Optional. Contains stack backtrace of deprecated function
  */
 function _give_deprecated_function( $function, $version, $replacement = null, $backtrace = null ) {
 	do_action( 'give_deprecated_function_run', $function, $replacement, $version );
@@ -565,7 +565,7 @@ function give_get_php_arg_separator_output() {
  *
  * @since 1.0
  *
- * @param unknown $n
+ * @param int $n
  *
  * @return string Short month name
  */
@@ -595,7 +595,7 @@ function give_is_func_disabled( $function ) {
 /**
  * Give Newsletter
  *
- * @description: Returns the main Give newsletter form
+ * Returns the main Give newsletter form
  */
 function give_get_newsletter() { ?>
 
@@ -667,7 +667,7 @@ function give_get_newsletter() { ?>
 /**
  * Social Media Like Buttons
  *
- * @description: Various social media elements to Give
+ * Various social media elements to Give
  */
 function give_social_media_elements() { ?>
 
@@ -902,7 +902,7 @@ function give_can_view_receipt( $payment_key = '' ) {
 /**
  * Fallback for cal_days_in_month
  *
- * @description: Fallback in case the calendar extension is not loaded in PHP; Only supports Gregorian calendar
+ * Fallback in case the calendar extension is not loaded in PHP; Only supports Gregorian calendar
  */
 if ( ! function_exists( 'cal_days_in_month' ) ) {
 	/**

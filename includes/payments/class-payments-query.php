@@ -17,9 +17,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Give_Payments_Query Class
  *
- * This class is for retrieving payments data
+ * This class is for retrieving payments data.
  *
- * Payments can be retrieved for date ranges and pre-defined periods
+ * Payments can be retrieved for date ranges and pre-defined periods.
  *
  * @since 1.0
  */
@@ -28,18 +28,20 @@ class Give_Payments_Query extends Give_Stats {
 	/**
 	 * The args to pass to the give_get_payments() query
 	 *
-	 * @var array
-	 * @access public
 	 * @since  1.0
+	 * @access public
+	 *
+	 * @var    array
 	 */
 	public $args = array();
 
 	/**
 	 * The payments found based on the criteria set
 	 *
-	 * @var array
-	 * @access public
 	 * @since  1.0
+	 * @access public
+	 *
+	 * @var    array
 	 */
 	public $payments = array();
 
@@ -49,10 +51,10 @@ class Give_Payments_Query extends Give_Stats {
 	 * Not all of these are valid arguments that can be passed to WP_Query. The ones that are not, are modified before
 	 * the query is run to convert them to the proper syntax.
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param $args array The array of arguments that can be passed in and used for setting up this payment query.
+	 * @param  $args array The array of arguments that can be passed in and used for setting up this payment query.
 	 */
 	public function __construct( $args = array() ) {
 		$defaults = array(
@@ -85,8 +87,8 @@ class Give_Payments_Query extends Give_Stats {
 	/**
 	 * Set a query variable.
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
 	 */
 	public function __set( $query_var, $value ) {
 		if ( in_array( $query_var, array( 'meta_query', 'tax_query' ) ) ) {
@@ -99,8 +101,8 @@ class Give_Payments_Query extends Give_Stats {
 	/**
 	 * Unset a query variable.
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
 	 */
 	public function __unset( $query_var ) {
 		unset( $this->args[ $query_var ] );
@@ -109,8 +111,9 @@ class Give_Payments_Query extends Give_Stats {
 	/**
 	 * Modify the query/query arguments before we retrieve payments.
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
+	 *
 	 * @return void
 	 */
 	public function init() {
@@ -137,8 +140,9 @@ class Give_Payments_Query extends Give_Stats {
 	 * query is run, or the filter on the arguments (existing mainly for backwards
 	 * compatibility).
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
+	 *
 	 * @return object
 	 */
 	public function get_payments() {
@@ -177,8 +181,9 @@ class Give_Payments_Query extends Give_Stats {
 	/**
 	 * If querying a specific date, add the proper filters.
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
+	 *
 	 * @return void
 	 */
 	public function date_filter_pre() {
@@ -195,8 +200,9 @@ class Give_Payments_Query extends Give_Stats {
 	 * If querying a specific date, remove filters after the query has been run
 	 * to avoid affecting future queries.
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
+	 *
 	 * @return void
 	 */
 	public function date_filter_post() {
@@ -210,8 +216,9 @@ class Give_Payments_Query extends Give_Stats {
 	/**
 	 * Post Status
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
+	 *
 	 * @return void
 	 */
 	public function status() {
@@ -226,8 +233,9 @@ class Give_Payments_Query extends Give_Stats {
 	/**
 	 * Current Page
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
+	 *
 	 * @return void
 	 */
 	public function page() {
@@ -242,8 +250,9 @@ class Give_Payments_Query extends Give_Stats {
 	/**
 	 * Posts Per Page
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
+	 *
 	 * @return void
 	 */
 	public function per_page() {
@@ -264,8 +273,9 @@ class Give_Payments_Query extends Give_Stats {
 	/**
 	 * Current Month
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
+	 *
 	 * @return void
 	 */
 	public function month() {
@@ -280,8 +290,9 @@ class Give_Payments_Query extends Give_Stats {
 	/**
 	 * Order by
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
+	 *
 	 * @return void
 	 */
 	public function orderby() {
@@ -299,8 +310,9 @@ class Give_Payments_Query extends Give_Stats {
 	/**
 	 * Specific User
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
+	 *
 	 * @return void
 	 */
 	public function user() {
@@ -323,8 +335,9 @@ class Give_Payments_Query extends Give_Stats {
 	/**
 	 * Search
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
+	 *
 	 * @return void
 	 */
 	public function search() {
@@ -438,8 +451,9 @@ class Give_Payments_Query extends Give_Stats {
 	/**
 	 * Payment Mode
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
+	 *
 	 * @return void
 	 */
 	public function mode() {
@@ -458,8 +472,9 @@ class Give_Payments_Query extends Give_Stats {
 	/**
 	 * Children
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
+	 *
 	 * @return void
 	 */
 	public function children() {
@@ -472,8 +487,9 @@ class Give_Payments_Query extends Give_Stats {
 	/**
 	 * Specific Give Form
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
+	 *
 	 * @return void
 	 */
 	public function give_forms() {
@@ -523,4 +539,5 @@ class Give_Payments_Query extends Give_Stats {
 		$this->__unset( 'give_forms' );
 
 	}
+
 }

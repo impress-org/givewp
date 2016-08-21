@@ -3,7 +3,7 @@
  * Cron
  *
  * @package     Give
- * @subpackage  Classes/Cron
+ * @subpackage  Classes/Give_Cron
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.3.2
@@ -17,16 +17,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Give_Cron Class
  *
- * This class handles scheduled events
+ * This class handles scheduled events.
  *
  * @since 1.3.2
  */
 class Give_Cron {
+
 	/**
-	 * Get things going
+	 * Class Constructor
 	 *
-	 * @since 1.3.2
-	 * @see   Give_Cron::weekly_events()
+	 * Set up the Give Cron Class.
+	 *
+	 * @since  1.3.2
+	 * @access public
+	 *
+	 * @see    Give_Cron::weekly_events()
 	 */
 	public function __construct() {
 		add_filter( 'cron_schedules', array( $this, 'add_schedules' ) );
@@ -36,17 +41,18 @@ class Give_Cron {
 	/**
 	 * Registers new cron schedules
 	 *
-	 * @since 1.3.2
+	 * @since  1.3.2
+	 * @access public
 	 *
-	 * @param array $schedules
+	 * @param  array $schedules An array of non-default cron schedules.
 	 *
-	 * @return array
+	 * @return array            An array of non-default cron schedules.
 	 */
 	public function add_schedules( $schedules = array() ) {
 		// Adds once weekly to the existing schedules.
 		$schedules['weekly'] = array(
 			'interval' => 604800,
-			'display'  => esc_html( 'Once Weekly', 'easy-digital-downloads' )
+			'display'  => esc_html__( 'Once Weekly', 'give' )
 		);
 
 		return $schedules;
@@ -55,8 +61,9 @@ class Give_Cron {
 	/**
 	 * Schedules our events
 	 *
-	 * @access public
 	 * @since  1.3.2
+	 * @access public
+	 *
 	 * @return void
 	 */
 	public function schedule_events() {
@@ -67,8 +74,9 @@ class Give_Cron {
 	/**
 	 * Schedule weekly events
 	 *
-	 * @access private
 	 * @since  1.3.2
+	 * @access private
+	 *
 	 * @return void
 	 */
 	private function weekly_events() {
@@ -80,8 +88,9 @@ class Give_Cron {
 	/**
 	 * Schedule daily events
 	 *
-	 * @access private
 	 * @since  1.3.2
+	 * @access private
+	 *
 	 * @return void
 	 */
 	private function daily_events() {

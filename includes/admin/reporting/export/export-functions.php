@@ -50,7 +50,7 @@ function give_do_ajax_export() {
 	if ( ! $export->is_writable ) {
 		$json_args = array(
 			'error'   => true,
-			'message' => esc_html( 'Export location or file not writable.', 'give' )
+			'message' => esc_html__( 'Export location or file not writable.', 'give' )
 		);
 		echo json_encode($json_args);
 		exit;
@@ -74,13 +74,13 @@ function give_do_ajax_export() {
 
 		echo json_encode( array(
 			'error'   => true,
-			'message' => esc_html( 'No data found for export parameters.', 'give' )
+			'message' => esc_html__( 'No data found for export parameters.', 'give' )
 		) );
 		exit;
 
 	} elseif ( true === $export->done && true === $export->is_void ) {
 
-		$message = ! empty( $export->message ) ? $export->message : esc_html( 'Batch Processing Complete', 'give' );
+		$message = ! empty( $export->message ) ? $export->message : esc_html__( 'Batch Processing Complete', 'give' );
 		echo json_encode( array( 'success' => true, 'message' => $message ) );
 		exit;
 

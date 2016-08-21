@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return array $links
  */
 function give_plugin_action_links( $links, $file ) {
-	$settings_link = '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-settings' ) . '">' . esc_html( 'Settings', 'give' ) . '</a>';
+	$settings_link = '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-settings' ) . '">' . esc_html__( 'Settings', 'give' ) . '</a>';
 	if ( $file == 'give/give.php' ) {
 		array_unshift( $links, $settings_link );
 	}
@@ -68,8 +68,8 @@ function give_plugin_row_meta( $input, $file ) {
 	);
 
 	$links = array(
-		'<a href="' . $give_docs_link . '" target="_blank">' . esc_html( 'Documentation', 'give' ) . '</a>',
-		'<a href="' . $give_addons_link . '" target="_blank">' . esc_html( 'Add-ons', 'give' ) . '</a>',
+		'<a href="' . $give_docs_link . '" target="_blank">' . esc_html__( 'Documentation', 'give' ) . '</a>',
+		'<a href="' . $give_addons_link . '" target="_blank">' . esc_html__( 'Add-ons', 'give' ) . '</a>',
 	);
 
 	$input = array_merge( $input, $links );

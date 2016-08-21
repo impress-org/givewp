@@ -32,15 +32,15 @@ function give_form_columns( $give_form_columns ) {
 	//Standard columns
 	$give_form_columns = array(
 		'cb'            => '<input type="checkbox"/>',
-		'title'         => esc_html( 'Name', 'give' ),
-		'form_category' => esc_html( 'Categories', 'give' ),
-		'form_tag'      => esc_html( 'Tags', 'give' ),
-		'price'         => esc_html( 'Price', 'give' ),
-		'goal'          => esc_html( 'Goal', 'give' ),
-		'donations'     => esc_html( 'Donations', 'give' ),
-		'earnings'      => esc_html( 'Income', 'give' ),
-		'shortcode'     => esc_html( 'Shortcode', 'give' ),
-		'date'          => esc_html( 'Date', 'give' )
+		'title'         => esc_html__( 'Name', 'give' ),
+		'form_category' => esc_html__( 'Categories', 'give' ),
+		'form_tag'      => esc_html__( 'Tags', 'give' ),
+		'price'         => esc_html__( 'Price', 'give' ),
+		'goal'          => esc_html__( 'Goal', 'give' ),
+		'donations'     => esc_html__( 'Donations', 'give' ),
+		'earnings'      => esc_html__( 'Income', 'give' ),
+		'shortcode'     => esc_html__( 'Shortcode', 'give' ),
+		'date'          => esc_html__( 'Date', 'give' )
 	);
 
 	//Does the user want categories / tags?
@@ -68,14 +68,7 @@ add_filter( 'manage_edit-give_forms_columns', 'give_form_columns' );
  */
 function give_render_form_columns( $column_name, $post_id ) {
 	if ( get_post_type( $post_id ) == 'give_forms' ) {
-		global $give_options;
-
-		$style = isset( $give_options['button_style'] ) ? $give_options['button_style'] : 'button';
-		$color = isset( $give_options['checkout_color'] ) ? $give_options['checkout_color'] : 'blue';
-		$color = ( $color == 'inherit' ) ? '' : $color;
-
-		$purchase_text = ! empty( $give_options['add_to_cart_text'] ) ? $give_options['add_to_cart_text'] : esc_html( 'Purchase', 'give' );
-
+		
 		switch ( $column_name ) {
 			case 'form_category':
 				echo get_the_term_list( $post_id, 'give_forms_category', '', ', ', '' );
@@ -96,13 +89,13 @@ function give_render_form_columns( $column_name, $post_id ) {
 				if ( ! empty( $goal_option ) && $goal_option === 'yes' ) {
 					echo give_goal( $post_id, false );
 				} else {
-					esc_html_e( 'No Goal Set', 'give' );
+					echo esc_html__( 'No Goal Set', 'give' );
 				}
 
 				echo '<input type="hidden" class="formgoal-' . $post_id . '" value="' . give_get_form_goal( $post_id ) . '" />';
 				break;
 			case 'donations':
-				if ( current_user_can( 'view_give_forms_stats', $post_id ) ) {
+				if ( current_user_can( 'view_give_form_stats', $post_id ) ) {
 					echo '<a href="' . esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=logs&view=sales&form=' . $post_id ) ) . '">';
 					echo give_get_form_sales_stats( $post_id );
 					echo '</a>';
@@ -111,7 +104,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 				}
 				break;
 			case 'earnings':
-				if ( current_user_can( 'view_give_forms_stats', $post_id ) ) {
+				if ( current_user_can( 'view_give_form_stats', $post_id ) ) {
 					echo '<a href="' . esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-reports&view=forms&form-id=' . $post_id ) ) . '">';
 					echo give_currency_filter( give_format_amount( give_get_form_earnings_stats( $post_id ) ) );
 					echo '</a>';
@@ -226,7 +219,7 @@ function give_filter_forms( $vars ) {
 			$author_id = $_REQUEST['author'];
 			if ( (int) $author_id !== get_current_user_id() ) {
 				// Tried to view the products of another person, sorry
-				wp_die( esc_html( 'You do not have permission to view this data.', 'give' ), esc_html( 'Error', 'give' ), array( 'response' => 403 ) );
+				wp_die( esc_html__( 'You do not have permission to view this data.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 			}
 			$vars = array_merge(
 				$vars,
@@ -301,7 +294,7 @@ function give_price_field_quick_edit( $column_name, $post_type ) {
 			<h4><?php 
 				printf(
 					/* translators: %s: forms singular label */
-					esc_html( '%s Configuration', 'give' ),
+					esc_html__( '%s Configuration', 'give' ),
 					give_get_forms_label_singular()
 				);
 			?></h4>

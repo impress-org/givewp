@@ -1,4 +1,4 @@
-# Copyright (c) 2016 WebDevStudios
+# Copyright (C) 2015 WebDevStudios
 # This file is distributed under the same license as the CMB2 package.
 # Translators:
 # Syahril Zulkefli <syahzul@gmail.com>, 2015

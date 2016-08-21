@@ -79,7 +79,7 @@
 //---------------------------------------------------------
 body.give_forms_page_give-reports, body.give_forms_page_give-payment-history {
 
-  h1.nav-tab-wrapper {
+  h1.nav-tab-wrapper, h2.nav-tab-wrapper {
     margin-bottom: 10px;
   }
   .actions {
@@ -184,7 +184,6 @@ body.give_forms_page_give-reports table.export-options-table {
 }
 
 #export-donor-options-wrap {
-
   p {
     padding: 20px 0 0;
     margin:0;
@@ -192,10 +191,14 @@ body.give_forms_page_give-reports table.export-options-table {
   }
   ul {
     max-width: 900px;
+    overflow: hidden;
+
     li {
+	  margin: 0;
+      padding: 0 5px 5px 0;
+      box-sizing:border-box;
       float:left;
-      padding: 3px 10px 0 0;
-      width:30%;
+      width:33%;
     }
   }
 

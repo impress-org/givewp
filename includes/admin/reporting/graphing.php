@@ -177,8 +177,8 @@ function give_reports_graph() {
 	}
 
 	$data = array(
-		esc_html( 'Income', 'give' )    => $earnings_data,
-		esc_html( 'Donations', 'give' ) => $sales_data
+		esc_html__( 'Income', 'give' )    => $earnings_data,
+		esc_html__( 'Donations', 'give' ) => $sales_data
 	);
 
 	// start our own output buffer
@@ -213,7 +213,7 @@ function give_reports_graph() {
 					<td class="row-title">
 						<label for="tablecell"><?php esc_html_e( 'Total donations for period shown: ', 'give' ); ?></label>
 					</td>
-					<td><?php echo give_format_amount( $sales_totals, false ); ?></td>
+					<td><?php echo $sales_totals; ?></td>
 				</tr>
 				<?php if ( 'this_month' == $dates['range'] ) : ?>
 					<tr>
@@ -226,7 +226,7 @@ function give_reports_graph() {
 						<td class="row-title">
 							<label for="tablecell"><?php esc_html_e( 'Estimated monthly donations: ', 'give' ); ?></label>
 						</td>
-						<td><?php echo give_format_amount( $estimated['sales'], false ); ?></td>
+						<td><?php echo floor( $estimated['sales'] ); ?></td>
 					</tr>
 				<?php endif; ?>
 			</table>
@@ -420,15 +420,15 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 	}
 
 	$data = array(
-		esc_html( 'Income', 'give' )    => $earnings_data,
-		esc_html( 'Donations', 'give' ) => $sales_data
+		esc_html__( 'Income', 'give' )    => $earnings_data,
+		esc_html__( 'Donations', 'give' ) => $sales_data
 	);
 
 	?>
 	<h3><span><?php
 		printf(
 			/* translators: %s: form title */
-			esc_html( 'Income Over Time for %s', 'give' ),
+			esc_html__( 'Income Over Time for %s', 'give' ),
 			get_the_title( $form_id )
 		);
 	?></span></h3>
@@ -460,13 +460,13 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 			</tr>
 			<tr>
 				<td class="row-title">
-					<label for="tablecell"><?php esc_html_e( 'Average monthly income: %s', 'give' ); ?></label>
+					<label for="tablecell"><?php esc_html_e( 'Average monthly income: ', 'give' ); ?></label>
 				</td>
 				<td><?php echo give_currency_filter( give_format_amount( give_get_average_monthly_form_earnings( $form_id ) ) ); ?></td>
 			</tr>
 			<tr class="alternate">
 				<td class="row-title">
-					<label for="tablecell"><?php esc_html_e( 'Average monthly donations: %s', 'give' ); ?></label>
+					<label for="tablecell"><?php esc_html_e( 'Average monthly donations: ', 'give' ); ?></label>
 				</td>
 				<td><?php echo number_format( give_get_average_monthly_form_sales( $form_id ), 0 ); ?></td>
 			</tr>
@@ -486,17 +486,17 @@ function give_reports_graph_of_form( $form_id = 0 ) {
  */
 function give_reports_graph_controls() {
 	$date_options = apply_filters( 'give_report_date_options', array(
-		'today'        => esc_html( 'Today', 'give' ),
-		'yesterday'    => esc_html( 'Yesterday', 'give' ),
-		'this_week'    => esc_html( 'This Week', 'give' ),
-		'last_week'    => esc_html( 'Last Week', 'give' ),
-		'this_month'   => esc_html( 'This Month', 'give' ),
-		'last_month'   => esc_html( 'Last Month', 'give' ),
-		'this_quarter' => esc_html( 'This Quarter', 'give' ),
-		'last_quarter' => esc_html( 'Last Quarter', 'give' ),
-		'this_year'    => esc_html( 'This Year', 'give' ),
-		'last_year'    => esc_html( 'Last Year', 'give' ),
-		'other'        => esc_html( 'Custom', 'give' )
+		'today'        => esc_html__( 'Today', 'give' ),
+		'yesterday'    => esc_html__( 'Yesterday', 'give' ),
+		'this_week'    => esc_html__( 'This Week', 'give' ),
+		'last_week'    => esc_html__( 'Last Week', 'give' ),
+		'this_month'   => esc_html__( 'This Month', 'give' ),
+		'last_month'   => esc_html__( 'Last Month', 'give' ),
+		'this_quarter' => esc_html__( 'This Quarter', 'give' ),
+		'last_quarter' => esc_html__( 'Last Quarter', 'give' ),
+		'this_year'    => esc_html__( 'This Year', 'give' ),
+		'last_year'    => esc_html__( 'Last Year', 'give' ),
+		'other'        => esc_html__( 'Custom', 'give' )
 	) );
 
 	$dates   = give_get_report_dates();
@@ -515,7 +515,7 @@ function give_reports_graph_controls() {
 
 				<input type="hidden" name="post_type" value="give_forms" />
 				<input type="hidden" name="page" value="give-reports" />
-				<input type="hidden" name="view" value="<?php esc_attr_e( $view ); ?>" />
+				<input type="hidden" name="view" value="<?php echo esc_attr( $view ); ?>" />
 
 				<?php if ( isset( $_GET['form-id'] ) ) : ?>
 					<input type="hidden" name="form-id" value="<?php echo absint( $_GET['form-id'] ); ?>" />
@@ -524,7 +524,7 @@ function give_reports_graph_controls() {
 				<div id="give-graphs-date-options-wrap" class="alignright">
 					<select id="give-graphs-date-options" name="range">
 						<?php foreach ( $date_options as $key => $option ) : ?>
-							<option value="<?php esc_attr_e( $key ); ?>"<?php selected( $key, $dates['range'] ); ?>><?php esc_html_e( $option ); ?></option>
+							<option value="<?php echo esc_attr( $key ); ?>"<?php selected( $key, $dates['range'] ); ?>><?php echo esc_html( $option ); ?></option>
 						<?php endforeach; ?>
 					</select>
 
@@ -789,8 +789,10 @@ add_action( 'give_filter_reports', 'give_parse_report_dates' );
 
 /**
  * Give Reports Refresh Button
+ *
+ * Outputs a "Refresh Reports" button for graphs
+ *
  * @since      1.3
- * @description: Outputs a "Refresh Reports" button for graphs
  */
 function give_reports_refresh_button() {
 
@@ -799,7 +801,7 @@ function give_reports_refresh_button() {
 		'give-message' => 'refreshed-reports'
 	) ), 'give-refresh-reports' );
 
-	echo '<a href="' . $url . '" data-tooltip="' . esc_attr( 'Clicking this will clear the reports cache.', 'give' ) . '" data-tooltip-my-position="right center"  data-tooltip-target-position="left center" class="button alignright give-refresh-reports-button give-tooltip">' . esc_html( 'Refresh Reports', 'give' ) . '</a>';
+	echo '<a href="' . $url . '" data-tooltip="' . esc_attr__( 'Clicking this will clear the reports cache.', 'give' ) . '" data-tooltip-my-position="right center"  data-tooltip-target-position="left center" class="button alignright give-refresh-reports-button give-tooltip">' . esc_html__( 'Refresh Reports', 'give' ) . '</a>';
 
 }
 

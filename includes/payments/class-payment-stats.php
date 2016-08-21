@@ -17,27 +17,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Give_Stats Class
  *
- * This class is for retrieving stats for earnings and sales
+ * This class is for retrieving stats for earnings and sales.
  *
- * Stats can be retrieved for date ranges and pre-defined periods
+ * Stats can be retrieved for date ranges and pre-defined periods.
  *
  * @since 1.0
  */
 class Give_Payment_Stats extends Give_Stats {
 
-
 	/**
 	 * Retrieve sale stats
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param $form_id    INT The donation form to retrieve stats for. If false, gets stats for all forms
-	 * @param $start_date string|bool The starting date for which we'd like to filter our sale stats. If false, we'll use the default start date of `this_month`
-	 * @param $end_date   string|bool The end date for which we'd like to filter our sale stats. If false, we'll use the default end date of `this_month`
-	 * @param $status     string|array The sale status(es) to count. Only valid when retrieving global stats
+	 * @param  $form_id    int          The donation form to retrieve stats for. If false, gets stats for all forms
+	 * @param  $start_date string|bool  The starting date for which we'd like to filter our sale stats. If false, we'll use the default start date of `this_month`
+	 * @param  $end_date   string|bool  The end date for which we'd like to filter our sale stats. If false, we'll use the default end date of `this_month`
+	 * @param  $status     string|array The sale status(es) to count. Only valid when retrieving global stats
 	 *
-	 * @return float|int  Total amount of donations based on the passed arguments.
+	 * @return float|int                Total amount of donations based on the passed arguments.
 	 */
 	public function get_sales( $form_id = 0, $start_date = false, $end_date = false, $status = 'publish' ) {
 
@@ -92,15 +91,15 @@ class Give_Payment_Stats extends Give_Stats {
 	/**
 	 * Retrieve earning stats
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param $form_id       INT The donation form to retrieve stats for. If false, gets stats for all forms
-	 * @param $start_date    string|bool The starting date for which we'd like to filter our donation earnings stats. If false, we'll use the default start date of `this_month`
-	 * @param $end_date      string|bool The end date for which we'd like to filter our sale stats. If false, we'll use the default end date of `this_month`
-	 * @param $gateway_id    string|bool The gateway to get earnings for such as 'paypal' or 'stripe'
+	 * @param  $form_id     int         The donation form to retrieve stats for. If false, gets stats for all forms
+	 * @param  $start_date  string|bool The starting date for which we'd like to filter our donation earnings stats. If false, we'll use the default start date of `this_month`
+	 * @param  $end_date    string|bool The end date for which we'd like to filter our sale stats. If false, we'll use the default end date of `this_month`
+	 * @param  $gateway_id  string|bool The gateway to get earnings for such as 'paypal' or 'stripe'
 	 *
-	 * @return float|int Total amount of donations based on the passed arguments.
+	 * @return float|int                Total amount of donations based on the passed arguments.
 	 */
 	public function get_earnings( $form_id = 0, $start_date = false, $end_date = false, $gateway_id = false ) {
 
@@ -210,14 +209,14 @@ class Give_Payment_Stats extends Give_Stats {
 	}
 
 	/**
-	 * Get the best selling Forms
+	 * Get the best selling forms
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param $number int The number of results to retrieve with the default set to 10.
+	 * @param  $number int The number of results to retrieve with the default set to 10.
 	 *
-	 * @return array
+	 * @return array       Best selling forms
 	 */
 	public function get_best_selling( $number = 10 ) {
 

@@ -157,7 +157,7 @@ class Give_Addon_Activation_Banner {
 				<h3><?php
 					printf(
 						/* translators: %s: Add-on name */
-						esc_html( "Thank you for installing Give's %s Add-on!", 'give' ),
+						esc_html__( "Thank you for installing Give's %s Add-on!", 'give' ),
 						'<span>' . $this->banner_details['name'] . '</span>'
 					);
 				?></h3>
@@ -187,7 +187,7 @@ class Give_Addon_Activation_Banner {
 							<?php
 								printf(
 									/* translators: %s: Add-on name */
-									esc_html( 'Documentation: %s Add-on', 'give' ),
+									esc_html__( 'Documentation: %s Add-on', 'give' ),
 									$this->banner_details['name']
 								);
 							?>

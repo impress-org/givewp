@@ -15,9 +15,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 get_header();
 
 /**
- * give_before_main_content hook
+ * Fires in single form template, before the main content.
  *
- * @hooked give_output_content_wrapper - 10 (outputs opening divs for the content)
+ * Allows you to add elements before the main content.
+ *
+ * @since 1.0
  */
 do_action( 'give_before_main_content' );
 
@@ -28,16 +30,20 @@ while ( have_posts() ) : the_post();
 endwhile; // end of the loop.
 
 /**
- * give_after_main_content hook
+ * Fires in single form template, after the main content.
  *
- * @hooked give_output_content_wrapper_end - 10 (outputs closing divs for the content)
+ * Allows you to add elements after the main content.
+ *
+ * @since 1.0
  */
 do_action( 'give_after_main_content' );
 
 /**
- * give_sidebar hook
+ * Fires in single form template, on the sidebar.
  *
- * @hooked give_get_sidebar - 10
+ * Allows you to add elements to the sidebar.
+ *
+ * @since 1.0
  */
 do_action( 'give_sidebar' );
 

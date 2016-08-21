@@ -2,7 +2,8 @@
 /**
  * Profile Editor
  *
- * @description  This template is used to display the profile editor with [give_profile_editor]
+ * This template is used to display the profile editor with [give_profile_editor]
+ * 
  * @copyright    Copyright (c) 2016, WordImpress
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
@@ -32,27 +33,27 @@ if ( is_user_logged_in() ):
 
 			<p id="give_profile_first_name_wrap" class="form-row form-row-first">
 				<label for="give_first_name"><?php esc_html_e( 'First Name', 'give' ); ?></label>
-				<input name="give_first_name" id="give_first_name" class="text give-input" type="text" value="<?php esc_attr_e( $first_name ); ?>" />
+				<input name="give_first_name" id="give_first_name" class="text give-input" type="text" value="<?php echo esc_attr( $first_name ); ?>" />
 			</p>
 
 			<p id="give_profile_last_name_wrap" class="form-row form-row-last">
 				<label for="give_last_name"><?php esc_html_e( 'Last Name', 'give' ); ?></label>
-				<input name="give_last_name" id="give_last_name" class="text give-input" type="text" value="<?php esc_attr_e( $last_name ); ?>" />
+				<input name="give_last_name" id="give_last_name" class="text give-input" type="text" value="<?php echo esc_attr( $last_name ); ?>" />
 			</p>
 
 			<p id="give_profile_display_name_wrap" class="form-row form-row-first">
 				<label for="give_display_name"><?php esc_html_e( 'Display Name', 'give' ); ?></label>
 				<select name="give_display_name" id="give_display_name" class="select give-select">
 					<?php if ( ! empty( $current_user->first_name ) ): ?>
-						<option <?php selected( $display_name, $current_user->first_name ); ?> value="<?php esc_attr_e( $current_user->first_name ); ?>"><?php esc_html_e( $current_user->first_name ); ?></option>
+						<option <?php selected( $display_name, $current_user->first_name ); ?> value="<?php echo esc_attr( $current_user->first_name ); ?>"><?php echo esc_html( $current_user->first_name ); ?></option>
 					<?php endif; ?>
-					<option <?php selected( $display_name, $current_user->user_nicename ); ?> value="<?php esc_attr_e( $current_user->user_nicename ); ?>"><?php esc_html_e( $current_user->user_nicename ); ?></option>
+					<option <?php selected( $display_name, $current_user->user_nicename ); ?> value="<?php echo esc_attr( $current_user->user_nicename ); ?>"><?php echo esc_html( $current_user->user_nicename ); ?></option>
 					<?php if ( ! empty( $current_user->last_name ) ): ?>
-						<option <?php selected( $display_name, $current_user->last_name ); ?> value="<?php esc_attr_e( $current_user->last_name ); ?>"><?php esc_html_e( $current_user->last_name ); ?></option>
+						<option <?php selected( $display_name, $current_user->last_name ); ?> value="<?php echo esc_attr( $current_user->last_name ); ?>"><?php echo esc_html( $current_user->last_name ); ?></option>
 					<?php endif; ?>
 					<?php if ( ! empty( $current_user->first_name ) && ! empty( $current_user->last_name ) ): ?>
-						<option <?php selected( $display_name, $current_user->first_name . ' ' . $current_user->last_name ); ?> value="<?php esc_attr_e( $current_user->first_name . ' ' . $current_user->last_name ); ?>"><?php esc_html_e( $current_user->first_name . ' ' . $current_user->last_name ); ?></option>
-						<option <?php selected( $display_name, $current_user->last_name . ' ' . $current_user->first_name ); ?> value="<?php esc_attr_e( $current_user->last_name . ' ' . $current_user->first_name ); ?>"><?php esc_html_e( $current_user->last_name . ' ' . $current_user->first_name ); ?></option>
+						<option <?php selected( $display_name, $current_user->first_name . ' ' . $current_user->last_name ); ?> value="<?php echo esc_attr( $current_user->first_name . ' ' . $current_user->last_name ); ?>"><?php echo esc_html( $current_user->first_name . ' ' . $current_user->last_name ); ?></option>
+						<option <?php selected( $display_name, $current_user->last_name . ' ' . $current_user->first_name ); ?> value="<?php echo esc_attr( $current_user->last_name . ' ' . $current_user->first_name ); ?>"><?php echo esc_html( $current_user->last_name . ' ' . $current_user->first_name ); ?></option>
 					<?php endif; ?>
 				</select>
 				<?php do_action( 'give_profile_editor_name' ); ?>
@@ -61,7 +62,7 @@ if ( is_user_logged_in() ):
 
 			<p class="form-row form-row-last">
 				<label for="give_email"><?php esc_html_e( 'Email Address', 'give' ); ?></label>
-				<input name="give_email" id="give_email" class="text give-input required" type="email" value="<?php esc_attr_e( $current_user->user_email ); ?>" />
+				<input name="give_email" id="give_email" class="text give-input required" type="email" value="<?php echo esc_attr( $current_user->user_email ); ?>" />
 				<?php do_action( 'give_profile_editor_email' ); ?>
 			</p>
 
@@ -73,25 +74,25 @@ if ( is_user_logged_in() ):
 
 				<p id="give-card-address-wrap" class="form-row form-row-two-thirds">
 					<label for="give_address_line1"><?php esc_html_e( 'Address', 'give' ); ?></label>
-					<input name="give_address_line1" id="give_address_line1" class="text give-input" type="text" value="<?php esc_attr_e( $address['line1'] ); ?>" />
+					<input name="give_address_line1" id="give_address_line1" class="text give-input" type="text" value="<?php echo esc_attr( $address['line1'] ); ?>" />
 				</p>
 
 
 				<p id="give-card-address-2-wrap" class="form-row form-row-one-third">
 					<label for="give_address_line2"><?php esc_html_e( 'Address Line 2', 'give' ); ?></label>
-					<input name="give_address_line2" id="give_address_line2" class="text give-input" type="text" value="<?php esc_attr_e( $address['line2'] ); ?>" />
+					<input name="give_address_line2" id="give_address_line2" class="text give-input" type="text" value="<?php echo esc_attr( $address['line2'] ); ?>" />
 				</p>
 
 
 				<p id="give-card-city-wrap" class="form-row form-row-two-thirds">
 					<label for="give_address_city"><?php esc_html_e( 'City', 'give' ); ?></label>
-					<input name="give_address_city" id="give_address_city" class="text give-input" type="text" value="<?php esc_attr_e( $address['city'] ); ?>" />
+					<input name="give_address_city" id="give_address_city" class="text give-input" type="text" value="<?php echo esc_attr( $address['city'] ); ?>" />
 				</p>
 
 
 				<p id="give-card-zip-wrap" class="form-row form-row-one-third">
 					<label for="give_address_zip"><?php esc_html_e( 'Zip / Postal Code', 'give' ); ?></label>
-					<input name="give_address_zip" id="give_address_zip" class="text give-input" type="text" value="<?php esc_attr_e( $address['zip'] ); ?>" />
+					<input name="give_address_zip" id="give_address_zip" class="text give-input" type="text" value="<?php echo esc_attr( $address['zip'] ); ?>" />
 				</p>
 
 
@@ -99,14 +100,14 @@ if ( is_user_logged_in() ):
 					<label for="give_address_country"><?php esc_html_e( 'Country', 'give' ); ?></label>
 					<select name="give_address_country" id="give_address_country" class="select give-select">
 						<?php foreach ( give_get_country_list() as $key => $country ) : ?>
-							<option value="<?php echo $key; ?>"<?php selected( $address['country'], $key ); ?>><?php esc_html_e( $country ); ?></option>
+							<option value="<?php echo $key; ?>"<?php selected( $address['country'], $key ); ?>><?php echo esc_html( $country ); ?></option>
 						<?php endforeach; ?>
 					</select></p>
 
 
 				<p id="give-card-state-wrap" class="form-row form-row-last">
 					<label for="give_address_state"><?php esc_html_e( 'State / Province', 'give' ); ?></label>
-					<input name="give_address_state" id="give_address_state" class="text give-input" type="text" value="<?php esc_attr_e( $address['state'] ); ?>" />
+					<input name="give_address_state" id="give_address_state" class="text give-input" type="text" value="<?php echo esc_attr( $address['state'] ); ?>" />
 				</p>
 
 				<?php do_action( 'give_profile_editor_address' ); ?>

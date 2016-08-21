@@ -11,6 +11,9 @@
 
 defined( 'ABSPATH' ) or exit;
 
+/**
+ * Class Give_Shortcode_Donation_Receipt
+ */
 class Give_Shortcode_Donation_Receipt extends Give_Shortcode_Generator {
 
 	/**
@@ -18,8 +21,8 @@ class Give_Shortcode_Donation_Receipt extends Give_Shortcode_Generator {
 	 */
 	public function __construct() {
 
-		$this->shortcode['title'] = esc_html( 'Donation Receipt', 'give' );
-		$this->shortcode['label'] = esc_html( 'Donation Receipt', 'give' );
+		$this->shortcode['title'] = esc_html__( 'Donation Receipt', 'give' );
+		$this->shortcode['label'] = esc_html__( 'Donation Receipt', 'give' );
 
 		parent::__construct( 'give_receipt' );
 	}
@@ -34,60 +37,60 @@ class Give_Shortcode_Donation_Receipt extends Give_Shortcode_Generator {
 		return array(
 			array(
 				'type' => 'container',
-				'html' => sprintf( '<p class="strong">%s</p>', esc_html( 'Optional settings', 'give' ) ),
+				'html' => sprintf( '<p class="strong">%s</p>', esc_html__( 'Optional settings', 'give' ) ),
 			),
 			array(
 				'type'    => 'listbox',
 				'name'    => 'price',
-				'label'   => esc_html( 'Show Donation Amount:', 'give' ),
+				'label'   => esc_html__( 'Show Donation Amount:', 'give' ),
 				'options' => array(
-					'true'  => esc_html( 'Show', 'give' ),
-					'false' => esc_html( 'Hide', 'give' ),
+					'true'  => esc_html__( 'Show', 'give' ),
+					'false' => esc_html__( 'Hide', 'give' ),
 				),
 			),
 			array(
 				'type'    => 'listbox',
 				'name'    => 'donor',
-				'label'   => esc_html( 'Show Donor Name:', 'give' ),
+				'label'   => esc_html__( 'Show Donor Name:', 'give' ),
 				'options' => array(
-					'true'  => esc_html( 'Show', 'give' ),
-					'false' => esc_html( 'Hide', 'give' ),
+					'true'  => esc_html__( 'Show', 'give' ),
+					'false' => esc_html__( 'Hide', 'give' ),
 				),
 			),
 			array(
 				'type'    => 'listbox',
 				'name'    => 'date',
-				'label'   => esc_html( 'Show Date:', 'give' ),
+				'label'   => esc_html__( 'Show Date:', 'give' ),
 				'options' => array(
-					'true'  => esc_html( 'Show', 'give' ),
-					'false' => esc_html( 'Hide', 'give' ),
+					'true'  => esc_html__( 'Show', 'give' ),
+					'false' => esc_html__( 'Hide', 'give' ),
 				),
 			),
 			array(
 				'type'    => 'listbox',
 				'name'    => 'payment_key',
-				'label'   => esc_html( 'Show Payment Key:', 'give' ),
+				'label'   => esc_html__( 'Show Payment Key:', 'give' ),
 				'options' => array(
-					'true'  => esc_html( 'Show', 'give' ),
-					'false' => esc_html( 'Hide', 'give' ),
+					'true'  => esc_html__( 'Show', 'give' ),
+					'false' => esc_html__( 'Hide', 'give' ),
 				),
 			),
 			array(
 				'type'    => 'listbox',
 				'name'    => 'payment_method',
-				'label'   => esc_html( 'Show Payment Method:', 'give' ),
+				'label'   => esc_html__( 'Show Payment Method:', 'give' ),
 				'options' => array(
-					'true'  => esc_html( 'Show', 'give' ),
-					'false' => esc_html( 'Hide', 'give' ),
+					'true'  => esc_html__( 'Show', 'give' ),
+					'false' => esc_html__( 'Hide', 'give' ),
 				),
 			),
 			array(
 				'type'    => 'listbox',
 				'name'    => 'payment_id',
-				'label'   => esc_html( 'Show Payment ID:', 'give' ),
+				'label'   => esc_html__( 'Show Payment ID:', 'give' ),
 				'options' => array(
-					'true'  => esc_html( 'Show', 'give' ),
-					'false' => esc_html( 'Hide', 'give' ),
+					'true'  => esc_html__( 'Show', 'give' ),
+					'false' => esc_html__( 'Hide', 'give' ),
 				),
 			),
 		);

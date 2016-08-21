@@ -47,7 +47,7 @@ function give_print_errors( $form_id ) {
 		echo '<div class="' . implode( ' ', $classes ) . '">';
 		// Loop error codes and display errors
 		foreach ( $errors as $error_id => $error ) {
-			echo '<div class="give_error" id="give_error_' . $error_id . '"><p><strong>' . esc_html( 'Error', 'give' ) . '</strong>: ' . $error . '</p></div>';
+			echo '<div class="give_error" id="give_error_' . $error_id . '"><p><strong>' . esc_html__( 'Error', 'give' ) . '</strong>: ' . $error . '</p></div>';
 		}
 		echo '</div>';
 		give_clear_errors();
@@ -126,7 +126,7 @@ function give_unset_error( $error_id ) {
  * Register die handler for give_die()
  *
  * @since  1.0
- * @return void
+ * @return string/void
  */
 function _give_die_handler() {
 	if ( defined( 'GIVE_UNIT_TESTS' ) ) {
@@ -140,8 +140,13 @@ function _give_die_handler() {
  * Wrapper function for wp_die(). This function adds filters for wp_die() which
  * kills execution of the script using wp_die(). This allows us to then to work
  * with functions using give_die() in the unit tests.
- *
- * @since  1.0
+ * 
+ * @since 1.0
+ * 
+ * @param string $message
+ * @param string $title
+ * @param int $status
+ * 
  * @return void
  */
 function give_die( $message = '', $title = '', $status = 400 ) {
@@ -153,12 +158,12 @@ function give_die( $message = '', $title = '', $status = 400 ) {
 /**
  * Give Output Error
  *
- * @description: Helper function to easily output an error message properly wrapped; used commonly with shortcodes
+ * Helper function to easily output an error message properly wrapped; used commonly with shortcodes
  * @since      1.3
  *
- * @param $message
- * @param $echo
- * @param $error_id
+ * @param string $message
+ * @param bool   $echo
+ * @param string $error_id
  *
  * @return   string  $error
  */

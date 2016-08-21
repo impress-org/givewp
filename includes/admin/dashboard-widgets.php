@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_register_dashboard_widgets() {
 	if ( current_user_can( apply_filters( 'give_dashboard_stats_cap', 'view_give_reports' ) ) ) {
-		wp_add_dashboard_widget( 'give_dashboard_sales', esc_html( 'Give: Donation Statistics', 'give' ), 'give_dashboard_sales_widget' );
+		wp_add_dashboard_widget( 'give_dashboard_sales', esc_html__( 'Give: Donation Statistics', 'give' ), 'give_dashboard_sales_widget' );
 	}
 }
 
@@ -31,7 +31,7 @@ add_action( 'wp_dashboard_setup', 'give_register_dashboard_widgets', 10 );
 /**
  * Sales Summary Dashboard Widget
  *
- * @descriptions: Builds and renders the statistics dashboard widget. This widget displays the current month's donations.
+ * Builds and renders the statistics dashboard widget. This widget displays the current month's donations.
  *
  * @since       1.0
  * @return void
@@ -50,20 +50,19 @@ function give_dashboard_sales_widget() {
 
 			<p class="give-dashboard-happy-day"><?php
 				printf(
-					/* translators: %s: day of the week */
-					esc_html( 'Happy %s!', 'give' ),
+				/* translators: %s: day of the week */
+					esc_html__( 'Happy %s!', 'give' ),
 					date( 'l', current_time( 'timestamp' ) )
 				);
-			?></p>
+				?></p>
 
 			<?php $earnings_today = $stats->get_earnings( 0, 'today', false ); ?>
 
 			<p class="give-dashboard-today-earnings"><?php echo give_currency_filter( give_format_amount( $earnings_today ) ); ?></p>
 
-			<p class="give-orders-today"><?php $donations_today = $stats->get_sales( 0, 'today', false, array(
-					'publish',
-					'revoked'
-				) ); ?><?php echo give_format_amount( $donations_today, false ); ?>
+			<p class="give-orders-today">
+				<?php $donations_today = $stats->get_sales( 0, 'today', false ); ?>
+				<?php echo give_format_amount( $donations_today, false ); ?>
 				<span><?php echo _x( 'donations today', 'Displays in WP admin dashboard widget after the day\'s total donations', 'give' ); ?></span>
 			</p>
 
@@ -109,7 +108,7 @@ function give_dashboard_sales_widget() {
 
 	</div>
 
-<?php
+	<?php
 }
 
 /**
@@ -125,9 +124,9 @@ function give_dashboard_at_a_glance_widget( $items ) {
 	$num_posts = wp_count_posts( 'give_forms' );
 
 	if ( $num_posts && $num_posts->publish ) {
-        
+
 		$text = sprintf(
-			/* translators: 1: number of posts published 2: forms singular label 3: forms plural label */
+		/* translators: 1: number of posts published 2: forms singular label 3: forms plural label */
 			_n( '%1$s Give %2$s', '%1$s Give %3$s', $num_posts->publish, 'give' ),
 			$num_posts->publish,
 			give_get_forms_label_singular(),
@@ -148,4 +147,4 @@ function give_dashboard_at_a_glance_widget( $items ) {
 	return $items;
 }
 
-add_filter( 'dashboard_glance_items', 'give_dashboard_at_a_glance_widget', 1, 1);
+add_filter( 'dashboard_glance_items', 'give_dashboard_at_a_glance_widget', 1, 1 );
