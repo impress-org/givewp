@@ -280,7 +280,7 @@ function give_customers_view( $customer ) {
 										<span data-key="user_id"><?php esc_html_e( 'None', 'give' ); ?></span>
 									<?php endif; ?>
 									<?php if ( current_user_can( $customer_edit_role ) && intval( $customer->user_id ) > 0 ) : ?>
-										<span class="disconnect-user"> - <a id="disconnect-customer" href="#disconnect" title="<?php esc_attr_e( 'Disconnects the current user ID from this customer record', 'give' ); ?>"><?php esc_html_e( 'Disconnect User', 'give' ); ?></a></span>
+										<span class="disconnect-user"> - <a id="disconnect-customer" href="#disconnect" aria-label="<?php esc_attr_e( 'Disconnects the current user ID from this customer record.', 'give' ); ?>"><?php esc_html_e( 'Disconnect User', 'give' ); ?></a></span>
 									<?php endif; ?>
 								</span>
 							</td>
@@ -467,7 +467,7 @@ function give_customers_view( $customer ) {
 						<td><?php echo date_i18n( get_option( 'date_format' ), strtotime( $payment->post_date ) ); ?></td>
 						<td><?php echo give_get_payment_status( $payment, true ); ?></td>
 						<td>
-							<a title="<?php sprintf( esc_attr_e( 'View Details for Donation %s', 'give' ), $payment->ID ); ?>" href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $payment->ID ); ?>">
+							<a aria-label="<?php sprintf( esc_attr_e( 'View Details for Donation %s.', 'give' ), $payment->ID ); ?>" href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $payment->ID ); ?>">
 								<?php esc_html_e( 'View Details', 'give' ); ?>
 							</a>
 							<?php
@@ -511,7 +511,7 @@ function give_customers_view( $customer ) {
 					<tr>
 						<td><?php echo $donation->post_title; ?></td>
 						<td>
-							<a title="<?php
+							<a aria-label="<?php
 								printf(
 									/* translators: %s: post title */
 									esc_attr__( 'View %s', 'give' ),
