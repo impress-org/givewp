@@ -623,14 +623,13 @@ function give_get_newsletter() { ?>
 					<td>
 						<input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL" placeholder="<?php esc_attr_e( 'Email Address (required)', 'give' ); ?>">
 					</td>
-
-					<td scope="row">
-						<input type="text" value="" placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" name="FNAME" class="" id="mce-FNAME"></td>
-
-					<td scope="row">
-						<input type="text" value="" placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" name="LNAME" class="" id="mce-LNAME"></td>
-
-					<td scope="row">
+					<td>
+						<input type="text" value="" placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" name="FNAME" class="" id="mce-FNAME">
+					</td>
+					<td>
+						<input type="text" value="" placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" name="LNAME" class="" id="mce-LNAME">
+					</td>
+					<td>
 						<input type="submit" value="<?php esc_attr_e( 'Subscribe', 'give' ); ?>" name="subscribe" id="mc-embedded-subscribe" class="button">
 					</td>
 				</tr>
@@ -638,7 +637,8 @@ function give_get_newsletter() { ?>
 		</form>
 
 		<div style="position: absolute; left: -5000px;">
-			<input type="text" name="b_3ccb75d68bda4381e2f45794c_12a081aa13" tabindex="-1" value=""></div>
+			<input type="text" name="b_3ccb75d68bda4381e2f45794c_12a081aa13" tabindex="-1" value="">
+		</div>
 
 	</div>
 
