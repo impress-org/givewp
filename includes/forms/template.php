@@ -1612,9 +1612,16 @@ function give_checkout_submit( $form_id ) {
 		 *
 		 * @since 1.0
 		 *
-		 * @param int $form_id The form ID.
+		 * @deprecated 1.7 Use {@see ''give_donation_form_before_submit} instead.
 		 */
-		do_action( 'give_purchase_form_before_submit', $form_id );
+		do_action_deprecated( 'give_purchase_form_before_submit', array( $form_id ), '1.7'. 'give_donation_form_before_submit' );
+
+		/**
+		 * Fire before donation form submit.
+		 *
+		 * @since 1.7
+		 */
+		do_action( 'give_donation_form_before_submit', $form_id );
 
 		give_checkout_hidden_fields( $form_id );
 
