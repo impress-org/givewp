@@ -146,7 +146,7 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 			}
 
 			$data = apply_filters( 'give_export_get_data', $data );
-			$data = apply_filters( 'give_export_get_data_' . $this->export_type, $data );
+			$data = apply_filters( "give_export_get_data_{$this->export_type}", $data );
 
 			return $data;
 

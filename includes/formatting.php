@@ -331,10 +331,13 @@ function give_currency_filter( $price = '', $currency = '' ) {
             break;
     endswitch;
 
+	$lowercase_currency = strtolower( $currency );
+
     /**
      * Filter formatted amount with currency
      *
      * Filter name depends upon current value of currency and currency position.
+     *
      * For example :
      *           if currency is USD and currency position is before then
      *           filter name will be give_usd_currency_filter_before
@@ -343,7 +346,7 @@ function give_currency_filter( $price = '', $currency = '' ) {
      *           filter name will be give_usd_currency_filter_after
      *
      */
-    $formatted = apply_filters( 'give_' . strtolower( $currency ) . "_currency_filter_{$position}", $formatted, $currency, $price );
+    $formatted = apply_filters( "give_{$lowercase_currency}_currency_filter_{$position}", $formatted, $currency, $price );
 
     if ( $negative ) {
 		// Prepend the minus sign before the currency sign.

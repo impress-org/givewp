@@ -186,7 +186,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 				break;
 		}
 
-		return apply_filters( 'give_report_column_' . $column_name, $value, $item['id'] );
+		return apply_filters( "give_report_column_{$column_name}", $value, $item['id'] );
 	}
 
 	/**

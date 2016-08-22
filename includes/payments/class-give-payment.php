@@ -1496,7 +1496,7 @@ final class Give_Payment {
 			}
 		}
 
-		$meta = apply_filters( 'give_get_payment_meta_' . $meta_key, $meta, $this->ID );
+		$meta = apply_filters( "give_get_payment_meta_{$meta_key}", $meta, $this->ID );
 
 		return apply_filters( 'give_get_payment_meta', $meta, $this->ID, $meta_key );
 	}
@@ -1528,7 +1528,7 @@ final class Give_Payment {
 
 		} else if ( $meta_key == 'email' || $meta_key == '_give_payment_user_email' ) {
 
-			$meta_value = apply_filters( 'give_give_update_payment_meta_' . $meta_key, $meta_value, $this->ID );
+			$meta_value = apply_filters( "give_give_update_payment_meta_{$meta_key}", $meta_value, $this->ID );
 			update_post_meta( $this->ID, '_give_payment_user_email', $meta_value );
 
 			$current_meta                       = $this->get_meta();
@@ -1539,7 +1539,7 @@ final class Give_Payment {
 
 		}
 
-		$meta_value = apply_filters( 'give_update_payment_meta_' . $meta_key, $meta_value, $this->ID );
+		$meta_value = apply_filters( "give_update_payment_meta_{$meta_key}", $meta_value, $this->ID );
 
 		return update_post_meta( $this->ID, $meta_key, $meta_value, $prev_value );
 	}
@@ -1935,7 +1935,7 @@ final class Give_Payment {
 		if ( empty( $transaction_id ) || (int) $transaction_id === (int) $this->ID ) {
 
 			$gateway        = $this->gateway;
-			$transaction_id = apply_filters( 'give_get_payment_transaction_id-' . $gateway, $this->ID );
+			$transaction_id = apply_filters( "give_get_payment_transaction_id-{$gateway}", $this->ID );
 
 		}
 

@@ -205,7 +205,7 @@ function give_get_email_body_content( $payment_id = 0, $payment_data = array() )
 
 	$email_body = wpautop( $email_content );
 
-	$email_body = apply_filters( 'give_donation_receipt_' . Give()->emails->get_template(), $email_body, $payment_id, $payment_data );
+	$email_body = apply_filters( "give_donation_receipt_{Give()->emails->get_template()}", $email_body, $payment_id, $payment_data );
 
 	return apply_filters( 'give_donation_receipt', $email_body, $payment_id, $payment_data );
 }
