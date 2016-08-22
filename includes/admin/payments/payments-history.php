@@ -22,7 +22,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @return      void
 */
 function give_payment_history_page() {
-	global $give_options;
 
 	$give_payment = get_post_type_object( 'give_payment' );
 
@@ -97,7 +96,7 @@ function give_view_order_details_title( $admin_title, $title ) {
 		case 'edit-payment' :
 			$title = sprintf(
 				/* translators: %s: admin title */
-				esc_html__( 'Edit Payment - %s', 'give' ),
+				esc_html__( 'Edit Donation - %s', 'give' ),
 				$admin_title
 			);
 			break;

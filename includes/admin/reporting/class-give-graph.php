@@ -307,8 +307,25 @@ class Give_Graph {
 	 * @since 1.0
 	 */
 	public function display() {
+		/**
+		 * Fires before displaying the final graph.
+		 *
+		 * @since 1.0
+		 *
+		 * @param Give_Graph $this Graph object.
+		 */
 		do_action( 'give_before_graph', $this );
+
+		// Build the graph.
 		echo $this->build_graph();
+
+		/**
+		 * Fires after displaying the final graph.
+		 *
+		 * @since 1.0
+		 *
+		 * @param Give_Graph $this Graph object.
+		 */
 		do_action( 'give_after_graph', $this );
 	}
 

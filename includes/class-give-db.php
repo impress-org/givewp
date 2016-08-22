@@ -179,10 +179,17 @@ abstract class Give_DB {
         /* @var WPDB $wpdb */
         global $wpdb;
 
-		// Set default values
+		// Set default values.
 		$data = wp_parse_args( $data, $this->get_column_defaults() );
 
-		do_action( 'give_pre_insert_' . $type, $data );
+		/**
+		 * Fires before inserting data to the database.
+		 *
+		 * @since 1.0
+		 *
+		 * @param array $data
+		 */
+		do_action( "give_pre_insert_{$type}", $data );
 
 		// Initialise column format array
 		$column_formats = $this->get_columns();
@@ -199,7 +206,15 @@ abstract class Give_DB {
 
 		$wpdb->insert( $this->table_name, $data, $column_formats );
 
-		do_action( 'give_post_insert_' . $type, $wpdb->insert_id, $data );
+		/**
+		 * Fires after inserting data to the database.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int   $insert_id
+		 * @param array $data
+		 */
+		do_action( "give_post_insert_{$type}", $wpdb->insert_id, $data );
 
 		return $wpdb->insert_id;
 	}

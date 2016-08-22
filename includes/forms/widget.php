@@ -83,6 +83,11 @@ class Give_Forms_Widget extends WP_Widget{
 
 		echo $args['before_widget'];
 
+		/**
+		 * Fires before widget settings form in the admin area.
+		 *
+		 * @since 1.0
+		 */
 		do_action( 'give_before_forms_widget' );
 
 		echo $title ? $args['before_title'] . $title . $args['after_title'] : '';
@@ -91,6 +96,11 @@ class Give_Forms_Widget extends WP_Widget{
 
 		echo $args['after_widget'];
 
+		/**
+		 * Fires after widget settings form in the admin area.
+		 *
+		 * @since 1.0
+		 */
 		do_action( 'give_after_forms_widget' );
 	}
 
@@ -138,7 +148,7 @@ class Give_Forms_Widget extends WP_Widget{
 				);
 			?></label>
 			<select class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'id' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'id' ) ); ?>">
-				<option value="current"><?php esc_html_e( '— Select —', 'give' ); ?></option>
+				<option value="current"><?php esc_html_e( '- Select -', 'give' ); ?></option>
 				<?php foreach ( $give_forms as $give_form ) { ?>
 					<option <?php selected( absint( $instance['id'] ), $give_form->ID ); ?> value="<?php echo esc_attr( $give_form->ID ); ?>"><?php echo $give_form->post_title; ?></option>
 				<?php } ?>
@@ -149,19 +159,13 @@ class Give_Forms_Widget extends WP_Widget{
 		// Widget: Floating Labels
 
 		?><p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'float_labels' ) ); ?>"><?php esc_html_e( 'Floating Labels (optional):', 'give' ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'float_labels' ) ); ?>"><?php esc_html_e( 'Floating Labels:', 'give' ); ?></label>
 			<select class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'float_labels' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'float_labels' ) ); ?>">
 				<option value="" <?php selected( esc_attr( $instance['float_labels'] ), '' ) ?>><?php esc_html_e( '- Select -', 'give' ); ?></option>
 				<option value="enabled" <?php selected( esc_attr( $instance['float_labels'] ), 'enabled' ) ?>><?php esc_html_e( 'Enabled', 'give' ); ?></option>
 				<option value="disabled" <?php selected( esc_attr( $instance['float_labels'] ), 'disabled' ) ?>><?php esc_html_e( 'Disabled', 'give' ); ?></option>
 			</select><br>
-			<small><?php
-				printf(
-					/* translators: %s: https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels */
-					__( 'Override the <a href="%s" target="_blank">floating labels</a> setting for this Give form.', 'give' ),
-					esc_url( 'https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels' )
-				);
-			?></small>
+			<small><?php esc_html_e( 'Override the default floating labels setting for this form.', 'give' ); ?></small>
 		</p><?php
 	}
 

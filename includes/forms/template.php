@@ -15,13 +15,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Get Donation Form
+ * Get Donation Form.
  *
- * @since 1.0
+ * @since  1.0
  *
- * @param array $args Arguments for display
+ * @param  array  $args An array of form arguments.
  *
- * @return string $purchase_form
+ * @return string Donation form.
  */
 function give_get_donation_form( $args = array() ) {
 
@@ -68,15 +68,16 @@ function give_get_donation_form( $args = array() ) {
 	ob_start();
 
 	/**
-	 * Fires before the post form outputs.
+	 * Fires while outputing donation form, before the form wapper div.
 	 *
 	 * @since 1.0
 	 *
-	 * @param int $form ->ID The current form ID
-	 * @param array $args An array of form args
+	 * @param int   $form_id The form ID.
+	 * @param array $args    An array of form arguments.
 	 */
-	do_action( 'give_pre_form_output', $form->ID, $args ); ?>
+	do_action( 'give_pre_form_output', $form->ID, $args );
 
+	?>
 	<div id="give-form-<?php echo $form->ID; ?>-wrap" class="<?php echo $form_wrap_classes; ?>">
 
 		<?php if ( $form->is_close_donation_form() ) {
@@ -96,7 +97,16 @@ function give_get_donation_form( $args = array() ) {
 
 			}
 
-			do_action( 'give_pre_form', $form->ID, $args ); ?>
+			/**
+			 * Fires while outputing donation form, before the form.
+			 *
+			 * @since 1.0
+			 *
+			 * @param int   $form_id The form ID.
+			 * @param array $args    An array of form arguments.
+			 */
+			do_action( 'give_pre_form', $form->ID, $args );
+			?>
 
 			<form id="give-form-<?php echo $form_id; ?>" class="<?php echo $form_classes; ?>" action="<?php echo $form_action; ?>" method="post">
 				<input type="hidden" name="give-form-id" value="<?php echo $form->ID; ?>"/>
@@ -128,29 +138,63 @@ function give_get_donation_form( $args = array() ) {
 					<input type="hidden" name="give-price-id" value="<?php echo $price_id; ?>"/>
 				<?php }
 
+				/**
+				 * Fires while outputing donation form, before all other fields.
+				 *
+				 * @since 1.0
+				 *
+				 * @param int   $form_id The form ID.
+				 * @param array $args    An array of form arguments.
+				 */
 				do_action( 'give_checkout_form_top', $form->ID, $args );
 
+				/**
+				 * Fires while outputing donation form, for payment gatways fields.
+				 *
+				 * @since 1.0
+				 *
+				 * @param int   $form_id The form ID.
+				 * @param array $args    An array of form arguments.
+				 */
 				do_action( 'give_payment_mode_select', $form->ID, $args );
 
+				/**
+				 * Fires while outputing donation form, after all other fields.
+				 *
+				 * @since 1.0
+				 *
+				 * @param int   $form_id The form ID.
+				 * @param array $args    An array of form arguments.
+				 */
 				do_action( 'give_checkout_form_bottom', $form->ID, $args );
 
 				?>
 			</form>
 
-			<?php do_action( 'give_post_form', $form->ID, $args ); ?>
+			<?php
+			/**
+			 * Fires while outputing donation form, after the form.
+			 *
+			 * @since 1.0
+			 *
+			 * @param int   $form_id The form ID.
+			 * @param array $args    An array of form arguments.
+			 */
+			do_action( 'give_post_form', $form->ID, $args );
 
-		<?php } ?>
+		}
+		?>
 
-		<!--end #give-form-<?php echo absint( $form->ID ); ?>--></div>
+	</div><!--end #give-form-<?php echo absint( $form->ID ); ?>-->
 	<?php
 
 	/**
-	 * Fires after the post form outputs.
+	 * Fires while outputing donation form, after the form wapper div.
 	 *
 	 * @since 1.0
 	 *
-	 * @param int $form ->ID The current form ID
-	 * @param array $args An array of form args
+	 * @param int   $form_id The form ID.
+	 * @param array $args    An array of form arguments.
 	 */
 	do_action( 'give_post_form_output', $form->ID, $args );
 
@@ -159,19 +203,17 @@ function give_get_donation_form( $args = array() ) {
 	echo apply_filters( 'give_donate_form', $final_output, $args );
 }
 
-
 /**
- *
- * Give Show Purchase Form
+ * Give Show Donation Form.
  *
  * Renders the Donation Form, hooks are provided to add to the checkout form.
  * The default Donation Form rendered displays a list of the enabled payment
  * gateways, a user registration form (if enable) and a credit card info form
- * if credit cards are enabled
+ * if credit cards are enabled.
  *
- * @since 1.0
+ * @since  1.0
  *
- * @param  int $form_id ID of the Give Form
+ * @param  int    $form_id The form ID.
  *
  * @return string
  */
@@ -183,43 +225,104 @@ function give_show_purchase_form( $form_id ) {
 		$form_id = $_POST['give_form_id'];
 	}
 
+	/**
+	 * Fires while displaying donation form, before the form.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int $form_id The form ID.
+	 */
 	do_action( 'give_purchase_form_top', $form_id );
 
 	if ( give_can_checkout() && isset( $form_id ) ) {
 
+		/**
+		 * Fires while displaying donation form, before registeration login  login.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int $form_id The form ID.
+		 */
 		do_action( 'give_purchase_form_before_register_login', $form_id );
 
+		/**
+		 * Fires while displaying donation form, registeration login fields.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int $form_id The form ID.
+		 */
 		do_action( 'give_purchase_form_register_login_fields', $form_id );
 
+		/**
+		 * Fires while displaying donation form, before credit card form fields.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int $form_id The form ID.
+		 */
 		do_action( 'give_purchase_form_before_cc_form', $form_id );
 
 		// Load the credit card form and allow gateways to load their own if they wish
 		if ( has_action( 'give_' . $payment_mode . '_cc_form' ) ) {
-			do_action( 'give_' . $payment_mode . '_cc_form', $form_id );
+			/**
+			 * Fires while displaying donation form, credit card form fields for a given gateway.
+			 *
+			 * @since 1.0
+			 *
+			 * @param int $form_id The form ID.
+			 */
+			do_action( "give_{$payment_mode}_cc_form", $form_id );
 		} else {
+			/**
+			 * Fires while displaying donation form, credit card form fields.
+			 *
+			 * @since 1.0
+			 *
+			 * @param int $form_id The form ID.
+			 */
 			do_action( 'give_cc_form', $form_id );
 		}
 
+		/**
+		 * Fires while displaying donation form, after credit card form fields.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int $form_id The form ID.
+		 */
 		do_action( 'give_purchase_form_after_cc_form', $form_id );
 
 	} else {
-		// Can't checkout
+		/**
+		 * Fires while displaying donation form, when no checkout access.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int $form_id The form ID.
+		 */
 		do_action( 'give_purchase_form_no_access', $form_id );
 
 	}
 
+	/**
+	 * Fires while displaying donation form, after the form.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int $form_id The form ID.
+	 */
 	do_action( 'give_purchase_form_bottom', $form_id );
 }
 
 add_action( 'give_purchase_form', 'give_show_purchase_form' );
 
 /**
- *
- * Give Show Login/Register Form Fields
+ * Give Show Login/Register Form Fields.
  *
  * @since  1.4.1
  *
- * @param  int   $form_id ID of the Give Form
+ * @param  int  $form_id The form ID.
  *
  * @return void
  */
@@ -227,17 +330,46 @@ function give_show_register_login_fields( $form_id ) {
 
 	$show_register_form = give_show_login_register_option( $form_id );
 
-	if ( ( $show_register_form === 'registration' || ( $show_register_form === 'both' && ! isset( $_GET['login'] ) ) ) && ! is_user_logged_in() ) : ?>
+	if ( ( $show_register_form === 'registration' || ( $show_register_form === 'both' && ! isset( $_GET['login'] ) ) ) && ! is_user_logged_in() ) :
+		?>
 		<div id="give-checkout-login-register-<?php echo $form_id; ?>">
-			<?php do_action( 'give_purchase_form_register_fields', $form_id ); ?>
+			<?php
+			/**
+			 * Fires while displaying donation form, when displaying registeration fields.
+			 *
+			 * @since 1.0
+			 *
+			 * @param int $form_id The form ID.
+			 */
+			do_action( 'give_purchase_form_register_fields', $form_id );
+			?>
 		</div>
-	<?php elseif ( ( $show_register_form === 'login' || ( $show_register_form === 'both' && isset( $_GET['login'] ) ) ) && ! is_user_logged_in() ) : ?>
+		<?php
+	elseif ( ( $show_register_form === 'login' || ( $show_register_form === 'both' && isset( $_GET['login'] ) ) ) && ! is_user_logged_in() ) :
+		?>
 		<div id="give-checkout-login-register-<?php echo $form_id; ?>">
-			<?php do_action( 'give_purchase_form_login_fields', $form_id ); ?>
+			<?php
+			/**
+			 * Fires while displaying donation form, when displaying login fields.
+			 *
+			 * @since 1.0
+			 *
+			 * @param int $form_id The form ID.
+			 */
+			do_action( 'give_purchase_form_login_fields', $form_id );
+			?>
 		</div>
-	<?php endif; ?>
+		<?php
+	endif;
 
-	<?php if ( ( ! isset( $_GET['login'] ) && is_user_logged_in() ) || ! isset( $show_register_form ) || 'none' === $show_register_form || 'login' === $show_register_form ) {
+	if ( ( ! isset( $_GET['login'] ) && is_user_logged_in() ) || ! isset( $show_register_form ) || 'none' === $show_register_form || 'login' === $show_register_form ) {
+		/**
+		 * Fires while displaying donation form, after login/registration.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int $form_id The form ID.
+		 */
 		do_action( 'give_purchase_form_after_user_info', $form_id );
 	}
 }
@@ -245,14 +377,14 @@ function give_show_register_login_fields( $form_id ) {
 add_action( 'give_purchase_form_register_login_fields', 'give_show_register_login_fields' );
 
 /**
- * Donation Amount Field
+ * Donation Amount Field.
  *
- * Outputs the donation amount field that appears at the top of the donation forms. If the user has custom amount enabled the field will output as a customizable input
+ * Outputs the donation amount field that appears at the top of the donation forms. If the user has custom amount enabled the field will output as a customizable input.
  *
  * @since  1.0
  *
- * @param  int   $form_id Give Form ID
- * @param  array $args
+ * @param  int   $form_id The form ID.
+ * @param  array $args    An array of form arguments.
  *
  * @return void
  */
@@ -268,15 +400,21 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 	$default_amount      = give_format_amount( give_get_default_form_amount( $form_id ) );
 	$custom_amount_text  = get_post_meta( $form_id, '_give_custom_amount_text', true );
 
+	/**
+	 * Fires while displaying donation form, before donation level fields.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int   $form_id The form ID.
+	 * @param array $args    An array of form arguments.
+	 */
 	do_action( 'give_before_donation_levels', $form_id, $args );
 
 	//Set Price, No Custom Amount Allowed means hidden price field
 	if ( $allow_custom_amount == 'no' ) {
 		?>
-
 		<label class="give-hidden" for="give-amount-hidden"><?php echo esc_html__( 'Donation Amount:', 'give' ); ?></label>
-		<input id="give-amount" class="give-amount-hidden" type="hidden" name="give-amount"
-		       value="<?php echo $default_amount; ?>" required>
+		<input id="give-amount" class="give-amount-hidden" type="hidden" name="give-amount" value="<?php echo $default_amount; ?>" required>
 		<div class="set-price give-donation-amount form-row-wide">
 			<?php if ( $currency_position == 'before' ) {
 				echo $currency_output;
@@ -304,6 +442,14 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 		</div>
 	<?php }
 
+	/**
+	 * Fires while displaying donation form, after donation amounf field(s).
+	 *
+	 * @since 1.0
+	 *
+	 * @param int   $form_id The form ID.
+	 * @param array $args    An array of form arguments.
+	 */
 	do_action( 'give_after_donation_amount', $form_id, $args );
 
 	//Custom Amount Text
@@ -316,20 +462,27 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 		give_output_levels( $form_id );
 	}
 
+	/**
+	 * Fires while displaying donation form, after donation level fields.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int   $form_id The form ID.
+	 * @param array $args    An array of form arguments.
+	 */
 	do_action( 'give_after_donation_levels', $form_id, $args );
 }
 
 add_action( 'give_checkout_form_top', 'give_output_donation_amount_top', 10, 2 );
 
-
 /**
- * Outputs the Donation Levels in various formats such as dropdown, radios, and buttons
+ * Outputs the Donation Levels in various formats such as dropdown, radios, and buttons.
  *
  * @since  1.0
  *
- * @param  int $form_id Give Form ID
+ * @param  int   $form_id The form ID.
  *
- * @return string
+ * @return string Donation levels.
  */
 function give_output_levels( $form_id ) {
 
@@ -434,13 +587,16 @@ function give_output_levels( $form_id ) {
 }
 
 /**
- * Display Reveal & Lightbox Button
+ * Display Reveal & Lightbox Button.
  *
- * Outputs a button to reveal form fields
+ * Outputs a button to reveal form fields.
  *
- * @param int   $form_id
- * @param array $args
+ * @since  1.0
  *
+ * @param  int   $form_id The form ID.
+ * @param  array $args    An array of form arguments.
+ *
+ * @return string Checkout button.
  */
 function give_display_checkout_button( $form_id, $args ) {
 
@@ -468,7 +624,7 @@ add_action( 'give_after_donation_levels', 'give_display_checkout_button', 10, 2 
  *
  * @since  1.0
  *
- * @param  int $form_id
+ * @param  int  $form_id The form ID.
  *
  * @return void
  */
@@ -478,6 +634,13 @@ function give_user_info_fields( $form_id ) {
 		$user_data = get_userdata( get_current_user_id() );
 	endif;
 
+	/**
+	 * Fires while displaying donation form, before personal information fields.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int $form_id The form ID.
+	 */
 	do_action( 'give_purchase_form_before_personal_info', $form_id );
 	?>
 	<fieldset id="give_checkout_user_info">
@@ -488,9 +651,9 @@ function give_user_info_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'give_first', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
-				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'We will use this to personalize your account experience.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'We will use this to personalize your account experience.', 'give' ); ?>"></span>
 			</label>
-			<input class="give-input required" type="text" name="give_first" placeholder="<?php esc_html_e( 'First Name', 'give' ); ?>" id="give-first" value="<?php echo is_user_logged_in() ? $user_data->first_name : ''; ?>"<?php if ( give_field_is_required( 'give_first', $form_id ) ) {
+			<input class="give-input required" type="text" name="give_first" placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" id="give-first" value="<?php echo is_user_logged_in() ? $user_data->first_name : ''; ?>"<?php if ( give_field_is_required( 'give_first', $form_id ) ) {
 				echo ' required ';
 			} ?>/>
 		</p>
@@ -501,36 +664,68 @@ function give_user_info_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'give_last', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
-				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'We will use this as well to personalize your account experience.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'We will use this as well to personalize your account experience.', 'give' ); ?>"></span>
 			</label>
 
 			<input class="give-input<?php if ( give_field_is_required( 'give_last', $form_id ) ) {
 				echo ' required';
-			} ?>" type="text" name="give_last" id="give-last" placeholder="<?php esc_html_e( 'Last Name', 'give' ); ?>" value="<?php echo is_user_logged_in() ? $user_data->last_name : ''; ?>"<?php if ( give_field_is_required( 'give_last', $form_id ) ) {
+			} ?>" type="text" name="give_last" id="give-last" placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" value="<?php echo is_user_logged_in() ? $user_data->last_name : ''; ?>"<?php if ( give_field_is_required( 'give_last', $form_id ) ) {
 				echo ' required ';
 			} ?> />
 		</p>
 
-		<?php do_action( 'give_purchase_form_before_email', $form_id ); ?>
+		<?php
+		/**
+		 * Fires while displaying donation form, before email field.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int $form_id The form ID.
+		 */
+		do_action( 'give_purchase_form_before_email', $form_id );
+		?>
 		<p id="give-email-wrap" class="form-row form-row-wide">
 			<label class="give-label" for="give-email">
 				<?php esc_html_e( 'Email Address', 'give' ); ?>
 				<?php if ( give_field_is_required( 'give_email', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
-				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'We will send the purchase receipt to this address.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'We will send the donation receipt to this address.', 'give' ); ?>"></span>
 			</label>
 
-			<input class="give-input required" type="email" name="give_email" placeholder="<?php esc_html_e( 'Email address', 'give' ); ?>" id="give-email" value="<?php echo is_user_logged_in() ? $user_data->user_email : ''; ?>"<?php if ( give_field_is_required( 'give_email', $form_id ) ) {
+			<input class="give-input required" type="email" name="give_email" placeholder="<?php esc_attr_e( 'Email Address', 'give' ); ?>" id="give-email" value="<?php echo is_user_logged_in() ? $user_data->user_email : ''; ?>"<?php if ( give_field_is_required( 'give_email', $form_id ) ) {
 				echo ' required ';
 			} ?>/>
 
 		</p>
-		<?php do_action( 'give_purchase_form_after_email', $form_id ); ?>
+		<?php
+		/**
+		 * Fires while displaying donation form, after email field.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int $form_id The form ID.
+		 */
+		do_action( 'give_purchase_form_after_email', $form_id );
 
-		<?php do_action( 'give_purchase_form_user_info', $form_id ); ?>
+		/**
+		 * Fires while displaying donation form, on user information fields.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int $form_id The form ID.
+		 */
+		do_action( 'give_purchase_form_user_info', $form_id );
+		?>
 	</fieldset>
 	<?php
+	/**
+	 * Fires while displaying donation form, after personal information fields.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int $form_id The form ID.
+	 */
 	do_action( 'give_purchase_form_after_personal_info', $form_id );
 
 }
@@ -543,7 +738,7 @@ add_action( 'give_register_fields_before', 'give_user_info_fields' );
  *
  * @since  1.0
  *
- * @param  int $form_id
+ * @param  int  $form_id The form ID.
  *
  * @return void
  */
@@ -551,8 +746,15 @@ function give_get_cc_form( $form_id ) {
 
 	ob_start();
 
-	do_action( 'give_before_cc_fields', $form_id ); ?>
-
+	/**
+	 * Fires while rendering credit card info form, before the fields.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int $form_id The form ID.
+	 */
+	do_action( 'give_before_cc_fields', $form_id );
+	?>
 	<fieldset id="give_cc_fields-<?php echo $form_id ?>" class="give-do-validate">
 		<legend><?php echo apply_filters( 'give_credit_card_fieldset_heading', esc_html__( 'Credit Card Info', 'give' ) ); ?></legend>
 		<?php if ( is_ssl() ) : ?>
@@ -565,49 +767,73 @@ function give_get_cc_form( $form_id ) {
 			<label for="card_number-<?php echo $form_id ?>" class="give-label">
 				<?php esc_html_e( 'Card Number', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
-				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'The (typically) 16 digits on the front of your credit card.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The (typically) 16 digits on the front of your credit card.', 'give' ); ?>"></span>
 				<span class="card-type"></span>
 			</label>
 
-			<input type="tel" autocomplete="off" name="card_number" id="card_number-<?php echo $form_id ?>" class="card-number give-input required" placeholder="<?php esc_html_e( 'Card number', 'give' ); ?>" required/>
+			<input type="tel" autocomplete="off" name="card_number" id="card_number-<?php echo $form_id ?>" class="card-number give-input required" placeholder="<?php esc_attr_e( 'Card number', 'give' ); ?>" required/>
 		</p>
 
 		<p id="give-card-cvc-wrap-<?php echo $form_id ?>" class="form-row form-row-one-third">
 			<label for="card_cvc-<?php echo $form_id ?>" class="give-label">
 				<?php esc_html_e( 'CVC', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
-				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'The 3 digit (back) or 4 digit (front) value on your card.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The 3 digit (back) or 4 digit (front) value on your card.', 'give' ); ?>"></span>
 			</label>
 
-			<input type="tel" size="4" autocomplete="off" name="card_cvc" id="card_cvc-<?php echo $form_id ?>" class="card-cvc give-input required" placeholder="<?php esc_html_e( 'Security code', 'give' ); ?>" required/>
+			<input type="tel" size="4" autocomplete="off" name="card_cvc" id="card_cvc-<?php echo $form_id ?>" class="card-cvc give-input required" placeholder="<?php esc_attr_e( 'Security code', 'give' ); ?>" required/>
 		</p>
 
 		<p id="give-card-name-wrap-<?php echo $form_id ?>" class="form-row form-row-two-thirds">
 			<label for="card_name-<?php echo $form_id ?>" class="give-label">
 				<?php esc_html_e( 'Name on the Card', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
-				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'The name printed on the front of your credit card.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The name printed on the front of your credit card.', 'give' ); ?>"></span>
 			</label>
 
-			<input type="text" autocomplete="off" name="card_name" id="card_name-<?php echo $form_id ?>" class="card-name give-input required" placeholder="<?php esc_html_e( 'Card name', 'give' ); ?>" required/>
+			<input type="text" autocomplete="off" name="card_name" id="card_name-<?php echo $form_id ?>" class="card-name give-input required" placeholder="<?php esc_attr_e( 'Card name', 'give' ); ?>" required/>
 		</p>
-		<?php do_action( 'give_before_cc_expiration' ); ?>
+		<?php
+		/**
+		 * Fires while rendering credit card info form, before expiration fields.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int $form_id The form ID.
+		 */
+		do_action( 'give_before_cc_expiration' );
+		?>
 		<p class="card-expiration form-row form-row-one-third">
 			<label for="card_expiry-<?php echo $form_id ?>" class="give-label">
 				<?php esc_html_e( 'Expiration', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
-				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'The date your credit card expires, typically on the front of the card.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The date your credit card expires, typically on the front of the card.', 'give' ); ?>"></span>
 			</label>
 
 			<input type="hidden" id="card_exp_month-<?php echo $form_id ?>" name="card_exp_month" class="card-expiry-month"/>
 			<input type="hidden" id="card_exp_year-<?php echo $form_id ?>" name="card_exp_year" class="card-expiry-year"/>
 
-			<input type="tel" autocomplete="off" name="card_expiry" id="card_expiry-<?php echo $form_id ?>" class="card-expiry give-input required" placeholder="<?php esc_html_e( 'MM / YY', 'give' ); ?>" required/>
+			<input type="tel" autocomplete="off" name="card_expiry" id="card_expiry-<?php echo $form_id ?>" class="card-expiry give-input required" placeholder="<?php esc_attr_e( 'MM / YY', 'give' ); ?>" required/>
 		</p>
-		<?php do_action( 'give_after_cc_expiration', $form_id ); ?>
-
+		<?php
+		/**
+		 * Fires while rendering credit card info form, after expiration fields.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int $form_id The form ID.
+		 */
+		do_action( 'give_after_cc_expiration', $form_id );
+		?>
 	</fieldset>
 	<?php
+	/**
+	 * Fires while rendering credit card info form, before the fields.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int $form_id The form ID.
+	 */
 	do_action( 'give_after_cc_fields', $form_id );
 
 	echo ob_get_clean();
@@ -616,11 +842,11 @@ function give_get_cc_form( $form_id ) {
 add_action( 'give_cc_form', 'give_get_cc_form' );
 
 /**
- * Outputs the default credit card address fields
+ * Outputs the default credit card address fields.
  *
  * @since  1.0
  *
- * @param  int $form_id
+ * @param  int  $form_id The form ID.
  *
  * @return void
  */
@@ -635,39 +861,50 @@ function give_default_cc_address_fields( $form_id ) {
 	$line2 = $logged_in && ! empty( $user_address['line2'] ) ? $user_address['line2'] : '';
 	$city  = $logged_in && ! empty( $user_address['city'] ) ? $user_address['city'] : '';
 	$zip   = $logged_in && ! empty( $user_address['zip'] ) ? $user_address['zip'] : '';
-	ob_start(); ?>
+
+	ob_start();
+	?>
 	<fieldset id="give_cc_address" class="cc-address">
 		<legend><?php echo apply_filters( 'give_billing_details_fieldset_heading', esc_html__( 'Billing Details', 'give' ) ); ?></legend>
-		<?php do_action( 'give_cc_billing_top' ); ?>
+		<?php
+		/**
+		 * Fires while rendering credit card billing form, before address fields.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int $form_id The form ID.
+		 */
+		do_action( 'give_cc_billing_top' );
+		?>
 		<p id="give-card-address-wrap" class="form-row form-row-two-thirds">
 			<label for="card_address" class="give-label">
-				<?php esc_html_e( 'Address', 'give' ); ?>
+				<?php esc_html_e( 'Address 1', 'give' ); ?>
 				<?php
 				if ( give_field_is_required( 'card_address', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
-				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'The primary billing address for your credit card.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The primary billing address for your credit card.', 'give' ); ?>"></span>
 			</label>
 
 			<input type="text" id="card_address" name="card_address" class="card-address give-input<?php if ( give_field_is_required( 'card_address', $form_id ) ) {
 				echo ' required';
-			} ?>" placeholder="<?php esc_html_e( 'Address line 1', 'give' ); ?>" value="<?php echo $line1; ?>"<?php if ( give_field_is_required( 'card_address', $form_id ) ) {
+			} ?>" placeholder="<?php esc_attr_e( 'Address line 1', 'give' ); ?>" value="<?php echo $line1; ?>"<?php if ( give_field_is_required( 'card_address', $form_id ) ) {
 				echo '  required ';
 			} ?>/>
 		</p>
 
 		<p id="give-card-address-2-wrap" class="form-row form-row-one-third">
 			<label for="card_address_2" class="give-label">
-				<?php esc_html_e( 'Address Line 2', 'give' ); ?>
+				<?php esc_html_e( 'Address 2', 'give' ); ?>
 				<?php if ( give_field_is_required( 'card_address_2', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
-				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( '(optional) The suite, apt no, PO box, etc, associated with your billing address.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( '(optional) The suite, apt no, PO box, etc, associated with your billing address.', 'give' ); ?>"></span>
 			</label>
 
 			<input type="text" id="card_address_2" name="card_address_2" class="card-address-2 give-input<?php if ( give_field_is_required( 'card_address_2', $form_id ) ) {
 				echo ' required';
-			} ?>" placeholder="<?php esc_html_e( 'Address line 2', 'give' ); ?>" value="<?php echo $line2; ?>"<?php if ( give_field_is_required( 'card_address_2', $form_id ) ) {
+			} ?>" placeholder="<?php esc_attr_e( 'Address line 2', 'give' ); ?>" value="<?php echo $line2; ?>"<?php if ( give_field_is_required( 'card_address_2', $form_id ) ) {
 				echo ' required ';
 			} ?>/>
 		</p>
@@ -678,11 +915,11 @@ function give_default_cc_address_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'card_city', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
-				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'The city for your billing address.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The city for your billing address.', 'give' ); ?>"></span>
 			</label>
 			<input type="text" id="card_city" name="card_city" class="card-city give-input<?php if ( give_field_is_required( 'card_city', $form_id ) ) {
 				echo ' required';
-			} ?>" placeholder="<?php esc_html_e( 'City', 'give' ); ?>" value="<?php echo $city; ?>"<?php if ( give_field_is_required( 'card_city', $form_id ) ) {
+			} ?>" placeholder="<?php esc_attr_e( 'City', 'give' ); ?>" value="<?php echo $city; ?>"<?php if ( give_field_is_required( 'card_city', $form_id ) ) {
 				echo ' required ';
 			} ?>/>
 		</p>
@@ -693,12 +930,12 @@ function give_default_cc_address_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'card_zip', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
-				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'The zip or postal code for your billing address.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The zip or postal code for your billing address.', 'give' ); ?>"></span>
 			</label>
 
 			<input type="text" size="4" id="card_zip" name="card_zip" class="card-zip give-input<?php if ( give_field_is_required( 'card_zip', $form_id ) ) {
 				echo ' required';
-			} ?>" placeholder="<?php esc_html_e( 'Zip / Postal Code', 'give' ); ?>" value="<?php echo $zip; ?>" <?php if ( give_field_is_required( 'card_zip', $form_id ) ) {
+			} ?>" placeholder="<?php esc_attr_e( 'Zip / Postal Code', 'give' ); ?>" value="<?php echo $zip; ?>" <?php if ( give_field_is_required( 'card_zip', $form_id ) ) {
 				echo ' required ';
 			} ?>/>
 		</p>
@@ -709,7 +946,7 @@ function give_default_cc_address_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'billing_country', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
-				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'The country for your billing address.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The country for your billing address.', 'give' ); ?>"></span>
 			</label>
 
 			<select name="billing_country" id="billing_country" class="billing-country billing_country give-select<?php if ( give_field_is_required( 'billing_country', $form_id ) ) {
@@ -739,7 +976,7 @@ function give_default_cc_address_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'card_state', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
-				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'The state or province for your billing address.', 'give' ); ?>"></span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The state or province for your billing address.', 'give' ); ?>"></span>
 			</label>
 
 			<?php
@@ -763,10 +1000,19 @@ function give_default_cc_address_fields( $form_id ) {
 					?>
 				</select>
 			<?php else : ?>
-				<input type="text" size="6" name="card_state" id="card_state" class="card_state give-input" placeholder="<?php esc_html_e( 'State / Province', 'give' ); ?>"/>
+				<input type="text" size="6" name="card_state" id="card_state" class="card_state give-input" placeholder="<?php esc_attr_e( 'State / Province', 'give' ); ?>"/>
 			<?php endif; ?>
 		</p>
-		<?php do_action( 'give_cc_billing_bottom' ); ?>
+		<?php
+		/**
+		 * Fires while rendering credit card billing form, after address fields.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int $form_id The form ID.
+		 */
+		do_action( 'give_cc_billing_bottom' );
+		?>
 	</fieldset>
 	<?php
 	echo ob_get_clean();
@@ -780,7 +1026,7 @@ add_action( 'give_after_cc_fields', 'give_default_cc_address_fields' );
  *
  * @since  1.0
  *
- * @param  int $form_id
+ * @param  int   $form_id The form ID.
  *
  * @return string
  */
@@ -807,26 +1053,46 @@ function give_get_register_fields( $form_id ) {
 			</div>
 		<?php } ?>
 
-		<?php do_action( 'give_register_fields_before', $form_id ); ?>
+		<?php
+		/**
+		 * Fires while rendering user registration form, before registration fields.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int $form_id The form ID.
+		 */
+		do_action( 'give_register_fields_before', $form_id );
+		?>
 
 		<fieldset id="give-register-account-fields-<?php echo $form_id; ?>">
-			<legend><?php echo apply_filters( 'give_create_account_fieldset_heading', esc_html__( 'Create an account', 'give' ) );
+			<legend>
+				<?php
+				echo apply_filters( 'give_create_account_fieldset_heading', esc_html__( 'Create an account', 'give' ) );
 				if ( ! give_logged_in_only( $form_id ) ) {
 					echo ' <span class="sub-text">' . esc_html__( '(optional)', 'give' ) . '</span>';
-				} ?></legend>
-			<?php do_action( 'give_register_account_fields_before', $form_id ); ?>
+				}
+				?>
+			</legend>
+			<?php
+			/**
+			 * Fires while rendering user registration form, before account fields.
+			 *
+			 * @since 1.0
+			 *
+			 * @param int $form_id The form ID.
+			 */
+			do_action( 'give_register_account_fields_before', $form_id );
+			?>
 			<div id="give-user-login-wrap-<?php echo $form_id; ?>" class="form-row form-row-one-third form-row-first">
 				<label for="give-user-login-<?php echo $form_id; ?>">
 					<?php esc_html_e( 'Username', 'give' ); ?>
 					<?php if ( give_logged_in_only( $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
-					<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'The username you will use to log into your account.', 'give' ); ?>"></span>
+					<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The username you will use to log into your account.', 'give' ); ?>"></span>
 				</label>
 
-				<input name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" class="<?php if ( give_logged_in_only( $form_id ) ) {
-					echo 'required ';
-				} ?>give-input" type="text" placeholder="<?php esc_html_e( 'Username', 'give' ); ?>" title="<?php esc_html_e( 'Username', 'give' ); ?>"/>
+				<input name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" class="give-input" type="text" placeholder="<?php esc_attr_e( 'Username', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required ' : ''; ?>/>
 			</div>
 
 			<div id="give-user-pass-wrap-<?php echo $form_id; ?>" class="form-row form-row-one-third">
@@ -835,12 +1101,10 @@ function give_get_register_fields( $form_id ) {
 					<?php if ( give_logged_in_only( $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
-					<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'The password used to access your account.', 'give' ); ?>"></span>
+					<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The password used to access your account.', 'give' ); ?>"></span>
 				</label>
 
-				<input name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>" class="<?php if ( give_logged_in_only( $form_id ) ) {
-					echo 'required ';
-				} ?>give-input" placeholder="<?php esc_html_e( 'Password', 'give' ); ?>" type="password"/>
+				<input name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>" class="give-input" placeholder="<?php esc_attr_e( 'Password', 'give' ); ?>" type="password"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required ' : ''; ?>/>
 			</div>
 
 			<div id="give-user-pass-confirm-wrap-<?php echo $form_id; ?>" class="give-register-password form-row form-row-one-third">
@@ -849,21 +1113,46 @@ function give_get_register_fields( $form_id ) {
 					<?php if ( give_logged_in_only( $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
-					<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'Please retype your password to confirm.', 'give' ); ?>"></span>
+					<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'Please retype your password to confirm.', 'give' ); ?>"></span>
 				</label>
 
-				<input name="give_user_pass_confirm" id="give-user-pass-confirm-<?php echo $form_id; ?>" class="<?php if ( give_logged_in_only( $form_id ) ) {
-					echo 'required ';
-				} ?>give-input" placeholder="<?php esc_html_e( 'Confirm password', 'give' ); ?>" type="password"/>
+				<input name="give_user_pass_confirm" id="give-user-pass-confirm-<?php echo $form_id; ?>" class="give-input" placeholder="<?php esc_attr_e( 'Confirm password', 'give' ); ?>" type="password"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required ' : ''; ?>/>
 			</div>
-			<?php do_action( 'give_register_account_fields_after', $form_id ); ?>
+			<?php
+			/**
+			 * Fires while rendering user registration form, after account fields.
+			 *
+			 * @since 1.0
+			 *
+			 * @param int $form_id The form ID.
+			 */
+			do_action( 'give_register_account_fields_after', $form_id );
+			?>
 		</fieldset>
 
-		<?php do_action( 'give_register_fields_after', $form_id ); ?>
+		<?php
+		/**
+		 * Fires while rendering user registration form, after registration fields.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int $form_id The form ID.
+		 */
+		do_action( 'give_register_fields_after', $form_id );
+		?>
 
 		<input type="hidden" name="give-purchase-var" value="needs-to-register"/>
 
-		<?php do_action( 'give_purchase_form_user_info', $form_id ); ?>
+		<?php
+		/**
+		 * Fires while rendering user registration form.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int $form_id The form ID.
+		 */
+		do_action( 'give_purchase_form_user_info', $form_id );
+		?>
 
 	</fieldset>
 	<?php
@@ -879,7 +1168,7 @@ add_action( 'give_purchase_form_register_fields', 'give_get_register_fields' );
  *
  * @since  1.0
  *
- * @param  int $form_id
+ * @param  int   $form_id The form ID.
  *
  * @return string
  */
@@ -909,7 +1198,16 @@ function give_get_login_fields( $form_id ) {
 			<p class="give-loading-text">
 				<span class="give-loading-animation"></span> <?php esc_html_e( 'Loading...', 'give' ); ?> </p>
 		<?php } ?>
-		<?php do_action( 'give_checkout_login_fields_before', $form_id ); ?>
+		<?php
+		/**
+		 * Fires while rendering checkout login form, before the fields.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int $form_id The form ID.
+		 */
+		do_action( 'give_checkout_login_fields_before', $form_id );
+		?>
 		<div id="give-user-login-wrap-<?php echo $form_id; ?>" class="form-row form-row-first">
 			<label class="give-label" for="give-user-login-<?php echo $form_id; ?>">
 				<?php esc_html_e( 'Username', 'give' ); ?>
@@ -920,7 +1218,7 @@ function give_get_login_fields( $form_id ) {
 
 			<input class="<?php if ( give_logged_in_only( $form_id ) ) {
 				echo 'required ';
-			} ?>give-input" type="text" name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" value="" placeholder="<?php esc_html_e( 'Your username', 'give' ); ?>"/>
+			} ?>give-input" type="text" name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" value="" placeholder="<?php esc_attr_e( 'Your username', 'give' ); ?>"/>
 		</div>
 
 		<div id="give-user-pass-wrap-<?php echo $form_id; ?>" class="give_login_password form-row form-row-last">
@@ -932,24 +1230,33 @@ function give_get_login_fields( $form_id ) {
 			</label>
 			<input class="<?php if ( give_logged_in_only( $form_id ) ) {
 				echo 'required ';
-			} ?>give-input" type="password" name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>" placeholder="<?php esc_html_e( 'Your password', 'give' ); ?>"/>
+			} ?>give-input" type="password" name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>" placeholder="<?php esc_attr_e( 'Your password', 'give' ); ?>"/>
 			<input type="hidden" name="give-purchase-var" value="needs-to-login"/>
 		</div>
 
 		<div id="give-forgot-password-wrap-<?php echo $form_id; ?>" class="give_login_forgot_password">
 			 <span class="give-forgot-password ">
-				 <a href="<?php echo wp_lostpassword_url() ?>" target="_blank"><?php esc_html_e( 'Reset password?' ) ?></a>
+				 <a href="<?php echo wp_lostpassword_url() ?>" target="_blank"><?php esc_html_e( 'Reset Password' ) ?></a>
 			 </span>
 		</div>
 
 		<div id="give-user-login-submit-<?php echo $form_id; ?>" class="give-clearfix">
-			<input type="submit" class="give-submit give-btn button" name="give_login_submit" value="<?php esc_html_e( 'Login', 'give' ); ?>"/>
+			<input type="submit" class="give-submit give-btn button" name="give_login_submit" value="<?php esc_attr_e( 'Login', 'give' ); ?>"/>
 			<?php if ( $show_register_form !== 'login' ) { ?>
-				<input type="button" data-action="give_cancel_login" class="give-cancel-login give-checkout-register-cancel give-btn button" name="give_login_cancel" value="<?php esc_html_e( 'Cancel', 'give' ); ?>"/>
+				<input type="button" data-action="give_cancel_login" class="give-cancel-login give-checkout-register-cancel give-btn button" name="give_login_cancel" value="<?php esc_attr_e( 'Cancel', 'give' ); ?>"/>
 			<?php } ?>
 			<span class="give-loading-animation"></span>
 		</div>
-		<?php do_action( 'give_checkout_login_fields_after', $form_id ); ?>
+		<?php
+		/**
+		 * Fires while rendering checkout login form, after the fields.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int $form_id The form ID.
+		 */
+		do_action( 'give_checkout_login_fields_after', $form_id );
+		?>
 	</fieldset><!--end #give-login-fields-->
 	<?php
 	echo ob_get_clean();
@@ -958,7 +1265,7 @@ function give_get_login_fields( $form_id ) {
 add_action( 'give_purchase_form_login_fields', 'give_get_login_fields', 10, 1 );
 
 /**
- * Payment Mode Select
+ * Payment Mode Select.
  *
  * Renders the payment mode form by getting all the enabled payment gateways and
  * outputting them as radio buttons for the user to choose the payment gateway. If
@@ -967,7 +1274,7 @@ add_action( 'give_purchase_form_login_fields', 'give_get_login_fields', 10, 1 );
  *
  * @since  1.0
  *
- * @param  int $form_id
+ * @param  int  $form_id The form ID.
  *
  * @return void
  */
@@ -975,18 +1282,38 @@ function give_payment_mode_select( $form_id ) {
 
 	$gateways = give_get_enabled_payment_gateways();
 
+	/**
+	 * Fires while selecting payment gateways, before the fields.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int $form_id The form ID.
+	 */
 	do_action( 'give_payment_mode_top', $form_id ); ?>
 
 	<fieldset id="give-payment-mode-select">
-		<?php do_action( 'give_payment_mode_before_gateways_wrap' ); ?>
+		<?php
+		/**
+		 * Fires while selecting payment gateways, before the wrap div.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int $form_id The form ID.
+		 */
+		do_action( 'give_payment_mode_before_gateways_wrap' );
+		?>
 		<div id="give-payment-mode-wrap">
 			<legend class="give-payment-mode-label"><?php echo apply_filters( 'give_checkout_payment_method_text', esc_html__( 'Select Payment Method', 'give' ) ); ?>
 				<span class="give-loading-text"><span class="give-loading-animation"></span> <?php esc_html_e( 'Loading...', 'give' ); ?></span>
 			</legend>
 			<?php
-
-			do_action( 'give_payment_mode_before_gateways' ) ?>
-
+			/**
+			 * Fires while selecting payment gateways, befire the gateways list.
+			 *
+			 * @since 1.0
+			 */
+			do_action( 'give_payment_mode_before_gateways' )
+			?>
 			<ul id="give-gateway-radio-list">
 				<?php foreach ( $gateways as $gateway_id => $gateway ) :
 					$checked       = checked( $gateway_id, give_get_default_gateway( $form_id ), false );
@@ -996,25 +1323,66 @@ function give_payment_mode_select( $form_id ) {
 					echo '</label></li>';
 				endforeach; ?>
 			</ul>
-			<?php do_action( 'give_payment_mode_after_gateways' ); ?>
+			<?php
+			/**
+			 * Fires while selecting payment gateways, befire the gateways list.
+			 *
+			 * @since 1.0
+			 */
+			do_action( 'give_payment_mode_after_gateways' );
+			?>
 		</div>
-		<?php do_action( 'give_payment_mode_after_gateways_wrap' ); ?>
+		<?php
+		/**
+		 * Fires while selecting payment gateways, after the wrap div.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int $form_id The form ID.
+		 */
+		do_action( 'give_payment_mode_after_gateways_wrap' );
+		?>
 	</fieldset>
 
-	<?php do_action( 'give_payment_mode_bottom', $form_id ); ?>
+	<?php
+	/**
+	 * Fires while selecting payment gateways, after the fields.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int $form_id The form ID.
+	 */
+	do_action( 'give_payment_mode_bottom', $form_id );
+	?>
 
 	<div id="give_purchase_form_wrap">
 
-		<?php do_action( 'give_purchase_form', $form_id ); ?>
+		<?php
+		/**
+		 * Fires after selecting payment gateways, while presenting donation form fields.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int $form_id The form ID.
+		 */
+		do_action( 'give_purchase_form', $form_id );
+		?>
 
-	</div><!-- the checkout fields are loaded into this-->
+	</div>
 
-	<?php do_action( 'give_purchase_form_wrap_bottom', $form_id );
+	<?php
+	/**
+	 * Fires while selecting payment gateways, after all the fields and wrappers.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int $form_id The form ID.
+	 */
+	do_action( 'give_purchase_form_wrap_bottom', $form_id );
 
 }
 
 add_action( 'give_payment_mode_select', 'give_payment_mode_select' );
-
 
 /**
  * Renders the Checkout Agree to Terms, this displays a checkbox for users to
@@ -1023,7 +1391,7 @@ add_action( 'give_payment_mode_select', 'give_payment_mode_select' );
  *
  * @since  1.0
  *
- * @param  int   $form_id
+ * @param  int  $form_id The form ID.
  *
  * @return void
  */
@@ -1037,8 +1405,19 @@ function give_terms_agreement( $form_id ) {
 		<fieldset id="give_terms_agreement">
 			<div id="give_terms" class= "give_terms-<?php echo $form_id;?>" style="display:none;">
 				<?php
+				/**
+				 * Fires while rendering terms of agreement, before the fields.
+				 *
+				 * @since 1.0
+				 */
 				do_action( 'give_before_terms' );
+
 				echo wpautop( stripslashes( $terms ) );
+				/**
+				 * Fires while rendering terms of agreement, after the fields.
+				 *
+				 * @since 1.0
+				 */
 				do_action( 'give_after_terms' );
 				?>
 			</div>
@@ -1048,8 +1427,7 @@ function give_terms_agreement( $form_id ) {
 			</div>
 
 			<input name="give_agree_to_terms" class="required" type="checkbox" id="give_agree_to_terms" value="1"/>
-			<label
-				for="give_agree_to_terms"><?php echo ! empty( $label ) ? stripslashes( $label ) : esc_html__( 'Agree to Terms?', 'give' ); ?></label>
+			<label for="give_agree_to_terms"><?php echo ! empty( $label ) ? stripslashes( $label ) : esc_html__( 'Agree to Terms?', 'give' ); ?></label>
 
 		</fieldset>
 		<?php
@@ -1059,13 +1437,13 @@ function give_terms_agreement( $form_id ) {
 add_action( 'give_purchase_form_before_submit', 'give_terms_agreement', 10, 1 );
 
 /**
- * Checkout Final Total
+ * Checkout Final Total.
  *
- * Shows the final purchase total at the bottom of the checkout page
+ * Shows the final donation total at the bottom of the checkout page.
  *
  * @since  1.0
  *
- * @param int   $form_id
+ * @param  int  $form_id The form ID.
  *
  * @return void
  */
@@ -1091,41 +1469,55 @@ function give_checkout_final_total( $form_id ) {
 
 add_action( 'give_purchase_form_before_submit', 'give_checkout_final_total', 999 );
 
-
 /**
- * Renders the Checkout Submit section
+ * Renders the Checkout Submit section.
  *
  * @since  1.0
  *
- * @param  int $form_id
+ * @param  int  $form_id The form ID.
  *
  * @return void
  */
 function give_checkout_submit( $form_id ) {
 	?>
 	<fieldset id="give_purchase_submit">
-		<?php do_action( 'give_purchase_form_before_submit', $form_id ); ?>
+		<?php
+		/**
+		 * Fires while rendering checkout submit, before the fields.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int $form_id The form ID.
+		 */
+		do_action( 'give_purchase_form_before_submit', $form_id );
 
-		<?php give_checkout_hidden_fields( $form_id ); ?>
+		give_checkout_hidden_fields( $form_id );
 
-		<?php echo give_checkout_button_purchase( $form_id ); ?>
+		echo give_checkout_button_purchase( $form_id );
 
-		<?php do_action( 'give_purchase_form_after_submit', $form_id ); ?>
-
+		/**
+		 * Fires while rendering checkout submit, after the fields.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int $form_id The form ID.
+		 */
+		do_action( 'give_purchase_form_after_submit', $form_id );
+		?>
 	</fieldset>
 	<?php
 }
 
 add_action( 'give_purchase_form_after_cc_form', 'give_checkout_submit', 9999 );
 
-
 /**
- * Give Checkout Button Purchase
+ * Give Checkout Button.
  *
- * Renders the Purchase button on the Checkout
+ * Renders the button on the Checkout.
+ *
  * @since  1.0
  *
- * @param  int $form_id
+ * @param  int   $form_id The form ID.
  *
  * @return string
  */
@@ -1143,12 +1535,13 @@ function give_checkout_button_purchase( $form_id ) {
 }
 
 /**
- * Give Agree to Terms
+ * Give Agree to Terms.
  *
- * Outputs the JavaScript code for the Agree to Terms section to toggle the T&Cs text
+ * Outputs the JavaScript code for the Agree to Terms section to toggle the T&Cs text.
+ *
  * @since  1.0
  *
- * @param  int $form_id
+ * @param  int  $form_id The form ID.
  *
  * @return void
  */
@@ -1175,18 +1568,17 @@ function give_agree_to_terms_js( $form_id ) {
 add_action( 'give_checkout_form_top', 'give_agree_to_terms_js', 10, 2 );
 
 /**
- * Show Give Goals
+ * Show Give Goals.
  *
  * @since  1.0
  * @since  1.6   Add template for Give Goals Shortcode.
  *               More info is on https://github.com/WordImpress/Give/issues/411
  *
- * @param  int   $form_id
- * @param  array $args
+ * @param  int   $form_id The form ID.
+ * @param  array $args    An array of form arguments.
  *
  * @return mixed
  */
-
 function give_show_goal_progress( $form_id, $args ) {
 
     ob_start();
@@ -1200,12 +1592,12 @@ function give_show_goal_progress( $form_id, $args ) {
 add_action( 'give_pre_form', 'give_show_goal_progress', 10, 2 );
 
 /**
- * Adds Actions to Render Form Content
+ * Adds Actions to Render Form Content.
  *
  * @since  1.0
  *
- * @param  int   $form_id
- * @param  array $args
+ * @param  int   $form_id The form ID.
+ * @param  array $args    An array of form arguments.
  *
  * @return void
  */
@@ -1224,14 +1616,16 @@ function give_form_content( $form_id, $args ) {
 add_action( 'give_pre_form_output', 'give_form_content', 10, 2 );
 
 /**
- * Renders Post Form Content
+ * Renders Post Form Content.
  *
- * Displays content for Give forms; fired by action from give_form_content
+ * Displays content for Give forms; fired by action from give_form_content.
  *
- * @param int $form_id
+ * @since  1.0
+ *
+ * @param  int   $form_id The form ID.
+ * @param  array $args    An array of form arguments.
  *
  * @return void
- * @since      1.0
  */
 function give_form_display_content( $form_id, $args ) {
 
@@ -1253,39 +1647,53 @@ function give_form_display_content( $form_id, $args ) {
 	remove_action( $show_content, 'give_form_display_content' );
 }
 
-
 /**
- * Renders the hidden Checkout fields
+ * Renders the hidden Checkout fields.
  *
  * @since 1.0
  *
- * @param int $form_id
+ * @param  int   $form_id The form ID.
  *
  * @return void
  */
 function give_checkout_hidden_fields( $form_id ) {
 
+	/**
+	 * Fires while rendering hidden checkout fields, before the fields.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int $form_id The form ID.
+	 */
 	do_action( 'give_hidden_fields_before', $form_id );
+
 	if ( is_user_logged_in() ) { ?>
 		<input type="hidden" name="give-user-id" value="<?php echo get_current_user_id(); ?>"/>
 	<?php } ?>
 	<input type="hidden" name="give_action" value="purchase"/>
 	<input type="hidden" name="give-gateway" value="<?php echo give_get_chosen_gateway( $form_id ); ?>"/>
 	<?php
+	/**
+	 * Fires while rendering hidden checkout fields, after the fields.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int $form_id The form ID.
+	 */
 	do_action( 'give_hidden_fields_after', $form_id );
 
 }
 
 /**
- * Filter Success Page Content
+ * Filter Success Page Content.
  *
  * Applies filters to the success page content.
  *
  * @since 1.0
  *
- * @param string $content Content before filters
+ * @param  string $content Content before filters.
  *
- * @return string $content Filtered content
+ * @return string $content Filtered content.
  */
 function give_filter_success_page_content( $content ) {
 
@@ -1302,30 +1710,28 @@ function give_filter_success_page_content( $content ) {
 
 add_filter( 'the_content', 'give_filter_success_page_content' );
 
-
 /**
- * Test Mode Frontend Warning
+ * Test Mode Frontend Warning.
  *
- * Displays a notice on the frontend for donation forms
+ * Displays a notice on the frontend for donation forms.
+ *
  * @since 1.1
  */
-
 function give_test_mode_frontend_warning() {
 
 	$test_mode = give_get_option( 'test_mode' );
 
 	if ( $test_mode == 'on' ) {
-		echo '<div class="give_error give_warning" id="give_error_test_mode"><p><strong>' . esc_html__( 'Notice', 'give' ) . '</strong>: ' . esc_html__( 'Test mode is enabled. While in test mode no live transactions are processed.', 'give' ) . '</p></div>';
+		echo '<div class="give_error give_warning" id="give_error_test_mode"><p><strong>' . esc_html__( 'Notice', 'give' ) . '</strong>: ' . esc_html__( 'Test mode is enabled. While in test mode no live donations are processed.', 'give' ) . '</p></div>';
 	}
 }
 
 add_action( 'give_pre_form', 'give_test_mode_frontend_warning', 10 );
 
-
 /**
- * Members-only Form
+ * Members-only Form.
  *
- * If "Disable Guest Donations" and "Display Register / Login" is set to none
+ * If "Disable Guest Donations" and "Display Register / Login" is set to none.
  *
  * @since  1.4.1
  *
@@ -1334,7 +1740,6 @@ add_action( 'give_pre_form', 'give_test_mode_frontend_warning', 10 );
  *
  * @return string
  */
-
 function give_members_only_form( $final_output, $args ) {
 
 	$form_id = isset( $args['form_id'] ) ? $args['form_id'] : 0;

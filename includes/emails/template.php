@@ -127,7 +127,7 @@ add_filter( 'give_settings_emails', 'give_email_template_preview' );
 function give_email_preview_buttons_callback() {
 	ob_start();
 	?>
-	<a href="<?php echo esc_url( add_query_arg( array( 'give_action' => 'preview_email' ), home_url() ) ); ?>" class="button-secondary" target="_blank" title="<?php esc_attr_e( 'Donation Receipt Preview', 'give' ); ?> "><?php esc_html_e( 'Preview Donation Receipt', 'give' ); ?></a>
+	<a href="<?php echo esc_url( add_query_arg( array( 'give_action' => 'preview_email' ), home_url() ) ); ?>" class="button-secondary" target="_blank"><?php esc_html_e( 'Preview Donation Receipt', 'give' ); ?></a>
 	<a href="<?php echo wp_nonce_url( add_query_arg( array(
 		'give_action'  => 'send_test_email',
 		'give-message' => 'sent-test-email',
@@ -258,7 +258,7 @@ function give_get_donation_notification_body_content( $payment_id = 0, $payment_
  *
  * A link is added to the Donation Receipt to view the email in the browser and
  * this function renders the Donation Receipt in the browser. It overrides the
- * Purchase Receipt template and provides its only styling.
+ * Donation Receipt template and provides its only styling.
  *
  * @since  1.0
  */
@@ -280,17 +280,45 @@ function give_render_receipt_in_browser() {
 	<!DOCTYPE html>
 	<html lang="en">
 	<head>
-		<?php do_action( 'give_receipt_head' ); ?>
+		<?php
+		/**
+		 * Fires in the receipt HEAD.
+		 *
+		 * @since 1.0
+		 */
+		do_action( 'give_receipt_head' );
+		?>
 	</head>
 	<body class="<?php echo apply_filters( 'give_receipt_page_body_class', 'give_receipt_page' ); ?>">
 
 	<div id="give_receipt_wrapper">
-		<?php do_action( 'give_render_receipt_in_browser_before' ); ?>
-		<?php echo do_shortcode( '[give_receipt payment_key=' . $key . ']' ); ?>
-		<?php do_action( 'give_render_receipt_in_browser_after' ); ?>
+		<?php
+		/**
+		 * Fires in the receipt template before the content.
+		 *
+		 * @since 1.0
+		 */
+		do_action( 'give_render_receipt_in_browser_before' );
+
+		echo do_shortcode( '[give_receipt payment_key=' . $key . ']' );
+
+		/**
+		 * Fires in the receipt template after the content.
+		 *
+		 * @since 1.0
+		 */
+		do_action( 'give_render_receipt_in_browser_after' );
+		?>
 	</div>
 
-	<?php do_action( 'give_receipt_footer' ); ?>
+	<?php
+	/**
+	 * Fires in the receipt footer.
+	 *
+	 * @since 1.0
+	 */
+	do_action( 'give_receipt_footer' );
+	?>
 	</body>
 	</html>
 	<?php
@@ -304,7 +332,7 @@ add_action( 'give_view_receipt', 'give_render_receipt_in_browser' );
 /**
  * Give Preview Email Header.
  *
- * Displays a header bar with the ability to change transactions to preview actual data within the preview. Will not display if
+ * Displays a header bar with the ability to change donations to preview actual data within the preview. Will not display if
  *
  * @since 1.6
  *
@@ -328,22 +356,20 @@ function give_get_preview_email_header() {
 
 	//Provide nice human readable options.
 	if ( $payments ) {
-		$options[0] =
-			/* translators: %s: transaction singular label */
-			esc_html__( '- Select a transaction -', 'give' );
+		$options[0] = esc_html__( '- Select a donation -', 'give' );
 		foreach ( $payments as $payment ) {
 
 			$options[ $payment->ID ] = esc_html( '#' . $payment->ID . ' - ' . $payment->email . ' - ' . $payment->form_title );
 
 		}
 	} else {
-		$options[0] = esc_html__( 'No Transactions Found', 'give' );
+		$options[0] = esc_html__( 'No donations found.', 'give' );
 	}
 
 	//Start constructing HTML output.
 	$transaction_header = '<div style="margin:0;padding:10px 0;width:100%;background-color:#FFF;border-bottom:1px solid #eee; text-align:center;">';
 
-	//Inline JS function for switching transactions.
+	//Inline JS function for switching donations.
 	$transaction_header .= '<script>
 				 function change_preview(){
 				  var transactions = document.getElementById("give_preview_email_payment_id");
@@ -356,7 +382,7 @@ function give_get_preview_email_header() {
 				    }
 			    </script>';
 
-	$transaction_header .= '<label for="give_preview_email_payment_id" style="font-size:12px;color:#333;margin:0 4px 0 0;">' . esc_html__( 'Preview email with a transaction:', 'give' ) . '</label>';
+	$transaction_header .= '<label for="give_preview_email_payment_id" style="font-size:12px;color:#333;margin:0 4px 0 0;">' . esc_html__( 'Preview email with a donation:', 'give' ) . '</label>';
 
 	//The select field with 100 latest transactions
 	$transaction_header .= Give()->html->select( array(

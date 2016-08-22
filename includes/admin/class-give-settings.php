@@ -158,7 +158,7 @@ class Give_Plugin_Settings {
 
 					$active = $active_tab == $tab_id ? ' nav-tab-active' : '';
 
-					echo '<a href="' . esc_url( $tab_url ) . '" title="' . esc_attr( $tab_name ) . '" class="nav-tab' . $active . '" id="tab-' . $tab_id . '">' . esc_html( $tab_name ) . '</a>';
+					echo '<a href="' . esc_url( $tab_url ) . '" class="nav-tab' . $active . '" id="tab-' . $tab_id . '">' . esc_html( $tab_name ) . '</a>';
 
 				}
 				?>
@@ -270,8 +270,8 @@ class Give_Plugin_Settings {
 							) ),
 						),
 						array(
-							'name'    => esc_html__( 'Failed Transaction Page', 'give' ),
-							'desc'    => esc_html__( 'This is the page donors are sent to if their transaction is cancelled or fails.', 'give' ),
+							'name'    => esc_html__( 'Failed Donation Page', 'give' ),
+							'desc'    => esc_html__( 'This is the page donors are sent to if their donation is cancelled or fails.', 'give' ),
 							'id'      => 'failure_page',
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
@@ -366,7 +366,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => esc_html__( 'Test Mode', 'give' ),
-							'desc' => esc_html__( 'While in test mode no live transactions are processed. To fully use test mode, you must have a sandbox (test) account for the payment gateway you are testing.', 'give' ),
+							'desc' => esc_html__( 'While in test mode no live donations are processed. To fully use test mode, you must have a sandbox (test) account for the payment gateway you are testing.', 'give' ),
 							'id'   => 'test_mode',
 							'type' => 'checkbox'
 						),
@@ -1294,7 +1294,16 @@ add_action( 'give_settings_tab_api_keys', 'give_api_callback' );
  * @return void
  */
 function give_hook_callback( $args ) {
-	do_action( 'give_' . $args['id'] );
+
+	$id = $args['id'];
+
+	/**
+	 * Fires in give field.
+	 *
+	 * @since 1.0
+	 */
+	do_action( "give_{$id}" );
+
 }
 
 /**

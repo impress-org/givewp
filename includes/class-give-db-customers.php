@@ -254,7 +254,7 @@ class Give_DB_Customers extends Give_DB {
 	}
 
 	/**
-	 * Increments customer purchase stats
+	 * Increments customer donation stats
 	 *
 	 * @access public
 	 *
@@ -279,7 +279,7 @@ class Give_DB_Customers extends Give_DB {
 	}
 
 	/**
-	 * Decrements customer purchase stats
+	 * Decrements customer donation stats
 	 *
 	 * @since  1.0
 	 * @access public
@@ -345,6 +345,14 @@ class Give_DB_Customers extends Give_DB {
 
 					}
 
+					/**
+					 * Fires after updating customer email on user update.
+					 *
+					 * @since 1.4.3
+					 * 
+					 * @param  WP_User       $user     WordPress User object.
+					 * @param  Give_Customer $customer Give customer object.
+					 */
 					do_action( 'give_update_customer_email_on_user_update', $user, $customer );
 
 				}

@@ -147,6 +147,13 @@ class Give_Payments_Query extends Give_Stats {
 	 */
 	public function get_payments() {
 
+		/**
+		 * Fires before retrieving payments.
+		 *
+		 * @since 1.0
+		 *
+		 * @param Give_Payments_Query $this Payments query object.
+		 */
 		do_action( 'give_pre_get_payments', $this );
 
 		$query = new WP_Query( $this->args );
@@ -173,6 +180,13 @@ class Give_Payments_Query extends Give_Stats {
 			wp_reset_postdata();
 		}
 
+		/**
+		 * Fires after retrieving payments.
+		 *
+		 * @since 1.0
+		 *
+		 * @param Give_Payments_Query $this Payments query object.
+		 */
 		do_action( 'give_post_get_payments', $this );
 
 		return $this->payments;

@@ -91,7 +91,6 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/welcome.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/class-admin-notices.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/admin-actions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/system-info.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/add-ons.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/dashboard-widgets.php' );

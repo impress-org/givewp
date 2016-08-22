@@ -40,7 +40,7 @@ function give_edit_customer( $args ) {
 	$nonce         = $args['_wpnonce'];
 
 	if ( ! wp_verify_nonce( $nonce, 'edit-customer' ) ) {
-		wp_die( esc_html__( 'Cheatin\' eh?!', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
+		wp_die( esc_html__( 'Cheatin&#8217; uh?', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
 	}
 
 	$customer = new Give_Customer( $customer_id );
@@ -147,7 +147,7 @@ function give_edit_customer( $args ) {
 			update_user_meta( $customer->user_id, '_give_user_address', $address );
 		}
 
-		// Update some payment meta if we need to
+		// Update some donation meta if we need to
 		$payments_array = explode( ',', $customer->payment_ids );
 
 		if ( $customer->email != $previous_email ) {
@@ -220,7 +220,7 @@ function give_customer_save_note( $args ) {
 	$nonce         = $args['add_customer_note_nonce'];
 
 	if ( ! wp_verify_nonce( $nonce, 'add-customer-note' ) ) {
-		wp_die( esc_html__( 'Cheatin\' eh?!', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
+		wp_die( esc_html__( 'Cheatin&#8217; uh?', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
 	}
 
 	if ( empty( $customer_note ) ) {
@@ -299,7 +299,7 @@ function give_customer_delete( $args ) {
 	$nonce       = $args['_wpnonce'];
 
 	if ( ! wp_verify_nonce( $nonce, 'delete-customer' ) ) {
-		wp_die( esc_html__( 'Cheatin\' eh?!', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
+		wp_die( esc_html__( 'Cheatin&#8217; uh?', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
 	}
 
 	if ( ! $confirm ) {
@@ -335,14 +335,14 @@ function give_customer_delete( $args ) {
 
 			if ( $remove_data ) {
 
-				// Remove all payments, logs, etc
+				// Remove all donations, logs, etc
 				foreach ( $payments_array as $payment_id ) {
 					give_delete_purchase( $payment_id );
 				}
 
 			} else {
 
-				// Just set the payments to customer_id of 0
+				// Just set the donations to customer_id of 0
 				foreach ( $payments_array as $payment_id ) {
 					give_update_payment_meta( $payment_id, '_give_payment_customer_id', 0 );
 				}
@@ -397,7 +397,7 @@ function give_disconnect_customer_user_id( $args ) {
 	$nonce       = $args['_wpnonce'];
 
 	if ( ! wp_verify_nonce( $nonce, 'edit-customer' ) ) {
-		wp_die( esc_html__( 'Cheatin\' eh?!', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
+		wp_die( esc_html__( 'Cheatin&#8217; uh?', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
 	}
 
 	$customer = new Give_Customer( $customer_id );

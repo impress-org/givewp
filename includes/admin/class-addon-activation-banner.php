@@ -105,7 +105,7 @@ class Give_Addon_Activation_Banner {
 				}
 
 				div.give-addon-alert h3 span {
-					font-weight: 900;
+					font-weight: 600;
 					color: #66BB6A;
 				}
 
@@ -142,6 +142,8 @@ class Give_Addon_Activation_Banner {
 					margin-top: -10px;
 					outline: none;
 					box-shadow: none;
+					text-decoration: none;
+					color: #cacaca;
 				}
 			</style>
 

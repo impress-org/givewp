@@ -256,6 +256,13 @@ function give_do_email_tags( $content, $payment_id ) {
  * @since 1.0
  */
 function give_load_email_tags() {
+	/**
+	 * Fires when loading email tags.
+	 *
+	 * Allows you to add new email tags.
+	 *
+	 * @since 1.0
+	 */
 	do_action( 'give_add_email_tags' );
 }
 

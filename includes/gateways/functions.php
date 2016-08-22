@@ -29,8 +29,8 @@ function give_get_payment_gateways() {
 			'supports'       => array( 'buy_now' )
 		),
 		'manual' => array(
-			'admin_label'    => esc_html__( 'Test Payment', 'give' ),
-			'checkout_label' => esc_html__( 'Test Payment', 'give' )
+			'admin_label'    => esc_html__( 'Test Donation', 'give' ),
+			'checkout_label' => esc_html__( 'Test Donation', 'give' )
 		),
 	);
 
@@ -222,8 +222,16 @@ function give_send_to_gateway( $gateway, $payment_data ) {
 
 	$payment_data['gateway_nonce'] = wp_create_nonce( 'give-gateway' );
 
-	// $gateway must match the ID used when registering the gateway
-	do_action( 'give_gateway_' . $gateway, $payment_data );
+	/**
+	 * Fires while loading payment gateway via AJAX.
+	 *
+	 * The dynamic portion of the hook name '$gateway' must match the ID used when registering the gateway.
+	 *
+	 * @since 1.0
+	 *
+	 * @param array $payment_data All the payment data to be sent to the gateway.
+	 */
+	do_action( "give_gateway_{$gateway}", $payment_data );
 }
 
 
@@ -287,7 +295,7 @@ function give_record_gateway_error( $title = '', $message = '', $parent = 0 ) {
 }
 
 /**
- * Counts the number of purchases made with a gateway
+ * Counts the number of donations made with a gateway
  *
  * @since 1.0
  *

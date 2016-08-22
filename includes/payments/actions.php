@@ -15,9 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Complete a purchase aka donation
+ * Complete a donation
  *
- * Performs all necessary actions to complete a purchase.
+ * Performs all necessary actions to complete a donation.
  * Triggered by the give_update_payment_status() function.
  *
  * @since  1.0
@@ -51,12 +51,29 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 	$price_id       = $payment->price_id;
 	$form_id        = $payment->form_id;
 
+	/**
+	 * Fires before completing donation.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int $payment_id The ID of the payment.
+	 */
 	do_action( 'give_pre_complete_purchase', $payment_id );
 
 	// Ensure these actions only run once, ever
 	if ( empty( $completed_date ) ) {
 
 		give_record_sale_in_log( $form_id, $payment_id, $price_id, $creation_date );
+
+		/**
+		 * Fires after logging donation record.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int   $form_id      The ID number of the form.
+		 * @param int   $payment_id   The ID number of the payment.
+		 * @param array $payment_meta The payment meta.
+		 */
 		do_action( 'give_complete_form_donation', $form_id, $payment_id, $payment_meta );
 
 	}
@@ -71,7 +88,7 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 	delete_transient( md5( 'give_earnings_this_monththis_month' ) );
 	delete_transient( md5( 'give_earnings_todaytoday' ) );
 	
-	// Increase the donor's purchase stats
+	// Increase the donor's donation stats
 	$customer = new Give_Customer( $customer_id );
 	$customer->increase_purchase_count();
 	$customer->increase_value( $amount );
@@ -86,9 +103,9 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 		$payment->save();
 
 		/**
-		 * Fires after a purchase/donation successfully complete.
+		 * Fires after completing donation.
 		 *
-		 * @since 1.6
+		 * @since 1.0
 		 *
 		 * @param int $payment_id The ID of the payment.
 		 */
@@ -134,7 +151,7 @@ add_action( 'give_update_payment_status', 'give_record_status_change', 100, 3 );
 /**
  * Clear User History Cache
  *
- * Flushes the current user's purchase history transient when a payment status
+ * Flushes the current user's donation history transient when a payment status
  * is updated.
  *
  * @since  1.0
@@ -160,7 +177,7 @@ add_action( 'give_update_payment_status', 'give_clear_user_history_cache', 10, 3
 /**
  * Update Old Payments Totals
  *
- * Updates all old payments, prior to 1.2, with new meta for the total purchase amount.
+ * Updates all old payments, prior to 1.2, with new meta for the total donation amount.
  *
  * It's done to query payments by their totals.
  *

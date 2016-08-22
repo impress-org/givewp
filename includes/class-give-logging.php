@@ -192,6 +192,14 @@ class Give_Logging {
 
 		$args = wp_parse_args( $log_data, $defaults );
 
+		/**
+		 * Fires before inserting log entry.
+		 *
+		 * @since 1.0
+		 *
+		 * @param array $log_data Log entry data.
+		 * @param array $log_meta Log entry meta.
+		 */
 		do_action( 'give_pre_insert_log', $log_data, $log_meta );
 
 		// Store the log entry
@@ -209,6 +217,15 @@ class Give_Logging {
 			}
 		}
 
+		/**
+		 * Fires after inserting log entry.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int   $log_id   Log entry id.
+		 * @param array $log_data Log entry data.
+		 * @param array $log_meta Log entry meta.
+		 */
 		do_action( 'give_post_insert_log', $log_id, $log_data, $log_meta );
 
 		return $log_id;
@@ -227,6 +244,14 @@ class Give_Logging {
 	 */
 	public function update_log( $log_data = array(), $log_meta = array() ) {
 
+		/**
+		 * Fires before updating log entry.
+		 *
+		 * @since 1.0
+		 *
+		 * @param array $log_data Log entry data.
+		 * @param array $log_meta Log entry meta.
+		 */
 		do_action( 'give_pre_update_log', $log_data, $log_meta );
 
 		$defaults = array(
@@ -248,6 +273,15 @@ class Give_Logging {
 			}
 		}
 
+		/**
+		 * Fires after updating log entry.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int   $log_id   Log entry id.
+		 * @param array $log_data Log entry data.
+		 * @param array $log_meta Log entry meta.
+		 */
 		do_action( 'give_post_update_log', $log_id, $log_data, $log_meta );
 	}
 
