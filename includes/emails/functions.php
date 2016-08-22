@@ -108,10 +108,36 @@ function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 function give_email_test_donation_receipt() {
 
 	$from_name = give_get_option( 'from_name', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) );
-	$from_name = apply_filters( 'give_purchase_from_name', $from_name, 0, array() );
+
+	/**
+	 * Filters the from name.
+	 *
+	 * @deprecated 1.9 Use {@see 'give_donation_from_name'} instead.
+	 */
+	$from_name = apply_filters_deprecated( 'give_purchase_from_name', array( $from_name, 0, array() ), '1.9', 'give_donation_from_name' );
+
+	/**
+	 * Filters the from name.
+	 *
+	 * @since 1.9
+	 */
+	$from_name = apply_filters( 'give_donation_from_name', $from_name, 0, array() );
 
 	$from_email = give_get_option( 'from_email', get_bloginfo( 'admin_email' ) );
-	$from_email = apply_filters( 'give_purchase_from_address', $from_email, 0, array() );
+
+	/**
+	 * Filters the from email.
+	 *
+	 * @deprecated 1.9 Use {@see 'give_donation_from_address'} instead.
+	 */
+	$from_email = apply_filters_deprecated( 'give_purchase_from_address', array( $from_email, 0, array() ), '1.9', 'give_donation_from_address' );
+
+	/**
+	 * Filters the from email.
+	 *
+	 * @since 1.9
+	 */
+	$from_email = apply_filters( 'give_donation_from_address', $from_email, 0, array() );
 
 	$subject = give_get_option( 'donation_subject', esc_html__( 'Donation Receipt', 'give' ) );
 	$subject = apply_filters( 'give_donation_subject', wp_strip_all_tags( $subject ), 0 );
@@ -156,10 +182,36 @@ function give_admin_email_notice( $payment_id = 0, $payment_data = array() ) {
 	}
 
 	$from_name = give_get_option( 'from_name', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) );
-	$from_name = apply_filters( 'give_purchase_from_name', $from_name, $payment_id, $payment_data );
+
+	/**
+	 * Filters the from name.
+	 *
+	 * @deprecated 1.9 Use {@see 'give_donation_from_name'} instead.
+	 */
+	$from_name = apply_filters_deprecated( 'give_purchase_from_name', array( $from_name, $payment_id, $payment_data ), '1.9', 'give_donation_from_name' );
+
+	/**
+	 * Filters the from name.
+	 *
+	 * @since 1.9
+	 */
+	$from_name = apply_filters( 'give_donation_from_name', $from_name, $payment_id, $payment_data );
 
 	$from_email = give_get_option( 'from_email', get_bloginfo( 'admin_email' ) );
-	$from_email = apply_filters( 'give_purchase_from_address', $from_email, $payment_id, $payment_data );
+
+	/**
+	 * Filters the from email.
+	 *
+	 * @deprecated 1.9 Use {@see 'give_donation_from_address'} instead.
+	 */
+	$from_email = apply_filters_deprecated( 'give_purchase_from_address', array( $from_email, $payment_id, $payment_data ), '1.9', 'give_donation_from_address' );
+
+	/**
+	 * Filters the from email.
+	 *
+	 * @since 1.9
+	 */
+	$from_email = apply_filters( 'give_donation_from_address', $from_email, $payment_id, $payment_data );
 
 	/* translators: %s: payment id */
 	$subject = give_get_option( 'donation_notification_subject', sprintf( esc_html__( 'New Donation - Payment #%s', 'give' ), $payment_id ) );
