@@ -1378,8 +1378,9 @@ Settings
 .cmb2-id-give-title > div.cmb-td {
   padding-bottom: 5px; }
 
-/* System Info page styles
--------------------------------------------------------------- */
+#system_info .give-submit-wrap {
+  display: none; }
+
 #system-info-textarea {
   width: 800px;
   height: 600px;
@@ -1393,8 +1394,6 @@ Settings
 #give-download-sysinfo {
   margin: 0; }
 
-/* API
--------------------------------------------------------------- */
 .cmb2-id-api .cmb-td {
   padding: 0; }
 
@@ -1435,8 +1434,6 @@ Settings
 a.give-delete {
   color: #a00; }
 
-/* License
--------------------------------------------------------------- */
 .cmb2-wrap .give-license-deactivate {
   margin: 1px 0 0 10px;
   height: 30px; }
@@ -1456,7 +1453,6 @@ a.give-delete {
   outline: none;
   background-size: 16px; }
 
-/* Tables */
 .give-table thead th {
   padding: 8px 10px !important; }
 
