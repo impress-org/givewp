@@ -30,55 +30,6 @@
 /* Donor Styles
 -------------------------------------------------------------- */
 
-#customer-tab-wrapper {
-
-}
-
-#customer-tab-wrapper-list {
-
-  border-bottom: 1px solid #ccc;
-  padding: 5px 15px 0 10px;
-
-  li {
-
-	display: inline-block;
-	margin: 0 0 -1px;
-	padding: 0;
-
-	a {
-	  padding: 6px 10px;
-	  font-weight: bold;
-	  font-size: 15px;
-	  line-height: 24px;
-	  border: 1px solid #ccc;
-	  border-bottom: none;
-	  background: #e4e4e4;
-	  color: #555;
-	  display: inline-block;
-	  text-decoration: none;
-	  margin: 0;
-	}
-
-  }
-
-  .active {
-	padding: 6px 10px;
-	font-weight: bold;
-	font-size: 15px;
-	line-height: 24px;
-	border: 1px solid #ccc;
-	border-bottom: 1px solid #f1f1f1;
-	background: #f1f1f1;
-	color: #000;
-  }
-
-  .dashicons {
-	font-size: 20px;
-	line-height: 26px;
-  }
-
-}
-
 #give-customer-card-wrapper {
   margin-left: -1px;
   z-index: 2;
