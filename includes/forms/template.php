@@ -335,9 +335,16 @@ function give_show_purchase_form( $form_id ) {
 		 *
 		 * @since 1.0
 		 *
-		 * @param int $form_id The form ID.
+		 * @deprecated 1.7 Use {@see 'give_donation_form_after_cc_form'} instead.
 		 */
-		do_action( 'give_purchase_form_no_access', $form_id );
+		do_action_deprecated( 'give_purchase_form_no_access', array( $form_id ), '1.7', 'give_donation_form_no_access' );
+
+		/**
+		 * Fire if user can not donate.
+		 *
+		 * @since 1.7
+		 */
+		do_action( 'give_donation_form_no_access', $form_id );
 
 	}
 
