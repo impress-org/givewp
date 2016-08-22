@@ -244,16 +244,23 @@ function give_show_purchase_form( $form_id ) {
 	if ( give_can_checkout() && isset( $form_id ) ) {
 
 		/**
-		 * Fires while displaying donation form, before registeration login  login.
+		 * Fires while displaying donation form, before registration login.
 		 *
 		 * @since 1.0
 		 *
-		 * @param int $form_id The form ID.
+		 * @deprecated 1.7 Use {@see 'give_donation_form_before_register_login'} instead.
 		 */
-		do_action( 'give_purchase_form_before_register_login', $form_id );
+		do_action_deprecated( 'give_purchase_form_before_register_login', array( $form_id ), '1.7', 'give_donation_form_before_register_login' );
 
 		/**
-		 * Fires while displaying donation form, registeration login fields.
+		 * Fires while displaying donation form, before registration login.
+		 *
+		 * @since 1.7
+		 */
+		do_action( 'give_donation_form_before_register_login', $form_id );
+
+		/**
+		 * Fires while displaying donation form, registration login fields.
 		 *
 		 * @since 1.0
 		 *
