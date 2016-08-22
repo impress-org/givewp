@@ -119,7 +119,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 				if ( ! in_array( $type, array( 'customers', 'forms', 'other' ) ) ) {
 					// Allows other types of custom post types to filter on their own post_type
 					// and add items to the query list, for the IDs found in their post type.
-					$sql = apply_filters( 'give_reset_add_queries_' . $type, $sql, $ids );
+					$sql = apply_filters( "give_reset_add_queries_{$type}", $sql, $ids );
 				}
 
 		

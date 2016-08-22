@@ -283,7 +283,7 @@ $payment_mode   = $payment->mode;
 											<div class="give-order-tx-id give-admin-box-inside">
 												<p>
 													<strong><?php esc_html_e( 'Donation ID:', 'give' ); ?></strong>&nbsp;
-													<?php echo apply_filters( 'give_payment_details_transaction_id-' . $gateway, $transaction_id, $payment_id ); ?>
+													<?php echo apply_filters( "give_payment_details_transaction_id-{$gateway}", $transaction_id, $payment_id ); ?>
 												</p>
 											</div>
 										<?php endif; ?>

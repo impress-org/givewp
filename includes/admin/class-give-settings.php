@@ -860,7 +860,7 @@ function give_get_option( $key = '', $default = false ) {
 	$value = ! empty( $give_options[ $key ] ) ? $give_options[ $key ] : $default;
 	$value = apply_filters( 'give_get_option', $value, $key, $default );
 
-	return apply_filters( 'give_get_option_' . $key, $value, $key, $default );
+	return apply_filters( "give_get_option_{$key}", $value, $key, $default );
 }
 
 
