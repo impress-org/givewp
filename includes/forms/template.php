@@ -710,14 +710,14 @@ function give_user_info_fields( $form_id ) {
 	 *
 	 * @since 1.0
 	 *
-	 * @deprecated 1.9 Use { @see 'give_donation_form_before_personal_info' } instead.
+	 * @deprecated 1.7 Use { @see 'give_donation_form_before_personal_info' } instead.
 	 */
 	do_action_deprecated( 'give_purchase_form_before_personal_info', array( $form_id ), '1.7', 'give_donation_form_before_personal_info' );
 
 	/**
 	 * Fire before user personal information fields
 	 *
-	 * @since 1.9
+	 * @since 1.7
 	 */
 	do_action( 'give_donation_form_before_personal_info', $form_id );
 	?>
@@ -753,14 +753,20 @@ function give_user_info_fields( $form_id ) {
 		</p>
 
 		<?php
-		/**
-		 * Fires while displaying donation form, before email field.
+		/** Fires while displaying donation form, before email field.
 		 *
 		 * @since 1.0
 		 *
-		 * @param int $form_id The form ID.
+		 * @deprecated 1.7 Use { @see 'give_donation_form_before_email' } instead.
 		 */
-		do_action( 'give_purchase_form_before_email', $form_id );
+		do_action_deprecated( 'give_purchase_form_before_email', array( $form_id ), '1.7', 'give_donation_form_before_email' );
+
+		/**
+		 * Fire before user email field
+		 *
+		 * @since 1.7
+		 */
+		do_action( 'give_donation_form_before_email', $form_id );
 		?>
 		<p id="give-email-wrap" class="form-row form-row-wide">
 			<label class="give-label" for="give-email">
