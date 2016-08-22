@@ -47,7 +47,20 @@ function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 	$from_name = apply_filters( 'give_donation_from_name', $from_name, $payment_id, $payment_data );
 
 	$from_email = give_get_option( 'from_email', get_bloginfo( 'admin_email' ) );
-	$from_email = apply_filters( 'give_purchase_from_address', $from_email, $payment_id, $payment_data );
+
+	/**
+	 * Filters the from email.
+	 *
+	 * @deprecated 1.9 Use {@see 'give_donation_from_address'} instead.
+	 */
+	$from_email = apply_filters_deprecated( 'give_purchase_from_address', array( $from_email, $payment_id, $payment_data ), '1.9', 'give_donation_from_address' );
+
+	/**
+	 * Filters the from email.
+	 *
+	 * @since 1.9
+	 */
+	$from_email = apply_filters( 'give_donation_from_address', $from_email, $payment_id, $payment_data );
 
 	$to_email = give_get_payment_user_email( $payment_id );
 
