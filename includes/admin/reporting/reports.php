@@ -363,8 +363,8 @@ function give_reports_tab_export() {
 				<table class="widefat export-options-table give-table">
 					<thead>
 					<tr>
-						<th class="row-title"><?php esc_html_e( 'Export Type', 'give' ); ?></th>
-						<th><?php esc_html_e( 'Export Options', 'give' ); ?></th>
+						<th scope="col"><?php esc_html_e( 'Export Type', 'give' ); ?></th>
+						<th scope="col"><?php esc_html_e( 'Export Options', 'give' ); ?></th>
 					</tr>
 					</thead>
 					<tbody>
@@ -379,9 +379,8 @@ function give_reports_tab_export() {
 					do_action( 'give_reports_tab_export_table_top' );
 					?>
 					<tr class="give-export-pdf-sales-earnings">
-						<td class="row-title">
+						<td scope="row" class="row-title">
 							<h3><span><?php esc_html_e( 'Export PDF of Donations and Income', 'give' ); ?></span></h3>
-
 							<p><?php esc_html_e( 'Download a PDF of Donations and Income reports for all forms for the current year.', 'give' ); ?></p>
 						</td>
 						<td>
@@ -389,9 +388,8 @@ function give_reports_tab_export() {
 						</td>
 					</tr>
 					<tr class="alternate give-export-sales-earnings">
-						<td class="row-title">
+						<td scope="row" class="row-title">
 							<h3><span><?php esc_html_e( 'Export Income and Donation Stats', 'give' ); ?></span></h3>
-
 							<p><?php esc_html_e( 'Download a CSV of income and donations over time.', 'give' ); ?></p>
 						</td>
 						<td>
@@ -410,9 +408,8 @@ function give_reports_tab_export() {
 						</td>
 					</tr>
 					<tr class="give-export-payment-history">
-						<td class="row-title">
+						<td scope="row" class="row-title">
 							<h3><span><?php esc_html_e( 'Export Donation History', 'give' ); ?></span></h3>
-
 							<p><?php esc_html_e( 'Download a CSV of all donations recorded.', 'give' ); ?></p>
 						</td>
 						<td>
@@ -447,13 +444,11 @@ function give_reports_tab_export() {
 									<span class="spinner"></span>
 								</span>
 							</form>
-
 						</td>
 					</tr>
 					<tr class="alternate give-export-donors">
-						<td class="row-title">
+						<td scope="row" class="row-title">
 							<h3><span><?php esc_html_e( 'Export Donors in CSV', 'give' ); ?></span></h3>
-
 							<p><?php esc_html_e( 'Download an export of donors for all donation forms or only those who have given to a particular form.', 'give' ); ?></p>
 						</td>
 						<td>
