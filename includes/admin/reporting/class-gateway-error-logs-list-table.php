@@ -124,10 +124,9 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 		$columns = array(
 			'ID'         => esc_html__( 'Log ID', 'give' ),
 			'error'      => esc_html__( 'Error', 'give' ),
-			'message'    => esc_html__( 'Message', 'give' ),
-			'gateway'    => esc_html__( 'Gateway', 'give' ),
 			'payment_id' => esc_html__( 'Payment ID', 'give' ),
-			'date'       => esc_html__( 'Date', 'give' )
+			'date'       => esc_html__( 'Date', 'give' ),
+			'message'    => esc_html__( 'Details', 'give' )
 		);
 
 		return $columns;
@@ -188,7 +187,6 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 					'ID_label'   => '<span class=\'give-item-label give-item-label-gray\'>' . $log->ID . '</span>',
 					'payment_id' => $log->post_parent,
 					'error'      => 'error',
-					'gateway'    => give_get_payment_gateway( $log->post_parent ),
 					'date'       => $log->post_date
 				);
 			}
