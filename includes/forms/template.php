@@ -389,9 +389,16 @@ function give_show_register_login_fields( $form_id ) {
 			 *
 			 * @since 1.0
 			 *
-			 * @param int $form_id The form ID.
+			 * @deprecated 1.7 Use {@see 'give_donation_form_register_fields'} instead.
 			 */
-			do_action( 'give_purchase_form_register_fields', $form_id );
+			do_action_deprecated( 'give_purchase_form_register_fields', array( $form_id ), '1.7', 'give_purchase_form_register_fields' );
+
+			/**
+			 * Fire if user registration form render.
+			 *
+			 * @since 1.7
+			 */
+			do_action( 'give_donation_form_register_fields', $form_id );
 			?>
 		</div>
 		<?php
