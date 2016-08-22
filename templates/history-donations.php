@@ -29,10 +29,10 @@ if ( $donations ) : ?>
 			 */
 			do_action( 'give_purchase_history_header_before' );
 			?>
-			<th class="give_purchase_id"><?php esc_html_e( 'ID', 'give' ); ?></th>
-			<th class="give_purchase_date"><?php esc_html_e( 'Date', 'give' ); ?></th>
-			<th class="give_purchase_amount"><?php esc_html_e( 'Amount', 'give' ); ?></th>
-			<th class="give_purchase_details"><?php esc_html_e( 'Details', 'give' ); ?></th>
+			<th scope="col" class="give_purchase_id"><?php esc_html_e( 'ID', 'give' ); ?></th>
+			<th scope="col" class="give_purchase_date"><?php esc_html_e( 'Date', 'give' ); ?></th>
+			<th scope="col" class="give_purchase_amount"><?php esc_html_e( 'Amount', 'give' ); ?></th>
+			<th scope="col" class="give_purchase_details"><?php esc_html_e( 'Details', 'give' ); ?></th>
 			<?php
 			/**
 			 * Fires in current user donation history table, after the header row ends.
