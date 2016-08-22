@@ -1475,9 +1475,16 @@ function give_payment_mode_select( $form_id ) {
 		 *
 		 * @since 1.0
 		 *
-		 * @param int $form_id The form ID.
+		 * @deprecated 1.7 Use {@see 'give_donation_form'} instead.
 		 */
-		do_action( 'give_purchase_form', $form_id );
+		do_action_deprecated( 'give_purchase_form', array( $form_id ), '1.7', 'give_donation_form' );
+
+		/**
+		 * Fire after payment field render.
+		 *
+		 * @since 1.7
+		 */
+		do_action( 'give_donation_form', $form_id );
 		?>
 
 	</div>
