@@ -12,12 +12,6 @@ Settings
 --------------------------------------*/
 .give_settings_page {
 
-  //Temporarily hide the recurring notice that's
-  //no longer needed as over version 1.6 since it checks all licenses.
-  //This will be removed eventually.
-  .give-recurring-no-license {
-    display:none;
-  }
   .nav-tab-wrapper {
     margin-bottom: 5px;
   }
@@ -113,8 +107,14 @@ Settings
   }
 }
 
-/* System Info page styles
--------------------------------------------------------------- */
+//--------------------------------------------------------------
+// System Info page styles
+//--------------------------------------------------------------
+
+#system_info .give-submit-wrap {
+  display: none;
+}
+
 #system-info-textarea {
   width: 800px;
   height: 600px;
@@ -130,8 +130,9 @@ Settings
   margin: 0;
 }
 
-/* API
--------------------------------------------------------------- */
+//--------------------------------------------------------------
+// API
+//--------------------------------------------------------------
 
 .cmb2-id-api {
 
@@ -193,8 +194,9 @@ a.give-delete {
   color: #a00;
 }
 
-/* License
--------------------------------------------------------------- */
+//--------------------------------------------------------------
+// License
+//--------------------------------------------------------------
 .cmb2-wrap {
   .give-license-deactivate {
     margin: 1px 0 0 10px;
@@ -220,7 +222,7 @@ a.give-delete {
 
 }
 
-/* Tables */
+// Tables
 
 .give-table {
 
