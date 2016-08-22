@@ -326,7 +326,7 @@ jQuery(function ($) {
         }
 
         //Does this number have an accepted minimum value?
-        if ( value_now < value_min || value_now < 1 ) {
+        if ( ( value_now < value_min || value_now < 1 ) && ( -1 === price_id ) ) {
 
             //It doesn't... Invalid Minimum
             $(this).addClass('give-invalid-amount');
