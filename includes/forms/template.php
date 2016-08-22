@@ -1628,13 +1628,18 @@ function give_checkout_submit( $form_id ) {
 		echo give_checkout_button_purchase( $form_id );
 
 		/**
-		 * Fires while rendering checkout submit, after the fields.
+		 * Fire after donation form submit.
 		 *
-		 * @since 1.0
-		 *
-		 * @param int $form_id The form ID.
+		 * @deprecated 1.7 Use {@see ''give_donation_form_after_submit} instead.
 		 */
-		do_action( 'give_purchase_form_after_submit', $form_id );
+		do_action_deprecated( 'give_purchase_form_after_submit', array( $form_id ), '1.7', 'give_donation_form_after_submit' );
+
+		/**
+		 * Fire after donation form submit.
+		 *
+		 * @since 1.7
+		 */
+		do_action( 'give_donation_form_after_submit', $form_id );
 		?>
 	</fieldset>
 	<?php
