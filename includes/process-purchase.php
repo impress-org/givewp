@@ -137,8 +137,19 @@ function give_process_purchase_form() {
 		$_POST['give-gateway']    = 'manual';
 	}
 
-	// Allow the donation data to be modified before it is sent to the gateway
-	$purchase_data = apply_filters( 'give_purchase_data_before_gateway', $purchase_data, $valid_data );
+	/**
+	 * Allow the purchase data to be modified before it is sent to the gateway
+	 *
+	 * @deprecated 1.7 Use {@see 'give_donation_data_before_gateway'} instead.
+	 */
+	$purchase_data = apply_filters_deprecated( 'give_purchase_data_before_gateway', array( $purchase_data, $valid_data ), '1.7', 'give_donation_data_before_gateway' );
+
+	/**
+	 * Allow the purchase data to be modified before it is sent to the gateway
+	 *
+	 * @since 1.7
+	 */
+	$purchase_data = apply_filters( 'give_donation_data_before_gateway', $purchase_data, $valid_data );
 
 	// Setup the data we're storing in the donation session
 	$session_data = $purchase_data;
