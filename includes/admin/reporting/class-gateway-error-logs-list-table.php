@@ -1,6 +1,6 @@
 <?php
 /**
- * Gateway Error Log View Class
+ * Gateway Error Log View Class.
  *
  * @package     Give
  * @subpackage  Admin/Reports
@@ -8,12 +8,12 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// Load WP_List_Table if not loaded
+// Load WP_List_Table if not loaded.
 if ( ! class_exists( 'WP_List_Table' ) ) {
 	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 }
@@ -21,14 +21,15 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 /**
  * Give_Gateway_Error_Log_Table Class
  *
- * Renders the gateway errors list table
+ * Renders the gateway errors list table.
  *
  * @access      private
  * @since       1.0
  */
 class Give_Gateway_Error_Log_Table extends WP_List_Table {
+
 	/**
-	 * Number of items per page
+	 * Number of items per page.
 	 *
 	 * @var int
 	 * @since 1.0
@@ -36,7 +37,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	public $per_page = 30;
 
 	/**
-	 * Get things started
+	 * Get things started.
 	 *
 	 * @since 1.0
 	 * @see   WP_List_Table::__construct()
@@ -58,10 +59,10 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 * @access public
 	 * @since  1.0
 	 *
-	 * @param array  $item        Contains all the data of the discount code
-	 * @param string $column_name The name of the column
+	 * @param array  $item Contains all the data of the log item.
+	 * @param string $column_name The name of the column.
 	 *
-	 * @return string Column Name
+	 * @return string Column Name.
 	 */
 	public function column_default( $item, $column_name ) {
 		switch ( $column_name ) {
@@ -75,12 +76,12 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Output Error Message Column
+	 * Output Error Message Column.
 	 *
 	 * @access public
 	 * @since  1.0
 	 *
-	 * @param array $item Contains all the data of the log
+	 * @param array $item Contains all the data of the log.
 	 *
 	 * @return void
 	 */
@@ -93,7 +94,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 
 			$log_message = get_post_field( 'post_content', $item['ID'] );
 
-			$serialized  = strpos( $log_message, '{"' );
+			$serialized = strpos( $log_message, '{"' );
 
 			// Check to see if the log message contains serialized information
 			if ( $serialized !== false ) {
@@ -110,15 +111,15 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 			}
 			?>
 		</div>
-	<?php
+		<?php
 	}
 
 	/**
-	 * Retrieve the table columns
+	 * Retrieve the table columns.
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @return array $columns Array of all the list table columns
+	 * @return array $columns Array of all the list table columns.
 	 */
 	public function get_columns() {
 		$columns = array(
@@ -156,17 +157,18 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Gets the log entries for the current view
+	 * Gets the log entries for the current view.
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @global object $give_logs Give Logs Object
-	 * @return array $logs_data Array of all the Log entires
+	 * @global object $give_logs Give Logs Object.
+	 * @return array $logs_data Array of all the Log entries.
 	 */
 	public function get_logs() {
 		global $give_logs;
 
-		// Prevent the queries from getting cached. Without this there are occasional memory issues for some installs
+		// Prevent the queries from getting cached.
+		// Without this there are occasional memory issues for some installs.
 		wp_suspend_cache_addition( true );
 
 		$logs_data = array();
@@ -226,7 +228,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 		</div>
 		<?php
 	}
-	
+
 	/**
 	 * Setup the final data for the table
 	 *
