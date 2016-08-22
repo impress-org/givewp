@@ -240,14 +240,14 @@ function give_customers_view( $customer ) {
 					<table class="widefat">
 						<tbody>
 						<tr>
-							<td><label for="tablecell"><?php esc_html_e( 'Email', 'give' ); ?></label>:</td>
+							<th scope="col"><label for="tablecell"><?php esc_html_e( 'Email:', 'give' ); ?></label></th>
 							<td class="row-title">
 								<span class="customer-name info-item edit-item"><input size="20" data-key="email" name="customerinfo[email]" type="text" value="<?php echo $customer->email; ?>" placeholder="<?php esc_attr_e( 'Donor Email', 'give' ); ?>" /></span>
 								<span class="customer-email info-item editable" data-key="email"><?php echo $customer->email; ?></span>
 							</td>
 						</tr>
 						<tr class="alternate">
-							<td><label for="tablecell"><?php esc_html_e( 'User ID', 'give' ); ?></label>:</td>
+							<th scope="col"><label for="tablecell"><?php esc_html_e( 'User ID:', 'give' ); ?></label></th>
 							<td class="row-title">
 								<span class="customer-user-id info-item edit-item">
 									<?php
@@ -288,7 +288,7 @@ function give_customers_view( $customer ) {
 						<?php if ( isset( $customer->user_id ) && $customer->user_id > 0 ) : ?>
 
 							<tr>
-								<td><?php esc_html_e( 'Address:', 'give' ); ?></td>
+								<th scope="col"><?php esc_html_e( 'Address:', 'give' ); ?></th>
 								<td class="row-title">
 
 									<div class="customer-address-wrapper">
@@ -358,7 +358,6 @@ function give_customers_view( $customer ) {
 						<?php endif; ?>
 						</tbody>
 					</table>
-
 
 				</div>
 
@@ -451,11 +450,11 @@ function give_customers_view( $customer ) {
 		<table class="wp-list-table widefat striped payments">
 			<thead>
 			<tr>
-				<th><?php esc_html_e( 'ID', 'give' ); ?></th>
-				<th><?php esc_html_e( 'Amount', 'give' ); ?></th>
-				<th><?php esc_html_e( 'Date', 'give' ); ?></th>
-				<th><?php esc_html_e( 'Status', 'give' ); ?></th>
-				<th><?php esc_html_e( 'Actions', 'give' ); ?></th>
+				<th scope="col"><?php esc_html_e( 'ID', 'give' ); ?></th>
+				<th scope="col"><?php esc_html_e( 'Amount', 'give' ); ?></th>
+				<th scope="col"><?php esc_html_e( 'Date', 'give' ); ?></th>
+				<th scope="col"><?php esc_html_e( 'Status', 'give' ); ?></th>
+				<th scope="col"><?php esc_html_e( 'Actions', 'give' ); ?></th>
 			</tr>
 			</thead>
 			<tbody>
@@ -501,8 +500,8 @@ function give_customers_view( $customer ) {
 		<table class="wp-list-table widefat striped donations">
 			<thead>
 			<tr>
-				<th><?php echo give_get_forms_label_singular(); ?></th>
-				<th width="120px"><?php esc_html_e( 'Actions', 'give' ); ?></th>
+				<th scope="col"><?php echo give_get_forms_label_singular(); ?></th>
+				<th scope="col" width="120px"><?php esc_html_e( 'Actions', 'give' ); ?></th>
 			</tr>
 			</thead>
 			<tbody>
