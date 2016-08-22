@@ -269,9 +269,9 @@ function give_get_chosen_gateway( $form_id ) {
 }
 
 /**
- * Record a gateway error
+ * Record a gateway error.
  *
- * A simple wrapper function for give_record_log()
+ * A simple wrapper function for give_record_log().
  *
  * @access public
  * @since  1.0
