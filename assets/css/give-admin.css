@@ -27,7 +27,7 @@
  */
 .give-item-label {
   padding: .2em .6em .3em;
-  font-size: 85%;
+  font-size: 11px;
   font-weight: 700;
   line-height: 1;
   color: #fff;
@@ -36,8 +36,22 @@
   vertical-align: baseline;
   border-radius: .25em; }
 
-.give-item-label-gray {
+.give-item-label-gray, #give-payments-filter .give-payment-id {
   background-color: #929292; }
+
+.give-item-label-orange {
+  background-color: #ffba00; }
+
+.give-item-label {
+  padding: .2em .6em .3em;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25em; }
 
 /**
  * Give CSS Variables
@@ -555,7 +569,7 @@ x:-o-prefocus, .qtip .qtip-tip {
  * @description: Fonts are from icomoon and the src paths need to be relative to template directory
  * @package     Give
  * @subpackage  SCSS/Frontend
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 @font-face {
@@ -651,7 +665,7 @@ x:-o-prefocus, .qtip .qtip-tip {
  *
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 /*------------------------------------
@@ -668,17 +682,17 @@ Forms CPT
 .cmb2-id--give-reveal-label,
 .cmb2-id--give-custom-amount-minimum,
 .cmb2-id--give-custom-amount-text,
-.cmb2-id--give-offline-checkout-notes {
+.cmb2-id--give-offline-checkout-notes,
+.cmb-type-levels-id,
+#_give_donation_levels_repeat .cmb-group-title,
+#_give_donation_levels_repeat .cmb-row > .cmb-remove-group-row,
+#_give_donation_levels_repeat .cmb-row > .handlediv {
   display: none; }
 
 /* Donation Levels Repeating Field */
 #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row .cmb2-radio-list label {
   font-size: 12px; }
 
-#_give_donation_levels_repeat .cmb-group-title, #_give_donation_levels_repeat .cmb-row > .cmb-remove-group-row, #_give_donation_levels_repeat .cmb-row > .handlediv {
-  display: none; }
-
-/* Table Rows */
 div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
   padding: 0 !important;
   margin: 0 !important;
@@ -704,10 +718,12 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
         vertical-align: middle;
         padding: 10px 15px;
         border-right: 1px solid #e9e9e9; }
+        .cmb2-id--give-levels-header .table-container > .table-row > .table-cell.col-id {
+          display: none; }
 
 #_give_donation_levels_repeat {
   background: #F7F7F7;
-  padding: 0 12px 20px;
+  padding: 0 1px 20px 12px;
   box-sizing: border-box; }
   #_give_donation_levels_repeat .cmb-row, #_give_donation_levels_repeat .inside {
     margin: 0; }
@@ -732,7 +748,7 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
   margin-left: 0; }
 
 .give-money-symbol {
-  border: 1px solid #e9e9e9;
+  border: 1px solid #DDD;
   background: #FCFCFC;
   margin: 0;
   font-size: 14px;
@@ -742,14 +758,8 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
   border-right: 0; }
 
 .give-money-symbol-after {
-  border-left: 0; }
-
-p.give-level-id {
-  border-radius: 50%;
-  border: 1px solid #e9e9e9;
-  background: #FCFCFC;
-  padding: 2px 7px;
-  font-size: 11px; }
+  border-left: 0;
+  margin-left: -4px; }
 
 .give-underline {
   text-decoration: underline; }
@@ -767,21 +777,21 @@ p.give-level-id {
   .postbox-container .cmb-row .cmb-th label {
     padding-left: 8px; }
 
-/* Smaller Resolution Desktops AND UP */
 @media only screen and (min-width: 851px) {
-  #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row > .cmb-th {
-    display: none; }
-  #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row > .cmb-td {
-    float: left;
-    width: 100%; }
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row {
     float: left;
-    border-bottom: none; }
+    border-bottom: none;
+    padding-right: 10px; }
+    #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row > .cmb-th {
+      display: none; }
+    #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row > .cmb-td {
+      float: left;
+      width: 100%; }
   .cmb-type-give-default-radio-inline .cmb-td {
     margin-top: 5px; } }
 
 /* Smaller Resolution Desktops */
-@media only screen and (min-width: 851px) and (max-width: 1285px) {
+@media only screen and (min-width: 851px) and (max-width: 1201px) {
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-remove-field-row {
     width: 100%;
     padding-top: 0; }
@@ -789,28 +799,18 @@ p.give-level-id {
     width: 105px; }
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list input.cmb2-text-money {
     width: 65px; }
-  #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-type-text {
-    width: 180px;
-    padding-right: 20px; }
-  #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-type-radio-inline {
+  #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list .give-multilevel-text-field {
+    width: 160px; }
+  #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list .cmb-type-radio-inline {
     margin-left: 20px; }
-  .col-id {
-    width: 15px; }
-  p.give-level-id {
-    margin: 7px 15px 0 0; }
   .col-amount {
     width: 70px; }
   .col-text {
-    width: 165px; }
+    width: 140px; }
   .col-sort {
-    display: none !important; } }
-
-@media only screen and (min-width: 1000px) {
-  #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-type-text {
-    width: 220px;
-    padding-right: 20px; }
-  .col-text {
-    width: 205px; } }
+    display: none !important; }
+  .give-money-field {
+    width: 55px; } }
 
 @media only screen and (min-width: 1201px) {
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-remove-field-row {
@@ -819,37 +819,19 @@ p.give-level-id {
     padding-right: 20px; }
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-remove-field-row.cmb-row {
     padding-right: 0; }
-  #_give_donation_levels_repeat .regular-text {
-    width: 100%; }
-  .col-id {
-    width: 20px; }
-  p.give-level-id {
-    margin: 6px 0 0; }
   .col-amount {
-    width: 85px; }
+    width: 93px; }
   .col-text {
     width: 195px; }
   .col-sort {
-    width: 100px; } }
+    width: 100px; }
+  .give-multilevel-text-field {
+    width: 205px; } }
 
-@media only screen and (min-width: 1375px) {
-  .col-text {
-    width: 270px; }
-  #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-type-text {
-    width: 290px; } }
-
-/* Small Resolution Repeater */
 @media only screen and (max-width: 850px) {
   div.cmb-type-levels-repeater-header {
-    display: none !important; }
-  p.give-level-id {
-    float: left;
-    font-weight: bold;
-    margin-top: 5px; } }
+    display: none !important; } }
 
-/*-------------------------------------
-Publish Metabox
--------------------------------------*/
 /*Shortcode Input */
 .shortcode-wrap {
   margin: 1px 14px 12px 11px; }
@@ -933,7 +915,7 @@ Tooltips
  * @description Add-on Styles
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 .type-download {
@@ -984,6 +966,13 @@ Tooltips
     background-color: #FFF;
     padding: 15px 20px; }
 
+.rtl .type-download {
+  float: right;
+  margin-right: 0 !important;
+  margin-left: 1em !important; }
+  .rtl .type-download .addon-footer-wrap {
+    right: 0; }
+
 .give-view-addons-all span.dashicons, .type-download span.dashicons {
   width: 16px;
   height: 16px;
@@ -993,13 +982,17 @@ Tooltips
 .give-view-addons-all span.dashicons {
   margin-left: 3px; }
 
+.rtl .give-view-addons-all span.dashicons {
+  margin-left: 0;
+  margin-right: 3px; }
+
 /**
  * Give Reports SCSS
  *
  * @description Payment History Styles
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 #give-dashboard-widgets-wrap .inside {
@@ -1034,15 +1027,13 @@ Tooltips
   clear: right;
   margin: 8px 0 0; }
 
-/* Global Graph Styles
--------------------------------------------------------------- */
 .give-graph .y1Axis {
   color: #66bb6a !important; }
 
 .give-graph .y2Axis {
   color: #546e7a !important; }
 
-body.give_forms_page_give-reports h1.nav-tab-wrapper, body.give_forms_page_give-payment-history h1.nav-tab-wrapper {
+body.give_forms_page_give-reports h1.nav-tab-wrapper, body.give_forms_page_give-reports h2.nav-tab-wrapper, body.give_forms_page_give-payment-history h1.nav-tab-wrapper, body.give_forms_page_give-payment-history h2.nav-tab-wrapper {
   margin-bottom: 10px; }
 
 body.give_forms_page_give-reports .actions, body.give_forms_page_give-payment-history .actions {
@@ -1096,21 +1087,104 @@ body.give_forms_page_give-reports .widefat tbody td, body.give_forms_page_give-r
   padding-top: 12px;
   padding-bottom: 12px; }
 
-/*---------------------
-Export Options Styles
----------------------------*/
 body.give_forms_page_give-reports table.export-options-table tbody td {
-  padding: 20px 12px; }
+  padding: 20px 12px;
+  vertical-align: top; }
 
-/*---------------------
-Payment Methods
----------------------------*/
+body.give_forms_page_give-reports table.export-options-table .give-export-form {
+  position: relative; }
+  body.give_forms_page_give-reports table.export-options-table .give-export-form .notice-wrap {
+    background-color: transparent;
+    padding: 12px 12px 4px;
+    margin: 2px 0 -16px -11px;
+    overflow: auto; }
+    body.give_forms_page_give-reports table.export-options-table .give-export-form .notice-wrap .spinner {
+      margin: -2px -12px 8px 0; }
+
+body.give_forms_page_give-reports table.export-options-table span#give-start-wrap input, body.give_forms_page_give-reports table.export-options-table span#give-end-wrap input {
+  width: 100px; }
+
+#export-donor-options-wrap p {
+  padding: 20px 0 0;
+  margin: 0;
+  font-weight: bold; }
+
+#export-donor-options-wrap ul {
+  max-width: 900px;
+  overflow: hidden; }
+  #export-donor-options-wrap ul li {
+    margin: 0;
+    padding: 0 5px 5px 0;
+    box-sizing: border-box;
+    float: left;
+    width: 33%; }
+
+#give-tools-recount-form .notice-wrap {
+  position: relative;
+  min-height: 25px;
+  margin: 10px -12px -12px;
+  background: #EFEFEF;
+  padding: 10px 12px 12px;
+  border-top: 1px solid #E5E5E5; }
+  #give-tools-recount-form .notice-wrap .give-progress {
+    position: absolute;
+    top: 15px; }
+  #give-tools-recount-form .notice-wrap .spinner {
+    position: absolute;
+    right: 14px;
+    top: 13px;
+    margin: 0; }
+  #give-tools-recount-form .notice-wrap #give-batch-success {
+    margin-bottom: 6px; }
+
+.give-progress {
+  height: 15px;
+  width: 95%;
+  border-radius: 4px;
+  overflow: hidden; }
+  .give-progress > div {
+    height: 100%;
+    width: 0; }
+
+.admin-color-fresh .give-export-form .give-progress div, .give-export-form .give-progress div {
+  background: #0073aa; }
+
+.admin-color-light .give-export-form .give-progress div {
+  background: #888; }
+
+.admin-color-blue .give-export-form .give-progress div {
+  background: #096484; }
+
+.admin-color-coffee .give-export-form .give-progress div {
+  background: #c7a589; }
+
+.admin-color-ectoplasm .give-export-form .give-progress div {
+  background: #a3b745; }
+
+.admin-color-midnight .give-export-form .give-progress div {
+  background: #e14d43; }
+
+.admin-color-sunrise .give-export-form .give-progress div {
+  background: #dd823b; }
+
+.recount-stats-controls form {
+  display: inline; }
+
+.give-recount-stats-descriptions {
+  margin: 8px 0 0;
+  display: block; }
+  .give-recount-stats-descriptions span {
+    line-height: 24px;
+    font-size: 13px;
+    font-style: italic;
+    font-weight: normal;
+    color: #aaa;
+    margin: 0;
+    display: none; }
+
 .gateways-report-tablenav .actions.bulkactions {
   padding-right: 0; }
 
-/*---------------------
-Table List Styles
----------------------------*/
 .widefat .column-name, .widefat .column-label {
   font-size: 14px;
   font-weight: bold; }
@@ -1129,9 +1203,9 @@ table.give-table td.row-title p {
   color: #aaa;
   margin: 0; }
 
-/*-------------------------
-Logs
-----------------------------*/
+#give-graphs-filter > .tablenav {
+  height: auto; }
+
 #give-logs-filter .search-box {
   float: right; }
 
@@ -1146,7 +1220,7 @@ Logs
  * @description Displays when user activates the plugin
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 .welcome-h1 {
@@ -1213,23 +1287,36 @@ Logs
  * @description Payment History Styles
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
-#give_donor_export_download {
+#give_donor_export_form {
   margin: 0 0 5px; }
+
+#give-payments-filter .give-donation-status {
+  display: inline-block; }
+
+.column-status .give-donation-status, .column-status .give-test-mode-transactions-label {
+  display: inline-block; }
+
+.column-status .give-test-mode-transactions-label {
+  margin: 0 5px;
+  vertical-align: middle; }
 
 /**
  * Give Settings SCSS
  *
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 /*------------------------------------
 Settings
 --------------------------------------*/
+.give_settings_page .give-recurring-no-license {
+  display: none; }
+
 .give_settings_page .nav-tab-wrapper {
   margin-bottom: 5px; }
 
@@ -1246,7 +1333,15 @@ Settings
 .give_settings_page .give_forms_page_give-payment-history .postbox .hndle {
   cursor: default; }
 
-/* Section Titles */
+.cmb-type-enabled-gateways ul li.ui-sortable-handle span.give-drag-handle {
+  padding: 3px 4px 0 0;
+  font-size: 15px;
+  font-weight: normal;
+  color: #bdbdbd;
+  cursor: move; }
+  .cmb-type-enabled-gateways ul li.ui-sortable-handle span.give-drag-handle:hover {
+    color: #333; }
+
 .cmb-type-give-title label {
   float: left;
   width: 220px;
@@ -1294,7 +1389,8 @@ Settings
   background: #FFF;
   white-space: pre;
   overflow: auto;
-  display: block; }
+  display: block;
+  direction: ltr; }
 
 #give-download-sysinfo {
   margin: 0; }
@@ -1317,7 +1413,8 @@ Settings
 .give_user_search_results {
   position: absolute;
   left: 0;
-  top: 27px; }
+  top: 27px;
+  z-index: 100; }
   .give_user_search_results a.give-ajax-user-cancel {
     position: absolute;
     right: 6px;
@@ -1331,7 +1428,10 @@ Settings
     max-height: 200px;
     overflow-y: scroll; }
 
-.give_forms_page_give-settings .tablenav .actions {
+#api .give-submit-wrap {
+  display: none; }
+
+#api .tablenav .actions {
   overflow: visible; }
 
 a.give-delete {
@@ -1365,13 +1465,16 @@ a.give-delete {
 .give_settings .cmb-td hr + hr {
   display: none; }
 
+.post-type-give_forms .mce-container iframe, .post-type-give_forms .wp-editor-area {
+  min-height: 400px; }
+
 /**
  * Give Payment History SCSS
  *
  * @description Payment History Styles
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 #give-payment-filters, .give-submit-wrap {
@@ -1414,21 +1517,18 @@ a.give-delete {
 #give-payments-filter #the-list .check-column input {
   margin-top: 1px; }
 
+#give-payments-filter .column-details {
+  width: 50px; }
+
+#give-payments-filter .column-amount {
+  width: 120px; }
+
 tr.status-refunded td {
   background: #cecece;
   border-top-color: #ccc; }
 
-.wp-list-table.forms th#ID {
-  width: 80px; }
-
-.wp-list-table.forms th#details {
-  width: 130px; }
-
 .wp-list-table.forms th#date {
   width: 140px; }
-
-.wp-list-table.forms th#user {
-  width: 130px; }
 
 .give-mobile-link {
   line-height: 32px;
@@ -1439,14 +1539,11 @@ tr.status-refunded td {
   height: auto;
   float: left; }
 
-/*---------------------
-Status Colors
----------------------------*/
 .give-donation-status > span {
-  float: left;
+  display: inline-block;
   width: 12px;
   height: 12px;
-  margin: 3px 4px 0 0;
+  margin: 0 4px;
   padding: 0;
   border-radius: 50%;
   background: #888;
@@ -1470,12 +1567,12 @@ Status Colors
 .give-donation-status.status-revoked > span {
   background-color: #d9534f; }
 
-.give-donation-status.status-subscription > span, .give-donation-status.status-give_subscription > span {
+.give-donation-status.status-subscription > span, .give-donation-status.status-renewal > span, .give-donation-status.status-give_subscription > span {
   background-color: #5bc0de; }
 
-#give-payments-filter .give-payment-id {
+#test-payment-label {
   padding: .2em .6em .3em;
-  font-size: 85%;
+  font-size: 11px;
   font-weight: 700;
   line-height: 1;
   color: #fff;
@@ -1483,18 +1580,37 @@ Status Colors
   white-space: nowrap;
   vertical-align: baseline;
   border-radius: .25em;
-  background-color: #929292; }
+  background-color: #ffba00;
+  margin: 0 15px;
+  vertical-align: middle; }
+
+#give-payments-filter .give-payment-id {
+  padding: .2em .6em .3em;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25em; }
 
 #give-payments-filter .column-details {
   padding-right: 30px; }
 
-/* Payment View Metabox */
+#give-payments-filter .give-donation-status {
+  display: inline-block; }
+
 #give-order-update .give-donation-status {
   display: inline-block;
   float: none;
-  margin: 0 0 0 10px;
+  margin: 0 10px;
   position: relative;
   top: 3px; }
+
+.column-donation_form .donation-level-text-wrap {
+  font-style: italic;
+  display: block; }
 
 /*---------------------
 Responsiveness
@@ -1514,12 +1630,9 @@ Responsiveness
 
 .give-admin-box-inside {
   margin: 0;
-  padding: 3px 12px;
+  padding: 3px 10px;
   clear: both;
   border-bottom: 1px solid #eee; }
-
-.rtl .give-admin-box-inside {
-  padding: 5px 10px 5px 0; }
 
 .give-admin-box-inside .strong {
   font-weight: 600; }
@@ -1556,6 +1669,9 @@ Responsiveness
 .give-order-update-box #major-publishing-actions .button-secondary {
   margin-right: 10px; }
 
+#give-donation-overview th {
+  text-align: left; }
+
 #give-donation-overview .give-select-chosen {
   width: 196px; }
 
@@ -1585,89 +1701,74 @@ Responsiveness
 #give-donation-overview .inside > ul > li {
   display: inline-block;
   position: relative;
-  vertical-align: top;
-  margin-right: 5%; }
-
-#give-donation-overview li.actions {
-  text-align: right;
-  min-width: 200px; }
-
-#give-donation-overview ul li.remove {
-  text-align: right; }
-
-#give-donation-overview .row {
-  padding: 12px;
-  border-bottom: 1px solid #eee; }
+  vertical-align: top; }
 
 #give-donation-overview ul {
   font-size: 0; }
-
-#give-donation-overview ul li {
-  font-size: 13px; }
+  #give-donation-overview ul li {
+    font-size: 13px; }
+    #give-donation-overview ul li.actions {
+      text-align: right;
+      min-width: 200px; }
+    #give-donation-overview ul li.remove {
+      text-align: right; }
+  #give-donation-overview ul .row {
+    padding: 12px;
+    border-bottom: 1px solid #eee; }
 
 #give-order-data .data span {
   color: #666;
   font-weight: 600; }
 
-#give-donation-overview .inside {
-  padding: 12px; }
-
-.give-price-field {
-  width: 80px; }
-
-.give_repeatable_upload_wrapper .pricing select, .give_repeatable_product_wrapper .give-select,
-#give_products .give-select {
-  min-width: 100%;
-  max-width: 200px; }
+input.give-price-field {
+  width: 80px;
+  padding: 3px 5px; }
 
 .give_forms_page_give-payment-history.js .postbox .hndle {
   cursor: default; }
 
-@media screen and (max-width: 782px) {
-  .order-data-column input[type="email"] {
-    padding: 6px 10px; } }
+#give-payment-notes textarea {
+  min-height: 150px; }
 
-@media screen and (max-width: 1024px) {
-  #give-edit-order-form .column {
-    width: 49%; } }
+#give-payment-notes #give-add-payment-note {
+  margin: 6px 0 15px; }
 
-@media screen and (max-width: 1280px) and (min-width: 1279px) {
-  #give-edit-order-form .column {
-    width: 32%; } }
+#give-billing-details .column > div {
+  margin: 0 0 10px; }
 
-@media screen and (min-width: 1280px) {
+#give-billing-details label {
+  display: block; }
+
+#give-billing-details .column-container {
+  padding: 5px 0 10px; }
+
+#give-billing-details input[type="text"] {
+  width: 95%; }
+
+#give-billing-details .chosen-container {
+  width: 98% !important; }
+
+@media screen and (min-width: 1200px) {
   #give-edit-order-form .column {
-    width: 32%;
-    margin-right: 3%; }
-  #give-edit-order-form .columns-4 .column, #give-donation-overview.columns-4 .row > ul > li,
-  #give-donation-overview.columns-4 .inside > ul > li {
-    width: 22%;
-    margin-right: 2%; }
-  #give-edit-order-form .columns-3 .column:nth-child(2n+1),
-  #give-edit-order-form .columns-4 .column:nth-child(3n+1),
-  #give-edit-order-form .column:nth-child(2n+1) {
-    margin-right: 0; }
-  #give-donation-overview.columns-4 li.download {
     width: 33%; }
-  #give-donation-overview.columns-4 li.price,
-  #give-donation-overview.columns-3 .row > ul > li.price,
-  #give-donation-overview.columns-3 .inside > ul > li.price {
-    width: 14%; }
   #give-donation-overview.columns-4 li.actions {
     width: 25%;
     margin-top: 0;
     margin-right: 0; } }
 
-@media screen and (max-width: 1284px) {
-  #give-edit-order-form .column strong {
-    display: block; } }
+@media screen and (max-width: 1199px) {
+  #give-edit-order-form .column {
+    width: 49%; } }
 
-/*------------------------------------------
-Donation Details
---------------------------------------------*/
-#give-customer-details .inside {
-  padding-top: 15px;
-  padding-bottom: 15px; }
+@media screen and (max-width: 782px) {
+  .order-data-column input[type="email"] {
+    padding: 6px 10px; } }
+
+#give-donor-details .inside, #give-donation-overview .inside {
+  margin-top: 0; }
+
+.give_forms_page_give-payment-history #give-dashboard-widgets-wrap #side-sortables {
+  padding-top: 0; }
 
 /**
  * Give Admin Dashboard SCSS
@@ -1675,7 +1776,7 @@ Donation Details
  * @description Styles the Give dashboard widget
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 .give-dashboard-widget .give-dashboard-today {
@@ -1692,7 +1793,7 @@ Donation Details
     font-weight: bold;
     margin: 15px 0 0;
     line-height: 1; }
-  .give-dashboard-widget .give-dashboard-today .give-orders-today {
+  .give-dashboard-widget .give-dashboard-today .give-donations-today {
     font-size: 18px;
     font-weight: bold;
     margin: 0 0 30px;
@@ -1751,7 +1852,7 @@ Donation Details
  *
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 /* Donors Listing Page Style
@@ -1829,22 +1930,29 @@ Donation Details
     text-decoration: none;
     color: #ff0000;
     margin-right: 5px; }
-  #give-customer-card-wrapper .donor-bio-header {
-    float: left;
-    width: 33%; }
-    #give-customer-card-wrapper .donor-bio-header .customer-since {
-      margin: 10px 0;
-      font-size: 16px; }
-    #give-customer-card-wrapper .donor-bio-header .customer-id {
-      font-size: 24px;
-      font-weight: 600;
-      float: left;
-      margin-right: 10px; }
-    #give-customer-card-wrapper .donor-bio-header .customer-edit-link {
-      margin-bottom: 15px;
-      float: left; }
+  #give-customer-card-wrapper .donor-bio-header .customer-since {
+    margin: 10px 0;
+    font-size: 16px; }
+  #give-customer-card-wrapper .donor-bio-header .customer-id {
+    display: inline-block;
+    font-size: 24px;
+    font-weight: 600;
+    margin-right: 10px; }
+  #give-customer-card-wrapper .donor-bio-header .customer-name-wrap {
+    display: inline-block; }
+  #give-customer-card-wrapper .donor-bio-header .customer-edit-link {
+    margin-bottom: 15px; }
+
+.rtl #give-customer-card-wrapper .avatar-wrap {
+  padding: 0 0 15px 15px;
+  float: right; }
+
+.rtl #give-customer-card-wrapper .customer-id {
+  margin-right: 0;
+  margin-left: 10px; }
 
 .customer-main-wrapper {
+  clear: both;
   margin: 0 0 20px; }
   @media (max-width: 655px) {
     .customer-main-wrapper {
@@ -1866,6 +1974,10 @@ Donation Details
     color: #F0F0F0;
     z-index: 0; }
 
+.rtl #donor-summary:after {
+  left: 10px;
+  right: initial; }
+
 #give-customer-card-wrapper .customer-address-wrapper {
   width: 202px; }
   #give-customer-card-wrapper .customer-address-wrapper span[data-key="line2"] {
@@ -1876,7 +1988,6 @@ Donation Details
   width: 200px; }
 
 #give-customer-card-wrapper .customer-info {
-  margin-top: 1px;
   min-height: 185px; }
 
 #give-customer-card-wrapper .info-wrapper {
@@ -1936,10 +2047,10 @@ Donation Details
 #customer-tables-wrapper th {
   text-align: center; }
 
-#customer-tables-wrapper .downloads tr > th:first-child, #customer-tables-wrapper .downloads tr > td:first-child {
+#customer-tables-wrapper .donations tr > th:first-child, #customer-tables-wrapper .donations tr > td:first-child {
   text-align: left; }
 
-#customer-tables-wrapper .downloads tr > td:only-child {
+#customer-tables-wrapper .donations tr > td:only-child {
   text-align: center; }
 
 #customer-notes-wrapper {
@@ -1981,7 +2092,7 @@ Donation Details
  *
  * @package     Give
  * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 /*=Give Shortcode Button
@@ -2088,5 +2199,19 @@ div.sc-shortcode {
 #mce-modal-block.mce-reset.mce-fade.mce-in {
   opacity: 0.7;
   filter: alpha(opacity=70); }
+
+/**
+ * Give Right to Left Support
+ *
+ * @package     Give
+ * @subpackage  SCSS/Admin
+ * @copyright   Copyright (c) 2016, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+body.rtl #give-donation-overview th {
+  text-align: right; }
+
+body.rtl #export-donor-options-wrap ul li {
+  padding: 0 0 5px 5px; }
 
 /*# sourceMappingURL=../sourcemaps/give-admin.css.map */

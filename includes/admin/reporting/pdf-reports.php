@@ -1,21 +1,21 @@
 <?php
 /**
- * PDF Report Generation Functions
+ * PDF Report Generation Functions.
  *
  * @package     Give
  * @subpackage  Admin/Reports
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
- * Generate PDF Reports
+ * Generate PDF Reports.
  *
  * Generates PDF report on donations and income for all forms for the current year.
  *
@@ -28,17 +28,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_generate_pdf( $data ) {
 
 	if ( ! current_user_can( 'view_give_reports' ) ) {
-		wp_die( __( 'You do not have permission to generate PDF sales reports', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( esc_html__( 'You do not have permission to generate PDF sales reports.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'give_generate_pdf' ) ) {
-		wp_die( __( 'Nonce verification failed', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( esc_html__( 'Nonce verification failed.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	require_once GIVE_PLUGIN_DIR . '/includes/libraries/fpdf/fpdf.php';
 	require_once GIVE_PLUGIN_DIR . '/includes/libraries/fpdf/give_pdf.php';
 
-	$daterange = date_i18n( get_option( 'date_format' ), mktime( 0, 0, 0, 1, 1, date( 'Y' ) ) ) . ' ' . utf8_decode( __( 'to', 'give' ) ) . ' ' . date_i18n( get_option( 'date_format' ) );
+	$daterange = utf8_decode(
+		sprintf(
+		/* translators: 1: start date 2: end date */
+			esc_html__( '%1$s to %2$s', 'give' ),
+			date_i18n( get_option( 'date_format' ), mktime( 0, 0, 0, 1, 1, date( 'Y' ) ) ),
+			date_i18n( get_option( 'date_format' ) )
+		)
+	);
 
 	$pdf = new give_pdf();
 	$pdf->AddPage( 'L', 'A4' );
@@ -47,7 +54,7 @@ function give_generate_pdf( $data ) {
 	$pdf->SetAuthor( utf8_decode( __( 'Give - Democratizing Generosity', 'give' ) ) );
 	$pdf->SetCreator( utf8_decode( __( 'Give - Democratizing Generosity', 'give' ) ) );
 
-	$pdf->Image( GIVE_PLUGIN_URL . 'assets/images/give-logo-small.png', 247, 8 );
+	$pdf->Image( apply_filters( 'give_pdf_export_logo', GIVE_PLUGIN_URL . 'assets/images/give-logo-small.png' ), 247, 8 );
 
 	$pdf->SetMargins( 8, 8, 8 );
 	$pdf->SetX( 8 );
@@ -126,7 +133,13 @@ function give_generate_pdf( $data ) {
 		endforeach;
 	else:
 		$pdf->SetWidths( array( 280 ) );
-		$title = utf8_decode( sprintf( __( 'No %s found.', 'give' ), give_get_forms_label_plural() ) );
+		$title = utf8_decode(
+			sprintf(
+			/* translators: %s: form plural label */
+				esc_html__( 'No %s found.', 'give' ),
+				give_get_forms_label_plural()
+			)
+		);
 		$pdf->Row( array( $title ) );
 	endif;
 
@@ -148,10 +161,10 @@ function give_generate_pdf( $data ) {
 add_action( 'give_generate_pdf', 'give_generate_pdf' );
 
 /**
- * Draws Chart for PDF Report
+ * Draws Chart for PDF Report.
  *
  * Draws the sales and earnings chart for the PDF report and then retrieves the
- * URL of that chart to display on the PDF Report
+ * URL of that chart to display on the PDF Report.
  *
  * @since  1.1.4.0
  * @uses   GoogleChart
@@ -208,7 +221,7 @@ function give_draw_chart_image() {
 		$earnings_array[11]
 	) );
 
-	$data->setLegend( __( 'Income', 'give' ) );
+	$data->setLegend( esc_html__( 'Income', 'give' ) );
 	$data->setColor( '1b58a3' );
 	$chart->addData( $data );
 
@@ -238,11 +251,11 @@ function give_draw_chart_image() {
 		$sales_array[10],
 		$sales_array[11]
 	) );
-	$data->setLegend( __( 'Donations', 'give' ) );
+	$data->setLegend( esc_html__( 'Donations', 'give' ) );
 	$data->setColor( 'ff6c1c' );
 	$chart->addData( $data );
 
-	$chart->setTitle( __( 'Donations by Month for all Give Forms', 'give' ), '336699', 18 );
+	$chart->setTitle( esc_html__( 'Donations by Month for all Give Forms', 'give' ), '336699', 18 );
 
 	$chart->setScale( 0, $max_earnings );
 
@@ -253,18 +266,18 @@ function give_draw_chart_image() {
 	$x_axis = new GoogleChartAxis( 'x' );
 	$x_axis->setTickMarks( 5 );
 	$x_axis->setLabels( array(
-		__( 'Jan', 'give' ),
-		__( 'Feb', 'give' ),
-		__( 'Mar', 'give' ),
-		__( 'Apr', 'give' ),
-		__( 'May', 'give' ),
-		__( 'June', 'give' ),
-		__( 'July', 'give' ),
-		__( 'Aug', 'give' ),
-		__( 'Sept', 'give' ),
-		__( 'Oct', 'give' ),
-		__( 'Nov', 'give' ),
-		__( 'Dec', 'give' )
+		esc_html__( 'Jan', 'give' ),
+		esc_html__( 'Feb', 'give' ),
+		esc_html__( 'Mar', 'give' ),
+		esc_html__( 'Apr', 'give' ),
+		esc_html__( 'May', 'give' ),
+		esc_html__( 'June', 'give' ),
+		esc_html__( 'July', 'give' ),
+		esc_html__( 'Aug', 'give' ),
+		esc_html__( 'Sept', 'give' ),
+		esc_html__( 'Oct', 'give' ),
+		esc_html__( 'Nov', 'give' ),
+		esc_html__( 'Dec', 'give' )
 	) );
 	$chart->addAxis( $x_axis );
 

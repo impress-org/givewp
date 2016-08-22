@@ -2,15 +2,17 @@
 /**
  * The [give_goal] Shortcode Generator class
  *
- * @package     Give
- * @subpackage  Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @package     Give/Admin/Shortcodes
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.3.0
  */
 
 defined( 'ABSPATH' ) or exit;
 
+/**
+ * Class Give_Shortcode_Donation_Form_Goal
+ */
 class Give_Shortcode_Donation_Form_Goal extends Give_Shortcode_Generator {
 
 	/**
@@ -18,8 +20,8 @@ class Give_Shortcode_Donation_Form_Goal extends Give_Shortcode_Generator {
 	 */
 	public function __construct() {
 
-		$this->shortcode['title'] = __( 'Donation Form Goal', 'give' );
-		$this->shortcode['label'] = __( 'Donation Form Goal', 'give' );
+		$this->shortcode['title'] = esc_html__( 'Donation Form Goal', 'give' );
+		$this->shortcode['label'] = esc_html__( 'Donation Form Goal', 'give' );
 
 		parent::__construct( 'give_goal' );
 	}
@@ -31,9 +33,10 @@ class Give_Shortcode_Donation_Form_Goal extends Give_Shortcode_Generator {
 	 */
 	public function define_fields() {
 
-		$create_form_link = sprintf( __( '%sClick here%s to create a new Donation Form.', 'give' ),
-			'<a href="' . admin_url( 'post-new.php?post_type=give_forms' ) . '">',
-			'</a>'
+		$create_form_link = sprintf(
+		/* translators: %s: create new form URL */
+			__( '<a href="%s">Create</a> a new Donation Form.', 'give' ),
+			admin_url( 'post-new.php?post_type=give_forms' )
 		);
 
 		return array(
@@ -43,35 +46,35 @@ class Give_Shortcode_Donation_Form_Goal extends Give_Shortcode_Generator {
 					'post_type' => 'give_forms',
 				),
 				'name'        => 'id',
-				'tooltip'     => __( 'Select a Donation Form', 'give' ),
-				'placeholder' => sprintf( '– %s –', __( 'Select a Form', 'give' ) ),
+				'tooltip'     => esc_attr__( 'Select a Donation Form', 'give' ),
+				'placeholder' => esc_attr__( '- Select a Form -', 'give' ),
 				'required'    => array(
-					'alert' => __( 'You must first select a Form!', 'give' ),
-					'error' => sprintf( '<p class="strong">%s</p><p class="no-margin">%s</p>', __( 'No donation forms were found!', 'give' ), $create_form_link ),
+					'alert' => esc_html__( 'You must first select a Form!', 'give' ),
+					'error' => sprintf( '<p class="strong">%s</p><p class="no-margin">%s</p>', esc_html__( 'No donation forms found.', 'give' ), $create_form_link ),
 				),
 			),
 			array(
 				'type' => 'container',
-				'html' => sprintf( '<p class="strong margin-top">%s</p>', __( 'Optional settings', 'give' ) ),
+				'html' => sprintf( '<p class="strong margin-top">%s</p>', esc_html__( 'Optional settings', 'give' ) ),
 			),
 			array(
 				'type'    => 'listbox',
 				'name'    => 'show_text',
-				'label'   => __( 'Show Text:', 'give' ),
-				'tooltip' => __( 'This text displays the amount of income raised compared to the goal.', 'give' ),
+				'label'   => esc_attr__( 'Show Text:', 'give' ),
+				'tooltip' => esc_attr__( 'This text displays the amount of income raised compared to the goal.', 'give' ),
 				'options' => array(
-					'true'  => __( 'Show', 'give' ),
-					'false' => __( 'Hide', 'give' ),
+					'true'  => esc_html__( 'Show', 'give' ),
+					'false' => esc_html__( 'Hide', 'give' ),
 				),
 			),
 			array(
 				'type'    => 'listbox',
 				'name'    => 'show_bar',
-				'label'   => __( 'Show Progress Bar:', 'give' ),
-				'tooltip' => __( 'Do you want to display the goal\'s progress bar?', 'give' ),
+				'label'   => esc_attr__( 'Show Progress Bar:', 'give' ),
+				'tooltip' => esc_attr__( 'Do you want to display the goal\'s progress bar?', 'give' ),
 				'options' => array(
-					'true'  => __( 'Show', 'give' ),
-					'false' => __( 'Hide', 'give' ),
+					'true'  => esc_html__( 'Show', 'give' ),
+					'false' => esc_html__( 'Hide', 'give' ),
 				),
 			),
 		);

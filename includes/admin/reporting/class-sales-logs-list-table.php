@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Admin/Reports
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
@@ -59,12 +59,15 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 * @access public
 	 * @since  1.0
 	 *
-	 * @param array  $item        Contains all the data of the discount code
+	 * @param array $item Contains all the data of the discount code
 	 * @param string $column_name The name of the column
 	 *
 	 * @return string Column Name
 	 */
 	public function column_default( $item, $column_name ) {
+
+		$payment = give_get_payment_by( 'id', $item['payment_id'] );
+
 		switch ( $column_name ) {
 			case 'form' :
 				return '<a href="' . esc_url( add_query_arg( 'form', $item[ $column_name ] ) ) . '" >' . get_the_title( $item[ $column_name ] ) . '</a>';
@@ -76,6 +79,16 @@ class Give_Sales_Log_Table extends WP_List_Table {
 
 			case 'amount' :
 				return give_currency_filter( give_format_amount( $item['amount'] ) );
+
+			case 'status' :
+
+				$value = '<div class="give-donation-status status-' . sanitize_title( give_get_payment_status( $payment, true ) ) . '"><span class="give-donation-status-icon"></span> ' . give_get_payment_status( $payment, true ) . '</div>';
+
+				if ( $payment->mode == 'test' ) {
+					$value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label" data-tooltip="' . esc_attr__( 'This donation was made in test mode.', 'give' ) . '">' . esc_html__( 'Test', 'give' ) . '</span>';
+				}
+
+				return $value;
 
 			case 'payment_id' :
 				return '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $item['payment_id'] ) . '">' . give_get_payment_number( $item['payment_id'] ) . '</a>';
@@ -94,12 +107,13 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'ID'         => __( 'Log ID', 'give' ),
-			'user_id'    => __( 'User', 'give' ),
+			'ID'         => esc_html__( 'Log ID', 'give' ),
+			'user_id'    => esc_html__( 'Donor', 'give' ),
 			'form'       => give_get_forms_label_singular(),
-			'amount'     => __( 'Item Amount', 'give' ),
-			'payment_id' => __( 'Payment ID', 'give' ),
-			'date'       => __( 'Date', 'give' )
+			'amount'     => esc_html__( 'Donation Amount', 'give' ),
+			'status'     => esc_html__( 'Status', 'give' ),
+			'payment_id' => esc_html__( 'Transaction ID', 'give' ),
+			'date'       => esc_html__( 'Date', 'give' )
 		);
 
 		return $columns;
@@ -148,6 +162,41 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	public function get_search() {
 		return ! empty( $_GET['s'] ) ? urldecode( trim( $_GET['s'] ) ) : false;
 	}
+
+
+	/**
+	 * Display Tablenav (extended)
+	 *
+	 * Display the table navigation above or below the table even when no items in the logs, so nav doesn't disappear
+	 *
+	 * @see: https://github.com/WordImpress/Give/issues/564
+	 *
+	 * @since 1.4.1
+	 * @access protected
+	 *
+	 * @param string $which
+	 */
+	protected function display_tablenav( $which ) {
+
+		if ( 'top' === $which ) {
+			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
+		}
+		?>
+		<div class="tablenav <?php echo esc_attr( $which ); ?>">
+
+			<div class="alignleft actions bulkactions">
+				<?php $this->bulk_actions( $which ); ?>
+			</div>
+			<?php
+			$this->extra_tablenav( $which );
+			$this->pagination( $which );
+			?>
+
+			<br class="clear"/>
+		</div>
+		<?php
+	}
+
 
 	/**
 	 * Gets the meta query for the log query
@@ -229,7 +278,6 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 * @return void
 	 */
 	function bulk_actions( $which = '' ) {
-		// These aren't really bulk actions but this outputs the markup in the right place
 		give_log_views();
 	}
 
@@ -254,7 +302,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 
 		if ( $give_forms ) {
 			echo '<select name="form" id="give-log-form-filter">';
-			echo '<option value="0">' . __( 'All', 'give' ) . '</option>';
+			echo '<option value="0">' . esc_html__( 'All', 'give' ) . '</option>';
 			foreach ( $give_forms as $form ) {
 				echo '<option value="' . $form . '"' . selected( $form, $this->get_filtered_give_form() ) . '>' . esc_html( get_the_title( $form ) ) . '</option>';
 			}

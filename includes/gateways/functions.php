@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Gateways
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -24,13 +24,13 @@ function give_get_payment_gateways() {
 	// Default, built-in gateways
 	$gateways = array(
 		'paypal' => array(
-			'admin_label'    => __( 'PayPal Standard', 'give' ),
-			'checkout_label' => __( 'PayPal', 'give' ),
+			'admin_label'    => esc_html__( 'PayPal Standard', 'give' ),
+			'checkout_label' => esc_html__( 'PayPal', 'give' ),
 			'supports'       => array( 'buy_now' )
 		),
 		'manual' => array(
-			'admin_label'    => __( 'Test Payment', 'give' ),
-			'checkout_label' => __( 'Test Payment', 'give' )
+			'admin_label'    => esc_html__( 'Test Donation', 'give' ),
+			'checkout_label' => esc_html__( 'Test Donation', 'give' )
 		),
 	);
 
@@ -45,13 +45,10 @@ function give_get_payment_gateways() {
  * @return array $gateway_list All the available gateways
  */
 function give_get_enabled_payment_gateways() {
-	global $give_options;
 
 	$gateways = give_get_payment_gateways();
 
-	$enabled = isset( $_POST['gateways'] )
-		? $_POST['gateways']
-		: ( isset( $give_options['gateways'] ) ? $give_options['gateways'] : false );
+	$enabled = isset( $_POST['gateways'] ) ? $_POST['gateways'] : give_get_option( 'gateways' );
 
 	$gateway_list = array();
 
@@ -60,6 +57,9 @@ function give_get_enabled_payment_gateways() {
 			$gateway_list[ $key ] = $gateway;
 		}
 	}
+
+	// Set order of payment gateway in list.
+	$gateway_list = give_get_ordered_payment_gateways( $gateway_list );
 
 	return apply_filters( 'give_enabled_payment_gateways', $gateway_list );
 }
@@ -114,7 +114,7 @@ function give_get_default_gateway( $form_id ) {
 /**
  * Returns the admin label for the specified gateway
  *
- * @since 1.0.8.3
+ * @since 1.0
  *
  * @param string $gateway Name of the gateway to retrieve a label for
  *
@@ -127,7 +127,7 @@ function give_get_gateway_admin_label( $gateway ) {
 
 	if ( $gateway == 'manual' && $payment ) {
 		if ( give_get_payment_amount( $payment ) == 0 ) {
-			$label = __( 'Test Donation', 'give' );
+			$label = esc_html__( 'Test Donation', 'give' );
 		}
 	}
 
@@ -148,7 +148,7 @@ function give_get_gateway_checkout_label( $gateway ) {
 	$label    = isset( $gateways[ $gateway ] ) ? $gateways[ $gateway ]['checkout_label'] : $gateway;
 
 	if ( $gateway == 'manual' ) {
-		$label = __( 'Test Donation', 'give' );
+		$label = esc_html__( 'Test Donation', 'give' );
 	}
 
 	return apply_filters( 'give_gateway_checkout_label', $label, $gateway );
@@ -213,8 +213,8 @@ function give_give_supports_buy_now() {
  *
  * @since 1.0
  *
- * @param string $gateway      Name of the gateway
- * @param array  $payment_data All the payment data to be sent to the gateway
+ * @param string $gateway Name of the gateway
+ * @param array $payment_data All the payment data to be sent to the gateway
  *
  * @return void
  */
@@ -222,8 +222,16 @@ function give_send_to_gateway( $gateway, $payment_data ) {
 
 	$payment_data['gateway_nonce'] = wp_create_nonce( 'give-gateway' );
 
-	// $gateway must match the ID used when registering the gateway
-	do_action( 'give_gateway_' . $gateway, $payment_data );
+	/**
+	 * Fires while loading payment gateway via AJAX.
+	 *
+	 * The dynamic portion of the hook name '$gateway' must match the ID used when registering the gateway.
+	 *
+	 * @since 1.0
+	 *
+	 * @param array $payment_data All the payment data to be sent to the gateway.
+	 */
+	do_action( "give_gateway_{$gateway}", $payment_data );
 }
 
 
@@ -276,9 +284,9 @@ function give_get_chosen_gateway( $form_id ) {
  * @access public
  * @since  1.0
  *
- * @param string $title   Title of the log entry (default: empty)
+ * @param string $title Title of the log entry (default: empty)
  * @param string $message Message to store in the log entry (default: empty)
- * @param int    $parent  Parent log entry (default: 0)
+ * @param int $parent Parent log entry (default: 0)
  *
  * @return int ID of the new log entry
  */
@@ -287,7 +295,7 @@ function give_record_gateway_error( $title = '', $message = '', $parent = 0 ) {
 }
 
 /**
- * Counts the number of purchases made with a gateway
+ * Counts the number of donations made with a gateway
  *
  * @since 1.0
  *
@@ -315,4 +323,48 @@ function give_count_sales_by_gateway( $gateway_id = 'paypal', $status = 'publish
 	}
 
 	return $ret;
+}
+
+
+/**
+ * Returns a ordered list of all available gateways.
+ *
+ * @since 1.4.5
+ *
+ * @param array $gateways List of payment gateways
+ *
+ * @return array $gateways All the available gateways
+ */
+function give_get_ordered_payment_gateways( $gateways ) {
+
+	//  Get gateways setting.
+	$gateways_setting = isset( $_POST['gateways'] ) ? $_POST['gateways'] : give_get_option( 'gateways' );
+
+	// Return from here if we do not have gateways setting.
+	if ( empty( $gateways_setting ) ) {
+		return $gateways;
+	}
+
+	// Reverse array to order payment gateways.
+	$gateways_setting = array_reverse( $gateways_setting );
+
+	// Reorder gateways array
+	foreach ( $gateways_setting as $gateway_key => $value ) {
+
+		$new_gateway_value = isset( $gateways[ $gateway_key ] ) ? $gateways[ $gateway_key ] : '';
+		unset( $gateways[ $gateway_key ] );
+
+		if(!empty($new_gateway_value)) {
+			$gateways = array_merge( array( $gateway_key => $new_gateway_value ), $gateways );
+		}
+	}
+
+	/**
+	 * Filter payment gateways order.
+	 *
+	 * @since 1.4.5
+	 *
+	 * @param array $gateways All the available gateways
+	 */
+	return apply_filters( 'give_payment_gateways_order', $gateways );
 }

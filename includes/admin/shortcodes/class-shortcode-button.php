@@ -5,7 +5,7 @@
  * @package     Give
  * @subpackage  Admin
  * @author      Paul Ryley
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @version     1.0
  * @since       1.3.0
@@ -13,6 +13,9 @@
 
 defined( 'ABSPATH' ) or exit;
 
+/**
+ * Class Give_Shortcode_Button
+ */
 final class Give_Shortcode_Button {
 
 	/**
@@ -44,18 +47,19 @@ final class Give_Shortcode_Button {
 	 *
 	 * @param array $plugin_array
 	 *
-	 * @return array
+	 * @return array|bool
 	 *
 	 * @since 1.0
 	 */
 	public function mce_external_plugins( $plugin_array ) {
 
-		if ( current_user_can( 'edit_posts' ) && current_user_can( 'edit_pages' ) ) {
-
-			$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-
-			$plugin_array['give_shortcode'] = GIVE_PLUGIN_URL . 'assets/js/admin/tinymce/mce-plugin' . $suffix . '.js';
+		if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) {
+			return false;
 		}
+
+		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
+		$plugin_array['give_shortcode'] = GIVE_PLUGIN_URL . 'assets/js/admin/tinymce/mce-plugin' . $suffix . '.js';
 
 		return $plugin_array;
 	}
@@ -114,7 +118,13 @@ final class Give_Shortcode_Button {
 
 		global $pagenow, $wp_version;
 
-		$shortcode_button_pages = array( 'post.php', 'page.php', 'post-new.php', 'post-edit.php' );
+		$shortcode_button_pages = apply_filters( 'give_shortcode_button_pages', array(
+			'post.php',
+			'page.php',
+			'post-new.php',
+			'post-edit.php'
+		) );
+
 		// Only run in admin post/page creation and edit screens
 		if ( in_array( $pagenow, $shortcode_button_pages )
 		     && apply_filters( 'give_shortcode_button_condition', true )
@@ -124,6 +134,7 @@ final class Give_Shortcode_Button {
 			$shortcodes = array();
 
 			foreach ( self::$shortcodes as $shortcode => $values ) {
+
 				/**
 				 * Filters the condition for including the current shortcode
 				 *
@@ -158,7 +169,7 @@ final class Give_Shortcode_Button {
 						$shortcode,
 						sprintf( '%s %s %s',
 							$img,
-							__( 'Insert', 'give' ),
+							esc_html__( 'Insert', 'give' ),
 							self::$shortcodes[ $shortcode ]['label']
 						)
 					);
@@ -169,7 +180,7 @@ final class Give_Shortcode_Button {
 						'<div class="sc-menu mce-menu">%s</div>' .
 						'</div>',
 						$img,
-						__( 'Give Shortcodes', 'give' ),
+						esc_html__( 'Give Shortcodes', 'give' ),
 						implode( '', array_values( $shortcodes ) )
 					);
 				}
@@ -194,7 +205,7 @@ final class Give_Shortcode_Button {
 			$data = self::$shortcodes[ $shortcode ];
 
 			if ( ! empty( $data['errors'] ) ) {
-				$data['btn_okay'] = array( __( 'Okay', 'give' ) );
+				$data['btn_okay'] = array( esc_html__( 'Okay', 'give' ) );
 			}
 
 			$response = array(

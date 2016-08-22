@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.3.0
  */
@@ -18,8 +18,8 @@ class Give_Shortcode_Login extends Give_Shortcode_Generator {
 	 */
 	public function __construct() {
 
-		$this->shortcode['title'] = __( 'Login', 'give' );
-		$this->shortcode['label'] = __( 'Login', 'give' );
+		$this->shortcode['title'] = esc_html__( 'Login', 'give' );
+		$this->shortcode['label'] = esc_html__( 'Login', 'give' );
 
 		parent::__construct( 'give_login' );
 	}
@@ -34,14 +34,24 @@ class Give_Shortcode_Login extends Give_Shortcode_Generator {
 		return array(
 			array(
 				'type' => 'container',
-				'html' => sprintf( '<p class="no-margin">%s</p>', __( 'Redirect URL (optional):', 'give' ) ),
+				'html' => sprintf( '<p class="no-margin">%s</p>', esc_html__( 'Login Redirect URL (optional):', 'give' ) ),
 			),
 			array(
 				'type'     => 'textbox',
-				'name'     => 'redirect',
+				'name'     => 'login-redirect',
 				'minWidth' => 320,
-				'tooltip'  => __( 'Enter an URL here to redirect to after login.', 'give' ),
+				'tooltip'  => esc_attr__( 'Enter an URL here to redirect to after login.', 'give' ),
 			),
+            array(
+                'type' => 'container',
+                'html' => sprintf( '<p class="no-margin">%s</p>', esc_html__( 'Logout Redirect URL (optional):', 'give' ) ),
+            ),
+            array(
+                'type'     => 'textbox',
+                'name'     => 'logout-redirect',
+                'minWidth' => 320,
+                'tooltip'  => esc_attr__( 'Enter an URL here to redirect to after logout.', 'give' ),
+            ),
 		);
 	}
 }

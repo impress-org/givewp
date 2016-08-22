@@ -18,25 +18,87 @@ if ( ! class_exists( 'Give_License' ) ) :
 	 * Give_License Class
 	 */
 	class Give_License {
+
+		/**
+		 * File
+		 *
+		 * @access private
+		 *
+		 * @var    string
+		 */
 		private $file;
+
+		/**
+		 * License
+		 *
+		 * @access private
+		 *
+		 * @var    string
+		 */
 		private $license;
+
+		/**
+		 * Item name
+		 *
+		 * @access private
+		 *
+		 * @var    string
+		 */
 		private $item_name;
+
+		/**
+		 * Item shortname
+		 *
+		 * @access private
+		 *
+		 * @var    string
+		 */
 		private $item_shortname;
+
+		/**
+		 * Version
+		 *
+		 * @access private
+		 *
+		 * @var    string
+		 */
 		private $version;
+
+		/**
+		 * Author
+		 *
+		 * @access private
+		 *
+		 * @var    string
+		 */
 		private $author;
+
+		/**
+		 * API URL
+		 *
+		 * @access private
+		 *
+		 * @var    string
+		 */
 		private $api_url = 'https://givewp.com/give-sl-api/';
 
 		/**
-		 * Class constructor
+		 * Class Constructor
 		 *
-		 * @global  array $give_options
+		 * Set up the Give License Class.
 		 *
-		 * @param string  $_file
-		 * @param string  $_item_name
-		 * @param string  $_version
-		 * @param string  $_author
-		 * @param string  $_optname
-		 * @param string  $_api_url
+		 * @access public
+		 *
+		 * @global array  $give_options
+		 *
+		 * @param  string $_file
+		 * @param  string $_item_name
+		 * @param  string $_version
+		 * @param  string $_author
+		 * @param  string $_optname
+		 * @param  string $_api_url
+		 *
+		 * @return void
 		 */
 		public function __construct( $_file, $_item_name, $_version, $_author, $_optname = null, $_api_url = null ) {
 			global $give_options;
@@ -49,17 +111,19 @@ if ( ! class_exists( 'Give_License' ) ) :
 			$this->author         = $_author;
 			$this->api_url        = is_null( $_api_url ) ? $this->api_url : $_api_url;
 
-
 			// Setup hooks
 			$this->includes();
 			$this->hooks();
 		}
 
 		/**
-		 * Include the updater class
+		 * Includes
 		 *
-		 * @access  private
-		 * @return  void
+		 * Include the updater class.
+		 *
+		 * @access private
+		 *
+		 * @return void
 		 */
 		private function includes() {
 			if ( ! class_exists( 'EDD_SL_Plugin_Updater' ) ) {
@@ -68,10 +132,13 @@ if ( ! class_exists( 'Give_License' ) ) :
 		}
 
 		/**
-		 * Setup hooks
+		 * Hooks
 		 *
-		 * @access  private
-		 * @return  void
+		 * Setup license hooks.
+		 *
+		 * @access private
+		 *
+		 * @return void
 		 */
 		private function hooks() {
 
@@ -91,11 +158,13 @@ if ( ! class_exists( 'Give_License' ) ) :
 		}
 
 		/**
-		 * Auto updater
+		 * Auto Updater
 		 *
-		 * @access  private
-		 * @global  array $give_options
-		 * @return  void
+		 * Setup the license auto updater.
+		 *
+		 * @access public
+		 *
+		 * @return void
 		 */
 		public function auto_updater() {
 
@@ -112,21 +181,22 @@ if ( ! class_exists( 'Give_License' ) ) :
 			);
 		}
 
-
 		/**
-		 * Add license field to settings
+		 * License Settings
 		 *
-		 * @access  public
+		 * Add license field to settings.
 		 *
-		 * @param array $settings
+		 * @access public
 		 *
-		 * @return  array
+		 * @param  array $settings License settings.
+		 *
+		 * @return array           License settings.
 		 */
 		public function settings( $settings ) {
 
 			$give_license_settings = array(
 				array(
-					'name'    => sprintf( __( '%1$s', 'give' ), $this->item_name ),
+					'name'    => $this->item_name,
 					'id'      => $this->item_shortname . '_license_key',
 					'desc'    => '',
 					'type'    => 'license_key',
@@ -139,19 +209,21 @@ if ( ! class_exists( 'Give_License' ) ) :
 		}
 
 		/**
-		 * Add Some Content to the Licensing Settings
+		 * License Settings Content
 		 *
-		 * @access  public
+		 * Add Some Content to the Licensing Settings.
 		 *
-		 * @param array $settings
+		 * @access public
 		 *
-		 * @return  array
+		 * @param  array $settings License settings content.
+		 *
+		 * @return array           License settings content.
 		 */
 		public function license_settings_content( $settings ) {
 
 			$give_license_settings = array(
 				array(
-					'name' => __( 'Add-on Licenses', 'give' ),
+					'name' => esc_html__( 'Add-on Licenses', 'give' ),
 					'desc' => '<hr>',
 					'type' => 'give_title',
 					'id'   => 'give_title'
@@ -161,12 +233,14 @@ if ( ! class_exists( 'Give_License' ) ) :
 			return array_merge( $settings, $give_license_settings );
 		}
 
-
 		/**
-		 * Activate the license key
+		 * Activate License
 		 *
-		 * @access  public
-		 * @return  void
+		 * Activate the license key.
+		 *
+		 * @access public
+		 *
+		 * @return void
 		 */
 		public function activate_license() {
 
@@ -183,7 +257,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			if ( ! wp_verify_nonce( $_REQUEST[ $this->item_shortname . '_license_key-nonce' ], $this->item_shortname . '_license_key-nonce' ) ) {
 
-				wp_die( __( 'Nonce verification failed', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+				wp_die( esc_html__( 'Nonce verification failed.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 
 			}
 
@@ -239,12 +313,14 @@ if ( ! class_exists( 'Give_License' ) ) :
 			}
 		}
 
-
 		/**
-		 * Deactivate the license key
+		 * Deactivate License
 		 *
-		 * @access  public
-		 * @return  void
+		 * Deactivate the license key.
+		 *
+		 * @access public
+		 *
+		 * @return void
 		 */
 		public function deactivate_license() {
 
@@ -254,7 +330,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			if ( ! wp_verify_nonce( $_REQUEST[ $this->item_shortname . '_license_key-nonce' ], $this->item_shortname . '_license_key-nonce' ) ) {
 
-				wp_die( __( 'Nonce verification failed', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+				wp_die( esc_html__( 'Nonce verification failed.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 
 			}
 
@@ -302,12 +378,14 @@ if ( ! class_exists( 'Give_License' ) ) :
 			}
 		}
 
-
 		/**
-		 * Admin notices for errors
+		 * License Notices
 		 *
-		 * @access  public
-		 * @return  void
+		 * Admin notices for license errors.
+		 *
+		 * @access public
+		 *
+		 * @return void
 		 */
 		public function notices() {
 
@@ -331,22 +409,26 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 					case 'item_name_mismatch' :
 
-						$message = __( 'This license does not belong to the product you have entered it for.', 'give' );
+						$message = esc_html__( 'This license does not belong to the product you have entered it for.', 'give' );
 						break;
 
 					case 'no_activations_left' :
 
-						$message = __( 'This license does not have any activations left', 'give' );
+						$message = esc_html__( 'This license does not have any activations left.', 'give' );
 						break;
 
 					case 'expired' :
 
-						$message = __( 'This license key is expired. Please renew it.', 'give' );
+						$message = esc_html__( 'This license key is expired. Please renew it.', 'give' );
 						break;
 
 					default :
 
-						$message = sprintf( __( 'There was a problem activating your license key, please try again or contact support. Error code: %s', 'give' ), $license_error->error );
+						$message = sprintf(
+							/* translators: %s: license error */
+							esc_html__( 'There was a problem activating your license key, please try again or contact support. Error code: %s', 'give' ),
+							$license_error->error
+						);
 						break;
 
 				}
@@ -364,6 +446,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			delete_transient( 'give_license_error' );
 
 		}
+
 	}
 
 endif; // end class_exists check

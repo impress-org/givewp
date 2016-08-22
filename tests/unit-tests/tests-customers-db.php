@@ -10,6 +10,9 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 
 	protected $_customer_id = null;
 
+	/**
+	 * Set it Up.
+	 */
 	public function setUp() {
 		parent::setUp();
 
@@ -99,10 +102,16 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 
 	}
 
+	/**
+	 * Tear Down.
+	 */
 	public function tearDown() {
 		parent::tearDown();
 	}
 
+	/**
+	 * Test get customer columns.
+	 */
 	public function test_get_customer_columns() {
 		$columns = array(
 			'id'             => '%d',
@@ -119,6 +128,9 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 		$this->assertEquals( $columns, Give()->customers->get_columns() );
 	}
 
+	/**
+	 * Test Get By.
+	 */
 	public function test_get_by() {
 
 		$customer = Give()->customers->get_customer_by( 'email', 'testadmin@domain.com' );
@@ -128,6 +140,9 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 
 	}
 
+	/**
+	 * Test Get Column By.
+	 */
 	public function test_get_column_by() {
 
 		$customer_id = Give()->customers->get_column_by( 'id', 'email', 'testadmin@domain.com' );
@@ -136,12 +151,18 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 
 	}
 
+	/**
+	 * Test Exists Method.
+	 */
 	public function test_exists() {
 
 		$this->assertTrue( Give()->customers->exists( 'testadmin@domain.com' ) );
 
 	}
 
+	/**
+	 * Test Legacy Attach Payment.
+	 */
 	public function test_legacy_attach_payment() {
 
 		$customer = new Give_Customer( 'testadmin@domain.com' );
@@ -154,6 +175,9 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 
 	}
 
+	/**
+	 * Test Legacy Remove Payment.
+	 */
 	public function test_legacy_remove_payment() {
 
 		$customer = new Give_Customer( 'testadmin@domain.com' );
@@ -171,6 +195,9 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 
 	}
 
+	/**
+	 * Test Legacy Increment Stats.
+	 */
 	public function test_legacy_increment_stats() {
 
 		$customer = new Give_Customer( 'testadmin@domain.com' );
@@ -186,6 +213,9 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 		$this->assertEquals( '2', $updated_customer->purchase_count );
 	}
 
+	/**
+	 * Test Legacy Decrement Stats.
+	 */
 	public function test_legacy_decrement_stats() {
 
 		$customer = new Give_Customer( 'testadmin@domain.com' );
@@ -201,6 +231,9 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 		$this->assertEquals( '0', $updated_customer->purchase_count );
 	}
 
+	/**
+	 * Test Get Customers.
+	 */
 	public function test_get_customers() {
 
 		$customers = Give()->customers->get_customers();
@@ -209,6 +242,9 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 
 	}
 
+	/**
+	 * Test Count Customers.
+	 */
 	public function test_count_customers() {
 
 		$this->assertEquals( 1, Give()->customers->count() );

@@ -3,14 +3,6 @@
   "private": true,
   "devDependencies": {
     "del": "^2.0.1",
-    "grunt": "~0.4.5",
-    "grunt-checktextdomain": "^1.0.0",
-    "grunt-contrib-clean": "^1.0.0",
-    "grunt-contrib-compress": "~1.1.1",
-    "grunt-contrib-copy": "~1.0.0",
-    "grunt-exec": "~0.4.5",
-    "grunt-potomo": "^3.3.3",
-    "grunt-wp-i18n": "~0.5.0",
     "gulp": "^3.9.1",
     "gulp-bower": "0.0.13",
     "gulp-concat": "~2.6.0",
@@ -20,10 +12,11 @@
     "gulp-notify": "~2.2.0",
     "gulp-rename": "~1.2.0",
     "gulp-sass": "^2.2.0",
+    "gulp-sort": "^2.0.0",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "~1.5.3",
     "gulp-watch": "~4.3.5",
-    "load-grunt-tasks": "~3.2.0",
+    "gulp-wp-pot": "^1.2.2",
     "main-bower-files": "^2.11.1"
   }
 }

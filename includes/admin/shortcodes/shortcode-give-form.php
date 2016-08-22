@@ -4,13 +4,16 @@
  *
  * @package     Give
  * @subpackage  Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.3.0
  */
 
 defined( 'ABSPATH' ) or exit;
 
+/**
+ * Class Give_Shortcode_Donation_Form
+ */
 class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 
 	/**
@@ -18,8 +21,8 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 	 */
 	public function __construct() {
 
-		$this->shortcode['title']   = __( 'Donation Form', 'give' );
-		$this->shortcode['label']   = __( 'Donation Form', 'give' );
+		$this->shortcode['title']   = esc_html__( 'Donation Form', 'give' );
+		$this->shortcode['label']   = esc_html__( 'Donation Form', 'give' );
 
 		parent::__construct( 'give_form' );
 	}
@@ -31,9 +34,10 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 	 */
 	public function define_fields() {
 
-		$create_form_link = sprintf( __( '%sClick here%s to create a new Donation Form.', 'give' ),
-			'<a href="' . admin_url( 'post-new.php?post_type=give_forms' ) . '">',
-			'</a>'
+		$create_form_link = sprintf(
+			/* translators: %s: create new form URL */
+			__( '<a href="%s">Create</a> a new Donation Form.', 'give' ),
+			admin_url( 'post-new.php?post_type=give_forms' )
 		);
 
 		return array(
@@ -43,68 +47,68 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 					'post_type' => 'give_forms',
 				),
 				'name'        => 'id',
-				'tooltip'     => __( 'Select a Donation Form', 'give' ),
-				'placeholder' => sprintf( '– %s –', __( 'Select a Form', 'give' ) ),
+				'tooltip'     => esc_attr__( 'Select a Donation Form', 'give' ),
+				'placeholder' => esc_attr__( '- Select a Form -', 'give' ),
 				'required'    => array(
-					'alert' => __( 'You must first select a Form!', 'give' ),
-					'error' => sprintf( '<p class="strong">%s</p><p class="no-margin">%s</p>', __( 'No donation forms were found!', 'give' ), $create_form_link ),
+					'alert' => esc_html__( 'You must first select a Form!', 'give' ),
+					'error' => sprintf( '<p class="strong">%s</p><p class="no-margin">%s</p>', esc_html__( 'No donation forms found.', 'give' ), $create_form_link ),
 				),
 			),
 			array(
 				'type' => 'container',
-				'html' => sprintf( '<p class="strong margin-top">%s</p>', __( 'Optional form settings', 'give' ) ),
+				'html' => sprintf( '<p class="strong margin-top">%s</p>', esc_html__( 'Optional settings', 'give' ) ),
 			),
 			array(
 				'type'    => 'listbox',
 				'name'    => 'show_title',
-				'label'   => __( 'Show Title:', 'give' ),
-				'tooltip' => __( 'Do you want to display the form title?', 'give' ),
+				'label'   => esc_attr__( 'Show Title:', 'give' ),
+				'tooltip' => esc_attr__( 'Do you want to display the form title?', 'give' ),
 				'options' => array(
-					'true'  => __( 'Show', 'give' ),
-					'false' => __( 'Hide', 'give' ),
+					'true'  => esc_html__( 'Show', 'give' ),
+					'false' => esc_html__( 'Hide', 'give' ),
 				),
 			),
 			array(
 				'type'    => 'listbox',
 				'name'    => 'show_goal',
-				'label'   => __( 'Show Goal:', 'give' ),
-				'tooltip' => __( 'Do you want to display the donation goal?', 'give' ),
+				'label'   => esc_attr__( 'Show Goal:', 'give' ),
+				'tooltip' => esc_attr__( 'Do you want to display the donation goal?', 'give' ),
 				'options' => array(
-					'true'  => __( 'Show', 'give' ),
-					'false' => __( 'Hide', 'give' ),
+					'true'  => esc_html__( 'Show', 'give' ),
+					'false' => esc_html__( 'Hide', 'give' ),
 				),
 			),
 			array(
 				'type'    => 'listbox',
 				'name'    => 'show_content',
 				'minWidth' => 240,
-				'label'   => __( 'Display Content:', 'give' ),
-				'tooltip' => __( 'Do you want to display the form content?', 'give' ),
+				'label'   => esc_attr__( 'Display Content:', 'give' ),
+				'tooltip' => esc_attr__( 'Do you want to display the form content?', 'give' ),
 				'options' => array(
-					'none'  => __( 'No Content', 'give' ),
-					'above' => __( 'Display above the form fields', 'give' ),
-					'below' => __( 'Display below the form fields', 'give' ),
+					'none'  => esc_html__( 'No Content', 'give' ),
+					'above' => esc_html__( 'Display content ABOVE the fields', 'give' ),
+					'below' => esc_html__( 'Display content BELOW the fields', 'give' ),
 				),
 			),
 			array(
 				'type'    => 'listbox',
 				'name'    => 'display_style',
-				'label'   => __( 'Payment Fields:', 'give' ),
-				'tooltip' => __( 'How would you like to display payment information?', 'give' ),
+				'label'   => esc_attr__( 'Donation Fields:', 'give' ),
+				'tooltip' => esc_attr__( 'How would you like to display donation information?', 'give' ),
 				'options' => array(
-					'onpage' => __( 'Show on Page', 'give' ),
-					'reveal' => __( 'Reveal Upon Click', 'give' ),
-					'modal'  => __( 'Modal Window Upon Click', 'give' ),
+					'onpage' => esc_html__( 'Show on Page', 'give' ),
+					'reveal' => esc_html__( 'Reveal Upon Click', 'give' ),
+					'modal'  => esc_html__( 'Modal Window Upon Click', 'give' ),
 				),
 			),
 			array(
 				'type'    => 'listbox',
 				'name'    => 'float_labels',
-				'label'   => __( 'Floating Labels:', 'give' ),
-				'tooltip' => __( 'Override the default floating labels setting for this form?', 'give' ),
+				'label'   => esc_attr__( 'Floating Labels:', 'give' ),
+				'tooltip' => esc_attr__( 'Override the default floating labels setting for this form.', 'give' ),
 				'options' => array(
-					'enabled'  => __( 'Enabled', 'give' ),
-					'disabled' => __( 'Disabled', 'give' ),
+					'enabled'  => esc_html__( 'Enabled', 'give' ),
+					'disabled' => esc_html__( 'Disabled', 'give' ),
 				),
 			),
 		);

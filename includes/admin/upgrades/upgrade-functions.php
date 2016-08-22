@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Admin/Upgrades
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  *
@@ -16,6 +16,27 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+
+/**
+ * Perform automatic database upgrades when necessary
+ *
+ * @since 1.6
+ * @return void
+ */
+function give_do_automatic_upgrades() {
+	$did_upgrade  = false;
+	$give_version = preg_replace( '/[^0-9.].*/', '', get_option( 'give_version' ) );
+	if ( version_compare( $give_version, GIVE_VERSION, '<' ) ) {
+		give_v16_upgrades();
+		$did_upgrade = true;
+	}
+	if ( $did_upgrade ) {
+		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
+	}
+}
+
+add_action( 'admin_init', 'give_do_automatic_upgrades' );
 
 /**
  * Display Upgrade Notices
@@ -49,6 +70,7 @@ function give_show_upgrade_notices() {
 	//v1.3.2 Upgrades
 	if ( version_compare( $give_version, '1.3.2', '<' ) || ! give_has_upgrade_completed( 'upgrade_give_payment_customer_id' ) ) {
 		printf(
+		/* translators: %s: upgrade URL */
 			'<div class="updated"><p>' . __( 'Give needs to upgrade the donor database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
 			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_give_payment_customer_id' ) )
 		);
@@ -57,7 +79,8 @@ function give_show_upgrade_notices() {
 	//v1.3.4 Upgrades //ensure the user has gone through 1.3.4
 	if ( version_compare( $give_version, '1.3.4', '<' ) || ( ! give_has_upgrade_completed( 'upgrade_give_offline_status' ) && give_has_upgrade_completed( 'upgrade_give_payment_customer_id' ) ) ) {
 		printf(
-			'<div class="updated"><p>' . __( 'Give needs to upgrade the transaction database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
+		/* translators: %s: upgrade URL */
+			'<div class="updated"><p>' . __( 'Give needs to upgrade the donations database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
 			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_give_offline_status' ) )
 		);
 	}
@@ -81,7 +104,7 @@ add_action( 'admin_notices', 'give_show_upgrade_notices' );
 function give_trigger_upgrades() {
 
 	if ( ! current_user_can( 'manage_give_settings' ) ) {
-		wp_die( __( 'You do not have permission to do Give upgrades', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( esc_html__( 'You do not have permission to do Give upgrades.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	$give_version = get_option( 'give_version' );
@@ -127,7 +150,7 @@ function give_has_upgrade_completed( $upgrade_action = '' ) {
  *
  * @since  1.0
  *
- * @param  string $upgrade_action The action to add to the copmleted upgrades array
+ * @param  string $upgrade_action The action to add to the completed upgrades array
  *
  * @return bool                   If the function was successfully added
  */
@@ -164,11 +187,10 @@ function give_get_completed_upgrades() {
 
 }
 
-
 /**
  * Upgrades the
  *
- * @description: Standardizes the discrepancies between two metakeys `_give_payment_customer_id` and `_give_payment_donor_id`
+ * Standardizes the discrepancies between two metakeys `_give_payment_customer_id` and `_give_payment_donor_id`
  *
  * @since      1.3.2
  *
@@ -176,7 +198,7 @@ function give_get_completed_upgrades() {
 function give_v132_upgrade_give_payment_customer_id() {
 	global $wpdb;
 	if ( ! current_user_can( 'manage_give_settings' ) ) {
-		wp_die( __( 'You do not have permission to do Give upgrades', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( esc_html__( 'You do not have permission to do Give upgrades.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	ignore_user_abort( true );
@@ -203,7 +225,7 @@ add_action( 'give_upgrade_give_payment_customer_id', 'give_v132_upgrade_give_pay
 /**
  * Upgrades the Offline Status
  *
- * @description: Reverses the issue where offline donation transactions in "pending" status where inappropriately marked as abandoned
+ * Reverses the issue where offline donations in "pending" status where inappropriately marked as abandoned
  *
  * @since      1.3.4
  *
@@ -213,7 +235,7 @@ function give_v134_upgrade_give_offline_status() {
 	global $wpdb;
 
 	if ( ! current_user_can( 'manage_give_settings' ) ) {
-		wp_die( __( 'You do not have permission to do Give upgrades', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( esc_html__( 'You do not have permission to do Give upgrades.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	ignore_user_abort( true );
@@ -258,3 +280,102 @@ function give_v134_upgrade_give_offline_status() {
 }
 
 add_action( 'give_upgrade_give_offline_status', 'give_v134_upgrade_give_offline_status' );
+
+/**
+ * Cleanup User Roles
+ *
+ * This upgrade routine removes unused roles and roles with typos
+ *
+ * @since      1.5.2
+ */
+function give_v152_cleanup_users() {
+
+	$give_version = get_option( 'give_version' );
+
+	if ( ! $give_version ) {
+		// 1.0 is the first version to use this option so we must add it
+		$give_version = '1.0';
+	}
+
+	$give_version = preg_replace( '/[^0-9.].*/', '', $give_version );
+
+	//v1.5.2 Upgrades
+	if ( version_compare( $give_version, '1.5.2', '<' ) || ! give_has_upgrade_completed( 'upgrade_give_user_caps_cleanup' ) ) {
+
+		//Delete all caps with "ss"
+		//Also delete all unused "campaign" roles
+		$delete_caps = array(
+			'delete_give_formss',
+			'delete_others_give_formss',
+			'delete_private_give_formss',
+			'delete_published_give_formss',
+			'read_private_forms',
+			'edit_give_formss',
+			'edit_others_give_formss',
+			'edit_private_give_formss',
+			'edit_published_give_formss',
+			'publish_give_formss',
+			'read_private_give_formss',
+			'assign_give_campaigns_terms',
+			'delete_give_campaigns',
+			'delete_give_campaigns_terms',
+			'delete_give_campaignss',
+			'delete_others_give_campaignss',
+			'delete_private_give_campaignss',
+			'delete_published_give_campaignss',
+			'edit_give_campaigns',
+			'edit_give_campaigns_terms',
+			'edit_give_campaignss',
+			'edit_others_give_campaignss',
+			'edit_private_give_campaignss',
+			'edit_published_give_campaignss',
+			'manage_give_campaigns_terms',
+			'publish_give_campaignss',
+			'read_give_campaigns',
+			'read_private_give_campaignss',
+			'view_give_campaigns_stats',
+			'delete_give_paymentss',
+			'delete_others_give_paymentss',
+			'delete_private_give_paymentss',
+			'delete_published_give_paymentss',
+			'edit_give_paymentss',
+			'edit_others_give_paymentss',
+			'edit_private_give_paymentss',
+			'edit_published_give_paymentss',
+			'publish_give_paymentss',
+			'read_private_give_paymentss',
+		);
+
+		global $wp_roles;
+		foreach ( $delete_caps as $cap ) {
+			foreach ( array_keys( $wp_roles->roles ) as $role ) {
+				$wp_roles->remove_cap( $role, $cap );
+			}
+		}
+
+		// Create Give plugin roles
+		$roles = new Give_Roles();
+		$roles->add_roles();
+		$roles->add_caps();
+
+		//The Update Ran
+		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
+		give_set_upgrade_complete( 'upgrade_give_user_caps_cleanup' );
+		delete_option( 'give_doing_upgrade' );
+
+	}
+
+}
+
+add_action( 'admin_init', 'give_v152_cleanup_users' );
+
+/**
+ * 1.6 Upgrade routine to create the customer meta table.
+ *
+ * @since  1.6
+ * @return void
+ */
+function give_v16_upgrades() {
+	@Give()->customers->create_table();
+	@Give()->customer_meta->create_table();
+}

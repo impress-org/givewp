@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Admin/Reports
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -73,7 +73,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 			echo '<input type="hidden" name="order" value="' . esc_attr( $_REQUEST['order'] ) . '" />';
 		}
 		?>
-		<p class="search-box">
+		<p class="search-box" role="search">
 			<label class="screen-reader-text" for="<?php echo $input_id ?>"><?php echo $text; ?>:</label>
 			<input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>" />
 			<?php submit_button( $text, 'button', false, false, array( 'ID' => 'search-submit' ) ); ?>
@@ -90,10 +90,10 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'ID'      => __( 'Log ID', 'give' ),
-			'details' => __( 'Request Details', 'give' ),
-			'ip'      => __( 'Request IP', 'give' ),
-			'date'    => __( 'Date', 'give' )
+			'ID'      => esc_html__( 'Log ID', 'give' ),
+			'details' => esc_html__( 'Request Details', 'give' ),
+			'ip'      => esc_html__( 'Request IP', 'give' ),
+			'date'    => esc_html__( 'Date', 'give' )
 		);
 
 		return $columns;
@@ -129,23 +129,23 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 */
 	public function column_details( $item ) {
 		?>
-		<a href="#TB_inline?width=640&amp;inlineId=log-details-<?php echo $item['ID']; ?>" class="thickbox" title="<?php _e( 'View Request Details', 'give' ); ?> "><?php _e( 'View Request', 'give' ); ?></a>
+		<a href="#TB_inline?width=640&amp;inlineId=log-details-<?php echo $item['ID']; ?>" class="thickbox"><?php esc_html_e( 'View Request', 'give' ); ?></a>
 		<div id="log-details-<?php echo $item['ID']; ?>" style="display:none;">
 			<?php
 
 			$request = get_post_field( 'post_excerpt', $item['ID'] );
 			$error   = get_post_field( 'post_content', $item['ID'] );
-			echo '<p><strong>' . __( 'API Request:', 'give' ) . '</strong></p>';
+			echo '<p><strong>' . esc_html__( 'API Request:', 'give' ) . '</strong></p>';
 			echo '<div>' . $request . '</div>';
 			if ( ! empty( $error ) ) {
-				echo '<p><strong>' . __( 'Error', 'give' ) . '</strong></p>';
+				echo '<p><strong>' . esc_html__( 'Error', 'give' ) . '</strong></p>';
 				echo '<div>' . esc_html( $error ) . '</div>';
 			}
-			echo '<p><strong>' . __( 'API User:', 'give' ) . '</strong></p>';
+			echo '<p><strong>' . esc_html__( 'API User:', 'give' ) . '</strong></p>';
 			echo '<div>' . get_post_meta( $item['ID'], '_give_log_user', true ) . '</div>';
-			echo '<p><strong>' . __( 'API Key:', 'give' ) . '</strong></p>';
+			echo '<p><strong>' . esc_html__( 'API Key:', 'give' ) . '</strong></p>';
 			echo '<div>' . get_post_meta( $item['ID'], '_give_log_key', true ) . '</div>';
-			echo '<p><strong>' . __( 'Request Date:', 'give' ) . '</strong></p>';
+			echo '<p><strong>' . esc_html__( 'Request Date:', 'give' ) . '</strong></p>';
 			echo '<div>' . get_post_field( 'post_date', $item['ID'] ) . '</div>';
 			?>
 		</div>
@@ -161,6 +161,39 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 */
 	public function get_search() {
 		return ! empty( $_GET['s'] ) ? urldecode( trim( $_GET['s'] ) ) : false;
+	}
+
+
+	/**
+	 * Display Tablenav (extended)
+	 *
+	 * Display the table navigation above or below the table even when no items in the logs, so nav doesn't disappear
+	 *
+	 * @see: https://github.com/WordImpress/Give/issues/564
+	 *
+	 * @since 1.4.1
+	 * @access protected
+	 *
+	 * @param string $which
+	 */
+	protected function display_tablenav( $which ) {
+		if ( 'top' === $which ) {
+			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
+		}
+		?>
+		<div class="tablenav <?php echo esc_attr( $which ); ?>">
+
+			<div class="alignleft actions bulkactions">
+				<?php $this->bulk_actions( $which ); ?>
+			</div>
+			<?php
+			$this->extra_tablenav( $which );
+			$this->pagination( $which );
+			?>
+
+			<br class="clear"/>
+		</div>
+		<?php
 	}
 
 	/**
@@ -238,7 +271,6 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 * @return void
 	 */
 	function bulk_actions( $which = '' ) {
-		// These aren't really bulk actions but this outputs the markup in the right place
 		give_log_views();
 	}
 

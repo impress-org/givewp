@@ -95,7 +95,7 @@ class Tests_Roles extends Give_Unit_Test_Case {
 		$this->assertArrayHasKey( 'read', (array) $wp_roles->roles['give_accountant']['capabilities'] );
 		$this->assertArrayHasKey( 'edit_posts', (array) $wp_roles->roles['give_accountant']['capabilities'] );
 		$this->assertArrayHasKey( 'delete_posts', (array) $wp_roles->roles['give_accountant']['capabilities'] );
-		$this->assertArrayHasKey( 'read_private_forms', (array) $wp_roles->roles['give_accountant']['capabilities'] );
+		$this->assertArrayHasKey( 'read_private_give_forms', (array) $wp_roles->roles['give_accountant']['capabilities'] );
 		$this->assertArrayHasKey( 'view_give_reports', (array) $wp_roles->roles['give_accountant']['capabilities'] );
 		$this->assertArrayHasKey( 'export_give_reports', (array) $wp_roles->roles['give_accountant']['capabilities'] );
 		$this->assertArrayHasKey( 'edit_give_payments', (array) $wp_roles->roles['give_accountant']['capabilities'] );

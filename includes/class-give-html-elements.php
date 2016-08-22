@@ -2,11 +2,9 @@
 /**
  * HTML elements
  *
- * A helper class for outputting common HTML elements, such as product drop downs
- *
  * @package     Give
- * @subpackage  Classes/HTML
- * @copyright   Copyright (c) 2015, WordImpress
+ * @subpackage  Classes/Give_HTML_Elements
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -19,19 +17,89 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Give_HTML_Elements Class
  *
+ * A helper class for outputting common HTML elements, such as product drop downs.
+ *
  * @since 1.0
  */
 class Give_HTML_Elements {
 
 	/**
-	 * Renders an HTML Dropdown of all the Give Forms
+	 * Donations Dropdown
 	 *
-	 * @access public
+	 * Renders an HTML Dropdown of all the donations.
+	 *
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param array $args Arguments for the dropdown
+	 * @param  array  $args Arguments for the dropdown.
 	 *
-	 * @return string $output Give forms dropdown
+	 * @return string       Donations dropdown.
+	 */
+	public function transactions_dropdown( $args = array() ) {
+
+		$defaults = array(
+			'name'        => 'transactions',
+			'id'          => 'transactions',
+			'class'       => '',
+			'multiple'    => false,
+			'selected'    => 0,
+			'chosen'      => false,
+			'number'      => 30,
+			'placeholder' => esc_html__( 'Select a transaction', 'give' )
+		);
+
+		$args = wp_parse_args( $args, $defaults );
+
+
+		$payments = new Give_Payments_Query( array(
+			'number' => $args['number']
+		) );
+
+		$payments = $payments->get_payments();
+
+		$options = array();
+
+		//Provide nice human readable options.
+		if ( $payments ) {
+			$options[0] = esc_html__( 'Select a donation', 'give' );
+			foreach ( $payments as $payment ) {
+
+				$options[ absint( $payment->ID ) ] = esc_html( '#' . $payment->ID . ' - ' . $payment->email . ' - ' . $payment->form_title);
+
+			}
+		} else {
+			$options[0] = esc_html__( 'No donations found.', 'give' );
+		}
+
+
+		$output = $this->select( array(
+			'name'             => $args['name'],
+			'selected'         => $args['selected'],
+			'id'               => $args['id'],
+			'class'            => $args['class'],
+			'options'          => $options,
+			'chosen'           => $args['chosen'],
+			'multiple'         => $args['multiple'],
+			'placeholder'      => $args['placeholder'],
+			'select_atts'      => $args['select_atts'],
+			'show_option_all'  => false,
+			'show_option_none' => false
+		) );
+
+		return $output;
+	}
+
+	/**
+	 * Give Forms Dropdown
+	 *
+	 * Renders an HTML Dropdown of all the Give Forms.
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @param  array $args Arguments for the dropdown.
+	 *
+	 * @return string      Give forms dropdown.
 	 */
 	public function forms_dropdown( $args = array() ) {
 
@@ -43,7 +111,11 @@ class Give_HTML_Elements {
 			'selected'    => 0,
 			'chosen'      => false,
 			'number'      => 30,
-			'placeholder' => sprintf( __( 'Select a %s', 'give' ), give_get_forms_label_singular() )
+			'placeholder' => sprintf(
+				/* translators: %s: form singular label */
+				esc_attr__( 'Select a %s', 'give' ),
+				give_get_forms_label_singular()
+			)
 		);
 
 		$args = wp_parse_args( $args, $defaults );
@@ -58,12 +130,16 @@ class Give_HTML_Elements {
 		$options = array();
 
 		if ( $forms ) {
-			$options[0] = sprintf( __( 'Select a %s', 'give' ), give_get_forms_label_singular() );
+			$options[0] = sprintf(
+				/* translators: %s: form singular label */
+				esc_html__( 'Select a %s', 'give' ),
+				give_get_forms_label_singular()
+			);
 			foreach ( $forms as $form ) {
 				$options[ absint( $form->ID ) ] = esc_html( $form->post_title );
 			}
 		} else {
-			$options[0] = __( 'No Give Forms Found', 'give' );
+			$options[0] = esc_html__( 'No donation forms found.', 'give' );
 		}
 
 		// This ensures that any selected forms are included in the drop down
@@ -96,14 +172,16 @@ class Give_HTML_Elements {
 	}
 
 	/**
-	 * Renders an HTML Dropdown of all customers
+	 * Donors Dropdown
 	 *
-	 * @access public
+	 * Renders an HTML Dropdown of all customers.
+	 *
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param array $args
+	 * @param  array $args Arguments for the dropdown.
 	 *
-	 * @return string $output Donor dropdown
+	 * @return string      Donors dropdown.
 	 */
 	public function donor_dropdown( $args = array() ) {
 
@@ -114,7 +192,7 @@ class Give_HTML_Elements {
 			'multiple'    => false,
 			'selected'    => 0,
 			'chosen'      => true,
-			'placeholder' => __( 'Select a Donor', 'give' ),
+			'placeholder' => esc_attr__( 'Select a Donor', 'give' ),
 			'number'      => 30
 		);
 
@@ -127,17 +205,17 @@ class Give_HTML_Elements {
 		$options = array();
 
 		if ( $customers ) {
-			$options[0] = __( 'No donor attached', 'give' );
+			$options[0] = esc_html__( 'No donor attached', 'give' );
 			foreach ( $customers as $customer ) {
 				$options[ absint( $customer->id ) ] = esc_html( $customer->name . ' (' . $customer->email . ')' );
 			}
 		} else {
-			$options[0] = __( 'No donors found', 'give' );
+			$options[0] = esc_html__( 'No donors found.', 'give' );
 		}
 
 		if ( ! empty( $args['selected'] ) ) {
 
-			// If a selected customer has been specified, we need to ensure it's in the initial list of customers displayed
+			// If a selected customer has been specified, we need to ensure it's in the initial list of customers displayed.
 
 			if ( ! array_key_exists( $args['selected'], $options ) ) {
 
@@ -168,17 +246,18 @@ class Give_HTML_Elements {
 		return $output;
 	}
 
-
 	/**
-	 * Renders an HTML Dropdown of all the Categories
+	 * Categories Dropdown
 	 *
-	 * @access public
+	 * Renders an HTML Dropdown of all the Categories.
+	 *
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param string $name     Name attribute of the dropdown
-	 * @param int    $selected Category to select automatically
+	 * @param  string $name     Name attribute of the dropdown. Default is 'give_forms_categories'.
+	 * @param  int    $selected Category to select automatically. Default is 0.
 	 *
-	 * @return string $output Category dropdown
+	 * @return string           Categories dropdown.
 	 */
 	public function category_dropdown( $name = 'give_forms_categories', $selected = 0 ) {
 		$categories = get_terms( 'give_forms_category', apply_filters( 'give_forms_category_dropdown', array() ) );
@@ -192,7 +271,7 @@ class Give_HTML_Elements {
 			'name'             => $name,
 			'selected'         => $selected,
 			'options'          => $options,
-			'show_option_all'  => __( 'All Categories', 'give' ),
+			'show_option_all'  => esc_html__( 'All Categories', 'give' ),
 			'show_option_none' => false
 		) );
 
@@ -200,17 +279,19 @@ class Give_HTML_Elements {
 	}
 
 	/**
-	 * Renders an HTML Dropdown of years
+	 * Years Dropdown
 	 *
-	 * @access public
+	 * Renders an HTML Dropdown of years.
+	 *
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param string $name         Name attribute of the dropdown
-	 * @param int    $selected     Year to select automatically
-	 * @param int    $years_before Number of years before the current year the dropdown should start with
-	 * @param int    $years_after  Number of years after the current year the dropdown should finish at
+	 * @param  string $name         Name attribute of the dropdown. Default is 'year'.
+	 * @param  int    $selected     Year to select automatically. Default is 0.
+	 * @param  int    $years_before Number of years before the current year the dropdown should start with. Default is 5.
+	 * @param  int    $years_after  Number of years after the current year the dropdown should finish at. Default is 0.
 	 *
-	 * @return string $output Year dropdown
+	 * @return string               Years dropdown.
 	 */
 	public function year_dropdown( $name = 'year', $selected = 0, $years_before = 5, $years_after = 0 ) {
 		$current    = date( 'Y' );
@@ -235,17 +316,18 @@ class Give_HTML_Elements {
 		return $output;
 	}
 
-
 	/**
-	 * Renders an HTML Dropdown of months
+	 * Months Dropdown
 	 *
-	 * @access public
+	 * Renders an HTML Dropdown of months.
+	 *
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param string $name     Name attribute of the dropdown
-	 * @param int    $selected Month to select automatically
+	 * @param  string $name     Name attribute of the dropdown. Default is 'month'.
+	 * @param  int    $selected Month to select automatically. Default is 0.
 	 *
-	 * @return string $output Month dropdown
+	 * @return string           Months dropdown.
 	 */
 	public function month_dropdown( $name = 'month', $selected = 0 ) {
 		$month    = 1;
@@ -269,13 +351,16 @@ class Give_HTML_Elements {
 	}
 
 	/**
-	 * Renders an HTML Dropdown
+	 * Dropdown
 	 *
-	 * @since 1.0
+	 * Renders an HTML Dropdown.
 	 *
-	 * @param array $args
+	 * @since  1.0
+	 * @access public
 	 *
-	 * @return string
+	 * @param  array $args Arguments for the dropdown.
+	 *
+	 * @return string      The dropdown.
 	 */
 	public function select( $args = array() ) {
 		$defaults = array(
@@ -287,12 +372,12 @@ class Give_HTML_Elements {
 			'chosen'           => false,
 			'placeholder'      => null,
 			'multiple'         => false,
-			'show_option_all'  => _x( 'All', 'all dropdown items', 'give' ),
-			'show_option_none' => _x( 'None', 'no dropdown items', 'give' )
+			'select_atts'      => false,
+			'show_option_all'  => esc_html__( 'All', 'give' ),
+			'show_option_none' => esc_html__( 'None', 'give' )
 		);
 
 		$args = wp_parse_args( $args, $defaults );
-
 
 		if ( $args['multiple'] ) {
 			$multiple = ' MULTIPLE';
@@ -310,7 +395,8 @@ class Give_HTML_Elements {
 			$placeholder = '';
 		}
 
-		$output = '<select name="' . esc_attr( $args['name'] ) . '" id="' . esc_attr( sanitize_key( str_replace( '-', '_', $args['id'] ) ) ) . '" class="give-select ' . esc_attr( $args['class'] ) . '"' . $multiple . ' data-placeholder="' . $placeholder . '">';
+
+		$output = '<select name="' . esc_attr( $args['name'] ) . '" id="' . esc_attr( sanitize_key( str_replace( '-', '_', $args['id'] ) ) ) . '" class="give-select ' . esc_attr( $args['class'] ) . '"' . $multiple . ' ' . $args['select_atts'] . ' data-placeholder="' . $placeholder . '">';
 
 		if ( $args['show_option_all'] ) {
 			if ( $args['multiple'] ) {
@@ -350,13 +436,16 @@ class Give_HTML_Elements {
 	}
 
 	/**
-	 * Renders an HTML Checkbox
+	 * Checkbox
 	 *
-	 * @since 1.0
+	 * Renders an HTML Checkbox.
 	 *
-	 * @param array $args
+	 * @since  1.0
+	 * @access public
 	 *
-	 * @return string
+	 * @param  array $args Arguments for the Checkbox.
+	 *
+	 * @return string      The checkbox.
 	 */
 	public function checkbox( $args = array() ) {
 		$defaults = array(
@@ -384,16 +473,19 @@ class Give_HTML_Elements {
 	}
 
 	/**
-	 * Renders an HTML Text field
+	 * Text Field
 	 *
-	 * @since 1.0
+	 * Renders an HTML Text field.
 	 *
-	 * @param array $args
+	 * @since  1.0
+	 * @access public
 	 *
-	 * @return string Text field
+	 * @param  array $args Arguments for the text field.
+	 *
+	 * @return string      The text field.
 	 */
 	public function text( $args = array() ) {
-		// Backwards compatabliity
+		// Backwards compatibility
 		if ( func_num_args() > 1 ) {
 			$args = func_get_args();
 
@@ -445,13 +537,39 @@ class Give_HTML_Elements {
 	}
 
 	/**
-	 * Renders an HTML textarea
+	 * Date Picker
 	 *
-	 * @since 1.0
+	 * Renders a date picker field.
 	 *
-	 * @param array $args Arguments for the textarea
+	 * @since  1.5
+	 * @access public
 	 *
-	 * @return string textarea
+	 * @param  array $args Arguments for the date picker.
+	 *
+	 * @return string      The date picker.
+	 */
+	public function date_field( $args = array() ) {
+
+		if ( empty( $args['class'] ) ) {
+			$args['class'] = 'give_datepicker';
+		} elseif ( ! strpos( $args['class'], 'give_datepicker' ) ) {
+			$args['class'] .= ' give_datepicker';
+		}
+
+		return $this->text( $args );
+	}
+
+	/**
+	 * Textarea
+	 *
+	 * Renders an HTML textarea.
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @param  array $args Arguments for the textarea.
+	 *
+	 * @return string      The textarea.
 	 */
 	public function textarea( $args = array() ) {
 		$defaults = array(
@@ -486,20 +604,23 @@ class Give_HTML_Elements {
 	}
 
 	/**
-	 * Renders an ajax user search field
+	 * User Search Field
 	 *
-	 * @since 1.0
+	 * Renders an ajax user search field.
 	 *
-	 * @param array $args
+	 * @since  1.0
+	 * @access public
 	 *
-	 * @return string text field with ajax search
+	 * @param  array $args Arguments for the search field.
+	 *
+	 * @return string      The text field with ajax search.
 	 */
 	public function ajax_user_search( $args = array() ) {
 
 		$defaults = array(
 			'name'         => 'user_id',
 			'value'        => null,
-			'placeholder'  => __( 'Enter username', 'give' ),
+			'placeholder'  => esc_attr__( 'Enter username', 'give' ),
 			'label'        => null,
 			'desc'         => null,
 			'class'        => '',
@@ -514,9 +635,10 @@ class Give_HTML_Elements {
 
 		$output = '<span class="give_user_search_wrap">';
 		$output .= $this->text( $args );
-		$output .= '<span class="give_user_search_results hidden"><a class="give-ajax-user-cancel" title="' . __( 'Cancel', 'give' ) . '" aria-label="' . __( 'Cancel', 'give' ) . '" href="#">x</a><span></span></span>';
+		$output .= '<span class="give_user_search_results hidden"><a class="give-ajax-user-cancel" aria-label="' . esc_attr__( 'Cancel', 'give' ) . '" href="#">x</a><span></span></span>';
 		$output .= '</span>';
 
 		return $output;
 	}
+
 }

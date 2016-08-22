@@ -1,10 +1,10 @@
 <?php
 /**
- * Process Purchase
+ * Process Donation
  *
  * @package     Give
  * @subpackage  Functions
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -15,9 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Process Purchase Form
+ * Process Donation Form
  *
- * Handles the purchase form process.
+ * Handles the donation form process.
  *
  * @access      private
  * @since       1.0
@@ -25,12 +25,26 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_process_purchase_form() {
 
+	/**
+	 * Fires before processing the donation form.
+	 *
+	 * @since 1.0
+	 */
 	do_action( 'give_pre_process_purchase' );
 
 	// Validate the form $_POST data
 	$valid_data = give_purchase_form_validate_fields();
 
-	// Allow themes and plugins to hook to errors
+	/**
+	 * Fires after validating donation form fields.
+	 *
+	 * Allow you to hook to donation form errors.
+	 *
+	 * @since 1.0
+	 *
+	 * @param bool|array $valid_data Validate fields.
+	 * @param array      $_POST      Array of variables passed via the HTTP POST.
+	 */
 	do_action( 'give_checkout_error_checks', $valid_data, $_POST );
 
 	$is_ajax = isset( $_POST['give_ajax'] );
@@ -43,8 +57,13 @@ function give_process_purchase_form() {
 	// Validate the user
 	$user = give_get_purchase_form_user( $valid_data );
 
-	if ( give_get_errors() || ! $user ) {
+	if ( false === $valid_data || give_get_errors() || ! $user ) {
 		if ( $is_ajax ) {
+			/**
+			 * Fires when AJAX sends back errors from the donation form.
+			 *
+			 * @since 1.0
+			 */
 			do_action( 'give_ajax_checkout_errors' );
 			give_die();
 		} else {
@@ -52,9 +71,21 @@ function give_process_purchase_form() {
 		}
 	}
 
+	//If AJAX send back success to proceed with form submission
 	if ( $is_ajax ) {
 		echo 'success';
 		give_die();
+	}
+
+	//After AJAX: Setup session if not using php_sessions
+	if ( ! Give()->session->use_php_sessions() ) {
+		//Double-check that set_cookie is publicly accessible;
+		// we're using a slightly modified class-wp-sessions.php
+		$session_reflection = new ReflectionMethod( 'WP_Session', 'set_cookie' );
+		if ( $session_reflection->isPublic() ) {
+			// Manually set the cookie.
+			Give()->session->init()->set_cookie();
+		}
 	}
 
 	// Setup user information
@@ -68,10 +99,13 @@ function give_process_purchase_form() {
 
 	$auth_key = defined( 'AUTH_KEY' ) ? AUTH_KEY : '';
 
-	// Setup purchase information
+	$price        = isset( $_POST['give-amount'] ) ? (float) apply_filters( 'give_donation_total', give_sanitize_amount( give_format_amount( $_POST['give-amount'] ) ) ) : '0.00';
+	$purchase_key = strtolower( md5( $user['user_email'] . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) );
+
+	// Setup donation information
 	$purchase_data = array(
-		'price'        => ( isset( $_POST['give-amount'] ) ? (float) apply_filters( 'give_donation_total', give_sanitize_amount( give_format_amount( $_POST['give-amount'] ) ) ) : '0.00' ),
-		'purchase_key' => strtolower( md5( $user['user_email'] . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) ),
+		'price'        => $price,
+		'purchase_key' => $purchase_key,
 		'user_email'   => $user['user_email'],
 		'date'         => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
 		'user_info'    => stripslashes_deep( $user_info ),
@@ -83,7 +117,17 @@ function give_process_purchase_form() {
 	// Add the user data for hooks
 	$valid_data['user'] = $user;
 
-	// Allow themes and plugins to hook before the gateway
+	/**
+	 * Fires before donation form gateway.
+	 *
+	 * Allow you to hook to donation form before the gateway.
+	 *
+	 * @since 1.0
+	 *
+	 * @param array      $_POST      Array of variables passed via the HTTP POST.
+	 * @param array      $user_info  Array containing basic user information.
+	 * @param bool|array $valid_data Validate fields.
+	 */
 	do_action( 'give_checkout_before_gateway', $_POST, $user_info, $valid_data );
 
 	//Sanity check for price
@@ -93,16 +137,17 @@ function give_process_purchase_form() {
 		$_POST['give-gateway']    = 'manual';
 	}
 
-	// Allow the purchase data to be modified before it is sent to the gateway
+	// Allow the donation data to be modified before it is sent to the gateway
 	$purchase_data = apply_filters( 'give_purchase_data_before_gateway', $purchase_data, $valid_data );
 
-	// Setup the data we're storing in the purchase session
+	// Setup the data we're storing in the donation session
 	$session_data = $purchase_data;
 
 	// Make sure credit card numbers are never stored in sessions
 	unset( $session_data['card_info']['card_number'] );
+	unset( $session_data['post_data']['card_number'] );
 
-	// Used for showing data to non logged-in users after purchase, and for other plugins needing purchase data.
+	// Used for showing data to non logged-in users after donation, and for other plugins needing donation data.
 	give_set_purchase_session( $session_data );
 
 	// Send info to the gateway for payment processing
@@ -130,6 +175,11 @@ function give_process_form_login() {
 
 	if ( give_get_errors() || $user_data['user_id'] < 1 ) {
 		if ( $is_ajax ) {
+			/**
+			 * Fires when AJAX sends back errors from the donation form.
+			 *
+			 * @since 1.0
+			 */
 			do_action( 'give_ajax_checkout_errors' );
 			give_die();
 		} else {
@@ -152,7 +202,7 @@ add_action( 'wp_ajax_give_process_checkout_login', 'give_process_form_login' );
 add_action( 'wp_ajax_nopriv_give_process_checkout_login', 'give_process_form_login' );
 
 /**
- * Purchase Form Validate Fields
+ * Donation Form Validate Fields
  *
  * @access      private
  * @since       1.0
@@ -178,6 +228,11 @@ function give_purchase_form_validate_fields() {
 		'guest_user_data'  => array(),   // Guest user collected data
 		'cc_info'          => give_purchase_form_validate_cc()    // Credit card info
 	);
+
+	//Validate Honeypot First
+	if ( ! empty( $_POST['give-honeypot'] ) ) {
+		give_set_error( 'invalid_honeypot', esc_html__( 'Honeypot field detected. Go away bad bot!', 'give' ) );
+	}
 
 	// Validate agree to terms
 	$terms_option = get_post_meta( $form_id, '_give_terms_option', true );
@@ -209,7 +264,9 @@ function give_purchase_form_validate_fields() {
 }
 
 /**
- * Purchase Form Validate Gateway
+ * Donation Form Validate Gateway
+ *
+ * Validate the gateway and donation amount
  *
  * @access      private
  * @since       1.0
@@ -217,35 +274,41 @@ function give_purchase_form_validate_fields() {
  */
 function give_purchase_form_validate_gateway() {
 
-	$gateway = give_get_default_gateway( $_REQUEST['give-form-id'] );
+	$form_id = isset( $_REQUEST['give-form-id'] ) ? $_REQUEST['give-form-id'] : 0;
+	$amount  = isset( $_REQUEST['give-amount'] ) ? give_sanitize_amount( $_REQUEST['give-amount'] ) : 0;
+	$gateway = give_get_default_gateway( $form_id );
 
 	// Check if a gateway value is present
 	if ( ! empty( $_REQUEST['give-gateway'] ) ) {
 
 		$gateway = sanitize_text_field( $_REQUEST['give-gateway'] );
 
-		//Is amount being donated in LIVE mode above 0.00?
-		if ( '0.00' == $_REQUEST['give-amount'] && ! give_is_test_mode() ) {
+		//Is amount being donated in LIVE mode 0.00? If so, error:
+		if ( $amount == 0 && ! give_is_test_mode() ) {
 
-			give_set_error( 'invalid_donation_amount', __( 'Please insert a valid donation amount.', 'give' ) );
+			give_set_error( 'invalid_donation_amount', esc_html__( 'Please insert a valid donation amount.', 'give' ) );
 
 		} //Check for a minimum custom amount
 		elseif ( ! give_verify_minimum_price() ) {
 
-			$minimum       = give_currency_filter( give_format_amount( give_get_form_minimum_price( $_REQUEST['give-form-id'] ) ) );
-			$error_message = __( 'This form has a minimum donation amount of %s', 'give' );
-
-			give_set_error( 'invalid_donation_minimum', sprintf( $error_message, $minimum ) );
+			give_set_error(
+				'invalid_donation_minimum',
+				sprintf(
+					/* translators: %s: minimum donation amount */
+					esc_html__( 'This form has a minimum donation amount of %s.', 'give' ),
+					give_currency_filter( give_format_amount( give_get_form_minimum_price( $form_id ) ) )
+				)
+			);
 
 		} //Is this test mode zero donation? Let it through but set to manual gateway
-		elseif ( '0.00' == $_REQUEST['give-amount'] && give_is_test_mode() ) {
+		elseif ( $amount == 0 && give_is_test_mode() ) {
 
 			$gateway = 'manual';
 
 		} //Check if this gateway is active
 		elseif ( ! give_is_gateway_active( $gateway ) ) {
 
-			give_set_error( 'invalid_gateway', __( 'The selected payment gateway is not enabled', 'give' ) );
+			give_set_error( 'invalid_gateway', esc_html__( 'The selected payment gateway is not enabled.', 'give' ) );
 
 		}
 
@@ -265,7 +328,7 @@ function give_purchase_form_validate_gateway() {
 function give_verify_minimum_price() {
 
 	$amount          = give_sanitize_amount( $_REQUEST['give-amount'] );
-	$form_id         = $_REQUEST['give-form-id'];
+	$form_id         = isset( $_REQUEST['give-form-id'] ) ? $_REQUEST['give-form-id'] : 0;
 	$price_id        = isset( $_REQUEST['give-price-id'] ) ? $_REQUEST['give-price-id'] : 0;
 	$variable_prices = give_has_variable_prices( $form_id );
 
@@ -288,7 +351,7 @@ function give_verify_minimum_price() {
 }
 
 /**
- * Purchase Form Validate Agree To Terms
+ * Donation Form Validate Agree To Terms
  *
  * @access      private
  * @since       1.0
@@ -298,12 +361,12 @@ function give_purchase_form_validate_agree_to_terms() {
 	// Validate agree to terms
 	if ( ! isset( $_POST['give_agree_to_terms'] ) || $_POST['give_agree_to_terms'] != 1 ) {
 		// User did not agree
-		give_set_error( 'agree_to_terms', apply_filters( 'give_agree_to_terms_text', __( 'You must agree to the terms of use', 'give' ) ) );
+		give_set_error( 'agree_to_terms', apply_filters( 'give_agree_to_terms_text', esc_html__( 'You must agree to the terms of use.', 'give' ) ) );
 	}
 }
 
 /**
- * Purchase Form Required Fields
+ * Donation Form Required Fields
  *
  * @access      private
  * @since       1.0
@@ -319,11 +382,11 @@ function give_purchase_form_required_fields( $form_id ) {
 	$required_fields = array(
 		'give_email' => array(
 			'error_id'      => 'invalid_email',
-			'error_message' => __( 'Please enter a valid email address', 'give' )
+			'error_message' => esc_html__( 'Please enter a valid email address.', 'give' )
 		),
 		'give_first' => array(
 			'error_id'      => 'invalid_first_name',
-			'error_message' => __( 'Please enter your first name', 'give' )
+			'error_message' => esc_html__( 'Please enter your first name.', 'give' )
 		)
 	);
 
@@ -332,23 +395,23 @@ function give_purchase_form_required_fields( $form_id ) {
 	if ( $require_address ) {
 		$required_fields['card_address']    = array(
 			'error_id'      => 'invalid_card_address',
-			'error_message' => __( 'Please enter your primary billing address', 'give' )
+			'error_message' => esc_html__( 'Please enter your primary billing address.', 'give' )
 		);
 		$required_fields['card_zip']        = array(
 			'error_id'      => 'invalid_zip_code',
-			'error_message' => __( 'Please enter your zip / postal code', 'give' )
+			'error_message' => esc_html__( 'Please enter your zip / postal code.', 'give' )
 		);
 		$required_fields['card_city']       = array(
 			'error_id'      => 'invalid_city',
-			'error_message' => __( 'Please enter your billing city', 'give' )
+			'error_message' => esc_html__( 'Please enter your billing city.', 'give' )
 		);
 		$required_fields['billing_country'] = array(
 			'error_id'      => 'invalid_country',
-			'error_message' => __( 'Please select your billing country', 'give' )
+			'error_message' => esc_html__( 'Please select your billing country.', 'give' )
 		);
 		$required_fields['card_state']      = array(
 			'error_id'      => 'invalid_state',
-			'error_message' => __( 'Please enter billing state / province', 'give' )
+			'error_message' => esc_html__( 'Please enter billing state / province.', 'give' )
 		);
 	}
 
@@ -379,7 +442,7 @@ function give_require_billing_address( $payment_mode ) {
 }
 
 /**
- * Purchase Form Validate Logged In User
+ * Donation Form Validate Logged In User
  *
  * @access      private
  * @since       1.0
@@ -419,12 +482,12 @@ function give_purchase_form_validate_logged_in_user() {
 			);
 
 			if ( ! is_email( $valid_user_data['user_email'] ) ) {
-				give_set_error( 'email_invalid', __( 'Invalid email', 'give' ) );
+				give_set_error( 'email_invalid', esc_html__( 'Invalid email.', 'give' ) );
 			}
 
 		} else {
 			// Set invalid user error
-			give_set_error( 'invalid_user', __( 'The user information is invalid', 'give' ) );
+			give_set_error( 'invalid_user', esc_html__( 'The user information is invalid.', 'give' ) );
 		}
 	}
 
@@ -474,40 +537,38 @@ function give_purchase_form_validate_new_user() {
 		// We have an user name, check if it already exists
 		if ( username_exists( $user_login ) ) {
 			// Username already registered
-			give_set_error( 'username_unavailable', __( 'Username already taken', 'give' ) );
+			give_set_error( 'username_unavailable', esc_html__( 'Username already taken.', 'give' ) );
 			// Check if it's valid
 		} else if ( ! give_validate_username( $user_login ) ) {
 			// Invalid username
 			if ( is_multisite() ) {
-				give_set_error( 'username_invalid', __( 'Invalid username. Only lowercase letters (a-z) and numbers are allowed', 'give' ) );
+				give_set_error( 'username_invalid', esc_html__( 'Invalid username. Only lowercase letters (a-z) and numbers are allowed.', 'give' ) );
 			} else {
-				give_set_error( 'username_invalid', __( 'Invalid username', 'give' ) );
+				give_set_error( 'username_invalid', esc_html__( 'Invalid username.', 'give' ) );
 			}
 		} else {
 			// All the checks have run and it's good to go
 			$valid_user_data['user_login'] = $user_login;
 		}
-	} else {
-		if ( give_no_guest_checkout( $form_id ) ) {
-			give_set_error( 'registration_required', esc_html__( 'You must register or login to complete your donation', 'give' ) );
-		}
+	} elseif ( give_logged_in_only( $form_id ) ) {
+		give_set_error( 'registration_required', esc_html__( 'You must register or login to complete your donation.', 'give' ) );
 	}
 
 	// Check if we have an email to verify
 	if ( $user_email && strlen( $user_email ) > 0 ) {
 		// Validate email
 		if ( ! is_email( $user_email ) ) {
-			give_set_error( 'email_invalid', __( 'Invalid email', 'give' ) );
+			give_set_error( 'email_invalid', esc_html__( 'Invalid email.', 'give' ) );
 			// Check if email exists
 		} else if ( email_exists( $user_email ) && $registering_new_user ) {
-			give_set_error( 'email_used', __( 'Email already used', 'give' ) );
+			give_set_error( 'email_used', esc_html__( 'The email already active for another user.', 'give' ) );
 		} else {
 			// All the checks have run and it's good to go
 			$valid_user_data['user_email'] = $user_email;
 		}
 	} else {
 		// No email
-		give_set_error( 'email_empty', __( 'Enter an email', 'give' ) );
+		give_set_error( 'email_empty', esc_html__( 'Enter an email.', 'give' ) );
 	}
 
 	// Check password
@@ -515,7 +576,7 @@ function give_purchase_form_validate_new_user() {
 		// Verify confirmation matches
 		if ( $user_pass != $pass_confirm ) {
 			// Passwords do not match
-			give_set_error( 'password_mismatch', __( 'Passwords don\'t match', 'give' ) );
+			give_set_error( 'password_mismatch', esc_html__( 'Passwords don\'t match.', 'give' ) );
 		} else {
 			// All is good to go
 			$valid_user_data['user_pass'] = $user_pass;
@@ -524,10 +585,10 @@ function give_purchase_form_validate_new_user() {
 		// Password or confirmation missing
 		if ( ! $user_pass && $registering_new_user ) {
 			// The password is invalid
-			give_set_error( 'password_empty', __( 'Enter a password', 'give' ) );
+			give_set_error( 'password_empty', esc_html__( 'Enter a password.', 'give' ) );
 		} else if ( ! $pass_confirm && $registering_new_user ) {
 			// Confirmation password is invalid
-			give_set_error( 'confirmation_empty', __( 'Enter the password confirmation', 'give' ) );
+			give_set_error( 'confirmation_empty', esc_html__( 'Enter the password confirmation.', 'give' ) );
 		}
 	}
 
@@ -551,7 +612,7 @@ function give_purchase_form_validate_user_login() {
 
 	// Username
 	if ( ! isset( $_POST['give_user_login'] ) || $_POST['give_user_login'] == '' ) {
-		give_set_error( 'must_log_in', __( 'You must login or register to complete your donation', 'give' ) );
+		give_set_error( 'must_log_in', esc_html__( 'You must register or login to complete your donation.', 'give' ) );
 
 		return $valid_user_data;
 	}
@@ -572,9 +633,10 @@ function give_purchase_form_validate_user_login() {
 				give_set_error(
 					'password_incorrect',
 					sprintf(
-						__( 'The password you entered is incorrect. %sReset Password%s', 'give' ),
-						'<a href="' . wp_lostpassword_url( "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]" ) . '" title="' . __( 'Lost Password', 'give' ) . '">',
-						'</a>'
+						'%1$s <a href="%2$s">%3$s</a>',
+						esc_html__( 'The password you entered is incorrect.', 'give' ),
+						wp_lostpassword_url( "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]" ),
+						esc_html__( 'Reset Password', 'give' )
 					)
 				);
 				// All is correct
@@ -591,18 +653,18 @@ function give_purchase_form_validate_user_login() {
 			}
 		} else {
 			// Empty password
-			give_set_error( 'password_empty', __( 'Enter a password', 'give' ) );
+			give_set_error( 'password_empty', esc_html__( 'Enter a password.', 'give' ) );
 		}
 	} else {
 		// no username
-		give_set_error( 'username_incorrect', __( 'The username you entered does not exist', 'give' ) );
+		give_set_error( 'username_incorrect', esc_html__( 'The username you entered does not exist.', 'give' ) );
 	}
 
 	return $valid_user_data;
 }
 
 /**
- * Purchase Form Validate Guest User
+ * Donation Form Validate Guest User
  *
  * @access  private
  * @since   1.0
@@ -619,8 +681,8 @@ function give_purchase_form_validate_guest_user() {
 	);
 
 	// Show error message if user must be logged in
-	if ( give_logged_in_only() ) {
-		give_set_error( 'logged_in_only', __( 'You must be logged into an account to donation', 'give' ) );
+	if ( give_logged_in_only( $form_id ) ) {
+		give_set_error( 'logged_in_only', esc_html__( 'You must be logged in to donate.', 'give' ) );
 	}
 
 	// Get the guest email
@@ -631,14 +693,14 @@ function give_purchase_form_validate_guest_user() {
 		// Validate email
 		if ( ! is_email( $guest_email ) ) {
 			// Invalid email
-			give_set_error( 'email_invalid', __( 'Invalid email', 'give' ) );
+			give_set_error( 'email_invalid', esc_html__( 'Invalid email.', 'give' ) );
 		} else {
 			// All is good to go
 			$valid_user_data['user_email'] = $guest_email;
 		}
 	} else {
 		// No email
-		give_set_error( 'email_empty', __( 'Enter an email', 'give' ) );
+		give_set_error( 'email_empty', esc_html__( 'Enter an email.', 'give' ) );
 	}
 
 	// Loop through required fields and show error messages
@@ -691,7 +753,14 @@ function give_register_and_login_new_user( $user_data = array() ) {
 	// Allow themes and plugins to filter the user data
 	$user_data = apply_filters( 'give_insert_user_data', $user_data, $user_args );
 
-	// Allow themes and plugins to hook
+	/**
+	 * Fires after inserting user.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int   $user_id   User id.
+	 * @param array $user_data Array containing user data.
+	 */
 	do_action( 'give_insert_user', $user_id, $user_data );
 
 	// Login new user
@@ -702,7 +771,7 @@ function give_register_and_login_new_user( $user_data = array() ) {
 }
 
 /**
- * Get Purchase Form User
+ * Get Donation Form User
  *
  * @param array $valid_data
  *
@@ -711,6 +780,7 @@ function give_register_and_login_new_user( $user_data = array() ) {
  * @return  array
  */
 function give_get_purchase_form_user( $valid_data = array() ) {
+
 	// Initialize user
 	$user    = false;
 	$is_ajax = defined( 'DOING_AJAX' ) && DOING_AJAX;
@@ -737,8 +807,8 @@ function give_get_purchase_form_user( $valid_data = array() ) {
 			 * This also allows the old login process to still work if a user removes the
 			 * checkout login submit button.
 			 *
-			 * This also ensures that the donor is logged in correctly if they click "Purchase"
-			 * instead of submitting the login form, meaning the donor is logged in during the purchase process.
+			 * This also ensures that the donor is logged in correctly if they click "Donation"
+			 * instead of submitting the login form, meaning the donor is logged in during the donation process.
 			 */
 
 			// Set user
@@ -749,7 +819,7 @@ function give_get_purchase_form_user( $valid_data = array() ) {
 	}
 
 	// Check guest checkout
-	if ( false === $user && false === give_no_guest_checkout( $_POST['give-form-id'] ) ) {
+	if ( false === $user && false === give_logged_in_only( $_POST['give-form-id'] ) ) {
 		// Set user
 		$user = $valid_data['guest_user_data'];
 	}
@@ -762,12 +832,12 @@ function give_get_purchase_form_user( $valid_data = array() ) {
 
 	// Get user first name
 	if ( ! isset( $user['user_first'] ) || strlen( trim( $user['user_first'] ) ) < 1 ) {
-		$user['user_first'] = isset( $_POST["give_first"] ) ? strip_tags( trim( $_POST["give_first"] ) ) : '';
+		$user['user_first'] = isset( $_POST['give_first'] ) ? strip_tags( trim( $_POST['give_first'] ) ) : '';
 	}
 
 	// Get user last name
 	if ( ! isset( $user['user_last'] ) || strlen( trim( $user['user_last'] ) ) < 1 ) {
-		$user['user_last'] = isset( $_POST["give_last"] ) ? strip_tags( trim( $_POST["give_last"] ) ) : '';
+		$user['user_last'] = isset( $_POST['give_last'] ) ? strip_tags( trim( $_POST['give_last'] ) ) : '';
 	}
 
 	// Get the user's billing address details
@@ -784,7 +854,7 @@ function give_get_purchase_form_user( $valid_data = array() ) {
 	} // Country will always be set if address fields are present
 
 	if ( ! empty( $user['user_id'] ) && $user['user_id'] > 0 && ! empty( $user['address'] ) ) {
-		// Store the address in the user's meta so the cart can be pre-populated with it on return purchases
+		// Store the address in the user's meta so the donation form can be pre-populated with it on return purchases
 		update_user_meta( $user['user_id'], '_give_user_address', $user['address'] );
 	}
 
@@ -806,7 +876,7 @@ function give_purchase_form_validate_cc() {
 	// Validate the card zip
 	if ( ! empty( $card_data['card_zip'] ) ) {
 		if ( ! give_purchase_form_validate_cc_zip( $card_data['card_zip'], $card_data['card_country'] ) ) {
-			give_set_error( 'invalid_cc_zip', __( 'The zip / postal code you entered for your billing address is invalid', 'give' ) );
+			give_set_error( 'invalid_cc_zip', esc_html__( 'The zip / postal code you entered for your billing address is invalid.', 'give' ) );
 		}
 	}
 
@@ -1031,53 +1101,68 @@ function give_purchase_form_validate_cc_zip( $zip = 0, $country_code = '' ) {
 
 
 /**
- * Check the purchase to ensure a banned email is not allowed through
+ * Auto set correct donation level id on basis of amount.
  *
- * @since       1.0
- * @return      void
+ * Note: If amount does not match to donation level amount then level id will be auto select to first match level id on basis of amount.
+ *
+ * @param array $valid_data
+ * @param array $data
+ *
+ * @return bool
  */
-function give_check_purchase_email( $valid_data, $posted ) {
-	$is_banned = false;
-	$banned    = give_get_banned_emails();
+function give_validate_multi_donation_form_level(  $valid_data, $data ) {
+    /* @var Give_Donate_Form $form*/
+    $form = new Give_Donate_Form( $data['give-form-id'] );
 
-	if ( empty( $banned ) ) {
-		return;
-	}
+    $donation_level_matched = false;
 
-	if ( is_user_logged_in() ) {
+    if( $form->is_multi_type_donation_form() ) {
 
-		// The user is logged in, check that their account email is not banned
-		$user_data = get_userdata( get_current_user_id() );
-		if ( give_is_email_banned( $user_data->user_email ) ) {
+        // Bailout.
+        if( ! ( $variable_prices = $form->get_prices() ) ) {
+            return false;
+        }
 
-			$is_banned = true;
-		}
+        // Sanitize donation amount.
+        $data['give-amount'] = give_sanitize_amount( $data['give-amount'] );
 
-		if ( give_is_email_banned( $posted['give_email'] ) ) {
-			$is_banned = true;
-		}
+        // Get number of decimals.
+        $default_decimals = give_get_price_decimals();
 
-	} elseif ( isset( $posted['give-purchase-var'] ) && $posted['give-purchase-var'] == 'needs-to-login' ) {
+        if( $data['give-amount'] === give_sanitize_amount( give_get_price_option_amount( $data['give-form-id'], $data['give-price-id'] ), $default_decimals ) ){
+            return true;
+        }
 
-		// The user is logging in, check that their email is not banned
-		$user_data = get_user_by( 'login', $posted['give_user_login'] );
-		if ( $user_data && give_is_email_banned( $user_data->user_email ) ) {
-			$is_banned = true;
-		}
+        
+        // Find correct donation level from all donation levels.
+        foreach ( $variable_prices as $variable_price ) {
+            // Sanitize level amount.
+            $variable_price['_give_amount'] = give_sanitize_amount( $variable_price['_give_amount'], $default_decimals );
 
-	} else {
+            // Set first match donation level ID.
+            if( $data['give-amount'] === $variable_price['_give_amount'] ) {
+                $_POST['give-price-id'] = $variable_price['_give_id']['level_id'];
+                $donation_level_matched = true;
+                break;
+            }
+        }
 
-		// Guest purchase, check that the email is not banned
-		if ( give_is_email_banned( $posted['give_email'] ) ) {
-			$is_banned = true;
-		}
+        // If donation amount is not find in donation levels then check if form has custom donation feature enable or not.
+        // If yes then set price id to custom if amount is greater then custom minimum amount (if any).
+        if(
+            ! $donation_level_matched
+            && ( 'yes' === get_post_meta( $data['give-form-id'], '_give_custom_amount', true ) )
+        ) {
+            // Sanitize custom minimum amount.
+            $custom_minimum_amount = give_sanitize_amount( get_post_meta( $data['give-form-id'], '_give_custom_amount_minimum', true ), $default_decimals );
 
-	}
+            if( $data['give-amount'] >= $custom_minimum_amount ) {
+                $_POST['give-price-id'] = 'custom';
+                $donation_level_matched  = true;
+            }
+        }
+    }
 
-	if ( $is_banned ) {
-		// Set an error and give the donor a general error (don't alert them that they were banned)
-		give_set_error( 'email_banned', __( 'An internal error has occurred, please try again or contact support.', 'give' ) );
-	}
+    return ( $donation_level_matched ? true : false );
 }
-
-add_action( 'give_checkout_error_checks', 'give_check_purchase_email', 10, 2 );
+add_action( 'give_checkout_error_checks', 'give_validate_multi_donation_form_level', 10, 2 );

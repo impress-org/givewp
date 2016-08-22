@@ -2,17 +2,19 @@
 /**
  * Shortcode Dialog Generator abstract class
  *
- * @package     Give
- * @subpackage  Admin
+ * @package     Give/Admin
  * @author      Paul Ryley
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @version     1.0
- * @since       1.3.0
+ * @since       1.3
  */
 
 defined( 'ABSPATH' ) or exit;
 
+/**
+ * Class Give_Shortcode_Generator
+ */
 abstract class Give_Shortcode_Generator {
 
 	/**
@@ -68,6 +70,7 @@ abstract class Give_Shortcode_Generator {
 
 	/**
 	 * Kick things off for the shortcode generator
+	 *
 	 * @since 1.3.0.2
 	 */
 	public function init() {
@@ -83,19 +86,20 @@ abstract class Give_Shortcode_Generator {
 			$fields = $this->get_fields();
 
 			$defaults = array(
-				'btn_close' => __( 'Close', 'give' ),
-				'btn_okay'  => __( 'Insert Shortcode', 'give' ),
+				'btn_close' => esc_html__( 'Close', 'give' ),
+				'btn_okay'  => esc_html__( 'Insert Shortcode', 'give' ),
 				'errors'    => $this->errors,
 				'fields'    => $fields,
 				'label'     => '[' . $this->shortcode_tag . ']',
 				'required'  => $this->required,
-				'title'     => __( 'Insert Shortcode', 'give' ),
+				'title'     => esc_html__( 'Insert Shortcode', 'give' ),
 			);
 
-			Give_Shortcode_Button::$shortcodes[ $this->shortcode_tag ] = wp_parse_args( $this->shortcode, $defaults );
+			if ( user_can_richedit() ) {
 
-			//
+				Give_Shortcode_Button::$shortcodes[ $this->shortcode_tag ] = wp_parse_args( $this->shortcode, $defaults );
 
+			}
 		}
 
 	}
@@ -246,7 +250,7 @@ abstract class Give_Shortcode_Generator {
 
 			// do not reindex array!
 			$field['options'] = array(
-				                    '' => ( $field['placeholder'] ? $field['placeholder'] : sprintf( '– %s –', __( 'Select', 'give' ) ) ),
+				                    '' => ( $field['placeholder'] ? $field['placeholder'] : esc_attr__( '- Select -', 'give' ) ),
 			                    ) + $field['options'];
 
 			foreach ( $field['options'] as $value => $text ) {
@@ -378,7 +382,7 @@ abstract class Give_Shortcode_Generator {
 
 			if ( ! ! $required || is_array( $required ) ) {
 
-				$alert = __( 'Some of the Shortcode options are required.', 'give' );
+				$alert = esc_html__( 'Some of the shortcode options are required.', 'give' );
 
 				if ( isset( $required['alert'] ) ) {
 
@@ -386,7 +390,9 @@ abstract class Give_Shortcode_Generator {
 
 				} else if ( ! empty( $label ) ) {
 
-					$alert = sprintf( __( 'The "%s" option is required.', 'give' ),
+					$alert = sprintf(
+					/* translators: %s: option label */
+						esc_html__( 'The "%s" option is required.', 'give' ),
 						str_replace( ':', '', $label )
 					);
 				}

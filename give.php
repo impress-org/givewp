@@ -5,7 +5,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: WordImpress
  * Author URI: https://wordimpress.com
- * Version: 1.3.6
+ * Version: 1.6
  * Text Domain: give
  * Domain Path: /languages
  * GitHub Plugin URI: https://github.com/WordImpress/Give
@@ -39,100 +39,142 @@
  *
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! class_exists( 'Give' ) ) : /**
- * Main Give Class
- *
- * @since 1.0
- */ {
+if ( ! class_exists( 'Give' ) ) :
+
+	/**
+	 * Main Give Class
+	 *
+	 * @since 1.0
+	 */
 	final class Give {
 		/** Singleton *************************************************************/
 
-
 		/**
-		 * @var Give The one true Give
-		 * @since 1.0
+		 * Give Instance
+		 *
+		 * @since  1.0
+		 * @access private
+		 *
+		 * @var    Give The one true Give
 		 */
 		private static $instance;
 
 		/**
 		 * Give Roles Object
 		 *
-		 * @var Give_Roles object
-		 * @since 1.0
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_Roles object
 		 */
 		public $roles;
 
 		/**
 		 * Give Settings Object
 		 *
-		 * @var Give_Plugin_Settings object
-		 * @since 1.0
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_Plugin_Settings object
 		 */
 		public $give_settings;
 
 		/**
 		 * Give Session Object
 		 *
-		 * This holds donation data for user's session
+		 * This holds donation data for user's session.
 		 *
-		 * @var Give_Session object
-		 * @since 1.0
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_Session object
 		 */
 		public $session;
 
 		/**
 		 * Give HTML Element Helper Object
 		 *
-		 * @var Give_HTML_Elements object
-		 * @since 1.0
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_HTML_Elements object
 		 */
 		public $html;
-
 
 		/**
 		 * Give Emails Object
 		 *
-		 * @var Give_Emails object
-		 * @since 1.0
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_Emails object
 		 */
 		public $emails;
 
 		/**
 		 * Give Email Template Tags Object
 		 *
-		 * @var Give_Email_Template_Tags object
-		 * @since 1.0
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_Email_Template_Tags object
 		 */
 		public $email_tags;
 
 		/**
 		 * Give Customers DB Object
 		 *
-		 * @var Give_Customer object
-		 * @since 1.0
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_DB_Customers object
 		 */
 		public $customers;
 
 		/**
+		 * Give Customer meta DB Object
+		 *
+		 * @since  1.6
+		 * @access public
+		 *
+		 * @var    Give_DB_Customer_Meta object
+		 */
+		public $customer_meta;
+
+		/**
 		 * Give API Object
 		 *
-		 * @var Give_API object
-		 * @since 1.1
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_API object
 		 */
 		public $api;
 
 		/**
 		 * Give Template Loader Object
 		 *
-		 * @var Give_Template_Loader object
-		 * @since 1.0
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_Template_Loader object
 		 */
 		public $template_loader;
+
+		/**
+		 * Give No Login Object
+		 *
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_Email_Access object
+		 */
+		public $email_access;
 
 		/**
 		 * Main Give Instance
@@ -141,12 +183,15 @@ if ( ! class_exists( 'Give' ) ) : /**
 		 * time. Also prevents needing to define globals all over the place.
 		 *
 		 * @since     1.0
+		 * @access    public
+		 *
 		 * @static
 		 * @staticvar array $instance
-		 * @uses      Give::setup_constants() Setup the constants needed
-		 * @uses      Give::includes() Include the required files
-		 * @uses      Give::load_textdomain() load the language files
+		 * @uses      Give::setup_constants() Setup the constants needed.
+		 * @uses      Give::includes() Include the required files.
+		 * @uses      Give::load_textdomain() load the language files.
 		 * @see       Give()
+		 *
 		 * @return    Give
 		 */
 		public static function instance() {
@@ -157,16 +202,17 @@ if ( ! class_exists( 'Give' ) ) : /**
 				add_action( 'plugins_loaded', array( self::$instance, 'load_textdomain' ) );
 
 				self::$instance->includes();
-				self::$instance->roles         = new Give_Roles();
-				self::$instance->api           = new Give_API();
-				self::$instance->give_settings = new Give_Plugin_Settings();
-				self::$instance->session       = new Give_Session();
-				self::$instance->html          = new Give_HTML_Elements();
-				self::$instance->emails        = new Give_Emails();
-				self::$instance->email_tags    = new Give_Email_Template_Tags();
-				//				self::$instance->donators_gravatars = new Give_Donators_Gravatars();
+				self::$instance->roles           = new Give_Roles();
+				self::$instance->api             = new Give_API();
+				self::$instance->give_settings   = new Give_Plugin_Settings();
+				self::$instance->session         = new Give_Session();
+				self::$instance->html            = new Give_HTML_Elements();
+				self::$instance->emails          = new Give_Emails();
+				self::$instance->email_tags      = new Give_Email_Template_Tags();
 				self::$instance->customers       = new Give_DB_Customers();
+				self::$instance->customer_meta   = new Give_DB_Customer_Meta();
 				self::$instance->template_loader = new Give_Template_Loader();
+				self::$instance->email_access    = new Give_Email_Access();
 
 			}
 
@@ -181,11 +227,12 @@ if ( ! class_exists( 'Give' ) ) : /**
 		 *
 		 * @since  1.0
 		 * @access protected
+		 *
 		 * @return void
 		 */
 		public function __clone() {
 			// Cloning instances of the class is forbidden
-			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'give' ), '1.0' );
+			_doing_it_wrong( __FUNCTION__, esc_html__( 'Cheatin&#8217; uh?', 'give' ), '1.0' );
 		}
 
 		/**
@@ -193,25 +240,27 @@ if ( ! class_exists( 'Give' ) ) : /**
 		 *
 		 * @since  1.0
 		 * @access protected
+		 *
 		 * @return void
 		 */
 		public function __wakeup() {
-			// Unserializing instances of the class is forbidden
-			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'give' ), '1.0' );
+			// Unserializing instances of the class is forbidden.
+			_doing_it_wrong( __FUNCTION__, esc_html__( 'Cheatin&#8217; uh?', 'give' ), '1.0' );
 		}
 
 		/**
 		 * Setup plugin constants
 		 *
-		 * @access private
 		 * @since  1.0
+		 * @access private
+		 *
 		 * @return void
 		 */
 		private function setup_constants() {
 
 			// Plugin version
 			if ( ! defined( 'GIVE_VERSION' ) ) {
-				define( 'GIVE_VERSION', '1.3.6' );
+				define( 'GIVE_VERSION', '1.6' );
 			}
 
 			// Plugin Folder Path
@@ -243,14 +292,15 @@ if ( ! class_exists( 'Give' ) ) : /**
 		/**
 		 * Include required files
 		 *
-		 * @access private
 		 * @since  1.0
+		 * @access private
+		 *
 		 * @return void
 		 */
 		private function includes() {
 			global $give_options;
 
-			require_once GIVE_PLUGIN_DIR . 'includes/admin/register-settings.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/admin/class-give-settings.php';
 			$give_options = give_get_settings();
 
 			require_once GIVE_PLUGIN_DIR . 'includes/post-types.php';
@@ -264,6 +314,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donate-form.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-customers.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-customer-meta.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-customer.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-stats.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-session.php';
@@ -271,6 +322,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-logging.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-license-handler.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-cron.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-email-access.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/country-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/template-functions.php';
@@ -285,12 +337,14 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/process-purchase.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/login-register.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/user-functions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/plugin-compatibility.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/deprecated-functions.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/actions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/class-payment-stats.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/class-payments-query.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/payments/class-donators-gravatars.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/payments/class-give-payment.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/actions.php';
@@ -304,6 +358,10 @@ if ( ! class_exists( 'Give' ) ) : /**
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/template.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/actions.php';
 
+            if( defined( 'WP_CLI' ) && WP_CLI ) {
+                require_once GIVE_PLUGIN_DIR . 'includes/class-give-cli-commands.php';
+            }
+
 			if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-footer.php';
@@ -311,9 +369,7 @@ if ( ! class_exists( 'Give' ) ) : /**
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/class-admin-notices.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/class-api-keys-table.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-actions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/system-info.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/export-functions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/add-ons.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/plugins.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/dashboard-widgets.php';
@@ -327,7 +383,10 @@ if ( ! class_exists( 'Give' ) ) : /**
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/metabox.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/dashboard-columns.php';
 
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/export/export-functions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/reports.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/tools.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/tools/tools-actions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/pdf-reports.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/class-give-graph.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/graphing.php';
@@ -354,8 +413,9 @@ if ( ! class_exists( 'Give' ) ) : /**
 		/**
 		 * Loads the plugin language files
 		 *
-		 * @access public
 		 * @since  1.0
+		 * @access public
+		 *
 		 * @return void
 		 */
 		public function load_textdomain() {
@@ -382,15 +442,16 @@ if ( ! class_exists( 'Give' ) ) : /**
 				load_plugin_textdomain( 'give', false, $give_lang_dir );
 			}
 		}
+
 	}
-}
 
 endif; // End if class_exists check
 
 
 /**
- * The main function responsible for returning the one true Give
- * Instance to functions everywhere.
+ * Start Give 
+ * 
+ * The main function responsible for returning the one true Give instance to functions everywhere.
  *
  * Use this function like you would a global variable, except without needing
  * to declare the global.
@@ -398,7 +459,7 @@ endif; // End if class_exists check
  * Example: <?php $give = Give(); ?>
  *
  * @since 1.0
- * @return object - The one true Give Instance
+ * @return object|Give 
  */
 function Give() {
 	return Give::instance();

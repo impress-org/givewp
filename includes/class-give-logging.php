@@ -3,14 +3,16 @@
  * Class for logging events and errors
  *
  * @package     Give
- * @subpackage  Logging
- * @copyright   Copyright (c) 2015, WordImpress
+ * @subpackage  Classes/Give_Logging
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Give_Logging Class
@@ -22,11 +24,17 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class Give_Logging {
 
 	/**
-	 * Set up the Give Logging Class
+	 * Class Constructor
 	 *
-	 * @since 1.0
+	 * Set up the Give Logging Class.
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @return void
 	 */
 	public function __construct() {
+
 		// Create the log post type
 		add_action( 'init', array( $this, 'register_post_type' ), 1 );
 
@@ -36,55 +44,62 @@ class Give_Logging {
 	}
 
 	/**
-	 * Registers the give_log Post Type
+	 * Log Post Type
 	 *
+	 * Registers the 'give_log' Post Type.
+	 *
+	 * @since  1.0
 	 * @access public
-	 * @since 1.0
+	 *
 	 * @return void
 	 */
 	public function register_post_type() {
 		/* Logs post type */
 		$log_args = array(
-			'labels'			  => array( 'name' => __( 'Logs', 'give' ) ),
-			'public'			  => false,
+			'labels'              => array( 'name' => esc_html__( 'Logs', 'give' ) ),
+			'public'              => false,
 			'exclude_from_search' => true,
 			'publicly_queryable'  => false,
 			'show_ui'             => false,
-			'query_var'			  => false,
-			'rewrite'			  => false,
-			'capability_type'	  => 'post',
-			'supports'			  => array( 'title', 'editor' ),
-			'can_export'		  => true
+			'query_var'           => false,
+			'rewrite'             => false,
+			'capability_type'     => 'post',
+			'supports'            => array( 'title', 'editor' ),
+			'can_export'          => true
 		);
 
 		register_post_type( 'give_log', $log_args );
 	}
 
 	/**
-	 * Registers the Type Taxonomy
+	 * Log Type Taxonomy
 	 *
-	 * The "Type" taxonomy is used to determine the type of log entry
+	 * Registers the "Log Type" taxonomy.  Used to determine the type of log entry.
 	 *
+	 * @since  1.0
 	 * @access public
-	 * @since 1.0
+	 *
 	 * @return void
-	*/
+	 */
 	public function register_taxonomy() {
 		register_taxonomy( 'give_log_type', 'give_log', array( 'public' => false ) );
 	}
 
 	/**
-	 * Log types
+	 * Log Types
 	 *
-	 * Sets up the default log types and allows for new ones to be created
+	 * Sets up the default log types and allows for new ones to be created.
 	 *
+	 * @since  1.0
 	 * @access public
-	 * @since 1.0
-	 * @return  array $terms
+	 *
+	 * @return array $terms
 	 */
 	public function log_types() {
 		$terms = array(
-			'sale', 'gateway_error', 'api_request'
+			'sale',
+			'gateway_error',
+			'api_request'
 		);
 
 		return apply_filters( 'give_log_types', $terms );
@@ -93,15 +108,16 @@ class Give_Logging {
 	/**
 	 * Check if a log type is valid
 	 *
-	 * Checks to see if the specified type is in the registered list of types
+	 * Checks to see if the specified type is in the registered list of types.
 	 *
+	 * @since  1.0
 	 * @access public
-	 * @since 1.0
-	 * @uses Give_Logging::log_types()
-	 * @param string $type Log type
-	 * @return bool Whether log type is valid
+	 *
+	 * @param  string $type Log type.
+	 *
+	 * @return bool         Whether log type is valid.
 	 */
-	function valid_type( $type ) {
+	public function valid_type( $type ) {
 		return in_array( $type, $this->log_types() );
 	}
 
@@ -109,64 +125,81 @@ class Give_Logging {
 	 * Create new log entry
 	 *
 	 * This is just a simple and fast way to log something. Use $this->insert_log()
-	 * if you need to store custom meta data
+	 * if you need to store custom meta data.
 	 *
+	 * @since  1.0
 	 * @access public
-	 * @since 1.0
-	 * @uses Give_Logging::insert_log()
-	 * @param string $title Log entry title
-	 * @param string $message Log entry message
-	 * @param int $parent Log entry parent
-	 * @param string $type Log type (default: null)
-	 * @return int Log ID
+	 *
+	 * @param  string $title   Log entry title. Default is empty.
+	 * @param  string $message Log entry message. Default is empty.
+	 * @param  int    $parent  Log entry parent. Default is 0.
+	 * @param  string $type    Log type. Default is null.
+	 *
+	 * @return int             Log ID.
 	 */
 	public function add( $title = '', $message = '', $parent = 0, $type = null ) {
 		$log_data = array(
-			'post_title' 	=> $title,
-			'post_content'	=> $message,
-			'post_parent'	=> $parent,
-			'log_type'		=> $type
+			'post_title'   => $title,
+			'post_content' => $message,
+			'post_parent'  => $parent,
+			'log_type'     => $type
 		);
 
 		return $this->insert_log( $log_data );
 	}
 
 	/**
-	 * Easily retrieves log items for a particular object ID
+	 * Get Logs
 	 *
+	 * Retrieves log items for a particular object ID.
+	 *
+	 * @since  1.0
 	 * @access public
-	 * @since 1.0
-	 * @uses Give_Logging::get_connected_logs()
-	 * @param int $object_id (default: 0)
-	 * @param string $type Log type (default: null)
-	 * @param int $paged Page number (default: null)
-	 * @return array Array of the connected logs
-	*/
+	 *
+	 * @param  int    $object_id Log object ID. Default is 0.
+	 * @param  string $type      Log type. Default is null.
+	 * @param  int    $paged     Page number Default is null.
+	 *
+	 * @return array             An array of the connected logs.
+	 */
 	public function get_logs( $object_id = 0, $type = null, $paged = null ) {
-		return $this->get_connected_logs( array( 'post_parent' => $object_id, 'paged' => $paged, 'log_type' => $type ) );
+		return $this->get_connected_logs( array(
+			'post_parent' => $object_id,
+			'paged'       => $paged,
+			'log_type'    => $type
+		) );
 	}
 
 	/**
 	 * Stores a log entry
 	 *
+	 * @since  1.0
 	 * @access public
-	 * @since 1.0
-	 * @uses Give_Logging::valid_type()
-	 * @param array $log_data Log entry data
-	 * @param array $log_meta Log entry meta
-	 * @return int The ID of the newly created log item
+	 *
+	 * @param  array $log_data Log entry data.
+	 * @param  array $log_meta Log entry meta.
+	 *
+	 * @return int             The ID of the newly created log item.
 	 */
-	function insert_log( $log_data = array(), $log_meta = array() ) {
+	public function insert_log( $log_data = array(), $log_meta = array() ) {
 		$defaults = array(
-			'post_type' 	=> 'give_log',
-			'post_status'	=> 'publish',
-			'post_parent'	=> 0,
-			'post_content'	=> '',
-			'log_type'		=> false
+			'post_type'    => 'give_log',
+			'post_status'  => 'publish',
+			'post_parent'  => 0,
+			'post_content' => '',
+			'log_type'     => false
 		);
 
 		$args = wp_parse_args( $log_data, $defaults );
 
+		/**
+		 * Fires before inserting log entry.
+		 *
+		 * @since 1.0
+		 *
+		 * @param array $log_data Log entry data.
+		 * @param array $log_meta Log entry meta.
+		 */
 		do_action( 'give_pre_insert_log', $log_data, $log_meta );
 
 		// Store the log entry
@@ -184,6 +217,15 @@ class Give_Logging {
 			}
 		}
 
+		/**
+		 * Fires after inserting log entry.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int   $log_id   Log entry id.
+		 * @param array $log_data Log entry data.
+		 * @param array $log_meta Log entry meta.
+		 */
 		do_action( 'give_post_insert_log', $log_id, $log_data, $log_meta );
 
 		return $log_id;
@@ -192,20 +234,30 @@ class Give_Logging {
 	/**
 	 * Update and existing log item
 	 *
+	 * @since  1.0
 	 * @access public
-	 * @since 1.0
-	 * @param array $log_data Log entry data
-	 * @param array $log_meta Log entry meta
-	 * @return bool True if successful, false otherwise
+	 *
+	 * @param  array $log_data Log entry data.
+	 * @param  array $log_meta Log entry meta.
+	 *
+	 * @return bool            True if successful, false otherwise.
 	 */
 	public function update_log( $log_data = array(), $log_meta = array() ) {
 
+		/**
+		 * Fires before updating log entry.
+		 *
+		 * @since 1.0
+		 *
+		 * @param array $log_data Log entry data.
+		 * @param array $log_meta Log entry meta.
+		 */
 		do_action( 'give_pre_update_log', $log_data, $log_meta );
 
 		$defaults = array(
-			'post_type' 	=> 'give_log',
-			'post_status'	=> 'publish',
-			'post_parent'	=> 0
+			'post_type'   => 'give_log',
+			'post_status' => 'publish',
+			'post_parent' => 0
 		);
 
 		$args = wp_parse_args( $log_data, $defaults );
@@ -215,11 +267,21 @@ class Give_Logging {
 
 		if ( $log_id && ! empty( $log_meta ) ) {
 			foreach ( (array) $log_meta as $key => $meta ) {
-				if ( ! empty( $meta ) )
+				if ( ! empty( $meta ) ) {
 					update_post_meta( $log_id, '_give_log_' . sanitize_key( $key ), $meta );
+				}
 			}
 		}
 
+		/**
+		 * Fires after updating log entry.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int   $log_id   Log entry id.
+		 * @param array $log_data Log entry data.
+		 * @param array $log_meta Log entry meta.
+		 */
 		do_action( 'give_post_update_log', $log_id, $log_data, $log_meta );
 	}
 
@@ -228,12 +290,15 @@ class Give_Logging {
 	 *
 	 * Used for retrieving logs related to particular items, such as a specific donation.
 	 *
-	 * @access private
-	 * @since 1.0
-	 * @param array $args Query arguments
-	 * @return mixed array if logs were found, false otherwise
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @param  array $args Query arguments.
+	 *
+	 * @return array|false Array if logs were found, false otherwise.
 	 */
 	public function get_connected_logs( $args = array() ) {
+
 		$defaults = array(
 			'post_type'      => 'give_log',
 			'posts_per_page' => 20,
@@ -247,51 +312,54 @@ class Give_Logging {
 		if ( $query_args['log_type'] && $this->valid_type( $query_args['log_type'] ) ) {
 			$query_args['tax_query'] = array(
 				array(
-					'taxonomy' 	=> 'give_log_type',
-					'field'		=> 'slug',
-					'terms'		=> $query_args['log_type']
+					'taxonomy' => 'give_log_type',
+					'field'    => 'slug',
+					'terms'    => $query_args['log_type']
 				)
 			);
 		}
-
+		
 		$logs = get_posts( $query_args );
-
-		if ( $logs )
+	
+		if ( $logs ) {
 			return $logs;
+		}
 
 		// No logs found
 		return false;
 	}
 
 	/**
-	 * Retrieves number of log entries connected to particular object ID
+	 * Retrieve Log Count
 	 *
+	 * Retrieves number of log entries connected to particular object ID.
+	 *
+	 * @since  1.0
 	 * @access public
-	 * @since 1.0
-	 * @param int $object_id (default: 0)
-	 * @param string $type Log type (default: null)
-	 * @param array $meta_query Log meta query (default: null)
-	 * @param array $date_query Log data query (default: null) (since 1.9)
-	 * @return int Log count
+	 *
+	 * @param  int    $object_id  Log object ID. Default is 0.
+	 * @param  string $type       Log type. Default is null.
+	 * @param  array  $meta_query Log meta query. Default is null.
+	 * @param  array  $date_query Log data query. Default is null.
+	 *
+	 * @return int                Log count.
 	 */
 	public function get_log_count( $object_id = 0, $type = null, $meta_query = null, $date_query = null ) {
-		
-		global $pagenow, $typenow;
 
 		$query_args = array(
-			'post_parent' 	   => $object_id,
-			'post_type'		   => 'give_log',
-			'posts_per_page'   => -1,
-			'post_status'	   => 'publish',
-			'fields'           => 'ids',
+			'post_parent'    => $object_id,
+			'post_type'      => 'give_log',
+			'posts_per_page' => - 1,
+			'post_status'    => 'publish',
+			'fields'         => 'ids',
 		);
 
 		if ( ! empty( $type ) && $this->valid_type( $type ) ) {
 			$query_args['tax_query'] = array(
 				array(
-					'taxonomy' 	=> 'give_log_type',
-					'field'		=> 'slug',
-					'terms'		=> $type
+					'taxonomy' => 'give_log_type',
+					'field'    => 'slug',
+					'terms'    => $type
 				)
 			);
 		}
@@ -310,31 +378,34 @@ class Give_Logging {
 	}
 
 	/**
-	 * Delete a log
+	 * Delete Logs
 	 *
+	 * Remove log entries connected to particular object ID.
+	 *
+	 * @since  1.0
 	 * @access public
-	 * @since 1.0
-	 * @uses Give_Logging::valid_type
-	 * @param int $object_id (default: 0)
-	 * @param string $type Log type (default: null)
-	 * @param array $meta_query Log meta query (default: null)
+	 *
+	 * @param  int    $object_id  Log object ID. Default is 0.
+	 * @param  string $type       Log type. Default is null.
+	 * @param  array  $meta_query Log meta query. Default is null.
+	 *
 	 * @return void
 	 */
-	public function delete_logs( $object_id = 0, $type = null, $meta_query = null  ) {
+	public function delete_logs( $object_id = 0, $type = null, $meta_query = null ) {
 		$query_args = array(
-			'post_parent' 	=> $object_id,
-			'post_type'		=> 'give_log',
-			'posts_per_page'=> -1,
-			'post_status'	=> 'publish',
-			'fields'        => 'ids'
+			'post_parent'    => $object_id,
+			'post_type'      => 'give_log',
+			'posts_per_page' => - 1,
+			'post_status'    => 'publish',
+			'fields'         => 'ids'
 		);
 
 		if ( ! empty( $type ) && $this->valid_type( $type ) ) {
 			$query_args['tax_query'] = array(
 				array(
-					'taxonomy' 	=> 'give_log_type',
-					'field'		=> 'slug',
-					'terms'		=> $type,
+					'taxonomy' => 'give_log_type',
+					'field'    => 'slug',
+					'terms'    => $type,
 				)
 			);
 		}
@@ -360,23 +431,21 @@ $GLOBALS['give_logs'] = new Give_Logging();
 /**
  * Record a log entry
  *
- * This is just a simple wrapper function for the log class add() function
+ * A wrapper function for the Give_Logging class add() method.
  *
- * @since 1.0
+ * @since  1.0
  *
- * @param string $title
- * @param string $message
- * @param int    $parent
- * @param null   $type
+ * @param  string $title   Log title. Default is empty.
+ * @param  string $message Log message. Default is empty.
+ * @param  int    $parent  Parent log. Default is 0.
+ * @param  string $type    Log type. Default is null.
  *
- * @global $give_logs GIVE Logs Object
- *
- * @uses Give_Logging::add()
- *
- * @return mixed ID of the new log entry
+ * @return mixed           ID of the new log entry.
  */
 function give_record_log( $title = '', $message = '', $parent = 0, $type = null ) {
+	/* @var Give_Logging $give_logs */
 	global $give_logs;
 	$log = $give_logs->add( $title, $message, $parent, $type );
+
 	return $log;
 }

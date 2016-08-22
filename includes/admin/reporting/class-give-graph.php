@@ -265,6 +265,7 @@ class Give_Graph {
 
 				var previousPoint = null;
 				$( "#give-graph-<?php echo $this->id; ?>" ).bind( "plothover", function ( event, pos, item ) {
+
 					$( "#x" ).text( pos.x.toFixed( 2 ) );
 					$( "#y" ).text( pos.y.toFixed( 2 ) );
 					if ( item ) {
@@ -272,15 +273,18 @@ class Give_Graph {
 							previousPoint = item.dataIndex;
 							$( "#give-flot-tooltip" ).remove();
 							var x = item.datapoint[0].toFixed( 2 ),
-								y = item.datapoint[1].toFixed( 2 );
-							if ( item.series.id == 'earnings' ) {
+                                y = accounting.formatMoney( item.datapoint[1].toFixed( give_vars.currency_decimals ), '', give_vars.currency_decimals, give_vars.thousands_separator, give_vars.decimal_separator );
+
+							if ( item.series.id == 'income' ) {
+
 								if ( give_vars.currency_pos == 'before' ) {
+
 									give_flot_tooltip( item.pageX, item.pageY, item.series.label + ' ' + give_vars.currency_sign + y );
 								} else {
 									give_flot_tooltip( item.pageX, item.pageY, item.series.label + ' ' + y + give_vars.currency_sign );
 								}
 							} else {
-								give_flot_tooltip( item.pageX, item.pageY, item.series.label + ' ' + y.replace( '.00', '' ) );
+								give_flot_tooltip( item.pageX, item.pageY, item.series.label + ' ' + parseInt( y ) );
 							}
 						}
 					} else {
@@ -303,8 +307,25 @@ class Give_Graph {
 	 * @since 1.0
 	 */
 	public function display() {
+		/**
+		 * Fires before displaying the final graph.
+		 *
+		 * @since 1.0
+		 *
+		 * @param Give_Graph $this Graph object.
+		 */
 		do_action( 'give_before_graph', $this );
+
+		// Build the graph.
 		echo $this->build_graph();
+
+		/**
+		 * Fires after displaying the final graph.
+		 *
+		 * @since 1.0
+		 *
+		 * @param Give_Graph $this Graph object.
+		 */
 		do_action( 'give_after_graph', $this );
 	}
 

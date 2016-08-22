@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Admin
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.3.0
  */
@@ -18,7 +18,7 @@ class Give_Shortcode_Profile_Editor extends Give_Shortcode_Generator {
 	 */
 	public function __construct() {
 
-		$this->shortcode['label'] = __( 'Profile Editor', 'give' );
+		$this->shortcode['label'] = esc_html__( 'Profile Editor', 'give' );
 
 		parent::__construct( 'give_profile_editor' );
 	}

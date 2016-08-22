@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Classes/Stats
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -17,27 +17,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Give_Stats Class
  *
- * This class is for retrieving stats for earnings and sales
+ * This class is for retrieving stats for earnings and sales.
  *
- * Stats can be retrieved for date ranges and pre-defined periods
+ * Stats can be retrieved for date ranges and pre-defined periods.
  *
  * @since 1.0
  */
 class Give_Payment_Stats extends Give_Stats {
 
-
 	/**
 	 * Retrieve sale stats
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param $form_id    INT The donation form to retrieve stats for. If false, gets stats for all forms
-	 * @param $start_date string|bool The starting date for which we'd like to filter our sale stats. If false, we'll use the default start date of `this_month`
-	 * @param $end_date   string|bool The end date for which we'd like to filter our sale stats. If false, we'll use the default end date of `this_month`
-	 * @param $status     string|array The sale status(es) to count. Only valid when retrieving global stats
+	 * @param  $form_id    int          The donation form to retrieve stats for. If false, gets stats for all forms
+	 * @param  $start_date string|bool  The starting date for which we'd like to filter our sale stats. If false, we'll use the default start date of `this_month`
+	 * @param  $end_date   string|bool  The end date for which we'd like to filter our sale stats. If false, we'll use the default end date of `this_month`
+	 * @param  $status     string|array The sale status(es) to count. Only valid when retrieving global stats
 	 *
-	 * @return float|int
+	 * @return float|int                Total amount of donations based on the passed arguments.
 	 */
 	public function get_sales( $form_id = 0, $start_date = false, $end_date = false, $status = 'publish' ) {
 
@@ -71,6 +70,8 @@ class Give_Payment_Stats extends Give_Stats {
 
 		} else {
 
+			$this->timestamp = false;
+
 			// Product specific stats
 			global $give_logs;
 
@@ -90,15 +91,15 @@ class Give_Payment_Stats extends Give_Stats {
 	/**
 	 * Retrieve earning stats
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param $form_id       INT The donation form to retrieve stats for. If false, gets stats for all forms
-	 * @param $start_date    string|bool The starting date for which we'd like to filter our donation earnings stats. If false, we'll use the default start date of `this_month`
-	 * @param $end_date      string|bool The end date for which we'd like to filter our sale stats. If false, we'll use the default end date of `this_month`
-	 * @param $gateway_id    string|bool The gateway to get earnings for such as 'paypal' or 'stripe'
+	 * @param  $form_id     int         The donation form to retrieve stats for. If false, gets stats for all forms
+	 * @param  $start_date  string|bool The starting date for which we'd like to filter our donation earnings stats. If false, we'll use the default start date of `this_month`
+	 * @param  $end_date    string|bool The end date for which we'd like to filter our sale stats. If false, we'll use the default end date of `this_month`
+	 * @param  $gateway_id  string|bool The gateway to get earnings for such as 'paypal' or 'stripe'
 	 *
-	 * @return float|int
+	 * @return float|int                Total amount of donations based on the passed arguments.
 	 */
 	public function get_earnings( $form_id = 0, $start_date = false, $end_date = false, $gateway_id = false ) {
 
@@ -124,7 +125,7 @@ class Give_Payment_Stats extends Give_Stats {
 			$args = array(
 				'post_type'              => 'give_payment',
 				'nopaging'               => true,
-				'post_status'            => array( 'publish', 'revoked' ),
+				'post_status'            => array( 'publish' ),
 				'fields'                 => 'ids',
 				'update_post_term_cache' => false,
 				'suppress_filters'       => false,
@@ -143,13 +144,13 @@ class Give_Payment_Stats extends Give_Stats {
 
 			$args = apply_filters( 'give_stats_earnings_args', $args );
 			$key  = 'give_stats_' . substr( md5( serialize( $args ) ), 0, 15 );
-
 			$earnings = get_transient( $key );
+			
 			if ( false === $earnings ) {
 				$sales    = get_posts( $args );
 				$earnings = 0;
 				if ( $sales ) {
-					$sales = implode( ',', $sales );
+					$sales = implode( ',', array_map('intval', $sales ) );
 					$earnings += $wpdb->get_var( "SELECT SUM(meta_value) FROM $wpdb->postmeta WHERE meta_key = '_give_payment_total' AND post_id IN({$sales})" );
 				}
 				// Cache the results for one hour
@@ -173,7 +174,6 @@ class Give_Payment_Stats extends Give_Stats {
 				'give_transient_type' => 'give_earnings',
 				// This is not a valid query arg, but is used for cache keying
 			);
-
 			$args = apply_filters( 'give_stats_earnings_args', $args );
 			$key  = 'give_stats_' . substr( md5( serialize( $args ) ), 0, 15 );
 			//Set transient for faster stats
@@ -181,15 +181,18 @@ class Give_Payment_Stats extends Give_Stats {
 
 			if ( false === $earnings ) {
 
+				$this->timestamp = false;
 				$log_ids  = $give_logs->get_connected_logs( $args, 'sale' );
 				$earnings = 0;
 
 				if ( $log_ids ) {
-					$log_ids     = implode( ',', $log_ids );
+					$log_ids     = implode( ',', array_map('intval', $log_ids ) );
 					$payment_ids = $wpdb->get_col( "SELECT meta_value FROM $wpdb->postmeta WHERE meta_key='_give_log_payment_id' AND post_id IN ($log_ids);" );
+
 					foreach ( $payment_ids as $payment_id ) {
 						$earnings += give_get_payment_amount( $payment_id );
 					}
+					
 				}
 
 				// Cache the results for one hour
@@ -206,14 +209,14 @@ class Give_Payment_Stats extends Give_Stats {
 	}
 
 	/**
-	 * Get the best selling Forms
+	 * Get the best selling forms
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param $number int The number of results to retrieve with the default set to 10.
+	 * @param  $number int The number of results to retrieve with the default set to 10.
 	 *
-	 * @return array
+	 * @return array       Best selling forms
 	 */
 	public function get_best_selling( $number = 10 ) {
 

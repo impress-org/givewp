@@ -1,10 +1,10 @@
 <?php
 /**
- * Customer (Donor) Object
+ * Customer (Donor)
  *
  * @package     Give
- * @subpackage  Classes/Customer
- * @copyright   Copyright (c) 2015, WordImpress
+ * @subpackage  Classes/Give_Customer
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -17,6 +17,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Give_Customer Class
  *
+ * This class handles customers.
+ *
  * @since 1.0
  */
 class Give_Customer {
@@ -24,42 +26,60 @@ class Give_Customer {
 	/**
 	 * The customer ID
 	 *
-	 * @since 1.0
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @var    int
 	 */
 	public $id = 0;
 
 	/**
-	 * The customer's purchase count
+	 * The customer's donation count
 	 *
-	 * @since 1.0
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @var    int
 	 */
 	public $purchase_count = 0;
 
 	/**
 	 * The customer's lifetime value
 	 *
-	 * @since 1.0
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @var    int
 	 */
 	public $purchase_value = 0;
 
 	/**
 	 * The customer's email
 	 *
-	 * @since 1.0
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @var    string
 	 */
 	public $email;
 
 	/**
 	 * The customer's name
 	 *
-	 * @since 1.0
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @var    string
 	 */
 	public $name;
 
 	/**
 	 * The customer's creation date
 	 *
-	 * @since 1.0
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @var    string
 	 */
 	public $date_created;
 
@@ -67,6 +87,9 @@ class Give_Customer {
 	 * The payment IDs associated with the customer
 	 *
 	 * @since  1.0
+	 * @access public
+	 *
+	 * @var    array
 	 */
 	public $payment_ids;
 
@@ -74,6 +97,9 @@ class Give_Customer {
 	 * The user ID associated with the customer
 	 *
 	 * @since  1.0
+	 * @access public
+	 *
+	 * @var    int
 	 */
 	public $user_id;
 
@@ -81,6 +107,9 @@ class Give_Customer {
 	 * Customer Notes
 	 *
 	 * @since  1.0
+	 * @access public
+	 *
+	 * @var    string
 	 */
 	public $notes;
 
@@ -88,14 +117,22 @@ class Give_Customer {
 	 * The Database Abstraction
 	 *
 	 * @since  1.0
+	 * @access protected
+	 *
+	 * @var    Give_DB_Customers
 	 */
 	protected $db;
 
 	/**
-	 * Give_Customer constructor.
+	 * Class Constructor
 	 *
-	 * @param bool $_id_or_email
-	 * @param bool $by_user_id
+	 * Set up the Give Customer Class.
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @param  bool $_id_or_email 
+	 * @param  bool $by_user_id
 	 */
 	public function __construct( $_id_or_email = false, $by_user_id = false ) {
 
@@ -124,13 +161,16 @@ class Give_Customer {
 	}
 
 	/**
-	 * Given the customer data, let's set the variables
+	 * Setup Customer
+	 *
+	 * Given the customer data, let's set the variables.
 	 *
 	 * @since  1.0
+	 * @access private
 	 *
-	 * @param  object $customer The Customer Object
+	 * @param  object $customer The Customer Object.
 	 *
-	 * @return bool             If the setup was successful or not
+	 * @return bool             If the setup was successful or not.
 	 */
 	private function setup_customer( $customer ) {
 
@@ -164,9 +204,10 @@ class Give_Customer {
 	}
 
 	/**
-	 * Magic __get function to dispatch a call to retrieve a private property
+	 * Magic __get function to dispatch a call to retrieve a private property.
 	 *
-	 * @since 1.0
+	 * @since  1.0
+	 * @access public
 	 */
 	public function __get( $key ) {
 
@@ -176,7 +217,8 @@ class Give_Customer {
 
 		} else {
 
-			return new WP_Error( 'give-customer-invalid-property', sprintf( __( 'Can\'t get property %s', 'give' ), $key ) );
+			/* translators: %s: property key */
+			return new WP_Error( 'give-customer-invalid-property', sprintf( esc_html__( 'Can\'t get property %s.', 'give' ), $key ) );
 
 		}
 
@@ -186,10 +228,11 @@ class Give_Customer {
 	 * Creates a customer
 	 *
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param  array $data Array of attributes for a customer
+	 * @param  array $data Array of attributes for a customer.
 	 *
-	 * @return mixed        False if not a valid creation, Customer ID if user is found or valid creation
+	 * @return bool|int    False if not a valid creation, customer ID if user is found or valid creation.
 	 */
 	public function create( $data = array() ) {
 
@@ -212,6 +255,13 @@ class Give_Customer {
 			$args['payment_ids'] = implode( ',', array_unique( array_values( $args['payment_ids'] ) ) );
 		}
 
+		/**
+		 * Fires before creating customers.
+		 *
+		 * @since 1.0
+		 *
+		 * @param array $args Customer attributes.
+		 */
 		do_action( 'give_customer_pre_create', $args );
 
 		$created = false;
@@ -228,6 +278,15 @@ class Give_Customer {
 			$created = $this->id;
 		}
 
+		/**
+		 * Fires after creating customers.
+		 *
+		 * @since 1.0
+		 *
+		 * @param bool|int $created False if not a valid creation,
+		 *                          customer ID if user is found or valid creation.
+		 * @param array    $args    Customer attributes.
+		 */
 		do_action( 'give_customer_post_create', $created, $args );
 
 		return $created;
@@ -238,10 +297,11 @@ class Give_Customer {
 	 * Update a customer record
 	 *
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param  array $data Array of data attributes for a customer (checked via whitelist)
+	 * @param  array $data Array of data attributes for a customer (checked via whitelist).
 	 *
-	 * @return bool         If the update was successful or not
+	 * @return bool        If the update was successful or not.
 	 */
 	public function update( $data = array() ) {
 
@@ -251,6 +311,14 @@ class Give_Customer {
 
 		$data = $this->sanitize_columns( $data );
 
+		/**
+		 * Fires before updating customers.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int   $customer_id Customer id.
+		 * @param array $data        Customer attributes.
+		 */
 		do_action( 'give_customer_pre_update', $this->id, $data );
 
 		$updated = false;
@@ -263,21 +331,32 @@ class Give_Customer {
 			$updated = true;
 		}
 
+		/**
+		 * Fires after updating customers.
+		 *
+		 * @since 1.0
+		 *
+		 * @param bool  $updated     If the update was successful or not.
+		 * @param int   $customer_id Customer id.
+		 * @param array $data        Customer attributes.
+		 */
 		do_action( 'give_customer_post_update', $updated, $this->id, $data );
 
 		return $updated;
 	}
 
-
 	/**
-	 * Attach payment to the customer then triggers increasing stats
+	 * Attach Payment
+	 *
+	 * Attach payment to the customer then triggers increasing stats.
 	 *
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param  int  $payment_id   The payment ID to attach to the customer
-	 * @param  bool $update_stats For backwards compatibility, if we should increase the stats or not
+	 * @param  int  $payment_id   The payment ID to attach to the customer.
+	 * @param  bool $update_stats For backwards compatibility, if we should increase the stats or not.
 	 *
-	 * @return bool            If the attachment was successfuly
+	 * @return bool            If the attachment was successfuly.
 	 */
 	public function attach_payment( $payment_id = 0, $update_stats = true ) {
 
@@ -303,6 +382,14 @@ class Give_Customer {
 
 		}
 
+		/**
+		 * Fires before attaching payments to customers.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int $payment_id  Payment id.
+		 * @param int $customer_id Customer id.
+		 */
 		do_action( 'give_customer_pre_attach_payment', $payment_id, $this->id );
 
 		$payment_added = $this->update( array( 'payment_ids' => $new_payment_ids ) );
@@ -324,26 +411,43 @@ class Give_Customer {
 
 		}
 
+		/**
+		 * Fires after attaching payments to customers.
+		 *
+		 * @since 1.0
+		 *
+		 * @param bool $payment_added If the attachment was successfuly.
+		 * @param int  $payment_id    Payment id.
+		 * @param int  $customer_id   Customer id.
+		 */
 		do_action( 'give_customer_post_attach_payment', $payment_added, $payment_id, $this->id );
 
 		return $payment_added;
 	}
 
-
 	/**
-	 * Remove a payment from this customer, then triggers reducing stats
+	 * Remove Payment
+	 *
+	 * Remove a payment from this customer, then triggers reducing stats.
 	 *
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param  integer $payment_id   The Payment ID to remove
-	 * @param  bool    $update_stats For backwards compatibility, if we should increase the stats or not
+	 * @param  int  $payment_id   The Payment ID to remove.
+	 * @param  bool $update_stats For backwards compatibility, if we should increase the stats or not.
 	 *
-	 * @return boolean             If the removal was successful
+	 * @return boolean               If the removal was successful.
 	 */
 	public function remove_payment( $payment_id = 0, $update_stats = true ) {
 
 		if ( empty( $payment_id ) ) {
 			return false;
+		}
+
+		$payment = new Give_Payment( $payment_id );
+
+		if ( 'publish' !== $payment->status && 'revoked' !== $payment->status ) {
+			$update_stats = false;
 		}
 
 		$new_payment_ids = '';
@@ -364,6 +468,14 @@ class Give_Customer {
 
 		}
 
+		/**
+		 * Fires before removing payments from customers.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int $payment_id  Payment id.
+		 * @param int $customer_id Customer id.
+		 */
 		do_action( 'give_customer_pre_remove_payment', $payment_id, $this->id );
 
 		$payment_removed = $this->update( array( 'payment_ids' => $new_payment_ids ) );
@@ -385,6 +497,15 @@ class Give_Customer {
 
 		}
 
+		/**
+		 * Fires after removing payments from customers.
+		 *
+		 * @since 1.0
+		 *
+		 * @param bool $payment_removed If the removal was successfuly.
+		 * @param int  $payment_id      Payment id.
+		 * @param int  $customer_id     Customer id.
+		 */
 		do_action( 'give_customer_post_remove_payment', $payment_removed, $payment_id, $this->id );
 
 		return $payment_removed;
@@ -392,42 +513,61 @@ class Give_Customer {
 	}
 
 	/**
-	 * Increase the purchase count of a customer
+	 * Increase the donation count of a customer.
 	 *
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param  integer $count The number to imcrement by
+	 * @param  int $count The number to increase by.
 	 *
-	 * @return int            The purchase count
+	 * @return int        The donation count.
 	 */
 	public function increase_purchase_count( $count = 1 ) {
 
-		// Make sure it's numeric and not negative
+		// Make sure it's numeric and not negative.
 		if ( ! is_numeric( $count ) || $count != absint( $count ) ) {
 			return false;
 		}
 
 		$new_total = (int) $this->purchase_count + (int) $count;
 
+		/**
+		 * Fires before increasing customer donation count.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int $count       The number to increase by.
+		 * @param int $customer_id Customer id.
+		 */
 		do_action( 'give_customer_pre_increase_purchase_count', $count, $this->id );
 
 		if ( $this->update( array( 'purchase_count' => $new_total ) ) ) {
 			$this->purchase_count = $new_total;
 		}
 
+		/**
+		 * Fires after increasing customer donation count.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int $purchase_count Customer donation count.
+		 * @param int $count          The number increased by.
+		 * @param int $customer_id    Customer id.
+		 */
 		do_action( 'give_customer_post_increase_purchase_count', $this->purchase_count, $count, $this->id );
 
 		return $this->purchase_count;
 	}
 
 	/**
-	 * Decrease the customer purchase count
+	 * Decrease the customer donation count.
 	 *
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param  integer $count The amount to decrease by
+	 * @param  int $count The amount to decrease by.
 	 *
-	 * @return mixed          If successful, the new count, otherwise false
+	 * @return mixed      If successful, the new count, otherwise false.
 	 */
 	public function decrease_purchase_count( $count = 1 ) {
 
@@ -442,49 +582,85 @@ class Give_Customer {
 			$new_total = 0;
 		}
 
+		/**
+		 * Fires before decreasing customer donation count.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int $count       The number to decrease by.
+		 * @param int $customer_id Customer id.
+		 */
 		do_action( 'give_customer_pre_decrease_purchase_count', $count, $this->id );
 
 		if ( $this->update( array( 'purchase_count' => $new_total ) ) ) {
 			$this->purchase_count = $new_total;
 		}
 
+		/**
+		 * Fires after decreasing customer donation count.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int $purchase_count Customer donation count.
+		 * @param int $count          The number decreased by.
+		 * @param int $customer_id    Customer id.
+		 */
 		do_action( 'give_customer_post_decrease_purchase_count', $this->purchase_count, $count, $this->id );
 
 		return $this->purchase_count;
 	}
 
 	/**
-	 * Increase the customer's lifetime value
+	 * Increase the customer's lifetime value.
 	 *
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param  float $value The value to increase by
+	 * @param  float $value The value to increase by.
 	 *
-	 * @return mixed         If successful, the new value, otherwise false
+	 * @return mixed        If successful, the new value, otherwise false.
 	 */
 	public function increase_value( $value = 0.00 ) {
 
 		$new_value = floatval( $this->purchase_value ) + $value;
 
+		/**
+		 * Fires before increasing customer lifetime value.
+		 *
+		 * @since 1.0
+		 *
+		 * @param float $value       The value to increase by.
+		 * @param int   $customer_id Customer id.
+		 */
 		do_action( 'give_customer_pre_increase_value', $value, $this->id );
 
 		if ( $this->update( array( 'purchase_value' => $new_value ) ) ) {
 			$this->purchase_value = $new_value;
 		}
 
+		/**
+		 * Fires after increasing customer lifetime value.
+		 *
+		 * @since 1.0
+		 *
+		 * @param float $purchase_value Customer lifetime value.
+		 * @param float $value          The value increased by.
+		 * @param int   $customer_id    Customer id.
+		 */
 		do_action( 'give_customer_post_increase_value', $this->purchase_value, $value, $this->id );
 
 		return $this->purchase_value;
 	}
 
 	/**
-	 * Decrease a customer's lifetime value
+	 * Decrease a customer's lifetime value.
 	 *
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param  float $value The value to decrease by
+	 * @param  float $value The value to decrease by.
 	 *
-	 * @return mixed         If successful, the new value, otherwise false
+	 * @return mixed        If successful, the new value, otherwise false.
 	 */
 	public function decrease_value( $value = 0.00 ) {
 
@@ -494,26 +670,83 @@ class Give_Customer {
 			$new_value = 0.00;
 		}
 
+		/**
+		 * Fires before decreaseing customer lifetime value.
+		 *
+		 * @since 1.0
+		 *
+		 * @param float $value       The value to decrease by.
+		 * @param int   $customer_id Customer id.
+		 */
 		do_action( 'give_customer_pre_decrease_value', $value, $this->id );
 
 		if ( $this->update( array( 'purchase_value' => $new_value ) ) ) {
 			$this->purchase_value = $new_value;
 		}
 
+		/**
+		 * Fires after decreaseing customer lifetime value.
+		 *
+		 * @since 1.0
+		 *
+		 * @param float $purchase_value Customer lifetime value.
+		 * @param float $value          The value decreased by.
+		 * @param int   $customer_id    Customer id.
+		 */
 		do_action( 'give_customer_post_decrease_value', $this->purchase_value, $value, $this->id );
 
 		return $this->purchase_value;
 	}
 
 	/**
-	 * Get the parsed notes for a customer as an array
+	 * Decrease/Increase a customer's lifetime value.
+     *
+     * This function will update donation stat on basis of current amount and new amount donation difference.
+     * Difference value can positive or negative. Negative value will decrease user donation stat while positive value increase donation stat.
+     *
+	 * @since  1.0
+     * @access public
+	 *
+	 * @param  float $curr_amount Current Donation amount.
+	 * @param  float $new_amount  New (changed) Donation amount.
+	 *
+	 * @return mixed              If successful, the new donation stat value, otherwise false.
+	 */
+	public function update_donation_value( $curr_amount, $new_amount ) {
+        /**
+         * Payment total difference value can be:
+         *  zero   (in case amount not change)
+         *  or -ve (in case amount decrease)
+         *  or +ve (in case amount increase)
+         */
+        $payment_total_diff = $new_amount - $curr_amount;
+
+        // We do not need to update donation stat if donation did not change.
+        if( ! $payment_total_diff ) {
+            return false;
+        }
+
+
+        if( $payment_total_diff > 0 ) {
+            $this->increase_value( $payment_total_diff );
+        }else{
+            // Pass payment total difference as +ve value to decrease amount from user lifetime stat.
+            $this->decrease_value( -$payment_total_diff );
+        }
+
+        return $this->purchase_value;
+	}
+
+	/**
+	 * Get the parsed notes for a customer as an array.
 	 *
 	 * @since  1.0
+     * @access public
 	 *
-	 * @param  integer $length The number of notes to get
-	 * @param  integer $paged  What note to start at
+	 * @param  int $length The number of notes to get.
+	 * @param  int $paged  What note to start at.
 	 *
-	 * @return array           The notes requsted
+	 * @return array       The notes requested.
 	 */
 	public function get_notes( $length = 20, $paged = 1 ) {
 
@@ -530,10 +763,12 @@ class Give_Customer {
 	}
 
 	/**
-	 * Get the total number of notes we have after parsing
+	 * Get the total number of notes we have after parsing.
 	 *
 	 * @since  1.0
-	 * @return int The number of notes for the customer
+     * @access public
+	 *
+	 * @return int The number of notes for the customer.
 	 */
 	public function get_notes_count() {
 
@@ -545,13 +780,14 @@ class Give_Customer {
 	}
 
 	/**
-	 * Add a note for the customer
+	 * Add a note for the customer.
 	 *
 	 * @since  1.0
+     * @access public
 	 *
-	 * @param string $note The note to add
+	 * @param  string $note   The note to add. Default is empty.
 	 *
-	 * @return string|boolean The new note if added succesfully, false otherwise
+	 * @return string|boolean The new note if added successfully, false otherwise.
 	 */
 	public function add_note( $note = '' ) {
 
@@ -570,6 +806,14 @@ class Give_Customer {
 		$new_note    = apply_filters( 'give_customer_add_note_string', $note_string );
 		$notes .= "\n\n" . $new_note;
 
+		/**
+		 * Fires before customer note added.
+		 *
+		 * @since 1.0
+		 *
+		 * @param string $new_note    New note to add.
+		 * @param int    $customer_id Customer id.
+		 */
 		do_action( 'give_customer_pre_add_note', $new_note, $this->id );
 
 		$updated = $this->update( array( 'notes' => $notes ) );
@@ -578,6 +822,15 @@ class Give_Customer {
 			$this->notes = $this->get_notes();
 		}
 
+		/**
+		 * Fires after customer note added.
+		 *
+		 * @since 1.0
+		 *
+		 * @param array  $customer_notes Customer notes.
+		 * @param string $new_note       New note added.
+		 * @param int    $customer_id    Customer id.
+		 */
 		do_action( 'give_customer_post_add_note', $this->notes, $new_note, $this->id );
 
 		// Return the formatted note, so we can test, as well as update any displays
@@ -589,7 +842,9 @@ class Give_Customer {
 	 * Get the notes column for the customer
 	 *
 	 * @since  1.0
-	 * @return string The Notes for the customer, non-parsed
+     * @access private
+	 *
+	 * @return string The Notes for the customer, non-parsed.
 	 */
 	private function get_raw_notes() {
 
@@ -600,13 +855,76 @@ class Give_Customer {
 	}
 
 	/**
+	 * Retrieve customer meta field for a customer.
+	 *
+	 * @since  1.6
+	 * @access public
+	 *
+	 * @param  string $meta_key The meta key to retrieve. Default is empty.
+	 * @param  bool   $single   Whether to return a single value. Default is true.
+	 *
+	 * @return mixed            Will be an array if $single is false. Will be value of meta data field if $single is true.
+	 */
+	public function get_meta( $meta_key = '', $single = true ) {
+		return Give()->customer_meta->get_meta( $this->id, $meta_key, $single );
+	}
+
+	/**
+	 * Add meta data field to a customer.
+	 *
+	 * @since  1.6
+	 * @access public
+	 *
+	 * @param  string $meta_key   Metadata name. Default is empty.
+	 * @param  mixed  $meta_value Metadata value.
+	 * @param  bool   $unique     Optional. Whether the same key should not be added. Default is false.
+	 *
+	 * @return bool               False for failure. True for success.
+	 */
+	public function add_meta( $meta_key = '', $meta_value, $unique = false ) {
+		return Give()->customer_meta->add_meta( $this->id, $meta_key, $meta_value, $unique );
+	}
+
+	/**
+	 * Update customer meta field based on customer ID.
+	 *
+	 * @since  1.6
+	 * @access public
+	 *
+	 * @param  string $meta_key   Metadata key. Default is empty.
+	 * @param  mixed  $meta_value Metadata value.
+	 * @param  mixed  $prev_value Optional. Previous value to check before removing. Default is empty.
+	 *
+	 * @return bool               False on failure, true if success.
+	 */
+	public function update_meta( $meta_key = '', $meta_value, $prev_value = '' ) {
+		return Give()->customer_meta->update_meta( $this->id, $meta_key, $meta_value, $prev_value );
+	}
+
+	/**
+	 * Remove metadata matching criteria from a customer.
+	 *
+	 * @since  1.6
+	 * @access public
+	 *
+	 * @param  string $meta_key   Metadata name. Default is empty.
+	 * @param  mixed  $meta_value Optional. Metadata value. Default is empty.
+	 *
+	 * @return bool               False for failure. True for success.
+	 */
+	public function delete_meta( $meta_key = '', $meta_value = '' ) {
+		return Give()->customer_meta->delete_meta( $this->id, $meta_key, $meta_value );
+	}
+
+	/**
 	 * Sanitize the data for update/create
 	 *
 	 * @since  1.0
+     * @access private
 	 *
-	 * @param  array $data The data to sanitize
+	 * @param  array $data The data to sanitize.
 	 *
-	 * @return array       The sanitized data, based off column defaults
+	 * @return array       The sanitized data, based off column defaults.
 	 */
 	private function sanitize_columns( $data ) {
 

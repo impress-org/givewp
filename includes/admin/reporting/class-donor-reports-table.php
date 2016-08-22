@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Admin/Reports
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -63,8 +63,8 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 
 		// Set parent defaults
 		parent::__construct( array(
-			'singular' => __( 'Donor', 'give' ),     // Singular name of the listed records
-			'plural'   => __( 'Donors', 'give' ),    // Plural name of the listed records
+			'singular' => esc_html__( 'Donor', 'give' ),     // Singular name of the listed records
+			'plural'   => esc_html__( 'Donors', 'give' ),    // Plural name of the listed records
 			'ajax'     => false                        // Does this table support ajax?
 		) );
 
@@ -73,7 +73,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	/**
 	 * Remove default search field in favor for repositioned location
 	 *
-	 * @description Reposition the search field
+	 * Reposition the search field
 	 *
 	 * @since       1.0
 	 * @access      public
@@ -108,7 +108,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 			echo '<input type="hidden" name="order" value="' . esc_attr( $_REQUEST['order'] ) . '" />';
 		}
 		?>
-		<p class="search-box donor-search">
+		<p class="search-box donor-search" role="search">
 			<label class="screen-reader-text" for="<?php echo $input_id ?>"><?php echo $text; ?>:</label>
 			<input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>" />
 			<?php submit_button( $text, 'button', false, false, array( 'ID' => 'search-submit' ) ); ?>
@@ -132,13 +132,13 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 		?>
 		<div class="tablenav give-clearfix <?php echo esc_attr( $which ); ?>">
 
-			<h3 class="alignleft reports-earnings-title"><span><?php _e( 'Donors Report', 'give' ); ?></span></h3>
+			<h3 class="alignleft reports-earnings-title"><span><?php esc_html_e( 'Donors Report', 'give' ); ?></span></h3>
 
 			<div class="alignright tablenav-right">
 				<div class="actions bulkactions">
 					<?php
 					if ( 'top' == $which ) {
-						$this->give_search_box( __( 'Search Donors', 'give' ), 'give-donors-report-search' );
+						$this->give_search_box( esc_html__( 'Search Donors', 'give' ), 'give-donors-report-search' );
 					}
 
 					$this->bulk_actions( $which ); ?>
@@ -186,7 +186,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 				break;
 		}
 
-		return apply_filters( 'give_report_column_' . $column_name, $value, $item['id'] );
+		return apply_filters( "give_report_column_{$column_name}", $value, $item['id'] );
 	}
 
 	/**
@@ -198,11 +198,11 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'name'          => __( 'Name', 'give' ),
-			'id'            => __( 'ID', 'give' ),
-			'email'         => __( 'Email', 'give' ),
-			'num_purchases' => __( 'Purchases', 'give' ),
-			'amount_spent'  => __( 'Total Spent', 'give' )
+			'name'          => esc_html__( 'Name', 'give' ),
+			'id'            => esc_html__( 'ID', 'give' ),
+			'email'         => esc_html__( 'Email', 'give' ),
+			'num_purchases' => esc_html__( 'Purchases', 'give' ),
+			'amount_spent'  => esc_html__( 'Total Spent', 'give' )
 		);
 
 		return apply_filters( 'give_report_donor_columns', $columns );

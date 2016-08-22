@@ -177,6 +177,7 @@ class EDD_SL_Plugin_Updater {
 
             if ( empty( $version_info->download_link ) ) {
                 printf(
+					/* translators: 1: name 2: changelog URL 3: version */
                     __( 'There is a new version of %1$s available. <a target="_blank" class="thickbox" href="%2$s">View version %3$s details</a>.', 'edd' ),
                     esc_html( $version_info->name ),
                     esc_url( $changelog_link ),
@@ -184,6 +185,7 @@ class EDD_SL_Plugin_Updater {
                 );
             } else {
                 printf(
+					/* translators: 1: name 2: changelog URL 3: version 4: update URL */
                     __( 'There is a new version of %1$s available. <a target="_blank" class="thickbox" href="%2$s">View version %3$s details</a> or <a href="%4$s">update now</a>.', 'edd' ),
                     esc_html( $version_info->name ),
                     esc_url( $changelog_link ),
@@ -324,7 +326,7 @@ class EDD_SL_Plugin_Updater {
         }
 
         if( ! current_user_can( 'update_plugins' ) ) {
-            wp_die( __( 'You do not have permission to install plugin updates', 'edd' ), __( 'Error', 'edd' ), array( 'response' => 403 ) );
+            wp_die( esc_html__( 'You do not have permission to install plugin updates.', 'edd' ), esc_html__( 'Error', 'edd' ), array( 'response' => 403 ) );
         }
 
         $response = $this->api_request( 'plugin_latest_version', array( 'slug' => $_REQUEST['slug'] ) );

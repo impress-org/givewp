@@ -74,6 +74,10 @@ class Give_Unit_Tests_Bootstrap {
 
 		// reload capabilities after install, see https://core.trac.wordpress.org/ticket/28374
 		$GLOBALS['wp_roles']->reinit();
+		$current_user = new WP_User(1);
+		$current_user->set_role('administrator');
+		wp_update_user( array( 'ID' => 1, 'first_name' => 'Admin', 'last_name' => 'User' ) );
+		add_filter( 'give_log_email_errors', '__return_false' );
 		
 	}
 
@@ -96,7 +100,7 @@ class Give_Unit_Tests_Bootstrap {
 	/**
 	 * Get the single class instance.
 	 *
-	 * @since 2.2
+	 * @since 1.3.2
 	 * @return Give_Unit_Tests_Bootstrap
 	 */
 	public static function instance() {

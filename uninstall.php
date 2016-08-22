@@ -4,7 +4,7 @@
  *
  * @package     Give
  * @subpackage  Uninstall
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -84,10 +84,12 @@ if ( give_get_option( 'uninstall_on_delete' ) === 'on' ) {
 	// Remove all database tables
 	$wpdb->query( "DROP TABLE IF EXISTS " . $wpdb->prefix . "give_donors" );
 	$wpdb->query( "DROP TABLE IF EXISTS " . $wpdb->prefix . "give_customers" );
+	$wpdb->query( "DROP TABLE IF EXISTS " . $wpdb->prefix . "give_customermeta" );
 
 	// Cleanup Cron Events
 	wp_clear_scheduled_hook( 'give_daily_scheduled_events' );
 	wp_clear_scheduled_hook( 'give_daily_cron' );
 	wp_clear_scheduled_hook( 'give_weekly_cron' );
+
 
 }

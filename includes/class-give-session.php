@@ -1,12 +1,10 @@
 <?php
 /**
- * Give Session
- *
- * This is a wrapper class for WP_Session / PHP $_SESSION and handles the storage of Give sessions
+ * Session
  *
  * @package     Give
- * @subpackage  Classes/Session
- * @copyright   Copyright (c) 2015, WordImpress
+ * @subpackage  Classes/Give_Session
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -19,6 +17,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Give_Session Class
  *
+ * This is a wrapper class for WP_Session / PHP $_SESSION and handles the storage of Give sessions.
+ *
  * @since 1.0
  */
 class Give_Session {
@@ -26,58 +26,59 @@ class Give_Session {
 	/**
 	 * Holds our session data
 	 *
-	 * @var array
-	 * @access private
 	 * @since  1.0
+	 * @access private
+	 *
+	 * @var    WP_Session/array
 	 */
 	private $session;
-
 
 	/**
 	 * Whether to use PHP $_SESSION or WP_Session
 	 *
-	 * @var bool
-	 * @access private
 	 * @since  1.0
+	 * @access private
+	 *
+	 * @var    bool
 	 */
 	private $use_php_sessions = false;
 
 	/**
 	 * Expiration Time
 	 *
-	 * @var int
-	 * @access private
 	 * @since  1.0
+	 * @access private
+	 *
+	 * @var    int
 	 */
 	private $exp_option = false;
 
 	/**
 	 * Session index prefix
 	 *
-	 * @var string
-	 * @access private
 	 * @since  1.0
+	 * @access private
+	 *
+	 * @var    string
 	 */
 	private $prefix = '';
 
 	/**
-	 * Get things started
+	 * Class Constructor
 	 *
-	 * Defines our WP_Session constants, includes the necessary libraries and
-	 * retrieves the WP Session instance
+	 * Defines our session constants, includes the necessary libraries and retrieves the session instance.
 	 *
-	 * @since 1.0
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @return void
 	 */
 	public function __construct() {
-
-		//Frontend only
-		if ( is_admin() ) {
-			return false;
-		}
 
 		$this->use_php_sessions = $this->use_php_sessions();
 		$this->exp_option       = give_get_option( 'session_lifetime' );
 
+		//PHP Sessions
 		if ( $this->use_php_sessions ) {
 
 			if ( is_multisite() ) {
@@ -86,23 +87,26 @@ class Give_Session {
 
 			}
 
-			// Use PHP SESSION (must be enabled via the GIVE_USE_PHP_SESSIONS constant)
 			add_action( 'init', array( $this, 'maybe_start_session' ), - 2 );
 
 		} else {
 
-			// Use WP_Session (default)
+			if ( ! $this->should_start_session() ) {
+				return;
+			}
+
+			// Use WP_Session
 			if ( ! defined( 'WP_SESSION_COOKIE' ) ) {
 				define( 'WP_SESSION_COOKIE', 'give_wp_session' );
 			}
 
 			if ( ! class_exists( 'Recursive_ArrayAccess' ) ) {
-				require_once GIVE_PLUGIN_DIR . 'includes/libraries/class-recursive-arrayaccess.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/libraries/sessions/class-recursive-arrayaccess.php';
 			}
 
 			if ( ! class_exists( 'WP_Session' ) ) {
-				require_once GIVE_PLUGIN_DIR . 'includes/libraries/class-wp-session.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/libraries/wp-session.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/libraries/sessions/class-wp-session.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/libraries/sessions/wp-session.php';
 			}
 
 			add_filter( 'wp_session_expiration_variant', array( $this, 'set_expiration_variant_time' ), 99999 );
@@ -110,20 +114,27 @@ class Give_Session {
 
 		}
 
+		//Init Session
 		if ( empty( $this->session ) && ! $this->use_php_sessions ) {
 			add_action( 'plugins_loaded', array( $this, 'init' ), - 1 );
 		} else {
 			add_action( 'init', array( $this, 'init' ), - 1 );
 		}
 
+		//Set cookie on Donation Completion page
+		add_action( 'give_pre_process_purchase', array( $this, 'set_session_cookies' ) );
+
 	}
 
 	/**
-	 * Setup the WP_Session instance
+	 * Session Init
 	 *
-	 * @access public
+	 * Setup the Session instance.
+	 *
 	 * @since  1.0
-	 * @return array $this->session
+	 * @access public
+	 *
+	 * @return array Session instance
 	 */
 	public function init() {
 
@@ -133,32 +144,35 @@ class Give_Session {
 			$this->session = WP_Session::get_instance();
 		}
 
-
 		return $this->session;
+
 	}
 
-
 	/**
-	 * Retrieve session ID
+	 * Get Session ID
 	 *
-	 * @access public
+	 * Retrieve session ID.
+	 *
 	 * @since  1.0
-	 * @return string Session ID
+	 * @access public
+	 *
+	 * @return string Session ID.
 	 */
 	public function get_id() {
 		return $this->session->session_id;
 	}
 
-
 	/**
-	 * Retrieve a session variable
+	 * Get Session
 	 *
-	 * @access public
+	 * Retrieve session variable for a given session key.
+	 *
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param string $key Session key
+	 * @param  string $key Session key.
 	 *
-	 * @return string Session variable
+	 * @return string      Session variable.
 	 */
 	public function get( $key ) {
 		$key = sanitize_key( $key );
@@ -168,14 +182,17 @@ class Give_Session {
 	}
 
 	/**
-	 * Set a session variable
+     * Set Session
+     *
+	 * Create a new session.
+     *
+	 * @since  1.0
+	 * @access public
 	 *
-	 * @since 1.0
+	 * @param  string $key   Session key.
+	 * @param  string $value Session variable.
 	 *
-	 * @param $key   $_SESSION key
-	 * @param $value $_SESSION variable
-	 *
-	 * @return mixed Session variable
+	 * @return mixed         Session variable.
 	 */
 	public function set( $key, $value ) {
 
@@ -195,12 +212,30 @@ class Give_Session {
 	}
 
 	/**
+	 * Set Session Cookies
+	 *
+	 * Cookies are used to increase the session lifetime using the give setting. This is helpful for when a user closes their browser after making a donation and comes back to the site.
+	 *
+	 * @since  1.4
+	 * @access public
+	 *
+	 * @hook
+	 */
+	public function set_session_cookies() {
+		if( ! headers_sent() ) {
+			$lifetime = current_time( 'timestamp' ) + $this->set_expiration_time();
+			@setcookie( session_name(), session_id(), $lifetime, COOKIEPATH, COOKIE_DOMAIN, false  );
+			@setcookie( session_name() . '_expiration', $lifetime, $lifetime,  COOKIEPATH, COOKIE_DOMAIN, false  );
+		}
+	}
+
+	/**
 	 * Set Cookie Variant Time
 	 *
-	 * @description Force the cookie expiration variant time to custom expiration option, less and hour; defaults to 23 hours (set_expiration_variant_time used in WP_Session)
+	 * Force the cookie expiration variant time to custom expiration option, less and hour. defaults to 23 hours (set_expiration_variant_time used in WP_Session).
 	 *
-	 * @access      public
-	 * @since       1.0
+	 * @since  1.0
+	 * @access public
 	 *
 	 * @return int
 	 */
@@ -210,12 +245,12 @@ class Give_Session {
 	}
 
 	/**
-	 * Set the Cookie Expiration
+	 * Set Cookie Expiration
 	 *
-	 * @description Force the cookie expiration time if set, default to 24 hours
+	 * Force the cookie expiration time if set, default to 24 hours.
 	 *
-	 * @access      public
-	 * @since       1.0
+	 * @since  1.0
+	 * @access public
 	 *
 	 * @return int
 	 */
@@ -225,15 +260,14 @@ class Give_Session {
 	}
 
 	/**
-	 * Starts a new session if one hasn't started yet.
+	 * Starts a new session if one has not started yet.
 	 *
-	 * @return null
-	 * Checks to see if the server supports PHP sessions
-	 * or if the GIVE_USE_PHP_SESSIONS constant is defined
+	 * Checks to see if the server supports PHP sessions or if the GIVE_USE_PHP_SESSIONS constant is defined.
 	 *
-	 * @access public
 	 * @since  1.0
-	 * @return bool $ret True if we are using PHP sessions, false otherwise
+	 * @access public
+	 *
+	 * @return bool $ret True if we are using PHP sessions, false otherwise.
 	 */
 	public function use_php_sessions() {
 
@@ -261,6 +295,7 @@ class Give_Session {
 			}
 
 		} else {
+
 			$ret = $give_use_php_sessions;
 		}
 
@@ -275,29 +310,77 @@ class Give_Session {
 	}
 
 	/**
-	 * Maybe Start Session
+	 * Should Start Session
 	 *
-	 * @description Starts a new session if one hasn't started yet.
-	 * @see         http://php.net/manual/en/function.session-set-cookie-params.php
+	 * Determines if we should start sessions.
+	 *
+	 * @since  1.4
+     * @access public
+	 *
+	 * @return bool
+	 */
+	public function should_start_session() {
+
+		$start_session = true;
+
+		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
+
+			$blacklist = apply_filters( 'give_session_start_uri_blacklist', array(
+				'feed',
+				'feed',
+				'feed/rss',
+				'feed/rss2',
+				'feed/rdf',
+				'feed/atom',
+				'comments/feed/'
+			) );
+			$uri       = ltrim( $_SERVER['REQUEST_URI'], '/' );
+			$uri       = untrailingslashit( $uri );
+			if ( in_array( $uri, $blacklist ) ) {
+				$start_session = false;
+			}
+			if ( false !== strpos( $uri, 'feed=' ) ) {
+				$start_session = false;
+			}
+			if ( is_admin() ) {
+				$start_session = false;
+			}
+		}
+
+		return apply_filters( 'give_start_session', $start_session );
+	}
+
+	/**
+	 * Maybe Start Session
+     *
+	 * Starts a new session if one hasn't started yet.
+     *
+     * @access public
+     *
+	 * @see    http://php.net/manual/en/function.session-set-cookie-params.php
+	 *
+	 * @return void
 	 */
 	public function maybe_start_session() {
 
-		//		session_destroy(); //Uncomment for testing ONLY
+		if ( ! $this->should_start_session() ) {
+			return;
+		}
 
 		if ( ! session_id() && ! headers_sent() ) {
-			$lifetime = current_time( 'timestamp' ) + $this->set_expiration_time();
 			session_start();
-			setcookie( session_name(), session_id(), $lifetime ); //
-			setcookie( session_name() . '_expiration', $lifetime, $lifetime );
 		}
-	}
 
+	}
 
 	/**
 	 * Get Session Expiration
-	 *
-	 * @description  Looks at the session cookies and returns the expiration date for this session if applicable
-	 *
+     *
+	 * Looks at the session cookies and returns the expiration date for this session if applicable
+     *
+     * @access public
+     *
+     * @return string Formatted expiration date string.
 	 */
 	public function get_session_expiration() {
 
@@ -314,4 +397,3 @@ class Give_Session {
 	}
 
 }
-

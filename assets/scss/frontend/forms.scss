@@ -3,7 +3,7 @@
  *
  * @package     Give
  * @subpackage  SCSS/Frontend
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 
@@ -44,6 +44,10 @@ Layout
       height: auto;
       box-shadow: none;
     }
+  }
+
+  .give-custom-amount-text {
+    clear: both;
   }
 
   div.summary {
@@ -171,7 +175,6 @@ form[id*='give-form'], #give-recurring-form, form.give-form {
       margin: 0 0 5px;
       position: relative;
       line-height: 1.7;
-      text-align: left;
 
       &.checkbox {
         display: inline;
@@ -185,7 +188,11 @@ form[id*='give-form'], #give-recurring-form, form.give-form {
       border-radius: 0;
       outline: none;
       color: $dark;
+      background-color: #FDFDFD;
 
+      &:focus {
+        background-color: #fff;
+      }
       &.required {
         color: $dark;
       }
@@ -263,6 +270,7 @@ form[id*='give-form'] {
 
     .give-currency-symbol {
       @include give-currency();
+      float: left;
 
       &.give-currency-position-before {
         border-left: 1px solid $borders;
@@ -278,7 +286,8 @@ form[id*='give-form'] {
     #give-amount,
     #give-amount-text {
       @include give-input();
-      width: 125px;
+      min-width: 125px;
+      float: left;
 
       &.invalid-amount {
         border: 1px solid red;
@@ -286,10 +295,15 @@ form[id*='give-form'] {
 
     }
 
+    input.give-amount-top {
+      width: 125px;
+    }
+
     span.give-final-total-amount {
       @include give-input();
       cursor: not-allowed;
       background: #FFF;
+      float: left;
     }
 
   }
@@ -301,6 +315,7 @@ form[id*='give-form'] {
 
     .give-donation-total-label {
       @include give-currency();
+      float: left;
       border: 1px solid $borders;
     }
 
@@ -308,6 +323,7 @@ form[id*='give-form'] {
       font-size: $font-size-medium;
       @include give-input();
       border-left: none;
+      float: left;
     }
 
   }
@@ -335,12 +351,14 @@ Notices, Warnings & Errors
     @include iconstyle();
     position: absolute;
     top: 50%;
+    font-size: 16px;
     margin-top: -15px;
     left: -17px;
     background-color: $red;
     color: #FFF;
     width: 30px;
     height: 30px;
+    font-size: 16px;
     border-radius: 100%;
     text-align: center;
     line-height: 30px;
@@ -388,7 +406,7 @@ Radio Lists
 
     label {
       cursor: pointer;
-      display:inline-block;
+      display: inline-block;
     }
 
     input[type="radio"] {
@@ -403,13 +421,12 @@ Radio Lists
 #give-gateway-radio-list {
   //this is the radio list for to select a gateway
   @include clearfix();
-  float: left;
   margin: 0 0 25px;
   padding: 0;
   list-style: none;
 
   > li {
-    float: left;
+    display: inline-block;
     margin-right: 15px;
     margin-left: 0;
     list-style-type: none;
@@ -423,6 +440,7 @@ Radio Lists
         outline: none;
         width: auto;
       }
+
     }
 
   }
@@ -439,7 +457,8 @@ form[id*='give-form'] {
     min-width: 155px;
     border: 1px solid $borders;
     margin: 0 0 15px;
-    display:block;
+    display: block;
+    clear: both;
   }
 }
 
@@ -471,7 +490,7 @@ Buttons
 CC Validation
 -----------------------------------*/
 
-#give_secure_site_wrapper {
+[id*='give_secure_site_wrapper'] {
   padding: 4px 4px 15px 0;
   font-size: 16px;
   line-height: 20px;
@@ -582,12 +601,7 @@ form[id*='give-form'] {
     font-style: italic;
     line-height: 20px;
     font-size: 16px;
-
-    &.give-updating-price-loader {
-      float: left;
-      margin: 6px 0 0 20px;
-    }
-
+    font-weight: normal;
   }
   .give-loading-animation {
     @include iconstyle();
@@ -625,14 +639,14 @@ form[id*='give-form'] {
     margin-right: 10px;
   }
 
+  .give_login_forgot_password {
+    float: right;
+  }
+
 }
 
 /* User Login */
 [id^='give-user-login-submit'], .give-submit-button-wrap {
-
-  input.give-submit, input.give-btn, span.give-loading-animation {
-    float: left;
-  }
 
   input.give-cancel-login {
     margin-left: 5px;
@@ -642,7 +656,9 @@ form[id*='give-form'] {
     margin: 3px 6px;
     display: none;
   }
-
+  .give-submit {
+    float: left;
+  }
 }
 
 p.give-recurring-login-toggle {
@@ -704,6 +720,19 @@ Basic Button Style
     background: #dbdbdb;
   }
 
+}
+
+/*---------------------------------
+Email Access Form
+-----------------------------------*/
+
+form#give-email-access-form {
+  div.g-recaptcha, input#give-email {
+    margin: 0 0 15px;
+  }
+  input#give-email {
+    width: 305px;
+  }
 }
 
 /*---------------------------------

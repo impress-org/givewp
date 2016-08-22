@@ -7,35 +7,61 @@ global $give_register_redirect;
 give_print_errors( 0 ); ?>
 
 <form id="give-register-form" class="give-form" action="" method="post">
-	<?php do_action( 'give_register_form_fields_top' ); ?>
+	<?php
+	/**
+	 * Fires in the registration shortcode, to the form top.
+	 *
+	 * Allows you to add elements to the form top.
+	 *
+	 * @since 1.0
+	 */
+	do_action( 'give_register_form_fields_top' );
+	?>
 
 	<fieldset>
-		<legend><?php _e( 'Register a New Account', 'give' ); ?></legend>
+		<legend><?php esc_html_e( 'Register a New Account', 'give' ); ?></legend>
 
-		<?php do_action( 'give_register_form_fields_before' ); ?>
+		<?php
+		/**
+		 * Fires in the registration shortcode, before the registration fields.
+		 *
+		 * Allows you to add elements to the fieldset, before the fields.
+		 *
+		 * @since 1.0
+		 */
+		do_action( 'give_register_form_fields_before' );
+		?>
 
 		<div class="form-row form-row-first">
-			<label for="give-user-login"><?php _e( 'Username', 'give' ); ?></label>
-			<input id="give-user-login" class="required give-input" type="text" name="give_user_login" title="<?php esc_attr_e( 'Username', 'give' ); ?>" />
+			<label for="give-user-login"><?php esc_html_e( 'Username', 'give' ); ?></label>
+			<input id="give-user-login" class="required give-input" type="text" name="give_user_login" />
 		</div>
 
 		<div class="form-row form-row-last">
-			<label for="give-user-email"><?php _e( 'Email', 'give' ); ?></label>
-			<input id="give-user-email" class="required give-input" type="email" name="give_user_email" title="<?php esc_attr_e( 'Email Address', 'give' ); ?>" />
+			<label for="give-user-email"><?php esc_html_e( 'Email', 'give' ); ?></label>
+			<input id="give-user-email" class="required give-input" type="email" name="give_user_email" />
 		</div>
 
 		<div class="form-row form-row-first">
-			<label for="give-user-pass"><?php _e( 'Password', 'give' ); ?></label>
+			<label for="give-user-pass"><?php esc_html_e( 'Password', 'give' ); ?></label>
 			<input id="give-user-pass" class="password required give-input" type="password" name="give_user_pass" />
 		</div>
 
 		<div class="form-row form-row-last">
-			<label for="give-user-pass2"><?php _e( 'Confirm Password', 'give' ); ?></label>
+			<label for="give-user-pass2"><?php esc_html_e( 'Confirm PW', 'give' ); ?></label>
 			<input id="give-user-pass2" class="password required give-input" type="password" name="give_user_pass2" />
 		</div>
 
-
-		<?php do_action( 'give_register_form_fields_before_submit' ); ?>
+		<?php
+		/**
+		 * Fires in the registration shortcode, before submit button.
+		 *
+		 * Allows you to add elements before submit button.
+		 *
+		 * @since 1.0
+		 */
+		do_action( 'give_register_form_fields_before_submit' );
+		?>
 
 		<div class="give-hidden">
 			<input type="hidden" name="give_honeypot" value="" />
@@ -47,9 +73,27 @@ give_print_errors( 0 ); ?>
 			<input class="button" name="give_register_submit" type="submit" value="<?php esc_attr_e( 'Register', 'give' ); ?>" />
 		</div>
 
-		<?php do_action( 'give_register_form_fields_after' ); ?>
+		<?php
+		/**
+		 * Fires in the registration shortcode, after the registration fields.
+		 *
+		 * Allows you to add elements to the fieldset, after the fields and the submit button.
+		 *
+		 * @since 1.0
+		 */
+		do_action( 'give_register_form_fields_after' );
+		?>
 
 	</fieldset>
 
-	<?php do_action( 'give_register_form_fields_bottom' ); ?>
+	<?php
+	/**
+	 * Fires in the registration shortcode, to the form bottom.
+	 *
+	 * Allows you to add elements to the form bottom.
+	 *
+	 * @since 1.0
+	 */
+	do_action( 'give_register_form_fields_bottom' );
+	?>
 </form>

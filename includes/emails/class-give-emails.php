@@ -6,7 +6,7 @@
  *
  * @package     Give
  * @subpackage  Classes/Emails
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.1.php GNU Public License
  * @since       1.0
  */
@@ -160,8 +160,8 @@ class Give_Emails {
 	 */
 	public function get_templates() {
 		$templates = array(
-			'default' => __( 'Default Template', 'give' ),
-			'none'    => __( 'No template, plain text only', 'give' )
+			'default' => esc_html__( 'Default Template', 'give' ),
+			'none'    => esc_html__( 'No template, plain text only', 'give' )
 		);
 
 		return apply_filters( 'give_email_templates', $templates );
@@ -197,10 +197,6 @@ class Give_Emails {
 	 * @return mixed
 	 */
 	public function parse_tags( $content ) {
-
-		// The email tags are parsed during setup for purchase receipts and sale notifications
-		// Once tags are not restricted to payments, we'll expand this. @see https://github.com/easydigitaldownloads/Easy-Digital-Downloads/issues/2151
-
 		return $content;
 	}
 
@@ -217,22 +213,50 @@ class Give_Emails {
 
 		$message = $this->text_to_html( $message );
 
+		$template = $this->get_template();
+
 		ob_start();
 
-		give_get_template_part( 'emails/header', $this->get_template(), true );
+		give_get_template_part( 'emails/header', $template, true );
 
+		/**
+		 * Fires in the email head.
+		 *
+		 * @since 1.0
+		 *
+		 * @param Give_Emails $this The email object.
+		 */
 		do_action( 'give_email_header', $this );
 
-		if ( has_action( 'give_email_template_' . $this->get_template() ) ) {
-			do_action( 'give_email_template_' . $this->get_template() );
+		if ( has_action( 'give_email_template_' . $template ) ) {
+			/**
+			 * Fires in a specific email template.
+			 *
+			 * @since 1.0
+			 */
+			do_action( "give_email_template_{$template}" );
 		} else {
-			give_get_template_part( 'emails/body', $this->get_template(), true );
+			give_get_template_part( 'emails/body', $template, true );
 		}
 
+		/**
+		 * Fires in the email body.
+		 *
+		 * @since 1.0
+		 *
+		 * @param Give_Emails $this The email object.
+		 */
 		do_action( 'give_email_body', $this );
 
-		give_get_template_part( 'emails/footer', $this->get_template(), true );
+		give_get_template_part( 'emails/footer', $template, true );
 
+		/**
+		 * Fires in the email footer.
+		 *
+		 * @since 1.0
+		 *
+		 * @param Give_Emails $this The email object.
+		 */
 		do_action( 'give_email_footer', $this );
 
 		$body    = ob_get_clean();
@@ -244,9 +268,9 @@ class Give_Emails {
 	/**
 	 * Send the email
 	 *
-	 * @param  string       $to          The To address to send to.
-	 * @param  string       $subject     The subject line of the email to send.
-	 * @param  string       $message     The body of the email to send.
+	 * @param  string $to The To address to send to.
+	 * @param  string $subject The subject line of the email to send.
+	 * @param  string $message The body of the email to send.
 	 * @param  string|array $attachments Attachments to the email in a format supported by wp_mail()
 	 *
 	 * @return bool
@@ -254,10 +278,18 @@ class Give_Emails {
 	public function send( $to, $subject, $message, $attachments = '' ) {
 
 		if ( ! did_action( 'init' ) && ! did_action( 'admin_init' ) ) {
-			_doing_it_wrong( __FUNCTION__, __( 'You cannot send email with Give_Emails until init/admin_init has been reached', 'give' ), null );
+			_doing_it_wrong( __FUNCTION__, esc_html__( 'You cannot send email with Give_Emails until init/admin_init has been reached.', 'give' ), null );
+
 			return false;
 		}
 
+		/**
+		 * Fires before sending an email.
+		 *
+		 * @since 1.0
+		 *
+		 * @param Give_Emails $this The email object.
+		 */
 		do_action( 'give_email_send_before', $this );
 
 		$subject = $this->parse_tags( $subject );
@@ -269,6 +301,13 @@ class Give_Emails {
 
 		$sent = wp_mail( $to, $subject, $message, $this->get_headers(), $attachments );
 
+		/**
+		 * Fires after sending an email.
+		 *
+		 * @since 1.0
+		 *
+		 * @param Give_Emails $this The email object.
+		 */
 		do_action( 'give_email_send_after', $this );
 
 		return $sent;

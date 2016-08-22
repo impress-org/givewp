@@ -6,7 +6,7 @@
  *
  * @package     Give
  * @subpackage  Admin/Reports
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
@@ -69,8 +69,8 @@ class Give_Export {
 	 */
 	public function csv_cols() {
 		$cols = array(
-			'id'   => __( 'ID', 'give' ),
-			'date' => __( 'Date', 'give' )
+			'id'   => esc_html__( 'ID', 'give' ),
+			'date' => esc_html__( 'Date', 'give' )
 		);
 
 		return $cols;
@@ -86,7 +86,7 @@ class Give_Export {
 	public function get_csv_cols() {
 		$cols = $this->csv_cols();
 
-		return apply_filters( 'give_export_csv_cols_' . $this->export_type, $cols );
+		return apply_filters( "give_export_csv_cols_{$this->export_type}", $cols );
 	}
 
 	/**
@@ -129,7 +129,7 @@ class Give_Export {
 		);
 
 		$data = apply_filters( 'give_export_get_data', $data );
-		$data = apply_filters( 'give_export_get_data_' . $this->export_type, $data );
+		$data = apply_filters( "give_export_get_data_{$this->export_type}", $data );
 
 		return $data;
 	}
@@ -174,7 +174,7 @@ class Give_Export {
 	 */
 	public function export() {
 		if ( ! $this->can_export() ) {
-			wp_die( __( 'You do not have permission to export data.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die( esc_html__( 'You do not have permission to export data.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 		}
 
 		// Set headers

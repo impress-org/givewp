@@ -1,26 +1,27 @@
 <?php
 /**
- * Stats Base
+ * Stats
  *
  * @package     Give
- * @subpackage  Classes/Stats
- * @copyright   Copyright (c) 2015, Give
+ * @subpackage  Classes/Give_Stats
+ * @copyright   Copyright (c) 2016, Give
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0
  */
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Give_Stats Class
  *
- * Base class for other stats classes
- *
- * Primarily for setting up dates and ranges
+ * Base class for other stats classes. Primarily for setting up dates and ranges.
  *
  * @since 1.0
  */
 class Give_Stats {
-
 
 	/**
 	 * The start date for the period we're getting stats for
@@ -31,11 +32,10 @@ class Give_Stats {
 	 * Predefined date options are: today, yesterday, this_week, last_week, this_month, last_month
 	 * this_quarter, last_quarter, this_year, last_year
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
 	 */
 	public $start_date;
-
 
 	/**
 	 * The end date for the period we're getting stats for
@@ -60,32 +60,41 @@ class Give_Stats {
 	public $timestamp;
 
 	/**
+	 * Class Constructor
+	 *
+	 * Set up the Give Stats Class.
+	 *
+	 * @since  1.0
 	 * @access public
+	 *
 	 * @return void
 	 */
-	public function __construct() { /* nothing here. Call get_sales() and get_earnings() directly */
+	public function __construct() {
+		/* nothing here. Call get_sales() and get_earnings() directly */
 	}
 
-
 	/**
-	 * Get the predefined date periods permitted
+	 * Get Predefined Dates
 	 *
+	 * Retrieve the predefined date periods permitted.
+	 *
+	 * @since  1.0
 	 * @access public
-	 * @since  1.8
-	 * @return array
+	 *
+	 * @return array  Predefined dates.
 	 */
 	public function get_predefined_dates() {
 		$predefined = array(
-			'today'        => __( 'Today', 'give' ),
-			'yesterday'    => __( 'Yesterday', 'give' ),
-			'this_week'    => __( 'This Week', 'give' ),
-			'last_week'    => __( 'Last Week', 'give' ),
-			'this_month'   => __( 'This Month', 'give' ),
-			'last_month'   => __( 'Last Month', 'give' ),
-			'this_quarter' => __( 'This Quarter', 'give' ),
-			'last_quarter' => __( 'Last Quarter', 'give' ),
-			'this_year'    => __( 'This Year', 'give' ),
-			'last_year'    => __( 'Last Year', 'give' )
+			'today'        => esc_html__( 'Today', 'give' ),
+			'yesterday'    => esc_html__( 'Yesterday', 'give' ),
+			'this_week'    => esc_html__( 'This Week', 'give' ),
+			'last_week'    => esc_html__( 'Last Week', 'give' ),
+			'this_month'   => esc_html__( 'This Month', 'give' ),
+			'last_month'   => esc_html__( 'Last Month', 'give' ),
+			'this_quarter' => esc_html__( 'This Quarter', 'give' ),
+			'last_quarter' => esc_html__( 'Last Quarter', 'give' ),
+			'this_year'    => esc_html__( 'This Year', 'give' ),
+			'last_year'    => esc_html__( 'Last Year', 'give' )
 		);
 
 		return apply_filters( 'give_stats_predefined_dates', $predefined );
@@ -94,23 +103,21 @@ class Give_Stats {
 	/**
 	 * Setup the dates passed to our constructor.
 	 *
-	 * This calls the convert_date() member function to ensure the dates are formatted correctly
+	 * This calls the convert_date() member function to ensure the dates are formatted correctly.
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param string $_start_date
-	 * @param bool   $_end_date
+	 * @param  string $_start_date Start date. Default is 'this_month'.
+	 * @param  bool   $_end_date   End date. Default is false.
 	 *
 	 * @return void
 	 */
 	public function setup_dates( $_start_date = 'this_month', $_end_date = false ) {
 
 		if ( empty( $_start_date ) ) {
-			$this->start_date = 'this_month';
+			$_start_date = 'this_month';
 		}
-
-		$this->start_date = $_start_date;
 
 		if ( empty( $_end_date ) ) {
 			$_end_date = $_start_date;
@@ -121,21 +128,27 @@ class Give_Stats {
 	}
 
 	/**
-	 * Converts a date to a timestamp
+	 * Convert Date
 	 *
-	 * @access public
+	 * Converts a date to a timestamp.
+	 *
 	 * @since  1.0
-	 * @return array|WP_Error If the date is invalid, a WP_Error object will be returned
+	 * @access public
+	 *
+	 * @param  string $date     Date.
+	 * @param  bool   $end_date End date. Default is false.
+	 *
+	 * @return array|WP_Error   If the date is invalid, a WP_Error object will be returned.
 	 */
 	public function convert_date( $date, $end_date = false ) {
 
-		$timestamp = false;
-		$second    = 0;
-		$minute    = 0;
-		$hour      = 0;
-		$day       = 1;
-		$month     = date( 'n', current_time( 'timestamp' ) );
-		$year      = date( 'Y', current_time( 'timestamp' ) );
+		$this->timestamp = false;
+		$second          = $end_date ? 59 : 0;
+		$minute          = $end_date ? 59 : 0;
+		$hour            = $end_date ? 23 : 0;
+		$day             = 1;
+		$month           = date( 'n', current_time( 'timestamp' ) );
+		$year            = date( 'Y', current_time( 'timestamp' ) );
 
 		if ( array_key_exists( $date, $this->get_predefined_dates() ) ) {
 
@@ -146,8 +159,10 @@ class Give_Stats {
 
 					if ( $end_date ) {
 
-						$day = cal_days_in_month( CAL_GREGORIAN, $month, $year );
-
+						$day    = cal_days_in_month( CAL_GREGORIAN, $month, $year );
+						$hour   = 23;
+						$minute = 59;
+						$second = 59;
 					}
 
 					break;
@@ -176,7 +191,7 @@ class Give_Stats {
 					$day = date( 'd', current_time( 'timestamp' ) );
 
 					if ( $end_date ) {
-						$hour   = 11;
+						$hour   = 23;
 						$minute = 59;
 						$second = 59;
 					}
@@ -285,7 +300,7 @@ class Give_Stats {
 						} else {
 							$month  = 3;
 							$day    = cal_days_in_month( CAL_GREGORIAN, $month, $year );
-							$hour   = 11;
+							$hour   = 23;
 							$minute = 59;
 							$second = 59;
 						}
@@ -297,7 +312,7 @@ class Give_Stats {
 						} else {
 							$month  = 6;
 							$day    = cal_days_in_month( CAL_GREGORIAN, $month, $year );
-							$hour   = 11;
+							$hour   = 23;
 							$minute = 59;
 							$second = 59;
 						}
@@ -309,7 +324,7 @@ class Give_Stats {
 						} else {
 							$month  = 9;
 							$day    = cal_days_in_month( CAL_GREGORIAN, $month, $year );
-							$hour   = 11;
+							$hour   = 23;
 							$minute = 59;
 							$second = 59;
 						}
@@ -321,7 +336,7 @@ class Give_Stats {
 						} else {
 							$month  = 12;
 							$day    = cal_days_in_month( CAL_GREGORIAN, $month, $year );
-							$hour   = 11;
+							$hour   = 23;
 							$minute = 59;
 							$second = 59;
 						}
@@ -342,7 +357,7 @@ class Give_Stats {
 							$year -= 1;
 							$month  = 12;
 							$day    = cal_days_in_month( CAL_GREGORIAN, $month, $year );
-							$hour   = 11;
+							$hour   = 23;
 							$minute = 59;
 							$second = 59;
 						}
@@ -354,7 +369,7 @@ class Give_Stats {
 						} else {
 							$month  = 3;
 							$day    = cal_days_in_month( CAL_GREGORIAN, $month, $year );
-							$hour   = 11;
+							$hour   = 23;
 							$minute = 59;
 							$second = 59;
 						}
@@ -366,7 +381,7 @@ class Give_Stats {
 						} else {
 							$month  = 6;
 							$day    = cal_days_in_month( CAL_GREGORIAN, $month, $year );
-							$hour   = 11;
+							$hour   = 23;
 							$minute = 59;
 							$second = 59;
 						}
@@ -378,7 +393,7 @@ class Give_Stats {
 						} else {
 							$month  = 9;
 							$day    = cal_days_in_month( CAL_GREGORIAN, $month, $year );
-							$hour   = 11;
+							$hour   = 23;
 							$minute = 59;
 							$second = 59;
 						}
@@ -394,7 +409,7 @@ class Give_Stats {
 					} else {
 						$month  = 12;
 						$day    = cal_days_in_month( CAL_GREGORIAN, $month, $year );
-						$hour   = 11;
+						$hour   = 23;
 						$minute = 59;
 						$second = 59;
 					}
@@ -409,7 +424,7 @@ class Give_Stats {
 					} else {
 						$month  = 12;
 						$day    = cal_days_in_month( CAL_GREGORIAN, $month, $year );
-						$hour   = 11;
+						$hour   = 23;
 						$minute = 59;
 						$second = 59;
 					}
@@ -426,20 +441,20 @@ class Give_Stats {
 
 		} else if ( false !== strtotime( $date ) ) {
 
-			$this->timestamp = true;
-			$date            = strtotime( $date, current_time( 'timestamp' ) );
+			$date  = strtotime( $date, current_time( 'timestamp' ) );
+			$year  = date( 'Y', $date );
+			$month = date( 'm', $date );
+			$day   = date( 'd', $date );
 
 		} else {
 
-			return new WP_Error( 'invalid_date', __( 'Improper date provided.', 'give' ) );
+			return new WP_Error( 'invalid_date', esc_html__( 'Improper date provided.', 'give' ) );
 
 		}
 
-		if ( ! is_wp_error( $date ) && ! $this->timestamp ) {
-
+		if ( false === $this->timestamp ) {
 			// Create an exact timestamp
 			$date = mktime( $hour, $minute, $second, $month, $day, $year );
-
 		}
 
 		return apply_filters( 'give_stats_date', $date, $end_date, $this );
@@ -447,10 +462,15 @@ class Give_Stats {
 	}
 
 	/**
-	 * Modifies the WHERE flag for payment counts
+	 * Count Where
 	 *
-	 * @access public
+	 * Modifies the WHERE flag for payment counts.
+	 *
 	 * @since  1.0
+	 * @access public
+	 *
+	 * @param  string $where SQL WHERE statment.
+	 * 
 	 * @return string
 	 */
 	public function count_where( $where = '' ) {
@@ -490,12 +510,14 @@ class Give_Stats {
 	}
 
 	/**
-	 * Modifies the WHERE flag for payment queries
+	 * Payment Where
 	 *
-	 * @access public
+	 * Modifies the WHERE flag for payment queries.
+	 *
 	 * @since  1.0
+	 * @access public
 	 *
-	 * @param string $where
+	 * @param  string $where SQL WHERE statment.
 	 *
 	 * @return string
 	 */
@@ -506,7 +528,7 @@ class Give_Stats {
 		$start_where = '';
 		$end_where   = '';
 
-		if ( $this->start_date ) {
+		if ( ! is_wp_error( $this->start_date ) ) {
 
 			if ( $this->timestamp ) {
 				$format = 'Y-m-d H:i:s';
@@ -518,10 +540,10 @@ class Give_Stats {
 			$start_where = " AND $wpdb->posts.post_date >= '{$start_date}'";
 		}
 
-		if ( $this->end_date ) {
+		if ( ! is_wp_error( $this->end_date ) ) {
 
 			if ( $this->timestamp ) {
-				$format = 'Y-m-d H:i:s';
+				$format = 'Y-m-d 00:00:00';
 			} else {
 				$format = 'Y-m-d 23:59:59';
 			}

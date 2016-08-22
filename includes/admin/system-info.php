@@ -6,7 +6,7 @@
  *
  * @package     Give
  * @subpackage  Admin/System
- * @copyright   Copyright (c) 2015, WordImpress
+ * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
@@ -27,20 +27,32 @@ function give_system_info_callback() {
 	if ( ! current_user_can( 'manage_give_settings' ) ) {
 		return;
 	}
-
 	?>
-	<textarea readonly="readonly" onclick="this.focus(); this.select()" id="system-info-textarea" name="give-sysinfo" title="To copy the system info, click below then press Ctrl + C (PC) or Cmd + C (Mac)."><?php echo give_tools_sysinfo_get(); ?></textarea>
+	<textarea readonly="readonly" onclick="this.focus(); this.select()" id="system-info-textarea" name="give-sysinfo" aria-label="<?php esc_attr_e( 'To copy the system info, click below then press Ctrl + C (PC) or Cmd + C (Mac).', 'give' ); ?>"><?php echo give_tools_sysinfo_get(); ?></textarea>
 	<p class="submit">
 		<input type="hidden" name="give-action" value="download_sysinfo"/>
-		<?php submit_button( 'Download System Info File', 'secondary', 'give-download-sysinfo', false ); ?>
+		<?php submit_button( esc_html__( 'Download System Info File', 'give' ), 'secondary', 'give-download-sysinfo', false ); ?>
 	</p>
-	<style>
-		.give_forms_page_give-settings .give-submit-wrap {
-			display: none; /* Hide Save settings button on System Info Tab (not needed) */
-		}
-	</style>
 	<?php
 }
+
+
+/**
+ * Allow Sessions for System Info Tab
+ *
+ * In 1.3.6 we prevented sessions within wp-admin, this allows them and allows the system info to properly detect
+ *
+ * @since: 1.4
+ *
+ * @return bool
+ */
+function give_allow_sessions_for_sysinfo() {
+	if ( is_admin() && ( isset( $_GET['page'] ) && isset( $_GET['tab'] ) ) && ( $_GET['tab'] == 'system_info' && $_GET['page'] == 'give-settings' ) ) {
+		return true;
+	}
+}
+
+add_filter( 'give_start_session', 'give_allow_sessions_for_sysinfo' );
 
 
 /**
@@ -171,7 +183,7 @@ function give_tools_sysinfo_get() {
 			$default_gateway = give_get_default_gateway( null );
 			$default_gateway = $active_gateways[ $default_gateway ]['admin_label'];
 		} else {
-			$default_gateway = 'Test Payment';
+			$default_gateway = 'Test Donation';
 		}
 
 		$gateways = array();
@@ -297,6 +309,8 @@ function give_tools_sysinfo_get() {
 	$return .= 'fsockopen:                ' . ( function_exists( 'fsockopen' ) ? 'Supported' : 'Not Supported' ) . "\n";
 	$return .= 'SOAP Client:              ' . ( class_exists( 'SoapClient' ) ? 'Installed' : 'Not Installed' ) . "\n";
 	$return .= 'Suhosin:                  ' . ( extension_loaded( 'suhosin' ) ? 'Installed' : 'Not Installed' ) . "\n";
+	$return .= 'DOM:                      ' . ( extension_loaded( 'dom' ) ? 'Installed' : 'Not Installed' ) . "\n";
+	$return .= 'MBString:                 ' . ( extension_loaded( 'mbstring' ) ? 'Installed' : 'Not Installed' ) . "\n";
 
 	$return = apply_filters( 'give_sysinfo_after_php_ext', $return );
 
