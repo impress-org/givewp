@@ -394,7 +394,7 @@ add_filter( 'give_format_amount_decimals', 'give_currency_decimal_filter' );
  * @return mixed
  */
 function give_sanitize_thousand_separator( $value, $field_args, $field ){
-    return $value;
+    return stripslashes( $value );
 }
 
 
