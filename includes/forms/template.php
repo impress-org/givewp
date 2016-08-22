@@ -281,9 +281,16 @@ function give_show_purchase_form( $form_id ) {
 		 *
 		 * @since 1.0
 		 *
-		 * @param int $form_id The form ID.
+		 * @deprecated 1.7 Use {@see 'give_donation_form_before_cc_form'} instead.
 		 */
-		do_action( 'give_purchase_form_before_cc_form', $form_id );
+		do_action_deprecated( 'give_purchase_form_before_cc_form', array( $form_id ), '1.7', 'give_donation_form_before_cc_form' );
+
+		/**
+		 * Fire when credit card form fields render.
+		 *
+		 * @since 1.7
+		 */
+		do_action( 'give_donation_form_before_cc_form', $form_id );
 
 		// Load the credit card form and allow gateways to load their own if they wish
 		if ( has_action( 'give_' . $payment_mode . '_cc_form' ) ) {
