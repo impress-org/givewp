@@ -889,6 +889,9 @@ jQuery.noConflict();
                 return false;
             }
 
+            // Replace dot decimal separator with user defined decimal separator.
+            price_string = price_string.replace( '.', decimal_separator );
+
             // Check if current number is negative or not.
             if( -1 !== price_string.indexOf('-') ) {
                 price_string = price_string.replace('-', '' );

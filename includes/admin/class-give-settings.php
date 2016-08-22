@@ -25,12 +25,6 @@ class Give_Plugin_Settings {
 	protected $option_metabox = array();
 
 	/**
-	 * Array of active tabs
-	 * @var array
-	 */
-	protected $registered_tabs = array();
-
-	/**
 	 * Options Page title
 	 * @var string
 	 */
@@ -147,10 +141,6 @@ class Give_Plugin_Settings {
 				<?php
 				foreach ( $this->give_get_settings_tabs() as $tab_id => $tab_name ) {
 
-					//Support legacy tab creation conditions based off $_GET parameter
-					//We pass the $_GET['tab'] to conditions executed later
-					$_GET['tab'] = $tab_id;
-
 					$tab_url = esc_url( add_query_arg( array(
 						'settings-updated' => false,
 						'tab'              => $tab_id
@@ -164,24 +154,7 @@ class Give_Plugin_Settings {
 				?>
 			</h2>
 
-			<?php
-			//Loop through and output settings
-			foreach ( $this->give_get_settings_tabs() as $tab_id => $tab_name ) {
-
-				//Support legacy tab creation conditions based off $_GET parameter
-				//We 'trick' the conditions into thinking this is the tab
-				$_GET['tab'] = $tab_id;
-
-				$tab_settings = $this->give_settings( $tab_id );
-
-				//Pass active tab within $tab_settings so we can hide with CSS via PHP
-				if ( $active_tab == $tab_id ) {
-					$tab_settings['active_tab'] = true;
-				}
-
-				cmb2_metabox_form( $tab_settings, $this->key );
-
-			} ?>
+			<?php cmb2_metabox_form( $this->give_settings( $active_tab ), $this->key ); ?>
 
 		</div><!-- .wrap -->
 
@@ -190,41 +163,25 @@ class Give_Plugin_Settings {
 
 
 	/**
+	 *
 	 * Modify CMB2 Default Form Output
 	 *
 	 * @param string @args
 	 *
-	 * @since 1.5 Modified to CSS hide non-active tabs
 	 * @since 1.0
+	 *
+	 * @param $form_format
+	 * @param $object_id
+	 * @param $cmb
+	 *
+	 * @return string
 	 */
 	function give_modify_cmb2_form_output( $form_format, $object_id, $cmb ) {
 
-
-		$pagenow = isset( $_GET['page'] ) ? $_GET['page'] : '';
-
 		//only modify the give settings form
-		if ( 'give_settings' == $object_id && $pagenow == 'give-settings' ) {
+		if ( 'give_settings' == $object_id ) {
 
-			$style = '';
-			if ( ! isset( $cmb->meta_box['active_tab'] ) ) {
-				$style = 'style="display:none;"';
-			}
-
-			//Set ID based off tab name - protects backwards compatibility
-			$tab_id = isset( $_GET['tab'] ) ? $_GET['tab'] : $cmb->meta_box['id'];
-
-			$save_button = apply_filters( 'give_save_button_markup', '<div class="give-submit-wrap"><input type="submit" name="submit-cmb" value="' . esc_attr__( 'Save Settings', 'give' ) . '" class="button-primary"></div>' );
-
-			//Filter so some tabs won't have save settings
-			$no_save_button = apply_filters( 'give_settings_no_save_output', array(
-				'system_info'
-			) );
-
-			if ( in_array( $tab_id, $no_save_button ) ) {
-				$save_button = '';
-			}
-
-			$form_format = '<form class="cmb-form" method="post" id="%1$s" enctype="multipart/form-data" encoding="multipart/form-data" ' . $style . ' data-tab="' . $tab_id . '"><input type="hidden" name="give_settings_saved" value="true"><input type="hidden" name="object_id" value="%2$s">%3$s' . $save_button . '</form>';
+			return '<form class="cmb-form" method="post" id="%1$s" enctype="multipart/form-data" encoding="multipart/form-data"><input type="hidden" name="give_settings_saved" value="true"><input type="hidden" name="object_id" value="%2$s">%3$s<div class="give-submit-wrap"><input type="submit" name="submit-cmb" value="' . __( 'Save Settings', 'give' ) . '" class="button-primary"></div></form>';
 
 		}
 

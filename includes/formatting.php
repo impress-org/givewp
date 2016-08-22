@@ -84,7 +84,9 @@ function give_sanitize_amount( $number, $dp = false, $trim_zeros = false ) {
     // Do not replace thousand separator from price if it is same as decimal separator, because it will be already replace by above code.
     if(  ! in_array( $thousand_separator, $decimals ) && ( false !== strpos( $number, $thousand_separator ) ) ) {
         $number = str_replace( $thousand_separator, '', $number );
-    }
+    } elseif ( in_array( $thousand_separator, $decimals ) ) {
+		$number = preg_replace( '/\.(?=.*\.)/', '', $number );
+	}
 
     // Remove non numeric entity before decimal separator.
     $number     = preg_replace( '/[^0-9\.]/', '', $number );
@@ -409,7 +411,7 @@ add_filter( 'give_format_amount_decimals', 'give_currency_decimal_filter' );
  * @return mixed
  */
 function give_sanitize_thousand_separator( $value, $field_args, $field ){
-    return $value;
+    return stripslashes( $value );
 }
 
 
