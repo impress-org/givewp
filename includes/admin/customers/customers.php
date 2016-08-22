@@ -148,6 +148,8 @@ function give_render_customer_view( $view, $callbacks ) {
 			</div>
 		<?php endif; ?>
 
+		<h1 class="screen-reader-text"><?php esc_html_e( 'Donor', 'give' ); ?></h1>
+
 		<?php if ( $customer && $render ) : ?>
 
 			<div id="customer-tab-wrapper">
