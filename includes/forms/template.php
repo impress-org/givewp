@@ -270,7 +270,7 @@ function give_show_purchase_form( $form_id ) {
 
 
 		/**
-		 * Fire before register/login form fields render.
+		 * Fire when register/login form fields render.
 		 *
 		 * @since 1.7
 		 */
