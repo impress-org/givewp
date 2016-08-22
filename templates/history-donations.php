@@ -21,13 +21,23 @@ if ( $donations ) : ?>
 		<tr class="give_purchase_row">
 			<?php
 			/**
-			 * Fires in current user donation history table, before the header row statrs.
+			 * Fires in current user donation history table, before the header row start.
 			 *
 			 * Allows you to add new <th> elements to the header, before other headers in the row.
 			 *
 			 * @since 1.0
+			 * @deprecated 1.9 Use {@see 'give_donation_history_header_before'} instead.
 			 */
-			do_action( 'give_purchase_history_header_before' );
+			do_action_deprecated( 'give_purchase_history_header_before', array(), '1.9', 'give_donation_history_header_before' );
+
+			/**
+			 * Fires in current user donation history table, before the header row start.
+			 *
+			 * Allows you to add new <th> elements to the header, before other headers in the row.
+			 *
+			 * @since 1.9
+			 */
+			do_action( 'give_donation_history_header_before' );
 			?>
 			<th scope="col" class="give_purchase_id"><?php esc_html_e( 'ID', 'give' ); ?></th>
 			<th scope="col" class="give_purchase_date"><?php esc_html_e( 'Date', 'give' ); ?></th>
