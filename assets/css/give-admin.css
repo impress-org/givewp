@@ -755,10 +755,12 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
   padding: 5px 8px; }
 
 .give-money-symbol-before {
-  border-right: 0; }
+  border-right: 0;
+  margin-right: -4px; }
 
 .give-money-symbol-after {
-  border-left: 0; }
+  border-left: 0;
+  margin-left: -4px; }
 
 .give-underline {
   text-decoration: underline; }
