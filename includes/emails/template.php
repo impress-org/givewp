@@ -132,7 +132,7 @@ function give_email_preview_buttons_callback() {
 		'give_action'  => 'send_test_email',
 		'give-message' => 'sent-test-email',
 		'tag'          => 'emails'
-	) ), 'give-test-email' ); ?>" title="<?php esc_attr_e( 'This will send a demo donation receipt to the emails listed below.', 'give' ); ?>" class="button-secondary"><?php esc_html_e( 'Send Test Email', 'give' ); ?></a>
+	) ), 'give-test-email' ); ?>" aria-label="<?php esc_attr_e( 'Send demo donation receipt to the emails listed below.', 'give' ); ?>" class="button-secondary"><?php esc_html_e( 'Send Test Email', 'give' ); ?></a>
 	<?php
 	echo ob_get_clean();
 }

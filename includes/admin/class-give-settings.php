@@ -781,7 +781,7 @@ class Give_Plugin_Settings {
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key, ), ),
 				'fields'     => apply_filters( 'give_settings_system', array(
 						array(
-							'id'   => 'system_info',
+							'id'   => 'system-info-textarea',
 							'name' => esc_html__( 'System Info', 'give' ),
 							'desc' => esc_html__( 'Please copy and paste this information in your ticket when contacting support.', 'give' ),
 							'type' => 'system_info'
