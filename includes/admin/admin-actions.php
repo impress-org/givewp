@@ -14,25 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Processes all Give actions sent via POST and GET by looking for the 'give-action'
- * request and running do_action() to call the function
- *
- * @since 1.0
- * @return void
- */
-function give_process_actions() {
-	if ( isset( $_POST['give-action'] ) ) {
-		do_action( 'give_' . $_POST['give-action'], $_POST );
-	}
-
-	if ( isset( $_GET['give-action'] ) ) {
-		do_action( 'give_' . $_GET['give-action'], $_GET );
-	}
-}
-
-add_action( 'admin_init', 'give_process_actions' );
-
 
 /**
  * Hide subscription notice if admin click on "Click here if already renewed" in subscription notice.
