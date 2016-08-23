@@ -84,7 +84,9 @@ function give_sanitize_amount( $number, $dp = false, $trim_zeros = false ) {
     // Do not replace thousand separator from price if it is same as decimal separator, because it will be already replace by above code.
     if(  ! in_array( $thousand_separator, $decimals ) && ( false !== strpos( $number, $thousand_separator ) ) ) {
         $number = str_replace( $thousand_separator, '', $number );
-    }
+    } elseif ( in_array( $thousand_separator, $decimals ) ) {
+		$number = preg_replace( '/\.(?=.*\.)/', '', $number );
+	}
 
     // Remove non numeric entity before decimal separator.
     $number     = preg_replace( '/[^0-9\.]/', '', $number );
@@ -198,30 +200,19 @@ function give_human_format_large_amount( $amount ) {
     // Calculate amount parts count.
     $amount_count_parts = count( $amount_array );
 
+	// Human format amount (default).
+	$human_format_amount = $amount;
+
     // Calculate large number formatted amount.
     if ( 4 < $amount_count_parts ){
-        $sanitize_amount =  sprintf(
-			/* translators: %s: number */
-			esc_html__( '%s trillion', 'give' ),
-			round( ( $sanitize_amount / 1000000000000 ), 2 )
-		);
+        $human_format_amount =  sprintf( esc_html__( '%s trillion', 'give' ), round( ( $sanitize_amount / 1000000000000 ), 2 ) );
     } elseif ( 3 < $amount_count_parts ){
-        $sanitize_amount =  sprintf(
-			/* translators: %s: number */
-			esc_html__( '%s billion', 'give' ),
-			round( ( $sanitize_amount / 1000000000 ), 2 )
-		);
+        $human_format_amount =  sprintf( esc_html__( '%s billion', 'give' ), round( ( $sanitize_amount / 1000000000 ), 2 ));
     } elseif ( 2 < $amount_count_parts  ) {
-        $sanitize_amount =  sprintf(
-			/* translators: %s: number */
-			esc_html__( '%s million', 'give' ),
-			round( ( $sanitize_amount / 1000000 ), 2 )
-		);
-    } else{
-        $sanitize_amount = give_format_amount( $amount );
+        $human_format_amount =  sprintf( esc_html__( '%s million', 'give' ), round( ( $sanitize_amount / 1000000), 2 ) );
     }
 
-    return apply_filters( 'give_human_format_large_amount', $sanitize_amount, $amount );
+    return apply_filters( 'give_human_format_large_amount', $human_format_amount, $amount, $sanitize_amount );
 }
 
 /**
@@ -331,13 +322,10 @@ function give_currency_filter( $price = '', $currency = '' ) {
             break;
     endswitch;
 
-	$lowercase_currency = strtolower( $currency );
-
     /**
      * Filter formatted amount with currency
      *
      * Filter name depends upon current value of currency and currency position.
-     *
      * For example :
      *           if currency is USD and currency position is before then
      *           filter name will be give_usd_currency_filter_before
@@ -346,7 +334,7 @@ function give_currency_filter( $price = '', $currency = '' ) {
      *           filter name will be give_usd_currency_filter_after
      *
      */
-    $formatted = apply_filters( "give_{$lowercase_currency}_currency_filter_{$position}", $formatted, $currency, $price );
+    $formatted = apply_filters( 'give_' . strtolower( $currency ) . "_currency_filter_{$position}", $formatted, $currency, $price );
 
     if ( $negative ) {
 		// Prepend the minus sign before the currency sign.
@@ -409,7 +397,7 @@ add_filter( 'give_format_amount_decimals', 'give_currency_decimal_filter' );
  * @return mixed
  */
 function give_sanitize_thousand_separator( $value, $field_args, $field ){
-    return $value;
+    return stripslashes( $value );
 }
 
 

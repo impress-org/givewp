@@ -1,6 +1,6 @@
 <?php
 /**
- * Customer (Donor) Reports Table Class
+ * Customer (Donor) Reports Table Class.
  *
  * @package     Give
  * @subpackage  Admin/Reports
@@ -20,16 +20,16 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 }
 
 /**
- * Give_Customer_Reports_Table Class
+ * Give_Customer_Reports_Table Class.
  *
- * Renders the Customer Reports table
+ * Renders the Customer Reports table.
  *
  * @since 1.0
  */
 class Give_Customer_Reports_Table extends WP_List_Table {
 
 	/**
-	 * Number of items per page
+	 * Number of items per page.
 	 *
 	 * @var int
 	 * @since 1.0
@@ -37,7 +37,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	public $per_page = 30;
 
 	/**
-	 * Number of customers found
+	 * Number of donors found.
 	 *
 	 * @var int
 	 * @since 1.0
@@ -45,7 +45,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	public $count = 0;
 
 	/**
-	 * Total customers
+	 * Total donors.
 	 *
 	 * @var int
 	 * @since 1.0
@@ -53,13 +53,12 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	public $total = 0;
 
 	/**
-	 * Get things started
+	 * Get things started.
 	 *
 	 * @since 1.0
 	 * @see   WP_List_Table::__construct()
 	 */
 	public function __construct() {
-		global $status, $page;
 
 		// Set parent defaults
 		parent::__construct( array(
@@ -71,13 +70,13 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Show the search field
+	 * Show the search field.
 	 *
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param string $text     Label for the search box
-	 * @param string $input_id ID of the search box
+	 * @param string $text Label for the search box.
+	 * @param string $input_id ID of the search box.
 	 *
 	 * @return void
 	 */
@@ -93,10 +92,10 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 		?>
 		<p class="search-box" role="search">
 			<label class="screen-reader-text" for="<?php echo $input_id ?>"><?php echo $text; ?>:</label>
-			<input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>" />
+			<input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>"/>
 			<?php submit_button( $text, 'button', false, false, array( 'ID' => 'search-submit' ) ); ?>
 		</p>
-	<?php
+		<?php
 	}
 
 	/**
@@ -105,10 +104,10 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * @access public
 	 * @since  1.0
 	 *
-	 * @param array  $item        Contains all the data of the customers
-	 * @param string $column_name The name of the column
+	 * @param array  $item Contains all the data of the customers.
+	 * @param string $column_name The name of the column.
 	 *
-	 * @return string Column Name
+	 * @return string Column Name.
 	 */
 	public function column_default( $item, $column_name ) {
 		switch ( $column_name ) {
@@ -136,6 +135,13 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 
 	}
 
+	/**
+	 * Column name.
+	 *
+	 * @param $item
+	 *
+	 * @return string
+	 */
 	public function column_name( $item ) {
 		$name = '#' . $item['id'] . ' ';
 		$name .= ! empty( $item['name'] ) ? $item['name'] : '<em>' . esc_html__( 'Unnamed Donor', 'give' ) . '</em>';
@@ -149,11 +155,11 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Retrieve the table columns
+	 * Retrieve the table columns.
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @return array $columns Array of all the list table columns
+	 * @return array $columns Array of all the list table columns.
 	 */
 	public function get_columns() {
 		$columns = array(
@@ -169,11 +175,11 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Get the sortable columns
+	 * Get the sortable columns.
 	 *
 	 * @access public
 	 * @since  2.1
-	 * @return array Array of all the sortable columns
+	 * @return array Array of all the sortable columns.
 	 */
 	public function get_sortable_columns() {
 		return array(
@@ -185,46 +191,46 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Outputs the reporting views
+	 * Outputs the reporting views.
 	 *
 	 * @access public
 	 * @since  1.0
 	 * @return void
 	 */
 	public function bulk_actions( $which = '' ) {
-		// These aren't really bulk actions but this outputs the markup in the right place
+		// These aren't really bulk actions but this outputs the markup in the right place.
 	}
 
 	/**
-	 * Retrieve the current page number
+	 * Retrieve the current page number.
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @return int Current page number
+	 * @return int Current page number.
 	 */
 	public function get_paged() {
 		return isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1;
 	}
 
 	/**
-	 * Retrieves the search query string
+	 * Retrieves the search query string.
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @return mixed string If search is present, false otherwise
+	 * @return mixed string If search is present, false otherwise.
 	 */
 	public function get_search() {
 		return ! empty( $_GET['s'] ) ? urldecode( trim( $_GET['s'] ) ) : false;
 	}
 
 	/**
-	 * Build all the reports data
+	 * Build all the reports data.
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @global object $wpdb Used to query the database using the WordPress
+	 * @global object $wpdb Used to query the database using the WordPress.
 	 *                      Database API
-	 * @return array $reports_data All the data for customer reports
+	 * @return array $reports_data All the data for customer reports.
 	 */
 	public function reports_data() {
 		global $wpdb;
@@ -275,7 +281,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Setup the final data for the table
+	 * Setup the final data for the table.
 	 *
 	 * @access public
 	 * @since  1.0

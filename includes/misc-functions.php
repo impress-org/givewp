@@ -621,16 +621,19 @@ function give_get_newsletter() { ?>
 			<table class="form-table give-newsletter-form">
 				<tr valign="middle">
 					<td>
-						<input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL" placeholder="<?php esc_attr_e( 'Email Address (required)', 'give' ); ?>">
+						<label for="mce-EMAIL" class="screen-reader-text"><?php esc_html_e( 'Email Address (required)', 'give' ); ?></label>
+						<input type="email" name="EMAIL" id="mce-EMAIL" placeholder="<?php esc_attr_e( 'Email Address (required)', 'give' ); ?>" class="required email" value="">
 					</td>
 					<td>
-						<input type="text" value="" placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" name="FNAME" class="" id="mce-FNAME">
+						<label for="mce-FNAME" class="screen-reader-text"><?php esc_html_e( 'First Name', 'give' ); ?></label>
+						<input type="text" name="FNAME" id="mce-FNAME" placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" class="" value="">
 					</td>
 					<td>
-						<input type="text" value="" placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" name="LNAME" class="" id="mce-LNAME">
+						<label for="mce-LNAME" class="screen-reader-text"><?php esc_html_e( 'Last Name', 'give' ); ?></label>
+						<input type="text" name="LNAME" id="mce-LNAME" placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" class="" value="">
 					</td>
 					<td>
-						<input type="submit" value="<?php esc_attr_e( 'Subscribe', 'give' ); ?>" name="subscribe" id="mc-embedded-subscribe" class="button">
+						<input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button" value="<?php esc_attr_e( 'Subscribe', 'give' ); ?>">
 					</td>
 				</tr>
 			</table>
