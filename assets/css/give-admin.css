@@ -1186,10 +1186,6 @@ body.give_forms_page_give-reports table.export-options-table span#give-start-wra
 .gateways-report-tablenav .actions.bulkactions {
   padding-right: 0; }
 
-.widefat .column-name, .widefat .column-label {
-  font-size: 14px;
-  font-weight: bold; }
-
 table.give-table td {
   vertical-align: middle; }
 
@@ -1849,10 +1845,13 @@ input.give-price-field {
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
-/* Donors Listing Page Style
--------------------------------------------------------------- */
 .give_forms_page_give-donors .wrap > h2 {
   margin-bottom: 15px; }
+
+.give_forms_page_give-donors .nav-tab-wrapper .dashicons {
+  position: relative;
+  top: 2px;
+  margin: 0 3px 0 0; }
 
 .give_forms_page_give-donors #give-donors-filter {
   position: relative; }
@@ -1863,40 +1862,6 @@ input.give-price-field {
 .give_forms_page_give-donors .tablenav.top {
   float: right;
   clear: none; }
-
-/* Donor Styles
--------------------------------------------------------------- */
-#customer-tab-wrapper-list {
-  border-bottom: 1px solid #ccc;
-  padding: 5px 15px 0 10px; }
-  #customer-tab-wrapper-list li {
-    display: inline-block;
-    margin: 0 0 -1px;
-    padding: 0; }
-    #customer-tab-wrapper-list li a {
-      padding: 6px 10px;
-      font-weight: bold;
-      font-size: 15px;
-      line-height: 24px;
-      border: 1px solid #ccc;
-      border-bottom: none;
-      background: #e4e4e4;
-      color: #555;
-      display: inline-block;
-      text-decoration: none;
-      margin: 0; }
-  #customer-tab-wrapper-list .active {
-    padding: 6px 10px;
-    font-weight: bold;
-    font-size: 15px;
-    line-height: 24px;
-    border: 1px solid #ccc;
-    border-bottom: 1px solid #f1f1f1;
-    background: #f1f1f1;
-    color: #000; }
-  #customer-tab-wrapper-list .dashicons {
-    font-size: 20px;
-    line-height: 26px; }
 
 #give-customer-card-wrapper {
   margin-left: -1px;
