@@ -200,18 +200,19 @@ function give_human_format_large_amount( $amount ) {
     // Calculate amount parts count.
     $amount_count_parts = count( $amount_array );
 
+	// Human format amount (default).
+	$human_format_amount = $amount;
+
     // Calculate large number formatted amount.
     if ( 4 < $amount_count_parts ){
-        $sanitize_amount =  sprintf( esc_html__( '%s trillion', 'give' ), round( ( $sanitize_amount / 1000000000000 ), 2 ) );
+        $human_format_amount =  sprintf( esc_html__( '%s trillion', 'give' ), round( ( $sanitize_amount / 1000000000000 ), 2 ) );
     } elseif ( 3 < $amount_count_parts ){
-        $sanitize_amount =  sprintf( esc_html__( '%s billion', 'give' ), round( ( $sanitize_amount / 1000000000 ), 2 ));
+        $human_format_amount =  sprintf( esc_html__( '%s billion', 'give' ), round( ( $sanitize_amount / 1000000000 ), 2 ));
     } elseif ( 2 < $amount_count_parts  ) {
-        $sanitize_amount =  sprintf( esc_html__( '%s million', 'give' ), round( ( $sanitize_amount / 1000000), 2 ) );
-    } else{
-        $sanitize_amount = give_format_amount( $amount );
+        $human_format_amount =  sprintf( esc_html__( '%s million', 'give' ), round( ( $sanitize_amount / 1000000), 2 ) );
     }
 
-    return apply_filters( 'give_human_format_large_amount', $sanitize_amount, $amount );
+    return apply_filters( 'give_human_format_large_amount', $human_format_amount, $amount, $sanitize_amount );
 }
 
 /**
