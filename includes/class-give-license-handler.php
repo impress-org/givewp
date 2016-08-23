@@ -89,7 +89,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @var    string
 		 */
-		private $api_url      = 'http://givewp.com/give-sl-api/';
+		private $api_url      = 'http://givewp.com/edd-sl-api/';
 		private $account_url  = 'http://givewp.com/my-account/';
 		private $checkout_url = 'http://givewp.com/checkout/';
 
