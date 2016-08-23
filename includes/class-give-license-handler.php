@@ -46,6 +46,13 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 */
 		private $item_name;
 
+		/**
+		 * License Information object.
+		 *
+		 * @access private
+		 *
+		 * @var    object
+		 */
 		private $license_data;
 
 		/**
