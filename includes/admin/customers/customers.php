@@ -152,28 +152,21 @@ function give_render_customer_view( $view, $callbacks ) {
 
 		<?php if ( $customer && $render ) : ?>
 
-			<div id="customer-tab-wrapper">
-				<ul id="customer-tab-wrapper-list" class="nav-tab-wrapper">
-					<?php foreach ( $customer_tabs as $key => $tab ) : ?>
-						<?php $active = $key === $view ? true : false; ?>
-						<?php $class = $active ? 'active' : 'inactive'; ?>
-
-						<li class="<?php echo sanitize_html_class( $class ); ?>">
-							<?php if ( ! $active ) : ?>
-							<a aria-label="<?php esc_attr_e( $tab['title'] ); ?>" href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=' . $key . '&id=' . $customer->id ) ); ?>">
-								<?php endif; ?>
-
-								<span class="dashicons <?php echo sanitize_html_class( $tab['dashicon'] ); ?>"></span> <?php esc_html_e( $tab['title'] ); ?>
-								<?php if ( ! $active ) : ?>
-							</a>
-						<?php endif; ?>
-
-						</li>
-
-
-					<?php endforeach; ?>
-				</ul>
-			</div>
+			<h2 class="nav-tab-wrapper">
+			<?php
+			foreach ( $customer_tabs as $key => $tab ) :
+				$active = $key === $view ? true : false;
+				$class = $active ? 'nav-tab nav-tab-active' : 'nav-tab';
+				printf(
+					'<a href="%1$s" class="%2$s"><span class="dashicons %3$s"></span>%4$s</a>'."\n",
+					esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=' . $key . '&id=' . $customer->id ) ),
+					esc_attr( $class ),
+					sanitize_html_class( $tab['dashicon'] ),
+					esc_html( $tab['title'] )
+				);
+			endforeach;
+			?>
+			</h2>
 
 			<div id="give-customer-card-wrapper">
 				<?php $callbacks[ $view ]( $customer ) ?>
