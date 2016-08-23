@@ -730,7 +730,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @return bool
 		 */
 		public function is_valid_license() {
-			if( apply_filters( 'give_is_valid_license' , ( is_object( $this->license_data ) && ! empty( $this->license_data ) && 'valid' === $this->license_data->license ) ) ) {
+			if( apply_filters( 'give_is_valid_license' , ( is_object( $this->license_data ) && ! empty( $this->license_data ) &&  property_exists( $this->license_data, 'license' )&& 'valid' === $this->license_data->license ) ) ) {
 				return true;
 			}
 

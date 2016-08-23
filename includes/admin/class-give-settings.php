@@ -1169,7 +1169,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 	$license              = $field_type_object->field->args['options']['license'];
     $license_key          = $escaped_value;
     $is_license_key       = apply_filters( 'give_is_license_key', ( is_object( $license ) && ! empty( $license ) ) );
-    $is_valid_license     = apply_filters( 'give_is_valid_license', ( $is_license_key && 'valid' === $license->license ) );
+    $is_valid_license     = apply_filters( 'give_is_valid_license', ( $is_license_key && property_exists( $license, 'license' ) && 'valid' === $license->license ) );
     $shortname            = $field_type_object->field->args['options']['shortname'];
 	$field_classes        = 'regular-text give-license-field';
 	$type                 = empty( $escaped_value ) || ! $is_valid_license ? 'text' : 'password';
@@ -1182,6 +1182,12 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
     $addon_name           = $field_type_object->field->args['options']['item_name'];
     $license_status       = null;
     $is_in_subscription   = null;
+
+	// By default query on edd api url will return license object which contain status and message property, this can break below functionality.
+	// To combat that check if status is set to error or not, if yes then set $is_license_key to false.
+	if( $is_license_key && property_exists( $license, 'status' ) && 'error' === $license->status ) {
+		$is_license_key = false;
+	}
 
 
     // Check if current license is part of subscription or not.
@@ -1237,7 +1243,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 
         } elseif ( empty( $license->success ) ) {
             // activate_license 'invalid' on anything other than valid, so if there was an error capture it
-            switch( $license->error ) {
+            switch(  property_exists( $license, 'error' ) && $license->error ) {
                 case 'expired' :
                     $class = $license->error;
                     $messages[] = sprintf(
