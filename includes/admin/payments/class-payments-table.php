@@ -326,8 +326,8 @@ class Give_Payment_History_Table extends WP_List_Table {
 			case 'donation' :
 				ob_start();
 				?>
-				<a href="<?php echo $single_donation_url; ?>" data-tooltip="<?php esc_html_e( 'View details', 'give' ) ?>">#<?php echo $payment->ID; ?></a>
-				&nbsp;<?php _e( 'by', 'give' ); ?>&nbsp;<?php echo $this->get_donor( $payment ); ?><br>
+				<a href="<?php echo $single_donation_url; ?>" data-tooltip="<?php esc_html_e( 'View details', 'give' ) ?>">#<?php echo $payment->ID; ?></a>&nbsp;<?php _e( 'by', 'give' ); ?>&nbsp;<?php echo $this->get_donor( $payment ); ?>
+				<br>
 				<?php echo $this->get_donor_email( $payment ); ?>
 				<?php echo $this->row_actions( $row_actions ); ?>
 				<?php
