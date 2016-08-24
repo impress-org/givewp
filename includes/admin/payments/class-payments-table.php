@@ -410,8 +410,8 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 */
 	function get_row_actions( $payment ) {
 
-		$row_actions = array();
-		$email       = give_get_payment_user_email( $payment->ID );
+		$actions = array();
+		$email   = give_get_payment_user_email( $payment->ID );
 
 		// Add search term string back to base URL
 		$search_terms = ( isset( $_GET['s'] ) ? trim( $_GET['s'] ) : '' );
@@ -420,19 +420,42 @@ class Give_Payment_History_Table extends WP_List_Table {
 		}
 
 		if ( give_is_payment_complete( $payment->ID ) && ! empty( $email ) ) {
-			$row_actions['email_links'] = '<a href="' . add_query_arg( array(
-					'give-action' => 'email_links',
-					'purchase_id' => $payment->ID
-				), $this->base_url ) . '">' . esc_html__( 'Resend Donation Receipt', 'give' ) . '</a>';
+
+			$actions['email_links'] = sprintf(
+				'<a href="%1$s" aria-label="%2$s">%3$s</a>',
+				wp_nonce_url(
+					add_query_arg(
+						array(
+							'give-action' => 'email_links',
+							'purchase_id' => $payment->ID
+						),
+						$this->base_url
+					),
+					'give_payment_nonce'
+				),
+				sprintf( esc_attr__( 'Resend Donation %s Receipt', 'give' ), $payment->ID ),
+				esc_html__( 'Resend Donation Receipt', 'give' )
+			);
 
 		}
 
-		$row_actions['delete'] = '<a href="' . wp_nonce_url( add_query_arg( array(
-				'give-action' => 'delete_payment',
-				'purchase_id' => $payment->ID
-			), $this->base_url ), 'give_payment_nonce' ) . '">' . esc_html__( 'Delete', 'give' ) . '</a>';
+		$actions['delete'] = sprintf(
+			'<a href="%1$s" aria-label="%2$s">%3$s</a>',
+			wp_nonce_url(
+				add_query_arg(
+					array(
+						'give-action' => 'delete_payment',
+						'purchase_id' => $payment->ID
+					),
+					$this->base_url
+				),
+				'give_payment_nonce'
+			),
+			sprintf( esc_attr__( 'Delete Donation %s', 'give' ), $payment->ID ),
+			esc_html__( 'Delete', 'give' )
+		);
 
-		return apply_filters( 'give_payment_row_actions', $row_actions, $payment );
+		return apply_filters( 'give_payment_row_actions', $actions, $payment );
 	}
 
 
