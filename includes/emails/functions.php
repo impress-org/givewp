@@ -35,14 +35,14 @@ function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 	/**
 	 * Filters the from name.
 	 *
-	 * @deprecated 1.9 Use {@see 'give_donation_from_name'} instead.
+	 * @deprecated 1.7 Use {@see 'give_donation_from_name'} instead.
 	 */
-	$from_name = apply_filters_deprecated( 'give_purchase_from_name', array( $from_name, $payment_id, $payment_data ), '1.9', 'give_donation_from_name' );
+	$from_name = apply_filters_deprecated( 'give_purchase_from_name', array( $from_name, $payment_id, $payment_data ), '1.7', 'give_donation_from_name' );
 
 	/**
 	 * Filters the from name.
 	 *
-	 * @since 1.9
+	 * @since 1.7
 	 */
 	$from_name = apply_filters( 'give_donation_from_name', $from_name, $payment_id, $payment_data );
 
@@ -51,14 +51,14 @@ function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 	/**
 	 * Filters the from email.
 	 *
-	 * @deprecated 1.9 Use {@see 'give_donation_from_address'} instead.
+	 * @deprecated 1.7 Use {@see 'give_donation_from_address'} instead.
 	 */
-	$from_email = apply_filters_deprecated( 'give_purchase_from_address', array( $from_email, $payment_id, $payment_data ), '1.9', 'give_donation_from_address' );
+	$from_email = apply_filters_deprecated( 'give_purchase_from_address', array( $from_email, $payment_id, $payment_data ), '1.7', 'give_donation_from_address' );
 
 	/**
 	 * Filters the from email.
 	 *
-	 * @since 1.9
+	 * @since 1.7
 	 */
 	$from_email = apply_filters( 'give_donation_from_address', $from_email, $payment_id, $payment_data );
 
@@ -112,14 +112,14 @@ function give_email_test_donation_receipt() {
 	/**
 	 * Filters the from name.
 	 *
-	 * @deprecated 1.9 Use {@see 'give_donation_from_name'} instead.
+	 * @deprecated 1.7 Use {@see 'give_donation_from_name'} instead.
 	 */
-	$from_name = apply_filters_deprecated( 'give_purchase_from_name', array( $from_name, 0, array() ), '1.9', 'give_donation_from_name' );
+	$from_name = apply_filters_deprecated( 'give_purchase_from_name', array( $from_name, 0, array() ), '1.7', 'give_donation_from_name' );
 
 	/**
 	 * Filters the from name.
 	 *
-	 * @since 1.9
+	 * @since 1.7
 	 */
 	$from_name = apply_filters( 'give_donation_from_name', $from_name, 0, array() );
 
@@ -128,14 +128,14 @@ function give_email_test_donation_receipt() {
 	/**
 	 * Filters the from email.
 	 *
-	 * @deprecated 1.9 Use {@see 'give_donation_from_address'} instead.
+	 * @deprecated 1.7 Use {@see 'give_donation_from_address'} instead.
 	 */
-	$from_email = apply_filters_deprecated( 'give_purchase_from_address', array( $from_email, 0, array() ), '1.9', 'give_donation_from_address' );
+	$from_email = apply_filters_deprecated( 'give_purchase_from_address', array( $from_email, 0, array() ), '1.7', 'give_donation_from_address' );
 
 	/**
 	 * Filters the from email.
 	 *
-	 * @since 1.9
+	 * @since 1.7
 	 */
 	$from_email = apply_filters( 'give_donation_from_address', $from_email, 0, array() );
 
@@ -186,14 +186,14 @@ function give_admin_email_notice( $payment_id = 0, $payment_data = array() ) {
 	/**
 	 * Filters the from name.
 	 *
-	 * @deprecated 1.9 Use {@see 'give_donation_from_name'} instead.
+	 * @deprecated 1.7 Use {@see 'give_donation_from_name'} instead.
 	 */
-	$from_name = apply_filters_deprecated( 'give_purchase_from_name', array( $from_name, $payment_id, $payment_data ), '1.9', 'give_donation_from_name' );
+	$from_name = apply_filters_deprecated( 'give_purchase_from_name', array( $from_name, $payment_id, $payment_data ), '1.7', 'give_donation_from_name' );
 
 	/**
 	 * Filters the from name.
 	 *
-	 * @since 1.9
+	 * @since 1.7
 	 */
 	$from_name = apply_filters( 'give_donation_from_name', $from_name, $payment_id, $payment_data );
 
@@ -202,14 +202,14 @@ function give_admin_email_notice( $payment_id = 0, $payment_data = array() ) {
 	/**
 	 * Filters the from email.
 	 *
-	 * @deprecated 1.9 Use {@see 'give_donation_from_address'} instead.
+	 * @deprecated 1.7 Use {@see 'give_donation_from_address'} instead.
 	 */
-	$from_email = apply_filters_deprecated( 'give_purchase_from_address', array( $from_email, $payment_id, $payment_data ), '1.9', 'give_donation_from_address' );
+	$from_email = apply_filters_deprecated( 'give_purchase_from_address', array( $from_email, $payment_id, $payment_data ), '1.7', 'give_donation_from_address' );
 
 	/**
 	 * Filters the from email.
 	 *
-	 * @since 1.9
+	 * @since 1.7
 	 */
 	$from_email = apply_filters( 'give_donation_from_address', $from_email, $payment_id, $payment_data );
 

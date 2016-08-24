@@ -429,14 +429,14 @@ function give_purchase_form_required_fields( $form_id ) {
 	/**
 	 * Filters the donation form required field.
 	 *
-	 * @deprecated 1.9 Use {@see 'give_donation_form_required_fields'} instead.
+	 * @deprecated 1.7 Use {@see 'give_donation_form_required_fields'} instead.
 	 */
-	$required_fields = apply_filters_deprecated( 'give_purchase_form_required_fields', array( $required_fields, $form_id ), '1.9', 'give_donation_form_required_fields' );
+	$required_fields = apply_filters_deprecated( 'give_purchase_form_required_fields', array( $required_fields, $form_id ), '1.7', 'give_donation_form_required_fields' );
 
 	/**
 	 * Filters the donation form required field.
 	 *
-	 * @since 1.9
+	 * @since 1.7
 	 */
 	$required_fields = apply_filters( 'give_donation_form_required_fields', $required_fields, $form_id );
 

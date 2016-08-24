@@ -26,16 +26,16 @@ if ( $donations ) : ?>
 			 * Allows you to add new <th> elements to the header, before other headers in the row.
 			 *
 			 * @since 1.0
-			 * @deprecated 1.9 Use {@see 'give_donation_history_header_before'} instead.
+			 * @deprecated 1.7 Use {@see 'give_donation_history_header_before'} instead.
 			 */
-			do_action_deprecated( 'give_purchase_history_header_before', array(), '1.9', 'give_donation_history_header_before' );
+			do_action_deprecated( 'give_purchase_history_header_before', array(), '1.7', 'give_donation_history_header_before' );
 
 			/**
 			 * Fires in current user donation history table, before the header row start.
 			 *
 			 * Allows you to add new <th> elements to the header, before other headers in the row.
 			 *
-			 * @since 1.9
+			 * @since 1.7
 			 */
 			do_action( 'give_donation_history_header_before' );
 			?>
@@ -50,16 +50,16 @@ if ( $donations ) : ?>
 			 * Allows you to add new <th> elements to the header, after other headers in the row.
 			 *
 			 * @since 1.0
-			 * @deprecated 1.9 Use {@see 'give_donation_history_header_after'} instead.
+			 * @deprecated 1.7 Use {@see 'give_donation_history_header_after'} instead.
 			 */
-			do_action_deprecated( 'give_purchase_history_header_after', array(), '1.9', 'give_donation_history_header_after' );
+			do_action_deprecated( 'give_purchase_history_header_after', array(), '1.7', 'give_donation_history_header_after' );
 
 			/**
 			 * Fires in current user donation history table, after the header row ends.
 			 *
 			 * Allows you to add new <th> elements to the header, after other headers in the row.
 			 *
-			 * @since 1.9
+			 * @since 1.7
 			 */
 			do_action( 'give_donation_history_header_after' );
 			?>
@@ -75,19 +75,19 @@ if ( $donations ) : ?>
 				 * Allows you to add new <td> elements to the row, before other elements in the row.
 				 *
 				 * @since 1.0
-				 * @deprecated 1.9 Use {@see 'give_donation_history_row_start'} instead.
+				 * @deprecated 1.7 Use {@see 'give_donation_history_row_start'} instead.
 				 *
 				 * @param int   $post_id       The ID of the post.
 				 * @param mixed $donation_data Payment meta data.
 				 */
-				do_action_deprecated( 'give_purchase_history_row_start', array( $post->ID, $donation_data ), '1.9', 'give_donation_history_row_start' );
+				do_action_deprecated( 'give_purchase_history_row_start', array( $post->ID, $donation_data ), '1.7', 'give_donation_history_row_start' );
 
 				/**
 				 * Fires in current user donation history table, before the row statrs.
 				 *
 				 * Allows you to add new <td> elements to the row, before other elements in the row.
 				 *
-				 * @since 1.9
+				 * @since 1.7
 				 *
 				 * @param int   $post_id       The ID of the post.
 				 * @param mixed $donation_data Payment meta data.
@@ -113,19 +113,19 @@ if ( $donations ) : ?>
 				 * Allows you to add new <td> elements to the row, after other elements in the row.
 				 *
 				 * @since 1.0
-				 * @deprecated 1.9 Use {@see 'give_donation_history_row_end'} instead.
+				 * @deprecated 1.7 Use {@see 'give_donation_history_row_end'} instead.
 				 *
 				 * @param int   $post_id       The ID of the post.
 				 * @param mixed $donation_data Payment meta data.
 				 */
-				do_action_deprecated( 'give_purchase_history_row_end', array( $post->ID, $donation_data ), '1.9', 'give_donation_history_row_end' );
+				do_action_deprecated( 'give_purchase_history_row_end', array( $post->ID, $donation_data ), '1.7', 'give_donation_history_row_end' );
 
 				/**
 				 * Fires in current user donation history table, after the row ends.
 				 *
 				 * Allows you to add new <td> elements to the row, after other elements in the row.
 				 *
-				 * @since 1.9
+				 * @since 1.7
 				 *
 				 * @param int   $post_id       The ID of the post.
 				 * @param mixed $donation_data Payment meta data.
