@@ -222,7 +222,7 @@ function give_customers_view( $customer ) {
 					</div>
 					<p class="customer-since info-item">
 						<?php esc_html_e( 'Donor since', 'give' ); ?>
-						<?php echo date_i18n( get_option( 'date_format' ), strtotime( $customer->date_created ) ) ?>
+						<?php echo date_i18n( give_date_format(), strtotime( $customer->date_created ) ) ?>
 					</p>
 					<?php if ( current_user_can( $customer_edit_role ) ): ?>
 						<a href="#" id="edit-customer" class="button info-item editable customer-edit-link"><?php esc_html_e( 'Edit Donor', 'give' ); ?></a>
@@ -458,7 +458,7 @@ function give_customers_view( $customer ) {
 					<tr>
 						<td><?php echo $payment->ID; ?></td>
 						<td><?php echo give_payment_amount( $payment->ID ); ?></td>
-						<td><?php echo date_i18n( get_option( 'date_format' ), strtotime( $payment->post_date ) ); ?></td>
+						<td><?php echo date_i18n( give_date_format(), strtotime( $payment->post_date ) ); ?></td>
 						<td><?php echo give_get_payment_status( $payment, true ); ?></td>
 						<td>
 							<a aria-label="<?php sprintf( esc_attr_e( 'View Details for Donation %s.', 'give' ), $payment->ID ); ?>" href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $payment->ID ); ?>">
