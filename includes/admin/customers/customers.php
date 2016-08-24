@@ -515,21 +515,18 @@ function give_customers_view( $customer ) {
 					<tr>
 						<td><?php echo $donation->post_title; ?></td>
 						<td>
-							<a aria-label="<?php
-								printf(
-									/* translators: %s: post title */
-									esc_attr__( 'View %s', 'give' ),
+							<?php
+							printf(
+								'<a href="%1$s" aria-label="%2$s">%3$s</a>',
+								esc_url( admin_url( 'post.php?action=edit&post=' . $donation->ID ) ),
+								sprintf(
+									/* translators: %s: form name */
+									esc_attr__( 'View Form %s.', 'give' ),
 									$donation->post_title
-								); ?>" href="<?php echo esc_url( admin_url( 'post.php?action=edit&post=' . $donation->ID ) );
-							?>">
-								<?php
-									printf(
-										/* translators: %s: forms singular label */
-										esc_html__( 'View %s', 'give' ),
-										give_get_forms_label_singular()
-									);
-								?>
-							</a>
+								),
+								esc_html__( 'View Form', 'give' )
+							);
+							?>
 						</td>
 					</tr>
 				<?php endforeach; ?>
