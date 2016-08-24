@@ -146,10 +146,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 		$name = '#' . $item['id'] . ' ';
 		$name .= ! empty( $item['name'] ) ? $item['name'] : '<em>' . esc_html__( 'Unnamed Donor', 'give' ) . '</em>';
 		$view_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $item['id'] );
-		$actions  = array(
-			'view'   => sprintf( '<a href="%1$s">%2$s</a>', $view_url, esc_html__( 'View Donor', 'give' ) ),
-			'delete' => sprintf( '<a href="%1$s">%2$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id=' . $item['id'] ), esc_html__( 'Delete', 'give' ) )
-		);
+		$actions  = $this->get_row_actions( $item );
 
 		return '<a href="' . esc_url( $view_url ) . '">' . $name . '</a>' . $this->row_actions( $actions );
 	}
@@ -188,6 +185,45 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 			'num_purchases' => array( 'purchase_count', false ),
 			'amount_spent'  => array( 'purchase_value', false ),
 		);
+	}
+
+	/**
+	 * Retrieve row actions.
+	 *
+	 * @since  1.7
+	 * @access public
+	 *
+	 * @return array An array of action links.
+	 */
+	public function get_row_actions( $item ) {
+
+		$actions = array(
+
+			'view' => sprintf(
+				'<a href="%1$s" aria-label="%2$s">%3$s</a>',
+				admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $item['id'] ),
+				sprintf( esc_attr__( 'View "%s"', 'give' ), $item['name'] ),
+				esc_html__( 'View Donor', 'give' )
+			),
+
+			'notes' => sprintf(
+				'<a href="%1$s" aria-label="%2$s">%3$s</a>',
+				admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=notes&id=' . $item['id'] ),
+				sprintf( esc_attr__( 'Notes for "%s"', 'give' ), $item['name'] ),
+				esc_html__( 'Notes', 'give' )
+			),
+
+			'delete' => sprintf(
+				'<a href="%1$s" aria-label="%2$s">%3$s</a>',
+				admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id=' . $item['id'] ),
+				sprintf( esc_attr__( 'Delete "%s"', 'give' ), $item['name'] ),
+				esc_html__( 'Delete', 'give' )
+			)
+
+		);
+
+		return apply_filters( 'give_donor_row_actions', $actions, $item );
+
 	}
 
 	/**
