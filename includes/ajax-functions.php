@@ -125,8 +125,18 @@ function give_load_checkout_login_fields() {
 	 * Fires on checkout login fields via AJAX.
 	 *
 	 * @since 1.0
+	 *
+	 * @deprecated 1.7 Use {@see 'give_donation_form_login_fields'} instead.
 	 */
-	do_action( 'give_purchase_form_login_fields' );
+	do_action_deprecated( 'give_purchase_form_login_fields', array(), '1.7', 'give_donation_form_login_fields' );
+
+	/**
+	 * Fire when render login fields via ajax.
+	 *
+	 * @since 1.7
+	 */
+	do_action( 'give_donation_form_login_fields' );
+
 	give_die();
 }
 
@@ -149,9 +159,16 @@ function give_load_checkout_fields() {
 	 *
 	 * @since 1.3.6
 	 *
-	 * @param int $form_id The form ID.
+	 * @deprecated 1.7 Use {@see 'give_donation_form_register_login_fields'} instead.
 	 */
-	do_action( 'give_purchase_form_register_login_fields', $form_id );
+	do_action_deprecated( 'give_purchase_form_register_login_fields', array( $form_id ), '1.7', 'give_donation_form_register_login_fields' );
+
+	/**
+	 * Fire to render registration/login form.
+	 *
+	 * @since 1.7
+	 */
+	do_action( 'give_donation_form_register_login_fields', $form_id );
 
 	$fields = ob_get_clean();
 
