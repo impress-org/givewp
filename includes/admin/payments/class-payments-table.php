@@ -324,14 +324,16 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 		switch ( $column_name ) {
 			case 'donation' :
-				ob_start();
-				?>
-				<a href="<?php echo $single_donation_url; ?>" data-tooltip="<?php esc_html_e( 'View details', 'give' ) ?>">#<?php echo $payment->ID; ?></a>&nbsp;<?php _e( 'by', 'give' ); ?>&nbsp;<?php echo $this->get_donor( $payment ); ?>
-				<br>
-				<?php echo $this->get_donor_email( $payment ); ?>
-				<?php echo $this->row_actions( $row_actions ); ?>
-				<?php
-				$value = ob_get_clean();
+				$value = sprintf(
+					'<a href="%1$s" data-tooltip="%2$s">#%3$s</a>&nbsp;%4$s&nbsp;%5$s<br>',
+					$single_donation_url,
+					sprintf( esc_attr__( 'View Donation %s', 'give' ), $payment->ID ),
+					$payment->ID,
+					esc_html__( 'by', 'give' ),
+					$this->get_donor( $payment )
+				);
+				$value .= $this->get_donor_email( $payment );
+				$value .= $this->row_actions( $row_actions );
 				break;
 
 			case 'amount' :
@@ -360,7 +362,11 @@ class Give_Payment_History_Table extends WP_List_Table {
 				break;
 
 			case 'details' :
-				$value = '<div class="give-payment-details-link-wrap"><a href="' . $single_donation_url . '" data-tooltip="' . __( 'View Details', 'give' ) . '" class="give-payment-details-link button button-small" aria-label="' . __( 'View Details', 'give' ) . '"><span class="dashicons dashicons-visibility"></span></a></div>';
+				$value = sprintf(
+					'<div class="give-payment-details-link-wrap"><a href="%1$s" class="give-payment-details-link button button-small" data-tooltip="%2$s" aria-label="%2$s"><span class="dashicons dashicons-visibility"></span></a></div>',
+					$single_donation_url,
+					sprintf( esc_attr__( 'View Donation %s', 'give' ), $payment->ID )
+				);
 				break;
 
 			default:

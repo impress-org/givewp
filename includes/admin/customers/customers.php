@@ -461,14 +461,24 @@ function give_customers_view( $customer ) {
 						<td><?php echo date_i18n( get_option( 'date_format' ), strtotime( $payment->post_date ) ); ?></td>
 						<td><?php echo give_get_payment_status( $payment, true ); ?></td>
 						<td>
-							<a aria-label="<?php sprintf( esc_attr_e( 'View Details for Donation %s.', 'give' ), $payment->ID ); ?>" href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $payment->ID ); ?>">
-								<?php esc_html_e( 'View Details', 'give' ); ?>
-							</a>
+							<?php
+							printf(
+								'<a href="%1$s" aria-label="%2$s">%3$s</a>',
+								admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $payment->ID ),
+								sprintf(
+									/* translators: %s: Donation ID */
+									esc_attr__( 'View Donation %s.', 'give' ),
+									$payment->ID
+								),
+								esc_html__( 'View Donation', 'give' )
+							);
+							?>
+
 							<?php
 							/**
 							 * Fires in donor profile screen, in the recent donations tables action links.
 							 *
-							 * Allows you to add more action links for each donation, after the 'View Details' action link.
+							 * Allows you to add more action links for each donation, after the 'View Donation' action link.
 							 *
 							 * @since 1.0
 							 *
