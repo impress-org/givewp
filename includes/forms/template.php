@@ -1614,7 +1614,7 @@ function give_checkout_submit( $form_id ) {
 		 *
 		 * @deprecated 1.7 Use {@see ''give_donation_form_before_submit} instead.
 		 */
-		do_action_deprecated( 'give_purchase_form_before_submit', array( $form_id ), '1.7'. 'give_donation_form_before_submit' );
+		do_action_deprecated( 'give_purchase_form_before_submit', array( $form_id ), '1.7', 'give_donation_form_before_submit' );
 
 		/**
 		 * Fire before donation form submit.
