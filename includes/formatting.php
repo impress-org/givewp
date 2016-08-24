@@ -69,6 +69,11 @@ function give_sanitize_amount( $number, $dp = false, $trim_zeros = false ) {
         return $number;
     }
 
+	// Remove slash from amount.
+	// If thousand or decimal separator is set to ' then in $_POST or $_GET param we will get an escaped number.
+	// To prevent notices and warning remove slash from amount/number.
+	$number = wp_unslash( $number );
+
     $thousand_separator = give_get_price_thousand_separator();
 
     $locale   = localeconv();
