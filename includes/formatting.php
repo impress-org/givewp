@@ -131,39 +131,14 @@ function give_sanitize_amount( $number, $dp = false, $trim_zeros = false ) {
  * @return string $amount Newly formatted amount or Price Not Available
  */
 function give_format_amount( $amount, $decimals = true ) {
-
 	$thousands_sep = give_get_option( 'thousands_separator', ',' );
 	$decimal_sep   = give_get_option( 'decimal_separator', '.' );
 
-	// Format the amount
-	if ( $decimal_sep == ',' && false !== ( $sep_found = strpos( $amount, $decimal_sep ) ) ) {
-		$whole  = substr( $amount, 0, $sep_found );
-		$part   = substr( $amount, $sep_found + 1, ( strlen( $amount ) - 1 ) );
-		$amount = $whole . '.' . $part;
-	}
-
-	// Strip , from the amount (if set as the thousands separator)
-	if ( $thousands_sep == ',' && false !== ( $found = strpos( $amount, $thousands_sep ) ) ) {
-		$amount = str_replace( ',', '', $amount );
-	}
-
-	// Strip . from the amount (if set as the thousands separator) AND , set to decimal separator
-	if ( $thousands_sep == '.' && $decimal_sep == ',' && false !== ( $found = strpos( $amount, $thousands_sep ) ) ) {
-		$amount      = explode( '.', $amount );
-		$array_count = count( $amount );
-		if ( $decimals == true ) {
-			unset( $amount[ $array_count - 1 ] );
-		}
-		$amount = implode( '', $amount );
-	}
-
-	// Strip ' ' from the amount (if set as the thousands separator)
-	if ( $thousands_sep == ' ' && false !== ( $found = strpos( $amount, $thousands_sep ) ) ) {
-		$amount = str_replace( ' ', '', $amount );
-	}
-
 	if ( empty( $amount ) ) {
 		$amount = 0;
+	} else {
+		// Sanitize amount before formatting.
+		$amount = give_sanitize_amount( $amount );
 	}
 
 	$decimals = give_get_price_decimals();
