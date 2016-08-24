@@ -2090,6 +2090,10 @@ input.give-price-field {
   .mce-sc-popup p.margin-top {
     margin-top: 1em; }
 
+.mce-sc-popup .mce-listbox button {
+  text-overflow: ellipsis;
+  overflow: hidden !important; }
+
 /* =Shortcode button above wp_editor
 -------------------------------------------------------------- */
 @media screen and (max-width: 782px) {
