@@ -339,8 +339,13 @@ function give_setup_email_tags() {
 		),
 		array(
 			'tag'         => 'receipt_link',
-			'description' => esc_html__( 'Adds a link so users can view their receipt directly on your website if they are unable to view it in the browser correctly.', 'give' ),
+			'description' => esc_html__( 'The donation receipt direct link, to view the receipt on the website.', 'give' ),
 			'function'    => 'give_email_tag_receipt_link'
+		),
+		array(
+			'tag'         => 'receipt_link_url',
+			'description' => esc_html__( 'The donation receipt direct URL, to view the receipt on the website.', 'give' ),
+			'function'    => 'give_email_tag_receipt_link_url'
 		),
 	);
 
@@ -569,9 +574,9 @@ function give_email_tag_sitename( $payment_id ) {
 }
 
 /**
- * Email template tag: receipt_link.
+ * Email template tag: {receipt_link}
  *
- * Adds a link so users can view their receipt directly on your website if they are unable to view it in the browser correctly.
+ * The donation receipt direct link, to view the receipt on the website.
  *
  * @param int $payment_id
  *
@@ -594,5 +599,27 @@ function give_email_tag_receipt_link( $payment_id ) {
 	} else {
 		return $receipt_url;
 	}
+
+}
+
+/**
+ * Email template tag: {receipt_link_url}
+ *
+ * The donation receipt direct URL, to view the receipt on the website.
+ *
+ * @since 1.7
+ *
+ * @param int $payment_id
+ *
+ * @return string receipt_url
+ */
+function give_email_tag_receipt_link_url( $payment_id ) {
+
+	$receipt_url = esc_url( add_query_arg( array(
+		'payment_key' => give_get_payment_key( $payment_id ),
+		'give_action' => 'view_receipt'
+	), home_url() ) );
+
+	return $receipt_url;
 
 }
