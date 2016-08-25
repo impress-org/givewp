@@ -569,9 +569,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 */
 		private function __single_subscription_check() {
-
-			if( ! empty( $_POST['give_settings'] ) ) {
-				// Don't fire when saving settings
+			// Do not fire if license key is not set.
+			if ( ! isset( $_POST[ $this->item_shortname . '_license_key' ] ) ) {
 				return false;
 			}
 
