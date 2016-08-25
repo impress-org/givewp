@@ -25,16 +25,6 @@ if ( $donations ) : ?>
 			 *
 			 * Allows you to add new <th> elements to the header, before other headers in the row.
 			 *
-			 * @since 1.0
-			 * @deprecated 1.7 Use {@see 'give_donation_history_header_before'} instead.
-			 */
-			_give_do_action_deprecated( 'give_purchase_history_header_before', array(), '1.7', 'give_donation_history_header_before' );
-
-			/**
-			 * Fires in current user donation history table, before the header row start.
-			 *
-			 * Allows you to add new <th> elements to the header, before other headers in the row.
-			 *
 			 * @since 1.7
 			 */
 			do_action( 'give_donation_history_header_before' );
@@ -44,16 +34,6 @@ if ( $donations ) : ?>
 			<th scope="col" class="give_purchase_amount"><?php esc_html_e( 'Amount', 'give' ); ?></th>
 			<th scope="col" class="give_purchase_details"><?php esc_html_e( 'Details', 'give' ); ?></th>
 			<?php
-			/**
-			 * Fires in current user donation history table, after the header row ends.
-			 *
-			 * Allows you to add new <th> elements to the header, after other headers in the row.
-			 *
-			 * @since 1.0
-			 * @deprecated 1.7 Use {@see 'give_donation_history_header_after'} instead.
-			 */
-			_give_do_action_deprecated( 'give_purchase_history_header_after', array(), '1.7', 'give_donation_history_header_after' );
-
 			/**
 			 * Fires in current user donation history table, after the header row ends.
 			 *
@@ -69,19 +49,6 @@ if ( $donations ) : ?>
 			<?php $donation_data = give_get_payment_meta( $post->ID ); ?>
 			<tr class="give_purchase_row">
 				<?php
-				/**
-				 * Fires in current user donation history table, before the row statrs.
-				 *
-				 * Allows you to add new <td> elements to the row, before other elements in the row.
-				 *
-				 * @since 1.0
-				 * @deprecated 1.7 Use {@see 'give_donation_history_row_start'} instead.
-				 *
-				 * @param int   $post_id       The ID of the post.
-				 * @param mixed $donation_data Payment meta data.
-				 */
-				_give_do_action_deprecated( 'give_purchase_history_row_start', array( $post->ID, $donation_data ), '1.7', 'give_donation_history_row_start' );
-
 				/**
 				 * Fires in current user donation history table, before the row statrs.
 				 *
@@ -107,19 +74,6 @@ if ( $donations ) : ?>
 					<?php endif; ?>
 				</td>
 				<?php
-				/**
-				 * Fires in current user donation history table, after the row ends.
-				 *
-				 * Allows you to add new <td> elements to the row, after other elements in the row.
-				 *
-				 * @since 1.0
-				 * @deprecated 1.7 Use {@see 'give_donation_history_row_end'} instead.
-				 *
-				 * @param int   $post_id       The ID of the post.
-				 * @param mixed $donation_data Payment meta data.
-				 */
-				_give_do_action_deprecated( 'give_purchase_history_row_end', array( $post->ID, $donation_data ), '1.7', 'give_donation_history_row_end' );
-
 				/**
 				 * Fires in current user donation history table, after the row ends.
 				 *
