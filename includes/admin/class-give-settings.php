@@ -249,7 +249,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name'    => esc_html__( 'Base Country', 'give' ),
-							'desc'    => esc_html__( 'The country the site is operating from.', 'give' ),
+							'desc'    => esc_html__( 'The country your site operates from.', 'give' ),
 							'id'      => 'base_country',
 							'type'    => 'select',
 							'options' => give_get_country_list(),
@@ -270,7 +270,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name'    => esc_html__( 'Currency Position', 'give' ),
-							'desc'    => esc_html__( 'The position of the currency sign.', 'give' ),
+							'desc'    => esc_html__( 'The position of the currency symbol.', 'give' ),
 							'id'      => 'currency_position',
 							'type'    => 'select',
 							'options' => array(
@@ -298,7 +298,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name'            => __( 'Number of Decimals', 'give' ),
-							'desc'            => __( 'The number of decimal points in displayed prices.', 'give' ),
+							'desc'            => __( 'The number of decimal points displayed in amounts.', 'give' ),
 							'id'              => 'number_decimals',
 							'type'            => 'text_small',
 							'default'         => 2,
@@ -329,7 +329,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => esc_html__( 'Enabled Gateways', 'give' ),
-							'desc' => esc_html__( 'The supported payment gateways you would like enabled. You can drag-and-drop payment gateways to reorder them.', 'give' ),
+							'desc' => esc_html__( 'Enable your payment gateway. Can be ordered by dragging.', 'give' ),
 							'id'   => 'gateways',
 							'type' => 'enabled_gateways'
 						),
@@ -382,7 +382,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => esc_html__( 'Collect Billing Details', 'give' ),
-							'desc' => esc_html__( 'Enable billing details section for offline donations. The fieldset will appear above the offline donation instructions. Note: You may customize this option per form as needed.', 'give' ),
+							'desc' => esc_html__( 'Enable to request billing details for offline donations. Will appear above offline donation instructions. Can be enabled/disabled per form.', 'give' ),
 							'id'   => 'give_offline_donation_enable_billing_fields',
 							'type' => 'checkbox'
 						),
@@ -501,13 +501,13 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => esc_html__( 'Enable Form Categories', 'give' ),
-							'desc' => esc_html__( 'Enable the form\'s category taxonomy to categorize donation forms.', 'give' ),
+							'desc' => esc_html__( 'Enables the "Category" taxonomy for all Give forms.', 'give' ),
 							'id'   => 'enable_categories',
 							'type' => 'checkbox'
 						),
 						array(
 							'name' => esc_html__( 'Enable Form Tags', 'give' ),
-							'desc' => esc_html__( 'Enable the form\'s tag taxonomy to tag donation forms.', 'give' ),
+							'desc' => esc_html__( 'Enables the "Tag" taxonomy for all Give forms.', 'give' ),
 							'id'   => 'enable_tags',
 							'type' => 'checkbox'
 						),
@@ -545,7 +545,7 @@ class Give_Plugin_Settings {
 						array(
 							'id'      => 'from_name',
 							'name'    => esc_html__( 'From Name', 'give' ),
-							'desc'    => esc_html__( 'The name donation receipts are said to come from. This should probably be your site name.', 'give' ),
+							'desc'    => esc_html__( 'The name which appears in the "From" field in donation receipt emails.', 'give' ),
 							'default' => get_bloginfo( 'name' ),
 							'type'    => 'text'
 						),
@@ -651,7 +651,7 @@ class Give_Plugin_Settings {
 						array(
 							'id'      => 'session_lifetime',
 							'name'    => esc_html__( 'Session Lifetime', 'give' ),
-							'desc'    => esc_html__( 'Control the lifetime a user\'s session is kept alive. Give will start a new session per user once they have donated. An active session allows users to view donation receipts on the site without having to be logged in.', 'give' ),
+							'desc'    => esc_html__( 'The length of time a user\'s session is kept alive. Give starts a new session per user upon donation. Sessions allow donors to view their donation receipts without being logged in.', 'give' ),
 							'type'    => 'select',
 							'options' => array(
 								'86400'  => esc_html__( '24 Hours', 'give' ),
