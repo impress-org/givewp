@@ -572,7 +572,7 @@ function _give_deprecated_hook( $hook, $version, $replacement = null, $message =
 	/**
 	 * Fires when a deprecated hook is called.
 	 *
-	 * @since1.7
+	 * @since 1.7
 	 *
 	 * @param string $hook        The hook that was called.
 	 * @param string $replacement The hook that should be used as a replacement.
