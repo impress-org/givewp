@@ -22,11 +22,15 @@ function give_deprecated_filter_mapping( $data, $arg_1 = '', $arg_2 = '', $arg_3
 
 	$filter = current_filter();
 
-	if ( isset( $give_map_deprecated_filters[ $filter ] ) )
+	if ( isset( $give_map_deprecated_filters[ $filter ] ) ){
 		if ( has_filter( $give_map_deprecated_filters[ $filter ] ) ) {
 			$data = apply_filters( $give_map_deprecated_filters[ $filter ], $data, $arg_1, $arg_2, $arg_3 );
-			_give_deprecated_function( 'The ' . $give_map_deprecated_filters[ $filter ] . ' filter', '1.7', $filter );
+
+			if ( ! defined( 'DOING_AJAX' ) ) {
+				_give_deprecated_function( 'The ' . $give_map_deprecated_filters[$filter] . ' filter', '1.7', $filter );
+			}
 		}
+	}
 
 	return $data;
 }
