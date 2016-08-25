@@ -232,7 +232,7 @@ function give_show_purchase_form( $form_id ) {
 	 *
 	 * @deprecated 1.7 Use {@see 'give_donation_form_top'} instead.
 	 */
-	do_action_deprecated( 'give_purchase_form_top', array( $form_id ), '1.7', 'give_donation_form_top' );
+	_give_do_action_deprecated( 'give_purchase_form_top', array( $form_id ), '1.7', 'give_donation_form_top' );
 
 	/**
 	 * Fire before donation form render.
@@ -250,7 +250,7 @@ function give_show_purchase_form( $form_id ) {
 		 *
 		 * @deprecated 1.7 Use {@see 'give_donation_form_before_register_login'} instead.
 		 */
-		do_action_deprecated( 'give_purchase_form_before_register_login', array( $form_id ), '1.7', 'give_donation_form_before_register_login' );
+		_give_do_action_deprecated( 'give_purchase_form_before_register_login', array( $form_id ), '1.7', 'give_donation_form_before_register_login' );
 
 		/**
 		 * Fires while displaying donation form, before registration login.
@@ -266,7 +266,7 @@ function give_show_purchase_form( $form_id ) {
 		 *
 		 * @deprecated 1.7 Use {@see 'give_donation_form_register_login_fields'} instead.
 		 */
-		do_action_deprecated( 'give_purchase_form_register_login_fields', array( $form_id ), '1.7', 'give_donation_form_register_login_fields' );
+		_give_do_action_deprecated( 'give_purchase_form_register_login_fields', array( $form_id ), '1.7', 'give_donation_form_register_login_fields' );
 
 
 		/**
@@ -283,7 +283,7 @@ function give_show_purchase_form( $form_id ) {
 		 *
 		 * @deprecated 1.7 Use {@see 'give_donation_form_before_cc_form'} instead.
 		 */
-		do_action_deprecated( 'give_purchase_form_before_cc_form', array( $form_id ), '1.7', 'give_donation_form_before_cc_form' );
+		_give_do_action_deprecated( 'give_purchase_form_before_cc_form', array( $form_id ), '1.7', 'give_donation_form_before_cc_form' );
 
 		/**
 		 * Fire when credit card form fields render.
@@ -320,7 +320,7 @@ function give_show_purchase_form( $form_id ) {
 		 *
 		 * @deprecated 1.7 Use {@see 'give_donation_form_after_cc_form'} instead.
 		 */
-		do_action_deprecated( 'give_purchase_form_after_cc_form', array( $form_id ), '1.7', 'give_donation_form_after_cc_form' );
+		_give_do_action_deprecated( 'give_purchase_form_after_cc_form', array( $form_id ), '1.7', 'give_donation_form_after_cc_form' );
 
 		/**
 		 * Fire after credit card form fields render.
@@ -337,7 +337,7 @@ function give_show_purchase_form( $form_id ) {
 		 *
 		 * @deprecated 1.7 Use {@see 'give_donation_form_after_cc_form'} instead.
 		 */
-		do_action_deprecated( 'give_purchase_form_no_access', array( $form_id ), '1.7', 'give_donation_form_no_access' );
+		_give_do_action_deprecated( 'give_purchase_form_no_access', array( $form_id ), '1.7', 'give_donation_form_no_access' );
 
 		/**
 		 * Fire if user can not donate.
@@ -355,7 +355,7 @@ function give_show_purchase_form( $form_id ) {
 	 *
 	 * @deprecated 1.7 Use {@see 'give_donation_form_bottom'} instead.
 	 */
-	do_action_deprecated( 'give_purchase_form_bottom', array( $form_id ), '1.7', 'give_donation_form_bottom' );
+	_give_do_action_deprecated( 'give_purchase_form_bottom', array( $form_id ), '1.7', 'give_donation_form_bottom' );
 
 	/**
 	 * Fire after donation form rendered.
@@ -391,7 +391,7 @@ function give_show_register_login_fields( $form_id ) {
 			 *
 			 * @deprecated 1.7 Use {@see 'give_donation_form_register_fields'} instead.
 			 */
-			do_action_deprecated( 'give_purchase_form_register_fields', array( $form_id ), '1.7', 'give_purchase_form_register_fields' );
+			_give_do_action_deprecated( 'give_purchase_form_register_fields', array( $form_id ), '1.7', 'give_purchase_form_register_fields' );
 
 			/**
 			 * Fire if user registration form render.
@@ -413,7 +413,7 @@ function give_show_register_login_fields( $form_id ) {
 			 *
 			 * @deprecated 1.7 Use {@see 'give_donation_form_login_fields'} instead.
 			 */
-			do_action_deprecated( 'give_purchase_form_login_fields', array( $form_id ), '1.7', 'give_donation_form_login_fields' );
+			_give_do_action_deprecated( 'give_purchase_form_login_fields', array( $form_id ), '1.7', 'give_donation_form_login_fields' );
 
 			/**
 			 * Fire if user login form render.
@@ -434,7 +434,7 @@ function give_show_register_login_fields( $form_id ) {
 		 *
 		 * @deprecated 1.7 Use {@see 'give_donation_form_login_fields'} instead.
 		 */
-		do_action_deprecated( 'give_purchase_form_after_user_info', array( $form_id ), '1.7', 'give_donation_form_after_user_info' );
+		_give_do_action_deprecated( 'give_purchase_form_after_user_info', array( $form_id ), '1.7', 'give_donation_form_after_user_info' );
 
 		/**
 		 * Fire when user info render.
@@ -712,7 +712,7 @@ function give_user_info_fields( $form_id ) {
 	 *
 	 * @deprecated 1.7 Use { @see 'give_donation_form_before_personal_info' } instead.
 	 */
-	do_action_deprecated( 'give_purchase_form_before_personal_info', array( $form_id ), '1.7', 'give_donation_form_before_personal_info' );
+	_give_do_action_deprecated( 'give_purchase_form_before_personal_info', array( $form_id ), '1.7', 'give_donation_form_before_personal_info' );
 
 	/**
 	 * Fire before user personal information fields
@@ -759,7 +759,7 @@ function give_user_info_fields( $form_id ) {
 		 *
 		 * @deprecated 1.7 Use { @see 'give_donation_form_before_email' } instead.
 		 */
-		do_action_deprecated( 'give_purchase_form_before_email', array( $form_id ), '1.7', 'give_donation_form_before_email' );
+		_give_do_action_deprecated( 'give_purchase_form_before_email', array( $form_id ), '1.7', 'give_donation_form_before_email' );
 
 		/**
 		 * Fire before user email field
@@ -790,7 +790,7 @@ function give_user_info_fields( $form_id ) {
 		 *
 		 * @deprecated 1.7 Use { @see 'give_donation_form_after_email' } instead.
 		 */
-		do_action_deprecated( 'give_purchase_form_after_email', array( $form_id ), '1.7', 'give_donation_form_after_email' );
+		_give_do_action_deprecated( 'give_purchase_form_after_email', array( $form_id ), '1.7', 'give_donation_form_after_email' );
 
 		/**
 		 * Fire after user email field
@@ -806,7 +806,7 @@ function give_user_info_fields( $form_id ) {
 		 *
 		 * @deprecated 1.7 Use { @see 'give_donation_form_user_info' } instead.
 		 */
-		do_action_deprecated( 'give_purchase_form_user_info', array( $form_id ), '1.7', 'give_donation_form_user_info' );
+		_give_do_action_deprecated( 'give_purchase_form_user_info', array( $form_id ), '1.7', 'give_donation_form_user_info' );
 
 		/**
 		 * Fire after personal email field
@@ -824,7 +824,7 @@ function give_user_info_fields( $form_id ) {
 	 *
 	 * @deprecated 1.7 Use { @see 'give_donation_form_after_personal_info' } instead.
 	 */
-	do_action_deprecated( 'give_purchase_form_after_personal_info', array( $form_id ), '1.7', 'give_donation_form_after_personal_info' );
+	_give_do_action_deprecated( 'give_purchase_form_after_personal_info', array( $form_id ), '1.7', 'give_donation_form_after_personal_info' );
 
 	/**
 	 * Fire after user personal information fields
@@ -1255,7 +1255,7 @@ function give_get_register_fields( $form_id ) {
 		 *
 		 * @deprecated 1.7 Use {@see 'give_donation_form_user_info'} instead.
 		 */
-		do_action_deprecated( 'give_purchase_form_user_info', array( $form_id ), '1.7', 'give_donation_form_user_info' );
+		_give_do_action_deprecated( 'give_purchase_form_user_info', array( $form_id ), '1.7', 'give_donation_form_user_info' );
 
 
 		/**
@@ -1477,7 +1477,7 @@ function give_payment_mode_select( $form_id ) {
 		 *
 		 * @deprecated 1.7 Use {@see 'give_donation_form'} instead.
 		 */
-		do_action_deprecated( 'give_purchase_form', array( $form_id ), '1.7', 'give_donation_form' );
+		_give_do_action_deprecated( 'give_purchase_form', array( $form_id ), '1.7', 'give_donation_form' );
 
 		/**
 		 * Fire after payment field render.
@@ -1497,7 +1497,7 @@ function give_payment_mode_select( $form_id ) {
 	 *
 	 * @deprecated 1.7 Use {@see 'give_donation_form_wrap_bottom'} instead.
 	 */
-	do_action_deprecated( 'give_purchase_form_wrap_bottom', array( $form_id ), '1.7', 'give_donation_form_wrap_bottom' );
+	_give_do_action_deprecated( 'give_purchase_form_wrap_bottom', array( $form_id ), '1.7', 'give_donation_form_wrap_bottom' );
 
 	/**
 	 * Fire after donation form render.
@@ -1614,7 +1614,7 @@ function give_checkout_submit( $form_id ) {
 		 *
 		 * @deprecated 1.7 Use {@see ''give_donation_form_before_submit} instead.
 		 */
-		do_action_deprecated( 'give_purchase_form_before_submit', array( $form_id ), '1.7', 'give_donation_form_before_submit' );
+		_give_do_action_deprecated( 'give_purchase_form_before_submit', array( $form_id ), '1.7', 'give_donation_form_before_submit' );
 
 		/**
 		 * Fire before donation form submit.
@@ -1632,7 +1632,7 @@ function give_checkout_submit( $form_id ) {
 		 *
 		 * @deprecated 1.7 Use {@see ''give_donation_form_after_submit} instead.
 		 */
-		do_action_deprecated( 'give_purchase_form_after_submit', array( $form_id ), '1.7', 'give_donation_form_after_submit' );
+		_give_do_action_deprecated( 'give_purchase_form_after_submit', array( $form_id ), '1.7', 'give_donation_form_after_submit' );
 
 		/**
 		 * Fire after donation form submit.

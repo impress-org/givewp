@@ -128,7 +128,7 @@ function give_load_checkout_login_fields() {
 	 *
 	 * @deprecated 1.7 Use {@see 'give_donation_form_login_fields'} instead.
 	 */
-	do_action_deprecated( 'give_purchase_form_login_fields', array(), '1.7', 'give_donation_form_login_fields' );
+	_give_do_action_deprecated( 'give_purchase_form_login_fields', array(), '1.7', 'give_donation_form_login_fields' );
 
 	/**
 	 * Fire when render login fields via ajax.
@@ -161,7 +161,7 @@ function give_load_checkout_fields() {
 	 *
 	 * @deprecated 1.7 Use {@see 'give_donation_form_register_login_fields'} instead.
 	 */
-	do_action_deprecated( 'give_purchase_form_register_login_fields', array( $form_id ), '1.7', 'give_donation_form_register_login_fields' );
+	_give_do_action_deprecated( 'give_purchase_form_register_login_fields', array( $form_id ), '1.7', 'give_donation_form_register_login_fields' );
 
 	/**
 	 * Fire to render registration/login form.

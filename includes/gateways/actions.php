@@ -46,7 +46,7 @@ function give_load_ajax_gateway() {
 		 *
 		 * @deprecated 1.7 Use {@see 'give_donation_form'} Instead.
 		 */
-		do_action_deprecated( 'give_purchase_form', array( $_POST['give_form_id'] ), '1.7', 'give_donation_form' );
+		_give_do_action_deprecated( 'give_purchase_form', array( $_POST['give_form_id'] ), '1.7', 'give_donation_form' );
 
 		/**
 		 * Fire to render donation form.
