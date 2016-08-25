@@ -142,7 +142,7 @@ function give_process_purchase_form() {
 	 *
 	 * @deprecated 1.7 Use {@see 'give_donation_data_before_gateway'} instead.
 	 */
-	$purchase_data = apply_filters_deprecated( 'give_purchase_data_before_gateway', array( $purchase_data, $valid_data ), '1.7', 'give_donation_data_before_gateway' );
+	$purchase_data = _give_apply_filters_deprecated( 'give_purchase_data_before_gateway', array( $purchase_data, $valid_data ), '1.7', 'give_donation_data_before_gateway' );
 
 	/**
 	 * Allow the purchase data to be modified before it is sent to the gateway
@@ -431,7 +431,7 @@ function give_purchase_form_required_fields( $form_id ) {
 	 *
 	 * @deprecated 1.7 Use {@see 'give_donation_form_required_fields'} instead.
 	 */
-	$required_fields = apply_filters_deprecated( 'give_purchase_form_required_fields', array( $required_fields, $form_id ), '1.7', 'give_donation_form_required_fields' );
+	$required_fields = _give_apply_filters_deprecated( 'give_purchase_form_required_fields', array( $required_fields, $form_id ), '1.7', 'give_donation_form_required_fields' );
 
 	/**
 	 * Filters the donation form required field.

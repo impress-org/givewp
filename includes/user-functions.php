@@ -229,7 +229,7 @@ function give_get_purchase_stats_by_user( $user = '' ) {
 	 *
 	 * @deprecated 1.7 Use {@see 'give_donation_stats_by_user'} instead.
 	 */
-	$stats = (array) apply_filters_deprecated( 'give_purchase_stats_by_user', array( $stats, $user ), '1.7', 'give_donation_stats_by_user' );
+	$stats = (array) _give_apply_filters_deprecated( 'give_purchase_stats_by_user', array( $stats, $user ), '1.7', 'give_donation_stats_by_user' );
 
 	/**
 	 * Filter the donation stats
