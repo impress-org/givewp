@@ -33,7 +33,9 @@ $give_map_deprecated_actions = array(
 );
 
 foreach ( $give_map_deprecated_actions as $new => $old ) {
-	add_action( $new, 'give_deprecated_action_mapping' );
+	// Allow action to accept four param in which remaining three has default value.
+	// By this way, we can dynamically pass upto four params to fire new action manually.
+	add_action( $new, 'give_deprecated_action_mapping', 10, 4 );
 }
 
 function give_deprecated_action_mapping( $data, $arg_1 = '', $arg_2 = '', $arg_3 = '' ) {
