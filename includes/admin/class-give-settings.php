@@ -1241,10 +1241,12 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
             }
 
 
-        } elseif ( empty( $license->success ) ) {
+        } elseif ( empty( $license->success ) && property_exists( $license, 'error' ) ) {
+
             // activate_license 'invalid' on anything other than valid, so if there was an error capture it
-            switch(  property_exists( $license, 'error' ) && $license->error ) {
+            switch(   $license->error ) {
                 case 'expired' :
+					error_log(print_r( $license->error, true) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log');
                     $class = $license->error;
                     $messages[] = sprintf(
                         __( 'Your license key expired on %s. Please <a href="%s" target="_blank" title="Renew your license key">renew your license key</a>.', 'give' ),
