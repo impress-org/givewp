@@ -152,28 +152,21 @@ function give_render_customer_view( $view, $callbacks ) {
 
 		<?php if ( $customer && $render ) : ?>
 
-			<div id="customer-tab-wrapper">
-				<ul id="customer-tab-wrapper-list" class="nav-tab-wrapper">
-					<?php foreach ( $customer_tabs as $key => $tab ) : ?>
-						<?php $active = $key === $view ? true : false; ?>
-						<?php $class = $active ? 'active' : 'inactive'; ?>
-
-						<li class="<?php echo sanitize_html_class( $class ); ?>">
-							<?php if ( ! $active ) : ?>
-							<a aria-label="<?php esc_attr_e( $tab['title'] ); ?>" href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=' . $key . '&id=' . $customer->id ) ); ?>">
-								<?php endif; ?>
-
-								<span class="dashicons <?php echo sanitize_html_class( $tab['dashicon'] ); ?>"></span> <?php esc_html_e( $tab['title'] ); ?>
-								<?php if ( ! $active ) : ?>
-							</a>
-						<?php endif; ?>
-
-						</li>
-
-
-					<?php endforeach; ?>
-				</ul>
-			</div>
+			<h2 class="nav-tab-wrapper">
+			<?php
+			foreach ( $customer_tabs as $key => $tab ) :
+				$active = $key === $view ? true : false;
+				$class = $active ? 'nav-tab nav-tab-active' : 'nav-tab';
+				printf(
+					'<a href="%1$s" class="%2$s"><span class="dashicons %3$s"></span>%4$s</a>'."\n",
+					esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=' . $key . '&id=' . $customer->id ) ),
+					esc_attr( $class ),
+					sanitize_html_class( $tab['dashicon'] ),
+					esc_html( $tab['title'] )
+				);
+			endforeach;
+			?>
+			</h2>
 
 			<div id="give-customer-card-wrapper">
 				<?php $callbacks[ $view ]( $customer ) ?>
@@ -468,14 +461,24 @@ function give_customers_view( $customer ) {
 						<td><?php echo date_i18n( get_option( 'date_format' ), strtotime( $payment->post_date ) ); ?></td>
 						<td><?php echo give_get_payment_status( $payment, true ); ?></td>
 						<td>
-							<a aria-label="<?php sprintf( esc_attr_e( 'View Details for Donation %s.', 'give' ), $payment->ID ); ?>" href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $payment->ID ); ?>">
-								<?php esc_html_e( 'View Details', 'give' ); ?>
-							</a>
+							<?php
+							printf(
+								'<a href="%1$s" aria-label="%2$s">%3$s</a>',
+								admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $payment->ID ),
+								sprintf(
+									/* translators: %s: Donation ID */
+									esc_attr__( 'View Donation %s.', 'give' ),
+									$payment->ID
+								),
+								esc_html__( 'View Donation', 'give' )
+							);
+							?>
+
 							<?php
 							/**
 							 * Fires in donor profile screen, in the recent donations tables action links.
 							 *
-							 * Allows you to add more action links for each donation, after the 'View Details' action link.
+							 * Allows you to add more action links for each donation, after the 'View Donation' action link.
 							 *
 							 * @since 1.0
 							 *
@@ -512,21 +515,18 @@ function give_customers_view( $customer ) {
 					<tr>
 						<td><?php echo $donation->post_title; ?></td>
 						<td>
-							<a aria-label="<?php
-								printf(
-									/* translators: %s: post title */
-									esc_attr__( 'View %s', 'give' ),
+							<?php
+							printf(
+								'<a href="%1$s" aria-label="%2$s">%3$s</a>',
+								esc_url( admin_url( 'post.php?action=edit&post=' . $donation->ID ) ),
+								sprintf(
+									/* translators: %s: form name */
+									esc_attr__( 'View Form %s.', 'give' ),
 									$donation->post_title
-								); ?>" href="<?php echo esc_url( admin_url( 'post.php?action=edit&post=' . $donation->ID ) );
-							?>">
-								<?php
-									printf(
-										/* translators: %s: forms singular label */
-										esc_html__( 'View %s', 'give' ),
-										give_get_forms_label_singular()
-									);
-								?>
-							</a>
+								),
+								esc_html__( 'View Form', 'give' )
+							);
+							?>
 						</td>
 					</tr>
 				<?php endforeach; ?>

@@ -290,7 +290,7 @@ abstract class Give_Shortcode_Generator {
 
 		if ( $posts ) {
 			foreach ( $posts as $post ) {
-				$options[ absint( $post->ID ) ] = esc_html( $post->post_title );
+				$options[ absint( $post->ID ) ] = $post->post_title;
 			}
 
 			$field['type']    = 'listbox';

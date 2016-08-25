@@ -323,9 +323,7 @@ function give_customer_delete( $args ) {
 	 * @param bool $remove_data Records delete confirmation.
 	 */
 	do_action( 'give_pre_delete_customer', $customer_id, $confirm, $remove_data );
-
-	$success = false;
-
+	
 	if ( $customer->id > 0 ) {
 
 		$payments_array = explode( ',', $customer->payment_ids );

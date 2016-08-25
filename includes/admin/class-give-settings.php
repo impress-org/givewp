@@ -572,8 +572,11 @@ class Give_Plugin_Settings {
 						array(
 							'id'      => 'donation_receipt',
 							'name'    => esc_html__( 'Donation Receipt', 'give' ),
-							/* translators: %s: emails tags list */
-							'desc'    => sprintf( __( 'Enter the email that is sent to users after completing a successful donation. HTML is accepted. Available template tags: %s', 'give' ), give_get_emails_tags_list() ) . '<br/>',
+							'desc'    => sprintf(
+								/* translators: %s: emails tags list */
+								esc_html__( 'Enter the email that is sent to users after completing a successful donation. HTML is accepted. Available template tags: %s', 'give' ),
+								'<br/>'.give_get_emails_tags_list()
+							),
 							'type'    => 'wysiwyg',
 							'default' => give_get_default_donation_receipt_email()
 						),
@@ -593,8 +596,11 @@ class Give_Plugin_Settings {
 						array(
 							'id'      => 'donation_notification',
 							'name'    => esc_html__( 'Donation Notification', 'give' ),
-							/* translators: %s: emails tags list */
-							'desc'    => sprintf( __( 'Enter the email that is sent to donation notification emails after completion of a donation. HTML is accepted. Available template tags: %s', 'give' ), give_get_emails_tags_list() ) . '<br/>',
+							'desc'    => sprintf(
+								/* translators: %s: emails tags list */
+								esc_html__( 'Enter the email that is sent to donation notification emails after completion of a donation. HTML is accepted. Available template tags: %s', 'give' ),
+								'<br/>'.give_get_emails_tags_list()
+							),
 							'type'    => 'wysiwyg',
 							'default' => give_get_default_donation_notification_email()
 						),

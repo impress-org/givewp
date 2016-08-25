@@ -66,9 +66,10 @@ function give_email_preview_template_tags( $message ) {
 
 	$payment_id = rand( 1, 100 );
 
+	$receipt_link_url = esc_url( add_query_arg( array( 'payment_key' => $receipt_id, 'give_action' => 'view_receipt' ), home_url() ) );
 	$receipt_link = sprintf(
 		'<a href="%1$s">%2$s</a>',
-		esc_url( add_query_arg( array( 'payment_key' => $receipt_id, 'give_action' => 'view_receipt' ), home_url() ) ),
+		$receipt_link_url,
 		esc_html__( 'View the receipt in your browser &raquo;', 'give' )
 	);
 
@@ -85,6 +86,7 @@ function give_email_preview_template_tags( $message ) {
 	$message = str_replace( '{sitename}', get_bloginfo( 'name' ), $message );
 	$message = str_replace( '{payment_id}', $payment_id, $message );
 	$message = str_replace( '{receipt_link}', $receipt_link, $message );
+	$message = str_replace( '{receipt_link_url}', $receipt_link_url, $message );
 	$message = str_replace( '{pdf_receipt}', '<a href="#">Download Receipt</a>', $message );
 
 	return wpautop( apply_filters( 'give_email_preview_template_tags', $message ) );
