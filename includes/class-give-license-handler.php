@@ -759,10 +759,15 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @since  1.6
 		 * @access private
 		 *
-		 * @return void
+		 * @return void|bool
 		 */
 		private function __remove_license_key_from_subscriptions(){
 			$subscriptions = get_option( 'give_subscriptions', array() );
+
+			// Bailout.
+			if( empty( $this->license ) ) {
+				return false;
+			}
 
 			if( ! empty( $subscriptions ) ) {
 				foreach ( $subscriptions as $subscription_id => $subscription ) {
