@@ -140,13 +140,6 @@ function give_process_purchase_form() {
 	/**
 	 * Allow the purchase data to be modified before it is sent to the gateway
 	 *
-	 * @deprecated 1.7 Use {@see 'give_donation_data_before_gateway'} instead.
-	 */
-	$purchase_data = _give_apply_filters_deprecated( 'give_purchase_data_before_gateway', array( $purchase_data, $valid_data ), '1.7', 'give_donation_data_before_gateway' );
-
-	/**
-	 * Allow the purchase data to be modified before it is sent to the gateway
-	 *
 	 * @since 1.7
 	 */
 	$purchase_data = apply_filters( 'give_donation_data_before_gateway', $purchase_data, $valid_data );
@@ -425,13 +418,6 @@ function give_purchase_form_required_fields( $form_id ) {
 			'error_message' => esc_html__( 'Please enter billing state / province.', 'give' )
 		);
 	}
-
-	/**
-	 * Filters the donation form required field.
-	 *
-	 * @deprecated 1.7 Use {@see 'give_donation_form_required_fields'} instead.
-	 */
-	$required_fields = _give_apply_filters_deprecated( 'give_purchase_form_required_fields', array( $required_fields, $form_id ), '1.7', 'give_donation_form_required_fields' );
 
 	/**
 	 * Filters the donation form required field.
