@@ -321,6 +321,9 @@ if ( ! class_exists( 'Give_License' ) ) :
 				return;
 			}
 
+			// Delete previous license key from subscription if previously added.
+			$this->__remove_license_key_from_subscriptions();
+
 			// Data to send to the API
 			$api_params = array(
 				'edd_action' => 'activate_license', //never change from "edd_" to "give_"!
