@@ -170,6 +170,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * New: Donation details screen now displays more information and is mobile responsive - https://github.com/WordImpress/Give/issues/887
 * New: Email tag {receipt_link_url} added - https://github.com/WordImpress/Give/issues/581
 * New: Deprecated actions and filters to fix non-donation based terminology - https://github.com/WordImpress/Give/issues/896
+* New: Function give_date_format() provides a way to adjust the date format based on a given context - https://github.com/WordImpress/Give/issues/687
 * Tweak: Organize data with a logical relationship in grids for table accessibility - https://github.com/WordImpress/Give/issues/922
 * Tweak: Terminology changes - "Transactions" now called "Donations" and "Payments" now termed "Donation" in WP-admin - https://github.com/WordImpress/Give/issues/896
 * Fix: User able to donate minimum amount then custom minimum amount with multi level donation form - https://github.com/WordImpress/Give/issues/712
