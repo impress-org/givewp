@@ -180,25 +180,11 @@ function give_offline_send_donor_instructions( $payment_id = 0 ) {
 	/**
 	 * Filters the from name.
 	 *
-	 * @deprecated 1.7 Use {@see 'give_donation_from_name'} instead.
-	 */
-	$from_name = apply_filters_deprecated( 'give_purchase_from_name', array( $from_name, $payment_id, $payment_data ), '1.7', 'give_donation_from_name' );
-
-	/**
-	 * Filters the from name.
-	 *
 	 * @since 1.7
 	 */
 	$from_name = apply_filters( 'give_donation_from_name', $from_name, $payment_id, $payment_data );
 
 	$from_email = give_get_option( 'from_email', get_bloginfo( 'admin_email' ) );
-
-	/**
-	 * Filters the from email.
-	 *
-	 * @deprecated 1.7 Use {@see 'give_donation_from_address'} instead.
-	 */
-	$from_email = apply_filters_deprecated( 'give_purchase_from_address', array( $from_email, $payment_id, $payment_data ), '1.7', 'give_donation_from_address' );
 
 	/**
 	 * Filters the from email.

@@ -237,7 +237,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 			$data[ $i ]['userid'] = ! empty( $donor->user_id ) ? $donor->user_id : '';
 		}
 		if ( ! empty( $columns['date_first_donated'] ) ) {
-			$data[ $i ]['date_first_donated'] = date_i18n( get_option( 'date_format' ), strtotime( $donor->date_created ) );
+			$data[ $i ]['date_first_donated'] = date_i18n( give_date_format(), strtotime( $donor->date_created ) );
 		}
 		if ( ! empty( $columns['donations'] ) ) {
 			$data[ $i ]['donations'] = $donor->purchase_count;

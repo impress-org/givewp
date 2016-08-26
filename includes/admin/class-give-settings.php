@@ -218,7 +218,7 @@ class Give_Plugin_Settings {
 						array(
 							'name'    => esc_html__( 'Success Page', 'give' ),
 							/* translators: %s: [give_receipt] */
-							'desc'    => sprintf( __( 'This is the page donors are sent to after completing their donations. The %s shortcode should be on this page.', 'give' ), '<code>[give_receipt]</code>' ),
+							'desc'    => sprintf( __( 'The page donors are sent to after completing their donations. The %s shortcode should be on this page.', 'give' ), '<code>[give_receipt]</code>' ),
 							'id'      => 'success_page',
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
@@ -228,7 +228,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name'    => esc_html__( 'Failed Donation Page', 'give' ),
-							'desc'    => esc_html__( 'This is the page donors are sent to if their donation is cancelled or fails.', 'give' ),
+							'desc'    => esc_html__( 'The page donors are sent to if their donation is cancelled or fails.', 'give' ),
 							'id'      => 'failure_page',
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
@@ -239,7 +239,7 @@ class Give_Plugin_Settings {
 						array(
 							'name'    => esc_html__( 'Donation History Page', 'give' ),
 							/* translators: %s: [donation_history] */
-							'desc'    => sprintf( __( 'This page shows a complete donation history for the current user. The %s shortcode should be on this page.', 'give' ), '<code>[donation_history]</code>' ),
+							'desc'    => sprintf( __( 'The page showing a complete donation history for the current user. The %s shortcode should be on this page.', 'give' ), '<code>[donation_history]</code>' ),
 							'id'      => 'history_page',
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
@@ -249,7 +249,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name'    => esc_html__( 'Base Country', 'give' ),
-							'desc'    => esc_html__( 'Where does your site operate from?', 'give' ),
+							'desc'    => esc_html__( 'The country your site operates from.', 'give' ),
 							'id'      => 'base_country',
 							'type'    => 'select',
 							'options' => give_get_country_list(),
@@ -262,7 +262,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name'    => esc_html__( 'Currency', 'give' ),
-							'desc'    => esc_html__( 'Choose your currency. Note that some payment gateways have currency restrictions.', 'give' ),
+							'desc'    => esc_html__( 'The donation currency. Note that some payment gateways have currency restrictions.', 'give' ),
 							'id'      => 'currency',
 							'type'    => 'select',
 							'options' => give_get_currencies(),
@@ -270,7 +270,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name'    => esc_html__( 'Currency Position', 'give' ),
-							'desc'    => esc_html__( 'Choose the position of the currency sign.', 'give' ),
+							'desc'    => esc_html__( 'The position of the currency symbol.', 'give' ),
 							'id'      => 'currency_position',
 							'type'    => 'select',
 							'options' => array(
@@ -298,7 +298,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name'            => __( 'Number of Decimals', 'give' ),
-							'desc'            => __( 'This sets the number of decimal points shown in displayed prices.', 'give' ),
+							'desc'            => __( 'The number of decimal points displayed in amounts.', 'give' ),
 							'id'              => 'number_decimals',
 							'type'            => 'text_small',
 							'default'         => 2,
@@ -329,13 +329,13 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => esc_html__( 'Enabled Gateways', 'give' ),
-							'desc' => esc_html__( 'Choose the payment gateways you would like enabled. You can drag-and-drop payment gateways to reorder them.', 'give' ),
+							'desc' => esc_html__( 'Enable your payment gateway. Can be ordered by dragging.', 'give' ),
 							'id'   => 'gateways',
 							'type' => 'enabled_gateways'
 						),
 						array(
 							'name' => esc_html__( 'Default Gateway', 'give' ),
-							'desc' => esc_html__( 'This is the gateway that will be selected by default.', 'give' ),
+							'desc' => esc_html__( 'The gateway that will be selected by default.', 'give' ),
 							'id'   => 'default_gateway',
 							'type' => 'default_gateway'
 						),
@@ -382,7 +382,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => esc_html__( 'Collect Billing Details', 'give' ),
-							'desc' => esc_html__( 'This option will enable the billing details section for offline donations. The fieldset will appear above the offline donation instructions. Note: You may customize this option per form as needed.', 'give' ),
+							'desc' => esc_html__( 'Enable to request billing details for offline donations. Will appear above offline donation instructions. Can be enabled/disabled per form.', 'give' ),
 							'id'   => 'give_offline_donation_enable_billing_fields',
 							'type' => 'checkbox'
 						),
@@ -437,14 +437,14 @@ class Give_Plugin_Settings {
 						array(
 							'name' => esc_html__( 'Enable Floating Labels', 'give' ),
 							/* translators: %s: https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels */
-							'desc' => sprintf( wp_kses( __( 'Enable this option if you would like to enable <a href="%s" target="_blank">floating labels</a> in Give\'s donation forms. <br />Be aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( 'https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels' ) ),
+							'desc' => sprintf( wp_kses( __( 'Enable <a href="%s" target="_blank">floating labels</a> in Give\'s donation forms. Note that if the "Disable CSS" option is enabled, you will need to style the floating labels yourself.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( 'https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels' ) ),
 							'id'   => 'enable_floatlabels',
 							'type' => 'checkbox'
 						),
 						array(
 							'name' => esc_html__( 'Disable Welcome Screen', 'give' ),
 							/* translators: %s: about page URL */
-							'desc' => sprintf( wp_kses( __( 'Enable this option if you would like to disable the Give Welcome screen every time Give is activated and/or updated. You can always access the <a href="%s">Welcome Screen</a> if you want in the future.', 'give' ), array( 'a' => array( 'href' => array() ) ) ), esc_url( admin_url( 'index.php?page=give-about' ) ) ),
+							'desc' => sprintf( wp_kses( __( 'Enable this option if you would like to disable the <a href="%s" target="_blank">Give Welcome screen</a> every time Give is activated and/or updated.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( admin_url( 'index.php?page=give-about' ) ) ),
 							'id'   => 'disable_welcome',
 							'type' => 'checkbox'
 						),
@@ -501,13 +501,13 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => esc_html__( 'Enable Form Categories', 'give' ),
-							'desc' => esc_html__( 'Check this option if you would like to categorize your donation forms. This option enables the form\'s category taxonomy.', 'give' ),
+							'desc' => esc_html__( 'Enables the "Category" taxonomy for all Give forms.', 'give' ),
 							'id'   => 'enable_categories',
 							'type' => 'checkbox'
 						),
 						array(
 							'name' => esc_html__( 'Enable Form Tags', 'give' ),
-							'desc' => esc_html__( 'Check this option if you would like to tag your donation forms. This option enables the form\'s tag taxonomy.', 'give' ),
+							'desc' => esc_html__( 'Enables the "Tag" taxonomy for all Give forms.', 'give' ),
 							'id'   => 'enable_tags',
 							'type' => 'checkbox'
 						),
@@ -545,7 +545,7 @@ class Give_Plugin_Settings {
 						array(
 							'id'      => 'from_name',
 							'name'    => esc_html__( 'From Name', 'give' ),
-							'desc'    => esc_html__( 'The name donation receipts are said to come from. This should probably be your site or shop name.', 'give' ),
+							'desc'    => esc_html__( 'The name which appears in the "From" field in donation receipt emails.', 'give' ),
 							'default' => get_bloginfo( 'name' ),
 							'type'    => 'text'
 						),
@@ -651,7 +651,7 @@ class Give_Plugin_Settings {
 						array(
 							'id'      => 'session_lifetime',
 							'name'    => esc_html__( 'Session Lifetime', 'give' ),
-							'desc'    => esc_html__( 'Give will start a new session per user once they have donated. This option controls the lifetime a user\'s session is kept alive. An active session allows users to view donation receipts on your site without having to be logged in as long as they are using the same browser they used when donating.', 'give' ),
+							'desc'    => esc_html__( 'The length of time a user\'s session is kept alive. Give starts a new session per user upon donation. Sessions allow donors to view their donation receipts without being logged in.', 'give' ),
 							'type'    => 'select',
 							'options' => array(
 								'86400'  => esc_html__( '24 Hours', 'give' ),
@@ -689,7 +689,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => esc_html__( 'Remove All Data on Uninstall?', 'give' ),
-							'desc' => esc_html__( 'Check this box if you would like Give to completely remove all of its data when the plugin is deleted.', 'give' ),
+							'desc' => esc_html__( 'When the plugin is deleted, completely remove all Give data.', 'give' ),
 							'id'   => 'uninstall_on_delete',
 							'type' => 'checkbox'
 						),
