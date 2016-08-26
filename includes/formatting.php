@@ -388,11 +388,12 @@ add_filter( 'give_format_amount_decimals', 'give_currency_decimal_filter' );
 /**
  * Sanitize thousand separator
  *
- * @since 1.6
+ * @since   1.6
+ * @used-by Give_Plugin_Settings::give_settings()
  *
- * @param string $value
- * @param array  $field_args
- * @param object $field
+ * @param   string $value
+ * @param   array  $field_args
+ * @param   object $field
  *
  * @return mixed
  */
@@ -404,13 +405,14 @@ function give_sanitize_thousand_separator( $value, $field_args, $field ){
 /**
  * Sanitize number of decimals
  *
- * @since 1.6
+ * @since   1.6
+ * @used-by Give_Plugin_Settings::give_settings()
  *
- * @param string $value
- * @param array  $field_args
- * @param object $field
+ * @param   string $value
+ * @param   array  $field_args
+ * @param   object $field
  *
- * @return mixed
+ * @return  mixed
  */
 function give_sanitize_number_decimals( $value, $field_args, $field ){
 	return absint($value);
@@ -419,13 +421,14 @@ function give_sanitize_number_decimals( $value, $field_args, $field ){
 /**
  * Sanitize price file value
  *
- * @since 1.6
+ * @since   1.6
+ * @used-by give_single_forms_cmb2_metaboxes()
  *
- * @param string $value
- * @param array  $field_args
- * @param object $field
+ * @param   string $value
+ * @param   array  $field_args
+ * @param   object $field
  *
- * @return mixed
+ * @return  mixed
  */
 function give_sanitize_price_field_value( $value, $field_args, $field ){
     return give_sanitize_amount( $value );
