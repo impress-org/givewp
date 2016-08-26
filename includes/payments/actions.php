@@ -266,3 +266,26 @@ function give_mark_abandoned_donations() {
 }
 
 add_action( 'give_weekly_scheduled_events', 'give_mark_abandoned_donations' );
+
+
+/**
+ * Trigger the refresh of this month reports transients
+ *
+ * @since 1.7
+ *
+ * @param int $payment_ID Payment ID.
+ *
+ * @return void
+ */
+function give_refresh_thismonth_stat_transients( $payment_ID ) {
+
+	/* @var Give_Payment_Stats $stats */
+	$stats = new Give_Payment_Stats();
+
+	// Delete transients.
+	delete_transient( 'give_estimated_monthly_stats' );
+	delete_transient( 'give_earnings_total' );
+	delete_transient( $stats->get_earnings_cache_key( 0, 'this_month') );
+}
+
+add_action( 'save_post_give_payment', 'give_refresh_thismonth_stat_transients' );
