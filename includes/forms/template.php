@@ -301,7 +301,7 @@ function give_show_purchase_form( $form_id ) {
 	do_action( 'give_donation_form_bottom', $form_id );
 }
 
-add_action( 'give_purchase_form', 'give_show_purchase_form' );
+add_action( 'give_donation_form', 'give_show_purchase_form' );
 
 /**
  * Give Show Login/Register Form Fields.
@@ -1466,7 +1466,7 @@ function give_checkout_submit( $form_id ) {
 	<?php
 }
 
-add_action( 'give_purchase_form_after_cc_form', 'give_checkout_submit', 9999 );
+add_action( 'give_donation_form_after_cc_form', 'give_checkout_submit', 9999 );
 
 /**
  * Give Checkout Button.
