@@ -354,7 +354,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 			case 'date' :
 				$date  = strtotime( $payment->date );
-				$value = date_i18n( get_option( 'date_format' ), $date );
+				$value = date_i18n( give_date_format(), $date );
 				break;
 
 			case 'status' :
