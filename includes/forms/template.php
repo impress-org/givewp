@@ -354,7 +354,7 @@ function give_show_register_login_fields( $form_id ) {
 	}
 }
 
-add_action( 'give_purchase_form_register_login_fields', 'give_show_register_login_fields' );
+add_action( 'give_donation_form_register_login_fields', 'give_show_register_login_fields' );
 
 /**
  * Donation Amount Field.
@@ -699,7 +699,7 @@ function give_user_info_fields( $form_id ) {
 	do_action( 'give_donation_form_after_personal_info', $form_id );
 }
 
-add_action( 'give_purchase_form_after_user_info', 'give_user_info_fields' );
+add_action( 'give_donation_form_after_user_info', 'give_user_info_fields' );
 add_action( 'give_register_fields_before', 'give_user_info_fields' );
 
 /**
@@ -1396,7 +1396,7 @@ function give_terms_agreement( $form_id ) {
 	}
 }
 
-add_action( 'give_purchase_form_before_submit', 'give_terms_agreement', 10, 1 );
+add_action( 'give_donation_form_before_submit', 'give_terms_agreement', 10, 1 );
 
 /**
  * Checkout Final Total.
@@ -1429,7 +1429,7 @@ function give_checkout_final_total( $form_id ) {
 	<?php
 }
 
-add_action( 'give_purchase_form_before_submit', 'give_checkout_final_total', 999 );
+add_action( 'give_donation_form_before_submit', 'give_checkout_final_total', 999 );
 
 /**
  * Renders the Checkout Submit section.
