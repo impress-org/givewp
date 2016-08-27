@@ -134,7 +134,8 @@ gulp.task('textdomain', function () {
             '_nx:1,2,4c,5d',
             '_n_noop:1,2,3d',
             '_nx_noop:1,2,3c,4d'
-        ]
+        ],
+		correct_domain: true
     };
     gulp.src('**/*.php')
         .pipe(checktextdomain(options))
