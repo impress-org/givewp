@@ -68,10 +68,6 @@ if ( give_get_option( 'uninstall_on_delete' ) === 'on' ) {
 		}
 	}
 
-	// Delete all the Plugin Options
-	delete_option( 'give_settings' );
-	delete_option( 'give_version' );
-
 	// Delete Capabilities
 	Give()->roles->remove_caps();
 
@@ -91,5 +87,35 @@ if ( give_get_option( 'uninstall_on_delete' ) === 'on' ) {
 	wp_clear_scheduled_hook( 'give_daily_cron' );
 	wp_clear_scheduled_hook( 'give_weekly_cron' );
 
+	// Get all options.
+	$give_option_names = $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT option_name FROM {$wpdb->options} where option_name LIKE '%%%s%%'",
+			'give'
+		),
+		ARRAY_A
+	);
 
+	if ( ! empty( $give_option_names ) ) {
+		// Convert option name to transient or option name.
+		$give_option_names = array_map(
+			function( $option ) {
+				return (
+				( false !== strpos( $option['option_name'], '_transient_' ) )
+					? str_replace( '_transient_', '', $option['option_name'] )
+					: $option['option_name'] );
+
+			},
+			$give_option_names
+		);
+
+		// Delete all the Plugin Options
+		foreach ($give_option_names as $option_name ) {
+			if ( false !== strpos( $option['option_name'], '_transient_' ) ) {
+				delete_transient( $option_name );
+			} else {
+				delete_option( $option_name );
+			}
+		}
+	}
 }
