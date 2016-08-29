@@ -133,7 +133,7 @@ class Give_Forms_Widget extends WP_Widget{
 
 		?><p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php esc_html_e( 'Title:', 'give' ); ?></label>
-			<input type="text" class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php esc_attr_e( $instance['title'] ); ?>" /><br>
+			<input type="text" class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php echo esc_attr( $instance['title'] ); ?>" /><br>
 			<small><?php esc_html_e( 'Leave blank to hide the widget title.', 'give' ); ?></small>
 		</p><?php
 

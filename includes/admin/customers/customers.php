@@ -217,7 +217,7 @@ function give_customers_view( $customer ) {
 
 					<div id="customer-name-wrap" class="left">
 						<span class="customer-id">#<?php echo $customer->id; ?></span>
-						<span class="customer-name info-item edit-item"><input size="15" data-key="name" name="customerinfo[name]" type="text" value="<?php esc_attr_e( $customer->name ); ?>" placeholder="<?php esc_attr_e( 'Donor Name', 'give' ); ?>" /></span>
+						<span class="customer-name info-item edit-item"><input size="15" data-key="name" name="customerinfo[name]" type="text" value="<?php echo esc_attr( $customer->name ); ?>" placeholder="<?php esc_attr_e( 'Donor Name', 'give' ); ?>" /></span>
 						<span class="customer-name info-item editable"><span data-key="name"><?php echo $customer->name; ?></span></span>
 					</div>
 					<p class="customer-since info-item">
