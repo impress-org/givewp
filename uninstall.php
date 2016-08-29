@@ -98,23 +98,22 @@ if ( give_get_option( 'uninstall_on_delete' ) === 'on' ) {
 
 	if ( ! empty( $give_option_names ) ) {
 		// Convert option name to transient or option name.
-		$give_option_names = array_map(
-			function( $option ) {
-				return (
-				( false !== strpos( $option['option_name'], '_transient_' ) )
-					? str_replace( '_transient_', '', $option['option_name'] )
-					: $option['option_name'] );
+		$new_give_option_names = array();
 
-			},
-			$give_option_names
-		);
+		foreach ( $give_option_names as $option ) {
+			$new_give_option_names[] = ( false !== strpos( $option['option_name'], '_transient_' ) )
+				? str_replace( '_transient_', '', $option['option_name'] )
+				: $option['option_name'];
+		}
+
+		$give_option_names = $new_give_option_names;
 
 		// Delete all the Plugin Options.
-		foreach ( $give_option_names as $option_name ) {
-			if ( false !== strpos( $option['option_name'], '_transient_' ) ) {
-				delete_transient( $option_name );
+		foreach ( $give_option_names as $option ) {
+			if ( false !== strpos( $option, '_transient_' ) ) {
+				delete_transient( $option );
 			} else {
-				delete_option( $option_name );
+				delete_option( $option );
 			}
 		}
 	}
