@@ -326,11 +326,10 @@ class Give_Plugin_Settings {
 							'desc' => esc_html__( 'While in test mode no live donations are processed. To fully use test mode, you must have a sandbox (test) account for the payment gateway you are testing.', 'give' ),
 							'id'   => 'test_mode',
 							'type' => 'radio_inline',
-							'show_option_none' => esc_html__( 'Off', 'give' ),
-							//'default' => 'on',
+							'default' => 'on',
 							'options' => array(
 								'on' => esc_html__( 'On', 'give' ),
-								//'' => esc_html__( 'Off', 'give' )
+								'' => esc_html__( 'Off', 'give' )
 							)
 						),
 						array(
