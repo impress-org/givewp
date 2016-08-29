@@ -28,17 +28,20 @@ function give_do_automatic_upgrades() {
 	$did_upgrade  = false;
 	$give_version = preg_replace( '/[^0-9.].*/', '', get_option( 'give_version' ) );
 
+	if ( ! $give_version ) {
+		// 1.0 is the first version to use this option so we must add it.
+		$give_version = '1.0';
+	}
+
 	switch ( true ) {
 
 		case version_compare( $give_version, '1.6', '<' ) :
 			give_v16_upgrades();
 			$did_upgrade = true;
-			error_log(print_r( '1.6', true) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log');
 
 		case version_compare( $give_version, '1.7', '<' ) :
 			give_v17_upgrades();
 			$did_upgrade = true;
-			error_log(print_r( '1.7', true) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log');
 	}
 
 	if ( $did_upgrade ) {
