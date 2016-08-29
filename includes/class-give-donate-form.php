@@ -387,7 +387,6 @@ class Give_Donate_Form {
 	 * @param  string $key
 	 *
 	 * @return mixed
-	 * @throws Exception
 	 */
 	public function __get( $key ) {
 
