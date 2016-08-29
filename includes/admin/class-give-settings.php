@@ -325,7 +325,12 @@ class Give_Plugin_Settings {
 							'name' => esc_html__( 'Test Mode', 'give' ),
 							'desc' => esc_html__( 'While in test mode no live donations are processed. To fully use test mode, you must have a sandbox (test) account for the payment gateway you are testing.', 'give' ),
 							'id'   => 'test_mode',
-							'type' => 'checkbox'
+							'type' => 'radio_inline',
+							'default' => 'on',
+							'options' => array(
+								'on' => esc_html__( 'On', 'give' ),
+								'' => esc_html__( 'Off', 'give' )
+							)
 						),
 						array(
 							'name' => esc_html__( 'Enabled Gateways', 'give' ),
@@ -369,10 +374,15 @@ class Give_Plugin_Settings {
 							'default' => 'donation',
 						),
 						array(
-							'name' => esc_html__( 'Disable PayPal IPN Verification', 'give' ),
-							'desc' => esc_html__( 'If donations are not getting marked as complete, then check this box. This forces the site to use a slightly less secure method of verifying donations.', 'give' ),
+							'name' => esc_html__( 'PayPal IPN Verification', 'give' ),
+							'desc' => esc_html__( 'If donations are not getting marked as complete, then disable this feature. This forces the site to use a slightly less secure method of verifying donations.', 'give' ),
 							'id'   => 'disable_paypal_verification',
-							'type' => 'checkbox'
+							'type' => 'radio_inline',
+							'default' => 'on',
+							'options' => array(
+								'on' => esc_html__( 'Enable', 'give' ),
+								'' => esc_html__( 'Disable', 'give' )
+							)
 						),
 						array(
 							'name' => esc_html__( 'Offline Donations', 'give' ),
@@ -384,7 +394,12 @@ class Give_Plugin_Settings {
 							'name' => esc_html__( 'Collect Billing Details', 'give' ),
 							'desc' => esc_html__( 'Enable to request billing details for offline donations. Will appear above offline donation instructions. Can be enabled/disabled per form.', 'give' ),
 							'id'   => 'give_offline_donation_enable_billing_fields',
-							'type' => 'checkbox'
+							'type' => 'radio_inline',
+							'default' => 'on',
+							'options' => array(
+								'on' => esc_html__( 'Yes', 'give' ),
+								'' => esc_html__( 'No', 'give' )
+							)
 						),
 						array(
 							'name'    => esc_html__( 'Offline Donation Instructions', 'give' ),
