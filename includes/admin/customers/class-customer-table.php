@@ -123,7 +123,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 				break;
 
 			case 'date_created' :
-				$value = date_i18n( get_option( 'date_format' ), strtotime( $item['date_created'] ) );
+				$value = date_i18n( give_date_format(), strtotime( $item['date_created'] ) );
 				break;
 
 			default:
