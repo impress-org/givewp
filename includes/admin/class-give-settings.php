@@ -444,39 +444,24 @@ class Give_Plugin_Settings {
 							'type' => 'give_title'
 						),
 						array(
-							'name' => esc_html__( 'Default Give Styles', 'give' ),
-							'desc' => esc_html__( 'Enable/Disable Give\'s default CSS stylesheets.', 'give' ),
+							'name' => esc_html__( 'Disable CSS', 'give' ),
+							'desc' => esc_html__( 'Enable this option if you would like to disable all of Give\'s included CSS stylesheets.', 'give' ),
 							'id'   => 'disable_css',
-							'type' => 'radio_inline',
-							'default' => 'on',
-							'options' => array(
-								'on' => esc_html__( 'Enable', 'give' ),
-								'' => esc_html__( 'Disable', 'give' )
-							)
+							'type' => 'checkbox'
 						),
 						array(
-							'name' => esc_html__( 'Floating Labels', 'give' ),
+							'name' => esc_html__( 'Enable Floating Labels', 'give' ),
 							/* translators: %s: https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels */
-							'desc' => sprintf( wp_kses( __( 'Enable <a href="%s" target="_blank">floating labels</a> in Give\'s donation forms. Note that if the "Default Give Styles" option is disabled, you will need to style the floating labels yourself.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( 'https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels' ) ),
+							'desc' => sprintf( wp_kses( __( 'Enable <a href="%s" target="_blank">floating labels</a> in Give\'s donation forms. Note that if the "Disable CSS" option is enabled, you will need to style the floating labels yourself.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( 'https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels' ) ),
 							'id'   => 'enable_floatlabels',
-							'type' => 'radio_inline',
-							'default' => '',
-							'options' => array(
-								'on' => esc_html__( 'Enable', 'give' ),
-								'' => esc_html__( 'Disable', 'give' )
-							)
+							'type' => 'checkbox'
 						),
 						array(
-							'name' => esc_html__( 'Welcome Screen', 'give' ),
+							'name' => esc_html__( 'Disable Welcome Screen', 'give' ),
 							/* translators: %s: about page URL */
 							'desc' => sprintf( wp_kses( __( 'Enable this option if you would like to disable the <a href="%s" target="_blank">Give Welcome screen</a> every time Give is activated and/or updated.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( admin_url( 'index.php?page=give-about' ) ) ),
 							'id'   => 'disable_welcome',
-							'type' => 'radio_inline',
-							'default' => 'on',
-							'options' => array(
-								'on' => esc_html__( 'Enable', 'give' ),
-								'' => esc_html__( 'Disable', 'give' )
-							)
+							'type' => 'checkbox'
 						),
 						array(
 							'name' => esc_html__( 'Post Types', 'give' ),
@@ -485,37 +470,22 @@ class Give_Plugin_Settings {
 							'type' => 'give_title'
 						),
 						array(
-							'name' => esc_html__( 'Single and Archive Views', 'give' ),
-							'desc' => esc_html__( 'By default, all forms have single views with a specific URL to view on your website. When disabled, forms can then only be embedded via the shortcode.', 'give' ),
+							'name' => esc_html__( 'Disable Form Single Views', 'give' ),
+							'desc' => esc_html__( 'By default, all forms have single views enabled which create a specific URL on your website for that form. This option disables the singular and archive views from being publicly viewable. Note: you will need to embed forms using a shortcode or widget if enabled.', 'give' ),
 							'id'   => 'disable_forms_singular',
-							'type' => 'radio_inline',
-							'default' => 'on',
-							'options' => array(
-								'on' => esc_html__( 'Enable', 'give' ),
-								'' => esc_html__( 'Disable', 'give' )
-							)
+							'type' => 'checkbox'
 						),
 						array(
-							'name' => esc_html__( 'Form Archives', 'give' ),
-							'desc' => esc_html__( 'Archive pages list all the forms you have created. This option only affects the form archive pages. Single form views will remain in place. Note: you will need to refresh your permalinks after this option has been enabled.', 'give' ),
+							'name' => esc_html__( 'Disable Form Archives', 'give' ),
+							'desc' => esc_html__( 'Archives pages list all the forms you have created. This option will disable only the form\'s archive page(s). The single form\'s view will remain in place. Note: you will need to refresh your permalinks after this option has been enabled.', 'give' ),
 							'id'   => 'disable_forms_archives',
-							'type' => 'radio_inline',
-							'default' => 'on',
-							'options' => array(
-								'on' => esc_html__( 'Enable', 'give' ),
-								'' => esc_html__( 'Disable', 'give' )
-							)
+							'type' => 'checkbox'
 						),
 						array(
-							'name' => esc_html__( 'Form Excerpts', 'give' ),
-							'desc' => esc_html__( 'The excerpt is an optional summary or description of a donation form.', 'give' ),
+							'name' => esc_html__( 'Disable Form Excerpts', 'give' ),
+							'desc' => esc_html__( 'The excerpt is an optional summary or description of a donation form; in short, a summary as to why the user should give.', 'give' ),
 							'id'   => 'disable_forms_excerpt',
-							'type' => 'radio_inline',
-							'default' => 'on',
-							'options' => array(
-								'on' => esc_html__( 'Enable', 'give' ),
-								'' => esc_html__( 'Disable', 'give' )
-							)
+							'type' => 'checkbox'
 						),
 
 						array(
@@ -527,26 +497,16 @@ class Give_Plugin_Settings {
 							'options' => give_get_featured_image_sizes()
 						),
 						array(
-							'name' => esc_html__( 'Form Featured Image', 'give' ),
-							'desc' => esc_html__( 'Control whether your single forms will output a featured image.', 'give' ),
+							'name' => esc_html__( 'Disable Form Featured Image', 'give' ),
+							'desc' => esc_html__( 'If you do not wish to use the featured image functionality you can disable it using this option and it will not be displayed for single donation forms.', 'give' ),
 							'id'   => 'disable_form_featured_img',
-							'type' => 'radio_inline',
-							'default' => 'on',
-							'options' => array(
-								'on' => esc_html__( 'Enable', 'give' ),
-								'' => esc_html__( 'Disable', 'give' )
-							)
+							'type' => 'checkbox'
 						),
 						array(
-							'name' => esc_html__( 'Single Form Sidebar', 'give' ),
-							'desc' => esc_html__( 'This global option affects all forms and whether they output the Give Sidebar or not.', 'give' ),
+							'name' => esc_html__( 'Disable Single Form Sidebar', 'give' ),
+							'desc' => esc_html__( 'The sidebar allows you to add additional widget to the Give single form view. If you don\'t plan on using the sidebar you may disable it with this option.', 'give' ),
 							'id'   => 'disable_form_sidebar',
-							'type' => 'radio_inline',
-							'default' => 'on',
-							'options' => array(
-								'on' => esc_html__( 'Enable', 'give' ),
-								'' => esc_html__( 'Disable', 'give' )
-							)
+							'type' => 'checkbox'
 						),
 						array(
 							'name' => esc_html__( 'Taxonomies', 'give' ),
@@ -555,26 +515,16 @@ class Give_Plugin_Settings {
 							'type' => 'give_title'
 						),
 						array(
-							'name' => esc_html__( 'Form Categories', 'give' ),
-							'desc' => esc_html__( 'Enable/Disable whether your Give forms support Categories.', 'give' ),
+							'name' => esc_html__( 'Enable Form Categories', 'give' ),
+							'desc' => esc_html__( 'Enables the "Category" taxonomy for all Give forms.', 'give' ),
 							'id'   => 'enable_categories',
-							'type' => 'radio_inline',
-							'default' => '',
-							'options' => array(
-								'on' => esc_html__( 'Enable', 'give' ),
-								'' => esc_html__( 'Disable', 'give' )
-							)
+							'type' => 'checkbox'
 						),
 						array(
-							'name' => esc_html__( 'Form Tags', 'give' ),
-							'desc' => esc_html__( 'Enable/Disable whether your Give forms support Tags.', 'give' ),
+							'name' => esc_html__( 'Enable Form Tags', 'give' ),
+							'desc' => esc_html__( 'Enables the "Tag" taxonomy for all Give forms.', 'give' ),
 							'id'   => 'enable_tags',
-							'type' => 'radio_inline',
-							'default' => '',
-							'options' => array(
-								'on' => esc_html__( 'Enable', 'give' ),
-								'' => esc_html__( 'Disable', 'give' )
-							)
+							'type' => 'checkbox'
 						),
 					)
 				)
