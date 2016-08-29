@@ -678,9 +678,14 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'id'   => 'disable_admin_notices',
-							'name' => esc_html__( 'Disable Admin Notifications', 'give' ),
-							'desc' => esc_html__( 'Check this box if you do not want to receive emails when new donations are made.', 'give' ),
-							'type' => 'checkbox'
+							'name' => esc_html__( 'Send Admin Notification Emails?', 'give' ),
+							'desc' => esc_html__( 'Control whether Admin notification emails are sent or not.', 'give' ),
+							'type' => 'radio_inline',
+							'default' => 'on',
+							'options' => array(
+								'on' => esc_html__( 'Yes', 'give' ),
+								'' => esc_html__( 'No', 'give' )
+							)
 						)
 					)
 				)
