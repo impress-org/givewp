@@ -34,7 +34,7 @@ function give_get_payment_gateways() {
 		),
 	);
 
-	return apply_filters( 'give_payment_gateways', $gateways );
+	return apply_filters( 'give_donation_gateways', $gateways );
 
 }
 
@@ -362,9 +362,9 @@ function give_get_ordered_payment_gateways( $gateways ) {
 	/**
 	 * Filter payment gateways order.
 	 *
-	 * @since 1.4.5
+	 * @since 1.7
 	 *
 	 * @param array $gateways All the available gateways
 	 */
-	return apply_filters( 'give_payment_gateways_order', $gateways );
+	return apply_filters( 'give_donation_gateways_order', $gateways );
 }
