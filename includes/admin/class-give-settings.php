@@ -752,7 +752,11 @@ class Give_Plugin_Settings {
 						array(
 							'id'      => 'recaptcha_secret',
 							'name'    => esc_html__( 'reCAPTCHA Secret Key', 'give' ),
-							'desc'    => esc_html__( 'Please paste the reCAPTCHA secret key here', 'give'),
+							'desc'    => esc_html__( 'Please paste the reCAPTCHA secret key here from your manage reCAPTCHA API Keys panel.', 'give' ),
+							'default' => '',
+							'type'    => 'text'
+						),
+						array(
 							'name' => esc_html__( 'Data Control', 'give' ),
 							'desc' => '',
 							'id'   => 'give_title_data_control_2',
