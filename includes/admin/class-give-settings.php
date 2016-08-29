@@ -734,12 +734,7 @@ class Give_Plugin_Settings {
 							'name' => esc_html__( 'Email Access', 'give' ),
 							'desc' => esc_html__( 'Would you like your donors to be able to access their donation history using only email? Donors whose sessions have expired and do not have an account may still access their donation history via a temporary email access link.', 'give' ),
 							'id'   => 'email_access',
-							'type' => 'radio_inline',
-							'default' => '',
-							'options' => array(
-								'on' => esc_html__( 'Enable', 'give' ),
-								'' => esc_html__( 'Disable', 'give' )
-							)
+							'type' => 'checkbox',
 						),
 						array(
 							'id'      => 'recaptcha_key',
@@ -766,12 +761,7 @@ class Give_Plugin_Settings {
 							'name' => esc_html__( 'Remove All Data on Uninstall?', 'give' ),
 							'desc' => esc_html__( 'When the plugin is deleted, completely remove all Give data.', 'give' ),
 							'id'   => 'uninstall_on_delete',
-							'type' => 'radio_inline',
-							'default' => '',
-							'options' => array(
-								'on' => esc_html__( 'Yes', 'give' ),
-								'' => esc_html__( 'No', 'give' )
-							)
+							'type' => 'checkbox'
 						),
 						array(
 							'name' => esc_html__( 'Filter Control', 'give' ),
@@ -781,15 +771,11 @@ class Give_Plugin_Settings {
 						),
 						array(
 							/* translators: %s: the_content */
-							'name' => esc_html__( 'Single form content filter', 'give' ),
+							'name' => sprintf( __( 'Disable %s filter', 'give' ), '<code>the_content</code>' ),
+							/* translators: 1: https://codex.wordpress.org/Plugin_API/Filter_Reference/the_content 2: the_content */
 							'desc' => sprintf( __( 'If you are seeing extra social buttons, related posts, or other unwanted elements appearing within your forms then you can disable WordPress\' content filter. <a href="%1$s" target="_blank">Learn more</a> about %2$s filter.', 'give' ), esc_url( 'https://codex.wordpress.org/Plugin_API/Filter_Reference/the_content' ), '<code>the_content</code>' ),
 							'id'   => 'disable_the_content_filter',
-							'type' => 'radio_inline',
-							'default' => '',
-							'options' => array(
-								'on' => esc_html__( 'Enable', 'give' ),
-								'' => esc_html__( 'Disable', 'give' )
-							)
+							'type' => 'checkbox'
 						),
 						array(
 							'name' => esc_html__( 'Script Loading', 'give' ),
@@ -801,12 +787,7 @@ class Give_Plugin_Settings {
 							'name' => esc_html__( 'Load Scripts in Footer?', 'give' ),
 							'desc' => esc_html__( 'Check this box if you would like Give to load all frontend JavaScript files in the footer.', 'give' ),
 							'id'   => 'scripts_footer',
-							'type' => 'radio_inline',
-							'default' => '',
-							'options' => array(
-								'on' => esc_html__( 'Yes', 'give' ),
-								'' => esc_html__( 'No', 'give' )
-							)
+							'type' => 'checkbox'
 						)
 					)
 				)
