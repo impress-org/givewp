@@ -788,7 +788,8 @@ class Give_Plugin_Settings {
 	 *
 	 * @param  string $field Field to retrieve
 	 *
-	 * @return mixed          Field value or exception is thrown
+	 * @return mixed         Field value or exception is thrown.
+	 * @throws Exception     Throws an exception if the field is invalid.
 	 */
 	public function __get( $field ) {
 
@@ -800,7 +801,7 @@ class Give_Plugin_Settings {
 			return $this->option_metabox();
 		}
 
-		throw new Exception( 'Invalid property: ' . $field );
+		throw new Exception( sprintf( esc_html__( 'Invalid property: %s', 'give' ), $field ) );
 	}
 
 
