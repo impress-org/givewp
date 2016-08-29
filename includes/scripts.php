@@ -367,9 +367,11 @@ add_action( 'admin_head', 'give_admin_icon' );
  *
  * This code helps to hide license notices for 24 hour if admin user dismissed notice.
  *
- * @since 1.0
+ * @since 1.7
+ *
  * @global $post_type
  * @global $wp_version
+ *
  * @return void
  */
 function give_admin_hide_notice_shortly_js() {

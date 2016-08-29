@@ -433,7 +433,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * Check if license key is valid once per week
 		 *
 		 * @access  public
-		 * @since   1.6
+		 * @since   1.7
+		 *
 		 * @return  bool/void
 		 */
 		public function weekly_license_check() {
@@ -485,7 +486,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * Check subscription validation once per week
 		 *
 		 * @access  public
-		 * @since   1.6
+		 * @since   1.7
+		 *
 		 * @return  bool/void
 		 */
 		public function weekly_subscription_check() {
@@ -563,8 +565,9 @@ if ( ! class_exists( 'Give_License' ) ) :
 		/**
 		 * Check if license key is part of subscription or not
 		 *
-		 * @since   1.6
+		 * @since   1.7
 		 * @access  private
+		 *
 		 * @return  bool/void
 		 *
 		 */
@@ -729,6 +732,9 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 		/**
 		 * Check if license is valid or not.
+		 *
+		 * @since 1.7
+		 *
 		 * @return bool
 		 */
 		public function is_valid_license() {
@@ -742,7 +748,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		/**
 		 * Check if license is valid or not.
 		 *
-		 * @since  1.6
+		 * @since  1.7
 		 * @access private
 		 *
 		 * @return bool
@@ -758,7 +764,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * This function mainly uses when admin user deactivate license key,
 		 * then we do not need subscription information for that license key.
 		 *
-		 * @since  1.6
+		 * @since  1.7
 		 * @access private
 		 *
 		 * @return void|bool
@@ -792,7 +798,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		/**
 		 * Remove license notices show blocker.
 		 *
-		 * @since 1.6
+		 * @since 1.7
 		 * @access private
 		 *
 		 * @return void
@@ -828,8 +834,9 @@ if ( ! class_exists( 'Give_License' ) ) :
 		/**
 		 * Check if notice dismissed by admin user or not.
 		 *
-		 * @since  1.6
+		 * @since  1.7
 		 * @access private
+		 *
 		 * @param int $notice_id notice ID.
 		 *
 		 * @return bool

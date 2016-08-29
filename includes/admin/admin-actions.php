@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Hide subscription notice if admin click on "Click here if already renewed" in subscription notice.
  *
- * @since 1.6
+ * @since 1.7
  * @return void
  */
 function give_hide_subscription_notices() {
