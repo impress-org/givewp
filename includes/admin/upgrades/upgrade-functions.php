@@ -27,10 +27,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_do_automatic_upgrades() {
 	$did_upgrade  = false;
 	$give_version = preg_replace( '/[^0-9.].*/', '', get_option( 'give_version' ) );
-	if ( version_compare( $give_version, GIVE_VERSION, '<' ) ) {
-		give_v16_upgrades();
-		$did_upgrade = true;
+
+	switch ( true ) {
+
+		case version_compare( $give_version, '1.6', '<' ) :
+			give_v16_upgrades();
+			$did_upgrade = true;
+			error_log(print_r( '1.6', true) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log');
+
+		case version_compare( $give_version, '1.7', '<' ) :
+			give_v17_upgrades();
+			$did_upgrade = true;
+			error_log(print_r( '1.7', true) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log');
 	}
+
 	if ( $did_upgrade ) {
 		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
 	}
@@ -370,9 +380,32 @@ function give_v152_cleanup_users() {
 add_action( 'admin_init', 'give_v152_cleanup_users' );
 
 /**
+ * 1.6 Upgrade routine to create the customer meta table.
+ *
+ * @since  1.6
+ * @return void
+ */
+function give_v16_upgrades() {
+	@Give()->customers->create_table();
+	@Give()->customer_meta->create_table();
+}
+
+/**
+ * 1.7 Upgrade.
+ *   a. Update license api data for plugin addons.
+ *
+ * @since  1.7
+ * @return void
+ */
+function give_v17_upgrades() {
+	// Upgrade license data.
+	give_upgrade_addon_license_data();
+}
+
+/**
  * Upgrade license data
  *
- * @since 1.6
+ * @since 1.7
  */
 function give_upgrade_addon_license_data(){
     global $give_options;
@@ -454,18 +487,4 @@ function give_upgrade_addon_license_data(){
         $license_data = json_decode( wp_remote_retrieve_body( $response ) );
         update_option( $addon_license_option_name, $license_data );
     }
-}
-
-/**
- * 1.6 Upgrade routine to create the customer meta table.
- *
- * @since  1.6
- * @return void
- */
-function give_v16_upgrades() {
-	@Give()->customers->create_table();
-	@Give()->customer_meta->create_table();
-
-    // Upgrade license data.
-    give_upgrade_addon_license_data();
 }
