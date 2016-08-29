@@ -326,11 +326,12 @@ class Give_Plugin_Settings {
 							'desc' => esc_html__( 'While in test mode no live donations are processed. To fully use test mode, you must have a sandbox (test) account for the payment gateway you are testing.', 'give' ),
 							'id'   => 'test_mode',
 							'type' => 'radio_inline',
+							'show_option_none' => esc_html__( 'Off', 'give' ),
+							//'default' => 'on',
 							'options' => array(
-								'on'	=> esc_html__( 'On', 'give' ),
-								''		=> esc_html__( 'Off', 'give' ),
-							),
-							'deafult' => 'on'
+								'on' => esc_html__( 'On', 'give' ),
+								//'' => esc_html__( 'Off', 'give' )
+							)
 						),
 						array(
 							'name' => esc_html__( 'Enabled Gateways', 'give' ),
@@ -378,13 +379,11 @@ class Give_Plugin_Settings {
 							'desc' => esc_html__( 'If donations are not getting marked as complete, then disable this feature. This forces the site to use a slightly less secure method of verifying donations.', 'give' ),
 							'id'   => 'disable_paypal_verification',
 							'type' => 'radio_inline',
+							'default' => 'on',
 							'options' => array(
-								// For backwards compatibility, the values of this option are reversed.
-								// In Give < 1.7 this setting was "check to disable".
-								'' => esc_html__( 'Enable', 'give' ),
-								'on' => esc_html__( 'Disable', 'give' ),
-							),
-							'default' => ''
+								'on' => esc_html__( 'Enable', 'give' ),
+								'' => esc_html__( 'Disable', 'give' )
+							)
 						),
 						array(
 							'name' => esc_html__( 'Offline Donations', 'give' ),
@@ -452,10 +451,8 @@ class Give_Plugin_Settings {
 							'type' => 'radio_inline',
 							'default' => 'on',
 							'options' => array(
-								// For backwards compatibility, the values of this option are reversed.
-								// In Give < 1.7 this setting was "check to disable".
-								'' => esc_html__( 'Enable', 'give' ),
-								'on' => esc_html__( 'Disable', 'give' )
+								'on' => esc_html__( 'Enable', 'give' ),
+								'' => esc_html__( 'Disable', 'give' )
 							)
 						),
 						array(
@@ -476,11 +473,11 @@ class Give_Plugin_Settings {
 							'desc' => sprintf( wp_kses( __( 'Enable this option if you would like to disable the <a href="%s" target="_blank">Give Welcome screen</a> every time Give is activated and/or updated.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( admin_url( 'index.php?page=give-about' ) ) ),
 							'id'   => 'disable_welcome',
 							'type' => 'radio_inline',
+							'default' => 'on',
 							'options' => array(
 								'on' => esc_html__( 'Enable', 'give' ),
 								'' => esc_html__( 'Disable', 'give' )
-							),
-							'default' => 'on',
+							)
 						),
 						array(
 							'name' => esc_html__( 'Post Types', 'give' ),
@@ -493,33 +490,33 @@ class Give_Plugin_Settings {
 							'desc' => esc_html__( 'By default, all forms have single views with a specific URL to view on your website. When disabled, forms can then only be embedded via the shortcode.', 'give' ),
 							'id'   => 'disable_forms_singular',
 							'type' => 'radio_inline',
+							'default' => 'on',
 							'options' => array(
 								'on' => esc_html__( 'Enable', 'give' ),
 								'' => esc_html__( 'Disable', 'give' )
-							),
-							'default' => 'on',
+							)
 						),
 						array(
 							'name' => esc_html__( 'Form Archives', 'give' ),
 							'desc' => esc_html__( 'Archive pages list all the forms you have created. This option only affects the form archive pages. Single form views will remain in place. Note: you will need to refresh your permalinks after this option has been enabled.', 'give' ),
 							'id'   => 'disable_forms_archives',
 							'type' => 'radio_inline',
+							'default' => 'on',
 							'options' => array(
 								'on' => esc_html__( 'Enable', 'give' ),
 								'' => esc_html__( 'Disable', 'give' )
-							),
-							'default' => 'on',
+							)
 						),
 						array(
 							'name' => esc_html__( 'Form Excerpts', 'give' ),
 							'desc' => esc_html__( 'The excerpt is an optional summary or description of a donation form.', 'give' ),
 							'id'   => 'disable_forms_excerpt',
 							'type' => 'radio_inline',
+							'default' => 'on',
 							'options' => array(
 								'on' => esc_html__( 'Enable', 'give' ),
 								'' => esc_html__( 'Disable', 'give' )
-							),
-							'default' => 'on',
+							)
 						),
 
 						array(
@@ -535,22 +532,22 @@ class Give_Plugin_Settings {
 							'desc' => esc_html__( 'Control whether your single forms will output a featured image.', 'give' ),
 							'id'   => 'disable_form_featured_img',
 							'type' => 'radio_inline',
+							'default' => 'on',
 							'options' => array(
 								'on' => esc_html__( 'Enable', 'give' ),
 								'' => esc_html__( 'Disable', 'give' )
-							),
-							'default' => 'on',
+							)
 						),
 						array(
 							'name' => esc_html__( 'Single Form Sidebar', 'give' ),
 							'desc' => esc_html__( 'This global option affects all forms and whether they output the Give Sidebar or not.', 'give' ),
 							'id'   => 'disable_form_sidebar',
 							'type' => 'radio_inline',
+							'default' => 'on',
 							'options' => array(
 								'on' => esc_html__( 'Enable', 'give' ),
 								'' => esc_html__( 'Disable', 'give' )
-							),
-							'default' => 'on',
+							)
 						),
 						array(
 							'name' => esc_html__( 'Taxonomies', 'give' ),
@@ -563,22 +560,22 @@ class Give_Plugin_Settings {
 							'desc' => esc_html__( 'Enable/Disable whether your Give forms support Categories.', 'give' ),
 							'id'   => 'enable_categories',
 							'type' => 'radio_inline',
+							'default' => '',
 							'options' => array(
 								'on' => esc_html__( 'Enable', 'give' ),
 								'' => esc_html__( 'Disable', 'give' )
-							),
-							'default' => '',
+							)
 						),
 						array(
 							'name' => esc_html__( 'Form Tags', 'give' ),
 							'desc' => esc_html__( 'Enable/Disable whether your Give forms support Tags.', 'give' ),
 							'id'   => 'enable_tags',
 							'type' => 'radio_inline',
+							'default' => '',
 							'options' => array(
 								'on' => esc_html__( 'Enable', 'give' ),
 								'' => esc_html__( 'Disable', 'give' )
-							),
-							'default' => '',
+							)
 						),
 					)
 				)
@@ -685,11 +682,11 @@ class Give_Plugin_Settings {
 							'name' => esc_html__( 'Send Admin Notification Emails?', 'give' ),
 							'desc' => esc_html__( 'Control whether Admin notification emails are sent or not.', 'give' ),
 							'type' => 'radio_inline',
+							'default' => 'on',
 							'options' => array(
 								'on' => esc_html__( 'Yes', 'give' ),
 								'' => esc_html__( 'No', 'give' )
-							),
-							'default' => 'on',
+							)
 						)
 					)
 				)
@@ -739,11 +736,11 @@ class Give_Plugin_Settings {
 							'desc' => esc_html__( 'Would you like your donors to be able to access their donation history using only email? Donors whose sessions have expired and do not have an account may still access their donation history via a temporary email access link.', 'give' ),
 							'id'   => 'email_access',
 							'type' => 'radio_inline',
+							'default' => '',
 							'options' => array(
 								'on' => esc_html__( 'Enable', 'give' ),
 								'' => esc_html__( 'Disable', 'give' )
-							),
-							'default' => '',
+							)
 						),
 						array(
 							'id'      => 'recaptcha_key',
@@ -771,11 +768,11 @@ class Give_Plugin_Settings {
 							'desc' => esc_html__( 'When the plugin is deleted, completely remove all Give data.', 'give' ),
 							'id'   => 'uninstall_on_delete',
 							'type' => 'radio_inline',
+							'default' => '',
 							'options' => array(
 								'on' => esc_html__( 'Yes', 'give' ),
 								'' => esc_html__( 'No', 'give' )
-							),
-							'default' => '',
+							)
 						),
 						array(
 							'name' => esc_html__( 'Filter Control', 'give' ),
@@ -789,11 +786,11 @@ class Give_Plugin_Settings {
 							'desc' => sprintf( __( 'If you are seeing extra social buttons, related posts, or other unwanted elements appearing within your forms then you can disable WordPress\' content filter. <a href="%1$s" target="_blank">Learn more</a> about %2$s filter.', 'give' ), esc_url( 'https://codex.wordpress.org/Plugin_API/Filter_Reference/the_content' ), '<code>the_content</code>' ),
 							'id'   => 'disable_the_content_filter',
 							'type' => 'radio_inline',
+							'default' => '',
 							'options' => array(
 								'on' => esc_html__( 'Enable', 'give' ),
 								'' => esc_html__( 'Disable', 'give' )
-							),
-							'default' => 'on',
+							)
 						),
 						array(
 							'name' => esc_html__( 'Script Loading', 'give' ),
