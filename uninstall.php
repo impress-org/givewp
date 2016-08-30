@@ -9,12 +9,12 @@
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
 
-// Load Give file
+// Load Give file.
 include_once( 'give.php' );
 
 global $wpdb, $wp_roles;
@@ -22,8 +22,8 @@ global $wpdb, $wp_roles;
 
 if ( give_get_option( 'uninstall_on_delete' ) === 'on' ) {
 
-	// Delete All the Custom Post Types
-	$give_taxonomies = array( 'form_category', 'form_tag', 'give_log_type', );
+	// Delete All the Custom Post Types.
+	$give_taxonomies = array( 'form_category', 'form_tag', 'give_log_type' );
 	$give_post_types = array( 'give_forms', 'give_payment', 'give_log' );
 	foreach ( $give_post_types as $post_type ) {
 
@@ -32,7 +32,7 @@ if ( give_get_option( 'uninstall_on_delete' ) === 'on' ) {
 			'post_type'   => $post_type,
 			'post_status' => 'any',
 			'numberposts' => - 1,
-			'fields'      => 'ids'
+			'fields'      => 'ids',
 		) );
 
 		if ( $items ) {
@@ -42,12 +42,12 @@ if ( give_get_option( 'uninstall_on_delete' ) === 'on' ) {
 		}
 	}
 
-	// Delete All the Terms & Taxonomies
+	// Delete All the Terms & Taxonomies.
 	foreach ( array_unique( array_filter( $give_taxonomies ) ) as $taxonomy ) {
 
 		$terms = $wpdb->get_results( $wpdb->prepare( "SELECT t.*, tt.* FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON t.term_id = tt.term_id WHERE tt.taxonomy IN ('%s') ORDER BY t.name ASC", $taxonomy ) );
 
-		// Delete Terms
+		// Delete Terms.
 		if ( $terms ) {
 			foreach ( $terms as $term ) {
 				$wpdb->delete( $wpdb->term_taxonomy, array( 'term_taxonomy_id' => $term->term_taxonomy_id ) );
@@ -55,11 +55,11 @@ if ( give_get_option( 'uninstall_on_delete' ) === 'on' ) {
 			}
 		}
 
-		// Delete Taxonomies
+		// Delete Taxonomies.
 		$wpdb->delete( $wpdb->term_taxonomy, array( 'taxonomy' => $taxonomy ), array( '%s' ) );
 	}
 
-	// Delete the Plugin Pages
+	// Delete the Plugin Pages.
 	$give_created_pages = array( 'success_page', 'failure_page', 'history_page' );
 	foreach ( $give_created_pages as $p ) {
 		$page = give_get_option( $p, false );
@@ -68,28 +68,53 @@ if ( give_get_option( 'uninstall_on_delete' ) === 'on' ) {
 		}
 	}
 
-	// Delete all the Plugin Options
-	delete_option( 'give_settings' );
-	delete_option( 'give_version' );
-
-	// Delete Capabilities
+	// Delete Capabilities.
 	Give()->roles->remove_caps();
 
-	// Delete the Roles
+	// Delete the Roles.
 	$give_roles = array( 'give_manager', 'give_accountant', 'give_worker' );
 	foreach ( $give_roles as $role ) {
 		remove_role( $role );
 	}
 
-	// Remove all database tables
-	$wpdb->query( "DROP TABLE IF EXISTS " . $wpdb->prefix . "give_donors" );
-	$wpdb->query( "DROP TABLE IF EXISTS " . $wpdb->prefix . "give_customers" );
-	$wpdb->query( "DROP TABLE IF EXISTS " . $wpdb->prefix . "give_customermeta" );
+	// Remove all database tables.
+	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_donors' );
+	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_customers' );
+	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_customermeta' );
 
-	// Cleanup Cron Events
+	// Cleanup Cron Events.
 	wp_clear_scheduled_hook( 'give_daily_scheduled_events' );
 	wp_clear_scheduled_hook( 'give_daily_cron' );
 	wp_clear_scheduled_hook( 'give_weekly_cron' );
 
+	// Get all options.
+	$give_option_names = $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT option_name FROM {$wpdb->options} where option_name LIKE '%%%s%%'",
+			'give'
+		),
+		ARRAY_A
+	);
 
+	if ( ! empty( $give_option_names ) ) {
+		// Convert option name to transient or option name.
+		$new_give_option_names = array();
+
+		foreach ( $give_option_names as $option ) {
+			$new_give_option_names[] = ( false !== strpos( $option['option_name'], '_transient_' ) )
+				? str_replace( '_transient_', '', $option['option_name'] )
+				: $option['option_name'];
+		}
+
+		$give_option_names = $new_give_option_names;
+
+		// Delete all the Plugin Options.
+		foreach ( $give_option_names as $option ) {
+			if ( false !== strpos( $option, '_transient_' ) ) {
+				delete_transient( $option );
+			} else {
+				delete_option( $option );
+			}
+		}
+	}
 }
