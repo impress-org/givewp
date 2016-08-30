@@ -528,7 +528,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => esc_html__( 'Agreement Text', 'give' ),
-							'desc' => esc_html__( 'This is the actual text which the user will have to agree to in order to make a donation. Note: You may customize the content per form as needed. Note: You can customize the content per form as needed.', 'give' ),
+							'desc' => esc_html__( 'This is the actual text which the user will have to agree to in order to make a donation. Note: You can customize the content per form as needed.', 'give' ),
 							'id'   => 'agreement_text',
 							'type' => 'wysiwyg'
 						),
