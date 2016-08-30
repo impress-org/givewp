@@ -114,7 +114,7 @@ function give_setup_post_types() {
 	);
 
 	$payment_args = array(
-		'labels'          => apply_filters( 'give_payment_labels', $payment_labels ),
+		'labels'          => apply_filters( 'give_donation_labels', $payment_labels ),
 		'public'          => false,
 		'query_var'       => false,
 		'rewrite'         => false,

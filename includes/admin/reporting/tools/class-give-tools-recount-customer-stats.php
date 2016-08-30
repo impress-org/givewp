@@ -65,7 +65,7 @@ class Give_Tools_Recount_Customer_Stats extends Give_Batch_Export {
 
 		if ( $customers ) {
 
-			$allowed_payment_status = apply_filters( 'give_recount_customer_payment_statuses', give_get_payment_status_keys() );
+			$allowed_payment_status = apply_filters( 'give_recount_customer_donation_statuses', give_get_payment_status_keys() );
 
 			foreach ( $customers as $customer ) {
 
@@ -105,7 +105,7 @@ class Give_Tools_Recount_Customer_Stats extends Give_Batch_Export {
 					foreach ( $payments as $payment ) {
 
 						$should_process_payment = 'publish' == $payment->post_status ? true : false;
-						$should_process_payment = apply_filters( 'give_customer_recount_should_process_payment', $should_process_payment, $payment );
+						$should_process_payment = apply_filters( 'give_customer_recount_should_process_donation', $should_process_payment, $payment );
 
 						if ( true === $should_process_payment ) {
 

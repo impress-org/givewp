@@ -27,12 +27,12 @@ $status   = give_get_payment_status( $payment, true );
  *
  * Allows you to add elements before the table.
  *
- * @since 1.0
+ * @since 1.7
  *
  * @param object $payment           The payment object.
  * @param array  $give_receipt_args Receipt_argument.
  */
-do_action( 'give_payment_receipt_before_table', $payment, $give_receipt_args );
+do_action( 'give_donation_receipt_before_table', $payment, $give_receipt_args );
 ?>
 
 	<table id="give_donation_receipt" class="give-table">
@@ -43,12 +43,12 @@ do_action( 'give_payment_receipt_before_table', $payment, $give_receipt_args );
 		 *
 		 * Allows you to add new <th> elements before the receipt first header item.
 		 *
-		 * @since 1.0
+		 * @since 1.7
 		 *
 		 * @param object $payment           The payment object.
 		 * @param array  $give_receipt_args Receipt_argument.
 		 */
-		do_action( 'give_payment_receipt_header_before', $payment, $give_receipt_args );
+		do_action( 'give_donation_receipt_header_before', $payment, $give_receipt_args );
 		?>
 		<tr>
 			<th scope="colgroup" colspan="2">
@@ -61,12 +61,12 @@ do_action( 'give_payment_receipt_before_table', $payment, $give_receipt_args );
 		 *
 		 * Allows you to add new <th> elements after the receipt last header item.
 		 *
-		 * @since 1.0
+		 * @since 1.7
 		 *
 		 * @param object $payment           The payment object.
 		 * @param array  $give_receipt_args Receipt_argument.
 		 */
-		do_action( 'give_payment_receipt_header_after', $payment, $give_receipt_args );
+		do_action( 'give_donation_receipt_header_after', $payment, $give_receipt_args );
 		?>
 		</thead>
 
@@ -77,12 +77,12 @@ do_action( 'give_payment_receipt_before_table', $payment, $give_receipt_args );
 		 *
 		 * Allows you to add new <td> elements before the receipt first item.
 		 *
-		 * @since 1.0
+		 * @since 1.7
 		 *
 		 * @param object $payment           The payment object.
 		 * @param array  $give_receipt_args Receipt_argument.
 		 */
-		do_action( 'give_payment_receipt_before', $payment, $give_receipt_args );
+		do_action( 'give_donation_receipt_before', $payment, $give_receipt_args );
 		?>
 
 		<?php if ( filter_var( $give_receipt_args['donor'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
@@ -168,12 +168,12 @@ do_action( 'give_payment_receipt_before_table', $payment, $give_receipt_args );
 		 *
 		 * Allows you to add new <td> elements after the receipt last item.
 		 *
-		 * @since 1.0
+		 * @since 1.7
 		 *
 		 * @param object $payment           The payment object.
 		 * @param array  $give_receipt_args Receipt_argument.
 		 */
-		do_action( 'give_payment_receipt_after', $payment, $give_receipt_args );
+		do_action( 'give_donation_receipt_after', $payment, $give_receipt_args );
 		?>
 		</tbody>
 	</table>
@@ -184,10 +184,10 @@ do_action( 'give_payment_receipt_before_table', $payment, $give_receipt_args );
  *
  * Allows you to add elements after the table.
  *
- * @since 1.0
+ * @since 1.7
  *
  * @param object $payment           The payment object.
  * @param array  $give_receipt_args Receipt_argument.
  */
-do_action( 'give_payment_receipt_after_table', $payment, $give_receipt_args );
+do_action( 'give_donation_receipt_after_table', $payment, $give_receipt_args );
 ?>
