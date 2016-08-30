@@ -272,7 +272,7 @@ function give_setup_email_tags() {
 	$email_tags = array(
 		array(
 			'tag'         => 'donation',
-			'description' => esc_html__( 'The name of completed donation form and the donation level chosen if applicable.', 'give' ),
+			'description' => esc_html__( 'The donation form name, and the donation level (if applicable).', 'give' ),
 			'function'    => 'give_email_tag_donation'
 		),
 		array(
@@ -519,17 +519,20 @@ function give_email_tag_receipt_id( $payment_id ) {
 /**
  * Email template tag: {donation}
  *
- * Output the donation form name used to make the donation along with the donation level (if applicable).
+ * Output the donation form name, and the donation level (if applicable).
  *
  * @param int $payment_id
  *
  * @return string $form_title
  */
 function give_email_tag_donation( $payment_id ) {
-	$payment    = new Give_Payment( $payment_id );
-	$form_title = strip_tags( give_get_payment_form_title( $payment->meta, false, '-' ) );
+	$payment      = new Give_Payment( $payment_id );
+	$payment_meta = $payment->meta;
+	$level_title  = give_has_variable_prices( $payment_meta['form_id'] );
+	$separator    = $level_title ? '-' : '';
+	$form_title   = strip_tags( give_get_payment_form_title( $payment_meta, $level_title, $separator ) );
 
-	return ! empty( $form_title ) ? $form_title : esc_html__( 'There was an error retrieving this donation title.', 'give' );
+	return ! empty( $form_title ) ? $form_title : esc_html__( 'There was an error retrieving the donation form name.', 'give' );
 
 }
 
