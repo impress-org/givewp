@@ -74,9 +74,6 @@ function give_deprecated_filter_mapping( $data, $arg_1 = '', $arg_2 = '', $arg_3
 
 	if ( isset( $give_map_deprecated_filters[ $filter ] ) ) {
 		if ( has_filter( $give_map_deprecated_filters[ $filter ] ) ) {
-			echo '<pre>';
-			var_dump( $give_map_deprecated_filters[ $filter ] );
-			echo '</pre>';
 			$data = apply_filters( $give_map_deprecated_filters[ $filter ], $data, $arg_1, $arg_2, $arg_3 );
 
 			if ( ! defined( 'DOING_AJAX' ) ) {
