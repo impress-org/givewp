@@ -214,7 +214,7 @@ function give_give_supports_buy_now() {
  * @since 1.0
  *
  * @param string $gateway Name of the gateway
- * @param array $payment_data All the payment data to be sent to the gateway
+ * @param array  $payment_data All the payment data to be sent to the gateway
  *
  * @return void
  */
@@ -228,10 +228,10 @@ function give_send_to_gateway( $gateway, $payment_data ) {
 
 
 /**
- * Determines what the currently selected gateway is
+ * Determines what the currently selected gateway is.
  *
- * If the amount is zero, no option is shown and the checkout uses the manual
- * gateway to emulate a no-gateway-setup for a free donation
+ * If the amount is zero, no option is shown and the donation form uses the manual
+ * gateway to emulate a no-gateway-setup for a free donation.
  *
  * @access public
  * @since  1.0
@@ -251,7 +251,7 @@ function give_get_chosen_gateway( $form_id ) {
 
 	//Take into account request Form ID args
 	if ( ! empty( $request_form_id ) && $form_id == $request_form_id ) {
-		$chosen = $_REQUEST['payment-mode'];
+		$chosen = isset( $_REQUEST['payment-mode'] ) ? $_REQUEST['payment-mode'] : '';
 	}
 
 	if ( $chosen ) {
@@ -269,16 +269,16 @@ function give_get_chosen_gateway( $form_id ) {
 }
 
 /**
- * Record a gateway error
+ * Record a gateway error.
  *
- * A simple wrapper function for give_record_log()
+ * A simple wrapper function for give_record_log().
  *
  * @access public
  * @since  1.0
  *
  * @param string $title Title of the log entry (default: empty)
  * @param string $message Message to store in the log entry (default: empty)
- * @param int $parent Parent log entry (default: 0)
+ * @param int    $parent Parent log entry (default: 0)
  *
  * @return int ID of the new log entry
  */
@@ -346,7 +346,7 @@ function give_get_ordered_payment_gateways( $gateways ) {
 		$new_gateway_value = isset( $gateways[ $gateway_key ] ) ? $gateways[ $gateway_key ] : '';
 		unset( $gateways[ $gateway_key ] );
 
-		if(!empty($new_gateway_value)) {
+		if ( ! empty( $new_gateway_value ) ) {
 			$gateways = array_merge( array( $gateway_key => $new_gateway_value ), $gateways );
 		}
 	}

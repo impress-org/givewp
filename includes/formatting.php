@@ -69,6 +69,11 @@ function give_sanitize_amount( $number, $dp = false, $trim_zeros = false ) {
         return $number;
     }
 
+	// Remove slash from amount.
+	// If thousand or decimal separator is set to ' then in $_POST or $_GET param we will get an escaped number.
+	// To prevent notices and warning remove slash from amount/number.
+	$number = wp_unslash( $number );
+
     $thousand_separator = give_get_price_thousand_separator();
 
     $locale   = localeconv();
@@ -84,7 +89,9 @@ function give_sanitize_amount( $number, $dp = false, $trim_zeros = false ) {
     // Do not replace thousand separator from price if it is same as decimal separator, because it will be already replace by above code.
     if(  ! in_array( $thousand_separator, $decimals ) && ( false !== strpos( $number, $thousand_separator ) ) ) {
         $number = str_replace( $thousand_separator, '', $number );
-    }
+    } elseif ( in_array( $thousand_separator, $decimals ) ) {
+		$number = preg_replace( '/\.(?=.*\.)/', '', $number );
+	}
 
     // Remove non numeric entity before decimal separator.
     $number     = preg_replace( '/[^0-9\.]/', '', $number );
@@ -129,39 +136,14 @@ function give_sanitize_amount( $number, $dp = false, $trim_zeros = false ) {
  * @return string $amount Newly formatted amount or Price Not Available
  */
 function give_format_amount( $amount, $decimals = true ) {
-
 	$thousands_sep = give_get_option( 'thousands_separator', ',' );
 	$decimal_sep   = give_get_option( 'decimal_separator', '.' );
 
-	// Format the amount
-	if ( $decimal_sep == ',' && false !== ( $sep_found = strpos( $amount, $decimal_sep ) ) ) {
-		$whole  = substr( $amount, 0, $sep_found );
-		$part   = substr( $amount, $sep_found + 1, ( strlen( $amount ) - 1 ) );
-		$amount = $whole . '.' . $part;
-	}
-
-	// Strip , from the amount (if set as the thousands separator)
-	if ( $thousands_sep == ',' && false !== ( $found = strpos( $amount, $thousands_sep ) ) ) {
-		$amount = str_replace( ',', '', $amount );
-	}
-
-	// Strip . from the amount (if set as the thousands separator) AND , set to decimal separator
-	if ( $thousands_sep == '.' && $decimal_sep == ',' && false !== ( $found = strpos( $amount, $thousands_sep ) ) ) {
-		$amount      = explode( '.', $amount );
-		$array_count = count( $amount );
-		if ( $decimals == true ) {
-			unset( $amount[ $array_count - 1 ] );
-		}
-		$amount = implode( '', $amount );
-	}
-
-	// Strip ' ' from the amount (if set as the thousands separator)
-	if ( $thousands_sep == ' ' && false !== ( $found = strpos( $amount, $thousands_sep ) ) ) {
-		$amount = str_replace( ' ', '', $amount );
-	}
-
 	if ( empty( $amount ) ) {
 		$amount = 0;
+	} else {
+		// Sanitize amount before formatting.
+		$amount = give_sanitize_amount( $amount );
 	}
 
 	$decimals = give_get_price_decimals();
@@ -198,18 +180,19 @@ function give_human_format_large_amount( $amount ) {
     // Calculate amount parts count.
     $amount_count_parts = count( $amount_array );
 
+	// Human format amount (default).
+	$human_format_amount = $amount;
+
     // Calculate large number formatted amount.
     if ( 4 < $amount_count_parts ){
-        $sanitize_amount =  sprintf( esc_html__( '%s trillion', 'give' ), round( ( $sanitize_amount / 1000000000000 ), 2 ) );
+        $human_format_amount =  sprintf( esc_html__( '%s trillion', 'give' ), round( ( $sanitize_amount / 1000000000000 ), 2 ) );
     } elseif ( 3 < $amount_count_parts ){
-        $sanitize_amount =  sprintf( esc_html__( '%s billion', 'give' ), round( ( $sanitize_amount / 1000000000 ), 2 ));
+        $human_format_amount =  sprintf( esc_html__( '%s billion', 'give' ), round( ( $sanitize_amount / 1000000000 ), 2 ));
     } elseif ( 2 < $amount_count_parts  ) {
-        $sanitize_amount =  sprintf( esc_html__( '%s million', 'give' ), round( ( $sanitize_amount / 1000000), 2 ) );
-    } else{
-        $sanitize_amount = give_format_amount( $amount );
+        $human_format_amount =  sprintf( esc_html__( '%s million', 'give' ), round( ( $sanitize_amount / 1000000), 2 ) );
     }
 
-    return apply_filters( 'give_human_format_large_amount', $sanitize_amount, $amount );
+    return apply_filters( 'give_human_format_large_amount', $human_format_amount, $amount, $sanitize_amount );
 }
 
 /**
@@ -394,7 +377,7 @@ add_filter( 'give_format_amount_decimals', 'give_currency_decimal_filter' );
  * @return mixed
  */
 function give_sanitize_thousand_separator( $value, $field_args, $field ){
-    return $value;
+    return stripslashes( $value );
 }
 
 
@@ -426,4 +409,55 @@ function give_sanitize_number_decimals( $value, $field_args, $field ){
  */
 function give_sanitize_price_field_value( $value, $field_args, $field ){
     return give_sanitize_amount( $value );
+}
+
+
+/**
+ * Manually render amount field.
+ *
+ * @since  1.7
+ *
+ * @param  array      $field_args Array of field arguments.
+ * @param  CMB2_Field $field      The field object
+ *
+ * @return void
+ */
+function give_cmb_amount_field_render_row_cb( $field_args, $field ) {
+
+	// Get args.
+	$id          = $field->args('id');
+	$label       = $field->args( 'name' );
+	$name        = $field->args( '_name' );
+	$description = $field->args( 'description' );
+	$attributes  = $field->args( 'attributes' );
+	$attributes_string  = '';
+	$row_class          = $field->row_classes();
+
+	// Get attributes.
+	if( ! empty( $attributes ) ) {
+		foreach ( $attributes as $attribute_name => $attribute_val ) {
+			$attributes_string[] = "$attribute_name=\"$attribute_val\"";
+		}
+
+		$attributes_string = implode( ' ', $attributes_string );
+	}
+
+	// Get row class.
+	if( ! empty( $row_class ) && is_array( $row_class ) ) {
+		$row_class = implode( ' ', $row_class );
+	}
+	?>
+	<div class="cmb-row <?php echo $row_class; ?>">
+		<div class="cmb-th">
+			<label for="<?php echo $id; ?>"><?php echo $label; ?></label>
+		</div>
+		<div class="cmb-td">
+			<?php echo ( give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol give-money-symbol-before">' . give_currency_symbol() . '</span>' : '' ); ?>
+			<input id="<?php echo $id; ?>" type="text" name="<?php echo $name; ?>" <?php echo $attributes_string?>/>
+			<?php echo ( give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '' ); ?>
+
+			<span class="cmb2-metabox-description"><?php echo $description; ?></span>
+		</div>
+	</div>
+	<?php
 }
