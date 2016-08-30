@@ -279,7 +279,7 @@ function give_setup_email_tags() {
 	$email_tags = array(
 		array(
 			'tag'         => 'donation',
-			'description' => esc_html__( 'The name of completed donation form and the donation level chosen if applicable.', 'give' ),
+			'description' => esc_html__( 'The donation form name.', 'give' ),
 			'function'    => 'give_email_tag_donation'
 		),
 		array(
