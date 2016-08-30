@@ -27,10 +27,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_do_automatic_upgrades() {
 	$did_upgrade  = false;
 	$give_version = preg_replace( '/[^0-9.].*/', '', get_option( 'give_version' ) );
-	if ( version_compare( $give_version, GIVE_VERSION, '<' ) ) {
-		give_v16_upgrades();
-		$did_upgrade = true;
+
+	if ( ! $give_version ) {
+		// 1.0 is the first version to use this option so we must add it.
+		$give_version = '1.0';
 	}
+
+	switch ( true ) {
+
+		case version_compare( $give_version, '1.6', '<' ) :
+			give_v16_upgrades();
+			$did_upgrade = true;
+
+		case version_compare( $give_version, '1.7', '<' ) :
+			give_v17_upgrades();
+			$did_upgrade = true;
+	}
+
 	if ( $did_upgrade ) {
 		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
 	}
@@ -378,4 +391,103 @@ add_action( 'admin_init', 'give_v152_cleanup_users' );
 function give_v16_upgrades() {
 	@Give()->customers->create_table();
 	@Give()->customer_meta->create_table();
+}
+
+/**
+ * 1.7 Upgrade.
+ *   a. Update license api data for plugin addons.
+ *
+ * @since  1.7
+ * @return void
+ */
+function give_v17_upgrades() {
+	// Upgrade license data.
+	give_upgrade_addon_license_data();
+}
+
+/**
+ * Upgrade license data
+ *
+ * @since 1.7
+ */
+function give_upgrade_addon_license_data(){
+    global $give_options;
+
+    $api_url = 'https://givewp.com/give-sl-api/';
+
+    // Get addons license key.
+    $addons = array();
+    foreach ( $give_options as $key => $value ) {
+        if( false !== strpos( $key, '_license_key' ) ) {
+            $addons[$key] = $value;
+        }
+    }
+
+    // Bailout: We do not have any addon license data to upgrade.
+    if( empty( $addons ) ) {
+        return false;
+    }
+    
+    foreach ( $addons as $key => $addon_license ) {
+
+        // Get addon shortname.
+        $shortname = str_replace( '_license_key', '', $key );
+
+        // Addon license option name.
+        $addon_license_option_name = $shortname . '_license_active';
+
+        // bailout if license is empty.
+        if( empty( $addon_license ) ) {
+            delete_option( $addon_license_option_name );
+            continue;
+        }
+
+        // Get addon name.
+        $addon_name = array();
+        $addon_name_parts = explode( '_', str_replace( 'give_', '', $shortname ) );
+        foreach ( $addon_name_parts as $name_part ) {
+
+            // Fix addon name
+            switch ( $name_part ) {
+                case 'authorizenet' :
+                    $name_part = 'authorize.net';
+                    break;
+            }
+
+            $addon_name[] = ucfirst( $name_part );
+        }
+
+        $addon_name = implode( ' ', $addon_name );
+
+        // Data to send to the API
+        $api_params = array(
+            'edd_action' => 'activate_license', //never change from "edd_" to "give_"!
+            'license'    => $addon_license,
+            'item_name'  => urlencode( $addon_name ),
+            'url'        => home_url()
+        );
+
+        // Call the API
+        $response = wp_remote_post(
+            $api_url,
+            array(
+                'timeout'   => 15,
+                'sslverify' => false,
+                'body'      => $api_params
+            )
+        );
+
+        // Make sure there are no errors
+        if ( is_wp_error( $response ) ) {
+            delete_option( $addon_license_option_name );
+            continue;
+        }
+
+        // Tell WordPress to look for updates
+        set_site_transient( 'update_plugins', null );
+
+        // Decode license data
+        $license_data = json_decode( wp_remote_retrieve_body( $response ) );
+        update_option( $addon_license_option_name, $license_data );
+    }
 }
