@@ -1,6 +1,6 @@
 <?php
 /**
- * Gateway Error Log View Class
+ * Gateway Error Log View Class.
  *
  * @package     Give
  * @subpackage  Admin/Reports
@@ -19,16 +19,17 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 }
 
 /**
- * Give_Gateway_Error_Log_Table Class
+ * Give_Gateway_Error_Log_Table Class.
  *
- * Renders the gateway errors list table
+ * Renders the gateway errors list table.
  *
  * @access      private
  * @since       1.0
  */
 class Give_Gateway_Error_Log_Table extends WP_List_Table {
+
 	/**
-	 * Number of items per page
+	 * Number of items per page.
 	 *
 	 * @var int
 	 * @since 1.0
@@ -36,19 +37,17 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	public $per_page = 30;
 
 	/**
-	 * Get things started
+	 * Get things started.
 	 *
 	 * @since 1.0
 	 * @see   WP_List_Table::__construct()
 	 */
 	public function __construct() {
-		global $status, $page;
-
-		// Set parent defaults
+		// Set parent defaults.
 		parent::__construct( array(
-			'singular' => give_get_forms_label_singular(),    // Singular name of the listed records
-			'plural'   => give_get_forms_label_plural(),        // Plural name of the listed records
-			'ajax'     => false                        // Does this table support ajax?
+			'singular' => give_get_forms_label_singular(),    // Singular name of the listed records.
+			'plural'   => give_get_forms_label_plural(),        // Plural name of the listed records.
+			'ajax'     => false                        // Does this table support ajax?.
 		) );
 	}
 
@@ -58,15 +57,20 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 * @access public
 	 * @since  1.0
 	 *
-	 * @param array  $item        Contains all the data of the discount code
-	 * @param string $column_name The name of the column
+	 * @param array  $item Contains all the data of the error.
+	 * @param string $column_name The name of the column.
 	 *
 	 * @return string Column Name
 	 */
 	public function column_default( $item, $column_name ) {
+
 		switch ( $column_name ) {
 			case 'ID' :
 				return $item['ID_label'];
+			case 'payment_id' :
+				return empty( $item->payment_id ) ? esc_html__( 'n/a', 'give' ) : $item->payment_id;
+			case 'gateway' :
+				return empty( $item->gateway ) ? esc_html__( 'n/a', 'give' ) : $item->gateway;
 			case 'error' :
 				return get_the_title( $item['ID'] ) ? get_the_title( $item['ID'] ) : esc_html__( 'Payment Error', 'give' );
 			default:
@@ -84,16 +88,14 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 *
 	 * @return void
 	 */
-	public function column_message( $item ) {
-
-		?>
-		<a href="#TB_inline?width=640&amp;inlineId=log-message-<?php echo $item['ID']; ?>" class="thickbox" title="<?php esc_attr_e( 'View Log Message', 'give' ); ?> "><?php esc_html_e( 'View Log Message', 'give' ); ?></a>
+	public function column_message( $item ) { ?>
+		<a href="#TB_inline?width=640&amp;inlineId=log-message-<?php echo $item['ID']; ?>" class="thickbox give-error-log-details-link button button-small" data-tooltip="<?php esc_attr_e( 'View Log Message', 'give' ); ?>"><span class="dashicons dashicons-visibility"></span></a>
 		<div id="log-message-<?php echo $item['ID']; ?>" style="display:none;">
 			<?php
 
 			$log_message = get_post_field( 'post_content', $item['ID'] );
 
-			$serialized  = strpos( $log_message, '{"' );
+			$serialized = strpos( $log_message, '{"' );
 
 			// Check to see if the log message contains serialized information
 			if ( $serialized !== false ) {
@@ -110,7 +112,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 			}
 			?>
 		</div>
-	<?php
+		<?php
 	}
 
 	/**
@@ -123,11 +125,11 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	public function get_columns() {
 		$columns = array(
 			'ID'         => esc_html__( 'Log ID', 'give' ),
-			'payment_id' => esc_html__( 'Payment ID', 'give' ),
 			'error'      => esc_html__( 'Error', 'give' ),
-			'message'    => esc_html__( 'Error Message', 'give' ),
 			'gateway'    => esc_html__( 'Gateway', 'give' ),
-			'date'       => esc_html__( 'Date', 'give' )
+			'payment_id' => esc_html__( 'Payment ID', 'give' ),
+			'date'       => esc_html__( 'Date', 'give' ),
+			'message'    => esc_html__( 'Details', 'give' )
 		);
 
 		return $columns;
@@ -164,9 +166,11 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 * @return array $logs_data Array of all the Log entires
 	 */
 	public function get_logs() {
-		global $give_logs;
 
-		// Prevent the queries from getting cached. Without this there are occasional memory issues for some installs
+		$give_logs = new Give_Logging();
+
+		// Prevent the queries from getting cached.
+		// Without this there are occasional memory issues for some installs.
 		wp_suspend_cache_addition( true );
 
 		$logs_data = array();
@@ -196,9 +200,10 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Display Tablenav (extended)
+	 * Display Tablenav (extended).
 	 *
-	 * Display the table navigation above or below the table even when no items in the logs, so nav doesn't disappear
+	 * Display the table navigation above or below the table even when no items in the logs,
+	 * so nav doesn't disappear.
 	 *
 	 * @see: https://github.com/WordImpress/Give/issues/564
 	 *
@@ -226,7 +231,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 		</div>
 		<?php
 	}
-	
+
 	/**
 	 * Setup the final data for the table
 	 *
@@ -241,13 +246,12 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 * @return void
 	 */
 	public function prepare_items() {
-		global $give_logs;
 
+		$give_logs             = new Give_logging();
 		$columns               = $this->get_columns();
 		$hidden                = array(); // No hidden columns
 		$sortable              = $this->get_sortable_columns();
 		$this->_column_headers = array( $columns, $hidden, $sortable );
-		$current_page          = $this->get_pagenum();
 		$this->items           = $this->get_logs();
 		$total_items           = $give_logs->get_log_count( 0, 'gateway_error' );
 

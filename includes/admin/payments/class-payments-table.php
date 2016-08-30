@@ -317,15 +317,15 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 */
 	public function column_default( $payment, $column_name ) {
 
-		$single_transaction_url = esc_url( add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details' ) ) );
-		$row_actions            = $this->get_row_actions( $payment );
+		$single_donation_url = esc_url( add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details' ) ) );
+		$row_actions         = $this->get_row_actions( $payment );
 
 		switch ( $column_name ) {
 			case 'donation' :
 				ob_start();
 				?>
-				<a href="<?php echo $single_transaction_url; ?>">#<?php echo $payment->ID; ?></a>
-				&nbsp;<?php _e( 'by', 'give' ); ?>&nbsp;<?php echo $this->get_donor( $payment ); ?><br>
+				<a href="<?php echo $single_donation_url; ?>" data-tooltip="<?php esc_html_e( 'View details', 'give' ) ?>">#<?php echo $payment->ID; ?></a>&nbsp;<?php _e( 'by', 'give' ); ?>&nbsp;<?php echo $this->get_donor( $payment ); ?>
+				<br>
 				<?php echo $this->get_donor_email( $payment ); ?>
 				<?php echo $this->row_actions( $row_actions ); ?>
 				<?php
@@ -358,7 +358,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 				break;
 
 			case 'details' :
-				$value = '<div class="give-payment-details-link-wrap"><a href="' . $single_transaction_url . '" data-tooltip="' . __( 'View details', 'give' ) . '" class="give-payment-details-link button button-small" title="' . __( 'View Details', 'give' ) . '"><span class="dashicons dashicons-visibility"></span></a></div>';
+				$value = '<div class="give-payment-details-link-wrap"><a href="' . $single_donation_url . '" data-tooltip="' . __( 'View details', 'give' ) . '" class="give-payment-details-link button button-small" title="' . __( 'View Details', 'give' ) . '"><span class="dashicons dashicons-visibility"></span></a></div>';
 				break;
 
 			default:
