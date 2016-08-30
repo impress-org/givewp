@@ -301,7 +301,7 @@ function give_show_purchase_form( $form_id ) {
 	do_action( 'give_donation_form_bottom', $form_id );
 }
 
-add_action( 'give_purchase_form', 'give_show_purchase_form' );
+add_action( 'give_donation_form', 'give_show_purchase_form' );
 
 /**
  * Give Show Login/Register Form Fields.
@@ -354,7 +354,7 @@ function give_show_register_login_fields( $form_id ) {
 	}
 }
 
-add_action( 'give_purchase_form_register_login_fields', 'give_show_register_login_fields' );
+add_action( 'give_donation_form_register_login_fields', 'give_show_register_login_fields' );
 
 /**
  * Donation Amount Field.
@@ -699,7 +699,7 @@ function give_user_info_fields( $form_id ) {
 	do_action( 'give_donation_form_after_personal_info', $form_id );
 }
 
-add_action( 'give_purchase_form_after_user_info', 'give_user_info_fields' );
+add_action( 'give_donation_form_after_user_info', 'give_user_info_fields' );
 add_action( 'give_register_fields_before', 'give_user_info_fields' );
 
 /**
@@ -1203,7 +1203,7 @@ function give_get_login_fields( $form_id ) {
 
 		<div id="give-forgot-password-wrap-<?php echo $form_id; ?>" class="give_login_forgot_password">
 			 <span class="give-forgot-password ">
-				 <a href="<?php echo wp_lostpassword_url() ?>" target="_blank"><?php esc_html_e( 'Reset Password' ) ?></a>
+				 <a href="<?php echo wp_lostpassword_url() ?>" target="_blank"><?php esc_html_e( 'Reset Password', 'give' ) ?></a>
 			 </span>
 		</div>
 
@@ -1396,7 +1396,7 @@ function give_terms_agreement( $form_id ) {
 	}
 }
 
-add_action( 'give_purchase_form_before_submit', 'give_terms_agreement', 10, 1 );
+add_action( 'give_donation_form_before_submit', 'give_terms_agreement', 10, 1 );
 
 /**
  * Checkout Final Total.
@@ -1429,7 +1429,7 @@ function give_checkout_final_total( $form_id ) {
 	<?php
 }
 
-add_action( 'give_purchase_form_before_submit', 'give_checkout_final_total', 999 );
+add_action( 'give_donation_form_before_submit', 'give_checkout_final_total', 999 );
 
 /**
  * Renders the Checkout Submit section.
@@ -1466,7 +1466,7 @@ function give_checkout_submit( $form_id ) {
 	<?php
 }
 
-add_action( 'give_purchase_form_after_cc_form', 'give_checkout_submit', 9999 );
+add_action( 'give_donation_form_after_cc_form', 'give_checkout_submit', 9999 );
 
 /**
  * Give Checkout Button.

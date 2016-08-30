@@ -1586,7 +1586,7 @@ function give_get_payment_note_html( $note, $payment_id = 0 ) {
 		$user = esc_html__( 'System', 'give' );
 	}
 
-	$date_format = get_option( 'date_format' ) . ', ' . get_option( 'time_format' );
+	$date_format = give_date_format() . ', ' . get_option( 'time_format' );
 
 	$delete_note_url = wp_nonce_url( add_query_arg( array(
 		'give-action' => 'delete_payment_note',

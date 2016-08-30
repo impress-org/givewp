@@ -42,8 +42,8 @@ function give_generate_pdf( $data ) {
 		sprintf(
 		/* translators: 1: start date 2: end date */
 			esc_html__( '%1$s to %2$s', 'give' ),
-			date_i18n( get_option( 'date_format' ), mktime( 0, 0, 0, 1, 1, date( 'Y' ) ) ),
-			date_i18n( get_option( 'date_format' ) )
+			date_i18n( give_date_format(), mktime( 0, 0, 0, 1, 1, date( 'Y' ) ) ),
+			date_i18n( give_date_format() )
 		)
 	);
 

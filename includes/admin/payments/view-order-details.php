@@ -377,7 +377,7 @@ $payment_mode   = $payment->mode;
 										<div class="column">
 											<p>
 												<strong><?php esc_html_e( 'Donation Date:', 'give' ); ?></strong><br>
-												<?php echo date_i18n( get_option( 'date_format' ), $payment_date ); ?>
+												<?php echo date_i18n( give_date_format(), $payment_date ); ?>
 											</p>
 											<p>
 												<strong><?php esc_html_e( 'Donation Level:', 'give' ); ?></strong><br>
@@ -498,7 +498,7 @@ $payment_mode   = $payment->mode;
 											</p>
 											<p>
 												<strong><?php esc_html_e( 'Donor Since:', 'give' ); ?></strong><br>
-												<?php echo date_i18n( get_option( 'date_format' ), strtotime( $customer->date_created ) ) ?>
+												<?php echo date_i18n( give_date_format(), strtotime( $customer->date_created ) ) ?>
 											</p>
 										</div>
 										<div class="column">

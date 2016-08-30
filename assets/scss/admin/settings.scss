@@ -222,7 +222,142 @@ a.give-delete {
 
 }
 
-// Tables
+/* Addon grid design */
+#licenses .cmb2-wrap{
+  margin-top: 20px;
+
+  .cmb-row {
+    display: block;
+    position: relative;
+    float: left;
+    width: 30.5%;
+    background: white;
+    margin-right: 9px!important;
+    margin-bottom: 10px !important;
+    min-height: 220px;
+    border: 1px solid #ccc;
+  }
+
+  // Common css for cmb-th and cmb-td.
+  .cmb-row > div {
+    display: block;
+    width: auto;
+    padding: 0;
+    float: none;
+  }
+
+  .cmb-th {
+    background: #f9f9f9;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 20px;
+
+    label{
+      margin: 0 0 0 10px;
+      padding: 10px 0;
+    }
+  }
+
+  .cmb-td {
+    > div {
+      margin: 0 10px;
+
+      input[type="text"]{
+        width: 100%;
+      }
+
+      input[type="submit"]{
+        margin: 15px 0 10px 0;
+      }
+    }
+  }
+
+  .give-license-notice {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: whitesmoke;
+    border-top: 1px solid #ececec;
+    min-height: 65px;
+
+    p {
+      padding: 0 10px;
+    }
+
+    a{
+      color: #444;
+      cursor: pointer;
+    }
+
+    a:hover{
+      text-decoration: none;
+
+    }
+  }
+
+  .give-license-notice.give-license-expires-soon {
+    background-color: #00a0d2;
+    color: #fff;
+    border-color: #00a0d2;
+  }
+
+  .give-license-notice.give-license-expired {
+    background-color: #e24e4e;
+    color: #fff;
+    border-color: #e24e4e;
+  }
+
+  .give-license-notice.give-license-error,
+  .give-license-notice.give-license-no_activations_left,
+  .give-license-notice.give-license-missing,
+  .give-license-notice.give-license-invalid,
+  .give-license-notice.give-license-site_inactive,
+  .give-license-notice.give-license-item_name_mismatch {
+    background-color: #ffebcd;
+    border-color: #ffebcd;
+  }
+
+  .give-license-notice.give-license-lifetime-notice{
+    background-color: #46b450;
+    border-color: #46b450;
+  }
+
+  .give-license-notice.give-license-lifetime-notice,
+  .give-license-notice.give-license-expires-soon,
+  .give-license-notice.give-license-expired {
+    color: #fff;
+
+    a{
+      color: #fff;
+    }
+  }
+
+  .give-license-notice.give-license-expires-soon a:hover,
+  .give-license-notice.give-license-expired a:hover {
+    text-decoration: none;
+  }
+}
+
+/* Responsive fixes: Addon grid design */
+@media screen and ( max-width: 1100px ) {
+  #licenses .cmb2-wrap{
+    .cmb-row{
+      width:45%;
+      min-height: 230px;
+    }
+  }
+}
+
+@media screen and ( max-width: 600px ){
+  #licenses .cmb2-wrap{
+    .cmb-row{
+      width:100%;
+      max-width: 320px;
+    }
+  }
+}
+
+/* Tables */
 
 .give-table {
 

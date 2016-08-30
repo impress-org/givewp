@@ -95,7 +95,7 @@ do_action( 'give_donation_receipt_before_table', $payment, $give_receipt_args );
 		<?php if ( filter_var( $give_receipt_args['date'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
 			<tr>
 				<td scope="row"><strong><?php esc_html_e( 'Date:', 'give' ); ?></strong></td>
-				<td><?php echo date_i18n( get_option( 'date_format' ), strtotime( $meta['date'] ) ); ?></td>
+				<td><?php echo date_i18n( give_date_format(), strtotime( $meta['date'] ) ); ?></td>
 			</tr>
 		<?php endif; ?>
 

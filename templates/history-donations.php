@@ -62,7 +62,7 @@ if ( $donations ) : ?>
 				do_action( 'give_donation_history_row_start', $post->ID, $donation_data );
 				?>
 				<td class="give_purchase_id">#<?php echo give_get_payment_number( $post->ID ); ?></td>
-				<td class="give_purchase_date"><?php echo date_i18n( get_option( 'date_format' ), strtotime( get_post_field( 'post_date', $post->ID ) ) ); ?></td>
+				<td class="give_purchase_date"><?php echo date_i18n( give_date_format(), strtotime( get_post_field( 'post_date', $post->ID ) ) ); ?></td>
 				<td class="give_purchase_amount">
 					<span class="give_purchase_amount"><?php echo give_currency_filter( give_format_amount( give_get_payment_amount( $post->ID ) ) ); ?></span>
 				</td>
