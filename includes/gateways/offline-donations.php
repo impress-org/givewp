@@ -58,7 +58,7 @@ function give_offline_payment_cc_form( $form_id ) {
 		<?php
 		$settings_url         = admin_url( 'post.php?post=' . $form_id . '&action=edit&message=1' );
 		/* translators: %s: form settings url */
-		$offline_instructions = ! empty( $offline_instructions ) ? $offline_instructions : sprintf( esc_attr__( 'Please enter offline donation instructions in <a href="%s">this form\'s settings</a>.', 'give' ), $settings_url );
+		$offline_instructions = ! empty( $offline_instructions ) ? $offline_instructions : sprintf( __( 'Please enter offline donation instructions in <a href="%s">this form\'s settings</a>.', 'give' ), $settings_url );
 		echo wpautop( stripslashes( $offline_instructions ) );
 		?>
 	</fieldset>
