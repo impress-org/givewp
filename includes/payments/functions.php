@@ -1005,7 +1005,7 @@ function give_is_guest_payment( $payment_id ) {
 	$payment_user_id  = give_get_payment_user_id( $payment_id );
 	$is_guest_payment = ! empty( $payment_user_id ) && $payment_user_id > 0 ? false : true;
 
-	return (bool) apply_filters( 'give_is_guest_payment', $is_guest_payment, $payment_id );
+	return (bool) apply_filters( 'give_is_guest_donation', $is_guest_payment, $payment_id );
 }
 
 /**

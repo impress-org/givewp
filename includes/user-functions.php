@@ -79,7 +79,7 @@ function give_get_users_purchases( $user = 0, $number = 20, $pagination = false,
 
 	}
 
-	$purchases = give_get_payments( apply_filters( 'give_get_users_purchases_args', $args ) );
+	$purchases = give_get_payments( apply_filters( 'give_get_users_donations_args', $args ) );
 
 	// No donations
 	if ( ! $purchases ) {
