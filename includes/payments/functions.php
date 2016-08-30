@@ -281,11 +281,11 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
 	/**
 	 * Fires before deleting payment.
 	 *
-	 * @since 1.0
+	 * @since 1.7
 	 *
 	 * @param int $payment_id Payment ID.
 	 */
-	do_action( 'give_payment_delete', $payment_id );
+	do_action( 'give_donation_delete', $payment_id );
 
 	if ( $customer->id && $update_customer ) {
 
@@ -312,11 +312,11 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
 	/**
 	 * Fires after payment deleted.
 	 *
-	 * @since 1.0
+	 * @since 1.7
 	 *
 	 * @param int $payment_id Payment ID.
 	 */
-	do_action( 'give_payment_deleted', $payment_id );
+	do_action( 'give_donation_deleted', $payment_id );
 }
 
 /**
@@ -622,7 +622,7 @@ function give_get_payment_statuses() {
 		'revoked'     => esc_html__( 'Revoked', 'give' )
 	);
 
-	return apply_filters( 'give_payment_statuses', $payment_statuses );
+	return apply_filters( 'give_donation_statuses', $payment_statuses );
 }
 
 /**
@@ -1005,7 +1005,7 @@ function give_is_guest_payment( $payment_id ) {
 	$payment_user_id  = give_get_payment_user_id( $payment_id );
 	$is_guest_payment = ! empty( $payment_user_id ) && $payment_user_id > 0 ? false : true;
 
-	return (bool) apply_filters( 'give_is_guest_payment', $is_guest_payment, $payment_id );
+	return (bool) apply_filters( 'give_is_guest_donation', $is_guest_payment, $payment_id );
 }
 
 /**
@@ -1110,7 +1110,7 @@ function give_get_payment_currency_code( $payment_id = 0 ) {
 function give_get_payment_currency( $payment_id = 0 ) {
 	$currency = give_get_payment_currency_code( $payment_id );
 
-	return apply_filters( 'give_payment_currency', give_get_currency_name( $currency ), $payment_id );
+	return apply_filters( 'give_donation_currency', give_get_currency_name( $currency ), $payment_id );
 }
 
 /**
@@ -1302,7 +1302,7 @@ function give_get_payment_amount( $payment_id ) {
 
 	$payment = new Give_Payment( $payment_id );
 
-	return apply_filters( 'give_payment_amount', floatval( $payment->total ), $payment_id );
+	return apply_filters( 'give_donation_amount', floatval( $payment->total ), $payment_id );
 }
 
 /**

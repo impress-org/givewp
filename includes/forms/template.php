@@ -151,12 +151,12 @@ function give_get_donation_form( $args = array() ) {
 				/**
 				 * Fires while outputing donation form, for payment gatways fields.
 				 *
-				 * @since 1.0
+				 * @since 1.7
 				 *
 				 * @param int   $form_id The form ID.
 				 * @param array $args    An array of form arguments.
 				 */
-				do_action( 'give_payment_mode_select', $form->ID, $args );
+				do_action( 'give_donation_mode_select', $form->ID, $args );
 
 				/**
 				 * Fires while outputing donation form, after all other fields.
@@ -1252,22 +1252,22 @@ function give_payment_mode_select( $form_id ) {
 	/**
 	 * Fires while selecting payment gateways, before the fields.
 	 *
-	 * @since 1.0
+	 * @since 1.7
 	 *
 	 * @param int $form_id The form ID.
 	 */
-	do_action( 'give_payment_mode_top', $form_id ); ?>
+	do_action( 'give_donation_mode_top', $form_id ); ?>
 
 	<fieldset id="give-payment-mode-select">
 		<?php
 		/**
 		 * Fires while selecting payment gateways, before the wrap div.
 		 *
-		 * @since 1.0
+		 * @since 1.7
 		 *
 		 * @param int $form_id The form ID.
 		 */
-		do_action( 'give_payment_mode_before_gateways_wrap' );
+		do_action( 'give_donation_mode_before_gateways_wrap' );
 		?>
 		<div id="give-payment-mode-wrap">
 			<legend class="give-payment-mode-label"><?php echo apply_filters( 'give_checkout_payment_method_text', esc_html__( 'Select Payment Method', 'give' ) ); ?>
@@ -1277,9 +1277,9 @@ function give_payment_mode_select( $form_id ) {
 			/**
 			 * Fires while selecting payment gateways, befire the gateways list.
 			 *
-			 * @since 1.0
+			 * @since 1.7
 			 */
-			do_action( 'give_payment_mode_before_gateways' )
+			do_action( 'give_donation_mode_before_gateways' )
 			?>
 			<ul id="give-gateway-radio-list">
 				<?php foreach ( $gateways as $gateway_id => $gateway ) :
@@ -1294,20 +1294,20 @@ function give_payment_mode_select( $form_id ) {
 			/**
 			 * Fires while selecting payment gateways, befire the gateways list.
 			 *
-			 * @since 1.0
+			 * @since 1.7
 			 */
-			do_action( 'give_payment_mode_after_gateways' );
+			do_action( 'give_donation_mode_after_gateways' );
 			?>
 		</div>
 		<?php
 		/**
 		 * Fires while selecting payment gateways, after the wrap div.
 		 *
-		 * @since 1.0
+		 * @since 1.7
 		 *
 		 * @param int $form_id The form ID.
 		 */
-		do_action( 'give_payment_mode_after_gateways_wrap' );
+		do_action( 'give_donation_mode_after_gateways_wrap' );
 		?>
 	</fieldset>
 
@@ -1315,11 +1315,11 @@ function give_payment_mode_select( $form_id ) {
 	/**
 	 * Fires while selecting payment gateways, after the fields.
 	 *
-	 * @since 1.0
+	 * @since 1.7
 	 *
 	 * @param int $form_id The form ID.
 	 */
-	do_action( 'give_payment_mode_bottom', $form_id );
+	do_action( 'give_donation_mode_bottom', $form_id );
 	?>
 
 	<div id="give_purchase_form_wrap">
@@ -1658,8 +1658,8 @@ function give_filter_success_page_content( $content ) {
 	global $give_options;
 
 	if ( isset( $give_options['success_page'] ) && isset( $_GET['payment-confirmation'] ) && is_page( $give_options['success_page'] ) ) {
-		if ( has_filter( 'give_payment_confirm_' . $_GET['payment-confirmation'] ) ) {
-			$content = apply_filters( 'give_payment_confirm_' . $_GET['payment-confirmation'], $content );
+		if ( has_filter( 'give_donation_confirm_' . $_GET['payment-confirmation'] ) ) {
+			$content = apply_filters( 'give_donation_confirm_' . $_GET['payment-confirmation'], $content );
 		}
 	}
 
@@ -1710,7 +1710,7 @@ function give_members_only_form( $final_output, $args ) {
 	//Logged in only and Register / Login set to none
 	if ( give_logged_in_only( $form_id ) && give_show_login_register_option( $form_id ) == 'none' ) {
 
-		$final_output = give_output_error( esc_html__( 'Please login in order to complete your donation.', 'give' ), false );
+		$final_output = give_output_error( esc_html__( 'Please log in in order to complete your donation.', 'give' ), false );
 
 		return apply_filters( 'give_members_only_output', $final_output, $form_id );
 

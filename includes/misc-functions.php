@@ -761,7 +761,8 @@ add_filter( 'nav_menu_meta_box_object', 'modify_nav_menu_meta_box_object' );
 /**
  * Array_column backup usage
  *
- * @desctipiont: This file is part of the array_column library
+ * This file is part of the array_column library.
+ *
  * @since      : 1.3.0.1
  *
  * @copyright  Copyright (c) Ben Ramsey (http://benramsey.com)
@@ -878,7 +879,7 @@ if ( ! function_exists( 'array_column' ) ) {
 }
 
 /**
- * Determines the receipt visibility status
+ * Determines the receipt visibility status.
  *
  * @since 1.3.2
  *

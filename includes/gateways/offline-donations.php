@@ -28,7 +28,7 @@ function give_offline_register_gateway( $gateways ) {
 	return $gateways;
 }
 
-add_filter( 'give_payment_gateways', 'give_offline_register_gateway', 1 );
+add_filter( 'give_donation_gateways', 'give_offline_register_gateway', 1 );
 
 
 /**

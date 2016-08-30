@@ -174,7 +174,7 @@ class Give_Payments_Query extends Give_Stats {
 				$payment_id = get_post()->ID;
 				$payment    = new Give_Payment( $payment_id );
 
-				$this->payments[] = apply_filters( 'give_payment', $payment, $payment_id, $this );
+				$this->payments[] = apply_filters( 'give_donation', $payment, $payment_id, $this );
 			}
 
 			wp_reset_postdata();
