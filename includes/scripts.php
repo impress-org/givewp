@@ -46,14 +46,26 @@ function give_load_scripts() {
 		'general_loading'     => esc_html__( 'Loading...', 'give' ),
 		'purchase_loading'    => esc_html__( 'Please Wait...', 'give' ),
 		'number_decimals'     => give_get_price_decimals(),
-		'give_version'        => GIVE_VERSION
+		'give_version'        => GIVE_VERSION,
+		'form_translation'    => apply_filters(
+			'give_form_translation_js',
+			array(
+				// Field name               Validation message.
+				'payment-mode'           => esc_html__( 'Please select payment mode.', 'give' ),
+				'give_first'             => esc_html__( 'Please enter your first name.', 'give' ),
+				'give_email'             => esc_html__( 'Please enter a valid email address.', 'give' ),
+				'give_user_login'        => esc_html__( 'Invalid username. Only lowercase letters (a-z) and numbers are allowed.', 'give' ),
+				'give_user_pass'         => esc_html__( 'Enter a password.', 'give' ),
+				'give_user_pass_confirm' => esc_html__( 'Enter a confirm password.', 'give' ),
+			)
+		)
 	) );
 	$localize_give_ajax     = apply_filters( 'give_global_ajax_vars', array(
 		'ajaxurl'         => give_get_ajax_url(),
 		'loading'         => esc_html__( 'Loading', 'give' ),
 		// General loading message
 		'select_option'   => esc_html__( 'Please select an option', 'give' ),
-		// Variable pricing error with multi-purchase option enabled
+		// Variable pricing error with multi-donation option enabled
 		'default_gateway' => give_get_default_gateway( null ),
 		'permalinks'      => get_option( 'permalink_structure' ) ? '1' : '0',
 		'number_decimals' => give_get_price_decimals()
@@ -267,7 +279,7 @@ function give_load_admin_scripts( $hook ) {
 		'give_version'            => GIVE_VERSION,
 		'thousands_separator'     => $thousand_separator,
 		'decimal_separator'       => $decimal_separator,
-		'quick_edit_warning'      => esc_html__( 'Sorry, not available for variable priced forms.', 'give' ),
+		'quick_edit_warning'      => esc_html__( 'Not available for variable priced forms.', 'give' ),
 		'delete_payment'          => esc_html__( 'Are you sure you wish to delete this payment?', 'give' ),
 		'delete_payment_note'     => esc_html__( 'Are you sure you wish to delete this note?', 'give' ),
 		'revoke_api_key'          => esc_html__( 'Are you sure you wish to revoke this API key?', 'give' ),
@@ -349,3 +361,36 @@ function give_admin_icon() {
 }
 
 add_action( 'admin_head', 'give_admin_icon' );
+
+/**
+ * Admin js code
+ *
+ * This code helps to hide license notices for 24 hour if admin user dismissed notice.
+ *
+ * @since 1.7
+ *
+ * @global $post_type
+ * @global $wp_version
+ *
+ * @return void
+ */
+function give_admin_hide_notice_shortly_js() {
+	?>
+    <script>
+        jQuery(document).ready(function($){
+           $('.give-license-notice').on( 'click', 'button.notice-dismiss', function(e){
+               e.preventDefault();
+
+               var parent = $(this).parents('.give-license-notice'),
+                   dismiss_notice_url = parent.data('dismiss-notice-shortly');
+
+               if( dismiss_notice_url ) {
+                   window.location.assign( dismiss_notice_url );
+               }
+           });
+        });
+    </script>
+	<?php
+}
+
+add_action( 'admin_head', 'give_admin_hide_notice_shortly_js' );

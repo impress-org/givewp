@@ -168,7 +168,7 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 			$this->delete_data( 'give_recount_income_total' );
 			$this->delete_data( 'give_temp_recount_income' );
 			$this->done    = true;
-			$this->message = esc_html__( 'Give income successfully recounted.', 'give' );
+			$this->message = esc_html__( 'Income stats have been successfully recounted.', 'give' );
 
 			return false;
 		}

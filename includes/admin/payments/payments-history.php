@@ -22,7 +22,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @return      void
 */
 function give_payment_history_page() {
-	global $give_options;
 
 	$give_payment = get_post_type_object( 'give_payment' );
 
@@ -41,9 +40,9 @@ function give_payment_history_page() {
 		/**
 		 * Fires in payment history screen, at the top of the page.
 		 *
-		 * @since 1.0
+		 * @since 1.7
 		 */
-		do_action( 'give_payments_page_top' );
+		do_action( 'give_donations_page_top' );
 		?>
 
 		<form id="give-payments-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ); ?>">
@@ -58,9 +57,9 @@ function give_payment_history_page() {
 		/**
 		 * Fires in payment history screen, at the bottom of the page.
 		 *
-		 * @since 1.0
+		 * @since 1.7
 		 */
-		do_action( 'give_payments_page_bottom' );
+		do_action( 'give_donations_page_bottom' );
 		?>
 
 	</div>
@@ -97,7 +96,7 @@ function give_view_order_details_title( $admin_title, $title ) {
 		case 'edit-payment' :
 			$title = sprintf(
 				/* translators: %s: admin title */
-				esc_html__( 'Edit Payment - %s', 'give' ),
+				esc_html__( 'Edit Donation - %s', 'give' ),
 				$admin_title
 			);
 			break;

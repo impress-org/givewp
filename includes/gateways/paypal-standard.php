@@ -183,6 +183,11 @@ add_action( 'give_gateway_paypal', 'give_process_paypal_purchase' );
 function give_listen_for_paypal_ipn() {
 	// Regular PayPal IPN
 	if ( isset( $_GET['give-listener'] ) && $_GET['give-listener'] == 'IPN' ) {
+		/**
+		 * Fires while verifying PayPal IPN
+		 *
+		 * @since 1.0
+		 */
 		do_action( 'give_verify_paypal_ipn' );
 	}
 }
@@ -313,12 +318,31 @@ function give_process_paypal_ipn() {
 	$encoded_data_array = wp_parse_args( $encoded_data_array, $defaults );
 
 	$payment_id = isset( $encoded_data_array['custom'] ) ? absint( $encoded_data_array['custom'] ) : 0;
+	$txn_type = $encoded_data_array['txn_type'];
 
-	if ( has_action( 'give_paypal_' . $encoded_data_array['txn_type'] ) ) {
-		// Allow PayPal IPN types to be processed separately
-		do_action( 'give_paypal_' . $encoded_data_array['txn_type'], $encoded_data_array, $payment_id );
+	if ( has_action( 'give_paypal_' . $txn_type ) ) {
+		/**
+		 * Fires while processing PayPal IPN $txn_type.
+		 *
+		 * Allow PayPal IPN types to be processed separately.
+		 *
+		 * @since 1.0
+		 *
+		 * @param array $encoded_data_array Encoded data.
+		 * @param int   $payment_id         Payment id.
+		 */
+		do_action( "give_paypal_{$txn_type}", $encoded_data_array, $payment_id );
 	} else {
-		// Fallback to web accept just in case the txn_type isn't present
+		/**
+		 * Fires while process PayPal IPN.
+		 *
+		 * Fallback to web accept just in case the txn_type isn't present.
+		 *
+		 * @since 1.0
+		 *
+		 * @param array $encoded_data_array Encoded data.
+		 * @param int   $payment_id         Payment id.
+		 */
 		do_action( 'give_paypal_web_accept', $encoded_data_array, $payment_id );
 	}
 	exit;
@@ -396,7 +420,7 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 
 	if ( ! give_get_payment_user_email( $payment_id ) ) {
 
-		// No email associated with purchase, so store from PayPal
+		// No email associated with the donation, so store from PayPal
 		give_update_payment_meta( $payment_id, '_give_payment_user_email', $data['payer_email'] );
 
 		// Setup and store the donors's details
@@ -431,7 +455,7 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 			return; // Only complete payments once
 		}
 
-		// Retrieve the total purchase amount (before PayPal)
+		// Retrieve the total donation amount (before PayPal)
 		$payment_amount = give_get_payment_amount( $payment_id );
 
 		if ( number_format( (float) $paypal_amount, 2 ) < number_format( (float) $payment_amount, 2 ) ) {
@@ -451,18 +475,18 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 			return;
 		}
 		if ( $purchase_key != give_get_payment_key( $payment_id ) ) {
-			// Purchase keys don't match
+			// Keys don't match
 			give_record_gateway_error(
 				esc_html__( 'IPN Error', 'give' ),
 				sprintf(
 					/* translators: %s: Paypal IPN response */
-					esc_html__( 'Invalid purchase key in IPN response. IPN data: %s', 'give' ),
+					esc_html__( 'Invalid key in IPN response. IPN data: %s', 'give' ),
 					json_encode( $data )
 				),
 				$payment_id
 			);
 			give_update_payment_status( $payment_id, 'failed' );
-			give_insert_payment_note( $payment_id, esc_html__( 'Payment failed due to invalid purchase key in PayPal IPN.', 'give' ) );
+			give_insert_payment_note( $payment_id, esc_html__( 'Payment failed due to invalid key in PayPal IPN.', 'give' ) );
 
 			return;
 		}
@@ -596,9 +620,10 @@ function give_process_paypal_refund( $data, $payment_id = 0 ) {
 	give_insert_payment_note(
 		$payment_id,
 		sprintf(
-			/* translators: %s: Paypal parent transaction ID */
-			esc_html__( 'PayPal Payment #%s Refunded for reason: %s', 'give' ),
-			$data['parent_txn_id'], $data['reason_code']
+			/* translators: 1: Paypal parent transaction ID 2. Paypal reason code */
+			esc_html__( 'PayPal Payment #%1$s Refunded for reason: %2$s', 'give' ),
+			$data['parent_txn_id'],
+			$data['reason_code']
 		)
 	);
 	give_insert_payment_note(

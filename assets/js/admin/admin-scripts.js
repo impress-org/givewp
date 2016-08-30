@@ -76,9 +76,9 @@ jQuery.noConflict();
 
 
     /**
-     * Edit payment screen JS
+     * Edit donation screen JS
      */
-    var Give_Edit_Payment = {
+    var Give_Edit_Donation = {
 
         init: function () {
             this.edit_address();
@@ -222,7 +222,7 @@ jQuery.noConflict();
         variable_price_list: function () {
             $('select[name="forms"]').chosen().change(function () {
                 var give_form_id,
-                    variable_prices_html_container = $(this).closest('td').next('td');
+                    variable_prices_html_container = $('.give-donation-level');
 
                 // Check for form ID.
                 if (!( give_form_id = $(this).val() )) {
@@ -566,7 +566,7 @@ jQuery.noConflict();
     };
 
     /**
-     * Customer management screen JS
+     * Donor management screen JS
      */
     var Give_Customer = {
 
@@ -742,7 +742,7 @@ jQuery.noConflict();
         enable_admin_datepicker();
         handle_status_change();
         setup_chosen_give_selects();
-        Give_Edit_Payment.init();
+        Give_Edit_Donation.init();
         Give_Settings.init();
         Give_Reports.init();
         Give_Customer.init();
@@ -899,6 +899,46 @@ jQuery.noConflict();
 
             // Update format price string in input field.
             $(this).val(price_string);
+        });
+
+
+        /**
+         * Show/Hide License notice
+         */
+        var $notices_container = $('.give-license-notice');
+
+        // Hide license notice for 24 hours if usr already read notice.
+        if( $notices_container.length ){
+            $.each( $notices_container, function( index, item ){
+                var notice_id = $(this).data('notice-id'),
+                    cookie_name = 'give_hide_license_notice_' + notice_id,
+                    hide_notice_cookie = document.cookie.replace( new RegExp( "(?:^|.*;\\s*)" + cookie_name.replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*((?:[^;](?!;))*[^;]?).*" ), "$1" );
+
+                // Do not show license notice.
+                if ( 'true' === hide_notice_cookie ) {
+                    $(this).remove();
+                }
+            });
+        }
+
+        // Add click event to license notice dismiss button.
+        $('.give-license-notice').on( 'click', 'button.notice-dismiss', function(e){
+            e.preventDefault();
+
+            var notice_id = $(this).closest('div.give-license-notice').data('notice-id'),
+                cookie_name = 'give_hide_license_notice_' + notice_id,
+                hide_notice_cookie = document.cookie.replace( '/(?:(?:^|.*;\s*)' + notice_id + '\s*\=\s*([^;]*).*$)|^.*$/', '$1' ),
+                date = new Date( Date.now() );
+
+            if( true === hide_notice_cookie ) {
+                return false;
+            }
+
+            // Set expire date to 24 hour.
+            date.setDate( date.getDate() + 1 );
+            document.cookie = cookie_name + '=true; expires=' + date.toUTCString();
+
+            return false;
         });
 
     });

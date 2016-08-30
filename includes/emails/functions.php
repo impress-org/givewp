@@ -31,10 +31,22 @@ function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 	$payment_data = give_get_payment_meta( $payment_id );
 
 	$from_name = give_get_option( 'from_name', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) );
-	$from_name = apply_filters( 'give_purchase_from_name', $from_name, $payment_id, $payment_data );
+
+	/**
+	 * Filters the from name.
+	 *
+	 * @since 1.7
+	 */
+	$from_name = apply_filters( 'give_donation_from_name', $from_name, $payment_id, $payment_data );
 
 	$from_email = give_get_option( 'from_email', get_bloginfo( 'admin_email' ) );
-	$from_email = apply_filters( 'give_purchase_from_address', $from_email, $payment_id, $payment_data );
+
+	/**
+	 * Filters the from email.
+	 *
+	 * @since 1.7
+	 */
+	$from_email = apply_filters( 'give_donation_from_address', $from_email, $payment_id, $payment_data );
 
 	$to_email = give_get_payment_user_email( $payment_id );
 
@@ -58,6 +70,16 @@ function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 	$emails->send( $to_email, $subject, $message, $attachments );
 
 	if ( $admin_notice && ! give_admin_notices_disabled( $payment_id ) ) {
+		/**
+		 * Fires in the email donation receipt.
+		 *
+		 * When admin notices are not disabled, you can add new sale notices.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int   $payment_id   Payment id.
+		 * @param mixed $payment_data Payment meta data.
+		 */
 		do_action( 'give_admin_sale_notice', $payment_id, $payment_data );
 	}
 }
@@ -72,10 +94,22 @@ function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 function give_email_test_donation_receipt() {
 
 	$from_name = give_get_option( 'from_name', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) );
-	$from_name = apply_filters( 'give_purchase_from_name', $from_name, 0, array() );
+
+	/**
+	 * Filters the from name.
+	 *
+	 * @since 1.7
+	 */
+	$from_name = apply_filters( 'give_donation_from_name', $from_name, 0, array() );
 
 	$from_email = give_get_option( 'from_email', get_bloginfo( 'admin_email' ) );
-	$from_email = apply_filters( 'give_purchase_from_address', $from_email, 0, array() );
+
+	/**
+	 * Filters the from email.
+	 *
+	 * @since 1.7
+	 */
+	$from_email = apply_filters( 'give_donation_from_address', $from_email, 0, array() );
 
 	$subject = give_get_option( 'donation_subject', esc_html__( 'Donation Receipt', 'give' ) );
 	$subject = apply_filters( 'give_donation_subject', wp_strip_all_tags( $subject ), 0 );
@@ -120,10 +154,22 @@ function give_admin_email_notice( $payment_id = 0, $payment_data = array() ) {
 	}
 
 	$from_name = give_get_option( 'from_name', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) );
-	$from_name = apply_filters( 'give_purchase_from_name', $from_name, $payment_id, $payment_data );
+
+	/**
+	 * Filters the from name.
+	 *
+	 * @since 1.7
+	 */
+	$from_name = apply_filters( 'give_donation_from_name', $from_name, $payment_id, $payment_data );
 
 	$from_email = give_get_option( 'from_email', get_bloginfo( 'admin_email' ) );
-	$from_email = apply_filters( 'give_purchase_from_address', $from_email, $payment_id, $payment_data );
+
+	/**
+	 * Filters the from email.
+	 *
+	 * @since 1.7
+	 */
+	$from_email = apply_filters( 'give_donation_from_address', $from_email, $payment_id, $payment_data );
 
 	/* translators: %s: payment id */
 	$subject = give_get_option( 'donation_notification_subject', sprintf( esc_html__( 'New Donation - Payment #%s', 'give' ), $payment_id ) );
@@ -195,7 +241,7 @@ function give_admin_notices_disabled( $payment_id = 0 ) {
 function give_get_default_donation_notification_email() {
 
 	$default_email_body  = esc_html__( 'Hi there,', 'give' ) . "\n\n";
-	$default_email_body .= esc_html__( 'This email is to inform you that a new donation has been made on your website: ', 'give' ) . ' <a href="' . get_bloginfo( 'url' ) . '" target="_blank">' . get_bloginfo( 'url' ) . '</a>' . ".\n\n";
+	$default_email_body .= esc_html__( 'This email is to inform you that a new donation has been made on your website:', 'give' ) . ' <a href="' . get_bloginfo( 'url' ) . '" target="_blank">' . get_bloginfo( 'url' ) . '</a>' . ".\n\n";
 	$default_email_body .= '<strong>' . esc_html__( 'Donor:', 'give' ) . '</strong> {name}' . "\n";
 	$default_email_body .= '<strong>' . esc_html__( 'Donation:', 'give' ) . '</strong> {donation}' . "\n";
 	$default_email_body .= '<strong>' . esc_html__( 'Amount:', 'give' ) . '</strong> {price}' . "\n";

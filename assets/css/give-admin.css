@@ -1186,10 +1186,6 @@ body.give_forms_page_give-reports table.export-options-table span#give-start-wra
 .gateways-report-tablenav .actions.bulkactions {
   padding-right: 0; }
 
-.widefat .column-name, .widefat .column-label {
-  font-size: 14px;
-  font-weight: bold; }
-
 table.give-table td {
   vertical-align: middle; }
 
@@ -1453,6 +1449,95 @@ a.give-delete {
   outline: none;
   background-size: 16px; }
 
+/* Addon grid design */
+#licenses .cmb2-wrap {
+  margin-top: 20px; }
+  #licenses .cmb2-wrap .cmb-row {
+    display: block;
+    position: relative;
+    float: left;
+    width: 30.5%;
+    background: white;
+    margin-right: 9px !important;
+    margin-bottom: 10px !important;
+    min-height: 220px;
+    border: 1px solid #ccc; }
+  #licenses .cmb2-wrap .cmb-row > div {
+    display: block;
+    width: auto;
+    padding: 0;
+    float: none; }
+  #licenses .cmb2-wrap .cmb-th {
+    background: #f9f9f9;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 20px; }
+    #licenses .cmb2-wrap .cmb-th label {
+      margin: 0 0 0 10px;
+      padding: 10px 0; }
+  #licenses .cmb2-wrap .cmb-td > div {
+    margin: 0 10px; }
+    #licenses .cmb2-wrap .cmb-td > div input[type="text"] {
+      width: 100%; }
+    #licenses .cmb2-wrap .cmb-td > div input[type="submit"] {
+      margin: 15px 0 10px 0; }
+  #licenses .cmb2-wrap .give-license-notice {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: whitesmoke;
+    border-top: 1px solid #ececec;
+    min-height: 65px; }
+    #licenses .cmb2-wrap .give-license-notice p {
+      padding: 0 10px; }
+    #licenses .cmb2-wrap .give-license-notice a {
+      color: #444;
+      cursor: pointer; }
+    #licenses .cmb2-wrap .give-license-notice a:hover {
+      text-decoration: none; }
+  #licenses .cmb2-wrap .give-license-notice.give-license-expires-soon {
+    background-color: #00a0d2;
+    color: #fff;
+    border-color: #00a0d2; }
+  #licenses .cmb2-wrap .give-license-notice.give-license-expired {
+    background-color: #e24e4e;
+    color: #fff;
+    border-color: #e24e4e; }
+  #licenses .cmb2-wrap .give-license-notice.give-license-error,
+  #licenses .cmb2-wrap .give-license-notice.give-license-no_activations_left,
+  #licenses .cmb2-wrap .give-license-notice.give-license-missing,
+  #licenses .cmb2-wrap .give-license-notice.give-license-invalid,
+  #licenses .cmb2-wrap .give-license-notice.give-license-site_inactive,
+  #licenses .cmb2-wrap .give-license-notice.give-license-item_name_mismatch {
+    background-color: #ffebcd;
+    border-color: #ffebcd; }
+  #licenses .cmb2-wrap .give-license-notice.give-license-lifetime-notice {
+    background-color: #46b450;
+    border-color: #46b450; }
+  #licenses .cmb2-wrap .give-license-notice.give-license-lifetime-notice,
+  #licenses .cmb2-wrap .give-license-notice.give-license-expires-soon,
+  #licenses .cmb2-wrap .give-license-notice.give-license-expired {
+    color: #fff; }
+    #licenses .cmb2-wrap .give-license-notice.give-license-lifetime-notice a,
+    #licenses .cmb2-wrap .give-license-notice.give-license-expires-soon a,
+    #licenses .cmb2-wrap .give-license-notice.give-license-expired a {
+      color: #fff; }
+  #licenses .cmb2-wrap .give-license-notice.give-license-expires-soon a:hover,
+  #licenses .cmb2-wrap .give-license-notice.give-license-expired a:hover {
+    text-decoration: none; }
+
+/* Responsive fixes: Addon grid design */
+@media screen and (max-width: 1100px) {
+  #licenses .cmb2-wrap .cmb-row {
+    width: 45%;
+    min-height: 230px; } }
+
+@media screen and (max-width: 600px) {
+  #licenses .cmb2-wrap .cmb-row {
+    width: 100%;
+    max-width: 320px; } }
+
+/* Tables */
 .give-table thead th {
   padding: 8px 10px !important; }
 
@@ -1714,9 +1799,6 @@ Responsiveness
   color: #666;
   font-weight: 600; }
 
-#give-donation-overview .inside {
-  padding: 12px; }
-
 input.give-price-field {
   width: 80px;
   padding: 3px 5px; }
@@ -1761,9 +1843,8 @@ input.give-price-field {
   .order-data-column input[type="email"] {
     padding: 6px 10px; } }
 
-#give-customer-details .inside {
-  padding-top: 15px;
-  padding-bottom: 15px; }
+#give-donor-details .inside, #give-donation-overview .inside {
+  margin-top: 0; }
 
 .give_forms_page_give-payment-history #give-dashboard-widgets-wrap #side-sortables {
   padding-top: 0; }
@@ -1853,10 +1934,13 @@ input.give-price-field {
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
-/* Donors Listing Page Style
--------------------------------------------------------------- */
 .give_forms_page_give-donors .wrap > h2 {
   margin-bottom: 15px; }
+
+.give_forms_page_give-donors .nav-tab-wrapper .dashicons {
+  position: relative;
+  top: 2px;
+  margin: 0 3px 0 0; }
 
 .give_forms_page_give-donors #give-donors-filter {
   position: relative; }
@@ -1867,40 +1951,6 @@ input.give-price-field {
 .give_forms_page_give-donors .tablenav.top {
   float: right;
   clear: none; }
-
-/* Donor Styles
--------------------------------------------------------------- */
-#customer-tab-wrapper-list {
-  border-bottom: 1px solid #ccc;
-  padding: 5px 15px 0 10px; }
-  #customer-tab-wrapper-list li {
-    display: inline-block;
-    margin: 0 0 -1px;
-    padding: 0; }
-    #customer-tab-wrapper-list li a {
-      padding: 6px 10px;
-      font-weight: bold;
-      font-size: 15px;
-      line-height: 24px;
-      border: 1px solid #ccc;
-      border-bottom: none;
-      background: #e4e4e4;
-      color: #555;
-      display: inline-block;
-      text-decoration: none;
-      margin: 0; }
-  #customer-tab-wrapper-list .active {
-    padding: 6px 10px;
-    font-weight: bold;
-    font-size: 15px;
-    line-height: 24px;
-    border: 1px solid #ccc;
-    border-bottom: 1px solid #f1f1f1;
-    background: #f1f1f1;
-    color: #000; }
-  #customer-tab-wrapper-list .dashicons {
-    font-size: 20px;
-    line-height: 26px; }
 
 #give-customer-card-wrapper {
   margin-left: -1px;
@@ -2128,6 +2178,10 @@ input.give-price-field {
     margin-bottom: 0; }
   .mce-sc-popup p.margin-top {
     margin-top: 1em; }
+
+.mce-sc-popup .mce-listbox button {
+  text-overflow: ellipsis;
+  overflow: hidden !important; }
 
 /* =Shortcode button above wp_editor
 -------------------------------------------------------------- */

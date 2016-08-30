@@ -28,7 +28,7 @@ function give_system_info_callback() {
 		return;
 	}
 	?>
-	<textarea readonly="readonly" onclick="this.focus(); this.select()" id="system-info-textarea" name="give-sysinfo" title="<?php esc_attr_e( 'To copy the system info, click below then press Ctrl + C (PC) or Cmd + C (Mac).', 'give' ); ?>"><?php echo give_tools_sysinfo_get(); ?></textarea>
+	<textarea readonly="readonly" onclick="this.focus(); this.select()" id="system-info-textarea" name="give-sysinfo" aria-label="<?php esc_attr_e( 'To copy the system info, click below then press Ctrl + C (PC) or Cmd + C (Mac).', 'give' ); ?>"><?php echo give_tools_sysinfo_get(); ?></textarea>
 	<p class="submit">
 		<input type="hidden" name="give-action" value="download_sysinfo"/>
 		<?php submit_button( esc_html__( 'Download System Info File', 'give' ), 'secondary', 'give-download-sysinfo', false ); ?>
@@ -183,7 +183,7 @@ function give_tools_sysinfo_get() {
 			$default_gateway = give_get_default_gateway( null );
 			$default_gateway = $active_gateways[ $default_gateway ]['admin_label'];
 		} else {
-			$default_gateway = 'Test Payment';
+			$default_gateway = 'Test Donation';
 		}
 
 		$gateways = array();

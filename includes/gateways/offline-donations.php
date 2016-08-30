@@ -28,7 +28,7 @@ function give_offline_register_gateway( $gateways ) {
 	return $gateways;
 }
 
-add_filter( 'give_payment_gateways', 'give_offline_register_gateway', 1 );
+add_filter( 'give_donation_gateways', 'give_offline_register_gateway', 1 );
 
 
 /**
@@ -36,7 +36,7 @@ add_filter( 'give_payment_gateways', 'give_offline_register_gateway', 1 );
  *
  * @since  1.0
  *
- * @param int $form_id
+ * @param  int $form_id Give form id.
  *
  * @return void
  */
@@ -51,9 +51,17 @@ function give_offline_payment_cc_form( $form_id ) {
 		$offline_instructions = $post_offline_instructions;
 	}
 
+	ob_start();
 
-	ob_start(); ?>
-	<?php do_action( 'give_before_offline_info_fields', $form_id ); ?>
+	/**
+	 * Fires before the offline info fields.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int $form_id Give form id.
+	 */
+	do_action( 'give_before_offline_info_fields', $form_id );
+	?>
 	<fieldset id="give_offline_payment_info">
 		<?php
 		$settings_url         = admin_url( 'post.php?post=' . $form_id . '&action=edit&message=1' );
@@ -62,8 +70,16 @@ function give_offline_payment_cc_form( $form_id ) {
 		echo wpautop( stripslashes( $offline_instructions ) );
 		?>
 	</fieldset>
-	<?php do_action( 'give_after_offline_info_fields', $form_id ); ?>
 	<?php
+	/**
+	 * Fires after the offline info fields.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int $form_id Give form id.
+	 */
+	do_action( 'give_after_offline_info_fields', $form_id );
+
 	echo ob_get_clean();
 }
 
@@ -160,10 +176,22 @@ function give_offline_send_donor_instructions( $payment_id = 0 ) {
 	}
 
 	$from_name = give_get_option( 'from_name', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) );
-	$from_name = apply_filters( 'give_purchase_from_name', $from_name, $payment_id, $payment_data );
+
+	/**
+	 * Filters the from name.
+	 *
+	 * @since 1.7
+	 */
+	$from_name = apply_filters( 'give_donation_from_name', $from_name, $payment_id, $payment_data );
 
 	$from_email = give_get_option( 'from_email', get_bloginfo( 'admin_email' ) );
-	$from_email = apply_filters( 'give_purchase_from_address', $from_email, $payment_id, $payment_data );
+
+	/**
+	 * Filters the from email.
+	 *
+	 * @since 1.7
+	 */
+	$from_email = apply_filters( 'give_donation_from_address', $from_email, $payment_id, $payment_data );
 
 	$to_email = give_get_payment_user_email( $payment_id );
 
@@ -224,12 +252,12 @@ function give_offline_send_admin_notice( $payment_id = 0 ) {
 	$admin_subject = apply_filters( 'give_offline_admin_donation_notification_subject', esc_attr__( 'New Pending Donation', 'give' ), $payment_id );
 
 	$admin_message = esc_attr__( 'Dear Admin,', 'give' ) . "\n\n";
-	$admin_message .= esc_attr__( 'An offline donation has been made on your website: ', 'give' ) . get_bloginfo( 'name' ) . ' ';
+	$admin_message .= esc_attr__( 'An offline donation has been made on your website:', 'give' ) . ' ' . get_bloginfo( 'name' ) . ' ';
 	$admin_message .= esc_attr__( 'Hooray! The donation is in a pending status and is awaiting payment. Donation instructions have been emailed to the donor. Once you receive payment, be sure to mark the donation as complete using the link below.', 'give' ) . "\n\n";
 
 
-	$admin_message .= '<strong>' . esc_attr__( 'Donor: ', 'give' ) . '</strong>' . '{fullname}' . "\n";
-	$admin_message .= '<strong>' . esc_attr__( 'Amount: ', 'give' ) . '</strong>' . '{price}' . "\n\n";
+	$admin_message .= '<strong>' . esc_attr__( 'Donor:', 'give' ) . '</strong> {fullname}' . "\n";
+	$admin_message .= '<strong>' . esc_attr__( 'Amount:', 'give' ) . '</strong> {price}' . "\n\n";
 
 	$admin_message .= sprintf(
 		'<a href="%1$s">%2$s</a>',

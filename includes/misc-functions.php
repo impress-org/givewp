@@ -314,9 +314,9 @@ function give_get_ip() {
 
 
 /**
- * Store Purchase Data in Sessions
+ * Store Donation Data in Sessions
  *
- * Used for storing info about purchase
+ * Used for storing info about donation
  *
  * @since 1.0
  *
@@ -330,10 +330,10 @@ function give_set_purchase_session( $purchase_data = array() ) {
 }
 
 /**
- * Retrieve Purchase Data from Session
+ * Retrieve Donation Data from Session
  *
- * Used for retrieving info about purchase
- * after completing a purchase
+ * Used for retrieving info about donation
+ * after completing a donation
  *
  * @since 1.0
  * @uses  Give()->session->get()
@@ -344,9 +344,9 @@ function give_get_purchase_session() {
 }
 
 /**
- * Get Purchase Summary
+ * Get Donation Summary
  *
- * Retrieves the purchase summary.
+ * Retrieves the donation summary.
  *
  * @since       1.0
  *
@@ -507,12 +507,24 @@ function give_is_host( $host = false ) {
  * @uses apply_filters() Calls 'give_deprecated_function_trigger_error' and expects boolean value of true to do
  *   trigger or false to not trigger error.
  *
- * @param string $function The function that was called
- * @param string $version The version of EDD that deprecated the function
- * @param string $replacement Optional. The function that should have been called
- * @param array  $backtrace Optional. Contains stack backtrace of deprecated function
+ * @param string $function    The function that was called.
+ * @param string $version     The plugin version that deprecated the function.
+ * @param string $replacement Optional. The function that should have been called.
+ * @param array  $backtrace   Optional. Contains stack backtrace of deprecated function.
  */
 function _give_deprecated_function( $function, $version, $replacement = null, $backtrace = null ) {
+
+	/**
+	 * Fires while give deprecated function call occurs.
+	 *
+	 * Allow you to hook to deprecated function call.
+	 *
+	 * @since 1.0
+	 *
+	 * @param string $function    The function that was called.
+	 * @param string $replacement Optional. The function that should have been called.
+	 * @param string $version     The plugin version that deprecated the function.
+	 */
 	do_action( 'give_deprecated_function_run', $function, $replacement, $version );
 
 	$show_errors = current_user_can( 'manage_options' );
@@ -609,24 +621,27 @@ function give_get_newsletter() { ?>
 			<table class="form-table give-newsletter-form">
 				<tr valign="middle">
 					<td>
-						<input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL" placeholder="Email Address (required)">
+						<label for="mce-EMAIL" class="screen-reader-text"><?php esc_html_e( 'Email Address (required)', 'give' ); ?></label>
+						<input type="email" name="EMAIL" id="mce-EMAIL" placeholder="<?php esc_attr_e( 'Email Address (required)', 'give' ); ?>" class="required email" value="">
 					</td>
-
-					<td scope="row">
-						<input type="text" value="" placeholder="First Name" name="FNAME" class="" id="mce-FNAME"></td>
-
-					<td scope="row">
-						<input type="text" value="" placeholder="Last Name" name="LNAME" class="" id="mce-LNAME"></td>
-
-					<td scope="row">
-						<input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button">
+					<td>
+						<label for="mce-FNAME" class="screen-reader-text"><?php esc_html_e( 'First Name', 'give' ); ?></label>
+						<input type="text" name="FNAME" id="mce-FNAME" placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" class="" value="">
+					</td>
+					<td>
+						<label for="mce-LNAME" class="screen-reader-text"><?php esc_html_e( 'Last Name', 'give' ); ?></label>
+						<input type="text" name="LNAME" id="mce-LNAME" placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" class="" value="">
+					</td>
+					<td>
+						<input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button" value="<?php esc_attr_e( 'Subscribe', 'give' ); ?>">
 					</td>
 				</tr>
 			</table>
 		</form>
 
 		<div style="position: absolute; left: -5000px;">
-			<input type="text" name="b_3ccb75d68bda4381e2f45794c_12a081aa13" tabindex="-1" value=""></div>
+			<input type="text" name="b_3ccb75d68bda4381e2f45794c_12a081aa13" tabindex="-1" value="">
+		</div>
 
 	</div>
 
@@ -669,13 +684,20 @@ function give_get_newsletter() { ?>
  *
  * Various social media elements to Give
  */
-function give_social_media_elements() { ?>
+function give_social_media_elements() {
+?>
 
 	<div class="social-items-wrap">
 
 		<iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fwpgive&amp;send=false&amp;layout=button_count&amp;width=100&amp;show_faces=false&amp;font&amp;colorscheme=light&amp;action=like&amp;height=21&amp;appId=220596284639969" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>
 
-		<a href="https://twitter.com/givewp" class="twitter-follow-button" data-show-count="false">Follow @givewp</a>
+		<a href="https://twitter.com/givewp" class="twitter-follow-button" data-show-count="false"><?php
+			printf(
+				/* translators: %s: Give twitter user @givewp */
+				esc_html_e( 'Follow %s', 'give' ),
+				'@givewp'
+			);
+		?></a>
 		<script>!function (d, s, id) {
 				var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
 				if (!d.getElementById(id)) {
@@ -684,12 +706,14 @@ function give_social_media_elements() { ?>
 					js.src = p + '://platform.twitter.com/widgets.js';
 					fjs.parentNode.insertBefore(js, fjs);
 				}
-			}(document, 'script', 'twitter-wjs');</script>
+			}(document, 'script', 'twitter-wjs');
+		</script>
+
 	</div>
 	<!--/.social-items-wrap -->
 
-
-<?php }
+<?php
+}
 
 
 /**
@@ -725,7 +749,7 @@ function give_svg_icons( $icon ) {
  */
 function modify_nav_menu_meta_box_object( $post_type ) {
 	if ( isset( $post_type->name ) && $post_type->name == 'give_forms' ) {
-		$post_type->labels->name = 'Donation Forms';
+		$post_type->labels->name = esc_html__( 'Donation Forms', 'give' );
 	}
 
 	return $post_type;

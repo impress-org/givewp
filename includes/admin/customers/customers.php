@@ -125,7 +125,7 @@ function give_render_customer_view( $view, $callbacks ) {
 	}
  
 	if ( ! isset( $_GET['id'] ) || ! is_numeric( $_GET['id'] ) ) {
-		give_set_error( 'give-invalid_customer', esc_html__( 'Invalid Donor ID Provided.', 'give' ) );
+		give_set_error( 'give-invalid_customer', esc_html__( 'Invalid Donor ID.', 'give' ) );
 		$render = false;
 	}
 
@@ -133,7 +133,7 @@ function give_render_customer_view( $view, $callbacks ) {
 	$customer    = new Give_Customer( $customer_id );
 
 	if ( empty( $customer->id ) ) {
-		give_set_error( 'give-invalid_customer', esc_html__( 'Invalid Donor ID Provided.', 'give' ) );
+		give_set_error( 'give-invalid_customer', esc_html__( 'Invalid Donor ID.', 'give' ) );
 		$render = false;
 	}
 
@@ -148,30 +148,25 @@ function give_render_customer_view( $view, $callbacks ) {
 			</div>
 		<?php endif; ?>
 
+		<h1 class="screen-reader-text"><?php esc_html_e( 'Donor', 'give' ); ?></h1>
+
 		<?php if ( $customer && $render ) : ?>
 
-			<div id="customer-tab-wrapper">
-				<ul id="customer-tab-wrapper-list" class="nav-tab-wrapper">
-					<?php foreach ( $customer_tabs as $key => $tab ) : ?>
-						<?php $active = $key === $view ? true : false; ?>
-						<?php $class = $active ? 'active' : 'inactive'; ?>
-
-						<li class="<?php echo sanitize_html_class( $class ); ?>">
-							<?php if ( ! $active ) : ?>
-							<a title="<?php esc_attr_e( $tab['title'] ); ?>" aria-label="<?php esc_attr_e( $tab['title'] ); ?>" href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=' . $key . '&id=' . $customer->id ) ); ?>">
-								<?php endif; ?>
-
-								<span class="dashicons <?php echo sanitize_html_class( $tab['dashicon'] ); ?>"></span> <?php esc_html_e( $tab['title'] ); ?>
-								<?php if ( ! $active ) : ?>
-							</a>
-						<?php endif; ?>
-
-						</li>
-
-
-					<?php endforeach; ?>
-				</ul>
-			</div>
+			<h2 class="nav-tab-wrapper">
+			<?php
+			foreach ( $customer_tabs as $key => $tab ) :
+				$active = $key === $view ? true : false;
+				$class = $active ? 'nav-tab nav-tab-active' : 'nav-tab';
+				printf(
+					'<a href="%1$s" class="%2$s"><span class="dashicons %3$s"></span>%4$s</a>'."\n",
+					esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=' . $key . '&id=' . $customer->id ) ),
+					esc_attr( $class ),
+					sanitize_html_class( $tab['dashicon'] ),
+					esc_html( $tab['title'] )
+				);
+			endforeach;
+			?>
+			</h2>
 
 			<div id="give-customer-card-wrapper">
 				<?php $callbacks[ $view ]( $customer ) ?>
@@ -222,15 +217,15 @@ function give_customers_view( $customer ) {
 
 					<div id="customer-name-wrap" class="left">
 						<span class="customer-id">#<?php echo $customer->id; ?></span>
-						<span class="customer-name info-item edit-item"><input size="15" data-key="name" name="customerinfo[name]" type="text" value="<?php esc_attr_e( $customer->name ); ?>" placeholder="<?php esc_attr_e( 'Donor Name', 'give' ); ?>" /></span>
+						<span class="customer-name info-item edit-item"><input size="15" data-key="name" name="customerinfo[name]" type="text" value="<?php echo esc_attr( $customer->name ); ?>" placeholder="<?php esc_attr_e( 'Donor Name', 'give' ); ?>" /></span>
 						<span class="customer-name info-item editable"><span data-key="name"><?php echo $customer->name; ?></span></span>
 					</div>
 					<p class="customer-since info-item">
 						<?php esc_html_e( 'Donor since', 'give' ); ?>
-						<?php echo date_i18n( get_option( 'date_format' ), strtotime( $customer->date_created ) ) ?>
+						<?php echo date_i18n( give_date_format(), strtotime( $customer->date_created ) ) ?>
 					</p>
 					<?php if ( current_user_can( $customer_edit_role ) ): ?>
-						<a title="<?php esc_attr_e( 'Edit Donor', 'give' ); ?>" href="#" id="edit-customer" class="button info-item editable customer-edit-link"><?php esc_html_e( 'Edit Donor', 'give' ); ?></a>
+						<a href="#" id="edit-customer" class="button info-item editable customer-edit-link"><?php esc_html_e( 'Edit Donor', 'give' ); ?></a>
 					<?php endif; ?>
 				</div>
 				<!-- /donor-bio-header -->
@@ -240,14 +235,14 @@ function give_customers_view( $customer ) {
 					<table class="widefat">
 						<tbody>
 						<tr>
-							<td><label for="tablecell"><?php esc_html_e( 'Email', 'give' ); ?></label>:</td>
+							<th scope="col"><label for="tablecell"><?php esc_html_e( 'Email:', 'give' ); ?></label></th>
 							<td class="row-title">
 								<span class="customer-name info-item edit-item"><input size="20" data-key="email" name="customerinfo[email]" type="text" value="<?php echo $customer->email; ?>" placeholder="<?php esc_attr_e( 'Donor Email', 'give' ); ?>" /></span>
 								<span class="customer-email info-item editable" data-key="email"><?php echo $customer->email; ?></span>
 							</td>
 						</tr>
 						<tr class="alternate">
-							<td><label for="tablecell"><?php esc_html_e( 'User ID', 'give' ); ?></label>:</td>
+							<th scope="col"><label for="tablecell"><?php esc_html_e( 'User ID:', 'give' ); ?></label></th>
 							<td class="row-title">
 								<span class="customer-user-id info-item edit-item">
 									<?php
@@ -280,7 +275,7 @@ function give_customers_view( $customer ) {
 										<span data-key="user_id"><?php esc_html_e( 'None', 'give' ); ?></span>
 									<?php endif; ?>
 									<?php if ( current_user_can( $customer_edit_role ) && intval( $customer->user_id ) > 0 ) : ?>
-										<span class="disconnect-user"> - <a id="disconnect-customer" href="#disconnect" title="<?php esc_attr_e( 'Disconnects the current user ID from this customer record', 'give' ); ?>"><?php esc_html_e( 'Disconnect User', 'give' ); ?></a></span>
+										<span class="disconnect-user"> - <a id="disconnect-customer" href="#disconnect" aria-label="<?php esc_attr_e( 'Disconnects the current user ID from this customer record.', 'give' ); ?>"><?php esc_html_e( 'Disconnect User', 'give' ); ?></a></span>
 									<?php endif; ?>
 								</span>
 							</td>
@@ -288,7 +283,7 @@ function give_customers_view( $customer ) {
 						<?php if ( isset( $customer->user_id ) && $customer->user_id > 0 ) : ?>
 
 							<tr>
-								<td><?php esc_html_e( 'Address', 'give' ); ?>:</td>
+								<th scope="col"><?php esc_html_e( 'Address:', 'give' ); ?></th>
 								<td class="row-title">
 
 									<div class="customer-address-wrapper">
@@ -349,7 +344,7 @@ function give_customers_view( $customer ) {
 											<?php else : ?>
 												<input type="text" size="6" data-key="state" name="customerinfo[state]" id="card_state" class="card_state give-input info-item" placeholder="<?php esc_attr_e( 'State / Province', 'give' ); ?>" />
 											<?php endif; ?>
-											<input class="info-item" type="text" data-key="zip" name="customerinfo[zip]" placeholder="<?php esc_attr_e( 'Postal', 'give' ); ?>" value="<?php echo $address['zip']; ?>" />
+											<input class="info-item" type="text" data-key="zip" name="customerinfo[zip]" placeholder="<?php esc_attr_e( 'Zip / Postal Code', 'give' ); ?>" value="<?php echo $address['zip']; ?>" />
 													</span>
 
 									</div>
@@ -358,7 +353,6 @@ function give_customers_view( $customer ) {
 						<?php endif; ?>
 						</tbody>
 					</table>
-
 
 				</div>
 
@@ -390,7 +384,7 @@ function give_customers_view( $customer ) {
 	<div id="customer-stats-wrapper" class="customer-section postbox clear">
 		<ul>
 			<li>
-				<a title="<?php esc_attr_e( 'View All Donations', 'give' ); ?>" href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( $customer->email ) ); ?>">
+				<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( $customer->email ) ); ?>">
 					<span class="dashicons dashicons-heart"></span>
 					<?php
 					//Completed Donations
@@ -451,11 +445,11 @@ function give_customers_view( $customer ) {
 		<table class="wp-list-table widefat striped payments">
 			<thead>
 			<tr>
-				<th><?php esc_html_e( 'ID', 'give' ); ?></th>
-				<th><?php esc_html_e( 'Amount', 'give' ); ?></th>
-				<th><?php esc_html_e( 'Date', 'give' ); ?></th>
-				<th><?php esc_html_e( 'Status', 'give' ); ?></th>
-				<th><?php esc_html_e( 'Actions', 'give' ); ?></th>
+				<th scope="col"><?php esc_html_e( 'ID', 'give' ); ?></th>
+				<th scope="col"><?php esc_html_e( 'Amount', 'give' ); ?></th>
+				<th scope="col"><?php esc_html_e( 'Date', 'give' ); ?></th>
+				<th scope="col"><?php esc_html_e( 'Status', 'give' ); ?></th>
+				<th scope="col"><?php esc_html_e( 'Actions', 'give' ); ?></th>
 			</tr>
 			</thead>
 			<tbody>
@@ -464,18 +458,27 @@ function give_customers_view( $customer ) {
 					<tr>
 						<td><?php echo $payment->ID; ?></td>
 						<td><?php echo give_payment_amount( $payment->ID ); ?></td>
-						<td><?php echo date_i18n( get_option( 'date_format' ), strtotime( $payment->post_date ) ); ?></td>
+						<td><?php echo date_i18n( give_date_format(), strtotime( $payment->post_date ) ); ?></td>
 						<td><?php echo give_get_payment_status( $payment, true ); ?></td>
 						<td>
-							<a title="<?php esc_attr_e( 'View Details for Donation', 'give' );
-							echo ' ' . $payment->ID; ?>" href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $payment->ID ); ?>">
-								<?php esc_html_e( 'View Details', 'give' ); ?>
-							</a>
+							<?php
+							printf(
+								'<a href="%1$s" aria-label="%2$s">%3$s</a>',
+								admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $payment->ID ),
+								sprintf(
+									/* translators: %s: Donation ID */
+									esc_attr__( 'View Donation %s.', 'give' ),
+									$payment->ID
+								),
+								esc_html__( 'View Donation', 'give' )
+							);
+							?>
+
 							<?php
 							/**
 							 * Fires in donor profile screen, in the recent donations tables action links.
 							 *
-							 * Allows you to add more action links for each payment, after the 'View Details' action link.
+							 * Allows you to add more action links for each donation, after the 'View Donation' action link.
 							 *
 							 * @since 1.0
 							 *
@@ -489,7 +492,7 @@ function give_customers_view( $customer ) {
 				<?php endforeach; ?>
 			<?php else: ?>
 				<tr>
-					<td colspan="5"><?php esc_html_e( 'No Donations Found', 'give' ); ?></td>
+					<td colspan="5"><?php esc_html_e( 'No donations found.', 'give' ); ?></td>
 				</tr>
 			<?php endif; ?>
 			</tbody>
@@ -502,8 +505,8 @@ function give_customers_view( $customer ) {
 		<table class="wp-list-table widefat striped donations">
 			<thead>
 			<tr>
-				<th><?php echo give_get_forms_label_singular(); ?></th>
-				<th width="120px"><?php esc_html_e( 'Actions', 'give' ); ?></th>
+				<th scope="col"><?php echo give_get_forms_label_singular(); ?></th>
+				<th scope="col" width="120px"><?php esc_html_e( 'Actions', 'give' ); ?></th>
 			</tr>
 			</thead>
 			<tbody>
@@ -512,27 +515,24 @@ function give_customers_view( $customer ) {
 					<tr>
 						<td><?php echo $donation->post_title; ?></td>
 						<td>
-							<a title="<?php
-								printf(
-									/* translators: %s: post title */
-									esc_attr__( 'View %s', 'give' ),
+							<?php
+							printf(
+								'<a href="%1$s" aria-label="%2$s">%3$s</a>',
+								esc_url( admin_url( 'post.php?action=edit&post=' . $donation->ID ) ),
+								sprintf(
+									/* translators: %s: form name */
+									esc_attr__( 'View Form %s.', 'give' ),
 									$donation->post_title
-								); ?>" href="<?php echo esc_url( admin_url( 'post.php?action=edit&post=' . $donation->ID ) );
-							?>">
-								<?php
-									printf(
-										/* translators: %s: forms singular label */
-										esc_html__( 'View %s', 'give' ),
-										give_get_forms_label_singular()
-									);
-								?>
-							</a>
+								),
+								esc_html__( 'View Form', 'give' )
+							);
+							?>
 						</td>
 					</tr>
 				<?php endforeach; ?>
 			<?php else: ?>
 				<tr>
-					<td colspan="2"><?php esc_html_e( 'No Completed Donations Found', 'give' ); ?></td>
+					<td colspan="2"><?php esc_html_e( 'No completed donations found.', 'give' ); ?></td>
 				</tr>
 			<?php endif; ?>
 			</tbody>
@@ -624,7 +624,7 @@ function give_customer_notes_view( $customer ) {
 				<?php endforeach; ?>
 			<?php else: ?>
 				<div class="give-no-customer-notes">
-					<?php esc_html_e( 'No Donor Notes', 'give' ); ?>
+					<?php esc_html_e( 'No donor notes found.', 'give' ); ?>
 				</div>
 			<?php endif; ?>
 		</div>
@@ -681,7 +681,7 @@ function give_customers_delete_view( $customer ) {
 							'name'    => 'give-customer-delete-records',
 							'options' => array( 'disabled' => true )
 						) ); ?>
-						<label for="give-customer-delete-records"><?php esc_html_e( 'Delete all associated payments and records?', 'give' ); ?></label>
+						<label for="give-customer-delete-records"><?php esc_html_e( 'Delete all associated donations and records?', 'give' ); ?></label>
 					</p>
 
 					<?php

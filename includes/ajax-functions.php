@@ -114,14 +114,20 @@ function give_get_ajax_url() {
 }
 
 /**
- * Loads Checkout Login Fields the via AJAX
+ * Loads Checkout Login Fields via AJAX
  *
  * @since  1.0
  *
  * @return void
  */
 function give_load_checkout_login_fields() {
-	do_action( 'give_purchase_form_login_fields' );
+	/**
+	 * Fire when render login fields via ajax.
+	 *
+	 * @since 1.7
+	 */
+	do_action( 'give_donation_form_login_fields' );
+
 	give_die();
 }
 
@@ -139,7 +145,12 @@ function give_load_checkout_fields() {
 
 	ob_start();
 
-	do_action( 'give_purchase_form_register_login_fields', $form_id );
+	/**
+	 * Fire to render registration/login form.
+	 *
+	 * @since 1.7
+	 */
+	do_action( 'give_donation_form_register_login_fields', $form_id );
 
 	$fields = ob_get_clean();
 

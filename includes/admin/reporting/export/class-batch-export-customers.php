@@ -82,8 +82,8 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 			$cols['email'] = esc_html__( 'Email Address', 'give' );
 		}
 		if ( ! empty( $columns['address'] ) ) {
-			$cols['address_line1']   = esc_html__( 'Address', 'give' );
-			$cols['address_line2']   = esc_html__( 'Address (Line 2)', 'give' );
+			$cols['address_line1']   = esc_html__( 'Address 1', 'give' );
+			$cols['address_line2']   = esc_html__( 'Address 2', 'give' );
 			$cols['address_city']    = esc_html__( 'City', 'give' );
 			$cols['address_state']   = esc_html__( 'State', 'give' );
 			$cols['address_zip']     = esc_html__( 'Zip', 'give' );
@@ -167,7 +167,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 		}
 
 		$data = apply_filters( 'give_export_get_data', $data );
-		$data = apply_filters( 'give_export_get_data_' . $this->export_type, $data );
+		$data = apply_filters( "give_export_get_data_{$this->export_type}", $data );
 
 		return $data;
 	}
@@ -237,7 +237,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 			$data[ $i ]['userid'] = ! empty( $donor->user_id ) ? $donor->user_id : '';
 		}
 		if ( ! empty( $columns['date_first_donated'] ) ) {
-			$data[ $i ]['date_first_donated'] = date_i18n( get_option( 'date_format' ), strtotime( $donor->date_created ) );
+			$data[ $i ]['date_first_donated'] = date_i18n( give_date_format(), strtotime( $donor->date_created ) );
 		}
 		if ( ! empty( $columns['donations'] ) ) {
 			$data[ $i ]['donations'] = $donor->purchase_count;
