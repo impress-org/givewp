@@ -60,49 +60,68 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 	}
 
 	/**
-	 * Set the CSV columns
+	 * Set the CSV columns.
 	 *
 	 * @access public
 	 * @since 1.5
-	 * @return array $cols All the columns
+	 * @return array|bool $cols All the columns.
 	 */
 	public function csv_cols() {
 
-		$cols = array();
 
 		$columns = isset( $this->data['give_export_option'] ) ? $this->data['give_export_option'] : array();
 
+		//We need columns.
 		if ( empty( $columns ) ) {
 			return false;
 		}
-		if ( ! empty( $columns['full_name'] ) ) {
-			$cols['full_name'] = esc_html__( 'Full Name', 'give' );
-		}
-		if ( ! empty( $columns['email'] ) ) {
-			$cols['email'] = esc_html__( 'Email Address', 'give' );
-		}
-		if ( ! empty( $columns['address'] ) ) {
-			$cols['address_line1']   = esc_html__( 'Address', 'give' );
-			$cols['address_line2']   = esc_html__( 'Address (Line 2)', 'give' );
-			$cols['address_city']    = esc_html__( 'City', 'give' );
-			$cols['address_state']   = esc_html__( 'State', 'give' );
-			$cols['address_zip']     = esc_html__( 'Zip', 'give' );
-			$cols['address_country'] = esc_html__( 'Country', 'give' );
-		}
-		if ( ! empty( $columns['userid'] ) ) {
-			$cols['userid'] = esc_html__( 'User ID', 'give' );
-		}
-		if ( ! empty( $columns['date_first_donated'] ) ) {
-			$cols['date_first_donated'] = esc_html__( 'First Donation Date', 'give' );
-		}
-		if ( ! empty( $columns['donations'] ) ) {
-			$cols['donations'] = esc_html__( 'Number of Donations', 'give' );
-		}
-		if ( ! empty( $columns['donation_sum'] ) ) {
-			$cols['donation_sum'] = esc_html__( 'Sum of Donations', 'give' );
+
+		$cols = $this->get_cols( $columns );
+
+		return $cols;
+	}
+
+	/**
+	 * @param $column
+	 */
+	private function get_cols( $columns ) {
+
+		$cols = array();
+
+		foreach ( $columns as $key => $value ) {
+
+			switch ( $key ) {
+				case 'full_name' :
+					$cols['full_name'] = esc_html__( 'Full Name', 'give' );
+					break;
+				case 'email' :
+					$cols['email'] = esc_html__( 'Email Address', 'give' );
+					break;
+				case 'address' :
+					$cols['address_line1']   = esc_html__( 'Address', 'give' );
+					$cols['address_line2']   = esc_html__( 'Address 2', 'give' );
+					$cols['address_city']    = esc_html__( 'City', 'give' );
+					$cols['address_state']   = esc_html__( 'State', 'give' );
+					$cols['address_zip']     = esc_html__( 'Zip', 'give' );
+					$cols['address_country'] = esc_html__( 'Country', 'give' );
+					break;
+				case 'userid' :
+					$cols['userid'] = esc_html__( 'User ID', 'give' );
+					break;
+				case 'date_first_donated' :
+					$cols['date_first_donated'] = esc_html__( 'First Donation Date', 'give' );
+					break;
+				case 'donations' :
+					$cols['donations'] = esc_html__( 'Number of Donations', 'give' );
+					break;
+				case 'donation_sum' :
+					$cols['donation_sum'] = esc_html__( 'Sum of Donations', 'give' );
+					break;
+			}
 		}
 
 		return $cols;
+
 	}
 
 	/**
