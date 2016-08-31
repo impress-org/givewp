@@ -527,7 +527,7 @@ function give_email_tag_receipt_id( $payment_id ) {
  */
 function give_email_tag_donation( $payment_id ) {
 	$payment      = new Give_Payment( $payment_id );
-	$payment_meta = $payment->meta;
+	$payment_meta = $payment->payment_meta;
 	$level_title  = give_has_variable_prices( $payment_meta['form_id'] );
 	$separator    = $level_title ? '-' : '';
 	$form_title   = strip_tags( give_get_payment_form_title( $payment_meta, $level_title, $separator ) );
