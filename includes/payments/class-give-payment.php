@@ -19,14 +19,31 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * This class is for working with payments in Give.
  *
- * @property-read string $payment_meta
+ * @property int             $ID
+ * @property bool            $new
+ * @property-read string     $number
+ * @property-read string     $mode
+ * @property-read string     $key
+ * @property-read string     $form_title
+ * @property-read string|int $form_id
+ * @property-read string|int $price_id
+ * @property-read string|int $total
+ * @property-read string|int $subtotal
+ * @property-read string|int $fees
+ * @property-read string|int $fees_total
+ * @property-read string     $post_status
+ * @property-read string     $date
+ * @property-read string     $postdate
+ * @property-read string     $status
+ * @property-read string     $email
+ * @property-read string     $payment_meta
  *
  * @since 1.5
  */
 final class Give_Payment {
 
 	/**
-	 * The Payment ID
+	 * The Payment ID.
 	 *
 	 * @since  1.5
 	 *
@@ -35,12 +52,13 @@ final class Give_Payment {
 	public $ID = 0;
 
 	/**
+	 * Protected non-read $_ID.
 	 * @var int
 	 */
 	protected $_ID = 0;
 
 	/**
-	 * Identify if the payment is a new one or existing
+	 * Identify if the payment is a new one or existing.
 	 *
 	 * @since  1.5
 	 * @access protected
@@ -50,7 +68,7 @@ final class Give_Payment {
 	protected $new = false;
 
 	/**
-	 * The Payment number (for use with sequential payments)
+	 * The Payment number (for use with sequential payments).
 	 *
 	 * @since  1.5
 	 * @access protected
@@ -60,7 +78,7 @@ final class Give_Payment {
 	protected $number = '';
 
 	/**
-	 * The Gateway mode the payment was made in
+	 * The Gateway mode the payment was made in.
 	 *
 	 * @since  1.5
 	 * @access protected
@@ -70,7 +88,7 @@ final class Give_Payment {
 	protected $mode = 'live';
 
 	/**
-	 * The Unique Payment Key
+	 * The unique donation payment key.
 	 *
 	 * @since  1.5
 	 * @access protected
@@ -105,13 +123,13 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access protected
 	 *
-	 * @var    string
+	 * @var    string|int
 	 */
 	protected $price_id = 0;
 
 	/**
-	 * The total amount the payment is for
-	 * Includes donation amount and fees
+	 * The total amount of the donation payment.
+	 * Includes donation amount and fees.
 	 *
 	 * @since  1.5
 	 * @access protected
@@ -159,10 +177,16 @@ final class Give_Payment {
 	 * @var    string
 	 */
 	protected $date = '';
+
+	/**
+	 * The date the payment post was created.
+	 *
+	 * @var string
+	 */
 	protected $post_date = '';
 
 	/**
-	 * The date the payment was marked as 'complete'
+	 * The date the payment was marked as 'complete'.
 	 *
 	 * @since  1.5
 	 * @access protected
@@ -172,7 +196,7 @@ final class Give_Payment {
 	protected $completed_date = '';
 
 	/**
-	 * The status of the payment
+	 * The status of the donation payment.
 	 *
 	 * @since  1.5
 	 * @access protected
@@ -180,6 +204,10 @@ final class Give_Payment {
 	 * @var    string
 	 */
 	protected $status = 'pending';
+
+	/**
+	 * @var string
+	 */
 	protected $post_status = 'pending'; // Same as $status but here for backwards compat
 
 	/**
@@ -193,7 +221,7 @@ final class Give_Payment {
 	protected $old_status = '';
 
 	/**
-	 * The display name of the current payment status
+	 * The display name of the current payment status.
 	 *
 	 * @since  1.5
 	 * @access protected
@@ -323,8 +351,8 @@ final class Give_Payment {
 	protected $currency = '';
 
 	/**
-	 * Array of items that have changed since the last save() was run
-	 * This is for internal use, to allow fewer update_payment_meta calls to be run
+	 * Array of items that have changed since the last save() was run.
+	 * This is for internal use, to allow fewer update_payment_meta calls to be run.
 	 *
 	 * @since  1.5
 	 * @access private
@@ -1257,7 +1285,7 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @param  float $amount The amount to increase the payment subtotal by
+	 * @param  float $amount The amount to increase the payment subtotal by.
 	 *
 	 * @return void
 	 */
@@ -1269,12 +1297,12 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Decrease the payment's subtotal
+	 * Decrease the payment's subtotal.
 	 *
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @param  float $amount The amount to decrease the payment subtotal by
+	 * @param  float $amount The amount to decrease the payment subtotal by.
 	 *
 	 * @return void
 	 */
@@ -1290,12 +1318,12 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Increase the payment's subtotal
+	 * Increase the payment's subtotal.
 	 *
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @param  float $amount The amount to increase the payment subtotal by
+	 * @param  float $amount The amount to increase the payment subtotal by.
 	 *
 	 * @return void
 	 */
@@ -1307,12 +1335,12 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Decrease the payment's subtotal
+	 * Decrease the payment's subtotal.
 	 *
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @param  float $amount The amount to decrease the payment subtotal by
+	 * @param  float $amount The amount to decrease the payment subtotal by.
 	 *
 	 * @return void
 	 */
@@ -1328,7 +1356,7 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Set or update the total for a payment
+	 * Set or update the total for a payment.
 	 *
 	 * @since  1.0
 	 * @access private
@@ -1340,14 +1368,14 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Set the payment status and run any status specific changes necessary
+	 * Set the payment status and run any status specific changes necessary.
 	 *
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  string $status The status to set the payment to
+	 * @param  string $status The status to set the payment to.
 	 *
-	 * @return bool   $updated Returns if the status was successfully updated
+	 * @return bool   $updated Returns if the status was successfully updated.
 	 */
 	public function update_status( $status = false ) {
 
