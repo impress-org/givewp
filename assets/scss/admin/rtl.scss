@@ -9,15 +9,17 @@
 
 body.rtl {
 
+  .give-badge {
+    left: 0;
+    right: initial;
+  }
+
   #give-donation-overview th {
     text-align:right;
   }
 
   #export-donor-options-wrap ul li {
-
     padding: 0 0 5px 5px;
-
-
   }
 
 }
