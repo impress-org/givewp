@@ -259,7 +259,7 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		$earnings = $form->earnings;
 		$sales    = $form->sales;
 
-		give_undo_donation_on_refund( $payment->ID, 'refunded', 'publish' );
+		$payment->refund();
 
 		wp_cache_flush();
 
