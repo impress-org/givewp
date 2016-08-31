@@ -420,7 +420,7 @@ if ( ! function_exists( 'give_show_avatars' ) ) {
 	 * Output the product title.
 	 */
 	function give_show_avatars() {
-		echo do_shortcode( '[give_donators_gravatars]' );
+		echo do_shortcode( '[give_donors_gravatars]' );
 	}
 }
 
