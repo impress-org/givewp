@@ -258,7 +258,7 @@ class Give_Welcome {
 			<p class="about-text"><?php
 				printf(
 					/* translators: %s: https://givewp.com/documenation/ */
-					__( 'Thank you for activating or updating to the latest version of Give! If you\'re a first time user, welcome! You\'re well on your way to empowering your cause. </You>We encourage you to check out the <a href="%s" target="_blank">plugin documentation</a> and getting started guide below.', 'give' ),
+					__( 'Thank you for activating or updating to the latest version of Give! If you\'re a first time user, welcome! You\'re well on your way to empowering your cause. We encourage you to check out the <a href="%s" target="_blank">plugin documentation</a> and getting started guide below.', 'give' ),
 					esc_url( 'https://givewp.com/documenation/' )
 				);
 			?></p>
@@ -418,9 +418,9 @@ class Give_Welcome {
 				<div class="content feature-section-item">
 					<h3><?php esc_html_e( 'STEP 1: Create a New Form', 'give' ); ?></h3>
 
-					<p><?php esc_html_e( 'Give is driven by it\'s powerful form building features. But it is not simply a "form". From the "Add New Form" page you\'ll be able to choose how and where you want to receive your donations. You\'ll be able to set the donation amounts. You even get to choose whether you want to create a whole page for your form, or embed it on a different page of your site.', 'give' ); ?></p>
+					<p><?php esc_html_e( 'Give is driven by it\'s powerful form building features. But it is not simply a "form". From the "Add Form" page you\'ll be able to choose how and where you want to receive your donations. You\'ll be able to set the donation amounts. You even get to choose whether you want to create a whole page for your form, or embed it on a different page of your site.', 'give' ); ?></p>
 
-					<p><?php esc_html_e( 'But all of these features begin simply by going to the menu and choosing "Add New Form."', 'give' ); ?></p>
+					<p><?php esc_html_e( 'But all of these features begin simply by going to the menu and choosing "Add Form".', 'give' ); ?></p>
 				</div>
 
 				<div class="content feature-section-item last-feature">
