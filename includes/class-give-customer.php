@@ -64,6 +64,16 @@ class Give_Customer {
 	public $email;
 
 	/**
+	 * The customer's emails
+	 *
+	 * @since  1.8
+	 * @access public
+	 *
+	 * @var    string
+	 */
+	public $emails;
+
+	/**
 	 * The customer's name
 	 *
 	 * @since  1.0
@@ -194,7 +204,11 @@ class Give_Customer {
 
 		}
 
-		// Customer ID and email are the only things that are necessary, make sure they exist
+		// Get donor's all email including primary email.
+		$this->emails   = (array) $this->get_meta( 'additional_email', false );
+		$this->emails[] = $this->email;
+
+		// Customer ID and email are the only things that are necessary, make sure they exist.
 		if ( ! empty( $this->id ) && ! empty( $this->email ) ) {
 			return true;
 		}
@@ -980,4 +994,100 @@ class Give_Customer {
 		return $data;
 	}
 
+	/**
+	 * Attach an email to the donor
+	 *
+	 * @since  1.8
+	 * @param  string $email The email address to attach to the customer
+	 * @return bool          If the email was added successfully
+	 */
+	public function add_email( $email = '' ) {
+		if( ! is_email( $email ) ) {
+			return false;
+		}
+		$existing = new Give_Customer( $email );
+
+		error_log(print_r( $existing, true) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log');
+
+		if( $existing->id > 0 ) {
+			// Email address already belongs to another customer
+			return false;
+		}
+
+		do_action( 'give_donor_pre_add_email', $email, $this->id, $this );
+
+		// Add is used to ensure duplicate emails are not added
+		$ret = (bool) $this->add_meta( 'additional_email', $email );
+
+		do_action( 'give_donor_post_add_email', $email, $this->id, $this );
+
+		return $ret;
+	}
+
+
+	/**
+	 * Remove an email from the customer
+	 *
+	 * @since  1.8
+	 * @param  string $email The email address to remove from the customer
+	 * @return bool          If the email was removeed successfully
+	 */
+	public function remove_email( $email = '' ) {
+		if( ! is_email( $email ) ) {
+			return false;
+		}
+
+		do_action( 'give_donor_pre_remove_email', $email, $this->id, $this );
+
+		$ret = (bool) $this->delete_meta( 'additional_email', $email );
+
+		do_action( 'give_donor_post_remove_email', $email, $this->id, $this );
+
+		return $ret;
+	}
+
+	/**
+	 * Set an email address as the customer's primary email
+	 *
+	 * This will move the customer's previous primary email to an additional email
+	 *
+	 * @since  1.8
+	 * @param  string $new_primary_email The email address to remove from the customer
+	 * @return bool                      If the email was set as primary successfully
+	 */
+	public function set_primary_email( $new_primary_email = '' ) {
+		if( ! is_email( $new_primary_email ) ) {
+			return false;
+		}
+
+		do_action( 'give_donor_pre_set_primary_email', $new_primary_email, $this->id, $this );
+
+		$existing = new Give_Customer( $new_primary_email );
+
+		if( $existing->id > 0 && (int) $existing->id !== (int) $this->id ) {
+			// This email belongs to another customer
+			return false;
+		}
+
+		$old_email = $this->email;
+
+		// Update customer record with new email
+		$update = $this->update( array( 'email' => $new_primary_email ) );
+
+		// Remove new primary from list of additional emails
+		$remove = $this->remove_email( $new_primary_email );
+
+		// Add old email to additional emails list
+		$add = $this->add_email( $old_email );
+
+		$ret = $update && $remove && $add;
+
+		if( $ret ) {
+			$this->email = $new_primary_email;
+		}
+
+		do_action( 'give_donor_post_set_primary_email', $new_primary_email, $this->id, $this );
+
+		return $ret;
+	}
 }
