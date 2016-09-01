@@ -998,10 +998,11 @@ class Give_Customer {
 	 * Attach an email to the donor
 	 *
 	 * @since  1.8
-	 * @param  string $email The email address to attach to the customer
-	 * @return bool          If the email was added successfully
+	 * @param  string $email   The email address to attach to the customer
+	 * @param  bool   $primary Allows setting the email added as the primary
+	 * @return bool            If the email was added successfully
 	 */
-	public function add_email( $email = '' ) {
+	public function add_email( $email = '', $primary = false ) {
 		if( ! is_email( $email ) ) {
 			return false;
 		}
@@ -1012,12 +1013,23 @@ class Give_Customer {
 			return false;
 		}
 
+		if ( email_exists( $email ) ) {
+			$user = get_user_by( 'email', $email );
+			if ( $user->ID != $this->user_id ) {
+				return false;
+			}
+		}
+
 		do_action( 'give_donor_pre_add_email', $email, $this->id, $this );
 
 		// Add is used to ensure duplicate emails are not added
 		$ret = (bool) $this->add_meta( 'additional_email', $email );
 
 		do_action( 'give_donor_post_add_email', $email, $this->id, $this );
+
+		if ( $ret && true === $primary ) {
+			$this->set_primary_email( $email );
+		}
 
 		return $ret;
 	}
