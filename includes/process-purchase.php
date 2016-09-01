@@ -166,7 +166,7 @@ add_action( 'wp_ajax_nopriv_give_process_checkout', 'give_process_purchase_form'
 
 
 /**
- * Verify that when a logged in user makes a purchase that the email address used doesn't belong to a different customer
+ * Verify that when a logged in user makes a donation that the email address used doesn't belong to a different customer
  *
  * @since  1.8
  * @param  array $valid_data Validated data submitted for the purchase
