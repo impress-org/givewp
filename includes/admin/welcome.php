@@ -263,9 +263,7 @@ class Give_Welcome {
 				);
 			?></p>
 
-			<p class="newsletter-intro"><?php esc_html_e( 'Be sure to sign up for the Give newsletter below to stay informed of important updates and news.', 'give' ); ?></p>
-
-			<?php give_get_newsletter() ?>
+			<?php give_get_newsletter(); ?>
 
 			<div class="give-badge"><?php
 				printf(
@@ -397,9 +395,7 @@ class Give_Welcome {
 
 			<p class="about-text"><?php esc_html_e( 'Welcome to the getting started guide.', 'give' ); ?></p>
 
-			<p class="newsletter-intro"><?php esc_html_e( 'Don\'t forget to sign up for the newsletter!', 'give' ); ?></p>
-
-			<?php give_get_newsletter() ?>
+			<?php give_get_newsletter(); ?>
 
 			<div class="give-badge"><?php
 				printf(
@@ -508,9 +504,7 @@ class Give_Welcome {
 
 			<p class="about-text"><?php esc_html_e( 'Welcome to the getting started guide.', 'give' ); ?></p>
 
-			<p class="newsletter-intro"><?php esc_html_e( 'Be sure to sign up for the Give newsletter below to stay informed of important updates and news.', 'give' ); ?></p>
-
-			<?php give_get_newsletter() ?>
+			<?php give_get_newsletter(); ?>
 
 			<div class="give-badge"><?php
 				printf(
