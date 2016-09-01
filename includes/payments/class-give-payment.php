@@ -19,24 +19,32 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * This class is for working with payments in Give.
  *
- * @property int             $ID
- * @property bool            $new
- * @property-read string     $number
- * @property-read string     $mode
- * @property-read string     $key
- * @property-read string     $form_title
- * @property-read string|int $form_id
- * @property-read string|int $price_id
- * @property-read string|int $total
- * @property-read string|int $subtotal
- * @property-read string|int $fees
- * @property-read string|int $fees_total
- * @property-read string     $post_status
- * @property-read string     $date
- * @property-read string     $postdate
- * @property-read string     $status
- * @property-read string     $email
- * @property-read string     $payment_meta
+ * @property int        $ID
+ * @property bool       $new
+ * @property string     $number
+ * @property string     $mode
+ * @property string     $key
+ * @property string     $form_title
+ * @property string|int $form_id
+ * @property string|int $price_id
+ * @property string|int $total
+ * @property string|int $subtotal
+ * @property string|int $fees
+ * @property string|int $fees_total
+ * @property string     $post_status
+ * @property string     $date
+ * @property string     $postdate
+ * @property string     $status
+ * @property string     $email
+ * @property string     $payment_meta
+ * @property string     $currency
+ * @property string     $ip
+ * @property array      $user_info
+ * @property string     $gateway
+ * @property string     $user_id
+ * @property string     $first_name
+ * @property string     $last_name
+ * @property string     $parent_payment
  *
  * @since 1.5
  */
@@ -53,6 +61,7 @@ final class Give_Payment {
 
 	/**
 	 * Protected non-read $_ID.
+	 *
 	 * @var int
 	 */
 	protected $_ID = 0;
