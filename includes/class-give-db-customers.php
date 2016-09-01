@@ -424,6 +424,17 @@ class Give_DB_Customers extends Give_DB {
 		}
 
 		if ( ! $customer = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $this->table_name WHERE $db_field = %s LIMIT 1", $value ) ) ) {
+
+			// Look for customer from an additional email
+			if( 'email' === $field ) {
+				$meta_table  = Give()->customer_meta->table_name;
+				$customer_id = $wpdb->get_var( $wpdb->prepare( "SELECT customer_id FROM {$meta_table} WHERE meta_key = 'additional_email' AND meta_value = %s LIMIT 1", $value ) );
+
+				if( ! empty( $customer_id ) ) {
+					return $this->get( $customer_id );
+ 				}
+ 			}
+
 			return false;
 		}
 
