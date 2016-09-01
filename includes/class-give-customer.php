@@ -206,7 +206,7 @@ class Give_Customer {
 
 		// Get donor's all email including primary email.
 		$this->emails   = (array) $this->get_meta( 'additional_email', false );
-		$this->emails[] = $this->email;
+		$this->emails = array( 'primary' => $this->email ) + $this->emails;
 
 		// Customer ID and email are the only things that are necessary, make sure they exist.
 		if ( ! empty( $this->id ) && ! empty( $this->email ) ) {

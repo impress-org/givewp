@@ -431,19 +431,6 @@ function give_customers_view( $customer ) {
 
 		<h3><?php _e( 'Donor Emails', 'give' ); ?></h3>
 
-		<?php
-		$primary_email     = $customer->email;
-		$additional_emails = $customer->emails;
-		$all_emails        = array( 'primary' => $primary_email );
-
-		foreach ( $additional_emails as $key => $email ) {
-			if ( $primary_email === $email ) {
-				continue;
-			}
-
-			$all_emails[ $key ] = $email;
-		}
-		?>
 		<table class="wp-list-table widefat striped emails">
 			<thead>
 				<tr>
@@ -453,9 +440,9 @@ function give_customers_view( $customer ) {
 			</thead>
 
 			<tbody>
-				<?php if ( ! empty( $all_emails ) ) : ?>
+				<?php if ( ! empty( $customer->emails ) ) : ?>
 
-					<?php foreach ( $all_emails as $key => $email ) : ?>
+					<?php foreach ( $customer->emails as $key => $email ) : ?>
 						<tr data-key="<?php echo $key; ?>">
 							<td>
 								<?php echo $email; ?>
