@@ -1007,8 +1007,6 @@ class Give_Customer {
 		}
 		$existing = new Give_Customer( $email );
 
-		error_log(print_r( $existing, true) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log');
-
 		if( $existing->id > 0 ) {
 			// Email address already belongs to another customer
 			return false;
