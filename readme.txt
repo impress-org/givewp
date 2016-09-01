@@ -167,6 +167,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 = 1.6.1 =
 * Fix: Donation date discrepancy in transaction details view - https://github.com/WordImpress/Give/issues/898
 * Fix: Switching donation form in transaction view "-2" appears when no form set - https://github.com/WordImpress/Give/issues/877
+* Fix: Styling issue on donor profile editor page - https://github.com/WordImpress/Give/issues/997
 * Tweak: Payment errors log missing gateway data and payment ID column data - https://github.com/WordImpress/Give/issues/780
 * Tweak: Reverted settings AJAX tabs in preparation for refactor - https://github.com/WordImpress/Give/issues/937
 
