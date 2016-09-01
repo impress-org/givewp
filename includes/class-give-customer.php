@@ -69,7 +69,7 @@ class Give_Customer {
 	 * @since  1.8
 	 * @access public
 	 *
-	 * @var    string
+	 * @var    array
 	 */
 	public $emails;
 
