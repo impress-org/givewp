@@ -164,6 +164,35 @@ add_action( 'give_purchase', 'give_process_purchase_form' );
 add_action( 'wp_ajax_give_process_checkout', 'give_process_purchase_form' );
 add_action( 'wp_ajax_nopriv_give_process_checkout', 'give_process_purchase_form' );
 
+
+/**
+ * Verify that when a logged in user makes a purchase that the email address used doesn't belong to a different customer
+ *
+ * @since  1.8
+ * @param  array $valid_data Validated data submitted for the purchase
+ * @param  array $post       Additional $_POST data submitted
+ * @return void
+ */
+function give_checkout_check_existing_email( $valid_data, $post ) {
+	
+	// Verify that the email address belongs to this customer
+	if ( is_user_logged_in() ) {
+
+		$email    = $valid_data['logged_in_user']['user_email'];
+		$customer = new Give_Customer( get_current_user_id(), true );
+
+		// If this email address is not registered with this customer, see if it belongs to any other customer
+		if ( $email !== $customer->email && ( is_array( $customer->emails ) && ! in_array( $email, $customer->emails ) ) ) {
+			$found_customer = new Give_Customer( $email );
+			
+			if ( $found_customer->id > 0 ) {
+				give_set_error( 'give-customer-email-exists', __( sprintf( 'The email address %s is already in use.', $email ), 'give' ) );
+			}
+		}
+	}
+}
+add_action( 'give_checkout_error_checks', 'give_checkout_check_existing_email', 10, 2 );
+
 /**
  * Process the checkout login form
  *
