@@ -467,8 +467,8 @@ function give_customers_view( $customer ) {
 								<?php if ( 'primary' !== $key ) : ?>
 									<?php
 									$base_url    = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $customer->id );
-									$promote_url = wp_nonce_url( add_query_arg( array( 'email' => rawurlencode( $email ), 'give_action' => 'customer-primary-email'), $base_url ), 'give-set-customer-primary-email' );
-									$remove_url  = wp_nonce_url( add_query_arg( array( 'email' => rawurlencode( $email ), 'give_action' => 'customer-remove-email' ), $base_url ), 'give-remove-customer-email'      );
+									$promote_url = wp_nonce_url( add_query_arg( array( 'email' => rawurlencode( $email ), 'give_action' => 'set_donor_primary_email'), $base_url ), 'give-set-donor-primary-email' );
+									$remove_url  = wp_nonce_url( add_query_arg( array( 'email' => rawurlencode( $email ), 'give_action' => 'remove_donor_email' ), $base_url ), 'give-remove-donor-email'      );
 									?>
 									<a href="<?php echo $promote_url; ?>"><?php _e( 'Make Primary', 'give' ); ?></a>
 									&nbsp;|&nbsp;
