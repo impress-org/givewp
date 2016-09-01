@@ -107,42 +107,8 @@ class Give_Welcome {
 		<style type="text/css" media="screen">
 			/*<![CDATA[*/
 			.give-badge {
-				padding-top: 150px;
-				height: 52px;
-				width: 185px;
-				color: #FFF;
-				font-weight: bold;
-				font-size: 14px;
-				text-align: center;
-				text-shadow: 0 1px 0 rgba(0, 0, 0, 0.8);
-				margin: 0 -5px;
 				background: url('<?php echo $badge_url; ?>') no-repeat;
 			}
-
-			.about-wrap .give-badge {
-				position: absolute;
-				top: 0;
-				right: 0;
-			}
-
-			.give-welcome-screenshots {
-				float: right;
-				margin-left: 10px !important;
-			}
-
-			.about-wrap .feature-section {
-				margin-top: 40px;
-			}
-
-			.introduction {
-				padding: 0 0 20px;
-				margin: 0 0 20px;
-			}
-
-			.about-wrap h3 {
-				margin: 1.5em 0 .6em;
-			}
-
 			/*]]>*/
 		</style>
 		<script>

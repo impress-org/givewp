@@ -6,15 +6,41 @@
  * @subpackage  SCSS/Admin
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
-*/
+ */
 
 .welcome-h1 {
   display: inline-block;
   margin-right: 15px !important;
 }
 
+.about-wrap h3 {
+	margin: 1.5em 0 .6em;
+}
+
+.give-badge {
+	padding-top: 150px;
+	height: 52px;
+	width: 185px;
+	color: #FFF;
+	font-weight: bold;
+	font-size: 14px;
+	text-align: center;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.8);
+	margin: 0 -5px;
+
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+.introduction {
+	padding: 0 0 20px;
+	margin: 0 0 20px;
+}
+
 //Feature section
 .feature-section {
+  margin-top: 40px;
 
   span.dashicons {
 	width: 16px;
