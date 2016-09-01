@@ -234,13 +234,6 @@ function give_customers_view( $customer ) {
 
 					<table class="widefat">
 						<tbody>
-						<tr>
-							<th scope="col"><label for="tablecell"><?php esc_html_e( 'Email:', 'give' ); ?></label></th>
-							<td class="row-title">
-								<span class="customer-name info-item edit-item"><input size="20" data-key="email" name="customerinfo[email]" type="text" value="<?php echo $customer->email; ?>" placeholder="<?php esc_attr_e( 'Donor Email', 'give' ); ?>" /></span>
-								<span class="customer-email info-item editable" data-key="email"><?php echo $customer->email; ?></span>
-							</td>
-						</tr>
 						<tr class="alternate">
 							<th scope="col"><label for="tablecell"><?php esc_html_e( 'User ID:', 'give' ); ?></label></th>
 							<td class="row-title">
@@ -435,6 +428,74 @@ function give_customers_view( $customer ) {
 		 */
 		do_action( 'give_donor_before_tables', $customer );
 		?>
+
+		<h3><?php _e( 'Donor Emails', 'give' ); ?></h3>
+
+		<?php
+		$primary_email     = $customer->email;
+		$additional_emails = $customer->emails;
+		$all_emails        = array( 'primary' => $primary_email );
+
+		foreach ( $additional_emails as $key => $email ) {
+			if ( $primary_email === $email ) {
+				continue;
+			}
+
+			$all_emails[ $key ] = $email;
+		}
+		?>
+		<table class="wp-list-table widefat striped emails">
+			<thead>
+				<tr>
+					<th><?php _e( 'Email', 'give' ); ?></th>
+					<th><?php _e( 'Actions', 'give' ); ?></th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<?php if ( ! empty( $all_emails ) ) : ?>
+
+					<?php foreach ( $all_emails as $key => $email ) : ?>
+						<tr data-key="<?php echo $key; ?>">
+							<td>
+								<?php echo $email; ?>
+								<?php if ( 'primary' === $key ) : ?>
+									<span class="dashicons dashicons-star-filled primary-email-icon"></span>
+								<?php endif; ?>
+							</td>
+							<td>
+								<?php if ( 'primary' !== $key ) : ?>
+									<?php
+									$base_url    = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $customer->id );
+									$promote_url = wp_nonce_url( add_query_arg( array( 'email' => rawurlencode( $email ), 'give_action' => 'customer-primary-email'), $base_url ), 'give-set-customer-primary-email' );
+									$remove_url  = wp_nonce_url( add_query_arg( array( 'email' => rawurlencode( $email ), 'give_action' => 'customer-remove-email' ), $base_url ), 'give-remove-customer-email'      );
+									?>
+									<a href="<?php echo $promote_url; ?>"><?php _e( 'Make Primary', 'give' ); ?></a>
+									&nbsp;|&nbsp;
+									<a href="<?php echo $remove_url; ?>" class="delete"><?php _e( 'Remove', 'give' ); ?></a>
+								<?php endif; ?>
+							</td>
+						</tr>
+					<?php endforeach; ?>
+
+					<tr class="add-customer-email-row">
+						<td colspan="2" class="add-customer-email-td">
+							<div class="add-customer-email-wrapper">
+								<input type="hidden" name="customer-id" value="<?php echo $customer->id; ?>" />
+								<?php wp_nonce_field( 'give-add-customer-email', 'add_email_nonce', false, true ); ?>
+								<input type="email" name="additional-email" value="" placeholder="<?php _e( 'Email Address', 'give' ); ?>" />&nbsp;
+								<input type="checkbox" name="make-additional-primary" value="1" id="make-additional-primary" />&nbsp;<label for="make-additional-primary"><?php _e( 'Make Primary', 'give' ); ?></label>
+								<button class="button-secondary edd-add-customer-email" id="add-customer-email"><?php _e( 'Add Email', 'give' ); ?></button>
+								<span class="spinner"></span>
+							</div>
+							<div class="notice-wrap"></div>
+						</td>
+					</tr>
+				<?php else: ?>
+					<tr><td colspan="2"><?php _e( 'No Emails Found', 'easy-digital-downloads' ); ?></td></tr>
+				<?php endif; ?>
+			</tbody>
+		</table>
 
 		<h3><?php esc_html_e( 'Recent Donations', 'give' ); ?></h3>
 		<?php
