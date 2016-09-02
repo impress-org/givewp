@@ -737,6 +737,7 @@ function give_purchase_form_validate_guest_user() {
 		} else {
 			// All is good to go
 			$valid_user_data['user_email'] = $guest_email;
+			$valid_user_data['user_id']    = absint( email_exists( $guest_email ) );
 		}
 	} else {
 		// No email
