@@ -101,6 +101,13 @@ function give_connect_donor_to_wpuser( $user_id, $user_data ){
 		if( $donor->update( array( 'user_id' => $user_id ) ) ) {
 			$donor_note    = __( sprintf( 'WordPress user #%d is connected to #%d', $user_id, $donor->id ), 'give' );
 			$donor->add_note( $donor_note );
+
+			// Update user_id meta in payments.
+			if( ! empty( $donor->payment_ids ) && ( $donations = explode( ',', $donor->payment_ids ) ) ) {
+				foreach ( $donations as $donation  ) {
+					update_post_meta( $donation, '_give_payment_user_id', $user_id );
+				}
+			}
 		}
 	}
 }
