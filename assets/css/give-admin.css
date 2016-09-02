@@ -2095,7 +2095,10 @@ input.give-price-field {
 #customer-tables-wrapper th {
   text-align: center; }
 
-#customer-tables-wrapper .donations tr > th:first-child, #customer-tables-wrapper .donations tr > td:first-child {
+#customer-tables-wrapper .donations tr > th:first-child,
+#customer-tables-wrapper .donations tr > td:first-child,
+#customer-tables-wrapper .emails tr > th:first-child,
+#customer-tables-wrapper .emails tr > td:first-child {
   text-align: left; }
 
 #customer-tables-wrapper .donations tr > td:only-child {

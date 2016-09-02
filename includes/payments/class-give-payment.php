@@ -625,6 +625,11 @@ final class Give_Payment {
 
 			if ( did_action( 'give_pre_process_purchase' ) && is_user_logged_in() ) {
 				$customer = new Give_Customer( get_current_user_id(), true );
+
+				// Customer is logged in but used a different email to purchase with so assign to their customer record
+				if( ! empty( $customer->id ) && $this->email != $customer->email ) {
+					$customer->add_email( $this->email );
+				}
 			}
 
 			if ( empty( $customer->id ) ) {

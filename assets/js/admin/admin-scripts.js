@@ -572,6 +572,7 @@ jQuery.noConflict();
 
         init: function () {
             this.edit_customer();
+            this.add_email();
             this.user_search();
             this.remove_user();
             this.cancel_edit();
@@ -690,8 +691,48 @@ jQuery.noConflict();
                     submit_button.attr('disabled', true);
                 }
             });
-        }
+        },
+        add_email: function() {
+            if( ! $('#add-customer-email').length ) {
+                return;
+            }
 
+            $( document.body ).on( 'click', '#add-customer-email', function(e) {
+                e.preventDefault();
+                var button  = $(this);
+                var wrapper = button.parent();
+
+                wrapper.parent().find('.notice-wrap').remove();
+                wrapper.find('.spinner').css('visibility', 'visible');
+                button.attr('disabled', true);
+
+                var customer_id = wrapper.find('input[name="customer-id"]').val();
+                var email       = wrapper.find('input[name="additional-email"]').val();
+                var primary     = wrapper.find('input[name="make-additional-primary"]').is(':checked');
+                var nonce       = wrapper.find('input[name="add_email_nonce"]').val();
+
+                var postData = {
+                    give_action:  'add_donor_email',
+                    customer_id: customer_id,
+                    email:       email,
+                    primary:     primary,
+                    _wpnonce:    nonce
+                };
+
+                $.post( ajaxurl, postData, function( response ) {
+
+                    if ( true === response.success ) {
+                        window.location.href = response.redirect;
+                    } else {
+                        button.attr('disabled', false);
+                        wrapper.after('<div class="notice-wrap"><div class="notice notice-error inline"><p>' + response.message + '</p></div></div>');
+                        wrapper.find('.spinner').css('visibility', 'hidden');
+                    }
+
+                }, 'json');
+
+            });
+        },
     };
 
     /**
