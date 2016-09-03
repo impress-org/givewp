@@ -3801,7 +3801,7 @@ msgstr "Kreditkarteninformation"
 
 #: includes/forms/template.php:530
 msgid "This is a secure SSL encrypted payment."
-msgstr "Die ist eine SSL-gesicherte Zahlung."
+msgstr "Dies ist eine SSL-gesicherte Zahlung."
 
 #: includes/forms/template.php:535
 msgid "Card Number"
