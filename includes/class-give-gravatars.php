@@ -377,7 +377,6 @@ class Give_Donors_Gravatars {
 			),
 			array(
 				'name' => esc_html__( 'Minimum Unique Donations Required', 'give' ),
-				/* translators: %s: form singular label */
 				'desc' => esc_html__( 'The minimum number of unique donations a form must have before the Gravatars are shown. Leave blank for no minimum.', 'give' ),
 				'type' => 'text_small',
 				'id'   => 'give_donors_gravatars_min_purchases_required',
