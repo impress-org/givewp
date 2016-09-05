@@ -140,13 +140,7 @@ class Give_Forms_Widget extends WP_Widget{
 		// Widget: Give Form
 
 		?><p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'id' ) ); ?>"><?php
-				printf(
-					/* translators: %s: form singular label */
-					esc_html__( 'Give %s:', 'give' ),
-					give_get_forms_label_singular()
-				);
-			?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'id' ) ); ?>"><?php esc_html_e( 'Give Form:', 'give' ); ?></label>
 			<select class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'id' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'id' ) ); ?>">
 				<option value="current"><?php esc_html_e( '- Select -', 'give' ); ?></option>
 				<?php foreach ( $give_forms as $give_form ) { ?>

@@ -378,7 +378,7 @@ class Give_Donors_Gravatars {
 			array(
 				'name' => esc_html__( 'Minimum Unique Donations Required', 'give' ),
 				/* translators: %s: form singular label */
-				'desc' => sprintf( esc_html__( 'The minimum number of unique donations a %s must have before the Gravatars are shown. Leave blank for no minimum.', 'give' ), strtolower( give_get_forms_label_singular() ) ),
+				'desc' => esc_html__( 'The minimum number of unique donations a form must have before the Gravatars are shown. Leave blank for no minimum.', 'give' ),
 				'type' => 'text_small',
 				'id'   => 'give_donors_gravatars_min_purchases_required',
 			),
@@ -428,13 +428,10 @@ class Give_Donors_Gravatars_Widget extends WP_Widget {
 	 */
 	public function __construct() {
 
-		$give_label_singular = function_exists( 'give_get_forms_label_singular' ) ? strtolower( give_get_forms_label_singular() ) : null;
-
 		// widget settings
 		$widget_ops = array(
 			'classname'   => 'give-donors-gravatars',
-			/* translators: 1: form singular label 2: form singular label */
-			'description' => sprintf( esc_html__( 'Displays gravatars of people who have donated using your your %1$s. Will only show on the single %2$s page.', 'give' ), $give_label_singular, $give_label_singular )
+			'description' => esc_html__( 'Displays gravatars of people who have donated using your your form. Will only show on the single form page.', 'give' ),
 		);
 
 		// widget control settings

@@ -286,15 +286,12 @@ function give_load_admin_scripts( $hook ) {
 		'regenerate_api_key'      => esc_html__( 'Are you sure you wish to regenerate this API key?', 'give' ),
 		'resend_receipt'          => esc_html__( 'Are you sure you wish to resend the donation receipt?', 'give' ),
 		'copy_download_link_text' => esc_html__( 'Copy these links to your clipboard and give them to your donor.', 'give' ),
-		/* translators: %s: form singular label */
-		'delete_payment_download' => sprintf( esc_html__( 'Are you sure you wish to delete this %s?', 'give' ), give_get_forms_label_singular() ),
+		'delete_payment_download' => esc_html__( 'Are you sure you wish to delete this form?', 'give' ),
 		'one_price_min'           => esc_html__( 'You must have at least one price.', 'give' ),
 		'one_file_min'            => esc_html__( 'You must have at least one file.', 'give' ),
 		'one_field_min'           => esc_html__( 'You must have at least one field.', 'give' ),
-		/* translators: %s: form singular label */
-		'one_option'              => sprintf( esc_html__( 'Choose a %s', 'give' ), give_get_forms_label_singular() ),
-		/* translators: %s: form plural label */
-		'one_or_more_option'      => sprintf( esc_html__( 'Choose one or more %s', 'give' ), give_get_forms_label_plural() ),
+		'one_option'              => esc_html__( 'Choose a form', 'give' ),
+		'one_or_more_option'      => esc_html__( 'Choose one or more forms', 'give' ),
 		'numeric_item_price'      => esc_html__( 'Item price must be numeric.', 'give' ),
 		'numeric_quantity'        => esc_html__( 'Quantity must be numeric.', 'give' ),
 		'currency_sign'           => give_currency_filter( '' ),
@@ -302,8 +299,7 @@ function give_load_admin_scripts( $hook ) {
 		'currency_decimals'       => give_currency_decimal_filter( give_get_price_decimals() ),
 		'new_media_ui'            => apply_filters( 'give_use_35_media_ui', 1 ),
 		'remove_text'             => esc_html__( 'Remove', 'give' ),
-		/* translators: %s: form plural label */
-		'type_to_search'          => sprintf( esc_html__( 'Type to search %s', 'give' ), give_get_forms_label_plural() ),
+		'type_to_search'          => esc_html__( 'Type to search forms', 'give' ),
 		'batch_export_no_class'   => esc_html__( 'You must choose a method.', 'give' ),
 		'batch_export_no_reqs'    => esc_html__( 'Required fields not completed.', 'give' ),
 		'reset_stats_warn'        => __( 'Are you sure you want to reset Give? This process is <strong><em>not reversible</em></strong> and will delete all data regardless of test or live mode. Please be sure you have a recent backup before proceeding.', 'give' ),
