@@ -47,6 +47,19 @@ var source_paths = {
  ------------------------------------- */
 gulp.task('admin_styles', function () {
     gulp.src(source_paths.admin_styles)
+        .pipe(sass())
+        .pipe(rtlcss())
+        .pipe(rename('give-admin-rtl.css'))
+        .pipe(gulp.dest('./assets/css'))
+        .pipe(rename('give-admin-rtl.min.css'))
+        .pipe(cssmin())
+        .pipe(gulp.dest('./assets/css'))
+        .pipe(notify({
+            message: 'Admin RTL styles task complete!',
+            onLast: true //only notify on completion of task
+        }));
+
+    gulp.src(source_paths.admin_styles)		
         .pipe(sourcemaps.init())
         .pipe(sass({
             errLogToConsole: true
@@ -68,6 +81,19 @@ gulp.task('admin_styles', function () {
  ------------------------------------- */
 gulp.task('frontend_styles', function () {
     gulp.src(source_paths.frontend_styles)
+        .pipe(sass())
+        .pipe(rtlcss())
+        .pipe(rename('give-rtl.css'))
+        .pipe(gulp.dest('./templates'))
+        .pipe(rename('give-rtl.min.css'))
+        .pipe(cssmin())
+        .pipe(gulp.dest('./templates'))
+        .pipe(notify({
+            message: 'Frontend RTL styles task complete!',
+            onLast: true //only notify on completion of task
+        }));
+
+	gulp.src(source_paths.frontend_styles)
         .pipe(sourcemaps.init()) //start up sourcemapping
         .pipe(sass({
             errLogToConsole: true
