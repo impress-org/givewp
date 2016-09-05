@@ -16,6 +16,7 @@ var bower = require('gulp-bower'),
     cssmin = require('gulp-cssmin'),
     notify = require('gulp-notify'),
     rename = require('gulp-rename'),
+    rtlcss = require('gulp-rtlcss');
     sass = require('gulp-sass'),
     sourcemaps = require('gulp-sourcemaps'),
     uglify = require('gulp-uglify'),
@@ -61,6 +62,14 @@ gulp.task('admin_styles', function () {
             message: 'Admin styles task complete!',
             onLast: true //only notify on completion of task
         }));
+});
+
+gulp.task('rtl', function () {
+    return gulp.src(['./assets/css/*.css'])
+        .pipe(gulp.dest('./assets/css')) // Output LTR stylesheets. 
+        .pipe(rtlcss()) // Convert to RTL. 
+        .pipe(rename({ suffix: '-rtl' })) // Append "-rtl" to the filename. 
+        .pipe(gulp.dest('./assets/css')); // Output RTL stylesheets. 
 });
 
 /* Frontend SCSS Task
