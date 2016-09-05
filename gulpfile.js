@@ -64,14 +64,6 @@ gulp.task('admin_styles', function () {
         }));
 });
 
-gulp.task('rtl', function () {
-    return gulp.src(['./assets/css/*.css'])
-        .pipe(gulp.dest('./assets/css')) // Output LTR stylesheets. 
-        .pipe(rtlcss()) // Convert to RTL. 
-        .pipe(rename({ suffix: '-rtl' })) // Append "-rtl" to the filename. 
-        .pipe(gulp.dest('./assets/css')); // Output RTL stylesheets. 
-});
-
 /* Frontend SCSS Task
  ------------------------------------- */
 gulp.task('frontend_styles', function () {
