@@ -521,7 +521,7 @@ class GIVE_CLI_COMMAND {
 		self::$counter = 1;
 
 		foreach ( $donations['donations'] as $key => $donation ) {
-			$this->color_main_heading( sprintf( __( '%1$s. Payment #%2$s', 'give' ), self::$counter, $donation['ID'] ), 'Y' );
+			$this->color_main_heading( sprintf( __( '%1$s. Donation #%2$s', 'give' ), self::$counter, $donation['ID'] ), 'Y' );
 			self::$counter++;
 
 			foreach ( $donation as $column => $data ) {
