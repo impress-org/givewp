@@ -89,7 +89,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 				if ( ! empty( $goal_option ) && $goal_option === 'yes' ) {
 					echo give_goal( $post_id, false );
 				} else {
-					echo esc_html__( 'No Goal Set', 'give' );
+					esc_html_e( 'No Goal Set', 'give' );
 				}
 
 				echo '<input type="hidden" class="formgoal-' . $post_id . '" value="' . give_get_form_goal( $post_id ) . '" />';

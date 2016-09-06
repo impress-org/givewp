@@ -393,7 +393,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 	//Set Price, No Custom Amount Allowed means hidden price field
 	if ( $allow_custom_amount == 'no' ) {
 		?>
-		<label class="give-hidden" for="give-amount-hidden"><?php echo esc_html__( 'Donation Amount:', 'give' ); ?></label>
+		<label class="give-hidden" for="give-amount-hidden"><?php esc_html_e( 'Donation Amount:', 'give' ); ?></label>
 		<input id="give-amount" class="give-amount-hidden" type="hidden" name="give-amount" value="<?php echo $default_amount; ?>" required>
 		<div class="set-price give-donation-amount form-row-wide">
 			<?php if ( $currency_position == 'before' ) {
@@ -413,7 +413,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 				<?php if ( $currency_position == 'before' ) {
 					echo $currency_output;
 				} ?>
-				<label class="give-hidden" for="give-amount"><?php echo esc_html__( 'Donation Amount:', 'give' ); ?></label>
+				<label class="give-hidden" for="give-amount"><?php esc_html_e( 'Donation Amount:', 'give' ); ?></label>
 				<input class="give-text-input give-amount-top" id="give-amount" name="give-amount" type="tel" placeholder="" value="<?php echo $default_amount; ?>" autocomplete="off">
 				<?php if ( $currency_position == 'after' ) {
 					echo $currency_output;
