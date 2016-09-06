@@ -33,8 +33,8 @@ class Tests_Post_Types extends Give_Unit_Test_Case {
 		$this->assertEquals( 'Edit Donation Form', $wp_post_types['give_forms']->labels->edit_item );
 		$this->assertEquals( 'View Form', $wp_post_types['give_forms']->labels->view_item );
 		$this->assertEquals( 'Search Forms', $wp_post_types['give_forms']->labels->search_items );
-		$this->assertEquals( 'No forms found', $wp_post_types['give_forms']->labels->not_found );
-		$this->assertEquals( 'No forms found in Trash', $wp_post_types['give_forms']->labels->not_found_in_trash );
+		$this->assertEquals( 'No forms found.', $wp_post_types['give_forms']->labels->not_found );
+		$this->assertEquals( 'No forms found in Trash.', $wp_post_types['give_forms']->labels->not_found_in_trash );
 		$this->assertEquals( 'All Forms', $wp_post_types['give_forms']->labels->all_items );
 		$this->assertEquals( 'Donations', $wp_post_types['give_forms']->labels->menu_name );
 		$this->assertEquals( 'Donation Form', $wp_post_types['give_forms']->labels->name_admin_bar );
@@ -67,8 +67,8 @@ class Tests_Post_Types extends Give_Unit_Test_Case {
 		$this->assertEquals( 'Edit Donation', $wp_post_types['give_payment']->labels->edit_item );
 		$this->assertEquals( 'View Donation', $wp_post_types['give_payment']->labels->view_item );
 		$this->assertEquals( 'Search Donations', $wp_post_types['give_payment']->labels->search_items );
-		$this->assertEquals( 'No Donations Found', $wp_post_types['give_payment']->labels->not_found );
-		$this->assertEquals( 'No Donations found in Trash', $wp_post_types['give_payment']->labels->not_found_in_trash );
+		$this->assertEquals( 'No donations found.', $wp_post_types['give_payment']->labels->not_found );
+		$this->assertEquals( 'No donations found in Trash.', $wp_post_types['give_payment']->labels->not_found_in_trash );
 		$this->assertEquals( 'All Donations', $wp_post_types['give_payment']->labels->all_items );
 		$this->assertEquals( 'Donations', $wp_post_types['give_payment']->labels->menu_name );
 		$this->assertEquals( 'Donation', $wp_post_types['give_payment']->labels->name_admin_bar );

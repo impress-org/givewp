@@ -48,8 +48,8 @@ function give_setup_post_types() {
 		'all_items'          => esc_html__( 'All Forms', 'give' ),
 		'view_item'          => esc_html__( 'View Form', 'give' ),
 		'search_items'       => esc_html__( 'Search Forms', 'give' ),
-		'not_found'          => esc_html__( 'No forms found', 'give' ),
-		'not_found_in_trash' => esc_html__( 'No forms found in Trash', 'give' ),
+		'not_found'          => esc_html__( 'No forms found.', 'give' ),
+		'not_found_in_trash' => esc_html__( 'No forms found in Trash.', 'give' ),
 		'parent_item_colon'  => '',
 		'menu_name'          => apply_filters( 'give_menu_name', esc_html__( 'Donations', 'give' ) ),
 		'name_admin_bar'     => apply_filters( 'give_name_admin_bar_name', esc_html__( 'Donation Form', 'give' ) )
@@ -103,8 +103,8 @@ function give_setup_post_types() {
 		'all_items'          => esc_html__( 'All Donations', 'give' ),
 		'view_item'          => esc_html__( 'View Donation', 'give' ),
 		'search_items'       => esc_html__( 'Search Donations', 'give' ),
-		'not_found'          => esc_html__( 'No Donations Found', 'give' ),
-		'not_found_in_trash' => esc_html__( 'No Donations found in Trash', 'give' ),
+		'not_found'          => esc_html__( 'No donations found.', 'give' ),
+		'not_found_in_trash' => esc_html__( 'No donations found in Trash.', 'give' ),
 		'parent_item_colon'  => '',
 		'menu_name'          => esc_html__( 'Donations', 'give' )
 	);

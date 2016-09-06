@@ -257,7 +257,7 @@ function give_ajax_form_search() {
 
 		$items[] = array(
 			'id'   => 0,
-			'name' => esc_html__( 'No results found', 'give' )
+			'name' => esc_html__( 'No forms found.', 'give' )
 		);
 
 	}
@@ -302,7 +302,7 @@ function give_ajax_donor_search() {
 
 		$donors[] = array(
 			'id'   => 0,
-			'name' => esc_html__( 'No results found', 'give' )
+			'name' => esc_html__( 'No donors found.', 'give' )
 		);
 
 	}
@@ -349,7 +349,7 @@ function give_ajax_search_users() {
 				$user_list .= '<li><a href="#" data-userid="' . esc_attr( $user->ID ) . '" data-login="' . esc_attr( $user->user_login ) . '">' . esc_html( $user->user_login ) . '</a></li>';
 			}
 		} else {
-			$user_list .= '<li>' . esc_html__( 'No users found', 'give' ) . '</li>';
+			$user_list .= '<li>' . esc_html__( 'No users found.', 'give' ) . '</li>';
 		}
 		$user_list .= '</ul>';
 

@@ -176,7 +176,7 @@ class GIVE_CLI_COMMAND {
 			return;
 		} elseif ( empty( $forms['forms'] ) ) {
 
-			WP_CLI::error( __( 'No form found.', 'give' ) );
+			WP_CLI::error( __( 'No forms found.', 'give' ) );
 			return;
 		}
 
@@ -402,7 +402,7 @@ class GIVE_CLI_COMMAND {
 			}
 
 			if ( empty( $donors ) ) {
-				WP_CLI::error( __( 'No donors found', 'give' ) );
+				WP_CLI::error( __( 'No donors found.', 'give' ) );
 				return;
 			}
 
@@ -514,7 +514,7 @@ class GIVE_CLI_COMMAND {
 		}
 
 		if ( empty( $donations ) ) {
-			WP_CLI::error( __( 'No sales found', 'give' ) );
+			WP_CLI::error( __( 'No donations found.', 'give' ) );
 			return;
 		}
 
