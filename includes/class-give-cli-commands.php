@@ -241,7 +241,7 @@ class GIVE_CLI_COMMAND {
 			$is_table_first_row_set = false;
 			$table_column_count = 0;
 
-			WP_CLI::line( $this->color_message( sprintf( __( '%1$d donation forms found', 'give' ), count( $forms['forms'] ) ), '', false ) );
+			WP_CLI::line( $this->color_message( sprintf( __( '%d donation forms found', 'give' ), count( $forms['forms'] ) ), '', false ) );
 
 			foreach ( $forms['forms'] as $index => $form_data ) {
 
