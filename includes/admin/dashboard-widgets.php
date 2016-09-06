@@ -46,7 +46,7 @@ function give_dashboard_sales_widget() {
 	<div class="give-dashboard-widget">
 
 		<div class="give-dashboard-today give-clearfix">
-			<h3 class="give-dashboard-date-today"><?php echo date( 'F j, Y' ); ?></h3>
+			<h3 class="give-dashboard-date-today"><?php echo date( _x( 'F j, Y', 'dashboard widget', 'give' ) ); ?></h3>
 
 			<p class="give-dashboard-happy-day"><?php
 				printf(
