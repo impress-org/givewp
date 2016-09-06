@@ -169,6 +169,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Fix: Switching donation form in transaction view "-2" appears when no form set - https://github.com/WordImpress/Give/issues/877
 * Fix: Styling issue on donor profile editor page - https://github.com/WordImpress/Give/issues/997
 * Fix: Pre-populate First and Last name fields in PayPal Standard - https://github.com/WordImpress/Give/issues/945
+* Fix: Save default value for donation receipt emails for new installs - https://github.com/WordImpress/Give/issues/863
 * Tweak: Payment errors log missing gateway data and payment ID column data - https://github.com/WordImpress/Give/issues/780
 * Tweak: Reverted settings AJAX tabs in preparation for refactor - https://github.com/WordImpress/Give/issues/937
 
