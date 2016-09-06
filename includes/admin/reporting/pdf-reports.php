@@ -133,13 +133,7 @@ function give_generate_pdf( $data ) {
 		endforeach;
 	else:
 		$pdf->SetWidths( array( 280 ) );
-		$title = utf8_decode(
-			sprintf(
-			/* translators: %s: form plural label */
-				esc_html__( 'No %s found.', 'give' ),
-				give_get_forms_label_plural()
-			)
-		);
+		$title = utf8_decode( esc_html__( 'No forms found.', 'give' ) );
 		$pdf->Row( array( $title ) );
 	endif;
 

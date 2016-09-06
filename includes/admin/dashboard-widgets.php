@@ -126,11 +126,9 @@ function give_dashboard_at_a_glance_widget( $items ) {
 	if ( $num_posts && $num_posts->publish ) {
 
 		$text = sprintf(
-		/* translators: 1: number of posts published 2: forms singular label 3: forms plural label */
-			_n( '%1$s Give %2$s', '%1$s Give %3$s', $num_posts->publish, 'give' ),
-			$num_posts->publish,
-			give_get_forms_label_singular(),
-			give_get_forms_label_plural()
+			/* translators: %s: number of posts published */
+			_n( '%s Give Form', '%s Give Forms', $num_posts->publish, 'give' ),
+			$num_posts->publish
 		);
 
 		$text = sprintf( $text, number_format_i18n( $num_posts->publish ) );

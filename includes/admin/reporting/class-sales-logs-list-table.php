@@ -109,7 +109,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 		$columns = array(
 			'ID'         => esc_html__( 'Log ID', 'give' ),
 			'user_id'    => esc_html__( 'Donor', 'give' ),
-			'form'       => give_get_forms_label_singular(),
+			'form'       => esc_html__( 'Form', 'give' ),
 			'amount'     => esc_html__( 'Donation Amount', 'give' ),
 			'status'     => esc_html__( 'Status', 'give' ),
 			'payment_id' => esc_html__( 'Transaction ID', 'give' ),
