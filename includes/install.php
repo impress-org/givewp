@@ -49,34 +49,34 @@ function give_install( $network_wide = false ) {
 register_activation_hook( GIVE_PLUGIN_FILE, 'give_install' );
 
 /**
- * Run the Give Install process
+ * Run the Give Install process.
  *
  * @since  1.5
  * @return void
  */
 function give_run_install() {
 
-	global $give_options;
+	$give_options = give_get_settings();
 
-	// Setup the Give Custom Post Types
+	// Setup the Give Custom Post Types.
 	give_setup_post_types();
 
-	// Clear the permalinks
+	// Clear the permalinks.
 	flush_rewrite_rules( false );
 
-	// Add Upgraded From Option
+	// Add Upgraded From Option.
 	$current_version = get_option( 'give_version' );
 	if ( $current_version ) {
 		update_option( 'give_version_upgraded_from', $current_version );
 	}
 
-	// Setup some default options
+	// Setup some default options.
 	$options = array();
 
-	// Checks if the Success Page option exists AND that the page exists
+	// Checks if the Success Page option exists AND that the page exists.
 	if ( ! get_post( give_get_option( 'success_page' ) ) ) {
 
-		// Purchase Confirmation (Success) Page
+		// Donations Confirmation (Success) Page.
 		$success = wp_insert_post(
 			array(
 				'post_title'     => esc_html__( 'Donation Confirmation', 'give' ),
@@ -92,10 +92,10 @@ function give_run_install() {
 		$options['success_page'] = $success;
 	}
 
-	// Checks if the Failure Page option exists AND that the page exists
+	// Checks if the Failure Page option exists AND that the page exists.
 	if ( ! get_post( give_get_option( 'failure_page' ) ) ) {
 
-		// Failed Purchase Page
+		// Failed Donation Page.
 		$failed = wp_insert_post(
 			array(
 				'post_title'     => esc_html__( 'Transaction Failed', 'give' ),
@@ -110,9 +110,9 @@ function give_run_install() {
 		$options['failure_page'] = $failed;
 	}
 
-	// Checks if the History Page option exists AND that the page exists
+	// Checks if the History Page option exists AND that the page exists.
 	if ( ! get_post( give_get_option( 'history_page' ) ) ) {
-		// Purchase History (History) Page
+		// Purchase History (History) Page.
 		$history = wp_insert_post(
 			array(
 				'post_title'     => esc_html__( 'Donation History', 'give' ),
@@ -127,36 +127,35 @@ function give_run_install() {
 		$options['history_page'] = $history;
 	}
 
-	//Fresh Install? Setup Test Mode, Base Country (US), Test Gateway, Currency
+	//Fresh Install? Setup Test Mode, Base Country (US), Test Gateway, Currency.
 	if ( empty( $current_version ) ) {
 		$options['base_country']       = 'US';
 		$options['test_mode']          = 1;
 		$options['currency']           = 'USD';
 		$options['session_lifetime']   = '604800';
 		$options['gateways']['manual'] = 1;
-		$options['default_gateway']    = 'manual'; //default is manual
+		$options['default_gateway']    = 'manual'; //default is manual gateway.
 
-		//Offline Gateway Setup
+		//Offline gateway setup.
 		$options['gateways']['offline']             = 1;
 		$options['global_offline_donation_content'] = give_get_default_offline_donation_content();
 
-		//Emails
+		//Default number of decimals.
+		$options['number_decimals'] = 2;
+
+		//Default donation notification email.
 		$options['donation_notification'] = give_get_default_donation_notification_email();
 
-		//Number of Decimals
-		$options['number_decimals'] = 2;
+		//Default email receipt message.
+		$options['donation_receipt'] = give_get_default_donation_receipt_email();
+
 	}
 
-	// Populate some default values
+	// Populate the default values.
 	update_option( 'give_settings', array_merge( $give_options, $options ) );
 	update_option( 'give_version', GIVE_VERSION );
 
-	//Update Version Number
-	if ( $current_version ) {
-		update_option( 'give_version_upgraded_from', $current_version );
-	}
-
-	// Create Give roles
+	// Create Give roles.
 	$roles = new Give_Roles();
 	$roles->add_roles();
 	$roles->add_caps();
@@ -164,21 +163,21 @@ function give_run_install() {
 	$api = new Give_API();
 	update_option( 'give_default_api_version', 'v' . $api->get_version() );
 
-	// Create the customers databases
+	// Create the customers databases.
 	@Give()->customers->create_table();
 	@Give()->customer_meta->create_table();
 
-	// Check for PHP Session support, and enable if available
+	// Check for PHP Session support, and enable if available.
 	Give()->session->use_php_sessions();
 
-	// Add a temporary option to note that Give pages have been created
+	// Add a temporary option to note that Give pages have been created.
 	set_transient( '_give_installed', $options, 30 );
 
 	if ( ! $current_version ) {
 
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrade-functions.php';
 
-		// When new upgrade routines are added, mark them as complete on fresh install
+		// When new upgrade routines are added, mark them as complete on fresh install.
 		$upgrade_routines = array(
 			'upgrade_give_user_caps_cleanup',
 			'upgrade_give_payment_customer_id',
@@ -190,12 +189,12 @@ function give_run_install() {
 		}
 	}
 
-	// Bail if activating from network, or bulk
+	// Bail if activating from network, or bulk.
 	if ( is_network_admin() || isset( $_GET['activate-multi'] ) ) {
 		return;
 	}
 
-	// Add the transient to redirect
+	// Add the transient to redirect.
 	set_transient( '_give_activation_redirect', true, 30 );
 
 }
