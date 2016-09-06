@@ -120,6 +120,8 @@ function give_process_paypal_purchase( $purchase_data ) {
 		// Setup PayPal arguments
 		$paypal_args = array(
 			'business'      => give_get_option( 'paypal_email', false ),
+			'first_name'    => $purchase_data['user_info']['first_name'],
+			'last_name'     => $purchase_data['user_info']['last_name'],
 			'email'         => $purchase_data['user_email'],
 			'invoice'       => $purchase_data['purchase_key'],
 			'amount'        => $purchase_data['price'],
@@ -141,6 +143,7 @@ function give_process_paypal_purchase( $purchase_data ) {
 			'bn'            => 'givewp_SP'
 		);
 
+		//Add user address if present.
 		if ( ! empty( $purchase_data['user_info']['address'] ) ) {
 			$paypal_args['address1'] = $purchase_data['user_info']['address']['line1'];
 			$paypal_args['address2'] = $purchase_data['user_info']['address']['line2'];
@@ -148,6 +151,7 @@ function give_process_paypal_purchase( $purchase_data ) {
 			$paypal_args['country']  = $purchase_data['user_info']['address']['country'];
 		}
 
+		//Donations or regular transactions?
 		if ( give_get_option( 'paypal_button_type' ) === 'standard' ) {
 			$paypal_extra_args = array(
 				'cmd' => '_xclick',
@@ -331,7 +335,7 @@ function give_process_paypal_ipn() {
 add_action( 'give_verify_paypal_ipn', 'give_process_paypal_ipn' );
 
 /**
- * Process web accept (one time) payment IPNs
+ * Process web accept (one time) payment IPNs.
  *
  * @since 1.0
  *
@@ -380,7 +384,7 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 		return;
 	}
 
-	// Verify payment currency
+	// Verify payment currency.
 	if ( $currency_code != strtolower( $payment_meta['currency'] ) ) {
 
 		give_record_gateway_error(
@@ -400,10 +404,10 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 
 	if ( ! give_get_payment_user_email( $payment_id ) ) {
 
-		// No email associated with purchase, so store from PayPal
+		// No email associated with donation, so store email from PayPal.
 		give_update_payment_meta( $payment_id, '_give_payment_user_email', $data['payer_email'] );
 
-		// Setup and store the donors's details
+		// Setup and store the donors's details.
 		$address            = array();
 		$address['line1']   = ! empty( $data['address_street'] ) ? sanitize_text_field( $data['address_street'] ) : false;
 		$address['city']    = ! empty( $data['address_city'] ) ? sanitize_text_field( $data['address_city'] ) : false;
