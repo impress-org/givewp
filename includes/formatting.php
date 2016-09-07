@@ -512,3 +512,19 @@ function give_date_format ( $date_context = '' ) {
 
 	return apply_filters( 'give_date_format', $date_format );
 }
+
+/**
+ * Clean variables using sanitize_text_field. Arrays are cleaned recursively.
+ * Non-scalar values are ignored.
+ *
+ * @since  1.8
+ * @param  string|array $var
+ * @return string|array
+ */
+function give_clean( $var ) {
+	if ( is_array( $var ) ) {
+		return array_map( 'give_clean', $var );
+	} else {
+		return is_scalar( $var ) ? sanitize_text_field( $var ) : $var;
+	}
+}
