@@ -586,7 +586,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 											}
 										}
 									?>
-								</select> <?php echo ( $description ) ? $description : ''; ?> <br /><a class="select_all button" href="#"><?php _e( 'Select all', 'give' ); ?></a> <a class="select_none button" href="#"><?php _e( 'Select none', 'give' ); ?></a>
+								</select> <?php echo $description; ?> <br /><a class="select_all button" href="#"><?php _e( 'Select all', 'give' ); ?></a> <a class="select_none button" href="#"><?php _e( 'Select none', 'give' ); ?></a>
 							</td>
 						</tr><?php
 						break;
@@ -598,6 +598,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 							</th>
 							<td class="forminp">
 								<?php give_system_info_callback(); ?>
+								<?php echo $description; ?>
 							</td>
 						</tr><?php
 						break;
@@ -609,6 +610,24 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 							</th>
 							<td class="forminp">
 								<?php give_enabled_gateways_callback( $value ); ?>
+								<?php echo $description; ?>
+							</td>
+						</tr><?php
+						break;
+
+					case 'wysiwyg' :
+						// Get option value.
+						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
+
+						// Get editor settings.
+						$editor_settings = ! empty( $value['options'] ) ? $value['options'] : array();
+						?><tr valign="top">
+							<th scope="row" class="titledesc">
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?></label>
+							</th>
+							<td class="forminp">
+								<?php wp_editor( $option_value, $value['id'], $editor_settings ); ?>
+								<?php echo $description; ?>
 							</td>
 						</tr><?php
 						break;
