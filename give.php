@@ -300,6 +300,7 @@ if ( ! class_exists( 'Give' ) ) :
 		private function includes() {
 			global $give_options;
 
+			require_once GIVE_PLUGIN_DIR . 'includes/admin/class-admin-settings.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/class-give-settings.php';
 			$give_options = give_get_settings();
 
@@ -368,7 +369,6 @@ if ( ! class_exists( 'Give' ) ) :
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-footer.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/welcome.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/class-admin-settings.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/class-admin-notices.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/class-api-keys-table.php';
