@@ -985,7 +985,7 @@ function give_enabled_gateways_callback( $field_arr, $saved_values = array() ) {
 	$id       = $field_arr['id'];
 	$gateways = give_get_ordered_payment_gateways( give_get_payment_gateways() );
 
-	echo '<ul class="cmb2-checkbox-list cmb2-list">';
+	echo '<ul class="give-checklist-fields give-payment-gatways-list">';
 
 	foreach ( $gateways as $key => $option ) :
 

@@ -15,7 +15,7 @@ jQuery(document).ready(function ($) {
 	/**
 	 *  Sortable payment gateways
 	 */
-	var $payment_gateways = jQuery( '.cmb-type-enabled-gateways ul', '#cmb2-metabox-payment_gateways' );
+	var $payment_gateways = jQuery( 'ul.give-payment-gatways-list' );
 	if( $payment_gateways.length ){
 		$payment_gateways.sortable();
 	}
