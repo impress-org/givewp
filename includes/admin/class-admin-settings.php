@@ -327,16 +327,17 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?></label>
 							</th>
 							<td class="forminp forminp-<?php echo sanitize_title( $value['type'] ) ?>">
-								<?php echo $description; ?>
-
 								<textarea
 									name="<?php echo esc_attr( $value['id'] ); ?>"
 									id="<?php echo esc_attr( $value['id'] ); ?>"
 									style="<?php echo esc_attr( $value['css'] ); ?>"
 									class="<?php echo esc_attr( $value['class'] ); ?>"
+									rows="10"
+									cols="60"
 									placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
 									<?php echo implode( ' ', $custom_attributes ); ?>
 									><?php echo esc_textarea( $option_value );  ?></textarea>
+								<?php echo $description; ?>
 							</td>
 						</tr><?php
 						break;
