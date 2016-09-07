@@ -41,26 +41,26 @@ class Give_Plugin_Settings {
 	 */
 	public function __construct() {
 
-		add_action( 'admin_init', array( $this, 'init' ) );
-
-		//Customize CMB2 URL
-		add_filter( 'cmb2_meta_box_url', array( $this, 'give_update_cmb_meta_box_url' ) );
-
-		//Custom CMB2 Settings Fields
-		add_action( 'cmb2_render_give_title', 'give_title_callback', 10, 5 );
-		add_action( 'cmb2_render_give_description', 'give_description_callback', 10, 5 );
-		add_action( 'cmb2_render_enabled_gateways', 'give_enabled_gateways_callback', 10, 5 );
-		add_action( 'cmb2_render_default_gateway', 'give_default_gateway_callback', 10, 5 );
-		add_action( 'cmb2_render_email_preview_buttons', 'give_email_preview_buttons_callback', 10, 5 );
-		add_action( 'cmb2_render_system_info', 'give_system_info_callback', 10, 5 );
-		add_action( 'cmb2_render_api', 'give_api_callback', 10, 5 );
-		add_action( 'cmb2_render_license_key', 'give_license_key_callback', 10, 5 );
-		add_action( 'admin_notices', array( $this, 'settings_notices' ) );
-
-		// Include CMB CSS in the head to avoid FOUC
-		add_action( 'admin_print_styles-give_forms_page_give-settings', array( 'CMB2_hookup', 'enqueue_cmb_css' ) );
-
-		add_filter( 'cmb2_get_metabox_form_format', array( $this, 'give_modify_cmb2_form_output' ), 10, 3 );
+//		add_action( 'admin_init', array( $this, 'init' ) );
+//
+//		//Customize CMB2 URL
+//		add_filter( 'cmb2_meta_box_url', array( $this, 'give_update_cmb_meta_box_url' ) );
+//
+//		//Custom CMB2 Settings Fields
+//		add_action( 'cmb2_render_give_title', 'give_title_callback', 10, 5 );
+//		add_action( 'cmb2_render_give_description', 'give_description_callback', 10, 5 );
+//		add_action( 'cmb2_render_enabled_gateways', 'give_enabled_gateways_callback', 10, 5 );
+//		add_action( 'cmb2_render_default_gateway', 'give_default_gateway_callback', 10, 5 );
+//		add_action( 'cmb2_render_email_preview_buttons', 'give_email_preview_buttons_callback', 10, 5 );
+//		add_action( 'cmb2_render_system_info', 'give_system_info_callback', 10, 5 );
+//		add_action( 'cmb2_render_api', 'give_api_callback', 10, 5 );
+//		add_action( 'cmb2_render_license_key', 'give_license_key_callback', 10, 5 );
+//		add_action( 'admin_notices', array( $this, 'settings_notices' ) );
+//
+//		// Include CMB CSS in the head to avoid FOUC
+//		add_action( 'admin_print_styles-give_forms_page_give-settings', array( 'CMB2_hookup', 'enqueue_cmb_css' ) );
+//
+//		add_filter( 'cmb2_get_metabox_form_format', array( $this, 'give_modify_cmb2_form_output' ), 10, 3 );
 
 	}
 
@@ -1449,19 +1449,19 @@ function give_hook_callback( $args ) {
 	do_action( "give_{$id}" );
 
 }
-
-/**
- * Get the CMB2 bootstrap!
- *
- * Checks to see if CMB2 plugin is installed first the uses included CMB2.
- * We can still use it even it it's not active.
- * This prevents fatal error conflicts with other themes and users of the CMB2 WP.org plugin.
- */
-
-if ( file_exists( WP_PLUGIN_DIR . '/cmb2/init.php' ) && ! defined( 'CMB2_LOADED' ) ) {
-	require_once WP_PLUGIN_DIR . '/cmb2/init.php';
-} elseif ( file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/cmb2/init.php' ) && ! defined( 'CMB2_LOADED' ) ) {
-	require_once GIVE_PLUGIN_DIR . '/includes/libraries/cmb2/init.php';
-} elseif ( file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/CMB2/init.php' ) && ! defined( 'CMB2_LOADED' ) ) {
-	require_once GIVE_PLUGIN_DIR . '/includes/libraries/CMB2/init.php';
-}
+//
+///**
+// * Get the CMB2 bootstrap!
+// *
+// * Checks to see if CMB2 plugin is installed first the uses included CMB2.
+// * We can still use it even it it's not active.
+// * This prevents fatal error conflicts with other themes and users of the CMB2 WP.org plugin.
+// */
+//
+//if ( file_exists( WP_PLUGIN_DIR . '/cmb2/init.php' ) && ! defined( 'CMB2_LOADED' ) ) {
+//	require_once WP_PLUGIN_DIR . '/cmb2/init.php';
+//} elseif ( file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/cmb2/init.php' ) && ! defined( 'CMB2_LOADED' ) ) {
+//	require_once GIVE_PLUGIN_DIR . '/includes/libraries/cmb2/init.php';
+//} elseif ( file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/CMB2/init.php' ) && ! defined( 'CMB2_LOADED' ) ) {
+//	require_once GIVE_PLUGIN_DIR . '/includes/libraries/CMB2/init.php';
+//}
