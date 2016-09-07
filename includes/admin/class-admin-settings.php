@@ -255,12 +255,12 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					// Section Titles
 					case 'title':
 						if ( ! empty( $value['title'] ) ) {
-							echo '<div class="give-section-header give-section-section-'. $value['id'].'"><h2>' . self::get_field_title( $value ) . '</h2><hr></div>';
+							echo '<div class="give-setting-tab-header give-setting-tab-header-'. $value['id'].'"><h2>' . self::get_field_title( $value ) . '</h2><hr></div>';
 						}
 						if ( ! empty( $value['desc'] ) ) {
 							echo wpautop( wptexturize( wp_kses_post( $value['desc'] ) ) );
 						}
-						echo '<table class="form-table give-section-body give-section-body-'. $value['id'].'">'. "\n\n";
+						echo '<table class="form-table give-setting-tab-body give-setting-tab-body-'. $value['id'].'">'. "\n\n";
 						if ( ! empty( $value['id'] ) ) {
 							do_action( 'give_settings_' . sanitize_title( $value['id'] ) );
 						}
