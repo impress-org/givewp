@@ -142,7 +142,7 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 					array(
 						'title' => $setting_fields['give_title'],
 						'type' => 'title',
-						'desc' => $setting_fields['desc'],
+						'desc' => ! empty( $setting_fields['desc'] ) ? $setting_fields['desc'] : '',
 						'id' => $setting_fields['id']
 					)
 				);
