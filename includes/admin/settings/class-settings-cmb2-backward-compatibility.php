@@ -75,7 +75,8 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 
 						// Modify cmb2 setting fields.
 						switch ( $field['type'] ) {
-							case 'text':
+							case 'text' :
+							case 'file' :
 								$field['css'] = 'width:25em;';
 								break;
 

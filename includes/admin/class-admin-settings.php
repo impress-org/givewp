@@ -484,6 +484,35 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						}
 						break;
 
+					case 'file' :
+						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
+						?><tr valign="top">
+							<th scope="row" class="titledesc">
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?></label>
+							</th>
+							<td class="forminp">
+								<div class="give-field-wrap">
+									<label for="<?php echo $value['id'] ?>">
+										<input
+											name="<?php echo esc_attr( $value['id'] ); ?>"
+											id="<?php echo esc_attr( $value['id'] ); ?>"
+											type="text"
+											class="<?php echo esc_attr( isset( $value['class'] ) ? $value['class'] : '' ); ?>"
+											value="<?php echo $option_value; ?>"
+											style="<?php echo esc_attr( $value['css'] ); ?>"
+											<?php echo implode( ' ', $custom_attributes ); ?>
+										/>&nbsp;&nbsp;&nbsp;&nbsp;<input class="give-upload-button button" type="button" value="<?php echo esc_html__( 'Add or Upload File', 'give' ); ?>">
+										<?php echo $description ?>
+										<div class="give-image-thumb<?php echo ! $option_value ? ' give-hidden' : ''; ?>">
+											<span class="give-delete-image-thumb dashicons dashicons-no-alt"></span>
+											<img src="<?php echo $option_value; ?>" alt="">
+										</div>
+									</label>
+								</div>
+							</td>
+						</tr><?php
+						break;
+
 					case 'system_info' :
 						?><tr valign="top">
 							<th scope="row" class="titledesc">

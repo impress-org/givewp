@@ -286,6 +286,9 @@ function give_load_admin_scripts( $hook ) {
 		'regenerate_api_key'      => esc_html__( 'Are you sure you wish to regenerate this API key?', 'give' ),
 		'resend_receipt'          => esc_html__( 'Are you sure you wish to resend the donation receipt?', 'give' ),
 		'copy_download_link_text' => esc_html__( 'Copy these links to your clipboard and give them to your donor.', 'give' ),
+		/* translators: %s: Upload image/file button & frame */
+		'logo'                   => esc_html__( 'Logo', 'give' ),
+		'use_this_image'         => esc_html__( 'Use this image', 'give' ),
 		/* translators: %s: form singular label */
 		'delete_payment_download' => sprintf( esc_html__( 'Are you sure you wish to delete this %s?', 'give' ), give_get_forms_label_singular() ),
 		'one_price_min'           => esc_html__( 'You must have at least one price.', 'give' ),

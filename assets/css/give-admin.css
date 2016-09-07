@@ -1358,6 +1358,20 @@ p.give-setting-field-desc {
   font-style: italic;
   font-size: 13px !important; }
 
+.give-image-thumb {
+  position: relative;
+  margin-top: 14px; }
+  .give-image-thumb span.give-delete-image-thumb {
+    position: absolute;
+    background: red;
+    color: white;
+    border-radius: 30px;
+    left: -10px;
+    top: -10px; }
+  .give-image-thumb img {
+    max-width: 400px;
+    border: 4px solid white; }
+
 .cmb-type-give-title label,
 .give-section-header h2 {
   float: left;

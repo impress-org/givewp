@@ -13,11 +13,85 @@ jQuery.noConflict();
 jQuery(document).ready(function ($) {
 
 	/**
-	 *  Sortable payment gateways
+	 *  Sortable payment gateways.
 	 */
 	var $payment_gateways = jQuery( 'ul.give-payment-gatways-list' );
 	if( $payment_gateways.length ){
 		$payment_gateways.sortable();
 	}
+
+	/**
+	 * Upload file button.
+	 */
+
+	// Set all variables to be used in scope
+	var $upload_image_frame,
+		$upload_file_btn = $('.give-upload-button'),
+		$active_upload_file_btn;
+
+	// ADD IMAGE LINK
+	$upload_file_btn.on( 'click', function( event ){
+
+		event.preventDefault();
+
+		// Cache active upload button selector.
+		$active_upload_file_btn = $(this);
+
+		// If the media $upload_image_frame already exists, reopen it.
+		if ( $upload_image_frame ) {
+			$upload_image_frame.open();
+			return;
+		}
+
+		// Create a new media $upload_image_frame
+		$upload_image_frame = wp.media({
+			title: give_vars.logo,
+			button: {
+				text: give_vars.use_this_image
+			},
+			multiple: false  // Set to true to allow multiple files to be selected
+		});
+
+		// When an image is selected in the media $upload_image_frame...
+		$upload_image_frame.on( 'select', function() {
+
+			// Get media attachment details from the $upload_image_frame state
+			var attachment = $upload_image_frame.state().get('selection').first().toJSON(),
+				$parent = $active_upload_file_btn.parents('.give-field-wrap'),
+				$image_container = $('.give-image-thumb', $parent );
+
+			// Send the attachment URL to our custom image input field.
+			$image_container.find('img').attr( 'src', attachment.url );
+
+			// Send the attachment id to our hidden input
+			$('input[type="text"]', $parent ).val( attachment.url );
+
+			// Hide the add image link
+			$image_container.removeClass( 'give-hidden' );
+		});
+
+		// Finally, open the modal on click
+		$upload_image_frame.open();
+	});
+
+
+	// DELETE IMAGE LINK
+	$( 'span.give-delete-image-thumb', '.give-image-thumb').on( 'click', function( event ){
+
+		event.preventDefault();
+
+		var $parent = $(this).parents('.give-field-wrap'),
+			$image_container = $(this).parent(),
+			$image_input_field = $('input[type="text"]', $parent);
+
+		// Clear out the preview image
+		$image_container.addClass( 'give-hidden' );
+
+		// Remove image link from input field.
+		$image_input_field.val('');
+
+		// Hide the add image link
+		$( 'img', $image_container ).attr( 'src', '' );
+	});
 
 });
