@@ -273,9 +273,11 @@ jQuery.noConflict();
             var email_access = $('#email_access');
             email_access.on('change', function () {
                 if (email_access.prop('checked')) {
-                    $('.cmb2-id-recaptcha-key, .cmb2-id-recaptcha-secret').show();
+                    $('#recaptcha_key').parents('tr').show();
+                    $('#recaptcha_secret').parents('tr').show();
                 } else {
-                    $('.cmb2-id-recaptcha-key, .cmb2-id-recaptcha-secret').hide();
+                    $('#recaptcha_key').parents('tr').hide();
+                    $('#recaptcha_secret').parents('tr').hide();
                 }
             }).change();
         },
