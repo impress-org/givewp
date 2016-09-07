@@ -255,7 +255,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					// Section Titles
 					case 'title':
 						if ( ! empty( $value['title'] ) ) {
-							echo '<div class="give-section-header"><h2>' . esc_html( $value['title'] ) . '</h2><hr></div>';
+							echo '<div class="give-section-header"><h2>' . self::get_field_title( $value ) . '</h2><hr></div>';
 						}
 						if ( ! empty( $value['desc'] ) ) {
 							echo wpautop( wptexturize( wp_kses_post( $value['desc'] ) ) );
@@ -295,7 +295,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 						?><tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
 							</th>
 							<td class="forminp forminp-<?php echo sanitize_title( $value['type'] ) ?>">
 								<?php
@@ -324,7 +324,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 						?><tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
 							</th>
 							<td class="forminp forminp-<?php echo sanitize_title( $value['type'] ) ?>">
 								<textarea
@@ -350,7 +350,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 						?><tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
 							</th>
 							<td class="forminp forminp-<?php echo sanitize_title( $value['type'] ) ?>">
 								<select
@@ -388,7 +388,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 						?><tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
 							</th>
 							<td class="forminp forminp-<?php echo sanitize_title( $value['type'] ) ?> <?php echo ( ! empty( $value['class'] ) ? $value['class'] : '' ); ?>">
 								<fieldset>
@@ -441,7 +441,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						if ( ! isset( $value['checkboxgroup'] ) || 'start' == $value['checkboxgroup'] ) {
 							?>
 								<tr valign="top" class="<?php echo esc_attr( implode( ' ', $visbility_class ) ); ?>">
-									<th scope="row" class="titledesc"><?php echo esc_html( $value['title'] ) ?></th>
+									<th scope="row" class="titledesc"><?php echo self::get_field_title( $value ) ?></th>
 									<td class="forminp forminp-checkbox">
 										<fieldset>
 							<?php
@@ -453,7 +453,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 						if ( ! empty( $value['title'] ) ) {
 							?>
-								<legend class="screen-reader-text"><span><?php echo esc_html( $value['title'] ) ?></span></legend>
+								<legend class="screen-reader-text"><span><?php echo self::get_field_title( $value ) ?></span></legend>
 							<?php
 						}
 
@@ -488,7 +488,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
 						?><tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
 							</th>
 							<td class="forminp">
 								<div class="give-field-wrap">
@@ -516,7 +516,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					case 'system_info' :
 						?><tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
 							</th>
 							<td class="forminp">
 								<?php give_system_info_callback(); ?>
@@ -529,7 +529,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
 						?><tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
 							</th>
 							<td class="forminp">
 								<?php give_default_gateway_callback( $value, $option_value ); ?>
@@ -542,7 +542,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
 						?><tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
 							</th>
 							<td class="forminp">
 								<?php give_enabled_gateways_callback( $value, $option_value ); ?>
@@ -559,7 +559,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						$editor_settings = ! empty( $value['options'] ) ? $value['options'] : array();
 						?><tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
 							</th>
 							<td class="forminp">
 								<?php wp_editor( $option_value, $value['id'], $editor_settings ); ?>
@@ -571,7 +571,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					case 'email_preview_buttons' :
 						?><tr valign="top">
 							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
 							</th>
 							<td class="forminp">
 								<?php give_email_preview_buttons_callback(); ?>
@@ -590,9 +590,8 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		}
 
 		/**
-		 * Helper function to get the formated description and tip HTML for a
-		 * given form field. Plugins can call this when implementing their own custom
-		 * settings types.
+		 * Helper function to get the formated description for a given form field.
+ 		 * Plugins can call this when implementing their own custom settings types.
 		 *
 		 * @param  array $value The form field value array
 		 * @return array The description and tip as a 2 element array
