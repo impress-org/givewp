@@ -147,7 +147,7 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 		public function output() {
 			$settings = $this->get_settings();
 
-			Give_Admin_Settings::output_fields( $settings, 'give-settings' );
+			Give_Admin_Settings::output_fields( $settings, 'give_settings' );
 		}
 
 		/**
@@ -156,7 +156,7 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 		public function save() {
 			$settings = $this->get_settings();
 
-			Give_Admin_Settings::save_fields( $settings, 'give-settings' );
+			Give_Admin_Settings::save_fields( $settings, 'give_settings' );
 		}
 	}
 endif;
