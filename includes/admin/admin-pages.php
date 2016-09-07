@@ -41,7 +41,7 @@ function give_add_options_links() {
 	//Settings
 	$give_settings_page = add_submenu_page( 'edit.php?post_type=give_forms', esc_html__( 'Give Settings', 'give' ), esc_html__( 'Settings', 'give' ), 'manage_give_settings', 'give-settings', array(
 		Give()->give_settings,
-		'admin_page_display'
+		'output'
 	) );
 
 	//Add-ons

@@ -204,7 +204,7 @@ if ( ! class_exists( 'Give' ) ) :
 				self::$instance->includes();
 				self::$instance->roles           = new Give_Roles();
 				self::$instance->api             = new Give_API();
-				self::$instance->give_settings   = new Give_Plugin_Settings();
+				self::$instance->give_settings   = new Give_Admin_Settings();
 				self::$instance->session         = new Give_Session();
 				self::$instance->html            = new Give_HTML_Elements();
 				self::$instance->emails          = new Give_Emails();
@@ -368,6 +368,7 @@ if ( ! class_exists( 'Give' ) ) :
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-footer.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/welcome.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/class-admin-settings.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/class-admin-notices.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/class-api-keys-table.php';
