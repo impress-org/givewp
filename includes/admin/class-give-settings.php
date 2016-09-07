@@ -1008,37 +1008,30 @@ function give_enabled_gateways_callback( $field_arr, $saved_values = array() ) {
  *
  * Renders gateways select menu
  *
- * @since 1.0
- *
- * @param $field_object , $escaped_value, $object_id, $object_type, $field_type_object Arguments passed by CMB2
- *
+ * @since  1.0
+ * @param  array $field_arr
+ * @param  array $saved_value
  * @return void
  */
-function give_default_gateway_callback( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
+function give_default_gateway_callback( $field_arr, $saved_value ) {
+	global $post;
 
-	$id                = $field_type_object->field->args['id'];
-	$field_description = $field_type_object->field->args['desc'];
+	$id                = $field_arr['id'];
 	$gateways          = give_get_enabled_payment_gateways();
 
 	echo '<select class="cmb2_select" name="' . $id . '" id="' . $id . '">';
 
-	//Add a field to the Give Form admin single post view of this field
-	if ( $field_type_object->field->object_type === 'post' ) {
-		echo '<option value="global">' . esc_html__( 'Global Default', 'give' ) . '</option>';
-	}
+		//Add a field to the Give Form admin single post view of this field
+		if ( is_object( $post ) &&  'give_forms' === $post->post_type ) {
+			echo '<option value="global">' . esc_html__( 'Global Default', 'give' ) . '</option>';
+		}
 
-	foreach ( $gateways as $key => $option ) :
-
-		$selected = isset( $escaped_value ) ? selected( $key, $escaped_value, false ) : '';
-
-
-		echo '<option value="' . esc_attr( $key ) . '"' . $selected . '>' . esc_html( $option['admin_label'] ) . '</option>';
-
-	endforeach;
+		foreach ( $gateways as $key => $option ) :
+			$selected = isset( $saved_value ) ? selected( $key, $saved_value, false ) : '';
+			echo '<option value="' . esc_attr( $key ) . '"' . $selected . '>' . esc_html( $option['admin_label'] ) . '</option>';
+		endforeach;
 
 	echo '</select>';
-
-	echo '<p class="cmb2-metabox-description">' . $field_description . '</p>';
 
 }
 
