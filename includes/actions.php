@@ -86,7 +86,7 @@ add_action( 'admin_init', 'give_post_actions' );
 /**
  * Connect WordPress user with Donor.
  *
- * @since  1.8
+ * @since  1.7
  * @param  int   $user_id   User ID
  * @param  array $user_data User Data
  * @return void

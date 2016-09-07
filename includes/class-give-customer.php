@@ -66,7 +66,7 @@ class Give_Customer {
 	/**
 	 * The customer's emails
 	 *
-	 * @since  1.8
+	 * @since  1.7
 	 * @access public
 	 *
 	 * @var    array
@@ -997,7 +997,7 @@ class Give_Customer {
 	/**
 	 * Attach an email to the donor
 	 *
-	 * @since  1.8
+	 * @since  1.7
 	 * @param  string $email   The email address to attach to the customer
 	 * @param  bool   $primary Allows setting the email added as the primary
 	 * @return bool            If the email was added successfully
@@ -1038,7 +1038,7 @@ class Give_Customer {
 	/**
 	 * Remove an email from the customer
 	 *
-	 * @since  1.8
+	 * @since  1.7
 	 * @param  string $email The email address to remove from the customer
 	 * @return bool          If the email was removeed successfully
 	 */
@@ -1061,7 +1061,7 @@ class Give_Customer {
 	 *
 	 * This will move the customer's previous primary email to an additional email
 	 *
-	 * @since  1.8
+	 * @since  1.7
 	 * @param  string $new_primary_email The email address to remove from the customer
 	 * @return bool                      If the email was set as primary successfully
 	 */

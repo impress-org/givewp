@@ -456,7 +456,7 @@ add_action( 'give_disconnect-userid', 'give_disconnect_customer_user_id', 10, 1 
 /**
  * Add an email address to the donor from within the admin and log a donor note
  *
- * @since  1.8
+ * @since  1.7
  * @param  array $args  Array of arguments: nonce, customer id, and email address
  * @return mixed        If DOING_AJAX echos out JSON, otherwise returns array of success (bool) and message (string)
  */
@@ -541,7 +541,7 @@ add_action( 'give_add_donor_email', 'give_add_donor_email', 10, 1 );
  * Remove an email address to the donor from within the admin and log a donor note
  * and redirect back to the donor interface for feedback
  *
- * @since  1.8
+ * @since  1.7
  * @return void|bool
  */
 function give_remove_donor_email() {
@@ -581,7 +581,7 @@ add_action( 'give_remove_donor_email', 'give_remove_donor_email', 10 );
  * Set an email address as the primary for a donor from within the admin and log a donor note
  * and redirect back to the donor interface for feedback
  *
- * @since  1.8
+ * @since  1.7
  * @return void|bool
  */
 function give_set_donor_primary_email() {
