@@ -607,6 +607,25 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			return $description;
 		}
 
+
+		/**
+		 * Helper function to get the formated title.
+		 * Plugins can call this when implementing their own custom settings types.
+		 *
+		 * @param  array $value The form field value array
+		 * @return array The description and tip as a 2 element array
+		 */
+		public static function get_field_title( $value ) {
+			$title  = esc_html( $value['title'] );
+
+			// If html tag detected then allow them to print.
+			if( strip_tags( $title )  ) {
+				$title = $value['title'];
+			}
+
+			return $title;
+		}
+
 		/**
 		 * Save admin fields.
 		 *
