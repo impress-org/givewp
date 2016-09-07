@@ -188,7 +188,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				// Get field value if any.
 				$option_value = get_option( $option_name );
 
-				$option_value = ( is_array( $option_value ) && ! empty( $field_id ))
+				$option_value = ( is_array( $option_value ) && array_key_exists( $field_id, $option_value ) )
 				? $option_value[ $field_id ]
 				: $default;
 			} else {
