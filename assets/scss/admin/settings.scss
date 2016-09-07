@@ -67,6 +67,21 @@ Settings
   }
 }
 
+.give-radio-inline {
+  ul{
+    margin-top: 0;
+  }
+
+  li {
+    display: inline-block;
+    margin-left: 15px;
+  }
+
+  li:first-child {
+    margin-left: 0;
+  }
+}
+
 p.give-setting-field-desc{
   color: #aaaaaa;
   font-style: italic;

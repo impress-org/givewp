@@ -389,9 +389,8 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 							<th scope="row" class="titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?></label>
 							</th>
-							<td class="forminp forminp-<?php echo sanitize_title( $value['type'] ) ?>">
+							<td class="forminp forminp-<?php echo sanitize_title( $value['type'] ) ?> <?php echo ( ! empty( $value['class'] ) ? $value['class'] : '' ); ?>">
 								<fieldset>
-									<?php echo $description; ?>
 									<ul>
 									<?php
 										foreach ( $value['options'] as $key => $val ) {
@@ -410,7 +409,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 											<?php
 										}
 									?>
-									</ul>
+									<?php echo $description; ?>
 								</fieldset>
 							</td>
 						</tr><?php

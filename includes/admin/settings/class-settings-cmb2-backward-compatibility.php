@@ -83,6 +83,16 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 								$field['type'] = 'text';
 								break;
 
+							case 'text_email' :
+								$field['type'] = 'email';
+								$field['css'] = 'width:25em;';
+								break;
+
+							case 'radio_inline' :
+								$field['type']  = 'radio';
+								$field['class'] = 'give-radio-inline';
+								break;
+
 							case 'give_title' :
 								$field['type'] = 'title';
 								break;

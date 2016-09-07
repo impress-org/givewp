@@ -1343,6 +1343,16 @@ Settings
   .give-section-header h2 {
     margin-top: 8px; }
 
+.give-radio-inline ul {
+  margin-top: 0; }
+
+.give-radio-inline li {
+  display: inline-block;
+  margin-left: 15px; }
+
+.give-radio-inline li:first-child {
+  margin-left: 0; }
+
 p.give-setting-field-desc {
   color: #aaaaaa;
   font-style: italic;
