@@ -73,8 +73,12 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 					// Create new setting fields.
 					foreach ( $setting_fields['fields'] as $index => $field ) {
 
-						// Update field type.
+						// Modify cmb2 setting fields.
 						switch ( $field['type'] ) {
+							case 'text':
+								$field['css'] = 'width:25em;';
+								break;
+
 							case 'text_small' :
 								$field['type'] = 'text';
 								break;
