@@ -23,12 +23,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 		self::show_messages();
 
 		do_action( "give_settings_{$current_tab}_page" );
-		?>
-		<div class="give-submit-wrap">
-			<?php if ( empty( $GLOBALS['hide_save_button'] ) ) : ?>
+
+		if ( empty( $GLOBALS['give_hide_save_button'] ) ) : ?>
+			<div class="give-submit-wrap">
 				<input name="save" class="button-primary give-save-button" type="submit" value="<?php esc_attr_e( 'Save changes', 'give' ); ?>" />
-			<?php endif; ?>
-			<?php wp_nonce_field( 'give-settings' ); ?>
-		</div>
+				<?php wp_nonce_field( 'give-settings' ); ?>
+			</div>
+		<?php endif; ?>
 	</form>
 </div>
