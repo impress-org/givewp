@@ -143,23 +143,23 @@ class Give_Notices {
 						break;
 
 					case 'email-added' :
-						$notices['updated']['edd-customer-email-added'] = __( 'Donor email added', 'give' );
+						$notices['updated']['give-customer-email-added'] = __( 'Donor email added', 'give' );
 						break;
 
 					case 'email-removed' :
-						$notices['updated']['edd-customer-email-removed'] = __( 'Donor email removed', 'give');
+						$notices['updated']['give-customer-email-removed'] = __( 'Donor email removed', 'give');
 						break;
 
 					case 'email-remove-failed' :
-						$notices['error']['edd-customer-email-remove-failed'] = __( 'Failed to remove donor email', 'give');
+						$notices['error']['give-customer-email-remove-failed'] = __( 'Failed to remove donor email', 'give');
 						break;
 
 					case 'primary-email-updated' :
-						$notices['updated']['edd-customer-primary-email-updated'] = __( 'Primary email updated for donors', 'give');
+						$notices['updated']['give-customer-primary-email-updated'] = __( 'Primary email updated for donors', 'give');
 						break;
 
 					case 'primary-email-failed' :
-						$notices['error']['edd-customer-primary-email-failed'] = __( 'Failed to set primary email', 'give');
+						$notices['error']['give-customer-primary-email-failed'] = __( 'Failed to set primary email', 'give');
 
 				}
 			}

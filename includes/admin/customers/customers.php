@@ -472,7 +472,7 @@ function give_customers_view( $customer ) {
 								<?php wp_nonce_field( 'give_add_donor_email', 'add_email_nonce', false, true ); ?>
 								<input type="email" name="additional-email" value="" placeholder="<?php _e( 'Email Address', 'give' ); ?>" />&nbsp;
 								<input type="checkbox" name="make-additional-primary" value="1" id="make-additional-primary" />&nbsp;<label for="make-additional-primary"><?php _e( 'Make Primary', 'give' ); ?></label>
-								<button class="button-secondary edd-add-customer-email" id="add-customer-email"><?php _e( 'Add Email', 'give' ); ?></button>
+								<button class="button-secondary give-add-customer-email" id="add-customer-email"><?php _e( 'Add Email', 'give' ); ?></button>
 								<span class="spinner"></span>
 							</div>
 							<div class="notice-wrap"></div>

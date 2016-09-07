@@ -505,7 +505,7 @@ function give_add_donor_email( $args ) {
 				);
 			}
 		} else {
-			$redirect = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $customer_id . '&edd-message=email-added' );
+			$redirect = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $customer_id . '&give-message=email-added' );
 			$output = array(
 				'success'  => true,
 				'message'  => __( 'Email successfully added to donor.', 'give' ),
