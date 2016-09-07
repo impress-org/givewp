@@ -568,6 +568,19 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						</tr><?php
 						break;
 
+					case 'email_preview_buttons' :
+						?><tr valign="top">
+							<th scope="row" class="titledesc">
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?></label>
+							</th>
+							<td class="forminp">
+								<?php give_email_preview_buttons_callback(); ?>
+								<?php echo $description; ?>
+							</td>
+						</tr><?php
+						break;
+
+
 					// Default: run an action
 					default:
 						do_action( 'give_admin_field_' . $value['type'], $value );
