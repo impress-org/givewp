@@ -240,8 +240,7 @@ function give_get_donation_notification_body_content( $payment_id = 0, $payment_
 
 	$default_email_body = esc_html__( 'Hello', 'give' ) . "\n\n";
 	$default_email_body .= esc_html__( 'A donation has been made.', 'give' ) . "\n\n";
-	/* translators: %s: form plural label */
-	$default_email_body .= sprintf( esc_html__( '%s sold:', 'give' ), give_get_forms_label_plural() ) . "\n\n";
+	$default_email_body .= esc_html__( 'Forms sold:', 'give' ) . "\n\n";
 	$default_email_body .= esc_html__( 'Donor:', 'give' ) . ' ' . html_entity_decode( $name, ENT_COMPAT, 'UTF-8' ) . "\n";
 	$default_email_body .= esc_html__( 'Amount:', 'give' ) . ' ' . html_entity_decode( give_currency_filter( give_format_amount( give_get_payment_amount( $payment_id ) ) ), ENT_COMPAT, 'UTF-8' ) . "\n";
 	$default_email_body .= esc_html__( 'Payment Method:', 'give' ) . ' ' . $gateway . "\n\n";

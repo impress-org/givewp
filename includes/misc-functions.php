@@ -611,6 +611,8 @@ function give_is_func_disabled( $function ) {
  */
 function give_get_newsletter() { ?>
 
+	<p class="newsletter-intro"><?php esc_html_e( 'Be sure to sign up for the Give newsletter below to stay informed of important updates and news.', 'give' ); ?></p>
+
 	<div class="give-newsletter-form-wrap">
 
 		<form action="//givewp.us3.list-manage.com/subscribe/post?u=3ccb75d68bda4381e2f45794c&amp;id=12a081aa13" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>

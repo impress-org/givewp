@@ -553,7 +553,7 @@ function give_customers_view( $customer ) {
 		<table class="wp-list-table widefat striped donations">
 			<thead>
 			<tr>
-				<th scope="col"><?php echo give_get_forms_label_singular(); ?></th>
+				<th scope="col"><?php esc_html_e( 'Form', 'give' ); ?></th>
 				<th scope="col" width="120px"><?php esc_html_e( 'Actions', 'give' ); ?></th>
 			</tr>
 			</thead>

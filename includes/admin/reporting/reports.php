@@ -102,7 +102,7 @@ function give_reports_page() {
 function give_reports_default_views() {
 	$views = array(
 		'earnings' => esc_html__( 'Income', 'give' ),
-		'forms'    => give_get_forms_label_plural(),
+		'forms'    => esc_html__( 'Forms', 'give' ),
 		'donors'   => esc_html__( 'Donors', 'give' ),
 		'gateways' => esc_html__( 'Payment Methods', 'give' )
 	);
