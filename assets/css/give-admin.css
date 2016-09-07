@@ -1382,6 +1382,20 @@ p.give-setting-field-desc {
   margin: 0;
   font-size: 14px; }
 
+/* css fix start: This css fix is for api setting page, */
+.give-section-section-api, .give-section-section-system_info {
+  display: none; }
+
+.give-section-body-api {
+  position: relative; }
+  .give-section-body-api .tablenav .actions {
+    overflow: visible; }
+  .give-section-body-api > tbody > tr > td {
+    padding: 0 !important; }
+  .give-section-body-api table th {
+    padding: 15px 10px !important; }
+
+/* css fix end*/
 .postbox-container #_give_donation_levels_repeat > .cmb-repeatable-grouping:not(:last-of-type) {
   border-bottom: 1px solid #e9e9e9;
   border-top: none; }

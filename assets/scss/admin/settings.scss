@@ -118,6 +118,26 @@ p.give-setting-field-desc{
   font-size: 14px;
 }
 
+/* css fix start: This css fix is for api setting page, */
+.give-section-section-api, .give-section-section-system_info{display:none}
+.give-section-body-api {
+  position: relative;
+
+  .tablenav .actions{
+    overflow: visible;
+  }
+
+  >tbody>tr>td{
+    padding: 0 !important;
+
+  }
+
+  table th{
+    padding: 15px 10px !important;;
+  }
+}
+/* css fix end*/
+
 .postbox-container #_give_donation_levels_repeat > .cmb-repeatable-grouping:not(:last-of-type) {
   border-bottom: 1px solid #e9e9e9;
   border-top: none;
