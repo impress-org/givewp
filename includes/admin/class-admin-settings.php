@@ -604,12 +604,13 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						break;
 
 					case 'enabled_gateways' :
+						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
 						?><tr valign="top">
 							<th scope="row" class="titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?></label>
 							</th>
 							<td class="forminp">
-								<?php give_enabled_gateways_callback( $value ); ?>
+								<?php give_enabled_gateways_callback( $value, $option_value ); ?>
 								<?php echo $description; ?>
 							</td>
 						</tr><?php

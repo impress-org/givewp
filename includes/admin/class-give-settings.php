@@ -976,26 +976,20 @@ function give_settings_array_insert( $array, $position, $insert ) {
  * Renders gateways fields.
  *
  * @since 1.0
- *
- * @param $field_object
- * @param $escaped_value
- * @param $object_id
- * @param $object_type
- * @param $field_type_object
- *
+ * @param array $field_arr
+ * @param array $saved_values
  * @return void
  */
-function give_enabled_gateways_callback( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
+function give_enabled_gateways_callback( $field_arr, $saved_values = array() ) {
 
-	$id                = $field_type_object->field->args['id'];
-	$field_description = $field_type_object->field->args['desc'];
-	$gateways          = give_get_ordered_payment_gateways( give_get_payment_gateways() );
+	$id       = $field_arr['id'];
+	$gateways = give_get_ordered_payment_gateways( give_get_payment_gateways() );
 
 	echo '<ul class="cmb2-checkbox-list cmb2-list">';
 
 	foreach ( $gateways as $key => $option ) :
 
-		if ( is_array( $escaped_value ) && array_key_exists( $key, $escaped_value ) ) {
+		if ( is_array( $saved_values ) && array_key_exists( $key, $saved_values ) ) {
 			$enabled = '1';
 		} else {
 			$enabled = null;
@@ -1007,11 +1001,6 @@ function give_enabled_gateways_callback( $field_object, $escaped_value, $object_
 	endforeach;
 
 	echo '</ul>';
-
-	if ( $field_description ) {
-		echo '<p class="cmb2-metabox-description">' . $field_description . '</p>';
-	}
-
 }
 
 /**
