@@ -29,8 +29,8 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			// Get previous setting class object.
 			$this->prev_settings = new Give_Plugin_Settings();
 
-			// Hide save button on api setting tab.
-			if( 'api' === $this->current_tab ) {
+			// Hide save button on api and system_info setting tab.
+			if( in_array( $this->current_tab, array( 'api', 'system_info' ) ) ) {
 				$GLOBALS['give_hide_save_button'] = true;
 			}
 
