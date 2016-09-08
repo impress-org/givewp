@@ -90,7 +90,7 @@ if ( is_user_logged_in() ):
 			?>
 
 			<p class="form-row form-row-last">
-				<label for="give_email"><?php esc_html_e( 'Email Address', 'give' ); ?></label>
+				<label for="give_email"><?php esc_html_e( 'Primary Email Address', 'give' ); ?></label>
 				<input name="give_email" id="give_email" class="text give-input required" type="email" value="<?php echo esc_attr( $current_user->user_email ); ?>" />
 				<?php
 				/**
