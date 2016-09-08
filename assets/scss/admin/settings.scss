@@ -363,7 +363,7 @@ a.give-delete {
     }
   }
 
-  .give-license-notice.give-license-expires-soon {
+  .give-license-status-notice.give-license-expires-soon {
     background-color: #00a0d2;
     color: #fff;
     border-color: #00a0d2;
@@ -375,24 +375,24 @@ a.give-delete {
     border-color: #e24e4e;
   }
 
-  .give-license-notice.give-license-error,
-  .give-license-notice.give-license-no_activations_left,
-  .give-license-notice.give-license-missing,
-  .give-license-notice.give-license-invalid,
-  .give-license-notice.give-license-site_inactive,
-  .give-license-notice.give-license-item_name_mismatch {
+  .give-license-status-notice.give-license-error,
+  .give-license-status-notice.give-license-no_activations_left,
+  .give-license-status-notice.give-license-missing,
+  .give-license-status-notice.give-license-invalid,
+  .give-license-status-notice.give-license-site_inactive,
+  .give-license-status-notice.give-license-item_name_mismatch {
     background-color: #ffebcd;
     border-color: #ffebcd;
   }
 
-  .give-license-notice.give-license-lifetime-notice{
+  .give-license-status-notice.give-license-lifetime-notice{
     background-color: #46b450;
     border-color: #46b450;
   }
 
-  .give-license-notice.give-license-lifetime-notice,
-  .give-license-notice.give-license-expires-soon,
-  .give-license-notice.give-license-expired {
+  .give-license-status-notice.give-license-lifetime-notice,
+  .give-license-status-notice.give-license-expires-soon,
+  .give-license-status-notice.give-license-expired {
     color: #fff;
 
     a{
@@ -400,8 +400,8 @@ a.give-delete {
     }
   }
 
-  .give-license-notice.give-license-expires-soon a:hover,
-  .give-license-notice.give-license-expired a:hover {
+  .give-license-status-notice.give-license-expires-soon a:hover,
+  .give-license-status-notice.give-license-expired a:hover {
     text-decoration: none;
   }
 }

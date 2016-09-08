@@ -1548,7 +1548,7 @@ a.give-delete {
       cursor: pointer; }
     .give-settings-page .give-license-status-notice a:hover {
       text-decoration: none; }
-  .give-settings-page .give-license-notice.give-license-expires-soon {
+  .give-settings-page .give-license-status-notice.give-license-expires-soon {
     background-color: #00a0d2;
     color: #fff;
     border-color: #00a0d2; }
@@ -1556,27 +1556,27 @@ a.give-delete {
     background-color: #e24e4e;
     color: #fff;
     border-color: #e24e4e; }
-  .give-settings-page .give-license-notice.give-license-error,
-  .give-settings-page .give-license-notice.give-license-no_activations_left,
-  .give-settings-page .give-license-notice.give-license-missing,
-  .give-settings-page .give-license-notice.give-license-invalid,
-  .give-settings-page .give-license-notice.give-license-site_inactive,
-  .give-settings-page .give-license-notice.give-license-item_name_mismatch {
+  .give-settings-page .give-license-status-notice.give-license-error,
+  .give-settings-page .give-license-status-notice.give-license-no_activations_left,
+  .give-settings-page .give-license-status-notice.give-license-missing,
+  .give-settings-page .give-license-status-notice.give-license-invalid,
+  .give-settings-page .give-license-status-notice.give-license-site_inactive,
+  .give-settings-page .give-license-status-notice.give-license-item_name_mismatch {
     background-color: #ffebcd;
     border-color: #ffebcd; }
-  .give-settings-page .give-license-notice.give-license-lifetime-notice {
+  .give-settings-page .give-license-status-notice.give-license-lifetime-notice {
     background-color: #46b450;
     border-color: #46b450; }
-  .give-settings-page .give-license-notice.give-license-lifetime-notice,
-  .give-settings-page .give-license-notice.give-license-expires-soon,
-  .give-settings-page .give-license-notice.give-license-expired {
+  .give-settings-page .give-license-status-notice.give-license-lifetime-notice,
+  .give-settings-page .give-license-status-notice.give-license-expires-soon,
+  .give-settings-page .give-license-status-notice.give-license-expired {
     color: #fff; }
-    .give-settings-page .give-license-notice.give-license-lifetime-notice a,
-    .give-settings-page .give-license-notice.give-license-expires-soon a,
-    .give-settings-page .give-license-notice.give-license-expired a {
+    .give-settings-page .give-license-status-notice.give-license-lifetime-notice a,
+    .give-settings-page .give-license-status-notice.give-license-expires-soon a,
+    .give-settings-page .give-license-status-notice.give-license-expired a {
       color: #fff; }
-  .give-settings-page .give-license-notice.give-license-expires-soon a:hover,
-  .give-settings-page .give-license-notice.give-license-expired a:hover {
+  .give-settings-page .give-license-status-notice.give-license-expires-soon a:hover,
+  .give-settings-page .give-license-status-notice.give-license-expired a:hover {
     text-decoration: none; }
 
 /* Responsive fixes: Addon grid design */
