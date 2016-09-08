@@ -22,12 +22,13 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 		 * Give_CMB2_Settings_Loader constructor.
 		 */
 		function __construct(){
-			// Get current tab/section
-			$this->current_tab     = empty( $_GET['tab'] ) ? 'general' : sanitize_title( $_GET['tab'] );
-			$this->current_section = empty( $_REQUEST['section'] ) ? '' : sanitize_title( $_REQUEST['section'] );
-
 			// Get previous setting class object.
 			$this->prev_settings = new Give_Plugin_Settings();
+
+			// Get current tab/section
+			$this->current_tab     = empty( $_GET['tab'] ) ? 'general' : sanitize_title( $_GET['tab'] );
+			$this->current_section = empty( $_REQUEST['section'] ) ? ( current( array_keys( $this->get_sections() ) ) ) : sanitize_title( $_REQUEST['section'] );
+
 
 			// Hide save button on api and system_info setting tab.
 			if( in_array( $this->current_tab, array( 'api', 'system_info' ) ) ) {
@@ -36,6 +37,7 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 
 			// Filter & actions.
 			add_filter( 'give_settings_tabs_array', array( $this, 'add_settings_pages' ), 20 );
+			add_action( "give_sections_{$this->current_tab}_page", array( $this, 'output_sections' ) );
 			add_action( "give_settings_{$this->current_tab}_page", array( $this, 'output' ), 10 );
 			add_action( "give_settings_save_{$this->current_tab}", array( $this, 'save' ) );
 		}
@@ -56,6 +58,46 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 
 				return $pages;
 			}
+		}
+
+		/**
+		 * Get sections.
+		 *
+		 * @return array
+		 */
+		public function get_sections() {
+			$sections = array();
+
+			if( ( $setting_fields = $this->prev_settings->give_settings( $this->current_tab ) ) && ! empty( $setting_fields['fields'] ) ) {
+				foreach ( $setting_fields['fields'] as $field ) {
+					if( 'give_title' == $field['type'] ) {
+						$sections[ sanitize_title( $field['name'] ) ] = str_replace( array( 'Settings' ), '', $field['name'] );
+					}
+				}
+			}
+
+			return apply_filters( 'give_get_sections_' . $this->id, $sections );
+		}
+
+		/**
+		 * Output sections.
+		 */
+		public function output_sections() {
+			$sections = $this->get_sections();
+
+			if ( empty( $sections ) || 1 === sizeof( $sections ) ) {
+				return;
+			}
+
+			echo '<ul class="subsubsub">';
+
+			$array_keys = array_keys( $sections );
+
+			foreach ( $sections as $id => $label ) {
+				echo '<li><a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=' . $this->current_tab . '&section=' . sanitize_title( $id ) ) . '" class="' . ( $this->current_section == $id  ? 'current' : '' ) . '">' . $label . '</a> ' . ( end( $array_keys ) == $id ? '' : '|' ) . ' </li>';
+			}
+
+			echo '</ul><br class="clear" />';
 		}
 
 
@@ -140,7 +182,7 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			}
 
 			// Check if setting page has title section or not.
-			// If setting page does not have title sectio  then add title section to it and fix section end array id.
+			// If setting page does not have title section  then add title section to it and fix section end array id.
 			if( 'title' !== $new_setting_fields[0]['type'] ) {
 				array_unshift(
 					$new_setting_fields,
@@ -158,7 +200,48 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 				}
 			}
 
+			// Return only section related settings.
+			if( $sections = $this->get_sections() ) {
+				$new_setting_fields = self::get_section_settiings( $new_setting_fields );
+			}
+
 			return apply_filters( "give_get_settings_{$this->id}", $new_setting_fields );
+		}
+
+
+		/**
+		 * Get section related setting.
+		 *
+		 * @since 1.8
+		 * @param $tab_settings
+		 * @return array
+		 */
+		function get_section_settiings( $tab_settings ) {
+			$section_start = false;
+			$section_end   = false;
+			$section_only_setting_fields = array();
+
+			foreach ( $tab_settings as $field ) {
+				if( 'title' == $field['type'] &&  $this->current_section == sanitize_title( $field['title'] ) ) {
+					$section_start = true;
+				}
+
+				if( ! $section_start || $section_end ) {
+					continue;
+				}
+
+				if( $section_start && ! $section_end ) {
+					if( 'sectionend' == $field['type'] ) {
+						$section_end = true;
+					}
+					$section_only_setting_fields[] = $field;
+				}
+			}
+
+			// Remove title from setting, pevent it from render in setting tab.
+			$section_only_setting_fields[0]['title'] = '';
+
+			return $section_only_setting_fields;
 		}
 
 		/**

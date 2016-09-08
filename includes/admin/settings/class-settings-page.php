@@ -36,8 +36,8 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 		 */
 		public function __construct() {
 			add_filter( 'give_settings_tabs_array', array( $this, 'add_settings_page' ), 20 );
-			add_action( "give_sections_{$this->id}", array( $this, 'output_sections' ) );
-			add_action( "give_settings_{$this->id}", array( $this, 'output' ) );
+			add_action( "give_sections_{$this->id}_page", array( $this, 'output_sections' ) );
+			add_action( "give_settings_{$this->id}_page", array( $this, 'output' ) );
 			add_action( "give_settings_save_{$this->id}", array( $this, 'save' ) );
 		}
 
@@ -85,7 +85,7 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 			$array_keys = array_keys( $sections );
 
 			foreach ( $sections as $id => $label ) {
-				echo '<li><a href="' . admin_url( 'admin.php?post_type=give-forms&page=give-settings&tab=' . $this->id . '&section=' . sanitize_title( $id ) ) . '" class="' . ( $current_section == $id ? 'current' : '' ) . '">' . $label . '</a> ' . ( end( $array_keys ) == $id ? '' : '|' ) . ' </li>';
+				echo '<li><a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=' . $this->id . '&section=' . sanitize_title( $id ) ) . '" class="' . ( $current_section == $id ? 'current' : '' ) . '">' . $label . '</a> ' . ( end( $array_keys ) == $id ? '' : '|' ) . ' </li>';
 			}
 
 			echo '</ul><br class="clear" />';
