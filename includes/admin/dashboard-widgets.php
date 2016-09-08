@@ -46,7 +46,7 @@ function give_dashboard_sales_widget() {
 	<div class="give-dashboard-widget">
 
 		<div class="give-dashboard-today give-clearfix">
-			<h3 class="give-dashboard-date-today"><?php echo date( 'F j, Y' ); ?></h3>
+			<h3 class="give-dashboard-date-today"><?php echo date( _x( 'F j, Y', 'dashboard widget', 'give' ) ); ?></h3>
 
 			<p class="give-dashboard-happy-day"><?php
 				printf(
@@ -54,18 +54,21 @@ function give_dashboard_sales_widget() {
 					esc_html__( 'Happy %s!', 'give' ),
 					date( 'l', current_time( 'timestamp' ) )
 				);
-				?></p>
+			?></p>
 
-			<?php $earnings_today = $stats->get_earnings( 0, 'today', false ); ?>
+			<p class="give-dashboard-today-earnings"><?php
+				$earnings_today = $stats->get_earnings( 0, 'today', false );
+				echo give_currency_filter( give_format_amount( $earnings_today ) );
+			?></p>
 
-			<p class="give-dashboard-today-earnings"><?php echo give_currency_filter( give_format_amount( $earnings_today ) ); ?></p>
-
-			<p class="give-orders-today">
-				<?php $donations_today = $stats->get_sales( 0, 'today', false ); ?>
-				<?php echo give_format_amount( $donations_today, false ); ?>
-				<span><?php echo _x( 'donations today', 'Displays in WP admin dashboard widget after the day\'s total donations', 'give' ); ?></span>
-			</p>
-
+			<p class="give-orders-today"><?php
+				$donations_today = $stats->get_sales( 0, 'today', false );
+				printf(
+					/* translators: %s: daily donation count */
+					esc_html__( '%s donations today', 'give' ),
+					give_format_amount( $donations_today, false )
+				);
+			?></p>
 
 		</div>
 

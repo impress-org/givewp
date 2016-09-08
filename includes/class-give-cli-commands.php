@@ -176,7 +176,7 @@ class GIVE_CLI_COMMAND {
 			return;
 		} elseif ( empty( $forms['forms'] ) ) {
 
-			WP_CLI::error( __( 'No form found.', 'give' ) );
+			WP_CLI::error( __( 'No forms found.', 'give' ) );
 			return;
 		}
 
@@ -241,7 +241,7 @@ class GIVE_CLI_COMMAND {
 			$is_table_first_row_set = false;
 			$table_column_count = 0;
 
-			WP_CLI::line( $this->color_message( sprintf( __( '%1$d donation forms found', 'give' ), count( $forms['forms'] ) ), '', false ) );
+			WP_CLI::line( $this->color_message( sprintf( __( '%d donation forms found', 'give' ), count( $forms['forms'] ) ), '', false ) );
 
 			foreach ( $forms['forms'] as $index => $form_data ) {
 
@@ -402,7 +402,7 @@ class GIVE_CLI_COMMAND {
 			}
 
 			if ( empty( $donors ) ) {
-				WP_CLI::error( __( 'No donors found', 'give' ) );
+				WP_CLI::error( __( 'No donors found.', 'give' ) );
 				return;
 			}
 
@@ -514,14 +514,14 @@ class GIVE_CLI_COMMAND {
 		}
 
 		if ( empty( $donations ) ) {
-			WP_CLI::error( __( 'No sales found', 'give' ) );
+			WP_CLI::error( __( 'No donations found.', 'give' ) );
 			return;
 		}
 
 		self::$counter = 1;
 
 		foreach ( $donations['donations'] as $key => $donation ) {
-			$this->color_main_heading( sprintf( __( '%1$s. Payment #%2$s', 'give' ), self::$counter, $donation['ID'] ), 'Y' );
+			$this->color_main_heading( sprintf( __( '%1$s. Donation #%2$s', 'give' ), self::$counter, $donation['ID'] ), 'Y' );
 			self::$counter++;
 
 			foreach ( $donation as $column => $data ) {

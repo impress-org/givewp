@@ -131,7 +131,7 @@ class Give_HTML_Elements {
 				$options[ absint( $form->ID ) ] = esc_html( $form->post_title );
 			}
 		} else {
-			$options[0] = esc_html__( 'No donation forms found.', 'give' );
+			$options[0] = esc_html__( 'No forms found.', 'give' );
 		}
 
 		// This ensures that any selected forms are included in the drop down
