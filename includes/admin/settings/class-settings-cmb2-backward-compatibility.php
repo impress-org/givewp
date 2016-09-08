@@ -149,8 +149,23 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 
 						if( 'title' === $field['type'] ) {
 
-							// Section end.
-							if( $index ) {
+							// If we do not have first element as title then these field will be skip from frontend
+							// because there are not belong to any section, so put all abandon fields under first section.
+							if( $index && empty( $prev_title_field_id )  ) {
+								array_unshift(
+									$new_setting_fields,
+									array(
+										'title' => $field['name'],
+										'type' => $field['type'],
+										'desc' => $field['desc'],
+										'id' => $field['id']
+									)
+								);
+
+								$prev_title_field_id = $field['id'];
+
+								continue;
+							} elseif ( $index ) {
 								// Section end.
 								$new_setting_fields[] = array(
 									'type' => 'sectionend',
