@@ -94,7 +94,7 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			$array_keys = array_keys( $sections );
 
 			foreach ( $sections as $id => $label ) {
-				echo '<li><a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=' . $this->current_tab . '&section=' . sanitize_title( $id ) ) . '" class="' . ( $this->current_section == $id  ? 'current' : '' ) . '">' . $label . '</a> ' . ( end( $array_keys ) == $id ? '' : '|' ) . ' </li>';
+				echo '<li><a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=' . $this->current_tab . '&section=' . sanitize_title( $id ) ) . '" class="' . ( $this->current_section == $id  ? 'current' : '' ) . '">' . strip_tags( $label ) . '</a> ' . ( end( $array_keys ) == $id ? '' : '|' ) . ' </li>';
 			}
 
 			echo '</ul><br class="clear" />';
