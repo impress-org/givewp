@@ -241,7 +241,7 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			// Remove title from setting, pevent it from render in setting tab.
 			$section_only_setting_fields[0]['title'] = '';
 
-			return $section_only_setting_fields;
+			return apply_filters( "give_get_settings_{$this->current_tab}_{$this->current_section}", $section_only_setting_fields, $tab_settings );
 		}
 
 		/**
