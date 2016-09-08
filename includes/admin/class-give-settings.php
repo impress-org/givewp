@@ -754,16 +754,16 @@ class Give_Plugin_Settings {
 			),
 		);
 
+		$give_settings = apply_filters( 'give_registered_settings', $give_settings );
+
 		//Return all settings array if no active tab
-		if ( $active_tab === null || ! isset( $give_settings[ $active_tab ] ) ) {
-
-			return apply_filters( 'give_registered_settings', $give_settings );
-
+		if (  empty( $active_tab ) || ! isset( $give_settings[ $active_tab ] ) ) {
+			return $give_settings;
 		}
 
 
 		// Add other tabs and settings fields as needed
-		return apply_filters( 'give_registered_settings', $give_settings[ $active_tab ] );
+		return $give_settings[ $active_tab ];
 
 	}
 
