@@ -108,7 +108,8 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 		 * @return array
 		 */
 		function get_settings() {
-			global $wp_filter, $wp_actions;
+			global $wp_filter;
+
 			$new_setting_fields = array();
 
 			if( $setting_fields = $this->prev_settings->give_settings( $this->current_tab ) ){
@@ -204,6 +205,24 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			if( $sections = $this->get_sections() ) {
 				$new_setting_fields = self::get_section_settiings( $new_setting_fields );
 			}
+			
+			// Third party plugin backward compatibility.
+			foreach ( $new_setting_fields  as $index => $field ) {
+				if( in_array( $field['type'], array( 'title', 'sectionend') ) ) {
+					continue;
+				}
+
+				$cmb2_filter_name = "cmb2_render_{$field['type']}";
+
+				if( ! empty( $wp_filter[ $cmb2_filter_name ] ) ) {
+					$cmb2_filter_arr = current( $wp_filter[ $cmb2_filter_name ] );
+
+					if( ! empty( $cmb2_filter_arr ) ) {
+						$new_setting_fields[$index]['func'] = current( array_keys( $cmb2_filter_arr ) );
+						add_action( "give_admin_field_{$field['type']}", array( $this, 'addon_setting_field' ), 10, 2 );
+					}
+				}
+			}
 
 			return apply_filters( "give_get_settings_{$this->id}", $new_setting_fields );
 		}
@@ -260,6 +279,26 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			$settings = $this->get_settings();
 
 			Give_Admin_Settings::save_fields( $settings, 'give_settings' );
+		}
+
+
+		/**
+		 * CMB2 addon setting fields backward compatibility.
+		 *
+		 * @since  1.8
+		 * @param  array $field
+		 * @param  mixed $saved_value
+		 * @return void
+		 */
+		function addon_setting_field ( $field, $saved_value ) {
+			// Create object for cmb2  function callback backward compatibility.
+			$field_obj = (object) array( 'args' => $field );
+			$field_type_object = (object) array( 'field' => $field_obj );
+			?>
+			<div class="give-settings-wrap give-settings-wrap-<?php echo $this->current_tab; ?>">
+				<?php $field['func']( $field_obj, $saved_value, '', '', $field_type_object ); ?>
+			</div>
+			<?php
 		}
 	}
 endif;

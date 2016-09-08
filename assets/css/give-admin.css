@@ -1484,18 +1484,18 @@ p.give-setting-field-desc {
 a.give-delete {
   color: #a00; }
 
-.cmb2-wrap .give-license-deactivate {
+.give-settings-wrap-licenses .give-license-deactivate {
   margin: 1px 0 0 10px;
   height: 30px; }
 
-.cmb2-wrap .give-license-field {
+.give-settings-wrap-licenses .give-license-field {
   background-image: url("../images/close.png");
   background-color: #FFF;
   background-repeat: no-repeat;
   background-position: 98.5% center;
   background-size: 18px; }
 
-.cmb2-wrap .give-license-active, .cmb2-wrap .give-license-active:focus {
+.give-settings-wrap-licenses .give-license-active, .give-settings-wrap-licenses .give-license-active:focus {
   background-image: url("../images/tick.png");
   background-color: #FFF;
   background-repeat: no-repeat;
@@ -1504,9 +1504,9 @@ a.give-delete {
   background-size: 16px; }
 
 /* Addon grid design */
-#licenses .cmb2-wrap {
+.give-settings-page {
   margin-top: 20px; }
-  #licenses .cmb2-wrap .cmb-row {
+  .give-settings-page .give-settings-wrap-licenses {
     display: block;
     position: relative;
     float: left;
@@ -1516,25 +1516,24 @@ a.give-delete {
     margin-bottom: 10px !important;
     min-height: 220px;
     border: 1px solid #ccc; }
-  #licenses .cmb2-wrap .cmb-row > div {
-    display: block;
-    width: auto;
-    padding: 0;
-    float: none; }
-  #licenses .cmb2-wrap .cmb-th {
+  .give-settings-page .give-license-key {
     background: #f9f9f9;
     border-bottom: 1px solid #ccc;
     margin-bottom: 20px; }
-    #licenses .cmb2-wrap .cmb-th label {
+    .give-settings-page .give-license-key label {
       margin: 0 0 0 10px;
-      padding: 10px 0; }
-  #licenses .cmb2-wrap .cmb-td > div {
+      padding: 10px 0;
+      display: block;
+      font-size: 14px;
+      font-weight: 600; }
+  .give-settings-page .give-license-block {
     margin: 0 10px; }
-    #licenses .cmb2-wrap .cmb-td > div input[type="text"] {
-      width: 100%; }
-    #licenses .cmb2-wrap .cmb-td > div input[type="submit"] {
-      margin: 15px 0 10px 0; }
-  #licenses .cmb2-wrap .give-license-notice {
+  .give-settings-page input[type="text"].give-license-field,
+  .give-settings-page input[type="password"].give-license-field {
+    width: 100%; }
+  .give-settings-page .give-license-block input[type="submit"] {
+    margin: 15px 0 10px 0; }
+  .give-settings-page .give-license-notice {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -1542,52 +1541,52 @@ a.give-delete {
     background: whitesmoke;
     border-top: 1px solid #ececec;
     min-height: 65px; }
-    #licenses .cmb2-wrap .give-license-notice p {
+    .give-settings-page .give-license-notice p {
       padding: 0 10px; }
-    #licenses .cmb2-wrap .give-license-notice a {
+    .give-settings-page .give-license-notice a {
       color: #444;
       cursor: pointer; }
-    #licenses .cmb2-wrap .give-license-notice a:hover {
+    .give-settings-page .give-license-notice a:hover {
       text-decoration: none; }
-  #licenses .cmb2-wrap .give-license-notice.give-license-expires-soon {
+  .give-settings-page .give-license-notice.give-license-expires-soon {
     background-color: #00a0d2;
     color: #fff;
     border-color: #00a0d2; }
-  #licenses .cmb2-wrap .give-license-notice.give-license-expired {
+  .give-settings-page .give-license-notice.give-license-expired {
     background-color: #e24e4e;
     color: #fff;
     border-color: #e24e4e; }
-  #licenses .cmb2-wrap .give-license-notice.give-license-error,
-  #licenses .cmb2-wrap .give-license-notice.give-license-no_activations_left,
-  #licenses .cmb2-wrap .give-license-notice.give-license-missing,
-  #licenses .cmb2-wrap .give-license-notice.give-license-invalid,
-  #licenses .cmb2-wrap .give-license-notice.give-license-site_inactive,
-  #licenses .cmb2-wrap .give-license-notice.give-license-item_name_mismatch {
+  .give-settings-page .give-license-notice.give-license-error,
+  .give-settings-page .give-license-notice.give-license-no_activations_left,
+  .give-settings-page .give-license-notice.give-license-missing,
+  .give-settings-page .give-license-notice.give-license-invalid,
+  .give-settings-page .give-license-notice.give-license-site_inactive,
+  .give-settings-page .give-license-notice.give-license-item_name_mismatch {
     background-color: #ffebcd;
     border-color: #ffebcd; }
-  #licenses .cmb2-wrap .give-license-notice.give-license-lifetime-notice {
+  .give-settings-page .give-license-notice.give-license-lifetime-notice {
     background-color: #46b450;
     border-color: #46b450; }
-  #licenses .cmb2-wrap .give-license-notice.give-license-lifetime-notice,
-  #licenses .cmb2-wrap .give-license-notice.give-license-expires-soon,
-  #licenses .cmb2-wrap .give-license-notice.give-license-expired {
+  .give-settings-page .give-license-notice.give-license-lifetime-notice,
+  .give-settings-page .give-license-notice.give-license-expires-soon,
+  .give-settings-page .give-license-notice.give-license-expired {
     color: #fff; }
-    #licenses .cmb2-wrap .give-license-notice.give-license-lifetime-notice a,
-    #licenses .cmb2-wrap .give-license-notice.give-license-expires-soon a,
-    #licenses .cmb2-wrap .give-license-notice.give-license-expired a {
+    .give-settings-page .give-license-notice.give-license-lifetime-notice a,
+    .give-settings-page .give-license-notice.give-license-expires-soon a,
+    .give-settings-page .give-license-notice.give-license-expired a {
       color: #fff; }
-  #licenses .cmb2-wrap .give-license-notice.give-license-expires-soon a:hover,
-  #licenses .cmb2-wrap .give-license-notice.give-license-expired a:hover {
+  .give-settings-page .give-license-notice.give-license-expires-soon a:hover,
+  .give-settings-page .give-license-notice.give-license-expired a:hover {
     text-decoration: none; }
 
 /* Responsive fixes: Addon grid design */
 @media screen and (max-width: 1100px) {
-  #licenses .cmb2-wrap .cmb-row {
+  .give-settings-page .give-settings-wrap-licenses {
     width: 45%;
     min-height: 230px; } }
 
 @media screen and (max-width: 600px) {
-  #licenses .cmb2-wrap .cmb-row {
+  .give-settings-page .give-settings-wrap-licenses {
     width: 100%;
     max-width: 320px; } }
 

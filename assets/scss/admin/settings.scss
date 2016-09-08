@@ -271,7 +271,7 @@ a.give-delete {
 //--------------------------------------------------------------
 // License
 //--------------------------------------------------------------
-.cmb2-wrap {
+.give-settings-wrap-licenses {
   .give-license-deactivate {
     margin: 1px 0 0 10px;
     height: 30px;
@@ -297,10 +297,10 @@ a.give-delete {
 }
 
 /* Addon grid design */
-#licenses .cmb2-wrap{
+.give-settings-page{
   margin-top: 20px;
 
-  .cmb-row {
+  .give-settings-wrap-licenses {
     display: block;
     position: relative;
     float: left;
@@ -312,15 +312,7 @@ a.give-delete {
     border: 1px solid #ccc;
   }
 
-  // Common css for cmb-th and cmb-td.
-  .cmb-row > div {
-    display: block;
-    width: auto;
-    padding: 0;
-    float: none;
-  }
-
-  .cmb-th {
+  .give-license-key {
     background: #f9f9f9;
     border-bottom: 1px solid #ccc;
     margin-bottom: 20px;
@@ -328,21 +320,23 @@ a.give-delete {
     label{
       margin: 0 0 0 10px;
       padding: 10px 0;
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
     }
   }
 
-  .cmb-td {
-    > div {
-      margin: 0 10px;
+  .give-license-block{
+    margin: 0 10px;
+  }
 
-      input[type="text"]{
-        width: 100%;
-      }
+  input[type="text"].give-license-field,
+  input[type="password"].give-license-field{
+    width: 100%;
+  }
 
-      input[type="submit"]{
-        margin: 15px 0 10px 0;
-      }
-    }
+  .give-license-block input[type="submit"]{
+    margin: 15px 0 10px 0;
   }
 
   .give-license-notice {
@@ -414,20 +408,16 @@ a.give-delete {
 
 /* Responsive fixes: Addon grid design */
 @media screen and ( max-width: 1100px ) {
-  #licenses .cmb2-wrap{
-    .cmb-row{
-      width:45%;
-      min-height: 230px;
-    }
+  .give-settings-page .give-settings-wrap-licenses{
+    width:45%;
+    min-height: 230px;
   }
 }
 
 @media screen and ( max-width: 600px ){
-  #licenses .cmb2-wrap{
-    .cmb-row{
-      width:100%;
-      max-width: 320px;
-    }
+  .give-settings-page .give-settings-wrap-licenses{
+    width:100%;
+    max-width: 320px;
   }
 }
 
