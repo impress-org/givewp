@@ -1533,7 +1533,7 @@ a.give-delete {
     width: 100%; }
   .give-settings-page .give-license-block input[type="submit"] {
     margin: 15px 0 10px 0; }
-  .give-settings-page .give-license-notice {
+  .give-settings-page .give-license-status-notice {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -1541,12 +1541,12 @@ a.give-delete {
     background: whitesmoke;
     border-top: 1px solid #ececec;
     min-height: 65px; }
-    .give-settings-page .give-license-notice p {
+    .give-settings-page .give-license-status-notice p {
       padding: 0 10px; }
-    .give-settings-page .give-license-notice a {
+    .give-settings-page .give-license-status-notice a {
       color: #444;
       cursor: pointer; }
-    .give-settings-page .give-license-notice a:hover {
+    .give-settings-page .give-license-status-notice a:hover {
       text-decoration: none; }
   .give-settings-page .give-license-notice.give-license-expires-soon {
     background-color: #00a0d2;

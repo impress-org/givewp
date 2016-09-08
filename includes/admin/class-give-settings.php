@@ -1348,7 +1348,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
     }
 
     foreach( $messages as $message ) {
-        $custom_html .= '<div class="give-license-notice give-' . $license_status . '">';
+        $custom_html .= '<div class="give-license-status-notice give-' . $license_status . '">';
         $custom_html .= '<p>' . $message . '</p>';
         $custom_html .= '</div>';
     }

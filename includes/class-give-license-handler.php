@@ -635,7 +635,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @return  void
 		 */
 		public function notices() {
-			global $current_user;
 			static $showed_invalid_message;
 			static $showed_subscriptions_message;
 			static $addon_license_key_in_subscriptions;
