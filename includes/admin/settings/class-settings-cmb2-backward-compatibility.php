@@ -180,46 +180,46 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 						'id'   => $prev_title_field_id
 					);
 				}
-			}
 
-			// Check if setting page has title section or not.
-			// If setting page does not have title section  then add title section to it and fix section end array id.
-			if( 'title' !== $new_setting_fields[0]['type'] ) {
-				array_unshift(
-					$new_setting_fields,
-					array(
-						'title' => $setting_fields['give_title'],
-						'type' => 'title',
-						'desc' => ! empty( $setting_fields['desc'] ) ? $setting_fields['desc'] : '',
-						'id' => $setting_fields['id']
-					)
-				);
+				// Check if setting page has title section or not.
+				// If setting page does not have title section  then add title section to it and fix section end array id.
+				if( 'title' !== $new_setting_fields[0]['type'] ) {
+					array_unshift(
+						$new_setting_fields,
+						array(
+							'title' => $setting_fields['give_title'],
+							'type' => 'title',
+							'desc' => ! empty( $setting_fields['desc'] ) ? $setting_fields['desc'] : '',
+							'id' => $setting_fields['id']
+						)
+					);
 
-				// Update id in section end array if does not contain.
-				if( empty( $new_setting_fields[count( $new_setting_fields ) - 1 ]['id'] ) ) {
-					$new_setting_fields[count( $new_setting_fields ) - 1 ]['id'] = $setting_fields['id'];
-				}
-			}
-
-			// Return only section related settings.
-			if( $sections = $this->get_sections() ) {
-				$new_setting_fields = self::get_section_settiings( $new_setting_fields );
-			}
-			
-			// Third party plugin backward compatibility.
-			foreach ( $new_setting_fields  as $index => $field ) {
-				if( in_array( $field['type'], array( 'title', 'sectionend') ) ) {
-					continue;
+					// Update id in section end array if does not contain.
+					if( empty( $new_setting_fields[count( $new_setting_fields ) - 1 ]['id'] ) ) {
+						$new_setting_fields[count( $new_setting_fields ) - 1 ]['id'] = $setting_fields['id'];
+					}
 				}
 
-				$cmb2_filter_name = "cmb2_render_{$field['type']}";
+				// Return only section related settings.
+				if( $sections = $this->get_sections() ) {
+					$new_setting_fields = self::get_section_settiings( $new_setting_fields );
+				}
 
-				if( ! empty( $wp_filter[ $cmb2_filter_name ] ) ) {
-					$cmb2_filter_arr = current( $wp_filter[ $cmb2_filter_name ] );
+				// Third party plugin backward compatibility.
+				foreach ( $new_setting_fields  as $index => $field ) {
+					if( in_array( $field['type'], array( 'title', 'sectionend') ) ) {
+						continue;
+					}
 
-					if( ! empty( $cmb2_filter_arr ) ) {
-						$new_setting_fields[$index]['func'] = current( array_keys( $cmb2_filter_arr ) );
-						add_action( "give_admin_field_{$field['type']}", array( $this, 'addon_setting_field' ), 10, 2 );
+					$cmb2_filter_name = "cmb2_render_{$field['type']}";
+
+					if( ! empty( $wp_filter[ $cmb2_filter_name ] ) ) {
+						$cmb2_filter_arr = current( $wp_filter[ $cmb2_filter_name ] );
+
+						if( ! empty( $cmb2_filter_arr ) ) {
+							$new_setting_fields[$index]['func'] = current( array_keys( $cmb2_filter_arr ) );
+							add_action( "give_admin_field_{$field['type']}", array( $this, 'addon_setting_field' ), 10, 2 );
+						}
 					}
 				}
 			}
