@@ -19,22 +19,55 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * This class is for working with payments in Give.
  *
+ * @property int        $ID
+ * @property bool       $new
+ * @property string     $number
+ * @property string     $mode
+ * @property string     $key
+ * @property string     $form_title
+ * @property string|int $form_id
+ * @property string|int $price_id
+ * @property string|int $total
+ * @property string|int $subtotal
+ * @property string|int $fees
+ * @property string|int $fees_total
+ * @property string     $post_status
+ * @property string     $date
+ * @property string     $postdate
+ * @property string     $status
+ * @property string     $email
+ * @property string     $payment_meta
+ * @property string     $currency
+ * @property string     $ip
+ * @property array      $user_info
+ * @property string     $gateway
+ * @property string     $user_id
+ * @property string     $first_name
+ * @property string     $last_name
+ * @property string     $parent_payment
+ *
  * @since 1.5
  */
 final class Give_Payment {
 
 	/**
-	 * The Payment ID
+	 * The Payment ID.
 	 *
 	 * @since  1.5
 	 *
-	 * @var    integer
+	 * @var    int
 	 */
 	public $ID = 0;
+
+	/**
+	 * Protected non-read $_ID.
+	 *
+	 * @var int
+	 */
 	protected $_ID = 0;
 
 	/**
-	 * Identify if the payment is a new one or existing
+	 * Identify if the payment is a new one or existing.
 	 *
 	 * @since  1.5
 	 * @access protected
@@ -44,7 +77,7 @@ final class Give_Payment {
 	protected $new = false;
 
 	/**
-	 * The Payment number (for use with sequential payments)
+	 * The Payment number (for use with sequential payments).
 	 *
 	 * @since  1.5
 	 * @access protected
@@ -54,7 +87,7 @@ final class Give_Payment {
 	protected $number = '';
 
 	/**
-	 * The Gateway mode the payment was made in
+	 * The Gateway mode the payment was made in.
 	 *
 	 * @since  1.5
 	 * @access protected
@@ -64,7 +97,7 @@ final class Give_Payment {
 	protected $mode = 'live';
 
 	/**
-	 * The Unique Payment Key
+	 * The unique donation payment key.
 	 *
 	 * @since  1.5
 	 * @access protected
@@ -99,13 +132,13 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access protected
 	 *
-	 * @var    string
+	 * @var    string|int
 	 */
 	protected $price_id = 0;
 
 	/**
-	 * The total amount the payment is for
-	 * Includes donation amount and fees
+	 * The total amount of the donation payment.
+	 * Includes donation amount and fees.
 	 *
 	 * @since  1.5
 	 * @access protected
@@ -153,10 +186,16 @@ final class Give_Payment {
 	 * @var    string
 	 */
 	protected $date = '';
+
+	/**
+	 * The date the payment post was created.
+	 *
+	 * @var string
+	 */
 	protected $post_date = '';
 
 	/**
-	 * The date the payment was marked as 'complete'
+	 * The date the payment was marked as 'complete'.
 	 *
 	 * @since  1.5
 	 * @access protected
@@ -166,7 +205,7 @@ final class Give_Payment {
 	protected $completed_date = '';
 
 	/**
-	 * The status of the payment
+	 * The status of the donation payment.
 	 *
 	 * @since  1.5
 	 * @access protected
@@ -174,6 +213,10 @@ final class Give_Payment {
 	 * @var    string
 	 */
 	protected $status = 'pending';
+
+	/**
+	 * @var string
+	 */
 	protected $post_status = 'pending'; // Same as $status but here for backwards compat
 
 	/**
@@ -187,7 +230,7 @@ final class Give_Payment {
 	protected $old_status = '';
 
 	/**
-	 * The display name of the current payment status
+	 * The display name of the current payment status.
 	 *
 	 * @since  1.5
 	 * @access protected
@@ -317,8 +360,8 @@ final class Give_Payment {
 	protected $currency = '';
 
 	/**
-	 * Array of items that have changed since the last save() was run
-	 * This is for internal use, to allow fewer update_payment_meta calls to be run
+	 * Array of items that have changed since the last save() was run.
+	 * This is for internal use, to allow fewer update_payment_meta calls to be run.
 	 *
 	 * @since  1.5
 	 * @access private
@@ -343,7 +386,7 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  int   $payment_id A given payment
+	 * @param  int $payment_id A given payment
 	 *
 	 * @return mixed void|false
 	 */
@@ -357,14 +400,14 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Magic GET function
+	 * Magic GET function.
 	 *
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  string $key The property
+	 * @param  string $key The property.
 	 *
-	 * @return mixed        The value
+	 * @return mixed        The value.
 	 */
 	public function __get( $key ) {
 
@@ -390,7 +433,7 @@ final class Give_Payment {
 	 * @access public
 	 *
 	 * @param  string $key The property name
-	 * @param  mixed $value The value of the property
+	 * @param  mixed  $value The value of the property
 	 */
 	public function __set( $key, $value ) {
 		$ignore = array( '_ID' );
@@ -531,22 +574,22 @@ final class Give_Payment {
 		return true;
 	}
 
-    /**
-     * Payment class object is storing various meta value in object parameter.
-     * So if user is updating payment meta but not updating payment object, then payment meta values will not reflect/changes on payment meta automatically
-     * and you can still access payment meta old value in any old payment object ( previously created ) which can cause to show or save wrong payment data.
-     * To prevent that user can use this function after updating any payment meta value ( in bulk or single update ).
-     *  
-     * @since  1.6
-     * @access public
-     * 
-     * @param  int $payment_id Payment ID.
-     * 
-     * @return void
-     */
-    public function update_payment_setup( $payment_id ){
-        $this->setup_payment( $payment_id );
-    }
+	/**
+	 * Payment class object is storing various meta value in object parameter.
+	 * So if user is updating payment meta but not updating payment object, then payment meta values will not reflect/changes on payment meta automatically
+	 * and you can still access payment meta old value in any old payment object ( previously created ) which can cause to show or save wrong payment data.
+	 * To prevent that user can use this function after updating any payment meta value ( in bulk or single update ).
+	 *
+	 * @since  1.6
+	 * @access public
+	 *
+	 * @param  int $payment_id Payment ID.
+	 *
+	 * @return void
+	 */
+	public function update_payment_setup( $payment_id ) {
+		$this->setup_payment( $payment_id );
+	}
 
 	/**
 	 * Create the base of a payment.
@@ -673,7 +716,7 @@ final class Give_Payment {
 	 *
 	 * Once items have been set, an update is needed to save them to the database.
 	 *
-     * @access public
+	 * @access public
 	 *
 	 * @return bool  True of the save occurred, false if it failed or wasn't needed
 	 */
@@ -967,10 +1010,10 @@ final class Give_Payment {
 	 * Add a donation to a given payment
 	 *
 	 * @since  1.5
-     * @access public
+	 * @access public
 	 *
 	 * @param  int   $form_id The donation form to add
-	 * @param  array $args    Other arguments to pass to the function
+	 * @param  array $args Other arguments to pass to the function
 	 * @param  array $options List of donation options
 	 *
 	 * @return bool           True when successful, false otherwise
@@ -1063,10 +1106,10 @@ final class Give_Payment {
 	 * Remove a donation from the payment
 	 *
 	 * @since  1.5
-     * @access public
+	 * @access public
 	 *
 	 * @param  int   $form_id The form ID to remove
-	 * @param  array $args    Arguments to pass to identify (quantity, amount, price_id)
+	 * @param  array $args Arguments to pass to identify (quantity, amount, price_id)
 	 *
 	 * @return bool           If the item was removed or not
 	 */
@@ -1105,9 +1148,9 @@ final class Give_Payment {
 	 * Add a fee to a given payment
 	 *
 	 * @since  1.5
-     * @access public
+	 * @access public
 	 *
-	 * @param  array $args   Array of arguments for the fee to add
+	 * @param  array $args Array of arguments for the fee to add
 	 * @param  bool  $global
 	 *
 	 * @return bool          If the fee was added
@@ -1140,7 +1183,7 @@ final class Give_Payment {
 	 * Remove a fee from the payment
 	 *
 	 * @since  1.5
-     * @access public
+	 * @access public
 	 *
 	 * @param  int $key The array key index to remove
 	 *
@@ -1160,10 +1203,10 @@ final class Give_Payment {
 	 * Remove a fee by the defined attributed
 	 *
 	 * @since  1.5
-     * @access public
+	 * @access public
 	 *
-	 * @param  string     $key    The key to remove by
-	 * @param  int|string $value  The value to search for
+	 * @param  string     $key The key to remove by
+	 * @param  int|string $value The value to search for
 	 * @param  boolean    $global False - removes the first value it fines,
 	 *                            True - removes all matches.
 	 *
@@ -1230,7 +1273,7 @@ final class Give_Payment {
 	 * Get the fees, filterable by type
 	 *
 	 * @since  1.5
-     * @access public
+	 * @access public
 	 *
 	 * @param  string $type All, item, fee
 	 *
@@ -1279,9 +1322,9 @@ final class Give_Payment {
 	 * Increase the payment's subtotal
 	 *
 	 * @since  1.5
-     * @access private
+	 * @access private
 	 *
-	 * @param  float $amount The amount to increase the payment subtotal by
+	 * @param  float $amount The amount to increase the payment subtotal by.
 	 *
 	 * @return void
 	 */
@@ -1293,12 +1336,12 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Decrease the payment's subtotal
+	 * Decrease the payment's subtotal.
 	 *
 	 * @since  1.5
-     * @access private
+	 * @access private
 	 *
-	 * @param  float $amount The amount to decrease the payment subtotal by
+	 * @param  float $amount The amount to decrease the payment subtotal by.
 	 *
 	 * @return void
 	 */
@@ -1314,12 +1357,12 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Increase the payment's subtotal
+	 * Increase the payment's subtotal.
 	 *
 	 * @since  1.5
-     * @access private
+	 * @access private
 	 *
-	 * @param  float $amount The amount to increase the payment subtotal by
+	 * @param  float $amount The amount to increase the payment subtotal by.
 	 *
 	 * @return void
 	 */
@@ -1331,12 +1374,12 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Decrease the payment's subtotal
+	 * Decrease the payment's subtotal.
 	 *
 	 * @since  1.5
-     * @access private
+	 * @access private
 	 *
-	 * @param  float $amount The amount to decrease the payment subtotal by
+	 * @param  float $amount The amount to decrease the payment subtotal by.
 	 *
 	 * @return void
 	 */
@@ -1352,7 +1395,7 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Set or update the total for a payment
+	 * Set or update the total for a payment.
 	 *
 	 * @since  1.5
      * @access private
@@ -1364,14 +1407,14 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Set the payment status and run any status specific changes necessary
+	 * Set the payment status and run any status specific changes necessary.
 	 *
 	 * @since  1.5
      * @access public
 	 *
-	 * @param  string $status  The status to set the payment to
+	 * @param  string $status The status to set the payment to.
 	 *
-	 * @return bool   $updated Returns if the status was successfully updated
+	 * @return bool   $updated Returns if the status was successfully updated.
 	 */
 	public function update_status( $status = false ) {
 
@@ -1426,12 +1469,12 @@ final class Give_Payment {
 				case 'pending':
 					$this->process_pending();
 					break;
-                case 'cancelled':
-                    $this->process_cancelled();
-                    break;
-                case 'revoked':
-                    $this->process_revoked();
-                    break;
+				case 'cancelled':
+					$this->process_cancelled();
+					break;
+				case 'revoked':
+					$this->process_revoked();
+					break;
 			}
 
 			/**
@@ -1455,7 +1498,7 @@ final class Give_Payment {
 	 * Change the status of the payment to refunded, and run the necessary changes
 	 *
 	 * @since  1.5
-     * @access public
+	 * @access public
 	 *
 	 * @return void
 	 */
@@ -1471,10 +1514,10 @@ final class Give_Payment {
 	 * Get a post meta item for the payment
 	 *
 	 * @since  1.5
-     * @access public
+	 * @access public
 	 *
 	 * @param  string  $meta_key The Meta Key
-	 * @param  boolean $single   Return single item or array
+	 * @param  boolean $single Return single item or array
 	 *
 	 * @return mixed             The value from the post meta
 	 */
@@ -1510,9 +1553,9 @@ final class Give_Payment {
 	 * Update the post meta
 	 *
 	 * @since  1.5
-     * @access public
+	 * @access public
 	 *
-	 * @param  string $meta_key   The meta key to update
+	 * @param  string $meta_key The meta key to update
 	 * @param  string $meta_value The meta value
 	 * @param  string $prev_value Previous meta value
 	 *
@@ -1650,77 +1693,77 @@ final class Give_Payment {
 		delete_transient( md5( 'give_earnings_this_monththis_month' ) );
 	}
 
-    /**
-     * Process when a payment moves to cancelled
-     *
-     * @since  1.5
+	/**
+	 * Process when a payment moves to cancelled
+	 *
+	 * @since  1.5
 	 * @access private
 	 *
-     * @return void
-     */
-    private function process_cancelled() {
-        $process_cancelled = true;
+	 * @return void
+	 */
+	private function process_cancelled() {
+		$process_cancelled = true;
 
-        // If the payment was not in publish or revoked status, don't decrement stats as they were never incremented
-        if ( 'publish' != $this->old_status || 'cancelled' != $this->status ) {
-            $process_cancelled = false;
-        }
+		// If the payment was not in publish or revoked status, don't decrement stats as they were never incremented
+		if ( 'publish' != $this->old_status || 'cancelled' != $this->status ) {
+			$process_cancelled = false;
+		}
 
-        // Allow extensions to filter for their own payment types, Example: Recurring Payments
-        $process_cancelled = apply_filters( 'give_should_process_cancelled', $process_cancelled, $this );
+		// Allow extensions to filter for their own payment types, Example: Recurring Payments
+		$process_cancelled = apply_filters( 'give_should_process_cancelled', $process_cancelled, $this );
 
-        if ( false === $process_cancelled ) {
-            return;
-        }
+		if ( false === $process_cancelled ) {
+			return;
+		}
 
-        $decrease_store_earnings = apply_filters( 'give_decrease_store_earnings_on_cancelled', true, $this );
-        $decrease_customer_value = apply_filters( 'give_decrease_customer_value_on_cancelled', true, $this );
-        $decrease_purchase_count = apply_filters( 'give_decrease_customer_purchase_count_on_cancelled', true, $this );
+		$decrease_store_earnings = apply_filters( 'give_decrease_store_earnings_on_cancelled', true, $this );
+		$decrease_customer_value = apply_filters( 'give_decrease_customer_value_on_cancelled', true, $this );
+		$decrease_purchase_count = apply_filters( 'give_decrease_customer_purchase_count_on_cancelled', true, $this );
 
-        $this->maybe_alter_stats( $decrease_store_earnings, $decrease_customer_value, $decrease_purchase_count );
-        $this->delete_sales_logs();
+		$this->maybe_alter_stats( $decrease_store_earnings, $decrease_customer_value, $decrease_purchase_count );
+		$this->delete_sales_logs();
 
-        $this->completed_date = false;
-        $this->update_meta( '_give_completed_date', '' );
+		$this->completed_date = false;
+		$this->update_meta( '_give_completed_date', '' );
 
-        // Clear the This Month earnings (this_monththis_month is NOT a typo)
-        delete_transient( md5( 'give_earnings_this_monththis_month' ) );
-    }
+		// Clear the This Month earnings (this_monththis_month is NOT a typo)
+		delete_transient( md5( 'give_earnings_this_monththis_month' ) );
+	}
 
-    /**
-     * Process when a payment moves to revoked
-     *
-     * @since  1.5
-     * @return void
-     */
-    private function process_revoked() {
-        $process_revoked = true;
+	/**
+	 * Process when a payment moves to revoked
+	 *
+	 * @since  1.5
+	 * @return void
+	 */
+	private function process_revoked() {
+		$process_revoked = true;
 
-        // If the payment was not in publish, don't decrement stats as they were never incremented
-        if ( 'publish' != $this->old_status || 'revoked' != $this->status ) {
-            $process_revoked = false;
-        }
+		// If the payment was not in publish, don't decrement stats as they were never incremented
+		if ( 'publish' != $this->old_status || 'revoked' != $this->status ) {
+			$process_revoked = false;
+		}
 
-        // Allow extensions to filter for their own payment types, Example: Recurring Payments
-        $process_revoked = apply_filters( 'give_should_process_revoked', $process_revoked, $this );
+		// Allow extensions to filter for their own payment types, Example: Recurring Payments
+		$process_revoked = apply_filters( 'give_should_process_revoked', $process_revoked, $this );
 
-        if ( false === $process_revoked ) {
-            return;
-        }
+		if ( false === $process_revoked ) {
+			return;
+		}
 
-        $decrease_store_earnings = apply_filters( 'give_decrease_store_earnings_on_revoked', true, $this );
-        $decrease_customer_value = apply_filters( 'give_decrease_customer_value_on_revoked', true, $this );
-        $decrease_purchase_count = apply_filters( 'give_decrease_customer_purchase_count_on_revoked', true, $this );
+		$decrease_store_earnings = apply_filters( 'give_decrease_store_earnings_on_revoked', true, $this );
+		$decrease_customer_value = apply_filters( 'give_decrease_customer_value_on_revoked', true, $this );
+		$decrease_purchase_count = apply_filters( 'give_decrease_customer_purchase_count_on_revoked', true, $this );
 
-        $this->maybe_alter_stats( $decrease_store_earnings, $decrease_customer_value, $decrease_purchase_count );
-        $this->delete_sales_logs();
+		$this->maybe_alter_stats( $decrease_store_earnings, $decrease_customer_value, $decrease_purchase_count );
+		$this->delete_sales_logs();
 
-        $this->completed_date = false;
-        $this->update_meta( '_give_completed_date', '' );
+		$this->completed_date = false;
+		$this->update_meta( '_give_completed_date', '' );
 
-        // Clear the This Month earnings (this_monththis_month is NOT a typo)
-        delete_transient( md5( 'give_earnings_this_monththis_month' ) );
-    }
+		// Clear the This Month earnings (this_monththis_month is NOT a typo)
+		delete_transient( md5( 'give_earnings_this_monththis_month' ) );
+	}
 
 	/**
 	 * Used during the process of moving to refunded or pending, to decrement stats
@@ -1728,9 +1771,9 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @param  bool $alter_store_earnings          If the method should alter the store earnings
-	 * @param  bool $alter_customer_value          If the method should reduce the customer value
-	 * @param  bool $alter_customer_purchase_count If the method should reduce the customer's donation count
+	 * @param  bool $alter_store_earnings If the method should alter the store earnings
+	 * @param  bool $alter_customer_value If the method should reduce the customer value
+	 * @param  bool $alter_customer_purchase_count If the method should reduce the customer's purchase count
 	 *
 	 * @return void
 	 */
