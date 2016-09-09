@@ -309,20 +309,31 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			// Create object for cmb2  function callback backward compatibility.
 			$field_obj = (object) array( 'args' => $field );
 			$field_type_object = (object) array( 'field' => $field_obj );
-			$colspan = "colspan=\"2\"";
-			?>
-			<tr valign="top">
-				<?php if( ! empty( $field['name'] ) && ! in_array( $field['name'], array( '&nbsp;' ) ) ) : ?>
-					<th scope="row" class="titledesc">
-						<label for="<?php echo esc_attr( $field['name'] ); ?>"><?php echo $field['title']; ?></label>
-					</th>
-					<?php $colspan = ''; ?>
-				<?php endif; ?>
-				<td class="forminp" <?php echo $colspan; ?>>
-					<?php $field['func']( $field_obj, $saved_value, '', '', $field_type_object ); ?>
-				</td>
-			</tr>
-			<?php
+
+			switch ( $this->current_tab ) :
+				case 'licenses':
+					?>
+					<div class="give-settings-wrap give-settings-wrap-<?php echo $this->current_tab; ?>">
+						<?php $field['func']( $field_obj, $saved_value, '', '', $field_type_object ); ?>
+					</div>
+					<? break;
+
+				default :
+					$colspan = "colspan=\"2\"";
+					?>
+					<tr valign="top">
+						<?php if( ! empty( $field['name'] ) && ! in_array( $field['name'], array( '&nbsp;' ) ) ) : ?>
+							<th scope="row" class="titledesc">
+								<label for="<?php echo esc_attr( $field['name'] ); ?>"><?php echo $field['title']; ?></label>
+							</th>
+							<?php $colspan = ''; ?>
+						<?php endif; ?>
+						<td class="forminp" <?php echo $colspan; ?>>
+							<?php $field['func']( $field_obj, $saved_value, '', '', $field_type_object ); ?>
+						</td>
+					</tr>
+					<?php
+			endswitch;
 		}
 	}
 endif;
