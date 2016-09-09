@@ -21,7 +21,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0
  * @global $wpdb
- * @global $wp_version
  * @return void
  */
 function give_install( $network_wide = false ) {
