@@ -28,7 +28,8 @@ class Give_Addon_Activation_Banner {
 	 */
 	function __construct( $_banner_details ) {
 
-		global $current_user;
+		$current_user = wp_get_current_user();
+
 		$this->banner_details = $_banner_details;
 		$this->test_mode      = ( $this->banner_details['testing'] == 'true' ) ? true : false;
 		$this->nag_meta_key   = 'give_addon_activation_ignore_' . sanitize_title( $this->banner_details['name'] );
