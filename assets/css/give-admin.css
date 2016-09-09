@@ -1314,9 +1314,6 @@ Settings
 .give_settings_page .nav-tab-wrapper {
   margin-bottom: 5px; }
 
-.give_settings_page span.cmb2-metabox-description {
-  font-size: 13px; }
-
 .give_settings_page .cmb2-wrap .cmb-type-checkbox input[type="checkbox"] {
   display: block;
   margin-bottom: 5px; }
@@ -1353,7 +1350,7 @@ Settings
 .give-radio-inline li:first-child {
   margin-left: 0; }
 
-p.give-setting-field-desc {
+p.give-setting-field-desc, .cmb2-metabox-description {
   color: #aaaaaa;
   font-style: italic;
   font-size: 13px !important; }

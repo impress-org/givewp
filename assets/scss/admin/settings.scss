@@ -16,10 +16,6 @@ Settings
     margin-bottom: 5px;
   }
 
-  span.cmb2-metabox-description {
-    font-size: 13px;
-  }
-
   .cmb2-wrap .cmb-type-checkbox input[type="checkbox"] {
     display: block;
     margin-bottom: 5px;
@@ -82,7 +78,7 @@ Settings
   }
 }
 
-p.give-setting-field-desc{
+p.give-setting-field-desc, .cmb2-metabox-description{
   color: #aaaaaa;
   font-style: italic;
   font-size: 13px !important;
