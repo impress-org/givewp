@@ -82,3 +82,33 @@ function give_post_actions() {
 
 add_action( 'init', 'give_post_actions' );
 add_action( 'admin_init', 'give_post_actions' );
+
+/**
+ * Connect WordPress user with Donor.
+ *
+ * @since  1.7
+ * @param  int   $user_id   User ID
+ * @param  array $user_data User Data
+ * @return void
+ */
+function give_connect_donor_to_wpuser( $user_id, $user_data ){
+	$donor = new Give_Customer( $user_data['user_email'] );
+
+	// Validate donor id and check if do nor is already connect to wp user or not.
+	if( $donor->id && ! $donor->user_id ) {
+
+		// Update donor user_id.
+		if( $donor->update( array( 'user_id' => $user_id ) ) ) {
+			$donor_note    = __( sprintf( 'WordPress user #%d is connected to #%d', $user_id, $donor->id ), 'give' );
+			$donor->add_note( $donor_note );
+
+			// Update user_id meta in payments.
+			if( ! empty( $donor->payment_ids ) && ( $donations = explode( ',', $donor->payment_ids ) ) ) {
+				foreach ( $donations as $donation  ) {
+					update_post_meta( $donation, '_give_payment_user_id', $user_id );
+				}
+			}
+		}
+	}
+}
+add_action( 'give_insert_user', 'give_connect_donor_to_wpuser', 10, 2 );

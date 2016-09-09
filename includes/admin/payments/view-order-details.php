@@ -385,7 +385,7 @@ $payment_mode   = $payment->mode;
 													<?php
 													$var_prices = give_has_variable_prices( $payment_meta['form_id'] );
 													if ( empty( $var_prices ) ) {
-														echo esc_html__( 'n/a', 'give' );
+														esc_html_e( 'n/a', 'give' );
 													} else {
 														// Variable price dropdown options.
 														$variable_price_dropdown_option = array(

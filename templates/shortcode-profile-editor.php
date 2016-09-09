@@ -199,7 +199,7 @@ if ( is_user_logged_in() ):
 				?>
 			</p>
 
-			<p class="give_password_change_notice" class=""><?php esc_html_e( 'Please note after changing your password, you must log back in.', 'give' ); ?></p>
+			<p class="give_password_change_notice"><?php esc_html_e( 'Please note after changing your password, you must log back in.', 'give' ); ?></p>
 
 			<?php
 			/**

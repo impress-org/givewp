@@ -1192,7 +1192,7 @@ class Give_API {
 				} else {
 					$error['error'] = sprintf(
 						/* translators: %s: form */
-						esc_html__( 'Product %s not found.', 'give' ),
+						esc_html__( 'Form %s not found.', 'give' ),
 						$args['form']
 					);
 				}
