@@ -1617,9 +1617,7 @@ function give_get_payment_note_html( $note, $payment_id = 0 ) {
  * @return void
  */
 function give_hide_payment_notes( $query ) {
-	global $wp_version;
-
-	if ( version_compare( floatval( $wp_version ), '4.1', '>=' ) ) {
+	if ( version_compare( floatval( get_bloginfo( 'version' ) ), '4.1', '>=' ) ) {
 		$types = isset( $query->query_vars['type__not_in'] ) ? $query->query_vars['type__not_in'] : array();
 		if ( ! is_array( $types ) ) {
 			$types = array( $types );
@@ -1642,9 +1640,7 @@ add_action( 'pre_get_comments', 'give_hide_payment_notes', 10 );
  * @return array $clauses Updated comment clauses
  */
 function give_hide_payment_notes_pre_41( $clauses, $wp_comment_query ) {
-	global $wpdb, $wp_version;
-
-	if ( version_compare( floatval( $wp_version ), '4.1', '<' ) ) {
+	if ( version_compare( floatval( get_bloginfo( 'version' ) ), '4.1', '<' ) ) {
 		$clauses['where'] .= ' AND comment_type != "give_payment_note"';
 	}
 
