@@ -213,7 +213,7 @@ function give_get_stylesheet_uri() {
  */
 function give_load_admin_scripts( $hook ) {
 
-	global $wp_version, $post, $post_type, $give_options;
+	global $post, $post_type, $give_options;
 
 	//Directories of assets
 	$js_dir     = GIVE_PLUGIN_URL . 'assets/js/admin/';
@@ -312,7 +312,7 @@ function give_load_admin_scripts( $hook ) {
 		'price_format_guide'      => sprintf( esc_html__( 'Please enter amount in monetary decimal ( %1$s ) format without thousand separator ( %2$s ) .', 'give' ), $decimal_separator, $thousand_separator )
 	) );
 
-	if ( function_exists( 'wp_enqueue_media' ) && version_compare( $wp_version, '3.5', '>=' ) ) {
+	if ( function_exists( 'wp_enqueue_media' ) && version_compare( get_bloginfo( 'version' ), '3.5', '>=' ) ) {
 		//call for new media manager
 		wp_enqueue_media();
 	}
@@ -328,15 +328,13 @@ add_action( 'admin_enqueue_scripts', 'give_load_admin_scripts', 100 );
  *
  * @since 1.0
  * @global $post_type
- * @global $wp_version
  * @return void
  */
 function give_admin_icon() {
-	global $wp_version;
 	?>
 	<style type="text/css" media="screen">
 
-		<?php if( version_compare( $wp_version, '3.8-RC', '>=' ) || version_compare( $wp_version, '3.8', '>=' ) ) { ?>
+		<?php if( version_compare( get_bloginfo( 'version' ), '3.8-RC', '>=' ) || version_compare( get_bloginfo( 'version' ), '3.8', '>=' ) ) { ?>
 		@font-face {
 			font-family: 'give-icomoon';
 			src: url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.eot?-ngjl88'; ?>');
@@ -372,7 +370,6 @@ add_action( 'admin_head', 'give_admin_icon' );
  * @since 1.7
  *
  * @global $post_type
- * @global $wp_version
  *
  * @return void
  */
