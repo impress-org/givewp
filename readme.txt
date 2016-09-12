@@ -140,27 +140,27 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 == Screenshots ==
 
-1. Creating powerful donation forms is easy with Give. Simply install the plugin, create a new donation form, set the desired giving options, and publish!
+1. This is an example of a simple, yet powerful, donation form that allows the user to input a custom amount.
 
-2. Donation form fields can appear within a modal window (as shown here), be revealed with a nice sliding animation, or display entirely on the page (default).
+2. Creating powerful donation forms is easy with Give. Simply install the plugin, create a new donation form, set the desired giving options, and publish!
 
-3. Give makes the donation process simple and easy for your donors. This helps maximize conversion rates and further empower your cause.
+3. Donation form fields can appear within a modal window (as shown here), be revealed with a nice sliding animation, or display entirely on the page (default).
 
-4. The multi-level donation amount functionality allows you to set different giving levels for your donors to choose from. In addition, you can allow donors to specify custom donation amounts and even set donation goals.
+4. Give makes the donation process simple and easy for your donors. This helps maximize conversion rates and further empower your cause.
 
-5. The admin view of a donation form with multi-level amounts configured. Give's flexible options allow you to control whether the amounts output as radio buttons, a select field, or input buttons.
+5. The multi-level donation amount functionality allows you to set different giving levels for your donors to choose from. In addition, you can allow donors to specify custom donation amounts and even set donation goals.
 
-6. Don't need donation levels? No problem. You can set a default amount and allow your donor's to configure a custom donation amount to create a simple, yet powerful, donation form.
+6. The admin view of a donation form with multi-level amounts configured. Give's flexible options allow you to control whether the amounts output as radio buttons, a select field, or input buttons.
 
-7. In-depth donation reports allow you to track just how much your cause has raised over time. You can even export the data to CSV or PDF formats.
+7. Don't need donation levels? No problem. You can set a default amount and allow your donor's to configure a custom donation amount to create a simple, yet powerful, donation form.
 
-8. Extend Give with a robust suite of powerful [Add-ons](https://givewp.com/addons "View all Give Add-ons"). Accept recurring donations, credit cards, add custom form fields, and more!
+8. In-depth donation reports allow you to track just how much your cause has raised over time. You can even export the data to CSV or PDF formats.
 
-9. Give is thoroughly [documented](https://givewp.com/documentation "Visit the Give documentation") to help you get started quickly and learn basic to advanced features and functionalities.
+9. Extend Give with a robust suite of powerful [Add-ons](https://givewp.com/addons "View all Give Add-ons"). Accept recurring donations, credit cards, add custom form fields, and more!
 
-10. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
+10. Give is thoroughly [documented](https://givewp.com/documentation "Visit the Give documentation") to help you get started quickly and learn basic to advanced features and functionalities.
 
-11. We are proud to build Give in collaboration with many of the WordPress communities' top developers.
+11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
 
@@ -171,8 +171,10 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * New: Email tag {receipt_link_url} added - https://github.com/WordImpress/Give/issues/581
 * New: Deprecated actions and filters to fix non-donation based terminology - https://github.com/WordImpress/Give/issues/896
 * New: Function give_date_format() provides a way to adjust the date format based on a given context - https://github.com/WordImpress/Give/issues/687
+* New: Automate RTL styles with gulp - https://github.com/WordImpress/Give/issues/995
 * Tweak: Organize data with a logical relationship in grids for table accessibility - https://github.com/WordImpress/Give/issues/922
 * Tweak: Terminology changes - "Transactions" now called "Donations" and "Payments" now termed "Donation" in WP-admin - https://github.com/WordImpress/Give/issues/896
+* Tweak: Remove "Form Labels" functions from translation strings - https://github.com/WordImpress/Give/issues/1003
 * Fix: User able to donate minimum amount then custom minimum amount with multi level donation form - https://github.com/WordImpress/Give/issues/712
 * Fix: Clearing reports cache wasn't working for "Estimated monthly income for this period" - https://github.com/WordImpress/Give/issues/773
 * Fix: Use only one text-domain "give" for i18n - https://github.com/WordImpress/Give/issues/964
@@ -180,6 +182,9 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 = 1.6.1 =
 * Fix: Donation date discrepancy in transaction details view - https://github.com/WordImpress/Give/issues/898
 * Fix: Switching donation form in transaction view "-2" appears when no form set - https://github.com/WordImpress/Give/issues/877
+* Fix: Styling issue on donor profile editor page - https://github.com/WordImpress/Give/issues/997
+* Fix: Pre-populate First and Last name fields in PayPal Standard - https://github.com/WordImpress/Give/issues/945
+* Fix: Save default value for donation receipt emails for new installs - https://github.com/WordImpress/Give/issues/863
 * Tweak: Payment errors log missing gateway data and payment ID column data - https://github.com/WordImpress/Give/issues/780
 * Tweak: Reverted settings AJAX tabs in preparation for refactor - https://github.com/WordImpress/Give/issues/937
 

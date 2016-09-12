@@ -130,10 +130,10 @@ function give_sanitize_amount( $number, $dp = false, $trim_zeros = false ) {
  *
  * @since 1.0
  *
- * @param string      $amount   Price amount to format
- * @param bool|string $decimals Whether or not to use decimals. Useful when set to false for non-currency numbers.
+ * @param string  $amount   Price amount to format
+ * @param bool    $decimals Whether or not to use decimals. Useful when set to false for non-currency numbers.
  *
- * @return string $amount Newly formatted amount or Price Not Available
+ * @return string $amount   Newly formatted amount or Price Not Available
  */
 function give_format_amount( $amount, $decimals = true ) {
 	$thousands_sep = give_get_option( 'thousands_separator', ',' );
@@ -146,7 +146,7 @@ function give_format_amount( $amount, $decimals = true ) {
 		$amount = give_sanitize_amount( $amount );
 	}
 
-	$decimals = give_get_price_decimals();
+	$decimals = $decimals ? give_get_price_decimals() : 0;
 
 	$formatted = number_format( $amount, $decimals, $decimal_sep, $thousands_sep );
 

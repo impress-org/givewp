@@ -89,7 +89,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 				if ( ! empty( $goal_option ) && $goal_option === 'yes' ) {
 					echo give_goal( $post_id, false );
 				} else {
-					echo esc_html__( 'No Goal Set', 'give' );
+					esc_html_e( 'No Goal Set', 'give' );
 				}
 
 				echo '<input type="hidden" class="formgoal-' . $post_id . '" value="' . give_get_form_goal( $post_id ) . '" />';
@@ -291,13 +291,7 @@ function give_price_field_quick_edit( $column_name, $post_type ) {
 	?>
 	<fieldset class="inline-edit-col-left">
 		<div id="give-give-data" class="inline-edit-col">
-			<h4><?php 
-				printf(
-					/* translators: %s: forms singular label */
-					esc_html__( '%s Configuration', 'give' ),
-					give_get_forms_label_singular()
-				);
-			?></h4>
+			<h4><?php esc_html_e( 'Form Configuration', 'give' ); ?></h4>
 			<label for="give_regprice">
 				<span class="title"><?php esc_html_e( 'Price', 'give' ); ?></span>
 				<span class="input-text-wrap">

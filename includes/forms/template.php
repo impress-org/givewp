@@ -393,7 +393,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 	//Set Price, No Custom Amount Allowed means hidden price field
 	if ( $allow_custom_amount == 'no' ) {
 		?>
-		<label class="give-hidden" for="give-amount-hidden"><?php echo esc_html__( 'Donation Amount:', 'give' ); ?></label>
+		<label class="give-hidden" for="give-amount-hidden"><?php esc_html_e( 'Donation Amount:', 'give' ); ?></label>
 		<input id="give-amount" class="give-amount-hidden" type="hidden" name="give-amount" value="<?php echo $default_amount; ?>" required>
 		<div class="set-price give-donation-amount form-row-wide">
 			<?php if ( $currency_position == 'before' ) {
@@ -413,7 +413,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 				<?php if ( $currency_position == 'before' ) {
 					echo $currency_output;
 				} ?>
-				<label class="give-hidden" for="give-amount"><?php echo esc_html__( 'Donation Amount:', 'give' ); ?></label>
+				<label class="give-hidden" for="give-amount"><?php esc_html_e( 'Donation Amount:', 'give' ); ?></label>
 				<input class="give-text-input give-amount-top" id="give-amount" name="give-amount" type="tel" placeholder="" value="<?php echo $default_amount; ?>" autocomplete="off">
 				<?php if ( $currency_position == 'after' ) {
 					echo $currency_output;
@@ -1355,45 +1355,58 @@ add_action( 'give_payment_mode_select', 'give_payment_mode_select' );
  *
  * @param  int  $form_id The form ID.
  *
- * @return void
+ * @return void|bool
  */
 function give_terms_agreement( $form_id ) {
-
 	$form_option = get_post_meta( $form_id, '_give_terms_option', true );
-	$label       = get_post_meta( $form_id, '_give_agree_label', true );
-	$terms       = get_post_meta( $form_id, '_give_agree_text', true );
 
-	if ( $form_option === 'yes' && ! empty( $terms ) ) { ?>
-		<fieldset id="give_terms_agreement">
-			<div id="give_terms" class= "give_terms-<?php echo $form_id;?>" style="display:none;">
-				<?php
-				/**
-				 * Fires while rendering terms of agreement, before the fields.
-				 *
-				 * @since 1.0
-				 */
-				do_action( 'give_before_terms' );
-
-				echo wpautop( stripslashes( $terms ) );
-				/**
-				 * Fires while rendering terms of agreement, after the fields.
-				 *
-				 * @since 1.0
-				 */
-				do_action( 'give_after_terms' );
-				?>
-			</div>
-			<div id="give_show_terms">
-				<a href="#" class="give_terms_links give_terms_links-<?php echo $form_id;?>"><?php esc_html_e( 'Show Terms', 'give' ); ?></a>
-				<a href="#" class="give_terms_links give_terms_links-<?php echo $form_id;?>" style="display:none;"><?php esc_html_e( 'Hide Terms', 'give' ); ?></a>
-			</div>
-
-			<input name="give_agree_to_terms" class="required" type="checkbox" id="give_agree_to_terms" value="1"/>
-			<label for="give_agree_to_terms"><?php echo ! empty( $label ) ? stripslashes( $label ) : esc_html__( 'Agree to Terms?', 'give' ); ?></label>
-
-		</fieldset>
-		<?php
+	// Bailout if per form and global term and conditions is not setup
+	if( 'yes' !== $form_option ) {
+		return false;
 	}
+
+	// Set term and conditions label and text on basis of per form and global setting.
+	$label = ( $label = get_post_meta( $form_id, '_give_agree_label', true ) ) ? stripslashes( $label ) : give_get_option( 'agree_to_terms_label', esc_html__( 'Agree to Terms?', 'give' ) );
+	$terms = ( $terms = get_post_meta( $form_id, '_give_agree_text', true ) ) ? $terms : give_get_option( 'agreement_text', '' );
+
+	// Bailout: Check if term and conditions text is empty or not.
+	if( empty( $terms ) ) {
+		if( is_user_logged_in() && current_user_can( 'manage_options' ) ) {
+			echo sprintf( __( 'Please enter term and conditions in <a href="%s">this form\'s settings</a>.', 'give' ), admin_url( 'post.php?post=' . $form_id . '&action=edit' ) );
+		}
+		return false;
+	}
+
+	?>
+	<fieldset id="give_terms_agreement">
+		<div id="give_terms" class= "give_terms-<?php echo $form_id;?>" style="display:none;">
+			<?php
+			/**
+			 * Fires while rendering terms of agreement, before the fields.
+			 *
+			 * @since 1.0
+			 */
+			do_action( 'give_before_terms' );
+
+			echo wpautop( stripslashes( $terms ) );
+			/**
+			 * Fires while rendering terms of agreement, after the fields.
+			 *
+			 * @since 1.0
+			 */
+			do_action( 'give_after_terms' );
+			?>
+		</div>
+		<div id="give_show_terms">
+			<a href="#" class="give_terms_links give_terms_links-<?php echo $form_id;?>"><?php esc_html_e( 'Show Terms', 'give' ); ?></a>
+			<a href="#" class="give_terms_links give_terms_links-<?php echo $form_id;?>" style="display:none;"><?php esc_html_e( 'Hide Terms', 'give' ); ?></a>
+		</div>
+
+		<input name="give_agree_to_terms" class="required" type="checkbox" id="give_agree_to_terms" value="1"/>
+		<label for="give_agree_to_terms"><?php echo $label; ?></label>
+
+	</fieldset>
+	<?php
 }
 
 add_action( 'give_donation_form_before_submit', 'give_terms_agreement', 10, 1 );
@@ -1680,7 +1693,7 @@ function give_test_mode_frontend_warning() {
 	$test_mode = give_get_option( 'test_mode' );
 
 	if ( $test_mode == 'on' ) {
-		echo '<div class="give_error give_warning" id="give_error_test_mode"><p><strong>' . esc_html__( 'Notice', 'give' ) . '</strong>: ' . esc_html__( 'Test mode is enabled. While in test mode no live donations are processed.', 'give' ) . '</p></div>';
+		echo '<div class="give_error give_warning" id="give_error_test_mode"><p><strong>' . esc_html__( 'Notice:', 'give' ) . '</strong> ' . esc_html__( 'Test mode is enabled. While in test mode no live donations are processed.', 'give' ) . '</p></div>';
 	}
 }
 

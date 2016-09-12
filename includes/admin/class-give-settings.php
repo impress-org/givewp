@@ -370,7 +370,7 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => esc_html__( 'Disable PayPal IPN Verification', 'give' ),
-							'desc' => esc_html__( 'If donations are not getting marked as complete, then check this box. This forces the site to use a slightly less secure method of verifying donations.', 'give' ),
+							'desc' => esc_html__( 'If donations are not getting marked as complete, use a slightly less secure method of verifying donations.', 'give' ),
 							'id'   => 'disable_paypal_verification',
 							'type' => 'checkbox'
 						),
@@ -510,6 +510,27 @@ class Give_Plugin_Settings {
 							'desc' => esc_html__( 'Enables the "Tag" taxonomy for all Give forms.', 'give' ),
 							'id'   => 'enable_tags',
 							'type' => 'checkbox'
+						),
+						array(
+							'name' => esc_html__( 'Term and Conditions', 'give' ),
+							'desc' => '',
+							'id'   => 'give_title_display_settings_4',
+							'type' => 'give_title'
+						),
+						array(
+							'name' => esc_html__( 'Agree to Terms Label', 'give' ),
+							'desc' => esc_html__( 'The label shown next to the agree to terms check box. Add your own to customize or leave blank to use the default text placeholder. Note: You can customize the label per form as needed.', 'give' ),
+							'id'   => 'agree_to_terms_label',
+							'attributes'  => array(
+								'placeholder' => esc_attr__( 'Agree to Terms?', 'give' ),
+							),
+							'type' => 'text'
+						),
+						array(
+							'name' => esc_html__( 'Agreement Text', 'give' ),
+							'desc' => esc_html__( 'This is the actual text which the user will have to agree to in order to make a donation. Note: You can customize the content per form as needed.', 'give' ),
+							'id'   => 'agreement_text',
+							'type' => 'wysiwyg'
 						),
 					)
 				)
