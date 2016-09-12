@@ -179,7 +179,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * Auto Updater
 		 *
 		 * @access  private
-		 * @global  array $give_options
+		 *
 		 * @return  bool
 		 */
 		public function auto_updater() {

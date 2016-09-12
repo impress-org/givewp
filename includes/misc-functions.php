@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Is Test Mode
  *
  * @since 1.0
- * @global $give_options
+ *
  * @return bool $ret True if return mode is enabled, false otherwise
  */
 function give_is_test_mode() {
@@ -223,7 +223,7 @@ function give_get_current_page_url() {
  * Verify credit card numbers live?
  *
  * @since 1.0
- * @global $give_options
+ *
  * @return bool $ret True is verify credit cards is live
  */
 function give_is_cc_verify_enabled() {

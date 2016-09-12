@@ -162,7 +162,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @global object $give_logs Give Logs Object.
+	 *
 	 * @return array $logs_data Array of all the Log entries.
 	 */
 	public function get_logs() {
@@ -237,7 +237,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @global object $give_logs Give Logs Object
+	 *
 	 * @uses   Give_Gateway_Error_Log_Table::get_columns()
 	 * @uses   WP_List_Table::get_sortable_columns()
 	 * @uses   Give_Gateway_Error_Log_Table::get_pagenum()
