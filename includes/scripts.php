@@ -20,8 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Enqueues the required scripts.
  *
  * @since 1.0
- * @global $give_options
- * @global $post
+ *
  * @return void
  */
 function give_load_scripts() {
@@ -327,7 +326,7 @@ add_action( 'admin_enqueue_scripts', 'give_load_admin_scripts', 100 );
  * Echoes the CSS for the Give post type icon.
  *
  * @since 1.0
- * @global $post_type
+ *
  * @return void
  */
 function give_admin_icon() {
@@ -368,8 +367,6 @@ add_action( 'admin_head', 'give_admin_icon' );
  * This code helps to hide license notices for 24 hour if admin user dismissed notice.
  *
  * @since 1.7
- *
- * @global $post_type
  *
  * @return void
  */

@@ -84,7 +84,7 @@ function give_is_float_labels_enabled( $args ) {
  * Allows themes and plugins to set donation checkout conditions
  * 
  * @since 1.0
- * @global array $give_options Array of all the Give Options
+ *
  * @return bool Can user checkout?
  */
 function give_can_checkout() {
@@ -846,8 +846,6 @@ add_filter( 'give_form_goal', 'give_currency_filter', 20 );
  * Checks if users can only donate when logged in
  *
  * @since  1.0
- *
- * @global array $give_options
  *
  * @param  int   $form_id Give form ID
  *
