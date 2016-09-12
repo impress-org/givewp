@@ -145,10 +145,11 @@ function give_process_paypal_purchase( $purchase_data ) {
 
 		//Add user address if present.
 		if ( ! empty( $purchase_data['user_info']['address'] ) ) {
-			$paypal_args['address1'] = $purchase_data['user_info']['address']['line1'];
-			$paypal_args['address2'] = $purchase_data['user_info']['address']['line2'];
-			$paypal_args['city']     = $purchase_data['user_info']['address']['city'];
-			$paypal_args['country']  = $purchase_data['user_info']['address']['country'];
+			$paypal_args['address1'] = isset( $purchase_data['user_info']['address']['line1'] ) ? $purchase_data['user_info']['address']['line1'] : '';
+			$paypal_args['address2'] = isset( $purchase_data['user_info']['address']['line2'] ) ? $purchase_data['user_info']['address']['line2'] : '';
+			$paypal_args['city']     = isset( $purchase_data['user_info']['address']['city'] ) ? $purchase_data['user_info']['address']['city'] : '';
+			$paypal_args['state']    = isset( $purchase_data['user_info']['address']['state'] ) ? $purchase_data['user_info']['address']['state'] : '';
+			$paypal_args['country']  = isset( $purchase_data['user_info']['address']['country'] ) ? $purchase_data['user_info']['address']['country'] : '';
 		}
 
 		//Donations or regular transactions?
