@@ -219,8 +219,6 @@ class Give_Addon_Activation_Banner {
 	 * Ignore Nag
 	 *
 	 * This is the action that allows the user to dismiss the banner it basically sets a tag to their user meta data
-	 *
-	 * @global $current_user
 	 */
 	public function give_addon_notice_ignore() {
 
@@ -230,7 +228,7 @@ class Give_Addon_Activation_Banner {
 		if ( isset( $_GET[ $this->nag_meta_key ] ) && '0' == $_GET[ $this->nag_meta_key ] ) {
 
 			//Get the global user
-			global $current_user;
+			$current_user = wp_get_current_user();
 			$user_id = $current_user->ID;
 
 			add_user_meta( $user_id, $this->nag_meta_key, 'true', true );
