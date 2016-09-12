@@ -238,6 +238,8 @@ class Give_Roles {
 	 * @since  1.0
 	 * @access public
 	 *
+	 * @global WP_Roles $wp_roles
+	 *
 	 * @return void
 	 */
 	public function remove_caps() {

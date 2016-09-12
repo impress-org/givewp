@@ -45,6 +45,9 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 *
 	 * @since 1.1
 	 * @see   WP_List_Table::__construct()
+	 *
+	 * @global $status
+	 * @global $page
 	 */
 	public function __construct() {
 		global $status, $page;

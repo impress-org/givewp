@@ -157,6 +157,8 @@ class Tests_Activation extends Give_Unit_Test_Case {
 	 * Kind of a useless test, but for coverage :-)
 	 *
 	 * @since 1.3.2
+	 *
+	 * @global WP_Roles $wp_roles
 	 */
 	public function test_give_install_roles_on_network_bail_object() {
 
@@ -177,6 +179,8 @@ class Tests_Activation extends Give_Unit_Test_Case {
 	 * Test that give_install_roles_on_network() bails when $wp_roles is no object.
 	 *
 	 * @since 1.3.2
+	 *
+	 * @global WP_Roles $wp_roles
 	 */
 	public function test_give_install_roles_on_network() {
 
