@@ -67,6 +67,8 @@ class Give_Addon_Activation_Banner {
 	 * Give Addon Activation Banner
 	 *
 	 * @since  1.0
+	 *
+	 * @global $pagenow
 	 */
 	public function give_addon_activation_admin_notice() {
 		global $pagenow;
@@ -217,6 +219,8 @@ class Give_Addon_Activation_Banner {
 	 * Ignore Nag
 	 *
 	 * This is the action that allows the user to dismiss the banner it basically sets a tag to their user meta data
+	 *
+	 * @global $current_user
 	 */
 	public function give_addon_notice_ignore() {
 

@@ -18,8 +18,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Login Form
  *
  * @since 1.0
- * @global       $give_options
- * @global       $post
+ * @global       $give_login_redirect
+ * @global       $give_logout_redirect
  *
  * @param string $login_redirect Login redirect page URL
  * @param string $logout_redirect Logout redirect page URL
@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string Login form
  */
 function give_login_form( $login_redirect = '', $logout_redirect = '' ) {
-	global $give_login_redirect, $give_logout_redirect;;
+	global $give_login_redirect, $give_logout_redirect;
 
 	if ( empty( $login_redirect ) ) {
 		$login_redirect = add_query_arg('give-login-success', 'true', give_get_current_page_url());
@@ -63,7 +63,7 @@ function give_login_form( $login_redirect = '', $logout_redirect = '' ) {
  *
  * @since 2.0
  * @global       $give_options
- * @global       $post
+ * @global       $give_register_redirect
  *
  * @param string $redirect Redirect page URL
  *

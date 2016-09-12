@@ -61,6 +61,8 @@ class Give_Unit_Tests_Bootstrap {
 	 * Install Give after the test environment and Give have been loaded.
 	 *
 	 * @since 1.3.2
+	 *
+	 * @global WP_Roles $wp_roles
 	 */
 	public function install_give() {
 

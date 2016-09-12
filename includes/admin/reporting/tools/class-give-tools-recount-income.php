@@ -48,8 +48,7 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 	 *
 	 * @access public
 	 * @since 1.5
-	 * @global object $wpdb Used to query the database using the WordPress
-	 *   Database API
+	 *
 	 * @return array $data The data for the CSV file
 	 */
 	public function get_data() {
