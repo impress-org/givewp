@@ -798,16 +798,13 @@ if ( ! function_exists( 'array_column' ) ) {
 		$params = func_get_args();
 
 		if ( $argc < 2 ) {
-			trigger_error( "array_column() expects at least 2 parameters, {$argc} given", E_USER_WARNING );
+			trigger_error( sprintf( esc_html__( 'array_column() expects at least 2 parameters, %s given.', 'give' ), $argc ), E_USER_WARNING );
 
 			return null;
 		}
 
 		if ( ! is_array( $params[0] ) ) {
-			trigger_error(
-				'array_column() expects parameter 1 to be array, ' . gettype( $params[0] ) . ' given',
-				E_USER_WARNING
-			);
+			trigger_error( sprintf( esc_html__( 'array_column() expects parameter 1 to be array, %s given.', 'give' ), gettype( $params[0] ) ), E_USER_WARNING );
 
 			return null;
 		}
@@ -818,7 +815,7 @@ if ( ! function_exists( 'array_column' ) ) {
 		     && $params[1] !== null
 		     && ! ( is_object( $params[1] ) && method_exists( $params[1], '__toString' ) )
 		) {
-			trigger_error( 'array_column(): The column key should be either a string or an integer', E_USER_WARNING );
+			trigger_error( esc_html__( 'array_column(): The column key should be either a string or an integer.', 'give' ), E_USER_WARNING );
 
 			return false;
 		}
@@ -829,7 +826,7 @@ if ( ! function_exists( 'array_column' ) ) {
 		     && ! is_string( $params[2] )
 		     && ! ( is_object( $params[2] ) && method_exists( $params[2], '__toString' ) )
 		) {
-			trigger_error( 'array_column(): The index key should be either a string or an integer', E_USER_WARNING );
+			trigger_error( esc_html__( 'array_column(): The index key should be either a string or an integer.', 'give' ), E_USER_WARNING );
 
 			return false;
 		}

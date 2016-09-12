@@ -29,17 +29,18 @@ class Give_Notices {
 	public function __construct() {
 		add_action( 'admin_notices', array( $this, 'show_notices' ) );
 		add_action( 'give_dismiss_notices', array( $this, 'dismiss_notices' ) );
-		add_action( 'admin_bar_menu', array( $this, 'give_admin_bar_menu' ), 1000 );
+		add_action( 'admin_bar_menu', array( $this, 'give_admin_bar_menu' ), 1000, 1 );
 	}
 
 
 	/**
 	 * Display admin bar when active.
 	 *
+	 * @param WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference
+	 *
 	 * @return bool
 	 */
-	public function give_admin_bar_menu() {
-		global $wp_admin_bar;
+	public function give_admin_bar_menu( $wp_admin_bar ) {
 
 		if ( ! give_is_test_mode() || ! current_user_can( 'view_give_reports' ) ) {
 			return false;

@@ -635,7 +635,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @return  void
 		 */
 		public function notices() {
-			global $current_user;
 			static $showed_invalid_message;
 			static $showed_subscriptions_message;
 			static $addon_license_key_in_subscriptions;
@@ -842,7 +841,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @return bool
 		 */
 		private function __is_notice_dismissed( $notice_id ){
-			global $current_user;
+			$current_user = wp_get_current_user();
 			$is_notice_dismissed = false;
 
 			// Ge is notice dismissed permanently.
