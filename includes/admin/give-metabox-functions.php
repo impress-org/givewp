@@ -102,10 +102,21 @@ function give_render_field( $field ) {
 	$field['attributes']['class'] = trim( "{$field['attributes']['class']} {$field['class']} give-{$field['type']}" );
 	unset( $field['class'] );
 
+
+	// CMB2 compatibility: Set wrapper class if any.
+	if( ! empty( $field['row_classes'] ) ) {
+		$field['wrapper_class'] = $field['row_classes'];
+		unset( $field['row_classes'] );
+	}
+
 	// Set field params on basis of cmb2 field name.
 	switch( $field['type'] ) {
 		case 'radio_inline':
-			$field['wrapper_class'] = 'give-inline-radio-fields';
+			if( empty( $field['wrapper_class'] ) ) {
+				$field['wrapper_class'] = '';
+			}
+			$field['wrapper_class'] .= ' give-inline-radio-fields';
+
 			break;
 
 		case 'text':
