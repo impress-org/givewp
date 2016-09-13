@@ -128,7 +128,6 @@ function give_text_input( $field ) {
 	global $thepostid, $post;
 
 	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
-	$field['placeholder']   = isset( $field['placeholder'] ) ? $field['placeholder'] : '';
 	$field['class']         = isset( $field['class'] ) ? $field['class'] : 'short';
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
@@ -162,14 +161,14 @@ function give_text_input( $field ) {
 	// Custom attribute handling
 	$custom_attributes = array();
 
-	if ( ! empty( $field['custom_attributes'] ) && is_array( $field['custom_attributes'] ) ) {
+	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
 
-		foreach ( $field['custom_attributes'] as $attribute => $value ){
+		foreach ( $field['attributes'] as $attribute => $value ){
 			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
 		}
 	}
-
-	echo '<p class="form-field ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . esc_attr( $field['id'] ) . '">' . wp_kses_post( $field['name'] ) . '</label><input type="' . esc_attr( $field['type'] ) . '" class="' . esc_attr( $field['class'] ) . '" style="' . esc_attr( $field['style'] ) . '" name="' . esc_attr( $field['id'] ) . '" id="' . esc_attr( $field['id'] ) . '" value="' . esc_attr( $field['value'] ) . '" placeholder="' . esc_attr( $field['placeholder'] ) . '" ' . implode( ' ', $custom_attributes ) . ' /> ';
+	
+	echo '<p class="form-field ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . esc_attr( $field['id'] ) . '">' . wp_kses_post( $field['name'] ) . '</label><input type="' . esc_attr( $field['type'] ) . '" class="' . esc_attr( $field['class'] ) . '" style="' . esc_attr( $field['style'] ) . '" name="' . esc_attr( $field['id'] ) . '" id="' . esc_attr( $field['id'] ) . '" value="' . esc_attr( $field['value'] ) . '" ' . implode( ' ', $custom_attributes ) . ' /> ';
 
 	if ( ! empty( $field['description'] ) ) {
 		echo '<span class="description">' . wp_kses_post( $field['description'] ) . '</span>';
@@ -201,7 +200,6 @@ function give_textarea_input( $field ) {
 	global $thepostid, $post;
 
 	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
-	$field['placeholder']   = isset( $field['placeholder'] ) ? $field['placeholder'] : '';
 	$field['class']         = isset( $field['class'] ) ? $field['class'] : 'short';
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
@@ -210,14 +208,14 @@ function give_textarea_input( $field ) {
 	// Custom attribute handling
 	$custom_attributes = array();
 
-	if ( ! empty( $field['custom_attributes'] ) && is_array( $field['custom_attributes'] ) ) {
+	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
 
-		foreach ( $field['custom_attributes'] as $attribute => $value ){
+		foreach ( $field['attributes'] as $attribute => $value ){
 			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
 		}
 	}
 
-	echo '<p class="form-field ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . esc_attr( $field['id'] ) . '">' . wp_kses_post( $field['name'] ) . '</label><textarea class="' . esc_attr( $field['class'] ) . '" style="' . esc_attr( $field['style'] ) . '"  name="' . esc_attr( $field['id'] ) . '" id="' . esc_attr( $field['id'] ) . '" placeholder="' . esc_attr( $field['placeholder'] ) . '" rows="10" cols="20" ' . implode( ' ', $custom_attributes ) . '>' . esc_textarea( $field['value'] ) . '</textarea> ';
+	echo '<p class="form-field ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . esc_attr( $field['id'] ) . '">' . wp_kses_post( $field['name'] ) . '</label><textarea class="' . esc_attr( $field['class'] ) . '" style="' . esc_attr( $field['style'] ) . '"  name="' . esc_attr( $field['id'] ) . '" id="' . esc_attr( $field['id'] ) . '" rows="10" cols="20" ' . implode( ' ', $custom_attributes ) . '>' . esc_textarea( $field['value'] ) . '</textarea> ';
 
 	if ( ! empty( $field['description'] ) ) {
 		echo '<span class="description">' . wp_kses_post( $field['description'] ) . '</span>';
@@ -234,7 +232,6 @@ function give_wysiwyg( $field ) {
 	global $thepostid, $post;
 
 	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
-	$field['placeholder']   = isset( $field['placeholder'] ) ? $field['placeholder'] : '';
 	$field['class']         = isset( $field['class'] ) ? $field['class'] : 'short';
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
@@ -243,24 +240,29 @@ function give_wysiwyg( $field ) {
 	// Custom attribute handling
 	$custom_attributes = array();
 
-	if ( ! empty( $field['custom_attributes'] ) && is_array( $field['custom_attributes'] ) ) {
-
-		foreach ( $field['custom_attributes'] as $attribute => $value ){
+	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
+		foreach ( $field['attributes'] as $attribute => $value ){
 			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
 		}
 	}
+
+	// Add backward compatibility to cmb2 attirbutes.
+	$custom_attributes = array_merge(
+		array(
+			'textarea_name' => esc_attr( $field['id'] ),
+			'editor_class'  => esc_attr( $field['class'] ),
+			'textarea_rows' => '10',
+			'editor_css'    => esc_attr( $field['style'] ),
+		),
+		$custom_attributes
+	);
 
 	echo '<div class="form-field ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . esc_attr( $field['id'] ) . '">' . wp_kses_post( $field['name'] ) . '</label>';
 
 	wp_editor(
 		$field['value'],
 		$field['id'],
-		array(
-			'textarea_name' => esc_attr( $field['id'] ),
-			'editor_class'  => esc_attr( $field['class'] ),
-			'textarea_rows' => '10',
-			'editor_css'    => esc_attr( $field['style'] ),
-		)
+		$custom_attributes
 	);
 
 	if ( ! empty( $field['description'] ) ) {
@@ -288,9 +290,9 @@ function give_checkbox( $field ) {
 	// Custom attribute handling
 	$custom_attributes = array();
 
-	if ( ! empty( $field['custom_attributes'] ) && is_array( $field['custom_attributes'] ) ) {
+	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
 
-		foreach ( $field['custom_attributes'] as $attribute => $value ){
+		foreach ( $field['attributes'] as $attribute => $value ){
 			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
 		}
 	}
@@ -322,9 +324,9 @@ function give_select( $field ) {
 	// Custom attribute handling
 	$custom_attributes = array();
 
-	if ( ! empty( $field['custom_attributes'] ) && is_array( $field['custom_attributes'] ) ) {
+	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
 
-		foreach ( $field['custom_attributes'] as $attribute => $value ){
+		foreach ( $field['attributes'] as $attribute => $value ){
 			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
 		}
 	}
@@ -390,7 +392,6 @@ function give_colorpicker( $field ) {
 	global $thepostid, $post;
 
 	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
-	$field['placeholder']   = isset( $field['placeholder'] ) ? $field['placeholder'] : '';
 	$field['class']         = isset( $field['class'] ) ? $field['class'] : 'short';
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
@@ -401,14 +402,14 @@ function give_colorpicker( $field ) {
 	// Custom attribute handling
 	$custom_attributes = array();
 
-	if ( ! empty( $field['custom_attributes'] ) && is_array( $field['custom_attributes'] ) ) {
+	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
 
-		foreach ( $field['custom_attributes'] as $attribute => $value ){
+		foreach ( $field['attributes'] as $attribute => $value ){
 			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
 		}
 	}
 
-	echo '<p class="form-field ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . esc_attr( $field['id'] ) . '">' . wp_kses_post( $field['name'] ) . '</label><input type="' . esc_attr( $field['type'] ) . '" class="' . esc_attr( $field['class'] ) . '" style="' . esc_attr( $field['style'] ) . '" name="' . esc_attr( $field['id'] ) . '" id="' . esc_attr( $field['id'] ) . '" value="' . esc_attr( $field['value'] ) . '" placeholder="' . esc_attr( $field['placeholder'] ) . '" ' . implode( ' ', $custom_attributes ) . ' /> ';
+	echo '<p class="form-field ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . esc_attr( $field['id'] ) . '">' . wp_kses_post( $field['name'] ) . '</label><input type="' . esc_attr( $field['type'] ) . '" class="' . esc_attr( $field['class'] ) . '" style="' . esc_attr( $field['style'] ) . '" name="' . esc_attr( $field['id'] ) . '" id="' . esc_attr( $field['id'] ) . '" value="' . esc_attr( $field['value'] ) . '" ' . implode( ' ', $custom_attributes ) . ' /> ';
 
 	if ( ! empty( $field['description'] ) ) {
 		echo '<span class="description">' . wp_kses_post( $field['description'] ) . '</span>';
