@@ -99,11 +99,11 @@ function give_can_checkout() {
  *
  * @access      public
  * @since       1.0
- * @global array $give_options Array of all the Give Options
+ *
  * @return      string
  */
 function give_get_success_page_uri() {
-	global $give_options;
+	$give_options = give_get_settings();
 
 	$success_page = isset( $give_options['success_page'] ) ? get_permalink( absint( $give_options['success_page'] ) ) : get_bloginfo( 'url' );
 
@@ -114,11 +114,11 @@ function give_get_success_page_uri() {
  * Determines if we're currently on the Success page.
  *
  * @since 1.0
- * @global array $give_options Array of all the Give Options
+ *
  * @return bool True if on the Success page, false otherwise.
  */
 function give_is_success_page() {
-	global $give_options;
+	$give_options = give_get_settings();
 	$is_success_page = isset( $give_options['success_page'] ) ? is_page( $give_options['success_page'] ) : false;
 
 	return apply_filters( 'give_is_success_page', $is_success_page );
@@ -212,14 +212,13 @@ function give_get_success_page_url( $query_string = null ) {
  * Get the URL of the Failed Donation Page
  *
  * @since 1.0
- * @global     $give_options Array of all the Give Options
  *
  * @param bool $extras Extras to append to the URL
  *
  * @return mixed|void Full URL to the Failed Donation Page, if present, home page if it doesn't exist
  */
 function give_get_failed_transaction_uri( $extras = false ) {
-	global $give_options;
+	$give_options = give_get_settings();
 
 	$uri = ! empty( $give_options['failure_page'] ) ? trailingslashit( get_permalink( $give_options['failure_page'] ) ) : home_url();
 	if ( $extras ) {
@@ -236,7 +235,7 @@ function give_get_failed_transaction_uri( $extras = false ) {
  * @return bool True if on the Failed Donation Page, false otherwise.
  */
 function give_is_failed_transaction_page() {
-	global $give_options;
+	$give_options = give_get_settings();
 	$ret = isset( $give_options['failure_page'] ) ? is_page( $give_options['failure_page'] ) : false;
 
 	return apply_filters( 'give_is_failure_page', $ret );

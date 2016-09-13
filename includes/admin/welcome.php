@@ -598,12 +598,11 @@ class Give_Welcome {
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @global $give_options Array of all the GIVE Options
+	 *
 	 * @return void
 	 */
 	public function welcome() {
-		global $give_options;
-
+		$give_options = give_get_settings();
 
 		// Bail if no activation redirect
 		if ( ! get_transient( '_give_activation_redirect' ) ) {

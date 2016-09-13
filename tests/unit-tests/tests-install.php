@@ -21,7 +21,8 @@ class Tests_Activation extends Give_Unit_Test_Case {
 	 * @since 1.3.2
 	 */
 	public function test_settings() {
-		global $give_options;
+		$give_options = give_get_settings();
+
 		$this->assertArrayHasKey( 'history_page', $give_options );
 		$this->assertArrayHasKey( 'success_page', $give_options );
 		$this->assertArrayHasKey( 'failure_page', $give_options );
@@ -34,8 +35,7 @@ class Tests_Activation extends Give_Unit_Test_Case {
 	 */
 	public function test_install() {
 
-		global $give_options;
-
+		$give_options               = give_get_settings();
 		$origin_give_options		= $give_options;
 		$origin_upgraded_from 		= get_option( 'give_version_upgraded_from' );
 		$origin_give_version		= get_option( 'give_version' );

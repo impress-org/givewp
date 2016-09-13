@@ -157,7 +157,7 @@ class Give_Donors_Gravatars {
 	 */
 	public function get_payment_ids( $form_id = '' ) {
 
-		global $give_options;
+		$give_options = give_get_settings();
 
 		$log_ids = $this->get_log_ids( $form_id );
 
@@ -223,7 +223,7 @@ class Give_Donors_Gravatars {
 		// unique $payment_ids 
 		$payment_ids = $this->get_payment_ids( $form_id );
 
-		global $give_options;
+		$give_options = give_get_settings();
 
 		// return if no ID
 		if ( ! $form_id ) {

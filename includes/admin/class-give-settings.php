@@ -835,15 +835,13 @@ $Give_Settings = new Give_Plugin_Settings();
  * Wrapper function around cmb2_get_option
  * @since  0.1.0
  *
- * @global $give_options
- *
  * @param  string $key Options array key
  * @param  string $default The default option if the option isn't set
  *
  * @return mixed        Option value
  */
 function give_get_option( $key = '', $default = false ) {
-	global $give_options;
+	$give_options = give_get_settings();
 	$value = ! empty( $give_options[ $key ] ) ? $give_options[ $key ] : $default;
 	$value = apply_filters( 'give_get_option', $value, $key, $default );
 

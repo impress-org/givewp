@@ -370,8 +370,7 @@ add_action( 'give_donation_form_register_login_fields', 'give_show_register_logi
  */
 function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 
-	global $give_options;
-
+	$give_options        = give_get_settings();
 	$variable_pricing    = give_has_variable_prices( $form_id );
 	$allow_custom_amount = get_post_meta( $form_id, '_give_custom_amount', true );
 	$currency_position   = isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before';
@@ -1668,7 +1667,7 @@ function give_checkout_hidden_fields( $form_id ) {
  */
 function give_filter_success_page_content( $content ) {
 
-	global $give_options;
+	$give_options = give_get_settings();
 
 	if ( isset( $give_options['success_page'] ) && isset( $_GET['payment-confirmation'] ) && is_page( $give_options['success_page'] ) ) {
 		if ( has_filter( 'give_donation_confirm_' . $_GET['payment-confirmation'] ) ) {
