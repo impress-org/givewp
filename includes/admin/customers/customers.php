@@ -73,7 +73,7 @@ function give_customers_list() {
 	$customers_table->prepare_items();
 	?>
 	<div class="wrap">
-		<h1><?php esc_html_e( 'Donors', 'give' ); ?></h1>
+		<h1><?php echo get_admin_page_title(); ?></h1>
 		<?php
 		/**
 		 * Fires in donors screen, above the table.

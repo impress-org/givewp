@@ -49,9 +49,12 @@ class Give_Welcome {
 	 * @return void
 	 */
 	public function admin_menus() {
+		list( $display_version ) = explode( '-', GIVE_VERSION );
+
 		// About Page
 		add_dashboard_page(
-			esc_html__( 'Welcome to Give', 'give' ),
+			/* translators: %s: Give version */
+			sprintf( esc_html__( 'Welcome to Give %s', 'give' ), $display_version ),
 			esc_html__( 'Welcome to Give', 'give' ),
 			$this->minimum_capability,
 			'give-about',
@@ -69,7 +72,8 @@ class Give_Welcome {
 
 		// Getting Started Page
 		add_dashboard_page(
-			esc_html__( 'Getting started with Give', 'give' ),
+			/* translators: %s: Give version */
+			sprintf( esc_html__( 'Give %s - Getting Started Guide', 'give' ), $display_version ),
 			esc_html__( 'Getting started with Give', 'give' ),
 			$this->minimum_capability,
 			'give-getting-started',
@@ -78,7 +82,8 @@ class Give_Welcome {
 
 		// Credits Page
 		add_dashboard_page(
-			esc_html__( 'The people that build Give', 'give' ),
+			/* translators: %s: Give version */
+			sprintf( esc_html__( 'Give %s - Credits', 'give' ), $display_version ),
 			esc_html__( 'The people that build Give', 'give' ),
 			$this->minimum_capability,
 			'give-credits',
@@ -211,13 +216,7 @@ class Give_Welcome {
 		list( $display_version ) = explode( '-', GIVE_VERSION );
 		?>
 		<div class="wrap about-wrap">
-			<h1 class="welcome-h1"><?php
-				printf(
-					/* translators: %s: Give version */
-					esc_html__( 'Welcome to Give %s', 'give' ),
-					$display_version
-				);
-			?></h1>
+			<h1 class="welcome-h1"><?php echo get_admin_page_title(); ?></h1>
 
 			<?php give_social_media_elements() ?>
 
@@ -301,7 +300,7 @@ class Give_Welcome {
 		list( $display_version ) = explode( '-', GIVE_VERSION );
 		?>
 		<div class="wrap about-wrap">
-			<h1><?php esc_html_e( 'Give Changelog', 'give' ); ?></h1>
+			<h1><?php echo get_admin_page_title(); ?></h1>
 
 			<p class="about-text"><?php
 				printf(
@@ -349,13 +348,7 @@ class Give_Welcome {
 		list( $display_version ) = explode( '-', GIVE_VERSION );
 		?>
 		<div class="wrap about-wrap get-started">
-			<h1 class="welcome-h1"><?php
-				printf(
-					/* translators: %s: Give version */
-					esc_html__( 'Give %s - Getting Started Guide', 'give' ),
-					$display_version
-				);
-			?></h1>
+			<h1 class="welcome-h1"><?php echo get_admin_page_title(); ?></h1>
 
 			<?php give_social_media_elements() ?>
 
@@ -456,13 +449,7 @@ class Give_Welcome {
 		list( $display_version ) = explode( '-', GIVE_VERSION );
 		?>
 		<div class="wrap about-wrap">
-			<h1 class="welcome-h1"><?php
-				printf(
-					/* translators: %s: Give version */
-					esc_html__( 'Give %s - Credits', 'give' ),
-					$display_version
-				);
-			?></h1>
+			<h1 class="welcome-h1"><?php echo get_admin_page_title(); ?></h1>
 
 			<?php give_social_media_elements() ?>
 
