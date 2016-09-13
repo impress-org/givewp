@@ -51,7 +51,6 @@ function give_get_state() {
  * @return mixed|void  A list of states for the shop's base country
  */
 function give_get_states( $country = null ) {
-	global $give_options;
 
 	if ( empty( $country ) ) {
 		$country = give_get_country();

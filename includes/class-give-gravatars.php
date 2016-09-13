@@ -464,7 +464,6 @@ class Give_Donors_Gravatars_Widget extends WP_Widget {
 	 * @return void
 	 */
 	public function widget( $args, $instance ) {
-		global $give_options;
 
 		//@TODO: Don't extract it!!!
 		extract( $args );

@@ -298,7 +298,6 @@ if ( ! class_exists( 'Give' ) ) :
 		 * @return void
 		 */
 		private function includes() {
-			global $give_options;
 
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/class-give-settings.php';
 			$give_options = give_get_settings();
