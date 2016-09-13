@@ -453,8 +453,9 @@ Tooltips
     min-width: 175px;
 
     .form-field{
-      padding: 5px 20px 5px 162px!important;
-      margin: 1em 0;
+      padding: 1em 20px 1em 162px !important;
+      margin: 0;
+      border-bottom: 1px solid #eee;
 
       >label, >legend{
         float: left;
@@ -463,6 +464,7 @@ Tooltips
         margin: 0 0 0 -150px;
         line-height: 24px;
         font-size: 12px;
+        font-weight: 400;
       }
 
       .description{
@@ -478,6 +480,10 @@ Tooltips
       .mce-container iframe{
         min-height: 200px;
       }
+    }
+
+    .form-field:last-child{
+      border-bottom: 0;
     }
 
     .give-repeater-fields-wrap {
