@@ -446,26 +446,26 @@ function give_default_gateway( $field ) {
  *
  * @param array $fields
  */
-function give_repeater_fields( $fields ) {
-	?>
-	<div class="give-repeater-fields-wrap">
-		<div class="give-repeater-block">
-			<?php foreach ( $fields['fields'] as $field ) : ?>
-				<?php if ( ! give_is_field_callback_exist( $field ) ) continue; ?>
-
-				<div class="give-field-wrap">
-					<?php give_render_field( $field ); ?>
-					<div class="give-field-row-actions">
-						<a class="give-plus" href="#" data-event="add-row" title="<?php echo esc_html__( 'Add row', 'give' ); ?>">+</a>
-						<a class="give-minus" href="#" data-event="remove-row" title="<?php echo esc_html__( 'Add row', 'give' ); ?>">-</a>
-					</div>
-				</div>
-			<?php endforeach; ?>
-		</div>
-
-		<div class="give-repeater-block-actions">
-			<a class="acf-button button button-primary" data-event="add-row"><?php echo esc_html__( 'Add Row', 'give' ); ?></a>
-		</div>
-	</div>
-	<?php
-}
+//function give_repeater_fields( $fields ) {
+//	?>
+<!--	<div class="give-repeater-fields-wrap">-->
+<!--		<div class="give-repeater-block">-->
+<!--			--><?php //foreach ( $fields['fields'] as $field ) : ?>
+<!--				--><?php //if ( ! give_is_field_callback_exist( $field ) ) continue; ?>
+<!---->
+<!--				<div class="give-field-wrap">-->
+<!--					--><?php //give_render_field( $field ); ?>
+<!--					<div class="give-field-row-actions">-->
+<!--						<a class="give-plus" href="#" data-event="add-row" title="--><?php //echo esc_html__( 'Add row', 'give' ); ?><!--">+</a>-->
+<!--						<a class="give-minus" href="#" data-event="remove-row" title="--><?php //echo esc_html__( 'Add row', 'give' ); ?><!--">-</a>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--			--><?php //endforeach; ?>
+<!--		</div>-->
+<!---->
+<!--		<div class="give-repeater-block-actions">-->
+<!--			<a class="acf-button button button-primary" data-event="add-row">--><?php //echo esc_html__( 'Add Row', 'give' ); ?><!--</a>-->
+<!--		</div>-->
+<!--	</div>-->
+<!--	--><?php
+//}
