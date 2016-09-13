@@ -415,6 +415,7 @@ function give_disconnect_customer_user_id( $args ) {
 	 */
 	do_action( 'give_pre_customer_disconnect_user_id', $customer_id, $user_id );
 
+	$output = array();
 	$customer_args = array( 'user_id' => 0 );
 
 	if ( $customer->update( $customer_args ) ) {
