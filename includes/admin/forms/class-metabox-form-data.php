@@ -101,7 +101,7 @@ class Give_MetaBox_Form_Data {
 			foreach ( $this->settings as $setting ) {
 				$tabs[] = array(
 					'id'    => $setting['id'],
-					'label' => $setting['title']
+					'label' => $setting['title'],
 				);
 			}
 		}
@@ -120,7 +120,7 @@ class Give_MetaBox_Form_Data {
 			<div class="panel-wrap form_data">
 				<ul class="form_data_tabs give-metabox-tabs">
 					<?php foreach ( $form_data_tabs as $index => $form_data_tab ) : ?>
-						<li class="<?php echo ( ! $index ? 'active' : '' ); ?>"><a href="#<?php echo $form_data_tab['id']; ?>"><?php echo $form_data_tab['label']; ?></a></li>
+						<li class="<?php echo "{$form_data_tab['id']}_tab" . ( ! $index ? ' active' : '' ); ?>"><a href="#<?php echo $form_data_tab['id']; ?>"><?php echo $form_data_tab['label']; ?></a></li>
 					<?php endforeach; ?>
 				</ul>
 
