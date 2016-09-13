@@ -101,8 +101,10 @@ class Tests_Activation extends Give_Unit_Test_Case {
 	 */
 	public function test_give_after_install() {
 
+		$give_options = give_get_settings();
+
 		// Prepare for test
-		set_transient( '_give_installed', $GLOBALS['give_options'], 30 );
+		set_transient( '_give_installed', $give_options, 30 );
 
 		// Fake admin screen
 		set_current_screen( 'dashboard' );
@@ -122,9 +124,11 @@ class Tests_Activation extends Give_Unit_Test_Case {
 	 */
 	public function test_give_after_install_bail_no_admin() {
 
+		$give_options = give_get_settings();
+
 		// Prepare for test
 		set_current_screen( 'front' );
-		set_transient( '_give_installed', $GLOBALS['give_options'], 30 );
+		set_transient( '_give_installed', $give_options, 30 );
 
 		give_after_install();
 		$this->assertNotFalse( get_transient( '_give_installed' ) );
@@ -140,6 +144,8 @@ class Tests_Activation extends Give_Unit_Test_Case {
 	 */
 	public function test_give_after_install_bail_transient() {
 
+		$give_options = give_get_settings();
+
 		// Fake admin screen
 		set_current_screen( 'dashboard' );
 
@@ -148,7 +154,7 @@ class Tests_Activation extends Give_Unit_Test_Case {
 		$this->assertNull( give_after_install() );
 
 		// Reset to origin
-		set_transient( '_give_installed', $GLOBALS['give_options'], 30 );
+		set_transient( '_give_installed', $give_options, 30 );
 
 	}
 
