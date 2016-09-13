@@ -760,7 +760,11 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
 
 .give-money-symbol-after {
   border-left: 0;
-  margin-left: -4px; }
+  margin-left: -1px; }
+
+input.give-text_small {
+  width: 75px !important;
+  padding: 5px; }
 
 .give-underline {
   text-decoration: underline; }

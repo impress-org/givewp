@@ -100,6 +100,7 @@ function give_render_field( $field ) {
 		case 'text-medium':
 		case 'text-small' :
 		case 'text_small' :
+			$field['class'] = empty( $field['class'] ) ? "give-{$field['type']}" : "{$field['class']} give-{$field['type']}";
 			$field['type'] = 'text';
 
 			if(
@@ -139,7 +140,7 @@ function give_text_input( $field ) {
 	global $thepostid, $post;
 
 	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
-	$field['class']         = isset( $field['class'] ) ? $field['class'] : 'short';
+	$field['class']         = isset( $field['class'] ) ? $field['class'] : 'small';
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
 	$field['value']         = isset( $field['value'] ) ? $field['value'] : get_post_meta( $thepostid, $field['id'], true );
@@ -151,6 +152,10 @@ function give_text_input( $field ) {
 		case 'price' :
 			$field['class'] .= ' give_input_price';
 			$field['value']  = give_format_amount( $field['value'] );
+
+
+			$field['before_field']  = isset( $field['before_field'] ) ? $field['before_field'] : ( give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol give-money-symbol-before">' . give_currency_symbol() . '</span>' : '' );
+			$field['after_field']   = isset( $field['after_field'] ) ? $field['after_field'] : ( give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '' );
 			break;
 
 		case 'decimal' :
@@ -171,8 +176,8 @@ function give_text_input( $field ) {
 			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
 		}
 	}
-	
-	echo '<p class="form-field ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . esc_attr( $field['id'] ) . '">' . wp_kses_post( $field['name'] ) . '</label><input type="' . esc_attr( $field['type'] ) . '" class="' . esc_attr( $field['class'] ) . '" style="' . esc_attr( $field['style'] ) . '" name="' . esc_attr( $field['id'] ) . '" id="' . esc_attr( $field['id'] ) . '" value="' . esc_attr( $field['value'] ) . '" ' . implode( ' ', $custom_attributes ) . ' /> ';
+
+	echo '<p class="form-field ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . esc_attr( $field['id'] ) . '">' . wp_kses_post( $field['name'] ) . '</label>' . $field['before_field'] . '<input type="' . esc_attr( $field['type'] ) . '" class="' . esc_attr( $field['class'] ) . '" style="' . esc_attr( $field['style'] ) . '" name="' . esc_attr( $field['id'] ) . '" id="' . esc_attr( $field['id'] ) . '" value="' . esc_attr( $field['value'] ) . '" ' . implode( ' ', $custom_attributes ) . ' />' . $field['after_field'];
 
 	if ( ! empty( $field['description'] ) ) {
 		echo '<span class="description">' . wp_kses_post( $field['description'] ) . '</span>';
