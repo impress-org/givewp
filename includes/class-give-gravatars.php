@@ -187,6 +187,8 @@ class Give_Donors_Gravatars {
 
 			}
 
+			$unique_ids = array();
+
 			// strip duplicate emails
 			$unique_emails = array_unique( $unique_emails );
 
