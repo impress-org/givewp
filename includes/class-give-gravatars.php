@@ -131,6 +131,8 @@ class Give_Donors_Gravatars {
 		$logs = $give_logs->get_logs( $form_id );
 
 		if ( $logs ) {
+			$log_ids = array();
+
 			// make an array with all the donor IDs
 			foreach ( $logs as $log ) {
 				$log_ids[] = $log->ID;
