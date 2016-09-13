@@ -62,7 +62,6 @@ function give_login_form( $login_redirect = '', $logout_redirect = '' ) {
  * Registration Form
  *
  * @since 2.0
- * @global       $give_options
  * @global       $give_register_redirect
  *
  * @param string $redirect Redirect page URL
@@ -70,7 +69,7 @@ function give_login_form( $login_redirect = '', $logout_redirect = '' ) {
  * @return string Register form
  */
 function give_register_form( $redirect = '' ) {
-	global $give_options, $give_register_redirect;
+	global $give_register_redirect;
 
 	if ( empty( $redirect ) ) {
 		$redirect = give_get_current_page_url();

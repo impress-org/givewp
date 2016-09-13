@@ -204,7 +204,6 @@ function give_get_stylesheet_uri() {
  * @since 1.0
  *
  * @global       $post
- * @global       $give_options
  *
  * @param string $hook Page hook
  *
@@ -212,7 +211,9 @@ function give_get_stylesheet_uri() {
  */
 function give_load_admin_scripts( $hook ) {
 
-	global $post, $post_type, $give_options;
+	global $post, $post_type;
+
+	$give_options = give_get_settings();
 
 	//Directories of assets
 	$js_dir     = GIVE_PLUGIN_URL . 'assets/js/admin/';

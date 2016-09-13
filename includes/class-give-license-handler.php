@@ -109,7 +109,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @param string  $_account_url
 		 */
 		public function __construct( $_file, $_item_name, $_version, $_author, $_optname = null, $_api_url = null, $_checkout_url = null, $_account_url = null ) {
-			global $give_options;
+			$give_options = give_get_settings();
 
 			$this->file           = $_file;
 			$this->item_name      = $_item_name;
