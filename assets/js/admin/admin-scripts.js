@@ -781,8 +781,6 @@ jQuery.noConflict();
                 // Hide all tab contents.
                 $( '.give_options_panel' ).addClass( 'give-hidden' );
 
-                console.log($(this).attr('href'));
-
                 // Show tab content.
                 $( $(this).attr('href') ).removeClass('give-hidden');
                 return false;

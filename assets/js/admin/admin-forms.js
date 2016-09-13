@@ -51,19 +51,19 @@ jQuery.noConflict();
     var toggle_conditional_form_fields = function () {
 
         //Price Option
-        var price_option = $('.cmb2-id--give-price-option input:radio');
+        var price_option = $('._give_price_option_field input:radio');
 
         price_option.on('change', function () {
 
-            var price_option_val = $('.cmb2-id--give-price-option input:radio:checked').val();
+            var price_option_val = $('._give_price_option_field input:radio:checked').val();
             if (price_option_val === 'set') {
                 //set price shows
-                $('.cmb2-id--give-set-price').show();
+                $('._give_set_price_field').show();
                 $('.cmb2-id--give-levels-header, .cmb2-id--give-levels-header + .cmb-repeat-group-wrap, .cmb2-id--give-display-style').hide(); //hide multi-val stuffs
 
             } else {
                 //multi-value shows
-                $('.cmb2-id--give-set-price').hide();
+                $('._give_set_price_field').hide();
                 $('.cmb2-id--give-levels-header, .cmb2-id--give-levels-header + .cmb-repeat-group-wrap, .cmb2-id--give-display-style').show(); //show set stuffs
             }
         }).change();
@@ -75,9 +75,9 @@ jQuery.noConflict();
         content_option.on('change', function () {
 
             if (content_option.val() !== 'none') {
-                $('.cmb2-id--give-form-content').show();
+                $('._give_form_content_field').show();
             } else {
-                $('.cmb2-id--give-form-content').hide();
+                $('._give_form_content_field').hide();
             }
         }).change();
 
@@ -86,11 +86,11 @@ jQuery.noConflict();
         terms_option.on('change', function () {
 
             if (terms_option.val() !== 'none') {
-                $('.cmb2-id--give-agree-label').show();
-                $('.cmb2-id--give-agree-text').show();
+                $('._give_agree_label_field').show();
+                $('._give_agree_text_field').show();
             } else {
-                $('.cmb2-id--give-agree-label').hide();
-                $('.cmb2-id--give-agree-text').hide();
+                $('._give_agree_label_field').hide();
+                $('._give_agree_text_field').hide();
             }
         }).change();
 
@@ -98,76 +98,76 @@ jQuery.noConflict();
         var payment_display_option = $('#_give_payment_display');
         payment_display_option.on('change', function () {
             if (payment_display_option.val() === 'onpage') {
-                $('.cmb2-id--give-reveal-label').hide();
+                $('._give_reveal_label_field').hide();
             } else {
-                $('.cmb2-id--give-reveal-label').show();
+                $('._give_reveal_label_field').show();
             }
         }).change();
 
         //Custom Amount
-        var custom_amount_option = $('.cmb2-id--give-custom-amount input:radio');
+        var custom_amount_option = $('._give_custom_amount_field input:radio');
         custom_amount_option.on('change', function () {
-            var custom_amount_option_val = $('.cmb2-id--give-custom-amount input:radio:checked').val();
+            var custom_amount_option_val = $('._give_custom_amount_field input:radio:checked').val();
             if (custom_amount_option_val === 'no') {
-                $('.cmb2-id--give-custom-amount-minimum').hide();
-                $('.cmb2-id--give-custom-amount-text').hide();
+                $('._give_custom_amount_minimum_field').hide();
+                $('._give_custom_amount_text_field').hide();
             } else {
-                $('.cmb2-id--give-custom-amount-minimum').show();
-                $('.cmb2-id--give-custom-amount-text').show();
+                $('._give_custom_amount_minimum_field').show();
+                $('._give_custom_amount_text_field').show();
             }
         }).change();
 
         //Goals
-        var goal_option = $('.cmb2-id--give-goal-option');
+        var goal_option = $('._give_goal_option_field');
         //Close Form when Goal Achieved
-        var close_form_when_goal_achieved_option = $('.cmb2-id--give-close-form-when-goal-achieved input:radio');
+        var close_form_when_goal_achieved_option = $('._give_close_form_when_goal_achieved_field input:radio');
 
         goal_option.on('change', function () {
-            var goal_option = $('.cmb2-id--give-goal-option input:radio:checked').val();
+            var goal_option = $('._give_goal_option_field input:radio:checked').val();
             if (goal_option === 'no') {
 
-                $('.cmb2-id--give-set-goal').hide();
-                $('.cmb2-id--give-goal-format').hide();
-                $('.cmb2-id--give-goal-color').hide();
-                $('.cmb2-id--give-close-form-when-goal-achieved').hide();
+                $('._give_set_goal_field').hide();
+                $('._give_goal_format_field').hide();
+                $('._give_goal_color_field').hide();
+                $('._give_close_form_when_goal_achieved_field').hide();
                 $('.cmb2-id--give-form-goal-achieved-message').hide();
             } else {
-                $('.cmb2-id--give-set-goal').show();
-                $('.cmb2-id--give-goal-format').show();
-                $('.cmb2-id--give-goal-color').show();
-                $('.cmb2-id--give-close-form-when-goal-achieved').show();
+                $('._give_set_goal_field').show();
+                $('._give_goal_format_field').show();
+                $('._give_goal_color_field').show();
+                $('._give_close_form_when_goal_achieved_field').show();
 
-                var close_form_when_goal_achieved_option_val = $('.cmb2-id--give-close-form-when-goal-achieved input:radio:checked').val();
+                var close_form_when_goal_achieved_option_val = $('._give_close_form_when_goal_achieved_field input:radio:checked').val();
 
                 if (close_form_when_goal_achieved_option_val === 'yes') {
-                    $('.cmb2-id--give-form-goal-achieved-message').show();
+                    $('._give_form_goal_achieved_message_field').show();
                 }
             }
         }).change();
 
         close_form_when_goal_achieved_option.on('change', function () {
-            var close_form_when_goal_achieved_option_val = $('.cmb2-id--give-close-form-when-goal-achieved input:radio:checked').val();
+            var close_form_when_goal_achieved_option_val = $('._give_close_form_when_goal_achieved_field input:radio:checked').val();
             if (close_form_when_goal_achieved_option_val === 'no') {
-                $('.cmb2-id--give-form-goal-achieved-message').hide();
+                $('._give_form_goal_achieved_message_field').hide();
             } else {
-                $('.cmb2-id--give-form-goal-achieved-message').show();
+                $('._give_form_goal_achieved_message_field').show();
             }
         }).change();
 
         //Offline Donations
-        var offline_customization_option = $('.cmb2-id--give-customize-offline-donations input:radio');
+        var offline_customization_option = $('._give_customize_offline_donations_field input:radio');
         offline_customization_option.on('change', function () {
-            var offline_customization_option_val = $('.cmb2-id--give-customize-offline-donations input:radio:checked').val();
+            var offline_customization_option_val = $('._give_customize_offline_donations_field input:radio:checked').val();
             if (offline_customization_option_val === 'no') {
-                $('.cmb2-id--give-offline-checkout-notes').hide();
-                $('.cmb2-id--give-offline-donation-enable-billing-fields-single').hide();
-                $('.cmb2-id--give-offline-donation-subject').hide();
-                $('.cmb2-id--give-offline-donation-email').hide();
+                $('._give_offline_checkout_notes_field').hide();
+                $('._give_offline_donation_enable_billing_fields_single_field').hide();
+                $('._give_offline_donation_subject_field').hide();
+                $('._give_offline_donation_email_field').hide();
             } else {
-                $('.cmb2-id--give-offline-checkout-notes').show();
-                $('.cmb2-id--give-offline-donation-enable-billing-fields-single').show();
-                $('.cmb2-id--give-offline-donation-subject').show();
-                $('.cmb2-id--give-offline-donation-email').show();
+                $('._give_offline_checkout_notes_field').show();
+                $('._give_offline_donation_enable_billing_fields_single_field').show();
+                $('._give_offline_donation_subject_field').show();
+                $('._give_offline_donation_email_field').show();
             }
         }).change();
     };
