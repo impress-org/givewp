@@ -743,7 +743,7 @@ class Give_Customer {
 
         if( $payment_total_diff > 0 ) {
             $this->increase_value( $payment_total_diff );
-        }else{
+        } else {
             // Pass payment total difference as +ve value to decrease amount from user lifetime stat.
             $this->decrease_value( -$payment_total_diff );
         }

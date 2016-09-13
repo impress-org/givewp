@@ -956,7 +956,8 @@ function give_default_cc_address_fields( $form_id ) {
 				$selected_state = $user_address['state'];
 			}
 
-			if ( ! empty( $states ) ) : ?>
+			if ( ! empty( $states ) ) {
+				?>
 				<select name="card_state" id="card_state" class="card_state give-select<?php if ( give_field_is_required( 'card_state', $form_id ) ) {
 					echo ' required';
 				} ?>"<?php if ( give_field_is_required( 'card_state', $form_id ) ) {
@@ -968,9 +969,13 @@ function give_default_cc_address_fields( $form_id ) {
 					}
 					?>
 				</select>
-			<?php else : ?>
+				<?php
+			} else {
+				?>
 				<input type="text" size="6" name="card_state" id="card_state" class="card_state give-input" placeholder="<?php esc_attr_e( 'State / Province', 'give' ); ?>"/>
-			<?php endif; ?>
+				<?php
+			}
+			?>
 		</p>
 		<?php
 		/**

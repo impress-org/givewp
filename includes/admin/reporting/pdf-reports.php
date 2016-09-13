@@ -84,7 +84,7 @@ function give_generate_pdf( $data ) {
 	$year       = date( 'Y' );
 	$give_forms = get_posts( array( 'post_type' => 'give_forms', 'year' => $year, 'posts_per_page' => - 1 ) );
 
-	if ( $give_forms ):
+	if ( $give_forms ) {
 		$pdf->SetWidths( array( 70, 30, 50, 50, 45, 35 ) );
 
 		foreach ( $give_forms as $form ):
@@ -131,11 +131,11 @@ function give_generate_pdf( $data ) {
 
 			$pdf->Row( array( $title, $price, $categories, $tags, $sales, $earnings ) );
 		endforeach;
-	else:
+	} else {
 		$pdf->SetWidths( array( 280 ) );
 		$title = utf8_decode( esc_html__( 'No forms found.', 'give' ) );
 		$pdf->Row( array( $title ) );
-	endif;
+	}
 
 	$pdf->Ln();
 	$pdf->SetTextColor( 50, 50, 50 );

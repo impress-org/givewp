@@ -114,7 +114,7 @@ function give_reports_graph() {
 			$i = $month_start;
 			while ( $i <= $month_end ) :
 
-				if ( $day_by_day ) :
+				if ( $day_by_day ) {
 
 					if ( $i == $month_end ) {
 
@@ -143,7 +143,7 @@ function give_reports_graph() {
 
 					endwhile;
 
-				else :
+				} else {
 
 					$sales = give_get_sales_by_date( null, $i, $y );
 					$sales_totals += $sales;
@@ -165,7 +165,7 @@ function give_reports_graph() {
 					$sales_data[]    = array( $date, $sales );
 					$earnings_data[] = array( $date, $earnings );
 
-				endif;
+				}
 
 				$i ++;
 
@@ -365,7 +365,7 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 			$i = $month_start;
 			while ( $i <= $month_end ) :
 
-				if ( $day_by_day ) :
+				if ( $day_by_day ) {
 
 					if ( $i == $month_end && $last_year ) {
 
@@ -395,7 +395,7 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 
 					endwhile;
 
-				else :
+				} else {
 
 					$num_of_days = cal_days_in_month( CAL_GREGORIAN, $i, $y );
 
@@ -410,7 +410,8 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 
 					$sales_data[]    = array( $date * 1000, $sales );
 					$earnings_data[] = array( $date * 1000, $earnings );
-				endif;
+
+				}
 
 				$i ++;
 
