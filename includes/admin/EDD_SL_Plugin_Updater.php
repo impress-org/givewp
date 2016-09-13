@@ -4,7 +4,9 @@
 //set_site_transient( 'update_plugins', null );
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Allows plugins to use their own update API.
@@ -275,11 +277,13 @@ class EDD_SL_Plugin_Updater {
 
         $data = array_merge( $this->api_data, $_data );
 
-        if ( $data['slug'] != $this->slug )
+        if ( $data['slug'] != $this->slug ) {
             return;
+		}
 
-        if ( empty( $data['license'] ) )
+        if ( empty( $data['license'] ) ) {
             return;
+		}
 
         if( $this->api_url == home_url() ) {
             return false; // Don't allow a plugin to ping itself
