@@ -759,6 +759,43 @@ jQuery.noConflict();
         }
     };
 
+    /**
+     * Edit Donation form screen Js
+     */
+    var Edit_Form_Screen = {
+        init: function(){
+            this.handle_metabox_tab_click();
+            this.setup_colorpicker();
+        },
+
+        handle_metabox_tab_click: function() {
+            var $tab_links = $( '.give-metabox-tabs a' );
+            $tab_links.on( 'click', function(e){
+                e.preventDefault();
+                // Remove active class from tab link.
+                $tab_links.parents( 'li' ).removeClass( 'active' );
+
+                // Add active class to current tab link.
+                $(this).parent().addClass('active');
+
+                // Hide all tab contents.
+                $( '.give_options_panel' ).addClass( 'give-hidden' );
+
+                console.log($(this).attr('href'));
+
+                // Show tab content.
+                $( $(this).attr('href') ).removeClass('give-hidden');
+                return false;
+            });
+        },
+
+        setup_colorpicker: function() {
+            $(document).ready(function(){
+                $('.give-colorpicker').wpColorPicker();
+            })
+        }
+    };
+
 
     /**
      * Initialize qTips
@@ -791,6 +828,7 @@ jQuery.noConflict();
         Give_Customer.init();
         API_Screen.init();
         Give_Export.init();
+        Edit_Form_Screen.init();
 
         initialize_qtips();
 

@@ -304,6 +304,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/class-give-settings.php';
 			$give_options = give_get_settings();
 
+			require_once GIVE_PLUGIN_DIR . 'includes/admin/give-metabox-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/post-types.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/scripts.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/ajax-functions.php';
@@ -385,6 +386,7 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/customers/customer-functions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/customers/customer-actions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/metabox.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/class-metabox-form-data.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/dashboard-columns.php';
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/export/export-functions.php';
