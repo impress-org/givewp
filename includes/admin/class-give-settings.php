@@ -858,8 +858,6 @@ function give_get_option( $key = '', $default = false ) {
  *
  * @since 1.0
  *
- * @global $give_options
- *
  * @param string          $key The Key to update
  * @param string|bool|int $value The value to set the key to
  *
@@ -888,12 +886,6 @@ function give_update_option( $key = '', $value = false ) {
 	$options[ $key ] = $value;
 	$did_update      = update_option( 'give_settings', $options );
 
-	// If it updated, let's update the global variable
-	if ( $did_update ) {
-		global $give_options;
-		$give_options[ $key ] = $value;
-	}
-
 	return $did_update;
 }
 
@@ -903,8 +895,6 @@ function give_update_option( $key = '', $value = false ) {
  * Removes an give setting value in both the db and the global variable.
  *
  * @since 1.0
- *
- * @global $give_options
  *
  * @param string $key The Key to delete
  *
@@ -928,12 +918,6 @@ function give_delete_option( $key = '' ) {
 	}
 
 	$did_update = update_option( 'give_settings', $options );
-
-	// If it updated, let's update the global variable
-	if ( $did_update ) {
-		global $give_options;
-		$give_options = $options;
-	}
 
 	return $did_update;
 }
