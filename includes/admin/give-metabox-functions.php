@@ -101,6 +101,17 @@ function give_render_field( $field ) {
 		case 'text-small' :
 		case 'text_small' :
 			$field['type'] = 'text';
+
+			if(
+				empty( $field['data_type'] )
+				&& ! empty( $field['attributes']['class'] )
+				&& (
+					false !== strpos( $field['attributes']['class'], 'money' )
+					|| false !== strpos( $field['attributes']['class'], 'amount' )
+				)
+			) {
+				$field['data_type'] = 'price';
+			}
 			break;
 
 		case 'colorpicker' :
@@ -139,19 +150,12 @@ function give_text_input( $field ) {
 	switch ( $data_type ) {
 		case 'price' :
 			$field['class'] .= ' give_input_price';
-			$field['value']  = give_format_localized_price( $field['value'] );
+			$field['value']  = give_format_amount( $field['value'] );
 			break;
+
 		case 'decimal' :
 			$field['class'] .= ' give_input_decimal';
-			$field['value']  = give_format_localized_decimal( $field['value'] );
-			break;
-		case 'stock' :
-			$field['class'] .= ' give_input_stock';
-			$field['value']  = give_stock_amount( $field['value'] );
-			break;
-		case 'url' :
-			$field['class'] .= ' give_input_url';
-			$field['value']  = esc_url( $field['value'] );
+			$field['value']  = give_format_decimal( $field['value'] );
 			break;
 
 		default :
