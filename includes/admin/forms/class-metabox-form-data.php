@@ -20,10 +20,17 @@ class Give_MetaBox_Form_Data {
 	 */
 	private $settings = array();
 
-
+	/**
+	 * Metabox ID.
+	 * @var string
+	 */
 	private $metabox_id;
+
+	/**
+	 * Metabox Label.
+	 * @var string
+	 */
 	private $metabox_label;
-	private $post_types;
 
 
 	/**
@@ -32,7 +39,6 @@ class Give_MetaBox_Form_Data {
 	function __construct(){
 		$this->metabox_id    = 'give-metabox-form-data';
 		$this->metabox_label = esc_html__( 'Donation Form Data', 'give' );
-		$this->post_types    = array( 'give_forms' );
 
 		// Add metabox.
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ), 30 );
@@ -45,14 +51,14 @@ class Give_MetaBox_Form_Data {
 	}
 
 	/**
-	 *
+	 * Add metabox.
 	 */
 	public function add_meta_box() {
 		add_meta_box(
 			$this->get_metabox_ID(),
 			$this->get_metabox_label(),
 			array( $this, 'output' ),
-			$this->get_allowed_post_types(),
+			array( 'give_forms' ),
 			'normal',
 			'high'
 		);
@@ -60,7 +66,7 @@ class Give_MetaBox_Form_Data {
 
 
 	/**
-	 *
+	 * Enqueue scripts.
 	 */
 	function enqueue_script() {
 		global $post;
@@ -72,6 +78,8 @@ class Give_MetaBox_Form_Data {
 	}
 
 	/**
+	 * Get metabox id.
+	 *
 	 * @return string
 	 */
 	function get_metabox_ID() {
@@ -79,20 +87,23 @@ class Give_MetaBox_Form_Data {
 	}
 
 	/**
+	 * Get metabox label.
+	 *
 	 * @return string
 	 */
 	function get_metabox_label() {
 		return $this->metabox_label;
 	}
 
-	/**
-	 * @return array
-	 */
-	function get_allowed_post_types() {
-		return $this->post_types;
-	}
 
+	/**
+	 * Get metabox tabs.
+	 * @return mixed|void
+	 */
 	public function get_tabs() {
+		/**
+		 * Filter the metabox settings.
+		 */
 		$this->settings = apply_filters( 'give_metabox_form_data_settings', array() );
 
 		$tabs = array();
@@ -106,11 +117,14 @@ class Give_MetaBox_Form_Data {
 			}
 		}
 
+		/**
+		 * Filter the metabox tabs.
+		 */
 		return apply_filters( 'give_metabox_form_data_setting_tabs', $tabs );
 	}
 
 	/**
-	 *
+	 * Output metabox settings.
 	 */
 	public function output() {
 		// Bailout.
@@ -201,7 +215,9 @@ class Give_MetaBox_Form_Data {
 	}
 
 	/**
-	 * CMB2 setting tab loader
+	 * CMB2 setting tab loader.
+	 *
+	 * @return mixed|void
 	 */
 	function cmb2_metabox_settings() {
 		return apply_filters( 'cmb2_meta_boxes', array() );
