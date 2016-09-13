@@ -30,8 +30,6 @@ class Give_Donors_Gravatars {
 	 *
 	 * @since  1.0
 	 * @access public
-	 *
-	 * @return void
 	 */
 	public function __construct() {
 		$this->setup_actions();
@@ -422,8 +420,6 @@ class Give_Donors_Gravatars_Widget extends WP_Widget {
 	 *
 	 * @since  1.0
 	 * @access public
-	 *
-	 * @return void
 	 */
 	public function __construct() {
 

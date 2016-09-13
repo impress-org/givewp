@@ -33,8 +33,6 @@ class Give_Roles {
 	 *
 	 * @since  1.0
 	 * @access public
-	 *
-	 * @return void
 	 */
 	public function __construct() {
 		add_filter( 'give_map_meta_cap', array( $this, 'meta_caps' ), 10, 4 );

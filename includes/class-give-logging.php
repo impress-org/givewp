@@ -30,8 +30,6 @@ class Give_Logging {
 	 *
 	 * @since  1.0
 	 * @access public
-	 *
-	 * @return void
 	 */
 	public function __construct() {
 

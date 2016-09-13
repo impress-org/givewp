@@ -30,8 +30,6 @@ class Give_Template_Loader {
 	 *
 	 * @since  1.0
 	 * @access public
-	 *
-	 * @return void
 	 */
 	public function __construct() {
 
