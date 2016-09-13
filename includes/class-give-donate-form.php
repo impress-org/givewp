@@ -328,8 +328,6 @@ class Give_Donate_Form {
 	 *
 	 * @param  bool  $_id   Post id. Default is false.
 	 * @param  array $_args Arguments passed.
-	 *
-	 * @return void
 	 */
 	public function __construct( $_id = false, $_args = array() ) {
 

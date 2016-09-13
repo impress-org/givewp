@@ -127,6 +127,7 @@ function give_tools_sysinfo_get() {
 	}
 
 	// Make sure wp_remote_post() is working
+	$request = array();
 	$request['cmd'] = '_notify-validate';
 
 	$params = array(

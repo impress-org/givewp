@@ -9,7 +9,10 @@
  * @since       1.3.0
  */
 
-defined( 'ABSPATH' ) or exit;
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class Give_Shortcode_Register extends Give_Shortcode_Generator {
 

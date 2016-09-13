@@ -30,8 +30,6 @@ class Give_Donors_Gravatars {
 	 *
 	 * @since  1.0
 	 * @access public
-	 *
-	 * @return void
 	 */
 	public function __construct() {
 		$this->setup_actions();
@@ -133,6 +131,8 @@ class Give_Donors_Gravatars {
 		$logs = $give_logs->get_logs( $form_id );
 
 		if ( $logs ) {
+			$log_ids = array();
+
 			// make an array with all the donor IDs
 			foreach ( $logs as $log ) {
 				$log_ids[] = $log->ID;
@@ -186,6 +186,8 @@ class Give_Donors_Gravatars {
 				$unique_emails[ $id ] = get_post_meta( $id, '_give_payment_user_email', true );
 
 			}
+
+			$unique_ids = array();
 
 			// strip duplicate emails
 			$unique_emails = array_unique( $unique_emails );
@@ -422,8 +424,6 @@ class Give_Donors_Gravatars_Widget extends WP_Widget {
 	 *
 	 * @since  1.0
 	 * @access public
-	 *
-	 * @return void
 	 */
 	public function __construct() {
 
