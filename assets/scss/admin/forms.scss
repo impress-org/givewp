@@ -475,6 +475,73 @@ Tooltips
       }
     }
 
+    .give-repeater-fields-wrap {
+      padding: 5px 20px 5px 162px !important;
+
+      .give-repeater-block {
+        border: 1px solid whitesmoke;
+        position: relative;
+        border-left: 15px solid #eee;
+      }
+
+      .give-field-wrap{
+        position: relative;
+        padding: 1em 0;
+        border-bottom: 1px solid #eee;
+
+        .form-field{
+          margin: 0;
+        }
+      }
+
+      .give-field-row-actions {
+        display: none;
+
+        a{
+          right: 0;
+          text-decoration: none;
+          position: absolute;
+          border: 1px solid gray;
+          border-radius: 25px;
+          font-size: 14px;
+          width: 18px;
+          height: 18px;
+          line-height: 18px;
+          text-align: center;
+          margin: -8px 0 0 -2px;
+          cursor: pointer;
+          z-index: 999999;
+          background-color: white;
+        }
+
+        .give-plus{
+          top: 0;
+        }
+
+        .give-minus{
+          bottom: 50%;
+        }
+
+        .give-minus:hover{
+          background-color: red;
+          color: white;
+        }
+
+        .give-plus:hover{
+          background-color: gray;
+          color: white;
+        }
+      }
+    }
+
+    .give-field-wrap:hover .give-field-row-actions{
+      display: block;
+    }
+
+    .give-field-wrap:last-child{
+      border-bottom: 0;
+    }
+
     .give-inline-radio-fields {
       li {
         display: inline-block;

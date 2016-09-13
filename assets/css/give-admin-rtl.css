@@ -980,6 +980,49 @@ Tooltips
       margin: 0; }
     #give-metabox-form-data .give_options_panel .form-field .mce-container iframe {
       min-height: 200px; }
+  #give-metabox-form-data .give_options_panel .give-repeater-fields-wrap {
+    padding: 5px 162px 5px 20px !important; }
+    #give-metabox-form-data .give_options_panel .give-repeater-fields-wrap .give-repeater-block {
+      border: 1px solid whitesmoke;
+      position: relative;
+      border-right: 15px solid #eee; }
+    #give-metabox-form-data .give_options_panel .give-repeater-fields-wrap .give-field-wrap {
+      position: relative;
+      padding: 1em 0;
+      border-bottom: 1px solid #eee; }
+      #give-metabox-form-data .give_options_panel .give-repeater-fields-wrap .give-field-wrap .form-field {
+        margin: 0; }
+    #give-metabox-form-data .give_options_panel .give-repeater-fields-wrap .give-field-row-actions {
+      display: none; }
+      #give-metabox-form-data .give_options_panel .give-repeater-fields-wrap .give-field-row-actions a {
+        left: 0;
+        text-decoration: none;
+        position: absolute;
+        border: 1px solid gray;
+        border-radius: 25px;
+        font-size: 14px;
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
+        text-align: center;
+        margin: -8px -2px 0 0;
+        cursor: pointer;
+        z-index: 999999;
+        background-color: white; }
+      #give-metabox-form-data .give_options_panel .give-repeater-fields-wrap .give-field-row-actions .give-plus {
+        top: 0; }
+      #give-metabox-form-data .give_options_panel .give-repeater-fields-wrap .give-field-row-actions .give-minus {
+        bottom: 50%; }
+      #give-metabox-form-data .give_options_panel .give-repeater-fields-wrap .give-field-row-actions .give-minus:hover {
+        background-color: red;
+        color: white; }
+      #give-metabox-form-data .give_options_panel .give-repeater-fields-wrap .give-field-row-actions .give-plus:hover {
+        background-color: gray;
+        color: white; }
+  #give-metabox-form-data .give_options_panel .give-field-wrap:hover .give-field-row-actions {
+    display: block; }
+  #give-metabox-form-data .give_options_panel .give-field-wrap:last-child {
+    border-bottom: 0; }
   #give-metabox-form-data .give_options_panel .give-inline-radio-fields li {
     display: inline-block;
     margin-right: 15px; }

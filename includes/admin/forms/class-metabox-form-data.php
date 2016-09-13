@@ -145,7 +145,7 @@ class Give_MetaBox_Form_Data {
 					<div id="<?php echo $setting['id']; ?>" class="panel give_options_panel <?php echo ( $show_first_tab_content ? '' : 'give-hidden' ); $show_first_tab_content = false; ?>">
 						<?php if( ! empty( $setting['fields'] ) ) : ?>
 							<?php foreach ( $setting['fields'] as $field ) : ?>
-								<?php $this->render_field( $field ); ?>
+								<?php give_render_field( $field ); ?>
 							<?php endforeach; ?>
 						<?php endif; ?>
 					</div>
@@ -155,63 +155,6 @@ class Give_MetaBox_Form_Data {
 			</div>
 			<?php
 		}
-	}
-
-	/**
-	 * This function add backward compatibility to render cmb2 type field type
-	 *
-	 * @param  array $field Field argument array.
-	 * @return bool
-	 */
-	function render_field( $field ) {
-		$func_name_prefix = 'give_wp';
-		$func_name = '';
-
-		// Set callback function on basis of cmb2 field name.
-		switch( $field['type'] ) {
-			case 'radio_inline':
-				$func_name              = "{$func_name_prefix}_radio";
-				$field['wrapper_class'] = 'give-inline-radio-fields';
-				//$field['name']          = $field['id'];
-				break;
-
-			case 'text':
-			case 'text-medium':
-			case 'text-small' :
-			case 'text_small' :
-				$field['type'] = 'text';
-				$func_name = "{$func_name_prefix}_text_input";
-				break;
-
-
-			case 'textarea' :
-				$func_name = "{$func_name_prefix}_textarea_input";
-				break;
-
-			case 'colorpicker' :
-				$func_name      = "{$func_name_prefix}_{$field['type']}";
-				$field['type'] = 'text';
-				$field['class'] = 'give-colorpicker';
-				break;
-
-			default:
-				$func_name = "{$func_name_prefix}_{$field['type']}";
-		}
-
-		// Check if render callback exist or not.
-		if ( !  function_exists( "$func_name" ) || empty( $func_name ) ){
-			return false;
-		}
-
-		// Add support to define field description by desc & description param.
-		$field['description'] = ( ! empty( $field['description'] )
-			? $field['description']
-			: ( ! empty( $field['desc'] ) ? $field['desc'] : '' ) );
-
-		// Call render function.
-		$func_name( $field );
-
-		return true;
 	}
 
 	/**
