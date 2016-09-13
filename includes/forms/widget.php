@@ -10,7 +10,9 @@
  */
 
 // Exit if accessed directly
-defined( 'ABSPATH' ) or exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Give Form widget
