@@ -1001,6 +1001,50 @@ Tooltips
     margin-right: 15px; }
   #give-metabox-form-data .give_options_panel .give-inline-radio-fields li:first-child {
     margin-right: 0; }
+  #give-metabox-form-data .give_options_panel .give-repeatable-field-section {
+    padding: 10px;
+    background: #f5f5f5; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-repeatable-fields-section-wrapper {
+      width: 100%;
+      background-color: white;
+      border-collapse: collapse; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-row {
+      border-bottom: 5px solid white;
+      background-color: white; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-row:last-child {
+      border-bottom: 0; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-column {
+      padding: 0; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-move {
+      position: relative;
+      width: 1%;
+      background-color: #dadada;
+      cursor: move; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-remove {
+      width: 10px;
+      height: 10px;
+      background: white;
+      text-align: center;
+      border: 1px solid gray;
+      padding: 5px;
+      border-radius: 25px;
+      position: absolute;
+      right: -9px;
+      top: 50%;
+      text-decoration: none;
+      color: black;
+      line-height: 10px;
+      font-size: 14px;
+      cursor: pointer; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-remove:hover {
+      background-color: red;
+      color: white; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-add-row {
+      margin: 5px 5px; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .form-field:last-child {
+      border-bottom: 1px solid #eee; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-ui-placeholder-state-highlight {
+      background-color: #68bb6c; }
 
 /**
  * Give Add-ons SCSS

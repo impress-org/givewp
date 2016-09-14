@@ -797,21 +797,24 @@ jQuery.noConflict();
         handle_repeatable_fields: function(){
             jQuery(function() {
                 jQuery('.give-repeatable-field-section').each(function() {
+                    // Note: Do not change option params, it can break repeatable fields functionality.
                     var options = {
-                        //wrapper : '',
+                        wrapper : '.give-repeatable-fields-section-wrapper',
                         container: '.container',
-                        row: '.row',
-                        add: '.add',
-                        remove: '.remove',
-                        move: '.move',
-                        template: '.template',
+                        row: '.give-row',
+                        add: '.give-add-row',
+                        remove: '.give-remove',
+                        move: '.give-move',
+                        template: '.give-template',
                         is_sortable: true,
                         before_add: null,
-                        after_add: null,
+                        //after_add:  after_add, Note: after_add is internal function in repeatable-fields.js. Uncomment this can cause of js error.
                         before_remove: null,
                         after_remove: null,
-                        sortable_options: null,
-                        row_count_placeholder: '{{row-count-placeholder}}',
+                        sortable_options: {
+                            placeholder: "give-ui-placeholder-state-highlight"
+                        },
+                        row_count_placeholder: '{{row-count-placeholder}}'
                     };
 
                     jQuery(this).repeatable_fields( options );

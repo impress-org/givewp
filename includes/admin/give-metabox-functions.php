@@ -518,26 +518,30 @@ function give_get_field_value( $field, $postid ) {
  *
  * @param array $fields
  */
-//function give_repeater_fields( $fields ) {
-//	?>
-<!--	<div class="give-repeater-fields-wrap">-->
-<!--		<div class="give-repeater-block">-->
-<!--			--><?php //foreach ( $fields['fields'] as $field ) : ?>
-<!--				--><?php //if ( ! give_is_field_callback_exist( $field ) ) continue; ?>
-<!---->
-<!--				<div class="give-field-wrap">-->
-<!--					--><?php //give_render_field( $field ); ?>
-<!--					<div class="give-field-row-actions">-->
-<!--						<a class="give-plus" href="#" data-event="add-row" title="--><?php //echo esc_html__( 'Add row', 'give' ); ?><!--">+</a>-->
-<!--						<a class="give-minus" href="#" data-event="remove-row" title="--><?php //echo esc_html__( 'Add row', 'give' ); ?><!--">-</a>-->
-<!--					</div>-->
-<!--				</div>-->
-<!--			--><?php //endforeach; ?>
-<!--		</div>-->
-<!---->
-<!--		<div class="give-repeater-block-actions">-->
-<!--			<a class="acf-button button button-primary" data-event="add-row">--><?php //echo esc_html__( 'Add Row', 'give' ); ?><!--</a>-->
-<!--		</div>-->
-<!--	</div>-->
-<!--	--><?php
-//}
+function give_repeater_fields( $fields ) {
+	?>
+	<div class="give-repeatable-field-section <?php echo "{$fields['id']}_field"; ?>">
+		<table class="give-repeatable-fields-section-wrapper" cellspacing="0">
+			<tbody class="container">
+				<tr class="give-template give-row">
+					<td class="give-move give-column"><sapn class="give-remove">-</sapn></td>
+
+					<td class="give-repeater-field-wrap give-column">
+						<?php foreach ( $fields['fields'] as $field ) : ?>
+							<?php if ( ! give_is_field_callback_exist( $field ) ) continue; ?>
+							<?php $field['repeat'] = true; ?>
+							<?php $field['repeater_id'] = "{$fields['id']}[{{row-count-placeholder}}][{$field['id']}]"; ?>
+							<?php give_render_field( $field ); ?>
+						<?php endforeach; ?>
+					</td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td width="10%" colspan="4"><span class="button button-primary give-add-row"><?php esc_html_e( 'Add Level', 'give' ); ?></span></td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+	<?php
+}

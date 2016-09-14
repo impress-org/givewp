@@ -59,12 +59,12 @@ jQuery.noConflict();
             if (price_option_val === 'set') {
                 //set price shows
                 $('._give_set_price_field').show();
-                $('.cmb2-id--give-levels-header, .cmb2-id--give-levels-header + .cmb-repeat-group-wrap, .cmb2-id--give-display-style').hide(); //hide multi-val stuffs
+                $('._give_donation_levels_field').hide(); //hide multi-val stuffs
 
             } else {
                 //multi-value shows
                 $('._give_set_price_field').hide();
-                $('.cmb2-id--give-levels-header, .cmb2-id--give-levels-header + .cmb-repeat-group-wrap, .cmb2-id--give-display-style').show(); //show set stuffs
+                $('._give_donation_levels_field').show(); //show set stuffs
             }
         }).change();
 
