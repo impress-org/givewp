@@ -762,8 +762,12 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
   border-right: 0;
   margin-right: -1px; }
 
-input.give-text_small {
+input.give-text_small, input.give-text-small {
   width: 100px !important;
+  padding: 5px; }
+
+input.give-text-medium {
+  width: 200px !important;
   padding: 5px; }
 
 .give-underline {
