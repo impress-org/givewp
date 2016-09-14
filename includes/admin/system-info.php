@@ -60,12 +60,15 @@ add_filter( 'give_start_session', 'give_allow_sessions_for_sysinfo' );
  *
  * @since       1.0
  * @access      public
+ *
  * @global      object $wpdb Used to query the database using the WordPress Database API
- * @global      array $give_options Array of all Give options
+ *
  * @return      string $return A string containing the info to output
  */
 function give_tools_sysinfo_get() {
-	global $wpdb, $give_options;
+	global $wpdb;
+
+	$give_options = give_get_settings();
 
 	if ( ! class_exists( 'Browser' ) ) {
 		require_once GIVE_PLUGIN_DIR . 'includes/libraries/browser.php';
@@ -127,6 +130,7 @@ function give_tools_sysinfo_get() {
 	}
 
 	// Make sure wp_remote_post() is working
+	$request = array();
 	$request['cmd'] = '_notify-validate';
 
 	$params = array(

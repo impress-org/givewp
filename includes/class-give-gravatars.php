@@ -30,8 +30,6 @@ class Give_Donors_Gravatars {
 	 *
 	 * @since  1.0
 	 * @access public
-	 *
-	 * @return void
 	 */
 	public function __construct() {
 		$this->setup_actions();
@@ -133,6 +131,8 @@ class Give_Donors_Gravatars {
 		$logs = $give_logs->get_logs( $form_id );
 
 		if ( $logs ) {
+			$log_ids = array();
+
 			// make an array with all the donor IDs
 			foreach ( $logs as $log ) {
 				$log_ids[] = $log->ID;
@@ -157,7 +157,7 @@ class Give_Donors_Gravatars {
 	 */
 	public function get_payment_ids( $form_id = '' ) {
 
-		global $give_options;
+		$give_options = give_get_settings();
 
 		$log_ids = $this->get_log_ids( $form_id );
 
@@ -186,6 +186,8 @@ class Give_Donors_Gravatars {
 				$unique_emails[ $id ] = get_post_meta( $id, '_give_payment_user_email', true );
 
 			}
+
+			$unique_ids = array();
 
 			// strip duplicate emails
 			$unique_emails = array_unique( $unique_emails );
@@ -223,7 +225,7 @@ class Give_Donors_Gravatars {
 		// unique $payment_ids 
 		$payment_ids = $this->get_payment_ids( $form_id );
 
-		global $give_options;
+		$give_options = give_get_settings();
 
 		// return if no ID
 		if ( ! $form_id ) {
@@ -422,8 +424,6 @@ class Give_Donors_Gravatars_Widget extends WP_Widget {
 	 *
 	 * @since  1.0
 	 * @access public
-	 *
-	 * @return void
 	 */
 	public function __construct() {
 
@@ -464,7 +464,6 @@ class Give_Donors_Gravatars_Widget extends WP_Widget {
 	 * @return void
 	 */
 	public function widget( $args, $instance ) {
-		global $give_options;
 
 		//@TODO: Don't extract it!!!
 		extract( $args );

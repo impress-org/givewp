@@ -411,7 +411,7 @@ function give_v17_upgrades() {
  * @since 1.7
  */
 function give_upgrade_addon_license_data(){
-    global $give_options;
+    $give_options = give_get_settings();
 
     $api_url = 'https://givewp.com/give-sl-api/';
 

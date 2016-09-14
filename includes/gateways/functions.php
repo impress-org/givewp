@@ -85,7 +85,6 @@ function give_is_gateway_active( $gateway ) {
  * Gets the default payment gateway selected from the Give Settings
  *
  * @since 1.0
- * @global $give_options Array of all the Give Options
  *
  * @param  $form_id      int ID of the Give Form
  *
@@ -93,8 +92,7 @@ function give_is_gateway_active( $gateway ) {
  */
 function give_get_default_gateway( $form_id ) {
 
-	global $give_options;
-
+	$give_options = give_get_settings();
 	$default      = isset( $give_options['default_gateway'] ) && give_is_gateway_active( $give_options['default_gateway'] ) ? $give_options['default_gateway'] : 'paypal';
 	$form_default = get_post_meta( $form_id, '_give_default_gateway', true );
 

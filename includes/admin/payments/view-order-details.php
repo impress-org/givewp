@@ -487,13 +487,13 @@ $payment_mode   = $payment->mode;
 											<p>
 												<strong><?php esc_html_e( 'Donor ID:', 'give' ); ?></strong><br>
 												<?php
-												if ( ! empty( $customer->id ) ) :
+												if ( ! empty( $customer->id ) ) {
 													printf(
 														'<a href="%1$s" target="_blank">#%2$s</a>',
 														admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $customer->id ),
 														$customer->id
 													);
-												endif;
+												}
 												?>
 											</p>
 											<p>
@@ -697,16 +697,16 @@ $payment_mode   = $payment->mode;
 									<div id="give-payment-notes-inner">
 										<?php
 										$notes = give_get_payment_notes( $payment_id );
-										if ( ! empty( $notes ) ) :
+										if ( ! empty( $notes ) ) {
 											$no_notes_display = ' style="display:none;"';
 											foreach ( $notes as $note ) :
 
 												echo give_get_payment_note_html( $note, $payment_id );
 
 											endforeach;
-										else :
+										} else {
 											$no_notes_display = '';
-										endif;
+										}
 										echo '<p class="give-no-payment-notes"' . $no_notes_display . '>' . esc_html__( 'No donation notes.', 'give' ) . '</p>'; ?>
 									</div>
 									<textarea name="give-payment-note" id="give-payment-note" class="large-text"></textarea>

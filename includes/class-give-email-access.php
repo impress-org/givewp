@@ -92,8 +92,6 @@ class Give_Email_Access {
 	 *
 	 * @since  1.0
 	 * @access public
-	 *
-	 * @return void
 	 */
 	public function __construct() {
 

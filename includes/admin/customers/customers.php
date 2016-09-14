@@ -73,7 +73,7 @@ function give_customers_list() {
 	$customers_table->prepare_items();
 	?>
 	<div class="wrap">
-		<h1><?php esc_html_e( 'Donors', 'give' ); ?></h1>
+		<h1><?php echo get_admin_page_title(); ?></h1>
 		<?php
 		/**
 		 * Fires in donors screen, above the table.
@@ -262,14 +262,14 @@ function give_customers_view( $customer ) {
 								</span>
 			
 								<span class="customer-user-id info-item editable">
-									<?php if ( intval( $customer->user_id ) > 0 ) : ?>
+									<?php if ( intval( $customer->user_id ) > 0 ) { ?>
 										<span data-key="user_id"><?php echo $customer->user_id; ?></span>
-									<?php else : ?>
+									<?php } else { ?>
 										<span data-key="user_id"><?php esc_html_e( 'None', 'give' ); ?></span>
-									<?php endif; ?>
-									<?php if ( current_user_can( $customer_edit_role ) && intval( $customer->user_id ) > 0 ) : ?>
+									<?php } ?>
+									<?php if ( current_user_can( $customer_edit_role ) && intval( $customer->user_id ) > 0 ) { ?>
 										<span class="disconnect-user"> - <a id="disconnect-customer" href="#disconnect" aria-label="<?php esc_attr_e( 'Disconnects the current user ID from this customer record.', 'give' ); ?>"><?php esc_html_e( 'Disconnect User', 'give' ); ?></a></span>
-									<?php endif; ?>
+									<?php } ?>
 								</span>
 							</td>
 						</tr>
@@ -326,7 +326,8 @@ function give_customers_view( $customer ) {
 
 											$selected_state = isset( $address['state'] ) ? $address['state'] : $selected_state;
 
-											if ( ! empty( $states ) ) : ?>
+											if ( ! empty( $states ) ) {
+												?>
 												<select data-key="state" name="customerinfo[state]" id="card_state" class="card_state give-select info-item">
 													<?php
 													foreach ( $states as $state_code => $state ) {
@@ -334,11 +335,15 @@ function give_customers_view( $customer ) {
 													}
 													?>
 												</select>
-											<?php else : ?>
+												<?php
+											} else {
+												?>
 												<input type="text" size="6" data-key="state" name="customerinfo[state]" id="card_state" class="card_state give-input info-item" placeholder="<?php esc_attr_e( 'State / Province', 'give' ); ?>" />
-											<?php endif; ?>
+												<?php
+											}
+											?>
 											<input class="info-item" type="text" data-key="zip" name="customerinfo[zip]" placeholder="<?php esc_attr_e( 'Zip / Postal Code', 'give' ); ?>" value="<?php echo $address['zip']; ?>" />
-													</span>
+										</span>
 
 									</div>
 								</td>
@@ -440,7 +445,7 @@ function give_customers_view( $customer ) {
 			</thead>
 
 			<tbody>
-				<?php if ( ! empty( $customer->emails ) ) : ?>
+				<?php if ( ! empty( $customer->emails ) ) { ?>
 
 					<?php foreach ( $customer->emails as $key => $email ) : ?>
 						<tr data-key="<?php echo $key; ?>">
@@ -478,9 +483,9 @@ function give_customers_view( $customer ) {
 							<div class="notice-wrap"></div>
 						</td>
 					</tr>
-				<?php else: ?>
+				<?php } else { ?>
 					<tr><td colspan="2"><?php _e( 'No Emails Found', 'easy-digital-downloads' ); ?></td></tr>
-				<?php endif; ?>
+				<?php } ?>
 			</tbody>
 		</table>
 
@@ -501,7 +506,7 @@ function give_customers_view( $customer ) {
 			</tr>
 			</thead>
 			<tbody>
-			<?php if ( ! empty( $payments ) ) : ?>
+			<?php if ( ! empty( $payments ) ) { ?>
 				<?php foreach ( $payments as $payment ) : ?>
 					<tr>
 						<td><?php echo $payment->ID; ?></td>
@@ -538,11 +543,11 @@ function give_customers_view( $customer ) {
 						</td>
 					</tr>
 				<?php endforeach; ?>
-			<?php else: ?>
+			<?php } else { ?>
 				<tr>
 					<td colspan="5"><?php esc_html_e( 'No donations found.', 'give' ); ?></td>
 				</tr>
-			<?php endif; ?>
+			<?php } ?>
 			</tbody>
 		</table>
 
@@ -558,7 +563,7 @@ function give_customers_view( $customer ) {
 			</tr>
 			</thead>
 			<tbody>
-			<?php if ( ! empty( $donations ) ) : ?>
+			<?php if ( ! empty( $donations ) ) { ?>
 				<?php foreach ( $donations as $donation ) : ?>
 					<tr>
 						<td><?php echo $donation->post_title; ?></td>
@@ -578,11 +583,11 @@ function give_customers_view( $customer ) {
 						</td>
 					</tr>
 				<?php endforeach; ?>
-			<?php else: ?>
+			<?php } else { ?>
 				<tr>
 					<td colspan="2"><?php esc_html_e( 'No completed donations found.', 'give' ); ?></td>
 				</tr>
-			<?php endif; ?>
+			<?php } ?>
 			</tbody>
 		</table>
 
@@ -662,7 +667,7 @@ function give_customer_notes_view( $customer ) {
 		?>
 
 		<div id="give-customer-notes" class="postbox">
-			<?php if ( count( $customer_notes ) > 0 ) : ?>
+			<?php if ( count( $customer_notes ) > 0 ) { ?>
 				<?php foreach ( $customer_notes as $key => $note ) : ?>
 					<div class="customer-note-wrapper dashboard-comment-wrap comment-item">
 					<span class="note-content-wrap">
@@ -670,11 +675,11 @@ function give_customer_notes_view( $customer ) {
 					</span>
 					</div>
 				<?php endforeach; ?>
-			<?php else: ?>
+			<?php } else { ?>
 				<div class="give-no-customer-notes">
 					<?php esc_html_e( 'No donor notes found.', 'give' ); ?>
 				</div>
-			<?php endif; ?>
+			<?php } ?>
 		</div>
 
 		<?php echo paginate_links( $pagination_args ); ?>
