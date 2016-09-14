@@ -766,6 +766,7 @@ jQuery.noConflict();
         init: function(){
             this.handle_metabox_tab_click();
             this.setup_colorpicker();
+            this.handle_repeatable_fields();
         },
 
         handle_metabox_tab_click: function() {
@@ -791,6 +792,31 @@ jQuery.noConflict();
             $(document).ready(function(){
                 $('.give-colorpicker').wpColorPicker();
             })
+        },
+
+        handle_repeatable_fields: function(){
+            jQuery(function() {
+                jQuery('.give-repeatable-field-section').each(function() {
+                    var options = {
+                        //wrapper : '',
+                        container: '.container',
+                        row: '.row',
+                        add: '.add',
+                        remove: '.remove',
+                        move: '.move',
+                        template: '.template',
+                        is_sortable: true,
+                        before_add: null,
+                        after_add: null,
+                        before_remove: null,
+                        after_remove: null,
+                        sortable_options: null,
+                        row_count_placeholder: '{{row-count-placeholder}}',
+                    };
+
+                    jQuery(this).repeatable_fields( options );
+                });
+            });
         }
     };
 
