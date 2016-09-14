@@ -166,7 +166,7 @@ function give_text_input( $field ) {
 	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
-	$field['value']         = isset( $field['value'] ) ? $field['value'] : get_post_meta( $thepostid, $field['id'], true );
+	$field['value']         = give_get_field_value( $field, $thepostid );
 	$field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
 	$field['type']          = isset( $field['type'] ) ? $field['type'] : 'text';
 	$field['before_field']  = '';
@@ -217,7 +217,7 @@ function give_hidden_input( $field ) {
 	global $thepostid, $post;
 
 	$thepostid = empty( $thepostid ) ? $post->ID : $thepostid;
-	$field['value'] = isset( $field['value'] ) ? $field['value'] : get_post_meta( $thepostid, $field['id'], true );
+	$field['value'] = give_get_field_value( $field, $thepostid );
 
 	// Custom attribute handling
 	$custom_attributes = array();
@@ -243,7 +243,7 @@ function give_textarea_input( $field ) {
 	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
-	$field['value']         = isset( $field['value'] ) ? $field['value'] : get_post_meta( $thepostid, $field['id'], true );
+	$field['value']         = give_get_field_value( $field, $thepostid );
 
 	// Custom attribute handling
 	$custom_attributes = array();
@@ -274,7 +274,7 @@ function give_wysiwyg( $field ) {
 	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
-	$field['value']         = isset( $field['value'] ) ? $field['value'] : get_post_meta( $thepostid, $field['id'], true );
+	$field['value']         = give_get_field_value( $field, $thepostid );
 
 	// Custom attribute handling
 	$custom_attributes = array();
@@ -320,7 +320,7 @@ function give_checkbox( $field ) {
 	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
-	$field['value']         = isset( $field['value'] ) ? $field['value'] : get_post_meta( $thepostid, $field['id'], true );
+	$field['value']         = give_get_field_value( $field, $thepostid );
 	$field['cbvalue']       = isset( $field['cbvalue'] ) ? $field['cbvalue'] : 'on';
 	$field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
 
@@ -354,7 +354,7 @@ function give_select( $field ) {
 	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
-	$field['value']         = isset( $field['value'] ) ? $field['value'] : get_post_meta( $thepostid, $field['id'], true );
+	$field['value']         = give_get_field_value( $field, $thepostid );
 	$field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
 
 	// Custom attribute handling
@@ -392,7 +392,7 @@ function give_radio( $field ) {
 	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
-	$field['value']         = isset( $field['value'] ) ? $field['value'] : get_post_meta( $thepostid, $field['id'], true );
+	$field['value']         = give_get_field_value( $field, $thepostid );
 	$field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
 
 	// Custom attribute handling
@@ -439,7 +439,7 @@ function give_colorpicker( $field ) {
 	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
-	$field['value']         = isset( $field['value'] ) ? $field['value'] : get_post_meta( $thepostid, $field['id'], true );
+	$field['value']         = give_get_field_value( $field, $thepostid );
 	$field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
 	$field['type']          = isset( $field['type'] ) ? $field['type'] : 'text';
 
@@ -484,6 +484,33 @@ function give_default_gateway( $field ) {
 
 	// Render select field.
 	give_select( $field );
+}
+
+
+/**
+ * Get setting field value.
+ *
+ * Note: Use only for single post, page or custom post type.
+ *
+ * @since  1.8
+ * @param  array  $field
+ * @param  int    $postid
+ * @return mixed
+ */
+function give_get_field_value( $field, $postid ) {
+	if( isset( $field['attributes']['value'] ) ) {
+		return $field['attributes']['value'];
+	}
+
+	// Get value from db.
+	$field_value = get_post_meta( $postid, $field['id'], true );
+
+	// Set default value if no any data saved to db.
+	if( ! $field_value && isset( $field['default'] )) {
+		$field_value = $field['default'];
+	}
+
+	return $field_value;
 }
 
 /**
