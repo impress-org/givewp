@@ -492,6 +492,10 @@ Tooltips
       border-bottom: 0;
     }
 
+    textarea.give-field {
+      width: 100%;
+    }
+
     .give-field-wrap:hover .give-field-row-actions{
       display: block;
     }

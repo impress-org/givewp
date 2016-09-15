@@ -993,6 +993,8 @@ Tooltips
       min-height: 200px; }
   #give-metabox-form-data .give_options_panel .form-field:last-child {
     border-bottom: 0; }
+  #give-metabox-form-data .give_options_panel textarea.give-field {
+    width: 100%; }
   #give-metabox-form-data .give_options_panel .give-field-wrap:hover .give-field-row-actions {
     display: block; }
   #give-metabox-form-data .give_options_panel .give-field-wrap:last-child {

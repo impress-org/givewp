@@ -811,7 +811,7 @@ jQuery.noConflict();
                         after_add: handle_metabox_repeater_field_row_count,
                         //after_add:  after_add, Note: after_add is internal function in repeatable-fields.js. Uncomment this can cause of js error.
                         before_remove: null,
-                        after_remove: null,
+                        after_remove: handle_metabox_repeater_field_row_remove,
                         sortable_options: {
                             placeholder: "give-ui-placeholder-state-highlight",
                             update: function( event, ui ){
@@ -872,6 +872,15 @@ jQuery.noConflict();
 
         // Set level id.
         $( 'input[type="hidden"].give-levels_id', new_row ).val( row_count - 1 );
+    };
+
+
+    /**
+     * Handle row remove for repeatable field.
+     */
+    var handle_metabox_repeater_field_row_remove =  function ( container ) {
+        var row_count = $(container).attr('data-rf-row-count');
+        $(container).attr('data-rf-row-count', -- row_count );
     };
 
 

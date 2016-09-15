@@ -241,7 +241,7 @@ class Give_MetaBox_Form_Data {
 		$form_meta_keys = apply_filters( 'give_process_form_meta_keys', $this->get_meta_keys_from_settings() );
 
 		// Save form meta data.
-		// @TODO: Sanitize data for group field
+		// @TODO: Sanitize data for group field, jus in case if there any editor setting field.
 		if( ! empty( $form_meta_keys ) ) {
 			foreach ( $form_meta_keys as $form_meta_key ) {
 				if( isset( $_POST[ $form_meta_key ] ) ) {

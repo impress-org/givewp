@@ -59,7 +59,7 @@ function give_get_field_callback( $field ){
 			break;
 
 		case 'group' :
-			$func_name = "{$func_name_prefix}_repeater_fields";
+			$func_name = "_{$func_name_prefix}_metabox_form_data_repeater_fields";
 			break;
 
 		default:
@@ -84,6 +84,8 @@ function give_get_field_callback( $field ){
  */
 function give_render_field( $field ) {
 	$func_name = give_get_field_callback( $field );
+
+	error_log(print_r($func_name, true) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log');
 
 	// Check if render callback exist or not.
 	if ( ! $func_name ){
@@ -532,15 +534,26 @@ function give_get_field_name( $field ) {
 }
 
 /**
- * Output a colorpicker.
+ * Output repeater field or multi donation type form on donation from edit screen.
+ * Note: internal use only.
  *
- * @param array $fields
+ * @since  1.8
+ * @param  array $fields
+ * @return void
  */
-function give_repeater_fields( $fields ) {
+function _give_metabox_form_data_repeater_fields( $fields ) {
+	global $thepostid, $post;
+
+	// Bailout.
+	if( ! isset( $fields['fields'] ) || empty( $fields['fields'] ) ) {
+		return;
+	}
+
 	?>
 	<div class="give-repeatable-field-section" id="<?php echo "{$fields['id']}_field"; ?>">
 		<table class="give-repeatable-fields-section-wrapper" cellspacing="0">
-			<tbody class="container">
+			<?php $donation_levels = get_post_meta( $thepostid, $fields['id'], true ); ?>
+			<tbody class="container"<?php echo ( ( $levels_count = count( $donation_levels ) ? " data-rf-row-count=\"{$levels_count}\"" : '' ) ); ?>>
 				<tr class="give-template give-row">
 					<td class="give-move give-column"><sapn class="give-remove">-</sapn></td>
 
@@ -549,12 +562,32 @@ function give_repeater_fields( $fields ) {
 							<?php if ( ! give_is_field_callback_exist( $field ) ) continue; ?>
 							<?php
 							$field['repeat'] = true;
-							$field['repeatable_field_id'] = "{$fields['id']}[{{row-count-placeholder}}][{$field['id']}]";
+							$field['repeatable_field_id'] = ( '_give_id' === $field['id'] ) ? "{$fields['id']}[{{row-count-placeholder}}][{$field['id']}][level_id]" : "{$fields['id']}[{{row-count-placeholder}}][{$field['id']}]";
 							?>
 							<?php give_render_field( $field ); ?>
 						<?php endforeach; ?>
 					</td>
 				</tr>
+
+				<?php if( ! empty( $donation_levels ) ) : ?>
+					<?php foreach ( $donation_levels as $index => $level ) : ?>
+						<tr class="give-row">
+							<td class="give-move give-column"><sapn class="give-remove">-</sapn></td>
+
+							<td class="give-repeater-field-wrap give-column">
+								<?php foreach ( $fields['fields'] as $field ) : ?>
+									<?php if ( ! give_is_field_callback_exist( $field ) ) continue; ?>
+									<?php
+									$field['repeat'] = true;
+									$field['repeatable_field_id'] = ( '_give_id' === $field['id'] ) ? "{$fields['id']}[{$index}][{$field['id']}][level_id]" : "{$fields['id']}[{$index}][{$field['id']}]";
+									$field['attributes']['value'] = ( '_give_id' === $field['id'] ) ? $level[$field['id']]['level_id'] : $level[$field['id']];
+									?>
+									<?php give_render_field( $field ); ?>
+								<?php endforeach; ?>
+							</td>
+						</tr>
+					<?php endforeach;; ?>
+				<?php endif; ?>
 			</tbody>
 			<tfoot>
 				<tr>
