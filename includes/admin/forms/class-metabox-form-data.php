@@ -152,8 +152,8 @@ class Give_MetaBox_Form_Data {
 		if( $form_data_tabs = $this->get_tabs() ) {
 			wp_nonce_field( 'give_save_form_meta', 'give_form_meta_nonce' );
 			?>
-			<div class="panel-wrap form_data">
-				<ul class="form_data_tabs give-metabox-tabs">
+			<div class="give-metabox-panel-wrap">
+				<ul class="give-form-data-tabs give-metabox-tabs">
 					<?php foreach ( $form_data_tabs as $index => $form_data_tab ) : ?>
 						<li class="<?php echo "{$form_data_tab['id']}_tab" . ( ! $index ? ' active' : '' ); ?>"><a href="#<?php echo $form_data_tab['id']; ?>"><?php echo $form_data_tab['label']; ?></a></li>
 					<?php endforeach; ?>
