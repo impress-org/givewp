@@ -815,7 +815,7 @@ jQuery.noConflict();
                         wrapper : '.give-repeatable-fields-section-wrapper',
                         container: '.container',
                         row: '.give-row',
-                        add: '.give-add-row',
+                        add: '#give-add-repeater-field-section-row',
                         remove: '.give-remove',
                         move: '.give-move',
                         template: '.give-template',
@@ -1023,7 +1023,7 @@ jQuery.noConflict();
         give_add_qtip($give_money_fields);
 
         // Add qtip to new created money/price input field.
-        $( '#_give_donation_levels_repeat').on( 'click' , 'button.cmb-add-group-row', function(){
+        $( '#give-add-repeater-field-section-row' ).on( 'click' , function(){
             window.setTimeout(
                 function(){
 
