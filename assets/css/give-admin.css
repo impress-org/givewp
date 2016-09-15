@@ -991,7 +991,7 @@ Tooltips
       margin: 0; }
     #give-metabox-form-data .give_options_panel .give-field-wrap .mce-container iframe {
       min-height: 200px; }
-  #give-metabox-form-data .give_options_panel .form-field:last-child {
+  #give-metabox-form-data .give_options_panel .give-field-wrap:last-child {
     border-bottom: 0; }
   #give-metabox-form-data .give_options_panel textarea.give-field {
     width: 100%; }
@@ -1044,7 +1044,7 @@ Tooltips
       color: white; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-add-row {
       margin: 5px 5px; }
-    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .form-field:last-child {
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-field-wrap:last-child {
       border-bottom: 1px solid #eee; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-ui-placeholder-state-highlight {
       background-color: #68bb6c; }

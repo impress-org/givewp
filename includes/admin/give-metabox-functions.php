@@ -62,6 +62,10 @@ function give_get_field_callback( $field ){
 			$func_name = "_{$func_name_prefix}_metabox_form_data_repeater_fields";
 			break;
 
+		case 'give_default_radio_inline':
+			$func_name = "{$func_name_prefix}_radio";
+			break;
+
 		default:
 			$func_name = "{$func_name_prefix}_{$field['type']}";
 	}
@@ -147,6 +151,14 @@ function give_render_field( $field ) {
 		case 'colorpicker' :
 			$field['type'] = 'text';
 			$field['class'] = 'give-colorpicker';
+			break;
+
+		case 'give_default_radio_inline':
+			$field['type'] = 'radio';
+			$field['options'] = array(
+				'default' => __( 'Default')
+			);
+			break;
 	}
 
 	// CMB2 compatibility: Add support to define field description by desc & description param.
