@@ -14,7 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Check if field callback exist or not.
  *
- * @param $field
+ * @since  1.8
+ * @param  $field
  * @return bool|string
  */
 function give_is_field_callback_exist( $field ) {
@@ -24,7 +25,8 @@ function give_is_field_callback_exist( $field ) {
 /**
  * Get field callback.
  *
- * @param $field
+ * @since  1.8
+ * @param  $field
  * @return bool|string
  */
 function give_get_field_callback( $field ){
@@ -83,6 +85,7 @@ function give_get_field_callback( $field ){
 /**
  * This function add backward compatibility to render cmb2 type field type.
  *
+ * @since  1.8
  * @param  array $field Field argument array.
  * @return bool
  */
@@ -176,7 +179,9 @@ function give_render_field( $field ) {
 /**
  * Output a text input box.
  *
- * @param array $field
+ * @since  1.8
+ * @param  array $field
+ * @return void
  */
 function give_text_input( $field ) {
 	global $thepostid, $post;
@@ -229,7 +234,9 @@ function give_text_input( $field ) {
 /**
  * Output a hidden input box.
  *
- * @param array $field
+ * @since  1.8
+ * @param  array $field
+ * @return void
  */
 function give_hidden_input( $field ) {
 	global $thepostid, $post;
@@ -253,7 +260,9 @@ function give_hidden_input( $field ) {
 /**
  * Output a textarea input box.
  *
- * @param array $field
+ * @since  1.8
+ * @param  array $field
+ * @return void
  */
 function give_textarea_input( $field ) {
 	global $thepostid, $post;
@@ -284,7 +293,9 @@ function give_textarea_input( $field ) {
 /**
  * Output a wysiwyg.
  *
- * @param array $field
+ * @since  1.8
+ * @param  array $field
+ * @return void
  */
 function give_wysiwyg( $field ) {
 	global $thepostid, $post;
@@ -330,7 +341,9 @@ function give_wysiwyg( $field ) {
 /**
  * Output a checkbox input box.
  *
- * @param array $field
+ * @since  1.8
+ * @param  array $field
+ * @return void
  */
 function give_checkbox( $field ) {
 	global $thepostid, $post;
@@ -364,7 +377,9 @@ function give_checkbox( $field ) {
 /**
  * Output a select input box.
  *
- * @param array $field
+ * @since  1.8
+ * @param  array $field
+ * @return void
  */
 function give_select( $field ) {
 	global $thepostid, $post;
@@ -402,7 +417,9 @@ function give_select( $field ) {
 /**
  * Output a radio input box.
  *
- * @param array $field
+ * @since  1.8
+ * @param  array $field
+ * @return void
  */
 function give_radio( $field ) {
 	global $thepostid, $post;
@@ -449,7 +466,9 @@ function give_radio( $field ) {
 /**
  * Output a colorpicker.
  *
- * @param array $field
+ * @since  1.8
+ * @param  array $field
+ * @return void
  */
 function give_colorpicker( $field ) {
 	global $thepostid, $post;
@@ -482,7 +501,9 @@ function give_colorpicker( $field ) {
 /**
  * Output a colorpicker.
  *
- * @param array $field
+ * @since  1.8
+ * @param  array $field
+ * @return void
  */
 function give_default_gateway( $field ) {
 	global $thepostid, $post;

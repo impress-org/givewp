@@ -16,19 +16,24 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Meta box settings.
 	 *
-	 * @var array
+	 * @since 1.8
+	 * @var   array
 	 */
 	private $settings = array();
 
 	/**
 	 * Metabox ID.
-	 * @var string
+	 *
+	 * @since 1.8
+	 * @var   string
 	 */
 	private $metabox_id;
 
 	/**
 	 * Metabox Label.
-	 * @var string
+	 *
+	 * @since 1.8
+	 * @var   string
 	 */
 	private $metabox_label;
 
@@ -59,6 +64,9 @@ class Give_MetaBox_Form_Data {
 
 	/**
 	 * Setup metabox related data.
+	 *
+	 * @since  1.8
+	 * @return void
 	 */
 	function setup() {
 		$this->settings = $this->get_settings();
@@ -67,6 +75,8 @@ class Give_MetaBox_Form_Data {
 
 	/**
 	 * Get metabox settings
+	 *
+	 * @since  1.8
 	 * @return mixed|void
 	 */
 	function get_settings() {
@@ -78,6 +88,9 @@ class Give_MetaBox_Form_Data {
 
 	/**
 	 * Add metabox.
+	 *
+	 * @since  1.8
+	 * @return void
 	 */
 	public function add_meta_box() {
 		add_meta_box(
@@ -93,6 +106,9 @@ class Give_MetaBox_Form_Data {
 
 	/**
 	 * Enqueue scripts.
+	 *
+	 * @since  1.8
+	 * @return void
 	 */
 	function enqueue_script() {
 		global $post;
@@ -106,6 +122,7 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Get metabox id.
 	 *
+	 * @since  1.8
 	 * @return string
 	 */
 	function get_metabox_ID() {
@@ -115,6 +132,7 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Get metabox label.
 	 *
+	 * @since  1.8
 	 * @return string
 	 */
 	function get_metabox_label() {
@@ -124,6 +142,8 @@ class Give_MetaBox_Form_Data {
 
 	/**
 	 * Get metabox tabs.
+	 *
+	 * @since  1.8
 	 * @return mixed|void
 	 */
 	public function get_tabs() {
@@ -146,6 +166,9 @@ class Give_MetaBox_Form_Data {
 
 	/**
 	 * Output metabox settings.
+	 *
+	 * @since  1.8
+	 * @return void
 	 */
 	public function output() {
 		// Bailout.
@@ -181,6 +204,7 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * CMB2 settings loader.
 	 *
+	 * @since  1.8
 	 * @return mixed|void
 	 */
 	function cmb2_metabox_settings() {
@@ -201,8 +225,10 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Check if we're saving, the trigger an action based on the post type.
 	 *
+	 * @since  1.8
 	 * @param  int $post_id
 	 * @param  object $post
+	 * @return void
 	 */
 	public function save( $post_id, $post ) {
 
@@ -268,6 +294,8 @@ class Give_MetaBox_Form_Data {
 
 	/**
 	 * Get all setting field ids.
+	 *
+	 * @since  1.8
 	 * @return array
 	 */
 	private function get_meta_keys_from_settings() {
@@ -286,7 +314,9 @@ class Give_MetaBox_Form_Data {
 
 	/**
 	 * Get field type.
-	 * @param $field_id
+	 *
+	 * @since  1.8
+	 * @param  $field_id
 	 * @return array|string
 	 */
 	function get_field_type( $field_id ) {
