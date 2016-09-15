@@ -767,6 +767,7 @@ jQuery.noConflict();
             this.handle_metabox_tab_click();
             this.setup_colorpicker();
             this.handle_repeatable_fields();
+            this.handle_default_setting_repeater_field_click();
         },
 
         handle_metabox_tab_click: function() {
@@ -792,6 +793,18 @@ jQuery.noConflict();
             $(document).ready(function(){
                 $('.give-colorpicker').wpColorPicker();
             })
+        },
+
+        handle_default_setting_repeater_field_click: function(){
+            var $default_radio_setting_field = jQuery( '.give-give_default_radio_inline', '#_give_donation_levels_field' );
+            $default_radio_setting_field.on( 'change', function(){
+
+                // Unset pre selected default level.
+                $default_radio_setting_field.prop( 'checked', false );
+
+                // Set level as default.
+                $(this).prop( 'checked', true );
+            });
         },
 
         handle_repeatable_fields: function(){
