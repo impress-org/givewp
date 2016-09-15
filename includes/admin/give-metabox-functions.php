@@ -35,15 +35,13 @@ function give_get_field_callback( $field ){
 	switch( $field['type'] ) {
 		case 'radio_inline':
 			$func_name              = "{$func_name_prefix}_radio";
-			$field['wrapper_class'] = 'give-inline-radio-fields';
-			//$field['name']          = $field['id'];
 			break;
 
 		case 'text':
 		case 'text-medium':
+		case 'text_medium':
 		case 'text-small' :
 		case 'text_small' :
-			$field['type'] = 'text';
 			$func_name = "{$func_name_prefix}_text_input";
 			break;
 
@@ -54,8 +52,10 @@ function give_get_field_callback( $field ){
 
 		case 'colorpicker' :
 			$func_name      = "{$func_name_prefix}_{$field['type']}";
-			$field['type'] = 'text';
-			$field['class'] = 'give-colorpicker';
+			break;
+
+		case 'levels_id':
+			$func_name = "{$func_name_prefix}_hidden_input";
 			break;
 
 		case 'group' :
@@ -77,7 +77,7 @@ function give_get_field_callback( $field ){
 }
 
 /**
- * This function add backward compatibility to render cmb2 type field type
+ * This function add backward compatibility to render cmb2 type field type.
  *
  * @param  array $field Field argument array.
  * @return bool
@@ -121,10 +121,11 @@ function give_render_field( $field ) {
 
 		case 'text':
 		case 'text-medium':
+		case 'text_medium':
 		case 'text-small' :
 		case 'text_small' :
 			// CMB2 compatibility: Set field type to text.
-			$field['type'] = 'text';
+			$field['type'] = isset( $field['attributes']['type'] ) ? $field['attributes']['type'] : 'text';
 
 			// CMB2 compatibility: Set data type to price.
 			if(
@@ -139,12 +140,17 @@ function give_render_field( $field ) {
 			}
 			break;
 
+		case 'levels_id':
+			$field['type'] = 'hidden';
+			break;
+
 		case 'colorpicker' :
 			$field['type'] = 'text';
 			$field['class'] = 'give-colorpicker';
 	}
 
-	// Add support to define field description by desc & description param.
+	// CMB2 compatibility: Add support to define field description by desc & description param.
+	// We encourage you to use description param.
 	$field['description'] = ( ! empty( $field['description'] )
 		? $field['description']
 		: ( ! empty( $field['desc'] ) ? $field['desc'] : '' ) );
