@@ -766,7 +766,8 @@ input.give-text_small, input.give-text-small {
   width: 100px !important;
   padding: 5px; }
 
-input.give-text-medium {
+input.give-text-medium,
+input.give-text_medium {
   width: 200px !important;
   padding: 5px; }
 
