@@ -796,7 +796,7 @@ jQuery.noConflict();
 
         handle_repeatable_fields: function(){
             jQuery(function() {
-                jQuery('.give-repeatable-field-section').each(function() {
+                jQuery('#_give_donation_levels_field').each(function() {
                     // Note: Do not change option params, it can break repeatable fields functionality.
                     var options = {
                         wrapper : '.give-repeatable-fields-section-wrapper',
@@ -808,19 +808,70 @@ jQuery.noConflict();
                         template: '.give-template',
                         is_sortable: true,
                         before_add: null,
+                        after_add: handle_metabox_repeater_field_row_count,
                         //after_add:  after_add, Note: after_add is internal function in repeatable-fields.js. Uncomment this can cause of js error.
                         before_remove: null,
                         after_remove: null,
                         sortable_options: {
-                            placeholder: "give-ui-placeholder-state-highlight"
-                        },
-                        row_count_placeholder: '{{row-count-placeholder}}'
+                            placeholder: "give-ui-placeholder-state-highlight",
+                            update: function( event, ui ){
+                                var $rows = $( '.give-row', '#_give_donation_levels_field' ).not( '.give-template' );
+
+                                if( $rows.length ) {
+                                    var row_count= 1;
+                                    $rows.each( function( index, item ){
+                                        // Set name for fields.
+                                        var $fields = $( '.give-field, label', $( item ) ) ;
+
+                                        if( $fields.length ){
+                                            $( '.give-field, label', $( item ) ).each(function() {
+                                                $.each(this.attributes, function( index, element ) {
+                                                    // Bailout.
+                                                    if( ! this.value || ( -1 == this.value.indexOf('[')) ) {
+                                                        return;
+                                                    }
+
+                                                    // Reorder index.
+                                                    this.value = this.value.replace( /\[\d+\]/g, '[' + (row_count - 1) + ']' );
+                                                });
+                                            });
+                                        }
+
+                                        row_count++;
+                                    });
+                                }
+                            }
+                        }
+                        //row_count_placeholder: '{{row-count-placeholder}}' Note: do not modify this param otherwise it will break repeatable field functionality.
                     };
 
                     jQuery(this).repeatable_fields( options );
                 });
             });
         }
+    };
+
+    /**
+     * Handle row count and field count for repeatable field.
+     */
+    var handle_metabox_repeater_field_row_count = function( container, new_row ) {
+        var row_count = $(container).attr('data-rf-row-count');
+
+        row_count++;
+
+
+        // Set name for fields.
+        $( '*', new_row ).each(function() {
+            $.each(this.attributes, function( index, element ) {
+                this.value = this.value.replace( '{{row-count-placeholder}}', row_count - 1 );
+            });
+        });
+
+        // Set row counter.
+        $(container).attr('data-rf-row-count', row_count);
+
+        // Set level id.
+        $( 'input[type="hidden"].give-levels_id', new_row ).val( row_count - 1 );
     };
 
 

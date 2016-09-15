@@ -969,11 +969,11 @@ Tooltips
   float: left;
   width: 80%;
   min-width: 175px; }
-  #give-metabox-form-data .give_options_panel .form-field {
+  #give-metabox-form-data .give_options_panel .give-field-wrap {
     padding: 1em 20px 1em 162px !important;
     margin: 0;
     border-bottom: 1px solid #eee; }
-    #give-metabox-form-data .give_options_panel .form-field > label, #give-metabox-form-data .give_options_panel .form-field > legend {
+    #give-metabox-form-data .give_options_panel .give-field-wrap > label, #give-metabox-form-data .give_options_panel .give-field-wrap > legend {
       float: left;
       width: 150px;
       padding: 0;
@@ -981,15 +981,15 @@ Tooltips
       line-height: 24px;
       font-size: 12px;
       font-weight: 400; }
-    #give-metabox-form-data .give_options_panel .form-field .description {
+    #give-metabox-form-data .give_options_panel .give-field-wrap .description {
       color: #aaaaaa;
       font-size: 12px;
       line-height: 18px;
       display: block;
       padding-top: 10px; }
-    #give-metabox-form-data .give_options_panel .form-field ul {
+    #give-metabox-form-data .give_options_panel .give-field-wrap ul {
       margin: 0; }
-    #give-metabox-form-data .give_options_panel .form-field .mce-container iframe {
+    #give-metabox-form-data .give_options_panel .give-field-wrap .mce-container iframe {
       min-height: 200px; }
   #give-metabox-form-data .give_options_panel .form-field:last-child {
     border-bottom: 0; }
