@@ -563,7 +563,7 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 	<div class="give-repeatable-field-section" id="<?php echo "{$fields['id']}_field"; ?>">
 		<table class="give-repeatable-fields-section-wrapper" cellspacing="0">
 			<?php $donation_levels = get_post_meta( $thepostid, $fields['id'], true ); ?>
-			<tbody class="container"<?php echo ( ( $levels_count = count( $donation_levels ) ? " data-rf-row-count=\"{$levels_count}\"" : '' ) ); ?>>
+			<tbody class="container"<?php $levels_count = 0; echo ( ( $levels_count = count( $donation_levels ) ? " data-rf-row-count=\"{$levels_count}\"" : '' ) ); ?>>
 				<tr class="give-template give-row">
 					<td class="give-move give-column"><sapn class="give-remove">-</sapn></td>
 
@@ -590,7 +590,7 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 									<?php
 									$field['repeat'] = true;
 									$field['repeatable_field_id'] = ( '_give_id' === $field['id'] ) ? "{$fields['id']}[{$index}][{$field['id']}][level_id]" : "{$fields['id']}[{$index}][{$field['id']}]";
-									$field['attributes']['value'] = ( '_give_id' === $field['id'] ) ? $level[$field['id']]['level_id'] : $level[$field['id']];
+									$field['attributes']['value'] = ( '_give_id' === $field['id'] ) ? $level[$field['id']]['level_id'] : ( isset( $level[$field['id']] ) ? $level[$field['id']] : '' );
 									?>
 									<?php give_render_field( $field ); ?>
 								<?php endforeach; ?>
