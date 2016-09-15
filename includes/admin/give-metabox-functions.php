@@ -85,8 +85,6 @@ function give_get_field_callback( $field ){
 function give_render_field( $field ) {
 	$func_name = give_get_field_callback( $field );
 
-	error_log(print_r($func_name, true) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log');
-
 	// Check if render callback exist or not.
 	if ( ! $func_name ){
 		return false;
