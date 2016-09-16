@@ -767,7 +767,6 @@ jQuery.noConflict();
             this.handle_metabox_tab_click();
             this.setup_colorpicker();
             this.handle_repeatable_fields();
-            this.handle_default_setting_repeater_field_click();
         },
 
         handle_metabox_tab_click: function() {
@@ -793,18 +792,6 @@ jQuery.noConflict();
             $(document).ready(function(){
                 $('.give-colorpicker').wpColorPicker();
             })
-        },
-
-        handle_default_setting_repeater_field_click: function(){
-            var $default_radio_setting_field = jQuery( '.give-give_default_radio_inline', '#_give_donation_levels_field' );
-            $default_radio_setting_field.on( 'change', function(){
-
-                // Unset pre selected default level.
-                $default_radio_setting_field.prop( 'checked', false );
-
-                // Set level as default.
-                $(this).prop( 'checked', true );
-            });
         },
 
         handle_repeatable_fields: function(){
@@ -885,6 +872,21 @@ jQuery.noConflict();
 
         // Set level id.
         $( 'input[type="hidden"].give-levels_id', new_row ).val( row_count - 1 );
+
+        // If there is only one level then set it as default.
+        window.setTimeout(
+            function(){
+                var $parent = $( '#_give_donation_levels_field' ),
+                    $repeatable_rows = $( '.give-row', $parent ).not('.give-template'),
+                    $default_radio = $( '.give-give_default_radio_inline', $repeatable_rows ),
+                    number_of_level = $repeatable_rows.length;
+
+                if ( number_of_level === 1 ) {
+                    $default_radio.prop('checked', true);
+                }
+            },
+            200
+        );
     };
 
 
@@ -892,8 +894,18 @@ jQuery.noConflict();
      * Handle row remove for repeatable field.
      */
     var handle_metabox_repeater_field_row_remove =  function ( container ) {
-        var row_count = $(container).attr('data-rf-row-count');
+        var $parent = $('#_give_donation_levels_field'),
+            $repeatable_rows = $( '.give-row', $parent ).not('.give-template'),
+            row_count = $(container).attr('data-rf-row-count');
+
+        // Reduce row count.
         $(container).attr('data-rf-row-count', -- row_count );
+
+        // Set first row as default if selected default row deleted.
+        // When a row is removed containing the default selection then revert default to first repeatable row.
+        if ( $('.give-give_default_radio_inline', $parent ).is(':checked') === false ) {
+            $repeatable_rows.first().find('.give-give_default_radio_inline').prop('checked', true);
+        }
     };
 
 

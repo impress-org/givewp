@@ -18,28 +18,16 @@ jQuery.noConflict();
      * @since: 1.0
      */
     var handle_default_radio = function () {
-        "use strict";
-        var default_radio = $('input.donation-level-radio');
-        var repeatable_rows = $('#_give_donation_levels_repeat > .cmb-repeatable-grouping');
-        var number_of_prices = repeatable_rows.length;
+        $('body').on( 'change', '.give-give_default_radio_inline', function(){
+            // Unset pre selected default level.
+            $('.give-give_default_radio_inline').prop( 'checked', false );
 
-        $('body').on('change', 'input.donation-level-radio', function () {
-            $('input.donation-level-radio').not(this).prop('checked', false);
+            // Set level as default.
+            $(this).prop( 'checked', true );
         });
 
-        //If only one price then that one is default
-        if (number_of_prices === 1) {
-            default_radio.prop('checked', true);
-        }
-
-        //When a row is removed containing the default selection then revert default to first repeatable row
-        $('body').on('cmb2_remove_row', function (e) {
-            var repeatable_rows = $('#_give_donation_levels_repeat > .cmb-repeatable-grouping');
-            if ($('input.donation-level-radio').is(':checked') === false) {
-                repeatable_rows.first().find('input.donation-level-radio').prop('checked', true);
-            }
-        });
-
+        // Note: some cases is covered in admin-scripts.js.
+        // For ref: handle_metabox_repeater_field_row_count, handle_metabox_repeater_field_row_remove
     };
 
 
