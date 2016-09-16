@@ -14,6 +14,8 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 	/**
 	 * Give_Admin_Settings Class.
+	 *
+	 * @since 1.8
 	 */
 	class Give_Admin_Settings {
 
@@ -46,17 +48,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				$settings = array();
 
 				include_once( 'settings/class-settings-page.php' );
-
-//				$settings[] = include( 'settings/class-settings-general.php' );
-//				$settings[] = include( 'settings/class-settings-products.php' );
 				$settings[] = include( 'settings/class-settings-cmb2-backward-compatibility.php' );
-//				$settings[] = include( 'settings/class-wc-settings-tax.php' );
-//				$settings[] = include( 'settings/class-wc-settings-shipping.php' );
-//				$settings[] = include( 'settings/class-wc-settings-checkout.php' );
-//				$settings[] = include( 'settings/class-wc-settings-accounts.php' );
-//				$settings[] = include( 'settings/class-wc-settings-emails.php' );
-//				$settings[] = include( 'settings/class-wc-settings-integrations.php' );
-//				$settings[] = include( 'settings/class-wc-settings-api.php' );
 
 				self::$settings = apply_filters( 'give_get_settings_pages', $settings );
 			}
@@ -74,20 +66,12 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				die( __( 'Action failed. Please refresh the page and retry.', 'give' ) );
 			}
 
-			// Trigger actions
+			// Trigger actions.
 			do_action( 'give_settings_save_' . $current_tab );
-			do_action( 'give_update_options_' . $current_tab );
-			do_action( 'give_update_options' );
 
 			self::add_message( __( 'Your settings have been saved.', 'give' ) );
-			self::check_download_folder_protection();
 
-			// Clear any unwanted data and flush rules
-//			delete_transient( 'give_cache_excluded_uris' );
-//			Give()->query->init_query_vars();
-//			Give()->query->add_endpoints();
-//			flush_rewrite_rules();
-
+			// Trigger actions.
 			do_action( 'give_settings_saved' );
 		}
 
@@ -114,11 +98,11 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		public static function show_messages() {
 			if ( sizeof( self::$errors ) > 0 ) {
 				foreach ( self::$errors as $error ) {
-					echo '<div id="message" class="error inline"><p><strong>' . esc_html( $error ) . '</strong></p></div>';
+					echo '<div id="give-message" class="notice notice-error"><p><strong>' . esc_html( $error ) . '</strong></p></div>';
 				}
 			} elseif ( sizeof( self::$messages ) > 0 ) {
 				foreach ( self::$messages as $message ) {
-					echo '<div id="message" class="updated inline"><p><strong>' . esc_html( $message ) . '</strong></p></div>';
+					echo '<div id="give-message" class="notice notice-success"><p><strong>' . esc_html( $message ) . '</strong></p></div>';
 				}
 			}
 		}
@@ -131,15 +115,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		public static function output() {
 			global $current_section, $current_tab;
 
-			$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-
 			do_action( 'give_settings_start' );
-
-			//wp_enqueue_script( 'give_settings', Give()->plugin_url() . '/assets/js/admin/settings' . $suffix . '.js', array( 'jquery', 'jquery-ui-datepicker', 'jquery-ui-sortable', 'iris', 'select2' ), Give()->version, true );
-
-			wp_localize_script( 'give_settings', 'give_settings_params', array(
-				'i18n_nav_warning' => __( 'The changes you made will be lost if you navigate away from this page.', 'give' )
-			) );
 
 			// Include settings pages
 			self::get_settings_pages();
@@ -290,7 +266,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 						if ( $value['type'] == 'color' ) {
 							$type = 'text';
-							$value['class'] .= 'colorpick';
+							$value['class'] .= 'colorpicker';
 							$description .= '<div id="colorPickerDiv_' . esc_attr( $value['id'] ) . '" class="colorpickdiv" style="z-index: 100;background:#eee;border:1px solid #ccc;position:absolute;display:none;"></div>';
 						}
 
@@ -640,6 +616,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * Save admin fields.
 		 *
 		 * Loops though the give options array and outputs each field.
+		 *
 		 * @since  1.8
 		 * @param  array  $options     Options array to output
 		 * @param  string $option_name Option name to save output. If empty then option will be store in there own option name i.e option id.
@@ -680,20 +657,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						$value = wp_kses_post( trim( $raw_value ) );
 						break;
 					case 'multiselect' :
-					case 'multi_select_countries' :
 						$value = array_filter( array_map( 'give_clean', (array) $raw_value ) );
-						break;
-					case 'image_width' :
-						$value = array();
-						if ( isset( $raw_value['width'] ) ) {
-							$value['width']  = give_clean( $raw_value['width'] );
-							$value['height'] = give_clean( $raw_value['height'] );
-							$value['crop']   = isset( $raw_value['crop'] ) ? 1 : 0;
-						} else {
-							$value['width']  = $option['default']['width'];
-							$value['height'] = $option['default']['height'];
-							$value['crop']   = $option['default']['crop'];
-						}
 						break;
 					default :
 						$value = give_clean( $raw_value );
@@ -728,12 +692,6 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				} else {
 					$update_options[ $field_option_name ] = $value;
 				}
-
-				/**
-				 * Fire an action before saved.
-				 * @deprecated 1.8 - doesn't allow manipulation of values!
-				 */
-				do_action( 'give_update_option', $option );
 			}
 
 			// Save all options in our array or there own option name i.e. option id.
@@ -749,35 +707,6 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			}
 
 			return true;
-		}
-
-		/**
-		 * Checks which method we're using to serve downloads.
-		 *
-		 * If using force or x-sendfile, this ensures the .htaccess is in place.
-		 */
-		public static function check_download_folder_protection() {
-			$upload_dir      = wp_upload_dir();
-			$downloads_url   = $upload_dir['basedir'] . '/give_uploads';
-			$download_method = get_option( 'give_file_download_method' );
-
-			if ( 'redirect' == $download_method ) {
-
-				// Redirect method - don't protect
-				if ( file_exists( $downloads_url . '/.htaccess' ) ) {
-					unlink( $downloads_url . '/.htaccess' );
-				}
-
-			} else {
-
-				// Force method - protect, add rules to the htaccess file
-				if ( ! file_exists( $downloads_url . '/.htaccess' ) ) {
-					if ( $file_handle = @fopen( $downloads_url . '/.htaccess', 'w' ) ) {
-						fwrite( $file_handle, 'deny from all' );
-						fclose( $file_handle );
-					}
-				}
-			}
 		}
 	}
 
