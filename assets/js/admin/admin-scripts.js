@@ -790,7 +790,9 @@ jQuery.noConflict();
 
         setup_colorpicker: function() {
             $(document).ready(function(){
-                $('.give-colorpicker').wpColorPicker();
+                if( $('.give-colorpicker').length ){
+                    $('.give-colorpicker').wpColorPicker();
+                }
             })
         },
 
