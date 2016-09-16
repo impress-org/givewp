@@ -7,6 +7,12 @@
  */
 
 if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
+
+	/**
+	 * This class load cmb2 settings.
+	 *
+	 * @since 1.8
+	 */
 	Class Give_CMB2_Settings_Loader extends Give_Settings_Page {
 
 		/* @var Give_Plugin_Settings $prev_settings Previous setting class object. */
