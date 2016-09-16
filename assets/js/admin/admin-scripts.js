@@ -1077,7 +1077,7 @@ jQuery.noConflict();
             price_string = give_unformat_currency( $(this).val(), false );
 
             // Back out.
-            if( ! price_string ) {
+            if( ! parseInt( price_string ) ) {
                 $(this).val('');
                 return false;
             }
