@@ -4,7 +4,7 @@
  *
  * @author  WordImpress
  * @version 1.0
- * https://github.com/WordImpress/Give-Activation-Banner
+ * https://github.com/WordImpress/plugin-activation-banner-demo
  */
 
 // Exit if accessed directly
@@ -18,11 +18,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Give_Addon_Activation_Banner {
 
 	/**
-	 *
 	 * Class constructor.
 	 *
-	 * @uses plugin_basename()
-	 * @uses hook()
+	 * @since  1.0
+	 * @access public
 	 *
 	 * @param $_banner_details
 	 */
@@ -44,7 +43,8 @@ class Give_Addon_Activation_Banner {
 	/**
 	 * Set up WordPress filters to hook into WP's update process.
 	 *
-	 * @uses add_filter()
+	 * @since  1.0
+	 * @access public
 	 *
 	 * @return void
 	 */
@@ -58,15 +58,13 @@ class Give_Addon_Activation_Banner {
 		//Get the current page to add the notice to
 		add_action( 'current_screen', array( $this, 'give_addon_notice_ignore' ) );
 		add_action( 'admin_notices', array( $this, 'give_addon_activation_admin_notice' ) );
-
-
 	}
-
 
 	/**
 	 * Give Addon Activation Banner
 	 *
 	 * @since  1.0
+	 * @access public
 	 *
 	 * @global $pagenow
 	 */
@@ -78,13 +76,12 @@ class Give_Addon_Activation_Banner {
 			return false;
 		}
 
-		// If the user hasn't already dismissed our alert,
-		// Output the activation banner
-		if ( ! get_user_meta( $this->user_id, $this->nag_meta_key ) ) { ?>
+		// If the user hasn't already dismissed the alert, output activation banner.
+		if ( ! get_user_meta( $this->user_id, $this->nag_meta_key ) ) {
 
-			<!-- * I output inline styles here
-				 * because there's no reason to keep these
-				 * enqueued after the alert is dismissed. -->
+			// Output inline styles here because there's no reason
+			// to enqueued them after the alert is dismissed.
+			?>
 			<style>
 				div.give-addon-alert.updated {
 					padding: 1em 2em;
@@ -116,7 +113,6 @@ class Give_Addon_Activation_Banner {
 					position: relative;
 					left: 70px;
 					top: -10px;
-
 				}
 
 				div.give-addon-alert a {
@@ -150,15 +146,12 @@ class Give_Addon_Activation_Banner {
 				}
 			</style>
 
-			<!-- * Now we output the HTML
-				 * of the banner 			-->
-
 			<div class="updated give-addon-alert">
 
-				<!-- Your Logo -->
+				<!-- Logo -->
 				<img src="<?php echo GIVE_PLUGIN_URL; ?>assets/images/svg/give-icon-full-circle.svg" class="give-logo" />
 
-				<!-- Your Message -->
+				<!-- Message -->
 				<h3><?php
 					printf(
 						/* translators: %s: Add-on name */
@@ -172,21 +165,22 @@ class Give_Addon_Activation_Banner {
 				$nag_admin_dismiss_url = 'plugins.php?' . $this->nag_meta_key . '=0';
 				echo admin_url( $nag_admin_dismiss_url ); ?>" class="dismiss"><span class="dashicons dashicons-dismiss"></span></a>
 
-				<!-- * Now we output a few "actions"
-					 * that the user can take from here -->
-
+				<!-- Action Links -->
 				<div class="alert-actions">
 
-					<?php //Point them to your settings page
-					if ( isset( $this->banner_details['settings_url'] ) ) { ?>
+					<?php
+					//Point them to your settings page
+					if ( isset( $this->banner_details['settings_url'] ) ) {
+						?>
 						<a href="<?php echo $this->banner_details['settings_url']; ?>">
 							<span class="dashicons dashicons-admin-settings"></span><?php esc_html_e( 'Go to Settings', 'give' ); ?>
 						</a>
-					<?php } ?>
+						<?php
+					}
 
-					<?php
 					// Show them how to configure the Addon
-					if ( isset( $this->banner_details['documentation_url'] ) ) { ?>
+					if ( isset( $this->banner_details['documentation_url'] ) ) {
+						?>
 						<a href="<?php echo $this->banner_details['documentation_url'] ?>" target="_blank">
 							<span class="dashicons dashicons-media-text"></span>
 							<?php
@@ -197,16 +191,18 @@ class Give_Addon_Activation_Banner {
 								);
 							?>
 						</a>
-					<?php } ?>
-					<?php
-					//Let them signup for plugin updates
-					if ( isset( $this->banner_details['support_url'] ) ) { ?>
+						<?php
+					}
 
+					//Let them signup for plugin updates
+					if ( isset( $this->banner_details['support_url'] ) ) {
+						?>
 						<a href="<?php echo $this->banner_details['support_url'] ?>" target="_blank">
 							<span class="dashicons dashicons-sos"></span><?php esc_html_e( 'Get Support', 'give' ); ?>
 						</a>
-
-					<?php } ?>
+						<?php
+					}
+					?>
 
 				</div>
 			</div>
@@ -214,11 +210,13 @@ class Give_Addon_Activation_Banner {
 		}
 	}
 
-
 	/**
 	 * Ignore Nag
 	 *
 	 * This is the action that allows the user to dismiss the banner it basically sets a tag to their user meta data
+	 *
+	 * @since  1.0
+	 * @access public
 	 */
 	public function give_addon_notice_ignore() {
 
