@@ -83,7 +83,16 @@ class Give_MetaBox_Form_Data {
 		/**
 		 * Filter the metabox tabbed panel settings.
 		 */
-		return apply_filters( 'give_metabox_form_data_settings', array() );
+		$settings = apply_filters( 'give_metabox_form_data_settings', array() );
+
+		foreach ( $settings as $key => $setting ) {
+
+			/**
+			 * Filter the each metabox tab panel setting.
+			 */
+			$settings[$key] = apply_filters( "give_form_data_setting_{$key}", $setting );
+		}
+		return $settings;
 	}
 
 	/**
@@ -158,7 +167,7 @@ class Give_MetaBox_Form_Data {
 			}
 		}
 
-		
+
 		return $tabs;
 	}
 
