@@ -540,7 +540,7 @@ Tooltips
 
       .give-move{
         position: relative;
-        width: 1%;
+        width: 5%;
         background-color: #dadada;
         cursor: move;
       }
@@ -566,6 +566,10 @@ Tooltips
       .give-remove:hover{
         background-color: red;
         color: white;
+      }
+
+      .give-add-repeater-field-section-row-wrap{
+        background-color: #f5f5f5;
       }
 
       #give-add-repeater-field-section-row{

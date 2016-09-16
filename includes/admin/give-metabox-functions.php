@@ -622,7 +622,7 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 			</tbody>
 			<tfoot>
 				<tr>
-					<td width="10%" colspan="4"><span id="give-add-repeater-field-section-row" class="button button-primary"><?php esc_html_e( 'Add Level', 'give' ); ?></span></td>
+					<td colspan="2" class="give-add-repeater-field-section-row-wrap"><span id="give-add-repeater-field-section-row" class="button button-primary"><?php esc_html_e( 'Add Level', 'give' ); ?></span></td>
 				</tr>
 			</tfoot>
 		</table>
