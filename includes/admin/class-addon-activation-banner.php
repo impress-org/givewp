@@ -84,22 +84,23 @@ class Give_Addon_Activation_Banner {
 			?>
 			<style>
 				div.give-addon-alert.updated {
-					padding: 1em 2em;
-					position: relative;
+					padding: 2em;
 					border-color: #66BB6A;
+				}
+
+				div.give-addon-alert-content {
+					display: inline-block;
+					vertical-align: top;
+					padding: 0 1.5em;
 				}
 
 				div.give-addon-alert img {
 					max-width: 50px;
-					position: relative;
-					top: 1em;
 				}
 
 				div.give-addon-alert h3 {
-					display: inline;
-					position: relative;
-					top: -20px;
-					left: 20px;
+					display: inline-block;
+					margin: 0;
 					font-size: 24px;
 					font-weight: 300;
 				}
@@ -110,9 +111,7 @@ class Give_Addon_Activation_Banner {
 				}
 
 				div.give-addon-alert .alert-actions {
-					position: relative;
-					left: 70px;
-					top: -10px;
+					padding-top:0.5em;
 				}
 
 				div.give-addon-alert a {
@@ -134,15 +133,26 @@ class Give_Addon_Activation_Banner {
 				}
 
 				div.give-addon-alert .dismiss {
-					position: absolute;
-					right: 0;
-					height: 100%;
-					top: 50%;
-					margin-top: -10px;
+					float: right;
+					margin: 0;
 					outline: none;
 					box-shadow: none;
 					text-decoration: none;
 					color: #cacaca;
+				}
+
+				.rtl div.give-addon-alert a {
+					margin-right: 0;
+					margin-left: 2em;
+				}
+
+				.rtl div.give-addon-alert .alert-actions a span {
+					margin-right: 0;
+					margin-left: 5px;
+				}
+
+				.rtl div.give-addon-alert .dismiss {
+					float: left;
 				}
 			</style>
 
@@ -154,55 +164,60 @@ class Give_Addon_Activation_Banner {
 				<!-- Logo -->
 				<img src="<?php echo GIVE_PLUGIN_URL; ?>assets/images/svg/give-icon-full-circle.svg" class="give-logo" />
 
-				<!-- Message -->
-				<h3><?php
-					printf(
-						/* translators: %s: Add-on name */
-						esc_html__( "Thank you for installing Give's %s Add-on!", 'give' ),
-						'<span>' . $this->banner_details['name'] . '</span>'
-					);
-				?></h3>
+				<div class="give-addon-alert-content">
 
-				<!-- Action Links -->
-				<div class="alert-actions">
+					<!-- Message -->
+					<h3><?php
+						printf(
+							/* translators: %s: Add-on name */
+							esc_html__( "Thank you for installing Give's %s Add-on!", 'give' ),
+							'<span>' . $this->banner_details['name'] . '</span>'
+						);
+					?></h3>
 
-					<?php
-					//Point them to your settings page
-					if ( isset( $this->banner_details['settings_url'] ) ) {
-						?>
-						<a href="<?php echo $this->banner_details['settings_url']; ?>">
-							<span class="dashicons dashicons-admin-settings"></span><?php esc_html_e( 'Go to Settings', 'give' ); ?>
-						</a>
+					<!-- Action Links -->
+					<div class="alert-actions">
+
 						<?php
-					}
-
-					// Show them how to configure the Addon
-					if ( isset( $this->banner_details['documentation_url'] ) ) {
-						?>
-						<a href="<?php echo $this->banner_details['documentation_url'] ?>" target="_blank">
-							<span class="dashicons dashicons-media-text"></span>
-							<?php
-								printf(
-									/* translators: %s: Add-on name */
-									esc_html__( 'Documentation: %s Add-on', 'give' ),
-									$this->banner_details['name']
-								);
+						//Point them to your settings page
+						if ( isset( $this->banner_details['settings_url'] ) ) {
 							?>
-						</a>
-						<?php
-					}
+							<a href="<?php echo $this->banner_details['settings_url']; ?>">
+								<span class="dashicons dashicons-admin-settings"></span><?php esc_html_e( 'Go to Settings', 'give' ); ?>
+							</a>
+							<?php
+						}
 
-					//Let them signup for plugin updates
-					if ( isset( $this->banner_details['support_url'] ) ) {
+						// Show them how to configure the Addon
+						if ( isset( $this->banner_details['documentation_url'] ) ) {
+							?>
+							<a href="<?php echo $this->banner_details['documentation_url'] ?>" target="_blank">
+								<span class="dashicons dashicons-media-text"></span>
+								<?php
+									printf(
+										/* translators: %s: Add-on name */
+										esc_html__( 'Documentation: %s Add-on', 'give' ),
+										$this->banner_details['name']
+									);
+								?>
+							</a>
+							<?php
+						}
+
+						//Let them signup for plugin updates
+						if ( isset( $this->banner_details['support_url'] ) ) {
+							?>
+							<a href="<?php echo $this->banner_details['support_url'] ?>" target="_blank">
+								<span class="dashicons dashicons-sos"></span><?php esc_html_e( 'Get Support', 'give' ); ?>
+							</a>
+							<?php
+						}
 						?>
-						<a href="<?php echo $this->banner_details['support_url'] ?>" target="_blank">
-							<span class="dashicons dashicons-sos"></span><?php esc_html_e( 'Get Support', 'give' ); ?>
-						</a>
-						<?php
-					}
-					?>
+
+					</div>
 
 				</div>
+
 			</div>
 			<?php
 		}
