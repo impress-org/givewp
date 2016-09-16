@@ -148,6 +148,9 @@ class Give_Addon_Activation_Banner {
 
 			<div class="updated give-addon-alert">
 
+				<!-- Dismiss Button -->
+				<a href="<?php echo admin_url( 'plugins.php?' . $this->nag_meta_key . '=0' ); ?>" class="dismiss"><span class="dashicons dashicons-dismiss"></span></a>
+
 				<!-- Logo -->
 				<img src="<?php echo GIVE_PLUGIN_URL; ?>assets/images/svg/give-icon-full-circle.svg" class="give-logo" />
 
@@ -159,11 +162,6 @@ class Give_Addon_Activation_Banner {
 						'<span>' . $this->banner_details['name'] . '</span>'
 					);
 				?></h3>
-
-				<a href="<?php
-				//The Dismiss Button
-				$nag_admin_dismiss_url = 'plugins.php?' . $this->nag_meta_key . '=0';
-				echo admin_url( $nag_admin_dismiss_url ); ?>" class="dismiss"><span class="dashicons dashicons-dismiss"></span></a>
 
 				<!-- Action Links -->
 				<div class="alert-actions">
