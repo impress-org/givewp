@@ -594,6 +594,7 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 							<?php
 							$field['repeat'] = true;
 							$field['repeatable_field_id'] = ( '_give_id' === $field['id'] ) ? "{$fields['id']}[{{row-count-placeholder}}][{$field['id']}][level_id]" : "{$fields['id']}[{{row-count-placeholder}}][{$field['id']}]";
+							$field['id'] = str_replace( array( '[', ']' ), array( '_', '' ), $field['repeatable_field_id'] );
 							?>
 							<?php give_render_field( $field ); ?>
 						<?php endforeach; ?>
@@ -612,6 +613,7 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 									$field['repeat'] = true;
 									$field['repeatable_field_id'] = ( '_give_id' === $field['id'] ) ? "{$fields['id']}[{$index}][{$field['id']}][level_id]" : "{$fields['id']}[{$index}][{$field['id']}]";
 									$field['attributes']['value'] = ( '_give_id' === $field['id'] ) ? $level[$field['id']]['level_id'] : ( isset( $level[$field['id']] ) ? $level[$field['id']] : '' );
+									$field['id'] = str_replace( array( '[', ']' ), array( '_', '' ), $field['repeatable_field_id'] );
 									?>
 									<?php give_render_field( $field ); ?>
 								<?php endforeach; ?>
