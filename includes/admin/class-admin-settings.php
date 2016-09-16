@@ -395,70 +395,26 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 					// Checkbox input
 					case 'checkbox' :
-
 						$option_value    = self::get_option( $option_name, $value['id'], $value['default'] );
-						$visbility_class = array();
-
-						if ( ! isset( $value['hide_if_checked'] ) ) {
-							$value['hide_if_checked'] = false;
-						}
-						if ( ! isset( $value['show_if_checked'] ) ) {
-							$value['show_if_checked'] = false;
-						}
-						if ( 'yes' == $value['hide_if_checked'] || 'yes' == $value['show_if_checked'] ) {
-							$visbility_class[] = 'hidden_option';
-						}
-						if ( 'option' == $value['hide_if_checked'] ) {
-							$visbility_class[] = 'hide_options_if_checked';
-						}
-						if ( 'option' == $value['show_if_checked'] ) {
-							$visbility_class[] = 'show_options_if_checked';
-						}
-
-						if ( ! isset( $value['checkboxgroup'] ) || 'start' == $value['checkboxgroup'] ) {
-							?>
-								<tr valign="top" class="<?php echo esc_attr( implode( ' ', $visbility_class ) ); ?>">
-									<th scope="row" class="titledesc"><?php echo self::get_field_title( $value ) ?></th>
-									<td class="forminp forminp-checkbox">
-										<fieldset>
-							<?php
-						} else {
-							?>
-								<fieldset class="<?php echo esc_attr( implode( ' ', $visbility_class ) ); ?>">
-							<?php
-						}
-
-						if ( ! empty( $value['title'] ) ) {
-							?>
-								<legend class="screen-reader-text"><span><?php echo self::get_field_title( $value ) ?></span></legend>
-							<?php
-						}
-
 						?>
-							<label for="<?php echo $value['id'] ?>">
+						<tr valign="top">
+							<th scope="row" class="titledesc">
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
+							</th>
+							<td class="forminp">
 								<input
 									name="<?php echo esc_attr( $value['id'] ); ?>"
 									id="<?php echo esc_attr( $value['id'] ); ?>"
 									type="checkbox"
 									class="<?php echo esc_attr( isset( $value['class'] ) ? $value['class'] : '' ); ?>"
 									value="1"
-									<?php checked( $option_value, 'yes'); ?>
+									<?php checked( $option_value, 'on'); ?>
 									<?php echo implode( ' ', $custom_attributes ); ?>
-								/> <?php echo $description ?>
-							</label>
+								/>
+								<?php echo $description; ?>
+							</td>
+						</tr>
 						<?php
-
-						if ( ! isset( $value['checkboxgroup'] ) || 'end' == $value['checkboxgroup'] ) {
-										?>
-										</fieldset>
-									</td>
-								</tr>
-							<?php
-						} else {
-							?>
-								</fieldset>
-							<?php
-						}
 						break;
 
 					case 'file' :
@@ -651,7 +607,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				// Format the value based on option type.
 				switch ( $option['type'] ) {
 					case 'checkbox' :
-						$value = is_null( $raw_value ) ? 'no' : 'yes';
+						$value = is_null( $raw_value ) ? '' : 'on';
 						break;
 					case 'textarea' :
 						$value = wp_kses_post( trim( $raw_value ) );
