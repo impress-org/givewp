@@ -158,10 +158,8 @@ class Give_MetaBox_Form_Data {
 			}
 		}
 
-		/**
-		 * Filter the metabox tabs.
-		 */
-		return apply_filters( 'give_metabox_form_data_setting_tabs', $tabs );
+		
+		return $tabs;
 	}
 
 	/**
