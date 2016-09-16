@@ -825,7 +825,12 @@ jQuery.noConflict();
 
                                         if( $fields.length ){
                                             $( '.give-field, label', $( item ) ).each(function() {
+                                                var $parent = $(this).parent();
+
                                                 $.each(this.attributes, function( index, element ) {
+                                                    var old_class_name = this.value.replace( /\[/g, '_' ).replace( /]/g, '' ) + '_field',
+                                                        new_class_name = '';
+
                                                     // Bailout.
                                                     if( ! this.value || ( -1 == this.value.indexOf('[')) ) {
                                                         return;
@@ -833,6 +838,12 @@ jQuery.noConflict();
 
                                                     // Reorder index.
                                                     this.value = this.value.replace( /\[\d+\]/g, '[' + (row_count - 1) + ']' );
+
+                                                    // Update class name
+                                                    if( 'P' == $parent.get(0).nodeName && $parent.hasClass( old_class_name ) ) {
+                                                        new_class_name = this.value.replace( /\[/g, '_' ).replace( /]/g, '' ) + '_field';
+                                                        $parent.removeClass( old_class_name ).addClass( new_class_name );
+                                                    }
                                                 });
                                             });
                                         }
