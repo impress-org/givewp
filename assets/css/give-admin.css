@@ -762,14 +762,17 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
   border-left: 0;
   margin-left: -1px; }
 
-input.give-text_small, input.give-text-small {
-  width: 100px !important;
-  padding: 5px; }
+.give_options_panel input[type="text"] {
+  padding: 5px;
+  width: 100%; }
+
+input.give-text_small,
+input.give-text-small {
+  width: 100px !important; }
 
 input.give-text-medium,
 input.give-text_medium {
-  width: 200px !important;
-  padding: 5px; }
+  width: 200px !important; }
 
 .give-underline {
   text-decoration: underline; }
