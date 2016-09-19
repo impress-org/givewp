@@ -2,8 +2,11 @@
 /**
  * Give Settings Page/Tab
  *
- * @author      WordImpress
- * @version     1.8
+ * @package     Give
+ * @subpackage  Classes/Give_Settings_Page
+ * @copyright   Copyright (c) 2016, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since       1.8
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -14,20 +17,24 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 
 	/**
 	 * Give_Settings_Page.
+	 *
+	 * @sine 1.8
 	 */
 	abstract class Give_Settings_Page {
 
 		/**
 		 * Setting page id.
 		 *
-		 * @var string
+		 * @since 1.8
+		 * @var   string
 		 */
 		protected $id = '';
 
 		/**
 		 * Setting page label.
 		 *
-		 * @var string
+		 * @since 1.8
+		 * @var   string
 		 */
 		protected $label = '';
 
@@ -43,6 +50,10 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 
 		/**
 		 * Add this page to settings.
+		 *
+		 * @since  1.8
+		 * @param  array $pages Lst of pages.
+		 * @return array
 		 */
 		public function add_settings_page( $pages ) {
 			$pages[ $this->id ] = $this->label;
@@ -53,6 +64,7 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 		/**
 		 * Get settings array.
 		 *
+		 * @since  1.8
 		 * @return array
 		 */
 		public function get_settings() {
@@ -62,6 +74,7 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 		/**
 		 * Get sections.
 		 *
+		 * @since 1.8
 		 * @return array
 		 */
 		public function get_sections() {
@@ -70,6 +83,9 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 
 		/**
 		 * Output sections.
+		 *
+		 * @since  1.8
+		 * @return void
 		 */
 		public function output_sections() {
 			global $current_section;
@@ -93,6 +109,9 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 
 		/**
 		 * Output the settings.
+		 *
+		 * @since  1.8
+		 * @return void
 		 */
 		public function output() {
 			$settings = $this->get_settings();
@@ -102,6 +121,9 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 
 		/**
 		 * Save settings.
+		 *
+		 * @since  1.8
+		 * @return void
 		 */
 		public function save() {
 			global $current_section;

@@ -2,8 +2,11 @@
 /**
  * Give cmb2 settings backward compatibility.
  *
- * @author      WordImpress
- * @version     1.8
+ * @package     Give
+ * @subpackage  Classes/Give_CMB2_Settings_Loader
+ * @copyright   Copyright (c) 2016, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since       1.8
  */
 
 if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :

@@ -4,8 +4,11 @@
 *
 * Displays the form data box, tabbed, with several panels.
 *
-* @author   WordImpress
-* @version  1.8
+ * @package     Give
+ * @subpackage  Classes/Give_MetaBox_Form_Data
+ * @copyright   Copyright (c) 2016, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since       1.8
 */
 
 /**

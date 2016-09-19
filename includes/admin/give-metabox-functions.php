@@ -2,9 +2,11 @@
 /**
  * Give Meta Box Functions
  *
- * @author      WordImpress
- * @category    Core
- * @version     1.8
+ * @package     Give
+ * @subpackage  Functions
+ * @copyright   Copyright (c) 2016, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since       1.8
  */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
