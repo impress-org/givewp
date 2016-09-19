@@ -22,26 +22,32 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		/**
 		 * Setting pages.
 		 *
-		 * @var array
+		 * @since 1.8
+		 * @var   array List of settings.
 		 */
 		private static $settings = array();
 
 		/**
 		 * Error messages.
 		 *
-		 * @var array
+		 * @since 1.8
+		 * @var   array List of errors.
 		 */
 		private static $errors   = array();
 
 		/**
 		 * Update messages.
 		 *
-		 * @var array
+		 * @since 1.8
+		 * @var   array List of messages.
 		 */
 		private static $messages = array();
 
 		/**
 		 * Include the settings page classes.
+		 *
+		 * @since  1.8
+		 * @return array
 		 */
 		public static function get_settings_pages() {
 			if ( empty( self::$settings ) ) {
@@ -58,6 +64,9 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 		/**
 		 * Save the settings.
+		 *
+		 * @since  1.8
+		 * @return void
 		 */
 		public static function save() {
 			global $current_tab;
@@ -77,7 +86,10 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 		/**
 		 * Add a message.
-		 * @param string $text
+		 *
+		 * @since  1.8
+		 * @param  string $text
+		 * @return void
 		 */
 		public static function add_message( $text ) {
 			self::$messages[] = $text;
@@ -85,7 +97,10 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 		/**
 		 * Add an error.
-		 * @param string $text
+		 *
+		 * @since  1.8
+		 * @param  string $text
+		 * @return void
 		 */
 		public static function add_error( $text ) {
 			self::$errors[] = $text;
@@ -93,7 +108,10 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 		/**
 		 * Output messages + errors.
+		 *
+		 * @since  1.8
 		 * @return string
+		 * @return void
 		 */
 		public static function show_messages() {
 			if ( sizeof( self::$errors ) > 0 ) {
@@ -111,6 +129,9 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * Settings page.
 		 *
 		 * Handles the display of the main give settings page in admin.
+		 *
+		 * @since  1.8
+		 * @return void
 		 */
 		public static function output() {
 			global $current_section, $current_tab;
@@ -184,8 +205,10 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 *
 		 * Loops though the give options array and outputs each field.
 		 *
-		 * @param array  $options     Opens array to output
-		 * @param string $option_name Opens array to output
+		 * @since  1.8
+		 * @param  array  $options     Opens array to output
+		 * @param  string $option_name Opens array to output
+		 * @return void
 		 */
 		public static function output_fields( $options, $option_name = '' ) {
 			global $current_tab;
@@ -400,6 +423,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						<?php
 						break;
 
+					// File input field.
 					case 'file' :
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
 						?><tr valign="top">
@@ -429,6 +453,25 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						</tr><?php
 						break;
 
+					// WordPress Editor.
+					case 'wysiwyg' :
+						// Get option value.
+						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
+
+						// Get editor settings.
+						$editor_settings = ! empty( $value['options'] ) ? $value['options'] : array();
+						?><tr valign="top">
+						<th scope="row" class="titledesc">
+							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
+						</th>
+						<td class="give-forminp">
+							<?php wp_editor( $option_value, $value['id'], $editor_settings ); ?>
+							<?php echo $description; ?>
+						</td>
+						</tr><?php
+						break;
+
+					// Custom: System setting field.
 					case 'system_info' :
 						?><tr valign="top">
 							<th scope="row" class="titledesc">
@@ -441,6 +484,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						</tr><?php
 						break;
 
+					// Custom: Default gateways setting field.
 					case 'default_gateway' :
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
 						?><tr valign="top">
@@ -454,6 +498,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						</tr><?php
 						break;
 
+					// Custom: Enable gateways setting field.
 					case 'enabled_gateways' :
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
 						?><tr valign="top">
@@ -467,23 +512,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						</tr><?php
 						break;
 
-					case 'wysiwyg' :
-						// Get option value.
-						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
-
-						// Get editor settings.
-						$editor_settings = ! empty( $value['options'] ) ? $value['options'] : array();
-						?><tr valign="top">
-							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
-							</th>
-							<td class="give-forminp">
-								<?php wp_editor( $option_value, $value['id'], $editor_settings ); ?>
-								<?php echo $description; ?>
-							</td>
-						</tr><?php
-						break;
-
+					// Custom: Email preview buttons field.
 					case 'email_preview_buttons' :
 						?><tr valign="top">
 							<th scope="row" class="titledesc">
@@ -496,6 +525,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						</tr><?php
 						break;
 
+					// Custom: API field.
 					case 'api' :
 						?><tr valign="top">
 							<td class="give-forminp">
@@ -506,6 +536,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						break;
 
 					// Default: run an action
+					// You can add or handle your custom field action.
 					default:
 						// Get option value.
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
@@ -519,6 +550,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * Helper function to get the formated description for a given form field.
  		 * Plugins can call this when implementing their own custom settings types.
 		 *
+		 * @since  1.8
 		 * @param  array $value The form field value array
 		 * @return array The description and tip as a 2 element array
 		 */
@@ -537,6 +569,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * Helper function to get the formated title.
 		 * Plugins can call this when implementing their own custom settings types.
 		 *
+		 * @since  1.8
 		 * @param  array $value The form field value array
 		 * @return array The description and tip as a 2 element array
 		 */
