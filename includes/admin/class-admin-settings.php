@@ -343,10 +343,10 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						break;
 
 					// Radio inputs
+					case 'radio_inline' :
+						$value['class'] = empty( $value['class'] ) ? 'give-radio-inline' : $value['class'] . ' give-radio-inline';
 					case 'radio' :
-
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
-
 						?><tr valign="top">
 							<th scope="row" class="titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
@@ -363,7 +363,6 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 													value="<?php echo $key; ?>"
 													type="radio"
 													style="<?php echo esc_attr( $value['css'] ); ?>"
-													class="<?php echo esc_attr( $value['class'] ); ?>"
 													<?php echo implode( ' ', $custom_attributes ); ?>
 													<?php checked( $key, $option_value ); ?>
 													/> <?php echo $val ?></label>
