@@ -258,28 +258,16 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					case 'text':
 					case 'email':
 					case 'number':
-					case 'color' :
 					case 'password' :
 
 						$type         = $value['type'];
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
-
-						if ( $value['type'] == 'color' ) {
-							$type = 'text';
-							$value['class'] .= 'colorpicker';
-							$description .= '<div id="colorPickerDiv_' . esc_attr( $value['id'] ) . '" class="colorpickdiv" style="z-index: 100;background:#eee;border:1px solid #ccc;position:absolute;display:none;"></div>';
-						}
 
 						?><tr valign="top">
 							<th scope="row" class="titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
 							</th>
 							<td class="give-forminp give-forminp-<?php echo sanitize_title( $value['type'] ) ?>">
-								<?php
-								if ( 'color' == $value['type'] ) {
-									echo '<span class="colorpickpreview" style="background: ' . esc_attr( $option_value ) . ';"></span>';
-								}
-								?>
 								<input
 									name="<?php echo esc_attr( $value['id'] ); ?>"
 									id="<?php echo esc_attr( $value['id'] ); ?>"
