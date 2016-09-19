@@ -15,13 +15,22 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 	 */
 	Class Give_CMB2_Settings_Loader extends Give_Settings_Page {
 
-		/* @var Give_Plugin_Settings $prev_settings Previous setting class object. */
+		/**
+		 * @since 1.8
+		 * @var   Give_Plugin_Settings $prev_settings Previous setting class object.
+		 */
 		private $prev_settings;
 
-		/* @var string $current_tab Current setting tab. */
+		/**
+		 * @since 1.8
+		 * @var   string $current_tab Current setting tab.
+		 */
 		private $current_tab;
 
-		/* @var string $current_tab Current setting section. */
+		/**
+		 * @since 1.8
+		 * @var   string $current_tab Current setting section.
+		 */
 		private $current_section;
 
 		/**
@@ -69,6 +78,7 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 		/**
 		 * Get sections.
 		 *
+		 * @since  1.8
 		 * @return array
 		 */
 		public function get_sections() {
@@ -87,6 +97,9 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 
 		/**
 		 * Output sections.
+		 *
+		 * @since  1.8
+		 * @return void
 		 */
 		public function output_sections() {
 			$sections = $this->get_sections();
@@ -294,6 +307,9 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 
 		/**
 		 * Output the settings.
+		 *
+		 * @since  1.8
+		 * @return void
 		 */
 		public function output() {
 			$settings = $this->get_settings();
@@ -303,6 +319,9 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 
 		/**
 		 * Save settings.
+		 *
+		 * @since  1.8
+		 * @return void
 		 */
 		public function save() {
 			$settings = $this->get_settings();
