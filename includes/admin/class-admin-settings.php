@@ -207,18 +207,12 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				if ( ! isset( $value['desc'] ) ) {
 					$value['desc'] = '';
 				}
-				if ( ! isset( $value['desc_tip'] ) ) {
-					$value['desc_tip'] = false;
-				}
-				if ( ! isset( $value['placeholder'] ) ) {
-					$value['placeholder'] = '';
-				}
 
 				// Custom attribute handling
 				$custom_attributes = array();
 
-				if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
-					foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
+				if ( ! empty( $value['attributes'] ) && is_array( $value['attributes'] ) ) {
+					foreach ( $value['attributes'] as $attribute => $attribute_value ) {
 						$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $attribute_value ) . '"';
 					}
 				}
@@ -275,7 +269,6 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 									style="<?php echo esc_attr( $value['css'] ); ?>"
 									value="<?php echo esc_attr( $option_value ); ?>"
 									class="<?php echo esc_attr( $value['class'] ); ?>"
-									placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
 									<?php echo implode( ' ', $custom_attributes ); ?>
 									/> <?php echo $description; ?>
 							</td>
@@ -299,7 +292,6 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 									class="<?php echo esc_attr( $value['class'] ); ?>"
 									rows="10"
 									cols="60"
-									placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
 									<?php echo implode( ' ', $custom_attributes ); ?>
 									><?php echo esc_textarea( $option_value );  ?></textarea>
 								<?php echo $description; ?>
