@@ -65,6 +65,8 @@ class EDD_SL_Plugin_Updater {
      * See wp-includes/update.php line 121 for the original wp_update_plugins() function.
      *
      * @uses api_request()
+	 *
+     * @global $pagenow
      *
      * @param array   $_transient_data Update array build by WordPress.
      * @return array Modified update array with custom plugin data.
@@ -270,8 +272,6 @@ class EDD_SL_Plugin_Updater {
      * @return false||object
      */
     private function api_request( $_action, $_data ) {
-
-        global $wp_version;
 
         $data = array_merge( $this->api_data, $_data );
 

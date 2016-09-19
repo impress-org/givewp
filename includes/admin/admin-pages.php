@@ -22,6 +22,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @global $give_settings_page
  * @global $give_payments_page
+ * @global $give_reports_page
+ * @global $give_add_ons_page
+ * @global $give_upgrades_screen
+ * @global $give_donors_page
  *
  * @return void
  */

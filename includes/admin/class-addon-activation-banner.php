@@ -28,7 +28,8 @@ class Give_Addon_Activation_Banner {
 	 */
 	function __construct( $_banner_details ) {
 
-		global $current_user;
+		$current_user = wp_get_current_user();
+
 		$this->banner_details = $_banner_details;
 		$this->test_mode      = ( $this->banner_details['testing'] == 'true' ) ? true : false;
 		$this->nag_meta_key   = 'give_addon_activation_ignore_' . sanitize_title( $this->banner_details['name'] );
@@ -66,6 +67,8 @@ class Give_Addon_Activation_Banner {
 	 * Give Addon Activation Banner
 	 *
 	 * @since  1.0
+	 *
+	 * @global $pagenow
 	 */
 	public function give_addon_activation_admin_notice() {
 		global $pagenow;
@@ -225,7 +228,7 @@ class Give_Addon_Activation_Banner {
 		if ( isset( $_GET[ $this->nag_meta_key ] ) && '0' == $_GET[ $this->nag_meta_key ] ) {
 
 			//Get the global user
-			global $current_user;
+			$current_user = wp_get_current_user();
 			$user_id = $current_user->ID;
 
 			add_user_meta( $user_id, $this->nag_meta_key, 'true', true );

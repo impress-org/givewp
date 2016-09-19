@@ -25,7 +25,7 @@ function give_hide_subscription_notices() {
 
     // Hide subscription notices permanently.
     if ( ! empty( $_GET['_give_hide_license_notices_permanently'] ) ) {
-        global $current_user;
+        $current_user = wp_get_current_user();
 
         // check previously disabled notice ids.
         $already_dismiss_notices = ( $already_dismiss_notices = get_user_meta( $current_user->ID, '_give_hide_license_notices_permanently', true ) )
@@ -49,7 +49,7 @@ function give_hide_subscription_notices() {
 
     // Hide subscription notices shortly.
     if ( ! empty( $_GET['_give_hide_license_notices_shortly'] ) ) {
-        global $current_user;
+        $current_user = wp_get_current_user();
 
         // Get notice id.
         $notice_id = sanitize_text_field( $_GET['_give_hide_license_notices_shortly'] );

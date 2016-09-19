@@ -22,7 +22,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0
  * @deprecated 1.4.1
- * @global    $give_options
  *
  * @param int $form_id
  *

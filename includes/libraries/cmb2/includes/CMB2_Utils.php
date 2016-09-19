@@ -408,8 +408,7 @@ class CMB2_Utils {
 	 * @return bool             Result of comparison check.
 	 */
 	public function wp_at_least( $version ) {
-		global $wp_version;
-		return version_compare( $wp_version, $version, '>=' );
+		return version_compare( get_bloginfo( 'version' ), $version, '>=' );
 	}
 
 }

@@ -7,7 +7,7 @@
  * @copyright    Copyright (c) 2016, WordImpress
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
-global $current_user;
+$current_user = wp_get_current_user();
 
 if ( is_user_logged_in() ):
 	$user_id      = get_current_user_id();

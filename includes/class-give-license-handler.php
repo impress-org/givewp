@@ -179,7 +179,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * Auto Updater
 		 *
 		 * @access  private
-		 * @global  array $give_options
+		 *
 		 * @return  bool
 		 */
 		public function auto_updater() {
@@ -841,7 +841,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @return bool
 		 */
 		private function __is_notice_dismissed( $notice_id ){
-			global $current_user;
+			$current_user = wp_get_current_user();
 			$is_notice_dismissed = false;
 
 			// Ge is notice dismissed permanently.

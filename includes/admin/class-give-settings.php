@@ -835,6 +835,8 @@ $Give_Settings = new Give_Plugin_Settings();
  * Wrapper function around cmb2_get_option
  * @since  0.1.0
  *
+ * @global $give_options
+ *
  * @param  string $key Options array key
  * @param  string $default The default option if the option isn't set
  *
@@ -857,6 +859,8 @@ function give_get_option( $key = '', $default = false ) {
  *          the key from the give_options array.
  *
  * @since 1.0
+ *
+ * @global $give_options
  *
  * @param string          $key The Key to update
  * @param string|bool|int $value The value to set the key to
@@ -901,6 +905,8 @@ function give_update_option( $key = '', $value = false ) {
  * Removes an give setting value in both the db and the global variable.
  *
  * @since 1.0
+ *
+ * @global $give_options
  *
  * @param string $key The Key to delete
  *
@@ -1141,6 +1147,8 @@ function give_cmb2_get_post_options( $query_args, $force = false ) {
  * Outputs an array for the "Featured Image Size" option found under Settings > Display Options.
  *
  * @since 1.4
+ *
+ * @global $_wp_additional_image_sizes
  */
 function give_get_featured_image_sizes() {
 	global $_wp_additional_image_sizes;
