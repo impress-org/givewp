@@ -160,6 +160,11 @@ class Give_MetaBox_Form_Data {
 
 		if( ! empty( $this->settings ) ) {
 			foreach ( $this->settings as $setting ) {
+				if( ! isset( $setting['id'] ) || ! isset( $setting['title'] ) ) {
+					continue;
+				}
+
+
 				$tabs[] = array(
 					'id'    => $setting['id'],
 					'label' => $setting['title'],
