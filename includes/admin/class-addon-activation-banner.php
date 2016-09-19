@@ -4,7 +4,7 @@
  *
  * @author  WordImpress
  * @version 1.0
- * https://github.com/WordImpress/Give-Activation-Banner
+ * https://github.com/WordImpress/plugin-activation-banner-demo
  */
 
 // Exit if accessed directly
@@ -18,11 +18,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Give_Addon_Activation_Banner {
 
 	/**
-	 *
 	 * Class constructor.
 	 *
-	 * @uses plugin_basename()
-	 * @uses hook()
+	 * @since  1.0
+	 * @access public
 	 *
 	 * @param $_banner_details
 	 */
@@ -44,7 +43,8 @@ class Give_Addon_Activation_Banner {
 	/**
 	 * Set up WordPress filters to hook into WP's update process.
 	 *
-	 * @uses add_filter()
+	 * @since  1.0
+	 * @access public
 	 *
 	 * @return void
 	 */
@@ -58,15 +58,13 @@ class Give_Addon_Activation_Banner {
 		//Get the current page to add the notice to
 		add_action( 'current_screen', array( $this, 'give_addon_notice_ignore' ) );
 		add_action( 'admin_notices', array( $this, 'give_addon_activation_admin_notice' ) );
-
-
 	}
-
 
 	/**
 	 * Give Addon Activation Banner
 	 *
 	 * @since  1.0
+	 * @access public
 	 *
 	 * @global $pagenow
 	 */
@@ -78,31 +76,31 @@ class Give_Addon_Activation_Banner {
 			return false;
 		}
 
-		// If the user hasn't already dismissed our alert,
-		// Output the activation banner
-		if ( ! get_user_meta( $this->user_id, $this->nag_meta_key ) ) { ?>
+		// If the user hasn't already dismissed the alert, output activation banner.
+		if ( ! get_user_meta( $this->user_id, $this->nag_meta_key ) ) {
 
-			<!-- * I output inline styles here
-				 * because there's no reason to keep these
-				 * enqueued after the alert is dismissed. -->
+			// Output inline styles here because there's no reason
+			// to enqueued them after the alert is dismissed.
+			?>
 			<style>
 				div.give-addon-alert.updated {
-					padding: 1em 2em;
-					position: relative;
+					padding: 2em;
 					border-color: #66BB6A;
+				}
+
+				div.give-addon-alert-content {
+					display: inline-block;
+					vertical-align: top;
+					padding: 0 1.5em;
 				}
 
 				div.give-addon-alert img {
 					max-width: 50px;
-					position: relative;
-					top: 1em;
 				}
 
 				div.give-addon-alert h3 {
-					display: inline;
-					position: relative;
-					top: -20px;
-					left: 20px;
+					display: inline-block;
+					margin: 0;
 					font-size: 24px;
 					font-weight: 300;
 				}
@@ -113,10 +111,7 @@ class Give_Addon_Activation_Banner {
 				}
 
 				div.give-addon-alert .alert-actions {
-					position: relative;
-					left: 70px;
-					top: -10px;
-
+					padding-top:0.5em;
 				}
 
 				div.give-addon-alert a {
@@ -138,87 +133,103 @@ class Give_Addon_Activation_Banner {
 				}
 
 				div.give-addon-alert .dismiss {
-					position: absolute;
-					right: 0;
-					height: 100%;
-					top: 50%;
-					margin-top: -10px;
+					float: right;
+					margin: 0;
 					outline: none;
 					box-shadow: none;
 					text-decoration: none;
 					color: #cacaca;
 				}
-			</style>
 
-			<!-- * Now we output the HTML
-				 * of the banner 			-->
+				.rtl div.give-addon-alert a {
+					margin-right: 0;
+					margin-left: 2em;
+				}
+
+				.rtl div.give-addon-alert .alert-actions a span {
+					margin-right: 0;
+					margin-left: 5px;
+				}
+
+				.rtl div.give-addon-alert .dismiss {
+					float: left;
+				}
+			</style>
 
 			<div class="updated give-addon-alert">
 
-				<!-- Your Logo -->
+				<!-- Dismiss Button -->
+				<a href="<?php echo admin_url( 'plugins.php?' . $this->nag_meta_key . '=0' ); ?>" class="dismiss"><span class="dashicons dashicons-dismiss"></span></a>
+
+				<!-- Logo -->
 				<img src="<?php echo GIVE_PLUGIN_URL; ?>assets/images/svg/give-icon-full-circle.svg" class="give-logo" />
 
-				<!-- Your Message -->
-				<h3><?php
-					printf(
-						/* translators: %s: Add-on name */
-						esc_html__( "Thank you for installing Give's %s Add-on!", 'give' ),
-						'<span>' . $this->banner_details['name'] . '</span>'
-					);
-				?></h3>
+				<div class="give-addon-alert-content">
 
-				<a href="<?php
-				//The Dismiss Button
-				$nag_admin_dismiss_url = 'plugins.php?' . $this->nag_meta_key . '=0';
-				echo admin_url( $nag_admin_dismiss_url ); ?>" class="dismiss"><span class="dashicons dashicons-dismiss"></span></a>
+					<!-- Message -->
+					<h3><?php
+						printf(
+							/* translators: %s: Add-on name */
+							esc_html__( "Thank you for installing Give's %s Add-on!", 'give' ),
+							'<span>' . $this->banner_details['name'] . '</span>'
+						);
+					?></h3>
 
-				<!-- * Now we output a few "actions"
-					 * that the user can take from here -->
+					<!-- Action Links -->
+					<div class="alert-actions">
 
-				<div class="alert-actions">
-
-					<?php //Point them to your settings page
-					if ( isset( $this->banner_details['settings_url'] ) ) { ?>
-						<a href="<?php echo $this->banner_details['settings_url']; ?>">
-							<span class="dashicons dashicons-admin-settings"></span><?php esc_html_e( 'Go to Settings', 'give' ); ?>
-						</a>
-					<?php } ?>
-
-					<?php
-					// Show them how to configure the Addon
-					if ( isset( $this->banner_details['documentation_url'] ) ) { ?>
-						<a href="<?php echo $this->banner_details['documentation_url'] ?>" target="_blank">
-							<span class="dashicons dashicons-media-text"></span>
-							<?php
-								printf(
-									/* translators: %s: Add-on name */
-									esc_html__( 'Documentation: %s Add-on', 'give' ),
-									$this->banner_details['name']
-								);
+						<?php
+						//Point them to your settings page
+						if ( isset( $this->banner_details['settings_url'] ) ) {
 							?>
-						</a>
-					<?php } ?>
-					<?php
-					//Let them signup for plugin updates
-					if ( isset( $this->banner_details['support_url'] ) ) { ?>
+							<a href="<?php echo $this->banner_details['settings_url']; ?>">
+								<span class="dashicons dashicons-admin-settings"></span><?php esc_html_e( 'Go to Settings', 'give' ); ?>
+							</a>
+							<?php
+						}
 
-						<a href="<?php echo $this->banner_details['support_url'] ?>" target="_blank">
-							<span class="dashicons dashicons-sos"></span><?php esc_html_e( 'Get Support', 'give' ); ?>
-						</a>
+						// Show them how to configure the Addon
+						if ( isset( $this->banner_details['documentation_url'] ) ) {
+							?>
+							<a href="<?php echo $this->banner_details['documentation_url'] ?>" target="_blank">
+								<span class="dashicons dashicons-media-text"></span>
+								<?php
+									printf(
+										/* translators: %s: Add-on name */
+										esc_html__( 'Documentation: %s Add-on', 'give' ),
+										$this->banner_details['name']
+									);
+								?>
+							</a>
+							<?php
+						}
 
-					<?php } ?>
+						//Let them signup for plugin updates
+						if ( isset( $this->banner_details['support_url'] ) ) {
+							?>
+							<a href="<?php echo $this->banner_details['support_url'] ?>" target="_blank">
+								<span class="dashicons dashicons-sos"></span><?php esc_html_e( 'Get Support', 'give' ); ?>
+							</a>
+							<?php
+						}
+						?>
+
+					</div>
 
 				</div>
+
 			</div>
 			<?php
 		}
 	}
 
-
 	/**
 	 * Ignore Nag
 	 *
 	 * This is the action that allows the user to dismiss the banner it basically sets a tag to their user meta data
+	 *
+	 * @since  1.0
+	 * @access public
 	 */
 	public function give_addon_notice_ignore() {
 
