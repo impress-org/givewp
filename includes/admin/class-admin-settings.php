@@ -155,12 +155,12 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 */
 		public static function get_option( $option_name = '', $field_id = '', $default = false ) {
 			// Bailout.
-			if( empty( $option_name ) ) {
+			if( empty( $option_name ) && empty( $field_id ) ) {
 				return false;
 			}
 
 
-			if( ! empty( $field_id ) ) {
+			if( ! empty( $field_id ) && ! empty( $option_name ) ) {
 				// Get field value if any.
 				$option_value = get_option( $option_name );
 
@@ -168,6 +168,10 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				? $option_value[ $field_id ]
 				: $default;
 			} else {
+				// If option name is empty but not field name then this means, setting is direct store to option table under there field name.
+				$option_name = ! $option_name ? $field_id : $option_name;
+
+
 				// Get option value if any.
 				$option_value = get_option( $option_name, $default );
 			}
