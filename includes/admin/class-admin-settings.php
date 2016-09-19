@@ -2,8 +2,11 @@
 /**
  * Give Admin Settings Class
  *
- * @author   WordImpress
- * @since    1.8
+ * @package     Give
+ * @subpackage  Classes/Give_Admin_Settings
+ * @copyright   Copyright (c) 2016, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since       1.8
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -88,7 +91,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * Add a message.
 		 *
 		 * @since  1.8
-		 * @param  string $text
+		 * @param  string $text Message text.
 		 * @return void
 		 */
 		public static function add_message( $text ) {
@@ -99,7 +102,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * Add an error.
 		 *
 		 * @since  1.8
-		 * @param  string $text
+		 * @param  string $text Message tex.
 		 * @return void
 		 */
 		public static function add_error( $text ) {
@@ -110,15 +113,14 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * Output messages + errors.
 		 *
 		 * @since  1.8
-		 * @return string
 		 * @return void
 		 */
 		public static function show_messages() {
-			if ( sizeof( self::$errors ) > 0 ) {
+			if ( 0 < count( self::$errors ) ) {
 				foreach ( self::$errors as $error ) {
 					echo '<div id="give-message" class="notice notice-error"><p><strong>' . esc_html( $error ) . '</strong></p></div>';
 				}
-			} elseif ( sizeof( self::$messages ) > 0 ) {
+			} elseif ( 0 < count( self::$messages ) ) {
 				foreach ( self::$messages as $message ) {
 					echo '<div id="give-message" class="notice notice-success"><p><strong>' . esc_html( $message ) . '</strong></p></div>';
 				}
@@ -138,19 +140,19 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 			do_action( 'give_settings_start' );
 
-			// Include settings pages
+			// Include settings pages.
 			self::get_settings_pages();
 
-			// Get current tab/section
+			// Get current tab/section.
 			$current_tab     = empty( $_GET['tab'] ) ? 'general' : sanitize_title( $_GET['tab'] );
 			$current_section = empty( $_REQUEST['section'] ) ? '' : sanitize_title( $_REQUEST['section'] );
 
-			// Save settings if data has been posted
+			// Save settings if data has been posted.
 			if ( ! empty( $_POST ) ) {
 				self::save();
 			}
 
-			// Add any posted messages
+			// Add any posted messages.
 			if ( ! empty( $_GET['give_error'] ) ) {
 				self::add_error( stripslashes( $_GET['give_error'] ) );
 			}
@@ -159,7 +161,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				self::add_message( stripslashes( $_GET['give_message'] ) );
 			}
 
-			// Get tabs for the settings page
+			// Get tabs for the settings page.
 			$tabs = apply_filters( 'give_settings_tabs_array', array() );
 
 			include 'views/html-admin-settings.php';
@@ -168,20 +170,19 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		/**
 		 * Get a setting from the settings API.
 		 *
- 		 * @since  1.8
-		 * @param  string      $option_name
-		 * @param  string      $field_id
-		 * @param  mixed       $default
+		 * @since  1.8
+		 * @param  string $option_name
+		 * @param  string $field_id
+		 * @param  mixed  $default
 		 * @return string|bool
 		 */
 		public static function get_option( $option_name = '', $field_id = '', $default = false ) {
 			// Bailout.
-			if( empty( $option_name ) && empty( $field_id ) ) {
+			if ( empty( $option_name ) && empty( $field_id ) ) {
 				return false;
 			}
 
-
-			if( ! empty( $field_id ) && ! empty( $option_name ) ) {
+			if ( ! empty( $field_id ) && ! empty( $option_name ) ) {
 				// Get field value if any.
 				$option_value = get_option( $option_name );
 
@@ -191,7 +192,6 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			} else {
 				// If option name is empty but not field name then this means, setting is direct store to option table under there field name.
 				$option_name = ! $option_name ? $field_id : $option_name;
-
 
 				// Get option value if any.
 				$option_value = get_option( $option_name, $default );
@@ -235,7 +235,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					$value['desc'] = '';
 				}
 
-				// Custom attribute handling
+				// Custom attribute handling.
 				$custom_attributes = array();
 
 				if ( ! empty( $value['attributes'] ) && is_array( $value['attributes'] ) ) {
@@ -244,27 +244,27 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					}
 				}
 
-				// Description handling
+				// Description handling.
 				$description = self::get_field_description( $value );
 
-				// Switch based on type
+				// Switch based on type.
 				switch ( $value['type'] ) {
 
 					// Section Titles
 					case 'title':
 						if ( ! empty( $value['title'] ) ) {
-							echo '<div class="give-setting-tab-header give-setting-tab-header-'. $current_tab .'"><h2>' . self::get_field_title( $value ) . '</h2><hr></div>';
+							echo '<div class="give-setting-tab-header give-setting-tab-header-' . $current_tab . '"><h2>' . self::get_field_title( $value ) . '</h2><hr></div>';
 						}
 						if ( ! empty( $value['desc'] ) ) {
 							echo wpautop( wptexturize( wp_kses_post( $value['desc'] ) ) );
 						}
-						echo '<table class="form-table give-setting-tab-body give-setting-tab-body-'. $current_tab .'">'. "\n\n";
+						echo '<table class="form-table give-setting-tab-body give-setting-tab-body-' . $current_tab . '">' . "\n\n";
 						if ( ! empty( $value['id'] ) ) {
 							do_action( 'give_settings_' . sanitize_title( $value['id'] ) );
 						}
 						break;
 
-					// Section Ends
+					// Section Ends.
 					case 'sectionend':
 						if ( ! empty( $value['id'] ) ) {
 							do_action( 'give_settings_' . sanitize_title( $value['id'] ) . '_end' );
@@ -275,7 +275,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						}
 						break;
 
-					// Standard text inputs and subtypes like 'number'
+					// Standard text inputs and subtypes like 'number'.
 					case 'text':
 					case 'email':
 					case 'number':
@@ -302,7 +302,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						</tr><?php
 						break;
 
-					// Textarea
+					// Textarea.
 					case 'textarea':
 
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
@@ -326,7 +326,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						</tr><?php
 						break;
 
-					// Select boxes
+					// Select boxes.
 					case 'select' :
 					case 'multiselect' :
 
@@ -338,7 +338,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 							</th>
 							<td class="give-forminp give-forminp-<?php echo sanitize_title( $value['type'] ) ?>">
 								<select
-									name="<?php echo esc_attr( $value['id'] ); ?><?php if ( $value['type'] == 'multiselect' ) echo '[]'; ?>"
+									name="<?php echo esc_attr( $value['id'] ); ?><?php if ( $value['type'] == 'multiselect' ) { echo '[]'; } ?>"
 									id="<?php echo esc_attr( $value['id'] ); ?>"
 									style="<?php echo esc_attr( $value['css'] ); ?>"
 									class="<?php echo esc_attr( $value['class'] ); ?>"
@@ -346,26 +346,26 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 									<?php echo ( 'multiselect' == $value['type'] ) ? 'multiple="multiple"' : ''; ?>
 									>
 									<?php
-										foreach ( $value['options'] as $key => $val ) {
-											?>
-											<option value="<?php echo esc_attr( $key ); ?>" <?php
+									foreach ( $value['options'] as $key => $val ) {
+										?>
+										<option value="<?php echo esc_attr( $key ); ?>" <?php
 
-												if ( is_array( $option_value ) ) {
-													selected( in_array( $key, $option_value ), true );
-												} else {
-													selected( $option_value, $key );
-												}
+										if ( is_array( $option_value ) ) {
+											selected( in_array( $key, $option_value ), true );
+										} else {
+											selected( $option_value, $key );
+										}
 
 											?>><?php echo $val ?></option>
 											<?php
-										}
+									}
 									?>
 								</select> <?php echo $description; ?>
 							</td>
 						</tr><?php
 						break;
 
-					// Radio inputs
+					// Radio inputs.
 					case 'radio_inline' :
 						$value['class'] = empty( $value['class'] ) ? 'give-radio-inline' : $value['class'] . ' give-radio-inline';
 					case 'radio' :
@@ -378,20 +378,20 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 								<fieldset>
 									<ul>
 									<?php
-										foreach ( $value['options'] as $key => $val ) {
-											?>
-											<li>
-												<label><input
-													name="<?php echo esc_attr( $value['id'] ); ?>"
-													value="<?php echo $key; ?>"
-													type="radio"
-													style="<?php echo esc_attr( $value['css'] ); ?>"
-													<?php echo implode( ' ', $custom_attributes ); ?>
-													<?php checked( $key, $option_value ); ?>
-													/> <?php echo $val ?></label>
-											</li>
-											<?php
-										}
+									foreach ( $value['options'] as $key => $val ) {
+										?>
+										<li>
+										<label><input
+											name="<?php echo esc_attr( $value['id'] ); ?>"
+											value="<?php echo $key; ?>"
+											type="radio"
+											style="<?php echo esc_attr( $value['css'] ); ?>"
+											<?php echo implode( ' ', $custom_attributes ); ?>
+											<?php checked( $key, $option_value ); ?>
+											/> <?php echo $val ?></label>
+										</li>
+										<?php
+									}
 									?>
 									<?php echo $description; ?>
 								</fieldset>
@@ -399,7 +399,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						</tr><?php
 						break;
 
-					// Checkbox input
+					// Checkbox input.
 					case 'checkbox' :
 						$option_value    = self::get_option( $option_name, $value['id'], $value['default'] );
 						?>
@@ -414,7 +414,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 									type="checkbox"
 									class="<?php echo esc_attr( isset( $value['class'] ) ? $value['class'] : '' ); ?>"
 									value="1"
-									<?php checked( $option_value, 'on'); ?>
+									<?php checked( $option_value, 'on' ); ?>
 									<?php echo implode( ' ', $custom_attributes ); ?>
 								/>
 								<?php echo $description; ?>
@@ -548,7 +548,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 		/**
 		 * Helper function to get the formated description for a given form field.
- 		 * Plugins can call this when implementing their own custom settings types.
+		 * Plugins can call this when implementing their own custom settings types.
 		 *
 		 * @since  1.8
 		 * @param  array $value The form field value array
@@ -557,7 +557,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		public static function get_field_description( $value ) {
 			$description  = '';
 
-			if( ! empty( $value['desc'] ) ) {
+			if ( ! empty( $value['desc'] ) ) {
 				$description = '<p class="give-setting-field-desc">' . wp_kses_post( $value['desc'] ) . '</p>';
 			}
 
@@ -577,7 +577,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			$title  = esc_html( $value['title'] );
 
 			// If html tag detected then allow them to print.
-			if( strip_tags( $title )  ) {
+			if ( strip_tags( $title )  ) {
 				$title = $value['title'];
 			}
 
@@ -638,12 +638,14 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 				/**
 				 * Sanitize the value of an option.
+				 *
 				 * @since 1.8
 				 */
 				$value = apply_filters( 'give_admin_settings_sanitize_option', $value, $option, $raw_value );
 
 				/**
 				 * Sanitize the value of an option by option name.
+				 *
 				 * @since 1.8
 				 */
 				$value = apply_filters( "give_admin_settings_sanitize_option_$field_option_name", $value, $option, $raw_value );
@@ -667,7 +669,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			}
 
 			// Save all options in our array or there own option name i.e. option id.
-			if( empty( $option_name ) ) {
+			if ( empty( $option_name ) ) {
 				foreach ( $update_options as $name => $value ) {
 					update_option( $name, $value );
 				}
