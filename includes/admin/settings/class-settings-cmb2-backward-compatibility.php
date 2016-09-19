@@ -120,6 +120,14 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 
 			if( $setting_fields = $this->prev_settings->give_settings( $this->current_tab ) ){
 
+				/**
+				 * give_settings can return array of all settings,
+				 * so make sure you always have array of single setting. otherwise leave.
+				 */
+				if( ! isset( $setting_fields['id'] ) ) {
+					return $new_setting_fields;
+				}
+
 				if( ! empty( $setting_fields['fields'] ) ) {
 					// Store title field id.
 					$prev_title_field_id = '';
@@ -334,7 +342,6 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 							</th>
 							<?php $colspan = ''; ?>
 						<?php endif; ?>
-						<td class="forminp" <?php echo $colspan; ?>>
 						<td class="give-forminp" <?php echo $colspan; ?>>
 							<?php $field['func']( $field_obj, $saved_value, '', '', $field_type_object ); ?>
 						</td>
