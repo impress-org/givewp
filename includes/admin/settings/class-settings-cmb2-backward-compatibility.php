@@ -335,6 +335,7 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 							<?php $colspan = ''; ?>
 						<?php endif; ?>
 						<td class="forminp" <?php echo $colspan; ?>>
+						<td class="give-forminp" <?php echo $colspan; ?>>
 							<?php $field['func']( $field_obj, $saved_value, '', '', $field_type_object ); ?>
 						</td>
 					</tr>
