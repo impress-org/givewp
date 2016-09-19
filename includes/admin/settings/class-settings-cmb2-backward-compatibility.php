@@ -90,7 +90,7 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			if( ( $setting_fields = $this->prev_settings->give_settings( $this->current_tab ) ) && ! empty( $setting_fields['fields'] ) ) {
 				foreach ( $setting_fields['fields'] as $field ) {
 					if( 'give_title' == $field['type'] ) {
-						$sections[ sanitize_title( $field['name'] ) ] = str_replace( array( 'Settings' ), '', $field['name'] );
+						$sections[ sanitize_title( $field['name'] ) ] = current( explode( ' ', $field['name'] ) );
 					}
 				}
 			}
