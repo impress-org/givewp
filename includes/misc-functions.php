@@ -721,9 +721,9 @@ function give_social_media_elements() {
 /**
  * Create SVG library function
  *
- * @param $icon
+ * @param string $icon
  *
- * @return mixed
+ * @return string
  */
 function give_svg_icons( $icon ) {
 
@@ -745,7 +745,7 @@ function give_svg_icons( $icon ) {
  *
  * @since 1.3
  *
- * @param $post_type
+ * @param object $post_type The current object to add a menu items meta box for.
  *
  * @return mixed
  */
@@ -781,7 +781,7 @@ if ( ! function_exists( 'array_column' ) ) {
 	 *
 	 * @param array $input A multi-dimensional array (record set) from which to pull
 	 *                         a column of values.
-	 * @param mixed $columnKey The column of values to return. This value may be the
+	 * @param int|string $columnKey The column of values to return. This value may be the
 	 *                         integer key of the column you wish to retrieve, or it
 	 *                         may be the string key name for an associative array.
 	 * @param mixed $indexKey (Optional.) The column to use as the index/keys for
@@ -932,9 +932,9 @@ if ( ! function_exists( 'cal_days_in_month' ) ) {
 	/**
 	 * cal_days_in_month
 	 *
-	 * @param $calendar
-	 * @param $month
-	 * @param $year
+	 * @param int $calendar
+	 * @param int $month
+	 * @param int $year
 	 *
 	 * @return bool|string
 	 */

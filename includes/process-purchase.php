@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @access      private
  * @since       1.0
- * @return      void
+ * @return      false|null
  */
 function give_process_purchase_form() {
 
@@ -464,7 +464,7 @@ function give_purchase_form_required_fields( $form_id ) {
  *
  * @since  1.0.1
  *
- * @param $payment_mode
+ * @param string $payment_mode
  *
  * @return mixed|void
  */

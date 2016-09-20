@@ -238,7 +238,7 @@ class Give_Logging {
 	 * @param  array $log_data Log entry data.
 	 * @param  array $log_meta Log entry meta.
 	 *
-	 * @return bool            True if successful, false otherwise.
+	 * @return bool|null       True if successful, false otherwise.
 	 */
 	public function update_log( $log_data = array(), $log_meta = array() ) {
 
@@ -438,7 +438,7 @@ $GLOBALS['give_logs'] = new Give_Logging();
  * @param  int    $parent  Parent log. Default is 0.
  * @param  string $type    Log type. Default is null.
  *
- * @return mixed           ID of the new log entry.
+ * @return int             ID of the new log entry.
  */
 function give_record_log( $title = '', $message = '', $parent = 0, $type = null ) {
 	/* @var Give_Logging $give_logs */
