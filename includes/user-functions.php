@@ -171,9 +171,9 @@ function give_get_users_completed_donations( $user = 0, $status = 'complete' ) {
  * @access      public
  * @since       1.0
  *
- * @param       $user_id int - the ID of the user to check
+ * @param       int $user_id The ID of the user to check.
  *
- * @return      bool - true if has donated, false other wise.
+ * @return      bool True if has donated, false other wise.
  */
 function give_has_purchases( $user_id = null ) {
 	if ( empty( $user_id ) ) {
@@ -196,7 +196,7 @@ function give_has_purchases( $user_id = null ) {
  * @access      public
  * @since       1.0
  *
- * @param       $user int|string - the ID or email of the donor to retrieve stats for
+ * @param       int|string $user The ID or email of the donor to retrieve stats for
  *
  * @return      array
  */
@@ -243,9 +243,9 @@ function give_get_purchase_stats_by_user( $user = '' ) {
  * @access      public
  * @since       1.0
  *
- * @param       $user mixed - ID or email
+ * @param       int|string $user The ID or email of the donor.
  *
- * @return      int - the total number of donations
+ * @return      int The total number of donations
  */
 function give_count_purchases_of_customer( $user = null ) {
 
@@ -271,9 +271,9 @@ function give_count_purchases_of_customer( $user = null ) {
  * @access      public
  * @since       1.0
  *
- * @param       $user mixed - ID or email
+ * @param       int|string $user The ID or email of the donor.
  *
- * @return      float - the total amount the user has spent
+ * @return      float The total amount the user has spent
  */
 function give_purchase_total_of_user( $user = null ) {
 
@@ -289,7 +289,7 @@ function give_purchase_total_of_user( $user = null ) {
  * @access      public
  * @since       1.0
  *
- * @param       $username string - the username to validate
+ * @param       string $username The username to validate.
  *
  * @return      bool
  */
@@ -310,7 +310,7 @@ function give_validate_username( $username ) {
  * @access      public
  * @since       1.0
  *
- * @param       $user_id INT - the new user's ID
+ * @param       int $user_id The new user's ID.
  *
  * @return      void
  */
@@ -347,7 +347,8 @@ add_action( 'user_register', 'give_add_past_purchases_to_new_user' );
  *
  * @access        public
  * @since         1.0
- * @return        int - The total number of donors.
+ *
+ * @return        int The total number of donors.
  */
 function give_count_total_customers() {
 	return Give()->customers->count();
@@ -359,7 +360,10 @@ function give_count_total_customers() {
  *
  * @access        public
  * @since         1.0
- * @return        array - The donor's address, if any
+ *
+ * @param         int $user_id The donor ID.
+ *
+ * @return        array The donor's address, if any
  */
 function give_get_donor_address( $user_id = 0 ) {
 	if ( empty( $user_id ) ) {
