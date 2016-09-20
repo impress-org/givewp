@@ -190,7 +190,7 @@ class Give_Session {
 	 * @param  string $key   Session key.
 	 * @param  string $value Session variable.
 	 *
-	 * @return mixed         Session variable.
+	 * @return string        Session variable.
 	 */
 	public function set( $key, $value ) {
 

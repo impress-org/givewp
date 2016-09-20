@@ -933,7 +933,7 @@ function give_get_payment_meta( $payment_id = 0, $meta_key = '_give_payment_meta
 /**
  * Update the meta for a payment
  *
- * @param  integer $payment_id Payment ID
+ * @param  int $payment_id Payment ID
  * @param  string $meta_key Meta key to update
  * @param  string $meta_value Value to update to
  * @param  string $prev_value Previous value
@@ -953,7 +953,7 @@ function give_update_payment_meta( $payment_id = 0, $meta_key = '', $meta_value 
  *
  * @param int $payment_id Payment ID
  *
- * @return array $user_info User Info Meta Values
+ * @return string $user_info User Info Meta Values
  */
 function give_get_payment_meta_user_info( $payment_id ) {
 	$payment = new Give_Payment( $payment_id );
@@ -965,7 +965,8 @@ function give_get_payment_meta_user_info( $payment_id ) {
  * Get the donations Key from Payment Meta
  *
  * Retrieves the form_id from a (Previously titled give_get_payment_meta_donations)
- * @since       1.0
+ *
+ * @since 1.0
  *
  * @param int $payment_id Payment ID
  *
@@ -1015,7 +1016,7 @@ function give_is_guest_payment( $payment_id ) {
  *
  * @param int $payment_id Payment ID
  *
- * @return string $user_id User ID
+ * @return int $user_id User ID
  */
 function give_get_payment_user_id( $payment_id ) {
 	$payment = new Give_Payment( $payment_id );
@@ -1030,7 +1031,7 @@ function give_get_payment_user_id( $payment_id ) {
  *
  * @param int $payment_id Payment ID
  *
- * @return string $customer_id Customer ID
+ * @return int $customer_id Customer ID
  */
 function give_get_payment_customer_id( $payment_id ) {
 	$payment = new Give_Payment( $payment_id );
@@ -1655,10 +1656,10 @@ add_filter( 'comments_clauses', 'give_hide_payment_notes_pre_41', 10, 2 );
  *
  * @since 1.0
  *
- * @param array $where
+ * @param string $where
  * @param object $wp_comment_query WordPress Comment Query Object
  *
- * @return array $where
+ * @return string $where
  */
 function give_hide_payment_notes_from_feeds( $where, $wp_comment_query ) {
 	global $wpdb;
@@ -1856,7 +1857,7 @@ function give_get_price_id( $form_id, $price ) {
  * @param array $args Arguments for form dropdown.
  * @param bool  $echo This parameter decides if print form dropdown html output or not.
  * 
- * @return string/void
+ * @return string|void
  */
 function give_get_form_dropdown( $args = array(), $echo = false ){
     $form_dropdown_html = Give()->html->forms_dropdown( $args );
@@ -1876,7 +1877,7 @@ function give_get_form_dropdown( $args = array(), $echo = false ){
  * @param array $args Arguments for form dropdown
  * @param bool $echo  This parameter decide if print form dropdown html output or not
  *
- * @return string/void
+ * @return string|void
  */
 function give_get_form_variable_price_dropdown( $args = array(), $echo = false ){
     
