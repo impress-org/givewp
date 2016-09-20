@@ -94,7 +94,7 @@ class Give_DB_Customers extends Give_DB {
 	 *
 	 * @param  array $data
 	 *
-	 * @return int/bool
+	 * @return int|bool
 	 */
 	public function add( $data = array() ) {
 

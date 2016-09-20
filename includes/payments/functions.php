@@ -1857,7 +1857,7 @@ function give_get_price_id( $form_id, $price ) {
  * @param array $args Arguments for form dropdown.
  * @param bool  $echo This parameter decides if print form dropdown html output or not.
  * 
- * @return string/void
+ * @return string|void
  */
 function give_get_form_dropdown( $args = array(), $echo = false ){
     $form_dropdown_html = Give()->html->forms_dropdown( $args );
@@ -1877,7 +1877,7 @@ function give_get_form_dropdown( $args = array(), $echo = false ){
  * @param array $args Arguments for form dropdown
  * @param bool $echo  This parameter decide if print form dropdown html output or not
  *
- * @return string/void
+ * @return string|void
  */
 function give_get_form_variable_price_dropdown( $args = array(), $echo = false ){
     
