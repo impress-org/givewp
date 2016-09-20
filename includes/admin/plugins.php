@@ -43,38 +43,40 @@ add_filter( 'plugin_action_links_' . GIVE_PLUGIN_BASENAME, 'give_plugin_action_l
  *
  * @since 1.4
  *
- * @param array $input already defined meta links
- * @param string $file plugin file path and name being processed
+ * @param array  $plugin_meta An array of the plugin's metadata.
+ * @param string $plugin_file Path to the plugin file, relative to the plugins directory.
  *
- * @return array $input
+ * @return array
  */
-function give_plugin_row_meta( $input, $file ) {
-	if ( $file != 'give/give.php' ) {
-		return $input;
+function give_plugin_row_meta( $plugin_meta, $plugin_file ) {
+	if ( $plugin_file != GIVE_PLUGIN_BASENAME ) {
+		return $plugin_meta;
 	}
 
-	$give_docs_link = esc_url( add_query_arg( array(
-			'utm_source'   => 'plugins-page',
-			'utm_medium'   => 'plugin-row',
-			'utm_campaign' => 'admin',
-		), 'https://givewp.com/documentation/' )
+	$new_meta_links = array(
+		sprintf(
+			'<a href="%1$s" target="_blank">%2$s</a>',
+			esc_url( add_query_arg( array(
+					'utm_source'   => 'plugins-page',
+					'utm_medium'   => 'plugin-row',
+					'utm_campaign' => 'admin',
+				), 'https://givewp.com/documentation/' )
+			),
+			esc_html__( 'Documentation', 'give' )
+		),
+		sprintf(
+			'<a href="%1$s" target="_blank">%2$s</a>',
+			esc_url( add_query_arg( array(
+					'utm_source'   => 'plugins-page',
+					'utm_medium'   => 'plugin-row',
+					'utm_campaign' => 'admin',
+				), 'https://givewp.com/addons/' )
+			),
+			esc_html__( 'Add-ons', 'give' )
+		),
 	);
 
-	$give_addons_link = esc_url( add_query_arg( array(
-			'utm_source'   => 'plugins-page',
-			'utm_medium'   => 'plugin-row',
-			'utm_campaign' => 'admin',
-		), 'https://givewp.com/addons/' )
-	);
-
-	$links = array(
-		'<a href="' . $give_docs_link . '" target="_blank">' . esc_html__( 'Documentation', 'give' ) . '</a>',
-		'<a href="' . $give_addons_link . '" target="_blank">' . esc_html__( 'Add-ons', 'give' ) . '</a>',
-	);
-
-	$input = array_merge( $input, $links );
-
-	return $input;
+	return array_merge( $plugin_meta, $new_meta_links );
 }
 
 add_filter( 'plugin_row_meta', 'give_plugin_row_meta', 10, 2 );
