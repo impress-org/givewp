@@ -745,7 +745,7 @@ function give_svg_icons( $icon ) {
  *
  * @since 1.3
  *
- * @param string $post_type
+ * @param object $post_type The current object to add a menu items meta box for.
  *
  * @return mixed
  */
