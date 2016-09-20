@@ -242,7 +242,7 @@ function give_text_input( $field ) {
 	echo '<p class="give-field-wrap ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . give_get_field_name( $field ) . '">' . wp_kses_post( $field['name'] ) . '</label>' . $field['before_field'] . '<input type="' . esc_attr( $field['type'] ) . '" style="' . esc_attr( $field['style'] ) . '" name="' . give_get_field_name( $field ) . '" id="' . esc_attr( $field['id'] ) . '" value="' . esc_attr( $field['value'] ) . '" ' . implode( ' ', $custom_attributes ) . ' />' . $field['after_field'];
 
 	if ( ! empty( $field['description'] ) ) {
-		echo '<span class="description">' . wp_kses_post( $field['description'] ) . '</span>';
+		echo '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
 	}
 	echo '</p>';
 }
@@ -322,7 +322,7 @@ function give_textarea_input( $field ) {
 	echo '<p class="give-field-wrap ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . give_get_field_name( $field ) . '">' . wp_kses_post( $field['name'] ) . '</label><textarea style="' . esc_attr( $field['style'] ) . '"  name="' . give_get_field_name( $field ) . '" id="' . esc_attr( $field['id'] ) . '" rows="10" cols="20" ' . implode( ' ', $custom_attributes ) . '>' . esc_textarea( $field['value'] ) . '</textarea> ';
 
 	if ( ! empty( $field['description'] ) ) {
-		echo '<span class="description">' . wp_kses_post( $field['description'] ) . '</span>';
+		echo '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
 	}
 	echo '</p>';
 }
@@ -381,7 +381,7 @@ function give_wysiwyg( $field ) {
 	);
 
 	if ( ! empty( $field['description'] ) ) {
-		echo '<span class="description">' . wp_kses_post( $field['description'] ) . '</span>';
+		echo '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
 	}
 	echo '</div>';
 }
@@ -428,7 +428,7 @@ function give_checkbox( $field ) {
 	echo '<p class="give-field-wrap ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . give_get_field_name( $field ) . '">' . wp_kses_post( $field['name'] ) . '</label><input type="checkbox" style="' . esc_attr( $field['style'] ) . '" name="' . give_get_field_name( $field ) . '" id="' . esc_attr( $field['id'] ) . '" value="' . esc_attr( $field['cbvalue'] ) . '" ' . checked( $field['value'], $field['cbvalue'], false ) . '  ' . implode( ' ', $custom_attributes ) . '/> ';
 
 	if ( ! empty( $field['description'] ) ) {
-		echo '<span class="description">' . wp_kses_post( $field['description'] ) . '</span>';
+		echo '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
 	}
 
 	echo '</p>';
@@ -482,7 +482,7 @@ function give_select( $field ) {
 	echo '</select> ';
 
 	if ( ! empty( $field['description'] ) ) {
-		echo '<span class="description">' . wp_kses_post( $field['description'] ) . '</span>';
+		echo '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
 	}
 	echo '</p>';
 }
@@ -543,7 +543,7 @@ function give_radio( $field ) {
 	echo '</ul>';
 
 	if ( ! empty( $field['description'] ) ) {
-		echo '<span class="description">' . wp_kses_post( $field['description'] ) . '</span>';
+		echo '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
 	}
 
 	echo '</fieldset>';
@@ -590,7 +590,7 @@ function give_colorpicker( $field ) {
 	echo '<p class="give-field-wrap ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . give_get_field_name( $field ) . '">' . wp_kses_post( $field['name'] ) . '</label><input type="' . esc_attr( $field['type'] ) . '" style="' . esc_attr( $field['style'] ) . '" name="' . give_get_field_name( $field ) . '" id="' . esc_attr( $field['id'] ) . '" value="' . esc_attr( $field['value'] ) . '" ' . implode( ' ', $custom_attributes ) . ' /> ';
 
 	if ( ! empty( $field['description'] ) ) {
-		echo '<span class="description">' . wp_kses_post( $field['description'] ) . '</span>';
+		echo '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
 	}
 	echo '</p>';
 }

@@ -558,7 +558,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			$description  = '';
 
 			if ( ! empty( $value['desc'] ) ) {
-				$description = '<p class="give-setting-field-desc">' . wp_kses_post( $value['desc'] ) . '</p>';
+				$description = '<p class="give-field-description">' . wp_kses_post( $value['desc'] ) . '</p>';
 			}
 
 			return $description;

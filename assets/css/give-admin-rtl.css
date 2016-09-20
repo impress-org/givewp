@@ -984,7 +984,7 @@ Tooltips
       line-height: 24px;
       font-size: 12px;
       font-weight: 400; }
-    #give-metabox-form-data .give_options_panel .give-field-wrap .description {
+    #give-metabox-form-data .give_options_panel .give-field-wrap .give-field-description {
       color: #aaaaaa;
       font-size: 12px;
       line-height: 18px;
@@ -1504,7 +1504,7 @@ Settings
 .give-radio-inline li:first-child {
   margin-right: 0; }
 
-p.give-setting-field-desc, .cmb2-metabox-description {
+p.give-field-description, .cmb2-metabox-description {
   color: #aaaaaa;
   font-style: italic;
   font-size: 13px !important; }
