@@ -1,7 +1,7 @@
 /**
  *  Give Gulp File
  *
- *  @description: Used for automating development tasks such as minifying files, compiling SASS and live-reload; using Gulp.js
+ *  Used for automating development tasks.
  */
 
 /* Modules (Can be installed with npm install command using package.json)

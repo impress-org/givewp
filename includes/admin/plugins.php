@@ -53,18 +53,18 @@ function give_plugin_row_meta( $input, $file ) {
 		return $input;
 	}
 
-	$give_addons_link = esc_url( add_query_arg( array(
-			'utm_source'   => 'plugins-page',
-			'utm_medium'   => 'plugin-row',
-			'utm_campaign' => 'admin',
-		), 'https://givewp.com/addons/' )
-	);
-
 	$give_docs_link = esc_url( add_query_arg( array(
 			'utm_source'   => 'plugins-page',
 			'utm_medium'   => 'plugin-row',
 			'utm_campaign' => 'admin',
 		), 'https://givewp.com/documentation/' )
+	);
+
+	$give_addons_link = esc_url( add_query_arg( array(
+			'utm_source'   => 'plugins-page',
+			'utm_medium'   => 'plugin-row',
+			'utm_campaign' => 'admin',
+		), 'https://givewp.com/addons/' )
 	);
 
 	$links = array(
