@@ -41,11 +41,11 @@ class Give_Plugin_Settings {
 	 */
 	public function __construct() {
 
-		add_action( 'admin_init', array( $this, 'init' ) );
-
-		//Customize CMB2 URL
-		add_filter( 'cmb2_meta_box_url', array( $this, 'give_update_cmb_meta_box_url' ) );
-
+//		add_action( 'admin_init', array( $this, 'init' ) );
+//
+//		//Customize CMB2 URL
+//		add_filter( 'cmb2_meta_box_url', array( $this, 'give_update_cmb_meta_box_url' ) );
+//
 		//Custom CMB2 Settings Fields
 		add_action( 'cmb2_render_give_title', 'give_title_callback', 10, 5 );
 		add_action( 'cmb2_render_give_description', 'give_description_callback', 10, 5 );
@@ -55,12 +55,12 @@ class Give_Plugin_Settings {
 		add_action( 'cmb2_render_system_info', 'give_system_info_callback', 10, 5 );
 		add_action( 'cmb2_render_api', 'give_api_callback', 10, 5 );
 		add_action( 'cmb2_render_license_key', 'give_license_key_callback', 10, 5 );
-		add_action( 'admin_notices', array( $this, 'settings_notices' ) );
-
-		// Include CMB CSS in the head to avoid FOUC
-		add_action( 'admin_print_styles-give_forms_page_give-settings', array( 'CMB2_hookup', 'enqueue_cmb_css' ) );
-
-		add_filter( 'cmb2_get_metabox_form_format', array( $this, 'give_modify_cmb2_form_output' ), 10, 3 );
+//		add_action( 'admin_notices', array( $this, 'settings_notices' ) );
+//
+//		// Include CMB CSS in the head to avoid FOUC
+//		add_action( 'admin_print_styles-give_forms_page_give-settings', array( 'CMB2_hookup', 'enqueue_cmb_css' ) );
+//
+//		add_filter( 'cmb2_get_metabox_form_format', array( $this, 'give_modify_cmb2_form_output' ), 10, 3 );
 
 	}
 
@@ -775,16 +775,16 @@ class Give_Plugin_Settings {
 			),
 		);
 
+		$give_settings = apply_filters( 'give_registered_settings', $give_settings );
+
 		//Return all settings array if no active tab
-		if ( $active_tab === null || ! isset( $give_settings[ $active_tab ] ) ) {
-
-			return apply_filters( 'give_registered_settings', $give_settings );
-
+		if (  empty( $active_tab ) || ! isset( $give_settings[ $active_tab ] ) ) {
+			return $give_settings;
 		}
 
 
 		// Add other tabs and settings fields as needed
-		return apply_filters( 'give_registered_settings', $give_settings[ $active_tab ] );
+		return $give_settings[ $active_tab ];
 
 	}
 
@@ -1001,26 +1001,20 @@ function give_settings_array_insert( $array, $position, $insert ) {
  * Renders gateways fields.
  *
  * @since 1.0
- *
- * @param $field_object
- * @param $escaped_value
- * @param $object_id
- * @param $object_type
- * @param $field_type_object
- *
+ * @param array $field_arr
+ * @param array $saved_values
  * @return void
  */
-function give_enabled_gateways_callback( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
+function give_enabled_gateways_callback( $field_arr, $saved_values = array() ) {
 
-	$id                = $field_type_object->field->args['id'];
-	$field_description = $field_type_object->field->args['desc'];
-	$gateways          = give_get_ordered_payment_gateways( give_get_payment_gateways() );
+	$id       = $field_arr['id'];
+	$gateways = give_get_ordered_payment_gateways( give_get_payment_gateways() );
 
-	echo '<ul class="cmb2-checkbox-list cmb2-list">';
+	echo '<ul class="give-checklist-fields give-payment-gatways-list">';
 
 	foreach ( $gateways as $key => $option ) :
 
-		if ( is_array( $escaped_value ) && array_key_exists( $key, $escaped_value ) ) {
+		if ( is_array( $saved_values ) && array_key_exists( $key, $saved_values ) ) {
 			$enabled = '1';
 		} else {
 			$enabled = null;
@@ -1032,11 +1026,6 @@ function give_enabled_gateways_callback( $field_object, $escaped_value, $object_
 	endforeach;
 
 	echo '</ul>';
-
-	if ( $field_description ) {
-		echo '<p class="cmb2-metabox-description">' . $field_description . '</p>';
-	}
-
 }
 
 /**
@@ -1044,37 +1033,30 @@ function give_enabled_gateways_callback( $field_object, $escaped_value, $object_
  *
  * Renders gateways select menu
  *
- * @since 1.0
- *
- * @param $field_object , $escaped_value, $object_id, $object_type, $field_type_object Arguments passed by CMB2
- *
+ * @since  1.0
+ * @param  array $field_arr
+ * @param  array $saved_value
  * @return void
  */
-function give_default_gateway_callback( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
+function give_default_gateway_callback( $field_arr, $saved_value ) {
+	global $post;
 
-	$id                = $field_type_object->field->args['id'];
-	$field_description = $field_type_object->field->args['desc'];
+	$id                = $field_arr['id'];
 	$gateways          = give_get_enabled_payment_gateways();
 
 	echo '<select class="cmb2_select" name="' . $id . '" id="' . $id . '">';
 
-	//Add a field to the Give Form admin single post view of this field
-	if ( $field_type_object->field->object_type === 'post' ) {
-		echo '<option value="global">' . esc_html__( 'Global Default', 'give' ) . '</option>';
-	}
+		//Add a field to the Give Form admin single post view of this field
+		if ( is_object( $post ) &&  'give_forms' === $post->post_type ) {
+			echo '<option value="global">' . esc_html__( 'Global Default', 'give' ) . '</option>';
+		}
 
-	foreach ( $gateways as $key => $option ) :
-
-		$selected = isset( $escaped_value ) ? selected( $key, $escaped_value, false ) : '';
-
-
-		echo '<option value="' . esc_attr( $key ) . '"' . $selected . '>' . esc_html( $option['admin_label'] ) . '</option>';
-
-	endforeach;
+		foreach ( $gateways as $key => $option ) :
+			$selected = isset( $saved_value ) ? selected( $key, $saved_value, false ) : '';
+			echo '<option value="' . esc_attr( $key ) . '"' . $selected . '>' . esc_html( $option['admin_label'] ) . '</option>';
+		endforeach;
 
 	echo '</select>';
-
-	echo '<p class="cmb2-metabox-description">' . $field_description . '</p>';
 
 }
 
@@ -1208,7 +1190,6 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 	$field_classes        = 'regular-text give-license-field';
 	$type                 = empty( $escaped_value ) || ! $is_valid_license ? 'text' : 'password';
     $custom_html          = '';
-    $value                = $escaped_value;
     $messages             = array();
     $class                = '';
     $account_page_link    = $field_type_object->field->args['options']['account_url'];
@@ -1285,7 +1266,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
                     $messages[] = sprintf(
                         __( 'Your license key expired on %s. Please <a href="%s" target="_blank" title="Renew your license key">renew your license key</a>.', 'give' ),
                         date_i18n( get_option( 'date_format' ), strtotime( $license->expires, current_time( 'timestamp' ) ) ),
-                        $checkout_page_link . '?edd_license_key=' . $value . '&utm_campaign=admin&utm_source=licenses&utm_medium=expired'
+                        $checkout_page_link . '?edd_license_key=' . $license_key . '&utm_campaign=admin&utm_source=licenses&utm_medium=expired'
                     );
                     $license_status = 'license-' . $class;
                     break;
@@ -1321,7 +1302,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 
                 case 'item_name_mismatch' :
                     $class = $license->error;
-                    $messages[] = sprintf( __( 'This license %s does not belong to %s.', 'give' ), $value, $addon_name );
+                    $messages[] = sprintf( __( 'This license %s does not belong to %s.', 'give' ), $license_key, $addon_name );
                     $license_status = 'license-' . $class;
                     break;
 
@@ -1346,7 +1327,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
                         $messages[] = sprintf(
                             __( 'Your license key expires soon! It expires on %s. <a href="%s" target="_blank" title="Renew license">Renew your license key</a>.', 'give' ),
                             date_i18n( get_option( 'date_format' ), strtotime( $license->expires, current_time( 'timestamp' ) ) ),
-                            $checkout_page_link . '?edd_license_key=' . $value . '&utm_campaign=admin&utm_source=licenses&utm_medium=renew'
+                            $checkout_page_link . '?edd_license_key=' . $license_key . '&utm_campaign=admin&utm_source=licenses&utm_medium=renew'
                         );
                         $license_status = 'license-expires-soon';
                     } else {
@@ -1374,20 +1355,13 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 		$field_classes .= ' give-license-active';
 	}
 
-	// Get input filed html.
-	$input_field_html = $field_type_object->input( array(
-		'class' => $field_classes,
-		'type'  => $type
-	) );
+	// Get input field html.
+	$input_field_html = "<input type=\"{$type}\" name=\"{$id}\" class=\"{$field_classes}\" value=\"{$license_key}\">";
 
 	// If license is active so show deactivate button
 	if ( $is_valid_license ) {
-        // Get input filed html.
-        $input_field_html = $field_type_object->input( array(
-            'class' => $field_classes,
-            'type'  => $type,
-            'readonly' => 'readonly',
-        ) );
+        // Get input field html.
+		$input_field_html = "<input type=\"{$type}\" name=\"{$id}\" class=\"{$field_classes}\" value=\"{$license_key}\" readonly=\"readonly\">";
 
 		$custom_html = '<input type="submit" class="button-secondary give-license-deactivate" name="' . $id . '_deactivate" value="' . esc_attr__( 'Deactivate License', 'give' ) . '"/>';
 	}
@@ -1401,7 +1375,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
     }
 
     foreach( $messages as $message ) {
-        $custom_html .= '<div class="give-license-notice give-' . $license_status . '">';
+        $custom_html .= '<div class="give-license-status-notice give-' . $license_status . '">';
         $custom_html .= '<p>' . $message . '</p>';
         $custom_html .= '</div>';
     }
@@ -1415,7 +1389,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 	wp_nonce_field( $id . '-nonce', $id . '-nonce' );
 
     // Print field html.
-    echo '<div>' . $custom_html . '</div>';
+    echo "<div class=\"give-license-key\"><label for=\"{$id}\">{$addon_name }</label></div><div class=\"give-license-block\">{$custom_html}</div>";
 }
 
 
@@ -1487,19 +1461,19 @@ function give_hook_callback( $args ) {
 	do_action( "give_{$id}" );
 
 }
-
-/**
- * Get the CMB2 bootstrap!
- *
- * Checks to see if CMB2 plugin is installed first the uses included CMB2.
- * We can still use it even it it's not active.
- * This prevents fatal error conflicts with other themes and users of the CMB2 WP.org plugin.
- */
-
-if ( file_exists( WP_PLUGIN_DIR . '/cmb2/init.php' ) && ! defined( 'CMB2_LOADED' ) ) {
-	require_once WP_PLUGIN_DIR . '/cmb2/init.php';
-} elseif ( file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/cmb2/init.php' ) && ! defined( 'CMB2_LOADED' ) ) {
-	require_once GIVE_PLUGIN_DIR . '/includes/libraries/cmb2/init.php';
-} elseif ( file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/CMB2/init.php' ) && ! defined( 'CMB2_LOADED' ) ) {
-	require_once GIVE_PLUGIN_DIR . '/includes/libraries/CMB2/init.php';
-}
+//
+///**
+// * Get the CMB2 bootstrap!
+// *
+// * Checks to see if CMB2 plugin is installed first the uses included CMB2.
+// * We can still use it even it it's not active.
+// * This prevents fatal error conflicts with other themes and users of the CMB2 WP.org plugin.
+// */
+//
+//if ( file_exists( WP_PLUGIN_DIR . '/cmb2/init.php' ) && ! defined( 'CMB2_LOADED' ) ) {
+//	require_once WP_PLUGIN_DIR . '/cmb2/init.php';
+//} elseif ( file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/cmb2/init.php' ) && ! defined( 'CMB2_LOADED' ) ) {
+//	require_once GIVE_PLUGIN_DIR . '/includes/libraries/cmb2/init.php';
+//} elseif ( file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/CMB2/init.php' ) && ! defined( 'CMB2_LOADED' ) ) {
+//	require_once GIVE_PLUGIN_DIR . '/includes/libraries/CMB2/init.php';
+//}

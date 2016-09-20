@@ -260,6 +260,9 @@ function give_load_admin_scripts( $hook ) {
 	wp_register_script( 'give-qtip', $js_plugins . 'jquery.qtip' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
 	wp_enqueue_script( 'give-qtip' );
 
+	wp_register_script( 'give-repeatable-fields', $js_plugins . 'repeatable-fields' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
+	wp_enqueue_script( 'give-repeatable-fields' );
+
 	wp_enqueue_script( 'jquery-ui-datepicker' );
 	wp_enqueue_script( 'thickbox' );
 
@@ -292,7 +295,11 @@ function give_load_admin_scripts( $hook ) {
 		'regenerate_api_key'      => esc_html__( 'Are you sure you wish to regenerate this API key?', 'give' ),
 		'resend_receipt'          => esc_html__( 'Are you sure you wish to resend the donation receipt?', 'give' ),
 		'copy_download_link_text' => esc_html__( 'Copy these links to your clipboard and give them to your donor.', 'give' ),
-		'delete_payment_download' => esc_html__( 'Are you sure you wish to delete this form?', 'give' ),
+		/* translators: %s: Upload image/file button & frame */
+		'logo'                   => esc_html__( 'Logo', 'give' ),
+		'use_this_image'         => esc_html__( 'Use this image', 'give' ),
+		/* translators: %s: form singular label */
+		'delete_payment_download' => sprintf( esc_html__( 'Are you sure you wish to delete this %s?', 'give' ), give_get_forms_label_singular() ),
 		'one_price_min'           => esc_html__( 'You must have at least one price.', 'give' ),
 		'one_file_min'            => esc_html__( 'You must have at least one file.', 'give' ),
 		'one_field_min'           => esc_html__( 'You must have at least one field.', 'give' ),

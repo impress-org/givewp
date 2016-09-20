@@ -16,10 +16,6 @@ Settings
     margin-bottom: 5px;
   }
 
-  span.cmb2-metabox-description {
-    font-size: 13px;
-  }
-
   .cmb2-wrap .cmb-type-checkbox input[type="checkbox"] {
     display: block;
     margin-bottom: 5px;
@@ -57,12 +53,86 @@ Settings
 
 }
 
-.cmb-type-give-title label {
+.give-setting-tab-header {
+  clear: both;
+  overflow: hidden;
+  margin: 30px 0;
+
+  h2{
+    margin-top: 8px;
+  }
+}
+
+.give-radio-inline {
+  ul{
+    margin-top: 0;
+  }
+
+  li {
+    display: inline-block;
+    margin-left: 15px;
+  }
+
+  li:first-child {
+    margin-left: 0;
+  }
+}
+
+p.give-field-description, .cmb2-metabox-description{
+  color: #aaaaaa;
+  font-style: italic;
+  font-size: 13px !important;
+}
+
+.give-image-thumb {
+  position: relative;
+  margin-top: 14px;
+
+  span.give-delete-image-thumb {
+    position: absolute;
+    background: red;
+    color: white;
+    border-radius: 30px;
+    left: -10px;
+    top: -10px;
+  }
+
+  img {
+    max-width: 400px;
+    border: 4px solid white;
+  }
+}
+
+.cmb-type-give-title label,
+.give-setting-tab-header h2{
   float: left;
+  display: inline-block;
   width: 220px;
   font-style: italic;
   color: #AAA;
+  margin: 0;
+  font-size: 14px;
 }
+
+/* css fix start: This css fix is for api and system info setting tab.  */
+.give-setting-tab-header-api, .give-setting-tab-header-system_info{display:none}
+.give-setting-tab-body-api {
+  position: relative;
+
+  .tablenav .actions{
+    overflow: visible;
+  }
+
+  >tbody>tr>td{
+    padding: 0 !important;
+
+  }
+
+  table th{
+    padding: 15px 10px !important;;
+  }
+}
+/* css fix end*/
 
 .postbox-container #_give_donation_levels_repeat > .cmb-repeatable-grouping:not(:last-of-type) {
   border-bottom: 1px solid #e9e9e9;
@@ -198,7 +268,7 @@ a.give-delete {
 //--------------------------------------------------------------
 // License
 //--------------------------------------------------------------
-.cmb2-wrap {
+.give-settings-wrap-licenses {
   .give-license-deactivate {
     margin: 1px 0 0 10px;
     height: 30px;
@@ -224,10 +294,10 @@ a.give-delete {
 }
 
 /* Addon grid design */
-#licenses .cmb2-wrap{
+.give-settings-page{
   margin-top: 20px;
 
-  .cmb-row {
+  .give-settings-wrap-licenses {
     display: block;
     position: relative;
     float: left;
@@ -239,15 +309,7 @@ a.give-delete {
     border: 1px solid #ccc;
   }
 
-  // Common css for cmb-th and cmb-td.
-  .cmb-row > div {
-    display: block;
-    width: auto;
-    padding: 0;
-    float: none;
-  }
-
-  .cmb-th {
+  .give-license-key {
     background: #f9f9f9;
     border-bottom: 1px solid #ccc;
     margin-bottom: 20px;
@@ -255,24 +317,26 @@ a.give-delete {
     label{
       margin: 0 0 0 10px;
       padding: 10px 0;
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
     }
   }
 
-  .cmb-td {
-    > div {
-      margin: 0 10px;
-
-      input[type="text"]{
-        width: 100%;
-      }
-
-      input[type="submit"]{
-        margin: 15px 0 10px 0;
-      }
-    }
+  .give-license-block{
+    margin: 0 10px;
   }
 
-  .give-license-notice {
+  input[type="text"].give-license-field,
+  input[type="password"].give-license-field{
+    width: 100%;
+  }
+
+  .give-license-block input[type="submit"]{
+    margin: 15px 0 10px 0;
+  }
+
+  .give-license-status-notice {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -296,7 +360,7 @@ a.give-delete {
     }
   }
 
-  .give-license-notice.give-license-expires-soon {
+  .give-license-status-notice.give-license-expires-soon {
     background-color: #00a0d2;
     color: #fff;
     border-color: #00a0d2;
@@ -308,24 +372,24 @@ a.give-delete {
     border-color: #e24e4e;
   }
 
-  .give-license-notice.give-license-error,
-  .give-license-notice.give-license-no_activations_left,
-  .give-license-notice.give-license-missing,
-  .give-license-notice.give-license-invalid,
-  .give-license-notice.give-license-site_inactive,
-  .give-license-notice.give-license-item_name_mismatch {
+  .give-license-status-notice.give-license-error,
+  .give-license-status-notice.give-license-no_activations_left,
+  .give-license-status-notice.give-license-missing,
+  .give-license-status-notice.give-license-invalid,
+  .give-license-status-notice.give-license-site_inactive,
+  .give-license-status-notice.give-license-item_name_mismatch {
     background-color: #ffebcd;
     border-color: #ffebcd;
   }
 
-  .give-license-notice.give-license-lifetime-notice{
+  .give-license-status-notice.give-license-lifetime-notice{
     background-color: #46b450;
     border-color: #46b450;
   }
 
-  .give-license-notice.give-license-lifetime-notice,
-  .give-license-notice.give-license-expires-soon,
-  .give-license-notice.give-license-expired {
+  .give-license-status-notice.give-license-lifetime-notice,
+  .give-license-status-notice.give-license-expires-soon,
+  .give-license-status-notice.give-license-expired {
     color: #fff;
 
     a{
@@ -333,28 +397,24 @@ a.give-delete {
     }
   }
 
-  .give-license-notice.give-license-expires-soon a:hover,
-  .give-license-notice.give-license-expired a:hover {
+  .give-license-status-notice.give-license-expires-soon a:hover,
+  .give-license-status-notice.give-license-expired a:hover {
     text-decoration: none;
   }
 }
 
 /* Responsive fixes: Addon grid design */
 @media screen and ( max-width: 1100px ) {
-  #licenses .cmb2-wrap{
-    .cmb-row{
-      width:45%;
-      min-height: 230px;
-    }
+  .give-settings-page .give-settings-wrap-licenses{
+    width:45%;
+    min-height: 230px;
   }
 }
 
 @media screen and ( max-width: 600px ){
-  #licenses .cmb2-wrap{
-    .cmb-row{
-      width:100%;
-      max-width: 320px;
-    }
+  .give-settings-page .give-settings-wrap-licenses{
+    width:100%;
+    max-width: 320px;
   }
 }
 

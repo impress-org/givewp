@@ -273,9 +273,11 @@ jQuery.noConflict();
             var email_access = $('#email_access');
             email_access.on('change', function () {
                 if (email_access.prop('checked')) {
-                    $('.cmb2-id-recaptcha-key, .cmb2-id-recaptcha-secret').show();
+                    $('#recaptcha_key').parents('tr').show();
+                    $('#recaptcha_secret').parents('tr').show();
                 } else {
-                    $('.cmb2-id-recaptcha-key, .cmb2-id-recaptcha-secret').hide();
+                    $('#recaptcha_key').parents('tr').hide();
+                    $('#recaptcha_secret').parents('tr').hide();
                 }
             }).change();
         },
@@ -757,6 +759,168 @@ jQuery.noConflict();
         }
     };
 
+    /**
+     * Edit Donation form screen Js
+     */
+    var Edit_Form_Screen = {
+        init: function(){
+            this.handle_metabox_tab_click();
+            this.setup_colorpicker();
+            this.handle_repeatable_fields();
+        },
+
+        handle_metabox_tab_click: function() {
+            var $tab_links = $( '.give-metabox-tabs a' );
+            $tab_links.on( 'click', function(e){
+                e.preventDefault();
+                // Remove active class from tab link.
+                $tab_links.parents( 'li' ).removeClass( 'active' );
+
+                // Add active class to current tab link.
+                $(this).parent().addClass('active');
+
+                // Hide all tab contents.
+                $( '.give_options_panel' ).addClass( 'give-hidden' );
+
+                // Show tab content.
+                $( $(this).attr('href') ).removeClass('give-hidden');
+                return false;
+            });
+        },
+
+        setup_colorpicker: function() {
+            $(document).ready(function(){
+                if( $('.give-colorpicker').length ){
+                    $('.give-colorpicker').wpColorPicker();
+                }
+            })
+        },
+
+        handle_repeatable_fields: function(){
+            jQuery(function() {
+                jQuery('#_give_donation_levels_field').each(function() {
+                    // Note: Do not change option params, it can break repeatable fields functionality.
+                    var options = {
+                        wrapper : '.give-repeatable-fields-section-wrapper',
+                        container: '.container',
+                        row: '.give-row',
+                        add: '#give-add-repeater-field-section-row',
+                        remove: '.give-remove',
+                        move: '.give-move',
+                        template: '.give-template',
+                        is_sortable: true,
+                        before_add: null,
+                        after_add: handle_metabox_repeater_field_row_count,
+                        //after_add:  after_add, Note: after_add is internal function in repeatable-fields.js. Uncomment this can cause of js error.
+                        before_remove: null,
+                        after_remove: handle_metabox_repeater_field_row_remove,
+                        sortable_options: {
+                            placeholder: "give-ui-placeholder-state-highlight",
+                            update: function( event, ui ){
+                                var $rows = $( '.give-row', '#_give_donation_levels_field' ).not( '.give-template' );
+
+                                if( $rows.length ) {
+                                    var row_count= 1;
+                                    $rows.each( function( index, item ){
+                                        // Set name for fields.
+                                        var $fields = $( '.give-field, label', $( item ) ) ;
+
+                                        if( $fields.length ){
+                                            $( '.give-field, label', $( item ) ).each(function() {
+                                                var $parent = $(this).parent();
+
+                                                $.each(this.attributes, function( index, element ) {
+                                                    var old_class_name = this.value.replace( /\[/g, '_' ).replace( /]/g, '' ) + '_field',
+                                                        new_class_name = '';
+
+                                                    // Bailout.
+                                                    if( ! this.value || ( -1 == this.value.indexOf('[')) ) {
+                                                        return;
+                                                    }
+
+                                                    // Reorder index.
+                                                    this.value = this.value.replace( /\[\d+\]/g, '[' + (row_count - 1) + ']' );
+
+                                                    // Update class name
+                                                    if( 'P' == $parent.get(0).nodeName && $parent.hasClass( old_class_name ) ) {
+                                                        new_class_name = this.value.replace( /\[/g, '_' ).replace( /]/g, '' ) + '_field';
+                                                        $parent.removeClass( old_class_name ).addClass( new_class_name );
+                                                    }
+                                                });
+                                            });
+                                        }
+
+                                        row_count++;
+                                    });
+                                }
+                            }
+                        }
+                        //row_count_placeholder: '{{row-count-placeholder}}' Note: do not modify this param otherwise it will break repeatable field functionality.
+                    };
+
+                    jQuery(this).repeatable_fields( options );
+                });
+            });
+        }
+    };
+
+    /**
+     * Handle row count and field count for repeatable field.
+     */
+    var handle_metabox_repeater_field_row_count = function( container, new_row ) {
+        var row_count = $(container).attr('data-rf-row-count');
+
+        row_count++;
+
+
+        // Set name for fields.
+        $( '*', new_row ).each(function() {
+            $.each(this.attributes, function( index, element ) {
+                this.value = this.value.replace( '{{row-count-placeholder}}', row_count - 1 );
+            });
+        });
+
+        // Set row counter.
+        $(container).attr('data-rf-row-count', row_count);
+
+        // Set level id.
+        $( 'input[type="hidden"].give-levels_id', new_row ).val( row_count - 1 );
+
+        // If there is only one level then set it as default.
+        window.setTimeout(
+            function(){
+                var $parent = $( '#_give_donation_levels_field' ),
+                    $repeatable_rows = $( '.give-row', $parent ).not('.give-template'),
+                    $default_radio = $( '.give-give_default_radio_inline', $repeatable_rows ),
+                    number_of_level = $repeatable_rows.length;
+
+                if ( number_of_level === 1 ) {
+                    $default_radio.prop('checked', true);
+                }
+            },
+            200
+        );
+    };
+
+
+    /**
+     * Handle row remove for repeatable field.
+     */
+    var handle_metabox_repeater_field_row_remove =  function ( container ) {
+        var $parent = $('#_give_donation_levels_field'),
+            $repeatable_rows = $( '.give-row', $parent ).not('.give-template'),
+            row_count = $(container).attr('data-rf-row-count');
+
+        // Reduce row count.
+        $(container).attr('data-rf-row-count', -- row_count );
+
+        // Set first row as default if selected default row deleted.
+        // When a row is removed containing the default selection then revert default to first repeatable row.
+        if ( $('.give-give_default_radio_inline', $parent ).is(':checked') === false ) {
+            $repeatable_rows.first().find('.give-give_default_radio_inline').prop('checked', true);
+        }
+    };
+
 
     /**
      * Initialize qTips
@@ -789,6 +953,7 @@ jQuery.noConflict();
         Give_Customer.init();
         API_Screen.init();
         Give_Export.init();
+        Edit_Form_Screen.init();
 
         initialize_qtips();
 
@@ -883,7 +1048,7 @@ jQuery.noConflict();
         give_add_qtip($give_money_fields);
 
         // Add qtip to new created money/price input field.
-        $( '#_give_donation_levels_repeat').on( 'click' , 'button.cmb-add-group-row', function(){
+        $( '#give-add-repeater-field-section-row' ).on( 'click' , function(){
             window.setTimeout(
                 function(){
 
@@ -925,7 +1090,7 @@ jQuery.noConflict();
             price_string = give_unformat_currency( $(this).val(), false );
 
             // Back out.
-            if( ! price_string ) {
+            if( ! parseInt( price_string ) ) {
                 $(this).val('');
                 return false;
             }

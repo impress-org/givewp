@@ -760,7 +760,19 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
 
 .give-money-symbol-after {
   border-left: 0;
-  margin-left: -4px; }
+  margin-left: -1px; }
+
+.give_options_panel input[type="text"] {
+  padding: 5px;
+  width: 100%; }
+
+input.give-text_small,
+input.give-text-small {
+  width: 100px !important; }
+
+input.give-text-medium,
+input.give-text_medium {
+  width: 200px !important; }
 
 .give-underline {
   text-decoration: underline; }
@@ -909,6 +921,138 @@ Tooltips
   top: 1px; }
   .give-tooltip:hover {
     color: #333; }
+
+#give-metabox-form-data .inside {
+  margin: 0;
+  padding: 0; }
+
+#give-metabox-form-data .give-metabox-panel-wrap {
+  background: #fff;
+  overflow: hidden; }
+
+#give-metabox-form-data .give-metabox-tabs {
+  margin: 0;
+  width: 20%;
+  float: left;
+  line-height: 1em;
+  padding: 0 0 10px;
+  position: relative;
+  background-color: #fafafa;
+  border-right: 1px solid #eee;
+  box-sizing: border-box; }
+  #give-metabox-form-data .give-metabox-tabs :after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 9999em;
+    position: absolute;
+    bottom: -9999em;
+    left: 0;
+    background-color: #fafafa;
+    border-right: 1px solid #eee; }
+  #give-metabox-form-data .give-metabox-tabs li {
+    margin: 0;
+    padding: 0;
+    display: block;
+    position: relative; }
+    #give-metabox-form-data .give-metabox-tabs li a {
+      margin: 0;
+      padding: 10px;
+      display: block;
+      box-shadow: none;
+      text-decoration: none;
+      line-height: 20px !important;
+      border-bottom: 1px solid #eee; }
+  #give-metabox-form-data .give-metabox-tabs li.active a {
+    color: #555;
+    position: relative;
+    background-color: #eee; }
+
+#give-metabox-form-data .give_options_panel {
+  float: left;
+  width: 80%;
+  min-width: 175px; }
+  #give-metabox-form-data .give_options_panel .give-field-wrap {
+    padding: 1em 20px 1em 162px !important;
+    margin: 0;
+    border-bottom: 1px solid #eee; }
+    #give-metabox-form-data .give_options_panel .give-field-wrap > label, #give-metabox-form-data .give_options_panel .give-field-wrap > legend {
+      float: left;
+      width: 150px;
+      padding: 0;
+      margin: 0 0 0 -150px;
+      line-height: 24px;
+      font-size: 12px;
+      font-weight: 400; }
+    #give-metabox-form-data .give_options_panel .give-field-wrap .give-field-description {
+      color: #aaaaaa;
+      font-size: 12px;
+      line-height: 18px;
+      display: block;
+      padding-top: 10px; }
+    #give-metabox-form-data .give_options_panel .give-field-wrap ul {
+      margin: 0; }
+    #give-metabox-form-data .give_options_panel .give-field-wrap .mce-container iframe {
+      min-height: 200px; }
+  #give-metabox-form-data .give_options_panel .give-field-wrap:last-child {
+    border-bottom: 0; }
+  #give-metabox-form-data .give_options_panel textarea.give-field {
+    width: 100%; }
+  #give-metabox-form-data .give_options_panel .give-field-wrap:hover .give-field-row-actions {
+    display: block; }
+  #give-metabox-form-data .give_options_panel .give-field-wrap:last-child {
+    border-bottom: 0; }
+  #give-metabox-form-data .give_options_panel .give-inline-radio-fields li {
+    display: inline-block;
+    margin-left: 15px; }
+  #give-metabox-form-data .give_options_panel .give-inline-radio-fields li:first-child {
+    margin-left: 0; }
+  #give-metabox-form-data .give_options_panel .give-repeatable-field-section {
+    padding: 10px;
+    background: #f5f5f5; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-repeatable-fields-section-wrapper {
+      width: 100%;
+      background-color: white;
+      border-collapse: collapse; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-row {
+      border-bottom: 5px solid white;
+      background-color: white; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-row:last-child {
+      border-bottom: 0; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-column {
+      padding: 0; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-move {
+      position: relative;
+      width: 5%;
+      background-color: #dadada;
+      cursor: move; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-remove {
+      width: 10px;
+      height: 10px;
+      background: white;
+      text-align: center;
+      border: 1px solid gray;
+      padding: 5px;
+      border-radius: 25px;
+      position: absolute;
+      left: -9px;
+      top: 50%;
+      text-decoration: none;
+      color: black;
+      line-height: 10px;
+      font-size: 14px;
+      cursor: pointer; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-remove:hover {
+      background-color: red;
+      color: white; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-add-repeater-field-section-row-wrap {
+      background-color: #f5f5f5; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section #give-add-repeater-field-section-row {
+      margin: 5px 5px; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-field-wrap:last-child {
+      border-bottom: 1px solid #eee; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-ui-placeholder-state-highlight {
+      background-color: #68bb6c; }
 
 /**
  * Give Add-ons SCSS
@@ -1324,9 +1468,6 @@ Settings
 .give_settings_page .nav-tab-wrapper {
   margin-bottom: 5px; }
 
-.give_settings_page span.cmb2-metabox-description {
-  font-size: 13px; }
-
 .give_settings_page .cmb2-wrap .cmb-type-checkbox input[type="checkbox"] {
   display: block;
   margin-bottom: 5px; }
@@ -1346,12 +1487,66 @@ Settings
   .cmb-type-enabled-gateways ul li.ui-sortable-handle span.give-drag-handle:hover {
     color: #333; }
 
-.cmb-type-give-title label {
+.give-setting-tab-header {
+  clear: both;
+  overflow: hidden;
+  margin: 30px 0; }
+  .give-setting-tab-header h2 {
+    margin-top: 8px; }
+
+.give-radio-inline ul {
+  margin-top: 0; }
+
+.give-radio-inline li {
+  display: inline-block;
+  margin-left: 15px; }
+
+.give-radio-inline li:first-child {
+  margin-left: 0; }
+
+p.give-field-description, .cmb2-metabox-description {
+  color: #aaaaaa;
+  font-style: italic;
+  font-size: 13px !important; }
+
+.give-image-thumb {
+  position: relative;
+  margin-top: 14px; }
+  .give-image-thumb span.give-delete-image-thumb {
+    position: absolute;
+    background: red;
+    color: white;
+    border-radius: 30px;
+    left: -10px;
+    top: -10px; }
+  .give-image-thumb img {
+    max-width: 400px;
+    border: 4px solid white; }
+
+.cmb-type-give-title label,
+.give-setting-tab-header h2 {
   float: left;
+  display: inline-block;
   width: 220px;
   font-style: italic;
-  color: #AAA; }
+  color: #AAA;
+  margin: 0;
+  font-size: 14px; }
 
+/* css fix start: This css fix is for api and system info setting tab.  */
+.give-setting-tab-header-api, .give-setting-tab-header-system_info {
+  display: none; }
+
+.give-setting-tab-body-api {
+  position: relative; }
+  .give-setting-tab-body-api .tablenav .actions {
+    overflow: visible; }
+  .give-setting-tab-body-api > tbody > tr > td {
+    padding: 0 !important; }
+  .give-setting-tab-body-api table th {
+    padding: 15px 10px !important; }
+
+/* css fix end*/
 .postbox-container #_give_donation_levels_repeat > .cmb-repeatable-grouping:not(:last-of-type) {
   border-bottom: 1px solid #e9e9e9;
   border-top: none; }
@@ -1441,18 +1636,18 @@ Settings
 a.give-delete {
   color: #a00; }
 
-.cmb2-wrap .give-license-deactivate {
+.give-settings-wrap-licenses .give-license-deactivate {
   margin: 1px 0 0 10px;
   height: 30px; }
 
-.cmb2-wrap .give-license-field {
+.give-settings-wrap-licenses .give-license-field {
   background-image: url("../images/close.png");
   background-color: #FFF;
   background-repeat: no-repeat;
   background-position: 98.5% center;
   background-size: 18px; }
 
-.cmb2-wrap .give-license-active, .cmb2-wrap .give-license-active:focus {
+.give-settings-wrap-licenses .give-license-active, .give-settings-wrap-licenses .give-license-active:focus {
   background-image: url("../images/tick.png");
   background-color: #FFF;
   background-repeat: no-repeat;
@@ -1461,9 +1656,9 @@ a.give-delete {
   background-size: 16px; }
 
 /* Addon grid design */
-#licenses .cmb2-wrap {
+.give-settings-page {
   margin-top: 20px; }
-  #licenses .cmb2-wrap .cmb-row {
+  .give-settings-page .give-settings-wrap-licenses {
     display: block;
     position: relative;
     float: left;
@@ -1473,25 +1668,24 @@ a.give-delete {
     margin-bottom: 10px !important;
     min-height: 220px;
     border: 1px solid #ccc; }
-  #licenses .cmb2-wrap .cmb-row > div {
-    display: block;
-    width: auto;
-    padding: 0;
-    float: none; }
-  #licenses .cmb2-wrap .cmb-th {
+  .give-settings-page .give-license-key {
     background: #f9f9f9;
     border-bottom: 1px solid #ccc;
     margin-bottom: 20px; }
-    #licenses .cmb2-wrap .cmb-th label {
+    .give-settings-page .give-license-key label {
       margin: 0 0 0 10px;
-      padding: 10px 0; }
-  #licenses .cmb2-wrap .cmb-td > div {
+      padding: 10px 0;
+      display: block;
+      font-size: 14px;
+      font-weight: 600; }
+  .give-settings-page .give-license-block {
     margin: 0 10px; }
-    #licenses .cmb2-wrap .cmb-td > div input[type="text"] {
-      width: 100%; }
-    #licenses .cmb2-wrap .cmb-td > div input[type="submit"] {
-      margin: 15px 0 10px 0; }
-  #licenses .cmb2-wrap .give-license-notice {
+  .give-settings-page input[type="text"].give-license-field,
+  .give-settings-page input[type="password"].give-license-field {
+    width: 100%; }
+  .give-settings-page .give-license-block input[type="submit"] {
+    margin: 15px 0 10px 0; }
+  .give-settings-page .give-license-status-notice {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -1499,52 +1693,52 @@ a.give-delete {
     background: whitesmoke;
     border-top: 1px solid #ececec;
     min-height: 65px; }
-    #licenses .cmb2-wrap .give-license-notice p {
+    .give-settings-page .give-license-status-notice p {
       padding: 0 10px; }
-    #licenses .cmb2-wrap .give-license-notice a {
+    .give-settings-page .give-license-status-notice a {
       color: #444;
       cursor: pointer; }
-    #licenses .cmb2-wrap .give-license-notice a:hover {
+    .give-settings-page .give-license-status-notice a:hover {
       text-decoration: none; }
-  #licenses .cmb2-wrap .give-license-notice.give-license-expires-soon {
+  .give-settings-page .give-license-status-notice.give-license-expires-soon {
     background-color: #00a0d2;
     color: #fff;
     border-color: #00a0d2; }
-  #licenses .cmb2-wrap .give-license-notice.give-license-expired {
+  .give-settings-page .give-license-notice.give-license-expired {
     background-color: #e24e4e;
     color: #fff;
     border-color: #e24e4e; }
-  #licenses .cmb2-wrap .give-license-notice.give-license-error,
-  #licenses .cmb2-wrap .give-license-notice.give-license-no_activations_left,
-  #licenses .cmb2-wrap .give-license-notice.give-license-missing,
-  #licenses .cmb2-wrap .give-license-notice.give-license-invalid,
-  #licenses .cmb2-wrap .give-license-notice.give-license-site_inactive,
-  #licenses .cmb2-wrap .give-license-notice.give-license-item_name_mismatch {
+  .give-settings-page .give-license-status-notice.give-license-error,
+  .give-settings-page .give-license-status-notice.give-license-no_activations_left,
+  .give-settings-page .give-license-status-notice.give-license-missing,
+  .give-settings-page .give-license-status-notice.give-license-invalid,
+  .give-settings-page .give-license-status-notice.give-license-site_inactive,
+  .give-settings-page .give-license-status-notice.give-license-item_name_mismatch {
     background-color: #ffebcd;
     border-color: #ffebcd; }
-  #licenses .cmb2-wrap .give-license-notice.give-license-lifetime-notice {
+  .give-settings-page .give-license-status-notice.give-license-lifetime-notice {
     background-color: #46b450;
     border-color: #46b450; }
-  #licenses .cmb2-wrap .give-license-notice.give-license-lifetime-notice,
-  #licenses .cmb2-wrap .give-license-notice.give-license-expires-soon,
-  #licenses .cmb2-wrap .give-license-notice.give-license-expired {
+  .give-settings-page .give-license-status-notice.give-license-lifetime-notice,
+  .give-settings-page .give-license-status-notice.give-license-expires-soon,
+  .give-settings-page .give-license-status-notice.give-license-expired {
     color: #fff; }
-    #licenses .cmb2-wrap .give-license-notice.give-license-lifetime-notice a,
-    #licenses .cmb2-wrap .give-license-notice.give-license-expires-soon a,
-    #licenses .cmb2-wrap .give-license-notice.give-license-expired a {
+    .give-settings-page .give-license-status-notice.give-license-lifetime-notice a,
+    .give-settings-page .give-license-status-notice.give-license-expires-soon a,
+    .give-settings-page .give-license-status-notice.give-license-expired a {
       color: #fff; }
-  #licenses .cmb2-wrap .give-license-notice.give-license-expires-soon a:hover,
-  #licenses .cmb2-wrap .give-license-notice.give-license-expired a:hover {
+  .give-settings-page .give-license-status-notice.give-license-expires-soon a:hover,
+  .give-settings-page .give-license-status-notice.give-license-expired a:hover {
     text-decoration: none; }
 
 /* Responsive fixes: Addon grid design */
 @media screen and (max-width: 1100px) {
-  #licenses .cmb2-wrap .cmb-row {
+  .give-settings-page .give-settings-wrap-licenses {
     width: 45%;
     min-height: 230px; } }
 
 @media screen and (max-width: 600px) {
-  #licenses .cmb2-wrap .cmb-row {
+  .give-settings-page .give-settings-wrap-licenses {
     width: 100%;
     max-width: 320px; } }
 
