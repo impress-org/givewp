@@ -182,7 +182,22 @@ function give_render_field( $field ) {
  * Output a text input box.
  *
  * @since  1.8
- * @param  array $field
+ * @param  array $field {
+ *     Optional. Array of text input field arguments.
+ *
+ *     @type string             $id              Field ID. Default ''.
+ *     @type string             $style           CSS style for input field. Default ''.
+ *     @type string             $wrapper_class   CSS class to use for wrapper of input field. Default ''.
+ *     @type string             $value           Value of input field. Default ''.
+ *     @type string             $name            Name of input field. Default ''.
+ *     @type string             $type            Type of input field. Default 'text'.
+ *     @type string             $before_field    Text/HTML to add before input field. Default ''.
+ *     @type string             $after_field     Text/HTML to add after input field. Default ''.
+ *     @type string             $data_type       Define data type for value of input to filter it properly. Default ''.
+ *     @type string             $description     Description of input field. Default ''.
+ *     @type array              $attributes      List of attributes of input field. Default array().
+ *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class' => '****' )
+ * }
  * @return void
  */
 function give_text_input( $field ) {
@@ -192,7 +207,6 @@ function give_text_input( $field ) {
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
 	$field['value']         = give_get_field_value( $field, $thepostid );
-	$field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
 	$field['type']          = isset( $field['type'] ) ? $field['type'] : 'text';
 	$field['before_field']  = '';
 	$field['after_field']   = '';
@@ -237,7 +251,16 @@ function give_text_input( $field ) {
  * Output a hidden input box.
  *
  * @since  1.8
- * @param  array $field
+ * @param  array $field {
+ *     Optional. Array of hidden text input field arguments.
+ *
+ *     @type string             $id              Field ID. Default ''.
+ *     @type string             $value           Value of input field. Default ''.
+ *     @type string             $name            Name of input field. Default ''.
+ *     @type string             $type            Type of input field. Default 'text'.
+ *     @type array              $attributes      List of attributes of input field. Default array().
+ *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class' => '****' )
+ * }
  * @return void
  */
 function give_hidden_input( $field ) {
@@ -263,7 +286,19 @@ function give_hidden_input( $field ) {
  * Output a textarea input box.
  *
  * @since  1.8
- * @param  array $field
+ * @since  1.8
+ * @param  array $field {
+ *     Optional. Array of textarea input field arguments.
+ *
+ *     @type string             $id              Field ID. Default ''.
+ *     @type string             $style           CSS style for input field. Default ''.
+ *     @type string             $wrapper_class   CSS class to use for wrapper of input field. Default ''.
+ *     @type string             $value           Value of input field. Default ''.
+ *     @type string             $name            Name of input field. Default ''.
+ *     @type string             $description     Description of input field. Default ''.
+ *     @type array              $attributes      List of attributes of input field. Default array().
+ *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class' => '****' )
+ * }
  * @return void
  */
 function give_textarea_input( $field ) {
@@ -296,7 +331,18 @@ function give_textarea_input( $field ) {
  * Output a wysiwyg.
  *
  * @since  1.8
- * @param  array $field
+ * @param  array $field {
+ *     Optional. Array of WordPress editor field arguments.
+ *
+ *     @type string             $id              Field ID. Default ''.
+ *     @type string             $style           CSS style for input field. Default ''.
+ *     @type string             $wrapper_class   CSS class to use for wrapper of input field. Default ''.
+ *     @type string             $value           Value of input field. Default ''.
+ *     @type string             $name            Name of input field. Default ''.
+ *     @type string             $description     Description of input field. Default ''.
+ *     @type array              $attributes      List of attributes of input field. Default array().
+ *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class' => '****' )
+ * }
  * @return void
  */
 function give_wysiwyg( $field ) {
@@ -344,7 +390,19 @@ function give_wysiwyg( $field ) {
  * Output a checkbox input box.
  *
  * @since  1.8
- * @param  array $field
+ * @param  array $field {
+ *     Optional. Array of checkbox field arguments.
+ *
+ *     @type string             $id              Field ID. Default ''.
+ *     @type string             $style           CSS style for input field. Default ''.
+ *     @type string             $wrapper_class   CSS class to use for wrapper of input field. Default ''.
+ *     @type string             $value           Value of input field. Default ''.
+ *     @type string             $cbvalue         Checkbox value. Default 'on'.
+ *     @type string             $name            Name of input field. Default ''.
+ *     @type string             $description     Description of input field. Default ''.
+ *     @type array              $attributes      List of attributes of input field. Default array().
+ *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class' => '****' )
+ * }
  * @return void
  */
 function give_checkbox( $field ) {
@@ -357,7 +415,7 @@ function give_checkbox( $field ) {
 	$field['cbvalue']       = isset( $field['cbvalue'] ) ? $field['cbvalue'] : 'on';
 	$field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
 
-	// Custom attribute handling
+	// Custom attribute handling.
 	$custom_attributes = array();
 
 	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
@@ -380,7 +438,20 @@ function give_checkbox( $field ) {
  * Output a select input box.
  *
  * @since  1.8
- * @param  array $field
+ * @param  array $field {
+ *     Optional. Array of select field arguments.
+ *
+ *     @type string             $id              Field ID. Default ''.
+ *     @type string             $style           CSS style for input field. Default ''.
+ *     @type string             $wrapper_class   CSS class to use for wrapper of input field. Default ''.
+ *     @type string             $value           Value of input field. Default ''.
+ *     @type string             $name            Name of input field. Default ''.
+ *     @type string             $description     Description of input field. Default ''.
+ *     @type array              $attributes      List of attributes of input field. Default array().
+ *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class' => '****' )
+ *     @type array              $options         List of options. Default array().
+ *                                               for example: 'options' => array( '' => 'None', 'yes' => 'Yes' )
+ * }
  * @return void
  */
 function give_select( $field ) {
@@ -420,7 +491,20 @@ function give_select( $field ) {
  * Output a radio input box.
  *
  * @since  1.8
- * @param  array $field
+ * @param  array $field {
+ *     Optional. Array of radio field arguments.
+ *
+ *     @type string             $id              Field ID. Default ''.
+ *     @type string             $style           CSS style for input field. Default ''.
+ *     @type string             $wrapper_class   CSS class to use for wrapper of input field. Default ''.
+ *     @type string             $value           Value of input field. Default ''.
+ *     @type string             $name            Name of input field. Default ''.
+ *     @type string             $description     Description of input field. Default ''.
+ *     @type array              $attributes      List of attributes of input field. Default array().
+ *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class' => '****' )
+ *     @type array              $options         List of options. Default array().
+ *                                               for example: 'options' => array( 'enable' => 'Enable', 'disable' => 'Disable' )
+ * }
  * @return void
  */
 function give_radio( $field ) {
@@ -469,7 +553,18 @@ function give_radio( $field ) {
  * Output a colorpicker.
  *
  * @since  1.8
- * @param  array $field
+ * @param  array $field {
+ *     Optional. Array of colorpicker field arguments.
+ *
+ *     @type string             $id              Field ID. Default ''.
+ *     @type string             $style           CSS style for input field. Default ''.
+ *     @type string             $wrapper_class   CSS class to use for wrapper of input field. Default ''.
+ *     @type string             $value           Value of input field. Default ''.
+ *     @type string             $name            Name of input field. Default ''.
+ *     @type string             $description     Description of input field. Default ''.
+ *     @type array              $attributes      List of attributes of input field. Default array().
+ *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class' => '****' )
+ * }
  * @return void
  */
 function give_colorpicker( $field ) {
@@ -480,7 +575,7 @@ function give_colorpicker( $field ) {
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
 	$field['value']         = give_get_field_value( $field, $thepostid );
 	$field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
-	$field['type']          = isset( $field['type'] ) ? $field['type'] : 'text';
+	$field['type']          = 'text';
 
 	// Custom attribute handling
 	$custom_attributes = array();
@@ -501,7 +596,7 @@ function give_colorpicker( $field ) {
 }
 
 /**
- * Output a colorpicker.
+ * Output a select field with payment options list.
  *
  * @since  1.8
  * @param  array $field
