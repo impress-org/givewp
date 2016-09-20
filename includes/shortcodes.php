@@ -421,8 +421,12 @@ function give_process_profile_editor_updates( $data ) {
 		}
 	}
 
-	// Make sure the new email doesn't belong to another user
-	if ( $email != $old_user_data->user_email ) {
+	if( empty( $email ) ) {
+		// Make sure email should not be empty.
+		give_set_error( 'email_empty', esc_html__( 'The email you entered is empty.', 'give' ) );
+
+	}else if ( $email != $old_user_data->user_email ) {
+		// Make sure the new email doesn't belong to another user
 		if ( email_exists( $email ) ) {
 			give_set_error( 'email_exists', esc_html__( 'The email you entered belongs to another user. Please use another.', 'give' ) );
 		}
