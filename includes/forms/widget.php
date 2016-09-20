@@ -152,9 +152,9 @@ class Give_Forms_Widget extends WP_Widget{
 			<small>
 				<?php echo esc_html__( 'Select a Give Form style.', 'give' ); ?>
 			</small><br>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>-onpage"><input type="radio" class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>-onpage" name="<?php echo $this->get_field_name( 'display_style' ); ?>" value="onpage" <?php checked( $instance['display_style'], 'onpage' ); ?>> Onpage</label>
-			&nbsp;&nbsp;<label for="<?php echo $this->get_field_id( 'title' ); ?>-reveal"><input type="radio" class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>-reveal" name="<?php echo $this->get_field_name( 'display_style' ); ?>" value="reveal" <?php checked( $instance['display_style'], 'reveal' ); ?>> Reveal</label>
-			&nbsp;&nbsp;<label for="<?php echo $this->get_field_id( 'title' ); ?>-modal"><input type="radio" class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>-modal" name="<?php echo $this->get_field_name( 'display_style' ); ?>" value="modal" <?php checked( $instance['display_style'], 'modal' ); ?>>Modal</label><br>
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>-onpage"><input type="radio" class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>-onpage" name="<?php echo $this->get_field_name( 'display_style' ); ?>" value="onpage" <?php checked( $instance['display_style'], 'onpage' ); ?>> <?php echo esc_html__( 'Onpage', 'give' ); ?></label>
+			&nbsp;&nbsp;<label for="<?php echo $this->get_field_id( 'title' ); ?>-reveal"><input type="radio" class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>-reveal" name="<?php echo $this->get_field_name( 'display_style' ); ?>" value="reveal" <?php checked( $instance['display_style'], 'reveal' ); ?>> <?php echo esc_html__( 'Reveal', 'give' ); ?></label>
+			&nbsp;&nbsp;<label for="<?php echo $this->get_field_id( 'title' ); ?>-modal"><input type="radio" class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>-modal" name="<?php echo $this->get_field_name( 'display_style' ); ?>" value="modal" <?php checked( $instance['display_style'], 'modal' ); ?>> <?php echo esc_html__( 'Modal', 'give' ); ?></label><br>
 		</p>
 
 		<?php // Widget: Floating Labels ?>
