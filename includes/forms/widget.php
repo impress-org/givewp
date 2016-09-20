@@ -125,7 +125,7 @@ class Give_Forms_Widget extends WP_Widget{
 		?><p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php esc_html_e( 'Title:', 'give' ); ?></label>
 			<input type="text" class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php esc_attr_e( $instance['title'] ); ?>" /><br>
-			<small><?php esc_html_e( 'Leave blank to hide the widget title.', 'give' ); ?></small>
+			<small class="give-field-description"><?php esc_html_e( 'Leave blank to hide the widget title.', 'give' ); ?></small>
 		</p>
 
 		<?php // Widget: Give Form ?>
@@ -143,18 +143,18 @@ class Give_Forms_Widget extends WP_Widget{
 					<option <?php selected( absint( $instance['id'] ), $give_form->ID ); ?> value="<?php echo esc_attr( $give_form->ID ); ?>"><?php echo $give_form->post_title; ?></option>
 				<?php } ?>
 			</select><br>
-			<small><?php esc_html_e( 'Select a Give Form to embed in this widget.', 'give' ); ?></small>
+			<small class="give-field-description"><?php esc_html_e( 'Select a Give Form to embed in this widget.', 'give' ); ?></small>
 		</p>
 
 		<?php // Widget: Display Style ?>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'display_style' ) ); ?>"><?php esc_html_e( 'Display style (optional):', 'give' ); ?></label><br>
-			<small>
-				<?php echo esc_html__( 'Select a Give Form style.', 'give' ); ?>
-			</small><br>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>-onpage"><input type="radio" class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>-onpage" name="<?php echo $this->get_field_name( 'display_style' ); ?>" value="onpage" <?php checked( $instance['display_style'], 'onpage' ); ?>> <?php echo esc_html__( 'Onpage', 'give' ); ?></label>
 			&nbsp;&nbsp;<label for="<?php echo $this->get_field_id( 'title' ); ?>-reveal"><input type="radio" class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>-reveal" name="<?php echo $this->get_field_name( 'display_style' ); ?>" value="reveal" <?php checked( $instance['display_style'], 'reveal' ); ?>> <?php echo esc_html__( 'Reveal', 'give' ); ?></label>
 			&nbsp;&nbsp;<label for="<?php echo $this->get_field_id( 'title' ); ?>-modal"><input type="radio" class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>-modal" name="<?php echo $this->get_field_name( 'display_style' ); ?>" value="modal" <?php checked( $instance['display_style'], 'modal' ); ?>> <?php echo esc_html__( 'Modal', 'give' ); ?></label><br>
+			 <small class="give-field-description">
+				<?php echo esc_html__( 'Select a Give Form style.', 'give' ); ?>
+			</small>
 		</p>
 
 		<?php // Widget: Floating Labels ?>
@@ -165,7 +165,7 @@ class Give_Forms_Widget extends WP_Widget{
 				<option value="enabled" <?php selected( esc_attr( $instance['float_labels'] ), 'enabled' ) ?>><?php esc_html_e( 'Enabled', 'give' ); ?></option>
 				<option value="disabled" <?php selected( esc_attr( $instance['float_labels'] ), 'disabled' ) ?>><?php esc_html_e( 'Disabled', 'give' ); ?></option>
 			</select><br>
-			<small>
+			<small class="give-field-description">
 				<?php
 				printf(
 					/* translators: %s: https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels */
