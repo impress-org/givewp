@@ -106,7 +106,7 @@ class Give_Forms_Widget extends WP_Widget{
 			'title'         => '',
 			'id'            => '',
 			'float_labels'  => '',
-			'display_style' => 'onpage',
+			'display_style' => 'modal',
 		);
 
 		$instance = wp_parse_args( (array) $instance, $defaults );
