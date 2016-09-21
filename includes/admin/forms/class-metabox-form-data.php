@@ -56,12 +56,15 @@ class Give_MetaBox_Form_Data {
 
 		// Load required scripts.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_script' ) );
-		
+
 		// Save form meta.
 		add_action( 'save_post_give_forms', array( $this, 'save' ), 10, 2 );
 
 		// cmb2 old setting loaders.
-		add_filter( 'give_metabox_form_data_settings', array( $this, 'cmb2_metabox_settings' ) );
+		//add_filter( 'give_metabox_form_data_settings', array( $this, 'cmb2_metabox_settings' ) );
+
+		// Add offline donations options.
+		add_filter( 'give_metabox_form_data_settings', array( $this, 'add_offline_donations_setting_tab' ), 0, 1 );
 	}
 
 
@@ -83,18 +86,421 @@ class Give_MetaBox_Form_Data {
 	 * @return mixed|void
 	 */
 	function get_settings() {
+		$post_id               = give_get_admin_post_id();
+		$price                 = give_get_form_price( $post_id );
+		$custom_amount_minimum = give_get_form_minimum_price( $post_id );
+		$goal                  = give_get_form_goal( $post_id );
+		$variable_pricing      = give_has_variable_prices( $post_id );
+		$prices                = give_get_variable_prices( $post_id );
+
+		//No empty prices - min. 1.00 for new forms
+		if ( empty( $price ) && is_null( $post_id ) ) {
+			$price = esc_attr( give_format_amount( '1.00' ) );
+		}
+
+		//Min. $1.00 for new forms
+		if ( empty( $custom_amount_minimum ) ) {
+			$custom_amount_minimum = esc_attr( give_format_amount( '1.00' ) );
+		}
+
+		// Start with an underscore to hide fields from custom fields list
+		$prefix = '_give_';
+
+		$settings = array(
+			 /**
+			 * Repeatable Field Groups
+			 */
+			'form_field_options' => apply_filters( 'give_forms_field_options', array(
+				'id'           => 'form_field_options',
+				'title'        => esc_html__( 'Donation Options', 'give' ),
+				'fields'       => apply_filters( 'give_forms_donation_form_metabox_fields', array(
+						//Donation Option
+						array(
+							'name'        => esc_html__( 'Donation Option', 'give' ),
+							'description' => esc_html__( 'Would you like this form to have one set donation price or multiple levels (for example, $10, $20, $50)?', 'give' ),
+							'id'          => $prefix . 'price_option',
+							'type'        => 'radio_inline',
+							'default'     => 'set',
+							'options'     => apply_filters( 'give_forms_price_options', array(
+								'set'   => esc_html__( 'Set Donation', 'give' ),
+								'multi' => esc_html__( 'Multi-level Donation', 'give' ),
+							) ),
+						),
+						array(
+							'name'         => esc_html__( 'Set Donation', 'give' ),
+							'description'  => esc_html__( 'This is the set donation amount for this form. If you have a "Custom Amount Minimum" set, make sure it is less than this amount.', 'give' ),
+							'id'           => $prefix . 'set_price',
+							'type'         => 'text_small',
+							'row_classes'  => 'give-subfield',
+							'render_row_cb' 	=> 'give_cmb_amount_field_render_row_cb',
+							'sanitization_cb'   => 'give_sanitize_price_field_value',
+							'attributes'   => array(
+								'placeholder' => give_format_decimal( '1.00' ),
+								'value'       => give_format_decimal( $price ),
+								'class'       => 'cmb-type-text-small give-money-field',
+							),
+						),
+						//Donation levels: Header
+						array(
+							'id'   => $prefix . 'levels_header',
+							'type' => 'levels_repeater_header',
+						),
+						//Donation Levels: Repeatable CMB2 Group
+						array(
+							'id'          => $prefix . 'donation_levels',
+							'type'        => 'group',
+							'row_classes' => 'give-subfield',
+							'options'     => array(
+								'add_button'    => esc_html__( 'Add Level', 'give' ),
+								'remove_button' => '<span class="dashicons dashicons-no"></span>',
+								'sortable'      => true, // beta
+							),
+							// Fields array works the same, except id's only need to be unique for this group. Prefix is not needed.
+							'fields'      => apply_filters( 'give_donation_levels_table_row', array(
+								array(
+									'name' => esc_html__( 'ID', 'give' ),
+									'id'   => $prefix . 'id',
+									'type' => 'levels_id',
+								),
+								array(
+									'name'              => esc_html__( 'Amount', 'give' ),
+									'id'                => $prefix . 'amount',
+									'type'              => 'text_small',
+									'before_field'      => give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol  give-money-symbol-before">' . give_currency_symbol() . '</span>' : '',
+									'after_field'       => give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol  give-money-symbol-after">' . give_currency_symbol() . '</span>' : '',
+									'sanitization_cb'   => 'give_sanitize_price_field_value',
+									'attributes'        => array(
+										'placeholder' => give_format_decimal( '1.00' ),
+										'class'       => 'cmb-type-text-small give-money-field',
+									),
+									'before'       => 'give_format_admin_multilevel_amount',
+								),
+								array(
+									'name'       => esc_html__( 'Text', 'give' ),
+									'id'         => $prefix . 'text',
+									'type'       => 'text',
+									'attributes' => array(
+										'placeholder' => esc_html__( 'Donation Level', 'give' ),
+										'class'       => 'give-multilevel-text-field',
+									),
+								),
+								array(
+									'name' => esc_html__( 'Default', 'give' ),
+									'id'   => $prefix . 'default',
+									'type' => 'give_default_radio_inline'
+								),
+							) ),
+						),
+						//Display Style
+						array(
+							'name'        => esc_html__( 'Display Style', 'give' ),
+							'description' => esc_html__( 'Set how the donations levels will display on the form.', 'give' ),
+							'id'          => $prefix . 'display_style',
+							'type'        => 'radio_inline',
+							'default'     => 'buttons',
+							'options'     => array(
+								'buttons'  => esc_html__( 'Buttons', 'give' ),
+								'radios'   => esc_html__( 'Radios', 'give' ),
+								'dropdown' => esc_html__( 'Dropdown', 'give' ),
+							),
+						),
+						//Custom Amount
+						array(
+							'name'        => esc_html__( 'Custom Amount', 'give' ),
+							'description' => esc_html__( 'Do you want the user to be able to input their own donation amount?', 'give' ),
+							'id'          => $prefix . 'custom_amount',
+							'type'        => 'radio_inline',
+							'default'     => 'no',
+							'options'     => array(
+								'yes' => esc_html__( 'Yes', 'give' ),
+								'no'  => esc_html__( 'No', 'give' ),
+							),
+						),
+						array(
+							'name'              => esc_html__( 'Custom Amount Minimum', 'give' ),
+							'description'       => esc_html__( 'If you would like to set a minimum custom donation amount please enter it here.', 'give' ),
+							'id'                => $prefix . 'custom_amount_minimum',
+							'type'              => 'text_small',
+							'row_classes'       => 'give-subfield',
+							'render_row_cb'     => 'give_cmb_amount_field_render_row_cb',
+							'sanitization_cb'   => 'give_sanitize_price_field_value',
+							'attributes'   => array(
+								'placeholder' => give_format_decimal('1.00'),
+								'value'       => give_format_decimal( $custom_amount_minimum ),
+								'class'       => 'cmb-type-text-small give-money-field',
+							)
+						),
+						array(
+							'name'        => esc_html__( 'Custom Amount Text', 'give' ),
+							'description' => esc_html__( 'This text appears as a label below the custom amount field for set donation forms. For multi-level forms the text will appear as it\'s own level (ie button, radio, or select option).', 'give' ),
+							'id'          => $prefix . 'custom_amount_text',
+							'type'        => 'text',
+							'row_classes' => 'give-subfield',
+							'attributes'  => array(
+								'rows'        => 3,
+								'placeholder' => esc_attr__( 'Give a Custom Amount', 'give' ),
+							),
+						)
+					)
+				)
+			)),
+
+			/**
+			 * Donation Goals
+			 */
+			'donation_goal_options' => apply_filters( 'give_donation_goal_options', array(
+				'id'           => 'donation_goal_options',
+				'title'        => esc_html__( 'Donation Goal', 'give' ),
+				'fields'       => apply_filters( 'give_forms_donation_goal_metabox_fields', array(
+					//Goals
+					array(
+						'name'        => esc_html__( 'Goal', 'give' ),
+						'description' => esc_html__( 'Do you want to set a donation goal for this form?', 'give' ),
+						'id'          => $prefix . 'goal_option',
+						'type'        => 'radio_inline',
+						'default'     => 'no',
+						'options'     => array(
+							'yes' => esc_html__( 'Yes', 'give' ),
+							'no'  => esc_html__( 'No', 'give' ),
+						),
+					),
+					array(
+						'name'              => esc_html__( 'Goal Amount', 'give' ),
+						'description'       => esc_html__( 'This is the monetary goal amount you want to reach for this donation form.', 'give' ),
+						'id'                => $prefix . 'set_goal',
+						'type'              => 'text_small',
+						'row_classes'       => 'give-subfield',
+						'render_row_cb' 	=> 'give_cmb_amount_field_render_row_cb',
+						'sanitization_cb'   => 'give_sanitize_price_field_value',
+						'attributes'        => array(
+							'placeholder' => give_format_decimal( '0.00' ),
+							'value'       => give_format_decimal( $goal ),
+							'class'       => 'cmb-type-text-small give-money-field',
+						),
+					),
+
+					array(
+						'name'        => esc_html__( 'Goal Format', 'give' ),
+						'description' => esc_html__( 'Would you like to display the total amount raised based on your monetary goal or a percentage? For instance, "$500 of $1,000 raised" or "50% funded".', 'give' ),
+						'id'          => $prefix . 'goal_format',
+						'type'        => 'radio_inline',
+						'default'     => 'amount',
+						'row_classes' => 'give-subfield',
+						'options'     => array(
+							'amount'     => esc_html__( 'Amount', 'give' ),
+							'percentage' => esc_html__( 'Percentage', 'give' ),
+						),
+					),
+					array(
+						'name'        => esc_html__( 'Goal Progress Bar Color', 'give' ),
+						'id'          => $prefix . 'goal_color',
+						'type'        => 'colorpicker',
+						'row_classes' => 'give-subfield',
+						'default'     => '#2bc253',
+					),
+
+					array(
+						'name'        => esc_html__( 'Close Form when Goal Achieved', 'give' ),
+						'desc'        => esc_html__( 'Would you like to close the donation forms and stop accepting donations once this goal has been met?', 'give' ),
+						'id'          => $prefix . 'close_form_when_goal_achieved',
+						'type'        => 'radio_inline',
+						'row_classes' => 'give-subfield',
+						'options'     => array(
+							'yes' => esc_html__( 'Yes', 'give' ),
+							'no'  => esc_html__( 'No', 'give' ),
+						),
+						'default'     => 'no',
+					),
+					array(
+						'name'        => esc_html__( 'Goal Achieved Message', 'give' ),
+						'desc'        => esc_html__( 'Would you like to display a custom message when the goal is closed? If none is provided the default message will be displayed', 'give' ),
+						'id'          => $prefix . 'form_goal_achieved_message',
+						'type'        => 'textarea',
+						'row_classes' => 'give-subfield',
+						'attributes'  => array(
+							'placeholder' => esc_attr__( 'Thank you to all our donors, we have met our fundraising goal.', 'give' ),
+						),
+					)
+				))
+			)),
+
+
+			/**
+			 * Display Options
+			 */
+			'form_display_options' => apply_filters( 'give_form_display_options', array(
+				'id'           => 'form_display_options',
+				'title'        => esc_html__( 'Form Display', 'give' ),
+				'fields'       => apply_filters( 'give_forms_display_options_metabox_fields', array(
+							array(
+								'name'    => esc_html__( 'Payment Fields', 'give' ),
+								'desc'    => sprintf( __( 'How would you like to display donation information for this form? <a href=""%s">Learn more ></a>', 'give' ), '#' ),
+								'id'      => $prefix . 'payment_display',
+								'type'    => 'radio_inline',
+								'options' => array(
+									'onpage' => esc_html__( 'All Fields', 'give' ),
+									'modal'  => esc_html__( 'Modal', 'give' ),
+									'reveal' => esc_html__( 'Reveal', 'give' ),
+								),
+								'default' => 'onpage',
+							),
+							array(
+								'id'          => $prefix . 'reveal_label',
+								'name'        => esc_html__( 'Reveal / Modal Open Text', 'give' ),
+								'desc'        => esc_html__( 'The button label for completing the donation.', 'give' ),
+								'type'        => 'text_small',
+								'row_classes' => 'give-subfield',
+								'attributes'  => array(
+									'placeholder' => esc_attr__( 'Donate Now', 'give' ),
+								),
+							),
+							array(
+								'id'         => $prefix . 'checkout_label',
+								'name'       => esc_html__( 'Complete Donation Text', 'give' ),
+								'desc'       => esc_html__( 'The button label for completing a donation.', 'give' ),
+								'type'       => 'text_small',
+								'attributes' => array(
+									'placeholder' => esc_html__( 'Donate Now', 'give' ),
+								),
+							),
+							array(
+								'name' => esc_html__( 'Default Gateway', 'give' ),
+								'desc' => esc_html__( 'By default, the gateway for this form will inherit the global default gateway (set under Give > Settings > Payment Gateways). This option allows you to customize the default gateway for this form only.', 'give' ),
+								'id'   => $prefix . 'default_gateway',
+								'type' => 'default_gateway'
+							),
+							array(
+								'name' => esc_html__( 'Disable Guest Donations', 'give' ),
+								'desc' => esc_html__( 'Do you want to require users be logged-in to make donations?', 'give' ),
+								'id'   => $prefix . 'logged_in_only',
+								'type' => 'checkbox'
+							),
+							array(
+								'name'    => esc_html__( 'Register', 'give' ),
+								'desc'    => esc_html__( 'Display the registration and login forms in the payment section for non-logged-in users.', 'give' ),
+								'id'      => $prefix . 'show_register_form',
+								'type'    => 'radio_inline',
+								'options' => array(
+									'none'         => esc_html__( 'None', 'give' ),
+									'registration' => esc_html__( 'Registration', 'give' ),
+									'login'        => esc_html__( 'Login', 'give' ),
+									'both'         => esc_html__( 'Registration + Login', 'give' ),
+								),
+								'default' => 'none',
+							),
+							array(
+								'name'    => esc_html__( 'Floating Labels', 'give' ),
+								/* translators: %s: forms https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels */
+								'desc'    => sprintf( __( 'Select the <a href="%s" target="_blank">floating labels</a> setting for this Give form.<br>Be aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), esc_url( 'https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels' ) ),
+								'id'      => $prefix . 'form_floating_labels',
+								'type'    => 'radio_inline',
+								'options' => array(
+									'global' => esc_html__( 'Global Options', 'give' ),
+									'yes'    => esc_html__( 'Yes', 'give' ),
+									'no'     => esc_html__( 'No', 'give' ),
+								),
+								'default' => 'global',
+							)
+						)
+					)
+				)
+			),
+
+			/**
+			 * Content Field
+			 */
+			'form_content_options' => apply_filters( 'give_forms_content_options', array(
+				'id'           => 'form_content_options',
+				'title'        => esc_html__( 'Form Content', 'give' ),
+				'fields'       => apply_filters( 'give_forms_content_options_metabox_fields', array(
+
+						//Donation content.
+						array(
+							'name'        => esc_html__( 'Display Content', 'give' ),
+							'description' => esc_html__( 'Do you want to display content? If you choose to display content, a WYSIWYG editor will appear which you will be able to enter content.', 'give' ),
+							'id'          => $prefix . 'display_content',
+							'type'        => 'radio_inline',
+							'options'     => apply_filters( 'give_forms_content_options_select', array(
+									'yes' => esc_html__( 'Yes', 'give' ),
+									'no'  => esc_html__( 'No', 'give' ),
+								)
+							),
+							'default'     => 'no',
+						),
+
+						// Content placement.
+						array(
+							'name'        => esc_html__( 'Content Placement', 'give' ),
+							'description' => esc_html__( 'Do you want to display content? If you choose to display content, a WYSIWYG editor will appear which you will be able to enter content.', 'give' ),
+							'id'          => $prefix . 'content_placement',
+							'type'        => 'radio_inline',
+							'options'     => apply_filters( 'give_forms_content_options_select', array(
+									'give_pre_form'  => esc_html__( 'Above fields', 'give' ),
+									'give_post_form' => esc_html__( 'Below fields', 'give' ),
+								)
+							),
+							'default'     => 'give_pre_form',
+						),
+						array(
+							'name'        => esc_html__( 'Content', 'give' ),
+							'description' => esc_html__( 'This content will display on the single give form page.', 'give' ),
+							'id'          => $prefix . 'form_content',
+							'row_classes' => 'give-subfield',
+							'type'        => 'wysiwyg'
+						),
+					)
+				)
+			) ),
+
+			/**
+			 * Terms & Conditions
+			 */
+			'form_terms_options' => apply_filters( 'give_forms_terms_options', array(
+				'id'           => 'form_terms_options',
+				'title'        => esc_html__( 'Terms and Conditions', 'give' ),
+				'fields'       => apply_filters( 'give_forms_terms_options_metabox_fields', array(
+						//Donation Option
+						array(
+							'name'        => esc_html__( 'Terms and Conditions', 'give' ),
+							'description' => esc_html__( 'Do you want to require the user to agree to terms and conditions prior to being able to complete their donation?', 'give' ),
+							'id'          => $prefix . 'terms_option',
+							'type'        => 'radio_inline',
+							'options'     => apply_filters( 'give_forms_content_options_select', array(
+									'global' => esc_html__( 'Global Options', 'give' ),
+									'yes'    => esc_html__( 'Customize', 'give' ),
+									'no'     => esc_html__( 'Disable', 'give' ),
+								)
+							),
+							'default'     => 'global',
+						),
+						array(
+							'id'          => $prefix . 'agree_label',
+							'name'        => esc_html__( 'Agree to Terms Label', 'give' ),
+							'desc'        => esc_html__( 'The label shown next to the agree to terms check box. Add your own to customize or leave blank to use the default text placeholder.', 'give' ),
+							'type'        => 'text',
+							'row_classes' => 'give-subfield',
+							'size'        => 'regular',
+							'attributes'  => array(
+								'placeholder' => esc_attr__( 'Agree to Terms?', 'give' ),
+							),
+						),
+						array(
+							'id'          => $prefix . 'agree_text',
+							'row_classes' => 'give-subfield',
+							'name'        => esc_html__( 'Agreement Text', 'give' ),
+							'desc'        => esc_html__( 'This is the actual text which the user will have to agree to in order to make a donation.', 'give' ),
+							'type'        => 'wysiwyg'
+						),
+					)
+				)
+			) )
+		);
 		/**
 		 * Filter the metabox tabbed panel settings.
 		 */
-		$settings = apply_filters( 'give_metabox_form_data_settings', array() );
+		$settings = apply_filters( 'give_metabox_form_data_settings', $settings );
 
-		foreach ( $settings as $key => $setting ) {
-
-			/**
-			 * Filter the each metabox tab panel setting.
-			 */
-			$settings[$key] = apply_filters( "give_form_data_setting_{$key}", $setting );
-		}
+		// Output.
 		return $settings;
 	}
 
@@ -347,6 +753,26 @@ class Give_MetaBox_Form_Data {
 				}
 			}
 		}
+	}
+
+
+	/**
+	 * Add offline donations setting tab to donation form options metabox.
+	 *
+	 * @since  1.8
+	 * @param  array $settings List of form settings.
+	 * @return mixed
+	 */
+	function add_offline_donations_setting_tab( $settings  ){
+		if( give_is_gateway_active( 'offline') ) {
+			$settings['offline_donations_options'] = apply_filters( 'give_forms_offline_donations_options', array(
+				'id'           => 'offline_donations_options',
+				'title'        => esc_html__( 'Offline Donations', 'give' ),
+				'fields'       => apply_filters( 'give_forms_offline_donations_metabox_fields', array() )
+			));
+		}
+
+		return $settings;
 	}
 }
 

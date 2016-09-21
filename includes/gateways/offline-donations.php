@@ -357,7 +357,7 @@ function give_offline_add_settings( $settings ) {
 	return array_merge( $settings, $check_settings );
 }
 
-add_filter( 'give_forms_display_options_metabox_fields', 'give_offline_add_settings' );
+add_filter( 'give_forms_offline_donations_metabox_fields', 'give_offline_add_settings' );
 
 
 /**
