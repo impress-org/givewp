@@ -777,14 +777,6 @@ input.give-text_medium {
 .give-underline {
   text-decoration: underline; }
 
-#poststuff .give-subfield {
-  background: #FAFAFA; }
-  #poststuff .give-subfield .cmb-th label {
-    padding-right: 16px; }
-  #poststuff .give-subfield .cmb-td {
-    padding-left: 10px;
-    box-sizing: border-box; }
-
 .postbox-container .cmb-row {
   margin: 0; }
   .postbox-container .cmb-row .cmb-th label {

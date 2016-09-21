@@ -131,7 +131,6 @@ class Give_MetaBox_Form_Data {
 							'description'  => esc_html__( 'This is the set donation amount for this form. If you have a "Custom Amount Minimum" set, make sure it is less than this amount.', 'give' ),
 							'id'           => $prefix . 'set_price',
 							'type'         => 'text_small',
-							'row_classes'  => 'give-subfield',
 							'render_row_cb' 	=> 'give_cmb_amount_field_render_row_cb',
 							'sanitization_cb'   => 'give_sanitize_price_field_value',
 							'attributes'   => array(
@@ -149,7 +148,6 @@ class Give_MetaBox_Form_Data {
 						array(
 							'id'          => $prefix . 'donation_levels',
 							'type'        => 'group',
-							'row_classes' => 'give-subfield',
 							'options'     => array(
 								'add_button'    => esc_html__( 'Add Level', 'give' ),
 								'remove_button' => '<span class="dashicons dashicons-no"></span>',
@@ -221,7 +219,6 @@ class Give_MetaBox_Form_Data {
 							'description'       => esc_html__( 'If you would like to set a minimum custom donation amount please enter it here.', 'give' ),
 							'id'                => $prefix . 'custom_amount_minimum',
 							'type'              => 'text_small',
-							'row_classes'       => 'give-subfield',
 							'render_row_cb'     => 'give_cmb_amount_field_render_row_cb',
 							'sanitization_cb'   => 'give_sanitize_price_field_value',
 							'attributes'   => array(
@@ -235,7 +232,6 @@ class Give_MetaBox_Form_Data {
 							'description' => esc_html__( 'This text appears as a label below the custom amount field for set donation forms. For multi-level forms the text will appear as it\'s own level (ie button, radio, or select option).', 'give' ),
 							'id'          => $prefix . 'custom_amount_text',
 							'type'        => 'text',
-							'row_classes' => 'give-subfield',
 							'attributes'  => array(
 								'rows'        => 3,
 								'placeholder' => esc_attr__( 'Give a Custom Amount', 'give' ),
@@ -269,7 +265,6 @@ class Give_MetaBox_Form_Data {
 						'description'       => esc_html__( 'This is the monetary goal amount you want to reach for this donation form.', 'give' ),
 						'id'                => $prefix . 'set_goal',
 						'type'              => 'text_small',
-						'row_classes'       => 'give-subfield',
 						'render_row_cb' 	=> 'give_cmb_amount_field_render_row_cb',
 						'sanitization_cb'   => 'give_sanitize_price_field_value',
 						'attributes'        => array(
@@ -285,7 +280,6 @@ class Give_MetaBox_Form_Data {
 						'id'          => $prefix . 'goal_format',
 						'type'        => 'radio_inline',
 						'default'     => 'amount',
-						'row_classes' => 'give-subfield',
 						'options'     => array(
 							'amount'     => esc_html__( 'Amount', 'give' ),
 							'percentage' => esc_html__( 'Percentage', 'give' ),
@@ -295,7 +289,6 @@ class Give_MetaBox_Form_Data {
 						'name'        => esc_html__( 'Goal Progress Bar Color', 'give' ),
 						'id'          => $prefix . 'goal_color',
 						'type'        => 'colorpicker',
-						'row_classes' => 'give-subfield',
 						'default'     => '#2bc253',
 					),
 
@@ -304,7 +297,6 @@ class Give_MetaBox_Form_Data {
 						'desc'        => esc_html__( 'Would you like to close the donation forms and stop accepting donations once this goal has been met?', 'give' ),
 						'id'          => $prefix . 'close_form_when_goal_achieved',
 						'type'        => 'radio_inline',
-						'row_classes' => 'give-subfield',
 						'options'     => array(
 							'yes' => esc_html__( 'Yes', 'give' ),
 							'no'  => esc_html__( 'No', 'give' ),
@@ -316,7 +308,6 @@ class Give_MetaBox_Form_Data {
 						'desc'        => esc_html__( 'Would you like to display a custom message when the goal is closed? If none is provided the default message will be displayed', 'give' ),
 						'id'          => $prefix . 'form_goal_achieved_message',
 						'type'        => 'textarea',
-						'row_classes' => 'give-subfield',
 						'attributes'  => array(
 							'placeholder' => esc_attr__( 'Thank you to all our donors, we have met our fundraising goal.', 'give' ),
 						),
@@ -349,7 +340,6 @@ class Give_MetaBox_Form_Data {
 								'name'        => esc_html__( 'Reveal / Modal Open Text', 'give' ),
 								'desc'        => esc_html__( 'The button label for completing the donation.', 'give' ),
 								'type'        => 'text_small',
-								'row_classes' => 'give-subfield',
 								'attributes'  => array(
 									'placeholder' => esc_attr__( 'Donate Now', 'give' ),
 								),
@@ -445,7 +435,6 @@ class Give_MetaBox_Form_Data {
 							'name'        => esc_html__( 'Content', 'give' ),
 							'description' => esc_html__( 'This content will display on the single give form page.', 'give' ),
 							'id'          => $prefix . 'form_content',
-							'row_classes' => 'give-subfield',
 							'type'        => 'wysiwyg'
 						),
 					)
@@ -478,7 +467,6 @@ class Give_MetaBox_Form_Data {
 							'name'        => esc_html__( 'Agree to Terms Label', 'give' ),
 							'desc'        => esc_html__( 'The label shown next to the agree to terms check box. Add your own to customize or leave blank to use the default text placeholder.', 'give' ),
 							'type'        => 'text',
-							'row_classes' => 'give-subfield',
 							'size'        => 'regular',
 							'attributes'  => array(
 								'placeholder' => esc_attr__( 'Agree to Terms?', 'give' ),
@@ -486,7 +474,6 @@ class Give_MetaBox_Form_Data {
 						),
 						array(
 							'id'          => $prefix . 'agree_text',
-							'row_classes' => 'give-subfield',
 							'name'        => esc_html__( 'Agreement Text', 'give' ),
 							'desc'        => esc_html__( 'This is the actual text which the user will have to agree to in order to make a donation.', 'give' ),
 							'type'        => 'wysiwyg'
