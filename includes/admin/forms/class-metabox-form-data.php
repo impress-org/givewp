@@ -95,12 +95,12 @@ class Give_MetaBox_Form_Data {
 
 		//No empty prices - min. 1.00 for new forms
 		if ( empty( $price ) && is_null( $post_id ) ) {
-			$price = esc_attr( give_format_amount( '1.00' ) );
+			$price = esc_attr( give_format_decimal( '1.00' ) );
 		}
 
 		//Min. $1.00 for new forms
 		if ( empty( $custom_amount_minimum ) ) {
-			$custom_amount_minimum = esc_attr( give_format_amount( '1.00' ) );
+			$custom_amount_minimum = esc_attr( give_format_decimal( '1.00' ) );
 		}
 
 		// Start with an underscore to hide fields from custom fields list

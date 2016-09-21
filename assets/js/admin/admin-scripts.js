@@ -767,6 +767,8 @@ jQuery.noConflict();
             this.handle_metabox_tab_click();
             this.setup_colorpicker();
             this.handle_repeatable_fields();
+            this.handle_repeatable_field_header_click();
+            this.handle_repeatable_field_level_text_click();
         },
 
         handle_metabox_tab_click: function() {
@@ -808,6 +810,8 @@ jQuery.noConflict();
                         remove: '.give-remove',
                         move: '.give-move',
                         template: '.give-template',
+                        confirm_before_remove_row: true,
+                        confirm_before_remove_row_text: give_vars.confirm_before_remove_row_text,
                         is_sortable: true,
                         before_add: null,
                         after_add: handle_metabox_repeater_field_row_count,
@@ -827,24 +831,33 @@ jQuery.noConflict();
 
                                         if( $fields.length ){
                                             $( '.give-field, label', $( item ) ).each(function() {
-                                                var $parent = $(this).parent();
+                                                var $parent = $(this).parent(),
+                                                    $currentElement = $(this);
 
                                                 $.each(this.attributes, function( index, element ) {
-                                                    var old_class_name = this.value.replace( /\[/g, '_' ).replace( /]/g, '' ) + '_field',
-                                                        new_class_name = '';
+                                                    var old_class_name_prefix = this.value.replace( /\[/g, '_' ).replace( /]/g, '' ),
+                                                        old_class_name = old_class_name_prefix + '_field',
+                                                        new_class_name = '',
+                                                        new_class_name_prefix = '';
 
                                                     // Bailout.
-                                                    if( ! this.value || ( -1 == this.value.indexOf('[')) ) {
+                                                    if( ! this.value     ) {
                                                         return;
                                                     }
 
                                                     // Reorder index.
                                                     this.value = this.value.replace( /\[\d+\]/g, '[' + (row_count - 1) + ']' );
+                                                    new_class_name_prefix = this.value.replace( /\[/g, '_' ).replace( /]/g, '' );
 
-                                                    // Update class name
-                                                    if( 'P' == $parent.get(0).nodeName && $parent.hasClass( old_class_name ) ) {
-                                                        new_class_name = this.value.replace( /\[/g, '_' ).replace( /]/g, '' ) + '_field';
+                                                    // Update class name.
+                                                    if( $parent.hasClass( old_class_name ) ) {
+                                                        new_class_name = new_class_name_prefix + '_field';
                                                         $parent.removeClass( old_class_name ).addClass( new_class_name );
+                                                    }
+
+                                                    // Update field id.
+                                                    if( old_class_name_prefix == $currentElement.attr( 'id' ) ) {
+                                                        $currentElement.attr( 'id', new_class_name_prefix );
                                                     }
                                                 });
                                             });
@@ -857,9 +870,38 @@ jQuery.noConflict();
                         }
                         //row_count_placeholder: '{{row-count-placeholder}}' Note: do not modify this param otherwise it will break repeatable field functionality.
                     };
-
+                    
                     jQuery(this).repeatable_fields( options );
                 });
+            });
+        },
+
+        handle_repeatable_field_header_click: function() {
+            $( 'body' ).on( 'click', '.give-row-head button', function() {
+                var $parent = $(this).closest('tr');
+                $parent.toggleClass( 'closed' );
+                $( '.give-row-body', $parent ).toggle();
+            });
+        },
+
+        handle_repeatable_field_level_text_click: function(){
+            $( 'body' ).on( 'keyup', '.give-multilevel-text-field', function() {
+                var $parent = $(this).closest('tr'),
+                    $header_title_container = $( '.give-row-head h2 span', $parent ),
+                    donation_level_header_text_prefix = $(this).attr('placeholder');
+
+                // Donation level header already set.
+                if( $(this).val() && (  $(this).val() === $header_title_container.html() ) ) {
+                    return false;
+                }
+
+                if( $(this).val() ) {
+                    // Change donaiton level header text.
+                    $header_title_container.html( donation_level_header_text_prefix + ': ' + $(this).val() );
+                } else{
+                    // Reset donation level header heading text.
+                    $header_title_container.html( donation_level_header_text_prefix )
+                }
             });
         }
     };

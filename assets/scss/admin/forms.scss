@@ -484,6 +484,7 @@ Tooltips
         line-height: 18px;
         display: block;
         padding-top: 10px;
+        font-style: italic;
       }
 
       ul{  margin: 0;  }
@@ -531,46 +532,55 @@ Tooltips
       }
 
       .give-row{
-        border-bottom: 5px solid white;
+        border-bottom: 15px solid #f5f5f5;
         background-color: white;
+      }
+      
+      .give-template{
+        display: none;
       }
 
       .give-row:last-child{
-        border-bottom: 0;
+        border-bottom: 10px solid #f5f5f5;
       }
 
       .give-column {
         padding: 0;
       }
 
-      .give-move{
-        position: relative;
-        width: 5%;
-        background-color: #dadada;
-        cursor: move;
-      }
-
       .give-remove{
-        width: 10px;
-        height: 10px;
-        background: white;
+        float: right;
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        display: block;
         text-align: center;
-        border: 1px solid gray;
-        padding: 5px;
-        border-radius: 25px;
-        position: absolute;
-        left: -9px;
-        top: 50%;
-        text-decoration: none;
-        color: black;
-        line-height: 10px;
-        font-size: 14px;
+        line-height: 34px;
+        font-size: 21px;
+        font-weight: 300;
         cursor: pointer;
       }
 
       .give-remove:hover{
         background-color: red;
         color: white;
+        width: 30px;
+        height: 30px;
+        border-radius: 30px;
+        margin-top: 3px;
+        line-height: 28px;
+      }
+
+      .give-row-head{
+        border-bottom: 1px solid #eee;
+        cursor: move;
+        h2{
+          text-align: left!important;
+        }
+      }
+
+      .give-row.closed .toggle-indicator:before{
+        content: "\f140";
       }
 
       .give-add-repeater-field-section-row-wrap{
@@ -588,6 +598,10 @@ Tooltips
       .give-ui-placeholder-state-highlight{
         background-color: #68bb6c;
       }
+
+      // Sortable jquery css fix.
+      .ui-sortable-helper {  display: table;  }
+      .give-row.ui-sortable-helper{  border-bottom: 0;  }
     }
   }
 }
