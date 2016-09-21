@@ -47,12 +47,15 @@ jQuery.noConflict();
             if (price_option_val === 'set') {
                 //set price shows
                 $('._give_set_price_field').show();
-                $('#_give_donation_levels_field').hide(); //hide multi-val stuffs
+                $('#_give_donation_levels_field').hide(); // Hide multi-val stuffs.
+                $('._give_display_style_field').hide(); // Hide display style setting.
+
 
             } else {
                 //multi-value shows
                 $('._give_set_price_field').hide();
-                $('#_give_donation_levels_field').show(); //show set stuffs
+                $('#_give_donation_levels_field').show(); // Show set stuffs.
+                $('._give_display_style_field').show(); // Show display style setting.
             }
         }).change();
 
