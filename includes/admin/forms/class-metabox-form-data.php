@@ -46,7 +46,7 @@ class Give_MetaBox_Form_Data {
 	 */
 	function __construct(){
 		$this->metabox_id    = 'give-metabox-form-data';
-		$this->metabox_label = esc_html__( 'Donation Form Data', 'give' );
+		$this->metabox_label = esc_html__( 'Donation Form Options', 'give' );
 
 		// Setup.
 		add_action( 'admin_init' , array( $this, 'setup' ) );
