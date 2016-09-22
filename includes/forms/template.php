@@ -1566,6 +1566,34 @@ function give_show_goal_progress( $form_id, $args ) {
 
 add_action( 'give_pre_form', 'give_show_goal_progress', 10, 2 );
 
+
+/**
+ * Get form content position.
+ *
+ * @since  1.8
+ * @param  $form_id
+ * @param  $args
+ * @return mixed|string
+ */
+function give_get_form_content_placement( $form_id, $args ) {
+	$show_content = '';
+
+	// @TODO: We can improve this function by removing backward compatibility after all user upgrade to 1.8
+	if(  isset( $args['show_content'] ) && ! empty( $args['show_content'] ) ) {
+		$show_content = $args['show_content'];
+	} elseif ( $display_content = get_post_meta( $form_id, '_give_display_content', true ) ) {
+		if( 'yes' === $display_content ) {
+			$show_content = get_post_meta( $form_id, '_give_content_placement', true );
+		}
+	} else {
+		// Backward compatibility: _give_content_option is deprecate in version 1.8.
+		$show_content = get_post_meta( $form_id, '_give_content_option', true );
+		$show_content = ( 'none' === $show_content ) ? '' : $show_content;
+	}
+
+	return $show_content;
+}
+
 /**
  * Adds Actions to Render Form Content.
  *
@@ -1574,18 +1602,19 @@ add_action( 'give_pre_form', 'give_show_goal_progress', 10, 2 );
  * @param  int   $form_id The form ID.
  * @param  array $args    An array of form arguments.
  *
- * @return void
+ * @return void|bool
  */
 function give_form_content( $form_id, $args ) {
 
-	$show_content = ( isset( $args['show_content'] ) && ! empty( $args['show_content'] ) )
-		? $args['show_content']
-		: get_post_meta( $form_id, '_give_content_option', true );
+	$show_content = give_get_form_content_placement( $form_id, $args );
 
-	if ( $show_content !== 'none' ) {
-		//add action according to value
-		add_action( $show_content, 'give_form_display_content', 10, 2 );
+	// Bailout.
+	if( empty( $show_content ) ) {
+		return false;
 	}
+
+	// Add action according to value.
+	add_action( $show_content, 'give_form_display_content', 10, 2 );
 }
 
 add_action( 'give_pre_form_output', 'give_form_content', 10, 2 );
@@ -1605,9 +1634,7 @@ add_action( 'give_pre_form_output', 'give_form_content', 10, 2 );
 function give_form_display_content( $form_id, $args ) {
 
 	$content      = wpautop( get_post_meta( $form_id, '_give_form_content', true ) );
-	$show_content = ( isset( $args['show_content'] ) && ! empty( $args['show_content'] ) )
-		? $args['show_content']
-		: get_post_meta( $form_id, '_give_content_option', true );
+	$show_content = give_get_form_content_placement( $form_id, $args );
 
 	if ( give_get_option( 'disable_the_content_filter' ) !== 'on' ) {
 		$content = apply_filters( 'the_content', $content );

@@ -641,6 +641,15 @@ function give_get_field_value( $field, $postid ) {
 	// Get value from db.
 	$field_value = get_post_meta( $postid, $field['id'], true );
 
+	/**
+	 * Filter the field value before apply default value.
+	 *
+	 * @since 1.8
+	 * @param mixed $field_value Field value.
+	 */
+	$field_value = apply_filters( "{$field['id']}_field_value", $field_value, $field, $postid );
+
+
 	// Set default value if no any data saved to db.
 	if( ! $field_value && isset( $field['default'] )) {
 		$field_value = $field['default'];
@@ -743,3 +752,53 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 	</div>
 	<?php
 }
+
+
+/**
+ * Set value for Form content --> Display content field setting.
+ *
+ * Backward compatibility:  set value by _give_content_option form meta field value if _give_display_content is not set yet.
+ *
+ * @since  1.8
+ * @param  mixed  $field_value Field Value.
+ * @param  array  $field       Field args.
+ * @param  int    $postid      Form/Post ID.
+ * @return string
+ */
+function _give_display_content_field_value( $field_value, $field, $postid ){
+	if(
+		! get_post_meta( $postid, '_give_display_content', true )
+		&& ( 'none' !== get_post_meta( $postid, '_give_content_option', true ) )
+	) {
+		$field_value = 'yes';
+	}
+
+	return $field_value;
+}
+add_filter( '_give_display_content_field_value', '_give_display_content_field_value', 10, 3 );
+
+
+/**
+ * Set value for Form content --> Content placement field setting.
+ *
+ * Backward compatibility:  set value by _give_content_option form meta field value if _give_content_placement is not set yet.
+ *
+ * @since  1.8
+ * @param  mixed  $field_value Field Value.
+ * @param  array  $field       Field args.
+ * @param  int    $postid      Form/Post ID.
+ * @return string
+ */
+function _give_content_placement_field_value( $field_value, $field, $postid ){
+	$show_content = get_post_meta( $postid, '_give_content_option', true );
+
+	if(
+		! get_post_meta( $postid, '_give_content_placement', true )
+		&& ( 'none' !== $show_content )
+	) {
+		$field_value = $show_content;
+	}
+
+	return $field_value;
+}
+add_filter( '_give_content_placement_field_value', '_give_content_placement_field_value', 10, 3 );
