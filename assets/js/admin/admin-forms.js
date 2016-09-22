@@ -76,10 +76,12 @@ jQuery.noConflict();
         }).change();
 
         //Terms Option
-        var terms_option = $('#_give_terms_option');
+        var terms_option = $('._give_terms_option_field input:radio');
         terms_option.on('change', function () {
+            // Get checked radio button value.
+            var terms_option_val = $('._give_terms_option_field input:radio:checked').val();
 
-            if (terms_option.val() !== 'none') {
+            if ( terms_option_val === 'yes' ) {
                 $('._give_agree_label_field').show();
                 $('._give_agree_text_field').show();
             } else {
