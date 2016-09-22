@@ -802,3 +802,26 @@ function _give_content_placement_field_value( $field_value, $field, $postid ){
 	return $field_value;
 }
 add_filter( '_give_content_placement_field_value', '_give_content_placement_field_value', 10, 3 );
+
+
+/**
+ * Set value for Terms and Conditions --> Terms and Conditions field setting.
+ *
+ * Backward compatibility:  set value by _give_terms_option form meta field value if it's value is none.
+ *
+ * @since  1.8
+ * @param  mixed  $field_value Field Value.
+ * @param  array  $field       Field args.
+ * @param  int    $postid      Form/Post ID.
+ * @return string
+ */
+function _give_terms_option_field_value( $field_value, $field, $postid ){
+	$term_option = get_post_meta( $postid, '_give_terms_option', true );
+
+	if(  'none' === $term_option ) {
+		$field_value = 'no';
+	}
+
+	return $field_value;
+}
+add_filter( '_give_terms_option_field_value', '_give_terms_option_field_value', 10, 3 );
