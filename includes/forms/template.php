@@ -1363,15 +1363,20 @@ add_action( 'give_payment_mode_select', 'give_payment_mode_select' );
  */
 function give_terms_agreement( $form_id ) {
 	$form_option = get_post_meta( $form_id, '_give_terms_option', true );
+	$label = $terms = '';
 
 	// Bailout if per form and global term and conditions is not setup
-	if( 'yes' !== $form_option ) {
-		return false;
-	}
+	if( 'yes' === $form_option ) {
+		// Set term and conditions label and text on basis of per form and global setting.
+		$label = ( $label = get_post_meta( $form_id, '_give_agree_label', true ) ) ? stripslashes( $label ) : give_get_option( 'agree_to_terms_label', esc_html__( 'Agree to Terms?', 'give' ) );
+		$terms = ( $terms = get_post_meta( $form_id, '_give_agree_text', true ) ) ? $terms : give_get_option( 'agreement_text', '' );
 
-	// Set term and conditions label and text on basis of per form and global setting.
-	$label = ( $label = get_post_meta( $form_id, '_give_agree_label', true ) ) ? stripslashes( $label ) : give_get_option( 'agree_to_terms_label', esc_html__( 'Agree to Terms?', 'give' ) );
-	$terms = ( $terms = get_post_meta( $form_id, '_give_agree_text', true ) ) ? $terms : give_get_option( 'agreement_text', '' );
+	} elseif ( 'global' === $form_option ){
+		// Set term and conditions label and text on basis of  global setting.
+		$label = give_get_option( 'agree_to_terms_label', esc_html__( 'Agree to Terms?', 'give' ) );
+		$terms = give_get_option( 'agreement_text', '' );
+
+	}
 
 	// Bailout: Check if term and conditions text is empty or not.
 	if( empty( $terms ) ) {
@@ -1524,7 +1529,7 @@ function give_agree_to_terms_js( $form_id ) {
 
 	$form_option = get_post_meta( $form_id, '_give_terms_option', true );
 
-	if ( $form_option === 'yes' ) {
+	if ( in_array( $form_option , array( 'yes', 'global' ) ) ) {
 		?>
 		<script type="text/javascript">
 			jQuery(document).ready(function ($) {

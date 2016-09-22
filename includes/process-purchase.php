@@ -269,7 +269,7 @@ function give_purchase_form_validate_fields() {
 
 	// Validate agree to terms
 	$terms_option = get_post_meta( $form_id, '_give_terms_option', true );
-	if ( isset( $terms_option ) && $terms_option === 'yes' ) {
+	if ( isset( $terms_option ) && in_array( $terms_option , array( 'yes', 'global' ) ) ) {
 		give_purchase_form_validate_agree_to_terms();
 	}
 
