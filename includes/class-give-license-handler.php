@@ -90,8 +90,13 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @var    string
 		 */
 		private $api_url      = 'https://givewp.com/edd-sl-api/';
-		private $account_url  = 'http://givewp.com/my-account/';
-		private $checkout_url = 'http://givewp.com/checkout/';
+
+		/**
+		 * 
+		 * @var null|string
+		 */
+		private $account_url  = 'https://givewp.com/my-account/';
+		private $checkout_url = 'https://givewp.com/checkout/';
 
 		/**
 		 * Class Constructor
@@ -430,7 +435,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 
 		/**
-		 * Check if license key is valid once per week
+		 * Check if license key is valid once per week.
 		 *
 		 * @access  public
 		 * @since   1.7
@@ -448,7 +453,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 				return false;
 			}
 
-			// Allow third party addon developers to handle there license check.
+			// Allow third party addon developers to handle their license check.
 			if( $this->__is_third_party_addon() ){
 				do_action( 'give_weekly_license_check', $this );
 				return false;
@@ -462,7 +467,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 				'url'       => home_url()
 			);
 
-			// Call the API
+			// Call the API.
 			$response = wp_remote_post(
 				$this->api_url,
 				array(
@@ -711,7 +716,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			if( ! in_array( $this->license, $addon_license_key_in_subscriptions ) && ! $this->__is_notice_dismissed( 'general' ) && ! $this->is_valid_license() && empty( $showed_invalid_message ) ) {
 
 				$messages['general'] = sprintf(
-					__( 'You have invalid or expired license keys for Give Addon. Please go to the <a href="%s">Licenses page</a> to correct this issue.', 'give' ),
+					__( 'You have invalid or expired license keys for Give Addon. Please go to the <a href="%s">licenses page</a> to correct this issue.', 'give' ),
 					admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' )
 				);
 				$showed_invalid_message = true;
@@ -758,7 +763,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 
 		/**
-		 * Remove license keyy from subscription
+		 * Remove license key from subscription.
 		 *
 		 * This function mainly uses when admin user deactivate license key,
 		 * then we do not need subscription information for that license key.
