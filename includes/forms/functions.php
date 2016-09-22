@@ -71,7 +71,7 @@ function give_is_float_labels_enabled( $args ) {
 		$float_labels = get_post_meta( $args['form_id'], '_give_form_floating_labels', true );
 	}
 
-	if ( empty( $float_labels ) ) {
+	if ( empty( $float_labels ) || ( 'global' === $float_labels ) ) {
 		$float_labels = give_get_option( 'enable_floatlabels' ) ? 'enabled' : 'disabled';
 	}
 
