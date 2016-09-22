@@ -388,7 +388,7 @@ class Give_MetaBox_Form_Data {
 									'enabled'  => esc_html__( 'Yes', 'give' ),
 									'disabled' => esc_html__( 'No', 'give' ),
 								),
-								'default' => 'global',
+								'default' => 'disabled',
 							)
 						)
 					)
@@ -459,7 +459,7 @@ class Give_MetaBox_Form_Data {
 									'no'     => esc_html__( 'Disable', 'give' ),
 								)
 							),
-							'default'     => 'global',
+							'default'     => 'no',
 						),
 						array(
 							'id'          => $prefix . 'agree_label',
