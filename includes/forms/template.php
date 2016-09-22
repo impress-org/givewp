@@ -1350,6 +1350,25 @@ function give_payment_mode_select( $form_id ) {
 
 add_action( 'give_payment_mode_select', 'give_payment_mode_select' );
 
+
+/**
+ * Check if term and condition setting is on or not [global or per form level]
+ *
+ * @since  1.8
+ * @param  $form_id
+ * @return bool
+ */
+function give_is_terms_agreement_enabled( $form_id ) {
+	$is_enabled  = false;
+	$form_option = get_post_meta( $form_id, '_give_terms_option', true );
+
+	if( in_array( $form_option, array( 'yes', 'global') ) ) {
+		$is_enabled = true;
+	}
+
+	return $is_enabled;
+}
+
 /**
  * Renders the Checkout Agree to Terms, this displays a checkbox for users to
  * agree the T&Cs set in the Give Settings. This is only displayed if T&Cs are
@@ -1529,7 +1548,7 @@ function give_agree_to_terms_js( $form_id ) {
 
 	$form_option = get_post_meta( $form_id, '_give_terms_option', true );
 
-	if ( in_array( $form_option , array( 'yes', 'global' ) ) ) {
+	if ( give_is_terms_agreement_enabled( $form_id ) ) {
 		?>
 		<script type="text/javascript">
 			jQuery(document).ready(function ($) {
