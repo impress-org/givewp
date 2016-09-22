@@ -167,6 +167,7 @@ class Give_MetaBox_Form_Data {
 									'before_field'      => give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol  give-money-symbol-before">' . give_currency_symbol() . '</span>' : '',
 									'after_field'       => give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol  give-money-symbol-after">' . give_currency_symbol() . '</span>' : '',
 									'sanitization_cb'   => 'give_sanitize_price_field_value',
+									'data_type'         => 'decimal',
 									'attributes'        => array(
 										'placeholder' => give_format_decimal( '1.00' ),
 										'class'       => 'cmb-type-text-small give-money-field',
@@ -219,8 +220,7 @@ class Give_MetaBox_Form_Data {
 							'description'       => esc_html__( 'If you would like to set a minimum custom donation amount please enter it here.', 'give' ),
 							'id'                => $prefix . 'custom_amount_minimum',
 							'type'              => 'text_small',
-							'render_row_cb'     => 'give_cmb_amount_field_render_row_cb',
-							'sanitization_cb'   => 'give_sanitize_price_field_value',
+							'data_type'         => 'decimal',
 							'attributes'   => array(
 								'placeholder' => give_format_decimal('1.00'),
 								'value'       => give_format_decimal( $custom_amount_minimum ),
