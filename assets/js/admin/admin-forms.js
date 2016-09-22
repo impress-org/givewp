@@ -113,6 +113,15 @@ jQuery.noConflict();
         //Close Form when Goal Achieved
         var close_form_when_goal_achieved_option = $('._give_close_form_when_goal_achieved_field input:radio');
 
+        close_form_when_goal_achieved_option.on('change', function () {
+            var close_form_when_goal_achieved_option_val = $('._give_close_form_when_goal_achieved_field input:radio:checked').val();
+            if (close_form_when_goal_achieved_option_val === 'no') {
+                $('._give_form_goal_achieved_message_field').hide();
+            } else {
+                $('._give_form_goal_achieved_message_field').show();
+            }
+        }).change();
+
         goal_option.on('change', function () {
             var goal_option = $('._give_goal_option_field input:radio:checked').val();
             if (goal_option === 'no') {
@@ -121,7 +130,7 @@ jQuery.noConflict();
                 $('._give_goal_format_field').hide();
                 $('._give_goal_color_field').hide();
                 $('._give_close_form_when_goal_achieved_field').hide();
-                $('.cmb2-id--give-form-goal-achieved-message').hide();
+                $('._give_form_goal_achieved_message_field').hide();
             } else {
                 $('._give_set_goal_field').show();
                 $('._give_goal_format_field').show();
@@ -133,15 +142,6 @@ jQuery.noConflict();
                 if (close_form_when_goal_achieved_option_val === 'yes') {
                     $('._give_form_goal_achieved_message_field').show();
                 }
-            }
-        }).change();
-
-        close_form_when_goal_achieved_option.on('change', function () {
-            var close_form_when_goal_achieved_option_val = $('._give_close_form_when_goal_achieved_field input:radio:checked').val();
-            if (close_form_when_goal_achieved_option_val === 'no') {
-                $('._give_form_goal_achieved_message_field').hide();
-            } else {
-                $('._give_form_goal_achieved_message_field').show();
             }
         }).change();
 
