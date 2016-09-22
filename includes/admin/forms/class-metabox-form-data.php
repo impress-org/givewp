@@ -265,8 +265,7 @@ class Give_MetaBox_Form_Data {
 						'description'       => esc_html__( 'This is the monetary goal amount you want to reach for this donation form.', 'give' ),
 						'id'                => $prefix . 'set_goal',
 						'type'              => 'text_small',
-						'render_row_cb' 	=> 'give_cmb_amount_field_render_row_cb',
-						'sanitization_cb'   => 'give_sanitize_price_field_value',
+						'data_type'         => 'decimal',
 						'attributes'        => array(
 							'placeholder' => give_format_decimal( '0.00' ),
 							'value'       => give_format_decimal( $goal ),
