@@ -154,16 +154,16 @@ jQuery.noConflict();
         var offline_customization_option = $('._give_customize_offline_donations_field input:radio');
         offline_customization_option.on('change', function () {
             var offline_customization_option_val = $('._give_customize_offline_donations_field input:radio:checked').val();
-            if (offline_customization_option_val === 'no') {
-                $('._give_offline_checkout_notes_field').hide();
-                $('._give_offline_donation_enable_billing_fields_single_field').hide();
-                $('._give_offline_donation_subject_field').hide();
-                $('._give_offline_donation_email_field').hide();
-            } else {
+            if ( 'yes' === offline_customization_option_val ) {
                 $('._give_offline_checkout_notes_field').show();
                 $('._give_offline_donation_enable_billing_fields_single_field').show();
                 $('._give_offline_donation_subject_field').show();
                 $('._give_offline_donation_email_field').show();
+            } else {
+                $('._give_offline_checkout_notes_field').hide();
+                $('._give_offline_donation_enable_billing_fields_single_field').hide();
+                $('._give_offline_donation_subject_field').hide();
+                $('._give_offline_donation_email_field').hide();
             }
         }).change();
     };
