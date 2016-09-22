@@ -61,13 +61,16 @@ jQuery.noConflict();
 
 
         //Content Option
-        var content_option = $('#_give_content_option');
+        var  display_content = $('._give_display_content_field input:radio');
+        display_content.on('change', function () {
+            // Get checked radio button value.
+            var display_content_val = $('._give_display_content_field input:radio:checked').val();
 
-        content_option.on('change', function () {
-
-            if (content_option.val() !== 'none') {
+            if ( display_content_val === 'yes') {
+                $('._give_content_placement_field').show();
                 $('._give_form_content_field').show();
             } else {
+                $('._give_content_placement_field').hide();
                 $('._give_form_content_field').hide();
             }
         }).change();
