@@ -459,3 +459,20 @@ function give_filter_offline_gateway( $gateway_list, $form_id ) {
 	return $gateway_list;
 }
 add_filter( 'give_enabled_payment_gateways', 'give_filter_offline_gateway', 10, 2 );
+
+/**
+ * Set default gateway to global default payment gateway
+ * if current default gateways selected offline and offline payment gateway is disabled.
+ *
+ * @since 1.8
+ * @param  string  $meta_key   Meta key.
+ * @param  string $meta_value  Meta value.
+ * @param  int    $postid      Form ID.
+ * @return void
+ */
+function _give_customize_offline_donations_on_save_callback( $meta_key, $meta_value, $postid ) {
+	if( ( 'no' === $meta_value ) && ( 'offline' === get_post_meta( $postid, '_give_default_gateway', true ) ) ) {
+		update_post_meta( $postid, '_give_default_gateway', 'global' );
+	}
+}
+add_filter( 'give_save__give_customize_offline_donations', '_give_customize_offline_donations_on_save_callback', 10, 3 );
