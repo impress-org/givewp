@@ -92,11 +92,16 @@ add_action( 'give_offline_cc_form', 'give_offline_payment_cc_form' );
  */
 function give_offline_billing_fields( $form_id ) {
 	//Enable Default CC fields (billing info)
-	$post_offline_cc_fields   = get_post_meta( $form_id, '_give_offline_donation_enable_billing_fields_single', true );
-	$global_offline_cc_fields = give_get_option( 'give_offline_donation_enable_billing_fields' );
+	$post_offline_cc_fields        = get_post_meta( $form_id, '_give_offline_donation_enable_billing_fields_single', true );
+	$post_offline_customize_option = get_post_meta( $form_id, '_give_customize_offline_donations', true );
+
+	$global_offline_cc_fields      = give_get_option( 'give_offline_donation_enable_billing_fields' );
 
 	//Output CC Address fields if global option is on and user hasn't elected to customize this form's offline donation options
-	if ( $global_offline_cc_fields == 'on' || $post_offline_cc_fields == 'on') {
+	if ( 'global' === $post_offline_customize_option && 'on' === $global_offline_cc_fields ) {
+		give_default_cc_address_fields( $form_id );
+
+	} elseif( 'yes' === $post_offline_customize_option && 'on' === $post_offline_cc_fields ) {
 		give_default_cc_address_fields( $form_id );
 	}
 }
