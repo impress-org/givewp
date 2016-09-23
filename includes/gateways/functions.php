@@ -41,10 +41,11 @@ function give_get_payment_gateways() {
 /**
  * Returns a list of all enabled gateways.
  *
- * @since 1.0
+ * @since  1.0
+ * @param  int   $form_id      Form ID
  * @return array $gateway_list All the available gateways
  */
-function give_get_enabled_payment_gateways() {
+function give_get_enabled_payment_gateways( $form_id = 0 ) {
 
 	$gateways = give_get_payment_gateways();
 
@@ -61,7 +62,7 @@ function give_get_enabled_payment_gateways() {
 	// Set order of payment gateway in list.
 	$gateway_list = give_get_ordered_payment_gateways( $gateway_list );
 
-	return apply_filters( 'give_enabled_payment_gateways', $gateway_list );
+	return apply_filters( 'give_enabled_payment_gateways', $gateway_list, $form_id );
 }
 
 /**

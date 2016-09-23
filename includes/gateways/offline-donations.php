@@ -435,3 +435,22 @@ function give_get_default_offline_donation_email_content() {
 	return apply_filters( 'give_default_offline_donation_content', $default_text );
 
 }
+
+
+/**
+ * Remove offline gateway from gateway list of offline disable for form.
+ *
+ * @since  1.8
+ * @param  array     $gateway_list
+ * @param  $form_id
+ * @return array
+ */
+function give_filter_offline_gateway( $gateway_list, $form_id ) {
+	if( $form_id && ( 'no' === get_post_meta( $form_id, '_give_customize_offline_donations', true ) ) ) {
+		unset( $gateway_list['offline'] );
+	}
+
+	// Output.
+	return $gateway_list;
+}
+add_filter( 'give_enabled_payment_gateways', 'give_filter_offline_gateway', 10, 2 );

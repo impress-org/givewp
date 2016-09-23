@@ -606,7 +606,7 @@ function give_default_gateway( $field ) {
 	global $thepostid, $post;
 
 	// get all active payment gateways.
-	$gateways = give_get_enabled_payment_gateways();
+	$gateways = give_get_enabled_payment_gateways( $thepostid );
 
 	// Set field option value.
 	foreach ( $gateways as $key => $option ) {
