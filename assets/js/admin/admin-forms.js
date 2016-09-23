@@ -91,9 +91,11 @@ jQuery.noConflict();
         }).change();
 
         //Payment Display
-        var payment_display_option = $('#_give_payment_display');
+        var payment_display_option = $('._give_payment_display_field input:radio');
         payment_display_option.on('change', function () {
-            if (payment_display_option.val() === 'onpage') {
+            var payment_display_option_val = $('._give_payment_display_field input:radio:checked').val();
+
+            if (payment_display_option_val === 'onpage') {
                 $('._give_reveal_label_field').hide();
             } else {
                 $('._give_reveal_label_field').show();
