@@ -689,6 +689,9 @@ class Give_MetaBox_Form_Data {
 								$form_meta_value = give_clean( $_POST[ $form_meta_key ] );
 								update_post_meta( $post_id, $form_meta_key, $form_meta_value );
 						}
+
+						// Fire after saving form meta key.
+						do_action( "give_save_{$form_meta_key}", $form_meta_key, $form_meta_value, $post_id, $post );
 					}
 				}
 			}
