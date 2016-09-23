@@ -108,7 +108,7 @@ function give_render_field( $field ) {
 		$field['attributes']['class'] = '';
 	}
 
-	$field['attributes']['class'] = trim( "give-field {$field['attributes']['class']} {$field['class']} give-{$field['type']}" );
+	$field['attributes']['class'] = trim( "give-field {$field['attributes']['class']} give-{$field['type']} {$field['class']}" );
 	unset( $field['class'] );
 
 
