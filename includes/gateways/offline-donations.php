@@ -301,7 +301,7 @@ function give_offline_add_settings( $settings ) {
 	$check_settings = array(
 
 		array(
-			'name'    => esc_attr__( 'Customize Offline Donations', 'give' ),
+			'name'    => esc_attr__( 'Offline Donations', 'give' ),
 			'desc'    => esc_attr__( 'If you would like to customize the donation instructions for this specific forms check this option.', 'give' ),
 			'id'      => $prefix . 'customize_offline_donations',
 			'type'    => 'radio_inline',
@@ -314,7 +314,7 @@ function give_offline_add_settings( $settings ) {
 			),
 		),
 		array(
-			'name'        => esc_attr__( 'Request Billing Information', 'give' ),
+			'name'        => esc_attr__( 'Billing Fields', 'give' ),
 			'desc'        => esc_attr__( 'This option will enable the billing details section for this form\'s offline donation payment gateway. The fieldset will appear above the offline donation instructions.', 'give' ),
 			'id'          => $prefix . 'offline_donation_enable_billing_fields_single',
 			'row_classes' => 'give-subfield',
@@ -322,7 +322,7 @@ function give_offline_add_settings( $settings ) {
 		),
 		array(
 			'id'          => $prefix . 'offline_checkout_notes',
-			'name'        => esc_attr__( 'Offline Donation Instructions', 'give' ),
+			'name'        => esc_attr__( 'Donation Instructions', 'give' ),
 			'desc'        => esc_attr__( 'Enter the instructions you want to display to the donor during the donation process. Most likely this would include important information like mailing address and who to make the check out to.', 'give' ),
 			'default'     => give_get_default_offline_donation_content(),
 			'type'        => 'wysiwyg',
@@ -333,7 +333,7 @@ function give_offline_add_settings( $settings ) {
 		),
 		array(
 			'id'          => $prefix . 'offline_donation_subject',
-			'name'        => esc_attr__( 'Offline Donation Email Instructions Subject', 'give' ),
+			'name'        => esc_attr__( 'Email Subject', 'give' ),
 			'desc'        => esc_attr__( 'Enter the subject line for the donation receipt email.', 'give' ),
 			'default'     => esc_attr__( '{donation} - Offline Donation Instructions', 'give' ),
 			'row_classes' => 'give-subfield',
@@ -341,7 +341,7 @@ function give_offline_add_settings( $settings ) {
 		),
 		array(
 			'id'          => $prefix . 'offline_donation_email',
-			'name'        => esc_attr__( 'Offline Donation Email Instructions', 'give' ),
+			'name'        => esc_attr__( 'Email Instructions', 'give' ),
 			'desc'        => esc_attr__( 'Enter the instructions you want emailed to the donor after they have submitted the donation form. Most likely this would include important information like mailing address and who to make the check out to.', 'give' ),
 			'default'     => give_get_default_offline_donation_email_content(),
 			'type'        => 'wysiwyg',

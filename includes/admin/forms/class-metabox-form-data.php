@@ -285,14 +285,14 @@ class Give_MetaBox_Form_Data {
 						),
 					),
 					array(
-						'name'        => esc_html__( 'Goal Progress Bar Color', 'give' ),
+						'name'        => esc_html__( 'Progress Bar Color', 'give' ),
 						'id'          => $prefix . 'goal_color',
 						'type'        => 'colorpicker',
 						'default'     => '#2bc253',
 					),
 
 					array(
-						'name'        => esc_html__( 'Close Form when Goal Achieved', 'give' ),
+						'name'        => esc_html__( 'Close Form', 'give' ),
 						'desc'        => esc_html__( 'Would you like to close the donation forms and stop accepting donations once this goal has been met?', 'give' ),
 						'id'          => $prefix . 'close_form_when_goal_achieved',
 						'type'        => 'radio_inline',
@@ -323,7 +323,7 @@ class Give_MetaBox_Form_Data {
 				'title'        => esc_html__( 'Form Display', 'give' ),
 				'fields'       => apply_filters( 'give_forms_display_options_metabox_fields', array(
 							array(
-								'name'    => esc_html__( 'Payment Fields', 'give' ),
+								'name'    => esc_html__( 'Display Options', 'give' ),
 								'desc'    => sprintf( __( 'How would you like to display donation information for this form? <a href=""%s">Learn more ></a>', 'give' ), '#' ),
 								'id'      => $prefix . 'payment_display',
 								'type'    => 'radio_inline',
@@ -345,7 +345,7 @@ class Give_MetaBox_Form_Data {
 							),
 							array(
 								'id'         => $prefix . 'checkout_label',
-								'name'       => esc_html__( 'Complete Donation Text', 'give' ),
+								'name'       => esc_html__( 'Submit Button', 'give' ),
 								'desc'       => esc_html__( 'The button label for completing a donation.', 'give' ),
 								'type'       => 'text_small',
 								'attributes' => array(
@@ -359,13 +359,13 @@ class Give_MetaBox_Form_Data {
 								'type' => 'default_gateway'
 							),
 							array(
-								'name' => esc_html__( 'Disable Guest Donations', 'give' ),
+								'name' => esc_html__( 'Guest Donations', 'give' ),
 								'desc' => esc_html__( 'Do you want to require users be logged-in to make donations?', 'give' ),
 								'id'   => $prefix . 'logged_in_only',
 								'type' => 'checkbox'
 							),
 							array(
-								'name'    => esc_html__( 'Register', 'give' ),
+								'name'    => esc_html__( 'Registration', 'give' ),
 								'desc'    => esc_html__( 'Display the registration and login forms in the payment section for non-logged-in users.', 'give' ),
 								'id'      => $prefix . 'show_register_form',
 								'type'    => 'radio_inline',
@@ -463,7 +463,7 @@ class Give_MetaBox_Form_Data {
 						),
 						array(
 							'id'          => $prefix . 'agree_label',
-							'name'        => esc_html__( 'Agree to Terms Label', 'give' ),
+							'name'        => esc_html__( 'Agreement Label', 'give' ),
 							'desc'        => esc_html__( 'The label shown next to the agree to terms check box. Add your own to customize or leave blank to use the default text placeholder.', 'give' ),
 							'type'        => 'text',
 							'size'        => 'regular',
