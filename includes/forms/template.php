@@ -1384,6 +1384,10 @@ function give_terms_agreement( $form_id ) {
 	$form_option = get_post_meta( $form_id, '_give_terms_option', true );
 	$label = $terms = '';
 
+	if( ! give_is_terms_agreement_enabled( $form_id ) ) {
+		return false;
+	}
+
 	// Bailout if per form and global term and conditions is not setup
 	if( 'yes' === $form_option ) {
 		// Set term and conditions label and text on basis of per form and global setting.
