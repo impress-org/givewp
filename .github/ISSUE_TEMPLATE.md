@@ -1,6 +1,8 @@
+<!--- Please conform as much as possible to the following issue template -->
+
 ## Issue Overview
 
-This is a brief overview of the issue.
+<!--- This is a brief overview of the issue. --->
 
 ## Expected Behavior
 <!--- If you're describing a bug, tell us what should happen -->
@@ -21,7 +23,6 @@ This is a brief overview of the issue.
 2.
 3.
 4.
-
 
 ## Impacted Add-ons
 List the Give Add-ons that this PR will affect:
