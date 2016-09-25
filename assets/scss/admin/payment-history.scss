@@ -226,11 +226,6 @@ Responsiveness
   float: right;
 }
 
-.rtl .give-admin-box .right {
-  float: left;
-  margin-left: 10px;
-}
-
 #give-order-update .inside,
 #give-order-details .inside {
   margin: 0;
@@ -329,10 +324,6 @@ Responsiveness
   font-weight: 600;
 }
 
-#give-donation-overview .inside {
-  padding: 12px;
-}
-
 input.give-price-field {
   width: 80px;
   padding: 3px 5px;
@@ -413,18 +404,11 @@ input.give-price-field {
   }
 }
 
-
 //------------------------------------------
 //Donation Details
 //------------------------------------------
-
-#give-customer-details {
-
-  .inside {
-    padding-top: 15px;
-    padding-bottom: 15px;
-  }
-
+#give-donor-details .inside, #give-donation-overview .inside {
+  margin-top: 0;
 }
 
 .give_forms_page_give-payment-history #give-dashboard-widgets-wrap #side-sortables {

@@ -21,7 +21,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0
  * @global $wpdb
- * @global $wp_version
  * @return void
  */
 function give_install( $network_wide = false ) {
@@ -76,7 +75,7 @@ function give_run_install() {
 	// Checks if the Success Page option exists AND that the page exists.
 	if ( ! get_post( give_get_option( 'success_page' ) ) ) {
 
-		// Donations Confirmation (Success) Page.
+		// Donation Confirmation (Success) Page
 		$success = wp_insert_post(
 			array(
 				'post_title'     => esc_html__( 'Donation Confirmation', 'give' ),
@@ -95,11 +94,11 @@ function give_run_install() {
 	// Checks if the Failure Page option exists AND that the page exists.
 	if ( ! get_post( give_get_option( 'failure_page' ) ) ) {
 
-		// Failed Donation Page.
+		// Failed Donation Page
 		$failed = wp_insert_post(
 			array(
-				'post_title'     => esc_html__( 'Transaction Failed', 'give' ),
-				'post_content'   => esc_html__( 'We\'re sorry, your transaction failed to process. Please try again or contact site support.', 'give' ),
+				'post_title'     => esc_html__( 'Donation Failed', 'give' ),
+				'post_content'   => esc_html__( 'We\'re sorry, your donation failed to process. Please try again or contact site support.', 'give' ),
 				'post_status'    => 'publish',
 				'post_author'    => 1,
 				'post_type'      => 'page',
@@ -112,7 +111,7 @@ function give_run_install() {
 
 	// Checks if the History Page option exists AND that the page exists.
 	if ( ! get_post( give_get_option( 'history_page' ) ) ) {
-		// Purchase History (History) Page.
+		// Donation History Page
 		$history = wp_insert_post(
 			array(
 				'post_title'     => esc_html__( 'Donation History', 'give' ),
@@ -290,6 +289,13 @@ function give_after_install() {
 			// (this ensures it creates it on multisite instances where it is network activated).
 			@Give()->customers->create_table();
 
+			/**
+			 * Fires after plugin installation.
+			 *
+			 * @since 1.0
+			 *
+			 * @param array $give_options Give plugin options.
+			 */
 			do_action( 'give_after_install', $give_options );
 		}
 

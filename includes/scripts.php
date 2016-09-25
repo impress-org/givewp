@@ -20,8 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Enqueues the required scripts.
  *
  * @since 1.0
- * @global $give_options
- * @global $post
+ *
  * @return void
  */
 function give_load_scripts() {
@@ -46,14 +45,26 @@ function give_load_scripts() {
 		'general_loading'     => esc_html__( 'Loading...', 'give' ),
 		'purchase_loading'    => esc_html__( 'Please Wait...', 'give' ),
 		'number_decimals'     => give_get_price_decimals(),
-		'give_version'        => GIVE_VERSION
+		'give_version'        => GIVE_VERSION,
+		'form_translation'    => apply_filters(
+			'give_form_translation_js',
+			array(
+				// Field name               Validation message.
+				'payment-mode'           => esc_html__( 'Please select payment mode.', 'give' ),
+				'give_first'             => esc_html__( 'Please enter your first name.', 'give' ),
+				'give_email'             => esc_html__( 'Please enter a valid email address.', 'give' ),
+				'give_user_login'        => esc_html__( 'Invalid username. Only lowercase letters (a-z) and numbers are allowed.', 'give' ),
+				'give_user_pass'         => esc_html__( 'Enter a password.', 'give' ),
+				'give_user_pass_confirm' => esc_html__( 'Enter a confirm password.', 'give' ),
+			)
+		)
 	) );
 	$localize_give_ajax     = apply_filters( 'give_global_ajax_vars', array(
 		'ajaxurl'         => give_get_ajax_url(),
 		'loading'         => esc_html__( 'Loading', 'give' ),
 		// General loading message
 		'select_option'   => esc_html__( 'Please select an option', 'give' ),
-		// Variable pricing error with multi-purchase option enabled
+		// Variable pricing error with multi-donation option enabled
 		'default_gateway' => give_get_default_gateway( null ),
 		'permalinks'      => get_option( 'permalink_structure' ) ? '1' : '0',
 		'number_decimals' => give_get_price_decimals()
@@ -148,13 +159,16 @@ function give_get_stylesheet_uri() {
 	// Use minified libraries if SCRIPT_DEBUG is turned off
 	$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
-	$file          = 'give' . $suffix . '.css';
+	// LTR or RTL files
+	$direction = ( is_rtl() ) ? '-rtl' : '';
+
+	$file          = 'give' . $direction . $suffix . '.css';
 	$templates_dir = give_get_theme_template_dir_name();
 
 	$child_theme_style_sheet    = trailingslashit( get_stylesheet_directory() ) . $templates_dir . $file;
-	$child_theme_style_sheet_2  = trailingslashit( get_stylesheet_directory() ) . $templates_dir . 'give.css';
+	$child_theme_style_sheet_2  = trailingslashit( get_stylesheet_directory() ) . $templates_dir . 'give' . $direction . '.css';
 	$parent_theme_style_sheet   = trailingslashit( get_template_directory() ) . $templates_dir . $file;
-	$parent_theme_style_sheet_2 = trailingslashit( get_template_directory() ) . $templates_dir . 'give.css';
+	$parent_theme_style_sheet_2 = trailingslashit( get_template_directory() ) . $templates_dir . 'give' . $direction . '.css';
 	$give_plugin_style_sheet    = trailingslashit( give_get_templates_dir() ) . $file;
 
 	$uri = false;
@@ -164,13 +178,13 @@ function give_get_stylesheet_uri() {
 	// This allows users to copy just give.css to their theme
 	if ( file_exists( $child_theme_style_sheet ) || ( ! empty( $suffix ) && ( $nonmin = file_exists( $child_theme_style_sheet_2 ) ) ) ) {
 		if ( ! empty( $nonmin ) ) {
-			$uri = trailingslashit( get_stylesheet_directory_uri() ) . $templates_dir . 'give.css';
+			$uri = trailingslashit( get_stylesheet_directory_uri() ) . $templates_dir . 'give' . $direction . '.css';
 		} else {
 			$uri = trailingslashit( get_stylesheet_directory_uri() ) . $templates_dir . $file;
 		}
 	} elseif ( file_exists( $parent_theme_style_sheet ) || ( ! empty( $suffix ) && ( $nonmin = file_exists( $parent_theme_style_sheet_2 ) ) ) ) {
 		if ( ! empty( $nonmin ) ) {
-			$uri = trailingslashit( get_template_directory_uri() ) . $templates_dir . 'give.css';
+			$uri = trailingslashit( get_template_directory_uri() ) . $templates_dir . 'give' . $direction . '.css';
 		} else {
 			$uri = trailingslashit( get_template_directory_uri() ) . $templates_dir . $file;
 		}
@@ -190,7 +204,6 @@ function give_get_stylesheet_uri() {
  * @since 1.0
  *
  * @global       $post
- * @global       $give_options
  *
  * @param string $hook Page hook
  *
@@ -198,7 +211,9 @@ function give_get_stylesheet_uri() {
  */
 function give_load_admin_scripts( $hook ) {
 
-	global $wp_version, $post, $post_type, $give_options;
+	global $post, $post_type;
+
+	$give_options = give_get_settings();
 
 	//Directories of assets
 	$js_dir     = GIVE_PLUGIN_URL . 'assets/js/admin/';
@@ -207,6 +222,9 @@ function give_load_admin_scripts( $hook ) {
 
 	// Use minified libraries if SCRIPT_DEBUG is turned off
 	$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
+	// LTR or RTL files
+	$direction = ( is_rtl() ) ? '-rtl' : '';
 
 	//Global Admin:
 	wp_register_style( 'give-admin-bar-notification', $css_dir . 'adminbar-style.css' );
@@ -220,7 +238,7 @@ function give_load_admin_scripts( $hook ) {
 	//CSS
 	wp_register_style( 'jquery-ui-css', $css_dir . 'jquery-ui-fresh' . $suffix . '.css' );
 	wp_enqueue_style( 'jquery-ui-css' );
-	wp_register_style( 'give-admin', $css_dir . 'give-admin' . $suffix . '.css', GIVE_VERSION );
+	wp_register_style( 'give-admin', $css_dir . 'give-admin' . $direction . $suffix . '.css', GIVE_VERSION );
 	wp_enqueue_style( 'give-admin' );
 	wp_register_style( 'jquery-chosen', $css_dir . 'chosen' . $suffix . '.css', array(), GIVE_VERSION );
 	wp_enqueue_style( 'jquery-chosen' );
@@ -267,22 +285,19 @@ function give_load_admin_scripts( $hook ) {
 		'give_version'            => GIVE_VERSION,
 		'thousands_separator'     => $thousand_separator,
 		'decimal_separator'       => $decimal_separator,
-		'quick_edit_warning'      => esc_html__( 'Sorry, not available for variable priced forms.', 'give' ),
+		'quick_edit_warning'      => esc_html__( 'Not available for variable priced forms.', 'give' ),
 		'delete_payment'          => esc_html__( 'Are you sure you wish to delete this payment?', 'give' ),
 		'delete_payment_note'     => esc_html__( 'Are you sure you wish to delete this note?', 'give' ),
 		'revoke_api_key'          => esc_html__( 'Are you sure you wish to revoke this API key?', 'give' ),
 		'regenerate_api_key'      => esc_html__( 'Are you sure you wish to regenerate this API key?', 'give' ),
 		'resend_receipt'          => esc_html__( 'Are you sure you wish to resend the donation receipt?', 'give' ),
 		'copy_download_link_text' => esc_html__( 'Copy these links to your clipboard and give them to your donor.', 'give' ),
-		/* translators: %s: form singular label */
-		'delete_payment_download' => sprintf( esc_html__( 'Are you sure you wish to delete this %s?', 'give' ), give_get_forms_label_singular() ),
+		'delete_payment_download' => esc_html__( 'Are you sure you wish to delete this form?', 'give' ),
 		'one_price_min'           => esc_html__( 'You must have at least one price.', 'give' ),
 		'one_file_min'            => esc_html__( 'You must have at least one file.', 'give' ),
 		'one_field_min'           => esc_html__( 'You must have at least one field.', 'give' ),
-		/* translators: %s: form singular label */
-		'one_option'              => sprintf( esc_html__( 'Choose a %s', 'give' ), give_get_forms_label_singular() ),
-		/* translators: %s: form plural label */
-		'one_or_more_option'      => sprintf( esc_html__( 'Choose one or more %s', 'give' ), give_get_forms_label_plural() ),
+		'one_option'              => esc_html__( 'Choose a form', 'give' ),
+		'one_or_more_option'      => esc_html__( 'Choose one or more forms', 'give' ),
 		'numeric_item_price'      => esc_html__( 'Item price must be numeric.', 'give' ),
 		'numeric_quantity'        => esc_html__( 'Quantity must be numeric.', 'give' ),
 		'currency_sign'           => give_currency_filter( '' ),
@@ -290,15 +305,14 @@ function give_load_admin_scripts( $hook ) {
 		'currency_decimals'       => give_currency_decimal_filter( give_get_price_decimals() ),
 		'new_media_ui'            => apply_filters( 'give_use_35_media_ui', 1 ),
 		'remove_text'             => esc_html__( 'Remove', 'give' ),
-		/* translators: %s: form plural label */
-		'type_to_search'          => sprintf( esc_html__( 'Type to search %s', 'give' ), give_get_forms_label_plural() ),
+		'type_to_search'          => esc_html__( 'Type to search forms', 'give' ),
 		'batch_export_no_class'   => esc_html__( 'You must choose a method.', 'give' ),
 		'batch_export_no_reqs'    => esc_html__( 'Required fields not completed.', 'give' ),
 		'reset_stats_warn'        => __( 'Are you sure you want to reset Give? This process is <strong><em>not reversible</em></strong> and will delete all data regardless of test or live mode. Please be sure you have a recent backup before proceeding.', 'give' ),
 		'price_format_guide'      => sprintf( esc_html__( 'Please enter amount in monetary decimal ( %1$s ) format without thousand separator ( %2$s ) .', 'give' ), $decimal_separator, $thousand_separator )
 	) );
 
-	if ( function_exists( 'wp_enqueue_media' ) && version_compare( $wp_version, '3.5', '>=' ) ) {
+	if ( function_exists( 'wp_enqueue_media' ) && version_compare( get_bloginfo( 'version' ), '3.5', '>=' ) ) {
 		//call for new media manager
 		wp_enqueue_media();
 	}
@@ -313,16 +327,14 @@ add_action( 'admin_enqueue_scripts', 'give_load_admin_scripts', 100 );
  * Echoes the CSS for the Give post type icon.
  *
  * @since 1.0
- * @global $post_type
- * @global $wp_version
+ *
  * @return void
  */
 function give_admin_icon() {
-	global $wp_version;
 	?>
 	<style type="text/css" media="screen">
 
-		<?php if( version_compare( $wp_version, '3.8-RC', '>=' ) || version_compare( $wp_version, '3.8', '>=' ) ) { ?>
+		<?php if( version_compare( get_bloginfo( 'version' ), '3.8-RC', '>=' ) || version_compare( get_bloginfo( 'version' ), '3.8', '>=' ) ) { ?>
 		@font-face {
 			font-family: 'give-icomoon';
 			src: url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.eot?-ngjl88'; ?>');
@@ -349,3 +361,33 @@ function give_admin_icon() {
 }
 
 add_action( 'admin_head', 'give_admin_icon' );
+
+/**
+ * Admin js code
+ *
+ * This code helps to hide license notices for 24 hour if admin user dismissed notice.
+ *
+ * @since 1.7
+ *
+ * @return void
+ */
+function give_admin_hide_notice_shortly_js() {
+	?>
+    <script>
+        jQuery(document).ready(function($){
+           $('.give-license-notice').on( 'click', 'button.notice-dismiss', function(e){
+               e.preventDefault();
+
+               var parent = $(this).parents('.give-license-notice'),
+                   dismiss_notice_url = parent.data('dismiss-notice-shortly');
+
+               if( dismiss_notice_url ) {
+                   window.location.assign( dismiss_notice_url );
+               }
+           });
+        });
+    </script>
+	<?php
+}
+
+add_action( 'admin_head', 'give_admin_hide_notice_shortly_js' );

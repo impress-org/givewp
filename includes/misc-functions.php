@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Is Test Mode
  *
  * @since 1.0
- * @global $give_options
+ *
  * @return bool $ret True if return mode is enabled, false otherwise
  */
 function give_is_test_mode() {
@@ -223,7 +223,7 @@ function give_get_current_page_url() {
  * Verify credit card numbers live?
  *
  * @since 1.0
- * @global $give_options
+ *
  * @return bool $ret True is verify credit cards is live
  */
 function give_is_cc_verify_enabled() {
@@ -314,9 +314,9 @@ function give_get_ip() {
 
 
 /**
- * Store Purchase Data in Sessions
+ * Store Donation Data in Sessions
  *
- * Used for storing info about purchase
+ * Used for storing info about donation
  *
  * @since 1.0
  *
@@ -330,10 +330,10 @@ function give_set_purchase_session( $purchase_data = array() ) {
 }
 
 /**
- * Retrieve Purchase Data from Session
+ * Retrieve Donation Data from Session
  *
- * Used for retrieving info about purchase
- * after completing a purchase
+ * Used for retrieving info about donation
+ * after completing a donation
  *
  * @since 1.0
  * @uses  Give()->session->get()
@@ -344,9 +344,9 @@ function give_get_purchase_session() {
 }
 
 /**
- * Get Purchase Summary
+ * Get Donation Summary
  *
- * Retrieves the purchase summary.
+ * Retrieves the donation summary.
  *
  * @since       1.0
  *
@@ -507,12 +507,24 @@ function give_is_host( $host = false ) {
  * @uses apply_filters() Calls 'give_deprecated_function_trigger_error' and expects boolean value of true to do
  *   trigger or false to not trigger error.
  *
- * @param string $function The function that was called
- * @param string $version The version of EDD that deprecated the function
- * @param string $replacement Optional. The function that should have been called
- * @param array  $backtrace Optional. Contains stack backtrace of deprecated function
+ * @param string $function    The function that was called.
+ * @param string $version     The plugin version that deprecated the function.
+ * @param string $replacement Optional. The function that should have been called.
+ * @param array  $backtrace   Optional. Contains stack backtrace of deprecated function.
  */
 function _give_deprecated_function( $function, $version, $replacement = null, $backtrace = null ) {
+
+	/**
+	 * Fires while give deprecated function call occurs.
+	 *
+	 * Allow you to hook to deprecated function call.
+	 *
+	 * @since 1.0
+	 *
+	 * @param string $function    The function that was called.
+	 * @param string $replacement Optional. The function that should have been called.
+	 * @param string $version     The plugin version that deprecated the function.
+	 */
 	do_action( 'give_deprecated_function_run', $function, $replacement, $version );
 
 	$show_errors = current_user_can( 'manage_options' );
@@ -599,6 +611,8 @@ function give_is_func_disabled( $function ) {
  */
 function give_get_newsletter() { ?>
 
+	<p class="newsletter-intro"><?php esc_html_e( 'Be sure to sign up for the Give newsletter below to stay informed of important updates and news.', 'give' ); ?></p>
+
 	<div class="give-newsletter-form-wrap">
 
 		<form action="//givewp.us3.list-manage.com/subscribe/post?u=3ccb75d68bda4381e2f45794c&amp;id=12a081aa13" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
@@ -609,24 +623,27 @@ function give_get_newsletter() { ?>
 			<table class="form-table give-newsletter-form">
 				<tr valign="middle">
 					<td>
-						<input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL" placeholder="Email Address (required)">
+						<label for="mce-EMAIL" class="screen-reader-text"><?php esc_html_e( 'Email Address (required)', 'give' ); ?></label>
+						<input type="email" name="EMAIL" id="mce-EMAIL" placeholder="<?php esc_attr_e( 'Email Address (required)', 'give' ); ?>" class="required email" value="">
 					</td>
-
-					<td scope="row">
-						<input type="text" value="" placeholder="First Name" name="FNAME" class="" id="mce-FNAME"></td>
-
-					<td scope="row">
-						<input type="text" value="" placeholder="Last Name" name="LNAME" class="" id="mce-LNAME"></td>
-
-					<td scope="row">
-						<input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button">
+					<td>
+						<label for="mce-FNAME" class="screen-reader-text"><?php esc_html_e( 'First Name', 'give' ); ?></label>
+						<input type="text" name="FNAME" id="mce-FNAME" placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" class="" value="">
+					</td>
+					<td>
+						<label for="mce-LNAME" class="screen-reader-text"><?php esc_html_e( 'Last Name', 'give' ); ?></label>
+						<input type="text" name="LNAME" id="mce-LNAME" placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" class="" value="">
+					</td>
+					<td>
+						<input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button" value="<?php esc_attr_e( 'Subscribe', 'give' ); ?>">
 					</td>
 				</tr>
 			</table>
 		</form>
 
 		<div style="position: absolute; left: -5000px;">
-			<input type="text" name="b_3ccb75d68bda4381e2f45794c_12a081aa13" tabindex="-1" value=""></div>
+			<input type="text" name="b_3ccb75d68bda4381e2f45794c_12a081aa13" tabindex="-1" value="">
+		</div>
 
 	</div>
 
@@ -669,13 +686,20 @@ function give_get_newsletter() { ?>
  *
  * Various social media elements to Give
  */
-function give_social_media_elements() { ?>
+function give_social_media_elements() {
+?>
 
 	<div class="social-items-wrap">
 
 		<iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fwpgive&amp;send=false&amp;layout=button_count&amp;width=100&amp;show_faces=false&amp;font&amp;colorscheme=light&amp;action=like&amp;height=21&amp;appId=220596284639969" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>
 
-		<a href="https://twitter.com/givewp" class="twitter-follow-button" data-show-count="false">Follow @givewp</a>
+		<a href="https://twitter.com/givewp" class="twitter-follow-button" data-show-count="false"><?php
+			printf(
+				/* translators: %s: Give twitter user @givewp */
+				esc_html_e( 'Follow %s', 'give' ),
+				'@givewp'
+			);
+		?></a>
 		<script>!function (d, s, id) {
 				var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
 				if (!d.getElementById(id)) {
@@ -684,20 +708,22 @@ function give_social_media_elements() { ?>
 					js.src = p + '://platform.twitter.com/widgets.js';
 					fjs.parentNode.insertBefore(js, fjs);
 				}
-			}(document, 'script', 'twitter-wjs');</script>
+			}(document, 'script', 'twitter-wjs');
+		</script>
+
 	</div>
 	<!--/.social-items-wrap -->
 
-
-<?php }
+<?php
+}
 
 
 /**
  * Create SVG library function
  *
- * @param $icon
+ * @param string $icon
  *
- * @return mixed
+ * @return string
  */
 function give_svg_icons( $icon ) {
 
@@ -719,13 +745,13 @@ function give_svg_icons( $icon ) {
  *
  * @since 1.3
  *
- * @param $post_type
+ * @param object $post_type The current object to add a menu items meta box for.
  *
  * @return mixed
  */
 function modify_nav_menu_meta_box_object( $post_type ) {
 	if ( isset( $post_type->name ) && $post_type->name == 'give_forms' ) {
-		$post_type->labels->name = 'Donation Forms';
+		$post_type->labels->name = esc_html__( 'Donation Forms', 'give' );
 	}
 
 	return $post_type;
@@ -755,7 +781,7 @@ if ( ! function_exists( 'array_column' ) ) {
 	 *
 	 * @param array $input A multi-dimensional array (record set) from which to pull
 	 *                         a column of values.
-	 * @param mixed $columnKey The column of values to return. This value may be the
+	 * @param int|string $columnKey The column of values to return. This value may be the
 	 *                         integer key of the column you wish to retrieve, or it
 	 *                         may be the string key name for an associative array.
 	 * @param mixed $indexKey (Optional.) The column to use as the index/keys for
@@ -772,16 +798,13 @@ if ( ! function_exists( 'array_column' ) ) {
 		$params = func_get_args();
 
 		if ( $argc < 2 ) {
-			trigger_error( "array_column() expects at least 2 parameters, {$argc} given", E_USER_WARNING );
+			trigger_error( sprintf( esc_html__( 'array_column() expects at least 2 parameters, %s given.', 'give' ), $argc ), E_USER_WARNING );
 
 			return null;
 		}
 
 		if ( ! is_array( $params[0] ) ) {
-			trigger_error(
-				'array_column() expects parameter 1 to be array, ' . gettype( $params[0] ) . ' given',
-				E_USER_WARNING
-			);
+			trigger_error( sprintf( esc_html__( 'array_column() expects parameter 1 to be array, %s given.', 'give' ), gettype( $params[0] ) ), E_USER_WARNING );
 
 			return null;
 		}
@@ -792,7 +815,7 @@ if ( ! function_exists( 'array_column' ) ) {
 		     && $params[1] !== null
 		     && ! ( is_object( $params[1] ) && method_exists( $params[1], '__toString' ) )
 		) {
-			trigger_error( 'array_column(): The column key should be either a string or an integer', E_USER_WARNING );
+			trigger_error( esc_html__( 'array_column(): The column key should be either a string or an integer.', 'give' ), E_USER_WARNING );
 
 			return false;
 		}
@@ -803,7 +826,7 @@ if ( ! function_exists( 'array_column' ) ) {
 		     && ! is_string( $params[2] )
 		     && ! ( is_object( $params[2] ) && method_exists( $params[2], '__toString' ) )
 		) {
-			trigger_error( 'array_column(): The index key should be either a string or an integer', E_USER_WARNING );
+			trigger_error( esc_html__( 'array_column(): The index key should be either a string or an integer.', 'give' ), E_USER_WARNING );
 
 			return false;
 		}
@@ -909,9 +932,9 @@ if ( ! function_exists( 'cal_days_in_month' ) ) {
 	/**
 	 * cal_days_in_month
 	 *
-	 * @param $calendar
-	 * @param $month
-	 * @param $year
+	 * @param int $calendar
+	 * @param int $month
+	 * @param int $year
 	 *
 	 * @return bool|string
 	 */

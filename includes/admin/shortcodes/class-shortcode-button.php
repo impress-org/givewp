@@ -11,7 +11,10 @@
  * @since       1.3.0
  */
 
-defined( 'ABSPATH' ) or exit;
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Class Give_Shortcode_Button
@@ -116,7 +119,7 @@ final class Give_Shortcode_Button {
 	 */
 	public function shortcode_button() {
 
-		global $pagenow, $wp_version;
+		global $pagenow;
 
 		$shortcode_button_pages = apply_filters( 'give_shortcode_button_pages', array(
 			'post.php',
@@ -154,7 +157,7 @@ final class Give_Shortcode_Button {
 			if ( ! empty( $shortcodes ) ) {
 
 				// check current WP version
-				$img = ( version_compare( $wp_version, '3.5', '<' ) )
+				$img = ( version_compare( get_bloginfo( 'version' ), '3.5', '<' ) )
 					? '<img src="' . GIVE_PLUGIN_URL . 'assets/images/give-media.png" />'
 					: '<span class="wp-media-buttons-icon" id="give-media-button" style="background-image: url(' . give_svg_icons( 'give_grey' ) . ');"></span>';
 

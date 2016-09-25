@@ -54,7 +54,7 @@ function give_print_errors( $form_id ) {
 	}
 }
 
-add_action( 'give_purchase_form_before_personal_info', 'give_print_errors' );
+add_action( 'give_donation_form_before_personal_info', 'give_print_errors' );
 add_action( 'give_ajax_checkout_errors', 'give_print_errors' );
 
 /**
@@ -126,7 +126,7 @@ function give_unset_error( $error_id ) {
  * Register die handler for give_die()
  *
  * @since  1.0
- * @return string/void
+ * @return string|void
  */
 function _give_die_handler() {
 	if ( defined( 'GIVE_UNIT_TESTS' ) ) {

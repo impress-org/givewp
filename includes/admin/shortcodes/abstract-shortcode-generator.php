@@ -10,7 +10,10 @@
  * @since       1.3
  */
 
-defined( 'ABSPATH' ) or exit;
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Class Give_Shortcode_Generator
@@ -290,7 +293,7 @@ abstract class Give_Shortcode_Generator {
 
 		if ( $posts ) {
 			foreach ( $posts as $post ) {
-				$options[ absint( $post->ID ) ] = esc_html( $post->post_title );
+				$options[ absint( $post->ID ) ] = $post->post_title;
 			}
 
 			$field['type']    = 'listbox';

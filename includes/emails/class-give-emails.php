@@ -17,63 +17,63 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Give_Emails Class
+ * Give_Emails Class.
  *
  * @since 1.0
  */
 class Give_Emails {
 
 	/**
-	 * Holds the from address
+	 * Holds the from address.
 	 *
 	 * @since 1.0
 	 */
 	private $from_address;
 
 	/**
-	 * Holds the from name
+	 * Holds the from name.
 	 *
 	 * @since 1.0
 	 */
 	private $from_name;
 
 	/**
-	 * Holds the email content type
+	 * Holds the email content type.
 	 *
 	 * @since 1.0
 	 */
 	private $content_type;
 
 	/**
-	 * Holds the email headers
+	 * Holds the email headers.
 	 *
 	 * @since 1.0
 	 */
 	private $headers;
 
 	/**
-	 * Whether to send email in HTML
+	 * Whether to send email in HTML.
 	 *
 	 * @since 1.0
 	 */
 	private $html = true;
 
 	/**
-	 * The email template to use
+	 * The email template to use.
 	 *
 	 * @since 1.0
 	 */
 	private $template;
 
 	/**
-	 * The header text for the email
+	 * The header text for the email.
 	 *
 	 * @since  1.0
 	 */
 	private $heading = '';
 
 	/**
-	 * Get things going
+	 * Get things going.
 	 *
 	 * @since 1.0
 	 */
@@ -89,7 +89,7 @@ class Give_Emails {
 	}
 
 	/**
-	 * Set a property
+	 * Set a property.
 	 *
 	 * @since 1.0
 	 */
@@ -98,7 +98,7 @@ class Give_Emails {
 	}
 
 	/**
-	 * Get the email from name
+	 * Get the email from name.
 	 *
 	 * @since 1.0
 	 */
@@ -111,7 +111,7 @@ class Give_Emails {
 	}
 
 	/**
-	 * Get the email from address
+	 * Get the email from address.
 	 *
 	 * @since 1.0
 	 */
@@ -124,7 +124,7 @@ class Give_Emails {
 	}
 
 	/**
-	 * Get the email content type
+	 * Get the email content type.
 	 *
 	 * @since 1.0
 	 */
@@ -139,7 +139,7 @@ class Give_Emails {
 	}
 
 	/**
-	 * Get the email headers
+	 * Get the email headers.
 	 *
 	 * @since 1.0
 	 */
@@ -154,7 +154,7 @@ class Give_Emails {
 	}
 
 	/**
-	 * Retrieve email templates
+	 * Retrieve email templates.
 	 *
 	 * @since 1.0
 	 */
@@ -168,7 +168,7 @@ class Give_Emails {
 	}
 
 	/**
-	 * Get the enabled email template
+	 * Get the enabled email template.
 	 *
 	 * @since 1.0
 	 */
@@ -181,7 +181,7 @@ class Give_Emails {
 	}
 
 	/**
-	 * Get the header text for the email
+	 * Get the header text for the email.
 	 *
 	 * @since 1.0
 	 */
@@ -190,7 +190,7 @@ class Give_Emails {
 	}
 
 	/**
-	 * Parse email template tags
+	 * Parse email template tags.
 	 *
 	 * @param $content
 	 *
@@ -201,7 +201,7 @@ class Give_Emails {
 	}
 
 	/**
-	 * Build the final email
+	 * Build the final email.
 	 *
 	 * @since 1.0
 	 */
@@ -213,22 +213,50 @@ class Give_Emails {
 
 		$message = $this->text_to_html( $message );
 
+		$template = $this->get_template();
+
 		ob_start();
 
-		give_get_template_part( 'emails/header', $this->get_template(), true );
+		give_get_template_part( 'emails/header', $template, true );
 
+		/**
+		 * Fires in the email head.
+		 *
+		 * @since 1.0
+		 *
+		 * @param Give_Emails $this The email object.
+		 */
 		do_action( 'give_email_header', $this );
 
-		if ( has_action( 'give_email_template_' . $this->get_template() ) ) {
-			do_action( 'give_email_template_' . $this->get_template() );
+		if ( has_action( 'give_email_template_' . $template ) ) {
+			/**
+			 * Fires in a specific email template.
+			 *
+			 * @since 1.0
+			 */
+			do_action( "give_email_template_{$template}" );
 		} else {
-			give_get_template_part( 'emails/body', $this->get_template(), true );
+			give_get_template_part( 'emails/body', $template, true );
 		}
 
+		/**
+		 * Fires in the email body.
+		 *
+		 * @since 1.0
+		 *
+		 * @param Give_Emails $this The email object.
+		 */
 		do_action( 'give_email_body', $this );
 
-		give_get_template_part( 'emails/footer', $this->get_template(), true );
+		give_get_template_part( 'emails/footer', $template, true );
 
+		/**
+		 * Fires in the email footer.
+		 *
+		 * @since 1.0
+		 *
+		 * @param Give_Emails $this The email object.
+		 */
 		do_action( 'give_email_footer', $this );
 
 		$body    = ob_get_clean();
@@ -238,12 +266,12 @@ class Give_Emails {
 	}
 
 	/**
-	 * Send the email
+	 * Send the email.
 	 *
 	 * @param  string $to The To address to send to.
 	 * @param  string $subject The subject line of the email to send.
 	 * @param  string $message The body of the email to send.
-	 * @param  string|array $attachments Attachments to the email in a format supported by wp_mail()
+	 * @param  string|array $attachments Attachments to the email in a format supported by wp_mail().
 	 *
 	 * @return bool
 	 */
@@ -255,6 +283,13 @@ class Give_Emails {
 			return false;
 		}
 
+		/**
+		 * Fires before sending an email.
+		 *
+		 * @since 1.0
+		 *
+		 * @param Give_Emails $this The email object.
+		 */
 		do_action( 'give_email_send_before', $this );
 
 		$subject = $this->parse_tags( $subject );
@@ -266,6 +301,13 @@ class Give_Emails {
 
 		$sent = wp_mail( $to, $subject, $message, $this->get_headers(), $attachments );
 
+		/**
+		 * Fires after sending an email.
+		 *
+		 * @since 1.0
+		 *
+		 * @param Give_Emails $this The email object.
+		 */
 		do_action( 'give_email_send_after', $this );
 
 		return $sent;
@@ -273,7 +315,7 @@ class Give_Emails {
 	}
 
 	/**
-	 * Add filters / actions before the email is sent
+	 * Add filters / actions before the email is sent.
 	 *
 	 * @since 1.0
 	 */
@@ -284,7 +326,7 @@ class Give_Emails {
 	}
 
 	/**
-	 * Remove filters / actions after the email is sent
+	 * Remove filters / actions after the email is sent.
 	 *
 	 * @since 1.0
 	 */

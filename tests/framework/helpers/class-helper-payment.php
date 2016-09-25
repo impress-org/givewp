@@ -28,7 +28,7 @@ class Give_Helper_Payment extends WP_UnitTestCase {
 	 */
 	public static function create_simple_payment() {
 
-		global $give_options;
+		$give_options = give_get_settings();
 
 		// Enable a few options
 		$give_options['enable_sequential'] = '1'; //Not yet in use
@@ -90,7 +90,7 @@ class Give_Helper_Payment extends WP_UnitTestCase {
 	 */
 	public static function create_multilevel_payment() {
 
-		global $give_options;
+		$give_options = give_get_settings();
 
 		// Enable a few options
 		$give_options['enable_sequential'] = '1'; //Not yet in use
@@ -153,7 +153,7 @@ class Give_Helper_Payment extends WP_UnitTestCase {
 	 */
 	public static function create_simple_payment_with_fee() {
 
-		global $give_options;
+		$give_options = give_get_settings();
 
 		// Enable a few options
 		$give_options['sequential_prefix'] = 'GIVE-';

@@ -1,7 +1,7 @@
 /**
  *  Give Gulp File
  *
- *  @description: Used for automating development tasks such as minifying files, compiling SASS and live-reload; using Gulp.js
+ *  Used for automating development tasks.
  */
 
 /* Modules (Can be installed with npm install command using package.json)
@@ -12,14 +12,17 @@ var bower = require('gulp-bower'),
     del = require('del'),
     filter = require('gulp-filter'),
     gulp = require('gulp'),
+	imagemin = require('gulp-imagemin'),
     livereload = require('gulp-livereload'),
     cssmin = require('gulp-cssmin'),
     notify = require('gulp-notify'),
     rename = require('gulp-rename'),
+    rtlcss = require('gulp-rtlcss'),
     sass = require('gulp-sass'),
     sourcemaps = require('gulp-sourcemaps'),
     uglify = require('gulp-uglify'),
     sort = require('gulp-sort'),
+    checktextdomain = require('gulp-checktextdomain'),
     wpPot = require('gulp-wp-pot'),
     watch = require('gulp-watch');
 
@@ -45,6 +48,19 @@ var source_paths = {
  ------------------------------------- */
 gulp.task('admin_styles', function () {
     gulp.src(source_paths.admin_styles)
+        .pipe(sass())
+        .pipe(rtlcss())
+        .pipe(rename('give-admin-rtl.css'))
+        .pipe(gulp.dest('./assets/css'))
+        .pipe(rename('give-admin-rtl.min.css'))
+        .pipe(cssmin())
+        .pipe(gulp.dest('./assets/css'))
+        .pipe(notify({
+            message: 'Admin RTL styles task complete!',
+            onLast: true //only notify on completion of task
+        }));
+
+    gulp.src(source_paths.admin_styles)		
         .pipe(sourcemaps.init())
         .pipe(sass({
             errLogToConsole: true
@@ -66,6 +82,19 @@ gulp.task('admin_styles', function () {
  ------------------------------------- */
 gulp.task('frontend_styles', function () {
     gulp.src(source_paths.frontend_styles)
+        .pipe(sass())
+        .pipe(rtlcss())
+        .pipe(rename('give-rtl.css'))
+        .pipe(gulp.dest('./templates'))
+        .pipe(rename('give-rtl.min.css'))
+        .pipe(cssmin())
+        .pipe(gulp.dest('./templates'))
+        .pipe(notify({
+            message: 'Frontend RTL styles task complete!',
+            onLast: true //only notify on completion of task
+        }));
+
+	gulp.src(source_paths.frontend_styles)
         .pipe(sourcemaps.init()) //start up sourcemapping
         .pipe(sass({
             errLogToConsole: true
@@ -111,6 +140,45 @@ gulp.task('concat_scripts', function (cb) {
                 onLast: true //only notify on completion of task (prevents multiple notifications per file)
             }))
     });
+});
+
+/* Text-domain task
+ ------------------------------------- */
+gulp.task('textdomain', function () {
+    var options = {
+        text_domain: 'give',
+        keywords: [
+            '__:1,2d',
+            '_e:1,2d',
+            '_x:1,2c,3d',
+            'esc_html__:1,2d',
+            'esc_html_e:1,2d',
+            'esc_html_x:1,2c,3d',
+            'esc_attr__:1,2d', 
+            'esc_attr_e:1,2d', 
+            'esc_attr_x:1,2c,3d', 
+            '_ex:1,2c,3d',
+            '_n:1,2,4d', 
+            '_nx:1,2,4c,5d',
+            '_n_noop:1,2,3d',
+            '_nx_noop:1,2,3c,4d'
+        ],
+		correct_domain: true
+    };
+    gulp.src('**/*.php')
+        .pipe(checktextdomain(options))
+        .pipe(notify({
+            message: 'Textdomain task complete!',
+            onLast: true //only notify on completion of task
+        }));
+});
+
+/* Image Minify Task
+ ------------------------------------- */
+gulp.task('image_minify', function () {
+    gulp.src('./assets/images/*')
+        .pipe(imagemin())
+        .pipe(gulp.dest('./assets/images'))
 });
 
 /* Watch Files For Changes

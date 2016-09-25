@@ -40,7 +40,7 @@ function give_edit_customer( $args ) {
 	$nonce         = $args['_wpnonce'];
 
 	if ( ! wp_verify_nonce( $nonce, 'edit-customer' ) ) {
-		wp_die( esc_html__( 'Cheatin\' eh?!', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
+		wp_die( esc_html__( 'Cheatin&#8217; uh?', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
 	}
 
 	$customer = new Give_Customer( $customer_id );
@@ -147,7 +147,7 @@ function give_edit_customer( $args ) {
 			update_user_meta( $customer->user_id, '_give_user_address', $address );
 		}
 
-		// Update some payment meta if we need to
+		// Update some donation meta if we need to
 		$payments_array = explode( ',', $customer->payment_ids );
 
 		if ( $customer->email != $previous_email ) {
@@ -220,7 +220,7 @@ function give_customer_save_note( $args ) {
 	$nonce         = $args['add_customer_note_nonce'];
 
 	if ( ! wp_verify_nonce( $nonce, 'add-customer-note' ) ) {
-		wp_die( esc_html__( 'Cheatin\' eh?!', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
+		wp_die( esc_html__( 'Cheatin&#8217; uh?', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
 	}
 
 	if ( empty( $customer_note ) ) {
@@ -299,7 +299,7 @@ function give_customer_delete( $args ) {
 	$nonce       = $args['_wpnonce'];
 
 	if ( ! wp_verify_nonce( $nonce, 'delete-customer' ) ) {
-		wp_die( esc_html__( 'Cheatin\' eh?!', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
+		wp_die( esc_html__( 'Cheatin&#8217; uh?', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
 	}
 
 	if ( ! $confirm ) {
@@ -323,9 +323,7 @@ function give_customer_delete( $args ) {
 	 * @param bool $remove_data Records delete confirmation.
 	 */
 	do_action( 'give_pre_delete_customer', $customer_id, $confirm, $remove_data );
-
-	$success = false;
-
+	
 	if ( $customer->id > 0 ) {
 
 		$payments_array = explode( ',', $customer->payment_ids );
@@ -335,14 +333,14 @@ function give_customer_delete( $args ) {
 
 			if ( $remove_data ) {
 
-				// Remove all payments, logs, etc
+				// Remove all donations, logs, etc
 				foreach ( $payments_array as $payment_id ) {
 					give_delete_purchase( $payment_id );
 				}
 
 			} else {
 
-				// Just set the payments to customer_id of 0
+				// Just set the donations to customer_id of 0
 				foreach ( $payments_array as $payment_id ) {
 					give_update_payment_meta( $payment_id, '_give_payment_customer_id', 0 );
 				}
@@ -397,7 +395,7 @@ function give_disconnect_customer_user_id( $args ) {
 	$nonce       = $args['_wpnonce'];
 
 	if ( ! wp_verify_nonce( $nonce, 'edit-customer' ) ) {
-		wp_die( esc_html__( 'Cheatin\' eh?!', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
+		wp_die( esc_html__( 'Cheatin&#8217; uh?', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
 	}
 
 	$customer = new Give_Customer( $customer_id );
@@ -417,6 +415,7 @@ function give_disconnect_customer_user_id( $args ) {
 	 */
 	do_action( 'give_pre_customer_disconnect_user_id', $customer_id, $user_id );
 
+	$output = array();
 	$customer_args = array( 'user_id' => 0 );
 
 	if ( $customer->update( $customer_args ) ) {
@@ -454,3 +453,171 @@ function give_disconnect_customer_user_id( $args ) {
 }
 
 add_action( 'give_disconnect-userid', 'give_disconnect_customer_user_id', 10, 1 );
+
+/**
+ * Add an email address to the donor from within the admin and log a donor note
+ *
+ * @since  1.7
+ * @param  array $args  Array of arguments: nonce, customer id, and email address
+ * @return mixed        If DOING_AJAX echos out JSON, otherwise returns array of success (bool) and message (string)
+ */
+function give_add_donor_email( $args ) {
+	$customer_edit_role = apply_filters( 'give_edit_customers_role', 'edit_give_payments' );
+
+	if ( ! is_admin() || ! current_user_can( $customer_edit_role ) ) {
+		wp_die( __( 'You do not have permission to edit this donor.', 'edit' ) );
+	}
+
+	$output = array();
+	if ( empty( $args ) || empty( $args['email'] ) || empty( $args['customer_id'] ) ) {
+		$output['success'] = false;
+		if ( empty( $args['email'] ) ) {
+			$output['message'] = __( 'Email address is required.', 'give' );
+		} else if ( empty( $args['customer_id'] ) ) {
+			$output['message'] = __( 'Customer ID is required.', 'give' );
+		} else {
+			$output['message'] = __( 'An error has occurred. Please try again.', 'give' );
+		}
+	} else if ( ! wp_verify_nonce( $args['_wpnonce'], 'give_add_donor_email' ) ) {
+		$output = array(
+			'success' => false,
+			'message' => __( 'Nonce verification failed.', 'give' ),
+		);
+	} else if ( ! is_email( $args['email'] ) ) {
+		$output = array(
+			'success' => false,
+			'message' => __( 'Invalid email address.', 'give' ),
+		);
+	} else {
+		$email       = sanitize_email($args['email'] );
+		$customer_id = (int) $args['customer_id'];
+		$primary     = 'true' === $args['primary'] ? true : false;
+		$customer    = new Give_Customer( $customer_id );
+		if ( false === $customer->add_email( $email, $primary ) ) {
+			if ( in_array( $email, $customer->emails ) ) {
+				$output = array(
+					'success'  => false,
+					'message'  => __( 'Email already associated with this donor.', 'give' ),
+				);
+			} else {
+				$output = array(
+					'success' => false,
+					'message' => __( 'Email address is already associated with another donor.', 'give' ),
+				);
+			}
+		} else {
+			$redirect = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $customer_id . '&give-message=email-added' );
+			$output = array(
+				'success'  => true,
+				'message'  => __( 'Email successfully added to donor.', 'give' ),
+				'redirect' => $redirect,
+			);
+
+			$user          = wp_get_current_user();
+			$user_login    = ! empty( $user->user_login ) ? $user->user_login : esc_html__( 'System', 'give' );
+			$customer_note = __( sprintf( 'Email address %s added by %s', $email, $user_login ), 'give' );
+			$customer->add_note( $customer_note );
+
+			if ( $primary ) {
+				$customer_note = __( sprintf( 'Email address %s set as primary by %s', $email, $user_login ), 'give' );
+				$customer->add_note( $customer_note );
+			}
+		}
+	}
+
+	do_action( 'give_post_add_customer_email', $customer_id, $args );
+
+	if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+		header( 'Content-Type: application/json' );
+		echo json_encode( $output );
+		wp_die();
+	}
+
+	return $output;
+}
+add_action( 'give_add_donor_email', 'give_add_donor_email', 10, 1 );
+
+
+/**
+ * Remove an email address to the donor from within the admin and log a donor note
+ * and redirect back to the donor interface for feedback
+ *
+ * @since  1.7
+ * @return void|bool
+ */
+function give_remove_donor_email() {
+	if ( empty( $_GET['id'] ) || ! is_numeric( $_GET['id'] ) ) {
+		return false;
+	}
+	if ( empty( $_GET['email'] ) || ! is_email( $_GET['email'] ) ) {
+		return false;
+	}
+	if ( empty( $_GET['_wpnonce'] ) ) {
+		return false;
+	}
+
+	$nonce = $_GET['_wpnonce'];
+	if ( ! wp_verify_nonce( $nonce, 'give-remove-donor-email' ) ) {
+		wp_die( __( 'Nonce verification failed', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+	}
+
+	$customer = new Give_Customer( $_GET['id'] );
+	if ( $customer->remove_email( $_GET['email'] ) ) {
+		$url = add_query_arg( 'give-message', 'email-removed', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $customer->id ) );
+		$user          = wp_get_current_user();
+		$user_login    = ! empty( $user->user_login ) ? $user->user_login : esc_html__( 'System', 'give' );
+		$customer_note = __( sprintf( 'Email address %s removed by %s', $_GET['email'], $user_login ), 'give' );
+		$customer->add_note( $customer_note );
+	} else {
+		$url = add_query_arg( 'give-message', 'email-remove-failed', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $customer->id ) );
+	}
+
+	wp_safe_redirect( $url );
+	exit;
+}
+add_action( 'give_remove_donor_email', 'give_remove_donor_email', 10 );
+
+
+/**
+ * Set an email address as the primary for a donor from within the admin and log a donor note
+ * and redirect back to the donor interface for feedback
+ *
+ * @since  1.7
+ * @return void|bool
+ */
+function give_set_donor_primary_email() {
+	if ( empty( $_GET['id'] ) || ! is_numeric( $_GET['id'] ) ) {
+		return false;
+	}
+
+	if ( empty( $_GET['email'] ) || ! is_email( $_GET['email'] ) ) {
+		return false;
+	}
+
+	if ( empty( $_GET['_wpnonce'] ) ) {
+		return false;
+	}
+
+	$nonce = $_GET['_wpnonce'];
+
+	if ( ! wp_verify_nonce( $nonce, 'give-set-donor-primary-email' ) ) {
+		wp_die( __( 'Nonce verification failed', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+	}
+
+	$donor = new Give_Customer( $_GET['id'] );
+
+	if ( $donor->set_primary_email( $_GET['email'] ) ) {
+		$url = add_query_arg( 'give-message', 'primary-email-updated', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ) );
+		$user          = wp_get_current_user();
+		$user_login    = ! empty( $user->user_login ) ? $user->user_login : esc_html__( 'System', 'give' );
+		$donor_note    = __( sprintf( 'Email address %s set as primary by %s', $_GET['email'], $user_login ), 'give' );
+
+		$donor->add_note( $donor_note );
+	} else {
+		$url = add_query_arg( 'give-message', 'primary-email-failed', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ) );
+	}
+
+	wp_safe_redirect( $url );
+	exit;
+}
+add_action( 'give_set_donor_primary_email', 'give_set_donor_primary_email', 10 );

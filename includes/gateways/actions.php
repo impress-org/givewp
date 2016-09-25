@@ -39,7 +39,13 @@ add_action( 'give_gateway_select', 'give_process_gateway_select' );
  */
 function give_load_ajax_gateway() {
 	if ( isset( $_POST['give_payment_mode'] ) ) {
-		do_action( 'give_purchase_form', $_POST['give_form_id'] );
+		/**
+		 * Fire to render donation form.
+		 *
+		 * @since 1.7
+		 */
+		do_action( 'give_donation_form', $_POST['give_form_id'] );
+
 		exit();
 	}
 }

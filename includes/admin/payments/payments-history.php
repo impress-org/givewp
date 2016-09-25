@@ -10,7 +10,9 @@
 */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Payment History Page
@@ -22,7 +24,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @return      void
 */
 function give_payment_history_page() {
-	global $give_options;
 
 	$give_payment = get_post_type_object( 'give_payment' );
 
@@ -35,15 +36,15 @@ function give_payment_history_page() {
 	?>
 	<div class="wrap">
 
-		<h1><?php echo $give_payment->labels->menu_name ?></h1>
+		<h1><?php echo get_admin_page_title(); ?></h1>
 
 		<?php
 		/**
 		 * Fires in payment history screen, at the top of the page.
 		 *
-		 * @since 1.0
+		 * @since 1.7
 		 */
-		do_action( 'give_payments_page_top' );
+		do_action( 'give_donations_page_top' );
 		?>
 
 		<form id="give-payments-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ); ?>">
@@ -58,9 +59,9 @@ function give_payment_history_page() {
 		/**
 		 * Fires in payment history screen, at the bottom of the page.
 		 *
-		 * @since 1.0
+		 * @since 1.7
 		 */
-		do_action( 'give_payments_page_bottom' );
+		do_action( 'give_donations_page_bottom' );
 		?>
 
 	</div>
@@ -79,11 +80,13 @@ function give_payment_history_page() {
  */
 function give_view_order_details_title( $admin_title, $title ) {
 
-	if ( 'give_forms_page_give-payment-history' != get_current_screen()->base )
+	if ( 'give_forms_page_give-payment-history' != get_current_screen()->base ) {
 		return $admin_title;
+	}
 
-	if( ! isset( $_GET['give-action'] ) )
+	if( ! isset( $_GET['give-action'] ) ) {
 		return $admin_title;
+	}
 
 	switch( $_GET['give-action'] ) :
 
@@ -97,7 +100,7 @@ function give_view_order_details_title( $admin_title, $title ) {
 		case 'edit-payment' :
 			$title = sprintf(
 				/* translators: %s: admin title */
-				esc_html__( 'Edit Payment - %s', 'give' ),
+				esc_html__( 'Edit Donation - %s', 'give' ),
 				$admin_title
 			);
 			break;
@@ -123,11 +126,14 @@ add_filter( 'admin_title', 'give_view_order_details_title', 10, 2 );
 function give_override_edit_post_for_payment_link( $url, $post_id = 0, $context ) {
 
 	$post = get_post( $post_id );
-	if( ! $post )
-		return $url;
 
-	if( 'give_payment' != $post->post_type )
+	if( ! $post ) {
 		return $url;
+	}
+
+	if( 'give_payment' != $post->post_type ) {
+		return $url;
+	}
 
 	$url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $post_id );
 

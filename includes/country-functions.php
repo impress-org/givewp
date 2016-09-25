@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string $country The two letter country code for the shop's base country
  */
 function give_get_country() {
-	global $give_options;
+	$give_options = give_get_settings();
 	$country = isset( $give_options['base_country'] ) ? $give_options['base_country'] : 'US';
 
 	return apply_filters( 'give_give_country', $country );
@@ -35,7 +35,7 @@ function give_get_country() {
  * @return string $state The shop's base state name
  */
 function give_get_state() {
-	global $give_options;
+	$give_options = give_get_settings();
 	$state = isset( $give_options['base_state'] ) ? $give_options['base_state'] : false;
 
 	return apply_filters( 'give_give_state', $state );
@@ -51,7 +51,6 @@ function give_get_state() {
  * @return mixed|void  A list of states for the shop's base country
  */
 function give_get_states( $country = null ) {
-	global $give_options;
 
 	if ( empty( $country ) ) {
 		$country = give_get_country();

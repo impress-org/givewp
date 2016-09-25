@@ -147,6 +147,13 @@ class Give_Payments_Query extends Give_Stats {
 	 */
 	public function get_payments() {
 
+		/**
+		 * Fires before retrieving payments.
+		 *
+		 * @since 1.0
+		 *
+		 * @param Give_Payments_Query $this Payments query object.
+		 */
 		do_action( 'give_pre_get_payments', $this );
 
 		$query = new WP_Query( $this->args );
@@ -167,12 +174,19 @@ class Give_Payments_Query extends Give_Stats {
 				$payment_id = get_post()->ID;
 				$payment    = new Give_Payment( $payment_id );
 
-				$this->payments[] = apply_filters( 'give_payment', $payment, $payment_id, $this );
+				$this->payments[] = apply_filters( 'give_donation', $payment, $payment_id, $this );
 			}
 
 			wp_reset_postdata();
 		}
 
+		/**
+		 * Fires after retrieving payments.
+		 *
+		 * @since 1.0
+		 *
+		 * @param Give_Payments_Query $this Payments query object.
+		 */
 		do_action( 'give_post_get_payments', $this );
 
 		return $this->payments;

@@ -16,8 +16,6 @@ class Give_Unit_Test_Case extends WP_UnitTestCase {
 	 */
 	public function setUp() {
 
-		global $give_options;
-
 		parent::setUp();
 
 		$_SERVER['SERVER_PROTOCOL'] = 'HTTP/1.1';
