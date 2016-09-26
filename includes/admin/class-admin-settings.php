@@ -57,10 +57,13 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				$settings = array();
 
 				include_once( 'settings/class-settings-page.php' );
-				$settings[] = include( 'settings/class-settings-cmb2-backward-compatibility.php' );
+				include( 'settings/class-settings-cmb2-backward-compatibility.php' );
 
 				// General settings.
 				$settings[] = include( 'settings/class-settings-general.php' );
+
+				// Payment Gateways Settings.
+				$settings[] = include( 'settings/class-settings-payment-gateways.php' );
 
 				self::$settings = apply_filters( 'give_get_settings_pages', $settings );
 			}
@@ -75,7 +78,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * @return void
 		 */
 		public static function save() {
-			global $current_tab;
+			$current_tab = give_get_current_setting_tab();
 
 			if ( empty( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'give-settings' ) ) {
 				die( __( 'Action failed. Please refresh the page and retry.', 'give' ) );
@@ -139,16 +142,12 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * @return void
 		 */
 		public static function output() {
-			global $current_section, $current_tab;
-
 			do_action( 'give_settings_start' );
+
+			$current_tab     = give_get_current_setting_tab();
 
 			// Include settings pages.
 			self::get_settings_pages();
-
-			// Get current tab/section.
-			$current_tab     = empty( $_GET['tab'] ) ? 'general' : sanitize_title( $_GET['tab'] );
-			$current_section = empty( $_REQUEST['section'] ) ? '' : sanitize_title( $_REQUEST['section'] );
 
 			// Save settings if data has been posted.
 			if ( ! empty( $_POST ) ) {
@@ -214,7 +213,8 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * @return void
 		 */
 		public static function output_fields( $options, $option_name = '' ) {
-			global $current_tab;
+			$current_tab = give_get_current_setting_tab();
+
 			foreach ( $options as $value ) {
 				if ( ! isset( $value['type'] ) ) {
 					continue;
