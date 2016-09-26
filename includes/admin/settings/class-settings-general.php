@@ -45,10 +45,22 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 			$this->id    = 'general';
 			$this->label = esc_html__( 'General Settings', 'give' );
 
+			add_filter( 'give_default_setting_tab_section_general', array( $this, 'set_default_setting_tab' ), 10 );
 			add_filter( 'give_settings_tabs_array', array( $this, 'add_settings_page' ), 20 );
 			add_action( "give_sections_{$this->id}_page", array( $this, 'output_sections' ) );
 			add_action( "give_settings_{$this->id}_page", array( $this, 'output' ) );
 			add_action( "give_settings_save_{$this->id}", array( $this, 'save' ) );
+		}
+
+		/**
+		 * Deafault setting tab.
+		 *
+		 * @since  1.8
+		 * @param  $setting_tab
+		 * @return string
+		 */
+		function set_default_setting_tab( $setting_tab ) {
+			return 'general';
 		}
 
 		/**
@@ -71,9 +83,8 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 		 * @return array
 		 */
 		public function get_settings() {
-			global $current_section;
-
 			$settings = array();
+			$current_section = give_get_current_setting_section();
 
 			switch ( $current_section ) {
 				case 'currency' :
@@ -229,10 +240,8 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 		 * @return void
 		 */
 		public function output_sections() {
-			global $current_section;
-
-			// Set default section if current section is not set.
-			$current_section = empty( $current_section ) ? 'general' : $current_section;
+			// Get current section.
+			$current_section = give_get_current_setting_section();
 
 			// Get all sections.
 			$sections = $this->get_sections();
