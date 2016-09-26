@@ -150,7 +150,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 					);
 					break;
 
-				default:
+				case 'general':
 					$settings = array(
 						// Section 1: General.
 						array(
@@ -207,15 +207,26 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'id'   => 'give_title_general_settings_1'
 						)
 					);
+					break;
+
+				default:
+					/**
+					 * Filter the payment gateways settings.
+					 * Backward compatibility: Please do not use this filter. This filter is deprecated in 1.8
+					 */
+					$settings = apply_filters( 'give_settings_general', $settings );
 			}
 
 			/**
-			 * Filter the general settings.
+			 * Filter the settings.
+			 *
+			 * @since  1.8
+			 * @param  array $settings
 			 */
-			$settings = apply_filters( 'give_settings_general', $settings );
+			$settings = apply_filters( 'give_get_settings_' . $this->id, $settings );
 
 			// Output.
-			return apply_filters( 'give_get_settings_' . $this->id, $settings );
+			return $settings;
 		}
 
 		/**
