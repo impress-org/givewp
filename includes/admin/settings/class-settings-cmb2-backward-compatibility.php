@@ -374,4 +374,4 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 	}
 endif;
 
-return new Give_CMB2_Settings_Loader();
+//return new Give_CMB2_Settings_Loader();
