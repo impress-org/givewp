@@ -110,6 +110,11 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			$new_setting_fields = array();
 
 			if( ! empty( $settings ) ) {
+				// Bailout: If setting array contain first element of tytpe title then it means it is already created with new setting api (skip this section ).
+				if( 'title' == $settings[0]['type'] ){
+					return $settings;
+				}
+
 				// Store title field id.
 				$prev_title_field_id = '';
 
@@ -192,51 +197,53 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 					'type' => 'sectionend',
 					'id'   => $prev_title_field_id
 				);
-			}
 
-			// Check if setting page has title section or not.
-			// If setting page does not have title section  then add title section to it and fix section end array id.
-			if( 'title' !== $new_setting_fields[0]['type'] ) {
-				array_unshift(
-					$new_setting_fields,
-					array(
-						'title' => $settings['give_title'],
-						'type' => 'title',
-						'desc' => ! empty( $setting_fields['desc'] ) ? $setting_fields['desc'] : '',
-						'id' => $setting_fields['id']
-					)
-				);
+				// Check if setting page has title section or not.
+				// If setting page does not have title section  then add title section to it and fix section end array id.
+				if( 'title' !== $new_setting_fields[0]['type'] ) {
+					array_unshift(
+						$new_setting_fields,
+						array(
+							'title' => $settings['give_title'],
+							'type' => 'title',
+							'desc' => ! empty( $setting_fields['desc'] ) ? $setting_fields['desc'] : '',
+							'id' => $setting_fields['id']
+						)
+					);
 
-				// Update id in section end array if does not contain.
-				if( empty( $new_setting_fields[count( $new_setting_fields ) - 1 ]['id'] ) ) {
-					$new_setting_fields[count( $new_setting_fields ) - 1 ]['id'] = $setting_fields['id'];
-				}
-			}
-
-			// Return only section related settings.
-			if( $sections = $this->get_filtered_addon_sections() ) {
-				$new_setting_fields = $this->get_section_settings( $new_setting_fields );
-			}
-
-			// Third party plugin backward compatibility.
-			foreach ( $new_setting_fields  as $index => $field ) {
-				if( in_array( $field['type'], array( 'title', 'sectionend') ) ) {
-					continue;
-				}
-
-				$cmb2_filter_name = "cmb2_render_{$field['type']}";
-
-				if( ! empty( $wp_filter[ $cmb2_filter_name ] ) ) {
-					$cmb2_filter_arr = current( $wp_filter[ $cmb2_filter_name ] );
-
-					if( ! empty( $cmb2_filter_arr ) ) {
-						$new_setting_fields[$index]['func'] = current( array_keys( $cmb2_filter_arr ) );
-						add_action( "give_admin_field_{$field['type']}", array( $this, 'addon_setting_field' ), 10, 2 );
+					// Update id in section end array if does not contain.
+					if( empty( $new_setting_fields[count( $new_setting_fields ) - 1 ]['id'] ) ) {
+						$new_setting_fields[count( $new_setting_fields ) - 1 ]['id'] = $setting_fields['id'];
 					}
 				}
+
+				// Return only section related settings.
+				if( $sections = $this->get_filtered_addon_sections() ) {
+					$new_setting_fields = $this->get_section_settings( $new_setting_fields );
+				}
+
+				// Third party plugin backward compatibility.
+				foreach ( $new_setting_fields  as $index => $field ) {
+					if( in_array( $field['type'], array( 'title', 'sectionend') ) ) {
+						continue;
+					}
+
+					$cmb2_filter_name = "cmb2_render_{$field['type']}";
+
+					if( ! empty( $wp_filter[ $cmb2_filter_name ] ) ) {
+						$cmb2_filter_arr = current( $wp_filter[ $cmb2_filter_name ] );
+
+						if( ! empty( $cmb2_filter_arr ) ) {
+							$new_setting_fields[$index]['func'] = current( array_keys( $cmb2_filter_arr ) );
+							add_action( "give_admin_field_{$field['type']}", array( $this, 'addon_setting_field' ), 10, 2 );
+						}
+					}
+				}
+
+				return $new_setting_fields;
 			}
 
-			return $new_setting_fields;
+			return $settings;
 		}
 
 
