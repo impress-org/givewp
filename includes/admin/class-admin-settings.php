@@ -59,6 +59,9 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				include_once( 'settings/class-settings-page.php' );
 				$settings[] = include( 'settings/class-settings-cmb2-backward-compatibility.php' );
 
+				// General settings.
+				$settings[] = include( 'settings/class-settings-general.php' );
+
 				self::$settings = apply_filters( 'give_get_settings_pages', $settings );
 			}
 
