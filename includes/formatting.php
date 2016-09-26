@@ -386,17 +386,15 @@ function give_sanitize_thousand_separator( $value, $field_args, $field ){
  * Sanitize number of decimals
  *
  * @since   1.6
+ * @since   1.8 Sanitizing number_decimals setting field with new setting api.
  * @used-by Give_Plugin_Settings::give_settings()
- *
  * @param   string $value
- * @param   array  $field_args
- * @param   object $field
- *
  * @return  mixed
  */
-function give_sanitize_number_decimals( $value, $field_args, $field ){
+function give_sanitize_number_decimals( $value ){
 	return absint($value);
 }
+add_filter( 'give_admin_settings_sanitize_option_number_decimals', 'give_sanitize_number_decimals', 10, 1 );
 
 /**
  * Sanitize price file value
