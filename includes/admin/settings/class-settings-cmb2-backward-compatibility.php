@@ -62,7 +62,7 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			add_filter( 'give_settings_tabs_array', array( $this, 'add_addon_settings_page' ), 999999 );
 
 			// Add backward compatibility filters plugin settings.
-			$setting_tabs = array( 'general', 'gateways', 'display', 'emails', 'addons', 'advanced', 'licenses' );
+			$setting_tabs = array( 'general', 'gateways', 'display', 'emails', 'addons', 'licenses' );
 
 			// Filter Payment Gateways settings.
 			if( in_array( $this->current_tab, $setting_tabs ) ) {
