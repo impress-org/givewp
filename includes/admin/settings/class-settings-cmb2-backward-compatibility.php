@@ -40,9 +40,13 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			// Get current tab.
 			$this->current_tab     = give_get_current_setting_tab();
 
-			// Filter Payment Gateways addon settings.
+			// Filter Payment Gateways settings.
 			add_filter( 'give_get_settings_gateways', array( $this, 'get_filtered_addon_settings' ), 999999, 1 );
 			add_filter( 'give_get_sections_gateways', array( $this, 'get_filtered_addon_sections' ), 999999, 1 );
+
+			// Filter Addons settings.
+			add_filter( 'give_get_settings_addons', array( $this, 'get_filtered_addon_settings' ), 999999, 1 );
+			add_filter( 'give_get_sections_addons', array( $this, 'get_filtered_addon_sections' ), 999999, 1 );
 		}
 
 		/**

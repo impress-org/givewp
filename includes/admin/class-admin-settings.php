@@ -68,8 +68,11 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				// Display settings.
 				$settings[] = include( 'settings/class-settings-display.php' );
 
-				// email settings.
+				// Emails settings.
 				$settings[] = include( 'settings/class-settings-email.php' );
+
+				// Addons settings.
+				$settings[] = include( 'settings/class-settings-addon.php' );
 
 				self::$settings = apply_filters( 'give_get_settings_pages', $settings );
 			}
