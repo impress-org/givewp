@@ -12,6 +12,7 @@ var bower = require('gulp-bower'),
     del = require('del'),
     filter = require('gulp-filter'),
     gulp = require('gulp'),
+	imagemin = require('gulp-imagemin'),
     livereload = require('gulp-livereload'),
     cssmin = require('gulp-cssmin'),
     notify = require('gulp-notify'),
@@ -170,6 +171,14 @@ gulp.task('textdomain', function () {
             message: 'Textdomain task complete!',
             onLast: true //only notify on completion of task
         }));
+});
+
+/* Image Minify Task
+ ------------------------------------- */
+gulp.task('image_minify', function () {
+    gulp.src('./assets/images/*')
+        .pipe(imagemin())
+        .pipe(gulp.dest('./assets/images'))
 });
 
 /* Watch Files For Changes
