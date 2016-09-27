@@ -58,13 +58,6 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			$this->id = $this->current_tab;
 
 
-
-			// Filter & actions.
-			add_filter( "give_default_setting_tab_section_{$this->current_tab}", array( $this, 'set_default_setting_tab' ), 10 );
-			add_action( "give_sections_{$this->current_tab}_page", array( $this, 'output_sections' ) );
-			add_action( "give_settings_{$this->current_tab}_page", array( $this, 'output' ), 10 );
-			add_action( "give_settings_save_{$this->current_tab}", array( $this, 'save' ) );
-
 			// add addon tabs.
 			add_filter( 'give_settings_tabs_array', array( $this, 'add_addon_settings_page' ), 999999 );
 
@@ -105,12 +98,26 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 		 * @return mixed
 		 */
 		function add_addon_settings_page( $pages ) {
-			// Merge old settings with new settings.
-			$pages = array_merge( $pages, $this->prev_settings->give_get_settings_tabs() );
-
+			// Previous setting page.
+			$previous_pages = $this->prev_settings->give_get_settings_tabs();
+				
 			// API and System Info setting tab merge to Tools setting tab, so remove them from tabs.
-			unset( $pages['api'] );
-			unset( $pages['system_info'] );
+			unset( $previous_pages['api'] );
+			unset( $previous_pages['system_info'] );
+
+			// Tab is not register.
+			$pages_diff = array_keys( array_diff( $previous_pages, $pages ) );
+
+			// Merge old settings with new settings.
+			$pages = array_merge( $pages, $previous_pages );
+
+			if( in_array( $this->current_tab, $pages_diff ) ) {
+				// Filter & actions.
+				add_filter( "give_default_setting_tab_section_{$this->current_tab}", array( $this, 'set_default_setting_tab' ), 10 );
+				add_action( "give_sections_{$this->current_tab}_page", array( $this, 'output_sections' ) );
+				add_action( "give_settings_{$this->current_tab}_page", array( $this, 'output' ), 10 );
+				add_action( "give_settings_save_{$this->current_tab}", array( $this, 'save' ) );
+			}
 
 			return $pages;
 		}
