@@ -47,6 +47,9 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			// Filter Addons settings.
 			add_filter( 'give_get_settings_addons', array( $this, 'get_filtered_addon_settings' ), 999999, 1 );
 			add_filter( 'give_get_sections_addons', array( $this, 'get_filtered_addon_sections' ), 999999, 1 );
+
+			// Filter Licenses settings.
+			add_filter( 'give_get_settings_licenses', array( $this, 'get_filtered_addon_settings' ), 999999, 1 );
 		}
 
 		/**

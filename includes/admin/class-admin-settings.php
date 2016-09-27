@@ -74,6 +74,9 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				// Addons settings.
 				$settings[] = include( 'settings/class-settings-addon.php' );
 
+				// License settings.
+				$settings[] = include( 'settings/class-settings-license.php' );
+
 				self::$settings = apply_filters( 'give_get_settings_pages', $settings );
 			}
 
