@@ -62,13 +62,12 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			add_filter( 'give_settings_tabs_array', array( $this, 'add_addon_settings_page' ), 999999 );
 
 			// Add backward compatibility filters plugin settings.
-			// Advanced and Licenses tab is not added to these filters.
-			$setting_tabs = array( 'general', 'gateways', 'display', 'emails', 'addons' );
+			$setting_tabs = array( 'general', 'gateways', 'display', 'emails', 'addons', 'advanced', 'licenses' );
 
 			// Filter Payment Gateways settings.
-			foreach ( $setting_tabs as $tab ) {
-				add_filter( "give_get_settings_{$tab}", array( $this, 'get_filtered_addon_settings' ), 999999, 1 );
-				add_filter( "give_get_sections_{$tab}", array( $this, 'get_filtered_addon_sections' ), 999999, 1 );
+			if( in_array( $this->current_tab, $setting_tabs ) ) {
+				add_filter( "give_get_settings_{$this->current_tab}", array( $this, 'get_filtered_addon_settings' ), 999999, 1 );
+				add_filter( "give_get_sections_{$this->current_tab}", array( $this, 'get_filtered_addon_sections' ), 999999, 1 );
 			}
 		}
 
