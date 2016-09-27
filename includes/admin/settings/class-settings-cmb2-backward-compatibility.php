@@ -301,15 +301,15 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 						$new_setting_fields,
 						array(
 							'title' => ( isset( $settings['give_title'] ) ? $settings['give_title'] : '' ),
-							'type' => 'title',
-							'desc' => ! empty( $setting_fields['desc'] ) ? $setting_fields['desc'] : '',
-							'id' => $setting_fields['id']
+							'type'  => 'title',
+							'desc'  => ! empty( $setting_fields['desc'] ) ? $setting_fields['desc'] : '',
+							'id'    => ( isset( $settings['id'] ) ? $settings['id'] : '' )
 						)
 					);
 
 					// Update id in section end array if does not contain.
 					if( empty( $new_setting_fields[count( $new_setting_fields ) - 1 ]['id'] ) ) {
-						$new_setting_fields[count( $new_setting_fields ) - 1 ]['id'] = $setting_fields['id'];
+						$new_setting_fields[count( $new_setting_fields ) - 1 ]['id'] = ( isset( $settings['id'] ) ? $settings['id'] : '' );
 					}
 				}
 
