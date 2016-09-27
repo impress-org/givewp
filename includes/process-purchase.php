@@ -186,7 +186,7 @@ function give_checkout_check_existing_email( $valid_data, $post ) {
 			$found_customer = new Give_Customer( $email );
 			
 			if ( $found_customer->id > 0 ) {
-				give_set_error( 'give-customer-email-exists', __( sprintf( 'The email address %s is already in use.', $email ), 'give' ) );
+				give_set_error( 'give-customer-email-exists', sprintf( __( 'The email address %s is already in use.', 'give' ), $email ) );
 			}
 		}
 	}

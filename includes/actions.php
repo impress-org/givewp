@@ -99,7 +99,7 @@ function give_connect_donor_to_wpuser( $user_id, $user_data ){
 
 		// Update donor user_id.
 		if( $donor->update( array( 'user_id' => $user_id ) ) ) {
-			$donor_note    = __( sprintf( 'WordPress user #%d is connected to #%d', $user_id, $donor->id ), 'give' );
+			$donor_note = sprintf( __( 'WordPress user #%d is connected to #%d', 'give' ), $user_id, $donor->id );
 			$donor->add_note( $donor_note );
 
 			// Update user_id meta in payments.
