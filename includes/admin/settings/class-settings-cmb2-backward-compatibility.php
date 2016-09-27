@@ -61,16 +61,15 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			// add addon tabs.
 			add_filter( 'give_settings_tabs_array', array( $this, 'add_addon_settings_page' ), 999999 );
 
+			// Add backward compatibility filters plugin settings.
+			// Advanced and Licenses tab is not added to these filters.
+			$setting_tabs = array( 'general', 'gateways', 'display', 'emails', 'addons' );
+
 			// Filter Payment Gateways settings.
-			add_filter( 'give_get_settings_gateways', array( $this, 'get_filtered_addon_settings' ), 999999, 1 );
-			add_filter( 'give_get_sections_gateways', array( $this, 'get_filtered_addon_sections' ), 999999, 1 );
-
-			// Filter Addons settings.
-			add_filter( 'give_get_settings_addons', array( $this, 'get_filtered_addon_settings' ), 999999, 1 );
-			add_filter( 'give_get_sections_addons', array( $this, 'get_filtered_addon_sections' ), 999999, 1 );
-
-			// Filter Licenses settings.
-			add_filter( 'give_get_settings_licenses', array( $this, 'get_filtered_addon_settings' ), 999999, 1 );
+			foreach ( $setting_tabs as $tab ) {
+				add_filter( "give_get_settings_{$tab}", array( $this, 'get_filtered_addon_settings' ), 999999, 1 );
+				add_filter( "give_get_sections_{$tab}", array( $this, 'get_filtered_addon_sections' ), 999999, 1 );
+			}
 		}
 
 		/**
@@ -130,6 +129,11 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 		 * @return string
 		 */
 		function get_section_name ( $field_name ) {
+			// Bailout.
+			if( empty( $field_name ) ) {
+				return $field_name;
+			}
+
 			$section_name = explode( ' ', $field_name );
 			unset( $section_name[ count( $section_name ) - 1 ] );
 
@@ -148,19 +152,23 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 		function get_filtered_addon_sections( $sections = array() ) {
 			// New sections.
 			$new_sections = array();
-			
+			$sections_ID  = array_keys( $sections );
+
 			if( ( $setting_fields = $this->prev_settings->give_settings( $this->current_tab ) ) && ! empty( $setting_fields['fields'] ) ) {
+
 				foreach ( $setting_fields['fields'] as $field ) {
-					$section_name = '';
+					// Section name.
+					$field['name'] = isset( $field['name'] ) ? $field['name'] : '';
+					$section_name = $this->get_section_name( $field['name'] );
 
 					// Check if section name exit and section title array is not empty.
-					if( ! empty( $sections ) && isset( $field['name'] ) ) {
-
-						// Section name.
-						$section_name = $this->get_section_name( $field['name'] );
+					if( ! empty( $sections ) &&  ! empty( $field['name'] ) ) {
 
 						// Bailout: Do not load section if it is already exist.
-						if( in_array( $section_name, $sections ) ) {
+						if(
+							in_array( sanitize_title( $field['name'] ), $sections_ID ) // Check section id.
+							|| in_array( $section_name, $sections )                    // Check section name.
+						) {
 							continue;
 						}
 					}

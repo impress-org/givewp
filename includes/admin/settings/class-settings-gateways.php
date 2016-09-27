@@ -131,7 +131,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 					);
 					break;
 
-				case 'offline' :
+				case 'offline-donations' :
 					$settings = array(
 						// Section 3: Offline gateway.
 						array(
@@ -238,9 +238,9 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 		 */
 		public function get_sections() {
 			$sections = array(
-				'gateways'         => esc_html__( 'Gateways', 'give' ),
-				'paypal-standard'  => esc_html__( 'Paypal Standard', 'give' ),
-				'offline'          => esc_html__( 'Offline', 'give' )
+				'gateways'          => esc_html__( 'Gateways', 'give' ),
+				'paypal-standard'   => esc_html__( 'Paypal Standard', 'give' ),
+				'offline-donations' => esc_html__( 'Offline', 'give' )
 			);
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );

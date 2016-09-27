@@ -60,7 +60,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 		 * @return string
 		 */
 		function set_default_setting_tab( $setting_tab ) {
-			return 'display';
+			return 'display-settings';
 		}
 
 		/**
@@ -87,7 +87,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 			$current_section = give_get_current_setting_section();
 
 			switch ( $current_section ) {
-				case 'display' :
+				case 'display-settings' :
 					$settings = array(
 						// Section 1: Display
 						array(
@@ -121,7 +121,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 					);
 					break;
 
-				case 'post_types' :
+				case 'post-types' :
 					$settings = array(
 						array(
 							'id'   => 'give_title_display_settings_2',
@@ -198,7 +198,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 					);
 					break;
 
-				case 'term-conditions':
+				case 'term-and-conditions':
 					$settings = array(
 						array(
 							'id'   => 'give_title_display_settings_4',
@@ -254,10 +254,10 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 		 */
 		public function get_sections() {
 			$sections = array(
-				'display'         => esc_html__( 'Display Settings', 'give' ),
-				'post_types'      => esc_html__( 'Post Types', 'give' ),
-				'taxonomies'      => esc_html__( 'Taxonomies', 'give' ),
-				'term-conditions' => esc_html__( 'Term and Conditions', 'give' )
+				'display-settings'    => esc_html__( 'Display', 'give' ),
+				'post-types'          => esc_html__( 'Post Types', 'give' ),
+				'taxonomies'          => esc_html__( 'Taxonomies', 'give' ),
+				'term-and-conditions' => esc_html__( 'Term and Conditions', 'give' )
 			);
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );
