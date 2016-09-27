@@ -77,7 +77,10 @@ if ( ! class_exists( 'Give_Settings_Addon' ) ) :
 		 * @return array
 		 */
 		public function add_settings_page( $pages ) {
-			$pages[ $this->id ] = $this->label;
+			// Bailout: Do not add addons setting tab if it does not contain any setting fields.
+			if( ! empty( $this->get_settings() ) ) {
+				$pages[ $this->id ] = $this->label;
+			}
 
 			return $pages;
 		}
