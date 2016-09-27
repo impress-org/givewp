@@ -77,6 +77,9 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				// License settings.
 				$settings[] = include( 'settings/class-settings-license.php' );
 
+				// Advanced settions.
+				$settings[] = include( 'settings/class-settings-advanced.php' );
+
 				self::$settings = apply_filters( 'give_get_settings_pages', $settings );
 			}
 
