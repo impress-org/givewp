@@ -1465,18 +1465,21 @@ table.give-table td.row-title p {
 /*------------------------------------
 Settings
 --------------------------------------*/
-.give_settings_page .nav-tab-wrapper {
+.give-settings-page .nav-tab-wrapper {
   margin-bottom: 5px; }
 
-.give_settings_page .cmb2-wrap .cmb-type-checkbox input[type="checkbox"] {
+.give-settings-page .cmb2-wrap .cmb-type-checkbox input[type="checkbox"] {
   display: block;
   margin-bottom: 5px; }
 
-.give_settings_page div.give-submit-wrap {
+.give-settings-page div.give-submit-wrap {
   margin: 20px 0; }
 
-.give_settings_page .give_forms_page_give-payment-history .postbox .hndle {
+.give-settings-page .give_forms_page_give-payment-history .postbox .hndle {
   cursor: default; }
+
+.give-settings-page input[type="text"], .give-settings-page input[type="email"] {
+  width: 25em; }
 
 .cmb-type-enabled-gateways ul li.ui-sortable-handle span.give-drag-handle {
   padding: 3px 0 0 4px;
@@ -1579,9 +1582,6 @@ p.give-field-description, .cmb2-metabox-description {
 .cmb2-id-give-title > div.cmb-td {
   padding-bottom: 5px; }
 
-#system_info .give-submit-wrap {
-  display: none; }
-
 #system-info-textarea {
   width: 800px;
   height: 600px;
@@ -1625,9 +1625,6 @@ p.give-field-description, .cmb2-metabox-description {
     width: 300px;
     max-height: 200px;
     overflow-y: scroll; }
-
-#api .give-submit-wrap {
-  display: none; }
 
 #api .tablenav .actions {
   overflow: visible; }

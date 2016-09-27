@@ -10,7 +10,7 @@
 /*------------------------------------
 Settings
 --------------------------------------*/
-.give_settings_page {
+.give-settings-page {
 
   .nav-tab-wrapper {
     margin-bottom: 5px;
@@ -27,6 +27,10 @@ Settings
 
   .give_forms_page_give-payment-history .postbox .hndle {
     cursor: default;
+  }
+
+  input[type="text"], input[type="email"] {
+    width: 25em;
   }
 
 }
@@ -181,10 +185,6 @@ p.give-field-description, .cmb2-metabox-description{
 // System Info page styles
 //--------------------------------------------------------------
 
-#system_info .give-submit-wrap {
-  display: none;
-}
-
 #system-info-textarea {
   width: 800px;
   height: 600px;
@@ -250,10 +250,6 @@ p.give-field-description, .cmb2-metabox-description{
 }
 
 #api {
-
-  .give-submit-wrap {
-    display: none;
-  }
 
   .tablenav .actions {
     overflow: visible;
