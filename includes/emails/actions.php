@@ -1,6 +1,6 @@
 <?php
 /**
- * Email Actions
+ * Email Actions.
  *
  * @package     Give
  * @subpackage  Emails
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Triggers Donation Receipt to be sent after the payment status is updated
+ * Triggers a donation receipt to be sent after the payment status is updated.
  *
  * @since 1.0
  *
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function give_trigger_donation_receipt( $payment_id ) {
-	// Make sure we don't send a purchase receipt while editing a payment
+	// Make sure we don't send a receipt while editing a donation.
 	if ( isset( $_POST['give-action'] ) && 'edit_payment' == $_POST['give-action'] ) {
 		return;
 	}

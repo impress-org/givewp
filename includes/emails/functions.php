@@ -51,7 +51,6 @@ function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 	$emails->__set( 'from_email', $from_email );
 	$emails->__set( 'heading', esc_html__( 'Donation Receipt', 'give' ) );
 
-
 	$headers = apply_filters( 'give_receipt_headers', $emails->get_headers(), $payment_id, $payment_data );
 	$emails->__set( 'headers', $headers );
 
