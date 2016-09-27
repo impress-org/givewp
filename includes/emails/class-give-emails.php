@@ -19,6 +19,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Give_Emails Class
  *
+ * @property $from_address
+ * @property $from_name
+ * @property $content_type
+ * @property $headers
+ * @property $html
+ * @property $template
+ * @property $heading
+ *
  * @since 1.0
  */
 class Give_Emails {
@@ -201,9 +209,13 @@ class Give_Emails {
 	}
 
 	/**
-	 * Build the final email
+	 * Build the final email.
 	 *
 	 * @since 1.0
+	 *
+	 * @param $message
+	 *
+	 * @return mixed|void
 	 */
 	public function build_email( $message ) {
 
@@ -240,9 +252,9 @@ class Give_Emails {
 	/**
 	 * Send the email
 	 *
-	 * @param  string $to The To address to send to.
-	 * @param  string $subject The subject line of the email to send.
-	 * @param  string $message The body of the email to send.
+	 * @param  string       $to The To address to send to.
+	 * @param  string       $subject The subject line of the email to send.
+	 * @param  string       $message The body of the email to send.
 	 * @param  string|array $attachments Attachments to the email in a format supported by wp_mail()
 	 *
 	 * @return bool
