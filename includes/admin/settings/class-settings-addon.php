@@ -43,7 +43,7 @@ if ( ! class_exists( 'Give_Settings_Addon' ) ) :
 		 */
 		public function __construct() {
 			$this->id    = 'addons';
-			$this->label = esc_html__( 'Addons', 'give' );
+			$this->label = esc_html__( 'Add-ons', 'give' );
 
 			add_filter( 'give_default_setting_tab_section_addons', array( $this, 'set_default_setting_tab' ), 10 );
 			add_filter( 'give_settings_tabs_array', array( $this, 'add_settings_page' ), 20 );
