@@ -22,6 +22,12 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 		 * @since 1.8
 		 * @var   Give_Plugin_Settings $prev_settings Previous setting class object.
 		 */
+		private $id;
+
+		/**
+		 * @since 1.8
+		 * @var   Give_Plugin_Settings $prev_settings Previous setting class object.
+		 */
 		private $prev_settings;
 
 		/**
@@ -29,6 +35,13 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 		 * @var   string $current_tab Current setting section.
 		 */
 		protected $current_tab;
+
+		/**
+		 * @since 1.8
+		 * @var   string $current_tab Current setting section.
+		 */
+		private $current_section;
+
 
 		/**
 		 * Give_CMB2_Settings_Loader constructor.
@@ -39,6 +52,21 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 
 			// Get current tab.
 			$this->current_tab     = give_get_current_setting_tab();
+			$this->current_section = empty( $_REQUEST['section'] ) ? ( current( array_keys( $this->get_sections() ) ) ) : sanitize_title( $_REQUEST['section'] );
+
+			// Tab ID.
+			$this->id = $this->current_tab;
+
+
+
+			// Filter & actions.
+			add_filter( "give_default_setting_tab_section_{$this->current_tab}", array( $this, 'set_default_setting_tab' ), 10 );
+			add_action( "give_sections_{$this->current_tab}_page", array( $this, 'output_sections' ) );
+			add_action( "give_settings_{$this->current_tab}_page", array( $this, 'output' ), 10 );
+			add_action( "give_settings_save_{$this->current_tab}", array( $this, 'save' ) );
+
+			// add addon tabs.
+			add_filter( 'give_settings_tabs_array', array( $this, 'add_addon_settings_page' ), 999999 );
 
 			// Filter Payment Gateways settings.
 			add_filter( 'give_get_settings_gateways', array( $this, 'get_filtered_addon_settings' ), 999999, 1 );
@@ -50,6 +78,41 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 
 			// Filter Licenses settings.
 			add_filter( 'give_get_settings_licenses', array( $this, 'get_filtered_addon_settings' ), 999999, 1 );
+		}
+
+		/**
+		 * Default setting tab.
+		 *
+		 * @since  1.8
+		 * @param  $setting_tab
+		 * @return string
+		 */
+		function set_default_setting_tab( $setting_tab ) {
+			$default_tab = '';
+
+			// Set default tab to first setting tab.
+			if( $sections = array_keys( $this->get_sections() ) ) {
+				$default_tab = current( $sections );
+			}
+			return $default_tab;
+		}
+
+		/**
+		 * Add addon setting pages.
+		 *
+		 * @since  1.8
+		 * @param  $pages
+		 * @return mixed
+		 */
+		function add_addon_settings_page( $pages ) {
+			// Merge old settings with new settings.
+			$pages = array_merge( $pages, $this->prev_settings->give_get_settings_tabs() );
+
+			// API and System Info setting tab merge to Tools setting tab, so remove them from tabs.
+			unset( $pages['api'] );
+			unset( $pages['system_info'] );
+
+			return $pages;
 		}
 
 		/**
@@ -81,12 +144,18 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			
 			if( ( $setting_fields = $this->prev_settings->give_settings( $this->current_tab ) ) && ! empty( $setting_fields['fields'] ) ) {
 				foreach ( $setting_fields['fields'] as $field ) {
-					// Section name.
-					$section_name = $this->get_section_name( $field['name'] );
+					$section_name = '';
 
-					// Bailout: Do not load section if it is already exist.
-					if( in_array( $section_name, $sections ) ) {
-						continue;
+					// Check if section name exit and section title array is not empty.
+					if( ! empty( $sections ) && isset( $field['name'] ) ) {
+
+						// Section name.
+						$section_name = $this->get_section_name( $field['name'] );
+
+						// Bailout: Do not load section if it is already exist.
+						if( in_array( $section_name, $sections ) ) {
+							continue;
+						}
 					}
 
 					// Collect new sections from addons.
@@ -108,17 +177,18 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 		 * Get setting fields.
 		 *
 		 * @since  1.8
-		 * @param  array  $settings List of settings.
+		 * @param  array  $settings       List of settings.
+		 * @param  array  $setting_fields Main tab settings data.
 		 * @return array
 		 */
-		function get_filtered_addon_settings( $settings ) {
+		function get_filtered_addon_settings( $settings, $setting_fields = array() ) {
 			global $wp_filter;
 
 			$new_setting_fields = array();
 
 			if( ! empty( $settings ) ) {
 				// Bailout: If setting array contain first element of tytpe title then it means it is already created with new setting api (skip this section ).
-				if( 'title' == $settings[0]['type'] ){
+				if( isset( $settings[0]['type'] ) && 'title' == $settings[0]['type'] ){
 					return $settings;
 				}
 
@@ -128,8 +198,13 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 				// Create new setting fields.
 				foreach ( $settings as $index => $field ) {
 
-					$field['name'] = empty( $field['name'] ) ? '' : $field['name'];
-					$field['desc'] = empty( $field['desc'] ) ? '' : $field['desc'];
+					// Bailout: Must need field type to process.
+					if( ! isset( $field['type'] ) ) {
+						continue;
+					}
+
+					$field['name'] = ! isset( $field['name'] ) ? '' : $field['name'];
+					$field['desc'] = ! isset( $field['desc'] ) ? '' : $field['desc'];
 
 					// Modify cmb2 setting fields.
 					switch ( $field['type'] ) {
@@ -211,7 +286,7 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 					array_unshift(
 						$new_setting_fields,
 						array(
-							'title' => $settings['give_title'],
+							'title' => ( isset( $settings['give_title'] ) ? $settings['give_title'] : '' ),
 							'type' => 'title',
 							'desc' => ! empty( $setting_fields['desc'] ) ? $setting_fields['desc'] : '',
 							'id' => $setting_fields['id']
@@ -329,6 +404,101 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 					</tr>
 					<?php
 			endswitch;
+		}
+
+		/**
+		 * Get sections.
+		 *
+		 * @since  1.8
+		 * @return array
+		 */
+		public function get_sections() {
+			$sections = array();
+
+			if( ( $setting_fields = $this->prev_settings->give_settings( $this->current_tab ) ) && ! empty( $setting_fields['fields'] ) ) {
+				foreach ( $setting_fields['fields'] as $field ) {
+					if( 'give_title' == $field['type'] ) {
+						$sections[ sanitize_title( $field['name'] ) ] = $this->get_section_name( $field['name'] );
+					}
+				}
+			}
+			
+			return $sections;
+		}
+
+
+		/**
+		 * Get setting fields.
+		 *
+		 * @since  1.8
+		 * @return array
+		 */
+		function get_settings() {
+			global $wp_filter;
+
+			$new_setting_fields = array();
+			
+			if( $setting_fields = $this->prev_settings->give_settings( $this->current_tab ) ) {
+				if( isset( $setting_fields['fields'] ) ) {
+
+					$tab_data = array(
+						'id'         => $setting_fields['id'],
+						'give_title' => $setting_fields['give_title'],
+						'desc'       => ( isset( $setting_fields['desc'] ) ? $setting_fields['desc'] : '' )
+					);
+
+					$new_setting_fields = $this->get_filtered_addon_settings( $setting_fields['fields'], $tab_data );
+				}
+			}
+
+			return $new_setting_fields;
+		}
+
+		/**
+		 * Output sections.
+		 *
+		 * @since  1.8
+		 * @return void
+		 */
+		public function output_sections() {
+			$sections = $this->get_sections();
+
+			if ( empty( $sections ) || 1 === sizeof( $sections ) ) {
+				return;
+			}
+
+			echo '<ul class="subsubsub">';
+
+			$array_keys = array_keys( $sections );
+
+			foreach ( $sections as $id => $label ) {
+				echo '<li><a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=' . $this->current_tab . '&section=' . sanitize_title( $id ) ) . '" class="' . ( $this->current_section == $id  ? 'current' : '' ) . '">' . strip_tags( $label ) . '</a> ' . ( end( $array_keys ) == $id ? '' : '|' ) . ' </li>';
+			}
+
+			echo '</ul><br class="clear" />';
+		}
+
+		/**
+		 * Output the settings.
+		 *
+		 * @since  1.8
+		 * @return void
+		 */
+		public function output() {
+			$settings = $this->get_settings();
+
+			Give_Admin_Settings::output_fields( $settings, 'give_settings' );
+		}
+		/**
+		 * Save settings.
+		 *
+		 * @since  1.8
+		 * @return void
+		 */
+		public function save() {
+			$settings = $this->get_settings();
+
+			Give_Admin_Settings::save_fields( $settings, 'give_settings' );
 		}
 	}
 endif;
