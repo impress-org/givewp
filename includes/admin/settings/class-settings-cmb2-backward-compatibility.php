@@ -255,9 +255,9 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 								$new_setting_fields,
 								array(
 									'title' => $field['name'],
-									'type' => $field['type'],
-									'desc' => $field['desc'],
-									'id' => $field['id']
+									'type'  => $field['type'],
+									'desc'  => $field['desc'],
+									'id'    => $field['id']
 								)
 							);
 
@@ -275,9 +275,9 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 						// Section start.
 						$new_setting_fields[] = array(
 							'title' => $field['name'],
-							'type' => $field['type'],
-							'desc' => $field['desc'],
-							'id' => $field['id']
+							'type'  => $field['type'],
+							'desc'  => $field['desc'],
+							'id'    => $field['id']
 						);
 
 						$prev_title_field_id = $field['id'];
