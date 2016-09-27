@@ -43,7 +43,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 		 */
 		public function __construct() {
 			$this->id    = 'display';
-			$this->label = esc_html__( 'Display Settings', 'give' );
+			$this->label = esc_html__( 'Display Options', 'give' );
 
 			add_filter( 'give_default_setting_tab_section_display', array( $this, 'set_default_setting_tab' ), 10 );
 			add_filter( 'give_settings_tabs_array', array( $this, 'add_settings_page' ), 20 );

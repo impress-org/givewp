@@ -43,7 +43,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 		 */
 		public function __construct() {
 			$this->id    = 'general';
-			$this->label = esc_html__( 'General Settings', 'give' );
+			$this->label = esc_html__( 'General', 'give' );
 
 			add_filter( 'give_default_setting_tab_section_general', array( $this, 'set_default_setting_tab' ), 10 );
 			add_filter( 'give_settings_tabs_array', array( $this, 'add_settings_page' ), 20 );
