@@ -3,7 +3,7 @@
  * Give Settings Page/Tab
  *
  * @package     Give
- * @subpackage  Classes/Give_Settings_Payment_Gateways
+ * @subpackage  Classes/Give_Settings_Gateways
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.8
@@ -13,14 +13,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-if ( ! class_exists( 'Give_Settings_Payment_Gateways' ) ) :
+if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 
 	/**
-	 * Give_Settings_Payment_Gateways.
+	 * Give_Settings_Gateways.
 	 *
 	 * @sine 1.8
 	 */
-	class Give_Settings_Payment_Gateways extends Give_Settings_Page {
+	class Give_Settings_Gateways extends Give_Settings_Page {
 
 		/**
 		 * Setting page id.
@@ -302,4 +302,4 @@ if ( ! class_exists( 'Give_Settings_Payment_Gateways' ) ) :
 
 endif;
 
-return new Give_Settings_Payment_Gateways();
+return new Give_Settings_Gateways();

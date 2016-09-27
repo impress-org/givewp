@@ -63,7 +63,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				$settings[] = include( 'settings/class-settings-general.php' );
 
 				// Payment Gateways Settings.
-				$settings[] = include( 'settings/class-settings-payment-gateways.php' );
+				$settings[] = include( 'settings/class-settings-gateways.php' );
 
 				// Display settings.
 				$settings[] = include( 'settings/class-settings-display.php' );
