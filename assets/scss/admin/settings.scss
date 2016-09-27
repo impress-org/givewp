@@ -33,6 +33,10 @@ Settings
     width: 25em;
   }
 
+  table input[type="text"]{
+    width: 15em;
+  }
+
 }
 
 // Payment Gateways
@@ -119,8 +123,7 @@ p.give-field-description, .cmb2-metabox-description{
 }
 
 /* css fix start: This css fix is for api and system info setting tab.  */
-.give-setting-tab-header-api, .give-setting-tab-header-system_info{display:none}
-.give-setting-tab-body-api {
+.give-setting-tab-body-tools {
   position: relative;
 
   .tablenav .actions{

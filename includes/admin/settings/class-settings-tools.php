@@ -93,10 +93,18 @@ if ( ! class_exists( 'Give_Settings_Tools' ) ) :
 
 					$settings = apply_filters( 'give_settings_system', array(
 						array(
+							'id'   => 'give_title_tools_settings_1',
+							'type' => 'title'
+						),
+						array(
 							'id'   => 'api',
 							'name' => esc_html__( 'API', 'give' ),
 							'type' => 'api'
-						)
+						),
+						array(
+							'id'   => 'give_title_tools_settings_1',
+							'type' => 'sectionend'
+						),
 					));
 					break;
 
@@ -106,7 +114,7 @@ if ( ! class_exists( 'Give_Settings_Tools' ) ) :
 					
 					$settings = apply_filters( 'give_settings_system', array(
 						array(
-							'id'   => 'give_title_advanced_settings_2',
+							'id'   => 'give_title_tools_settings_2',
 							'type' => 'title'
 						),
 						array(
