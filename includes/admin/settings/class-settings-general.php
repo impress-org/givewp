@@ -87,6 +87,53 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 			$current_section = give_get_current_setting_section();
 
 			switch ( $current_section ) {
+				case 'access-control':
+					$settings = array(
+						// Section 3: Access control.
+						array(
+							'id'   => 'give_title_session_control_1',
+							'type' => 'title'
+						),
+						array(
+							'id'      => 'session_lifetime',
+							'name'    => esc_html__( 'Session Lifetime', 'give' ),
+							'desc'    => esc_html__( 'The length of time a user\'s session is kept alive. Give starts a new session per user upon donation. Sessions allow donors to view their donation receipts without being logged in.', 'give' ),
+							'type'    => 'select',
+							'options' => array(
+								'86400'  => esc_html__( '24 Hours', 'give' ),
+								'172800' => esc_html__( '48 Hours', 'give' ),
+								'259200' => esc_html__( '72 Hours', 'give' ),
+								'604800' => esc_html__( '1 Week', 'give' ),
+							)
+						),
+						array(
+							'name' => esc_html__( 'Email Access', 'give' ),
+							'desc' => esc_html__( 'Would you like your donors to be able to access their donation history using only email? Donors whose sessions have expired and do not have an account may still access their donation history via a temporary email access link.', 'give' ),
+							'id'   => 'email_access',
+							'type' => 'checkbox',
+						),
+						array(
+							'id'      => 'recaptcha_key',
+							'name'    => esc_html__( 'reCAPTCHA Site Key', 'give' ),
+							/* translators: %s: https://www.google.com/recaptcha/ */
+							'desc'    => sprintf( __( 'If you would like to prevent spam on the email access form navigate to <a href="%s" target="_blank">the reCAPTCHA website</a> and sign up for an API key. The reCAPTCHA uses Google\'s user-friendly single click verification method.', 'give' ), esc_url( 'https://www.google.com/recaptcha/' ) ),
+							'default' => '',
+							'type'    => 'text'
+						),
+						array(
+							'id'      => 'recaptcha_secret',
+							'name'    => esc_html__( 'reCAPTCHA Secret Key', 'give' ),
+							'desc'    => esc_html__( 'Please paste the reCAPTCHA secret key here from your manage reCAPTCHA API Keys panel.', 'give' ),
+							'default' => '',
+							'type'    => 'text'
+						),
+						array(
+							'id'   => 'give_title_session_control_1',
+							'type' => 'sectionend'
+						),
+					);
+					break;
+
 				case 'currency' :
 					$settings = array(
 						// Section 2: Currency
@@ -237,8 +284,9 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 		 */
 		public function get_sections() {
 			$sections = array(
-				'general'  => esc_html__( 'General', 'give' ),
-				'currency' => esc_html__( 'Currency', 'give' )
+				'general'        => esc_html__( 'General', 'give' ),
+				'currency'       => esc_html__( 'Currency', 'give' ),
+				'access-control' => esc_html__( 'Access Control', 'give' )
 			);
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );
