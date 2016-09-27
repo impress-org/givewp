@@ -174,6 +174,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'id'              => 'thousands_separator',
 							'type'            => 'text',
 							'default'         => ',',
+							'css'             => 'width:12em;',
 						),
 						array(
 							'name'    => esc_html__( 'Decimal Separator', 'give' ),
@@ -181,6 +182,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'id'      => 'decimal_separator',
 							'type'    => 'text',
 							'default' => '.',
+							'css'             => 'width:12em;',
 						),
 						array(
 							'name'            => __( 'Number of Decimals', 'give' ),
@@ -189,6 +191,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'type'            => 'text',
 							'default'         => 2,
 							'sanitization_cb' => 'give_sanitize_number_decimals',
+							'css'             => 'width:12em;',
 						),
 						array(
 							'type' => 'title',
