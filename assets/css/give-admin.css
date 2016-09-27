@@ -1481,7 +1481,7 @@ Settings
 .give-settings-page input[type="text"], .give-settings-page input[type="email"] {
   width: 25em; }
 
-.give-settings-page table input[type="text"] {
+.give-settings-page table table input[type="text"] {
   width: 15em; }
 
 .cmb-type-enabled-gateways ul li.ui-sortable-handle span.give-drag-handle {
@@ -1542,6 +1542,8 @@ p.give-field-description, .cmb2-metabox-description {
 /* css fix start: This css fix is for api and system info setting tab.  */
 .give-setting-tab-body-tools {
   position: relative; }
+  .give-setting-tab-body-tools .give_user_search_wrap input[type="text"] {
+    width: 15em; }
   .give-setting-tab-body-tools .tablenav .actions {
     overflow: visible; }
   .give-setting-tab-body-tools > tbody > tr > td {
