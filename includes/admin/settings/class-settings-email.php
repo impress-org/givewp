@@ -53,7 +53,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 		}
 
 		/**
-		 * Deafault setting tab.
+		 * Default setting tab.
 		 *
 		 * @since  1.8
 		 * @param  $setting_tab

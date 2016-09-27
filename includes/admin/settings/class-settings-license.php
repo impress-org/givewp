@@ -77,7 +77,7 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 
 				default:
 					/**
-					 * Filter the license settings.
+					 * Filter the licenses settings.
 					 * Backward compatibility: Please do not use this filter. This filter is deprecated in 1.8
 					 */
 					$settings = apply_filters( 'give_settings_licenses', $settings );

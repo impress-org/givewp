@@ -53,7 +53,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 		}
 
 		/**
-		 * Deafault setting tab.
+		 * Default setting tab.
 		 *
 		 * @since  1.8
 		 * @param  $setting_tab
@@ -258,7 +258,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 
 				default:
 					/**
-					 * Filter the payment gateways settings.
+					 * Filter the general settings.
 					 * Backward compatibility: Please do not use this filter. This filter is deprecated in 1.8
 					 */
 					$settings = apply_filters( 'give_settings_general', $settings );

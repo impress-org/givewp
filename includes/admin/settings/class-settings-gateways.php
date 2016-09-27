@@ -54,7 +54,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 
 
 		/**
-		 * Deafault setting tab.
+		 * Default setting tab.
 		 *
 		 * @since  1.8
 		 * @param  $setting_tab
