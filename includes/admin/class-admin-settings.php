@@ -286,6 +286,10 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					$value['desc'] = '';
 				}
 
+				if ( ! isset( $value['html'] ) ) {
+					$value['html'] = true;
+				}
+
 				// Custom attribute handling.
 				$custom_attributes = array();
 
@@ -306,13 +310,19 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						if ( ! empty( $value['title'] ) ) {
 							echo '<div class="give-setting-tab-header give-setting-tab-header-' . $current_tab . '"><h2>' . self::get_field_title( $value ) . '</h2><hr></div>';
 						}
+
 						if ( ! empty( $value['desc'] ) ) {
 							echo wpautop( wptexturize( wp_kses_post( $value['desc'] ) ) );
 						}
-						echo '<table class="form-table give-setting-tab-body give-setting-tab-body-' . $current_tab . '">' . "\n\n";
+
+						if( $value['html'] ) {
+							echo '<table class="form-table give-setting-tab-body give-setting-tab-body-' . $current_tab . '">' . "\n\n";
+						}
+
 						if ( ! empty( $value['id'] ) ) {
 							do_action( 'give_settings_' . sanitize_title( $value['id'] ) );
 						}
+
 						break;
 
 					// Section Ends.
@@ -320,10 +330,15 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						if ( ! empty( $value['id'] ) ) {
 							do_action( 'give_settings_' . sanitize_title( $value['id'] ) . '_end' );
 						}
-						echo '</table>';
+
+						if( $value['html'] ) {
+							echo '</table>';
+						}
+
 						if ( ! empty( $value['id'] ) ) {
 							do_action( 'give_settings_' . sanitize_title( $value['id'] ) . '_after' );
 						}
+
 						break;
 
 					// Standard text inputs and subtypes like 'number'.
@@ -582,32 +597,21 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 					// Custom: API field.
 					case 'api' :
-						?><tr valign="top">
-							<td class="give-forminp">
-								<?php give_api_callback(); ?>
-								<?php echo $description; ?>
-							</td>
-						</tr><?php
+						give_api_callback();
+						echo $description;
 						break;
 
 					// Custom: Log field.
 					case 'logs' :
-						?><tr valign="top">
-							<td class="give-forminp">
-								<?php give_reports_tab_logs(); ?>
-								<?php echo $description; ?>
-							</td>
-						</tr><?php
+						// Note: there are no need to check for html field param because we want custom html to this field.
+						give_reports_tab_logs();
+						echo $description;
 						break;
 
 					// Custom: API field.
 					case 'tools' :
-						?><tr valign="top">
-						<td class="give-forminp">
-							<?php give_tools_recount_stats_display(); ?>
-							<?php echo $description; ?>
-						</td>
-						</tr><?php
+						give_tools_recount_stats_display();
+						echo $description;
 						break;
 
 					// Default: run an action

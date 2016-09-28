@@ -77,16 +77,20 @@ if ( ! class_exists( 'Give_Settings_Logs' ) ) :
 			$settings = apply_filters( 'give_settings_system', array(
 				array(
 					'id'   => 'give_tools_logs',
-					'type' => 'title'
+					'type' => 'title',
+					'html' => false
 				),
 				array(
 					'id'   => 'api',
 					'name' => esc_html__( 'Log', 'give' ),
-					'type' => 'logs'
+					'type' => 'logs',
+					'html' => false
+
 				),
 				array(
 					'id'   => 'give_tools_logs',
-					'type' => 'sectionend'
+					'type' => 'sectionend',
+					'html' => false
 				)
 			));
 

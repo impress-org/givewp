@@ -77,16 +77,19 @@ if ( ! class_exists( 'Give_Settings_API' ) ) :
 			$settings = apply_filters( 'give_settings_system', array(
 				array(
 					'id'   => 'give_tools_api',
-					'type' => 'title'
+					'type' => 'title',
+					'html' => false
 				),
 				array(
 					'id'   => 'api',
 					'name' => esc_html__( 'API', 'give' ),
-					'type' => 'api'
+					'type' => 'api',
+					'html' => false
 				),
 				array(
 					'id'   => 'give_tools_api',
-					'type' => 'sectionend'
+					'type' => 'sectionend',
+					'html' => false
 				)
 			));
 
