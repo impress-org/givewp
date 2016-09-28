@@ -90,35 +90,6 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 */
 		public static function get_settings_pages() {
 			if ( empty( self::$settings ) ) {
-				$settings = array();
-
-				include( 'settings/class-settings-cmb2-backward-compatibility.php' );
-
-				// General settings.
-				$settings[] = include( 'settings/class-settings-general.php' );
-
-				// Payment Gateways Settings.
-				$settings[] = include( 'settings/class-settings-gateways.php' );
-
-				// Display settings.
-				$settings[] = include( 'settings/class-settings-display.php' );
-
-				// Emails settings.
-				$settings[] = include( 'settings/class-settings-email.php' );
-
-				// Addons settings.
-				$settings[] = include( 'settings/class-settings-addon.php' );
-
-				// License settings.
-				$settings[] = include( 'settings/class-settings-license.php' );
-
-				// Advanced settions.
-				$settings[] = include( 'settings/class-settings-advanced.php' );
-
-				// Tool settings.
-				$settings[] = include( 'settings/class-settings-tools.php' );
-
-
 				/**
 				 * Filter the setting page.
 				 *
@@ -129,7 +100,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				 * @since 1.8
 				 * @param array $settings Array of settings class object.
 				 */
-				self::$settings = apply_filters( self::$setting_filter_prefix . '_get_settings_pages', $settings );
+				self::$settings = apply_filters( self::$setting_filter_prefix . '_get_settings_pages', array() );
 			}
 
 			return self::$settings;

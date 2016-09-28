@@ -313,3 +313,45 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 	return (bool) apply_filters( 'give_is_admin_page', $found, $page, $view, $passed_page, $passed_view );
 
 }
+
+
+/**
+ * Add setting tab to give-settings page
+ *
+ * @since  1.8
+ * @param  array $settings
+ * @return array
+ */
+function give_settings_page_pages( $settings ) {
+	include( 'settings/class-settings-cmb2-backward-compatibility.php' );
+
+	$settings = array(
+		// General settings.
+		include( 'settings/class-settings-general.php' ),
+
+		// Payment Gateways Settings.
+		include( 'settings/class-settings-gateways.php' ),
+
+		// Display settings.
+		include( 'settings/class-settings-display.php' ),
+
+		// Emails settings.
+		include( 'settings/class-settings-email.php' ),
+
+		// Addons settings.
+		include( 'settings/class-settings-addon.php' ),
+
+		// License settings.
+		include( 'settings/class-settings-license.php' ),
+
+		// Advanced settinns.
+		include( 'settings/class-settings-advanced.php' ),
+
+		// Tool settings.
+		include( 'settings/class-settings-tools.php' )
+	);
+
+	// Output.
+	return $settings;
+}
+add_filter( 'give-settings_get_settings_pages', 'give_settings_page_pages', 10, 1 );
