@@ -5,7 +5,7 @@
  * @package     Give
  * @subpackage  Classes/Give_Email_Access
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.4
  */
 

@@ -6,7 +6,7 @@
  *
  * @subpackage  Admin/Tools/Give_Tools_Recount_Customer_Stats
  * @copyright   Copyright (c) 2016, Chris Klosowski
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.5
  */
 

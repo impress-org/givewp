@@ -7,7 +7,7 @@
  *
  * @package    Give
  * @subpackage Admin
- * @license    http://www.opensource.org/licenses/gpl-license.php GPL v2.0 (or later)
+ * @license    https://opensource.org/licenses/gpl-license GNU Public License
  * @link       https://github.com/webdevstudios/Custom-Metaboxes-and-Fields-for-WordPress
  */
 class Give_Plugin_Settings {
