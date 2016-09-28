@@ -362,3 +362,22 @@ function give_settings_page_pages( $settings ) {
 	return $settings;
 }
 add_filter( 'give-settings_get_settings_pages', 'give_settings_page_pages', 10, 1 );
+
+
+/**
+ * Add setting tab to give-settings page
+ *
+ * @since  1.8
+ * @param  array $settings
+ * @return array
+ */
+function give_tools_page_pages( $settings ) {
+	$settings = array(
+		// System Info settings.
+		include( 'tools/class-setting-system-info.php' ),
+	);
+
+	// Output.
+	return $settings;
+}
+add_filter( 'give-tools_get_settings_pages', 'give_tools_page_pages', 10, 1 );
