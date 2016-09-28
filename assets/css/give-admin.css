@@ -1540,15 +1540,15 @@ p.give-field-description, .cmb2-metabox-description {
   font-size: 14px; }
 
 /* css fix start: This css fix is for api and system info setting tab.  */
-.give-setting-tab-body-tools {
+.give-setting-tab-body {
   position: relative; }
-  .give-setting-tab-body-tools .give_user_search_wrap input[type="text"] {
+  .give-setting-tab-body .give_user_search_wrap input[type="text"] {
     width: 15em; }
-  .give-setting-tab-body-tools .tablenav .actions {
+  .give-setting-tab-body .tablenav .actions {
     overflow: visible; }
-  .give-setting-tab-body-tools > tbody > tr > td {
+  .give-setting-tab-body > tbody > tr > td {
     padding: 0 !important; }
-  .give-setting-tab-body-tools table th {
+  .give-setting-tab-body table th {
     padding: 15px 10px !important; }
 
 /* css fix end*/
