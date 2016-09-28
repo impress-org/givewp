@@ -31,6 +31,14 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		private static $settings = array();
 
 		/**
+		 * Setting filter and action prefix.
+		 *
+		 * @since 1.8
+		 * @var   string setting fileter and action anme prefix.
+		 */
+		private static $setting_filter_prefix = '';
+
+		/**
 		 * Error messages.
 		 *
 		 * @since 1.8
@@ -45,6 +53,34 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * @var   array List of messages.
 		 */
 		private static $messages = array();
+
+
+		/**
+		 * Add Setting page.
+		 *
+		 * @since  1.8
+		 * @param  $parent_slug
+		 * @param  $page_title
+		 * @param  $menu_title
+		 * @param  $capability
+		 * @param  $menu_slug
+		 * @param  string $function
+		 * @return false|string
+		 */
+		public static function add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function = ''){
+			// Set filter and action name prefix.
+			self::$setting_filter_prefix = $menu_slug;
+
+			// Output.
+			return add_submenu_page(
+				$parent_slug,
+				$page_title,
+				$menu_title,
+				$capability,
+				$menu_slug,
+				$function
+			);
+		}
 
 		/**
 		 * Include the settings page classes.
@@ -83,7 +119,18 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				// Tool settings.
 				$settings[] = include( 'settings/class-settings-tools.php' );
 
-				self::$settings = apply_filters( 'give_get_settings_pages', $settings );
+
+				/**
+				 * Filter the setting page.
+				 *
+				 * Note: filter dynamically fire on basis of setting page slug.
+				 * For example: if you register a setting page with give-settings menu slug
+				 *              then filter will be give-settings_get_settings_pages
+				 *
+				 * @since 1.8
+				 * @param array $settings Array of settings class object.
+				 */
+				self::$settings = apply_filters( self::$setting_filter_prefix . '_get_settings_pages', $settings );
 			}
 
 			return self::$settings;
@@ -102,13 +149,29 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				die( __( 'Action failed. Please refresh the page and retry.', 'give' ) );
 			}
 
-			// Trigger actions.
-			do_action( 'give_settings_save_' . $current_tab );
+			/**
+			 * Trigger Action.
+			 *
+			 * Note: action dynamically fire on basis of setting page slug and current tab.
+			 * For example: if you register a setting page with give-settings menu slug and general current tab name
+			 *              then action will be give-settings_save_general
+			 *
+			 * @since 1.8.
+			 */
+			do_action( self::$setting_filter_prefix . '_save_' . $current_tab );
 
 			self::add_message( __( 'Your settings have been saved.', 'give' ) );
 
-			// Trigger actions.
-			do_action( 'give_settings_saved' );
+			/**
+			 * Trigger Action.
+			 *
+			 * Note: action dynamically fire on basis of setting page slug.
+			 * For example: if you register a setting page with give-settings menu slug
+			 *              then action will be give-settings_saved
+			 *
+			 * @since 1.8.
+			 */
+			do_action( self::$setting_filter_prefix . '_saved' );
 		}
 
 		/**
@@ -160,7 +223,16 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * @return void
 		 */
 		public static function output() {
-			do_action( 'give_settings_start' );
+			/**
+			 * Trigger Action.
+			 *
+			 * Note: action dynamically fire on basis of setting page slug
+			 * For example: if you register a setting page with give-settings menu slug
+			 *              then action will be give-settings_start
+			 *
+			 * @since 1.8.
+			 */
+			do_action( self::$setting_filter_prefix . '_start' );
 
 			$current_tab     = give_get_current_setting_tab();
 
@@ -181,8 +253,16 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				self::add_message( stripslashes( $_GET['give_message'] ) );
 			}
 
-			// Get tabs for the settings page.
-			$tabs = apply_filters( 'give_settings_tabs_array', array() );
+			/**
+			 * Filter the tabs for current setting page.
+			 *
+			 * Note: filter dynamically fire on basis of setting page slug.
+			 * For example: if you register a setting page with give-settings menu slug and general current tab name
+			 *              then action will be give-settings_tabs_array
+			 *
+			 * @since 1.8.
+			 */
+			$tabs = apply_filters( self::$setting_filter_prefix . '_tabs_array', array() );
 
 			include 'views/html-admin-settings.php';
 		}
