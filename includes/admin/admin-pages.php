@@ -378,6 +378,9 @@ function give_tools_page_pages( $settings ) {
 
 		// API.
 		include( 'tools/class-settings-api.php' ),
+
+		// Logs
+		include( 'tools/class-settings-logs.php' )
 	);
 
 	// Output.

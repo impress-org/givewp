@@ -610,6 +610,16 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						</tr><?php
 						break;
 
+					// Custom: Log field.
+					case 'logs' :
+						?><tr valign="top">
+							<td class="give-forminp">
+								<?php give_reports_tab_logs(); ?>
+								<?php echo $description; ?>
+							</td>
+						</tr><?php
+						break;
+
 					// Default: run an action
 					// You can add or handle your custom field action.
 					default:
