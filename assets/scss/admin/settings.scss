@@ -123,24 +123,9 @@ p.give-field-description, .cmb2-metabox-description{
 }
 
 /* css fix start: This css fix is for api and system info setting tab.  */
-.give-setting-tab-body {
-  position: relative;
-
-  .give_user_search_wrap input[type="text"]{
-    width:15em;
-  }
-
-  .tablenav .actions{
+.give-tools-setting-page {
+  .tablenav .actions {
     overflow: visible;
-  }
-
-  >tbody>tr>td{
-    padding: 0 !important;
-
-  }
-
-  table th{
-    padding: 15px 10px !important;;
   }
 }
 /* css fix end*/
