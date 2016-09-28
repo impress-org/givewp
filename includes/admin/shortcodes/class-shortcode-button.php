@@ -6,7 +6,7 @@
  * @subpackage  Admin
  * @author      Paul Ryley
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @version     1.0
  * @since       1.3.0
  */

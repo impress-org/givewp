@@ -4,7 +4,7 @@
  *
  * @package     Give/Admin/Shortcodes
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.3.0
  */
 
