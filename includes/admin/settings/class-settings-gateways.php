@@ -61,7 +61,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 		 * @return string
 		 */
 		function set_default_setting_tab( $setting_tab ) {
-			return 'gateways';
+			return 'gateways-settings';
 		}
 
 		/**
@@ -178,7 +178,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 					);
 					break;
 
-				case 'gateways':
+				case 'gateways-settings':
 					$settings = array(
 						// Section 1: Gateways.
 						array(
@@ -238,7 +238,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 		 */
 		public function get_sections() {
 			$sections = array(
-				'gateways'          => esc_html__( 'Gateways', 'give' ),
+				'gateways-settings' => esc_html__( 'Gateways', 'give' ),
 				'paypal-standard'   => esc_html__( 'Paypal Standard', 'give' ),
 				'offline-donations' => esc_html__( 'Offline', 'give' )
 			);
