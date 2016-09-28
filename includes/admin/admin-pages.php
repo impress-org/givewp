@@ -43,13 +43,13 @@ function give_add_options_links() {
 	$give_reports_page = add_submenu_page( 'edit.php?post_type=give_forms', esc_html__( 'Donation Reports', 'give' ), esc_html__( 'Reports', 'give' ), 'view_give_reports', 'give-reports', 'give_reports_page' );
 
 	//Settings
-	$give_settings_page = Give_Admin_Settings::add_submenu_page( 'edit.php?post_type=give_forms', esc_html__( 'Give Settings', 'give' ), esc_html__( 'Settings', 'give' ), 'manage_give_settings', 'give-settings', array(
+	$give_settings_page = add_submenu_page( 'edit.php?post_type=give_forms', esc_html__( 'Give Settings', 'give' ), esc_html__( 'Settings', 'give' ), 'manage_give_settings', 'give-settings', array(
 		Give()->give_settings,
 		'output'
 	) );
 
 	//Tools.
-	$give_tools_page = Give_Admin_Settings::add_submenu_page( 'edit.php?post_type=give_forms', esc_html__( 'Give Tools', 'give' ), esc_html__( 'Tools', 'give' ), 'manage_give_settings', 'give-tools', array(
+	$give_tools_page = add_submenu_page( 'edit.php?post_type=give_forms', esc_html__( 'Give Tools', 'give' ), esc_html__( 'Tools', 'give' ), 'manage_give_settings', 'give-tools', array(
 		Give()->give_settings,
 		'output'
 	) );
@@ -352,10 +352,7 @@ function give_settings_page_pages( $settings ) {
 		include( 'settings/class-settings-license.php' ),
 
 		// Advanced settinns.
-		include( 'settings/class-settings-advanced.php' ),
-
-		// Tool settings.
-		include( 'settings/class-settings-tools.php' )
+		include( 'settings/class-settings-advanced.php' )
 	);
 
 	// Output.

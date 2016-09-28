@@ -54,34 +54,6 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 */
 		private static $messages = array();
 
-
-		/**
-		 * Add Setting page.
-		 *
-		 * @since  1.8
-		 * @param  $parent_slug
-		 * @param  $page_title
-		 * @param  $menu_title
-		 * @param  $capability
-		 * @param  $menu_slug
-		 * @param  string $function
-		 * @return false|string
-		 */
-		public static function add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function = ''){
-			// Set filter and action name prefix.
-			self::$setting_filter_prefix = $menu_slug;
-
-			// Output.
-			return add_submenu_page(
-				$parent_slug,
-				$page_title,
-				$menu_title,
-				$capability,
-				$menu_slug,
-				$function
-			);
-		}
-
 		/**
 		 * Include the settings page classes.
 		 *
@@ -89,19 +61,17 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * @return array
 		 */
 		public static function get_settings_pages() {
-			if ( empty( self::$settings ) ) {
-				/**
-				 * Filter the setting page.
-				 *
-				 * Note: filter dynamically fire on basis of setting page slug.
-				 * For example: if you register a setting page with give-settings menu slug
-				 *              then filter will be give-settings_get_settings_pages
-				 *
-				 * @since 1.8
-				 * @param array $settings Array of settings class object.
-				 */
-				self::$settings = apply_filters( self::$setting_filter_prefix . '_get_settings_pages', array() );
-			}
+			/**
+			 * Filter the setting page.
+			 *
+			 * Note: filter dynamically fire on basis of setting page slug.
+			 * For example: if you register a setting page with give-settings menu slug
+			 *              then filter will be give-settings_get_settings_pages
+			 *
+			 * @since 1.8
+			 * @param array $settings Array of settings class object.
+			 */
+			self::$settings = apply_filters( self::$setting_filter_prefix . '_get_settings_pages', array() );
 
 			return self::$settings;
 		}
@@ -190,9 +160,17 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * Handles the display of the main give settings page in admin.
 		 *
 		 * @since  1.8
-		 * @return void
+		 * @return void|bool
 		 */
 		public static function output() {
+			// Get current setting page.
+			self::$setting_filter_prefix = give_get_current_setting_page();
+
+			// Bailout: Exit if setting page is not defined.
+			if( empty( self::$setting_filter_prefix ) ) {
+				return false;
+			}
+
 			/**
 			 * Trigger Action.
 			 *
@@ -235,6 +213,8 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			$tabs = apply_filters( self::$setting_filter_prefix . '_tabs_array', array() );
 
 			include 'views/html-admin-settings.php';
+
+			return true;
 		}
 
 		/**

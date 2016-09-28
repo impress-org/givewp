@@ -762,3 +762,17 @@ function give_get_current_setting_section(){
 	//Output.
 	return $current_section;
 }
+
+/**
+ * Get current setting page.
+ *
+ * @since  1.8
+ * @return string
+ */
+function give_get_current_setting_page(){
+	// Get current page.
+	$setting_page = ! empty( $_GET['page'] ) ? urldecode( $_GET['page'] ) : '';
+
+	//Output.
+	return $setting_page;
+}
