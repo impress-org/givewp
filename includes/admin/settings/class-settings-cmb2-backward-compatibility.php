@@ -112,9 +112,9 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			if( in_array( $this->current_tab, $pages_diff ) ) {
 				// Filter & actions.
 				add_filter( "give_default_setting_tab_section_{$this->current_tab}", array( $this, 'set_default_setting_tab' ), 10 );
-				add_action( "give_sections_{$this->current_tab}_page", array( $this, 'output_sections' ) );
-				add_action( "give_settings_{$this->current_tab}_page", array( $this, 'output' ), 10 );
-				add_action( "give_settings_save_{$this->current_tab}", array( $this, 'save' ) );
+				add_action( "give-settings_sections_{$this->current_tab}_page", array( $this, 'output_sections' ) );
+				add_action( "give-settings_settings_{$this->current_tab}_page", array( $this, 'output' ), 10 );
+				add_action( "give-settings_save_{$this->current_tab}", array( $this, 'save' ) );
 			}
 
 			return $pages;

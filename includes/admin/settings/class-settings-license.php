@@ -20,7 +20,7 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 	 *
 	 * @sine 1.8
 	 */
-	class Give_Settings_License extends Give_Settings_Page {
+	class Give_Settings_License {
 
 		/**
 		 * Setting page id.
@@ -45,9 +45,9 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 			$this->id    = 'licenses';
 			$this->label = esc_html__( 'Licenses', 'give' );
 
-			add_filter( 'give_settings_tabs_array', array( $this, 'add_settings_page' ), 20 );
-			add_action( "give_settings_{$this->id}_page", array( $this, 'output' ) );
-			add_action( "give_settings_save_{$this->id}", array( $this, 'save' ) );
+			add_filter( 'give-settings_tabs_array', array( $this, 'add_settings_page' ), 20 );
+			add_action( "give-settings_settings_{$this->id}_page", array( $this, 'output' ) );
+			add_action( "give-settings_save_{$this->id}", array( $this, 'save' ) );
 		}
 
 		/**

@@ -92,7 +92,6 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			if ( empty( self::$settings ) ) {
 				$settings = array();
 
-				include_once( 'settings/class-settings-page.php' );
 				include( 'settings/class-settings-cmb2-backward-compatibility.php' );
 
 				// General settings.

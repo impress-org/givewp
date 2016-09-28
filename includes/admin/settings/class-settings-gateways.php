@@ -20,7 +20,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 	 *
 	 * @sine 1.8
 	 */
-	class Give_Settings_Gateways extends Give_Settings_Page {
+	class Give_Settings_Gateways {
 
 		/**
 		 * Setting page id.
@@ -45,11 +45,11 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 			$this->id    = 'gateways';
 			$this->label = esc_html__( 'Payment Gateways', 'give' );
 
-			add_filter( 'give_default_setting_tab_section_gateways', array( $this, 'set_default_setting_tab' ), 10 );
-			add_filter( 'give_settings_tabs_array', array( $this, 'add_settings_page' ), 20 );
-			add_action( "give_sections_{$this->id}_page", array( $this, 'output_sections' ) );
-			add_action( "give_settings_{$this->id}_page", array( $this, 'output' ) );
-			add_action( "give_settings_save_{$this->id}", array( $this, 'save' ) );
+			add_filter( "give_default_setting_tab_section_{$this->id}", array( $this, 'set_default_setting_tab' ), 10 );
+			add_filter( 'give-settings_tabs_array', array( $this, 'add_settings_page' ), 20 );
+			add_action( "give-settings_sections_{$this->id}_page", array( $this, 'output_sections' ) );
+			add_action( "give-settings_settings_{$this->id}_page", array( $this, 'output' ) );
+			add_action( "give-settings_save_{$this->id}", array( $this, 'save' ) );
 		}
 
 

@@ -20,7 +20,7 @@ if ( ! class_exists( 'Give_Settings_Addon' ) ) :
 	 *
 	 * @sine 1.8
 	 */
-	class Give_Settings_Addon extends Give_Settings_Page {
+	class Give_Settings_Addon {
 
 		/**
 		 * Setting page id.
@@ -45,11 +45,11 @@ if ( ! class_exists( 'Give_Settings_Addon' ) ) :
 			$this->id    = 'addons';
 			$this->label = esc_html__( 'Add-ons', 'give' );
 
-			add_filter( 'give_default_setting_tab_section_addons', array( $this, 'set_default_setting_tab' ), 10 );
-			add_filter( 'give_settings_tabs_array', array( $this, 'add_settings_page' ), 20 );
-			add_action( "give_sections_{$this->id}_page", array( $this, 'output_sections' ) );
-			add_action( "give_settings_{$this->id}_page", array( $this, 'output' ) );
-			add_action( "give_settings_save_{$this->id}", array( $this, 'save' ) );
+			add_filter( "give_default_setting_tab_section_{$this->id}", array( $this, 'set_default_setting_tab' ), 10 );
+			add_filter( 'give-settings_tabs_array', array( $this, 'add_settings_page' ), 20 );
+			add_action( "give-settings_sections_{$this->id}_page", array( $this, 'output_sections' ) );
+			add_action( "give-settings_settings_{$this->id}_page", array( $this, 'output' ) );
+			add_action( "give-settings_save_{$this->id}", array( $this, 'save' ) );
 		}
 
 		/**
