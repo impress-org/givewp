@@ -5,9 +5,13 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+
+// Bailout: Do not output anything if setting tab is not defined.
+if( ! empty( $tabs ) ) :
 ?>
 <div class="wrap give-settings-page">
-	<form method="<?php echo esc_attr( apply_filters( 'give_settings_form_method_tab_' . $current_tab, 'post' ) ); ?>" id="mainform" action="" enctype="multipart/form-data">
+	<form method="<?php echo esc_attr( apply_filters( self::$setting_filter_prefix . '_form_method_tab_' . $current_tab, 'post' ) ); ?>" id="mainform" action="" enctype="multipart/form-data">
 		<h2 class="nav-tab-wrapper woo-nav-tab-wrapper">
 			<?php
 			foreach ( $tabs as $name => $label ) {
@@ -18,11 +22,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</h2>
 		<h1 class="screen-reader-text"><?php echo esc_html( $tabs[ $current_tab ] ); ?></h1>
 		<?php
-		do_action( "give_sections_{$current_tab}_page" );
+		do_action( self::$setting_filter_prefix . "_sections_{$current_tab}_page" );
 
 		self::show_messages();
 
-		do_action( "give_settings_{$current_tab}_page" );
+		do_action( self::$setting_filter_prefix . "_settings_{$current_tab}_page" );
 
 		if ( empty( $GLOBALS['give_hide_save_button'] ) ) : ?>
 			<div class="give-submit-wrap">
@@ -32,3 +36,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php endif; ?>
 	</form>
 </div>
+<?php endif; ?>
