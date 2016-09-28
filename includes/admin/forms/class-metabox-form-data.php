@@ -459,7 +459,7 @@ class Give_MetaBox_Form_Data {
 									'no'     => esc_html__( 'Disable', 'give' ),
 								)
 							),
-							'default'     => 'no',
+							'default'     => 'global',
 						),
 						array(
 							'id'          => $prefix . 'agree_label',

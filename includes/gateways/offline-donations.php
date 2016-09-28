@@ -310,7 +310,7 @@ function give_offline_add_settings( $settings ) {
 			'desc'    => esc_attr__( 'If you would like to customize the donation instructions for this specific forms check this option.', 'give' ),
 			'id'      => $prefix . 'customize_offline_donations',
 			'type'    => 'radio_inline',
-			'default' => 'no',
+			'default' => 'global',
 			'options'     => apply_filters( 'give_forms_content_options_select', array(
 					'global' => esc_html__( 'Global Options', 'give' ),
 					'yes'    => esc_html__( 'Customize', 'give' ),
