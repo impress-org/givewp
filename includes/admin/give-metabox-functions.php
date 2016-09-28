@@ -689,9 +689,19 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 	?>
 	<div class="give-repeatable-field-section" id="<?php echo "{$fields['id']}_field"; ?>">
 		<table class="give-repeatable-fields-section-wrapper" cellspacing="0">
-			<?php $donation_levels = get_post_meta( $thepostid, $fields['id'], true ); ?>
-			<?php if( count( $donation_levels ) ) { $donation_levels = array_values( $donation_levels ); } ?>
-			<tbody class="container"<?php $levels_count = 0; echo ( ( $levels_count = count( $donation_levels ) ? " data-rf-row-count=\"{$levels_count}\"" : '' ) ); ?>>
+			<?php
+			$donation_levels = get_post_meta( $thepostid, $fields['id'], true );
+
+			// Check if level is not created or we have to add default level.
+			if( is_array( $donation_levels ) && ( $levels_count = count( $donation_levels ) ) ) {
+				$donation_levels = array_values( $donation_levels );
+				$set_default_donation_level = false;
+			} else {
+				$levels_count = 1;
+				$set_default_donation_level = true;
+			}
+			?>
+			<tbody class="container"<?php echo " data-rf-row-count=\"{$levels_count}\""; ?>>
 				<tr class="give-template give-row">
 					<td class="give-repeater-field-wrap give-column" colspan="2">
 						<div class="give-row-head give-move">
@@ -741,6 +751,32 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 							</td>
 						</tr>
 					<?php endforeach;; ?>
+
+				<?php elseif ( $set_default_donation_level ) : ?>
+					<tr class="give-row">
+						<td class="give-repeater-field-wrap give-column" colspan="2">
+							<div class="give-row-head give-move">
+								<button type="button" class="handlediv button-link"><span class="toggle-indicator"></span></button>
+								<sapn class="give-remove" title="<?php esc_html_e( 'Remove Donation Level', 'give' ); ?>">-</sapn>
+								<h2>
+									<span><?php esc_html_e( 'Donation Level', 'give' ); ?></span>
+								</h2>
+							</div>
+							<div class="give-row-body">
+								<?php $index = 0; ?>
+								<?php foreach ( $fields['fields'] as $field ) : ?>
+									<?php if ( ! give_is_field_callback_exist( $field ) ) continue; ?>
+									<?php
+									$field['repeat'] = true;
+									$field['repeatable_field_id'] = ( '_give_id' === $field['id'] ) ? "{$fields['id']}[{$index}][{$field['id']}][level_id]" : "{$fields['id']}[{$index}][{$field['id']}]";
+									$field['attributes']['value'] = ( '_give_id' === $field['id'] ) ? 0 : '';
+									$field['id'] = str_replace( array( '[', ']' ), array( '_', '' ), $field['repeatable_field_id'] );
+									?>
+									<?php give_render_field( $field ); ?>
+								<?php endforeach; ?>
+							</div>
+						</td>
+					</tr>
 				<?php endif; ?>
 			</tbody>
 			<tfoot>
