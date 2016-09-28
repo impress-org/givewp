@@ -48,7 +48,6 @@ if ( ! class_exists( 'Give_Settings_System_Info' ) ) :
 			add_filter( 'give-tools_tabs_array', array( $this, 'add_settings_page' ), 20 );
 			add_action( "give-tools_sections_{$this->id}_page", array( $this, 'output_sections' ) );
 			add_action( "give-tools_settings_{$this->id}_page", array( $this, 'output' ) );
-			add_action( "give-tools_save_{$this->id}", array( $this, 'save' ) );
 		}
 
 		/**
@@ -153,18 +152,6 @@ if ( ! class_exists( 'Give_Settings_System_Info' ) ) :
 			$settings = $this->get_settings();
 
 			Give_Admin_Settings::output_fields( $settings, 'give_settings' );
-		}
-
-		/**
-		 * Save settings.
-		 *
-		 * @since  1.8
-		 * @return void
-		 */
-		public function save() {
-			$settings = $this->get_settings();
-
-			Give_Admin_Settings::save_fields( $settings, 'give_settings' );
 		}
 	}
 
