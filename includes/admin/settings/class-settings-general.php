@@ -60,7 +60,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 		 * @return string
 		 */
 		function set_default_setting_tab( $setting_tab ) {
-			return 'general';
+			return 'general-settings';
 		}
 
 		/**
@@ -134,7 +134,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 					);
 					break;
 
-				case 'currency' :
+				case 'currency-settings' :
 					$settings = array(
 						// Section 2: Currency
 						array(
@@ -200,7 +200,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 					);
 					break;
 
-				case 'general':
+				case 'general-settings':
 					$settings = array(
 						// Section 1: General.
 						array(
@@ -287,9 +287,9 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 		 */
 		public function get_sections() {
 			$sections = array(
-				'general'        => esc_html__( 'General', 'give' ),
-				'currency'       => esc_html__( 'Currency', 'give' ),
-				'access-control' => esc_html__( 'Access Control', 'give' )
+				'general-settings'  => esc_html__( 'General', 'give' ),
+				'currency-settings' => esc_html__( 'Currency', 'give' ),
+				'access-control'    => esc_html__( 'Access Control', 'give' )
 			);
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );
