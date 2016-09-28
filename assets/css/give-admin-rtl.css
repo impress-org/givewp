@@ -1478,7 +1478,7 @@ Settings
 .give-settings-page .give_forms_page_give-payment-history .postbox .hndle {
   cursor: default; }
 
-.give-settings-page input[type="text"], .give-settings-page input[type="email"] {
+.give-settings-page .give-input-field {
   width: 25em; }
 
 .give-settings-page table table input[type="text"] {
