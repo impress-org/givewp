@@ -346,7 +346,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 									type="<?php echo esc_attr( $type ); ?>"
 									style="<?php echo esc_attr( $value['css'] ); ?>"
 									value="<?php echo esc_attr( $option_value ); ?>"
-									class="<?php echo esc_attr( $value['class'] ); ?>"
+									class="give-input-field<?php echo ( empty( $value['class'] ) ? '' :  ' '. esc_attr( $value['class'] ) ); ?>"
 									<?php echo implode( ' ', $custom_attributes ); ?>
 									/> <?php echo $description; ?>
 							</td>
@@ -492,7 +492,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 											name="<?php echo esc_attr( $value['id'] ); ?>"
 											id="<?php echo esc_attr( $value['id'] ); ?>"
 											type="text"
-											class="<?php echo esc_attr( isset( $value['class'] ) ? $value['class'] : '' ); ?>"
+											class="give-input-field<?php echo esc_attr( isset( $value['class'] ) ? ' ' . $value['class'] : '' ); ?>"
 											value="<?php echo $option_value; ?>"
 											style="<?php echo esc_attr( $value['css'] ); ?>"
 											<?php echo implode( ' ', $custom_attributes ); ?>
