@@ -15,7 +15,7 @@ if( ! empty( $tabs ) ) :
 		<h2 class="nav-tab-wrapper woo-nav-tab-wrapper">
 			<?php
 			foreach ( $tabs as $name => $label ) {
-				echo '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=' . $name ) . '" class="nav-tab ' . ( $current_tab == $name ? 'nav-tab-active' : '' ) . '">' . $label . '</a>';
+				echo '<a href="' . admin_url( "edit.php?post_type=give_forms&page=" . self::$setting_filter_prefix . "&tab={$name}" ) . '" class="nav-tab ' . ( $current_tab == $name ? 'nav-tab-active' : '' ) . '">' . $label . '</a>';
 			}
 			do_action( 'give_settings_tabs' );
 			?>
