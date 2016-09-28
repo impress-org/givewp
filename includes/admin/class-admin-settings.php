@@ -620,6 +620,16 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						</tr><?php
 						break;
 
+					// Custom: API field.
+					case 'tools' :
+						?><tr valign="top">
+						<td class="give-forminp">
+							<?php give_tools_recount_stats_display(); ?>
+							<?php echo $description; ?>
+						</td>
+						</tr><?php
+						break;
+
 					// Default: run an action
 					// You can add or handle your custom field action.
 					default:
