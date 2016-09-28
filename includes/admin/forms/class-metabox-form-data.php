@@ -131,8 +131,8 @@ class Give_MetaBox_Form_Data {
 							'description'  => esc_html__( 'This is the set donation amount for this form. If you have a "Custom Amount Minimum" set, make sure it is less than this amount.', 'give' ),
 							'id'           => $prefix . 'set_price',
 							'type'         => 'text_small',
-							'render_row_cb' 	=> 'give_cmb_amount_field_render_row_cb',
-							'sanitization_cb'   => 'give_sanitize_price_field_value',
+							'render_row_cb'=> 'give_cmb_amount_field_render_row_cb',
+							'data_type'    => 'decimal',
 							'attributes'   => array(
 								'placeholder' => give_format_decimal( '1.00' ),
 								'value'       => give_format_decimal( $price ),
@@ -166,7 +166,6 @@ class Give_MetaBox_Form_Data {
 									'type'              => 'text_small',
 									'before_field'      => give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol  give-money-symbol-before">' . give_currency_symbol() . '</span>' : '',
 									'after_field'       => give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol  give-money-symbol-after">' . give_currency_symbol() . '</span>' : '',
-									'sanitization_cb'   => 'give_sanitize_price_field_value',
 									'data_type'         => 'decimal',
 									'attributes'        => array(
 										'placeholder' => give_format_decimal( '1.00' ),
@@ -359,10 +358,15 @@ class Give_MetaBox_Form_Data {
 								'type' => 'default_gateway'
 							),
 							array(
-								'name' => esc_html__( 'Guest Donations', 'give' ),
-								'desc' => esc_html__( 'Do you want to require users be logged-in to make donations?', 'give' ),
-								'id'   => $prefix . 'logged_in_only',
-								'type' => 'checkbox'
+								'name'    => esc_html__( 'Guest Donations', 'give' ),
+								'desc'    => esc_html__( 'Do you want to require users be logged-in to make donations?', 'give' ),
+								'id'      => $prefix . 'logged_in_only',
+								'type'    => 'radio_inline',
+								'default' => 'yes',
+								'options' => array(
+									'yes'    => esc_html__( 'Yes', 'give' ),
+									'no'     => esc_html__( 'No', 'give' ),
+								)
 							),
 							array(
 								'name'    => esc_html__( 'Registration', 'give' ),
