@@ -78,18 +78,17 @@ if ( ! class_exists( 'Give_Settings_API' ) ) :
 				array(
 					'id'   => 'give_tools_api',
 					'type' => 'title',
-					'html' => false
+					'table_html' => false
 				),
 				array(
 					'id'   => 'api',
 					'name' => esc_html__( 'API', 'give' ),
 					'type' => 'api',
-					'html' => false
 				),
 				array(
 					'id'   => 'give_tools_api',
 					'type' => 'sectionend',
-					'html' => false
+					'table_html' => false
 				)
 			));
 

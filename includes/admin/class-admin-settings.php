@@ -286,8 +286,8 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					$value['desc'] = '';
 				}
 
-				if ( ! isset( $value['html'] ) ) {
-					$value['html'] = true;
+				if ( ! isset( $value['table_html'] ) ) {
+					$value['table_html'] = true;
 				}
 
 				// Custom attribute handling.
@@ -315,7 +315,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 							echo wpautop( wptexturize( wp_kses_post( $value['desc'] ) ) );
 						}
 
-						if( $value['html'] ) {
+						if( $value['table_html'] ) {
 							echo '<table class="form-table give-setting-tab-body give-setting-tab-body-' . $current_tab . '">' . "\n\n";
 						}
 
@@ -331,7 +331,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 							do_action( 'give_settings_' . sanitize_title( $value['id'] ) . '_end' );
 						}
 
-						if( $value['html'] ) {
+						if( $value['table_html'] ) {
 							echo '</table>';
 						}
 

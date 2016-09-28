@@ -78,19 +78,18 @@ if ( ! class_exists( 'Give_Settings_Logs' ) ) :
 				array(
 					'id'   => 'give_tools_logs',
 					'type' => 'title',
-					'html' => false
+					'table_html' => false
 				),
 				array(
 					'id'   => 'api',
 					'name' => esc_html__( 'Log', 'give' ),
 					'type' => 'logs',
-					'html' => false
 
 				),
 				array(
 					'id'   => 'give_tools_logs',
 					'type' => 'sectionend',
-					'html' => false
+					'table_html' => false
 				)
 			));
 
