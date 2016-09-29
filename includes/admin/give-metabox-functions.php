@@ -802,9 +802,12 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
  * @return string
  */
 function _give_display_content_field_value( $field_value, $field, $postid ){
+	$show_content = get_post_meta( $postid, '_give_content_option', true );
+
 	if(
 		! get_post_meta( $postid, '_give_display_content', true )
-		&& ( 'none' !== get_post_meta( $postid, '_give_content_option', true ) )
+		&& $show_content
+		&& ( 'none' !== $show_content )
 	) {
 		$field_value = 'yes';
 	}
