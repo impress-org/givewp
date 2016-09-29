@@ -20,23 +20,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 	 *
 	 * @sine 1.8
 	 */
-	class Give_Settings_Advanced {
-
-		/**
-		 * Setting page id.
-		 *
-		 * @since 1.8
-		 * @var   string
-		 */
-		protected $id = '';
-
-		/**
-		 * Setting page label.
-		 *
-		 * @since 1.8
-		 * @var   string
-		 */
-		protected $label = '';
+	class Give_Settings_Advanced extends Give_Settings_Page {
 
 		/**
 		 * Constructor.
@@ -45,35 +29,9 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 			$this->id    = 'advanced';
 			$this->label = esc_html__( 'Advanced', 'give' );
 
-			add_filter( "give_default_setting_tab_section_{$this->id}", array( $this, 'set_default_setting_tab' ), 10 );
-			add_filter( 'give-settings_tabs_array', array( $this, 'add_settings_page' ), 20 );
-			add_action( "give-settings_sections_{$this->id}_page", array( $this, 'output_sections' ) );
-			add_action( "give-settings_settings_{$this->id}_page", array( $this, 'output' ) );
-			add_action( "give-settings_save_{$this->id}", array( $this, 'save' ) );
-		}
+			$this->default_tab = 'advanced-options';
 
-		/**
-		 * Default setting tab.
-		 *
-		 * @since  1.8
-		 * @param  $setting_tab
-		 * @return string
-		 */
-		function set_default_setting_tab( $setting_tab ) {
-			return 'advanced-options';
-		}
-
-		/**
-		 * Add this page to settings.
-		 *
-		 * @since  1.8
-		 * @param  array $pages Lst of pages.
-		 * @return array
-		 */
-		public function add_settings_page( $pages ) {
-			$pages[ $this->id ] = $this->label;
-
-			return $pages;
+			parent::__construct();
 		}
 
 		/**
@@ -153,59 +111,6 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 			);
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );
-		}
-
-		/**
-		 * Output sections.
-		 *
-		 * @since  1.8
-		 * @return void
-		 */
-		public function output_sections() {
-			// Get current section.
-			$current_section = give_get_current_setting_section();
-
-			// Get all sections.
-			$sections = $this->get_sections();
-
-			if ( empty( $sections ) || 1 === sizeof( $sections ) ) {
-				return;
-			}
-
-			echo '<ul class="subsubsub">';
-
-			// Get section keys.
-			$array_keys = array_keys( $sections );
-
-			foreach ( $sections as $id => $label ) {
-				echo '<li><a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=' . $this->id . '&section=' . sanitize_title( $id ) ) . '" class="' . ( $current_section == $id ? 'current' : '' ) . '">' . $label . '</a> ' . ( end( $array_keys ) == $id ? '' : '|' ) . ' </li>';
-			}
-
-			echo '</ul><br class="clear" />';
-		}
-
-		/**
-		 * Output the settings.
-		 *
-		 * @since  1.8
-		 * @return void
-		 */
-		public function output() {
-			$settings = $this->get_settings();
-
-			Give_Admin_Settings::output_fields( $settings, 'give_settings' );
-		}
-
-		/**
-		 * Save settings.
-		 *
-		 * @since  1.8
-		 * @return void
-		 */
-		public function save() {
-			$settings = $this->get_settings();
-
-			Give_Admin_Settings::save_fields( $settings, 'give_settings' );
 		}
 	}
 
