@@ -392,7 +392,7 @@ class Give_MetaBox_Form_Data {
 									'enabled'  => esc_html__( 'Yes', 'give' ),
 									'disabled' => esc_html__( 'No', 'give' ),
 								),
-								'default' => 'disabled',
+								'default' => 'global',
 							)
 						)
 					)
