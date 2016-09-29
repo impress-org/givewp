@@ -139,11 +139,6 @@ class Give_MetaBox_Form_Data {
 								'class'       => 'cmb-type-text-small give-money-field',
 							),
 						),
-						//Donation levels: Header
-						array(
-							'id'   => $prefix . 'levels_header',
-							'type' => 'levels_repeater_header',
-						),
 						//Donation Levels: Repeatable CMB2 Group
 						array(
 							'id'          => $prefix . 'donation_levels',
