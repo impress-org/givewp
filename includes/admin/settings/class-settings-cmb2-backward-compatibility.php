@@ -59,7 +59,7 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 
 
 			// add addon tabs.
-			add_filter( 'give_settings_tabs_array', array( $this, 'add_addon_settings_page' ), 999999 );
+			add_filter( 'give-settings_tabs_array', array( $this, 'add_addon_settings_page' ), 999999 );
 
 			// Add backward compatibility filters plugin settings.
 			$setting_tabs = array( 'general', 'gateways', 'display', 'emails', 'addons', 'licenses' );
