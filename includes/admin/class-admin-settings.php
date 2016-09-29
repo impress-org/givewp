@@ -320,6 +320,14 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						}
 
 						if ( ! empty( $value['id'] ) ) {
+
+							/**
+							 * Trigger Action.
+							 *
+							 * Note: action dynamically fire on basis of field id.
+							 *
+							 * @since 1.8
+							 */
 							do_action( 'give_settings_' . sanitize_title( $value['id'] ) );
 						}
 
@@ -328,6 +336,14 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					// Section Ends.
 					case 'sectionend':
 						if ( ! empty( $value['id'] ) ) {
+
+							/**
+							 * Trigger Action.
+							 *
+							 * Note: action dynamically fire on basis of field id.
+							 *
+							 * @since 1.8
+							 */
 							do_action( 'give_settings_' . sanitize_title( $value['id'] ) . '_end' );
 						}
 
@@ -336,6 +352,14 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						}
 
 						if ( ! empty( $value['id'] ) ) {
+
+							/**
+							 * Trigger Action.
+							 *
+							 * Note: action dynamically fire on basis of field id.
+							 *
+							 * @since 1.8
+							 */
 							do_action( 'give_settings_' . sanitize_title( $value['id'] ) . '_after' );
 						}
 
@@ -727,7 +751,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				 *
 				 * @since 1.8
 				 */
-				$value = apply_filters( "give_admin_settings_sanitize_option_$field_option_name", $value, $option, $raw_value );
+				$value = apply_filters( "give_admin_settings_sanitize_option_{$field_option_name}", $value, $option, $raw_value );
 
 				if ( is_null( $value ) ) {
 					continue;
