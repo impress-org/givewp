@@ -46,16 +46,7 @@ function give_reports_page() {
 					'tab'              => 'export',
 					'settings-updated' => false
 				), $current_page ) ); ?>" class="nav-tab <?php echo $active_tab == 'export' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Export', 'give' ); ?></a>
-			<?php } ?>
-			<a href="<?php echo esc_url( add_query_arg( array(
-				'tab'              => 'logs',
-				'settings-updated' => false
-			), $current_page ) ); ?>" class="nav-tab <?php echo $active_tab == 'logs' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Logs', 'give' ); ?></a>
-			<a href="<?php echo esc_url( add_query_arg( array(
-				'tab'              => 'tools',
-				'settings-updated' => false
-			), $current_page ) ); ?>" class="nav-tab <?php echo $active_tab == 'tools' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Tools', 'give' ); ?></a>
-			<?php
+			<?php }
 			/**
 			 * Fires in the report tabs.
 			 *
@@ -559,8 +550,6 @@ function give_reports_tab_logs() {
 	 */
 	do_action( "give_logs_view_{$current_view}" );
 }
-
-add_action( 'give_reports_tab_logs', 'give_reports_tab_logs' );
 
 /**
  * Retrieves estimated monthly earnings and sales
