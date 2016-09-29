@@ -99,7 +99,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 							'name' => esc_html__( 'PayPal Email', 'give' ),
 							'desc' => esc_html__( 'Enter your PayPal account\'s email.', 'give' ),
 							'id'   => 'paypal_email',
-							'type' => 'text_email',
+							'type' => 'email',
 						),
 						array(
 							'name' => esc_html__( 'PayPal Page Style', 'give' ),
