@@ -47,7 +47,6 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 
 			add_filter( 'give-settings_tabs_array', array( $this, 'add_settings_page' ), 20 );
 			add_action( "give-settings_settings_{$this->id}_page", array( $this, 'output' ) );
-			add_action( "give-settings_save_{$this->id}", array( $this, 'save' ) );
 		}
 
 		/**
@@ -103,18 +102,6 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 			$settings = $this->get_settings();
 
 			Give_Admin_Settings::output_fields( $settings, 'give_settings' );
-		}
-
-		/**
-		 * Save settings.
-		 *
-		 * @since  1.8
-		 * @return void
-		 */
-		public function save() {
-			$settings = $this->get_settings();
-
-			Give_Admin_Settings::save_fields( $settings, 'give_settings' );
 		}
 	}
 
