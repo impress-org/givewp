@@ -96,7 +96,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			 * For example: if you register a setting page with give-settings menu slug and general current tab name
 			 *              then action will be give-settings_save_general
 			 *
-			 * @since 1.8.
+			 * @since 1.8
 			 */
 			do_action( self::$setting_filter_prefix . '_save_' . $current_tab );
 
@@ -109,7 +109,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			 * For example: if you register a setting page with give-settings menu slug
 			 *              then action will be give-settings_saved
 			 *
-			 * @since 1.8.
+			 * @since 1.8
 			 */
 			do_action( self::$setting_filter_prefix . '_saved' );
 		}
@@ -178,7 +178,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			 * For example: if you register a setting page with give-settings menu slug
 			 *              then action will be give-settings_start
 			 *
-			 * @since 1.8.
+			 * @since 1.8
 			 */
 			do_action( self::$setting_filter_prefix . '_start' );
 
@@ -208,7 +208,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			 * For example: if you register a setting page with give-settings menu slug and general current tab name
 			 *              then action will be give-settings_tabs_array
 			 *
-			 * @since 1.8.
+			 * @since 1.8
 			 */
 			$tabs = apply_filters( self::$setting_filter_prefix . '_tabs_array', array() );
 
