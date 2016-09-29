@@ -609,7 +609,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						break;
 
 					// Custom: API field.
-					case 'tools' :
+					case 'data' :
 						give_tools_recount_stats_display();
 						echo $description;
 						break;

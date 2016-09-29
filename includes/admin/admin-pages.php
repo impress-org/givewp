@@ -380,7 +380,7 @@ function give_tools_page_pages( $settings ) {
 		include( 'tools/class-settings-logs.php' ),
 
 		// Tools.
-		include( 'tools/class-settings-tools.php' )
+		include( 'tools/class-settings-data.php' )
 	);
 
 	// Output.

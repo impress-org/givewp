@@ -3,7 +3,7 @@
  * Give Settings Page/Tab
  *
  * @package     Give
- * @subpackage  Classes/Give_Settings_Tools
+ * @subpackage  Classes/Give_Settings_Data
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.8
@@ -13,14 +13,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-if ( ! class_exists( 'Give_Settings_Tools' ) ) :
+if ( ! class_exists( 'Give_Settings_Data' ) ) :
 
 	/**
-	 * Give_Settings_Tools.
+	 * Give_Settings_Data.
 	 *
 	 * @sine 1.8
 	 */
-	class Give_Settings_Tools {
+	class Give_Settings_Data {
 
 		/**
 		 * Setting page id.
@@ -42,8 +42,8 @@ if ( ! class_exists( 'Give_Settings_Tools' ) ) :
 		 * Constructor.
 		 */
 		public function __construct() {
-			$this->id    = 'tools';
-			$this->label = esc_html__( 'Tools', 'give' );
+			$this->id    = 'data';
+			$this->label = esc_html__( 'Data', 'give' );
 
 			add_filter( 'give-tools_tabs_array', array( $this, 'add_settings_page' ), 20 );
 			add_action( "give-tools_sections_{$this->id}_page", array( $this, 'output_sections' ) );
@@ -83,7 +83,7 @@ if ( ! class_exists( 'Give_Settings_Tools' ) ) :
 				array(
 					'id'   => 'api',
 					'name' => esc_html__( 'Tools', 'give' ),
-					'type' => 'tools',
+					'type' => 'data',
 				),
 				array(
 					'id'   => 'give_tools_tools',
@@ -158,4 +158,4 @@ if ( ! class_exists( 'Give_Settings_Tools' ) ) :
 
 endif;
 
-return new Give_Settings_Tools();
+return new Give_Settings_Data();
