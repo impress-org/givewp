@@ -330,7 +330,8 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 						$cmb2_filter_arr = current( $wp_filter[ $cmb2_filter_name ] );
 
 						if( ! empty( $cmb2_filter_arr ) ) {
-							$new_setting_fields[$index]['func'] = current( array_keys( $cmb2_filter_arr ) );
+							// Note: function can be called either globally or with class object, depend open how developer invoke it.
+							$new_setting_fields[$index]['func'] = current( $cmb2_filter_arr );
 							add_action( "give_admin_field_{$field['type']}", array( $this, 'addon_setting_field' ), 10, 2 );
 						}
 					}
@@ -391,14 +392,14 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 		 */
 		function addon_setting_field ( $field, $saved_value ) {
 			// Create object for cmb2  function callback backward compatibility.
-			$field_obj = (object) array( 'args' => $field );
-			$field_type_object = (object) array( 'field' => $field_obj );
+			$field_obj = array( 'args' => $field );
+			$field_type_obj = (object) array( 'field' => $field_obj );
 
 			switch ( $this->current_tab ) :
 				case 'licenses':
 					?>
 					<div class="give-settings-wrap give-settings-wrap-<?php echo $this->current_tab; ?>">
-						<?php $field['func']( $field_obj, $saved_value, '', '', $field_type_object ); ?>
+						<?php $field['func']['function']( $field_obj, $saved_value, '', '', $field_type_obj ); ?>
 					</div>
 					<? break;
 
@@ -413,7 +414,13 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 							<?php $colspan = ''; ?>
 						<?php endif; ?>
 						<td class="give-forminp" <?php echo $colspan; ?>>
-							<?php $field['func']( $field_obj, $saved_value, '', '', $field_type_object ); ?>
+							<?php
+							if( is_array( $field['func']['function'] ) ) {
+								$field['func']['function'][0]->$field['func']['function'][1]( $field_obj, $saved_value, '', '', $field_type_obj );
+							}else {
+								$field['func']['function']( $field_obj, $saved_value, '', '', $field_type_obj );
+							}
+							?>
 						</td>
 					</tr>
 					<?php
