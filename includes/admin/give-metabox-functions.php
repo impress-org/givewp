@@ -108,7 +108,7 @@ function give_render_field( $field ) {
 		$field['attributes']['class'] = '';
 	}
 
-	$field['attributes']['class'] = trim( "give-field {$field['attributes']['class']} {$field['class']} give-{$field['type']}" );
+	$field['attributes']['class'] = trim( "give-field {$field['attributes']['class']} give-{$field['type']} {$field['class']}" );
 	unset( $field['class'] );
 
 
@@ -145,7 +145,7 @@ function give_render_field( $field ) {
 					|| false !== strpos( $field['attributes']['class'], 'amount' )
 				)
 			) {
-				$field['data_type'] = 'price';
+				$field['data_type'] = 'decimal';
 			}
 			break;
 
@@ -221,8 +221,8 @@ function give_text_input( $field ) {
 			break;
 
 		case 'decimal' :
-			$field['class'] .= ' give_input_decimal';
-			$field['value']  = ( ! empty( $field['value'] ) ? give_format_amount( $field['value'] ) : $field['value'] );
+			$field['attributes']['class'] .= ' give_input_decimal';
+			$field['value']  = ( ! empty( $field['value'] ) ? give_format_decimal( $field['value'] ) : $field['value'] );
 			break;
 
 		default :
@@ -606,7 +606,7 @@ function give_default_gateway( $field ) {
 	global $thepostid, $post;
 
 	// get all active payment gateways.
-	$gateways = give_get_enabled_payment_gateways();
+	$gateways = give_get_enabled_payment_gateways( $thepostid );
 
 	// Set field option value.
 	foreach ( $gateways as $key => $option ) {
@@ -640,6 +640,15 @@ function give_get_field_value( $field, $postid ) {
 
 	// Get value from db.
 	$field_value = get_post_meta( $postid, $field['id'], true );
+
+	/**
+	 * Filter the field value before apply default value.
+	 *
+	 * @since 1.8
+	 * @param mixed $field_value Field value.
+	 */
+	$field_value = apply_filters( "{$field['id']}_field_value", $field_value, $field, $postid );
+
 
 	// Set default value if no any data saved to db.
 	if( ! $field_value && isset( $field['default'] )) {
@@ -680,43 +689,108 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 	?>
 	<div class="give-repeatable-field-section" id="<?php echo "{$fields['id']}_field"; ?>">
 		<table class="give-repeatable-fields-section-wrapper" cellspacing="0">
-			<?php $donation_levels = get_post_meta( $thepostid, $fields['id'], true ); ?>
-			<tbody class="container"<?php $levels_count = 0; echo ( ( $levels_count = count( $donation_levels ) ? " data-rf-row-count=\"{$levels_count}\"" : '' ) ); ?>>
-				<tr class="give-template give-row">
-					<td class="give-move give-column"><sapn class="give-remove">-</sapn></td>
+			<?php
+			$donation_levels = get_post_meta( $thepostid, $fields['id'], true );
 
-					<td class="give-repeater-field-wrap give-column">
-						<?php foreach ( $fields['fields'] as $field ) : ?>
-							<?php if ( ! give_is_field_callback_exist( $field ) ) continue; ?>
-							<?php
-							$field['repeat'] = true;
-							$field['repeatable_field_id'] = ( '_give_id' === $field['id'] ) ? "{$fields['id']}[{{row-count-placeholder}}][{$field['id']}][level_id]" : "{$fields['id']}[{{row-count-placeholder}}][{$field['id']}]";
-							$field['id'] = str_replace( array( '[', ']' ), array( '_', '' ), $field['repeatable_field_id'] );
-							?>
-							<?php give_render_field( $field ); ?>
-						<?php endforeach; ?>
+			// Check if level is not created or we have to add default level.
+			if( is_array( $donation_levels ) && ( $levels_count = count( $donation_levels ) ) ) {
+				$donation_levels = array_values( $donation_levels );
+				$set_default_donation_level = false;
+			} else {
+				$levels_count = 1;
+				$set_default_donation_level = true;
+			}
+			?>
+			<tbody class="container"<?php echo " data-rf-row-count=\"{$levels_count}\""; ?>>
+				<tr class="give-template give-row">
+					<td class="give-repeater-field-wrap give-column" colspan="2">
+						<div class="give-row-head give-move">
+							<button type="button" class="handlediv button-link"><span class="toggle-indicator"></span></button>
+							<sapn class="give-remove" title="<?php esc_html_e( 'Remove Donation Level', 'give' ); ?>">-</sapn>
+							<h2>
+								<span><?php esc_html_e( 'Donation Level', 'give' ); ?></span>
+							</h2>
+						</div>
+						<div class="give-row-body">
+							<?php foreach ( $fields['fields'] as $field ) : ?>
+								<?php if ( ! give_is_field_callback_exist( $field ) ) continue; ?>
+								<?php
+								$field['repeat'] = true;
+								$field['repeatable_field_id'] = ( '_give_id' === $field['id'] ) ? "{$fields['id']}[{{row-count-placeholder}}][{$field['id']}][level_id]" : "{$fields['id']}[{{row-count-placeholder}}][{$field['id']}]";
+								$field['id'] = str_replace( array( '[', ']' ), array( '_', '' ), $field['repeatable_field_id'] );
+								?>
+								<?php give_render_field( $field ); ?>
+							<?php endforeach; ?>
+						</div>
 					</td>
 				</tr>
 
 				<?php if( ! empty( $donation_levels ) ) : ?>
 					<?php foreach ( $donation_levels as $index => $level ) : ?>
 						<tr class="give-row">
-							<td class="give-move give-column"><sapn class="give-remove">-</sapn></td>
+							<td class="give-repeater-field-wrap give-column" colspan="2">
+								<div class="give-row-head give-move">
+									<button type="button" class="handlediv button-link"><span class="toggle-indicator"></span></button>
+									<sapn class="give-remove" title="<?php esc_html_e( 'Remove Donation Level', 'give' ); ?>">-</sapn>
+									<h2>
+										<span><?php echo sprintf( esc_html__( 'Donation Level: %s', 'give' ), $level['_give_text'] ); ?></span>
+									</h2>
+								</div>
+								<div class="give-row-body">
+									<?php foreach ( $fields['fields'] as $field ) : ?>
+										<?php if ( ! give_is_field_callback_exist( $field ) ) continue; ?>
+										<?php
+										$field['repeat'] = true;
+										$field['repeatable_field_id'] = ( '_give_id' === $field['id'] ) ? "{$fields['id']}[{$index}][{$field['id']}][level_id]" : "{$fields['id']}[{$index}][{$field['id']}]";
+										$field['attributes']['value'] = ( '_give_id' === $field['id'] ) ? $level[$field['id']]['level_id'] : ( isset( $level[$field['id']] ) ? $level[$field['id']] : '' );
+										$field['id'] = str_replace( array( '[', ']' ), array( '_', '' ), $field['repeatable_field_id'] );
+										?>
+										<?php give_render_field( $field ); ?>
+									<?php endforeach; ?>
+								</div>
+							</td>
+						</tr>
+					<?php endforeach;; ?>
 
-							<td class="give-repeater-field-wrap give-column">
+				<?php elseif ( $set_default_donation_level ) : ?>
+					<tr class="give-row">
+						<td class="give-repeater-field-wrap give-column" colspan="2">
+							<div class="give-row-head give-move">
+								<button type="button" class="handlediv button-link"><span class="toggle-indicator"></span></button>
+								<sapn class="give-remove" title="<?php esc_html_e( 'Remove Donation Level', 'give' ); ?>">-</sapn>
+								<h2>
+									<span><?php esc_html_e( 'Donation Level', 'give' ); ?></span>
+								</h2>
+							</div>
+							<div class="give-row-body">
+								<?php $index = 0; ?>
 								<?php foreach ( $fields['fields'] as $field ) : ?>
 									<?php if ( ! give_is_field_callback_exist( $field ) ) continue; ?>
 									<?php
 									$field['repeat'] = true;
 									$field['repeatable_field_id'] = ( '_give_id' === $field['id'] ) ? "{$fields['id']}[{$index}][{$field['id']}][level_id]" : "{$fields['id']}[{$index}][{$field['id']}]";
-									$field['attributes']['value'] = ( '_give_id' === $field['id'] ) ? $level[$field['id']]['level_id'] : ( isset( $level[$field['id']] ) ? $level[$field['id']] : '' );
+
+									// Set default value.
+									switch ( $field['id'] ) {
+										case '_give_id':
+											$field['attributes']['value'] = 0;
+											break;
+
+										case '_give_default':
+											$field['attributes']['checked'] = 'checked';
+											break;
+
+										default:
+											$field['attributes']['value'] = '';
+									}
+									
 									$field['id'] = str_replace( array( '[', ']' ), array( '_', '' ), $field['repeatable_field_id'] );
 									?>
 									<?php give_render_field( $field ); ?>
 								<?php endforeach; ?>
-							</td>
-						</tr>
-					<?php endforeach;; ?>
+							</div>
+						</td>
+					</tr>
 				<?php endif; ?>
 			</tbody>
 			<tfoot>
@@ -728,3 +802,102 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 	</div>
 	<?php
 }
+
+
+/**
+ * Set value for Form content --> Display content field setting.
+ *
+ * Backward compatibility:  set value by _give_content_option form meta field value if _give_display_content is not set yet.
+ *
+ * @since  1.8
+ * @param  mixed  $field_value Field Value.
+ * @param  array  $field       Field args.
+ * @param  int    $postid      Form/Post ID.
+ * @return string
+ */
+function _give_display_content_field_value( $field_value, $field, $postid ){
+	$show_content = get_post_meta( $postid, '_give_content_option', true );
+
+	if(
+		! get_post_meta( $postid, '_give_display_content', true )
+		&& $show_content
+		&& ( 'none' !== $show_content )
+	) {
+		$field_value = 'yes';
+	}
+
+	return $field_value;
+}
+add_filter( '_give_display_content_field_value', '_give_display_content_field_value', 10, 3 );
+
+
+/**
+ * Set value for Form content --> Content placement field setting.
+ *
+ * Backward compatibility:  set value by _give_content_option form meta field value if _give_content_placement is not set yet.
+ *
+ * @since  1.8
+ * @param  mixed  $field_value Field Value.
+ * @param  array  $field       Field args.
+ * @param  int    $postid      Form/Post ID.
+ * @return string
+ */
+function _give_content_placement_field_value( $field_value, $field, $postid ){
+	$show_content = get_post_meta( $postid, '_give_content_option', true );
+
+	if(
+		! get_post_meta( $postid, '_give_content_placement', true )
+		&& ( 'none' !== $show_content )
+	) {
+		$field_value = $show_content;
+	}
+
+	return $field_value;
+}
+add_filter( '_give_content_placement_field_value', '_give_content_placement_field_value', 10, 3 );
+
+
+/**
+ * Set value for Terms and Conditions --> Terms and Conditions field setting.
+ *
+ * Backward compatibility:  set value by _give_terms_option form meta field value if it's value is none.
+ *
+ * @since  1.8
+ * @param  mixed  $field_value Field Value.
+ * @param  array  $field       Field args.
+ * @param  int    $postid      Form/Post ID.
+ * @return string
+ */
+function _give_terms_option_field_value( $field_value, $field, $postid ){
+	$term_option = get_post_meta( $postid, '_give_terms_option', true );
+
+	if(  'none' === $term_option ) {
+		$field_value = 'no';
+	}
+
+	return $field_value;
+}
+add_filter( '_give_terms_option_field_value', '_give_terms_option_field_value', 10, 3 );
+
+
+/**
+ * Set value for Form Display --> Guest donation.
+ *
+ * Backward compatibility:  set value by _give_logged_in_only form meta field value if it's value is on.
+ *
+ * @since  1.8
+ * @param  mixed  $field_value Field Value.
+ * @param  array  $field       Field args.
+ * @param  int    $postid      Form/Post ID.
+ * @return string
+ */
+function _give_logged_in_only_field_value( $field_value, $field, $postid ){
+	$term_option = get_post_meta( $postid, '_give_logged_in_only', true );
+
+	if(  'on' === $term_option ) {
+		$field_value = 'yes';
+	}
+
+	return $field_value;
+}
+add_filter( '_give_logged_in_only_field_value', '_give_logged_in_only_field_value', 10, 3 );

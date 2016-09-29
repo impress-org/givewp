@@ -1251,7 +1251,7 @@ add_action( 'give_purchase_form_login_fields', 'give_get_login_fields', 10, 1 );
  */
 function give_payment_mode_select( $form_id ) {
 
-	$gateways = give_get_enabled_payment_gateways();
+	$gateways = give_get_enabled_payment_gateways( $form_id );
 
 	/**
 	 * Fires while selecting payment gateways, before the fields.
@@ -1350,6 +1350,25 @@ function give_payment_mode_select( $form_id ) {
 
 add_action( 'give_payment_mode_select', 'give_payment_mode_select' );
 
+
+/**
+ * Check if term and condition setting is on or not [global or per form level]
+ *
+ * @since  1.8
+ * @param  $form_id
+ * @return bool
+ */
+function give_is_terms_agreement_enabled( $form_id ) {
+	$is_enabled  = false;
+	$form_option = get_post_meta( $form_id, '_give_terms_option', true );
+
+	if( in_array( $form_option, array( 'yes', 'global') ) ) {
+		$is_enabled = true;
+	}
+
+	return $is_enabled;
+}
+
 /**
  * Renders the Checkout Agree to Terms, this displays a checkbox for users to
  * agree the T&Cs set in the Give Settings. This is only displayed if T&Cs are
@@ -1363,15 +1382,24 @@ add_action( 'give_payment_mode_select', 'give_payment_mode_select' );
  */
 function give_terms_agreement( $form_id ) {
 	$form_option = get_post_meta( $form_id, '_give_terms_option', true );
+	$label = $terms = '';
 
-	// Bailout if per form and global term and conditions is not setup
-	if( 'yes' !== $form_option ) {
+	if( ! give_is_terms_agreement_enabled( $form_id ) ) {
 		return false;
 	}
 
-	// Set term and conditions label and text on basis of per form and global setting.
-	$label = ( $label = get_post_meta( $form_id, '_give_agree_label', true ) ) ? stripslashes( $label ) : give_get_option( 'agree_to_terms_label', esc_html__( 'Agree to Terms?', 'give' ) );
-	$terms = ( $terms = get_post_meta( $form_id, '_give_agree_text', true ) ) ? $terms : give_get_option( 'agreement_text', '' );
+	// Bailout if per form and global term and conditions is not setup
+	if( 'yes' === $form_option ) {
+		// Set term and conditions label and text on basis of per form and global setting.
+		$label = ( $label = get_post_meta( $form_id, '_give_agree_label', true ) ) ? stripslashes( $label ) : give_get_option( 'agree_to_terms_label', esc_html__( 'Agree to Terms?', 'give' ) );
+		$terms = ( $terms = get_post_meta( $form_id, '_give_agree_text', true ) ) ? $terms : give_get_option( 'agreement_text', '' );
+
+	} elseif ( 'global' === $form_option ){
+		// Set term and conditions label and text on basis of  global setting.
+		$label = give_get_option( 'agree_to_terms_label', esc_html__( 'Agree to Terms?', 'give' ) );
+		$terms = give_get_option( 'agreement_text', '' );
+
+	}
 
 	// Bailout: Check if term and conditions text is empty or not.
 	if( empty( $terms ) ) {
@@ -1524,7 +1552,7 @@ function give_agree_to_terms_js( $form_id ) {
 
 	$form_option = get_post_meta( $form_id, '_give_terms_option', true );
 
-	if ( $form_option === 'yes' ) {
+	if ( give_is_terms_agreement_enabled( $form_id ) ) {
 		?>
 		<script type="text/javascript">
 			jQuery(document).ready(function ($) {
@@ -1566,6 +1594,34 @@ function give_show_goal_progress( $form_id, $args ) {
 
 add_action( 'give_pre_form', 'give_show_goal_progress', 10, 2 );
 
+
+/**
+ * Get form content position.
+ *
+ * @since  1.8
+ * @param  $form_id
+ * @param  $args
+ * @return mixed|string
+ */
+function give_get_form_content_placement( $form_id, $args ) {
+	$show_content = '';
+
+	// @TODO: We can improve this function by removing backward compatibility after all user upgrade to 1.8
+	if(  isset( $args['show_content'] ) && ! empty( $args['show_content'] ) ) {
+		$show_content = $args['show_content'];
+	} elseif ( $display_content = get_post_meta( $form_id, '_give_display_content', true ) ) {
+		if( 'yes' === $display_content ) {
+			$show_content = get_post_meta( $form_id, '_give_content_placement', true );
+		}
+	} else {
+		// Backward compatibility: _give_content_option is deprecate in version 1.8.
+		$show_content = get_post_meta( $form_id, '_give_content_option', true );
+		$show_content = ( 'none' === $show_content ) ? '' : $show_content;
+	}
+
+	return $show_content;
+}
+
 /**
  * Adds Actions to Render Form Content.
  *
@@ -1574,18 +1630,19 @@ add_action( 'give_pre_form', 'give_show_goal_progress', 10, 2 );
  * @param  int   $form_id The form ID.
  * @param  array $args    An array of form arguments.
  *
- * @return void
+ * @return void|bool
  */
 function give_form_content( $form_id, $args ) {
 
-	$show_content = ( isset( $args['show_content'] ) && ! empty( $args['show_content'] ) )
-		? $args['show_content']
-		: get_post_meta( $form_id, '_give_content_option', true );
+	$show_content = give_get_form_content_placement( $form_id, $args );
 
-	if ( $show_content !== 'none' ) {
-		//add action according to value
-		add_action( $show_content, 'give_form_display_content', 10, 2 );
+	// Bailout.
+	if( empty( $show_content ) ) {
+		return false;
 	}
+
+	// Add action according to value.
+	add_action( $show_content, 'give_form_display_content', 10, 2 );
 }
 
 add_action( 'give_pre_form_output', 'give_form_content', 10, 2 );
@@ -1605,9 +1662,7 @@ add_action( 'give_pre_form_output', 'give_form_content', 10, 2 );
 function give_form_display_content( $form_id, $args ) {
 
 	$content      = wpautop( get_post_meta( $form_id, '_give_form_content', true ) );
-	$show_content = ( isset( $args['show_content'] ) && ! empty( $args['show_content'] ) )
-		? $args['show_content']
-		: get_post_meta( $form_id, '_give_content_option', true );
+	$show_content = give_get_form_content_placement( $form_id, $args );
 
 	if ( give_get_option( 'disable_the_content_filter' ) !== 'on' ) {
 		$content = apply_filters( 'the_content', $content );

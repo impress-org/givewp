@@ -14,6 +14,8 @@
             row: '.row',
             add: '.add',
             remove: '.remove',
+            confirm_before_remove_row: false,
+            confirm_before_remove_row_text: '',
             move: '.move',
             template: '.template',
             is_sortable: true,
@@ -73,6 +75,12 @@
 
                 $(wrapper).on('click', settings.remove, function(event) {
                     event.stopImmediatePropagation();
+
+                    if( settings.confirm_before_remove_row && settings.confirm_before_remove_row_text ) {
+                        if( ! confirm( settings.confirm_before_remove_row_text ) ) {
+                            return false;
+                        }
+                    }
 
                     var row = $(this).parents(settings.row).first();
 

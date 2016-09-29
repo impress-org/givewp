@@ -47,33 +47,41 @@ jQuery.noConflict();
             if (price_option_val === 'set') {
                 //set price shows
                 $('._give_set_price_field').show();
-                $('#_give_donation_levels_field').hide(); //hide multi-val stuffs
+                $('#_give_donation_levels_field').hide(); // Hide multi-val stuffs.
+                $('._give_display_style_field').hide(); // Hide display style setting.
+
 
             } else {
                 //multi-value shows
                 $('._give_set_price_field').hide();
-                $('#_give_donation_levels_field').show(); //show set stuffs
+                $('#_give_donation_levels_field').show(); // Show set stuffs.
+                $('._give_display_style_field').show(); // Show display style setting.
             }
         }).change();
 
 
         //Content Option
-        var content_option = $('#_give_content_option');
+        var  display_content = $('._give_display_content_field input:radio');
+        display_content.on('change', function () {
+            // Get checked radio button value.
+            var display_content_val = $('._give_display_content_field input:radio:checked').val();
 
-        content_option.on('change', function () {
-
-            if (content_option.val() !== 'none') {
+            if ( display_content_val === 'yes') {
+                $('._give_content_placement_field').show();
                 $('._give_form_content_field').show();
             } else {
+                $('._give_content_placement_field').hide();
                 $('._give_form_content_field').hide();
             }
         }).change();
 
         //Terms Option
-        var terms_option = $('#_give_terms_option');
+        var terms_option = $('._give_terms_option_field input:radio');
         terms_option.on('change', function () {
+            // Get checked radio button value.
+            var terms_option_val = $('._give_terms_option_field input:radio:checked').val();
 
-            if (terms_option.val() !== 'none') {
+            if ( terms_option_val === 'yes' ) {
                 $('._give_agree_label_field').show();
                 $('._give_agree_text_field').show();
             } else {
@@ -83,9 +91,11 @@ jQuery.noConflict();
         }).change();
 
         //Payment Display
-        var payment_display_option = $('#_give_payment_display');
+        var payment_display_option = $('._give_payment_display_field input:radio');
         payment_display_option.on('change', function () {
-            if (payment_display_option.val() === 'onpage') {
+            var payment_display_option_val = $('._give_payment_display_field input:radio:checked').val();
+
+            if (payment_display_option_val === 'onpage') {
                 $('._give_reveal_label_field').hide();
             } else {
                 $('._give_reveal_label_field').show();
@@ -110,6 +120,15 @@ jQuery.noConflict();
         //Close Form when Goal Achieved
         var close_form_when_goal_achieved_option = $('._give_close_form_when_goal_achieved_field input:radio');
 
+        close_form_when_goal_achieved_option.on('change', function () {
+            var close_form_when_goal_achieved_option_val = $('._give_close_form_when_goal_achieved_field input:radio:checked').val();
+            if (close_form_when_goal_achieved_option_val === 'no') {
+                $('._give_form_goal_achieved_message_field').hide();
+            } else {
+                $('._give_form_goal_achieved_message_field').show();
+            }
+        }).change();
+
         goal_option.on('change', function () {
             var goal_option = $('._give_goal_option_field input:radio:checked').val();
             if (goal_option === 'no') {
@@ -118,7 +137,7 @@ jQuery.noConflict();
                 $('._give_goal_format_field').hide();
                 $('._give_goal_color_field').hide();
                 $('._give_close_form_when_goal_achieved_field').hide();
-                $('.cmb2-id--give-form-goal-achieved-message').hide();
+                $('._give_form_goal_achieved_message_field').hide();
             } else {
                 $('._give_set_goal_field').show();
                 $('._give_goal_format_field').show();
@@ -133,29 +152,20 @@ jQuery.noConflict();
             }
         }).change();
 
-        close_form_when_goal_achieved_option.on('change', function () {
-            var close_form_when_goal_achieved_option_val = $('._give_close_form_when_goal_achieved_field input:radio:checked').val();
-            if (close_form_when_goal_achieved_option_val === 'no') {
-                $('._give_form_goal_achieved_message_field').hide();
-            } else {
-                $('._give_form_goal_achieved_message_field').show();
-            }
-        }).change();
-
         //Offline Donations
         var offline_customization_option = $('._give_customize_offline_donations_field input:radio');
         offline_customization_option.on('change', function () {
             var offline_customization_option_val = $('._give_customize_offline_donations_field input:radio:checked').val();
-            if (offline_customization_option_val === 'no') {
-                $('._give_offline_checkout_notes_field').hide();
-                $('._give_offline_donation_enable_billing_fields_single_field').hide();
-                $('._give_offline_donation_subject_field').hide();
-                $('._give_offline_donation_email_field').hide();
-            } else {
+            if ( 'yes' === offline_customization_option_val ) {
                 $('._give_offline_checkout_notes_field').show();
                 $('._give_offline_donation_enable_billing_fields_single_field').show();
                 $('._give_offline_donation_subject_field').show();
                 $('._give_offline_donation_email_field').show();
+            } else {
+                $('._give_offline_checkout_notes_field').hide();
+                $('._give_offline_donation_enable_billing_fields_single_field').hide();
+                $('._give_offline_donation_subject_field').hide();
+                $('._give_offline_donation_email_field').hide();
             }
         }).change();
     };

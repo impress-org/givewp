@@ -777,14 +777,6 @@ input.give-text_medium {
 .give-underline {
   text-decoration: underline; }
 
-#poststuff .give-subfield {
-  background: #FAFAFA; }
-  #poststuff .give-subfield .cmb-th label {
-    padding-right: 16px; }
-  #poststuff .give-subfield .cmb-td {
-    padding-left: 10px;
-    box-sizing: border-box; }
-
 .postbox-container .cmb-row {
   margin: 0; }
   .postbox-container .cmb-row .cmb-th label {
@@ -989,7 +981,8 @@ Tooltips
       font-size: 12px;
       line-height: 18px;
       display: block;
-      padding-top: 10px; }
+      padding-top: 10px;
+      font-style: italic; }
     #give-metabox-form-data .give_options_panel .give-field-wrap ul {
       margin: 0; }
     #give-metabox-form-data .give_options_panel .give-field-wrap .mce-container iframe {
@@ -1015,36 +1008,40 @@ Tooltips
       background-color: white;
       border-collapse: collapse; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-row {
-      border-bottom: 5px solid white;
+      border-bottom: 15px solid #f5f5f5;
       background-color: white; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-template {
+      display: none; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-row:last-child {
-      border-bottom: 0; }
+      border-bottom: 10px solid #f5f5f5; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-column {
       padding: 0; }
-    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-move {
-      position: relative;
-      width: 5%;
-      background-color: #dadada;
-      cursor: move; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-remove {
-      width: 10px;
-      height: 10px;
-      background: white;
+      float: left;
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      display: block;
       text-align: center;
-      border: 1px solid gray;
-      padding: 5px;
-      border-radius: 25px;
-      position: absolute;
-      right: -9px;
-      top: 50%;
-      text-decoration: none;
-      color: black;
-      line-height: 10px;
-      font-size: 14px;
+      line-height: 34px;
+      font-size: 21px;
+      font-weight: 300;
       cursor: pointer; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-remove:hover {
       background-color: red;
-      color: white; }
+      color: white;
+      width: 30px;
+      height: 30px;
+      border-radius: 30px;
+      margin-top: 3px;
+      line-height: 28px; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-row-head {
+      border-bottom: 1px solid #eee;
+      cursor: move; }
+      #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-row-head h2 {
+        text-align: right !important; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-row.closed .toggle-indicator:before {
+      content: "\f140"; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-add-repeater-field-section-row-wrap {
       background-color: #f5f5f5; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section #give-add-repeater-field-section-row {
@@ -1053,6 +1050,10 @@ Tooltips
       border-bottom: 1px solid #eee; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-ui-placeholder-state-highlight {
       background-color: #68bb6c; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .ui-sortable-helper {
+      display: table; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-row.ui-sortable-helper {
+      border-bottom: 0; }
 
 /**
  * Give Add-ons SCSS
