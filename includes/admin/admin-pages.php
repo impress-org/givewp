@@ -304,8 +304,9 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 				$give_upgrades_screen,
 				$give_settings_export,
 				$give_customers_page,
-				$give_tools_page
-			) );
+				$give_tools_page,
+				'widgets.php'
+		) );
 			if ( 'give_forms' == $typenow || 'index.php' == $pagenow || 'post-new.php' == $pagenow || 'post.php' == $pagenow ) {
 				$found = true;
 				if ( 'give-upgrades' === $page ) {
