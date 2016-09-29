@@ -225,14 +225,13 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						)
 					);
 					break;
-
-				default:
-					/**
-					 * Filter the display options settings.
-					 * Backward compatibility: Please do not use this filter. This filter is deprecated in 1.8
-					 */
-					$settings = apply_filters( 'give_settings_display', $settings );
 			}
+
+			/**
+			 * Filter the display options settings.
+			 * Backward compatibility: Please do not use this filter. This filter is deprecated in 1.8
+			 */
+			$settings = apply_filters( 'give_settings_display', $settings );
 
 			/**
 			 * Filter the settings.

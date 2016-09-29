@@ -120,13 +120,14 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 						)
 					);
 					break;
-				default:
-					/**
-					 * Filter the advanced settings.
-					 * Backward compatibility: Please do not use this filter. This filter is deprecated in 1.8
-					 */
-					$settings = apply_filters( 'give_settings_advanced', $settings );
 			}
+
+
+			/**
+			 * Filter the advanced settings.
+			 * Backward compatibility: Please do not use this filter. This filter is deprecated in 1.8
+			 */
+			$settings = apply_filters( 'give_settings_advanced', $settings );
 
 			/**
 			 * Filter the settings.

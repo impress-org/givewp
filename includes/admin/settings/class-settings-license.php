@@ -74,17 +74,12 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 		 */
 		public function get_settings() {
 			$settings = array();
-			$current_section = give_get_current_setting_section();
 
-			switch ( $current_section ) {
-
-				default:
-					/**
-					 * Filter the licenses settings.
-					 * Backward compatibility: Please do not use this filter. This filter is deprecated in 1.8
-					 */
-					$settings = apply_filters( 'give_settings_licenses', $settings );
-			}
+			/**
+			 * Filter the licenses settings.
+			 * Backward compatibility: Please do not use this filter. This filter is deprecated in 1.8
+			 */
+			$settings = apply_filters( 'give_settings_licenses', $settings );
 
 			/**
 			 * Filter the settings.

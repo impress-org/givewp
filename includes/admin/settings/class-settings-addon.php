@@ -95,15 +95,11 @@ if ( ! class_exists( 'Give_Settings_Addon' ) ) :
 			$settings = array();
 			$current_section = give_get_current_setting_section();
 
-			switch ( $current_section ) {
-
-				default:
-					/**
-					 * Filter the addons settings.
-					 * Backward compatibility: Please do not use this filter. This filter is deprecated in 1.8
-					 */
-					$settings = apply_filters( 'give_settings_addons', $settings );
-			}
+			/**
+			 * Filter the addons settings.
+			 * Backward compatibility: Please do not use this filter. This filter is deprecated in 1.8
+			 */
+			$settings = apply_filters( 'give_settings_addons', $settings );
 
 			/**
 			 * Filter the settings.

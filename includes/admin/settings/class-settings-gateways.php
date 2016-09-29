@@ -209,14 +209,13 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 						),
 					);
 					break;
-
-				default:
-					/**
-					 * Filter the payment gateways settings.
-					 * Backward compatibility: Please do not use this filter. This filter is deprecated in 1.8
-					 */
-					$settings = apply_filters( 'give_settings_gateways', $settings );
 			}
+
+			/**
+			 * Filter the payment gateways settings.
+			 * Backward compatibility: Please do not use this filter. This filter is deprecated in 1.8
+			 */
+			$settings = apply_filters( 'give_settings_gateways', $settings );
 
 			/**
 			 * Filter the settings.

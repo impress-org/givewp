@@ -204,14 +204,13 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 						)
 					);
 					break;
-
-				default:
-					/**
-					 * Filter the emails settings.
-					 * Backward compatibility: Please do not use this filter. This filter is deprecated in 1.8
-					 */
-					$settings = apply_filters( 'give_settings_emails', $settings );
 			}
+
+			/**
+			 * Filter the emails settings.
+			 * Backward compatibility: Please do not use this filter. This filter is deprecated in 1.8
+			 */
+			$settings = apply_filters( 'give_settings_emails', $settings );
 
 			/**
 			 * Filter the settings.

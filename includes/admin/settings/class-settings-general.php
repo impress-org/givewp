@@ -258,14 +258,13 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						)
 					);
 					break;
-
-				default:
-					/**
-					 * Filter the general settings.
-					 * Backward compatibility: Please do not use this filter. This filter is deprecated in 1.8
-					 */
-					$settings = apply_filters( 'give_settings_general', $settings );
 			}
+
+			/**
+			 * Filter the general settings.
+			 * Backward compatibility: Please do not use this filter. This filter is deprecated in 1.8
+			 */
+			$settings = apply_filters( 'give_settings_general', $settings );
 
 			/**
 			 * Filter the settings.
