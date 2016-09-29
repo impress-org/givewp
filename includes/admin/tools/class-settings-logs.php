@@ -46,7 +46,6 @@ if ( ! class_exists( 'Give_Settings_Logs' ) ) :
 			$this->label = esc_html__( 'Logs', 'give' );
 
 			add_filter( 'give-tools_tabs_array', array( $this, 'add_settings_page' ), 20 );
-			add_action( "give-tools_sections_{$this->id}_page", array( $this, 'output_sections' ) );
 			add_action( "give-tools_settings_{$this->id}_page", array( $this, 'output' ) );
 		}
 
@@ -103,45 +102,6 @@ if ( ! class_exists( 'Give_Settings_Logs' ) ) :
 
 			// Output.
 			return $settings;
-		}
-
-		/**
-		 * Get sections.
-		 *
-		 * @since 1.8
-		 * @return array
-		 */
-		public function get_sections() {
-			return apply_filters( 'give_get_sections_' . $this->id, array() );
-		}
-
-		/**
-		 * Output sections.
-		 *
-		 * @since  1.8
-		 * @return void
-		 */
-		public function output_sections() {
-			// Get current section.
-			$current_section = give_get_current_setting_section();
-
-			// Get all sections.
-			$sections = $this->get_sections();
-
-			if ( empty( $sections ) || 1 === sizeof( $sections ) ) {
-				return;
-			}
-
-			echo '<ul class="subsubsub">';
-
-			// Get section keys.
-			$array_keys = array_keys( $sections );
-
-			foreach ( $sections as $id => $label ) {
-				echo '<li><a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-tools&tab=' . $this->id . '&section=' . sanitize_title( $id ) ) . '" class="' . ( $current_section == $id ? 'current' : '' ) . '">' . $label . '</a> ' . ( end( $array_keys ) == $id ? '' : '|' ) . ' </li>';
-			}
-
-			echo '</ul><br class="clear" />';
 		}
 
 		/**
