@@ -40,15 +40,47 @@ if( ! empty( $tabs ) ) :
 				foreach ( $tabs as $name => $label ) {
 					echo '<a href="' . admin_url( "edit.php?post_type=give_forms&page=" . self::$setting_filter_prefix . "&tab={$name}" ) . '" class="nav-tab ' . ( $current_tab == $name ? 'nav-tab-active' : '' ) . '">' . $label . '</a>';
 				}
-				do_action( 'give_settings_tabs' );
+
+				/**
+				 * Trigger Action.
+				 *
+				 * Note: action dynamically fire on basis of setting page slug.
+				 * For example: if you register a setting page with give-settings menu slug
+				 *              then action will be give-settings_tabs
+				 *
+				 * @since 1.8
+				 */
+				do_action( self::$setting_filter_prefix . '_tabs' );
 				?>
 			</h2>
 			<h1 class="screen-reader-text"><?php echo esc_html( $tabs[ $current_tab ] ); ?></h1>
 			<?php
+
+			/**
+			 * Trigger Action.
+			 *
+			 * Note: action dynamically fire on basis of setting page slug.
+			 * For example: if you register a setting page with give-settings menu slug and general current tab
+			 *              then action will be give-settings_sections_general_page
+			 *
+			 * @since 1.8
+			 */
 			do_action( self::$setting_filter_prefix . "_sections_{$current_tab}_page" );
 
+			
+			// Show messages.
 			self::show_messages();
 
+
+			/**
+			 * Trigger Action.
+			 *
+			 * Note: action dynamically fire on basis of setting page slug.
+			 * For example: if you register a setting page with give-settings menu slug and general current tab
+			 *              then action will be give-settings_settings_general_page
+			 *
+			 * @since 1.8
+			 */
 			do_action( self::$setting_filter_prefix . "_settings_{$current_tab}_page" );
 
 			if ( empty( $GLOBALS['give_hide_save_button'] ) ) : ?>
