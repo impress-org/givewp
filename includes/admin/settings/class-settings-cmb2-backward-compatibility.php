@@ -58,8 +58,11 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			$this->id = $this->current_tab;
 
 
-			// add addon tabs.
+			// Add addon tabs.
 			add_filter( 'give-settings_tabs_array', array( $this, 'add_addon_settings_page' ), 999999 );
+			
+			// Add save hook to addons.
+			add_action( 'give-settings_get_settings_pages', array( $this, 'setup_addon_save_hook' ), 999999 );
 
 			// Add backward compatibility filters plugin settings.
 			$setting_tabs = array( 'general', 'gateways', 'display', 'emails', 'addons', 'licenses' );
@@ -114,6 +117,42 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 				add_filter( "give_default_setting_tab_section_{$this->current_tab}", array( $this, 'set_default_setting_tab' ), 10 );
 				add_action( "give-settings_sections_{$this->current_tab}_page", array( $this, 'output_sections' ) );
 				add_action( "give-settings_settings_{$this->current_tab}_page", array( $this, 'output' ), 10 );
+				add_action( "give-settings_save_{$this->current_tab}", array( $this, 'save' ) );
+			}
+
+			return $pages;
+		}
+
+
+		/**
+		 * Setup save addon data hook.
+		 *
+		 * @since  1.8
+		 * @param  $pages
+		 * @return mixed
+		 */
+		function setup_addon_save_hook( $pages ) {
+			$page_ids = array();
+
+			foreach ( $pages as $page ) {
+				$page_ids = $page->add_settings_page( $page_ids );
+			}
+
+			// Previous setting page.
+			$previous_pages = $this->prev_settings->give_get_settings_tabs();
+
+			// API and System Info setting tab merge to Tools setting tab, so remove them from tabs.
+			unset( $previous_pages['api'] );
+			unset( $previous_pages['system_info'] );
+
+			// Tab is not register.
+			$pages_diff = array_keys( array_diff( $previous_pages, $page_ids ) );
+
+			// Merge old settings with new settings.
+			$pages = array_merge( $page_ids, $previous_pages );
+
+			if( in_array( $this->current_tab, $pages_diff ) ) {
+				// Filter & actions.
 				add_action( "give-settings_save_{$this->current_tab}", array( $this, 'save' ) );
 			}
 
