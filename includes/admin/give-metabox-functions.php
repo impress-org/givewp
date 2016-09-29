@@ -769,7 +769,21 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 									<?php
 									$field['repeat'] = true;
 									$field['repeatable_field_id'] = ( '_give_id' === $field['id'] ) ? "{$fields['id']}[{$index}][{$field['id']}][level_id]" : "{$fields['id']}[{$index}][{$field['id']}]";
-									$field['attributes']['value'] = ( '_give_id' === $field['id'] ) ? 0 : '';
+
+									// Set default value.
+									switch ( $field['id'] ) {
+										case '_give_id':
+											$field['attributes']['value'] = 0;
+											break;
+
+										case '_give_default':
+											$field['attributes']['checked'] = 'checked';
+											break;
+
+										default:
+											$field['attributes']['value'] = '';
+									}
+									
 									$field['id'] = str_replace( array( '[', ']' ), array( '_', '' ), $field['repeatable_field_id'] );
 									?>
 									<?php give_render_field( $field ); ?>
