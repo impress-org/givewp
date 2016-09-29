@@ -387,3 +387,15 @@ function give_tools_page_pages( $settings ) {
 	return $settings;
 }
 add_filter( 'give-tools_get_settings_pages', 'give_tools_page_pages', 10, 1 );
+
+/**
+ * Set default tools page tab.
+ *
+ * @since  1.8
+ * @param  string $default_tab Default tab name.
+ * @return string
+ */
+function give_set_default_tab_form_tools_page( $default_tab ) {
+	return 'api';
+}
+add_filter( 'give_default_setting_tab_give-tools', 'give_set_default_tab_form_tools_page', 10, 1 );
