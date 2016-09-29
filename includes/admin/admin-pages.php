@@ -359,7 +359,7 @@ function give_settings_page_pages( $settings ) {
 	// Output.
 	return $settings;
 }
-add_filter( 'give-settings_get_settings_pages', 'give_settings_page_pages', 10, 1 );
+add_filter( 'give-settings_get_settings_pages', 'give_settings_page_pages', 0, 1 );
 
 
 /**
@@ -387,7 +387,7 @@ function give_tools_page_pages( $settings ) {
 	// Output.
 	return $settings;
 }
-add_filter( 'give-tools_get_settings_pages', 'give_tools_page_pages', 10, 1 );
+add_filter( 'give-tools_get_settings_pages', 'give_tools_page_pages', 0, 1 );
 
 /**
  * Set default tools page tab.
