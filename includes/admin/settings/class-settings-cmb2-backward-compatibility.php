@@ -392,7 +392,8 @@ if( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 		 */
 		function addon_setting_field ( $field, $saved_value ) {
 			// Create object for cmb2  function callback backward compatibility.
-			$field_obj = array( 'args' => $field );
+			// Note: Do not call any cmb2 function on these objects
+			$field_obj      = (object) array( 'args' => $field );
 			$field_type_obj = (object) array( 'field' => $field_obj );
 
 			switch ( $this->current_tab ) :
