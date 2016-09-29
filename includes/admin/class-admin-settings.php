@@ -517,6 +517,42 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						<?php
 						break;
 
+					// Multi Checkbox input.
+					case 'multicheck' :
+						$option_value    = self::get_option( $option_name, $value['id'], $value['default'] );
+						?>
+						<tr valign="top">
+							<th scope="row" class="titledesc">
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
+							</th>
+							<td class="give-forminp give-forminp-<?php echo sanitize_title( $value['type'] ) ?> <?php echo ( ! empty( $value['class'] ) ? $value['class'] : '' ); ?>">
+								<fieldset>
+									<ul>
+										<?php
+										foreach ( $value['options'] as $key => $val ) {
+											?>
+											<li>
+												<label>
+													<input
+														name="<?php echo esc_attr( $value['id'] ); ?>[]"
+														value="<?php echo $key; ?>"
+														type="checkbox"
+														style="<?php echo esc_attr( $value['css'] ); ?>"
+														<?php echo implode( ' ', $custom_attributes ); ?>
+														<?php if( in_array( $key, $option_value ) ) { echo 'checked="checked"'; } ?>
+													/> <?php echo $val ?>
+												</label>
+											</li>
+											<?php
+										}
+										?>
+										<?php echo $description; ?>
+								</fieldset>
+							</td>
+						</tr>
+						<?php
+						break;
+
 					// File input field.
 					case 'file' :
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
