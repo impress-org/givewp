@@ -504,8 +504,57 @@ function give_upgrade_addon_license_data(){
  * @return void
  */
 function give_v18_upgrades() {
+	// Upgrade checkbox settings to radio button settings.
+	give_v18_upgrades_core_setting();
+
 	// Upgrade form metadata.
 	give_v18_upgrades_form_metadata();
+}
+
+/**
+ * Upgrade core settings.
+ *
+ * @since  1.8
+ * @return void
+ */
+function give_v18_upgrades_core_setting() {
+	// Core settings which changes from checkbox to radio.
+	$core_setting_names = array(
+		'disable_paypal_verification',
+		'disable_css',
+		'disable_welcome',
+		'disable_forms_singular',
+		'disable_forms_archives',
+		'disable_forms_excerpt',
+		'disable_form_featured_img',
+		'disable_form_sidebar',
+		'disable_admin_notices',
+		'disable_the_content_filter',
+	);
+
+	// Bailout: If not any setting define.
+	if( $give_settings = get_option( 'give_settings' ) ){
+		$setting_changed = false;
+
+		// Loop: check each setting field.
+		foreach ( $core_setting_names as $name ) {
+
+			// Check (checkbox to radio): Make sure that value do not update again and again if version did not update.
+			if( ! in_array( $give_settings[ $name ], array( 'enabled', 'disabled') ) && ! empty( $give_settings[ $name ] ) ) {
+				$give_settings[ $name ] = ( 'on' === $give_settings[ $name ] ? 'enabled' : 'disabled' );
+
+				// Tell bot to update core setting to db.
+				if( ! $setting_changed ) {
+					$setting_changed = true;
+				}
+			}
+		}
+
+		// Update setting only if they changed.
+		if ( $setting_changed ) {
+			update_option( 'give_settings', $give_settings );
+		}
+	}
 }
 
 
