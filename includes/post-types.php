@@ -55,7 +55,7 @@ function give_setup_post_types() {
 		'name_admin_bar'     => apply_filters( 'give_name_admin_bar_name', esc_html__( 'Donation Form', 'give' ) )
 	) );
 
-	//Default give_forms supports
+	//Default give_forms supports.
 	$give_form_supports = array(
 		'title',
 		'thumbnail',
@@ -64,13 +64,13 @@ function give_setup_post_types() {
 		'author'
 	);
 
-	//Has the user disabled the excerpt
-	if (  give_is_setting_enabled( give_get_option( 'disable_forms_excerpt', 'disabled' ) ) ) {
+	//Has the user disabled the excerpt?
+	if ( ! give_is_setting_enabled( give_get_option( 'disable_forms_excerpt', 'enabled' ) ) ) {
 		unset( $give_form_supports[2] );
 	}
 
 	//Has user disabled the featured image?
-	if ( give_is_setting_enabled( give_get_option( 'disable_form_featured_img', 'disabled' ) ) ) {
+	if ( ! give_is_setting_enabled( give_get_option( 'disable_form_featured_img', 'enabled' ) ) ) {
 		unset( $give_form_supports[1] );
 		remove_action( 'give_before_single_form_summary', 'give_show_form_images' );
 	}
@@ -384,7 +384,7 @@ add_action( 'after_setup_theme', 'give_add_thumbnail_support', 10 );
  * Ensure post thumbnail support is turned on
  */
 function give_add_thumbnail_support() {
-	if ( give_is_setting_enabled( give_get_option( 'disable_form_featured_img', 'disabled' ) ) ) {
+	if ( ! give_is_setting_enabled( give_get_option( 'disable_form_featured_img', 'enabled' ) ) ) {
 		return;
 	}
 	if ( ! current_theme_supports( 'post-thumbnails' ) ) {
