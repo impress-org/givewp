@@ -175,9 +175,11 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			// Check license weekly.
 			add_action( 'give_weekly_scheduled_events', array( $this, 'weekly_license_check' ) );
+			add_action( 'give_validate_license_when_site_migrated', array( $this, 'weekly_license_check' ) );
 
 			// Check subscription weekly.
 			add_action( 'give_weekly_scheduled_events', array( $this, 'weekly_subscription_check' ) );
+			add_action( 'give_validate_license_when_site_migrated', array( $this, 'weekly_subscription_check' ) );
 		}
 
 		/**
