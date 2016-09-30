@@ -22,10 +22,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_setup_post_types() {
 
-	/** Give Forms Post Type */
-	$give_forms_singular = ! give_is_setting_enabled( give_get_option( 'disable_forms_singular', 'disabled' ) );
+	// Give Forms single post and archive options.
+	$give_forms_singular = give_is_setting_enabled( give_get_option( 'disable_forms_singular', 'enabled' ) );
 
-	$give_forms_archives = ! give_is_setting_enabled( give_get_option( 'disable_forms_archives', 'disabled' ) );
+	$give_forms_archives = give_is_setting_enabled( give_get_option( 'disable_forms_archives', 'enabled' ) );
 
 	$give_forms_slug = defined( 'GIVE_SLUG' ) ? GIVE_SLUG : 'donations';
 	//support for old 'GIVE_FORMS_SLUG' constant
