@@ -1506,10 +1506,13 @@ Settings
 
 .give-radio-inline li {
   display: inline-block;
-  margin-right: 15px; }
+  margin: 0 15px 0 0; }
 
 .give-radio-inline li:first-child {
   margin-right: 0; }
+
+.form-table td.give-radio-inline fieldset li > label {
+  margin: 5px 0 0 !important; }
 
 p.give-field-description, .cmb2-metabox-description {
   color: #aaaaaa;
