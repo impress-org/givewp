@@ -536,7 +536,6 @@ function give_v18_upgrades_core_setting() {
 		'enable_categories',
 		'enable_tags',
 		'email_access',
-		'email_access',
 		'test_mode',
 	);
 
