@@ -530,6 +530,12 @@ function give_v18_upgrades_core_setting() {
 		'disable_form_sidebar',
 		'disable_admin_notices',
 		'disable_the_content_filter',
+		'enable_floatlabels',
+		'enable_categories',
+		'enable_tags',
+		'email_access',
+		'email_access',
+		'test_mode',
 	);
 
 	// Bailout: If not any setting define.
@@ -539,7 +545,7 @@ function give_v18_upgrades_core_setting() {
 		// Loop: check each setting field.
 		foreach ( $core_setting_names as $name ) {
 
-			// Check (checkbox to radio): Make sure that value do not update again and again if version did not update.
+			// Check (checkbox to radio): Make sure that value does not update again and again if version did not update.
 			if( ! in_array( $give_settings[ $name ], array( 'enabled', 'disabled') ) ) {
 
 				if( ! empty( $give_settings[ $name ] ) ){
