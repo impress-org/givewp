@@ -66,7 +66,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						array(
 							'name' => esc_html__( 'Floating Labels', 'give' ),
 							/* translators: %s: https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels */
-							'desc' => sprintf( wp_kses( __( '<a href="%s" target="_blank">Floating labels</a> in Give\'s donation forms place form labels within the fields themselves and can improve the donor experience. Note that if the "Disable CSS" option is enabled, you will need to style the floating labels yourself.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( 'https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels' ) ),
+							'desc' => sprintf( wp_kses( __( '<a href="%s" target="_blank">Floating labels</a> in set form labels within fields and can improve the donor experience. Note that if the "Disable CSS" option is enabled, you will need to style the floating labels yourself.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( 'https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels' ) ),
 							'id'   => 'enable_floatlabels',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
@@ -210,6 +210,17 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						array(
 							'id'   => 'give_title_display_settings_4',
 							'type' => 'title'
+						),
+						array(
+							'name'    => esc_html__( 'Terms and Conditions', 'give' ),
+							'desc'    => esc_html__( 'Would you like donors to have to agree to your terms when making a donation? Note: You can toggle this option and customize the terms per form.', 'give' ),
+							'id'      => 'enable_terms',
+							'type'    => 'radio_inline',
+							'default' => 'disabled',
+							'options' => array(
+								'enabled' => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							)
 						),
 						array(
 							'name' => esc_html__( 'Agree to Terms Label', 'give' ),
