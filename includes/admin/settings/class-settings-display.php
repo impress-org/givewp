@@ -53,24 +53,32 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'type' => 'title'
 						),
 						array(
-							'name' => esc_html__( 'Disable CSS', 'give' ),
-							'desc' => esc_html__( 'Enable this option if you would like to disable all of Give\'s included CSS stylesheets.', 'give' ),
-							'id'   => 'disable_css',
-							'type' => 'checkbox'
+							'name'    => esc_html__( 'Disable CSS', 'give' ),
+							'desc'    => esc_html__( 'Enable this option if you would like to disable all of Give\'s included CSS stylesheets.', 'give' ),
+							'id'      => 'disable_css',
+							'type'    => 'radio_inline',
+							'options' => array(
+								'enabled' => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							)
 						),
 						array(
 							'name' => esc_html__( 'Enable Floating Labels', 'give' ),
 							/* translators: %s: https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels */
 							'desc' => sprintf( wp_kses( __( 'Enable <a href="%s" target="_blank">floating labels</a> in Give\'s donation forms. Note that if the "Disable CSS" option is enabled, you will need to style the floating labels yourself.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( 'https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels' ) ),
 							'id'   => 'enable_floatlabels',
-							'type' => 'checkbox'
+							'type'    => 'checkbox',
 						),
 						array(
 							'name' => esc_html__( 'Disable Welcome Screen', 'give' ),
 							/* translators: %s: about page URL */
 							'desc' => sprintf( wp_kses( __( 'Enable this option if you would like to disable the <a href="%s" target="_blank">Give Welcome screen</a> every time Give is activated and/or updated.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( admin_url( 'index.php?page=give-about' ) ) ),
 							'id'   => 'disable_welcome',
-							'type' => 'checkbox'
+							'type'    => 'radio_inline',
+							'options' => array(
+								'enabled' => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							)
 						),
 						array(
 							'id'   => 'give_title_display_settings_1',
@@ -89,19 +97,31 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'name' => esc_html__( 'Disable Form Single Views', 'give' ),
 							'desc' => esc_html__( 'By default, all forms have single views enabled which create a specific URL on your website for that form. This option disables the singular and archive views from being publicly viewable. Note: you will need to embed forms using a shortcode or widget if enabled.', 'give' ),
 							'id'   => 'disable_forms_singular',
-							'type' => 'checkbox'
+							'type'    => 'radio_inline',
+							'options' => array(
+								'enabled' => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							)
 						),
 						array(
 							'name' => esc_html__( 'Disable Form Archives', 'give' ),
 							'desc' => esc_html__( 'Archives pages list all the forms you have created. This option will disable only the form\'s archive page(s). The single form\'s view will remain in place. Note: you will need to refresh your permalinks after this option has been enabled.', 'give' ),
 							'id'   => 'disable_forms_archives',
-							'type' => 'checkbox'
+							'type'    => 'radio_inline',
+							'options' => array(
+								'enabled' => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							)
 						),
 						array(
 							'name' => esc_html__( 'Disable Form Excerpts', 'give' ),
 							'desc' => esc_html__( 'The excerpt is an optional summary or description of a donation form; in short, a summary as to why the user should give.', 'give' ),
 							'id'   => 'disable_forms_excerpt',
-							'type' => 'checkbox'
+							'type'    => 'radio_inline',
+							'options' => array(
+								'enabled' => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							)
 						),
 
 						array(
@@ -116,13 +136,22 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'name' => esc_html__( 'Disable Form Featured Image', 'give' ),
 							'desc' => esc_html__( 'If you do not wish to use the featured image functionality you can disable it using this option and it will not be displayed for single donation forms.', 'give' ),
 							'id'   => 'disable_form_featured_img',
-							'type' => 'checkbox'
+							'type'    => 'radio_inline',
+							'default' => 'enabled',
+							'options' => array(
+								'enabled' => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							)
 						),
 						array(
 							'name' => esc_html__( 'Disable Single Form Sidebar', 'give' ),
 							'desc' => esc_html__( 'The sidebar allows you to add additional widget to the Give single form view. If you don\'t plan on using the sidebar you may disable it with this option.', 'give' ),
 							'id'   => 'disable_form_sidebar',
-							'type' => 'checkbox'
+							'type'    => 'radio_inline',
+							'options' => array(
+								'enabled' => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							)
 						),
 						array(
 							'id'   => 'give_title_display_settings_2',

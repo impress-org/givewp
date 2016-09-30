@@ -56,7 +56,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							'name' => esc_html__( 'Remove All Data on Uninstall?', 'give' ),
 							'desc' => esc_html__( 'When the plugin is deleted, completely remove all Give data.', 'give' ),
 							'id'   => 'uninstall_on_delete',
-							'type' => 'checkbox'
+							'type' => 'checkbox',
 						),
 						array(
 							/* translators: %s: the_content */
@@ -64,13 +64,17 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							/* translators: 1: https://codex.wordpress.org/Plugin_API/Filter_Reference/the_content 2: the_content */
 							'desc' => sprintf( __( 'If you are seeing extra social buttons, related posts, or other unwanted elements appearing within your forms then you can disable WordPress\' content filter. <a href="%1$s" target="_blank">Learn more</a> about %2$s filter.', 'give' ), esc_url( 'https://codex.wordpress.org/Plugin_API/Filter_Reference/the_content' ), '<code>the_content</code>' ),
 							'id'   => 'disable_the_content_filter',
-							'type' => 'checkbox'
+							'type'    => 'radio_inline',
+							'options' => array(
+								'enabled' => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							)
 						),
 						array(
 							'name' => esc_html__( 'Load Scripts in Footer?', 'give' ),
 							'desc' => esc_html__( 'Check this box if you would like Give to load all frontend JavaScript files in the footer.', 'give' ),
 							'id'   => 'scripts_footer',
-							'type' => 'checkbox'
+							'type' => 'checkbox',
 						),
 						array(
 							'id'   => 'give_title_data_control_2',
