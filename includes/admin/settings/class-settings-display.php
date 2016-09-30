@@ -57,6 +57,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'desc'    => esc_html__( 'Enable this option if you would like to disable all of Give\'s included CSS stylesheets.', 'give' ),
 							'id'      => 'disable_css',
 							'type'    => 'radio_inline',
+							'default' => 'disabled',
 							'options' => array(
 								'enabled' => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
@@ -70,11 +71,12 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'type'    => 'checkbox',
 						),
 						array(
-							'name' => esc_html__( 'Disable Welcome Screen', 'give' ),
+							'name'    => esc_html__( 'Disable Welcome Screen', 'give' ),
 							/* translators: %s: about page URL */
-							'desc' => sprintf( wp_kses( __( 'Enable this option if you would like to disable the <a href="%s" target="_blank">Give Welcome screen</a> every time Give is activated and/or updated.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( admin_url( 'index.php?page=give-about' ) ) ),
-							'id'   => 'disable_welcome',
+							'desc'    => sprintf( wp_kses( __( 'Enable this option if you would like to disable the <a href="%s" target="_blank">Give Welcome screen</a> every time Give is activated and/or updated.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( admin_url( 'index.php?page=give-about' ) ) ),
+							'id'      => 'disable_welcome',
 							'type'    => 'radio_inline',
+							'default' => 'disabled',
 							'options' => array(
 								'enabled' => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
@@ -94,30 +96,33 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'type' => 'title'
 						),
 						array(
-							'name' => esc_html__( 'Disable Form Single Views', 'give' ),
-							'desc' => esc_html__( 'By default, all forms have single views enabled which create a specific URL on your website for that form. This option disables the singular and archive views from being publicly viewable. Note: you will need to embed forms using a shortcode or widget if enabled.', 'give' ),
-							'id'   => 'disable_forms_singular',
+							'name'    => esc_html__( 'Disable Form Single Views', 'give' ),
+							'desc'    => esc_html__( 'By default, all forms have single views enabled which create a specific URL on your website for that form. This option disables the singular and archive views from being publicly viewable. Note: you will need to embed forms using a shortcode or widget if enabled.', 'give' ),
+							'id'      => 'disable_forms_singular',
 							'type'    => 'radio_inline',
+							'default' => 'disabled',
 							'options' => array(
 								'enabled' => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
 							)
 						),
 						array(
-							'name' => esc_html__( 'Disable Form Archives', 'give' ),
-							'desc' => esc_html__( 'Archives pages list all the forms you have created. This option will disable only the form\'s archive page(s). The single form\'s view will remain in place. Note: you will need to refresh your permalinks after this option has been enabled.', 'give' ),
-							'id'   => 'disable_forms_archives',
+							'name'    => esc_html__( 'Disable Form Archives', 'give' ),
+							'desc'    => esc_html__( 'Archives pages list all the forms you have created. This option will disable only the form\'s archive page(s). The single form\'s view will remain in place. Note: you will need to refresh your permalinks after this option has been enabled.', 'give' ),
+							'id'      => 'disable_forms_archives',
 							'type'    => 'radio_inline',
+							'default' => 'disabled',
 							'options' => array(
 								'enabled' => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
 							)
 						),
 						array(
-							'name' => esc_html__( 'Disable Form Excerpts', 'give' ),
-							'desc' => esc_html__( 'The excerpt is an optional summary or description of a donation form; in short, a summary as to why the user should give.', 'give' ),
-							'id'   => 'disable_forms_excerpt',
+							'name'    => esc_html__( 'Disable Form Excerpts', 'give' ),
+							'desc'    => esc_html__( 'The excerpt is an optional summary or description of a donation form; in short, a summary as to why the user should give.', 'give' ),
+							'id'      => 'disable_forms_excerpt',
 							'type'    => 'radio_inline',
+							'default' => 'disabled',
 							'options' => array(
 								'enabled' => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
@@ -133,21 +138,22 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'options' => give_get_featured_image_sizes()
 						),
 						array(
-							'name' => esc_html__( 'Disable Form Featured Image', 'give' ),
-							'desc' => esc_html__( 'If you do not wish to use the featured image functionality you can disable it using this option and it will not be displayed for single donation forms.', 'give' ),
-							'id'   => 'disable_form_featured_img',
+							'name'    => esc_html__( 'Disable Form Featured Image', 'give' ),
+							'desc'    => esc_html__( 'If you do not wish to use the featured image functionality you can disable it using this option and it will not be displayed for single donation forms.', 'give' ),
+							'id'      => 'disable_form_featured_img',
 							'type'    => 'radio_inline',
-							'default' => 'enabled',
+							'default' => 'disabled',
 							'options' => array(
 								'enabled' => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
 							)
 						),
 						array(
-							'name' => esc_html__( 'Disable Single Form Sidebar', 'give' ),
-							'desc' => esc_html__( 'The sidebar allows you to add additional widget to the Give single form view. If you don\'t plan on using the sidebar you may disable it with this option.', 'give' ),
-							'id'   => 'disable_form_sidebar',
+							'name'    => esc_html__( 'Disable Single Form Sidebar', 'give' ),
+							'desc'    => esc_html__( 'The sidebar allows you to add additional widget to the Give single form view. If you don\'t plan on using the sidebar you may disable it with this option.', 'give' ),
+							'id'      => 'disable_form_sidebar',
 							'type'    => 'radio_inline',
+							'default' => 'disabled',
 							'options' => array(
 								'enabled' => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),

@@ -151,10 +151,11 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 							'default' => get_bloginfo( 'admin_email' )
 						),
 						array(
-							'id'   => 'disable_admin_notices',
-							'name' => esc_html__( 'Disable Admin Notifications', 'give' ),
-							'desc' => esc_html__( 'Check this box if you do not want to receive emails when new donations are made.', 'give' ),
+							'id'      => 'disable_admin_notices',
+							'name'    => esc_html__( 'Disable Admin Notifications', 'give' ),
+							'desc'    => esc_html__( 'Check this box if you do not want to receive emails when new donations are made.', 'give' ),
 							'type'    => 'radio_inline',
+							'default' => 'disabled',
 							'options' => array(
 								'enabled' => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),

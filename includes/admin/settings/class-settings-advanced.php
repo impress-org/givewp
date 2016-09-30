@@ -60,10 +60,11 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 						),
 						array(
 							/* translators: %s: the_content */
-							'name' => sprintf( __( 'Disable %s filter', 'give' ), '<code>the_content</code>' ),
+							'name'    => sprintf( __( 'Disable %s filter', 'give' ), '<code>the_content</code>' ),
 							/* translators: 1: https://codex.wordpress.org/Plugin_API/Filter_Reference/the_content 2: the_content */
-							'desc' => sprintf( __( 'If you are seeing extra social buttons, related posts, or other unwanted elements appearing within your forms then you can disable WordPress\' content filter. <a href="%1$s" target="_blank">Learn more</a> about %2$s filter.', 'give' ), esc_url( 'https://codex.wordpress.org/Plugin_API/Filter_Reference/the_content' ), '<code>the_content</code>' ),
-							'id'   => 'disable_the_content_filter',
+							'desc'    => sprintf( __( 'If you are seeing extra social buttons, related posts, or other unwanted elements appearing within your forms then you can disable WordPress\' content filter. <a href="%1$s" target="_blank">Learn more</a> about %2$s filter.', 'give' ), esc_url( 'https://codex.wordpress.org/Plugin_API/Filter_Reference/the_content' ), '<code>the_content</code>' ),
+							'id'      => 'disable_the_content_filter',
+							'default' => 'disabled',
 							'type'    => 'radio_inline',
 							'options' => array(
 								'enabled' => __( 'Enabled', 'give' ),
