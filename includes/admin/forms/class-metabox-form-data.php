@@ -383,7 +383,7 @@ class Give_MetaBox_Form_Data {
 								'id'      => $prefix . 'form_floating_labels',
 								'type'    => 'radio_inline',
 								'options' => array(
-									'global'   => esc_html__( 'Global Options', 'give' ),
+									'global'   => esc_html__( 'Global Option', 'give' ),
 									'enabled'  => esc_html__( 'Yes', 'give' ),
 									'disabled' => esc_html__( 'No', 'give' ),
 								),
@@ -453,7 +453,7 @@ class Give_MetaBox_Form_Data {
 							'id'          => $prefix . 'terms_option',
 							'type'        => 'radio_inline',
 							'options'     => apply_filters( 'give_forms_content_options_select', array(
-									'global' => esc_html__( 'Global Options', 'give' ),
+									'global' => esc_html__( 'Global Option', 'give' ),
 									'yes'    => esc_html__( 'Customize', 'give' ),
 									'no'     => esc_html__( 'Disable', 'give' ),
 								)
