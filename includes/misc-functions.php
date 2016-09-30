@@ -5,7 +5,7 @@
  * @package     Give
  * @subpackage  Functions
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
@@ -768,7 +768,7 @@ add_filter( 'nav_menu_meta_box_object', 'modify_nav_menu_meta_box_object' );
  * @since      : 1.3.0.1
  *
  * @copyright  Copyright (c) Ben Ramsey (http://benramsey.com)
- * @license    http://opensource.org/licenses/MIT MIT
+ * @license    https://opensource.org/licenses/MIT MIT
  */
 
 if ( ! function_exists( 'array_column' ) ) {

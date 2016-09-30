@@ -5,7 +5,7 @@
  * @package     Give
  * @subpackage  Classes/Give_Donate_Form
  * @copyright   Copyright (c) 2015, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 

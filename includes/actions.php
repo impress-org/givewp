@@ -5,7 +5,7 @@
  * @package     Give
  * @subpackage  Functions
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
@@ -112,3 +112,34 @@ function give_connect_donor_to_wpuser( $user_id, $user_data ){
 	}
 }
 add_action( 'give_insert_user', 'give_connect_donor_to_wpuser', 10, 2 );
+
+
+/**
+ * Setup site home url check
+ *
+ * Note: if location of site changes then run cron to validate licenses
+ *
+ * @since  1.7
+ * @return void
+ */
+function give_validate_license_when_site_migrated() {
+	// Store current site address if not already stored.
+	$homeurl = home_url();
+	if( ! get_option( 'give_site_address_before_migrate' ) ) {
+		// Update site address.
+		update_option( 'give_site_address_before_migrate', $homeurl );
+
+		return;
+	}
+
+	if( $homeurl !== get_option( 'give_site_address_before_migrate' ) ) {
+		// Immediately run cron.
+		wp_schedule_single_event( time() , 'give_validate_license_when_site_migrated' );
+
+		// Update site address.
+		update_option( 'give_site_address_before_migrate', home_url() );
+	}
+
+}
+add_action( 'init', 'give_validate_license_when_site_migrated' );
+add_action( 'admin_init', 'give_validate_license_when_site_migrated' );
