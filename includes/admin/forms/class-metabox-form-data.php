@@ -245,7 +245,7 @@ class Give_MetaBox_Form_Data {
 				'fields'       => apply_filters( 'give_forms_donation_goal_metabox_fields', array(
 					//Goals
 					array(
-						'name'        => esc_html__( 'Goal', 'give' ),
+						'name'        => esc_html__( 'Donation Goal', 'give' ),
 						'description' => esc_html__( 'Do you want to set a donation goal for this form?', 'give' ),
 						'id'          => $prefix . 'goal_option',
 						'type'        => 'radio_inline',
