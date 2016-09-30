@@ -540,8 +540,13 @@ function give_v18_upgrades_core_setting() {
 		foreach ( $core_setting_names as $name ) {
 
 			// Check (checkbox to radio): Make sure that value do not update again and again if version did not update.
-			if( ! in_array( $give_settings[ $name ], array( 'enabled', 'disabled') ) && ! empty( $give_settings[ $name ] ) ) {
-				$give_settings[ $name ] = ( 'on' === $give_settings[ $name ] ? 'enabled' : 'disabled' );
+			if( ! in_array( $give_settings[ $name ], array( 'enabled', 'disabled') ) ) {
+
+				if( ! empty( $give_settings[ $name ] ) ){
+					$give_settings[ $name ] = ( 'on' === $give_settings[ $name ] ? 'enabled' : 'disabled' );
+				} else {
+					$give_settings[ $name ] = 'disabled';
+				}
 
 				// Tell bot to update core setting to db.
 				if( ! $setting_changed ) {
