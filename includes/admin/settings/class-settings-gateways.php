@@ -150,7 +150,12 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 							'name' => esc_html__( 'Test Mode', 'give' ),
 							'desc' => esc_html__( 'While in test mode no live donations are processed. To fully use test mode, you must have a sandbox (test) account for the payment gateway you are testing.', 'give' ),
 							'id'   => 'test_mode',
-							'type' => 'checkbox'
+							'type'    => 'radio_inline',
+							'default' => 'enabled',
+							'options' => array(
+								'enabled' => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							)
 						),
 						array(
 							'name' => esc_html__( 'Enabled Gateways', 'give' ),
