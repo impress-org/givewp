@@ -42,6 +42,10 @@ function give_do_automatic_upgrades() {
 		case version_compare( $give_version, '1.7', '<' ) :
 			give_v17_upgrades();
 			$did_upgrade = true;
+
+		case version_compare( $give_version, '1.8', '<' ) :
+			give_v18_upgrades();
+			$did_upgrade = true;
 	}
 
 	if ( $did_upgrade ) {
@@ -490,4 +494,61 @@ function give_upgrade_addon_license_data(){
         $license_data = json_decode( wp_remote_retrieve_body( $response ) );
         update_option( $addon_license_option_name, $license_data );
     }
+}
+
+/**
+ * 1.8 Upgrade.
+ *   a. Update form meta for new metabox settings.
+ *
+ * @since  1.8
+ * @return void
+ */
+function give_v18_upgrades() {
+	// Upgrade form metadata.
+	give_v18_upgrades_form_metadata();
+}
+
+
+/**
+ * Upgrade form metadata for new metabox settings.
+ *
+ * @since  1.8
+ * @return void
+ */
+function give_v18_upgrades_form_metadata() {
+	$forms = new WP_Query( array(
+			'post_type'      => 'give_forms',
+			'posts_per_page' => -1
+		)
+	);
+
+	if( $forms->have_posts() ) {
+		while( $forms->have_posts() ){
+			$forms->the_post();
+
+			// Guest donation setting.
+			if( 'on' === get_post_meta( get_the_ID(), '_give_logged_in_only', true ) ) {
+				update_post_meta( get_the_ID(), '_give_logged_in_only', 'yes' );
+			}
+
+			// Term and conditions.
+			if( 'none' === get_post_meta( get_the_ID(), '_give_terms_option', true ) ) {
+				update_post_meta( get_the_ID(), '_give_terms_option', 'no' );
+			}
+
+			// Form content.
+			// Note in version 1.8 display content setting split into display content and content placement setting.
+			$show_content = get_post_meta( get_the_ID(), '_give_content_option', true );
+			if( $show_content ) {
+				if( 'none' !== $show_content ) {
+					update_post_meta( get_the_ID(), '_give_display_option', 'yes' );
+				}else {
+					update_post_meta( get_the_ID(), '_give_display_option', 'no' );
+					update_post_meta( get_the_ID(), '_give_content_option', 'give_pre_form' );
+				}
+			}
+		}
+	}
+
+	wp_reset_postdata();
 }

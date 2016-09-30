@@ -316,7 +316,9 @@ function give_load_admin_scripts( $hook ) {
 		'batch_export_no_class'   => esc_html__( 'You must choose a method.', 'give' ),
 		'batch_export_no_reqs'    => esc_html__( 'Required fields not completed.', 'give' ),
 		'reset_stats_warn'        => __( 'Are you sure you want to reset Give? This process is <strong><em>not reversible</em></strong> and will delete all data regardless of test or live mode. Please be sure you have a recent backup before proceeding.', 'give' ),
-		'price_format_guide'      => sprintf( esc_html__( 'Please enter amount in monetary decimal ( %1$s ) format without thousand separator ( %2$s ) .', 'give' ), $decimal_separator, $thousand_separator )
+		'price_format_guide'      => sprintf( esc_html__( 'Please enter amount in monetary decimal ( %1$s ) format without thousand separator ( %2$s ) .', 'give' ), $decimal_separator, $thousand_separator ),
+		/* translators : %s: Donation form options metabox */
+		'confirm_before_remove_row_text' => __( 'Do you want to delete this level?', 'give' )
 	) );
 
 	if ( function_exists( 'wp_enqueue_media' ) && version_compare( get_bloginfo( 'version' ), '3.5', '>=' ) ) {

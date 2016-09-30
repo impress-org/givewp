@@ -98,9 +98,10 @@ function give_offline_billing_fields( $form_id ) {
 	$global_offline_cc_fields      = give_get_option( 'give_offline_donation_enable_billing_fields' );
 
 	//Output CC Address fields if global option is on and user hasn't elected to customize this form's offline donation options
-	if ( $global_offline_cc_fields == 'on' && $post_offline_customize_option !== 'yes' ) {
+	if ( 'global' === $post_offline_customize_option && 'on' === $global_offline_cc_fields ) {
 		give_default_cc_address_fields( $form_id );
-	} elseif($post_offline_customize_option == 'yes' && $post_offline_cc_fields == 'on') {
+
+	} elseif( 'yes' === $post_offline_customize_option && 'on' === $post_offline_cc_fields ) {
 		give_default_cc_address_fields( $form_id );
 	}
 }
@@ -305,18 +306,20 @@ function give_offline_add_settings( $settings ) {
 	$check_settings = array(
 
 		array(
-			'name'    => esc_attr__( 'Customize Offline Donations', 'give' ),
+			'name'    => esc_attr__( 'Offline Donations', 'give' ),
 			'desc'    => esc_attr__( 'If you would like to customize the donation instructions for this specific forms check this option.', 'give' ),
 			'id'      => $prefix . 'customize_offline_donations',
 			'type'    => 'radio_inline',
-			'default' => 'no',
-			'options' => array(
-				'yes' => esc_attr__( 'Yes', 'give' ),
-				'no'  => esc_attr__( 'No', 'give' ),
+			'default' => 'global',
+			'options'     => apply_filters( 'give_forms_content_options_select', array(
+					'global' => esc_html__( 'Global Options', 'give' ),
+					'yes'    => esc_html__( 'Customize', 'give' ),
+					'no'     => esc_html__( 'Disable', 'give' ),
+				)
 			),
 		),
 		array(
-			'name'        => esc_attr__( 'Request Billing Information', 'give' ),
+			'name'        => esc_attr__( 'Billing Fields', 'give' ),
 			'desc'        => esc_attr__( 'This option will enable the billing details section for this form\'s offline donation payment gateway. The fieldset will appear above the offline donation instructions.', 'give' ),
 			'id'          => $prefix . 'offline_donation_enable_billing_fields_single',
 			'row_classes' => 'give-subfield',
@@ -324,7 +327,7 @@ function give_offline_add_settings( $settings ) {
 		),
 		array(
 			'id'          => $prefix . 'offline_checkout_notes',
-			'name'        => esc_attr__( 'Offline Donation Instructions', 'give' ),
+			'name'        => esc_attr__( 'Donation Instructions', 'give' ),
 			'desc'        => esc_attr__( 'Enter the instructions you want to display to the donor during the donation process. Most likely this would include important information like mailing address and who to make the check out to.', 'give' ),
 			'default'     => give_get_default_offline_donation_content(),
 			'type'        => 'wysiwyg',
@@ -335,7 +338,7 @@ function give_offline_add_settings( $settings ) {
 		),
 		array(
 			'id'          => $prefix . 'offline_donation_subject',
-			'name'        => esc_attr__( 'Offline Donation Email Instructions Subject', 'give' ),
+			'name'        => esc_attr__( 'Email Subject', 'give' ),
 			'desc'        => esc_attr__( 'Enter the subject line for the donation receipt email.', 'give' ),
 			'default'     => esc_attr__( '{donation} - Offline Donation Instructions', 'give' ),
 			'row_classes' => 'give-subfield',
@@ -343,7 +346,7 @@ function give_offline_add_settings( $settings ) {
 		),
 		array(
 			'id'          => $prefix . 'offline_donation_email',
-			'name'        => esc_attr__( 'Offline Donation Email Instructions', 'give' ),
+			'name'        => esc_attr__( 'Email Instructions', 'give' ),
 			'desc'        => esc_attr__( 'Enter the instructions you want emailed to the donor after they have submitted the donation form. Most likely this would include important information like mailing address and who to make the check out to.', 'give' ),
 			'default'     => give_get_default_offline_donation_email_content(),
 			'type'        => 'wysiwyg',
@@ -357,7 +360,7 @@ function give_offline_add_settings( $settings ) {
 	return array_merge( $settings, $check_settings );
 }
 
-add_filter( 'give_forms_display_options_metabox_fields', 'give_offline_add_settings' );
+add_filter( 'give_forms_offline_donations_metabox_fields', 'give_offline_add_settings' );
 
 
 /**
@@ -437,3 +440,39 @@ function give_get_default_offline_donation_email_content() {
 	return apply_filters( 'give_default_offline_donation_content', $default_text );
 
 }
+
+
+/**
+ * Remove offline gateway from gateway list of offline disable for form.
+ *
+ * @since  1.8
+ * @param  array     $gateway_list
+ * @param  $form_id
+ * @return array
+ */
+function give_filter_offline_gateway( $gateway_list, $form_id ) {
+	if( $form_id && ( 'no' === get_post_meta( $form_id, '_give_customize_offline_donations', true ) ) ) {
+		unset( $gateway_list['offline'] );
+	}
+
+	// Output.
+	return $gateway_list;
+}
+add_filter( 'give_enabled_payment_gateways', 'give_filter_offline_gateway', 10, 2 );
+
+/**
+ * Set default gateway to global default payment gateway
+ * if current default gateways selected offline and offline payment gateway is disabled.
+ *
+ * @since 1.8
+ * @param  string  $meta_key   Meta key.
+ * @param  string $meta_value  Meta value.
+ * @param  int    $postid      Form ID.
+ * @return void
+ */
+function _give_customize_offline_donations_on_save_callback( $meta_key, $meta_value, $postid ) {
+	if( ( 'no' === $meta_value ) && ( 'offline' === get_post_meta( $postid, '_give_default_gateway', true ) ) ) {
+		update_post_meta( $postid, '_give_default_gateway', 'global' );
+	}
+}
+add_filter( 'give_save__give_customize_offline_donations', '_give_customize_offline_donations_on_save_callback', 10, 3 );
