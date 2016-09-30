@@ -103,7 +103,7 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 		$payment->save();
 
 		/**
-		 * Fires after completing donation.
+		 * Fires after a donation successfully complete.
 		 *
 		 * @since 1.0
 		 *
