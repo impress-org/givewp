@@ -431,7 +431,7 @@ function give_upgrade_addon_license_data(){
     if( empty( $addons ) ) {
         return false;
     }
-    
+
     foreach ( $addons as $key => $addon_license ) {
 
         // Get addon shortname.
@@ -530,6 +530,8 @@ function give_v18_upgrades_core_setting() {
 		'disable_form_sidebar',
 		'disable_admin_notices',
 		'disable_the_content_filter',
+		'uninstall_on_delete',
+		'scripts_footer',
 		'enable_floatlabels',
 		'enable_categories',
 		'enable_tags',
