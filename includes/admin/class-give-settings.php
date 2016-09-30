@@ -1460,6 +1460,18 @@ function give_hook_callback( $args ) {
 	do_action( "give_{$id}" );
 
 }
+
+
+/**
+ * Check if radio(enabled/disabled) and checkbox(on) is active or not.
+ *
+ * @since  1.8
+ * @param  $value
+ * @return bool
+ */
+function give_is_setting_enabled( $value ) {
+	return ( in_array( $value, array( 'on', 'enabled' ) ) ? true : false );
+}
 //
 ///**
 // * Get the CMB2 bootstrap!
