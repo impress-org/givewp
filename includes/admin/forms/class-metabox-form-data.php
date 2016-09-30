@@ -117,7 +117,7 @@ class Give_MetaBox_Form_Data {
 						//Donation Option
 						array(
 							'name'        => esc_html__( 'Donation Option', 'give' ),
-							'description' => esc_html__( 'Would you like this form to have one set donation price or multiple levels (for example, $10, $20, $50)?', 'give' ),
+							'description' => esc_html__( 'Do you want this form to have one set donation price or multiple levels (for example, $10, $20, $50)?', 'give' ),
 							'id'          => $prefix . 'price_option',
 							'type'        => 'radio_inline',
 							'default'     => 'set',
@@ -148,7 +148,8 @@ class Give_MetaBox_Form_Data {
 								'remove_button' => '<span class="dashicons dashicons-no"></span>',
 								'sortable'      => true, // beta
 							),
-							// Fields array works the same, except id's only need to be unique for this group. Prefix is not needed.
+							// Fields array works the same, except id's only need to be unique for this group.
+							// Prefix is not needed.
 							'fields'      => apply_filters( 'give_donation_levels_table_row', array(
 								array(
 									'name' => esc_html__( 'ID', 'give' ),
@@ -210,8 +211,8 @@ class Give_MetaBox_Form_Data {
 							),
 						),
 						array(
-							'name'              => esc_html__( 'Custom Amount Minimum', 'give' ),
-							'description'       => esc_html__( 'If you would like to set a minimum custom donation amount please enter it here.', 'give' ),
+							'name'              => esc_html__( 'Minimum Amount', 'give' ),
+							'description'       => esc_html__( 'Enter the minimum custom donation amount.', 'give' ),
 							'id'                => $prefix . 'custom_amount_minimum',
 							'type'              => 'text_small',
 							'data_type'         => 'decimal',
@@ -256,7 +257,7 @@ class Give_MetaBox_Form_Data {
 					),
 					array(
 						'name'              => esc_html__( 'Goal Amount', 'give' ),
-						'description'       => esc_html__( 'This is the monetary goal amount you want to reach for this donation form.', 'give' ),
+						'description'       => esc_html__( 'This is the monetary goal amount you want to reach for this form.', 'give' ),
 						'id'                => $prefix . 'set_goal',
 						'type'              => 'text_small',
 						'data_type'         => 'decimal',
@@ -269,7 +270,7 @@ class Give_MetaBox_Form_Data {
 
 					array(
 						'name'        => esc_html__( 'Goal Format', 'give' ),
-						'description' => esc_html__( 'Would you like to display the total amount raised based on your monetary goal or a percentage? For instance, "$500 of $1,000 raised" or "50% funded".', 'give' ),
+						'description' => esc_html__( 'Do you want to display the total amount raised based on your monetary goal or a percentage? For instance, "$500 of $1,000 raised" or "50% funded".', 'give' ),
 						'id'          => $prefix . 'goal_format',
 						'type'        => 'radio_inline',
 						'default'     => 'amount',
@@ -280,6 +281,7 @@ class Give_MetaBox_Form_Data {
 					),
 					array(
 						'name'        => esc_html__( 'Progress Bar Color', 'give' ),
+						'desc'        => esc_html__( 'Customize the color of the goal progress bar.', 'give' ),
 						'id'          => $prefix . 'goal_color',
 						'type'        => 'colorpicker',
 						'default'     => '#2bc253',
@@ -287,7 +289,7 @@ class Give_MetaBox_Form_Data {
 
 					array(
 						'name'        => esc_html__( 'Close Form', 'give' ),
-						'desc'        => esc_html__( 'Would you like to close the donation forms and stop accepting donations once this goal has been met?', 'give' ),
+						'desc'        => esc_html__( 'Do you want to close the donation forms and stop accepting donations once this goal has been met?', 'give' ),
 						'id'          => $prefix . 'close_form_when_goal_achieved',
 						'type'        => 'radio_inline',
 						'options'     => array(
@@ -298,7 +300,7 @@ class Give_MetaBox_Form_Data {
 					),
 					array(
 						'name'        => esc_html__( 'Goal Achieved Message', 'give' ),
-						'desc'        => esc_html__( 'Would you like to display a custom message when the goal is closed? If none is provided the default message will be displayed', 'give' ),
+						'desc'        => esc_html__( 'Do you want to display a custom message when the goal is closed? If none is provided the default message will be displayed', 'give' ),
 						'id'          => $prefix . 'form_goal_achieved_message',
 						'type'        => 'textarea',
 						'attributes'  => array(
@@ -318,7 +320,7 @@ class Give_MetaBox_Form_Data {
 				'fields'       => apply_filters( 'give_forms_display_options_metabox_fields', array(
 							array(
 								'name'    => esc_html__( 'Display Options', 'give' ),
-								'desc'    => sprintf( __( 'How would you like to display donation information for this form? <a href=""%s">Learn more ></a>', 'give' ), '#' ),
+								'desc'    => sprintf( __( 'How would you like to display donation information for this form?', 'give' ), '#' ),
 								'id'      => $prefix . 'payment_display',
 								'type'    => 'radio_inline',
 								'options' => array(
@@ -330,8 +332,8 @@ class Give_MetaBox_Form_Data {
 							),
 							array(
 								'id'          => $prefix . 'reveal_label',
-								'name'        => esc_html__( 'Reveal / Modal Open Text', 'give' ),
-								'desc'        => esc_html__( 'The button label for completing the donation.', 'give' ),
+								'name'        => esc_html__( 'Continue Button', 'give' ),
+								'desc'        => esc_html__( 'The button label for displaying the additional payment fields.', 'give' ),
 								'type'        => 'text_small',
 								'attributes'  => array(
 									'placeholder' => esc_attr__( 'Donate Now', 'give' ),
@@ -379,7 +381,7 @@ class Give_MetaBox_Form_Data {
 							array(
 								'name'    => esc_html__( 'Floating Labels', 'give' ),
 								/* translators: %s: forms https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels */
-								'desc'    => sprintf( __( 'Select the <a href="%s" target="_blank">floating labels</a> setting for this Give form.<br>Be aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), esc_url( 'https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels' ) ),
+								'desc'    => sprintf( __( 'Select the <a href="%s" target="_blank">floating labels</a> setting for this Give form. Be aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), esc_url( 'https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels' ) ),
 								'id'      => $prefix . 'form_floating_labels',
 								'type'    => 'radio_inline',
 								'options' => array(
@@ -405,7 +407,7 @@ class Give_MetaBox_Form_Data {
 						//Donation content.
 						array(
 							'name'        => esc_html__( 'Display Content', 'give' ),
-							'description' => esc_html__( 'Do you want to display content? If you choose to display content, a WYSIWYG editor will appear which you will be able to enter content.', 'give' ),
+							'description' => esc_html__( 'Do you want to add custom content to this form?', 'give' ),
 							'id'          => $prefix . 'display_content',
 							'type'        => 'radio_inline',
 							'options'     => apply_filters( 'give_forms_content_options_select', array(
@@ -419,7 +421,7 @@ class Give_MetaBox_Form_Data {
 						// Content placement.
 						array(
 							'name'        => esc_html__( 'Content Placement', 'give' ),
-							'description' => esc_html__( 'Do you want to display content? If you choose to display content, a WYSIWYG editor will appear which you will be able to enter content.', 'give' ),
+							'description' => esc_html__( 'This option controls where the content appears within the donation form.', 'give' ),
 							'id'          => $prefix . 'content_placement',
 							'type'        => 'radio_inline',
 							'options'     => apply_filters( 'give_forms_content_options_select', array(
@@ -449,7 +451,7 @@ class Give_MetaBox_Form_Data {
 						//Donation Option
 						array(
 							'name'        => esc_html__( 'Terms & Conditions', 'give' ),
-							'description' => esc_html__( 'Do you want to require the user to agree to terms and conditions prior to being able to complete their donation?', 'give' ),
+							'description' => esc_html__( 'Do you want to require the donor to accept terms prior to being able to complete their donation?', 'give' ),
 							'id'          => $prefix . 'terms_option',
 							'type'        => 'radio_inline',
 							'options'     => apply_filters( 'give_forms_content_options_select', array(
