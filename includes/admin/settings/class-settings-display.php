@@ -133,15 +133,6 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 								'disabled' => __( 'Disabled', 'give' ),
 							)
 						),
-
-						array(
-							'name'    => esc_html__( 'Featured Image Size', 'give' ),
-							'desc'    => esc_html__( 'The Featured Image is an image that is chosen as the representative image for a donation form. Some themes may have custom featured image sizes. Please select the size you would like to display for your single donation forms\' featured image.', 'give' ),
-							'id'      => 'featured_image_size',
-							'type'    => 'select',
-							'default' => 'large',
-							'options' => give_get_featured_image_sizes()
-						),
 						array(
 							'name'    => esc_html__( 'Form Featured Image', 'give' ),
 							'desc'    => esc_html__( 'If you do not wish to use the featured image functionality you can disable it using this option and it will not be displayed for single donation forms.', 'give' ),
@@ -152,6 +143,14 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 								'enabled' => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
 							)
+						),
+						array(
+							'name'    => esc_html__( 'Featured Image Size', 'give' ),
+							'desc'    => esc_html__( 'The Featured Image is an image that is chosen as the representative image for a donation form. Some themes may have custom featured image sizes. Please select the size you would like to display for your single donation forms\' featured image.', 'give' ),
+							'id'      => 'featured_image_size',
+							'type'    => 'select',
+							'default' => 'large',
+							'options' => give_get_featured_image_sizes()
 						),
 						array(
 							'name'    => esc_html__( 'Single Form Sidebar', 'give' ),
