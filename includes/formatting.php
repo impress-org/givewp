@@ -365,54 +365,20 @@ function give_currency_decimal_filter() {
 add_filter( 'give_sanitize_amount_decimals', 'give_currency_decimal_filter' );
 add_filter( 'give_format_amount_decimals', 'give_currency_decimal_filter' );
 
-/**
- * Sanitize thousand separator
- *
- * @since   1.6
- * @used-by Give_Plugin_Settings::give_settings()
- *
- * @param   string $value
- * @param   array  $field_args
- * @param   object $field
- *
- * @return mixed
- */
-function give_sanitize_thousand_separator( $value, $field_args, $field ){
-    return stripslashes( $value );
-}
-
 
 /**
  * Sanitize number of decimals
  *
  * @since   1.6
+ * @since   1.8 Sanitizing number_decimals setting field with new setting api.
  * @used-by Give_Plugin_Settings::give_settings()
- *
  * @param   string $value
- * @param   array  $field_args
- * @param   object $field
- *
  * @return  mixed
  */
-function give_sanitize_number_decimals( $value, $field_args, $field ){
+function give_sanitize_number_decimals( $value ){
 	return absint($value);
 }
-
-/**
- * Sanitize price file value
- *
- * @since   1.6
- * @used-by give_single_forms_cmb2_metaboxes()
- *
- * @param   string $value
- * @param   array  $field_args
- * @param   object $field
- *
- * @return  mixed
- */
-function give_sanitize_price_field_value( $value, $field_args, $field ){
-    return give_sanitize_amount( $value );
-}
+add_filter( 'give_admin_settings_sanitize_option_number_decimals', 'give_sanitize_number_decimals', 10, 1 );
 
 
 /**

@@ -397,8 +397,7 @@ if ( ! function_exists( 'give_show_form_images' ) ) {
 	 * Output the product image before the single product summary.
 	 */
 	function give_show_form_images() {
-		$featured_image_option = give_get_option( 'disable_form_featured_img' );
-		if ( $featured_image_option !== 'on' ) {
+		if ( ! give_is_setting_enabled( give_get_option( 'disable_form_featured_img', 'disabled' ) ) ) {
 			give_get_template_part( 'single-give-form/featured-image' );
 		}
 	}

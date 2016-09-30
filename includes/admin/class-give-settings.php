@@ -1261,7 +1261,6 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
             // activate_license 'invalid' on anything other than valid, so if there was an error capture it
             switch(   $license->error ) {
                 case 'expired' :
-					error_log(print_r( $license->error, true) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log');
                     $class = $license->error;
                     $messages[] = sprintf(
                         __( 'Your license key expired on %s. Please <a href="%s" target="_blank" title="Renew your license key">renew your license key</a>.', 'give' ),
@@ -1460,6 +1459,18 @@ function give_hook_callback( $args ) {
 	 */
 	do_action( "give_{$id}" );
 
+}
+
+
+/**
+ * Check if radio(enabled/disabled) and checkbox(on) is active or not.
+ *
+ * @since  1.8
+ * @param  $value
+ * @return bool
+ */
+function give_is_setting_enabled( $value ) {
+	return ( in_array( $value, array( 'on', 'enabled' ) ) ? true : false );
 }
 //
 ///**

@@ -1664,7 +1664,7 @@ function give_form_display_content( $form_id, $args ) {
 	$content      = wpautop( get_post_meta( $form_id, '_give_form_content', true ) );
 	$show_content = give_get_form_content_placement( $form_id, $args );
 
-	if ( give_get_option( 'disable_the_content_filter' ) !== 'on' ) {
+	if ( ! give_is_setting_enabled( give_get_option( 'disable_the_content_filter', 'disabled' ) ) ) {
 		$content = apply_filters( 'the_content', $content );
 	}
 

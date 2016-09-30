@@ -1466,18 +1466,24 @@ table.give-table td.row-title p {
 /*------------------------------------
 Settings
 --------------------------------------*/
-.give_settings_page .nav-tab-wrapper {
+.give-settings-page .nav-tab-wrapper {
   margin-bottom: 5px; }
 
-.give_settings_page .cmb2-wrap .cmb-type-checkbox input[type="checkbox"] {
+.give-settings-page .cmb2-wrap .cmb-type-checkbox input[type="checkbox"] {
   display: block;
   margin-bottom: 5px; }
 
-.give_settings_page div.give-submit-wrap {
+.give-settings-page div.give-submit-wrap {
   margin: 20px 0; }
 
-.give_settings_page .give_forms_page_give-payment-history .postbox .hndle {
+.give-settings-page .give_forms_page_give-payment-history .postbox .hndle {
   cursor: default; }
+
+.give-settings-page .give-input-field {
+  width: 25em; }
+
+.give-settings-page table table input[type="text"] {
+  width: 15em; }
 
 .cmb-type-enabled-gateways ul li.ui-sortable-handle span.give-drag-handle {
   padding: 3px 0 0 4px;
@@ -1535,17 +1541,8 @@ p.give-field-description, .cmb2-metabox-description {
   font-size: 14px; }
 
 /* css fix start: This css fix is for api and system info setting tab.  */
-.give-setting-tab-header-api, .give-setting-tab-header-system_info {
-  display: none; }
-
-.give-setting-tab-body-api {
-  position: relative; }
-  .give-setting-tab-body-api .tablenav .actions {
-    overflow: visible; }
-  .give-setting-tab-body-api > tbody > tr > td {
-    padding: 0 !important; }
-  .give-setting-tab-body-api table th {
-    padding: 15px 10px !important; }
+.give-tools-setting-page .tablenav .actions {
+  overflow: visible; }
 
 /* css fix end*/
 .postbox-container #_give_donation_levels_repeat > .cmb-repeatable-grouping:not(:last-of-type) {
@@ -1579,9 +1576,6 @@ p.give-field-description, .cmb2-metabox-description {
 
 .cmb2-id-give-title > div.cmb-td {
   padding-bottom: 5px; }
-
-#system_info .give-submit-wrap {
-  display: none; }
 
 #system-info-textarea {
   width: 800px;
@@ -1626,9 +1620,6 @@ p.give-field-description, .cmb2-metabox-description {
     width: 300px;
     max-height: 200px;
     overflow-y: scroll; }
-
-#api .give-submit-wrap {
-  display: none; }
 
 #api .tablenav .actions {
   overflow: visible; }
@@ -1751,6 +1742,12 @@ a.give-delete {
 
 .post-type-give_forms .mce-container iframe, .post-type-give_forms .wp-editor-area {
   min-height: 400px; }
+
+.give-field-description {
+  color: #aaaaaa;
+  font-style: italic;
+  margin: 0;
+  padding-top: .5em; }
 
 /**
  * Give Payment History SCSS

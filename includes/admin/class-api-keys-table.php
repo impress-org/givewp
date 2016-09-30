@@ -172,6 +172,18 @@ class Give_API_Keys_Table extends WP_List_Table {
 	}
 
 	/**
+	 * Gets the name of the primary column.
+	 *
+	 * @since 1.5
+	 * @access protected
+	 *
+	 * @return string Name of the primary column.
+	 */
+	protected function get_primary_column_name() {
+		return 'user';
+	}
+
+	/**
 	 * Retrieve the table columns
 	 *
 	 * @access public
@@ -285,7 +297,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 		$hidden   = array(); // No hidden columns
 		$sortable = array(); // Not sortable... for now
 
-		$this->_column_headers = array( $columns, $hidden, $sortable, 'id' );
+		$this->_column_headers = array( $columns, $hidden, $sortable );
 
 		$data = $this->query();
 

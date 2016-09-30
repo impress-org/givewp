@@ -10,7 +10,7 @@
 /*------------------------------------
 Settings
 --------------------------------------*/
-.give_settings_page {
+.give-settings-page {
 
   .nav-tab-wrapper {
     margin-bottom: 5px;
@@ -27,6 +27,14 @@ Settings
 
   .give_forms_page_give-payment-history .postbox .hndle {
     cursor: default;
+  }
+
+  .give-input-field{
+    width: 25em;
+  }
+
+  table table input[type="text"]{
+    width: 15em;
   }
 
 }
@@ -115,21 +123,9 @@ p.give-field-description, .cmb2-metabox-description{
 }
 
 /* css fix start: This css fix is for api and system info setting tab.  */
-.give-setting-tab-header-api, .give-setting-tab-header-system_info{display:none}
-.give-setting-tab-body-api {
-  position: relative;
-
-  .tablenav .actions{
+.give-tools-setting-page {
+  .tablenav .actions {
     overflow: visible;
-  }
-
-  >tbody>tr>td{
-    padding: 0 !important;
-
-  }
-
-  table th{
-    padding: 15px 10px !important;;
   }
 }
 /* css fix end*/
@@ -180,10 +176,6 @@ p.give-field-description, .cmb2-metabox-description{
 //--------------------------------------------------------------
 // System Info page styles
 //--------------------------------------------------------------
-
-#system_info .give-submit-wrap {
-  display: none;
-}
 
 #system-info-textarea {
   width: 800px;
@@ -250,10 +242,6 @@ p.give-field-description, .cmb2-metabox-description{
 }
 
 #api {
-
-  .give-submit-wrap {
-    display: none;
-  }
 
   .tablenav .actions {
     overflow: visible;

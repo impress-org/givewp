@@ -31,6 +31,14 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		private static $settings = array();
 
 		/**
+		 * Setting filter and action prefix.
+		 *
+		 * @since 1.8
+		 * @var   string setting fileter and action anme prefix.
+		 */
+		private static $setting_filter_prefix = '';
+
+		/**
 		 * Error messages.
 		 *
 		 * @since 1.8
@@ -53,14 +61,17 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * @return array
 		 */
 		public static function get_settings_pages() {
-			if ( empty( self::$settings ) ) {
-				$settings = array();
-
-				include_once( 'settings/class-settings-page.php' );
-				$settings[] = include( 'settings/class-settings-cmb2-backward-compatibility.php' );
-
-				self::$settings = apply_filters( 'give_get_settings_pages', $settings );
-			}
+			/**
+			 * Filter the setting page.
+			 *
+			 * Note: filter dynamically fire on basis of setting page slug.
+			 * For example: if you register a setting page with give-settings menu slug
+			 *              then filter will be give-settings_get_settings_pages
+			 *
+			 * @since 1.8
+			 * @param array $settings Array of settings class object.
+			 */
+			self::$settings = apply_filters( self::$setting_filter_prefix . '_get_settings_pages', array() );
 
 			return self::$settings;
 		}
@@ -72,19 +83,35 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * @return void
 		 */
 		public static function save() {
-			global $current_tab;
+			$current_tab = give_get_current_setting_tab();
 
 			if ( empty( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'give-settings' ) ) {
 				die( __( 'Action failed. Please refresh the page and retry.', 'give' ) );
 			}
 
-			// Trigger actions.
-			do_action( 'give_settings_save_' . $current_tab );
+			/**
+			 * Trigger Action.
+			 *
+			 * Note: action dynamically fire on basis of setting page slug and current tab.
+			 * For example: if you register a setting page with give-settings menu slug and general current tab name
+			 *              then action will be give-settings_save_general
+			 *
+			 * @since 1.8
+			 */
+			do_action( self::$setting_filter_prefix . '_save_' . $current_tab );
 
 			self::add_message( __( 'Your settings have been saved.', 'give' ) );
 
-			// Trigger actions.
-			do_action( 'give_settings_saved' );
+			/**
+			 * Trigger Action.
+			 *
+			 * Note: action dynamically fire on basis of setting page slug.
+			 * For example: if you register a setting page with give-settings menu slug
+			 *              then action will be give-settings_saved
+			 *
+			 * @since 1.8
+			 */
+			do_action( self::$setting_filter_prefix . '_saved' );
 		}
 
 		/**
@@ -133,19 +160,32 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * Handles the display of the main give settings page in admin.
 		 *
 		 * @since  1.8
-		 * @return void
+		 * @return void|bool
 		 */
 		public static function output() {
-			global $current_section, $current_tab;
+			// Get current setting page.
+			self::$setting_filter_prefix = give_get_current_setting_page();
 
-			do_action( 'give_settings_start' );
+			// Bailout: Exit if setting page is not defined.
+			if( empty( self::$setting_filter_prefix ) ) {
+				return false;
+			}
+
+			/**
+			 * Trigger Action.
+			 *
+			 * Note: action dynamically fire on basis of setting page slug
+			 * For example: if you register a setting page with give-settings menu slug
+			 *              then action will be give-settings_start
+			 *
+			 * @since 1.8
+			 */
+			do_action( self::$setting_filter_prefix . '_start' );
+
+			$current_tab     = give_get_current_setting_tab();
 
 			// Include settings pages.
 			self::get_settings_pages();
-
-			// Get current tab/section.
-			$current_tab     = empty( $_GET['tab'] ) ? 'general' : sanitize_title( $_GET['tab'] );
-			$current_section = empty( $_REQUEST['section'] ) ? '' : sanitize_title( $_REQUEST['section'] );
 
 			// Save settings if data has been posted.
 			if ( ! empty( $_POST ) ) {
@@ -161,10 +201,20 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				self::add_message( stripslashes( $_GET['give_message'] ) );
 			}
 
-			// Get tabs for the settings page.
-			$tabs = apply_filters( 'give_settings_tabs_array', array() );
+			/**
+			 * Filter the tabs for current setting page.
+			 *
+			 * Note: filter dynamically fire on basis of setting page slug.
+			 * For example: if you register a setting page with give-settings menu slug and general current tab name
+			 *              then action will be give-settings_tabs_array
+			 *
+			 * @since 1.8
+			 */
+			$tabs = apply_filters( self::$setting_filter_prefix . '_tabs_array', array() );
 
 			include 'views/html-admin-settings.php';
+
+			return true;
 		}
 
 		/**
@@ -211,7 +261,8 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * @return void
 		 */
 		public static function output_fields( $options, $option_name = '' ) {
-			global $current_tab;
+			$current_tab = give_get_current_setting_tab();
+
 			foreach ( $options as $value ) {
 				if ( ! isset( $value['type'] ) ) {
 					continue;
@@ -235,6 +286,10 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					$value['desc'] = '';
 				}
 
+				if ( ! isset( $value['table_html'] ) ) {
+					$value['table_html'] = true;
+				}
+
 				// Custom attribute handling.
 				$custom_attributes = array();
 
@@ -255,24 +310,59 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						if ( ! empty( $value['title'] ) ) {
 							echo '<div class="give-setting-tab-header give-setting-tab-header-' . $current_tab . '"><h2>' . self::get_field_title( $value ) . '</h2><hr></div>';
 						}
+
 						if ( ! empty( $value['desc'] ) ) {
 							echo wpautop( wptexturize( wp_kses_post( $value['desc'] ) ) );
 						}
-						echo '<table class="form-table give-setting-tab-body give-setting-tab-body-' . $current_tab . '">' . "\n\n";
+
+						if( $value['table_html'] ) {
+							echo '<table class="form-table give-setting-tab-body give-setting-tab-body-' . $current_tab . '">' . "\n\n";
+						}
+
 						if ( ! empty( $value['id'] ) ) {
+
+							/**
+							 * Trigger Action.
+							 *
+							 * Note: action dynamically fire on basis of field id.
+							 *
+							 * @since 1.8
+							 */
 							do_action( 'give_settings_' . sanitize_title( $value['id'] ) );
 						}
+
 						break;
 
 					// Section Ends.
 					case 'sectionend':
 						if ( ! empty( $value['id'] ) ) {
+
+							/**
+							 * Trigger Action.
+							 *
+							 * Note: action dynamically fire on basis of field id.
+							 *
+							 * @since 1.8
+							 */
 							do_action( 'give_settings_' . sanitize_title( $value['id'] ) . '_end' );
 						}
-						echo '</table>';
+
+						if( $value['table_html'] ) {
+							echo '</table>';
+						}
+
 						if ( ! empty( $value['id'] ) ) {
+
+							/**
+							 * Trigger Action.
+							 *
+							 * Note: action dynamically fire on basis of field id.
+							 *
+							 * @since 1.8
+							 */
 							do_action( 'give_settings_' . sanitize_title( $value['id'] ) . '_after' );
 						}
+
 						break;
 
 					// Standard text inputs and subtypes like 'number'.
@@ -295,7 +385,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 									type="<?php echo esc_attr( $type ); ?>"
 									style="<?php echo esc_attr( $value['css'] ); ?>"
 									value="<?php echo esc_attr( $option_value ); ?>"
-									class="<?php echo esc_attr( $value['class'] ); ?>"
+									class="give-input-field<?php echo ( empty( $value['class'] ) ? '' :  ' '. esc_attr( $value['class'] ) ); ?>"
 									<?php echo implode( ' ', $custom_attributes ); ?>
 									/> <?php echo $description; ?>
 							</td>
@@ -345,21 +435,25 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 									<?php echo implode( ' ', $custom_attributes ); ?>
 									<?php echo ( 'multiselect' == $value['type'] ) ? 'multiple="multiple"' : ''; ?>
 									>
-									<?php
-									foreach ( $value['options'] as $key => $val ) {
-										?>
-										<option value="<?php echo esc_attr( $key ); ?>" <?php
 
-										if ( is_array( $option_value ) ) {
-											selected( in_array( $key, $option_value ), true );
-										} else {
-											selected( $option_value, $key );
-										}
+									<?php
+									if( ! empty( $value['options'] ) ) {
+										foreach ( $value['options'] as $key => $val ) {
+											?>
+											<option value="<?php echo esc_attr( $key ); ?>" <?php
+
+											if ( is_array( $option_value ) ) {
+												selected( in_array( $key, $option_value ), true );
+											} else {
+												selected( $option_value, $key );
+											}
 
 											?>><?php echo $val ?></option>
 											<?php
+										}
 									}
 									?>
+
 								</select> <?php echo $description; ?>
 							</td>
 						</tr><?php
@@ -423,6 +517,42 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						<?php
 						break;
 
+					// Multi Checkbox input.
+					case 'multicheck' :
+						$option_value    = self::get_option( $option_name, $value['id'], $value['default'] );
+						?>
+						<tr valign="top">
+							<th scope="row" class="titledesc">
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
+							</th>
+							<td class="give-forminp give-forminp-<?php echo sanitize_title( $value['type'] ) ?> <?php echo ( ! empty( $value['class'] ) ? $value['class'] : '' ); ?>">
+								<fieldset>
+									<ul>
+										<?php
+										foreach ( $value['options'] as $key => $val ) {
+											?>
+											<li>
+												<label>
+													<input
+														name="<?php echo esc_attr( $value['id'] ); ?>[]"
+														value="<?php echo $key; ?>"
+														type="checkbox"
+														style="<?php echo esc_attr( $value['css'] ); ?>"
+														<?php echo implode( ' ', $custom_attributes ); ?>
+														<?php if( in_array( $key, $option_value ) ) { echo 'checked="checked"'; } ?>
+													/> <?php echo $val ?>
+												</label>
+											</li>
+											<?php
+										}
+										?>
+										<?php echo $description; ?>
+								</fieldset>
+							</td>
+						</tr>
+						<?php
+						break;
+
 					// File input field.
 					case 'file' :
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
@@ -437,7 +567,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 											name="<?php echo esc_attr( $value['id'] ); ?>"
 											id="<?php echo esc_attr( $value['id'] ); ?>"
 											type="text"
-											class="<?php echo esc_attr( isset( $value['class'] ) ? $value['class'] : '' ); ?>"
+											class="give-input-field<?php echo esc_attr( isset( $value['class'] ) ? ' ' . $value['class'] : '' ); ?>"
 											value="<?php echo $option_value; ?>"
 											style="<?php echo esc_attr( $value['css'] ); ?>"
 											<?php echo implode( ' ', $custom_attributes ); ?>
@@ -527,12 +657,21 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 					// Custom: API field.
 					case 'api' :
-						?><tr valign="top">
-							<td class="give-forminp">
-								<?php give_api_callback(); ?>
-								<?php echo $description; ?>
-							</td>
-						</tr><?php
+						give_api_callback();
+						echo $description;
+						break;
+
+					// Custom: Log field.
+					case 'logs' :
+						// Note: there are no need to check for html field param because we want custom html to this field.
+						give_reports_tab_logs();
+						echo $description;
+						break;
+
+					// Custom: API field.
+					case 'data' :
+						give_tools_recount_stats_display();
+						echo $description;
 						break;
 
 					// Default: run an action
@@ -648,7 +787,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				 *
 				 * @since 1.8
 				 */
-				$value = apply_filters( "give_admin_settings_sanitize_option_$field_option_name", $value, $option, $raw_value );
+				$value = apply_filters( "give_admin_settings_sanitize_option_{$field_option_name}", $value, $option, $raw_value );
 
 				if ( is_null( $value ) ) {
 					continue;

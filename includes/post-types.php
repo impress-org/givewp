@@ -23,9 +23,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_setup_post_types() {
 
 	/** Give Forms Post Type */
-	$give_forms_singular = give_get_option( 'disable_forms_singular' ) !== 'on' ? true : false;
+	$give_forms_singular = ! give_is_setting_enabled( give_get_option( 'disable_forms_singular', 'disabled' ) );
 
-	$give_forms_archives = give_get_option( 'disable_forms_archives' ) !== 'on' ? true : false;
+	$give_forms_archives = ! give_is_setting_enabled( give_get_option( 'disable_forms_archives', 'disabled' ) );
 
 	$give_forms_slug = defined( 'GIVE_SLUG' ) ? GIVE_SLUG : 'donations';
 	//support for old 'GIVE_FORMS_SLUG' constant
@@ -65,12 +65,12 @@ function give_setup_post_types() {
 	);
 
 	//Has the user disabled the excerpt
-	if ( give_get_option( 'disable_forms_excerpt' ) === 'on' ) {
+	if (  give_is_setting_enabled( give_get_option( 'disable_forms_excerpt', 'disabled' ) ) ) {
 		unset( $give_form_supports[2] );
 	}
 
 	//Has user disabled the featured image?
-	if ( give_get_option( 'disable_form_featured_img' ) === 'on' ) {
+	if ( give_is_setting_enabled( give_get_option( 'disable_form_featured_img', 'disabled' ) ) ) {
 		unset( $give_form_supports[1] );
 		remove_action( 'give_before_single_form_summary', 'give_show_form_images' );
 	}
@@ -384,7 +384,7 @@ add_action( 'after_setup_theme', 'give_add_thumbnail_support', 10 );
  * Ensure post thumbnail support is turned on
  */
 function give_add_thumbnail_support() {
-	if ( give_get_option( 'disable_form_featured_img' ) === 'on' ) {
+	if ( give_is_setting_enabled( give_get_option( 'disable_form_featured_img', 'disabled' ) ) ) {
 		return;
 	}
 	if ( ! current_theme_supports( 'post-thumbnails' ) ) {
@@ -402,7 +402,10 @@ function give_add_thumbnail_support() {
 function give_widgets_init() {
 
 	//Single Give Forms (disabled if single turned off in settings)
-	if ( give_get_option( 'disable_forms_singular' ) !== 'on' && give_get_option( 'disable_form_sidebar' ) !== 'on' ) {
+	if (
+		! give_is_setting_enabled( give_get_option( 'disable_forms_singular', 'disabled' ) )
+		&& ! give_is_setting_enabled( give_get_option( 'disable_form_sidebar', 'disabled' ) )
+	) {
 
 		register_sidebar( apply_filters( 'give_forms_single_sidebar', array(
 			'name'          => esc_html__( 'Give Single Form Sidebar', 'give' ),
