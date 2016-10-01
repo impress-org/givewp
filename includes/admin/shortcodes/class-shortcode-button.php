@@ -125,7 +125,9 @@ final class Give_Shortcode_Button {
 			'post.php',
 			'page.php',
 			'post-new.php',
-			'post-edit.php'
+			'post-edit.php',
+			'edit.php',
+			'edit.php?post_type=page',
 		) );
 
 		// Only run in admin post/page creation and edit screens
