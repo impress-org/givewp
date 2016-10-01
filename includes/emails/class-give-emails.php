@@ -19,6 +19,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Give_Emails Class.
  *
+ * @property $from_address
+ * @property $from_name
+ * @property $content_type
+ * @property $headers
+ * @property $html
+ * @property $template
+ * @property $heading
+ *
  * @since 1.0
  */
 class Give_Emails {
@@ -204,6 +212,10 @@ class Give_Emails {
 	 * Build the final email.
 	 *
 	 * @since 1.0
+	 *
+	 * @param $message
+	 *
+	 * @return mixed|void
 	 */
 	public function build_email( $message ) {
 
