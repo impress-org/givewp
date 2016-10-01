@@ -1684,9 +1684,11 @@ add_filter( 'comment_feed_where', 'give_hide_payment_notes_from_feeds', 10, 2 );
  * @return array Array of comment counts
  */
 function give_remove_payment_notes_in_comment_counts( $stats, $post_id ) {
-	global $wpdb, $pagenow;
+	global $wpdb;
 
-	if ( 'index.php' != $pagenow ) {
+	$screen = get_current_screen();
+
+	if ( 'index.php' != $screen->parent_file ) {
 		return $stats;
 	}
 
