@@ -566,28 +566,28 @@ x:-o-prefocus, .qtip .qtip-tip {
 /**
  * Give Frontend Fonts SCSS
  *
- * @description: Fonts are from icomoon and the src paths need to be relative to template directory
- * @package     Give
+ * Fonts are from icomoon and the src paths need to be relative to template directory.
+ *
+ @package     Give
  * @subpackage  SCSS/Frontend
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 @font-face {
   font-family: 'give-icomoon';
-  src: url("../assets/fonts/icomoon.eot?kdnr3d");
-  src: url("../assets/fonts/icomoon.eot?kdnr3d#iefix") format("embedded-opentype"), url("../assets/fonts/icomoon.woff?kdnr3d") format("woff"), url("../assets/fonts/icomoon.ttf?kdnr3d") format("truetype"), url("../assets/fonts/icomoon.svg?kdnr3d#icomoon") format("svg");
   font-weight: normal;
   font-style: normal; }
 
 [class^="give-icon-"], [class*=" give-icon-"] {
   font-family: 'give-icomoon';
+  src: url("../assets/fonts/icomoon.eot?kdnr3d");
+  src: url("../assets/fonts/icomoon.eot?kdnr3d#iefix") format("embedded-opentype"), url("../assets/fonts/icomoon.woff?kdnr3d") format("woff"), url("../assets/fonts/icomoon.svg?kdnr3d#icomoon") format("svg");
   speak: none;
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
   text-transform: none;
   line-height: 1;
-  /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
@@ -629,13 +629,14 @@ x:-o-prefocus, .qtip .qtip-tip {
 
 .dashicons-give:before {
   font-family: 'give-icomoon';
+  src: url("../assets/fonts/icomoon.eot?kdnr3d");
+  src: url("../assets/fonts/icomoon.eot?kdnr3d#iefix") format("embedded-opentype"), url("../assets/fonts/icomoon.woff?kdnr3d") format("woff"), url("../assets/fonts/icomoon.svg?kdnr3d#icomoon") format("svg");
   speak: none;
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
   text-transform: none;
   line-height: 1;
-  /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   content: "\e800"; }
@@ -659,6 +660,47 @@ x:-o-prefocus, .qtip .qtip-tip {
   100% {
     -webkit-transform: rotate(-359deg);
     transform: rotate(-359deg); } }
+
+@font-face {
+  font-family: 'give-icomoon';
+  font-weight: normal;
+  font-style: normal; }
+
+.give-metabox-tabs li a:before {
+  font-family: 'give-icomoon';
+  src: url("../assets/fonts/icomoon.eot?kdnr3d");
+  src: url("../assets/fonts/icomoon.eot?kdnr3d#iefix") format("embedded-opentype"), url("../assets/fonts/icomoon.woff?kdnr3d") format("woff"), url("../assets/fonts/icomoon.svg?kdnr3d#icomoon") format("svg");
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 12px;
+  vertical-align: baseline;
+  margin: 0 0 0 5px; }
+
+.give-metabox-tabs li.form_field_options_tab > a:before {
+  content: "\e604"; }
+
+.give-metabox-tabs li.donation_goal_options_tab > a:before {
+  content: "\e904"; }
+
+.give-metabox-tabs li.form_display_options_tab > a:before {
+  content: "\e90c"; }
+
+.give-metabox-tabs li.form_content_options_tab > a:before {
+  content: "\e902"; }
+
+.give-metabox-tabs li.form_terms_options_tab > a:before {
+  position: relative;
+  top: 1px;
+  content: "\e900"; }
+
+.give-metabox-tabs li.offline_donations_options_tab > a:before {
+  content: "\e8df"; }
 
 /**
  * Give Forms SCSS
@@ -2110,13 +2152,14 @@ input.give-price-field {
 
 #dashboard_right_now .give-forms-count:before {
   font-family: 'give-icomoon';
+  src: url("../assets/fonts/icomoon.eot?kdnr3d");
+  src: url("../assets/fonts/icomoon.eot?kdnr3d#iefix") format("embedded-opentype"), url("../assets/fonts/icomoon.woff?kdnr3d") format("woff"), url("../assets/fonts/icomoon.svg?kdnr3d#icomoon") format("svg");
   speak: none;
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
   text-transform: none;
   line-height: 1;
-  /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 18px;

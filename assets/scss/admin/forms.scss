@@ -142,20 +142,19 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
   margin-left: -1px;
 }
 
-.give_options_panel  input[ type="text"]{
+.give_options_panel input[ type="text"] {
   padding: 5px;
   width: 100%;
 }
 
-
 input.give-text_small,
 input.give-text-small {
-  width: 100px!important;
+  width: 100px !important;
 }
 
 input.give-text-medium,
 input.give-text_medium {
-  width: 200px!important;
+  width: 200px !important;
 }
 
 .give-underline {
@@ -265,7 +264,6 @@ input.give-text_medium {
   }
 
 }
-
 
 //Small Resolution Repeater
 @media only screen and (max-width: 850px) {
@@ -384,14 +382,13 @@ Tooltips
 
 }
 
-
 #give-metabox-form-data {
   .inside {
     margin: 0;
     padding: 0;
   }
 
-  .give-metabox-panel-wrap{
+  .give-metabox-panel-wrap {
     background: #fff;
     overflow: hidden;
   }
@@ -407,7 +404,7 @@ Tooltips
     border-right: 1px solid #eee;
     box-sizing: border-box;
 
-    :after{
+    :after {
       content: "";
       display: block;
       width: 100%;
@@ -425,19 +422,21 @@ Tooltips
       display: block;
       position: relative;
 
-      a{
+      a {
         margin: 0;
         padding: 10px;
         display: block;
         box-shadow: none;
         text-decoration: none;
-        line-height: 20px!important;
+        line-height: 20px !important;
         border-bottom: 1px solid #eee;
+
       }
+
     }
 
-    li.active{
-      a{
+    li.active {
+      a {
         color: #555;
         position: relative;
         background-color: #eee;
@@ -450,12 +449,12 @@ Tooltips
     width: 80%;
     min-width: 175px;
 
-    .give-field-wrap{
+    .give-field-wrap {
       padding: 1em 20px 1em 162px !important;
       margin: 0;
       border-bottom: 1px solid #eee;
 
-      >label, >legend{
+      > label, > legend {
         float: left;
         width: 150px;
         padding: 0;
@@ -465,7 +464,7 @@ Tooltips
         font-weight: 400;
       }
 
-      .give-field-description{
+      .give-field-description {
         color: #aaaaaa;
         font-size: 12px;
         line-height: 18px;
@@ -474,14 +473,16 @@ Tooltips
         font-style: italic;
       }
 
-      ul{  margin: 0;  }
+      ul {
+        margin: 0;
+      }
 
-      .mce-container iframe{
+      .mce-container iframe {
         min-height: 200px;
       }
     }
 
-    .give-field-wrap:last-child{
+    .give-field-wrap:last-child {
       border-bottom: 0;
     }
 
@@ -489,11 +490,11 @@ Tooltips
       width: 100%;
     }
 
-    .give-field-wrap:hover .give-field-row-actions{
+    .give-field-wrap:hover .give-field-row-actions {
       display: block;
     }
 
-    .give-field-wrap:last-child{
+    .give-field-wrap:last-child {
       border-bottom: 0;
     }
 
@@ -508,26 +509,26 @@ Tooltips
       }
     }
 
-    .give-repeatable-field-section{
+    .give-repeatable-field-section {
       padding: 10px;
       background: #f5f5f5;
 
-      .give-repeatable-fields-section-wrapper{
+      .give-repeatable-fields-section-wrapper {
         width: 100%;
         background-color: white;
         border-collapse: collapse;
       }
 
-      .give-row{
+      .give-row {
         border-bottom: 15px solid #f5f5f5;
         background-color: white;
       }
-      
-      .give-template{
+
+      .give-template {
         display: none;
       }
 
-      .give-row:last-child{
+      .give-row:last-child {
         border-bottom: 10px solid #f5f5f5;
       }
 
@@ -535,7 +536,7 @@ Tooltips
         padding: 0;
       }
 
-      .give-remove{
+      .give-remove {
         float: right;
         width: 36px;
         height: 36px;
@@ -548,7 +549,7 @@ Tooltips
         cursor: pointer;
       }
 
-      .give-remove:hover{
+      .give-remove:hover {
         background-color: red;
         color: white;
         width: 30px;
@@ -558,23 +559,23 @@ Tooltips
         line-height: 28px;
       }
 
-      .give-row-head{
+      .give-row-head {
         border-bottom: 1px solid #eee;
         cursor: move;
-        h2{
-          text-align: left!important;
+        h2 {
+          text-align: left !important;
         }
       }
 
-      .give-row.closed .toggle-indicator:before{
+      .give-row.closed .toggle-indicator:before {
         content: "\f140";
       }
 
-      .give-add-repeater-field-section-row-wrap{
+      .give-add-repeater-field-section-row-wrap {
         background-color: #f5f5f5;
       }
 
-      #give-add-repeater-field-section-row{
+      #give-add-repeater-field-section-row {
         margin: 5px 5px;
       }
 
@@ -582,13 +583,17 @@ Tooltips
         border-bottom: 1px solid #eee;
       }
 
-      .give-ui-placeholder-state-highlight{
+      .give-ui-placeholder-state-highlight {
         background-color: #68bb6c;
       }
 
       // Sortable jquery css fix.
-      .ui-sortable-helper {  display: table;  }
-      .give-row.ui-sortable-helper{  border-bottom: 0;  }
+      .ui-sortable-helper {
+        display: table;
+      }
+      .give-row.ui-sortable-helper {
+        border-bottom: 0;
+      }
     }
   }
 }
