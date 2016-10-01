@@ -119,7 +119,7 @@ final class Give_Shortcode_Button {
 	 */
 	public function shortcode_button() {
 
-		global $pagenow;
+		$screen = get_current_screen();
 
 		$shortcode_button_pages = apply_filters( 'give_shortcode_button_pages', array(
 			'post.php',
@@ -129,7 +129,7 @@ final class Give_Shortcode_Button {
 		) );
 
 		// Only run in admin post/page creation and edit screens
-		if ( in_array( $pagenow, $shortcode_button_pages )
+		if ( in_array( $screen->parent_file, $shortcode_button_pages )
 		     && apply_filters( 'give_shortcode_button_condition', true )
 		     && ! empty( self::$shortcodes )
 		) {
