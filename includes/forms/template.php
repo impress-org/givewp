@@ -609,7 +609,7 @@ add_action( 'give_after_donation_levels', 'give_display_checkout_button', 10, 2 
  */
 function give_user_info_fields( $form_id ) {
 	// Get user info.
-	$give_user_info = _give_get_prefill_form_field_values();
+	$give_user_info = _give_get_prefill_form_field_values( $form_id );
 
 	/**
 	 * Fire before user personal information fields
@@ -832,7 +832,7 @@ add_action( 'give_cc_form', 'give_get_cc_form' );
  */
 function give_default_cc_address_fields( $form_id ) {
 	// Get user info.
-	$give_user_info = _give_get_prefill_form_field_values();
+	$give_user_info = _give_get_prefill_form_field_values( $form_id );
 
 	$logged_in = is_user_logged_in();
 

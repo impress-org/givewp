@@ -885,9 +885,20 @@ function give_show_login_register_option( $form_id ) {
  * Note: this function will extract form field values from give_user_info param in user request (POST/GET).
  *
  * @since  1.8
+ * @param  int   $form_id
  * @return array
  */
-function _give_get_prefill_form_field_values() {
+function _give_get_prefill_form_field_values( $form_id ) {
+
+	// Bailout: Auto fill form field values only form form which donor is donating.
+	if(
+		empty( $_GET['form-id'] )
+		|| ! $form_id
+		|| ( $form_id !== absint( $_GET['form-id'] ) )
+	) {
+		return array();
+	}
+
 	// Get purchase data,
 	$give_purchase_data = Give()->session->get( 'give_purchase' );
 
@@ -940,6 +951,6 @@ function _give_get_prefill_form_field_values() {
 				$give_user_info['card_zip']  = ( ! empty( $user_address['zip'] ) ? $user_address['zip'] : '' );
 		}
 	endif;
-	
+
 	return $give_user_info;
 }
