@@ -166,28 +166,7 @@ function give_send_back_to_checkout( $args = array() ) {
 
 	$redirect = ( isset( $_POST['give-current-url'] ) ) ? $_POST['give-current-url'] : '';
 	$form_id  = isset( $_POST['give-form-id'] ) ? $_POST['give-form-id'] : 0;
-
-	/**
-	 * Filter the donation form field values enter either by guest or logged in user.
-	 *
-	 * @since 1.8
-	 * @param array $form_field_values
-	 */
-	$form_field_values = apply_filters( 'give_send_back_to_checkout_form_field_values', array(
-		'give_first'      => isset( $_REQUEST['give_first'] )      ? sanitize_text_field( $_REQUEST['give_first'] )      : '',
-		'give_last'       => isset( $_REQUEST['give_last'] )       ? sanitize_text_field( $_REQUEST['give_last'] )       : '',
-		'give_email'      => isset( $_REQUEST['give_email'] )      ? sanitize_text_field( $_REQUEST['give_email'] )      : '',
-		'card_address'    => isset( $_REQUEST['card_address'] )    ? sanitize_text_field( $_REQUEST['card_address'] )    : '',
-		'card_address_2'  => isset( $_REQUEST['card_address_2'] )  ? sanitize_text_field( $_REQUEST['card_address_2'] )  : '',
-		'card_city'       => isset( $_REQUEST['card_city'] )       ? sanitize_text_field( $_REQUEST['card_city'] )       : '',
-		'card_zip'        => isset( $_REQUEST['card_zip'] )        ? sanitize_text_field( $_REQUEST['card_zip'] )        : '',
-		'billing_country' => isset( $_REQUEST['billing_country'] ) ? sanitize_text_field( $_REQUEST['billing_country'] ) : '',
-		'card_state'      => isset( $_REQUEST['card_state'] )      ? sanitize_text_field( $_REQUEST['card_state'] )      : '',
-	) );
 	
-	// Instead adding data to session instead url. 
-	Give()->session->set( 'give_user_info', base64_encode( serialize( $form_field_values ) ) );
-
 	$defaults = array(
 		'form-id'   => (int) $form_id,
 	);
