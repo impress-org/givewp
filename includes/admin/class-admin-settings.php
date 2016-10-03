@@ -85,7 +85,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		public static function save() {
 			$current_tab = give_get_current_setting_tab();
 
-			if ( empty( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'give-settings' ) ) {
+			if ( empty( $_REQUEST['_give-save-settings'] ) || ! wp_verify_nonce( $_REQUEST['_give-save-settings'], 'give-save-settings' ) ) {
 				die( __( 'Action failed. Please refresh the page and retry.', 'give' ) );
 			}
 
