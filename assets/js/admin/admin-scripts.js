@@ -266,6 +266,7 @@ jQuery.noConflict();
 
         init: function () {
             this.toggle_options();
+			this.main_setting_update_notice();
         },
 
         toggle_options: function () {
@@ -281,6 +282,20 @@ jQuery.noConflict();
                 }
             }).change();
         },
+
+        main_setting_update_notice: function () {
+        	var $setting_message = $('#setting-error-give-setting-updated');
+			if( $setting_message.length ) {
+
+				// auto hide setting message in 5 seconds.
+				window.setTimeout(
+					function(){
+						$setting_message.slideUp();
+					},
+					5000
+				);
+			}
+		}
 
     };
 

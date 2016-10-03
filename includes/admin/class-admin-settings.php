@@ -100,7 +100,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			 */
 			do_action( self::$setting_filter_prefix . '_save_' . $current_tab );
 
-			self::add_message( __( 'Your settings have been saved.', 'give' ) );
+			self::add_message( 'give-setting-updated', __( 'Your settings have been saved.', 'give' ) );
 
 			/**
 			 * Trigger Action.
@@ -118,22 +118,24 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * Add a message.
 		 *
 		 * @since  1.8
-		 * @param  string $text Message text.
+		 * @param  string $code    Message code (Note: This should be unique).
+		 * @param  string $message Message text.
 		 * @return void
 		 */
-		public static function add_message( $text ) {
-			self::$messages[] = $text;
+		public static function add_message( $code, $message ) {
+			self::$messages[ $code ] = $message;
 		}
 
 		/**
 		 * Add an error.
 		 *
 		 * @since  1.8
-		 * @param  string $text Message tex.
+		 * @param  string $code    Message code (Note: This should be unique).
+		 * @param  string $message Message text.
 		 * @return void
 		 */
-		public static function add_error( $text ) {
-			self::$errors[] = $text;
+		public static function add_error( $code, $message ) {
+			self::$errors[ $code ] = $message;
 		}
 
 		/**
@@ -144,14 +146,18 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 */
 		public static function show_messages() {
 			if ( 0 < count( self::$errors ) ) {
-				foreach ( self::$errors as $error ) {
-					echo '<div id="give-message" class="notice notice-error"><p><strong>' . esc_html( $error ) . '</strong></p></div>';
-				}
-			} elseif ( 0 < count( self::$messages ) ) {
-				foreach ( self::$messages as $message ) {
-					echo '<div id="give-message" class="notice notice-success"><p><strong>' . esc_html( $message ) . '</strong></p></div>';
+				foreach ( self::$errors as $code => $message ) {
+					add_settings_error( 'give-notices', $code, $message, 'give-notice error' );
 				}
 			}
+
+			if ( 0 < count( self::$messages ) ) {
+				foreach ( self::$messages as $code => $message ) {
+					add_settings_error( 'give-notices', $code, $message, 'give-notice updated' );
+				}
+			}
+
+			settings_errors( 'give-notices' );
 		}
 
 		/**
@@ -190,15 +196,6 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			// Save settings if data has been posted.
 			if ( ! empty( $_POST ) ) {
 				self::save();
-			}
-
-			// Add any posted messages.
-			if ( ! empty( $_GET['give_error'] ) ) {
-				self::add_error( stripslashes( $_GET['give_error'] ) );
-			}
-
-			if ( ! empty( $_GET['give_message'] ) ) {
-				self::add_message( stripslashes( $_GET['give_message'] ) );
 			}
 
 			/**
