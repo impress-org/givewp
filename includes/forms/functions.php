@@ -938,8 +938,6 @@ function _give_get_prefill_form_field_values() {
 				$give_user_info['give_email']  = $user_data->user_email;
 		}
 	endif;
-
-	error_log( print_r(  $give_user_info, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-
+	
 	return $give_user_info;
 }
