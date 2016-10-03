@@ -585,6 +585,11 @@ function give_v18_upgrades_form_metadata() {
 				update_post_meta( get_the_ID(), '_give_logged_in_only', 'yes' );
 			}
 
+			// Guest donation setting.
+			if( 'on' === get_post_meta( get_the_ID(), '_give_offline_donation_enable_billing_fields_single', true ) ) {
+				update_post_meta( get_the_ID(), '_give_offline_donation_enable_billing_fields_single', 'enabled' );
+			}
+
 			// Term and conditions.
 			if( 'none' === get_post_meta( get_the_ID(), '_give_terms_option', true ) ) {
 				update_post_meta( get_the_ID(), '_give_terms_option', 'no' );
