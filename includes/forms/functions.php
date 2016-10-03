@@ -888,15 +888,13 @@ function give_show_login_register_option( $form_id ) {
  * @return array
  */
 function _give_get_prefill_form_field_values() {
-	$give_user_info = empty( Give()->session->get( 'give_user_info' ) )
+	// Get purchase data,
+	$give_purchase_data = Give()->session->get( 'give_purchase' );
+
+	// Get form info.
+	$give_user_info = empty( $give_purchase_data['post_data'] )
 		? array()
-		: Give()->session->get( 'give_user_info' );
-	
-	// Get user data from url param.
-	// @see give_send_back_to_checkout#L176.
-	if( ! empty( $give_user_info ) ) {
-		$give_user_info = unserialize( base64_decode( Give()->session->get( 'give_user_info' ) ) );
-	}
+		: $give_purchase_data['post_data'];
 
 	if ( is_user_logged_in() ) :
 		$user_data    = get_userdata( get_current_user_id() );
