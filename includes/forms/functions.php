@@ -920,7 +920,8 @@ function _give_get_prefill_form_field_values() {
 	}
 
 	if ( is_user_logged_in() ) :
-		$user_data = get_userdata( get_current_user_id() );
+		$user_data    = get_userdata( get_current_user_id() );
+		$user_address = get_user_meta( get_current_user_id(), '_give_user_address', true );
 
 		// Add user value to donation form if there did not fill already.
 		switch ( true ) {
@@ -936,6 +937,30 @@ function _give_get_prefill_form_field_values() {
 			// Email
 			case  empty( $give_user_info['give_email'] ) :
 				$give_user_info['give_email']  = $user_data->user_email;
+
+			// Street address 1.
+			case  empty( $user_address['card_address'] ) :
+				$give_user_info['card_address']  = ( ! empty( $user_address['line1'] ) ? $user_address['line1'] : '' );
+
+			// Street address 2.
+			case  empty( $user_address['card_address_2'] ) :
+				$give_user_info['card_address_2']  = ( ! empty( $user_address['line2'] ) ? $user_address['line2'] : '' );
+
+			// Country.
+			case  empty( $user_address['billing_country'] ) :
+				$give_user_info['billing_country']  = ( ! empty( $user_address['country'] ) ? $user_address['country'] : '' );
+
+			// State.
+			case  empty( $user_address['card_state'] ) :
+				$give_user_info['card_state']  = ( ! empty( $user_address['state'] ) ? $user_address['state'] : '' );
+
+			// City.
+			case  empty( $user_address['card_city'] ) :
+				$give_user_info['card_city']  = ( ! empty( $user_address['city'] ) ? $user_address['city'] : '' );
+
+			// Zipcode.
+			case  empty( $user_address['card_zip'] ) :
+				$give_user_info['card_zip']  = ( ! empty( $user_address['zip'] ) ? $user_address['zip'] : '' );
 		}
 	endif;
 	
