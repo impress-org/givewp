@@ -146,14 +146,18 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 */
 		public static function show_messages() {
 			if ( 0 < count( self::$errors ) ) {
-				foreach ( self::$errors as $error ) {
-					echo '<div id="give-message" class="notice notice-error"><p><strong>' . esc_html( $error ) . '</strong></p></div>';
-				}
-			} elseif ( 0 < count( self::$messages ) ) {
-				foreach ( self::$messages as $message ) {
-					echo '<div id="give-message" class="notice notice-success"><p><strong>' . esc_html( $message ) . '</strong></p></div>';
+				foreach ( self::$errors as $code => $message ) {
+					add_settings_error( 'give-notices', $code, $message, 'give-notice error' );
 				}
 			}
+
+			if ( 0 < count( self::$messages ) ) {
+				foreach ( self::$messages as $code => $message ) {
+					add_settings_error( 'give-notices', $code, $message, 'give-notice updated' );
+				}
+			}
+
+			settings_errors( 'give-notices' );
 		}
 
 		/**
