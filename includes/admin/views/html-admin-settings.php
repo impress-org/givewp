@@ -85,8 +85,8 @@ if( ! empty( $tabs ) ) :
 
 			if ( empty( $GLOBALS['give_hide_save_button'] ) ) : ?>
 				<div class="give-submit-wrap">
+					<?php wp_nonce_field( 'give-save-settings', '_give-save-settings' ); ?>
 					<input name="save" class="button-primary give-save-button" type="submit" value="<?php esc_attr_e( 'Save changes', 'give' ); ?>" />
-					<?php wp_nonce_field( 'give-settings' ); ?>
 				</div>
 			<?php endif; ?>
 		<?php echo $form_close_tag; ?>
