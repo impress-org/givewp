@@ -47,6 +47,12 @@ if ( ! class_exists( 'Give_Settings_System_Info' ) ) :
 
 			add_filter( 'give-tools_tabs_array', array( $this, 'add_settings_page' ), 20 );
 			add_action( "give-tools_settings_{$this->id}_page", array( $this, 'output' ) );
+
+			// Do not use main form for this tab.
+			if( give_get_current_setting_tab() === $this->id ) {
+				add_action( "give-tools_open_form", '__return_empty_string' );
+				add_action( "give-tools_close_form", '__return_empty_string' );
+			}
 		}
 
 		/**
