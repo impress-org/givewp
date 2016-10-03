@@ -118,22 +118,24 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * Add a message.
 		 *
 		 * @since  1.8
-		 * @param  string $text Message text.
+		 * @param  string $code    Message code (Note: This should be unique).
+		 * @param  string $message Message text.
 		 * @return void
 		 */
-		public static function add_message( $text ) {
-			self::$messages[] = $text;
+		public static function add_message( $code, $message ) {
+			self::$messages[ $code ] = $message;
 		}
 
 		/**
 		 * Add an error.
 		 *
 		 * @since  1.8
-		 * @param  string $text Message tex.
+		 * @param  string $code    Message code (Note: This should be unique).
+		 * @param  string $message Message text.
 		 * @return void
 		 */
-		public static function add_error( $text ) {
-			self::$errors[] = $text;
+		public static function add_error( $code, $message ) {
+			self::$errors[ $code ] = $message;
 		}
 
 		/**
