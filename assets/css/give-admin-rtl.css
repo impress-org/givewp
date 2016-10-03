@@ -686,7 +686,7 @@ x:-o-prefocus, .qtip .qtip-tip {
   content: "\e604"; }
 
 .give-metabox-tabs li.donation_goal_options_tab > a:before {
-  content: "\e904"; }
+  content: "\e901"; }
 
 .give-metabox-tabs li.form_display_options_tab > a:before {
   content: "\e90c"; }
