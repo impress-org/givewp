@@ -898,3 +898,48 @@ function give_show_login_register_option( $form_id ) {
 	return apply_filters( 'give_show_register_form', $show_register_form, $form_id );
 
 }
+
+
+/**
+ * Get pre fill form field value.
+ *
+ * Note: this function will extract form field values from give_user_info param in user request (POST/GET).
+ *
+ * @since  1.8
+ * @return array
+ */
+function _give_get_prefill_form_field_values() {
+	$give_user_info = empty( Give()->session->get( 'give_user_info' ) )
+		? array()
+		: Give()->session->get( 'give_user_info' );
+	
+	// Get user data from url param.
+	// @see give_send_back_to_checkout#L176.
+	if( ! empty( $give_user_info ) ) {
+		$give_user_info = unserialize( base64_decode( Give()->session->get( 'give_user_info' ) ) );
+	}
+
+	if ( is_user_logged_in() ) :
+		$user_data = get_userdata( get_current_user_id() );
+
+		// Add user value to donation form if there did not fill already.
+		switch ( true ) {
+
+			// First name.
+			case empty( $give_user_info['give_first'] ):
+				$give_user_info['give_first']  = $user_data->first_name;
+
+			// Last name.
+			case empty( $give_user_info['give_last'] ) :
+				$give_user_info['give_last']   = $user_data->last_name;
+
+			// Email
+			case  empty( $give_user_info['give_email'] ) :
+				$give_user_info['give_email']  = $user_data->user_email;
+		}
+	endif;
+
+	error_log( print_r(  $give_user_info, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
+
+	return $give_user_info;
+}
