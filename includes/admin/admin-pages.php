@@ -372,17 +372,18 @@ add_filter( 'give-settings_get_settings_pages', 'give_settings_page_pages', 0, 1
  */
 function give_tools_page_pages( $settings ) {
 	$settings = array(
-		// API.
-		include( 'tools/class-settings-api.php' ),
-
-		// System Info.
-		include( 'tools/class-setting-system-info.php' ),
 
 		// Logs.
 		include( 'tools/class-settings-logs.php' ),
 
+		// API.
+		include( 'tools/class-settings-api.php' ),
+
 		// Tools.
-		include( 'tools/class-settings-data.php' )
+		include( 'tools/class-settings-data.php' ),
+
+		// System Info.
+		include( 'tools/class-setting-system-info.php' )
 	);
 
 	// Output.
@@ -398,6 +399,6 @@ add_filter( 'give-tools_get_settings_pages', 'give_tools_page_pages', 0, 1 );
  * @return string
  */
 function give_set_default_tab_form_tools_page( $default_tab ) {
-	return 'api';
+	return 'logs';
 }
 add_filter( 'give_default_setting_tab_give-tools', 'give_set_default_tab_form_tools_page', 10, 1 );
