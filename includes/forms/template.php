@@ -608,10 +608,8 @@ add_action( 'give_after_donation_levels', 'give_display_checkout_button', 10, 2 
  * @return void
  */
 function give_user_info_fields( $form_id ) {
-
-	if ( is_user_logged_in() ) :
-		$user_data = get_userdata( get_current_user_id() );
-	endif;
+	// Get user info.
+	$give_user_info = _give_get_prefill_form_field_values();
 
 	/**
 	 * Fire before user personal information fields
@@ -625,30 +623,39 @@ function give_user_info_fields( $form_id ) {
 		<p id="give-first-name-wrap" class="form-row form-row-first">
 			<label class="give-label" for="give-first">
 				<?php esc_html_e( 'First Name', 'give' ); ?>
-				<?php if ( give_field_is_required( 'give_first', $form_id ) ) { ?>
+				<?php if ( give_field_is_required( 'give_first', $form_id ) ) : ?>
 					<span class="give-required-indicator">*</span>
-				<?php } ?>
+				<?php endif ?>
 				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'We will use this to personalize your account experience.', 'give' ); ?>"></span>
 			</label>
-			<input class="give-input required" type="text" name="give_first" placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" id="give-first" value="<?php echo is_user_logged_in() ? $user_data->first_name : ''; ?>"<?php if ( give_field_is_required( 'give_first', $form_id ) ) {
-				echo ' required ';
-			} ?>/>
+			<input
+				class="give-input required"
+				type="text"
+				name="give_first"
+				placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>"
+				id="give-first" value="<?php echo isset( $give_user_info['give_first'] ) ? $give_user_info['give_first'] : ''; ?>"
+				<?php echo ( give_field_is_required( 'give_first', $form_id ) ? ' required ' : '' ); ?>
+			/>
 		</p>
 
 		<p id="give-last-name-wrap" class="form-row form-row-last">
 			<label class="give-label" for="give-last">
 				<?php esc_html_e( 'Last Name', 'give' ); ?>
-				<?php if ( give_field_is_required( 'give_last', $form_id ) ) { ?>
+				<?php if ( give_field_is_required( 'give_last', $form_id ) ) : ?>
 					<span class="give-required-indicator">*</span>
-				<?php } ?>
+				<?php endif ?>
 				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'We will use this as well to personalize your account experience.', 'give' ); ?>"></span>
 			</label>
 
-			<input class="give-input<?php if ( give_field_is_required( 'give_last', $form_id ) ) {
-				echo ' required';
-			} ?>" type="text" name="give_last" id="give-last" placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" value="<?php echo is_user_logged_in() ? $user_data->last_name : ''; ?>"<?php if ( give_field_is_required( 'give_last', $form_id ) ) {
-				echo ' required ';
-			} ?> />
+			<input
+				class="give-input<?php echo ( give_field_is_required( 'give_last', $form_id ) ? ' required' : '' ); ?>"
+				type="text"
+				name="give_last"
+				id="give-last"
+				placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>"
+				value="<?php echo isset( $give_user_info['give_last'] ) ? $give_user_info['give_last'] : ''; ?>"
+				<?php echo ( give_field_is_required( 'give_last', $form_id ) ? ' required' : '' ); ?>
+			/>
 		</p>
 
 		<?php
@@ -668,9 +675,14 @@ function give_user_info_fields( $form_id ) {
 				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'We will send the donation receipt to this address.', 'give' ); ?>"></span>
 			</label>
 
-			<input class="give-input required" type="email" name="give_email" placeholder="<?php esc_attr_e( 'Email Address', 'give' ); ?>" id="give-email" value="<?php echo is_user_logged_in() ? $user_data->user_email : ''; ?>"<?php if ( give_field_is_required( 'give_email', $form_id ) ) {
-				echo ' required ';
-			} ?>/>
+			<input
+				class="give-input required"
+				type="email"
+				name="give_email"
+				placeholder="<?php esc_attr_e( 'Email Address', 'give' ); ?>"
+				id="give-email" value="<?php echo isset( $give_user_info['give_email'] ) ? $give_user_info['give_email'] : ''; ?>"
+				<?php echo ( give_field_is_required( 'give_email', $form_id ) ? ' required ' : '' ); ?>
+			/>
 
 		</p>
 		<?php
