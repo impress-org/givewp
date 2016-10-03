@@ -65,14 +65,12 @@ class Give_Addon_Activation_Banner {
 	 *
 	 * @since  1.0
 	 * @access public
-	 *
-	 * @global $pagenow
 	 */
 	public function give_addon_activation_admin_notice() {
-		global $pagenow;
+		$screen = get_current_screen();
 
 		//Make sure we're on the plugins page.
-		if ( $pagenow !== 'plugins.php' ) {
+		if ( $screen->parent_file !== 'plugins.php' ) {
 			return false;
 		}
 
