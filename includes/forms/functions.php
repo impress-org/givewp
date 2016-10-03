@@ -168,7 +168,7 @@ function give_send_back_to_checkout( $args = array() ) {
 	$form_id  = isset( $_POST['give-form-id'] ) ? $_POST['give-form-id'] : 0;
 	
 	$defaults = array(
-		'form-id' => (int) $form_id,
+		'form-id' => (int) $form_id
 	);
 
 	// Check for backward compatibility
@@ -880,12 +880,12 @@ function give_show_login_register_option( $form_id ) {
 
 
 /**
- * Get pre fill form field value.
+ * Get pre fill form field values.
  *
- * Note: this function will extract form field values from give_user_info param in user request (POST/GET).
+ * Note: this function will extract form field values from give_purchase session data.
  *
  * @since  1.8
- * @param  int   $form_id
+ * @param  int   $form_id Form ID.
  * @return array
  */
 function _give_get_prefill_form_field_values( $form_id ) {
