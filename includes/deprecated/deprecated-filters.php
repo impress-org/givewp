@@ -85,7 +85,15 @@ function give_deprecated_filter_mapping( $data, $arg_1 = '', $arg_2 = '', $arg_3
 			$data = apply_filters( $give_map_deprecated_filters[ $filter ], $data, $arg_1, $arg_2, $arg_3 );
 
 			if ( ! defined( 'DOING_AJAX' ) ) {
-				_give_deprecated_function( 'The ' . $give_map_deprecated_filters[ $filter ] . ' filter', '1.7', $filter );
+				_give_deprecated_function(
+					sprintf(
+						/* translators: %s: filter name */
+						__( 'The %s filter' ),
+						$give_map_deprecated_filters[ $filter ]
+					),
+					'1.7',
+					$filter
+				);
 			}
 		}
 	}
