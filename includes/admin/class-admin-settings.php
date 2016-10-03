@@ -192,15 +192,6 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				self::save();
 			}
 
-			// Add any posted messages.
-			if ( ! empty( $_GET['give_error'] ) ) {
-				self::add_error( stripslashes( $_GET['give_error'] ) );
-			}
-
-			if ( ! empty( $_GET['give_message'] ) ) {
-				self::add_message( stripslashes( $_GET['give_message'] ) );
-			}
-
 			/**
 			 * Filter the tabs for current setting page.
 			 *
