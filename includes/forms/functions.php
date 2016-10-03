@@ -168,7 +168,7 @@ function give_send_back_to_checkout( $args = array() ) {
 	$form_id  = isset( $_POST['give-form-id'] ) ? $_POST['give-form-id'] : 0;
 	
 	$defaults = array(
-		'form-id'   => (int) $form_id,
+		'form-id' => (int) $form_id,
 	);
 
 	// Check for backward compatibility
