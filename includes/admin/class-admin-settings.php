@@ -100,7 +100,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			 */
 			do_action( self::$setting_filter_prefix . '_save_' . $current_tab );
 
-			self::add_message( __( 'Your settings have been saved.', 'give' ) );
+			self::add_message( 'give-setting-updated', __( 'Your settings have been saved.', 'give' ) );
 
 			/**
 			 * Trigger Action.
