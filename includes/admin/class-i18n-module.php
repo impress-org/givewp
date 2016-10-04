@@ -61,9 +61,10 @@ class Give_i18n {
 	private $translation_loaded;
 
 	/**
-	 * Class constructor.
+	 * Give_i18n constructor.
 	 *
-	 * @param array $args Contains the settings for the class.
+	 * @param $args
+	 *
 	 */
 	public function __construct( $args ) {
 		if ( ! is_admin() ) {
@@ -153,17 +154,57 @@ class Give_i18n {
 
 			<style>
 				/* Banner specific styles */
+				div.give-addon-alert.updated {
+					padding: 10px 20px;
+					position: relative;
+					border-color: #66BB6A;
+				}
 
+				div.give-addon-alert a {
+					color: #66BB6A;
+				}
+
+				#give-i18n-notice > .give-i18n-icon {
+					overflow: hidden;
+				}
+
+				#give-i18n-notice > .give-i18n-icon .dashicons {
+					width: 110px;
+					height: 110px;
+				}
+
+				#give-i18n-notice > .give-i18n-icon:focus {
+					box-shadow: none;
+				}
+
+				.give-i18n-notice-content {
+					margin: 0 30px 0 125px;
+				}
+
+				div.give-addon-alert .dismiss {
+					position: absolute;
+					right: 20px;
+					height: 100%;
+					top: 50%;
+					margin-top: -10px;
+					outline: none;
+					box-shadow: none;
+					text-decoration: none;
+					color: #AAA;
+				}
+
+				div.give-addon-alert .dismiss:hover {
+					color: #333;
+				}
 			</style>
 			<div id="give-i18n-notice" class="give-addon-alert updated" style="">
 
-				<a href="https://wordpress.org/support/register.php" class="alignleft" style="margin:0" target="_blank"><span class="dashicons dashicons-translation" style="font-size: 110px; text-decoration: none;"></span></a>
+				<a href="https://wordpress.org/support/register.php" class="alignleft give-i18n-icon" style="margin:0" target="_blank"><span class="dashicons dashicons-translation" style="font-size: 110px; text-decoration: none;"></span></a>
 
-				<div style="margin: 0 0 0 132px;">
-					<a href="<?php echo esc_url( add_query_arg( array( 'remove_i18n_promo' => '1' ) ) ); ?>" style="color:#333;text-decoration:none;font-weight:bold;font-size:16px;padding:1px 4px;" class="alignright"><span class="dashicons dashicons-dismiss"></span></a>
+				<div class="give-i18n-notice-content">
+					<a href="<?php echo esc_url( add_query_arg( array( 'remove_i18n_promo' => '1' ) ) ); ?>" class="dismiss"><span class="dashicons dashicons-dismiss"></span></a>
 
-					<h2 style="margin: 10px 0;"><?php _e( 'Help Translate Give', 'give' ); ?></h2>
-
+					<h2 style="margin: 10px 0;"><?php printf( __( 'Help Translate Give to %s', 'give' ), $this->locale_name ); ?></h2>
 					<p><?php echo $message; ?></p>
 					<p>
 						<a href="https://wordpress.org/support/register.php" target="_blank"><?php _e( 'Register now &raquo;', 'give' ); ?></a>
@@ -182,6 +223,7 @@ class Give_i18n {
 	 * @return object|null
 	 */
 	private function find_or_initialize_translation_details() {
+
 		$set = get_transient( 'give_i18n_give_' . $this->locale );
 
 		if ( ! $set ) {
@@ -214,14 +256,25 @@ class Give_i18n {
 	 * @return object|null
 	 */
 	private function retrieve_translation_details() {
-		$api_url = trailingslashit( $this->glotpress_url ) . 'api/projects/give';
+
+		$api_url = trailingslashit( $this->glotpress_url );
 
 		$resp = wp_remote_get( $api_url );
+
+		if ( is_wp_error( $resp ) || wp_remote_retrieve_response_code( $resp ) === '404' ) {
+			return null;
+		}
+
 		$body = wp_remote_retrieve_body( $resp );
 		unset( $resp );
 
 		if ( $body ) {
 			$body = json_decode( $body );
+			echo '<pre>';
+			var_dump( $body->translation_sets );
+			var_dump( $body );
+			echo '</pre>';
+
 			foreach ( $body->translation_sets as $set ) {
 				if ( ! property_exists( $set, 'wp_locale' ) ) {
 					continue;
@@ -256,7 +309,7 @@ class Give_i18n {
 
 $give_i18n = new Give_i18n(
 	array(
-		'hook'          => 'admin_notices',
-		'glotpress_url' => 'https://translate.wordpress.org/projects/wp-plugins/give',
+		'hook'          => 'give_forms_page_give-settings',
+		'glotpress_url' => 'https://translate.wordpress.org/api/projects/wp-plugins/give/stable/',
 	)
 );
