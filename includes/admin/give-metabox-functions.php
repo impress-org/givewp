@@ -988,3 +988,26 @@ function _give_offline_donation_enable_billing_fields_single_field_value( $field
 	return $field_value;
 }
 add_filter( '_give_offline_donation_enable_billing_fields_single_field_value', '_give_offline_donation_enable_billing_fields_single_field_value', 10, 3 );
+
+
+/**
+ * Set value for Donation Options --> Custom Amount.
+ *
+ * Backward compatibility:  set value by _give_custom_amount form meta field value if it's value is yes or no.
+ *
+ * @since  1.8
+ * @param  mixed  $field_value Field Value.
+ * @param  array  $field       Field args.
+ * @param  int    $postid      Form/Post ID.
+ * @return string
+ */
+function _give_custom_amount_field_value( $field_value, $field, $postid ){
+	$custom_amount = get_post_meta( $postid, '_give_custom_amount', true );
+
+	if( in_array( $custom_amount, array( 'yes', 'no' ) ) ) {
+		$field_value =  ( 'yes' === $custom_amount ? 'enabled' : 'disabled' );
+	}
+
+	return $field_value;
+}
+add_filter( '_give_custom_amount_field_value', '_give_custom_amount_field_value', 10, 3 );
