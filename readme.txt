@@ -165,6 +165,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 == Changelog ==
 
 = 1.6.2 =
+* New: Internationalization banner now promotes to admins translating Give in languages it doesn't yet support. The banner will only display under Donations > Settings and is dismissible. https://github.com/WordImpress/Give/issues/1021
 * Fix: Donation form names with an apostrophe in them were displaying a backslash in the name for the PayPal Standard gateway. https://github.com/WordImpress/Give/issues/1079
 
 = 1.6.1 =
