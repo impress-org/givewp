@@ -206,8 +206,8 @@ class Give_MetaBox_Form_Data {
 							'type'        => 'radio_inline',
 							'default'     => 'no',
 							'options'     => array(
-								'yes' => esc_html__( 'Yes', 'give' ),
-								'no'  => esc_html__( 'No', 'give' ),
+								'enabled'   => esc_html__( 'Enabled', 'give' ),
+								'disabled'  => esc_html__( 'Disabled', 'give' ),
 							),
 						),
 						array(
