@@ -957,9 +957,9 @@ add_filter( '_give_terms_option_field_value', '_give_terms_option_field_value', 
  * @return string
  */
 function _give_offline_donation_enable_billing_fields_single_field_value( $field_value, $field, $postid ){
-	$term_option = get_post_meta( $postid, '_give_offline_donation_enable_billing_fields_single', true );
+	$offline_donation = get_post_meta( $postid, '_give_offline_donation_enable_billing_fields_single', true );
 
-	if(  'on' === $term_option ) {
+	if(  'on' === $offline_donation ) {
 		$field_value = 'enabled';
 	}
 
