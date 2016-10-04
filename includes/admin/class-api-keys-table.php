@@ -139,7 +139,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 				esc_url( add_query_arg( array(
 					'view'      => 'api_requests',
 					'post_type' => 'give_forms',
-					'page'      => 'give-reports',
+					'page'      => 'give-tools',
 					'tab'       => 'logs',
 					's'         => $item['email']
 				), 'edit.php' ) ),

@@ -145,19 +145,22 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * @return void
 		 */
 		public static function show_messages() {
+			$notice_html = '';
+			$classes     = 'give-notice settings-error notice is-dismissible';
+
 			if ( 0 < count( self::$errors ) ) {
 				foreach ( self::$errors as $code => $message ) {
-					add_settings_error( 'give-notices', $code, $message, 'give-notice error' );
+					$notice_html .= '<div id="setting-error-' . $code . '" class="' . $classes . ' error"><p><strong>' . $message . '</strong></p></div>';
 				}
 			}
 
 			if ( 0 < count( self::$messages ) ) {
 				foreach ( self::$messages as $code => $message ) {
-					add_settings_error( 'give-notices', $code, $message, 'give-notice updated' );
+					$notice_html .= '<div id="setting-error-' . $code . '" class="' . $classes . ' updated"><p><strong>' . $message . '</strong></p></div>';
 				}
 			}
 
-			settings_errors( 'give-notices' );
+			echo $notice_html;
 		}
 
 		/**
