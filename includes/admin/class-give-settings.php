@@ -1459,5 +1459,5 @@ function give_hook_callback( $args ) {
  */
 function give_is_setting_enabled( $value ) {
 	// Backward compatibility: From version 1.8 most of setting is modified to enabled/disabled
-	return ( in_array( $value, array( 'enabled', 'on', 'yes' , 'global' ) ) ? true : false );
+	return ( in_array( $value, array( 'enabled', 'on', 'yes' ) ) ? true : false );
 }
