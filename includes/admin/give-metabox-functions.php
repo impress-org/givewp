@@ -946,28 +946,6 @@ add_filter( '_give_terms_option_field_value', '_give_terms_option_field_value', 
 
 
 /**
- * Set value for Form Display --> Guest donation.
- *
- * Backward compatibility:  set value by _give_logged_in_only form meta field value if it's value is on.
- *
- * @since  1.8
- * @param  mixed  $field_value Field Value.
- * @param  array  $field       Field args.
- * @param  int    $postid      Form/Post ID.
- * @return string
- */
-function _give_logged_in_only_field_value( $field_value, $field, $postid ){
-	$term_option = get_post_meta( $postid, '_give_logged_in_only', true );
-
-	if(  'on' === $term_option ) {
-		$field_value = 'yes';
-	}
-
-	return $field_value;
-}
-add_filter( '_give_logged_in_only_field_value', '_give_logged_in_only_field_value', 10, 3 );
-
-/**
  * Set value for Form Display --> Offline Donation --> Billing Fields.
  *
  * Backward compatibility:  set value by _give_offline_donation_enable_billing_fields_single form meta field value if it's value is on.
