@@ -66,7 +66,7 @@ jQuery.noConflict();
             // Get checked radio button value.
             var display_content_val = $('._give_display_content_field input:radio:checked').val();
 
-            if ( display_content_val === 'yes') {
+            if ( display_content_val === 'enabled') {
                 $('._give_content_placement_field').show();
                 $('._give_form_content_field').show();
             } else {
