@@ -607,13 +607,25 @@ function give_v18_upgrades_form_metadata() {
 				}
 			}
 
-			// Custom Amount.
-			$custom_amount = get_post_meta( get_the_ID(), '_give_custom_amount', true );
-			if( in_array( $custom_amount, array( 'yes', 'no' ) ) ) {
-				if( 'yes' === $custom_amount ) {
-					update_post_meta( get_the_ID(), '_give_custom_amount', 'enabled' );
-				}elseif( 'no' === $custom_amount ) {
-					update_post_meta( get_the_ID(), '_give_custom_amount', 'disabled' );
+
+			// Convert yes/no setting field to enabled/disabled.
+			$form_radio_settings = array(
+				// Custom Amount.
+				'_give_custom_amount',
+
+				// Donation gaol.
+				'_give_goal_option'
+			);
+
+
+			foreach ( $form_radio_settings as $meta_key ) {
+				// Get value.
+				$field_value = get_post_meta( get_the_ID(), $meta_key, true );
+
+				// Convert meta value only if it is in yes/no.
+				if( in_array( $field_value, array( 'yes', 'no' ) ) ) {
+					$field_value = ( 'yes' === $field_value ? 'enabled' : 'disabled' );
+					update_post_meta( get_the_ID(), '_give_custom_amount', $field_value );
 				}
 			}
 		}
