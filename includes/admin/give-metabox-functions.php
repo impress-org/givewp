@@ -1070,10 +1070,10 @@ add_filter( '_give_logged_in_only_field_value', '_give_logged_in_only_value', 10
  * @return string
  */
 function _give_customize_offline_donations_value( $field_value, $field, $postid ){
-	$custom_amount = get_post_meta( $postid, '_give_customize_offline_donations', true );
+	$customize_offline_text = get_post_meta( $postid, '_give_customize_offline_donations', true );
 
-	if( in_array( $custom_amount, array( 'yes', 'no' ) ) ) {
-		$field_value =  ( 'yes' === $custom_amount ? 'enabled' : 'disabled' );
+	if( in_array( $customize_offline_text, array( 'yes', 'no' ) ) ) {
+		$field_value =  ( 'yes' === $customize_offline_text ? 'enabled' : 'disabled' );
 	}
 
 	return $field_value;
