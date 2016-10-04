@@ -62,7 +62,7 @@ Here's some great developer-oriented tutorials and docs to help you customize Gi
 
 * [Create Dramatic Donation Email Receipts](https://givewp.com/create-dramatic-donation-email-receipts/)
 * [Load a Whole Donation Form in a Popup](https://givewp.com/load-donation-form-popup-give/)
-* [Useing the Give API to Create Charts with ChartJS](https://givewp.com/using-give-api-create-charts-chartjs/)
+* [Using the Give API to Create Charts with ChartJS](https://givewp.com/using-give-api-create-charts-chartjs/)
 * [Themeing with Give](https://givewp.com/documentation/developers/themeing-with-give/)
 * [How to Create Custom Form Fields](https://givewp.com/documentation/developers/how-to-create-custom-form-fields/)
 
