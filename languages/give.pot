@@ -75,19 +75,19 @@ msgstr ""
 msgid "Give Upgrades"
 msgstr ""
 
-#: includes/admin/class-addon-activation-banner.php:160
+#: includes/admin/class-addon-activation-banner.php:158
 msgid "Thank you for installing Give's %s Add-on!"
 msgstr ""
 
-#: includes/admin/class-addon-activation-banner.php:178
+#: includes/admin/class-addon-activation-banner.php:174
 msgid "Go to Settings"
 msgstr ""
 
-#: includes/admin/class-addon-activation-banner.php:190
+#: includes/admin/class-addon-activation-banner.php:184
 msgid "Documentation: %s Add-on"
 msgstr ""
 
-#: includes/admin/class-addon-activation-banner.php:201
+#: includes/admin/class-addon-activation-banner.php:194
 msgid "Get Support"
 msgstr ""
 
@@ -199,7 +199,7 @@ msgstr ""
 msgid "Secret Key"
 msgstr ""
 
-#: includes/admin/class-api-keys-table.php:208
+#: includes/admin/class-api-keys-table.php:237
 msgid "Generate New API Keys"
 msgstr ""
 
@@ -575,7 +575,7 @@ msgstr ""
 msgid "Email to send donation receipts from. This will act as the \"from\" and \"reply-to\" address."
 msgstr ""
 
-#: includes/admin/class-give-settings.php:1119, includes/admin/class-give-settings.php:1137, includes/admin/class-give-settings.php:1147, includes/admin/shortcodes/shortcode-give-receipt.php:24, includes/admin/shortcodes/shortcode-give-receipt.php:25, includes/emails/functions.php:41, includes/emails/functions.php:52, includes/emails/functions.php:80, includes/emails/functions.php:91, includes/emails/template.php:161, includes/emails/template.php:391, templates/shortcode-receipt.php:55
+#: includes/admin/class-give-settings.php:1119, includes/admin/class-give-settings.php:1137, includes/admin/class-give-settings.php:1147, includes/admin/shortcodes/shortcode-give-receipt.php:24, includes/admin/shortcodes/shortcode-give-receipt.php:25, includes/emails/functions.php:41, includes/emails/functions.php:52, includes/emails/functions.php:79, includes/emails/functions.php:90, includes/emails/template.php:161, includes/emails/template.php:391, templates/shortcode-receipt.php:55
 msgid "Donation Receipt"
 msgstr ""
 
@@ -745,6 +745,34 @@ msgstr ""
 
 #: includes/admin/class-give-settings.php:2449
 msgid "You can create API keys for individual users within their profile edit screen. API keys allow users to use the <a href=\"%1$s\" target=\"_blank\">Give REST API</a> to retrieve donation data in JSON or XML for external applications or devices, such as <a href=\"%2$s\" target=\"_blank\">Zapier</a>."
+msgstr ""
+
+#: includes/admin/class-i18n-module.php:135
+msgid "As you can see, there is a translation of this plugin in %1$s. This translation is currently %3$d%% complete. We need your help to make it complete and to fix any errors. Please register at %4$s to help %5$s to %1$s!"
+msgstr ""
+
+#: includes/admin/class-i18n-module.php:137
+msgid "You're using WordPress in %1$s. While %2$s has been translated to %1$s for %3$d%%, it's not been shipped with the plugin yet. You can help! Register at %4$s to help complete the translation to %1$s!"
+msgstr ""
+
+#: includes/admin/class-i18n-module.php:139
+msgid "You're using WordPress in a language we don't support yet. We'd love for %2$s to be translated in that language too, but unfortunately, it isn't right now. You can change that! Register at %4$s to help translate it!"
+msgstr ""
+
+#: includes/admin/class-i18n-module.php:143
+msgid "WordPress.org"
+msgstr ""
+
+#: includes/admin/class-i18n-module.php:144
+msgid "complete the translation"
+msgstr ""
+
+#: includes/admin/class-i18n-module.php:216
+msgid "Help Translate Give to %s"
+msgstr ""
+
+#: includes/admin/class-i18n-module.php:219
+msgid "Register now &raquo;"
 msgstr ""
 
 #: includes/admin/customers/class-customer-table.php:66, includes/admin/reporting/class-donor-reports-table.php:66, includes/admin/reporting/class-sales-logs-list-table.php:111, templates/shortcode-receipt.php:90
@@ -1148,11 +1176,11 @@ msgstr ""
 msgid "Do you want the user to be able to input their own donation amount?"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:311, includes/admin/forms/metabox.php:385, includes/admin/forms/metabox.php:477, includes/admin/forms/metabox.php:795, includes/gateways/offline-donations.php:286
+#: includes/admin/forms/metabox.php:311, includes/admin/forms/metabox.php:385, includes/admin/forms/metabox.php:477, includes/admin/forms/metabox.php:795, includes/forms/widget.php:174, includes/gateways/offline-donations.php:286
 msgid "Yes"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:313, includes/admin/forms/metabox.php:387, includes/admin/forms/metabox.php:479, includes/admin/forms/metabox.php:793, includes/gateways/offline-donations.php:287
+#: includes/admin/forms/metabox.php:313, includes/admin/forms/metabox.php:387, includes/admin/forms/metabox.php:479, includes/admin/forms/metabox.php:793, includes/forms/widget.php:175, includes/gateways/offline-donations.php:287
 msgid "No"
 msgstr ""
 
@@ -1348,11 +1376,11 @@ msgstr ""
 msgid "Use the global setting"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:739, includes/admin/shortcodes/shortcode-give-form.php:110, includes/forms/widget.php:155
+#: includes/admin/forms/metabox.php:739, includes/admin/shortcodes/shortcode-give-form.php:110
 msgid "Enabled"
 msgstr ""
 
-#: includes/admin/forms/metabox.php:741, includes/admin/shortcodes/shortcode-give-form.php:111, includes/forms/widget.php:156
+#: includes/admin/forms/metabox.php:741, includes/admin/shortcodes/shortcode-give-form.php:111
 msgid "Disabled"
 msgstr ""
 
@@ -2336,7 +2364,7 @@ msgstr ""
 msgid "Insert Shortcode"
 msgstr ""
 
-#: includes/admin/shortcodes/abstract-shortcode-generator.php:253, includes/forms/widget.php:154
+#: includes/admin/shortcodes/abstract-shortcode-generator.php:253
 msgid "- Select -"
 msgstr ""
 
@@ -2820,7 +2848,7 @@ msgstr ""
 msgid "Access My Donation Details &raquo;"
 msgstr ""
 
-#: includes/class-give-email-access.php:211, includes/emails/functions.php:234, includes/gateways/offline-donations.php:406
+#: includes/class-give-email-access.php:211, includes/emails/functions.php:233, includes/gateways/offline-donations.php:406
 msgid "Sincerely,"
 msgstr ""
 
@@ -2888,7 +2916,7 @@ msgstr ""
 msgid "Give Donators Gravatars"
 msgstr ""
 
-#: includes/class-give-gravatars.php:546, includes/forms/widget.php:125
+#: includes/class-give-gravatars.php:546, includes/forms/widget.php:135
 msgid "Title:"
 msgstr ""
 
@@ -4260,71 +4288,71 @@ msgstr ""
 msgid "View it in your browser"
 msgstr ""
 
-#: includes/emails/class-give-emails.php:163
+#: includes/emails/class-give-emails.php:171
 msgid "Default Template"
 msgstr ""
 
-#: includes/emails/class-give-emails.php:164
+#: includes/emails/class-give-emails.php:172
 msgid "No template, plain text only"
 msgstr ""
 
-#: includes/emails/class-give-emails.php:253
+#: includes/emails/class-give-emails.php:265
 msgid "You cannot send email with Give_Emails until init/admin_init has been reached."
 msgstr ""
 
-#: includes/emails/functions.php:129
+#: includes/emails/functions.php:128
 msgid "New Donation - Payment #%s"
 msgstr ""
 
-#: includes/emails/functions.php:147
+#: includes/emails/functions.php:146
 msgid "New Donation!"
 msgstr ""
 
-#: includes/emails/functions.php:197
+#: includes/emails/functions.php:196
 msgid "Hi there,"
 msgstr ""
 
-#: includes/emails/functions.php:198
+#: includes/emails/functions.php:197
 msgid "This email is to inform you that a new donation has been made on your website: "
 msgstr ""
 
-#: includes/emails/functions.php:199, includes/emails/functions.php:225, includes/emails/template.php:243
+#: includes/emails/functions.php:198, includes/emails/functions.php:224, includes/emails/template.php:243
 msgid "Donor:"
 msgstr ""
 
-#: includes/emails/functions.php:200, includes/emails/functions.php:226
+#: includes/emails/functions.php:199, includes/emails/functions.php:225
 msgid "Donation:"
 msgstr ""
 
-#: includes/emails/functions.php:201, includes/emails/functions.php:228, includes/emails/template.php:244
+#: includes/emails/functions.php:200, includes/emails/functions.php:227, includes/emails/template.php:244
 msgid "Amount:"
 msgstr ""
 
-#: includes/emails/functions.php:202, includes/emails/functions.php:229, includes/emails/template.php:245
+#: includes/emails/functions.php:201, includes/emails/functions.php:228, includes/emails/template.php:245
 msgid "Payment Method:"
 msgstr ""
 
-#: includes/emails/functions.php:203
+#: includes/emails/functions.php:202
 msgid "Thank you,"
 msgstr ""
 
-#: includes/emails/functions.php:223
+#: includes/emails/functions.php:222
 msgid "Dear"
 msgstr ""
 
-#: includes/emails/functions.php:224
+#: includes/emails/functions.php:223
 msgid "Thank you for your donation. Your generosity is appreciated! Here are the details of your donation:"
 msgstr ""
 
-#: includes/emails/functions.php:227
+#: includes/emails/functions.php:226
 msgid "Donation Date:"
 msgstr ""
 
-#: includes/emails/functions.php:230
+#: includes/emails/functions.php:229
 msgid "Payment ID:"
 msgstr ""
 
-#: includes/emails/functions.php:231
+#: includes/emails/functions.php:230
 msgid "Receipt ID:"
 msgstr ""
 
@@ -4620,27 +4648,51 @@ msgstr ""
 msgid "Display a Give Donation Form in your theme's widget powered sidebar."
 msgstr ""
 
-#: includes/forms/widget.php:127
+#: includes/forms/widget.php:137
 msgid "Leave blank to hide the widget title."
 msgstr ""
 
-#: includes/forms/widget.php:136
+#: includes/forms/widget.php:146
 msgid "Give %s:"
 msgstr ""
 
-#: includes/forms/widget.php:141
+#: includes/forms/widget.php:151
 msgid "— Select —"
 msgstr ""
 
-#: includes/forms/widget.php:146
+#: includes/forms/widget.php:156
 msgid "Select a Give Form to embed in this widget."
 msgstr ""
 
-#: includes/forms/widget.php:152
+#: includes/forms/widget.php:161
+msgid "Display style:"
+msgstr ""
+
+#: includes/forms/widget.php:162
+msgid "All Fields"
+msgstr ""
+
+#: includes/forms/widget.php:163
+msgid "Reveal"
+msgstr ""
+
+#: includes/forms/widget.php:164
+msgid "Modal"
+msgstr ""
+
+#: includes/forms/widget.php:166
+msgid "Select a Give Form style."
+msgstr ""
+
+#: includes/forms/widget.php:172
 msgid "Floating Labels (optional):"
 msgstr ""
 
-#: includes/forms/widget.php:161
+#: includes/forms/widget.php:173
+msgid "Global Options"
+msgstr ""
+
+#: includes/forms/widget.php:180
 msgid "Override the <a href=\"%s\" target=\"_blank\">floating labels</a> setting for this Give form."
 msgstr ""
 
@@ -4760,95 +4812,95 @@ msgstr ""
 msgid "Payment creation failed before sending buyer to PayPal. Payment data: %s"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:285, includes/gateways/paypal-standard.php:298, includes/gateways/paypal-standard.php:373, includes/gateways/paypal-standard.php:391, includes/gateways/paypal-standard.php:448, includes/gateways/paypal-standard.php:464
+#: includes/gateways/paypal-standard.php:286, includes/gateways/paypal-standard.php:299, includes/gateways/paypal-standard.php:374, includes/gateways/paypal-standard.php:392, includes/gateways/paypal-standard.php:449, includes/gateways/paypal-standard.php:465
 msgid "IPN Error"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:288, includes/gateways/paypal-standard.php:301
+#: includes/gateways/paypal-standard.php:289, includes/gateways/paypal-standard.php:302
 msgid "Invalid IPN verification response. IPN data: %s"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:376
+#: includes/gateways/paypal-standard.php:377
 msgid "Invalid business email in IPN response. IPN data: %s"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:382
+#: includes/gateways/paypal-standard.php:383
 msgid "Payment failed due to invalid PayPal business email."
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:394
+#: includes/gateways/paypal-standard.php:395
 msgid "Invalid currency in IPN response. IPN data: %s"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:400
+#: includes/gateways/paypal-standard.php:401
 msgid "Payment failed due to invalid currency in PayPal IPN."
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:451
+#: includes/gateways/paypal-standard.php:452
 msgid "Invalid payment amount in IPN response. IPN data: %s"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:457
+#: includes/gateways/paypal-standard.php:458
 msgid "Payment failed due to invalid amount in PayPal IPN."
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:467
+#: includes/gateways/paypal-standard.php:468
 msgid "Invalid purchase key in IPN response. IPN data: %s"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:473
+#: includes/gateways/paypal-standard.php:474
 msgid "Payment failed due to invalid purchase key in PayPal IPN."
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:483, tests/framework/helpers/class-helper-payment.php:77, tests/framework/helpers/class-helper-payment.php:140, tests/framework/helpers/class-helper-payment.php:235, tests/unit-tests/tests-payment-class.php:31
+#: includes/gateways/paypal-standard.php:484, tests/framework/helpers/class-helper-payment.php:77, tests/framework/helpers/class-helper-payment.php:140, tests/framework/helpers/class-helper-payment.php:235, tests/unit-tests/tests-payment-class.php:31
 msgid "PayPal Transaction ID: %s"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:499
+#: includes/gateways/paypal-standard.php:500
 msgid "Payment made via eCheck and will clear automatically in 5-8 days."
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:505
+#: includes/gateways/paypal-standard.php:506
 msgid "Payment requires a confirmed donor address and must be accepted manually through PayPal."
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:511
+#: includes/gateways/paypal-standard.php:512
 msgid "Payment must be accepted manually through PayPal due to international account regulations."
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:517
+#: includes/gateways/paypal-standard.php:518
 msgid "Payment received in non-shop currency and must be accepted manually through PayPal."
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:524
+#: includes/gateways/paypal-standard.php:525
 msgid "Payment is being reviewed by PayPal staff as high-risk or in possible violation of government regulations."
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:530
+#: includes/gateways/paypal-standard.php:531
 msgid "Payment was sent to non-confirmed or non-registered email address."
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:536
+#: includes/gateways/paypal-standard.php:537
 msgid "PayPal account must be upgraded before this payment can be accepted."
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:542
+#: includes/gateways/paypal-standard.php:543
 msgid "PayPal account is not verified. Verify account in order to accept this payment."
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:548
+#: includes/gateways/paypal-standard.php:549
 msgid "Payment is pending for unknown reasons. Contact PayPal support for assistance."
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:595
+#: includes/gateways/paypal-standard.php:596
 msgid "Partial PayPal refund processed: %s"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:608
+#: includes/gateways/paypal-standard.php:609
 msgid "PayPal Payment #%s Refunded for reason: %s"
 msgstr ""
 
-#: includes/gateways/paypal-standard.php:616
+#: includes/gateways/paypal-standard.php:617
 msgid "PayPal Refund Transaction ID: %s"
 msgstr ""
 
@@ -5542,7 +5594,15 @@ msgstr ""
 msgid "The passwords you entered do not match. Please try again."
 msgstr ""
 
-#: includes/shortcodes.php:427
+#: includes/shortcodes.php:426
+msgid "The email you entered is empty."
+msgstr ""
+
+#: includes/shortcodes.php:430
+msgid "The email you entered is not valid. Please use another"
+msgstr ""
+
+#: includes/shortcodes.php:435
 msgid "The email you entered belongs to another user. Please use another."
 msgstr ""
 
