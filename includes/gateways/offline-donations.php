@@ -324,7 +324,7 @@ function give_offline_add_settings( $settings ) {
 			'id'          => $prefix . 'offline_donation_enable_billing_fields_single',
 			'row_classes' => 'give-subfield',
 			'type'        => 'radio_inline',
-			'default'     => 'global',
+			'default'     => 'disabled',
 			'options'     => array(
 				'enabled'  => esc_html__( 'Enabled', 'give' ),
 				'disabled' => esc_html__( 'Disabled', 'give' ),
