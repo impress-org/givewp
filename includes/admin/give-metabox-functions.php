@@ -978,7 +978,7 @@ add_filter( '_give_logged_in_only_field_value', '_give_logged_in_only_field_valu
  * @param  int    $postid      Form/Post ID.
  * @return string
  */
-function _give_give_offline_donation_billing_field_value( $field_value, $field, $postid ){
+function _give_offline_donation_enable_billing_fields_single_field_value( $field_value, $field, $postid ){
 	$term_option = get_post_meta( $postid, '_give_offline_donation_enable_billing_fields_single', true );
 
 	if(  'on' === $term_option ) {
@@ -987,4 +987,4 @@ function _give_give_offline_donation_billing_field_value( $field_value, $field, 
 
 	return $field_value;
 }
-add_filter( '_give_offline_donation_enable_billing_fields_single_field_value', '_give_give_offline_donation_billing_field_value', 10, 3 );
+add_filter( '_give_offline_donation_enable_billing_fields_single_field_value', '_give_offline_donation_enable_billing_fields_single_field_value', 10, 3 );
