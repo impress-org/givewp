@@ -99,8 +99,8 @@ function give_offline_billing_fields( $form_id ) {
 
 	//Output CC Address fields if global option is on and user hasn't elected to customize this form's offline donation options
 	if (
-		( 'global' === $post_offline_customize_option && 'on' === $global_offline_cc_fields )
-		|| ( 'enabled' === $post_offline_customize_option && 'on' === $post_offline_cc_fields )
+		( 'global' === $post_offline_customize_option && give_is_setting_enabled( $global_offline_cc_fields ) )
+		|| ( 'enabled' === $post_offline_customize_option && give_is_setting_enabled( $post_offline_cc_fields ) )
 	) {
 		give_default_cc_address_fields( $form_id );
 
