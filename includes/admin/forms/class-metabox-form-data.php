@@ -292,11 +292,11 @@ class Give_MetaBox_Form_Data {
 						'desc'        => esc_html__( 'Do you want to close the donation forms and stop accepting donations once this goal has been met?', 'give' ),
 						'id'          => $prefix . 'close_form_when_goal_achieved',
 						'type'        => 'radio_inline',
+						'default'     => 'disabled',
 						'options'     => array(
-							'yes' => esc_html__( 'Yes', 'give' ),
-							'no'  => esc_html__( 'No', 'give' ),
+							'enabled'   => esc_html__( 'Enabled', 'give' ),
+							'disabled'  => esc_html__( 'Disabled', 'give' ),
 						),
-						'default'     => 'no',
 					),
 					array(
 						'name'        => esc_html__( 'Goal Achieved Message', 'give' ),
