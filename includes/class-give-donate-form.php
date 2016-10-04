@@ -1020,10 +1020,10 @@ class Give_Donate_Form {
 	 */
 	public function is_close_donation_form() {
 		return (
-			       'yes' === get_post_meta( $this->ID, '_give_goal_option', true ) )
-		       && ( 'yes' === get_post_meta( $this->ID, '_give_close_form_when_goal_achieved', true ) )
-		       && ( $this->get_goal() <= $this->get_earnings()
-		       );
+				give_is_setting_enabled( get_post_meta( $this->ID, '_give_goal_option', true ) ) )
+				&& ( 'yes' === get_post_meta( $this->ID, '_give_close_form_when_goal_achieved', true ) )
+				&& ( $this->get_goal() <= $this->get_earnings()
+		);
 	}
 
 	/**
