@@ -270,10 +270,6 @@ class Give_i18n_Banner {
 
 		if ( $body ) {
 			$body = json_decode( $body );
-			echo '<pre>';
-			var_dump( $body->translation_sets );
-			var_dump( $body );
-			echo '</pre>';
 
 			foreach ( $body->translation_sets as $set ) {
 				if ( ! property_exists( $set, 'wp_locale' ) ) {
