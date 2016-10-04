@@ -3,7 +3,7 @@
 /**
  * Class Give_i18n
  */
-class Give_i18n {
+class Give_i18n_Banner {
 
 	/**
 	 * Your translation site's URL.
@@ -307,7 +307,7 @@ class Give_i18n {
 	}
 }
 
-$give_i18n = new Give_i18n(
+$give_i18n = new Give_i18n_Banner(
 	array(
 		'hook'          => 'give_forms_page_give-settings',
 		'glotpress_url' => 'https://translate.wordpress.org/api/projects/wp-plugins/give/stable/',
