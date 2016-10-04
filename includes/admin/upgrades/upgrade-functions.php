@@ -613,11 +613,14 @@ function give_v18_upgrades_form_metadata() {
 				// Custom Amount.
 				'_give_custom_amount',
 
-				// Donation gaol.
+				// Donation Gaol.
 				'_give_goal_option',
 
-				// Close form.
-				'_give_close_form_when_goal_achieved'
+				// Close Form.
+				'_give_close_form_when_goal_achieved',
+
+				// Guest Donation.
+				'_give_logged_in_only'
 			);
 
 
