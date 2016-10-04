@@ -79,30 +79,30 @@ function give_process_paypal_purchase( $purchase_data ) {
 		// Only send to PayPal if the pending payment is created successfully.
 		$listener_url = add_query_arg( 'give-listener', 'IPN', home_url( 'index.php' ) );
 
-		// Get the success url
+		// Get the success url.
 		$return_url = add_query_arg( array(
 			'payment-confirmation' => 'paypal',
 			'payment-id'           => $payment
 
 		), get_permalink( give_get_option( 'success_page' ) ) );
 
-		// Get the PayPal redirect uri
+		// Get the PayPal redirect uri.
 		$paypal_redirect = trailingslashit( give_get_paypal_redirect() ) . '?';
 
-		//Item name - pass level name if variable priced
+		//Item name - pass level name if variable priced.
 		$item_name = $purchase_data['post_data']['give-form-title'];
 
-		//Verify has variable prices
+		//Verify has variable prices.
 		if ( give_has_variable_prices( $form_id ) && isset( $purchase_data['post_data']['give-price-id'] ) ) {
 
 			$item_price_level_text = give_get_price_option_name( $form_id, $purchase_data['post_data']['give-price-id'] );
 
 			$price_level_amount = give_get_price_option_amount( $form_id, $purchase_data['post_data']['give-price-id'] );
 
-			//Donation given doesn't match selected level (must be a custom amount)
+			//Donation given doesn't match selected level (must be a custom amount).
 			if ( $price_level_amount != give_sanitize_amount( $purchase_data['price'] ) ) {
 				$custom_amount_text = get_post_meta( $form_id, '_give_custom_amount_text', true );
-				//user custom amount text if any, fallback to default if not
+				//user custom amount text if any, fallback to default if not.
 				$item_name .= ' - ' . ( ! empty( $custom_amount_text ) ? $custom_amount_text : esc_html__( 'Custom Amount', 'give' ) );
 
 			} //Is there any donation level text?
@@ -110,14 +110,14 @@ function give_process_paypal_purchase( $purchase_data ) {
 				$item_name .= ' - ' . $item_price_level_text;
 			}
 
-		} //Single donation: Custom Amount
+		} //Single donation: Custom Amount.
 		elseif ( give_get_form_price( $form_id ) !== give_sanitize_amount( $purchase_data['price'] ) ) {
 			$custom_amount_text = get_post_meta( $form_id, '_give_custom_amount_text', true );
-			//user custom amount text if any, fallback to default if not
+			//user custom amount text if any, fallback to default if not.
 			$item_name .= ' - ' . ( ! empty( $custom_amount_text ) ? $custom_amount_text : esc_html__( 'Custom Amount', 'give' ) );
 		}
 
-		// Setup PayPal arguments
+		// Setup PayPal arguments.
 		$paypal_args = array(
 			'business'      => give_get_option( 'paypal_email', false ),
 			'first_name'    => $purchase_data['user_info']['first_name'],
@@ -125,9 +125,9 @@ function give_process_paypal_purchase( $purchase_data ) {
 			'email'         => $purchase_data['user_email'],
 			'invoice'       => $purchase_data['purchase_key'],
 			'amount'        => $purchase_data['price'],
-			// The all important donation amount
-			'item_name'     => $item_name,
-			// "Purpose" field pre-populated with Form Title
+			// The all important donation amount.
+			'item_name'     => stripslashes( $item_name ),
+			// "Purpose" field pre-populated with Form Title.
 			'no_shipping'   => '1',
 			'shipping'      => '0',
 			'no_note'       => '1',
@@ -166,13 +166,13 @@ function give_process_paypal_purchase( $purchase_data ) {
 		$paypal_args = array_merge( $paypal_extra_args, $paypal_args );
 		$paypal_args = apply_filters( 'give_paypal_redirect_args', $paypal_args, $purchase_data );
 
-		// Build query
+		// Build query.
 		$paypal_redirect .= http_build_query( $paypal_args );
 
-		// Fix for some sites that encode the entities
+		// Fix for some sites that encode the entities.
 		$paypal_redirect = str_replace( '&amp;', '&', $paypal_redirect );
 
-		// Redirect to PayPal
+		// Redirect to PayPal.
 		wp_redirect( $paypal_redirect );
 		exit;
 	}

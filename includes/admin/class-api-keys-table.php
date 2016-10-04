@@ -190,10 +190,39 @@ class Give_API_Keys_Table extends WP_List_Table {
 	}
 
 	/**
+	 * Generate the table navigation above or below the table
+	 *
+	 * @since 3.1.0
+	 * @access protected
+	 * @param string $which
+	 */
+	protected function display_tablenav( $which ) {
+		if ( 'top' === $which ) {
+			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
+		}
+		?>
+		<div class="tablenav <?php echo esc_attr( $which ); ?>">
+
+			<div class="alignleft actions bulkactions">
+				<?php $this->bulk_actions( $which ); ?>
+			</div>
+
+			<?php
+			$this->extra_tablenav( $which );
+			$this->pagination( $which );
+			?>
+
+			<br class="clear" />
+		</div>
+		<?php
+	}
+
+	/**
 	 * Display the key generation form
 	 *
 	 * @access public
 	 * @since  1.1
+	 * @param  string $which
 	 * @return void
 	 */
 	function bulk_actions( $which = '' ) {
