@@ -3,7 +3,7 @@ Contributors: wordimpress, dlocc, webdevmattcrom
 Donate link: https://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 4.0
-Tested up to: 4.6
+Tested up to: 4.6.1
 Stable tag: 1.6.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -166,7 +166,11 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 = 1.6.2 =
 * New: Internationalization banner now promotes to admins translating Give in languages it doesn't yet support. The banner will only display under Donations > Settings and is dismissible. [#1021](https://github.com/WordImpress/Give/issues/1021)
+* New: The Give widget has a new "Display Option" field which defaults to "modal" to help improve display in sidebars. [#1043](https://github.com/WordImpress/Give/issues/1034)
+* Tweak: The Give widget now uses radio buttons for options rather than a dropdown. [#1042](https://github.com/WordImpress/Give/issues/1042)
+* Tweak: Improved the styles of the Add-on activation banner. [#1081](https://github.com/WordImpress/Give/issues/1081)
 * Fix: Donation form names with an apostrophe in them were displaying a backslash in the name for the PayPal Standard gateway. [#1079](https://github.com/WordImpress/Give/issues/1079)
+* Fix: Prevent the donor from saving an empty email address in the [give_profile_editor] shortcode. [#999](https://github.com/WordImpress/Give/issues/999)
 
 = 1.6.1 =
 * Fix: Donation date discrepancy in transaction details view. [#898](https://github.com/WordImpress/Give/issues/898)
