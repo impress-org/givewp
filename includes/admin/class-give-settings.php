@@ -1460,9 +1460,17 @@ function give_hook_callback( $args ) {
  */
 function give_is_setting_enabled( $value, $compare_with = null ) {
 	if( ! is_null( $compare_with ) ) {
+
+		if( is_array( $compare_with ) ) {
+			// Output.
+			return in_array( $value, $compare_with );
+		}
+
+		// Output.
 		return ( $value === $compare_with );
 	}
 
 	// Backward compatibility: From version 1.8 most of setting is modified to enabled/disabled
+	// Output.
 	return ( in_array( $value, array( 'enabled', 'on', 'yes' ) ) ? true : false );
 }
