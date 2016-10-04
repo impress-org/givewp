@@ -312,9 +312,9 @@ function give_offline_add_settings( $settings ) {
 			'type'    => 'radio_inline',
 			'default' => 'global',
 			'options' => apply_filters( 'give_forms_content_options_select', array(
-					'global' => esc_html__( 'Global Options', 'give' ),
-					'yes'    => esc_html__( 'Customize', 'give' ),
-					'no'     => esc_html__( 'Disable', 'give' ),
+					'global'   => esc_html__( 'Global Options', 'give' ),
+					'enabled'  => esc_html__( 'Customize', 'give' ),
+					'disabled' => esc_html__( 'Disable', 'give' ),
 				)
 			),
 		),
