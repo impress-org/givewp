@@ -249,10 +249,10 @@ class Give_MetaBox_Form_Data {
 						'description' => esc_html__( 'Do you want to set a donation goal for this form?', 'give' ),
 						'id'          => $prefix . 'goal_option',
 						'type'        => 'radio_inline',
-						'default'     => 'no',
+						'default'     => 'disabled',
 						'options'     => array(
-							'yes' => esc_html__( 'Yes', 'give' ),
-							'no'  => esc_html__( 'No', 'give' ),
+							'enabled'   => esc_html__( 'Enabled', 'give' ),
+							'disabled'  => esc_html__( 'Disabled', 'give' ),
 						),
 					),
 					array(
