@@ -390,7 +390,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 	do_action( 'give_before_donation_levels', $form_id, $args );
 
 	//Set Price, No Custom Amount Allowed means hidden price field
-	if ( $allow_custom_amount == 'no' ) {
+	if ( ! give_is_setting_enabled( $allow_custom_amount ) ) {
 		?>
 		<label class="give-hidden" for="give-amount-hidden"><?php esc_html_e( 'Donation Amount:', 'give' ); ?></label>
 		<input id="give-amount" class="give-amount-hidden" type="hidden" name="give-amount" value="<?php echo $default_amount; ?>" required>
@@ -432,7 +432,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 	do_action( 'give_after_donation_amount', $form_id, $args );
 
 	//Custom Amount Text
-	if ( ! $variable_pricing && $allow_custom_amount == 'yes' && ! empty( $custom_amount_text ) ) { ?>
+	if ( ! $variable_pricing &&  give_is_setting_enabled( $allow_custom_amount ) && ! empty( $custom_amount_text ) ) { ?>
 		<p class="give-custom-amount-text"><?php echo $custom_amount_text; ?></p>
 	<?php }
 
