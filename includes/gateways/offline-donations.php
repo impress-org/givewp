@@ -173,7 +173,7 @@ function give_offline_send_donor_instructions( $payment_id = 0 ) {
 	//Customize email content depending on whether the single form has been customized
 	$email_content = give_get_option( 'global_offline_donation_email' );
 
-	if ( $post_offline_customization_option === 'yes' ) {
+	if ( give_is_setting_enabled( $post_offline_customization_option, 'enabled' ) ) {
 		$email_content = get_post_meta( $payment_data['form_id'], '_give_offline_donation_email', true );
 	}
 
@@ -198,7 +198,7 @@ function give_offline_send_donor_instructions( $payment_id = 0 ) {
 	$to_email = give_get_payment_user_email( $payment_id );
 
 	$subject = give_get_option( 'offline_donation_subject', esc_html__( 'Offline Donation Instructions', 'give' ) );
-	if ( $post_offline_customization_option === 'yes' ) {
+	if ( give_is_setting_enabled( $post_offline_customization_option,  'enabled' ) ) {
 		$subject = get_post_meta( $payment_data['form_id'], '_give_offline_donation_subject', true );
 	}
 
