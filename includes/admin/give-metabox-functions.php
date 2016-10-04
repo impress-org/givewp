@@ -1025,10 +1025,10 @@ add_filter( '_give_goal_option_field_value', '_give_goal_option_field_value', 10
  * @return string
  */
 function _give_close_form_when_goal_achieved_value( $field_value, $field, $postid ){
-	$custom_amount = get_post_meta( $postid, '_give_close_form_when_goal_achieved', true );
+	$close_form = get_post_meta( $postid, '_give_close_form_when_goal_achieved', true );
 
-	if( in_array( $custom_amount, array( 'yes', 'no' ) ) ) {
-		$field_value =  ( 'yes' === $custom_amount ? 'enabled' : 'disabled' );
+	if( in_array( $close_form, array( 'yes', 'no' ) ) ) {
+		$field_value =  ( 'yes' === $close_form ? 'enabled' : 'disabled' );
 	}
 
 	return $field_value;
