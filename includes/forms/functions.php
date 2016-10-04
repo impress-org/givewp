@@ -937,7 +937,7 @@ function _give_get_prefill_form_field_values( $form_id ) {
 	// Get purchase data.
 	$give_purchase_data = Give()->session->get( 'give_purchase' );
 
-	// Get form info.
+	// Get donor info from form data.
 	$give_donor_info_in_session = empty( $give_purchase_data['post_data'] )
 		? array()
 		: $give_purchase_data['post_data'];
