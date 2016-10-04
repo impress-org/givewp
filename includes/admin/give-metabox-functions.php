@@ -936,8 +936,8 @@ add_filter( '_give_content_placement_field_value', '_give_content_placement_fiel
 function _give_terms_option_field_value( $field_value, $field, $postid ){
 	$term_option = get_post_meta( $postid, '_give_terms_option', true );
 
-	if(  'none' === $term_option ) {
-		$field_value = 'no';
+	if(  in_array( $term_option, array( 'none', 'yes' ) ) ) {
+		$field_value = ( 'yes' === $term_option ? 'enabled' : 'disabled' );
 	}
 
 	return $field_value;
