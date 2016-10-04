@@ -6,7 +6,7 @@ Requires at least: 4.0
 Tested up to: 4.6
 Stable tag: 1.7
 License: GPLv3
-License URI: https://opensource.org/licenses/GPL-3.0
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Democratizing Generosity - Empower your cause: start accepting donations on WordPress with Give.
 
@@ -178,6 +178,9 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Fix: User able to donate minimum amount then custom minimum amount with multi level donation form - https://github.com/WordImpress/Give/issues/712
 * Fix: Clearing reports cache wasn't working for "Estimated monthly income for this period" - https://github.com/WordImpress/Give/issues/773
 * Fix: Use only one text-domain "give" for i18n - https://github.com/WordImpress/Give/issues/964
+
+= 1.6.2 =
+* Fix: Donation form names with an apostrophe in them were displaying a backslash in the name for the PayPal Standard gateway. https://github.com/WordImpress/Give/issues/1079
 
 = 1.6.1 =
 * Fix: Donation date discrepancy in transaction details view - https://github.com/WordImpress/Give/issues/898
