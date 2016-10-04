@@ -122,7 +122,7 @@ jQuery.noConflict();
 
         close_form_when_goal_achieved_option.on('change', function () {
             var close_form_when_goal_achieved_option_val = $('._give_close_form_when_goal_achieved_field input:radio:checked').val();
-            if (close_form_when_goal_achieved_option_val === 'no') {
+            if (close_form_when_goal_achieved_option_val === 'disabled') {
                 $('._give_form_goal_achieved_message_field').hide();
             } else {
                 $('._give_form_goal_achieved_message_field').show();
@@ -146,7 +146,7 @@ jQuery.noConflict();
 
                 var close_form_when_goal_achieved_option_val = $('._give_close_form_when_goal_achieved_field input:radio:checked').val();
 
-                if (close_form_when_goal_achieved_option_val === 'yes') {
+                if (close_form_when_goal_achieved_option_val === 'enabled') {
                     $('._give_form_goal_achieved_message_field').show();
                 }
             }
