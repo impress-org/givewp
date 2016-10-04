@@ -53,10 +53,15 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							'type' => 'title'
 						),
 						array(
-							'name' => esc_html__( 'Remove All Data on Uninstall?', 'give' ),
-							'desc' => esc_html__( 'When the plugin is deleted, completely remove all Give data.', 'give' ),
-							'id'   => 'uninstall_on_delete',
-							'type' => 'checkbox',
+							'name'    => esc_html__( 'Remove Data on Uninstall', 'give' ),
+							'desc'    => esc_html__( 'When the plugin is deleted, completely remove all Give data.', 'give' ),
+							'id'      => 'uninstall_on_delete',
+							'type'    => 'radio_inline',
+							'default' => 'disabled',
+							'options' => array(
+								'enabled'  => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							)
 						),
 						array(
 							/* translators: %s: the_content */
@@ -67,15 +72,20 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							'default' => 'disabled',
 							'type'    => 'radio_inline',
 							'options' => array(
-								'enabled' => __( 'Enabled', 'give' ),
+								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
 							)
 						),
 						array(
-							'name' => esc_html__( 'Load Scripts in Footer?', 'give' ),
-							'desc' => esc_html__( 'Check this box if you would like Give to load all frontend JavaScript files in the footer.', 'give' ),
-							'id'   => 'scripts_footer',
-							'type' => 'checkbox',
+							'name'    => esc_html__( 'Load Scripts in Footer?', 'give' ),
+							'desc'    => esc_html__( 'Check this box if you would like Give to load all frontend JavaScript files in the footer.', 'give' ),
+							'id'      => 'scripts_footer',
+							'type'    => 'radio_inline',
+							'default' => 'disabled',
+							'options' => array(
+								'enabled'  => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							)
 						),
 						array(
 							'id'   => 'give_title_data_control_2',
@@ -96,6 +106,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 			 * Filter the settings.
 			 *
 			 * @since  1.8
+			 *
 			 * @param  array $settings
 			 */
 			$settings = apply_filters( 'give_get_settings_' . $this->id, $settings );

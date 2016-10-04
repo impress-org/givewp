@@ -311,8 +311,8 @@ function give_offline_add_settings( $settings ) {
 			'id'      => $prefix . 'customize_offline_donations',
 			'type'    => 'radio_inline',
 			'default' => 'global',
-			'options' => apply_filters( 'give_forms_content_options_select', array(
-					'global' => esc_html__( 'Global Options', 'give' ),
+			'options'     => apply_filters( 'give_forms_content_options_select', array(
+					'global' => esc_html__( 'Global Option', 'give' ),
 					'yes'    => esc_html__( 'Customize', 'give' ),
 					'no'     => esc_html__( 'Disable', 'give' ),
 				)

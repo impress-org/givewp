@@ -344,7 +344,7 @@ class Give_API {
 	 *
 	 * @access public
 	 * @since  1.1
-	 * @global WPDB $wpdb Used to query the database using the WordPress
+	 * @global WPDB  $wpdb Used to query the database using the WordPress
 	 *                      Database API
 	 *
 	 * @param string $key Public Key
@@ -846,7 +846,7 @@ class Give_API {
 	 * @global WPDB $wpdb Used to query the database using the WordPress
 	 *                          Database API
 	 *
-	 * @param int $customer Customer ID
+	 * @param int   $customer Customer ID
 	 *
 	 * @return array $customers Multidimensional array of the customers
 	 */
@@ -918,7 +918,7 @@ class Give_API {
 		} elseif ( $customer ) {
 
 			$error['error'] = sprintf(
-				/* translators: %s: customer */
+			/* translators: %s: customer */
 				esc_html__( 'Donor %s not found.', 'give' ),
 				$customer
 			);
@@ -976,7 +976,7 @@ class Give_API {
 
 			} else {
 				$error['error'] = sprintf(
-					/* translators: %s: form */
+				/* translators: %s: form */
 					esc_html__( 'Form %s not found.', 'give' ),
 					$form
 				);
@@ -1011,11 +1011,11 @@ class Give_API {
 		$form['info']['content']       = get_post_meta( $form_info->ID, '_give_form_content', true );
 		$form['info']['thumbnail']     = wp_get_attachment_url( get_post_thumbnail_id( $form_info->ID ) );
 
-		if ( give_get_option( 'enable_categories' ) == 'on' ) {
+		if ( give_is_setting_enabled( give_get_option( 'enable_categories', 'disabled' ) ) ) {
 			$form['info']['category'] = get_the_terms( $form_info, 'give_forms_category' );
 			$form['info']['tags']     = get_the_terms( $form_info, 'give_forms_tag' );
 		}
-		if ( give_get_option( 'enable_tags' ) == 'on' ) {
+		if ( give_is_setting_enabled( give_get_option( 'enable_tags', 'disabled' ) ) ) {
 			$form['info']['tags'] = get_the_terms( $form_info, 'give_forms_tag' );
 		}
 
@@ -1191,7 +1191,7 @@ class Give_API {
 					$sales['donations'][0] = array( $form_info->post_name => give_get_form_sales_stats( $args['form'] ) );
 				} else {
 					$error['error'] = sprintf(
-						/* translators: %s: form */
+					/* translators: %s: form */
 						esc_html__( 'Form %s not found.', 'give' ),
 						$args['form']
 					);
@@ -1308,7 +1308,7 @@ class Give_API {
 					$earnings['earnings'][0] = array( $form_info->post_name => give_get_form_earnings_stats( $args['form'] ) );
 				} else {
 					$error['error'] = sprintf(
-						/* translators: %s: form */
+					/* translators: %s: form */
 						esc_html__( 'Form %s not found.', 'give' ),
 						$args['form']
 					);
@@ -1457,7 +1457,7 @@ class Give_API {
 	 * Determines whether results should be displayed in XML or JSON
 	 *
 	 * @since 1.1
-     * @access public
+	 * @access public
 	 *
 	 * @return mixed|void
 	 */
@@ -1475,11 +1475,11 @@ class Give_API {
 	 *
 	 * @access private
 	 * @since  1.1
-     *
+	 *
 	 * @global Give_Logging $give_logs
 	 * @global WP_Query     $wp_query
 	 *
-	 * @param array $data
+	 * @param array         $data
 	 *
 	 * @return void
 	 */
@@ -1488,15 +1488,15 @@ class Give_API {
 			return;
 		}
 
-        /**
-         * @var Give_Logging $give_logs
-         */
+		/**
+		 * @var Give_Logging $give_logs
+		 */
 		global $give_logs;
 
-        /**
-         * @var WP_Query $wp_query
-         */
-        global $wp_query;
+		/**
+		 * @var WP_Query $wp_query
+		 */
+		global $wp_query;
 
 		$query = array(
 			'give-api'    => $wp_query->query_vars['give-api'],
@@ -1551,12 +1551,12 @@ class Give_API {
 	 * @since 1.1
 	 * @global WP_Query $wp_query
 	 *
-	 * @param int $status_code
+	 * @param int       $status_code
 	 */
 	public function output( $status_code = 200 ) {
-        /**
-         * @var WP_Query $wp_query
-         */
+		/**
+		 * @var WP_Query $wp_query
+		 */
 		global $wp_query;
 
 		$format = $this->get_output_format();
@@ -1568,8 +1568,8 @@ class Give_API {
 		 *
 		 * @since 1.1
 		 *
-		 * @param array    $data   Response data to return.
-		 * @param Give_API $this   The Give_API object.
+		 * @param array    $data Response data to return.
+		 * @param Give_API $this The Give_API object.
 		 * @param string   $format Output format, XML or JSON. Default is JSON.
 		 */
 		do_action( 'give_api_output_before', $this->data, $this, $format );
@@ -1617,8 +1617,8 @@ class Give_API {
 		 *
 		 * @since 1.1
 		 *
-		 * @param array    $data   Response data to return.
-		 * @param Give_API $this   The Give_API object.
+		 * @param array    $data Response data to return.
+		 * @param Give_API $this The Give_API object.
 		 * @param string   $format Output format, XML or JSON. Default is JSON.
 		 */
 		do_action( 'give_api_output_after', $this->data, $this, $format );
@@ -1710,7 +1710,7 @@ class Give_API {
 		if ( $user_id == get_current_user_id() && ! give_get_option( 'allow_user_api_keys' ) && ! current_user_can( 'manage_give_settings' ) ) {
 			wp_die(
 				sprintf(
-					/* translators: %s: process */
+				/* translators: %s: process */
 					esc_html__( 'You do not have permission to %s API keys for this user.', 'give' ),
 					$process
 				),
@@ -1720,7 +1720,7 @@ class Give_API {
 		} elseif ( ! current_user_can( 'manage_give_settings' ) ) {
 			wp_die(
 				sprintf(
-					/* translators: %s: process */
+				/* translators: %s: process */
 					esc_html__( 'You do not have permission to %s API keys for this user.', 'give' ),
 					$process
 				),
@@ -1763,7 +1763,7 @@ class Give_API {
 	 * @access public
 	 * @since  1.1
 	 *
-	 * @param int $user_id User ID the key is being generated for
+	 * @param int     $user_id User ID the key is being generated for
 	 * @param boolean $regenerate Regenerate the key for the user
 	 *
 	 * @return boolean True if (re)generated succesfully, false otherwise.
@@ -1967,10 +1967,10 @@ class Give_API {
 	 *
 	 * @since  1.3.6
 	 *
-	 * @param  string $check     Whether to check the cache or not
+	 * @param  string $check Whether to check the cache or not
 	 * @param  int    $object_id The User ID being passed
-	 * @param  string $meta_key  The user meta key
-	 * @param  bool   $single    If it should return a single value or array
+	 * @param  string $meta_key The user meta key
+	 * @param  bool   $single If it should return a single value or array
 	 *
 	 * @return string            The API key/secret for the user supplied
 	 */

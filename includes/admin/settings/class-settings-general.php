@@ -41,7 +41,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 		 * @return array
 		 */
 		public function get_settings() {
-			$settings = array();
+			$settings        = array();
 			$current_section = give_get_current_setting_section();
 
 			switch ( $current_section ) {
@@ -65,10 +65,15 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							)
 						),
 						array(
-							'name' => esc_html__( 'Email Access', 'give' ),
-							'desc' => esc_html__( 'Would you like your donors to be able to access their donation history using only email? Donors whose sessions have expired and do not have an account may still access their donation history via a temporary email access link.', 'give' ),
-							'id'   => 'email_access',
-							'type' => 'checkbox',
+							'name'    => esc_html__( 'Email Access', 'give' ),
+							'desc'    => esc_html__( 'Would you like your donors to be able to access their donation history using only email? Donors whose sessions have expired and do not have an account may still access their donation history via a temporary email access link.', 'give' ),
+							'id'      => 'email_access',
+							'type'    => 'radio_inline',
+							'default' => 'disabled',
+							'options' => array(
+								'enabled'  => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							)
 						),
 						array(
 							'id'      => 'recaptcha_key',
@@ -127,12 +132,12 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'default' => 'before',
 						),
 						array(
-							'name'            => esc_html__( 'Thousands Separator', 'give' ),
-							'desc'            => esc_html__( 'The symbol (typically , or .) to separate thousands.', 'give' ),
-							'id'              => 'thousands_separator',
-							'type'            => 'text',
-							'default'         => ',',
-							'css'             => 'width:12em;',
+							'name'    => esc_html__( 'Thousands Separator', 'give' ),
+							'desc'    => esc_html__( 'The symbol (typically , or .) to separate thousands.', 'give' ),
+							'id'      => 'thousands_separator',
+							'type'    => 'text',
+							'default' => ',',
+							'css'     => 'width:12em;',
 						),
 						array(
 							'name'    => esc_html__( 'Decimal Separator', 'give' ),
@@ -140,7 +145,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'id'      => 'decimal_separator',
 							'type'    => 'text',
 							'default' => '.',
-							'css'             => 'width:12em;',
+							'css'     => 'width:12em;',
 						),
 						array(
 							'name'            => __( 'Number of Decimals', 'give' ),
@@ -228,6 +233,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 			 * Filter the settings.
 			 *
 			 * @since  1.8
+			 *
 			 * @param  array $settings
 			 */
 			$settings = apply_filters( 'give_get_settings_' . $this->id, $settings );

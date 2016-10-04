@@ -110,7 +110,7 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 				'label'   => esc_attr__( 'Floating Labels:', 'give' ),
 				'tooltip' => esc_attr__( 'Override the default floating labels setting for this form.', 'give' ),
 				'options' => array(
-					'global'   => esc_html__( 'Global Options', 'give' ),
+					'global'   => esc_html__( 'Global Option', 'give' ),
 					'enabled'  => esc_html__( 'Enabled', 'give' ),
 					'disabled' => esc_html__( 'Disabled', 'give' ),
 				),
