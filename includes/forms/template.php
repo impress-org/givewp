@@ -1543,8 +1543,6 @@ function give_checkout_button_purchase( $form_id ) {
  */
 function give_agree_to_terms_js( $form_id ) {
 
-	$form_option = get_post_meta( $form_id, '_give_terms_option', true );
-
 	if ( give_is_terms_agreement_enabled( $form_id ) ) {
 		?>
 		<script type="text/javascript">
