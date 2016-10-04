@@ -96,7 +96,7 @@ class Give_Addon_Activation_Banner {
 
 				div.give-addon-alert h3 {
 					margin: -5px 0 10px;
-					font-size: 24px;
+					font-size: 22px;
 					font-weight: 300;
 					line-height: 30px;
 				}
