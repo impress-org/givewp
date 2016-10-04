@@ -1197,7 +1197,7 @@ function give_validate_multi_donation_form_level(  $valid_data, $data ) {
         // If yes then set price id to custom if amount is greater then custom minimum amount (if any).
         if(
             ! $donation_level_matched
-            && ( 'yes' === get_post_meta( $data['give-form-id'], '_give_custom_amount', true ) )
+            && give_is_setting_enabled( get_post_meta( $data['give-form-id'], '_give_custom_amount', true ) )
         ) {
             // Sanitize custom minimum amount.
             $custom_minimum_amount = give_sanitize_amount( get_post_meta( $data['give-form-id'], '_give_custom_amount_minimum', true ), $default_decimals );
