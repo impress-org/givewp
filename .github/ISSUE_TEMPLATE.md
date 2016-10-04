@@ -1,5 +1,3 @@
-<!--- Please conform as much as possible to the following issue template -->
-
 ## Issue Overview
 
 <!--- This is a brief overview of the issue. --->
@@ -24,27 +22,9 @@
 3.
 4.
 
-## Impacted Add-ons
-List the Give Add-ons that this PR will affect:
-
-* Recurring Donations - Issue created 
-
-## Context
-<!--- How has this issue affected you? What are you trying to accomplish? -->
-<!--- Providing context helps us come up with a solution that is most useful in the real world -->
-
-## Your Environment
-<!--- Include as many relevant details about the environment you experienced the bug in -->
-* Version used:
-* Browser Name and version:
-* Operating System and version (desktop or mobile):
-* Link to your project:
 ## Related PRs
 List related PRs against other branches:
 
 ## Todos
 - [ ] Tests
 - [ ] Documentation
-
-## Notes
-Notes regarding deployment of the contained body of work.  These should note any db migrations, etc.
