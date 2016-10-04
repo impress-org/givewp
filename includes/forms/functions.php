@@ -889,6 +889,41 @@ function give_show_login_register_option( $form_id ) {
  * @return array
  */
 function _give_get_prefill_form_field_values( $form_id ) {
+	$logged_in_donor_info = array();
+
+	if ( is_user_logged_in() ) :
+		$donor_data    = get_userdata( get_current_user_id() );
+		$donor_address = get_user_meta( get_current_user_id(), '_give_user_address', true );
+
+		$logged_in_donor_info = array(
+			// First name.
+			'give_first' => $donor_data->first_name,
+
+			// Last name.
+			'give_last'  => $donor_data->last_name,
+
+			// Email.
+			'give_email' => $donor_data->user_email,
+
+			// Street address 1.
+			'card_address' => ( ! empty( $donor_address['line1'] ) ? $donor_address['line1'] : '' ),
+
+			// Street address 2.
+			'card_address_2' => ( ! empty( $donor_address['line2'] ) ? $donor_address['line2'] : '' ),
+
+			// Country.
+			'billing_country' => ( ! empty( $donor_address['country'] ) ? $donor_address['country'] : '' ),
+
+			// State.
+			'card_state'      => ( ! empty( $donor_address['state'] ) ? $donor_address['state'] : '' ),
+
+			// City.
+			'card_city'      => ( ! empty( $donor_address['city'] ) ? $donor_address['city'] : '' ),
+
+			// Zipcode
+			'card_zip'       => ( ! empty( $donor_address['zip'] ) ? $donor_address['zip'] : '' )
+		);
+	endif;
 
 	// Bailout: Auto fill form field values only form form which donor is donating.
 	if(
@@ -896,61 +931,17 @@ function _give_get_prefill_form_field_values( $form_id ) {
 		|| ! $form_id
 		|| ( $form_id !== absint( $_GET['form-id'] ) )
 	) {
-		return array();
+		return $logged_in_donor_info;
 	}
 
-	// Get purchase data,
+	// Get purchase data.
 	$give_purchase_data = Give()->session->get( 'give_purchase' );
 
 	// Get form info.
-	$give_user_info = empty( $give_purchase_data['post_data'] )
+	$give_donor_info_in_session = empty( $give_purchase_data['post_data'] )
 		? array()
 		: $give_purchase_data['post_data'];
 
-	if ( is_user_logged_in() ) :
-		$user_data    = get_userdata( get_current_user_id() );
-		$user_address = get_user_meta( get_current_user_id(), '_give_user_address', true );
-
-		// Add user value to donation form if there did not fill already.
-		switch ( true ) {
-
-			// First name.
-			case empty( $give_user_info['give_first'] ):
-				$give_user_info['give_first']  = $user_data->first_name;
-
-			// Last name.
-			case empty( $give_user_info['give_last'] ) :
-				$give_user_info['give_last']   = $user_data->last_name;
-
-			// Email
-			case  empty( $give_user_info['give_email'] ) :
-				$give_user_info['give_email']  = $user_data->user_email;
-
-			// Street address 1.
-			case  empty( $user_address['card_address'] ) :
-				$give_user_info['card_address']  = ( ! empty( $user_address['line1'] ) ? $user_address['line1'] : '' );
-
-			// Street address 2.
-			case  empty( $user_address['card_address_2'] ) :
-				$give_user_info['card_address_2']  = ( ! empty( $user_address['line2'] ) ? $user_address['line2'] : '' );
-
-			// Country.
-			case  empty( $user_address['billing_country'] ) :
-				$give_user_info['billing_country']  = ( ! empty( $user_address['country'] ) ? $user_address['country'] : '' );
-
-			// State.
-			case  empty( $user_address['card_state'] ) :
-				$give_user_info['card_state']  = ( ! empty( $user_address['state'] ) ? $user_address['state'] : '' );
-
-			// City.
-			case  empty( $user_address['card_city'] ) :
-				$give_user_info['card_city']  = ( ! empty( $user_address['city'] ) ? $user_address['city'] : '' );
-
-			// Zipcode.
-			case  empty( $user_address['card_zip'] ) :
-				$give_user_info['card_zip']  = ( ! empty( $user_address['zip'] ) ? $user_address['zip'] : '' );
-		}
-	endif;
-
-	return $give_user_info;
+	// Output.
+	return array_merge( $give_donor_info_in_session, $logged_in_donor_info );
 }
