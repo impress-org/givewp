@@ -613,7 +613,10 @@ function give_v18_upgrades_form_metadata() {
 				'_give_logged_in_only',
 
 				// Term & conditions.
-				'_give_terms_option'
+				'_give_terms_option',
+
+				// Offline donation.
+				'customize_offline_donations'
 			);
 
 
