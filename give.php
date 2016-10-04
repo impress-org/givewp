@@ -373,6 +373,7 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/class-admin-notices.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/class-api-keys-table.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/class-i18n-module.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-actions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/system-info.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/add-ons.php';
