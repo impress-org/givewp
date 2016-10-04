@@ -851,15 +851,7 @@ add_filter( 'give_form_goal', 'give_currency_filter', 20 );
  * @return bool  $ret Whether or not the logged_in_only setting is set
  */
 function give_logged_in_only( $form_id ) {
-
-	$form_option = get_post_meta( $form_id, '_give_logged_in_only', true );
-
-	// Backward compatibility: if value is on then set value to yes.
-	if( ! in_array( $form_option, array( 'yes', 'no') ) && ( 'on' === $form_option ) ){
-		$form_option = ( 'on' === $form_option ? 'yes' : 'no' );
-	}
-
-	$ret = ( 'yes' === $form_option ? true : false );
+	$ret = give_is_setting_enabled( get_post_meta( $form_id, '_give_logged_in_only', true ) );
 
 	return (bool) apply_filters( 'give_logged_in_only', $ret, $form_id );
 
