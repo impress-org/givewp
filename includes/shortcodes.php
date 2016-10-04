@@ -137,8 +137,8 @@ function give_goal_shortcode( $atts, $content = null ) {
 	}
 
 	//Sanity check 2: Check the form even has Goals enabled.
-	$goal_option = get_post_meta( $atts['id'], '_give_goal_option', true );
-	if ( empty( $goal_option ) || $goal_option !== 'yes' ) {
+	if ( ! give_is_setting_enabled( get_post_meta( $atts['id'], '_give_goal_option', true ) ) ) {
+
 		give_output_error( esc_html__( 'The form does not have Goals enabled.', 'give' ), true );
 	} else {
 		//Passed all sanity checks: output Goal.
