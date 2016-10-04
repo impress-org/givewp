@@ -459,7 +459,7 @@ function give_get_default_offline_donation_email_content() {
  * @return array
  */
 function give_filter_offline_gateway( $gateway_list, $form_id ) {
-	if ( $form_id && ( 'no' === get_post_meta( $form_id, '_give_customize_offline_donations', true ) ) ) {
+	if ( $form_id && ( give_is_setting_enabled( get_post_meta( $form_id, '_give_customize_offline_donations', true ) ) ) ) {
 		unset( $gateway_list['offline'] );
 	}
 
