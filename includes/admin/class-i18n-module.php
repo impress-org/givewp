@@ -167,6 +167,7 @@ class Give_i18n_Banner {
 					padding: 10px 20px;
 					position: relative;
 					border-color: #66BB6A;
+					overflow: hidden;
 				}
 
 				div.give-addon-alert a {
