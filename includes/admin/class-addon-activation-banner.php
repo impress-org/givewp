@@ -58,7 +58,6 @@ class Give_Addon_Activation_Banner {
 		add_action( 'current_screen', array( $this, 'give_addon_notice_ignore' ) );
 		add_action( 'admin_notices', array( $this, 'give_addon_activation_admin_notice' ) );
 
-
 	}
 
 
@@ -79,45 +78,42 @@ class Give_Addon_Activation_Banner {
 		// Output the activation banner
 		if ( ! get_user_meta( $this->user_id, $this->nag_meta_key ) ) { ?>
 
-			<!-- * I output inline styles here
-				 * because there's no reason to keep these
-				 * enqueued after the alert is dismissed. -->
 			<style>
 				div.give-addon-alert.updated {
-					padding: 1em 2em;
+					padding: 20px;
 					position: relative;
 					border-color: #66BB6A;
 				}
 
-				div.give-addon-alert img {
+				div.give-alert-message {
+					margin-left: 70px;
+				}
+
+				div.give-addon-alert img.give-logo {
 					max-width: 50px;
-					position: relative;
-					top: 1em;
+					float: left;
 				}
 
 				div.give-addon-alert h3 {
-					display: inline;
-					position: relative;
-					top: -20px;
-					left: 20px;
+					margin: -5px 0 10px;
 					font-size: 24px;
 					font-weight: 300;
+					line-height: 30px;
 				}
 
 				div.give-addon-alert h3 span {
-					font-weight: 900;
+					font-weight: 700;
 					color: #66BB6A;
 				}
 
 				div.give-addon-alert .alert-actions {
-					position: relative;
-					left: 70px;
-					top: -10px;
-
 				}
 
 				div.give-addon-alert a {
 					color: #66BB6A;
+				}
+
+				div.give-addon-alert .alert-actions a {
 					margin-right: 2em;
 				}
 
@@ -136,73 +132,71 @@ class Give_Addon_Activation_Banner {
 
 				div.give-addon-alert .dismiss {
 					position: absolute;
-					right: 0;
+					right: 20px;
 					height: 100%;
 					top: 50%;
 					margin-top: -10px;
 					outline: none;
 					box-shadow: none;
+					text-decoration: none;
+					color: #AAA;
+				}
+
+				div.give-addon-alert .dismiss:hover {
+					color: #333;
 				}
 			</style>
 
-			<!-- * Now we output the HTML
-				 * of the banner 			-->
-
 			<div class="updated give-addon-alert">
 
-				<!-- Your Logo -->
-				<img src="<?php echo GIVE_PLUGIN_URL; ?>assets/images/svg/give-icon-full-circle.svg" class="give-logo" />
+				<img src="<?php echo GIVE_PLUGIN_URL; ?>assets/images/svg/give-icon-full-circle.svg" class="give-logo"/>
 
-				<!-- Your Message -->
-				<h3><?php
-					printf(
+				<div class="give-alert-message">
+					<h3><?php
+						printf(
 						/* translators: %s: Add-on name */
-						esc_html__( "Thank you for installing Give's %s Add-on!", 'give' ),
-						'<span>' . $this->banner_details['name'] . '</span>'
-					);
-				?></h3>
+							esc_html__( "Thank you for installing Give's %s Add-on!", 'give' ),
+							'<span>' . $this->banner_details['name'] . '</span>'
+						);
+						?></h3>
 
-				<a href="<?php
-				//The Dismiss Button
-				$nag_admin_dismiss_url = 'plugins.php?' . $this->nag_meta_key . '=0';
-				echo admin_url( $nag_admin_dismiss_url ); ?>" class="dismiss"><span class="dashicons dashicons-dismiss"></span></a>
+					<a href="<?php
+					//The Dismiss Button.
+					$nag_admin_dismiss_url = 'plugins.php?' . $this->nag_meta_key . '=0';
+					echo admin_url( $nag_admin_dismiss_url ); ?>" class="dismiss"><span
+							class="dashicons dashicons-dismiss"></span></a>
 
-				<!-- * Now we output a few "actions"
-					 * that the user can take from here -->
+					<div class="alert-actions">
 
-				<div class="alert-actions">
+						<?php //Point them to your settings page.
+						if ( isset( $this->banner_details['settings_url'] ) ) { ?>
+							<a href="<?php echo $this->banner_details['settings_url']; ?>">
+								<span class="dashicons dashicons-admin-settings"></span><?php esc_html_e( 'Go to Settings', 'give' ); ?></a>
+						<?php } ?>
 
-					<?php //Point them to your settings page
-					if ( isset( $this->banner_details['settings_url'] ) ) { ?>
-						<a href="<?php echo $this->banner_details['settings_url']; ?>">
-							<span class="dashicons dashicons-admin-settings"></span><?php esc_html_e( 'Go to Settings', 'give' ); ?>
-						</a>
-					<?php } ?>
-
-					<?php
-					// Show them how to configure the Addon
-					if ( isset( $this->banner_details['documentation_url'] ) ) { ?>
-						<a href="<?php echo $this->banner_details['documentation_url'] ?>" target="_blank">
-							<span class="dashicons dashicons-media-text"></span>
-							<?php
+						<?php
+						// Show them how to configure the Addon.
+						if ( isset( $this->banner_details['documentation_url'] ) ) { ?>
+							<a href="<?php echo $this->banner_details['documentation_url'] ?>" target="_blank">
+								<span class="dashicons dashicons-media-text"></span><?php
 								printf(
-									/* translators: %s: Add-on name */
+								/* translators: %s: Add-on name */
 									esc_html__( 'Documentation: %s Add-on', 'give' ),
 									$this->banner_details['name']
 								);
-							?>
-						</a>
-					<?php } ?>
-					<?php
-					//Let them signup for plugin updates
-					if ( isset( $this->banner_details['support_url'] ) ) { ?>
+								?></a>
+						<?php } ?>
+						<?php
+						//Let them signup for plugin updates
+						if ( isset( $this->banner_details['support_url'] ) ) { ?>
 
-						<a href="<?php echo $this->banner_details['support_url'] ?>" target="_blank">
-							<span class="dashicons dashicons-sos"></span><?php esc_html_e( 'Get Support', 'give' ); ?>
-						</a>
+							<a href="<?php echo $this->banner_details['support_url'] ?>" target="_blank">
+								<span class="dashicons dashicons-sos"></span><?php esc_html_e( 'Get Support', 'give' ); ?>
+							</a>
 
-					<?php } ?>
+						<?php } ?>
 
+					</div>
 				</div>
 			</div>
 			<?php
@@ -211,13 +205,14 @@ class Give_Addon_Activation_Banner {
 
 
 	/**
-	 * Ignore Nag
+	 * Ignore Nag.
 	 *
 	 * This is the action that allows the user to dismiss the banner it basically sets a tag to their user meta data
 	 */
 	public function give_addon_notice_ignore() {
 
-		/* If user clicks to ignore the notice, add that to their user meta the banner then checks whether this tag exists already or not.
+		/**
+		 * If user clicks to ignore the notice, add that to their user meta the banner then checks whether this tag exists already or not.
 		 * See here: http://codex.wordpress.org/Function_Reference/add_user_meta
 		 */
 		if ( isset( $_GET[ $this->nag_meta_key ] ) && '0' == $_GET[ $this->nag_meta_key ] ) {
