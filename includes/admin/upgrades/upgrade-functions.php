@@ -606,6 +606,16 @@ function give_v18_upgrades_form_metadata() {
 					update_post_meta( get_the_ID(), '_give_content_option', 'give_pre_form' );
 				}
 			}
+
+			// Custom Amount.
+			$custom_amount = get_post_meta( get_the_ID(), '_give_custom_amount', true );
+			if( in_array( $custom_amount, array( 'yes', 'no' ) ) ) {
+				if( 'yes' === $custom_amount ) {
+					update_post_meta( get_the_ID(), '_give_custom_amount', 'enabled' );
+				}elseif( 'no' === $custom_amount ) {
+					update_post_meta( get_the_ID(), '_give_custom_amount', 'disabled' );
+				}
+			}
 		}
 	}
 
