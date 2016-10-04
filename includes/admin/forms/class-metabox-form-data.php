@@ -359,10 +359,10 @@ class Give_MetaBox_Form_Data {
 								'desc'    => esc_html__( 'Do you want to require users be logged-in to make donations?', 'give' ),
 								'id'      => $prefix . 'logged_in_only',
 								'type'    => 'radio_inline',
-								'default' => 'yes',
+								'default' => 'enabled',
 								'options' => array(
-									'yes'    => esc_html__( 'Yes', 'give' ),
-									'no'     => esc_html__( 'No', 'give' ),
+									'enabled'    => esc_html__( 'Enabled', 'give' ),
+									'disabled'   => esc_html__( 'Disabled', 'give' ),
 								)
 							),
 							array(
