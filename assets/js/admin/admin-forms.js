@@ -131,7 +131,7 @@ jQuery.noConflict();
 
         goal_option.on('change', function () {
             var goal_option = $('._give_goal_option_field input:radio:checked').val();
-            if (goal_option === 'no') {
+            if (goal_option === 'disabled') {
 
                 $('._give_set_goal_field').hide();
                 $('._give_goal_format_field').hide();
