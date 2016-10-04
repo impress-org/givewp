@@ -386,8 +386,8 @@ class Give_MetaBox_Form_Data {
 								'type'    => 'radio_inline',
 								'options' => array(
 									'global'   => esc_html__( 'Global Options', 'give' ),
-									'enabled'  => esc_html__( 'Yes', 'give' ),
-									'disabled' => esc_html__( 'No', 'give' ),
+									'enabled'  => esc_html__( 'Enabled', 'give' ),
+									'disabled' => esc_html__( 'Disabled', 'give' ),
 								),
 								'default' => 'global',
 							)
