@@ -595,9 +595,9 @@ function give_v18_upgrades_form_metadata() {
 			$show_content = get_post_meta( get_the_ID(), '_give_content_option', true );
 			if( $show_content ) {
 				if( 'none' !== $show_content ) {
-					update_post_meta( get_the_ID(), '_give_display_option', 'yes' );
+					update_post_meta( get_the_ID(), '_give_display_option', 'enabled' );
 				}else {
-					update_post_meta( get_the_ID(), '_give_display_option', 'no' );
+					update_post_meta( get_the_ID(), '_give_display_option', 'disabled' );
 					update_post_meta( get_the_ID(), '_give_content_option', 'give_pre_form' );
 				}
 			}
