@@ -626,7 +626,7 @@ function give_v18_upgrades_form_metadata() {
 				if( in_array( $field_value, array( 'yes', 'on', 'no', 'none' ) ) ) {
 
 					$field_value = ( in_array( $field_value, array( 'yes', 'on' )) ? 'enabled' : 'disabled' );
-					update_post_meta( get_the_ID(), '_give_custom_amount', $field_value );
+					update_post_meta( get_the_ID(), $meta_key, $field_value );
 				}
 
 			}
