@@ -639,7 +639,7 @@ class Give_Donate_Form {
 		$option = get_post_meta( $this->ID, '_give_custom_amount', true );
 		$ret    = 0;
 
-		if ( $option === 'yes' ) {
+		if ( give_is_setting_enabled( $option ) ) {
 			$ret = 1;
 		}
 
