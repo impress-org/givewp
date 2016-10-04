@@ -1034,3 +1034,25 @@ function _give_goal_option_field_value( $field_value, $field, $postid ){
 	return $field_value;
 }
 add_filter( '_give_goal_option_field_value', '_give_goal_option_field_value', 10, 3 );
+
+/**
+ * Set value for Donation Goal --> cloas Form.
+ *
+ * Backward compatibility:  set value by _give_close_form_when_goal_achieved form meta field value if it's value is yes or no.
+ *
+ * @since  1.8
+ * @param  mixed  $field_value Field Value.
+ * @param  array  $field       Field args.
+ * @param  int    $postid      Form/Post ID.
+ * @return string
+ */
+function _give_close_form_when_goal_achieved_value( $field_value, $field, $postid ){
+	$custom_amount = get_post_meta( $postid, '_give_close_form_when_goal_achieved', true );
+
+	if( in_array( $custom_amount, array( 'yes', 'no' ) ) ) {
+		$field_value =  ( 'yes' === $custom_amount ? 'enabled' : 'disabled' );
+	}
+
+	return $field_value;
+}
+add_filter( '_give_close_form_when_goal_achieved_field_value', '_give_close_form_when_goal_achieved_value', 10, 3 );
