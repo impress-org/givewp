@@ -1048,10 +1048,10 @@ add_filter( '_give_close_form_when_goal_achieved_field_value', '_give_close_form
  * @return string
  */
 function _give_logged_in_only_value( $field_value, $field, $postid ){
-	$custom_amount = get_post_meta( $postid, '_give_logged_in_only', true );
+	$guest_donation = get_post_meta( $postid, '_give_logged_in_only', true );
 
-	if( in_array( $custom_amount, array( 'yes', 'no' ) ) ) {
-		$field_value =  ( 'yes' === $custom_amount ? 'enabled' : 'disabled' );
+	if( in_array( $guest_donation, array( 'yes', 'no' ) ) ) {
+		$field_value =  ( 'yes' === $guest_donation ? 'enabled' : 'disabled' );
 	}
 
 	return $field_value;
