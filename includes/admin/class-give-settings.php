@@ -1470,7 +1470,8 @@ function give_hook_callback( $args ) {
  * @return bool
  */
 function give_is_setting_enabled( $value ) {
-	return ( in_array( $value, array( 'on', 'enabled' ) ) ? true : false );
+	// Backward compatibility: From version 1.8 most of setting is modified to enabled/disabled
+	return ( in_array( $value, array( 'enabled', 'on', 'yes' ) ) ? true : false );
 }
 //
 ///**
