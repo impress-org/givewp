@@ -411,11 +411,11 @@ class Give_MetaBox_Form_Data {
 							'id'          => $prefix . 'display_content',
 							'type'        => 'radio_inline',
 							'options'     => apply_filters( 'give_forms_content_options_select', array(
-									'yes' => esc_html__( 'Yes', 'give' ),
-									'no'  => esc_html__( 'No', 'give' ),
+									'enabled'  => esc_html__( 'Enabled', 'give' ),
+									'disabled' => esc_html__( 'Disabled', 'give' ),
 								)
 							),
-							'default'     => 'no',
+							'default'     => 'disabled',
 						),
 
 						// Content placement.

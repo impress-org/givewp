@@ -888,7 +888,7 @@ function _give_display_content_field_value( $field_value, $field, $postid ){
 		&& $show_content
 		&& ( 'none' !== $show_content )
 	) {
-		$field_value = 'yes';
+		$field_value = 'enabled';
 	}
 
 	return $field_value;
