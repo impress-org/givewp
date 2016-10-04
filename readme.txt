@@ -164,6 +164,9 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 == Changelog ==
 
+= 1.6.2 =
+* Fix: Donation form names with an apostrophe in them were displaying a backslash in the name for the PayPal Standard gateway. https://github.com/WordImpress/Give/issues/1079
+
 = 1.6.1 =
 * Fix: Donation date discrepancy in transaction details view - https://github.com/WordImpress/Give/issues/898
 * Fix: Switching donation form in transaction view "-2" appears when no form set - https://github.com/WordImpress/Give/issues/877
