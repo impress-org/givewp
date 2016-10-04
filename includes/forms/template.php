@@ -496,7 +496,7 @@ function give_output_levels( $form_id ) {
 			}
 
 			//Custom Amount
-			if ( $custom_amount === 'yes' && ! empty( $custom_amount_text ) ) {
+			if ( give_is_setting_enabled( $custom_amount ) && ! empty( $custom_amount_text ) ) {
 				$output .= '<li>';
 				$output .= '<button type="button" data-price-id="custom" class="give-donation-level-btn give-btn give-btn-level-custom" value="custom">';
 				$output .= $custom_amount_text;
@@ -525,7 +525,7 @@ function give_output_levels( $form_id ) {
 			}
 
 			//Custom Amount
-			if ( $custom_amount === 'yes' && ! empty( $custom_amount_text ) ) {
+			if ( give_is_setting_enabled( $custom_amount ) && ! empty( $custom_amount_text ) ) {
 				$output .= '<li>';
 				$output .= '<input type="radio" data-price-id="custom" class="give-radio-input give-radio-input-level give-radio-level-custom" name="give-radio-donation-level" id="give-radio-level-custom" value="custom">';
 				$output .= '<label for="give-radio-level-custom">' . $custom_amount_text . '</label>';
@@ -553,7 +553,7 @@ function give_output_levels( $form_id ) {
 			}
 
 			//Custom Amount
-			if ( $custom_amount === 'yes' && ! empty( $custom_amount_text ) ) {
+			if ( give_is_setting_enabled( $custom_amount ) && ! empty( $custom_amount_text ) ) {
 				$output .= '<option data-price-id="custom" class="give-donation-level-custom" value="custom">' . $custom_amount_text . '</option>';
 			}
 
