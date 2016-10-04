@@ -1003,10 +1003,10 @@ add_filter( '_give_custom_amount_field_value', '_give_custom_amount_field_value'
  * @return string
  */
 function _give_goal_option_field_value( $field_value, $field, $postid ){
-	$custom_amount = get_post_meta( $postid, '_give_goal_option', true );
+	$goal_option = get_post_meta( $postid, '_give_goal_option', true );
 
-	if( in_array( $custom_amount, array( 'yes', 'no' ) ) ) {
-		$field_value =  ( 'yes' === $custom_amount ? 'enabled' : 'disabled' );
+	if( in_array( $goal_option, array( 'yes', 'no' ) ) ) {
+		$field_value =  ( 'yes' === $goal_option ? 'enabled' : 'disabled' );
 	}
 
 	return $field_value;
