@@ -585,11 +585,6 @@ function give_v18_upgrades_form_metadata() {
 				update_post_meta( get_the_ID(), '_give_offline_donation_enable_billing_fields_single', 'enabled' );
 			}
 
-			// Term and conditions.
-			if( 'none' === get_post_meta( get_the_ID(), '_give_terms_option', true ) ) {
-				update_post_meta( get_the_ID(), '_give_terms_option', 'no' );
-			}
-
 			// Form content.
 			// Note in version 1.8 display content setting split into display content and content placement setting.
 			$show_content = get_post_meta( get_the_ID(), '_give_content_option', true );
@@ -615,7 +610,10 @@ function give_v18_upgrades_form_metadata() {
 				'_give_close_form_when_goal_achieved',
 
 				// Guest Donation.
-				'_give_logged_in_only'
+				'_give_logged_in_only',
+
+				// Term & conditions.
+				'_give_terms_option'
 			);
 
 
@@ -623,11 +621,12 @@ function give_v18_upgrades_form_metadata() {
 				// Get value.
 				$field_value = get_post_meta( get_the_ID(), $meta_key, true );
 
-				// Convert meta value only if it is in yes/no.
-				if( in_array( $field_value, array( 'yes', 'no' ) ) ) {
+				// Convert meta value only if it is in yes/no/none.
+				if( in_array( $field_value, array( 'yes', 'no', 'none' ) ) ) {
 					$field_value = ( 'yes' === $field_value ? 'enabled' : 'disabled' );
 					update_post_meta( get_the_ID(), '_give_custom_amount', $field_value );
 				}
+
 			}
 		}
 	}
