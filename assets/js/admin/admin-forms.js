@@ -81,7 +81,7 @@ jQuery.noConflict();
             // Get checked radio button value.
             var terms_option_val = $('._give_terms_option_field input:radio:checked').val();
 
-            if ( terms_option_val === 'yes' ) {
+            if ( terms_option_val === 'enabled' ) {
                 $('._give_agree_label_field').show();
                 $('._give_agree_text_field').show();
             } else {
