@@ -78,12 +78,17 @@ Settings
 
   li {
     display: inline-block;
-    margin-left: 15px;
+    margin: 0 0 0 15px;
   }
 
   li:first-child {
     margin-left: 0;
   }
+}
+
+//Ugly but necessary to override WP core styles.
+.form-table td.give-radio-inline fieldset li > label {
+  margin:5px 0 0 !important;
 }
 
 p.give-field-description, .cmb2-metabox-description{

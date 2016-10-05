@@ -87,7 +87,15 @@ function give_deprecated_action_mapping( $data, $arg_1 = '', $arg_2 = '', $arg_3
 			do_action( $give_map_deprecated_actions[ $action ], $data, $arg_1, $arg_2, $arg_3 );
 
 			if ( ! defined( 'DOING_AJAX' ) ) {
-				_give_deprecated_function( 'The ' . $give_map_deprecated_actions[ $action ] . ' action', '1.7', $action );
+				_give_deprecated_function(
+					sprintf(
+						/* translators: %s: action name */
+						__( 'The %s action' ),
+						$give_map_deprecated_actions[ $action ]
+					),
+					'1.7',
+					$action
+				);
 			}
 		}
 	}

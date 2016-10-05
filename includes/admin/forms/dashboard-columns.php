@@ -44,10 +44,10 @@ function give_form_columns( $give_form_columns ) {
 	);
 
 	//Does the user want categories / tags?
-	if ( give_get_option( 'enable_categories' ) !== 'on' ) {
+	if ( ! give_is_setting_enabled( give_get_option( 'enable_categories', 'disabled' ) ) ) {
 		unset( $give_form_columns['form_category'] );
 	}
-	if ( give_get_option( 'enable_tags' ) !== 'on' ) {
+	if ( ! give_is_setting_enabled( give_get_option( 'enable_tags', 'disabled' ) ) ) {
 		unset( $give_form_columns['form_tag'] );
 	}
 
@@ -62,13 +62,13 @@ add_filter( 'manage_edit-give_forms_columns', 'give_form_columns' );
  * @since 1.0
  *
  * @param string $column_name Column name
- * @param int    $post_id     Give Form (Post) ID
+ * @param int    $post_id Give Form (Post) ID
  *
  * @return void
  */
 function give_render_form_columns( $column_name, $post_id ) {
 	if ( get_post_type( $post_id ) == 'give_forms' ) {
-		
+
 		switch ( $column_name ) {
 			case 'form_category':
 				echo get_the_term_list( $post_id, 'give_forms_category', '', ', ', '' );
@@ -256,7 +256,7 @@ add_action( 'load-edit.php', 'give_forms_load', 9999 );
  *
  * @since  1.0
  *
- * @param array $dates   The preset array of dates
+ * @param array $dates The preset array of dates
  *
  * @global      $typenow The post type we are viewing
  * @return array Empty array disables the dropdown
@@ -279,7 +279,7 @@ add_filter( 'months_dropdown_results', 'give_remove_month_filter', 99 );
  * @since 1.0
  *
  * @param string $column_name Name of the column
- * @param string $post_type   Current Post Type (i.e. forms)
+ * @param string $post_type Current Post Type (i.e. forms)
  *
  * @return void
  */
@@ -294,10 +294,10 @@ function give_price_field_quick_edit( $column_name, $post_type ) {
 			<label for="give_regprice">
 				<span class="title"><?php esc_html_e( 'Price', 'give' ); ?></span>
 				<span class="input-text-wrap">
-					<input type="text" name="give_regprice" id="give_regprice" class="text regprice" />
+					<input type="text" name="give_regprice" id="give_regprice" class="text regprice"/>
 				</span>
 			</label>
-			<br class="clear" />
+			<br class="clear"/>
 		</div>
 	</fieldset>
 	<?php
