@@ -270,7 +270,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Fix: Bug with Custom Amount minimum and currencies with "," for decimal separator miscalculating the amounts. [#591](https://github.com/WordImpress/Give/issues/591)
 * Fix: Tooltips weren't loading properly when clicking the "Cancel" button after opting to create an account. [#500](https://github.com/WordImpress/Give/issues/500)
 * Fix: Closing Give Donation Modal Displays "give-hidden" elements in form incorrectly. [#582](https://github.com/WordImpress/Give/issues/582)
-* Fix: Ensure email is set in PHP session to view donation history after donating properly without having to preform additional email access request. [#587](https://github.com/WordImpress/Give/issues/587)
+* Fix: Ensure email is set in PHP session to view donation history after donating properly without having to perform additional email access request. [#587](https://github.com/WordImpress/Give/issues/587)
 * Tweak: Removing the top loading animation when changing donation amounts to reduce theme compatibility issues with it. [#556](https://github.com/WordImpress/Give/issues/556)
 * Tweak: Replaced JS get query parameter function with better function that doesn't throw unreachable code warning in console and works similarly. [#586](https://github.com/WordImpress/Give/issues/586)
 * Tweak: New changelog.txt file to offload older version changelogs; also added release dates to versions for better tracking. [#596](https://github.com/WordImpress/Give/issues/596)
