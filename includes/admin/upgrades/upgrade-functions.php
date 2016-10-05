@@ -610,7 +610,7 @@ function give_v18_upgrades_form_metadata() {
 				'_give_terms_option',
 
 				// Offline donation.
-				'customize_offline_donations',
+				'_give_customize_offline_donations',
 
 				// Billing fields.
 				'_give_offline_donation_enable_billing_fields_single'
