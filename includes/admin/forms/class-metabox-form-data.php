@@ -410,10 +410,9 @@ class Give_MetaBox_Form_Data {
 							'description' => esc_html__( 'Do you want to add custom content to this form?', 'give' ),
 							'id'          => $prefix . 'display_content',
 							'type'        => 'radio_inline',
-							'options'     => apply_filters( 'give_forms_content_options_select', array(
-									'enabled'  => esc_html__( 'Enabled', 'give' ),
-									'disabled' => esc_html__( 'Disabled', 'give' ),
-								)
+							'options'     => array(
+								'enabled'  => esc_html__( 'Enabled', 'give' ),
+								'disabled' => esc_html__( 'Disabled', 'give' ),
 							),
 							'default'     => 'disabled',
 						),
