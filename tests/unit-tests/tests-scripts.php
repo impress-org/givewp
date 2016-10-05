@@ -101,7 +101,7 @@ class Tests_Scripts extends Give_Unit_Test_Case {
 		$origin_pagenow = $pagenow;
 		$pagenow        = 'dashboard';
 
-		include GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php';
+		require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php';
 
 		// Assert
 		$this->assertNull( give_load_admin_scripts( 'dashboard' ) );
@@ -118,7 +118,7 @@ class Tests_Scripts extends Give_Unit_Test_Case {
 	 */
 	public function test_load_admin_scripts() {
 
-		include GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php';
+		require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php';
 
 		give_load_admin_scripts( 'index.php' );
 
