@@ -26,9 +26,8 @@
  * CSS3 Easing
  */
 .give-item-label {
-  padding: .2em .6em .3em;
+  padding: .2em .4em .3em;
   font-size: 11px;
-  font-weight: 700;
   line-height: 1;
   color: #fff;
   text-align: center;
@@ -43,9 +42,8 @@
   background-color: #ffba00; }
 
 .give-item-label {
-  padding: .2em .6em .3em;
+  padding: .2em .4em .3em;
   font-size: 11px;
-  font-weight: 700;
   line-height: 1;
   color: #fff;
   text-align: center;
@@ -1557,6 +1555,12 @@ a.give-delete {
 .post-type-give_forms .mce-container iframe, .post-type-give_forms .wp-editor-area {
   min-height: 400px; }
 
+.give-field-description {
+  color: #aaaaaa;
+  font-style: italic;
+  margin: 0;
+  padding-top: .5em; }
+
 /**
  * Give Payment History SCSS
  *
@@ -1632,7 +1636,9 @@ tr.status-refunded td {
   display: inline-block;
   width: 12px;
   height: 12px;
-  margin: 0 4px;
+  position: relative;
+  top: 1px;
+  margin: 0;
   padding: 0;
   border-radius: 50%;
   background: #888;
@@ -1660,9 +1666,8 @@ tr.status-refunded td {
   background-color: #5bc0de; }
 
 #test-payment-label {
-  padding: .2em .6em .3em;
+  padding: .2em .4em .3em;
   font-size: 11px;
-  font-weight: 700;
   line-height: 1;
   color: #fff;
   text-align: center;
@@ -1674,15 +1679,15 @@ tr.status-refunded td {
   vertical-align: middle; }
 
 #give-payments-filter .give-payment-id {
-  padding: .2em .6em .3em;
+  padding: .2em .4em .3em;
   font-size: 11px;
-  font-weight: 700;
   line-height: 1;
   color: #fff;
   text-align: center;
   white-space: nowrap;
   vertical-align: baseline;
-  border-radius: .25em; }
+  border-radius: .25em;
+  font-weight: normal; }
 
 #give-payments-filter .column-details {
   padding-left: 30px; }

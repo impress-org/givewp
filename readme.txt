@@ -323,4 +323,4 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Fix: Transactions with a "cancelled" status are not shown in the wp-admin Transactions table - thanks @pryley. [#514](https://github.com/WordImpress/Give/issues/514)
 * Fix: Alternative to fopen provided for PDF exports. [#511](https://github.com/WordImpress/Give/issues/511)
 
-[See full changelog here](https://plugins.svn.wordpress.org/give/trunk/changelog.txt)
+[See full changelog here &raquo;](https://plugins.svn.wordpress.org/give/trunk/changelog.txt)
