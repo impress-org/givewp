@@ -803,6 +803,15 @@ jQuery.noConflict();
 				$( $(this).attr('href') ).removeClass('give-hidden');
 				return false;
 			});
+
+			// Auto open tab if mentioned in url.
+			if( location.hash.length ) {
+				var $current_active_tab = $( 'a[href="' + location.hash + '"]', '.give-metabox-tabs' );
+
+				if( $current_active_tab.length ) {
+					$current_active_tab.trigger( 'click' );
+				}
+			}
 		},
 
 		setup_colorpicker: function() {
