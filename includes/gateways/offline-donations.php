@@ -47,7 +47,7 @@ function give_offline_payment_cc_form( $form_id ) {
 	$global_offline_instruction        = give_get_option( 'global_offline_donation_content' );
 	$offline_instructions              = $global_offline_instruction;
 
-	if ( 'enabled' === $post_offline_customization_option ) {
+	if ( give_is_setting_enabled( $post_offline_customization_option, 'enabled' ) ) {
 		$offline_instructions = $post_offline_instructions;
 	}
 
@@ -99,8 +99,8 @@ function give_offline_billing_fields( $form_id ) {
 
 	//Output CC Address fields if global option is on and user hasn't elected to customize this form's offline donation options
 	if (
-		( 'global' === $post_offline_customize_option && give_is_setting_enabled( $global_offline_cc_fields ) )
-		|| ( 'enabled' === $post_offline_customize_option && give_is_setting_enabled( $post_offline_cc_fields ) )
+		( give_is_setting_enabled( $post_offline_customize_option, 'global' ) && give_is_setting_enabled( $global_offline_cc_fields ) )
+		|| ( give_is_setting_enabled( $post_offline_customize_option, 'enabled' ) && give_is_setting_enabled( $post_offline_cc_fields ) )
 	) {
 		give_default_cc_address_fields( $form_id );
 
