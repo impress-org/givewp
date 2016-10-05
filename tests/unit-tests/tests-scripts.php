@@ -101,9 +101,7 @@ class Tests_Scripts extends Give_Unit_Test_Case {
 		$origin_pagenow = $pagenow;
 		$pagenow        = 'dashboard';
 
-		if ( ! function_exists( 'give_is_admin_page' ) ) {
-			include GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php';
-		}
+		include GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php';
 
 		// Assert
 		$this->assertNull( give_load_admin_scripts( 'dashboard' ) );
@@ -120,9 +118,7 @@ class Tests_Scripts extends Give_Unit_Test_Case {
 	 */
 	public function test_load_admin_scripts() {
 
-		if ( ! function_exists( 'give_is_admin_page' ) ) {
-			include GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php';
-		}
+		include GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php';
 
 		give_load_admin_scripts( 'index.php' );
 
