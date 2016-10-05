@@ -1359,7 +1359,7 @@ add_action( 'give_payment_mode_select', 'give_payment_mode_select' );
  * @return bool
  */
 function give_is_terms_agreement_enabled( $form_id ) {
-	return give_is_setting_enabled( $form_id, array( 'enabled', 'global' ) );
+	return give_is_setting_enabled( get_post_meta( $form_id, '_give_terms_option', true ), array( 'enabled', 'global' ) );
 }
 
 /**
