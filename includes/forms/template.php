@@ -1359,7 +1359,23 @@ add_action( 'give_payment_mode_select', 'give_payment_mode_select' );
  * @return bool
  */
 function give_is_terms_agreement_enabled( $form_id ) {
-	return give_is_setting_enabled( get_post_meta( $form_id, '_give_terms_option', true ), array( 'enabled', 'global' ) );
+	$term_option  = get_post_meta( $form_id, '_give_terms_option', true );
+	$is_add_terms = false;
+
+	if( give_is_setting_enabled( $term_option , 'enabled' ) ) {
+		$is_add_terms = true;
+		
+	} elseif ( give_is_setting_enabled( $term_option , 'global' ) ) {
+
+		$is_add_terms = true;
+
+		// Bailout: Do not print terms and conditions if it is disable globally.
+		if( ! give_is_setting_enabled( give_get_option( 'enable_terms' ) ) ) {
+			$is_add_terms = false;
+		}
+	}
+
+	return $is_add_terms;
 }
 
 /**
