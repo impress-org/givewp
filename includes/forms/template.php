@@ -1382,12 +1382,12 @@ function give_terms_agreement( $form_id ) {
 	}
 
 	// Bailout if per form and global term and conditions is not setup
-	if( 'yes' === $term_option ) {
+	if( give_is_setting_enabled( $term_option, 'enabled' ) ) {
 		// Set term and conditions label and text on basis of per form and global setting.
 		$label = ( $label = get_post_meta( $form_id, '_give_agree_label', true ) ) ? stripslashes( $label ) : give_get_option( 'agree_to_terms_label', esc_html__( 'Agree to Terms?', 'give' ) );
 		$terms = ( $terms = get_post_meta( $form_id, '_give_agree_text', true ) ) ? $terms : give_get_option( 'agreement_text', '' );
 
-	} elseif ( 'global' === $term_option ){
+	} elseif ( give_is_setting_enabled( $term_option, 'global' ) ){
 		// Set term and conditions label and text on basis of  global setting.
 		$label = give_get_option( 'agree_to_terms_label', esc_html__( 'Agree to Terms?', 'give' ) );
 		$terms = give_get_option( 'agreement_text', '' );
