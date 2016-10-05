@@ -102,7 +102,7 @@ tr.status-refunded td {
     width: 12px;
     height: 12px;
     position: relative;
-    top:1px;
+    top: 1px;
     margin: 0;
     padding: 0;
     border-radius: 50%;
@@ -156,6 +156,7 @@ tr.status-refunded td {
 
   .give-payment-id {
     @include give-label();
+    font-weight: normal;
     @extend .give-item-label-gray;
   }
 
@@ -414,7 +415,6 @@ input.give-price-field {
     padding: 6px 10px;
   }
 }
-
 
 //------------------------------------------
 //Donation Details

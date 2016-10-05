@@ -26,9 +26,8 @@
  * CSS3 Easing
  */
 .give-item-label {
-  padding: .2em .6em .3em;
+  padding: .2em .4em .3em;
   font-size: 11px;
-  font-weight: 700;
   line-height: 1;
   color: #fff;
   text-align: center;
@@ -43,9 +42,8 @@
   background-color: #ffba00; }
 
 .give-item-label {
-  padding: .2em .6em .3em;
+  padding: .2em .4em .3em;
   font-size: 11px;
-  font-weight: 700;
   line-height: 1;
   color: #fff;
   text-align: center;
@@ -1573,9 +1571,8 @@ tr.status-refunded td {
   background-color: #5bc0de; }
 
 #test-payment-label {
-  padding: .2em .6em .3em;
+  padding: .2em .4em .3em;
   font-size: 11px;
-  font-weight: 700;
   line-height: 1;
   color: #fff;
   text-align: center;
@@ -1587,15 +1584,15 @@ tr.status-refunded td {
   vertical-align: middle; }
 
 #give-payments-filter .give-payment-id {
-  padding: .2em .6em .3em;
+  padding: .2em .4em .3em;
   font-size: 11px;
-  font-weight: 700;
   line-height: 1;
   color: #fff;
   text-align: center;
   white-space: nowrap;
   vertical-align: baseline;
-  border-radius: .25em; }
+  border-radius: .25em;
+  font-weight: normal; }
 
 #give-payments-filter .column-details {
   padding-right: 30px; }
