@@ -369,7 +369,7 @@ class Give_MetaBox_Form_Data {
 								'name'    => esc_html__( 'Registration', 'give' ),
 								'desc'    => esc_html__( 'Display the registration and login forms in the payment section for non-logged-in users.', 'give' ),
 								'id'      => $prefix . 'show_register_form',
-								'type'    => 'radio_inline',
+								'type'    => 'radio',
 								'options' => array(
 									'none'         => esc_html__( 'None', 'give' ),
 									'registration' => esc_html__( 'Registration', 'give' ),
