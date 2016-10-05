@@ -1616,18 +1616,11 @@ add_action( 'give_pre_form', 'give_show_goal_progress', 10, 2 );
  */
 function give_get_form_content_placement( $form_id, $args ) {
 	$show_content = '';
-
-	// @TODO: We can improve this function by removing backward compatibility after all user upgrade to 1.8
+	
 	if(  isset( $args['show_content'] ) && ! empty( $args['show_content'] ) ) {
-		$show_content = $args['show_content'];
-	} elseif ( $display_content = get_post_meta( $form_id, '_give_display_content', true ) ) {
-		if( 'yes' === $display_content ) {
-			$show_content = get_post_meta( $form_id, '_give_content_placement', true );
-		}
-	} else {
-		// Backward compatibility: _give_content_option is deprecate in version 1.8.
-		$show_content = get_post_meta( $form_id, '_give_content_option', true );
-		$show_content = ( 'none' === $show_content ) ? '' : $show_content;
+		$show_content = ( 'none' !== $args['show_content'] ? $args['show_content'] : '' );
+	} elseif ( give_is_setting_enabled( get_post_meta( $form_id, '_give_display_content', true ) ) ) {
+		$show_content = get_post_meta( $form_id, '_give_content_placement', true );
 	}
 
 	return $show_content;
