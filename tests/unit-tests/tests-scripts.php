@@ -84,6 +84,7 @@ class Tests_Scripts extends Give_Unit_Test_Case {
 		give_update_option( 'disable_css', false );
 		give_register_styles();
 
+		// Assert
 		$this->assertTrue( wp_style_is( 'give-styles', 'enqueued' ) );
 
 	}
