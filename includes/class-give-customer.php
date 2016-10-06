@@ -998,8 +998,11 @@ class Give_Customer {
 	 * Attach an email to the donor
 	 *
 	 * @since  1.7
+	 * @access public
+	 *
 	 * @param  string $email   The email address to attach to the customer
 	 * @param  bool   $primary Allows setting the email added as the primary
+	 *
 	 * @return bool            If the email was added successfully
 	 */
 	public function add_email( $email = '', $primary = false ) {
@@ -1034,12 +1037,14 @@ class Give_Customer {
 		return $ret;
 	}
 
-
 	/**
 	 * Remove an email from the customer
 	 *
 	 * @since  1.7
+	 * @access public
+	 *
 	 * @param  string $email The email address to remove from the customer
+	 *
 	 * @return bool          If the email was removeed successfully
 	 */
 	public function remove_email( $email = '' ) {
@@ -1062,7 +1067,10 @@ class Give_Customer {
 	 * This will move the customer's previous primary email to an additional email
 	 *
 	 * @since  1.7
+	 * @access public
+	 *
 	 * @param  string $new_primary_email The email address to remove from the customer
+	 *
 	 * @return bool                      If the email was set as primary successfully
 	 */
 	public function set_primary_email( $new_primary_email = '' ) {

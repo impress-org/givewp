@@ -70,7 +70,7 @@ abstract class Give_DB {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @return array Columns
+	 * @return array  Columns and formats.
 	 */
 	public function get_columns() {
 		return array();
@@ -326,4 +326,3 @@ abstract class Give_DB {
 	}
 
 }
-

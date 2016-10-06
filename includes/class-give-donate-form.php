@@ -409,7 +409,7 @@ class Give_Donate_Form {
 	 *
 	 * @param  array $data Array of attributes for a donation form.
 	 *
-	 * @return mixed       False if data isn't passed and class not instantiated for creation, or New Form ID.
+	 * @return bool|int    False if data isn't passed and class not instantiated for creation, or New Form ID.
 	 */
 	public function create( $data = array() ) {
 
