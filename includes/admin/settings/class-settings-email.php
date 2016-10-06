@@ -126,6 +126,17 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 							'type' => 'title'
 						),
 						array(
+							'id'      => 'disable_admin_notices',
+							'name'    => esc_html__( 'Disable Admin Notifications', 'give' ),
+							'desc'    => esc_html__( 'Check this box if you do not want to receive emails when new donations are made.', 'give' ),
+							'type'    => 'radio_inline',
+							'default' => 'disabled',
+							'options' => array(
+								'enabled' => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							)
+						),
+						array(
 							'id'      => 'donation_notification_subject',
 							'name'    => esc_html__( 'Donation Notification Subject', 'give' ),
 							'desc'    => esc_html__( 'Enter the subject line for the donation notification email.', 'give' ),
@@ -149,17 +160,6 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 							'desc'    => __( 'Enter the email address(es) that should receive a notification anytime a donation is made, please only enter <span class="give-underline">one email address per line</span> and <strong>not separated by commas</strong>.', 'give' ),
 							'type'    => 'textarea',
 							'default' => get_bloginfo( 'admin_email' )
-						),
-						array(
-							'id'      => 'disable_admin_notices',
-							'name'    => esc_html__( 'Disable Admin Notifications', 'give' ),
-							'desc'    => esc_html__( 'Check this box if you do not want to receive emails when new donations are made.', 'give' ),
-							'type'    => 'radio_inline',
-							'default' => 'disabled',
-							'options' => array(
-								'enabled' => __( 'Enabled', 'give' ),
-								'disabled' => __( 'Disabled', 'give' ),
-							)
 						),
 						array(
 							'id'   => 'give_title_email_settings_3',
