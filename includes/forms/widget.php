@@ -164,21 +164,25 @@ class Give_Forms_Widget extends WP_Widget{
 
 		<?php // Widget: Display Style ?>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'display_style' ) ); ?>"><?php esc_html_e( 'Display style:', 'give' ); ?></label><br>
-			<label for="<?php echo $this->get_field_id( 'display_style' ); ?>-onpage"><input type="radio" class="widefat" id="<?php echo $this->get_field_id( 'display_style' ); ?>-onpage" name="<?php echo $this->get_field_name( 'display_style' ); ?>" value="onpage" <?php checked( $instance['display_style'], 'onpage' ); ?>> <?php echo esc_html__( 'All Fields', 'give' ); ?></label>
-			&nbsp;&nbsp;<label for="<?php echo $this->get_field_id( 'display_style' ); ?>-reveal"><input type="radio" class="widefat" id="<?php echo $this->get_field_id( 'display_style' ); ?>-reveal" name="<?php echo $this->get_field_name( 'display_style' ); ?>" value="reveal" <?php checked( $instance['display_style'], 'reveal' ); ?>> <?php echo esc_html__( 'Reveal', 'give' ); ?></label>
-			&nbsp;&nbsp;<label for="<?php echo $this->get_field_id( 'display_style' ); ?>-modal"><input type="radio" class="widefat" id="<?php echo $this->get_field_id( 'display_style' ); ?>-modal" name="<?php echo $this->get_field_name( 'display_style' ); ?>" value="modal" <?php checked( $instance['display_style'], 'modal' ); ?>> <?php echo esc_html__( 'Modal', 'give' ); ?></label><br>
-			 <small class="give-field-description">
+			<label for="<?php echo esc_attr( $this->get_field_id( 'display_style' ) ); ?>"><?php esc_html_e( 'Display style:', 'give' ); ?></label>
+			<select class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'display_style' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'display_style' ) ); ?>">
+				<option <?php selected( $instance['display_style'], 'onpage' ); ?> value="onpage"><?php esc_html_e( 'Show on Page', 'give' ); ?></option>
+				<option <?php selected( $instance['display_style'], 'reveal' ); ?> value="reveal"><?php esc_html_e( 'Reveal Upon Click', 'give' ); ?></option>
+				<option <?php selected( $instance['display_style'], 'modal'  ); ?> value="modal" ><?php esc_html_e( 'Modal Window Upon Click', 'give' ); ?></option>
+			</select><br>
+			<small class="give-field-description">
 				<?php echo esc_html__( 'Select a Give Form style.', 'give' ); ?>
 			</small>
 		</p>
 
 		<?php // Widget: Floating Labels ?>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'float_labels' ) ); ?>"><?php esc_html_e( 'Floating Labels (optional):', 'give' ); ?></label><br>
-			<label for="<?php echo $this->get_field_id( 'float_labels' ); ?>-global"><input type="radio" class="widefat" id="<?php echo $this->get_field_id( 'float_labels' ); ?>-global" name="<?php echo $this->get_field_name( 'float_labels' ); ?>" value="global" <?php checked( $instance['float_labels'], 'global' ); ?>> <?php echo esc_html__( 'Global Options', 'give' ); ?></label>
-			&nbsp;&nbsp;<label for="<?php echo $this->get_field_id( 'float_labels' ); ?>-enabled"><input type="radio" class="widefat" id="<?php echo $this->get_field_id( 'float_labels' ); ?>-enabled" name="<?php echo $this->get_field_name( 'float_labels' ); ?>" value="enabled" <?php checked( $instance['float_labels'], 'enabled' ); ?>> <?php echo esc_html__( 'Yes', 'give' ); ?></label>
-			&nbsp;&nbsp;<label for="<?php echo $this->get_field_id( 'float_labels' ); ?>-disabled"><input type="radio" class="widefat" id="<?php echo $this->get_field_id( 'float_labels' ); ?>-disabled" name="<?php echo $this->get_field_name( 'float_labels' ); ?>" value="disabled" <?php checked( $instance['float_labels'], 'disabled' ); ?>> <?php echo esc_html__( 'No', 'give' ); ?></label><br>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'float_labels' ) ); ?>"><?php esc_html_e( 'Floating Labels (optional):', 'give' ); ?></label>
+			<select class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'float_labels' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'float_labels' ) ); ?>">
+				<option <?php selected( $instance['float_labels'], 'global'   ); ?> value="global"  ><?php esc_html_e( 'Global Options', 'give' ); ?></option>
+				<option <?php selected( $instance['float_labels'], 'enabled'  ); ?> value="enabled" ><?php esc_html_e( 'Enabled', 'give' ); ?></option>
+				<option <?php selected( $instance['float_labels'], 'disabled' ); ?> value="disabled"><?php esc_html_e( 'Disabled', 'give' ); ?></option>
+			</select><br>
 			<small class="give-field-description">
 				<?php
 				printf(
