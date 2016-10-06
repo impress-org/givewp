@@ -358,16 +358,29 @@ add_action( 'init', 'give_register_post_type_statuses' );
 function give_updated_messages( $messages ) {
 	global $post, $post_ID;
 
-	$url1 = '<a href="' . get_permalink( $post_ID ) . '">';
-	$url2 = '</a>';
+	if ( give_get_option( 'disable_forms_singular' ) === 'on' ) {
 
-	$messages['give_forms'] = array(
-		1 => sprintf( __( 'Form updated. %1$sView Form%2$s.', 'give' ), $url1, $url2 ),
-		4 => sprintf( __( 'Form updated. %1$sView Form%2$s.', 'give' ), $url1, $url2 ),
-		6 => sprintf( __( 'Form published. %1$sView Form%2$s.', 'give' ), $url1, $url2 ),
-		7 => sprintf( __( 'Form saved. %1$sView Form%2$s.', 'give' ), $url1, $url2 ),
-		8 => sprintf( __( 'Form submitted. %1$sView Form%2$s.', 'give' ), $url1, $url2 )
-	);
+		$messages['give_forms'] = array(
+			1 => __( 'Form updated.', 'give' ),
+			4 => __( 'Form updated.', 'give' ),
+			6 => __( 'Form published.', 'give' ),
+			7 => __( 'Form saved.', 'give' ),
+			8 => __( 'Form submitted.', 'give' ),
+		);
+
+	} else {
+
+		$url1 = '<a href="' . get_permalink( $post_ID ) . '">';
+		$url2 = '</a>';
+		$messages['give_forms'] = array(
+			1 => sprintf( __( 'Form updated. %1$sView Form%2$s.', 'give' ), $url1, $url2 ),
+			4 => sprintf( __( 'Form updated. %1$sView Form%2$s.', 'give' ), $url1, $url2 ),
+			6 => sprintf( __( 'Form published. %1$sView Form%2$s.', 'give' ), $url1, $url2 ),
+			7 => sprintf( __( 'Form saved. %1$sView Form%2$s.', 'give' ), $url1, $url2 ),
+			8 => sprintf( __( 'Form submitted. %1$sView Form%2$s.', 'give' ), $url1, $url2 )
+		);
+
+	}
 
 	return $messages;
 }
