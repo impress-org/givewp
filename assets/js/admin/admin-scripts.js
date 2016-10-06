@@ -271,9 +271,10 @@ jQuery.noConflict();
 
 		toggle_options: function () {
 
-			var email_access = $('#email_access');
+			var email_access = $( 'input[name="email_access"]' ,'.give-setting-tab-body-general' );
 			email_access.on('change', function () {
-				if (email_access.prop('checked')) {
+				var field_value = email_access = $( 'input[name="email_access"]:checked' ,'.give-setting-tab-body-general' ).val();
+				if ( 'enabled' === field_value) {
 					$('#recaptcha_key').parents('tr').show();
 					$('#recaptcha_secret').parents('tr').show();
 				} else {
