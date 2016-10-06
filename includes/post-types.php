@@ -370,14 +370,12 @@ function give_updated_messages( $messages ) {
 
 	} else {
 
-		$url1 = '<a href="' . get_permalink( $post_ID ) . '">';
-		$url2 = '</a>';
 		$messages['give_forms'] = array(
-			1 => sprintf( __( 'Form updated. %1$sView Form%2$s.', 'give' ), $url1, $url2 ),
-			4 => sprintf( __( 'Form updated. %1$sView Form%2$s.', 'give' ), $url1, $url2 ),
-			6 => sprintf( __( 'Form published. %1$sView Form%2$s.', 'give' ), $url1, $url2 ),
-			7 => sprintf( __( 'Form saved. %1$sView Form%2$s.', 'give' ), $url1, $url2 ),
-			8 => sprintf( __( 'Form submitted. %1$sView Form%2$s.', 'give' ), $url1, $url2 )
+			1 => sprintf( '%1$s <a href="%2$s">%3$s</a>', __( 'Form updated.',   'give' ), get_permalink( $post_ID ), __( 'View Form', 'give' ) ),
+			4 => sprintf( '%1$s <a href="%2$s">%3$s</a>', __( 'Form updated.',   'give' ), get_permalink( $post_ID ), __( 'View Form', 'give' ) ),
+			6 => sprintf( '%1$s <a href="%2$s">%3$s</a>', __( 'Form published.', 'give' ), get_permalink( $post_ID ), __( 'View Form', 'give' ) ),
+			7 => sprintf( '%1$s <a href="%2$s">%3$s</a>', __( 'Form saved.',     'give' ), get_permalink( $post_ID ), __( 'View Form', 'give' ) ),
+			8 => sprintf( '%1$s <a href="%2$s">%3$s</a>', __( 'Form submitted.', 'give' ), get_permalink( $post_ID ), __( 'View Form', 'give' ) )
 		);
 
 	}
