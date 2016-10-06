@@ -271,6 +271,9 @@ jQuery.noConflict();
 
 		toggle_options: function () {
 
+			/**
+			 * Email access setting toggle
+			 */
 			var email_access = $( 'input[name="email_access"]' ,'.give-setting-tab-body-general' );
 			email_access.on('change', function () {
 				var field_value = email_access = $( 'input[name="email_access"]:checked' ,'.give-setting-tab-body-general' ).val();
@@ -280,6 +283,19 @@ jQuery.noConflict();
 				} else {
 					$('#recaptcha_key').parents('tr').hide();
 					$('#recaptcha_secret').parents('tr').hide();
+				}
+			}).change();
+
+			/**
+			 * Form featured image setting toggle
+			 */
+			var form_featured_image = $( 'input[name="disable_form_featured_img"]' ,'.give-setting-tab-body-display' );
+			form_featured_image.on('change', function () {
+				var field_value = email_access = $( 'input[name="disable_form_featured_img"]:checked' ,'.give-setting-tab-body-display' ).val();
+				if ( 'enabled' === field_value) {
+					$('#featured_image_size').parents('tr').show();
+				} else {
+					$('#featured_image_size').parents('tr').hide();
 				}
 			}).change();
 		},
