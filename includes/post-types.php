@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_setup_post_types() {
 
 	// Give Forms single post and archive options.
-	$give_forms_singular = give_is_setting_enabled( give_get_option( 'disable_forms_singular', 'enabled' ) );
+	$give_forms_singular = give_is_setting_enabled( give_get_option( 'enable_forms_singular' ) );
 
 	$give_forms_archives = give_is_setting_enabled( give_get_option( 'disable_forms_archives', 'enabled' ) );
 
@@ -403,7 +403,7 @@ function give_widgets_init() {
 
 	//Single Give Forms (disabled if single turned off in settings)
 	if (
-		! give_is_setting_enabled( give_get_option( 'disable_forms_singular', 'disabled' ) )
+		! give_is_setting_enabled( give_get_option( 'enable_forms_singular' ) )
 		&& ! give_is_setting_enabled( give_get_option( 'disable_form_sidebar', 'disabled' ) )
 	) {
 

@@ -103,9 +103,9 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						array(
 							'name'    => esc_html__( 'Form Single Views', 'give' ),
 							'desc'    => esc_html__( 'By default, all donation form have single views enabled which creates a specific URL on your website for that form. This option disables the singular posts from being publicly viewable. Note: you will need to embed forms using a shortcode or widget if enabled.', 'give' ),
-							'id'      => 'disable_forms_singular',
+							'id'      => 'enable_forms_singular',
 							'type'    => 'radio_inline',
-							'default' => 'disabled',
+							'default' => 'enabled',
 							'options' => array(
 								'enabled' => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
