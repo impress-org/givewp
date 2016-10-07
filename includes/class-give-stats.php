@@ -34,6 +34,8 @@ class Give_Stats {
 	 *
 	 * @since  1.0
 	 * @access public
+	 *
+	 * @var    string
 	 */
 	public $start_date;
 
@@ -48,14 +50,20 @@ class Give_Stats {
 	 *
 	 * The end date is optional
 	 *
+	 * @since  1.0
 	 * @access public
+	 *
+	 * @var    string
 	 */
 	public $end_date;
 
 	/**
 	 * Flag to determine if current query is based on timestamps
 	 *
+	 * @since  1.0
 	 * @access public
+	 *
+	 * @var    string
 	 */
 	public $timestamp;
 

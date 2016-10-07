@@ -50,7 +50,6 @@ class Give_HTML_Elements {
 
 		$args = wp_parse_args( $args, $defaults );
 
-
 		$payments = new Give_Payments_Query( array(
 			'number' => $args['number']
 		) );
