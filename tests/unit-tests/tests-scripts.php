@@ -98,9 +98,9 @@ class Tests_Scripts extends Give_Unit_Test_Case {
 	public function test_load_admin_scripts_bail() {
 
 		// Prepare test
-		global $pagenow;
-		$origin_pagenow = $pagenow;
-		$pagenow        = 'dashboard';
+		$screen         = get_current_screen();
+		$origin_screen  = $screen->id;
+		$current_screen = 'dashboard';
 
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php';
 
@@ -108,7 +108,7 @@ class Tests_Scripts extends Give_Unit_Test_Case {
 		$this->assertNull( give_load_admin_scripts( 'dashboard' ) );
 
 		// Reset to origin
-		$pagenow = $origin_pagenow;
+		$current_screen = $origin_screen;
 
 	}
 
