@@ -62,20 +62,18 @@ class EDD_SL_Plugin_Updater {
      *
      * @uses api_request()
 	 *
-     * @global $pagenow
-     *
      * @param array   $_transient_data Update array build by WordPress.
      * @return array Modified update array with custom plugin data.
      */
     function check_update( $_transient_data ) {
 
-        global $pagenow;
+        $screen = get_current_screen();
 
         if( ! is_object( $_transient_data ) ) {
             $_transient_data = new stdClass;
         }
 
-        if( 'plugins.php' == $pagenow && is_multisite() ) {
+        if( 'plugins.php' == $screen->parent_file && is_multisite() ) {
             return $_transient_data;
         }
 
