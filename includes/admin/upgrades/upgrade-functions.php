@@ -560,7 +560,7 @@ function give_v18_upgrades_core_setting() {
 		'enable_tags'                => 'disabled',
 		'enable_terms'               => 'disabled',
 		'email_access'               => 'disabled',
-		'test_mode'                  => 'enabled',
+		'test_mode'                  => 'disabled',
 		'give_offline_donation_enable_billing_fields' => 'disabled'
 	);
 
