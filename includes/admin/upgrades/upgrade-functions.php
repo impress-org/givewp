@@ -547,12 +547,12 @@ function give_v18_upgrades_core_setting() {
 		// Loop: check each setting field.
 		foreach ( $core_setting_names as $name ) {
 			// Bailout.
-			if( in_array( $give_settings[ $name ], array( 'enabled', 'disabled') ) ) {
+			if( ! empty( $give_settings[ $name ] ) && in_array( $give_settings[ $name ], array( 'enabled', 'disabled') ) ) {
 				continue;
 			}
 
 			// Check (checkbox to radio): Make sure that value does not update again and again if version did not update.
-			$give_settings[ $name ] = ( 'on' === $give_settings[ $name ] ? 'enabled' : 'disabled' );
+			$give_settings[ $name ] = ( ! empty( $give_settings[ $name ] ) && 'on' === $give_settings[ $name ] ? 'enabled' : 'disabled' );
 
 			// Rename disable_* setting enable_* for more understanding
 			// @see https://github.com/WordImpress/Give/issues/1063
