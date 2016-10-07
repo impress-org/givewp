@@ -129,7 +129,7 @@ function give_run_install() {
 	//Fresh Install? Setup Test Mode, Base Country (US), Test Gateway, Currency.
 	if ( empty( $current_version ) ) {
 		$options['base_country']       = 'US';
-		$options['test_mode']          = 1;
+		$options['test_mode']          = 'enabled';
 		$options['currency']           = 'USD';
 		$options['session_lifetime']   = '604800';
 		$options['gateways']['manual'] = 1;
