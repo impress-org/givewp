@@ -289,9 +289,9 @@ jQuery.noConflict();
 			/**
 			 * Form featured image
 			 */
-			var form_featured_image = $( 'input[name="disable_form_featured_img"]' ,'.give-setting-tab-body-display' );
+			var form_featured_image = $( 'input[name="enable_form_featured_img"]' ,'.give-setting-tab-body-display' );
 			form_featured_image.on('change', function () {
-				var field_value = $( 'input[name="disable_form_featured_img"]:checked' ,'.give-setting-tab-body-display' ).val();
+				var field_value = $( 'input[name="enable_form_featured_img"]:checked' ,'.give-setting-tab-body-display' ).val();
 				if ( 'enabled' === field_value) {
 					$('#featured_image_size').parents('tr').show();
 				} else {
@@ -317,9 +317,9 @@ jQuery.noConflict();
 			/**
 			 * Disable admin notification
 			 */
-			var disable_admin_notification = $( 'input[name="disable_admin_notices"]' ,'.give-setting-tab-body-emails' );
-			disable_admin_notification.on('change', function () {
-				var field_value = $( 'input[name="disable_admin_notices"]:checked' ,'.give-setting-tab-body-emails' ).val();
+			var admin_notification = $( 'input[name="enable_admin_notices"]' ,'.give-setting-tab-body-emails' );
+			admin_notification.on('change', function () {
+				var field_value = $( 'input[name="enable_admin_notices"]:checked' ,'.give-setting-tab-body-emails' ).val();
 				if ( 'enabled' === field_value) {
 					$('#donation_notification_subject').parents('tr').show();
 					$('#wp-donation_notification-wrap').parents('tr').show();
