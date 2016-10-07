@@ -276,7 +276,7 @@ jQuery.noConflict();
 			 */
 			var email_access = $( 'input[name="email_access"]' ,'.give-setting-tab-body-general' );
 			email_access.on('change', function () {
-				var field_value = email_access = $( 'input[name="email_access"]:checked' ,'.give-setting-tab-body-general' ).val();
+				var field_value = $( 'input[name="email_access"]:checked' ,'.give-setting-tab-body-general' ).val();
 				if ( 'enabled' === field_value) {
 					$('#recaptcha_key').parents('tr').show();
 					$('#recaptcha_secret').parents('tr').show();
@@ -291,7 +291,7 @@ jQuery.noConflict();
 			 */
 			var form_featured_image = $( 'input[name="disable_form_featured_img"]' ,'.give-setting-tab-body-display' );
 			form_featured_image.on('change', function () {
-				var field_value = email_access = $( 'input[name="disable_form_featured_img"]:checked' ,'.give-setting-tab-body-display' ).val();
+				var field_value = $( 'input[name="disable_form_featured_img"]:checked' ,'.give-setting-tab-body-display' ).val();
 				if ( 'enabled' === field_value) {
 					$('#featured_image_size').parents('tr').show();
 				} else {
@@ -304,7 +304,7 @@ jQuery.noConflict();
 			 */
 			var terms_and_conditions = $( 'input[name="enable_terms"]' ,'.give-setting-tab-body-display' );
 			terms_and_conditions.on('change', function () {
-				var field_value = email_access = $( 'input[name="enable_terms"]:checked' ,'.give-setting-tab-body-display' ).val();
+				var field_value = $( 'input[name="enable_terms"]:checked' ,'.give-setting-tab-body-display' ).val();
 				if ( 'enabled' === field_value) {
 					$('#agree_to_terms_label').parents('tr').show();
 					$('#wp-agreement_text-wrap').parents('tr').show();
