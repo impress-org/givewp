@@ -158,11 +158,11 @@ function give_run_install() {
 		$options['enable_paypal_verification']       = 'enabled';
 
 		// Default is manual gateway.
-		$options['gateways']['manual'] = 1;
+		$options['gateways']['manual'] = 'on';
 		$options['default_gateway']    = 'manual';
 
 		// Offline gateway setup.
-		$options['gateways']['offline']             = 1;
+		$options['gateways']['offline']             = 'on';
 		$options['global_offline_donation_content'] = give_get_default_offline_donation_content();
 
 		// Billing address.
