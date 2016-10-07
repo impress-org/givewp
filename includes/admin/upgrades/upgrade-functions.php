@@ -537,6 +537,7 @@ function give_v18_upgrades_core_setting() {
 		'enable_tags',
 		'email_access',
 		'test_mode',
+		'give_offline_donation_enable_billing_fields'
 	);
 
 	// Bailout: If not any setting define.
