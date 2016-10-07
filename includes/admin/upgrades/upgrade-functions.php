@@ -546,20 +546,30 @@ function give_v18_upgrades_core_setting() {
 
 		// Loop: check each setting field.
 		foreach ( $core_setting_names as $name ) {
+			// Bailout.
+			if( in_array( $give_settings[ $name ], array( 'enabled', 'disabled') ) ) {
+				continue;
+			}
 
 			// Check (checkbox to radio): Make sure that value does not update again and again if version did not update.
-			if( ! in_array( $give_settings[ $name ], array( 'enabled', 'disabled') ) ) {
+			$give_settings[ $name ] = ( 'on' === $give_settings[ $name ] ? 'enabled' : 'disabled' );
 
-				if( ! empty( $give_settings[ $name ] ) ){
-					$give_settings[ $name ] = ( 'on' === $give_settings[ $name ] ? 'enabled' : 'disabled' );
-				} else {
-					$give_settings[ $name ] = 'disabled';
-				}
+			// Rename disable_* setting enable_* for more understanding
+			// @see https://github.com/WordImpress/Give/issues/1063
+			if( false !== strpos( $name, 'disable_' ) ) {
+				$old_setting_name = $name;
+				$name = str_replace( 'disable_', 'enable_', $name );
 
-				// Tell bot to update core setting to db.
-				if( ! $setting_changed ) {
-					$setting_changed = true;
-				}
+				// Revert setting value.
+				$give_settings[ $name ] = ( 'enabled' === $give_settings[ $old_setting_name ] ? 'disabled' : 'enabled' );
+
+				// Unset old value.
+				unset( $give_settings[ $old_setting_name ] );
+			}
+
+			// Tell bot to update core setting to db.
+			if( ! $setting_changed ) {
+				$setting_changed = true;
 			}
 		}
 
