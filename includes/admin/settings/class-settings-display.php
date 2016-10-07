@@ -57,7 +57,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'desc'    => esc_html__( 'Give includes default styles for donation forms and other frontend elements.', 'give' ),
 							'id'      => 'enable_css',
 							'type'    => 'radio_inline',
-							'default' => 'disabled',
+							'default' => 'enabled',
 							'options' => array(
 								'enabled' => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
