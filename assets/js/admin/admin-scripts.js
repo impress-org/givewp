@@ -272,7 +272,7 @@ jQuery.noConflict();
 		toggle_options: function () {
 
 			/**
-			 * Email access setting toggle
+			 * Email access
 			 */
 			var email_access = $( 'input[name="email_access"]' ,'.give-setting-tab-body-general' );
 			email_access.on('change', function () {
@@ -287,7 +287,7 @@ jQuery.noConflict();
 			}).change();
 
 			/**
-			 * Form featured image setting toggle
+			 * Form featured image
 			 */
 			var form_featured_image = $( 'input[name="disable_form_featured_img"]' ,'.give-setting-tab-body-display' );
 			form_featured_image.on('change', function () {
@@ -296,6 +296,21 @@ jQuery.noConflict();
 					$('#featured_image_size').parents('tr').show();
 				} else {
 					$('#featured_image_size').parents('tr').hide();
+				}
+			}).change();
+
+			/**
+			 * Terms and Conditions
+			 */
+			var terms_and_conditions = $( 'input[name="enable_terms"]' ,'.give-setting-tab-body-display' );
+			terms_and_conditions.on('change', function () {
+				var field_value = email_access = $( 'input[name="enable_terms"]:checked' ,'.give-setting-tab-body-display' ).val();
+				if ( 'enabled' === field_value) {
+					$('#agree_to_terms_label').parents('tr').show();
+					$('#wp-agreement_text-wrap').parents('tr').show();
+				} else {
+					$('#agree_to_terms_label').parents('tr').hide();
+					$('#wp-agreement_text-wrap').parents('tr').hide();
 				}
 			}).change();
 		},
