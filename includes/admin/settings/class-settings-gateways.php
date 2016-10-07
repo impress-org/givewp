@@ -100,10 +100,15 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 							'id'   => 'give_title_gateway_settings_3',
 						),
 						array(
-							'name' => esc_html__( 'Collect Billing Details', 'give' ),
-							'desc' => esc_html__( 'Enable to request billing details for offline donations. Will appear above offline donation instructions. Can be enabled/disabled per form.', 'give' ),
-							'id'   => 'give_offline_donation_enable_billing_fields',
-							'type' => 'checkbox'
+							'name'    => esc_html__( 'Collect Billing Details', 'give' ),
+							'desc'    => esc_html__( 'Enable to request billing details for offline donations. Will appear above offline donation instructions. Can be enabled/disabled per form.', 'give' ),
+							'id'      => 'give_offline_donation_enable_billing_fields',
+							'type'    => 'radio_inline',
+							'default' => 'disabled',
+							'options' => array(
+								'enabled'  => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' )
+							)
 						),
 						array(
 							'name'    => esc_html__( 'Offline Donation Instructions', 'give' ),
