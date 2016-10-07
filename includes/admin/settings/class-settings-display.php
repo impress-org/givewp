@@ -125,9 +125,9 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						array(
 							'name'    => esc_html__( 'Form Excerpts', 'give' ),
 							'desc'    => esc_html__( 'The excerpt is an optional summary or description of a donation form; in short, a summary as to why the user should give.', 'give' ),
-							'id'      => 'disable_forms_excerpt',
+							'id'      => 'enable_forms_excerpt',
 							'type'    => 'radio_inline',
-							'default' => 'enabled',
+							'default' => 'disabled',
 							'options' => array(
 								'enabled' => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),

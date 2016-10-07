@@ -64,7 +64,7 @@ function give_setup_post_types() {
 	);
 
 	//Has the user disabled the excerpt?
-	if ( ! give_is_setting_enabled( give_get_option( 'disable_forms_excerpt', 'enabled' ) ) ) {
+	if ( ! give_is_setting_enabled( give_get_option( 'enable_forms_excerpt' ) ) ) {
 		unset( $give_form_supports[2] );
 	}
 
