@@ -80,7 +80,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 							'desc'    => esc_html__( 'If donations are not getting marked as complete, use a slightly less secure method of verifying donations.', 'give' ),
 							'id'      => 'enable_paypal_verification',
 							'type'    => 'radio_inline',
-							'default' => 'disable',
+							'default' => 'enabled',
 							'options' => array(
 								'enabled' => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
