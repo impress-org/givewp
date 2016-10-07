@@ -537,34 +537,66 @@ function give_v18_upgrades_core_setting() {
 		'enable_tags',
 		'email_access',
 		'test_mode',
+		'enable_terms',
 		'give_offline_donation_enable_billing_fields'
+	);
+
+	// Core new settings default value.
+	$new_setting_default_values = array(
+		'enable_paypal_verification' => 'enabled',
+		'enable_css'                 => 'enabled',
+		'enable_welcome'             => 'enabled',
+		'enable_forms_singular'      => 'enabled',
+		'enable_forms_archives'      => 'enabled',
+		'enable_forms_excerpt'       => 'enabled',
+		'enable_form_featured_img'   => 'enabled',
+		'enable_form_sidebar'        => 'enabled',
+		'enable_admin_notices'       => 'enabled',
+		'enable_the_content_filter'  => 'enabled',
+		'uninstall_on_delete'        => 'disabled',
+		'scripts_footer'             => 'disabled',
+		'enable_floatlabels'         => 'disabled',
+		'enable_categories'          => 'disabled',
+		'enable_tags'                => 'disabled',
+		'enable_terms'               => 'disabled',
+		'email_access'               => 'disabled',
+		'test_mode'                  => 'enabled',
+		'give_offline_donation_enable_billing_fields' => 'disabled'
 	);
 
 	// Bailout: If not any setting define.
 	if( $give_settings = get_option( 'give_settings' ) ){
+
 		$setting_changed = false;
 
 		// Loop: check each setting field.
-		foreach ( $core_setting_names as $name ) {
-			// Bailout.
-			if( ! empty( $give_settings[ $name ] ) && in_array( $give_settings[ $name ], array( 'enabled', 'disabled') ) ) {
+		foreach ( $core_setting_names as $setting_name ) {
+			// New setting name.
+			$new_setting_name = str_replace( 'disable_', 'enable_', $setting_name );
+
+			// Continue: If setting already set.
+			if( array_key_exists( $new_setting_name, $give_settings ) ) {
 				continue;
 			}
 
-			// Check (checkbox to radio): Make sure that value does not update again and again if version did not update.
-			$give_settings[ $name ] = ( ! empty( $give_settings[ $name ] ) && 'on' === $give_settings[ $name ] ? 'enabled' : 'disabled' );
+			// Set checkbox value to radio value.
+			if( empty( $give_settings[ $setting_name ] )  ) {
 
-			// Rename disable_* setting enable_* for more understanding
-			// @see https://github.com/WordImpress/Give/issues/1063
-			if( false !== strpos( $name, 'disable_' ) ) {
-				$old_setting_name = $name;
-				$name = str_replace( 'disable_', 'enable_', $name );
+				// Set field value from default value array if not set yet.
+				$give_settings[ $new_setting_name ] = $new_setting_default_values[ $new_setting_name ];
+			} else{
 
-				// Revert setting value.
-				$give_settings[ $name ] = ( 'enabled' === $give_settings[ $old_setting_name ] ? 'disabled' : 'enabled' );
+				$give_settings[ $setting_name ] = ( ! empty( $give_settings[ $setting_name ] ) && 'on' === $give_settings[ $setting_name ] ? 'enabled' : 'disabled' );
 
-				// Unset old value.
-				unset( $give_settings[ $old_setting_name ] );
+				// @see https://github.com/WordImpress/Give/issues/1063
+				if( false !== strpos( $setting_name, 'disable_' ) ) {
+
+					// Revert setting value.
+					$give_settings[ $new_setting_name ] = ( 'enabled' === $give_settings[ $setting_name ] ? 'disabled' : 'enabled' );
+
+					// Unset old value.
+					unset( $give_settings[ $setting_name ] );
+				}
 			}
 
 			// Tell bot to update core setting to db.
