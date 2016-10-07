@@ -76,10 +76,11 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 							'default' => 'donation',
 						),
 						array(
-							'name' => esc_html__( 'Disable PayPal IPN Verification', 'give' ),
-							'desc' => esc_html__( 'If donations are not getting marked as complete, use a slightly less secure method of verifying donations.', 'give' ),
-							'id'   => 'disable_paypal_verification',
+							'name'    => esc_html__( 'PayPal IPN Verification', 'give' ),
+							'desc'    => esc_html__( 'If donations are not getting marked as complete, use a slightly less secure method of verifying donations.', 'give' ),
+							'id'      => 'enable_paypal_verification',
 							'type'    => 'radio_inline',
+							'default' => 'disable',
 							'options' => array(
 								'enabled' => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
