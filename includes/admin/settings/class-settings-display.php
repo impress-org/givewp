@@ -114,9 +114,9 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						array(
 							'name'    => esc_html__( 'Form Archives', 'give' ),
 							'desc'    => esc_html__( 'Archives pages list all the donation forms you have created. This option will disable only the form\'s archive page(s). The single form\'s view will remain in place. Note: you will need to refresh your permalinks after this option has been enabled.', 'give' ),
-							'id'      => 'disable_forms_archives',
+							'id'      => 'enable_forms_archives',
 							'type'    => 'radio_inline',
-							'default' => 'enabled',
+							'default' => 'disabled',
 							'options' => array(
 								'enabled' => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
