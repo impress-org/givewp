@@ -126,13 +126,13 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 							'type' => 'title'
 						),
 						array(
-							'id'      => 'disable_admin_notices',
+							'id'      => 'enable_admin_notices',
 							'name'    => esc_html__( 'Disable Admin Notifications', 'give' ),
 							'desc'    => esc_html__( 'Check this box if you do not want to receive emails when new donations are made.', 'give' ),
 							'type'    => 'radio_inline',
-							'default' => 'disabled',
+							'default' => 'enable',
 							'options' => array(
-								'enabled' => __( 'Enabled', 'give' ),
+								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
 							)
 						),
