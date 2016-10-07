@@ -136,9 +136,9 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						array(
 							'name'    => esc_html__( 'Form Featured Image', 'give' ),
 							'desc'    => esc_html__( 'If you do not wish to use the featured image functionality you can disable it using this option and it will not be displayed for single donation forms.', 'give' ),
-							'id'      => 'disable_form_featured_img',
+							'id'      => 'enable_form_featured_img',
 							'type'    => 'radio_inline',
-							'default' => 'enabled',
+							'default' => 'disabled',
 							'options' => array(
 								'enabled' => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),

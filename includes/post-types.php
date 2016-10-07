@@ -69,7 +69,7 @@ function give_setup_post_types() {
 	}
 
 	//Has user disabled the featured image?
-	if ( ! give_is_setting_enabled( give_get_option( 'disable_form_featured_img', 'enabled' ) ) ) {
+	if ( ! give_is_setting_enabled( give_get_option( 'enable_form_featured_img' ) ) ) {
 		unset( $give_form_supports[1] );
 		remove_action( 'give_before_single_form_summary', 'give_show_form_images' );
 	}
@@ -383,12 +383,14 @@ add_action( 'after_setup_theme', 'give_add_thumbnail_support', 10 );
  * Ensure post thumbnail support is turned on
  */
 function give_add_thumbnail_support() {
-	if ( ! give_is_setting_enabled( give_get_option( 'disable_form_featured_img', 'enabled' ) ) ) {
+	if ( ! give_is_setting_enabled( give_get_option( 'enable_form_featured_img' ) ) ) {
 		return;
 	}
+
 	if ( ! current_theme_supports( 'post-thumbnails' ) ) {
 		add_theme_support( 'post-thumbnails' );
 	}
+
 	add_post_type_support( 'give_forms', 'thumbnail' );
 }
 
