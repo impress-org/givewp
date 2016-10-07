@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_is_test_mode() {
 
-	$ret = give_get_option('test_mode', false);
+	$ret = give_is_setting_enabled( give_get_option( 'test_mode' ) );
 
 	return (bool) apply_filters( 'give_is_test_mode', $ret );
 
