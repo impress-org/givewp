@@ -313,6 +313,23 @@ jQuery.noConflict();
 					$('#wp-agreement_text-wrap').parents('tr').hide();
 				}
 			}).change();
+
+			/**
+			 * Disable admin notification
+			 */
+			var disable_admin_notification = $( 'input[name="disable_admin_notices"]' ,'.give-setting-tab-body-emails' );
+			disable_admin_notification.on('change', function () {
+				var field_value = $( 'input[name="disable_admin_notices"]:checked' ,'.give-setting-tab-body-emails' ).val();
+				if ( 'enabled' === field_value) {
+					$('#donation_notification_subject').parents('tr').show();
+					$('#wp-donation_notification-wrap').parents('tr').show();
+					$('#admin_notice_emails').parents('tr').show();
+				} else {
+					$('#donation_notification_subject').parents('tr').hide();
+					$('#wp-donation_notification-wrap').parents('tr').hide();
+					$('#admin_notice_emails').parents('tr').hide();
+				}
+			}).change();
 		},
 
 		main_setting_update_notice: function () {
