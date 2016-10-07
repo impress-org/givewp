@@ -79,9 +79,9 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'name'    => esc_html__( 'Welcome Screen', 'give' ),
 							/* translators: %s: about page URL */
 							'desc'    => sprintf( wp_kses( __( 'Enable this option if you would like to disable the <a href="%s" target="_blank">Give Welcome screen</a> that display each time Give is activated or updated.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( admin_url( 'index.php?page=give-about' ) ) ),
-							'id'      => 'disable_welcome',
+							'id'      => 'enable_welcome',
 							'type'    => 'radio_inline',
-							'default' => 'enabled',
+							'default' => 'disabled',
 							'options' => array(
 								'enabled' => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
