@@ -361,21 +361,21 @@ function give_updated_messages( $messages ) {
 	if ( give_get_option( 'disable_forms_singular' ) === 'on' ) {
 
 		$messages['give_forms'] = array(
-			1 => __( 'Form updated.', 'give' ),
-			4 => __( 'Form updated.', 'give' ),
-			6 => __( 'Form published.', 'give' ),
-			7 => __( 'Form saved.', 'give' ),
-			8 => __( 'Form submitted.', 'give' ),
+			1 => esc_html__( 'Form updated.',   'give' ),
+			4 => esc_html__( 'Form updated.',   'give' ),
+			6 => esc_html__( 'Form published.', 'give' ),
+			7 => esc_html__( 'Form saved.',     'give' ),
+			8 => esc_html__( 'Form submitted.', 'give' )
 		);
 
 	} else {
 
 		$messages['give_forms'] = array(
-			1 => sprintf( '%1$s <a href="%2$s">%3$s</a>', __( 'Form updated.',   'give' ), get_permalink( $post_ID ), __( 'View Form', 'give' ) ),
-			4 => sprintf( '%1$s <a href="%2$s">%3$s</a>', __( 'Form updated.',   'give' ), get_permalink( $post_ID ), __( 'View Form', 'give' ) ),
-			6 => sprintf( '%1$s <a href="%2$s">%3$s</a>', __( 'Form published.', 'give' ), get_permalink( $post_ID ), __( 'View Form', 'give' ) ),
-			7 => sprintf( '%1$s <a href="%2$s">%3$s</a>', __( 'Form saved.',     'give' ), get_permalink( $post_ID ), __( 'View Form', 'give' ) ),
-			8 => sprintf( '%1$s <a href="%2$s">%3$s</a>', __( 'Form submitted.', 'give' ), get_permalink( $post_ID ), __( 'View Form', 'give' ) )
+			1 => sprintf( '%1$s <a href="%2$s">%3$s</a>', esc_html__( 'Form updated.',   'give' ), get_permalink( $post_ID ), esc_html__( 'View Form', 'give' ) ),
+			4 => sprintf( '%1$s <a href="%2$s">%3$s</a>', esc_html__( 'Form updated.',   'give' ), get_permalink( $post_ID ), esc_html__( 'View Form', 'give' ) ),
+			6 => sprintf( '%1$s <a href="%2$s">%3$s</a>', esc_html__( 'Form published.', 'give' ), get_permalink( $post_ID ), esc_html__( 'View Form', 'give' ) ),
+			7 => sprintf( '%1$s <a href="%2$s">%3$s</a>', esc_html__( 'Form saved.',     'give' ), get_permalink( $post_ID ), esc_html__( 'View Form', 'give' ) ),
+			8 => sprintf( '%1$s <a href="%2$s">%3$s</a>', esc_html__( 'Form submitted.', 'give' ), get_permalink( $post_ID ), esc_html__( 'View Form', 'give' ) )
 		);
 
 	}
