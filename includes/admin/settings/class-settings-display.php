@@ -157,7 +157,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'desc'    => esc_html__( 'The sidebar allows you to add additional widgets to the Give single form view. If you don\'t plan on using the sidebar you may disable it with this option.', 'give' ),
 							'id'      => 'enable_form_sidebar',
 							'type'    => 'radio_inline',
-							'default' => 'disabled',
+							'default' => 'enabled',
 							'options' => array(
 								'enabled' => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
