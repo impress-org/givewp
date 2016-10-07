@@ -1044,7 +1044,7 @@ function give_default_gateway_callback( $field_arr, $saved_value ) {
 	$id                = $field_arr['id'];
 	$gateways          = give_get_enabled_payment_gateways();
 
-	echo '<select class="cmb2_select" name="' . $id . '" id="' . $id . '">';
+	echo '<select class="give-select" name="' . $id . '" id="' . $id . '">';
 
 		//Add a field to the Give Form admin single post view of this field
 		if ( is_object( $post ) &&  'give_forms' === $post->post_type ) {
