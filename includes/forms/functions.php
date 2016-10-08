@@ -72,10 +72,10 @@ function give_is_float_labels_enabled( $args ) {
 	}
 
 	if ( empty( $float_labels ) || ( 'global' === $float_labels ) ) {
-		$float_labels = give_get_option( 'enable_floatlabels' ) ? 'enabled' : 'disabled';
+		$float_labels = give_get_option( 'floatlabels', 'disabled' );
 	}
 
-	return ( $float_labels == 'enabled' ) ? true : false;
+	return give_is_setting_enabled( $float_labels );
 }
 
 /**

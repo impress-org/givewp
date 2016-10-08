@@ -23,8 +23,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_setup_post_types() {
 
 	// Give Forms single post and archive options.
-	$give_forms_singular = give_is_setting_enabled( give_get_option( 'enable_forms_singular' ) );
-	$give_forms_archives = give_is_setting_enabled( give_get_option( 'enable_forms_archives' ) );
+	$give_forms_singular = give_is_setting_enabled( give_get_option( 'forms_singular' ) );
+	$give_forms_archives = give_is_setting_enabled( give_get_option( 'forms_archives' ) );
 
 	$give_forms_slug = defined( 'GIVE_SLUG' ) ? GIVE_SLUG : 'donations';
 	//support for old 'GIVE_FORMS_SLUG' constant
@@ -64,12 +64,12 @@ function give_setup_post_types() {
 	);
 
 	//Has the user disabled the excerpt?
-	if ( ! give_is_setting_enabled( give_get_option( 'enable_forms_excerpt' ) ) ) {
+	if ( ! give_is_setting_enabled( give_get_option( 'forms_excerpt' ) ) ) {
 		unset( $give_form_supports[2] );
 	}
 
 	//Has user disabled the featured image?
-	if ( ! give_is_setting_enabled( give_get_option( 'enable_form_featured_img' ) ) ) {
+	if ( ! give_is_setting_enabled( give_get_option( 'form_featured_img' ) ) ) {
 		unset( $give_form_supports[1] );
 		remove_action( 'give_before_single_form_summary', 'give_show_form_images' );
 	}
@@ -172,7 +172,7 @@ function give_setup_taxonomies() {
 	);
 
 	//Does the user want categories?
-	if ( give_is_setting_enabled( give_get_option( 'enable_categories', 'disabled' ) ) ) {
+	if ( give_is_setting_enabled( give_get_option( 'categories', 'disabled' ) ) ) {
 		register_taxonomy( 'give_forms_category', array( 'give_forms' ), $category_args );
 		register_taxonomy_for_object_type( 'give_forms_category', 'give_forms' );
 	}
@@ -209,7 +209,7 @@ function give_setup_taxonomies() {
 		)
 	);
 
-	if ( give_is_setting_enabled( give_get_option( 'enable_tags', 'disabled' ) ) ) {
+	if ( give_is_setting_enabled( give_get_option( 'tags', 'disabled' ) ) ) {
 		register_taxonomy( 'give_forms_tag', array( 'give_forms' ), $tag_args );
 		register_taxonomy_for_object_type( 'give_forms_tag', 'give_forms' );
 	}
@@ -383,7 +383,7 @@ add_action( 'after_setup_theme', 'give_add_thumbnail_support', 10 );
  * Ensure post thumbnail support is turned on
  */
 function give_add_thumbnail_support() {
-	if ( ! give_is_setting_enabled( give_get_option( 'enable_form_featured_img' ) ) ) {
+	if ( ! give_is_setting_enabled( give_get_option( 'form_featured_img' ) ) ) {
 		return;
 	}
 
@@ -404,8 +404,8 @@ function give_widgets_init() {
 
 	//Single Give Forms (disabled if single turned off in settings)
 	if (
-		! give_is_setting_enabled( give_get_option( 'enable_forms_singular' ) )
-		&& give_is_setting_enabled( give_get_option( 'enable_form_sidebar' ) )
+		! give_is_setting_enabled( give_get_option( 'forms_singular' ) )
+		&& give_is_setting_enabled( give_get_option( 'form_sidebar' ) )
 	) {
 
 		register_sidebar( apply_filters( 'give_forms_single_sidebar', array(

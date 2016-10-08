@@ -138,24 +138,24 @@ function give_run_install() {
 		$options['number_decimals']    = 2;
 
 		// Display options.
-		$options['enable_css']                = 'enabled';
-		$options['enable_floatlabels']        = 'disabled';
-		$options['enable_welcome']            = 'enabled';
-		$options['enable_forms_singular']     = 'enabled';
-		$options['enable_forms_archives']     = 'enabled';
-		$options['enable_forms_excerpt']      = 'enabled';
-		$options['enable_form_featured_img']  = 'enabled';
-		$options['enable_form_sidebar']       = 'enabled';
-		$options['enable_categories']         = 'disabled';
-		$options['enable_tags']               = 'disabled';
-		$options['enable_terms']              = 'disabled';
-		$options['enable_admin_notices']      = 'enabled';
-		$options['uninstall_on_delete']       = 'disabled';
-		$options['enable_the_content_filter'] = 'enabled';
-		$options['scripts_footer']            = 'disabled';
+		$options['css']                  = 'enabled';
+		$options['floatlabels']          = 'disabled';
+		$options['welcome']              = 'enabled';
+		$options['forms_singular']       = 'enabled';
+		$options['forms_archives']       = 'enabled';
+		$options['forms_excerpt']        = 'enabled';
+		$options['form_featured_img']    = 'enabled';
+		$options['form_sidebar']         = 'enabled';
+		$options['categories']           = 'disabled';
+		$options['tags']                 = 'disabled';
+		$options['terms']                = 'disabled';
+		$options['admin_notices']        = 'enabled';
+		$options['uninstall_on_delete']  = 'disabled';
+		$options['the_content_filter']   = 'enabled';
+		$options['scripts_footer']       = 'disabled';
 
 		// Paypal IPN verification.
-		$options['enable_paypal_verification']       = 'enabled';
+		$options['paypal_verification']       = 'enabled';
 
 		// Default is manual gateway.
 		$options['gateways']['manual'] = 'on';

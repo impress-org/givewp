@@ -397,7 +397,7 @@ if ( ! function_exists( 'give_show_form_images' ) ) {
 	 * Output the donation form featured image.
 	 */
 	function give_show_form_images() {
-		if ( give_is_setting_enabled( give_get_option( 'enable_form_featured_img' ) ) ) {
+		if ( give_is_setting_enabled( give_get_option( 'form_featured_img' ) ) ) {
 			give_get_template_part( 'single-give-form/featured-image' );
 		}
 	}

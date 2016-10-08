@@ -226,7 +226,7 @@ function give_admin_notices_disabled( $payment_id = 0 ) {
 
 	return apply_filters(
 		'give_admin_notices_disabled',
-		! give_is_setting_enabled( give_get_option( 'enable_admin_notices' ) ),
+		! give_is_setting_enabled( give_get_option( 'admin_notices' ) ),
 		$payment_id
 	);
 }

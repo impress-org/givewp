@@ -126,7 +126,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 							'type' => 'title'
 						),
 						array(
-							'id'      => 'enable_admin_notices',
+							'id'      => 'admin_notices',
 							'name'    => esc_html__( 'Admin Notifications', 'give' ),
 							'desc'    => esc_html__( 'Check this box if you do not want to receive emails when new donations are made.', 'give' ),
 							'type'    => 'radio_inline',

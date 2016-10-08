@@ -264,7 +264,7 @@ function give_process_paypal_ipn() {
 	}
 
 	//Validate IPN request w/ PayPal if user hasn't disabled this security measure
-	if ( give_is_setting_enabled( give_get_option( 'enable_paypal_verification' ) ) ) {
+	if ( give_is_setting_enabled( give_get_option( 'paypal_verification' ) ) ) {
 
 		$remote_post_vars = array(
 			'method'      => 'POST',

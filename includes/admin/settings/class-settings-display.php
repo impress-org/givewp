@@ -55,7 +55,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						array(
 							'name'    => esc_html__( 'Default Give Styles', 'give' ),
 							'desc'    => esc_html__( 'Give includes default styles for donation forms and other frontend elements.', 'give' ),
-							'id'      => 'enable_css',
+							'id'      => 'css',
 							'type'    => 'radio_inline',
 							'default' => 'enabled',
 							'options' => array(
@@ -67,7 +67,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'name' => esc_html__( 'Floating Labels', 'give' ),
 							/* translators: %s: https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels */
 							'desc' => sprintf( wp_kses( __( '<a href="%s" target="_blank">Floating labels</a> in set form labels within fields and can improve the donor experience. Note that if the "Disable CSS" option is enabled, you will need to style the floating labels yourself.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( 'https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels' ) ),
-							'id'   => 'enable_floatlabels',
+							'id'   => 'floatlabels',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
 							'options' => array(
@@ -79,7 +79,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'name'    => esc_html__( 'Welcome Screen', 'give' ),
 							/* translators: %s: about page URL */
 							'desc'    => sprintf( wp_kses( __( 'Enable this option if you would like to disable the <a href="%s" target="_blank">Give Welcome screen</a> that display each time Give is activated or updated.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( admin_url( 'index.php?page=give-about' ) ) ),
-							'id'      => 'enable_welcome',
+							'id'      => 'welcome',
 							'type'    => 'radio_inline',
 							'default' => 'enabled',
 							'options' => array(
@@ -103,7 +103,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						array(
 							'name'    => esc_html__( 'Form Single Views', 'give' ),
 							'desc'    => esc_html__( 'By default, all donation form have single views enabled which creates a specific URL on your website for that form. This option disables the singular posts from being publicly viewable. Note: you will need to embed forms using a shortcode or widget if enabled.', 'give' ),
-							'id'      => 'enable_forms_singular',
+							'id'      => 'forms_singular',
 							'type'    => 'radio_inline',
 							'default' => 'enabled',
 							'options' => array(
@@ -114,7 +114,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						array(
 							'name'    => esc_html__( 'Form Archives', 'give' ),
 							'desc'    => esc_html__( 'Archives pages list all the donation forms you have created. This option will disable only the form\'s archive page(s). The single form\'s view will remain in place. Note: you will need to refresh your permalinks after this option has been enabled.', 'give' ),
-							'id'      => 'enable_forms_archives',
+							'id'      => 'forms_archives',
 							'type'    => 'radio_inline',
 							'default' => 'enabled',
 							'options' => array(
@@ -125,7 +125,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						array(
 							'name'    => esc_html__( 'Form Excerpts', 'give' ),
 							'desc'    => esc_html__( 'The excerpt is an optional summary or description of a donation form; in short, a summary as to why the user should give.', 'give' ),
-							'id'      => 'enable_forms_excerpt',
+							'id'      => 'forms_excerpt',
 							'type'    => 'radio_inline',
 							'default' => 'enabled',
 							'options' => array(
@@ -136,7 +136,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						array(
 							'name'    => esc_html__( 'Form Featured Image', 'give' ),
 							'desc'    => esc_html__( 'If you do not wish to use the featured image functionality you can disable it using this option and it will not be displayed for single donation forms.', 'give' ),
-							'id'      => 'enable_form_featured_img',
+							'id'      => 'form_featured_img',
 							'type'    => 'radio_inline',
 							'default' => 'enabled',
 							'options' => array(
@@ -155,7 +155,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						array(
 							'name'    => esc_html__( 'Single Form Sidebar', 'give' ),
 							'desc'    => esc_html__( 'The sidebar allows you to add additional widgets to the Give single form view. If you don\'t plan on using the sidebar you may disable it with this option.', 'give' ),
-							'id'      => 'enable_form_sidebar',
+							'id'      => 'form_sidebar',
 							'type'    => 'radio_inline',
 							'default' => 'enabled',
 							'options' => array(
@@ -179,7 +179,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						array(
 							'name' => esc_html__( 'Form Categories', 'give' ),
 							'desc' => esc_html__( 'Enable the "Category" taxonomy for all Give forms.', 'give' ),
-							'id'   => 'enable_categories',
+							'id'   => 'categories',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
 							'options' => array(
@@ -190,7 +190,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						array(
 							'name' => esc_html__( 'Form Tags', 'give' ),
 							'desc' => esc_html__( 'Enable the "Tag" taxonomy for all Give forms.', 'give' ),
-							'id'   => 'enable_tags',
+							'id'   => 'tags',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
 							'options' => array(
@@ -214,7 +214,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						array(
 							'name'    => esc_html__( 'Terms and Conditions', 'give' ),
 							'desc'    => esc_html__( 'Would you like donors to have to agree to your terms when making a donation? Note: You can toggle this option and customize the terms per form.', 'give' ),
-							'id'      => 'enable_terms',
+							'id'      => 'terms',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
 							'options' => array(

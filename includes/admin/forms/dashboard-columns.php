@@ -44,10 +44,10 @@ function give_form_columns( $give_form_columns ) {
 	);
 
 	//Does the user want categories / tags?
-	if ( ! give_is_setting_enabled( give_get_option( 'enable_categories', 'disabled' ) ) ) {
+	if ( ! give_is_setting_enabled( give_get_option( 'categories', 'disabled' ) ) ) {
 		unset( $give_form_columns['form_category'] );
 	}
-	if ( ! give_is_setting_enabled( give_get_option( 'enable_tags', 'disabled' ) ) ) {
+	if ( ! give_is_setting_enabled( give_get_option( 'tags', 'disabled' ) ) ) {
 		unset( $give_form_columns['form_tag'] );
 	}
 
