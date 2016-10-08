@@ -29,7 +29,7 @@ class Tests_Logging extends Give_Unit_Test_Case {
 	 * Test Post Type
 	 */
 	public function test_post_type() {
-		$wp_post_types = get_post_types();
+		$wp_post_types = get_post_types( array(), 'names' );
 		$this->assertArrayHasKey( 'give_log', $wp_post_types );
 	}
 
@@ -37,7 +37,7 @@ class Tests_Logging extends Give_Unit_Test_Case {
 	 * Test Logs CPT Labels
 	 */
 	public function test_post_type_labels() {
-		$wp_post_types = get_post_types();
+		$wp_post_types = get_post_types( array(), 'objects' );
 		$this->assertEquals( 'Logs', $wp_post_types['give_log']->labels->name );
 		$this->assertEquals( 'Logs', $wp_post_types['give_log']->labels->singular_name );
 		$this->assertEquals( 'Add New', $wp_post_types['give_log']->labels->add_new );

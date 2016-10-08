@@ -17,7 +17,7 @@ class Tests_Post_Types extends Give_Unit_Test_Case {
 	 * @covers ::give_setup_post_types
 	 */
 	public function test_give_post_type() {
-		$wp_post_types = get_post_types();
+		$wp_post_types = get_post_types( array(), 'names' );
 		$this->assertArrayHasKey( 'give_forms', $wp_post_types );
 	}
 
@@ -25,7 +25,7 @@ class Tests_Post_Types extends Give_Unit_Test_Case {
 	 * Test Post Type Labels
 	 */
 	public function test_give_post_type_labels() {
-		$wp_post_types = get_post_types();
+		$wp_post_types = get_post_types( array(), 'objects' );
 		$this->assertEquals( 'Donation Forms', $wp_post_types['give_forms']->labels->name );
 		$this->assertEquals( 'Form', $wp_post_types['give_forms']->labels->singular_name );
 		$this->assertEquals( 'Add Form', $wp_post_types['give_forms']->labels->add_new );
