@@ -511,6 +511,31 @@ function give_v18_upgrades() {
 	give_v18_upgrades_form_metadata();
 }
 
+
+/**
+ * Get list of core setting which is renamed in version 1.8.
+ *
+ * @since  1.8
+ * @return array
+ */
+function give_v18_renamed_core_settings(){
+	return array(
+		'disable_paypal_verification' => 'paypal_verification',
+		'disable_css'                 => 'css',
+		'disable_welcome'             => 'welcome',
+		'disable_forms_singular'      => 'forms_singlar',
+		'disable_forms_archives'      => 'forms_archives',
+		'disable_forms_excerpt'       => 'forms_excerpt',
+		'disable_form_featured_img'   => 'form_featured_img',
+		'disable_form_sidebar'        => 'form_sidebar',
+		'disable_admin_notices'       => 'admin_notices',
+		'disable_the_content_filter'  => 'the_content_filter',
+		'enable_floatlabels'          => 'floatlabels',
+		'enable_categories'           => 'categories',
+		'enable_tags'                 => 'tags',
+	);
+}
+
 /**
  * Upgrade core settings.
  *
@@ -519,26 +544,16 @@ function give_v18_upgrades() {
  */
 function give_v18_upgrades_core_setting() {
 	// Core settings which changes from checkbox to radio.
-	$core_setting_names = array(
-		'disable_paypal_verification',
-		'disable_css',
-		'disable_welcome',
-		'disable_forms_singular',
-		'disable_forms_archives',
-		'disable_forms_excerpt',
-		'disable_form_featured_img',
-		'disable_form_sidebar',
-		'disable_admin_notices',
-		'disable_the_content_filter',
-		'uninstall_on_delete',
-		'scripts_footer',
-		'enable_floatlabels',
-		'enable_categories',
-		'enable_tags',
-		'email_access',
-		'test_mode',
-		'enable_terms',
-		'give_offline_donation_enable_billing_fields'
+	$core_setting_names = array_merge(
+		array_keys( give_v18_renamed_core_settings() ),
+		array(
+			'uninstall_on_delete',
+			'scripts_footer',
+			'test_mode',
+			'email_access',
+			'terms',
+			'give_offline_donation_enable_billing_fields'
+		)
 	);
 
 	// Core new settings default value.
