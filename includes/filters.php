@@ -14,59 +14,49 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Add backward compatibility for option who has disable_ as name prefix.
- *
- * @since  1.8
- * @param  mixed  $value
- * @param  string $key
- *
- * @return string
- */
-function give_set_option_with_disable_prefix( $value, $key ) {
-	$give_setting = give_get_settings();
-
-	// Bailout.
-	if( false === strpos( $key, 'disable_' ) ) {
-		return $value;
-	}
-
-	$new_key = str_replace( 'disable_', 'enable_', $key );
-
-	// Bailout.
-	if( array_key_exists( $new_key, $give_setting ) ) {
-		return $value;
-	}
-
-	return ( give_is_setting_enabled( $value ) ? '' : 'on' );
-}
-add_filter( 'give_get_option', 'give_set_option_with_disable_prefix', 10, 2 );
-
 
 /**
  * Add backward compatibility for settings who has disable_ as name prefix.
+ * TODO: Remove this backward compatibility when do not need.
  *
  * @since  1.8
- * @param  array $settings
+ * @param  array  $settings    Array of settings.
+ * @param  string $option_name Setting name.
  *
  * @return array
  */
-function give_set_settings_with_disable_prefix( $settings ) {
-	// Bailout.
-	if( empty( $settings ) ) {
-		return $settings;
-	}
-	
+function give_set_settings_with_disable_prefix( $settings, $option_name ) {
+	// Get old setting names.
+	$old_settings   = give_v18_renamed_core_settings();
+	$update_setting = false;
+
 	foreach ( $settings as $key => $value ) {
-		// Bailout.
-		if( false === strpos( $key, 'enable_' ) ){
+
+		// Check 1. Check if new option is really updated or not.
+		// Check 2. Continue if key is not renamed.
+		if(
+			! isset( $_POST[ $key ] )
+			|| false === ( $old_setting_name = array_search( $key, $old_settings ) )
+		) {
 			continue;
 		}
 
-		// Set old setting key.
-		$settings[ str_replace( 'enable_', 'disable_',$key ) ] = ( give_is_setting_enabled( $value ) ? '' : 'on' );
-	}
+		// Set old setting.
+		$settings[ $old_setting_name ] = 'on';
 
-	return $settings;
+		// Do not need to set old setting if new setting is not set.
+		if( give_is_setting_enabled( $value ) ) {
+			unset( $settings[ $old_setting_name ] );
+		}
+		
+		// Tell bot to update setting.
+		$update_setting = true;
+	}
+	
+	
+	// Update setting if any old setting set.
+	if( $update_setting ) {
+		update_option( $option_name, $settings );
+	}
 }
-add_filter( 'give_get_settings', 'give_set_settings_with_disable_prefix' );
+add_filter( 'give_save_settings_give_settings', 'give_set_settings_with_disable_prefix', 10, 2 );
