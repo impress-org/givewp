@@ -811,12 +811,30 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			if ( empty( $option_name ) ) {
 				foreach ( $update_options as $name => $value ) {
 					update_option( $name, $value );
+
+					/**
+					 * Trigger action.
+					 *
+					 * Note: This is dynamically fire on basis of option name.
+					 *
+					 * @since 1.8
+					 */
+					do_action( "give_save_option_{$name}", $value, $name );
 				}
 			} else {
 				$old_options = ( $old_options = get_option( $option_name ) ) ? $old_options : array();
 				$update_options = array_merge( $old_options, $update_options );
 
 				update_option( $option_name, $update_options );
+
+				/**
+				 * Trigger action.
+				 *
+				 * Note: This is dynamically fire on basis of setting name.
+				 *
+				 * @since 1.8
+				 */
+				do_action( "give_save_settings_{$option_name}", $update_options, $option_name );
 			}
 
 			return true;
