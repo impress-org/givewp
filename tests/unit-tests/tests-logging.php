@@ -62,7 +62,7 @@ class Tests_Logging extends Give_Unit_Test_Case {
 	 * Test Taxonomy Exist
 	 */
 	public function test_taxonomy_exist() {
-		global $wp_taxonomies;
+		$wp_taxonomies = get_taxonomies( array(), 'names' );
 		$this->assertArrayHasKey( 'give_log_type', $wp_taxonomies );
 	}
 
