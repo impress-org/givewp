@@ -587,10 +587,13 @@ function give_v18_upgrades_core_setting() {
 		// Loop: check each setting field.
 		foreach ( $core_setting_names as $setting_name ) {
 			// New setting name.
-			$new_setting_name = str_replace( 'disable_', '', $setting_name );
+			$new_setting_name = str_replace( array( 'disable_', 'enable_' ), '', $setting_name );
 
 			// Continue: If setting already set.
-			if( array_key_exists( $new_setting_name, $give_settings ) ) {
+			if(
+				array_key_exists( $new_setting_name, $give_settings )
+				&& in_array( $give_settings[$new_setting_name], array( 'enabled', 'disabled' ) )
+			) {
 				continue;
 			}
 
@@ -600,14 +603,11 @@ function give_v18_upgrades_core_setting() {
 				// Set field value from default value array if not set yet.
 				$give_settings[ $new_setting_name ] = $new_setting_default_values[ $new_setting_name ];
 			} else{
-
-				$give_settings[ $setting_name ] = ( ! empty( $give_settings[ $setting_name ] ) && 'on' === $give_settings[ $setting_name ] ? 'enabled' : 'disabled' );
-
 				// @see https://github.com/WordImpress/Give/issues/1063
 				if( false !== strpos( $setting_name, 'disable_' ) ) {
-
-					// Revert setting value.
-					$give_settings[ $new_setting_name ] = ( 'enabled' === $give_settings[ $setting_name ] ? 'disabled' : 'enabled' );
+					$give_settings[ $new_setting_name ] = ( 'on' === $give_settings[ $setting_name ] ? 'disabled' : 'enabled' );
+				} else {
+					$give_settings[ $setting_name ] = ( 'on' === $give_settings[ $setting_name ] ? 'enabled' : 'disabled' );
 				}
 			}
 
