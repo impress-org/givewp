@@ -556,29 +556,6 @@ function give_v18_upgrades_core_setting() {
 		)
 	);
 
-	// Core new settings default value.
-	$new_setting_default_values = array(
-		'paypal_verification' => 'enabled',
-		'css'                 => 'enabled',
-		'welcome'             => 'enabled',
-		'forms_singular'      => 'enabled',
-		'forms_archives'      => 'enabled',
-		'forms_excerpt'       => 'enabled',
-		'form_featured_img'   => 'enabled',
-		'form_sidebar'        => 'enabled',
-		'admin_notices'       => 'enabled',
-		'the_content_filter'  => 'enabled',
-		'uninstall_on_delete' => 'disabled',
-		'scripts_footer'      => 'disabled',
-		'floatlabels'         => 'disabled',
-		'categories'          => 'disabled',
-		'tags'                => 'disabled',
-		'terms'               => 'disabled',
-		'email_access'        => 'disabled',
-		'test_mode'           => 'disabled',
-		'give_offline_donation_enable_billing_fields' => 'disabled'
-	);
-
 	// Bailout: If not any setting define.
 	if( $give_settings = get_option( 'give_settings' ) ){
 
@@ -598,17 +575,15 @@ function give_v18_upgrades_core_setting() {
 			}
 
 			// Set checkbox value to radio value.
-			if( empty( $give_settings[ $setting_name ] )  ) {
+			$give_settings[ $setting_name ] = ( ! empty( $give_settings[ $setting_name ] ) && 'on' === $give_settings[ $setting_name ] ? 'enabled' : 'disabled' );
 
-				// Set field value from default value array if not set yet.
-				$give_settings[ $new_setting_name ] = $new_setting_default_values[ $new_setting_name ];
-			} else{
-				// @see https://github.com/WordImpress/Give/issues/1063
-				if( false !== strpos( $setting_name, 'disable_' ) ) {
-					$give_settings[ $new_setting_name ] = ( 'on' === $give_settings[ $setting_name ] ? 'disabled' : 'enabled' );
-				} else {
-					$give_settings[ $setting_name ] = ( 'on' === $give_settings[ $setting_name ] ? 'enabled' : 'disabled' );
-				}
+			// @see https://github.com/WordImpress/Give/issues/1063
+			if( false !== strpos( $setting_name, 'disable_' ) ) {
+
+				$give_settings[ $new_setting_name ] = ( give_is_setting_enabled( $give_settings[ $setting_name ] ) ? 'disabled' : 'enabled' );
+			} elseif ( false !== strpos( $setting_name, 'enable_' ) ) {
+
+				$give_settings[ $new_setting_name ] = ( give_is_setting_enabled( $give_settings[ $setting_name ] ) ? 'enable' : 'disabled' );
 			}
 
 			// Tell bot to update core setting to db.
