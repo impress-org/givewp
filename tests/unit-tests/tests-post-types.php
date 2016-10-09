@@ -87,7 +87,7 @@ class Tests_Post_Types extends Give_Unit_Test_Case {
 	public function test_register_post_statuses() {
 		give_register_post_type_statuses();
 
-		global $wp_post_statuses;
+		$wp_post_statuses = get_post_stati( array(), 'objects' );
 
 		$this->assertInternalType( 'object', $wp_post_statuses['refunded'] );
 		$this->assertInternalType( 'object', $wp_post_statuses['revoked'] );
