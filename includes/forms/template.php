@@ -1157,7 +1157,7 @@ function give_get_register_fields( $form_id ) {
 	echo ob_get_clean();
 }
 
-add_action( 'give_purchase_form_register_fields', 'give_get_register_fields' );
+add_action( 'give_donation_form_register_fields', 'give_get_register_fields' );
 
 /**
  * Gets the login fields for the login form on the checkout. This function hooks
