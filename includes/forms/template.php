@@ -1163,7 +1163,7 @@ add_action( 'give_donation_form_register_fields', 'give_get_register_fields' );
 
 /**
  * Gets the login fields for the login form on the checkout. This function hooks
- * on the give_purchase_form_login_fields to display the login form if a user already
+ * on the give_donation_form_login_fields to display the login form if a user already
  * had an account.
  *
  * @since  1.0
@@ -1262,7 +1262,7 @@ function give_get_login_fields( $form_id ) {
 	echo ob_get_clean();
 }
 
-add_action( 'give_purchase_form_login_fields', 'give_get_login_fields', 10, 1 );
+add_action( 'give_donation_form_login_fields', 'give_get_login_fields', 10, 1 );
 
 /**
  * Payment Mode Select.
