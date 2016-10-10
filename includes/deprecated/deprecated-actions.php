@@ -41,6 +41,7 @@ function give_deprecated_actions() {
 		'give_donation_history_row_end'            => 'give_purchase_history_row_end',
 		'give_donation_form_top'                   => 'give_purchase_form_top',
 		'give_pre_process_donation'                => 'give_pre_process_purchase',
+		'give_complete_donation'                   => 'give_complete_purchase',
 		'give_donation_history_search'             => 'give_payment_history_search',
 		'give_donations_table_do_bulk_action'      => 'give_payments_table_do_bulk_action',
 		'give_donations_page_top'                  => 'give_payments_page_top',

@@ -109,7 +109,7 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 		 *
 		 * @param int $payment_id The ID of the payment.
 		 */
-		do_action( 'give_complete_purchase', $payment_id );
+		do_action( 'give_complete_donation', $payment_id );
 	}
 
 }
