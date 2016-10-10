@@ -733,7 +733,7 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 									<button type="button" class="handlediv button-link"><span class="toggle-indicator"></span></button>
 									<sapn class="give-remove" title="<?php esc_html_e( 'Remove Donation Level', 'give' ); ?>">-</sapn>
 									<h2>
-										<span><?php echo sprintf( esc_html__( 'Donation Level: %s', 'give' ), $level['_give_text'] ); ?></span>
+										<span><?php echo sprintf( esc_html__( 'Donation Level: %s', 'give' ), ( ! empty( $level['_give_text'] ) ? $level['_give_text'] : '') ); ?></span>
 									</h2>
 								</div>
 								<div class="give-row-body">
