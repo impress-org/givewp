@@ -1396,9 +1396,12 @@ function give_terms_agreement( $form_id ) {
 		return false;
 	}
 
+	$label = get_post_meta( $form_id, '_give_agree_label', true );
+	$terms = get_post_meta( $form_id, '_give_agree_text', true );
+
 	// Set term and conditions label and text on basis of per form and global setting.
-	$label = ( $label = get_post_meta( $form_id, '_give_agree_label', true ) ) ? stripslashes( $label ) : give_get_option( 'agree_to_terms_label', esc_html__( 'Agree to Terms?', 'give' ) );
-	$terms = ( $terms = get_post_meta( $form_id, '_give_agree_text', true ) ) ? $terms : give_get_option( 'agreement_text', '' );
+	// $label = ( $label = get_post_meta( $form_id, '_give_agree_label', true ) ) ? stripslashes( $label ) : give_get_option( 'agree_to_terms_label', esc_html__( 'Agree to Terms?', 'give' ) );
+	// $terms = ( $terms = get_post_meta( $form_id, '_give_agree_text', true ) ) ? $terms : give_get_option( 'agreement_text', '' );
 
 	// Bailout: Check if term and conditions text is empty or not.
 	if( empty( $terms ) ) {
