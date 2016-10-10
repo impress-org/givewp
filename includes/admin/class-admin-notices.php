@@ -49,7 +49,7 @@ class Give_Notices {
 		//Add the main siteadmin menu item.
 		$wp_admin_bar->add_menu( array(
 			'id'     => 'give-test-notice',
-			'href'   => admin_url() . 'edit.php?post_type=give_forms&page=give-settings&tab=gateways',
+			'href'   => admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways' ),
 			'parent' => 'top-secondary',
 			'title'  => esc_html__( 'Give Test Mode Active', 'give' ),
 			'meta'   => array( 'class' => 'give-test-mode-active' ),
