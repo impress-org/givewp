@@ -341,7 +341,7 @@ class Give_Welcome {
 	 * Render Getting Started Screen
 	 *
 	 * @access public
-	 * @since  1.9
+	 * @since  1.0
 	 * @return void
 	 */
 	public function getting_started_screen() {
@@ -486,7 +486,7 @@ class Give_Welcome {
 	/**
 	 * Parse the GIVE readme.txt file
 	 *
-	 * @since 2.0.3
+	 * @since 1.0
 	 * @return string $readme HTML formatted readme file
 	 */
 	public function parse_readme() {

@@ -200,7 +200,12 @@ class Give_Roles {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @return array $caps Meta capabilities.
+	 * @param  array  $caps    Returns the user's actual capabilities.
+	 * @param  string $cap     Capability name.
+	 * @param  int    $user_id The user ID.
+	 * @param  array  $args    Adds the context to the cap. Typically the object ID.
+	 *
+	 * @return array  $caps    Meta capabilities.
 	 */
 	public function meta_caps( $caps, $cap, $user_id, $args ) {
 
