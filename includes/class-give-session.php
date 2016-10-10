@@ -120,7 +120,7 @@ class Give_Session {
 		}
 
 		//Set cookie on Donation Completion page
-		add_action( 'give_pre_process_purchase', array( $this, 'set_session_cookies' ) );
+		add_action( 'give_pre_process_donation', array( $this, 'set_session_cookies' ) );
 
 	}
 

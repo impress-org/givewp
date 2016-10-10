@@ -30,7 +30,7 @@ function give_process_purchase_form() {
 	 *
 	 * @since 1.0
 	 */
-	do_action( 'give_pre_process_purchase' );
+	do_action( 'give_pre_process_donation' );
 
 	// Validate the form $_POST data
 	$valid_data = give_purchase_form_validate_fields();
