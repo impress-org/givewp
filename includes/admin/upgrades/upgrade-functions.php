@@ -85,8 +85,8 @@ function give_show_upgrade_notices() {
 
 	// v1.3.2 Upgrades
 	if ( version_compare( $give_version, '1.3.2', '<' ) || ! give_has_upgrade_completed( 'upgrade_give_payment_customer_id' ) ) {
+		// translators: %s: upgrade URL.
 		printf(
-			/* translators: %s: upgrade URL */
 			'<div class="updated"><p>' . __( 'Give needs to upgrade the donor database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
 			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_give_payment_customer_id' ) )
 		);
@@ -94,8 +94,8 @@ function give_show_upgrade_notices() {
 
 	// v1.3.4 Upgrades //ensure the user has gone through 1.3.4.
 	if ( version_compare( $give_version, '1.3.4', '<' ) || ( ! give_has_upgrade_completed( 'upgrade_give_offline_status' ) && give_has_upgrade_completed( 'upgrade_give_payment_customer_id' ) ) ) {
+		// translators: %s: upgrade URL.
 		printf(
-			/* translators: %s: upgrade URL */
 			'<div class="updated"><p>' . __( 'Give needs to upgrade the donations database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
 			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_give_offline_status' ) )
 		);
@@ -571,7 +571,7 @@ function give_v18_upgrades_core_setting() {
 
 				$give_settings[ $new_setting_name ] = ( give_is_setting_enabled( $give_settings[ $setting_name ] ) ? 'disabled' : 'enabled' );
 			} elseif ( false !== strpos( $setting_name, 'enable_' ) ) {
-				
+
 				$give_settings[ $new_setting_name ] = ( give_is_setting_enabled( $give_settings[ $setting_name ] ) ? 'enable' : 'disabled' );
 			}
 
@@ -609,7 +609,7 @@ function give_v18_upgrades_form_metadata() {
 			// Form content.
 			// Note in version 1.8 display content setting split into display content and content placement setting.
 			$show_content = get_post_meta( get_the_ID(), '_give_content_option', true );
-			if( $show_content && ! get_post_meta( get_the_ID(), '_give_display_content', true ) ) {
+			if ( $show_content && ! get_post_meta( get_the_ID(), '_give_display_content', true ) ) {
 				$field_value = ( 'none' !== $show_content ? 'enabled' : 'disabled' );
 				update_post_meta( get_the_ID(), '_give_display_content', $field_value );
 
@@ -648,9 +648,9 @@ function give_v18_upgrades_form_metadata() {
 				$field_value = get_post_meta( get_the_ID(), $meta_key, true );
 
 				// Convert meta value only if it is in yes/no/none.
-				if( in_array( $field_value, array( 'yes', 'on', 'no', 'none' ) ) ) {
+				if ( in_array( $field_value, array( 'yes', 'on', 'no', 'none' ) ) ) {
 
-					$field_value = ( in_array( $field_value, array( 'yes', 'on' )) ? 'enabled' : 'disabled' );
+					$field_value = ( in_array( $field_value, array( 'yes', 'on' ) ) ? 'enabled' : 'disabled' );
 					update_post_meta( get_the_ID(), $meta_key, $field_value );
 				}
 

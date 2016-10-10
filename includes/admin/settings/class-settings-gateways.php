@@ -41,7 +41,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 		 * @return array
 		 */
 		public function get_settings() {
-			$settings = array();
+			$settings        = array();
 			$current_section = give_get_current_setting_section();
 
 			switch ( $current_section ) {
@@ -82,7 +82,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 							'type'    => 'radio_inline',
 							'default' => 'enabled',
 							'options' => array(
-								'enabled' => __( 'Enabled', 'give' ),
+								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
 							)
 						),
@@ -153,13 +153,13 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 							'type' => 'title'
 						),
 						array(
-							'name' => esc_html__( 'Test Mode', 'give' ),
-							'desc' => esc_html__( 'While in test mode no live donations are processed. To fully use test mode, you must have a sandbox (test) account for the payment gateway you are testing.', 'give' ),
-							'id'   => 'test_mode',
+							'name'    => esc_html__( 'Test Mode', 'give' ),
+							'desc'    => esc_html__( 'While in test mode no live donations are processed. To fully use test mode, you must have a sandbox (test) account for the payment gateway you are testing.', 'give' ),
+							'id'      => 'test_mode',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
 							'options' => array(
-								'enabled' => __( 'Enabled', 'give' ),
+								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
 							)
 						),
@@ -193,6 +193,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 			 * Filter the settings.
 			 *
 			 * @since  1.8
+			 *
 			 * @param  array $settings
 			 */
 			$settings = apply_filters( 'give_get_settings_' . $this->id, $settings );
