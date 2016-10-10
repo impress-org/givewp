@@ -553,7 +553,7 @@ function give_v18_upgrades_core_setting() {
 		// Loop: check each setting field.
 		foreach ( $core_setting_names as $setting_name ) {
 			// New setting name.
-			$new_setting_name = str_replace( array( 'disable_', 'enable_' ), '', $setting_name );
+			$new_setting_name = preg_replace( '/^(enable_|disable_)/', '', $setting_name );
 
 			// Continue: If setting already set.
 			if (
@@ -571,7 +571,7 @@ function give_v18_upgrades_core_setting() {
 
 				$give_settings[ $new_setting_name ] = ( give_is_setting_enabled( $give_settings[ $setting_name ] ) ? 'disabled' : 'enabled' );
 			} elseif ( false !== strpos( $setting_name, 'enable_' ) ) {
-
+				
 				$give_settings[ $new_setting_name ] = ( give_is_setting_enabled( $give_settings[ $setting_name ] ) ? 'enable' : 'disabled' );
 			}
 
