@@ -390,7 +390,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 	do_action( 'give_before_donation_levels', $form_id, $args );
 
 	//Set Price, No Custom Amount Allowed means hidden price field
-	if ( $allow_custom_amount == 'no' ) {
+	if ( ! give_is_setting_enabled( $allow_custom_amount ) ) {
 		?>
 		<label class="give-hidden" for="give-amount-hidden"><?php esc_html_e( 'Donation Amount:', 'give' ); ?></label>
 		<input id="give-amount" class="give-amount-hidden" type="hidden" name="give-amount" value="<?php echo $default_amount; ?>" required>
@@ -432,7 +432,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 	do_action( 'give_after_donation_amount', $form_id, $args );
 
 	//Custom Amount Text
-	if ( ! $variable_pricing && $allow_custom_amount == 'yes' && ! empty( $custom_amount_text ) ) { ?>
+	if ( ! $variable_pricing &&  give_is_setting_enabled( $allow_custom_amount ) && ! empty( $custom_amount_text ) ) { ?>
 		<p class="give-custom-amount-text"><?php echo $custom_amount_text; ?></p>
 	<?php }
 
@@ -496,7 +496,7 @@ function give_output_levels( $form_id ) {
 			}
 
 			//Custom Amount
-			if ( $custom_amount === 'yes' && ! empty( $custom_amount_text ) ) {
+			if ( give_is_setting_enabled( $custom_amount ) && ! empty( $custom_amount_text ) ) {
 				$output .= '<li>';
 				$output .= '<button type="button" data-price-id="custom" class="give-donation-level-btn give-btn give-btn-level-custom" value="custom">';
 				$output .= $custom_amount_text;
@@ -525,7 +525,7 @@ function give_output_levels( $form_id ) {
 			}
 
 			//Custom Amount
-			if ( $custom_amount === 'yes' && ! empty( $custom_amount_text ) ) {
+			if ( give_is_setting_enabled( $custom_amount ) && ! empty( $custom_amount_text ) ) {
 				$output .= '<li>';
 				$output .= '<input type="radio" data-price-id="custom" class="give-radio-input give-radio-input-level give-radio-level-custom" name="give-radio-donation-level" id="give-radio-level-custom" value="custom">';
 				$output .= '<label for="give-radio-level-custom">' . $custom_amount_text . '</label>';
@@ -553,7 +553,7 @@ function give_output_levels( $form_id ) {
 			}
 
 			//Custom Amount
-			if ( $custom_amount === 'yes' && ! empty( $custom_amount_text ) ) {
+			if ( give_is_setting_enabled( $custom_amount ) && ! empty( $custom_amount_text ) ) {
 				$output .= '<option data-price-id="custom" class="give-donation-level-custom" value="custom">' . $custom_amount_text . '</option>';
 			}
 
@@ -1359,14 +1359,23 @@ add_action( 'give_payment_mode_select', 'give_payment_mode_select' );
  * @return bool
  */
 function give_is_terms_agreement_enabled( $form_id ) {
-	$is_enabled  = false;
-	$form_option = get_post_meta( $form_id, '_give_terms_option', true );
+	$term_option  = get_post_meta( $form_id, '_give_terms_option', true );
+	$is_add_terms = false;
 
-	if( in_array( $form_option, array( 'yes', 'global') ) ) {
-		$is_enabled = true;
+	if( give_is_setting_enabled( $term_option , 'enabled' ) ) {
+		$is_add_terms = true;
+		
+	} elseif ( give_is_setting_enabled( $term_option , 'global' ) ) {
+
+		$is_add_terms = true;
+
+		// Bailout: Do not print terms and conditions if it is disable globally.
+		if( ! give_is_setting_enabled( give_get_option( 'enable_terms' ) ) ) {
+			$is_add_terms = false;
+		}
 	}
 
-	return $is_enabled;
+	return $is_add_terms;
 }
 
 /**
@@ -1381,30 +1390,34 @@ function give_is_terms_agreement_enabled( $form_id ) {
  * @return void|bool
  */
 function give_terms_agreement( $form_id ) {
-	$form_option = get_post_meta( $form_id, '_give_terms_option', true );
+	$term_option = get_post_meta( $form_id, '_give_terms_option', true );
 	$label = $terms = '';
 
 	if( ! give_is_terms_agreement_enabled( $form_id ) ) {
 		return false;
 	}
 
+	$term_setting_page_link = '';
+
 	// Bailout if per form and global term and conditions is not setup
-	if( 'yes' === $form_option ) {
+	if( give_is_setting_enabled( $term_option, 'enabled' ) ) {
 		// Set term and conditions label and text on basis of per form and global setting.
 		$label = ( $label = get_post_meta( $form_id, '_give_agree_label', true ) ) ? stripslashes( $label ) : give_get_option( 'agree_to_terms_label', esc_html__( 'Agree to Terms?', 'give' ) );
 		$terms = ( $terms = get_post_meta( $form_id, '_give_agree_text', true ) ) ? $terms : give_get_option( 'agreement_text', '' );
 
-	} elseif ( 'global' === $form_option ){
+		$term_setting_page_link = admin_url( 'post.php?post=' . $form_id . '&action=edit&#form_terms_options' );
+	} elseif ( give_is_setting_enabled( $term_option, 'global' ) ){
 		// Set term and conditions label and text on basis of  global setting.
 		$label = give_get_option( 'agree_to_terms_label', esc_html__( 'Agree to Terms?', 'give' ) );
 		$terms = give_get_option( 'agreement_text', '' );
 
+		$term_setting_page_link = admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=display&section=term-and-conditions' );
 	}
 
 	// Bailout: Check if term and conditions text is empty or not.
 	if( empty( $terms ) ) {
 		if( is_user_logged_in() && current_user_can( 'manage_options' ) ) {
-			echo sprintf( __( 'Please enter term and conditions in <a href="%s">this form\'s settings</a>.', 'give' ), admin_url( 'post.php?post=' . $form_id . '&action=edit' ) );
+			echo sprintf( __( 'Please enter term and conditions in <a href="%s">this form\'s settings</a>.', 'give' ), $term_setting_page_link );
 		}
 		return false;
 	}
@@ -1550,8 +1563,6 @@ function give_checkout_button_purchase( $form_id ) {
  */
 function give_agree_to_terms_js( $form_id ) {
 
-	$form_option = get_post_meta( $form_id, '_give_terms_option', true );
-
 	if ( give_is_terms_agreement_enabled( $form_id ) ) {
 		?>
 		<script type="text/javascript">
@@ -1605,18 +1616,11 @@ add_action( 'give_pre_form', 'give_show_goal_progress', 10, 2 );
  */
 function give_get_form_content_placement( $form_id, $args ) {
 	$show_content = '';
-
-	// @TODO: We can improve this function by removing backward compatibility after all user upgrade to 1.8
+	
 	if(  isset( $args['show_content'] ) && ! empty( $args['show_content'] ) ) {
-		$show_content = $args['show_content'];
-	} elseif ( $display_content = get_post_meta( $form_id, '_give_display_content', true ) ) {
-		if( 'yes' === $display_content ) {
-			$show_content = get_post_meta( $form_id, '_give_content_placement', true );
-		}
-	} else {
-		// Backward compatibility: _give_content_option is deprecate in version 1.8.
-		$show_content = get_post_meta( $form_id, '_give_content_option', true );
-		$show_content = ( 'none' === $show_content ) ? '' : $show_content;
+		$show_content = ( 'none' !== $args['show_content'] ? $args['show_content'] : '' );
+	} elseif ( give_is_setting_enabled( get_post_meta( $form_id, '_give_display_content', true ) ) ) {
+		$show_content = get_post_meta( $form_id, '_give_content_placement', true );
 	}
 
 	return $show_content;

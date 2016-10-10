@@ -524,7 +524,7 @@ class Give_Donate_Form {
 			$allow_custom_amount = get_post_meta( $this->ID, '_give_custom_amount', true );
 			$this->minimum_price = get_post_meta( $this->ID, '_give_custom_amount_minimum', true );
 
-			if ( $allow_custom_amount != 'no' && $this->minimum_price ) {
+			if ( give_is_setting_enabled( $allow_custom_amount ) && $this->minimum_price ) {
 
 				$this->minimum_price = give_sanitize_amount( $this->minimum_price );
 
@@ -639,7 +639,7 @@ class Give_Donate_Form {
 		$option = get_post_meta( $this->ID, '_give_custom_amount', true );
 		$ret    = 0;
 
-		if ( $option === 'yes' ) {
+		if ( give_is_setting_enabled( $option ) ) {
 			$ret = 1;
 		}
 
@@ -1020,10 +1020,10 @@ class Give_Donate_Form {
 	 */
 	public function is_close_donation_form() {
 		return (
-			       'yes' === get_post_meta( $this->ID, '_give_goal_option', true ) )
-		       && ( 'yes' === get_post_meta( $this->ID, '_give_close_form_when_goal_achieved', true ) )
-		       && ( $this->get_goal() <= $this->get_earnings()
-		       );
+				give_is_setting_enabled( get_post_meta( $this->ID, '_give_goal_option', true ) ) )
+				&& give_is_setting_enabled( get_post_meta( $this->ID, '_give_close_form_when_goal_achieved', true ) )
+				&& ( $this->get_goal() <= $this->get_earnings()
+		);
 	}
 
 	/**

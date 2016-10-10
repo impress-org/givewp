@@ -888,7 +888,7 @@ function _give_display_content_field_value( $field_value, $field, $postid ){
 		&& $show_content
 		&& ( 'none' !== $show_content )
 	) {
-		$field_value = 'yes';
+		$field_value = 'enabled';
 	}
 
 	return $field_value;
@@ -936,36 +936,14 @@ add_filter( '_give_content_placement_field_value', '_give_content_placement_fiel
 function _give_terms_option_field_value( $field_value, $field, $postid ){
 	$term_option = get_post_meta( $postid, '_give_terms_option', true );
 
-	if(  'none' === $term_option ) {
-		$field_value = 'no';
+	if(  in_array( $term_option, array( 'none', 'yes' ) ) ) {
+		$field_value = ( 'yes' === $term_option ? 'enabled' : 'disabled' );
 	}
 
 	return $field_value;
 }
 add_filter( '_give_terms_option_field_value', '_give_terms_option_field_value', 10, 3 );
 
-
-/**
- * Set value for Form Display --> Guest donation.
- *
- * Backward compatibility:  set value by _give_logged_in_only form meta field value if it's value is on.
- *
- * @since  1.8
- * @param  mixed  $field_value Field Value.
- * @param  array  $field       Field args.
- * @param  int    $postid      Form/Post ID.
- * @return string
- */
-function _give_logged_in_only_field_value( $field_value, $field, $postid ){
-	$term_option = get_post_meta( $postid, '_give_logged_in_only', true );
-
-	if(  'on' === $term_option ) {
-		$field_value = 'yes';
-	}
-
-	return $field_value;
-}
-add_filter( '_give_logged_in_only_field_value', '_give_logged_in_only_field_value', 10, 3 );
 
 /**
  * Set value for Form Display --> Offline Donation --> Billing Fields.
@@ -978,13 +956,126 @@ add_filter( '_give_logged_in_only_field_value', '_give_logged_in_only_field_valu
  * @param  int    $postid      Form/Post ID.
  * @return string
  */
-function _give_give_offline_donation_billing_field_value( $field_value, $field, $postid ){
-	$term_option = get_post_meta( $postid, '_give_offline_donation_enable_billing_fields_single', true );
+function _give_offline_donation_enable_billing_fields_single_field_value( $field_value, $field, $postid ){
+	$offline_donation = get_post_meta( $postid, '_give_offline_donation_enable_billing_fields_single', true );
 
-	if(  'on' === $term_option ) {
+	if(  'on' === $offline_donation ) {
 		$field_value = 'enabled';
 	}
 
 	return $field_value;
 }
-add_filter( '_give_offline_donation_enable_billing_fields_single_field_value', '_give_give_offline_donation_billing_field_value', 10, 3 );
+add_filter( '_give_offline_donation_enable_billing_fields_single_field_value', '_give_offline_donation_enable_billing_fields_single_field_value', 10, 3 );
+
+
+/**
+ * Set value for Donation Options --> Custom Amount.
+ *
+ * Backward compatibility:  set value by _give_custom_amount form meta field value if it's value is yes or no.
+ *
+ * @since  1.8
+ * @param  mixed  $field_value Field Value.
+ * @param  array  $field       Field args.
+ * @param  int    $postid      Form/Post ID.
+ * @return string
+ */
+function _give_custom_amount_field_value( $field_value, $field, $postid ){
+	$custom_amount = get_post_meta( $postid, '_give_custom_amount', true );
+
+	if( in_array( $custom_amount, array( 'yes', 'no' ) ) ) {
+		$field_value =  ( 'yes' === $custom_amount ? 'enabled' : 'disabled' );
+	}
+
+	return $field_value;
+}
+add_filter( '_give_custom_amount_field_value', '_give_custom_amount_field_value', 10, 3 );
+
+
+/**
+ * Set value for Donation Goal --> Donation Goal.
+ *
+ * Backward compatibility:  set value by _give_goal_option form meta field value if it's value is yes or no.
+ *
+ * @since  1.8
+ * @param  mixed  $field_value Field Value.
+ * @param  array  $field       Field args.
+ * @param  int    $postid      Form/Post ID.
+ * @return string
+ */
+function _give_goal_option_field_value( $field_value, $field, $postid ){
+	$goal_option = get_post_meta( $postid, '_give_goal_option', true );
+
+	if( in_array( $goal_option, array( 'yes', 'no' ) ) ) {
+		$field_value =  ( 'yes' === $goal_option ? 'enabled' : 'disabled' );
+	}
+
+	return $field_value;
+}
+add_filter( '_give_goal_option_field_value', '_give_goal_option_field_value', 10, 3 );
+
+/**
+ * Set value for Donation Goal --> close Form.
+ *
+ * Backward compatibility:  set value by _give_close_form_when_goal_achieved form meta field value if it's value is yes or no.
+ *
+ * @since  1.8
+ * @param  mixed  $field_value Field Value.
+ * @param  array  $field       Field args.
+ * @param  int    $postid      Form/Post ID.
+ * @return string
+ */
+function _give_close_form_when_goal_achieved_value( $field_value, $field, $postid ){
+	$close_form = get_post_meta( $postid, '_give_close_form_when_goal_achieved', true );
+
+	if( in_array( $close_form, array( 'yes', 'no' ) ) ) {
+		$field_value =  ( 'yes' === $close_form ? 'enabled' : 'disabled' );
+	}
+
+	return $field_value;
+}
+add_filter( '_give_close_form_when_goal_achieved_field_value', '_give_close_form_when_goal_achieved_value', 10, 3 );
+
+
+/**
+ * Set value for Form display --> Guest Donation.
+ *
+ * Backward compatibility:  set value by _give_logged_in_only form meta field value if it's value is yes or no.
+ *
+ * @since  1.8
+ * @param  mixed  $field_value Field Value.
+ * @param  array  $field       Field args.
+ * @param  int    $postid      Form/Post ID.
+ * @return string
+ */
+function _give_logged_in_only_value( $field_value, $field, $postid ){
+	$guest_donation = get_post_meta( $postid, '_give_logged_in_only', true );
+
+	if( in_array( $guest_donation, array( 'yes', 'no' ) ) ) {
+		$field_value =  ( 'yes' === $guest_donation ? 'enabled' : 'disabled' );
+	}
+
+	return $field_value;
+}
+add_filter( '_give_logged_in_only_field_value', '_give_logged_in_only_value', 10, 3 );
+
+/**
+ * Set value for Offline Donations --> Offline Donations.
+ *
+ * Backward compatibility:  set value by _give_customize_offline_donations form meta field value if it's value is yes or no.
+ *
+ * @since  1.8
+ * @param  mixed  $field_value Field Value.
+ * @param  array  $field       Field args.
+ * @param  int    $postid      Form/Post ID.
+ * @return string
+ */
+function _give_customize_offline_donations_value( $field_value, $field, $postid ){
+	$customize_offline_text = get_post_meta( $postid, '_give_customize_offline_donations', true );
+
+	if( in_array( $customize_offline_text, array( 'yes', 'no' ) ) ) {
+		$field_value =  ( 'yes' === $customize_offline_text ? 'enabled' : 'disabled' );
+	}
+
+	return $field_value;
+}
+add_filter( '_give_customize_offline_donations_field_value', '_give_customize_offline_donations_value', 10, 3 );
