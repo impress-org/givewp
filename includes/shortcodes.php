@@ -14,13 +14,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-
 /**
  * Donation History Shortcode
  *
  * Displays a user's donation history.
  *
- * @since 1.0
+ * @since  1.0
+ *
  * @return string
  */
 function give_donation_history() {
@@ -53,14 +53,13 @@ add_shortcode( 'donation_history', 'give_donation_history' );
  *
  * Show the Give donation form.
  *
- * @since       1.0
+ * @since  1.0
  *
- * @param array $atts     Shortcode attributes
- * @param string $content
+ * @param  array  $atts Shortcode attributes
  *
  * @return string
  */
-function give_form_shortcode( $atts, $content = null ) {
+function give_form_shortcode( $atts ) {
 	$atts = shortcode_atts( array(
 		'id'            => '',
 		'show_title'    => true,
@@ -113,14 +112,13 @@ add_shortcode( 'give_form', 'give_form_shortcode' );
  *
  * Show the Give donation form goals.
  *
- * @since       1.0
+ * @since  1.0
  *
- * @param array $atts Shortcode attributes.
- * @param string $content
+ * @param  array  $atts Shortcode attributes.
  *
  * @return string
  */
-function give_goal_shortcode( $atts, $content = null ) {
+function give_goal_shortcode( $atts ) {
 	$atts = shortcode_atts( array(
 		'id'        => '',
 		'show_text' => true,
@@ -137,8 +135,8 @@ function give_goal_shortcode( $atts, $content = null ) {
 	}
 
 	//Sanity check 2: Check the form even has Goals enabled.
-	$goal_option = get_post_meta( $atts['id'], '_give_goal_option', true );
-	if ( empty( $goal_option ) || $goal_option !== 'yes' ) {
+	if ( ! give_is_setting_enabled( get_post_meta( $atts['id'], '_give_goal_option', true ) ) ) {
+
 		give_output_error( esc_html__( 'The form does not have Goals enabled.', 'give' ), true );
 	} else {
 		//Passed all sanity checks: output Goal.
@@ -159,15 +157,15 @@ add_shortcode( 'give_goal', 'give_goal_shortcode' );
  * Shows a login form allowing users to users to log in. This function simply
  * calls the give_login_form function to display the login form.
  *
- * @since 1.0
+ * @since  1.0
  *
- * @param array  $atts     Shortcode attributes
- * @param string $content
+ * @param  array  $atts Shortcode attributes.
  *
- * @uses  give_login_form()
+ * @uses   give_login_form()
+ *
  * @return string
  */
-function give_login_form_shortcode( $atts, $content = null ) {
+function give_login_form_shortcode( $atts ) {
 	$atts = shortcode_atts( array(
         // Add backward compatibility for redirect attribute.
         'redirect'          => '',
@@ -189,15 +187,15 @@ add_shortcode( 'give_login', 'give_login_form_shortcode' );
  *
  * Shows a registration form allowing users to users to register for the site.
  *
- * @since 1.0
+ * @since  1.0
  *
- * @param array  $atts     Shortcode attributes.
- * @param string $content
+ * @param  array  $atts Shortcode attributes.
  *
- * @uses  give_register_form()
+ * @uses   give_register_form()
+ *
  * @return string
  */
-function give_register_form_shortcode( $atts, $content = null ) {
+function give_register_form_shortcode( $atts ) {
 	$atts = shortcode_atts( array(
 		'redirect' => '',
 	), $atts, 'give_register' );
@@ -207,20 +205,18 @@ function give_register_form_shortcode( $atts, $content = null ) {
 
 add_shortcode( 'give_register', 'give_register_form_shortcode' );
 
-
 /**
  * Receipt Shortcode.
  *
  * Shows a donation receipt.
  *
- * @since 1.0
+ * @since  1.0
  *
- * @param array  $atts    Shortcode attributes.
- * @param string $content
+ * @param  array  $atts Shortcode attributes.
  *
  * @return string
  */
-function give_receipt_shortcode( $atts, $content = null ) {
+function give_receipt_shortcode( $atts ) {
 
 	global $give_receipt_args, $payment;
 
@@ -311,8 +307,6 @@ function give_receipt_shortcode( $atts, $content = null ) {
 	$display = ob_get_clean();
 
 	return $display;
-
-
 }
 
 add_shortcode( 'give_receipt', 'give_receipt_shortcode' );
@@ -330,12 +324,11 @@ add_shortcode( 'give_receipt', 'give_receipt_shortcode' );
  *
  * @since  1.0
  *
- * @param array   $atts    attributes
- * @param string  $content
+ * @param  array  $atts Shortcode attributes.
  *
  * @return string Output generated from the profile editor
  */
-function give_profile_editor_shortcode( $atts, $content = null ) {
+function give_profile_editor_shortcode( $atts ) {
 
 	ob_start();
 
@@ -355,7 +348,7 @@ add_shortcode( 'give_profile_editor', 'give_profile_editor_shortcode' );
  *
  * @since  1.0
  *
- * @param array $data Data sent from the profile editor.
+ * @param  array $data Data sent from the profile editor.
  *
  * @return bool
  */
@@ -468,4 +461,3 @@ function give_process_profile_editor_updates( $data ) {
 }
 
 add_action( 'give_edit_user_profile', 'give_process_profile_editor_updates' );
-

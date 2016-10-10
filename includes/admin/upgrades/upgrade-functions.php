@@ -606,31 +606,54 @@ function give_v18_upgrades_form_metadata() {
 		while ( $forms->have_posts() ) {
 			$forms->the_post();
 
-			// Guest donation setting.
-			if ( 'on' === get_post_meta( get_the_ID(), '_give_logged_in_only', true ) ) {
-				update_post_meta( get_the_ID(), '_give_logged_in_only', 'yes' );
-			}
-
-			// Guest donation setting.
-			if ( 'on' === get_post_meta( get_the_ID(), '_give_offline_donation_enable_billing_fields_single', true ) ) {
-				update_post_meta( get_the_ID(), '_give_offline_donation_enable_billing_fields_single', 'enabled' );
-			}
-
-			// Term and conditions.
-			if ( 'none' === get_post_meta( get_the_ID(), '_give_terms_option', true ) ) {
-				update_post_meta( get_the_ID(), '_give_terms_option', 'no' );
-			}
-
 			// Form content.
 			// Note in version 1.8 display content setting split into display content and content placement setting.
 			$show_content = get_post_meta( get_the_ID(), '_give_content_option', true );
-			if ( $show_content ) {
-				if ( 'none' !== $show_content ) {
-					update_post_meta( get_the_ID(), '_give_display_option', 'yes' );
-				} else {
-					update_post_meta( get_the_ID(), '_give_display_option', 'no' );
-					update_post_meta( get_the_ID(), '_give_content_option', 'give_pre_form' );
+			if( $show_content && ! get_post_meta( get_the_ID(), '_give_display_content', true ) ) {
+				$field_value = ( 'none' !== $show_content ? 'enabled' : 'disabled' );
+				update_post_meta( get_the_ID(), '_give_display_content', $field_value );
+
+				$field_value = ( 'none' !== $show_content ? $show_content : 'give_pre_form' );
+				update_post_meta( get_the_ID(), '_give_content_option', $field_value );
+			}
+
+
+			// Convert yes/no setting field to enabled/disabled.
+			$form_radio_settings = array(
+				// Custom Amount.
+				'_give_custom_amount',
+
+				// Donation Gaol.
+				'_give_goal_option',
+
+				// Close Form.
+				'_give_close_form_when_goal_achieved',
+
+				// Guest Donation.
+				'_give_logged_in_only',
+
+				// Term & conditions.
+				'_give_terms_option',
+
+				// Offline donation.
+				'_give_customize_offline_donations',
+
+				// Billing fields.
+				'_give_offline_donation_enable_billing_fields_single'
+			);
+
+
+			foreach ( $form_radio_settings as $meta_key ) {
+				// Get value.
+				$field_value = get_post_meta( get_the_ID(), $meta_key, true );
+
+				// Convert meta value only if it is in yes/no/none.
+				if( in_array( $field_value, array( 'yes', 'on', 'no', 'none' ) ) ) {
+
+					$field_value = ( in_array( $field_value, array( 'yes', 'on' )) ? 'enabled' : 'disabled' );
+					update_post_meta( get_the_ID(), $meta_key, $field_value );
 				}
+
 			}
 		}
 	}

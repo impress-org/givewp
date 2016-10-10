@@ -204,10 +204,10 @@ class Give_MetaBox_Form_Data {
 							'description' => esc_html__( 'Do you want the user to be able to input their own donation amount?', 'give' ),
 							'id'          => $prefix . 'custom_amount',
 							'type'        => 'radio_inline',
-							'default'     => 'no',
+							'default'     => 'disabled',
 							'options'     => array(
-								'yes' => esc_html__( 'Yes', 'give' ),
-								'no'  => esc_html__( 'No', 'give' ),
+								'enabled'   => esc_html__( 'Enabled', 'give' ),
+								'disabled'  => esc_html__( 'Disabled', 'give' ),
 							),
 						),
 						array(
@@ -249,10 +249,10 @@ class Give_MetaBox_Form_Data {
 						'description' => esc_html__( 'Do you want to set a donation goal for this form?', 'give' ),
 						'id'          => $prefix . 'goal_option',
 						'type'        => 'radio_inline',
-						'default'     => 'no',
+						'default'     => 'disabled',
 						'options'     => array(
-							'yes' => esc_html__( 'Yes', 'give' ),
-							'no'  => esc_html__( 'No', 'give' ),
+							'enabled'   => esc_html__( 'Enabled', 'give' ),
+							'disabled'  => esc_html__( 'Disabled', 'give' ),
 						),
 					),
 					array(
@@ -292,11 +292,11 @@ class Give_MetaBox_Form_Data {
 						'desc'        => esc_html__( 'Do you want to close the donation forms and stop accepting donations once this goal has been met?', 'give' ),
 						'id'          => $prefix . 'close_form_when_goal_achieved',
 						'type'        => 'radio_inline',
+						'default'     => 'disabled',
 						'options'     => array(
-							'yes' => esc_html__( 'Yes', 'give' ),
-							'no'  => esc_html__( 'No', 'give' ),
+							'enabled'   => esc_html__( 'Enabled', 'give' ),
+							'disabled'  => esc_html__( 'Disabled', 'give' ),
 						),
-						'default'     => 'no',
 					),
 					array(
 						'name'        => esc_html__( 'Goal Achieved Message', 'give' ),
@@ -359,17 +359,17 @@ class Give_MetaBox_Form_Data {
 								'desc'    => esc_html__( 'Do you want to require users be logged-in to make donations?', 'give' ),
 								'id'      => $prefix . 'logged_in_only',
 								'type'    => 'radio_inline',
-								'default' => 'yes',
+								'default' => 'enabled',
 								'options' => array(
-									'yes'    => esc_html__( 'Yes', 'give' ),
-									'no'     => esc_html__( 'No', 'give' ),
+									'enabled'    => esc_html__( 'Enabled', 'give' ),
+									'disabled'   => esc_html__( 'Disabled', 'give' ),
 								)
 							),
 							array(
 								'name'    => esc_html__( 'Registration', 'give' ),
 								'desc'    => esc_html__( 'Display the registration and login forms in the payment section for non-logged-in users.', 'give' ),
 								'id'      => $prefix . 'show_register_form',
-								'type'    => 'radio_inline',
+								'type'    => 'radio',
 								'options' => array(
 									'none'         => esc_html__( 'None', 'give' ),
 									'registration' => esc_html__( 'Registration', 'give' ),
@@ -385,9 +385,9 @@ class Give_MetaBox_Form_Data {
 								'id'      => $prefix . 'form_floating_labels',
 								'type'    => 'radio_inline',
 								'options' => array(
-									'global'   => esc_html__( 'Global Option', 'give' ),
-									'enabled'  => esc_html__( 'Yes', 'give' ),
-									'disabled' => esc_html__( 'No', 'give' ),
+									'global'   => esc_html__( 'Global Options', 'give' ),
+									'enabled'  => esc_html__( 'Enabled', 'give' ),
+									'disabled' => esc_html__( 'Disabled', 'give' ),
 								),
 								'default' => 'global',
 							)
@@ -410,12 +410,11 @@ class Give_MetaBox_Form_Data {
 							'description' => esc_html__( 'Do you want to add custom content to this form?', 'give' ),
 							'id'          => $prefix . 'display_content',
 							'type'        => 'radio_inline',
-							'options'     => apply_filters( 'give_forms_content_options_select', array(
-									'yes' => esc_html__( 'Yes', 'give' ),
-									'no'  => esc_html__( 'No', 'give' ),
-								)
+							'options'     => array(
+								'enabled'  => esc_html__( 'Enabled', 'give' ),
+								'disabled' => esc_html__( 'Disabled', 'give' ),
 							),
-							'default'     => 'no',
+							'default'     => 'disabled',
 						),
 
 						// Content placement.
@@ -455,9 +454,9 @@ class Give_MetaBox_Form_Data {
 							'id'          => $prefix . 'terms_option',
 							'type'        => 'radio_inline',
 							'options'     => apply_filters( 'give_forms_content_options_select', array(
-									'global' => esc_html__( 'Global Option', 'give' ),
-									'yes'    => esc_html__( 'Customize', 'give' ),
-									'no'     => esc_html__( 'Disable', 'give' ),
+									'global'   => esc_html__( 'Global Options', 'give' ),
+									'enabled'  => esc_html__( 'Customize', 'give' ),
+									'disabled' => esc_html__( 'Disable', 'give' ),
 								)
 							),
 							'default'     => 'global',

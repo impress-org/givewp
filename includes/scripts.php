@@ -132,6 +132,7 @@ add_action( 'wp_enqueue_scripts', 'give_load_scripts' );
  * Checks the styles option and hooks the required filter.
  *
  * @since 1.0
+ *
  * @return void
  */
 function give_register_styles() {
@@ -152,6 +153,7 @@ add_action( 'wp_enqueue_scripts', 'give_register_styles' );
  * Get the stylesheet URI.
  *
  * @since 1.6
+ *
  * @return mixed|void
  */
 function give_get_stylesheet_uri() {

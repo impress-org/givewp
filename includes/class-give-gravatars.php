@@ -324,8 +324,6 @@ class Give_Donors_Gravatars {
 	 * @param  string $content Shortcode content.
 	 *
 	 * @return string
-	 *
-	 * @todo   Set the ID to get_the_ID() if ID parameter is not passed through. Otherwise it will incorrectly get other gravatars
 	 */
 	public function shortcode( $atts, $content = null ) {
 

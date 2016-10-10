@@ -2,9 +2,11 @@
 /**
  * Give License handler
  *
- * This class simplifies the process of adding license information to new Give add-ons.
- *
- * @version 1.0
+ * @package     Give
+ * @subpackage  Admin/License
+ * @copyright   Copyright (c) 2016, WordImpress
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
+ * @since       1.0
  */
 
 // Exit if accessed directly
@@ -16,6 +18,10 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 	/**
 	 * Give_License Class
+	 *
+	 * This class simplifies the process of adding license information to new Give add-ons.
+	 *
+	 * @since 1.0
 	 */
 	class Give_License {
 
@@ -23,6 +29,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * File
 		 *
 		 * @access private
+		 * @since  1.0
 		 *
 		 * @var    string
 		 */
@@ -32,6 +39,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * License
 		 *
 		 * @access private
+		 * @since  1.0
 		 *
 		 * @var    string
 		 */
@@ -41,6 +49,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * Item name
 		 *
 		 * @access private
+		 * @since  1.0
 		 *
 		 * @var    string
 		 */
@@ -50,6 +59,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * License Information object.
 		 *
 		 * @access private
+		 * @since  1.7
 		 *
 		 * @var    object
 		 */
@@ -59,6 +69,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * Item shortname
 		 *
 		 * @access private
+		 * @since  1.0
 		 *
 		 * @var    string
 		 */
@@ -68,6 +79,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * Version
 		 *
 		 * @access private
+		 * @since  1.0
 		 *
 		 * @var    string
 		 */
@@ -77,6 +89,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * Author
 		 *
 		 * @access private
+		 * @since  1.0
 		 *
 		 * @var    string
 		 */
@@ -86,16 +99,30 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * API URL
 		 *
 		 * @access private
+		 * @since  1.0
 		 *
 		 * @var    string
 		 */
 		private $api_url      = 'https://givewp.com/edd-sl-api/';
 
 		/**
-		 * 
+		 * Account URL
+		 *
+		 * @access private
+		 * @since  1.7
+		 *
 		 * @var null|string
 		 */
 		private $account_url  = 'https://givewp.com/my-account/';
+
+		/**
+		 * Ccheckout URL
+		 *
+		 * @access private
+		 * @since  1.7
+		 *
+		 * @var null|string
+		 */
 		private $checkout_url = 'https://givewp.com/checkout/';
 
 		/**
@@ -104,6 +131,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * Set up the Give License Class.
 		 *
 		 * @access public
+		 * @since  1.0
+		 *
 		 * @param string  $_file
 		 * @param string  $_item_name
 		 * @param string  $_version
@@ -139,6 +168,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * Include the updater class.
 		 *
 		 * @access private
+		 * @since  1.0
 		 *
 		 * @return void
 		 */
@@ -154,6 +184,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * Setup license hooks.
 		 *
 		 * @access private
+		 * @since  1.0
 		 *
 		 * @return void
 		 */
@@ -185,9 +216,10 @@ if ( ! class_exists( 'Give_License' ) ) :
 		/**
 		 * Auto Updater
 		 *
-		 * @access  private
+		 * @access private
+		 * @since  1.0
 		 *
-		 * @return  bool
+		 * @return bool
 		 */
 		public function auto_updater() {
 
@@ -214,6 +246,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * Add license field to settings.
 		 *
 		 * @access public
+		 * @since  1.0
 		 *
 		 * @param  array $settings License settings.
 		 *
@@ -248,6 +281,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * Add Some Content to the Licensing Settings.
 		 *
 		 * @access public
+		 * @since  1.0
 		 *
 		 * @param  array $settings License settings content.
 		 *
@@ -273,6 +307,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * Activate the license key.
 		 *
 		 * @access public
+		 * @since  1.0
 		 *
 		 * @return void
 		 */
@@ -371,6 +406,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * Deactivate the license key.
 		 *
 		 * @access public
+		 * @since  1.0
 		 *
 		 * @return void
 		 */
@@ -417,7 +453,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 					)
 				);
 
-
 				// Make sure there are no errors
 				if ( is_wp_error( $response ) ) {
 					return;
@@ -425,7 +460,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 				// Decode the license data
 				$license_data = json_decode( wp_remote_retrieve_body( $response ) );
-
 
 				// Remove license data.
 				delete_option( $this->item_shortname . '_license_active' );
@@ -435,14 +469,13 @@ if ( ! class_exists( 'Give_License' ) ) :
 			}
 		}
 
-
 		/**
 		 * Check if license key is valid once per week.
 		 *
-		 * @access  public
-		 * @since   1.7
+		 * @access public
+		 * @since  1.7
 		 *
-		 * @return  bool/void
+		 * @return bool|void
 		 */
 		public function weekly_license_check() {
 
@@ -488,14 +521,13 @@ if ( ! class_exists( 'Give_License' ) ) :
 			update_option( $this->item_shortname . '_license_active', $license_data );
 		}
 
-
 		/**
 		 * Check subscription validation once per week
 		 *
-		 * @access  public
-		 * @since   1.7
+		 * @access public
+		 * @since  1.7
 		 *
-		 * @return  bool/void
+		 * @return bool|void
 		 */
 		public function weekly_subscription_check() {
 
@@ -572,11 +604,10 @@ if ( ! class_exists( 'Give_License' ) ) :
 		/**
 		 * Check if license key is part of subscription or not
 		 *
-		 * @since   1.7
-		 * @access  private
+		 * @access private
+		 * @since  1.7
 		 *
-		 * @return  bool/void
-		 *
+		 * @return bool|void
 		 */
 		private function __single_subscription_check() {
 			// Do not fire if license key is not set.
@@ -634,12 +665,13 @@ if ( ! class_exists( 'Give_License' ) ) :
 			}
 		}
 
-
 		/**
 		 * Admin notices for errors
 		 *
-		 * @access  public
-		 * @return  void
+		 * @access public
+		 * @since  1.0
+		 *
+		 * @return void
 		 */
 		public function notices() {
 			static $showed_invalid_message;
@@ -666,7 +698,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			// Get subscriptions.
 			$subscriptions = get_option( 'give_subscriptions' );
-
 
 			// Show subscription messages.
 			if( ! empty( $subscriptions ) && ! $showed_subscriptions_message ) {
@@ -713,7 +744,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 				$showed_subscriptions_message = true;
 			}
 
-
 			// Show non subscription addon messages.
 			if( ! in_array( $this->license, $addon_license_key_in_subscriptions ) && ! $this->__is_notice_dismissed( 'general' ) && ! $this->is_valid_license() && empty( $showed_invalid_message ) ) {
 
@@ -735,11 +765,11 @@ if ( ! class_exists( 'Give_License' ) ) :
 			}
 		}
 
-
 		/**
 		 * Check if license is valid or not.
 		 *
-		 * @since 1.7
+		 * @access public
+		 * @since  1.7
 		 *
 		 * @return bool
 		 */
@@ -754,8 +784,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 		/**
 		 * Check if license is valid or not.
 		 *
-		 * @since  1.7
 		 * @access private
+		 * @since  1.7
 		 *
 		 * @return bool
 		 */
@@ -763,15 +793,14 @@ if ( ! class_exists( 'Give_License' ) ) :
 			return ( false === strpos( $this->api_url, 'givewp.com/' ) );
 		}
 
-
 		/**
 		 * Remove license key from subscription.
 		 *
 		 * This function mainly uses when admin user deactivate license key,
 		 * then we do not need subscription information for that license key.
 		 *
-		 * @since  1.7
 		 * @access private
+		 * @since  1.7
 		 *
 		 * @return void|bool
 		 */
@@ -804,8 +833,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 		/**
 		 * Remove license notices show blocker.
 		 *
-		 * @since 1.7
 		 * @access private
+		 * @since  1.7
 		 *
 		 * @return void
 		 */
@@ -840,10 +869,10 @@ if ( ! class_exists( 'Give_License' ) ) :
 		/**
 		 * Check if notice dismissed by admin user or not.
 		 *
-		 * @since  1.7
 		 * @access private
+		 * @since  1.7
 		 *
-		 * @param int $notice_id notice ID.
+		 * @param  int $notice_id Notice ID.
 		 *
 		 * @return bool
 		 */

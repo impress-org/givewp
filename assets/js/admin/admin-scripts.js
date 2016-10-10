@@ -289,9 +289,9 @@ jQuery.noConflict();
 			/**
 			 * Form featured image
 			 */
-			var form_featured_image = $( 'input[name="enable_form_featured_img"]' ,'.give-setting-tab-body-display' );
+			var form_featured_image = $( 'input[name="form_featured_img"]' ,'.give-setting-tab-body-display' );
 			form_featured_image.on('change', function () {
-				var field_value = $( 'input[name="enable_form_featured_img"]:checked' ,'.give-setting-tab-body-display' ).val();
+				var field_value = $( 'input[name="form_featured_img"]:checked' ,'.give-setting-tab-body-display' ).val();
 				if ( 'enabled' === field_value) {
 					$('#featured_image_size').parents('tr').show();
 				} else {
@@ -302,9 +302,9 @@ jQuery.noConflict();
 			/**
 			 * Terms and Conditions
 			 */
-			var terms_and_conditions = $( 'input[name="enable_terms"]' ,'.give-setting-tab-body-display' );
+			var terms_and_conditions = $( 'input[name="terms"]' ,'.give-setting-tab-body-display' );
 			terms_and_conditions.on('change', function () {
-				var field_value = $( 'input[name="enable_terms"]:checked' ,'.give-setting-tab-body-display' ).val();
+				var field_value = $( 'input[name="terms"]:checked' ,'.give-setting-tab-body-display' ).val();
 				if ( 'enabled' === field_value) {
 					$('#agree_to_terms_label').parents('tr').show();
 					$('#wp-agreement_text-wrap').parents('tr').show();
@@ -317,9 +317,9 @@ jQuery.noConflict();
 			/**
 			 * Disable admin notification
 			 */
-			var admin_notification = $( 'input[name="enable_admin_notices"]' ,'.give-setting-tab-body-emails' );
+			var admin_notification = $( 'input[name="admin_notices"]' ,'.give-setting-tab-body-emails' );
 			admin_notification.on('change', function () {
-				var field_value = $( 'input[name="enable_admin_notices"]:checked' ,'.give-setting-tab-body-emails' ).val();
+				var field_value = $( 'input[name="admin_notices"]:checked' ,'.give-setting-tab-body-emails' ).val();
 				if ( 'enabled' === field_value) {
 					$('#donation_notification_subject').parents('tr').show();
 					$('#wp-donation_notification-wrap').parents('tr').show();
@@ -852,6 +852,15 @@ jQuery.noConflict();
 				$( $(this).attr('href') ).removeClass('give-hidden');
 				return false;
 			});
+
+			// Auto open tab if mentioned in url.
+			if( location.hash.length ) {
+				var $current_active_tab = $( 'a[href="' + location.hash + '"]', '.give-metabox-tabs' );
+
+				if( $current_active_tab.length ) {
+					$current_active_tab.trigger( 'click' );
+				}
+			}
 		},
 
 		setup_colorpicker: function() {
