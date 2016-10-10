@@ -943,5 +943,5 @@ function _give_get_prefill_form_field_values( $form_id ) {
 		: $give_purchase_data['post_data'];
 
 	// Output.
-	return array_merge( $give_donor_info_in_session, $logged_in_donor_info );
+	return wp_parse_args( $give_donor_info_in_session, $logged_in_donor_info );
 }
