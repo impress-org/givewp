@@ -1,7 +1,7 @@
 <?php
 /**
-* Handle renamed actions.
-*/
+ * Handle renamed actions.
+ */
 $give_map_deprecated_actions = give_deprecated_actions();
 
 foreach ( $give_map_deprecated_actions as $new => $old ) {
@@ -80,16 +80,16 @@ function give_deprecated_actions() {
  */
 function give_deprecated_action_mapping( $data, $arg_1 = '', $arg_2 = '', $arg_3 = '' ) {
 	$give_map_deprecated_actions = give_deprecated_actions();
-	$action = current_filter();
+	$action                      = current_filter();
 
 	if ( isset( $give_map_deprecated_actions[ $action ] ) ) {
 		if ( has_action( $give_map_deprecated_actions[ $action ] ) ) {
 			do_action( $give_map_deprecated_actions[ $action ], $data, $arg_1, $arg_2, $arg_3 );
 
 			if ( ! defined( 'DOING_AJAX' ) ) {
+				// translators: %s: action name.
 				_give_deprecated_function(
 					sprintf(
-						/* translators: %s: action name */
 						__( 'The %s action' ),
 						$give_map_deprecated_actions[ $action ]
 					),
