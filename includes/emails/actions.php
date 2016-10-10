@@ -29,7 +29,7 @@ function give_trigger_donation_receipt( $payment_id ) {
 		return;
 	}
 
-	// Send email
+	// Send email.
 	give_email_donation_receipt( $payment_id );
 }
 
@@ -82,10 +82,10 @@ function give_send_test_email( $data ) {
 		return;
 	}
 
-	// Send a test email
+	// Send a test email.
 	give_email_test_donation_receipt();
 
-	// Remove the test email query arg
+	// Remove the test email query arg.
 	wp_redirect( remove_query_arg( 'give_action' ) );
 	exit;
 }
