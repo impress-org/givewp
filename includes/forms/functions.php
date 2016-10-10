@@ -166,7 +166,7 @@ function give_send_back_to_checkout( $args = array() ) {
 
 	$redirect = ( isset( $_POST['give-current-url'] ) ) ? $_POST['give-current-url'] : '';
 	$form_id  = isset( $_POST['give-form-id'] ) ? $_POST['give-form-id'] : 0;
-
+	
 	$defaults = array(
 		'form-id' => (int) $form_id
 	);
@@ -876,4 +876,72 @@ function give_show_login_register_option( $form_id ) {
 
 	return apply_filters( 'give_show_register_form', $show_register_form, $form_id );
 
+}
+
+
+/**
+ * Get pre fill form field values.
+ *
+ * Note: this function will extract form field values from give_purchase session data.
+ *
+ * @since  1.8
+ * @param  int   $form_id Form ID.
+ * @return array
+ */
+function _give_get_prefill_form_field_values( $form_id ) {
+	$logged_in_donor_info = array();
+
+	if ( is_user_logged_in() ) :
+		$donor_data    = get_userdata( get_current_user_id() );
+		$donor_address = get_user_meta( get_current_user_id(), '_give_user_address', true );
+
+		$logged_in_donor_info = array(
+			// First name.
+			'give_first' => $donor_data->first_name,
+
+			// Last name.
+			'give_last'  => $donor_data->last_name,
+
+			// Email.
+			'give_email' => $donor_data->user_email,
+
+			// Street address 1.
+			'card_address' => ( ! empty( $donor_address['line1'] ) ? $donor_address['line1'] : '' ),
+
+			// Street address 2.
+			'card_address_2' => ( ! empty( $donor_address['line2'] ) ? $donor_address['line2'] : '' ),
+
+			// Country.
+			'billing_country' => ( ! empty( $donor_address['country'] ) ? $donor_address['country'] : '' ),
+
+			// State.
+			'card_state'      => ( ! empty( $donor_address['state'] ) ? $donor_address['state'] : '' ),
+
+			// City.
+			'card_city'      => ( ! empty( $donor_address['city'] ) ? $donor_address['city'] : '' ),
+
+			// Zipcode
+			'card_zip'       => ( ! empty( $donor_address['zip'] ) ? $donor_address['zip'] : '' )
+		);
+	endif;
+
+	// Bailout: Auto fill form field values only form form which donor is donating.
+	if(
+		empty( $_GET['form-id'] )
+		|| ! $form_id
+		|| ( $form_id !== absint( $_GET['form-id'] ) )
+	) {
+		return $logged_in_donor_info;
+	}
+
+	// Get purchase data.
+	$give_purchase_data = Give()->session->get( 'give_purchase' );
+
+	// Get donor info from form data.
+	$give_donor_info_in_session = empty( $give_purchase_data['post_data'] )
+		? array()
+		: $give_purchase_data['post_data'];
+
+	// Output.
+	return wp_parse_args( $give_donor_info_in_session, $logged_in_donor_info );
 }
