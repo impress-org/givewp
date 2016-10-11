@@ -55,7 +55,7 @@ function give_print_errors( $form_id ) {
 }
 
 add_action( 'give_donation_form_before_personal_info', 'give_print_errors' );
-add_action( 'give_ajax_checkout_errors', 'give_print_errors' );
+add_action( 'give_ajax_donation_errors', 'give_print_errors' );
 
 /**
  * Get Errors
