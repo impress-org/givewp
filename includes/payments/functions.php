@@ -849,7 +849,7 @@ function give_get_total_earnings() {
 				 * first donation
 				 */
 
-				if ( did_action( 'give_update_payment_status' ) ) {
+				if ( did_action( 'give_update_donation_status' ) ) {
 					array_pop( $payments );
 				}
 

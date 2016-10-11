@@ -65,6 +65,7 @@ function give_deprecated_actions() {
 		'give_donation_mode_after_gateways'        => 'give_payment_mode_after_gateways',
 		'give_donation_mode_after_gateways_wrap'   => 'give_payment_mode_after_gateways_wrap',
 		'give_donation_mode_bottom'                => 'give_payment_mode_bottom',
+		'give_update_donation_status'              => 'give_update_payment_status',
 		'give_ajax_donation_errors'                => 'give_ajax_checkout_errors',
 	);
 
