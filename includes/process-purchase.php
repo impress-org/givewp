@@ -64,7 +64,7 @@ function give_process_purchase_form() {
 			 *
 			 * @since 1.0
 			 */
-			do_action( 'give_ajax_checkout_errors' );
+			do_action( 'give_ajax_donation_errors' );
 			give_die();
 		} else {
 			return false;
@@ -216,7 +216,7 @@ function give_process_form_login() {
 			 *
 			 * @since 1.0
 			 */
-			do_action( 'give_ajax_checkout_errors' );
+			do_action( 'give_ajax_donation_errors' );
 			give_die();
 		} else {
 			wp_redirect( $_SERVER['HTTP_REFERER'] );
