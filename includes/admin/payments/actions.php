@@ -9,7 +9,7 @@
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -322,7 +322,7 @@ function give_trigger_purchase_delete( $data ) {
 		}
 
 		give_delete_purchase( $payment_id );
-		wp_redirect( admin_url( '/edit.php?post_type=give_forms&page=give-payment-history&give-message=payment_deleted' ) );
+		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&give-message=payment_deleted' ) );
 		give_die();
 	}
 }

@@ -9,7 +9,7 @@
  * @since       1.4
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -278,9 +278,8 @@ class Give_Email_Access {
 
 		//Set error only if email access form isn't being submitted
 		if ( ! isset( $_POST['give_email'] ) && ! isset( $_POST['_wpnonce'] ) ) {
-			give_set_error( 'give_email_token_expired', apply_filters( 'give_email_token_expired_message', 'Your access token has expired. Please request a new one below:', 'give' ) );
+			give_set_error( 'give_email_token_expired', apply_filters( 'give_email_token_expired_message', esc_html__( 'Your access token has expired. Please request a new one below:', 'give' ) ) );
 		}
-
 
 		return false;
 
