@@ -32,7 +32,7 @@ function give_update_payment_details( $data ) {
 		wp_die( esc_html__( 'You do not have permission to edit payments.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
-	check_admin_referer( 'give_update_payment_details_nonce' );
+	check_admin_referer( 'give_update_donation_details_nonce' );
 
 	// Retrieve the payment ID
 	$payment_id = absint( $data['give_payment_id'] );
@@ -301,7 +301,7 @@ function give_update_payment_details( $data ) {
 	exit;
 }
 
-add_action( 'give_update_payment_details', 'give_update_payment_details' );
+add_action( 'give_update_donation_details', 'give_update_payment_details' );
 
 /**
  * Trigger a Donation Deletion

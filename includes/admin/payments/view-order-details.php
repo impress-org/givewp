@@ -752,10 +752,10 @@ $payment_mode   = $payment->mode;
 		 */
 		do_action( 'give_view_order_details_form_bottom', $payment_id );
 
-		wp_nonce_field( 'give_update_payment_details_nonce' );
+		wp_nonce_field( 'give_update_donation_details_nonce' );
 		?>
 		<input type="hidden" name="give_payment_id" value="<?php echo esc_attr( $payment_id ); ?>"/>
-		<input type="hidden" name="give_action" value="update_payment_details"/>
+		<input type="hidden" name="give_action" value="update_donation_details"/>
 	</form>
 	<?php
 	/**
