@@ -444,12 +444,12 @@ class Give_Payment_History_Table extends WP_List_Table {
 			wp_nonce_url(
 				add_query_arg(
 					array(
-						'give-action' => 'delete_payment',
+						'give-action' => 'delete_donation',
 						'purchase_id' => $payment->ID
 					),
 					$this->base_url
 				),
-				'give_payment_nonce'
+				'give_donation_nonce'
 			),
 			sprintf( esc_attr__( 'Delete Donation %s', 'give' ), $payment->ID ),
 			esc_html__( 'Delete', 'give' )

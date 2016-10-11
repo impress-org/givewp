@@ -86,7 +86,7 @@ class Give_Notices {
 			// Donation reports errors.
 			if ( current_user_can( 'view_give_reports' ) ) {
 				switch ( $_GET['give-message'] ) {
-					case 'payment_deleted' :
+					case 'donation_deleted' :
 						$notices['updated']['give-payment-deleted'] = esc_attr__( 'The donation has been deleted.', 'give' );
 						break;
 					case 'email_sent' :

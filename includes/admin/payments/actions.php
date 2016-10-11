@@ -306,7 +306,7 @@ add_action( 'give_update_donation_details', 'give_update_payment_details' );
  * @return void
  */
 function give_trigger_purchase_delete( $data ) {
-	if ( wp_verify_nonce( $data['_wpnonce'], 'give_payment_nonce' ) ) {
+	if ( wp_verify_nonce( $data['_wpnonce'], 'give_donation_nonce' ) ) {
 
 		$payment_id = absint( $data['purchase_id'] );
 
@@ -315,12 +315,12 @@ function give_trigger_purchase_delete( $data ) {
 		}
 
 		give_delete_purchase( $payment_id );
-		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&give-message=payment_deleted' ) );
+		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&give-message=donation_deleted' ) );
 		give_die();
 	}
 }
 
-add_action( 'give_delete_payment', 'give_trigger_purchase_delete' );
+add_action( 'give_delete_donation', 'give_trigger_purchase_delete' );
 
 /**
  * AJAX Store Donation Note
