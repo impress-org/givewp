@@ -78,7 +78,7 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 
 	}
 
-	// Increase the earnings for this form ID
+	// Increase the earnings for this form ID.
 	give_increase_earnings( $form_id, $amount );
 	give_increase_purchase_count( $form_id );
 
@@ -199,7 +199,7 @@ function give_update_old_payments_with_totals( $data ) {
 	$payments = give_get_payments( array(
 		'offset' => 0,
 		'number' => - 1,
-		'mode'   => 'all'
+		'mode'   => 'all',
 	) );
 
 	if ( $payments ) {
@@ -279,7 +279,7 @@ add_action( 'give_weekly_scheduled_events', 'give_mark_abandoned_donations' );
  */
 function give_refresh_thismonth_stat_transients( $payment_ID ) {
 
-	/* @var Give_Payment_Stats $stats */
+	/* @var Give_Payment_Stats $stats Give_Payment_Stats class object.  */
 	$stats = new Give_Payment_Stats();
 
 	// Delete transients.
