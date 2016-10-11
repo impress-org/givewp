@@ -18,13 +18,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Process the payment details edit
  *
- * @access      private
+ * @since  1.0
+ * @access private
  *
- * @param array $data
+ * @param array $data Donation data.
  *
- * @since       1.0
  * @return      void
- *
  */
 function give_update_payment_details( $data ) {
 
@@ -32,15 +31,15 @@ function give_update_payment_details( $data ) {
 		wp_die( esc_html__( 'You do not have permission to edit payments.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
-	check_admin_referer( 'give_update_payment_details_nonce' );
+	check_admin_referer( 'give_update_donation_details_nonce' );
 
-	// Retrieve the payment ID
+	// Retrieve the payment ID.
 	$payment_id = absint( $data['give_payment_id'] );
 
-    /* @var Give_Payment $payment */
-	$payment    = new Give_Payment( $payment_id );
+	/* @var Give_Payment $payment */
+	$payment = new Give_Payment( $payment_id );
 
-	// Retrieve existing payment meta
+	// Retrieve existing payment meta.
 	$meta      = $payment->get_meta();
 	$user_info = $payment->user_info;
 
@@ -48,7 +47,7 @@ function give_update_payment_details( $data ) {
 	$date   = sanitize_text_field( $data['give-payment-date'] );
 	$hour   = sanitize_text_field( $data['give-payment-time-hour'] );
 
-	// Restrict to our high and low
+	// Restrict to our high and low.
 	if ( $hour > 23 ) {
 		$hour = 23;
 	} elseif ( $hour < 0 ) {
@@ -57,7 +56,7 @@ function give_update_payment_details( $data ) {
 
 	$minute = sanitize_text_field( $data['give-payment-time-min'] );
 
-	// Restrict to our high and low
+	// Restrict to our high and low.
 	if ( $minute > 59 ) {
 		$minute = 59;
 	} elseif ( $minute < 0 ) {
@@ -89,7 +88,6 @@ function give_update_payment_details( $data ) {
 		wp_die( esc_html__( 'Error Updating Donation.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
 	}
 
-
 	$customer_changed = false;
 
 	if ( isset( $data['give-new-customer'] ) && $data['give-new-customer'] == '1' ) {
@@ -110,7 +108,7 @@ function give_update_payment_details( $data ) {
 			}
 
 			if ( ! $customer->create( $customer_data ) ) {
-				// Failed to crete the new donor, assume the previous donor
+				// Failed to crete the new donor, assume the previous donor.
 				$customer_changed = false;
 				$customer         = new Give_Customer( $curr_customer_id );
 				give_set_error( 'give-payment-new-customer-fail', esc_html__( 'Error creating new donor.', 'give' ) );
@@ -141,8 +139,7 @@ function give_update_payment_details( $data ) {
 
 	}
 
-
-	// Setup first and last name from input values
+	// Setup first and last name from input values.
 	$names      = explode( ' ', $names );
 	$first_name = ! empty( $names[0] ) ? $names[0] : '';
 	$last_name  = '';
@@ -151,34 +148,33 @@ function give_update_payment_details( $data ) {
 		$last_name = implode( ' ', $names );
 	}
 
-
 	if ( $customer_changed ) {
 
-		// Remove the stats and payment from the previous customer and attach it to the new customer
+		// Remove the stats and payment from the previous customer and attach it to the new customer.
 		$previous_customer->remove_payment( $payment_id, false );
 		$customer->attach_payment( $payment_id, false );
 
 		if ( 'publish' == $status ) {
 
-            // Reduce previous user donation count and amount.
-            $previous_customer->decrease_purchase_count();
-            $previous_customer->decrease_value( $curr_total );
+			// Reduce previous user donation count and amount.
+			$previous_customer->decrease_purchase_count();
+			$previous_customer->decrease_value( $curr_total );
 
-            // If donation was completed adjust stats of new customers.
-            $customer->increase_purchase_count();
+			// If donation was completed adjust stats of new customers.
+			$customer->increase_purchase_count();
 			$customer->increase_value( $new_total );
 		}
 
 		$payment->customer_id = $customer->id;
-	} else{
+	} else {
 
-	    if( 'publish' === $status ){
-            // Update user donation stat.
-            $customer->update_donation_value( $curr_total, $new_total );
-        }
-    }
+		if ( 'publish' === $status ) {
+			// Update user donation stat.
+			$customer->update_donation_value( $curr_total, $new_total );
+		}
+	}
 
-	// Set new meta values
+	// Set new meta values.
 	$payment->user_id    = $customer->user_id;
 	$payment->email      = $customer->email;
 	$payment->first_name = $first_name;
@@ -186,8 +182,7 @@ function give_update_payment_details( $data ) {
 	$payment->address    = $address;
 	$payment->total      = $new_total;
 
-
-	// Check for payment notes
+	// Check for payment notes.
 	if ( ! empty( $data['give-payment-note'] ) ) {
 
 		$note = wp_kses( $data['give-payment-note'], array() );
@@ -195,98 +190,96 @@ function give_update_payment_details( $data ) {
 
 	}
 
-	// Set new status
+	// Set new status.
 	$payment->status = $status;
 
-	// Adjust total store earnings if the payment total has been changed
+	// Adjust total store earnings if the payment total has been changed.
 	if ( $new_total !== $curr_total && 'publish' == $status ) {
 
 		if ( $new_total > $curr_total ) {
-			// Increase if our new total is higher
+			// Increase if our new total is higher.
 			$difference = $new_total - $curr_total;
 			give_increase_total_earnings( $difference );
 
 		} elseif ( $curr_total > $new_total ) {
-			// Decrease if our new total is lower
+			// Decrease if our new total is lower.
 			$difference = $curr_total - $new_total;
 			give_decrease_total_earnings( $difference );
 
 		}
-
 	}
 
 	$payment->save();
 
-    // Get new give form ID.
-    $new_form_id = absint( $data['forms'] );
-    $current_form_id = absint( $payment->get_meta( '_give_payment_form_id' ) );
+	// Get new give form ID.
+	$new_form_id     = absint( $data['forms'] );
+	$current_form_id = absint( $payment->get_meta( '_give_payment_form_id' ) );
 
-    // We are adding payment transfer code in last to remove any conflict with above functionality.
-    // For example: above code will automatically handle form stat (increase/decrease) when payment status changes.
-    /* Check if user want to transfer current payment to new give form id. */
-    if( $new_form_id != $current_form_id  ) {
+	// We are adding payment transfer code in last to remove any conflict with above functionality.
+	// For example: above code will automatically handle form stat (increase/decrease) when payment status changes.
+	// Check if user want to transfer current payment to new give form id.
+	if ( $new_form_id != $current_form_id ) {
 
-        // Get new give form title.
-        $new_form_title = get_the_title( $new_form_id );
+		// Get new give form title.
+		$new_form_title = get_the_title( $new_form_id );
 
-        // Update new give form data in payment data.
-        $payment_meta = $payment->get_meta();
-        $payment_meta['form_title'] = $new_form_title;
-        $payment_meta['form_id']    = $new_form_id;
+		// Update new give form data in payment data.
+		$payment_meta               = $payment->get_meta();
+		$payment_meta['form_title'] = $new_form_title;
+		$payment_meta['form_id']    = $new_form_id;
 
-        // Update price id post meta data for set donation form.
-        if( ! give_has_variable_prices( $new_form_id ) ) {
-            $payment_meta['price_id'] = '';
-        }
+		// Update price id post meta data for set donation form.
+		if ( ! give_has_variable_prices( $new_form_id ) ) {
+			$payment_meta['price_id'] = '';
+		}
 
-        // Update payment give form meta data.
-        $payment->update_meta( '_give_payment_form_id', $new_form_id );
-        $payment->update_meta( '_give_payment_form_title', $new_form_title );
-        $payment->update_meta( '_give_payment_meta', $payment_meta );
+		// Update payment give form meta data.
+		$payment->update_meta( '_give_payment_form_id', $new_form_id );
+		$payment->update_meta( '_give_payment_form_title', $new_form_title );
+		$payment->update_meta( '_give_payment_meta', $payment_meta );
 
-        // Update price id payment metadata.
-        if( ! give_has_variable_prices( $new_form_id ) ) {
-            $payment->update_meta( '_give_payment_price_id', '' );
-        }
+		// Update price id payment metadata.
+		if ( ! give_has_variable_prices( $new_form_id ) ) {
+			$payment->update_meta( '_give_payment_price_id', '' );
+		}
 
+		// If donation was completed, adjust stats of forms.
+		if ( 'publish' == $status ) {
 
-        // If donation was completed, adjust stats of forms
-        if ( 'publish' == $status ) {
+			// Decrease sale of old give form. For other payment status.
+			$current_form = new Give_Donate_Form( $current_form_id );
+			$current_form->decrease_sales();
+			$current_form->decrease_earnings( $curr_total );
 
-            // Decrease sale of old give form. For other payment status 
-            $current_form = new Give_Donate_Form( $current_form_id );
-            $current_form->decrease_sales();
-            $current_form->decrease_earnings( $curr_total );
-            
-            // Increase sale of new give form.
-            $new_form = new Give_Donate_Form($new_form_id);
-            $new_form->increase_sales();
-            $new_form->increase_earnings($new_total);
-        }
+			// Increase sale of new give form.
+			$new_form = new Give_Donate_Form( $new_form_id );
+			$new_form->increase_sales();
+			$new_form->increase_earnings( $new_total );
+		}
 
-        // Re setup payment to update new meta value in object.
-        $payment->update_payment_setup( $payment->ID );
-    }
+		// Re setup payment to update new meta value in object.
+		$payment->update_payment_setup( $payment->ID );
+	}
 
-    // Update price id if current form is variable form.
-    if( ! empty( $data['give-variable-price'] ) && give_has_variable_prices( $payment->form_id ) ) {
+	// Update price id if current form is variable form.
+	if ( ! empty( $data['give-variable-price'] ) && give_has_variable_prices( $payment->form_id ) ) {
 
-        // Get payment meta data.
-        $payment_meta = $payment->get_meta();
+		// Get payment meta data.
+		$payment_meta = $payment->get_meta();
 
-        // Set payment id to empty string if variable price id is negative ( i.e. custom amount feature enabled ).
-        $data['give-variable-price'] = ( 'custom' === $data['give-variable-price'] ) ? 'custom' : ( 0 < $data['give-variable-price'] ) ? $data['give-variable-price'] : '';
+		// Set payment id to empty string if variable price id is negative ( i.e. custom amount feature enabled ).
+		$data['give-variable-price'] = ( 'custom' === $data['give-variable-price'] ) ? 'custom' : ( 0 < $data['give-variable-price'] ) ? $data['give-variable-price'] : '';
 
-        // Update payment meta data.
-        $payment_meta['price_id'] = $data['give-variable-price'];
+		// Update payment meta data.
+		$payment_meta['price_id'] = $data['give-variable-price'];
 
-        // Update payment give form meta data.
-        $payment->update_meta( '_give_payment_price_id', $data['give-variable-price'] );
-        $payment->update_meta( '_give_payment_meta', $payment_meta );
+		// Update payment give form meta data.
+		$payment->update_meta( '_give_payment_price_id', $data['give-variable-price'] );
+		$payment->update_meta( '_give_payment_meta', $payment_meta );
 
-        // Re setup payment to update new meta value in object.
-        $payment->update_payment_setup( $payment->ID );
-    }
+		// Re setup payment to update new meta value in object.
+		$payment->update_payment_setup( $payment->ID );
+	}
 
 	/**
 	 * Fires after updating edited donation.
@@ -301,7 +294,7 @@ function give_update_payment_details( $data ) {
 	exit;
 }
 
-add_action( 'give_update_payment_details', 'give_update_payment_details' );
+add_action( 'give_update_donation_details', 'give_update_payment_details' );
 
 /**
  * Trigger a Donation Deletion
@@ -313,7 +306,7 @@ add_action( 'give_update_payment_details', 'give_update_payment_details' );
  * @return void
  */
 function give_trigger_purchase_delete( $data ) {
-	if ( wp_verify_nonce( $data['_wpnonce'], 'give_payment_nonce' ) ) {
+	if ( wp_verify_nonce( $data['_wpnonce'], 'give_donation_nonce' ) ) {
 
 		$payment_id = absint( $data['purchase_id'] );
 
@@ -322,12 +315,12 @@ function give_trigger_purchase_delete( $data ) {
 		}
 
 		give_delete_purchase( $payment_id );
-		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&give-message=payment_deleted' ) );
+		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&give-message=donation_deleted' ) );
 		give_die();
 	}
 }
 
-add_action( 'give_delete_payment', 'give_trigger_purchase_delete' );
+add_action( 'give_delete_donation', 'give_trigger_purchase_delete' );
 
 /**
  * AJAX Store Donation Note
