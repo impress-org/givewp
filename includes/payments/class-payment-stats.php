@@ -94,10 +94,10 @@ class Give_Payment_Stats extends Give_Stats {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  $form_id     int         The donation form to retrieve stats for. If false, gets stats for all forms
-	 * @param  $start_date  string|bool The starting date for which we'd like to filter our donation earnings stats. If false, we'll use the default start date of `this_month`
-	 * @param  $end_date    string|bool The end date for which we'd like to filter our sale stats. If false, we'll use the default end date of `this_month`
-	 * @param  $gateway_id  string|bool The gateway to get earnings for such as 'paypal' or 'stripe'
+	 * @param  $form_id     int         The donation form to retrieve stats for. If false, gets stats for all forms.
+	 * @param  $start_date  string|bool The starting date for which we'd like to filter our donation earnings stats. If false, method will use the default start date of `this_month`.
+	 * @param  $end_date    string|bool The end date for which we'd like to filter the donations stats. If false, method will use the default end date of `this_month`.
+	 * @param  $gateway_id  string|bool The gateway to get earnings for such as 'paypal' or 'stripe'.
 	 *
 	 * @return float|int                Total amount of donations based on the passed arguments.
 	 */
