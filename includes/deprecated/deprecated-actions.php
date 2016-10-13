@@ -71,6 +71,7 @@ function give_deprecated_actions() {
 		'give_update_donation_status'              => 'give_update_payment_status',
 		'give_update_donation_details'             => 'give_update_payment_details',
 		'give_ajax_donation_errors'                => 'give_ajax_checkout_errors',
+		'give_admin_sale_notice'                   => 'give_admin_donation_email',
 	);
 
 	return $give_deprecated_actions;
@@ -79,7 +80,7 @@ function give_deprecated_actions() {
 /**
  * Deprecated action mapping.
  *
- * @param mixed  $data
+ * @param mixed $data
  * @param string $arg_1
  * @param string $arg_2
  * @param string $arg_3

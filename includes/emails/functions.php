@@ -79,7 +79,7 @@ function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 		 * @param int   $payment_id   Payment id.
 		 * @param mixed $payment_data Payment meta data.
 		 */
-		do_action( 'give_admin_sale_notice', $payment_id, $payment_data );
+		do_action( 'give_admin_donation_email', $payment_id, $payment_data );
 	}
 }
 
@@ -195,7 +195,7 @@ function give_admin_email_notice( $payment_id = 0, $payment_data = array() ) {
 
 }
 
-add_action( 'give_admin_sale_notice', 'give_admin_email_notice', 10, 2 );
+add_action( 'give_admin_donation_email', 'give_admin_email_notice', 10, 2 );
 
 /**
  * Retrieves the emails for which admin notifications are sent to (these can be changed in the Give Settings).
