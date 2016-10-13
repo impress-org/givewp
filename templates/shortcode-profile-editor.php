@@ -119,22 +119,22 @@ if ( is_user_logged_in() ):
 
 			<div id="give_profile_billing_address_wrap">
 
-				<p id="give-card-address-wrap" class="form-row form-row-two-thirds">
+				<p id="give-card-address-wrap" class="form-row form-row-first">
 					<label for="give_address_line1"><?php esc_html_e( 'Address 1', 'give' ); ?></label>
 					<input name="give_address_line1" id="give_address_line1" class="text give-input" type="text" value="<?php echo esc_attr( $address['line1'] ); ?>" />
 				</p>
 
-				<p id="give-card-address-2-wrap" class="form-row form-row-one-third">
+				<p id="give-card-address-2-wrap" class="form-row form-row-last">
 					<label for="give_address_line2"><?php esc_html_e( 'Address 2', 'give' ); ?></label>
 					<input name="give_address_line2" id="give_address_line2" class="text give-input" type="text" value="<?php echo esc_attr( $address['line2'] ); ?>" />
 				</p>
 
-				<p id="give-card-city-wrap" class="form-row form-row-two-thirds">
+				<p id="give-card-city-wrap" class="form-row form-row-first">
 					<label for="give_address_city"><?php esc_html_e( 'City', 'give' ); ?></label>
 					<input name="give_address_city" id="give_address_city" class="text give-input" type="text" value="<?php echo esc_attr( $address['city'] ); ?>" />
 				</p>
 
-				<p id="give-card-zip-wrap" class="form-row form-row-one-third">
+				<p id="give-card-zip-wrap" class="form-row form-row-last">
 					<label for="give_address_zip"><?php esc_html_e( 'Zip / Postal Code', 'give' ); ?></label>
 					<input name="give_address_zip" id="give_address_zip" class="text give-input" type="text" value="<?php echo esc_attr( $address['zip'] ); ?>" />
 				</p>
