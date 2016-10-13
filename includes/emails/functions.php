@@ -35,6 +35,9 @@ function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 	/**
 	 * Filters the from name.
 	 *
+	 * @param int $payment_id Payment id.
+	 * @param mixed $payment_data Payment meta data.
+	 *
 	 * @since 1.0
 	 */
 	$from_name = apply_filters( 'give_donation_from_name', $from_name, $payment_id, $payment_data );
@@ -44,12 +47,14 @@ function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 	/**
 	 * Filters the from email.
 	 *
+	 * @param int $payment_id Payment id.
+	 * @param mixed $payment_data Payment meta data.
+	 *
 	 * @since 1.0
 	 */
 	$from_email = apply_filters( 'give_donation_from_address', $from_email, $payment_id, $payment_data );
 
 	$to_email = give_get_payment_user_email( $payment_id );
-
 
 	$subject = give_get_option( 'donation_subject', esc_html__( 'Donation Receipt', 'give' ) );
 
@@ -64,6 +69,9 @@ function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 	/**
 	 * Filters the donation email receipt attachments. By default, there is no attachment but plugins can hook in to provide one more multiple for the donor. Examples would be a printable ticket or PDF receipt.
 	 *
+	 * @param int $payment_id Payment id.
+	 * @param mixed $payment_data Payment meta data.
+	 *
 	 * @since 1.0
 	 */
 	$attachments = apply_filters( 'give_receipt_attachments', array(), $payment_id, $payment_data );
@@ -77,6 +85,9 @@ function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 
 	/**
 	 * Filters the donation receipt's email headers.
+	 *
+	 * @param int $payment_id Payment id.
+	 * @param mixed $payment_data Payment meta data.
 	 *
 	 * @since 1.0
 	 */
