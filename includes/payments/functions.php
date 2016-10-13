@@ -1527,26 +1527,26 @@ function give_delete_payment_note( $comment_id = 0, $payment_id = 0 ) {
 	}
 
 	/**
-	 * Fires before deleting payment note.
+	 * Fires before deleting donation note.
 	 *
 	 * @since 1.0
 	 *
 	 * @param int $comment_id Note ID.
 	 * @param int $payment_id Payment ID.
 	 */
-	do_action( 'give_pre_delete_payment_note', $comment_id, $payment_id );
+	do_action( 'give_pre_delete_donation_note', $comment_id, $payment_id );
 
 	$ret = wp_delete_comment( $comment_id, true );
 
 	/**
-	 * Fires after payment note deleted.
+	 * Fires after donation note deleted.
 	 *
 	 * @since 1.0
 	 *
 	 * @param int $comment_id Note ID.
 	 * @param int $payment_id Payment ID.
 	 */
-	do_action( 'give_post_delete_payment_note', $comment_id, $payment_id );
+	do_action( 'give_post_delete_donation_note', $comment_id, $payment_id );
 
 	return $ret;
 }
@@ -1577,10 +1577,12 @@ function give_get_payment_note_html( $note, $payment_id = 0 ) {
 	$date_format = give_date_format() . ', ' . get_option( 'time_format' );
 
 	$delete_note_url = wp_nonce_url( add_query_arg( array(
-		'give-action' => 'delete_payment_note',
-		'note_id'     => $note->comment_ID,
-		'payment_id'  => $payment_id,
-	) ), 'give_delete_payment_note_' . $note->comment_ID );
+			'give-action' => 'delete_donation_note',
+			'note_id'     => $note->comment_ID,
+			'payment_id'  => $payment_id,
+		) ),
+		'give_delete_donation_note_' . $note->comment_ID
+	);
 
 	$note_html = '<div class="give-payment-note" id="give-payment-note-' . $note->comment_ID . '">';
 	$note_html .= '<p>';
