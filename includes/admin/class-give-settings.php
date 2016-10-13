@@ -545,7 +545,7 @@ class Give_Plugin_Settings {
 						array(
 							'id'      => 'from_name',
 							'name'    => esc_html__( 'From Name', 'give' ),
-							'desc'    => esc_html__( 'The name donation receipts are said to come from. This should probably be your site or shop name.', 'give' ),
+							'desc'    => esc_html__( 'The name donation receipts are said to come from. This is most likely the name of your organization or website.', 'give' ),
 							'default' => get_bloginfo( 'name' ),
 							'type'    => 'text'
 						),
