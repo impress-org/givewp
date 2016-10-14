@@ -26,7 +26,6 @@ function give_get_payment_gateways() {
 		'paypal' => array(
 			'admin_label'    => esc_html__( 'PayPal Standard', 'give' ),
 			'checkout_label' => esc_html__( 'PayPal', 'give' ),
-			'supports'       => array( 'buy_now' )
 		),
 		'manual' => array(
 			'admin_label'    => esc_html__( 'Test Donation', 'give' ),
@@ -166,44 +165,6 @@ function give_get_gateway_supports( $gateway ) {
 	$supports = isset( $gateways[ $gateway ]['supports'] ) ? $gateways[ $gateway ]['supports'] : array();
 
 	return apply_filters( 'give_gateway_supports', $supports, $gateway );
-}
-
-/**
- * Checks if a gateway supports buy now
- *
- * @since 1.8
- *
- * @param string $gateway ID of the gateway to retrieve a label for
- *
- * @return bool
- */
-function give_gateway_supports_buy_now( $gateway ) {
-	$supports = give_get_gateway_supports( $gateway );
-	$ret      = in_array( 'buy_now', $supports );
-
-	return apply_filters( 'give_gateway_supports_buy_now', $ret, $gateway );
-}
-
-/**
- * Checks if an enabled gateway supports buy now
- *
- * @since 1.0
- * @return bool
- */
-function give_give_supports_buy_now() {
-	$gateways = give_get_enabled_payment_gateways();
-	$ret      = false;
-
-	if ( $gateways ) {
-		foreach ( $gateways as $gateway_id => $gateway ) {
-			if ( give_gateway_supports_buy_now( $gateway_id ) ) {
-				$ret = true;
-				break;
-			}
-		}
-	}
-
-	return apply_filters( 'give_give_supports_buy_now', $ret );
 }
 
 /**
