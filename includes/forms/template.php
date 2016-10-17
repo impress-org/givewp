@@ -1302,8 +1302,8 @@ function give_payment_mode_select( $form_id ) {
 		 */
 		do_action( 'give_donation_mode_before_gateways_wrap' );
 		?>
-		<div id="give-payment-mode-wrap">
 			<legend class="give-payment-mode-label"><?php echo apply_filters( 'give_checkout_payment_method_text', esc_html__( 'Select Payment Method', 'give' ) ); ?>
+		<div id="give-payment-mode-wrap" <?php if ( count($gateways) <= 1 ) echo 'style="display: none;"'; ?>>
 				<span class="give-loading-text"><span class="give-loading-animation"></span> <?php esc_html_e( 'Loading...', 'give' ); ?></span>
 			</legend>
 			<?php
