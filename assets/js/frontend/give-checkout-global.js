@@ -123,7 +123,7 @@ jQuery( function ( $ ) {
 				el.removeClass( 'valid' ).addClass( 'error' );
 			}
 			else {
-				card_type.removeClass( 'off' ).addClass( type );
+				card_type.removeClass().addClass( 'card-type ' + type );
 			}
 
 			card_number.toggleError( ! $.payment.validateCardNumber( card_number.val() ) );
