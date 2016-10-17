@@ -82,6 +82,7 @@ jQuery( function ( $ ) {
 		//Alls well, open popup!
 		$.magnificPopup.open( {
 			mainClass   : 'give-modal',
+			closeOnBgClick : false,
 			items       : {
 				src : this_form,
 				type: 'inline'
