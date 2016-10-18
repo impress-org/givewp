@@ -918,7 +918,7 @@ function give_get_spain_states_list() {
 	$states = array(
 		''   => '',
 		'C'  => esc_html__( 'A Coru&ntilde;a', 'give' ),
-		'VI' => esc_html__( 'Araba', 'give' ),
+		'VI' => esc_html__( 'Álava', 'give' ),
 		'AB' => esc_html__( 'Albacete', 'give' ),
 		'A'  => esc_html__( 'Alicante', 'give' ),
 		'AL' => esc_html__( 'Almer&iacute;a', 'give' ),

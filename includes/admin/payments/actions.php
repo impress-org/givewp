@@ -349,7 +349,7 @@ function give_ajax_store_payment_note() {
 add_action( 'wp_ajax_give_insert_payment_note', 'give_ajax_store_payment_note' );
 
 /**
- * Triggers a payment note deletion without ajax
+ * Triggers a donation note deletion without ajax
  *
  * @since 1.0
  *
@@ -359,7 +359,7 @@ add_action( 'wp_ajax_give_insert_payment_note', 'give_ajax_store_payment_note' )
  */
 function give_trigger_payment_note_deletion( $data ) {
 
-	if ( ! wp_verify_nonce( $data['_wpnonce'], 'give_delete_payment_note_' . $data['note_id'] ) ) {
+	if ( ! wp_verify_nonce( $data['_wpnonce'], 'give_delete_donation_note_' . $data['note_id'] ) ) {
 		return;
 	}
 
@@ -367,14 +367,14 @@ function give_trigger_payment_note_deletion( $data ) {
 		wp_die( esc_html__( 'You do not have permission to edit payments.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
-	$edit_order_url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&give-message=payment-note-deleted&id=' . absint( $data['payment_id'] ) );
+	$edit_order_url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&give-message=donation-note-deleted&id=' . absint( $data['payment_id'] ) );
 
 	give_delete_payment_note( $data['note_id'], $data['payment_id'] );
 
 	wp_redirect( $edit_order_url );
 }
 
-add_action( 'give_delete_payment_note', 'give_trigger_payment_note_deletion' );
+add_action( 'give_delete_donation_note', 'give_trigger_payment_note_deletion' );
 
 /**
  * Delete a payment note deletion with ajax
@@ -397,4 +397,4 @@ function give_ajax_delete_payment_note() {
 
 }
 
-add_action( 'wp_ajax_give_delete_payment_note', 'give_ajax_delete_payment_note' );
+add_action( 'wp_ajax_give_delete_donation_note', 'give_ajax_delete_payment_note' );

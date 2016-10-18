@@ -26,7 +26,6 @@ function give_get_payment_gateways() {
 		'paypal' => array(
 			'admin_label'    => esc_html__( 'PayPal Standard', 'give' ),
 			'checkout_label' => esc_html__( 'PayPal', 'give' ),
-			'supports'       => array( 'buy_now' )
 		),
 		'manual' => array(
 			'admin_label'    => esc_html__( 'Test Donation', 'give' ),
@@ -97,7 +96,7 @@ function give_get_default_gateway( $form_id ) {
 	$default      = isset( $give_options['default_gateway'] ) && give_is_gateway_active( $give_options['default_gateway'] ) ? $give_options['default_gateway'] : 'paypal';
 	$form_default = get_post_meta( $form_id, '_give_default_gateway', true );
 
-	//Single Form settings varies compared to the Global default settings
+	//Single Form settings varies compared to the Global default settings.
 	if ( ! empty( $form_default ) &&
 	     $form_id !== null &&
 	     $default !== $form_default &&
@@ -170,50 +169,12 @@ function give_get_gateway_supports( $gateway ) {
 }
 
 /**
- * Checks if a gateway supports buy now
- *
- * @since 1.8
- *
- * @param string $gateway ID of the gateway to retrieve a label for
- *
- * @return bool
- */
-function give_gateway_supports_buy_now( $gateway ) {
-	$supports = give_get_gateway_supports( $gateway );
-	$ret      = in_array( 'buy_now', $supports );
-
-	return apply_filters( 'give_gateway_supports_buy_now', $ret, $gateway );
-}
-
-/**
- * Checks if an enabled gateway supports buy now
- *
- * @since 1.0
- * @return bool
- */
-function give_give_supports_buy_now() {
-	$gateways = give_get_enabled_payment_gateways();
-	$ret      = false;
-
-	if ( $gateways ) {
-		foreach ( $gateways as $gateway_id => $gateway ) {
-			if ( give_gateway_supports_buy_now( $gateway_id ) ) {
-				$ret = true;
-				break;
-			}
-		}
-	}
-
-	return apply_filters( 'give_give_supports_buy_now', $ret );
-}
-
-/**
  * Sends all the payment data to the specified gateway
  *
  * @since 1.0
  *
  * @param string $gateway Name of the gateway
- * @param array  $payment_data All the payment data to be sent to the gateway
+ * @param array $payment_data All the payment data to be sent to the gateway
  *
  * @return void
  */
@@ -285,7 +246,7 @@ function give_get_chosen_gateway( $form_id ) {
  *
  * @param string $title Title of the log entry (default: empty)
  * @param string $message Message to store in the log entry (default: empty)
- * @param int    $parent Parent log entry (default: 0)
+ * @param int $parent Parent log entry (default: 0)
  *
  * @return int ID of the new log entry
  */

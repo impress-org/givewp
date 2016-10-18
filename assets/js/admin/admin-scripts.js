@@ -74,7 +74,6 @@ jQuery.noConflict();
 		return price;
 	}
 
-
 	/**
 	 * Edit donation screen JS
 	 */
@@ -577,10 +576,9 @@ jQuery.noConflict();
 				return (css.match(/\bstatus-\S+/g) || []).join(' ');
 			}).addClass('status-' + status);
 
-
 		});
 
-	};
+    };
 
 	/**
 	 * Donor management screen JS
@@ -709,12 +707,12 @@ jQuery.noConflict();
 				}
 			});
 		},
-		add_email: function() {
-			if( ! $('#add-customer-email').length ) {
+		add_email: function () {
+			if (!$('#add-customer-email').length) {
 				return;
 			}
 
-			$( document.body ).on( 'click', '#add-customer-email', function(e) {
+			$(document.body).on('click', '#add-customer-email', function (e) {
 				e.preventDefault();
 				var button  = $(this);
 				var wrapper = button.parent();
@@ -729,11 +727,11 @@ jQuery.noConflict();
 				var nonce       = wrapper.find('input[name="add_email_nonce"]').val();
 
 				var postData = {
-					give_action:  'add_donor_email',
+					give_action: 'add_donor_email',
 					customer_id: customer_id,
-					email:       email,
-					primary:     primary,
-					_wpnonce:    nonce
+					email      : email,
+					primary    : primary,
+					_wpnonce   : nonce
 				};
 
 				$.post( ajaxurl, postData, function( response ) {
@@ -1031,7 +1029,7 @@ jQuery.noConflict();
 		// Ajax user search
 		$('.give-ajax-user-search').on('keyup', function () {
 			var user_search = $(this).val();
-			var exclude = '';
+			var exclude     = '';
 
 			if ($(this).data('exclude')) {
 				exclude = $(this).data('exclude');
@@ -1081,15 +1079,15 @@ jQuery.noConflict();
 		 */
 
 		// This function uses for adding qtip to money/price field.
-		function give_add_qtip( $fields ){
+		function give_add_qtip($fields) {
 			// Add qtip to all existing money input fields.
 			$fields.each(function () {
 				$(this).qtip({
-					style: 'qtip-dark qtip-tipsy',
-					content: {
+					style   : 'qtip-dark qtip-tipsy',
+					content : {
 						text: give_vars.price_format_guide.trim()
 					},
-					show: '',
+					show    : '',
 					position: {
 						my: 'bottom center',
 						at: 'top center'
@@ -1098,13 +1096,12 @@ jQuery.noConflict();
 			});
 		}
 
-
-		var $give_money_fields = $('input.give-money-field, input.give-price-field');
-		var thousand_separator = give_vars.thousands_separator,
-			decimal_separator = give_vars.decimal_separator,
+		var $give_money_fields       = $('input.give-money-field, input.give-price-field');
+		var thousand_separator       = give_vars.thousands_separator,
+			decimal_separator        = give_vars.decimal_separator,
 			thousand_separator_count = '',
-			alphabet_count = '',
-			price_string = '',
+			alphabet_count           = '',
+			price_string             = '',
 
 			// Thousand separation limit in price depends upon decimal separator symbol.
 			// If thousand separator is equal to decimal separator then price does not have more then 1 thousand separator otherwise limit is zero.
@@ -1114,9 +1111,9 @@ jQuery.noConflict();
 		give_add_qtip($give_money_fields);
 
 		// Add qtip to new created money/price input field.
-		$( '#give-add-repeater-field-section-row' ).on( 'click' , function(){
+		$('#_give_donation_levels_repeat').on('click', 'button.cmb-add-group-row', function () {
 			window.setTimeout(
-				function(){
+				function () {
 
 					// Update input filed selector.
 					$give_money_fields = $('input.give-money-field, input.give-price-field');
@@ -1129,18 +1126,18 @@ jQuery.noConflict();
 		});
 
 		// Check & show message on keyup event.
-		$( '#poststuff' ).on( 'keyup', 'input.give-money-field, input.give-price-field', function () {
+		$('#poststuff').on('keyup', 'input.give-money-field, input.give-price-field', function () {
 			// Count thousand separator in price string.
 			thousand_separator_count = ( $(this).val().match(new RegExp(thousand_separator, 'g')) || [] ).length;
-			alphabet_count = ( $(this).val().match(new RegExp( '[a-z]', 'g')) || [] ).length;
+			alphabet_count           = ( $(this).val().match(new RegExp('[a-z]', 'g')) || [] ).length;
 
 			// Show qtip conditionally if thousand separator detected on price string.
 			if (
-				( -1 !== $(this).val().indexOf( thousand_separator ) )
+				( -1 !== $(this).val().indexOf(thousand_separator) )
 				&& ( thousand_separator_limit < thousand_separator_count )
 			) {
 				$(this).qtip('show');
-			} else if( alphabet_count ) {
+			} else if (alphabet_count) {
 				// Show qtip if user entered a number with alphabet letter.
 				$(this).qtip('show');
 			} else {

@@ -1300,8 +1300,8 @@ function give_payment_mode_select( $form_id ) {
 		 */
 		do_action( 'give_donation_mode_before_gateways_wrap' );
 		?>
-		<div id="give-payment-mode-wrap">
 			<legend class="give-payment-mode-label"><?php echo apply_filters( 'give_checkout_payment_method_text', esc_html__( 'Select Payment Method', 'give' ) ); ?>
+		<div id="give-payment-mode-wrap" <?php if ( count($gateways) <= 1 ) echo 'style="display: none;"'; ?>>
 				<span class="give-loading-text"><span class="give-loading-animation"></span> <?php esc_html_e( 'Loading...', 'give' ); ?></span>
 			</legend>
 			<?php
@@ -1314,7 +1314,9 @@ function give_payment_mode_select( $form_id ) {
 			?>
 			<ul id="give-gateway-radio-list">
 				<?php foreach ( $gateways as $gateway_id => $gateway ) :
-					$checked       = checked( $gateway_id, give_get_default_gateway( $form_id ), false );
+					$selected_gateway = give_get_default_gateway( $form_id );
+					$selected_gateway = isset( $_REQUEST['payment_mode'] ) ? $_REQUEST['payment_mode'] : $selected_gateway;
+					$checked = checked( $gateway_id, $selected_gateway, false );
 					$checked_class = $checked ? ' give-gateway-option-selected' : '';
 					echo '<li><label for="give-gateway-' . esc_attr( $gateway_id ) . '-' . $form_id . '" class="give-gateway-option' . $checked_class . '" id="give-gateway-option-' . esc_attr( $gateway_id ) . '">';
 					echo '<input type="radio" name="payment-mode" class="give-gateway" id="give-gateway-' . esc_attr( $gateway_id ) . '-' . $form_id . '" value="' . esc_attr( $gateway_id ) . '"' . $checked . '>' . esc_html( $gateway['checkout_label'] );

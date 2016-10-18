@@ -65,9 +65,13 @@ function give_deprecated_actions() {
 		'give_donation_mode_after_gateways'        => 'give_payment_mode_after_gateways',
 		'give_donation_mode_after_gateways_wrap'   => 'give_payment_mode_after_gateways_wrap',
 		'give_donation_mode_bottom'                => 'give_payment_mode_bottom',
+		'give_delete_donation_note'                => 'give_delete_payment_note',
+		'give_post_delete_donation_note'           => 'give_post_delete_payment_note',
+		'give_pre_delete_donation_note'            => 'give_pre_delete_payment_note',
 		'give_update_donation_status'              => 'give_update_payment_status',
 		'give_update_donation_details'             => 'give_update_payment_details',
 		'give_ajax_donation_errors'                => 'give_ajax_checkout_errors',
+		'give_admin_sale_notice'                   => 'give_admin_donation_email',
 	);
 
 	return $give_deprecated_actions;
@@ -76,7 +80,7 @@ function give_deprecated_actions() {
 /**
  * Deprecated action mapping.
  *
- * @param mixed  $data
+ * @param mixed $data
  * @param string $arg_1
  * @param string $arg_2
  * @param string $arg_3
