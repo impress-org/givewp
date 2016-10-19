@@ -128,24 +128,50 @@ function give_run_install() {
 
 	//Fresh Install? Setup Test Mode, Base Country (US), Test Gateway, Currency.
 	if ( empty( $current_version ) ) {
+
+		// General.
 		$options['base_country']       = 'US';
-		$options['test_mode']          = 1;
+		$options['test_mode']          = 'enabled';
 		$options['currency']           = 'USD';
 		$options['session_lifetime']   = '604800';
-		$options['gateways']['manual'] = 1;
-		$options['default_gateway']    = 'manual'; //default is manual gateway.
+		$options['email_access']       = 'disabled';
+		$options['number_decimals']    = 2;
 
-		//Offline gateway setup.
-		$options['gateways']['offline']             = 1;
+		// Display options.
+		$options['css']                  = 'enabled';
+		$options['floatlabels']          = 'disabled';
+		$options['welcome']              = 'enabled';
+		$options['forms_singular']       = 'enabled';
+		$options['forms_archives']       = 'enabled';
+		$options['forms_excerpt']        = 'enabled';
+		$options['form_featured_img']    = 'enabled';
+		$options['form_sidebar']         = 'enabled';
+		$options['categories']           = 'disabled';
+		$options['tags']                 = 'disabled';
+		$options['terms']                = 'disabled';
+		$options['admin_notices']        = 'enabled';
+		$options['uninstall_on_delete']  = 'disabled';
+		$options['the_content_filter']   = 'enabled';
+		$options['scripts_footer']       = 'disabled';
+
+		// Paypal IPN verification.
+		$options['paypal_verification']       = 'enabled';
+
+		// Default is manual gateway.
+		$options['gateways']['manual'] = 'on';
+		$options['default_gateway']    = 'manual';
+
+		// Offline gateway setup.
+		$options['gateways']['offline']             = 'on';
 		$options['global_offline_donation_content'] = give_get_default_offline_donation_content();
 
-		//Default number of decimals.
-		$options['number_decimals'] = 2;
+		// Billing address.
+		$options['give_offline_donation_enable_billing_fields'] = 'disabled';
 
-		//Default donation notification email.
+		// Default donation notification email.
 		$options['donation_notification'] = give_get_default_donation_notification_email();
 
-		//Default email receipt message.
+		// Default email receipt message.
 		$options['donation_receipt'] = give_get_default_donation_receipt_email();
 
 	}

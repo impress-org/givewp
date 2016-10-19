@@ -1011,11 +1011,11 @@ class Give_API {
 		$form['info']['content']       = get_post_meta( $form_info->ID, '_give_form_content', true );
 		$form['info']['thumbnail']     = wp_get_attachment_url( get_post_thumbnail_id( $form_info->ID ) );
 
-		if ( give_is_setting_enabled( give_get_option( 'enable_categories', 'disabled' ) ) ) {
+		if ( give_is_setting_enabled( give_get_option( 'categories', 'disabled' ) ) ) {
 			$form['info']['category'] = get_the_terms( $form_info, 'give_forms_category' );
 			$form['info']['tags']     = get_the_terms( $form_info, 'give_forms_tag' );
 		}
-		if ( give_is_setting_enabled( give_get_option( 'enable_tags', 'disabled' ) ) ) {
+		if ( give_is_setting_enabled( give_get_option( 'tags', 'disabled' ) ) ) {
 			$form['info']['tags'] = get_the_terms( $form_info, 'give_forms_tag' );
 		}
 

@@ -270,14 +270,63 @@ jQuery.noConflict();
 
 		toggle_options: function () {
 
-			var email_access = $('#email_access');
+			/**
+			 * Email access
+			 */
+			var email_access = $( 'input[name="email_access"]' ,'.give-setting-tab-body-general' );
 			email_access.on('change', function () {
-				if (email_access.prop('checked')) {
+				var field_value = $( 'input[name="email_access"]:checked' ,'.give-setting-tab-body-general' ).val();
+				if ( 'enabled' === field_value) {
 					$('#recaptcha_key').parents('tr').show();
 					$('#recaptcha_secret').parents('tr').show();
 				} else {
 					$('#recaptcha_key').parents('tr').hide();
 					$('#recaptcha_secret').parents('tr').hide();
+				}
+			}).change();
+
+			/**
+			 * Form featured image
+			 */
+			var form_featured_image = $( 'input[name="form_featured_img"]' ,'.give-setting-tab-body-display' );
+			form_featured_image.on('change', function () {
+				var field_value = $( 'input[name="form_featured_img"]:checked' ,'.give-setting-tab-body-display' ).val();
+				if ( 'enabled' === field_value) {
+					$('#featured_image_size').parents('tr').show();
+				} else {
+					$('#featured_image_size').parents('tr').hide();
+				}
+			}).change();
+
+			/**
+			 * Terms and Conditions
+			 */
+			var terms_and_conditions = $( 'input[name="terms"]' ,'.give-setting-tab-body-display' );
+			terms_and_conditions.on('change', function () {
+				var field_value = $( 'input[name="terms"]:checked' ,'.give-setting-tab-body-display' ).val();
+				if ( 'enabled' === field_value) {
+					$('#agree_to_terms_label').parents('tr').show();
+					$('#wp-agreement_text-wrap').parents('tr').show();
+				} else {
+					$('#agree_to_terms_label').parents('tr').hide();
+					$('#wp-agreement_text-wrap').parents('tr').hide();
+				}
+			}).change();
+
+			/**
+			 * Disable admin notification
+			 */
+			var admin_notification = $( 'input[name="admin_notices"]' ,'.give-setting-tab-body-emails' );
+			admin_notification.on('change', function () {
+				var field_value = $( 'input[name="admin_notices"]:checked' ,'.give-setting-tab-body-emails' ).val();
+				if ( 'enabled' === field_value) {
+					$('#donation_notification_subject').parents('tr').show();
+					$('#wp-donation_notification-wrap').parents('tr').show();
+					$('#admin_notice_emails').parents('tr').show();
+				} else {
+					$('#donation_notification_subject').parents('tr').hide();
+					$('#wp-donation_notification-wrap').parents('tr').hide();
+					$('#admin_notice_emails').parents('tr').hide();
 				}
 			}).change();
 		},

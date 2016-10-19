@@ -103,7 +103,6 @@ function give_offline_billing_fields( $form_id ) {
 		|| ( give_is_setting_enabled( $post_offline_customize_option, 'enabled' ) && give_is_setting_enabled( $post_offline_cc_fields ) )
 	) {
 		give_default_cc_address_fields( $form_id );
-
 	}
 }
 

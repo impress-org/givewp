@@ -609,7 +609,7 @@ class Give_Welcome {
 		if ( ! $upgrade ) { // First time install
 			wp_safe_redirect( admin_url( 'index.php?page=give-about' ) );
 			exit;
-		} elseif( give_is_setting_enabled( give_get_option( 'disable_welcome', 'disabled' ) ) ) { // Welcome is disabled in settings
+		} elseif( ! give_is_setting_enabled( give_get_option( 'welcome' ) ) ) { // Welcome is disabled in settings
 
 		} else { // Welcome is NOT disabled in settings
 			wp_safe_redirect(admin_url('index.php?page=give-about'));

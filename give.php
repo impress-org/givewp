@@ -309,6 +309,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/scripts.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/ajax-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/actions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/filters.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/api/class-give-api.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-roles.php';

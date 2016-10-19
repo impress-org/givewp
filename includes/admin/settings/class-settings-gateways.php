@@ -41,7 +41,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 		 * @return array
 		 */
 		public function get_settings() {
-			$settings = array();
+			$settings        = array();
 			$current_section = give_get_current_setting_section();
 
 			switch ( $current_section ) {
@@ -76,12 +76,13 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 							'default' => 'donation',
 						),
 						array(
-							'name' => esc_html__( 'Disable PayPal IPN Verification', 'give' ),
-							'desc' => esc_html__( 'If donations are not getting marked as complete, use a slightly less secure method of verifying donations.', 'give' ),
-							'id'   => 'disable_paypal_verification',
+							'name'    => esc_html__( 'PayPal IPN Verification', 'give' ),
+							'desc'    => esc_html__( 'If donations are not getting marked as complete, use a slightly less secure method of verifying donations.', 'give' ),
+							'id'      => 'paypal_verification',
 							'type'    => 'radio_inline',
+							'default' => 'enabled',
 							'options' => array(
-								'enabled' => __( 'Enabled', 'give' ),
+								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
 							)
 						),
@@ -100,10 +101,15 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 							'id'   => 'give_title_gateway_settings_3',
 						),
 						array(
-							'name' => esc_html__( 'Collect Billing Details', 'give' ),
-							'desc' => esc_html__( 'Enable to request billing details for offline donations. Will appear above offline donation instructions. Can be enabled/disabled per form.', 'give' ),
-							'id'   => 'give_offline_donation_enable_billing_fields',
-							'type' => 'checkbox'
+							'name'    => esc_html__( 'Collect Billing Details', 'give' ),
+							'desc'    => esc_html__( 'Enable to request billing details for offline donations. Will appear above offline donation instructions. Can be enabled/disabled per form.', 'give' ),
+							'id'      => 'give_offline_donation_enable_billing_fields',
+							'type'    => 'radio_inline',
+							'default' => 'disabled',
+							'options' => array(
+								'enabled'  => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' )
+							)
 						),
 						array(
 							'name'    => esc_html__( 'Offline Donation Instructions', 'give' ),
@@ -147,13 +153,13 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 							'type' => 'title'
 						),
 						array(
-							'name' => esc_html__( 'Test Mode', 'give' ),
-							'desc' => esc_html__( 'While in test mode no live donations are processed. To fully use test mode, you must have a sandbox (test) account for the payment gateway you are testing.', 'give' ),
-							'id'   => 'test_mode',
+							'name'    => esc_html__( 'Test Mode', 'give' ),
+							'desc'    => esc_html__( 'While in test mode no live donations are processed. To fully use test mode, you must have a sandbox (test) account for the payment gateway you are testing.', 'give' ),
+							'id'      => 'test_mode',
 							'type'    => 'radio_inline',
-							'default' => 'enabled',
+							'default' => 'disabled',
 							'options' => array(
-								'enabled' => __( 'Enabled', 'give' ),
+								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
 							)
 						),
@@ -187,6 +193,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 			 * Filter the settings.
 			 *
 			 * @since  1.8
+			 *
 			 * @param  array $settings
 			 */
 			$settings = apply_filters( 'give_get_settings_' . $this->id, $settings );

@@ -264,7 +264,7 @@ function give_process_paypal_ipn() {
 	}
 
 	//Validate IPN request w/ PayPal if user hasn't disabled this security measure
-	if ( ! give_is_setting_enabled( give_get_option( 'disable_paypal_verification', 'disabled' ) ) ) {
+	if ( give_is_setting_enabled( give_get_option( 'paypal_verification' ) ) ) {
 
 		$remote_post_vars = array(
 			'method'      => 'POST',
@@ -299,7 +299,7 @@ function give_process_paypal_ipn() {
 			return; // Something went wrong
 		}
 
-		if ( $api_response['body'] !== 'VERIFIED' && give_is_setting_enabled( give_get_option( 'disable_paypal_verification', 'disabled' ) ) ) {
+		if ( $api_response['body'] !== 'VERIFIED' ) {
 			give_record_gateway_error(
 				esc_html__( 'IPN Error', 'give' ),
 				sprintf(

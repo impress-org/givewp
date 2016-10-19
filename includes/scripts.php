@@ -135,7 +135,7 @@ add_action( 'wp_enqueue_scripts', 'give_load_scripts' );
  */
 function give_register_styles() {
 
-	if ( ! give_is_setting_enabled( give_get_option( 'disable_css', 'enabled' ) ) ) {
+	if ( ! give_is_setting_enabled( give_get_option( 'css' ) ) ) {
 		return;
 	}
 

@@ -275,32 +275,25 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		public static function output_fields( $options, $option_name = '' ) {
 			$current_tab = give_get_current_setting_tab();
 
+			// Field Default values.
+			$defaults = array(
+				'id'         => '',
+				'class'      => '',
+				'css'        => '',
+				'default'    => '',
+				'desc'       => '',
+				'table_html' => true
+			);
+
 			foreach ( $options as $value ) {
 				if ( ! isset( $value['type'] ) ) {
 					continue;
 				}
-				if ( ! isset( $value['id'] ) ) {
-					$value['id'] = '';
-				}
-				if ( ! isset( $value['title'] ) ) {
-					$value['title'] = isset( $value['name'] ) ? $value['name'] : '';
-				}
-				if ( ! isset( $value['class'] ) ) {
-					$value['class'] = '';
-				}
-				if ( ! isset( $value['css'] ) ) {
-					$value['css'] = '';
-				}
-				if ( ! isset( $value['default'] ) ) {
-					$value['default'] = '';
-				}
-				if ( ! isset( $value['desc'] ) ) {
-					$value['desc'] = '';
-				}
 
-				if ( ! isset( $value['table_html'] ) ) {
-					$value['table_html'] = true;
-				}
+				// Set title.
+				$defaults['title'] = isset( $value['name'] ) ? $value['name'] : '';
+
+				$value = wp_parse_args( $value, $defaults );
 
 				// Custom attribute handling.
 				$custom_attributes = array();
@@ -843,12 +836,30 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			if ( empty( $option_name ) ) {
 				foreach ( $update_options as $name => $value ) {
 					update_option( $name, $value );
+
+					/**
+					 * Trigger action.
+					 *
+					 * Note: This is dynamically fire on basis of option name.
+					 *
+					 * @since 1.8
+					 */
+					do_action( "give_save_option_{$name}", $value, $name );
 				}
 			} else {
 				$old_options    = ( $old_options = get_option( $option_name ) ) ? $old_options : array();
 				$update_options = array_merge( $old_options, $update_options );
 
 				update_option( $option_name, $update_options );
+
+				/**
+				 * Trigger action.
+				 *
+				 * Note: This is dynamically fire on basis of setting name.
+				 *
+				 * @since 1.8
+				 */
+				do_action( "give_save_settings_{$option_name}", $update_options, $option_name );
 			}
 
 			return true;
