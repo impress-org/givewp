@@ -50,15 +50,10 @@ function give_edit_customer( $args ) {
 
 	$defaults = array(
 		'name'    => '',
-		'email'   => '',
 		'user_id' => 0
 	);
 
 	$customer_info = wp_parse_args( $customer_info, $defaults );
-
-	if ( ! is_email( $customer_info['email'] ) ) {
-		give_set_error( 'give-invalid-email', esc_html__( 'Please enter a valid email address.', 'give' ) );
-	}
 
 	if ( (int) $customer_info['user_id'] != (int) $customer->user_id ) {
 
