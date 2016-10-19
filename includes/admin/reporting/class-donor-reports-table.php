@@ -9,7 +9,7 @@
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -173,7 +173,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 
 			case 'num_purchases' :
 				$value = '<a href="' .
-				         admin_url( '/edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( $item['email'] )
+				         admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( $item['email'] )
 				         ) . '">' . esc_html( $item['num_purchases'] ) . '</a>';
 				break;
 

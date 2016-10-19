@@ -9,7 +9,7 @@
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -36,7 +36,7 @@ class Give_Notices {
 	/**
 	 * Display admin bar when active.
 	 *
-	 * @param WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference
+	 * @param WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference.
 	 *
 	 * @return bool
 	 */
@@ -46,10 +46,10 @@ class Give_Notices {
 			return false;
 		}
 
-		//Add the main siteadmin menu item.
+		// Add the main siteadmin menu item.
 		$wp_admin_bar->add_menu( array(
 			'id'     => 'give-test-notice',
-			'href'   => admin_url() . 'edit.php?post_type=give_forms&page=give-settings&tab=gateways',
+			'href'   => admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways' ),
 			'parent' => 'top-secondary',
 			'title'  => esc_html__( 'Give Test Mode Active', 'give' ),
 			'meta'   => array( 'class' => 'give-test-mode-active' ),
@@ -65,7 +65,7 @@ class Give_Notices {
 	public function show_notices() {
 		$notices = array(
 			'updated' => array(),
-			'error'   => array()
+			'error'   => array(),
 		);
 
 		if ( ! give_test_ajax_works() && ! get_user_meta( get_current_user_id(), '_give_admin_ajax_inaccessible_dismissed', true ) && current_user_can( 'manage_give_settings' ) ) {
@@ -75,19 +75,18 @@ class Give_Notices {
 			echo '<p>' . sprintf( __( 'Please see <a href="%s" target="_blank">this reference</a> for possible solutions.', 'give' ), esc_url( 'https://givewp.com/documentation/core/troubleshooting/admin-ajax-blocked/' ) ) . '</p>';
 			echo '<p><a href="' . add_query_arg( array(
 					'give_action' => 'dismiss_notices',
-					'give_notice' => 'admin_ajax_inaccessible'
-				) ) . '">' . esc_attr__( 'Dismiss Notice', 'give' ) . '</a></p>';
+					'give_notice' => 'admin_ajax_inaccessible',
+			) ) . '">' . esc_attr__( 'Dismiss Notice', 'give' ) . '</a></p>';
 			echo '</div>';
 		}
-
 
 		if ( isset( $_GET['give-message'] ) ) {
 
 			// Donation reports errors.
 			if ( current_user_can( 'view_give_reports' ) ) {
 				switch ( $_GET['give-message'] ) {
-					case 'payment_deleted' :
-						$notices['updated']['give-payment-deleted'] = esc_attr__( 'The donation has been deleted.', 'give' );
+					case 'donation_deleted' :
+						$notices['updated']['give-donation-deleted'] = esc_attr__( 'The donation has been deleted.', 'give' );
 						break;
 					case 'email_sent' :
 						$notices['updated']['give-payment-sent'] = esc_attr__( 'The donation receipt has been resent.', 'give' );
@@ -95,8 +94,8 @@ class Give_Notices {
 					case 'refreshed-reports' :
 						$notices['updated']['give-refreshed-reports'] = esc_attr__( 'The reports cache has been cleared.', 'give' );
 						break;
-					case 'payment-note-deleted' :
-						$notices['updated']['give-payment-note-deleted'] = esc_attr__( 'The donation note has been deleted.', 'give' );
+					case 'donation-note-deleted' :
+						$notices['updated']['give-donation-note-deleted'] = esc_attr__( 'The donation note has been deleted.', 'give' );
 						break;
 				}
 			}
@@ -148,23 +147,22 @@ class Give_Notices {
 						break;
 
 					case 'email-removed' :
-						$notices['updated']['give-customer-email-removed'] = __( 'Donor email removed', 'give');
+						$notices['updated']['give-customer-email-removed'] = __( 'Donor email removed', 'give' );
 						break;
 
 					case 'email-remove-failed' :
-						$notices['error']['give-customer-email-remove-failed'] = __( 'Failed to remove donor email', 'give');
+						$notices['error']['give-customer-email-remove-failed'] = __( 'Failed to remove donor email', 'give' );
 						break;
 
 					case 'primary-email-updated' :
-						$notices['updated']['give-customer-primary-email-updated'] = __( 'Primary email updated for donors', 'give');
+						$notices['updated']['give-customer-primary-email-updated'] = __( 'Primary email updated for donors', 'give' );
 						break;
 
 					case 'primary-email-failed' :
-						$notices['error']['give-customer-primary-email-failed'] = __( 'Failed to set primary email', 'give');
+						$notices['error']['give-customer-primary-email-failed'] = __( 'Failed to set primary email', 'give' );
 
 				}
 			}
-
 		}
 
 		if ( count( $notices['updated'] ) > 0 ) {

@@ -1,7 +1,7 @@
 <?php
 /**
-* Handle renamed actions.
-*/
+ * Handle renamed actions.
+ */
 $give_map_deprecated_actions = give_deprecated_actions();
 
 foreach ( $give_map_deprecated_actions as $new => $old ) {
@@ -40,6 +40,8 @@ function give_deprecated_actions() {
 		'give_donation_history_row_start'          => 'give_purchase_history_row_start',
 		'give_donation_history_row_end'            => 'give_purchase_history_row_end',
 		'give_donation_form_top'                   => 'give_purchase_form_top',
+		'give_pre_process_donation'                => 'give_pre_process_purchase',
+		'give_complete_donation'                   => 'give_complete_purchase',
 		'give_donation_history_search'             => 'give_payment_history_search',
 		'give_donations_table_do_bulk_action'      => 'give_payments_table_do_bulk_action',
 		'give_donations_page_top'                  => 'give_payments_page_top',
@@ -63,6 +65,13 @@ function give_deprecated_actions() {
 		'give_donation_mode_after_gateways'        => 'give_payment_mode_after_gateways',
 		'give_donation_mode_after_gateways_wrap'   => 'give_payment_mode_after_gateways_wrap',
 		'give_donation_mode_bottom'                => 'give_payment_mode_bottom',
+		'give_delete_donation_note'                => 'give_delete_payment_note',
+		'give_post_delete_donation_note'           => 'give_post_delete_payment_note',
+		'give_pre_delete_donation_note'            => 'give_pre_delete_payment_note',
+		'give_update_donation_status'              => 'give_update_payment_status',
+		'give_update_donation_details'             => 'give_update_payment_details',
+		'give_ajax_donation_errors'                => 'give_ajax_checkout_errors',
+		'give_admin_sale_notice'                   => 'give_admin_donation_email',
 	);
 
 	return $give_deprecated_actions;
@@ -71,7 +80,7 @@ function give_deprecated_actions() {
 /**
  * Deprecated action mapping.
  *
- * @param mixed  $data
+ * @param mixed $data
  * @param string $arg_1
  * @param string $arg_2
  * @param string $arg_3
@@ -80,16 +89,16 @@ function give_deprecated_actions() {
  */
 function give_deprecated_action_mapping( $data, $arg_1 = '', $arg_2 = '', $arg_3 = '' ) {
 	$give_map_deprecated_actions = give_deprecated_actions();
-	$action = current_filter();
+	$action                      = current_filter();
 
 	if ( isset( $give_map_deprecated_actions[ $action ] ) ) {
 		if ( has_action( $give_map_deprecated_actions[ $action ] ) ) {
 			do_action( $give_map_deprecated_actions[ $action ], $data, $arg_1, $arg_2, $arg_3 );
 
 			if ( ! defined( 'DOING_AJAX' ) ) {
+				// translators: %s: action name.
 				_give_deprecated_function(
 					sprintf(
-						/* translators: %s: action name */
 						__( 'The %s action' ),
 						$give_map_deprecated_actions[ $action ]
 					),

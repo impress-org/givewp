@@ -44,7 +44,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * @since 1.8
 		 * @var   array List of errors.
 		 */
-		private static $errors   = array();
+		private static $errors = array();
 
 		/**
 		 * Update messages.
@@ -69,6 +69,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			 *              then filter will be give-settings_get_settings_pages
 			 *
 			 * @since 1.8
+			 *
 			 * @param array $settings Array of settings class object.
 			 */
 			self::$settings = apply_filters( self::$setting_filter_prefix . '_get_settings_pages', array() );
@@ -118,8 +119,10 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * Add a message.
 		 *
 		 * @since  1.8
+		 *
 		 * @param  string $code    Message code (Note: This should be unique).
 		 * @param  string $message Message text.
+		 *
 		 * @return void
 		 */
 		public static function add_message( $code, $message ) {
@@ -130,8 +133,10 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * Add an error.
 		 *
 		 * @since  1.8
+		 *
 		 * @param  string $code    Message code (Note: This should be unique).
 		 * @param  string $message Message text.
+		 *
 		 * @return void
 		 */
 		public static function add_error( $code, $message ) {
@@ -147,6 +152,9 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		public static function show_messages() {
 			$notice_html = '';
 			$classes     = 'give-notice settings-error notice is-dismissible';
+
+			self::$errors   = apply_filters( self::$setting_filter_prefix . '_error_notices', self::$errors );
+			self::$messages = apply_filters( self::$setting_filter_prefix . '_update_notices', self::$errors );
 
 			if ( 0 < count( self::$errors ) ) {
 				foreach ( self::$errors as $code => $message ) {
@@ -176,7 +184,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			self::$setting_filter_prefix = give_get_current_setting_page();
 
 			// Bailout: Exit if setting page is not defined.
-			if( empty( self::$setting_filter_prefix ) ) {
+			if ( empty( self::$setting_filter_prefix ) ) {
 				return false;
 			}
 
@@ -191,7 +199,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			 */
 			do_action( self::$setting_filter_prefix . '_start' );
 
-			$current_tab     = give_get_current_setting_tab();
+			$current_tab = give_get_current_setting_tab();
 
 			// Include settings pages.
 			self::get_settings_pages();
@@ -221,9 +229,11 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * Get a setting from the settings API.
 		 *
 		 * @since  1.8
+		 *
 		 * @param  string $option_name
 		 * @param  string $field_id
 		 * @param  mixed  $default
+		 *
 		 * @return string|bool
 		 */
 		public static function get_option( $option_name = '', $field_id = '', $default = false ) {
@@ -237,8 +247,8 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				$option_value = get_option( $option_name );
 
 				$option_value = ( is_array( $option_value ) && array_key_exists( $field_id, $option_value ) )
-				? $option_value[ $field_id ]
-				: $default;
+					? $option_value[ $field_id ]
+					: $default;
 			} else {
 				// If option name is empty but not field name then this means, setting is direct store to option table under there field name.
 				$option_name = ! $option_name ? $field_id : $option_name;
@@ -256,8 +266,10 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * Loops though the give options array and outputs each field.
 		 *
 		 * @since  1.8
+		 *
 		 * @param  array  $options     Opens array to output
 		 * @param  string $option_name Opens array to output
+		 *
 		 * @return void
 		 */
 		public static function output_fields( $options, $option_name = '' ) {
@@ -293,7 +305,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				}
 
 				// Description handling.
-				$description = self::get_field_description( $value );
+				$description          = self::get_field_description( $value );
 
 				// Switch based on type.
 				switch ( $value['type'] ) {
@@ -308,7 +320,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 							echo wpautop( wptexturize( wp_kses_post( $value['desc'] ) ) );
 						}
 
-						if( $value['table_html'] ) {
+						if ( $value['table_html'] ) {
 							echo '<table class="form-table give-setting-tab-body give-setting-tab-body-' . $current_tab . '">' . "\n\n";
 						}
 
@@ -340,7 +352,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 							do_action( 'give_settings_' . sanitize_title( $value['id'] ) . '_end' );
 						}
 
-						if( $value['table_html'] ) {
+						if ( $value['table_html'] ) {
 							echo '</table>';
 						}
 
@@ -364,24 +376,25 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					case 'number':
 					case 'password' :
 
-						$type         = $value['type'];
+						$type = $value['type'];
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
 
-						?><tr valign="top">
-							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
-							</th>
-							<td class="give-forminp give-forminp-<?php echo sanitize_title( $value['type'] ) ?>">
-								<input
-									name="<?php echo esc_attr( $value['id'] ); ?>"
-									id="<?php echo esc_attr( $value['id'] ); ?>"
-									type="<?php echo esc_attr( $type ); ?>"
-									style="<?php echo esc_attr( $value['css'] ); ?>"
-									value="<?php echo esc_attr( $option_value ); ?>"
-									class="give-input-field<?php echo ( empty( $value['class'] ) ? '' :  ' '. esc_attr( $value['class'] ) ); ?>"
-									<?php echo implode( ' ', $custom_attributes ); ?>
-									/> <?php echo $description; ?>
-							</td>
+						?>
+						<tr valign="top">
+						<th scope="row" class="titledesc">
+							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
+						</th>
+						<td class="give-forminp give-forminp-<?php echo sanitize_title( $value['type'] ) ?>">
+							<input
+								name="<?php echo esc_attr( $value['id'] ); ?>"
+								id="<?php echo esc_attr( $value['id'] ); ?>"
+								type="<?php echo esc_attr( $type ); ?>"
+								style="<?php echo esc_attr( $value['css'] ); ?>"
+								value="<?php echo esc_attr( $option_value ); ?>"
+								class="give-input-field<?php echo( empty( $value['class'] ) ? '' : ' ' . esc_attr( $value['class'] ) ); ?>"
+								<?php echo implode( ' ', $custom_attributes ); ?>
+							/> <?php echo $description; ?>
+						</td>
 						</tr><?php
 						break;
 
@@ -390,11 +403,12 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
 
-						?><tr valign="top">
-							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
-							</th>
-							<td class="give-forminp give-forminp-<?php echo sanitize_title( $value['type'] ) ?>">
+						?>
+						<tr valign="top">
+						<th scope="row" class="titledesc">
+							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
+						</th>
+						<td class="give-forminp give-forminp-<?php echo sanitize_title( $value['type'] ) ?>">
 								<textarea
 									name="<?php echo esc_attr( $value['id'] ); ?>"
 									id="<?php echo esc_attr( $value['id'] ); ?>"
@@ -403,9 +417,9 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 									rows="10"
 									cols="60"
 									<?php echo implode( ' ', $custom_attributes ); ?>
-									><?php echo esc_textarea( $option_value );  ?></textarea>
-								<?php echo $description; ?>
-							</td>
+								><?php echo esc_textarea( $option_value ); ?></textarea>
+							<?php echo $description; ?>
+						</td>
 						</tr><?php
 						break;
 
@@ -415,40 +429,43 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
 
-						?><tr valign="top">
-							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
-							</th>
-							<td class="give-forminp give-forminp-<?php echo sanitize_title( $value['type'] ) ?>">
-								<select
-									name="<?php echo esc_attr( $value['id'] ); ?><?php if ( $value['type'] == 'multiselect' ) { echo '[]'; } ?>"
-									id="<?php echo esc_attr( $value['id'] ); ?>"
-									style="<?php echo esc_attr( $value['css'] ); ?>"
-									class="<?php echo esc_attr( $value['class'] ); ?>"
-									<?php echo implode( ' ', $custom_attributes ); ?>
-									<?php echo ( 'multiselect' == $value['type'] ) ? 'multiple="multiple"' : ''; ?>
-									>
+						?>
+						<tr valign="top">
+						<th scope="row" class="titledesc">
+							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
+						</th>
+						<td class="give-forminp give-forminp-<?php echo sanitize_title( $value['type'] ) ?>">
+							<select
+								name="<?php echo esc_attr( $value['id'] ); ?><?php if ( $value['type'] == 'multiselect' ) {
+									echo '[]';
+								} ?>"
+								id="<?php echo esc_attr( $value['id'] ); ?>"
+								style="<?php echo esc_attr( $value['css'] ); ?>"
+								class="<?php echo esc_attr( $value['class'] ); ?>"
+								<?php echo implode( ' ', $custom_attributes ); ?>
+								<?php echo ( 'multiselect' == $value['type'] ) ? 'multiple="multiple"' : ''; ?>
+							>
 
-									<?php
-									if( ! empty( $value['options'] ) ) {
-										foreach ( $value['options'] as $key => $val ) {
-											?>
-											<option value="<?php echo esc_attr( $key ); ?>" <?php
+								<?php
+								if ( ! empty( $value['options'] ) ) {
+									foreach ( $value['options'] as $key => $val ) {
+										?>
+										<option value="<?php echo esc_attr( $key ); ?>" <?php
 
-											if ( is_array( $option_value ) ) {
-												selected( in_array( $key, $option_value ), true );
-											} else {
-												selected( $option_value, $key );
-											}
-
-											?>><?php echo $val ?></option>
-											<?php
+										if ( is_array( $option_value ) ) {
+											selected( in_array( $key, $option_value ), true );
+										} else {
+											selected( $option_value, $key );
 										}
-									}
-									?>
 
-								</select> <?php echo $description; ?>
-							</td>
+										?>><?php echo $val ?></option>
+										<?php
+									}
+								}
+								?>
+
+							</select> <?php echo $description; ?>
+						</td>
 						</tr><?php
 						break;
 
@@ -457,38 +474,39 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						$value['class'] = empty( $value['class'] ) ? 'give-radio-inline' : $value['class'] . ' give-radio-inline';
 					case 'radio' :
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
-						?><tr valign="top">
-							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
-							</th>
-							<td class="give-forminp give-forminp-<?php echo sanitize_title( $value['type'] ) ?> <?php echo ( ! empty( $value['class'] ) ? $value['class'] : '' ); ?>">
-								<fieldset>
-									<ul>
+						?>
+						<tr valign="top">
+						<th scope="row" class="titledesc">
+							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
+						</th>
+						<td class="give-forminp give-forminp-<?php echo sanitize_title( $value['type'] ) ?> <?php echo( ! empty( $value['class'] ) ? $value['class'] : '' ); ?>">
+							<fieldset>
+								<ul>
 									<?php
 									foreach ( $value['options'] as $key => $val ) {
 										?>
 										<li>
-										<label><input
-											name="<?php echo esc_attr( $value['id'] ); ?>"
-											value="<?php echo $key; ?>"
-											type="radio"
-											style="<?php echo esc_attr( $value['css'] ); ?>"
-											<?php echo implode( ' ', $custom_attributes ); ?>
-											<?php checked( $key, $option_value ); ?>
-											/> <?php echo $val ?></label>
+											<label><input
+													name="<?php echo esc_attr( $value['id'] ); ?>"
+													value="<?php echo $key; ?>"
+													type="radio"
+													style="<?php echo esc_attr( $value['css'] ); ?>"
+													<?php echo implode( ' ', $custom_attributes ); ?>
+													<?php checked( $key, $option_value ); ?>
+												/> <?php echo $val ?></label>
 										</li>
 										<?php
 									}
 									?>
 									<?php echo $description; ?>
-								</fieldset>
-							</td>
+							</fieldset>
+						</td>
 						</tr><?php
 						break;
 
 					// Checkbox input.
 					case 'checkbox' :
-						$option_value    = self::get_option( $option_name, $value['id'], $value['default'] );
+						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
 						?>
 						<tr valign="top">
 							<th scope="row" class="titledesc">
@@ -512,13 +530,13 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 					// Multi Checkbox input.
 					case 'multicheck' :
-						$option_value    = self::get_option( $option_name, $value['id'], $value['default'] );
+						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
 						?>
 						<tr valign="top">
 							<th scope="row" class="titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
 							</th>
-							<td class="give-forminp give-forminp-<?php echo sanitize_title( $value['type'] ) ?> <?php echo ( ! empty( $value['class'] ) ? $value['class'] : '' ); ?>">
+							<td class="give-forminp give-forminp-<?php echo sanitize_title( $value['type'] ) ?> <?php echo( ! empty( $value['class'] ) ? $value['class'] : '' ); ?>">
 								<fieldset>
 									<ul>
 										<?php
@@ -532,7 +550,9 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 														type="checkbox"
 														style="<?php echo esc_attr( $value['css'] ); ?>"
 														<?php echo implode( ' ', $custom_attributes ); ?>
-														<?php if( in_array( $key, $option_value ) ) { echo 'checked="checked"'; } ?>
+														<?php if ( in_array( $key, $option_value ) ) {
+															echo 'checked="checked"';
+														} ?>
 													/> <?php echo $val ?>
 												</label>
 											</li>
@@ -549,30 +569,31 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					// File input field.
 					case 'file' :
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
-						?><tr valign="top">
-							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
-							</th>
-							<td class="give-forminp">
-								<div class="give-field-wrap">
-									<label for="<?php echo $value['id'] ?>">
-										<input
-											name="<?php echo esc_attr( $value['id'] ); ?>"
-											id="<?php echo esc_attr( $value['id'] ); ?>"
-											type="text"
-											class="give-input-field<?php echo esc_attr( isset( $value['class'] ) ? ' ' . $value['class'] : '' ); ?>"
-											value="<?php echo $option_value; ?>"
-											style="<?php echo esc_attr( $value['css'] ); ?>"
-											<?php echo implode( ' ', $custom_attributes ); ?>
-										/>&nbsp;&nbsp;&nbsp;&nbsp;<input class="give-upload-button button" type="button" value="<?php echo esc_html__( 'Add or Upload File', 'give' ); ?>">
-										<?php echo $description ?>
-										<div class="give-image-thumb<?php echo ! $option_value ? ' give-hidden' : ''; ?>">
-											<span class="give-delete-image-thumb dashicons dashicons-no-alt"></span>
-											<img src="<?php echo $option_value; ?>" alt="">
-										</div>
-									</label>
-								</div>
-							</td>
+						?>
+						<tr valign="top">
+						<th scope="row" class="titledesc">
+							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
+						</th>
+						<td class="give-forminp">
+							<div class="give-field-wrap">
+								<label for="<?php echo $value['id'] ?>">
+									<input
+										name="<?php echo esc_attr( $value['id'] ); ?>"
+										id="<?php echo esc_attr( $value['id'] ); ?>"
+										type="text"
+										class="give-input-field<?php echo esc_attr( isset( $value['class'] ) ? ' ' . $value['class'] : '' ); ?>"
+										value="<?php echo $option_value; ?>"
+										style="<?php echo esc_attr( $value['css'] ); ?>"
+										<?php echo implode( ' ', $custom_attributes ); ?>
+									/>&nbsp;&nbsp;&nbsp;&nbsp;<input class="give-upload-button button" type="button" value="<?php echo esc_html__( 'Add or Upload File', 'give' ); ?>">
+									<?php echo $description ?>
+									<div class="give-image-thumb<?php echo ! $option_value ? ' give-hidden' : ''; ?>">
+										<span class="give-delete-image-thumb dashicons dashicons-no-alt"></span>
+										<img src="<?php echo $option_value; ?>" alt="">
+									</div>
+								</label>
+							</div>
+						</td>
 						</tr><?php
 						break;
 
@@ -583,7 +604,8 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 						// Get editor settings.
 						$editor_settings = ! empty( $value['options'] ) ? $value['options'] : array();
-						?><tr valign="top">
+						?>
+						<tr valign="top">
 						<th scope="row" class="titledesc">
 							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
 						</th>
@@ -596,55 +618,59 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 					// Custom: System setting field.
 					case 'system_info' :
-						?><tr valign="top">
-							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
-							</th>
-							<td class="give-forminp">
-								<?php give_system_info_callback(); ?>
-								<?php echo $description; ?>
-							</td>
+						?>
+						<tr valign="top">
+						<th scope="row" class="titledesc">
+							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
+						</th>
+						<td class="give-forminp">
+							<?php give_system_info_callback(); ?>
+							<?php echo $description; ?>
+						</td>
 						</tr><?php
 						break;
 
 					// Custom: Default gateways setting field.
 					case 'default_gateway' :
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
-						?><tr valign="top">
-							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
-							</th>
-							<td class="give-forminp">
-								<?php give_default_gateway_callback( $value, $option_value ); ?>
-								<?php echo $description; ?>
-							</td>
+						?>
+						<tr valign="top">
+						<th scope="row" class="titledesc">
+							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
+						</th>
+						<td class="give-forminp">
+							<?php give_default_gateway_callback( $value, $option_value ); ?>
+							<?php echo $description; ?>
+						</td>
 						</tr><?php
 						break;
 
 					// Custom: Enable gateways setting field.
 					case 'enabled_gateways' :
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
-						?><tr valign="top">
-							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
-							</th>
-							<td class="give-forminp">
-								<?php give_enabled_gateways_callback( $value, $option_value ); ?>
-								<?php echo $description; ?>
-							</td>
+						?>
+						<tr valign="top">
+						<th scope="row" class="titledesc">
+							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
+						</th>
+						<td class="give-forminp">
+							<?php give_enabled_gateways_callback( $value, $option_value ); ?>
+							<?php echo $description; ?>
+						</td>
 						</tr><?php
 						break;
 
 					// Custom: Email preview buttons field.
 					case 'email_preview_buttons' :
-						?><tr valign="top">
-							<th scope="row" class="titledesc">
-								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
-							</th>
-							<td class="give-forminp">
-								<?php give_email_preview_buttons_callback(); ?>
-								<?php echo $description; ?>
-							</td>
+						?>
+						<tr valign="top">
+						<th scope="row" class="titledesc">
+							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
+						</th>
+						<td class="give-forminp">
+							<?php give_email_preview_buttons_callback(); ?>
+							<?php echo $description; ?>
+						</td>
 						</tr><?php
 						break;
 
@@ -683,11 +709,13 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * Plugins can call this when implementing their own custom settings types.
 		 *
 		 * @since  1.8
+		 *
 		 * @param  array $value The form field value array
+		 *
 		 * @return array The description and tip as a 2 element array
 		 */
 		public static function get_field_description( $value ) {
-			$description  = '';
+			$description = '';
 
 			if ( ! empty( $value['desc'] ) ) {
 				$description = '<p class="give-field-description">' . wp_kses_post( $value['desc'] ) . '</p>';
@@ -702,14 +730,16 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * Plugins can call this when implementing their own custom settings types.
 		 *
 		 * @since  1.8
+		 *
 		 * @param  array $value The form field value array
+		 *
 		 * @return array The description and tip as a 2 element array
 		 */
 		public static function get_field_title( $value ) {
-			$title  = esc_html( $value['title'] );
+			$title = esc_html( $value['title'] );
 
 			// If html tag detected then allow them to print.
-			if ( strip_tags( $title )  ) {
+			if ( strip_tags( $title ) ) {
 				$title = $value['title'];
 			}
 
@@ -722,8 +752,10 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * Loops though the give options array and outputs each field.
 		 *
 		 * @since  1.8
+		 *
 		 * @param  array  $options     Options array to output
 		 * @param  string $option_name Option name to save output. If empty then option will be store in there own option name i.e option id.
+		 *
 		 * @return bool
 		 */
 		public static function save_fields( $options, $option_name = '' ) {
@@ -743,13 +775,13 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				// Get posted value.
 				if ( strstr( $option['id'], '[' ) ) {
 					parse_str( $option['id'], $option_name_array );
-					$field_option_name  = current( array_keys( $option_name_array ) );
-					$setting_name = key( $option_name_array[ $field_option_name ] );
-					$raw_value    = isset( $_POST[ $field_option_name ][ $setting_name ] ) ? wp_unslash( $_POST[ $field_option_name ][ $setting_name ] ) : null;
+					$field_option_name = current( array_keys( $option_name_array ) );
+					$setting_name      = key( $option_name_array[ $field_option_name ] );
+					$raw_value         = isset( $_POST[ $field_option_name ][ $setting_name ] ) ? wp_unslash( $_POST[ $field_option_name ][ $setting_name ] ) : null;
 				} else {
-					$field_option_name  = $option['id'];
-					$setting_name = '';
-					$raw_value    = isset( $_POST[ $option['id'] ] ) ? wp_unslash( $_POST[ $option['id'] ] ) : null;
+					$field_option_name = $option['id'];
+					$setting_name      = '';
+					$raw_value         = isset( $_POST[ $option['id'] ] ) ? wp_unslash( $_POST[ $option['id'] ] ) : null;
 				}
 
 				// Format the value based on option type.
@@ -815,7 +847,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					do_action( "give_save_option_{$name}", $value, $name );
 				}
 			} else {
-				$old_options = ( $old_options = get_option( $option_name ) ) ? $old_options : array();
+				$old_options    = ( $old_options = get_option( $option_name ) ) ? $old_options : array();
 				$update_options = array_merge( $old_options, $update_options );
 
 				update_option( $option_name, $update_options );

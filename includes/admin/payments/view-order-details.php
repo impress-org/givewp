@@ -9,7 +9,7 @@
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -52,7 +52,7 @@ $payment_mode   = $payment->mode;
 
 	<h1 id="transaction-details-heading"><?php
 		printf(
-		/* translators: %s: donation number */
+			/* translators: %s: donation number */
 			esc_html__( 'Donation %s', 'give' ),
 			$number
 		);
@@ -156,7 +156,7 @@ $payment_mode   = $payment->mode;
 										 */
 										do_action( 'give_view_order_details_update_inner', $payment_id );
 
-										//@TODO: Fees
+										// @TODO: Fees
 										$fees = give_get_payment_fees( $payment_id );
 										if ( ! empty( $fees ) ) : ?>
 											<div class="give-order-fees give-admin-box-inside">
@@ -175,7 +175,8 @@ $payment_mode   = $payment->mode;
 										<div class="give-order-payment give-admin-box-inside">
 											<p>
 												<label for="give-payment-total" class="strong"><?php esc_html_e( 'Total Donation:', 'give' ); ?></label>&nbsp;
-												<?php echo give_currency_symbol( $payment->currency ); ?>&nbsp;<input id="give-payment-total" name="give-payment-total" type="text" class="small-text give-price-field" value="<?php echo esc_attr( give_format_decimal( give_get_payment_amount( $payment_id ) ) ); ?>"/>
+												<?php echo give_currency_symbol( $payment->currency ); ?>
+												&nbsp;<input id="give-payment-total" name="give-payment-total" type="text" class="small-text give-price-field" value="<?php echo esc_attr( give_format_decimal( give_get_payment_amount( $payment_id ) ) ); ?>"/>
 											</p>
 										</div>
 
@@ -214,7 +215,7 @@ $payment_mode   = $payment->mode;
 											<?php if ( give_is_payment_complete( $payment_id ) ) : ?>
 												<a href="<?php echo esc_url( add_query_arg( array(
 													'give-action' => 'email_links',
-													'purchase_id' => $payment_id
+													'purchase_id' => $payment_id,
 												) ) ); ?>" id="give-resend-receipt" class="button-secondary right"><?php esc_html_e( 'Resend Receipt', 'give' ); ?></a>
 											<?php endif; ?>
 										</div>
@@ -370,7 +371,7 @@ $payment_mode   = $payment->mode;
 												<?php give_get_form_dropdown( array(
 													'id'       => $payment_meta['form_id'],
 													'selected' => $payment_meta['form_id'],
-													'chosen'   => true
+													'chosen'   => true,
 												), true ); ?>
 											</p>
 										</div>
@@ -517,7 +518,7 @@ $payment_mode   = $payment->mode;
 												<?php
 												echo Give()->html->donor_dropdown( array(
 													'selected' => $customer->id,
-													'name'     => 'customer-id'
+													'name'     => 'customer-id',
 												) );
 												?>
 											</p>
@@ -560,7 +561,7 @@ $payment_mode   = $payment->mode;
 									 * @since 1.7
 									 *
 									 * @param array $payment_meta Payment meta.
-									 * @param array $user_info User information.
+									 * @param array $user_info    User information.
 									 */
 									do_action( 'give_donation_personal_details_list', $payment_meta, $user_info );
 
@@ -631,7 +632,7 @@ $payment_mode   = $payment->mode;
 															'show_option_all'  => false,
 															'show_option_none' => false,
 															'chosen'           => true,
-															'placeholder'      => esc_attr__( 'Select a country', 'give' )
+															'placeholder'      => esc_attr__( 'Select a country', 'give' ),
 														) );
 														?>
 													</div>
@@ -647,7 +648,7 @@ $payment_mode   = $payment->mode;
 																'show_option_all'  => false,
 																'show_option_none' => false,
 																'chosen'           => true,
-																'placeholder'      => esc_attr__( 'Select a state', 'give' )
+																'placeholder'      => esc_attr__( 'Select a state', 'give' ),
 															) );
 														} else {
 															?>
@@ -752,10 +753,10 @@ $payment_mode   = $payment->mode;
 		 */
 		do_action( 'give_view_order_details_form_bottom', $payment_id );
 
-		wp_nonce_field( 'give_update_payment_details_nonce' );
+		wp_nonce_field( 'give_update_donation_details_nonce' );
 		?>
 		<input type="hidden" name="give_payment_id" value="<?php echo esc_attr( $payment_id ); ?>"/>
-		<input type="hidden" name="give_action" value="update_payment_details"/>
+		<input type="hidden" name="give_action" value="update_donation_details"/>
 	</form>
 	<?php
 	/**
