@@ -1291,7 +1291,7 @@ function give_payment_mode_select( $form_id ) {
 	 */
 	do_action( 'give_donation_mode_top', $form_id ); ?>
 
-	<fieldset id="give-payment-mode-select">
+	<fieldset id="give-payment-mode-select" <?php if ( count($gateways) <= 1 ) echo 'style="display: none;"'; ?>>
 		<?php
 		/**
 		 * Fires while selecting payment gateways, before the wrap div.
@@ -1302,10 +1302,10 @@ function give_payment_mode_select( $form_id ) {
 		 */
 		do_action( 'give_donation_mode_before_gateways_wrap' );
 		?>
-			<legend class="give-payment-mode-label"><?php echo apply_filters( 'give_checkout_payment_method_text', esc_html__( 'Select Payment Method', 'give' ) ); ?>
-		<div id="give-payment-mode-wrap" <?php if ( count($gateways) <= 1 ) echo 'style="display: none;"'; ?>>
+			<legend class="give-payment-mode-label"><?php echo apply_filters( 'give_checkout_payment_method_text', esc_html__( 'Select Payment Method', 'give' ) ); ?></legend>
+		<div id="give-payment-mode-wrap">
 				<span class="give-loading-text"><span class="give-loading-animation"></span> <?php esc_html_e( 'Loading...', 'give' ); ?></span>
-			</legend>
+
 			<?php
 			/**
 			 * Fires while selecting payment gateways, befire the gateways list.
