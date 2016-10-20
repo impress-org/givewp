@@ -27,7 +27,11 @@ function give_donation_history() {
 
 	// If payment_key query arg exists, return receipt instead of donation history.
 	if ( isset( $_GET['payment_key'] ) ) {
-		return give_receipt_shortcode( array() );
+		ob_start();
+		echo give_receipt_shortcode( array() );
+		echo '<a href="' . esc_url( give_get_history_page_uri() ) . '">&laquo; ' . esc_html__( 'Return to All Donations', 'give' ) . '</a>';
+
+		return ob_get_clean();
 	}
 
 	$email_access = give_get_option( 'email_access' );
