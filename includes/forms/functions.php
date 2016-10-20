@@ -263,6 +263,21 @@ function give_listen_for_failed_payments() {
 
 add_action( 'template_redirect', 'give_listen_for_failed_payments' );
 
+/**
+ * Retrieve the Donation History page URI
+ *
+ * @access      public
+ * @since       1.7
+ *
+ * @return      string
+ */
+function give_get_history_page_uri() {
+	$give_options = give_get_settings();
+
+	$history_page = isset( $give_options['history_page'] ) ? get_permalink( absint( $give_options['history_page'] ) ) : get_bloginfo( 'url' );
+
+	return apply_filters( 'give_get_history_page_uri', $history_page );
+}
 
 /**
  * Check if a field is required
