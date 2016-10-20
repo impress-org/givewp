@@ -25,6 +25,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_donation_history() {
 
+	// If payment_key query arg exists, return receipt instead of donation history.
+	if ( isset( $_GET['payment_key'] ) ) {
+		return give_receipt_shortcode( array() );
+	}
+
 	$email_access = give_get_option( 'email_access' );
 
 	//Is user logged in? Does a session exist? Does an email-access token exist?
