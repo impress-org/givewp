@@ -236,7 +236,9 @@ function give_receipt_shortcode( $atts ) {
 		'date'           => true,
 		'payment_key'    => false,
 		'payment_method' => true,
-		'payment_id'     => true
+		'payment_id'     => true,
+		'payment_status' => false,
+		'notice'         => true,
 	), $atts, 'give_receipt' );
 
 	//set $session var
