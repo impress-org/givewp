@@ -22,60 +22,64 @@ $user           = give_get_payment_meta_user_info( $payment->ID );
 $email          = give_get_payment_user_email( $payment->ID );
 $status         = $payment->post_status;
 $status_label   = give_get_payment_status( $payment, true );
-$notice_message = '';
-$notice_type    = 'warning';
 
-switch( $status ) {
-	case 'publish':
-		$notice_message = __( 'Payment Complete: Thank you for your donation.', 'give' );
-		$notice_type = 'success';
-		break;
-	case 'pending':
-		$notice_message = __( 'Payment Pending: Please contact the site owner for assistance.', 'give' );
-		$notice_type = 'warning';
-		break;
-	case 'refunded':
-		$notice_message = __( 'Payment Refunded: Please contact the site owner for assistance.', 'give' );
-		$notice_type = 'warning';
-		break;
-	case 'preapproval':
-		$notice_message = __( 'Payment Preapproved: Please contact the site owner for assistance.', 'give' );
-		$notice_type = 'warning';
-		break;
-	case 'failed':
-		$notice_message = __( 'Payment Failed: Please contact the site owner for assistance.', 'give' );
-		$notice_type = 'error';
-		break;
-	case 'cancelled':
-		$notice_message = __( 'Payment Cancelled: Please contact the site owner for assistance.', 'give' );
-		$notice_type = 'error';
-		break;
-	case 'abandoned':
-		$notice_message = __( 'Payment Abandoned: Please contact the site owner for assistance.', 'give' );
-		$notice_type = 'error';
-		break;
-	case 'revoked':
-		$notice_message = __( 'Payment Revoked: Please contact the site owner for assistance.', 'give' );
-		$notice_type = 'error';
-		break;
-}
+// Show payment status notice based on shortcode attribute.
+if ( true === $give_receipt_args['notice'] ) {
+	$notice_message = '';
+	$notice_type    = 'warning';
 
-if ( ! empty( $notice_message ) ) {
-	/**
-	 * Filters payment status notice for receipts.
-	 *
-	 * By default, a success, warning, or error notice appears on the receipt
-	 * with payment status. This filter allows the HTML markup
-	 * and messaging for that notice to be customized.
-	 *
-	 * @since 1.7.0
-	 *
-	 * @param string $notice HTML markup for the default notice.
-	 * @param int    $id     Post ID where the notice is displayed.
-	 * @param string $status Payment status.
-	 * @param array  $meta   Array of meta data related to the payment.
-	 */
-	echo apply_filters( 'give_receipt_notice', give_output_error( $notice_message, false, $notice_type ), $id, $status, $meta );
+	switch ( $status ) {
+		case 'publish':
+			$notice_message = __( 'Payment Complete: Thank you for your donation.', 'give' );
+			$notice_type    = 'success';
+			break;
+		case 'pending':
+			$notice_message = __( 'Payment Pending: Please contact the site owner for assistance.', 'give' );
+			$notice_type    = 'warning';
+			break;
+		case 'refunded':
+			$notice_message = __( 'Payment Refunded: Please contact the site owner for assistance.', 'give' );
+			$notice_type    = 'warning';
+			break;
+		case 'preapproval':
+			$notice_message = __( 'Payment Preapproved: Please contact the site owner for assistance.', 'give' );
+			$notice_type    = 'warning';
+			break;
+		case 'failed':
+			$notice_message = __( 'Payment Failed: Please contact the site owner for assistance.', 'give' );
+			$notice_type    = 'error';
+			break;
+		case 'cancelled':
+			$notice_message = __( 'Payment Cancelled: Please contact the site owner for assistance.', 'give' );
+			$notice_type    = 'error';
+			break;
+		case 'abandoned':
+			$notice_message = __( 'Payment Abandoned: Please contact the site owner for assistance.', 'give' );
+			$notice_type    = 'error';
+			break;
+		case 'revoked':
+			$notice_message = __( 'Payment Revoked: Please contact the site owner for assistance.', 'give' );
+			$notice_type    = 'error';
+			break;
+	}
+
+	if ( ! empty( $notice_message ) ) {
+		/**
+		 * Filters payment status notice for receipts.
+		 *
+		 * By default, a success, warning, or error notice appears on the receipt
+		 * with payment status. This filter allows the HTML markup
+		 * and messaging for that notice to be customized.
+		 *
+		 * @since 1.7.0
+		 *
+		 * @param string $notice HTML markup for the default notice.
+		 * @param int    $id     Post ID where the notice is displayed.
+		 * @param string $status Payment status.
+		 * @param array  $meta   Array of meta data related to the payment.
+		 */
+		echo apply_filters( 'give_receipt_notice', give_output_error( $notice_message, false, $notice_type ), $id, $status, $meta );
+	}
 }
 
 /**
