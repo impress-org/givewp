@@ -16,11 +16,12 @@ if ( empty( $payment ) ) {
 	return;
 }
 
-$meta     = give_get_payment_meta( $payment->ID );
-$donation = give_get_payment_form_title( $meta );
-$user     = give_get_payment_meta_user_info( $payment->ID );
-$email    = give_get_payment_user_email( $payment->ID );
-$status   = give_get_payment_status( $payment, true );
+$meta         = give_get_payment_meta( $payment->ID );
+$donation     = give_get_payment_form_title( $meta );
+$user         = give_get_payment_meta_user_info( $payment->ID );
+$email        = give_get_payment_user_email( $payment->ID );
+$status       = $payment->post_status;
+$status_label = give_get_payment_status( $payment, true );
 
 /**
  * Fires in the payment receipt shortcode, before the receipt main table.
