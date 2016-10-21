@@ -50,15 +50,10 @@ function give_edit_customer( $args ) {
 
 	$defaults = array(
 		'name'    => '',
-		'email'   => '',
 		'user_id' => 0
 	);
 
 	$customer_info = wp_parse_args( $customer_info, $defaults );
-
-	if ( ! is_email( $customer_info['email'] ) ) {
-		give_set_error( 'give-invalid-email', esc_html__( 'Please enter a valid email address.', 'give' ) );
-	}
 
 	if ( (int) $customer_info['user_id'] != (int) $customer->user_id ) {
 
@@ -117,7 +112,6 @@ function give_edit_customer( $args ) {
 	// Sanitize the inputs
 	$customer_data            = array();
 	$customer_data['name']    = strip_tags( stripslashes( $customer_info['name'] ) );
-	$customer_data['email']   = $customer_info['email'];
 	$customer_data['user_id'] = $customer_info['user_id'];
 
 	$customer_data = apply_filters( 'give_edit_customer_info', $customer_data, $customer_id );
@@ -139,7 +133,6 @@ function give_edit_customer( $args ) {
 	do_action( 'give_pre_edit_customer', $customer_id, $customer_data, $address );
 
 	$output         = array();
-	$previous_email = $customer->email;
 
 	if ( $customer->update( $customer_data ) ) {
 
@@ -149,12 +142,6 @@ function give_edit_customer( $args ) {
 
 		// Update some donation meta if we need to
 		$payments_array = explode( ',', $customer->payment_ids );
-
-		if ( $customer->email != $previous_email ) {
-			foreach ( $payments_array as $payment_id ) {
-				give_update_payment_meta( $payment_id, 'email', $customer->email );
-			}
-		}
 
 		if ( $customer->user_id != $previous_user_id ) {
 			foreach ( $payments_array as $payment_id ) {
