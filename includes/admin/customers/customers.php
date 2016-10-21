@@ -551,7 +551,7 @@ function give_customers_view( $customer ) {
 			</tbody>
 		</table>
 
-		<h3><?php esc_html_e( 'Completed Donations', 'give' ); ?></h3>
+		<h3><?php esc_html_e( 'Completed Forms', 'give' ); ?></h3>
 		<?php
 		$donations = give_get_users_completed_donations( $customer->email );
 		?>
