@@ -114,7 +114,7 @@ do_action( 'give_donation_receipt_before_table', $payment, $give_receipt_args );
 
 		<tr>
 			<td scope="row" class="give_receipt_payment_status"><strong><?php esc_html_e( 'Donation Status:', 'give' ); ?></strong></td>
-			<td class="give_receipt_payment_status <?php echo strtolower( $status ); ?>"><?php echo $status; ?></td>
+			<td class="give_receipt_payment_status <?php echo esc_attr( $status ); ?>"><?php echo $status_label; ?></td>
 		</tr>
 
 		<?php if ( filter_var( $give_receipt_args['payment_id'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
