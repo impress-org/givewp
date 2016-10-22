@@ -1025,7 +1025,7 @@ class Give_Donate_Form {
 		 * @since 1.8
 		 */
 		$is_close_form = apply_filters(
-			'give_is_close_form',
+			'give_is_close_donation_form',
 			(
 			give_is_setting_enabled( get_post_meta( $this->ID, '_give_goal_option', true ) ) )
 			&& give_is_setting_enabled( get_post_meta( $this->ID, '_give_close_form_when_goal_achieved', true ) )
