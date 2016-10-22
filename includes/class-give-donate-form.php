@@ -1019,11 +1019,22 @@ class Give_Donate_Form {
 	 * @return bool
 	 */
 	public function is_close_donation_form() {
-		return (
-				give_is_setting_enabled( get_post_meta( $this->ID, '_give_goal_option', true ) ) )
-				&& give_is_setting_enabled( get_post_meta( $this->ID, '_give_close_form_when_goal_achieved', true ) )
-				&& ( $this->get_goal() <= $this->get_earnings()
+
+		/**
+		 * Filter the close form result.
+		 *
+		 * @since 1.8
+		 */
+		$is_close_form = apply_filters(
+			'give_is_close_form',
+			(
+			give_is_setting_enabled( get_post_meta( $this->ID, '_give_goal_option', true ) ) )
+			&& give_is_setting_enabled( get_post_meta( $this->ID, '_give_close_form_when_goal_achieved', true ) )
+			&& ( $this->get_goal() <= $this->get_earnings()
+			)
 		);
+
+		return $is_close_form;
 	}
 
 	/**
