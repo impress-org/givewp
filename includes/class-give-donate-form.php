@@ -1030,7 +1030,8 @@ class Give_Donate_Form {
 			give_is_setting_enabled( get_post_meta( $this->ID, '_give_goal_option', true ) ) )
 			&& give_is_setting_enabled( get_post_meta( $this->ID, '_give_close_form_when_goal_achieved', true ) )
 			&& ( $this->get_goal() <= $this->get_earnings()
-			)
+			),
+			$this->ID
 		);
 
 		return $is_close_form;
