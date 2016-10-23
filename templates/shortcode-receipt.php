@@ -78,7 +78,7 @@ if ( true === $give_receipt_args['status_notice'] ) {
 		 * @param string $status Payment status.
 		 * @param array  $meta   Array of meta data related to the payment.
 		 */
-		echo apply_filters( 'give_receipt_notice', give_output_error( $notice_message, false, $notice_type ), $id, $status, $meta );
+		echo apply_filters( 'give_receipt_status_notice', give_output_error( $notice_message, false, $notice_type ), $id, $status, $meta );
 	}
 }
 
