@@ -97,13 +97,6 @@ function give_sanitize_amount( $number, $dp = false, $trim_zeros = false ) {
 	$number     = preg_replace( '/[^0-9\.]/', '', $number );
 	$default_dp = give_get_price_decimals();
 
-	// Format number of decimals in number.
-	if ( false !== $dp ) {
-		$dp     = intval( empty( $dp ) ? $default_dp : $dp );
-		$dp     = apply_filters( 'give_sanitize_amount_decimals', $dp, $number );
-		$number = number_format( floatval( $number ), $dp, '.', '' );
-	}
-
 	// Reset negative amount to zero.
 	if ( 0 > $number ) {
 		$number = number_format( 0, $default_dp, '.' );
@@ -115,6 +108,13 @@ function give_sanitize_amount( $number, $dp = false, $trim_zeros = false ) {
 		|| ( $default_dp > strlen( substr( $number, strpos( $number, '.' ) + 1 ) ) )
 	) {
 		$number = number_format( $number, $default_dp, '.', '' );
+	}
+
+	// Format number by custom number of decimals.
+	if ( false !== $dp ) {
+		$dp     = intval( empty( $dp ) ? $default_dp : $dp );
+		$dp     = apply_filters( 'give_sanitize_amount_decimals', $dp, $number );
+		$number = number_format( floatval( $number ), $dp, '.', '' );
 	}
 
 	// Trim zeros.
