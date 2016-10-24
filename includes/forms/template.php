@@ -87,7 +87,7 @@ function give_get_donation_form( $args = array() ) {
 			$display_thankyou_message = ! empty( $display_thankyou_message ) ? $display_thankyou_message : esc_html__( 'Thank you to all our donors, we have met our fundraising goal.', 'give' );
 
 			//Print thank you message.
-			apply_filters( 'give_goal_closed_output', give_output_error( $display_thankyou_message, true, 'success' ) );
+			echo apply_filters( 'give_goal_closed_output', give_output_error( $display_thankyou_message, false, 'success' ), $form->ID );
 
 		} else {
 
