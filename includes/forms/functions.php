@@ -164,8 +164,18 @@ function give_send_to_success_page( $query_string = null ) {
  */
 function give_send_back_to_checkout( $args = array() ) {
 
-	$url = ( isset( $_POST['give-current-url'] ) ) ? $_POST['give-current-url'] : '';
-	$form_id  = isset( $_POST['give-form-id'] ) ? $_POST['give-form-id'] : 0;
+	if ( isset( $_POST['give-current-url'] ) ) {
+		$url = sanitize_text_field( $_POST['give-current-url']);
+	} else {
+		wp_safe_redirect( home_url() );
+		give_die();
+	}
+
+	if ( isset( $_POST['give-form-id'] ) ) {
+		$form_id = sanitize_text_field( $_POST['give-form-id']);
+	} else {
+		$form_id = 0;
+	}
 
 	$defaults = array(
 		'form-id' => (int) $form_id
