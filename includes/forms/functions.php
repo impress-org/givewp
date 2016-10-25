@@ -164,7 +164,7 @@ function give_send_to_success_page( $query_string = null ) {
  */
 function give_send_back_to_checkout( $args = array() ) {
 
-	$redirect = ( isset( $_POST['give-current-url'] ) ) ? $_POST['give-current-url'] : '';
+	$url = ( isset( $_POST['give-current-url'] ) ) ? $_POST['give-current-url'] : '';
 	$form_id  = isset( $_POST['give-form-id'] ) ? $_POST['give-form-id'] : 0;
 	
 	$defaults = array(
@@ -178,7 +178,10 @@ function give_send_back_to_checkout( $args = array() ) {
 
 	$args = wp_parse_args( $args, $defaults );
 
-	$redirect = add_query_arg( $args, $redirect ) . '#give-form-' . $form_id . '-wrap';
+	// Remove query string before adding new query args.
+	$url_parts = explode( '?', $url );
+
+	$redirect = add_query_arg( $args, $url_parts[0] ) . '#give-form-' . $form_id . '-wrap';
 
 	wp_redirect( apply_filters( 'give_send_back_to_checkout', $redirect, $args ) );
 	give_die();
@@ -263,6 +266,21 @@ function give_listen_for_failed_payments() {
 
 add_action( 'template_redirect', 'give_listen_for_failed_payments' );
 
+/**
+ * Retrieve the Donation History page URI
+ *
+ * @access      public
+ * @since       1.7
+ *
+ * @return      string
+ */
+function give_get_history_page_uri() {
+	$give_options = give_get_settings();
+
+	$history_page = isset( $give_options['history_page'] ) ? get_permalink( absint( $give_options['history_page'] ) ) : get_bloginfo( 'url' );
+
+	return apply_filters( 'give_get_history_page_uri', $history_page );
+}
 
 /**
  * Check if a field is required
