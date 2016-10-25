@@ -188,12 +188,16 @@ function give_send_back_to_checkout( $args = array() ) {
 
 	$args = wp_parse_args( $args, $defaults );
 
-	// Remove query string before adding new query args.
-	$url_parts = explode( '?', $url );
+	// Merge URL query with $args to maintain third-party URL parameters after redirect.
+	$url_data = wp_parse_url( $url );
+	parse_str( $url_data['query'], $query );
+	$new_query = array_merge( $args, $query );
+	$new_query_string = http_build_query( $new_query );
 
-	$redirect = add_query_arg( $args, $url_parts[0] ) . '#give-form-' . $form_id . '-wrap';
+	// Assemble URL parts.
+	$redirect = home_url( '/' . $url_data['path'] . '?' . $new_query_string . '#give-form-' . $form_id . '-wrap' );
 
-	wp_redirect( apply_filters( 'give_send_back_to_checkout', $redirect, $args ) );
+	wp_safe_redirect( apply_filters( 'give_send_back_to_checkout', $redirect, $args ) );
 	give_die();
 }
 
