@@ -667,6 +667,8 @@ add_filter( 'give_payment_details_transaction_id-paypal', 'give_paypal_link_tran
  */
 function give_paypal_get_pending_donation_note( $pending_reason ) {
 
+	$note = '';
+
 	switch ( $pending_reason ) {
 
 		case 'echeck' :
@@ -727,4 +729,5 @@ function give_paypal_get_pending_donation_note( $pending_reason ) {
 	}
 
 	return $note;
+
 }
