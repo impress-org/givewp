@@ -340,7 +340,7 @@ add_action( 'give_verify_paypal_ipn', 'give_process_paypal_ipn' );
  * @since 1.0
  *
  * @param array $data       IPN Data
- * @param array $payment_id The payment ID from Give.
+ * @param int   $payment_id The payment ID from Give.
  *
  * @return void
  */
@@ -444,6 +444,7 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 		// Retrieve the total purchase amount (before PayPal)
 		$payment_amount = give_get_payment_amount( $payment_id );
 
+		//Check that the donation PP and local db amounts match.
 		if ( number_format( (float) $paypal_amount, 2 ) < number_format( (float) $payment_amount, 2 ) ) {
 			// The prices don't match
 			give_record_gateway_error(
@@ -460,6 +461,8 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 
 			return;
 		}
+
+
 		if ( $purchase_key != give_get_payment_key( $payment_id ) ) {
 			// Purchase keys don't match
 			give_record_gateway_error(
@@ -488,9 +491,9 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 			);
 			give_set_payment_transaction_id( $payment_id, $data['txn_id'] );
 			give_update_payment_status( $payment_id, 'publish' );
-		} else if ( 'pending' == $payment_status && isset( $data['pending_reason'] ) ) {
+		} elseif ( 'pending' == $payment_status && isset( $data['pending_reason'] ) ) {
 
-			// Look for possible pending reasons, such as an echeck
+			// Look for possible pending reasons, such as an echeck.
 			$note = '';
 
 			switch ( strtolower( $data['pending_reason'] ) ) {
@@ -540,7 +543,7 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 
 				case 'verify' :
 
-					$note = esc_html__( 'PayPal account is not verified. Verify account in order to accept this payment.', 'give' );
+					$note = esc_html__( 'PayPal account is not verified. Verify account in order to accept this donation.', 'give' );
 
 					break;
 
