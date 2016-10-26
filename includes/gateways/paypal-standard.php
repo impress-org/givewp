@@ -355,14 +355,12 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 		return;
 	}
 
-	// Collect payment details
-	$purchase_key   = isset( $data['invoice'] ) ? $data['invoice'] : $data['item_number'];
+	// Collect donation payment details.
 	$paypal_amount  = $data['mc_gross'];
 	$payment_status = strtolower( $data['payment_status'] );
 	$currency_code  = strtolower( $data['mc_currency'] );
 	$business_email = isset( $data['business'] ) && is_email( $data['business'] ) ? trim( $data['business'] ) : trim( $data['receiver_email'] );
 	$payment_meta   = give_get_payment_meta( $payment_id );
-	$pp_button_type = give_get_option( 'paypal_button_type' );
 
 	// Must be a PayPal standard IPN.
 	if ( give_get_payment_gateway( $payment_id ) != 'paypal' ) {
@@ -405,43 +403,15 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 		return;
 	}
 
-	if ( ! give_get_payment_user_email( $payment_id ) ) {
-
-		// No email associated with donation, so store email from PayPal.
-		give_update_payment_meta( $payment_id, '_give_payment_user_email', $data['payer_email'] );
-
-		// Setup and store the donors's details.
-		$address            = array();
-		$address['line1']   = ! empty( $data['address_street'] ) ? sanitize_text_field( $data['address_street'] ) : false;
-		$address['city']    = ! empty( $data['address_city'] ) ? sanitize_text_field( $data['address_city'] ) : false;
-		$address['state']   = ! empty( $data['address_state'] ) ? sanitize_text_field( $data['address_state'] ) : false;
-		$address['country'] = ! empty( $data['address_country_code'] ) ? sanitize_text_field( $data['address_country_code'] ) : false;
-		$address['zip']     = ! empty( $data['address_zip'] ) ? sanitize_text_field( $data['address_zip'] ) : false;
-
-		$user_info = array(
-			'id'         => '-1',
-			'email'      => sanitize_text_field( $data['payer_email'] ),
-			'first_name' => sanitize_text_field( $data['first_name'] ),
-			'last_name'  => sanitize_text_field( $data['last_name'] ),
-			'discount'   => '',
-			'address'    => $address
-		);
-
-		$payment_meta['user_info'] = $user_info;
-		give_update_payment_meta( $payment_id, '_give_payment_meta', $payment_meta );
-	}
-
 	//Process refunds & reversed.
 	if ( $payment_status == 'refunded' || $payment_status == 'reversed' ) {
-
-		// Process a refund
 		give_process_paypal_refund( $data, $payment_id );
-
 		return;
 	}
 
+	// Only complete payments once.
 	if ( get_post_status( $payment_id ) == 'publish' ) {
-		return; // Only complete payments once
+		return;
 	}
 
 	// Retrieve the total donation amount (before PayPal).
@@ -461,26 +431,6 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 		);
 		give_update_payment_status( $payment_id, 'failed' );
 		give_insert_payment_note( $payment_id, esc_html__( 'Payment failed due to invalid amount in PayPal IPN.', 'give' ) );
-
-		return;
-	}
-
-	//Verify the payment ID matches local db's if "standard" transaction is set.
-	//@see
-
-	if ( $pp_button_type == 'standard' && $purchase_key != give_get_payment_key( $payment_id ) ) {
-		// Purchase keys don't match
-		give_record_gateway_error(
-			esc_html__( 'IPN Error', 'give' ),
-			sprintf(
-			/* translators: %s: Paypal IPN response */
-				esc_html__( 'Invalid purchase key in IPN response. IPN data: %s', 'give' ),
-				json_encode( $data )
-			),
-			$payment_id
-		);
-		give_update_payment_status( $payment_id, 'failed' );
-		give_insert_payment_note( $payment_id, esc_html__( 'Payment failed due to invalid purchase key in PayPal IPN.', 'give' ) );
 
 		return;
 	}
@@ -715,7 +665,8 @@ add_filter( 'give_payment_details_transaction_id-paypal', 'give_paypal_link_tran
  *
  * @return string
  */
-function give_get_pending_donation_note( $pending_reason ) {
+function give_paypal_get_pending_donation_note( $pending_reason ) {
+
 	switch ( $pending_reason ) {
 
 		case 'echeck' :
