@@ -151,10 +151,9 @@ function give_send_to_success_page( $query_string = null ) {
 
 
 /**
- * Send back to checkout.
+ * Send back to donation form..
  *
- * Used to redirect a user back to the purchase
- * page if there are errors present.
+ * Used to redirect a user back to the donation form if there are errors present.
  *
  * @param array $args
  *
