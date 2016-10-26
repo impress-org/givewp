@@ -585,13 +585,11 @@ function give_get_payment_status( $payment, $return_label = false ) {
 
 	if ( array_key_exists( $payment->status, $statuses ) ) {
 		if ( true === $return_label ) {
+			// Return translated status label.
 			return $statuses[ $payment->status ];
 		} else {
-			// Account that our 'publish' status is labeled 'Complete'.
-			$post_status = 'publish' == $payment->status ? 'Complete' : $payment->post_status;
-
-			// Make sure we're matching cases, since they matter.
-			return array_search( strtolower( $post_status ), array_map( 'strtolower', $statuses ) );
+			// Return status value.
+			return $payment->status;
 		}
 	}
 
