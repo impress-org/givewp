@@ -66,7 +66,7 @@ function give_process_paypal_purchase( $purchase_data ) {
 			esc_html__( 'Payment Error', 'give' ),
 			sprintf(
 			/* translators: %s: payment data */
-				esc_html__( 'Payment creation failed before sending buyer to PayPal. Payment data: %s', 'give' ),
+				esc_html__( 'Payment creation failed before sending donor to PayPal. Payment data: %s', 'give' ),
 				json_encode( $payment_data )
 			),
 			$payment
@@ -127,7 +127,6 @@ function give_process_paypal_purchase( $purchase_data ) {
 			'amount'        => $purchase_data['price'],
 			// The all important donation amount.
 			'item_name'     => stripslashes( $item_name ),
-			// "Purpose" field pre-populated with Form Title.
 			'no_shipping'   => '1',
 			'shipping'      => '0',
 			'no_note'       => '1',
@@ -237,13 +236,13 @@ function give_process_paypal_ipn() {
 		} else {
 			// Loop through each POST
 			foreach ( $_POST as $key => $value ) {
-				// Encode the value and append the data
+				// Encode the value and append the data.
 				$encoded_data .= $arg_separator . "$key=" . urlencode( $value );
 			}
 		}
 	}
 
-	// Convert collected post data to an array
+	// Convert collected post data to an array.
 	parse_str( $encoded_data, $encoded_data_array );
 
 	foreach ( $encoded_data_array as $key => $value ) {
@@ -258,7 +257,7 @@ function give_process_paypal_ipn() {
 
 	}
 
-	//Validate IPN request w/ PayPal if user hasn't disabled this security measure
+	//Validate IPN request w/ PayPal if user hasn't disabled this security measure.
 	if ( ! give_get_option( 'disable_paypal_verification' ) ) {
 
 		$remote_post_vars = array(
@@ -278,7 +277,7 @@ function give_process_paypal_ipn() {
 			'body'        => $encoded_data_array
 		);
 
-		// Validate the IPN
+		// Validate the IPN.
 		$api_response = wp_remote_post( give_get_paypal_redirect(), $remote_post_vars );
 
 		if ( is_wp_error( $api_response ) ) {
@@ -324,10 +323,10 @@ function give_process_paypal_ipn() {
 	$payment_id = isset( $encoded_data_array['custom'] ) ? absint( $encoded_data_array['custom'] ) : 0;
 
 	if ( has_action( 'give_paypal_' . $encoded_data_array['txn_type'] ) ) {
-		// Allow PayPal IPN types to be processed separately
+		// Allow PayPal IPN types to be processed separately.
 		do_action( 'give_paypal_' . $encoded_data_array['txn_type'], $encoded_data_array, $payment_id );
 	} else {
-		// Fallback to web accept just in case the txn_type isn't present
+		// Fallback to web accept just in case the txn_type isn't present.
 		do_action( 'give_paypal_web_accept', $encoded_data_array, $payment_id );
 	}
 	exit;
@@ -340,12 +339,14 @@ add_action( 'give_verify_paypal_ipn', 'give_process_paypal_ipn' );
  *
  * @since 1.0
  *
- * @param array $data IPN Data
+ * @param array $data       IPN Data
+ * @param array $payment_id The payment ID from Give.
  *
  * @return void
  */
 function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 
+	//Only allow through these transaction types
 	if ( $data['txn_type'] != 'web_accept' && $data['txn_type'] != 'cart' && $data['payment_status'] != 'Refunded' ) {
 		return;
 	}
@@ -490,7 +491,6 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 		} else if ( 'pending' == $payment_status && isset( $data['pending_reason'] ) ) {
 
 			// Look for possible pending reasons, such as an echeck
-
 			$note = '';
 
 			switch ( strtolower( $data['pending_reason'] ) ) {
@@ -738,7 +738,7 @@ add_filter( 'give_get_payment_transaction_id-paypal', 'give_paypal_get_payment_t
  * @since  1.0
  *
  * @param  string $transaction_id The Transaction ID
- * @param  int    $payment_id The payment ID for this transaction
+ * @param  int    $payment_id     The payment ID for this transaction
  *
  * @return string                 A link to the PayPal transaction details
  */
