@@ -405,13 +405,13 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 
 	//Process refunds & reversed.
 	if ( $payment_status == 'refunded' || $payment_status == 'reversed' ) {
-		// Process a refund
 		give_process_paypal_refund( $data, $payment_id );
 		return;
 	}
 
+	// Only complete payments once.
 	if ( get_post_status( $payment_id ) == 'publish' ) {
-		return; // Only complete payments once
+		return;
 	}
 
 	// Retrieve the total donation amount (before PayPal).
@@ -665,7 +665,8 @@ add_filter( 'give_payment_details_transaction_id-paypal', 'give_paypal_link_tran
  *
  * @return string
  */
-function give_get_pending_donation_note( $pending_reason ) {
+function give_paypal_get_pending_donation_note( $pending_reason ) {
+
 	switch ( $pending_reason ) {
 
 		case 'echeck' :
