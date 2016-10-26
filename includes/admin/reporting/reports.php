@@ -39,13 +39,13 @@ function give_reports_page() {
 		<h2 class="nav-tab-wrapper">
 			<a href="<?php echo esc_url( add_query_arg( array(
 				'tab'              => 'reports',
-				'settings-updated' => false
-			), $current_page ) ); ?>" class="nav-tab <?php echo $active_tab == 'reports' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Reports', 'give' ); ?></a>
+				'settings-updated' => false,
+			), $current_page ) ); ?>" class="nav-tab <?php echo 'reports' === $active_tab ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Reports', 'give' ); ?></a>
 			<?php if ( current_user_can( 'export_give_reports' ) ) { ?>
 				<a href="<?php echo esc_url( add_query_arg( array(
 					'tab'              => 'export',
-					'settings-updated' => false
-				), $current_page ) ); ?>" class="nav-tab <?php echo $active_tab == 'export' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Export', 'give' ); ?></a>
+					'settings-updated' => false,
+				), $current_page ) ); ?>" class="nav-tab <?php echo 'export' === $active_tab ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Export', 'give' ); ?></a>
 			<?php }
 			/**
 			 * Fires in the report tabs.
