@@ -362,6 +362,7 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 	$currency_code  = strtolower( $data['mc_currency'] );
 	$business_email = isset( $data['business'] ) && is_email( $data['business'] ) ? trim( $data['business'] ) : trim( $data['receiver_email'] );
 	$payment_meta   = give_get_payment_meta( $payment_id );
+	$pp_button_type = give_get_option( 'paypal_button_type' );
 
 	// Must be a PayPal standard IPN.
 	if ( give_get_payment_gateway( $payment_id ) != 'paypal' ) {
@@ -464,8 +465,10 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 		return;
 	}
 
-	//Match
-	if ( $purchase_key != give_get_payment_key( $payment_id ) ) {
+	//Verify the payment ID matches local db's if "standard" transaction is set.
+	//@see
+
+	if ( $pp_button_type == 'standard' && $purchase_key != give_get_payment_key( $payment_id ) ) {
 		// Purchase keys don't match
 		give_record_gateway_error(
 			esc_html__( 'IPN Error', 'give' ),
@@ -517,7 +520,8 @@ add_action( 'give_paypal_web_accept', 'give_process_paypal_web_accept_and_cart',
  *
  * @since 1.0
  *
- * @param array $data IPN Data
+ * @param array $data       IPN Data
+ * @param int   $payment_id The payment ID.
  *
  * @return void
  */
