@@ -166,15 +166,17 @@ function give_send_back_to_checkout( $args = array() ) {
 
 	$url = isset( $_POST['give-current-url'] ) ? sanitize_text_field( $_POST['give-current-url'] ) : '';
 
-	if ( empty( $url ) ) {
-		wp_safe_redirect( home_url() );
-		give_die();
-	}
-
+	//Set the form_id.
 	if ( isset( $_POST['give-form-id'] ) ) {
 		$form_id = sanitize_text_field( $_POST['give-form-id'] );
 	} else {
 		$form_id = 0;
+	}
+
+	//Need a URL to continue. If none, redirect back to single form.
+	if ( empty( $url ) ) {
+		wp_safe_redirect( get_permalink( $form_id ) );
+		give_die();
 	}
 
 	$defaults = array(
@@ -196,8 +198,8 @@ function give_send_back_to_checkout( $args = array() ) {
 		parse_str( $url_data['query'], $query );
 
 		//Precaution: don't allow any CC info.
-		unset($query['card_number']);
-		unset($query['card_cvc']);
+		unset( $query['card_number'] );
+		unset( $query['card_cvc'] );
 
 	} else {
 		//No $url_data so pass empty array.
@@ -210,8 +212,10 @@ function give_send_back_to_checkout( $args = array() ) {
 	// Assemble URL parts.
 	$redirect = home_url( '/' . $url_data['path'] . '?' . $new_query_string . '#give-form-' . $form_id . '-wrap' );
 
+	//Redirect them.
 	wp_safe_redirect( apply_filters( 'give_send_back_to_checkout', $redirect, $args ) );
 	give_die();
+	
 }
 
 /**
