@@ -564,9 +564,9 @@ function give_check_for_existing_payment( $payment_id ) {
  *
  * @since 1.0
  *
- * @param WP_Post $payment      Payment ID.
- * @param bool    $return_label Whether to return the donation status or not.
- *
+ * @param WP_Post $payment      Payment object.
+ * @param bool    $return_label Whether to return the translated status label
+ *                              instead of status value. Default false.
  * @return bool|mixed True if payment status exists, false otherwise.
  */
 function give_get_payment_status( $payment, $return_label = false ) {
