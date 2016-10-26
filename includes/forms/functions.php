@@ -164,8 +164,18 @@ function give_send_to_success_page( $query_string = null ) {
  */
 function give_send_back_to_checkout( $args = array() ) {
 
-	$redirect = ( isset( $_POST['give-current-url'] ) ) ? $_POST['give-current-url'] : '';
-	$form_id  = isset( $_POST['give-form-id'] ) ? $_POST['give-form-id'] : 0;
+	if ( isset( $_POST['give-current-url'] ) ) {
+		$url = sanitize_text_field( $_POST['give-current-url']);
+	} else {
+		wp_safe_redirect( home_url() );
+		give_die();
+	}
+
+	if ( isset( $_POST['give-form-id'] ) ) {
+		$form_id = sanitize_text_field( $_POST['give-form-id']);
+	} else {
+		$form_id = 0;
+	}
 
 	$defaults = array(
 		'form-id' => (int) $form_id
@@ -178,9 +188,16 @@ function give_send_back_to_checkout( $args = array() ) {
 
 	$args = wp_parse_args( $args, $defaults );
 
-	$redirect = add_query_arg( $args, $redirect ) . '#give-form-' . $form_id . '-wrap';
+	// Merge URL query with $args to maintain third-party URL parameters after redirect.
+	$url_data = wp_parse_url( $url );
+	parse_str( $url_data['query'], $query );
+	$new_query = array_merge( $args, $query );
+	$new_query_string = http_build_query( $new_query );
 
-	wp_redirect( apply_filters( 'give_send_back_to_checkout', $redirect, $args ) );
+	// Assemble URL parts.
+	$redirect = home_url( '/' . $url_data['path'] . '?' . $new_query_string . '#give-form-' . $form_id . '-wrap' );
+
+	wp_safe_redirect( apply_filters( 'give_send_back_to_checkout', $redirect, $args ) );
 	give_die();
 }
 

@@ -212,10 +212,12 @@ function give_get_current_page_url() {
 	if ( is_front_page() ) {
 		$current_url = home_url( '/' );
 	} else {
-		$current_url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . untrailingslashit( $_SERVER['REQUEST_URI'] ) );
+		$http_host = sanitize_text_field( $_SERVER['HTTP_HOST'] );
+		$request_uri = sanitize_text_field( $_SERVER['REQUEST_URI'] );
+		$current_url = set_url_scheme( 'http://' . $http_host . untrailingslashit( $request_uri ) );
 	}
 
-	return apply_filters( 'give_get_current_page_url', esc_url( $current_url ) );
+	return apply_filters( 'give_get_current_page_url', $current_url );
 }
 
 
