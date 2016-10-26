@@ -215,7 +215,7 @@ function give_send_back_to_checkout( $args = array() ) {
 	//Redirect them.
 	wp_safe_redirect( apply_filters( 'give_send_back_to_checkout', $redirect, $args ) );
 	give_die();
-	
+
 }
 
 /**
