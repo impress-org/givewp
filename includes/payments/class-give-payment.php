@@ -1973,7 +1973,7 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Setup the email address for the purchase
+	 * Setup the email address for the donation.
 	 *
 	 * @since  1.5
 	 * @access private
