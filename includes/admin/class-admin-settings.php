@@ -282,7 +282,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				'css'        => '',
 				'default'    => '',
 				'desc'       => '',
-				'table_html' => true
+				'table_html' => true,
 			);
 
 			foreach ( $options as $value ) {

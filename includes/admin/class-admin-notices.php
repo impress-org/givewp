@@ -76,7 +76,7 @@ class Give_Notices {
 			echo '<p><a href="' . add_query_arg( array(
 					'give_action' => 'dismiss_notices',
 					'give_notice' => 'admin_ajax_inaccessible',
-			) ) . '">' . esc_attr__( 'Dismiss Notice', 'give' ) . '</a></p>';
+				) ) . '">' . esc_attr__( 'Dismiss Notice', 'give' ) . '</a></p>';
 			echo '</div>';
 		}
 
