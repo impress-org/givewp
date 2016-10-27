@@ -1171,9 +1171,11 @@ Tooltips
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 #give-dashboard-widgets-wrap .inside {
-  padding-right: 0;
   padding-top: 0;
-  padding-bottom: 0; }
+  padding-bottom: 0;
+  /* counteract extra padding in Income Report graph */ }
+  .give_forms_page_give-reports #give-dashboard-widgets-wrap .inside {
+    padding-right: 0; }
 
 #give-dashboard-widgets-wrap .postbox {
   margin-bottom: 10px; }
@@ -1186,11 +1188,13 @@ Tooltips
   #give-dashboard-widgets-wrap #give-graphs-filter .tablenav .actions {
     padding: 0; }
 
-#give-dashboard-widgets-wrap #give-date-range-options > span {
-  float: right;
-  line-height: 30px;
-  font-style: italic;
-  padding: 0 0 0 5px; }
+#give-dashboard-widgets-wrap #give-date-range-options {
+  float: right; }
+  #give-dashboard-widgets-wrap #give-date-range-options > span {
+    float: right;
+    line-height: 30px;
+    font-style: italic;
+    padding: 0 0 0 5px; }
 
 .give-graph .y1Axis {
   color: #66bb6a !important; }
