@@ -70,6 +70,8 @@ class Give_Addon_Activation_Banner {
 		add_action( 'current_screen', array( $this, 'give_addon_notice_ignore' ) );
 		add_action( 'admin_notices', array( $this, 'give_addon_activation_admin_notice' ) );
 
+		// File path of addon must be included in banner detail other addon activate meta will not delete.
+		add_action( 'deactivate_' . $this->get_plugin_file_name(), array( $this, 'remove_addon_activate_meta' ) );
 	}
 
 
@@ -96,7 +98,7 @@ class Give_Addon_Activation_Banner {
 	public function give_addon_activation_admin_notice() {
 
 		// Bailout.
-		if ( ! $this->is_plugin_page() ) {
+		if ( ! $this->is_plugin_page() || $this->user_id !== $this->plugin_activate_by ) {
 			return;
 		}
 
@@ -255,6 +257,77 @@ class Give_Addon_Activation_Banner {
 
 			add_user_meta( $user_id, $this->nag_meta_key, 'true', true );
 		}
+	}
+
+	/**
+	 * Setup user id to option
+	 *
+	 * @since  1.8
+	 * @access private
+	 */
+	private function add_addon_activate_meta() {
+		$user_id                  = get_option( $this->activate_by_meta_key );
+		$this->plugin_activate_by = (int) $user_id;
+
+		if ( ! $user_id ) {
+			add_option( $this->activate_by_meta_key, $this->user_id, '', 'no' );
+			$this->plugin_activate_by = (int) $this->user_id;
+		}
+	}
+
+
+	/**
+	 * Delete user id from option if plugin deactivated.
+	 *
+	 * @since  1.8
+	 * @access public
+	 */
+	public function remove_addon_activate_meta() {
+		$user_id = get_option( $this->activate_by_meta_key );
+
+		if ( $user_id ) {
+			delete_option( $this->activate_by_meta_key );
+		}
+	}
+
+
+	/**
+	 * Get plugin file name.
+	 *
+	 * @since   1.8
+	 * @access  private
+	 * @return mixed
+	 */
+	private function get_plugin_file_name() {
+		$active_plugins = get_option( 'active_plugins' );
+		$file_name      = '';
+
+		try {
+
+			// Check addon file path.
+			if ( ! empty( $this->banner_details['file'] ) ) {
+				$file_name = explode( '/', explode( '/plugins/', $this->banner_details['file'] )[1] )[0];
+
+				foreach ( $active_plugins as $plugin ) {
+					if ( false !== strpos( $plugin, $file_name ) ) {
+						$file_name = $plugin;
+						break;
+					}
+				}
+			} else {
+				throw new Exception( __( "File path must be added of {$this->banner_details['name']} addon in banner details.", 'give' ) );
+			}
+
+			// Check plugin path calculated by addon file path.
+			if ( empty( $file_name ) ) {
+				throw new Exception( __( "Empty Addon plugin path for {$this->banner_details['name']} addon.", 'give' ) );
+			}
+
+		} catch ( Exception $e ) {
+			echo $e->getMessage();
+		}
+
+		return $file_name;
 	}
 
 }
