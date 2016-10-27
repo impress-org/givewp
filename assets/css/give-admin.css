@@ -1192,10 +1192,6 @@ Tooltips
   font-style: italic;
   padding: 0 5px 0 0; }
 
-#give-dashboard-widgets-wrap a.give-refresh-reports-button {
-  display: inline-block;
-  clear: right; }
-
 .give-graph .y1Axis {
   color: #66bb6a !important; }
 
@@ -2389,6 +2385,29 @@ input.give-price-field {
 .mce-primary.mce-give-primary button {
   padding-right: 10px;
   padding-left: 10px; }
+
+/*=Admin Buttons w/ Icons
+--------------------------------------*/
+/* extends .wp-core-ui .button */
+.wp-core-ui .give-admin-button {
+  padding-left: 7px;
+  padding-right: 7px; }
+
+/* matches style of Add Media and Give Shortcodes buttons */
+.give-admin-button-icon {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  vertical-align: text-top;
+  margin: 0 2px;
+  /* specific DashIcon styles */ }
+  .give-admin-button-icon:before {
+    font: 400 18px/1 dashicons;
+    speak: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale; }
+  .give-admin-button-icon-update:before {
+    content: "\f463"; }
 
 /* =Primary button in shortcode tinymce dialog
 -------------------------------------------------------------- */
