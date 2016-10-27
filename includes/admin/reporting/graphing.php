@@ -189,6 +189,7 @@ function give_reports_graph() {
 		<div class="metabox-holder" style="padding-top: 0;">
 			<div class="postbox">
 				<div class="inside">
+					<?php give_reports_graph_controls(); ?>
 					<?php
 					$graph = new Give_Graph( $data );
 					$graph->set( 'x_mode', 'time' );
@@ -201,7 +202,6 @@ function give_reports_graph() {
 					?>
 				</div>
 			</div>
-			<?php give_reports_graph_controls(); ?>
 			<table class="widefat reports-table alignleft" style="max-width:450px">
 				<tbody>
 				<tr>
