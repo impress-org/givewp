@@ -387,8 +387,8 @@ function give_admin_hide_notice_shortly_js() {
 			$('.give-license-notice').on('click', 'button.notice-dismiss', function (e) {
 				e.preventDefault();
 
-				var parent = $(this).parents('.give-license-notice'),
-					dismiss_notice_url = parent.data('dismiss-notice-shortly');
+				var parent             = $(this).parents('.give-license-notice'),
+				    dismiss_notice_url = parent.data('dismiss-notice-shortly');
 
 				if (dismiss_notice_url) {
 					window.location.assign(dismiss_notice_url);
