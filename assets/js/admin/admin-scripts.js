@@ -262,6 +262,7 @@ jQuery.noConflict();
 		init: function () {
 			this.toggle_options();
 			this.main_setting_update_notice();
+			this.verify_settings();
 		},
 
 		toggle_options: function () {
@@ -339,8 +340,24 @@ jQuery.noConflict();
 					5000
 				);
 			}
-		}
+		},
 
+		verify_settings: function () {
+			var success_setting = $('#success_page');
+			var failure_setting = $('#failure_page');
+
+			/**
+			 * Verify success and failure page.
+			 */
+			success_setting.add(failure_setting).change(function () {
+				if (success_setting.val() === failure_setting.val()) {
+					alert(give_vars.matched_success_failure_page);
+
+					// Unset setting field.
+					$(this).val('');
+				}
+			}).change();
+		}
 	};
 
 	/**
