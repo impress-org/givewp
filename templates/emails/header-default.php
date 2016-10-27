@@ -60,7 +60,8 @@ $header_content_h1 = "
 ";
 $header_img_id = give_get_option( 'email_logo_id', '' );
 $logo_size = give_get_option( 'email_logo_size', '' );
-$header_img = $header_img_id == '' ? give_get_option( 'email_logo' ) : wp_get_attachment_image_src( $header_img_id, $logo_size )[0];
+$header_img_array = wp_get_attachment_image_src( $header_img_id, $logo_size );
+$header_img = is_array( $header_img_array ) ? $header_img_array[0] : give_get_option( 'email_logo', '' );
 ?>
 <!DOCTYPE html>
 <html>
