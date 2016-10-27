@@ -320,7 +320,7 @@ function give_trigger_purchase_delete( $data ) {
 	}
 }
 
-add_action( 'give_delete_donation', 'give_trigger_purchase_delete' );
+add_action( 'give_delete_payment', 'give_trigger_purchase_delete' );
 
 /**
  * AJAX Store Donation Note
@@ -397,4 +397,4 @@ function give_ajax_delete_payment_note() {
 
 }
 
-add_action( 'wp_ajax_give_delete_donation_note', 'give_ajax_delete_payment_note' );
+add_action( 'wp_ajax_give_delete_payment_note', 'give_ajax_delete_payment_note' );

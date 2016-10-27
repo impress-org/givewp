@@ -449,7 +449,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			wp_nonce_url(
 				add_query_arg(
 					array(
-						'give-action' => 'delete_donation',
+						'give-action' => 'delete_payment',
 						'purchase_id' => $payment->ID,
 					),
 					$this->base_url
