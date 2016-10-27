@@ -48,11 +48,11 @@ function give_get_donation_form( $args = array() ) {
 
 	$payment_mode = give_get_chosen_gateway( $form->ID );
 
-	$form_action = esc_url( add_query_arg( apply_filters( 'give_form_action_args', array(
+	$form_action = add_query_arg( apply_filters( 'give_form_action_args', array(
 		'payment-mode' => $payment_mode,
 	) ),
 		give_get_current_page_url()
-	) );
+	);
 
 	//Sanity Check: Donation form not published or user doesn't have permission to view drafts.
 	if ( 'publish' !== $form->post_status && ! current_user_can( 'edit_give_forms', $form->ID ) ) {
@@ -108,7 +108,7 @@ function give_get_donation_form( $args = array() ) {
 			do_action( 'give_pre_form', $form->ID, $args );
 			?>
 
-			<form id="give-form-<?php echo $form_id; ?>" class="<?php echo $form_classes; ?>" action="<?php echo $form_action; ?>" method="post">
+			<form id="give-form-<?php echo $form_id; ?>" class="<?php echo $form_classes; ?>" action="<?php echo esc_url_raw( $form_action ); ?>" method="post">
 				<input type="hidden" name="give-form-id" value="<?php echo $form->ID; ?>"/>
 				<input type="hidden" name="give-form-title" value="<?php echo htmlentities( $form->post_title ); ?>"/>
 				<input type="hidden" name="give-current-url" value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
