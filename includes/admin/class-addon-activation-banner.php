@@ -174,7 +174,8 @@ class Give_Addon_Activation_Banner {
 						<?php //Point them to your settings page.
 						if ( isset( $this->banner_details['settings_url'] ) ) { ?>
 							<a href="<?php echo $this->banner_details['settings_url']; ?>">
-								<span class="dashicons dashicons-admin-settings"></span><?php esc_html_e( 'Go to Settings', 'give' ); ?></a>
+								<span class="dashicons dashicons-admin-settings"></span><?php esc_html_e( 'Go to Settings', 'give' ); ?>
+							</a>
 						<?php } ?>
 
 						<?php
@@ -225,7 +226,7 @@ class Give_Addon_Activation_Banner {
 
 			//Get the global user
 			$current_user = wp_get_current_user();
-			$user_id = $current_user->ID;
+			$user_id      = $current_user->ID;
 
 			add_user_meta( $user_id, $this->nag_meta_key, 'true', true );
 		}
