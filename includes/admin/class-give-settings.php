@@ -543,6 +543,19 @@ class Give_Plugin_Settings {
 							'type' => 'file'
 						),
 						array(
+						    'id'      => 'email_logo_size',
+						    'name'    => esc_html( 'Select Logo Size', 'give' ),
+						    'desc'    => esc_html( 'Choose which size to display logo', 'give' ),
+						    'type'    => 'select',
+						    'options' => array(
+						        'full' 		=> __( 'Full', 'give' ),
+						        'large'   	=> __( 'Large', 'give' ),
+						        'medium'    => __( 'Medium', 'give' ),
+						        'thumbnail' => __( 'Thumbnail', 'give' )
+						    ),
+						    'default' => 'full',
+						),
+						array(
 							'id'      => 'from_name',
 							'name'    => esc_html__( 'From Name', 'give' ),
 							'desc'    => esc_html__( 'The name donation receipts are said to come from. This is most likely the name of your organization or website.', 'give' ),

@@ -58,7 +58,9 @@ $header_content_h1 = "
 	font-weight: 500;
 	line-height: 1.2;
 ";
-$header_img = give_get_option( 'email_logo', '' );
+$header_img_id = give_get_option( 'email_logo_id', '' );
+$logo_size = give_get_option( 'email_logo_size', '' );
+$header_img = $header_img_id == '' ? give_get_option( 'email_logo' ) : wp_get_attachment_image_src( $header_img_id, $logo_size )[0];
 ?>
 <!DOCTYPE html>
 <html>
