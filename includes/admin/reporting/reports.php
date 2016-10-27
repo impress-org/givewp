@@ -325,7 +325,7 @@ add_action( 'give_reports_view_gateways', 'give_reports_gateways_table' );
 function give_reports_earnings() {
 	?>
 	<div class="tablenav top reports-table-nav">
-		<h3 class="alignleft reports-earnings-title"><span><?php esc_html_e( 'Income Over Time', 'give' ); ?></span></h3>
+		<h3 class="alignleft reports-earnings-title"><span><?php esc_html_e( 'Income Report', 'give' ); ?></span></h3>
 	</div>
 	<?php
 	give_reports_graph();

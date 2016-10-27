@@ -431,7 +431,7 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 	<h3><span><?php
 		printf(
 			/* translators: %s: form title */
-			esc_html__( 'Income Over Time for %s', 'give' ),
+			esc_html__( 'Income Report for %s', 'give' ),
 			get_the_title( $form_id )
 		);
 	?></span></h3>
