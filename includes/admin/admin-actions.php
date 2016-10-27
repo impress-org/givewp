@@ -74,7 +74,9 @@ add_action( 'admin_init', 'give_hide_subscription_notices' );
 
 
 /**
- * Verify settings..
+ * Verify settings.
+ *
+ * 1. success and failure page should not be same.
  *
  * @since 1.8
  */
