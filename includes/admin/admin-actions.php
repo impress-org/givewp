@@ -71,3 +71,49 @@ function give_hide_subscription_notices() {
 }
 
 add_action( 'admin_init', 'give_hide_subscription_notices' );
+
+
+/**
+ * Verify settings..
+ *
+ * @since 1.8
+ */
+function give_verify_settings() {
+	// Bailout.
+	if ( ! isset( $_POST['_give-save-settings'] ) ) {
+		return;
+	}
+
+	$is_redirect = false;
+
+	switch ( esc_attr( $_GET['tab'] ) ) {
+		case 'general' :
+			// Check if success page and failure page are same or not.
+			if (
+				isset( $_POST['success_page'] )
+				&& isset( $_POST['failure_page'] )
+				&& ( $_POST['success_page'] === $_POST['failure_page'] )
+			) {
+				$is_redirect = true;
+			}
+			break;
+	}
+
+	// Bailout.
+	if ( ! $is_redirect ) {
+		return;
+	}
+
+
+	// Redirect.
+	wp_safe_redirect(
+		add_query_arg(
+			'give-message',
+			'matched-success-failure-page',
+			esc_url_raw( $_SERVER['REQUEST_URI'] )
+		)
+	);
+	exit();
+}
+
+add_action( 'admin_init', 'give_verify_settings' );
