@@ -154,7 +154,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			$classes     = 'give-notice settings-error notice is-dismissible';
 
 			self::$errors   = apply_filters( self::$setting_filter_prefix . '_error_notices', self::$errors );
-			self::$messages = apply_filters( self::$setting_filter_prefix . '_update_notices', self::$errors );
+			self::$messages = apply_filters( self::$setting_filter_prefix . '_update_notices', self::$messages );
 
 			if ( 0 < count( self::$errors ) ) {
 				foreach ( self::$errors as $code => $message ) {
