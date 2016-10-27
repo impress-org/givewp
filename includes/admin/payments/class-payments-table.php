@@ -256,7 +256,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			) ) ), $current === 'abandoned' ? ' class="current"' : '', esc_html__( 'Abandoned', 'give' ) . $abandoned_count ),
 		);
 
-		return apply_filters( 'give_donations_table_views', $views );
+		return apply_filters( 'give_payments_table_views', $views );
 	}
 
 	/**
@@ -277,7 +277,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			'details'       => esc_html__( 'Details', 'give' ),
 		);
 
-		return apply_filters( 'give_donations_table_columns', $columns );
+		return apply_filters( 'give_payments_table_columns', $columns );
 	}
 
 	/**
@@ -296,7 +296,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			'date'          => array( 'date', false ),
 		);
 
-		return apply_filters( 'give_donations_table_sortable_columns', $columns );
+		return apply_filters( 'give_payments_table_sortable_columns', $columns );
 	}
 
 	/**
@@ -380,7 +380,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 		}
 
-		return apply_filters( 'give_donations_table_column', $value, $payment->ID, $column_name );
+		return apply_filters( 'give_payments_table_column', $value, $payment->ID, $column_name );
 	}
 
 	/**
@@ -403,7 +403,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 		$value = '<a href="mailto:' . $email . '" data-tooltip="' . __( 'Email donor', 'give' ) . '">' . $email . '</a>';
 
-		return apply_filters( 'give_donations_table_column', $value, $payment->ID, 'email' );
+		return apply_filters( 'give_payments_table_column', $value, $payment->ID, 'email' );
 	}
 
 	/**
@@ -460,7 +460,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			esc_html__( 'Delete', 'give' )
 		);
 
-		return apply_filters( 'give_donation_row_actions', $actions, $payment );
+		return apply_filters( 'give_payment_row_actions', $actions, $payment );
 	}
 
 
@@ -537,7 +537,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			$value = '<a href="' . esc_url( admin_url( "edit.php?post_type=give_forms&page=give-payment-history&s=$email" ) ) . '">' . esc_html__( '(donor missing)', 'give' ) . '</a>';
 		}
 
-		return apply_filters( 'give_donations_table_column', $value, $payment->ID, 'donor' );
+		return apply_filters( 'give_payments_table_column', $value, $payment->ID, 'donor' );
 	}
 
 	/**
@@ -560,7 +560,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			'resend-receipt'       => esc_html__( 'Resend Email Receipts', 'give' ),
 		);
 
-		return apply_filters( 'give_donations_table_bulk_actions', $actions );
+		return apply_filters( 'give_payments_table_bulk_actions', $actions );
 	}
 
 	/**
