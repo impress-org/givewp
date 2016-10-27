@@ -23,21 +23,32 @@ class Give_Addon_Activation_Banner {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param $_banner_details
+	 * @param array $_banner_details {
+	 *                               'file'              => __FILE__, // (required) Directory path to the main plugin file
+	 *                               'name'              => __( 'Authorize.net Gateway', 'give-authorize' ), // (required) Name of the Add-on
+	 *                               'version'           => GIVE_AUTHORIZE_VERSION, // (required)The most current version
+	 *                               'documentation_url' => 'https://givewp.com/documentation/add-ons/authorize-net-gateway/',// (required)
+	 *                               'support_url'       => 'https://givewp.com/support/', // (required)Location of Add-on settings page, leave blank to hide
+	 *                               'testing'           => false, // (required) Never leave as "true" in production!!!
+	 *                               }
 	 */
 	function __construct( $_banner_details ) {
-
 		$current_user = wp_get_current_user();
 
-		$this->banner_details = $_banner_details;
-		$this->test_mode      = ( $this->banner_details['testing'] == 'true' ) ? true : false;
-		$this->nag_meta_key   = 'give_addon_activation_ignore_' . sanitize_title( $this->banner_details['name'] );
+		$this->plugin_activate_by   = 0;
+		$this->banner_details       = $_banner_details;
+		$this->test_mode            = ( $this->banner_details['testing'] == 'true' ) ? true : false;
+		$this->nag_meta_key         = 'give_addon_activation_ignore_' . sanitize_title( $this->banner_details['name'] );
+		$this->activate_by_meta_key = 'give_addon_' . sanitize_title( $this->banner_details['name'] ) . '_active_by_user';
 
 		//Get current user
 		$this->user_id = $current_user->ID;
 
 		// Set up hooks.
 		$this->init();
+
+		// Store user id who activate plugin.
+		$this->add_addon_activate_meta();
 	}
 
 	/**
@@ -74,6 +85,7 @@ class Give_Addon_Activation_Banner {
 
 		return ( $screen->parent_file === 'plugins.php' );
 	}
+
 
 	/**
 	 * Give Addon Activation Banner
