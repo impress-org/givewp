@@ -14,9 +14,13 @@
 #give-dashboard-widgets-wrap {
 
   .inside {
-    padding-left: 0;
     padding-top: 0;
     padding-bottom: 0;
+
+    /* counteract extra padding in Income Report graph */
+    .give_forms_page_give-reports & {
+      padding-left: 0;
+    }
   }
 
   .postbox {
@@ -37,6 +41,8 @@
   }
 
   #give-date-range-options {
+    float: left;
+
     > span {
       float: left;
       line-height: 30px;
