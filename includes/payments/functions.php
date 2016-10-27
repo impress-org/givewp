@@ -280,11 +280,11 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
 	/**
 	 * Fires before deleting payment.
 	 *
-	 * @since 1.7
+	 * @since 1.0
 	 *
 	 * @param int $payment_id Payment ID.
 	 */
-	do_action( 'give_donation_delete', $payment_id );
+	do_action( 'give_payment_delete', $payment_id );
 
 	if ( $customer->id && $update_customer ) {
 
@@ -311,11 +311,11 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
 	/**
 	 * Fires after payment deleted.
 	 *
-	 * @since 1.7
+	 * @since 1.0
 	 *
 	 * @param int $payment_id Payment ID.
 	 */
-	do_action( 'give_donation_deleted', $payment_id );
+	do_action( 'give_payment_deleted', $payment_id );
 }
 
 /**
@@ -615,7 +615,7 @@ function give_get_payment_statuses() {
 		'revoked'     => esc_html__( 'Revoked', 'give' ),
 	);
 
-	return apply_filters( 'give_donation_statuses', $payment_statuses );
+	return apply_filters( 'give_payment_statuses', $payment_statuses );
 }
 
 /**
@@ -839,7 +839,7 @@ function give_get_total_earnings() {
 				 * which results in duplicated earnings for the very first donation.
 				 */
 
-				if ( did_action( 'give_update_donation_status' ) ) {
+				if ( did_action( 'give_update_payment_status' ) ) {
 					array_pop( $payments );
 				}
 
@@ -995,7 +995,7 @@ function give_is_guest_payment( $payment_id ) {
 	$payment_user_id  = give_get_payment_user_id( $payment_id );
 	$is_guest_payment = ! empty( $payment_user_id ) && $payment_user_id > 0 ? false : true;
 
-	return (bool) apply_filters( 'give_is_guest_donation', $is_guest_payment, $payment_id );
+	return (bool) apply_filters( 'give_is_guest_payment', $is_guest_payment, $payment_id );
 }
 
 /**
@@ -1100,7 +1100,7 @@ function give_get_payment_currency_code( $payment_id = 0 ) {
 function give_get_payment_currency( $payment_id = 0 ) {
 	$currency = give_get_payment_currency_code( $payment_id );
 
-	return apply_filters( 'give_donation_currency', give_get_currency_name( $currency ), $payment_id );
+	return apply_filters( 'give_payment_currency', give_get_currency_name( $currency ), $payment_id );
 }
 
 /**
@@ -1290,7 +1290,7 @@ function give_get_payment_amount( $payment_id ) {
 
 	$payment = new Give_Payment( $payment_id );
 
-	return apply_filters( 'give_donation_amount', floatval( $payment->total ), $payment_id );
+	return apply_filters( 'give_payment_amount', floatval( $payment->total ), $payment_id );
 }
 
 /**
@@ -1532,7 +1532,7 @@ function give_delete_payment_note( $comment_id = 0, $payment_id = 0 ) {
 	 * @param int $comment_id Note ID.
 	 * @param int $payment_id Payment ID.
 	 */
-	do_action( 'give_pre_delete_donation_note', $comment_id, $payment_id );
+	do_action( 'give_pre_delete_payment_note', $comment_id, $payment_id );
 
 	$ret = wp_delete_comment( $comment_id, true );
 
@@ -1544,7 +1544,7 @@ function give_delete_payment_note( $comment_id = 0, $payment_id = 0 ) {
 	 * @param int $comment_id Note ID.
 	 * @param int $payment_id Payment ID.
 	 */
-	do_action( 'give_post_delete_donation_note', $comment_id, $payment_id );
+	do_action( 'give_post_delete_payment_note', $comment_id, $payment_id );
 
 	return $ret;
 }
@@ -1575,11 +1575,11 @@ function give_get_payment_note_html( $note, $payment_id = 0 ) {
 	$date_format = give_date_format() . ', ' . get_option( 'time_format' );
 
 	$delete_note_url = wp_nonce_url( add_query_arg( array(
-			'give-action' => 'delete_donation_note',
+			'give-action' => 'delete_payment_note',
 			'note_id'     => $note->comment_ID,
 			'payment_id'  => $payment_id,
 		) ),
-		'give_delete_donation_note_' . $note->comment_ID
+		'give_delete_payment_note_' . $note->comment_ID
 	);
 
 	$note_html = '<div class="give-payment-note" id="give-payment-note-' . $note->comment_ID . '">';

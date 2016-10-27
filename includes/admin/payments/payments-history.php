@@ -44,7 +44,7 @@ function give_payment_history_page() {
 		 *
 		 * @since 1.7
 		 */
-		do_action( 'give_donations_page_top' );
+		do_action( 'give_payments_page_top' );
 		?>
 
 		<form id="give-payments-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ); ?>">
@@ -61,7 +61,7 @@ function give_payment_history_page() {
 		 *
 		 * @since 1.7
 		 */
-		do_action( 'give_donations_page_bottom' );
+		do_action( 'give_payments_page_bottom' );
 		?>
 
 	</div>
