@@ -69,6 +69,11 @@ function give_reports_page() {
 		 */
 		do_action( 'give_reports_page_top' );
 
+		// Set $active_tab prior to hook firing.
+		if ( in_array( $active_tab, array_keys( $views ) ) ) {
+			$active_tab = 'reports';
+		}
+
 		/**
 		 * Fires the report page active tab.
 		 *
