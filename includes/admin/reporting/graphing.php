@@ -510,8 +510,8 @@ function give_reports_graph_controls() {
 	 */
 	do_action( 'give_report_graph_controls_before' );
 	?>
-	<form id="give-graphs-filter" method="get" class="alignright">
-		<div class="tablenav top alignright">
+	<form id="give-graphs-filter" method="get">
+		<div class="tablenav top">
 			<div class="actions">
 
 				<input type="hidden" name="post_type" value="give_forms" />
@@ -522,7 +522,7 @@ function give_reports_graph_controls() {
 					<input type="hidden" name="form-id" value="<?php echo absint( $_GET['form-id'] ); ?>" />
 				<?php endif; ?>
 
-				<div id="give-graphs-date-options-wrap" class="alignright">
+				<div id="give-graphs-date-options-wrap">
 					<select id="give-graphs-date-options" name="range">
 						<?php foreach ( $date_options as $key => $option ) : ?>
 							<option value="<?php echo esc_attr( $key ); ?>"<?php selected( $key, $dates['range'] ); ?>><?php echo esc_html( $option ); ?></option>
