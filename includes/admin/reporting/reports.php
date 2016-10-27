@@ -241,8 +241,6 @@ function give_reports_form_details() {
 	?>
 	<div class="tablenav top reports-forms-details-wrap">
 		<div class="actions bulkactions">
-			<?php give_report_views(); ?>
-			&nbsp;
 			<button onclick="history.go(-1);" class="button-secondary"><?php esc_html_e( 'Go Back', 'give' ); ?></button>
 		</div>
 	</div>
@@ -328,8 +326,6 @@ function give_reports_earnings() {
 	?>
 	<div class="tablenav top reports-table-nav">
 		<h3 class="alignleft reports-earnings-title"><span><?php esc_html_e( 'Income Over Time', 'give' ); ?></span></h3>
-
-		<div class="alignright actions reports-views-wrap"><?php give_report_views(); ?></div>
 	</div>
 	<?php
 	give_reports_graph();

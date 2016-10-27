@@ -111,8 +111,7 @@ class Give_Gateawy_Reports_Table extends WP_List_Table {
 	 * @return void
 	 */
 	public function bulk_actions( $which = '' ) {
-		// These aren't really bulk actions but this outputs the markup in the right place
-		give_report_views();
+
 	}
 
 	/**
