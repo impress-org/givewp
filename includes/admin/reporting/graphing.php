@@ -808,7 +808,13 @@ function give_reports_refresh_button() {
 		'give-message' => 'refreshed-reports'
 	) ), 'give-refresh-reports' );
 
-	echo '<a href="' . $url . '" data-tooltip="' . esc_attr__( 'Clicking this will clear the reports cache.', 'give' ) . '" data-tooltip-my-position="right center"  data-tooltip-target-position="left center" class="button alignright give-refresh-reports-button give-tooltip">' . esc_html__( 'Refresh Reports', 'give' ) . '</a>';
+	echo '<a href="'
+	     . esc_url_raw( $url )
+	     . '" data-tooltip="'. esc_attr__( 'Clicking this will clear the reports cache.', 'give' )
+	     . '" data-tooltip-my-position="right center"  data-tooltip-target-position="left center" class="button alignright give-admin-button give-tooltip">'
+	     . '<span class="give-admin-button-icon give-admin-button-icon-update"></span>'
+	     . esc_html__( 'Refresh Report Data', 'give' )
+	     . '</a>';
 
 }
 
