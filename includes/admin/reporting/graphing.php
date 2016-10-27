@@ -496,7 +496,7 @@ function give_reports_graph_controls() {
 	) );
 
 	$dates   = give_get_report_dates();
-	$display = $dates['range'] == 'other' ? '' : 'style="display:none;"';
+	$display = $dates['range'] == 'other' ? '' : 'display: none;';
 	$view    = give_get_reporting_view();
 
 	if ( empty( $dates['day_end'] ) ) {
@@ -529,7 +529,7 @@ function give_reports_graph_controls() {
 						<?php endforeach; ?>
 					</select>
 
-					<div id="give-date-range-options" <?php echo esc_attr( $display ); ?>>
+					<div id="give-date-range-options" style="<?php echo esc_attr( $display ); ?>">
 						<span class="screen-reader-text"><?php esc_html_e( 'From', 'give' ); ?>&nbsp;</span>
 						<select id="give-graphs-month-start" name="m_start" aria-label="Start Month">
 							<?php for ( $i = 1; $i <= 12; $i ++ ) : ?>
