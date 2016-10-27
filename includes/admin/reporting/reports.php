@@ -103,7 +103,7 @@ function give_reports_default_views() {
 		'earnings' => esc_html__( 'Income', 'give' ),
 		'forms'    => esc_html__( 'Forms', 'give' ),
 		'donors'   => esc_html__( 'Donors', 'give' ),
-		'gateways' => esc_html__( 'Payment Methods', 'give' )
+		'gateways' => esc_html__( 'Donation Methods', 'give' )
 	);
 
 	$views = apply_filters( 'give_report_views', $views );
