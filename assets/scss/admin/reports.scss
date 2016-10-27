@@ -14,6 +14,7 @@
 #give-dashboard-widgets-wrap {
 
   .inside {
+    padding-left: 0;
     padding-top: 0;
     padding-bottom: 0;
   }
@@ -28,7 +29,7 @@
 
   #give-graphs-filter {
     .tablenav {
-      margin: 0;
+      margin: 0 0 0 17px;
       .actions {
         padding: 0;
       }
@@ -36,10 +37,6 @@
   }
 
   #give-date-range-options {
-    clear: both;
-    overflow: hidden;
-    padding: 8px 0;
-
     > span {
       float: left;
       line-height: 30px;
@@ -47,16 +44,11 @@
       padding: 0 5px 0 0;
     }
 
-    #give-graphs-year-end {
-      margin-right: 0;
-    }
-
   }
 
   a.give-refresh-reports-button {
     display: inline-block;
     clear: right;
-    margin: 8px 0 0;
   }
 
 }
