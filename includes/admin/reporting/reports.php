@@ -31,16 +31,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_reports_page() {
 	$current_page = admin_url( 'edit.php?post_type=give_forms&page=give-reports' );
 	$active_tab   = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'earnings';
+	$views = give_reports_default_views();
 	?>
 	<div class="wrap">
 
 		<h1 class="screen-reader-text"><?php echo get_admin_page_title(); ?></h1>
 
 		<h2 class="nav-tab-wrapper">
-			<a href="<?php echo esc_url( add_query_arg( array(
-				'tab'              => 'reports',
-				'settings-updated' => false,
-			), $current_page ) ); ?>" class="nav-tab <?php echo 'reports' === $active_tab ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Reports', 'give' ); ?></a>
+			<?php foreach ( $views as $tab => $label ) { ?>
+				<a href="<?php echo esc_url( add_query_arg( array(
+					'tab'              => $tab,
+					'settings-updated' => false,
+				), $current_page ) ); ?>" class="nav-tab <?php echo $tab === $active_tab ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php echo esc_html( $label ); ?></a>
+			<?php } ?>
 			<?php if ( current_user_can( 'export_give_reports' ) ) { ?>
 				<a href="<?php echo esc_url( add_query_arg( array(
 					'tab'              => 'export',
