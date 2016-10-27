@@ -435,40 +435,41 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 			get_the_title( $form_id )
 		);
 	?></span></h3>
-
-	<div class="metabox-holder" style="padding-top: 0;">
-		<div class="postbox">
-			<div class="inside">
-				<?php
-				$graph = new Give_Graph( $data );
-				$graph->set( 'x_mode', 'time' );
-				$graph->set( 'multiple_y_axes', true );
-				$graph->display();
-				?>
+	<div id="give-dashboard-widgets-wrap">
+		<div class="metabox-holder" style="padding-top: 0;">
+			<div class="postbox">
+				<div class="inside">
+					<?php give_reports_graph_controls(); ?>
+					<?php
+					$graph = new Give_Graph( $data );
+					$graph->set( 'x_mode', 'time' );
+					$graph->set( 'multiple_y_axes', true );
+					$graph->display();
+					?>
+				</div>
 			</div>
+			<!--/.postbox -->
+			<table class="widefat reports-table alignleft" style="max-width:450px">
+				<tbody>
+				<tr>
+					<th scope="row"><strong><?php esc_html_e( 'Total income for period:', 'give' ); ?></strong></th>
+					<td><?php echo give_currency_filter( give_format_amount( $earnings_totals ) ); ?></td>
+				</tr>
+				<tr class="alternate">
+					<th scope="row"><strong><?php esc_html_e( 'Total donations for period:', 'give' ); ?></strong></th>
+					<td><?php echo $sales_totals; ?></td>
+				</tr>
+				<tr>
+					<th scope="row"><strong><?php esc_html_e( 'Average monthly income:', 'give' ); ?></strong></th>
+					<td><?php echo give_currency_filter( give_format_amount( give_get_average_monthly_form_earnings( $form_id ) ) ); ?></td>
+				</tr>
+				<tr class="alternate">
+					<th scope="row"><strong><?php esc_html_e( 'Average monthly donations:', 'give' ); ?></strong></th>
+					<td><?php echo number_format( give_get_average_monthly_form_sales( $form_id ), 0 ); ?></td>
+				</tr>
+				</tbody>
+			</table>
 		</div>
-		<!--/.postbox -->
-		<table class="widefat reports-table alignleft" style="max-width:450px">
-			<tbody>
-			<tr>
-				<th scope="row"><strong><?php esc_html_e( 'Total income for period:', 'give' ); ?></strong></th>
-				<td><?php echo give_currency_filter( give_format_amount( $earnings_totals ) ); ?></td>
-			</tr>
-			<tr class="alternate">
-				<th scope="row"><strong><?php esc_html_e( 'Total donations for period:', 'give' ); ?></strong></th>
-				<td><?php echo $sales_totals; ?></td>
-			</tr>
-			<tr>
-				<th scope="row"><strong><?php esc_html_e( 'Average monthly income:', 'give' ); ?></strong></th>
-				<td><?php echo give_currency_filter( give_format_amount( give_get_average_monthly_form_earnings( $form_id ) ) ); ?></td>
-			</tr>
-			<tr class="alternate">
-				<th scope="row"><strong><?php esc_html_e( 'Average monthly donations:', 'give' ); ?></strong></th>
-				<td><?php echo number_format( give_get_average_monthly_form_sales( $form_id ), 0 ); ?></td>
-			</tr>
-			</tbody>
-		</table>
-		<?php give_reports_graph_controls(); ?>
 	</div>
 	<?php
 	echo ob_get_clean();
