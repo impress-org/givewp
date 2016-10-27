@@ -529,38 +529,38 @@ function give_reports_graph_controls() {
 						<?php endforeach; ?>
 					</select>
 
-					<div id="give-date-range-options" <?php echo $display; ?>>
+					<div id="give-date-range-options" <?php echo esc_attr( $display ); ?>>
 						<span class="screen-reader-text"><?php esc_html_e( 'From', 'give' ); ?>&nbsp;</span>
 						<select id="give-graphs-month-start" name="m_start" aria-label="Start Month">
 							<?php for ( $i = 1; $i <= 12; $i ++ ) : ?>
-								<option value="<?php echo absint( $i ); ?>" <?php selected( $i, $dates['m_start'] ); ?>><?php echo give_month_num_to_name( $i ); ?></option>
+								<option value="<?php echo absint( $i ); ?>" <?php echo esc_attr( selected( $i, $dates['m_start'] ) ); ?>><?php echo esc_html( give_month_num_to_name( $i ) ); ?></option>
 							<?php endfor; ?>
 						</select>
 						<select id="give-graphs-day-start" name="day" aria-label="Start Day">
 							<?php for ( $i = 1; $i <= 31; $i ++ ) : ?>
-								<option value="<?php echo absint( $i ); ?>" <?php selected( $i, $dates['day'] ); ?>><?php echo $i; ?></option>
+								<option value="<?php echo absint( $i ); ?>" <?php echo esc_attr( selected( $i, $dates['day'] ) ); ?>><?php echo esc_html( $i ); ?></option>
 							<?php endfor; ?>
 						</select>
 						<select id="give-graphs-year-start" name="year" aria-label="Start Year">
 							<?php for ( $i = 2007; $i <= date( 'Y' ); $i ++ ) : ?>
-								<option value="<?php echo absint( $i ); ?>" <?php selected( $i, $dates['year'] ); ?>><?php echo $i; ?></option>
+								<option value="<?php echo absint( $i ); ?>" <?php echo esc_attr( selected( $i, $dates['year'] ) ); ?>><?php echo esc_html( $i ); ?></option>
 							<?php endfor; ?>
 						</select>
 						<span class="screen-reader-text"><?php esc_html_e( 'To', 'give' ); ?>&nbsp;</span>
 						<span>&ndash;</span>
 						<select id="give-graphs-month-end" name="m_end" aria-label="End Month">
 							<?php for ( $i = 1; $i <= 12; $i ++ ) : ?>
-								<option value="<?php echo absint( $i ); ?>" <?php selected( $i, $dates['m_end'] ); ?>><?php echo give_month_num_to_name( $i ); ?></option>
+								<option value="<?php echo absint( $i ); ?>" <?php echo esc_attr( selected( $i, $dates['m_end'] ) ); ?>><?php echo esc_html( give_month_num_to_name( $i ) ); ?></option>
 							<?php endfor; ?>
 						</select>
 						<select id="give-graphs-day-end" name="day_end" aria-label="End Day">
 							<?php for ( $i = 1; $i <= 31; $i ++ ) : ?>
-								<option value="<?php echo absint( $i ); ?>" <?php selected( $i, $dates['day_end'] ); ?>><?php echo $i; ?></option>
+								<option value="<?php echo absint( $i ); ?>" <?php echo esc_attr( selected( $i, $dates['day_end'] ) ); ?>><?php echo esc_html( $i ); ?></option>
 							<?php endfor; ?>
 						</select>
 						<select id="give-graphs-year-end" name="year_end" aria-label="End Year">
 							<?php for ( $i = 2007; $i <= date( 'Y' ); $i ++ ) : ?>
-								<option value="<?php echo absint( $i ); ?>" <?php selected( $i, $dates['year_end'] ); ?>><?php echo $i; ?></option>
+								<option value="<?php echo absint( $i ); ?>" <?php echo esc_attr( selected( $i, $dates['year_end'] ) ); ?>><?php echo esc_html( $i ); ?></option>
 							<?php endfor; ?>
 						</select>
 					</div>
