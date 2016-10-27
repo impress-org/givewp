@@ -205,8 +205,8 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 			'name'          => esc_html__( 'Name', 'give' ),
 			'id'            => esc_html__( 'ID', 'give' ),
 			'email'         => esc_html__( 'Email', 'give' ),
-			'num_purchases' => esc_html__( 'Purchases', 'give' ),
-			'amount_spent'  => esc_html__( 'Total Spent', 'give' )
+			'num_purchases' => esc_html__( 'Donations', 'give' ),
+			'amount_spent'  => esc_html__( 'Total Donated', 'give' )
 		);
 
 		return apply_filters( 'give_report_donor_columns', $columns );

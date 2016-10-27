@@ -84,7 +84,7 @@ class Give_Gateawy_Reports_Table extends WP_List_Table {
 			'complete_sales'  => esc_attr__( 'Complete Transactions', 'give' ),
 			'pending_sales'   => esc_attr__( 'Pending / Failed Transactions', 'give' ),
 			'total_sales'     => esc_attr__( 'Total Transactions', 'give' ),
-			'total_donations' => esc_attr__( 'Total Donations', 'give' )
+			'total_donations' => esc_attr__( 'Total Donated', 'give' )
 		);
 
 		return $columns;
