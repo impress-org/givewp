@@ -30,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_reports_page() {
 	$current_page = admin_url( 'edit.php?post_type=give_forms&page=give-reports' );
-	$active_tab   = isset( $_GET['tab'] ) ? $_GET['tab'] : 'reports';
+	$active_tab   = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'earnings';
 	?>
 	<div class="wrap">
 
