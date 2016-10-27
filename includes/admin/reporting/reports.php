@@ -143,8 +143,8 @@ function give_reports_tab_reports() {
 	$current_view = 'earnings';
 	$views        = give_reports_default_views();
 
-	if ( isset( $_GET['view'] ) && array_key_exists( $_GET['view'], $views ) ) {
-		$current_view = $_GET['view'];
+	if ( isset( $_GET['tab'] ) && array_key_exists( $_GET['tab'], $views ) ) {
+		$current_view = $_GET['tab'];
 	}
 
 	/**
