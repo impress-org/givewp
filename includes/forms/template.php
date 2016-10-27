@@ -156,7 +156,7 @@ function give_get_donation_form( $args = array() ) {
 				 * @param int   $form_id The form ID.
 				 * @param array $args    An array of form arguments.
 				 */
-				do_action( 'give_donation_mode_select', $form->ID, $args );
+				do_action( 'give_payment_mode_select', $form->ID, $args );
 
 				/**
 				 * Fires while outputing donation form, after all other fields.
@@ -1289,7 +1289,7 @@ function give_payment_mode_select( $form_id ) {
 	 *
 	 * @param int $form_id The form ID.
 	 */
-	do_action( 'give_donation_mode_top', $form_id ); ?>
+	do_action( 'give_payment_mode_top', $form_id ); ?>
 
 	<fieldset id="give-payment-mode-select" <?php if ( count($gateways) <= 1 ) echo 'style="display: none;"'; ?>>
 		<?php
@@ -1300,7 +1300,7 @@ function give_payment_mode_select( $form_id ) {
 		 *
 		 * @param int $form_id The form ID.
 		 */
-		do_action( 'give_donation_mode_before_gateways_wrap' );
+		do_action( 'give_payment_mode_before_gateways_wrap' );
 		?>
 			<legend class="give-payment-mode-label"><?php echo apply_filters( 'give_checkout_payment_method_text', esc_html__( 'Select Payment Method', 'give' ) ); ?></legend>
 		<div id="give-payment-mode-wrap">
@@ -1312,7 +1312,7 @@ function give_payment_mode_select( $form_id ) {
 			 *
 			 * @since 1.7
 			 */
-			do_action( 'give_donation_mode_before_gateways' )
+			do_action( 'give_payment_mode_before_gateways' )
 			?>
 			<ul id="give-gateway-radio-list">
 				<?php foreach ( $gateways as $gateway_id => $gateway ) :
@@ -1331,7 +1331,7 @@ function give_payment_mode_select( $form_id ) {
 			 *
 			 * @since 1.7
 			 */
-			do_action( 'give_donation_mode_after_gateways' );
+			do_action( 'give_payment_mode_after_gateways' );
 			?>
 		</div>
 		<?php
@@ -1342,7 +1342,7 @@ function give_payment_mode_select( $form_id ) {
 		 *
 		 * @param int $form_id The form ID.
 		 */
-		do_action( 'give_donation_mode_after_gateways_wrap' );
+		do_action( 'give_payment_mode_after_gateways_wrap' );
 		?>
 	</fieldset>
 
@@ -1354,7 +1354,7 @@ function give_payment_mode_select( $form_id ) {
 	 *
 	 * @param int $form_id The form ID.
 	 */
-	do_action( 'give_donation_mode_bottom', $form_id );
+	do_action( 'give_payment_mode_bottom', $form_id );
 	?>
 
 	<div id="give_purchase_form_wrap">

@@ -280,11 +280,11 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
 	/**
 	 * Fires before deleting payment.
 	 *
-	 * @since 1.7
+	 * @since 1.0
 	 *
 	 * @param int $payment_id Payment ID.
 	 */
-	do_action( 'give_donation_delete', $payment_id );
+	do_action( 'give_payment_delete', $payment_id );
 
 	if ( $customer->id && $update_customer ) {
 
@@ -311,11 +311,11 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
 	/**
 	 * Fires after payment deleted.
 	 *
-	 * @since 1.7
+	 * @since 1.0
 	 *
 	 * @param int $payment_id Payment ID.
 	 */
-	do_action( 'give_donation_deleted', $payment_id );
+	do_action( 'give_payment_deleted', $payment_id );
 }
 
 /**
@@ -839,7 +839,7 @@ function give_get_total_earnings() {
 				 * which results in duplicated earnings for the very first donation.
 				 */
 
-				if ( did_action( 'give_update_donation_status' ) ) {
+				if ( did_action( 'give_update_payment_status' ) ) {
 					array_pop( $payments );
 				}
 
@@ -1532,7 +1532,7 @@ function give_delete_payment_note( $comment_id = 0, $payment_id = 0 ) {
 	 * @param int $comment_id Note ID.
 	 * @param int $payment_id Payment ID.
 	 */
-	do_action( 'give_pre_delete_donation_note', $comment_id, $payment_id );
+	do_action( 'give_pre_delete_payment_note', $comment_id, $payment_id );
 
 	$ret = wp_delete_comment( $comment_id, true );
 
@@ -1544,7 +1544,7 @@ function give_delete_payment_note( $comment_id = 0, $payment_id = 0 ) {
 	 * @param int $comment_id Note ID.
 	 * @param int $payment_id Payment ID.
 	 */
-	do_action( 'give_post_delete_donation_note', $comment_id, $payment_id );
+	do_action( 'give_post_delete_payment_note', $comment_id, $payment_id );
 
 	return $ret;
 }
@@ -1579,7 +1579,7 @@ function give_get_payment_note_html( $note, $payment_id = 0 ) {
 			'note_id'     => $note->comment_ID,
 			'payment_id'  => $payment_id,
 		) ),
-		'give_delete_donation_note_' . $note->comment_ID
+		'give_delete_payment_note_' . $note->comment_ID
 	);
 
 	$note_html = '<div class="give-payment-note" id="give-payment-note-' . $note->comment_ID . '">';

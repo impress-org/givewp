@@ -31,7 +31,7 @@ function give_update_payment_details( $data ) {
 		wp_die( esc_html__( 'You do not have permission to edit payments.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
-	check_admin_referer( 'give_update_donation_details_nonce' );
+	check_admin_referer( 'give_update_payment_details_nonce' );
 
 	// Retrieve the payment ID.
 	$payment_id = absint( $data['give_payment_id'] );
@@ -294,7 +294,7 @@ function give_update_payment_details( $data ) {
 	exit;
 }
 
-add_action( 'give_update_donation_details', 'give_update_payment_details' );
+add_action( 'give_update_payment_details', 'give_update_payment_details' );
 
 /**
  * Trigger a Donation Deletion
@@ -359,7 +359,7 @@ add_action( 'wp_ajax_give_insert_payment_note', 'give_ajax_store_payment_note' )
  */
 function give_trigger_payment_note_deletion( $data ) {
 
-	if ( ! wp_verify_nonce( $data['_wpnonce'], 'give_delete_donation_note_' . $data['note_id'] ) ) {
+	if ( ! wp_verify_nonce( $data['_wpnonce'], 'give_delete_payment_note_' . $data['note_id'] ) ) {
 		return;
 	}
 
@@ -374,7 +374,7 @@ function give_trigger_payment_note_deletion( $data ) {
 	wp_redirect( $edit_order_url );
 }
 
-add_action( 'give_delete_donation_note', 'give_trigger_payment_note_deletion' );
+add_action( 'give_delete_payment_note', 'give_trigger_payment_note_deletion' );
 
 /**
  * Delete a payment note deletion with ajax

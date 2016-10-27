@@ -163,7 +163,7 @@ jQuery.noConflict();
 
 				if (confirm(give_vars.delete_donation_note)) {
 					var postData = {
-						action    : 'give_delete_donation_note',
+						action    : 'give_delete_payment_note',
 						payment_id: $(this).data('payment-id'),
 						note_id   : $(this).data('note-id')
 					};

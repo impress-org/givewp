@@ -193,7 +193,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			 *
 			 * @since 1.7
 			 */
-			do_action( 'give_donation_history_search' );
+			do_action( 'give_payment_history_search' );
 			?>
 			<label class="screen-reader-text" for="<?php echo $input_id ?>"><?php echo $text; ?>:</label>
 			<input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>"/>
@@ -635,7 +635,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			 * @param int    $id             The ID of the payment.
 			 * @param string $current_action The action that is being triggered.
 			 */
-			do_action( 'give_donations_table_do_bulk_action', $id, $this->current_action() );
+			do_action( 'give_payments_table_do_bulk_action', $id, $this->current_action() );
 		}
 
 	}

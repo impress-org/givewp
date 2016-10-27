@@ -945,7 +945,7 @@ final class Give_Payment {
 						 *
 						 * @param Give_Payment $this Payment object.
 						 */
-						do_action( 'give_donation_save', $this, $key );
+						do_action( 'give_payment_save', $this, $key );
 						break;
 				}
 			}
@@ -1478,7 +1478,7 @@ final class Give_Payment {
 			 * @param string $status     The new status.
 			 * @param string $old_status The old status.
 			 */
-			do_action( 'give_update_donation_status', $this->ID, $status, $old_status );
+			do_action( 'give_update_payment_status', $this->ID, $status, $old_status );
 
 		}
 
