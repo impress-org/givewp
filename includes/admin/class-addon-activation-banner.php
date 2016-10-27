@@ -61,6 +61,20 @@ class Give_Addon_Activation_Banner {
 
 	}
 
+
+	/**
+	 * Check if current page is plugin page or not.
+	 *
+	 * @since  1.8
+	 * @access private
+	 * @return bool
+	 */
+	private function is_plugin_page() {
+		$screen = get_current_screen();
+
+		return ( $screen->parent_file === 'plugins.php' );
+	}
+
 	/**
 	 * Give Addon Activation Banner
 	 *
@@ -68,11 +82,10 @@ class Give_Addon_Activation_Banner {
 	 * @access public
 	 */
 	public function give_addon_activation_admin_notice() {
-		$screen = get_current_screen();
 
-		//Make sure we're on the plugins page.
-		if ( $screen->parent_file !== 'plugins.php' ) {
-			return false;
+		// Bailout.
+		if ( ! $this->is_plugin_page() ) {
+			return;
 		}
 
 		// If the user hasn't already dismissed the alert, output activation banner.
