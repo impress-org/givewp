@@ -33,7 +33,7 @@ function give_get_payment_gateways() {
 		),
 	);
 
-	return apply_filters( 'give_donation_gateways', $gateways );
+	return apply_filters( 'give_payment_gateways', $gateways );
 
 }
 
@@ -325,5 +325,5 @@ function give_get_ordered_payment_gateways( $gateways ) {
 	 *
 	 * @param array $gateways All the available gateways
 	 */
-	return apply_filters( 'give_donation_gateways_order', $gateways );
+	return apply_filters( 'give_payment_gateways_order', $gateways );
 }

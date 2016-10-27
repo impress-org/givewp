@@ -71,7 +71,7 @@ if ( true === $give_receipt_args['status_notice'] ) {
 		 * with payment status. This filter allows the HTML markup
 		 * and messaging for that notice to be customized.
 		 *
-		 * @since 1.7.0
+		 * @since 1.0
 		 *
 		 * @param string $notice HTML markup for the default notice.
 		 * @param int    $id     Post ID where the notice is displayed.
@@ -87,12 +87,12 @@ if ( true === $give_receipt_args['status_notice'] ) {
  *
  * Allows you to add elements before the table.
  *
- * @since 1.7
+ * @since 1.0
  *
  * @param object $payment           The payment object.
  * @param array  $give_receipt_args Receipt_argument.
  */
-do_action( 'give_donation_receipt_before_table', $payment, $give_receipt_args );
+do_action( 'give_payment_receipt_before_table', $payment, $give_receipt_args );
 ?>
 
 	<table id="give_donation_receipt" class="give-table">
@@ -108,7 +108,7 @@ do_action( 'give_donation_receipt_before_table', $payment, $give_receipt_args );
 		 * @param object $payment           The payment object.
 		 * @param array  $give_receipt_args Receipt_argument.
 		 */
-		do_action( 'give_donation_receipt_header_before', $payment, $give_receipt_args );
+		do_action( 'give_payment_receipt_header_before', $payment, $give_receipt_args );
 		?>
 		<tr>
 			<th scope="colgroup" colspan="2">
@@ -126,7 +126,7 @@ do_action( 'give_donation_receipt_before_table', $payment, $give_receipt_args );
 		 * @param object $payment           The payment object.
 		 * @param array  $give_receipt_args Receipt_argument.
 		 */
-		do_action( 'give_donation_receipt_header_after', $payment, $give_receipt_args );
+		do_action( 'give_payment_receipt_header_after', $payment, $give_receipt_args );
 		?>
 		</thead>
 
@@ -142,7 +142,7 @@ do_action( 'give_donation_receipt_before_table', $payment, $give_receipt_args );
 		 * @param object $payment           The payment object.
 		 * @param array  $give_receipt_args Receipt_argument.
 		 */
-		do_action( 'give_donation_receipt_before', $payment, $give_receipt_args );
+		do_action( 'give_payment_receipt_before', $payment, $give_receipt_args );
 		?>
 
 		<?php if ( filter_var( $give_receipt_args['donor'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
