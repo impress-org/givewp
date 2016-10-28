@@ -49,25 +49,52 @@ jQuery(document).ready(function ($) {
 			button: {
 				text: give_vars.use_this_image
 			},
-			multiple: false  // Set to true to allow multiple files to be selected
+			frame: 'post',
+			multiple: false, // Set to true to allow multiple files to be selected
+			library : {
+				type:'image'
+			}
 		});
 
+
 		// When an image is selected in the media $upload_image_frame...
-		$upload_image_frame.on( 'select', function() {
+		$upload_image_frame.on( 'insert', function() {
 
 			// Get media attachment details from the $upload_image_frame state
 			var attachment = $upload_image_frame.state().get('selection').first().toJSON(),
 				$parent = $active_upload_file_btn.parents('.give-field-wrap'),
-				$image_container = $('.give-image-thumb', $parent );
+				$image_container = $('.give-image-thumb', $parent ),
+				$selected_image_size = $('.attachment-display-settings .size').val();
 
 			// Send the attachment URL to our custom image input field.
-			$image_container.find('img').attr( 'src', attachment.url );
+			$image_container.find('img').attr( 'src', attachment.sizes[ $selected_image_size ].url );
 
 			// Send the attachment id to our hidden input
-			$('input[type="text"]', $parent ).val( attachment.url );
+			$('input[type="text"]', $parent ).val( attachment.sizes[ $selected_image_size ].url );
 
 			// Hide the add image link
 			$image_container.removeClass( 'give-hidden' );
+		});
+
+		// When an image is selected in the media $upload_image_frame...
+		$upload_image_frame.on( 'open', function() {
+			$('a.media-menu-item').each(function(){
+				switch ( $(this).text().trim() ) {
+					case 'Create Gallery':
+					case 'Insert from URL':
+						$(this).hide();
+				}
+			});
+		});
+
+		$('body').on( 'click', '.thumbnail', function(e){
+			var $attachment_display_setting = $('.attachment-display-settings');
+
+			if( $attachment_display_setting.length ) {
+				$( '.alignment', $attachment_display_setting ).closest('label').hide();
+				$( '.link-to', $attachment_display_setting ).closest('label').hide();
+			}
+
 		});
 
 		// Finally, open the modal on click
