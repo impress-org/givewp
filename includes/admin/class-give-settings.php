@@ -1137,6 +1137,7 @@ function give_get_featured_image_sizes() {
 	$sizes = array();
 	$get_sizes = get_intermediate_image_sizes();
 
+	// check whether intermediate image sizes exist first
 	if ( !is_null($get_sizes)) :
 
 	foreach ( $get_sizes as $_size ) {
