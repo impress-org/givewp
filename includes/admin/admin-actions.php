@@ -88,7 +88,7 @@ function give_verify_settings() {
 
 	$is_redirect = false;
 
-	switch ( esc_attr( $_GET['tab'] ) ) {
+	switch ( give_get_current_setting_tab() ) {
 		case 'general' :
 			// Check if success page and failure page are same or not.
 			if (
