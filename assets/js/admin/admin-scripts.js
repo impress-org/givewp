@@ -351,7 +351,22 @@ jQuery.noConflict();
 			 */
 			success_setting.add(failure_setting).change(function () {
 				if (success_setting.val() === failure_setting.val()) {
-					alert(give_vars.matched_success_failure_page);
+					var notice_html = '<div id="setting-error-give-matched-success-failure-page" class="updated settings-error notice is-dismissible"> <p><strong>' + give_vars.matched_success_failure_page + '</strong></p> <button type="button" class="notice-dismiss"><span class="screen-reader-text">' + give_vars.dismiss_notice_text + '</span></button> </div>',
+						$notice_container = $( '#setting-error-give-matched-success-failure-page');
+
+					// Bailout.
+					if( $notice_container.length ) {
+						return false;
+					}
+
+					// Add html.
+					$( 'h2', '#give-mainform' ).html( notice_html );
+					$notice_container = $( '#setting-error-give-matched-success-failure-page');
+
+					// Add event to  dismiss button.
+					$( '.notice-dismiss', $notice_container ).click(function(){
+						$notice_container.remove();
+					});
 
 					// Unset setting field.
 					$(this).val('');

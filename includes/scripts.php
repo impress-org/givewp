@@ -320,6 +320,7 @@ function give_load_admin_scripts( $hook ) {
 		/* translators : %s: Donation form options metabox */
 		'confirm_before_remove_row_text' => __( 'Do you want to delete this level?', 'give' ),
 		'matched_success_failure_page'   => __( 'You cannot set the success and failed pages to the same page', 'give' ),
+		'dismiss_notice_text'            => __( 'Dismiss this notice.', 'give' ),
 	) );
 
 	if ( function_exists( 'wp_enqueue_media' ) && version_compare( get_bloginfo( 'version' ), '3.5', '>=' ) ) {
