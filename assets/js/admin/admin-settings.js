@@ -93,6 +93,7 @@ jQuery(document).ready(function ($) {
 			if( $attachment_display_setting.length ) {
 				$( '.alignment', $attachment_display_setting ).closest('label').hide();
 				$( '.link-to', $attachment_display_setting ).closest('label').hide();
+				$( '.attachment-details label' ).hide();
 			}
 
 		});
