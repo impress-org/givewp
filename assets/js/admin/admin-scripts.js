@@ -360,7 +360,7 @@ jQuery.noConflict();
 					}
 
 					// Add html.
-					$( 'h2', '#give-mainform' ).html( notice_html );
+					$( 'h2', '#give-mainform' ).after( notice_html );
 					$notice_container = $( '#setting-error-give-matched-success-failure-page');
 
 					// Add event to  dismiss button.
