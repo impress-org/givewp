@@ -1139,7 +1139,7 @@ function give_get_featured_image_sizes() {
 
 	// check whether intermediate image sizes exist first
 	if ( empty( $get_sizes ) ) {
-		return false;
+		$get_sizes = array( 'thumbnail', 'medium', 'medium_large', 'large' );
 	}
 
 	foreach ( $get_sizes as $_size ) {
