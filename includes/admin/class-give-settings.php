@@ -1135,8 +1135,11 @@ function give_cmb2_get_post_options( $query_args, $force = false ) {
 function give_get_featured_image_sizes() {
 	global $_wp_additional_image_sizes;
 	$sizes = array();
+	$get_sizes = get_intermediate_image_sizes();
 
-	foreach ( get_intermediate_image_sizes() as $_size ) {
+	if ( !is_null($get_sizes)) :
+
+	foreach ( $get_sizes as $_size ) {
 
 		if ( in_array( $_size, array( 'thumbnail', 'medium', 'medium_large', 'large' ) ) ) {
 			$sizes[ $_size ] = $_size . ' - ' . get_option( "{$_size}_size_w" ) . 'x' . get_option( "{$_size}_size_h" );
@@ -1145,6 +1148,8 @@ function give_get_featured_image_sizes() {
 		}
 
 	}
+
+	endif;
 
 	return apply_filters( 'give_get_featured_image_sizes', $sizes );
 }
