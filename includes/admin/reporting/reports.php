@@ -273,14 +273,14 @@ function give_reports_donors_table() {
 		 */
 		do_action( 'give_logs_donors_table_top' );
 		?>
-		<form id="give-donors-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-reports&view=donors' ); ?>">
+		<form id="give-donors-filter" method="get">
 			<?php
 			$give_table->search_box( esc_html__( 'Search', 'give' ), 'give-donors' );
 			$give_table->display();
 			?>
 			<input type="hidden" name="post_type" value="give_forms"/>
 			<input type="hidden" name="page" value="give-reports"/>
-			<input type="hidden" name="view" value="donors"/>
+			<input type="hidden" name="tab" value="donors"/>
 		</form>
 		<?php
 		/**
