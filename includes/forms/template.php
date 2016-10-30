@@ -1437,8 +1437,8 @@ function give_terms_agreement( $form_id ) {
 			?>
 		</div>
 		<div id="give_show_terms">
-			<a href="#" class="give_terms_links give_terms_links-<?php echo $form_id; ?>" role="button"><?php esc_html_e( 'Show Terms', 'give' ); ?></a>
-			<a href="#" class="give_terms_links give_terms_links-<?php echo $form_id; ?>" role="button" style="display:none;"><?php esc_html_e( 'Hide Terms', 'give' ); ?></a>
+			<a href="#" class="give_terms_links give_terms_links-<?php echo $form_id; ?>" role="button" aria-controls="give_terms"><?php esc_html_e( 'Show Terms', 'give' ); ?></a>
+			<a href="#" class="give_terms_links give_terms_links-<?php echo $form_id; ?>" role="button" aria-controls="give_terms" style="display:none;"><?php esc_html_e( 'Hide Terms', 'give' ); ?></a>
 		</div>
 
 		<input name="give_agree_to_terms" class="required" type="checkbox" id="give_agree_to_terms" value="1"/>
