@@ -30,35 +30,35 @@ if ( true === $give_receipt_args['status_notice'] ) {
 
 	switch ( $status ) {
 		case 'publish':
-			$notice_message = __( 'Payment Complete: Thank you for your donation.', 'give' );
+			$notice_message = esc_html__( 'Payment Complete: Thank you for your donation.', 'give' );
 			$notice_type    = 'success';
 			break;
 		case 'pending':
-			$notice_message = __( 'Payment Pending: Please contact the site owner for assistance.', 'give' );
+			$notice_message = esc_html__( 'Payment Pending: Please contact the site owner for assistance.', 'give' );
 			$notice_type    = 'warning';
 			break;
 		case 'refunded':
-			$notice_message = __( 'Payment Refunded: Please contact the site owner for assistance.', 'give' );
+			$notice_message = esc_html__( 'Payment Refunded: Please contact the site owner for assistance.', 'give' );
 			$notice_type    = 'warning';
 			break;
 		case 'preapproval':
-			$notice_message = __( 'Payment Preapproved: Please contact the site owner for assistance.', 'give' );
+			$notice_message = esc_html__( 'Payment Preapproved: Please contact the site owner for assistance.', 'give' );
 			$notice_type    = 'warning';
 			break;
 		case 'failed':
-			$notice_message = __( 'Payment Failed: Please contact the site owner for assistance.', 'give' );
+			$notice_message = esc_html__( 'Payment Failed: Please contact the site owner for assistance.', 'give' );
 			$notice_type    = 'error';
 			break;
 		case 'cancelled':
-			$notice_message = __( 'Payment Cancelled: Please contact the site owner for assistance.', 'give' );
+			$notice_message = esc_html__( 'Payment Cancelled: Please contact the site owner for assistance.', 'give' );
 			$notice_type    = 'error';
 			break;
 		case 'abandoned':
-			$notice_message = __( 'Payment Abandoned: Please contact the site owner for assistance.', 'give' );
+			$notice_message = esc_html__( 'Payment Abandoned: Please contact the site owner for assistance.', 'give' );
 			$notice_type    = 'error';
 			break;
 		case 'revoked':
-			$notice_message = __( 'Payment Revoked: Please contact the site owner for assistance.', 'give' );
+			$notice_message = esc_html__( 'Payment Revoked: Please contact the site owner for assistance.', 'give' );
 			$notice_type    = 'error';
 			break;
 	}
