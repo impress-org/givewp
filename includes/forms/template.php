@@ -1418,6 +1418,7 @@ function give_terms_agreement( $form_id ) {
 
 	?>
 	<fieldset id="give_terms_agreement">
+		<legend><?php esc_html_e( 'Terms', 'give' ); ?></legend>
 		<div id="give_terms" class="give_terms-<?php echo $form_id; ?>" style="display:none;">
 			<?php
 			/**
