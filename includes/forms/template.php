@@ -1216,7 +1216,7 @@ function give_get_login_fields( $form_id ) {
 				<?php } ?>
 			</label>
 
-			<input class="give-input<?php echo ( give_logged_in_only( $form_id ) ) ? ' required' : ''; } ?>" type="text" name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" value="" placeholder="<?php esc_attr_e( 'Your username', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; } ?>/>
+			<input class="give-input<?php echo ( give_logged_in_only( $form_id ) ) ? ' required' : ''; ?>" type="text" name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" value="" placeholder="<?php esc_attr_e( 'Your username', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; ?>/>
 		</div>
 
 		<div id="give-user-pass-wrap-<?php echo $form_id; ?>" class="give_login_password form-row form-row-last">
@@ -1226,7 +1226,7 @@ function give_get_login_fields( $form_id ) {
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
 			</label>
-			<input class="give-input<?php echo ( give_logged_in_only( $form_id ) ) ? ' required' : ''; } ?>" type="password" name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>" placeholder="<?php esc_attr_e( 'Your password', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; } ?>/>
+			<input class="give-input<?php echo ( give_logged_in_only( $form_id ) ) ? ' required' : ''; ?>" type="password" name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>" placeholder="<?php esc_attr_e( 'Your password', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; ?>/>
 			<input type="hidden" name="give-purchase-var" value="needs-to-login"/>
 		</div>
 
