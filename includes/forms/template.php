@@ -1448,7 +1448,7 @@ function give_terms_agreement( $form_id ) {
 	<?php
 }
 
-add_action( 'give_donation_form_before_submit', 'give_terms_agreement', 10, 1 );
+add_action( 'give_donation_form_after_cc_form', 'give_terms_agreement', 8888, 1 );
 
 /**
  * Checkout Final Total.
