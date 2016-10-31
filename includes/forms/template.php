@@ -1289,7 +1289,8 @@ function give_payment_mode_select( $form_id ) {
 	 *
 	 * @param int $form_id The form ID.
 	 */
-	do_action( 'give_payment_mode_top', $form_id ); ?>
+	do_action( 'give_payment_mode_top', $form_id );
+	?>
 
 	<fieldset id="give-payment-mode-select" <?php if ( count($gateways) <= 1 ) echo 'style="display: none;"'; ?>>
 		<?php
@@ -1302,9 +1303,10 @@ function give_payment_mode_select( $form_id ) {
 		 */
 		do_action( 'give_payment_mode_before_gateways_wrap' );
 		?>
-			<legend class="give-payment-mode-label"><?php echo apply_filters( 'give_checkout_payment_method_text', esc_html__( 'Select Payment Method', 'give' ) ); ?></legend>
+		<legend class="give-payment-mode-label"><?php echo apply_filters( 'give_checkout_payment_method_text', esc_html__( 'Select Payment Method', 'give' ) ); ?></legend>
+
 		<div id="give-payment-mode-wrap">
-				<span class="give-loading-text"><span class="give-loading-animation"></span> <?php esc_html_e( 'Loading...', 'give' ); ?></span>
+			<span class="give-loading-text"><span class="give-loading-animation"></span> <?php esc_html_e( 'Loading...', 'give' ); ?></span>
 
 			<?php
 			/**
@@ -1315,15 +1317,20 @@ function give_payment_mode_select( $form_id ) {
 			do_action( 'give_payment_mode_before_gateways' )
 			?>
 			<ul id="give-gateway-radio-list">
-				<?php foreach ( $gateways as $gateway_id => $gateway ) :
+				<?php
+				foreach ( $gateways as $gateway_id => $gateway ) :
 					$selected_gateway = give_get_default_gateway( $form_id );
 					$selected_gateway = isset( $_REQUEST['payment_mode'] ) ? $_REQUEST['payment_mode'] : $selected_gateway;
 					$checked = checked( $gateway_id, $selected_gateway, false );
 					$checked_class = $checked ? ' give-gateway-option-selected' : '';
-					echo '<li><label for="give-gateway-' . esc_attr( $gateway_id ) . '-' . $form_id . '" class="give-gateway-option' . $checked_class . '" id="give-gateway-option-' . esc_attr( $gateway_id ) . '">';
-					echo '<input type="radio" name="payment-mode" class="give-gateway" id="give-gateway-' . esc_attr( $gateway_id ) . '-' . $form_id . '" value="' . esc_attr( $gateway_id ) . '"' . $checked . '>' . esc_html( $gateway['checkout_label'] );
-					echo '</label></li>';
-				endforeach; ?>
+					?>
+					<li>
+						<input type="radio" name="payment-mode" class="give-gateway" id="give-gateway-<?php echo esc_attr( $gateway_id ) . '-' . $form_id; ?>" value="<?php echo esc_attr( $gateway_id ); ?>"<?php echo $checked; ?>>
+						<label for="give-gateway-<?php echo esc_attr( $gateway_id ) . '-' . $form_id; ?>" class="give-gateway-option<?php echo $checked_class; ?>" id="give-gateway-option-<?php echo esc_attr( $gateway_id ); ?>"> <?php echo esc_html( $gateway['checkout_label'] ); ?></label>
+					</li>
+					<?php
+				endforeach;
+				?>
 			</ul>
 			<?php
 			/**
