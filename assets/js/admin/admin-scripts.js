@@ -25,15 +25,14 @@ jQuery.noConflict();
 		}
 	};
 
-
 	/**
 	 * Setup Pretty Chosen Select Fields
 	 */
 	var setup_chosen_give_selects = function () {
 		// Setup Chosen Selects
 		$('.give-select-chosen').chosen({
-			inherit_select_classes: true,
-			placeholder_text_single: give_vars.one_option,
+			inherit_select_classes   : true,
+			placeholder_text_single  : give_vars.one_option,
 			placeholder_text_multiple: give_vars.one_or_more_option
 		});
 
@@ -70,7 +69,6 @@ jQuery.noConflict();
 			price = parseFloat(price).toFixed(give_vars.currency_decimals);
 		}
 
-
 		return price;
 	}
 
@@ -88,7 +86,6 @@ jQuery.noConflict();
 			this.variable_price_list();
 		},
 
-
 		edit_address: function () {
 
 			// Update base state field based on selected base country
@@ -96,8 +93,8 @@ jQuery.noConflict();
 				var $this = $(this);
 
 				data = {
-					action: 'give_get_states',
-					country: $this.val(),
+					action    : 'give_get_states',
+					country   : $this.val(),
 					field_name: 'give-payment-address[0][state]'
 				};
 				$.post(ajaxurl, data, function (response) {
@@ -124,17 +121,17 @@ jQuery.noConflict();
 			$('#give-add-payment-note').on('click', function (e) {
 				e.preventDefault();
 				var postData = {
-					action: 'give_insert_payment_note',
+					action    : 'give_insert_payment_note',
 					payment_id: $(this).data('payment-id'),
-					note: $('#give-payment-note').val()
+					note      : $('#give-payment-note').val()
 				};
 
 				if (postData.note) {
 
 					$.ajax({
-						type: 'POST',
-						data: postData,
-						url: ajaxurl,
+						type   : 'POST',
+						data   : postData,
+						url    : ajaxurl,
 						success: function (response) {
 							$('#give-payment-notes-inner').append(response);
 							$('.give-no-payment-notes').hide();
@@ -235,7 +232,7 @@ jQuery.noConflict();
 					data: {
 						form_id: give_form_id,
 						payment_id: $('input[name="give_payment_id"]').val(),
-						action: 'give_check_for_form_price_variations_html'
+						action    : 'give_check_for_form_price_variations_html'
 					},
 					success: function (response) {
 						response = response.trim();
@@ -256,7 +253,6 @@ jQuery.noConflict();
 		}
 
 	};
-
 
 	/**
 	 * Settings screen JS
@@ -428,7 +424,7 @@ jQuery.noConflict();
 
 					forms.show();
 					forms.find('.give-select-chosen').css({
-						'width': 'auto',
+						'width'    : 'auto',
 						'min-width': '250px'
 					});
 
@@ -460,10 +456,9 @@ jQuery.noConflict();
 			});
 
 			$('#give-tools-recount-form').submit(function (e) {
-				var selection = $('#recount-stats-type').val();
-				var export_form = $(this);
+				var selection     = $('#recount-stats-type').val();
+				var export_form   = $(this);
 				var selected_type = $('option:selected', this).data('type');
-
 
 				if ('reset-stats' === selected_type) {
 					var is_confirmed = $('#confirm-reset').is(':checked');
@@ -478,7 +473,7 @@ jQuery.noConflict();
 
 				export_form.append('<div class="notice-wrap"></div>');
 				var notice_wrap = export_form.find('.notice-wrap');
-				var has_errors = false;
+				var has_errors  = false;
 
 				if (null === selection || 0 === selection) {
 					// Needs to pick a method give_vars.batch_export_no_class
@@ -544,15 +539,15 @@ jQuery.noConflict();
 		process_step: function (step, data, self) {
 
 			$.ajax({
-				type: 'POST',
-				url: ajaxurl,
-				data: {
-					form: data,
+				type    : 'POST',
+				url     : ajaxurl,
+				data    : {
+					form  : data,
 					action: 'give_do_ajax_export',
-					step: step,
+					step  : step,
 				},
 				dataType: 'json',
-				success: function (response) {
+				success : function (response) {
 
 					if ('done' == response.step || response.error || response.success) {
 
@@ -634,7 +629,7 @@ jQuery.noConflict();
 	 */
 	var Give_Customer = {
 
-		init: function () {
+		init          : function () {
 			this.edit_customer();
 			this.add_email();
 			this.user_search();
@@ -644,14 +639,14 @@ jQuery.noConflict();
 			this.add_note();
 			this.delete_checked();
 		},
-		edit_customer: function () {
+		edit_customer : function () {
 			$('body').on('click', '#edit-customer', function (e) {
 				e.preventDefault();
 				$('#give-customer-card-wrapper .editable').hide();
 				$('#give-customer-card-wrapper .edit-item').fadeIn().css('display', 'block');
 			});
 		},
-		user_search: function () {
+		user_search   : function () {
 			// Upon selecting a user from the dropdown, we need to update the User ID
 			$('body').on('click.giveSelectUser', '.give_user_search_results a', function (e) {
 				e.preventDefault();
@@ -659,7 +654,7 @@ jQuery.noConflict();
 				$('input[name="customerinfo[user_id]"]').val(user_id);
 			});
 		},
-		remove_user: function () {
+		remove_user   : function () {
 			$('body').on('click', '#disconnect-customer', function (e) {
 				e.preventDefault();
 				var customer_id = $('input[name="customerinfo[id]"]').val();
@@ -667,7 +662,7 @@ jQuery.noConflict();
 				var postData = {
 					give_action: 'disconnect-userid',
 					customer_id: customer_id,
-					_wpnonce: $('#edit-customer-info #_wpnonce').val()
+					_wpnonce   : $('#edit-customer-info #_wpnonce').val()
 				};
 
 				$.post(ajaxurl, postData, function (response) {
@@ -678,7 +673,7 @@ jQuery.noConflict();
 
 			});
 		},
-		cancel_edit: function () {
+		cancel_edit   : function () {
 			$('body').on('click', '#give-edit-customer-cancel', function (e) {
 				e.preventDefault();
 				$('#give-customer-card-wrapper .edit-item').hide();
@@ -689,9 +684,9 @@ jQuery.noConflict();
 		change_country: function () {
 			$('select[name="customerinfo[country]"]').change(function () {
 				var $this = $(this);
-				var data = {
-					action: 'give_get_states',
-					country: $this.val(),
+				var data  = {
+					action    : 'give_get_states',
+					country   : $this.val(),
 					field_name: 'customerinfo[state]'
 				};
 				$.post(ajaxurl, data, function (response) {
@@ -705,22 +700,22 @@ jQuery.noConflict();
 				return false;
 			});
 		},
-		add_note: function () {
+		add_note      : function () {
 			$('body').on('click', '#add-customer-note', function (e) {
 				e.preventDefault();
 				var postData = {
-					give_action: 'add-customer-note',
-					customer_id: $('#customer-id').val(),
-					customer_note: $('#customer-note').val(),
+					give_action            : 'add-customer-note',
+					customer_id            : $('#customer-id').val(),
+					customer_note          : $('#customer-note').val(),
 					add_customer_note_nonce: $('#add_customer_note_nonce').val()
 				};
 
 				if (postData.customer_note) {
 
 					$.ajax({
-						type: "POST",
-						data: postData,
-						url: ajaxurl,
+						type   : "POST",
+						data   : postData,
+						url    : ajaxurl,
 						success: function (response) {
 							$('#give-customer-notes').prepend(response);
 							$('.give-no-customer-notes').hide();
@@ -756,14 +751,14 @@ jQuery.noConflict();
 				}
 			});
 		},
-		add_email: function () {
+		add_email     : function () {
 			if (!$('#add-customer-email').length) {
 				return;
 			}
 
 			$(document.body).on('click', '#add-customer-email', function (e) {
 				e.preventDefault();
-				var button = $(this);
+				var button  = $(this);
 				var wrapper = button.parent();
 
 				wrapper.parent().find('.notice-wrap').remove();
@@ -771,16 +766,16 @@ jQuery.noConflict();
 				button.attr('disabled', true);
 
 				var customer_id = wrapper.find('input[name="customer-id"]').val();
-				var email = wrapper.find('input[name="additional-email"]').val();
-				var primary = wrapper.find('input[name="make-additional-primary"]').is(':checked');
-				var nonce = wrapper.find('input[name="add_email_nonce"]').val();
+				var email       = wrapper.find('input[name="additional-email"]').val();
+				var primary     = wrapper.find('input[name="make-additional-primary"]').is(':checked');
+				var nonce       = wrapper.find('input[name="add_email_nonce"]').val();
 
 				var postData = {
 					give_action: 'add_donor_email',
 					customer_id: customer_id,
-					email: email,
-					primary: primary,
-					_wpnonce: nonce
+					email      : email,
+					primary    : primary,
+					_wpnonce   : nonce
 				};
 
 				$.post(ajaxurl, postData, function (response) {
@@ -809,7 +804,7 @@ jQuery.noConflict();
 			this.regenerate_api_key();
 		},
 
-		revoke_api_key: function () {
+		revoke_api_key    : function () {
 			$('body').on('click', '.give-revoke-api-key', function (e) {
 				return confirm(give_vars.revoke_api_key);
 			});
@@ -1043,8 +1038,8 @@ jQuery.noConflict();
 			content: {
 				attr: 'data-tooltip' // Tell qTip2 to look inside this attr for its content
 			},
-			style: {classes: 'qtip-rounded qtip-tipsy'},
-			events: {
+			style  : {classes: 'qtip-rounded qtip-tipsy'},
+			events : {
 				show: function (event, api) {
 					var $el = $(api.elements.target[0]);
 					$el.qtip('option', 'position.my', ($el.data('tooltip-my-position') == undefined) ? 'bottom center' : $el.data('tooltip-my-position'));
@@ -1078,7 +1073,7 @@ jQuery.noConflict();
 		// Ajax user search
 		$('.give-ajax-user-search').on('keyup', function () {
 			var user_search = $(this).val();
-			var exclude = '';
+			var exclude     = '';
 
 			if ($(this).data('exclude')) {
 				exclude = $(this).data('exclude');
@@ -1086,19 +1081,19 @@ jQuery.noConflict();
 
 			$('.give-ajax').show();
 			data = {
-				action: 'give_search_users',
+				action   : 'give_search_users',
 				user_name: user_search,
-				exclude: exclude
+				exclude  : exclude
 			};
 
 			document.body.style.cursor = 'wait';
 
 			$.ajax({
-				type: "POST",
-				data: data,
+				type    : "POST",
+				data    : data,
 				dataType: "json",
-				url: ajaxurl,
-				success: function (search_response) {
+				url     : ajaxurl,
+				success : function (search_response) {
 					$('.give-ajax').hide();
 					$('.give_user_search_results').removeClass('hidden');
 					$('.give_user_search_results span').html('');
@@ -1132,11 +1127,11 @@ jQuery.noConflict();
 			// Add qtip to all existing money input fields.
 			$fields.each(function () {
 				$(this).qtip({
-					style: 'qtip-dark qtip-tipsy',
-					content: {
+					style   : 'qtip-dark qtip-tipsy',
+					content : {
 						text: give_vars.price_format_guide.trim()
 					},
-					show: '',
+					show    : '',
 					position: {
 						my: 'bottom center',
 						at: 'top center'
@@ -1145,12 +1140,12 @@ jQuery.noConflict();
 			});
 		}
 
-		var $give_money_fields = $('input.give-money-field, input.give-price-field');
-		var thousand_separator = give_vars.thousands_separator,
-			decimal_separator = give_vars.decimal_separator,
+		var $give_money_fields       = $('input.give-money-field, input.give-price-field');
+		var thousand_separator       = give_vars.thousands_separator,
+			decimal_separator        = give_vars.decimal_separator,
 			thousand_separator_count = '',
-			alphabet_count = '',
-			price_string = '',
+			alphabet_count           = '',
+			price_string             = '',
 
 			// Thousand separation limit in price depends upon decimal separator symbol.
 			// If thousand separator is equal to decimal separator then price does not have more then 1 thousand separator otherwise limit is zero.
@@ -1178,7 +1173,7 @@ jQuery.noConflict();
 		$('#poststuff').on('keyup', 'input.give-money-field, input.give-price-field', function () {
 			// Count thousand separator in price string.
 			thousand_separator_count = ( $(this).val().match(new RegExp(thousand_separator, 'g')) || [] ).length;
-			alphabet_count = ( $(this).val().match(new RegExp('[a-z]', 'g')) || [] ).length;
+			alphabet_count           = ( $(this).val().match(new RegExp('[a-z]', 'g')) || [] ).length;
 
 			// Show qtip conditionally if thousand separator detected on price string.
 			if (

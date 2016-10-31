@@ -531,6 +531,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					// Multi Checkbox input.
 					case 'multicheck' :
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
+						$option_value = is_array( $option_value ) ? $option_value : array();
 						?>
 						<tr valign="top">
 							<th scope="row" class="titledesc">

@@ -289,30 +289,18 @@ function give_load_admin_scripts( $hook ) {
 		'thousands_separator'            => $thousand_separator,
 		'decimal_separator'              => $decimal_separator,
 		'quick_edit_warning'             => esc_html__( 'Not available for variable priced forms.', 'give' ),
-		'delete_donation'                => esc_html__( 'Are you sure you wish to delete this payment?', 'give' ),
-		'delete_donation_note'           => esc_html__( 'Are you sure you wish to delete this note?', 'give' ),
+		'delete_payment'                 => esc_html__( 'Are you sure you wish to delete this payment?', 'give' ),
+		'delete_payment_note'            => esc_html__( 'Are you sure you wish to delete this note?', 'give' ),
 		'revoke_api_key'                 => esc_html__( 'Are you sure you wish to revoke this API key?', 'give' ),
 		'regenerate_api_key'             => esc_html__( 'Are you sure you wish to regenerate this API key?', 'give' ),
 		'resend_receipt'                 => esc_html__( 'Are you sure you wish to resend the donation receipt?', 'give' ),
-		'copy_download_link_text'        => esc_html__( 'Copy these links to your clipboard and give them to your donor.', 'give' ),
-		/* translators: %s: Upload image/file button & frame */
 		'logo'                           => esc_html__( 'Logo', 'give' ),
 		'use_this_image'                 => esc_html__( 'Use this image', 'give' ),
-		/* translators: %s: form singular label */
-		'delete_payment_download'        => sprintf( esc_html__( 'Are you sure you wish to delete this %s?', 'give' ), give_get_forms_label_singular() ),
-		'one_price_min'                  => esc_html__( 'You must have at least one price.', 'give' ),
-		'one_file_min'                   => esc_html__( 'You must have at least one file.', 'give' ),
-		'one_field_min'                  => esc_html__( 'You must have at least one field.', 'give' ),
 		'one_option'                     => esc_html__( 'Choose a form', 'give' ),
 		'one_or_more_option'             => esc_html__( 'Choose one or more forms', 'give' ),
-		'numeric_item_price'             => esc_html__( 'Item price must be numeric.', 'give' ),
-		'numeric_quantity'               => esc_html__( 'Quantity must be numeric.', 'give' ),
 		'currency_sign'                  => give_currency_filter( '' ),
 		'currency_pos'                   => isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before',
 		'currency_decimals'              => give_currency_decimal_filter( give_get_price_decimals() ),
-		'new_media_ui'                   => apply_filters( 'give_use_35_media_ui', 1 ),
-		'remove_text'                    => esc_html__( 'Remove', 'give' ),
-		'type_to_search'                 => esc_html__( 'Type to search forms', 'give' ),
 		'batch_export_no_class'          => esc_html__( 'You must choose a method.', 'give' ),
 		'batch_export_no_reqs'           => esc_html__( 'Required fields not completed.', 'give' ),
 		'reset_stats_warn'               => __( 'Are you sure you want to reset Give? This process is <strong><em>not reversible</em></strong> and will delete all data regardless of test or live mode. Please be sure you have a recent backup before proceeding.', 'give' ),
@@ -349,7 +337,6 @@ function give_admin_icon() {
 			src: url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.eot?-ngjl88'; ?>');
 			src: url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.eot?#iefix-ngjl88'?>') format('embedded-opentype'),
 			url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.woff?-ngjl88'; ?>') format('woff'),
-			url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.ttf?-ngjl88'; ?>') format('truetype'),
 			url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.svg?-ngjl88#icomoon'; ?>') format('svg');
 			font-weight: normal;
 			font-style: normal;

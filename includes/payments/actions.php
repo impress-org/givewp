@@ -114,7 +114,7 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 
 }
 
-add_action( 'give_update_donation_status', 'give_complete_purchase', 100, 3 );
+add_action( 'give_update_payment_status', 'give_complete_purchase', 100, 3 );
 
 
 /**
@@ -145,7 +145,7 @@ function give_record_status_change( $payment_id, $new_status, $old_status ) {
 	give_insert_payment_note( $payment_id, $status_change );
 }
 
-add_action( 'give_update_donation_status', 'give_record_status_change', 100, 3 );
+add_action( 'give_update_payment_status', 'give_record_status_change', 100, 3 );
 
 
 /**
@@ -172,7 +172,7 @@ function give_clear_user_history_cache( $payment_id, $new_status, $old_status ) 
 
 }
 
-add_action( 'give_update_donation_status', 'give_clear_user_history_cache', 10, 3 );
+add_action( 'give_update_payment_status', 'give_clear_user_history_cache', 10, 3 );
 
 /**
  * Update Old Payments Totals
