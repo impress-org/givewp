@@ -34,22 +34,22 @@ give_print_errors( 0 ); ?>
 
 		<div class="form-row form-row-first">
 			<label for="give-user-login"><?php esc_html_e( 'Username', 'give' ); ?></label>
-			<input id="give-user-login" class="required give-input" type="text" name="give_user_login" />
+			<input id="give-user-login" class="required give-input" type="text" name="give_user_login" required aria-required="true" />
 		</div>
 
 		<div class="form-row form-row-last">
 			<label for="give-user-email"><?php esc_html_e( 'Email', 'give' ); ?></label>
-			<input id="give-user-email" class="required give-input" type="email" name="give_user_email" />
+			<input id="give-user-email" class="required give-input" type="email" name="give_user_email" required aria-required="true" />
 		</div>
 
 		<div class="form-row form-row-first">
 			<label for="give-user-pass"><?php esc_html_e( 'Password', 'give' ); ?></label>
-			<input id="give-user-pass" class="password required give-input" type="password" name="give_user_pass" />
+			<input id="give-user-pass" class="password required give-input" type="password" name="give_user_pass" required aria-required="true" />
 		</div>
 
 		<div class="form-row form-row-last">
 			<label for="give-user-pass2"><?php esc_html_e( 'Confirm PW', 'give' ); ?></label>
-			<input id="give-user-pass2" class="password required give-input" type="password" name="give_user_pass2" />
+			<input id="give-user-pass2" class="password required give-input" type="password" name="give_user_pass2" required aria-required="true" />
 		</div>
 
 		<?php
