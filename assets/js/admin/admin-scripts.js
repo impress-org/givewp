@@ -54,7 +54,7 @@ jQuery.noConflict();
 	 * @returns {string}
 	 */
 	function give_unformat_currency(price, dp) {
-		price = accounting.unformat(price, give_vars.decimal_separator).toString();
+		price                = accounting.unformat(price, give_vars.decimal_separator).toString();
 		var decimal_position = price.indexOf('.');
 
 		// Set default value for number of decimals.
@@ -164,15 +164,15 @@ jQuery.noConflict();
 				if (confirm(give_vars.delete_payment_note)) {
 
 					var postData = {
-						action: 'give_delete_payment_note',
+						action    : 'give_delete_payment_note',
 						payment_id: $(this).data('payment-id'),
-						note_id: $(this).data('note-id')
+						note_id   : $(this).data('note-id')
 					};
 
 					$.ajax({
-						type: "POST",
-						data: postData,
-						url: ajaxurl,
+						type   : "POST",
+						data   : postData,
+						url    : ajaxurl,
 						success: function (response) {
 							$('#give-payment-note-' + postData.note_id).remove();
 							if (!$('.give-payment-note').length) {
@@ -227,10 +227,10 @@ jQuery.noConflict();
 
 				// Ajax.
 				$.ajax({
-					type: 'POST',
-					url: ajaxurl,
-					data: {
-						form_id: give_form_id,
+					type   : 'POST',
+					url    : ajaxurl,
+					data   : {
+						form_id   : give_form_id,
 						payment_id: $('input[name="give_payment_id"]').val(),
 						action    : 'give_check_for_form_price_variations_html'
 					},
@@ -262,6 +262,7 @@ jQuery.noConflict();
 		init: function () {
 			this.toggle_options();
 			this.main_setting_update_notice();
+			this.verify_settings();
 		},
 
 		toggle_options: function () {
@@ -269,10 +270,10 @@ jQuery.noConflict();
 			/**
 			 * Email access
 			 */
-			var email_access = $( 'input[name="email_access"]' ,'.give-setting-tab-body-general' );
+			var email_access = $('input[name="email_access"]', '.give-setting-tab-body-general');
 			email_access.on('change', function () {
-				var field_value = $( 'input[name="email_access"]:checked' ,'.give-setting-tab-body-general' ).val();
-				if ( 'enabled' === field_value) {
+				var field_value = $('input[name="email_access"]:checked', '.give-setting-tab-body-general').val();
+				if ('enabled' === field_value) {
 					$('#recaptcha_key').parents('tr').show();
 					$('#recaptcha_secret').parents('tr').show();
 				} else {
@@ -284,10 +285,10 @@ jQuery.noConflict();
 			/**
 			 * Form featured image
 			 */
-			var form_featured_image = $( 'input[name="form_featured_img"]' ,'.give-setting-tab-body-display' );
+			var form_featured_image = $('input[name="form_featured_img"]', '.give-setting-tab-body-display');
 			form_featured_image.on('change', function () {
-				var field_value = $( 'input[name="form_featured_img"]:checked' ,'.give-setting-tab-body-display' ).val();
-				if ( 'enabled' === field_value) {
+				var field_value = $('input[name="form_featured_img"]:checked', '.give-setting-tab-body-display').val();
+				if ('enabled' === field_value) {
 					$('#featured_image_size').parents('tr').show();
 				} else {
 					$('#featured_image_size').parents('tr').hide();
@@ -297,10 +298,10 @@ jQuery.noConflict();
 			/**
 			 * Terms and Conditions
 			 */
-			var terms_and_conditions = $( 'input[name="terms"]' ,'.give-setting-tab-body-display' );
+			var terms_and_conditions = $('input[name="terms"]', '.give-setting-tab-body-display');
 			terms_and_conditions.on('change', function () {
-				var field_value = $( 'input[name="terms"]:checked' ,'.give-setting-tab-body-display' ).val();
-				if ( 'enabled' === field_value) {
+				var field_value = $('input[name="terms"]:checked', '.give-setting-tab-body-display').val();
+				if ('enabled' === field_value) {
 					$('#agree_to_terms_label').parents('tr').show();
 					$('#wp-agreement_text-wrap').parents('tr').show();
 				} else {
@@ -312,10 +313,10 @@ jQuery.noConflict();
 			/**
 			 * Disable admin notification
 			 */
-			var admin_notification = $( 'input[name="admin_notices"]' ,'.give-setting-tab-body-emails' );
+			var admin_notification = $('input[name="admin_notices"]', '.give-setting-tab-body-emails');
 			admin_notification.on('change', function () {
-				var field_value = $( 'input[name="admin_notices"]:checked' ,'.give-setting-tab-body-emails' ).val();
-				if ( 'enabled' === field_value) {
+				var field_value = $('input[name="admin_notices"]:checked', '.give-setting-tab-body-emails').val();
+				if ('enabled' === field_value) {
 					$('#donation_notification_subject').parents('tr').show();
 					$('#wp-donation_notification-wrap').parents('tr').show();
 					$('#admin_notice_emails').parents('tr').show();
@@ -339,8 +340,39 @@ jQuery.noConflict();
 					5000
 				);
 			}
-		}
+		},
 
+		verify_settings: function () {
+			var success_setting = $('#success_page');
+			var failure_setting = $('#failure_page');
+
+			/**
+			 * Verify success and failure page.
+			 */
+			success_setting.add(failure_setting).change(function () {
+				if (success_setting.val() === failure_setting.val()) {
+					var notice_html = '<div id="setting-error-give-matched-success-failure-page" class="updated settings-error notice is-dismissible"> <p><strong>' + give_vars.matched_success_failure_page + '</strong></p> <button type="button" class="notice-dismiss"><span class="screen-reader-text">' + give_vars.dismiss_notice_text + '</span></button> </div>',
+						$notice_container = $( '#setting-error-give-matched-success-failure-page');
+
+					// Bailout.
+					if( $notice_container.length ) {
+						return false;
+					}
+
+					// Add html.
+					$( 'h2', '#give-mainform' ).after( notice_html );
+					$notice_container = $( '#setting-error-give-matched-success-failure-page');
+
+					// Add event to  dismiss button.
+					$( '.notice-dismiss', $notice_container ).click(function(){
+						$notice_container.remove();
+					});
+
+					// Unset setting field.
+					$(this).val('');
+				}
+			}).change();
+		}
 	};
 
 	/**
@@ -373,8 +405,8 @@ jQuery.noConflict();
 			// Show / hide Donation Form option when exporting donors
 			$('#give_customer_export_form').change(function () {
 
-				var $this = $(this),
-					form_id = $('option:selected', $this).val(),
+				var $this                  = $(this),
+					form_id                = $('option:selected', $this).val(),
 					customer_export_option = $('#give_customer_export_option');
 
 				if ('0' === $this.val()) {
@@ -388,8 +420,8 @@ jQuery.noConflict();
 				// On Form Select, Check if Variable Prices Exist
 				if (parseInt(form_id) != 0) {
 					var data = {
-						action: 'give_check_for_form_price_variations',
-						form_id: form_id,
+						action    : 'give_check_for_form_price_variations',
+						form_id   : form_id,
 						all_prices: true
 					};
 
@@ -409,10 +441,10 @@ jQuery.noConflict();
 
 			$('body').on('change', '#recount-stats-type', function () {
 
-				var export_form = $('#give-tools-recount-form');
+				var export_form   = $('#give-tools-recount-form');
 				var selected_type = $('option:selected', this).data('type');
 				var submit_button = $('#recount-stats-submit');
-				var forms = $('#tools-form-dropdown');
+				var forms         = $('#tools-form-dropdown');
 
 				// Reset the form
 				export_form.find('.notice-wrap').remove();
@@ -869,24 +901,24 @@ jQuery.noConflict();
 				jQuery('#_give_donation_levels_field').each(function () {
 					// Note: Do not change option params, it can break repeatable fields functionality.
 					var options = {
-						wrapper: '.give-repeatable-fields-section-wrapper',
-						container: '.container',
-						row: '.give-row',
-						add: '#give-add-repeater-field-section-row',
-						remove: '.give-remove',
-						move: '.give-move',
-						template: '.give-template',
-						confirm_before_remove_row: true,
+						wrapper                       : '.give-repeatable-fields-section-wrapper',
+						container                     : '.container',
+						row                           : '.give-row',
+						add                           : '#give-add-repeater-field-section-row',
+						remove                        : '.give-remove',
+						move                          : '.give-move',
+						template                      : '.give-template',
+						confirm_before_remove_row     : true,
 						confirm_before_remove_row_text: give_vars.confirm_before_remove_row_text,
-						is_sortable: true,
-						before_add: null,
-						after_add: handle_metabox_repeater_field_row_count,
+						is_sortable                   : true,
+						before_add                    : null,
+						after_add                     : handle_metabox_repeater_field_row_count,
 						//after_add:  after_add, Note: after_add is internal function in repeatable-fields.js. Uncomment this can cause of js error.
-						before_remove: null,
-						after_remove: handle_metabox_repeater_field_row_remove,
-						sortable_options: {
+						before_remove                 : null,
+						after_remove                  : handle_metabox_repeater_field_row_remove,
+						sortable_options              : {
 							placeholder: "give-ui-placeholder-state-highlight",
-							update: function (event, ui) {
+							update     : function (event, ui) {
 								var $rows = $('.give-row', '#_give_donation_levels_field').not('.give-template');
 
 								if ($rows.length) {
@@ -897,13 +929,13 @@ jQuery.noConflict();
 
 										if ($fields.length) {
 											$('.give-field, label', $(item)).each(function () {
-												var $parent = $(this).parent(),
+												var $parent         = $(this).parent(),
 													$currentElement = $(this);
 
 												$.each(this.attributes, function (index, element) {
 													var old_class_name_prefix = this.value.replace(/\[/g, '_').replace(/]/g, ''),
-														old_class_name = old_class_name_prefix + '_field',
-														new_class_name = '',
+														old_class_name        = old_class_name_prefix + '_field',
+														new_class_name        = '',
 														new_class_name_prefix = '';
 
 													// Bailout.
@@ -912,7 +944,7 @@ jQuery.noConflict();
 													}
 
 													// Reorder index.
-													this.value = this.value.replace(/\[\d+\]/g, '[' + (row_count - 1) + ']');
+													this.value            = this.value.replace(/\[\d+\]/g, '[' + (row_count - 1) + ']');
 													new_class_name_prefix = this.value.replace(/\[/g, '_').replace(/]/g, '');
 
 													// Update class name.
@@ -952,8 +984,8 @@ jQuery.noConflict();
 
 		handle_repeatable_field_level_text_click: function () {
 			$('body').on('keyup', '.give-multilevel-text-field', function () {
-				var $parent = $(this).closest('tr'),
-					$header_title_container = $('.give-row-head h2 span', $parent),
+				var $parent                           = $(this).closest('tr'),
+					$header_title_container           = $('.give-row-head h2 span', $parent),
 					donation_level_header_text_prefix = $(this).attr('placeholder');
 
 				// Donation level header already set.
@@ -980,7 +1012,6 @@ jQuery.noConflict();
 
 		row_count++;
 
-
 		// Set name for fields.
 		$('*', new_row).each(function () {
 			$.each(this.attributes, function (index, element) {
@@ -997,10 +1028,10 @@ jQuery.noConflict();
 		// If there is only one level then set it as default.
 		window.setTimeout(
 			function () {
-				var $parent = $('#_give_donation_levels_field'),
+				var $parent          = $('#_give_donation_levels_field'),
 					$repeatable_rows = $('.give-row', $parent).not('.give-template'),
-					$default_radio = $('.give-give_default_radio_inline', $repeatable_rows),
-					number_of_level = $repeatable_rows.length;
+					$default_radio   = $('.give-give_default_radio_inline', $repeatable_rows),
+					number_of_level  = $repeatable_rows.length;
 
 				if (number_of_level === 1) {
 					$default_radio.prop('checked', true);
@@ -1010,14 +1041,13 @@ jQuery.noConflict();
 		);
 	};
 
-
 	/**
 	 * Handle row remove for repeatable field.
 	 */
 	var handle_metabox_repeater_field_row_remove = function (container) {
-		var $parent = $('#_give_donation_levels_field'),
+		var $parent          = $('#_give_donation_levels_field'),
 			$repeatable_rows = $('.give-row', $parent).not('.give-template'),
-			row_count = $(container).attr('data-rf-row-count');
+			row_count        = $(container).attr('data-rf-row-count');
 
 		// Reduce row count.
 		$(container).attr('data-rf-row-count', --row_count);
@@ -1028,7 +1058,6 @@ jQuery.noConflict();
 			$repeatable_rows.first().find('.give-give_default_radio_inline').prop('checked', true);
 		}
 	};
-
 
 	/**
 	 * Initialize qTips

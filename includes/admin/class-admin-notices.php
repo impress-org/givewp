@@ -76,7 +76,7 @@ class Give_Notices {
 			echo '<p><a href="' . add_query_arg( array(
 					'give_action' => 'dismiss_notices',
 					'give_notice' => 'admin_ajax_inaccessible',
-			) ) . '">' . esc_attr__( 'Dismiss Notice', 'give' ) . '</a></p>';
+				) ) . '">' . esc_attr__( 'Dismiss Notice', 'give' ) . '</a></p>';
 			echo '</div>';
 		}
 
@@ -121,6 +121,8 @@ class Give_Notices {
 					case 'sent-test-email' :
 						$notices['updated']['give-sent-test-email'] = esc_attr__( 'The test email has been sent.', 'give' );
 						break;
+					case 'matched-success-failure-page':
+						$notices['updated']['give-matched-success-failure-page'] = esc_html__( 'You cannot set the success and failed pages to the same page', 'give' );
 				}
 			}
 			// Payments errors.
