@@ -478,7 +478,9 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 /**
  * Show report graph date filters
  *
- * @since 1.0
+ * @since 1.0.0
+ * @since 1.8.0 The hidden `view` field is replaced with `tab` field.
+ *
  * @return void
  */
 function give_reports_graph_controls() {
@@ -498,7 +500,7 @@ function give_reports_graph_controls() {
 
 	$dates   = give_get_report_dates();
 	$display = $dates['range'] == 'other' ? '' : 'display: none;';
-	$view    = give_get_reporting_view();
+	$tab     = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'earnings';
 
 	if ( empty( $dates['day_end'] ) ) {
 		$dates['day_end'] = cal_days_in_month( CAL_GREGORIAN, date( 'n' ), date( 'Y' ) );
@@ -517,7 +519,7 @@ function give_reports_graph_controls() {
 
 				<input type="hidden" name="post_type" value="give_forms" />
 				<input type="hidden" name="page" value="give-reports" />
-				<input type="hidden" name="view" value="<?php echo esc_attr( $view ); ?>" />
+				<input type="hidden" name="tab" value="<?php echo esc_attr( $tab ); ?>" />
 
 				<?php if ( isset( $_GET['form-id'] ) ) : ?>
 					<input type="hidden" name="form-id" value="<?php echo absint( $_GET['form-id'] ); ?>" />
