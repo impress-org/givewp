@@ -780,7 +780,8 @@ function give_get_report_dates() {
 /**
  * Grabs all of the selected date info and then redirects appropriately
  *
- * @since 1.0
+ * @since 1.0.0
+ * @since 1.8.0 The `tab` query arg is added to the redirect.
  *
  * @param $data
  */
@@ -788,9 +789,10 @@ function give_parse_report_dates( $data ) {
 	$dates = give_get_report_dates();
 
 	$view = give_get_reporting_view();
+	$tab  = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'earnings';
 	$id   = isset( $_GET['form-id'] ) ? $_GET['form-id'] : null;
 
-	wp_redirect( add_query_arg( $dates, admin_url( 'edit.php?post_type=give_forms&page=give-reports&view=' . esc_attr( $view ) . '&form-id=' . absint( $id ) ) ) );
+	wp_redirect( add_query_arg( $dates, admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=' . esc_attr( $tab ) . '&view=' . esc_attr( $view ) . '&form-id=' . absint( $id ) ) ) );
 	give_die();
 }
 
