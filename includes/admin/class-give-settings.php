@@ -169,7 +169,7 @@ class Give_Plugin_Settings {
 		//only modify the give settings form
 		if ( 'give_settings' == $object_id ) {
 
-			return '<form class="cmb-form" method="post" id="%1$s" enctype="multipart/form-data" encoding="multipart/form-data"><input type="hidden" name="give_settings_saved" value="true"><input type="hidden" name="object_id" value="%2$s">%3$s<div class="give-submit-wrap"><input type="submit" name="submit-cmb" value="' . __( 'Save Settings', 'give' ) . '" class="button-primary"></div></form>';
+			return '<form class="cmb-form" method="post" id="%1$s" enctype="multipart/form-data" encoding="multipart/form-data"><input type="hidden" name="give_settings_saved" value="true"><input type="hidden" name="object_id" value="%2$s">%3$s<div class="give-submit-wrap"><input type="submit" name="submit-cmb" value="' . esc_attr__( 'Save Settings', 'give' ) . '" class="button-primary"></div></form>';
 
 		}
 
@@ -285,8 +285,8 @@ class Give_Plugin_Settings {
 							'default' => '.',
 						),
 						array(
-							'name'            => __( 'Number of Decimals', 'give' ),
-							'desc'            => __( 'The number of decimal points displayed in amounts.', 'give' ),
+							'name'            => esc_html__( 'Number of Decimals', 'give' ),
+							'desc'            => esc_html__( 'The number of decimal points displayed in amounts.', 'give' ),
 							'id'              => 'number_decimals',
 							'type'            => 'text_small',
 							'default'         => 2,
@@ -1209,10 +1209,10 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
     if( $is_license_key ) {
         if( $is_in_subscription ) {
             $subscription_expires = strtotime( $subscriptions[$is_in_subscription]['expires'] );
-            $subscription_status  = __( 'renew', 'give' );
+            $subscription_status  = esc_html__( 'renew', 'give' );
 
             if( ( 'active' !== $subscriptions[$is_in_subscription]['status'] ) ){
-                $subscription_status = __( 'expire', 'give' );
+                $subscription_status = esc_html__( 'expire', 'give' );
             }
 
             if( $subscription_expires < current_time( 'timestamp', 1 ) ) {
@@ -1308,7 +1308,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
                     $expiration = strtotime( $license->expires, current_time( 'timestamp' ) );
 
                     if( 'lifetime' === $license->expires ) {
-                        $messages[] = __( 'License key never expires.', 'give' );
+                        $messages[] = esc_html__( 'License key never expires.', 'give' );
                         $license_status = 'license-lifetime-notice';
                     } elseif( $expiration > $now && $expiration - $now < ( DAY_IN_SECONDS * 30 ) ) {
                         $messages[] = sprintf(

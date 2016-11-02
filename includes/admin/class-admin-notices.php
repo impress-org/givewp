@@ -76,7 +76,7 @@ class Give_Notices {
 			echo '<p><a href="' . add_query_arg( array(
 					'give_action' => 'dismiss_notices',
 					'give_notice' => 'admin_ajax_inaccessible',
-			) ) . '">' . esc_attr__( 'Dismiss Notice', 'give' ) . '</a></p>';
+			) ) . '">' . esc_html__( 'Dismiss Notice', 'give' ) . '</a></p>';
 			echo '</div>';
 		}
 
@@ -143,23 +143,23 @@ class Give_Notices {
 						break;
 
 					case 'email-added' :
-						$notices['updated']['give-customer-email-added'] = __( 'Donor email added', 'give' );
+						$notices['updated']['give-customer-email-added'] = esc_attr__( 'Donor email added', 'give' );
 						break;
 
 					case 'email-removed' :
-						$notices['updated']['give-customer-email-removed'] = __( 'Donor email removed', 'give' );
+						$notices['updated']['give-customer-email-removed'] = esc_attr__( 'Donor email removed', 'give' );
 						break;
 
 					case 'email-remove-failed' :
-						$notices['error']['give-customer-email-remove-failed'] = __( 'Failed to remove donor email', 'give' );
+						$notices['error']['give-customer-email-remove-failed'] = esc_attr__( 'Failed to remove donor email', 'give' );
 						break;
 
 					case 'primary-email-updated' :
-						$notices['updated']['give-customer-primary-email-updated'] = __( 'Primary email updated for donors', 'give' );
+						$notices['updated']['give-customer-primary-email-updated'] = esc_attr__( 'Primary email updated for donors', 'give' );
 						break;
 
 					case 'primary-email-failed' :
-						$notices['error']['give-customer-primary-email-failed'] = __( 'Failed to set primary email', 'give' );
+						$notices['error']['give-customer-primary-email-failed'] = esc_attr__( 'Failed to set primary email', 'give' );
 
 				}
 			}
