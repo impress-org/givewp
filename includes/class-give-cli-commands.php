@@ -360,7 +360,7 @@ class GIVE_CLI_COMMAND {
 				$customer_id = Give()->customers->add( $args );
 
 				if ( $customer_id ) {
-					WP_CLI::line( $this->color_message( sprintf( __( 'Donor %d created successfully', 'give' ), $customer_id ) ) );
+					WP_CLI::line( $this->color_message( sprintf( __( 'Donor #%d created successfully', 'give' ), $customer_id ) ) );
 				} else {
 					WP_CLI::error( __( 'Failed to create donor', 'give' ) );
 				}
