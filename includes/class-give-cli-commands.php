@@ -306,10 +306,12 @@ class GIVE_CLI_COMMAND {
 	 * [--create=<number>]
 	 * : The number of arbitrary donors to create. Leave as 1 or blank to create a donor with a specific email
 	 *
+	 *  * [--name=<name_of_donor>]
+	 * : Name with which you want to create new donor
+	 *
 	 * ## EXAMPLES
 	 *
 	 * wp give donors --id=103
-	 * wp give donors --id=103 --number=100
 	 * wp give donors --email=john@test.com
 	 * wp give donors --create=1 --email=john@test.com
 	 * wp give donors --create=1 --email=john@test.com --name="John Doe"
