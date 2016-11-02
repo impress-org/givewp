@@ -306,6 +306,9 @@ class GIVE_CLI_COMMAND {
 	 * [--create=<number>]
 	 * : The number of arbitrary donors to create. Leave as 1 or blank to create a donor with a specific email
 	 *
+	 * [--form-id=<donation_form_id>]
+	 * : Get list of donors of specific donation form
+	 *
 	 * ## EXAMPLES
 	 *
 	 * wp give donors --id=103
@@ -314,25 +317,28 @@ class GIVE_CLI_COMMAND {
 	 * wp give donors --create=1 --email=john@test.com
 	 * wp give donors --create=1 --email=john@test.com --name="John Doe"
 	 * wp give donors --create=1000
+	 * wp give donors --number=1000
+	 * wp give donors --form-id=1024
 	 *
-	 * @since		1.7
-	 * @access		public
+	 * @since         1.7
+	 * @access        public
 	 *
-	 * @param		string $args        Command Data.
-	 * @param		array  $assoc_args  List of command data.
+	 * @param        string $args       Command Data.
+	 * @param        array  $assoc_args List of command data.
 	 *
-	 * @return		void
+	 * @return        void
 	 *
-	 * @subcommand	donors
+	 * @subcommand    donors
 	 */
 	public function donors( $args, $assoc_args ) {
-	    global $wp_query;
-		$donor_id    = isset( $assoc_args ) && array_key_exists( 'id', $assoc_args )      ? absint( $assoc_args['id'] ) : false;
-		$email       = isset( $assoc_args ) && array_key_exists( 'email', $assoc_args )   ? $assoc_args['email']        : false;
-		$name        = isset( $assoc_args ) && array_key_exists( 'name', $assoc_args )    ? $assoc_args['name']         : '';
-		$create      = isset( $assoc_args ) && array_key_exists( 'create', $assoc_args )  ? $assoc_args['create']       : false;
-		$number      = isset( $assoc_args ) && array_key_exists( 'number', $assoc_args )  ? $assoc_args['number']       : 10;
-		$start       = time();
+		global $wp_query;
+		$donor_id = isset( $assoc_args ) && array_key_exists( 'id', $assoc_args ) ? absint( $assoc_args['id'] ) : false;
+		$email    = isset( $assoc_args ) && array_key_exists( 'email', $assoc_args ) ? $assoc_args['email'] : false;
+		$name     = isset( $assoc_args ) && array_key_exists( 'name', $assoc_args ) ? $assoc_args['name'] : '';
+		$create   = isset( $assoc_args ) && array_key_exists( 'create', $assoc_args ) ? $assoc_args['create'] : false;
+		$number   = isset( $assoc_args ) && array_key_exists( 'number', $assoc_args ) ? $assoc_args['number'] : 10;
+		$form_id  = isset( $assoc_args ) && array_key_exists( 'form-id', $assoc_args ) ? $assoc_args['form-id'] : 0;
+		$start    = time();
 
 		if ( $create ) {
 			$number = 1;
@@ -383,14 +389,19 @@ class GIVE_CLI_COMMAND {
 			$is_set_number = $cache_per_page = false;
 			if ( isset( $wp_query->query_vars['number'] ) ) {
 				$cache_per_page = $wp_query->query_vars['number'];
-				$is_set_number = true;
+				$is_set_number  = true;
 			}
 
 			// Change number query var.
 			$wp_query->query_vars['number'] = $number;
 
 			// Get donors.
-			$donors = $this->api->get_customers( $search );
+			if ( $form_id ) {
+				// @TODO: Allow user to get a list of donors by donation status.
+				$donors = $this->get_donors_by_form_id( $form_id );
+			} else {
+				$donors = $this->api->get_customers( $search );
+			}
 
 			// Reset number query var.
 			if ( $is_set_number ) {
@@ -778,5 +789,49 @@ class GIVE_CLI_COMMAND {
 
 		// Display table.
 		$table->display();
+	}
+
+
+	/**
+	 * Get donors by form id
+	 *
+	 * @since 1.8
+	 * @param int $form_id From id.
+	 *
+	 * @return array
+	 */
+
+	private function get_donors_by_form_id( $form_id ) {
+		$donors = array();
+
+		$donations = new Give_Payments_Query(
+			array(
+				'give_forms' => array( $form_id ),
+				'number'     => -1,
+				'status'     => array( 'publish' )
+			)
+		);
+
+
+		$donations   = $donations->get_payments();
+		$skip_donors = array();
+
+		/* @var Give_Payment|object $donation Payment object. */
+		foreach ( $donations as $donation ) {
+
+			if ( in_array( $donation->customer_id, $skip_donors ) ) {
+				continue;
+			}
+
+			if ( ! empty( $donors ) ) {
+				$donors['donors'][] = current( $this->api->get_customers( (int) $donation->customer_id ) )[0];
+			} else {
+				$donors = array_merge( $donors, $this->api->get_customers( (int) $donation->customer_id ) );
+			}
+
+			$skip_donors[] = $donation->customer_id;
+		}
+
+		return $donors;
 	}
 }
