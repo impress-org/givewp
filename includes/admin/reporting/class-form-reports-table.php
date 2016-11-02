@@ -81,7 +81,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 			case 'average_earnings' :
 				return give_currency_filter( give_format_amount( $item[ $column_name ] ) );
 			case 'details' :
-				return '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-reports&view=forms&form-id=' . $item['ID'] ) . '">' . esc_html__( 'View Detailed Report', 'give' ) . '</a>';
+				return '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=forms&form-id=' . $item['ID'] ) . '">' . esc_html__( 'View Detailed Report', 'give' ) . '</a>';
 			default:
 				return $item[ $column_name ];
 		}
@@ -171,8 +171,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * @return void
 	 */
 	public function bulk_actions( $which = '' ) {
-		// These aren't really bulk actions but this outputs the markup in the right place
-		give_report_views();
+
 	}
 
 	/**
@@ -185,13 +184,17 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 */
 	protected function display_tablenav( $which ) {
 
-		if ( 'top' == $which ) {
+		if ( 'top' === $which ) {
 			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
 		}
 		?>
 		<div class="tablenav give-clearfix <?php echo esc_attr( $which ); ?>">
 
-			<h3 class="alignleft reports-earnings-title"><span><?php esc_html_e( 'Donation Forms Report', 'give' ); ?></span></h3>
+			<?php if ( 'top' === $which ) { ?>
+				<h3 class="alignleft reports-earnings-title">
+					<span><?php esc_html_e( 'Donation Forms Report', 'give' ); ?></span>
+				</h3>
+			<?php } ?>
 
 			<div class="alignright tablenav-right">
 				<div class="actions bulkactions">
