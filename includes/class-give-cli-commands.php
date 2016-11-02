@@ -339,6 +339,11 @@ class GIVE_CLI_COMMAND {
 		if ( $create ) {
 			$number = 1;
 
+			if( isset( $assoc_args['email'] ) && ! is_email( $email ) ){
+				WP_CLI::warning( 'Wrong email address provided.', 'give' );
+				return;
+			}
+
 			// Create one or more donors.
 			if ( ! $email ) {
 				// If no email is specified, look to see if we are generating arbitrary donor accounts.
