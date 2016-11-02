@@ -5,11 +5,11 @@
  * @package     Give
  * @subpackage  Classes/Give_Roles
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -33,8 +33,6 @@ class Give_Roles {
 	 *
 	 * @since  1.0
 	 * @access public
-	 *
-	 * @return void
 	 */
 	public function __construct() {
 		add_filter( 'give_map_meta_cap', array( $this, 'meta_caps' ), 10, 4 );
@@ -202,7 +200,12 @@ class Give_Roles {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @return array $caps Meta capabilities.
+	 * @param  array  $caps    Returns the user's actual capabilities.
+	 * @param  string $cap     Capability name.
+	 * @param  int    $user_id The user ID.
+	 * @param  array  $args    Adds the context to the cap. Typically the object ID.
+	 *
+	 * @return array  $caps    Meta capabilities.
 	 */
 	public function meta_caps( $caps, $cap, $user_id, $args ) {
 
@@ -237,6 +240,8 @@ class Give_Roles {
 	 *
 	 * @since  1.0
 	 * @access public
+	 *
+	 * @global WP_Roles $wp_roles
 	 *
 	 * @return void
 	 */

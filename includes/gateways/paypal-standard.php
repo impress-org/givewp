@@ -5,7 +5,7 @@
  * @package     Give
  * @subpackage  Gateways
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
@@ -188,6 +188,11 @@ add_action( 'give_gateway_paypal', 'give_process_paypal_purchase' );
 function give_listen_for_paypal_ipn() {
 	// Regular PayPal IPN
 	if ( isset( $_GET['give-listener'] ) && $_GET['give-listener'] == 'IPN' ) {
+		/**
+		 * Fires while verifying PayPal IPN
+		 *
+		 * @since 1.0
+		 */
 		do_action( 'give_verify_paypal_ipn' );
 	}
 }
@@ -320,12 +325,31 @@ function give_process_paypal_ipn() {
 	$encoded_data_array = wp_parse_args( $encoded_data_array, $defaults );
 
 	$payment_id = isset( $encoded_data_array['custom'] ) ? absint( $encoded_data_array['custom'] ) : 0;
+	$txn_type = $encoded_data_array['txn_type'];
 
-	if ( has_action( 'give_paypal_' . $encoded_data_array['txn_type'] ) ) {
-		// Allow PayPal IPN types to be processed separately.
-		do_action( 'give_paypal_' . $encoded_data_array['txn_type'], $encoded_data_array, $payment_id );
+	if ( has_action( 'give_paypal_' . $txn_type ) ) {
+		/**
+		 * Fires while processing PayPal IPN $txn_type.
+		 *
+		 * Allow PayPal IPN types to be processed separately.
+		 *
+		 * @since 1.0
+		 *
+		 * @param array $encoded_data_array Encoded data.
+		 * @param int   $payment_id         Payment id.
+		 */
+		do_action( "give_paypal_{$txn_type}", $encoded_data_array, $payment_id );
 	} else {
-		// Fallback to web accept just in case the txn_type isn't present.
+		/**
+		 * Fires while process PayPal IPN.
+		 *
+		 * Fallback to web accept just in case the txn_type isn't present.
+		 *
+		 * @since 1.0
+		 *
+		 * @param array $encoded_data_array Encoded data.
+		 * @param int   $payment_id         Payment id.
+		 */
 		do_action( 'give_paypal_web_accept', $encoded_data_array, $payment_id );
 	}
 	exit;
@@ -508,9 +532,10 @@ function give_process_paypal_refund( $data, $payment_id = 0 ) {
 	give_insert_payment_note(
 		$payment_id,
 		sprintf(
-		/* translators: %s: Paypal parent transaction ID */
-			esc_html__( 'PayPal Payment #%s Refunded for reason: %s', 'give' ),
-			$data['parent_txn_id'], $data['reason_code']
+			/* translators: 1: Paypal parent transaction ID 2. Paypal reason code */
+			esc_html__( 'PayPal Payment #%1$s Refunded for reason: %2$s', 'give' ),
+			$data['parent_txn_id'],
+			$data['reason_code']
 		)
 	);
 	give_insert_payment_note(

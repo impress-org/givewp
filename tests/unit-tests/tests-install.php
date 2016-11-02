@@ -21,7 +21,8 @@ class Tests_Activation extends Give_Unit_Test_Case {
 	 * @since 1.3.2
 	 */
 	public function test_settings() {
-		global $give_options;
+		$give_options = give_get_settings();
+
 		$this->assertArrayHasKey( 'history_page', $give_options );
 		$this->assertArrayHasKey( 'success_page', $give_options );
 		$this->assertArrayHasKey( 'failure_page', $give_options );
@@ -34,8 +35,7 @@ class Tests_Activation extends Give_Unit_Test_Case {
 	 */
 	public function test_install() {
 
-		global $give_options;
-
+		$give_options               = give_get_settings();
 		$origin_give_options		= $give_options;
 		$origin_upgraded_from 		= get_option( 'give_version_upgraded_from' );
 		$origin_give_version		= get_option( 'give_version' );
@@ -101,8 +101,10 @@ class Tests_Activation extends Give_Unit_Test_Case {
 	 */
 	public function test_give_after_install() {
 
+		$give_options = give_get_settings();
+
 		// Prepare for test
-		set_transient( '_give_installed', $GLOBALS['give_options'], 30 );
+		set_transient( '_give_installed', $give_options, 30 );
 
 		// Fake admin screen
 		set_current_screen( 'dashboard' );
@@ -122,9 +124,11 @@ class Tests_Activation extends Give_Unit_Test_Case {
 	 */
 	public function test_give_after_install_bail_no_admin() {
 
+		$give_options = give_get_settings();
+
 		// Prepare for test
 		set_current_screen( 'front' );
-		set_transient( '_give_installed', $GLOBALS['give_options'], 30 );
+		set_transient( '_give_installed', $give_options, 30 );
 
 		give_after_install();
 		$this->assertNotFalse( get_transient( '_give_installed' ) );
@@ -140,6 +144,8 @@ class Tests_Activation extends Give_Unit_Test_Case {
 	 */
 	public function test_give_after_install_bail_transient() {
 
+		$give_options = give_get_settings();
+
 		// Fake admin screen
 		set_current_screen( 'dashboard' );
 
@@ -148,7 +154,7 @@ class Tests_Activation extends Give_Unit_Test_Case {
 		$this->assertNull( give_after_install() );
 
 		// Reset to origin
-		set_transient( '_give_installed', $GLOBALS['give_options'], 30 );
+		set_transient( '_give_installed', $give_options, 30 );
 
 	}
 
@@ -157,6 +163,8 @@ class Tests_Activation extends Give_Unit_Test_Case {
 	 * Kind of a useless test, but for coverage :-)
 	 *
 	 * @since 1.3.2
+	 *
+	 * @global WP_Roles $wp_roles
 	 */
 	public function test_give_install_roles_on_network_bail_object() {
 
@@ -177,6 +185,8 @@ class Tests_Activation extends Give_Unit_Test_Case {
 	 * Test that give_install_roles_on_network() bails when $wp_roles is no object.
 	 *
 	 * @since 1.3.2
+	 *
+	 * @global WP_Roles $wp_roles
 	 */
 	public function test_give_install_roles_on_network() {
 

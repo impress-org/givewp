@@ -116,8 +116,7 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 	 */
 	public function test_process_register_form_logged_in() {
 
-		global $current_user;
-		$origin_user  = $current_user;
+		$origin_user  = wp_get_current_user();
 		$current_user = wp_set_current_user( 1 );
 
 		$_POST['give_register_submit'] = '';

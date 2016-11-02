@@ -7,11 +7,11 @@
  * @package     Give
  * @subpackage  Classes/API
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.1
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -424,7 +424,7 @@ class Give_API {
 	 */
 	private function missing_auth() {
 		$error          = array();
-		$error['error'] = esc_html__( 'You must specify both a token and API key!', 'give' );
+		$error['error'] = esc_html__( 'You must specify both a token and API key.', 'give' );
 
 		$this->data = $error;
 		$this->output( 401 );
@@ -441,7 +441,7 @@ class Give_API {
 	 */
 	private function invalid_auth() {
 		$error          = array();
-		$error['error'] = esc_html__( 'Your request could not be authenticated!', 'give' );
+		$error['error'] = esc_html__( 'Your request could not be authenticated.', 'give' );
 
 		$this->data = $error;
 		$this->output( 403 );
@@ -458,7 +458,7 @@ class Give_API {
 	 */
 	private function invalid_key() {
 		$error          = array();
-		$error['error'] = esc_html__( 'Invalid API key!', 'give' );
+		$error['error'] = esc_html__( 'Invalid API key.', 'give' );
 
 		$this->data = $error;
 		$this->output( 403 );
@@ -474,7 +474,7 @@ class Give_API {
 	 */
 	private function invalid_version() {
 		$error          = array();
-		$error['error'] = esc_html__( 'Invalid API version!', 'give' );
+		$error['error'] = esc_html__( 'Invalid API version.', 'give' );
 
 		$this->data = $error;
 		$this->output( 404 );
@@ -612,7 +612,7 @@ class Give_API {
 
 		// Make sure our query is valid
 		if ( ! in_array( $query, $accepted ) ) {
-			$error['error'] = esc_html__( 'Invalid query!', 'give' );
+			$error['error'] = esc_html__( 'Invalid query.', 'give' );
 
 			$this->data = $error;
 			// 400 is Bad Request
@@ -919,7 +919,7 @@ class Give_API {
 
 			$error['error'] = sprintf(
 				/* translators: %s: customer */
-				esc_html__( 'Donor %s not found!', 'give' ),
+				esc_html__( 'Donor %s not found.', 'give' ),
 				$customer
 			);
 
@@ -927,7 +927,7 @@ class Give_API {
 
 		} else {
 
-			$error['error'] = esc_html__( 'No donors found!', 'give' );
+			$error['error'] = esc_html__( 'No donors found.', 'give' );
 
 			return $error;
 
@@ -977,7 +977,7 @@ class Give_API {
 			} else {
 				$error['error'] = sprintf(
 					/* translators: %s: form */
-					esc_html__( 'Form %s not found!', 'give' ),
+					esc_html__( 'Form %s not found.', 'give' ),
 					$form
 				);
 
@@ -1041,7 +1041,11 @@ class Give_API {
 
 		if ( user_can( $this->user_id, 'view_give_sensitive_data' ) || $this->override ) {
 
-			//Sensitive data here
+			/**
+			 * Fires when generating API sensitive data.
+			 *
+			 * @since 1.1
+			 */
 			do_action( 'give_api_sensitive_data' );
 
 		}
@@ -1097,12 +1101,12 @@ class Give_API {
 
 					// Ensure the end date is later than the start date
 					if ( $args['enddate'] < $args['startdate'] ) {
-						$error['error'] = esc_html__( 'The end date must be later than the start date!', 'give' );
+						$error['error'] = esc_html__( 'The end date must be later than the start date.', 'give' );
 					}
 
 					// Ensure both the start and end date are specified
 					if ( empty( $args['startdate'] ) || empty( $args['enddate'] ) ) {
-						$error['error'] = esc_html__( 'Invalid or no date range specified!', 'give' );
+						$error['error'] = esc_html__( 'Invalid or no date range specified.', 'give' );
 					}
 
 					$total = 0;
@@ -1188,7 +1192,7 @@ class Give_API {
 				} else {
 					$error['error'] = sprintf(
 						/* translators: %s: form */
-						esc_html__( 'Product %s not found!', 'give' ),
+						esc_html__( 'Form %s not found.', 'give' ),
 						$args['form']
 					);
 				}
@@ -1209,12 +1213,12 @@ class Give_API {
 
 					// Ensure the end date is later than the start date
 					if ( $args['enddate'] < $args['startdate'] ) {
-						$error['error'] = esc_html__( 'The end date must be later than the start date!', 'give' );
+						$error['error'] = esc_html__( 'The end date must be later than the start date.', 'give' );
 					}
 
 					// Ensure both the start and end date are specified
 					if ( empty( $args['startdate'] ) || empty( $args['enddate'] ) ) {
-						$error['error'] = esc_html__( 'Invalid or no date range specified!', 'give' );
+						$error['error'] = esc_html__( 'Invalid or no date range specified.', 'give' );
 					}
 
 					$total = (float) 0.00;
@@ -1305,7 +1309,7 @@ class Give_API {
 				} else {
 					$error['error'] = sprintf(
 						/* translators: %s: form */
-						esc_html__( 'Form %s not found!', 'give' ),
+						esc_html__( 'Form %s not found.', 'give' ),
 						$args['form']
 					);
 				}
@@ -1559,6 +1563,15 @@ class Give_API {
 
 		status_header( $status_code );
 
+		/**
+		 * Fires before outputing the API.
+		 *
+		 * @since 1.1
+		 *
+		 * @param array    $data   Response data to return.
+		 * @param Give_API $this   The Give_API object.
+		 * @param string   $format Output format, XML or JSON. Default is JSON.
+		 */
 		do_action( 'give_api_output_before', $this->data, $this, $format );
 
 		switch ( $format ) :
@@ -1585,13 +1598,29 @@ class Give_API {
 
 			default :
 
-				// Allow other formats to be added via extensions
-				do_action( 'give_api_output_' . $format, $this->data, $this );
+				/**
+				 * Fires by the API while outputing other formats.
+				 *
+				 * @since 1.1
+				 *
+				 * @param array    $data Response data to return.
+				 * @param Give_API $this The Give_API object.
+				 */
+				do_action( "give_api_output_{$format}", $this->data, $this );
 
 				break;
 
 		endswitch;
 
+		/**
+		 * Fires after outputing the API.
+		 *
+		 * @since 1.1
+		 *
+		 * @param array    $data   Response data to return.
+		 * @param Give_API $this   The Give_API object.
+		 * @param string   $format Output format, XML or JSON. Default is JSON.
+		 */
 		do_action( 'give_api_output_after', $this->data, $this, $format );
 
 		give_die();

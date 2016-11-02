@@ -5,11 +5,11 @@
  * @package     Give
  * @subpackage  Classes/Give_Email_Access
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.4
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -92,8 +92,6 @@ class Give_Email_Access {
 	 *
 	 * @since  1.0
 	 * @access public
-	 *
-	 * @return void
 	 */
 	public function __construct() {
 
@@ -195,7 +193,7 @@ class Give_Email_Access {
 		// Generate a new verify key
 		$this->set_verify_key( $customer_id, $email, $verify_key );
 
-		// Get the purchase history URL
+		// Get the donation history page
 		$page_id = give_get_option( 'history_page' );
 
 		$access_url = add_query_arg( array(
@@ -280,9 +278,8 @@ class Give_Email_Access {
 
 		//Set error only if email access form isn't being submitted
 		if ( ! isset( $_POST['give_email'] ) && ! isset( $_POST['_wpnonce'] ) ) {
-			give_set_error( 'give_email_token_expired', apply_filters( 'give_email_token_expired_message', 'Sorry, your access token has expired. Please request a new one below:', 'give' ) );
+			give_set_error( 'give_email_token_expired', apply_filters( 'give_email_token_expired_message', esc_html__( 'Your access token has expired. Please request a new one below:', 'give' ) ) );
 		}
-
 
 		return false;
 
@@ -360,9 +357,9 @@ class Give_Email_Access {
 	}
 
 	/**
-	 * Users purchases args
+	 * Users donations args
 	 *
-	 * Force Give to find transactions by donation email, not user ID
+	 * Force Give to find donations by email, not user ID.
 	 *
 	 * @since  1.0
 	 * @access public

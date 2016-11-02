@@ -5,12 +5,14 @@
  * @package     WordImpress
  * @subpackage  Admin/Forms
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
-defined( 'ABSPATH' ) or exit;
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Give Form widget
@@ -89,6 +91,11 @@ class Give_Forms_Widget extends WP_Widget{
 
 		echo $args['before_widget'];
 
+		/**
+		 * Fires before widget settings form in the admin area.
+		 *
+		 * @since 1.0
+		 */
 		do_action( 'give_before_forms_widget' );
 
 		echo $title ? $args['before_title'] . $title . $args['after_title'] : '';
@@ -97,6 +104,11 @@ class Give_Forms_Widget extends WP_Widget{
 
 		echo $args['after_widget'];
 
+		/**
+		 * Fires after widget settings form in the admin area.
+		 *
+		 * @since 1.0
+		 */
 		do_action( 'give_after_forms_widget' );
 	}
 
@@ -140,15 +152,9 @@ class Give_Forms_Widget extends WP_Widget{
 		// Widget: Give Form
 
 		?><p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'id' ) ); ?>"><?php
-				printf(
-					/* translators: %s: form singular label */
-					esc_html__( 'Give %s:', 'give' ),
-					give_get_forms_label_singular()
-				);
-			?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'id' ) ); ?>"><?php esc_html_e( 'Give Form:', 'give' ); ?></label>
 			<select class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'id' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'id' ) ); ?>">
-				<option value="current"><?php esc_html_e( '— Select —', 'give' ); ?></option>
+				<option value="current"><?php esc_html_e( '- Select -', 'give' ); ?></option>
 				<?php foreach ( $give_forms as $give_form ) { ?>
 					<option <?php selected( absint( $instance['id'] ), $give_form->ID ); ?> value="<?php echo esc_attr( $give_form->ID ); ?>"><?php echo $give_form->post_title; ?></option>
 				<?php } ?>

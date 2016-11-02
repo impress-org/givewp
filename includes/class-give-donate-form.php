@@ -5,11 +5,11 @@
  * @package     Give
  * @subpackage  Classes/Give_Donate_Form
  * @copyright   Copyright (c) 2015, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -328,8 +328,6 @@ class Give_Donate_Form {
 	 *
 	 * @param  bool  $_id   Post id. Default is false.
 	 * @param  array $_args Arguments passed.
-	 *
-	 * @return void
 	 */
 	public function __construct( $_id = false, $_args = array() ) {
 
@@ -387,7 +385,6 @@ class Give_Donate_Form {
 	 * @param  string $key
 	 *
 	 * @return mixed
-	 * @throws Exception
 	 */
 	public function __get( $key ) {
 
@@ -412,7 +409,7 @@ class Give_Donate_Form {
 	 *
 	 * @param  array $data Array of attributes for a donation form.
 	 *
-	 * @return mixed       False if data isn't passed and class not instantiated for creation, or New Form ID.
+	 * @return bool|int    False if data isn't passed and class not instantiated for creation, or New Form ID.
 	 */
 	public function create( $data = array() ) {
 

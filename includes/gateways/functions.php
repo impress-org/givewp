@@ -5,11 +5,11 @@
  * @package     Give
  * @subpackage  Gateways
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -28,8 +28,8 @@ function give_get_payment_gateways() {
 			'checkout_label' => esc_html__( 'PayPal', 'give' ),
 		),
 		'manual' => array(
-			'admin_label'    => esc_html__( 'Test Payment', 'give' ),
-			'checkout_label' => esc_html__( 'Test Payment', 'give' )
+			'admin_label'    => esc_html__( 'Test Donation', 'give' ),
+			'checkout_label' => esc_html__( 'Test Donation', 'give' )
 		),
 	);
 
@@ -84,7 +84,6 @@ function give_is_gateway_active( $gateway ) {
  * Gets the default payment gateway selected from the Give Settings
  *
  * @since 1.0
- * @global $give_options Array of all the Give Options
  *
  * @param  $form_id      int ID of the Give Form
  *
@@ -92,8 +91,7 @@ function give_is_gateway_active( $gateway ) {
  */
 function give_get_default_gateway( $form_id ) {
 
-	global $give_options;
-
+	$give_options = give_get_settings();
 	$default      = isset( $give_options['default_gateway'] ) && give_is_gateway_active( $give_options['default_gateway'] ) ? $give_options['default_gateway'] : 'paypal';
 	$form_default = get_post_meta( $form_id, '_give_default_gateway', true );
 
@@ -183,8 +181,16 @@ function give_send_to_gateway( $gateway, $payment_data ) {
 
 	$payment_data['gateway_nonce'] = wp_create_nonce( 'give-gateway' );
 
-	// $gateway must match the ID used when registering the gateway
-	do_action( 'give_gateway_' . $gateway, $payment_data );
+	/**
+	 * Fires while loading payment gateway via AJAX.
+	 *
+	 * The dynamic portion of the hook name '$gateway' must match the ID used when registering the gateway.
+	 *
+	 * @since 1.0
+	 *
+	 * @param array $payment_data All the payment data to be sent to the gateway.
+	 */
+	do_action( "give_gateway_{$gateway}", $payment_data );
 }
 
 
@@ -248,7 +254,7 @@ function give_record_gateway_error( $title = '', $message = '', $parent = 0 ) {
 }
 
 /**
- * Counts the number of purchases made with a gateway
+ * Counts the number of donations made with a gateway
  *
  * @since 1.0
  *
@@ -315,7 +321,7 @@ function give_get_ordered_payment_gateways( $gateways ) {
 	/**
 	 * Filter payment gateways order.
 	 *
-	 * @since 1.4.5
+	 * @since 1.7
 	 *
 	 * @param array $gateways All the available gateways
 	 */

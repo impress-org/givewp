@@ -5,11 +5,11 @@
  * @package     Give
  * @subpackage  Classes/Give_Logging
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -30,8 +30,6 @@ class Give_Logging {
 	 *
 	 * @since  1.0
 	 * @access public
-	 *
-	 * @return void
 	 */
 	public function __construct() {
 
@@ -192,6 +190,14 @@ class Give_Logging {
 
 		$args = wp_parse_args( $log_data, $defaults );
 
+		/**
+		 * Fires before inserting log entry.
+		 *
+		 * @since 1.0
+		 *
+		 * @param array $log_data Log entry data.
+		 * @param array $log_meta Log entry meta.
+		 */
 		do_action( 'give_pre_insert_log', $log_data, $log_meta );
 
 		// Store the log entry
@@ -209,6 +215,15 @@ class Give_Logging {
 			}
 		}
 
+		/**
+		 * Fires after inserting log entry.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int   $log_id   Log entry id.
+		 * @param array $log_data Log entry data.
+		 * @param array $log_meta Log entry meta.
+		 */
 		do_action( 'give_post_insert_log', $log_id, $log_data, $log_meta );
 
 		return $log_id;
@@ -223,10 +238,18 @@ class Give_Logging {
 	 * @param  array $log_data Log entry data.
 	 * @param  array $log_meta Log entry meta.
 	 *
-	 * @return bool            True if successful, false otherwise.
+	 * @return bool|null       True if successful, false otherwise.
 	 */
 	public function update_log( $log_data = array(), $log_meta = array() ) {
 
+		/**
+		 * Fires before updating log entry.
+		 *
+		 * @since 1.0
+		 *
+		 * @param array $log_data Log entry data.
+		 * @param array $log_meta Log entry meta.
+		 */
 		do_action( 'give_pre_update_log', $log_data, $log_meta );
 
 		$defaults = array(
@@ -248,6 +271,15 @@ class Give_Logging {
 			}
 		}
 
+		/**
+		 * Fires after updating log entry.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int   $log_id   Log entry id.
+		 * @param array $log_data Log entry data.
+		 * @param array $log_meta Log entry meta.
+		 */
 		do_action( 'give_post_update_log', $log_id, $log_data, $log_meta );
 	}
 
@@ -406,7 +438,7 @@ $GLOBALS['give_logs'] = new Give_Logging();
  * @param  int    $parent  Parent log. Default is 0.
  * @param  string $type    Log type. Default is null.
  *
- * @return mixed           ID of the new log entry.
+ * @return int             ID of the new log entry.
  */
 function give_record_log( $title = '', $message = '', $parent = 0, $type = null ) {
 	/* @var Give_Logging $give_logs */

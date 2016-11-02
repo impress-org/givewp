@@ -5,11 +5,11 @@
  * @package     Give
  * @subpackage  Classes/Stats
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -94,10 +94,10 @@ class Give_Payment_Stats extends Give_Stats {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  $form_id     int         The donation form to retrieve stats for. If false, gets stats for all forms
-	 * @param  $start_date  string|bool The starting date for which we'd like to filter our donation earnings stats. If false, we'll use the default start date of `this_month`
-	 * @param  $end_date    string|bool The end date for which we'd like to filter our sale stats. If false, we'll use the default end date of `this_month`
-	 * @param  $gateway_id  string|bool The gateway to get earnings for such as 'paypal' or 'stripe'
+	 * @param  $form_id     int         The donation form to retrieve stats for. If false, gets stats for all forms.
+	 * @param  $start_date  string|bool The starting date for which we'd like to filter our donation earnings stats. If false, method will use the default start date of `this_month`.
+	 * @param  $end_date    string|bool The end date for which we'd like to filter the donations stats. If false, method will use the default end date of `this_month`.
+	 * @param  $gateway_id  string|bool The gateway to get earnings for such as 'paypal' or 'stripe'.
 	 *
 	 * @return float|int                Total amount of donations based on the passed arguments.
 	 */
@@ -205,6 +205,90 @@ class Give_Payment_Stats extends Give_Stats {
 
 		//return earnings
 		return round( $earnings, give_currency_decimal_filter() );
+
+	}
+
+	/**
+	 * Retrieve earning stat transient key
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @param  $form_id     int         The donation form to retrieve stats for. If false, gets stats for all forms
+	 * @param  $start_date  string|bool The starting date for which we'd like to filter our donation earnings stats. If false, we'll use the default start date of `this_month`
+	 * @param  $end_date    string|bool The end date for which we'd like to filter our sale stats. If false, we'll use the default end date of `this_month`
+	 * @param  $gateway_id  string|bool The gateway to get earnings for such as 'paypal' or 'stripe'
+	 *
+	 * @return float|int                Total amount of donations based on the passed arguments.
+	 */
+	public function get_earnings_cache_key( $form_id = 0, $start_date = false, $end_date = false, $gateway_id = false ) {
+
+		$this->setup_dates( $start_date, $end_date );
+
+		// Make sure start date is valid
+		if ( is_wp_error( $this->start_date ) ) {
+			return $this->start_date;
+		}
+
+		// Make sure end date is valid
+		if ( is_wp_error( $this->end_date ) ) {
+			return $this->end_date;
+		}
+
+		add_filter( 'posts_where', array( $this, 'payments_where' ) );
+
+		if ( empty( $form_id ) ) {
+
+			// Global earning stats
+			$args = array(
+				'post_type'              => 'give_payment',
+				'nopaging'               => true,
+				'post_status'            => array( 'publish' ),
+				'fields'                 => 'ids',
+				'update_post_term_cache' => false,
+				'suppress_filters'       => false,
+				'start_date'             => $this->start_date,
+				// These dates are not valid query args, but they are used for cache keys
+				'end_date'               => $this->end_date,
+				'give_transient_type'    => 'give_earnings',
+				// This is not a valid query arg, but is used for cache keying
+			);
+
+			//Filter by Gateway ID meta_key
+			if ( $gateway_id !== false ) {
+				$args['meta_key']   = '_give_payment_gateway';
+				$args['meta_value'] = $gateway_id;
+			}
+
+			$args = apply_filters( 'give_stats_earnings_args', $args );
+			$key  = 'give_stats_' . substr( md5( serialize( $args ) ), 0, 15 );
+
+		} else {
+
+			// Donation form specific earning stats
+			global $wpdb;
+
+			$args = array(
+				'post_parent'         => $form_id,
+				'nopaging'            => true,
+				'log_type'            => 'sale',
+				'fields'              => 'ids',
+				'suppress_filters'    => false,
+				'start_date'          => $this->start_date,
+				// These dates are not valid query args, but they are used for cache keys
+				'end_date'            => $this->end_date,
+				'give_transient_type' => 'give_earnings',
+				// This is not a valid query arg, but is used for cache keying
+			);
+			$args = apply_filters( 'give_stats_earnings_args', $args );
+			$key  = 'give_stats_' . substr( md5( serialize( $args ) ), 0, 15 );
+		}
+
+		//remove our filter
+		remove_filter( 'posts_where', array( $this, 'payments_where' ) );
+
+		//return earnings
+		return $key;
 
 	}
 

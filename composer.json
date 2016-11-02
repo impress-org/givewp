@@ -2,8 +2,8 @@
   "name": "wordimpress/give",
   "type": "wordpress-plugin",
   "license": "GPL",
-  "description": "Give - The best way to accept donations on WordPress",
-  "homepage": "http://givewp.com",
+  "description": "Give - Democratizing Generosity",
+  "homepage": "https://givewp.com",
   "authors": [
     {
       "name": "Devin Walker",

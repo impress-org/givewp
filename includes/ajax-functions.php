@@ -7,11 +7,11 @@
  * @package     Give
  * @subpackage  Functions/AJAX
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -114,14 +114,20 @@ function give_get_ajax_url() {
 }
 
 /**
- * Loads Checkout Login Fields the via AJAX
+ * Loads Checkout Login Fields via AJAX
  *
  * @since  1.0
  *
  * @return void
  */
 function give_load_checkout_login_fields() {
-	do_action( 'give_purchase_form_login_fields' );
+	/**
+	 * Fire when render login fields via ajax.
+	 *
+	 * @since 1.7
+	 */
+	do_action( 'give_donation_form_login_fields' );
+
 	give_die();
 }
 
@@ -139,7 +145,12 @@ function give_load_checkout_fields() {
 
 	ob_start();
 
-	do_action( 'give_purchase_form_register_login_fields', $form_id );
+	/**
+	 * Fire to render registration/login form.
+	 *
+	 * @since 1.7
+	 */
+	do_action( 'give_donation_form_register_login_fields', $form_id );
 
 	$fields = ob_get_clean();
 
@@ -246,7 +257,7 @@ function give_ajax_form_search() {
 
 		$items[] = array(
 			'id'   => 0,
-			'name' => esc_html__( 'No results found', 'give' )
+			'name' => esc_html__( 'No forms found.', 'give' )
 		);
 
 	}
@@ -291,7 +302,7 @@ function give_ajax_donor_search() {
 
 		$donors[] = array(
 			'id'   => 0,
-			'name' => esc_html__( 'No results found', 'give' )
+			'name' => esc_html__( 'No donors found.', 'give' )
 		);
 
 	}
@@ -338,7 +349,7 @@ function give_ajax_search_users() {
 				$user_list .= '<li><a href="#" data-userid="' . esc_attr( $user->ID ) . '" data-login="' . esc_attr( $user->user_login ) . '">' . esc_html( $user->user_login ) . '</a></li>';
 			}
 		} else {
-			$user_list .= '<li>' . esc_html__( 'No users found', 'give' ) . '</li>';
+			$user_list .= '<li>' . esc_html__( 'No users found.', 'give' ) . '</li>';
 		}
 		$user_list .= '</ul>';
 

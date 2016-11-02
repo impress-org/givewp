@@ -5,11 +5,11 @@
  * @package     Give
  * @subpackage  Admin/Reports
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -114,7 +114,7 @@ function give_reports_graph() {
 			$i = $month_start;
 			while ( $i <= $month_end ) :
 
-				if ( $day_by_day ) :
+				if ( $day_by_day ) {
 
 					if ( $i == $month_end ) {
 
@@ -143,7 +143,7 @@ function give_reports_graph() {
 
 					endwhile;
 
-				else :
+				} else {
 
 					$sales = give_get_sales_by_date( null, $i, $y );
 					$sales_totals += $sales;
@@ -165,7 +165,7 @@ function give_reports_graph() {
 					$sales_data[]    = array( $date, $sales );
 					$earnings_data[] = array( $date, $earnings );
 
-				endif;
+				}
 
 				$i ++;
 
@@ -205,33 +205,35 @@ function give_reports_graph() {
 			<table class="widefat reports-table alignleft" style="max-width:450px">
 				<tbody>
 				<tr>
-					<td class="row-title">
-						<label for="tablecell"><?php esc_html_e( 'Total income for period: ', 'give' ); ?></label></td>
+					<th scope="row"><strong><?php esc_html_e( 'Total income for period:', 'give' ); ?></strong></th>
 					<td><?php echo give_currency_filter( give_format_amount( $earnings_totals ) ); ?></td>
 				</tr>
 				<tr class="alternate">
-					<td class="row-title">
-						<label for="tablecell"><?php esc_html_e( 'Total donations for period shown: ', 'give' ); ?></label>
-					</td>
+					<th scope="row"><strong><?php esc_html_e( 'Total donations for period:', 'give' ); ?><strong></th>
 					<td><?php echo $sales_totals; ?></td>
 				</tr>
 				<?php if ( 'this_month' == $dates['range'] ) : ?>
 					<tr>
-						<td class="row-title">
-							<label for="tablecell"><?php esc_html_e( 'Estimated monthly income: ', 'give' ); ?></label>
-						</td>
+						<th scope="row"><strong><?php esc_html_e( 'Estimated monthly income:', 'give' ); ?></strong></th>
 						<td><?php echo give_currency_filter( give_format_amount( $estimated['earnings'] ) ); ?></td>
 					</tr>
 					<tr class="alternate">
-						<td class="row-title">
-							<label for="tablecell"><?php esc_html_e( 'Estimated monthly donations: ', 'give' ); ?></label>
-						</td>
+						<th scope="row"><strong><?php esc_html_e( 'Estimated monthly donations:', 'give' ); ?></strong></th>
 						<td><?php echo floor( $estimated['sales'] ); ?></td>
 					</tr>
 				<?php endif; ?>
 			</table>
 
-			<?php do_action( 'give_reports_graph_additional_stats' ); ?>
+			<?php
+			/**
+			 * Fires on report graphs widget.
+			 *
+			 * Allows you to add additional stats to the widget.
+			 *
+			 * @since 1.0
+			 */
+			do_action( 'give_reports_graph_additional_stats' );
+			?>
 
 		</div>
 	</div>
@@ -363,7 +365,7 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 			$i = $month_start;
 			while ( $i <= $month_end ) :
 
-				if ( $day_by_day ) :
+				if ( $day_by_day ) {
 
 					if ( $i == $month_end && $last_year ) {
 
@@ -393,7 +395,7 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 
 					endwhile;
 
-				else :
+				} else {
 
 					$num_of_days = cal_days_in_month( CAL_GREGORIAN, $i, $y );
 
@@ -408,7 +410,8 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 
 					$sales_data[]    = array( $date * 1000, $sales );
 					$earnings_data[] = array( $date * 1000, $earnings );
-				endif;
+
+				}
 
 				$i ++;
 
@@ -448,26 +451,19 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 		<table class="widefat reports-table alignleft" style="max-width:450px">
 			<tbody>
 			<tr>
-				<td class="row-title">
-					<label for="tablecell"><?php esc_html_e( 'Total income for period: ', 'give' ); ?></label></td>
+				<th scope="row"><strong><?php esc_html_e( 'Total income for period:', 'give' ); ?></strong></th>
 				<td><?php echo give_currency_filter( give_format_amount( $earnings_totals ) ); ?></td>
 			</tr>
 			<tr class="alternate">
-				<td class="row-title">
-					<label for="tablecell"><?php esc_html_e( 'Total donations for period: ', 'give' ); ?></label>
-				</td>
+				<th scope="row"><strong><?php esc_html_e( 'Total donations for period:', 'give' ); ?></strong></th>
 				<td><?php echo $sales_totals; ?></td>
 			</tr>
 			<tr>
-				<td class="row-title">
-					<label for="tablecell"><?php esc_html_e( 'Average monthly income: ', 'give' ); ?></label>
-				</td>
+				<th scope="row"><strong><?php esc_html_e( 'Average monthly income:', 'give' ); ?></strong></th>
 				<td><?php echo give_currency_filter( give_format_amount( give_get_average_monthly_form_earnings( $form_id ) ) ); ?></td>
 			</tr>
 			<tr class="alternate">
-				<td class="row-title">
-					<label for="tablecell"><?php esc_html_e( 'Average monthly donations: ', 'give' ); ?></label>
-				</td>
+				<th scope="row"><strong><?php esc_html_e( 'Average monthly donations:', 'give' ); ?></strong></th>
 				<td><?php echo number_format( give_get_average_monthly_form_sales( $form_id ), 0 ); ?></td>
 			</tr>
 			</tbody>
@@ -507,6 +503,11 @@ function give_reports_graph_controls() {
 		$dates['day_end'] = cal_days_in_month( CAL_GREGORIAN, date( 'n' ), date( 'Y' ) );
 	}
 
+	/**
+	 * Fires before displaying report graph date filters.
+	 *
+	 * @since 1.0
+	 */
 	do_action( 'give_report_graph_controls_before' );
 	?>
 	<form id="give-graphs-filter" method="get" class="alignright">
@@ -571,6 +572,11 @@ function give_reports_graph_controls() {
 		</div>
 	</form>
 	<?php
+	/**
+	 * Fires after displaying report graph date filters.
+	 *
+	 * @since 1.0
+	 */
 	do_action( 'give_report_graph_controls_after' );
 }
 

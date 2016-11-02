@@ -7,11 +7,11 @@
  * @package     Give
  * @subpackage  Admin/Reports
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.5
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -68,6 +68,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 	 */
 	public function csv_cols() {
 
+		$cols = array();
 
 		$columns = isset( $this->data['give_export_option'] ) ? $this->data['give_export_option'] : array();
 
@@ -186,7 +187,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 		}
 
 		$data = apply_filters( 'give_export_get_data', $data );
-		$data = apply_filters( 'give_export_get_data_' . $this->export_type, $data );
+		$data = apply_filters( "give_export_get_data_{$this->export_type}", $data );
 
 		return $data;
 	}
@@ -256,7 +257,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 			$data[ $i ]['userid'] = ! empty( $donor->user_id ) ? $donor->user_id : '';
 		}
 		if ( ! empty( $columns['date_first_donated'] ) ) {
-			$data[ $i ]['date_first_donated'] = date_i18n( get_option( 'date_format' ), strtotime( $donor->date_created ) );
+			$data[ $i ]['date_first_donated'] = date_i18n( give_date_format(), strtotime( $donor->date_created ) );
 		}
 		if ( ! empty( $columns['donations'] ) ) {
 			$data[ $i ]['donations'] = $donor->purchase_count;

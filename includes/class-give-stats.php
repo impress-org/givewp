@@ -5,11 +5,11 @@
  * @package     Give
  * @subpackage  Classes/Give_Stats
  * @copyright   Copyright (c) 2016, Give
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -34,6 +34,8 @@ class Give_Stats {
 	 *
 	 * @since  1.0
 	 * @access public
+	 *
+	 * @var    string
 	 */
 	public $start_date;
 
@@ -48,14 +50,20 @@ class Give_Stats {
 	 *
 	 * The end date is optional
 	 *
+	 * @since  1.0
 	 * @access public
+	 *
+	 * @var    string
 	 */
 	public $end_date;
 
 	/**
 	 * Flag to determine if current query is based on timestamps
 	 *
+	 * @since  1.0
 	 * @access public
+	 *
+	 * @var    string
 	 */
 	public $timestamp;
 

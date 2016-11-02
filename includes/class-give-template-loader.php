@@ -5,11 +5,11 @@
  * @package     Give
  * @subpackage  Classes/Give_Template_Loader
  * @copyright   Copyright (c) 2016, Give
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -30,8 +30,6 @@ class Give_Template_Loader {
 	 *
 	 * @since  1.0
 	 * @access public
-	 *
-	 * @return void
 	 */
 	public function __construct() {
 

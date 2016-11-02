@@ -5,11 +5,11 @@
  * @package     Give
  * @subpackage  Admin/Tools/APIKeys
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.1
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -45,6 +45,9 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 *
 	 * @since 1.1
 	 * @see   WP_List_Table::__construct()
+	 *
+	 * @global $status
+	 * @global $page
 	 */
 	public function __construct() {
 		global $status, $page;

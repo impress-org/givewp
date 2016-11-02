@@ -6,11 +6,11 @@
  * @package     Give
  * @subpackage  Admin/Welcome
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -49,9 +49,12 @@ class Give_Welcome {
 	 * @return void
 	 */
 	public function admin_menus() {
+		list( $display_version ) = explode( '-', GIVE_VERSION );
+
 		// About Page
 		add_dashboard_page(
-			esc_html__( 'Welcome to Give', 'give' ),
+			/* translators: %s: Give version */
+			sprintf( esc_html__( 'Welcome to Give %s', 'give' ), $display_version ),
 			esc_html__( 'Welcome to Give', 'give' ),
 			$this->minimum_capability,
 			'give-about',
@@ -69,7 +72,8 @@ class Give_Welcome {
 
 		// Getting Started Page
 		add_dashboard_page(
-			esc_html__( 'Getting started with Give', 'give' ),
+			/* translators: %s: Give version */
+			sprintf( esc_html__( 'Give %s - Getting Started Guide', 'give' ), $display_version ),
 			esc_html__( 'Getting started with Give', 'give' ),
 			$this->minimum_capability,
 			'give-getting-started',
@@ -78,7 +82,8 @@ class Give_Welcome {
 
 		// Credits Page
 		add_dashboard_page(
-			esc_html__( 'The people that build Give', 'give' ),
+			/* translators: %s: Give version */
+			sprintf( esc_html__( 'Give %s - Credits', 'give' ), $display_version ),
 			esc_html__( 'The people that build Give', 'give' ),
 			$this->minimum_capability,
 			'give-credits',
@@ -107,42 +112,8 @@ class Give_Welcome {
 		<style type="text/css" media="screen">
 			/*<![CDATA[*/
 			.give-badge {
-				padding-top: 150px;
-				height: 52px;
-				width: 185px;
-				color: #FFF;
-				font-weight: bold;
-				font-size: 14px;
-				text-align: center;
-				text-shadow: 0 1px 0 rgba(0, 0, 0, 0.8);
-				margin: 0 -5px;
 				background: url('<?php echo $badge_url; ?>') no-repeat;
 			}
-
-			.about-wrap .give-badge {
-				position: absolute;
-				top: 0;
-				right: 0;
-			}
-
-			.give-welcome-screenshots {
-				float: right;
-				margin-left: 10px !important;
-			}
-
-			.about-wrap .feature-section {
-				margin-top: 40px;
-			}
-
-			.introduction {
-				padding: 0 0 20px;
-				margin: 0 0 20px;
-			}
-
-			.about-wrap h3 {
-				margin: 1.5em 0 .6em;
-			}
-
 			/*]]>*/
 		</style>
 		<script>
@@ -227,7 +198,7 @@ class Give_Welcome {
 			<a class="nav-tab <?php echo $selected == 'give-credits' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'give-credits' ), 'index.php' ) ) ); ?>">
 				<?php esc_html_e( 'Credits', 'give' ); ?>
 			</a>
-			<a class="nav-tab <?php echo $selected == 'give-add-ons' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( null, 'index.php' ) ) . 'edit.php?post_type=give_forms&page=give-addons'; ?>">
+			<a class="nav-tab <?php echo $selected == 'give-add-ons' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-addons' ) ); ?>">
 				<?php esc_html_e( 'Add-ons', 'give' ); ?>
 			</a>
 		</h2>
@@ -245,28 +216,19 @@ class Give_Welcome {
 		list( $display_version ) = explode( '-', GIVE_VERSION );
 		?>
 		<div class="wrap about-wrap">
-			<h1 class="welcome-h1"><?php
-				printf(
-					/* translators: %s: Give version */
-					esc_html__( 'Welcome to Give %s', 'give' ),
-					$display_version
-				);
-			?></h1>
+			<h1 class="welcome-h1"><?php echo get_admin_page_title(); ?></h1>
 
 			<?php give_social_media_elements() ?>
 
 			<p class="about-text"><?php
 				printf(
-					/* translators: 1: https://givewp.com/documenation/ 2: title attribute text */
-					__( 'Thank you for activating or updating to the latest version of Give! If you\'re a first time user, welcome! You\'re well on your way to empowering your cause. </You>We encourage you to check out the <a href="%1$s" title="%2$s" target="_blank">plugin documentation</a> and getting started guide below.', 'give' ),
-					esc_url( 'https://givewp.com/documenation/' ),
-					esc_attr__( 'View the Give plugin documentation online', 'give' )
+					/* translators: %s: https://givewp.com/documenation/ */
+					__( 'Thank you for activating or updating to the latest version of Give! If you\'re a first time user, welcome! You\'re well on your way to empowering your cause. We encourage you to check out the <a href="%s" target="_blank">plugin documentation</a> and getting started guide below.', 'give' ),
+					esc_url( 'https://givewp.com/documenation/' )
 				);
 			?></p>
 
-			<p class="newsletter-intro"><?php esc_html_e( 'Be sure to sign up for the Give newsletter below to stay informed of important updates and news.', 'give' ); ?></p>
-
-			<?php give_get_newsletter() ?>
+			<?php give_get_newsletter(); ?>
 
 			<div class="give-badge"><?php
 				printf(
@@ -281,8 +243,7 @@ class Give_Welcome {
 			<div class="feature-section clearfix introduction">
 
 				<div class="video feature-section-item">
-					<img src="<?php echo GIVE_PLUGIN_URL . '/assets/images/give-form-mockup.png' ?>" title="A Give donation form" alt="A Give donation form">
-
+					<img src="<?php echo GIVE_PLUGIN_URL . '/assets/images/give-form-mockup.png' ?>" alt="<?php esc_attr_e( 'A Give donation form', 'give' ); ?>">
 				</div>
 
 				<div class="content feature-section-item last-feature">
@@ -290,8 +251,10 @@ class Give_Welcome {
 					<h3><?php esc_html_e( 'Give - Democratizing Generosity', 'give' ); ?></h3>
 
 					<p><?php esc_html_e( 'Give empowers you to easily accept donations and setup fundraising campaigns, directly within WordPress. We created Give to provide a better donation experience for you and your users. Robust, flexible, and intuitive, the plugin is built from the ground up to be the goto donation solution for WordPress. Create powerful donation forms, embed them throughout your website, start a campaign, and exceed your fundraising goals with Give. This plugin is actively developed and proudly supported by folks who are dedicated to helping you and your cause.', 'give' ); ?></p>
-					<a href="https://givewp.com" target="_blank" class="button-secondary" title="Visit the Give Website">Learn More
-						<span class="dashicons dashicons-external"></span></a>
+					<a href="https://givewp.com" target="_blank" class="button-secondary">
+						<?php esc_html_e( 'Learn More', 'give' ); ?>
+						<span class="dashicons dashicons-external"></span>
+					</a>
 
 				</div>
 
@@ -305,14 +268,16 @@ class Give_Welcome {
 					<h3><?php esc_html_e( 'Getting to Know Give', 'give' ); ?></h3>
 
 					<p><?php esc_html_e( 'Before you get started with Give we suggest you take a look at the online documentation. There you will find the getting started guide which will help you get up and running quickly. If you have an question, issue or bug with the Core plugin please submit an issue on the Give website. We also welcome your feedback and feature requests. Welcome to Give. We hope you much success with your cause.', 'give' ); ?></p>
-					<a href="https://givewp.com/documentation" target="_blank" class="button-secondary" title="Visit the Give Website">View Documentation
-						<span class="dashicons dashicons-external"></span></a>
+					<a href="https://givewp.com/documentation" target="_blank" class="button-secondary">
+						<?php esc_html_e( 'View Documentation', 'give' ); ?>
+						<span class="dashicons dashicons-external"></span>
+					</a>
 
 				</div>
 
 				<div class="content  feature-section-item last-feature">
 
-					<img src="<?php echo GIVE_PLUGIN_URL . '/assets/images/give-logo-photo-mashup.png' ?>" title="Give" alt="Give">
+					<img src="<?php echo GIVE_PLUGIN_URL . '/assets/images/give-logo-photo-mashup.png' ?>" alt="<?php esc_attr_e( 'Give', 'give' ); ?>">
 
 				</div>
 
@@ -335,7 +300,7 @@ class Give_Welcome {
 		list( $display_version ) = explode( '-', GIVE_VERSION );
 		?>
 		<div class="wrap about-wrap">
-			<h1><?php esc_html_e( 'Give Changelog', 'give' ); ?></h1>
+			<h1><?php echo get_admin_page_title(); ?></h1>
 
 			<p class="about-text"><?php
 				printf(
@@ -366,7 +331,7 @@ class Give_Welcome {
 				<a href="<?php echo esc_url( admin_url( add_query_arg( array(
 					'post_type' => 'give_forms',
 					'page'      => 'give-settings'
-				), 'edit.php' ) ) ); ?>"><?php esc_html_e( 'Go to Give Settings', 'give' ); ?></a>
+				), 'edit.php' ) ) ); ?>"><?php esc_html_e( 'Give Settings', 'give' ); ?></a>
 			</div>
 		</div>
 	<?php
@@ -376,28 +341,20 @@ class Give_Welcome {
 	 * Render Getting Started Screen
 	 *
 	 * @access public
-	 * @since  1.9
+	 * @since  1.0
 	 * @return void
 	 */
 	public function getting_started_screen() {
 		list( $display_version ) = explode( '-', GIVE_VERSION );
 		?>
 		<div class="wrap about-wrap get-started">
-			<h1 class="welcome-h1"><?php
-				printf(
-					/* translators: %s: Give version */
-					esc_html__( 'Give %s - Getting Started Guide', 'give' ),
-					$display_version
-				);
-			?></h1>
+			<h1 class="welcome-h1"><?php echo get_admin_page_title(); ?></h1>
 
 			<?php give_social_media_elements() ?>
 
 			<p class="about-text"><?php esc_html_e( 'Welcome to the getting started guide.', 'give' ); ?></p>
 
-			<p class="newsletter-intro"><?php esc_html_e( 'Don\'t forget to sign up for the newsletter!', 'give' ); ?>.</p>
-
-			<?php give_get_newsletter() ?>
+			<?php give_get_newsletter(); ?>
 
 			<div class="give-badge"><?php
 				printf(
@@ -416,9 +373,9 @@ class Give_Welcome {
 				<div class="content feature-section-item">
 					<h3><?php esc_html_e( 'STEP 1: Create a New Form', 'give' ); ?></h3>
 
-					<p><?php esc_html_e( 'Give is driven by it\'s powerful form building features. But it is not simply a "form". From the "Add New Form" page you\'ll be able to choose how and where you want to receive your donations. You\'ll be able to set the donation amounts. You even get to choose whether you want to create a whole page for your form, or embed it on a different page of your site.', 'give' ); ?></p>
+					<p><?php esc_html_e( 'Give is driven by it\'s powerful form building features. But it is not simply a "form". From the "Add Form" page you\'ll be able to choose how and where you want to receive your donations. You\'ll be able to set the donation amounts. You even get to choose whether you want to create a whole page for your form, or embed it on a different page of your site.', 'give' ); ?></p>
 
-					<p><?php esc_html_e( 'But all of these features begin simply by going to the menu and choosing "Add New Form."', 'give' ); ?></p>
+					<p><?php esc_html_e( 'But all of these features begin simply by going to the menu and choosing "Add Form".', 'give' ); ?></p>
 				</div>
 
 				<div class="content feature-section-item last-feature">
@@ -492,23 +449,15 @@ class Give_Welcome {
 		list( $display_version ) = explode( '-', GIVE_VERSION );
 		?>
 		<div class="wrap about-wrap">
-			<h1 class="welcome-h1"><?php
-				printf(
-					/* translators: %s: Give version */
-					esc_html__( 'Give %s - Credits', 'give' ),
-					$display_version
-				);
-			?></h1>
+			<h1 class="welcome-h1"><?php echo get_admin_page_title(); ?></h1>
 
 			<?php give_social_media_elements() ?>
 
-			<p class="about-text"><?php esc_html_e( 'Thanks to all those who have contributed code directly or indirectly. ', 'give' ); ?></p>
+			<p class="about-text"><?php esc_html_e( 'Thanks to all those who have contributed code directly or indirectly.', 'give' ); ?></p>
 
 			<p class="about-text"><?php esc_html_e( 'Welcome to the getting started guide.', 'give' ); ?></p>
 
-			<p class="newsletter-intro"><?php esc_html_e( 'Be sure to sign up for the Give newsletter below to stay informed of important updates and news.', 'give' ); ?></p>
-
-			<?php give_get_newsletter() ?>
+			<?php give_get_newsletter(); ?>
 
 			<div class="give-badge"><?php
 				printf(
@@ -520,7 +469,13 @@ class Give_Welcome {
 
 			<?php $this->tabs(); ?>
 
-			<p class="about-description"><?php printf( __( 'Give is created by a dedicated team of developers. If you are interested in contributing please visit the <a href="%s" target="_blank">GitHub Repo</a>.', 'give' ), esc_url( 'https://github.com/WordImpress/give' ) ); ?></p>
+			<p class="about-description"><?php
+				printf(
+					/* translators: %s: https://github.com/WordImpress/give */
+					__( 'Give is created by a dedicated team of developers. If you are interested in contributing please visit the <a href="%s" target="_blank">GitHub Repo</a>.', 'give' ),
+					esc_url( 'https://github.com/WordImpress/give' )
+				);
+			?></p>
 
 			<?php echo $this->contributors(); ?>
 		</div>
@@ -531,7 +486,7 @@ class Give_Welcome {
 	/**
 	 * Parse the GIVE readme.txt file
 	 *
-	 * @since 2.0.3
+	 * @since 1.0
 	 * @return string $readme HTML formatted readme file
 	 */
 	public function parse_readme() {
@@ -574,20 +529,17 @@ class Give_Welcome {
 
 		foreach ( $contributors as $contributor ) {
 			$contributor_list .= '<li class="wp-person">';
-			$contributor_list .= sprintf( '<a href="%s" title="%s">',
+			$contributor_list .= sprintf(
+				'<a href="%1$s" target="_blank"><img src="%2$s" width="64" height="64" class="gravatar" alt="%3$s" /></a>',
 				esc_url( 'https://github.com/' . $contributor->login ),
-				esc_html(
-					sprintf(
-						/* translators: %s: github contributor */
-						esc_html__( 'View %s', 'give' ),
-						$contributor->login
-					)
-				)
+				esc_url( $contributor->avatar_url ),
+				esc_attr( $contributor->login )
 			);
-			$contributor_list .= sprintf( '<img src="%s" width="64" height="64" class="gravatar" alt="%s" />', esc_url( $contributor->avatar_url ), esc_html( $contributor->login ) );
-			$contributor_list .= '</a>';
-			$contributor_list .= sprintf( '<a class="web" href="%s">%s</a>', esc_url( 'https://github.com/' . $contributor->login ), esc_html( $contributor->login ) );
-			$contributor_list .= '</a>';
+			$contributor_list .= sprintf(
+				'<a class="web" target="_blank" href="%1$s">%2$s</a>',
+				esc_url( 'https://github.com/' . $contributor->login ),
+				esc_html( $contributor->login )
+			);
 			$contributor_list .= '</li>';
 		}
 
@@ -633,12 +585,11 @@ class Give_Welcome {
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @global $give_options Array of all the GIVE Options
+	 *
 	 * @return void
 	 */
 	public function welcome() {
-		global $give_options;
-
+		$give_options = give_get_settings();
 
 		// Bail if no activation redirect
 		if ( ! get_transient( '_give_activation_redirect' ) ) {

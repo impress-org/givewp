@@ -7,11 +7,11 @@
  * @package     Give
  * @subpackage  Admin/Reports
  * @copyright   Copyright (c) 2012, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -307,8 +307,25 @@ class Give_Graph {
 	 * @since 1.0
 	 */
 	public function display() {
+		/**
+		 * Fires before displaying the final graph.
+		 *
+		 * @since 1.0
+		 *
+		 * @param Give_Graph $this Graph object.
+		 */
 		do_action( 'give_before_graph', $this );
+
+		// Build the graph.
 		echo $this->build_graph();
+
+		/**
+		 * Fires after displaying the final graph.
+		 *
+		 * @since 1.0
+		 *
+		 * @param Give_Graph $this Graph object.
+		 */
 		do_action( 'give_after_graph', $this );
 	}
 

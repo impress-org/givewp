@@ -5,11 +5,11 @@
  * @package     Give
  * @subpackage  Admin/Reports
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly.
+// Exit if accessed directly..
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -42,8 +42,8 @@ function give_generate_pdf( $data ) {
 		sprintf(
 		/* translators: 1: start date 2: end date */
 			esc_html__( '%1$s to %2$s', 'give' ),
-			date_i18n( get_option( 'date_format' ), mktime( 0, 0, 0, 1, 1, date( 'Y' ) ) ),
-			date_i18n( get_option( 'date_format' ) )
+			date_i18n( give_date_format(), mktime( 0, 0, 0, 1, 1, date( 'Y' ) ) ),
+			date_i18n( give_date_format() )
 		)
 	);
 
@@ -84,7 +84,7 @@ function give_generate_pdf( $data ) {
 	$year       = date( 'Y' );
 	$give_forms = get_posts( array( 'post_type' => 'give_forms', 'year' => $year, 'posts_per_page' => - 1 ) );
 
-	if ( $give_forms ):
+	if ( $give_forms ) {
 		$pdf->SetWidths( array( 70, 30, 50, 50, 45, 35 ) );
 
 		foreach ( $give_forms as $form ):
@@ -131,17 +131,11 @@ function give_generate_pdf( $data ) {
 
 			$pdf->Row( array( $title, $price, $categories, $tags, $sales, $earnings ) );
 		endforeach;
-	else:
+	} else {
 		$pdf->SetWidths( array( 280 ) );
-		$title = utf8_decode(
-			sprintf(
-			/* translators: %s: form plural label */
-				esc_html__( 'No %s found.', 'give' ),
-				give_get_forms_label_plural()
-			)
-		);
+		$title = utf8_decode( esc_html__( 'No forms found.', 'give' ) );
 		$pdf->Row( array( $title ) );
-	endif;
+	}
 
 	$pdf->Ln();
 	$pdf->SetTextColor( 50, 50, 50 );
