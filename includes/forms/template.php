@@ -393,7 +393,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 	if ( $allow_custom_amount == 'no' ) {
 		?>
 		<label class="give-hidden" for="give-amount-hidden"><?php esc_html_e( 'Donation Amount:', 'give' ); ?></label>
-		<input id="give-amount" class="give-amount-hidden" type="hidden" name="give-amount" value="<?php echo $default_amount; ?>" required>
+		<input id="give-amount" class="give-amount-hidden" type="hidden" name="give-amount" value="<?php echo $default_amount; ?>" required aria-required="true" />
 		<div class="set-price give-donation-amount form-row-wide">
 			<?php if ( $currency_position == 'before' ) {
 				echo $currency_output;
@@ -634,7 +634,7 @@ function give_user_info_fields( $form_id ) {
 				name="give_first"
 				placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>"
 				id="give-first" value="<?php echo isset( $give_user_info['give_first'] ) ? $give_user_info['give_first'] : ''; ?>"
-				<?php echo( give_field_is_required( 'give_first', $form_id ) ? ' required ' : '' ); ?>
+				<?php echo( give_field_is_required( 'give_first', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
 			/>
 		</p>
 
@@ -654,7 +654,7 @@ function give_user_info_fields( $form_id ) {
 				id="give-last"
 				placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>"
 				value="<?php echo isset( $give_user_info['give_last'] ) ? $give_user_info['give_last'] : ''; ?>"
-				<?php echo( give_field_is_required( 'give_last', $form_id ) ? ' required' : '' ); ?>
+				<?php echo( give_field_is_required( 'give_last', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
 			/>
 		</p>
 
@@ -681,7 +681,7 @@ function give_user_info_fields( $form_id ) {
 				name="give_email"
 				placeholder="<?php esc_attr_e( 'Email Address', 'give' ); ?>"
 				id="give-email" value="<?php echo isset( $give_user_info['give_email'] ) ? $give_user_info['give_email'] : ''; ?>"
-				<?php echo( give_field_is_required( 'give_email', $form_id ) ? ' required ' : '' ); ?>
+				<?php echo( give_field_is_required( 'give_email', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
 			/>
 
 		</p>
@@ -751,7 +751,7 @@ function give_get_cc_form( $form_id ) {
 				<span class="card-type"></span>
 			</label>
 
-			<input type="tel" autocomplete="off" name="card_number" id="card_number-<?php echo $form_id ?>" class="card-number give-input required" placeholder="<?php esc_attr_e( 'Card number', 'give' ); ?>" required/>
+			<input type="tel" autocomplete="off" name="card_number" id="card_number-<?php echo $form_id ?>" class="card-number give-input required" placeholder="<?php esc_attr_e( 'Card number', 'give' ); ?>" required aria-required="true" />
 		</p>
 
 		<p id="give-card-cvc-wrap-<?php echo $form_id ?>" class="form-row form-row-one-third">
@@ -761,7 +761,7 @@ function give_get_cc_form( $form_id ) {
 				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The 3 digit (back) or 4 digit (front) value on your card.', 'give' ); ?>"></span>
 			</label>
 
-			<input type="tel" size="4" autocomplete="off" name="card_cvc" id="card_cvc-<?php echo $form_id ?>" class="card-cvc give-input required" placeholder="<?php esc_attr_e( 'Security code', 'give' ); ?>" required/>
+			<input type="tel" size="4" autocomplete="off" name="card_cvc" id="card_cvc-<?php echo $form_id ?>" class="card-cvc give-input required" placeholder="<?php esc_attr_e( 'Security code', 'give' ); ?>" required aria-required="true" />
 		</p>
 
 		<p id="give-card-name-wrap-<?php echo $form_id ?>" class="form-row form-row-two-thirds">
@@ -771,7 +771,7 @@ function give_get_cc_form( $form_id ) {
 				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The name printed on the front of your credit card.', 'give' ); ?>"></span>
 			</label>
 
-			<input type="text" autocomplete="off" name="card_name" id="card_name-<?php echo $form_id ?>" class="card-name give-input required" placeholder="<?php esc_attr_e( 'Card name', 'give' ); ?>" required/>
+			<input type="text" autocomplete="off" name="card_name" id="card_name-<?php echo $form_id ?>" class="card-name give-input required" placeholder="<?php esc_attr_e( 'Card name', 'give' ); ?>" required aria-required="true" />
 		</p>
 		<?php
 		/**
@@ -793,7 +793,7 @@ function give_get_cc_form( $form_id ) {
 			<input type="hidden" id="card_exp_month-<?php echo $form_id ?>" name="card_exp_month" class="card-expiry-month"/>
 			<input type="hidden" id="card_exp_year-<?php echo $form_id ?>" name="card_exp_year" class="card-expiry-year"/>
 
-			<input type="tel" autocomplete="off" name="card_expiry" id="card_expiry-<?php echo $form_id ?>" class="card-expiry give-input required" placeholder="<?php esc_attr_e( 'MM / YY', 'give' ); ?>" required/>
+			<input type="tel" autocomplete="off" name="card_expiry" id="card_expiry-<?php echo $form_id ?>" class="card-expiry give-input required" placeholder="<?php esc_attr_e( 'MM / YY', 'give' ); ?>" required aria-required="true" />
 		</p>
 		<?php
 		/**
@@ -875,7 +875,7 @@ function give_default_cc_address_fields( $form_id ) {
 				class="card-address give-input<?php echo( give_field_is_required( 'card_address', $form_id ) ? ' required' : '' ); ?>"
 				placeholder="<?php esc_attr_e( 'Address line 1', 'give' ); ?>"
 				value="<?php echo isset( $give_user_info['card_address'] ) ? $give_user_info['card_address'] : ''; ?>"
-				<?php echo( give_field_is_required( 'card_address', $form_id ) ? '  required ' : '' ); ?>
+				<?php echo( give_field_is_required( 'card_address', $form_id ) ? '  required aria-required="true" ' : '' ); ?>
 			/>
 		</p>
 
@@ -895,7 +895,7 @@ function give_default_cc_address_fields( $form_id ) {
 				class="card-address-2 give-input<?php echo( give_field_is_required( 'card_address_2', $form_id ) ? ' required' : '' ); ?>"
 				placeholder="<?php esc_attr_e( 'Address line 2', 'give' ); ?>"
 				value="<?php echo isset( $give_user_info['card_address_2'] ) ? $give_user_info['card_address_2'] : ''; ?>"
-				<?php echo( give_field_is_required( 'card_address_2', $form_id ) ? ' required ' : '' ); ?>
+				<?php echo( give_field_is_required( 'card_address_2', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
 			/>
 		</p>
 
@@ -914,7 +914,7 @@ function give_default_cc_address_fields( $form_id ) {
 				class="card-city give-input<?php echo( give_field_is_required( 'card_city', $form_id ) ? ' required' : '' ); ?>"
 				placeholder="<?php esc_attr_e( 'City', 'give' ); ?>"
 				value="<?php echo isset( $give_user_info['card_city'] ) ? $give_user_info['card_city'] : ''; ?>"
-				<?php echo( give_field_is_required( 'card_city', $form_id ) ? ' required ' : '' ); ?>
+				<?php echo( give_field_is_required( 'card_city', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
 			/>
 		</p>
 
@@ -935,7 +935,7 @@ function give_default_cc_address_fields( $form_id ) {
 				class="card-zip give-input<?php echo( give_field_is_required( 'card_zip', $form_id ) ? ' required' : '' ); ?>"
 				placeholder="<?php esc_attr_e( 'Zip / Postal Code', 'give' ); ?>"
 				value="<?php echo isset( $give_user_info['card_zip'] ) ? $give_user_info['card_zip'] : ''; ?>"
-				<?php echo( give_field_is_required( 'card_zip', $form_id ) ? ' required ' : '' ); ?>
+				<?php echo( give_field_is_required( 'card_zip', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
 			/>
 		</p>
 
@@ -952,7 +952,7 @@ function give_default_cc_address_fields( $form_id ) {
 				name="billing_country"
 				id="billing_country"
 				class="billing-country billing_country give-select<?php echo( give_field_is_required( 'billing_country', $form_id ) ? ' required' : '' ); ?>"
-				<?php echo( give_field_is_required( 'billing_country', $form_id ) ? ' required ' : '' ); ?>
+				<?php echo( give_field_is_required( 'billing_country', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
 			>
 				<?php
 
@@ -992,7 +992,7 @@ function give_default_cc_address_fields( $form_id ) {
 					name="card_state"
 					id="card_state"
 					class="card_state give-select<?php echo( give_field_is_required( 'card_state', $form_id ) ? ' required' : '' ); ?>"
-					<?php if ( give_field_is_required( 'card_state', $form_id ) ? ' required ' : '' ) {
+					<?php if ( give_field_is_required( 'card_state', $form_id ) ? ' required aria-required="true" ' : '' ) {
 						;
 					} ?>>
 					<?php
@@ -1094,7 +1094,7 @@ function give_get_register_fields( $form_id ) {
 					<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The username you will use to log into your account.', 'give' ); ?>"></span>
 				</label>
 
-				<input name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" class="give-input" type="text" placeholder="<?php esc_attr_e( 'Username', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required ' : ''; ?>/>
+				<input name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" class="give-input" type="text" placeholder="<?php esc_attr_e( 'Username', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; ?>/>
 			</div>
 
 			<div id="give-user-pass-wrap-<?php echo $form_id; ?>" class="form-row form-row-one-third">
@@ -1106,7 +1106,7 @@ function give_get_register_fields( $form_id ) {
 					<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'The password used to access your account.', 'give' ); ?>"></span>
 				</label>
 
-				<input name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>" class="give-input" placeholder="<?php esc_attr_e( 'Password', 'give' ); ?>" type="password"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required ' : ''; ?>/>
+				<input name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>" class="give-input" placeholder="<?php esc_attr_e( 'Password', 'give' ); ?>" type="password"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; ?>/>
 			</div>
 
 			<div id="give-user-pass-confirm-wrap-<?php echo $form_id; ?>" class="give-register-password form-row form-row-one-third">
@@ -1118,7 +1118,7 @@ function give_get_register_fields( $form_id ) {
 					<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'Please retype your password to confirm.', 'give' ); ?>"></span>
 				</label>
 
-				<input name="give_user_pass_confirm" id="give-user-pass-confirm-<?php echo $form_id; ?>" class="give-input" placeholder="<?php esc_attr_e( 'Confirm password', 'give' ); ?>" type="password"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required ' : ''; ?>/>
+				<input name="give_user_pass_confirm" id="give-user-pass-confirm-<?php echo $form_id; ?>" class="give-input" placeholder="<?php esc_attr_e( 'Confirm password', 'give' ); ?>" type="password"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; ?>/>
 			</div>
 			<?php
 			/**
@@ -1216,9 +1216,7 @@ function give_get_login_fields( $form_id ) {
 				<?php } ?>
 			</label>
 
-			<input class="<?php if ( give_logged_in_only( $form_id ) ) {
-				echo 'required ';
-			} ?>give-input" type="text" name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" value="" placeholder="<?php esc_attr_e( 'Your username', 'give' ); ?>"/>
+			<input class="give-input<?php echo ( give_logged_in_only( $form_id ) ) ? ' required' : ''; ?>" type="text" name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" value="" placeholder="<?php esc_attr_e( 'Your username', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; ?>/>
 		</div>
 
 		<div id="give-user-pass-wrap-<?php echo $form_id; ?>" class="give_login_password form-row form-row-last">
@@ -1228,9 +1226,7 @@ function give_get_login_fields( $form_id ) {
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
 			</label>
-			<input class="<?php if ( give_logged_in_only( $form_id ) ) {
-				echo 'required ';
-			} ?>give-input" type="password" name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>" placeholder="<?php esc_attr_e( 'Your password', 'give' ); ?>"/>
+			<input class="give-input<?php echo ( give_logged_in_only( $form_id ) ) ? ' required' : ''; ?>" type="password" name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>" placeholder="<?php esc_attr_e( 'Your password', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; ?>/>
 			<input type="hidden" name="give-purchase-var" value="needs-to-login"/>
 		</div>
 
