@@ -306,7 +306,7 @@ class GIVE_CLI_COMMAND {
 	 * [--create=<number>]
 	 * : The number of arbitrary donors to create. Leave as 1 or blank to create a donor with a specific email
 	 *
-	 *  * [--name=<name_of_donor>]
+	 * [--name=<name_of_donor>]
 	 * : Name with which you want to create new donor
 	 *
 	 * ## EXAMPLES
