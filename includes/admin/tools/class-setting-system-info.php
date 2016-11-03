@@ -118,6 +118,8 @@ if ( ! class_exists( 'Give_Settings_System_Info' ) ) :
 			$settings = $this->get_settings();
 
 			Give_Admin_Settings::output_fields( $settings, 'give_settings' );
+
+			include_once( 'views/html-admin-page-system-info.php' );
 		}
 	}
 
