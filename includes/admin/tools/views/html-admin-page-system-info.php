@@ -124,6 +124,16 @@ global $wpdb;
 			<td><?php echo 0 !== $blog_page_id ? esc_html( get_the_title( $blog_page_id ) . ' (#' . $blog_page_id . ')' ) : __( 'Unset', 'give' ); ?></td>
 		</tr>
 	<?php endif;?>
+	<tr>
+		<td data-export-label="Table Prefix Length"><?php _e( 'Table Prefix Length', 'give' ); ?>:</td>
+		<td class="help"><?php echo wc_help_tip( __( 'The length of the table prefix used in your WordPress database.', 'give' ) ); ?></td>
+		<td><?php echo esc_html( strlen( $wpdb->prefix ) ); ?></td>
+	</tr>
+	<tr>
+		<td data-export-label="Table Prefix Status"><?php _e( 'Table Prefix Status', 'give' ); ?>:</td>
+		<td class="help"><?php echo wc_help_tip( __( 'The status of the table prefix used in your WordPress database.', 'give' ) ); ?></td>
+		<td><?php echo strlen( $wpdb->prefix ) > 16 ? esc_html( 'Error: Too long', 'give' ) : esc_html( 'Acceptable', 'give' ); ?></td>
+	</tr>
 </table>
 
 <table class="wc_status_table widefat" cellspacing="0">
