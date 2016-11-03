@@ -145,6 +145,7 @@ class Give_MetaBox_Form_Data {
 							'type'        => 'group',
 							'options'     => array(
 								'add_button'    => esc_html__( 'Add Level', 'give' ),
+								'header_title'  => esc_html__( 'Donation Level', 'give' ),
 								'remove_button' => '<span class="dashicons dashicons-no"></span>',
 								'sortable'      => true, // beta
 							),
