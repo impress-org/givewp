@@ -866,13 +866,15 @@ jQuery.noConflict();
 
 		handle_repeatable_fields: function () {
 			jQuery(function () {
-				jQuery('#_give_donation_levels_field').each(function () {
+				jQuery('.give-repeatable-field-section').each(function () {
+					var $this = $(this);
+
 					// Note: Do not change option params, it can break repeatable fields functionality.
 					var options = {
 						wrapper: '.give-repeatable-fields-section-wrapper',
 						container: '.container',
 						row: '.give-row',
-						add: '#give-add-repeater-field-section-row',
+						add: '.give-add-repeater-field-section-row',
 						remove: '.give-remove',
 						move: '.give-move',
 						template: '.give-template',
@@ -887,7 +889,7 @@ jQuery.noConflict();
 						sortable_options: {
 							placeholder: "give-ui-placeholder-state-highlight",
 							update: function (event, ui) {
-								var $rows = $('.give-row', '#_give_donation_levels_field').not('.give-template');
+								var $rows = $('.give-row', $this ).not('.give-template');
 
 								if ($rows.length) {
 									var row_count = 1;

@@ -1085,7 +1085,7 @@ Tooltips
       content: "\f140"; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-add-repeater-field-section-row-wrap {
       background-color: #f5f5f5; }
-    #give-metabox-form-data .give_options_panel .give-repeatable-field-section #give-add-repeater-field-section-row {
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-add-repeater-field-section-row {
       margin: 5px 5px; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-field-wrap:last-child {
       border-bottom: 1px solid #eee; }

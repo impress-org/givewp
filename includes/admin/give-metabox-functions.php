@@ -690,7 +690,11 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 	<div class="give-repeatable-field-section" id="<?php echo "{$fields['id']}_field"; ?>">
 		<table class="give-repeatable-fields-section-wrapper" cellspacing="0">
 			<?php
+			// @TODO: Update header title with numbering with javascript.
 			$donation_levels = get_post_meta( $thepostid, $fields['id'], true );
+			$header_title    = isset( $fields['options']['header_title'] )
+				? $fields['options']['header_title']
+				: esc_attr__( 'Group', 'give' ) ;
 
 			// Check if level is not created or we have to add default level.
 			if( is_array( $donation_levels ) && ( $levels_count = count( $donation_levels ) ) ) {
@@ -706,9 +710,9 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 					<td class="give-repeater-field-wrap give-column" colspan="2">
 						<div class="give-row-head give-move">
 							<button type="button" class="handlediv button-link"><span class="toggle-indicator"></span></button>
-							<sapn class="give-remove" title="<?php esc_html_e( 'Remove Donation Level', 'give' ); ?>">-</sapn>
+							<sapn class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-</sapn>
 							<h2>
-								<span><?php esc_html_e( 'Donation Level', 'give' ); ?></span>
+								<span><?php echo $header_title; ?></span>
 							</h2>
 						</div>
 						<div class="give-row-body">
@@ -731,7 +735,7 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 							<td class="give-repeater-field-wrap give-column" colspan="2">
 								<div class="give-row-head give-move">
 									<button type="button" class="handlediv button-link"><span class="toggle-indicator"></span></button>
-									<sapn class="give-remove" title="<?php esc_html_e( 'Remove Donation Level', 'give' ); ?>">-</sapn>
+									<sapn class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-</sapn>
 									<h2>
 										<span><?php echo sprintf( esc_html__( 'Donation Level: %s', 'give' ), ( ! empty( $level['_give_text'] ) ? $level['_give_text'] : '') ); ?></span>
 									</h2>
@@ -757,9 +761,9 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 						<td class="give-repeater-field-wrap give-column" colspan="2">
 							<div class="give-row-head give-move">
 								<button type="button" class="handlediv button-link"><span class="toggle-indicator"></span></button>
-								<sapn class="give-remove" title="<?php esc_html_e( 'Remove Donation Level', 'give' ); ?>">-</sapn>
+								<sapn class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-</sapn>
 								<h2>
-									<span><?php esc_html_e( 'Donation Level', 'give' ); ?></span>
+									<span><?php echo $header_title; ?></span>
 								</h2>
 							</div>
 							<div class="give-row-body">
@@ -801,7 +805,7 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 						: esc_html__( 'Add Row', 'give' );
 					?>
 					<td colspan="2" class="give-add-repeater-field-section-row-wrap">
-						<span id="give-add-repeater-field-section-row" class="button button-primary"><?php echo $add_row_btn_title; ?></span>
+						<span class="button button-primary give-add-repeater-field-section-row"><?php echo $add_row_btn_title; ?></span>
 					</td>
 				</tr>
 			</tfoot>
