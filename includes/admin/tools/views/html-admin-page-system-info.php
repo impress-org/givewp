@@ -366,11 +366,41 @@ global $wpdb;
 	</tr>
 	</thead>
 	<tbody>
-	<tr>
-		<td data-export-label="Give Version"><?php _e( 'Give Version', 'give' ); ?>:</td>
-		<td class="help"><?php echo wc_help_tip( __( 'The version of Give installed on your site.', 'give' ) ); ?></td>
-		<td><?php echo esc_html( GIVE_VERSION ); ?></td>
-	</tr>
+		<tr>
+			<td data-export-label="Give Version"><?php _e( 'Give Version', 'give' ); ?>:</td>
+			<td class="help"><?php echo wc_help_tip( __( 'The version of Give installed on your site.', 'give' ) ); ?></td>
+			<td><?php echo esc_html( GIVE_VERSION ); ?></td>
+		</tr>
+		<tr>
+			<td data-export-label="Upgraded From"><?php _e( 'Upgraded From', 'give' ); ?>:</td>
+			<td class="help"><?php echo wc_help_tip( __( 'The version of Give installed prior to the last update.', 'give' ) ); ?></td>
+			<td><?php echo esc_html( get_option( 'give_version_upgraded_from', '&ndash;' ) ); ?></td>
+		</tr>
+		<tr>
+			<td data-export-label="Test Mode"><?php _e( 'Test Mode', 'give' ); ?>:</td>
+			<td class="help"><?php echo wc_help_tip( __( 'Whether Test Mode is enabled in Give settings.', 'give' ) ); ?></td>
+			<td><?php echo give_is_test_mode() ? __( 'Enabled', 'give' ) : __( 'Disabled', 'give' ); ?></td>
+		</tr>
+		<tr>
+			<td data-export-label="Currency Code"><?php _e( 'Currency Code', 'give' ); ?>:</td>
+			<td class="help"><?php echo wc_help_tip( __( 'The currency code selected in Give settings.', 'give' ) ); ?></td>
+			<td><?php echo esc_html( give_get_currency() ); ?></td>
+		</tr>
+		<tr>
+			<td data-export-label="Currency Position"><?php _e( 'Currency Position', 'give' ); ?>:</td>
+			<td class="help"><?php echo wc_help_tip( __( 'The currency position selected in Give settings.', 'give' ) ); ?></td>
+			<td><?php echo esc_html( give_get_option( 'currency_position', 'before' ) ); ?></td>
+		</tr>
+		<tr>
+			<td data-export-label="Decimal Separator"><?php _e( 'Decimal Separator', 'give' ); ?>:</td>
+			<td class="help"><?php echo wc_help_tip( __( 'The decimal separator defined in Give settings.', 'give' ) ); ?></td>
+			<td><?php echo esc_html( give_get_option( 'decimal_separator', '.' ) ); ?></td>
+		</tr>
+		<tr>
+			<td data-export-label="Thousands Separator"><?php _e( 'Thousands Separator', 'give' ); ?>:</td>
+			<td class="help"><?php echo wc_help_tip( __( 'The decimal separator defined in Give settings.', 'give' ) ); ?></td>
+			<td><?php echo esc_html( give_get_option( 'thousands_separator', ',' ) ); ?></td>
+		</tr>
 	</tbody>
 </table>
 
