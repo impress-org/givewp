@@ -97,6 +97,11 @@ global $wpdb;
 		<td class="help"><?php echo wc_help_tip( __( 'The current language used by WordPress. Default = English', 'give' ) ); ?></td>
 		<td><?php echo get_locale(); ?></td>
 	</tr>
+	<tr>
+		<td data-export-label="Permalink Structure"><?php _e( 'Permalink Structure', 'give' ); ?>:</td>
+		<td class="help"><?php echo wc_help_tip( __( 'The permalink structure as defined in Settings.', 'give' ) ); ?></td>
+		<td><?php get_option( 'permalink_structure' ) ? form_option( 'permalink_structure' ) : _e( 'Default', 'give' ); ?></td>
+	</tr>
 	</thead>
 </table>
 
