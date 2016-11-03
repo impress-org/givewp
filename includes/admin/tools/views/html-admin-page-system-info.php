@@ -98,12 +98,12 @@ global $wpdb;
 		<tr>
 			<td data-export-label="Permalink Structure"><?php _e( 'Permalink Structure', 'give' ); ?>:</td>
 			<td class="help"><?php echo wc_help_tip( __( 'The permalink structure as defined in Settings.', 'give' ) ); ?></td>
-			<td><?php get_option( 'permalink_structure' ) ? form_option( 'permalink_structure' ) : _e( 'Default', 'give' ); ?></td>
+			<td><?php echo esc_html( get_option( 'permalink_structure', __( 'Default', 'give' ) ) ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Show on Front"><?php _e( 'Show on Front', 'give' ); ?>:</td>
 			<td class="help"><?php echo wc_help_tip( __( 'Whether your front page is set to show posts or a static page.', 'give' ) ); ?></td>
-			<td><?php form_option( 'show_on_front' ) ?></td>
+			<td><?php echo esc_html( get_option( 'show_on_front', '&ndash;' ) ); ?></td>
 		</tr>
 		<?php if ( 'page' === get_option( 'show_on_front' ) ) : ?>
 			<?php
