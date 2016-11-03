@@ -134,6 +134,11 @@ global $wpdb;
 		<td class="help"><?php echo wc_help_tip( __( 'The status of the table prefix used in your WordPress database.', 'give' ) ); ?></td>
 		<td><?php echo strlen( $wpdb->prefix ) > 16 ? esc_html( 'Error: Too long', 'give' ) : esc_html( 'Acceptable', 'give' ); ?></td>
 	</tr>
+	<tr>
+		<td data-export-label="Admin AJAX"><?php _e( 'Admin AJAX', 'give' ); ?>:</td>
+		<td class="help"><?php echo wc_help_tip( __( 'Whether Admin AJAX is accessible.', 'give' ) ); ?></td>
+		<td><?php echo give_test_ajax_works() ? __( 'Accessible', 'give' ) : __( 'Inaccessible', 'give' ); ?></td>
+	</tr>
 </table>
 
 <table class="wc_status_table widefat" cellspacing="0">
