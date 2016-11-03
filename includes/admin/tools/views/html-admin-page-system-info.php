@@ -39,11 +39,6 @@ global $wpdb;
 			<td><?php form_option( 'siteurl' ); ?></td>
 		</tr>
 		<tr>
-			<td data-export-label="WC Version"><?php _e( 'Give Version', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'The version of Give installed on your site.', 'give' ) ); ?></td>
-			<td><?php echo esc_html( GIVE_VERSION ); ?></td>
-		</tr>
-		<tr>
 			<td data-export-label="WP Version"><?php _e( 'WP Version', 'give' ); ?>:</td>
 			<td class="help"><?php echo wc_help_tip( __( 'The version of WordPress installed on your site.', 'give' ) ); ?></td>
 			<td><?php bloginfo('version'); ?></td>
@@ -361,6 +356,21 @@ global $wpdb;
 		<?php
 	}
 	?>
+	</tbody>
+</table>
+
+<table class="wc_status_table widefat" cellspacing="0">
+	<thead>
+	<tr>
+		<th colspan="3" data-export-label="Give Configuration"><h2><?php _e( 'Give Configuration', 'give' ); ?></h2></th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+		<td data-export-label="Give Version"><?php _e( 'Give Version', 'give' ); ?>:</td>
+		<td class="help"><?php echo wc_help_tip( __( 'The version of Give installed on your site.', 'give' ) ); ?></td>
+		<td><?php echo esc_html( GIVE_VERSION ); ?></td>
+	</tr>
 	</tbody>
 </table>
 
