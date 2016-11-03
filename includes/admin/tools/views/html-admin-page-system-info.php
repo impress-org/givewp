@@ -284,7 +284,7 @@ global $wpdb;
 
 	$response = wp_safe_remote_post( 'https://www.paypal.com/cgi-bin/webscr', array(
 		'timeout'     => 60,
-		'user-agent'  => 'WooCommerce/' . WC()->version,
+		'user-agent'  => 'Give/' . GIVE_VERSION,
 		'httpversion' => '1.1',
 		'body'        => array(
 			'cmd'     => '_notify-validate'
@@ -296,9 +296,9 @@ global $wpdb;
 	} else {
 		$posting['wp_remote_post']['note']    = __( 'wp_remote_post() failed. PayPal IPN won\'t work with your server. Contact your hosting provider.', 'give' );
 		if ( is_wp_error( $response ) ) {
-			$posting['wp_remote_post']['note'] .= ' ' . sprintf( __( 'Error: %s', 'give' ), wc_clean( $response->get_error_message() ) );
+			$posting['wp_remote_post']['note'] .= ' ' . sprintf( __( 'Error: %s', 'give' ), sanitize_text_field( $response->get_error_message() ) );
 		} else {
-			$posting['wp_remote_post']['note'] .= ' ' . sprintf( __( 'Status code: %s', 'give' ), wc_clean( $response['response']['code'] ) );
+			$posting['wp_remote_post']['note'] .= ' ' . sprintf( __( 'Status code: %s', 'give' ), sanitize_text_field( $response['response']['code'] ) );
 		}
 		$posting['wp_remote_post']['success'] = false;
 	}
