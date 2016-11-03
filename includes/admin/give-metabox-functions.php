@@ -658,6 +658,60 @@ function give_get_field_value( $field, $postid ) {
 	return $field_value;
 }
 
+/**
+ * Get repeater field value.
+ *
+ * Note: Use only for single post, page or custom post type.
+ *
+ * @since  1.8
+ *
+ * @param array $field
+ * @param array $field_group
+ * @param array $fields
+ *
+ * @return string
+ */
+function give_get_repeater_field_value( $field, $field_group, $fields ) {
+	$field_value = ( isset( $field_group[$field['id']] ) ? $field_group[$field['id']] : '' );
+
+	/**
+	 * Filter the repeater field value
+	 *
+	 * @since 1.8
+	 * @param string $field_id
+	 */
+	$field_value = apply_filters( 'give_get_repeater_field_value', $field_value, $field, $field_group, $fields );
+
+	return $field_value;
+}
+
+/**
+ * Get repeater field id.
+ *
+ * Note: Use only for single post, page or custom post type.
+ *
+ * @since  1.8
+ *
+ * @param array $field
+ * @param array $fields
+ *
+ * @return string
+ */
+function give_get_repeater_field_id( $field, $fields ) {
+	// Get field id.
+	$field_id = "{$fields['id']}[{{row-count-placeholder}}][{$field['id']}]";
+
+	/**
+	 * Filter the repeater field id
+	 *
+	 * @since 1.8
+	 * @param string $field_id
+	 */
+	$field_id = apply_filters( 'give_get_repeater_field_id', $field_id, $field, $fields );
+
+	return $field_id;
+}
+
 
 /**
  * Get field name.
@@ -690,29 +744,29 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 	<div class="give-repeatable-field-section" id="<?php echo "{$fields['id']}_field"; ?>">
 		<table class="give-repeatable-fields-section-wrapper" cellspacing="0">
 			<?php
-			// @TODO: Update header title with numbering with javascript.
-			$donation_levels = get_post_meta( $thepostid, $fields['id'], true );
+			$repeater_field_values = get_post_meta( $thepostid, $fields['id'], true );
 			$header_title    = isset( $fields['options']['header_title'] )
 				? $fields['options']['header_title']
 				: esc_attr__( 'Group', 'give' ) ;
 
+			$add_default_donation_field = false;
+
 			// Check if level is not created or we have to add default level.
-			if( is_array( $donation_levels ) && ( $levels_count = count( $donation_levels ) ) ) {
-				$donation_levels = array_values( $donation_levels );
-				$set_default_donation_level = false;
+			if( is_array( $repeater_field_values ) && ( $fields_count = count( $repeater_field_values ) ) ) {
+				$repeater_field_values = array_values( $repeater_field_values );
 			} else {
-				$levels_count = 1;
-				$set_default_donation_level = true;
+				$fields_count = 1;
+				$add_default_donation_field = true;
 			}
 			?>
-			<tbody class="container"<?php echo " data-rf-row-count=\"{$levels_count}\""; ?>>
+			<tbody class="container"<?php echo " data-rf-row-count=\"{$fields_count}\""; ?>>
 				<tr class="give-template give-row">
 					<td class="give-repeater-field-wrap give-column" colspan="2">
 						<div class="give-row-head give-move">
 							<button type="button" class="handlediv button-link"><span class="toggle-indicator"></span></button>
 							<sapn class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-</sapn>
 							<h2>
-								<span><?php echo $header_title; ?></span>
+								<span data-header-title="<?php echo $header_title; ?>"><?php echo $header_title; ?></span>
 							</h2>
 						</div>
 						<div class="give-row-body">
@@ -720,7 +774,7 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 								<?php if ( ! give_is_field_callback_exist( $field ) ) continue; ?>
 								<?php
 								$field['repeat'] = true;
-								$field['repeatable_field_id'] = ( '_give_id' === $field['id'] ) ? "{$fields['id']}[{{row-count-placeholder}}][{$field['id']}][level_id]" : "{$fields['id']}[{{row-count-placeholder}}][{$field['id']}]";
+								$field['repeatable_field_id'] = give_get_repeater_field_id( $field, $fields );
 								$field['id'] = str_replace( array( '[', ']' ), array( '_', '' ), $field['repeatable_field_id'] );
 								?>
 								<?php give_render_field( $field ); ?>
@@ -729,15 +783,15 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 					</td>
 				</tr>
 
-				<?php if( ! empty( $donation_levels ) ) : ?>
-					<?php foreach ( $donation_levels as $index => $level ) : ?>
+				<?php if( ! empty( $repeater_field_values ) ) : ?>
+					<?php foreach ( $repeater_field_values as $index => $field_group ) : ?>
 						<tr class="give-row">
 							<td class="give-repeater-field-wrap give-column" colspan="2">
 								<div class="give-row-head give-move">
 									<button type="button" class="handlediv button-link"><span class="toggle-indicator"></span></button>
 									<sapn class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-</sapn>
 									<h2>
-										<span><?php echo sprintf( esc_html__( 'Donation Level: %s', 'give' ), ( ! empty( $level['_give_text'] ) ? $level['_give_text'] : '') ); ?></span>
+										<span data-header-title="<?php echo $header_title; ?>"><?php echo $header_title; ?></span>
 									</h2>
 								</div>
 								<div class="give-row-body">
@@ -745,8 +799,8 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 										<?php if ( ! give_is_field_callback_exist( $field ) ) continue; ?>
 										<?php
 										$field['repeat'] = true;
-										$field['repeatable_field_id'] = ( '_give_id' === $field['id'] ) ? "{$fields['id']}[{$index}][{$field['id']}][level_id]" : "{$fields['id']}[{$index}][{$field['id']}]";
-										$field['attributes']['value'] = ( '_give_id' === $field['id'] ) ? $level[$field['id']]['level_id'] : ( isset( $level[$field['id']] ) ? $level[$field['id']] : '' );
+										$field['repeatable_field_id'] = give_get_repeater_field_id( $field, $fields );
+										$field['attributes']['value'] = give_get_repeater_field_value( $field, $field_group, $fields );
 										$field['id'] = str_replace( array( '[', ']' ), array( '_', '' ), $field['repeatable_field_id'] );
 										?>
 										<?php give_render_field( $field ); ?>
@@ -756,38 +810,23 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 						</tr>
 					<?php endforeach;; ?>
 
-				<?php elseif ( $set_default_donation_level ) : ?>
+				<?php elseif ( $add_default_donation_field ) : ?>
 					<tr class="give-row">
 						<td class="give-repeater-field-wrap give-column" colspan="2">
 							<div class="give-row-head give-move">
 								<button type="button" class="handlediv button-link"><span class="toggle-indicator"></span></button>
 								<sapn class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-</sapn>
 								<h2>
-									<span><?php echo $header_title; ?></span>
+									<span data-header-title="<?php echo $header_title; ?>"><?php echo $header_title; ?></span>
 								</h2>
 							</div>
 							<div class="give-row-body">
-								<?php $index = 0; ?>
 								<?php foreach ( $fields['fields'] as $field ) : ?>
 									<?php if ( ! give_is_field_callback_exist( $field ) ) continue; ?>
 									<?php
 									$field['repeat'] = true;
-									$field['repeatable_field_id'] = ( '_give_id' === $field['id'] ) ? "{$fields['id']}[{$index}][{$field['id']}][level_id]" : "{$fields['id']}[{$index}][{$field['id']}]";
-
-									// Set default value.
-									switch ( $field['id'] ) {
-										case '_give_id':
-											$field['attributes']['value'] = 0;
-											break;
-
-										case '_give_default':
-											$field['attributes']['checked'] = 'checked';
-											break;
-
-										default:
-											$field['attributes']['value'] = '';
-									}
-
+									$field['repeatable_field_id'] = give_get_repeater_field_id( $field, $fields );
+									$field['attributes']['value'] = apply_filters( "give_default_field_group_field_{$field['id']}_value", ( ! empty( $field['default'] ) ? $field['default'] : '' ), $field );
 									$field['id'] = str_replace( array( '[', ']' ), array( '_', '' ), $field['repeatable_field_id'] );
 									?>
 									<?php give_render_field( $field ); ?>
@@ -974,8 +1013,6 @@ function _give_offline_donation_enable_billing_fields_single_field_value( $field
 		$field_value = 'enabled';
 	}
 
-	error_log( print_r(  $field_value, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-
 	return $field_value;
 }
 add_filter( '_give_offline_donation_enable_billing_fields_single_field_value', '_give_offline_donation_enable_billing_fields_single_field_value', 10, 3 );
@@ -1092,3 +1129,71 @@ function _give_customize_offline_donations_value( $field_value, $field, $postid 
 	return $field_value;
 }
 add_filter( '_give_customize_offline_donations_field_value', '_give_customize_offline_donations_value', 10, 3 );
+
+
+/**
+ * Set repeater field id for multi donation form.
+ *
+ * @since 1.8
+ *
+ * @param int   $field_id
+ * @param array $field
+ * @param array $fields
+ *
+ * @return mixed
+ */
+function _give_set_multi_level_repeater_field_id( $field_id, $field, $fields ){
+	if( '_give_id' === $field['id'] && '_give_donation_levels' === $fields['id'] ) {
+		$field_id = "{$fields['id']}[{{row-count-placeholder}}][{$field['id']}][level_id]";
+	}
+	
+	return $field_id;
+}
+
+add_filter( 'give_get_repeater_field_id', '_give_set_multi_level_repeater_field_id', 10, 3 );
+
+/**
+ * Set repeater field value for multi donation form.
+ *
+ * @since 1.8
+ *
+ * @param string $field_value
+ * @param array  $field
+ * @param array  $field_group
+ * @param array  $fields
+ *
+ * @return mixed
+ */
+function _give_set_multi_level_repeater_field_value( $field_value, $field, $field_group, $fields ){
+	if( isset( $field['id'] ) && '_give_id' === $field['id'] && '_give_donation_levels' === $fields['id'] ) {
+		$field_value = $field_group[$field['id']]['level_id'];
+	}
+
+	return $field_value;
+}
+
+add_filter( 'give_get_repeater_field_value', '_give_set_multi_level_repeater_field_value', 10, 4 );
+
+/**
+ * Set default value for _give_id field.
+ *
+ * @since 1.8
+ * @param $field
+ * @return string
+ */
+function _give_set_field_give_id_default_value( $field ) {
+	return 0;
+}
+add_filter( 'give_default_field_group_field__give_id_value', ' _give_set_field_give_id_default_value' );
+
+/**
+ * Set default value for _give_default field.
+ *
+ * @since 1.8
+ * @param $field
+ * @return string
+ */
+function _give_set_field_give_default_default_value( $field ) {
+	return 'checked';
+}
+add_filter( 'give_default_field_group_field__give_default_value', ' _give_set_field_give_default_default_value' );

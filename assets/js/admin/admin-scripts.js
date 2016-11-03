@@ -825,7 +825,12 @@ jQuery.noConflict();
 			this.setup_colorpicker();
 			this.handle_repeatable_fields();
 			this.handle_repeatable_field_header_click();
-			this.handle_repeatable_field_level_text_click();
+
+			// Multi level repeater field js.
+			this.handle_multi_levels_repeatable_level_text_field_click();
+			this.handle_multi_levels_repeatable_auto_rename_header_title();
+			this.handle_multi_levels_repeatable_row_added_event();
+			this.handle_multi_levels_repeatable_row_deleted_event();
 		},
 
 		handle_metabox_tab_click: function () {
@@ -944,6 +949,9 @@ jQuery.noConflict();
 			});
 		},
 
+		/**
+		 * Hide show repeater field when admin click on field group header.
+		 */
 		handle_repeatable_field_header_click: function () {
 			$('body').on('click', '.give-row-head button', function () {
 				var $parent = $(this).closest('tr');
@@ -952,11 +960,14 @@ jQuery.noConflict();
 			});
 		},
 
-		handle_repeatable_field_level_text_click: function () {
+		/**
+		 * Add level title as suffix to header title when admin add level title.
+		 */
+		handle_multi_levels_repeatable_level_text_field_click: function () {
 			$('body').on('keyup', '.give-multilevel-text-field', function () {
 				var $parent = $(this).closest('tr'),
 					$header_title_container = $('.give-row-head h2 span', $parent),
-					donation_level_header_text_prefix = $(this).attr('placeholder');
+					donation_level_header_text_prefix = $header_title_container.data('header-title');
 
 				// Donation level header already set.
 				if ($(this).val() && (  $(this).val() === $header_title_container.html() )) {
@@ -971,6 +982,87 @@ jQuery.noConflict();
 					$header_title_container.html(donation_level_header_text_prefix)
 				}
 			});
+		},
+
+
+		/**
+		 * Add level title as suffix to header title on document load.
+		 */
+		handle_multi_levels_repeatable_auto_rename_header_title: function () {
+			$('.give-multilevel-text-field').not('.give-template').each(function( index, item ){
+
+				// Skip first element.
+				if( ! index ) {
+					return;
+				}
+
+				// Check if item is jquery object or not.
+				item = item instanceof jQuery ? item : jQuery(item);
+
+				var $parent = item.closest('tr'),
+					$header_title_container = $('.give-row-head h2 span', $parent),
+					donation_level_header_text_prefix = $header_title_container.data('header-title');
+
+				// Donation level header already set.
+				if (item.val() && (  item.val() === $header_title_container.html() )) {
+					return false;
+				}
+
+				if (item.val()) {
+					// Change donaiton level header text.
+					$header_title_container.html(donation_level_header_text_prefix + ': ' + item.val());
+				} else {
+					// Reset donation level header heading text.
+					$header_title_container.html(donation_level_header_text_prefix)
+				}
+			});
+		},
+
+		/**
+		 * Handle row added event for levels repeaterow_added_event
+		 */
+		handle_multi_levels_repeatable_row_added_event: function(){
+			$('.give-repeatable-field-section').on( 'repeater_field_row_deleted', function() {
+				var $this = $(this);
+
+				window.setTimeout(
+					function () {
+						var $parent = $this,
+							$repeatable_rows = $('.give-row', $parent).not('.give-template'),
+							$default_radio = $('.give-give_default_radio_inline', $repeatable_rows),
+							number_of_level = $repeatable_rows.length;
+
+						if (number_of_level === 1) {
+							$default_radio.prop('checked', true);
+						}
+					},
+					200
+				);
+			});
+		},
+
+		/**
+		 * Handle row deleted event for levels repeaterow_added_event
+		 */
+		handle_multi_levels_repeatable_row_deleted_event: function(){
+			$('.give-repeatable-field-section').on( 'repeater_field_new_row_added', function() {
+				var $this = $(this);
+
+				window.setTimeout(
+					function () {
+						// Set first row as default if selected default row deleted.
+						// When a row is removed containing the default selection then revert default to first repeatable row.
+						if ($('.give-give_default_radio_inline', $this ).is(':checked') === false) {
+							$('.give-row', $this )
+								.not('.give-template')
+								.first()
+								.find('.give-give_default_radio_inline')
+								.prop('checked', true);
+						}
+					},
+					200
+				);
+			});
 		}
 	};
 
@@ -978,7 +1070,9 @@ jQuery.noConflict();
 	 * Handle row count and field count for repeatable field.
 	 */
 	var handle_metabox_repeater_field_row_count = function (container, new_row) {
-		var row_count = $(container).attr('data-rf-row-count');
+		var row_count  = $(container).attr('data-rf-row-count'),
+			$container = $(container),
+			$parent    = $container.parents('.give-repeatable-field-section');
 
 		row_count++;
 
@@ -996,20 +1090,8 @@ jQuery.noConflict();
 		// Set level id.
 		$('input[type="hidden"].give-levels_id', new_row).val(row_count - 1);
 
-		// If there is only one level then set it as default.
-		window.setTimeout(
-			function () {
-				var $parent = $('#_give_donation_levels_field'),
-					$repeatable_rows = $('.give-row', $parent).not('.give-template'),
-					$default_radio = $('.give-give_default_radio_inline', $repeatable_rows),
-					number_of_level = $repeatable_rows.length;
-
-				if (number_of_level === 1) {
-					$default_radio.prop('checked', true);
-				}
-			},
-			200
-		);
+		// Fire event: Row added.
+		$parent.trigger( 'repeater_field_new_row_added' );
 	};
 
 
@@ -1017,18 +1099,15 @@ jQuery.noConflict();
 	 * Handle row remove for repeatable field.
 	 */
 	var handle_metabox_repeater_field_row_remove = function (container) {
-		var $parent = $('#_give_donation_levels_field'),
-			$repeatable_rows = $('.give-row', $parent).not('.give-template'),
+		var $container = $(container),
+			$parent    = $container.parents('.give-repeatable-field-section'),
 			row_count = $(container).attr('data-rf-row-count');
 
 		// Reduce row count.
-		$(container).attr('data-rf-row-count', --row_count);
+		$container.attr('data-rf-row-count', --row_count);
 
-		// Set first row as default if selected default row deleted.
-		// When a row is removed containing the default selection then revert default to first repeatable row.
-		if ($('.give-give_default_radio_inline', $parent).is(':checked') === false) {
-			$repeatable_rows.first().find('.give-give_default_radio_inline').prop('checked', true);
-		}
+		// Fire event: Row deleted.
+		$parent.trigger( 'repeater_field_row_deleted' );
 	};
 
 
