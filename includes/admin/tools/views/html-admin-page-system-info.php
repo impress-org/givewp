@@ -102,6 +102,27 @@ global $wpdb;
 		<td class="help"><?php echo wc_help_tip( __( 'The permalink structure as defined in Settings.', 'give' ) ); ?></td>
 		<td><?php get_option( 'permalink_structure' ) ? form_option( 'permalink_structure' ) : _e( 'Default', 'give' ); ?></td>
 	</tr>
+	<tr>
+		<td data-export-label="Show on Front"><?php _e( 'Show on Front', 'give' ); ?>:</td>
+		<td class="help"><?php echo wc_help_tip( __( 'Whether your front page is set to show posts or a static page.', 'give' ) ); ?></td>
+		<td><?php form_option( 'show_on_front' ) ?></td>
+	</tr>
+	<?php if ( 'page' === get_option( 'show_on_front' ) ) : ?>
+		<?php
+		$front_page_id = absint( get_option( 'page_on_front' ) );
+		$blog_page_id  = absint( get_option( 'page_for_posts' ) );
+		?>
+		<tr>
+			<td data-export-label="Page on Front"><?php _e( 'Page on Front', 'give' ); ?>:</td>
+			<td class="help"><?php echo wc_help_tip( __( 'The page set to display as your front page.', 'give' ) ); ?></td>
+			<td><?php 0 !== $front_page_id ? esc_html_e( get_the_title( $front_page_id ) . ' (#' . $front_page_id . ')' ) : _e( 'Unset', 'give' ); ?></td>
+		</tr>
+		<tr>
+			<td data-export-label="Page for Posts"><?php _e( 'Page for Posts', 'give' ); ?>:</td>
+			<td class="help"><?php echo wc_help_tip( __( 'The page set to display your posts.', 'give' ) ); ?></td>
+			<td><?php 0 !== $blog_page_id ? esc_html_e( get_the_title( $blog_page_id ) . ' (#' . $blog_page_id . ')' ) : _e( 'Unset', 'give' ); ?></td>
+		</tr>
+	<?php endif;?>
 	</thead>
 </table>
 
