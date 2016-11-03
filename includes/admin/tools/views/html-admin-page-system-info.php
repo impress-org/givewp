@@ -23,9 +23,10 @@ global $wpdb;
 
 <table class="give-status-table widefat" cellspacing="0" id="status">
 	<thead>
-	<tr>
-		<th colspan="3" data-export-label="WordPress Environment"><h2><?php _e( 'WordPress Environment', 'give' ); ?></h2></th>
-	</tr>
+		<tr>
+			<th colspan="3" data-export-label="WordPress Environment"><h2><?php _e( 'WordPress Environment', 'give' ); ?></h2></th>
+		</tr>
+	</thead>
 	<tbody>
 	<tr>
 		<td data-export-label="Home URL"><?php _e( 'Home URL', 'give' ); ?>:</td>
@@ -123,7 +124,6 @@ global $wpdb;
 			<td><?php echo 0 !== $blog_page_id ? esc_html( get_the_title( $blog_page_id ) . ' (#' . $blog_page_id . ')' ) : __( 'Unset', 'give' ); ?></td>
 		</tr>
 	<?php endif;?>
-	</thead>
 </table>
 
 <table class="wc_status_table widefat" cellspacing="0">
