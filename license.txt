@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 This program incorporates work covered by the following copyright and
 permission notices:
 
-   Easy Digital Downloads is Copyright (c) 2015 WordImpress, LLC
+   Easy Digital Downloads is Copyright (c) 2015, Pippin Williamson
    https://easydigitaldownloads.com
 
    EDD is released under the GPL 2.0
