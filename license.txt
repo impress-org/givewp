@@ -24,7 +24,6 @@ permission notices:
 
    EDD is released under the GPL 2.0
 
-
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
                     GNU GENERAL PUBLIC LICENSE
