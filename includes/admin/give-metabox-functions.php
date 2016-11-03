@@ -742,6 +742,14 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 
 	?>
 	<div class="give-repeatable-field-section" id="<?php echo "{$fields['id']}_field"; ?>">
+		<?php if( ! empty( $fields['name'] ) ) : ?>
+			<p class="give-repeater-field-name"><?php echo $fields['name']; ?></p>
+		<?php endif; ?>
+
+		<?php if( ! empty( $fields['description'] ) ) : ?>
+			<p class="give-repeater-field-description"><?php echo $fields['description']; ?></p>
+		<?php endif; ?>
+
 		<table class="give-repeatable-fields-section-wrapper" cellspacing="0">
 			<?php
 			$repeater_field_values = get_post_meta( $thepostid, $fields['id'], true );

@@ -594,6 +594,19 @@ Tooltips
       .give-row.ui-sortable-helper {
         border-bottom: 0;
       }
+
+      .give-repeater-field-name{
+        border: 0!important;
+        padding: 0!important;
+      }
+      .give-repeater-field-description{
+        color: #aaaaaa;
+        font-size: 12px;
+        line-height: 18px;
+        display: block;
+        padding-bottom: 10px;
+        font-style: italic;
+      }
     }
   }
 }
