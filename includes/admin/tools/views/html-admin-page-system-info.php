@@ -139,6 +139,11 @@ global $wpdb;
 		<td class="help"><?php echo wc_help_tip( __( 'Whether Admin AJAX is accessible.', 'give' ) ); ?></td>
 		<td><?php echo give_test_ajax_works() ? __( 'Accessible', 'give' ) : __( 'Inaccessible', 'give' ); ?></td>
 	</tr>
+	<tr>
+		<td data-export-label="Registered Post Stati"><?php _e( 'Registered Post Stati', 'give' ); ?>:</td>
+		<td class="help"><?php echo wc_help_tip( __( 'A list of all registered post stati.', 'give' ) ); ?></td>
+		<td><?php echo esc_html( implode( ', ', get_post_stati() ) ); ?></td>
+	</tr>
 </table>
 
 <table class="wc_status_table widefat" cellspacing="0">
