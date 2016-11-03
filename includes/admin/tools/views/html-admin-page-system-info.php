@@ -28,122 +28,125 @@ global $wpdb;
 		</tr>
 	</thead>
 	<tbody>
-	<tr>
-		<td data-export-label="Home URL"><?php _e( 'Home URL', 'give' ); ?>:</td>
-		<td class="help"><?php echo wc_help_tip( __( 'The URL of your site\'s homepage.', 'give' ) ); ?></td>
-		<td><?php form_option( 'home' ); ?></td>
-	</tr>
-	<tr>
-		<td data-export-label="Site URL"><?php _e( 'Site URL', 'give' ); ?>:</td>
-		<td class="help"><?php echo wc_help_tip( __( 'The root URL of your site.', 'give' ) ); ?></td>
-		<td><?php form_option( 'siteurl' ); ?></td>
-	</tr>
-	<tr>
-		<td data-export-label="WC Version"><?php _e( 'Give Version', 'give' ); ?>:</td>
-		<td class="help"><?php echo wc_help_tip( __( 'The version of Give installed on your site.', 'give' ) ); ?></td>
-		<td><?php echo esc_html( GIVE_VERSION ); ?></td>
-	</tr>
-	<tr>
-		<td data-export-label="WP Version"><?php _e( 'WP Version', 'give' ); ?>:</td>
-		<td class="help"><?php echo wc_help_tip( __( 'The version of WordPress installed on your site.', 'give' ) ); ?></td>
-		<td><?php bloginfo('version'); ?></td>
-	</tr>
-	<tr>
-		<td data-export-label="WP Multisite"><?php _e( 'WP Multisite', 'give' ); ?>:</td>
-		<td class="help"><?php echo wc_help_tip( __( 'Whether or not you have WordPress Multisite enabled.', 'give' ) ); ?></td>
-		<td><?php if ( is_multisite() ) echo '<span class="dashicons dashicons-yes"></span>'; else echo '&ndash;'; ?></td>
-	</tr>
-	<tr>
-		<td data-export-label="WP Memory Limit"><?php _e( 'WP Memory Limit', 'give' ); ?>:</td>
-		<td class="help"><?php echo wc_help_tip( __( 'The maximum amount of memory (RAM) that your site can use at one time.', 'give' ) ); ?></td>
-		<td><?php
-			$memory = wc_let_to_num( WP_MEMORY_LIMIT );
-
-			if ( function_exists( 'memory_get_usage' ) ) {
-				$system_memory = wc_let_to_num( @ini_get( 'memory_limit' ) );
-				$memory        = max( $memory, $system_memory );
-			}
-
-			if ( $memory < 67108864 ) {
-				echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf( __( '%s - We recommend setting memory to at least 64MB. See: %s', 'give' ), size_format( $memory ), '<a href="https://codex.wordpress.org/Editing_wp-config.php#Increasing_memory_allocated_to_PHP" target="_blank">' . __( 'Increasing memory allocated to PHP', 'give' ) . '</a>' ) . '</mark>';
-			} else {
-				echo '<mark class="yes">' . size_format( $memory ) . '</mark>';
-			}
-			?></td>
-	</tr>
-	<tr>
-		<td data-export-label="WP Debug Mode"><?php _e( 'WP Debug Mode', 'give' ); ?>:</td>
-		<td class="help"><?php echo wc_help_tip( __( 'Displays whether or not WordPress is in Debug Mode.', 'give' ) ); ?></td>
-		<td>
-			<?php if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) : ?>
-				<mark class="yes"><span class="dashicons dashicons-yes"></span></mark>
-			<?php else : ?>
-				<mark class="no">&ndash;</mark>
-			<?php endif; ?>
-		</td>
-	</tr>
-	<tr>
-		<td data-export-label="WP Cron"><?php _e( 'WP Cron', 'give' ); ?>:</td>
-		<td class="help"><?php echo wc_help_tip( __( 'Displays whether or not WP Cron Jobs are enabled.', 'give' ) ); ?></td>
-		<td>
-			<?php if ( defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON ) : ?>
-				<mark class="no">&ndash;</mark>
-			<?php else : ?>
-				<mark class="yes"><span class="dashicons dashicons-yes"></span></mark>
-			<?php endif; ?>
-		</td>
-	</tr>
-	<tr>
-		<td data-export-label="Language"><?php _e( 'Language', 'give' ); ?>:</td>
-		<td class="help"><?php echo wc_help_tip( __( 'The current language used by WordPress. Default = English', 'give' ) ); ?></td>
-		<td><?php echo get_locale(); ?></td>
-	</tr>
-	<tr>
-		<td data-export-label="Permalink Structure"><?php _e( 'Permalink Structure', 'give' ); ?>:</td>
-		<td class="help"><?php echo wc_help_tip( __( 'The permalink structure as defined in Settings.', 'give' ) ); ?></td>
-		<td><?php get_option( 'permalink_structure' ) ? form_option( 'permalink_structure' ) : _e( 'Default', 'give' ); ?></td>
-	</tr>
-	<tr>
-		<td data-export-label="Show on Front"><?php _e( 'Show on Front', 'give' ); ?>:</td>
-		<td class="help"><?php echo wc_help_tip( __( 'Whether your front page is set to show posts or a static page.', 'give' ) ); ?></td>
-		<td><?php form_option( 'show_on_front' ) ?></td>
-	</tr>
-	<?php if ( 'page' === get_option( 'show_on_front' ) ) : ?>
-		<?php
-		$front_page_id = absint( get_option( 'page_on_front' ) );
-		$blog_page_id  = absint( get_option( 'page_for_posts' ) );
-		?>
 		<tr>
-			<td data-export-label="Page on Front"><?php _e( 'Page on Front', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'The page set to display as your front page.', 'give' ) ); ?></td>
-			<td><?php echo 0 !== $front_page_id ? esc_html( get_the_title( $front_page_id ) . ' (#' . $front_page_id . ')' ) : __( 'Unset', 'give' ); ?></td>
+			<td data-export-label="Home URL"><?php _e( 'Home URL', 'give' ); ?>:</td>
+			<td class="help"><?php echo wc_help_tip( __( 'The URL of your site\'s homepage.', 'give' ) ); ?></td>
+			<td><?php form_option( 'home' ); ?></td>
 		</tr>
 		<tr>
-			<td data-export-label="Page for Posts"><?php _e( 'Page for Posts', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'The page set to display your posts.', 'give' ) ); ?></td>
-			<td><?php echo 0 !== $blog_page_id ? esc_html( get_the_title( $blog_page_id ) . ' (#' . $blog_page_id . ')' ) : __( 'Unset', 'give' ); ?></td>
+			<td data-export-label="Site URL"><?php _e( 'Site URL', 'give' ); ?>:</td>
+			<td class="help"><?php echo wc_help_tip( __( 'The root URL of your site.', 'give' ) ); ?></td>
+			<td><?php form_option( 'siteurl' ); ?></td>
 		</tr>
-	<?php endif;?>
-	<tr>
-		<td data-export-label="Table Prefix Length"><?php _e( 'Table Prefix Length', 'give' ); ?>:</td>
-		<td class="help"><?php echo wc_help_tip( __( 'The length of the table prefix used in your WordPress database.', 'give' ) ); ?></td>
-		<td><?php echo esc_html( strlen( $wpdb->prefix ) ); ?></td>
-	</tr>
-	<tr>
-		<td data-export-label="Table Prefix Status"><?php _e( 'Table Prefix Status', 'give' ); ?>:</td>
-		<td class="help"><?php echo wc_help_tip( __( 'The status of the table prefix used in your WordPress database.', 'give' ) ); ?></td>
-		<td><?php echo strlen( $wpdb->prefix ) > 16 ? esc_html( 'Error: Too long', 'give' ) : esc_html( 'Acceptable', 'give' ); ?></td>
-	</tr>
-	<tr>
-		<td data-export-label="Admin AJAX"><?php _e( 'Admin AJAX', 'give' ); ?>:</td>
-		<td class="help"><?php echo wc_help_tip( __( 'Whether Admin AJAX is accessible.', 'give' ) ); ?></td>
-		<td><?php echo give_test_ajax_works() ? __( 'Accessible', 'give' ) : __( 'Inaccessible', 'give' ); ?></td>
-	</tr>
-	<tr>
-		<td data-export-label="Registered Post Stati"><?php _e( 'Registered Post Stati', 'give' ); ?>:</td>
-		<td class="help"><?php echo wc_help_tip( __( 'A list of all registered post stati.', 'give' ) ); ?></td>
-		<td><?php echo esc_html( implode( ', ', get_post_stati() ) ); ?></td>
-	</tr>
+		<tr>
+			<td data-export-label="WC Version"><?php _e( 'Give Version', 'give' ); ?>:</td>
+			<td class="help"><?php echo wc_help_tip( __( 'The version of Give installed on your site.', 'give' ) ); ?></td>
+			<td><?php echo esc_html( GIVE_VERSION ); ?></td>
+		</tr>
+		<tr>
+			<td data-export-label="WP Version"><?php _e( 'WP Version', 'give' ); ?>:</td>
+			<td class="help"><?php echo wc_help_tip( __( 'The version of WordPress installed on your site.', 'give' ) ); ?></td>
+			<td><?php bloginfo('version'); ?></td>
+		</tr>
+		<tr>
+			<td data-export-label="WP Multisite"><?php _e( 'WP Multisite', 'give' ); ?>:</td>
+			<td class="help"><?php echo wc_help_tip( __( 'Whether or not you have WordPress Multisite enabled.', 'give' ) ); ?></td>
+			<td><?php if ( is_multisite() ) echo '<span class="dashicons dashicons-yes"></span>'; else echo '&ndash;'; ?></td>
+		</tr>
+		<tr>
+			<td data-export-label="WP Memory Limit"><?php _e( 'WP Memory Limit', 'give' ); ?>:</td>
+			<td class="help"><?php echo wc_help_tip( __( 'The maximum amount of memory (RAM) that your site can use at one time.', 'give' ) ); ?></td>
+			<td>
+				<?php
+				$memory = wc_let_to_num( WP_MEMORY_LIMIT );
+
+				if ( function_exists( 'memory_get_usage' ) ) {
+					$system_memory = wc_let_to_num( @ini_get( 'memory_limit' ) );
+					$memory        = max( $memory, $system_memory );
+				}
+
+				if ( $memory < 67108864 ) {
+					echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf( __( '%s - We recommend setting memory to at least 64MB. See: %s', 'give' ), size_format( $memory ), '<a href="https://codex.wordpress.org/Editing_wp-config.php#Increasing_memory_allocated_to_PHP" target="_blank">' . __( 'Increasing memory allocated to PHP', 'give' ) . '</a>' ) . '</mark>';
+				} else {
+					echo '<mark class="yes">' . size_format( $memory ) . '</mark>';
+				}
+				?>
+			</td>
+		</tr>
+		<tr>
+			<td data-export-label="WP Debug Mode"><?php _e( 'WP Debug Mode', 'give' ); ?>:</td>
+			<td class="help"><?php echo wc_help_tip( __( 'Displays whether or not WordPress is in Debug Mode.', 'give' ) ); ?></td>
+			<td>
+				<?php if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) : ?>
+					<mark class="yes"><span class="dashicons dashicons-yes"></span></mark>
+				<?php else : ?>
+					<mark class="no">&ndash;</mark>
+				<?php endif; ?>
+			</td>
+		</tr>
+		<tr>
+			<td data-export-label="WP Cron"><?php _e( 'WP Cron', 'give' ); ?>:</td>
+			<td class="help"><?php echo wc_help_tip( __( 'Displays whether or not WP Cron Jobs are enabled.', 'give' ) ); ?></td>
+			<td>
+				<?php if ( defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON ) : ?>
+					<mark class="no">&ndash;</mark>
+				<?php else : ?>
+					<mark class="yes"><span class="dashicons dashicons-yes"></span></mark>
+				<?php endif; ?>
+			</td>
+		</tr>
+		<tr>
+			<td data-export-label="Language"><?php _e( 'Language', 'give' ); ?>:</td>
+			<td class="help"><?php echo wc_help_tip( __( 'The current language used by WordPress. Default = English', 'give' ) ); ?></td>
+			<td><?php echo get_locale(); ?></td>
+		</tr>
+		<tr>
+			<td data-export-label="Permalink Structure"><?php _e( 'Permalink Structure', 'give' ); ?>:</td>
+			<td class="help"><?php echo wc_help_tip( __( 'The permalink structure as defined in Settings.', 'give' ) ); ?></td>
+			<td><?php get_option( 'permalink_structure' ) ? form_option( 'permalink_structure' ) : _e( 'Default', 'give' ); ?></td>
+		</tr>
+		<tr>
+			<td data-export-label="Show on Front"><?php _e( 'Show on Front', 'give' ); ?>:</td>
+			<td class="help"><?php echo wc_help_tip( __( 'Whether your front page is set to show posts or a static page.', 'give' ) ); ?></td>
+			<td><?php form_option( 'show_on_front' ) ?></td>
+		</tr>
+		<?php if ( 'page' === get_option( 'show_on_front' ) ) : ?>
+			<?php
+			$front_page_id = absint( get_option( 'page_on_front' ) );
+			$blog_page_id  = absint( get_option( 'page_for_posts' ) );
+			?>
+			<tr>
+				<td data-export-label="Page on Front"><?php _e( 'Page on Front', 'give' ); ?>:</td>
+				<td class="help"><?php echo wc_help_tip( __( 'The page set to display as your front page.', 'give' ) ); ?></td>
+				<td><?php echo 0 !== $front_page_id ? esc_html( get_the_title( $front_page_id ) . ' (#' . $front_page_id . ')' ) : __( 'Unset', 'give' ); ?></td>
+			</tr>
+			<tr>
+				<td data-export-label="Page for Posts"><?php _e( 'Page for Posts', 'give' ); ?>:</td>
+				<td class="help"><?php echo wc_help_tip( __( 'The page set to display your posts.', 'give' ) ); ?></td>
+				<td><?php echo 0 !== $blog_page_id ? esc_html( get_the_title( $blog_page_id ) . ' (#' . $blog_page_id . ')' ) : __( 'Unset', 'give' ); ?></td>
+			</tr>
+		<?php endif;?>
+		<tr>
+			<td data-export-label="Table Prefix Length"><?php _e( 'Table Prefix Length', 'give' ); ?>:</td>
+			<td class="help"><?php echo wc_help_tip( __( 'The length of the table prefix used in your WordPress database.', 'give' ) ); ?></td>
+			<td><?php echo esc_html( strlen( $wpdb->prefix ) ); ?></td>
+		</tr>
+		<tr>
+			<td data-export-label="Table Prefix Status"><?php _e( 'Table Prefix Status', 'give' ); ?>:</td>
+			<td class="help"><?php echo wc_help_tip( __( 'The status of the table prefix used in your WordPress database.', 'give' ) ); ?></td>
+			<td><?php echo strlen( $wpdb->prefix ) > 16 ? esc_html( 'Error: Too long', 'give' ) : esc_html( 'Acceptable', 'give' ); ?></td>
+		</tr>
+		<tr>
+			<td data-export-label="Admin AJAX"><?php _e( 'Admin AJAX', 'give' ); ?>:</td>
+			<td class="help"><?php echo wc_help_tip( __( 'Whether Admin AJAX is accessible.', 'give' ) ); ?></td>
+			<td><?php echo give_test_ajax_works() ? __( 'Accessible', 'give' ) : __( 'Inaccessible', 'give' ); ?></td>
+		</tr>
+		<tr>
+			<td data-export-label="Registered Post Stati"><?php _e( 'Registered Post Stati', 'give' ); ?>:</td>
+			<td class="help"><?php echo wc_help_tip( __( 'A list of all registered post stati.', 'give' ) ); ?></td>
+			<td><?php echo esc_html( implode( ', ', get_post_stati() ) ); ?></td>
+		</tr>
+	</tbody>
 </table>
 
 <table class="wc_status_table widefat" cellspacing="0">
