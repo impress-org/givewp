@@ -19,6 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 
 global $wpdb;
+$give_options = give_get_settings();
 ?>
 
 <table class="give-status-table widefat" cellspacing="0" id="status">
@@ -400,6 +401,21 @@ global $wpdb;
 			<td data-export-label="Thousands Separator"><?php _e( 'Thousands Separator', 'give' ); ?>:</td>
 			<td class="help"><?php echo wc_help_tip( __( 'The decimal separator defined in Give settings.', 'give' ) ); ?></td>
 			<td><?php echo esc_html( give_get_option( 'thousands_separator', ',' ) ); ?></td>
+		</tr>
+		<tr>
+			<td data-export-label="Success Page"><?php _e( 'Success Page', 'give' ); ?>:</td>
+			<td class="help"><?php echo wc_help_tip( __( 'The page where donors land following a successful transaction.', 'give' ) ); ?></td>
+			<td><?php echo ! empty( $give_options['success_page'] ) ? esc_url( get_permalink( $give_options['success_page'] ) ) : '&ndash;'; ?></td>
+		</tr>
+		<tr>
+			<td data-export-label="Failure Page"><?php _e( 'Failure Page', 'give' ); ?>:</td>
+			<td class="help"><?php echo wc_help_tip( __( 'The page where donors land following a failed transaction.', 'give' ) ); ?></td>
+			<td><?php echo ! empty( $give_options['failure_page'] ) ? esc_url( get_permalink( $give_options['failure_page'] ) ) : '&ndash;'; ?></td>
+		</tr>
+		<tr>
+			<td data-export-label="Give Forms Slug"><?php _e( 'Give Forms Slug', 'give' ); ?>:</td>
+			<td class="help"><?php echo wc_help_tip( __( 'The slug used for Give donation forms.', 'give' ) ); ?></td>
+			<td><?php echo esc_html( defined( 'GIVE_SLUG' ) ? '/' . GIVE_SLUG . '/' : '/donations/' ); ?></td>
 		</tr>
 	</tbody>
 </table>
