@@ -313,10 +313,12 @@ class GIVE_CLI_COMMAND {
 	 * [--form-id=<donation_form_id>]
 	 * : Get list of donors of specific donation form
 	 *
+	 * [--name=<name_of_donor>]
+	 * : Name with which you want to create new donor
+	 *
 	 * ## EXAMPLES
 	 *
 	 * wp give donors --id=103
-	 * wp give donors --id=103 --number=100
 	 * wp give donors --email=john@test.com
 	 * wp give donors --create=1 --email=john@test.com
 	 * wp give donors --create=1 --email=john@test.com --name="John Doe"
@@ -347,6 +349,12 @@ class GIVE_CLI_COMMAND {
 		if ( $create ) {
 			$number = 1;
 
+			if ( isset( $assoc_args['email'] ) && ! is_email( $email ) ) {
+				WP_CLI::warning( 'Wrong email address provided.', 'give' );
+
+				return;
+			}
+
 			// Create one or more donors.
 			if ( ! $email ) {
 				// If no email is specified, look to see if we are generating arbitrary donor accounts.
@@ -368,7 +376,7 @@ class GIVE_CLI_COMMAND {
 				$customer_id = Give()->customers->add( $args );
 
 				if ( $customer_id ) {
-					WP_CLI::line( $this->color_message( sprintf( __( 'Donor %d created successfully', 'give' ), $customer_id ) ) );
+					WP_CLI::line( $this->color_message( sprintf( __( 'Donor #%d created successfully', 'give' ), $customer_id ) ) );
 				} else {
 					WP_CLI::error( __( 'Failed to create donor', 'give' ) );
 				}
