@@ -24,6 +24,13 @@ permission notices:
 
    EDD is released under the GPL 2.0
 
+and
+
+  Give is Copyright (c) 2015 WordImpress, LLC
+  https://givewp.com/
+
+  Give is released under the GPLv3
+  
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
                     GNU GENERAL PUBLIC LICENSE
