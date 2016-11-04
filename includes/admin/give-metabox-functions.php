@@ -542,7 +542,7 @@ function give_radio( $field ) {
 				type="radio"
 				style="' . esc_attr( $field['style'] ) . '"
 				' . checked( esc_attr( $field['value'] ), esc_attr( $key ), false ) . ' '
-		     . implode( ' ', $custom_attributes ) . '
+				. implode( ' ', $custom_attributes ) . '
 				/> ' . esc_html( $value ) . '</label>
 		</li>';
 	}
@@ -871,7 +871,7 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 									if ( ! give_is_field_callback_exist( $field ) ) {
 										continue;
 									}
-									
+
 									$field['repeat']              = true;
 									$field['repeatable_field_id'] = give_get_repeater_field_id( $field, $fields, true );
 									$field['attributes']['value'] = apply_filters( "give_default_field_group_field_{$field['id']}_value", ( ! empty( $field['default'] ) ? $field['default'] : '' ), $field );
@@ -1280,7 +1280,7 @@ add_filter( 'give_default_field_group_field__give_id_value', '_give_set_field_gi
  * @return string
  */
 function _give_set_field_give_default_default_value( $field ) {
-	return 'checked';
+	return 'default';
 }
 
 add_filter( 'give_default_field_group_field__give_default_value', '_give_set_field_give_default_default_value' );
