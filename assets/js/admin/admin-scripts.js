@@ -823,16 +823,16 @@ jQuery.noConflict();
 		init: function () {
 			this.handle_metabox_tab_click();
 			this.setup_colorpicker();
-			this.handle_repeatable_fields();
-			this.handle_repeatable_field_header_click();
+			this.setup_repeatable_fields();
+			this.handle_repeater_group_events();
 
 			// Multi level repeater field js.
-			this.handle_multi_levels_repeatable_level_text_field_click();
-			this.handle_multi_levels_repeatable_auto_rename_header_title();
-			this.handle_multi_levels_repeatable_row_added_event();
-			this.handle_multi_levels_repeatable_row_deleted_event();
+			this.handle_multi_levels_repeater_group_events();
 		},
 
+		/**
+		 * Toggle metabox tab if mentioned in url.
+		 */
 		handle_metabox_tab_click: function () {
 			var $tab_links = $('.give-metabox-tabs a');
 			$tab_links.on('click', function (e) {
@@ -861,6 +861,9 @@ jQuery.noConflict();
 			}
 		},
 
+		/**
+		 * Initialize colorpicker.
+		 */
 		setup_colorpicker: function () {
 			$(document).ready(function () {
 				if ($('.give-colorpicker').length) {
@@ -869,7 +872,10 @@ jQuery.noConflict();
 			})
 		},
 
-		handle_repeatable_fields: function () {
+		/**
+		 * Setup repeater field.
+		 */
+		setup_repeatable_fields: function () {
 			jQuery(function () {
 				jQuery('.give-repeatable-field-section').each(function () {
 					var $this = $(this);
@@ -938,6 +944,7 @@ jQuery.noConflict();
 
 										row_count++;
 									});
+									$this.trigger('repeater_field_row_reordered');
 								}
 							}
 						}
@@ -950,20 +957,37 @@ jQuery.noConflict();
 		},
 
 		/**
-		 * Hide show repeater field when admin click on field group header.
+		 * Handle repeater field events.
 		 */
-		handle_repeatable_field_header_click: function () {
+		handle_repeater_group_events: function(){
+			// Auto toggle repeater group
 			$('body').on('click', '.give-row-head button', function () {
 				var $parent = $(this).closest('tr');
 				$parent.toggleClass('closed');
 				$('.give-row-body', $parent).toggle();
 			});
+
+			// Reset header title when new row added.
+			$('.give-repeatable-field-section').on( 'repeater_field_new_row_added repeater_field_row_deleted repeater_field_row_reordered', function() {
+				handle_repeater_group_add_number_suffix( $(this) );
+			});
+
+			// Reset title on document load for already exist groups.
+			$('.give-repeatable-field-section').each(function( index, item ){
+				// Skip first element.
+				if( ! index ) {
+					return;
+				}
+
+				handle_repeater_group_add_number_suffix( $(this) );
+			});
 		},
 
 		/**
-		 * Add level title as suffix to header title when admin add level title.
+		 *  Handle events for multi level repeater group.
 		 */
-		handle_multi_levels_repeatable_level_text_field_click: function () {
+		handle_multi_levels_repeater_group_events: function () {
+			// Add level title as suffix to header title when admin add level title.
 			$('body').on('keyup', '.give-multilevel-text-field', function () {
 				var $parent = $(this).closest('tr'),
 					$header_title_container = $('.give-row-head h2 span', $parent),
@@ -982,14 +1006,9 @@ jQuery.noConflict();
 					$header_title_container.html(donation_level_header_text_prefix)
 				}
 			});
-		},
 
-
-		/**
-		 * Add level title as suffix to header title on document load.
-		 */
-		handle_multi_levels_repeatable_auto_rename_header_title: function () {
-			$('.give-multilevel-text-field').not('.give-template').each(function( index, item ){
+			//  Add level title as suffix to header title on document load.
+			$('.give-multilevel-text-field').each(function( index, item ){
 
 				// Skip first element.
 				if( ! index ) {
@@ -1016,12 +1035,8 @@ jQuery.noConflict();
 					$header_title_container.html(donation_level_header_text_prefix)
 				}
 			});
-		},
 
-		/**
-		 * Handle row added event for levels repeaterow_added_event
-		 */
-		handle_multi_levels_repeatable_row_added_event: function(){
+			// Handle row deleted event for levels repeater field.
 			$('.give-repeatable-field-section').on( 'repeater_field_row_deleted', function() {
 				var $this = $(this);
 
@@ -1039,12 +1054,8 @@ jQuery.noConflict();
 					200
 				);
 			});
-		},
 
-		/**
-		 * Handle row deleted event for levels repeaterow_added_event
-		 */
-		handle_multi_levels_repeatable_row_deleted_event: function(){
+			// Handle row added event for levels repeater field.
 			$('.give-repeatable-field-section').on( 'repeater_field_new_row_added', function() {
 				var $this = $(this);
 
@@ -1108,6 +1119,24 @@ jQuery.noConflict();
 
 		// Fire event: Row deleted.
 		$parent.trigger( 'repeater_field_row_deleted' );
+	};
+
+	/**
+	 * Add number suffix to repeater group.
+	 */
+	var handle_repeater_group_add_number_suffix = function( $parent ){
+		// Check if auto group numbering is on or not.
+		if( ! parseInt( $parent.data('group-numbering') ) ) {
+			return;
+		}
+
+		var $header_title_container = $('.give-row-head h2 span', $parent ),
+			header_text_prefix = $header_title_container.data('header-title');
+
+		$header_title_container.each( function( index, item ){
+			item = item instanceof jQuery ? item : jQuery( item );
+			item.html( header_text_prefix + ': ' + index );
+		});
 	};
 
 
