@@ -413,7 +413,7 @@ $give_options = give_get_settings();
 		<tr>
 			<td data-export-label="Currency Position"><?php _e( 'Currency Position', 'give' ); ?>:</td>
 			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The currency position selected in Give settings.', 'give' ) ); ?>"></span></td>
-			<td><?php echo esc_html( give_get_option( 'currency_position', 'before' ) ); ?></td>
+			<td><?php echo 'before' === give_get_option( 'currency_position' ) ? __( 'Before', 'give' ) : __( 'After', 'give' ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Decimal Separator"><?php _e( 'Decimal Separator', 'give' ); ?>:</td>
