@@ -145,7 +145,7 @@ $give_options = give_get_settings();
 	</tbody>
 </table>
 
-<table class="wc_status_table widefat" cellspacing="0">
+<table class="give-status-table widefat" cellspacing="0">
 	<thead>
 		<tr>
 			<th colspan="3" data-export-label="Server Environment"><h2><?php _e( 'Server Environment', 'give' ); ?></h2></th>
@@ -383,7 +383,7 @@ $give_options = give_get_settings();
 	</tbody>
 </table>
 
-<table class="wc_status_table widefat" cellspacing="0">
+<table class="give-status-table widefat" cellspacing="0">
 	<thead>
 		<tr>
 			<th colspan="3" data-export-label="Give Configuration"><h2><?php _e( 'Give Configuration', 'give' ); ?></h2></th>
@@ -481,7 +481,7 @@ $give_options = give_get_settings();
 	</tbody>
 </table>
 
-<table class="wc_status_table widefat" cellspacing="0">
+<table class="give-status-table widefat" cellspacing="0">
 	<thead>
 		<tr>
 			<th colspan="3" data-export-label="Active Plugins (<?php echo count( (array) get_option( 'active_plugins' ) ); ?>)"><h2><?php _e( 'Active Plugins', 'give' ); ?> (<?php echo count( (array) get_option( 'active_plugins' ) ); ?>)</h2></th>
@@ -523,7 +523,7 @@ $give_options = give_get_settings();
 $active_mu_plugins = (array) get_mu_plugins();
 if ( ! empty( $active_mu_plugins ) ) {
 ?>
-	<table class="wc_status_table widefat" cellspacing="0">
+	<table class="give-status-table widefat" cellspacing="0">
 		<thead>
 			<tr>
 				<th colspan="3" data-export-label="Active MU Plugins (<?php echo count( (array) get_mu_plugins() ); ?>)"><h2><?php _e( 'Active MU Plugins', 'give' ); ?> (<?php echo count( (array) get_mu_plugins() ); ?>)</h2></th>
@@ -561,7 +561,7 @@ if ( ! empty( $active_mu_plugins ) ) {
 	</table>
 <?php } ?>
 
-<table class="wc_status_table widefat" cellspacing="0">
+<table class="give-status-table widefat" cellspacing="0">
 	<thead>
 		<tr>
 			<th colspan="3" data-export-label="Theme"><h2><?php _e( 'Theme', 'give' ); ?></h2></th>
