@@ -159,7 +159,6 @@ class Tests_Give extends Give_Unit_Test_Case {
 
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/fonts/icomoon.eot' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/fonts/icomoon.svg' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/fonts/icomoon.ttf' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/fonts/icomoon.woff' );
 
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/admin/admin-forms.js' );
