@@ -293,6 +293,17 @@ $give_options = give_get_settings();
 			$posting['dom_document']['note']    = sprintf( __( 'Your server does not have the %s class enabled - HTML/Multipart emails, and also some extensions, will not work without DOMDocument.', 'give' ), '<a href="https://php.net/manual/en/class.domdocument.php">DOMDocument</a>' );
 		}
 
+		// gzip.
+		$posting['gzip']['name'] = 'gzip';
+		$posting['gzip']['help'] = wc_help_tip( __( 'gzip is used for file compression and decompression.', 'give' ) );
+
+		if ( is_callable( 'gzopen' ) ) {
+			$posting['gzip']['success'] = true;
+		} else {
+			$posting['gzip']['success'] = false;
+			$posting['gzip']['note']    = sprintf( __( 'Your server does not support the %s function - this is used for file compression and decompression.', 'give' ), '<a href="https://php.net/manual/en/zlib.installation.php">gzopen</a>' );
+		}
+
 		// Multibyte String.
 		$posting['mbstring']['name'] = 'Multibyte String';
 		$posting['mbstring']['help'] = wc_help_tip( __( 'Multibyte String (mbstring) is used to convert character encoding, like for emails or converting characters to lowercase.', 'give' ) );
