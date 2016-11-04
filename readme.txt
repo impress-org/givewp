@@ -164,6 +164,10 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 == Changelog ==
 
+= 1.6.4 =
+* New: {form_title} email tag that outputs only the donation form title and improved the email tag display in the plugin's settings. [#943](https://github.com/WordImpress/Give/issues/943)
+* Fix: {donation} email tag was not properly displaying the donation form title along with the level for multi-level donations.  [#943](https://github.com/WordImpress/Give/issues/943)
+
 = 1.6.3 =
 * Fix: PayPal Standard donations payments being set incorrectly to failed. [#1152](https://github.com/WordImpress/Give/issues/1152)
 * Fix: Custom number of decimals formatting is not working in give_sanitize_amount. [#1144](https://github.com/WordImpress/Give/issues/1144)

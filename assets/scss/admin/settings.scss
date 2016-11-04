@@ -108,6 +108,29 @@ Settings
 }
 
 //--------------------------------------------------------------
+// Emails
+//--------------------------------------------------------------
+
+.give-email-tags-wrap {
+  margin: 5px 0 0;
+  code {
+    font-style: normal;
+    padding: 1px 2px;
+    font-size: 12px;
+  }
+  span {
+    display: block;
+    color: #AAA;
+    font-style: italic;
+    margin: 0 0 2px;
+    font-size: 13px;
+  }
+  .give_price_tag {
+    display: none;
+  }
+}
+
+//--------------------------------------------------------------
 // System Info page styles
 //--------------------------------------------------------------
 
@@ -245,7 +268,7 @@ a.give-delete {
 }
 
 // Widget Page
-.give-field-description{
+.give-field-description {
   color: #aaaaaa;
   font-style: italic;
   margin: 0;

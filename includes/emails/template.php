@@ -78,7 +78,7 @@ function give_email_preview_template_tags( $message ) {
 	$message = str_replace( '{fullname}', $user->display_name, $message );
 	$message = str_replace( '{username}', $user->user_login, $message );
 	$message = str_replace( '{date}', date( get_option( 'date_format' ), current_time( 'timestamp' ) ), $message );
-	$message = str_replace( '{price}', $price, $message );
+	$message = str_replace( '{amount}', $price, $message );
 	$message = str_replace( '{donation}', esc_html__( 'Sample Donation Form Title', 'give' ), $message );
 	$message = str_replace( '{receipt_id}', $receipt_id, $message );
 	$message = str_replace( '{payment_method}', $gateway, $message );
