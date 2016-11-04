@@ -866,11 +866,12 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 								</h2>
 							</div>
 							<div class="give-row-body">
-								<?php foreach ( $fields['fields'] as $field ) : ?>
-									<?php if ( ! give_is_field_callback_exist( $field ) ) {
+								<?php
+								foreach ( $fields['fields'] as $field ) :
+									if ( ! give_is_field_callback_exist( $field ) ) {
 										continue;
-									} ?>
-									<?php
+									}
+									
 									$field['repeat']              = true;
 									$field['repeatable_field_id'] = give_get_repeater_field_id( $field, $fields, true );
 									$field['attributes']['value'] = apply_filters( "give_default_field_group_field_{$field['id']}_value", ( ! empty( $field['default'] ) ? $field['default'] : '' ), $field );
@@ -878,9 +879,9 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 										'_',
 										'',
 									), $field['repeatable_field_id'] );
-									?>
-									<?php give_render_field( $field ); ?>
-								<?php endforeach; ?>
+									give_render_field( $field );
+								endforeach;
+								?>
 							</div>
 						</td>
 					</tr>
@@ -1267,7 +1268,7 @@ function _give_set_field_give_id_default_value( $field ) {
 	return 0;
 }
 
-add_filter( 'give_default_field_group_field__give_id_value', ' _give_set_field_give_id_default_value' );
+add_filter( 'give_default_field_group_field__give_id_value', '_give_set_field_give_id_default_value' );
 
 /**
  * Set default value for _give_default field.
@@ -1282,4 +1283,4 @@ function _give_set_field_give_default_default_value( $field ) {
 	return 'checked';
 }
 
-add_filter( 'give_default_field_group_field__give_default_value', ' _give_set_field_give_default_default_value' );
+add_filter( 'give_default_field_group_field__give_default_value', '_give_set_field_give_default_default_value' );
