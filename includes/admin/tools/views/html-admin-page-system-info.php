@@ -190,6 +190,11 @@ $give_options = give_get_settings();
 				<td><?php echo ini_get( 'max_input_vars' ); ?></td>
 			</tr>
 			<tr>
+				<td data-export-label="PHP Max Upload Size"><?php _e( 'PHP Max Upload Size', 'give' ); ?>:</td>
+				<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The largest filesize that can be uploaded to your WordPress installation.', 'give' ) ); ?>"></span></td>
+				<td><?php echo size_format( wp_max_upload_size() ); ?></td>
+			</tr>
+			<tr>
 				<td data-export-label="cURL Version"><?php _e( 'cURL Version', 'give' ); ?>:</td>
 				<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The version of cURL installed on your server.', 'give' ) ); ?>"></span></td>
 				<td>
@@ -238,11 +243,6 @@ $give_options = give_get_settings();
 				</td>
 			</tr>
 		<?php endif; ?>
-		<tr>
-			<td data-export-label="Max Upload Size"><?php _e( 'Max Upload Size', 'give' ); ?>:</td>
-			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The largest filesize that can be uploaded to your WordPress installation.', 'give' ) ); ?>"></span></td>
-			<td><?php echo size_format( wp_max_upload_size() ); ?></td>
-		</tr>
 		<tr>
 			<td data-export-label="Default Timezone is UTC"><?php _e( 'Default Timezone is UTC', 'give' ); ?>:</td>
 			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The default timezone for your server.', 'give' ) ); ?>"></span></td>
