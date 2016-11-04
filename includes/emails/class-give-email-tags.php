@@ -13,7 +13,7 @@
  * To replace tags in content, use: give_do_email_tags( $content, payment_id );
  *
  * To add tags, use: give_add_email_tag( $tag, $description, $func ). Be sure to wrap give_add_email_tag()
- * in a function hooked to the 'give_email_tags' action
+ * in a function hooked to the 'give_email_tags' action.
  *
  * @package     Give
  * @subpackage  Emails
@@ -33,7 +33,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Give_Email_Template_Tags {
 
 	/**
-	 * Container for storing all tags
+	 * Container for storing all tags.
 	 *
 	 * @since 1.0
 	 */
@@ -47,12 +47,13 @@ class Give_Email_Template_Tags {
 	private $payment_id;
 
 	/**
-	 * Add an email tag
+	 * Add an email tag.
 	 *
 	 * @since 1.0
 	 *
-	 * @param string $tag Email tag to be replace in email
-	 * @param callable $func Hook to run when email tag is found
+	 * @param string   $tag         Email tag to be replace in email.
+	 * @param string   $description The email tag description.
+	 * @param callable $func        Hook to run when email tag is found.
 	 */
 	public function add( $tag, $description, $func ) {
 		if ( is_callable( $func ) ) {
@@ -65,7 +66,7 @@ class Give_Email_Template_Tags {
 	}
 
 	/**
-	 * Remove an email tag
+	 * Remove an email tag.
 	 *
 	 * @since 1.0
 	 *
@@ -76,11 +77,11 @@ class Give_Email_Template_Tags {
 	}
 
 	/**
-	 * Check if $tag is a registered email tag
+	 * Check if $tag is a registered email tag.
 	 *
 	 * @since 1.0
 	 *
-	 * @param string $tag Email tag that will be searched
+	 * @param string $tag Email tag that will be searched.
 	 *
 	 * @return bool
 	 */
@@ -100,10 +101,10 @@ class Give_Email_Template_Tags {
 	}
 
 	/**
-	 * Search content for email tags and filter email tags through their hooks
+	 * Search content for email tags and filter email tags through their hooks.
 	 *
-	 * @param string $content Content to search for email tags
-	 * @param int $payment_id The payment id
+	 * @param string $content    Content to search for email tags.
+	 * @param int    $payment_id The payment id.
 	 *
 	 * @since 1.0
 	 *
@@ -111,7 +112,7 @@ class Give_Email_Template_Tags {
 	 */
 	public function do_tags( $content, $payment_id ) {
 
-		// Check if there is atleast one tag added
+		// Check if there is at least one tag added.
 		if ( empty( $this->tags ) || ! is_array( $this->tags ) ) {
 			return $content;
 		}
@@ -154,9 +155,9 @@ class Give_Email_Template_Tags {
  *
  * @since 1.0
  *
- * @param string $tag Email tag to be replace in email
- * @param string $description Description of the email tag added
- * @param callable $func Hook to run when email tag is found
+ * @param string   $tag         Email tag to be replace in email
+ * @param string   $description Description of the email tag added
+ * @param callable $func        Hook to run when email tag is found
  */
 function give_add_email_tag( $tag, $description, $func ) {
 	Give()->email_tags->add( $tag, $description, $func );
@@ -205,34 +206,30 @@ function give_get_email_tags() {
  * @return string
  */
 function give_get_emails_tags_list() {
-	// The list
-	$list = '';
 
-	// Get all tags
+	// Get all email tags.
 	$email_tags = give_get_email_tags();
 
-	// Check
-	if ( count( $email_tags ) > 0 ) {
+	ob_start();
+	if ( count( $email_tags ) > 0 ) : ?>
+		<div class="give-email-tags-wrap">
+			<?php foreach ( $email_tags as $email_tag ) : ?>
+				<span class="give_<?php echo $email_tag['tag']; ?>_tag">
+					<code>{<?php echo $email_tag['tag']; ?>}</code> - <?php echo $email_tag['description']; ?>
+				</span>
+			<?php endforeach; ?>
+		</div>
+	<?php endif;
 
-		// Loop
-		foreach ( $email_tags as $email_tag ) {
-
-			// Add email tag to list
-			$list .= '<code>{' . $email_tag['tag'] . '}</code> - ' . $email_tag['description'] . '<br/>';
-
-		}
-
-	}
-
-	// Return the list
-	return $list;
+	// Return the list.
+	return ob_get_clean();
 }
 
 /**
  * Search content for email tags and filter email tags through their hooks.
  *
- * @param string $content Content to search for email tags.
- * @param int $payment_id The payment id.
+ * @param string $content    Content to search for email tags.
+ * @param int    $payment_id The payment id.
  *
  * @since 1.0
  *
@@ -276,6 +273,21 @@ function give_setup_email_tags() {
 			'function'    => 'give_email_tag_donation'
 		),
 		array(
+			'tag'         => 'form_title',
+			'description' => esc_html__( 'The donation form name.', 'give' ),
+			'function'    => 'give_email_tag_form_title'
+		),
+		array(
+			'tag'         => 'amount',
+			'description' => esc_html__( 'The total donation amount with currency sign.', 'give' ),
+			'function'    => 'give_email_tag_amount'
+		),
+		array(
+			'tag'         => 'price',
+			'description' => esc_html__( 'The total donation amount with currency sign.', 'give' ),
+			'function'    => 'give_email_tag_price'
+		),
+		array(
 			'tag'         => 'name',
 			'description' => esc_html__( 'The donor\'s first name.', 'give' ),
 			'function'    => 'give_email_tag_first_name'
@@ -306,11 +318,6 @@ function give_setup_email_tags() {
 			'function'    => 'give_email_tag_date'
 		),
 		array(
-			'tag'         => 'price',
-			'description' => esc_html__( 'The total price of the donation.', 'give' ),
-			'function'    => 'give_email_tag_price'
-		),
-		array(
 			'tag'         => 'payment_id',
 			'description' => esc_html__( 'The unique ID number for this donation.', 'give' ),
 			'function'    => 'give_email_tag_payment_id'
@@ -327,7 +334,7 @@ function give_setup_email_tags() {
 		),
 		array(
 			'tag'         => 'sitename',
-			'description' => esc_html__( 'Your site name', 'give' ),
+			'description' => esc_html__( 'Your site name.', 'give' ),
 			'function'    => 'give_email_tag_sitename'
 		),
 		array(
@@ -438,7 +445,6 @@ function give_email_tag_user_email( $payment_id ) {
  * @return string billing_address
  */
 function give_email_tag_billing_address( $payment_id ) {
-
 	$user_info    = give_get_payment_meta_user_info( $payment_id );
 	$user_address = ! empty( $user_info['address'] ) ? $user_info['address'] : array(
 		'line1'   => '',
@@ -474,7 +480,24 @@ function give_email_tag_date( $payment_id ) {
 }
 
 /**
+ * Email template tag: give_amount.
+ *
+ * The total amount of the donation given.
+ *
+ * @param int $payment_id
+ *
+ * @return string amount
+ */
+function give_email_tag_amount( $payment_id ) {
+	$payment     = new Give_Payment( $payment_id );
+	$give_amount = give_currency_filter( give_format_amount( $payment->total ), $payment->currency );
+
+	return html_entity_decode( $give_amount, ENT_COMPAT, 'UTF-8' );
+}
+
+/**
  * Email template tag: price.
+ *
  * The total price of the donation.
  *
  * @param int $payment_id
@@ -482,11 +505,9 @@ function give_email_tag_date( $payment_id ) {
  * @return string price
  */
 function give_email_tag_price( $payment_id ) {
-	$payment = new Give_Payment( $payment_id );
-	$price   = give_currency_filter( give_format_amount( $payment->total ), $payment->currency );
-
-	return html_entity_decode( $price, ENT_COMPAT, 'UTF-8' );
+	return give_email_tag_amount( $payment_id );
 }
+
 
 /**
  * Email template tag: payment_id.
@@ -530,9 +551,26 @@ function give_email_tag_donation( $payment_id ) {
 	$payment_meta = $payment->payment_meta;
 	$level_title  = give_has_variable_prices( $payment_meta['form_id'] );
 	$separator    = $level_title ? '-' : '';
-	$form_title   = strip_tags( give_get_payment_form_title( $payment_meta, $level_title, $separator ) );
+	$form_title   = strip_tags( give_get_payment_form_title( $payment_meta, false, $separator ) );
 
 	return ! empty( $form_title ) ? $form_title : esc_html__( 'There was an error retrieving the donation form name.', 'give' );
+
+}
+
+/**
+ * Email template tag: {form_title}
+ *
+ * Output the donation form name.
+ *
+ * @param int $payment_id
+ *
+ * @return string $form_title
+ */
+function give_email_tag_form_title( $payment_id ) {
+	$payment      = new Give_Payment( $payment_id );
+	$payment_meta = $payment->payment_meta;
+
+	return isset( $payment_meta['form_title'] ) ? strip_tags( $payment_meta['form_title'] ) : esc_html__( 'There was an error retrieving the donation form name.', 'give' );
 
 }
 

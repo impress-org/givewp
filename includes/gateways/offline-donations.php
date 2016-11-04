@@ -229,7 +229,7 @@ function give_offline_send_admin_notice( $payment_id = 0 ) {
 
 
 	$admin_message .= '<strong>' . esc_attr__( 'Donor: ', 'give' ) . '</strong>' . '{fullname}' . "\n";
-	$admin_message .= '<strong>' . esc_attr__( 'Amount: ', 'give' ) . '</strong>' . '{price}' . "\n\n";
+	$admin_message .= '<strong>' . esc_attr__( 'Amount: ', 'give' ) . '</strong>' . '{amount}' . "\n\n";
 
 	$admin_message .= sprintf(
 		'<a href="%1$s">%2$s</a>',
