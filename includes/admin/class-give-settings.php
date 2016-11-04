@@ -437,7 +437,12 @@ class Give_Plugin_Settings {
 						array(
 							'name' => esc_html__( 'Enable Floating Labels', 'give' ),
 							/* translators: %s: https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels */
-							'desc' => sprintf( wp_kses( __( 'Enable this option if you would like to enable <a href="%s" target="_blank">floating labels</a> in Give\'s donation forms. <br />Be aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( 'https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels' ) ),
+							'desc' => sprintf( wp_kses( __( 'Enable this option if you would like to enable <a href="%s" target="_blank">floating labels</a> in Give\'s donation forms. <br />Be aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), array(
+								'a' => array(
+									'href'   => array(),
+									'target' => array()
+								)
+							) ), esc_url( 'https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels' ) ),
 							'id'   => 'enable_floatlabels',
 							'type' => 'checkbox'
 						),
@@ -573,7 +578,7 @@ class Give_Plugin_Settings {
 							'id'      => 'donation_receipt',
 							'name'    => esc_html__( 'Donation Receipt', 'give' ),
 							/* translators: %s: emails tags list */
-							'desc'    => sprintf( __( 'Enter the email that is sent to users after completing a successful donation. HTML is accepted. Available template tags: %s', 'give' ), give_get_emails_tags_list() ) . '<br/>',
+							'desc'    => sprintf( __( 'Enter the email that is sent to users after completing a successful donation. HTML is accepted. Available template tags: %s', 'give' ), give_get_emails_tags_list() ),
 							'type'    => 'wysiwyg',
 							'default' => give_get_default_donation_receipt_email()
 						),
@@ -594,7 +599,7 @@ class Give_Plugin_Settings {
 							'id'      => 'donation_notification',
 							'name'    => esc_html__( 'Donation Notification', 'give' ),
 							/* translators: %s: emails tags list */
-							'desc'    => sprintf( __( 'Enter the email that is sent to donation notification emails after completion of a donation. HTML is accepted. Available template tags: %s', 'give' ), give_get_emails_tags_list() ) . '<br/>',
+							'desc'    => sprintf( __( 'Enter the email that is sent to donation notification emails after completion of a donation. HTML is accepted. Available template tags: %s', 'give' ), give_get_emails_tags_list() ),
 							'type'    => 'wysiwyg',
 							'default' => give_get_default_donation_notification_email()
 						),
@@ -807,7 +812,7 @@ $Give_Settings = new Give_Plugin_Settings();
  * Wrapper function around cmb2_get_option
  * @since  0.1.0
  *
- * @param  string $key Options array key
+ * @param  string $key     Options array key
  * @param  string $default The default option if the option isn't set
  *
  * @return mixed        Option value
@@ -830,7 +835,7 @@ function give_get_option( $key = '', $default = false ) {
  *
  * @since 1.0
  *
- * @param string          $key The Key to update
+ * @param string          $key   The Key to update
  * @param string|bool|int $value The value to set the key to
  *
  * @return boolean True if updated, false if not.
@@ -933,7 +938,7 @@ function give_get_settings() {
  *
  * @param $array
  * @param $position |int|string Expects an array key or 'id' of the settings field to appear after
- * @param $insert |array a valid array of options to insert
+ * @param $insert   |array a valid array of options to insert
  *
  * @return array
  */
@@ -1093,7 +1098,7 @@ function give_description_callback( $field_object, $escaped_value, $object_id, $
  * Gets a number of posts and displays them as options
  *
  * @param  array $query_args Optional. Overrides defaults.
- * @param  bool  $force Force the pages to be loaded even if not on settings
+ * @param  bool  $force      Force the pages to be loaded even if not on settings
  *
  * @see: https://github.com/WebDevStudios/CMB2/wiki/Adding-your-own-field-types
  * @return array An array of options that matches the CMB2 options array
@@ -1134,7 +1139,7 @@ function give_cmb2_get_post_options( $query_args, $force = false ) {
  */
 function give_get_featured_image_sizes() {
 	global $_wp_additional_image_sizes;
-	$sizes = array();
+	$sizes     = array();
 	$get_sizes = get_intermediate_image_sizes();
 
 	// check whether intermediate image sizes exist first
