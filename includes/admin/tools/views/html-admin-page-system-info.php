@@ -417,6 +417,39 @@ $give_options = give_get_settings();
 			<td class="help"><?php echo wc_help_tip( __( 'The slug used for Give donation forms.', 'give' ) ); ?></td>
 			<td><?php echo esc_html( defined( 'GIVE_SLUG' ) ? '/' . GIVE_SLUG . '/' : '/donations/' ); ?></td>
 		</tr>
+		<?php
+		$active_gateways = give_get_enabled_payment_gateways();
+		$enabled_gateways = $default_gateway = '';
+
+		if ( $active_gateways ) {
+			$default_gateway_is_active = give_is_gateway_active( give_get_default_gateway( null ) );
+
+			if ( $default_gateway_is_active ) {
+				$default_gateway = give_get_default_gateway( null );
+				$default_gateway = $active_gateways[ $default_gateway ]['admin_label'];
+			} else {
+				$default_gateway = __( 'Test Donation', 'give' );
+			}
+
+			$gateways = array();
+
+			foreach ( $active_gateways as $gateway ) {
+				$gateways[] = $gateway['admin_label'];
+			}
+
+			$enabled_gateways = implode( ', ', $gateways );
+		}
+		?>
+		<tr>
+			<td data-export-label="Enabled Payment Gateways"><?php _e( 'Enabled Payment Gateways', 'give' ); ?>:</td>
+			<td class="help"><?php echo wc_help_tip( __( 'All payment gateways enabled in Give settings.', 'give' ) ); ?></td>
+			<td><?php echo esc_html( ! empty( $enabled_gateways ) ? $enabled_gateways : '&ndash;' ); ?></td>
+		</tr>
+		<tr>
+			<td data-export-label="Default Payment Gateway"><?php _e( 'Default Payment Gateway', 'give' ); ?>:</td>
+			<td class="help"><?php echo wc_help_tip( __( 'The default payment gateway selected in Give settings.', 'give' ) ); ?></td>
+			<td><?php echo esc_html( ! empty( $default_gateway ) ? $default_gateway : '&ndash;' ); ?></td>
+		</tr>
 	</tbody>
 </table>
 
