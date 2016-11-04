@@ -541,10 +541,7 @@ if ( ! empty( $active_mu_plugins ) ) {
 	</thead>
 	<?php
 	include_once( ABSPATH . 'wp-admin/includes/theme-install.php' );
-
-	$active_theme         = wp_get_theme();
-	$theme_version        = $active_theme->Version;
-	$update_theme_version = WC_Admin_Status::get_latest_theme_version( $active_theme );
+	$active_theme = wp_get_theme();
 	?>
 	<tbody>
 		<tr>
@@ -555,17 +552,11 @@ if ( ! empty( $active_mu_plugins ) ) {
 		<tr>
 			<td data-export-label="Version"><?php _e( 'Version', 'give' ); ?>:</td>
 			<td class="help"><?php echo wc_help_tip( __( 'The installed version of the current active theme.', 'give' ) ); ?></td>
-			<td><?php
-				echo esc_html( $theme_version );
-
-				if ( version_compare( $theme_version, $update_theme_version, '<' ) ) {
-					echo ' &ndash; <strong style="color:red;">' . sprintf( __( '%s is available', 'give' ), esc_html( $update_theme_version ) ) . '</strong>';
-				}
-				?></td>
+			<td><?php echo esc_html( $active_theme->Version ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Author URL"><?php _e( 'Author URL', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'The theme developers URL.', 'give' ) ); ?></td>
+			<td class="help"><?php echo wc_help_tip( __( 'The theme developer\'s URL.', 'give' ) ); ?></td>
 			<td><?php echo $active_theme->{'Author URI'}; ?></td>
 		</tr>
 		<tr>
@@ -576,10 +567,9 @@ if ( ! empty( $active_mu_plugins ) ) {
 				?></td>
 		</tr>
 		<?php
-		if( is_child_theme() ) :
-			$parent_theme         = wp_get_theme( $active_theme->Template );
-			$update_theme_version = WC_Admin_Status::get_latest_theme_version( $parent_theme );
-			?>
+		if( is_child_theme() ) {
+			$parent_theme = wp_get_theme( $active_theme->Template );
+		?>
 			<tr>
 				<td data-export-label="Parent Theme Name"><?php _e( 'Parent Theme Name', 'give' ); ?>:</td>
 				<td class="help"><?php echo wc_help_tip( __( 'The name of the parent theme.', 'give' ) ); ?></td>
@@ -588,19 +578,13 @@ if ( ! empty( $active_mu_plugins ) ) {
 			<tr>
 				<td data-export-label="Parent Theme Version"><?php _e( 'Parent Theme Version', 'give' ); ?>:</td>
 				<td class="help"><?php echo wc_help_tip( __( 'The installed version of the parent theme.', 'give' ) ); ?></td>
-				<td><?php
-					echo esc_html( $parent_theme->Version );
-
-					if ( version_compare( $parent_theme->Version, $update_theme_version, '<' ) ) {
-						echo ' &ndash; <strong style="color:red;">' . sprintf( __( '%s is available', 'give' ), esc_html( $update_theme_version ) ) . '</strong>';
-					}
-					?></td>
+				<td><?php echo esc_html( $parent_theme->Version ); ?></td>
 			</tr>
 			<tr>
 				<td data-export-label="Parent Theme Author URL"><?php _e( 'Parent Theme Author URL', 'give' ); ?>:</td>
 				<td class="help"><?php echo wc_help_tip( __( 'The parent theme developers URL.', 'give' ) ); ?></td>
 				<td><?php echo $parent_theme->{'Author URI'}; ?></td>
 			</tr>
-		<?php endif ?>
+		<?php } ?>
 	</tbody>
 </table>
