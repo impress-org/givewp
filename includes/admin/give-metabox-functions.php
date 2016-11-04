@@ -17,7 +17,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Check if field callback exist or not.
  *
  * @since  1.8
+ *
  * @param  $field
+ *
  * @return bool|string
  */
 function give_is_field_callback_exist( $field ) {
@@ -28,17 +30,19 @@ function give_is_field_callback_exist( $field ) {
  * Get field callback.
  *
  * @since  1.8
+ *
  * @param  $field
+ *
  * @return bool|string
  */
-function give_get_field_callback( $field ){
+function give_get_field_callback( $field ) {
 	$func_name_prefix = 'give';
-	$func_name = '';
+	$func_name        = '';
 
 	// Set callback function on basis of cmb2 field name.
-	switch( $field['type'] ) {
+	switch ( $field['type'] ) {
 		case 'radio_inline':
-			$func_name              = "{$func_name_prefix}_radio";
+			$func_name = "{$func_name_prefix}_radio";
 			break;
 
 		case 'text':
@@ -55,7 +59,7 @@ function give_get_field_callback( $field ){
 			break;
 
 		case 'colorpicker' :
-			$func_name      = "{$func_name_prefix}_{$field['type']}";
+			$func_name = "{$func_name_prefix}_{$field['type']}";
 			break;
 
 		case 'levels_id':
@@ -77,7 +81,7 @@ function give_get_field_callback( $field ){
 	$func_name = apply_filters( 'give_setting_callback', $func_name, $field );
 
 	// Check if render callback exist or not.
-	if ( !  function_exists( "$func_name" ) || empty( $func_name ) ){
+	if ( ! function_exists( "$func_name" ) || empty( $func_name ) ) {
 		return false;
 	}
 
@@ -88,23 +92,25 @@ function give_get_field_callback( $field ){
  * This function add backward compatibility to render cmb2 type field type.
  *
  * @since  1.8
+ *
  * @param  array $field Field argument array.
+ *
  * @return bool
  */
 function give_render_field( $field ) {
 	$func_name = give_get_field_callback( $field );
 
 	// Check if render callback exist or not.
-	if ( ! $func_name ){
+	if ( ! $func_name ) {
 		return false;
 	}
 
 	// CMB2 compatibility: Push all classes to attributes's class key
-	if( empty( $field['class'] ) ) {
+	if ( empty( $field['class'] ) ) {
 		$field['class'] = '';
 	}
 
-	if( empty( $field['attributes']['class'] ) ) {
+	if ( empty( $field['attributes']['class'] ) ) {
 		$field['attributes']['class'] = '';
 	}
 
@@ -113,15 +119,15 @@ function give_render_field( $field ) {
 
 
 	// CMB2 compatibility: Set wrapper class if any.
-	if( ! empty( $field['row_classes'] ) ) {
+	if ( ! empty( $field['row_classes'] ) ) {
 		$field['wrapper_class'] = $field['row_classes'];
 		unset( $field['row_classes'] );
 	}
 
 	// Set field params on basis of cmb2 field name.
-	switch( $field['type'] ) {
+	switch ( $field['type'] ) {
 		case 'radio_inline':
-			if( empty( $field['wrapper_class'] ) ) {
+			if ( empty( $field['wrapper_class'] ) ) {
 				$field['wrapper_class'] = '';
 			}
 			$field['wrapper_class'] .= ' give-inline-radio-fields';
@@ -137,7 +143,7 @@ function give_render_field( $field ) {
 			$field['type'] = isset( $field['attributes']['type'] ) ? $field['attributes']['type'] : 'text';
 
 			// CMB2 compatibility: Set data type to price.
-			if(
+			if (
 				empty( $field['data_type'] )
 				&& ! empty( $field['attributes']['class'] )
 				&& (
@@ -154,14 +160,14 @@ function give_render_field( $field ) {
 			break;
 
 		case 'colorpicker' :
-			$field['type'] = 'text';
+			$field['type']  = 'text';
 			$field['class'] = 'give-colorpicker';
 			break;
 
 		case 'give_default_radio_inline':
-			$field['type'] = 'radio';
+			$field['type']    = 'radio';
 			$field['options'] = array(
-				'default' => __( 'Default')
+				'default' => __( 'Default' ),
 			);
 			break;
 	}
@@ -214,15 +220,15 @@ function give_text_input( $field ) {
 
 	switch ( $data_type ) {
 		case 'price' :
-			$field['value']  = ( ! empty( $field['value'] ) ? give_format_amount( $field['value'] ) : $field['value'] );
+			$field['value'] = ( ! empty( $field['value'] ) ? give_format_amount( $field['value'] ) : $field['value'] );
 
-			$field['before_field']  = ! empty( $field['before_field'] ) ? $field['before_field'] : ( give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol give-money-symbol-before">' . give_currency_symbol() . '</span>' : '' );
-			$field['after_field']   = ! empty( $field['after_field'] ) ? $field['after_field'] : ( give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '' );
+			$field['before_field'] = ! empty( $field['before_field'] ) ? $field['before_field'] : ( give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol give-money-symbol-before">' . give_currency_symbol() . '</span>' : '' );
+			$field['after_field']  = ! empty( $field['after_field'] ) ? $field['after_field'] : ( give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '' );
 			break;
 
 		case 'decimal' :
 			$field['attributes']['class'] .= ' give_input_decimal';
-			$field['value']  = ( ! empty( $field['value'] ) ? give_format_decimal( $field['value'] ) : $field['value'] );
+			$field['value'] = ( ! empty( $field['value'] ) ? give_format_decimal( $field['value'] ) : $field['value'] );
 			break;
 
 		default :
@@ -234,7 +240,7 @@ function give_text_input( $field ) {
 
 	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
 
-		foreach ( $field['attributes'] as $attribute => $value ){
+		foreach ( $field['attributes'] as $attribute => $value ) {
 			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
 		}
 	}
@@ -266,7 +272,7 @@ function give_text_input( $field ) {
 function give_hidden_input( $field ) {
 	global $thepostid, $post;
 
-	$thepostid = empty( $thepostid ) ? $post->ID : $thepostid;
+	$thepostid      = empty( $thepostid ) ? $post->ID : $thepostid;
 	$field['value'] = give_get_field_value( $field, $thepostid );
 
 	// Custom attribute handling
@@ -274,12 +280,12 @@ function give_hidden_input( $field ) {
 
 	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
 
-		foreach ( $field['attributes'] as $attribute => $value ){
+		foreach ( $field['attributes'] as $attribute => $value ) {
 			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
 		}
 	}
 
-	echo '<input type="hidden" name="' . give_get_field_name( $field ) . '" id="' . esc_attr( $field['id'] ) . '" value="' . esc_attr( $field['value'] ) .  '" ' . implode( ' ', $custom_attributes ) .'/> ';
+	echo '<input type="hidden" name="' . give_get_field_name( $field ) . '" id="' . esc_attr( $field['id'] ) . '" value="' . esc_attr( $field['value'] ) . '" ' . implode( ' ', $custom_attributes ) . '/> ';
 }
 
 /**
@@ -314,7 +320,7 @@ function give_textarea_input( $field ) {
 
 	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
 
-		foreach ( $field['attributes'] as $attribute => $value ){
+		foreach ( $field['attributes'] as $attribute => $value ) {
 			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
 		}
 	}
@@ -357,7 +363,7 @@ function give_wysiwyg( $field ) {
 	$custom_attributes = array();
 
 	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
-		foreach ( $field['attributes'] as $attribute => $value ){
+		foreach ( $field['attributes'] as $attribute => $value ) {
 			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
 		}
 	}
@@ -420,7 +426,7 @@ function give_checkbox( $field ) {
 
 	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
 
-		foreach ( $field['attributes'] as $attribute => $value ){
+		foreach ( $field['attributes'] as $attribute => $value ) {
 			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
 		}
 	}
@@ -468,7 +474,7 @@ function give_select( $field ) {
 
 	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
 
-		foreach ( $field['attributes'] as $attribute => $value ){
+		foreach ( $field['attributes'] as $attribute => $value ) {
 			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
 		}
 	}
@@ -521,7 +527,7 @@ function give_radio( $field ) {
 
 	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
 
-		foreach ( $field['attributes'] as $attribute => $value ){
+		foreach ( $field['attributes'] as $attribute => $value ) {
 			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
 		}
 	}
@@ -536,7 +542,7 @@ function give_radio( $field ) {
 				type="radio"
 				style="' . esc_attr( $field['style'] ) . '"
 				' . checked( esc_attr( $field['value'] ), esc_attr( $key ), false ) . ' '
-				. implode( ' ', $custom_attributes ) . '
+		     . implode( ' ', $custom_attributes ) . '
 				/> ' . esc_html( $value ) . '</label>
 		</li>';
 	}
@@ -582,7 +588,7 @@ function give_colorpicker( $field ) {
 
 	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
 
-		foreach ( $field['attributes'] as $attribute => $value ){
+		foreach ( $field['attributes'] as $attribute => $value ) {
 			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
 		}
 	}
@@ -599,7 +605,9 @@ function give_colorpicker( $field ) {
  * Output a select field with payment options list.
  *
  * @since  1.8
+ *
  * @param  array $field
+ *
  * @return void
  */
 function give_default_gateway( $field ) {
@@ -614,7 +622,7 @@ function give_default_gateway( $field ) {
 	}
 
 	//Add a field to the Give Form admin single post view of this field
-	if ( is_object( $post ) &&  'give_forms' === $post->post_type ) {
+	if ( is_object( $post ) && 'give_forms' === $post->post_type ) {
 		$field['options'] = array_merge( array( 'global' => esc_html__( 'Global Default', 'give' ) ), $field['options'] );
 	}
 
@@ -629,12 +637,14 @@ function give_default_gateway( $field ) {
  * Note: Use only for single post, page or custom post type.
  *
  * @since  1.8
- * @param  array  $field
- * @param  int    $postid
+ *
+ * @param  array $field
+ * @param  int   $postid
+ *
  * @return mixed
  */
 function give_get_field_value( $field, $postid ) {
-	if( isset( $field['attributes']['value'] ) ) {
+	if ( isset( $field['attributes']['value'] ) ) {
 		return $field['attributes']['value'];
 	}
 
@@ -645,13 +655,14 @@ function give_get_field_value( $field, $postid ) {
 	 * Filter the field value before apply default value.
 	 *
 	 * @since 1.8
+	 *
 	 * @param mixed $field_value Field value.
 	 */
 	$field_value = apply_filters( "{$field['id']}_field_value", $field_value, $field, $postid );
 
 
 	// Set default value if no any data saved to db.
-	if( ! $field_value && isset( $field['default'] )) {
+	if ( ! $field_value && isset( $field['default'] ) ) {
 		$field_value = $field['default'];
 	}
 
@@ -672,12 +683,13 @@ function give_get_field_value( $field, $postid ) {
  * @return string
  */
 function give_get_repeater_field_value( $field, $field_group, $fields ) {
-	$field_value = ( isset( $field_group[$field['id']] ) ? $field_group[$field['id']] : '' );
+	$field_value = ( isset( $field_group[ $field['id'] ] ) ? $field_group[ $field['id'] ] : '' );
 
 	/**
 	 * Filter the repeater field value
 	 *
 	 * @since 1.8
+	 *
 	 * @param string $field_id
 	 */
 	$field_value = apply_filters( 'give_get_repeater_field_value', $field_value, $field, $field_group, $fields );
@@ -708,6 +720,7 @@ function give_get_repeater_field_id( $field, $fields, $default = false ) {
 	 * Filter the repeater field id
 	 *
 	 * @since 1.8
+	 *
 	 * @param string $field_id
 	 */
 	$field_id = apply_filters( 'give_get_repeater_field_id', $field_id, $field, $fields, $default );
@@ -720,7 +733,9 @@ function give_get_repeater_field_id( $field, $fields, $default = false ) {
  * Get field name.
  *
  * @since  1.8
+ *
  * @param  array $field
+ *
  * @return string
  */
 function give_get_field_name( $field ) {
@@ -730,45 +745,47 @@ function give_get_field_name( $field ) {
 /**
  * Output repeater field or multi donation type form on donation from edit screen.
  * Note: internal use only.
- * @TODO: Add support for wysiwyg tytpe field.
+ * @TODO   : Add support for wysiwyg tytpe field.
  *
  * @since  1.8
+ *
  * @param  array $fields
+ *
  * @return void
  */
 function _give_metabox_form_data_repeater_fields( $fields ) {
 	global $thepostid, $post;
 
 	// Bailout.
-	if( ! isset( $fields['fields'] ) || empty( $fields['fields'] ) ) {
+	if ( ! isset( $fields['fields'] ) || empty( $fields['fields'] ) ) {
 		return;
 	}
 
 	$group_numbering = isset( $fields['options']['group_numbering'] ) ? (int) $fields['options']['group_numbering'] : 0;
 	?>
 	<div class="give-repeatable-field-section" id="<?php echo "{$fields['id']}_field"; ?>" data-group-numbering="<?php echo $group_numbering; ?>">
-		<?php if( ! empty( $fields['name'] ) ) : ?>
+		<?php if ( ! empty( $fields['name'] ) ) : ?>
 			<p class="give-repeater-field-name"><?php echo $fields['name']; ?></p>
 		<?php endif; ?>
 
-		<?php if( ! empty( $fields['description'] ) ) : ?>
+		<?php if ( ! empty( $fields['description'] ) ) : ?>
 			<p class="give-repeater-field-description"><?php echo $fields['description']; ?></p>
 		<?php endif; ?>
 
 		<table class="give-repeatable-fields-section-wrapper" cellspacing="0">
 			<?php
 			$repeater_field_values = get_post_meta( $thepostid, $fields['id'], true );
-			$header_title    = isset( $fields['options']['header_title'] )
+			$header_title          = isset( $fields['options']['header_title'] )
 				? $fields['options']['header_title']
-				: esc_attr__( 'Group', 'give' ) ;
+				: esc_attr__( 'Group', 'give' );
 
 			$add_default_donation_field = false;
 
 			// Check if level is not created or we have to add default level.
-			if( is_array( $repeater_field_values ) && ( $fields_count = count( $repeater_field_values ) ) ) {
+			if ( is_array( $repeater_field_values ) && ( $fields_count = count( $repeater_field_values ) ) ) {
 				$repeater_field_values = array_values( $repeater_field_values );
 			} else {
-				$fields_count = 1;
+				$fields_count               = 1;
 				$add_default_donation_field = true;
 			}
 			?>
@@ -776,7 +793,8 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 				<tr class="give-template give-row">
 					<td class="give-repeater-field-wrap give-column" colspan="2">
 						<div class="give-row-head give-move">
-							<button type="button" class="handlediv button-link"><span class="toggle-indicator"></span></button>
+							<button type="button" class="handlediv button-link"><span class="toggle-indicator"></span>
+							</button>
 							<sapn class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-</sapn>
 							<h2>
 								<span data-header-title="<?php echo $header_title; ?>"><?php echo $header_title; ?></span>
@@ -784,11 +802,16 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 						</div>
 						<div class="give-row-body">
 							<?php foreach ( $fields['fields'] as $field ) : ?>
-								<?php if ( ! give_is_field_callback_exist( $field ) ) continue; ?>
+								<?php if ( ! give_is_field_callback_exist( $field ) ) {
+									continue;
+								} ?>
 								<?php
-								$field['repeat'] = true;
+								$field['repeat']              = true;
 								$field['repeatable_field_id'] = give_get_repeater_field_id( $field, $fields );
-								$field['id'] = str_replace( array( '[', ']' ), array( '_', '' ), $field['repeatable_field_id'] );
+								$field['id']                  = str_replace( array( '[', ']' ), array(
+									'_',
+									'',
+								), $field['repeatable_field_id'] );
 								?>
 								<?php give_render_field( $field ); ?>
 							<?php endforeach; ?>
@@ -796,25 +819,32 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 					</td>
 				</tr>
 
-				<?php if( ! empty( $repeater_field_values ) ) : ?>
+				<?php if ( ! empty( $repeater_field_values ) ) : ?>
 					<?php foreach ( $repeater_field_values as $index => $field_group ) : ?>
 						<tr class="give-row">
 							<td class="give-repeater-field-wrap give-column" colspan="2">
 								<div class="give-row-head give-move">
-									<button type="button" class="handlediv button-link"><span class="toggle-indicator"></span></button>
-									<sapn class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-</sapn>
+									<button type="button" class="handlediv button-link">
+										<span class="toggle-indicator"></span></button>
+									<sapn class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-
+									</sapn>
 									<h2>
 										<span data-header-title="<?php echo $header_title; ?>"><?php echo $header_title; ?></span>
 									</h2>
 								</div>
 								<div class="give-row-body">
 									<?php foreach ( $fields['fields'] as $field ) : ?>
-										<?php if ( ! give_is_field_callback_exist( $field ) ) continue; ?>
+										<?php if ( ! give_is_field_callback_exist( $field ) ) {
+											continue;
+										} ?>
 										<?php
-										$field['repeat'] = true;
+										$field['repeat']              = true;
 										$field['repeatable_field_id'] = give_get_repeater_field_id( $field, $fields );
 										$field['attributes']['value'] = give_get_repeater_field_value( $field, $field_group, $fields );
-										$field['id'] = str_replace( array( '[', ']' ), array( '_', '' ), $field['repeatable_field_id'] );
+										$field['id']                  = str_replace( array( '[', ']' ), array(
+											'_',
+											'',
+										), $field['repeatable_field_id'] );
 										?>
 										<?php give_render_field( $field ); ?>
 									<?php endforeach; ?>
@@ -827,20 +857,27 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 					<tr class="give-row">
 						<td class="give-repeater-field-wrap give-column" colspan="2">
 							<div class="give-row-head give-move">
-								<button type="button" class="handlediv button-link"><span class="toggle-indicator"></span></button>
-								<sapn class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-</sapn>
+								<button type="button" class="handlediv button-link">
+									<span class="toggle-indicator"></span></button>
+								<sapn class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-
+								</sapn>
 								<h2>
 									<span data-header-title="<?php echo $header_title; ?>"><?php echo $header_title; ?></span>
 								</h2>
 							</div>
 							<div class="give-row-body">
 								<?php foreach ( $fields['fields'] as $field ) : ?>
-									<?php if ( ! give_is_field_callback_exist( $field ) ) continue; ?>
+									<?php if ( ! give_is_field_callback_exist( $field ) ) {
+										continue;
+									} ?>
 									<?php
-									$field['repeat'] = true;
+									$field['repeat']              = true;
 									$field['repeatable_field_id'] = give_get_repeater_field_id( $field, $fields, true );
 									$field['attributes']['value'] = apply_filters( "give_default_field_group_field_{$field['id']}_value", ( ! empty( $field['default'] ) ? $field['default'] : '' ), $field );
-									$field['id'] = str_replace( array( '[', ']' ), array( '_', '' ), $field['repeatable_field_id'] );
+									$field['id']                  = str_replace( array( '[', ']' ), array(
+										'_',
+										'',
+									), $field['repeatable_field_id'] );
 									?>
 									<?php give_render_field( $field ); ?>
 								<?php endforeach; ?>
@@ -873,7 +910,7 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
  * @since  1.8
  * @return string
  */
-function give_get_current_setting_tab(){
+function give_get_current_setting_tab() {
 	// Get current setting page.
 	$current_setting_page = give_get_current_setting_page();
 
@@ -881,6 +918,7 @@ function give_get_current_setting_tab(){
 	 * Filter the default tab for current setting page.
 	 *
 	 * @since 1.8
+	 *
 	 * @param string
 	 */
 	$default_current_tab = apply_filters( "give_default_setting_tab_{$current_setting_page}", 'general' );
@@ -899,7 +937,7 @@ function give_get_current_setting_tab(){
  * @since  1.8
  * @return string
  */
-function give_get_current_setting_section(){
+function give_get_current_setting_section() {
 	// Get current tab.
 	$current_tab = give_get_current_setting_tab();
 
@@ -907,6 +945,7 @@ function give_get_current_setting_section(){
 	 * Filter the default section for current setting page tab.
 	 *
 	 * @since 1.8
+	 *
 	 * @param string
 	 */
 	$default_current_section = apply_filters( "give_default_setting_tab_section_{$current_tab}", '' );
@@ -924,7 +963,7 @@ function give_get_current_setting_section(){
  * @since  1.8
  * @return string
  */
-function give_get_current_setting_page(){
+function give_get_current_setting_page() {
 	// Get current page.
 	$setting_page = ! empty( $_GET['page'] ) ? urldecode( $_GET['page'] ) : '';
 
@@ -938,15 +977,17 @@ function give_get_current_setting_page(){
  * Backward compatibility:  set value by _give_content_option form meta field value if _give_display_content is not set yet.
  *
  * @since  1.8
- * @param  mixed  $field_value Field Value.
- * @param  array  $field       Field args.
- * @param  int    $postid      Form/Post ID.
+ *
+ * @param  mixed $field_value Field Value.
+ * @param  array $field       Field args.
+ * @param  int   $postid      Form/Post ID.
+ *
  * @return string
  */
-function _give_display_content_field_value( $field_value, $field, $postid ){
+function _give_display_content_field_value( $field_value, $field, $postid ) {
 	$show_content = get_post_meta( $postid, '_give_content_option', true );
 
-	if(
+	if (
 		! get_post_meta( $postid, '_give_display_content', true )
 		&& $show_content
 		&& ( 'none' !== $show_content )
@@ -956,6 +997,7 @@ function _give_display_content_field_value( $field_value, $field, $postid ){
 
 	return $field_value;
 }
+
 add_filter( '_give_display_content_field_value', '_give_display_content_field_value', 10, 3 );
 
 
@@ -965,15 +1007,17 @@ add_filter( '_give_display_content_field_value', '_give_display_content_field_va
  * Backward compatibility:  set value by _give_content_option form meta field value if _give_content_placement is not set yet.
  *
  * @since  1.8
- * @param  mixed  $field_value Field Value.
- * @param  array  $field       Field args.
- * @param  int    $postid      Form/Post ID.
+ *
+ * @param  mixed $field_value Field Value.
+ * @param  array $field       Field args.
+ * @param  int   $postid      Form/Post ID.
+ *
  * @return string
  */
-function _give_content_placement_field_value( $field_value, $field, $postid ){
+function _give_content_placement_field_value( $field_value, $field, $postid ) {
 	$show_content = get_post_meta( $postid, '_give_content_option', true );
 
-	if(
+	if (
 		! get_post_meta( $postid, '_give_content_placement', true )
 		&& ( 'none' !== $show_content )
 	) {
@@ -982,6 +1026,7 @@ function _give_content_placement_field_value( $field_value, $field, $postid ){
 
 	return $field_value;
 }
+
 add_filter( '_give_content_placement_field_value', '_give_content_placement_field_value', 10, 3 );
 
 
@@ -991,20 +1036,23 @@ add_filter( '_give_content_placement_field_value', '_give_content_placement_fiel
  * Backward compatibility:  set value by _give_terms_option form meta field value if it's value is none.
  *
  * @since  1.8
- * @param  mixed  $field_value Field Value.
- * @param  array  $field       Field args.
- * @param  int    $postid      Form/Post ID.
+ *
+ * @param  mixed $field_value Field Value.
+ * @param  array $field       Field args.
+ * @param  int   $postid      Form/Post ID.
+ *
  * @return string
  */
-function _give_terms_option_field_value( $field_value, $field, $postid ){
+function _give_terms_option_field_value( $field_value, $field, $postid ) {
 	$term_option = get_post_meta( $postid, '_give_terms_option', true );
 
-	if(  in_array( $term_option, array( 'none', 'yes' ) ) ) {
+	if ( in_array( $term_option, array( 'none', 'yes' ) ) ) {
 		$field_value = ( 'yes' === $term_option ? 'enabled' : 'disabled' );
 	}
 
 	return $field_value;
 }
+
 add_filter( '_give_terms_option_field_value', '_give_terms_option_field_value', 10, 3 );
 
 
@@ -1014,20 +1062,23 @@ add_filter( '_give_terms_option_field_value', '_give_terms_option_field_value', 
  * Backward compatibility:  set value by _give_offline_donation_enable_billing_fields_single form meta field value if it's value is on.
  *
  * @since  1.8
- * @param  mixed  $field_value Field Value.
- * @param  array  $field       Field args.
- * @param  int    $postid      Form/Post ID.
+ *
+ * @param  mixed $field_value Field Value.
+ * @param  array $field       Field args.
+ * @param  int   $postid      Form/Post ID.
+ *
  * @return string
  */
-function _give_offline_donation_enable_billing_fields_single_field_value( $field_value, $field, $postid ){
+function _give_offline_donation_enable_billing_fields_single_field_value( $field_value, $field, $postid ) {
 	$offline_donation = get_post_meta( $postid, '_give_offline_donation_enable_billing_fields_single', true );
 
-	if(  'on' === $offline_donation ) {
+	if ( 'on' === $offline_donation ) {
 		$field_value = 'enabled';
 	}
 
 	return $field_value;
 }
+
 add_filter( '_give_offline_donation_enable_billing_fields_single_field_value', '_give_offline_donation_enable_billing_fields_single_field_value', 10, 3 );
 
 
@@ -1037,20 +1088,23 @@ add_filter( '_give_offline_donation_enable_billing_fields_single_field_value', '
  * Backward compatibility:  set value by _give_custom_amount form meta field value if it's value is yes or no.
  *
  * @since  1.8
- * @param  mixed  $field_value Field Value.
- * @param  array  $field       Field args.
- * @param  int    $postid      Form/Post ID.
+ *
+ * @param  mixed $field_value Field Value.
+ * @param  array $field       Field args.
+ * @param  int   $postid      Form/Post ID.
+ *
  * @return string
  */
-function _give_custom_amount_field_value( $field_value, $field, $postid ){
+function _give_custom_amount_field_value( $field_value, $field, $postid ) {
 	$custom_amount = get_post_meta( $postid, '_give_custom_amount', true );
 
-	if( in_array( $custom_amount, array( 'yes', 'no' ) ) ) {
-		$field_value =  ( 'yes' === $custom_amount ? 'enabled' : 'disabled' );
+	if ( in_array( $custom_amount, array( 'yes', 'no' ) ) ) {
+		$field_value = ( 'yes' === $custom_amount ? 'enabled' : 'disabled' );
 	}
 
 	return $field_value;
 }
+
 add_filter( '_give_custom_amount_field_value', '_give_custom_amount_field_value', 10, 3 );
 
 
@@ -1060,20 +1114,23 @@ add_filter( '_give_custom_amount_field_value', '_give_custom_amount_field_value'
  * Backward compatibility:  set value by _give_goal_option form meta field value if it's value is yes or no.
  *
  * @since  1.8
- * @param  mixed  $field_value Field Value.
- * @param  array  $field       Field args.
- * @param  int    $postid      Form/Post ID.
+ *
+ * @param  mixed $field_value Field Value.
+ * @param  array $field       Field args.
+ * @param  int   $postid      Form/Post ID.
+ *
  * @return string
  */
-function _give_goal_option_field_value( $field_value, $field, $postid ){
+function _give_goal_option_field_value( $field_value, $field, $postid ) {
 	$goal_option = get_post_meta( $postid, '_give_goal_option', true );
 
-	if( in_array( $goal_option, array( 'yes', 'no' ) ) ) {
-		$field_value =  ( 'yes' === $goal_option ? 'enabled' : 'disabled' );
+	if ( in_array( $goal_option, array( 'yes', 'no' ) ) ) {
+		$field_value = ( 'yes' === $goal_option ? 'enabled' : 'disabled' );
 	}
 
 	return $field_value;
 }
+
 add_filter( '_give_goal_option_field_value', '_give_goal_option_field_value', 10, 3 );
 
 /**
@@ -1082,20 +1139,23 @@ add_filter( '_give_goal_option_field_value', '_give_goal_option_field_value', 10
  * Backward compatibility:  set value by _give_close_form_when_goal_achieved form meta field value if it's value is yes or no.
  *
  * @since  1.8
- * @param  mixed  $field_value Field Value.
- * @param  array  $field       Field args.
- * @param  int    $postid      Form/Post ID.
+ *
+ * @param  mixed $field_value Field Value.
+ * @param  array $field       Field args.
+ * @param  int   $postid      Form/Post ID.
+ *
  * @return string
  */
-function _give_close_form_when_goal_achieved_value( $field_value, $field, $postid ){
+function _give_close_form_when_goal_achieved_value( $field_value, $field, $postid ) {
 	$close_form = get_post_meta( $postid, '_give_close_form_when_goal_achieved', true );
 
-	if( in_array( $close_form, array( 'yes', 'no' ) ) ) {
-		$field_value =  ( 'yes' === $close_form ? 'enabled' : 'disabled' );
+	if ( in_array( $close_form, array( 'yes', 'no' ) ) ) {
+		$field_value = ( 'yes' === $close_form ? 'enabled' : 'disabled' );
 	}
 
 	return $field_value;
 }
+
 add_filter( '_give_close_form_when_goal_achieved_field_value', '_give_close_form_when_goal_achieved_value', 10, 3 );
 
 
@@ -1105,20 +1165,23 @@ add_filter( '_give_close_form_when_goal_achieved_field_value', '_give_close_form
  * Backward compatibility:  set value by _give_logged_in_only form meta field value if it's value is yes or no.
  *
  * @since  1.8
- * @param  mixed  $field_value Field Value.
- * @param  array  $field       Field args.
- * @param  int    $postid      Form/Post ID.
+ *
+ * @param  mixed $field_value Field Value.
+ * @param  array $field       Field args.
+ * @param  int   $postid      Form/Post ID.
+ *
  * @return string
  */
-function _give_logged_in_only_value( $field_value, $field, $postid ){
+function _give_logged_in_only_value( $field_value, $field, $postid ) {
 	$guest_donation = get_post_meta( $postid, '_give_logged_in_only', true );
 
-	if( in_array( $guest_donation, array( 'yes', 'no' ) ) ) {
-		$field_value =  ( 'yes' === $guest_donation ? 'enabled' : 'disabled' );
+	if ( in_array( $guest_donation, array( 'yes', 'no' ) ) ) {
+		$field_value = ( 'yes' === $guest_donation ? 'enabled' : 'disabled' );
 	}
 
 	return $field_value;
 }
+
 add_filter( '_give_logged_in_only_field_value', '_give_logged_in_only_value', 10, 3 );
 
 /**
@@ -1127,20 +1190,23 @@ add_filter( '_give_logged_in_only_field_value', '_give_logged_in_only_value', 10
  * Backward compatibility:  set value by _give_customize_offline_donations form meta field value if it's value is yes or no.
  *
  * @since  1.8
- * @param  mixed  $field_value Field Value.
- * @param  array  $field       Field args.
- * @param  int    $postid      Form/Post ID.
+ *
+ * @param  mixed $field_value Field Value.
+ * @param  array $field       Field args.
+ * @param  int   $postid      Form/Post ID.
+ *
  * @return string
  */
-function _give_customize_offline_donations_value( $field_value, $field, $postid ){
+function _give_customize_offline_donations_value( $field_value, $field, $postid ) {
 	$customize_offline_text = get_post_meta( $postid, '_give_customize_offline_donations', true );
 
-	if( in_array( $customize_offline_text, array( 'yes', 'no' ) ) ) {
-		$field_value =  ( 'yes' === $customize_offline_text ? 'enabled' : 'disabled' );
+	if ( in_array( $customize_offline_text, array( 'yes', 'no' ) ) ) {
+		$field_value = ( 'yes' === $customize_offline_text ? 'enabled' : 'disabled' );
 	}
 
 	return $field_value;
 }
+
 add_filter( '_give_customize_offline_donations_field_value', '_give_customize_offline_donations_value', 10, 3 );
 
 
@@ -1156,11 +1222,11 @@ add_filter( '_give_customize_offline_donations_field_value', '_give_customize_of
  *
  * @return mixed
  */
-function _give_set_multi_level_repeater_field_id( $field_id, $field, $fields, $default ){
-	if( ! $default && '_give_id' === $field['id'] && '_give_donation_levels' === $fields['id'] ) {
+function _give_set_multi_level_repeater_field_id( $field_id, $field, $fields, $default ) {
+	if ( ! $default && '_give_id' === $field['id'] && '_give_donation_levels' === $fields['id'] ) {
 		$field_id = "{$fields['id']}[{{row-count-placeholder}}][{$field['id']}][level_id]";
 	}
-	
+
 	return $field_id;
 }
 
@@ -1178,9 +1244,9 @@ add_filter( 'give_get_repeater_field_id', '_give_set_multi_level_repeater_field_
  *
  * @return mixed
  */
-function _give_set_multi_level_repeater_field_value( $field_value, $field, $field_group, $fields ){
-	if( isset( $field['id'] ) && '_give_id' === $field['id'] && '_give_donation_levels' === $fields['id'] ) {
-		$field_value = $field_group[$field['id']]['level_id'];
+function _give_set_multi_level_repeater_field_value( $field_value, $field, $field_group, $fields ) {
+	if ( isset( $field['id'] ) && '_give_id' === $field['id'] && '_give_donation_levels' === $fields['id'] ) {
+		$field_value = $field_group[ $field['id'] ]['level_id'];
 	}
 
 	return $field_value;
@@ -1192,22 +1258,28 @@ add_filter( 'give_get_repeater_field_value', '_give_set_multi_level_repeater_fie
  * Set default value for _give_id field.
  *
  * @since 1.8
+ *
  * @param $field
+ *
  * @return string
  */
 function _give_set_field_give_id_default_value( $field ) {
 	return 0;
 }
+
 add_filter( 'give_default_field_group_field__give_id_value', ' _give_set_field_give_id_default_value' );
 
 /**
  * Set default value for _give_default field.
  *
  * @since 1.8
+ *
  * @param $field
+ *
  * @return string
  */
 function _give_set_field_give_default_default_value( $field ) {
 	return 'checked';
 }
+
 add_filter( 'give_default_field_group_field__give_default_value', ' _give_set_field_give_default_default_value' );
