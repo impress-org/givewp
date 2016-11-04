@@ -491,6 +491,48 @@ $give_options = give_get_settings();
 	</tbody>
 </table>
 
+<?php
+$active_mu_plugins = (array) get_mu_plugins();
+if ( ! empty( $active_mu_plugins ) ) {
+?>
+	<table class="wc_status_table widefat" cellspacing="0">
+		<thead>
+			<tr>
+				<th colspan="3" data-export-label="Active MU Plugins (<?php echo count( (array) get_mu_plugins() ); ?>)"><h2><?php _e( 'Active MU Plugins', 'give' ); ?> (<?php echo count( (array) get_mu_plugins() ); ?>)</h2></th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php
+
+			foreach ( $active_mu_plugins as $mu_plugin_data ) {
+				if ( ! empty( $mu_plugin_data['Name'] ) ) {
+					// Link the plugin name to the plugin url if available.
+					$plugin_name = esc_html( $mu_plugin_data['Name'] );
+
+					if ( ! empty( $mu_plugin_data['PluginURI'] ) ) {
+						$plugin_name = '<a href="' . esc_url( $mu_plugin_data['PluginURI'] ) . '" title="' . esc_attr__( 'Visit plugin homepage' , 'give' ) . '">' . $plugin_name . '</a>';
+					}
+
+					// Link the author name to the author url if available.
+					$author_name = esc_html( $mu_plugin_data['Author'] );
+
+					if ( ! empty( $mu_plugin_data['AuthorURI'] ) ) {
+						$author_name = '<a href="' . esc_url( $mu_plugin_data['AuthorURI'] ) . '">' . $author_name . '</a>';
+					}
+					?>
+					<tr>
+						<td><?php echo $plugin_name; ?></td>
+						<td class="help">&nbsp;</td>
+						<td><?php echo sprintf( _x( 'by %s', 'by author', 'give' ), $author_name ) . ' &ndash; ' . esc_html( $mu_plugin_data['Version'] ); ?></td>
+					</tr>
+			<?php
+				}
+			}
+			?>
+		</tbody>
+	</table>
+<?php } ?>
+
 <table class="wc_status_table widefat" cellspacing="0">
 	<thead>
 		<tr>
