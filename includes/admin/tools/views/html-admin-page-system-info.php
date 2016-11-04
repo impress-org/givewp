@@ -450,6 +450,11 @@ $give_options = give_get_settings();
 			<td class="help"><?php echo wc_help_tip( __( 'The default payment gateway selected in Give settings.', 'give' ) ); ?></td>
 			<td><?php echo esc_html( ! empty( $default_gateway ) ? $default_gateway : '&ndash;' ); ?></td>
 		</tr>
+		<tr>
+			<td data-export-label="Admin Email Notifications"><?php _e( 'Admin Email Notifications', 'give' ); ?>:</td>
+			<td class="help"><?php echo wc_help_tip( __( 'Whether admins receive email notifications of transactions.', 'give' ) ); ?></td>
+			<td><?php echo 'enabled' === give_get_option( 'admin_notices' ) ? __( 'Enabled', 'give' ) : __( 'Disabled', 'give' ); ?></td>
+		</tr>
 	</tbody>
 </table>
 
