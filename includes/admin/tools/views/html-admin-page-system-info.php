@@ -304,6 +304,11 @@ $give_options = give_get_settings();
 			$posting['gzip']['note']    = sprintf( __( 'Your server does not support the %s function - this is used for file compression and decompression.', 'give' ), '<a href="https://php.net/manual/en/zlib.installation.php">gzopen</a>' );
 		}
 
+		// GD Graphics Library.
+		$posting['gd']['name'] = 'GD Graphics Library';
+		$posting['gd']['help'] = wc_help_tip( __( 'GD Graphics Library is used for dynamically manipulating images.', 'give' ) );
+		$posting['gd']['success'] = extension_loaded( 'gd' ) && function_exists( 'gd_info' ) ? true : false;
+
 		// Multibyte String.
 		$posting['mbstring']['name'] = 'Multibyte String';
 		$posting['mbstring']['help'] = wc_help_tip( __( 'Multibyte String (mbstring) is used to convert character encoding, like for emails or converting characters to lowercase.', 'give' ) );
