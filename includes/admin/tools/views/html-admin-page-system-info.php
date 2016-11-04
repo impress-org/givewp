@@ -8,14 +8,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Display system info in a table format.
- *
- * Copyright (c) 2015 WooThemes
- * Copyright (c) 2016 WordImpress, LLC
- *
  * The following code is a derivative work of the code from the WooCommerce
  * plugin, which is licensed GPLv3. This code therefore is also licensed under
  * the terms of the GNU Public License, version 3.
+ *
+ * Copyright (c) 2015 WooThemes
+ * Copyright (c) 2016 WordImpress, LLC
  */
 
 global $wpdb;
