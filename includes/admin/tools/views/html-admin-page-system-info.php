@@ -484,40 +484,11 @@ $give_options = give_get_settings();
 				$plugin_name = '<a href="' . esc_url( $plugin_data['PluginURI'] ) . '" title="' . esc_attr__( 'Visit plugin homepage' , 'give' ) . '" target="_blank">' . $plugin_name . '</a>';
 			}
 
-			if ( strstr( $dirname, 'woocommerce-' ) && strstr( $plugin_data['PluginURI'], 'woothemes.com' ) ) {
-
-				if ( false === ( $version_data = get_transient( md5( $plugin ) . '_version_data' ) ) ) {
-					$changelog = wp_safe_remote_get( 'http://dzv365zjfbd8v.cloudfront.net/changelogs/' . $dirname . '/changelog.txt' );
-					$cl_lines  = explode( "\n", wp_remote_retrieve_body( $changelog ) );
-					if ( ! empty( $cl_lines ) ) {
-						foreach ( $cl_lines as $line_num => $cl_line ) {
-							if ( preg_match( '/^[0-9]/', $cl_line ) ) {
-
-								$date         = str_replace( '.' , '-' , trim( substr( $cl_line , 0 , strpos( $cl_line , '-' ) ) ) );
-								$version      = preg_replace( '~[^0-9,.]~' , '' ,stristr( $cl_line , "version" ) );
-								$update       = trim( str_replace( "*" , "" , $cl_lines[ $line_num + 1 ] ) );
-								$version_data = array( 'date' => $date , 'version' => $version , 'update' => $update , 'changelog' => $changelog );
-								set_transient( md5( $plugin ) . '_version_data', $version_data, DAY_IN_SECONDS );
-								break;
-							}
-						}
-					}
-				}
-
-				if ( ! empty( $version_data['version'] ) && version_compare( $version_data['version'], $plugin_data['Version'], '>' ) ) {
-					$version_string = ' &ndash; <strong style="color:red;">' . esc_html( sprintf( _x( '%s is available', 'Version info', 'give' ), $version_data['version'] ) ) . '</strong>';
-				}
-
-				if ( $plugin_data['Network'] != false ) {
-					$network_string = ' &ndash; <strong style="color:black;">' . __( 'Network enabled', 'give' ) . '</strong>';
-				}
-			}
-
 			?>
 			<tr>
 				<td><?php echo $plugin_name; ?></td>
 				<td class="help">&nbsp;</td>
-				<td><?php echo sprintf( _x( 'by %s', 'by author', 'give' ), $plugin_data['Author'] ) . ' &ndash; ' . esc_html( $plugin_data['Version'] ) . $version_string . $network_string; ?></td>
+				<td><?php echo sprintf( _x( 'by %s', 'by author', 'give' ), $plugin_data['Author'] ) . ' &ndash; ' . esc_html( $plugin_data['Version'] ); ?></td>
 			</tr>
 			<?php
 		}
