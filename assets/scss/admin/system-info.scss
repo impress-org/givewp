@@ -70,3 +70,25 @@
     }
   }
 }
+
+.give-debug-report {
+  display: none;
+  margin: 10px 0;
+  padding: 0;
+  position: relative;
+
+  textarea {
+    font-family: monospace;
+    width: 100%;
+    margin: 0;
+    height: 300px;
+    padding: 20px;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    resize: none;
+    font-size: 12px;
+    line-height: 20px;
+    outline: 0;
+  }
+}
