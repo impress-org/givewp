@@ -469,25 +469,22 @@ $give_options = give_get_settings();
 	}
 
 	foreach ( $active_plugins as $plugin ) {
-
 		$plugin_data    = @get_plugin_data( WP_PLUGIN_DIR . '/' . $plugin );
 
 		if ( ! empty( $plugin_data['Name'] ) ) {
-
 			// Link the plugin name to the plugin url if available.
 			$plugin_name = esc_html( $plugin_data['Name'] );
 
 			if ( ! empty( $plugin_data['PluginURI'] ) ) {
-				$plugin_name = '<a href="' . esc_url( $plugin_data['PluginURI'] ) . '" title="' . esc_attr__( 'Visit plugin homepage' , 'give' ) . '" target="_blank">' . $plugin_name . '</a>';
+				$plugin_name = '<a href="' . esc_url( $plugin_data['PluginURI'] ) . '" title="' . esc_attr__( 'Visit plugin homepage' , 'give' ) . '">' . $plugin_name . '</a>';
 			}
-
 			?>
 			<tr>
 				<td><?php echo $plugin_name; ?></td>
 				<td class="help">&nbsp;</td>
 				<td><?php echo sprintf( _x( 'by %s', 'by author', 'give' ), $plugin_data['Author'] ) . ' &ndash; ' . esc_html( $plugin_data['Version'] ); ?></td>
 			</tr>
-			<?php
+	<?php
 		}
 	}
 	?>
