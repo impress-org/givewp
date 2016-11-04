@@ -31,27 +31,27 @@ $give_options = give_get_settings();
 	<tbody>
 		<tr>
 			<td data-export-label="Home URL"><?php _e( 'Home URL', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'The URL of your site\'s homepage.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The URL of your site\'s homepage.', 'give' ) ); ?>"></span></td>
 			<td><?php form_option( 'home' ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Site URL"><?php _e( 'Site URL', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'The root URL of your site.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The root URL of your site.', 'give' ) ); ?>"></span></td>
 			<td><?php form_option( 'siteurl' ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="WP Version"><?php _e( 'WP Version', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'The version of WordPress installed on your site.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The version of WordPress installed on your site.', 'give' ) ); ?>"></span></td>
 			<td><?php bloginfo('version'); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="WP Multisite"><?php _e( 'WP Multisite', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'Whether or not you have WordPress Multisite enabled.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'Whether or not you have WordPress Multisite enabled.', 'give' ) ); ?>"></span></td>
 			<td><?php if ( is_multisite() ) echo '<span class="dashicons dashicons-yes"></span>'; else echo '&ndash;'; ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="WP Memory Limit"><?php _e( 'WP Memory Limit', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'The maximum amount of memory (RAM) that your site can use at one time.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The maximum amount of memory (RAM) that your site can use at one time.', 'give' ) ); ?>"></span></td>
 			<td>
 				<?php
 				$memory = wc_let_to_num( WP_MEMORY_LIMIT );
@@ -71,7 +71,7 @@ $give_options = give_get_settings();
 		</tr>
 		<tr>
 			<td data-export-label="WP Debug Mode"><?php _e( 'WP Debug Mode', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'Displays whether or not WordPress is in Debug Mode.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'Displays whether or not WordPress is in Debug Mode.', 'give' ) ); ?>"></span></td>
 			<td>
 				<?php if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) : ?>
 					<mark class="yes"><span class="dashicons dashicons-yes"></span></mark>
@@ -82,7 +82,7 @@ $give_options = give_get_settings();
 		</tr>
 		<tr>
 			<td data-export-label="WP Cron"><?php _e( 'WP Cron', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'Displays whether or not WP Cron Jobs are enabled.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'Displays whether or not WP Cron Jobs are enabled.', 'give' ) ); ?>"></span></td>
 			<td>
 				<?php if ( defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON ) : ?>
 					<mark class="no">&ndash;</mark>
@@ -93,17 +93,17 @@ $give_options = give_get_settings();
 		</tr>
 		<tr>
 			<td data-export-label="Language"><?php _e( 'Language', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'The current language used by WordPress. Default = English', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The current language used by WordPress. Default = English', 'give' ) ); ?>"></span></td>
 			<td><?php echo get_locale(); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Permalink Structure"><?php _e( 'Permalink Structure', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'The permalink structure as defined in Settings.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The permalink structure as defined in Settings.', 'give' ) ); ?>"></span></td>
 			<td><?php echo esc_html( get_option( 'permalink_structure', __( 'Default', 'give' ) ) ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Show on Front"><?php _e( 'Show on Front', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'Whether your front page is set to show posts or a static page.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'Whether your front page is set to show posts or a static page.', 'give' ) ); ?>"></span></td>
 			<td><?php echo esc_html( get_option( 'show_on_front', '&ndash;' ) ); ?></td>
 		</tr>
 		<?php if ( 'page' === get_option( 'show_on_front' ) ) : ?>
@@ -113,33 +113,33 @@ $give_options = give_get_settings();
 			?>
 			<tr>
 				<td data-export-label="Page on Front"><?php _e( 'Page on Front', 'give' ); ?>:</td>
-				<td class="help"><?php echo wc_help_tip( __( 'The page set to display as your front page.', 'give' ) ); ?></td>
+				<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The page set to display as your front page.', 'give' ) ); ?>"></span></td>
 				<td><?php echo 0 !== $front_page_id ? esc_html( get_the_title( $front_page_id ) . ' (#' . $front_page_id . ')' ) : __( 'Unset', 'give' ); ?></td>
 			</tr>
 			<tr>
 				<td data-export-label="Page for Posts"><?php _e( 'Page for Posts', 'give' ); ?>:</td>
-				<td class="help"><?php echo wc_help_tip( __( 'The page set to display your posts.', 'give' ) ); ?></td>
+				<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The page set to display your posts.', 'give' ) ); ?>"></span></td>
 				<td><?php echo 0 !== $blog_page_id ? esc_html( get_the_title( $blog_page_id ) . ' (#' . $blog_page_id . ')' ) : __( 'Unset', 'give' ); ?></td>
 			</tr>
 		<?php endif;?>
 		<tr>
 			<td data-export-label="Table Prefix Length"><?php _e( 'Table Prefix Length', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'The length of the table prefix used in your WordPress database.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The length of the table prefix used in your WordPress database.', 'give' ) ); ?>"></span></td>
 			<td><?php echo esc_html( strlen( $wpdb->prefix ) ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Table Prefix Status"><?php _e( 'Table Prefix Status', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'The status of the table prefix used in your WordPress database.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The status of the table prefix used in your WordPress database.', 'give' ) ); ?>"></span></td>
 			<td><?php echo strlen( $wpdb->prefix ) > 16 ? esc_html( 'Error: Too long', 'give' ) : esc_html( 'Acceptable', 'give' ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Admin AJAX"><?php _e( 'Admin AJAX', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'Whether Admin AJAX is accessible.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'Whether Admin AJAX is accessible.', 'give' ) ); ?>"></span></td>
 			<td><?php echo give_test_ajax_works() ? __( 'Accessible', 'give' ) : __( 'Inaccessible', 'give' ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Registered Post Stati"><?php _e( 'Registered Post Stati', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'A list of all registered post stati.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'A list of all registered post stati.', 'give' ) ); ?>"></span></td>
 			<td><?php echo esc_html( implode( ', ', get_post_stati() ) ); ?></td>
 		</tr>
 	</tbody>
@@ -154,12 +154,12 @@ $give_options = give_get_settings();
 	<tbody>
 		<tr>
 			<td data-export-label="Server Info"><?php _e( 'Server Info', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'Information about the web server that is currently hosting your site.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'Information about the web server that is currently hosting your site.', 'give' ) ); ?>"></span></td>
 			<td><?php echo esc_html( $_SERVER['SERVER_SOFTWARE'] ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="PHP Version"><?php _e( 'PHP Version', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'The version of PHP installed on your hosting server.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The version of PHP installed on your hosting server.', 'give' ) ); ?>"></span></td>
 			<td><?php
 				// Check if phpversion function exists.
 				if ( function_exists( 'phpversion' ) ) {
@@ -178,22 +178,22 @@ $give_options = give_get_settings();
 		<?php if ( function_exists( 'ini_get' ) ) : ?>
 			<tr>
 				<td data-export-label="PHP Post Max Size"><?php _e( 'PHP Post Max Size', 'give' ); ?>:</td>
-				<td class="help"><?php echo wc_help_tip( __( 'The largest filesize that can be contained in one post.', 'give' ) ); ?></td>
+				<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The largest filesize that can be contained in one post.', 'give' ) ); ?>"></span></td>
 				<td><?php echo size_format( wc_let_to_num( ini_get( 'post_max_size' ) ) ); ?></td>
 			</tr>
 			<tr>
 				<td data-export-label="PHP Time Limit"><?php _e( 'PHP Time Limit', 'give' ); ?>:</td>
-				<td class="help"><?php echo wc_help_tip( __( 'The amount of time (in seconds) that your site will spend on a single operation before timing out (to avoid server lockups)', 'give' ) ); ?></td>
+				<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The amount of time (in seconds) that your site will spend on a single operation before timing out (to avoid server lockups).', 'give' ) ); ?>"></span></td>
 				<td><?php echo ini_get( 'max_execution_time' ); ?></td>
 			</tr>
 			<tr>
 				<td data-export-label="PHP Max Input Vars"><?php _e( 'PHP Max Input Vars', 'give' ); ?>:</td>
-				<td class="help"><?php echo wc_help_tip( __( 'The maximum number of variables your server can use for a single function to avoid overloads.', 'give' ) ); ?></td>
+				<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The maximum number of variables your server can use for a single function to avoid overloads.', 'give' ) ); ?>"></span></td>
 				<td><?php echo ini_get( 'max_input_vars' ); ?></td>
 			</tr>
 			<tr>
 				<td data-export-label="cURL Version"><?php _e( 'cURL Version', 'give' ); ?>:</td>
-				<td class="help"><?php echo wc_help_tip( __( 'The version of cURL installed on your server.', 'give' ) ); ?></td>
+				<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The version of cURL installed on your server.', 'give' ) ); ?>"></span></td>
 				<td>
 					<?php
 					if ( function_exists( 'curl_version' ) ) {
@@ -212,7 +212,7 @@ $give_options = give_get_settings();
 			</tr>
 			<tr>
 				<td data-export-label="SUHOSIN Installed"><?php _e( 'SUHOSIN Installed', 'give' ); ?>:</td>
-				<td class="help"><?php echo wc_help_tip( __( 'Suhosin is an advanced protection system for PHP installations. It was designed to protect your servers on the one hand against a number of well known problems in PHP applications and on the other hand against potential unknown vulnerabilities within these applications or the PHP core itself. If enabled on your server, Suhosin may need to be configured to increase its data submission limits.', 'give' ) ); ?></td>
+				<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'Suhosin is an advanced protection system for PHP installations. It was designed to protect your servers on the one hand against a number of well known problems in PHP applications and on the other hand against potential unknown vulnerabilities within these applications or the PHP core itself. If enabled on your server, Suhosin may need to be configured to increase its data submission limits.', 'give' ) ); ?>"></span></td>
 				<td><?php echo extension_loaded( 'suhosin' ) ? '<span class="dashicons dashicons-yes"></span>' : '&ndash;'; ?></td>
 			</tr>
 		<?php endif;
@@ -226,7 +226,7 @@ $give_options = give_get_settings();
 		if ( ! empty( $wpdb->is_mysql ) && ! stristr( $ver, 'MariaDB' ) ) : ?>
 			<tr>
 				<td data-export-label="MySQL Version"><?php _e( 'MySQL Version', 'give' ); ?>:</td>
-				<td class="help"><?php echo wc_help_tip( __( 'The version of MySQL installed on your hosting server.', 'give' ) ); ?></td>
+				<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The version of MySQL installed on your hosting server.', 'give' ) ); ?>"></span></td>
 				<td>
 					<?php
 					$mysql_version = $wpdb->db_version();
@@ -242,12 +242,12 @@ $give_options = give_get_settings();
 		<?php endif; ?>
 		<tr>
 			<td data-export-label="Max Upload Size"><?php _e( 'Max Upload Size', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'The largest filesize that can be uploaded to your WordPress installation.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The largest filesize that can be uploaded to your WordPress installation.', 'give' ) ); ?>"></span></td>
 			<td><?php echo size_format( wp_max_upload_size() ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Default Timezone is UTC"><?php _e( 'Default Timezone is UTC', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'The default timezone for your server.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The default timezone for your server.', 'give' ) ); ?>"></span></td>
 			<td><?php
 				$default_timezone = date_default_timezone_get();
 				if ( 'UTC' !== $default_timezone ) {
@@ -370,7 +370,7 @@ $give_options = give_get_settings();
 			?>
 			<tr>
 				<td data-export-label="<?php echo esc_html( $post['name'] ); ?>"><?php echo esc_html( $post['name'] ); ?>:</td>
-				<td class="help"><?php echo isset( $post['help'] ) ? $post['help'] : ''; ?></td>
+				<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( isset( $post['help'] ) ? $post['help'] : '' ); ?>"></span></td>
 				<td>
 					<mark class="<?php echo $mark; ?>">
 						<?php echo ! empty( $post['success'] ) ? '<span class="dashicons dashicons-yes"></span>' : '<span class="dashicons dashicons-no-alt"></span>'; ?> <?php echo ! empty( $post['note'] ) ? wp_kses_data( $post['note'] ) : ''; ?>
@@ -392,52 +392,52 @@ $give_options = give_get_settings();
 	<tbody>
 		<tr>
 			<td data-export-label="Give Version"><?php _e( 'Give Version', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'The version of Give installed on your site.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The version of Give installed on your site.', 'give' ) ); ?>"></span></td>
 			<td><?php echo esc_html( GIVE_VERSION ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Upgraded From"><?php _e( 'Upgraded From', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'The version of Give installed prior to the last update.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The version of Give installed prior to the last update.', 'give' ) ); ?>"></span></td>
 			<td><?php echo esc_html( get_option( 'give_version_upgraded_from', '&ndash;' ) ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Test Mode"><?php _e( 'Test Mode', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'Whether Test Mode is enabled in Give settings.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'Whether Test Mode is enabled in Give settings.', 'give' ) ); ?>"></span></td>
 			<td><?php echo give_is_test_mode() ? __( 'Enabled', 'give' ) : __( 'Disabled', 'give' ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Currency Code"><?php _e( 'Currency Code', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'The currency code selected in Give settings.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The currency code selected in Give settings.', 'give' ) ); ?>"></span></td>
 			<td><?php echo esc_html( give_get_currency() ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Currency Position"><?php _e( 'Currency Position', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'The currency position selected in Give settings.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The currency position selected in Give settings.', 'give' ) ); ?>"></span></td>
 			<td><?php echo esc_html( give_get_option( 'currency_position', 'before' ) ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Decimal Separator"><?php _e( 'Decimal Separator', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'The decimal separator defined in Give settings.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The decimal separator defined in Give settings.', 'give' ) ); ?>"></span></td>
 			<td><?php echo esc_html( give_get_option( 'decimal_separator', '.' ) ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Thousands Separator"><?php _e( 'Thousands Separator', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'The decimal separator defined in Give settings.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The decimal separator defined in Give settings.', 'give' ) ); ?>"></span></td>
 			<td><?php echo esc_html( give_get_option( 'thousands_separator', ',' ) ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Success Page"><?php _e( 'Success Page', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'The page where donors land following a successful transaction.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The page where donors land following a successful transaction.', 'give' ) ); ?>"></span></td>
 			<td><?php echo ! empty( $give_options['success_page'] ) ? esc_url( get_permalink( $give_options['success_page'] ) ) : '&ndash;'; ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Failure Page"><?php _e( 'Failure Page', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'The page where donors land following a failed transaction.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The page where donors land following a failed transaction.', 'give' ) ); ?>"></span></td>
 			<td><?php echo ! empty( $give_options['failure_page'] ) ? esc_url( get_permalink( $give_options['failure_page'] ) ) : '&ndash;'; ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Give Forms Slug"><?php _e( 'Give Forms Slug', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'The slug used for Give donation forms.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The slug used for Give donation forms.', 'give' ) ); ?>"></span></td>
 			<td><?php echo esc_html( defined( 'GIVE_SLUG' ) ? '/' . GIVE_SLUG . '/' : '/donations/' ); ?></td>
 		</tr>
 		<?php
@@ -465,17 +465,17 @@ $give_options = give_get_settings();
 		?>
 		<tr>
 			<td data-export-label="Enabled Payment Gateways"><?php _e( 'Enabled Payment Gateways', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'All payment gateways enabled in Give settings.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'All payment gateways enabled in Give settings.', 'give' ) ); ?>"></span></td>
 			<td><?php echo esc_html( ! empty( $enabled_gateways ) ? $enabled_gateways : '&ndash;' ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Default Payment Gateway"><?php _e( 'Default Payment Gateway', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'The default payment gateway selected in Give settings.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The default payment gateway selected in Give settings.', 'give' ) ); ?>"></span></td>
 			<td><?php echo esc_html( ! empty( $default_gateway ) ? $default_gateway : '&ndash;' ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Admin Email Notifications"><?php _e( 'Admin Email Notifications', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'Whether admins receive email notifications of transactions.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'Whether admins receive email notifications of transactions.', 'give' ) ); ?>"></span></td>
 			<td><?php echo 'enabled' === give_get_option( 'admin_notices' ) ? __( 'Enabled', 'give' ) : __( 'Disabled', 'give' ); ?></td>
 		</tr>
 	</tbody>
@@ -574,22 +574,22 @@ if ( ! empty( $active_mu_plugins ) ) {
 	<tbody>
 		<tr>
 			<td data-export-label="Name"><?php _e( 'Name', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'The name of the current active theme.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The name of the current active theme.', 'give' ) ); ?>"></span></td>
 			<td><?php echo esc_html( $active_theme->Name ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Version"><?php _e( 'Version', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'The installed version of the current active theme.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The installed version of the current active theme.', 'give' ) ); ?>"></span></td>
 			<td><?php echo esc_html( $active_theme->Version ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Author URL"><?php _e( 'Author URL', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'The theme developer\'s URL.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The theme developer\'s URL.', 'give' ) ); ?>"></span></td>
 			<td><?php echo $active_theme->{'Author URI'}; ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Child Theme"><?php _e( 'Child Theme', 'give' ); ?>:</td>
-			<td class="help"><?php echo wc_help_tip( __( 'Displays whether or not the current theme is a child theme.', 'give' ) ); ?></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'Displays whether or not the current theme is a child theme.', 'give' ) ); ?>"></span></td>
 			<td><?php
 				echo is_child_theme() ? '<mark class="yes"><span class="dashicons dashicons-yes"></span></mark>' : '<span class="dashicons dashicons-no-alt"></span> &ndash; ' . sprintf( __( 'If you\'re modifying Give on a parent theme you didn\'t build personally, then we recommend using a child theme. See: <a href="%s" target="_blank">How to Create a Child Theme</a>', 'give' ), 'https://codex.wordpress.org/Child_Themes' );
 				?></td>
@@ -600,17 +600,17 @@ if ( ! empty( $active_mu_plugins ) ) {
 		?>
 			<tr>
 				<td data-export-label="Parent Theme Name"><?php _e( 'Parent Theme Name', 'give' ); ?>:</td>
-				<td class="help"><?php echo wc_help_tip( __( 'The name of the parent theme.', 'give' ) ); ?></td>
+				<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The name of the parent theme.', 'give' ) ); ?>"></span></td>
 				<td><?php echo esc_html( $parent_theme->Name ); ?></td>
 			</tr>
 			<tr>
 				<td data-export-label="Parent Theme Version"><?php _e( 'Parent Theme Version', 'give' ); ?>:</td>
-				<td class="help"><?php echo wc_help_tip( __( 'The installed version of the parent theme.', 'give' ) ); ?></td>
+				<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The installed version of the parent theme.', 'give' ) ); ?>"></span></td>
 				<td><?php echo esc_html( $parent_theme->Version ); ?></td>
 			</tr>
 			<tr>
 				<td data-export-label="Parent Theme Author URL"><?php _e( 'Parent Theme Author URL', 'give' ); ?>:</td>
-				<td class="help"><?php echo wc_help_tip( __( 'The parent theme developers URL.', 'give' ) ); ?></td>
+				<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The parent theme developers URL.', 'give' ) ); ?>"></span></td>
 				<td><?php echo $parent_theme->{'Author URI'}; ?></td>
 			</tr>
 		<?php } ?>
