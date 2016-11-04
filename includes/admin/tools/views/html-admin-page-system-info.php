@@ -20,7 +20,7 @@ global $wpdb;
 $give_options = give_get_settings();
 ?>
 
-<div class="updated">
+<div class="give-debug-report-wrapper updated">
 	<p><?php _e( 'Please copy and paste this information in your ticket when contacting support:', 'give' ); ?> </p>
 	<p class="submit"><a href="#" class="button-primary debug-report"><?php _e( 'Get System Report', 'give' ); ?></a></p>
 	<div class="give-debug-report js-give-debug-report">
