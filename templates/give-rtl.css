@@ -58,8 +58,7 @@
  * Give Frontend Fonts SCSS
  *
  * Fonts are from icomoon and the src paths need to be relative to template directory.
- *
- @package     Give
+ * @package     Give
  * @subpackage  SCSS/Frontend
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -995,6 +994,9 @@ form[id*='give-form'] .give-donation-amount {
     cursor: not-allowed;
     background: #FFF;
     float: right; }
+
+form[id*='give-form'] #give_terms_agreement legend {
+  display: none; }
 
 form[id*='give-form'] #give-final-total-wrap {
   margin: 25px 0;
