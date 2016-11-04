@@ -194,14 +194,21 @@ $give_options = give_get_settings();
 			<tr>
 				<td data-export-label="cURL Version"><?php _e( 'cURL Version', 'give' ); ?>:</td>
 				<td class="help"><?php echo wc_help_tip( __( 'The version of cURL installed on your server.', 'give' ) ); ?></td>
-				<td><?php
+				<td>
+					<?php
 					if ( function_exists( 'curl_version' ) ) {
 						$curl_version = curl_version();
-						echo $curl_version['version'] . ', ' . $curl_version['ssl_version'];
+
+						if ( version_compare( $curl_version['version'], '7.40', '<' ) ) {
+							echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf( __( '%s - We recommend a minimum cURL version of 7.40.', 'give' ), esc_html( $curl_version['version'] . ', ' . $curl_version['ssl_version'] ) ) . '</mark>';
+						} else {
+							echo '<mark class="yes">' . esc_html( $curl_version['version'] . ', ' . $curl_version['ssl_version'] ) . '</mark>';
+						}
 					} else {
-						_e( 'N/A', 'give' );
+						echo '&ndash';
 					}
-					?></td>
+					?>
+				</td>
 			</tr>
 			<tr>
 				<td data-export-label="SUHOSIN Installed"><?php _e( 'SUHOSIN Installed', 'give' ); ?>:</td>
