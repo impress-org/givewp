@@ -51,7 +51,7 @@ class Give_Email_Template_Tags {
 	 *
 	 * @since 1.0
 	 *
-	 * @param string $tag Email tag to be replace in email
+	 * @param string   $tag  Email tag to be replace in email
 	 * @param callable $func Hook to run when email tag is found
 	 */
 	public function add( $tag, $description, $func ) {
@@ -102,8 +102,8 @@ class Give_Email_Template_Tags {
 	/**
 	 * Search content for email tags and filter email tags through their hooks
 	 *
-	 * @param string $content Content to search for email tags
-	 * @param int $payment_id The payment id
+	 * @param string $content    Content to search for email tags
+	 * @param int    $payment_id The payment id
 	 *
 	 * @since 1.0
 	 *
@@ -154,9 +154,9 @@ class Give_Email_Template_Tags {
  *
  * @since 1.0
  *
- * @param string $tag Email tag to be replace in email
- * @param string $description Description of the email tag added
- * @param callable $func Hook to run when email tag is found
+ * @param string   $tag         Email tag to be replace in email
+ * @param string   $description Description of the email tag added
+ * @param callable $func        Hook to run when email tag is found
  */
 function give_add_email_tag( $tag, $description, $func ) {
 	Give()->email_tags->add( $tag, $description, $func );
@@ -231,8 +231,8 @@ function give_get_emails_tags_list() {
 /**
  * Search content for email tags and filter email tags through their hooks.
  *
- * @param string $content Content to search for email tags.
- * @param int $payment_id The payment id.
+ * @param string $content    Content to search for email tags.
+ * @param int    $payment_id The payment id.
  *
  * @since 1.0
  *
@@ -530,7 +530,7 @@ function give_email_tag_donation( $payment_id ) {
 	$payment_meta = $payment->payment_meta;
 	$level_title  = give_has_variable_prices( $payment_meta['form_id'] );
 	$separator    = $level_title ? '-' : '';
-	$form_title   = strip_tags( give_get_payment_form_title( $payment_meta, $level_title, $separator ) );
+	$form_title   = strip_tags( give_get_payment_form_title( $payment_meta, false, $separator ) );
 
 	return ! empty( $form_title ) ? $form_title : esc_html__( 'There was an error retrieving the donation form name.', 'give' );
 
