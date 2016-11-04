@@ -1091,10 +1091,6 @@ Tooltips
       border-bottom: 1px solid #eee; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-ui-placeholder-state-highlight {
       background-color: #68bb6c; }
-    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .ui-sortable-helper {
-      display: table; }
-    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-row.ui-sortable-helper {
-      border-bottom: 0; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-repeater-field-name {
       border: 0 !important;
       padding: 0 !important; }
@@ -1105,6 +1101,10 @@ Tooltips
       display: block;
       padding-bottom: 10px;
       font-style: italic; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .ui-sortable-helper {
+      display: table !important; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-row.ui-sortable-helper {
+      border-bottom: 0; }
 
 /**
  * Give Add-ons SCSS

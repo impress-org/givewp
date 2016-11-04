@@ -866,8 +866,19 @@ jQuery.noConflict();
 		 */
 		setup_colorpicker: function () {
 			$(document).ready(function () {
-				if ($('.give-colorpicker').length) {
-					$('.give-colorpicker').wpColorPicker();
+				var $colorpicker_fields = $('.give-colorpicker');
+
+				if ( $colorpicker_fields.length) {
+					$colorpicker_fields.each(function( index, item ){
+						item = item instanceof jQuery ? item : jQuery( item );
+
+						// Bailout: do not automatically initialize colorpicker for repeater field group template.
+						if( item.parents( '.give-template' ).length ) {
+							return;
+						}
+
+						item.wpColorPicker();
+					});
 				}
 			})
 		},
@@ -944,6 +955,8 @@ jQuery.noConflict();
 
 										row_count++;
 									});
+
+									// Fire event.
 									$this.trigger('repeater_field_row_reordered');
 								}
 							}
@@ -960,6 +973,8 @@ jQuery.noConflict();
 		 * Handle repeater field events.
 		 */
 		handle_repeater_group_events: function(){
+			var $repeater_fields = $('.give-repeatable-field-section');
+
 			// Auto toggle repeater group
 			$('body').on('click', '.give-row-head button', function () {
 				var $parent = $(this).closest('tr');
@@ -968,18 +983,28 @@ jQuery.noConflict();
 			});
 
 			// Reset header title when new row added.
-			$('.give-repeatable-field-section').on( 'repeater_field_new_row_added repeater_field_row_deleted repeater_field_row_reordered', function() {
+			$repeater_fields.on( 'repeater_field_new_row_added repeater_field_row_deleted repeater_field_row_reordered', function() {
 				handle_repeater_group_add_number_suffix( $(this) );
 			});
 
 			// Reset title on document load for already exist groups.
-			$('.give-repeatable-field-section').each(function( index, item ){
-				// Skip first element.
-				if( ! index ) {
-					return;
-				}
+			$repeater_fields.each(function( index, item ){
+				item = item instanceof jQuery ? item : jQuery( item );
+				handle_repeater_group_add_number_suffix( item );
+			});
 
-				handle_repeater_group_add_number_suffix( $(this) );
+			// Setup colorpicker field when row added.
+			$repeater_fields.on( 'repeater_field_new_row_added', function() {
+				$('.give-colorpicker', $(this) ).each(function( index, item ){
+					item = item instanceof jQuery ? item : jQuery(item);
+
+					// Bailout: skip already init colorpocker fields.
+					if( item.parents('.wp-picker-container').length || item.parents('.give-template').length ) {
+						return;
+					}
+
+					item.wpColorPicker();
+				})
 			});
 		},
 
@@ -1125,7 +1150,7 @@ jQuery.noConflict();
 	 * Add number suffix to repeater group.
 	 */
 	var handle_repeater_group_add_number_suffix = function( $parent ){
-		// Check if auto group numbering is on or not.
+		// Bailout: check if auto group numbering is on or not.
 		if( ! parseInt( $parent.data('group-numbering') ) ) {
 			return;
 		}
@@ -1135,6 +1160,12 @@ jQuery.noConflict();
 
 		$header_title_container.each( function( index, item ){
 			item = item instanceof jQuery ? item : jQuery( item );
+
+			// Bailout: do not rename header title in fields template.
+			if( item.parents( '.give-template' ).length ) {
+				return;
+			}
+
 			item.html( header_text_prefix + ': ' + index );
 		});
 	};

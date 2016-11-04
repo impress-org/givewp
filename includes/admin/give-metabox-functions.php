@@ -694,12 +694,15 @@ function give_get_repeater_field_value( $field, $field_group, $fields ) {
  *
  * @param array $field
  * @param array $fields
+ * @param bool  $default
  *
  * @return string
  */
-function give_get_repeater_field_id( $field, $fields ) {
+function give_get_repeater_field_id( $field, $fields, $default = false ) {
+	$row_placeholder = $default ? 0 : '{{row-count-placeholder}}';
+
 	// Get field id.
-	$field_id = "{$fields['id']}[{{row-count-placeholder}}][{$field['id']}]";
+	$field_id = "{$fields['id']}[{$row_placeholder}][{$field['id']}]";
 
 	/**
 	 * Filter the repeater field id
@@ -707,7 +710,7 @@ function give_get_repeater_field_id( $field, $fields ) {
 	 * @since 1.8
 	 * @param string $field_id
 	 */
-	$field_id = apply_filters( 'give_get_repeater_field_id', $field_id, $field, $fields );
+	$field_id = apply_filters( 'give_get_repeater_field_id', $field_id, $field, $fields, $default );
 
 	return $field_id;
 }
@@ -834,7 +837,7 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 									<?php if ( ! give_is_field_callback_exist( $field ) ) continue; ?>
 									<?php
 									$field['repeat'] = true;
-									$field['repeatable_field_id'] = give_get_repeater_field_id( $field, $fields );
+									$field['repeatable_field_id'] = give_get_repeater_field_id( $field, $fields, true );
 									$field['attributes']['value'] = apply_filters( "give_default_field_group_field_{$field['id']}_value", ( ! empty( $field['default'] ) ? $field['default'] : '' ), $field );
 									$field['id'] = str_replace( array( '[', ']' ), array( '_', '' ), $field['repeatable_field_id'] );
 									?>
@@ -1148,18 +1151,19 @@ add_filter( '_give_customize_offline_donations_field_value', '_give_customize_of
  * @param int   $field_id
  * @param array $field
  * @param array $fields
+ * @param bool  $default
  *
  * @return mixed
  */
-function _give_set_multi_level_repeater_field_id( $field_id, $field, $fields ){
-	if( '_give_id' === $field['id'] && '_give_donation_levels' === $fields['id'] ) {
+function _give_set_multi_level_repeater_field_id( $field_id, $field, $fields, $default ){
+	if( ! $default && '_give_id' === $field['id'] && '_give_donation_levels' === $fields['id'] ) {
 		$field_id = "{$fields['id']}[{{row-count-placeholder}}][{$field['id']}][level_id]";
 	}
 	
 	return $field_id;
 }
 
-add_filter( 'give_get_repeater_field_id', '_give_set_multi_level_repeater_field_id', 10, 3 );
+add_filter( 'give_get_repeater_field_id', '_give_set_multi_level_repeater_field_id', 10, 4 );
 
 /**
  * Set repeater field value for multi donation form.

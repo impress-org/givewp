@@ -587,18 +587,11 @@ Tooltips
 				background-color: #68bb6c;
 			}
 
-			// Sortable jquery css fix.
-			.ui-sortable-helper {
-				display: table;
-			}
-			.give-row.ui-sortable-helper {
-				border-bottom: 0;
-			}
-
 			.give-repeater-field-name {
 				border: 0 !important;
 				padding: 0 !important;
 			}
+
 			.give-repeater-field-description {
 				color: #aaaaaa;
 				font-size: 12px;
@@ -606,6 +599,14 @@ Tooltips
 				display: block;
 				padding-bottom: 10px;
 				font-style: italic;
+			}
+
+			// Sortable jquery css fix.
+			.ui-sortable-helper {
+				display: table!important;
+			}
+			.give-row.ui-sortable-helper {
+				border-bottom: 0;
 			}
 		}
 	}
