@@ -1,5 +1,5 @@
 === Give - WordPress Donation Plugin ===
-Contributors: wordimpress, dlocc, webdevmattcrom
+Contributors: givewp, wordimpress, dlocc, webdevmattcrom
 Donate link: https://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 4.0

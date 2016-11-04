@@ -30,7 +30,7 @@ and
   https://givewp.com/
 
   Give is released under the GPLv3
-  
+
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
                     GNU GENERAL PUBLIC LICENSE
