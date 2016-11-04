@@ -20,6 +20,14 @@ global $wpdb;
 $give_options = give_get_settings();
 ?>
 
+<div class="updated">
+	<p><?php _e( 'Please copy and paste this information in your ticket when contacting support:', 'give' ); ?> </p>
+	<p class="submit"><a href="#" class="button-primary debug-report"><?php _e( 'Get System Report', 'give' ); ?></a></p>
+	<div class="give-debug-report js-give-debug-report">
+		<textarea readonly="readonly"></textarea>
+	</div>
+</div>
+
 <table class="give-status-table widefat" cellspacing="0" id="status">
 	<thead>
 		<tr>
@@ -614,3 +622,65 @@ if ( ! empty( $active_mu_plugins ) ) {
 		<?php } ?>
 	</tbody>
 </table>
+
+<script type="text/javascript">
+
+	jQuery( 'a.debug-report' ).click( function() {
+
+		var report = '';
+
+		jQuery( '.give-status-table thead, .give-status-table tbody' ).each( function() {
+
+			if ( jQuery( this ).is( 'thead' ) ) {
+
+				var label = jQuery( this ).find( 'th:eq(0)' ).data( 'export-label' ) || jQuery( this ).text();
+				report = report + '\n### ' + jQuery.trim( label ) + ' ###\n\n';
+
+			} else {
+
+				jQuery( 'tr', jQuery( this ) ).each( function() {
+
+					var label       = jQuery( this ).find( 'td:eq(0)' ).data( 'export-label' ) || jQuery( this ).find( 'td:eq(0)' ).text();
+					var the_name    = jQuery.trim( label ).replace( /(<([^>]+)>)/ig, '' ); // Remove HTML.
+
+					// Find value
+					var $value_html = jQuery( this ).find( 'td:eq(2)' ).clone();
+					$value_html.find( '.private' ).remove();
+					$value_html.find( '.dashicons-yes' ).replaceWith( '&#10004;' );
+					$value_html.find( '.dashicons-no-alt, .dashicons-warning' ).replaceWith( '&#10060;' );
+
+					// Format value
+					var the_value   = jQuery.trim( $value_html.text() );
+//					var value_array = the_value.split( ', ' );
+//
+//					if ( value_array.length > 1 ) {
+//						// If value have a list of plugins ','.
+//						// Split to add new line.
+//						var temp_line ='';
+//						jQuery.each( value_array, function( key, line ) {
+//							temp_line = temp_line + line + '\n';
+//						});
+//
+//						the_value = temp_line;
+//					}
+
+					report = report + '' + the_name + ': ' + the_value + '\n';
+				});
+
+			}
+		});
+
+		try {
+			jQuery( '.js-give-debug-report' ).slideDown();
+			jQuery( '.js-give-debug-report' ).find( 'textarea' ).val( '`' + report + '`' ).focus().select();
+			jQuery( this ).hide();
+			return false;
+		} catch ( e ) {
+			/* jshint devel: true */
+			console.log( e );
+		}
+
+		return false;
+	});
+
+</script>
