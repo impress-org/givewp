@@ -471,9 +471,6 @@ $give_options = give_get_settings();
 	foreach ( $active_plugins as $plugin ) {
 
 		$plugin_data    = @get_plugin_data( WP_PLUGIN_DIR . '/' . $plugin );
-		$dirname        = dirname( $plugin );
-		$version_string = '';
-		$network_string = '';
 
 		if ( ! empty( $plugin_data['Name'] ) ) {
 
