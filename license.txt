@@ -19,20 +19,17 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 This program incorporates work covered by the following copyright and
 permission notices:
 
-  Give is Copyright (c) 2015 WordImpress, LLC
-  https://wordimpress.com
+   Easy Digital Downloads is Copyright (c) 2015, Pippin Williamson
+   https://easydigitaldownloads.com
 
-  Give is released under the GPL 3.0
+   EDD is released under the GPL 2.0
 
 and
 
-  Give - Donation Plugin for WordPress
+  Give is Copyright (c) 2015 WordImpress, LLC
+  https://givewp.com/
 
-  GiveWP
-
-  Give - Democratizing Generosity
-
-  Give is Copyright (c) 2015 WordImpress
+  Give is released under the GPLv3
 
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
