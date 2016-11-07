@@ -1098,6 +1098,17 @@ jQuery.noConflict();
 					},
 					200
 				);
+
+				// Get max level id.
+				$('input[type="hidden"].give-levels_id', $this ).each( function( index, item ){
+					item = item instanceof jQuery ? item : jQuery(item);
+					if( max_level_id < item.val() ) {
+						max_level_id = item.val();
+					}
+				});
+
+				// Auto set level id for new setting level setting group.
+				$('input[type="hidden"].give-levels_id', new_row ).val( ++max_level_id );
 			});
 		}
 	};
