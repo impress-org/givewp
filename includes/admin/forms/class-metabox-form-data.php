@@ -146,7 +146,6 @@ class Give_MetaBox_Form_Data {
 								'add_button'    => esc_html__( 'Add Level', 'give' ),
 								'header_title'  => esc_html__( 'Donation Level', 'give' ),
 								'remove_button' => '<span class="dashicons dashicons-no"></span>',
-								'sortable'      => true, // beta
 							),
 							// Fields array works the same, except id's only need to be unique for this group.
 							// Prefix is not needed.
