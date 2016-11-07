@@ -162,6 +162,11 @@ $give_options = give_get_settings();
 	</thead>
 	<tbody>
 		<tr>
+			<td data-export-label="Hosting Provider"><?php _e( 'Hosting Provider', 'give' ); ?>:</td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The hosting provider for this WordPress installation.', 'give' ) ); ?>"></span></td>
+			<td><?php echo give_get_host() ? esc_html( give_get_host() ) : __( 'Unknown', 'give' ); ?></td>
+		</tr>
+		<tr>
 			<td data-export-label="Server Info"><?php _e( 'Server Info', 'give' ); ?>:</td>
 			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'Information about the web server that is currently hosting your site.', 'give' ) ); ?>"></span></td>
 			<td><?php echo esc_html( $_SERVER['SERVER_SOFTWARE'] ); ?></td>
