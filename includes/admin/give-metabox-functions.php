@@ -781,8 +781,9 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 	}
 
 	$group_numbering = isset( $fields['options']['group_numbering'] ) ? (int) $fields['options']['group_numbering'] : 0;
+	$close_tabs      = isset( $fields['options']['close_tabs'] )      ? (int) $fields['options']['close_tabs']      : 0;
 	?>
-	<div class="give-repeatable-field-section" id="<?php echo "{$fields['id']}_field"; ?>" data-group-numbering="<?php echo $group_numbering; ?>">
+	<div class="give-repeatable-field-section" id="<?php echo "{$fields['id']}_field"; ?>" data-group-numbering="<?php echo $group_numbering; ?>" data-close-tabs="<?php echo $close_tabs; ?>">
 		<?php if ( ! empty( $fields['name'] ) ) : ?>
 			<p class="give-repeater-field-name"><?php echo $fields['name']; ?></p>
 		<?php endif; ?>

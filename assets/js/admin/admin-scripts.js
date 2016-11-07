@@ -987,10 +987,15 @@ jQuery.noConflict();
 				handle_repeater_group_add_number_suffix( $(this) );
 			});
 
-			// Reset title on document load for already exist groups.
 			$repeater_fields.each(function( index, item ){
+				// Reset title on document load for already exist groups.
 				item = item instanceof jQuery ? item : jQuery( item );
 				handle_repeater_group_add_number_suffix( item );
+
+				// Close all tabs when page load.
+				if( parseInt( item.data( 'close-tabs' ) ) ) {
+					$( '.give-row-head button', item ).trigger('click');
+				}
 			});
 
 			// Setup colorpicker field when row added.
@@ -1006,6 +1011,7 @@ jQuery.noConflict();
 					item.wpColorPicker();
 				})
 			});
+
 		},
 
 		/**
