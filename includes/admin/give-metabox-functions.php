@@ -764,7 +764,7 @@ function give_get_field_name( $field ) {
 /**
  * Output repeater field or multi donation type form on donation from edit screen.
  * Note: internal use only.
- * @TODO   : Add support for wysiwyg tytpe field.
+ * @TODO   : Add support for wysiwyg type field.
  *
  * @since  1.8
  *
