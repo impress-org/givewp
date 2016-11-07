@@ -271,7 +271,7 @@ $give_options = give_get_settings();
 
 		// fsockopen/cURL.
 		$posting['fsockopen_curl']['name'] = 'fsockopen/cURL';
-		$posting['fsockopen_curl']['help'] = wc_help_tip( __( 'Payment gateways can use cURL to communicate with remote servers to authorize payments, other plugins may also use it when communicating with remote services.', 'give' ) );
+		$posting['fsockopen_curl']['help'] = __( 'Payment gateways can use cURL to communicate with remote servers to authorize payments, other plugins may also use it when communicating with remote services.', 'give' );
 
 		if ( function_exists( 'fsockopen' ) || function_exists( 'curl_init' ) ) {
 			$posting['fsockopen_curl']['success'] = true;
@@ -282,7 +282,7 @@ $give_options = give_get_settings();
 
 		// SOAP.
 		$posting['soap_client']['name'] = 'SoapClient';
-		$posting['soap_client']['help'] = wc_help_tip( __( 'Some webservices like shipping use SOAP to get information from remote servers, for example, live shipping quotes from FedEx require SOAP to be installed.', 'give' ) );
+		$posting['soap_client']['help'] = __( 'Some webservices like shipping use SOAP to get information from remote servers, for example, live shipping quotes from FedEx require SOAP to be installed.', 'give' );
 
 		if ( class_exists( 'SoapClient' ) ) {
 			$posting['soap_client']['success'] = true;
@@ -293,7 +293,7 @@ $give_options = give_get_settings();
 
 		// DOMDocument.
 		$posting['dom_document']['name'] = 'DOMDocument';
-		$posting['dom_document']['help'] = wc_help_tip( __( 'HTML/Multipart emails use DOMDocument to generate inline CSS in templates.', 'give' ) );
+		$posting['dom_document']['help'] = __( 'HTML/Multipart emails use DOMDocument to generate inline CSS in templates.', 'give' );
 
 		if ( class_exists( 'DOMDocument' ) ) {
 			$posting['dom_document']['success'] = true;
@@ -304,7 +304,7 @@ $give_options = give_get_settings();
 
 		// gzip.
 		$posting['gzip']['name'] = 'gzip';
-		$posting['gzip']['help'] = wc_help_tip( __( 'gzip is used for file compression and decompression.', 'give' ) );
+		$posting['gzip']['help'] = __( 'gzip is used for file compression and decompression.', 'give' );
 
 		if ( is_callable( 'gzopen' ) ) {
 			$posting['gzip']['success'] = true;
@@ -315,12 +315,12 @@ $give_options = give_get_settings();
 
 		// GD Graphics Library.
 		$posting['gd']['name'] = 'GD Graphics Library';
-		$posting['gd']['help'] = wc_help_tip( __( 'GD Graphics Library is used for dynamically manipulating images.', 'give' ) );
+		$posting['gd']['help'] = __( 'GD Graphics Library is used for dynamically manipulating images.', 'give' );
 		$posting['gd']['success'] = extension_loaded( 'gd' ) && function_exists( 'gd_info' ) ? true : false;
 
 		// Multibyte String.
 		$posting['mbstring']['name'] = 'Multibyte String';
-		$posting['mbstring']['help'] = wc_help_tip( __( 'Multibyte String (mbstring) is used to convert character encoding, like for emails or converting characters to lowercase.', 'give' ) );
+		$posting['mbstring']['help'] = __( 'Multibyte String (mbstring) is used to convert character encoding, like for emails or converting characters to lowercase.', 'give' );
 
 		if ( extension_loaded( 'mbstring' ) ) {
 			$posting['mbstring']['success'] = true;
@@ -331,7 +331,7 @@ $give_options = give_get_settings();
 
 		// WP Remote Post Check.
 		$posting['wp_remote_post']['name'] = __( 'Remote Post', 'give');
-		$posting['wp_remote_post']['help'] = wc_help_tip( __( 'PayPal uses this method of communicating when sending back transaction information.', 'give' ) );
+		$posting['wp_remote_post']['help'] = __( 'PayPal uses this method of communicating when sending back transaction information.', 'give' );
 
 		$response = wp_safe_remote_post( 'https://www.paypal.com/cgi-bin/webscr', array(
 			'timeout'     => 60,
@@ -356,7 +356,7 @@ $give_options = give_get_settings();
 
 		// WP Remote Get Check.
 		$posting['wp_remote_get']['name'] = __( 'Remote Get', 'give');
-		$posting['wp_remote_get']['help'] = wc_help_tip( __( 'Give plugins may use this method of communication when checking for plugin updates.', 'give' ) );
+		$posting['wp_remote_get']['help'] = __( 'Give plugins may use this method of communication when checking for plugin updates.', 'give' );
 
 		$response = wp_safe_remote_get( 'https://woocommerce.com/wc-api/product-key-api?request=ping&network=' . ( is_multisite() ? '1' : '0' ) );
 
