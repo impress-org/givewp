@@ -686,6 +686,15 @@ function give_get_repeater_field_value( $field, $field_group, $fields ) {
 	$field_value = ( isset( $field_group[ $field['id'] ] ) ? $field_group[ $field['id'] ] : '' );
 
 	/**
+	 * Filter the specific repeater field value
+	 *
+	 * @since 1.8
+	 *
+	 * @param string $field_id
+	 */
+	$field_value = apply_filters( "give_get_repeater_field_{$field['id']}_value", $field_value, $field, $field_group, $fields );
+
+	/**
 	 * Filter the repeater field value
 	 *
 	 * @since 1.8
@@ -715,6 +724,16 @@ function give_get_repeater_field_id( $field, $fields, $default = false ) {
 
 	// Get field id.
 	$field_id = "{$fields['id']}[{$row_placeholder}][{$field['id']}]";
+
+	/**
+	 * Filter the specific repeater field id
+	 *
+	 * @since 1.8
+	 *
+	 * @param string $field_id
+	 */
+	$field_id = apply_filters( "give_get_repeater_field_{$field['id']}_id", $field_id, $field, $fields, $default );
+
 
 	/**
 	 * Filter the repeater field id
