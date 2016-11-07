@@ -675,7 +675,6 @@ class Give_MetaBox_Form_Data {
 		$form_meta_keys = apply_filters( 'give_process_form_meta_keys', $this->get_meta_keys_from_settings() );
 
 		// Save form meta data.
-		// @TODO: Sanitize data for group field, just in case if there any editor setting field.
 		if( ! empty( $form_meta_keys ) ) {
 			foreach ( $form_meta_keys as $form_meta_key ) {
 				if( isset( $_POST[ $form_meta_key ] ) ) {
@@ -688,6 +687,13 @@ class Give_MetaBox_Form_Data {
 
 							default:
 								$form_meta_value = give_clean( $_POST[ $form_meta_key ] );
+								
+								// Arrange repeater field keys in order.
+								if( 'group' === $field_type ) {
+									$form_meta_value = array_values( $form_meta_value );
+								}
+
+								// Save data.
 								update_post_meta( $post_id, $form_meta_key, $form_meta_value );
 						}
 
@@ -728,7 +734,7 @@ class Give_MetaBox_Form_Data {
 	 *
 	 * @since  1.8
 	 * @param  $field_id
-	 * @return array|string
+	 * @return string
 	 */
 	function get_field_type( $field_id ) {
 		$field_type = '';
