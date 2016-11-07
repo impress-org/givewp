@@ -809,6 +809,7 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 			}
 			?>
 			<tbody class="container"<?php echo " data-rf-row-count=\"{$fields_count}\""; ?>>
+				<!--Repeater field group template-->
 				<tr class="give-template give-row">
 					<td class="give-repeater-field-wrap give-column" colspan="2">
 						<div class="give-row-head give-move">
@@ -839,6 +840,7 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 				</tr>
 
 				<?php if ( ! empty( $repeater_field_values ) ) : ?>
+					<!--Stored repeater field group-->
 					<?php foreach ( $repeater_field_values as $index => $field_group ) : ?>
 						<tr class="give-row">
 							<td class="give-repeater-field-wrap give-column" colspan="2">
@@ -873,6 +875,7 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 					<?php endforeach;; ?>
 
 				<?php elseif ( $add_default_donation_field ) : ?>
+					<!--Default repeater field group-->
 					<tr class="give-row">
 						<td class="give-repeater-field-wrap give-column" colspan="2">
 							<div class="give-row-head give-move">
