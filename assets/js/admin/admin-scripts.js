@@ -1012,6 +1012,8 @@ jQuery.noConflict();
 		 *  Handle events for multi level repeater group.
 		 */
 		handle_multi_levels_repeater_group_events: function () {
+			var $repeater_fields = $('.give-repeatable-field-section');
+
 			// Add level title as suffix to header title when admin add level title.
 			$('body').on('keyup', '.give-multilevel-text-field', function () {
 				var $parent = $(this).closest('tr'),
@@ -1062,7 +1064,7 @@ jQuery.noConflict();
 			});
 
 			// Handle row deleted event for levels repeater field.
-			$('.give-repeatable-field-section').on( 'repeater_field_row_deleted', function() {
+			$repeater_fields.on( 'repeater_field_row_deleted', function() {
 				var $this = $(this);
 
 				window.setTimeout(
@@ -1081,9 +1083,12 @@ jQuery.noConflict();
 			});
 
 			// Handle row added event for levels repeater field.
-			$('.give-repeatable-field-section').on( 'repeater_field_new_row_added', function() {
-				var $this = $(this);
+			$repeater_fields.on( 'repeater_field_new_row_added', function( e, container, new_row ) {
+				var $this = $(this),
+					max_level_id = 0;
 
+
+				// Auto set default level if no level set as default.
 				window.setTimeout(
 					function () {
 						// Set first row as default if selected default row deleted.
