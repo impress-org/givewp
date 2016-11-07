@@ -1246,14 +1246,13 @@ add_filter( '_give_customize_offline_donations_field_value', '_give_customize_of
  * @return mixed
  */
 function _give_set_multi_level_repeater_field_id( $field_id, $field, $fields, $default ) {
-	if ( ! $default && '_give_id' === $field['id'] && '_give_donation_levels' === $fields['id'] ) {
-		$field_id = "{$fields['id']}[{{row-count-placeholder}}][{$field['id']}][level_id]";
-	}
+	$row_placeholder = false !== $default ? $default : '{{row-count-placeholder}}';
+	$field_id = "{$fields['id']}[{$row_placeholder}][{$field['id']}][level_id]";
 
 	return $field_id;
 }
 
-add_filter( 'give_get_repeater_field_id', '_give_set_multi_level_repeater_field_id', 10, 4 );
+add_filter( 'give_get_repeater_field__give_id_id', '_give_set_multi_level_repeater_field_id', 10, 4 );
 
 /**
  * Set repeater field value for multi donation form.
