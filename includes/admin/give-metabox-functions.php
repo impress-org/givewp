@@ -895,7 +895,7 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 									}
 
 									$field['repeat']              = true;
-									$field['repeatable_field_id'] = give_get_repeater_field_id( $field, $fields, true );
+									$field['repeatable_field_id'] = give_get_repeater_field_id( $field, $fields, 0 );
 									$field['attributes']['value'] = apply_filters( "give_default_field_group_field_{$field['id']}_value", ( ! empty( $field['default'] ) ? $field['default'] : '' ), $field );
 									$field['id']                  = str_replace( array( '[', ']' ), array(
 										'_',
