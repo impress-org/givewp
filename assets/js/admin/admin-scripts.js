@@ -1012,7 +1012,7 @@ jQuery.noConflict();
 		 *  Handle events for multi level repeater group.
 		 */
 		handle_multi_levels_repeater_group_events: function () {
-			var $repeater_fields = $('.give-repeatable-field-section');
+			var $repeater_fields = $('#_give_donation_levels_field');
 
 			// Add level title as suffix to header title when admin add level title.
 			$('body').on('keyup', '.give-multilevel-text-field', function () {
