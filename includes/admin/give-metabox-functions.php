@@ -704,14 +704,14 @@ function give_get_repeater_field_value( $field, $field_group, $fields ) {
  *
  * @since  1.8
  *
- * @param array $field
- * @param array $fields
- * @param bool  $default
+ * @param array    $field
+ * @param array    $fields
+ * @param int|bool $default
  *
  * @return string
  */
 function give_get_repeater_field_id( $field, $fields, $default = false ) {
-	$row_placeholder = $default ? 0 : '{{row-count-placeholder}}';
+	$row_placeholder = false !== $default ? $default : '{{row-count-placeholder}}';
 
 	// Get field id.
 	$field_id = "{$fields['id']}[{$row_placeholder}][{$field['id']}]";
@@ -839,7 +839,7 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 										} ?>
 										<?php
 										$field['repeat']              = true;
-										$field['repeatable_field_id'] = give_get_repeater_field_id( $field, $fields );
+										$field['repeatable_field_id'] = give_get_repeater_field_id( $field, $fields, $index );
 										$field['attributes']['value'] = give_get_repeater_field_value( $field, $field_group, $fields );
 										$field['id']                  = str_replace( array( '[', ']' ), array(
 											'_',
