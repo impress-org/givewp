@@ -512,7 +512,7 @@ $give_options = give_get_settings();
 			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'Whether a PHP session is currently set.', 'give' ) ); ?>"></span></td>
 			<td><?php echo isset( $_SESSION ) ? __( 'Session Set', 'give' ) : __( 'Session Not Set', 'give' ); ?></td>
 		</tr>
-		<?php if ( true ) { ?>
+		<?php if ( isset( $_SESSION ) ) { ?>
 			<tr>
 				<td data-export-label="Session Name"><?php _e( 'Session Name', 'give' ); ?>:</td>
 				<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The name of the current PHP session.', 'give' ) ); ?>"></span></td>
