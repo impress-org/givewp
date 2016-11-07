@@ -48,6 +48,32 @@ class GIVE_CLI_COMMAND {
 
 
 	/**
+	 * Get Give logo
+	 *
+	 * ## OPTIONS
+	 *
+	 * None. for a fun surprise.
+	 *
+	 * ## EXAMPLES
+	 *
+	 * wp give logo
+	 *
+	 * @since		1.7
+	 * @access		public
+	 *
+	 * @param		string $args        Command Data.
+	 * @param		array  $assoc_args  List of command data.
+	 *
+	 * @return		void
+	 *
+	 * @subcommand  logo
+	 */
+	public function ascii( $args, $assoc_args ){
+		WP_CLI::log( file_get_contents( GIVE_PLUGIN_DIR . 'assets/images/give-ascii-logo.txt' ) );
+	}
+
+
+	/**
 	 * Get Give details
 	 *
 	 * ## OPTIONS
