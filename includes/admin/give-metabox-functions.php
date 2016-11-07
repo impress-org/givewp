@@ -1267,14 +1267,12 @@ add_filter( 'give_get_repeater_field__give_id_id', '_give_set_multi_level_repeat
  * @return mixed
  */
 function _give_set_multi_level_repeater_field_value( $field_value, $field, $field_group, $fields ) {
-	if ( isset( $field['id'] ) && '_give_id' === $field['id'] && '_give_donation_levels' === $fields['id'] ) {
-		$field_value = $field_group[ $field['id'] ]['level_id'];
-	}
+	$field_value = $field_group[ $field['id'] ]['level_id'];
 
 	return $field_value;
 }
 
-add_filter( 'give_get_repeater_field_value', '_give_set_multi_level_repeater_field_value', 10, 4 );
+add_filter( 'give_get_repeater_field__give_id_value', '_give_set_multi_level_repeater_field_value', 10, 4 );
 
 /**
  * Set default value for _give_id field.
