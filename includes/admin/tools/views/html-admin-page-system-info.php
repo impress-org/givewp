@@ -627,18 +627,21 @@ if ( ! empty( $active_mu_plugins ) ) {
 </table>
 
 <script type="text/javascript">
-
 	jQuery( '.js-give-debug-report-button' ).click( function() {
-
 		var report = '';
+		var first_row  = true;
 
 		jQuery( '.give-status-table thead, .give-status-table tbody' ).each( function() {
-
 			if ( jQuery( this ).is( 'thead' ) ) {
 
 				var label = jQuery( this ).find( 'th:eq(0)' ).data( 'export-label' ) || jQuery( this ).text();
-				report = report + '\n### ' + jQuery.trim( label ) + ' ###\n\n';
 
+				if ( true === first_row ) {
+					report = '### ' + jQuery.trim( label ) + ' ###\n\n';
+					first_row  = false;
+				} else {
+					report = report + '\n### ' + jQuery.trim( label ) + ' ###\n\n';
+				}
 			} else {
 
 				jQuery( 'tr', jQuery( this ) ).each( function() {
@@ -675,7 +678,7 @@ if ( ! empty( $active_mu_plugins ) ) {
 
 		try {
 			jQuery( '.js-give-debug-report' ).slideDown();
-			jQuery( '.js-give-debug-report' ).find( 'textarea' ).val( '`' + report + '`' ).focus().select();
+			jQuery( '.js-give-debug-report' ).find( 'textarea' ).val( report ).focus().select();
 			jQuery( this ).hide();
 			return false;
 		} catch ( e ) {
@@ -685,5 +688,4 @@ if ( ! empty( $active_mu_plugins ) ) {
 
 		return false;
 	});
-
 </script>
