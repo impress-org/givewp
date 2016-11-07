@@ -1123,11 +1123,8 @@ jQuery.noConflict();
 		// Set row counter.
 		$(container).attr('data-rf-row-count', row_count);
 
-		// Set level id.
-		$('input[type="hidden"].give-levels_id', new_row).val(row_count - 1);
-
 		// Fire event: Row added.
-		$parent.trigger( 'repeater_field_new_row_added' );
+		$parent.trigger( 'repeater_field_new_row_added', [ container, new_row ] );
 	};
 
 
