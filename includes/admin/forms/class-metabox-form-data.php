@@ -737,12 +737,15 @@ class Give_MetaBox_Form_Data {
 			foreach ( $this->settings as $setting ) {
 				if( ! empty( $setting['fields'] ) ) {
 					foreach ( $setting['fields'] as $field ) {
-						$field_type[] = $field['type'];
-						return $field_type;
+						if( $field['id'] === $field_id ) {
+							$field_type = $field['type'];
+						}
 					}
 				}
 			}
 		}
+
+		return $field_type;
 	}
 
 
