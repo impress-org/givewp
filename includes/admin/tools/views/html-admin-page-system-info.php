@@ -566,6 +566,13 @@ foreach ( $all_plugins as $plugin_path => $plugin_data ) {
 
 		// Check if plugin is a Give add-on.
 		if ( strstr( $dirname, 'give-' ) && strstr( $plugin_data['AuthorURI'], 'wordimpress.com' ) ) {
+			// Determine whether add-on license is valid.
+			$license_active = get_option( $dirname . '_license_active' );
+
+			if ( isset( $license_active ) && 'valid' === $license_active->license ) {
+				$plugin_data['License'] = $license_active->license;
+			}
+
 			$active_addons[] = $plugin_data;
 			continue;
 		}
@@ -602,7 +609,13 @@ foreach ( $all_plugins as $plugin_path => $plugin_data ) {
 			<tr>
 				<td><?php echo wp_kses( $plugin_name, wp_kses_allowed_html( 'post' ) ); ?></td>
 				<td class="help">&nbsp;</td>
-				<td><?php echo sprintf( _x( 'by %s', 'by author', 'give' ), wp_kses( $author_name, wp_kses_allowed_html( 'post' ) ) ) . ' &ndash; ' . esc_html( $plugin_data['Version'] ); ?></td>
+				<td>
+					<?php echo sprintf( _x( 'by %s', 'by author', 'give' ), wp_kses( $author_name, wp_kses_allowed_html( 'post' ) ) )
+					           . ' &ndash; '
+					           . esc_html( $plugin_data['Version'] )
+					           . ( 'valid' === $plugin_data['License'] ? ' &ndash; ' . __( 'Licensed', 'give' ) : ' &ndash; ' . __( 'Unlicensed', 'give' ) );
+					?>
+				</td>
 			</tr>
 			<?php
 		}
