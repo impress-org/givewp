@@ -577,7 +577,7 @@ foreach ( $all_plugins as $plugin_path => $plugin_data ) {
 			$active_addons[] = $plugin_data;
 		} else {
 			// Plugin is active, but not a Give add-on.
-			active_plugins[] = $plugin_data;
+			$active_plugins[] = $plugin_data;
 		}
 	} else {
 		// Plugin is inactive.
