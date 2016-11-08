@@ -42,7 +42,7 @@ if ( ! class_exists( 'Give_Settings_System_Info' ) ) :
 		 * Constructor.
 		 */
 		public function __construct() {
-			$this->id    = 'general';
+			$this->id    = 'system-info';
 			$this->label = esc_html__( 'System Info', 'give' );
 
 			add_filter( 'give-tools_tabs_array', array( $this, 'add_settings_page' ), 20 );
