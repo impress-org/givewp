@@ -920,8 +920,8 @@ jQuery.noConflict();
 										var $fields = $('.give-field, label', $(item));
 
 										if ($fields.length) {
-											$('.give-field, label', $(item)).each(function () {
-												var $parent = $(this).parent(),
+											$fields.each(function () {
+												var $parent = $(this).parents('.give-field-wrap'),
 													$currentElement = $(this);
 
 												$.each(this.attributes, function (index, element) {
