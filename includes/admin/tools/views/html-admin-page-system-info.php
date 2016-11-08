@@ -548,7 +548,7 @@ $give_options = give_get_settings();
 </table>
 
 <?php
-// Assemble Data for Active Give Add-ons, Active Plugins, and Inactive Plugins tables
+// Assemble data for Active Give Add-ons, Other Active Plugins, and Inactive Plugins tables.
 $all_plugins         = get_plugins();
 $active_addons       = array();
 $active_plugins      = array();
@@ -573,12 +573,14 @@ foreach ( $all_plugins as $plugin_path => $plugin_data ) {
 				$plugin_data['License'] = $license_active->license;
 			}
 
+			// Plugin is an active Give add-on.
 			$active_addons[] = $plugin_data;
-			continue;
+		} else {
+			// Plugin is active, but not a Give add-on.
+			active_plugins[] = $plugin_data;
 		}
-
-		$active_plugins[] = $plugin_data;
 	} else {
+		// Plugin is inactive.
 		$inactive_plugins[] = $plugin_data;
 	}
 }
