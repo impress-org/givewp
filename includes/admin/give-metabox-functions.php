@@ -371,14 +371,14 @@ function give_wysiwyg( $field ) {
 	// Add backward compatibility to cmb2 attributes.
 	$custom_attributes = array_merge(
 		array(
-			'textarea_name' => esc_attr( $field['id'] ),
+			'textarea_name' => esc_attr( isset( $field['repeatable_field_id'] ) ? $field['repeatable_field_id'] : $field['id'] ),
 			'textarea_rows' => '10',
 			'editor_css'    => esc_attr( $field['style'] ),
 		),
 		$custom_attributes
 	);
 
-	echo '<div class="give-field-wrap ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . give_get_field_name( $field ) . '">' . wp_kses_post( $field['name'] ) . '</label>';
+	echo '<div class="give-field-wrap ' . give_get_field_name( $field ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . give_get_field_name( $field ) . '">' . wp_kses_post( $field['name'] ) . '</label>';
 
 	wp_editor(
 		$field['value'],
@@ -758,7 +758,18 @@ function give_get_repeater_field_id( $field, $fields, $default = false ) {
  * @return string
  */
 function give_get_field_name( $field ) {
-	return esc_attr( empty( $field['repeat'] ) ? $field['id'] : $field['repeatable_field_id'] );
+	$field_name = esc_attr( empty( $field['repeat'] ) ? $field['id'] : $field['repeatable_field_id'] );
+
+	/**
+	 * Filter the field name.
+	 *
+	 * @since 1.8
+	 *
+	 * @param string $field_name
+	 */
+	$field_name = apply_filters( 'give_get_field_name', $field_name, $field );
+
+	return $field_name;
 }
 
 /**
@@ -1304,3 +1315,22 @@ function _give_set_field_give_default_default_value( $field ) {
 }
 
 add_filter( 'give_default_field_group_field__give_default_value', '_give_set_field_give_default_default_value' );
+
+/**
+ * Set repeater field editor id for field type wysiwyg.
+ *
+ * @since 1.8
+ *
+ * @param $field_name
+ * @param $field
+ *
+ * @return string
+ */
+function give_repeater_field_set_editor_id( $field_name, $field ) {
+	if ( isset( $field['repeatable_field_id'] ) &&  'wysiwyg' == $field['type'] ) {
+		$field_name = '_give_repeater_' . uniqid() . '_wysiwyg';
+	}
+
+	return $field_name;
+}
+add_filter( 'give_get_field_name', 'give_repeater_field_set_editor_id', 10, 2 );
