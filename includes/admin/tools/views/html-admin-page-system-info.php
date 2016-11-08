@@ -492,6 +492,11 @@ $give_options = give_get_settings();
 			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'Whether admins receive email notifications of transactions.', 'give' ) ); ?>"></span></td>
 			<td><?php echo 'enabled' === give_get_option( 'admin_notices' ) ? __( 'Enabled', 'give' ) : __( 'Disabled', 'give' ); ?></td>
 		</tr>
+		<tr>
+			<td data-export-label="Donor Email Access"><?php _e( 'Donor Email Access', 'give' ); ?>:</td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'Whether donors can access their donation history using only email.', 'give' ) ); ?>"></span></td>
+			<td><?php echo 'enabled' === give_get_option( 'email_access' ) ? __( 'Enabled', 'give' ) : __( 'Disabled', 'give' ); ?></td>
+		</tr>
 	</tbody>
 </table>
 
