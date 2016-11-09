@@ -72,3 +72,22 @@ function give_hide_subscription_notices() {
 }
 
 add_action( 'admin_init', 'give_hide_subscription_notices' );
+
+/**
+ * Load wp editor by ajax.
+ *
+ * @since 1.8
+ */
+function give_load_wp_editor() {
+	if( ! isset( $_POST['wp_editor'] ) ) {
+		die();
+	}
+
+	$wp_editor = json_decode( base64_decode( $_POST['wp_editor'] ), true );
+	$wp_editor[2]['textarea_name'] = $_POST['textarea_name'];
+
+	wp_editor( $wp_editor[0], $_POST['wp_editor_id'], $wp_editor[2] );
+
+	die();
+}
+add_action( 'wp_ajax_give_load_wp_editor', 'give_load_wp_editor' );

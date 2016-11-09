@@ -1024,7 +1024,7 @@ jQuery.noConflict();
 			});
 
 			// Setup colorpicker field when row added.
-			$repeater_fields.on( 'repeater_field_new_row_added', function() {
+			$repeater_fields.on( 'repeater_field_new_row_added', function( e, container, new_row ) {
 				$('.give-colorpicker', $(this) ).each(function( index, item ){
 					item = item instanceof jQuery ? item : jQuery(item);
 
@@ -1034,7 +1034,66 @@ jQuery.noConflict();
 					}
 
 					item.wpColorPicker();
-				})
+				});
+
+				// Load WordPress editor by ajax..
+				var wysiwyg_editor_container = $( 'div[data-wp-editor]', new_row ),
+					wysiwyg_editor = $( '.wp-editor-wrap', wysiwyg_editor_container ),
+					textarea = $( 'textarea', wysiwyg_editor_container ),
+					wysiwyg_editor_label = wysiwyg_editor.prev();
+
+				if( wysiwyg_editor_container.length ) {
+					textarea.attr( 'id', 'give_wysiwyg_unique_'+ Math.random().toString().replace( '.', '_' ) );
+
+					$.post(
+						ajaxurl,
+						{
+							action: 'give_load_wp_editor',
+							wp_editor: wysiwyg_editor_container.data('wp-editor'),
+							wp_editor_id: textarea.attr('id'),
+							textarea_name: $( 'textarea', wysiwyg_editor_container ).attr('name')
+						},
+						function( res ){
+							wysiwyg_editor_container.html( res );
+
+							// Setup qt data for editor.
+							tinyMCEPreInit.qtInit[textarea.attr( 'id')] = $.extend(
+								true,
+								tinyMCEPreInit.qtInit['_give_agree_text'],
+								{id: textarea.attr('id')}
+							);
+
+							// Setup mce data for editor.
+							tinyMCEPreInit.mceInit[textarea.attr('id')] = $.extend(
+								true,
+								tinyMCEPreInit.mceInit['_give_agree_text'],
+								{
+									body_class: textarea.attr('id') + ' post-type-give_forms post-status-publish locale-en-us',
+									selector: '#' + textarea.attr('id')
+								}
+							);
+
+							// Setup editor.
+							tinymce.init(tinyMCEPreInit.mceInit[textarea.attr('id')]);
+							quicktags( tinyMCEPreInit.qtInit[textarea.attr('id')] );
+							QTags._buttonsInit();
+
+							window.setTimeout(function(){
+								// Switch editor to html mode.
+								switchEditors.go( textarea.attr('id'), 'tinymce' );
+
+								if( ! wysiwyg_editor.hasClass( 'tmce-active' ) ) {
+									wysiwyg_editor.addClass('tmce-active');
+								}
+							}, 200);
+
+							if ( ! window.wpActiveEditor ) {
+								window.wpActiveEditor = textarea.attr('id');
+							}
+						}
+					);
+				}
+
 			});
 
 		},
