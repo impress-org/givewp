@@ -360,24 +360,6 @@ function give_wysiwyg( $field ) {
 	$field['value']           = give_get_field_value( $field, $thepostid );
 	$field['unique_field_id'] = give_get_field_name( $field );
 
-	// Custom attribute handling
-	$custom_attributes = array();
-
-	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
-		foreach ( $field['attributes'] as $attribute => $value ) {
-			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
-		}
-	}
-
-	// Add backward compatibility to cmb2 attributes.
-	$custom_attributes = array_merge(
-		array(
-			'textarea_name' => esc_attr( isset( $field['repeatable_field_id'] ) ? $field['repeatable_field_id'] : $field['id'] ),
-			'textarea_rows' => '10',
-			'editor_css'    => esc_attr( $field['style'] ),
-		),
-		$custom_attributes
-	);
 
 	ob_start();
 
@@ -386,7 +368,12 @@ function give_wysiwyg( $field ) {
 	wp_editor(
 		$field['value'],
 		$field['unique_field_id'],
-		$custom_attributes
+		array(
+			'textarea_name' => esc_attr( isset( $field['repeatable_field_id'] ) ? $field['repeatable_field_id'] : $field['id'] ),
+			'textarea_rows' => '10',
+			'editor_css'    => esc_attr( $field['style'] ),
+			'editor_class'  => $field['attributes']['class']
+		)
 	);
 
 	if ( ! empty( $field['description'] ) ) {
@@ -1369,22 +1356,20 @@ function give_repeater_field_wysiwyg_html( $html, $field ){
 
 	ob_start();
 
-	// Add backward compatibility to cmb2 attributes.
-	$custom_attributes = array(
+	$editor_attributes = array(
 		'textarea_name' => esc_attr( isset( $field['repeatable_field_id'] ) ? $field['repeatable_field_id'] : $field['id'] ),
 		'textarea_rows' => '10',
 		'editor_css'    => esc_attr( $field['style'] ),
+		'editor_class'  => $field['attributes']['class']
 	);
 
-	ob_start();
-
 	$field_name = $field['unique_field_id'];
-	echo '<div class="give-field-wrap ' . $field_name . '_field ' . esc_attr( $field['wrapper_class'] ) . '" data-wp-editor="'. base64_encode( json_encode( array( $field['value'], $field_name,$custom_attributes ) ) ) .'"><label for="' . $field_name . '">' . wp_kses_post( $field['name'] ) . '</label>';
+	echo '<div class="give-field-wrap ' . $field_name . '_field ' . esc_attr( $field['wrapper_class'] ) . '" data-wp-editor="'. base64_encode( json_encode( array( $field['value'], $field_name,$editor_attributes ) ) ) .'"><label for="' . $field_name . '">' . wp_kses_post( $field['name'] ) . '</label>';
 
 	wp_editor(
 		$field['value'],
 		$field_name,
-		$custom_attributes
+		$editor_attributes
 	);
 
 	if ( ! empty( $field['description'] ) ) {
