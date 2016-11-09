@@ -1104,7 +1104,7 @@ jQuery.noConflict();
 									// Hack to show tmce mode.
 									switchEditors.go( textarea_id, 'html' );
 									$('#' + textarea_id + '-tmce' ).trigger('click');
-								}, 300);
+								}, 100);
 
 								if (!window.wpActiveEditor) {
 									window.wpActiveEditor = textarea_id;
