@@ -999,3 +999,30 @@ function give_get_plugins() {
 
 	return $plugins;
 }
+
+/**
+ * Transforms php.ini notation for numbers (like '2M') to an integer.
+ *
+ * @since 1.8.0
+ *
+ * @param $size
+ * @return int
+ */
+function give_let_to_num( $size ) {
+	$l   = substr( $size, -1 );
+	$ret = substr( $size, 0, -1 );
+	switch ( strtoupper( $l ) ) {
+		case 'P':
+			$ret *= 1024;
+		case 'T':
+			$ret *= 1024;
+		case 'G':
+			$ret *= 1024;
+		case 'M':
+			$ret *= 1024;
+		case 'K':
+			$ret *= 1024;
+	}
+
+	return $ret;
+}

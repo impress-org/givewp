@@ -64,10 +64,10 @@ $plugins      = give_get_plugins();
 			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The maximum amount of memory (RAM) that your site can use at one time.', 'give' ) ); ?>"></span></td>
 			<td>
 				<?php
-				$memory = wc_let_to_num( WP_MEMORY_LIMIT );
+				$memory = give_let_to_num( WP_MEMORY_LIMIT );
 
 				if ( function_exists( 'memory_get_usage' ) ) {
-					$system_memory = wc_let_to_num( @ini_get( 'memory_limit' ) );
+					$system_memory = give_let_to_num( @ini_get( 'memory_limit' ) );
 					$memory        = max( $memory, $system_memory );
 				}
 
@@ -194,7 +194,7 @@ $plugins      = give_get_plugins();
 			<tr>
 				<td data-export-label="PHP Post Max Size"><?php _e( 'PHP Post Max Size', 'give' ); ?>:</td>
 				<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The largest filesize that can be contained in one post.', 'give' ) ); ?>"></span></td>
-				<td><?php echo size_format( wc_let_to_num( ini_get( 'post_max_size' ) ) ); ?></td>
+				<td><?php echo size_format( give_let_to_num( ini_get( 'post_max_size' ) ) ); ?></td>
 			</tr>
 			<tr>
 				<td data-export-label="PHP Time Limit"><?php _e( 'PHP Time Limit', 'give' ); ?>:</td>
