@@ -910,6 +910,12 @@ jQuery.noConflict();
 						after_remove: handle_metabox_repeater_field_row_remove,
 						sortable_options: {
 							placeholder: "give-ui-placeholder-state-highlight",
+							start: function (event, ui){
+								$('body').trigger('repeater_field_sorting_start', [ ui.item ] );
+							},
+							stop: function (event, ui){
+								$('body').trigger('repeater_field_sorting_stop', [ ui.item ] );
+							},
 							update: function (event, ui) {
 								var $rows = $('.give-row', $this ).not('.give-template');
 
