@@ -951,6 +951,8 @@ if ( ! function_exists( 'cal_days_in_month' ) ) {
  * and license validation for Give add-ons (`true` or `false`). Does not include
  * MU plugins.
  *
+ * @since 1.8.0
+ *
  * @return array Plugin info plus status, type, and license validation if
  *               available.
  */
