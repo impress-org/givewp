@@ -683,14 +683,38 @@ class Give_MetaBox_Form_Data {
 								$form_meta_value = wp_kses_post( $_POST[ $form_meta_key ] );
 								update_post_meta( $post_id, $form_meta_key, $form_meta_value );
 								break;
+							
+							case 'group':
+								$form_meta_value = array();
+
+								foreach ( $_POST[ $form_meta_key ] as $index => $group ) {
+									$group_meta_value = array();
+									foreach ( $group as $field_id => $field_value ){
+										switch ( $this->get_field_type( $field_id, $form_meta_key ) ) {
+											case 'wysiwyg':
+												$group_meta_value[$field_id] = wp_kses_post( $field_value );
+												break;
+
+											default:
+												$group_meta_value[$field_id] = give_clean( $field_value );
+										}
+									}
+
+									if( ! empty( $group_meta_value ) ) {
+										$form_meta_value[$index] = $group_meta_value;
+									}
+								}
+
+
+								// Arrange repeater field keys in order.
+								$form_meta_value = array_values( $form_meta_value );
+
+								// Save data.
+								update_post_meta( $post_id, $form_meta_key, $form_meta_value );
+								break;
 
 							default:
 								$form_meta_value = give_clean( $_POST[ $form_meta_key ] );
-
-								// Arrange repeater field keys in order.
-								if ( 'group' === $field_type ) {
-									$form_meta_value = array_values( $form_meta_value );
-								}
 
 								// Save data.
 								update_post_meta( $post_id, $form_meta_key, $form_meta_value );
