@@ -755,6 +755,47 @@ class Give_MetaBox_Form_Data {
 		return $field_type;
 	}
 
+	/**
+	 * Get setting field.
+	 *
+	 * @since  1.8
+	 *
+	 * @param  string $field_id
+	 * @param  string $group_id    Get sub field from group.
+	 *
+	 * @return array
+	 */
+	function get_setting_field( $field_id, $group_id = '' ) {
+		$setting_field = array();
+		
+		$_field_id = $field_id;
+		$field_id  = empty( $group_id ) ? $field_id : $group_id;
+
+		if ( ! empty( $this->settings ) ) {
+			foreach ( $this->settings as $setting ) {
+				if ( ! empty( $setting['fields'] ) ) {
+					foreach ( $setting['fields'] as $field ) {
+						if ( $field['id'] === $field_id ) {
+							$setting_field = $field;
+						}
+					}
+				}
+			}
+		}
+		
+		
+		// Get field from group.
+		if( ! empty( $group_id ) ) {
+			foreach ( $setting_field['fields'] as $field ) {
+				if ( $field['id'] === $_field_id ) {
+					$setting_field = $field;
+				}
+			}
+		}
+
+		return $setting_field;
+	}
+
 
 	/**
 	 * Add offline donations setting tab to donation form options metabox.
