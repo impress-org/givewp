@@ -963,7 +963,7 @@ jQuery.noConflict();
 									});
 
 									// Fire event.
-									$this.trigger('repeater_field_row_reordered');
+									$this.trigger('repeater_field_row_reordered', [ ui.item ] );
 								}
 							}
 						}
