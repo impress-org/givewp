@@ -579,15 +579,16 @@ $plugins      = give_get_plugins();
 				<td class="help">&nbsp;</td>
 				<td>
 					<?php
-					echo sprintf( _x( 'by %s', 'by author', 'give' ), wp_kses( $author_name, wp_kses_allowed_html( 'post' ) ) )
+					if ( true === $plugin_data['License'] ) {
+						echo '<mark class="yes"><span class="dashicons dashicons-yes"></span></mark> ' . __( 'Licensed', 'give' );
+					} else {
+						echo '<mark class="error"><span class="dashicons dashicons-no-alt"></span></mark> ' . __( 'Unlicensed', 'give' );
+					}
+
+					echo ' &ndash; '
+					     . sprintf( _x( 'by %s', 'by author', 'give' ), wp_kses( $author_name, wp_kses_allowed_html( 'post' ) ) )
 					     . ' &ndash; '
 					     . esc_html( $plugin_data['Version'] );
-
-					if ( true === $plugin_data['License'] ) {
-						echo ' &ndash; ' . __( 'Licensed', 'give' );
-					} else {
-						echo ' &ndash; ' . __( 'Unlicensed', 'give' );
-					}
 					?>
 				</td>
 			</tr>
