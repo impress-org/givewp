@@ -1034,6 +1034,8 @@ jQuery.noConflict();
 				// Close all tabs when page load.
 				if( parseInt( item.data( 'close-tabs' ) ) ) {
 					$( '.give-row-head button', item ).trigger('click');
+					$( '.give-template', item ).removeClass('closed');
+					$( '.give-template .give-row-body', item ).show();
 				}
 			});
 
