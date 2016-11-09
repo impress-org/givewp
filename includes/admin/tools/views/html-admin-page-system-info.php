@@ -741,9 +741,9 @@ if ( ! empty( $active_mu_plugins ) ) {
 		</tr>
 		<tr>
 			<td data-export-label="Child Theme"><?php _e( 'Child Theme', 'give' ); ?>:</td>
-			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'Displays whether or not the current theme is a child theme.', 'give' ) ); ?>"></span></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'Whether the current theme is a child theme.', 'give' ) ); ?>"></span></td>
 			<td><?php
-				echo is_child_theme() ? '<mark class="yes"><span class="dashicons dashicons-yes"></span></mark>' : '<span class="dashicons dashicons-no-alt"></span> &ndash; ' . sprintf( __( 'If you\'re modifying Give on a parent theme you didn\'t build personally, then we recommend using a child theme. See: <a href="%s" target="_blank">How to Create a Child Theme</a>', 'give' ), 'https://codex.wordpress.org/Child_Themes' );
+				echo is_child_theme() ? __( 'Yes', 'give' ) : __( 'No', 'give' ) . ' &ndash; ' . sprintf( __( 'If you\'re modifying Give on a parent theme you didn\'t build personally, then we recommend using a child theme. See: <a href="%s" target="_blank">How to Create a Child Theme</a>', 'give' ), 'https://codex.wordpress.org/Child_Themes' );
 				?></td>
 		</tr>
 		<?php
