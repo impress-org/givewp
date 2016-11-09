@@ -13,25 +13,29 @@
 class Give_Plugin_Settings {
 
 	/**
-	 * Option key, and option page slug
+	 * Option key, and option page slug.
+	 *
 	 * @var string
 	 */
 	private $key = 'give_settings';
 
 	/**
-	 * Array of metaboxes/fields
+	 * Array of metaboxes/fields.
+	 *
 	 * @var array
 	 */
 	protected $option_metabox = array();
 
 	/**
-	 * Options Page title
+	 * Options Page title.
+	 *
 	 * @var string
 	 */
 	protected $title = '';
 
 	/**
-	 * Options Page hook
+	 * Options Page hook.
+	 *
 	 * @var string
 	 */
 	protected $options_page = '';
@@ -432,7 +436,12 @@ class Give_Plugin_Settings {
 						array(
 							'name' => esc_html__( 'Disable Welcome Screen', 'give' ),
 							/* translators: %s: about page URL */
-							'desc' => sprintf( wp_kses( __( 'Enable this option if you would like to disable the <a href="%s" target="_blank">Give Welcome screen</a> every time Give is activated and/or updated.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( admin_url( 'index.php?page=give-about' ) ) ),
+							'desc' => sprintf( wp_kses( __( 'Enable this option if you would like to disable the <a href="%s" target="_blank">Give Welcome screen</a> every time Give is activated and/or updated.', 'give' ), array(
+								'a' => array(
+									'href'   => array(),
+									'target' => array()
+								)
+							) ), esc_url( admin_url( 'index.php?page=give-about' ) ) ),
 							'id'   => 'disable_welcome',
 							'type' => 'checkbox'
 						),
@@ -582,9 +591,9 @@ class Give_Plugin_Settings {
 							'id'      => 'donation_receipt',
 							'name'    => esc_html__( 'Donation Receipt', 'give' ),
 							'desc'    => sprintf(
-								/* translators: %s: emails tags list */
+							/* translators: %s: emails tags list */
 								esc_html__( 'Enter the email that is sent to users after completing a successful donation. HTML is accepted. Available template tags: %s', 'give' ),
-								'<br/>'.give_get_emails_tags_list()
+								'<br/>' . give_get_emails_tags_list()
 							),
 							'type'    => 'wysiwyg',
 							'default' => give_get_default_donation_receipt_email()
@@ -606,9 +615,9 @@ class Give_Plugin_Settings {
 							'id'      => 'donation_notification',
 							'name'    => esc_html__( 'Donation Notification', 'give' ),
 							'desc'    => sprintf(
-								/* translators: %s: emails tags list */
+							/* translators: %s: emails tags list */
 								esc_html__( 'Enter the email that is sent to donation notification emails after completion of a donation. HTML is accepted. Available template tags: %s', 'give' ),
-								'<br/>'.give_get_emails_tags_list()
+								'<br/>' . give_get_emails_tags_list()
 							),
 							'type'    => 'wysiwyg',
 							'default' => give_get_default_donation_notification_email()
@@ -823,15 +832,15 @@ $Give_Settings = new Give_Plugin_Settings();
  * Wrapper function around cmb2_get_option
  * @since  0.1.0
  *
- * @param  string $key Options array key
+ * @param  string $key     Options array key
  * @param  string $default The default option if the option isn't set
  *
  * @return mixed        Option value
  */
 function give_get_option( $key = '', $default = false ) {
 	$give_options = give_get_settings();
-	$value = ! empty( $give_options[ $key ] ) ? $give_options[ $key ] : $default;
-	$value = apply_filters( 'give_get_option', $value, $key, $default );
+	$value        = ! empty( $give_options[ $key ] ) ? $give_options[ $key ] : $default;
+	$value        = apply_filters( 'give_get_option', $value, $key, $default );
 
 	return apply_filters( "give_get_option_{$key}", $value, $key, $default );
 }
@@ -846,9 +855,9 @@ function give_get_option( $key = '', $default = false ) {
  *
  * @since 1.0
  *
- * @global $give_options
+ * @global                $give_options
  *
- * @param string          $key The Key to update
+ * @param string          $key   The Key to update
  * @param string|bool|int $value The value to set the key to
  *
  * @return boolean True if updated, false if not.
@@ -892,7 +901,7 @@ function give_update_option( $key = '', $value = false ) {
  *
  * @since 1.0
  *
- * @global $give_options
+ * @global       $give_options
  *
  * @param string $key The Key to delete
  *
@@ -953,7 +962,7 @@ function give_get_settings() {
  *
  * @param $array
  * @param $position |int|string Expects an array key or 'id' of the settings field to appear after
- * @param $insert |array a valid array of options to insert
+ * @param $insert   |array a valid array of options to insert
  *
  * @return array
  */
@@ -1095,7 +1104,7 @@ function give_description_callback( $field_object, $escaped_value, $object_id, $
  * Gets a number of posts and displays them as options
  *
  * @param  array $query_args Optional. Overrides defaults.
- * @param  bool  $force Force the pages to be loaded even if not on settings
+ * @param  bool  $force      Force the pages to be loaded even if not on settings
  *
  * @see: https://github.com/WebDevStudios/CMB2/wiki/Adding-your-own-field-types
  * @return array An array of options that matches the CMB2 options array
@@ -1138,7 +1147,7 @@ function give_cmb2_get_post_options( $query_args, $force = false ) {
  */
 function give_get_featured_image_sizes() {
 	global $_wp_additional_image_sizes;
-	$sizes = array();
+	$sizes     = array();
 	$get_sizes = get_intermediate_image_sizes();
 
 	// check whether intermediate image sizes exist first
@@ -1172,7 +1181,7 @@ function give_get_featured_image_sizes() {
  * @return void
  */
 function give_license_key_callback( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
-    /* @var CMB2_Types $field_type_object*/
+	/* @var CMB2_Types $field_type_object */
 
     $id                   = $field_type_object->field->args['id'];
 	$field_description    = $field_type_object->field->args['desc'];
@@ -1194,63 +1203,63 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 
 	// By default query on edd api url will return license object which contain status and message property, this can break below functionality.
 	// To combat that check if status is set to error or not, if yes then set $is_license_key to false.
-	if( $is_license_key && property_exists( $license, 'status' ) && 'error' === $license->status ) {
+	if ( $is_license_key && property_exists( $license, 'status' ) && 'error' === $license->status ) {
 		$is_license_key = false;
 	}
 
 
-    // Check if current license is part of subscription or not.
-    $subscriptions = get_option( 'give_subscriptions' );
+	// Check if current license is part of subscription or not.
+	$subscriptions = get_option( 'give_subscriptions' );
 
-    if( $is_license_key && $subscriptions ) {
-        foreach ( $subscriptions as $subscription ) {
-            if( in_array( $license_key, $subscription['licenses'] ) ) {
-                $is_in_subscription = $subscription['id'];
-                break;
-            }
-        }
-    }
-
-
-    if( $is_license_key ) {
-        if( $is_in_subscription ) {
-            $subscription_expires = strtotime( $subscriptions[$is_in_subscription]['expires'] );
-            $subscription_status  = esc_html__( 'renew', 'give' );
-
-            if( ( 'active' !== $subscriptions[$is_in_subscription]['status'] ) ){
-                $subscription_status = esc_html__( 'expire', 'give' );
-            }
-
-            if( $subscription_expires < current_time( 'timestamp', 1 ) ) {
-                $messages[] = sprintf(
-                    __( 'Your subscription (<a href="%s" target="_blank">#%d</a>) expired. Please <a href="%s" target="_blank" title="Renew your license key">renew your license key</a>', 'give' ),
-                    urldecode( $subscriptions[$is_in_subscription]['invoice_url'] ),
-                    $subscriptions[$is_in_subscription]['payment_id'],
-                    $checkout_page_link . '?edd_license_key=' . $subscriptions[$is_in_subscription]['license_key'] . '&utm_campaign=admin&utm_source=licenses&utm_medium=expired'
-                );
-                $license_status = 'license-expired';
-            } elseif( strtotime( '- 7 days', $subscription_expires ) < current_time( 'timestamp', 1 ) ) {
-                $messages[] = sprintf(
-                    __( 'Your subscription (<a href="%s" target="_blank">#%d</a>) will %s in %s.', 'give' ),
-                    urldecode( $subscriptions[$is_in_subscription]['invoice_url'] ),
-                    $subscriptions[$is_in_subscription]['payment_id'],
-                    $subscription_status,
-                    human_time_diff( current_time( 'timestamp', 1 ), strtotime( $subscriptions[$is_in_subscription]['expires'] ) )
-                );
-                $license_status = 'license-expires-soon';
-            } else {
-                $messages[] = sprintf(
-                    __( 'Your subscription (<a href="%s" target="_blank">#%d</a>) will %s on %s.', 'give' ),
-                    urldecode( $subscriptions[$is_in_subscription]['invoice_url'] ),
-                    $subscriptions[$is_in_subscription]['payment_id'],
-                    $subscription_status,
-                    date_i18n( get_option( 'date_format' ), strtotime( $subscriptions[$is_in_subscription]['expires'], current_time( 'timestamp' ) ) )
-                );
-                $license_status = 'license-expiration-date';
-            }
+	if ( $is_license_key && $subscriptions ) {
+		foreach ( $subscriptions as $subscription ) {
+			if ( in_array( $license_key, $subscription['licenses'] ) ) {
+				$is_in_subscription = $subscription['id'];
+				break;
+			}
+		}
+	}
 
 
-        } elseif ( empty( $license->success ) && property_exists( $license, 'error' ) ) {
+	if ( $is_license_key ) {
+		if ( $is_in_subscription ) {
+			$subscription_expires = strtotime( $subscriptions[ $is_in_subscription ]['expires'] );
+			$subscription_status  = esc_html__( 'renew', 'give' );
+
+			if ( ( 'active' !== $subscriptions[ $is_in_subscription ]['status'] ) ) {
+				$subscription_status = esc_html__( 'expire', 'give' );
+			}
+
+			if ( $subscription_expires < current_time( 'timestamp', 1 ) ) {
+				$messages[]     = sprintf(
+					__( 'Your subscription (<a href="%s" target="_blank">#%d</a>) expired. Please <a href="%s" target="_blank" title="Renew your license key">renew your license key</a>', 'give' ),
+					urldecode( $subscriptions[ $is_in_subscription ]['invoice_url'] ),
+					$subscriptions[ $is_in_subscription ]['payment_id'],
+					$checkout_page_link . '?edd_license_key=' . $subscriptions[ $is_in_subscription ]['license_key'] . '&utm_campaign=admin&utm_source=licenses&utm_medium=expired'
+				);
+				$license_status = 'license-expired';
+			} elseif ( strtotime( '- 7 days', $subscription_expires ) < current_time( 'timestamp', 1 ) ) {
+				$messages[]     = sprintf(
+					__( 'Your subscription (<a href="%s" target="_blank">#%d</a>) will %s in %s.', 'give' ),
+					urldecode( $subscriptions[ $is_in_subscription ]['invoice_url'] ),
+					$subscriptions[ $is_in_subscription ]['payment_id'],
+					$subscription_status,
+					human_time_diff( current_time( 'timestamp', 1 ), strtotime( $subscriptions[ $is_in_subscription ]['expires'] ) )
+				);
+				$license_status = 'license-expires-soon';
+			} else {
+				$messages[]     = sprintf(
+					__( 'Your subscription (<a href="%s" target="_blank">#%d</a>) will %s on %s.', 'give' ),
+					urldecode( $subscriptions[ $is_in_subscription ]['invoice_url'] ),
+					$subscriptions[ $is_in_subscription ]['payment_id'],
+					$subscription_status,
+					date_i18n( get_option( 'date_format' ), strtotime( $subscriptions[ $is_in_subscription ]['expires'], current_time( 'timestamp' ) ) )
+				);
+				$license_status = 'license-expiration-date';
+			}
+
+
+		} elseif ( empty( $license->success ) && property_exists( $license, 'error' ) ) {
 
             // activate_license 'invalid' on anything other than valid, so if there was an error capture it
             switch(   $license->error ) {
@@ -1264,34 +1273,34 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
                     $license_status = 'license-' . $class;
                     break;
 
-                case 'missing' :
-                    $class = $license->error;
-                    $messages[] = sprintf(
-                        __( 'Invalid license. Please <a href="%s" target="_blank" title="Visit account page">visit your account page</a> and verify it.', 'give' ),
-                        $account_page_link . '?utm_campaign=admin&utm_source=licenses&utm_medium=missing'
-                    );
-                    $license_status = 'license-' . $class;
-                    break;
+				case 'missing' :
+					$class          = $license->error;
+					$messages[]     = sprintf(
+						__( 'Invalid license. Please <a href="%s" target="_blank" title="Visit account page">visit your account page</a> and verify it.', 'give' ),
+						$account_page_link . '?utm_campaign=admin&utm_source=licenses&utm_medium=missing'
+					);
+					$license_status = 'license-' . $class;
+					break;
 
-                case 'invalid' :
-                    $class = $license->error;
-                    $messages[] = sprintf(
-                        __( 'Your %s is not active for this URL. Please <a href="%s" target="_blank" title="Visit account page">visit your account page</a> to manage your license key URLs.', 'give' ),
-                        $addon_name,
-                        $account_page_link . '?utm_campaign=admin&utm_source=licenses&utm_medium=invalid'
-                    );
-                    $license_status = 'license-' . $class;
-                    break;
+				case 'invalid' :
+					$class          = $license->error;
+					$messages[]     = sprintf(
+						__( 'Your %s is not active for this URL. Please <a href="%s" target="_blank" title="Visit account page">visit your account page</a> to manage your license key URLs.', 'give' ),
+						$addon_name,
+						$account_page_link . '?utm_campaign=admin&utm_source=licenses&utm_medium=invalid'
+					);
+					$license_status = 'license-' . $class;
+					break;
 
-                case 'site_inactive' :
-                    $class = $license->error;
-                    $messages[] = sprintf(
-                        __( 'Your %s is not active for this URL. Please <a href="%s" target="_blank" title="Visit account page">visit your account page</a> to manage your license key URLs.', 'give' ),
-                        $addon_name,
-                        $account_page_link . '?utm_campaign=admin&utm_source=licenses&utm_medium=invalid'
-                    );
-                    $license_status = 'license-' . $class;
-                    break;
+				case 'site_inactive' :
+					$class          = $license->error;
+					$messages[]     = sprintf(
+						__( 'Your %s is not active for this URL. Please <a href="%s" target="_blank" title="Visit account page">visit your account page</a> to manage your license key URLs.', 'give' ),
+						$addon_name,
+						$account_page_link . '?utm_campaign=admin&utm_source=licenses&utm_medium=invalid'
+					);
+					$license_status = 'license-' . $class;
+					break;
 
                 case 'item_name_mismatch' :
                     $class = $license->error;
@@ -1299,19 +1308,19 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
                     $license_status = 'license-' . $class;
                     break;
 
-                case 'no_activations_left':
-                    $class = $license->error;
-                    $messages[] = sprintf( __( 'Your license key has reached it\'s activation limit. <a href="%s">View possible upgrades</a> now.', 'give' ), $account_page_link );
-                    $license_status = 'license-' . $class;
-                    break;
-            }
-        } else {
-            switch( $license->license ) {
-                case 'valid' :
-                default:
-                    $class = 'valid';
-                    $now        = current_time( 'timestamp' );
-                    $expiration = strtotime( $license->expires, current_time( 'timestamp' ) );
+				case 'no_activations_left':
+					$class          = $license->error;
+					$messages[]     = sprintf( __( 'Your license key has reached it\'s activation limit. <a href="%s">View possible upgrades</a> now.', 'give' ), $account_page_link );
+					$license_status = 'license-' . $class;
+					break;
+			}
+		} else {
+			switch ( $license->license ) {
+				case 'valid' :
+				default:
+					$class      = 'valid';
+					$now        = current_time( 'timestamp' );
+					$expiration = strtotime( $license->expires, current_time( 'timestamp' ) );
 
                     if( 'lifetime' === $license->expires ) {
                         $messages[] = esc_html__( 'License key never expires.', 'give' );
@@ -1343,7 +1352,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 	}
 
 
-    // Add class for input field if license is active.
+	// Add class for input field if license is active.
 	if ( $is_valid_license ) {
 		$field_classes .= ' give-license-active';
 	}
@@ -1362,10 +1371,10 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 	// Field description.
 	$custom_html .= '<label for="give_settings[' . $id . ']"> ' . $field_description . '</label>';
 
-    // If no messages found then inform user that to get updated in future register yourself.
-    if ( empty( $messages ) ) {
-        $messages[] = apply_filters( "{$shortname}_default_addon_notice", esc_html__( 'To receive updates, please enter your valid Software Licensing license key.', 'give' ) );
-    }
+	// If no messages found then inform user that to get updated in future register yourself.
+	if ( empty( $messages ) ) {
+		$messages[] = apply_filters( "{$shortname}_default_addon_notice", esc_html__( 'To receive updates, please enter your valid Software Licensing license key.', 'give' ) );
+	}
 
     foreach( $messages as $message ) {
         $custom_html .= '<div class="give-license-status-notice give-' . $license_status . '">';
@@ -1374,11 +1383,10 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
     }
 
 
+	// Field html.
+	$custom_html = apply_filters( 'give_license_key_field_html', $input_field_html . $custom_html, $field_type_object );
 
-    // Field html.
-    $custom_html = apply_filters('give_license_key_field_html', $input_field_html.$custom_html, $field_type_object );
-
-    // Nonce.
+	// Nonce.
 	wp_nonce_field( $id . '-nonce', $id . '-nonce' );
 
     // Print field html.
