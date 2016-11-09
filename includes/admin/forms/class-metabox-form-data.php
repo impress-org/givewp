@@ -733,26 +733,14 @@ class Give_MetaBox_Form_Data {
 	 *
 	 * @since  1.8
 	 *
-	 * @param  $field_id
+	 * @param  string $field_id
+	 * @param  string $group_id
 	 *
 	 * @return string
 	 */
-	function get_field_type( $field_id ) {
-		$field_type = '';
+	function get_field_type( $field_id, $group_id = '' ) {
 
-		if ( ! empty( $this->settings ) ) {
-			foreach ( $this->settings as $setting ) {
-				if ( ! empty( $setting['fields'] ) ) {
-					foreach ( $setting['fields'] as $field ) {
-						if ( $field['id'] === $field_id ) {
-							$field_type = $field['type'];
-						}
-					}
-				}
-			}
-		}
-
-		return $field_type;
+		return $this->get_setting_field( $field_id, $group_id )['type'];
 	}
 
 	/**
