@@ -979,10 +979,11 @@ jQuery.noConflict();
 		 * Handle repeater field events.
 		 */
 		handle_repeater_group_events: function(){
-			var $repeater_fields = $('.give-repeatable-field-section');
+			var $repeater_fields = $('.give-repeatable-field-section'),
+				$body = $('body');
 
 			// Auto toggle repeater group
-			$('body').on('click', '.give-row-head button', function () {
+			$body.on('click', '.give-row-head button', function () {
 				var $parent = $(this).closest('tr');
 				$parent.toggleClass('closed');
 				$('.give-row-body', $parent).toggle();
@@ -991,6 +992,24 @@ jQuery.noConflict();
 			// Reset header title when new row added.
 			$repeater_fields.on( 'repeater_field_new_row_added repeater_field_row_deleted repeater_field_row_reordered', function() {
 				handle_repeater_group_add_number_suffix( $(this) );
+			});
+
+			// Disable editor when sorting start.
+			$body.on( 'repeater_field_sorting_start', function( e, row  ) {
+				var textarea = $( '.wp-editor-area', row ),
+					editor_id = textarea.attr('id');
+
+				tinyMCE.execCommand( 'mceRemoveEditor', true, editor_id );
+			});
+
+			// Enable editor when sorting stop.
+			$body.on( 'repeater_field_sorting_stop', function( e, row  ) {
+				var textarea = $( '.wp-editor-area', row ),
+					editor_id = textarea.attr('id'),
+					container = textarea.parents('.give-field-wrap'),
+					editor_template =  $('#tmpl-give-wysiwyg-' + textarea.attr('id') ).html();
+
+				tinyMCE.execCommand( 'mceAddEditor', true, editor_id );
 			});
 
 			$repeater_fields.each(function( index, item ){
