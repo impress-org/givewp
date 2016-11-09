@@ -154,7 +154,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			$classes     = 'give-notice settings-error notice is-dismissible';
 
 			self::$errors   = apply_filters( self::$setting_filter_prefix . '_error_notices', self::$errors );
-			self::$messages = apply_filters( self::$setting_filter_prefix . '_update_notices', self::$errors );
+			self::$messages = apply_filters( self::$setting_filter_prefix . '_update_notices', self::$messages );
 
 			if ( 0 < count( self::$errors ) ) {
 				foreach ( self::$errors as $code => $message ) {
@@ -282,7 +282,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				'css'        => '',
 				'default'    => '',
 				'desc'       => '',
-				'table_html' => true
+				'table_html' => true,
 			);
 
 			foreach ( $options as $value ) {
@@ -531,6 +531,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					// Multi Checkbox input.
 					case 'multicheck' :
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
+						$option_value = is_array( $option_value ) ? $option_value : array();
 						?>
 						<tr valign="top">
 							<th scope="row" class="titledesc">

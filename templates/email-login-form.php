@@ -78,7 +78,7 @@ if ( $show_form ) {
 
 		<?php
 		if ( ! give_get_errors() ) {
-			give_output_error( esc_html__( 'Please enter the email address you used for your donation. A verification email containing an access link will be sent to you.', 'give' ), true );
+			give_output_error( apply_filters( 'give_email_access_message', esc_html__( 'Please enter the email address you used for your donation. A verification email containing an access link will be sent to you.', 'give' ) ), true );
 		} ?>
 
 		<form method="post" action="" id="give-email-access-form">

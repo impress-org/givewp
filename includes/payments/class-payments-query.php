@@ -174,7 +174,7 @@ class Give_Payments_Query extends Give_Stats {
 				$payment_id = get_post()->ID;
 				$payment    = new Give_Payment( $payment_id );
 
-				$this->payments[] = apply_filters( 'give_donation', $payment, $payment_id, $this );
+				$this->payments[] = apply_filters( 'give_payment', $payment, $payment_id, $this );
 			}
 
 			wp_reset_postdata();
@@ -512,43 +512,19 @@ class Give_Payments_Query extends Give_Stats {
 			return;
 		}
 
-		global $give_logs;
-
-		$args = array(
-			'post_parent'            => $this->args['give_forms'],
-			'log_type'               => 'sale',
-			'post_status'            => array( 'publish' ),
-			'nopaging'               => true,
-			'no_found_rows'          => true,
-			'update_post_term_cache' => false,
-			'update_post_meta_cache' => false,
-			'cache_results'          => false,
-			'fields'                 => 'ids'
-		);
+		$compare = '=';
 
 		if ( is_array( $this->args['give_forms'] ) ) {
-			unset( $args['post_parent'] );
-			$args['post_parent__in'] = $this->args['give_forms'];
+			$compare = 'IN';
 		}
 
-		$sales = $give_logs->get_connected_logs( $args );
-
-		if ( ! empty( $sales ) ) {
-
-			$payments = array();
-
-			foreach ( $sales as $sale ) {
-				$payments[] = get_post_meta( $sale, '_give_log_payment_id', true );
-			}
-
-			$this->__set( 'post__in', $payments );
-
-		} else {
-
-			// Set post_parent to something crazy so it doesn't find anything
-			$this->__set( 'post_parent', 999999999999999 );
-
-		}
+		$this->__set( 'meta_query', array(
+			array(
+				'key' => '_give_payment_form_id',
+				'value' => $this->args['give_forms'],
+				'compare' => $compare
+			)
+		) );
 
 		$this->__unset( 'give_forms' );
 

@@ -109,7 +109,7 @@ function give_setup_post_types() {
 	);
 
 	$payment_args = array(
-		'labels'          => apply_filters( 'give_donation_labels', $payment_labels ),
+		'labels'          => apply_filters( 'give_payment_labels', $payment_labels ),
 		'public'          => false,
 		'query_var'       => false,
 		'rewrite'         => false,
@@ -299,7 +299,7 @@ add_filter( 'enter_title_here', 'give_change_default_title' );
 function give_register_post_type_statuses() {
 	// Payment Statuses
 	register_post_status( 'refunded', array(
-		'label'                     => __( 'Refunded', 'give' ),
+		'label'                     => esc_html__( 'Refunded', 'give' ),
 		'public'                    => true,
 		'exclude_from_search'       => false,
 		'show_in_admin_all_list'    => true,
@@ -307,7 +307,7 @@ function give_register_post_type_statuses() {
 		'label_count'               => _n_noop( 'Refunded <span class="count">(%s)</span>', 'Refunded <span class="count">(%s)</span>', 'give' )
 	) );
 	register_post_status( 'failed', array(
-		'label'                     => __( 'Failed', 'give' ),
+		'label'                     => esc_html__( 'Failed', 'give' ),
 		'public'                    => true,
 		'exclude_from_search'       => false,
 		'show_in_admin_all_list'    => true,
@@ -315,7 +315,7 @@ function give_register_post_type_statuses() {
 		'label_count'               => _n_noop( 'Failed <span class="count">(%s)</span>', 'Failed <span class="count">(%s)</span>', 'give' )
 	) );
 	register_post_status( 'revoked', array(
-		'label'                     => __( 'Revoked', 'give' ),
+		'label'                     => esc_html__( 'Revoked', 'give' ),
 		'public'                    => true,
 		'exclude_from_search'       => false,
 		'show_in_admin_all_list'    => true,
@@ -323,7 +323,7 @@ function give_register_post_type_statuses() {
 		'label_count'               => _n_noop( 'Revoked <span class="count">(%s)</span>', 'Revoked <span class="count">(%s)</span>', 'give' )
 	) );
 	register_post_status( 'cancelled', array(
-		'label'                     => __( 'Cancelled', 'give' ),
+		'label'                     => esc_html__( 'Cancelled', 'give' ),
 		'public'                    => true,
 		'exclude_from_search'       => false,
 		'show_in_admin_all_list'    => true,
@@ -331,7 +331,7 @@ function give_register_post_type_statuses() {
 		'label_count'               => _n_noop( 'Cancelled <span class="count">(%s)</span>', 'Cancelled <span class="count">(%s)</span>', 'give' )
 	) );
 	register_post_status( 'abandoned', array(
-		'label'                     => __( 'Abandoned', 'give' ),
+		'label'                     => esc_html__( 'Abandoned', 'give' ),
 		'public'                    => true,
 		'exclude_from_search'       => false,
 		'show_in_admin_all_list'    => true,

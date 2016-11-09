@@ -59,6 +59,7 @@ function give_test_ajax_works() {
 	);
 
 	$ajax  = wp_remote_post( give_get_ajax_url(), $params );
+
 	$works = true;
 
 	if ( is_wp_error( $ajax ) ) {

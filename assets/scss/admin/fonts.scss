@@ -4,7 +4,7 @@
   font-style: normal;
 }
 
-@mixin admin_fonts(){
+@mixin admin_fonts() {
   font-family: 'give-icomoon';
   src: url('../assets/fonts/icomoon.eot?kdnr3d');
   src: url('../assets/fonts/icomoon.eot?kdnr3d#iefix') format('embedded-opentype'),
@@ -32,7 +32,9 @@
     font-size: 12px;
     vertical-align: baseline;
     margin: 0 5px 0 0;
+    content: "\e903";
   }
+
   //Donation options tab.
   &.form_field_options_tab > a:before {
     content: "\e604"; //this is a wp dashicon heart.
@@ -52,7 +54,7 @@
   //Form terms tab.
   &.form_terms_options_tab > a:before {
     position: relative;
-    top:1px;
+    top: 1px;
     content: "\e900";
   }
   //Form offline donations tab.

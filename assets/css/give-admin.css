@@ -565,8 +565,7 @@ x:-o-prefocus, .qtip .qtip-tip {
  * Give Frontend Fonts SCSS
  *
  * Fonts are from icomoon and the src paths need to be relative to template directory.
- *
- @package     Give
+ * @package     Give
  * @subpackage  SCSS/Frontend
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -678,7 +677,8 @@ x:-o-prefocus, .qtip .qtip-tip {
   -moz-osx-font-smoothing: grayscale;
   font-size: 12px;
   vertical-align: baseline;
-  margin: 0 5px 0 0; }
+  margin: 0 5px 0 0;
+  content: "\e903"; }
 
 .give-metabox-tabs li.form_field_options_tab > a:before {
   content: "\e604"; }
@@ -1172,7 +1172,10 @@ Tooltips
 */
 #give-dashboard-widgets-wrap .inside {
   padding-top: 0;
-  padding-bottom: 0; }
+  padding-bottom: 0;
+  /* counteract extra padding in Income Report graph */ }
+  .give_forms_page_give-reports #give-dashboard-widgets-wrap .inside {
+    padding-left: 0; }
 
 #give-dashboard-widgets-wrap .postbox {
   margin-bottom: 10px; }
@@ -1181,26 +1184,17 @@ Tooltips
   clear: none; }
 
 #give-dashboard-widgets-wrap #give-graphs-filter .tablenav {
-  margin: 0; }
+  margin: 0 0 0 17px; }
   #give-dashboard-widgets-wrap #give-graphs-filter .tablenav .actions {
     padding: 0; }
 
 #give-dashboard-widgets-wrap #give-date-range-options {
-  clear: both;
-  overflow: hidden;
-  padding: 8px 0; }
+  float: left; }
   #give-dashboard-widgets-wrap #give-date-range-options > span {
     float: left;
     line-height: 30px;
     font-style: italic;
     padding: 0 5px 0 0; }
-  #give-dashboard-widgets-wrap #give-date-range-options #give-graphs-year-end {
-    margin-right: 0; }
-
-#give-dashboard-widgets-wrap a.give-refresh-reports-button {
-  display: inline-block;
-  clear: right;
-  margin: 8px 0 0; }
 
 .give-graph .y1Axis {
   color: #66bb6a !important; }
@@ -2395,6 +2389,29 @@ input.give-price-field {
 .mce-primary.mce-give-primary button {
   padding-right: 10px;
   padding-left: 10px; }
+
+/*=Admin Buttons w/ Icons
+--------------------------------------*/
+/* extends .wp-core-ui .button */
+.wp-core-ui .give-admin-button {
+  padding-left: 7px;
+  padding-right: 7px; }
+
+/* matches style of Add Media and Give Shortcodes buttons */
+.give-admin-button-icon {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  vertical-align: text-top;
+  margin: 0 2px;
+  /* specific DashIcon styles */ }
+  .give-admin-button-icon:before {
+    font: 400 18px/1 dashicons;
+    speak: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale; }
+  .give-admin-button-icon-update:before {
+    content: "\f463"; }
 
 /* =Primary button in shortcode tinymce dialog
 -------------------------------------------------------------- */
