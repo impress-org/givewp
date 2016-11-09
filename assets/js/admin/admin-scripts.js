@@ -1090,7 +1090,7 @@ jQuery.noConflict();
 									true,
 									tinyMCEPreInit.mceInit['_give_agree_text'],
 									{
-										body_class: textarea_id + ' post-type-give_forms post-status-publish locale-en-us',
+										body_class: textarea_id + ' post-type-give_forms post-status-publish locale-' + tinyMCEPreInit.mceInit['_give_agree_text']['wp_lang_attr'].toLowerCase(),
 										selector  : '#' + textarea_id
 									}
 								);
