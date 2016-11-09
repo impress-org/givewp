@@ -610,6 +610,11 @@ $plugins      = give_get_plugins();
 				continue;
 			}
 
+			// Do not show Give core plugin.
+			if ( 'Give - Donation Plugin' === $plugin_data['Name'] ) {
+				continue;
+			}
+
 			$plugin_name = $plugin_data['Name'];
 			$author_name = $plugin_data['Author'];
 
