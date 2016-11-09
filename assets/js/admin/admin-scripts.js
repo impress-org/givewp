@@ -996,20 +996,34 @@ jQuery.noConflict();
 
 			// Disable editor when sorting start.
 			$body.on( 'repeater_field_sorting_start', function( e, row  ) {
-				var textarea = $( '.wp-editor-area', row ),
-					editor_id = textarea.attr('id');
+				var $textarea = $( '.wp-editor-area', row );
 
-				tinyMCE.execCommand( 'mceRemoveEditor', true, editor_id );
+				if( $textarea.length ) {
+					$textarea.each( function( index, item ){
+						window.setTimeout(
+							function(){
+								tinyMCE.execCommand( 'mceRemoveEditor', true, $(item).attr('id') )
+							},
+							200
+						);
+					});
+				}
 			});
 
 			// Enable editor when sorting stop.
 			$body.on( 'repeater_field_sorting_stop', function( e, row  ) {
-				var textarea = $( '.wp-editor-area', row ),
-					editor_id = textarea.attr('id'),
-					container = textarea.parents('.give-field-wrap'),
-					editor_template =  $('#tmpl-give-wysiwyg-' + textarea.attr('id') ).html();
+				var $textarea = $( '.wp-editor-area', row );
 
-				tinyMCE.execCommand( 'mceAddEditor', true, editor_id );
+				if( $textarea.length ) {
+					$textarea.each( function( index, item ){
+						window.setTimeout(
+							function(){
+								tinyMCE.execCommand( 'mceAddEditor', true, $(item).attr('id') )
+							},
+							200
+						);
+					});
+				}
 			});
 
 			$repeater_fields.each(function( index, item ){
