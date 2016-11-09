@@ -1002,9 +1002,9 @@ jQuery.noConflict();
 					$textarea.each( function( index, item ){
 						window.setTimeout(
 							function(){
-								tinyMCE.execCommand( 'mceRemoveEditor', true, $(item).attr('id') )
+								tinyMCE.execCommand( 'mceRemoveEditor', true, $(item).attr('id') );
 							},
-							200
+							300
 						);
 					});
 				}
@@ -1018,14 +1018,20 @@ jQuery.noConflict();
 					$textarea.each( function( index, item ){
 						window.setTimeout(
 							function(){
-								tinyMCE.execCommand( 'mceAddEditor', true, $(item).attr('id') )
+								var textarea_id = $(item).attr('id'),
+									wysiwyg_editor = $(item).parents( '.wp-editor-wrap' );
+								tinyMCE.execCommand( 'mceAddEditor', true, textarea_id );
+
+								// Switch editor to html mode.
+								$('#' + textarea_id + '-tmce').trigger('click');
 							},
-							200
+							300
 						);
 					});
 				}
 			});
 
+			// Process jobs on document load for repeater fields.
 			$repeater_fields.each(function( index, item ){
 				// Reset title on document load for already exist groups.
 				item = item instanceof jQuery ? item : jQuery( item );
@@ -1053,61 +1059,62 @@ jQuery.noConflict();
 				});
 
 				// Load WordPress editor by ajax..
-				var wysiwyg_editor_container = $( 'div[data-wp-editor]', new_row ),
-					wysiwyg_editor = $( '.wp-editor-wrap', wysiwyg_editor_container ),
-					textarea = $( 'textarea', wysiwyg_editor_container ),
-					wysiwyg_editor_label = wysiwyg_editor.prev();
+				var wysiwyg_editor_container = $( 'div[data-wp-editor]', new_row );
 
 				if( wysiwyg_editor_container.length ) {
-					textarea.attr( 'id', 'give_wysiwyg_unique_'+ Math.random().toString().replace( '.', '_' ) );
+					wysiwyg_editor_container.each(function( index, item ){
+						var wysiwyg_editor = $( '.wp-editor-wrap', $(item) ),
+							textarea = $( 'textarea', $(item) ),
+							textarea_id = 'give_wysiwyg_unique_'+ Math.random().toString().replace( '.', '_' ),
+							wysiwyg_editor_label = wysiwyg_editor.prev();
 
-					$.post(
-						ajaxurl,
-						{
-							action: 'give_load_wp_editor',
-							wp_editor: wysiwyg_editor_container.data('wp-editor'),
-							wp_editor_id: textarea.attr('id'),
-							textarea_name: $( 'textarea', wysiwyg_editor_container ).attr('name')
-						},
-						function( res ){
-							wysiwyg_editor_container.html( res );
+						textarea.attr( 'id', textarea_id );
 
-							// Setup qt data for editor.
-							tinyMCEPreInit.qtInit[textarea.attr( 'id')] = $.extend(
-								true,
-								tinyMCEPreInit.qtInit['_give_agree_text'],
-								{id: textarea.attr('id')}
-							);
+						$.post(
+							ajaxurl,
+							{
+								action: 'give_load_wp_editor',
+								wp_editor: $(item).data('wp-editor'),
+								wp_editor_id: textarea_id,
+								textarea_name: $( 'textarea', $(item) ).attr('name')
+							},
+							function( res ){
+								wysiwyg_editor.remove();
+								wysiwyg_editor_label.after( res );
 
-							// Setup mce data for editor.
-							tinyMCEPreInit.mceInit[textarea.attr('id')] = $.extend(
-								true,
-								tinyMCEPreInit.mceInit['_give_agree_text'],
-								{
-									body_class: textarea.attr('id') + ' post-type-give_forms post-status-publish locale-en-us',
-									selector: '#' + textarea.attr('id')
+								// Setup qt data for editor.
+								tinyMCEPreInit.qtInit[textarea.attr( 'id')] = $.extend(
+									true,
+									tinyMCEPreInit.qtInit['_give_agree_text'],
+									{id: textarea_id}
+								);
+
+								// Setup mce data for editor.
+								tinyMCEPreInit.mceInit[textarea_id] = $.extend(
+									true,
+									tinyMCEPreInit.mceInit['_give_agree_text'],
+									{
+										body_class: textarea_id + ' post-type-give_forms post-status-publish locale-en-us',
+										selector: '#' + textarea_id
+									}
+								);
+
+								// Setup editor.
+								tinymce.init(tinyMCEPreInit.mceInit[textarea_id]);
+								quicktags( tinyMCEPreInit.qtInit[textarea_id] );
+								QTags._buttonsInit();
+
+								window.setTimeout(function(){
+									// Switch editor to html mode.
+									$('#' + textarea_id + '-tmce').trigger('click');
+								}, 300);
+
+								if ( ! window.wpActiveEditor ) {
+									window.wpActiveEditor = textarea_id;
 								}
-							);
-
-							// Setup editor.
-							tinymce.init(tinyMCEPreInit.mceInit[textarea.attr('id')]);
-							quicktags( tinyMCEPreInit.qtInit[textarea.attr('id')] );
-							QTags._buttonsInit();
-
-							window.setTimeout(function(){
-								// Switch editor to html mode.
-								switchEditors.go( textarea.attr('id'), 'tinymce' );
-
-								if( ! wysiwyg_editor.hasClass( 'tmce-active' ) ) {
-									wysiwyg_editor.addClass('tmce-active');
-								}
-							}, 200);
-
-							if ( ! window.wpActiveEditor ) {
-								window.wpActiveEditor = textarea.attr('id');
 							}
-						}
-					);
+						);
+					});
 				}
 
 			});
