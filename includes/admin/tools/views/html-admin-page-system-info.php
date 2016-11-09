@@ -18,6 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 global $wpdb;
 $give_options = give_get_settings();
+$plugins      = give_get_plugins();
 ?>
 
 <div class="give-debug-report-wrapper updated">
@@ -547,54 +548,19 @@ $give_options = give_get_settings();
 	</tbody>
 </table>
 
-<?php
-// Assemble data for Active Give Add-ons, Other Active Plugins, and Inactive Plugins tables.
-$all_plugins         = get_plugins();
-$active_addons       = array();
-$active_plugins      = array();
-$inactive_plugins    = array();
-$active_plugin_paths = (array) get_option( 'active_plugins', array() );
-
-if ( is_multisite() ) {
-	$network_activated_plugin_paths = array_keys( get_site_option( 'active_sitewide_plugins', array() ) );
-	$active_plugin_paths            = array_merge( $active_plugin_paths, $network_activated_plugin_paths );
-}
-
-foreach ( $all_plugins as $plugin_path => $plugin_data ) {
-	if ( in_array( $plugin_path, $active_plugin_paths ) ) {
-		$dirname = strtolower( dirname( $plugin_path ) );
-
-		// Check if plugin is a Give add-on.
-		if ( strstr( $dirname, 'give-' ) && strstr( $plugin_data['AuthorURI'], 'wordimpress.com' ) ) {
-			// Determine whether add-on license is valid.
-			$license_active = get_option( $dirname . '_license_active' );
-
-			if ( isset( $license_active ) && 'valid' === $license_active->license ) {
-				$plugin_data['License'] = $license_active->license;
-			}
-
-			// Plugin is an active Give add-on.
-			$active_addons[] = $plugin_data;
-		} else {
-			// Plugin is active, but not a Give add-on.
-			$active_plugins[] = $plugin_data;
-		}
-	} else {
-		// Plugin is inactive.
-		$inactive_plugins[] = $plugin_data;
-	}
-}
-?>
-
 <table class="give-status-table widefat" cellspacing="0">
 	<thead>
 	<tr>
-		<th colspan="3" data-export-label="Active Give Add-ons (<?php echo count( (array) $active_addons ); ?>)"><h2><?php _e( 'Active Give Add-ons', 'give' ); ?> (<?php echo count( (array) $active_addons ); ?>)</h2></th>
+		<th colspan="3" data-export-label="Active Give Add-ons"><h2><?php _e( 'Active Give Add-ons', 'give' ); ?></h2></th>
 	</tr>
 	</thead>
 	<tbody>
 		<?php
-		foreach ( $active_addons as $plugin_data ) {
+		foreach ( $plugins as $plugin_data ) {
+			if ( 'active' != $plugin_data['Status'] ||  'add-on' != $plugin_data['Type'] ) {
+				continue;
+			}
+
 			$plugin_name = $plugin_data['Name'];
 			$author_name = $plugin_data['Author'];
 
@@ -612,10 +578,16 @@ foreach ( $all_plugins as $plugin_path => $plugin_data ) {
 				<td><?php echo wp_kses( $plugin_name, wp_kses_allowed_html( 'post' ) ); ?></td>
 				<td class="help">&nbsp;</td>
 				<td>
-					<?php echo sprintf( _x( 'by %s', 'by author', 'give' ), wp_kses( $author_name, wp_kses_allowed_html( 'post' ) ) )
-					           . ' &ndash; '
-					           . esc_html( $plugin_data['Version'] )
-					           . ( 'valid' === $plugin_data['License'] ? ' &ndash; ' . __( 'Licensed', 'give' ) : ' &ndash; ' . __( 'Unlicensed', 'give' ) );
+					<?php
+					echo sprintf( _x( 'by %s', 'by author', 'give' ), wp_kses( $author_name, wp_kses_allowed_html( 'post' ) ) )
+					     . ' &ndash; '
+					     . esc_html( $plugin_data['Version'] );
+
+					if ( true === $plugin_data['License'] ) {
+						echo ' &ndash; ' . __( 'Licensed', 'give' );
+					} else {
+						echo ' &ndash; ' . __( 'Unlicensed', 'give' );
+					}
 					?>
 				</td>
 			</tr>
@@ -628,12 +600,16 @@ foreach ( $all_plugins as $plugin_path => $plugin_data ) {
 <table class="give-status-table widefat" cellspacing="0">
 	<thead>
 		<tr>
-			<th colspan="3" data-export-label="Other Active Plugins (<?php echo count( (array) $active_plugins ); ?>)"><h2><?php _e( 'Other Active Plugins', 'give' ); ?> (<?php echo count( (array) $active_plugins ); ?>)</h2></th>
+			<th colspan="3" data-export-label="Other Active Plugins"><h2><?php _e( 'Other Active Plugins', 'give' ); ?></h2></th>
 		</tr>
 	</thead>
 	<tbody>
 		<?php
-		foreach ( $active_plugins as $plugin_data ) {
+		foreach ( $plugins as $plugin_data ) {
+			if ( 'active' != $plugin_data['Status'] ||  'other' != $plugin_data['Type'] ) {
+				continue;
+			}
+
 			$plugin_name = $plugin_data['Name'];
 			$author_name = $plugin_data['Author'];
 
@@ -661,12 +637,16 @@ foreach ( $all_plugins as $plugin_path => $plugin_data ) {
 <table class="give-status-table widefat" cellspacing="0">
 	<thead>
 		<tr>
-			<th colspan="3" data-export-label="Inactive Plugins (<?php echo count( (array) $inactive_plugins ); ?>)"><h2><?php _e( 'Inactive Plugins', 'give' ); ?> (<?php echo count( (array) $inactive_plugins ); ?>)</h2></th>
+			<th colspan="3" data-export-label="Inactive Plugins"><h2><?php _e( 'Inactive Plugins', 'give' ); ?></h2></th>
 		</tr>
 	</thead>
 	<tbody>
 		<?php
-		foreach ( $inactive_plugins as $plugin_data ) {
+		foreach ( $plugins as $plugin_data ) {
+			if ( 'inactive' != $plugin_data['Status'] ) {
+				continue;
+			}
+
 			$plugin_name = $plugin_data['Name'];
 			$author_name = $plugin_data['Author'];
 
@@ -698,7 +678,7 @@ if ( ! empty( $active_mu_plugins ) ) {
 	<table class="give-status-table widefat" cellspacing="0">
 		<thead>
 			<tr>
-				<th colspan="3" data-export-label="Active MU Plugins (<?php echo count( (array) get_mu_plugins() ); ?>)"><h2><?php _e( 'Active MU Plugins', 'give' ); ?> (<?php echo count( (array) get_mu_plugins() ); ?>)</h2></th>
+				<th colspan="3" data-export-label="Active MU Plugins"><h2><?php _e( 'Active MU Plugins', 'give' ); ?></h2></th>
 			</tr>
 		</thead>
 		<tbody>
