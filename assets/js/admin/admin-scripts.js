@@ -54,7 +54,7 @@ jQuery.noConflict();
 	 * @returns {string}
 	 */
 	function give_unformat_currency(price, dp) {
-		price = accounting.unformat(price, give_vars.decimal_separator).toString();
+		price                = accounting.unformat(price, give_vars.decimal_separator).toString();
 		var decimal_position = price.indexOf('.');
 
 		// Set default value for number of decimals.
@@ -164,15 +164,15 @@ jQuery.noConflict();
 				if (confirm(give_vars.delete_payment_note)) {
 
 					var postData = {
-						action: 'give_delete_payment_note',
+						action    : 'give_delete_payment_note',
 						payment_id: $(this).data('payment-id'),
-						note_id: $(this).data('note-id')
+						note_id   : $(this).data('note-id')
 					};
 
 					$.ajax({
-						type: "POST",
-						data: postData,
-						url: ajaxurl,
+						type   : "POST",
+						data   : postData,
+						url    : ajaxurl,
 						success: function (response) {
 							$('#give-payment-note-' + postData.note_id).remove();
 							if (!$('.give-payment-note').length) {
@@ -227,10 +227,10 @@ jQuery.noConflict();
 
 				// Ajax.
 				$.ajax({
-					type: 'POST',
-					url: ajaxurl,
-					data: {
-						form_id: give_form_id,
+					type   : 'POST',
+					url    : ajaxurl,
+					data   : {
+						form_id   : give_form_id,
 						payment_id: $('input[name="give_payment_id"]').val(),
 						action    : 'give_check_for_form_price_variations_html'
 					},
@@ -269,10 +269,10 @@ jQuery.noConflict();
 			/**
 			 * Email access
 			 */
-			var email_access = $( 'input[name="email_access"]' ,'.give-setting-tab-body-general' );
+			var email_access = $('input[name="email_access"]', '.give-setting-tab-body-general');
 			email_access.on('change', function () {
-				var field_value = $( 'input[name="email_access"]:checked' ,'.give-setting-tab-body-general' ).val();
-				if ( 'enabled' === field_value) {
+				var field_value = $('input[name="email_access"]:checked', '.give-setting-tab-body-general').val();
+				if ('enabled' === field_value) {
 					$('#recaptcha_key').parents('tr').show();
 					$('#recaptcha_secret').parents('tr').show();
 				} else {
@@ -284,10 +284,10 @@ jQuery.noConflict();
 			/**
 			 * Form featured image
 			 */
-			var form_featured_image = $( 'input[name="form_featured_img"]' ,'.give-setting-tab-body-display' );
+			var form_featured_image = $('input[name="form_featured_img"]', '.give-setting-tab-body-display');
 			form_featured_image.on('change', function () {
-				var field_value = $( 'input[name="form_featured_img"]:checked' ,'.give-setting-tab-body-display' ).val();
-				if ( 'enabled' === field_value) {
+				var field_value = $('input[name="form_featured_img"]:checked', '.give-setting-tab-body-display').val();
+				if ('enabled' === field_value) {
 					$('#featured_image_size').parents('tr').show();
 				} else {
 					$('#featured_image_size').parents('tr').hide();
@@ -297,10 +297,10 @@ jQuery.noConflict();
 			/**
 			 * Terms and Conditions
 			 */
-			var terms_and_conditions = $( 'input[name="terms"]' ,'.give-setting-tab-body-display' );
+			var terms_and_conditions = $('input[name="terms"]', '.give-setting-tab-body-display');
 			terms_and_conditions.on('change', function () {
-				var field_value = $( 'input[name="terms"]:checked' ,'.give-setting-tab-body-display' ).val();
-				if ( 'enabled' === field_value) {
+				var field_value = $('input[name="terms"]:checked', '.give-setting-tab-body-display').val();
+				if ('enabled' === field_value) {
 					$('#agree_to_terms_label').parents('tr').show();
 					$('#wp-agreement_text-wrap').parents('tr').show();
 				} else {
@@ -312,10 +312,10 @@ jQuery.noConflict();
 			/**
 			 * Disable admin notification
 			 */
-			var admin_notification = $( 'input[name="admin_notices"]' ,'.give-setting-tab-body-emails' );
+			var admin_notification = $('input[name="admin_notices"]', '.give-setting-tab-body-emails');
 			admin_notification.on('change', function () {
-				var field_value = $( 'input[name="admin_notices"]:checked' ,'.give-setting-tab-body-emails' ).val();
-				if ( 'enabled' === field_value) {
+				var field_value = $('input[name="admin_notices"]:checked', '.give-setting-tab-body-emails').val();
+				if ('enabled' === field_value) {
 					$('#donation_notification_subject').parents('tr').show();
 					$('#wp-donation_notification-wrap').parents('tr').show();
 					$('#admin_notice_emails').parents('tr').show();
@@ -373,8 +373,8 @@ jQuery.noConflict();
 			// Show / hide Donation Form option when exporting donors
 			$('#give_customer_export_form').change(function () {
 
-				var $this = $(this),
-					form_id = $('option:selected', $this).val(),
+				var $this                  = $(this),
+					form_id                = $('option:selected', $this).val(),
 					customer_export_option = $('#give_customer_export_option');
 
 				if ('0' === $this.val()) {
@@ -388,8 +388,8 @@ jQuery.noConflict();
 				// On Form Select, Check if Variable Prices Exist
 				if (parseInt(form_id) != 0) {
 					var data = {
-						action: 'give_check_for_form_price_variations',
-						form_id: form_id,
+						action    : 'give_check_for_form_price_variations',
+						form_id   : form_id,
 						all_prices: true
 					};
 
@@ -409,10 +409,10 @@ jQuery.noConflict();
 
 			$('body').on('change', '#recount-stats-type', function () {
 
-				var export_form = $('#give-tools-recount-form');
+				var export_form   = $('#give-tools-recount-form');
 				var selected_type = $('option:selected', this).data('type');
 				var submit_button = $('#recount-stats-submit');
-				var forms = $('#tools-form-dropdown');
+				var forms         = $('#tools-form-dropdown');
 
 				// Reset the form
 				export_form.find('.notice-wrap').remove();
@@ -868,12 +868,12 @@ jQuery.noConflict();
 			$(document).ready(function () {
 				var $colorpicker_fields = $('.give-colorpicker');
 
-				if ( $colorpicker_fields.length) {
-					$colorpicker_fields.each(function( index, item ){
-						item = item instanceof jQuery ? item : jQuery( item );
+				if ($colorpicker_fields.length) {
+					$colorpicker_fields.each(function (index, item) {
+						item = item instanceof jQuery ? item : jQuery(item);
 
 						// Bailout: do not automatically initialize colorpicker for repeater field group template.
-						if( item.parents( '.give-template' ).length ) {
+						if (item.parents('.give-template').length) {
 							return;
 						}
 
@@ -893,31 +893,31 @@ jQuery.noConflict();
 
 					// Note: Do not change option params, it can break repeatable fields functionality.
 					var options = {
-						wrapper: '.give-repeatable-fields-section-wrapper',
-						container: '.container',
-						row: '.give-row',
-						add: '.give-add-repeater-field-section-row',
-						remove: '.give-remove',
-						move: '.give-move',
-						template: '.give-template',
-						confirm_before_remove_row: true,
+						wrapper                       : '.give-repeatable-fields-section-wrapper',
+						container                     : '.container',
+						row                           : '.give-row',
+						add                           : '.give-add-repeater-field-section-row',
+						remove                        : '.give-remove',
+						move                          : '.give-move',
+						template                      : '.give-template',
+						confirm_before_remove_row     : true,
 						confirm_before_remove_row_text: give_vars.confirm_before_remove_row_text,
-						is_sortable: true,
-						before_add: null,
-						after_add: handle_metabox_repeater_field_row_count,
+						is_sortable                   : true,
+						before_add                    : null,
+						after_add                     : handle_metabox_repeater_field_row_count,
 						//after_add:  after_add, Note: after_add is internal function in repeatable-fields.js. Uncomment this can cause of js error.
-						before_remove: null,
-						after_remove: handle_metabox_repeater_field_row_remove,
-						sortable_options: {
+						before_remove                 : null,
+						after_remove                  : handle_metabox_repeater_field_row_remove,
+						sortable_options              : {
 							placeholder: "give-ui-placeholder-state-highlight",
-							start: function (event, ui){
-								$('body').trigger('repeater_field_sorting_start', [ ui.item ] );
+							start      : function (event, ui) {
+								$('body').trigger('repeater_field_sorting_start', [ui.item]);
 							},
-							stop: function (event, ui){
-								$('body').trigger('repeater_field_sorting_stop', [ ui.item ] );
+							stop       : function (event, ui) {
+								$('body').trigger('repeater_field_sorting_stop', [ui.item]);
 							},
-							update: function (event, ui) {
-								var $rows = $('.give-row', $this ).not('.give-template');
+							update     : function (event, ui) {
+								var $rows = $('.give-row', $this).not('.give-template');
 
 								if ($rows.length) {
 									var row_count = 1;
@@ -927,13 +927,13 @@ jQuery.noConflict();
 
 										if ($fields.length) {
 											$fields.each(function () {
-												var $parent = $(this).parents('.give-field-wrap'),
+												var $parent         = $(this).parents('.give-field-wrap'),
 													$currentElement = $(this);
 
 												$.each(this.attributes, function (index, element) {
 													var old_class_name_prefix = this.value.replace(/\[/g, '_').replace(/]/g, ''),
-														old_class_name = old_class_name_prefix + '_field',
-														new_class_name = '',
+														old_class_name        = old_class_name_prefix + '_field',
+														new_class_name        = '',
 														new_class_name_prefix = '';
 
 													// Bailout.
@@ -942,7 +942,7 @@ jQuery.noConflict();
 													}
 
 													// Reorder index.
-													this.value = this.value.replace(/\[\d+\]/g, '[' + (row_count - 1) + ']');
+													this.value            = this.value.replace(/\[\d+\]/g, '[' + (row_count - 1) + ']');
 													new_class_name_prefix = this.value.replace(/\[/g, '_').replace(/]/g, '');
 
 													// Update class name.
@@ -963,7 +963,7 @@ jQuery.noConflict();
 									});
 
 									// Fire event.
-									$this.trigger('repeater_field_row_reordered', [ ui.item ] );
+									$this.trigger('repeater_field_row_reordered', [ui.item]);
 								}
 							}
 						}
@@ -978,9 +978,9 @@ jQuery.noConflict();
 		/**
 		 * Handle repeater field events.
 		 */
-		handle_repeater_group_events: function(){
+		handle_repeater_group_events: function () {
 			var $repeater_fields = $('.give-repeatable-field-section'),
-				$body = $('body');
+				$body            = $('body');
 
 			// Auto toggle repeater group
 			$body.on('click', '.give-row-head button', function () {
@@ -990,19 +990,19 @@ jQuery.noConflict();
 			});
 
 			// Reset header title when new row added.
-			$repeater_fields.on( 'repeater_field_new_row_added repeater_field_row_deleted repeater_field_row_reordered', function() {
-				handle_repeater_group_add_number_suffix( $(this) );
+			$repeater_fields.on('repeater_field_new_row_added repeater_field_row_deleted repeater_field_row_reordered', function () {
+				handle_repeater_group_add_number_suffix($(this));
 			});
 
 			// Disable editor when sorting start.
-			$body.on( 'repeater_field_sorting_start', function( e, row  ) {
-				var $textarea = $( '.wp-editor-area', row );
+			$body.on('repeater_field_sorting_start', function (e, row) {
+				var $textarea = $('.wp-editor-area', row);
 
-				if( $textarea.length ) {
-					$textarea.each( function( index, item ){
+				if ($textarea.length) {
+					$textarea.each(function (index, item) {
 						window.setTimeout(
-							function(){
-								tinyMCE.execCommand( 'mceRemoveEditor', true, $(item).attr('id') );
+							function () {
+								tinyMCE.execCommand('mceRemoveEditor', true, $(item).attr('id'));
 							},
 							300
 						);
@@ -1011,16 +1011,16 @@ jQuery.noConflict();
 			});
 
 			// Enable editor when sorting stop.
-			$body.on( 'repeater_field_sorting_stop', function( e, row  ) {
-				var $textarea = $( '.wp-editor-area', row );
+			$body.on('repeater_field_sorting_stop', function (e, row) {
+				var $textarea = $('.wp-editor-area', row);
 
-				if( $textarea.length ) {
-					$textarea.each( function( index, item ){
+				if ($textarea.length) {
+					$textarea.each(function (index, item) {
 						window.setTimeout(
-							function(){
-								var textarea_id = $(item).attr('id'),
-									wysiwyg_editor = $(item).parents( '.wp-editor-wrap' );
-								tinyMCE.execCommand( 'mceAddEditor', true, textarea_id );
+							function () {
+								var textarea_id    = $(item).attr('id'),
+									wysiwyg_editor = $(item).parents('.wp-editor-wrap');
+								tinyMCE.execCommand('mceAddEditor', true, textarea_id);
 
 								// Switch editor to html mode.
 								$('#' + textarea_id + '-tmce').trigger('click');
@@ -1032,26 +1032,26 @@ jQuery.noConflict();
 			});
 
 			// Process jobs on document load for repeater fields.
-			$repeater_fields.each(function( index, item ){
+			$repeater_fields.each(function (index, item) {
 				// Reset title on document load for already exist groups.
-				item = item instanceof jQuery ? item : jQuery( item );
-				handle_repeater_group_add_number_suffix( item );
+				item = item instanceof jQuery ? item : jQuery(item);
+				handle_repeater_group_add_number_suffix(item);
 
 				// Close all tabs when page load.
-				if( parseInt( item.data( 'close-tabs' ) ) ) {
-					$( '.give-row-head button', item ).trigger('click');
-					$( '.give-template', item ).removeClass('closed');
-					$( '.give-template .give-row-body', item ).show();
+				if (parseInt(item.data('close-tabs'))) {
+					$('.give-row-head button', item).trigger('click');
+					$('.give-template', item).removeClass('closed');
+					$('.give-template .give-row-body', item).show();
 				}
 			});
 
 			// Setup colorpicker field when row added.
-			$repeater_fields.on( 'repeater_field_new_row_added', function( e, container, new_row ) {
-				$('.give-colorpicker', $(this) ).each(function( index, item ){
+			$repeater_fields.on('repeater_field_new_row_added', function (e, container, new_row) {
+				$('.give-colorpicker', $(this)).each(function (index, item) {
 					item = item instanceof jQuery ? item : jQuery(item);
 
 					// Bailout: skip already init colorpocker fields.
-					if( item.parents('.wp-picker-container').length || item.parents('.give-template').length ) {
+					if (item.parents('.wp-picker-container').length || item.parents('.give-template').length) {
 						return;
 					}
 
@@ -1059,31 +1059,31 @@ jQuery.noConflict();
 				});
 
 				// Load WordPress editor by ajax..
-				var wysiwyg_editor_container = $( 'div[data-wp-editor]', new_row );
+				var wysiwyg_editor_container = $('div[data-wp-editor]', new_row);
 
-				if( wysiwyg_editor_container.length ) {
-					wysiwyg_editor_container.each(function( index, item ){
-						var wysiwyg_editor = $( '.wp-editor-wrap', $(item) ),
-							textarea = $( 'textarea', $(item) ),
-							textarea_id = 'give_wysiwyg_unique_'+ Math.random().toString().replace( '.', '_' ),
+				if (wysiwyg_editor_container.length) {
+					wysiwyg_editor_container.each(function (index, item) {
+						var wysiwyg_editor       = $('.wp-editor-wrap', $(item)),
+							textarea             = $('textarea', $(item)),
+							textarea_id          = 'give_wysiwyg_unique_' + Math.random().toString().replace('.', '_'),
 							wysiwyg_editor_label = wysiwyg_editor.prev();
 
-						textarea.attr( 'id', textarea_id );
+						textarea.attr('id', textarea_id);
 
 						$.post(
 							ajaxurl,
 							{
-								action: 'give_load_wp_editor',
-								wp_editor: $(item).data('wp-editor'),
-								wp_editor_id: textarea_id,
-								textarea_name: $( 'textarea', $(item) ).attr('name')
+								action       : 'give_load_wp_editor',
+								wp_editor    : $(item).data('wp-editor'),
+								wp_editor_id : textarea_id,
+								textarea_name: $('textarea', $(item)).attr('name')
 							},
-							function( res ){
+							function (res) {
 								wysiwyg_editor.remove();
-								wysiwyg_editor_label.after( res );
+								wysiwyg_editor_label.after(res);
 
 								// Setup qt data for editor.
-								tinyMCEPreInit.qtInit[textarea.attr( 'id')] = $.extend(
+								tinyMCEPreInit.qtInit[textarea.attr('id')] = $.extend(
 									true,
 									tinyMCEPreInit.qtInit['_give_agree_text'],
 									{id: textarea_id}
@@ -1095,21 +1095,21 @@ jQuery.noConflict();
 									tinyMCEPreInit.mceInit['_give_agree_text'],
 									{
 										body_class: textarea_id + ' post-type-give_forms post-status-publish locale-en-us',
-										selector: '#' + textarea_id
+										selector  : '#' + textarea_id
 									}
 								);
 
 								// Setup editor.
 								tinymce.init(tinyMCEPreInit.mceInit[textarea_id]);
-								quicktags( tinyMCEPreInit.qtInit[textarea_id] );
+								quicktags(tinyMCEPreInit.qtInit[textarea_id]);
 								QTags._buttonsInit();
 
-								window.setTimeout(function(){
+								window.setTimeout(function () {
 									// Switch editor to html mode.
 									$('#' + textarea_id + '-tmce').trigger('click');
 								}, 300);
 
-								if ( ! window.wpActiveEditor ) {
+								if (!window.wpActiveEditor) {
 									window.wpActiveEditor = textarea_id;
 								}
 							}
@@ -1129,8 +1129,8 @@ jQuery.noConflict();
 
 			// Add level title as suffix to header title when admin add level title.
 			$('body').on('keyup', '.give-multilevel-text-field', function () {
-				var $parent = $(this).closest('tr'),
-					$header_title_container = $('.give-row-head h2 span', $parent),
+				var $parent                           = $(this).closest('tr'),
+					$header_title_container           = $('.give-row-head h2 span', $parent),
 					donation_level_header_text_prefix = $header_title_container.data('header-title');
 
 				// Donation level header already set.
@@ -1148,18 +1148,18 @@ jQuery.noConflict();
 			});
 
 			//  Add level title as suffix to header title on document load.
-			$('.give-multilevel-text-field').each(function( index, item ){
+			$('.give-multilevel-text-field').each(function (index, item) {
 
 				// Skip first element.
-				if( ! index ) {
+				if (!index) {
 					return;
 				}
 
 				// Check if item is jquery object or not.
 				item = item instanceof jQuery ? item : jQuery(item);
 
-				var $parent = item.closest('tr'),
-					$header_title_container = $('.give-row-head h2 span', $parent),
+				var $parent                           = item.closest('tr'),
+					$header_title_container           = $('.give-row-head h2 span', $parent),
 					donation_level_header_text_prefix = $header_title_container.data('header-title');
 
 				// Donation level header already set.
@@ -1177,15 +1177,15 @@ jQuery.noConflict();
 			});
 
 			// Handle row deleted event for levels repeater field.
-			$repeater_fields.on( 'repeater_field_row_deleted', function() {
+			$repeater_fields.on('repeater_field_row_deleted', function () {
 				var $this = $(this);
 
 				window.setTimeout(
 					function () {
-						var $parent = $this,
+						var $parent          = $this,
 							$repeatable_rows = $('.give-row', $parent).not('.give-template'),
-							$default_radio = $('.give-give_default_radio_inline', $repeatable_rows),
-							number_of_level = $repeatable_rows.length;
+							$default_radio   = $('.give-give_default_radio_inline', $repeatable_rows),
+							number_of_level  = $repeatable_rows.length;
 
 						if (number_of_level === 1) {
 							$default_radio.prop('checked', true);
@@ -1196,18 +1196,17 @@ jQuery.noConflict();
 			});
 
 			// Handle row added event for levels repeater field.
-			$repeater_fields.on( 'repeater_field_new_row_added', function( e, container, new_row ) {
-				var $this = $(this),
+			$repeater_fields.on('repeater_field_new_row_added', function (e, container, new_row) {
+				var $this        = $(this),
 					max_level_id = 0;
-
 
 				// Auto set default level if no level set as default.
 				window.setTimeout(
 					function () {
 						// Set first row as default if selected default row deleted.
 						// When a row is removed containing the default selection then revert default to first repeatable row.
-						if ($('.give-give_default_radio_inline', $this ).is(':checked') === false) {
-							$('.give-row', $this )
+						if ($('.give-give_default_radio_inline', $this).is(':checked') === false) {
+							$('.give-row', $this)
 								.not('.give-template')
 								.first()
 								.find('.give-give_default_radio_inline')
@@ -1218,15 +1217,15 @@ jQuery.noConflict();
 				);
 
 				// Get max level id.
-				$('input[type="hidden"].give-levels_id', $this ).each( function( index, item ){
+				$('input[type="hidden"].give-levels_id', $this).each(function (index, item) {
 					item = item instanceof jQuery ? item : jQuery(item);
-					if( max_level_id < item.val() ) {
+					if (max_level_id < item.val()) {
 						max_level_id = item.val();
 					}
 				});
 
 				// Auto set level id for new setting level setting group.
-				$('input[type="hidden"].give-levels_id', new_row ).val( ++max_level_id );
+				$('input[type="hidden"].give-levels_id', new_row).val(++max_level_id);
 			});
 		}
 	};
@@ -1241,7 +1240,6 @@ jQuery.noConflict();
 
 		row_count++;
 
-
 		// Set name for fields.
 		$('*', new_row).each(function () {
 			$.each(this.attributes, function (index, element) {
@@ -1253,9 +1251,8 @@ jQuery.noConflict();
 		$(container).attr('data-rf-row-count', row_count);
 
 		// Fire event: Row added.
-		$parent.trigger( 'repeater_field_new_row_added', [ container, new_row ] );
+		$parent.trigger('repeater_field_new_row_added', [container, new_row]);
 	};
-
 
 	/**
 	 * Handle row remove for repeatable field.
@@ -1263,39 +1260,38 @@ jQuery.noConflict();
 	var handle_metabox_repeater_field_row_remove = function (container) {
 		var $container = $(container),
 			$parent    = $container.parents('.give-repeatable-field-section'),
-			row_count = $(container).attr('data-rf-row-count');
+			row_count  = $(container).attr('data-rf-row-count');
 
 		// Reduce row count.
 		$container.attr('data-rf-row-count', --row_count);
 
 		// Fire event: Row deleted.
-		$parent.trigger( 'repeater_field_row_deleted' );
+		$parent.trigger('repeater_field_row_deleted');
 	};
 
 	/**
 	 * Add number suffix to repeater group.
 	 */
-	var handle_repeater_group_add_number_suffix = function( $parent ){
+	var handle_repeater_group_add_number_suffix = function ($parent) {
 		// Bailout: check if auto group numbering is on or not.
-		if( ! parseInt( $parent.data('group-numbering') ) ) {
+		if (!parseInt($parent.data('group-numbering'))) {
 			return;
 		}
 
-		var $header_title_container = $('.give-row-head h2 span', $parent ),
-			header_text_prefix = $header_title_container.data('header-title');
+		var $header_title_container = $('.give-row-head h2 span', $parent),
+			header_text_prefix      = $header_title_container.data('header-title');
 
-		$header_title_container.each( function( index, item ){
-			item = item instanceof jQuery ? item : jQuery( item );
+		$header_title_container.each(function (index, item) {
+			item = item instanceof jQuery ? item : jQuery(item);
 
 			// Bailout: do not rename header title in fields template.
-			if( item.parents( '.give-template' ).length ) {
+			if (item.parents('.give-template').length) {
 				return;
 			}
 
-			item.html( header_text_prefix + ': ' + index );
+			item.html(header_text_prefix + ': ' + index);
 		});
 	};
-
 
 	/**
 	 * Initialize qTips
