@@ -477,8 +477,8 @@ Tooltips
 				margin: 0;
 			}
 
-			.mce-container iframe {
-				min-height: 200px;
+			.mce-container iframe, textarea {
+				min-height: 250px !important;
 			}
 		}
 

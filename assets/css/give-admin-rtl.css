@@ -1026,8 +1026,8 @@ Tooltips
       font-style: italic; }
     #give-metabox-form-data .give_options_panel .give-field-wrap ul {
       margin: 0; }
-    #give-metabox-form-data .give_options_panel .give-field-wrap .mce-container iframe {
-      min-height: 200px; }
+    #give-metabox-form-data .give_options_panel .give-field-wrap .mce-container iframe, #give-metabox-form-data .give_options_panel .give-field-wrap textarea {
+      min-height: 250px !important; }
   #give-metabox-form-data .give_options_panel .give-field-wrap:last-child {
     border-bottom: 0; }
   #give-metabox-form-data .give_options_panel textarea.give-field {
