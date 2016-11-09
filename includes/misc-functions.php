@@ -988,7 +988,7 @@ function give_get_plugins() {
 			$license_active = get_option( $db_option );
 
 			// Does a valid license exist?
-			if ( isset( $license_active ) && 'valid' === $license_active->license ) {
+			if ( ! empty( $license_active ) && 'valid' === $license_active->license ) {
 				$plugins[ $plugin_path ]['License'] = true;
 			} else {
 				$plugins[ $plugin_path ]['License'] = false;
