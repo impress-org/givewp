@@ -1018,12 +1018,8 @@ jQuery.noConflict();
 					$textarea.each(function (index, item) {
 						window.setTimeout(
 							function () {
-								var textarea_id    = $(item).attr('id'),
-									wysiwyg_editor = $(item).parents('.wp-editor-wrap');
+								var textarea_id    = $(item).attr('id');
 								tinyMCE.execCommand('mceAddEditor', true, textarea_id);
-
-								// Switch editor to html mode.
-								$('#' + textarea_id + '-tmce').trigger('click');
 							},
 							300
 						);
@@ -1105,8 +1101,9 @@ jQuery.noConflict();
 								QTags._buttonsInit();
 
 								window.setTimeout(function () {
-									// Switch editor to html mode.
-									$('#' + textarea_id + '-tmce').trigger('click');
+									// Hack to show tmce mode.
+									switchEditors.go( textarea_id, 'html' );
+									$('#' + textarea_id + '-tmce' ).trigger('click');
 								}, 300);
 
 								if (!window.wpActiveEditor) {
