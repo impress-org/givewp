@@ -270,7 +270,7 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
 
 		if ( $customer->id && $update_customer ) {
 
-			// Decrement the stats for the customer.
+			// Decrement the stats for the donor.
 			$customer->decrease_purchase_count();
 			$customer->decrease_value( $amount );
 
@@ -288,7 +288,7 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
 
 	if ( $customer->id && $update_customer ) {
 
-		// Remove the payment ID from the customer.
+		// Remove the payment ID from the donor.
 		$customer->remove_payment( $payment_id );
 
 	}
@@ -567,6 +567,7 @@ function give_check_for_existing_payment( $payment_id ) {
  * @param WP_Post $payment      Payment object.
  * @param bool    $return_label Whether to return the translated status label
  *                              instead of status value. Default false.
+ *
  * @return bool|mixed True if payment status exists, false otherwise.
  */
 function give_get_payment_status( $payment, $return_label = false ) {
@@ -588,8 +589,11 @@ function give_get_payment_status( $payment, $return_label = false ) {
 			// Return translated status label.
 			return $statuses[ $payment->status ];
 		} else {
-			// Return status value.
-			return $payment->status;
+			// Account that our 'publish' status is labeled 'Complete'
+			$post_status = 'publish' == $payment->status ? 'Complete' : $payment->post_status;
+
+			// Make sure we're matching cases, since they matter
+			return array_search( strtolower( $post_status ), array_map( 'strtolower', $statuses ) );
 		}
 	}
 
@@ -605,14 +609,14 @@ function give_get_payment_status( $payment, $return_label = false ) {
  */
 function give_get_payment_statuses() {
 	$payment_statuses = array(
-		'pending'     => esc_html__( 'Pending', 'give' ),
-		'publish'     => esc_html__( 'Complete', 'give' ),
-		'refunded'    => esc_html__( 'Refunded', 'give' ),
-		'failed'      => esc_html__( 'Failed', 'give' ),
-		'cancelled'   => esc_html__( 'Cancelled', 'give' ),
-		'abandoned'   => esc_html__( 'Abandoned', 'give' ),
-		'preapproval' => esc_html__( 'Pre-Approved', 'give' ),
-		'revoked'     => esc_html__( 'Revoked', 'give' ),
+		'pending'     => __( 'Pending', 'give' ),
+		'publish'     => __( 'Complete', 'give' ),
+		'refunded'    => __( 'Refunded', 'give' ),
+		'failed'      => __( 'Failed', 'give' ),
+		'cancelled'   => __( 'Cancelled', 'give' ),
+		'abandoned'   => __( 'Abandoned', 'give' ),
+		'preapproval' => __( 'Pre-Approved', 'give' ),
+		'revoked'     => __( 'Revoked', 'give' ),
 	);
 
 	return apply_filters( 'give_payment_statuses', $payment_statuses );
@@ -833,12 +837,11 @@ function give_get_total_earnings() {
 			$payments = give_get_payments( $args );
 			if ( $payments ) {
 
-				/*
+				/**
 				 * If performing a donation, we need to skip the very last payment in the database,
 				 * since it calls give_increase_total_earnings() on completion,
 				 * which results in duplicated earnings for the very first donation.
 				 */
-
 				if ( did_action( 'give_update_payment_status' ) ) {
 					array_pop( $payments );
 				}
@@ -1387,9 +1390,9 @@ function give_set_payment_transaction_id( $payment_id = 0, $transaction_id = '' 
  * @since 1.0
  * @global object $wpdb Used to query the database using the WordPress Database API.
  *
- * @param string $key  the key to search for.
+ * @param string  $key  the key to search for.
  *
- * @return int $purchase Donation ID
+ * @return int $purchase Donation ID.
  */
 function give_get_purchase_id_by_key( $key ) {
 	global $wpdb;
@@ -1410,7 +1413,7 @@ function give_get_purchase_id_by_key( $key ) {
  * @since 1.3
  * @global object $wpdb Used to query the database using the WordPress Database API.
  *
- * @param string $key  The transaction ID to search for.
+ * @param string  $key  The transaction ID to search for.
  *
  * @return int $purchase Donation ID.
  */
@@ -1575,10 +1578,10 @@ function give_get_payment_note_html( $note, $payment_id = 0 ) {
 	$date_format = give_date_format() . ', ' . get_option( 'time_format' );
 
 	$delete_note_url = wp_nonce_url( add_query_arg( array(
-			'give-action' => 'delete_payment_note',
-			'note_id'     => $note->comment_ID,
-			'payment_id'  => $payment_id,
-		) ),
+		'give-action' => 'delete_payment_note',
+		'note_id'     => $note->comment_ID,
+		'payment_id'  => $payment_id,
+	) ),
 		'give_delete_payment_note_' . $note->comment_ID
 	);
 
@@ -1753,7 +1756,7 @@ function give_filter_where_older_than_week( $where = '' ) {
 /**
  * Get Payment Form ID
  *
- * Retrieves the form title and appends the price ID title if applicable
+ * Retrieves the form title and appends the price ID title if applicable.
  *
  * @since 1.5
  *
@@ -1781,10 +1784,8 @@ function give_get_payment_form_title( $payment_meta, $level_title = false, $sepa
 		$form_title .= ' <span class="donation-level-text-wrap">';
 
 		if ( $price_id == 'custom' ) {
-
 			$custom_amount_text = get_post_meta( $form_id, '_give_custom_amount_text', true );
 			$form_title .= ! empty( $custom_amount_text ) ? $custom_amount_text : esc_html__( 'Custom Amount', 'give' );
-
 		} else {
 			$form_title .= give_get_price_option_name( $form_id, $price_id );
 		}
