@@ -901,7 +901,7 @@ class Give_API {
 
 					$user_data = get_userdata( $customer_obj->user_id );
 
-					// Customer with registered account
+					// Customer with registered account.
 					$customers['donors'][ $customer_count ]['info']['user_id']      = $customer_obj->user_id;
 					$customers['donors'][ $customer_count ]['info']['username']     = $user_data->user_login;
 					$customers['donors'][ $customer_count ]['info']['display_name'] = $user_data->display_name;
@@ -937,7 +937,7 @@ class Give_API {
 	}
 
 	/**
-	 * Process Get Products API Request
+	 * Process Get Donation Forms API Request
 	 *
 	 * @access public
 	 * @since  1.1

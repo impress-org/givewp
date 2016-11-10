@@ -30,22 +30,25 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_reports_page() {
 	$current_page = admin_url( 'edit.php?post_type=give_forms&page=give-reports' );
-	$active_tab   = isset( $_GET['tab'] ) ? $_GET['tab'] : 'reports';
+	$active_tab   = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'earnings';
+	$views = give_reports_default_views();
 	?>
 	<div class="wrap">
 
 		<h1 class="screen-reader-text"><?php echo get_admin_page_title(); ?></h1>
 
 		<h2 class="nav-tab-wrapper">
-			<a href="<?php echo esc_url( add_query_arg( array(
-				'tab'              => 'reports',
-				'settings-updated' => false
-			), $current_page ) ); ?>" class="nav-tab <?php echo $active_tab == 'reports' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Reports', 'give' ); ?></a>
+			<?php foreach ( $views as $tab => $label ) { ?>
+				<a href="<?php echo esc_url( add_query_arg( array(
+					'tab'              => $tab,
+					'settings-updated' => false,
+				), $current_page ) ); ?>" class="nav-tab <?php echo $tab === $active_tab ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php echo esc_html( $label ); ?></a>
+			<?php } ?>
 			<?php if ( current_user_can( 'export_give_reports' ) ) { ?>
 				<a href="<?php echo esc_url( add_query_arg( array(
 					'tab'              => 'export',
-					'settings-updated' => false
-				), $current_page ) ); ?>" class="nav-tab <?php echo $active_tab == 'export' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Export', 'give' ); ?></a>
+					'settings-updated' => false,
+				), $current_page ) ); ?>" class="nav-tab <?php echo 'export' === $active_tab ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Export', 'give' ); ?></a>
 			<?php }
 			/**
 			 * Fires in the report tabs.
@@ -65,6 +68,11 @@ function give_reports_page() {
 		 * @since 1.0
 		 */
 		do_action( 'give_reports_page_top' );
+
+		// Set $active_tab prior to hook firing.
+		if ( in_array( $active_tab, array_keys( $views ) ) ) {
+			$active_tab = 'reports';
+		}
 
 		/**
 		 * Fires the report page active tab.
@@ -95,7 +103,7 @@ function give_reports_default_views() {
 		'earnings' => esc_html__( 'Income', 'give' ),
 		'forms'    => esc_html__( 'Forms', 'give' ),
 		'donors'   => esc_html__( 'Donors', 'give' ),
-		'gateways' => esc_html__( 'Payment Methods', 'give' )
+		'gateways' => esc_html__( 'Donation Methods', 'give' )
 	);
 
 	$views = apply_filters( 'give_report_views', $views );
@@ -135,8 +143,8 @@ function give_reports_tab_reports() {
 	$current_view = 'earnings';
 	$views        = give_reports_default_views();
 
-	if ( isset( $_GET['view'] ) && array_key_exists( $_GET['view'], $views ) ) {
-		$current_view = $_GET['view'];
+	if ( isset( $_GET['tab'] ) && array_key_exists( $_GET['tab'], $views ) ) {
+		$current_view = $_GET['tab'];
 	}
 
 	/**
@@ -233,8 +241,6 @@ function give_reports_form_details() {
 	?>
 	<div class="tablenav top reports-forms-details-wrap">
 		<div class="actions bulkactions">
-			<?php give_report_views(); ?>
-			&nbsp;
 			<button onclick="history.go(-1);" class="button-secondary"><?php esc_html_e( 'Go Back', 'give' ); ?></button>
 		</div>
 	</div>
@@ -267,14 +273,14 @@ function give_reports_donors_table() {
 		 */
 		do_action( 'give_logs_donors_table_top' );
 		?>
-		<form id="give-donors-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-reports&view=donors' ); ?>">
+		<form id="give-donors-filter" method="get">
 			<?php
 			$give_table->search_box( esc_html__( 'Search', 'give' ), 'give-donors' );
 			$give_table->display();
 			?>
 			<input type="hidden" name="post_type" value="give_forms"/>
 			<input type="hidden" name="page" value="give-reports"/>
-			<input type="hidden" name="view" value="donors"/>
+			<input type="hidden" name="tab" value="donors"/>
 		</form>
 		<?php
 		/**
@@ -319,9 +325,7 @@ add_action( 'give_reports_view_gateways', 'give_reports_gateways_table' );
 function give_reports_earnings() {
 	?>
 	<div class="tablenav top reports-table-nav">
-		<h3 class="alignleft reports-earnings-title"><span><?php esc_html_e( 'Income Over Time', 'give' ); ?></span></h3>
-
-		<div class="alignright actions reports-views-wrap"><?php give_report_views(); ?></div>
+		<h3 class="alignleft reports-earnings-title"><span><?php esc_html_e( 'Income Report', 'give' ); ?></span></h3>
 	</div>
 	<?php
 	give_reports_graph();

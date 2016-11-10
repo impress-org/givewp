@@ -452,28 +452,28 @@ function give_add_donor_email( $args ) {
 	$customer_edit_role = apply_filters( 'give_edit_customers_role', 'edit_give_payments' );
 
 	if ( ! is_admin() || ! current_user_can( $customer_edit_role ) ) {
-		wp_die( __( 'You do not have permission to edit this donor.', 'edit' ) );
+		wp_die( esc_html__( 'You do not have permission to edit this donor.', 'edit' ) );
 	}
 
 	$output = array();
 	if ( empty( $args ) || empty( $args['email'] ) || empty( $args['customer_id'] ) ) {
 		$output['success'] = false;
 		if ( empty( $args['email'] ) ) {
-			$output['message'] = __( 'Email address is required.', 'give' );
+			$output['message'] = esc_html__( 'Email address is required.', 'give' );
 		} else if ( empty( $args['customer_id'] ) ) {
-			$output['message'] = __( 'Customer ID is required.', 'give' );
+			$output['message'] = esc_html__( 'Customer ID is required.', 'give' );
 		} else {
-			$output['message'] = __( 'An error has occurred. Please try again.', 'give' );
+			$output['message'] = esc_html__( 'An error has occurred. Please try again.', 'give' );
 		}
 	} else if ( ! wp_verify_nonce( $args['_wpnonce'], 'give_add_donor_email' ) ) {
 		$output = array(
 			'success' => false,
-			'message' => __( 'Nonce verification failed.', 'give' ),
+			'message' => esc_html__( 'Nonce verification failed.', 'give' ),
 		);
 	} else if ( ! is_email( $args['email'] ) ) {
 		$output = array(
 			'success' => false,
-			'message' => __( 'Invalid email address.', 'give' ),
+			'message' => esc_html__( 'Invalid email address.', 'give' ),
 		);
 	} else {
 		$email       = sanitize_email($args['email'] );
@@ -484,19 +484,19 @@ function give_add_donor_email( $args ) {
 			if ( in_array( $email, $customer->emails ) ) {
 				$output = array(
 					'success'  => false,
-					'message'  => __( 'Email already associated with this donor.', 'give' ),
+					'message'  => esc_html__( 'Email already associated with this donor.', 'give' ),
 				);
 			} else {
 				$output = array(
 					'success' => false,
-					'message' => __( 'Email address is already associated with another donor.', 'give' ),
+					'message' => esc_html__( 'Email address is already associated with another donor.', 'give' ),
 				);
 			}
 		} else {
 			$redirect = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $customer_id . '&give-message=email-added' );
 			$output = array(
 				'success'  => true,
-				'message'  => __( 'Email successfully added to donor.', 'give' ),
+				'message'  => esc_html__( 'Email successfully added to donor.', 'give' ),
 				'redirect' => $redirect,
 			);
 
@@ -545,7 +545,7 @@ function give_remove_donor_email() {
 
 	$nonce = $_GET['_wpnonce'];
 	if ( ! wp_verify_nonce( $nonce, 'give-remove-donor-email' ) ) {
-		wp_die( __( 'Nonce verification failed', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( esc_html__( 'Nonce verification failed', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	$customer = new Give_Customer( $_GET['id'] );
@@ -588,7 +588,7 @@ function give_set_donor_primary_email() {
 	$nonce = $_GET['_wpnonce'];
 
 	if ( ! wp_verify_nonce( $nonce, 'give-set-donor-primary-email' ) ) {
-		wp_die( __( 'Nonce verification failed', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( esc_html__( 'Nonce verification failed', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	$donor = new Give_Customer( $_GET['id'] );

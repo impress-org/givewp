@@ -22,12 +22,12 @@ if ( ! is_user_logged_in() ) {
 			?>
 			<div class="give-login-username give-login">
 				<label for="give_user_login"><?php esc_html_e( 'Username', 'give' ); ?></label>
-				<input name="give_user_login" id="give_user_login" class="give-required give-input" type="text" />
+				<input name="give_user_login" id="give_user_login" class="give-required give-input" type="text" required aria-required="true" />
 			</div>
 
 			<div class="give-login-password give-login">
 				<label for="give_user_pass"><?php esc_html_e( 'Password', 'give' ); ?></label>
-				<input name="give_user_pass" id="give_user_pass" class="give-password give-required give-input" type="password" />
+				<input name="give_user_pass" id="give_user_pass" class="give-password give-required give-input" type="password" required aria-required="true" />
 			</div>
 
 			<div class="give-login-submit give-login">

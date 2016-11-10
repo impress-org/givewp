@@ -126,18 +126,22 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 */
 	protected function display_tablenav( $which ) {
 
-		if ( 'top' == $which ) {
+		if ( 'top' === $which ) {
 			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
 		}
 		?>
 		<div class="tablenav give-clearfix <?php echo esc_attr( $which ); ?>">
 
-			<h3 class="alignleft reports-earnings-title"><span><?php esc_html_e( 'Donors Report', 'give' ); ?></span></h3>
+			<?php if ( 'top' === $which ) { ?>
+				<h3 class="alignleft reports-earnings-title">
+					<span><?php esc_html_e( 'Donors Report', 'give' ); ?></span>
+				</h3>
+			<?php } ?>
 
 			<div class="alignright tablenav-right">
 				<div class="actions bulkactions">
 					<?php
-					if ( 'top' == $which ) {
+					if ( 'top' === $which ) {
 						$this->give_search_box( esc_html__( 'Search Donors', 'give' ), 'give-donors-report-search' );
 					}
 
@@ -201,8 +205,8 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 			'name'          => esc_html__( 'Name', 'give' ),
 			'id'            => esc_html__( 'ID', 'give' ),
 			'email'         => esc_html__( 'Email', 'give' ),
-			'num_purchases' => esc_html__( 'Purchases', 'give' ),
-			'amount_spent'  => esc_html__( 'Total Spent', 'give' )
+			'num_purchases' => esc_html__( 'Donations', 'give' ),
+			'amount_spent'  => esc_html__( 'Total Donated', 'give' )
 		);
 
 		return apply_filters( 'give_report_donor_columns', $columns );
@@ -233,8 +237,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 * @return void
 	 */
 	public function bulk_actions( $which = '' ) {
-		// These aren't really bulk actions but this outputs the markup in the right place
-		give_report_views();
+
 	}
 
 	/**

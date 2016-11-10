@@ -16,6 +16,11 @@
   .inside {
     padding-top: 0;
     padding-bottom: 0;
+
+    /* counteract extra padding in Income Report graph */
+    .give_forms_page_give-reports & {
+      padding-left: 0;
+    }
   }
 
   .postbox {
@@ -28,7 +33,7 @@
 
   #give-graphs-filter {
     .tablenav {
-      margin: 0;
+      margin: 0 0 0 17px;
       .actions {
         padding: 0;
       }
@@ -36,9 +41,7 @@
   }
 
   #give-date-range-options {
-    clear: both;
-    overflow: hidden;
-    padding: 8px 0;
+    float: left;
 
     > span {
       float: left;
@@ -47,16 +50,6 @@
       padding: 0 5px 0 0;
     }
 
-    #give-graphs-year-end {
-      margin-right: 0;
-    }
-
-  }
-
-  a.give-refresh-reports-button {
-    display: inline-block;
-    clear: right;
-    margin: 8px 0 0;
   }
 
 }
