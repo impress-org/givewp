@@ -532,6 +532,24 @@ class GIVE_CLI_COMMAND {
 					WP_CLI::log( json_encode( $new_table_data ) );
 					break;
 
+				case 'csv':
+					$file_path = trailingslashit( WP_CONTENT_DIR ) . 'uploads/give_donors_' . date( 'Y_m_d_s', current_time( 'timestamp' ) ) . '.csv';
+					$fp        = fopen( $file_path, 'w' );
+
+					if( is_writable( $file_path ) ) {
+						foreach ( $table_data as $fields ) {
+							fputcsv( $fp, $fields );
+						}
+
+						fclose( $fp );
+
+						WP_CLI::success( "Donors list csv created successfully: {$file_path}" );
+					} else{
+						WP_CLI::warning( "Unable to create donors list csv file: {$file_path} (May folder do not have write permission)" );
+					}
+
+					break;
+
 				default:
 					$this->display_table( $table_data );
 			}
