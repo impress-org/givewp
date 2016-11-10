@@ -1732,10 +1732,8 @@ add_filter( 'the_content', 'give_filter_success_page_content' );
  * @since 1.1
  */
 function give_test_mode_frontend_warning() {
-
-	$test_mode = give_get_option( 'test_mode' );
-
-	if ( $test_mode == 'on' ) {
+	
+	if ( give_is_test_mode() ) {
 		echo '<div class="give_error give_warning" id="give_error_test_mode"><p><strong>' . esc_html__( 'Notice:', 'give' ) . '</strong> ' . esc_html__( 'Test mode is enabled. While in test mode no live donations are processed.', 'give' ) . '</p></div>';
 	}
 }
