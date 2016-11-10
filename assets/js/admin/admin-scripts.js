@@ -1018,14 +1018,14 @@ jQuery.noConflict();
 					$textarea.each(function (index, item) {
 						window.setTimeout(
 							function () {
-								var textarea_id    = $(item).attr('id');
+								var textarea_id = $(item).attr('id');
 								tinyMCE.execCommand('mceAddEditor', true, textarea_id);
 
 								// Switch editor to tmce mode to fix some glitch which appear when you reorder rows.
 								window.setTimeout(function () {
 									// Hack to show tmce mode.
-									switchEditors.go( textarea_id, 'html' );
-									$('#' + textarea_id + '-tmce' ).trigger('click');
+									switchEditors.go(textarea_id, 'html');
+									$('#' + textarea_id + '-tmce').trigger('click');
 								}, 100);
 							},
 							300
@@ -1109,8 +1109,8 @@ jQuery.noConflict();
 
 								window.setTimeout(function () {
 									// Hack to show tmce mode.
-									switchEditors.go( textarea_id, 'html' );
-									$('#' + textarea_id + '-tmce' ).trigger('click');
+									switchEditors.go(textarea_id, 'html');
+									$('#' + textarea_id + '-tmce').trigger('click');
 								}, 100);
 
 								if (!window.wpActiveEditor) {
