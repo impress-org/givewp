@@ -351,20 +351,20 @@ jQuery.noConflict();
 			 */
 			success_setting.add(failure_setting).change(function () {
 				if (success_setting.val() === failure_setting.val()) {
-					var notice_html = '<div id="setting-error-give-matched-success-failure-page" class="updated settings-error notice is-dismissible"> <p><strong>' + give_vars.matched_success_failure_page + '</strong></p> <button type="button" class="notice-dismiss"><span class="screen-reader-text">' + give_vars.dismiss_notice_text + '</span></button> </div>',
-						$notice_container = $( '#setting-error-give-matched-success-failure-page');
+					var notice_html       = '<div id="setting-error-give-matched-success-failure-page" class="updated settings-error notice is-dismissible"> <p><strong>' + give_vars.matched_success_failure_page + '</strong></p> <button type="button" class="notice-dismiss"><span class="screen-reader-text">' + give_vars.dismiss_notice_text + '</span></button> </div>',
+						$notice_container = $('#setting-error-give-matched-success-failure-page');
 
 					// Bailout.
-					if( $notice_container.length ) {
+					if ($notice_container.length) {
 						return false;
 					}
 
 					// Add html.
-					$( 'h2', '#give-mainform' ).after( notice_html );
-					$notice_container = $( '#setting-error-give-matched-success-failure-page');
+					$('h2', '#give-mainform').after(notice_html);
+					$notice_container = $('#setting-error-give-matched-success-failure-page');
 
 					// Add event to  dismiss button.
-					$( '.notice-dismiss', $notice_container ).click(function(){
+					$('.notice-dismiss', $notice_container).click(function () {
 						$notice_container.remove();
 					});
 
@@ -902,14 +902,14 @@ jQuery.noConflict();
 
 				if ($colorpicker_fields.length) {
 					$colorpicker_fields.each(function (index, item) {
-						item = item instanceof jQuery ? item : jQuery(item);
+						var $item = $(item);
 
 						// Bailout: do not automatically initialize colorpicker for repeater field group template.
-						if (item.parents('.give-template').length) {
+						if ($item.parents('.give-template').length) {
 							return;
 						}
 
-						item.wpColorPicker();
+						$item.wpColorPicker();
 					});
 				}
 			})
@@ -1069,28 +1069,28 @@ jQuery.noConflict();
 			// Process jobs on document load for repeater fields.
 			$repeater_fields.each(function (index, item) {
 				// Reset title on document load for already exist groups.
-				item = item instanceof jQuery ? item : jQuery(item);
-				handle_repeater_group_add_number_suffix(item);
+				var $item = $(item);
+				handle_repeater_group_add_number_suffix($item);
 
 				// Close all tabs when page load.
-				if (parseInt(item.data('close-tabs'))) {
-					$('.give-row-head button', item).trigger('click');
-					$('.give-template', item).removeClass('closed');
-					$('.give-template .give-row-body', item).show();
+				if (parseInt($item.data('close-tabs'))) {
+					$('.give-row-head button', $item).trigger('click');
+					$('.give-template', $item).removeClass('closed');
+					$('.give-template .give-row-body', $item).show();
 				}
 			});
 
 			// Setup colorpicker field when row added.
 			$repeater_fields.on('repeater_field_new_row_added', function (e, container, new_row) {
 				$('.give-colorpicker', $(this)).each(function (index, item) {
-					item = item instanceof jQuery ? item : jQuery(item);
+					var $item = $(item);
 
 					// Bailout: skip already init colorpocker fields.
-					if (item.parents('.wp-picker-container').length || item.parents('.give-template').length) {
+					if ($item.parents('.wp-picker-container').length || $item.parents('.give-template').length) {
 						return;
 					}
 
-					item.wpColorPicker();
+					$item.wpColorPicker();
 				});
 
 				// Load WordPress editor by ajax..
@@ -1098,8 +1098,9 @@ jQuery.noConflict();
 
 				if (wysiwyg_editor_container.length) {
 					wysiwyg_editor_container.each(function (index, item) {
-						var wysiwyg_editor       = $('.wp-editor-wrap', $(item)),
-							textarea             = $('textarea', $(item)),
+						var $item                = $(item),
+							wysiwyg_editor       = $('.wp-editor-wrap', $item),
+							textarea             = $('textarea', $item),
 							textarea_id          = 'give_wysiwyg_unique_' + Math.random().toString().replace('.', '_'),
 							wysiwyg_editor_label = wysiwyg_editor.prev();
 
@@ -1109,9 +1110,9 @@ jQuery.noConflict();
 							ajaxurl,
 							{
 								action       : 'give_load_wp_editor',
-								wp_editor    : $(item).data('wp-editor'),
+								wp_editor    : $item.data('wp-editor'),
 								wp_editor_id : textarea_id,
-								textarea_name: $('textarea', $(item)).attr('name')
+								textarea_name: $('textarea', $item).attr('name')
 							},
 							function (res) {
 								wysiwyg_editor.remove();
@@ -1192,20 +1193,20 @@ jQuery.noConflict();
 				}
 
 				// Check if item is jquery object or not.
-				item = item instanceof jQuery ? item : jQuery(item);
+				var $item = $(item);
 
-				var $parent                           = item.closest('tr'),
+				var $parent                           = $item.closest('tr'),
 					$header_title_container           = $('.give-row-head h2 span', $parent),
 					donation_level_header_text_prefix = $header_title_container.data('header-title');
 
 				// Donation level header already set.
-				if (item.val() && (  item.val() === $header_title_container.html() )) {
+				if ($item.val() && (  $item.val() === $header_title_container.html() )) {
 					return false;
 				}
 
-				if (item.val()) {
+				if ($item.val()) {
 					// Change donaiton level header text.
-					$header_title_container.html(donation_level_header_text_prefix + ': ' + item.val());
+					$header_title_container.html(donation_level_header_text_prefix + ': ' + $item.val());
 				} else {
 					// Reset donation level header heading text.
 					$header_title_container.html(donation_level_header_text_prefix)
@@ -1254,9 +1255,9 @@ jQuery.noConflict();
 
 				// Get max level id.
 				$('input[type="hidden"].give-levels_id', $this).each(function (index, item) {
-					item = item instanceof jQuery ? item : jQuery(item);
-					if (max_level_id < item.val()) {
-						max_level_id = item.val();
+					var $item = $(item);
+					if (max_level_id < $item.val()) {
+						max_level_id = $item.val();
 					}
 				});
 
@@ -1318,14 +1319,14 @@ jQuery.noConflict();
 			header_text_prefix      = $header_title_container.data('header-title');
 
 		$header_title_container.each(function (index, item) {
-			item = item instanceof jQuery ? item : jQuery(item);
+			var $item = $(item);
 
 			// Bailout: do not rename header title in fields template.
-			if (item.parents('.give-template').length) {
+			if ($item.parents('.give-template').length) {
 				return;
 			}
 
-			item.html(header_text_prefix + ': ' + index);
+			$item.html(header_text_prefix + ': ' + index);
 		});
 	};
 
