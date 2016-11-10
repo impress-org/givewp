@@ -1020,6 +1020,13 @@ jQuery.noConflict();
 							function () {
 								var textarea_id    = $(item).attr('id');
 								tinyMCE.execCommand('mceAddEditor', true, textarea_id);
+
+								// Switch editor to tmce mode to fix some glitch which appear when you reorder rows.
+								window.setTimeout(function () {
+									// Hack to show tmce mode.
+									switchEditors.go( textarea_id, 'html' );
+									$('#' + textarea_id + '-tmce' ).trigger('click');
+								}, 100);
 							},
 							300
 						);
