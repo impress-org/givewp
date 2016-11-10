@@ -359,41 +359,27 @@ function give_wysiwyg( $field ) {
 	$field['wrapper_class']   = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
 	$field['value']           = give_get_field_value( $field, $thepostid );
 	$field['unique_field_id'] = give_get_field_name( $field );
+	$editor_attributes        = array(
+		'textarea_name' => isset( $field['repeatable_field_id'] ) ? $field['repeatable_field_id'] : $field['id'],
+		'textarea_rows' => '10',
+		'editor_css'    => esc_attr( $field['style'] ),
+		'editor_class'  => $field['attributes']['class']
+	);
+	$data_wp_editor           = ' data-wp-editor="'. base64_encode( json_encode( array( $field['value'], $field['unique_field_id'],$editor_attributes ) ) ) .'"';
+	$data_wp_editor           = isset( $field['repeatable_field_id'] ) ? $data_wp_editor : '';
 
-
-	ob_start();
-
-	echo '<div class="give-field-wrap ' . give_get_field_name( $field ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . give_get_field_name( $field ) . '">' . wp_kses_post( $field['name'] ) . '</label>';
+	echo '<div class="give-field-wrap ' . $field['unique_field_id'] . '_field ' . esc_attr( $field['wrapper_class'] ) . '"'.$data_wp_editor.'><label for="' . $field['unique_field_id'] . '">' . wp_kses_post( $field['name'] ) . '</label>';
 
 	wp_editor(
 		$field['value'],
 		$field['unique_field_id'],
-		array(
-			'textarea_name' => esc_attr( isset( $field['repeatable_field_id'] ) ? $field['repeatable_field_id'] : $field['id'] ),
-			'textarea_rows' => '10',
-			'editor_css'    => esc_attr( $field['style'] ),
-			'editor_class'  => $field['attributes']['class']
-		)
+		$editor_attributes
 	);
 
 	if ( ! empty( $field['description'] ) ) {
 		echo '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
 	}
 	echo '</div>';
-
-	$html = ob_get_contents();
-	ob_get_clean();
-
-	/**
-	 * Filter the wysiwyg field html.
-	 *
-	 * @since 1.8
-	 *
-	 * @param string $html
-	 */
-	$html = apply_filters( 'give_wysiwyg_html', $html, $field );
-
-	echo $html;
 }
 
 /**
@@ -1338,48 +1324,3 @@ function give_repeater_field_set_editor_id( $field_name, $field ) {
 	return $field_name;
 }
 add_filter( 'give_get_field_name', 'give_repeater_field_set_editor_id', 10, 2 );
-
-/**
- * Wysiwyg field html for repeater field.
- *
- * @since 1.8
- *
- * @param $html
- * @param $field
- *
- * @return string
- */
-function give_repeater_field_wysiwyg_html( $html, $field ){
-	if( ! isset( $field['repeatable_field_id'] ) ) {
-		return $html;
-	}
-
-	ob_start();
-
-	$editor_attributes = array(
-		'textarea_name' => esc_attr( isset( $field['repeatable_field_id'] ) ? $field['repeatable_field_id'] : $field['id'] ),
-		'textarea_rows' => '10',
-		'editor_css'    => esc_attr( $field['style'] ),
-		'editor_class'  => $field['attributes']['class']
-	);
-
-	$field_name = $field['unique_field_id'];
-	echo '<div class="give-field-wrap ' . $field_name . '_field ' . esc_attr( $field['wrapper_class'] ) . '" data-wp-editor="'. base64_encode( json_encode( array( $field['value'], $field_name,$editor_attributes ) ) ) .'"><label for="' . $field_name . '">' . wp_kses_post( $field['name'] ) . '</label>';
-
-	wp_editor(
-		$field['value'],
-		$field_name,
-		$editor_attributes
-	);
-
-	if ( ! empty( $field['description'] ) ) {
-		echo '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
-	}
-	echo '</div>';
-
-	$html = ob_get_contents();
-	ob_get_clean();
-
-	return $html;
-}
-add_filter( 'give_wysiwyg_html', 'give_repeater_field_wysiwyg_html', 10, 2 );
