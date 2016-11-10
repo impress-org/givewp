@@ -334,7 +334,8 @@ class GIVE_CLI_COMMAND {
 	 * : The number of donor to retrieve
 	 *
 	 * [--create=<number>]
-	 * : The number of arbitrary donors to create. Leave as 1 or blank to create a donor with a specific email
+	 * : The number of arbitrary donors to create. Leave as 1 or blank to create a
+	 * donor with a specific email
 	 *
 	 * [--form-id=<donation_form_id>]
 	 * : Get list of donors of specific donation form
