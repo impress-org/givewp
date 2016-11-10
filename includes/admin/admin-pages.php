@@ -373,7 +373,7 @@ add_filter( 'give-settings_get_settings_pages', 'give_settings_page_pages', 0, 1
 function give_tools_page_pages( $settings ) {
 	$settings = array(
 		// System Info.
-		include( 'tools/class-setting-system-info.php' ),
+		include( 'tools/class-settings-system-info.php' ),
 
 		// Logs.
 		include( 'tools/class-settings-logs.php' ),
