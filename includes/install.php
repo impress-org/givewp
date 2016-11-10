@@ -15,12 +15,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ *
  * Install
  *
  * Runs on plugin install by setting up the post types, custom taxonomies, flushing rewrite rules to initiate the new 'donations' slug and also creates the plugin and populates the settings fields for those plugin pages. After successful install, the user is redirected to the Give Welcome screen.
  *
  * @since 1.0
- * @global $wpdb
+ *
+ * @param bool $network_wide
+ *
+ * @global     $wpdb
  * @return void
  */
 function give_install( $network_wide = false ) {
@@ -209,10 +213,10 @@ register_activation_hook( GIVE_PLUGIN_FILE, 'give_install' );
  *
  * @param  int    $blog_id The Blog ID created.
  * @param  int    $user_id The User ID set as the admin.
- * @param  string $domain The URL.
- * @param  string $path Site Path.
+ * @param  string $domain  The URL.
+ * @param  string $path    Site Path.
  * @param  int    $site_id The Site ID.
- * @param  array  $meta Blog Meta.
+ * @param  array  $meta    Blog Meta.
  */
 function on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
 
@@ -234,7 +238,7 @@ add_action( 'wpmu_new_blog', 'on_create_blog', 10, 6 );
  *
  * @since  1.4.3
  *
- * @param  array $tables The tables to drop.
+ * @param  array $tables  The tables to drop.
  * @param  int   $blog_id The Blog ID being deleted.
  *
  * @return array          The tables to drop.
