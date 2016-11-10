@@ -949,6 +949,11 @@ jQuery.noConflict();
 								$('body').trigger('repeater_field_sorting_stop', [ui.item]);
 							},
 							update     : function (event, ui) {
+								// Do not allow any row at position 0.
+								if (ui.item.next().hasClass('give-template')) {
+									ui.item.next().after(ui.item);
+								}
+
 								var $rows = $('.give-row', $this).not('.give-template');
 
 								if ($rows.length) {
