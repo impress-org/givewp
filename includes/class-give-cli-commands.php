@@ -342,6 +342,9 @@ class GIVE_CLI_COMMAND {
 	 * [--name=<name_of_donor>]
 	 * : Name with which you want to create new donor
 	 *
+	 * [--format=<output_format>]
+	 * : In which format you want to see results. Valid formats: table, json, csv
+	 *
 	 * ## EXAMPLES
 	 *
 	 * wp give donors --id=103
@@ -370,6 +373,7 @@ class GIVE_CLI_COMMAND {
 		$create   = isset( $assoc_args ) && array_key_exists( 'create', $assoc_args ) ? $assoc_args['create'] : false;
 		$number   = isset( $assoc_args ) && array_key_exists( 'number', $assoc_args ) ? $assoc_args['number'] : 10;
 		$form_id  = isset( $assoc_args ) && array_key_exists( 'form-id', $assoc_args ) ? $assoc_args['form-id'] : 0;
+		$format   = isset( $assoc_args ) && array_key_exists( 'format', $assoc_args ) ? $assoc_args['format'] : 'table';
 		$start    = time();
 
 		if ( $create ) {
