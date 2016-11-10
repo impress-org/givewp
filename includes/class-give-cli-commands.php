@@ -465,7 +465,7 @@ class GIVE_CLI_COMMAND {
 
 			foreach ( $donors['donors'] as $donor_data ) {
 				// Set default table row data.
-				$table_first_row = array( __( 'S. No.', 'give' ) );
+				$table_first_row = array( __( 's_no', 'give' ) );
 				$table_row       = array( self::$counter );
 
 				foreach ( $donor_data as $key => $donor ) {
@@ -516,7 +516,24 @@ class GIVE_CLI_COMMAND {
 				self::$counter ++;
 			}
 
-			$this->display_table( $table_data );
+			switch ( $format ) {
+				case 'json':
+					$table_column_name = $table_data[0];
+					unset( $table_data[0] );
+					
+					$new_table_data = array();
+					foreach ( $table_data as $index => $data ) {
+						foreach ( $data as $key => $value ) {
+							$new_table_data[$index][$table_column_name[$key]] = $value;
+						}
+					}
+
+					WP_CLI::log( json_encode( $new_table_data ) );
+					break;
+
+				default:
+					$this->display_table( $table_data );
+			}
 		}
 	}
 
