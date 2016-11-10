@@ -1,5 +1,5 @@
 === Give - WordPress Donation Plugin ===
-Contributors: wordimpress, dlocc, webdevmattcrom
+Contributors: givewp, wordimpress, dlocc, webdevmattcrom
 Donate link: https://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 4.0
@@ -179,6 +179,12 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Fix: User able to donate minimum amount then custom minimum amount with multi level donation form - https://github.com/WordImpress/Give/issues/712
 * Fix: Clearing reports cache wasn't working for "Estimated monthly income for this period" - https://github.com/WordImpress/Give/issues/773
 * Fix: Use only one text-domain "give" for i18n - https://github.com/WordImpress/Give/issues/964
+
+= 1.6.4 =
+* New: {form_title} email tag that outputs only the donation form title and improved the email tag display in the plugin's settings. [#943](https://github.com/WordImpress/Give/issues/943)
+* Fix: {donation} email tag was not properly displaying the donation form title along with the level for multi-level donations.  [#943](https://github.com/WordImpress/Give/issues/943)
+* Fix: Removed all usage of ttf fonts within Give to prevent strict mod_security warnings on certain hosts. [#794](https://github.com/WordImpress/Give/issues/794)
+* Fix: If theme doesn't register image sizes there is a PHP Warning on the Give Settings page. [#1163](https://github.com/WordImpress/Give/issues/1163)
 
 = 1.6.3 =
 * Fix: PayPal Standard donations payments being set incorrectly to failed. [#1152](https://github.com/WordImpress/Give/issues/1152)

@@ -1614,6 +1614,21 @@ p.give-field-description, .cmb2-metabox-description {
 .cmb2-id-give-title > div.cmb-td {
   padding-bottom: 5px; }
 
+.give-email-tags-wrap {
+  margin: 5px 0 0; }
+  .give-email-tags-wrap code {
+    font-style: normal;
+    padding: 1px 2px;
+    font-size: 12px; }
+  .give-email-tags-wrap span {
+    display: block;
+    color: #AAA;
+    font-style: italic;
+    margin: 0 0 2px;
+    font-size: 13px; }
+  .give-email-tags-wrap .give_price_tag {
+    display: none; }
+
 #system-info-textarea {
   width: 800px;
   height: 600px;

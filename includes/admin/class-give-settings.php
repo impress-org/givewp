@@ -563,7 +563,7 @@ class Give_Plugin_Settings {
 						array(
 							'id'      => 'from_name',
 							'name'    => esc_html__( 'From Name', 'give' ),
-							'desc'    => esc_html__( 'The name which appears in the "From" field in donation receipt emails.', 'give' ),
+							'desc'    => esc_html__( 'The name that appears in the "From" field in donation receipt emails.', 'give' ),
 							'default' => get_bloginfo( 'name' ),
 							'type'    => 'text'
 						),
@@ -854,8 +854,6 @@ function give_get_option( $key = '', $default = false ) {
  *          the key from the give_options array.
  *
  * @since 1.0
- *
- * @global                $give_options
  *
  * @param string          $key   The Key to update
  * @param string|bool|int $value The value to set the key to
