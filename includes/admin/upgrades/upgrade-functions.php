@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 /**
- * Perform automatic database upgrades when necessary
+ * Perform automatic database upgrades when necessary.
  *
  * @since 1.6
  * @return void
@@ -402,7 +402,8 @@ function give_v16_upgrades() {
  */
 function give_v17_upgrades() {
 	// Upgrade license data.
-	give_upgrade_addon_license_data();
+	give_v17_upgrade_addon_license_data();
+	give_v17_cleanup_roles();
 }
 
 /**
@@ -410,7 +411,7 @@ function give_v17_upgrades() {
  *
  * @since 1.7
  */
-function give_upgrade_addon_license_data(){
+function give_v17_upgrade_addon_license_data(){
     $give_options = give_get_settings();
 
     $api_url = 'https://givewp.com/give-sl-api/';
@@ -490,4 +491,17 @@ function give_upgrade_addon_license_data(){
         $license_data = json_decode( wp_remote_retrieve_body( $response ) );
         update_option( $addon_license_option_name, $license_data );
     }
+}
+
+
+
+/**
+ * Cleanup User Roles.
+ *
+ * This upgrade routine removes unused roles and roles with typos.
+ *
+ * @since      1.7
+ */
+function give_v17_cleanup_users() {
+
 }
