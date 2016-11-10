@@ -1025,8 +1025,8 @@ Tooltips
       font-style: italic; }
     #give-metabox-form-data .give_options_panel .give-field-wrap ul {
       margin: 0; }
-    #give-metabox-form-data .give_options_panel .give-field-wrap .mce-container iframe {
-      min-height: 200px; }
+    #give-metabox-form-data .give_options_panel .give-field-wrap .mce-container iframe, #give-metabox-form-data .give_options_panel .give-field-wrap textarea {
+      min-height: 250px !important; }
   #give-metabox-form-data .give_options_panel .give-field-wrap:last-child {
     border-bottom: 0; }
   #give-metabox-form-data .give_options_panel textarea.give-field {
@@ -1084,14 +1084,24 @@ Tooltips
       content: "\f140"; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-add-repeater-field-section-row-wrap {
       background-color: #f5f5f5; }
-    #give-metabox-form-data .give_options_panel .give-repeatable-field-section #give-add-repeater-field-section-row {
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-add-repeater-field-section-row {
       margin: 5px 5px; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-field-wrap:last-child {
       border-bottom: 1px solid #eee; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-ui-placeholder-state-highlight {
       background-color: #68bb6c; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-repeater-field-name {
+      border: 0 !important;
+      padding: 0 !important; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-repeater-field-description {
+      color: #aaaaaa;
+      font-size: 12px;
+      line-height: 18px;
+      display: block;
+      padding-bottom: 10px;
+      font-style: italic; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .ui-sortable-helper {
-      display: table; }
+      display: table !important; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-row.ui-sortable-helper {
       border-bottom: 0; }
 

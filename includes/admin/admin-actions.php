@@ -61,6 +61,7 @@ function give_hide_subscription_notices() {
 			return;
 		}
 
+
 		// Hide notice for 24 hours.
 		set_transient( $transient_key, true, 24 * HOUR_IN_SECONDS );
 
@@ -72,50 +73,22 @@ function give_hide_subscription_notices() {
 
 add_action( 'admin_init', 'give_hide_subscription_notices' );
 
-
 /**
- * Verify settings.
- *
- * 1. success and failure page should not be same.
+ * Load wp editor by ajax.
  *
  * @since 1.8
  */
-function give_verify_settings() {
-	// Bailout.
-	if ( ! isset( $_POST['_give-save-settings'] ) ) {
-		return;
+function give_load_wp_editor() {
+	if ( ! isset( $_POST['wp_editor'] ) ) {
+		die();
 	}
 
-	$is_redirect = false;
+	$wp_editor                     = json_decode( base64_decode( $_POST['wp_editor'] ), true );
+	$wp_editor[2]['textarea_name'] = $_POST['textarea_name'];
 
-	switch ( give_get_current_setting_tab() ) {
-		case 'general' :
-			// Check if success page and failure page are same or not.
-			if (
-				isset( $_POST['success_page'] )
-				&& isset( $_POST['failure_page'] )
-				&& ( $_POST['success_page'] === $_POST['failure_page'] )
-			) {
-				$is_redirect = true;
-			}
-			break;
-	}
+	wp_editor( $wp_editor[0], $_POST['wp_editor_id'], $wp_editor[2] );
 
-	// Bailout.
-	if ( ! $is_redirect ) {
-		return;
-	}
-
-
-	// Redirect.
-	wp_safe_redirect(
-		add_query_arg(
-			'give-message',
-			'matched-success-failure-page',
-			esc_url_raw( $_SERVER['REQUEST_URI'] )
-		)
-	);
-	exit();
+	die();
 }
 
-add_action( 'admin_init', 'give_verify_settings' );
+add_action( 'wp_ajax_give_load_wp_editor', 'give_load_wp_editor' );
