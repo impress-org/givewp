@@ -334,13 +334,17 @@ class GIVE_CLI_COMMAND {
 	 * : The number of donor to retrieve
 	 *
 	 * [--create=<number>]
-	 * : The number of arbitrary donors to create. Leave as 1 or blank to create a donor with a specific email
+	 * : The number of arbitrary donors to create. Leave as 1 or blank to create a
+	 * donor with a specific email
 	 *
 	 * [--form-id=<donation_form_id>]
 	 * : Get list of donors of specific donation form
 	 *
 	 * [--name=<name_of_donor>]
 	 * : Name with which you want to create new donor
+	 *
+	 * [--format=<output_format>]
+	 * : In which format you want to see results. Valid formats: table, json, csv
 	 *
 	 * ## EXAMPLES
 	 *
@@ -370,6 +374,7 @@ class GIVE_CLI_COMMAND {
 		$create   = isset( $assoc_args ) && array_key_exists( 'create', $assoc_args ) ? $assoc_args['create'] : false;
 		$number   = isset( $assoc_args ) && array_key_exists( 'number', $assoc_args ) ? $assoc_args['number'] : 10;
 		$form_id  = isset( $assoc_args ) && array_key_exists( 'form-id', $assoc_args ) ? $assoc_args['form-id'] : 0;
+		$format   = isset( $assoc_args ) && array_key_exists( 'format', $assoc_args ) ? $assoc_args['format'] : 'table';
 		$start    = time();
 
 		if ( $create ) {
@@ -461,7 +466,7 @@ class GIVE_CLI_COMMAND {
 
 			foreach ( $donors['donors'] as $donor_data ) {
 				// Set default table row data.
-				$table_first_row = array( __( 'S. No.', 'give' ) );
+				$table_first_row = array( __( 's_no', 'give' ) );
 				$table_row       = array( self::$counter );
 
 				foreach ( $donor_data as $key => $donor ) {
@@ -512,7 +517,42 @@ class GIVE_CLI_COMMAND {
 				self::$counter ++;
 			}
 
-			$this->display_table( $table_data );
+			switch ( $format ) {
+				case 'json':
+					$table_column_name = $table_data[0];
+					unset( $table_data[0] );
+					
+					$new_table_data = array();
+					foreach ( $table_data as $index => $data ) {
+						foreach ( $data as $key => $value ) {
+							$new_table_data[$index][$table_column_name[$key]] = $value;
+						}
+					}
+
+					WP_CLI::log( json_encode( $new_table_data ) );
+					break;
+
+				case 'csv':
+					$file_path = trailingslashit( WP_CONTENT_DIR ) . 'uploads/give_donors_' . date( 'Y_m_d_s', current_time( 'timestamp' ) ) . '.csv';
+					$fp        = fopen( $file_path, 'w' );
+
+					if( is_writable( $file_path ) ) {
+						foreach ( $table_data as $fields ) {
+							fputcsv( $fp, $fields );
+						}
+
+						fclose( $fp );
+
+						WP_CLI::success( "Donors list csv created successfully: {$file_path}" );
+					} else{
+						WP_CLI::warning( "Unable to create donors list csv file: {$file_path} (May folder do not have write permission)" );
+					}
+
+					break;
+
+				default:
+					$this->display_table( $table_data );
+			}
 		}
 	}
 
