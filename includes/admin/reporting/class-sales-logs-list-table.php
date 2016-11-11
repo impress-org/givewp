@@ -319,10 +319,8 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 * @return array $logs_data Array of all the Log entires
 	 */
 	public function get_logs() {
+		/** @var Give_Logging $give_logs */
 		global $give_logs;
-
-		// Prevent the queries from getting cached. Without this there are occasional memory issues for some installs
-		wp_suspend_cache_addition( true );
 
 		$logs_data = array();
 		$paged     = $this->get_paged();
@@ -379,6 +377,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 * @return void
 	 */
 	public function prepare_items() {
+		/** @var Give_Logging $give_logs */
 		global $give_logs;
 
 		$columns               = $this->get_columns();
