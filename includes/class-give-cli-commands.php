@@ -741,10 +741,10 @@ class GIVE_CLI_COMMAND {
 
 				if ( $this->delete_stats_transients() ) {
 					// Report .eading.
-					WP_CLI::success( 'All form stat transient cache deleted.' );
+					WP_CLI::success( 'Give cache deleted.' );
 				} else {
 					// Report .eading.
-					WP_CLI::warning( 'We did not find any transient to delete :)' );
+					WP_CLI::warning( 'We did not find any Give plugin cache to delete :)' );
 				}
 				break;
 		}
@@ -764,25 +764,32 @@ class GIVE_CLI_COMMAND {
 
 		$stat_option_names = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT option_name FROM {$wpdb->options} where option_name LIKE '%%%s%%'",
-				'_transient_give_stats_'
+				"SELECT option_name FROM {$wpdb->options} where (option_name LIKE '%%%s%%' OR option_name LIKE '%%%s%%')",
+				array(
+					'_transient_give_stats_',
+					'give_cache'
+				)
 			),
 			ARRAY_A
 		);
 
 		if ( ! empty( $stat_option_names ) ) {
 
-			// Convert transient option name to transient name.
-			$stat_option_names = array_map(
-				function ( $option ) {
-					return str_replace( '_transient_', '', $option['option_name'] );
-				},
-				$stat_option_names
-			);
-
 			foreach ( $stat_option_names as $option_name ) {
-				if ( delete_transient( $option_name ) ) {
+				$error = false;
+				$option_name = $option_name['option_name'];
 
+				switch ( true ) {
+					case ( false !== strpos( $option_name, 'transient' ) ):
+						$option_name = str_replace( '_transient_', '', $option_name );
+						$error = delete_transient( $option_name );
+						break;
+
+					default:
+						$error = delete_option( $option_name );
+				}
+
+				if ( $error ) {
 					WP_CLI::log( $this->color_message( self::$counter, $option_name ) );
 					self::$counter ++;
 				} else {
