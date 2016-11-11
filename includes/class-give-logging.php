@@ -47,6 +47,11 @@ class Give_Logging {
 
 		// Create types taxonomy and default types
 		add_action( 'init', array( $this, 'register_taxonomy' ), 1 );
+
+		add_action( 'save_post_give_payment', array( $this, 'background_process_delete_cache') );
+		add_action( 'save_post_give_forms', array( $this, 'background_process_delete_cache') );
+		add_action( 'save_post_give_log', array( $this, 'background_process_delete_cache') );
+		add_action( 'give_delete_log_cache', array( $this, 'delete_cache') );
 	}
 
 	/**
@@ -440,6 +445,49 @@ class Give_Logging {
 		}
 	}
 
+	/**
+	 * Setup cron to delete log cache in background.
+	 *
+	 * @since  1.7
+	 * @access public
+	 *
+	 * @param int $post_id
+	 */
+	public function background_process_delete_cache( $post_id ) {
+		wp_schedule_single_event( time(), 'give_delete_log_cache' );
+	}
+
+	/**
+	 * Delete all logging cache when form, log or payment updates
+	 *
+	 * @since  1.7
+	 * @access public
+	 *
+	 * @param int $post_id
+	 *
+	 * @return bool
+	 */
+	public function delete_cache( $post_id ) {
+		global $wpdb;
+		$cache_option_names = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT option_name FROM {$wpdb->options} where option_name LIKE '%%%s%%'",
+				'give_cache'
+			),
+			ARRAY_A
+		);
+
+		// Bailout.
+		if( empty( $cache_option_names ) ) {
+			return false;
+		}
+
+
+		// Delete log cache.
+		foreach ( $cache_option_names as $option_name ) {
+			delete_option( $option_name['option_name'] );
+		}
+	}
 }
 
 // Initiate the logging system
