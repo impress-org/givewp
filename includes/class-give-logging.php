@@ -31,7 +31,8 @@ class Give_Logging {
 	 * @since  1.0
 	 * @access public
 	 */
-	public function __construct() {}
+	public function __construct() {
+	}
 
 
 	/**
@@ -70,7 +71,7 @@ class Give_Logging {
 			'rewrite'             => false,
 			'capability_type'     => 'post',
 			'supports'            => array( 'title', 'editor' ),
-			'can_export'          => true
+			'can_export'          => true,
 		);
 
 		register_post_type( 'give_log', $log_args );
@@ -104,7 +105,7 @@ class Give_Logging {
 		$terms = array(
 			'sale',
 			'gateway_error',
-			'api_request'
+			'api_request',
 		);
 
 		return apply_filters( 'give_log_types', $terms );
@@ -147,7 +148,7 @@ class Give_Logging {
 			'post_title'   => $title,
 			'post_content' => $message,
 			'post_parent'  => $parent,
-			'log_type'     => $type
+			'log_type'     => $type,
 		);
 
 		return $this->insert_log( $log_data );
@@ -171,7 +172,7 @@ class Give_Logging {
 		return $this->get_connected_logs( array(
 			'post_parent' => $object_id,
 			'paged'       => $paged,
-			'log_type'    => $type
+			'log_type'    => $type,
 		) );
 	}
 
@@ -192,7 +193,7 @@ class Give_Logging {
 			'post_status'  => 'publish',
 			'post_parent'  => 0,
 			'post_content' => '',
-			'log_type'     => false
+			'log_type'     => false,
 		);
 
 		$args = wp_parse_args( $log_data, $defaults );
@@ -262,7 +263,7 @@ class Give_Logging {
 		$defaults = array(
 			'post_type'   => 'give_log',
 			'post_status' => 'publish',
-			'post_parent' => 0
+			'post_parent' => 0,
 		);
 
 		$args = wp_parse_args( $log_data, $defaults );
@@ -309,7 +310,7 @@ class Give_Logging {
 			'posts_per_page' => 20,
 			'post_status'    => 'publish',
 			'paged'          => get_query_var( 'paged' ),
-			'log_type'       => false
+			'log_type'       => false,
 		);
 
 		$query_args = wp_parse_args( $args, $defaults );
@@ -319,13 +320,13 @@ class Give_Logging {
 				array(
 					'taxonomy' => 'give_log_type',
 					'field'    => 'slug',
-					'terms'    => $query_args['log_type']
-				)
+					'terms'    => $query_args['log_type'],
+				),
 			);
 		}
-		
+
 		$logs = get_posts( $query_args );
-	
+
 		if ( $logs ) {
 			return $logs;
 		}
@@ -364,8 +365,8 @@ class Give_Logging {
 				array(
 					'taxonomy' => 'give_log_type',
 					'field'    => 'slug',
-					'terms'    => $type
-				)
+					'terms'    => $type,
+				),
 			);
 		}
 
@@ -402,7 +403,7 @@ class Give_Logging {
 			'post_type'      => 'give_log',
 			'posts_per_page' => - 1,
 			'post_status'    => 'publish',
-			'fields'         => 'ids'
+			'fields'         => 'ids',
 		);
 
 		if ( ! empty( $type ) && $this->valid_type( $type ) ) {
@@ -411,7 +412,7 @@ class Give_Logging {
 					'taxonomy' => 'give_log_type',
 					'field'    => 'slug',
 					'terms'    => $type,
-				)
+				),
 			);
 		}
 
