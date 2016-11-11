@@ -319,14 +319,15 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 		$single_donation_url = esc_url( add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details' ) ) );
 		$row_actions         = $this->get_row_actions( $payment );
+		$sensitive_data      = current_user_can('view_give_sensitive_data');
 
 		switch ( $column_name ) {
 			case 'donation' :
 				ob_start();
 				?>
-				<a href="<?php echo $single_donation_url; ?>" data-tooltip="<?php esc_html_e( 'View details', 'give' ) ?>">#<?php echo $payment->ID; ?></a>&nbsp;<?php _e( 'by', 'give' ); ?>&nbsp;<?php echo $this->get_donor( $payment ); ?>
+				<a href="<?php echo $single_donation_url; ?>" data-tooltip="<?php esc_html_e( 'View details', 'give' ) ?>">#<?php echo $payment->ID; ?></a>&nbsp;<?php _e( 'by', 'give' ); ?>&nbsp;<?php if ($sensitive_data){ echo $this->get_donor( $payment );} else {echo '(hidden)';}; ?>
 				<br>
-				<?php echo $this->get_donor_email( $payment ); ?>
+				<?php if($sensitive_data) { echo $this->get_donor_email( $payment );} else {echo '';} ?>
 				<?php echo $this->row_actions( $row_actions ); ?>
 				<?php
 				$value = ob_get_clean();
