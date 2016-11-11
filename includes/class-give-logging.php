@@ -31,14 +31,21 @@ class Give_Logging {
 	 * @since  1.0
 	 * @access public
 	 */
-	public function __construct() {
+	public function __construct() {}
 
+
+	/**
+	 * Setup hooks
+	 *
+	 * @since  1.7
+	 * @access public
+	 */
+	public function __setup_hooks() {
 		// Create the log post type
 		add_action( 'init', array( $this, 'register_post_type' ), 1 );
 
 		// Create types taxonomy and default types
 		add_action( 'init', array( $this, 'register_taxonomy' ), 1 );
-
 	}
 
 	/**
@@ -425,6 +432,7 @@ class Give_Logging {
 
 // Initiate the logging system
 $GLOBALS['give_logs'] = new Give_Logging();
+$GLOBALS['give_logs']->__setup_hooks();
 
 /**
  * Record a log entry
