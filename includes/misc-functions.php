@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Is Test Mode
+ * Is Test Mode Enabled.
  *
  * @since 1.0
  *

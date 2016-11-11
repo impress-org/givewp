@@ -515,6 +515,25 @@ function give_date_format ( $date_context = '' ) {
 }
 
 /**
+ * Get cache key.
+ *
+ * @since  1.7
+ *
+ * @param  string $action     Cache key prefix.
+ * @param array   $query_args Query array.
+ *
+ * @return string
+ */
+function give_get_cache_key( $action, $query_args ) {
+	// Bailout.
+	if( ! is_array( $query_args ) || empty( $query_args ) ) {
+		return '';
+	}
+
+	return "give_cache_{$action}_" . substr( md5( serialize( $query_args ) ), 0, 15 );
+}
+
+/**
  * Clean variables using sanitize_text_field. Arrays are cleaned recursively.
  * Non-scalar values are ignored.
  *
