@@ -175,6 +175,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * New: If only a single payment gateway is enabled the "Select Payment Method" fieldset is hidden to improve the donor experience - https://github.com/WordImpress/Give/issues/1122
 * Tweak: Organize data with a logical relationship in grids for table accessibility - https://github.com/WordImpress/Give/issues/922
 * Tweak: Terminology changes - "Transactions" now called "Donations" and "Payments" now termed "Donation" in WP-admin - https://github.com/WordImpress/Give/issues/896
+* Tweak: Removed unnecessary Give user roles - https://github.com/WordImpress/Give/issues/662
 * Tweak: Remove "Form Labels" functions from translation strings - https://github.com/WordImpress/Give/issues/1003
 * Fix: User able to donate minimum amount then custom minimum amount with multi level donation form - https://github.com/WordImpress/Give/issues/712
 * Fix: Clearing reports cache wasn't working for "Estimated monthly income for this period" - https://github.com/WordImpress/Give/issues/773
