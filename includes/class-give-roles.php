@@ -127,7 +127,7 @@ class Give_Roles {
 			$wp_roles->add_cap( 'administrator', 'export_give_reports' );
 			$wp_roles->add_cap( 'administrator', 'manage_give_settings' );
 
-			// Add the main post type capabilities
+			// Add the main post type capabilities.
 			$capabilities = $this->get_core_caps();
 			foreach ( $capabilities as $cap_group ) {
 				foreach ( $cap_group as $cap ) {
@@ -257,19 +257,19 @@ class Give_Roles {
 		}
 
 		if ( is_object( $wp_roles ) ) {
-			/** Give Manager Capabilities */
+			// Give Manager Capabilities.
 			$wp_roles->remove_cap( 'give_manager', 'view_give_reports' );
 			$wp_roles->remove_cap( 'give_manager', 'view_give_sensitive_data' );
 			$wp_roles->remove_cap( 'give_manager', 'export_give_reports' );
 			$wp_roles->remove_cap( 'give_manager', 'manage_give_settings' );
 
-			/** Site Administrator Capabilities */
+			// Site Administrator Capabilities.
 			$wp_roles->remove_cap( 'administrator', 'view_give_reports' );
 			$wp_roles->remove_cap( 'administrator', 'view_give_sensitive_data' );
 			$wp_roles->remove_cap( 'administrator', 'export_give_reports' );
 			$wp_roles->remove_cap( 'administrator', 'manage_give_settings' );
 
-			/** Remove the Main Post Type Capabilities */
+			// Remove the Main Post Type Capabilities.
 			$capabilities = $this->get_core_caps();
 
 			foreach ( $capabilities as $cap_group ) {
