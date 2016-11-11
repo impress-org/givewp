@@ -58,17 +58,17 @@ class GIVE_CLI_COMMAND {
 	 *
 	 * wp give logo
 	 *
-	 * @since		1.7
-	 * @access		public
+	 * @since         1.7
+	 * @access        public
 	 *
-	 * @param		string $args        Command Data.
-	 * @param		array  $assoc_args  List of command data.
+	 * @param        string $args       Command Data.
+	 * @param        array  $assoc_args List of command data.
 	 *
-	 * @return		void
+	 * @return        void
 	 *
-	 * @subcommand  logo
+	 * @subcommand    logo
 	 */
-	public function ascii( $args, $assoc_args ){
+	public function ascii( $args, $assoc_args ) {
 		WP_CLI::log( file_get_contents( GIVE_PLUGIN_DIR . 'assets/images/give-ascii-logo.txt' ) );
 	}
 
@@ -521,11 +521,11 @@ class GIVE_CLI_COMMAND {
 				case 'json':
 					$table_column_name = $table_data[0];
 					unset( $table_data[0] );
-					
+
 					$new_table_data = array();
 					foreach ( $table_data as $index => $data ) {
 						foreach ( $data as $key => $value ) {
-							$new_table_data[$index][$table_column_name[$key]] = $value;
+							$new_table_data[ $index ][ $table_column_name[ $key ] ] = $value;
 						}
 					}
 
@@ -536,7 +536,7 @@ class GIVE_CLI_COMMAND {
 					$file_path = trailingslashit( WP_CONTENT_DIR ) . 'uploads/give_donors_' . date( 'Y_m_d_s', current_time( 'timestamp' ) ) . '.csv';
 					$fp        = fopen( $file_path, 'w' );
 
-					if( is_writable( $file_path ) ) {
+					if ( is_writable( $file_path ) ) {
 						foreach ( $table_data as $fields ) {
 							fputcsv( $fp, $fields );
 						}
@@ -544,7 +544,7 @@ class GIVE_CLI_COMMAND {
 						fclose( $fp );
 
 						WP_CLI::success( "Donors list csv created successfully: {$file_path}" );
-					} else{
+					} else {
 						WP_CLI::warning( "Unable to create donors list csv file: {$file_path} (May folder do not have write permission)" );
 					}
 
@@ -741,10 +741,10 @@ class GIVE_CLI_COMMAND {
 
 				if ( $this->delete_stats_transients() ) {
 					// Report .eading.
-					WP_CLI::success( 'All form stat transient cache deleted.' );
+					WP_CLI::success( 'Give cache deleted.' );
 				} else {
 					// Report .eading.
-					WP_CLI::warning( 'We did not find any transient to delete :)' );
+					WP_CLI::warning( 'We did not find any Give plugin cache to delete :)' );
 				}
 				break;
 		}
@@ -764,25 +764,32 @@ class GIVE_CLI_COMMAND {
 
 		$stat_option_names = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT option_name FROM {$wpdb->options} where option_name LIKE '%%%s%%'",
-				'_transient_give_stats_'
+				"SELECT option_name FROM {$wpdb->options} where (option_name LIKE '%%%s%%' OR option_name LIKE '%%%s%%')",
+				array(
+					'_transient_give_stats_',
+					'give_cache',
+				)
 			),
 			ARRAY_A
 		);
 
 		if ( ! empty( $stat_option_names ) ) {
 
-			// Convert transient option name to transient name.
-			$stat_option_names = array_map(
-				function ( $option ) {
-					return str_replace( '_transient_', '', $option['option_name'] );
-				},
-				$stat_option_names
-			);
-
 			foreach ( $stat_option_names as $option_name ) {
-				if ( delete_transient( $option_name ) ) {
+				$error       = false;
+				$option_name = $option_name['option_name'];
 
+				switch ( true ) {
+					case ( false !== strpos( $option_name, 'transient' ) ):
+						$option_name = str_replace( '_transient_', '', $option_name );
+						$error       = delete_transient( $option_name );
+						break;
+
+					default:
+						$error = delete_option( $option_name );
+				}
+
+				if ( $error ) {
 					WP_CLI::log( $this->color_message( self::$counter, $option_name ) );
 					self::$counter ++;
 				} else {
@@ -878,6 +885,7 @@ class GIVE_CLI_COMMAND {
 	 * Get donors by form id
 	 *
 	 * @since 1.8
+	 *
 	 * @param int $form_id From id.
 	 *
 	 * @return array
@@ -889,7 +897,7 @@ class GIVE_CLI_COMMAND {
 		$donations = new Give_Payments_Query(
 			array(
 				'give_forms' => array( $form_id ),
-				'number'     => -1,
+				'number'     => - 1,
 				'status'     => array( 'publish' ),
 			)
 		);
