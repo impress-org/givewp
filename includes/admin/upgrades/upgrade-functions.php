@@ -411,88 +411,87 @@ function give_v17_upgrades() {
  *
  * @since 1.7
  */
-function give_v17_upgrade_addon_license_data(){
-    $give_options = give_get_settings();
+function give_v17_upgrade_addon_license_data() {
+	$give_options = give_get_settings();
 
-    $api_url = 'https://givewp.com/give-sl-api/';
+	$api_url = 'https://givewp.com/give-sl-api/';
 
-    // Get addons license key.
-    $addons = array();
-    foreach ( $give_options as $key => $value ) {
-        if( false !== strpos( $key, '_license_key' ) ) {
-            $addons[$key] = $value;
-        }
-    }
+	// Get addons license key.
+	$addons = array();
+	foreach ( $give_options as $key => $value ) {
+		if ( false !== strpos( $key, '_license_key' ) ) {
+			$addons[ $key ] = $value;
+		}
+	}
 
-    // Bailout: We do not have any addon license data to upgrade.
-    if( empty( $addons ) ) {
-        return false;
-    }
-    
-    foreach ( $addons as $key => $addon_license ) {
+	// Bailout: We do not have any addon license data to upgrade.
+	if ( empty( $addons ) ) {
+		return false;
+	}
 
-        // Get addon shortname.
-        $shortname = str_replace( '_license_key', '', $key );
+	foreach ( $addons as $key => $addon_license ) {
 
-        // Addon license option name.
-        $addon_license_option_name = $shortname . '_license_active';
+		// Get addon shortname.
+		$shortname = str_replace( '_license_key', '', $key );
 
-        // bailout if license is empty.
-        if( empty( $addon_license ) ) {
-            delete_option( $addon_license_option_name );
-            continue;
-        }
+		// Addon license option name.
+		$addon_license_option_name = $shortname . '_license_active';
 
-        // Get addon name.
-        $addon_name = array();
-        $addon_name_parts = explode( '_', str_replace( 'give_', '', $shortname ) );
-        foreach ( $addon_name_parts as $name_part ) {
+		// bailout if license is empty.
+		if ( empty( $addon_license ) ) {
+			delete_option( $addon_license_option_name );
+			continue;
+		}
 
-            // Fix addon name
-            switch ( $name_part ) {
-                case 'authorizenet' :
-                    $name_part = 'authorize.net';
-                    break;
-            }
+		// Get addon name.
+		$addon_name       = array();
+		$addon_name_parts = explode( '_', str_replace( 'give_', '', $shortname ) );
+		foreach ( $addon_name_parts as $name_part ) {
 
-            $addon_name[] = ucfirst( $name_part );
-        }
+			// Fix addon name
+			switch ( $name_part ) {
+				case 'authorizenet' :
+					$name_part = 'authorize.net';
+					break;
+			}
 
-        $addon_name = implode( ' ', $addon_name );
+			$addon_name[] = ucfirst( $name_part );
+		}
 
-        // Data to send to the API
-        $api_params = array(
-            'edd_action' => 'activate_license', //never change from "edd_" to "give_"!
-            'license'    => $addon_license,
-            'item_name'  => urlencode( $addon_name ),
-            'url'        => home_url()
-        );
+		$addon_name = implode( ' ', $addon_name );
 
-        // Call the API
-        $response = wp_remote_post(
-            $api_url,
-            array(
-                'timeout'   => 15,
-                'sslverify' => false,
-                'body'      => $api_params
-            )
-        );
+		// Data to send to the API
+		$api_params = array(
+			'edd_action' => 'activate_license', //never change from "edd_" to "give_"!
+			'license'    => $addon_license,
+			'item_name'  => urlencode( $addon_name ),
+			'url'        => home_url()
+		);
 
-        // Make sure there are no errors
-        if ( is_wp_error( $response ) ) {
-            delete_option( $addon_license_option_name );
-            continue;
-        }
+		// Call the API
+		$response = wp_remote_post(
+			$api_url,
+			array(
+				'timeout'   => 15,
+				'sslverify' => false,
+				'body'      => $api_params
+			)
+		);
 
-        // Tell WordPress to look for updates
-        set_site_transient( 'update_plugins', null );
+		// Make sure there are no errors
+		if ( is_wp_error( $response ) ) {
+			delete_option( $addon_license_option_name );
+			continue;
+		}
 
-        // Decode license data
-        $license_data = json_decode( wp_remote_retrieve_body( $response ) );
-        update_option( $addon_license_option_name, $license_data );
-    }
+		// Tell WordPress to look for updates
+		set_site_transient( 'update_plugins', null );
+
+		// Decode license data
+		$license_data = json_decode( wp_remote_retrieve_body( $response ) );
+		update_option( $addon_license_option_name, $license_data );
+	}
 }
-
 
 
 /**
@@ -502,6 +501,33 @@ function give_v17_upgrade_addon_license_data(){
  *
  * @since      1.7
  */
-function give_v17_cleanup_users() {
+function give_v17_cleanup_roles() {
+
+	//Delete all caps with "_give_forms_" and "_give_payments_"
+	//These roles have no usage; the proper is singular.
+	$delete_caps = array(
+		'view_give_forms_stats',
+		'delete_give_forms_terms',
+		'assign_give_forms_terms',
+		'edit_give_forms_terms',
+		'manage_give_forms_terms',
+		'view_give_payments_stats',
+		'manage_give_payments_terms',
+		'edit_give_payments_terms',
+		'assign_give_payments_terms',
+		'delete_give_payments_terms',
+	);
+
+	global $wp_roles;
+	foreach ( $delete_caps as $cap ) {
+		foreach ( array_keys( $wp_roles->roles ) as $role ) {
+			$wp_roles->remove_cap( $role, $cap );
+		}
+	}
+
+	//Set roles again.
+	$roles = new Give_Roles();
+	$roles->add_roles();
+	$roles->add_caps();
 
 }
