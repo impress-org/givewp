@@ -81,16 +81,16 @@ class Give_Roles {
 		) );
 
 		add_role( 'give_accountant', esc_html__( 'Give Accountant', 'give' ), array(
-		    'read'                   => true,
-		    'edit_posts'             => false,
-		    'delete_posts'           => false
+			'read'         => true,
+			'edit_posts'   => false,
+			'delete_posts' => false
 		) );
 
 		add_role( 'give_worker', esc_html__( 'Give Worker', 'give' ), array(
-			'read'                   => true,
-			'edit_posts'             => false,
-			'upload_files'           => true,
-			'delete_posts'           => false
+			'read'         => true,
+			'edit_posts'   => false,
+			'upload_files' => true,
+			'delete_posts' => false
 		) );
 
 	}
@@ -110,7 +110,7 @@ class Give_Roles {
 	public function add_caps() {
 		global $wp_roles;
 
-		if ( class_exists('WP_Roles') ) {
+		if ( class_exists( 'WP_Roles' ) ) {
 			if ( ! isset( $wp_roles ) ) {
 				$wp_roles = new WP_Roles();
 			}
@@ -163,7 +163,7 @@ class Give_Roles {
 
 		foreach ( $capability_types as $capability_type ) {
 			$capabilities[ $capability_type ] = array(
-				// Post type
+				// Post type.
 				"edit_{$capability_type}",
 				"read_{$capability_type}",
 				"delete_{$capability_type}",
@@ -178,14 +178,15 @@ class Give_Roles {
 				"edit_private_{$capability_type}s",
 				"edit_published_{$capability_type}s",
 
-				// Terms
+				// Terms / taxonomies.
 				"manage_{$capability_type}_terms",
 				"edit_{$capability_type}_terms",
 				"delete_{$capability_type}_terms",
 				"assign_{$capability_type}_terms",
 
-				// Custom
-				"view_{$capability_type}_stats"
+				// Custom capabilities.
+				"view_{$capability_type}_stats",
+				"import_{$capability_type}s",
 			);
 		}
 
@@ -209,20 +210,20 @@ class Give_Roles {
 	 */
 	public function meta_caps( $caps, $cap, $user_id, $args ) {
 
-		switch( $cap ) {
+		switch ( $cap ) {
 
 			case 'view_give_form_stats' :
-				
-				if( empty( $args[0] ) ) {
+
+				if ( empty( $args[0] ) ) {
 					break;
 				}
-				
+
 				$form = get_post( $args[0] );
 				if ( empty( $form ) ) {
 					break;
 				}
 
-				if( user_can( $user_id, 'view_give_reports' ) || $user_id == $form->post_author ) {
+				if ( user_can( $user_id, 'view_give_reports' ) || $user_id == $form->post_author ) {
 					$caps = array();
 				}
 
@@ -246,7 +247,7 @@ class Give_Roles {
 	 * @return void
 	 */
 	public function remove_caps() {
-		
+
 		global $wp_roles;
 
 		if ( class_exists( 'WP_Roles' ) ) {
