@@ -378,9 +378,20 @@ class Give_Logging {
 			$query_args['date_query'] = $date_query;
 		}
 
-		$logs = new WP_Query( $query_args );
 
-		return (int) $logs->post_count;
+		// Get cache key for current query.
+		$cache_key =  give_get_cache_key( 'get_log_count', $query_args );
+
+		// check if cache already exist or not.
+		if( ! ( $logs_count = get_option( $cache_key ) ) ) {
+			$logs = new WP_Query( $query_args );
+			$logs_count = (int) $logs->post_count;
+
+			// Cache results.
+			add_option( $cache_key, $logs_count, '', 'no' );
+		}
+
+		return $logs_count;
 	}
 
 	/**
