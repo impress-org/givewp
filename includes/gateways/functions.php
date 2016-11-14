@@ -118,7 +118,7 @@ function give_get_default_gateway( $form_id ) {
  * @return string Gateway admin label
  */
 function give_get_gateway_admin_label( $gateway ) {
-	$gateways = give_get_enabled_payment_gateways();
+	$gateways = give_get_payment_gateways();
 	$label    = isset( $gateways[ $gateway ] ) ? $gateways[ $gateway ]['admin_label'] : $gateway;
 	$payment  = isset( $_GET['id'] ) ? absint( $_GET['id'] ) : false;
 
