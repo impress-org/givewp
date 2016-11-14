@@ -56,6 +56,7 @@ function give_load_scripts() {
 				'give_user_login'        => esc_html__( 'Invalid username. Only lowercase letters (a-z) and numbers are allowed.', 'give' ),
 				'give_user_pass'         => esc_html__( 'Enter a password.', 'give' ),
 				'give_user_pass_confirm' => esc_html__( 'Enter a confirm password.', 'give' ),
+				'give_agree_to_terms'    => esc_html__( 'You must agree to the terms of use.', 'give' ),
 			)
 		),
 	) );
