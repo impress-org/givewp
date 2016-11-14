@@ -177,6 +177,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Tweak: Terminology changes - "Transactions" now called "Donations" and "Payments" now termed "Donation" in WP-admin - https://github.com/WordImpress/Give/issues/896
 * Tweak: Removed unnecessary Give user roles - https://github.com/WordImpress/Give/issues/662
 * Tweak: Remove "Form Labels" functions from translation strings - https://github.com/WordImpress/Give/issues/1003
+* Tweak: a11y + UX - The terms agreement checkbox should be a required field - https://github.com/WordImpress/Give/issues/1200
 * Fix: User able to donate minimum amount then custom minimum amount with multi level donation form - https://github.com/WordImpress/Give/issues/712
 * Fix: Clearing reports cache wasn't working for "Estimated monthly income for this period" - https://github.com/WordImpress/Give/issues/773
 * Fix: Use only one text-domain "give" for i18n - https://github.com/WordImpress/Give/issues/964
