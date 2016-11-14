@@ -292,7 +292,7 @@ function give_get_default_donation_notification_email() {
 	$default_email_body .= esc_html__( 'This email is to inform you that a new donation has been made on your website:', 'give' ) . ' <a href="' . get_bloginfo( 'url' ) . '" target="_blank">' . get_bloginfo( 'url' ) . '</a>' . ".\n\n";
 	$default_email_body .= '<strong>' . esc_html__( 'Donor:', 'give' ) . '</strong> {name}' . "\n";
 	$default_email_body .= '<strong>' . esc_html__( 'Donation:', 'give' ) . '</strong> {donation}' . "\n";
-	$default_email_body .= '<strong>' . esc_html__( 'Amount:', 'give' ) . '</strong> {price}' . "\n";
+	$default_email_body .= '<strong>' . esc_html__( 'Amount:', 'give' ) . '</strong> {amount}' . "\n";
 	$default_email_body .= '<strong>' . esc_html__( 'Payment Method:', 'give' ) . '</strong> {payment_method}' . "\n\n";
 	$default_email_body .= esc_html__( 'Thank you,', 'give' ) . "\n\n";
 	$default_email_body .= '{sitename}' . "\n";
@@ -319,7 +319,7 @@ function give_get_default_donation_receipt_email() {
 	$default_email_body .= '<strong>' . esc_html__( 'Donor:', 'give' ) . '</strong> {fullname}' . "\n";
 	$default_email_body .= '<strong>' . esc_html__( 'Donation:', 'give' ) . '</strong> {donation}' . "\n";
 	$default_email_body .= '<strong>' . esc_html__( 'Donation Date:', 'give' ) . '</strong> {date}' . "\n";
-	$default_email_body .= '<strong>' . esc_html__( 'Amount:', 'give' ) . '</strong> {price}' . "\n";
+	$default_email_body .= '<strong>' . esc_html__( 'Amount:', 'give' ) . '</strong> {amount}' . "\n";
 	$default_email_body .= '<strong>' . esc_html__( 'Payment Method:', 'give' ) . '</strong> {payment_method}' . "\n";
 	$default_email_body .= '<strong>' . esc_html__( 'Payment ID:', 'give' ) . '</strong> {payment_id}' . "\n";
 	$default_email_body .= '<strong>' . esc_html__( 'Receipt ID:', 'give' ) . '</strong> {receipt_id}' . "\n\n";

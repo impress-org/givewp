@@ -563,7 +563,7 @@ $payment_mode   = $payment->mode;
 									 * @param array $payment_meta Payment meta.
 									 * @param array $user_info    User information.
 									 */
-									do_action( 'give_donation_personal_details_list', $payment_meta, $user_info );
+									do_action( 'give_payment_personal_details_list', $payment_meta, $user_info );
 
 									/**
 									 * Fires in order details page, in the donor-details metabox.
@@ -572,7 +572,7 @@ $payment_mode   = $payment->mode;
 									 *
 									 * @param int $payment_id Payment id.
 									 */
-									do_action( 'give_donation_view_details', $payment_id );
+									do_action( 'give_payment_view_details', $payment_id );
 									?>
 
 								</div>
@@ -672,7 +672,7 @@ $payment_mode   = $payment->mode;
 									 *
 									 * @param int $payment_id Payment id.
 									 */
-									do_action( 'give_donation_billing_details', $payment_id );
+									do_action( 'give_payment_billing_details', $payment_id );
 									?>
 
 								</div>
@@ -753,10 +753,10 @@ $payment_mode   = $payment->mode;
 		 */
 		do_action( 'give_view_order_details_form_bottom', $payment_id );
 
-		wp_nonce_field( 'give_update_donation_details_nonce' );
+		wp_nonce_field( 'give_update_payment_details_nonce' );
 		?>
 		<input type="hidden" name="give_payment_id" value="<?php echo esc_attr( $payment_id ); ?>"/>
-		<input type="hidden" name="give_action" value="update_donation_details"/>
+		<input type="hidden" name="give_action" value="update_payment_details"/>
 	</form>
 	<?php
 	/**

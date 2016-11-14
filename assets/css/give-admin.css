@@ -565,8 +565,7 @@ x:-o-prefocus, .qtip .qtip-tip {
  * Give Frontend Fonts SCSS
  *
  * Fonts are from icomoon and the src paths need to be relative to template directory.
- *
- @package     Give
+ * @package     Give
  * @subpackage  SCSS/Frontend
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -678,7 +677,8 @@ x:-o-prefocus, .qtip .qtip-tip {
   -moz-osx-font-smoothing: grayscale;
   font-size: 12px;
   vertical-align: baseline;
-  margin: 0 5px 0 0; }
+  margin: 0 5px 0 0;
+  content: "\e903"; }
 
 .give-metabox-tabs li.form_field_options_tab > a:before {
   content: "\e604"; }
@@ -1025,8 +1025,8 @@ Tooltips
       font-style: italic; }
     #give-metabox-form-data .give_options_panel .give-field-wrap ul {
       margin: 0; }
-    #give-metabox-form-data .give_options_panel .give-field-wrap .mce-container iframe {
-      min-height: 200px; }
+    #give-metabox-form-data .give_options_panel .give-field-wrap .mce-container iframe, #give-metabox-form-data .give_options_panel .give-field-wrap textarea {
+      min-height: 250px !important; }
   #give-metabox-form-data .give_options_panel .give-field-wrap:last-child {
     border-bottom: 0; }
   #give-metabox-form-data .give_options_panel textarea.give-field {
@@ -1084,14 +1084,24 @@ Tooltips
       content: "\f140"; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-add-repeater-field-section-row-wrap {
       background-color: #f5f5f5; }
-    #give-metabox-form-data .give_options_panel .give-repeatable-field-section #give-add-repeater-field-section-row {
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-add-repeater-field-section-row {
       margin: 5px 5px; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-field-wrap:last-child {
       border-bottom: 1px solid #eee; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-ui-placeholder-state-highlight {
       background-color: #68bb6c; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-repeater-field-name {
+      border: 0 !important;
+      padding: 0 !important; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-repeater-field-description {
+      color: #aaaaaa;
+      font-size: 12px;
+      line-height: 18px;
+      display: block;
+      padding-bottom: 10px;
+      font-style: italic; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .ui-sortable-helper {
-      display: table; }
+      display: table !important; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-row.ui-sortable-helper {
       border-bottom: 0; }
 
@@ -1172,7 +1182,10 @@ Tooltips
 */
 #give-dashboard-widgets-wrap .inside {
   padding-top: 0;
-  padding-bottom: 0; }
+  padding-bottom: 0;
+  /* counteract extra padding in Income Report graph */ }
+  .give_forms_page_give-reports #give-dashboard-widgets-wrap .inside {
+    padding-left: 0; }
 
 #give-dashboard-widgets-wrap .postbox {
   margin-bottom: 10px; }
@@ -1181,26 +1194,17 @@ Tooltips
   clear: none; }
 
 #give-dashboard-widgets-wrap #give-graphs-filter .tablenav {
-  margin: 0; }
+  margin: 0 0 0 17px; }
   #give-dashboard-widgets-wrap #give-graphs-filter .tablenav .actions {
     padding: 0; }
 
 #give-dashboard-widgets-wrap #give-date-range-options {
-  clear: both;
-  overflow: hidden;
-  padding: 8px 0; }
+  float: left; }
   #give-dashboard-widgets-wrap #give-date-range-options > span {
     float: left;
     line-height: 30px;
     font-style: italic;
     padding: 0 5px 0 0; }
-  #give-dashboard-widgets-wrap #give-date-range-options #give-graphs-year-end {
-    margin-right: 0; }
-
-#give-dashboard-widgets-wrap a.give-refresh-reports-button {
-  display: inline-block;
-  clear: right;
-  margin: 8px 0 0; }
 
 .give-graph .y1Axis {
   color: #66bb6a !important; }
@@ -1619,6 +1623,21 @@ p.give-field-description, .cmb2-metabox-description {
 
 .cmb2-id-give-title > div.cmb-td {
   padding-bottom: 5px; }
+
+.give-email-tags-wrap {
+  margin: 5px 0 0; }
+  .give-email-tags-wrap code {
+    font-style: normal;
+    padding: 1px 2px;
+    font-size: 12px; }
+  .give-email-tags-wrap span {
+    display: block;
+    color: #AAA;
+    font-style: italic;
+    margin: 0 0 2px;
+    font-size: 13px; }
+  .give-email-tags-wrap .give_price_tag {
+    display: none; }
 
 #system-info-textarea {
   width: 800px;
@@ -2396,6 +2415,29 @@ input.give-price-field {
   padding-right: 10px;
   padding-left: 10px; }
 
+/*=Admin Buttons w/ Icons
+--------------------------------------*/
+/* extends .wp-core-ui .button */
+.wp-core-ui .give-admin-button {
+  padding-left: 7px;
+  padding-right: 7px; }
+
+/* matches style of Add Media and Give Shortcodes buttons */
+.give-admin-button-icon {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  vertical-align: text-top;
+  margin: 0 2px;
+  /* specific DashIcon styles */ }
+  .give-admin-button-icon:before {
+    font: 400 18px/1 dashicons;
+    speak: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale; }
+  .give-admin-button-icon-update:before {
+    content: "\f463"; }
+
 /* =Primary button in shortcode tinymce dialog
 -------------------------------------------------------------- */
 .mce-primary.mce-sc-primary button {
@@ -2486,5 +2528,72 @@ div.sc-shortcode {
 #mce-modal-block.mce-reset.mce-fade.mce-in {
   opacity: 0.7;
   filter: alpha(opacity=70); }
+
+/**
+ * Give System Info SCSS
+ *
+ * @description System Info Styles
+ * @package     Give
+ * @subpackage  SCSS/Admin
+ * @copyright   Copyright (c) 2016, WordImpress
+ * @license     https://opensource.org/licenses/gpl-3.0/ GNU Public License
+ *
+ * The following code is a derivative work of the code from the WooCommerce
+ * plugin, which is licensed GPLv3. This code therefore is also licensed under
+ * the terms of the GNU Public License, version 3.
+ *
+ * Copyright (c) 2015 WooThemes
+ * Copyright (c) 2016 WordImpress, LLC
+*/
+.give-status-table {
+  margin-bottom: 1em; }
+  .give-status-table h2 {
+    font-size: 14px;
+    margin: 0; }
+  .give-status-table tr:nth-child(2n) th,
+  .give-status-table tr:nth-child(2n) td {
+    background: #fcfcfc; }
+  .give-status-table th {
+    font-weight: 700;
+    padding: 9px; }
+  .give-status-table td:first-child {
+    width: 33%; }
+  .give-status-table td.help {
+    width: 1em; }
+  .give-status-table td {
+    padding: 9px;
+    font-size: 1.1em; }
+    .give-status-table td mark {
+      background: transparent none; }
+    .give-status-table td mark.yes {
+      color: #7ad03a; }
+    .give-status-table td mark.no {
+      color: #999; }
+    .give-status-table td mark.error {
+      color: #a00; }
+    .give-status-table td ul {
+      margin: 0; }
+
+.wrap div.give-debug-report-wrapper {
+  margin-top: 1em; }
+
+.give-debug-report {
+  display: none;
+  margin: 10px 0;
+  padding: 0;
+  position: relative; }
+  .give-debug-report textarea {
+    font-family: monospace;
+    width: 100%;
+    margin: 0;
+    height: 300px;
+    padding: 20px;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    resize: none;
+    font-size: 12px;
+    line-height: 20px;
+    outline: 0; }
 
 /*# sourceMappingURL=../sourcemaps/give-admin.css.map */

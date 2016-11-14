@@ -515,6 +515,25 @@ function give_date_format ( $date_context = '' ) {
 }
 
 /**
+ * Get cache key.
+ *
+ * @since  1.7
+ *
+ * @param  string $action     Cache key prefix.
+ * @param array   $query_args Query array.
+ *
+ * @return string
+ */
+function give_get_cache_key( $action, $query_args ) {
+	// Bailout.
+	if( ! is_array( $query_args ) || empty( $query_args ) ) {
+		return '';
+	}
+
+	return "give_cache_{$action}_" . substr( md5( serialize( $query_args ) ), 0, 15 );
+}
+
+/**
  * Clean variables using sanitize_text_field. Arrays are cleaned recursively.
  * Non-scalar values are ignored.
  *
@@ -528,4 +547,31 @@ function give_clean( $var ) {
 	} else {
 		return is_scalar( $var ) ? sanitize_text_field( $var ) : $var;
 	}
+}
+
+/**
+ * Transforms php.ini notation for numbers (like '2M') to an integer.
+ *
+ * @since 1.8
+ *
+ * @param $size
+ * @return int
+ */
+function give_let_to_num( $size ) {
+	$l   = substr( $size, -1 );
+	$ret = substr( $size, 0, -1 );
+	switch ( strtoupper( $l ) ) {
+		case 'P':
+			$ret *= 1024;
+		case 'T':
+			$ret *= 1024;
+		case 'G':
+			$ret *= 1024;
+		case 'M':
+			$ret *= 1024;
+		case 'K':
+			$ret *= 1024;
+	}
+
+	return $ret;
 }

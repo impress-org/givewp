@@ -1,9 +1,9 @@
 === Give - WordPress Donation Plugin ===
-Contributors: wordimpress, dlocc, webdevmattcrom
+Contributors: givewp, wordimpress, dlocc, webdevmattcrom
 Donate link: https://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 4.0
-Tested up to: 4.6
+Tested up to: 4.6.1
 Stable tag: 1.7
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -179,6 +179,17 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Fix: User able to donate minimum amount then custom minimum amount with multi level donation form - https://github.com/WordImpress/Give/issues/712
 * Fix: Clearing reports cache wasn't working for "Estimated monthly income for this period" - https://github.com/WordImpress/Give/issues/773
 * Fix: Use only one text-domain "give" for i18n - https://github.com/WordImpress/Give/issues/964
+
+= 1.6.4 =
+* New: {form_title} email tag that outputs only the donation form title and improved the email tag display in the plugin's settings. [#943](https://github.com/WordImpress/Give/issues/943)
+* Fix: {donation} email tag was not properly displaying the donation form title along with the level for multi-level donations.  [#943](https://github.com/WordImpress/Give/issues/943)
+* Fix: Removed all usage of ttf fonts within Give to prevent strict mod_security warnings on certain hosts. [#794](https://github.com/WordImpress/Give/issues/794)
+* Fix: If theme doesn't register image sizes there is a PHP Warning on the Give Settings page. [#1163](https://github.com/WordImpress/Give/issues/1163)
+
+= 1.6.3 =
+* Fix: PayPal Standard donations payments being set incorrectly to failed. [#1152](https://github.com/WordImpress/Give/issues/1152)
+* Fix: Custom number of decimals formatting is not working in give_sanitize_amount. [#1144](https://github.com/WordImpress/Give/issues/1144)
+* Tweak: The "Email Access" message is now filtered via `give_email_access_message`. [#1147](https://github.com/WordImpress/Give/issues/1147)
 
 = 1.6.2 =
 * New: Internationalization banner now promotes to admins translating Give in languages it doesn't yet support. The banner will only display under Donations > Settings and is dismissible. [#1021](https://github.com/WordImpress/Give/issues/1021)

@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Is Test Mode
+ * Is Test Mode Enabled.
  *
  * @since 1.0
  *
@@ -212,10 +212,12 @@ function give_get_current_page_url() {
 	if ( is_front_page() ) {
 		$current_url = home_url( '/' );
 	} else {
-		$current_url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . untrailingslashit( $_SERVER['REQUEST_URI'] ) );
+		$http_host = sanitize_text_field( $_SERVER['HTTP_HOST'] );
+		$request_uri = sanitize_text_field( $_SERVER['REQUEST_URI'] );
+		$current_url = set_url_scheme( 'http://' . $http_host . untrailingslashit( $request_uri ) );
 	}
 
-	return apply_filters( 'give_get_current_page_url', esc_url( $current_url ) );
+	return apply_filters( 'give_get_current_page_url', $current_url );
 }
 
 
@@ -941,4 +943,61 @@ if ( ! function_exists( 'cal_days_in_month' ) ) {
 	function cal_days_in_month( $calendar, $month, $year ) {
 		return date( 't', mktime( 0, 0, 0, $month, 1, $year ) );
 	}
+}
+
+/**
+ * Get plugin info including status, type, and license validation.
+ *
+ * This is an enhanced version of get_plugins() that returns the status
+ * (`active` or `inactive`) of all plugins, type of plugin (`add-on` or `other`
+ * and license validation for Give add-ons (`true` or `false`). Does not include
+ * MU plugins.
+ *
+ * @since 1.8.0
+ *
+ * @return array Plugin info plus status, type, and license validation if
+ *               available.
+ */
+function give_get_plugins() {
+	$plugins             = get_plugins();
+	$active_plugin_paths = (array) get_option( 'active_plugins', array() );
+
+	if ( is_multisite() ) {
+		$network_activated_plugin_paths = array_keys( get_site_option( 'active_sitewide_plugins', array() ) );
+		$active_plugin_paths            = array_merge( $active_plugin_paths, $network_activated_plugin_paths );
+	}
+
+	foreach ( $plugins as $plugin_path => $plugin_data ) {
+		// Is plugin active?
+		if ( in_array( $plugin_path, $active_plugin_paths ) ) {
+			$plugins[ $plugin_path ]['Status'] = 'active';
+		} else {
+			$plugins[ $plugin_path ]['Status'] = 'inactive';
+		}
+
+		$dirname = strtolower( dirname( $plugin_path ) );
+
+		// Is plugin a Give add-on by WordImpress?
+		if ( strstr( $dirname, 'give-' ) && strstr( $plugin_data['AuthorURI'], 'wordimpress.com' ) ) {
+			// Plugin is a Give-addon.
+			$plugins[ $plugin_path ]['Type'] = 'add-on';
+
+			// Get license info from database.
+			$plugin_name    = str_replace( 'Give - ', '', $plugin_data['Name'] );
+			$db_option      = 'give_' . preg_replace( '/[^a-zA-Z0-9_\s]/', '', str_replace( ' ', '_', strtolower( $plugin_name ) ) ) . '_license_active';
+			$license_active = get_option( $db_option );
+
+			// Does a valid license exist?
+			if ( ! empty( $license_active ) && 'valid' === $license_active->license ) {
+				$plugins[ $plugin_path ]['License'] = true;
+			} else {
+				$plugins[ $plugin_path ]['License'] = false;
+			}
+		} else {
+			// Plugin is not a Give add-on.
+			$plugins[ $plugin_path ]['Type'] = 'other';
+		}
+	}
+
+	return $plugins;
 }
