@@ -213,14 +213,14 @@ function give_get_chosen_gateway( $form_id ) {
 		$request_form_id = isset( $_REQUEST['form-id'] ) ? $_REQUEST['form-id'] : 0;
 	}
 
-	$chosen          = give_get_default_gateway( $form_id );
+	$chosen = give_get_default_gateway( $form_id );
 
 	//Take into account request Form ID args.
 	if ( ! empty( $request_form_id ) && $form_id == $request_form_id ) {
 		$chosen = isset( $_REQUEST['payment-mode'] ) ? $_REQUEST['payment-mode'] : '';
 	}
 
-	if ( $chosen ) {
+	if ( $chosen && give_is_gateway_active( $chosen ) ) {
 		$enabled_gateway = urldecode( $chosen );
 	} else {
 		$enabled_gateway = give_get_default_gateway( $form_id );
