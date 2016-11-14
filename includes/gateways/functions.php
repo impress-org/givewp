@@ -141,7 +141,7 @@ function give_get_gateway_admin_label( $gateway ) {
  * @return string Checkout label for the gateway
  */
 function give_get_gateway_checkout_label( $gateway ) {
-	$gateways = give_get_enabled_payment_gateways();
+	$gateways = give_get_payment_gateways();
 	$label    = isset( $gateways[ $gateway ] ) ? $gateways[ $gateway ]['checkout_label'] : $gateway;
 
 	if ( $gateway == 'manual' ) {
@@ -205,13 +205,15 @@ function give_send_to_gateway( $gateway, $payment_data ) {
  * @return string $enabled_gateway The slug of the gateway
  */
 function give_get_chosen_gateway( $form_id ) {
-	$gateways        = give_get_enabled_payment_gateways();
+
 	$request_form_id = isset( $_REQUEST['give_form_id'] ) ? $_REQUEST['give_form_id'] : 0;
+
+	//Back to check if 'form-id' is present.
 	if ( empty( $request_form_id ) ) {
 		$request_form_id = isset( $_REQUEST['form-id'] ) ? $_REQUEST['form-id'] : 0;
 	}
+
 	$chosen          = give_get_default_gateway( $form_id );
-	$enabled_gateway = '';
 
 	//Take into account request Form ID args.
 	if ( ! empty( $request_form_id ) && $form_id == $request_form_id ) {
@@ -220,10 +222,6 @@ function give_get_chosen_gateway( $form_id ) {
 
 	if ( $chosen ) {
 		$enabled_gateway = urldecode( $chosen );
-	} else if ( count( $gateways ) >= 1 && ! $chosen ) {
-		foreach ( $gateways as $gateway_id => $gateway ):
-			$enabled_gateway = $gateway_id;
-		endforeach;
 	} else {
 		$enabled_gateway = give_get_default_gateway( $form_id );
 	}
