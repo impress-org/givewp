@@ -1508,7 +1508,7 @@ function give_terms_agreement( $form_id ) {
 			   aria-controls="give_terms" style="display:none;"><?php esc_html_e( 'Hide Terms', 'give' ); ?></a>
 		</div>
 
-		<input name="give_agree_to_terms" class="required" type="checkbox" id="give_agree_to_terms" value="1"/>
+		<input name="give_agree_to_terms" class="required" type="checkbox" id="give_agree_to_terms" value="1" required aria-required="true" />
 		<label for="give_agree_to_terms"><?php echo $label; ?></label>
 
 	</fieldset>
