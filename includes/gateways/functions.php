@@ -172,8 +172,8 @@ function give_get_gateway_supports( $gateway ) {
  *
  * @since 1.0
  *
- * @param string $gateway Name of the gateway
- * @param array $payment_data All the payment data to be sent to the gateway
+ * @param string $gateway      Name of the gateway
+ * @param array  $payment_data All the payment data to be sent to the gateway
  *
  * @return void
  */
@@ -198,7 +198,7 @@ function give_send_to_gateway( $gateway, $payment_data ) {
  * Determines what the currently selected gateway is.
  *
  * If the amount is zero, no option is shown and the donation form uses the manual
- * gateway to emulate a no-gateway-setup for a free donation.
+ * gateway to emulate a no-gateway-setup for a donation.
  *
  * @access public
  * @since  1.0
@@ -216,7 +216,7 @@ function give_get_chosen_gateway( $form_id ) {
 	$chosen          = give_get_default_gateway( $form_id );
 	$enabled_gateway = '';
 
-	//Take into account request Form ID args
+	//Take into account request Form ID args.
 	if ( ! empty( $request_form_id ) && $form_id == $request_form_id ) {
 		$chosen = isset( $_REQUEST['payment-mode'] ) ? $_REQUEST['payment-mode'] : '';
 	}
@@ -243,9 +243,9 @@ function give_get_chosen_gateway( $form_id ) {
  * @access public
  * @since  1.0
  *
- * @param string $title Title of the log entry (default: empty)
+ * @param string $title   Title of the log entry (default: empty)
  * @param string $message Message to store in the log entry (default: empty)
- * @param int $parent Parent log entry (default: 0)
+ * @param int    $parent  Parent log entry (default: 0)
  *
  * @return int ID of the new log entry
  */
