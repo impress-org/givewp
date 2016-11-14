@@ -195,10 +195,7 @@ function give_send_to_gateway( $gateway, $payment_data ) {
 
 
 /**
- * Determines what the currently selected gateway is.
- *
- * If the amount is zero, no option is shown and the donation form uses the manual
- * gateway to emulate a no-gateway-setup for a donation.
+ * Determines the currently selected donation payment gateway.
  *
  * @access public
  * @since  1.0
