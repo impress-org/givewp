@@ -54,7 +54,7 @@ add_action( 'wp_ajax_give_load_gateway', 'give_load_ajax_gateway' );
 add_action( 'wp_ajax_nopriv_give_load_gateway', 'give_load_ajax_gateway' );
 
 /**
- * Sets an error on checkout if no gateways are enabled
+ * Sets an error on checkout if no gateways are enabled.
  *
  * @since 1.0
  *
