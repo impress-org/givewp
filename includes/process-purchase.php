@@ -386,7 +386,7 @@ function give_verify_minimum_price() {
 }
 
 /**
- * Donation Form Validate Agree To Terms
+ * Donation form validate agree to "Terms and Conditions".
  *
  * @access      private
  * @since       1.0
@@ -396,7 +396,7 @@ function give_purchase_form_validate_agree_to_terms() {
 	// Validate agree to terms.
 	if ( ! isset( $_POST['give_agree_to_terms'] ) || $_POST['give_agree_to_terms'] != 1 ) {
 		// User did not agree.
-		give_set_error( 'agree_to_terms', apply_filters( 'give_agree_to_terms_text', esc_html__( 'You must agree to the terms of use.', 'give' ) ) );
+		give_set_error( 'agree_to_terms', apply_filters( 'give_agree_to_terms_text', esc_html__( 'You must agree to the terms and conditions.', 'give' ) ) );
 	}
 }
 

@@ -51,9 +51,9 @@ class Give_Email_Template_Tags {
 	 *
 	 * @since 1.0
 	 *
-	 * @param string $tag Email tag to be replace in email
-	 * @param string $description Email tag description text
-	 * @param callable $func Hook to run when email tag is found
+	 * @param string   $tag         Email tag to be replace in email
+	 * @param string   $description Email tag description text
+	 * @param callable $func        Hook to run when email tag is found
 	 */
 	public function add( $tag, $description, $func ) {
 		if ( is_callable( $func ) ) {
@@ -566,7 +566,7 @@ function give_email_tag_receipt_id( $payment_id ) {
 function give_email_tag_donation( $payment_id ) {
 	$payment      = new Give_Payment( $payment_id );
 	$payment_meta = $payment->payment_meta;
-	$level_title  = give_has_variable_prices( $payment_meta['form_id'] );
+	$level_title  = give_has_variable_prices( $payment->form_id );
 	$separator    = $level_title ? '-' : '';
 	$form_title   = strip_tags( give_get_payment_form_title( $payment_meta, false, $separator ) );
 

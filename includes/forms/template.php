@@ -1369,12 +1369,14 @@ function give_payment_mode_select( $form_id ) {
 			?>
 			<ul id="give-gateway-radio-list">
 				<?php
+				/**
+				 * Loop through the active payment gateways.
+				 */
+				$selected_gateway = give_get_chosen_gateway( $form_id );
 				foreach ( $gateways as $gateway_id => $gateway ) :
-					$selected_gateway = give_get_default_gateway( $form_id );
-					$selected_gateway = isset( $_REQUEST['payment_mode'] ) ? $_REQUEST['payment_mode'] : $selected_gateway;
-					$checked = checked( $gateway_id, $selected_gateway, false );
-					$checked_class = $checked ? ' give-gateway-option-selected' : '';
-					?>
+					//Determine the default gateway.
+					$checked       = checked( $gateway_id, $selected_gateway, false );
+					$checked_class = $checked ? ' give-gateway-option-selected' : ''; ?>
 					<li>
 						<input type="radio" name="payment-mode" class="give-gateway"
 						       id="give-gateway-<?php echo esc_attr( $gateway_id ) . '-' . $form_id; ?>"
@@ -1506,7 +1508,7 @@ function give_terms_agreement( $form_id ) {
 			   aria-controls="give_terms" style="display:none;"><?php esc_html_e( 'Hide Terms', 'give' ); ?></a>
 		</div>
 
-		<input name="give_agree_to_terms" class="required" type="checkbox" id="give_agree_to_terms" value="1"/>
+		<input name="give_agree_to_terms" class="required" type="checkbox" id="give_agree_to_terms" value="1" required aria-required="true" />
 		<label for="give_agree_to_terms"><?php echo $label; ?></label>
 
 	</fieldset>

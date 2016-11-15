@@ -173,9 +173,12 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * New: Function give_date_format() provides a way to adjust the date format based on a given context - https://github.com/WordImpress/Give/issues/687
 * New: Automate RTL styles with gulp - https://github.com/WordImpress/Give/issues/995
 * New: If only a single payment gateway is enabled the "Select Payment Method" fieldset is hidden to improve the donor experience - https://github.com/WordImpress/Give/issues/1122
+* Tweak: Optimized payment gateway loading and ensure that the proper gateway is returned if donor is brought back to website from an offsite gateway like PayPal Standard. Also, new PHPUnit tests for gateways added. - https://github.com/WordImpress/Give/issues/1119
 * Tweak: Organize data with a logical relationship in grids for table accessibility - https://github.com/WordImpress/Give/issues/922
 * Tweak: Terminology changes - "Transactions" now called "Donations" and "Payments" now termed "Donation" in WP-admin - https://github.com/WordImpress/Give/issues/896
+* Tweak: Removed unnecessary Give user roles - https://github.com/WordImpress/Give/issues/662
 * Tweak: Remove "Form Labels" functions from translation strings - https://github.com/WordImpress/Give/issues/1003
+* Tweak: a11y + UX - The terms agreement checkbox should be a required field - https://github.com/WordImpress/Give/issues/1200
 * Fix: User able to donate minimum amount then custom minimum amount with multi level donation form - https://github.com/WordImpress/Give/issues/712
 * Fix: Clearing reports cache wasn't working for "Estimated monthly income for this period" - https://github.com/WordImpress/Give/issues/773
 * Fix: Use only one text-domain "give" for i18n - https://github.com/WordImpress/Give/issues/964
