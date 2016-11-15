@@ -1890,7 +1890,7 @@ function give_get_form_variable_price_dropdown( $args = array(), $echo = false )
 
 	// Get variable price and ID from variable price array.
 	foreach ( $variable_prices as $variable_price ) {
-		$variable_price_options[ $variable_price['_give_id']['level_id'] ] = ! empty( $variable_price['_give_text'] ) ? $variable_price['_give_text'] : give_currency_filter( $variable_price['_give_amount'] );
+		$variable_price_options[ $variable_price['_give_id']['level_id'] ] = ! empty( $variable_price['_give_text'] ) ? $variable_price['_give_text'] : give_currency_filter( give_format_amount( $variable_price['_give_amount'] ) );
 	}
 
 	// Update options.
