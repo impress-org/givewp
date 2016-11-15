@@ -463,11 +463,9 @@ class Give_Logging {
 	 * @since  1.7
 	 * @access public
 	 *
-	 * @param int $post_id
-	 *
 	 * @return bool
 	 */
-	public function delete_cache( $post_id ) {
+	public function delete_cache() {
 		global $wpdb;
 		$cache_option_names = $wpdb->get_results(
 			$wpdb->prepare(
