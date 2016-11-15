@@ -1873,22 +1873,24 @@ function give_get_form_variable_price_dropdown( $args = array(), $echo = false )
 		return false;
 	}
 
+	$form = new Give_Donate_Form( $args['id'] );
+
 	// Check if form has variable prices or not.
-	if ( ! ( $variable_prices = give_has_variable_prices( $args['id'] ) ) ) {
+	if ( ! $form->ID || ! $form->has_variable_prices() ) {
 		return false;
 	}
 
-	$variable_prices        = give_get_variable_prices( absint( $args['id'] ) );
+	$variable_prices        = $form->get_prices();
 	$variable_price_options = array();
 
 	// Check if multi donation form support custom donation or not.
-	if ( give_is_custom_price_mode( absint( $args['id'] ) ) ) {
+	if ( $form->is_custom_price_mode() ) {
 		$variable_price_options['custom'] = _x( 'Custom', 'custom donation dropdown item', 'give' );
 	}
 
 	// Get variable price and ID from variable price array.
 	foreach ( $variable_prices as $variable_price ) {
-		$variable_price_options[ $variable_price['_give_id']['level_id'] ] = $variable_price['_give_text'];
+		$variable_price_options[ $variable_price['_give_id']['level_id'] ] = ! empty( $variable_price['_give_text'] ) ? $variable_price['_give_text'] : give_currency_filter( give_format_amount( $variable_price['_give_amount'] ) );
 	}
 
 	// Update options.
