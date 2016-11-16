@@ -134,7 +134,7 @@ class Give_Email_Access {
 		if ( $this->token_exists ) {
 			add_filter( 'give_can_view_receipt', '__return_true' );
 			add_filter( 'give_user_pending_verification', '__return_false' );
-			add_filter( 'give_get_users_purchases_args', array( $this, 'users_purchases_args' ) );
+			add_filter( 'give_get_users_donations_args', array( $this, 'users_donations_args' ) );
 		}
 	}
 
@@ -364,11 +364,11 @@ class Give_Email_Access {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  $args User Purchases arguments.
+	 * @param  $args User Donations arguments.
 	 *
 	 * @return mixed
 	 */
-	public function users_purchases_args( $args ) {
+	public function users_donations_args( $args ) {
 		$args['user'] = $this->token_email;
 
 		return $args;
