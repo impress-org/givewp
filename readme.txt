@@ -182,6 +182,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Fix: User able to donate minimum amount then custom minimum amount with multi level donation form - https://github.com/WordImpress/Give/issues/712
 * Fix: Clearing reports cache wasn't working for "Estimated monthly income for this period" - https://github.com/WordImpress/Give/issues/773
 * Fix: Use only one text-domain "give" for i18n - https://github.com/WordImpress/Give/issues/964
+* Fix: Multiple donation forms on a page with the Terms and Condition checkbox causes jumping when the checkbox is clicked by a secondary form - https://github.com/WordImpress/Give/issues/1244
 
 = 1.6.4 =
 * New: {form_title} email tag that outputs only the donation form title and improved the email tag display in the plugin's settings. [#943](https://github.com/WordImpress/Give/issues/943)
