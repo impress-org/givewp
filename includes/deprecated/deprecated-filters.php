@@ -25,7 +25,7 @@ function give_deprecated_filters() {
 		'give_get_users_donations_args'              => 'give_get_users_purchases_args',
 		'give_recount_donors_donation_statuses'      => 'give_recount_customer_payment_statuses',
 		'give_donor_recount_should_process_donation' => 'give_customer_recount_should_process_payment',
-		'give_reset_store_items'                     => 'give_reset_items',
+		'give_reset_items'                           => 'give_reset_store_items',
 	);
 
 	// Dynamic filters.
