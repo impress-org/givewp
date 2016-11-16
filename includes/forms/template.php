@@ -1393,7 +1393,7 @@ function give_payment_mode_select( $form_id ) {
 			</ul>
 			<?php
 			/**
-			 * Fires while selecting payment gateways, befire the gateways list.
+			 * Fires while selecting payment gateways, before the gateways list.
 			 *
 			 * @since 1.7
 			 */
