@@ -28,7 +28,7 @@ add_action( 'give_paypal_cc_form', '__return_false' );
  *
  * @since 1.0
  *
- * @param array $payment_data Purchase Data
+ * @param array $payment_data Payment data.
  *
  * @return void
  */
@@ -325,7 +325,7 @@ function give_process_paypal_ipn() {
 	$encoded_data_array = wp_parse_args( $encoded_data_array, $defaults );
 
 	$payment_id = isset( $encoded_data_array['custom'] ) ? absint( $encoded_data_array['custom'] ) : 0;
-	$txn_type = $encoded_data_array['txn_type'];
+	$txn_type   = $encoded_data_array['txn_type'];
 
 	if ( has_action( 'give_paypal_' . $txn_type ) ) {
 		/**
@@ -430,6 +430,7 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 	//Process refunds & reversed.
 	if ( $payment_status == 'refunded' || $payment_status == 'reversed' ) {
 		give_process_paypal_refund( $data, $payment_id );
+
 		return;
 	}
 
@@ -532,7 +533,7 @@ function give_process_paypal_refund( $data, $payment_id = 0 ) {
 	give_insert_payment_note(
 		$payment_id,
 		sprintf(
-			/* translators: 1: Paypal parent transaction ID 2. Paypal reason code */
+		/* translators: 1: Paypal parent transaction ID 2. Paypal reason code */
 			esc_html__( 'PayPal Payment #%1$s Refunded for reason: %2$s', 'give' ),
 			$data['parent_txn_id'],
 			$data['reason_code']
@@ -579,7 +580,7 @@ function give_get_paypal_redirect( $ssl_check = false ) {
 }
 
 /**
- * Set the Page Style for PayPal Purchase page
+ * Set the Page Style for offsite PayPal page.
  *
  * @since 1.0
  * @return string
