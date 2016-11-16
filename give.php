@@ -334,7 +334,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/formatting.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/price-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/error-tracking.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/process-purchase.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/process-donation.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/login-register.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/user-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/plugin-compatibility.php';
