@@ -25,6 +25,7 @@ function give_deprecated_filters() {
 		'give_get_users_donations_args'              => 'give_get_users_purchases_args',
 		'give_recount_donors_donation_statuses'      => 'give_recount_customer_payment_statuses',
 		'give_donor_recount_should_process_donation' => 'give_customer_recount_should_process_payment',
+		'give_reset_store_items'                     => 'give_reset_items',
 	);
 
 	// Dynamic filters.
@@ -48,7 +49,7 @@ function give_deprecated_filters() {
  */
 function give_deprecated_filter_mapping( $data, $arg_1 = '', $arg_2 = '', $arg_3 = '' ) {
 	$give_map_deprecated_filters = give_deprecated_filters();
-	$filter = current_filter();
+	$filter                      = current_filter();
 
 	if ( isset( $give_map_deprecated_filters[ $filter ] ) ) {
 		if ( has_filter( $give_map_deprecated_filters[ $filter ] ) ) {
@@ -57,7 +58,7 @@ function give_deprecated_filter_mapping( $data, $arg_1 = '', $arg_2 = '', $arg_3
 			if ( ! defined( 'DOING_AJAX' ) ) {
 				_give_deprecated_function(
 					sprintf(
-						/* translators: %s: filter name */
+					/* translators: %s: filter name */
 						__( 'The %s filter' ),
 						$give_map_deprecated_filters[ $filter ]
 					),
