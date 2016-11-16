@@ -286,13 +286,13 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	}
 
 	/**
-	 * Given a key, get the information from the Database Directly
+	 * Given a key, get the information from the Database Directly.
 	 *
 	 * @since  1.5
 	 *
 	 * @param  string $key The option_name
 	 *
-	 * @return mixed       Returns the data from the database
+	 * @return mixed       Returns the data from the database.
 	 */
 	private function get_stored_data( $key ) {
 		global $wpdb;
@@ -302,12 +302,12 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	}
 
 	/**
-	 * Give a key, store the value
+	 * Give a key, store the value.
 	 *
 	 * @since  1.5
 	 *
-	 * @param  string $key   The option_name
-	 * @param  mixed  $value The value to store
+	 * @param  string $key   The option_name.
+	 * @param  mixed  $value The value to store.
 	 *
 	 * @return void
 	 */
