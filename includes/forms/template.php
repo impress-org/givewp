@@ -1375,6 +1375,7 @@ function give_payment_mode_select( $form_id ) {
 				 * Loop through the active payment gateways.
 				 */
 				$selected_gateway = give_get_chosen_gateway( $form_id );
+
 				foreach ( $gateways as $gateway_id => $gateway ) :
 					//Determine the default gateway.
 					$checked       = checked( $gateway_id, $selected_gateway, false );
