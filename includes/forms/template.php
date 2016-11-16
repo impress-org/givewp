@@ -1464,8 +1464,8 @@ function give_terms_agreement( $form_id ) {
 		return false;
 	}
 
-	$label = get_post_meta( $form_id, '_give_agree_label', true );
-	$terms = get_post_meta( $form_id, '_give_agree_text', true );
+	$label = ( $label = get_post_meta( $form_id, '_give_agree_label', true ) ) ? stripslashes( $label ) : give_get_option( 'agree_to_terms_label', esc_html__( 'Agree to Terms?', 'give' ) );
+	$terms = ( $terms = get_post_meta( $form_id, '_give_agree_text', true ) ) ? $terms : give_get_option( 'agreement_text', '' );
 
 	// Set term and conditions label and text on basis of per form and global setting.
 	// $label = ( $label = get_post_meta( $form_id, '_give_agree_label', true ) ) ? stripslashes( $label ) : give_get_option( 'agree_to_terms_label', esc_html__( 'Agree to Terms?', 'give' ) );
@@ -1508,8 +1508,8 @@ function give_terms_agreement( $form_id ) {
 			   aria-controls="give_terms" style="display:none;"><?php esc_html_e( 'Hide Terms', 'give' ); ?></a>
 		</div>
 
-		<input name="give_agree_to_terms" class="required" type="checkbox" id="give_agree_to_terms" value="1" required aria-required="true" />
-		<label for="give_agree_to_terms"><?php echo $label; ?></label>
+		<input name="give_agree_to_terms" class="required" type="checkbox" id="give_agree_to_terms-<?php echo $form_id; ?>" value="1" required aria-required="true" />
+		<label for="give_agree_to_terms-<?php echo $form_id; ?>"><?php echo $label; ?></label>
 
 	</fieldset>
 	<?php

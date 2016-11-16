@@ -913,7 +913,7 @@ class GIVE_CLI_COMMAND {
 			}
 
 			if ( ! empty( $donors ) ) {
-				$donors['donors'][] = current( $this->api->get_customers( (int) $donation->customer_id ) )[0];
+				$donors['donors'][] = current( current( $this->api->get_customers( (int) $donation->customer_id ) ) );
 			} else {
 				$donors = array_merge( $donors, $this->api->get_customers( (int) $donation->customer_id ) );
 			}

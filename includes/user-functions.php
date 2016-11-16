@@ -52,7 +52,7 @@ function give_get_users_purchases( $user = 0, $number = 20, $pagination = false,
 		}
 	}
 
-	$args = apply_filters( 'give_get_users_purchases_args', array(
+	$args = apply_filters( 'give_get_users_donations_args', array(
 		'user'    => $user,
 		'number'  => $number,
 		'status'  => $status,
