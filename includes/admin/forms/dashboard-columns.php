@@ -153,9 +153,13 @@ add_filter( 'manage_edit-give_forms_sortable_columns', 'give_sortable_form_colum
  */
 function give_sort_forms( $vars ) {
 	// Check if we're viewing the "give_forms" post type
-	if ( isset( $vars['post_type'] ) && 'give_forms' == $vars['post_type'] ) {
+	if ( ! isset( $vars['post_type'] ) || ! isset( $vars['orderby'] ) || 'give_forms' !== $vars['post_type'] ) {
+		return $vars;
+	}
+
+	switch ( $vars['orderby'] ) {
 		// Check if 'orderby' is set to "sales"
-		if ( isset( $vars['orderby'] ) && 'sales' == $vars['orderby'] ) {
+		case 'sales':
 			$vars = array_merge(
 				$vars,
 				array(
@@ -163,10 +167,10 @@ function give_sort_forms( $vars ) {
 					'orderby'  => 'meta_value_num',
 				)
 			);
-		}
+			break;
 
 		// Check if "orderby" is set to "earnings"
-		if ( isset( $vars['orderby'] ) && 'earnings' == $vars['orderby'] ) {
+		case 'earnings':
 			$vars = array_merge(
 				$vars,
 				array(
@@ -174,10 +178,10 @@ function give_sort_forms( $vars ) {
 					'orderby'  => 'meta_value_num',
 				)
 			);
-		}
+			break;
 
-		// Check if "orderby" is set to "price"
-		if ( isset( $vars['orderby'] ) && 'amount' == $vars['orderby'] ) {
+		// Check if "orderby" is set to "price/amount"
+		case 'amount':
 			$vars = array_merge(
 				$vars,
 				array(
@@ -185,10 +189,10 @@ function give_sort_forms( $vars ) {
 					'orderby'  => 'meta_value_num',
 				)
 			);
-		}
+			break;
 
 		// Check if "orderby" is set to "goal"
-		if ( isset( $vars['orderby'] ) && 'goal' == $vars['orderby'] ) {
+		case 'goal':
 			$vars = array_merge(
 				$vars,
 				array(
@@ -196,10 +200,10 @@ function give_sort_forms( $vars ) {
 					'orderby'  => 'meta_value_num',
 				)
 			);
-		}
+			break;
 
 		// Check if "orderby" is set to "donations"
-		if ( isset( $vars['orderby'] ) && 'donations' == $vars['orderby'] ) {
+		case 'donations':
 			$vars = array_merge(
 				$vars,
 				array(
@@ -207,7 +211,7 @@ function give_sort_forms( $vars ) {
 					'orderby'  => 'meta_value_num',
 				)
 			);
-		}
+			break;
 	}
 
 	return $vars;
