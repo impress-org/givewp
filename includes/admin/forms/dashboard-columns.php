@@ -131,10 +131,11 @@ add_action( 'manage_posts_custom_column', 'give_render_form_columns', 10, 2 );
  * @return array $columns Array of sortable columns
  */
 function give_sortable_form_columns( $columns ) {
-	$columns['price']    = 'price';
-	$columns['sales']    = 'sales';
-	$columns['earnings'] = 'earnings';
-	$columns['goal']     = 'goal';
+	$columns['price']     = 'price';
+	$columns['sales']     = 'sales';
+	$columns['earnings']  = 'earnings';
+	$columns['goal']      = 'goal';
+	$columns['donations'] = 'donations';
 
 	return $columns;
 }
@@ -192,6 +193,17 @@ function give_sort_forms( $vars ) {
 				$vars,
 				array(
 					'meta_key' => '_give_set_goal',
+					'orderby'  => 'meta_value_num'
+				)
+			);
+		}
+
+		// Check if "orderby" is set to "donations"
+		if ( isset( $vars['orderby'] ) && 'donations' == $vars['orderby'] ) {
+			$vars = array_merge(
+				$vars,
+				array(
+					'meta_key' => '_give_form_sales',
 					'orderby'  => 'meta_value_num'
 				)
 			);
