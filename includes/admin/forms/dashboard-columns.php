@@ -40,7 +40,7 @@ function give_form_columns( $give_form_columns ) {
 		'donations'     => esc_html__( 'Donations', 'give' ),
 		'earnings'      => esc_html__( 'Income', 'give' ),
 		'shortcode'     => esc_html__( 'Shortcode', 'give' ),
-		'date'          => esc_html__( 'Date', 'give' )
+		'date'          => esc_html__( 'Date', 'give' ),
 	);
 
 	//Does the user want categories / tags?
@@ -68,7 +68,7 @@ add_filter( 'manage_edit-give_forms_columns', 'give_form_columns' );
  */
 function give_render_form_columns( $column_name, $post_id ) {
 	if ( get_post_type( $post_id ) == 'give_forms' ) {
-		
+
 		switch ( $column_name ) {
 			case 'form_category':
 				echo get_the_term_list( $post_id, 'give_forms_category', '', ', ', '' );
@@ -160,7 +160,7 @@ function give_sort_forms( $vars ) {
 				$vars,
 				array(
 					'meta_key' => '_give_form_sales',
-					'orderby'  => 'meta_value_num'
+					'orderby'  => 'meta_value_num',
 				)
 			);
 		}
@@ -171,7 +171,7 @@ function give_sort_forms( $vars ) {
 				$vars,
 				array(
 					'meta_key' => '_give_form_earnings',
-					'orderby'  => 'meta_value_num'
+					'orderby'  => 'meta_value_num',
 				)
 			);
 		}
@@ -182,7 +182,7 @@ function give_sort_forms( $vars ) {
 				$vars,
 				array(
 					'meta_key' => '_give_set_price',
-					'orderby'  => 'meta_value_num'
+					'orderby'  => 'meta_value_num',
 				)
 			);
 		}
@@ -193,7 +193,7 @@ function give_sort_forms( $vars ) {
 				$vars,
 				array(
 					'meta_key' => '_give_set_goal',
-					'orderby'  => 'meta_value_num'
+					'orderby'  => 'meta_value_num',
 				)
 			);
 		}
@@ -204,7 +204,7 @@ function give_sort_forms( $vars ) {
 				$vars,
 				array(
 					'meta_key' => '_give_form_sales',
-					'orderby'  => 'meta_value_num'
+					'orderby'  => 'meta_value_num',
 				)
 			);
 		}
@@ -236,7 +236,7 @@ function give_filter_forms( $vars ) {
 			$vars = array_merge(
 				$vars,
 				array(
-					'author' => get_current_user_id()
+					'author' => get_current_user_id(),
 				)
 			);
 
@@ -307,10 +307,10 @@ function give_price_field_quick_edit( $column_name, $post_type ) {
 			<label for="give_regprice">
 				<span class="title"><?php esc_html_e( 'Amount', 'give' ); ?></span>
 				<span class="input-text-wrap">
-					<input type="text" name="give_regprice" id="give_regprice" class="text regprice" />
+					<input type="text" name="give_regprice" id="give_regprice" class="text regprice"/>
 				</span>
 			</label>
-			<br class="clear" />
+			<br class="clear"/>
 		</div>
 	</fieldset>
 	<?php
