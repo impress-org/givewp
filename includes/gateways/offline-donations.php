@@ -337,7 +337,7 @@ function give_offline_add_settings( $settings ) {
 			'id'          => $prefix . 'offline_donation_subject',
 			'name'        => esc_attr__( 'Offline Donation Email Instructions Subject', 'give' ),
 			'desc'        => esc_attr__( 'Enter the subject line for the donation receipt email.', 'give' ),
-			'default'     => esc_attr__( '{donation} - Offline Donation Instructions', 'give' ),
+			'default'     => esc_attr__( '{form_title} - Offline Donation Instructions', 'give' ),
 			'row_classes' => 'give-subfield',
 			'type'        => 'text'
 		),
