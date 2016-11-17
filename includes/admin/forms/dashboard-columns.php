@@ -131,7 +131,7 @@ add_action( 'manage_posts_custom_column', 'give_render_form_columns', 10, 2 );
  * @return array $columns Array of sortable columns
  */
 function give_sortable_form_columns( $columns ) {
-	$columns['price']     = 'price';
+	$columns['price']     = 'amount';
 	$columns['sales']     = 'sales';
 	$columns['earnings']  = 'earnings';
 	$columns['goal']      = 'goal';
@@ -177,7 +177,7 @@ function give_sort_forms( $vars ) {
 		}
 
 		// Check if "orderby" is set to "price"
-		if ( isset( $vars['orderby'] ) && 'price' == $vars['orderby'] ) {
+		if ( isset( $vars['orderby'] ) && 'amount' == $vars['orderby'] ) {
 			$vars = array_merge(
 				$vars,
 				array(
