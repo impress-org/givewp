@@ -54,8 +54,9 @@ If Give is already 100% translated for your language, join the team anyway! We r
 
 # Additional Resources
 
+* [Give Documentation](https://givewp.com/documentation/)
+* [WordPress.org Support](https://wordpress.org/support/plugin/give/)
+* [Give Priority Support](https://givewp.com/support/)
+* [Translator Handbook](https://make.wordpress.org/polyglots/handbook/)
 * [General GitHub documentation](https://help.github.com/)
 * [GitHub pull request documentation](https://help.github.com/send-pull-requests/)
-* [Translator Handbook](https://make.wordpress.org/polyglots/handbook/)
-* [Give Docs](https://givewp.com/documentation/)
-* [WooThemes Support](https://givewp.com/support/)
