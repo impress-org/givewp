@@ -3,14 +3,14 @@
  * Profile Editor
  *
  * This template is used to display the profile editor with [give_profile_editor]
- * 
+ *
  * @copyright    Copyright (c) 2016, WordImpress
  * @license      https://opensource.org/licenses/gpl-license GNU Public License
  */
-$current_user = wp_get_current_user();
+$current_user     = wp_get_current_user();
 
 if ( is_user_logged_in() ):
-	$user_id      = get_current_user_id();
+	$user_id = get_current_user_id();
 	$first_name   = get_user_meta( $user_id, 'first_name', true );
 	$last_name    = get_user_meta( $user_id, 'last_name', true );
 	$display_name = $current_user->display_name;
@@ -43,12 +43,12 @@ if ( is_user_logged_in() ):
 
 			<p id="give_profile_first_name_wrap" class="form-row form-row-first">
 				<label for="give_first_name"><?php esc_html_e( 'First Name', 'give' ); ?></label>
-				<input name="give_first_name" id="give_first_name" class="text give-input" type="text" value="<?php echo esc_attr( $first_name ); ?>" />
+				<input name="give_first_name" id="give_first_name" class="text give-input" type="text" value="<?php echo esc_attr( $first_name ); ?>"/>
 			</p>
 
 			<p id="give_profile_last_name_wrap" class="form-row form-row-last">
 				<label for="give_last_name"><?php esc_html_e( 'Last Name', 'give' ); ?></label>
-				<input name="give_last_name" id="give_last_name" class="text give-input" type="text" value="<?php echo esc_attr( $last_name ); ?>" />
+				<input name="give_last_name" id="give_last_name" class="text give-input" type="text" value="<?php echo esc_attr( $last_name ); ?>"/>
 			</p>
 
 			<p id="give_profile_display_name_wrap" class="form-row form-row-first">
@@ -91,7 +91,7 @@ if ( is_user_logged_in() ):
 
 			<p class="form-row form-row-last">
 				<label for="give_email"><?php esc_html_e( 'Email Address', 'give' ); ?></label>
-				<input name="give_email" id="give_email" class="text give-input required" type="email" value="<?php echo esc_attr( $current_user->user_email ); ?>" required aria-required="true" />
+				<input name="give_email" id="give_email" class="text give-input required" type="email" value="<?php echo esc_attr( $current_user->user_email ); ?>" required aria-required="true"/>
 				<?php
 				/**
 				 * Fires in the profile editor shortcode, to the email section.
@@ -121,22 +121,22 @@ if ( is_user_logged_in() ):
 
 				<p id="give-card-address-wrap" class="form-row form-row-first">
 					<label for="give_address_line1"><?php esc_html_e( 'Address 1', 'give' ); ?></label>
-					<input name="give_address_line1" id="give_address_line1" class="text give-input" type="text" value="<?php echo esc_attr( $address['line1'] ); ?>" />
+					<input name="give_address_line1" id="give_address_line1" class="text give-input" type="text" value="<?php echo esc_attr( $address['line1'] ); ?>"/>
 				</p>
 
 				<p id="give-card-address-2-wrap" class="form-row form-row-last">
 					<label for="give_address_line2"><?php esc_html_e( 'Address 2', 'give' ); ?></label>
-					<input name="give_address_line2" id="give_address_line2" class="text give-input" type="text" value="<?php echo esc_attr( $address['line2'] ); ?>" />
+					<input name="give_address_line2" id="give_address_line2" class="text give-input" type="text" value="<?php echo esc_attr( $address['line2'] ); ?>"/>
 				</p>
 
 				<p id="give-card-city-wrap" class="form-row form-row-first">
 					<label for="give_address_city"><?php esc_html_e( 'City', 'give' ); ?></label>
-					<input name="give_address_city" id="give_address_city" class="text give-input" type="text" value="<?php echo esc_attr( $address['city'] ); ?>" />
+					<input name="give_address_city" id="give_address_city" class="text give-input" type="text" value="<?php echo esc_attr( $address['city'] ); ?>"/>
 				</p>
 
 				<p id="give-card-zip-wrap" class="form-row form-row-last">
 					<label for="give_address_zip"><?php esc_html_e( 'Zip / Postal Code', 'give' ); ?></label>
-					<input name="give_address_zip" id="give_address_zip" class="text give-input" type="text" value="<?php echo esc_attr( $address['zip'] ); ?>" />
+					<input name="give_address_zip" id="give_address_zip" class="text give-input" type="text" value="<?php echo esc_attr( $address['zip'] ); ?>"/>
 				</p>
 
 				<p id="give-card-country-wrap" class="form-row form-row-first">
@@ -150,7 +150,7 @@ if ( is_user_logged_in() ):
 
 				<p id="give-card-state-wrap" class="form-row form-row-last">
 					<label for="give_address_state"><?php esc_html_e( 'State / Province', 'give' ); ?></label>
-					<input name="give_address_state" id="give_address_state" class="text give-input" type="text" value="<?php echo esc_attr( $address['state'] ); ?>" />
+					<input name="give_address_state" id="give_address_state" class="text give-input" type="text" value="<?php echo esc_attr( $address['state'] ); ?>"/>
 				</p>
 
 				<?php
@@ -179,25 +179,27 @@ if ( is_user_logged_in() ):
 
 			<legend id="give_profile_password_label"><?php esc_html_e( 'Change your Password', 'give' ); ?></legend>
 
-			<p id="give_profile_password_wrap_1" class="form-row form-row-first">
-				<label for="give_new_user_pass1"><?php esc_html_e( 'New Password', 'give' ); ?></label>
-				<input name="give_new_user_pass1" id="give_new_user_pass1" class="password give-input" type="password" />
-			</p>
+			<div id="give_profile_password_wrap" class="give-clearfix">
+				<p id="give_profile_password_wrap_1" class="form-row form-row-first">
+					<label for="give_new_user_pass1"><?php esc_html_e( 'New Password', 'give' ); ?></label>
+					<input name="give_new_user_pass1" id="give_new_user_pass1" class="password give-input" type="password"/>
+				</p>
 
-			<p id="give_profile_password_wrap_2" class="form-row form-row-last">
-				<label for="give_new_user_pass2"><?php esc_html_e( 'Re-enter Password', 'give' ); ?></label>
-				<input name="give_new_user_pass2" id="give_new_user_pass2" class="password give-input" type="password" />
-				<?php
-				/**
-				 * Fires in the profile editor shortcode, to the password section.
-				 *
-				 * Allows you to add new elements to the password section.
-				 *
-				 * @since 1.0
-				 */
-				do_action( 'give_profile_editor_password' );
-				?>
-			</p>
+				<p id="give_profile_password_wrap_2" class="form-row form-row-last">
+					<label for="give_new_user_pass2"><?php esc_html_e( 'Re-enter Password', 'give' ); ?></label>
+					<input name="give_new_user_pass2" id="give_new_user_pass2" class="password give-input" type="password"/>
+					<?php
+					/**
+					 * Fires in the profile editor shortcode, to the password section.
+					 *
+					 * Allows you to add new elements to the password section.
+					 *
+					 * @since 1.0
+					 */
+					do_action( 'give_profile_editor_password' );
+					?>
+				</p>
+			</div>
 
 			<p class="give_password_change_notice"><?php esc_html_e( 'Please note after changing your password, you must log back in.', 'give' ); ?></p>
 
@@ -213,10 +215,10 @@ if ( is_user_logged_in() ):
 			?>
 
 			<p id="give_profile_submit_wrap">
-				<input type="hidden" name="give_profile_editor_nonce" value="<?php echo wp_create_nonce( 'give-profile-editor-nonce' ); ?>" />
-				<input type="hidden" name="give_action" value="edit_user_profile" />
-				<input type="hidden" name="give_redirect" value="<?php echo esc_url( give_get_current_page_url() ); ?>" />
-				<input name="give_profile_editor_submit" id="give_profile_editor_submit" type="submit" class="give_submit" value="<?php esc_attr_e( 'Save Changes', 'give' ); ?>" />
+				<input type="hidden" name="give_profile_editor_nonce" value="<?php echo wp_create_nonce( 'give-profile-editor-nonce' ); ?>"/>
+				<input type="hidden" name="give_action" value="edit_user_profile"/>
+				<input type="hidden" name="give_redirect" value="<?php echo esc_url( give_get_current_page_url() ); ?>"/>
+				<input name="give_profile_editor_submit" id="give_profile_editor_submit" type="submit" class="give_submit" value="<?php esc_attr_e( 'Save Changes', 'give' ); ?>"/>
 			</p>
 
 		</fieldset>
@@ -234,7 +236,7 @@ if ( is_user_logged_in() ):
 	do_action( 'give_profile_editor_after' );
 	?>
 
-<?php
+	<?php
 else:
 	esc_html_e( 'You need to login to edit your profile.', 'give' );
 	echo give_login_form();
