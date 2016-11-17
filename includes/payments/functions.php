@@ -1769,19 +1769,22 @@ function give_filter_where_older_than_week( $where = '' ) {
 function give_get_payment_form_title( $payment_meta, $include_level_name = false, $separator = '' ) {
 
 	$form_id    = isset( $payment_meta['form_id'] ) ? $payment_meta['form_id'] : 0;
-	$form_title = isset( $payment_meta['form_title'] ) ? $payment_meta['form_title'] : '';
 	$price_id   = isset( $payment_meta['price_id'] ) ? $payment_meta['price_id'] : null;
+	$form_title = isset( $payment_meta['form_title'] ) ? $payment_meta['form_title'] : '';
 
 	if ( $include_level_name == true ) {
 		$form_title = '';
 	}
 
+	//If multi-level, append to the form title.
 	if ( give_has_variable_prices( $form_id ) ) {
 
-		if ( ! empty( $form_title ) && ! empty( $separator ) ) {
-			$form_title .= ' ' . $separator;
+		//Only add separator if there is a form title.
+		if ( ! empty( $form_title ) ) {
+			$form_title .= ' ' . $separator . ' ';
 		}
-		$form_title .= ' <span class="donation-level-text-wrap">';
+
+		$form_title .= '<span class="donation-level-text-wrap">';
 
 		if ( $price_id == 'custom' ) {
 			$custom_amount_text = get_post_meta( $form_id, '_give_custom_amount_text', true );
