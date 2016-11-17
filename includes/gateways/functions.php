@@ -214,21 +214,26 @@ function give_get_chosen_gateway( $form_id ) {
 		$request_form_id = isset( $_REQUEST['form-id'] ) ? $_REQUEST['form-id'] : 0;
 	}
 
-	$chosen = give_get_default_gateway( $form_id );
+	$request_payment_mode = isset( $_REQUEST['payment-mode'] ) ? $_REQUEST['payment-mode'] : '';
+	$chosen               = false;
 
-	//Take into account request Form ID args.
+	//If both 'payment-mode' and 'form-id' then set for only this form.
 	if ( ! empty( $request_form_id ) && $form_id == $request_form_id ) {
-		$chosen = isset( $_REQUEST['payment-mode'] ) ? $_REQUEST['payment-mode'] : '';
+		$chosen = $request_payment_mode;
+	} elseif ( empty( $request_form_id ) && $request_payment_mode ) {
+		//If no 'form-id' but there is 'payment-mode'.
+		$chosen = $request_payment_mode;
 	}
 
+	// Get the enable gateway based of chosen var.
 	if ( $chosen && give_is_gateway_active( $chosen ) ) {
 		$enabled_gateway = urldecode( $chosen );
 	} else {
 		$enabled_gateway = give_get_default_gateway( $form_id );
 	}
 
-
 	return apply_filters( 'give_chosen_gateway', $enabled_gateway );
+
 }
 
 /**
