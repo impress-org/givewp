@@ -291,39 +291,6 @@ function give_remove_month_filter( $dates ) {
 add_filter( 'months_dropdown_results', 'give_remove_month_filter', 99 );
 
 /**
- * Adds price field to Quick Edit options
- *
- * @since 1.0
- *
- * @param string $column_name Name of the column
- * @param string $post_type   Current Post Type (i.e. forms)
- *
- * @return void
- */
-function give_price_field_quick_edit( $column_name, $post_type ) {
-	if ( $column_name != 'price' || $post_type != 'give_forms' ) {
-		return;
-	}
-	?>
-	<fieldset class="inline-edit-col-left">
-		<div id="give-give-data" class="inline-edit-col">
-			<h4><?php esc_html_e( 'Form Configuration', 'give' ); ?></h4>
-			<label for="give_regprice">
-				<span class="title"><?php esc_html_e( 'Amount', 'give' ); ?></span>
-				<span class="input-text-wrap">
-					<input type="text" name="give_regprice" id="give_regprice" class="text regprice"/>
-				</span>
-			</label>
-			<br class="clear"/>
-		</div>
-	</fieldset>
-	<?php
-}
-
-add_action( 'quick_edit_custom_box', 'give_price_field_quick_edit', 10, 2 );
-add_action( 'bulk_edit_custom_box', 'give_price_field_quick_edit', 10, 2 );
-
-/**
  * Updates price when saving post
  *
  * @since 1.0
