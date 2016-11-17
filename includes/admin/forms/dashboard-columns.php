@@ -35,7 +35,7 @@ function give_form_columns( $give_form_columns ) {
 		'title'         => esc_html__( 'Name', 'give' ),
 		'form_category' => esc_html__( 'Categories', 'give' ),
 		'form_tag'      => esc_html__( 'Tags', 'give' ),
-		'price'         => esc_html__( 'Price', 'give' ),
+		'price'         => esc_html__( 'Amount', 'give' ),
 		'goal'          => esc_html__( 'Goal', 'give' ),
 		'donations'     => esc_html__( 'Donations', 'give' ),
 		'earnings'      => esc_html__( 'Income', 'give' ),
@@ -293,7 +293,7 @@ function give_price_field_quick_edit( $column_name, $post_type ) {
 		<div id="give-give-data" class="inline-edit-col">
 			<h4><?php esc_html_e( 'Form Configuration', 'give' ); ?></h4>
 			<label for="give_regprice">
-				<span class="title"><?php esc_html_e( 'Price', 'give' ); ?></span>
+				<span class="title"><?php esc_html_e( 'Amount', 'give' ); ?></span>
 				<span class="input-text-wrap">
 					<input type="text" name="give_regprice" id="give_regprice" class="text regprice" />
 				</span>
