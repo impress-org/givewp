@@ -566,12 +566,9 @@ function give_email_tag_receipt_id( $payment_id ) {
 function give_email_tag_donation( $payment_id ) {
 	$payment      = new Give_Payment( $payment_id );
 	$payment_meta = $payment->payment_meta;
-	$level_title  = give_has_variable_prices( $payment->form_id );
-	$separator    = $level_title ? '-' : '';
-	$form_title   = strip_tags( give_get_payment_form_title( $payment_meta, false, $separator ) );
+	$separator    = give_has_variable_prices( $payment->form_id ) ? '-' : '';
 
-	return ! empty( $form_title ) ? $form_title : esc_html__( 'There was an error retrieving the donation form name.', 'give' );
-
+	return strip_tags( give_get_payment_form_title( $payment_meta, false, $separator ) );
 }
 
 /**
