@@ -179,25 +179,27 @@ if ( is_user_logged_in() ):
 
 			<legend id="give_profile_password_label"><?php esc_html_e( 'Change your Password', 'give' ); ?></legend>
 
-			<p id="give_profile_password_wrap_1" class="form-row form-row-first">
-				<label for="give_new_user_pass1"><?php esc_html_e( 'New Password', 'give' ); ?></label>
-				<input name="give_new_user_pass1" id="give_new_user_pass1" class="password give-input" type="password" />
-			</p>
+			<div id="give_profile_password_wrap" class="give-clearfix">
+				<p id="give_profile_password_wrap_1" class="form-row form-row-first">
+					<label for="give_new_user_pass1"><?php esc_html_e( 'New Password', 'give' ); ?></label>
+					<input name="give_new_user_pass1" id="give_new_user_pass1" class="password give-input" type="password" />
+				</p>
 
-			<p id="give_profile_password_wrap_2" class="form-row form-row-last">
-				<label for="give_new_user_pass2"><?php esc_html_e( 'Re-enter Password', 'give' ); ?></label>
-				<input name="give_new_user_pass2" id="give_new_user_pass2" class="password give-input" type="password" />
-				<?php
-				/**
-				 * Fires in the profile editor shortcode, to the password section.
-				 *
-				 * Allows you to add new elements to the password section.
-				 *
-				 * @since 1.0
-				 */
-				do_action( 'give_profile_editor_password' );
-				?>
-			</p>
+				<p id="give_profile_password_wrap_2" class="form-row form-row-last">
+					<label for="give_new_user_pass2"><?php esc_html_e( 'Re-enter Password', 'give' ); ?></label>
+					<input name="give_new_user_pass2" id="give_new_user_pass2" class="password give-input" type="password" />
+					<?php
+					/**
+					 * Fires in the profile editor shortcode, to the password section.
+					 *
+					 * Allows you to add new elements to the password section.
+					 *
+					 * @since 1.0
+					 */
+					do_action( 'give_profile_editor_password' );
+					?>
+				</p>
+			</div>
 
 			<p class="give_password_change_notice"><?php esc_html_e( 'Please note after changing your password, you must log back in.', 'give' ); ?></p>
 
