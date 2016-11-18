@@ -41,15 +41,8 @@ add_filter( 'give_payment_gateways', 'give_offline_register_gateway', 1 );
  * @return void
  */
 function give_offline_payment_cc_form( $form_id ) {
-
-	$post_offline_customization_option = get_post_meta( $form_id, '_give_customize_offline_donations', true );
-	$post_offline_instructions         = get_post_meta( $form_id, '_give_offline_checkout_notes', true );
-	$global_offline_instruction        = give_get_option( 'global_offline_donation_content' );
-	$offline_instructions              = $global_offline_instruction;
-
-	if ( $post_offline_customization_option == 'yes' ) {
-		$offline_instructions = $post_offline_instructions;
-	}
+	// Get offline payment instruction.
+	$offline_instructions = give_get_offline_payment_instruction( $form_id, true );
 
 	ob_start();
 
@@ -63,12 +56,7 @@ function give_offline_payment_cc_form( $form_id ) {
 	do_action( 'give_before_offline_info_fields', $form_id );
 	?>
 	<fieldset id="give_offline_payment_info">
-		<?php
-		$settings_url         = admin_url( 'post.php?post=' . $form_id . '&action=edit&message=1' );
-		/* translators: %s: form settings url */
-		$offline_instructions = ! empty( $offline_instructions ) ? $offline_instructions : sprintf( __( 'Please enter offline donation instructions in <a href="%s">this form\'s settings</a>.', 'give' ), $settings_url );
-		echo wpautop( stripslashes( $offline_instructions ) );
-		?>
+		<?php echo stripslashes( $offline_instructions ); ?>
 	</fieldset>
 	<?php
 	/**
