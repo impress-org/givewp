@@ -47,6 +47,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @property string     $first_name
  * @property string     $last_name
  * @property string     $parent_payment
+ * @property string     $transaction_id
+ * @property string     $old_status
  *
  * @since 1.5
  */

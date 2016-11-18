@@ -177,7 +177,7 @@ add_action( 'wp_ajax_nopriv_give_process_checkout', 'give_process_purchase_form'
  */
 function give_checkout_check_existing_email( $valid_data, $post ) {
 
-	// Verify that the email address belongs to this customer
+	// Verify that the email address belongs to this customer.
 	if ( is_user_logged_in() ) {
 
 		$email    = $valid_data['logged_in_user']['user_email'];
