@@ -68,15 +68,10 @@ function give_deprecated_action_mapping( $data, $arg_1 = '', $arg_2 = '', $arg_3
 			do_action( $give_map_deprecated_actions[ $action ], $data, $arg_1, $arg_2, $arg_3 );
 
 			if ( ! defined( 'DOING_AJAX' ) ) {
-				$debug_trace = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 3 );
-				$debug_trace = array_pop( $debug_trace );
-				$file        = explode( 'wp-content', $debug_trace['file'] );
-				$file        = array_pop( $file );
-
 				// translators: %s: action name.
 				_give_deprecated_function(
 					sprintf(
-						__( "The %s action found in <strong>...{$file}</strong> on line <strong>{$debug_trace['line']}</strong>" ),
+						__( 'The %s action' ),
 						$give_map_deprecated_actions[ $action ]
 					),
 					'1.7',
