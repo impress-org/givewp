@@ -92,9 +92,9 @@ function __give_offline_payment_receipt_after( $payment ) {
 	}
 
 	?>
-	<tr class="give-offline-instruction-wrap">
+	<tr>
 		<td scope="row"><strong><?php esc_html_e( 'Offline Payment Instruction:', 'give' ); ?></strong></td>
-		<td class="give-offline-instruction">
+		<td>
 			<?php echo give_get_offline_payment_instruction( $payment->form_id, true ); ?>
 		</td>
 	</tr>
