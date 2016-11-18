@@ -31,7 +31,7 @@ function give_process_gateway_select( $data ) {
 add_action( 'give_gateway_select', 'give_process_gateway_select' );
 
 /**
- * Loads a payment gateway via AJAX
+ * Loads a payment gateway via AJAX.
  *
  * @since 1.0
  *
@@ -54,7 +54,7 @@ add_action( 'wp_ajax_give_load_gateway', 'give_load_ajax_gateway' );
 add_action( 'wp_ajax_nopriv_give_load_gateway', 'give_load_ajax_gateway' );
 
 /**
- * Sets an error on checkout if no gateways are enabled.
+ * Sets an error within the donation form if no gateways are enabled.
  *
  * @since 1.0
  *
@@ -71,34 +71,3 @@ function give_no_gateway_error() {
 }
 
 add_action( 'init', 'give_no_gateway_error' );
-
-
-/**
- * Add offline payment instruction on payment receipt.
- *
- * @since 1.7
- *
- * @param WP_Post $payment
- *
- * @return mixed
- */
-function __give_offline_payment_receipt_after( $payment ) {
-	// Get payment object.
-	$payment = new Give_Payment( $payment->ID );
-
-	// Bailout.
-	if ( 'offline' !== $payment->gateway ) {
-		return false;
-	}
-
-	?>
-	<tr>
-		<td scope="row"><strong><?php esc_html_e( 'Offline Payment Instruction:', 'give' ); ?></strong></td>
-		<td>
-			<?php echo give_get_offline_payment_instruction( $payment->form_id, true ); ?>
-		</td>
-	</tr>
-	<?php
-}
-
-add_filter( 'give_payment_receipt_after', '__give_offline_payment_receipt_after' );

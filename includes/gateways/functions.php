@@ -327,37 +327,3 @@ function give_get_ordered_payment_gateways( $gateways ) {
 	 */
 	return apply_filters( 'give_payment_gateways_order', $gateways );
 }
-
-
-/**
- * Get offline payment instruction.
- *
- * @since 1.7
- *
- * @param int  $form_id
- * @param bool $wpautop
- *
- * @return string
- */
-function give_get_offline_payment_instruction( $form_id, $wpautop = false ) {
-	// Bailout.
-	if ( ! $form_id ) {
-		return '';
-	}
-
-	$post_offline_customization_option = get_post_meta( $form_id, '_give_customize_offline_donations', true );
-	$post_offline_instructions         = get_post_meta( $form_id, '_give_offline_checkout_notes', true );
-	$global_offline_instruction        = give_get_option( 'global_offline_donation_content' );
-	$offline_instructions              = $global_offline_instruction;
-
-	if ( $post_offline_customization_option == 'yes' ) {
-		$offline_instructions = $post_offline_instructions;
-	}
-
-	$settings_url = admin_url( 'post.php?post=' . $form_id . '&action=edit&message=1' );
-
-	/* translators: %s: form settings url */
-	$offline_instructions = ! empty( $offline_instructions ) ? $offline_instructions : sprintf( __( 'Please enter offline donation instructions in <a href="%s">this form\'s settings</a>.', 'give' ), $settings_url );
-
-	return ( $wpautop ? wpautop( $offline_instructions ) : $offline_instructions );
-}
