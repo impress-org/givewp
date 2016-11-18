@@ -34,7 +34,7 @@ if ( true === $give_receipt_args['status_notice'] ) {
 			$notice_type    = 'success';
 			break;
 		case 'pending':
-			$notice_message = esc_html__( 'Payment Pending: Please contact the site owner for assistance.', 'give' );
+			$notice_message = esc_html__( 'Payment Pending: Please send you donation to the address below.', 'give' );
 			$notice_type    = 'warning';
 			break;
 		case 'refunded':
