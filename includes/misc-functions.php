@@ -534,7 +534,7 @@ function _give_deprecated_function( $function, $version, $replacement = null, $b
 	// Allow plugin to filter the output error trigger
 	if ( WP_DEBUG && apply_filters( 'give_deprecated_function_trigger_error', $show_errors ) ) {
 		if ( ! is_null( $replacement ) ) {
-			trigger_error( sprintf( __( '%1$s is <strong>deprecated</strong> since Give version %2$s! Use %3$s instead.', 'give' ), $function, $version, $replacement ), E_USER_NOTICE );
+			trigger_error( sprintf( __( '%1$s is <strong>deprecated</strong> since Give version %2$s! Use %3$s instead, found', 'give' ), $function, $version, $replacement ), E_USER_NOTICE );
 		} else {
 			trigger_error( sprintf( __( '%1$s is <strong>deprecated</strong> since Give version %2$s with no alternative available.', 'give' ), $function, $version ), E_USER_NOTICE );
 		}
