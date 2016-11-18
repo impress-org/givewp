@@ -16,6 +16,7 @@ if ( empty( $payment ) ) {
 	return;
 }
 
+$id           = $payment->ID;
 $meta         = give_get_payment_meta( $payment->ID );
 $donation     = give_get_payment_form_title( $meta );
 $user         = give_get_payment_meta_user_info( $payment->ID );
