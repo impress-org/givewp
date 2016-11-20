@@ -1480,51 +1480,44 @@ a.give-delete {
     position: relative;
     float: right;
     width: 30.5%;
-    background: white;
-    margin-left: 9px !important;
+    margin-left: 1% !important;
     margin-bottom: 10px !important;
-    min-height: 220px;
-    border: 1px solid #ccc; }
+    min-height: 220px; }
   #licenses .cmb2-wrap .cmb-row > div {
     display: block;
     width: auto;
     padding: 0;
     float: none; }
-  #licenses .cmb2-wrap .cmb-th {
-    background: #f9f9f9;
-    border-bottom: 1px solid #ccc;
-    margin-bottom: 20px; }
-    #licenses .cmb2-wrap .cmb-th label {
-      margin: 0 10px 0 0;
-      padding: 10px 0; }
+  #licenses .cmb2-wrap .cmb-th label {
+    margin: 0 10px 0 0;
+    padding: 10px 0; }
   #licenses .cmb2-wrap .cmb-td > div {
     margin: 0 10px; }
     #licenses .cmb2-wrap .cmb-td > div input[type="text"] {
       width: 100%; }
     #licenses .cmb2-wrap .cmb-td > div input[type="submit"] {
-      margin: 15px 0 10px 0; }
+      margin: 0;
+      position: absolute;
+      top: 0;
+      left: 10px; }
   #licenses .cmb2-wrap .give-license-notice {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    background: whitesmoke;
-    border-top: 1px solid #ececec;
-    min-height: 65px; }
+    background: #FFF;
+    border-right: 4px solid #e24e4e;
+    -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+    margin: 5px 0 2px;
+    padding: 1px 12px; }
     #licenses .cmb2-wrap .give-license-notice p {
-      padding: 0 10px; }
+      padding: 10px 0;
+      margin: 0; }
     #licenses .cmb2-wrap .give-license-notice a {
       color: #444;
       cursor: pointer; }
     #licenses .cmb2-wrap .give-license-notice a:hover {
       text-decoration: none; }
   #licenses .cmb2-wrap .give-license-notice.give-license-expires-soon {
-    background-color: #00a0d2;
-    color: #fff;
     border-color: #00a0d2; }
   #licenses .cmb2-wrap .give-license-notice.give-license-expired {
-    background-color: #e24e4e;
-    color: #fff;
     border-color: #e24e4e; }
   #licenses .cmb2-wrap .give-license-notice.give-license-error,
   #licenses .cmb2-wrap .give-license-notice.give-license-no_activations_left,
@@ -1532,19 +1525,9 @@ a.give-delete {
   #licenses .cmb2-wrap .give-license-notice.give-license-invalid,
   #licenses .cmb2-wrap .give-license-notice.give-license-site_inactive,
   #licenses .cmb2-wrap .give-license-notice.give-license-item_name_mismatch {
-    background-color: #ffebcd;
     border-color: #ffebcd; }
-  #licenses .cmb2-wrap .give-license-notice.give-license-lifetime-notice {
-    background-color: #46b450;
+  #licenses .cmb2-wrap .give-license-notice.give-license-lifetime-notice, #licenses .cmb2-wrap .give-license-notice.give-license-expiration-date {
     border-color: #46b450; }
-  #licenses .cmb2-wrap .give-license-notice.give-license-lifetime-notice,
-  #licenses .cmb2-wrap .give-license-notice.give-license-expires-soon,
-  #licenses .cmb2-wrap .give-license-notice.give-license-expired {
-    color: #fff; }
-    #licenses .cmb2-wrap .give-license-notice.give-license-lifetime-notice a,
-    #licenses .cmb2-wrap .give-license-notice.give-license-expires-soon a,
-    #licenses .cmb2-wrap .give-license-notice.give-license-expired a {
-      color: #fff; }
   #licenses .cmb2-wrap .give-license-notice.give-license-expires-soon a:hover,
   #licenses .cmb2-wrap .give-license-notice.give-license-expired a:hover {
     text-decoration: none; }

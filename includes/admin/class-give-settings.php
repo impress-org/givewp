@@ -1228,7 +1228,6 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 	$custom_html        = '';
 	$value              = $escaped_value;
 	$messages           = array();
-	$class              = '';
 	$account_page_link  = $field_type_object->field->args['options']['account_url'];
 	$checkout_page_link = $field_type_object->field->args['options']['checkout_url'];
 	$addon_name         = $field_type_object->field->args['options']['item_name'];
@@ -1378,12 +1377,11 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 			}
 		}
 	} else {
-		$class          = 'empty';
 		$messages[]     = sprintf(
 			__( 'To receive updates, please enter your valid %s license key.', 'give' ),
 			$addon_name
 		);
-		$license_status = null;
+		$license_status = 'inactive';
 	}
 
 
@@ -1398,8 +1396,9 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 		'type'  => $type
 	) );
 
-	// If license is active so show deactivate button
+	// If license is active so show deactivate button.
 	if ( $is_valid_license ) {
+
 		// Get input filed html.
 		$input_field_html = $field_type_object->input( array(
 			'class'    => $field_classes,
@@ -1408,6 +1407,8 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 		) );
 
 		$custom_html = '<input type="submit" class="button-secondary give-license-deactivate" name="' . $id . '_deactivate" value="' . esc_attr__( 'Deactivate License', 'give' ) . '"/>';
+
+
 	}
 
 	// Field description.
@@ -1415,7 +1416,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 
 	// If no messages found then inform user that to get updated in future register yourself.
 	if ( empty( $messages ) ) {
-		$messages[] = apply_filters( "{$shortname}_default_addon_notice", esc_html__( 'To receive updates, please enter your valid Software Licensing license key.', 'give' ) );
+		$messages[] = apply_filters( "{$shortname}_default_addon_notice", esc_html__( 'To receive updates, please enter your valid license key.', 'give' ) );
 	}
 
 	foreach ( $messages as $message ) {
