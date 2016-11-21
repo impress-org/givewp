@@ -115,6 +115,16 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 					'disabled' => esc_html__( 'Disabled', 'give' ),
 				),
 			),
+			array(
+				'type'    => 'listbox',
+				'name'    => 'button_only',
+				'label'   => esc_attr__( 'Button Only:', 'give' ),
+				'tooltip' => esc_attr__( 'Override the display style setting for this form.', 'give' ),
+				'options' => array(
+					'enabled'  => esc_html__( 'Enabled', 'give' ),
+					'disabled' => esc_html__( 'Disabled', 'give' ),
+				),
+			),
 		);
 	}
 }
