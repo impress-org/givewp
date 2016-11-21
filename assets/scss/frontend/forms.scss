@@ -68,6 +68,10 @@ Layout
 		margin: 0 0 20px;
 	}
 
+	div.give-form-content-wrap.give_post_form-content {
+		margin: 20px 0 0 0;
+	}
+
 	&.give-display-reveal, &.give-display-modal {
 		.give-btn {
 			margin: 0 0 15px;
@@ -712,10 +716,6 @@ div.give-form-wrap.mfp-hide {
 }
 
 div.mfp-content {
-	//.give-form-content-wrap, .give-donation-amount, .give-select-level {
-	//  display: none;
-	//}
-
 	//Basic Styles
 	fieldset {
 		p, ol, ul {

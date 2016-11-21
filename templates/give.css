@@ -791,6 +791,9 @@ Layout
 [id*='give-form'] div.give-form-content-wrap {
   margin: 0 0 20px; }
 
+[id*='give-form'] div.give-form-content-wrap.give_post_form-content {
+  margin: 20px 0 0 0; }
+
 [id*='give-form'].give-display-reveal .give-btn, [id*='give-form'].give-display-modal .give-btn {
   margin: 0 0 15px; }
 
