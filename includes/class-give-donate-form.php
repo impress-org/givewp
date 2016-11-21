@@ -758,7 +758,7 @@ class Give_Donate_Form {
 			: get_post_meta( $this->ID, '_give_payment_display', true );
 
 		// If admin want to show only button for form then user inbuilt modal functionality.
-		if( $this->is_show_only_button( $args ) ) {
+		if( 'button_only' === $display_option ) {
 			$display_option = 'modal give-display-button-only';
 		}
 
@@ -1040,20 +1040,6 @@ class Give_Donate_Form {
 		);
 
 		return $is_close_form;
-	}
-
-	/**
-	 * Check if admin want to show only button on frontend.
-	 *
-	 * @since  1.8
-	 * @access public
-	 *
-	 * @param array $args List of settings for form template.
-	 *
-	 * @return bool
-	 */
-	public function is_show_only_button( $args ) {
-		return (bool) ( isset( $args['display_style'] ) && 'button_only' === $args['display_style'] );
 	}
 
 	/**
