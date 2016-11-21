@@ -7,9 +7,10 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
-/*------------------------------------
-Settings
---------------------------------------*/
+//--------------------------------------------------------------
+// General Settings
+//--------------------------------------------------------------
+
 .give-settings-page {
 
   .nav-tab-wrapper {
@@ -35,28 +36,6 @@ Settings
 
   table table input[type="text"] {
     width: 15em;
-  }
-
-}
-
-// Payment Gateways
-.cmb-type-enabled-gateways {
-
-  ul li.ui-sortable-handle {
-
-    span.give-drag-handle {
-      padding: 3px 4px 0 0;
-      font-size: 15px;
-      font-weight: normal;
-      color: #bdbdbd;
-      cursor: move;
-
-      &:hover {
-        color: #333;
-      }
-
-    }
-
   }
 
 }
@@ -127,15 +106,6 @@ p.give-field-description, .cmb2-metabox-description {
   font-size: 14px;
 }
 
-/* css fix start: This css fix is for api and system info setting tab.  */
-.give-tools-setting-page {
-  .tablenav .actions {
-    overflow: visible;
-  }
-}
-
-/* css fix end*/
-
 .postbox-container #_give_donation_levels_repeat > .cmb-repeatable-grouping:not(:last-of-type) {
   border-bottom: 1px solid #e9e9e9;
   border-top: none;
@@ -145,7 +115,7 @@ p.give-field-description, .cmb2-metabox-description {
   display: none;
 }
 
-/* CMB2 Checkbox Revised Styles */
+// CMB2 Checkbox Revised Styles
 .cmb-type-checkbox .cmb-td {
   width: 80%;
   label {
@@ -177,6 +147,26 @@ p.give-field-description, .cmb2-metabox-description {
   > div.cmb-td {
     padding-bottom: 5px;
   }
+}
+
+//--------------------------------------------------------------
+// Payment Gateways
+//--------------------------------------------------------------
+.give-payment-gatways-list li.ui-sortable-handle {
+
+  span.give-drag-handle {
+    padding: 3px 4px 0 0;
+    font-size: 15px;
+    font-weight: normal;
+    color: #bdbdbd;
+    cursor: move;
+
+    &:hover {
+      color: #333;
+    }
+
+  }
+
 }
 
 //--------------------------------------------------------------

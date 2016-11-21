@@ -1507,9 +1507,6 @@ table.give-table td.row-title p {
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
-/*------------------------------------
-Settings
---------------------------------------*/
 .give-settings-page .nav-tab-wrapper {
   margin-bottom: 5px; }
 
@@ -1528,15 +1525,6 @@ Settings
 
 .give-settings-page table table input[type="text"] {
   width: 15em; }
-
-.cmb-type-enabled-gateways ul li.ui-sortable-handle span.give-drag-handle {
-  padding: 3px 4px 0 0;
-  font-size: 15px;
-  font-weight: normal;
-  color: #bdbdbd;
-  cursor: move; }
-  .cmb-type-enabled-gateways ul li.ui-sortable-handle span.give-drag-handle:hover {
-    color: #333; }
 
 .give-setting-tab-header {
   clear: both;
@@ -1587,11 +1575,6 @@ p.give-field-description, .cmb2-metabox-description {
   margin: 0;
   font-size: 14px; }
 
-/* css fix start: This css fix is for api and system info setting tab.  */
-.give-tools-setting-page .tablenav .actions {
-  overflow: visible; }
-
-/* css fix end*/
 .postbox-container #_give_donation_levels_repeat > .cmb-repeatable-grouping:not(:last-of-type) {
   border-bottom: 1px solid #e9e9e9;
   border-top: none; }
@@ -1599,7 +1582,6 @@ p.give-field-description, .cmb2-metabox-description {
 .cmb-type-enabled-gateways .cmb-td > p:first-of-type {
   display: none; }
 
-/* CMB2 Checkbox Revised Styles */
 .cmb-type-checkbox .cmb-td {
   width: 80%; }
   .cmb-type-checkbox .cmb-td label {
@@ -1623,6 +1605,15 @@ p.give-field-description, .cmb2-metabox-description {
 
 .cmb2-id-give-title > div.cmb-td {
   padding-bottom: 5px; }
+
+.give-payment-gatways-list li.ui-sortable-handle span.give-drag-handle {
+  padding: 3px 4px 0 0;
+  font-size: 15px;
+  font-weight: normal;
+  color: #bdbdbd;
+  cursor: move; }
+  .give-payment-gatways-list li.ui-sortable-handle span.give-drag-handle:hover {
+    color: #333; }
 
 .give-email-tags-wrap {
   margin: 5px 0 0; }
