@@ -83,7 +83,7 @@ jQuery(function ($) {
 
 		// Hide amount and title field if admin only want to show only button.
 		if (this_form_wrap.hasClass('give-display-button-only')) {
-			children = 'div, ul, fieldset, label, .mfp-close';
+			children = 'h2, div, ul, fieldset, label, .mfp-close';
 		}
 
 		//Alls well, open popup!
@@ -95,6 +95,23 @@ jQuery(function ($) {
 				type: 'inline'
 			},
 			callbacks     : {
+				beforeOpen: function(){
+					var $form_content = $( '.give-form-content-wrap', this_form_wrap ),
+						$form_title = $( '.give-form-title', this_form_wrap );
+
+					if( this_form_wrap.hasClass('give-display-button-only') && ( $form_content.length || $form_title.length ) ) {
+
+						// Add content to form.
+						if( $form_content.length && ! $( '.give-form-content-wrap', this_form ).length ) {
+							this_form.prepend( $form_content );
+						}
+
+						// Add title to form.
+						if( $form_title.length && ! $( '.give-form-title', this_form ).length ) {
+							this_form.prepend( $form_title );
+						}
+					}
+				},
 				open : function () {
 					// Will fire when this exact popup is opened
 					// this - is Magnific Popup object
