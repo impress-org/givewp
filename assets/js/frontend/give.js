@@ -71,12 +71,20 @@ jQuery( function ( $ ) {
 		var this_form = this_form_wrap.find( 'form.give-form' );
 		var this_amount_field = this_form.find( '#give-amount' );
 		var this_amount = this_amount_field.val();
-		//Check to ensure our amount is greater than 0
 
+		//Check to ensure our amount is greater than 0
 		//Does this number have a value
 		if ( !this_amount || this_amount <= 0 ) {
 			this_amount_field.focus();
 			return false;
+		}
+
+		// Hide form form children.
+		var children = '#give_purchase_form_wrap, #give-payment-mode-select, .mfp-close, .give-hidden';
+
+		// Hide amount and title field if admin only want to show only button.
+		if( this_form_wrap.hasClass( 'give-display-button-only' ) ) {
+			children = 'div, ul, fieldset, label, .mfp-close';
 		}
 
 		//Alls well, open popup!
@@ -94,15 +102,17 @@ jQuery( function ( $ ) {
 					if ( $( '.mfp-content' ).outerWidth() >= 500 ) {
 						$( '.mfp-content' ).addClass( 'give-responsive-mfp-content' );
 					}
+
 					//Hide all form elements besides the ones required for payment
-					this_form.children().not( '#give_purchase_form_wrap, #give-payment-mode-select, .mfp-close' ).hide();
+					this_form.children().not( children ).hide();
 
 				},
 				close: function () {
 					//Remove popup class
 					this_form.removeClass( 'mfp-hide' );
+
 					//Show all fields again
-					this_form.children().not( '#give_purchase_form_wrap, #give-payment-mode-select, .mfp-close, .give-hidden' ).show();
+					this_form.children().not( children ).show();
 				}
 			}
 		} );
