@@ -1038,6 +1038,20 @@ class Give_Donate_Form {
 	}
 
 	/**
+	 * Check if admin want to show only button on frontend.
+	 *
+	 * @since  1.8
+	 * @access public
+	 *
+	 * @param array $args List of settings for form template.
+	 *
+	 * @return bool
+	 */
+	public function is_show_only_button( $args ) {
+		return (bool) ( isset( $args['button_only'] ) && $args['button_only'] );
+	}
+
+	/**
 	 * Updates a single meta entry for the donation form
 	 *
 	 * @since  1.5
