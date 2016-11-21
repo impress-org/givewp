@@ -102,7 +102,7 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 					'onpage'      => esc_html__( 'All Fields', 'give' ),
 					'modal'       => esc_html__( 'Modal', 'give' ),
 					'reveal'      => esc_html__( 'Reveal', 'give' ),
-					'button_only' => esc_html__( 'Button Pnly', 'give' ),
+					'button_only' => esc_html__( 'Button Only', 'give' ),
 				),
 			),
 		);
