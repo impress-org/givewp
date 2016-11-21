@@ -76,7 +76,7 @@ function give_form_shortcode( $atts ) {
 		'show_content'  => '',
 		'float_labels'  => '',
 		'display_style' => '',
-		'button_only'   => false,
+		'button_only'   => 'disabled',
 	), $atts, 'give_form' );
 
 	foreach ( $atts as $key => $value ) {

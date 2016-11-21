@@ -590,7 +590,7 @@ function give_display_checkout_button( $form_id, $args ) {
 		? $args['display_style']
 		: get_post_meta( $form_id, '_give_payment_display', true );
 
-	if( isset( $args['button_only'] ) && (bool) $args['button_only'] ) {
+	if( give_is_setting_enabled( $args['button_only'] ) ) {
 		$display_option = 'modal';
 	}elseif ( $display_option === 'onpage' ) {
 		return '';
