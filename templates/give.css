@@ -1038,6 +1038,14 @@ form[id*='give-form'] #give-final-total-wrap {
     border-left: none;
     float: left; }
 
+.give-display-button-only .give-form-title {
+  display: none; }
+
+.give-display-button-only form[id*='give-form'] > div,
+.give-display-button-only form[id*='give-form'] > fieldset,
+.give-display-button-only form[id*='give-form'] > ul {
+  display: none; }
+
 /*---------------------------------
 Notices, Warnings & Errors
 -----------------------------------*/
@@ -1342,9 +1350,6 @@ Modal - Magnific Popup
 -----------------------------------*/
 div.give-form-wrap.mfp-hide {
   display: block !important; }
-
-div.mfp-content .give-form-content-wrap, div.mfp-content .give-donation-amount, div.mfp-content .give-select-level {
-  display: none; }
 
 div.mfp-content fieldset p, div.mfp-content fieldset ol, div.mfp-content fieldset ul {
   margin-bottom: 1.2em;
@@ -1981,9 +1986,10 @@ form.floated-labels .styled.select {
     max-width: 500px;
     margin: 40px auto;
     z-index: 2147483640; }
-    .give-modal .mfp-content .give-donation-levels-wrap, .give-modal .mfp-content .give-btn-modal {
-      display: none; }
-    .give-modal .mfp-content [id*='give-form'] #give-payment-mode-select, .give-modal .mfp-content [id*='give-form'] #give_purchase_form_wrap {
+    .give-modal .mfp-content [id*='give-form'] #give-payment-mode-select,
+    .give-modal .mfp-content [id*='give-form'] #give_purchase_form_wrap,
+    .give-modal .mfp-content [id*='give-form'].give-display-button-only .give-donation-amount,
+    .give-modal .mfp-content [id*='give-form'].give-display-button-only .give-donation-levels-wrap {
       display: block; }
   .give-modal .mfp-inline-holder .mfp-content,
   .give-modal .mfp-ajax-holder .mfp-content {

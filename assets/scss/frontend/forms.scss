@@ -338,6 +338,19 @@ form[id*='give-form'] {
 
 }
 
+.give-display-button-only{
+	.give-form-title{
+		display: none;
+	}
+}
+.give-display-button-only form[id*='give-form']{
+	> div,
+	> fieldset,
+	> ul{
+		display: none;
+	}
+}
+
 /*---------------------------------
 Notices, Warnings & Errors
 -----------------------------------*/
@@ -697,9 +710,9 @@ div.give-form-wrap.mfp-hide {
 }
 
 div.mfp-content {
-  .give-form-content-wrap, .give-donation-amount, .give-select-level {
-    display: none;
-  }
+  //.give-form-content-wrap, .give-donation-amount, .give-select-level {
+  //  display: none;
+  //}
 
   //Basic Styles
   fieldset {

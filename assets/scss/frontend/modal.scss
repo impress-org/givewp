@@ -75,11 +75,10 @@
     margin: 40px auto;
     z-index: $mfp-z-index-base + 2147482600;
 
-    .give-donation-levels-wrap, .give-btn-modal {
-      display: none;
-    }
-
-    [id*='give-form'] #give-payment-mode-select, [id*='give-form'] #give_purchase_form_wrap {
+    [id*='give-form'] #give-payment-mode-select,
+    [id*='give-form'] #give_purchase_form_wrap,
+    [id*='give-form'].give-display-button-only .give-donation-amount,
+	[id*='give-form'].give-display-button-only .give-donation-levels-wrap{
       display: block;
     }
 
