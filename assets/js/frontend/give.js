@@ -95,11 +95,12 @@ jQuery(function ($) {
 				type: 'inline'
 			},
 			callbacks     : {
-				beforeOpen: function(){
+				beforeOpen: function () {
 					if (this_form_wrap.hasClass('give-display-button-only') && !this_form.data('content')) {
 
 						var $form_content = $('.give-form-content-wrap', this_form_wrap),
-							$form_title   = $('.give-form-title', this_form_wrap);
+							$form_title   = $('.give-form-title', this_form_wrap),
+							$form_goal    = $('.give-goal-progress', this_form_wrap);
 
 						// Add content to form.
 						if ($form_content.length && !$('.give-form-content-wrap', this_form).length) {
@@ -108,6 +109,11 @@ jQuery(function ($) {
 							} else {
 								this_form.prepend($form_content);
 							}
+						}
+
+						// Add goal to form.
+						if ($form_goal.length && !$('.give-goal-progress', this_form).length) {
+							this_form.prepend($form_goal);
 						}
 
 						// Add title to form.
