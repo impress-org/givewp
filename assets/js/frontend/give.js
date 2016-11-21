@@ -96,20 +96,26 @@ jQuery(function ($) {
 			},
 			callbacks     : {
 				beforeOpen: function(){
-					var $form_content = $( '.give-form-content-wrap', this_form_wrap ),
-						$form_title = $( '.give-form-title', this_form_wrap );
+					if (this_form_wrap.hasClass('give-display-button-only') && !this_form.data('content')) {
 
-					if( this_form_wrap.hasClass('give-display-button-only') && ( $form_content.length || $form_title.length ) ) {
+						var $form_content = $('.give-form-content-wrap', this_form_wrap),
+							$form_title   = $('.give-form-title', this_form_wrap);
 
 						// Add content to form.
-						if( $form_content.length && ! $( '.give-form-content-wrap', this_form ).length ) {
-							this_form.prepend( $form_content );
+						if ($form_content.length && !$('.give-form-content-wrap', this_form).length) {
+							if ($form_content.hasClass('give_post_form-content')) {
+								this_form.append($form_content);
+							} else {
+								this_form.prepend($form_content);
+							}
 						}
 
 						// Add title to form.
-						if( $form_title.length && ! $( '.give-form-title', this_form ).length ) {
-							this_form.prepend( $form_title );
+						if ($form_title.length && !$('.give-form-title', this_form).length) {
+							this_form.prepend($form_title);
 						}
+
+						this_form.data('content', 'loaded');
 					}
 				},
 				open : function () {
