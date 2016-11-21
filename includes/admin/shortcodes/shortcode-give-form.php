@@ -96,33 +96,13 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 			array(
 				'type'    => 'listbox',
 				'name'    => 'display_style',
-				'label'   => esc_attr__( 'Donation Fields:', 'give' ),
+				'label'   => esc_attr__( 'Donation Options:', 'give' ),
 				'tooltip' => esc_attr__( 'How would you like to display donation information?', 'give' ),
 				'options' => array(
-					'onpage' => esc_html__( 'Show on Page', 'give' ),
-					'reveal' => esc_html__( 'Reveal Upon Click', 'give' ),
-					'modal'  => esc_html__( 'Modal Window Upon Click', 'give' ),
-				),
-			),
-			array(
-				'type'    => 'listbox',
-				'name'    => 'float_labels',
-				'label'   => esc_attr__( 'Floating Labels:', 'give' ),
-				'tooltip' => esc_attr__( 'Override the default floating labels setting for this form.', 'give' ),
-				'options' => array(
-					'global'   => esc_html__( 'Global Option', 'give' ),
-					'enabled'  => esc_html__( 'Enabled', 'give' ),
-					'disabled' => esc_html__( 'Disabled', 'give' ),
-				),
-			),
-			array(
-				'type'    => 'listbox',
-				'name'    => 'button_only',
-				'label'   => esc_attr__( 'Button Only:', 'give' ),
-				'tooltip' => esc_attr__( 'Override the display style setting for this form.', 'give' ),
-				'options' => array(
-					'enabled'  => esc_html__( 'Enabled', 'give' ),
-					'disabled' => esc_html__( 'Disabled', 'give' ),
+					'onpage'      => esc_html__( 'All Fields', 'give' ),
+					'modal'       => esc_html__( 'Modal', 'give' ),
+					'reveal'      => esc_html__( 'Reveal', 'give' ),
+					'button_only' => esc_html__( 'Button Pnly', 'give' ),
 				),
 			),
 		);
