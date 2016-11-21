@@ -242,12 +242,13 @@ a.give-delete {
     background-position: 98.5% center;
     outline: none;
     background-size: 16px;
+    width:100%;
   }
 
 }
 
 /* Addon grid design */
-#licenses .cmb2-wrap{
+#licenses .cmb2-wrap {
   margin-top: 20px;
 
   .cmb-row {
@@ -255,11 +256,9 @@ a.give-delete {
     position: relative;
     float: left;
     width: 30.5%;
-    background: white;
-    margin-right: 9px!important;
+    margin-right: 1% !important;
     margin-bottom: 10px !important;
-    min-height: 220px;
-    border: 1px solid #ccc;
+    min-height: 180px;
   }
 
   // Common css for cmb-th and cmb-td.
@@ -271,11 +270,8 @@ a.give-delete {
   }
 
   .cmb-th {
-    background: #f9f9f9;
-    border-bottom: 1px solid #ccc;
-    margin-bottom: 20px;
 
-    label{
+    label {
       margin: 0 0 0 10px;
       padding: 10px 0;
     }
@@ -285,49 +281,47 @@ a.give-delete {
     > div {
       margin: 0 10px;
 
-      input[type="text"]{
+      input[type="text"] {
         width: 100%;
       }
 
-      input[type="submit"]{
-        margin: 15px 0 10px 0;
+      input[type="submit"] {
+        margin: 0;
+        position: absolute;
+        top: 2px;
+        right: 10px;
       }
     }
   }
 
   .give-license-notice {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: whitesmoke;
-    border-top: 1px solid #ececec;
-    min-height: 65px;
+    background: #FFF;
+    border-left: 4px solid #e24e4e;
+    -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
+    margin: 5px 0 2px;
+    padding: 1px 12px;
 
     p {
-      padding: 0 10px;
+      padding: 10px 0;
+      margin: 0;
     }
 
-    a{
+    a {
       color: #444;
       cursor: pointer;
     }
 
-    a:hover{
+    a:hover {
       text-decoration: none;
-
     }
   }
 
   .give-license-notice.give-license-expires-soon {
-    background-color: #00a0d2;
-    color: #fff;
     border-color: #00a0d2;
   }
 
   .give-license-notice.give-license-expired {
-    background-color: #e24e4e;
-    color: #fff;
     border-color: #e24e4e;
   }
 
@@ -337,23 +331,11 @@ a.give-delete {
   .give-license-notice.give-license-invalid,
   .give-license-notice.give-license-site_inactive,
   .give-license-notice.give-license-item_name_mismatch {
-    background-color: #ffebcd;
     border-color: #ffebcd;
   }
 
-  .give-license-notice.give-license-lifetime-notice{
-    background-color: #46b450;
+  .give-license-notice.give-license-lifetime-notice, .give-license-notice.give-license-expiration-date {
     border-color: #46b450;
-  }
-
-  .give-license-notice.give-license-lifetime-notice,
-  .give-license-notice.give-license-expires-soon,
-  .give-license-notice.give-license-expired {
-    color: #fff;
-
-    a{
-      color: #fff;
-    }
   }
 
   .give-license-notice.give-license-expires-soon a:hover,
@@ -363,19 +345,19 @@ a.give-delete {
 }
 
 /* Responsive fixes: Addon grid design */
-@media screen and ( max-width: 1100px ) {
-  #licenses .cmb2-wrap{
-    .cmb-row{
-      width:45%;
+@media screen and (max-width: 1100px) {
+  #licenses .cmb2-wrap {
+    .cmb-row {
+      width: 45%;
       min-height: 230px;
     }
   }
 }
 
-@media screen and ( max-width: 600px ){
-  #licenses .cmb2-wrap{
-    .cmb-row{
-      width:100%;
+@media screen and (max-width: 600px) {
+  #licenses .cmb2-wrap {
+    .cmb-row {
+      width: 100%;
       max-width: 320px;
     }
   }
