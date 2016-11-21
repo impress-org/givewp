@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 /**
- * Perform automatic database upgrades when necessary
+ * Perform automatic database upgrades when necessary.
  *
  * @since 1.6
  * @return void
@@ -85,8 +85,8 @@ function give_show_upgrade_notices() {
 
 	// v1.3.2 Upgrades
 	if ( version_compare( $give_version, '1.3.2', '<' ) || ! give_has_upgrade_completed( 'upgrade_give_payment_customer_id' ) ) {
-		// translators: %s: upgrade URL.
 		printf(
+		/* translators: %s: upgrade URL */
 			'<div class="updated"><p>' . __( 'Give needs to upgrade the donor database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
 			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_give_payment_customer_id' ) )
 		);
@@ -94,8 +94,8 @@ function give_show_upgrade_notices() {
 
 	// v1.3.4 Upgrades //ensure the user has gone through 1.3.4.
 	if ( version_compare( $give_version, '1.3.4', '<' ) || ( ! give_has_upgrade_completed( 'upgrade_give_offline_status' ) && give_has_upgrade_completed( 'upgrade_give_payment_customer_id' ) ) ) {
-		// translators: %s: upgrade URL.
 		printf(
+		/* translators: %s: upgrade URL */
 			'<div class="updated"><p>' . __( 'Give needs to upgrade the donations database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
 			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_give_offline_status' ) )
 		);
@@ -387,15 +387,18 @@ function give_v16_upgrades() {
 }
 
 /**
- * 1.7 Upgrade.
- *   a. Update license api data for plugin addons.
+ * 1.7 Upgrades.
+ *
+ * a. Update license api data for plugin addons.
+ * b. Cleanup user roles.
  *
  * @since  1.7
  * @return void
  */
 function give_v17_upgrades() {
 	// Upgrade license data.
-	give_upgrade_addon_license_data();
+	give_v17_upgrade_addon_license_data();
+	give_v17_cleanup_roles();
 }
 
 /**
@@ -403,7 +406,7 @@ function give_v17_upgrades() {
  *
  * @since 1.7
  */
-function give_upgrade_addon_license_data() {
+function give_v17_upgrade_addon_license_data() {
 	$give_options = give_get_settings();
 
 	$api_url = 'https://givewp.com/give-sl-api/';
@@ -440,7 +443,7 @@ function give_upgrade_addon_license_data() {
 		$addon_name_parts = explode( '_', str_replace( 'give_', '', $shortname ) );
 		foreach ( $addon_name_parts as $name_part ) {
 
-			// Fix addon name.
+			// Fix addon name
 			switch ( $name_part ) {
 				case 'authorizenet' :
 					$name_part = 'authorize.net';
@@ -452,12 +455,12 @@ function give_upgrade_addon_license_data() {
 
 		$addon_name = implode( ' ', $addon_name );
 
-		// Data to send to the API.
+		// Data to send to the API
 		$api_params = array(
-			'edd_action' => 'activate_license', // never change from "edd_" to "give_"!
+			'edd_action' => 'activate_license', //never change from "edd_" to "give_"!
 			'license'    => $addon_license,
 			'item_name'  => urlencode( $addon_name ),
-			'url'        => home_url(),
+			'url'        => home_url()
 		);
 
 		// Call the API.
@@ -466,7 +469,7 @@ function give_upgrade_addon_license_data() {
 			array(
 				'timeout'   => 15,
 				'sslverify' => false,
-				'body'      => $api_params,
+				'body'      => $api_params
 			)
 		);
 
@@ -485,9 +488,50 @@ function give_upgrade_addon_license_data() {
 	}
 }
 
+
 /**
- * 1.8 Upgrade.
- *   a. Update form meta for new metabox settings.
+ * Cleanup User Roles.
+ *
+ * This upgrade routine removes unused roles and roles with typos.
+ *
+ * @since      1.7
+ */
+function give_v17_cleanup_roles() {
+
+	//Delete all caps with "_give_forms_" and "_give_payments_"
+	//These roles have no usage; the proper is singular.
+	$delete_caps = array(
+		'view_give_forms_stats',
+		'delete_give_forms_terms',
+		'assign_give_forms_terms',
+		'edit_give_forms_terms',
+		'manage_give_forms_terms',
+		'view_give_payments_stats',
+		'manage_give_payments_terms',
+		'edit_give_payments_terms',
+		'assign_give_payments_terms',
+		'delete_give_payments_terms',
+	);
+
+	global $wp_roles;
+	foreach ( $delete_caps as $cap ) {
+		foreach ( array_keys( $wp_roles->roles ) as $role ) {
+			$wp_roles->remove_cap( $role, $cap );
+		}
+	}
+
+	//Set roles again.
+	$roles = new Give_Roles();
+	$roles->add_roles();
+	$roles->add_caps();
+
+}
+
+/**
+ * 1.8 Upgrades.
+ *
+ * a. Upgrade checkbox settings to radio button settings..
+ * a. Update form meta for new metabox settings.
  *
  * @since  1.8
  * @return void
@@ -495,34 +539,8 @@ function give_upgrade_addon_license_data() {
 function give_v18_upgrades() {
 	// Upgrade checkbox settings to radio button settings.
 	give_v18_upgrades_core_setting();
-
 	// Upgrade form metadata.
 	give_v18_upgrades_form_metadata();
-}
-
-
-/**
- * Get list of core setting which is renamed in version 1.8.
- *
- * @since  1.8
- * @return array
- */
-function give_v18_renamed_core_settings() {
-	return array(
-		'disable_paypal_verification' => 'paypal_verification',
-		'disable_css'                 => 'css',
-		'disable_welcome'             => 'welcome',
-		'disable_forms_singular'      => 'forms_singlar',
-		'disable_forms_archives'      => 'forms_archives',
-		'disable_forms_excerpt'       => 'forms_excerpt',
-		'disable_form_featured_img'   => 'form_featured_img',
-		'disable_form_sidebar'        => 'form_sidebar',
-		'disable_admin_notices'       => 'admin_notices',
-		'disable_the_content_filter'  => 'the_content_filter',
-		'enable_floatlabels'          => 'floatlabels',
-		'enable_categories'           => 'categories',
-		'enable_tags'                 => 'tags',
-	);
 }
 
 /**
@@ -587,7 +605,6 @@ function give_v18_upgrades_core_setting() {
 		}
 	}
 }
-
 
 /**
  * Upgrade form metadata for new metabox settings.
@@ -659,4 +676,28 @@ function give_v18_upgrades_form_metadata() {
 	}
 
 	wp_reset_postdata();
+}
+
+/**
+ * Get list of core setting which is renamed in version 1.8.
+ *
+ * @since  1.8
+ * @return array
+ */
+function give_v18_renamed_core_settings() {
+	return array(
+		'disable_paypal_verification' => 'paypal_verification',
+		'disable_css'                 => 'css',
+		'disable_welcome'             => 'welcome',
+		'disable_forms_singular'      => 'forms_singlar',
+		'disable_forms_archives'      => 'forms_archives',
+		'disable_forms_excerpt'       => 'forms_excerpt',
+		'disable_form_featured_img'   => 'form_featured_img',
+		'disable_form_sidebar'        => 'form_sidebar',
+		'disable_admin_notices'       => 'admin_notices',
+		'disable_the_content_filter'  => 'the_content_filter',
+		'enable_floatlabels'          => 'floatlabels',
+		'enable_categories'           => 'categories',
+		'enable_tags'                 => 'tags',
+	);
 }

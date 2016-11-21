@@ -324,7 +324,7 @@ function give_get_history_page_uri() {
  */
 function give_field_is_required( $field = '', $form_id ) {
 
-	$required_fields = give_purchase_form_required_fields( $form_id );
+	$required_fields = give_get_required_fields( $form_id );
 
 	return array_key_exists( $field, $required_fields );
 }

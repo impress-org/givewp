@@ -1369,12 +1369,15 @@ function give_payment_mode_select( $form_id ) {
 			?>
 			<ul id="give-gateway-radio-list">
 				<?php
+				/**
+				 * Loop through the active payment gateways.
+				 */
+				$selected_gateway = give_get_chosen_gateway( $form_id );
+
 				foreach ( $gateways as $gateway_id => $gateway ) :
-					$selected_gateway = give_get_default_gateway( $form_id );
-					$selected_gateway = isset( $_REQUEST['payment_mode'] ) ? $_REQUEST['payment_mode'] : $selected_gateway;
-					$checked = checked( $gateway_id, $selected_gateway, false );
-					$checked_class = $checked ? ' give-gateway-option-selected' : '';
-					?>
+					//Determine the default gateway.
+					$checked       = checked( $gateway_id, $selected_gateway, false );
+					$checked_class = $checked ? ' give-gateway-option-selected' : ''; ?>
 					<li>
 						<input type="radio" name="payment-mode" class="give-gateway"
 						       id="give-gateway-<?php echo esc_attr( $gateway_id ) . '-' . $form_id; ?>"
@@ -1389,7 +1392,7 @@ function give_payment_mode_select( $form_id ) {
 			</ul>
 			<?php
 			/**
-			 * Fires while selecting payment gateways, befire the gateways list.
+			 * Fires while selecting payment gateways, before the gateways list.
 			 *
 			 * @since 1.7
 			 */
@@ -1462,8 +1465,8 @@ function give_terms_agreement( $form_id ) {
 		return false;
 	}
 
-	$label = get_post_meta( $form_id, '_give_agree_label', true );
-	$terms = get_post_meta( $form_id, '_give_agree_text', true );
+	$label = ( $label = get_post_meta( $form_id, '_give_agree_label', true ) ) ? stripslashes( $label ) : give_get_option( 'agree_to_terms_label', esc_html__( 'Agree to Terms?', 'give' ) );
+	$terms = ( $terms = get_post_meta( $form_id, '_give_agree_text', true ) ) ? $terms : give_get_option( 'agreement_text', '' );
 
 	// Set term and conditions label and text on basis of per form and global setting.
 	// $label = ( $label = get_post_meta( $form_id, '_give_agree_label', true ) ) ? stripslashes( $label ) : give_get_option( 'agree_to_terms_label', esc_html__( 'Agree to Terms?', 'give' ) );
@@ -1506,8 +1509,8 @@ function give_terms_agreement( $form_id ) {
 			   aria-controls="give_terms" style="display:none;"><?php esc_html_e( 'Hide Terms', 'give' ); ?></a>
 		</div>
 
-		<input name="give_agree_to_terms" class="required" type="checkbox" id="give_agree_to_terms" value="1"/>
-		<label for="give_agree_to_terms"><?php echo $label; ?></label>
+		<input name="give_agree_to_terms" class="required" type="checkbox" id="give_agree_to_terms-<?php echo $form_id; ?>" value="1" required aria-required="true" />
+		<label for="give_agree_to_terms-<?php echo $form_id; ?>"><?php echo $label; ?></label>
 
 	</fieldset>
 	<?php

@@ -15,14 +15,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Email Donation Receipt
+ * Email Donation Receipt.
  *
- * Email the donation confirmation to the donor via the customizable "Donation Receipt" settings
+ * Email the donation confirmation to the donor via the customizable "Donation Receipt" settings.
  *
  * @since 1.0
  *
- * @param int $payment_id Payment ID
- * @param bool $admin_notice Whether to send the admin email notification or not (default: true)
+ * @param int $payment_id Payment ID.
+ * @param bool $admin_notice Whether to send the admin email notification or not (default: true).
  *
  * @return void
  */

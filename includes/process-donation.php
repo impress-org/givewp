@@ -386,7 +386,7 @@ function give_verify_minimum_price() {
 }
 
 /**
- * Donation Form Validate Agree To Terms
+ * Donation form validate agree to "Terms and Conditions".
  *
  * @access      private
  * @since       1.0
@@ -396,12 +396,12 @@ function give_purchase_form_validate_agree_to_terms() {
 	// Validate agree to terms.
 	if ( ! isset( $_POST['give_agree_to_terms'] ) || $_POST['give_agree_to_terms'] != 1 ) {
 		// User did not agree.
-		give_set_error( 'agree_to_terms', apply_filters( 'give_agree_to_terms_text', esc_html__( 'You must agree to the terms of use.', 'give' ) ) );
+		give_set_error( 'agree_to_terms', apply_filters( 'give_agree_to_terms_text', esc_html__( 'You must agree to the terms and conditions.', 'give' ) ) );
 	}
 }
 
 /**
- * Donation Form Required Fields
+ * Donation Form Required Fields.
  *
  * @access      private
  * @since       1.0
@@ -410,7 +410,7 @@ function give_purchase_form_validate_agree_to_terms() {
  *
  * @return      array
  */
-function give_purchase_form_required_fields( $form_id ) {
+function give_get_required_fields( $form_id ) {
 
 	$payment_mode = give_get_chosen_gateway( $form_id );
 
@@ -507,8 +507,8 @@ function give_purchase_form_validate_logged_in_user() {
 		$user_data = get_userdata( $user_ID );
 
 		// Loop through required fields and show error messages.
-		foreach ( give_purchase_form_required_fields( $form_id ) as $field_name => $value ) {
-			if ( in_array( $value, give_purchase_form_required_fields( $form_id ) ) && empty( $_POST[ $field_name ] ) ) {
+		foreach ( give_get_required_fields( $form_id ) as $field_name => $value ) {
+			if ( in_array( $value, give_get_required_fields( $form_id ) ) && empty( $_POST[ $field_name ] ) ) {
 				give_set_error( $value['error_id'], $value['error_message'] );
 			}
 		}
@@ -565,8 +565,8 @@ function give_purchase_form_validate_new_user() {
 	$pass_confirm = isset( $_POST['give_user_pass_confirm'] ) ? trim( $_POST['give_user_pass_confirm'] ) : false;
 
 	// Loop through required fields and show error messages.
-	foreach ( give_purchase_form_required_fields( $form_id ) as $field_name => $value ) {
-		if ( in_array( $value, give_purchase_form_required_fields( $form_id ) ) && empty( $_POST[ $field_name ] ) ) {
+	foreach ( give_get_required_fields( $form_id ) as $field_name => $value ) {
+		if ( in_array( $value, give_get_required_fields( $form_id ) ) && empty( $_POST[ $field_name ] ) ) {
 			give_set_error( $value['error_id'], $value['error_message'] );
 		}
 	}
@@ -751,8 +751,8 @@ function give_purchase_form_validate_guest_user() {
 	}
 
 	// Loop through required fields and show error messages.
-	foreach ( give_purchase_form_required_fields( $form_id ) as $field_name => $value ) {
-		if ( in_array( $value, give_purchase_form_required_fields( $form_id ) ) && empty( $_POST[ $field_name ] ) ) {
+	foreach ( give_get_required_fields( $form_id ) as $field_name => $value ) {
+		if ( in_array( $value, give_get_required_fields( $form_id ) ) && empty( $_POST[ $field_name ] ) ) {
 			give_set_error( $value['error_id'], $value['error_message'] );
 		}
 	}
