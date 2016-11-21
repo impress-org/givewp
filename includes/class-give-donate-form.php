@@ -1053,7 +1053,7 @@ class Give_Donate_Form {
 	 * @return bool
 	 */
 	public function is_show_only_button( $args ) {
-		return give_is_setting_enabled( $args['button_only'] );
+		return (bool) ( isset( $args['display_style'] ) && 'button_only' === $args['display_style'] );
 	}
 
 	/**
