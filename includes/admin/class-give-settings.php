@@ -1406,7 +1406,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 			'readonly' => 'readonly',
 		) );
 
-		$custom_html = '<input type="submit" class="button-secondary give-license-deactivate" name="' . $id . '_deactivate" value="' . esc_attr__( 'Deactivate License', 'give' ) . '"/>';
+		$custom_html = '<input type="submit" class="button button-small give-license-deactivate" name="' . $id . '_deactivate" value="' . esc_attr__( 'Deactivate License', 'give' ) . '"/>';
 
 
 	}

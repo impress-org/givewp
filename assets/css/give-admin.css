@@ -1471,7 +1471,8 @@ a.give-delete {
   background-repeat: no-repeat;
   background-position: 98.5% center;
   outline: none;
-  background-size: 16px; }
+  background-size: 16px;
+  width: 100%; }
 
 /* Addon grid design */
 #licenses .cmb2-wrap {
@@ -1483,7 +1484,7 @@ a.give-delete {
     width: 30.5%;
     margin-right: 1% !important;
     margin-bottom: 10px !important;
-    min-height: 220px; }
+    min-height: 180px; }
   #licenses .cmb2-wrap .cmb-row > div {
     display: block;
     width: auto;
@@ -1499,7 +1500,7 @@ a.give-delete {
     #licenses .cmb2-wrap .cmb-td > div input[type="submit"] {
       margin: 0;
       position: absolute;
-      top: 0;
+      top: 2px;
       right: 10px; }
   #licenses .cmb2-wrap .give-license-notice {
     background: #FFF;
