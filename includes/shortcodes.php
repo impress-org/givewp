@@ -76,7 +76,6 @@ function give_form_shortcode( $atts ) {
 		'show_content'  => '',
 		'float_labels'  => '',
 		'display_style' => '',
-		'button_only'   => 'disabled',
 	), $atts, 'give_form' );
 
 	foreach ( $atts as $key => $value ) {
@@ -99,7 +98,7 @@ function give_form_shortcode( $atts ) {
 		}
 
 		//validate display_style and float_labels value
-		if ( ( $key == 'display_style' && ! in_array( $value, array( 'onpage', 'reveal', 'modal' ) ) )
+		if ( ( $key == 'display_style' && ! in_array( $value, array( 'onpage', 'reveal', 'modal', 'button_only' ) ) )
 		     || ( $key == 'float_labels' && ! in_array( $value, array( 'enabled', 'disabled' ) ) )
 		) {
 
