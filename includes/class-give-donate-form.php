@@ -781,15 +781,15 @@ class Give_Donate_Form {
 	 * @access public
 	 *
 	 * @return bool
-	 *
-	 * public function is_set_type_donation_form() {
-	 * $form_type = $this->get_type();
-	 *
-	 * return ( 'set' === $form_type ? true : false );
-	 *
-	 * }
-	 *
-	 * /**
+	 */
+	public function is_set_type_donation_form() {
+		$form_type = $this->get_type();
+
+		return ( 'set' === $form_type ? true : false );
+
+	}
+
+	/**
 	 * Get if form type multi or not.
 	 *
 	 * @since  1.6
