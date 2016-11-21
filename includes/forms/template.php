@@ -1741,7 +1741,7 @@ function give_form_display_content( $form_id, $args ) {
 		$content = apply_filters( 'the_content', $content );
 	}
 
-	$output = '<div id="give-form-content-' . $form_id . '" class="give-form-content-wrap" >' . $content . '</div>';
+	$output = '<div id="give-form-content-' . $form_id . '" class="give-form-content-wrap ' . $show_content . '-content">' . $content . '</div>';
 
 	echo apply_filters( 'give_form_content_output', $output );
 
