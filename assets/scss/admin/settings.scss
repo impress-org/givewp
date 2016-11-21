@@ -305,6 +305,7 @@ a.give-delete {
     background-position: 98.5% center;
     outline: none;
     background-size: 16px;
+    width:100%;
   }
 
 }
@@ -318,20 +319,15 @@ a.give-delete {
     position: relative;
     float: left;
     width: 30.5%;
-    background: white;
-    margin-right: 9px!important;
+    margin-right: 1% !important;
     margin-bottom: 10px !important;
-    min-height: 220px;
-    border: 1px solid #ccc;
+    min-height: 180px;
   }
 
   .give-license-key {
-    background: #f9f9f9;
-    border-bottom: 1px solid #ccc;
-    margin-bottom: 20px;
 
     label{
-      margin: 0 0 0 10px;
+       margin: 0 0 0 10px;
       padding: 10px 0;
       display: block;
       font-size: 14px;
@@ -362,29 +358,25 @@ a.give-delete {
     min-height: 65px;
 
     p {
-      padding: 0 10px;
+      padding: 10px 0;
+      margin: 0;
     }
 
-    a{
+    a {
       color: #444;
       cursor: pointer;
     }
 
     a:hover{
       text-decoration: none;
-
     }
   }
 
-  .give-license-status-notice.give-license-expires-soon {
-    background-color: #00a0d2;
-    color: #fff;
+  .give-license-notice.give-license-expires-soon {
     border-color: #00a0d2;
   }
 
   .give-license-notice.give-license-expired {
-    background-color: #e24e4e;
-    color: #fff;
     border-color: #e24e4e;
   }
 
@@ -394,27 +386,15 @@ a.give-delete {
   .give-license-status-notice.give-license-invalid,
   .give-license-status-notice.give-license-site_inactive,
   .give-license-status-notice.give-license-item_name_mismatch {
-    background-color: #ffebcd;
     border-color: #ffebcd;
   }
 
   .give-license-status-notice.give-license-lifetime-notice{
-    background-color: #46b450;
     border-color: #46b450;
   }
 
-  .give-license-status-notice.give-license-lifetime-notice,
-  .give-license-status-notice.give-license-expires-soon,
-  .give-license-status-notice.give-license-expired {
-    color: #fff;
-
-    a{
-      color: #fff;
-    }
-  }
-
-  .give-license-status-notice.give-license-expires-soon a:hover,
-  .give-license-status-notice.give-license-expired a:hover {
+  .give-license-notice.give-license-expires-soon a:hover,
+  .give-license-notice.give-license-expired a:hover {
     text-decoration: none;
   }
 }

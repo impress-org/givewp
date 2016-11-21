@@ -1706,7 +1706,8 @@ a.give-delete {
   background-repeat: no-repeat;
   background-position: 1.5% center;
   outline: none;
-  background-size: 16px; }
+  background-size: 16px;
+  width: 100%; }
 
 /* Addon grid design */
 .give-settings-page {
@@ -1716,21 +1717,15 @@ a.give-delete {
     position: relative;
     float: right;
     width: 30.5%;
-    background: white;
-    margin-left: 9px !important;
+    margin-left: 1% !important;
     margin-bottom: 10px !important;
-    min-height: 220px;
-    border: 1px solid #ccc; }
-  .give-settings-page .give-license-key {
-    background: #f9f9f9;
-    border-bottom: 1px solid #ccc;
-    margin-bottom: 20px; }
-    .give-settings-page .give-license-key label {
-      margin: 0 10px 0 0;
-      padding: 10px 0;
-      display: block;
-      font-size: 14px;
-      font-weight: 600; }
+    min-height: 180px; }
+  .give-settings-page .give-license-key label {
+    margin: 0 10px 0 0;
+    padding: 10px 0;
+    display: block;
+    font-size: 14px;
+    font-weight: 600; }
   .give-settings-page .give-license-block {
     margin: 0 10px; }
   .give-settings-page input[type="text"].give-license-field,
@@ -1747,19 +1742,16 @@ a.give-delete {
     border-top: 1px solid #ececec;
     min-height: 65px; }
     .give-settings-page .give-license-status-notice p {
-      padding: 0 10px; }
+      padding: 10px 0;
+      margin: 0; }
     .give-settings-page .give-license-status-notice a {
       color: #444;
       cursor: pointer; }
     .give-settings-page .give-license-status-notice a:hover {
       text-decoration: none; }
-  .give-settings-page .give-license-status-notice.give-license-expires-soon {
-    background-color: #00a0d2;
-    color: #fff;
+  .give-settings-page .give-license-notice.give-license-expires-soon {
     border-color: #00a0d2; }
   .give-settings-page .give-license-notice.give-license-expired {
-    background-color: #e24e4e;
-    color: #fff;
     border-color: #e24e4e; }
   .give-settings-page .give-license-status-notice.give-license-error,
   .give-settings-page .give-license-status-notice.give-license-no_activations_left,
@@ -1767,21 +1759,11 @@ a.give-delete {
   .give-settings-page .give-license-status-notice.give-license-invalid,
   .give-settings-page .give-license-status-notice.give-license-site_inactive,
   .give-settings-page .give-license-status-notice.give-license-item_name_mismatch {
-    background-color: #ffebcd;
     border-color: #ffebcd; }
   .give-settings-page .give-license-status-notice.give-license-lifetime-notice {
-    background-color: #46b450;
     border-color: #46b450; }
-  .give-settings-page .give-license-status-notice.give-license-lifetime-notice,
-  .give-settings-page .give-license-status-notice.give-license-expires-soon,
-  .give-settings-page .give-license-status-notice.give-license-expired {
-    color: #fff; }
-    .give-settings-page .give-license-status-notice.give-license-lifetime-notice a,
-    .give-settings-page .give-license-status-notice.give-license-expires-soon a,
-    .give-settings-page .give-license-status-notice.give-license-expired a {
-      color: #fff; }
-  .give-settings-page .give-license-status-notice.give-license-expires-soon a:hover,
-  .give-settings-page .give-license-status-notice.give-license-expired a:hover {
+  .give-settings-page .give-license-notice.give-license-expires-soon a:hover,
+  .give-settings-page .give-license-notice.give-license-expired a:hover {
     text-decoration: none; }
 
 /* Responsive fixes: Addon grid design */

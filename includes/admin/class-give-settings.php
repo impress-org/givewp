@@ -1320,33 +1320,32 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 					$now        = current_time( 'timestamp' );
 					$expiration = strtotime( $license->expires, current_time( 'timestamp' ) );
 
-                    if( 'lifetime' === $license->expires ) {
-                        $messages[] = esc_html__( 'License key never expires.', 'give' );
-                        $license_status = 'license-lifetime-notice';
-                    } elseif( $expiration > $now && $expiration - $now < ( DAY_IN_SECONDS * 30 ) ) {
-                        $messages[] = sprintf(
-                            __( 'Your license key expires soon! It expires on %s. <a href="%s" target="_blank" title="Renew license">Renew your license key</a>.', 'give' ),
-                            date_i18n( get_option( 'date_format' ), strtotime( $license->expires, current_time( 'timestamp' ) ) ),
-                            $checkout_page_link . '?edd_license_key=' . $license_key . '&utm_campaign=admin&utm_source=licenses&utm_medium=renew'
-                        );
-                        $license_status = 'license-expires-soon';
-                    } else {
-                        $messages[] = sprintf(
-                            __( 'Your license key expires on %s.', 'give' ),
-                            date_i18n( get_option( 'date_format' ), strtotime( $license->expires, current_time( 'timestamp' ) ) )
-                        );
-                        $license_status = 'license-expiration-date';
-                    }
-                    break;
-            }
-        }
-    } else{
-		$class = 'empty';
-		$messages[] = sprintf(
+					if ( 'lifetime' === $license->expires ) {
+						$messages[]     = esc_html__( 'License key never expires.', 'give' );
+						$license_status = 'license-lifetime-notice';
+					} elseif ( $expiration > $now && $expiration - $now < ( DAY_IN_SECONDS * 30 ) ) {
+						$messages[]     = sprintf(
+							__( 'Your license key expires soon! It expires on %s. <a href="%s" target="_blank" title="Renew license">Renew your license key</a>.', 'give' ),
+							date_i18n( get_option( 'date_format' ), strtotime( $license->expires, current_time( 'timestamp' ) ) ),
+							$checkout_page_link . '?edd_license_key=' . $value . '&utm_campaign=admin&utm_source=licenses&utm_medium=renew'
+						);
+						$license_status = 'license-expires-soon';
+					} else {
+						$messages[]     = sprintf(
+							__( 'Your license key expires on %s.', 'give' ),
+							date_i18n( get_option( 'date_format' ), strtotime( $license->expires, current_time( 'timestamp' ) ) )
+						);
+						$license_status = 'license-expiration-date';
+					}
+					break;
+			}
+		}
+	} else {
+		$messages[]     = sprintf(
 			__( 'To receive updates, please enter your valid %s license key.', 'give' ),
 			$addon_name
 		);
-		$license_status = null;
+		$license_status = 'inactive';
 	}
 
 
@@ -1358,12 +1357,14 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 	// Get input field html.
 	$input_field_html = "<input type=\"{$type}\" name=\"{$id}\" class=\"{$field_classes}\" value=\"{$license_key}\">";
 
-	// If license is active so show deactivate button
+	// If license is active so show deactivate button.
 	if ( $is_valid_license ) {
         // Get input field html.
 		$input_field_html = "<input type=\"{$type}\" name=\"{$id}\" class=\"{$field_classes}\" value=\"{$license_key}\" readonly=\"readonly\">";
 
-		$custom_html = '<input type="submit" class="button-secondary give-license-deactivate" name="' . $id . '_deactivate" value="' . esc_attr__( 'Deactivate License', 'give' ) . '"/>';
+		$custom_html = '<input type="submit" class="button button-small give-license-deactivate" name="' . $id . '_deactivate" value="' . esc_attr__( 'Deactivate License', 'give' ) . '"/>';
+
+
 	}
 
 	// Field description.
@@ -1371,7 +1372,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 
 	// If no messages found then inform user that to get updated in future register yourself.
 	if ( empty( $messages ) ) {
-		$messages[] = apply_filters( "{$shortname}_default_addon_notice", esc_html__( 'To receive updates, please enter your valid Software Licensing license key.', 'give' ) );
+		$messages[] = apply_filters( "{$shortname}_default_addon_notice", esc_html__( 'To receive updates, please enter your valid license key.', 'give' ) );
 	}
 
     foreach( $messages as $message ) {

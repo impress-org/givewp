@@ -1762,18 +1762,18 @@ function give_filter_where_older_than_week( $where = '' ) {
  * @since 1.5
  *
  * @param array  $payment_meta       Payment meta data.
- * @param bool   $include_level_name Whether you want the entire title or just the level name.
+ * @param bool   $only_level         If set to true will only return the level name if multi-level enabled.
  * @param string $separator          The separator between the .
  *
- * @return string $form_title Returns the full title if $include_level_name is false, otherwise returns the levels title.
+ * @return string $form_title Returns the full title if $only_level is false, otherwise returns the levels title.
  */
-function give_get_payment_form_title( $payment_meta, $include_level_name = false, $separator = '' ) {
+function give_get_payment_form_title( $payment_meta, $only_level = false, $separator = '' ) {
 
 	$form_id    = isset( $payment_meta['form_id'] ) ? $payment_meta['form_id'] : 0;
 	$price_id   = isset( $payment_meta['price_id'] ) ? $payment_meta['price_id'] : null;
 	$form_title = isset( $payment_meta['form_title'] ) ? $payment_meta['form_title'] : '';
 
-	if ( $include_level_name == true ) {
+	if ( $only_level == true ) {
 		$form_title = '';
 	}
 

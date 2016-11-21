@@ -570,7 +570,7 @@ function give_email_tag_donation( $payment_id ) {
 	$separator    = $level_title ? '-' : '';
 	$form_title   = strip_tags( give_get_payment_form_title( $payment_meta, false, $separator ) );
 
-	return ! empty( $form_title ) ? $form_title : esc_html__( 'There was an error retrieving the donation form name.', 'give' );
+	return ! empty( $form_title ) ? $form_title : '';
 
 }
 
@@ -587,7 +587,7 @@ function give_email_tag_form_title( $payment_id ) {
 	$payment      = new Give_Payment( $payment_id );
 	$payment_meta = $payment->payment_meta;
 
-	return isset( $payment_meta['form_title'] ) ? strip_tags( $payment_meta['form_title'] ) : esc_html__( 'There was an error retrieving the donation form name.', 'give' );
+	return isset( $payment_meta['form_title'] ) ? strip_tags( $payment_meta['form_title'] ) : '';
 
 }
 
