@@ -29,11 +29,11 @@ Settings
     cursor: default;
   }
 
-  .give-input-field{
+  .give-input-field {
     width: 25em;
   }
 
-  table table input[type="text"]{
+  table table input[type="text"] {
     width: 15em;
   }
 
@@ -66,13 +66,13 @@ Settings
   overflow: hidden;
   margin: 30px 0;
 
-  h2{
+  h2 {
     margin-top: 8px;
   }
 }
 
 .give-radio-inline {
-  ul{
+  ul {
     margin-top: 0;
   }
 
@@ -88,10 +88,10 @@ Settings
 
 //Ugly but necessary to override WP core styles.
 .form-table td.give-radio-inline fieldset li > label {
-  margin:5px 0 0 !important;
+  margin: 5px 0 0 !important;
 }
 
-p.give-field-description, .cmb2-metabox-description{
+p.give-field-description, .cmb2-metabox-description {
   color: #aaaaaa;
   font-style: italic;
   font-size: 13px !important;
@@ -117,7 +117,7 @@ p.give-field-description, .cmb2-metabox-description{
 }
 
 .cmb-type-give-title label,
-.give-setting-tab-header h2{
+.give-setting-tab-header h2 {
   float: left;
   display: inline-block;
   width: 220px;
@@ -133,6 +133,7 @@ p.give-field-description, .cmb2-metabox-description{
     overflow: visible;
   }
 }
+
 /* css fix end*/
 
 .postbox-container #_give_donation_levels_repeat > .cmb-repeatable-grouping:not(:last-of-type) {
@@ -291,9 +292,7 @@ a.give-delete {
   }
 
   .give-license-field {
-    background-image: url('../images/close.png');
-    background-color: #FFF;
-    background-repeat: no-repeat;
+    background: #FFF url('../images/close.png') no-repeat;
     background-position: 98.5% center;
     background-size: 18px;
   }
@@ -305,13 +304,13 @@ a.give-delete {
     background-position: 98.5% center;
     outline: none;
     background-size: 16px;
-    width:100%;
+    width: 100%;
   }
 
 }
 
 /* Addon grid design */
-.give-settings-page{
+.give-settings-page {
   margin-top: 20px;
 
   .give-settings-wrap-licenses {
@@ -319,43 +318,48 @@ a.give-delete {
     position: relative;
     float: left;
     width: 30.5%;
-    margin-right: 1% !important;
-    margin-bottom: 10px !important;
     min-height: 180px;
+    margin: 20px 1% 20px 0;
   }
 
   .give-license-key {
-
-    label{
-       margin: 0 0 0 10px;
+    label {
+      margin: 0 0 0 10px;
       padding: 10px 0;
       display: block;
       font-size: 14px;
       font-weight: 600;
+      cursor: default;
     }
   }
 
-  .give-license-block{
+  .give-license-block {
     margin: 0 10px;
   }
 
   input[type="text"].give-license-field,
-  input[type="password"].give-license-field{
+  input[type="password"].give-license-field {
     width: 100%;
   }
 
-  .give-license-block input[type="submit"]{
-    margin: 15px 0 10px 0;
+  .give-license-block input[type="submit"] {
+    position: absolute;
+    top: 3px;
+    right: 10px;
+    height: 24px;
+    line-height: 22px;
+    padding: 0 8px 1px;
+    font-size: 11px;
   }
 
+  //License status notice.
   .give-license-status-notice {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: whitesmoke;
-    border-top: 1px solid #ececec;
-    min-height: 65px;
+    background: #fff;
+    border-left: 4px solid #fff;
+    -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+    margin: 5px 0 2px;
+    padding: 1px 12px;
 
     p {
       padding: 10px 0;
@@ -365,18 +369,20 @@ a.give-delete {
     a {
       color: #444;
       cursor: pointer;
+      &:hover {
+        text-decoration: none;
+      }
     }
 
-    a:hover{
-      text-decoration: none;
-    }
   }
 
-  .give-license-notice.give-license-expires-soon {
+  .give-license-status-notice.give-license-expires-soon {
     border-color: #00a0d2;
   }
 
-  .give-license-notice.give-license-expired {
+  //Inactive or Expired.
+  .give-license-status-notice.give-inactive,
+  .give-license-status-notice.give-license-expired {
     border-color: #e24e4e;
   }
 
@@ -386,30 +392,32 @@ a.give-delete {
   .give-license-status-notice.give-license-invalid,
   .give-license-status-notice.give-license-site_inactive,
   .give-license-status-notice.give-license-item_name_mismatch {
-    border-color: #ffebcd;
+    border-color: orange;
   }
 
-  .give-license-status-notice.give-license-lifetime-notice{
+  .give-license-status-notice.give-license-lifetime-notice,
+  .give-license-status-notice.give-license-expiration-date {
     border-color: #46b450;
   }
 
-  .give-license-notice.give-license-expires-soon a:hover,
-  .give-license-notice.give-license-expired a:hover {
+  .give-license-status-notice.give-license-expires-soon a:hover,
+  .give-license-status-notice.give-license-expired a:hover {
     text-decoration: none;
   }
+
 }
 
 /* Responsive fixes: Addon grid design */
-@media screen and ( max-width: 1100px ) {
-  .give-settings-page .give-settings-wrap-licenses{
-    width:45%;
-    min-height: 230px;
+@media screen and (max-width: 1100px) {
+  .give-settings-page .give-settings-wrap-licenses {
+    width: 45%;
+    min-height: 150px;
   }
 }
 
-@media screen and ( max-width: 600px ){
-  .give-settings-page .give-settings-wrap-licenses{
-    width:100%;
+@media screen and (max-width: 600px) {
+  .give-settings-page .give-settings-wrap-licenses {
+    width: 100%;
     max-width: 320px;
   }
 }
