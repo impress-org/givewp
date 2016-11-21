@@ -1038,7 +1038,8 @@ form[id*='give-form'] #give-final-total-wrap {
     border-left: none;
     float: left; }
 
-.give-display-button-only .give-form-title {
+.give-display-button-only .give-form-title,
+.give-display-button-only .give-form-content-wrap {
   display: none; }
 
 .give-display-button-only form[id*='give-form'] > div,
