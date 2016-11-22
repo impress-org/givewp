@@ -15,16 +15,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Give_Donate_Form Class
+ * Give_Donate_Form Class.
  *
  * This class handles donation forms.
  *
  * @since 1.0
+ *
+ * @property $price
+ * @property $prices
+ * @property $minimum_price
+ * @property $goal
+ * @property $sales
+ * @property $earnings
  */
 class Give_Donate_Form {
 
 	/**
-	 * The donation ID
+	 * The donation ID.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -34,7 +41,7 @@ class Give_Donate_Form {
 	public $ID = 0;
 
 	/**
-	 * The donation price
+	 * The donation price.
 	 *
 	 * @since  1.0
 	 * @access private
@@ -44,7 +51,7 @@ class Give_Donate_Form {
 	private $price;
 
 	/**
-	 * The minimum donation price
+	 * The minimum donation price.
 	 *
 	 * @since  1.3.6
 	 * @access private
@@ -54,17 +61,7 @@ class Give_Donate_Form {
 	private $minimum_price;
 
 	/**
-	 * The donation goal
-	 *
-	 * @since  1.0
-	 * @access private
-	 *
-	 * @var    float
-	 */
-	private $goal;
-
-	/**
-	 * The donation prices, if Price Levels are enabled
+	 * The donation prices, if Price Levels are enabled.
 	 *
 	 * @since  1.0
 	 * @access private
@@ -74,7 +71,17 @@ class Give_Donate_Form {
 	private $prices;
 
 	/**
-	 * The form's sale count
+	 * The donation goal.
+	 *
+	 * @since  1.0
+	 * @access private
+	 *
+	 * @var    float
+	 */
+	private $goal;
+
+	/**
+	 * The form's sale count.
 	 *
 	 * @since  1.0
 	 * @access private
@@ -420,7 +427,7 @@ class Give_Donate_Form {
 		$defaults = array(
 			'post_type'   => 'give_forms',
 			'post_status' => 'draft',
-			'post_title'  => esc_html__( 'New Donation Form', 'give' ),
+			'post_title'  => __( 'New Donation Form', 'give' ),
 		);
 
 		$args = wp_parse_args( $data, $defaults );
@@ -561,7 +568,7 @@ class Give_Donate_Form {
 		 * @since 1.0
 		 *
 		 * @param array      $prices The array of mulit-level prices.
-		 * @param int|string The     ID of the form.
+		 * @param int|string $ID     The ID of the form.
 		 */
 		return apply_filters( 'give_get_donation_levels', $this->prices, $this->ID );
 
@@ -620,7 +627,7 @@ class Give_Donate_Form {
 		 * @since 1.0
 		 *
 		 * @param bool       $ret Is donation form in single price mode?
-		 * @param int|string The  ID of the donation form.
+		 * @param int|string $ID The ID of the donation form.
 		 */
 		return (bool) apply_filters( 'give_single_price_option_mode', $ret, $this->ID );
 
@@ -649,7 +656,7 @@ class Give_Donate_Form {
 		 * @since 1.6
 		 *
 		 * @param bool       $ret Is donation form in custom price mode?
-		 * @param int|string The  ID of the donation form.
+		 * @param int|string $ID  The ID of the donation form.
 		 */
 		return (bool) apply_filters( 'give_custom_price_option_mode', $ret, $this->ID );
 
@@ -678,7 +685,7 @@ class Give_Donate_Form {
 		 * Filter: Override whether the donation form has variables prices.
 		 *
 		 * @param bool       $ret Does donation form have variable prices?
-		 * @param int|string The  ID of the donation form.
+		 * @param int|string $ID  The ID of the donation form.
 		 */
 		return (bool) apply_filters( 'give_has_variable_prices', $ret, $this->ID );
 

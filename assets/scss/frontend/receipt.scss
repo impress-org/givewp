@@ -11,49 +11,49 @@
 // Email Browser Receipt Page
 //------------------------------------------------------------
 body.give_receipt_page {
-  background-color: #fff;
-  color: #141412;
-  margin: 0;
-  font-family: Helvetica, sans-serif;
-  font-size: 12px;
+	background-color: #fff;
+	color: #141412;
+	margin: 0;
+	font-family: Helvetica, sans-serif;
+	font-size: 12px;
 
-  #give_receipt_wrapper {
-    width: 660px;
-    margin: 0 auto;
-    padding: 50px 0;
-  }
+	#give_receipt_wrapper {
+		width: 660px;
+		margin: 0 auto;
+		padding: 50px 0;
+	}
 
-  table {
-    display: table;
-    width: 100%;
-    border-bottom: 1px solid #ededed;
-    border-collapse: collapse;
-    border-spacing: 0;
-    font-size: 14px;
-    line-height: 2;
-    margin: 0 0 20px;
-  }
+	table {
+		display: table;
+		width: 100%;
+		border-bottom: 1px solid #ededed;
+		border-collapse: collapse;
+		border-spacing: 0;
+		font-size: 14px;
+		line-height: 2;
+		margin: 0 0 20px;
+	}
 
-  td, th {
-    display: table-cell;
-    text-align: left;
-    border-top: 1px solid #ededed;
-    padding: 6px 10px 6px 0;
-    font-weight: normal;
-  }
+	td, th {
+		display: table-cell;
+		text-align: left;
+		border-top: 1px solid #ededed;
+		padding: 6px 10px 6px 0;
+		font-weight: normal;
+	}
 
-  th {
-    font-weight: bold;
-    text-transform: uppercase;
-  }
+	th {
+		font-weight: bold;
+		text-transform: uppercase;
+	}
 
-  h3 {
-    font-size: 22px;
-    margin: 40px 0 5px;
-    clear: both;
-    display: block;
-    font-weight: bold;
-  }
+	h3 {
+		font-size: 22px;
+		margin: 40px 0 5px;
+		clear: both;
+		display: block;
+		font-weight: bold;
+	}
 
 }
 
@@ -63,45 +63,45 @@ body.give_receipt_page {
 
 table#give_donation_receipt_products,
 table#give_donation_receipt {
-  width: 100%;
+	width: 100%;
 }
 
 table#give_donation_receipt {
 
-  td, th, td, th {
-    text-align: left;
-  }
+	td, th, td, th {
+		text-align: left;
+	}
 
-  .give-receipt-thead-text {
-    font-size:18px;
-    text-align:center;
-    display: block;
+	.give-receipt-thead-text {
+		font-size: 18px;
+		text-align: center;
+		display: block;
 
-    > span {
-      font-size:16px;
-    }
+		> span {
+			font-size: 16px;
+		}
 
-  }
+	}
 
-  li {
-    list-style: none;
-    margin: 0 0 8px 10px;
-  }
+	li {
+		margin: 0 0 8px 10px;
+	}
 
-  ul {
-    margin: 0;
-    padding: 0;
-  }
+	ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
 
-  .give_receipt_payment_status.pending,
-  .give_receipt_payment_status.revoked,
-  .give_receipt_payment_status.failed {
-    color: #f73f2e;
-  }
+	.give_receipt_payment_status.pending,
+	.give_receipt_payment_status.revoked,
+	.give_receipt_payment_status.failed {
+		color: #f73f2e;
+	}
 
-  span.donation-level-text-wrap {
-    font-style: italic;
-    display: block;
-  }
+	span.donation-level-text-wrap {
+		font-style: italic;
+		display: block;
+	}
 
 }
