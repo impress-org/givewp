@@ -122,6 +122,7 @@ class Give_Payments_Query extends Give_Stats {
 		add_action( 'give_post_get_payments', array( $this, 'date_filter_post' ) );
 
 		add_action( 'give_pre_get_payments', array( $this, 'orderby' ) );
+		add_filter( 'posts_orderby', array( $this, 'custom_orderby' ), 10, 2 );
 		add_action( 'give_pre_get_payments', array( $this, 'status' ) );
 		add_action( 'give_pre_get_payments', array( $this, 'month' ) );
 		add_action( 'give_pre_get_payments', array( $this, 'per_page' ) );
@@ -315,10 +316,41 @@ class Give_Payments_Query extends Give_Stats {
 				$this->__set( 'orderby', 'meta_value_num' );
 				$this->__set( 'meta_key', '_give_payment_total' );
 				break;
+
+			case 'status' :
+				$this->__set( 'orderby', 'post_status' );
+				break;
+
 			default :
 				$this->__set( 'orderby', $this->args['orderby'] );
 				break;
 		}
+	}
+
+	/**
+	 * Custom orderby.
+	 * Note: currently custom sorting is only used for donation listing page.
+	 *
+	 * @since  1.8
+	 * @access public
+	 *
+	 * @param string   $order
+	 * @param WP_Query $query
+	 *
+	 * @return mixed
+	 */
+	public function custom_orderby( $order, $query ) {
+		if ( ! in_array( 'give_payment', $query->query['post_type'] ) || is_array( $query->query['orderby'] ) ) {
+			return $order;
+		}
+
+		switch ( $query->query['orderby'] ) {
+			case 'post_status':
+				$order = 'wp_posts.post_status ' . strtoupper( $query->query['order'] );
+				break;
+		}
+
+		return $order;
 	}
 
 	/**
