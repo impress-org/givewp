@@ -1684,8 +1684,19 @@ add_action( 'give_pre_form', 'give_show_goal_progress', 10, 2 );
 function give_get_form_content_placement( $form_id, $args ) {
 	$show_content = '';
 
-	if(  isset( $args['show_content'] ) && ! empty( $args['show_content'] ) ) {
-		$show_content = ( 'none' !== $args['show_content'] ? $args['show_content'] : '' );
+	if ( isset( $args['show_content'] ) && ! empty( $args['show_content'] ) ) {
+		// Content positions.
+		$content_placement = array(
+			'above' => 'give_pre_form',
+			'below' => 'give_post_form',
+		);
+
+		// Check if content position already decoded.
+		if ( in_array( $args['show_content'], $content_placement ) ) {
+			return $args['show_content'];
+		}
+
+		$show_content = ( 'none' !== $args['show_content'] ? $content_placement[ $args['show_content'] ] : '' );
 	} elseif ( give_is_setting_enabled( get_post_meta( $form_id, '_give_display_content', true ) ) ) {
 		$show_content = get_post_meta( $form_id, '_give_content_placement', true );
 	}
