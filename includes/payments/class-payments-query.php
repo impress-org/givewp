@@ -321,6 +321,11 @@ class Give_Payments_Query extends Give_Stats {
 				$this->__set( 'orderby', 'post_status' );
 				break;
 
+			case 'donation_form' :
+				$this->__set( 'orderby', 'meta_value' );
+				$this->__set( 'meta_key', '_give_payment_form_title' );
+				break;
+
 			default :
 				$this->__set( 'orderby', $this->args['orderby'] );
 				break;
