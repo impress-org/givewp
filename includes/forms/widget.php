@@ -83,12 +83,6 @@ class Give_Forms_Widget extends WP_Widget{
 		$title = !empty( $instance['title'] ) ? $instance['title'] : '';
 		$title = apply_filters( 'widget_title', $title, $instance, $this->id_base );
 
-
-		// If user set float labels to global then check global float label setting and update donation form widget accordingly.
-		if( ( 'global' === $instance['float_labels'] ) ) {
-			$instance['float_labels'] = give_get_option( 'floatlabels', 'disabled' );
-		}
-
 		echo $args['before_widget'];
 
 		/**
