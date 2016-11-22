@@ -159,7 +159,7 @@ class Give_Forms_Widget extends WP_Widget{
 
 		<?php // Widget: Display Style ?>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'display_style' ) ); ?>"><?php esc_html_e( 'Display style:', 'give' ); ?></label><br>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'display_style' ) ); ?>"><?php esc_html_e( 'Display Style:', 'give' ); ?></label><br>
 			<label for="<?php echo $this->get_field_id( 'display_style' ); ?>-onpage"><input type="radio" class="widefat" id="<?php echo $this->get_field_id( 'display_style' ); ?>-onpage" name="<?php echo $this->get_field_name( 'display_style' ); ?>" value="onpage" <?php checked( $instance['display_style'], 'onpage' ); ?>> <?php echo esc_html__( 'All Fields', 'give' ); ?></label>
 			&nbsp;&nbsp;<label for="<?php echo $this->get_field_id( 'display_style' ); ?>-reveal"><input type="radio" class="widefat" id="<?php echo $this->get_field_id( 'display_style' ); ?>-reveal" name="<?php echo $this->get_field_name( 'display_style' ); ?>" value="reveal" <?php checked( $instance['display_style'], 'reveal' ); ?>> <?php echo esc_html__( 'Reveal', 'give' ); ?></label>
 			&nbsp;&nbsp;<label for="<?php echo $this->get_field_id( 'display_style' ); ?>-modal"><input type="radio" class="widefat" id="<?php echo $this->get_field_id( 'display_style' ); ?>-modal" name="<?php echo $this->get_field_name( 'display_style' ); ?>" value="modal" <?php checked( $instance['display_style'], 'modal' ); ?>> <?php echo esc_html__( 'Modal', 'give' ); ?></label><br>
