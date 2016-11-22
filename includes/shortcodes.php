@@ -78,33 +78,9 @@ function give_form_shortcode( $atts ) {
 		'display_style' => '',
 	), $atts, 'give_form' );
 
-	foreach ( $atts as $key => $value ) {
-		//convert shortcode_atts values to booleans
-		if ( $key == 'show_title' ) {
-			$atts[ $key ] = filter_var( $atts[ $key ], FILTER_VALIDATE_BOOLEAN );
-		} elseif ( $key == 'show_goal' ) {
-			$atts[ $key ] = filter_var( $atts[ $key ], FILTER_VALIDATE_BOOLEAN );
-		}
-
-		//validate show_content value
-		if ( $key == 'show_content' ) {
-			if ( ! in_array( $value, array( 'none', 'above', 'below' ) ) ) {
-				$atts[ $key ] = '';
-			} else if ( $value == 'above' ) {
-				$atts[ $key ] = 'give_pre_form';
-			} else if ( $value == 'below' ) {
-				$atts[ $key ] = 'give_post_form';
-			}
-		}
-
-		//validate display_style and float_labels value
-		if ( ( $key == 'display_style' && ! in_array( $value, array( 'onpage', 'reveal', 'modal', 'button_only' ) ) )
-		     || ( $key == 'float_labels' && ! in_array( $value, array( 'enabled', 'disabled' ) ) )
-		) {
-
-			$atts[ $key ] = '';
-		}
-	}
+	// Convert string to bool.
+	$atts['show_title'] = (bool) $atts['show_title'];
+	$atts['show_goal']  = (bool) $atts['show_goal'];
 
 	//get the Give Form
 	ob_start();
