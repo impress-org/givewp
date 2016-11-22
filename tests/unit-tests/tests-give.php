@@ -69,7 +69,8 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/shortcodes.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/formatting.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/error-tracking.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/process-purchase.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/price-functions.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/process-donation.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/login-register.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/user-functions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/payments/functions.php' );
@@ -159,7 +160,6 @@ class Tests_Give extends Give_Unit_Test_Case {
 
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/fonts/icomoon.eot' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/fonts/icomoon.svg' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/fonts/icomoon.ttf' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/fonts/icomoon.woff' );
 
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/admin/admin-forms.js' );

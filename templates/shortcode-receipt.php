@@ -16,12 +16,13 @@ if ( empty( $payment ) ) {
 	return;
 }
 
-$meta           = give_get_payment_meta( $payment->ID );
-$donation       = give_get_payment_form_title( $meta );
-$user           = give_get_payment_meta_user_info( $payment->ID );
-$email          = give_get_payment_user_email( $payment->ID );
-$status         = $payment->post_status;
-$status_label   = give_get_payment_status( $payment, true );
+$id           = $payment->ID;
+$meta         = give_get_payment_meta( $payment->ID );
+$donation     = give_get_payment_form_title( $meta );
+$user         = give_get_payment_meta_user_info( $payment->ID );
+$email        = give_get_payment_user_email( $payment->ID );
+$status       = $payment->post_status;
+$status_label = give_get_payment_status( $payment, true );
 
 // Show payment status notice based on shortcode attribute.
 if ( true === $give_receipt_args['status_notice'] ) {
@@ -30,35 +31,35 @@ if ( true === $give_receipt_args['status_notice'] ) {
 
 	switch ( $status ) {
 		case 'publish':
-			$notice_message = __( 'Payment Complete: Thank you for your donation.', 'give' );
+			$notice_message = esc_html__( 'Payment Complete: Thank you for your donation.', 'give' );
 			$notice_type    = 'success';
 			break;
 		case 'pending':
-			$notice_message = __( 'Payment Pending: Please contact the site owner for assistance.', 'give' );
+			$notice_message = esc_html__( 'Payment Pending: Please contact the site owner for assistance.', 'give' );
 			$notice_type    = 'warning';
 			break;
 		case 'refunded':
-			$notice_message = __( 'Payment Refunded: Please contact the site owner for assistance.', 'give' );
+			$notice_message = esc_html__( 'Payment Refunded: Please contact the site owner for assistance.', 'give' );
 			$notice_type    = 'warning';
 			break;
 		case 'preapproval':
-			$notice_message = __( 'Payment Preapproved: Please contact the site owner for assistance.', 'give' );
+			$notice_message = esc_html__( 'Payment Preapproved: Please contact the site owner for assistance.', 'give' );
 			$notice_type    = 'warning';
 			break;
 		case 'failed':
-			$notice_message = __( 'Payment Failed: Please contact the site owner for assistance.', 'give' );
+			$notice_message = esc_html__( 'Payment Failed: Please contact the site owner for assistance.', 'give' );
 			$notice_type    = 'error';
 			break;
 		case 'cancelled':
-			$notice_message = __( 'Payment Cancelled: Please contact the site owner for assistance.', 'give' );
+			$notice_message = esc_html__( 'Payment Cancelled: Please contact the site owner for assistance.', 'give' );
 			$notice_type    = 'error';
 			break;
 		case 'abandoned':
-			$notice_message = __( 'Payment Abandoned: Please contact the site owner for assistance.', 'give' );
+			$notice_message = esc_html__( 'Payment Abandoned: Please contact the site owner for assistance.', 'give' );
 			$notice_type    = 'error';
 			break;
 		case 'revoked':
-			$notice_message = __( 'Payment Revoked: Please contact the site owner for assistance.', 'give' );
+			$notice_message = esc_html__( 'Payment Revoked: Please contact the site owner for assistance.', 'give' );
 			$notice_type    = 'error';
 			break;
 	}
@@ -112,7 +113,7 @@ do_action( 'give_payment_receipt_before_table', $payment, $give_receipt_args );
 		?>
 		<tr>
 			<th scope="colgroup" colspan="2">
-				<span class="give-receipt-thead-text"><?php esc_html_e('Donation Receipt', 'give') ?></span>
+				<span class="give-receipt-thead-text"><?php esc_html_e( 'Donation Receipt', 'give' ) ?></span>
 			</th>
 		</tr>
 		<?php
@@ -165,15 +166,17 @@ do_action( 'give_payment_receipt_before_table', $payment, $give_receipt_args );
 				<td><?php echo give_payment_amount( $payment->ID ); ?></td>
 			</tr>
 		<?php endif; ?>
-		
+
 		<tr>
-			<td scope="row" class="give_receipt_payment_status"><strong><?php esc_html_e( 'Donation:', 'give' ); ?></strong></td>
+			<td scope="row" class="give_receipt_payment_status">
+				<strong><?php esc_html_e( 'Donation:', 'give' ); ?></strong></td>
 			<td class="give_receipt_payment_status"><?php echo $donation; ?></td>
 		</tr>
 
 		<?php if ( filter_var( $give_receipt_args['payment_status'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
 			<tr>
-				<td scope="row" class="give_receipt_payment_status"> <strong><?php esc_html_e( 'Donation Status:', 'give' ); ?></strong> </td>
+				<td scope="row" class="give_receipt_payment_status">
+					<strong><?php esc_html_e( 'Donation Status:', 'give' ); ?></strong></td>
 				<td class="give_receipt_payment_status <?php echo esc_attr( $status ); ?>"><?php echo esc_html( $status_label ); ?></td>
 			</tr>
 		<?php endif; ?>
@@ -216,7 +219,8 @@ do_action( 'give_payment_receipt_before_table', $payment, $give_receipt_args );
 							<li>
 								<span class="give_fee_label"><?php echo esc_html( $fee['label'] ); ?></span>
 								<span class="give_fee_sep">&nbsp;&ndash;&nbsp;</span>
-								<span class="give_fee_amount"><?php echo give_currency_filter( give_format_amount( $fee['amount'] ) ); ?></span>
+								<span
+									class="give_fee_amount"><?php echo give_currency_filter( give_format_amount( $fee['amount'] ) ); ?></span>
 							</li>
 						<?php endforeach; ?>
 					</ul>
@@ -235,7 +239,7 @@ do_action( 'give_payment_receipt_before_table', $payment, $give_receipt_args );
 		 * @param object $payment           The payment object.
 		 * @param array  $give_receipt_args Receipt_argument.
 		 */
-		do_action( 'give_donation_receipt_after', $payment, $give_receipt_args );
+		do_action( 'give_payment_receipt_after', $payment, $give_receipt_args );
 		?>
 		</tbody>
 	</table>
@@ -251,5 +255,5 @@ do_action( 'give_payment_receipt_before_table', $payment, $give_receipt_args );
  * @param object $payment           The payment object.
  * @param array  $give_receipt_args Receipt_argument.
  */
-do_action( 'give_donation_receipt_after_table', $payment, $give_receipt_args );
+do_action( 'give_payment_receipt_after_table', $payment, $give_receipt_args );
 ?>

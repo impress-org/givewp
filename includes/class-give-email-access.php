@@ -71,7 +71,7 @@ class Give_Email_Access {
 	 * @since  1.0
 	 * @access private
 	 *
-	 * @var    
+	 * @var
 	 */
 	private $verify_throttle;
 
@@ -83,7 +83,7 @@ class Give_Email_Access {
 	 *
 	 * @var    string
 	 */
-    private $token_expiration;
+	private $token_expiration;
 
 	/**
 	 * Class Constructor
@@ -134,12 +134,12 @@ class Give_Email_Access {
 		if ( $this->token_exists ) {
 			add_filter( 'give_can_view_receipt', '__return_true' );
 			add_filter( 'give_user_pending_verification', '__return_false' );
-			add_filter( 'give_get_users_purchases_args', array( $this, 'users_purchases_args' ) );
+			add_filter( 'give_get_users_donations_args', array( $this, 'users_donations_args' ) );
 		}
 	}
 
 	/**
-	 * Prevent email spamming
+	 * Prevent email spamming.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -203,7 +203,7 @@ class Give_Email_Access {
 		//Nice subject and message
 		$subject = apply_filters( 'give_email_access_token_subject', sprintf( esc_html__( 'Your Access Link to %s', 'give' ), get_bloginfo( 'name' ) ) );
 
-		$message  = esc_html__( 'You or someone in your organization requested an access link be sent to this email address. This is a temporary access link for you to view your donation information. Click on the link below to view:', 'give' ) . "\n\n";
+		$message = esc_html__( 'You or someone in your organization requested an access link be sent to this email address. This is a temporary access link for you to view your donation information. Click on the link below to view:', 'give' ) . "\n\n";
 		$message .= '<a href="' . esc_url( $access_url ) . '" target="_blank">' . esc_html__( 'Access My Donation Details &raquo;', 'give' ) . '</a>' . "\n\n";
 		$message .= "\n\n";
 		$message .= esc_html__( 'Sincerely,', 'give' ) . "\n";
@@ -331,7 +331,7 @@ class Give_Email_Access {
 	 * @return bool
 	 */
 	public function is_valid_verify_key( $token ) {
-        /* @var WPDB $wpdb */
+		/* @var WPDB $wpdb */
 		global $wpdb;
 
 		// See if the verify_key exists
@@ -364,11 +364,11 @@ class Give_Email_Access {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  $args User Purchases arguments.
+	 * @param  $args User Donations arguments.
 	 *
 	 * @return mixed
 	 */
-	public function users_purchases_args( $args ) {
+	public function users_donations_args( $args ) {
 		$args['user'] = $this->token_email;
 
 		return $args;

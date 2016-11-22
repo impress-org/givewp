@@ -319,10 +319,8 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 * @return array $logs_data Array of all the Log entires
 	 */
 	public function get_logs() {
+		/** @var Give_Logging $give_logs */
 		global $give_logs;
-
-		// Prevent the queries from getting cached. Without this there are occasional memory issues for some installs
-		wp_suspend_cache_addition( true );
 
 		$logs_data = array();
 		$paged     = $this->get_paged();
@@ -336,29 +334,40 @@ class Give_Sales_Log_Table extends WP_List_Table {
 			'meta_query'  => $this->get_meta_query()
 		);
 
-		$logs = $give_logs->get_connected_logs( $log_query );
+		$cache_key = give_get_cache_key( 'get_logs', $log_query );
 
-		if ( $logs ) {
-			foreach ( $logs as $log ) {
-				$payment_id = get_post_meta( $log->ID, '_give_log_payment_id', true );
+		// Return result from cache if exist.
+		if ( ! ( $logs_data = get_option( $cache_key ) ) ) {
 
-				// Make sure this payment hasn't been deleted
-				if ( get_post( $payment_id ) ) :
-					$user_info      = give_get_payment_meta_user_info( $payment_id );
-					$payment_meta   = give_get_payment_meta( $payment_id );
-					$payment_amount = give_get_payment_amount( $payment_id );
+			$logs = $give_logs->get_connected_logs( $log_query );
 
-					$logs_data[] = array(
-						'ID'         => '<span class="give-item-label give-item-label-gray">' . $log->ID . '</span>',
-						'payment_id' => $payment_id,
-						'form'       => $log->post_parent,
-						'amount'     => $payment_amount,
-						'user_id'    => $user_info['id'],
-						'user_name'  => $user_info['first_name'] . ' ' . $user_info['last_name'],
-						'date'       => get_post_field( 'post_date', $payment_id )
-					);
+			if ( $logs ) {
+				foreach ( $logs as $log ) {
+					$payment_id = get_post_meta( $log->ID, '_give_log_payment_id', true );
 
-				endif;
+					// Make sure this payment hasn't been deleted
+					if ( get_post( $payment_id ) ) :
+						$user_info      = give_get_payment_meta_user_info( $payment_id );
+						$payment_meta   = give_get_payment_meta( $payment_id );
+						$payment_amount = give_get_payment_amount( $payment_id );
+
+						$logs_data[] = array(
+							'ID'         => '<span class="give-item-label give-item-label-gray">' . $log->ID . '</span>',
+							'payment_id' => $payment_id,
+							'form'       => $log->post_parent,
+							'amount'     => $payment_amount,
+							'user_id'    => $user_info['id'],
+							'user_name'  => $user_info['first_name'] . ' ' . $user_info['last_name'],
+							'date'       => get_post_field( 'post_date', $payment_id ),
+						);
+
+					endif;
+				}
+
+				// Cache results.
+				if ( ! empty( $logs_data ) ) {
+					add_option( $cache_key, $logs_data, '', 'no' );
+				}
 			}
 		}
 
@@ -379,6 +388,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 * @return void
 	 */
 	public function prepare_items() {
+		/** @var Give_Logging $give_logs */
 		global $give_logs;
 
 		$columns               = $this->get_columns();

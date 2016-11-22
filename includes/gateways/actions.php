@@ -31,7 +31,7 @@ function give_process_gateway_select( $data ) {
 add_action( 'give_gateway_select', 'give_process_gateway_select' );
 
 /**
- * Loads a payment gateway via AJAX
+ * Loads a payment gateway via AJAX.
  *
  * @since 1.0
  *
@@ -54,7 +54,7 @@ add_action( 'wp_ajax_give_load_gateway', 'give_load_ajax_gateway' );
 add_action( 'wp_ajax_nopriv_give_load_gateway', 'give_load_ajax_gateway' );
 
 /**
- * Sets an error on checkout if no gateways are enabled
+ * Sets an error within the donation form if no gateways are enabled.
  *
  * @since 1.0
  *

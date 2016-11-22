@@ -56,6 +56,7 @@ function give_load_scripts() {
 				'give_user_login'        => esc_html__( 'Invalid username. Only lowercase letters (a-z) and numbers are allowed.', 'give' ),
 				'give_user_pass'         => esc_html__( 'Enter a password.', 'give' ),
 				'give_user_pass_confirm' => esc_html__( 'Enter a confirm password.', 'give' ),
+				'give_agree_to_terms'    => esc_html__( 'You must agree to the terms and conditions.', 'give' ),
 			)
 		),
 	) );
@@ -340,7 +341,6 @@ function give_admin_icon() {
 			src: url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.eot?-ngjl88'; ?>');
 			src: url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.eot?#iefix-ngjl88'?>') format('embedded-opentype'),
 			url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.woff?-ngjl88'; ?>') format('woff'),
-			url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.ttf?-ngjl88'; ?>') format('truetype'),
 			url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.svg?-ngjl88#icomoon'; ?>') format('svg');
 			font-weight: normal;
 			font-style: normal;

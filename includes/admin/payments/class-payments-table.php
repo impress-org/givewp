@@ -348,7 +348,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 			case 'donation_form' :
 
-				$value = '<a href="' . admin_url( 'post.php?post=' . $payment->form_id . '&action=edit' ) . '">' . $payment->form_title . '</a>';
+				$value = empty( $payment->form_title ) ? __( 'Untitled', 'give' ) : '<a href="' . admin_url( 'post.php?post=' . $payment->form_id . '&action=edit' ) . '">' . $payment->form_title . '</a>';
 				$level = give_get_payment_form_title( $payment->meta, true );
 
 				if ( ! empty( $level ) ) {
@@ -401,7 +401,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			$email = esc_html__( '(unknown)', 'give' );
 		}
 
-		$value = '<a href="mailto:' . $email . '" data-tooltip="' . __( 'Email donor', 'give' ) . '">' . $email . '</a>';
+		$value = '<a href="mailto:' . $email . '" data-tooltip="' . esc_attr__( 'Email donor', 'give' ) . '">' . $email . '</a>';
 
 		return apply_filters( 'give_payments_table_column', $value, $payment->ID, 'email' );
 	}

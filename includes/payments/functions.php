@@ -270,7 +270,7 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
 
 		if ( $customer->id && $update_customer ) {
 
-			// Decrement the stats for the customer.
+			// Decrement the stats for the donor.
 			$customer->decrease_purchase_count();
 			$customer->decrease_value( $amount );
 
@@ -288,7 +288,7 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
 
 	if ( $customer->id && $update_customer ) {
 
-		// Remove the payment ID from the customer.
+		// Remove the payment ID from the donor.
 		$customer->remove_payment( $payment_id );
 
 	}
@@ -564,9 +564,10 @@ function give_check_for_existing_payment( $payment_id ) {
  *
  * @since 1.0
  *
- * @param WP_Post $payment      Payment object.
- * @param bool    $return_label Whether to return the translated status label
- *                              instead of status value. Default false.
+ * @param WP_Post|Give_Payment $payment      Payment object.
+ * @param bool                 $return_label Whether to return the translated status label
+ *                                           instead of status value. Default false.
+ *
  * @return bool|mixed True if payment status exists, false otherwise.
  */
 function give_get_payment_status( $payment, $return_label = false ) {
@@ -581,15 +582,19 @@ function give_get_payment_status( $payment, $return_label = false ) {
 		return false;
 	}
 
-	$payment = new Give_Payment( $payment->ID );
+	// Get payment object if no already given.
+	$payment = $payment instanceof Give_Payment ? $payment : new Give_Payment( $payment->ID );
 
 	if ( array_key_exists( $payment->status, $statuses ) ) {
 		if ( true === $return_label ) {
 			// Return translated status label.
 			return $statuses[ $payment->status ];
 		} else {
-			// Return status value.
-			return $payment->status;
+			// Account that our 'publish' status is labeled 'Complete'
+			$post_status = 'publish' == $payment->status ? 'Complete' : $payment->post_status;
+
+			// Make sure we're matching cases, since they matter
+			return array_search( strtolower( $post_status ), array_map( 'strtolower', $statuses ) );
 		}
 	}
 
@@ -605,14 +610,14 @@ function give_get_payment_status( $payment, $return_label = false ) {
  */
 function give_get_payment_statuses() {
 	$payment_statuses = array(
-		'pending'     => esc_html__( 'Pending', 'give' ),
-		'publish'     => esc_html__( 'Complete', 'give' ),
-		'refunded'    => esc_html__( 'Refunded', 'give' ),
-		'failed'      => esc_html__( 'Failed', 'give' ),
-		'cancelled'   => esc_html__( 'Cancelled', 'give' ),
-		'abandoned'   => esc_html__( 'Abandoned', 'give' ),
-		'preapproval' => esc_html__( 'Pre-Approved', 'give' ),
-		'revoked'     => esc_html__( 'Revoked', 'give' ),
+		'pending'     => __( 'Pending', 'give' ),
+		'publish'     => __( 'Complete', 'give' ),
+		'refunded'    => __( 'Refunded', 'give' ),
+		'failed'      => __( 'Failed', 'give' ),
+		'cancelled'   => __( 'Cancelled', 'give' ),
+		'abandoned'   => __( 'Abandoned', 'give' ),
+		'preapproval' => __( 'Pre-Approved', 'give' ),
+		'revoked'     => __( 'Revoked', 'give' ),
 	);
 
 	return apply_filters( 'give_payment_statuses', $payment_statuses );
@@ -833,12 +838,11 @@ function give_get_total_earnings() {
 			$payments = give_get_payments( $args );
 			if ( $payments ) {
 
-				/*
+				/**
 				 * If performing a donation, we need to skip the very last payment in the database,
 				 * since it calls give_increase_total_earnings() on completion,
 				 * which results in duplicated earnings for the very first donation.
 				 */
-
 				if ( did_action( 'give_update_payment_status' ) ) {
 					array_pop( $payments );
 				}
@@ -1387,9 +1391,9 @@ function give_set_payment_transaction_id( $payment_id = 0, $transaction_id = '' 
  * @since 1.0
  * @global object $wpdb Used to query the database using the WordPress Database API.
  *
- * @param string $key  the key to search for.
+ * @param string  $key  the key to search for.
  *
- * @return int $purchase Donation ID
+ * @return int $purchase Donation ID.
  */
 function give_get_purchase_id_by_key( $key ) {
 	global $wpdb;
@@ -1410,7 +1414,7 @@ function give_get_purchase_id_by_key( $key ) {
  * @since 1.3
  * @global object $wpdb Used to query the database using the WordPress Database API.
  *
- * @param string $key  The transaction ID to search for.
+ * @param string  $key  The transaction ID to search for.
  *
  * @return int $purchase Donation ID.
  */
@@ -1575,10 +1579,10 @@ function give_get_payment_note_html( $note, $payment_id = 0 ) {
 	$date_format = give_date_format() . ', ' . get_option( 'time_format' );
 
 	$delete_note_url = wp_nonce_url( add_query_arg( array(
-			'give-action' => 'delete_payment_note',
-			'note_id'     => $note->comment_ID,
-			'payment_id'  => $payment_id,
-		) ),
+		'give-action' => 'delete_payment_note',
+		'note_id'     => $note->comment_ID,
+		'payment_id'  => $payment_id,
+	) ),
 		'give_delete_payment_note_' . $note->comment_ID
 	);
 
@@ -1751,40 +1755,41 @@ function give_filter_where_older_than_week( $where = '' ) {
 
 
 /**
- * Get Payment Form ID
+ * Get Payment Form ID.
  *
- * Retrieves the form title and appends the price ID title if applicable
+ * Retrieves the form title and appends the level name if present.
  *
  * @since 1.5
  *
- * @param array  $payment_meta Payment meta data.
- * @param bool   $level_title  Whether you want the entire title or just the level title.
- * @param string $separator    Separator.
+ * @param array  $payment_meta       Payment meta data.
+ * @param bool   $only_level         If set to true will only return the level name if multi-level enabled.
+ * @param string $separator          The separator between the .
  *
- * @return string $form_title Returns the full title if $level_title false, otherwise returns the levels title.
+ * @return string $form_title Returns the full title if $only_level is false, otherwise returns the levels title.
  */
-function give_get_payment_form_title( $payment_meta, $level_title = false, $separator = '' ) {
+function give_get_payment_form_title( $payment_meta, $only_level = false, $separator = '' ) {
 
 	$form_id    = isset( $payment_meta['form_id'] ) ? $payment_meta['form_id'] : 0;
-	$form_title = isset( $payment_meta['form_title'] ) ? $payment_meta['form_title'] : '';
 	$price_id   = isset( $payment_meta['price_id'] ) ? $payment_meta['price_id'] : null;
+	$form_title = isset( $payment_meta['form_title'] ) ? $payment_meta['form_title'] : '';
 
-	if ( $level_title == true ) {
+	if ( $only_level == true ) {
 		$form_title = '';
 	}
 
+	//If multi-level, append to the form title.
 	if ( give_has_variable_prices( $form_id ) ) {
 
-		if ( ! empty( $separator ) ) {
-			$form_title .= ' ' . $separator;
+		//Only add separator if there is a form title.
+		if ( ! empty( $form_title ) ) {
+			$form_title .= ' ' . $separator . ' ';
 		}
-		$form_title .= ' <span class="donation-level-text-wrap">';
+
+		$form_title .= '<span class="donation-level-text-wrap">';
 
 		if ( $price_id == 'custom' ) {
-
 			$custom_amount_text = get_post_meta( $form_id, '_give_custom_amount_text', true );
-			$form_title .= ! empty( $custom_amount_text ) ? $custom_amount_text : esc_html__( 'Custom Amount', 'give' );
-
+			$form_title .= ! empty( $custom_amount_text ) ? $custom_amount_text : __( 'Custom Amount', 'give' );
 		} else {
 			$form_title .= give_get_price_option_name( $form_id, $price_id );
 		}
@@ -1872,22 +1877,24 @@ function give_get_form_variable_price_dropdown( $args = array(), $echo = false )
 		return false;
 	}
 
+	$form = new Give_Donate_Form( $args['id'] );
+
 	// Check if form has variable prices or not.
-	if ( ! ( $variable_prices = give_has_variable_prices( $args['id'] ) ) ) {
+	if ( ! $form->ID || ! $form->has_variable_prices() ) {
 		return false;
 	}
 
-	$variable_prices        = give_get_variable_prices( absint( $args['id'] ) );
+	$variable_prices        = $form->get_prices();
 	$variable_price_options = array();
 
 	// Check if multi donation form support custom donation or not.
-	if ( give_is_custom_price_mode( absint( $args['id'] ) ) ) {
+	if ( $form->is_custom_price_mode() ) {
 		$variable_price_options['custom'] = _x( 'Custom', 'custom donation dropdown item', 'give' );
 	}
 
 	// Get variable price and ID from variable price array.
 	foreach ( $variable_prices as $variable_price ) {
-		$variable_price_options[ $variable_price['_give_id']['level_id'] ] = $variable_price['_give_text'];
+		$variable_price_options[ $variable_price['_give_id']['level_id'] ] = ! empty( $variable_price['_give_text'] ) ? $variable_price['_give_text'] : give_currency_filter( give_format_amount( $variable_price['_give_amount'] ) );
 	}
 
 	// Update options.
