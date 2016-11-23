@@ -24,8 +24,8 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 	 */
 	public function __construct() {
 
-		$this->shortcode['title']   = esc_html__( 'Donation Form', 'give' );
-		$this->shortcode['label']   = esc_html__( 'Donation Form', 'give' );
+		$this->shortcode['title'] = esc_html__( 'Donation Form', 'give' );
+		$this->shortcode['label'] = esc_html__( 'Donation Form', 'give' );
 
 		parent::__construct( 'give_form' );
 	}
@@ -38,7 +38,7 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 	public function define_fields() {
 
 		$create_form_link = sprintf(
-			/* translators: %s: create new form URL */
+		/* translators: %s: create new form URL */
 			__( '<a href="%s">Create</a> a new Donation Form.', 'give' ),
 			admin_url( 'post-new.php?post_type=give_forms' )
 		);
@@ -82,12 +82,12 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 				),
 			),
 			array(
-				'type'    => 'listbox',
-				'name'    => 'show_content',
+				'type'     => 'listbox',
+				'name'     => 'show_content',
 				'minWidth' => 240,
-				'label'   => esc_attr__( 'Display Content:', 'give' ),
-				'tooltip' => esc_attr__( 'Do you want to display the form content?', 'give' ),
-				'options' => array(
+				'label'    => esc_attr__( 'Display Content:', 'give' ),
+				'tooltip'  => esc_attr__( 'Do you want to display the form content?', 'give' ),
+				'options'  => array(
 					'none'  => esc_html__( 'No Content', 'give' ),
 					'above' => esc_html__( 'Display content ABOVE the fields', 'give' ),
 					'below' => esc_html__( 'Display content BELOW the fields', 'give' ),
@@ -99,10 +99,10 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 				'label'   => esc_attr__( 'Donation Options:', 'give' ),
 				'tooltip' => esc_attr__( 'How would you like to display donation information?', 'give' ),
 				'options' => array(
-					'onpage'      => esc_html__( 'All Fields', 'give' ),
-					'modal'       => esc_html__( 'Modal', 'give' ),
-					'reveal'      => esc_html__( 'Reveal', 'give' ),
-					'button_only' => esc_html__( 'Button Only', 'give' ),
+					'onpage' => esc_html__( 'All Fields', 'give' ),
+					'modal'  => esc_html__( 'Modal', 'give' ),
+					'reveal' => esc_html__( 'Reveal', 'give' ),
+					'button' => esc_html__( 'Button', 'give' ),
 				),
 			),
 		);

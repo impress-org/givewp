@@ -765,7 +765,7 @@ class Give_Donate_Form {
 			: get_post_meta( $this->ID, '_give_payment_display', true );
 
 		// If admin want to show only button for form then user inbuilt modal functionality.
-		if( 'button_only' === $display_option ) {
+		if( 'button' === $display_option ) {
 			$display_option = 'modal give-display-button-only';
 		}
 
