@@ -76,7 +76,7 @@ class Give_Payments_Query extends Give_Stats {
 			'search_in_notes' => false,
 			'children'        => false,
 			'fields'          => null,
-			'give_forms'      => null
+			'give_forms'      => null,
 		);
 
 		$this->args = wp_parse_args( $args, $defaults );
@@ -237,7 +237,7 @@ class Give_Payments_Query extends Give_Stats {
 	 * @return void
 	 */
 	public function status() {
-		if ( ! isset ( $this->args['status'] ) ) {
+		if ( ! isset( $this->args['status'] ) ) {
 			return;
 		}
 
@@ -254,7 +254,7 @@ class Give_Payments_Query extends Give_Stats {
 	 * @return void
 	 */
 	public function page() {
-		if ( ! isset ( $this->args['page'] ) ) {
+		if ( ! isset( $this->args['page'] ) ) {
 			return;
 		}
 
@@ -294,7 +294,7 @@ class Give_Payments_Query extends Give_Stats {
 	 * @return void
 	 */
 	public function month() {
-		if ( ! isset ( $this->args['month'] ) ) {
+		if ( ! isset( $this->args['month'] ) ) {
 			return;
 		}
 
@@ -380,7 +380,7 @@ class Give_Payments_Query extends Give_Stats {
 
 		$this->__set( 'meta_query', array(
 			'key'   => $user_key,
-			'value' => $this->args['user']
+			'value' => $this->args['user'],
 		) );
 	}
 
@@ -426,7 +426,7 @@ class Give_Payments_Query extends Give_Stats {
 			$search_meta = array(
 				'key'     => $key,
 				'value'   => $search,
-				'compare' => 'LIKE'
+				'compare' => 'LIKE',
 			);
 
 			$this->__set( 'meta_query', $search_meta );
@@ -436,7 +436,7 @@ class Give_Payments_Query extends Give_Stats {
 
 			$search_meta = array(
 				'key'   => '_give_payment_user_id',
-				'value' => trim( str_replace( 'user:', '', strtolower( $search ) ) )
+				'value' => trim( str_replace( 'user:', '', strtolower( $search ) ) ),
 			);
 
 			$this->__set( 'meta_query', $search_meta );
@@ -446,7 +446,7 @@ class Give_Payments_Query extends Give_Stats {
 				$search_meta = array(
 					'key'     => '_give_payment_number',
 					'value'   => $search,
-					'compare' => 'LIKE'
+					'compare' => 'LIKE',
 				);
 
 				$this->__set( 'meta_query', $search_meta );
@@ -468,7 +468,7 @@ class Give_Payments_Query extends Give_Stats {
 			$search_meta = array(
 				'key'     => '_give_payment_number',
 				'value'   => $search,
-				'compare' => 'LIKE'
+				'compare' => 'LIKE',
 			);
 
 			$this->__set( 'meta_query', $search_meta );
@@ -485,7 +485,6 @@ class Give_Payments_Query extends Give_Stats {
 				$this->__set( 'post__in', $arr );
 				$this->__unset( 's' );
 			}
-
 		} elseif ( '#' == substr( $search, 0, 1 ) ) {
 
 			$search = str_replace( '#:', '', $search );
@@ -517,7 +516,7 @@ class Give_Payments_Query extends Give_Stats {
 
 		$this->__set( 'meta_query', array(
 			'key'   => '_give_payment_mode',
-			'value' => $this->args['mode']
+			'value' => $this->args['mode'],
 		) );
 	}
 
@@ -558,10 +557,10 @@ class Give_Payments_Query extends Give_Stats {
 
 		$this->__set( 'meta_query', array(
 			array(
-				'key' => '_give_payment_form_id',
-				'value' => $this->args['give_forms'],
-				'compare' => $compare
-			)
+				'key'     => '_give_payment_form_id',
+				'value'   => $this->args['give_forms'],
+				'compare' => $compare,
+			),
 		) );
 
 		$this->__unset( 'give_forms' );
