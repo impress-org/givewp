@@ -82,7 +82,7 @@ jQuery(document).ready(function ($) {
         this_form.find('[id^=give-login-fields] .give-loading-animation').fadeIn();
 
         var data = {
-            action: 'give_process_checkout_login',
+            action: 'give_process_donation_login',
             give_ajax: 1,
             give_user_login: this_form.find('[name=give_user_login]').val(),
             give_user_pass: this_form.find('[name=give_user_pass]').val()
@@ -169,7 +169,7 @@ jQuery(document).ready(function ($) {
         $(this).val(give_global_vars.purchase_loading);
 
         //Submit form via AJAX
-        $.post(give_global_vars.ajaxurl, this_form.serialize() + '&action=give_process_checkout&give_ajax=true', function (data) {
+        $.post(give_global_vars.ajaxurl, this_form.serialize() + '&action=give_process_donation&give_ajax=true', function (data) {
 
             if ($.trim(data) == 'success') {
                 //Remove any errors
