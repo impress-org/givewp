@@ -345,7 +345,8 @@ class Give_Payments_Query extends Give_Stats {
 	 * @return mixed
 	 */
 	public function custom_orderby( $order, $query ) {
-		if ( ! in_array( 'give_payment', $query->query['post_type'] ) || is_array( $query->query['orderby'] ) ) {
+		$post_types = is_array( $query->query['post_type'] ) ? $query->query['post_type'] : array( $query->query['post_type'] );
+		if ( ! in_array( 'give_payment', $post_types ) || is_array( $query->query['orderby'] ) ) {
 			return $order;
 		}
 
