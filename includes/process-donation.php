@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since       1.0
  * @return      false|null
  */
-function give_process_purchase_form() {
+function give_process_donation_form() {
 
 	/**
 	 * Fires before processing the donation form.
@@ -160,9 +160,9 @@ function give_process_purchase_form() {
 
 }
 
-add_action( 'give_purchase', 'give_process_purchase_form' );
-add_action( 'wp_ajax_give_process_checkout', 'give_process_purchase_form' );
-add_action( 'wp_ajax_nopriv_give_process_checkout', 'give_process_purchase_form' );
+add_action( 'give_purchase', 'give_process_donation_form' );
+add_action( 'wp_ajax_give_process_checkout', 'give_process_donation_form' );
+add_action( 'wp_ajax_nopriv_give_process_checkout', 'give_process_donation_form' );
 
 
 /**
