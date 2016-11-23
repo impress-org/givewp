@@ -590,10 +590,12 @@ function give_display_checkout_button( $form_id, $args ) {
 		? $args['display_style']
 		: get_post_meta( $form_id, '_give_payment_display', true );
 
-	//no btn for onpage.
-	if ( $display_option === 'onpage' ) {
-		return;
+	if( 'button_only' === $display_option ) {
+		$display_option = 'modal';
+	}elseif ( $display_option === 'onpage' ) {
+		return '';
 	}
+
 
 	$display_label_field = get_post_meta( $form_id, '_give_reveal_label', true );
 	$display_label       = ( ! empty( $display_label_field ) ? $display_label_field : esc_html__( 'Donate Now', 'give' ) );
@@ -1750,7 +1752,7 @@ function give_form_display_content( $form_id, $args ) {
 		$content = apply_filters( 'the_content', $content );
 	}
 
-	$output = '<div id="give-form-content-' . $form_id . '" class="give-form-content-wrap" >' . $content . '</div>';
+	$output = '<div id="give-form-content-' . $form_id . '" class="give-form-content-wrap ' . $show_content . '-content">' . $content . '</div>';
 
 	echo apply_filters( 'give_form_content_output', $output );
 
