@@ -1043,7 +1043,8 @@ form[id*='give-form'] #give-final-total-wrap {
 
 .give-display-button-only .give-form-title,
 .give-display-button-only .give-form-content-wrap,
-.give-display-button-only .give-goal-progress {
+.give-display-button-only .give-goal-progress,
+.give-display-button-only .give_error {
   display: none; }
 
 .give-display-button-only form[id*='give-form'] > div,

@@ -345,7 +345,8 @@ form[id*='give-form'] {
 .give-display-button-only {
 	.give-form-title,
 	.give-form-content-wrap,
-	.give-goal-progress{
+	.give-goal-progress,
+	.give_error{
 		display: none;
 	}
 }

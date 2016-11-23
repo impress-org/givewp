@@ -100,9 +100,10 @@ jQuery(function ($) {
 
 						var $form_content = $('.give-form-content-wrap', this_form_wrap),
 							$form_title   = $('.give-form-title', this_form_wrap),
-							$form_goal    = $('.give-goal-progress', this_form_wrap);
-
-						// Add content to form.
+							$form_goal    = $('.give-goal-progress', this_form_wrap),
+							$form_error   = $('.give_error', this_form_wrap);
+						
+						// Add content container to form.
 						if ($form_content.length && !$('.give-form-content-wrap', this_form).length) {
 							if ($form_content.hasClass('give_post_form-content')) {
 								this_form.append($form_content);
@@ -111,12 +112,17 @@ jQuery(function ($) {
 							}
 						}
 
-						// Add goal to form.
+						// Add error container to form.
+						if ($form_error.length && !$('.give_error', this_form).length) {
+							this_form.prepend($form_error);
+						}
+
+						// Add goal container to form.
 						if ($form_goal.length && !$('.give-goal-progress', this_form).length) {
 							this_form.prepend($form_goal);
 						}
 
-						// Add title to form.
+						// Add title container to form.
 						if ($form_title.length && !$('.give-form-title', this_form).length) {
 							this_form.prepend($form_title);
 						}
