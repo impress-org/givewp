@@ -114,7 +114,8 @@ function give_open_form_modal( $form_wrap, $form ) {
 					var $form_content = jQuery('.give-form-content-wrap', $form_wrap),
 						$form_title   = jQuery('.give-form-title', $form_wrap),
 						$form_goal    = jQuery('.give-goal-progress', $form_wrap),
-						$form_error   = jQuery('.give_error', $form_wrap);
+						$form_error   = jQuery('>.give_error', $form_wrap),
+						$form_errors  = jQuery('.give_errors', $form_wrap);
 
 					// Add content container to form.
 					if ($form_content.length && !jQuery('.give-form-content-wrap', $form).length) {
@@ -125,9 +126,18 @@ function give_open_form_modal( $form_wrap, $form ) {
 						}
 					}
 
+					// Add errors container to form.
+					if ($form_errors.length && !jQuery('.give_errors', $form).length) {
+						$form_errors.each(function( index, $error ){
+							$form.prepend( jQuery( $error ) );
+						});
+					}
+
 					// Add error container to form.
-					if ($form_error.length && !jQuery('.give_error', $form).length) {
-						$form.prepend($form_error);
+					if ($form_error.length && !jQuery('>.give_error', $form).length) {
+						$form_error.each(function( index, $error ){
+							$form.prepend( jQuery( $error ) );
+						});
 					}
 
 					// Add goal container to form.
