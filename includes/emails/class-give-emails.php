@@ -100,6 +100,9 @@ class Give_Emails {
 	 * Set a property.
 	 *
 	 * @since 1.0
+	 *
+	 * @param $key
+	 * @param $value
 	 */
 	public function __set( $key, $value ) {
 		$this->$key = $value;
@@ -280,9 +283,9 @@ class Give_Emails {
 	/**
 	 * Send the email.
 	 *
-	 * @param  string $to The To address to send to.
-	 * @param  string $subject The subject line of the email to send.
-	 * @param  string $message The body of the email to send.
+	 * @param  string       $to          The To address to send to.
+	 * @param  string       $subject     The subject line of the email to send.
+	 * @param  string       $message     The body of the email to send.
 	 * @param  string|array $attachments Attachments to the email in a format supported by wp_mail().
 	 *
 	 * @return bool

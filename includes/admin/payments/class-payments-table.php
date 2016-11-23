@@ -348,7 +348,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 			case 'donation_form' :
 
-				$value = '<a href="' . admin_url( 'post.php?post=' . $payment->form_id . '&action=edit' ) . '">' . $payment->form_title . '</a>';
+				$value = empty( $payment->form_title ) ? __( 'Untitled', 'give' ) : '<a href="' . admin_url( 'post.php?post=' . $payment->form_id . '&action=edit' ) . '">' . $payment->form_title . '</a>';
 				$level = give_get_payment_form_title( $payment->meta, true );
 
 				if ( ! empty( $level ) ) {
