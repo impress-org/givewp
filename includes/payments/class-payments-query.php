@@ -89,6 +89,9 @@ class Give_Payments_Query extends Give_Stats {
 	 *
 	 * @since  1.0
 	 * @access public
+	 *
+	 * @param $query_var
+	 * @param $value
 	 */
 	public function __set( $query_var, $value ) {
 		if ( in_array( $query_var, array( 'meta_query', 'tax_query' ) ) ) {
@@ -103,6 +106,8 @@ class Give_Payments_Query extends Give_Stats {
 	 *
 	 * @since  1.0
 	 * @access public
+	 *
+	 * @param $query_var
 	 */
 	public function __unset( $query_var ) {
 		unset( $this->args[ $query_var ] );
@@ -520,8 +525,8 @@ class Give_Payments_Query extends Give_Stats {
 
 		$this->__set( 'meta_query', array(
 			array(
-				'key' => '_give_payment_form_id',
-				'value' => $this->args['give_forms'],
+				'key'     => '_give_payment_form_id',
+				'value'   => $this->args['give_forms'],
 				'compare' => $compare
 			)
 		) );
