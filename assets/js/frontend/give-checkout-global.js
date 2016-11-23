@@ -528,29 +528,7 @@ jQuery( function ( $ ) {
 
 		//This form is modal display so show the modal
 		if ( display_modal ) {
-
-			//@TODO: Make this DRYer - repeated in give.js
-			$.magnificPopup.open( {
-				mainClass: 'give-modal',
-				items: {
-					src: form,
-					type: 'inline'
-				},
-				callbacks: {
-					open: function () {
-						// Will fire when this exact popup is opened
-						// this - is Magnific Popup object
-						if ( $( '.mfp-content' ).outerWidth() >= 500 ) {
-							$( '.mfp-content' ).addClass( 'give-responsive-mfp-content' );
-						}
-					},
-					close: function () {
-						//Remove popup class
-						form.removeClass( 'mfp-hide' );
-
-					}
-				}
-			} );
+			give_open_form_modal( form_wrap, form );
 		}
 		//This is a reveal form, show it
 		else if ( display_reveal ) {

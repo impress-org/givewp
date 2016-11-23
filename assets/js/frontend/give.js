@@ -78,81 +78,93 @@ jQuery(function ($) {
 			return false;
 		}
 
-		// Hide form form children.
-		var children = '#give_purchase_form_wrap, #give-payment-mode-select, .mfp-close, .give-hidden';
+		give_open_form_modal( this_form_wrap, this_form );
 
-		// Hide amount and title field if admin only want to show only button.
-		if (this_form_wrap.hasClass('give-display-button-only')) {
-			children = 'h2, div, ul, fieldset, label, .mfp-close';
-		}
-
-		//Alls well, open popup!
-		$.magnificPopup.open({
-			mainClass     : 'give-modal',
-			closeOnBgClick: false,
-			items         : {
-				src : this_form,
-				type: 'inline'
-			},
-			callbacks     : {
-				beforeOpen: function () {
-					if (this_form_wrap.hasClass('give-display-button-only') && !this_form.data('content')) {
-
-						var $form_content = $('.give-form-content-wrap', this_form_wrap),
-							$form_title   = $('.give-form-title', this_form_wrap),
-							$form_goal    = $('.give-goal-progress', this_form_wrap),
-							$form_error   = $('.give_error', this_form_wrap);
-						
-						// Add content container to form.
-						if ($form_content.length && !$('.give-form-content-wrap', this_form).length) {
-							if ($form_content.hasClass('give_post_form-content')) {
-								this_form.append($form_content);
-							} else {
-								this_form.prepend($form_content);
-							}
-						}
-
-						// Add error container to form.
-						if ($form_error.length && !$('.give_error', this_form).length) {
-							this_form.prepend($form_error);
-						}
-
-						// Add goal container to form.
-						if ($form_goal.length && !$('.give-goal-progress', this_form).length) {
-							this_form.prepend($form_goal);
-						}
-
-						// Add title container to form.
-						if ($form_title.length && !$('.give-form-title', this_form).length) {
-							this_form.prepend($form_title);
-						}
-
-						this_form.data('content', 'loaded');
-					}
-				},
-				open : function () {
-					// Will fire when this exact popup is opened
-					// this - is Magnific Popup object
-					if ($('.mfp-content').outerWidth() >= 500) {
-						$('.mfp-content').addClass('give-responsive-mfp-content');
-					}
-
-					//Hide all form elements besides the ones required for payment
-					this_form.children().not(children).hide();
-
-				},
-				close: function () {
-					//Remove popup class
-					this_form.removeClass('mfp-hide');
-
-					//Show all fields again
-					this_form.children().not(children).show();
-				}
-			}
-		});
 	});
 
 });
+
+/**
+ * Open form modal
+ * @param $form_wrap
+ * @param $form
+ */
+function give_open_form_modal( $form_wrap, $form ) {
+	// Hide form form children.
+	var children = '#give_purchase_form_wrap, #give-payment-mode-select, .mfp-close, .give-hidden';
+
+	// Hide amount and title field if admin only want to show only button.
+	if ($form_wrap.hasClass('give-display-button-only')) {
+		children = 'h2, div, ul, fieldset, label, .mfp-close';
+	}
+
+	//Alls well, open popup!
+	jQuery.magnificPopup.open({
+		mainClass     : 'give-modal',
+		closeOnBgClick: false,
+		items         : {
+			src : $form,
+			type: 'inline'
+		},
+		callbacks     : {
+			beforeOpen: function () {
+				// add title, content, goal and error to form if admin want to show button only
+				if ($form_wrap.hasClass('give-display-button-only') && !$form.data('content')) {
+
+					var $form_content = jQuery('.give-form-content-wrap', $form_wrap),
+						$form_title   = jQuery('.give-form-title', $form_wrap),
+						$form_goal    = jQuery('.give-goal-progress', $form_wrap),
+						$form_error   = jQuery('.give_error', $form_wrap);
+
+					// Add content container to form.
+					if ($form_content.length && !jQuery('.give-form-content-wrap', $form).length) {
+						if ($form_content.hasClass('give_post_form-content')) {
+							$form.append($form_content);
+						} else {
+							$form.prepend($form_content);
+						}
+					}
+
+					// Add error container to form.
+					if ($form_error.length && !jQuery('.give_error', $form).length) {
+						$form.prepend($form_error);
+					}
+
+					// Add goal container to form.
+					if ($form_goal.length && !jQuery('.give-goal-progress', $form).length) {
+						$form.prepend($form_goal);
+					}
+
+					// Add title container to form.
+					if ($form_title.length && !jQuery('.give-form-title', $form).length) {
+						$form.prepend($form_title);
+					}
+
+					$form.data('content', 'loaded');
+				}
+			},
+			open : function () {
+				// Will fire when this exact popup is opened
+				// this - is Magnific Popup object
+				var $mfp_content = jQuery('.mfp-content');
+				if ( $mfp_content.outerWidth() >= 500) {
+					$mfp_content.addClass('give-responsive-mfp-content');
+				}
+
+				//Hide all form elements besides the ones required for payment
+				$form.children().not(children).hide();
+
+			},
+			close: function () {
+				//Remove popup class
+				$form.removeClass('mfp-hide');
+
+				//Show all fields again
+				$form.children().not(children).show();
+			}
+		}
+	});
+}
 
 /**
  * Floating Labels Custom Events
