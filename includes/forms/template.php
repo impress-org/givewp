@@ -90,11 +90,17 @@ function give_get_donation_form( $args = array() ) {
 			echo apply_filters( 'give_goal_closed_output', give_output_error( $display_thankyou_message, false, 'success' ), $form->ID );
 
 		} else {
-
-			if ( isset( $args['show_title'] ) && $args['show_title'] == true ) {
-
-				echo apply_filters( 'give_form_title', '<h2 class="give-form-title">' . get_the_title( $form_id ) . '</h2>' );
-
+			/**
+			 * Show form title:
+			 * 1. if show_title params set to true
+			 * 2. if admin set form display_style to button
+			 */
+			$form_title = apply_filters( 'give_form_title', '<h2 class="give-form-title">' . get_the_title( $form_id ) . '</h2>' );
+			if (
+				( isset( $args['show_title'] ) && $args['show_title'] == true )
+				|| ( 'button' === get_post_meta( $form_id, '_give_payment_display', true ) )
+			) {
+				echo $form_title;
 			}
 
 			/**
