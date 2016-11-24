@@ -1354,6 +1354,55 @@ jQuery.noConflict();
 		})
 	};
 
+	/**
+	 * Payment history listing page js
+	 */
+	var Give_Payment_History = {
+		init : function(){
+			this.handle_bulk_delete()
+		},
+
+		handle_bulk_delete: function(){
+			var $payment_filters = $('#give-payments-filter');
+
+			/**
+			 * Payment filters
+			 */
+			$payment_filters.on( 'submit', function(e){
+				e.preventDefault();
+				var current_action        = $('select[name="action"]', $(this)).val(),
+					$payments             = [],
+					confirm_action_notice = '';
+
+				$('input[name="payment[]"]:checked', $(this) ).each(function( index, item ){
+					$payments.push( $(this).val() );
+				});
+
+				// Total payment count.
+				$payments = $payments.length.toString();
+
+				switch ( current_action ) {
+					case 'delete':
+						// Check if admin did not select any payment.
+						if( ! $payments.length ) {
+							alert( give_vars.bulk_action.zero_payment_selected );
+							return false;
+						}
+
+						// Ask admin before processing.
+						confirm_action_notice = ( 1 < $payments ) ? give_vars.bulk_action.delete_payments : give_vars.bulk_action.delete_payment;
+						if( ! window.confirm( confirm_action_notice.replace( '{payment_count}', $payments ) ) ) {
+							return false;
+						}
+
+						break;
+				}
+
+				return true;
+			});
+		}
+	};
+
 	//On DOM Ready
 	$(function () {
 
@@ -1367,6 +1416,7 @@ jQuery.noConflict();
 		API_Screen.init();
 		Give_Export.init();
 		Edit_Form_Screen.init();
+		Give_Payment_History.init();
 
 		initialize_qtips();
 
