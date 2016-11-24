@@ -293,7 +293,7 @@ abstract class Give_Shortcode_Generator {
 
 		if ( $posts ) {
 			foreach ( $posts as $post ) {
-				$options[ absint( $post->ID ) ] = $post->post_title;
+				$options[ absint( $post->ID ) ] = ( empty( $post->post_title ) ? sprintf( __( 'Untitled (#%s)', 'give' ), $post->ID ) : $post->post_title );
 			}
 
 			$field['type']    = 'listbox';
