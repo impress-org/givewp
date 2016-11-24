@@ -325,6 +325,7 @@ class Give_MetaBox_Form_Data {
 									'onpage' => esc_html__( 'All Fields', 'give' ),
 									'modal'  => esc_html__( 'Modal', 'give' ),
 									'reveal' => esc_html__( 'Reveal', 'give' ),
+									'button' => esc_html__( 'Button', 'give' ),
 								),
 								'default' => 'onpage',
 							),
