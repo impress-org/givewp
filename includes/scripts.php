@@ -310,6 +310,11 @@ function give_load_admin_scripts( $hook ) {
 		'confirm_before_remove_row_text' => __( 'Do you want to delete this level?', 'give' ),
 		'matched_success_failure_page'   => __( 'You cannot set the success and failed pages to the same page', 'give' ),
 		'dismiss_notice_text'            => __( 'Dismiss this notice.', 'give' ),
+		'bulk_action' => array(
+			'zero_payment_selected' => __( 'Please choose some payments to delete', 'give' ),
+			'delete_payment'        => __( 'Do you want permanently delete only one transaction?', 'give' ),
+			'delete_payments'       => __( 'Do you want permanently delete {payment_count} number of transactions?', 'give' ),
+		),
 	) );
 
 	if ( function_exists( 'wp_enqueue_media' ) && version_compare( get_bloginfo( 'version' ), '3.5', '>=' ) ) {
