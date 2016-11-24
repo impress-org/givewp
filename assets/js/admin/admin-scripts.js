@@ -1369,7 +1369,6 @@ jQuery.noConflict();
 			 * Payment filters
 			 */
 			$payment_filters.on( 'submit', function(e){
-				e.preventDefault();
 				var current_action        = $('select[name="action"]', $(this)).val(),
 					$payments             = [],
 					confirm_action_notice = '';
@@ -1380,11 +1379,11 @@ jQuery.noConflict();
 
 				// Total payment count.
 				$payments = $payments.length.toString();
-
+				
 				switch ( current_action ) {
 					case 'delete':
 						// Check if admin did not select any payment.
-						if( ! $payments.length ) {
+						if( ! parseInt( $payments ) ) {
 							alert( give_vars.bulk_action.zero_payment_selected );
 							return false;
 						}
