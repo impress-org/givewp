@@ -73,7 +73,7 @@ class EDD_SL_Plugin_Updater {
             $_transient_data = new stdClass;
         }
 
-        if( 'plugins.php' == $screen->parent_file && is_multisite() ) {
+        if( is_object($screen) && 'plugins.php' == $screen->parent_file && is_multisite() ) {
             return $_transient_data;
         }
 
