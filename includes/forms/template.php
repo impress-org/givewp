@@ -55,7 +55,7 @@ function give_get_donation_form( $args = array() ) {
 	);
 
 	//Sanity Check: Donation form not published or user doesn't have permission to view drafts.
-	if ( 'publish' !== $form->post_status && ! current_user_can( 'edit_give_forms', $form->ID ) ) {
+	if ( 'publish' !== $form->post_status ) {
 		return false;
 	}
 
