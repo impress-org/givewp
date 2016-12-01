@@ -131,7 +131,7 @@ class Give_Email_Template_Tags {
 	 *
 	 * @since 1.0
 	 *
-	 * @param $m message
+	 * @param $m array
 	 *
 	 * @return mixed
 	 */
@@ -151,7 +151,7 @@ class Give_Email_Template_Tags {
 }
 
 /**
- * Add an email tag
+ * Add an email tag.
  *
  * @since 1.0
  *
@@ -240,7 +240,6 @@ function give_do_email_tags( $content, $payment_id ) {
 	// Replace all tags
 	$content = Give()->email_tags->do_tags( $content, $payment_id );
 
-	// Maintaining backwards compatibility
 	$content = apply_filters( 'give_email_template_tags', $content, give_get_payment_meta( $payment_id ), $payment_id );
 
 	// Return content

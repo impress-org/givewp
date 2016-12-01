@@ -89,6 +89,9 @@ class Give_Payments_Query extends Give_Stats {
 	 *
 	 * @since  1.0
 	 * @access public
+	 *
+	 * @param $query_var
+	 * @param $value
 	 */
 	public function __set( $query_var, $value ) {
 		if ( in_array( $query_var, array( 'meta_query', 'tax_query' ) ) ) {
@@ -103,6 +106,8 @@ class Give_Payments_Query extends Give_Stats {
 	 *
 	 * @since  1.0
 	 * @access public
+	 *
+	 * @param $query_var
 	 */
 	public function __unset( $query_var ) {
 		unset( $this->args[ $query_var ] );
@@ -237,7 +242,7 @@ class Give_Payments_Query extends Give_Stats {
 	 * @return void
 	 */
 	public function status() {
-		if ( ! isset( $this->args['status'] ) ) {
+		if ( ! isset ( $this->args['status'] ) ) {
 			return;
 		}
 
@@ -254,7 +259,7 @@ class Give_Payments_Query extends Give_Stats {
 	 * @return void
 	 */
 	public function page() {
-		if ( ! isset( $this->args['page'] ) ) {
+		if ( ! isset ( $this->args['page'] ) ) {
 			return;
 		}
 
@@ -294,7 +299,7 @@ class Give_Payments_Query extends Give_Stats {
 	 * @return void
 	 */
 	public function month() {
-		if ( ! isset( $this->args['month'] ) ) {
+		if ( ! isset ( $this->args['month'] ) ) {
 			return;
 		}
 
