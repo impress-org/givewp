@@ -93,7 +93,7 @@ function give_get_donation_form( $args = array() ) {
 
 			if ( isset( $args['show_title'] ) && $args['show_title'] == true ) {
 
-				echo apply_filters( 'give_form_title', '<h2 class="give-form-title">' . get_the_title( $form_id ) . '</h2>' );
+				echo apply_filters( 'give_form_title', '<h2 class="give-form-title">' . get_the_title( $form_id ) . '</h2>', $form->ID, $form );
 
 			}
 
