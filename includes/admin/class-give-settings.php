@@ -1036,6 +1036,7 @@ function give_enabled_gateways_callback( $field_arr, $saved_values = array() ) {
 function give_default_gateway_callback( $field_arr, $saved_value ) {
 	$id                = $field_arr['id'];
 	$gateways          = give_get_enabled_payment_gateways();
+	$saved_value       = give_get_default_gateway( null );
 
 	echo '<select class="give-select" name="' . $id . '" id="' . $id . '">';
 
