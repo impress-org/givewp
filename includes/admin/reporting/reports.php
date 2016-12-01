@@ -438,6 +438,37 @@ function give_reports_tab_export() {
 									<input type="submit" value="<?php esc_attr_e( 'Generate CSV', 'give' ); ?>" class="button-secondary"/>
 									<span class="spinner"></span>
 								</span>
+								<?php
+								if ( give_is_setting_enabled( give_get_option( 'categories' ) ) ) {
+									echo Give()->html->category_dropdown(
+										'give_forms_categories[]',
+										0,
+										array(
+											'class'           => 'give_forms_categories',
+											'chosen'          => true,
+											'multiple'        => true,
+											'selected'        => array(),
+											'show_option_all' => false,
+											'placeholder'     => __( 'Choose one or more from categories', 'give' ),
+										)
+									);
+								}
+
+								if ( give_is_setting_enabled( give_get_option( 'tags' ) ) ) {
+									echo Give()->html->tags_dropdown(
+										'give_forms_tags[]',
+										0,
+										array(
+											'class'           => 'give_forms_tags',
+											'chosen'          => true,
+											'multiple'        => true,
+											'selected'        => array(),
+											'show_option_all' => false,
+											'placeholder'     => __( 'Choose one or more from tags', 'give' ),
+										)
+									);
+								}
+								?>
 							</form>
 						</td>
 					</tr>
