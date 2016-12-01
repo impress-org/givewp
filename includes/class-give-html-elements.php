@@ -247,10 +247,11 @@ class Give_HTML_Elements {
 	 *
 	 * @param  string $name     Name attribute of the dropdown. Default is 'give_forms_categories'.
 	 * @param  int    $selected Category to select automatically. Default is 0.
+	 * @param  array  $args     Select box options.
 	 *
 	 * @return string           Categories dropdown.
 	 */
-	public function category_dropdown( $name = 'give_forms_categories', $selected = 0 ) {
+	public function category_dropdown( $name = 'give_forms_categories', $selected = 0, $args = array() ) {
 		$categories = get_terms( 'give_forms_category', apply_filters( 'give_forms_category_dropdown', array() ) );
 		$options    = array();
 
@@ -258,12 +259,51 @@ class Give_HTML_Elements {
 			$options[ absint( $category->term_id ) ] = esc_html( $category->name );
 		}
 
-		$output = $this->select( array(
-			'name'             => $name,
-			'selected'         => $selected,
-			'options'          => $options,
-			'show_option_all'  => esc_html__( 'All Categories', 'give' ),
-			'show_option_none' => false
+		$output = $this->select( wp_parse_args(
+			$args,
+			array(
+				'name'             => $name,
+				'selected'         => $selected,
+				'options'          => $options,
+				'show_option_all'  => esc_html__( 'All Categories', 'give' ),
+				'show_option_none' => false
+			)
+		) );
+
+		return $output;
+	}
+
+	/**
+	 * Tags Dropdown
+	 *
+	 * Renders an HTML Dropdown of all the Tags.
+	 *
+	 * @since  1.8
+	 * @access public
+	 *
+	 * @param  string $name     Name attribute of the dropdown. Default is 'give_forms_tags'.
+	 * @param  int    $selected Tag to select automatically. Default is 0.
+	 * @param  array  $args     Select box options.
+	 *
+	 * @return string           Tags dropdown.
+	 */
+	public function tags_dropdown( $name = 'give_forms_tags', $selected = 0, $args = array() ) {
+		$tags    = get_terms( 'give_forms_tag', apply_filters( 'give_forms_tag_dropdown', array() ) );
+		$options = array();
+
+		foreach ( $tags as $tag ) {
+			$options[ absint( $tag->term_id ) ] = esc_html( $tag->name );
+		}
+
+		$output = $this->select( wp_parse_args(
+			$args,
+			array(
+				'name'             => $name,
+				'selected'         => $selected,
+				'options'          => $options,
+				'show_option_all'  => esc_html__( 'All Tags', 'give' ),
+				'show_option_none' => false,
+			)
 		) );
 
 		return $output;
