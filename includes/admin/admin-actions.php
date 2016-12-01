@@ -61,7 +61,6 @@ function give_hide_subscription_notices() {
 			return;
 		}
 
-
 		// Hide notice for 24 hours.
 		set_transient( $transient_key, true, 24 * HOUR_IN_SECONDS );
 
@@ -106,7 +105,7 @@ add_action( 'wp_ajax_give_load_wp_editor', 'give_load_wp_editor' );
  */
 function give_check_saved_settings( $option_value, $option_name ) {
 	// Set default payment gateway.
-	if( ! in_array( $option_value['default_gateway'], $option_value['gateways'] ) ){
+	if ( ! in_array( $option_value['default_gateway'], $option_value['gateways'] ) ) {
 		$option_value['default_gateway'] = current( array_keys( $option_value['gateways'] ) );
 		update_option( $option_name, $option_value );
 	}
