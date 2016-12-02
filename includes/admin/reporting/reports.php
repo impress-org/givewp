@@ -433,9 +433,8 @@ function give_reports_tab_export() {
 									?>
 								</select>
 								<?php
-								$add_break = false;
 								if ( give_is_setting_enabled( give_get_option( 'categories' ) ) ) {
-									echo '<br>' . Give()->html->category_dropdown(
+									echo Give()->html->category_dropdown(
 										'give_forms_categories[]',
 										0,
 										array(
@@ -451,7 +450,7 @@ function give_reports_tab_export() {
 								}
 
 								if ( give_is_setting_enabled( give_get_option( 'tags' ) ) ) {
-									echo '<br>' . Give()->html->tags_dropdown(
+									echo Give()->html->tags_dropdown(
 										'give_forms_tags[]',
 										0,
 										array(
@@ -464,10 +463,6 @@ function give_reports_tab_export() {
 										)
 									);
 									$add_break = true;
-								}
-
-								if( $add_break ) {
-									echo '<br>';
 								}
 
 								wp_nonce_field( 'give_ajax_export', 'give_ajax_export' );

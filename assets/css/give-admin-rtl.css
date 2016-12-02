@@ -1111,7 +1111,8 @@ Export Form
 #give-export-payments .give_forms_categories,
 #give-export-payments .give_forms_tags {
   min-width: 250px;
-  margin: 0 0 10px 0; }
+  margin: 0 0 10px 0;
+  display: block; }
   #give-export-payments .give_forms_categories input,
   #give-export-payments .give_forms_tags input {
     color: #999; }
