@@ -201,8 +201,10 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 	 * @param array $request The Form Data passed into the batch processing.
 	 */
 	public function set_properties( $request ) {
-		$this->start  = isset( $request['start'] ) ? sanitize_text_field( $request['start'] ) : '';
-		$this->end    = isset( $request['end'] ) ? sanitize_text_field( $request['end'] ) : '';
-		$this->status = isset( $request['status'] ) ? sanitize_text_field( $request['status'] ) : 'complete';
+		$this->start      = isset( $request['start'] ) ? sanitize_text_field( $request['start'] ) : '';
+		$this->end        = isset( $request['end'] ) ? sanitize_text_field( $request['end'] ) : '';
+		$this->status     = isset( $request['status'] ) ? sanitize_text_field( $request['status'] ) : 'complete';
+		$this->categories = isset( $request['give_forms_categories'] ) ? give_clean( $request['give_forms_categories'] ) : array();
+		$this->tags       = isset( $request['give_forms_tags'] ) ? give_clean( $request['give_forms_tags'] ) : array();
 	}
 }
