@@ -611,3 +611,23 @@ Tooltips
 		}
 	}
 }
+
+/*-------------------------------------
+Export Form
+-------------------------------------*/
+
+#give-export-payments{
+	.give_forms_categories,
+	.give_forms_tags{
+		input{
+			color: #999;
+		}
+
+		min-width: 250px;
+		margin: 0 0 10px 0;
+	}
+
+	div.chosen-container:first-of-type{
+		margin-top: 10px;
+	}
+}
