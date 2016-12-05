@@ -134,7 +134,7 @@ class Give_MetaBox_Form_Data {
 							'attributes'    => array(
 								'placeholder' => give_format_decimal( '1.00' ),
 								'value'       => give_format_decimal( $price ),
-								'class'       => 'cmb-type-text-small give-money-field',
+								'class'       => 'give-money-field',
 							),
 						),
 						// Donation Levels: Repeatable CMB2 Group
@@ -161,7 +161,7 @@ class Give_MetaBox_Form_Data {
 									'data_type'    => 'price',
 									'attributes'   => array(
 										'placeholder' => give_format_decimal( '1.00' ),
-										'class'       => 'cmb-type-text-small give-money-field',
+										'class'       => 'give-money-field',
 									),
 									'before'       => 'give_format_admin_multilevel_amount',
 								),
@@ -215,7 +215,7 @@ class Give_MetaBox_Form_Data {
 							'attributes'  => array(
 								'placeholder' => give_format_decimal( '1.00' ),
 								'value'       => give_format_decimal( $custom_amount_minimum ),
-								'class'       => 'cmb-type-text-small give-money-field',
+								'class'       => 'give-money-field',
 							),
 						),
 						array(
