@@ -130,7 +130,6 @@ class Give_MetaBox_Form_Data {
 							'description'   => esc_html__( 'This is the set donation amount for this form. If you have a "Custom Amount Minimum" set, make sure it is less than this amount.', 'give' ),
 							'id'            => $prefix . 'set_price',
 							'type'          => 'text_small',
-							'render_row_cb' => 'give_cmb_amount_field_render_row_cb',
 							'data_type'     => 'price',
 							'attributes'    => array(
 								'placeholder' => give_format_decimal( '1.00' ),
