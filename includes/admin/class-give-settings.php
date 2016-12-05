@@ -472,7 +472,7 @@ class Give_Plugin_Settings {
 
 						array(
 							'name'    => esc_html__( 'Featured Image Size', 'give' ),
-							'desc'    => esc_html__( 'The Featured Image is an image that is chosen as the representative image for a donation form. Some themes may have custom featured image sizes. Please select the size you would like to display for your single donation forms\' featured image.', 'give' ),
+							'desc'    => esc_html__( 'The Featured Image is an image that is chosen as the representative image for a donation form. Some themes may have custom featured image sizes. Please select the size you would like to display for your single donation form\'s featured image.', 'give' ),
 							'id'      => 'featured_image_size',
 							'type'    => 'select',
 							'default' => 'large',
