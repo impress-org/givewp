@@ -131,7 +131,7 @@ class Give_MetaBox_Form_Data {
 							'id'            => $prefix . 'set_price',
 							'type'          => 'text_small',
 							'render_row_cb' => 'give_cmb_amount_field_render_row_cb',
-							'data_type'     => 'decimal',
+							'data_type'     => 'price',
 							'attributes'    => array(
 								'placeholder' => give_format_decimal( '1.00' ),
 								'value'       => give_format_decimal( $price ),
@@ -159,9 +159,7 @@ class Give_MetaBox_Form_Data {
 									'name'         => esc_html__( 'Amount', 'give' ),
 									'id'           => $prefix . 'amount',
 									'type'         => 'text_small',
-									'before_field' => give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol  give-money-symbol-before">' . give_currency_symbol() . '</span>' : '',
-									'after_field'  => give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol  give-money-symbol-after">' . give_currency_symbol() . '</span>' : '',
-									'data_type'    => 'decimal',
+									'data_type'    => 'price',
 									'attributes'   => array(
 										'placeholder' => give_format_decimal( '1.00' ),
 										'class'       => 'cmb-type-text-small give-money-field',
@@ -214,7 +212,7 @@ class Give_MetaBox_Form_Data {
 							'description' => esc_html__( 'Enter the minimum custom donation amount.', 'give' ),
 							'id'          => $prefix . 'custom_amount_minimum',
 							'type'        => 'text_small',
-							'data_type'   => 'decimal',
+							'data_type'   => 'price',
 							'attributes'  => array(
 								'placeholder' => give_format_decimal( '1.00' ),
 								'value'       => give_format_decimal( $custom_amount_minimum ),
