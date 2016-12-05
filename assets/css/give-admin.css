@@ -1007,7 +1007,7 @@ Tooltips
     padding: 1em 20px 1em 162px !important;
     margin: 0;
     border-bottom: 1px solid #eee; }
-    #give-metabox-form-data .give_options_panel .give-field-wrap > label, #give-metabox-form-data .give_options_panel .give-field-wrap > legend {
+    #give-metabox-form-data .give_options_panel .give-field-wrap > label, #give-metabox-form-data .give_options_panel .give-field-wrap > span.give-field-label {
       float: left;
       width: 150px;
       padding: 0;
