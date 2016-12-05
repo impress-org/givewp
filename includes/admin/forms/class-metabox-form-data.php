@@ -256,11 +256,11 @@ class Give_MetaBox_Form_Data {
 						'description' => esc_html__( 'This is the monetary goal amount you want to reach for this form.', 'give' ),
 						'id'          => $prefix . 'set_goal',
 						'type'        => 'text_small',
-						'data_type'   => 'decimal',
+						'data_type'   => 'price',
 						'attributes'  => array(
 							'placeholder' => give_format_decimal( '0.00' ),
 							'value'       => give_format_decimal( $goal ),
-							'class'       => 'cmb-type-text-small give-money-field',
+							'class'       => 'give-money-field',
 						),
 					),
 
