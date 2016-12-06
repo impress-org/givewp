@@ -1034,17 +1034,11 @@ function give_enabled_gateways_callback( $field_arr, $saved_values = array() ) {
  * @return void
  */
 function give_default_gateway_callback( $field_arr, $saved_value ) {
-	global $post;
-
 	$id                = $field_arr['id'];
 	$gateways          = give_get_enabled_payment_gateways();
+	$saved_value       = give_get_default_gateway( null );
 
 	echo '<select class="give-select" name="' . $id . '" id="' . $id . '">';
-
-		//Add a field to the Give Form admin single post view of this field
-		if ( is_object( $post ) &&  'give_forms' === $post->post_type ) {
-			echo '<option value="global">' . esc_html__( 'Global Default', 'give' ) . '</option>';
-		}
 
 		foreach ( $gateways as $key => $option ) :
 			$selected = isset( $saved_value ) ? selected( $key, $saved_value, false ) : '';
