@@ -91,23 +91,3 @@ function give_load_wp_editor() {
 }
 
 add_action( 'wp_ajax_give_load_wp_editor', 'give_load_wp_editor' );
-
-
-/**
- * Check saved core settings.
- * Note: some setting's value are depend upon other setting's value, To prevent any bug check them properly
- *  1. default_gateway: it's value will be auto set if not match to any active payment gateway value.
- *
- * @since 1.8
- *
- * @param $option_value
- * @param $option_name
- */
-function give_check_saved_settings( $option_value, $option_name ) {
-	// Set default payment gateway.
-	if ( ! array_key_exists( $option_value['default_gateway'], $option_value['gateways'] ) ) {
-		$option_value['default_gateway'] = current( array_keys( $option_value['gateways'] ) );
-		update_option( $option_name, $option_value );
-	}
-}
-add_action( 'give_save_settings_give_settings', 'give_check_saved_settings', 10, 2 );
