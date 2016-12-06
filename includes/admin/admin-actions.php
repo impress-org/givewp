@@ -61,7 +61,6 @@ function give_hide_subscription_notices() {
 			return;
 		}
 
-
 		// Hide notice for 24 hours.
 		set_transient( $transient_key, true, 24 * HOUR_IN_SECONDS );
 

@@ -799,7 +799,6 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
   margin-left: -4px; }
 
 .give-money-symbol-after {
-  border-right: 0;
   margin-right: -1px; }
 
 .give_options_panel input[type="text"] {
@@ -1008,7 +1007,7 @@ Tooltips
     padding: 1em 162px 1em 20px !important;
     margin: 0;
     border-bottom: 1px solid #eee; }
-    #give-metabox-form-data .give_options_panel .give-field-wrap > label, #give-metabox-form-data .give_options_panel .give-field-wrap > legend {
+    #give-metabox-form-data .give_options_panel .give-field-wrap > label, #give-metabox-form-data .give_options_panel .give-field-wrap > span.give-field-label {
       float: right;
       width: 150px;
       padding: 0;
