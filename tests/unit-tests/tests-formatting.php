@@ -14,6 +14,67 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 
 
 	/**
+	 * Test give_date_format.
+	 *
+	 * @since        1.8
+	 *
+	 * @cover        give_date_format
+	 * @dataProvider give_date_format_provider
+	 *
+	 * @param string $date_context
+	 * @param string $expected
+	 * @param string $message
+	 */
+	function test_give_date_format( $date_context, $expected, $message ) {
+		add_filter( 'give_date_format_contexts', array( $this, 'add_new_date_contexts' ) );
+		$output = give_date_format( $date_context );
+		remove_filter( 'give_date_format_contexts', array( $this, 'add_new_date_contexts' ) );
+
+		$this->assertEquals(
+			$expected,
+			$output,
+			$message
+		);
+	}
+
+
+	/**
+	 * Add date formats.
+	 *
+	 * @since 1.8
+	 *
+	 * @return array
+	 */
+	function add_new_date_contexts() {
+		return array(
+			'checkout' => 'F j, Y',
+			'report'   => 'Y-m-d',
+			'email'    => 'm/d/Y',
+		);
+	}
+
+
+	/**
+	 * Data provider for give_date_format function.
+	 *
+	 * @since 1.8
+	 *
+	 * @return array
+	 */
+	public function give_date_format_provider() {
+		// Default date format.
+		$wp_default_date_format = get_option( 'date_format' );
+
+		return array(
+			array( '', $wp_default_date_format, "Date format should be equal to {$wp_default_date_format}" ),
+			array( 'checkout', 'F j, Y', "Date format should be equal to {$wp_default_date_format}" ),
+			array( 'report', 'Y-m-d', "Date format should be equal to {$wp_default_date_format}" ),
+			array( 'email', 'm/d/Y', "Date format should be equal to {$wp_default_date_format}" ),
+		);
+	}
+
+
+	/**
 	 * Test give_get_cache_key function.
 	 *
 	 * @since 1.8
