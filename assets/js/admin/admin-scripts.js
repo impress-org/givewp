@@ -1395,6 +1395,21 @@ jQuery.noConflict();
 						}
 
 						break;
+
+					case 'resend-receipt':
+						// Check if admin did not select any payment.
+						if( ! parseInt( $payments ) ) {
+							alert( give_vars.bulk_action.resend_receipt.zero_recipient_selected );
+							return false;
+						}
+
+						// Ask admin before processing.
+						confirm_action_notice = ( 1 < $payments ) ? give_vars.bulk_action.resend_receipt.resend_receipts : give_vars.bulk_action.resend_receipt.resend_receipt;
+						if( ! window.confirm( confirm_action_notice.replace( '{payment_count}', $payments ) ) ) {
+							return false;
+						}
+
+						break;
 				}
 
 				return true;
