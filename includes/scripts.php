@@ -311,9 +311,11 @@ function give_load_admin_scripts( $hook ) {
 		'matched_success_failure_page'   => __( 'You cannot set the success and failed pages to the same page', 'give' ),
 		'dismiss_notice_text'            => __( 'Dismiss this notice.', 'give' ),
 		'bulk_action' => array(
-			'zero_payment_selected' => __( 'You must choose at least one or more payments to delete.', 'give' ),
-			'delete_payment'        => __( 'Are you sure you want to permanently delete this donation?', 'give' ),
-			'delete_payments'       => __( 'Are you sure you want to permanently delete the selected {payment_count} donations?', 'give' ),
+			'delete' => array(
+				'zero_payment_selected' => __( 'You must choose at least one or more payments to delete.', 'give' ),
+				'delete_payment'        => __( 'Are you sure you want to permanently delete this donation?', 'give' ),
+				'delete_payments'       => __( 'Are you sure you want to permanently delete the selected {payment_count} donations?', 'give' ),
+			),
 		),
 	) );
 

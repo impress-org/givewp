@@ -1384,12 +1384,12 @@ jQuery.noConflict();
 					case 'delete':
 						// Check if admin did not select any payment.
 						if( ! parseInt( $payments ) ) {
-							alert( give_vars.bulk_action.zero_payment_selected );
+							alert( give_vars.bulk_action.delete.zero_payment_selected );
 							return false;
 						}
 
 						// Ask admin before processing.
-						confirm_action_notice = ( 1 < $payments ) ? give_vars.bulk_action.delete_payments : give_vars.bulk_action.delete_payment;
+						confirm_action_notice = ( 1 < $payments ) ? give_vars.bulk_action.delete.delete_payments : give_vars.bulk_action.delete.delete_payment;
 						if( ! window.confirm( confirm_action_notice.replace( '{payment_count}', $payments ) ) ) {
 							return false;
 						}
