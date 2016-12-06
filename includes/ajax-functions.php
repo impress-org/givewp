@@ -432,6 +432,15 @@ function give_check_for_form_price_variations_html() {
 		// Payment object.
 		$payment = new Give_Payment( $payment_id );
 
+
+		$prices_atts = '';
+		if( $variable_prices = give_get_variable_prices( $form_id ) ) {
+			foreach ( $variable_prices as $variable_price ) {
+				$prices_atts[$variable_price['_give_id']['level_id']] = give_format_amount( $variable_price['_give_amount'] );
+			}
+		}
+
+
 		// Payment meta.
 		$payment_meta = $payment->get_meta();
 
@@ -441,6 +450,7 @@ function give_check_for_form_price_variations_html() {
 			'name'            => 'give-variable-price',
 			'chosen'          => true,
 			'show_option_all' => '',
+			'select_atts'     => 'data-prices=' . esc_attr( json_encode( $prices_atts ) ),
 			'selected'        => $payment_meta['price_id'],
 		);
 
