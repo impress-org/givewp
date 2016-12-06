@@ -446,12 +446,13 @@ function give_check_for_form_price_variations_html() {
 
 		// Variable price dropdown options.
 		$variable_price_dropdown_option = array(
-			'id'              => $form_id,
-			'name'            => 'give-variable-price',
-			'chosen'          => true,
-			'show_option_all' => '',
-			'select_atts'     => 'data-prices=' . esc_attr( json_encode( $prices_atts ) ),
-			'selected'        => $payment_meta['price_id'],
+			'id'               => $form_id,
+			'name'             => 'give-variable-price',
+			'chosen'           => true,
+			'show_option_all'  => '',
+			'show_option_none' => '',
+			'select_atts'      => 'data-prices=' . esc_attr( json_encode( $prices_atts ) ),
+			'selected'         => $payment_meta['price_id'],
 		);
 
 		// Render variable prices select tag html.

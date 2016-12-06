@@ -396,12 +396,13 @@ $payment_mode   = $payment->mode;
 														}
 														// Variable price dropdown options.
 														$variable_price_dropdown_option = array(
-															'id'              => $payment_meta['form_id'],
-															'name'            => 'give-variable-price',
-															'chosen'          => true,
-															'show_option_all' => '',
-															'select_atts'     => 'data-prices=' . esc_attr( json_encode( $prices_atts ) ),
-															'selected'        => $payment_meta['price_id'],
+															'id'               => $payment_meta['form_id'],
+															'name'             => 'give-variable-price',
+															'chosen'           => true,
+															'show_option_all'  => '',
+															'show_option_none' => '',
+															'select_atts'      => 'data-prices=' . esc_attr( json_encode( $prices_atts ) ),
+															'selected'         => $payment_meta['price_id'],
 														);
 														// Render variable prices select tag html.
 														give_get_form_variable_price_dropdown( $variable_price_dropdown_option, true );
