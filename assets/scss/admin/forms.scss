@@ -138,7 +138,7 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
 }
 
 .give-money-symbol-after {
-	border-left: 0;
+	//border-left: 0;
 	margin-left: -1px;
 }
 
@@ -454,7 +454,7 @@ Tooltips
 			margin: 0;
 			border-bottom: 1px solid #eee;
 
-			> label, > legend {
+			> label, > span.give-field-label {
 				float: left;
 				width: 150px;
 				padding: 0;
