@@ -1466,7 +1466,7 @@ add_action( 'give_payment_mode_select', 'give_payment_mode_select' );
  *
  * @param  int $form_id The form ID.
  *
- * @return void|bool
+ * @return bool
  */
 function give_terms_agreement( $form_id ) {
 	$form_option = get_post_meta( $form_id, '_give_terms_option', true );
