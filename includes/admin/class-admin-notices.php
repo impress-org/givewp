@@ -235,12 +235,18 @@ class Give_Notices {
 			&& isset( $_GET['payment'] )
 			&& ! empty( $_GET['payment'] )
 		) {
+			$payment_count = isset( $_GET['payment'] ) ? count( $_GET['payment'] ) : 0;
+
 			switch ( $_GET['action'] ) {
 				case 'delete':
-					$payment_count = isset( $_GET['payment'] ) ? count( $_GET['payment'] ) : 0;
-
 					if ( $payment_count ) {
 						$this->notices['updated']['bulk_action_delete'] = sprintf( _n( 'Successfully deleted only one transaction.', 'Successfully deleted %d number of transactions.', $payment_count, 'give' ), $payment_count );
+					}
+					break;
+
+				case 'resend-receipt':
+					if ( $payment_count ) {
+						$this->notices['updated']['bulk_action_resend_receipt'] = sprintf( _n( 'Successfully send email receipt to only one recipient.', 'Successfully send email receipts to %d recipients.', $payment_count, 'give' ), $payment_count );
 					}
 					break;
 			}
