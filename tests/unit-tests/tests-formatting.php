@@ -15,7 +15,9 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 
 	/**
 	 * Test give_get_cache_key function.
+	 *
 	 * @since 1.8
+	 *
 	 * @cover give_get_cache_key
 	 */
 	function test_give_get_cache_key() {
@@ -41,6 +43,7 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 * has coverage for sanitized_text_field().
 	 *
 	 * @since 1.8
+	 * @cover give_clean
 	 */
 	public function test_give_clean() {
 		$this->assertEquals( 'cleaned', give_clean( '<script>alert();</script>cleaned' ) );
@@ -48,7 +51,7 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 
 
 	/**
-	 * Check formatting give_let_to_num function.
+	 * Test give_let_to_num function.
 	 *
 	 * @since        1.8
 	 *
