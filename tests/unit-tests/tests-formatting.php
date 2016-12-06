@@ -12,9 +12,21 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 		parent::tearDown();
 	}
 
+	/**
+	 * Test give_clean() - note this is a basic type test as WP core already.
+	 * has coverage for sanitized_text_field().
+	 *
+	 * @since 1.8
+	 */
+	public function test_wc_clean() {
+		$this->assertEquals( 'cleaned', give_clean( '<script>alert();</script>cleaned' ) );
+	}
+
 
 	/**
 	 * Check formatting give_let_to_num function.
+	 *
+	 * @since        1.8
 	 *
 	 * @cover        give_let_to_num
 	 * @dataProvider give_let_to_num_provider
