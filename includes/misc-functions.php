@@ -1001,3 +1001,30 @@ function give_get_plugins() {
 
 	return $plugins;
 }
+
+
+/**
+ * Check if terms enabled or not for form.
+ *
+ * @since 1.8
+ *
+ * @param $form_id
+ *
+ * @return bool
+ */
+function give_is_terms_enabled( $form_id ) {
+	$form_option = get_post_meta( $form_id, '_give_terms_option', true );
+
+	if (
+		give_is_setting_enabled( $form_option, 'global' )
+		&& give_is_setting_enabled( give_get_option( 'terms' ) )
+	) {
+		return true;
+
+	} elseif ( give_is_setting_enabled( $form_option ) ) {
+		return true;
+
+	} else {
+		return false;
+	}
+}
