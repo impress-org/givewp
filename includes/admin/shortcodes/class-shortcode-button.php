@@ -6,12 +6,15 @@
  * @subpackage  Admin
  * @author      Paul Ryley
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @version     1.0
  * @since       1.3.0
  */
 
-defined( 'ABSPATH' ) or exit;
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Class Give_Shortcode_Button
@@ -116,17 +119,19 @@ final class Give_Shortcode_Button {
 	 */
 	public function shortcode_button() {
 
-		global $pagenow, $wp_version;
+		$screen = get_current_screen();
 
 		$shortcode_button_pages = apply_filters( 'give_shortcode_button_pages', array(
 			'post.php',
 			'page.php',
 			'post-new.php',
-			'post-edit.php'
+			'post-edit.php',
+			'edit.php',
+			'edit.php?post_type=page',
 		) );
 
 		// Only run in admin post/page creation and edit screens
-		if ( in_array( $pagenow, $shortcode_button_pages )
+		if ( in_array( $screen->parent_file, $shortcode_button_pages )
 		     && apply_filters( 'give_shortcode_button_condition', true )
 		     && ! empty( self::$shortcodes )
 		) {
@@ -154,7 +159,7 @@ final class Give_Shortcode_Button {
 			if ( ! empty( $shortcodes ) ) {
 
 				// check current WP version
-				$img = ( version_compare( $wp_version, '3.5', '<' ) )
+				$img = ( version_compare( get_bloginfo( 'version' ), '3.5', '<' ) )
 					? '<img src="' . GIVE_PLUGIN_URL . 'assets/images/give-media.png" />'
 					: '<span class="wp-media-buttons-icon" id="give-media-button" style="background-image: url(' . give_svg_icons( 'give_grey' ) . ');"></span>';
 

@@ -3,8 +3,10 @@
 // uncomment this line for testing
 //set_site_transient( 'update_plugins', null );
 
-// Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Allows plugins to use their own update API.
@@ -21,13 +23,9 @@ class EDD_SL_Plugin_Updater {
     /**
      * Class constructor.
      *
-     * @uses plugin_basename()
-     * @uses hook()
-     *
      * @param string  $_api_url     The URL pointing to the custom API endpoint.
      * @param string  $_plugin_file Path to the plugin file.
      * @param array   $_api_data    Optional data to send with API calls.
-     * @return void
      */
     function __construct( $_api_url, $_plugin_file, $_api_data = null ) {
         $this->api_url  = trailingslashit( $_api_url );
@@ -43,8 +41,6 @@ class EDD_SL_Plugin_Updater {
 
     /**
      * Set up WordPress filters to hook into WP's update process.
-     *
-     * @uses add_filter()
      *
      * @return void
      */
@@ -65,19 +61,19 @@ class EDD_SL_Plugin_Updater {
      * See wp-includes/update.php line 121 for the original wp_update_plugins() function.
      *
      * @uses api_request()
-     *
+	 *
      * @param array   $_transient_data Update array build by WordPress.
      * @return array Modified update array with custom plugin data.
      */
     function check_update( $_transient_data ) {
 
-        global $pagenow;
+        $screen = get_current_screen();
 
         if( ! is_object( $_transient_data ) ) {
             $_transient_data = new stdClass;
         }
 
-        if( 'plugins.php' == $pagenow && is_multisite() ) {
+        if( is_object($screen) && 'plugins.php' == $screen->parent_file && is_multisite() ) {
             return $_transient_data;
         }
 
@@ -178,7 +174,7 @@ class EDD_SL_Plugin_Updater {
             if ( empty( $version_info->download_link ) ) {
                 printf(
 					/* translators: 1: name 2: changelog URL 3: version */
-                    __( 'There is a new version of %1$s available. <a target="_blank" class="thickbox" href="%2$s">View version %3$s details</a>.', 'edd' ),
+                    __( 'There is a new version of %1$s available. <a target="_blank" class="thickbox" href="%2$s">View version %3$s details</a>.', 'give' ),
                     esc_html( $version_info->name ),
                     esc_url( $changelog_link ),
                     esc_html( $version_info->new_version )
@@ -186,7 +182,7 @@ class EDD_SL_Plugin_Updater {
             } else {
                 printf(
 					/* translators: 1: name 2: changelog URL 3: version 4: update URL */
-                    __( 'There is a new version of %1$s available. <a target="_blank" class="thickbox" href="%2$s">View version %3$s details</a> or <a href="%4$s">update now</a>.', 'edd' ),
+                    __( 'There is a new version of %1$s available. <a target="_blank" class="thickbox" href="%2$s">View version %3$s details</a> or <a href="%4$s">update now</a>.', 'give' ),
                     esc_html( $version_info->name ),
                     esc_url( $changelog_link ),
                     esc_html( $version_info->new_version ),
@@ -271,15 +267,15 @@ class EDD_SL_Plugin_Updater {
      */
     private function api_request( $_action, $_data ) {
 
-        global $wp_version;
-
         $data = array_merge( $this->api_data, $_data );
 
-        if ( $data['slug'] != $this->slug )
+        if ( $data['slug'] != $this->slug ) {
             return;
+		}
 
-        if ( empty( $data['license'] ) )
+        if ( empty( $data['license'] ) ) {
             return;
+		}
 
         if( $this->api_url == home_url() ) {
             return false; // Don't allow a plugin to ping itself
@@ -326,7 +322,7 @@ class EDD_SL_Plugin_Updater {
         }
 
         if( ! current_user_can( 'update_plugins' ) ) {
-            wp_die( esc_html__( 'You do not have permission to install plugin updates.', 'edd' ), esc_html__( 'Error', 'edd' ), array( 'response' => 403 ) );
+            wp_die( esc_html__( 'You do not have permission to install plugin updates.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
         }
 
         $response = $this->api_request( 'plugin_latest_version', array( 'slug' => $_REQUEST['slug'] ) );

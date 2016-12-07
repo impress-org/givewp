@@ -5,11 +5,11 @@
  * @package     Give
  * @subpackage  Admin/Add-ons
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -25,8 +25,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_add_ons_page() {
 	ob_start(); ?>
 	<div class="wrap" id="give-add-ons">
-		<h1><?php esc_html_e( 'Give Add-ons', 'give' ); ?>
-			&nbsp;&mdash;&nbsp;<a href="https://givewp.com/addons/" class="button-primary give-view-addons-all" title="<?php esc_attr_e( 'Browse All Add-ons', 'give' ); ?>" target="_blank"><?php esc_html_e( 'View All Add-ons', 'give' ); ?>
+		<h1><?php echo get_admin_page_title(); ?>
+			&nbsp;&mdash;&nbsp;<a href="https://givewp.com/addons/" class="button-primary give-view-addons-all" target="_blank"><?php esc_html_e( 'View All Add-ons', 'give' ); ?>
 				<span class="dashicons dashicons-external"></span></a>
 		</h1>
 

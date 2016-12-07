@@ -5,11 +5,11 @@
  * @package     Give
  * @subpackage  Functions
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string $country The two letter country code for the shop's base country
  */
 function give_get_country() {
-	global $give_options;
+	$give_options = give_get_settings();
 	$country = isset( $give_options['base_country'] ) ? $give_options['base_country'] : 'US';
 
 	return apply_filters( 'give_give_country', $country );
@@ -35,7 +35,7 @@ function give_get_country() {
  * @return string $state The shop's base state name
  */
 function give_get_state() {
-	global $give_options;
+	$give_options = give_get_settings();
 	$state = isset( $give_options['base_state'] ) ? $give_options['base_state'] : false;
 
 	return apply_filters( 'give_give_state', $state );
@@ -51,7 +51,6 @@ function give_get_state() {
  * @return mixed|void  A list of states for the shop's base country
  */
 function give_get_states( $country = null ) {
-	global $give_options;
 
 	if ( empty( $country ) ) {
 		$country = give_get_country();
@@ -919,7 +918,7 @@ function give_get_spain_states_list() {
 	$states = array(
 		''   => '',
 		'C'  => esc_html__( 'A Coru&ntilde;a', 'give' ),
-		'VI' => esc_html__( 'Araba', 'give' ),
+		'VI' => esc_html__( 'Álava', 'give' ),
 		'AB' => esc_html__( 'Albacete', 'give' ),
 		'A'  => esc_html__( 'Alicante', 'give' ),
 		'AL' => esc_html__( 'Almer&iacute;a', 'give' ),

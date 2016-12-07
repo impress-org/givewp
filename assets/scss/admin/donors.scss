@@ -7,12 +7,20 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 
-/* Donors Listing Page Style
--------------------------------------------------------------- */
+//--------------------------------------------------------------
+// Donors Listing Page Style
+//--------------------------------------------------------------
 .give_forms_page_give-donors {
   .wrap > h2 {
 	margin-bottom: 15px;
   }
+
+  .nav-tab-wrapper .dashicons {
+    position: relative;
+    top:2px;
+    margin: 0 3px 0 0;
+  }
+
   #give-donors-filter {
 	position: relative;
 	p.search-box {
@@ -27,62 +35,14 @@
   }
 }
 
-/* Donor Styles
--------------------------------------------------------------- */
-
-#customer-tab-wrapper {
-
-}
-
-#customer-tab-wrapper-list {
-
-  border-bottom: 1px solid #ccc;
-  padding: 5px 15px 0 10px;
-
-  li {
-
-	display: inline-block;
-	margin: 0 0 -1px;
-	padding: 0;
-
-	a {
-	  padding: 6px 10px;
-	  font-weight: bold;
-	  font-size: 15px;
-	  line-height: 24px;
-	  border: 1px solid #ccc;
-	  border-bottom: none;
-	  background: #e4e4e4;
-	  color: #555;
-	  display: inline-block;
-	  text-decoration: none;
-	  margin: 0;
-	}
-
-  }
-
-  .active {
-	padding: 6px 10px;
-	font-weight: bold;
-	font-size: 15px;
-	line-height: 24px;
-	border: 1px solid #ccc;
-	border-bottom: 1px solid #f1f1f1;
-	background: #f1f1f1;
-	color: #000;
-  }
-
-  .dashicons {
-	font-size: 20px;
-	line-height: 26px;
-  }
-
-}
-
+//--------------------------------------------------------------
+// Donor Styles
+//--------------------------------------------------------------
 #give-customer-card-wrapper {
   margin-left: -1px;
   z-index: 2;
   min-height: 200px;
+
 
   input {
 	font-weight: normal;
@@ -151,20 +111,6 @@
 
 }
 
-.rtl #give-customer-card-wrapper {
-
-  .avatar-wrap {
-    padding: 0 0 15px 15px;
-    float: right;
-  }
-
-  .customer-id {
-    margin-right: 0;
-    margin-left: 10px;
-  }
-
-}
-
 .customer-main-wrapper {
   clear: both;
   margin: 0 0 20px;
@@ -199,15 +145,6 @@
   }
 
 }
-.rtl #donor-summary {
-
-  &:after {
-	left: 10px;
-    right: initial;
-  }
-
-}
-
 #give-customer-card-wrapper .customer-address-wrapper {
   width: 202px;
 
@@ -299,7 +236,10 @@
   text-align: center;
 }
 
-#customer-tables-wrapper .donations tr > th:first-child, #customer-tables-wrapper .donations tr > td:first-child {
+#customer-tables-wrapper .donations tr > th:first-child,
+#customer-tables-wrapper .donations tr > td:first-child,
+#customer-tables-wrapper .emails tr > th:first-child,
+#customer-tables-wrapper .emails tr > td:first-child {
   text-align: left;
 }
 

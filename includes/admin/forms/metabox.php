@@ -5,11 +5,11 @@
  * @package     Give
  * @subpackage  Admin/Forms
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -217,7 +217,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 					'default'     => 'amount',
 					'row_classes' => 'give-subfield',
 					'options'     => array(
-						'amount'     => esc_html__( 'Amount ', 'give' ),
+						'amount'     => esc_html__( 'Amount', 'give' ),
 						'percentage' => esc_html__( 'Percentage', 'give' ),
 					),
 				),
@@ -269,13 +269,13 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 				//Donation Option
 				array(
 					'name'        => esc_html__( 'Display Content', 'give' ),
-					'description' => esc_html__( 'Do you want to display content? If you select "Yes" a WYSIWYG editor will appear which you will be able to enter content to display above or below the form.', 'give' ),
+					'description' => esc_html__( 'Do you want to display content? If you choose to display content, a WYSIWYG editor will appear which you will be able to enter content.', 'give' ),
 					'id'          => $prefix . 'content_option',
 					'type'        => 'select',
 					'options'     => apply_filters( 'give_forms_content_options_select', array(
-							'none'           => esc_html__( 'No content', 'give' ),
-							'give_pre_form'  => esc_html__( 'Yes, display content ABOVE the form fields', 'give' ),
-							'give_post_form' => esc_html__( 'Yes, display content BELOW the form fields', 'give' ),
+							'none'           => esc_html__( 'No Content', 'give' ),
+							'give_pre_form'  => esc_html__( 'Display content ABOVE the fields', 'give' ),
+							'give_post_form' => esc_html__( 'Display content BELOW the fields', 'give' ),
 						)
 					),
 					'default'     => 'none',
@@ -305,7 +305,7 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 			'fields'       => apply_filters( 'give_forms_display_options_metabox_fields', array(
 					array(
 						'name'    => esc_html__( 'Payment Fields', 'give' ),
-						'desc'    => esc_html__( 'How would you like to display payment information for this form? The "Show on Page" option will display the entire form when the page loads. "Reveal Upon Click" places a button below the donation fields and upon click slides into view the rest of the fields. "Modal Window Upon Click" is a similar option, rather than sliding into view the fields they will open in a shadow box or "modal" window.', 'give' ),
+						'desc'    => esc_html__( 'How would you like to display donation information for this form? The "Show on Page" option will display the entire form when the page loads. "Reveal Upon Click" places a button below the donation fields and upon click slides into view the rest of the fields. "Modal Window Upon Click" is a similar option, rather than sliding into view the fields they will open in a shadow box or "modal" window.', 'give' ),
 						'id'      => $prefix . 'payment_display',
 						'type'    => 'select',
 						'options' => array(
@@ -507,7 +507,7 @@ add_action( 'cmb2_render_levels_id', 'give_cmb_render_levels_id', 10, 5 );
  */
 function give_cmb_give_default_radio_inline( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
 	echo '<input type="radio" class="cmb2-option donation-level-radio" name="' . $field_object->args['_name'] . '" id="' . $field_object->args['id'] . '" value="default" ' . checked( 'default', $escaped_value, false ) . '>';
-	echo '<label for="' . $field_object->args['id'] . '">Default</label>';
+	echo '<label for="' . $field_object->args['id'] . '">' . esc_html__( 'Default', 'give' ) . '</label>';
 
 }
 
@@ -531,7 +531,7 @@ function give_add_shortcode_to_publish_metabox() {
 	if ( 'give_forms' === $post->post_type ) {
 		//Shortcode column with select all input
 		$shortcode = htmlentities( '[give_form id="' . $post->ID . '"]' );
-		echo '<div class="shortcode-wrap box-sizing"><label>' . esc_html__( 'Give Form Shortcode:', 'give' ) . '</label><input onClick="this.setSelectionRange(0, this.value.length)" type="text" class="shortcode-input" readonly value="' . $shortcode . '"></div>';
+		echo '<div class="shortcode-wrap box-sizing"><label for="shortcode-input">' . esc_html__( 'Give Form Shortcode:', 'give' ) . '</label><input onClick="this.setSelectionRange(0, this.value.length)" type="text" name="shortcode-input" id="shortcode-input" class="shortcode-input" readonly value="' . $shortcode . '"></div>';
 
 	}
 

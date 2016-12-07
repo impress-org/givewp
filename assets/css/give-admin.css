@@ -965,13 +965,6 @@ Tooltips
     background-color: #FFF;
     padding: 15px 20px; }
 
-.rtl .type-download {
-  float: right;
-  margin-right: 0 !important;
-  margin-left: 1em !important; }
-  .rtl .type-download .addon-footer-wrap {
-    right: 0; }
-
 .give-view-addons-all span.dashicons, .type-download span.dashicons {
   width: 16px;
   height: 16px;
@@ -980,10 +973,6 @@ Tooltips
 
 .give-view-addons-all span.dashicons {
   margin-left: 3px; }
-
-.rtl .give-view-addons-all span.dashicons {
-  margin-left: 0;
-  margin-right: 3px; }
 
 /**
  * Give Reports SCSS
@@ -1184,10 +1173,6 @@ body.give_forms_page_give-reports table.export-options-table span#give-start-wra
 .gateways-report-tablenav .actions.bulkactions {
   padding-right: 0; }
 
-.widefat .column-name, .widefat .column-label {
-  font-size: 14px;
-  font-weight: bold; }
-
 table.give-table td {
   vertical-align: middle; }
 
@@ -1221,24 +1206,45 @@ table.give-table td.row-title p {
  * @subpackage  SCSS/Admin
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
-*/
+ */
 .welcome-h1 {
   display: inline-block;
   margin-right: 15px !important; }
 
-.feature-section span.dashicons {
-  width: 16px;
-  height: 16px;
+.about-wrap h3 {
+  margin: 1.5em 0 .6em; }
+
+.give-badge {
+  padding-top: 150px;
+  height: 52px;
+  width: 185px;
+  color: #FFF;
+  font-weight: bold;
   font-size: 14px;
-  margin: 6px 0 0 0; }
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.8);
+  margin: 0 -5px;
+  position: absolute;
+  top: 0;
+  right: 0; }
 
-.feature-section .feature-section-item {
-  width: 48%;
-  float: left; }
+.introduction {
+  padding: 0 0 20px;
+  margin: 0 0 20px; }
 
-.feature-section div.last-feature {
-  margin-right: 0;
-  margin-left: 4%; }
+.feature-section {
+  margin-top: 40px; }
+  .feature-section span.dashicons {
+    width: 16px;
+    height: 16px;
+    font-size: 14px;
+    margin: 6px 0 0 0; }
+  .feature-section .feature-section-item {
+    width: 48%;
+    float: left; }
+  .feature-section div.last-feature {
+    margin-right: 0;
+    margin-left: 4%; }
 
 [class^="dashboard_page_give-"] .about-text, [class*="dashboard_page_give-"] .about-text {
   min-height: 0; }
@@ -1402,6 +1408,7 @@ Settings
   white-space: pre;
   overflow: auto;
   display: block;
+  /*rtl:ignore*/
   direction: ltr; }
 
 #give-download-sysinfo {
@@ -1464,8 +1471,81 @@ a.give-delete {
   background-repeat: no-repeat;
   background-position: 98.5% center;
   outline: none;
-  background-size: 16px; }
+  background-size: 16px;
+  width: 100%; }
 
+/* Addon grid design */
+#licenses .cmb2-wrap {
+  margin-top: 20px; }
+  #licenses .cmb2-wrap .cmb-row {
+    display: block;
+    position: relative;
+    float: left;
+    width: 30.5%;
+    margin-right: 1% !important;
+    margin-bottom: 10px !important;
+    min-height: 180px; }
+  #licenses .cmb2-wrap .cmb-row > div {
+    display: block;
+    width: auto;
+    padding: 0;
+    float: none; }
+  #licenses .cmb2-wrap .cmb-th label {
+    margin: 0 0 0 10px;
+    padding: 10px 0; }
+  #licenses .cmb2-wrap .cmb-td > div {
+    margin: 0 10px; }
+    #licenses .cmb2-wrap .cmb-td > div input[type="text"] {
+      width: 100%; }
+    #licenses .cmb2-wrap .cmb-td > div input[type="submit"] {
+      margin: 0;
+      position: absolute;
+      top: 2px;
+      right: 10px; }
+  #licenses .cmb2-wrap .give-license-notice {
+    background: #FFF;
+    border-left: 4px solid #e24e4e;
+    -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+    margin: 5px 0 2px;
+    padding: 1px 12px; }
+    #licenses .cmb2-wrap .give-license-notice p {
+      padding: 10px 0;
+      margin: 0; }
+    #licenses .cmb2-wrap .give-license-notice a {
+      color: #444;
+      cursor: pointer; }
+    #licenses .cmb2-wrap .give-license-notice a:hover {
+      text-decoration: none; }
+  #licenses .cmb2-wrap .give-license-notice.give-license-expires-soon {
+    border-color: #00a0d2; }
+  #licenses .cmb2-wrap .give-license-notice.give-license-expired {
+    border-color: #e24e4e; }
+  #licenses .cmb2-wrap .give-license-notice.give-license-error,
+  #licenses .cmb2-wrap .give-license-notice.give-license-no_activations_left,
+  #licenses .cmb2-wrap .give-license-notice.give-license-missing,
+  #licenses .cmb2-wrap .give-license-notice.give-license-invalid,
+  #licenses .cmb2-wrap .give-license-notice.give-license-site_inactive,
+  #licenses .cmb2-wrap .give-license-notice.give-license-item_name_mismatch {
+    border-color: #ffebcd; }
+  #licenses .cmb2-wrap .give-license-notice.give-license-lifetime-notice, #licenses .cmb2-wrap .give-license-notice.give-license-expiration-date {
+    border-color: #46b450; }
+  #licenses .cmb2-wrap .give-license-notice.give-license-expires-soon a:hover,
+  #licenses .cmb2-wrap .give-license-notice.give-license-expired a:hover {
+    text-decoration: none; }
+
+/* Responsive fixes: Addon grid design */
+@media screen and (max-width: 1100px) {
+  #licenses .cmb2-wrap .cmb-row {
+    width: 45%;
+    min-height: 230px; } }
+
+@media screen and (max-width: 600px) {
+  #licenses .cmb2-wrap .cmb-row {
+    width: 100%;
+    max-width: 320px; } }
+
+/* Tables */
 .give-table thead th {
   padding: 8px 10px !important; }
 
@@ -1658,10 +1738,6 @@ Responsiveness
 .give-admin-box .right {
   float: right; }
 
-.rtl .give-admin-box .right {
-  float: left;
-  margin-left: 10px; }
-
 #give-order-update .inside,
 #give-order-details .inside {
   margin: 0;
@@ -1734,9 +1810,6 @@ Responsiveness
   color: #666;
   font-weight: 600; }
 
-#give-donation-overview .inside {
-  padding: 12px; }
-
 input.give-price-field {
   width: 80px;
   padding: 3px 5px; }
@@ -1781,9 +1854,8 @@ input.give-price-field {
   .order-data-column input[type="email"] {
     padding: 6px 10px; } }
 
-#give-customer-details .inside {
-  padding-top: 15px;
-  padding-bottom: 15px; }
+#give-donor-details .inside, #give-donation-overview .inside {
+  margin-top: 0; }
 
 .give_forms_page_give-payment-history #give-dashboard-widgets-wrap #side-sortables {
   padding-top: 0; }
@@ -1873,10 +1945,13 @@ input.give-price-field {
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
-/* Donors Listing Page Style
--------------------------------------------------------------- */
 .give_forms_page_give-donors .wrap > h2 {
   margin-bottom: 15px; }
+
+.give_forms_page_give-donors .nav-tab-wrapper .dashicons {
+  position: relative;
+  top: 2px;
+  margin: 0 3px 0 0; }
 
 .give_forms_page_give-donors #give-donors-filter {
   position: relative; }
@@ -1887,40 +1962,6 @@ input.give-price-field {
 .give_forms_page_give-donors .tablenav.top {
   float: right;
   clear: none; }
-
-/* Donor Styles
--------------------------------------------------------------- */
-#customer-tab-wrapper-list {
-  border-bottom: 1px solid #ccc;
-  padding: 5px 15px 0 10px; }
-  #customer-tab-wrapper-list li {
-    display: inline-block;
-    margin: 0 0 -1px;
-    padding: 0; }
-    #customer-tab-wrapper-list li a {
-      padding: 6px 10px;
-      font-weight: bold;
-      font-size: 15px;
-      line-height: 24px;
-      border: 1px solid #ccc;
-      border-bottom: none;
-      background: #e4e4e4;
-      color: #555;
-      display: inline-block;
-      text-decoration: none;
-      margin: 0; }
-  #customer-tab-wrapper-list .active {
-    padding: 6px 10px;
-    font-weight: bold;
-    font-size: 15px;
-    line-height: 24px;
-    border: 1px solid #ccc;
-    border-bottom: 1px solid #f1f1f1;
-    background: #f1f1f1;
-    color: #000; }
-  #customer-tab-wrapper-list .dashicons {
-    font-size: 20px;
-    line-height: 26px; }
 
 #give-customer-card-wrapper {
   margin-left: -1px;
@@ -1961,14 +2002,6 @@ input.give-price-field {
   #give-customer-card-wrapper .donor-bio-header .customer-edit-link {
     margin-bottom: 15px; }
 
-.rtl #give-customer-card-wrapper .avatar-wrap {
-  padding: 0 0 15px 15px;
-  float: right; }
-
-.rtl #give-customer-card-wrapper .customer-id {
-  margin-right: 0;
-  margin-left: 10px; }
-
 .customer-main-wrapper {
   clear: both;
   margin: 0 0 20px; }
@@ -1991,10 +2024,6 @@ input.give-price-field {
     font-size: 100px;
     color: #F0F0F0;
     z-index: 0; }
-
-.rtl #donor-summary:after {
-  left: 10px;
-  right: initial; }
 
 #give-customer-card-wrapper .customer-address-wrapper {
   width: 202px; }
@@ -2065,7 +2094,10 @@ input.give-price-field {
 #customer-tables-wrapper th {
   text-align: center; }
 
-#customer-tables-wrapper .donations tr > th:first-child, #customer-tables-wrapper .donations tr > td:first-child {
+#customer-tables-wrapper .donations tr > th:first-child,
+#customer-tables-wrapper .donations tr > td:first-child,
+#customer-tables-wrapper .emails tr > th:first-child,
+#customer-tables-wrapper .emails tr > td:first-child {
   text-align: left; }
 
 #customer-tables-wrapper .donations tr > td:only-child {
@@ -2149,6 +2181,10 @@ input.give-price-field {
   .mce-sc-popup p.margin-top {
     margin-top: 1em; }
 
+.mce-sc-popup .mce-listbox button {
+  text-overflow: ellipsis;
+  overflow: hidden !important; }
+
 /* =Shortcode button above wp_editor
 -------------------------------------------------------------- */
 @media screen and (max-width: 782px) {
@@ -2217,19 +2253,5 @@ div.sc-shortcode {
 #mce-modal-block.mce-reset.mce-fade.mce-in {
   opacity: 0.7;
   filter: alpha(opacity=70); }
-
-/**
- * Give Right to Left Support
- *
- * @package     Give
- * @subpackage  SCSS/Admin
- * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
-*/
-body.rtl #give-donation-overview th {
-  text-align: right; }
-
-body.rtl #export-donor-options-wrap ul li {
-  padding: 0 0 5px 5px; }
 
 /*# sourceMappingURL=../sourcemaps/give-admin.css.map */

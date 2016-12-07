@@ -5,11 +5,11 @@
  * @package     Give
  * @subpackage  Functions/Login
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -18,8 +18,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Login Form
  *
  * @since 1.0
- * @global       $give_options
- * @global       $post
+ * @global       $give_login_redirect
+ * @global       $give_logout_redirect
  *
  * @param string $login_redirect Login redirect page URL
  * @param string $logout_redirect Logout redirect page URL
@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string Login form
  */
 function give_login_form( $login_redirect = '', $logout_redirect = '' ) {
-	global $give_login_redirect, $give_logout_redirect;;
+	global $give_login_redirect, $give_logout_redirect;
 
 	if ( empty( $login_redirect ) ) {
 		$login_redirect = add_query_arg('give-login-success', 'true', give_get_current_page_url());
@@ -62,15 +62,14 @@ function give_login_form( $login_redirect = '', $logout_redirect = '' ) {
  * Registration Form
  *
  * @since 2.0
- * @global       $give_options
- * @global       $post
+ * @global       $give_register_redirect
  *
  * @param string $redirect Redirect page URL
  *
  * @return string Register form
  */
 function give_register_form( $redirect = '' ) {
-	global $give_options, $give_register_redirect;
+	global $give_register_redirect;
 
 	if ( empty( $redirect ) ) {
 		$redirect = give_get_current_page_url();
@@ -141,13 +140,21 @@ function give_process_user_logout( $data ) {
         // Prevent occurring of any custom action on wp_logout.
         remove_all_actions( 'wp_logout' );
 
-        // Before logout give action.
+		/**
+		 * Fires before processing user logout.
+		 *
+		 * @since 1.0
+		 */
         do_action( 'give_before_user_logout' );
 
         // Logout user.
         wp_logout();
 
-        // After logout give action.
+		/**
+		 * Fires after processing user logout.
+		 *
+		 * @since 1.0
+		 */
         do_action( 'give_after_user_logout' );
 
         wp_redirect( $data['give_logout_redirect'] );
@@ -175,7 +182,26 @@ function give_log_user_in( $user_id, $user_login, $user_pass ) {
 
 	wp_set_auth_cookie( $user_id );
 	wp_set_current_user( $user_id, $user_login );
+
+	/**
+	 * Fires after the user has successfully logged in.
+	 *
+	 * @since 1.0
+	 *
+	 * @param string  $user_login Username.
+	 * @param WP_User $$user      WP_User object of the logged-in user.
+	 */
 	do_action( 'wp_login', $user_login, get_userdata( $user_id ) );
+
+	/**
+	 * Fires after give user has successfully logged in.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int    $$user_id   User id.
+	 * @param string $user_login Username.
+	 * @param string $user_pass  User password.
+	 */
 	do_action( 'give_log_user_in', $user_id, $user_login, $user_pass );
 }
 
@@ -199,6 +225,11 @@ function give_process_register_form( $data ) {
 		return;
 	}
 
+	/**
+	 * Fires before processing user registration.
+	 *
+	 * @since 1.0
+	 */
 	do_action( 'give_pre_process_register_form' );
 
 	if ( empty( $data['give_user_login'] ) ) {
@@ -233,6 +264,11 @@ function give_process_register_form( $data ) {
 		give_set_error( 'password_mismatch', esc_html__( 'Passwords don\'t match.', 'give' ) );
 	}
 
+	/**
+	 * Fires while processing user registration.
+	 *
+	 * @since 1.0
+	 */
 	do_action( 'give_process_register_form' );
 
 	// Check for errors and redirect if none present

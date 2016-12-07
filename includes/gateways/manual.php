@@ -5,11 +5,11 @@
  * @package     Give
  * @subpackage  Gateways
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -23,19 +23,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 add_action( 'give_manual_cc_form', '__return_false' );
 
 /**
- * Processes the purchase data and uses the Manual Payment gateway to record
- * the transaction in the Purchase History
+ * Processes the donation data and uses the Manual Payment gateway to record
+ * the donation in the Donation History
  *
  * @since 1.0
  *
- * @param array $purchase_data Purchase Data
+ * @param array $purchase_data Donation Data
  *
  * @return void
  */
 function give_manual_payment( $purchase_data ) {
 
 	if ( ! wp_verify_nonce( $purchase_data['gateway_nonce'], 'give-gateway' ) ) {
-		wp_die( esc_html__( 'Nonce verification has failed', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( esc_html__( 'Nonce verification has failed.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 	
 	//Create payment_data array
@@ -67,7 +67,7 @@ function give_manual_payment( $purchase_data ) {
 			),
 			$payment
 		);
-		// If errors are present, send the user back to the purchase page so they can be corrected
+		// If errors are present, send the user back to the donation page so they can be corrected
 		give_send_back_to_checkout( '?payment-mode=' . $purchase_data['post_data']['give-gateway'] );
 	}
 }

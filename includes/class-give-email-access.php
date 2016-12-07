@@ -5,11 +5,11 @@
  * @package     Give
  * @subpackage  Classes/Give_Email_Access
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.4
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -71,7 +71,7 @@ class Give_Email_Access {
 	 * @since  1.0
 	 * @access private
 	 *
-	 * @var    
+	 * @var
 	 */
 	private $verify_throttle;
 
@@ -83,7 +83,7 @@ class Give_Email_Access {
 	 *
 	 * @var    string
 	 */
-    private $token_expiration;
+	private $token_expiration;
 
 	/**
 	 * Class Constructor
@@ -92,8 +92,6 @@ class Give_Email_Access {
 	 *
 	 * @since  1.0
 	 * @access public
-	 *
-	 * @return void
 	 */
 	public function __construct() {
 
@@ -136,12 +134,12 @@ class Give_Email_Access {
 		if ( $this->token_exists ) {
 			add_filter( 'give_can_view_receipt', '__return_true' );
 			add_filter( 'give_user_pending_verification', '__return_false' );
-			add_filter( 'give_get_users_purchases_args', array( $this, 'users_purchases_args' ) );
+			add_filter( 'give_get_users_donations_args', array( $this, 'users_donations_args' ) );
 		}
 	}
 
 	/**
-	 * Prevent email spamming
+	 * Prevent email spamming.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -195,7 +193,7 @@ class Give_Email_Access {
 		// Generate a new verify key
 		$this->set_verify_key( $customer_id, $email, $verify_key );
 
-		// Get the purchase history URL
+		// Get the donation history page
 		$page_id = give_get_option( 'history_page' );
 
 		$access_url = add_query_arg( array(
@@ -205,7 +203,7 @@ class Give_Email_Access {
 		//Nice subject and message
 		$subject = apply_filters( 'give_email_access_token_subject', sprintf( esc_html__( 'Your Access Link to %s', 'give' ), get_bloginfo( 'name' ) ) );
 
-		$message  = esc_html__( 'You or someone in your organization requested an access link be sent to this email address. This is a temporary access link for you to view your donation information. Click on the link below to view:', 'give' ) . "\n\n";
+		$message = esc_html__( 'You or someone in your organization requested an access link be sent to this email address. This is a temporary access link for you to view your donation information. Click on the link below to view:', 'give' ) . "\n\n";
 		$message .= '<a href="' . esc_url( $access_url ) . '" target="_blank">' . esc_html__( 'Access My Donation Details &raquo;', 'give' ) . '</a>' . "\n\n";
 		$message .= "\n\n";
 		$message .= esc_html__( 'Sincerely,', 'give' ) . "\n";
@@ -280,9 +278,8 @@ class Give_Email_Access {
 
 		//Set error only if email access form isn't being submitted
 		if ( ! isset( $_POST['give_email'] ) && ! isset( $_POST['_wpnonce'] ) ) {
-			give_set_error( 'give_email_token_expired', apply_filters( 'give_email_token_expired_message', 'Sorry, your access token has expired. Please request a new one below:', 'give' ) );
+			give_set_error( 'give_email_token_expired', apply_filters( 'give_email_token_expired_message', esc_html__( 'Your access token has expired. Please request a new one below:', 'give' ) ) );
 		}
-
 
 		return false;
 
@@ -334,7 +331,7 @@ class Give_Email_Access {
 	 * @return bool
 	 */
 	public function is_valid_verify_key( $token ) {
-        /* @var WPDB $wpdb */
+		/* @var WPDB $wpdb */
 		global $wpdb;
 
 		// See if the verify_key exists
@@ -360,18 +357,18 @@ class Give_Email_Access {
 	}
 
 	/**
-	 * Users purchases args
+	 * Users donations args
 	 *
-	 * Force Give to find transactions by donation email, not user ID
+	 * Force Give to find donations by email, not user ID.
 	 *
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  $args User Purchases arguments.
+	 * @param  $args User Donations arguments.
 	 *
 	 * @return mixed
 	 */
-	public function users_purchases_args( $args ) {
+	public function users_donations_args( $args ) {
 		$args['user'] = $this->token_email;
 
 		return $args;

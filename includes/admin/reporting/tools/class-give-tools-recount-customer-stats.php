@@ -6,11 +6,11 @@
  *
  * @subpackage  Admin/Tools/Give_Tools_Recount_Customer_Stats
  * @copyright   Copyright (c) 2016, Chris Klosowski
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.5
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -48,8 +48,7 @@ class Give_Tools_Recount_Customer_Stats extends Give_Batch_Export {
 	 *
 	 * @access public
 	 * @since 1.5
-	 * @global object $wpdb Used to query the database using the WordPress
-	 *   Database API
+	 *
 	 * @return array $data The data for the CSV file
 	 */
 	public function get_data() {
@@ -65,7 +64,7 @@ class Give_Tools_Recount_Customer_Stats extends Give_Batch_Export {
 
 		if ( $customers ) {
 
-			$allowed_payment_status = apply_filters( 'give_recount_customer_payment_statuses', give_get_payment_status_keys() );
+			$allowed_payment_status = apply_filters( 'give_recount_donors_donation_statuses', give_get_payment_status_keys() );
 
 			foreach ( $customers as $customer ) {
 
@@ -105,7 +104,7 @@ class Give_Tools_Recount_Customer_Stats extends Give_Batch_Export {
 					foreach ( $payments as $payment ) {
 
 						$should_process_payment = 'publish' == $payment->post_status ? true : false;
-						$should_process_payment = apply_filters( 'give_customer_recount_should_process_payment', $should_process_payment, $payment );
+						$should_process_payment = apply_filters( 'give_donor_recount_should_process_donation', $should_process_payment, $payment );
 
 						if ( true === $should_process_payment ) {
 
@@ -193,7 +192,7 @@ class Give_Tools_Recount_Customer_Stats extends Give_Batch_Export {
 	public function process_step() {
 
 		if ( ! $this->can_export() ) {
-			wp_die( esc_html__( 'You do not have permission to export data.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die( esc_html__( 'You do not have permission to recount stats.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 		}
 
 		$had_data = $this->get_data();
@@ -204,7 +203,7 @@ class Give_Tools_Recount_Customer_Stats extends Give_Batch_Export {
 			return true;
 		} else {
 			$this->done    = true;
-			$this->message = esc_html__( 'Donor stats successfully recounted.', 'give' );
+			$this->message = esc_html__( 'Donor stats have been successfully recounted.', 'give' );
 
 			return false;
 		}
