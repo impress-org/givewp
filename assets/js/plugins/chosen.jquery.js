@@ -145,8 +145,7 @@
       this.display_selected_options = this.options.display_selected_options != null ? this.options.display_selected_options : true;
       this.display_disabled_options = this.options.display_disabled_options != null ? this.options.display_disabled_options : true;
       this.include_group_label_in_selected = this.options.include_group_label_in_selected || false;
-      this.max_shown_results = this.options.max_shown_results || Number.POSITIVE_INFINITY;
-      return this.case_sensitive_search = this.options.case_sensitive_search || false;
+      return this.max_shown_results = this.options.max_shown_results || Number.POSITIVE_INFINITY;
     };
 
     AbstractChosen.prototype.set_default_text = function() {
@@ -389,10 +388,9 @@
     };
 
     AbstractChosen.prototype.get_search_regex = function(escaped_search_string) {
-      var regex_anchor, regex_flag;
+      var regex_anchor;
       regex_anchor = this.search_contains ? "" : "^";
-      regex_flag = this.case_sensitive_search ? "" : "i";
-      return new RegExp(regex_anchor + escaped_search_string, regex_flag);
+      return new RegExp(regex_anchor + escaped_search_string, 'i');
     };
 
     AbstractChosen.prototype.search_string_match = function(search_string, regex) {
@@ -527,11 +525,28 @@
     };
 
     AbstractChosen.browser_is_supported = function() {
-      if ("Microsoft Internet Explorer" === window.navigator.appName) {
-        return document.documentMode >= 8;
-      }
-      if (/iP(od|hone)/i.test(window.navigator.userAgent) || /IEMobile/i.test(window.navigator.userAgent) || /Windows Phone/i.test(window.navigator.userAgent) || /BlackBerry/i.test(window.navigator.userAgent) || /BB10/i.test(window.navigator.userAgent) || /Android.*Mobile/i.test(window.navigator.userAgent)) {
+      if (/iP(od|hone)/i.test(window.navigator.userAgent)) {
         return false;
+      }
+      if (/Android/i.test(window.navigator.userAgent)) {
+        if (/Mobile/i.test(window.navigator.userAgent)) {
+          return false;
+        }
+      }
+      if (/IEMobile/i.test(window.navigator.userAgent)) {
+        return false;
+      }
+      if (/Windows Phone/i.test(window.navigator.userAgent)) {
+        return false;
+      }
+      if (/BlackBerry/i.test(window.navigator.userAgent)) {
+        return false;
+      }
+      if (/BB10/i.test(window.navigator.userAgent)) {
+        return false;
+      }
+      if (window.navigator.appName === "Microsoft Internet Explorer") {
+        return document.documentMode >= 8;
       }
       return true;
     };
