@@ -72,7 +72,7 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 	 * Get the Export Data.
 	 *
 	 * @access public
-	 * @since 1.5
+	 * @since  1.5
 	 * @global object $wpdb Used to query the database using the WordPress database API.
 	 * @return array $data The data for the CSV file.
 	 */
@@ -99,7 +99,41 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 
 		}
 
-		//echo json_encode($args ); exit;
+		// Add category or tag to payment query if any.
+		if ( ! empty( $this->categories ) || ! empty( $this->tags ) ) {
+			$form_args = array(
+				'post_type'      => 'give_forms',
+				'post_status'    => 'publish',
+				'posts_per_page' => - 1,
+				'fields'         => 'ids',
+				'tax_query'      => array(
+					'relation' => 'AND',
+				),
+			);
+
+
+			if ( ! empty( $this->categories ) ) {
+				$form_args['tax_query'][] = array(
+					'taxonomy' => 'give_forms_category',
+					'terms'    => $this->categories,
+				);
+			}
+
+			if ( ! empty( $this->tags ) ) {
+				$form_args['tax_query'][] = array(
+					'taxonomy' => 'give_forms_tag',
+					'terms'    => $this->tags,
+				);
+			}
+
+			$forms = new WP_Query( $form_args );
+
+			if ( empty( $forms->posts ) ) {
+				return array();
+			}
+
+			$args['give_forms'] = $forms->posts;
+		}
 
 		$payments = give_get_payments( $args );
 
@@ -152,7 +186,7 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 
 		}
 
-		return false;
+		return array();
 
 	}
 
@@ -201,8 +235,10 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 	 * @param array $request The Form Data passed into the batch processing.
 	 */
 	public function set_properties( $request ) {
-		$this->start  = isset( $request['start'] ) ? sanitize_text_field( $request['start'] ) : '';
-		$this->end    = isset( $request['end'] ) ? sanitize_text_field( $request['end'] ) : '';
-		$this->status = isset( $request['status'] ) ? sanitize_text_field( $request['status'] ) : 'complete';
+		$this->start      = isset( $request['start'] ) ? sanitize_text_field( $request['start'] ) : '';
+		$this->end        = isset( $request['end'] ) ? sanitize_text_field( $request['end'] ) : '';
+		$this->status     = isset( $request['status'] ) ? sanitize_text_field( $request['status'] ) : 'complete';
+		$this->categories = isset( $request['give_forms_categories'] ) ? give_clean( $request['give_forms_categories'] ) : array();
+		$this->tags       = isset( $request['give_forms_tags'] ) ? give_clean( $request['give_forms_tags'] ) : array();
 	}
 }

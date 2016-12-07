@@ -91,3 +91,50 @@ function give_load_wp_editor() {
 }
 
 add_action( 'wp_ajax_give_load_wp_editor', 'give_load_wp_editor' );
+
+
+/**
+ * Redirect admin to clean url give admin pages.
+ *
+ * @since 1.8
+ *
+ * @return bool
+ */
+function give_redirect_to_clean_url_admin_pages() {
+	// Give admin pages.
+	$give_pages = array(
+		'give-payment-history',
+	);
+
+	// Get current page.
+	$current_page = isset( $_GET['page'] ) ? esc_attr( $_GET['page'] ) : '';
+
+	// Bailout.
+	if (
+		empty( $current_page )
+		|| empty( $_GET['_wp_http_referer'] )
+		|| ! in_array( $current_page, $give_pages )
+	) {
+		return false;
+	}
+
+	/**
+	 * Verify current page request.
+	 *
+	 * @since 1.8
+	 */
+	$redirect = apply_filters( "give_validate_{$current_page}", true );
+
+	if ( $redirect ) {
+		// Redirect.
+		wp_redirect(
+			remove_query_arg(
+				array( '_wp_http_referer', '_wpnonce' ),
+				wp_unslash( $_SERVER['REQUEST_URI'] )
+			)
+		);
+		exit;
+	}
+}
+
+add_action( 'admin_init', 'give_redirect_to_clean_url_admin_pages' );
