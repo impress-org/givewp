@@ -415,7 +415,7 @@ function give_widgets_init() {
 
 	//Single Give Forms (disabled if single turned off in settings)
 	if (
-		! give_is_setting_enabled( give_get_option( 'forms_singular' ) )
+		give_is_setting_enabled( give_get_option( 'forms_singular' ) )
 		&& give_is_setting_enabled( give_get_option( 'form_sidebar' ) )
 	) {
 
