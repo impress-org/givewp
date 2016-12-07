@@ -389,6 +389,7 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 				}
 
 				// Third party plugin backward compatibility.
+				$wp_filter_keys = array_keys( $wp_filter );
 				foreach ( $new_setting_fields as $index => $field ) {
 
 					if ( in_array( $field['type'], array( 'title', 'sectionend' ) ) ) {
@@ -397,8 +398,13 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 
 					$cmb2_filter_name = "cmb2_render_{$field['type']}";
 
-					if ( ! empty( $wp_filter[ $cmb2_filter_name ] ) ) {
-						$cmb2_filter_arr = current( $wp_filter[ $cmb2_filter_name ] );
+					if ( in_array( $cmb2_filter_name, $wp_filter_keys ) ) {
+
+						if( 0 <= version_compare( 4.7, get_bloginfo('version') ) &&  ! empty( $wp_filter[$cmb2_filter_name]->callbacks ) ) {
+							$cmb2_filter_arr = current( $wp_filter[$cmb2_filter_name]->callbacks );
+						} else {
+							$cmb2_filter_arr = current( $wp_filter[ $cmb2_filter_name ] );
+						}
 
 						if ( ! empty( $cmb2_filter_arr ) ) {
 							// Note: function can be called either globally or with class object, it depends on how developer invoke it.
