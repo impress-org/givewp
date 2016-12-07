@@ -318,7 +318,7 @@ function give_load_admin_scripts( $hook ) {
 			),
 			'resend_receipt' => array(
 				'zero_recipient_selected' => __( 'You must choose at least one or more recipients to resend the email receipt.', 'give' ),
-				'resend_receipt'          => __( 'Are you sure you want to resend the email receipt to this recipients?', 'give' ),
+				'resend_receipt'          => __( 'Are you sure you want to resend the email receipt to this recipient?', 'give' ),
 				'resend_receipts'         => __( 'Are you sure you want to resend the emails receipt to {payment_count} recipients?', 'give' ),
 			),
 		),
