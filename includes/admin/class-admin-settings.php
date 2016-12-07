@@ -790,6 +790,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					case 'checkbox' :
 						$value = is_null( $raw_value ) ? '' : 'on';
 						break;
+					case 'wysiwyg'  :
 					case 'textarea' :
 						$value = wp_kses_post( trim( $raw_value ) );
 						break;
