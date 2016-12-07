@@ -216,6 +216,7 @@ jQuery.noConflict();
 		},
 
 		variable_price_list: function () {
+			// Update variable price list whnen form changes.
 			$('select[name="forms"]').chosen().change(function () {
 				var give_form_id,
 					variable_prices_html_container = $('.give-donation-level');
@@ -242,13 +243,32 @@ jQuery.noConflict();
 							variable_prices_html_container.html(response);
 
 							// Add chosen feature to select tag.
-							$('select[name="give-variable-price"]').chosen();
+							$('select[name="give-variable-price"]').chosen().change();
 						} else {
 							// Update Variable price html.
 							variable_prices_html_container.html('');
 						}
 					}
 				});
+			});
+
+			// Add total donation amount if level changes.
+			$('#give-donation-overview').on('change', 'select[name="give-variable-price"]', function(){
+				var prices = jQuery(this).data('prices'),
+					$total_amount = $('#give-payment-total')
+
+				if( $(this).val() in prices ) {
+					$total_amount
+						.val( prices[$(this).val()] )
+						.css( 'background-color', 'yellow' );
+
+					window.setTimeout(
+						function(){
+							$total_amount.css( 'background-color', 'white' )
+						},
+						1000
+					);
+				}
 			});
 		}
 

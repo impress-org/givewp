@@ -1868,7 +1868,7 @@ function give_get_form_dropdown( $args = array(), $echo = false ) {
  * @param array $args Arguments for form dropdown.
  * @param bool  $echo This parameter decide if print form dropdown html output or not.
  *
- * @return string|void
+ * @return string|bool
  */
 function give_get_form_variable_price_dropdown( $args = array(), $echo = false ) {
 
