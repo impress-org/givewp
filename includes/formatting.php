@@ -59,7 +59,6 @@ function give_get_price_decimal_separator() {
  * @param  int|bool         $dp         Number of decimals
  * @param  bool             $trim_zeros From end of string
  *
- *
  * @return string $amount Newly sanitized amount
  */
 function give_sanitize_amount( $number, $dp = false, $trim_zeros = false ) {
@@ -258,50 +257,50 @@ function give_currency_filter( $price = '', $currency = '' ) {
 	$negative = $price < 0;
 
 	if ( $negative ) {
-        // Remove proceeding "-".
+		// Remove proceeding "-".
 		$price = substr( $price, 1 );
 	}
 
 	$symbol = give_currency_symbol( $currency );
 
-    switch ( $currency ):
-        case 'GBP' :
-        case 'BRL' :
-        case 'EUR' :
-        case 'USD' :
-        case 'AUD' :
-        case 'CAD' :
-        case 'HKD' :
-        case 'MXN' :
-        case 'NZD' :
-        case 'SGD' :
-        case 'JPY' :
-        case 'THB' :
-        case 'INR' :
-        case 'RIAL' :
-        case 'TRY' :
-        case 'RUB' :
-        case 'SEK' :
-        case 'PLN' :
-        case 'PHP' :
-        case 'TWD' :
-        case 'MYR' :
-        case 'CZK' :
-        case 'DKK' :
-        case 'HUF' :
-        case 'ILS' :
-        case 'MAD' :
-        case 'KRW' :
-        case 'ZAR' :
-            $formatted = ( 'before' === $position ? $symbol . $price : $price . $symbol );
-            break;
-        case 'NOK' :
-            $formatted = ( 'before' === $position ? $symbol . ' ' . $price : $price . ' ' . $symbol );
-            break;
-        default :
-            $formatted = ( 'before' === $position ? $currency . ' ' . $price : $price . ' ' . $currency );
-            break;
-    endswitch;
+	switch ( $currency ) :
+		case 'GBP' :
+		case 'BRL' :
+		case 'EUR' :
+		case 'USD' :
+		case 'AUD' :
+		case 'CAD' :
+		case 'HKD' :
+		case 'MXN' :
+		case 'NZD' :
+		case 'SGD' :
+		case 'JPY' :
+		case 'THB' :
+		case 'INR' :
+		case 'RIAL' :
+		case 'TRY' :
+		case 'RUB' :
+		case 'SEK' :
+		case 'PLN' :
+		case 'PHP' :
+		case 'TWD' :
+		case 'MYR' :
+		case 'CZK' :
+		case 'DKK' :
+		case 'HUF' :
+		case 'ILS' :
+		case 'MAD' :
+		case 'KRW' :
+		case 'ZAR' :
+			$formatted = ( 'before' === $position ? $symbol . $price : $price . $symbol );
+			break;
+		case 'NOK' :
+			$formatted = ( 'before' === $position ? $symbol . ' ' . $price : $price . ' ' . $symbol );
+			break;
+		default :
+			$formatted = ( 'before' === $position ? $currency . ' ' . $price : $price . ' ' . $currency );
+			break;
+	endswitch;
 
 	/**
 	 * Filter formatted amount with currency
@@ -313,7 +312,6 @@ function give_currency_filter( $price = '', $currency = '' ) {
 	 *
 	 *           and if currency is USD and currency position is after then
 	 *           filter name will be give_usd_currency_filter_after
-	 *
 	 */
 	$formatted = apply_filters( 'give_' . strtolower( $currency ) . "_currency_filter_{$position}", $formatted, $currency, $price );
 
@@ -330,7 +328,7 @@ function give_currency_filter( $price = '', $currency = '' ) {
  *
  * @since 1.0
  * @since 1.6 $decimals parameter removed from function params
- **
+ * *
  * @return int $decimals
  */
 function give_currency_decimal_filter() {
@@ -341,7 +339,6 @@ function give_currency_decimal_filter() {
 	$decimals = give_get_price_decimals();
 
 	add_filter( 'give_sanitize_amount_decimals', 'give_currency_decimal_filter' );
-
 
 	// Get number of decimals with backward compatibility ( version < 1.6 )
 	if ( 1 <= func_num_args() ) {
@@ -419,14 +416,13 @@ function give_sanitize_price_field_value( $value, $field_args, $field ) {
 /**
  * Get date format string on basis of given context.
  *
- *
  * @since 1.7
  *
- * @param  string $date_context    Date format context name.
+ * @param  string $date_context Date format context name.
  *
  * @return string                  Date format string
  */
-function give_date_format ( $date_context = '' ) {
+function give_date_format( $date_context = '' ) {
 	/**
 	 * Filter the date context
 	 *
@@ -450,11 +446,10 @@ function give_date_format ( $date_context = '' ) {
 	$date_format_contexts = apply_filters( 'give_date_format_contexts', array() );
 
 	// Set date format to default date format.
-	$date_format = get_option('date_format');
-
+	$date_format = get_option( 'date_format' );
 
 	// Update date format if we have non empty date format context array and non empty date format string for that context.
-	if( $date_context &&  ! empty( $date_format_contexts ) && array_key_exists( $date_context, $date_format_contexts ) ) {
+	if ( $date_context && ! empty( $date_format_contexts ) && array_key_exists( $date_context, $date_format_contexts ) ) {
 		$date_format = ! empty( $date_format_contexts[ $date_context ] )
 			? $date_format_contexts[ $date_context ]
 			: $date_format;
@@ -469,13 +464,13 @@ function give_date_format ( $date_context = '' ) {
  * @since  1.7
  *
  * @param  string $action     Cache key prefix.
- * @param array   $query_args Query array.
+ * @param array  $query_args Query array.
  *
  * @return string
  */
 function give_get_cache_key( $action, $query_args ) {
 	// Bailout.
-	if( ! is_array( $query_args ) || empty( $query_args ) ) {
+	if ( ! is_array( $query_args ) || empty( $query_args ) ) {
 		return '';
 	}
 
@@ -487,7 +482,9 @@ function give_get_cache_key( $action, $query_args ) {
  * Non-scalar values are ignored.
  *
  * @since  1.8
+ *
  * @param  string|array $var
+ *
  * @return string|array
  */
 function give_clean( $var ) {
@@ -504,11 +501,12 @@ function give_clean( $var ) {
  * @since 1.8
  *
  * @param $size
+ *
  * @return int
  */
 function give_let_to_num( $size ) {
-	$l   = substr( $size, -1 );
-	$ret = substr( $size, 0, -1 );
+	$l   = substr( $size, - 1 );
+	$ret = substr( $size, 0, - 1 );
 	switch ( strtoupper( $l ) ) {
 		case 'P':
 			$ret *= 1024;
