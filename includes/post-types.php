@@ -27,14 +27,14 @@ function give_setup_post_types() {
 	$give_forms_archives = give_is_setting_enabled( give_get_option( 'forms_archives' ) );
 
 	$give_forms_slug = defined( 'GIVE_SLUG' ) ? GIVE_SLUG : 'donations';
-	//support for old 'GIVE_FORMS_SLUG' constant
+	// Support for old 'GIVE_FORMS_SLUG' constant
 	if ( defined( 'GIVE_FORMS_SLUG' ) ) {
 		$give_forms_slug = GIVE_FORMS_SLUG;
 	}
 
 	$give_forms_rewrite = defined( 'GIVE_DISABLE_FORMS_REWRITE' ) && GIVE_DISABLE_FORMS_REWRITE ? false : array(
 		'slug'       => $give_forms_slug,
-		'with_front' => false
+		'with_front' => false,
 	);
 
 	$give_forms_labels = apply_filters( 'give_forms_labels', array(
@@ -51,24 +51,24 @@ function give_setup_post_types() {
 		'not_found_in_trash' => esc_html__( 'No forms found in Trash.', 'give' ),
 		'parent_item_colon'  => '',
 		'menu_name'          => apply_filters( 'give_menu_name', esc_html__( 'Donations', 'give' ) ),
-		'name_admin_bar'     => apply_filters( 'give_name_admin_bar_name', esc_html__( 'Donation Form', 'give' ) )
+		'name_admin_bar'     => apply_filters( 'give_name_admin_bar_name', esc_html__( 'Donation Form', 'give' ) ),
 	) );
 
-	//Default give_forms supports.
+	// Default give_forms supports.
 	$give_form_supports = array(
 		'title',
 		'thumbnail',
 		'excerpt',
 		'revisions',
-		'author'
+		'author',
 	);
 
-	//Has the user disabled the excerpt?
+	// Has the user disabled the excerpt?
 	if ( ! give_is_setting_enabled( give_get_option( 'forms_excerpt' ) ) ) {
 		unset( $give_form_supports[2] );
 	}
 
-	//Has user disabled the featured image?
+	// Has user disabled the featured image?
 	if ( ! give_is_setting_enabled( give_get_option( 'form_featured_img' ) ) ) {
 		unset( $give_form_supports[1] );
 		remove_action( 'give_before_single_form_summary', 'give_show_form_images' );
@@ -90,7 +90,7 @@ function give_setup_post_types() {
 		'supports'           => apply_filters( 'give_forms_supports', $give_form_supports ),
 	);
 	register_post_type( 'give_forms', apply_filters( 'give_forms_post_type_args', $give_forms_args ) );
-	
+
 	/** Donation Post Type */
 	$payment_labels = array(
 		'name'               => _x( 'Donations', 'post type general name', 'give' ),
@@ -105,7 +105,7 @@ function give_setup_post_types() {
 		'not_found'          => esc_html__( 'No donations found.', 'give' ),
 		'not_found_in_trash' => esc_html__( 'No donations found in Trash.', 'give' ),
 		'parent_item_colon'  => '',
-		'menu_name'          => esc_html__( 'Donations', 'give' )
+		'menu_name'          => esc_html__( 'Donations', 'give' ),
 	);
 
 	$payment_args = array(
@@ -116,7 +116,7 @@ function give_setup_post_types() {
 		'map_meta_cap'    => true,
 		'capability_type' => 'give_payment',
 		'supports'        => array( 'title' ),
-		'can_export'      => true
+		'can_export'      => true,
 	);
 	register_post_type( 'give_payment', $payment_args );
 
@@ -160,23 +160,22 @@ function give_setup_taxonomies() {
 			'rewrite'      => array(
 				'slug'         => $slug . '/category',
 				'with_front'   => false,
-				'hierarchical' => true
+				'hierarchical' => true,
 			),
 			'capabilities' => array(
 				'manage_terms' => 'manage_give_form_terms',
 				'edit_terms'   => 'edit_give_form_terms',
 				'assign_terms' => 'assign_give_form_terms',
-				'delete_terms' => 'delete_give_form_terms'
-			)
+				'delete_terms' => 'delete_give_form_terms',
+			),
 		)
 	);
 
-	//Does the user want categories?
+	// Does the user want categories?
 	if ( give_is_setting_enabled( give_get_option( 'categories', 'disabled' ) ) ) {
 		register_taxonomy( 'give_forms_category', array( 'give_forms' ), $category_args );
 		register_taxonomy_for_object_type( 'give_forms_category', 'give_forms' );
 	}
-
 
 	/** Tags */
 	$tag_labels = array(
@@ -204,8 +203,8 @@ function give_setup_taxonomies() {
 				'manage_terms' => 'manage_give_form_terms',
 				'edit_terms'   => 'edit_give_form_terms',
 				'assign_terms' => 'assign_give_form_terms',
-				'delete_terms' => 'delete_give_form_terms'
-			)
+				'delete_terms' => 'delete_give_form_terms',
+			),
 		)
 	);
 
@@ -213,7 +212,6 @@ function give_setup_taxonomies() {
 		register_taxonomy( 'give_forms_tag', array( 'give_forms' ), $tag_args );
 		register_taxonomy_for_object_type( 'give_forms_tag', 'give_forms' );
 	}
-
 
 }
 
@@ -229,7 +227,7 @@ add_action( 'init', 'give_setup_taxonomies', 0 );
 function give_get_default_form_labels() {
 	$defaults = array(
 		'singular' => esc_html__( 'Form', 'give' ),
-		'plural'   => esc_html__( 'Forms', 'give' )
+		'plural'   => esc_html__( 'Forms', 'give' ),
 	);
 
 	return apply_filters( 'give_default_form_name', $defaults );
@@ -304,7 +302,7 @@ function give_register_post_type_statuses() {
 		'exclude_from_search'       => false,
 		'show_in_admin_all_list'    => true,
 		'show_in_admin_status_list' => true,
-		'label_count'               => _n_noop( 'Refunded <span class="count">(%s)</span>', 'Refunded <span class="count">(%s)</span>', 'give' )
+		'label_count'               => _n_noop( 'Refunded <span class="count">(%s)</span>', 'Refunded <span class="count">(%s)</span>', 'give' ),
 	) );
 	register_post_status( 'failed', array(
 		'label'                     => esc_html__( 'Failed', 'give' ),
@@ -312,7 +310,7 @@ function give_register_post_type_statuses() {
 		'exclude_from_search'       => false,
 		'show_in_admin_all_list'    => true,
 		'show_in_admin_status_list' => true,
-		'label_count'               => _n_noop( 'Failed <span class="count">(%s)</span>', 'Failed <span class="count">(%s)</span>', 'give' )
+		'label_count'               => _n_noop( 'Failed <span class="count">(%s)</span>', 'Failed <span class="count">(%s)</span>', 'give' ),
 	) );
 	register_post_status( 'revoked', array(
 		'label'                     => esc_html__( 'Revoked', 'give' ),
@@ -320,7 +318,7 @@ function give_register_post_type_statuses() {
 		'exclude_from_search'       => false,
 		'show_in_admin_all_list'    => true,
 		'show_in_admin_status_list' => true,
-		'label_count'               => _n_noop( 'Revoked <span class="count">(%s)</span>', 'Revoked <span class="count">(%s)</span>', 'give' )
+		'label_count'               => _n_noop( 'Revoked <span class="count">(%s)</span>', 'Revoked <span class="count">(%s)</span>', 'give' ),
 	) );
 	register_post_status( 'cancelled', array(
 		'label'                     => esc_html__( 'Cancelled', 'give' ),
@@ -328,7 +326,7 @@ function give_register_post_type_statuses() {
 		'exclude_from_search'       => false,
 		'show_in_admin_all_list'    => true,
 		'show_in_admin_status_list' => true,
-		'label_count'               => _n_noop( 'Cancelled <span class="count">(%s)</span>', 'Cancelled <span class="count">(%s)</span>', 'give' )
+		'label_count'               => _n_noop( 'Cancelled <span class="count">(%s)</span>', 'Cancelled <span class="count">(%s)</span>', 'give' ),
 	) );
 	register_post_status( 'abandoned', array(
 		'label'                     => esc_html__( 'Abandoned', 'give' ),
@@ -336,7 +334,7 @@ function give_register_post_type_statuses() {
 		'exclude_from_search'       => false,
 		'show_in_admin_all_list'    => true,
 		'show_in_admin_status_list' => true,
-		'label_count'               => _n_noop( 'Abandoned <span class="count">(%s)</span>', 'Abandoned <span class="count">(%s)</span>', 'give' )
+		'label_count'               => _n_noop( 'Abandoned <span class="count">(%s)</span>', 'Abandoned <span class="count">(%s)</span>', 'give' ),
 	) );
 
 }
@@ -360,21 +358,21 @@ function give_updated_messages( $messages ) {
 	if ( give_get_option( 'disable_forms_singular' ) === 'on' ) {
 
 		$messages['give_forms'] = array(
-			1 => esc_html__( 'Form updated.',   'give' ),
-			4 => esc_html__( 'Form updated.',   'give' ),
+			1 => esc_html__( 'Form updated.', 'give' ),
+			4 => esc_html__( 'Form updated.', 'give' ),
 			6 => esc_html__( 'Form published.', 'give' ),
-			7 => esc_html__( 'Form saved.',     'give' ),
-			8 => esc_html__( 'Form submitted.', 'give' )
+			7 => esc_html__( 'Form saved.', 'give' ),
+			8 => esc_html__( 'Form submitted.', 'give' ),
 		);
 
 	} else {
 
 		$messages['give_forms'] = array(
-			1 => sprintf( '%1$s <a href="%2$s">%3$s</a>', esc_html__( 'Form updated.',   'give' ), get_permalink( $post_ID ), esc_html__( 'View Form', 'give' ) ),
-			4 => sprintf( '%1$s <a href="%2$s">%3$s</a>', esc_html__( 'Form updated.',   'give' ), get_permalink( $post_ID ), esc_html__( 'View Form', 'give' ) ),
+			1 => sprintf( '%1$s <a href="%2$s">%3$s</a>', esc_html__( 'Form updated.', 'give' ), get_permalink( $post_ID ), esc_html__( 'View Form', 'give' ) ),
+			4 => sprintf( '%1$s <a href="%2$s">%3$s</a>', esc_html__( 'Form updated.', 'give' ), get_permalink( $post_ID ), esc_html__( 'View Form', 'give' ) ),
 			6 => sprintf( '%1$s <a href="%2$s">%3$s</a>', esc_html__( 'Form published.', 'give' ), get_permalink( $post_ID ), esc_html__( 'View Form', 'give' ) ),
-			7 => sprintf( '%1$s <a href="%2$s">%3$s</a>', esc_html__( 'Form saved.',     'give' ), get_permalink( $post_ID ), esc_html__( 'View Form', 'give' ) ),
-			8 => sprintf( '%1$s <a href="%2$s">%3$s</a>', esc_html__( 'Form submitted.', 'give' ), get_permalink( $post_ID ), esc_html__( 'View Form', 'give' ) )
+			7 => sprintf( '%1$s <a href="%2$s">%3$s</a>', esc_html__( 'Form saved.', 'give' ), get_permalink( $post_ID ), esc_html__( 'View Form', 'give' ) ),
+			8 => sprintf( '%1$s <a href="%2$s">%3$s</a>', esc_html__( 'Form submitted.', 'give' ), get_permalink( $post_ID ), esc_html__( 'View Form', 'give' ) ),
 		);
 
 	}
@@ -409,13 +407,12 @@ function give_add_thumbnail_support() {
  * Give Sidebars
  *
  * This option adds Give sidebars; registered late so it display last in list
- *
  */
 function give_widgets_init() {
 
-	//Single Give Forms (disabled if single turned off in settings)
+	// Single Give Forms (disabled if single turned off in settings)
 	if (
-		! give_is_setting_enabled( give_get_option( 'forms_singular' ) )
+		give_is_setting_enabled( give_get_option( 'forms_singular' ) )
 		&& give_is_setting_enabled( give_get_option( 'form_sidebar' ) )
 	) {
 
