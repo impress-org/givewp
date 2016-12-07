@@ -1104,6 +1104,21 @@ Tooltips
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-row.ui-sortable-helper {
       border-bottom: 0; }
 
+/*-------------------------------------
+Export Form
+-------------------------------------*/
+#give-export-payments .give_forms_categories,
+#give-export-payments .give_forms_tags {
+  min-width: 250px;
+  margin: 0 0 10px 0;
+  display: block; }
+  #give-export-payments .give_forms_categories input,
+  #give-export-payments .give_forms_tags input {
+    color: #999; }
+
+#give-export-payments div.chosen-container:first-of-type {
+  margin-top: 10px; }
+
 /**
  * Give Add-ons SCSS
  *
