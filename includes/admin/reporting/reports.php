@@ -432,7 +432,41 @@ function give_reports_tab_export() {
 									}
 									?>
 								</select>
-								<?php wp_nonce_field( 'give_ajax_export', 'give_ajax_export' ); ?>
+								<?php
+								if ( give_is_setting_enabled( give_get_option( 'categories' ) ) ) {
+									echo Give()->html->category_dropdown(
+										'give_forms_categories[]',
+										0,
+										array(
+											'class'           => 'give_forms_categories',
+											'chosen'          => true,
+											'multiple'        => true,
+											'selected'        => array(),
+											'show_option_all' => false,
+											'placeholder'     => __( 'Choose one or more from categories', 'give' ),
+										)
+									);
+									$add_break = true;
+								}
+
+								if ( give_is_setting_enabled( give_get_option( 'tags' ) ) ) {
+									echo Give()->html->tags_dropdown(
+										'give_forms_tags[]',
+										0,
+										array(
+											'class'           => 'give_forms_tags',
+											'chosen'          => true,
+											'multiple'        => true,
+											'selected'        => array(),
+											'show_option_all' => false,
+											'placeholder'     => __( 'Choose one or more from tags', 'give' ),
+										)
+									);
+									$add_break = true;
+								}
+
+								wp_nonce_field( 'give_ajax_export', 'give_ajax_export' );
+								?>
 								<input type="hidden" name="give-export-class" value="Give_Batch_Payments_Export"/>
 								<span>
 									<input type="submit" value="<?php esc_attr_e( 'Generate CSV', 'give' ); ?>" class="button-secondary"/>

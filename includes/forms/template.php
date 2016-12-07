@@ -1466,27 +1466,33 @@ add_action( 'give_payment_mode_select', 'give_payment_mode_select' );
  *
  * @param  int $form_id The form ID.
  *
- * @return void|bool
+ * @return bool
  */
 function give_terms_agreement( $form_id ) {
 	$form_option = get_post_meta( $form_id, '_give_terms_option', true );
 
 	// Bailout if per form and global term and conditions is not setup.
-	if ( 'yes' !== $form_option ) {
+	if (
+		give_is_setting_enabled( $form_option, 'global' )
+		&& give_is_setting_enabled( give_get_option( 'terms' ) )
+	) {
+		$label         = give_get_option( 'agree_to_terms_label', esc_html__( 'Agree to Terms?', 'give' ) );
+		$terms         = $terms = give_get_option( 'agreement_text', '' );
+		$edit_term_url = admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=display&section=term-and-conditions' );
+
+	} elseif ( give_is_setting_enabled( $form_option ) ) {
+		$label         = ( $label = get_post_meta( $form_id, '_give_agree_label', true ) ) ? stripslashes( $label ) : esc_html__( 'Agree to Terms?', 'give' );
+		$terms         = get_post_meta( $form_id, '_give_agree_text', true );
+		$edit_term_url = admin_url( 'post.php?post=' . $form_id . '&action=edit#form_terms_options' );
+
+	} else {
 		return false;
 	}
 
-	$label = ( $label = get_post_meta( $form_id, '_give_agree_label', true ) ) ? stripslashes( $label ) : give_get_option( 'agree_to_terms_label', esc_html__( 'Agree to Terms?', 'give' ) );
-	$terms = ( $terms = get_post_meta( $form_id, '_give_agree_text', true ) ) ? $terms : give_get_option( 'agreement_text', '' );
-
-	// Set term and conditions label and text on basis of per form and global setting.
-	// $label = ( $label = get_post_meta( $form_id, '_give_agree_label', true ) ) ? stripslashes( $label ) : give_get_option( 'agree_to_terms_label', esc_html__( 'Agree to Terms?', 'give' ) );
-	// $terms = ( $terms = get_post_meta( $form_id, '_give_agree_text', true ) ) ? $terms : give_get_option( 'agreement_text', '' );
-
 	// Bailout: Check if term and conditions text is empty or not.
 	if ( empty( $terms ) ) {
-		if ( is_user_logged_in() && current_user_can( 'manage_options' ) ) {
-			echo sprintf( __( 'Please enter term and conditions in <a href="%s">this form\'s settings</a>.', 'give' ), admin_url( 'post.php?post=' . $form_id . '&action=edit' ) );
+		if ( is_user_logged_in() && current_user_can( 'edit_give_forms' ) ) {
+			echo sprintf( __( 'Please enter valid term and conditions in <a href="%s">this form\'s settings</a>.', 'give' ), $edit_term_url );
 		}
 
 		return false;
@@ -1641,7 +1647,7 @@ function give_agree_to_terms_js( $form_id ) {
 
 	$form_option = get_post_meta( $form_id, '_give_terms_option', true );
 
-	if ( $form_option === 'yes' ) {
+	if ( give_is_setting_enabled( $form_option, array( 'enabled', 'global' ) ) ) {
 		?>
 		<script type="text/javascript">
 			jQuery(document).ready(function ($) {
