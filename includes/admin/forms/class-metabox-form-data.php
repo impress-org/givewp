@@ -233,80 +233,6 @@ class Give_MetaBox_Form_Data {
 			) ),
 
 			/**
-			 * Donation Goals
-			 */
-			'donation_goal_options' => apply_filters( 'give_donation_goal_options', array(
-				'id'     => 'donation_goal_options',
-				'title'  => esc_html__( 'Donation Goal', 'give' ),
-				'fields' => apply_filters( 'give_forms_donation_goal_metabox_fields', array(
-					// Goals
-					array(
-						'name'        => esc_html__( 'Donation Goal', 'give' ),
-						'description' => esc_html__( 'Do you want to set a donation goal for this form?', 'give' ),
-						'id'          => $prefix . 'goal_option',
-						'type'        => 'radio_inline',
-						'default'     => 'disabled',
-						'options'     => array(
-							'enabled'  => esc_html__( 'Enabled', 'give' ),
-							'disabled' => esc_html__( 'Disabled', 'give' ),
-						),
-					),
-					array(
-						'name'        => esc_html__( 'Goal Amount', 'give' ),
-						'description' => esc_html__( 'This is the monetary goal amount you want to reach for this form.', 'give' ),
-						'id'          => $prefix . 'set_goal',
-						'type'        => 'text_small',
-						'data_type'   => 'price',
-						'attributes'  => array(
-							'placeholder' => give_format_decimal( '0.00' ),
-							'value'       => give_format_decimal( $goal ),
-							'class'       => 'give-money-field',
-						),
-					),
-
-					array(
-						'name'        => esc_html__( 'Goal Format', 'give' ),
-						'description' => esc_html__( 'Do you want to display the total amount raised based on your monetary goal or a percentage? For instance, "$500 of $1,000 raised" or "50% funded".', 'give' ),
-						'id'          => $prefix . 'goal_format',
-						'type'        => 'radio_inline',
-						'default'     => 'amount',
-						'options'     => array(
-							'amount'     => esc_html__( 'Amount', 'give' ),
-							'percentage' => esc_html__( 'Percentage', 'give' ),
-						),
-					),
-					array(
-						'name'    => esc_html__( 'Progress Bar Color', 'give' ),
-						'desc'    => esc_html__( 'Customize the color of the goal progress bar.', 'give' ),
-						'id'      => $prefix . 'goal_color',
-						'type'    => 'colorpicker',
-						'default' => '#2bc253',
-					),
-
-					array(
-						'name'    => esc_html__( 'Close Form', 'give' ),
-						'desc'    => esc_html__( 'Do you want to close the donation forms and stop accepting donations once this goal has been met?', 'give' ),
-						'id'      => $prefix . 'close_form_when_goal_achieved',
-						'type'    => 'radio_inline',
-						'default' => 'disabled',
-						'options' => array(
-							'enabled'  => esc_html__( 'Enabled', 'give' ),
-							'disabled' => esc_html__( 'Disabled', 'give' ),
-						),
-					),
-					array(
-						'name'       => esc_html__( 'Goal Achieved Message', 'give' ),
-						'desc'       => esc_html__( 'Do you want to display a custom message when the goal is closed? If none is provided the default message will be displayed', 'give' ),
-						'id'         => $prefix . 'form_goal_achieved_message',
-						'type'       => 'textarea',
-						'attributes' => array(
-							'placeholder' => esc_attr__( 'Thank you to all our donors, we have met our fundraising goal.', 'give' ),
-						),
-					),
-				) ),
-			) ),
-
-			/**
 			 * Display Options
 			 */
 			'form_display_options'  => apply_filters( 'give_form_display_options', array(
@@ -391,6 +317,80 @@ class Give_MetaBox_Form_Data {
 					),
 				)
 			),
+
+			/**
+			 * Donation Goals
+			 */
+			'donation_goal_options' => apply_filters( 'give_donation_goal_options', array(
+				'id'     => 'donation_goal_options',
+				'title'  => esc_html__( 'Donation Goal', 'give' ),
+				'fields' => apply_filters( 'give_forms_donation_goal_metabox_fields', array(
+					// Goals
+					array(
+						'name'        => esc_html__( 'Donation Goal', 'give' ),
+						'description' => esc_html__( 'Do you want to set a donation goal for this form?', 'give' ),
+						'id'          => $prefix . 'goal_option',
+						'type'        => 'radio_inline',
+						'default'     => 'disabled',
+						'options'     => array(
+							'enabled'  => esc_html__( 'Enabled', 'give' ),
+							'disabled' => esc_html__( 'Disabled', 'give' ),
+						),
+					),
+					array(
+						'name'        => esc_html__( 'Goal Amount', 'give' ),
+						'description' => esc_html__( 'This is the monetary goal amount you want to reach for this form.', 'give' ),
+						'id'          => $prefix . 'set_goal',
+						'type'        => 'text_small',
+						'data_type'   => 'price',
+						'attributes'  => array(
+							'placeholder' => give_format_decimal( '0.00' ),
+							'value'       => give_format_decimal( $goal ),
+							'class'       => 'give-money-field',
+						),
+					),
+
+					array(
+						'name'        => esc_html__( 'Goal Format', 'give' ),
+						'description' => esc_html__( 'Do you want to display the total amount raised based on your monetary goal or a percentage? For instance, "$500 of $1,000 raised" or "50% funded".', 'give' ),
+						'id'          => $prefix . 'goal_format',
+						'type'        => 'radio_inline',
+						'default'     => 'amount',
+						'options'     => array(
+							'amount'     => esc_html__( 'Amount', 'give' ),
+							'percentage' => esc_html__( 'Percentage', 'give' ),
+						),
+					),
+					array(
+						'name'    => esc_html__( 'Progress Bar Color', 'give' ),
+						'desc'    => esc_html__( 'Customize the color of the goal progress bar.', 'give' ),
+						'id'      => $prefix . 'goal_color',
+						'type'    => 'colorpicker',
+						'default' => '#2bc253',
+					),
+
+					array(
+						'name'    => esc_html__( 'Close Form', 'give' ),
+						'desc'    => esc_html__( 'Do you want to close the donation forms and stop accepting donations once this goal has been met?', 'give' ),
+						'id'      => $prefix . 'close_form_when_goal_achieved',
+						'type'    => 'radio_inline',
+						'default' => 'disabled',
+						'options' => array(
+							'enabled'  => esc_html__( 'Enabled', 'give' ),
+							'disabled' => esc_html__( 'Disabled', 'give' ),
+						),
+					),
+					array(
+						'name'       => esc_html__( 'Goal Achieved Message', 'give' ),
+						'desc'       => esc_html__( 'Do you want to display a custom message when the goal is closed? If none is provided the default message will be displayed', 'give' ),
+						'id'         => $prefix . 'form_goal_achieved_message',
+						'type'       => 'textarea',
+						'attributes' => array(
+							'placeholder' => esc_attr__( 'Thank you to all our donors, we have met our fundraising goal.', 'give' ),
+						),
+					),
+				) ),
+			) ),
 
 			/**
 			 * Content Field
