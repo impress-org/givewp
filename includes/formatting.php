@@ -381,22 +381,6 @@ function give_sanitize_thousand_separator( $value, $field_args, $field ) {
 
 
 /**
- * Sanitize number of decimals
- *
- * @since   1.6
- * @used-by Give_Plugin_Settings::give_settings()
- *
- * @param   string $value
- * @param   array  $field_args
- * @param   object $field
- *
- * @return  mixed
- */
-function give_sanitize_number_decimals( $value, $field_args, $field ) {
-	return absint( $value );
-}
-
-/**
  * Sanitize price file value
  *
  * @since   1.6

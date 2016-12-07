@@ -153,7 +153,6 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'id'              => 'number_decimals',
 							'type'            => 'text',
 							'default'         => 2,
-							'sanitization_cb' => 'give_sanitize_number_decimals',
 							'css'             => 'width:12em;',
 						),
 						array(
