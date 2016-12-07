@@ -14,6 +14,68 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 
 
 	/**
+	 * Test give_get_price_decimals.
+	 *
+	 * @since  1.8
+	 *
+	 * @cover  give_date_format
+	 * @cover  give_currency_decimal_filter
+	 */
+	function test_give_get_price_decimals() {
+
+		/*
+		 * Check 1
+		 *
+		 * Fresh install test.
+		 */
+		$output_number_of_decimal = give_get_price_decimals();
+
+		// Default number of decimals.
+		$this->assertEquals(
+			2, // Default number of decimal value.
+			$output_number_of_decimal,
+			'Number of decimal places should be equal to 2'
+		);
+
+
+		/*
+		 * Check 2
+		 *
+		 * Change number of decimal value.
+		 */
+		give_update_option( 'number_decimals', 3 );
+
+		// Get updated number of decimal
+		$output_number_of_decimal = give_get_price_decimals();
+
+		// Default number of decimals.
+		$this->assertEquals(
+			3,
+			$output_number_of_decimal,
+			'Number of decimal places should be equal to 3'
+		);
+
+		/*
+		 * Check 3.
+		 *
+		 * Change currency
+		 */
+		give_update_option( 'currency', 'RIAL' );
+
+		// Get updated number of decimal
+		$output_number_of_decimal = give_get_price_decimals();
+
+		// Default number of decimals.
+		$this->assertEquals(
+			0,
+			$output_number_of_decimal,
+			'Some currency only have  0 number of decimal places. For example: RIAL, JPY, TWD, HUF'
+		);
+
+	}
+
+
+	/**
 	 * Test give_date_format.
 	 *
 	 * @since        1.8
@@ -67,9 +129,9 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 
 		return array(
 			array( '', $wp_default_date_format, "Date format should be equal to {$wp_default_date_format}" ),
-			array( 'checkout', 'F j, Y', "Date format should be equal to {$wp_default_date_format}" ),
-			array( 'report', 'Y-m-d', "Date format should be equal to {$wp_default_date_format}" ),
-			array( 'email', 'm/d/Y', "Date format should be equal to {$wp_default_date_format}" ),
+			array( 'checkout', 'F j, Y', "Date format should be equal to F j, Y" ),
+			array( 'report', 'Y-m-d', "Date format should be equal to Y-m-d" ),
+			array( 'email', 'm/d/Y', "Date format should be equal to m/d/y" ),
 		);
 	}
 
