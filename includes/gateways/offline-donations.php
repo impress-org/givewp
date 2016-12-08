@@ -183,7 +183,7 @@ function give_offline_send_donor_instructions( $payment_id = 0 ) {
 
 	$to_email = give_get_payment_user_email( $payment_id );
 
-	$subject = give_get_option( 'offline_donation_subject', esc_html__( 'Offline Donation Instructions', 'give' ) );
+	$subject = give_get_option( 'offline_donation_subject', __( 'Offline Donation Instructions', 'give' ) );
 	if ( $post_offline_customization_option === 'yes' ) {
 		$subject = get_post_meta( $payment_data['form_id'], '_give_offline_donation_subject', true );
 	}
@@ -198,7 +198,7 @@ function give_offline_send_donor_instructions( $payment_id = 0 ) {
 
 	$emails->__set( 'from_name', $from_name );
 	$emails->__set( 'from_email', $from_email );
-	$emails->__set( 'heading', esc_html__( 'Offline Donation Instructions', 'give' ) );
+	$emails->__set( 'heading', __( 'Offline Donation Instructions', 'give' ) );
 
 	$headers = apply_filters( 'give_receipt_headers', $emails->get_headers(), $payment_id, $payment_data );
 	$emails->__set( 'headers', $headers );
@@ -237,20 +237,20 @@ function give_offline_send_admin_notice( $payment_id = 0 ) {
 
 	$amount = give_currency_filter( give_format_amount( give_get_payment_amount( $payment_id ) ) );
 
-	$admin_subject = apply_filters( 'give_offline_admin_donation_notification_subject', esc_attr__( 'New Pending Donation', 'give' ), $payment_id );
+	$admin_subject = apply_filters( 'give_offline_admin_donation_notification_subject', __( 'New Pending Donation', 'give' ), $payment_id );
 
-	$admin_message = esc_attr__( 'Dear Admin,', 'give' ) . "\n\n";
-	$admin_message .= esc_attr__( 'An offline donation has been made on your website:', 'give' ) . ' ' . get_bloginfo( 'name' ) . ' ';
-	$admin_message .= esc_attr__( 'Hooray! The donation is in a pending status and is awaiting payment. Donation instructions have been emailed to the donor. Once you receive payment, be sure to mark the donation as complete using the link below.', 'give' ) . "\n\n";
+	$admin_message = __( 'Dear Admin,', 'give' ) . "\n\n";
+	$admin_message .= __( 'An offline donation has been made on your website:', 'give' ) . ' ' . get_bloginfo( 'name' ) . ' ';
+	$admin_message .= __( 'Hooray! The donation is in a pending status and is awaiting payment. Donation instructions have been emailed to the donor. Once you receive payment, be sure to mark the donation as complete using the link below.', 'give' ) . "\n\n";
 
 
-	$admin_message .= '<strong>' . esc_attr__( 'Donor:', 'give' ) . '</strong> {fullname}' . "\n";
-	$admin_message .= '<strong>' . esc_attr__( 'Amount:', 'give' ) . '</strong> {amount}' . "\n\n";
+	$admin_message .= '<strong>' . __( 'Donor:', 'give' ) . '</strong> {fullname}' . "\n";
+	$admin_message .= '<strong>' . __( 'Amount:', 'give' ) . '</strong> {amount}' . "\n\n";
 
 	$admin_message .= sprintf(
 		'<a href="%1$s">%2$s</a>',
 		admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $payment_id ),
-		esc_html__( 'Click Here to View and/or Update Donation Details', 'give' )
+		__( 'Click Here to View and/or Update Donation Details', 'give' )
 	) . "\n\n";
 
 	$admin_message = apply_filters( 'give_offline_admin_donation_notification', $admin_message, $payment_id );
@@ -294,27 +294,27 @@ function give_offline_add_settings( $settings ) {
 	$check_settings = array(
 
 		array(
-			'name'    => esc_attr__( 'Customize Offline Donations', 'give' ),
-			'desc'    => esc_attr__( 'If you would like to customize the donation instructions for this specific forms check this option.', 'give' ),
+			'name'    => __( 'Customize Offline Donations', 'give' ),
+			'desc'    => __( 'If you would like to customize the donation instructions for this specific forms check this option.', 'give' ),
 			'id'      => $prefix . 'customize_offline_donations',
 			'type'    => 'radio_inline',
 			'default' => 'no',
 			'options' => array(
-				'yes' => esc_attr__( 'Yes', 'give' ),
-				'no'  => esc_attr__( 'No', 'give' ),
+				'yes' => __( 'Yes', 'give' ),
+				'no'  => __( 'No', 'give' ),
 			),
 		),
 		array(
-			'name'        => esc_attr__( 'Request Billing Information', 'give' ),
-			'desc'        => esc_attr__( 'This option will enable the billing details section for this form\'s offline donation payment gateway. The fieldset will appear above the offline donation instructions.', 'give' ),
+			'name'        => __( 'Request Billing Information', 'give' ),
+			'desc'        => __( 'This option will enable the billing details section for this form\'s offline donation payment gateway. The fieldset will appear above the offline donation instructions.', 'give' ),
 			'id'          => $prefix . 'offline_donation_enable_billing_fields_single',
 			'row_classes' => 'give-subfield',
 			'type'        => 'checkbox'
 		),
 		array(
 			'id'          => $prefix . 'offline_checkout_notes',
-			'name'        => esc_attr__( 'Offline Donation Instructions', 'give' ),
-			'desc'        => esc_attr__( 'Enter the instructions you want to display to the donor during the donation process. Most likely this would include important information like mailing address and who to make the check out to.', 'give' ),
+			'name'        => __( 'Offline Donation Instructions', 'give' ),
+			'desc'        => __( 'Enter the instructions you want to display to the donor during the donation process. Most likely this would include important information like mailing address and who to make the check out to.', 'give' ),
 			'default'     => give_get_default_offline_donation_content(),
 			'type'        => 'wysiwyg',
 			'row_classes' => 'give-subfield',
@@ -324,16 +324,16 @@ function give_offline_add_settings( $settings ) {
 		),
 		array(
 			'id'          => $prefix . 'offline_donation_subject',
-			'name'        => esc_attr__( 'Offline Donation Email Instructions Subject', 'give' ),
-			'desc'        => esc_attr__( 'Enter the subject line for the donation receipt email.', 'give' ),
-			'default'     => esc_attr__( '{form_title} - Offline Donation Instructions', 'give' ),
+			'name'        => __( 'Offline Donation Email Instructions Subject', 'give' ),
+			'desc'        => __( 'Enter the subject line for the donation receipt email.', 'give' ),
+			'default'     => __( '{form_title} - Offline Donation Instructions', 'give' ),
 			'row_classes' => 'give-subfield',
 			'type'        => 'text'
 		),
 		array(
 			'id'          => $prefix . 'offline_donation_email',
-			'name'        => esc_attr__( 'Offline Donation Email Instructions', 'give' ),
-			'desc'        => esc_attr__( 'Enter the instructions you want emailed to the donor after they have submitted the donation form. Most likely this would include important information like mailing address and who to make the check out to.', 'give' ),
+			'name'        => __( 'Offline Donation Email Instructions', 'give' ),
+			'desc'        => __( 'Enter the instructions you want emailed to the donor after they have submitted the donation form. Most likely this would include important information like mailing address and who to make the check out to.', 'give' ),
 			'default'     => give_get_default_offline_donation_email_content(),
 			'type'        => 'wysiwyg',
 			'row_classes' => 'give-subfield',
@@ -354,34 +354,34 @@ add_filter( 'give_forms_display_options_metabox_fields', 'give_offline_add_setti
  *
  * Get default offline donation text
  *
- * @return mixed|void
+ * @return string
  */
 function give_get_default_offline_donation_content() {
 
 	$sitename = get_bloginfo( 'sitename' );
 
-	$default_text = '<p>' . esc_attr__( 'In order to make an offline donation we ask that you please follow these instructions', 'give' ) . ': </p>';
+	$default_text = '<p>' . __( 'In order to make an offline donation we ask that you please follow these instructions', 'give' ) . ': </p>';
 	$default_text .= '<ol>';
 	$default_text .= '<li>';
 	$default_text .= sprintf(
 		/* translators: %s: site name */
-		esc_html__( 'Make a check payable to "%s"', 'give' ),
+		__( 'Make a check payable to "%s"', 'give' ),
 		$sitename
 	);
 	$default_text .= '</li>';
 	$default_text .= '<li>';
 	$default_text .= sprintf(
 		/* translators: %s: site name */
-		esc_html__( 'On the memo line of the check, please indicate that the donation is for "%s"', 'give' ),
+		__( 'On the memo line of the check, please indicate that the donation is for "%s"', 'give' ),
 		$sitename
 	);
 	$default_text .= '</li>';
-	$default_text .= '<li>' . esc_html__( 'Please mail your check to:', 'give' ) . '</li>';
+	$default_text .= '<li>' . __( 'Please mail your check to:', 'give' ) . '</li>';
 	$default_text .= '</ol>';
 	$default_text .= '&nbsp;&nbsp;&nbsp;&nbsp;<em>' . $sitename . '</em><br>';
 	$default_text .= '&nbsp;&nbsp;&nbsp;&nbsp;<em>123 G Street </em><br>';
 	$default_text .= '&nbsp;&nbsp;&nbsp;&nbsp;<em>San Diego, CA 92101 </em><br>';
-	$default_text .= '<p>' . esc_attr__( 'All contributions will be gratefully acknowledged and are tax deductible.', 'give' ) . '</p>';
+	$default_text .= '<p>' . __( 'All contributions will be gratefully acknowledged and are tax deductible.', 'give' ) . '</p>';
 
 	return apply_filters( 'give_default_offline_donation_content', $default_text );
 
@@ -392,35 +392,35 @@ function give_get_default_offline_donation_content() {
  *
  * Gets the default offline donation email content
  *
- * @return mixed|void
+ * @return string
  */
 function give_get_default_offline_donation_email_content() {
 
 	$sitename      = get_bloginfo( 'sitename' );
-	$default_text  = '<p>' . esc_html__( 'Dear {name},', 'give' ) . '</p>';
-	$default_text .= '<p>' . esc_html__( 'Thank you for your offline donation request! Your generosity is greatly appreciated. In order to make an offline donation we ask that you please follow these instructions:', 'give' ) . '</p>';
+	$default_text  = '<p>' . __( 'Dear {name},', 'give' ) . '</p>';
+	$default_text .= '<p>' . __( 'Thank you for your offline donation request! Your generosity is greatly appreciated. In order to make an offline donation we ask that you please follow these instructions:', 'give' ) . '</p>';
 	$default_text .= '<ol>';
 	$default_text .= '<li>';
 	$default_text .= sprintf(
 		/* translators: %s: site name */
-		esc_html__( 'Make a check payable to "%s"', 'give' ),
+		__( 'Make a check payable to "%s"', 'give' ),
 		$sitename
 	);
 	$default_text .= '</li>';
 	$default_text .= '<li>';
 	$default_text .= sprintf(
 		/* translators: %s: site name */
-		esc_html__( 'On the memo line of the check, please indicate that the donation is for "%s"', 'give' ),
+		__( 'On the memo line of the check, please indicate that the donation is for "%s"', 'give' ),
 		$sitename
 	);
 	$default_text .= '</li>';
-	$default_text .= '<li>' . esc_html__( 'Please mail your check to:', 'give' ) . '</li>';
+	$default_text .= '<li>' . __( 'Please mail your check to:', 'give' ) . '</li>';
 	$default_text .= '</ol>';
 	$default_text .= '&nbsp;&nbsp;&nbsp;&nbsp;<em>' . $sitename . '</em><br>';
 	$default_text .= '&nbsp;&nbsp;&nbsp;&nbsp;<em>123 G Street </em><br>';
 	$default_text .= '&nbsp;&nbsp;&nbsp;&nbsp;<em>San Diego, CA 92101 </em><br>';
-	$default_text .= '<p>' . esc_html__( 'Once your donation has been received we will mark it as complete and you will receive an email receipt for your records. Please contact us with any questions you may have!', 'give' ) . '</p>';
-	$default_text .= '<p>' . esc_html__( 'Sincerely,', 'give' ) . '</p>';
+	$default_text .= '<p>' . __( 'Once your donation has been received we will mark it as complete and you will receive an email receipt for your records. Please contact us with any questions you may have!', 'give' ) . '</p>';
+	$default_text .= '<p>' . __( 'Sincerely,', 'give' ) . '</p>';
 	$default_text .= '<p>' . $sitename . '</p>';
 
 	return apply_filters( 'give_default_offline_donation_content', $default_text );
