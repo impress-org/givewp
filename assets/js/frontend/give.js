@@ -9,7 +9,7 @@
  */
 
 
-var give_scripts;
+var give_global_vars;
 
 jQuery( function ( $ ) {
 
@@ -81,8 +81,8 @@ jQuery( function ( $ ) {
 
 		//Alls well, open popup!
 		$.magnificPopup.open( {
-			mainClass   : 'give-modal',
-			closeOnBgClick : false,
+			mainClass   : give_global_vars.magnific_options.main_class,
+			closeOnBgClick : give_global_vars.magnific_options.close_on_bg_click,
 			items       : {
 				src : this_form,
 				type: 'inline'
