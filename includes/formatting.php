@@ -499,3 +499,40 @@ function give_validate_nonce( $nonce, $action = -1, $wp_die_args = array() ) {
 		);
 	}
 }
+
+/**
+ * Check variable and get default or valid value.
+ *
+ * Helper function to check if a variable is set, empty, etc.
+ *
+ * @since 1.8
+ *
+ * @param                   $variable
+ * @param string (optional) $conditional , default value: isset
+ * @param bool (optional)   $default     , default value: false
+ *
+ * @return mixed
+ */
+function give_check_variable( $variable, $conditional = '', $default = false ) {
+
+	switch ( $conditional ) {
+		case 'isset_empty':
+			$variable = isset( $variable ) && empty( $variable ) ? $variable : $default;
+			break;
+
+		case 'empty':
+			$variable = empty( $variable ) ? $variable : $default;
+			break;
+
+		case 'null':
+				$variable = is_null( $variable ) ? $variable : $default;
+				break;
+
+		default:
+			$variable = isset( $variable ) ? $variable : $default;
+
+	}
+
+	return $variable;
+
+}
