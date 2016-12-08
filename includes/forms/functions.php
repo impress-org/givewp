@@ -635,9 +635,11 @@ function give_get_lowest_price_option( $form_id = 0 ) {
 
 	$prices = give_get_variable_prices( $form_id );
 
-	$min = $min_id = 0;
+	$low = 0;
 
 	if ( ! empty( $prices ) ) {
+
+		$min = $min_id = 0;
 
 		foreach ( $prices as $key => $price ) {
 
