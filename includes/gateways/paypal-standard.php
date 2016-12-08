@@ -716,21 +716,29 @@ function _give_build_paypal_url( $payment_id, $payment_data ) {
 
 	// Add user address if present.
 	if ( ! empty( $payment_data['user_info']['address'] ) ) {
-		$paypal_args['address1'] = isset( $payment_data['user_info']['address']['line1'] ) ? $payment_data['user_info']['address']['line1'] : '';
-		$paypal_args['address2'] = isset( $payment_data['user_info']['address']['line2'] ) ? $payment_data['user_info']['address']['line2'] : '';
-		$paypal_args['city']     = isset( $payment_data['user_info']['address']['city'] ) ? $payment_data['user_info']['address']['city'] : '';
-		$paypal_args['state']    = isset( $payment_data['user_info']['address']['state'] ) ? $payment_data['user_info']['address']['state'] : '';
-		$paypal_args['country']  = isset( $payment_data['user_info']['address']['country'] ) ? $payment_data['user_info']['address']['country'] : '';
+		$default_address = array(
+			'line1'   => '',
+			'line2'   => '',
+			'city'    => '',
+			'state'   => '',
+			'country' => '',
+		);
+
+		$address = wp_parse_args( $payment_data['user_info']['address'], $default_address );
+
+		$paypal_args['address1'] = $address['line1'];
+		$paypal_args['address2'] = $address['line2'];
+		$paypal_args['city']     = $address['city'];
+		$paypal_args['state']    = $address['state'];
+		$paypal_args['country']  = $address['country'];
 	}
 
 	// Donations or regular transactions?
+	// paypal_button_type can be donation or standard.
+	$paypal_extra_args = array( 'cmd' => '_donations', );
 	if ( give_get_option( 'paypal_button_type' ) === 'standard' ) {
 		$paypal_extra_args = array(
 			'cmd' => '_xclick',
-		);
-	} else {
-		$paypal_extra_args = array(
-			'cmd' => '_donations',
 		);
 	}
 
