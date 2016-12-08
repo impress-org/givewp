@@ -5,11 +5,14 @@
  * @package     Give
  * @subpackage  Admin
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.3.0
  */
 
-defined( 'ABSPATH' ) or exit;
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Class Give_Shortcode_Donation_Form
@@ -51,12 +54,12 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 				'placeholder' => esc_attr__( '- Select a Form -', 'give' ),
 				'required'    => array(
 					'alert' => esc_html__( 'You must first select a Form!', 'give' ),
-					'error' => sprintf( '<p class="strong">%s</p><p class="no-margin">%s</p>', esc_html__( 'No donation forms were found!', 'give' ), $create_form_link ),
+					'error' => sprintf( '<p class="strong">%s</p><p class="no-margin">%s</p>', esc_html__( 'No forms found.', 'give' ), $create_form_link ),
 				),
 			),
 			array(
 				'type' => 'container',
-				'html' => sprintf( '<p class="strong margin-top">%s</p>', esc_html__( 'Optional form settings', 'give' ) ),
+				'html' => sprintf( '<p class="strong margin-top">%s</p>', esc_html__( 'Optional settings', 'give' ) ),
 			),
 			array(
 				'type'    => 'listbox',
@@ -86,15 +89,15 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 				'tooltip' => esc_attr__( 'Do you want to display the form content?', 'give' ),
 				'options' => array(
 					'none'  => esc_html__( 'No Content', 'give' ),
-					'above' => esc_html__( 'Display above the form fields', 'give' ),
-					'below' => esc_html__( 'Display below the form fields', 'give' ),
+					'above' => esc_html__( 'Display content ABOVE the fields', 'give' ),
+					'below' => esc_html__( 'Display content BELOW the fields', 'give' ),
 				),
 			),
 			array(
 				'type'    => 'listbox',
 				'name'    => 'display_style',
-				'label'   => esc_attr__( 'Payment Fields:', 'give' ),
-				'tooltip' => esc_attr__( 'How would you like to display payment information?', 'give' ),
+				'label'   => esc_attr__( 'Donation Fields:', 'give' ),
+				'tooltip' => esc_attr__( 'How would you like to display donation information?', 'give' ),
 				'options' => array(
 					'onpage' => esc_html__( 'Show on Page', 'give' ),
 					'reveal' => esc_html__( 'Reveal Upon Click', 'give' ),
@@ -105,7 +108,7 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 				'type'    => 'listbox',
 				'name'    => 'float_labels',
 				'label'   => esc_attr__( 'Floating Labels:', 'give' ),
-				'tooltip' => esc_attr__( 'Override the default floating labels setting for this form?', 'give' ),
+				'tooltip' => esc_attr__( 'Override the default floating labels setting for this form.', 'give' ),
 				'options' => array(
 					'enabled'  => esc_html__( 'Enabled', 'give' ),
 					'disabled' => esc_html__( 'Disabled', 'give' ),

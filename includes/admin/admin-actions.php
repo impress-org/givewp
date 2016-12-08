@@ -5,30 +5,70 @@
  * @package     Give
  * @subpackage  Admin/Actions
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+
 /**
- * Processes all Give actions sent via POST and GET by looking for the 'give-action'
- * request and running do_action() to call the function
+ * Hide subscription notice if admin click on "Click here if already renewed" in subscription notice.
  *
- * @since 1.0
+ * @since 1.7
  * @return void
  */
-function give_process_actions() {
-	if ( isset( $_POST['give-action'] ) ) {
-		do_action( 'give_' . $_POST['give-action'], $_POST );
-	}
+function give_hide_subscription_notices() {
 
-	if ( isset( $_GET['give-action'] ) ) {
-		do_action( 'give_' . $_GET['give-action'], $_GET );
-	}
+    // Hide subscription notices permanently.
+    if ( ! empty( $_GET['_give_hide_license_notices_permanently'] ) ) {
+        $current_user = wp_get_current_user();
+
+        // check previously disabled notice ids.
+        $already_dismiss_notices = ( $already_dismiss_notices = get_user_meta( $current_user->ID, '_give_hide_license_notices_permanently', true ) )
+            ? $already_dismiss_notices
+            : array();
+
+        // Get notice id.
+        $notice_id = sanitize_text_field( $_GET['_give_hide_license_notices_permanently'] );
+
+        if( ! in_array( $notice_id, $already_dismiss_notices ) ) {
+            $already_dismiss_notices[] = $notice_id;
+        }
+
+        // Store subscription ids.
+        update_user_meta( $current_user->ID, '_give_hide_license_notices_permanently', $already_dismiss_notices );
+
+        // Redirect user.
+        wp_safe_redirect( remove_query_arg( '_give_hide_license_notices_permanently', $_SERVER['REQUEST_URI'] ) );
+        exit();
+    }
+
+    // Hide subscription notices shortly.
+    if ( ! empty( $_GET['_give_hide_license_notices_shortly'] ) ) {
+        $current_user = wp_get_current_user();
+
+        // Get notice id.
+        $notice_id = sanitize_text_field( $_GET['_give_hide_license_notices_shortly'] );
+
+        // Transient key name.
+        $transient_key = "_give_hide_license_notices_shortly_{$current_user->ID}_{$notice_id}";
+
+        if( get_transient( $transient_key ) ) {
+            return;
+        }
+
+
+        // Hide notice for 24 hours.
+        set_transient( $transient_key, true, 24 * HOUR_IN_SECONDS );
+
+        // Redirect user.
+        wp_safe_redirect( remove_query_arg( '_give_hide_license_notices_shortly', $_SERVER['REQUEST_URI'] ) );
+        exit();
+    }
 }
 
-add_action( 'admin_init', 'give_process_actions' );
+add_action( 'admin_init', 'give_hide_subscription_notices' );

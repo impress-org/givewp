@@ -6,11 +6,11 @@
  *
  * @subpackage  Admin/Tools/Give_Tools_Recount_Single_Customer_Stats
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.5
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -79,7 +79,7 @@ class Give_Tools_Recount_Single_Customer_Stats extends Give_Batch_Export {
 				}
 
 				$should_process_payment = 'publish' == $payment->post_status ? true : false;
-				$should_process_payment = apply_filters( 'give_customer_recount_should_process_payment', $should_process_payment, $payment );
+				$should_process_payment = apply_filters( 'give_donor_recount_should_process_donation', $should_process_payment, $payment );
 
 				if ( true === $should_process_payment ) {
 
@@ -165,7 +165,7 @@ class Give_Tools_Recount_Single_Customer_Stats extends Give_Batch_Export {
 
 			$removed_payments = array_unique( get_option( 'give_stats_missing_payments' . $customer->id, array() ) );
 
-			// Find non-existing payments (deleted) and total up the purchase count
+			// Find non-existing payments (deleted) and total up the donation count
 			$purchase_count = 0;
 			foreach ( $payment_ids as $key => $payment_id ) {
 				if ( in_array( $payment_id, $removed_payments ) ) {
@@ -231,7 +231,7 @@ class Give_Tools_Recount_Single_Customer_Stats extends Give_Batch_Export {
 	 */
 	public function pre_fetch() {
 		if ( $this->step === 1 ) {
-			$allowed_payment_status = apply_filters( 'give_recount_customer_payment_statuses', give_get_payment_status_keys() );
+			$allowed_payment_status = apply_filters( 'give_recount_donors_donation_statuses', give_get_payment_status_keys() );
 
 			// Before we start, let's zero out the customer's data
 			$customer = new Give_Customer( $this->customer_id );

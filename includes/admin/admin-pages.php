@@ -5,11 +5,11 @@
  * @package     Give
  * @subpackage  Admin/Pages
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -22,6 +22,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @global $give_settings_page
  * @global $give_payments_page
+ * @global $give_reports_page
+ * @global $give_add_ons_page
+ * @global $give_upgrades_screen
+ * @global $give_donors_page
  *
  * @return void
  */

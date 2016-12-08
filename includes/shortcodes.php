@@ -5,25 +5,34 @@
  * @package     Give
  * @subpackage  Shortcodes
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-
 /**
- * Purchase History Shortcode
+ * Donation History Shortcode
  *
- * Displays a user's purchase history.
+ * Displays a user's donation history.
  *
- * @since 1.0
+ * @since  1.0
+ *
  * @return string
  */
 function give_donation_history() {
+
+	// If payment_key query arg exists, return receipt instead of donation history.
+	if ( isset( $_GET['payment_key'] ) ) {
+		ob_start();
+		echo give_receipt_shortcode( array() );
+		echo '<a href="' . esc_url( give_get_history_page_uri() ) . '">&laquo; ' . esc_html__( 'Return to All Donations', 'give' ) . '</a>';
+
+		return ob_get_clean();
+	}
 
 	$email_access = give_get_option( 'email_access' );
 
@@ -53,14 +62,13 @@ add_shortcode( 'donation_history', 'give_donation_history' );
  *
  * Show the Give donation form.
  *
- * @since       1.0
+ * @since  1.0
  *
- * @param array $atts     Shortcode attributes
- * @param string $content
+ * @param  array  $atts Shortcode attributes
  *
  * @return string
  */
-function give_form_shortcode( $atts, $content = null ) {
+function give_form_shortcode( $atts ) {
 	$atts = shortcode_atts( array(
 		'id'            => '',
 		'show_title'    => true,
@@ -113,14 +121,13 @@ add_shortcode( 'give_form', 'give_form_shortcode' );
  *
  * Show the Give donation form goals.
  *
- * @since       1.0
+ * @since  1.0
  *
- * @param array $atts Shortcode attributes.
- * @param string $content
+ * @param  array  $atts Shortcode attributes.
  *
  * @return string
  */
-function give_goal_shortcode( $atts, $content = null ) {
+function give_goal_shortcode( $atts ) {
 	$atts = shortcode_atts( array(
 		'id'        => '',
 		'show_text' => true,
@@ -133,13 +140,13 @@ function give_goal_shortcode( $atts, $content = null ) {
 
 	//Sanity check 1: ensure there is an ID Provided.
 	if ( empty( $atts['id'] ) ) {
-		give_output_error( esc_html__( 'Error: No Donation form ID for the shortcode provided.', 'give' ), true );
+		give_output_error( esc_html__( 'The shortcode is missing Donation Form ID attribute.', 'give' ), true );
 	}
 
-	//Sanity check 2: Check that this form even has Goals enabled.
+	//Sanity check 2: Check the form even has Goals enabled.
 	$goal_option = get_post_meta( $atts['id'], '_give_goal_option', true );
 	if ( empty( $goal_option ) || $goal_option !== 'yes' ) {
-		give_output_error( esc_html__( 'Error: This form does not have Goals enabled.', 'give' ), true );
+		give_output_error( esc_html__( 'The form does not have Goals enabled.', 'give' ), true );
 	} else {
 		//Passed all sanity checks: output Goal.
 		give_show_goal_progress( $atts['id'], $atts );
@@ -159,15 +166,15 @@ add_shortcode( 'give_goal', 'give_goal_shortcode' );
  * Shows a login form allowing users to users to log in. This function simply
  * calls the give_login_form function to display the login form.
  *
- * @since 1.0
+ * @since  1.0
  *
- * @param array  $atts     Shortcode attributes
- * @param string $content
+ * @param  array  $atts Shortcode attributes.
  *
- * @uses  give_login_form()
+ * @uses   give_login_form()
+ *
  * @return string
  */
-function give_login_form_shortcode( $atts, $content = null ) {
+function give_login_form_shortcode( $atts ) {
 	$atts = shortcode_atts( array(
         // Add backward compatibility for redirect attribute.
         'redirect'          => '',
@@ -189,15 +196,15 @@ add_shortcode( 'give_login', 'give_login_form_shortcode' );
  *
  * Shows a registration form allowing users to users to register for the site.
  *
- * @since 1.0
+ * @since  1.0
  *
- * @param array  $atts     Shortcode attributes.
- * @param string $content
+ * @param  array  $atts Shortcode attributes.
  *
- * @uses  give_register_form()
+ * @uses   give_register_form()
+ *
  * @return string
  */
-function give_register_form_shortcode( $atts, $content = null ) {
+function give_register_form_shortcode( $atts ) {
 	$atts = shortcode_atts( array(
 		'redirect' => '',
 	), $atts, 'give_register' );
@@ -207,31 +214,31 @@ function give_register_form_shortcode( $atts, $content = null ) {
 
 add_shortcode( 'give_register', 'give_register_form_shortcode' );
 
-
 /**
  * Receipt Shortcode.
  *
  * Shows a donation receipt.
  *
- * @since 1.0
+ * @since  1.0
  *
- * @param array  $atts    Shortcode attributes.
- * @param string $content
+ * @param  array  $atts Shortcode attributes.
  *
  * @return string
  */
-function give_receipt_shortcode( $atts, $content = null ) {
+function give_receipt_shortcode( $atts ) {
 
 	global $give_receipt_args, $payment;
 
 	$give_receipt_args = shortcode_atts( array(
-		'error'          => esc_html__( 'Sorry, you are missing the payment key to view this donation receipt.', 'give' ),
+		'error'          => esc_html__( 'You are missing the payment key to view this donation receipt.', 'give' ),
 		'price'          => true,
 		'donor'          => true,
 		'date'           => true,
 		'payment_key'    => false,
 		'payment_method' => true,
-		'payment_id'     => true
+		'payment_id'     => true,
+		'payment_status' => false,
+		'status_notice'  => true,
 	), $atts, 'give_receipt' );
 
 	//set $session var
@@ -283,7 +290,7 @@ function give_receipt_shortcode( $atts, $content = null ) {
 
 		ob_start();
 
-		give_output_error( apply_filters( 'give_must_be_logged_in_error_message', esc_html__( 'You must be logged in to view this donation payment receipt.', 'give' ) ) );
+		give_output_error( apply_filters( 'give_must_be_logged_in_error_message', esc_html__( 'You must be logged in to view this donation receipt.', 'give' ) ) );
 
 		give_get_template_part( 'shortcode', 'login' );
 
@@ -296,7 +303,7 @@ function give_receipt_shortcode( $atts, $content = null ) {
 	 * Check if the user has permission to view the receipt.
 	 *
 	 * If user is logged in, user ID is compared to user ID of ID stored in payment meta
-	 * or if user is logged out and purchase was made as a guest, the purchase session is checked for
+	 * or if user is logged out and donation was made as a guest, the donation session is checked for
 	 * or if user is logged in and the user can view sensitive shop data.
 	 *
 	 */
@@ -311,8 +318,6 @@ function give_receipt_shortcode( $atts, $content = null ) {
 	$display = ob_get_clean();
 
 	return $display;
-
-
 }
 
 add_shortcode( 'give_receipt', 'give_receipt_shortcode' );
@@ -330,12 +335,11 @@ add_shortcode( 'give_receipt', 'give_receipt_shortcode' );
  *
  * @since  1.0
  *
- * @param array   $atts    attributes
- * @param string  $content
+ * @param  array  $atts Shortcode attributes.
  *
  * @return string Output generated from the profile editor
  */
-function give_profile_editor_shortcode( $atts, $content = null ) {
+function give_profile_editor_shortcode( $atts ) {
 
 	ob_start();
 
@@ -355,7 +359,7 @@ add_shortcode( 'give_profile_editor', 'give_profile_editor_shortcode' );
  *
  * @since  1.0
  *
- * @param array $data Data sent from the profile editor.
+ * @param  array $data Data sent from the profile editor.
  *
  * @return bool
  */
@@ -468,4 +472,3 @@ function give_process_profile_editor_updates( $data ) {
 }
 
 add_action( 'give_edit_user_profile', 'give_process_profile_editor_updates' );
-

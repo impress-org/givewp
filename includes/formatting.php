@@ -5,11 +5,11 @@
  * @package     Give
  * @subpackage  Functions/Formatting
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -245,7 +245,7 @@ function give_format_admin_multilevel_amount( $field_args, $field ) {
  * @param string $price
  * @param string $currency
  *
- * @return mixed|string|void
+ * @return mixed|string
  */
 function give_currency_filter( $price = '', $currency = '' ) {
 
@@ -369,11 +369,12 @@ add_filter( 'give_format_amount_decimals', 'give_currency_decimal_filter' );
 /**
  * Sanitize thousand separator
  *
- * @since 1.6
+ * @since   1.6
+ * @used-by Give_Plugin_Settings::give_settings()
  *
- * @param string $value
- * @param array  $field_args
- * @param object $field
+ * @param   string $value
+ * @param   array  $field_args
+ * @param   object $field
  *
  * @return mixed
  */
@@ -385,13 +386,14 @@ function give_sanitize_thousand_separator( $value, $field_args, $field ) {
 /**
  * Sanitize number of decimals
  *
- * @since 1.6
+ * @since   1.6
+ * @used-by Give_Plugin_Settings::give_settings()
  *
- * @param string $value
- * @param array  $field_args
- * @param object $field
+ * @param   string $value
+ * @param   array  $field_args
+ * @param   object $field
  *
- * @return mixed
+ * @return  mixed
  */
 function give_sanitize_number_decimals( $value, $field_args, $field ) {
 	return absint( $value );
@@ -400,13 +402,14 @@ function give_sanitize_number_decimals( $value, $field_args, $field ) {
 /**
  * Sanitize price file value
  *
- * @since 1.6
+ * @since   1.6
+ * @used-by give_single_forms_cmb2_metaboxes()
  *
- * @param string $value
- * @param array  $field_args
- * @param object $field
+ * @param   string $value
+ * @param   array  $field_args
+ * @param   object $field
  *
- * @return mixed
+ * @return  mixed
  */
 function give_sanitize_price_field_value( $value, $field_args, $field ) {
 	return give_sanitize_amount( $value );
@@ -461,4 +464,71 @@ function give_cmb_amount_field_render_row_cb( $field_args, $field ) {
 		</div>
 	</div>
 	<?php
+}
+
+
+/**
+ * Get date format string on basis of given context.
+ *
+ *
+ * @since 1.7
+ *
+ * @param  string $date_context    Date format context name.
+ *
+ * @return string                  Date format string
+ */
+function give_date_format ( $date_context = '' ) {
+	/**
+	 * Filter the date context
+	 *
+	 * You can add your own date context or use already exist context.
+	 * For example:
+	 *    add_filter( 'give_date_format_contexts', 'add_new_date_contexts' );
+	 *    function add_new_date_contexts( $date_format_contexts ) {
+	 *        // You can add single context like this $date_format_contexts['checkout'] = 'F j, Y';
+	 *        // Instead add multiple date context at once.
+	 *        $new_date_format_contexts = array(
+	 *            'checkout' => 'F j, Y',
+	 *            'report'   => 'Y-m-d',
+	 *            'email'    => 'm/d/Y',
+	 *        );
+	 *
+	 *       // Merge date contexts array only if you are adding multiple date contexts at once otherwise return  $date_format_contexts.
+	 *       return array_merge( $new_date_format_contexts, $date_format_contexts );
+	 *
+	 *    }
+	 */
+	$date_format_contexts = apply_filters( 'give_date_format_contexts', array() );
+
+	// Set date format to default date format.
+	$date_format = get_option('date_format');
+
+
+	// Update date format if we have non empty date format context array and non empty date format string for that context.
+	if( $date_context &&  ! empty( $date_format_contexts ) && array_key_exists( $date_context, $date_format_contexts ) ) {
+		$date_format = ! empty( $date_format_contexts[ $date_context ] )
+			? $date_format_contexts[ $date_context ]
+			: $date_format;
+	}
+
+	return apply_filters( 'give_date_format', $date_format );
+}
+
+/**
+ * Get cache key.
+ *
+ * @since  1.7
+ *
+ * @param  string $action     Cache key prefix.
+ * @param array   $query_args Query array.
+ *
+ * @return string
+ */
+function give_get_cache_key( $action, $query_args ) {
+	// Bailout.
+	if( ! is_array( $query_args ) || empty( $query_args ) ) {
+		return '';
+	}
+
+	return "give_cache_{$action}_" . substr( md5( serialize( $query_args ) ), 0, 15 );
 }

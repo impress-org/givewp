@@ -5,15 +5,15 @@
  * @package     Give
  * @subpackage  Admin/Reports
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// Load WP_List_Table if not loaded
+// Load WP_List_Table if not loaded.
 if ( ! class_exists( 'WP_List_Table' ) ) {
 	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 }
@@ -57,10 +57,10 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 * @access public
 	 * @since  1.0
 	 *
-	 * @param array  $item Contains all the data of the error.
+	 * @param array  $item Contains all the data of the log item.
 	 * @param string $column_name The name of the column.
 	 *
-	 * @return string Column Name
+	 * @return string Column Name.
 	 */
 	public function column_default( $item, $column_name ) {
 
@@ -79,12 +79,12 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Output Error Message Column
+	 * Output Error Message Column.
 	 *
 	 * @access public
 	 * @since  1.0
 	 *
-	 * @param array $item Contains all the data of the log
+	 * @param array $item Contains all the data of the log.
 	 *
 	 * @return void
 	 */
@@ -116,18 +116,18 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Retrieve the table columns
+	 * Retrieve the table columns.
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @return array $columns Array of all the list table columns
+	 * @return array $columns Array of all the list table columns.
 	 */
 	public function get_columns() {
 		$columns = array(
 			'ID'         => esc_html__( 'Log ID', 'give' ),
 			'error'      => esc_html__( 'Error', 'give' ),
 			'gateway'    => esc_html__( 'Gateway', 'give' ),
-			'payment_id' => esc_html__( 'Payment ID', 'give' ),
+			'payment_id' => esc_html__( 'Donation ID', 'give' ),
 			'date'       => esc_html__( 'Date', 'give' ),
 			'message'    => esc_html__( 'Details', 'give' )
 		);
@@ -158,12 +158,12 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Gets the log entries for the current view
+	 * Gets the log entries for the current view.
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @global object $give_logs Give Logs Object
-	 * @return array $logs_data Array of all the Log entires
+	 *
+	 * @return array $logs_data Array of all the Log entries.
 	 */
 	public function get_logs() {
 
@@ -237,7 +237,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @global object $give_logs Give Logs Object
+	 *
 	 * @uses   Give_Gateway_Error_Log_Table::get_columns()
 	 * @uses   WP_List_Table::get_sortable_columns()
 	 * @uses   Give_Gateway_Error_Log_Table::get_pagenum()

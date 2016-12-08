@@ -6,11 +6,11 @@
  *
  * @subpackage  Admin/Tools/Give_Tools_Delete_Test_Transactions
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.5
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -239,9 +239,9 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 				);
 			}
 
-			// Allow filtering of items to remove with an unassociative array for each item
-			// The array contains the unique ID of the item, and a 'type' for you to use in the execution of the get_data method
-			$items = apply_filters( 'give_reset_store_items', $items );
+			// Allow filtering of items to remove with an unassociative array for each item.
+			// The array contains the unique ID of the item, and a 'type' for you to use in the execution of the get_data method.
+			$items = apply_filters( 'give_reset_items', $items );
 
 			$this->store_data( 'give_temp_reset_ids', $items );
 		}

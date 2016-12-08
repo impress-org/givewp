@@ -5,23 +5,26 @@
  * @package     Give
  * @subpackage  Functions/Install
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
+ *
  * Install
  *
  * Runs on plugin install by setting up the post types, custom taxonomies, flushing rewrite rules to initiate the new 'donations' slug and also creates the plugin and populates the settings fields for those plugin pages. After successful install, the user is redirected to the Give Welcome screen.
  *
  * @since 1.0
- * @global $wpdb
- * @global $wp_version
+ *
+ * @param bool $network_wide
+ *
+ * @global     $wpdb
  * @return void
  */
 function give_install( $network_wide = false ) {
@@ -76,7 +79,7 @@ function give_run_install() {
 	// Checks if the Success Page option exists AND that the page exists.
 	if ( ! get_post( give_get_option( 'success_page' ) ) ) {
 
-		// Donations Confirmation (Success) Page.
+		// Donation Confirmation (Success) Page
 		$success = wp_insert_post(
 			array(
 				'post_title'     => esc_html__( 'Donation Confirmation', 'give' ),
@@ -95,11 +98,11 @@ function give_run_install() {
 	// Checks if the Failure Page option exists AND that the page exists.
 	if ( ! get_post( give_get_option( 'failure_page' ) ) ) {
 
-		// Failed Donation Page.
+		// Failed Donation Page
 		$failed = wp_insert_post(
 			array(
-				'post_title'     => esc_html__( 'Transaction Failed', 'give' ),
-				'post_content'   => esc_html__( 'We\'re sorry, your transaction failed to process. Please try again or contact site support.', 'give' ),
+				'post_title'     => esc_html__( 'Donation Failed', 'give' ),
+				'post_content'   => esc_html__( 'We\'re sorry, your donation failed to process. Please try again or contact site support.', 'give' ),
 				'post_status'    => 'publish',
 				'post_author'    => 1,
 				'post_type'      => 'page',
@@ -112,7 +115,7 @@ function give_run_install() {
 
 	// Checks if the History Page option exists AND that the page exists.
 	if ( ! get_post( give_get_option( 'history_page' ) ) ) {
-		// Purchase History (History) Page.
+		// Donation History Page
 		$history = wp_insert_post(
 			array(
 				'post_title'     => esc_html__( 'Donation History', 'give' ),
@@ -130,7 +133,7 @@ function give_run_install() {
 	//Fresh Install? Setup Test Mode, Base Country (US), Test Gateway, Currency.
 	if ( empty( $current_version ) ) {
 		$options['base_country']       = 'US';
-		$options['test_mode']          = 1;
+		$options['test_mode']          = 'on';
 		$options['currency']           = 'USD';
 		$options['session_lifetime']   = '604800';
 		$options['gateways']['manual'] = 1;
@@ -210,10 +213,10 @@ register_activation_hook( GIVE_PLUGIN_FILE, 'give_install' );
  *
  * @param  int    $blog_id The Blog ID created.
  * @param  int    $user_id The User ID set as the admin.
- * @param  string $domain The URL.
- * @param  string $path Site Path.
+ * @param  string $domain  The URL.
+ * @param  string $path    Site Path.
  * @param  int    $site_id The Site ID.
- * @param  array  $meta Blog Meta.
+ * @param  array  $meta    Blog Meta.
  */
 function on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
 
@@ -235,7 +238,7 @@ add_action( 'wpmu_new_blog', 'on_create_blog', 10, 6 );
  *
  * @since  1.4.3
  *
- * @param  array $tables The tables to drop.
+ * @param  array $tables  The tables to drop.
  * @param  int   $blog_id The Blog ID being deleted.
  *
  * @return array          The tables to drop.
@@ -290,6 +293,13 @@ function give_after_install() {
 			// (this ensures it creates it on multisite instances where it is network activated).
 			@Give()->customers->create_table();
 
+			/**
+			 * Fires after plugin installation.
+			 *
+			 * @since 1.0
+			 *
+			 * @param array $give_options Give plugin options.
+			 */
 			do_action( 'give_after_install', $give_options );
 		}
 

@@ -35,6 +35,10 @@ function cmb2_autoload_classes( $class_name ) {
 		$path .= '/types';
 	}
 
+	if ( 'CMB2_REST' === $class_name || 0 === strpos( $class_name, 'CMB2_REST_' ) ) {
+		$path .= '/rest-api';
+	}
+
 	include_once( cmb2_dir( "$path/{$class_name}.php" ) );
 }
 
@@ -52,7 +56,7 @@ function cmb2_utils() {
 /**
  * Get instance of the CMB2_Ajax class
  * @since  2.0.0
- * @return CMB2_Ajax object CMB2 utilities class
+ * @return CMB2_Ajax object CMB2 ajax class
  */
 function cmb2_ajax() {
 	return CMB2_Ajax::get_instance();
@@ -90,10 +94,15 @@ function cmb2_get_oembed( $args = array() ) {
 		return '<div class="cmb2-oembed">' . $oembed['embed'] . '</div>';
 	}
 
-	$error = sprintf( __( 'No oEmbed Results Found for %s. View more info at %s', 'cmb2' ), $oembed['fallback'], ' <a href="http://codex.wordpress.org/Embeds" target="_blank">codex.wordpress.org/Embeds</a>.' );
+	$error = sprintf(
+		/* translators: 1: results for. 2: link to codex.wordpress.org/Embeds */
+		esc_html__( 'No oEmbed Results Found for %1$s. View more info at %2$s.', 'cmb2' ),
+		$oembed['fallback'],
+		'<a href="https://codex.wordpress.org/Embeds" target="_blank">codex.wordpress.org/Embeds</a>'
+	);
 
 	if ( isset( $args['wp_error'] ) && $args['wp_error'] ) {
-		return new WP_Error( 'cmb2_get_oembed_result', $wp_error, compact( 'oembed', 'args' ) );
+		return new WP_Error( 'cmb2_get_oembed_result', $error, compact( 'oembed', 'args' ) );
 	}
 
 	// Otherwise, send back error info that no oEmbeds were found
@@ -276,7 +285,7 @@ function cmb2_print_metabox_form( $meta_box, $object_id = 0, $args = array() ) {
 
 	$args = wp_parse_args( $args, array(
 		'form_format' => '<form class="cmb-form" method="post" id="%1$s" enctype="multipart/form-data" encoding="multipart/form-data"><input type="hidden" name="object_id" value="%2$s">%3$s<input type="submit" name="submit-cmb" value="%4$s" class="button-primary"></form>',
-		'save_button' => __( 'Save', 'cmb2' ),
+		'save_button' => esc_html__( 'Save', 'cmb2' ),
 		'object_type' => $cmb->mb_object_type(),
 		'cmb_styles'  => $cmb->prop( 'cmb_styles' ),
 		'enqueue_js'  => $cmb->prop( 'enqueue_js' ),

@@ -9,6 +9,12 @@
  * @author    WebDevStudios
  * @license   GPL-2.0+
  * @link      http://webdevstudios.com
+ *
+ * @method string _id()
+ * @method string _name()
+ * @method string _desc()
+ * @method string _text()
+ * @method string concat_attrs()
  */
 class CMB2_Types {
 
@@ -27,11 +33,11 @@ class CMB2_Types {
 	public $field;
 
 	/**
-	 * Current CMB2_Type object
-	 * @var   CMB2_Type object
+	 * Current CMB2_Type_Base object
+	 * @var   CMB2_Type_Base object
 	 * @since 2.2.2
 	 */
-	public $type;
+	public $type = null;
 
 	public function __construct( CMB2_Field $field ) {
 		$this->field = $field;
@@ -57,7 +63,7 @@ class CMB2_Types {
 			'parse_picker_options' => array(),
 		);
 		if ( isset( $proxied[ $fieldtype ] ) ) {
-			// Proxies the method call to the CMB2_Type object
+			// Proxies the method call to the CMB2_Type_Base object
 			return $this->proxy_method( $fieldtype, $proxied[ $fieldtype ], $arguments );
 		}
 
@@ -77,7 +83,7 @@ class CMB2_Types {
 		 *                                   but could also be `comment`, `user` or `options-page`.
 		 * @param object $field_type_object  This `CMB2_Types` object
 		 */
-		do_action( "cmb2_render_$fieldtype", $this->field, $this->field->escaped_value(), $this->field->object_id, $this->field->object_type, $this );
+		do_action( "cmb2_render_{$fieldtype}", $this->field, $this->field->escaped_value(), $this->field->object_id, $this->field->object_type, $this );
 	}
 
 	/**
@@ -103,23 +109,71 @@ class CMB2_Types {
 	}
 
 	/**
-	 * Proxies the method call to the CMB2_Type object, if it exists, otherwise returns a default fallback value.
+	 * Proxies the method call to the CMB2_Type_Base object, if it exists, otherwise returns a default fallback value.
 	 *
 	 * @since  2.2.2
 	 *
-	 * @param  string $method  Method to call on the CMB2_Type object.
+	 * @param  string $method  Method to call on the CMB2_Type_Base object.
 	 * @param  mixed  $default Default fallback value if method is not found.
 	 *
 	 * @return mixed           Results from called method.
 	 */
 	protected function proxy_method( $method, $default, $args = array() ) {
+		if ( ! is_object( $this->type ) ) {
+			$this->guess_type_object( $method );
+		}
+
 		if ( is_object( $this->type ) && method_exists( $this->type, $method ) ) {
+
 			return empty( $args )
 				? $this->type->$method()
 				: call_user_func_array( array( $this->type, $method ), $args );
 		}
 
 		return $default;
+	}
+
+	/**
+	 * If no CMB2_Types::$type object is initiated when a proxy method is called, it means
+	 * it's a custom field type (which SHOULD be instantiating a Type), but let's try and
+	 * guess the type object for them and instantiate it.
+	 *
+	 * @since  2.2.3
+	 *
+	 * @param string $method  Method attempting to be called on the CMB2_Type_Base object.
+	 */
+	protected function guess_type_object( $method ) {
+
+		// Try to "guess" the Type object based on the method requested.
+		switch ( $method ) {
+			case 'select_option':
+			case 'list_input':
+			case 'list_input_checkbox':
+			case 'concat_items':
+				$this->type = new CMB2_Type_Select( $this );
+				break;
+			case 'is_valid_img_ext':
+			case 'img_status_output':
+			case 'file_status_output':
+				$this->type = new CMB2_Type_File_Base( $this );
+				break;
+			case 'parse_picker_options':
+				$this->type = new CMB2_Type_Text_Date( $this );
+				break;
+			case 'get_object_terms':
+			case 'get_terms':
+				$this->type = new CMB2_Type_Taxonomy_Multicheck( $this );
+				break;
+			case 'date_args':
+			case 'time_args':
+				$this->type = new CMB2_Type_Text_Datetime_Timestamp( $this );
+				break;
+			case 'parse_args':
+				$this->type = new CMB2_Type_Text( $this );
+				break;
+		}
+
+		return null !== $this->type;
 	}
 
 	/**
@@ -130,7 +184,7 @@ class CMB2_Types {
 	 * @return string            Text
 	 */
 	public function _text( $text_key, $fallback = '' ) {
-		return $this->field->string( $text_key, $fallback );
+		return $this->field->get_string( $text_key, $fallback );
 	}
 
 	/**
@@ -140,7 +194,7 @@ class CMB2_Types {
 	 * @return string|false       File extension or false
 	 */
 	public function get_file_ext( $file ) {
-		return cmb2_utils()->get_file_ext( $file );
+		return CMB2_Utils::get_file_ext( $file );
 	}
 
 	/**
@@ -150,7 +204,7 @@ class CMB2_Types {
 	 * @return string        File name
 	 */
 	public function get_file_name_from_path( $value ) {
-		return cmb2_utils()->get_file_name_from_path( $value );
+		return CMB2_Utils::get_file_name_from_path( $value );
 	}
 
 	/**
@@ -161,18 +215,7 @@ class CMB2_Types {
 	 * @return string               String of attributes for form element
 	 */
 	public function concat_attrs( $attrs, $attr_exclude = array() ) {
-		$attr_exclude[] = 'rendered';
-		$attributes = '';
-		foreach ( $attrs as $attr => $val ) {
-			$excluded = in_array( $attr, (array) $attr_exclude, true );
-			$empty    = false === $val && 'value' !== $attr;
-			if ( ! $excluded && ! $empty ) {
-				// if data attribute, use single quote wraps, else double
-				$quotes = false !== stripos( $attr, 'data-' ) ? "'" : '"';
-				$attributes .= sprintf( ' %1$s=%3$s%2$s%3$s', $attr, $val, $quotes );
-			}
-		}
-		return $attributes;
+		return CMB2_Utils::concat_attrs( $attrs, $attr_exclude );
 	}
 
 	/**
@@ -191,7 +234,7 @@ class CMB2_Types {
 			</div>
 		</div>
 		<p class="cmb-add-row">
-			<button type="button" data-selector="<?php echo $table_id; ?>" class="cmb-add-row-button button"><?php echo esc_html( $this->_text( 'add_row_text', __( 'Add Row', 'cmb2' ) ) ); ?></button>
+			<button type="button" data-selector="<?php echo $table_id; ?>" class="cmb-add-row-button button"><?php echo esc_html( $this->_text( 'add_row_text', esc_html__( 'Add Row', 'cmb2' ) ) ); ?></button>
 		</p>
 
 		<?php
@@ -254,7 +297,7 @@ class CMB2_Types {
 				<?php $this->_render(); ?>
 			</div>
 			<div class="cmb-td cmb-remove-row">
-				<button type="button" class="button cmb-remove-row-button<?php echo $disabled; ?>"><?php echo esc_html( $this->_text( 'remove_row_text', __( 'Remove', 'cmb2' ) ) ); ?></button>
+				<button type="button" class="button cmb-remove-row-button<?php echo $disabled; ?>"><?php echo esc_html( $this->_text( 'remove_row_text', esc_html__( 'Remove', 'cmb2' ) ) ); ?></button>
 			</div>
 		</div>
 
@@ -314,7 +357,7 @@ class CMB2_Types {
 	 * Handles outputting an 'input' element
 	 * @since  1.1.0
 	 * @param  array  $args Override arguments
-	 * @param  array  $type Field type
+	 * @param  string $type Field type
 	 * @return string       Form input element
 	 */
 	public function input( $args = array(), $type = __FUNCTION__ ) {
@@ -342,11 +385,16 @@ class CMB2_Types {
 	}
 
 	public function hidden() {
-		return $this->input( array(
+		$args = array(
 			'type' => 'hidden',
 			'desc' => '',
-			'class' => false,
-		) );
+			'class' => 'cmb2-hidden',
+		);
+		if ( $this->field->group ) {
+			$args['data-groupid'] = $this->field->group->id();
+			$args['data-iterator'] = $this->iterator;
+		}
+		return $this->input( $args );
 	}
 
 	public function text_small() {

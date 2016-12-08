@@ -25,16 +25,16 @@ We earn money by selling add-ons, not from the money you raise. What you raise i
 
 ### Easy to Customize and Enhance ###
 
-Give is built by [WordImpress](http://wordimpress.com "Visit the the developers of Give - WordImpress"), our plugins are built from the ground up to be intuitive and easy to use. Along with the plugin is a support team that is dedicated, fast to respond, and always willing to squash bugs and help troubleshoot.
+Give is built by [WordImpress](https://wordimpress.com "Visit the the developers of Give - WordImpress"), our plugins are built from the ground up to be intuitive and easy to use. Along with the plugin is a support team that is dedicated, fast to respond, and always willing to squash bugs and help troubleshoot.
 
 ### Connect with Give ###
 
 Stay in touch with us for important plugin news and updates:
 
 * **[Newsletter](http://eepurl.com/bggG99 "Subscribe via MailChimp")**
-* **[Facebook](http://facebook.com/wpgive "Visit the Give on Facebook")**
+* **[Facebook](https://facebook.com/wpgive "Visit the Give on Facebook")**
 * **[GitHub](https://github.com/WordImpress/Give "Visit the the developers of Give - WordImpress")**
-* **[WordImpress](http://wordimpress.com "Visit the the developers of Give - WordImpress")**
+* **[WordImpress](https://wordimpress.com "Visit the the developers of Give - WordImpress")**
 
 ### Contribute to Give ###
 
@@ -42,7 +42,7 @@ This is a WordPress plugin and therefore is GPL / open source. We are always loo
 
 ## Installation ##
 
-The easiest way to install the plugin is through the [WordPress.org plugin repository](http://wordpress.org/plugins/give "Give on the WordPress.org plugin repository").
+The easiest way to install the plugin is through the [WordPress.org plugin repository](https://wordpress.org/plugins/give "Give on the WordPress.org plugin repository").
 
 ### Minimum Requirements ###
 
@@ -59,7 +59,7 @@ In the search field type "Give" and click Search Plugins. Once you have found th
 
 ### Manual installation ###
 
-The manual installation method involves downloading the plugin and uploading it to your server via your favorite FTP application. The WordPress Codex contains [instructions on how to do this here](http://codex.wordpress.org/Managing_Plugins#Manual_Plugin_Installation).
+The manual installation method involves downloading the plugin and uploading it to your server via your favorite FTP application. The WordPress Codex contains [instructions on how to do this here](https://codex.wordpress.org/Managing_Plugins#Manual_Plugin_Installation).
 
 ### Updating ###
 

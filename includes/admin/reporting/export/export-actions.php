@@ -7,7 +7,7 @@
  * @package     Give
  * @subpackage  Admin/Export
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -28,6 +28,13 @@ function give_process_batch_export_form() {
 
 	require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/export/class-batch-export.php';
 
+	/**
+	 * Fires before batch export.
+	 *
+	 * @since 1.5
+	 *
+	 * @param atring $class Export class.
+	 */
 	do_action( 'give_batch_export_class_include', $_REQUEST['class'] );
 
 	$export = new $_REQUEST['class'];
@@ -83,6 +90,15 @@ add_action( 'give_email_export', 'give_export_all_customers' );
  */
 function give_register_batch_exporters() {
 	if ( is_admin() ) {
+		/**
+		 * Fires in the admin, while plugins loaded.
+		 *
+		 * Allowing extensions to register a hook on the batch export process.
+		 *
+		 * @since 1.5
+		 *
+		 * @param string $class Export class.
+		 */
 		do_action( 'give_register_batch_exporter' );
 	}
 }

@@ -5,11 +5,11 @@
  * @package     Give
  * @subpackage  Classes/Give_HTML_Elements
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -24,16 +24,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Give_HTML_Elements {
 
 	/**
-	 * Transactions Dropdown
+	 * Donations Dropdown
 	 *
-	 * Renders an HTML Dropdown of all the donation transactions.
+	 * Renders an HTML Dropdown of all the donations.
 	 *
 	 * @since  1.0
 	 * @access public
 	 *
 	 * @param  array  $args Arguments for the dropdown.
 	 *
-	 * @return string       Transactions dropdown.
+	 * @return string       Donations dropdown.
 	 */
 	public function transactions_dropdown( $args = array() ) {
 
@@ -45,12 +45,10 @@ class Give_HTML_Elements {
 			'selected'    => 0,
 			'chosen'      => false,
 			'number'      => 30,
-			/* translators: %s: transaction singular label */
 			'placeholder' => esc_html__( 'Select a transaction', 'give' )
 		);
 
 		$args = wp_parse_args( $args, $defaults );
-
 
 		$payments = new Give_Payments_Query( array(
 			'number' => $args['number']
@@ -62,16 +60,14 @@ class Give_HTML_Elements {
 
 		//Provide nice human readable options.
 		if ( $payments ) {
-			$options[0] =
-				/* translators: %s: transaction singular label */
-				esc_html__( 'Select a transaction', 'give' );
+			$options[0] = esc_html__( 'Select a donation', 'give' );
 			foreach ( $payments as $payment ) {
 
 				$options[ absint( $payment->ID ) ] = esc_html( '#' . $payment->ID . ' - ' . $payment->email . ' - ' . $payment->form_title);
 
 			}
 		} else {
-			$options[0] = esc_html__( 'No Transactions Found', 'give' );
+			$options[0] = esc_html__( 'No donations found.', 'give' );
 		}
 
 
@@ -114,8 +110,7 @@ class Give_HTML_Elements {
 			'selected'    => 0,
 			'chosen'      => false,
 			'number'      => 30,
-			/* translators: %s: form singular label */
-			'placeholder' => sprintf( esc_html__( 'Select a %s', 'give' ), give_get_forms_label_singular() )
+			'placeholder' => esc_attr__( 'Select a Form', 'give' )
 		);
 
 		$args = wp_parse_args( $args, $defaults );
@@ -130,16 +125,12 @@ class Give_HTML_Elements {
 		$options = array();
 
 		if ( $forms ) {
-			$options[0] = sprintf(
-			/* translators: %s: form singular label */
-				esc_html__( 'Select a %s', 'give' ),
-				give_get_forms_label_singular()
-			);
+			$options[0] = esc_attr__( 'Select a Form', 'give' );
 			foreach ( $forms as $form ) {
 				$options[ absint( $form->ID ) ] = esc_html( $form->post_title );
 			}
 		} else {
-			$options[0] = esc_html__( 'No Give Donation Forms Found', 'give' );
+			$options[0] = esc_html__( 'No forms found.', 'give' );
 		}
 
 		// This ensures that any selected forms are included in the drop down
@@ -210,7 +201,7 @@ class Give_HTML_Elements {
 				$options[ absint( $customer->id ) ] = esc_html( $customer->name . ' (' . $customer->email . ')' );
 			}
 		} else {
-			$options[0] = esc_html__( 'No donors found', 'give' );
+			$options[0] = esc_html__( 'No donors found.', 'give' );
 		}
 
 		if ( ! empty( $args['selected'] ) ) {
@@ -635,7 +626,7 @@ class Give_HTML_Elements {
 
 		$output = '<span class="give_user_search_wrap">';
 		$output .= $this->text( $args );
-		$output .= '<span class="give_user_search_results hidden"><a class="give-ajax-user-cancel" title="' . esc_attr__( 'Cancel', 'give' ) . '" aria-label="' . esc_attr__( 'Cancel', 'give' ) . '" href="#">x</a><span></span></span>';
+		$output .= '<span class="give_user_search_results hidden"><a class="give-ajax-user-cancel" aria-label="' . esc_attr__( 'Cancel', 'give' ) . '" href="#">x</a><span></span></span>';
 		$output .= '</span>';
 
 		return $output;

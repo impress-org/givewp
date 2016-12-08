@@ -113,8 +113,6 @@ class CMB2_Field_Display {
 	 * Catchall method if field's 'display_cb' is NOT defined, or field type does
 	 * not have a corresponding display method
 	 * @since 2.2.2
-	 * @param  string $method    Non-existent method name
-	 * @param  array  $arguments All arguments passed to the method
 	 */
 	public function display() {
 		// If repeatable
@@ -378,7 +376,7 @@ class CMB2_Display_File extends CMB2_Field_Display {
 		$field_type = new CMB2_Type_File_Base( new CMB2_Types( $this->field ) );
 
 		$id = $this->field->get_field_clone( array(
-			'id' => $field_type->_id() . '_id',
+			'id' => $this->field->_id() . '_id',
 		) )->escaped_value( 'absint' );
 
 		$this->file_output( $this->value, $id, $field_type );
@@ -387,7 +385,7 @@ class CMB2_Display_File extends CMB2_Field_Display {
 	protected function file_output( $url_value, $id, CMB2_Type_File_Base $field_type ) {
 		// If there is no ID saved yet, try to get it from the url
 		if ( $url_value && ! $id ) {
-			$id = cmb2_utils()->image_id_from_url( esc_url_raw( $url_value ) );
+			$id = CMB2_Utils::image_id_from_url( esc_url_raw( $url_value ) );
 		}
 
 		if ( $field_type->is_valid_img_ext( $url_value ) ) {
@@ -405,9 +403,9 @@ class CMB2_Display_File extends CMB2_Field_Display {
 		} else {
 
 			printf( '<div class="file-status"><span>%1$s <strong><a href="%2$s">%3$s</a></strong></span></div>',
-				esc_html( $field_type->_text( 'file_text', __( 'File:', 'cmb2' ) ) ),
+				esc_html( $field_type->_text( 'file_text', esc_html__( 'File:', 'cmb2' ) ) ),
 				$url_value,
-				cmb2_utils()->get_file_name_from_path( $url_value )
+				CMB2_Utils::get_file_name_from_path( $url_value )
 			);
 
 		}

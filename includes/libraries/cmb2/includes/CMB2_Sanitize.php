@@ -58,7 +58,11 @@ class CMB2_Sanitize {
 		 * is not what happens here.
 		 * @deprecated See documentation for "cmb2_sanitize_{$this->type()}".
 		 */
-		$override_value = apply_filters( "cmb2_validate_{$this->field->type()}", null, $this->value, $this->field->object_id, $this->field->args(), $this );
+		if ( function_exists( 'apply_filters_deprecated' ) ) {
+			$override_value = apply_filters_deprecated( "cmb2_validate_{$this->field->type()}", array( null, $this->value, $this->field->object_id, $this->field->args(), $this ), '2.0.0', "cmb2_sanitize_{$this->field->type()}" );
+		} else {
+			$override_value = apply_filters( "cmb2_validate_{$this->field->type()}", null, $this->value, $this->field->object_id, $this->field->args(), $this );
+		}
 
 		if ( null !== $override_value ) {
 			return $override_value;
@@ -79,7 +83,7 @@ class CMB2_Sanitize {
 				if ( $this->field->args( 'taxonomy' ) ) {
 					wp_set_object_terms( $this->field->object_id, $this->value, $this->field->args( 'taxonomy' ) );
 				} else {
-					cmb2_utils()->log_if_debug( __METHOD__, __LINE__, "{$this->field->type()} {$this->field->_id()} is missing the 'taxonomy' parameter." );
+					CMB2_Utils::log_if_debug( __METHOD__, __LINE__, "{$this->field->type()} {$this->field->_id()} is missing the 'taxonomy' parameter." );
 				}
 				break;
 			case 'multicheck':
@@ -206,7 +210,7 @@ class CMB2_Sanitize {
 	/**
 	 * Datetime to timestamp
 	 * @since  1.0.1
-	 * @return string Timestring
+	 * @return string|array Timestring
 	 */
 	public function text_datetime_timestamp( $repeat = false ) {
 
@@ -263,10 +267,10 @@ class CMB2_Sanitize {
 		}
 
 		if ( empty( $tzstring ) ) {
-			$tzstring = cmb2_utils()->timezone_string();
+			$tzstring = CMB2_Utils::timezone_string();
 		}
 
-		$offset = cmb2_utils()->timezone_offset( $tzstring );
+		$offset = CMB2_Utils::timezone_offset( $tzstring );
 
 		if ( 'UTC' === substr( $tzstring, 0, 3 ) ) {
 			$tzstring = timezone_name_from_abbr( '', $offset, 0 );
@@ -311,7 +315,7 @@ class CMB2_Sanitize {
 
 		} catch ( Exception $e ) {
 			$this->value = '';
-			cmb2_utils()->log_if_debug( __METHOD__, __LINE__, $e->getMessage() );
+			CMB2_Utils::log_if_debug( __METHOD__, __LINE__, $e->getMessage() );
 		}
 
 		return $this->value;
@@ -394,7 +398,7 @@ class CMB2_Sanitize {
 
 		// If there is no ID saved yet, try to get it from the url
 		if ( $this->value && ! $id_val ) {
-			$id_val = cmb2_utils()->image_id_from_url( $this->value );
+			$id_val = CMB2_Utils::image_id_from_url( $this->value );
 		}
 
 		return $id_field->save_field( $id_val );

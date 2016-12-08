@@ -716,12 +716,12 @@ table#give_donation_receipt .give-receipt-thead-text {
     font-size: 16px; }
 
 table#give_donation_receipt li {
-  list-style: none;
   margin: 0 0 8px 10px; }
 
 table#give_donation_receipt ul {
   margin: 0;
-  padding: 0; }
+  padding: 0;
+  list-style: none; }
 
 table#give_donation_receipt .give_receipt_payment_status.pending,
 table#give_donation_receipt .give_receipt_payment_status.revoked,
@@ -994,6 +994,9 @@ form[id*='give-form'] .give-donation-amount {
     cursor: not-allowed;
     background: #FFF;
     float: left; }
+
+form[id*='give-form'] #give_terms_agreement legend {
+  display: none; }
 
 form[id*='give-form'] #give-final-total-wrap {
   margin: 25px 0;
@@ -2081,152 +2084,5 @@ body.give-twentysixteen form[id*="give"] fieldset {
 
 body.give-twentysixteen fieldset#give_terms_agreement {
   padding-left: 0; }
-
-/**
- * Give Right-to-Left Support
- *
- * @package     Give
- * @subpackage  SCSS/Frontend
- * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
-*/
-body.rtl [id*='give-form'] .form-row-first,
-body.rtl [id*='give-form'] .form-row-last,
-body.rtl [id*='give-form'] .form-row-two-thirds {
-  float: right; }
-
-body.rtl [id*='give-form'] .form-row-two-thirds {
-  float: right; }
-  body.rtl [id*='give-form'] .form-row-two-thirds.form-row-first {
-    margin-right: 0; }
-
-body.rtl [id*='give-form'] .form-row-one-third {
-  float: right;
-  margin-right: 3%;
-  margin-left: 0; }
-  body.rtl [id*='give-form'] .form-row-one-third.form-row-first {
-    margin-right: 0; }
-
-body.rtl [id*='give-form'] .form-row-last {
-  float: left; }
-
-body.rtl [id*='give-form'] select.card-expiry-year {
-  float: left; }
-
-body.rtl form[id*='give-form'] .give-donation-amount .give-currency-symbol {
-  float: right; }
-  body.rtl form[id*='give-form'] .give-donation-amount .give-currency-symbol.give-currency-position-before {
-    border-left: none;
-    border-right: 1px solid #ccc; }
-  body.rtl form[id*='give-form'] .give-donation-amount .give-currency-symbol.give-currency-position-after {
-    border-right: none;
-    border-left: 1px solid #ccc; }
-
-body.rtl form[id*='give-form'] .give-donation-amount #give-amount,
-body.rtl form[id*='give-form'] .give-donation-amount #give-amount-text {
-  float: right; }
-
-body.rtl form[id*='give-form'] .give-donation-amount span.give-final-total-amount {
-  float: right; }
-
-body.rtl form[id*='give-form'] #give-final-total-wrap .give-donation-total-label {
-  float: right;
-  border: 1px solid #ccc; }
-
-body.rtl form[id*='give-form'] #give-final-total-wrap .give-final-total-amount {
-  float: right;
-  border-right: none;
-  border-left: 1px solid #ccc; }
-
-body.rtl form[id*='give-form'] [id*='give-purchase-button'] {
-  float: right;
-  margin: 0 0 0 10px; }
-
-body.rtl .give_error, body.rtl .give_success {
-  padding: 1em 2em 1em 1em;
-  border-left: 0;
-  border-right: 4px solid #a00; }
-  body.rtl .give_error:before, body.rtl .give_success:before {
-    right: -17px; }
-  body.rtl .give_error.give_warning, body.rtl .give_success.give_warning {
-    border-color: #ffba00; }
-    body.rtl .give_error.give_warning:before, body.rtl .give_success.give_warning:before {
-      background-color: #ffba00; }
-
-body.rtl #give-donation-level-radio-list > li input[type="radio"] {
-  margin: 0 0 0 5px; }
-
-body.rtl #give-gateway-radio-list > li {
-  margin-right: 0;
-  margin-left: 15px; }
-  body.rtl #give-gateway-radio-list > li .give-gateway-option input[type="radio"] {
-    margin: 0 0 0 5px; }
-
-body.rtl #give-donation-level-button-wrap > li {
-  float: right;
-  margin: 0 0 5px 5px; }
-
-body.rtl .give_terms_links {
-  float: left; }
-
-body.rtl form[id*='give-form'] p.give-loading-text, body.rtl form[id*='give-form'] span.give-loading-text {
-  float: left; }
-
-body.rtl form[id*='give-form'] .give-loading-animation {
-  float: right;
-  margin: 0 0 0 5px; }
-
-body.rtl form[id*='give-form'] .give-payment-mode-label .give-loading-text {
-  float: left; }
-
-body.rtl .give-login-account-wrap > p.give-new-account-link, body.rtl .give-login-account-wrap > p.give-login-message, body.rtl [id^="give-login-fields"] > p.give-new-account-link, body.rtl [id^="give-login-fields"] > p.give-login-message {
-  float: right; }
-
-body.rtl .give-login-account-wrap p.give-login-message, body.rtl [id^="give-login-fields"] p.give-login-message {
-  margin-right: 0;
-  margin-left: 10px; }
-
-body.rtl .give-login-account-wrap .give_login_forgot_password, body.rtl [id^="give-login-fields"] .give_login_forgot_password {
-  float: left; }
-
-body.rtl [id^='give-user-login-submit'] input.give-cancel-login, body.rtl .give-submit-button-wrap input.give-cancel-login {
-  margin-left: 0;
-  margin-right: 5px; }
-
-body.rtl table.give-table thead th:first-child {
-  text-align: right; }
-
-body.rtl table.give-table tbody tr td {
-  border-left: 0;
-  border-right: 1px solid #e0e0e0; }
-
-body.rtl table.give-table tbody tr td:first-child {
-  text-align: right; }
-
-body.rtl .give-modal {
-  right: 0; }
-  body.rtl .give-modal .mfp-container {
-    right: 0; }
-  body.rtl .give-modal .mfp-content {
-    text-align: right; }
-  body.rtl .give-modal .mfp-close {
-    left: 0;
-    right: inherit; }
-
-body.give_receipt_page td, body.give_receipt_page th {
-  text-align: right;
-  padding: 6px 0 6px 10px; }
-
-body.rtl table#give_donation_receipt td, body.rtl table#give_donation_receipt th, body.rtl table#give_donation_receipt td, body.rtl table#give_donation_receipt th {
-  text-align: right; }
-
-body.rtl table#give_donation_receipt li {
-  margin: 0 10px 8px 0; }
-
-body.rtl .qtip-content {
-  text-align: right; }
-
-body.rtl [id*='give-form'].give-recurring-form-admin div.give-donation-amount, body.rtl [id*='give-form'].give-recurring-form-admin p.give-donation-amount {
-  float: right; }
 
 /*# sourceMappingURL=../assets/sourcemaps/give.css.map */

@@ -23,6 +23,11 @@
 			margin-top: 1em;
 		}
 	}
+	// Crop text which overflow in listbox.
+	.mce-listbox button{
+		text-overflow: ellipsis;
+		overflow: hidden !important;
+	}
 }
 
 /* =Shortcode button above wp_editor

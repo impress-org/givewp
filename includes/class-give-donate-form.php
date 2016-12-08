@@ -5,26 +5,34 @@
  * @package     Give
  * @subpackage  Classes/Give_Donate_Form
  * @copyright   Copyright (c) 2015, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
- * Give_Donate_Form Class
+ * Give_Donate_Form Class.
  *
  * This class handles donation forms.
  *
  * @since 1.0
+ *
+ * @property $price
+ * @property $minimum_price
+ * @property $prices
+ * @property $goal
+ * @property $sales
+ * @property $earnings
+ * @property $post_type
  */
 class Give_Donate_Form {
 
 	/**
-	 * The donation ID
+	 * The donation ID.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -34,7 +42,7 @@ class Give_Donate_Form {
 	public $ID = 0;
 
 	/**
-	 * The donation price
+	 * The donation price.
 	 *
 	 * @since  1.0
 	 * @access private
@@ -44,7 +52,7 @@ class Give_Donate_Form {
 	private $price;
 
 	/**
-	 * The minimum donation price
+	 * The minimum donation price.
 	 *
 	 * @since  1.3.6
 	 * @access private
@@ -54,17 +62,7 @@ class Give_Donate_Form {
 	private $minimum_price;
 
 	/**
-	 * The donation goal
-	 *
-	 * @since  1.0
-	 * @access private
-	 *
-	 * @var    float
-	 */
-	private $goal;
-
-	/**
-	 * The donation prices, if Price Levels are enabled
+	 * The donation prices, if Price Levels are enabled.
 	 *
 	 * @since  1.0
 	 * @access private
@@ -74,7 +72,17 @@ class Give_Donate_Form {
 	private $prices;
 
 	/**
-	 * The form's sale count
+	 * The donation goal.
+	 *
+	 * @since  1.0
+	 * @access private
+	 *
+	 * @var    float
+	 */
+	private $goal;
+
+	/**
+	 * The form's sale count.
 	 *
 	 * @since  1.0
 	 * @access private
@@ -328,8 +336,6 @@ class Give_Donate_Form {
 	 *
 	 * @param  bool  $_id   Post id. Default is false.
 	 * @param  array $_args Arguments passed.
-	 *
-	 * @return void
 	 */
 	public function __construct( $_id = false, $_args = array() ) {
 
@@ -381,13 +387,12 @@ class Give_Donate_Form {
 	/**
 	 * Magic __get function to dispatch a call to retrieve a private property
 	 *
-	 * @since 1.0
+	 * @since  1.0
 	 * @access public
 	 *
 	 * @param  string $key
 	 *
 	 * @return mixed
-	 * @throws Exception
 	 */
 	public function __get( $key ) {
 
@@ -412,7 +417,7 @@ class Give_Donate_Form {
 	 *
 	 * @param  array $data Array of attributes for a donation form.
 	 *
-	 * @return mixed       False if data isn't passed and class not instantiated for creation, or New Form ID.
+	 * @return bool|int    False if data isn't passed and class not instantiated for creation, or New Form ID.
 	 */
 	public function create( $data = array() ) {
 
@@ -563,8 +568,8 @@ class Give_Donate_Form {
 		 *
 		 * @since 1.0
 		 *
-		 * @param array $prices The array of mulit-level prices.
-		 * @param int|string The ID of the form.
+		 * @param array      $prices The array of mulit-level prices.
+		 * @param int|string The     ID of the form.
 		 */
 		return apply_filters( 'give_get_donation_levels', $this->prices, $this->ID );
 
@@ -622,8 +627,8 @@ class Give_Donate_Form {
 		 *
 		 * @since 1.0
 		 *
-		 * @param bool $ret Is donation form in single price mode?
-		 * @param int|string The ID of the donation form.
+		 * @param bool       $ret Is donation form in single price mode?
+		 * @param int|string The  ID of the donation form.
 		 */
 		return (bool) apply_filters( 'give_single_price_option_mode', $ret, $this->ID );
 
@@ -651,8 +656,8 @@ class Give_Donate_Form {
 		 *
 		 * @since 1.6
 		 *
-		 * @param bool $ret Is donation form in custom price mode?
-		 * @param int|string The ID of the donation form.
+		 * @param bool       $ret Is donation form in custom price mode?
+		 * @param int|string The  ID of the donation form.
 		 */
 		return (bool) apply_filters( 'give_custom_price_option_mode', $ret, $this->ID );
 
@@ -680,8 +685,8 @@ class Give_Donate_Form {
 		/**
 		 * Filter: Override whether the donation form has variables prices.
 		 *
-		 * @param bool $ret Does donation form have variable prices?
-		 * @param int|string The ID of the donation form.
+		 * @param bool       $ret Does donation form have variable prices?
+		 * @param int|string The  ID of the donation form.
 		 */
 		return (bool) apply_filters( 'give_has_variable_prices', $ret, $this->ID );
 
@@ -770,14 +775,14 @@ class Give_Donate_Form {
 
 	}
 
-    /**
-     * Get if form type set or not.
-     *
-     * @since  1.6
-	 * @access public
-     *
-	 * @return bool
+	/**
+	 * Get if form type set or not.
 	 *
+	 * @since  1.6
+	 * @access public
+	 *
+	 * @return bool
+	 */
 	public function is_set_type_donation_form() {
 		$form_type = $this->get_type();
 
@@ -925,7 +930,7 @@ class Give_Donate_Form {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  int    $amount Amount of donation. Default is 0.
+	 * @param  int $amount Amount of donation. Default is 0.
 	 *
 	 * @return float|false
 	 */
@@ -952,8 +957,8 @@ class Give_Donate_Form {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  int    $amount Amount of donation.
-	 * 
+	 * @param  int $amount Amount of donation.
+	 *
 	 * @return float|false
 	 */
 	public function decrease_earnings( $amount ) {
@@ -985,7 +990,7 @@ class Give_Donate_Form {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  int    $price_id Price ID. Default is false.
+	 * @param  int $price_id Price ID. Default is false.
 	 *
 	 * @return bool
 	 */

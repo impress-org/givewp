@@ -5,11 +5,11 @@
  * @package     Give
  * @subpackage  Admin/Reports
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.5
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -26,6 +26,11 @@ function give_tools_recount_stats_display() {
 		return;
 	}
 
+	/**
+	 * Fires before displaying the recount stats tools.
+	 *
+	 * @since 1.5
+	 */
 	do_action( 'give_tools_recount_stats_before' );
 	?>
 	<div id="poststuff">
@@ -47,7 +52,16 @@ function give_tools_recount_stats_display() {
 						<option data-type="recount-customer-stats" value="Give_Tools_Recount_Customer_Stats"><?php esc_html_e( 'Recalculate Donor Statistics', 'give' ); ?></option>
 						<option data-type="delete-test-transactions" value="Give_Tools_Delete_Test_Transactions"><?php esc_html_e( 'Delete Test Transactions', 'give' ); ?></option>
 						<option data-type="reset-stats" value="Give_Tools_Reset_Stats"><?php esc_html_e( 'Delete All Data', 'give' ); ?></option>
-						<?php do_action( 'give_recount_tool_options' ); ?>
+						<?php
+						/**
+						 * Fires in the recount stats selectbox.
+						 *
+						 * Allows you to add new recount tool option elements.
+						 *
+						 * @since 1.5
+						 */
+						do_action( 'give_recount_tool_options' );
+						?>
 					</select>
 
 					<span id="tools-form-dropdown" style="display: none">
@@ -67,34 +81,45 @@ function give_tools_recount_stats_display() {
 
 					<span class="give-recount-stats-descriptions">
 						<span id="recount-stats"><?php esc_html_e( 'Recalculates the overall donation income amount.', 'give' ); ?></span>
-						<span id="recount-form"><?php
-							printf(
-								/* translators: %s: form singular label */
-								esc_html__( 'Recalculates the donation and income stats for a specific %s.', 'give' ),
-								give_get_forms_label_singular( true )
-							);
-						?></span>
-						<span id="recount-all"><?php
-							printf(
-								/* translators: %s: form plural label */
-								esc_html__( 'Recalculates the earnings and sales stats for all %s.', 'give' ),
-								give_get_forms_label_plural( true )
-							);
-						?></span>
+						<span id="recount-form"><?php esc_html_e( 'Recalculates the donation and income stats for a specific form.', 'give' ); ?></span>
+						<span id="recount-all"><?php esc_html_e( 'Recalculates the earnings and sales stats for all forms.', 'give' ); ?></span>
 						<span id="recount-customer-stats"><?php esc_html_e( 'Recalculates the lifetime value and donation counts for all donors.', 'give' ); ?></span>
-						<?php do_action( 'give_recount_tool_descriptions' ); ?>
-						<span id="delete-test-transactions"><?php _e( '<strong>Deletes</strong> all TEST payment records, donors, and related log entries.', 'give' ); ?></span>
-						<span id="reset-stats"><?php _e( '<strong>Deletes</strong> ALL transaction records, donors, and related log entries regardless of test or live mode.', 'give' ); ?></span>
+						<?php
+						/**
+						 * Fires in the recount stats description area.
+						 *
+						 * Allows you to add new recount tool description text.
+						 *
+						 * @since 1.5
+						 */
+						do_action( 'give_recount_tool_descriptions' );
+						?>
+						<span id="delete-test-transactions"><?php _e( '<strong>Deletes</strong> all TEST donations, donors, and related log entries.', 'give' ); ?></span>
+						<span id="reset-stats"><?php _e( '<strong>Deletes</strong> ALL donations, donors, and related log entries regardless of test or live mode.', 'give' ); ?></span>
 					</span>
 
 					<span class="spinner"></span>
 
 				</form>
-				<?php do_action( 'give_tools_recount_forms' ); ?>
+				<?php
+				/**
+				 * Fires after the recount form.
+				 *
+				 * Allows you to add new elements after the form.
+				 *
+				 * @since 1.5
+				 */
+				do_action( 'give_tools_recount_forms' );
+				?>
 			</div><!-- .inside -->
 		</div><!-- .postbox -->
 	</div><!-- #poststuff -->
 	<?php
+	/**
+	 * Fires after displaying the recount stats tools.
+	 *
+	 * @since 1.5
+	 */
 	do_action( 'give_tools_recount_stats_after' );
 }
 

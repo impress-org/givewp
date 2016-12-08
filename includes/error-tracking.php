@@ -5,11 +5,11 @@
  * @package     Give
  * @subpackage  Functions/Errors
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @uses  give_get_errors()
  * @uses  give_clear_errors()
  *
- * @param int $form_id
+ * @param int $form_id Form ID.
  *
  * @return void
  */
@@ -35,17 +35,17 @@ function give_print_errors( $form_id ) {
 
 	$request_form_id = isset( $_REQUEST['form-id'] ) ? intval( $_REQUEST['form-id'] ) : 0;
 
-	//Sanity checks first: Ensure that gateway returned errors display on the appropriate form
+	// Sanity checks first: Ensure that gateway returned errors display on the appropriate form.
 	if ( ! isset( $_POST['give_ajax'] ) && $request_form_id !== $form_id ) {
 		return;
 	}
 
 	if ( $errors ) {
 		$classes = apply_filters( 'give_error_class', array(
-			'give_errors'
+			'give_errors',
 		) );
 		echo '<div class="' . implode( ' ', $classes ) . '">';
-		// Loop error codes and display errors
+		// Loop error codes and display errors.
 		foreach ( $errors as $error_id => $error ) {
 			echo '<div class="give_error" id="give_error_' . $error_id . '"><p><strong>' . esc_html__( 'Error', 'give' ) . '</strong>: ' . $error . '</p></div>';
 		}
@@ -54,8 +54,8 @@ function give_print_errors( $form_id ) {
 	}
 }
 
-add_action( 'give_purchase_form_before_personal_info', 'give_print_errors' );
-add_action( 'give_ajax_checkout_errors', 'give_print_errors' );
+add_action( 'give_donation_form_before_personal_info', 'give_print_errors' );
+add_action( 'give_ajax_donation_errors', 'give_print_errors' );
 
 /**
  * Get Errors
@@ -79,8 +79,8 @@ function give_get_errors() {
  * @since 1.0
  * @uses  Give_Session::get()
  *
- * @param int $error_id ID of the error being set
- * @param string $error_message Message to store with the error
+ * @param int    $error_id      ID of the error being set.
+ * @param string $error_message Message to store with the error.
  *
  * @return void
  */
@@ -110,9 +110,9 @@ function give_clear_errors() {
  * @since 1.0
  * @uses  Give_Session::set()
  *
- * @param int $error_id ID of the error being set
+ * @param int $error_id ID of the error being set.
  *
- * @return string
+ * @return void
  */
 function give_unset_error( $error_id ) {
 	$errors = give_get_errors();
@@ -126,7 +126,7 @@ function give_unset_error( $error_id ) {
  * Register die handler for give_die()
  *
  * @since  1.0
- * @return string/void
+ * @return string|void
  */
 function _give_die_handler() {
 	if ( defined( 'GIVE_UNIT_TESTS' ) ) {
@@ -140,13 +140,13 @@ function _give_die_handler() {
  * Wrapper function for wp_die(). This function adds filters for wp_die() which
  * kills execution of the script using wp_die(). This allows us to then to work
  * with functions using give_die() in the unit tests.
- * 
+ *
  * @since 1.0
- * 
- * @param string $message
- * @param string $title
- * @param int $status
- * 
+ *
+ * @param string $message Message to store with the error.
+ * @param string $title   Error title.
+ * @param int    $status  HTTP status code..
+ *
  * @return void
  */
 function give_die( $message = '', $title = '', $status = 400 ) {
@@ -159,11 +159,12 @@ function give_die( $message = '', $title = '', $status = 400 ) {
  * Give Output Error
  *
  * Helper function to easily output an error message properly wrapped; used commonly with shortcodes
+ *
  * @since      1.3
  *
- * @param string $message
- * @param bool   $echo
- * @param string $error_id
+ * @param string $message  Message to store with the error.
+ * @param bool   $echo     Flag to print or return output.
+ * @param string $error_id ID of the error being set.
  *
  * @return   string  $error
  */

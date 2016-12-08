@@ -5,11 +5,11 @@
  * @package     Give
  * @subpackage  Functions
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -39,25 +39,21 @@ function give_setup_post_types() {
 	);
 
 	$give_forms_labels = apply_filters( 'give_forms_labels', array(
-		'name'               => esc_html__( 'Donation %2$s', 'give' ),
-		'singular_name'      => '%1$s',
-		'add_new'            => esc_html__( 'Add %1$s', 'give' ),
-		'add_new_item'       => esc_html__( 'Add New Donation %1$s', 'give' ),
-		'edit_item'          => esc_html__( 'Edit Donation %1$s', 'give' ),
-		'new_item'           => esc_html__( 'New %1$s', 'give' ),
-		'all_items'          => esc_html__( 'All %2$s', 'give' ),
-		'view_item'          => esc_html__( 'View %1$s', 'give' ),
-		'search_items'       => esc_html__( 'Search %2$s', 'give' ),
-		'not_found'          => esc_html__( 'No %2$s found', 'give' ),
-		'not_found_in_trash' => esc_html__( 'No %2$s found in Trash', 'give' ),
+		'name'               => esc_html__( 'Donation Forms', 'give' ),
+		'singular_name'      => esc_html__( 'Form', 'give' ),
+		'add_new'            => esc_html__( 'Add Form', 'give' ),
+		'add_new_item'       => esc_html__( 'Add New Donation Form', 'give' ),
+		'edit_item'          => esc_html__( 'Edit Donation Form', 'give' ),
+		'new_item'           => esc_html__( 'New Form', 'give' ),
+		'all_items'          => esc_html__( 'All Forms', 'give' ),
+		'view_item'          => esc_html__( 'View Form', 'give' ),
+		'search_items'       => esc_html__( 'Search Forms', 'give' ),
+		'not_found'          => esc_html__( 'No forms found.', 'give' ),
+		'not_found_in_trash' => esc_html__( 'No forms found in Trash.', 'give' ),
 		'parent_item_colon'  => '',
 		'menu_name'          => apply_filters( 'give_menu_name', esc_html__( 'Donations', 'give' ) ),
 		'name_admin_bar'     => apply_filters( 'give_name_admin_bar_name', esc_html__( 'Donation Form', 'give' ) )
 	) );
-
-	foreach ( $give_forms_labels as $key => $value ) {
-		$give_forms_labels[ $key ] = sprintf( $value, give_get_forms_label_singular(), give_get_forms_label_plural() );
-	}
 
 	//Default give_forms supports
 	$give_form_supports = array(
@@ -96,7 +92,7 @@ function give_setup_post_types() {
 	);
 	register_post_type( 'give_forms', apply_filters( 'give_forms_post_type_args', $give_forms_args ) );
 	
-	/** Payment Post Type */
+	/** Donation Post Type */
 	$payment_labels = array(
 		'name'               => _x( 'Donations', 'post type general name', 'give' ),
 		'singular_name'      => _x( 'Donation', 'post type singular name', 'give' ),
@@ -107,10 +103,10 @@ function give_setup_post_types() {
 		'all_items'          => esc_html__( 'All Donations', 'give' ),
 		'view_item'          => esc_html__( 'View Donation', 'give' ),
 		'search_items'       => esc_html__( 'Search Donations', 'give' ),
-		'not_found'          => esc_html__( 'No Donations found', 'give' ),
-		'not_found_in_trash' => esc_html__( 'No Donations found in Trash', 'give' ),
+		'not_found'          => esc_html__( 'No donations found.', 'give' ),
+		'not_found_in_trash' => esc_html__( 'No donations found in Trash.', 'give' ),
 		'parent_item_colon'  => '',
-		'menu_name'          => esc_html__( 'Transactions', 'give' )
+		'menu_name'          => esc_html__( 'Donations', 'give' )
 	);
 
 	$payment_args = array(
@@ -144,8 +140,7 @@ function give_setup_taxonomies() {
 
 	/** Categories */
 	$category_labels = array(
-		/* translators: %s: form singular label */
-		'name'              => sprintf( _x( '%s Categories', 'taxonomy general name', 'give' ), give_get_forms_label_singular() ),
+		'name'              => _x( 'Form Categories', 'taxonomy general name', 'give' ),
 		'singular_name'     => _x( 'Category', 'taxonomy singular name', 'give' ),
 		'search_items'      => esc_html__( 'Search Categories', 'give' ),
 		'all_items'         => esc_html__( 'All Categories', 'give' ),
@@ -153,8 +148,7 @@ function give_setup_taxonomies() {
 		'parent_item_colon' => esc_html__( 'Parent Category:', 'give' ),
 		'edit_item'         => esc_html__( 'Edit Category', 'give' ),
 		'update_item'       => esc_html__( 'Update Category', 'give' ),
-		/* translators: %s: form singular label */
-		'add_new_item'      => sprintf( esc_html__( 'Add New %s Category', 'give' ), give_get_forms_label_singular() ),
+		'add_new_item'      => esc_html__( 'Add New Category', 'give' ),
 		'new_item_name'     => esc_html__( 'New Category Name', 'give' ),
 		'menu_name'         => esc_html__( 'Categories', 'give' ),
 	);
@@ -187,8 +181,7 @@ function give_setup_taxonomies() {
 
 	/** Tags */
 	$tag_labels = array(
-		/* translators: %s: form singular label */
-		'name'                  => sprintf( _x( '%s Tags', 'taxonomy general name', 'give' ), give_get_forms_label_singular() ),
+		'name'                  => _x( 'Form Tags', 'taxonomy general name', 'give' ),
 		'singular_name'         => _x( 'Tag', 'taxonomy singular name', 'give' ),
 		'search_items'          => esc_html__( 'Search Tags', 'give' ),
 		'all_items'             => esc_html__( 'All Tags', 'give' ),
@@ -199,8 +192,7 @@ function give_setup_taxonomies() {
 		'add_new_item'          => esc_html__( 'Add New Tag', 'give' ),
 		'new_item_name'         => esc_html__( 'New Tag Name', 'give' ),
 		'menu_name'             => esc_html__( 'Tags', 'give' ),
-		/* translators: %s: form singular label */
-		'choose_from_most_used' => sprintf( esc_html__( 'Choose from most used %s tags.', 'give' ), give_get_forms_label_singular() ),
+		'choose_from_most_used' => esc_html__( 'Choose from most used tags.', 'give' ),
 	);
 
 	$tag_args = apply_filters( 'give_forms_tag_args', array(
@@ -283,11 +275,7 @@ function give_get_forms_label_plural( $lowercase = false ) {
 function give_change_default_title( $title ) {
 	// If a frontend plugin uses this filter (check extensions before changing this function)
 	if ( ! is_admin() ) {
-		$title = sprintf(
-			/* translators: %s: form singular label */
-			esc_html__( 'Enter %s title here', 'give' ),
-			give_get_forms_label_singular()
-		);
+		$title = esc_html__( 'Enter form title here', 'give' );
 
 		return $title;
 	}
@@ -295,11 +283,7 @@ function give_change_default_title( $title ) {
 	$screen = get_current_screen();
 
 	if ( 'give_forms' == $screen->post_type ) {
-		$title = sprintf(
-			/* translators: %s: form singular label */
-			esc_html__( 'Enter %s title here', 'give' ),
-			give_get_forms_label_singular()
-		);
+		$title = esc_html__( 'Enter form title here', 'give' );
 	}
 
 	return $title;
@@ -316,7 +300,7 @@ add_filter( 'enter_title_here', 'give_change_default_title' );
 function give_register_post_type_statuses() {
 	// Payment Statuses
 	register_post_status( 'refunded', array(
-		'label'                     => _x( 'Refunded', 'payment status', 'give' ),
+		'label'                     => esc_html__( 'Refunded', 'give' ),
 		'public'                    => true,
 		'exclude_from_search'       => false,
 		'show_in_admin_all_list'    => true,
@@ -324,7 +308,7 @@ function give_register_post_type_statuses() {
 		'label_count'               => _n_noop( 'Refunded <span class="count">(%s)</span>', 'Refunded <span class="count">(%s)</span>', 'give' )
 	) );
 	register_post_status( 'failed', array(
-		'label'                     => _x( 'Failed', 'payment status', 'give' ),
+		'label'                     => esc_html__( 'Failed', 'give' ),
 		'public'                    => true,
 		'exclude_from_search'       => false,
 		'show_in_admin_all_list'    => true,
@@ -332,7 +316,7 @@ function give_register_post_type_statuses() {
 		'label_count'               => _n_noop( 'Failed <span class="count">(%s)</span>', 'Failed <span class="count">(%s)</span>', 'give' )
 	) );
 	register_post_status( 'revoked', array(
-		'label'                     => _x( 'Revoked', 'payment status', 'give' ),
+		'label'                     => esc_html__( 'Revoked', 'give' ),
 		'public'                    => true,
 		'exclude_from_search'       => false,
 		'show_in_admin_all_list'    => true,
@@ -340,7 +324,7 @@ function give_register_post_type_statuses() {
 		'label_count'               => _n_noop( 'Revoked <span class="count">(%s)</span>', 'Revoked <span class="count">(%s)</span>', 'give' )
 	) );
 	register_post_status( 'cancelled', array(
-		'label'                     => _x( 'Cancelled', 'payment status', 'give' ),
+		'label'                     => esc_html__( 'Cancelled', 'give' ),
 		'public'                    => true,
 		'exclude_from_search'       => false,
 		'show_in_admin_all_list'    => true,
@@ -348,7 +332,7 @@ function give_register_post_type_statuses() {
 		'label_count'               => _n_noop( 'Cancelled <span class="count">(%s)</span>', 'Cancelled <span class="count">(%s)</span>', 'give' )
 	) );
 	register_post_status( 'abandoned', array(
-		'label'                     => _x( 'Abandoned', 'payment status', 'give' ),
+		'label'                     => esc_html__( 'Abandoned', 'give' ),
 		'public'                    => true,
 		'exclude_from_search'       => false,
 		'show_in_admin_all_list'    => true,
@@ -374,17 +358,27 @@ add_action( 'init', 'give_register_post_type_statuses' );
 function give_updated_messages( $messages ) {
 	global $post, $post_ID;
 
-	$url1 = '<a href="' . get_permalink( $post_ID ) . '">';
-	$url2 = give_get_forms_label_singular();
-	$url3 = '</a>';
+	if ( give_get_option( 'disable_forms_singular' ) === 'on' ) {
 
-	$messages['give_forms'] = array(
-		1 => sprintf( __( '%2$s updated. %1$sView %2$s%3$s.', 'give' ), $url1, $url2, $url3 ),
-		4 => sprintf( __( '%2$s updated. %1$sView %2$s%3$s.', 'give' ), $url1, $url2, $url3 ),
-		6 => sprintf( __( '%2$s published. %1$sView %2$s%3$s.', 'give' ), $url1, $url2, $url3 ),
-		7 => sprintf( __( '%2$s saved. %1$sView %2$s%3$s.', 'give' ), $url1, $url2, $url3 ),
-		8 => sprintf( __( '%2$s submitted. %1$sView %2$s%3$s.', 'give' ), $url1, $url2, $url3 )
-	);
+		$messages['give_forms'] = array(
+			1 => esc_html__( 'Form updated.',   'give' ),
+			4 => esc_html__( 'Form updated.',   'give' ),
+			6 => esc_html__( 'Form published.', 'give' ),
+			7 => esc_html__( 'Form saved.',     'give' ),
+			8 => esc_html__( 'Form submitted.', 'give' )
+		);
+
+	} else {
+
+		$messages['give_forms'] = array(
+			1 => sprintf( '%1$s <a href="%2$s">%3$s</a>', esc_html__( 'Form updated.',   'give' ), get_permalink( $post_ID ), esc_html__( 'View Form', 'give' ) ),
+			4 => sprintf( '%1$s <a href="%2$s">%3$s</a>', esc_html__( 'Form updated.',   'give' ), get_permalink( $post_ID ), esc_html__( 'View Form', 'give' ) ),
+			6 => sprintf( '%1$s <a href="%2$s">%3$s</a>', esc_html__( 'Form published.', 'give' ), get_permalink( $post_ID ), esc_html__( 'View Form', 'give' ) ),
+			7 => sprintf( '%1$s <a href="%2$s">%3$s</a>', esc_html__( 'Form saved.',     'give' ), get_permalink( $post_ID ), esc_html__( 'View Form', 'give' ) ),
+			8 => sprintf( '%1$s <a href="%2$s">%3$s</a>', esc_html__( 'Form submitted.', 'give' ), get_permalink( $post_ID ), esc_html__( 'View Form', 'give' ) )
+		);
+
+	}
 
 	return $messages;
 }
