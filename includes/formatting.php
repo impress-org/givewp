@@ -473,3 +473,29 @@ function give_let_to_num( $size ) {
 
 	return $ret;
 }
+
+/**
+ * Verify nonce.
+ *
+ * @param        $nonce
+ * @param int    $action
+ * @param array  $wp_die_args
+ */
+function give_validate_nonce( $nonce, $action = -1, $wp_die_args = array() ) {
+
+	$default_wp_die_args = array(
+		'message' => esc_html__( 'Nonce verification has failed.', 'give' ),
+		'title'   => esc_html__( 'Error', 'give' ),
+		'args'    => array( 'response' => 403 ),
+	);
+
+	$wp_die_args = wp_parse_args( $wp_die_args, $default_wp_die_args );
+
+	if ( ! wp_verify_nonce( $nonce, $action ) ) {
+		wp_die(
+			$wp_die_args['message'],
+			$wp_die_args['title'],
+			$wp_die_args['args']
+		);
+	}
+}
