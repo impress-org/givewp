@@ -39,7 +39,7 @@ function give_process_paypal_payment( $payment_data ) {
 	$payment_id = give_create_payment( $payment_data );
 
 	// Check payment.
-	if ( ! $payment_id ) {
+	if ( ! empty( $payment_id ) ) {
 		// Record the error.
 		give_record_gateway_error(
 			esc_html__( 'Payment Error', 'give' ),
