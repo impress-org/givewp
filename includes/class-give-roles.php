@@ -5,11 +5,11 @@
  * @package     Give
  * @subpackage  Classes/Give_Roles
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -33,8 +33,6 @@ class Give_Roles {
 	 *
 	 * @since  1.0
 	 * @access public
-	 *
-	 * @return void
 	 */
 	public function __construct() {
 		add_filter( 'give_map_meta_cap', array( $this, 'meta_caps' ), 10, 4 );
@@ -83,16 +81,16 @@ class Give_Roles {
 		) );
 
 		add_role( 'give_accountant', esc_html__( 'Give Accountant', 'give' ), array(
-		    'read'                   => true,
-		    'edit_posts'             => false,
-		    'delete_posts'           => false
+			'read'         => true,
+			'edit_posts'   => false,
+			'delete_posts' => false
 		) );
 
 		add_role( 'give_worker', esc_html__( 'Give Worker', 'give' ), array(
-			'read'                   => true,
-			'edit_posts'             => false,
-			'upload_files'           => true,
-			'delete_posts'           => false
+			'read'         => true,
+			'edit_posts'   => false,
+			'upload_files' => true,
+			'delete_posts' => false
 		) );
 
 	}
@@ -112,7 +110,7 @@ class Give_Roles {
 	public function add_caps() {
 		global $wp_roles;
 
-		if ( class_exists('WP_Roles') ) {
+		if ( class_exists( 'WP_Roles' ) ) {
 			if ( ! isset( $wp_roles ) ) {
 				$wp_roles = new WP_Roles();
 			}
@@ -129,7 +127,7 @@ class Give_Roles {
 			$wp_roles->add_cap( 'administrator', 'export_give_reports' );
 			$wp_roles->add_cap( 'administrator', 'manage_give_settings' );
 
-			// Add the main post type capabilities
+			// Add the main post type capabilities.
 			$capabilities = $this->get_core_caps();
 			foreach ( $capabilities as $cap_group ) {
 				foreach ( $cap_group as $cap ) {
@@ -165,7 +163,7 @@ class Give_Roles {
 
 		foreach ( $capability_types as $capability_type ) {
 			$capabilities[ $capability_type ] = array(
-				// Post type
+				// Post type.
 				"edit_{$capability_type}",
 				"read_{$capability_type}",
 				"delete_{$capability_type}",
@@ -180,14 +178,15 @@ class Give_Roles {
 				"edit_private_{$capability_type}s",
 				"edit_published_{$capability_type}s",
 
-				// Terms
+				// Terms / taxonomies.
 				"manage_{$capability_type}_terms",
 				"edit_{$capability_type}_terms",
 				"delete_{$capability_type}_terms",
 				"assign_{$capability_type}_terms",
 
-				// Custom
-				"view_{$capability_type}_stats"
+				// Custom capabilities.
+				"view_{$capability_type}_stats",
+				"import_{$capability_type}s",
 			);
 		}
 
@@ -202,24 +201,29 @@ class Give_Roles {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @return array $caps Meta capabilities.
+	 * @param  array  $caps    Returns the user's actual capabilities.
+	 * @param  string $cap     Capability name.
+	 * @param  int    $user_id The user ID.
+	 * @param  array  $args    Adds the context to the cap. Typically the object ID.
+	 *
+	 * @return array  $caps    Meta capabilities.
 	 */
 	public function meta_caps( $caps, $cap, $user_id, $args ) {
 
-		switch( $cap ) {
+		switch ( $cap ) {
 
 			case 'view_give_form_stats' :
-				
-				if( empty( $args[0] ) ) {
+
+				if ( empty( $args[0] ) ) {
 					break;
 				}
-				
+
 				$form = get_post( $args[0] );
 				if ( empty( $form ) ) {
 					break;
 				}
 
-				if( user_can( $user_id, 'view_give_reports' ) || $user_id == $form->post_author ) {
+				if ( user_can( $user_id, 'view_give_reports' ) || $user_id == $form->post_author ) {
 					$caps = array();
 				}
 
@@ -238,10 +242,12 @@ class Give_Roles {
 	 * @since  1.0
 	 * @access public
 	 *
+	 * @global WP_Roles $wp_roles
+	 *
 	 * @return void
 	 */
 	public function remove_caps() {
-		
+
 		global $wp_roles;
 
 		if ( class_exists( 'WP_Roles' ) ) {
@@ -251,19 +257,19 @@ class Give_Roles {
 		}
 
 		if ( is_object( $wp_roles ) ) {
-			/** Give Manager Capabilities */
+			// Give Manager Capabilities.
 			$wp_roles->remove_cap( 'give_manager', 'view_give_reports' );
 			$wp_roles->remove_cap( 'give_manager', 'view_give_sensitive_data' );
 			$wp_roles->remove_cap( 'give_manager', 'export_give_reports' );
 			$wp_roles->remove_cap( 'give_manager', 'manage_give_settings' );
 
-			/** Site Administrator Capabilities */
+			// Site Administrator Capabilities.
 			$wp_roles->remove_cap( 'administrator', 'view_give_reports' );
 			$wp_roles->remove_cap( 'administrator', 'view_give_sensitive_data' );
 			$wp_roles->remove_cap( 'administrator', 'export_give_reports' );
 			$wp_roles->remove_cap( 'administrator', 'manage_give_settings' );
 
-			/** Remove the Main Post Type Capabilities */
+			// Remove the Main Post Type Capabilities.
 			$capabilities = $this->get_core_caps();
 
 			foreach ( $capabilities as $cap_group ) {

@@ -4,11 +4,14 @@
  *
  * @package     Give/Admin/Shortcodes
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.3.0
  */
 
-defined( 'ABSPATH' ) or exit;
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Class Give_Shortcode_Donation_Form_Goal
@@ -50,7 +53,7 @@ class Give_Shortcode_Donation_Form_Goal extends Give_Shortcode_Generator {
 				'placeholder' => esc_attr__( '- Select a Form -', 'give' ),
 				'required'    => array(
 					'alert' => esc_html__( 'You must first select a Form!', 'give' ),
-					'error' => sprintf( '<p class="strong">%s</p><p class="no-margin">%s</p>', esc_html__( 'No donation forms were found!', 'give' ), $create_form_link ),
+					'error' => sprintf( '<p class="strong">%s</p><p class="no-margin">%s</p>', esc_html__( 'No forms found.', 'give' ), $create_form_link ),
 				),
 			),
 			array(

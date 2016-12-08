@@ -5,11 +5,11 @@
  * @package     Give
  * @subpackage  Classes/Give_Logging
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -30,17 +30,28 @@ class Give_Logging {
 	 *
 	 * @since  1.0
 	 * @access public
-	 *
-	 * @return void
 	 */
 	public function __construct() {
+	}
 
+
+	/**
+	 * Setup hooks
+	 *
+	 * @since  1.7
+	 * @access public
+	 */
+	public function __setup_hooks() {
 		// Create the log post type
 		add_action( 'init', array( $this, 'register_post_type' ), 1 );
 
 		// Create types taxonomy and default types
 		add_action( 'init', array( $this, 'register_taxonomy' ), 1 );
 
+		add_action( 'save_post_give_payment', array( $this, 'background_process_delete_cache') );
+		add_action( 'save_post_give_forms', array( $this, 'background_process_delete_cache') );
+		add_action( 'save_post_give_log', array( $this, 'background_process_delete_cache') );
+		add_action( 'give_delete_log_cache', array( $this, 'delete_cache') );
 	}
 
 	/**
@@ -65,7 +76,7 @@ class Give_Logging {
 			'rewrite'             => false,
 			'capability_type'     => 'post',
 			'supports'            => array( 'title', 'editor' ),
-			'can_export'          => true
+			'can_export'          => true,
 		);
 
 		register_post_type( 'give_log', $log_args );
@@ -99,7 +110,7 @@ class Give_Logging {
 		$terms = array(
 			'sale',
 			'gateway_error',
-			'api_request'
+			'api_request',
 		);
 
 		return apply_filters( 'give_log_types', $terms );
@@ -142,7 +153,7 @@ class Give_Logging {
 			'post_title'   => $title,
 			'post_content' => $message,
 			'post_parent'  => $parent,
-			'log_type'     => $type
+			'log_type'     => $type,
 		);
 
 		return $this->insert_log( $log_data );
@@ -166,7 +177,7 @@ class Give_Logging {
 		return $this->get_connected_logs( array(
 			'post_parent' => $object_id,
 			'paged'       => $paged,
-			'log_type'    => $type
+			'log_type'    => $type,
 		) );
 	}
 
@@ -187,11 +198,19 @@ class Give_Logging {
 			'post_status'  => 'publish',
 			'post_parent'  => 0,
 			'post_content' => '',
-			'log_type'     => false
+			'log_type'     => false,
 		);
 
 		$args = wp_parse_args( $log_data, $defaults );
 
+		/**
+		 * Fires before inserting log entry.
+		 *
+		 * @since 1.0
+		 *
+		 * @param array $log_data Log entry data.
+		 * @param array $log_meta Log entry meta.
+		 */
 		do_action( 'give_pre_insert_log', $log_data, $log_meta );
 
 		// Store the log entry
@@ -209,6 +228,15 @@ class Give_Logging {
 			}
 		}
 
+		/**
+		 * Fires after inserting log entry.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int   $log_id   Log entry id.
+		 * @param array $log_data Log entry data.
+		 * @param array $log_meta Log entry meta.
+		 */
 		do_action( 'give_post_insert_log', $log_id, $log_data, $log_meta );
 
 		return $log_id;
@@ -223,16 +251,24 @@ class Give_Logging {
 	 * @param  array $log_data Log entry data.
 	 * @param  array $log_meta Log entry meta.
 	 *
-	 * @return bool            True if successful, false otherwise.
+	 * @return bool|null       True if successful, false otherwise.
 	 */
 	public function update_log( $log_data = array(), $log_meta = array() ) {
 
+		/**
+		 * Fires before updating log entry.
+		 *
+		 * @since 1.0
+		 *
+		 * @param array $log_data Log entry data.
+		 * @param array $log_meta Log entry meta.
+		 */
 		do_action( 'give_pre_update_log', $log_data, $log_meta );
 
 		$defaults = array(
 			'post_type'   => 'give_log',
 			'post_status' => 'publish',
-			'post_parent' => 0
+			'post_parent' => 0,
 		);
 
 		$args = wp_parse_args( $log_data, $defaults );
@@ -248,6 +284,15 @@ class Give_Logging {
 			}
 		}
 
+		/**
+		 * Fires after updating log entry.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int   $log_id   Log entry id.
+		 * @param array $log_data Log entry data.
+		 * @param array $log_meta Log entry meta.
+		 */
 		do_action( 'give_post_update_log', $log_id, $log_data, $log_meta );
 	}
 
@@ -270,7 +315,7 @@ class Give_Logging {
 			'posts_per_page' => 20,
 			'post_status'    => 'publish',
 			'paged'          => get_query_var( 'paged' ),
-			'log_type'       => false
+			'log_type'       => false,
 		);
 
 		$query_args = wp_parse_args( $args, $defaults );
@@ -280,13 +325,13 @@ class Give_Logging {
 				array(
 					'taxonomy' => 'give_log_type',
 					'field'    => 'slug',
-					'terms'    => $query_args['log_type']
-				)
+					'terms'    => $query_args['log_type'],
+				),
 			);
 		}
-		
+
 		$logs = get_posts( $query_args );
-	
+
 		if ( $logs ) {
 			return $logs;
 		}
@@ -325,8 +370,8 @@ class Give_Logging {
 				array(
 					'taxonomy' => 'give_log_type',
 					'field'    => 'slug',
-					'terms'    => $type
-				)
+					'terms'    => $type,
+				),
 			);
 		}
 
@@ -338,9 +383,20 @@ class Give_Logging {
 			$query_args['date_query'] = $date_query;
 		}
 
-		$logs = new WP_Query( $query_args );
 
-		return (int) $logs->post_count;
+		// Get cache key for current query.
+		$cache_key =  give_get_cache_key( 'get_log_count', $query_args );
+
+		// check if cache already exist or not.
+		if( ! ( $logs_count = get_option( $cache_key ) ) ) {
+			$logs = new WP_Query( $query_args );
+			$logs_count = (int) $logs->post_count;
+
+			// Cache results.
+			add_option( $cache_key, $logs_count, '', 'no' );
+		}
+
+		return $logs_count;
 	}
 
 	/**
@@ -363,7 +419,7 @@ class Give_Logging {
 			'post_type'      => 'give_log',
 			'posts_per_page' => - 1,
 			'post_status'    => 'publish',
-			'fields'         => 'ids'
+			'fields'         => 'ids',
 		);
 
 		if ( ! empty( $type ) && $this->valid_type( $type ) ) {
@@ -372,7 +428,7 @@ class Give_Logging {
 					'taxonomy' => 'give_log_type',
 					'field'    => 'slug',
 					'terms'    => $type,
-				)
+				),
 			);
 		}
 
@@ -389,10 +445,52 @@ class Give_Logging {
 		}
 	}
 
+	/**
+	 * Setup cron to delete log cache in background.
+	 *
+	 * @since  1.7
+	 * @access public
+	 *
+	 * @param int $post_id
+	 */
+	public function background_process_delete_cache( $post_id ) {
+		wp_schedule_single_event( time(), 'give_delete_log_cache' );
+	}
+
+	/**
+	 * Delete all logging cache when form, log or payment updates
+	 *
+	 * @since  1.7
+	 * @access public
+	 *
+	 * @return bool
+	 */
+	public function delete_cache() {
+		global $wpdb;
+		$cache_option_names = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT option_name FROM {$wpdb->options} where option_name LIKE '%%%s%%'",
+				'give_cache'
+			),
+			ARRAY_A
+		);
+
+		// Bailout.
+		if( empty( $cache_option_names ) ) {
+			return false;
+		}
+
+
+		// Delete log cache.
+		foreach ( $cache_option_names as $option_name ) {
+			delete_option( $option_name['option_name'] );
+		}
+	}
 }
 
 // Initiate the logging system
 $GLOBALS['give_logs'] = new Give_Logging();
+$GLOBALS['give_logs']->__setup_hooks();
 
 /**
  * Record a log entry
@@ -406,7 +504,7 @@ $GLOBALS['give_logs'] = new Give_Logging();
  * @param  int    $parent  Parent log. Default is 0.
  * @param  string $type    Log type. Default is null.
  *
- * @return mixed           ID of the new log entry.
+ * @return int             ID of the new log entry.
  */
 function give_record_log( $title = '', $message = '', $parent = 0, $type = null ) {
 	/* @var Give_Logging $give_logs */

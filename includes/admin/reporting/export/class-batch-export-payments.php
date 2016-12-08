@@ -7,7 +7,7 @@
  * @package     Give
  * @subpackage  Admin/Reports
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.5
  */
 
@@ -44,8 +44,8 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 			'email'     => esc_html__( 'Email', 'give' ),
 			'first'     => esc_html__( 'First Name', 'give' ),
 			'last'      => esc_html__( 'Last Name', 'give' ),
-			'address1'  => esc_html__( 'Address', 'give' ),
-			'address2'  => esc_html__( 'Address (Line 2)', 'give' ),
+			'address1'  => esc_html__( 'Address 1', 'give' ),
+			'address2'  => esc_html__( 'Address 2', 'give' ),
 			'city'      => esc_html__( 'City', 'give' ),
 			'state'     => esc_html__( 'State', 'give' ),
 			'country'   => esc_html__( 'Country', 'give' ),
@@ -55,7 +55,7 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 			'amount'    => esc_html__( 'Amount', 'give' ) . ' (' . html_entity_decode( give_currency_filter( '' ) ) . ')',
 			'gateway'   => esc_html__( 'Payment Method', 'give' ),
 			'trans_id'  => esc_html__( 'Transaction ID', 'give' ),
-			'key'       => esc_html__( 'Purchase Key', 'give' ),
+			'key'       => esc_html__( 'Key', 'give' ),
 			'date'      => esc_html__( 'Date', 'give' ),
 			'user'      => esc_html__( 'User', 'give' ),
 			'status'    => esc_html__( 'Status', 'give' )
@@ -146,7 +146,7 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 			}
 
 			$data = apply_filters( 'give_export_get_data', $data );
-			$data = apply_filters( 'give_export_get_data_' . $this->export_type, $data );
+			$data = apply_filters( "give_export_get_data_{$this->export_type}", $data );
 
 			return $data;
 

@@ -7,10 +7,10 @@
  * @package     Give
  * @subpackage  Admin/System
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -28,7 +28,7 @@ function give_system_info_callback() {
 		return;
 	}
 	?>
-	<textarea readonly="readonly" onclick="this.focus(); this.select()" id="system-info-textarea" name="give-sysinfo" title="<?php esc_attr_e( 'To copy the system info, click below then press Ctrl + C (PC) or Cmd + C (Mac).', 'give' ); ?>"><?php echo give_tools_sysinfo_get(); ?></textarea>
+	<textarea readonly="readonly" onclick="this.focus(); this.select()" id="system-info-textarea" name="give-sysinfo" aria-label="<?php esc_attr_e( 'To copy the system info, click below then press Ctrl + C (PC) or Cmd + C (Mac).', 'give' ); ?>"><?php echo give_tools_sysinfo_get(); ?></textarea>
 	<p class="submit">
 		<input type="hidden" name="give-action" value="download_sysinfo"/>
 		<?php submit_button( esc_html__( 'Download System Info File', 'give' ), 'secondary', 'give-download-sysinfo', false ); ?>
@@ -60,12 +60,15 @@ add_filter( 'give_start_session', 'give_allow_sessions_for_sysinfo' );
  *
  * @since       1.0
  * @access      public
+ *
  * @global      object $wpdb Used to query the database using the WordPress Database API
- * @global      array $give_options Array of all Give options
+ *
  * @return      string $return A string containing the info to output
  */
 function give_tools_sysinfo_get() {
-	global $wpdb, $give_options;
+	global $wpdb;
+
+	$give_options = give_get_settings();
 
 	if ( ! class_exists( 'Browser' ) ) {
 		require_once GIVE_PLUGIN_DIR . 'includes/libraries/browser.php';
@@ -127,6 +130,7 @@ function give_tools_sysinfo_get() {
 	}
 
 	// Make sure wp_remote_post() is working
+	$request = array();
 	$request['cmd'] = '_notify-validate';
 
 	$params = array(
@@ -183,7 +187,7 @@ function give_tools_sysinfo_get() {
 			$default_gateway = give_get_default_gateway( null );
 			$default_gateway = $active_gateways[ $default_gateway ]['admin_label'];
 		} else {
-			$default_gateway = 'Test Payment';
+			$default_gateway = 'Test Donation';
 		}
 
 		$gateways = array();

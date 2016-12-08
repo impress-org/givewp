@@ -2,22 +2,24 @@
 /**
  * Customer Meta DB class
  *
- * This class is for interacting with the customer meta database table
- *
  * @package     Give
  * @subpackage  Classes/DB Customer Meta
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.6
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
  * Class Give_DB_Customer_Meta
+ *
+ * This class is for interacting with the customer meta database table
+ *
+ * @since 1.6
  */
 class Give_DB_Customer_Meta extends Give_DB {
 
@@ -44,6 +46,8 @@ class Give_DB_Customer_Meta extends Give_DB {
 	 *
 	 * @access  public
 	 * @since   1.6
+	 *
+	 * @return  array  Columns and formats.
 	 */
 	public function get_columns() {
 		return array(
@@ -59,6 +63,8 @@ class Give_DB_Customer_Meta extends Give_DB {
 	 *
 	 * @access  public
 	 * @since   1.6
+	 *
+	 * @return  void
 	 */
 	public function register_table() {
 		global $wpdb;
@@ -70,14 +76,14 @@ class Give_DB_Customer_Meta extends Give_DB {
 	 *
 	 * For internal use only. Use Give_Customer->get_meta() for public usage.
 	 *
+	 * @access  private
+	 * @since   1.6
+	 *
 	 * @param   int    $customer_id Customer ID.
 	 * @param   string $meta_key The meta key to retrieve.
 	 * @param   bool   $single Whether to return a single value.
 	 *
 	 * @return  mixed                 Will be an array if $single is false. Will be value of meta data field if $single is true.
-	 *
-	 * @access  private
-	 * @since   1.6
 	 */
 	public function get_meta( $customer_id = 0, $meta_key = '', $single = false ) {
 		$customer_id = $this->sanitize_customer_id( $customer_id );
@@ -93,15 +99,15 @@ class Give_DB_Customer_Meta extends Give_DB {
 	 *
 	 * For internal use only. Use Give_Customer->add_meta() for public usage.
 	 *
+	 * @access  private
+	 * @since   1.6
+	 *
 	 * @param   int    $customer_id Customer ID.
 	 * @param   string $meta_key Metadata name.
 	 * @param   mixed  $meta_value Metadata value.
 	 * @param   bool   $unique Optional, default is false. Whether the same key should not be added.
 	 *
 	 * @return  bool                  False for failure. True for success.
-	 *
-	 * @access  private
-	 * @since   1.6
 	 */
 	public function add_meta( $customer_id = 0, $meta_key = '', $meta_value, $unique = false ) {
 		$customer_id = $this->sanitize_customer_id( $customer_id );
@@ -122,15 +128,15 @@ class Give_DB_Customer_Meta extends Give_DB {
 	 *
 	 * If the meta field for the customer does not exist, it will be added.
 	 *
+	 * @access  private
+	 * @since   1.6
+	 *
 	 * @param   int    $customer_id Customer ID.
 	 * @param   string $meta_key Metadata key.
 	 * @param   mixed  $meta_value Metadata value.
 	 * @param   mixed  $prev_value Optional. Previous value to check before removing.
 	 *
 	 * @return  bool                  False on failure, true if success.
-	 *
-	 * @access  private
-	 * @since   1.6
 	 */
 	public function update_meta( $customer_id = 0, $meta_key = '', $meta_value, $prev_value = '' ) {
 		$customer_id = $this->sanitize_customer_id( $customer_id );
@@ -150,14 +156,14 @@ class Give_DB_Customer_Meta extends Give_DB {
 	 * value, will keep from removing duplicate metadata with the same key. It also
 	 * allows removing all metadata matching key, if needed.
 	 *
+	 * @access  private
+	 * @since   1.6
+	 *
 	 * @param   int    $customer_id Customer ID.
 	 * @param   string $meta_key Metadata name.
 	 * @param   mixed  $meta_value Optional. Metadata value.
 	 *
 	 * @return  bool                  False for failure. True for success.
-	 *
-	 * @access  private
-	 * @since   1.6
 	 */
 	public function delete_meta( $customer_id = 0, $meta_key = '', $meta_value = '' ) {
 		return delete_metadata( 'customer', $customer_id, $meta_key, $meta_value );
@@ -166,8 +172,10 @@ class Give_DB_Customer_Meta extends Give_DB {
 	/**
 	 * Create the table
 	 *
-	 * @access  public
-	 * @since   1.6
+	 * @access public
+	 * @since  1.6
+	 *
+	 * @return void
 	 */
 	public function create_table() {
 
@@ -191,6 +199,7 @@ class Give_DB_Customer_Meta extends Give_DB {
 	/**
 	 * Given a customer ID, make sure it's a positive number, greater than zero before inserting or adding.
 	 *
+	 * @access private
 	 * @since  1.6
 	 *
 	 * @param  int|stripe $customer_id A passed customer ID.

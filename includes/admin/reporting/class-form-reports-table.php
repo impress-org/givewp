@@ -5,11 +5,11 @@
  * @package     Give
  * @subpackage  Admin/Reports
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -96,7 +96,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'title'            => give_get_forms_label_singular(),
+			'title'            => esc_html__( 'Form', 'give' ),
 			'sales'            => esc_html__( 'Donations', 'give' ),
 			'earnings'         => esc_html__( 'Income', 'give' ),
 			'average_sales'    => esc_html__( 'Monthly Average Donations', 'give' ),

@@ -6,11 +6,11 @@
  *
  * @subpackage  Admin/Tools/Give_Tools_Reset_Stats
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.5
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -47,9 +47,9 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	 * Get the Export Data
 	 *
 	 * @access public
-	 * @since 1.5
+	 * @since  1.5
 	 * @global object $wpdb Used to query the database using the WordPress
-	 *   Database API
+	 *                      Database API
 	 * @return array $data The data for the CSV file
 	 */
 	public function get_data() {
@@ -67,9 +67,9 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 		if ( $step_items ) {
 
 			$step_ids = array(
-				'customers'  => array(),
-				'forms' => array(),
-				'other'      => array(),
+				'customers' => array(),
+				'forms'     => array(),
+				'other'     => array(),
 			);
 
 			foreach ( $step_items as $item ) {
@@ -119,10 +119,10 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 				if ( ! in_array( $type, array( 'customers', 'forms', 'other' ) ) ) {
 					// Allows other types of custom post types to filter on their own post_type
 					// and add items to the query list, for the IDs found in their post type.
-					$sql = apply_filters( 'give_reset_add_queries_' . $type, $sql, $ids );
+					$sql = apply_filters( "give_reset_add_queries_{$type}", $sql, $ids );
 				}
 
-		
+
 			}
 
 			if ( ! empty( $sql ) ) {
@@ -140,7 +140,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	}
 
 	/**
-	 * Return the calculated completion percentage
+	 * Return the calculated completion percentage.
 	 *
 	 * @since 1.5
 	 * @return int
@@ -182,7 +182,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	public function process_step() {
 
 		if ( ! $this->can_export() ) {
-			wp_die( esc_html__( 'You do not have permission to export data.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die( esc_html__( 'You do not have permission to reset data.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 		}
 
 		$had_data = $this->get_data();
@@ -225,7 +225,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	 * Perform the export
 	 *
 	 * @access public
-	 * @since 1.5
+	 * @since  1.5
 	 * @return void
 	 */
 	public function export() {
@@ -278,7 +278,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 
 			// Allow filtering of items to remove with an unassociative array for each item
 			// The array contains the unique ID of the item, and a 'type' for you to use in the execution of the get_data method
-			$items = apply_filters( 'give_reset_store_items', $items );
+			$items = apply_filters( 'give_reset_items', $items );
 
 			$this->store_data( 'give_temp_reset_ids', $items );
 		}
@@ -286,13 +286,13 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	}
 
 	/**
-	 * Given a key, get the information from the Database Directly
+	 * Given a key, get the information from the Database Directly.
 	 *
 	 * @since  1.5
 	 *
 	 * @param  string $key The option_name
 	 *
-	 * @return mixed       Returns the data from the database
+	 * @return mixed       Returns the data from the database.
 	 */
 	private function get_stored_data( $key ) {
 		global $wpdb;
@@ -302,12 +302,12 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	}
 
 	/**
-	 * Give a key, store the value
+	 * Give a key, store the value.
 	 *
 	 * @since  1.5
 	 *
-	 * @param  string $key The option_name
-	 * @param  mixed $value The value to store
+	 * @param  string $key   The option_name.
+	 * @param  mixed  $value The value to store.
 	 *
 	 * @return void
 	 */

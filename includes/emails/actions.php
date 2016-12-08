@@ -5,11 +5,11 @@
  * @package     Give
  * @subpackage  Emails
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -29,14 +29,14 @@ function give_trigger_donation_receipt( $payment_id ) {
 		return;
 	}
 
-	// Send email
+	// Send email.
 	give_email_donation_receipt( $payment_id );
 }
 
-add_action( 'give_complete_purchase', 'give_trigger_donation_receipt', 999, 1 );
+add_action( 'give_complete_donation', 'give_trigger_donation_receipt', 999, 1 );
 
 /**
- * Resend the Email Purchase Receipt. (This can be done from the Payment History page)
+ * Resend the Email Donation Receipt. (This can be done from the Donation History Page)
  *
  * @since 1.0
  *
@@ -53,7 +53,7 @@ function give_resend_donation_receipt( $data ) {
 	}
 
 	if ( ! current_user_can( 'edit_give_payments', $purchase_id ) ) {
-		wp_die( esc_html__( 'You do not have permission to edit payment records.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( esc_html__( 'You do not have permission to edit payments.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	give_email_donation_receipt( $purchase_id, false );
@@ -82,10 +82,10 @@ function give_send_test_email( $data ) {
 		return;
 	}
 
-	// Send a test email
+	// Send a test email.
 	give_email_test_donation_receipt();
 
-	// Remove the test email query arg
+	// Remove the test email query arg.
 	wp_redirect( remove_query_arg( 'give_action' ) );
 	exit;
 }

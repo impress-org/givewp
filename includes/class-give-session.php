@@ -5,11 +5,11 @@
  * @package     Give
  * @subpackage  Classes/Give_Session
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -70,15 +70,13 @@ class Give_Session {
 	 *
 	 * @since  1.0
 	 * @access public
-	 *
-	 * @return void
 	 */
 	public function __construct() {
 
 		$this->use_php_sessions = $this->use_php_sessions();
 		$this->exp_option       = give_get_option( 'session_lifetime' );
 
-		//PHP Sessions
+		// PHP Sessions.
 		if ( $this->use_php_sessions ) {
 
 			if ( is_multisite() ) {
@@ -95,7 +93,7 @@ class Give_Session {
 				return;
 			}
 
-			// Use WP_Session
+			// Use WP_Session.
 			if ( ! defined( 'WP_SESSION_COOKIE' ) ) {
 				define( 'WP_SESSION_COOKIE', 'give_wp_session' );
 			}
@@ -114,15 +112,15 @@ class Give_Session {
 
 		}
 
-		//Init Session
+		// Init Session.
 		if ( empty( $this->session ) && ! $this->use_php_sessions ) {
 			add_action( 'plugins_loaded', array( $this, 'init' ), - 1 );
 		} else {
 			add_action( 'init', array( $this, 'init' ), - 1 );
 		}
 
-		//Set cookie on Donation Completion page
-		add_action( 'give_pre_process_purchase', array( $this, 'set_session_cookies' ) );
+		// Set cookie on Donation Completion page.
+		add_action( 'give_pre_process_donation', array( $this, 'set_session_cookies' ) );
 
 	}
 
@@ -182,17 +180,17 @@ class Give_Session {
 	}
 
 	/**
-     * Set Session
-     *
+	 * Set Session
+	 *
 	 * Create a new session.
-     *
+	 *
 	 * @since  1.0
 	 * @access public
 	 *
 	 * @param  string $key   Session key.
 	 * @param  string $value Session variable.
 	 *
-	 * @return mixed         Session variable.
+	 * @return string        Session variable.
 	 */
 	public function set( $key, $value ) {
 
@@ -222,10 +220,10 @@ class Give_Session {
 	 * @hook
 	 */
 	public function set_session_cookies() {
-		if( ! headers_sent() ) {
+		if ( ! headers_sent() ) {
 			$lifetime = current_time( 'timestamp' ) + $this->set_expiration_time();
-			@setcookie( session_name(), session_id(), $lifetime, COOKIEPATH, COOKIE_DOMAIN, false  );
-			@setcookie( session_name() . '_expiration', $lifetime, $lifetime,  COOKIEPATH, COOKIE_DOMAIN, false  );
+			@setcookie( session_name(), session_id(), $lifetime, COOKIEPATH, COOKIE_DOMAIN, false );
+			@setcookie( session_name() . '_expiration', $lifetime, $lifetime, COOKIEPATH, COOKIE_DOMAIN, false );
 		}
 	}
 
@@ -273,12 +271,12 @@ class Give_Session {
 
 		$ret = false;
 
-		// If the database variable is already set, no need to run autodetection
+		// If the database variable is already set, no need to run auto detection.
 		$give_use_php_sessions = (bool) get_option( 'give_use_php_sessions' );
 
 		if ( ! $give_use_php_sessions ) {
 
-			// Attempt to detect if the server supports PHP sessions
+			// Attempt to detect if the server supports PHP sessions.
 			if ( function_exists( 'session_start' ) && ! ini_get( 'safe_mode' ) ) {
 
 				$this->set( 'give_use_php_sessions', 1 );
@@ -287,22 +285,20 @@ class Give_Session {
 
 					$ret = true;
 
-					// Set the database option
+					// Set the database option.
 					update_option( 'give_use_php_sessions', true );
 
 				}
-
 			}
-
 		} else {
 
 			$ret = $give_use_php_sessions;
 		}
 
-		// Enable or disable PHP Sessions based on the GIVE_USE_PHP_SESSIONS constant
+		// Enable or disable PHP Sessions based on the GIVE_USE_PHP_SESSIONS constant.
 		if ( defined( 'GIVE_USE_PHP_SESSIONS' ) && GIVE_USE_PHP_SESSIONS ) {
 			$ret = true;
-		} else if ( defined( 'GIVE_USE_PHP_SESSIONS' ) && ! GIVE_USE_PHP_SESSIONS ) {
+		} elseif ( defined( 'GIVE_USE_PHP_SESSIONS' ) && ! GIVE_USE_PHP_SESSIONS ) {
 			$ret = false;
 		}
 
@@ -315,7 +311,7 @@ class Give_Session {
 	 * Determines if we should start sessions.
 	 *
 	 * @since  1.4
-     * @access public
+	 * @access public
 	 *
 	 * @return bool
 	 */
@@ -332,7 +328,7 @@ class Give_Session {
 				'feed/rss2',
 				'feed/rdf',
 				'feed/atom',
-				'comments/feed/'
+				'comments/feed/',
 			) );
 			$uri       = ltrim( $_SERVER['REQUEST_URI'], '/' );
 			$uri       = untrailingslashit( $uri );
@@ -352,11 +348,11 @@ class Give_Session {
 
 	/**
 	 * Maybe Start Session
-     *
+	 *
 	 * Starts a new session if one hasn't started yet.
-     *
-     * @access public
-     *
+	 *
+	 * @access public
+	 *
 	 * @see    http://php.net/manual/en/function.session-set-cookie-params.php
 	 *
 	 * @return void
@@ -375,12 +371,12 @@ class Give_Session {
 
 	/**
 	 * Get Session Expiration
-     *
+	 *
 	 * Looks at the session cookies and returns the expiration date for this session if applicable
-     *
-     * @access public
-     *
-     * @return string Formatted expiration date string.
+	 *
+	 * @access public
+	 *
+	 * @return string Formatted expiration date string.
 	 */
 	public function get_session_expiration() {
 

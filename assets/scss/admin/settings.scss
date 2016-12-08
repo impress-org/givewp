@@ -146,6 +146,7 @@ Settings
   white-space: pre;
   overflow: auto;
   display: block;
+  /*rtl:ignore*/
   direction: ltr;
 }
 
@@ -241,11 +242,128 @@ a.give-delete {
     background-position: 98.5% center;
     outline: none;
     background-size: 16px;
+    width:100%;
   }
 
 }
 
-// Tables
+/* Addon grid design */
+#licenses .cmb2-wrap {
+  margin-top: 20px;
+
+  .cmb-row {
+    display: block;
+    position: relative;
+    float: left;
+    width: 30.5%;
+    margin-right: 1% !important;
+    margin-bottom: 10px !important;
+    min-height: 180px;
+  }
+
+  // Common css for cmb-th and cmb-td.
+  .cmb-row > div {
+    display: block;
+    width: auto;
+    padding: 0;
+    float: none;
+  }
+
+  .cmb-th {
+
+    label {
+      margin: 0 0 0 10px;
+      padding: 10px 0;
+    }
+  }
+
+  .cmb-td {
+    > div {
+      margin: 0 10px;
+
+      input[type="text"] {
+        width: 100%;
+      }
+
+      input[type="submit"] {
+        margin: 0;
+        position: absolute;
+        top: 2px;
+        right: 10px;
+      }
+    }
+  }
+
+  .give-license-notice {
+    background: #FFF;
+    border-left: 4px solid #e24e4e;
+    -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
+    margin: 5px 0 2px;
+    padding: 1px 12px;
+
+    p {
+      padding: 10px 0;
+      margin: 0;
+    }
+
+    a {
+      color: #444;
+      cursor: pointer;
+    }
+
+    a:hover {
+      text-decoration: none;
+    }
+  }
+
+  .give-license-notice.give-license-expires-soon {
+    border-color: #00a0d2;
+  }
+
+  .give-license-notice.give-license-expired {
+    border-color: #e24e4e;
+  }
+
+  .give-license-notice.give-license-error,
+  .give-license-notice.give-license-no_activations_left,
+  .give-license-notice.give-license-missing,
+  .give-license-notice.give-license-invalid,
+  .give-license-notice.give-license-site_inactive,
+  .give-license-notice.give-license-item_name_mismatch {
+    border-color: #ffebcd;
+  }
+
+  .give-license-notice.give-license-lifetime-notice, .give-license-notice.give-license-expiration-date {
+    border-color: #46b450;
+  }
+
+  .give-license-notice.give-license-expires-soon a:hover,
+  .give-license-notice.give-license-expired a:hover {
+    text-decoration: none;
+  }
+}
+
+/* Responsive fixes: Addon grid design */
+@media screen and (max-width: 1100px) {
+  #licenses .cmb2-wrap {
+    .cmb-row {
+      width: 45%;
+      min-height: 230px;
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #licenses .cmb2-wrap {
+    .cmb-row {
+      width: 100%;
+      max-width: 320px;
+    }
+  }
+}
+
+/* Tables */
 
 .give-table {
 

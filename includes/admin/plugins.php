@@ -5,37 +5,37 @@
  * @package     Give
  * @subpackage  Admin/Plugins
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.4
  */
 
-
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-
 
 /**
  * Plugins row action links
  *
  * @since 1.4
  *
- * @param array $links already defined action links
- * @param string $file plugin file path and name being processed
+ * @param array $actions An array of plugin action links.
  *
- * @return array $links
+ * @return array An array of updated action links.
  */
-function give_plugin_action_links( $links, $file ) {
-	$settings_link = '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-settings' ) . '">' . esc_html__( 'Settings', 'give' ) . '</a>';
-	if ( $file == 'give/give.php' ) {
-		array_unshift( $links, $settings_link );
-	}
+function give_plugin_action_links( $actions ) {
+	$new_actions = array(
+		'settings' => sprintf(
+			'<a href="%1$s">%2$s</a>',
+			admin_url( 'edit.php?post_type=give_forms&page=give-settings' ),
+			esc_html__( 'Settings', 'give' )
+		),
+	);
 
-	return $links;
+	return array_merge( $new_actions, $actions );
 }
 
-add_filter( 'plugin_action_links', 'give_plugin_action_links', 10, 2 );
+add_filter( 'plugin_action_links_' . GIVE_PLUGIN_BASENAME, 'give_plugin_action_links' );
 
 
 /**
@@ -43,38 +43,40 @@ add_filter( 'plugin_action_links', 'give_plugin_action_links', 10, 2 );
  *
  * @since 1.4
  *
- * @param array $input already defined meta links
- * @param string $file plugin file path and name being processed
+ * @param array  $plugin_meta An array of the plugin's metadata.
+ * @param string $plugin_file Path to the plugin file, relative to the plugins directory.
  *
- * @return array $input
+ * @return array
  */
-function give_plugin_row_meta( $input, $file ) {
-	if ( $file != 'give/give.php' ) {
-		return $input;
+function give_plugin_row_meta( $plugin_meta, $plugin_file ) {
+	if ( $plugin_file != GIVE_PLUGIN_BASENAME ) {
+		return $plugin_meta;
 	}
 
-	$give_addons_link = esc_url( add_query_arg( array(
-			'utm_source'   => 'plugins-page',
-			'utm_medium'   => 'plugin-row',
-			'utm_campaign' => 'admin',
-		), 'https://givewp.com/addons/' )
+	$new_meta_links = array(
+		sprintf(
+			'<a href="%1$s" target="_blank">%2$s</a>',
+			esc_url( add_query_arg( array(
+					'utm_source'   => 'plugins-page',
+					'utm_medium'   => 'plugin-row',
+					'utm_campaign' => 'admin',
+				), 'https://givewp.com/documentation/' )
+			),
+			esc_html__( 'Documentation', 'give' )
+		),
+		sprintf(
+			'<a href="%1$s" target="_blank">%2$s</a>',
+			esc_url( add_query_arg( array(
+					'utm_source'   => 'plugins-page',
+					'utm_medium'   => 'plugin-row',
+					'utm_campaign' => 'admin',
+				), 'https://givewp.com/addons/' )
+			),
+			esc_html__( 'Add-ons', 'give' )
+		),
 	);
 
-	$give_docs_link = esc_url( add_query_arg( array(
-			'utm_source'   => 'plugins-page',
-			'utm_medium'   => 'plugin-row',
-			'utm_campaign' => 'admin',
-		), 'https://givewp.com/documentation/' )
-	);
-
-	$links = array(
-		'<a href="' . $give_docs_link . '" target="_blank">' . esc_html__( 'Documentation', 'give' ) . '</a>',
-		'<a href="' . $give_addons_link . '" target="_blank">' . esc_html__( 'Add-ons', 'give' ) . '</a>',
-	);
-
-	$input = array_merge( $input, $links );
-
-	return $input;
+	return array_merge( $plugin_meta, $new_meta_links );
 }
 
 add_filter( 'plugin_row_meta', 'give_plugin_row_meta', 10, 2 );

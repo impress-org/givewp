@@ -4,10 +4,10 @@
  *
  * @author  WordImpress
  * @version 1.0
- * https://github.com/WordImpress/Give-Activation-Banner
+ * https://github.com/WordImpress/plugin-activation-banner-demo
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -18,17 +18,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Give_Addon_Activation_Banner {
 
 	/**
-	 *
 	 * Class constructor.
 	 *
-	 * @uses plugin_basename()
-	 * @uses hook()
+	 * @since  1.0
+	 * @access public
 	 *
 	 * @param $_banner_details
 	 */
 	function __construct( $_banner_details ) {
 
-		global $current_user;
+		$current_user = wp_get_current_user();
+
 		$this->banner_details = $_banner_details;
 		$this->test_mode      = ( $this->banner_details['testing'] == 'true' ) ? true : false;
 		$this->nag_meta_key   = 'give_addon_activation_ignore_' . sanitize_title( $this->banner_details['name'] );
@@ -43,7 +43,8 @@ class Give_Addon_Activation_Banner {
 	/**
 	 * Set up WordPress filters to hook into WP's update process.
 	 *
-	 * @uses add_filter()
+	 * @since  1.0
+	 * @access public
 	 *
 	 * @return void
 	 */
@@ -60,24 +61,26 @@ class Give_Addon_Activation_Banner {
 
 	}
 
-
 	/**
 	 * Give Addon Activation Banner
 	 *
 	 * @since  1.0
+	 * @access public
 	 */
 	public function give_addon_activation_admin_notice() {
-		global $pagenow;
+		$screen = get_current_screen();
 
 		//Make sure we're on the plugins page.
-		if ( $pagenow !== 'plugins.php' ) {
+		if ( $screen->parent_file !== 'plugins.php' ) {
 			return false;
 		}
 
-		// If the user hasn't already dismissed our alert,
-		// Output the activation banner
-		if ( ! get_user_meta( $this->user_id, $this->nag_meta_key ) ) { ?>
+		// If the user hasn't already dismissed the alert, output activation banner.
+		if ( ! get_user_meta( $this->user_id, $this->nag_meta_key ) ) {
 
+			// Output inline styles here because there's no reason
+			// to enqueued them after the alert is dismissed.
+			?>
 			<style>
 				div.give-addon-alert.updated {
 					padding: 20px;
@@ -208,6 +211,9 @@ class Give_Addon_Activation_Banner {
 	 * Ignore Nag.
 	 *
 	 * This is the action that allows the user to dismiss the banner it basically sets a tag to their user meta data
+	 *
+	 * @since  1.0
+	 * @access public
 	 */
 	public function give_addon_notice_ignore() {
 
@@ -218,7 +224,7 @@ class Give_Addon_Activation_Banner {
 		if ( isset( $_GET[ $this->nag_meta_key ] ) && '0' == $_GET[ $this->nag_meta_key ] ) {
 
 			//Get the global user
-			global $current_user;
+			$current_user = wp_get_current_user();
 			$user_id = $current_user->ID;
 
 			add_user_meta( $user_id, $this->nag_meta_key, 'true', true );

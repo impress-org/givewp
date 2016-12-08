@@ -96,7 +96,7 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test Payment Status Update
+	 * Test Donation Status Update
 	 */
 	public function test_payment_status_update() {
 

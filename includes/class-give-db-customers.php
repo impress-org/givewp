@@ -5,11 +5,11 @@
  * @package     Give
  * @subpackage  Classes/Give_DB_Customers
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -94,7 +94,7 @@ class Give_DB_Customers extends Give_DB {
 	 *
 	 * @param  array $data
 	 *
-	 * @return int/bool
+	 * @return int|bool
 	 */
 	public function add( $data = array() ) {
 
@@ -254,7 +254,7 @@ class Give_DB_Customers extends Give_DB {
 	}
 
 	/**
-	 * Increments customer purchase stats
+	 * Increments customer donation stats
 	 *
 	 * @access public
 	 *
@@ -279,7 +279,7 @@ class Give_DB_Customers extends Give_DB {
 	}
 
 	/**
-	 * Decrements customer purchase stats
+	 * Decrements customer donation stats
 	 *
 	 * @since  1.0
 	 * @access public
@@ -345,6 +345,14 @@ class Give_DB_Customers extends Give_DB {
 
 					}
 
+					/**
+					 * Fires after updating customer email on user update.
+					 *
+					 * @since 1.4.3
+					 * 
+					 * @param  WP_User       $user     WordPress User object.
+					 * @param  Give_Customer $customer Give customer object.
+					 */
 					do_action( 'give_update_customer_email_on_user_update', $user, $customer );
 
 				}
@@ -416,6 +424,17 @@ class Give_DB_Customers extends Give_DB {
 		}
 
 		if ( ! $customer = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $this->table_name WHERE $db_field = %s LIMIT 1", $value ) ) ) {
+
+			// Look for customer from an additional email
+			if( 'email' === $field ) {
+				$meta_table  = Give()->customer_meta->table_name;
+				$customer_id = $wpdb->get_var( $wpdb->prepare( "SELECT customer_id FROM {$meta_table} WHERE meta_key = 'additional_email' AND meta_value = %s LIMIT 1", $value ) );
+
+				if( ! empty( $customer_id ) ) {
+					return $this->get( $customer_id );
+ 				}
+ 			}
+
 			return false;
 		}
 

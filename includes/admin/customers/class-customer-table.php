@@ -1,15 +1,15 @@
 <?php
 /**
- * Customer (Donor) Reports Table Class
+ * Customer (Donor) Reports Table Class.
  *
  * @package     Give
  * @subpackage  Admin/Reports
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -20,16 +20,16 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 }
 
 /**
- * Give_Customer_Reports_Table Class
+ * Give_Customer_Reports_Table Class.
  *
- * Renders the Customer Reports table
+ * Renders the Customer Reports table.
  *
  * @since 1.0
  */
 class Give_Customer_Reports_Table extends WP_List_Table {
 
 	/**
-	 * Number of items per page
+	 * Number of items per page.
 	 *
 	 * @var int
 	 * @since 1.0
@@ -37,7 +37,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	public $per_page = 30;
 
 	/**
-	 * Number of customers found
+	 * Number of donors found.
 	 *
 	 * @var int
 	 * @since 1.0
@@ -45,7 +45,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	public $count = 0;
 
 	/**
-	 * Total customers
+	 * Total donors.
 	 *
 	 * @var int
 	 * @since 1.0
@@ -53,13 +53,12 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	public $total = 0;
 
 	/**
-	 * Get things started
+	 * Get things started.
 	 *
 	 * @since 1.0
 	 * @see   WP_List_Table::__construct()
 	 */
 	public function __construct() {
-		global $status, $page;
 
 		// Set parent defaults
 		parent::__construct( array(
@@ -71,13 +70,13 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Show the search field
+	 * Show the search field.
 	 *
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param string $text     Label for the search box
-	 * @param string $input_id ID of the search box
+	 * @param string $text Label for the search box.
+	 * @param string $input_id ID of the search box.
 	 *
 	 * @return void
 	 */
@@ -91,12 +90,12 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 			echo '<input type="hidden" name="order" value="' . esc_attr( $_REQUEST['order'] ) . '" />';
 		}
 		?>
-		<p class="search-box">
+		<p class="search-box" role="search">
 			<label class="screen-reader-text" for="<?php echo $input_id ?>"><?php echo $text; ?>:</label>
-			<input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>" />
+			<input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>"/>
 			<?php submit_button( $text, 'button', false, false, array( 'ID' => 'search-submit' ) ); ?>
 		</p>
-	<?php
+		<?php
 	}
 
 	/**
@@ -105,17 +104,17 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * @access public
 	 * @since  1.0
 	 *
-	 * @param array  $item        Contains all the data of the customers
-	 * @param string $column_name The name of the column
+	 * @param array  $item Contains all the data of the customers.
+	 * @param string $column_name The name of the column.
 	 *
-	 * @return string Column Name
+	 * @return string Column Name.
 	 */
 	public function column_default( $item, $column_name ) {
 		switch ( $column_name ) {
 
 			case 'num_purchases' :
 				$value = '<a href="' .
-				         admin_url( '/edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( $item['email'] )
+				         admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( $item['email'] )
 				         ) . '">' . esc_html( $item['num_purchases'] ) . '</a>';
 				break;
 
@@ -124,7 +123,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 				break;
 
 			case 'date_created' :
-				$value = date_i18n( get_option( 'date_format' ), strtotime( $item['date_created'] ) );
+				$value = date_i18n( give_date_format(), strtotime( $item['date_created'] ) );
 				break;
 
 			default:
@@ -132,28 +131,32 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 				break;
 		}
 
-		return apply_filters( 'give_report_column_' . $column_name, $value, $item['id'] );
+		return apply_filters( "give_report_column_{$column_name}", $value, $item['id'] );
 
 	}
 
+	/**
+	 * Column name.
+	 *
+	 * @param $item
+	 *
+	 * @return string
+	 */
 	public function column_name( $item ) {
 		$name = '#' . $item['id'] . ' ';
 		$name .= ! empty( $item['name'] ) ? $item['name'] : '<em>' . esc_html__( 'Unnamed Donor', 'give' ) . '</em>';
 		$view_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $item['id'] );
-		$actions  = array(
-			'view'   => sprintf( '<a href="%1$s">%2$s</a>', $view_url, esc_html__( 'View Donor', 'give' ) ),
-			'delete' => sprintf( '<a href="%1$s">%2$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id=' . $item['id'] ), esc_html__( 'Delete', 'give' ) )
-		);
+		$actions  = $this->get_row_actions( $item );
 
 		return '<a href="' . esc_url( $view_url ) . '">' . $name . '</a>' . $this->row_actions( $actions );
 	}
 
 	/**
-	 * Retrieve the table columns
+	 * Retrieve the table columns.
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @return array $columns Array of all the list table columns
+	 * @return array $columns Array of all the list table columns.
 	 */
 	public function get_columns() {
 		$columns = array(
@@ -169,11 +172,11 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Get the sortable columns
+	 * Get the sortable columns.
 	 *
 	 * @access public
 	 * @since  2.1
-	 * @return array Array of all the sortable columns
+	 * @return array Array of all the sortable columns.
 	 */
 	public function get_sortable_columns() {
 		return array(
@@ -185,46 +188,85 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Outputs the reporting views
+	 * Retrieve row actions.
+	 *
+	 * @since  1.7
+	 * @access public
+	 *
+	 * @return array An array of action links.
+	 */
+	public function get_row_actions( $item ) {
+
+		$actions = array(
+
+			'view' => sprintf(
+				'<a href="%1$s" aria-label="%2$s">%3$s</a>',
+				admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $item['id'] ),
+				sprintf( esc_attr__( 'View "%s"', 'give' ), $item['name'] ),
+				esc_html__( 'View Donor', 'give' )
+			),
+
+			'notes' => sprintf(
+				'<a href="%1$s" aria-label="%2$s">%3$s</a>',
+				admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=notes&id=' . $item['id'] ),
+				sprintf( esc_attr__( 'Notes for "%s"', 'give' ), $item['name'] ),
+				esc_html__( 'Notes', 'give' )
+			),
+
+			'delete' => sprintf(
+				'<a href="%1$s" aria-label="%2$s">%3$s</a>',
+				admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id=' . $item['id'] ),
+				sprintf( esc_attr__( 'Delete "%s"', 'give' ), $item['name'] ),
+				esc_html__( 'Delete', 'give' )
+			)
+
+		);
+
+		return apply_filters( 'give_donor_row_actions', $actions, $item );
+
+	}
+
+	/**
+	 * Outputs the reporting views.
 	 *
 	 * @access public
 	 * @since  1.0
 	 * @return void
 	 */
 	public function bulk_actions( $which = '' ) {
-		// These aren't really bulk actions but this outputs the markup in the right place
+		// These aren't really bulk actions but this outputs the markup in the right place.
 	}
 
 	/**
-	 * Retrieve the current page number
+	 * Retrieve the current page number.
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @return int Current page number
+	 * @return int Current page number.
 	 */
 	public function get_paged() {
 		return isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1;
 	}
 
 	/**
-	 * Retrieves the search query string
+	 * Retrieves the search query string.
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @return mixed string If search is present, false otherwise
+	 * @return mixed string If search is present, false otherwise.
 	 */
 	public function get_search() {
 		return ! empty( $_GET['s'] ) ? urldecode( trim( $_GET['s'] ) ) : false;
 	}
 
 	/**
-	 * Build all the reports data
+	 * Build all the reports data.
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @global object $wpdb Used to query the database using the WordPress
+	 * @global object $wpdb Used to query the database using the WordPress.
 	 *                      Database API
-	 * @return array $reports_data All the data for customer reports
+	 * @return array $reports_data All the data for customer reports.
 	 */
 	public function reports_data() {
 		global $wpdb;
@@ -275,7 +317,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Setup the final data for the table
+	 * Setup the final data for the table.
 	 *
 	 * @access public
 	 * @since  1.0

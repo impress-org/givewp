@@ -5,11 +5,11 @@
  * @package     Give
  * @subpackage  Classes/Stats
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -89,6 +89,9 @@ class Give_Payments_Query extends Give_Stats {
 	 *
 	 * @since  1.0
 	 * @access public
+	 *
+	 * @param $query_var
+	 * @param $value
 	 */
 	public function __set( $query_var, $value ) {
 		if ( in_array( $query_var, array( 'meta_query', 'tax_query' ) ) ) {
@@ -103,6 +106,8 @@ class Give_Payments_Query extends Give_Stats {
 	 *
 	 * @since  1.0
 	 * @access public
+	 *
+	 * @param $query_var
 	 */
 	public function __unset( $query_var ) {
 		unset( $this->args[ $query_var ] );
@@ -147,6 +152,13 @@ class Give_Payments_Query extends Give_Stats {
 	 */
 	public function get_payments() {
 
+		/**
+		 * Fires before retrieving payments.
+		 *
+		 * @since 1.0
+		 *
+		 * @param Give_Payments_Query $this Payments query object.
+		 */
 		do_action( 'give_pre_get_payments', $this );
 
 		$query = new WP_Query( $this->args );
@@ -173,6 +185,13 @@ class Give_Payments_Query extends Give_Stats {
 			wp_reset_postdata();
 		}
 
+		/**
+		 * Fires after retrieving payments.
+		 *
+		 * @since 1.0
+		 *
+		 * @param Give_Payments_Query $this Payments query object.
+		 */
 		do_action( 'give_post_get_payments', $this );
 
 		return $this->payments;
@@ -498,43 +517,19 @@ class Give_Payments_Query extends Give_Stats {
 			return;
 		}
 
-		global $give_logs;
-
-		$args = array(
-			'post_parent'            => $this->args['give_forms'],
-			'log_type'               => 'sale',
-			'post_status'            => array( 'publish' ),
-			'nopaging'               => true,
-			'no_found_rows'          => true,
-			'update_post_term_cache' => false,
-			'update_post_meta_cache' => false,
-			'cache_results'          => false,
-			'fields'                 => 'ids'
-		);
+		$compare = '=';
 
 		if ( is_array( $this->args['give_forms'] ) ) {
-			unset( $args['post_parent'] );
-			$args['post_parent__in'] = $this->args['give_forms'];
+			$compare = 'IN';
 		}
 
-		$sales = $give_logs->get_connected_logs( $args );
-
-		if ( ! empty( $sales ) ) {
-
-			$payments = array();
-
-			foreach ( $sales as $sale ) {
-				$payments[] = get_post_meta( $sale, '_give_log_payment_id', true );
-			}
-
-			$this->__set( 'post__in', $payments );
-
-		} else {
-
-			// Set post_parent to something crazy so it doesn't find anything
-			$this->__set( 'post_parent', 999999999999999 );
-
-		}
+		$this->__set( 'meta_query', array(
+			array(
+				'key'     => '_give_payment_form_id',
+				'value'   => $this->args['give_forms'],
+				'compare' => $compare
+			)
+		) );
 
 		$this->__unset( 'give_forms' );
 

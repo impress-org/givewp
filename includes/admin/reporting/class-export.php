@@ -7,11 +7,11 @@
  * @package     Give
  * @subpackage  Admin/Reports
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -86,7 +86,7 @@ class Give_Export {
 	public function get_csv_cols() {
 		$cols = $this->csv_cols();
 
-		return apply_filters( 'give_export_csv_cols_' . $this->export_type, $cols );
+		return apply_filters( "give_export_csv_cols_{$this->export_type}", $cols );
 	}
 
 	/**
@@ -129,7 +129,7 @@ class Give_Export {
 		);
 
 		$data = apply_filters( 'give_export_get_data', $data );
-		$data = apply_filters( 'give_export_get_data_' . $this->export_type, $data );
+		$data = apply_filters( "give_export_get_data_{$this->export_type}", $data );
 
 		return $data;
 	}

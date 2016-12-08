@@ -441,7 +441,7 @@ class Tests_API extends Give_Unit_Test_Case {
 		$this->assertEquals( 'all', $out['forms'][0]['files'][1]['condition'] );
 
 		$this->assertArrayHasKey( 'notes', $out['forms'][0] );
-		$this->assertEquals( 'Purchase Notes', $out['forms'][0]['notes'] );
+		$this->assertEquals( 'Donation Notes', $out['forms'][0]['notes'] );
 	}
 
 }

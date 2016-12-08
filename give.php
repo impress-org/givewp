@@ -5,14 +5,14 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: WordImpress
  * Author URI: https://wordimpress.com
- * Version: 1.6.4
+ * Version: 1.7
  * Text Domain: give
  * Domain Path: /languages
  * GitHub Plugin URI: https://github.com/WordImpress/Give
  *
  * Give is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * any later version.
  *
  * Give is distributed in the hope that it will be useful,
@@ -21,7 +21,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Give. If not, see <http://www.gnu.org/licenses/>.
+ * along with Give. If not, see <https://www.gnu.org/licenses/>.
  *
  * A Tribute to Open Source:
  *
@@ -260,7 +260,7 @@ if ( ! class_exists( 'Give' ) ) :
 
 			// Plugin version
 			if ( ! defined( 'GIVE_VERSION' ) ) {
-				define( 'GIVE_VERSION', '1.6.4' );
+				define( 'GIVE_VERSION', '1.7' );
 			}
 
 			// Plugin Folder Path
@@ -334,11 +334,13 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/formatting.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/price-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/error-tracking.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/process-purchase.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/process-donation.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/login-register.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/user-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/plugin-compatibility.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/deprecated-functions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/deprecated/deprecated-functions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/deprecated/deprecated-actions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/deprecated/deprecated-filters.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/actions.php';
@@ -357,6 +359,10 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/template.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/actions.php';
+
+            if( defined( 'WP_CLI' ) && WP_CLI ) {
+                require_once GIVE_PLUGIN_DIR . 'includes/class-give-cli-commands.php';
+            }
 
 			if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 

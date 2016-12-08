@@ -6,11 +6,11 @@
  *
  * @subpackage  Admin/Tools/Give_Tools_Recount_Income
  * @copyright   Copyright (c) 2016, WordImpress
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.5
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -48,8 +48,7 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 	 *
 	 * @access public
 	 * @since 1.5
-	 * @global object $wpdb Used to query the database using the WordPress
-	 *   Database API
+	 *
 	 * @return array $data The data for the CSV file
 	 */
 	public function get_data() {
@@ -168,7 +167,7 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 			$this->delete_data( 'give_recount_income_total' );
 			$this->delete_data( 'give_temp_recount_income' );
 			$this->done    = true;
-			$this->message = esc_html__( 'Give income successfully recounted.', 'give' );
+			$this->message = esc_html__( 'Income stats have been successfully recounted.', 'give' );
 
 			return false;
 		}
