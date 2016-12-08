@@ -34,30 +34,10 @@ add_action( 'give_paypal_cc_form', '__return_false' );
  */
 function give_process_paypal_payment( $payment_data ) {
 
-	if ( ! wp_verify_nonce( $payment_data['gateway_nonce'], 'give-gateway' ) ) {
-		wp_die( esc_html__( 'Nonce verification has failed.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
-	}
+	// Validate nonce.
+	give_validate_nonce( $payment_data['gateway_nonce'], 'give-gateway' );
+	$payment_id = give_create_payment( $payment_data );
 
-	$form_id  = intval( $payment_data['post_data']['give-form-id'] );
-	$price_id = isset( $payment_data['post_data']['give-price-id'] ) ? $payment_data['post_data']['give-price-id'] : '';
-
-	// Collect payment data.
-	$payment_data = array(
-		'price'           => $payment_data['price'],
-		'give_form_title' => $payment_data['post_data']['give-form-title'],
-		'give_form_id'    => $form_id,
-		'give_price_id'   => $price_id,
-		'date'            => $payment_data['date'],
-		'user_email'      => $payment_data['user_email'],
-		'purchase_key'    => $payment_data['purchase_key'],
-		'currency'        => give_get_currency(),
-		'user_info'       => $payment_data['user_info'],
-		'status'          => 'pending',
-		'gateway'         => 'paypal'
-	);
-
-	// Record the pending payment.
-	$payment_id = give_insert_payment( $payment_data );
 
 	// Check payment.
 	if ( ! $payment_id ) {
@@ -73,108 +53,11 @@ function give_process_paypal_payment( $payment_data ) {
 		);
 		// Problems? Send back.
 		give_send_back_to_checkout( '?payment-mode=' . $payment_data['post_data']['give-gateway'] );
-
-	} else {
-
-		// Only send to PayPal if the pending payment is created successfully.
-		$listener_url = add_query_arg( 'give-listener', 'IPN', home_url( 'index.php' ) );
-
-		// Get the success url.
-		$return_url = add_query_arg( array(
-			'payment-confirmation' => 'paypal',
-			'payment-id'           => $payment_id
-
-		), get_permalink( give_get_option( 'success_page' ) ) );
-
-		// Get the PayPal redirect uri.
-		$paypal_redirect = trailingslashit( give_get_paypal_redirect() ) . '?';
-
-		//Item name - pass level name if variable priced.
-		$item_name = $payment_data['post_data']['give-form-title'];
-
-		//Verify has variable prices.
-		if ( give_has_variable_prices( $form_id ) && isset( $payment_data['post_data']['give-price-id'] ) ) {
-
-			$item_price_level_text = give_get_price_option_name( $form_id, $payment_data['post_data']['give-price-id'] );
-
-			$price_level_amount = give_get_price_option_amount( $form_id, $payment_data['post_data']['give-price-id'] );
-
-			//Donation given doesn't match selected level (must be a custom amount).
-			if ( $price_level_amount != give_sanitize_amount( $payment_data['price'] ) ) {
-				$custom_amount_text = get_post_meta( $form_id, '_give_custom_amount_text', true );
-				//user custom amount text if any, fallback to default if not.
-				$item_name .= ' - ' . ( ! empty( $custom_amount_text ) ? $custom_amount_text : esc_html__( 'Custom Amount', 'give' ) );
-
-			} //Is there any donation level text?
-			elseif ( ! empty( $item_price_level_text ) ) {
-				$item_name .= ' - ' . $item_price_level_text;
-			}
-
-		} //Single donation: Custom Amount.
-		elseif ( give_get_form_price( $form_id ) !== give_sanitize_amount( $payment_data['price'] ) ) {
-			$custom_amount_text = get_post_meta( $form_id, '_give_custom_amount_text', true );
-			//user custom amount text if any, fallback to default if not.
-			$item_name .= ' - ' . ( ! empty( $custom_amount_text ) ? $custom_amount_text : esc_html__( 'Custom Amount', 'give' ) );
-		}
-
-		// Setup PayPal API params.
-		$paypal_args = array(
-			'business'      => give_get_option( 'paypal_email', false ),
-			'first_name'    => $payment_data['user_info']['first_name'],
-			'last_name'     => $payment_data['user_info']['last_name'],
-			'email'         => $payment_data['user_email'],
-			'invoice'       => $payment_data['purchase_key'],
-			'amount'        => $payment_data['price'],
-			'item_name'     => stripslashes( $item_name ),
-			'no_shipping'   => '1',
-			'shipping'      => '0',
-			'no_note'       => '1',
-			'currency_code' => give_get_currency(),
-			'charset'       => get_bloginfo( 'charset' ),
-			'custom'        => $payment_id,
-			'rm'            => '2',
-			'return'        => $return_url,
-			'cancel_return' => give_get_failed_transaction_uri( '?payment-id=' . $payment_id ),
-			'notify_url'    => $listener_url,
-			'page_style'    => give_get_paypal_page_style(),
-			'cbt'           => get_bloginfo( 'name' ),
-			'bn'            => 'givewp_SP'
-		);
-
-		//Add user address if present.
-		if ( ! empty( $payment_data['user_info']['address'] ) ) {
-			$paypal_args['address1'] = isset( $payment_data['user_info']['address']['line1'] ) ? $payment_data['user_info']['address']['line1'] : '';
-			$paypal_args['address2'] = isset( $payment_data['user_info']['address']['line2'] ) ? $payment_data['user_info']['address']['line2'] : '';
-			$paypal_args['city']     = isset( $payment_data['user_info']['address']['city'] ) ? $payment_data['user_info']['address']['city'] : '';
-			$paypal_args['state']    = isset( $payment_data['user_info']['address']['state'] ) ? $payment_data['user_info']['address']['state'] : '';
-			$paypal_args['country']  = isset( $payment_data['user_info']['address']['country'] ) ? $payment_data['user_info']['address']['country'] : '';
-		}
-
-		//Donations or regular transactions?
-		if ( give_get_option( 'paypal_button_type' ) === 'standard' ) {
-			$paypal_extra_args = array(
-				'cmd' => '_xclick',
-			);
-		} else {
-			$paypal_extra_args = array(
-				'cmd' => '_donations',
-			);
-		}
-
-		$paypal_args = array_merge( $paypal_extra_args, $paypal_args );
-		$paypal_args = apply_filters( 'give_paypal_redirect_args', $paypal_args, $payment_data );
-
-		// Build query.
-		$paypal_redirect .= http_build_query( $paypal_args );
-
-		// Fix for some sites that encode the entities.
-		$paypal_redirect = str_replace( '&amp;', '&', $paypal_redirect );
-
-		// Redirect to PayPal.
-		wp_redirect( $paypal_redirect );
-		exit;
 	}
 
+	// Redirect to PayPal.
+	wp_redirect( _give_build_paypal_url( $payment_id, $payment_data ) );
+	exit;
 }
 
 add_action( 'give_gateway_paypal', 'give_process_paypal_payment' );
