@@ -31,8 +31,8 @@ jQuery(function ($) {
 
 		if (form.hasClass('float-labels-enabled')) {
 
-			var wrap  = form.find('#give-card-state-wrap');
-			var el    = wrap.find('#card_state');
+			var wrap = form.find('#give-card-state-wrap');
+			var el = wrap.find('#card_state');
 			var label = wrap.find('label[for="card_state"]');
 
 			label = label.length ? label.text().replace(/[*:]/g, '').trim() : '';
@@ -57,7 +57,7 @@ jQuery(function ($) {
 	doc.on('click', '.give-btn-reveal', function (e) {
 		e.preventDefault();
 		var this_button = $(this);
-		var this_form   = $(this).parents('form');
+		var this_form = $(this).parents('form');
 		this_button.hide();
 		this_form.find('#give-payment-mode-select, #give_purchase_form_wrap').slideDown();
 		return false;
@@ -66,10 +66,10 @@ jQuery(function ($) {
 	// Modal with Magnific
 	doc.on('click', '.give-btn-modal', function (e) {
 		e.preventDefault();
-		var this_form_wrap    = $(this).parents('div.give-form-wrap');
-		var this_form         = this_form_wrap.find('form.give-form');
+		var this_form_wrap = $(this).parents('div.give-form-wrap');
+		var this_form = this_form_wrap.find('form.give-form');
 		var this_amount_field = this_form.find('#give-amount');
-		var this_amount       = this_amount_field.val();
+		var this_amount = this_amount_field.val();
 
 		//Check to ensure our amount is greater than 0
 		//Does this number have a value
@@ -78,7 +78,7 @@ jQuery(function ($) {
 			return false;
 		}
 
-		give_open_form_modal( this_form_wrap, this_form );
+		give_open_form_modal(this_form_wrap, this_form);
 
 	});
 
@@ -89,7 +89,7 @@ jQuery(function ($) {
  * @param $form_wrap
  * @param $form
  */
-function give_open_form_modal( $form_wrap, $form ) {
+function give_open_form_modal($form_wrap, $form) {
 	// Hide form form children.
 	var children = '#give_purchase_form_wrap, #give-payment-mode-select, .mfp-close, .give-hidden';
 
@@ -100,22 +100,22 @@ function give_open_form_modal( $form_wrap, $form ) {
 
 	//Alls well, open popup!
 	jQuery.magnificPopup.open({
-		mainClass     : 'give-modal',
+		mainClass: 'give-modal',
 		closeOnBgClick: false,
-		items         : {
-			src : $form,
+		items: {
+			src: $form,
 			type: 'inline'
 		},
-		callbacks     : {
+		callbacks: {
 			beforeOpen: function () {
 				// add title, content, goal and error to form if admin want to show button only
 				if ($form_wrap.hasClass('give-display-button-only') && !$form.data('content')) {
 
 					var $form_content = jQuery('.give-form-content-wrap', $form_wrap),
-						$form_title   = jQuery('.give-form-title', $form_wrap),
-						$form_goal    = jQuery('.give-goal-progress', $form_wrap),
-						$form_error   = jQuery('>.give_error', $form_wrap),
-						$form_errors  = jQuery('.give_errors', $form_wrap);
+						$form_title = jQuery('.give-form-title', $form_wrap),
+						$form_goal = jQuery('.give-goal-progress', $form_wrap),
+						$form_error = jQuery('>.give_error', $form_wrap),
+						$form_errors = jQuery('.give_errors', $form_wrap);
 
 					// Add content container to form.
 					if ($form_content.length && !jQuery('.give-form-content-wrap', $form).length) {
@@ -128,15 +128,15 @@ function give_open_form_modal( $form_wrap, $form ) {
 
 					// Add errors container to form.
 					if ($form_errors.length && !jQuery('.give_errors', $form).length) {
-						$form_errors.each(function( index, $error ){
-							$form.prepend( jQuery( $error ) );
+						$form_errors.each(function (index, $error) {
+							$form.prepend(jQuery($error));
 						});
 					}
 
 					// Add error container to form.
 					if ($form_error.length && !jQuery('>.give_error', $form).length) {
-						$form_error.each(function( index, $error ){
-							$form.prepend( jQuery( $error ) );
+						$form_error.each(function (index, $error) {
+							$form.prepend(jQuery($error));
 						});
 					}
 
@@ -153,11 +153,11 @@ function give_open_form_modal( $form_wrap, $form ) {
 					$form.data('content', 'loaded');
 				}
 			},
-			open : function () {
+			open: function () {
 				// Will fire when this exact popup is opened
 				// this - is Magnific Popup object
 				var $mfp_content = jQuery('.mfp-content');
-				if ( $mfp_content.outerWidth() >= 500) {
+				if ($mfp_content.outerWidth() >= 500) {
 					$mfp_content.addClass('give-responsive-mfp-content');
 				}
 
@@ -181,7 +181,7 @@ function give_open_form_modal( $form_wrap, $form ) {
  */
 function give_fl_trigger() {
 	var options = {
-		exclude    : ['#give-amount, .give-select-level, .multiselect, .give-repeater-table input, input[type="url"]'],
+		exclude: ['#give-amount, .give-select-level, .multiselect, .give-repeater-table input, input[type="url"]'],
 		customEvent: give_fl_custom_events
 	};
 	jQuery('.float-labels-enabled').floatlabels(options);
