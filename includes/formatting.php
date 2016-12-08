@@ -480,10 +480,10 @@ function give_let_to_num( $size ) {
  * @since 1.8
  *
  * @param        $nonce
- * @param int    $action
- * @param array  $wp_die_args
+ * @param int   $action
+ * @param array $wp_die_args
  */
-function give_validate_nonce( $nonce, $action = -1, $wp_die_args = array() ) {
+function give_validate_nonce( $nonce, $action = - 1, $wp_die_args = array() ) {
 
 	$default_wp_die_args = array(
 		'message' => esc_html__( 'Nonce verification has failed.', 'give' ),
@@ -527,8 +527,8 @@ function give_check_variable( $variable, $conditional = '', $default = false ) {
 			break;
 
 		case 'null':
-				$variable = is_null( $variable ) ? $variable : $default;
-				break;
+			$variable = is_null( $variable ) ? $variable : $default;
+			break;
 
 		default:
 			$variable = isset( $variable ) ? $variable : $default;
