@@ -357,15 +357,6 @@ function give_create_payment( $payment_data ) {
 		'gateway'         => 'paypal'
 	);
 
-
-	/**
-	 * Filter the payment data.
-	 *
-	 * @since 1.8
-	 * @param array $payment_data
-	 */
-	$payment_data = apply_filters( 'give_create_payment', $payment_data );
-
 	// Record the pending payment.
 	return give_insert_payment( $payment_data );
 }
