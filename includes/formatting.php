@@ -477,6 +477,8 @@ function give_let_to_num( $size ) {
 /**
  * Verify nonce.
  *
+ * @since 1.8
+ *
  * @param        $nonce
  * @param int    $action
  * @param array  $wp_die_args
