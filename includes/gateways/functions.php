@@ -458,15 +458,16 @@ function _give_build_paypal_url( $payment_id, $payment_data ) {
 	}
 
 	// Donations or regular transactions?
-	// paypal_button_type can be donation or standard.
-	$paypal_extra_args = array( 'cmd' => '_donations', );
-	if ( give_get_option( 'paypal_button_type' ) === 'standard' ) {
-		$paypal_extra_args = array(
-			'cmd' => '_xclick',
-		);
-	}
+	$paypal_args['cmd'] = _give_get_paypal_button_type();
 
-	$paypal_args = array_merge( $paypal_extra_args, $paypal_args );
+	/**
+	 * Filter the paypal redirect args.
+	 *
+	 * @since 1.8
+	 *
+	 * @param array $paypal_args
+	 * @param array $payment_data
+	 */
 	$paypal_args = apply_filters( 'give_paypal_redirect_args', $paypal_args, $payment_data );
 
 	// Build query.
@@ -476,4 +477,23 @@ function _give_build_paypal_url( $payment_id, $payment_data ) {
 	$paypal_redirect = str_replace( '&amp;', '&', $paypal_redirect );
 
 	return $paypal_redirect;
+}
+
+
+/**
+ * Get paypal button type.
+ *
+ * Note: only for internal use
+ *
+ * @since 1.8
+ * @return string
+ */
+function _give_get_paypal_button_type() {
+	// paypal_button_type can be donation or standard.
+	$paypal_button_type = '_donations';
+	if ( give_get_option( 'paypal_button_type' ) === 'standard' ) {
+		$paypal_button_type = '_xclick';
+	}
+
+	return $paypal_button_type;
 }
