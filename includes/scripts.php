@@ -46,10 +46,11 @@ function give_load_scripts() {
 		'purchase_loading'    => __( 'Please Wait...', 'give' ),
 		'number_decimals'     => give_get_price_decimals(),
 		'give_version'        => GIVE_VERSION,
-		'magnific_options'            => apply_filters(
-            'give_magnific_options',
+		'magnific_options'    => apply_filters(
+			'give_magnific_options',
 			array(
-				'close_on_bg_click' => true,
+				'main_class'        => 'give-modal',
+				'close_on_bg_click' => false,
 			)
 		),
 		'form_translation'    => apply_filters(
