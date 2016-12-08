@@ -210,4 +210,21 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 			array( '1K', 1024, '1K should be equal to 1024' ),
 		);
 	}
+
+	/**
+	 * Test give_validate_nonce function
+	 *
+	 * @since  1.8
+	 *
+	 * @cover  give_validate_nonce
+	 */
+	function test_give_validate_nonce() {
+		$input_nonce = wp_create_nonce( 'give_gateway' );
+
+		/*
+		 * If nonce does not validate successfully then WPDieException throw.
+		 */
+		$this->expectException( 'WPDieException' );
+		give_validate_nonce( $input_nonce );
+	}
 }
