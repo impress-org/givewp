@@ -22,11 +22,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 1.0
  *
  * @property $price
- * @property $prices
  * @property $minimum_price
+ * @property $prices
  * @property $goal
  * @property $sales
  * @property $earnings
+ * @property $post_type
  */
 class Give_Donate_Form {
 

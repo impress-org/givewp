@@ -68,7 +68,7 @@ function give_get_donation_form( $args = array() ) {
 	ob_start();
 
 	/**
-	 * Fires while outputing donation form, before the form wapper div.
+	 * Fires while outputting donation form, before the form wrapper div.
 	 *
 	 * @since 1.0
 	 *

@@ -244,7 +244,7 @@ function give_format_admin_multilevel_amount( $field_args, $field ) {
  * @param string $price
  * @param string $currency
  *
- * @return mixed|string|void
+ * @return mixed|string
  */
 function give_currency_filter( $price = '', $currency = '' ) {
 
