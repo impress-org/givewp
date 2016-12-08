@@ -330,6 +330,7 @@ function give_purchase_form_validate_gateway() {
 			give_set_error(
 				'invalid_donation_minimum',
 				sprintf(
+					/* translators: %s: minimum donation amount */
 					esc_html__( 'This form has a minimum donation amount of %s.', 'give' ),
 					give_currency_filter( give_format_amount( give_get_form_minimum_price( $form_id ) ) )
 				)
@@ -1009,7 +1010,7 @@ function give_purchase_form_validate_cc_zip( $zip = 0, $country_code = '' ) {
 		'CX' => '6798',
 		'CY' => '\d{4}',
 		'CZ' => '\d{3}[ ]?\d{2}',
-		'DE' => "\b((?:0[1-46-9]\d{3})|(?:[1-357-9]\d{4})|(?:[4][0-24-9]\d{3})|(?:[6][013-9]\d{3}))\b",
+		'DE' => '\b((?:0[1-46-9]\d{3})|(?:[1-357-9]\d{4})|(?:[4][0-24-9]\d{3})|(?:[6][013-9]\d{3}))\b',
 		'DK' => '^([D-d][K-k])?( |-)?[1-9]{1}[0-9]{3}$',
 		'DO' => '\d{5}',
 		'DZ' => '\d{5}',

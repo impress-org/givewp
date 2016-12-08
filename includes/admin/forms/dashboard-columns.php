@@ -44,10 +44,10 @@ function give_form_columns( $give_form_columns ) {
 	);
 
 	//Does the user want categories / tags?
-	if ( give_get_option( 'enable_categories' ) !== 'on' ) {
+	if ( ! give_is_setting_enabled( give_get_option( 'categories', 'disabled' ) ) ) {
 		unset( $give_form_columns['form_category'] );
 	}
-	if ( give_get_option( 'enable_tags' ) !== 'on' ) {
+	if ( ! give_is_setting_enabled( give_get_option( 'tags', 'disabled' ) ) ) {
 		unset( $give_form_columns['form_tag'] );
 	}
 
@@ -68,7 +68,7 @@ add_filter( 'manage_edit-give_forms_columns', 'give_form_columns' );
  */
 function give_render_form_columns( $column_name, $post_id ) {
 	if ( get_post_type( $post_id ) == 'give_forms' ) {
-
+		
 		switch ( $column_name ) {
 			case 'form_category':
 				echo get_the_term_list( $post_id, 'give_forms_category', '', ', ', '' );
@@ -85,8 +85,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 				}
 				break;
 			case 'goal':
-				$goal_option = get_post_meta( $post_id, '_give_goal_option', true );
-				if ( ! empty( $goal_option ) && $goal_option === 'yes' ) {
+				if ( give_is_setting_enabled( get_post_meta( $post_id, '_give_goal_option', true ) ) ) {
 					echo give_goal( $post_id, false );
 				} else {
 					esc_html_e( 'No Goal Set', 'give' );

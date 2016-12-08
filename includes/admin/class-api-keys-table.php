@@ -139,7 +139,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 				esc_url( add_query_arg( array(
 					'view'      => 'api_requests',
 					'post_type' => 'give_forms',
-					'page'      => 'give-reports',
+					'page'      => 'give-tools',
 					'tab'       => 'logs',
 					's'         => $item['email']
 				), 'edit.php' ) ),
@@ -169,6 +169,18 @@ class Give_API_Keys_Table extends WP_List_Table {
 		$actions = apply_filters( 'give_api_row_actions', array_filter( $actions ) );
 
 		return sprintf( '%1$s %2$s', $item['user'], $this->row_actions( $actions ) );
+	}
+
+	/**
+	 * Gets the name of the primary column.
+	 *
+	 * @since 1.5
+	 * @access protected
+	 *
+	 * @return string Name of the primary column.
+	 */
+	protected function get_primary_column_name() {
+		return 'user';
 	}
 
 	/**
@@ -314,7 +326,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 		$hidden   = array(); // No hidden columns
 		$sortable = array(); // Not sortable... for now
 
-		$this->_column_headers = array( $columns, $hidden, $sortable, 'id' );
+		$this->_column_headers = array( $columns, $hidden, $sortable );
 
 		$data = $this->query();
 

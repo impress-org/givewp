@@ -161,7 +161,8 @@ jQuery.noConflict();
 
 				e.preventDefault();
 
-				if (confirm(give_vars.delete_donation_note)) {
+				if (confirm(give_vars.delete_payment_note)) {
+
 					var postData = {
 						action    : 'give_delete_payment_note',
 						payment_id: $(this).data('payment-id'),
@@ -260,20 +261,118 @@ jQuery.noConflict();
 
 		init: function () {
 			this.toggle_options();
+			this.main_setting_update_notice();
+			this.verify_settings();
 		},
 
 		toggle_options: function () {
 
-			var email_access = $('#email_access');
+			/**
+			 * Email access
+			 */
+			var email_access = $('input[name="email_access"]', '.give-setting-tab-body-general');
 			email_access.on('change', function () {
-				if (email_access.prop('checked')) {
-					$('.cmb2-id-recaptcha-key, .cmb2-id-recaptcha-secret').show();
+				var field_value = $('input[name="email_access"]:checked', '.give-setting-tab-body-general').val();
+				if ('enabled' === field_value) {
+					$('#recaptcha_key').parents('tr').show();
+					$('#recaptcha_secret').parents('tr').show();
 				} else {
-					$('.cmb2-id-recaptcha-key, .cmb2-id-recaptcha-secret').hide();
+					$('#recaptcha_key').parents('tr').hide();
+					$('#recaptcha_secret').parents('tr').hide();
+				}
+			}).change();
+
+			/**
+			 * Form featured image
+			 */
+			var form_featured_image = $('input[name="form_featured_img"]', '.give-setting-tab-body-display');
+			form_featured_image.on('change', function () {
+				var field_value = $('input[name="form_featured_img"]:checked', '.give-setting-tab-body-display').val();
+				if ('enabled' === field_value) {
+					$('#featured_image_size').parents('tr').show();
+				} else {
+					$('#featured_image_size').parents('tr').hide();
+				}
+			}).change();
+
+			/**
+			 * Terms and Conditions
+			 */
+			var terms_and_conditions = $('input[name="terms"]', '.give-setting-tab-body-display');
+			terms_and_conditions.on('change', function () {
+				var field_value = $('input[name="terms"]:checked', '.give-setting-tab-body-display').val();
+				if ('enabled' === field_value) {
+					$('#agree_to_terms_label').parents('tr').show();
+					$('#wp-agreement_text-wrap').parents('tr').show();
+				} else {
+					$('#agree_to_terms_label').parents('tr').hide();
+					$('#wp-agreement_text-wrap').parents('tr').hide();
+				}
+			}).change();
+
+			/**
+			 * Disable admin notification
+			 */
+			var admin_notification = $('input[name="admin_notices"]', '.give-setting-tab-body-emails');
+			admin_notification.on('change', function () {
+				var field_value = $('input[name="admin_notices"]:checked', '.give-setting-tab-body-emails').val();
+				if ('enabled' === field_value) {
+					$('#donation_notification_subject').parents('tr').show();
+					$('#wp-donation_notification-wrap').parents('tr').show();
+					$('#admin_notice_emails').parents('tr').show();
+				} else {
+					$('#donation_notification_subject').parents('tr').hide();
+					$('#wp-donation_notification-wrap').parents('tr').hide();
+					$('#admin_notice_emails').parents('tr').hide();
 				}
 			}).change();
 		},
 
+		main_setting_update_notice: function () {
+			var $setting_message = $('#setting-error-give-setting-updated');
+			if ($setting_message.length) {
+
+				// auto hide setting message in 5 seconds.
+				window.setTimeout(
+					function () {
+						$setting_message.slideUp();
+					},
+					5000
+				);
+			}
+		},
+
+		verify_settings: function () {
+			var success_setting = $('#success_page');
+			var failure_setting = $('#failure_page');
+
+			/**
+			 * Verify success and failure page.
+			 */
+			success_setting.add(failure_setting).change(function () {
+				if (success_setting.val() === failure_setting.val()) {
+					var notice_html       = '<div id="setting-error-give-matched-success-failure-page" class="updated settings-error notice is-dismissible"> <p><strong>' + give_vars.matched_success_failure_page + '</strong></p> <button type="button" class="notice-dismiss"><span class="screen-reader-text">' + give_vars.dismiss_notice_text + '</span></button> </div>',
+						$notice_container = $('#setting-error-give-matched-success-failure-page');
+
+					// Bailout.
+					if ($notice_container.length) {
+						return false;
+					}
+
+					// Add html.
+					$('h2', '#give-mainform').after(notice_html);
+					$notice_container = $('#setting-error-give-matched-success-failure-page');
+
+					// Add event to  dismiss button.
+					$('.notice-dismiss', $notice_container).click(function () {
+						$notice_container.remove();
+					});
+
+					// Unset setting field.
+					$(this).val('');
+				}
+			}).change();
+		}
 	};
 
 	/**
@@ -750,6 +849,493 @@ jQuery.noConflict();
 	};
 
 	/**
+	 * Edit Donation form screen Js
+	 */
+	var Edit_Form_Screen = {
+		init: function () {
+			this.handle_metabox_tab_click();
+			this.setup_colorpicker();
+			this.setup_repeatable_fields();
+			this.handle_repeater_group_events();
+
+			// Multi level repeater field js.
+			this.handle_multi_levels_repeater_group_events();
+		},
+
+		/**
+		 * Toggle metabox tab if mentioned in url.
+		 */
+		handle_metabox_tab_click: function () {
+			var $tab_links = $('.give-metabox-tabs a');
+			$tab_links.on('click', function (e) {
+				e.preventDefault();
+				// Remove active class from tab link.
+				$tab_links.parents('li').removeClass('active');
+
+				// Add active class to current tab link.
+				$(this).parent().addClass('active');
+
+				// Hide all tab contents.
+				$('.give_options_panel').addClass('give-hidden');
+
+				// Show tab content.
+				$($(this).attr('href')).removeClass('give-hidden');
+				return false;
+			});
+
+			// Auto open tab if mentioned in url.
+			if (location.hash.length) {
+				var $current_active_tab = $('a[href="' + location.hash + '"]', '.give-metabox-tabs');
+
+				if ($current_active_tab.length) {
+					$current_active_tab.trigger('click');
+				}
+			}
+		},
+
+		/**
+		 * Initialize colorpicker.
+		 */
+		setup_colorpicker: function () {
+			$(document).ready(function () {
+				var $colorpicker_fields = $('.give-colorpicker');
+
+				if ($colorpicker_fields.length) {
+					$colorpicker_fields.each(function (index, item) {
+						var $item = $(item);
+
+						// Bailout: do not automatically initialize colorpicker for repeater field group template.
+						if ($item.parents('.give-template').length) {
+							return;
+						}
+
+						$item.wpColorPicker();
+					});
+				}
+			})
+		},
+
+		/**
+		 * Setup repeater field.
+		 */
+		setup_repeatable_fields: function () {
+			jQuery(function () {
+				jQuery('.give-repeatable-field-section').each(function () {
+					var $this = $(this);
+
+					// Note: Do not change option params, it can break repeatable fields functionality.
+					var options = {
+						wrapper                       : '.give-repeatable-fields-section-wrapper',
+						container                     : '.container',
+						row                           : '.give-row',
+						add                           : '.give-add-repeater-field-section-row',
+						remove                        : '.give-remove',
+						move                          : '.give-move',
+						template                      : '.give-template',
+						confirm_before_remove_row     : true,
+						confirm_before_remove_row_text: give_vars.confirm_before_remove_row_text,
+						is_sortable                   : true,
+						before_add                    : null,
+						after_add                     : handle_metabox_repeater_field_row_count,
+						//after_add:  after_add, Note: after_add is internal function in repeatable-fields.js. Uncomment this can cause of js error.
+						before_remove                 : null,
+						after_remove                  : handle_metabox_repeater_field_row_remove,
+						sortable_options              : {
+							placeholder: "give-ui-placeholder-state-highlight",
+							start      : function (event, ui) {
+								$('body').trigger('repeater_field_sorting_start', [ui.item]);
+							},
+							stop       : function (event, ui) {
+								$('body').trigger('repeater_field_sorting_stop', [ui.item]);
+							},
+							update     : function (event, ui) {
+								// Do not allow any row at position 0.
+								if (ui.item.next().hasClass('give-template')) {
+									ui.item.next().after(ui.item);
+								}
+
+								var $rows = $('.give-row', $this).not('.give-template');
+
+								if ($rows.length) {
+									var row_count = 1;
+									$rows.each(function (index, item) {
+										// Set name for fields.
+										var $fields = $('.give-field, label', $(item));
+
+										if ($fields.length) {
+											$fields.each(function () {
+												var $parent         = $(this).parents('.give-field-wrap'),
+													$currentElement = $(this);
+
+												$.each(this.attributes, function (index, element) {
+													var old_class_name_prefix = this.value.replace(/\[/g, '_').replace(/]/g, ''),
+														old_class_name        = old_class_name_prefix + '_field',
+														new_class_name        = '',
+														new_class_name_prefix = '';
+
+													// Bailout.
+													if (!this.value) {
+														return;
+													}
+
+													// Reorder index.
+													this.value            = this.value.replace(/\[\d+\]/g, '[' + (row_count - 1) + ']');
+													new_class_name_prefix = this.value.replace(/\[/g, '_').replace(/]/g, '');
+
+													// Update class name.
+													if ($parent.hasClass(old_class_name)) {
+														new_class_name = new_class_name_prefix + '_field';
+														$parent.removeClass(old_class_name).addClass(new_class_name);
+													}
+
+													// Update field id.
+													if (old_class_name_prefix == $currentElement.attr('id')) {
+														$currentElement.attr('id', new_class_name_prefix);
+													}
+												});
+											});
+										}
+
+										row_count++;
+									});
+
+									// Fire event.
+									$this.trigger('repeater_field_row_reordered', [ui.item]);
+								}
+							}
+						}
+						//row_count_placeholder: '{{row-count-placeholder}}' Note: do not modify this param otherwise it will break repeatable field functionality.
+					};
+
+					jQuery(this).repeatable_fields(options);
+				});
+			});
+		},
+
+		/**
+		 * Handle repeater field events.
+		 */
+		handle_repeater_group_events: function () {
+			var $repeater_fields = $('.give-repeatable-field-section'),
+				$body            = $('body');
+
+			// Auto toggle repeater group
+			$body.on('click', '.give-row-head button', function () {
+				var $parent = $(this).closest('tr');
+				$parent.toggleClass('closed');
+				$('.give-row-body', $parent).toggle();
+			});
+
+			// Reset header title when new row added.
+			$repeater_fields.on('repeater_field_new_row_added repeater_field_row_deleted repeater_field_row_reordered', function () {
+				handle_repeater_group_add_number_suffix($(this));
+			});
+
+			// Disable editor when sorting start.
+			$body.on('repeater_field_sorting_start', function (e, row) {
+				var $textarea = $('.wp-editor-area', row);
+
+				if ($textarea.length) {
+					$textarea.each(function (index, item) {
+						window.setTimeout(
+							function () {
+								tinyMCE.execCommand('mceRemoveEditor', true, $(item).attr('id'));
+							},
+							300
+						);
+					});
+				}
+			});
+
+			// Enable editor when sorting stop.
+			$body.on('repeater_field_sorting_stop', function (e, row) {
+				var $textarea = $('.wp-editor-area', row);
+
+				if ($textarea.length) {
+					$textarea.each(function (index, item) {
+						window.setTimeout(
+							function () {
+								var textarea_id = $(item).attr('id');
+								tinyMCE.execCommand('mceAddEditor', true, textarea_id);
+
+								// Switch editor to tmce mode to fix some glitch which appear when you reorder rows.
+								window.setTimeout(function () {
+									// Hack to show tmce mode.
+									switchEditors.go(textarea_id, 'html');
+									$('#' + textarea_id + '-tmce').trigger('click');
+								}, 100);
+							},
+							300
+						);
+					});
+				}
+			});
+
+			// Process jobs on document load for repeater fields.
+			$repeater_fields.each(function (index, item) {
+				// Reset title on document load for already exist groups.
+				var $item = $(item);
+				handle_repeater_group_add_number_suffix($item);
+
+				// Close all tabs when page load.
+				if (parseInt($item.data('close-tabs'))) {
+					$('.give-row-head button', $item).trigger('click');
+					$('.give-template', $item).removeClass('closed');
+					$('.give-template .give-row-body', $item).show();
+				}
+			});
+
+			// Setup colorpicker field when row added.
+			$repeater_fields.on('repeater_field_new_row_added', function (e, container, new_row) {
+				$('.give-colorpicker', $(this)).each(function (index, item) {
+					var $item = $(item);
+
+					// Bailout: skip already init colorpocker fields.
+					if ($item.parents('.wp-picker-container').length || $item.parents('.give-template').length) {
+						return;
+					}
+
+					$item.wpColorPicker();
+				});
+
+				// Load WordPress editor by ajax..
+				var wysiwyg_editor_container = $('div[data-wp-editor]', new_row);
+
+				if (wysiwyg_editor_container.length) {
+					wysiwyg_editor_container.each(function (index, item) {
+						var $item                = $(item),
+							wysiwyg_editor       = $('.wp-editor-wrap', $item),
+							textarea             = $('textarea', $item),
+							textarea_id          = 'give_wysiwyg_unique_' + Math.random().toString().replace('.', '_'),
+							wysiwyg_editor_label = wysiwyg_editor.prev();
+
+						textarea.attr('id', textarea_id);
+
+						$.post(
+							ajaxurl,
+							{
+								action       : 'give_load_wp_editor',
+								wp_editor    : $item.data('wp-editor'),
+								wp_editor_id : textarea_id,
+								textarea_name: $('textarea', $item).attr('name')
+							},
+							function (res) {
+								wysiwyg_editor.remove();
+								wysiwyg_editor_label.after(res);
+
+								// Setup qt data for editor.
+								tinyMCEPreInit.qtInit[textarea.attr('id')] = $.extend(
+									true,
+									tinyMCEPreInit.qtInit['_give_agree_text'],
+									{id: textarea_id}
+								);
+
+								// Setup mce data for editor.
+								tinyMCEPreInit.mceInit[textarea_id] = $.extend(
+									true,
+									tinyMCEPreInit.mceInit['_give_agree_text'],
+									{
+										body_class: textarea_id + ' post-type-give_forms post-status-publish locale-' + tinyMCEPreInit.mceInit['_give_agree_text']['wp_lang_attr'].toLowerCase(),
+										selector  : '#' + textarea_id
+									}
+								);
+
+								// Setup editor.
+								tinymce.init(tinyMCEPreInit.mceInit[textarea_id]);
+								quicktags(tinyMCEPreInit.qtInit[textarea_id]);
+								QTags._buttonsInit();
+
+								window.setTimeout(function () {
+									// Hack to show tmce mode.
+									switchEditors.go(textarea_id, 'html');
+									$('#' + textarea_id + '-tmce').trigger('click');
+								}, 100);
+
+								if (!window.wpActiveEditor) {
+									window.wpActiveEditor = textarea_id;
+								}
+							}
+						);
+					});
+				}
+
+			});
+
+		},
+
+		/**
+		 *  Handle events for multi level repeater group.
+		 */
+		handle_multi_levels_repeater_group_events: function () {
+			var $repeater_fields = $('#_give_donation_levels_field');
+
+			// Add level title as suffix to header title when admin add level title.
+			$('body').on('keyup', '.give-multilevel-text-field', function () {
+				var $parent                           = $(this).closest('tr'),
+					$header_title_container           = $('.give-row-head h2 span', $parent),
+					donation_level_header_text_prefix = $header_title_container.data('header-title');
+
+				// Donation level header already set.
+				if ($(this).val() && (  $(this).val() === $header_title_container.html() )) {
+					return false;
+				}
+
+				if ($(this).val()) {
+					// Change donaiton level header text.
+					$header_title_container.html(donation_level_header_text_prefix + ': ' + $(this).val());
+				} else {
+					// Reset donation level header heading text.
+					$header_title_container.html(donation_level_header_text_prefix)
+				}
+			});
+
+			//  Add level title as suffix to header title on document load.
+			$('.give-multilevel-text-field').each(function (index, item) {
+
+				// Skip first element.
+				if (!index) {
+					return;
+				}
+
+				// Check if item is jquery object or not.
+				var $item = $(item);
+
+				var $parent                           = $item.closest('tr'),
+					$header_title_container           = $('.give-row-head h2 span', $parent),
+					donation_level_header_text_prefix = $header_title_container.data('header-title');
+
+				// Donation level header already set.
+				if ($item.val() && (  $item.val() === $header_title_container.html() )) {
+					return false;
+				}
+
+				if ($item.val()) {
+					// Change donaiton level header text.
+					$header_title_container.html(donation_level_header_text_prefix + ': ' + $item.val());
+				} else {
+					// Reset donation level header heading text.
+					$header_title_container.html(donation_level_header_text_prefix)
+				}
+			});
+
+			// Handle row deleted event for levels repeater field.
+			$repeater_fields.on('repeater_field_row_deleted', function () {
+				var $this = $(this);
+
+				window.setTimeout(
+					function () {
+						var $parent          = $this,
+							$repeatable_rows = $('.give-row', $parent).not('.give-template'),
+							$default_radio   = $('.give-give_default_radio_inline', $repeatable_rows),
+							number_of_level  = $repeatable_rows.length;
+
+						if (number_of_level === 1) {
+							$default_radio.prop('checked', true);
+						}
+					},
+					200
+				);
+			});
+
+			// Handle row added event for levels repeater field.
+			$repeater_fields.on('repeater_field_new_row_added', function (e, container, new_row) {
+				var $this        = $(this),
+					max_level_id = 0;
+
+				// Auto set default level if no level set as default.
+				window.setTimeout(
+					function () {
+						// Set first row as default if selected default row deleted.
+						// When a row is removed containing the default selection then revert default to first repeatable row.
+						if ($('.give-give_default_radio_inline', $this).is(':checked') === false) {
+							$('.give-row', $this)
+								.not('.give-template')
+								.first()
+								.find('.give-give_default_radio_inline')
+								.prop('checked', true);
+						}
+					},
+					200
+				);
+
+				// Get max level id.
+				$('input[type="hidden"].give-levels_id', $this).each(function (index, item) {
+					var $item = $(item);
+					if (max_level_id < $item.val()) {
+						max_level_id = $item.val();
+					}
+				});
+
+				// Auto set level id for new setting level setting group.
+				$('input[type="hidden"].give-levels_id', new_row).val(++max_level_id);
+			});
+		}
+	};
+
+	/**
+	 * Handle row count and field count for repeatable field.
+	 */
+	var handle_metabox_repeater_field_row_count = function (container, new_row) {
+		var row_count  = $(container).attr('data-rf-row-count'),
+			$container = $(container),
+			$parent    = $container.parents('.give-repeatable-field-section');
+
+		row_count++;
+
+		// Set name for fields.
+		$('*', new_row).each(function () {
+			$.each(this.attributes, function (index, element) {
+				this.value = this.value.replace('{{row-count-placeholder}}', row_count - 1);
+			});
+		});
+
+		// Set row counter.
+		$(container).attr('data-rf-row-count', row_count);
+
+		// Fire event: Row added.
+		$parent.trigger('repeater_field_new_row_added', [container, new_row]);
+	};
+
+	/**
+	 * Handle row remove for repeatable field.
+	 */
+	var handle_metabox_repeater_field_row_remove = function (container) {
+		var $container = $(container),
+			$parent    = $container.parents('.give-repeatable-field-section'),
+			row_count  = $(container).attr('data-rf-row-count');
+
+		// Reduce row count.
+		$container.attr('data-rf-row-count', --row_count);
+
+		// Fire event: Row deleted.
+		$parent.trigger('repeater_field_row_deleted');
+	};
+
+	/**
+	 * Add number suffix to repeater group.
+	 */
+	var handle_repeater_group_add_number_suffix = function ($parent) {
+		// Bailout: check if auto group numbering is on or not.
+		if (!parseInt($parent.data('group-numbering'))) {
+			return;
+		}
+
+		var $header_title_container = $('.give-row-head h2 span', $parent),
+			header_text_prefix      = $header_title_container.data('header-title');
+
+		$header_title_container.each(function (index, item) {
+			var $item = $(item);
+
+			// Bailout: do not rename header title in fields template.
+			if ($item.parents('.give-template').length) {
+				return;
+			}
+
+			$item.html(header_text_prefix + ': ' + index);
+		});
+	};
+
+	/**
 	 * Initialize qTips
 	 */
 	var initialize_qtips = function () {
@@ -780,6 +1366,7 @@ jQuery.noConflict();
 		Give_Customer.init();
 		API_Screen.init();
 		Give_Export.init();
+		Edit_Form_Screen.init();
 
 		initialize_qtips();
 
@@ -915,7 +1502,7 @@ jQuery.noConflict();
 			price_string = give_unformat_currency($(this).val(), false);
 
 			// Back out.
-			if (!price_string) {
+			if (!parseInt(price_string)) {
 				$(this).val('');
 				return false;
 			}

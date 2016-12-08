@@ -258,50 +258,50 @@ function give_currency_filter( $price = '', $currency = '' ) {
 	$negative = $price < 0;
 
 	if ( $negative ) {
-		// Remove proceeding "-".
+        // Remove proceeding "-".
 		$price = substr( $price, 1 );
 	}
 
 	$symbol = give_currency_symbol( $currency );
 
-	switch ( $currency ):
-		case 'GBP' :
-		case 'BRL' :
-		case 'EUR' :
-		case 'USD' :
-		case 'AUD' :
-		case 'CAD' :
-		case 'HKD' :
-		case 'MXN' :
-		case 'NZD' :
-		case 'SGD' :
-		case 'JPY' :
-		case 'THB' :
-		case 'INR' :
-		case 'RIAL' :
-		case 'TRY' :
-		case 'RUB' :
-		case 'SEK' :
-		case 'PLN' :
-		case 'PHP' :
-		case 'TWD' :
-		case 'MYR' :
-		case 'CZK' :
-		case 'DKK' :
-		case 'HUF' :
-		case 'ILS' :
-		case 'MAD' :
-		case 'KRW' :
-		case 'ZAR' :
-			$formatted = ( 'before' === $position ? $symbol . $price : $price . $symbol );
-			break;
-		case 'NOK' :
-			$formatted = ( 'before' === $position ? $symbol . ' ' . $price : $price . ' ' . $symbol );
-			break;
-		default :
-			$formatted = ( 'before' === $position ? $currency . ' ' . $price : $price . ' ' . $currency );
-			break;
-	endswitch;
+    switch ( $currency ):
+        case 'GBP' :
+        case 'BRL' :
+        case 'EUR' :
+        case 'USD' :
+        case 'AUD' :
+        case 'CAD' :
+        case 'HKD' :
+        case 'MXN' :
+        case 'NZD' :
+        case 'SGD' :
+        case 'JPY' :
+        case 'THB' :
+        case 'INR' :
+        case 'RIAL' :
+        case 'TRY' :
+        case 'RUB' :
+        case 'SEK' :
+        case 'PLN' :
+        case 'PHP' :
+        case 'TWD' :
+        case 'MYR' :
+        case 'CZK' :
+        case 'DKK' :
+        case 'HUF' :
+        case 'ILS' :
+        case 'MAD' :
+        case 'KRW' :
+        case 'ZAR' :
+            $formatted = ( 'before' === $position ? $symbol . $price : $price . $symbol );
+            break;
+        case 'NOK' :
+            $formatted = ( 'before' === $position ? $symbol . ' ' . $price : $price . ' ' . $symbol );
+            break;
+        default :
+            $formatted = ( 'before' === $position ? $currency . ' ' . $price : $price . ' ' . $currency );
+            break;
+    endswitch;
 
 	/**
 	 * Filter formatted amount with currency
@@ -417,57 +417,6 @@ function give_sanitize_price_field_value( $value, $field_args, $field ) {
 
 
 /**
- * Manually render amount field.
- *
- * @since  1.7
- *
- * @param  array      $field_args Array of field arguments.
- * @param  CMB2_Field $field      The field object
- *
- * @return void
- */
-function give_cmb_amount_field_render_row_cb( $field_args, $field ) {
-
-	// Get args.
-	$id                = $field->args( 'id' );
-	$label             = $field->args( 'name' );
-	$name              = $field->args( '_name' );
-	$description       = $field->args( 'description' );
-	$attributes        = $field->args( 'attributes' );
-	$attributes_string = '';
-	$row_class         = $field->row_classes();
-
-	// Get attributes.
-	if ( ! empty( $attributes ) ) {
-		foreach ( $attributes as $attribute_name => $attribute_val ) {
-			$attributes_string[] = "$attribute_name=\"$attribute_val\"";
-		}
-
-		$attributes_string = implode( ' ', $attributes_string );
-	}
-
-	// Get row class.
-	if ( ! empty( $row_class ) && is_array( $row_class ) ) {
-		$row_class = implode( ' ', $row_class );
-	}
-	?>
-	<div class="cmb-row <?php echo $row_class; ?>">
-		<div class="cmb-th">
-			<label for="<?php echo $id; ?>"><?php echo $label; ?></label>
-		</div>
-		<div class="cmb-td">
-			<?php echo( give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol give-money-symbol-before">' . give_currency_symbol() . '</span>' : '' ); ?>
-			<input id="<?php echo $id; ?>" type="text" name="<?php echo $name; ?>" <?php echo $attributes_string ?>/>
-			<?php echo( give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '' ); ?>
-
-			<span class="cmb2-metabox-description"><?php echo $description; ?></span>
-		</div>
-	</div>
-	<?php
-}
-
-
-/**
  * Get date format string on basis of given context.
  *
  *
@@ -531,4 +480,47 @@ function give_get_cache_key( $action, $query_args ) {
 	}
 
 	return "give_cache_{$action}_" . substr( md5( serialize( $query_args ) ), 0, 15 );
+}
+
+/**
+ * Clean variables using sanitize_text_field. Arrays are cleaned recursively.
+ * Non-scalar values are ignored.
+ *
+ * @since  1.8
+ * @param  string|array $var
+ * @return string|array
+ */
+function give_clean( $var ) {
+	if ( is_array( $var ) ) {
+		return array_map( 'give_clean', $var );
+	} else {
+		return is_scalar( $var ) ? sanitize_text_field( $var ) : $var;
+	}
+}
+
+/**
+ * Transforms php.ini notation for numbers (like '2M') to an integer.
+ *
+ * @since 1.8
+ *
+ * @param $size
+ * @return int
+ */
+function give_let_to_num( $size ) {
+	$l   = substr( $size, -1 );
+	$ret = substr( $size, 0, -1 );
+	switch ( strtoupper( $l ) ) {
+		case 'P':
+			$ret *= 1024;
+		case 'T':
+			$ret *= 1024;
+		case 'G':
+			$ret *= 1024;
+		case 'M':
+			$ret *= 1024;
+		case 'K':
+			$ret *= 1024;
+	}
+
+	return $ret;
 }

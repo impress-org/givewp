@@ -71,11 +71,11 @@ function give_is_float_labels_enabled( $args ) {
 		$float_labels = get_post_meta( $args['form_id'], '_give_form_floating_labels', true );
 	}
 
-	if ( empty( $float_labels ) ) {
-		$float_labels = give_get_option( 'enable_floatlabels' ) ? 'enabled' : 'disabled';
+	if ( empty( $float_labels ) || ( 'global' === $float_labels ) ) {
+		$float_labels = give_get_option( 'floatlabels', 'disabled' );
 	}
 
-	return ( $float_labels == 'enabled' ) ? true : false;
+	return give_is_setting_enabled( $float_labels );
 }
 
 /**
@@ -900,10 +900,7 @@ add_filter( 'give_form_goal', 'give_currency_filter', 20 );
  * @return bool  $ret Whether or not the logged_in_only setting is set
  */
 function give_logged_in_only( $form_id ) {
-
-	$form_option = get_post_meta( $form_id, '_give_logged_in_only', true );
-
-	$ret = ! empty( $form_option ) ? $form_option : false;
+	$ret = give_is_setting_enabled( get_post_meta( $form_id, '_give_logged_in_only', true ) );
 
 	return (bool) apply_filters( 'give_logged_in_only', $ret, $form_id );
 
