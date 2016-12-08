@@ -576,8 +576,7 @@ function give_get_lowest_price_id( $form_id = 0 ) {
 
 	$prices = give_get_variable_prices( $form_id );
 
-	$low    = 0.00;
-	$min_id = 1;
+	$min = $min_id = 0;
 
 	if ( ! empty( $prices ) ) {
 
@@ -622,7 +621,7 @@ function give_get_lowest_price_option( $form_id = 0 ) {
 
 	$prices = give_get_variable_prices( $form_id );
 
-	$low = 0.00;
+	$min = $min_id = 0;
 
 	if ( ! empty( $prices ) ) {
 
@@ -675,7 +674,7 @@ function give_get_highest_price_option( $form_id = 0 ) {
 
 	if ( ! empty( $prices ) ) {
 
-		$max = 0;
+		$max_id = $max = 0;
 
 		foreach ( $prices as $key => $price ) {
 			if ( empty( $price['_give_amount'] ) ) {
