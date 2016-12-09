@@ -191,7 +191,6 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			}
 
 			$section_name = explode( ' ', $field_name );
-//			unset( $section_name[ count( $section_name ) - 1 ] );
 
 			// Output.
 			return strip_tags( implode( ' ', $section_name ) );
