@@ -498,11 +498,11 @@ function give_add_donor_email( $args ) {
 
 			$user          = wp_get_current_user();
 			$user_login    = ! empty( $user->user_login ) ? $user->user_login : esc_html__( 'System', 'give' );
-			$customer_note = sprintf( __( 'Email address %1$s added by %1$s', 'give' ), $email, $user_login );
+			$customer_note = sprintf( __( 'Email address %1$s added by %2$s', 'give' ), $email, $user_login );
 			$customer->add_note( $customer_note );
 
 			if ( $primary ) {
-				$customer_note = sprintf( __( 'Email address %1$s set as primary by %1$s', 'give' ), $email, $user_login );
+				$customer_note = sprintf( __( 'Email address %1$s set as primary by %2$s', 'give' ), $email, $user_login );
 				$customer->add_note( $customer_note );
 			}
 		}
@@ -550,7 +550,7 @@ function give_remove_donor_email() {
 		$url           = add_query_arg( 'give-message', 'email-removed', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $customer->id ) );
 		$user          = wp_get_current_user();
 		$user_login    = ! empty( $user->user_login ) ? $user->user_login : esc_html__( 'System', 'give' );
-		$customer_note = sprintf( __( 'Email address %1$s removed by %1$s', 'give' ), $_GET['email'], $user_login );
+		$customer_note = sprintf( __( 'Email address %1$s removed by %2$s', 'give' ), $_GET['email'], $user_login );
 		$customer->add_note( $customer_note );
 	} else {
 		$url = add_query_arg( 'give-message', 'email-remove-failed', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $customer->id ) );
