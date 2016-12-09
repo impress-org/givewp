@@ -519,15 +519,15 @@ function give_check_variable( $variable, $conditional = '', $default = false ) {
 
 	switch ( $conditional ) {
 		case 'isset_empty':
-			$variable = ( isset( $variable ) && empty( $variable ) ) ? $variable : $default;
+			$variable = ( isset( $variable ) && ! empty( $variable ) ) ? $variable : $default;
 			break;
 
 		case 'empty':
-			$variable = empty( $variable ) ? $variable : $default;
+			$variable = ! empty( $variable ) ? $variable : $default;
 			break;
 
 		case 'null':
-			$variable = is_null( $variable ) ? $variable : $default;
+			$variable = ! is_null( $variable ) ? $variable : $default;
 			break;
 
 		default:
