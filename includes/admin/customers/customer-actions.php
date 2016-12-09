@@ -530,7 +530,7 @@ add_action( 'give_add_donor_email', 'give_add_donor_email', 10, 1 );
  * and redirect back to the donor interface for feedback
  *
  * @since  1.7
- * @return void|bool
+ * @return bool|null
  */
 function give_remove_donor_email() {
 	if ( empty( $_GET['id'] ) || ! is_numeric( $_GET['id'] ) ) {
@@ -570,7 +570,7 @@ add_action( 'give_remove_donor_email', 'give_remove_donor_email', 10 );
  * and redirect back to the donor interface for feedback
  *
  * @since  1.7
- * @return void|bool
+ * @return bool|null
  */
 function give_set_donor_primary_email() {
 	if ( empty( $_GET['id'] ) || ! is_numeric( $_GET['id'] ) ) {
