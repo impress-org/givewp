@@ -48,7 +48,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 	 */
 	public function set_properties( $request ) {
 
-		//Set data from form submission
+		// Set data from form submission
 		if ( isset( $_POST['form'] ) ) {
 			parse_str( $_POST['form'], $this->data );
 		}
@@ -63,7 +63,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 	 * Set the CSV columns.
 	 *
 	 * @access public
-	 * @since 1.5
+	 * @since  1.5
 	 * @return array|bool $cols All the columns.
 	 */
 	public function csv_cols() {
@@ -72,7 +72,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 
 		$columns = isset( $this->data['give_export_option'] ) ? $this->data['give_export_option'] : array();
 
-		//We need columns.
+		// We need columns.
 		if ( empty( $columns ) ) {
 			return false;
 		}
@@ -148,16 +148,16 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 				'post_parent'    => absint( $this->form ),
 				'log_type'       => 'sale',
 				'posts_per_page' => 30,
-				'paged'          => $this->step
+				'paged'          => $this->step,
 			);
 
-			//Check for price option
+			// Check for price option
 			if ( null !== $this->price_id ) {
 				$args['meta_query'] = array(
 					array(
 						'key'   => '_give_log_price_id',
-						'value' => (int) $this->price_id
-					)
+						'value' => (int) $this->price_id,
+					),
 				);
 			}
 
@@ -172,7 +172,6 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 					$i ++;
 				}
 			}
-
 		} else {
 
 			// Export all customers
@@ -212,7 +211,6 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 				$percentage = ( ( 30 * $this->step ) / $total ) * 100;
 
 			}
-
 		}
 
 		if ( $percentage > 100 ) {
@@ -235,13 +233,13 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 
 		$columns = $this->csv_cols();
 
-		//Set address variable
+		// Set address variable
 		$address = '';
 		if ( isset( $donor->user_id ) && $donor->user_id > 0 ) {
 			$address = give_get_donor_address( $donor->user_id );
 		}
 
-		//Set columns
+		// Set columns
 		if ( ! empty( $columns['full_name'] ) ) {
 			$data[ $i ]['full_name'] = $donor->name;
 		}
