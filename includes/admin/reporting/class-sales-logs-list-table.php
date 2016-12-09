@@ -47,7 +47,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 		parent::__construct( array(
 			'singular' => give_get_forms_label_singular(),    // Singular name of the listed records
 			'plural'   => give_get_forms_label_plural(),        // Plural name of the listed records
-			'ajax'     => false                        // Does this table support ajax?
+			'ajax'     => false,// Does this table support ajax?
 		) );
 
 		add_action( 'give_log_view_actions', array( $this, 'give_forms_filter' ) );
@@ -59,7 +59,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 * @access public
 	 * @since  1.0
 	 *
-	 * @param array $item Contains all the data of the discount code
+	 * @param array  $item        Contains all the data of the discount code
 	 * @param string $column_name The name of the column
 	 *
 	 * @return string Column Name
@@ -74,8 +74,8 @@ class Give_Sales_Log_Table extends WP_List_Table {
 
 			case 'user_id' :
 				return '<a href="' .
-				       admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . ( ! empty( $item['user_id'] ) ? urlencode( $item['user_id'] ) : give_get_payment_user_email( $item['payment_id'] ) ) ) .
-				       '">' . $item['user_name'] . '</a>';
+					   admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . ( ! empty( $item['user_id'] ) ? urlencode( $item['user_id'] ) : give_get_payment_user_email( $item['payment_id'] ) ) ) .
+					   '">' . $item['user_name'] . '</a>';
 
 			case 'amount' :
 				return give_currency_filter( give_format_amount( $item['amount'] ) );
@@ -113,7 +113,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 			'amount'     => esc_html__( 'Donation Amount', 'give' ),
 			'status'     => esc_html__( 'Status', 'give' ),
 			'payment_id' => esc_html__( 'Transaction ID', 'give' ),
-			'date'       => esc_html__( 'Date', 'give' )
+			'date'       => esc_html__( 'Date', 'give' ),
 		);
 
 		return $columns;
@@ -169,9 +169,9 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 *
 	 * Display the table navigation above or below the table even when no items in the logs, so nav doesn't disappear
 	 *
-	 * @see: https://github.com/WordImpress/Give/issues/564
+	 * @see    : https://github.com/WordImpress/Give/issues/564
 	 *
-	 * @since 1.4.1
+	 * @since  1.4.1
 	 * @access protected
 	 *
 	 * @param string $which
@@ -216,7 +216,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 			// Show only logs from a specific user
 			$meta_query[] = array(
 				'key'   => '_give_log_user_id',
-				'value' => $user
+				'value' => $user,
 			);
 		}
 
@@ -244,7 +244,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 							'search'         => $search,
 							'search_columns' => array( 'user_url', 'user_nicename' ),
 							'number'         => 1,
-							'fields'         => 'ids'
+							'fields'         => 'ids',
 						) );
 
 						$found_user = $users->get_results();
@@ -261,7 +261,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 				$meta_query[] = array(
 					'key'     => $key,
 					'value'   => $search,
-					'compare' => $compare
+					'compare' => $compare,
 				);
 
 			}
@@ -297,7 +297,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 			'order'                  => 'ASC',
 			'fields'                 => 'ids',
 			'update_post_meta_cache' => false,
-			'update_post_term_cache' => false
+			'update_post_term_cache' => false,
 		) );
 
 		if ( $give_forms ) {
@@ -331,7 +331,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 			'post_parent' => $give_form,
 			'log_type'    => 'sale',
 			'paged'       => $paged,
-			'meta_query'  => $this->get_meta_query()
+			'meta_query'  => $this->get_meta_query(),
 		);
 
 		$cache_key = give_get_cache_key( 'get_logs', $log_query );
@@ -402,7 +402,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 		$this->set_pagination_args( array(
 				'total_items' => $total_items,
 				'per_page'    => $this->per_page,
-				'total_pages' => ceil( $total_items / $this->per_page )
+				'total_pages' => ceil( $total_items / $this->per_page ),
 			)
 		);
 	}
