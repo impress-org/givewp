@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_form_columns( $give_form_columns ) {
 
-	//Standard columns
+	// Standard columns
 	$give_form_columns = array(
 		'cb'            => '<input type="checkbox"/>',
 		'title'         => esc_html__( 'Name', 'give' ),
@@ -43,7 +43,7 @@ function give_form_columns( $give_form_columns ) {
 		'date'          => esc_html__( 'Date', 'give' ),
 	);
 
-	//Does the user want categories / tags?
+	// Does the user want categories / tags?
 	if ( ! give_is_setting_enabled( give_get_option( 'categories', 'disabled' ) ) ) {
 		unset( $give_form_columns['form_category'] );
 	}
@@ -68,7 +68,7 @@ add_filter( 'manage_edit-give_forms_columns', 'give_form_columns' );
  */
 function give_render_form_columns( $column_name, $post_id ) {
 	if ( get_post_type( $post_id ) == 'give_forms' ) {
-		
+
 		switch ( $column_name ) {
 			case 'form_category':
 				echo get_the_term_list( $post_id, 'give_forms_category', '', ', ', '' );
@@ -244,7 +244,6 @@ function give_filter_forms( $vars ) {
 			);
 
 		}
-
 	}
 
 	return $vars;
