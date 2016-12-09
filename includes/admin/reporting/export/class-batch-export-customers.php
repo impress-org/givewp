@@ -225,7 +225,11 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 	/**
 	 * Set Donor Data
 	 *
-	 * @param $donor
+	 * @param int           $i
+	 * @param array         $data
+	 * @param Give_Customer $donor
+	 *
+	 * @return mixed
 	 */
 	private function set_donor_data( $i, $data, $donor ) {
 
