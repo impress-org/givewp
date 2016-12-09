@@ -163,7 +163,6 @@ class Give_MetaBox_Form_Data {
 										'placeholder' => give_format_decimal( '1.00' ),
 										'class'       => 'give-money-field',
 									),
-									'before'       => 'give_format_admin_multilevel_amount',
 								),
 								array(
 									'name'       => esc_html__( 'Text', 'give' ),
