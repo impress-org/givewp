@@ -215,7 +215,7 @@ class Give_API {
 	 *
 	 * @access public
 	 * @since  1.1
-	 * @return array
+	 * @return string
 	 */
 	public function get_versions() {
 		return $this->versions;
@@ -832,9 +832,8 @@ class Give_API {
 		 *
 		 * @since 1.2
 		 *
-		 * @param object $dates The dates used for retrieving earnings/donations
+		 * @param array $dates The dates used for retrieving earnings/donations
 		 */
-
 		return apply_filters( 'give_api_stat_dates', $dates );
 	}
 
@@ -1808,7 +1807,7 @@ class Give_API {
 	 *
 	 * @param int $user_id User ID of user to revoke key for
 	 *
-	 * @return string
+	 * @return bool
 	 */
 	public function revoke_api_key( $user_id = 0 ) {
 
