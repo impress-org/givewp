@@ -216,26 +216,6 @@ function give_format_decimal( $amount, $dp = false ) {
 	return apply_filters( 'give_format_decimal', $formatted_amount, $amount, $decimal_separator );
 }
 
-
-/**
- * Format Multi-level Amount
- *
- * Loops through CMB2 repeater field and updates amount field using give_format_amount()
- *
- * @param $field_args
- * @param $field
- *
- * @return bool
- */
-function give_format_admin_multilevel_amount( $field_args, $field ) {
-
-	if ( empty( $field->value ) ) {
-		return false;
-	}
-
-	$field->value = give_format_decimal( $field->value );
-}
-
 /**
  * Formats the currency display
  *
