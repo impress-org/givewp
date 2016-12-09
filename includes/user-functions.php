@@ -286,18 +286,157 @@ function give_purchase_total_of_user( $user = null ) {
 /**
  * Validate a potential username
  *
- * @access      public
- * @since       1.0
+ * @since 1.0
  *
- * @param       string $username The username to validate.
+ * @param string $username The username to validate.
+ * @param int    $form_id
  *
- * @return      bool
+ * @return bool
  */
-function give_validate_username( $username ) {
-	$sanitized = sanitize_user( $username, false );
-	$valid     = ( $sanitized == $username );
+function give_validate_username( $username, $form_id = 0 ) {
+	$valid = true;
 
-	return (bool) apply_filters( 'give_validate_username', $valid, $username );
+	// Validate username.
+	if ( ! empty( $username ) ) {
+
+		// Sanitize username.
+		$sanitized_user_name = sanitize_user( $username, false );
+
+		// We have an user name, check if it already exists.
+		if ( username_exists( $username ) ) {
+			// Username already registered.
+			give_set_error( 'username_unavailable', esc_html__( 'Username already taken.', 'give' ) );
+			$valid = false;
+
+			// Check if it's valid.
+		} elseif ( $sanitized_user_name !== $username ) {
+			// Invalid username.
+			if ( is_multisite() ) {
+				give_set_error( 'username_invalid', esc_html__( 'Invalid username. Only lowercase letters (a-z) and numbers are allowed.', 'give' ) );
+				$valid = false;
+			} else {
+				give_set_error( 'username_invalid', esc_html__( 'Invalid username.', 'give' ) );
+				$valid = false;
+			}
+		}
+	} else {
+		// Username is empty.
+		give_set_error( 'username_empty', esc_html__( 'Enter an username.', 'give' ) );
+		$valid = false;
+
+		// Check if guest checkout is disable for form.
+		if ( $form_id && give_logged_in_only( $form_id ) ) {
+			give_set_error( 'registration_required', esc_html__( 'You must register or login to complete your donation.', 'give' ) );
+			$valid = false;
+		}
+	}
+
+	/**
+	 * Filter the username validation result.
+	 *
+	 * @since 1.8
+	 *
+	 * @param bool   $valid
+	 * @param string $username
+	 * @param bool   $form_id
+	 */
+	$valid = (bool) apply_filters( 'give_validate_username', $valid, $username, $form_id );
+
+	return $valid;
+}
+
+
+/**
+ * Validate user email.
+ *
+ * @since 1.8
+ *
+ * @param string $email                User email.
+ * @param bool   $registering_new_user Flag to check user register or not.
+ *
+ * @return bool
+ */
+function give_validate_user_email( $email, $registering_new_user = false ) {
+	$valid = true;
+
+	if ( empty( $email ) ) {
+		// No email.
+		give_set_error( 'email_empty', esc_html__( 'Enter an email.', 'give' ) );
+		$valid = false;
+
+	} elseif ( ! is_email( $email ) ) {
+		// Validate email.
+		give_set_error( 'email_invalid', esc_html__( 'Invalid email.', 'give' ) );
+		$valid = false;
+
+	} else if ( is_email( $email ) && $registering_new_user && email_exists( $email ) ) {
+		// Check if email exists.
+		give_set_error( 'email_used', esc_html__( 'The email already active for another user.', 'give' ) );
+		$valid = false;
+	}
+
+
+	/**
+	 * Filter the email validation result.
+	 *
+	 * @since 1.8
+	 *
+	 * @param bool   $valid
+	 * @param string $email
+	 * @param bool   $registering_new_user
+	 */
+	$valid = (bool) apply_filters( 'give_validate_user_email', $valid, $email, $registering_new_user );
+
+	return $valid;
+}
+
+/**
+ * Validate password.
+ *
+ * @since 1.8
+ *
+ * @param string $password
+ * @param string $confirm_password
+ * @param bool   $registering_new_user
+ *
+ * @return bool
+ */
+function give_validate_user_password( $password = '', $confirm_password = '', $registering_new_user = false ) {
+	$valid = true;
+
+	if ( $password && $confirm_password ) {
+		// Verify confirmation matches.
+		if ( $password != $confirm_password ) {
+			// Passwords do not match
+			give_set_error( 'password_mismatch', esc_html__( 'Passwords don\'t match.', 'give' ) );
+			$valid = false;
+		}
+	} else if ( $registering_new_user ) {
+		// Password or confirmation missing.
+		if ( ! $password ) {
+			// The password is invalid.
+			give_set_error( 'password_empty', esc_html__( 'Enter a password.', 'give' ) );
+			$valid = false;
+		} elseif ( ! $confirm_password ) {
+			// Confirmation password is invalid.
+			give_set_error( 'confirmation_empty', esc_html__( 'Enter the password confirmation.', 'give' ) );
+			$valid = false;
+		}
+	}
+
+	/**
+	 * Filter the password validation result.
+	 *
+	 * @since 1.8
+	 *
+	 * @param bool   $valid
+	 * @param string $password
+	 * @param string $confirm_password
+	 * @param bool   $registering_new_user
+	 */
+	$valid = (bool) apply_filters( 'give_validate_user_email', $valid, $password, $confirm_password, $registering_new_user );
+
+	return $valid;
 }
 
 
