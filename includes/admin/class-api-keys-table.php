@@ -84,7 +84,6 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 * @since  1.1
 	 *
 	 * @param array $item Contains all the data of the keys
-	 * @param string $column_name The name of the column
 	 *
 	 * @return string Column Name
 	 */
@@ -99,7 +98,6 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 * @since  1.1
 	 *
 	 * @param array $item Contains all the data of the keys
-	 * @param string $column_name The name of the column
 	 *
 	 * @return string Column Name
 	 */
@@ -114,7 +112,6 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 * @since  1.1
 	 *
 	 * @param array $item Contains all the data of the keys
-	 * @param string $column_name The name of the column
 	 *
 	 * @return string Column Name
 	 */
@@ -127,7 +124,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.1
-	 * @return void
+	 * @return string
 	 */
 	public function column_user( $item ) {
 
