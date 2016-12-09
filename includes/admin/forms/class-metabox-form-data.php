@@ -82,15 +82,13 @@ class Give_MetaBox_Form_Data {
 	 * Get metabox settings
 	 *
 	 * @since  1.8
-	 * @return mixed|void
+	 * @return array
 	 */
 	function get_settings() {
 		$post_id               = give_get_admin_post_id();
 		$price                 = give_get_form_price( $post_id );
 		$custom_amount_minimum = give_get_form_minimum_price( $post_id );
 		$goal                  = give_get_form_goal( $post_id );
-		$variable_pricing      = give_has_variable_prices( $post_id );
-		$prices                = give_get_variable_prices( $post_id );
 
 		// No empty prices - min. 1.00 for new forms
 		if ( empty( $price ) && is_null( $post_id ) ) {
@@ -163,7 +161,6 @@ class Give_MetaBox_Form_Data {
 										'placeholder' => give_format_decimal( '1.00' ),
 										'class'       => 'give-money-field',
 									),
-									'before'       => 'give_format_admin_multilevel_amount',
 								),
 								array(
 									'name'       => esc_html__( 'Text', 'give' ),
@@ -544,7 +541,7 @@ class Give_MetaBox_Form_Data {
 	 * Get metabox tabs.
 	 *
 	 * @since  1.8
-	 * @return mixed|void
+	 * @return array
 	 */
 	public function get_tabs() {
 		$tabs = array();
@@ -608,7 +605,7 @@ class Give_MetaBox_Form_Data {
 	 * CMB2 settings loader.
 	 *
 	 * @since  1.8
-	 * @return mixed|void
+	 * @return array
 	 */
 	function cmb2_metabox_settings() {
 		$all_cmb2_settings   = apply_filters( 'cmb2_meta_boxes', array() );
