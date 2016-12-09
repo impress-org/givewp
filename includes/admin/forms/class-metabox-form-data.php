@@ -82,7 +82,7 @@ class Give_MetaBox_Form_Data {
 	 * Get metabox settings
 	 *
 	 * @since  1.8
-	 * @return mixed|void
+	 * @return array
 	 */
 	function get_settings() {
 		$post_id               = give_get_admin_post_id();
@@ -543,7 +543,7 @@ class Give_MetaBox_Form_Data {
 	 * Get metabox tabs.
 	 *
 	 * @since  1.8
-	 * @return mixed|void
+	 * @return array
 	 */
 	public function get_tabs() {
 		$tabs = array();
@@ -607,7 +607,7 @@ class Give_MetaBox_Form_Data {
 	 * CMB2 settings loader.
 	 *
 	 * @since  1.8
-	 * @return mixed|void
+	 * @return array
 	 */
 	function cmb2_metabox_settings() {
 		$all_cmb2_settings   = apply_filters( 'cmb2_meta_boxes', array() );
