@@ -89,8 +89,6 @@ class Give_MetaBox_Form_Data {
 		$price                 = give_get_form_price( $post_id );
 		$custom_amount_minimum = give_get_form_minimum_price( $post_id );
 		$goal                  = give_get_form_goal( $post_id );
-		$variable_pricing      = give_has_variable_prices( $post_id );
-		$prices                = give_get_variable_prices( $post_id );
 
 		// No empty prices - min. 1.00 for new forms
 		if ( empty( $price ) && is_null( $post_id ) ) {
