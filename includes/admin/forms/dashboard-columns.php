@@ -296,7 +296,7 @@ add_filter( 'months_dropdown_results', 'give_remove_month_filter', 99 );
  *
  * @param int $post_id Download (Post) ID
  *
- * @return void
+ * @return int|null
  */
 function give_price_save_quick_edit( $post_id ) {
 	if ( ! isset( $_POST['post_type'] ) || 'give_forms' !== $_POST['post_type'] ) {
