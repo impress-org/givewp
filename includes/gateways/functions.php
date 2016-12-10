@@ -366,8 +366,6 @@ function give_create_payment( $payment_data ) {
 /**
  * Build paypal url
  *
- * Note: For internal use only.
- *
  * @param int   $payment_id   Payment ID
  * @param array $payment_data Array of payment data.
  *
@@ -484,8 +482,6 @@ function give_build_paypal_url( $payment_id, $payment_data ) {
 
 /**
  * Get paypal button type.
- *
- * Note: only for internal use
  *
  * @since 1.8
  * @return string
