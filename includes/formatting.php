@@ -453,3 +453,68 @@ function give_let_to_num( $size ) {
 
 	return $ret;
 }
+
+/**
+ * Verify nonce.
+ *
+ * @since 1.8
+ *
+ * @param        $nonce
+ * @param int   $action
+ * @param array $wp_die_args
+ */
+function give_validate_nonce( $nonce, $action = - 1, $wp_die_args = array() ) {
+
+	$default_wp_die_args = array(
+		'message' => esc_html__( 'Nonce verification has failed.', 'give' ),
+		'title'   => esc_html__( 'Error', 'give' ),
+		'args'    => array( 'response' => 403 ),
+	);
+
+	$wp_die_args = wp_parse_args( $wp_die_args, $default_wp_die_args );
+
+	if ( ! wp_verify_nonce( $nonce, $action ) ) {
+		wp_die(
+			$wp_die_args['message'],
+			$wp_die_args['title'],
+			$wp_die_args['args']
+		);
+	}
+}
+
+/**
+ * Check variable and get default or valid value.
+ *
+ * Helper function to check if a variable is set, empty, etc.
+ *
+ * @since 1.8
+ *
+ * @param                   $variable
+ * @param string (optional) $conditional , default value: isset
+ * @param bool (optional)   $default     , default value: false
+ *
+ * @return mixed
+ */
+function give_check_variable( $variable, $conditional = '', $default = false ) {
+
+	switch ( $conditional ) {
+		case 'isset_empty':
+			$variable = ( isset( $variable ) && ! empty( $variable ) ) ? $variable : $default;
+			break;
+
+		case 'empty':
+			$variable = ! empty( $variable ) ? $variable : $default;
+			break;
+
+		case 'null':
+			$variable = ! is_null( $variable ) ? $variable : $default;
+			break;
+
+		default:
+			$variable = isset( $variable ) ? $variable : $default;
+
+	}
+
+	return $variable;
+
+}
