@@ -1133,7 +1133,7 @@ msgstr ""
 msgid "Make Primary"
 msgstr ""
 
-#: includes/admin/customers/customers.php:467, includes/scripts.php:308
+#: includes/admin/customers/customers.php:467, includes/scripts.php:319
 msgid "Remove"
 msgstr ""
 
@@ -2444,7 +2444,7 @@ msgstr ""
 msgid "Use these tools to recount stats, delete test transactions, or reset stats."
 msgstr ""
 
-#: includes/admin/reporting/tools.php:48, includes/scripts.php:67
+#: includes/admin/reporting/tools.php:48, includes/scripts.php:75
 msgid "Please select an option"
 msgstr ""
 
@@ -5621,15 +5621,15 @@ msgstr ""
 msgid "The selected payment gateway is not enabled."
 msgstr ""
 
-#: includes/process-donation.php:398, includes/scripts.php:59
+#: includes/process-donation.php:398, includes/scripts.php:66
 msgid "You must agree to the terms and conditions."
 msgstr ""
 
-#: includes/process-donation.php:419, includes/scripts.php:55
+#: includes/process-donation.php:419, includes/scripts.php:62
 msgid "Please enter a valid email address."
 msgstr ""
 
-#: includes/process-donation.php:423, includes/scripts.php:54
+#: includes/process-donation.php:423, includes/scripts.php:61
 msgid "Please enter your first name."
 msgstr ""
 
@@ -5657,7 +5657,7 @@ msgstr ""
 msgid "The user information is invalid."
 msgstr ""
 
-#: includes/process-donation.php:585, includes/scripts.php:56
+#: includes/process-donation.php:585, includes/scripts.php:63
 msgid "Invalid username. Only lowercase letters (a-z) and numbers are allowed."
 msgstr ""
 
@@ -5673,7 +5673,7 @@ msgstr ""
 msgid "Enter an email."
 msgstr ""
 
-#: includes/process-donation.php:628, includes/process-donation.php:696, includes/scripts.php:57
+#: includes/process-donation.php:628, includes/process-donation.php:696, includes/scripts.php:64
 msgid "Enter a password."
 msgstr ""
 
@@ -5701,95 +5701,95 @@ msgstr ""
 msgid "Please Wait..."
 msgstr ""
 
-#: includes/scripts.php:53
+#: includes/scripts.php:60
 msgid "Please select payment mode."
 msgstr ""
 
-#: includes/scripts.php:58
+#: includes/scripts.php:65
 msgid "Enter a confirm password."
 msgstr ""
 
-#: includes/scripts.php:65
+#: includes/scripts.php:73
 msgid "Loading"
 msgstr ""
 
-#: includes/scripts.php:289
+#: includes/scripts.php:300
 msgid "Not available for variable priced forms."
 msgstr ""
 
-#: includes/scripts.php:290
+#: includes/scripts.php:301
 msgid "Are you sure you wish to delete this payment?"
 msgstr ""
 
-#: includes/scripts.php:291
+#: includes/scripts.php:302
 msgid "Are you sure you wish to delete this note?"
 msgstr ""
 
-#: includes/scripts.php:292
+#: includes/scripts.php:303
 msgid "Are you sure you wish to revoke this API key?"
 msgstr ""
 
-#: includes/scripts.php:293
+#: includes/scripts.php:304
 msgid "Are you sure you wish to regenerate this API key?"
 msgstr ""
 
-#: includes/scripts.php:294
+#: includes/scripts.php:305
 msgid "Are you sure you wish to resend the donation receipt?"
 msgstr ""
 
-#: includes/scripts.php:295
+#: includes/scripts.php:306
 msgid "Copy these links to your clipboard and give them to your donor."
 msgstr ""
 
-#: includes/scripts.php:296
+#: includes/scripts.php:307
 msgid "Are you sure you wish to delete this form?"
 msgstr ""
 
-#: includes/scripts.php:297
+#: includes/scripts.php:308
 msgid "You must have at least one price."
 msgstr ""
 
-#: includes/scripts.php:298
+#: includes/scripts.php:309
 msgid "You must have at least one file."
 msgstr ""
 
-#: includes/scripts.php:299
+#: includes/scripts.php:310
 msgid "You must have at least one field."
 msgstr ""
 
-#: includes/scripts.php:300
+#: includes/scripts.php:311
 msgid "Choose a form"
 msgstr ""
 
-#: includes/scripts.php:301
+#: includes/scripts.php:312
 msgid "Choose one or more forms"
 msgstr ""
 
-#: includes/scripts.php:302
+#: includes/scripts.php:313
 msgid "Item price must be numeric."
 msgstr ""
 
-#: includes/scripts.php:303
+#: includes/scripts.php:314
 msgid "Quantity must be numeric."
 msgstr ""
 
-#: includes/scripts.php:309
+#: includes/scripts.php:320
 msgid "Type to search forms"
 msgstr ""
 
-#: includes/scripts.php:310
+#: includes/scripts.php:321
 msgid "You must choose a method."
 msgstr ""
 
-#: includes/scripts.php:311
+#: includes/scripts.php:322
 msgid "Required fields not completed."
 msgstr ""
 
-#: includes/scripts.php:312
+#: includes/scripts.php:323
 msgid "Are you sure you want to reset Give? This process is <strong><em>not reversible</em></strong> and will delete all data regardless of test or live mode. Please be sure you have a recent backup before proceeding."
 msgstr ""
 
-#: includes/scripts.php:313
+#: includes/scripts.php:324
 msgid "Please enter amount in monetary decimal ( %1$s ) format without thousand separator ( %2$s ) ."
 msgstr ""
 

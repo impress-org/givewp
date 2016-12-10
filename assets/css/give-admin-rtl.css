@@ -1214,6 +1214,9 @@ table.give-table td.row-title p {
 .about-wrap h3 {
   margin: 1.5em 0 .6em; }
 
+.about-wrap img {
+  border: none; }
+
 .give-badge {
   padding-top: 150px;
   height: 52px;
