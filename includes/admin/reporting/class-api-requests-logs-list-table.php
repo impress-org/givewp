@@ -48,7 +48,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 		parent::__construct( array(
 			'singular' => give_get_forms_label_singular(),    // Singular name of the listed records
 			'plural'   => give_get_forms_label_plural(),        // Plural name of the listed records
-			'ajax'     => false                        // Does this table support ajax?
+			'ajax'     => false,// Does this table support ajax?
 		) );
 	}
 
@@ -75,10 +75,10 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 		?>
 		<p class="search-box" role="search">
 			<label class="screen-reader-text" for="<?php echo $input_id ?>"><?php echo $text; ?>:</label>
-			<input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>" />
+			<input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>"/>
 			<?php submit_button( $text, 'button', false, false, array( 'ID' => 'search-submit' ) ); ?>
 		</p>
-	<?php
+		<?php
 	}
 
 	/**
@@ -93,7 +93,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 			'ID'      => esc_html__( 'Log ID', 'give' ),
 			'details' => esc_html__( 'Request Details', 'give' ),
 			'ip'      => esc_html__( 'Request IP', 'give' ),
-			'date'    => esc_html__( 'Date', 'give' )
+			'date'    => esc_html__( 'Date', 'give' ),
 		);
 
 		return $columns;
@@ -149,7 +149,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 			echo '<div>' . get_post_field( 'post_date', $item['ID'] ) . '</div>';
 			?>
 		</div>
-	<?php
+		<?php
 	}
 
 	/**
@@ -157,7 +157,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @return mixed String if search is present, false otherwise
+	 * @return string|bool String if search is present, false otherwise
 	 */
 	public function get_search() {
 		return ! empty( $_GET['s'] ) ? urldecode( trim( $_GET['s'] ) ) : false;
@@ -169,9 +169,9 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 *
 	 * Display the table navigation above or below the table even when no items in the logs, so nav doesn't disappear
 	 *
-	 * @see: https://github.com/WordImpress/Give/issues/564
+	 * @see    : https://github.com/WordImpress/Give/issues/564
 	 *
-	 * @since 1.4.1
+	 * @since  1.4.1
 	 * @access protected
 	 *
 	 * @param string $which
@@ -214,7 +214,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 			if ( filter_var( $search, FILTER_VALIDATE_IP ) ) {
 				// This is an IP address search
 				$key = '_give_log_request_ip';
-			} else if ( is_email( $search ) ) {
+			} elseif ( is_email( $search ) ) {
 				// This is an email search
 				$userdata = get_user_by( 'email', $search );
 
@@ -245,7 +245,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 			$meta_query[] = array(
 				'key'     => $key,
 				'value'   => $search,
-				'compare' => '='
+				'compare' => '=',
 			);
 		}
 
@@ -290,7 +290,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 		$log_query = array(
 			'log_type'   => 'api_request',
 			'paged'      => $paged,
-			'meta_query' => $this->get_meta_query()
+			'meta_query' => $this->get_meta_query(),
 		);
 
 		$logs = $give_logs->get_connected_logs( $log_query );
@@ -301,7 +301,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 				$logs_data[] = array(
 					'ID'   => $log->ID,
 					'ip'   => get_post_meta( $log->ID, '_give_log_request_ip', true ),
-					'date' => $log->post_date
+					'date' => $log->post_date,
 				);
 			}
 		}
@@ -335,7 +335,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 		$this->set_pagination_args( array(
 				'total_items' => $total_items,
 				'per_page'    => $this->per_page,
-				'total_pages' => ceil( $total_items / $this->per_page )
+				'total_pages' => ceil( $total_items / $this->per_page ),
 			)
 		);
 	}

@@ -191,7 +191,6 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			}
 
 			$section_name = explode( ' ', $field_name );
-//			unset( $section_name[ count( $section_name ) - 1 ] );
 
 			// Output.
 			return strip_tags( implode( ' ', $section_name ) );
@@ -493,7 +492,7 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 					<div class="give-settings-wrap give-settings-wrap-<?php echo $this->current_tab; ?>">
 						<?php $field['func']['function']( $field_obj, $saved_value, '', '', $field_type_obj ); ?>
 					</div>
-					<? break;
+					<?php break;
 
 				default :
 					$colspan = "colspan=\"2\"";

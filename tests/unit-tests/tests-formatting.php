@@ -12,6 +12,87 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 		parent::tearDown();
 	}
 
+	/**
+	 * Test give_format_decimal function.
+	 *
+	 * @since        1.8
+	 *
+	 * @param int $number
+	 * @param string $expected
+	 * @param int|bool $decimal_place
+	 *
+	 * @cover        give_format_decimal
+	 * @dataProvider give_format_decimal_provider
+	 */
+	public function test_give_format_decimal( $number, $expected, $decimal_place = false ) {
+		$output = (string) give_format_decimal( floatval( $number ), $decimal_place );
+
+		$this->assertSame(
+			$expected,
+			$output
+		);
+	}
+
+
+	/**
+	 * Data provider for give_format_decimal function.
+	 *
+	 * @since 1.8
+	 * @return array
+	 */
+	public function give_format_decimal_provider() {
+		return array(
+			array( '10.5678', '10.568', 3 ),
+			array( '10.56', '10.56', 2 ),
+			array( '10.567', '10.6', 1 ),
+			array( '10.567', '10.567' ),
+		);
+	}
+
+
+
+	/**
+	 * Test give_currency_filter function.
+	 *
+	 * @since        1.8
+	 *
+	 * @param string $price
+	 * @param string $currency
+	 * @param string $currency_position
+	 * @param string $expected
+	 *
+	 * @cover        give_currency_filter
+	 * @dataProvider give_currency_filter_provider
+	 */
+	public function test_give_currency_filter( $price, $currency, $currency_position, $expected ) {
+		give_update_option( 'currency', $currency );
+		give_update_option( 'currency_position', $currency_position );
+
+		$output = give_currency_filter( $price, $currency );
+
+		$this->assertSame(
+			$expected,
+			$output
+		);
+	}
+
+	/**
+	 * Data provider for give_currency_filter function.
+	 *
+	 * @since 1.8
+	 * @return array
+	 */
+	public function give_currency_filter_provider() {
+		return array(
+			array( '10', 'USD', 'after', '10$' ),
+			array( '10', 'ZAR', 'after', '10R' ),
+			array( '10', 'NOK', 'after', '10 Kr.' ),
+			array( '10', 'USD', 'before', '$10' ),
+			array( '10', 'ZAR', 'before', 'R10' ),
+			array( '10', 'NOK', 'before', 'Kr. 10' ),
+		);
+	}
+
 
 	/**
 	 * Test give_get_price_decimals.
