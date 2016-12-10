@@ -411,6 +411,8 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 *
 	 * @since 1.6
 	 *
+	 * @param Give_Payment $payment
+	 *
 	 * @return mixed|void
 	 */
 	function get_row_actions( $payment ) {
