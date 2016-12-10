@@ -35,14 +35,14 @@ add_action( 'give_paypal_cc_form', '__return_false' );
 function give_process_paypal_payment( $payment_data ) {
 
 	if ( ! wp_verify_nonce( $payment_data['gateway_nonce'], 'give-gateway' ) ) {
-		wp_die( esc_html__( 'Nonce verification has failed.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( __( 'Nonce verification has failed.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	$form_id  = intval( $payment_data['post_data']['give-form-id'] );
 	$price_id = isset( $payment_data['post_data']['give-price-id'] ) ? $payment_data['post_data']['give-price-id'] : '';
 
-	// Collect payment data.
-	$payment_data = array(
+	// Collect Give's payment data.
+	$insert_payment_args = array(
 		'price'           => $payment_data['price'],
 		'give_form_title' => $payment_data['post_data']['give-form-title'],
 		'give_form_id'    => $form_id,
@@ -57,7 +57,7 @@ function give_process_paypal_payment( $payment_data ) {
 	);
 
 	// Record the pending payment.
-	$payment_id = give_insert_payment( $payment_data );
+	$payment_id = give_insert_payment( $insert_payment_args );
 
 	// Check payment.
 	if ( ! $payment_id ) {
