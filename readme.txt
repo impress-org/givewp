@@ -166,7 +166,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 = 1.7.1: December 10, 2016 =
 * Fix: PayPal gateway is not properly passing the donation form name. [#1334](https://github.com/WordImpress/Give/issues/1334)
-* Fix: PayPal gateway is not properly passing the donation form name. [#1334](https://github.com/WordImpress/Give/issues/1334)
+* Fix: Add filter for Magnific modal options to close when the background is clicked and customize the modal's CSS class name. [#1328](https://github.com/WordImpress/Give/issues/1328)
 * Tweak: WordPress 4.7 adds a gray border around certain images in wp-admin. [#1322](https://github.com/WordImpress/Give/issues/1322)
 
 = 1.7: December 7, 2016  =
