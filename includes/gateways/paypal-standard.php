@@ -55,7 +55,7 @@ function give_process_paypal_payment( $payment_data ) {
 	}
 
 	// Redirect to PayPal.
-	wp_redirect( _give_build_paypal_url( $payment_id, $payment_data ) );
+	wp_redirect( give_build_paypal_url( $payment_id, $payment_data ) );
 	exit;
 }
 

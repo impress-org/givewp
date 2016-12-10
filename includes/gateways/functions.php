@@ -373,7 +373,7 @@ function give_create_payment( $payment_data ) {
  *
  * @return mixed|string
  */
-function _give_build_paypal_url( $payment_id, $payment_data ) {
+function give_build_paypal_url( $payment_id, $payment_data ) {
 	$form_id = intval( $payment_data['post_data']['give-form-id'] );
 
 	// Only send to PayPal if the pending payment is created successfully.
