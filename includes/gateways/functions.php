@@ -345,7 +345,7 @@ function give_create_payment( $payment_data ) {
 	$price_id = isset( $payment_data['post_data']['give-price-id'] ) ? $payment_data['post_data']['give-price-id'] : '';
 
 	// Collect payment data.
-	$payment_data = array(
+	$insert_payment_data = array(
 		'price'           => $payment_data['price'],
 		'give_form_title' => $payment_data['post_data']['give-form-title'],
 		'give_form_id'    => $form_id,
@@ -360,5 +360,5 @@ function give_create_payment( $payment_data ) {
 	);
 
 	// Record the pending payment.
-	return give_insert_payment( $payment_data );
+	return give_insert_payment( $insert_payment_data );
 }
