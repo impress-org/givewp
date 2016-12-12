@@ -254,7 +254,7 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 *
 	 * @since  1.8
 	 *
-	 * @cover  give_date_format
+	 * @cover  give_get_price_decimals
 	 * @cover  give_currency_decimal_filter
 	 */
 	function test_give_get_price_decimals() {
