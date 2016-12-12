@@ -13,6 +13,19 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	}
 
 	/**
+	 * Test function give_get_price_thousand_separator
+	 *
+	 * @since 1.8
+	 *
+	 * @cover give_get_price_thousand_separator
+	 */
+	function test_give_get_price_thousand_separator() {
+		$output = give_get_price_thousand_separator();
+
+		$this->assertEquals( ',', $output );
+	}
+
+	/**
 	 * Test give_get_price_decimal_separator function
 	 *
 	 * @since 1.8
