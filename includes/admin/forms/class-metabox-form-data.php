@@ -683,6 +683,12 @@ class Give_MetaBox_Form_Data {
 								$form_meta_value = array();
 
 								foreach ( $_POST[ $form_meta_key ] as $index => $group ) {
+
+									// Do not save template input field values.
+									if( '{{row-count-placeholder}}' === $index ) {
+										continue;
+									}
+
 									$group_meta_value = array();
 									foreach ( $group as $field_id => $field_value ){
 										switch ( $this->get_field_type( $field_id, $form_meta_key ) ) {
