@@ -12,6 +12,56 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 		parent::tearDown();
 	}
 
+	/**
+	 * Test give_sanitize_amount function.
+	 *
+	 * @since        1.8
+	 *
+	 * @param string $amount
+	 * @param string $expected
+	 * @param bool   $dp
+	 * @param bool   $trim_zeros
+	 *
+	 * @cover        give_sanitize_amount
+	 * @dataProvider give_sanitize_amount_provider
+	 */
+	function test_give_sanitize_amount( $amount, $expected, $dp = false, $trim_zeros = false ) {
+		$output = give_sanitize_amount( $amount, $dp, $trim_zeros );
+
+		$this->assertSame(
+			$expected,
+			$output
+		);
+	}
+
+
+	/**
+	 * Data provider for give_sanitize_amount function
+	 *
+	 * @since 1.8
+	 * @return array
+	 *
+	 */
+	function give_sanitize_amount_provider() {
+		return array(
+			array( '1,000,000,000,000.00', '1000000000000.00' ),
+			array( '1,000,000,000.00', '1000000000.00' ),
+			array( '1,000,000.00', '1000000.00' ),
+			array( '10,000.00', '10000.00' ),
+			array( '100.00', '100.00' ),
+			array( '1,000,000,000,000.00', '1000000000000.000', 3 ),
+			array( '1,000,000,000.00', '1000000000.000', 3 ),
+			array( '1,000,000.00', '1000000.000', 3 ),
+			array( '10,000.00', '10000.000', 3 ),
+			array( '100.00', '100.000', 3 ),
+			array( '1,000,000,000,000.00', '1000000000000', false, true ),
+			array( '1,000,000,000.00', '1000000000', false, true ),
+			array( '1,000,000.00', '1000000', false, true ),
+			array( '10,000.00', '10000', false, true ),
+			array( '100.00', '100', false, true ),
+		);
+	}
+
 
 	/**
 	 * Test give_format_amount function.
