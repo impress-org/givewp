@@ -13,6 +13,167 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	}
 
 	/**
+	 * Test function give_get_price_thousand_separator
+	 *
+	 * @since 1.8
+	 *
+	 * @cover give_get_price_thousand_separator
+	 */
+	function test_give_get_price_thousand_separator() {
+		$output = give_get_price_thousand_separator();
+
+		$this->assertEquals( ',', $output );
+	}
+
+	/**
+	 * Test give_get_price_decimal_separator function
+	 *
+	 * @since 1.8
+	 *
+	 * @cover give_get_price_decimal_separator
+	 */
+	function test_give_get_price_decimal_separator() {
+		$output = give_get_price_decimal_separator();
+
+		$this->assertEquals( '.', $output );
+	}
+
+	/**
+	 * Test give_sanitize_amount function.
+	 *
+	 * @since        1.8
+	 *
+	 * @param string $amount
+	 * @param string $expected
+	 * @param bool   $dp
+	 * @param bool   $trim_zeros
+	 *
+	 * @cover        give_sanitize_amount
+	 * @dataProvider give_sanitize_amount_provider
+	 */
+	function test_give_sanitize_amount( $amount, $expected, $dp = false, $trim_zeros = false ) {
+		$output = give_sanitize_amount( $amount, $dp, $trim_zeros );
+
+		$this->assertSame(
+			$expected,
+			$output
+		);
+	}
+
+
+	/**
+	 * Data provider for give_sanitize_amount function
+	 *
+	 * @since 1.8
+	 * @return array
+	 *
+	 */
+	function give_sanitize_amount_provider() {
+		return array(
+			array( '1,000,000,000,000.00', '1000000000000.00' ),
+			array( '1,000,000,000.00', '1000000000.00' ),
+			array( '1,000,000.00', '1000000.00' ),
+			array( '10,000.00', '10000.00' ),
+			array( '100.00', '100.00' ),
+			array( '1,000,000,000,000.00', '1000000000000.000', 3 ),
+			array( '1,000,000,000.00', '1000000000.000', 3 ),
+			array( '1,000,000.00', '1000000.000', 3 ),
+			array( '10,000.00', '10000.000', 3 ),
+			array( '100.00', '100.000', 3 ),
+			array( '1,000,000,000,000.00', '1000000000000', false, true ),
+			array( '1,000,000,000.00', '1000000000', false, true ),
+			array( '1,000,000.00', '1000000', false, true ),
+			array( '10,000.00', '10000', false, true ),
+			array( '100.00', '100', false, true ),
+		);
+	}
+
+
+	/**
+	 * Test give_format_amount function.
+	 *
+	 * @since        1.8
+	 *
+	 * @param string   $amount
+	 * @param string   $expected
+	 * @param bool $decimal
+	 *
+	 * @cover        give_format_amount
+	 * @dataProvider give_format_amount_provider
+	 */
+	function test_give_format_amount( $amount, $expected, $decimal = false ) {
+		$output = give_format_amount( $amount, $decimal );
+
+		$this->assertSame(
+			$expected,
+			$output
+		);
+	}
+
+
+	/**
+	 * Data provider for give_format_amount function
+	 *
+	 * @since 1.8
+	 * @return array
+	 *
+	 */
+	function give_format_amount_provider() {
+		return array(
+			array( '1000000000000', '1,000,000,000,000' ),
+			array( '1000000000', '1,000,000,000' ),
+			array( '1000000', '1,000,000' ),
+			array( '10000', '10,000' ),
+			array( '100', '100' ),
+			array( '1000000000000', '1,000,000,000,000.00', true ),
+			array( '1000000000', '1,000,000,000.00', true ),
+			array( '1000000', '1,000,000.00', true ),
+			array( '10000', '10,000.00', true ),
+			array( '100', '100.00', true ),
+		);
+	}
+
+
+	/**
+	 * Test give_human_format_large_amount function.
+	 *
+	 * @since        1.8
+	 *
+	 * @param string $amount
+	 * @param string $expected
+	 *
+	 * @cover        give_human_format_large_amount
+	 * @dataProvider give_human_format_large_amount_provider
+	 */
+	function test_give_human_format_large_amount( $amount, $expected ) {
+		$output = give_human_format_large_amount( give_format_amount( $amount ) );
+
+		$this->assertSame(
+			$expected,
+			$output
+		);
+	}
+
+
+	/**
+	 * Data provider for give_human_format_large_amount function
+	 *
+	 * @since 1.8
+	 * @return array
+	 *
+	 */
+	function give_human_format_large_amount_provider() {
+		return array(
+			array( '1234000000000', '1.23 trillion' ),
+			array( '1000000000000', '1 trillion' ),
+			array( '1000000000', '1 billion' ),
+			array( '1000000', '1 million' ),
+			array( '10000', '10,000.00' ),
+			array( '100', '100.00' ),
+		);
+	}
+
+	/**
 	 * Test give_format_decimal function.
 	 *
 	 * @since        1.8
@@ -99,7 +260,7 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 *
 	 * @since  1.8
 	 *
-	 * @cover  give_date_format
+	 * @cover  give_get_price_decimals
 	 * @cover  give_currency_decimal_filter
 	 */
 	function test_give_get_price_decimals() {
