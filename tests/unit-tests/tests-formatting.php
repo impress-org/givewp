@@ -12,6 +12,46 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 		parent::tearDown();
 	}
 
+
+	/**
+	 * Test give_human_format_large_amount function.
+	 *
+	 * @since        1.8
+	 *
+	 * @param string $amount
+	 * @param string $expected
+	 *
+	 * @cover        give_format_decimal
+	 * @dataProvider give_human_format_large_amount_provider
+	 */
+	function test_give_human_format_large_amount( $amount, $expected ) {
+		$output = give_human_format_large_amount( give_format_amount( $amount ) );
+
+		$this->assertSame(
+			$expected,
+			$output
+		);
+	}
+
+
+	/**
+	 * Data provider for give_human_format_large_amount function
+	 *
+	 * @since 1.8
+	 * @return array
+	 *
+	 */
+	function give_human_format_large_amount_provider() {
+		return array(
+			array( '1234000000000', '1.23 trillion' ),
+			array( '1000000000000', '1 trillion' ),
+			array( '1000000000', '1 billion' ),
+			array( '1000000', '1 million' ),
+			array( '10000', '10,000.00' ),
+			array( '100', '100.00' ),
+		);
+	}
+
 	/**
 	 * Test give_format_decimal function.
 	 *
