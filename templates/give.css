@@ -1041,16 +1041,11 @@ form[id*='give-form'] #give-final-total-wrap {
     border-left: none;
     float: left; }
 
-.give-display-button-only .give-form-title,
-.give-display-button-only .give-form-content-wrap,
-.give-display-button-only .give-goal-progress,
-.give-display-button-only .give_error {
-  display: none; }
+.give-display-button-only > *:not(form) {
+  display: none !important; }
 
-.give-display-button-only form[id*='give-form'] > div,
-.give-display-button-only form[id*='give-form'] > fieldset,
-.give-display-button-only form[id*='give-form'] > ul {
-  display: none; }
+.give-display-button-only form > *:not(.give-btn-modal) {
+  display: none !important; }
 
 /*---------------------------------
 Notices, Warnings & Errors

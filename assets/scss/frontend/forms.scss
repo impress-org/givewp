@@ -342,21 +342,12 @@ form[id*='give-form'] {
 
 }
 
-.give-display-button-only {
-	.give-form-title,
-	.give-form-content-wrap,
-	.give-goal-progress,
-	.give_error{
-		display: none;
-	}
+.give-display-button-only > *:not(form){
+	display: none !important;
 }
 
-.give-display-button-only form[id*='give-form'] {
-	> div,
-	> fieldset,
-	> ul {
-		display: none;
-	}
+.give-display-button-only form > *:not(.give-btn-modal){
+	display: none !important;
 }
 
 /*---------------------------------
