@@ -13,6 +13,19 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	}
 
 	/**
+	 * Test give_get_price_decimal_separator function
+	 *
+	 * @since 1.8
+	 *
+	 * @cover give_get_price_decimal_separator
+	 */
+	function test_give_get_price_decimal_separator() {
+		$output = give_get_price_decimal_separator();
+
+		$this->assertEquals( '.', $output );
+	}
+
+	/**
 	 * Test give_sanitize_amount function.
 	 *
 	 * @since        1.8
@@ -71,7 +84,7 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 * @param string $amount
 	 * @param string $expected
 	 *
-	 * @cover        give_format_decimal
+	 * @cover        give_format_amount
 	 * @dataProvider give_format_amount_provider
 	 */
 	function test_give_format_amount( $amount, $expected ) {
@@ -110,7 +123,7 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 * @param string $amount
 	 * @param string $expected
 	 *
-	 * @cover        give_format_decimal
+	 * @cover        give_human_format_large_amount
 	 * @dataProvider give_human_format_large_amount_provider
 	 */
 	function test_give_human_format_large_amount( $amount, $expected ) {
