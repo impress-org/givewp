@@ -14,6 +14,45 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 
 
 	/**
+	 * Test give_format_amount function.
+	 *
+	 * @since        1.8
+	 *
+	 * @param string $amount
+	 * @param string $expected
+	 *
+	 * @cover        give_format_decimal
+	 * @dataProvider give_format_amount_provider
+	 */
+	function test_give_format_amount( $amount, $expected ) {
+		$output = give_format_amount( $amount );
+
+		$this->assertSame(
+			$expected,
+			$output
+		);
+	}
+
+
+	/**
+	 * Data provider for give_format_amount function
+	 *
+	 * @since 1.8
+	 * @return array
+	 *
+	 */
+	function give_format_amount_provider() {
+		return array(
+			array( '1000000000000', '1,000,000,000,000.00' ),
+			array( '1000000000', '1,000,000,000.00' ),
+			array( '1000000', '1,000,000.00' ),
+			array( '10000', '10,000.00' ),
+			array( '100', '100.00' ),
+		);
+	}
+
+
+	/**
 	 * Test give_human_format_large_amount function.
 	 *
 	 * @since        1.8
