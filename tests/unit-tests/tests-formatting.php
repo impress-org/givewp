@@ -94,14 +94,15 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 *
 	 * @since        1.8
 	 *
-	 * @param string $amount
-	 * @param string $expected
+	 * @param string   $amount
+	 * @param string   $expected
+	 * @param bool $decimal
 	 *
 	 * @cover        give_format_amount
 	 * @dataProvider give_format_amount_provider
 	 */
-	function test_give_format_amount( $amount, $expected ) {
-		$output = give_format_amount( $amount );
+	function test_give_format_amount( $amount, $expected, $decimal = false ) {
+		$output = give_format_amount( $amount, $decimal );
 
 		$this->assertSame(
 			$expected,
@@ -119,11 +120,16 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 */
 	function give_format_amount_provider() {
 		return array(
-			array( '1000000000000', '1,000,000,000,000.00' ),
-			array( '1000000000', '1,000,000,000.00' ),
-			array( '1000000', '1,000,000.00' ),
-			array( '10000', '10,000.00' ),
-			array( '100', '100.00' ),
+			array( '1000000000000', '1,000,000,000,000' ),
+			array( '1000000000', '1,000,000,000' ),
+			array( '1000000', '1,000,000' ),
+			array( '10000', '10,000' ),
+			array( '100', '100' ),
+			array( '1000000000000', '1,000,000,000,000.00', true ),
+			array( '1000000000', '1,000,000,000.00', true ),
+			array( '1000000', '1,000,000.00', true ),
+			array( '10000', '10,000.00', true ),
+			array( '100', '100.00', true ),
 		);
 	}
 
