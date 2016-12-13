@@ -1387,13 +1387,13 @@ function give_payment_mode_select( $form_id ) {
 				foreach ( $gateways as $gateway_id => $gateway ) :
 					//Determine the default gateway.
 					$checked       = checked( $gateway_id, $selected_gateway, false );
-					$checked_class = $checked ? ' give-gateway-option-selected' : ''; ?>
-					<li>
+					$checked_class = $checked ? ' class="give-gateway-option-selected"' : ''; ?>
+					<li<?php echo $checked_class?>>
 						<input type="radio" name="payment-mode" class="give-gateway"
 						       id="give-gateway-<?php echo esc_attr( $gateway_id ) . '-' . $form_id; ?>"
 						       value="<?php echo esc_attr( $gateway_id ); ?>"<?php echo $checked; ?>>
 						<label for="give-gateway-<?php echo esc_attr( $gateway_id ) . '-' . $form_id; ?>"
-						       class="give-gateway-option<?php echo $checked_class; ?>"
+						       class="give-gateway-option"
 						       id="give-gateway-option-<?php echo esc_attr( $gateway_id ); ?>"> <?php echo esc_html( $gateway['checkout_label'] ); ?></label>
 					</li>
 					<?php

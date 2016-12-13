@@ -237,7 +237,7 @@ jQuery(function ($) {
 
 	// Add a class to the currently selected gateway on click
 	doc.on('click', '#give-payment-mode-select input', function () {
-		$('#give-payment-mode-select label.give-gateway-option-selected').removeClass('give-gateway-option-selected');
+		$('#give-payment-mode-select li.give-gateway-option-selected').removeClass('give-gateway-option-selected');
 		$('#give-payment-mode-select input:checked').parent().addClass('give-gateway-option-selected');
 	});
 
