@@ -312,12 +312,18 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 					// Section Titles
 					case 'title':
-						if ( ! empty( $value['title'] ) ) {
-							echo '<div class="give-setting-tab-header give-setting-tab-header-' . $current_tab . '"><h2>' . self::get_field_title( $value ) . '</h2><hr></div>';
-						}
+						if ( ! empty( $value['title'] ) || ! empty( $value['desc'] ) ) {
+							?>
+							<div class="give-setting-tab-header give-setting-tab-header-<?php echo $current_tab; ?>">
+								<?php if ( ! empty( $value['title'] ) ) : ?>
+									<h2><?php echo self::get_field_title( $value ); ?></h2><hr>
+								<?php endif; ?>
 
-						if ( ! empty( $value['desc'] ) ) {
-							echo wpautop( wptexturize( wp_kses_post( $value['desc'] ) ) );
+								<?php if ( ! empty( $value['desc'] ) ) : ?>
+									<?php echo wpautop( wptexturize( wp_kses_post( $value['desc'] ) ) ); ?>
+								<?php endif; ?>
+							</div>
+							<?php
 						}
 
 						if ( $value['table_html'] ) {
