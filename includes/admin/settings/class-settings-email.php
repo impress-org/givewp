@@ -54,6 +54,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 							'desc'  => __( 'Email notifications sent from Give are listed below. Click on an email to configure it.', 'give' ),
 							'type'  => 'title',
 							'id'    => 'give_email_notification_settings',
+							'table_html' => false,
 						),
 						array(
 							'type' => 'email_notification',
