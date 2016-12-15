@@ -47,8 +47,25 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 			switch ( $current_section ) {
 				case 'email-settings' :
 					$settings = array(
-						// Section 1: Email
+
+						// Section 1: Email Notification Listing.
 						array(
+							'title' => __( 'Email Notifications', 'give' ),
+							'desc' => __( 'Email notifications sent from Give are listed below. Click on an email to configure it.', 'give' ),
+							'type' => 'title',
+							'id' => 'give_email_notification_settings'
+						),
+						array(
+							'type' => 'email_notification'
+						),
+						array(
+							'type' => 'sectionend',
+							'id' => 'give_email_notification_settings'
+						),
+
+						// Section 2: Email Sender Setting
+						array(
+							'title' => __( 'Email Sender Options', 'give' ),
 							'id'   => 'give_title_email_settings_1',
 							'type' => 'title'
 						),
