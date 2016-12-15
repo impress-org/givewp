@@ -263,16 +263,17 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			if ( ! empty( $settings ) ) {
 				// Bailout: If setting array contain first element of type title then it means it is already created with new setting api (skip this section ).
 				if ( isset( $settings[0]['type'] ) && 'title' == $settings[0]['type'] ) {
-					foreach ( $settings as $setting ) {
-						$new_setting_fields[] = $setting;
-
-						// We need setting only till first section end.
+					$last_sectionend_pos = 0;
+					foreach ( $settings as $index => $setting ) {
+						// We need setting till last section end.
 						if ( 'sectionend' === $setting['type'] ) {
-							break;
+							$last_sectionend_pos = ++$index;
 						}
 					}
 
-					return $new_setting_fields;
+					$settings = array_slice( $settings, 0, $last_sectionend_pos );
+
+					return $settings;
 				}
 
 				// Store title field id.
