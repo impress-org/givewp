@@ -16,7 +16,7 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 	 *
 	 * @since 1.8
 	 */
-	Class Give_CMB2_Settings_Loader {
+	class Give_CMB2_Settings_Loader {
 
 		/**
 		 * @since 1.8
@@ -57,7 +57,6 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			// Tab ID.
 			$this->id = $this->current_tab;
 
-
 			// Add addon tabs.
 			add_filter( 'give-settings_tabs_array', array( $this, 'add_addon_settings_page' ), 999999 );
 
@@ -71,11 +70,11 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			if ( in_array( $this->current_tab, $setting_tabs ) ) {
 				add_filter( "give_get_settings_{$this->current_tab}", array(
 					$this,
-					'get_filtered_addon_settings'
+					'get_filtered_addon_settings',
 				), 999999, 1 );
 				add_filter( "give_get_sections_{$this->current_tab}", array(
 					$this,
-					'get_filtered_addon_sections'
+					'get_filtered_addon_sections',
 				), 999999, 1 );
 			}
 		}
@@ -127,7 +126,7 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 				// Filter & actions.
 				add_filter( "give_default_setting_tab_section_{$this->current_tab}", array(
 					$this,
-					'set_default_setting_tab'
+					'set_default_setting_tab',
 				), 10 );
 				add_action( "give-settings_sections_{$this->current_tab}_page", array( $this, 'output_sections' ) );
 				add_action( "give-settings_settings_{$this->current_tab}_page", array( $this, 'output' ), 10 );
@@ -267,7 +266,7 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 					foreach ( $settings as $index => $setting ) {
 						// We need setting till last section end.
 						if ( 'sectionend' === $setting['type'] ) {
-							$last_sectionend_pos = ++$index;
+							$last_sectionend_pos = ++ $index;
 						}
 					}
 
@@ -327,7 +326,7 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 									'title' => $field['name'],
 									'type'  => $field['type'],
 									'desc'  => $field['desc'],
-									'id'    => $field['id']
+									'id'    => $field['id'],
 								)
 							);
 
@@ -338,7 +337,7 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 							// Section end.
 							$new_setting_fields[] = array(
 								'type' => 'sectionend',
-								'id'   => $prev_title_field_id
+								'id'   => $prev_title_field_id,
 							);
 						}
 
@@ -347,7 +346,7 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 							'title' => $field['name'],
 							'type'  => $field['type'],
 							'desc'  => $field['desc'],
-							'id'    => $field['id']
+							'id'    => $field['id'],
 						);
 
 						$prev_title_field_id = $field['id'];
@@ -355,13 +354,13 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 
 						// setting fields
 						$new_setting_fields[] = $field;
-					}
-				}
+					}// End if().
+				}// End foreach().
 
 				// Section end.
 				$new_setting_fields[] = array(
 					'type' => 'sectionend',
-					'id'   => $prev_title_field_id
+					'id'   => $prev_title_field_id,
 				);
 
 				// Check if setting page has title section or not.
@@ -373,7 +372,7 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 							'title' => ( isset( $settings['give_title'] ) ? $settings['give_title'] : '' ),
 							'type'  => 'title',
 							'desc'  => ! empty( $setting_fields['desc'] ) ? $setting_fields['desc'] : '',
-							'id'    => ( isset( $settings['id'] ) ? $settings['id'] : '' )
+							'id'    => ( isset( $settings['id'] ) ? $settings['id'] : '' ),
 						)
 					);
 
@@ -400,8 +399,8 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 
 					if ( in_array( $cmb2_filter_name, $wp_filter_keys ) ) {
 
-						if( 0 <= version_compare( 4.7, get_bloginfo('version') ) &&  ! empty( $wp_filter[$cmb2_filter_name]->callbacks ) ) {
-							$cmb2_filter_arr = current( $wp_filter[$cmb2_filter_name]->callbacks );
+						if ( 0 <= version_compare( 4.7, get_bloginfo( 'version' ) ) && ! empty( $wp_filter[ $cmb2_filter_name ]->callbacks ) ) {
+							$cmb2_filter_arr = current( $wp_filter[ $cmb2_filter_name ]->callbacks );
 						} else {
 							$cmb2_filter_arr = current( $wp_filter[ $cmb2_filter_name ] );
 						}
@@ -411,14 +410,14 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 							$new_setting_fields[ $index ]['func'] = current( $cmb2_filter_arr );
 							add_action( "give_admin_field_{$field['type']}", array(
 								$this,
-								'addon_setting_field'
+								'addon_setting_field',
 							), 10, 2 );
 						}
 					}
 				}
 
 				return $new_setting_fields;
-			}
+			}// End if().
 
 			return $settings;
 		}
@@ -496,13 +495,12 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 					<?php break;
 
 				default :
-					$colspan = "colspan=\"2\"";
+					$colspan = 'colspan="2"';
 					?>
 					<tr valign="top">
 						<?php if ( ! empty( $field['name'] ) && ! in_array( $field['name'], array( '&nbsp;' ) ) ) : ?>
 							<th scope="row" class="titledesc">
-								<label
-									for="<?php echo esc_attr( $field['name'] ); ?>"><?php echo $field['title']; ?></label>
+								<label for="<?php echo esc_attr( $field['name'] ); ?>"><?php echo $field['title']; ?></label>
 							</th>
 							<?php $colspan = ''; ?>
 						<?php endif; ?>
@@ -558,7 +556,7 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 					$tab_data = array(
 						'id'         => $setting_fields['id'],
 						'give_title' => $setting_fields['give_title'],
-						'desc'       => ( isset( $setting_fields['desc'] ) ? $setting_fields['desc'] : '' )
+						'desc'       => ( isset( $setting_fields['desc'] ) ? $setting_fields['desc'] : '' ),
 					);
 
 					$new_setting_fields = $this->get_filtered_addon_settings( $setting_fields['fields'], $tab_data );
