@@ -1549,6 +1549,8 @@ table.give-table td.row-title p {
   margin: 30px 0; }
   .give-setting-tab-header h2 {
     margin-top: 8px; }
+  .give-setting-tab-header p {
+    margin-bottom: 0; }
 
 .give-radio-inline ul {
   margin-top: 0; }
@@ -1806,6 +1808,19 @@ a.give-delete {
   font-style: italic;
   margin: 0;
   padding-top: .5em; }
+
+.give_emails_notification th:first-child {
+  width: 1em; }
+
+.give_emails_notification .give-email-notification-status span {
+  color: white;
+  border-radius: 1em; }
+
+.give_emails_notification .give-email-notification-enabled {
+  background: #46b450; }
+
+.give_emails_notification .give-email-notification-disbled {
+  background: #bbbbbb; }
 
 /**
  * Give Payment History SCSS

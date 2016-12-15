@@ -48,6 +48,10 @@
   h2 {
     margin-top: 8px;
   }
+
+  p{
+    margin-bottom: 0;
+  }
 }
 
 .give-radio-inline {
@@ -440,4 +444,24 @@ a.give-delete {
   font-style: italic;
   margin: 0;
   padding-top: .5em;
+}
+
+// Email notification list.
+.give_emails_notification {
+  th:first-child{
+    width: 1em;
+  }
+
+  .give-email-notification-status span{
+    color: white;
+    border-radius: 1em;
+  }
+
+  .give-email-notification-enabled{
+    background: #46b450;
+  }
+
+  .give-email-notification-disbled{
+    background: #bbbbbb;
+  }
 }
