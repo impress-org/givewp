@@ -199,7 +199,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 								case 'email_type' :
 									?>
 									<td class="give-email-notification-settings-table-email_type">
-										text/html
+										<?php echo $email->get_email_type(); ?>
 									</td>
 									<?php
 									break;

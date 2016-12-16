@@ -74,6 +74,13 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		protected $default_notification_status = 'disabled';
 
 		/**
+		 * @var     bool $default_notification_status Flag to check email type.
+		 * @access  protected
+		 * @since   1.8
+		 */
+		protected $default_email_type = 'text/html';
+
+		/**
 		 * Create a class instance.
 		 *
 		 * @param   mixed[] $objects
@@ -292,6 +299,17 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 */
 		public function get_notification_status() {
 			return give_get_option( "{$this->id}_notification", $this->default_notification_status );
+		}
+
+		/**
+		 * Get notification status.
+		 *
+		 * @since  1.8
+		 * @access public
+		 * @return string
+		 */
+		public function get_email_type() {
+			return $this->default_email_type;
 		}
 	}
 
