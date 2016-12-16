@@ -37,9 +37,9 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		public function __construct( $objects = array() ) {
 			parent::__construct();
 
-			$this->id          = 'donation-receipt';
-			$this->label       = __( 'Donation Receipt', 'give' );
-			$this->description = __( 'Donation Receipt Notification will be sent to donor when new donation received', 'give' );
+			$this->id          = 'new-donation';
+			$this->label       = __( 'New Donation', 'give' );
+			$this->description = __( 'Donation Notification will be sent to recipient(s) when new donation received', 'give' );
 		}
 	}
 
