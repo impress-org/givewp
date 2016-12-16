@@ -336,25 +336,25 @@ function give_settings_page_pages( $settings ) {
 
 	$settings = array(
 		// General settings.
-		include( 'settings/class-settings-general.php' ),
+		include( GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-general.php' ),
 
 		// Payment Gateways Settings.
-		include( 'settings/class-settings-gateways.php' ),
+		include( GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-gateways.php' ),
 
 		// Display settings.
-		include( 'settings/class-settings-display.php' ),
+		include( GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-display.php' ),
 
 		// Emails settings.
-		include( 'settings/class-settings-email.php' ),
+		include( GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-email.php' ),
 
 		// Addons settings.
-		include( 'settings/class-settings-addon.php' ),
+		include( GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-addon.php' ),
 
 		// License settings.
-		include( 'settings/class-settings-license.php' ),
+		include( GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-license.php' ),
 
 		// Advanced settings.
-		include( 'settings/class-settings-advanced.php' )
+		include( GIVE_PLUGIN_DIR . 'includes/admin/settings/class-settings-advanced.php' )
 	);
 
 	// Output.
@@ -373,16 +373,16 @@ add_filter( 'give-settings_get_settings_pages', 'give_settings_page_pages', 0, 1
 function give_tools_page_pages( $settings ) {
 	$settings = array(
 		// System Info.
-		include( 'tools/class-settings-system-info.php' ),
+		include( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-system-info.php' ),
 
 		// Logs.
-		include( 'tools/class-settings-logs.php' ),
+		include( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-logs.php' ),
 
 		// API.
-		include( 'tools/class-settings-api.php' ),
+		include( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-api.php' ),
 
 		// Data.
-		include( 'tools/class-settings-data.php' ),
+		include( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-data.php' ),
 	);
 
 	// Output.
