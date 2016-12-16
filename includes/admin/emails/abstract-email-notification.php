@@ -154,7 +154,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 					'id'      => "{$this->id}_email_subject",
 					'name'    => esc_html__( 'Email Subject', 'give' ),
 					'desc'    => esc_html__( 'Enter the subject line for the donation receipt email.', 'give' ),
-					'default' => esc_attr__( 'Donation Receipt', 'give' ),
+					'default' => $this->get_default_email_subject(),
 					'type'    => 'text',
 				),
 				array(
@@ -322,6 +322,28 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 */
 		function get_default_recipient() {
 			return get_bloginfo( 'admin_email' );
+		}
+
+		/**
+		 * Get default email subject.
+		 *
+		 * @since  1.8
+		 * @access public
+		 * @return string
+		 */
+		function get_default_email_subject() {
+			return '';
+		}
+
+		/**
+		 * Get default email subject.
+		 *
+		 * @since  1.8
+		 * @access public
+		 * @return string
+		 */
+		function get_default_email_content() {
+			return '';
 		}
 	}
 

@@ -44,6 +44,17 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			$this->has_recipient_field         = true;
 			$this->default_notification_status = 'enabled';
 		}
+
+		/**
+		 * Get default email subject.
+		 *
+		 * @since  1.8
+		 * @access public
+		 * @return string
+		 */
+		public function get_default_email_subject() {
+			return esc_attr__( 'New Donation - #{payment_id}', 'give' );
+		}
 	}
 
 endif; // End class_exists check
