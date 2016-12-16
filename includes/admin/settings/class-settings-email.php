@@ -178,14 +178,20 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 								case 'recipient' :
 									?>
 									<td class="give-email-notification-settings-table-recipient">
-										Customer
+										<?php echo $email->get_recipient(); ?>
 									</td>
 									<?php
 									break;
 								case 'status' :
 									?>
 									<td class="give-email-notification-status">
-										<span class="give-email-notification-enabled dashicons dashicons-yes"></span>
+										<?php
+										$notification_status = $email->get_notification_status();
+										$notification_status_class = give_is_setting_enabled( $notification_status )
+											? 'dashicons-yes'
+											: 'dashicons-no-alt';
+										echo "<span class=\"give-email-notification-{$notification_status} dashicons {$notification_status_class}\"></span>";
+										?>
 									</td>
 									<?php
 									break;

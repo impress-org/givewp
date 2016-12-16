@@ -67,6 +67,13 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		protected $has_recipient_field = false;
 
 		/**
+		 * @var     bool $default_notification_status Flag to check if email notification enabled or not.
+		 * @access  protected
+		 * @since   1.8
+		 */
+		protected $default_notification_status = 'disabled';
+
+		/**
 		 * Create a class instance.
 		 *
 		 * @param   mixed[] $objects
@@ -130,7 +137,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 					'desc'    => esc_html__( 'Choose option if you want to send email notification or not.', 'give' ),
 					'id'      => "{$this->id}_notification",
 					'type'    => 'radio_inline',
-					'default' => 'enabled',
+					'default' => $this->default_notification_status,
 					'options' => array(
 						'enabled' => __( 'Enabled', 'give' ),
 						'disabled' => __( 'Disabled', 'give' ),
@@ -257,6 +264,34 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 */
 		public function get_description() {
 			return $this->description;
+		}
+
+		/**
+		 * Get recipient(s).
+		 *
+		 * @since  1.8
+		 * @access public
+		 * @return string
+		 */
+		public function get_recipient() {
+			$recipient = __( 'Donor', 'give' );
+
+			if ( $this->has_recipient_field ) {
+				$recipient = give_get_option( "{$this->id}_recipient", '' );
+			}
+
+			return $recipient;
+		}
+
+		/**
+		 * Get notification status.
+		 *
+		 * @since  1.8
+		 * @access public
+		 * @return string
+		 */
+		public function get_notification_status() {
+			return give_get_option( "{$this->id}_notification", $this->default_notification_status );
 		}
 	}
 

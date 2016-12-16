@@ -40,6 +40,8 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			$this->id          = 'new-donation';
 			$this->label       = __( 'New Donation', 'give' );
 			$this->description = __( 'Donation Notification will be sent to recipient(s) when new donation received.', 'give' );
+
+			$this->default_notification_status = 'enabled';
 		}
 	}
 
