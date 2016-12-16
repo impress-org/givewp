@@ -284,7 +284,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			$recipient = __( 'Donor', 'give' );
 
 			if ( $this->has_recipient_field ) {
-				$recipient = give_get_option( "{$this->id}_recipient", '' );
+				$recipient = give_get_option( "{$this->id}_recipient", $this->get_default_recipient() );
 			}
 
 			return $recipient;
@@ -310,6 +310,18 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 */
 		public function get_email_type() {
 			return $this->default_email_type;
+		}
+
+
+		/**
+		 * Get default recipient.
+		 *
+		 * @since  1.8
+		 * @access public
+		 * @return string
+		 */
+		function get_default_recipient() {
+			return get_bloginfo( 'admin_email' );
 		}
 	}
 
