@@ -32,6 +32,8 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 			$this->default_tab = 'email-settings';
 
 			parent::__construct();
+
+			add_action( 'give_admin_field_email_notification', array( $this, 'email_notification_setting') );
 		}
 
 		/**
@@ -220,6 +222,88 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 			);
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );
+		}
+
+
+		public function email_notification_setting(){
+			$email_notifications = Give_Email_Notifications::get_instance()->get_email_notifications();
+			?>
+			<table class="give_emails_notification wp-list-table widefat fixed striped">
+				<thead>
+					<tr>
+						<?php
+						$columns = apply_filters( 'give_email_notification_setting_columns', array(
+							'status'     => '',
+							'name'       => __( 'Email', 'give' ),
+							'email_type' => __( 'Content Type', 'give' ),
+							'recipient'  => __( 'Recipient(s)', 'give' ),
+							'setting'    => ''
+						) );
+						foreach ( $columns as $key => $column ) {
+							echo '<th class="give-email-notification-settings-column-' . esc_attr( $key ) . '">' . esc_html( $column ) . '</th>';
+						}
+						?>
+				</thead>
+				<tbody>
+					<?php
+					foreach ( $email_notifications as $email ) :
+						echo '<tr>';
+
+						foreach ( $columns as $key => $column ) {
+
+							switch ( $key ) {
+								case 'name' :
+									?>
+									<td class="give-email-notification-settings-table-name">
+										<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails&section=' . $email->get_id() ) ); ?>"><?php echo $email->get_label(); ?></a>
+										<?php if ( $desc = $email->get_description() ) : ?>
+											<br>
+											<span class="give-field-description">
+												<?php echo $desc; ?>
+											</span>
+										<?php endif; ?>
+									</td>
+									<?php
+									break;
+								case 'recipient' :
+									?>
+									<td class="give-email-notification-settings-table-recipient">
+										Customer
+									</td>
+									<?php
+									break;
+								case 'status' :
+									?>
+									<td class="give-email-notification-status">
+										<span class="give-email-notification-enabled dashicons dashicons-yes"></span>
+									</td>
+									<?php
+									break;
+								case 'email_type' :
+									?>
+									<td class="give-email-notification-settings-table-email_type">
+										text/html
+									</td>
+									<?php
+									break;
+								case 'setting' :
+									?>
+									<td class="give-email-notification-settings-table-actions">
+										<a class="dashicons dashicons-admin-generic alignright" href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails&section=' . $email->get_id() ) ); ?>"></a>
+									</td>
+									<?php
+									break;
+								default :
+									do_action( 'give_email_notification_setting_column_' . $key, $email );
+									break;
+							}
+						}
+						echo '</tr>';
+					endforeach;;
+					?>
+				</tbody>
+			</table>
+			<?php
 		}
 	}
 
