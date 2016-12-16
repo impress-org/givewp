@@ -102,6 +102,22 @@ class Give_Email_Notifications {
 	public function get_email_notifications() {
 		return $this->emails;
 	}
+
+
+	public function get_columns(){
+		/**
+		 * Filter the table columns
+		 *
+		 * @since 1.8
+		 */
+		return apply_filters( 'give_email_notification_setting_columns', array(
+			'status'     => '',
+			'name'       => __( 'Email', 'give' ),
+			'email_type' => __( 'Content Type', 'give' ),
+			'recipient'  => __( 'Recipient(s)', 'give' ),
+			'setting'    => ''
+		) );
+	}
 }
 
 

@@ -148,13 +148,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 				<thead>
 					<tr>
 						<?php
-						$columns = apply_filters( 'give_email_notification_setting_columns', array(
-							'status'     => '',
-							'name'       => __( 'Email', 'give' ),
-							'email_type' => __( 'Content Type', 'give' ),
-							'recipient'  => __( 'Recipient(s)', 'give' ),
-							'setting'    => ''
-						) );
+						$columns = Give_Email_Notifications::get_instance()->get_columns();
 						foreach ( $columns as $key => $column ) {
 							echo '<th class="give-email-notification-settings-column-' . esc_attr( $key ) . '">' . esc_html( $column ) . '</th>';
 						}
