@@ -41,7 +41,6 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			$this->label       = __( 'Donation Receipt', 'give' );
 			$this->description = __( 'Donation Receipt Notification will be sent to donor when new donation received.', 'give' );
 
-			$this->has_recipient_field = true;
 			$this->default_notification_status = 'enabled';
 		}
 	}
