@@ -105,88 +105,6 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 						),
 					);
 					break;
-
-				case 'donation-receipt':
-					$settings = array(
-						// Section 2: donation.
-						array(
-							'id'   => 'give_title_email_settings_2',
-							'type' => 'title',
-						),
-						array(
-							'id'      => 'donation_subject',
-							'name'    => esc_html__( 'Donation Email Subject', 'give' ),
-							'desc'    => esc_html__( 'Enter the subject line for the donation receipt email.', 'give' ),
-							'default' => esc_attr__( 'Donation Receipt', 'give' ),
-							'type'    => 'text',
-						),
-						array(
-							'id'      => 'donation_receipt',
-							'name'    => esc_html__( 'Donation Receipt', 'give' ),
-							'desc'    => sprintf(
-								/* translators: %s: emails tags list */
-								esc_html__( 'Enter the email that is sent to users after completing a successful donation. HTML is accepted. Available template tags: %s', 'give' ),
-								'<br/>' . give_get_emails_tags_list()
-							),
-							'type'    => 'wysiwyg',
-							'default' => give_get_default_donation_receipt_email(),
-						),
-						array(
-							'id'   => 'give_title_email_settings_2',
-							'type' => 'sectionend',
-						),
-					);
-					break;
-
-				case 'new-donation-notification':
-					$settings = array(
-						// Section 3: New Donation.
-						array(
-							'id'   => 'give_title_email_settings_3',
-							'type' => 'title',
-						),
-						array(
-							'id'      => 'admin_notices',
-							'name'    => esc_html__( 'Admin Notifications', 'give' ),
-							'desc'    => esc_html__( 'Check this box if you do not want to receive emails when new donations are made.', 'give' ),
-							'type'    => 'radio_inline',
-							'default' => 'enabled',
-							'options' => array(
-								'enabled'  => __( 'Enabled', 'give' ),
-								'disabled' => __( 'Disabled', 'give' ),
-							),
-						),
-						array(
-							'id'      => 'donation_notification_subject',
-							'name'    => esc_html__( 'Donation Notification Subject', 'give' ),
-							'desc'    => esc_html__( 'Enter the subject line for the donation notification email.', 'give' ),
-							'type'    => 'text',
-							'default' => esc_attr__( 'New Donation - #{payment_id}', 'give' ),
-						),
-						array(
-							'id'      => 'donation_notification',
-							'name'    => esc_html__( 'Donation Notification', 'give' ),
-							'desc'    => sprintf(
-								/* translators: %s: emails tags list */
-								esc_html__( 'Enter the email that is sent to donation notification emails after completion of a donation. HTML is accepted. Available template tags: %s', 'give' ),
-								'<br/>' . give_get_emails_tags_list()
-							),
-							'type'    => 'wysiwyg',
-							'default' => give_get_default_donation_notification_email(),
-						),
-						array(
-							'id'      => 'admin_notice_emails',
-							'name'    => esc_html__( 'Donation Notification Emails', 'give' ),
-							'desc'    => __( 'Enter the email address(es) that should receive a notification anytime a donation is made, please only enter <span class="give-underline">one email address per line</span> and <strong>not separated by commas</strong>.', 'give' ),
-							'type'    => 'textarea',
-							'default' => get_bloginfo( 'admin_email' ),
-						),
-						array(
-							'id'   => 'give_title_email_settings_3',
-							'type' => 'sectionend',
-						),
-					);
-					break;
 			}// End switch().
 
 			/**
@@ -216,9 +134,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 		 */
 		public function get_sections() {
 			$sections = array(
-				'email-settings'            => esc_html__( 'Email Settings', 'give' ),
-				'donation-receipt'          => esc_html__( 'Donation Receipt', 'give' ),
-				'new-donation-notification' => esc_html__( 'New Donation Notification', 'give' ),
+				'email-settings' => esc_html__( 'Email Settings', 'give' ),
 			);
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );
