@@ -156,6 +156,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 				</thead>
 				<tbody>
 					<?php
+					/* @var Give_Email_Notification $email */
 					foreach ( $email_notifications as $email ) :
 						echo '<tr>';
 
