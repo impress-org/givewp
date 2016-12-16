@@ -80,7 +80,7 @@ class Give_Email_Notifications {
 
 		$this->emails = array(
 			include 'class-new-donation-email.php',
-			include 'class-donation-receipt-notification.php',
+			include 'class-donation-receipt-email.php',
 		);
 
 		/**
