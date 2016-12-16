@@ -90,13 +90,8 @@ jQuery(function ($) {
  * @param $form
  */
 function give_open_form_modal($form_wrap, $form) {
-	// Hide form form children.
+	// Hide form children.
 	var children = '#give_purchase_form_wrap, #give-payment-mode-select, .mfp-close, .give-hidden';
-
-	// Hide amount and title field if admin only want to show only button.
-	if ($form_wrap.hasClass('give-display-button-only')) {
-		children = 'h2, div, ul, fieldset, label, .mfp-close';
-	}
 
 	//Alls well, open popup!
 	jQuery.magnificPopup.open({
@@ -161,9 +156,15 @@ function give_open_form_modal($form_wrap, $form) {
 					$mfp_content.addClass('give-responsive-mfp-content');
 				}
 
+
+
+				// Hide .give-hidden and .give-btn-modal  if admin only want to show only button.
+				if ($form_wrap.hasClass('give-display-button-only')) {
+					children = $form.children().not('.give-hidden, .give-btn-modal');
+				}
+
 				//Hide all form elements besides the ones required for payment
 				$form.children().not(children).hide();
-
 			},
 			close: function () {
 				//Remove popup class
