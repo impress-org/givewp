@@ -156,7 +156,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'css'             => 'width:12em;',
 						),
 						array(
-							'type' => 'title',
+							'type' => 'sectionend',
 							'id'   => 'give_title_general_settings_2'
 						)
 					);
