@@ -118,6 +118,111 @@ class Give_Email_Notifications {
 			'setting'    => ''
 		) );
 	}
+
+
+	/**
+	 * Get name column.
+	 *
+	 * @since 1.8
+	 * @access public
+	 * @param Give_Email_Notification $email
+	 */
+	public function get_name_column( Give_Email_Notification $email ) {
+		?>
+		<td class="give-email-notification-settings-table-name">
+			<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails&section=' . $email->get_id() ) ); ?>"><?php echo $email->get_label(); ?></a>
+			<?php if ( $desc = $email->get_description() ) : ?>
+				<br>
+				<span class="give-field-description">
+					<?php echo $desc; ?>
+				</span>
+			<?php endif; ?>
+		</td>
+		<?php
+	}
+
+	/**
+	 * Get recipient column.
+	 *
+	 * @since 1.8
+	 * @access public
+	 * @param Give_Email_Notification $email
+	 */
+	public function get_recipient_column( Give_Email_Notification $email ) {
+		?>
+		<td class="give-email-notification-settings-table-recipient">
+			<?php echo $email->get_recipient(); ?>
+		</td>
+		<?php
+	}
+
+	/**
+	 * Get status column.
+	 *
+	 * @since 1.8
+	 * @access public
+	 * @param Give_Email_Notification $email
+	 */
+	public function get_status_column( Give_Email_Notification $email ) {
+		?>
+		<td class="give-email-notification-status">
+			<?php
+			$notification_status = $email->get_notification_status();
+			$notification_status_class = $email->get_notification_status()
+				? 'dashicons-yes'
+				: 'dashicons-no-alt';
+			echo "<span class=\"give-email-notification-{$notification_status} dashicons {$notification_status_class}\"></span>";
+			?>
+		</td>
+		<?php
+	}
+
+	/**
+	 * Get email_type column.
+	 *
+	 * @since 1.8
+	 * @access public
+	 * @param Give_Email_Notification $email
+	 */
+	public function get_email_type_column( Give_Email_Notification $email ) {
+		?>
+		<td class="give-email-notification-settings-table-email_type">
+			<?php echo $email->get_email_type(); ?>
+		</td>
+		<?php
+	}
+
+	/**
+	 * Get setting column.
+	 *
+	 * @since 1.8
+	 * @access public
+	 * @param Give_Email_Notification $email
+	 */
+	public function get_setting_column( Give_Email_Notification $email ) {
+		?>
+		<td class="give-email-notification-settings-table-actions">
+			<a class="dashicons dashicons-admin-generic alignright" href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails&section=' . $email->get_id() ) ); ?>"></a>
+		</td>
+		<?php
+	}
+
+	/**
+	 * Render column.
+	 *
+	 * @since  1.8
+	 * @access public
+	 *
+	 * @param Give_Email_Notification $email
+	 * @param string                  $column_name
+	 */
+	public function render_column( Give_Email_Notification $email, $column_name ) {
+		if( method_exists( $this, "get_{$column_name}_column" ) ) {
+			$this->{"get_{$column_name}_column"}( $email );
+		} else {
+			do_action( "give_email_notification_setting_column_$column_name", $email );
+		}
+	}
 }
 
 

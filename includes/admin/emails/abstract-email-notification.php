@@ -67,18 +67,18 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		protected $has_recipient_field = false;
 
 		/**
-		 * @var     bool $default_notification_status Flag to check if email notification enabled or not.
+		 * @var     bool $notification_status Flag to check if email notification enabled or not.
 		 * @access  protected
 		 * @since   1.8
 		 */
-		protected $default_notification_status = 'disabled';
+		protected $notification_status = 'disabled';
 
 		/**
-		 * @var     bool $default_notification_status Flag to check email type.
+		 * @var     bool $email_type Flag to check email type.
 		 * @access  protected
 		 * @since   1.8
 		 */
-		protected $default_email_type = 'text/html';
+		protected $email_type = 'text/html';
 
 		/**
 		 * Create a class instance.
@@ -144,7 +144,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 					'desc'    => esc_html__( 'Choose option if you want to send email notification or not.', 'give' ),
 					'id'      => "{$this->id}_notification",
 					'type'    => 'radio_inline',
-					'default' => $this->default_notification_status,
+					'default' => $this->notification_status,
 					'options' => array(
 						'enabled' => __( 'Enabled', 'give' ),
 						'disabled' => __( 'Disabled', 'give' ),
@@ -291,14 +291,25 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		}
 
 		/**
-		 * Get notification status.
+		 * Check email active or not.
 		 *
 		 * @since  1.8
 		 * @access public
 		 * @return string
 		 */
+		public function is_email_notification_active() {
+			return give_is_setting_enabled( $this->get_notification_status() );
+		}
+
+		/**
+		 * Get notification status.
+		 *
+		 * @since  1.8
+		 * @access public
+		 * @return bool
+		 */
 		public function get_notification_status() {
-			return give_get_option( "{$this->id}_notification", $this->default_notification_status );
+			return give_get_option( "{$this->id}_notification", $this->notification_status );
 		}
 
 		/**
@@ -309,7 +320,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @return string
 		 */
 		public function get_email_type() {
-			return $this->default_email_type;
+			return $this->email_type;
 		}
 
 
