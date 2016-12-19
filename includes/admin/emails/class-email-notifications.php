@@ -81,6 +81,7 @@ class Give_Email_Notifications {
 		$this->emails = array(
 			include GIVE_PLUGIN_DIR . 'includes/admin/emails/class-new-donation-email.php',
 			include GIVE_PLUGIN_DIR . 'includes/admin/emails/class-donation-receipt-email.php',
+			include GIVE_PLUGIN_DIR . 'includes/admin/emails/class-new-donor-register-email.php',
 		);
 
 		/**
