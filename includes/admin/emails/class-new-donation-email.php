@@ -55,6 +55,33 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		public function get_default_email_subject() {
 			return esc_attr__( 'New Donation - #{payment_id}', 'give' );
 		}
+
+
+		/**
+		 * Get default email message.
+		 *
+		 * @since  1.8
+		 * @access public
+		 * @return string
+		 */
+		public function get_default_email_message() {
+			$message = esc_html__( 'Hello', 'give' ) . "\n\n";
+			$message .= esc_html__( 'A donation has been made.', 'give' ) . "\n\n";
+			$message .= esc_html__( 'Donation:', 'give' ) . "\n\n";
+			$message .= esc_html__( 'Donor:', 'give' ) . ' {fullname}' . "\n";
+			$message .= esc_html__( 'Amount:', 'give' ) . ' {payment_total}' . "\n";
+			$message .= esc_html__( 'Payment Method:', 'give' ) . ' {payment_method}' . "\n\n";
+			$message .= esc_html__( 'Thank you', 'give' );
+
+
+			/**
+			 * Filter the new donation email message
+			 *
+			 * @since 1.8
+			 * @param string $message
+			 */
+			return apply_filters( 'give_default_new_donation_email', $message );
+		}
 	}
 
 endif; // End class_exists check
