@@ -158,49 +158,6 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			return $setting_fields;
 		}
 
-
-		/**
-		 * Get default setting field.
-		 *
-		 * @since  1.8
-		 * @access public
-		 * @return array
-		 */
-		function get_default_setting_fields() {
-			return array(
-				array(
-					'id'    => "give_title_email_settings_{$this->id}",
-					'type'  => 'title',
-					'title' => $this->label,
-				),
-				array(
-					'name'    => esc_html__( 'Notification', 'give' ),
-					'desc'    => esc_html__( 'Choose option if you want to send email notification or not.', 'give' ),
-					'id'      => "{$this->id}_notification",
-					'type'    => 'radio_inline',
-					'default' => $this->notification_status,
-					'options' => array(
-						'enabled' => __( 'Enabled', 'give' ),
-						'disabled' => __( 'Disabled', 'give' ),
-					)
-				),
-				array(
-					'id'      => "{$this->id}_email_subject",
-					'name'    => esc_html__( 'Email Subject', 'give' ),
-					'desc'    => esc_html__( 'Enter the subject line for email.', 'give' ),
-					'default' => $this->get_default_email_subject(),
-					'type'    => 'text',
-				),
-				array(
-					'id'      => "{$this->id}_email_message",
-					'name'    => esc_html__( 'Email message', 'give' ),
-					'desc'    => __( 'Enter the message for email', 'give' ),
-					'type'    => 'wysiwyg',
-					'default' => $this->get_default_email_message(),
-				)
-			);
-		}
-
 		/**
 		 * Get extra setting field.
 		 *
@@ -297,17 +254,6 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		}
 
 		/**
-		 * Check email active or not.
-		 *
-		 * @since  1.8
-		 * @access public
-		 * @return string
-		 */
-		public function is_email_notification_active() {
-			return give_is_setting_enabled( $this->get_notification_status() );
-		}
-
-		/**
 		 * Get notification status.
 		 *
 		 * @since  1.8
@@ -384,6 +330,59 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 */
 		function get_default_email_message() {
 			return '';
+		}
+
+		/**
+		 * Get default setting field.
+		 *
+		 * @since  1.8
+		 * @access public
+		 * @return array
+		 */
+		function get_default_setting_fields() {
+			return array(
+				array(
+					'id'    => "give_title_email_settings_{$this->id}",
+					'type'  => 'title',
+					'title' => $this->label,
+				),
+				array(
+					'name'    => esc_html__( 'Notification', 'give' ),
+					'desc'    => esc_html__( 'Choose option if you want to send email notification or not.', 'give' ),
+					'id'      => "{$this->id}_notification",
+					'type'    => 'radio_inline',
+					'default' => $this->notification_status,
+					'options' => array(
+						'enabled' => __( 'Enabled', 'give' ),
+						'disabled' => __( 'Disabled', 'give' ),
+					)
+				),
+				array(
+					'id'      => "{$this->id}_email_subject",
+					'name'    => esc_html__( 'Email Subject', 'give' ),
+					'desc'    => esc_html__( 'Enter the subject line for email.', 'give' ),
+					'default' => $this->get_default_email_subject(),
+					'type'    => 'text',
+				),
+				array(
+					'id'      => "{$this->id}_email_message",
+					'name'    => esc_html__( 'Email message', 'give' ),
+					'desc'    => __( 'Enter the message for email', 'give' ),
+					'type'    => 'wysiwyg',
+					'default' => $this->get_default_email_message(),
+				)
+			);
+		}
+
+		/**
+		 * Check email active or not.
+		 *
+		 * @since  1.8
+		 * @access public
+		 * @return string
+		 */
+		public function is_email_notification_active() {
+			return give_is_setting_enabled( $this->get_notification_status() );
 		}
 	}
 
