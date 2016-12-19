@@ -132,8 +132,42 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @return array|int
 		 */
 		public function get_setting_fields() {
+			$setting_fields = $this->get_default_setting_fields();
 
-			$setting_fields = array(
+			// Add extra setting field.
+			if( $extra_setting_field = $this->get_extra_setting_fields() ) {
+				$setting_fields = array_merge( $setting_fields, $extra_setting_field );
+			}
+
+			// Recipient field.
+			if( $this->has_recipient_field ) {
+				$setting_fields[] = $this->get_recipient_setting_field();
+			}
+
+			// Preview field.
+			if( $this->has_preview ) {
+				$setting_fields[] = $this->get_preview_setting_field();
+			}
+
+			// Add section end field.
+			$setting_fields[] = array(
+				'id'   => "give_title_email_settings_{$this->id}",
+				'type' => 'sectionend',
+			);
+
+			return $setting_fields;
+		}
+
+
+		/**
+		 * Get default setting field.
+		 *
+		 * @since  1.8
+		 * @access public
+		 * @return array
+		 */
+		function get_default_setting_fields() {
+			return array(
 				array(
 					'id'    => "give_title_email_settings_{$this->id}",
 					'type'  => 'title',
@@ -169,30 +203,6 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 					'default' => give_get_default_donation_receipt_email(),
 				)
 			);
-
-
-			// Add extra setting field.
-			if( $extra_setting_field = $this->get_extra_setting_fields() ) {
-				$setting_fields = array_merge( $setting_fields, $extra_setting_field );
-			}
-
-			// Recipient field.
-			if( $this->has_recipient_field ) {
-				$setting_fields[] = $this->get_recipient_setting_field();
-			}
-
-			// Preview field.
-			if( $this->has_preview ) {
-				$setting_fields[] = $this->get_preview_setting_field();
-			}
-
-			// Add section end field.
-			$setting_fields[] = array(
-				'id'   => "give_title_email_settings_{$this->id}",
-				'type' => 'sectionend',
-			);
-
-			return $setting_fields;
 		}
 
 		/**
