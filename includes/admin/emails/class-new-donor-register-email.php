@@ -1,8 +1,6 @@
 <?php
 /**
- * New Donation Email
- *
- * This class handles all email notification settings.
+ * New Donor Register Email
  *
  * @package     Give
  * @subpackage  Classes/Emails
@@ -35,14 +33,22 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 		 * @since   1.8
 		 */
 		public function __construct( $objects = array() ) {
-			parent::__construct();
-
 			$this->id          = 'new-donor-register';
 			$this->label       = __( 'New Donor Register', 'give' );
 			$this->description = __( 'New Donor Register Notification will be sent to recipient(s) when new donor registered.', 'give' );
 
 			$this->has_recipient_field = true;
 			$this->notification_status = 'enabled';
+
+			parent::__construct();
+
+			// Setup action hook.
+			add_action(
+				"give_{$this->action}_email_notification",
+				array( $this, 'send_email_notification' ),
+				10,
+				2
+			);
 		}
 
 		/**
@@ -55,7 +61,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 		function get_default_email_subject() {
 			return sprintf(
 			/* translators: %s: site name */
-				esc_attr__( '[%s] New User Registration', 'give' ),
+				esc_attr__( 'New user registration on your site %s:', 'give' ),
 				get_bloginfo( 'name' )
 			);
 		}
@@ -71,12 +77,32 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 		 * @return string
 		 */
 		function get_default_email_message( $args = array() ) {
-			$message = esc_attr__( 'New user registration on your site {blogname}:', 'give' ) . "\r\n\r\n";
+			$message = esc_attr__( 'New user registration on your site {sitename}:', 'give' ) . "\r\n\r\n";
 			$message .= esc_attr__( 'Username: {user_login}', 'give' ) . "\r\n\r\n";
 			$message .= esc_attr__( 'E-mail: {user_email}', 'give' ) . "\r\n";
 
 
 			return $message;
+		}
+
+
+		/**
+		 * Send new donor register notifications.
+		 *
+		 * @since  1.8
+		 * @access public
+		 *
+		 * @param int   $user_id   User ID.
+		 * @param array $user_data User Information.
+		 *
+		 * @return string
+		 */
+		public function send_email_notification( $user_id, $user_data ) {
+			$subject = $this->get_email_subject();
+			$message = $this->get_email_message();
+
+			// Send email.
+			Give()->emails->send( $this->get_recipient(), $subject, $message );
 		}
 	}
 
