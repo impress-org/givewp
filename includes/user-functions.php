@@ -554,26 +554,9 @@ function give_new_user_notification( $user_id = 0, $user_data = array() ) {
 	if ( empty( $user_id ) || empty( $user_data ) ) {
 		return;
 	}
-	$blogname = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
 
 	do_action( 'give_new_donor_register_email_notification', $user_id, $user_data );
-
-	/* translators: %s: user login */
-	$message = sprintf( esc_attr__( 'Username: %s', 'give' ), $user_data['user_login'] ) . "\r\n";
-	/* translators: %s: paswword */
-	$message .= sprintf( esc_attr__( 'Password: %s', 'give' ), esc_attr__( '[Password entered during donation]', 'give' ) ) . "\r\n";
-
-	$message .= '<a href="' . wp_login_url() . '"> ' . esc_attr__( 'Click Here to Login &raquo;', 'give' ) . '</a>' . "\r\n";
-
-	wp_mail(
-		$user_data['user_email'],
-		sprintf(
-			/* translators: %s: site name */
-			esc_attr__( '[%s] Your username and password', 'give' ),
-			$blogname
-		),
-		$message
-	);
+	do_action( 'give_donor_register_email_notification', $user_id, $user_data );
 }
 
 add_action( 'give_insert_user', 'give_new_user_notification', 10, 2 );
