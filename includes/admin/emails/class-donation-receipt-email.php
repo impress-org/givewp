@@ -61,9 +61,12 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		 *
 		 * @since  1.8
 		 * @access public
+		 *
+		 * @param array $args Email Arguments.
+		 *
 		 * @return string
 		 */
-		public function get_default_email_message() {
+		public function get_default_email_message( $args = array() ) {
 			$message = esc_html__( 'Dear', 'give' ) . " {name},\n\n";
 			$message .= esc_html__( 'Thank you for your donation. Your generosity is appreciated! Here are the details of your donation:', 'give' ) . "\n\n";
 			$message .= '<strong>' . esc_html__( 'Donor:', 'give' ) . '</strong> {fullname}' . "\n";

@@ -339,9 +339,12 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 *
 		 * @since  1.8
 		 * @access public
+		 *
+		 * @param array $args Email arguments.
+		 *
 		 * @return string
 		 */
-		function get_default_email_message() {
+		function get_default_email_message( $args = array() ) {
 			return '';
 		}
 

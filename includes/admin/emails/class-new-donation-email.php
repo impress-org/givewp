@@ -62,9 +62,12 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		 *
 		 * @since  1.8
 		 * @access public
+		 *
+		 * @param array $args Email Arguments.
+		 *
 		 * @return string
 		 */
-		public function get_default_email_message() {
+		public function get_default_email_message( $args = array() ) {
 			$message = esc_html__( 'Hello', 'give' ) . "\n\n";
 			$message .= esc_html__( 'A donation has been made.', 'give' ) . "\n\n";
 			$message .= esc_html__( 'Donation:', 'give' ) . "\n\n";
