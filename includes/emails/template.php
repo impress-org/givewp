@@ -398,7 +398,7 @@ function give_get_preview_email_header() {
 			        var selected_trans = transactions.options[transactions.selectedIndex];
 				        console.log(selected_trans);
 				        if (selected_trans){
-				            var url_string = "' . get_bloginfo( 'url' ) . '?give_action=preview_email&preview_id=" + selected_trans.value;
+				            var url_string = "' . $_SERVER['REQUEST_URI'] . '&preview_id=" + selected_trans.value;
 				                window.location = url_string;
 				        }
 				    }
