@@ -126,18 +126,37 @@ add_filter( 'give_settings_emails', 'give_email_template_preview' );
  *
  * @access private
  * @since  1.0
+ * @since  1.8 Field arguments param added.
+ *
+ * @param array $field Field arguments.
+ *
  * @return array
  */
-function give_email_preview_buttons_callback() {
+function give_email_preview_buttons_callback( $field ) {
+	$field_id = str_replace( '_preview_buttons', '', $field['id'] );
+
 	ob_start();
-	?>
-	<a href="<?php echo esc_url( add_query_arg( array( 'give_action' => 'preview_email' ), home_url() ) ); ?>" class="button-secondary" target="_blank"><?php esc_html_e( 'Preview Donation Receipt', 'give' ); ?></a>
-	<a href="<?php echo wp_nonce_url( add_query_arg( array(
-		'give_action'  => 'send_test_email',
-		'give-message' => 'sent-test-email',
-		'tag'          => 'emails'
-	) ), 'give-test-email' ); ?>" aria-label="<?php esc_attr_e( 'Send demo donation receipt to the emails listed below.', 'give' ); ?>" class="button-secondary"><?php esc_html_e( 'Send Test Email', 'give' ); ?></a>
-	<?php
+
+	echo sprintf(
+		'<a href="%1$s" class="button-secondary" target="_blank">%2$s</a>',
+		esc_url( add_query_arg(
+			array( 'give_action' => 'preview_email', 'email_type' => $field_id ),
+			home_url()
+		) ),
+		esc_html__( 'Preview Donation Receipt', 'give' )
+	);
+
+	echo sprintf(
+		'<a href="%1$s" aria-label="%2$s" class="button-secondary">%3$s</a>',
+		wp_nonce_url( add_query_arg( array(
+			'give_action'  => 'send_test_email',
+			'give-message' => 'sent-test-email',
+			'tag'          => 'emails'
+		) ), 'give-test-email' ),
+		esc_attr__( 'Send demo donation receipt to the emails listed below.', 'give' ),
+		esc_html__( 'Send Test Email', 'give' )
+	);
+
 	echo ob_get_clean();
 }
 
@@ -188,7 +207,7 @@ function give_display_email_template_preview() {
 
 }
 
-add_action( 'init', 'give_display_email_template_preview' );
+// add_action( 'init', 'give_display_email_template_preview' );
 
 /**
  * Email Template Body.

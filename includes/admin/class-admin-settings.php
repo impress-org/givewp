@@ -675,7 +675,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
 						</th>
 						<td class="give-forminp">
-							<?php give_email_preview_buttons_callback(); ?>
+							<?php give_email_preview_buttons_callback( $value ); ?>
 							<?php echo $description; ?>
 						</td>
 						</tr><?php
