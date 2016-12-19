@@ -97,15 +97,6 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		}
 
 		/**
-		 * Returns all email tags.
-		 *
-		 * @return  array
-		 * @access  public
-		 * @since   1.8
-		 */
-		public function get_email_tags() {}
-
-		/**
 		 * Register email settings.
 		 *
 		 * @since  1.8
@@ -300,6 +291,28 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 
 
 		/**
+		 * Get email message field description
+		 *
+		 * @since 1.8
+		 * @acess public
+		 * @return string
+		 */
+		function get_email_message_field_description() {
+			$desc = esc_html__( 'Enter the subject line for email.', 'give' );
+
+			if( ! empty( give_get_email_tags() ) ) {
+				$desc = sprintf(
+					esc_html__( 'Enter the email that is sent to users after completing a successful donation. HTML is accepted. Available template tags: %s', 'give' ),
+					give_get_emails_tags_list()
+				);
+
+			}
+
+			return $desc;
+		}
+
+
+		/**
 		 * Get default recipient.
 		 *
 		 * @since  1.8
@@ -367,7 +380,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 				array(
 					'id'      => "{$this->id}_email_message",
 					'name'    => esc_html__( 'Email message', 'give' ),
-					'desc'    => __( 'Enter the message for email', 'give' ),
+					'desc'    => $this->get_email_message_field_description(),
 					'type'    => 'wysiwyg',
 					'default' => $this->get_default_email_message(),
 				)
