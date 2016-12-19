@@ -169,7 +169,7 @@ class Give_Email_Notifications {
 		<td class="give-email-notification-status">
 			<?php
 			$notification_status = $email->get_notification_status();
-			$notification_status_class = $email->get_notification_status()
+			$notification_status_class = $email->is_email_notification_active()
 				? 'dashicons-yes'
 				: 'dashicons-no-alt';
 			echo "<span class=\"give-email-notification-{$notification_status} dashicons {$notification_status_class}\"></span>";
