@@ -67,6 +67,9 @@ class Give_Email_Notifications {
 	public function init() {
 		// Load email notifications.
 		$this->add_emails_notifications();
+
+		add_action( 'init', array( $this, 'preview_email' ) );
+		add_action( 'give_donation-receipt_email_preview', array( $this, 'donation_receipt_email_preview_header') );
 	}
 
 	/**
@@ -226,6 +229,68 @@ class Give_Email_Notifications {
 		} else {
 			do_action( "give_email_notification_setting_column_$column_name", $email );
 		}
+	}
+
+	/**
+	 * Check if admin preview email or not
+	 *
+	 * @since  1.8
+	 * @access public
+	 * @return bool   $is_preview
+	 */
+	public function is_preview_email() {
+		$is_preview = false;
+
+		if (
+			current_user_can( 'manage_give_settings' )
+			&& ! empty( $_GET['give_action'] )
+			&& 'preview_email' === $_GET['give_action']
+		) {
+			$is_preview = true;
+		}
+
+		return $is_preview;
+	}
+
+	/**
+	 * Displays the email preview
+	 *
+	 * @since  1.8
+	 * @access public
+	 * @return bool
+	 */
+	function preview_email() {
+		// Bailout.
+		if ( ! $this->is_preview_email() ) {
+			return false;
+		}
+
+		// Get email type.
+		$email_type = isset( $_GET['email_type'] ) ? esc_attr( $_GET['email_type'] ) : '';
+
+		/* @var Give_Email_Notification $email */
+		foreach ( $this->get_email_notifications() as $email ) {
+			if( $email_type !== $email->get_id() ) {
+				continue;
+			}
+
+			if( $email_message = Give()->emails->build_email( $email->get_email_message() ) ) {
+				do_action( "give_{$email_type}_email_preview", $email );
+				echo $email_message;
+				exit();
+			}
+		}
+	}
+
+
+	/**
+	 * Add header to donation receipt email preview
+	 *
+	 * @since   1.8
+	 * @access public
+	 */
+	public function donation_receipt_email_preview_header() {
+		echo give_get_preview_email_header();
 	}
 }
 
