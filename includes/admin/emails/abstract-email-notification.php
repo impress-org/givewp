@@ -187,20 +187,16 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 				array(
 					'id'      => "{$this->id}_email_subject",
 					'name'    => esc_html__( 'Email Subject', 'give' ),
-					'desc'    => esc_html__( 'Enter the subject line for the donation receipt email.', 'give' ),
+					'desc'    => esc_html__( 'Enter the subject line for email.', 'give' ),
 					'default' => $this->get_default_email_subject(),
 					'type'    => 'text',
 				),
 				array(
 					'id'      => "{$this->id}_email_message",
 					'name'    => esc_html__( 'Email message', 'give' ),
-					'desc'    => sprintf(
-					/* translators: %s: emails tags list */
-						esc_html__( 'Enter the email that is sent to users after completing a successful donation. HTML is accepted. Available template tags: %s', 'give' ),
-						'<br/>' . give_get_emails_tags_list()
-					),
+					'desc'    => __( 'Enter the message for email', 'give' ),
 					'type'    => 'wysiwyg',
-					'default' => give_get_default_donation_receipt_email(),
+					'default' => $this->get_default_email_message(),
 				)
 			);
 		}
@@ -331,6 +327,29 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 */
 		public function get_email_type() {
 			return $this->email_type;
+		}
+
+
+		/**
+		 * Get email subject.
+		 *
+		 * @since  1.8
+		 * @access public
+		 * @return string
+		 */
+		function get_email_subject(){
+			return give_get_option( "{$this->id}_email_subject", $this->get_default_email_subject() );
+		}
+
+		/**
+		 * Get email message.
+		 *
+		 * @since  1.8
+		 * @access public
+		 * @return string
+		 */
+		function get_email_message(){
+			return give_get_option( "{$this->id}_email_message", $this->get_default_email_message() );
 		}
 
 
