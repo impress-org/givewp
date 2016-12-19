@@ -347,13 +347,13 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		}
 
 		/**
-		 * Get default email subject.
+		 * Get default email message.
 		 *
 		 * @since  1.8
 		 * @access public
 		 * @return string
 		 */
-		function get_default_email_content() {
+		function get_default_email_message() {
 			return '';
 		}
 	}
