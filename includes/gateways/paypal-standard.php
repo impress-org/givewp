@@ -35,7 +35,7 @@ add_action( 'give_paypal_cc_form', '__return_false' );
 function give_process_paypal_payment( $payment_data ) {
 
 	if ( ! wp_verify_nonce( $payment_data['gateway_nonce'], 'give-gateway' ) ) {
-		wp_die( __( 'Nonce verification has failed.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( __( 'Nonce verification failed.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	$form_id  = intval( $payment_data['post_data']['give-form-id'] );

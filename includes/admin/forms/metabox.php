@@ -327,7 +327,7 @@ function give_single_forms_cmb2_metaboxes() {
 					array(
 						'id'         => $prefix . 'checkout_label',
 						'name'       => esc_html__( 'Complete Donation Text', 'give' ),
-						'desc'       => esc_html__( 'The button label for completing a donation.', 'give' ),
+						'desc'       => esc_html__( 'The button label for completing the donation.', 'give' ),
 						'type'       => 'text_small',
 						'attributes' => array(
 							'placeholder' => esc_html__( 'Donate Now', 'give' ),
