@@ -418,7 +418,7 @@ Radio Lists
     }
 
     input[type="radio"] {
-      margin: 0 5px 0 0;
+      margin: 0 2px 0 0;
       outline: none;
       width: auto;
     }
@@ -440,15 +440,15 @@ Radio Lists
     list-style-type: none;
     list-style-image: none;
 
-    .give-gateway-option {
+    label.give-gateway-option {
       cursor: pointer;
-
-      input[type="radio"] {
-        margin: 0 5px 0 0;
-        outline: none;
-        width: auto;
-      }
-
+      display: inline;
+    }
+    input[type="radio"] {
+      margin: 0 2px 0 0;
+      outline: none;
+      width: auto;
+      display: inline;
     }
 
   }
