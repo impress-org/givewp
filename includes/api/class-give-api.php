@@ -215,7 +215,7 @@ class Give_API {
 	 *
 	 * @access public
 	 * @since  1.1
-	 * @return array
+	 * @return string
 	 */
 	public function get_versions() {
 		return $this->versions;
@@ -665,7 +665,7 @@ class Give_API {
 	 *
 	 * @param array $args Arguments to override defaults
 	 *
-	 * @return array $dates
+	 * @return integer|null $dates
 	 */
 	public function get_dates( $args = array() ) {
 		$dates = array();
@@ -1808,7 +1808,7 @@ class Give_API {
 	 *
 	 * @param int $user_id User ID of user to revoke key for
 	 *
-	 * @return string
+	 * @return boolean
 	 */
 	public function revoke_api_key( $user_id = 0 ) {
 

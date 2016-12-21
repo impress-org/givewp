@@ -50,7 +50,7 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 	 * @since 1.5
 	 * @global object $wpdb Used to query the database using the WordPress
 	 *   Database API
-	 * @return array $data The data for the CSV file
+	 * @return boolean $data The data for the CSV file
 	 */
 	public function get_data() {
 		global $give_logs, $wpdb;

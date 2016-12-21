@@ -158,7 +158,7 @@ class Give_DB_Customers extends Give_DB {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  bool|string|int $_id_or_email
+	 * @param  integer $_id_or_email
 	 *
 	 * @return bool|int
 	 */
@@ -313,7 +313,7 @@ class Give_DB_Customers extends Give_DB {
 	 * @param  int     $user_id       User ID.
 	 * @param  WP_User $old_user_data User data.
 	 *
-	 * @return bool
+	 * @return false|null
 	 */
 	public function update_customer_email_on_user_update( $user_id = 0, $old_user_data ) {
 
@@ -370,7 +370,7 @@ class Give_DB_Customers extends Give_DB {
 	 * @access public
 	 *
 	 * @param  string $field ID or email. Default is 'id'.
-	 * @param  mixed  $value The Customer ID or email to search. Default is 0.
+	 * @param  integer  $value The Customer ID or email to search. Default is 0.
 	 *
 	 * @return mixed         Upon success, an object of the customer. Upon failure, NULL
 	 */

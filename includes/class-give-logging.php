@@ -463,7 +463,7 @@ class Give_Logging {
 	 * @since  1.7
 	 * @access public
 	 *
-	 * @return bool
+	 * @return false|null
 	 */
 	public function delete_cache() {
 		global $wpdb;

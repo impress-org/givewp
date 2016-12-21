@@ -456,7 +456,7 @@ add_filter( 'give_receipt_status_notice', 'give_offline_donation_receipt_status_
  *
  * @param WP_Post $payment
  *
- * @return mixed
+ * @return false|null
  */
 function give_offline_payment_receipt_after( $payment ) {
 	// Get payment object.
