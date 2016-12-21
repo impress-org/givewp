@@ -51,7 +51,7 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 				),
 				'name'        => 'id',
 				'tooltip'     => esc_attr__( 'Select a Donation Form', 'give' ),
-				'placeholder' => esc_attr__( '- Select a Form -', 'give' ),
+				'placeholder' => '- ' . esc_attr__( 'Select a Donation Form', 'give' ) . ' -',
 				'required'    => array(
 					'alert' => esc_html__( 'You must first select a Form!', 'give' ),
 					'error' => sprintf( '<p class="strong">%s</p><p class="no-margin">%s</p>', esc_html__( 'No forms found.', 'give' ), $create_form_link ),
