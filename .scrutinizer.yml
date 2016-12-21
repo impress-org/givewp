@@ -19,7 +19,8 @@ tools:
                 excessive_class_complexity:  false
 
     php_code_sniffer: true
-        config: { standard: WordPress }
+        config:
+            standard: WordPress
     sensiolabs_security_checker: true
     php_code_coverage: true
     php_pdepend: true
