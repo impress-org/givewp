@@ -17,10 +17,10 @@ tools:
                 too_many_fields:      false
                 too_many_methods:     false
                 excessive_class_complexity:  false
-      php_code_sniffer:
-            config:
-                standard: WordPress
-                sniffs: { wordpress: { arrays: { array_declaration_sniff: true }, classes: { valid_class_name_sniff: true }, files: { file_name_sniff: true }, formatting: { multiple_statement_alignment_sniff: true }, functions: { function_call_signature_sniff: true, function_declaration_argument_spacing_sniff: true }, naming_conventions: { valid_function_name_sniff: true }, objects: { object_instantiation_sniff: true }, php: { discouraged_functions_sniff: true }, strings: { double_quote_usage_sniff: true }, white_space: { control_structure_spacing_sniff: true, operator_spacing_sniff: true, php_indent_sniff: true }, xss: { escape_output_sniff: true } } }
+    php_code_sniffer:
+        config:
+            standard: WordPress
+            sniffs: { wordpress: { arrays: { array_declaration_sniff: true }, classes: { valid_class_name_sniff: true }, files: { file_name_sniff: true }, formatting: { multiple_statement_alignment_sniff: true }, functions: { function_call_signature_sniff: true, function_declaration_argument_spacing_sniff: true }, naming_conventions: { valid_function_name_sniff: true }, objects: { object_instantiation_sniff: true }, php: { discouraged_functions_sniff: true }, strings: { double_quote_usage_sniff: true }, white_space: { control_structure_spacing_sniff: true, operator_spacing_sniff: true, php_indent_sniff: true }, xss: { escape_output_sniff: true } } }
     sensiolabs_security_checker: true
     php_code_coverage: true
     php_pdepend: true
