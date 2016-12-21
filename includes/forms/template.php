@@ -55,7 +55,10 @@ function give_get_donation_form( $args = array() ) {
 	);
 
 	//Sanity Check: Donation form not published or user doesn't have permission to view drafts.
-	if ( 'publish' !== $form->post_status && ! current_user_can( 'edit_give_forms', $form->ID ) ) {
+	if (
+		( 'publish' !== $form->post_status && ! current_user_can( 'edit_give_forms', $form->ID ) )
+		|| ( 'trash' === $form->post_status )
+	) {
 		return false;
 	}
 
@@ -540,7 +543,7 @@ function give_output_levels( $form_id ) {
 
 			}
 
-			//Custom Amount
+			//Custom Amount.
 			if ( give_is_setting_enabled( $custom_amount ) && ! empty( $custom_amount_text ) ) {
 				$output .= '<li>';
 				$output .= '<input type="radio" data-price-id="custom" class="give-radio-input give-radio-input-level give-radio-level-custom" name="give-radio-donation-level" id="give-radio-level-custom" value="custom">';
@@ -604,7 +607,6 @@ function give_display_checkout_button( $form_id, $args ) {
 	}elseif ( $display_option === 'onpage' ) {
 		return '';
 	}
-
 
 	$display_label_field = get_post_meta( $form_id, '_give_reveal_label', true );
 	$display_label       = ( ! empty( $display_label_field ) ? $display_label_field : esc_html__( 'Donate Now', 'give' ) );
@@ -1388,13 +1390,13 @@ function give_payment_mode_select( $form_id ) {
 				foreach ( $gateways as $gateway_id => $gateway ) :
 					//Determine the default gateway.
 					$checked       = checked( $gateway_id, $selected_gateway, false );
-					$checked_class = $checked ? ' give-gateway-option-selected' : ''; ?>
-					<li>
+					$checked_class = $checked ? ' class="give-gateway-option-selected"' : ''; ?>
+					<li<?php echo $checked_class?>>
 						<input type="radio" name="payment-mode" class="give-gateway"
 						       id="give-gateway-<?php echo esc_attr( $gateway_id ) . '-' . $form_id; ?>"
 						       value="<?php echo esc_attr( $gateway_id ); ?>"<?php echo $checked; ?>>
 						<label for="give-gateway-<?php echo esc_attr( $gateway_id ) . '-' . $form_id; ?>"
-						       class="give-gateway-option<?php echo $checked_class; ?>"
+						       class="give-gateway-option"
 						       id="give-gateway-option-<?php echo esc_attr( $gateway_id ); ?>"> <?php echo esc_html( $gateway['checkout_label'] ); ?></label>
 					</li>
 					<?php
@@ -1492,7 +1494,7 @@ function give_terms_agreement( $form_id ) {
 	// Bailout: Check if term and conditions text is empty or not.
 	if ( empty( $terms ) ) {
 		if ( is_user_logged_in() && current_user_can( 'edit_give_forms' ) ) {
-			echo sprintf( __( 'Please enter valid term and conditions in <a href="%s">this form\'s settings</a>.', 'give' ), $edit_term_url );
+			echo sprintf( __( 'Please enter valid terms and conditions in <a href="%s">this form\'s settings</a>.', 'give' ), $edit_term_url );
 		}
 
 		return false;

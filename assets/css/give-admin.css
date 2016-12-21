@@ -572,13 +572,13 @@ x:-o-prefocus, .qtip .qtip-tip {
 */
 @font-face {
   font-family: 'give-icomoon';
+  src: url("../assets/fonts/icomoon.eot?kdnr3d");
+  src: url("../assets/fonts/icomoon.eot?kdnr3d#iefix") format("embedded-opentype"), url("../assets/fonts/icomoon.woff?kdnr3d") format("woff"), url("../assets/fonts/icomoon.svg?kdnr3d#icomoon") format("svg");
   font-weight: normal;
   font-style: normal; }
 
 [class^="give-icon-"], [class*=" give-icon-"] {
   font-family: 'give-icomoon';
-  src: url("../assets/fonts/icomoon.eot?kdnr3d");
-  src: url("../assets/fonts/icomoon.eot?kdnr3d#iefix") format("embedded-opentype"), url("../assets/fonts/icomoon.woff?kdnr3d") format("woff"), url("../assets/fonts/icomoon.svg?kdnr3d#icomoon") format("svg");
   speak: none;
   font-style: normal;
   font-weight: normal;
@@ -626,8 +626,6 @@ x:-o-prefocus, .qtip .qtip-tip {
 
 .dashicons-give:before {
   font-family: 'give-icomoon';
-  src: url("../assets/fonts/icomoon.eot?kdnr3d");
-  src: url("../assets/fonts/icomoon.eot?kdnr3d#iefix") format("embedded-opentype"), url("../assets/fonts/icomoon.woff?kdnr3d") format("woff"), url("../assets/fonts/icomoon.svg?kdnr3d#icomoon") format("svg");
   speak: none;
   font-style: normal;
   font-weight: normal;
@@ -2169,8 +2167,6 @@ input.give-price-field {
 
 #dashboard_right_now .give-forms-count:before {
   font-family: 'give-icomoon';
-  src: url("../assets/fonts/icomoon.eot?kdnr3d");
-  src: url("../assets/fonts/icomoon.eot?kdnr3d#iefix") format("embedded-opentype"), url("../assets/fonts/icomoon.woff?kdnr3d") format("woff"), url("../assets/fonts/icomoon.svg?kdnr3d#icomoon") format("svg");
   speak: none;
   font-style: normal;
   font-weight: normal;
