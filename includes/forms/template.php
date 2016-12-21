@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @param  array $args An array of form arguments.
  *
- * @return string Donation form.
+ * @return false|null Donation form.
  */
 function give_get_donation_form( $args = array() ) {
 
@@ -1468,7 +1468,7 @@ add_action( 'give_payment_mode_select', 'give_payment_mode_select' );
  *
  * @param  int $form_id The form ID.
  *
- * @return void|bool
+ * @return false|null
  */
 function give_terms_agreement( $form_id ) {
 	$form_option = get_post_meta( $form_id, '_give_terms_option', true );
@@ -1671,7 +1671,7 @@ add_action( 'give_checkout_form_top', 'give_agree_to_terms_js', 10, 2 );
  * @param  int   $form_id The form ID.
  * @param  array $args    An array of form arguments.
  *
- * @return mixed
+ * @return boolean
  */
 function give_show_goal_progress( $form_id, $args ) {
 

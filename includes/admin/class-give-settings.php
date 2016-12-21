@@ -87,7 +87,7 @@ class Give_Plugin_Settings {
 	 *
 	 * @param $url
 	 *
-	 * @return mixed
+	 * @return string
 	 */
 	public function give_update_cmb_meta_box_url( $url ) {
 		//Path to Give's CMB

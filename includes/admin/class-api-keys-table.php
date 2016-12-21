@@ -127,7 +127,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.1
-	 * @return void
+	 * @return string
 	 */
 	public function column_user( $item ) {
 

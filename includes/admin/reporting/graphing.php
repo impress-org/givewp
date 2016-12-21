@@ -587,7 +587,7 @@ function give_reports_graph_controls() {
  * selected date-range (if any)
  *
  * @since 1.0
- * @return array
+ * @return integer|null
  */
 function give_get_report_dates() {
 	$dates = array();

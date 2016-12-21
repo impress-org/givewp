@@ -339,7 +339,7 @@ function give_set_purchase_session( $purchase_data = array() ) {
  *
  * @since 1.0
  * @uses  Give()->session->get()
- * @return mixed array | false
+ * @return string array | false
  */
 function give_get_purchase_session() {
 	return Give()->session->get( 'give_purchase' );

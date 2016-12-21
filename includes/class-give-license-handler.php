@@ -219,7 +219,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @access private
 		 * @since  1.0
 		 *
-		 * @return bool
+		 * @return false|null
 		 */
 		public function auto_updater() {
 
@@ -475,7 +475,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @access public
 		 * @since  1.7
 		 *
-		 * @return bool|void
+		 * @return false|null
 		 */
 		public function weekly_license_check() {
 
@@ -527,7 +527,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @access public
 		 * @since  1.7
 		 *
-		 * @return bool|void
+		 * @return false|null
 		 */
 		public function weekly_subscription_check() {
 
@@ -607,7 +607,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @access private
 		 * @since  1.7
 		 *
-		 * @return bool|void
+		 * @return false|null
 		 */
 		private function __single_subscription_check() {
 			// Do not fire if license key is not set.
@@ -802,7 +802,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @access private
 		 * @since  1.7
 		 *
-		 * @return void|bool
+		 * @return false|null
 		 */
 		private function __remove_license_key_from_subscriptions(){
 			$subscriptions = get_option( 'give_subscriptions', array() );

@@ -226,7 +226,7 @@ function give_format_decimal( $amount, $dp = false ) {
  * @param $field_args
  * @param $field
  *
- * @return bool
+ * @return false|null
  */
 function give_format_admin_multilevel_amount( $field_args, $field ) {
 
@@ -376,7 +376,7 @@ add_filter( 'give_format_amount_decimals', 'give_currency_decimal_filter' );
  * @param   array  $field_args
  * @param   object $field
  *
- * @return mixed
+ * @return string
  */
 function give_sanitize_thousand_separator( $value, $field_args, $field ) {
 	return stripslashes( $value );
@@ -409,7 +409,7 @@ function give_sanitize_number_decimals( $value, $field_args, $field ) {
  * @param   array  $field_args
  * @param   object $field
  *
- * @return  mixed
+ * @return  string
  */
 function give_sanitize_price_field_value( $value, $field_args, $field ) {
 	return give_sanitize_amount( $value );

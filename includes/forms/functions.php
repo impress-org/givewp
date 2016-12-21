@@ -155,7 +155,7 @@ function give_send_to_success_page( $query_string = null ) {
  *
  * Used to redirect a user back to the donation form if there are errors present.
  *
- * @param array $args
+ * @param string $args
  *
  * @access public
  * @since  1.0
@@ -437,7 +437,7 @@ function give_decrease_earnings( $form_id = 0, $amount ) {
  *
  * @param int $form_id Give Form ID
  *
- * @return int $earnings Earnings for a certain form
+ * @return double $earnings Earnings for a certain form
  */
 function give_get_form_earnings_stats( $form_id = 0 ) {
 	$give_form = new Give_Donate_Form( $form_id );

@@ -38,7 +38,7 @@ class Give_Notices {
 	 *
 	 * @param WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference.
 	 *
-	 * @return bool
+	 * @return false|null
 	 */
 	public function give_admin_bar_menu( $wp_admin_bar ) {
 

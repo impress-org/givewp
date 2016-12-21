@@ -326,7 +326,7 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
  *
  * @since  1.0
  *
- * @param  int|bool $form_id    Form ID (default: false).
+ * @param  boolean $form_id    Form ID (default: false).
  * @param  int      $payment_id Payment ID.
  *
  * @return void
@@ -649,7 +649,7 @@ function give_get_payment_status_keys() {
  * @param  int $year      Year number. Default is null.
  * @param  int $hour      Hour number. Default is null.
  *
- * @return int $earnings  Earnings
+ * @return double $earnings  Earnings
  */
 function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour = null ) {
 
@@ -963,7 +963,7 @@ function give_get_payment_meta_user_info( $payment_id ) {
  *
  * @param int $payment_id Payment ID.
  *
- * @return int $form_id Form ID.
+ * @return string $form_id Form ID.
  */
 function give_get_payment_form_id( $payment_id ) {
 	$payment = new Give_Payment( $payment_id );

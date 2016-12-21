@@ -392,7 +392,7 @@ final class Give_Payment {
 	 *
 	 * @param  int|bool $payment_id A given payment
 	 *
-	 * @return mixed void|false
+	 * @return false|null void|false
 	 */
 	public function __construct( $payment_id = false ) {
 
@@ -463,7 +463,7 @@ final class Give_Payment {
 	 *
 	 * @param  string $name The attribute to get
 	 *
-	 * @return boolean       If the item is set or not
+	 * @return boolean|null       If the item is set or not
 	 */
 	public function __isset( $name ) {
 		if ( property_exists( $this, $name ) ) {
@@ -1302,7 +1302,7 @@ final class Give_Payment {
 	 *
 	 * @param  string $note The note to add
 	 *
-	 * @return void
+	 * @return false|null
 	 */
 	public function add_note( $note = false ) {
 		// Bail if no note specified.

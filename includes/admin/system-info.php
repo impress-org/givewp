@@ -44,7 +44,7 @@ function give_system_info_callback() {
  *
  * @since: 1.4
  *
- * @return bool
+ * @return boolean|null
  */
 function give_allow_sessions_for_sysinfo() {
 	if ( is_admin() && ( isset( $_GET['page'] ) && isset( $_GET['tab'] ) ) && ( $_GET['tab'] == 'system_info' && $_GET['page'] == 'give-settings' ) ) {

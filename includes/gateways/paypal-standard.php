@@ -687,7 +687,7 @@ add_filter( 'give_payment_details_transaction_id-paypal', 'give_paypal_link_tran
  *
  * @since 1.6.3
  *
- * @param $pending_reason
+ * @param string $pending_reason
  *
  * @return string
  */

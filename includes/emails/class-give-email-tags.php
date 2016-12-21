@@ -530,7 +530,7 @@ function give_email_tag_price( $payment_id ) {
  *
  * @param int $payment_id
  *
- * @return int payment_id
+ * @return string payment_id
  */
 function give_email_tag_payment_id( $payment_id ) {
 	$payment = new Give_Payment( $payment_id );

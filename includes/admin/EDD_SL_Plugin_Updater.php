@@ -63,7 +63,7 @@ class EDD_SL_Plugin_Updater {
      * @uses api_request()
 	 *
      * @param array   $_transient_data Update array build by WordPress.
-     * @return array Modified update array with custom plugin data.
+     * @return stdClass Modified update array with custom plugin data.
      */
     function check_update( $_transient_data ) {
 

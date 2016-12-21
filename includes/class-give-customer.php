@@ -890,7 +890,7 @@ class Give_Customer {
 	 * @access public
 	 *
 	 * @param  string $meta_key   Metadata name. Default is empty.
-	 * @param  mixed  $meta_value Metadata value.
+	 * @param  string  $meta_value Metadata value.
 	 * @param  bool   $unique     Optional. Whether the same key should not be added. Default is false.
 	 *
 	 * @return bool               False for failure. True for success.
@@ -922,7 +922,7 @@ class Give_Customer {
 	 * @access public
 	 *
 	 * @param  string $meta_key   Metadata name. Default is empty.
-	 * @param  mixed  $meta_value Optional. Metadata value. Default is empty.
+	 * @param  string  $meta_value Optional. Metadata value. Default is empty.
 	 *
 	 * @return bool               False for failure. True for success.
 	 */
