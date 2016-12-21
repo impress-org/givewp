@@ -439,7 +439,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 					'give_payment_nonce'
 				),
 				sprintf( esc_attr__( 'Resend Donation %s Receipt', 'give' ), $payment->ID ),
-				esc_html__( 'Resend Donation Receipt', 'give' )
+				esc_html__( 'Resend Receipt', 'give' )
 			);
 
 		}
