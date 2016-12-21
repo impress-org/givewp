@@ -14,16 +14,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_filter( 'cmb2_meta_boxes', 'give_single_forms_cmb2_metaboxes' );
+add_action( 'cmb2_init', 'give_single_forms_cmb2_metaboxes', 6 );
 
 /**
  * Define the metabox and field configurations.
- *
- * @param  array $meta_boxes
- *
- * @return array
  */
-function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
+function give_single_forms_cmb2_metaboxes() {
 
 	$post_id               = give_get_admin_post_id();
 	$price                 = give_get_form_price( $post_id );
@@ -44,6 +40,9 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 
 	// Start with an underscore to hide fields from custom fields list
 	$prefix = '_give_';
+
+	// Init metaboxes array.
+	$meta_boxes = array();
 
 	/**
 	 * Repeatable Field Groups
@@ -422,7 +421,9 @@ function give_single_forms_cmb2_metaboxes( array $meta_boxes ) {
 		)
 	) );
 
-	return $meta_boxes;
+	foreach ( $meta_boxes as $box ) {
+		$cmb = new_cmb2_box( $box );
+	}
 
 }
 
