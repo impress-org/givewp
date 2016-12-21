@@ -1107,7 +1107,7 @@ Radio Lists
       cursor: pointer;
       display: inline-block; }
     #give-donation-level-radio-list > li input[type="radio"] {
-      margin: 0 0 0 5px;
+      margin: 0 0 0 2px;
       outline: none;
       width: auto; }
 
@@ -1127,12 +1127,14 @@ Radio Lists
     margin-right: 0;
     list-style-type: none;
     list-style-image: none; }
-    #give-gateway-radio-list > li .give-gateway-option {
-      cursor: pointer; }
-      #give-gateway-radio-list > li .give-gateway-option input[type="radio"] {
-        margin: 0 0 0 5px;
-        outline: none;
-        width: auto; }
+    #give-gateway-radio-list > li label.give-gateway-option {
+      cursor: pointer;
+      display: inline; }
+    #give-gateway-radio-list > li input[type="radio"] {
+      margin: 0 0 0 2px;
+      outline: none;
+      width: auto;
+      display: inline; }
 
 /*---------------------------------
 Donation Level: Dropdown/Select
