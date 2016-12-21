@@ -469,7 +469,7 @@ function give_add_donor_email( $args ) {
 	} elseif ( ! is_email( $args['email'] ) ) {
 		$output = array(
 			'success' => false,
-			'message' => esc_html__( 'Invalid email address.', 'give' ),
+			'message' => esc_html__( 'Invalid email.', 'give' ),
 		);
 	} else {
 		$email       = sanitize_email( $args['email'] );

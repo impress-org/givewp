@@ -610,11 +610,11 @@ $payment_mode   = $payment->mode;
 											<div class="data column-container">
 												<div class="column">
 													<div class="give-wrap-address-line1">
-														<label for="give-payment-address-line1" class="order-data-address"><?php esc_html_e( 'Address 1:', 'give' ); ?></label>
+														<label for="give-payment-address-line1" class="order-data-address"><?php esc_html_e( 'Address 1', 'give' ); ?>:</label>
 														<input id="give-payment-address-line1" type="text" name="give-payment-address[0][line1]" value="<?php echo esc_attr( $address['line1'] ); ?>" class="medium-text"/>
 													</div>
 													<div class="give-wrap-address-line2">
-														<label for="give-payment-address-line2" class="order-data-address-line"><?php esc_html_e( 'Address 2:', 'give' ); ?></label>
+														<label for="give-payment-address-line2" class="order-data-address-line"><?php esc_html_e( 'Address 2', 'give' ); ?>:</label>
 														<input id="give-payment-address-line2" type="text" name="give-payment-address[0][line2]" value="<?php echo esc_attr( $address['line2'] ); ?>" class="medium-text"/>
 													</div>
 												</div>

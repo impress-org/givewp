@@ -1055,7 +1055,7 @@ Radio Lists
       cursor: pointer;
       display: inline-block; }
     #give-donation-level-radio-list > li input[type="radio"] {
-      margin: 0 0 0 5px;
+      margin: 0 0 0 2px;
       outline: none;
       width: auto; }
 
