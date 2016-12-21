@@ -19,6 +19,7 @@ tools:
                 excessive_class_complexity:  false
 
     php_code_sniffer: true
+        config: { standard: WordPress }
     sensiolabs_security_checker: true
     php_code_coverage: true
     php_pdepend: true
@@ -62,7 +63,7 @@ checks:
         too_many_arguments: true
         no_debug_code: true
         missing_arguments: true
+        return_doc_comments: true
         argument_type_checks: false
         no_error_suppression: false
-        return_doc_comments: false
         property_assignments: false
