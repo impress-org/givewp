@@ -632,3 +632,23 @@ Export Form
 		margin-top: 10px;
 	}
 }
+
+/*-------------------------------------
+DOCS LINKS
+-------------------------------------*/
+
+.give-metabox-panel-wrap .docs-link {
+	text-align: right;
+	margin-right: 15px;
+
+	a {
+		color: #999;
+		text-decoration: none;
+		font-style: italic;
+
+		&:hover {color: rgb(0, 115, 170);}
+		span {
+			font-style: normal;
+		}
+	}
+}

@@ -1117,6 +1117,21 @@ Export Form
 #give-export-payments div.chosen-container:first-of-type {
   margin-top: 10px; }
 
+/*-------------------------------------
+DOCS LINKS
+-------------------------------------*/
+.give-metabox-panel-wrap .docs-link {
+  text-align: left;
+  margin-left: 15px; }
+  .give-metabox-panel-wrap .docs-link a {
+    color: #999;
+    text-decoration: none;
+    font-style: italic; }
+    .give-metabox-panel-wrap .docs-link a:hover {
+      color: #0073aa; }
+    .give-metabox-panel-wrap .docs-link a span {
+      font-style: normal; }
+
 /**
  * Give Add-ons SCSS
  *
