@@ -117,7 +117,7 @@ class Give_MetaBox_Form_Data {
 						//Donation Option
 						array(
 							'name'        => esc_html__( 'Donation Option', 'give' ),
-							'description' => esc_html__( 'Do you want this form to have one set donation price or multiple levels (for example, $10, $20, $50)?', 'give' ),
+							'description' => sprintf( esc_html__( 'Do you want this form to have one set donation price or multiple levels (for example, $10, $20, $50)? %1$s See docs for help. %2$s', 'give'), '<p class="docs-link"><span class="dashicons dashicons-editor-help"></span><a href="https://docs.givewp.com" target="_blank">', '</a></p>'),
 							'id'          => $prefix . 'price_option',
 							'type'        => 'radio_inline',
 							'default'     => 'set',
@@ -231,6 +231,12 @@ class Give_MetaBox_Form_Data {
 								'rows'        => 3,
 								'placeholder' => esc_attr__( 'Give a Custom Amount', 'give' ),
 							),
+						),
+						array(
+							'name'		  => 'donation_options_docs',
+							'type'        => 'docs_link',
+							'url'		  => 'https://givewp.com/documentation/core/give-forms/',
+							'title'		  => "Documentation Options",
 						)
 					)
 				)
