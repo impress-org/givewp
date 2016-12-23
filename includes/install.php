@@ -27,15 +27,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @global     $wpdb
  * @return void
  */
-function give_install( $network_wide = false ) {
+function give_install($network_wide = false) {
 
 	global $wpdb;
 
-	if ( is_multisite() && $network_wide ) {
+	if (is_multisite() && $network_wide) {
 
-		foreach ( $wpdb->get_col( "SELECT blog_id FROM $wpdb->blogs LIMIT 100" ) as $blog_id ) {
+		foreach ($wpdb->get_col("SELECT blog_id FROM $wpdb->blogs LIMIT 100") as $blog_id) {
 
-			switch_to_blog( $blog_id );
+			switch_to_blog($blog_id);
 			give_run_install();
 			restore_current_blog();
 
@@ -49,7 +49,7 @@ function give_install( $network_wide = false ) {
 
 }
 
-register_activation_hook( GIVE_PLUGIN_FILE, 'give_install' );
+register_activation_hook(GIVE_PLUGIN_FILE, 'give_install');
 
 /**
  * Run the Give Install process.
@@ -65,24 +65,24 @@ function give_run_install() {
 	give_setup_post_types();
 
 	// Clear the permalinks.
-	flush_rewrite_rules( false );
+	flush_rewrite_rules(false);
 
 	// Add Upgraded From Option.
-	$current_version = get_option( 'give_version' );
-	if ( $current_version ) {
-		update_option( 'give_version_upgraded_from', $current_version );
+	$current_version = get_option('give_version');
+	if ($current_version) {
+		update_option('give_version_upgraded_from', $current_version);
 	}
 
 	// Setup some default options.
 	$options = array();
 
 	// Checks if the Success Page option exists AND that the page exists.
-	if ( ! get_post( give_get_option( 'success_page' ) ) ) {
+	if ( ! get_post(give_get_option('success_page'))) {
 
 		// Donation Confirmation (Success) Page
 		$success = wp_insert_post(
 			array(
-				'post_title'     => esc_html__( 'Donation Confirmation', 'give' ),
+				'post_title'     => esc_html__('Donation Confirmation', 'give'),
 				'post_content'   => '[give_receipt]',
 				'post_status'    => 'publish',
 				'post_author'    => 1,
@@ -96,13 +96,13 @@ function give_run_install() {
 	}
 
 	// Checks if the Failure Page option exists AND that the page exists.
-	if ( ! get_post( give_get_option( 'failure_page' ) ) ) {
+	if ( ! get_post(give_get_option('failure_page'))) {
 
 		// Failed Donation Page
 		$failed = wp_insert_post(
 			array(
-				'post_title'     => esc_html__( 'Donation Failed', 'give' ),
-				'post_content'   => esc_html__( 'We\'re sorry, your donation failed to process. Please try again or contact site support.', 'give' ),
+				'post_title'     => esc_html__('Donation Failed', 'give'),
+				'post_content'   => esc_html__('We\'re sorry, your donation failed to process. Please try again or contact site support.', 'give'),
 				'post_status'    => 'publish',
 				'post_author'    => 1,
 				'post_type'      => 'page',
@@ -114,11 +114,11 @@ function give_run_install() {
 	}
 
 	// Checks if the History Page option exists AND that the page exists.
-	if ( ! get_post( give_get_option( 'history_page' ) ) ) {
+	if ( ! get_post(give_get_option('history_page'))) {
 		// Donation History Page
 		$history = wp_insert_post(
 			array(
-				'post_title'     => esc_html__( 'Donation History', 'give' ),
+				'post_title'     => esc_html__('Donation History', 'give'),
 				'post_content'   => '[donation_history]',
 				'post_status'    => 'publish',
 				'post_author'    => 1,
@@ -131,7 +131,7 @@ function give_run_install() {
 	}
 
 	//Fresh Install? Setup Test Mode, Base Country (US), Test Gateway, Currency.
-	if ( empty( $current_version ) ) {
+	if (empty($current_version)) {
 		$options['base_country']       = 'US';
 		$options['test_mode']          = 'on';
 		$options['currency']           = 'USD';
@@ -155,8 +155,8 @@ function give_run_install() {
 	}
 
 	// Populate the default values.
-	update_option( 'give_settings', array_merge( $give_options, $options ) );
-	update_option( 'give_version', GIVE_VERSION );
+	update_option('give_settings', array_merge($give_options, $options));
+	update_option('give_version', GIVE_VERSION);
 
 	// Create Give roles.
 	$roles = new Give_Roles();
@@ -164,7 +164,7 @@ function give_run_install() {
 	$roles->add_caps();
 
 	$api = new Give_API();
-	update_option( 'give_default_api_version', 'v' . $api->get_version() );
+	update_option('give_default_api_version', 'v'.$api->get_version());
 
 	// Create the customers databases.
 	@Give()->customers->create_table();
@@ -174,11 +174,11 @@ function give_run_install() {
 	Give()->session->use_php_sessions();
 
 	// Add a temporary option to note that Give pages have been created.
-	set_transient( '_give_installed', $options, 30 );
+	set_transient('_give_installed', $options, 30);
 
-	if ( ! $current_version ) {
+	if ( ! $current_version) {
 
-		require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrade-functions.php';
+		require_once GIVE_PLUGIN_DIR.'includes/admin/upgrades/upgrade-functions.php';
 
 		// When new upgrade routines are added, mark them as complete on fresh install.
 		$upgrade_routines = array(
@@ -187,22 +187,22 @@ function give_run_install() {
 			'upgrade_give_offline_status'
 		);
 
-		foreach ( $upgrade_routines as $upgrade ) {
-			give_set_upgrade_complete( $upgrade );
+		foreach ($upgrade_routines as $upgrade) {
+			give_set_upgrade_complete($upgrade);
 		}
 	}
 
 	// Bail if activating from network, or bulk.
-	if ( is_network_admin() || isset( $_GET['activate-multi'] ) ) {
+	if (is_network_admin() || isset($_GET['activate-multi'])) {
 		return;
 	}
 
 	// Add the transient to redirect.
-	set_transient( '_give_activation_redirect', true, 30 );
+	set_transient('_give_activation_redirect', true, 30);
 
 }
 
-register_activation_hook( GIVE_PLUGIN_FILE, 'give_install' );
+register_activation_hook(GIVE_PLUGIN_FILE, 'give_install');
 
 /**
  * Network Activated New Site Setup.
@@ -218,11 +218,11 @@ register_activation_hook( GIVE_PLUGIN_FILE, 'give_install' );
  * @param  int    $site_id The Site ID.
  * @param  array  $meta    Blog Meta.
  */
-function on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
+function on_create_blog($blog_id, $user_id, $domain, $path, $site_id, $meta) {
 
-	if ( is_plugin_active_for_network( GIVE_PLUGIN_BASENAME ) ) {
+	if (is_plugin_active_for_network(GIVE_PLUGIN_BASENAME)) {
 
-		switch_to_blog( $blog_id );
+		switch_to_blog($blog_id);
 		give_install();
 		restore_current_blog();
 
@@ -230,7 +230,7 @@ function on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
 
 }
 
-add_action( 'wpmu_new_blog', 'on_create_blog', 10, 6 );
+add_action('wpmu_new_blog', 'on_create_blog', 10, 6);
 
 
 /**
@@ -243,13 +243,13 @@ add_action( 'wpmu_new_blog', 'on_create_blog', 10, 6 );
  *
  * @return array          The tables to drop.
  */
-function give_wpmu_drop_tables( $tables, $blog_id ) {
+function give_wpmu_drop_tables($tables, $blog_id) {
 
-	switch_to_blog( $blog_id );
+	switch_to_blog($blog_id);
 	$customers_db     = new Give_DB_Customers();
 	$customer_meta_db = new Give_DB_Customer_Meta();
 
-	if ( $customers_db->installed() ) {
+	if ($customers_db->installed()) {
 		$tables[] = $customers_db->table_name;
 		$tables[] = $customer_meta_db->table_name;
 	}
@@ -259,7 +259,7 @@ function give_wpmu_drop_tables( $tables, $blog_id ) {
 
 }
 
-add_filter( 'wpmu_drop_tables', 'give_wpmu_drop_tables', 10, 2 );
+add_filter('wpmu_drop_tables', 'give_wpmu_drop_tables', 10, 2);
 
 /**
  * Post-installation
@@ -271,16 +271,16 @@ add_filter( 'wpmu_drop_tables', 'give_wpmu_drop_tables', 10, 2 );
  */
 function give_after_install() {
 
-	if ( ! is_admin() ) {
+	if ( ! is_admin()) {
 		return;
 	}
 
-	$give_options     = get_transient( '_give_installed' );
-	$give_table_check = get_option( '_give_table_check', false );
+	$give_options     = get_transient('_give_installed');
+	$give_table_check = get_option('_give_table_check', false);
 
-	if ( false === $give_table_check || current_time( 'timestamp' ) > $give_table_check ) {
+	if (false === $give_table_check || current_time('timestamp') > $give_table_check) {
 
-		if ( ! @Give()->customer_meta->installed() ) {
+		if ( ! @Give()->customer_meta->installed()) {
 
 			// Create the customer meta database
 			// (this ensures it creates it on multisite instances where it is network activated).
@@ -288,7 +288,7 @@ function give_after_install() {
 
 		}
 
-		if ( ! @Give()->customers->installed() ) {
+		if ( ! @Give()->customers->installed()) {
 			// Create the customers database
 			// (this ensures it creates it on multisite instances where it is network activated).
 			@Give()->customers->create_table();
@@ -300,22 +300,22 @@ function give_after_install() {
 			 *
 			 * @param array $give_options Give plugin options.
 			 */
-			do_action( 'give_after_install', $give_options );
+			do_action('give_after_install', $give_options);
 		}
 
-		update_option( '_give_table_check', ( current_time( 'timestamp' ) + WEEK_IN_SECONDS ) );
+		update_option('_give_table_check', (current_time('timestamp') + WEEK_IN_SECONDS));
 
 	}
 
 	// Delete the transient
-	if ( false !== $give_options ) {
-		delete_transient( '_give_installed' );
+	if (false !== $give_options) {
+		delete_transient('_give_installed');
 	}
 
 
 }
 
-add_action( 'admin_init', 'give_after_install' );
+add_action('admin_init', 'give_after_install');
 
 
 /**
@@ -330,11 +330,11 @@ function give_install_roles_on_network() {
 
 	global $wp_roles;
 
-	if ( ! is_object( $wp_roles ) ) {
+	if ( ! is_object($wp_roles)) {
 		return;
 	}
 
-	if ( ! array_key_exists( 'give_manager', $wp_roles->roles ) ) {
+	if ( ! array_key_exists('give_manager', $wp_roles->roles)) {
 
 		// Create Give plugin roles
 		$roles = new Give_Roles();
@@ -345,4 +345,4 @@ function give_install_roles_on_network() {
 
 }
 
-add_action( 'admin_init', 'give_install_roles_on_network' );
+add_action('admin_init', 'give_install_roles_on_network');

@@ -10,7 +10,7 @@
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) {
+if ( ! defined('ABSPATH')) {
 	exit;
 }
 
@@ -23,13 +23,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return bool true if has variable prices, false otherwise
  */
-function give_has_variable_prices( $form_id = 0 ) {
+function give_has_variable_prices($form_id = 0) {
 
-	if ( empty( $form_id ) ) {
+	if (empty($form_id)) {
 		return false;
 	}
 
-	$form = new Give_Donate_Form( $form_id );
+	$form = new Give_Donate_Form($form_id);
 
 	return $form->has_variable_prices();
 }
@@ -44,13 +44,13 @@ function give_has_variable_prices( $form_id = 0 ) {
  *
  * @return array Variable prices
  */
-function give_get_variable_prices( $form_id = 0 ) {
+function give_get_variable_prices($form_id = 0) {
 
-	if ( empty( $form_id ) ) {
+	if (empty($form_id)) {
 		return false;
 	}
 
-	$form = new Give_Donate_Form( $form_id );
+	$form = new Give_Donate_Form($form_id);
 
 	return $form->prices;
 
@@ -67,13 +67,13 @@ function give_get_variable_prices( $form_id = 0 ) {
  *
  * @return string $default_price
  */
-function give_get_default_multilevel_amount( $form_id ) {
+function give_get_default_multilevel_amount($form_id) {
 	$default_price = '1.00';
-	$prices        = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
+	$prices        = apply_filters('give_form_variable_prices', give_get_variable_prices($form_id), $form_id);
 
-	foreach ( $prices as $price ) {
+	foreach ($prices as $price) {
 
-		if ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) {
+		if (isset($price['_give_default']) && $price['_give_default'] === 'default') {
 			$default_price = $price['_give_amount'];
 		}
 
@@ -94,19 +94,19 @@ function give_get_default_multilevel_amount( $form_id ) {
  * @return string $default_price
  * @since      1.0
  */
-function give_get_default_form_amount( $form_id ) {
+function give_get_default_form_amount($form_id) {
 
-	if ( give_has_variable_prices( $form_id ) ) {
+	if (give_has_variable_prices($form_id)) {
 
-		$default_amount = give_get_default_multilevel_amount( $form_id );
+		$default_amount = give_get_default_multilevel_amount($form_id);
 
 	} else {
 
-		$default_amount = get_post_meta( $form_id, '_give_set_price', true );
+		$default_amount = get_post_meta($form_id, '_give_set_price', true);
 
 	}
 
-	return apply_filters( 'give_default_form_amount', $default_amount );
+	return apply_filters('give_default_form_amount', $default_amount);
 
 }
 
@@ -124,13 +124,13 @@ function give_get_default_form_amount( $form_id ) {
  *
  * @return bool
  */
-function give_is_custom_price_mode( $form_id = 0 ) {
+function give_is_custom_price_mode($form_id = 0) {
 
-	if ( empty( $form_id ) ) {
+	if (empty($form_id)) {
 		return false;
 	}
 
-	$form = new Give_Donate_Form( $form_id );
+	$form = new Give_Donate_Form($form_id);
 
 	return $form->is_custom_price_mode();
 }

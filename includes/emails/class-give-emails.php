@@ -87,12 +87,12 @@ class Give_Emails {
 	 */
 	public function __construct() {
 
-		if ( 'none' === $this->get_template() ) {
+		if ('none' === $this->get_template()) {
 			$this->html = false;
 		}
 
-		add_action( 'give_email_send_before', array( $this, 'send_before' ) );
-		add_action( 'give_email_send_after', array( $this, 'send_after' ) );
+		add_action('give_email_send_before', array($this, 'send_before'));
+		add_action('give_email_send_after', array($this, 'send_after'));
 
 	}
 
@@ -104,7 +104,7 @@ class Give_Emails {
 	 * @param $key
 	 * @param $value
 	 */
-	public function __set( $key, $value ) {
+	public function __set($key, $value) {
 		$this->$key = $value;
 	}
 
@@ -114,11 +114,11 @@ class Give_Emails {
 	 * @since 1.0
 	 */
 	public function get_from_name() {
-		if ( ! $this->from_name ) {
-			$this->from_name = give_get_option( 'from_name', get_bloginfo( 'name' ) );
+		if ( ! $this->from_name) {
+			$this->from_name = give_get_option('from_name', get_bloginfo('name'));
 		}
 
-		return apply_filters( 'give_email_from_name', wp_specialchars_decode( $this->from_name ), $this );
+		return apply_filters('give_email_from_name', wp_specialchars_decode($this->from_name), $this);
 	}
 
 	/**
@@ -127,11 +127,11 @@ class Give_Emails {
 	 * @since 1.0
 	 */
 	public function get_from_address() {
-		if ( ! $this->from_address ) {
-			$this->from_address = give_get_option( 'from_email', get_option( 'admin_email' ) );
+		if ( ! $this->from_address) {
+			$this->from_address = give_get_option('from_email', get_option('admin_email'));
 		}
 
-		return apply_filters( 'give_email_from_address', $this->from_address, $this );
+		return apply_filters('give_email_from_address', $this->from_address, $this);
 	}
 
 	/**
@@ -140,13 +140,13 @@ class Give_Emails {
 	 * @since 1.0
 	 */
 	public function get_content_type() {
-		if ( ! $this->content_type && $this->html ) {
-			$this->content_type = apply_filters( 'give_email_default_content_type', 'text/html', $this );
-		} else if ( ! $this->html ) {
+		if ( ! $this->content_type && $this->html) {
+			$this->content_type = apply_filters('give_email_default_content_type', 'text/html', $this);
+		} else if ( ! $this->html) {
 			$this->content_type = 'text/plain';
 		}
 
-		return apply_filters( 'give_email_content_type', $this->content_type, $this );
+		return apply_filters('give_email_content_type', $this->content_type, $this);
 	}
 
 	/**
@@ -155,13 +155,13 @@ class Give_Emails {
 	 * @since 1.0
 	 */
 	public function get_headers() {
-		if ( ! $this->headers ) {
+		if ( ! $this->headers) {
 			$this->headers = "From: {$this->get_from_name()} <{$this->get_from_address()}>\r\n";
 			$this->headers .= "Reply-To: {$this->get_from_address()}\r\n";
 			$this->headers .= "Content-Type: {$this->get_content_type()}; charset=utf-8\r\n";
 		}
 
-		return apply_filters( 'give_email_headers', $this->headers, $this );
+		return apply_filters('give_email_headers', $this->headers, $this);
 	}
 
 	/**
@@ -171,11 +171,11 @@ class Give_Emails {
 	 */
 	public function get_templates() {
 		$templates = array(
-			'default' => esc_html__( 'Default Template', 'give' ),
-			'none'    => esc_html__( 'No template, plain text only', 'give' )
+			'default' => esc_html__('Default Template', 'give'),
+			'none'    => esc_html__('No template, plain text only', 'give')
 		);
 
-		return apply_filters( 'give_email_templates', $templates );
+		return apply_filters('give_email_templates', $templates);
 	}
 
 	/**
@@ -184,11 +184,11 @@ class Give_Emails {
 	 * @since 1.0
 	 */
 	public function get_template() {
-		if ( ! $this->template ) {
-			$this->template = give_get_option( 'email_template', 'default' );
+		if ( ! $this->template) {
+			$this->template = give_get_option('email_template', 'default');
 		}
 
-		return apply_filters( 'give_email_template', $this->template );
+		return apply_filters('give_email_template', $this->template);
 	}
 
 	/**
@@ -197,7 +197,7 @@ class Give_Emails {
 	 * @since 1.0
 	 */
 	public function get_heading() {
-		return apply_filters( 'give_email_heading', $this->heading );
+		return apply_filters('give_email_heading', $this->heading);
 	}
 
 	/**
@@ -207,7 +207,7 @@ class Give_Emails {
 	 *
 	 * @return mixed
 	 */
-	public function parse_tags( $content ) {
+	public function parse_tags($content) {
 		return $content;
 	}
 
@@ -220,19 +220,19 @@ class Give_Emails {
 	 *
 	 * @return mixed|void
 	 */
-	public function build_email( $message ) {
+	public function build_email($message) {
 
-		if ( false === $this->html ) {
-			return apply_filters( 'give_email_message', wp_strip_all_tags( $message ), $this );
+		if (false === $this->html) {
+			return apply_filters('give_email_message', wp_strip_all_tags($message), $this);
 		}
 
-		$message = $this->text_to_html( $message );
+		$message = $this->text_to_html($message);
 
 		$template = $this->get_template();
 
 		ob_start();
 
-		give_get_template_part( 'emails/header', $template, true );
+		give_get_template_part('emails/header', $template, true);
 
 		/**
 		 * Fires in the email head.
@@ -241,17 +241,17 @@ class Give_Emails {
 		 *
 		 * @param Give_Emails $this The email object.
 		 */
-		do_action( 'give_email_header', $this );
+		do_action('give_email_header', $this);
 
-		if ( has_action( 'give_email_template_' . $template ) ) {
+		if (has_action('give_email_template_'.$template)) {
 			/**
 			 * Fires in a specific email template.
 			 *
 			 * @since 1.0
 			 */
-			do_action( "give_email_template_{$template}" );
+			do_action("give_email_template_{$template}");
 		} else {
-			give_get_template_part( 'emails/body', $template, true );
+			give_get_template_part('emails/body', $template, true);
 		}
 
 		/**
@@ -261,9 +261,9 @@ class Give_Emails {
 		 *
 		 * @param Give_Emails $this The email object.
 		 */
-		do_action( 'give_email_body', $this );
+		do_action('give_email_body', $this);
 
-		give_get_template_part( 'emails/footer', $template, true );
+		give_get_template_part('emails/footer', $template, true);
 
 		/**
 		 * Fires in the email footer.
@@ -272,12 +272,12 @@ class Give_Emails {
 		 *
 		 * @param Give_Emails $this The email object.
 		 */
-		do_action( 'give_email_footer', $this );
+		do_action('give_email_footer', $this);
 
 		$body    = ob_get_clean();
-		$message = str_replace( '{email}', $message, $body );
+		$message = str_replace('{email}', $message, $body);
 
-		return apply_filters( 'give_email_message', $message, $this );
+		return apply_filters('give_email_message', $message, $this);
 	}
 
 	/**
@@ -290,10 +290,10 @@ class Give_Emails {
 	 *
 	 * @return bool
 	 */
-	public function send( $to, $subject, $message, $attachments = '' ) {
+	public function send($to, $subject, $message, $attachments = '') {
 
-		if ( ! did_action( 'init' ) && ! did_action( 'admin_init' ) ) {
-			_doing_it_wrong( __FUNCTION__, esc_html__( 'You cannot send email with Give_Emails until init/admin_init has been reached.', 'give' ), null );
+		if ( ! did_action('init') && ! did_action('admin_init')) {
+			_doing_it_wrong(__FUNCTION__, esc_html__('You cannot send email with Give_Emails until init/admin_init has been reached.', 'give'), null);
 
 			return false;
 		}
@@ -305,16 +305,16 @@ class Give_Emails {
 		 *
 		 * @param Give_Emails $this The email object.
 		 */
-		do_action( 'give_email_send_before', $this );
+		do_action('give_email_send_before', $this);
 
-		$subject = $this->parse_tags( $subject );
-		$message = $this->parse_tags( $message );
+		$subject = $this->parse_tags($subject);
+		$message = $this->parse_tags($message);
 
-		$message = $this->build_email( $message );
+		$message = $this->build_email($message);
 
-		$attachments = apply_filters( 'give_email_attachments', $attachments, $this );
+		$attachments = apply_filters('give_email_attachments', $attachments, $this);
 
-		$sent = wp_mail( $to, $subject, $message, $this->get_headers(), $attachments );
+		$sent = wp_mail($to, $subject, $message, $this->get_headers(), $attachments);
 
 		/**
 		 * Fires after sending an email.
@@ -323,7 +323,7 @@ class Give_Emails {
 		 *
 		 * @param Give_Emails $this The email object.
 		 */
-		do_action( 'give_email_send_after', $this );
+		do_action('give_email_send_after', $this);
 
 		return $sent;
 
@@ -335,9 +335,9 @@ class Give_Emails {
 	 * @since 1.0
 	 */
 	public function send_before() {
-		add_filter( 'wp_mail_from', array( $this, 'get_from_address' ) );
-		add_filter( 'wp_mail_from_name', array( $this, 'get_from_name' ) );
-		add_filter( 'wp_mail_content_type', array( $this, 'get_content_type' ) );
+		add_filter('wp_mail_from', array($this, 'get_from_address'));
+		add_filter('wp_mail_from_name', array($this, 'get_from_name'));
+		add_filter('wp_mail_content_type', array($this, 'get_content_type'));
 	}
 
 	/**
@@ -346,9 +346,9 @@ class Give_Emails {
 	 * @since 1.0
 	 */
 	public function send_after() {
-		remove_filter( 'wp_mail_from', array( $this, 'get_from_address' ) );
-		remove_filter( 'wp_mail_from_name', array( $this, 'get_from_name' ) );
-		remove_filter( 'wp_mail_content_type', array( $this, 'get_content_type' ) );
+		remove_filter('wp_mail_from', array($this, 'get_from_address'));
+		remove_filter('wp_mail_from_name', array($this, 'get_from_name'));
+		remove_filter('wp_mail_content_type', array($this, 'get_content_type'));
 
 		// Reset heading to an empty string
 		$this->heading = '';
@@ -359,10 +359,10 @@ class Give_Emails {
 	 *
 	 * @since 1.0
 	 */
-	public function text_to_html( $message ) {
+	public function text_to_html($message) {
 
-		if ( 'text/html' == $this->content_type || true === $this->html ) {
-			$message = wpautop( $message );
+		if ('text/html' == $this->content_type || true === $this->html) {
+			$message = wpautop($message);
 		}
 
 		return $message;

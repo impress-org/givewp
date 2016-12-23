@@ -10,11 +10,11 @@
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) {
+if ( ! defined('ABSPATH')) {
 	exit;
 }
 
-add_action( 'cmb2_init', 'give_single_forms_cmb2_metaboxes', 6 );
+add_action('cmb2_init', 'give_single_forms_cmb2_metaboxes', 6);
 
 /**
  * Define the metabox and field configurations.
@@ -22,20 +22,20 @@ add_action( 'cmb2_init', 'give_single_forms_cmb2_metaboxes', 6 );
 function give_single_forms_cmb2_metaboxes() {
 
 	$post_id               = give_get_admin_post_id();
-	$price                 = give_get_form_price( $post_id );
-	$custom_amount_minimum = give_get_form_minimum_price( $post_id );
-	$goal                  = give_get_form_goal( $post_id );
-	$variable_pricing      = give_has_variable_prices( $post_id );
-	$prices                = give_get_variable_prices( $post_id );
+	$price                 = give_get_form_price($post_id);
+	$custom_amount_minimum = give_get_form_minimum_price($post_id);
+	$goal                  = give_get_form_goal($post_id);
+	$variable_pricing      = give_has_variable_prices($post_id);
+	$prices                = give_get_variable_prices($post_id);
 
 	//No empty prices - min. 1.00 for new forms
-	if ( empty( $price ) && is_null( $post_id ) ) {
-		$price = esc_attr( give_format_amount( '1.00' ) );
+	if (empty($price) && is_null($post_id)) {
+		$price = esc_attr(give_format_amount('1.00'));
 	}
 
 	//Min. $1.00 for new forms
-	if ( empty( $custom_amount_minimum ) ) {
-		$custom_amount_minimum = esc_attr( give_format_amount( '1.00' ) );
+	if (empty($custom_amount_minimum)) {
+		$custom_amount_minimum = esc_attr(give_format_amount('1.00'));
 	}
 
 	// Start with an underscore to hide fields from custom fields list
@@ -74,7 +74,7 @@ function give_single_forms_cmb2_metaboxes() {
 					'row_classes'  => 'give-subfield',
 					'render_row_cb' 	=> 'give_cmb_amount_field_render_row_cb',
 					'sanitization_cb'   => 'give_sanitize_price_field_value',
-                    'attributes'   => array(
+					'attributes'   => array(
 						'placeholder' => give_format_decimal( '1.00' ),
 						'value'       => give_format_decimal( $price ),
 						'class'       => 'cmb-type-text-small give-money-field',
@@ -109,7 +109,7 @@ function give_single_forms_cmb2_metaboxes() {
 							'before_field'      => give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol  give-money-symbol-before">' . give_currency_symbol() . '</span>' : '',
 							'after_field'       => give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol  give-money-symbol-after">' . give_currency_symbol() . '</span>' : '',
 							'sanitization_cb'   => 'give_sanitize_price_field_value',
-                            'attributes'        => array(
+							'attributes'        => array(
 								'placeholder' => give_format_decimal( '1.00' ),
 								'class'       => 'cmb-type-text-small give-money-field',
 							),
@@ -379,50 +379,50 @@ function give_single_forms_cmb2_metaboxes() {
 	/**
 	 * Terms & Conditions
 	 */
-	$meta_boxes['form_terms_options'] = apply_filters( 'give_forms_terms_options', array(
+	$meta_boxes['form_terms_options'] = apply_filters('give_forms_terms_options', array(
 		'id'           => 'form_terms_options',
-		'title'        => esc_html__( 'Terms and Conditions', 'give' ),
-		'object_types' => array( 'give_forms' ),
+		'title'        => esc_html__('Terms and Conditions', 'give'),
+		'object_types' => array('give_forms'),
 		'context'      => 'normal',
 		'priority'     => 'high', //Show above Content WYSIWYG
-		'fields'       => apply_filters( 'give_forms_terms_options_metabox_fields', array(
+		'fields'       => apply_filters('give_forms_terms_options_metabox_fields', array(
 				//Donation Option
 				array(
-					'name'        => esc_html__( 'Terms and Conditions', 'give' ),
-					'description' => esc_html__( 'Do you want to require the user to agree to terms and conditions prior to being able to complete their donation?', 'give' ),
-					'id'          => $prefix . 'terms_option',
+					'name'        => esc_html__('Terms and Conditions', 'give'),
+					'description' => esc_html__('Do you want to require the user to agree to terms and conditions prior to being able to complete their donation?', 'give'),
+					'id'          => $prefix.'terms_option',
 					'type'        => 'select',
-					'options'     => apply_filters( 'give_forms_content_options_select', array(
-							'none' => esc_html__( 'No', 'give' ),
-							'yes'  => esc_html__( 'Yes', 'give' ),
+					'options'     => apply_filters('give_forms_content_options_select', array(
+							'none' => esc_html__('No', 'give'),
+							'yes'  => esc_html__('Yes', 'give'),
 						)
 					),
 					'default'     => 'none',
 				),
 				array(
-					'id'          => $prefix . 'agree_label',
-					'name'        => esc_html__( 'Agree to Terms Label', 'give' ),
-					'desc'        => esc_html__( 'The label shown next to the agree to terms check box. Add your own to customize or leave blank to use the default text placeholder.', 'give' ),
+					'id'          => $prefix.'agree_label',
+					'name'        => esc_html__('Agree to Terms Label', 'give'),
+					'desc'        => esc_html__('The label shown next to the agree to terms check box. Add your own to customize or leave blank to use the default text placeholder.', 'give'),
 					'type'        => 'text',
 					'row_classes' => 'give-subfield',
 					'size'        => 'regular',
 					'attributes'  => array(
-						'placeholder' => esc_attr__( 'Agree to Terms?', 'give' ),
+						'placeholder' => esc_attr__('Agree to Terms?', 'give'),
 					),
 				),
 				array(
-					'id'          => $prefix . 'agree_text',
+					'id'          => $prefix.'agree_text',
 					'row_classes' => 'give-subfield',
-					'name'        => esc_html__( 'Agreement Text', 'give' ),
-					'desc'        => esc_html__( 'This is the actual text which the user will have to agree to in order to make a donation.', 'give' ),
+					'name'        => esc_html__('Agreement Text', 'give'),
+					'desc'        => esc_html__('This is the actual text which the user will have to agree to in order to make a donation.', 'give'),
 					'type'        => 'wysiwyg'
 				),
 			)
 		)
-	) );
+	));
 
-	foreach ( $meta_boxes as $box ) {
-		$cmb = new_cmb2_box( $box );
+	foreach ($meta_boxes as $box) {
+		$cmb = new_cmb2_box($box);
 	}
 
 }
@@ -435,9 +435,9 @@ function give_cmb_render_levels_repeater_header() {
 
 	<div class="table-container">
 		<div class="table-row">
-			<div class="table-cell col-amount"><?php esc_html_e( 'Amount', 'give' ); ?></div>
-			<div class="table-cell col-text"><?php esc_html_e( 'Text', 'give' ); ?></div>
-			<div class="table-cell col-default"><?php esc_html_e( 'Default', 'give' ); ?></div>
+			<div class="table-cell col-amount"><?php esc_html_e('Amount', 'give'); ?></div>
+			<div class="table-cell col-text"><?php esc_html_e('Text', 'give'); ?></div>
+			<div class="table-cell col-default"><?php esc_html_e('Default', 'give'); ?></div>
 			<?php
 			/**
 			 * Fires in repeatable donation levels table head.
@@ -449,9 +449,9 @@ function give_cmb_render_levels_repeater_header() {
 			 *
 			 * @since 1.0
 			 */
-			do_action( 'give_donation_levels_table_head' );
+			do_action('give_donation_levels_table_head');
 			?>
-			<div class="table-cell col-sort"><?php esc_html_e( 'Sort', 'give' ); ?></div>
+			<div class="table-cell col-sort"><?php esc_html_e('Sort', 'give'); ?></div>
 
 		</div>
 	</div>
@@ -459,7 +459,7 @@ function give_cmb_render_levels_repeater_header() {
 	<?php
 }
 
-add_action( 'cmb2_render_levels_repeater_header', 'give_cmb_render_levels_repeater_header', 10 );
+add_action('cmb2_render_levels_repeater_header', 'give_cmb_render_levels_repeater_header', 10);
 
 
 /**
@@ -476,25 +476,25 @@ add_action( 'cmb2_render_levels_repeater_header', 'give_cmb_render_levels_repeat
  * @param $object_type
  * @param $field_type_object
  */
-function give_cmb_render_levels_id( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
+function give_cmb_render_levels_id($field_object, $escaped_value, $object_id, $object_type, $field_type_object) {
 
-	$escaped_value = ( isset( $escaped_value['level_id'] ) ? $escaped_value['level_id'] : '' );
+	$escaped_value = (isset($escaped_value['level_id']) ? $escaped_value['level_id'] : '');
 
 	$field_options_array = array(
 		'class' => 'give-hidden give-level-id-input',
-		'name'  => $field_type_object->_name( '[level_id]' ),
-		'id'    => $field_type_object->_id( '_level_id' ),
+		'name'  => $field_type_object->_name('[level_id]'),
+		'id'    => $field_type_object->_id('_level_id'),
 		'value' => $escaped_value,
 		'type'  => 'number',
 		'desc'  => '',
 	);
 
-	echo '<p class="give-level-id">' . $escaped_value . '</p>';
-	echo $field_type_object->input( $field_options_array );
+	echo '<p class="give-level-id">'.$escaped_value.'</p>';
+	echo $field_type_object->input($field_options_array);
 
 }
 
-add_action( 'cmb2_render_levels_id', 'give_cmb_render_levels_id', 10, 5 );
+add_action('cmb2_render_levels_id', 'give_cmb_render_levels_id', 10, 5);
 
 
 /**
@@ -506,13 +506,13 @@ add_action( 'cmb2_render_levels_id', 'give_cmb_render_levels_id', 10, 5 );
  * @param $object_type
  * @param $field_type_object
  */
-function give_cmb_give_default_radio_inline( $field_object, $escaped_value, $object_id, $object_type, $field_type_object ) {
-	echo '<input type="radio" class="cmb2-option donation-level-radio" name="' . $field_object->args['_name'] . '" id="' . $field_object->args['id'] . '" value="default" ' . checked( 'default', $escaped_value, false ) . '>';
-	echo '<label for="' . $field_object->args['id'] . '">' . esc_html__( 'Default', 'give' ) . '</label>';
+function give_cmb_give_default_radio_inline($field_object, $escaped_value, $object_id, $object_type, $field_type_object) {
+	echo '<input type="radio" class="cmb2-option donation-level-radio" name="'.$field_object->args['_name'].'" id="'.$field_object->args['id'].'" value="default" '.checked('default', $escaped_value, false).'>';
+	echo '<label for="'.$field_object->args['id'].'">'.esc_html__('Default', 'give').'</label>';
 
 }
 
-add_action( 'cmb2_render_give_default_radio_inline', 'give_cmb_give_default_radio_inline', 10, 5 );
+add_action('cmb2_render_give_default_radio_inline', 'give_cmb_give_default_radio_inline', 10, 5);
 
 
 /**
@@ -522,20 +522,20 @@ add_action( 'cmb2_render_give_default_radio_inline', 'give_cmb_give_default_radi
  */
 function give_add_shortcode_to_publish_metabox() {
 
-	if ( 'give_forms' !== get_post_type() ) {
+	if ('give_forms' !== get_post_type()) {
 		return false;
 	}
 
 	global $post;
 
 	//Only enqueue scripts for CPT on post type screen
-	if ( 'give_forms' === $post->post_type ) {
+	if ('give_forms' === $post->post_type) {
 		//Shortcode column with select all input
-		$shortcode = htmlentities( '[give_form id="' . $post->ID . '"]' );
-		echo '<div class="shortcode-wrap box-sizing"><label for="shortcode-input">' . esc_html__( 'Give Form Shortcode:', 'give' ) . '</label><input onClick="this.setSelectionRange(0, this.value.length)" type="text" name="shortcode-input" id="shortcode-input" class="shortcode-input" readonly value="' . $shortcode . '"></div>';
+		$shortcode = htmlentities('[give_form id="'.$post->ID.'"]');
+		echo '<div class="shortcode-wrap box-sizing"><label for="shortcode-input">'.esc_html__('Give Form Shortcode:', 'give').'</label><input onClick="this.setSelectionRange(0, this.value.length)" type="text" name="shortcode-input" id="shortcode-input" class="shortcode-input" readonly value="'.$shortcode.'"></div>';
 
 	}
 
 }
 
-add_action( 'post_submitbox_misc_actions', 'give_add_shortcode_to_publish_metabox' );
+add_action('post_submitbox_misc_actions', 'give_add_shortcode_to_publish_metabox');

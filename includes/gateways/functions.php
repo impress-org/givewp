@@ -10,7 +10,7 @@
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) {
+if ( ! defined('ABSPATH')) {
 	exit;
 }
 
@@ -24,16 +24,16 @@ function give_get_payment_gateways() {
 	// Default, built-in gateways
 	$gateways = array(
 		'paypal' => array(
-			'admin_label'    => __( 'PayPal Standard', 'give' ),
-			'checkout_label' => __( 'PayPal', 'give' ),
+			'admin_label'    => __('PayPal Standard', 'give'),
+			'checkout_label' => __('PayPal', 'give'),
 		),
 		'manual' => array(
-			'admin_label'    => __( 'Test Donation', 'give' ),
-			'checkout_label' => __( 'Test Donation', 'give' )
+			'admin_label'    => __('Test Donation', 'give'),
+			'checkout_label' => __('Test Donation', 'give')
 		),
 	);
 
-	return apply_filters( 'give_payment_gateways', $gateways );
+	return apply_filters('give_payment_gateways', $gateways);
 
 }
 
@@ -47,20 +47,20 @@ function give_get_enabled_payment_gateways() {
 
 	$gateways = give_get_payment_gateways();
 
-	$enabled = isset( $_POST['gateways'] ) ? $_POST['gateways'] : give_get_option( 'gateways' );
+	$enabled = isset($_POST['gateways']) ? $_POST['gateways'] : give_get_option('gateways');
 
 	$gateway_list = array();
 
-	foreach ( $gateways as $key => $gateway ) {
-		if ( isset( $enabled[ $key ] ) && $enabled[ $key ] == 1 ) {
-			$gateway_list[ $key ] = $gateway;
+	foreach ($gateways as $key => $gateway) {
+		if (isset($enabled[$key]) && $enabled[$key] == 1) {
+			$gateway_list[$key] = $gateway;
 		}
 	}
 
 	// Set order of payment gateway in list.
-	$gateway_list = give_get_ordered_payment_gateways( $gateway_list );
+	$gateway_list = give_get_ordered_payment_gateways($gateway_list);
 
-	return apply_filters( 'give_enabled_payment_gateways', $gateway_list );
+	return apply_filters('give_enabled_payment_gateways', $gateway_list);
 }
 
 /**
@@ -72,12 +72,12 @@ function give_get_enabled_payment_gateways() {
  *
  * @return boolean true if enabled, false otherwise
  */
-function give_is_gateway_active( $gateway ) {
+function give_is_gateway_active($gateway) {
 	$gateways = give_get_enabled_payment_gateways();
 
-	$ret = array_key_exists( $gateway, $gateways );
+	$ret = array_key_exists($gateway, $gateways);
 
-	return apply_filters( 'give_is_gateway_active', $ret, $gateway, $gateways );
+	return apply_filters('give_is_gateway_active', $ret, $gateway, $gateways);
 }
 
 /**
@@ -97,10 +97,10 @@ function give_get_default_gateway( $form_id ) {
 
 	//Single Form settings varies compared to the Global default settings.
 	if ( ! empty( $form_default ) &&
-	     $form_id !== null &&
-	     $default !== $form_default &&
-	     $form_default !== 'global' &&
-	     give_is_gateway_active( $form_default )
+		 $form_id !== null &&
+		 $default !== $form_default &&
+		 $form_default !== 'global' &&
+		 give_is_gateway_active( $form_default )
 	) {
 		$default = $form_default;
 	}
@@ -117,18 +117,18 @@ function give_get_default_gateway( $form_id ) {
  *
  * @return string Gateway admin label
  */
-function give_get_gateway_admin_label( $gateway ) {
+function give_get_gateway_admin_label($gateway) {
 	$gateways = give_get_payment_gateways();
-	$label    = isset( $gateways[ $gateway ] ) ? $gateways[ $gateway ]['admin_label'] : $gateway;
-	$payment  = isset( $_GET['id'] ) ? absint( $_GET['id'] ) : false;
+	$label    = isset($gateways[$gateway]) ? $gateways[$gateway]['admin_label'] : $gateway;
+	$payment  = isset($_GET['id']) ? absint($_GET['id']) : false;
 
-	if ( $gateway == 'manual' && $payment ) {
-		if ( give_get_payment_amount( $payment ) == 0 ) {
-			$label = __( 'Test Donation', 'give' );
+	if ($gateway == 'manual' && $payment) {
+		if (give_get_payment_amount($payment) == 0) {
+			$label = __('Test Donation', 'give');
 		}
 	}
 
-	return apply_filters( 'give_gateway_admin_label', $label, $gateway );
+	return apply_filters('give_gateway_admin_label', $label, $gateway);
 }
 
 /**
@@ -140,15 +140,15 @@ function give_get_gateway_admin_label( $gateway ) {
  *
  * @return string Checkout label for the gateway
  */
-function give_get_gateway_checkout_label( $gateway ) {
+function give_get_gateway_checkout_label($gateway) {
 	$gateways = give_get_payment_gateways();
-	$label    = isset( $gateways[ $gateway ] ) ? $gateways[ $gateway ]['checkout_label'] : $gateway;
+	$label    = isset($gateways[$gateway]) ? $gateways[$gateway]['checkout_label'] : $gateway;
 
-	if ( $gateway == 'manual' ) {
-		$label = __( 'Test Donation', 'give' );
+	if ($gateway == 'manual') {
+		$label = __('Test Donation', 'give');
 	}
 
-	return apply_filters( 'give_gateway_checkout_label', $label, $gateway );
+	return apply_filters('give_gateway_checkout_label', $label, $gateway);
 }
 
 /**
@@ -160,11 +160,11 @@ function give_get_gateway_checkout_label( $gateway ) {
  *
  * @return array Options the gateway supports
  */
-function give_get_gateway_supports( $gateway ) {
+function give_get_gateway_supports($gateway) {
 	$gateways = give_get_enabled_payment_gateways();
-	$supports = isset( $gateways[ $gateway ]['supports'] ) ? $gateways[ $gateway ]['supports'] : array();
+	$supports = isset($gateways[$gateway]['supports']) ? $gateways[$gateway]['supports'] : array();
 
-	return apply_filters( 'give_gateway_supports', $supports, $gateway );
+	return apply_filters('give_gateway_supports', $supports, $gateway);
 }
 
 /**
@@ -177,9 +177,9 @@ function give_get_gateway_supports( $gateway ) {
  *
  * @return void
  */
-function give_send_to_gateway( $gateway, $payment_data ) {
+function give_send_to_gateway($gateway, $payment_data) {
 
-	$payment_data['gateway_nonce'] = wp_create_nonce( 'give-gateway' );
+	$payment_data['gateway_nonce'] = wp_create_nonce('give-gateway');
 
 	/**
 	 * Fires while loading payment gateway via AJAX.
@@ -190,7 +190,7 @@ function give_send_to_gateway( $gateway, $payment_data ) {
 	 *
 	 * @param array $payment_data All the payment data to be sent to the gateway.
 	 */
-	do_action( "give_gateway_{$gateway}", $payment_data );
+	do_action("give_gateway_{$gateway}", $payment_data);
 }
 
 
@@ -204,34 +204,34 @@ function give_send_to_gateway( $gateway, $payment_data ) {
  *
  * @return string $enabled_gateway The slug of the gateway
  */
-function give_get_chosen_gateway( $form_id ) {
+function give_get_chosen_gateway($form_id) {
 
-	$request_form_id = isset( $_REQUEST['give_form_id'] ) ? $_REQUEST['give_form_id'] : 0;
+	$request_form_id = isset($_REQUEST['give_form_id']) ? $_REQUEST['give_form_id'] : 0;
 
 	//Back to check if 'form-id' is present.
-	if ( empty( $request_form_id ) ) {
-		$request_form_id = isset( $_REQUEST['form-id'] ) ? $_REQUEST['form-id'] : 0;
+	if (empty($request_form_id)) {
+		$request_form_id = isset($_REQUEST['form-id']) ? $_REQUEST['form-id'] : 0;
 	}
 
-	$request_payment_mode = isset( $_REQUEST['payment-mode'] ) ? $_REQUEST['payment-mode'] : '';
+	$request_payment_mode = isset($_REQUEST['payment-mode']) ? $_REQUEST['payment-mode'] : '';
 	$chosen               = false;
 
 	//If both 'payment-mode' and 'form-id' then set for only this form.
-	if ( ! empty( $request_form_id ) && $form_id == $request_form_id ) {
+	if ( ! empty($request_form_id) && $form_id == $request_form_id) {
 		$chosen = $request_payment_mode;
-	} elseif ( empty( $request_form_id ) && $request_payment_mode ) {
+	} elseif (empty($request_form_id) && $request_payment_mode) {
 		//If no 'form-id' but there is 'payment-mode'.
 		$chosen = $request_payment_mode;
 	}
 
 	// Get the enable gateway based of chosen var.
-	if ( $chosen && give_is_gateway_active( $chosen ) ) {
-		$enabled_gateway = urldecode( $chosen );
+	if ($chosen && give_is_gateway_active($chosen)) {
+		$enabled_gateway = urldecode($chosen);
 	} else {
-		$enabled_gateway = give_get_default_gateway( $form_id );
+		$enabled_gateway = give_get_default_gateway($form_id);
 	}
 
-	return apply_filters( 'give_chosen_gateway', $enabled_gateway );
+	return apply_filters('give_chosen_gateway', $enabled_gateway);
 
 }
 
@@ -249,8 +249,8 @@ function give_get_chosen_gateway( $form_id ) {
  *
  * @return int ID of the new log entry
  */
-function give_record_gateway_error( $title = '', $message = '', $parent = 0 ) {
-	return give_record_log( $title, $message, $parent, 'gateway_error' );
+function give_record_gateway_error($title = '', $message = '', $parent = 0) {
+	return give_record_log($title, $message, $parent, 'gateway_error');
 }
 
 /**
@@ -263,7 +263,7 @@ function give_record_gateway_error( $title = '', $message = '', $parent = 0 ) {
  *
  * @return int
  */
-function give_count_sales_by_gateway( $gateway_id = 'paypal', $status = 'publish' ) {
+function give_count_sales_by_gateway($gateway_id = 'paypal', $status = 'publish') {
 
 	$ret  = 0;
 	$args = array(
@@ -275,9 +275,9 @@ function give_count_sales_by_gateway( $gateway_id = 'paypal', $status = 'publish
 		'fields'      => 'ids'
 	);
 
-	$payments = new WP_Query( $args );
+	$payments = new WP_Query($args);
 
-	if ( $payments ) {
+	if ($payments) {
 		$ret = $payments->post_count;
 	}
 
@@ -294,27 +294,27 @@ function give_count_sales_by_gateway( $gateway_id = 'paypal', $status = 'publish
  *
  * @return array $gateways All the available gateways
  */
-function give_get_ordered_payment_gateways( $gateways ) {
+function give_get_ordered_payment_gateways($gateways) {
 
 	//  Get gateways setting.
-	$gateways_setting = isset( $_POST['gateways'] ) ? $_POST['gateways'] : give_get_option( 'gateways' );
+	$gateways_setting = isset($_POST['gateways']) ? $_POST['gateways'] : give_get_option('gateways');
 
 	// Return from here if we do not have gateways setting.
-	if ( empty( $gateways_setting ) ) {
+	if (empty($gateways_setting)) {
 		return $gateways;
 	}
 
 	// Reverse array to order payment gateways.
-	$gateways_setting = array_reverse( $gateways_setting );
+	$gateways_setting = array_reverse($gateways_setting);
 
 	// Reorder gateways array
-	foreach ( $gateways_setting as $gateway_key => $value ) {
+	foreach ($gateways_setting as $gateway_key => $value) {
 
-		$new_gateway_value = isset( $gateways[ $gateway_key ] ) ? $gateways[ $gateway_key ] : '';
-		unset( $gateways[ $gateway_key ] );
+		$new_gateway_value = isset($gateways[$gateway_key]) ? $gateways[$gateway_key] : '';
+		unset($gateways[$gateway_key]);
 
-		if ( ! empty( $new_gateway_value ) ) {
-			$gateways = array_merge( array( $gateway_key => $new_gateway_value ), $gateways );
+		if ( ! empty($new_gateway_value)) {
+			$gateways = array_merge(array($gateway_key => $new_gateway_value), $gateways);
 		}
 	}
 
@@ -325,5 +325,5 @@ function give_get_ordered_payment_gateways( $gateways ) {
 	 *
 	 * @param array $gateways All the available gateways
 	 */
-	return apply_filters( 'give_payment_gateways_order', $gateways );
+	return apply_filters('give_payment_gateways_order', $gateways);
 }

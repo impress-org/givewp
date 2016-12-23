@@ -57,28 +57,28 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 	 * @since 1.5
 	 * @global object $wpdb Used to query the database using the WordPress
 	 *   Database API
-	 * @return array $data The data for the CSV file
+	 * @return boolean $data The data for the CSV file
 	 */
 	public function get_data() {
 		global $give_logs, $wpdb;
 
-		$accepted_statuses = apply_filters( 'give_recount_accepted_statuses', array( 'publish' ) );
+		$accepted_statuses = apply_filters('give_recount_accepted_statuses', array('publish'));
 
-		if ( $this->step == 1 ) {
-			$this->delete_data( 'give_temp_recount_form_stats' );
+		if ($this->step == 1) {
+			$this->delete_data('give_temp_recount_form_stats');
 		}
 
-		$totals = $this->get_stored_data( 'give_temp_recount_form_stats' );
+		$totals = $this->get_stored_data('give_temp_recount_form_stats');
 
-		if ( false === $totals ) {
+		if (false === $totals) {
 			$totals = array(
 				'earnings' => (float) 0,
 				'sales'    => 0,
 			);
-			$this->store_data( 'give_temp_recount_form_stats', $totals );
+			$this->store_data('give_temp_recount_form_stats', $totals);
 		}
 
-		$args = apply_filters( 'give_recount_form_stats_args', array(
+		$args = apply_filters('give_recount_form_stats_args', array(
 			'post_parent'    => $this->form_id,
 			'post_type'      => 'give_log',
 			'posts_per_page' => $this->per_step,
@@ -86,49 +86,49 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 			'paged'          => $this->step,
 			'log_type'       => 'sale',
 			'fields'         => 'ids',
-		) );
+		));
 
-		$log_ids              = $give_logs->get_connected_logs( $args, 'sale' );
+		$log_ids              = $give_logs->get_connected_logs($args, 'sale');
 		$this->_log_ids_debug = array();
 
-		if ( $log_ids ) {
-			$log_ids     = implode( ',', $log_ids );
-			$payment_ids = $wpdb->get_col( "SELECT meta_value FROM $wpdb->postmeta WHERE meta_key='_give_log_payment_id' AND post_id IN ($log_ids)" );
-			unset( $log_ids );
+		if ($log_ids) {
+			$log_ids     = implode(',', $log_ids);
+			$payment_ids = $wpdb->get_col("SELECT meta_value FROM $wpdb->postmeta WHERE meta_key='_give_log_payment_id' AND post_id IN ($log_ids)");
+			unset($log_ids);
 
-			$payment_ids = implode( ',', $payment_ids );
-			$payments    = $wpdb->get_results( "SELECT ID, post_status FROM $wpdb->posts WHERE ID IN (" . $payment_ids . ")" );
-			unset( $payment_ids );
+			$payment_ids = implode(',', $payment_ids);
+			$payments    = $wpdb->get_results("SELECT ID, post_status FROM $wpdb->posts WHERE ID IN (".$payment_ids.")");
+			unset($payment_ids);
 
-			foreach ( $payments as $payment ) {
+			foreach ($payments as $payment) {
 
-				$payment = new Give_Payment( $payment->ID );
+				$payment = new Give_Payment($payment->ID);
 
 				//Ensure acceptible status only
-				if ( ! in_array( $payment->post_status, $accepted_statuses ) ) {
+				if ( ! in_array($payment->post_status, $accepted_statuses)) {
 					continue;
 				}
 
 				//Ensure only payments for this form are counted
-				if ( $payment->form_id != $this->form_id ) {
+				if ($payment->form_id != $this->form_id) {
 					continue;
 				}
 
 				$this->_log_ids_debug[] = $payment->ID;
 
-				$totals['sales'] ++;
+				$totals['sales']++;
 				$totals['earnings'] += $payment->total;
 
 			}
 
-			$this->store_data( 'give_temp_recount_form_stats', $totals );
+			$this->store_data('give_temp_recount_form_stats', $totals);
 
 			return true;
 		}
 
 
-		update_post_meta( $this->form_id, '_give_form_sales', $totals['sales'] );
-		update_post_meta( $this->form_id, '_give_form_earnings', $totals['earnings'] );
+		update_post_meta($this->form_id, '_give_form_sales', $totals['sales']);
+		update_post_meta($this->form_id, '_give_form_earnings', $totals['earnings']);
 
 		return false;
 
@@ -143,54 +143,54 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 	public function get_percentage_complete() {
 		global $give_logs, $wpdb;
 
-		if ( $this->step == 1 ) {
-			$this->delete_data( 'give_recount_total_' . $this->form_id );
+		if ($this->step == 1) {
+			$this->delete_data('give_recount_total_'.$this->form_id);
 		}
 
-		$accepted_statuses = apply_filters( 'give_recount_accepted_statuses', array( 'publish' ) );
-		$total             = $this->get_stored_data( 'give_recount_total_' . $this->form_id );
+		$accepted_statuses = apply_filters('give_recount_accepted_statuses', array('publish'));
+		$total             = $this->get_stored_data('give_recount_total_'.$this->form_id);
 
-		if ( false === $total ) {
+		if (false === $total) {
 			$total = 0;
-			$args  = apply_filters( 'give_recount_form_stats_total_args', array(
+			$args  = apply_filters('give_recount_form_stats_total_args', array(
 				'post_parent' => $this->form_id,
 				'post_type'   => 'give_log',
 				'post_status' => 'publish',
 				'log_type'    => 'sale',
 				'fields'      => 'ids',
 				'nopaging'    => true,
-			) );
+			));
 
-			$log_ids = $give_logs->get_connected_logs( $args, 'sale' );
+			$log_ids = $give_logs->get_connected_logs($args, 'sale');
 
-			if ( $log_ids ) {
-				$log_ids     = implode( ',', $log_ids );
-				$payment_ids = $wpdb->get_col( "SELECT meta_value FROM $wpdb->postmeta WHERE meta_key='_give_log_payment_id' AND post_id IN ($log_ids)" );
-				unset( $log_ids );
+			if ($log_ids) {
+				$log_ids     = implode(',', $log_ids);
+				$payment_ids = $wpdb->get_col("SELECT meta_value FROM $wpdb->postmeta WHERE meta_key='_give_log_payment_id' AND post_id IN ($log_ids)");
+				unset($log_ids);
 
-				$payment_ids = implode( ',', $payment_ids );
-				$payments    = $wpdb->get_results( "SELECT ID, post_status FROM $wpdb->posts WHERE ID IN (" . $payment_ids . ")" );
-				unset( $payment_ids );
+				$payment_ids = implode(',', $payment_ids);
+				$payments    = $wpdb->get_results("SELECT ID, post_status FROM $wpdb->posts WHERE ID IN (".$payment_ids.")");
+				unset($payment_ids);
 
-				foreach ( $payments as $payment ) {
-					if ( in_array( $payment->post_status, $accepted_statuses ) ) {
+				foreach ($payments as $payment) {
+					if (in_array($payment->post_status, $accepted_statuses)) {
 						continue;
 					}
 
-					$total ++;
+					$total++;
 				}
 			}
 
-			$this->store_data( 'give_recount_total_' . $this->form_id, $total );
+			$this->store_data('give_recount_total_'.$this->form_id, $total);
 		}
 
 		$percentage = 100;
 
-		if ( $total > 0 ) {
-			$percentage = ( ( $this->per_step * $this->step ) / $total ) * 100;
+		if ($total > 0) {
+			$percentage = (($this->per_step * $this->step) / $total) * 100;
 		}
 
-		if ( $percentage > 100 ) {
+		if ($percentage > 100) {
 			$percentage = 100;
 		}
 
@@ -204,8 +204,8 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 	 *
 	 * @param array $request The Form Data passed into the batch processing
 	 */
-	public function set_properties( $request ) {
-		$this->form_id = isset( $request['form_id'] ) ? sanitize_text_field( $request['form_id'] ) : false;
+	public function set_properties($request) {
+		$this->form_id = isset($request['form_id']) ? sanitize_text_field($request['form_id']) : false;
 	}
 
 	/**
@@ -216,31 +216,31 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 	 */
 	public function process_step() {
 
-		if ( ! $this->can_export() ) {
-			wp_die( esc_html__( 'You do not have permission to recount stats.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+		if ( ! $this->can_export()) {
+			wp_die(esc_html__('You do not have permission to recount stats.', 'give'), esc_html__('Error', 'give'), array('response' => 403));
 		}
 
 		$had_data = $this->get_data();
 
-		if ( $had_data ) {
+		if ($had_data) {
 			$this->done = false;
 
 			return true;
 		} else {
-			$this->delete_data( 'give_recount_total_' . $this->form_id );
-			$this->delete_data( 'give_temp_recount_form_stats' );
+			$this->delete_data('give_recount_total_'.$this->form_id);
+			$this->delete_data('give_temp_recount_form_stats');
 			$this->done    = true;
-			$this->message = sprintf( esc_html__( 'Donation counts and income amount statistics successfully recounted for "%s".', 'give' ), get_the_title( $this->form_id ) );
+			$this->message = sprintf(esc_html__('Donation counts and income amount statistics successfully recounted for "%s".', 'give'), get_the_title($this->form_id));
 
 			return false;
 		}
 	}
 
 	public function headers() {
-		ignore_user_abort( true );
+		ignore_user_abort(true);
 
-		if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
-			set_time_limit( 0 );
+		if ( ! give_is_func_disabled('set_time_limit') && ! ini_get('safe_mode')) {
+			set_time_limit(0);
 		}
 	}
 
@@ -268,11 +268,11 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 	 *
 	 * @return mixed       Returns the data from the database
 	 */
-	private function get_stored_data( $key ) {
+	private function get_stored_data($key) {
 		global $wpdb;
-		$value = $wpdb->get_var( $wpdb->prepare( "SELECT option_value FROM $wpdb->options WHERE option_name = '%s'", $key ) );
+		$value = $wpdb->get_var($wpdb->prepare("SELECT option_value FROM $wpdb->options WHERE option_name = '%s'", $key));
 
-		return empty( $value ) ? false : maybe_unserialize( $value );
+		return empty($value) ? false : maybe_unserialize($value);
 	}
 
 	/**
@@ -285,10 +285,10 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 	 *
 	 * @return void
 	 */
-	private function store_data( $key, $value ) {
+	private function store_data($key, $value) {
 		global $wpdb;
 
-		$value = maybe_serialize( $value );
+		$value = maybe_serialize($value);
 
 		$data = array(
 			'option_name'  => $key,
@@ -302,7 +302,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 			'%s',
 		);
 
-		$wpdb->replace( $wpdb->options, $data, $formats );
+		$wpdb->replace($wpdb->options, $data, $formats);
 	}
 
 	/**
@@ -314,9 +314,9 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 	 *
 	 * @return void
 	 */
-	private function delete_data( $key ) {
+	private function delete_data($key) {
 		global $wpdb;
-		$wpdb->delete( $wpdb->options, array( 'option_name' => $key ) );
+		$wpdb->delete($wpdb->options, array('option_name' => $key));
 	}
 
 }

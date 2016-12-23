@@ -21,10 +21,10 @@ class Give_Shortcode_Register extends Give_Shortcode_Generator {
 	 */
 	public function __construct() {
 
-		$this->shortcode['title'] = esc_html__( 'Register', 'give' );
-		$this->shortcode['label'] = esc_html__( 'Register', 'give' );
+		$this->shortcode['title'] = esc_html__('Register', 'give');
+		$this->shortcode['label'] = esc_html__('Register', 'give');
 
-		parent::__construct( 'give_register' );
+		parent::__construct('give_register');
 	}
 
 	/**
@@ -37,13 +37,13 @@ class Give_Shortcode_Register extends Give_Shortcode_Generator {
 		return array(
 			array(
 				'type' => 'container',
-				'html' => sprintf( '<p class="no-margin">%s</p>', esc_html__( 'Redirect URL (optional):', 'give' ) ),
+				'html' => sprintf('<p class="no-margin">%s</p>', esc_html__('Redirect URL (optional):', 'give')),
 			),
 			array(
 				'type'     => 'textbox',
 				'name'     => 'redirect',
 				'minWidth' => 320,
-				'tooltip'  => esc_attr__( 'Enter an URL here to redirect to after registering.', 'give' ),
+				'tooltip'  => esc_attr__('Enter an URL here to redirect to after registering.', 'give'),
 			),
 		);
 	}

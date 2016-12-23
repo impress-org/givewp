@@ -12,7 +12,7 @@
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) {
+if ( ! defined('ABSPATH')) {
 	exit;
 }
 
@@ -30,36 +30,36 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return bool|object List of all user donations
  */
-function give_get_users_purchases( $user = 0, $number = 20, $pagination = false, $status = 'complete' ) {
+function give_get_users_purchases($user = 0, $number = 20, $pagination = false, $status = 'complete') {
 
-	if ( empty( $user ) ) {
+	if (empty($user)) {
 		$user = get_current_user_id();
 	}
 
-	if ( 0 === $user && ! Give()->email_access->token_exists ) {
+	if (0 === $user && ! Give()->email_access->token_exists) {
 		return false;
 	}
 
 	$status = $status === 'complete' ? 'publish' : $status;
 
-	if ( $pagination ) {
-		if ( get_query_var( 'paged' ) ) {
-			$paged = get_query_var( 'paged' );
-		} else if ( get_query_var( 'page' ) ) {
-			$paged = get_query_var( 'page' );
+	if ($pagination) {
+		if (get_query_var('paged')) {
+			$paged = get_query_var('paged');
+		} else if (get_query_var('page')) {
+			$paged = get_query_var('page');
 		} else {
 			$paged = 1;
 		}
 	}
 
-	$args = apply_filters( 'give_get_users_donations_args', array(
+	$args = apply_filters('give_get_users_donations_args', array(
 		'user'    => $user,
 		'number'  => $number,
 		'status'  => $status,
 		'orderby' => 'date'
-	) );
+	));
 
-	if ( $pagination ) {
+	if ($pagination) {
 
 		$args['page'] = $paged;
 
@@ -69,20 +69,20 @@ function give_get_users_purchases( $user = 0, $number = 20, $pagination = false,
 
 	}
 
-	$by_user_id = is_numeric( $user ) ? true : false;
-	$customer   = new Give_Customer( $user, $by_user_id );
+	$by_user_id = is_numeric($user) ? true : false;
+	$customer   = new Give_Customer($user, $by_user_id);
 
-	if ( ! empty( $customer->payment_ids ) ) {
+	if ( ! empty($customer->payment_ids)) {
 
-		unset( $args['user'] );
-		$args['post__in'] = array_map( 'absint', explode( ',', $customer->payment_ids ) );
+		unset($args['user']);
+		$args['post__in'] = array_map('absint', explode(',', $customer->payment_ids));
 
 	}
 
-	$purchases = give_get_payments( apply_filters( 'give_get_users_donations_args', $args ) );
+	$purchases = give_get_payments(apply_filters('give_get_users_donations_args', $args));
 
 	// No donations
-	if ( ! $purchases ) {
+	if ( ! $purchases) {
 		return false;
 	}
 
@@ -101,65 +101,65 @@ function give_get_users_purchases( $user = 0, $number = 20, $pagination = false,
  *
  * @return bool|object List of unique forms donated by user
  */
-function give_get_users_completed_donations( $user = 0, $status = 'complete' ) {
-	if ( empty( $user ) ) {
+function give_get_users_completed_donations($user = 0, $status = 'complete') {
+	if (empty($user)) {
 		$user = get_current_user_id();
 	}
 
-	if ( empty( $user ) ) {
+	if (empty($user)) {
 		return false;
 	}
 
-	$by_user_id = is_numeric( $user ) ? true : false;
+	$by_user_id = is_numeric($user) ? true : false;
 
-	$customer = new Give_Customer( $user, $by_user_id );
+	$customer = new Give_Customer($user, $by_user_id);
 
-	if ( empty( $customer->payment_ids ) ) {
+	if (empty($customer->payment_ids)) {
 		return false;
 	}
 
 	// Get all the items donated
-	$payment_ids    = array_reverse( explode( ',', $customer->payment_ids ) );
-	$limit_payments = apply_filters( 'give_users_completed_donations_payments', 50 );
-	if ( ! empty( $limit_payments ) ) {
-		$payment_ids = array_slice( $payment_ids, 0, $limit_payments );
+	$payment_ids    = array_reverse(explode(',', $customer->payment_ids));
+	$limit_payments = apply_filters('give_users_completed_donations_payments', 50);
+	if ( ! empty($limit_payments)) {
+		$payment_ids = array_slice($payment_ids, 0, $limit_payments);
 	}
 	$donation_data = array();
-	foreach ( $payment_ids as $payment_id ) {
-		$donation_data[] = give_get_payment_meta( $payment_id );
+	foreach ($payment_ids as $payment_id) {
+		$donation_data[] = give_get_payment_meta($payment_id);
 	}
 
-	if ( empty( $donation_data ) ) {
+	if (empty($donation_data)) {
 		return false;
 	}
 
 	// Grab only the post ids "form_id" of the forms donated on this order
 	$completed_donations_ids = array();
-	foreach ( $donation_data as $purchase_meta ) {
+	foreach ($donation_data as $purchase_meta) {
 		$completed_donations_ids[] = isset($purchase_meta['form_id']) ? $purchase_meta['form_id'] : '';
 	}
 
-	if ( empty( $completed_donations_ids ) ) {
+	if (empty($completed_donations_ids)) {
 		return false;
 	}
 
 	// Only include each donation once
-	$form_ids = array_unique( $completed_donations_ids );
+	$form_ids = array_unique($completed_donations_ids);
 
 	// Make sure we still have some products and a first item
-	if ( empty ( $form_ids ) || ! isset( $form_ids[0] ) ) {
+	if (empty ($form_ids) || ! isset($form_ids[0])) {
 		return false;
 	}
 
-	$post_type = get_post_type( $form_ids[0] );
+	$post_type = get_post_type($form_ids[0]);
 
-	$args = apply_filters( 'give_get_users_completed_donations_args', array(
+	$args = apply_filters('give_get_users_completed_donations_args', array(
 		'include'        => $form_ids,
 		'post_type'      => $post_type,
-		'posts_per_page' => - 1
-	) );
+		'posts_per_page' => -1
+	));
 
-	return apply_filters( 'give_users_completed_donations_list', get_posts( $args ) );
+	return apply_filters('give_users_completed_donations_list', get_posts($args));
 }
 
 
@@ -175,12 +175,12 @@ function give_get_users_completed_donations( $user = 0, $status = 'complete' ) {
  *
  * @return      bool True if has donated, false other wise.
  */
-function give_has_purchases( $user_id = null ) {
-	if ( empty( $user_id ) ) {
+function give_has_purchases($user_id = null) {
+	if (empty($user_id)) {
 		$user_id = get_current_user_id();
 	}
 
-	if ( give_get_users_purchases( $user_id, 1 ) ) {
+	if (give_get_users_purchases($user_id, 1)) {
 		return true; // User has at least one donation
 	}
 
@@ -200,27 +200,27 @@ function give_has_purchases( $user_id = null ) {
  *
  * @return      array
  */
-function give_get_purchase_stats_by_user( $user = '' ) {
+function give_get_purchase_stats_by_user($user = '') {
 
-	if ( is_email( $user ) ) {
+	if (is_email($user)) {
 
 		$field = 'email';
 
-	} elseif ( is_numeric( $user ) ) {
+	} elseif (is_numeric($user)) {
 
 		$field = 'user_id';
 
 	}
 
 	$stats    = array();
-	$customer = Give()->customers->get_customer_by( $field, $user );
+	$customer = Give()->customers->get_customer_by($field, $user);
 
-	if ( $customer ) {
+	if ($customer) {
 
-		$customer = new Give_Customer( $customer->id );
+		$customer = new Give_Customer($customer->id);
 
-		$stats['purchases']   = absint( $customer->purchase_count );
-		$stats['total_spent'] = give_sanitize_amount( $customer->purchase_value );
+		$stats['purchases']   = absint($customer->purchase_count);
+		$stats['total_spent'] = give_sanitize_amount($customer->purchase_value);
 
 	}
 
@@ -229,7 +229,7 @@ function give_get_purchase_stats_by_user( $user = '' ) {
 	 *
 	 * @since 1.7
 	 */
-	$stats = (array) apply_filters( 'give_donation_stats_by_user', $stats, $user );
+	$stats = (array) apply_filters('give_donation_stats_by_user', $stats, $user);
 
 	return $stats;
 }
@@ -247,22 +247,22 @@ function give_get_purchase_stats_by_user( $user = '' ) {
  *
  * @return      int The total number of donations
  */
-function give_count_purchases_of_customer( $user = null ) {
+function give_count_purchases_of_customer($user = null) {
 
 	//Logged in?
-	if ( empty( $user ) ) {
+	if (empty($user)) {
 		$user = get_current_user_id();
 	}
 
 	//Email access?
-	if ( empty( $user ) && Give()->email_access->token_email ) {
+	if (empty($user) && Give()->email_access->token_email) {
 		$user = Give()->email_access->token_email;
 	}
 
 
-	$stats = ! empty( $user ) ? give_get_purchase_stats_by_user( $user ) : false;
+	$stats = ! empty($user) ? give_get_purchase_stats_by_user($user) : false;
 
-	return isset( $stats['purchases'] ) ? $stats['purchases'] : 0;
+	return isset($stats['purchases']) ? $stats['purchases'] : 0;
 }
 
 /**
@@ -275,9 +275,9 @@ function give_count_purchases_of_customer( $user = null ) {
  *
  * @return      float The total amount the user has spent
  */
-function give_purchase_total_of_user( $user = null ) {
+function give_purchase_total_of_user($user = null) {
 
-	$stats = give_get_purchase_stats_by_user( $user );
+	$stats = give_get_purchase_stats_by_user($user);
 
 	return $stats['total_spent'];
 }
@@ -293,11 +293,11 @@ function give_purchase_total_of_user( $user = null ) {
  *
  * @return      bool
  */
-function give_validate_username( $username ) {
-	$sanitized = sanitize_user( $username, false );
-	$valid     = ( $sanitized == $username );
+function give_validate_username($username) {
+	$sanitized = sanitize_user($username, false);
+	$valid     = ($sanitized == $username);
 
-	return (bool) apply_filters( 'give_validate_username', $valid, $username );
+	return (bool) apply_filters('give_validate_username', $valid, $username);
 }
 
 
@@ -314,32 +314,32 @@ function give_validate_username( $username ) {
  *
  * @return      void
  */
-function give_add_past_purchases_to_new_user( $user_id ) {
+function give_add_past_purchases_to_new_user($user_id) {
 
-	$email = get_the_author_meta( 'user_email', $user_id );
+	$email = get_the_author_meta('user_email', $user_id);
 
-	$payments = give_get_payments( array( 's' => $email ) );
+	$payments = give_get_payments(array('s' => $email));
 
-	if ( $payments ) {
-		foreach ( $payments as $payment ) {
-			if ( intval( give_get_payment_user_id( $payment->ID ) ) > 0 ) {
+	if ($payments) {
+		foreach ($payments as $payment) {
+			if (intval(give_get_payment_user_id($payment->ID)) > 0) {
 				continue;
 			} // This payment already associated with an account
 
-			$meta                    = give_get_payment_meta( $payment->ID );
-			$meta['user_info']       = maybe_unserialize( $meta['user_info'] );
+			$meta                    = give_get_payment_meta($payment->ID);
+			$meta['user_info']       = maybe_unserialize($meta['user_info']);
 			$meta['user_info']['id'] = $user_id;
 			$meta['user_info']       = $meta['user_info'];
 
 			// Store the updated user ID in the payment meta
-			give_update_payment_meta( $payment->ID, '_give_payment_meta', $meta );
-			give_update_payment_meta( $payment->ID, '_give_payment_user_id', $user_id );
+			give_update_payment_meta($payment->ID, '_give_payment_meta', $meta);
+			give_update_payment_meta($payment->ID, '_give_payment_user_id', $user_id);
 		}
 	}
 
 }
 
-add_action( 'user_register', 'give_add_past_purchases_to_new_user' );
+add_action('user_register', 'give_add_past_purchases_to_new_user');
 
 
 /**
@@ -365,34 +365,34 @@ function give_count_total_customers() {
  *
  * @return        array The donor's address, if any
  */
-function give_get_donor_address( $user_id = 0 ) {
-	if ( empty( $user_id ) ) {
+function give_get_donor_address($user_id = 0) {
+	if (empty($user_id)) {
 		$user_id = get_current_user_id();
 	}
 
-	$address = get_user_meta( $user_id, '_give_user_address', true );
+	$address = get_user_meta($user_id, '_give_user_address', true);
 
-	if ( ! isset( $address['line1'] ) ) {
+	if ( ! isset($address['line1'])) {
 		$address['line1'] = '';
 	}
 
-	if ( ! isset( $address['line2'] ) ) {
+	if ( ! isset($address['line2'])) {
 		$address['line2'] = '';
 	}
 
-	if ( ! isset( $address['city'] ) ) {
+	if ( ! isset($address['city'])) {
 		$address['city'] = '';
 	}
 
-	if ( ! isset( $address['zip'] ) ) {
+	if ( ! isset($address['zip'])) {
 		$address['zip'] = '';
 	}
 
-	if ( ! isset( $address['country'] ) ) {
+	if ( ! isset($address['country'])) {
 		$address['country'] = '';
 	}
 
-	if ( ! isset( $address['state'] ) ) {
+	if ( ! isset($address['state'])) {
 		$address['state'] = '';
 	}
 
@@ -412,42 +412,42 @@ function give_get_donor_address( $user_id = 0 ) {
  *
  * @return        void
  */
-function give_new_user_notification( $user_id = 0, $user_data = array() ) {
+function give_new_user_notification($user_id = 0, $user_data = array()) {
 
-	if ( empty( $user_id ) || empty( $user_data ) ) {
+	if (empty($user_id) || empty($user_data)) {
 		return;
 	}
-	$blogname = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
+	$blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
 
 	/* translators: %s: site name */
-	$message  = sprintf( esc_attr__( 'New user registration on your site %s:', 'give' ), $blogname ) . "\r\n\r\n";
+	$message  = sprintf(esc_attr__('New user registration on your site %s:', 'give'), $blogname)."\r\n\r\n";
 	/* translators: %s: user login */
-	$message .= sprintf( esc_attr__( 'Username: %s', 'give' ), $user_data['user_login'] ) . "\r\n\r\n";
+	$message .= sprintf(esc_attr__('Username: %s', 'give'), $user_data['user_login'])."\r\n\r\n";
 	/* translators: %s: user email */
-	$message .= sprintf( esc_attr__( 'E-mail: %s', 'give' ), $user_data['user_email'] ) . "\r\n";
+	$message .= sprintf(esc_attr__('E-mail: %s', 'give'), $user_data['user_email'])."\r\n";
 
 	@wp_mail(
-		get_option( 'admin_email' ),
+		get_option('admin_email'),
 		sprintf(
 			/* translators: %s: site name */
-			esc_attr__( '[%s] New User Registration', 'give' ),
+			esc_attr__('[%s] New User Registration', 'give'),
 			$blogname
 		),
 		$message
 	);
 
 	/* translators: %s: user login */
-	$message  = sprintf( esc_attr__( 'Username: %s', 'give' ), $user_data['user_login'] ) . "\r\n";
+	$message  = sprintf(esc_attr__('Username: %s', 'give'), $user_data['user_login'])."\r\n";
 	/* translators: %s: paswword */
-	$message .= sprintf( esc_attr__( 'Password: %s', 'give' ), esc_attr__( '[Password entered during donation]', 'give' ) ) . "\r\n";
+	$message .= sprintf(esc_attr__('Password: %s', 'give'), esc_attr__('[Password entered during donation]', 'give'))."\r\n";
 
-	$message .= '<a href="' . wp_login_url() . '"> ' . esc_attr__( 'Click Here to Login &raquo;', 'give' ) . '</a>' . "\r\n";
+	$message .= '<a href="'.wp_login_url().'"> '.esc_attr__('Click Here to Login &raquo;', 'give').'</a>'."\r\n";
 
 	wp_mail(
 		$user_data['user_email'],
 		sprintf(
 			/* translators: %s: site name */
-			esc_attr__( '[%s] Your username and password', 'give' ),
+			esc_attr__('[%s] Your username and password', 'give'),
 			$blogname
 		),
 		$message
@@ -455,4 +455,4 @@ function give_new_user_notification( $user_id = 0, $user_data = array() ) {
 
 }
 
-add_action( 'give_insert_user', 'give_new_user_notification', 10, 2 );
+add_action('give_insert_user', 'give_new_user_notification', 10, 2);

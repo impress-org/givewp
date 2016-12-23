@@ -41,20 +41,20 @@ class Give_Batch_Forms_Export extends Give_Batch_Export {
 	public function csv_cols() {
 
 		$cols = array(
-			'ID'                      => esc_html__( 'ID', 'give' ),
-			'post_name'               => esc_html__( 'Slug', 'give' ),
-			'post_title'              => esc_html__( 'Name', 'give' ),
-			'post_date'               => esc_html__( 'Date Created', 'give' ),
-			'post_author'             => esc_html__( 'Author', 'give' ),
-			'post_content'            => esc_html__( 'Description', 'give' ),
-			'post_excerpt'            => esc_html__( 'Excerpt', 'give' ),
-			'post_status'             => esc_html__( 'Status', 'give' ),
-			'categories'              => esc_html__( 'Categories', 'give' ),
-			'tags'                    => esc_html__( 'Tags', 'give' ),
-			'give_price'              => esc_html__( 'Price', 'give' ),
-			'_thumbnail_id'           => esc_html__( 'Featured Image', 'give' ),
-			'_give_form_sales'        => esc_html__( 'Donations', 'give' ),
-			'_give_download_earnings' => esc_html__( 'Income', 'give' ),
+			'ID'                      => esc_html__('ID', 'give'),
+			'post_name'               => esc_html__('Slug', 'give'),
+			'post_title'              => esc_html__('Name', 'give'),
+			'post_date'               => esc_html__('Date Created', 'give'),
+			'post_author'             => esc_html__('Author', 'give'),
+			'post_content'            => esc_html__('Description', 'give'),
+			'post_excerpt'            => esc_html__('Excerpt', 'give'),
+			'post_status'             => esc_html__('Status', 'give'),
+			'categories'              => esc_html__('Categories', 'give'),
+			'tags'                    => esc_html__('Tags', 'give'),
+			'give_price'              => esc_html__('Price', 'give'),
+			'_thumbnail_id'           => esc_html__('Featured Image', 'give'),
+			'_give_form_sales'        => esc_html__('Donations', 'give'),
+			'_give_download_earnings' => esc_html__('Income', 'give'),
 		);
 
 		return $cols;
@@ -86,43 +86,43 @@ class Give_Batch_Forms_Export extends Give_Batch_Export {
 			'paged'          => $this->step
 		);
 
-		$downloads = new WP_Query( $args );
+		$downloads = new WP_Query($args);
 
-		if ( $downloads->posts ) {
-			foreach ( $downloads->posts as $download ) {
+		if ($downloads->posts) {
+			foreach ($downloads->posts as $download) {
 
 				$row = array();
 
-				foreach ( $this->csv_cols() as $key => $value ) {
+				foreach ($this->csv_cols() as $key => $value) {
 
 					// Setup default value
-					$row[ $key ] = '';
+					$row[$key] = '';
 
-					if ( in_array( $key, $meta ) ) {
+					if (in_array($key, $meta)) {
 
-						switch ( $key ) {
+						switch ($key) {
 
 							case '_thumbnail_id' :
 
-								$image_id    = get_post_thumbnail_id( $download->ID );
-								$row[ $key ] = wp_get_attachment_url( $image_id );
+								$image_id    = get_post_thumbnail_id($download->ID);
+								$row[$key] = wp_get_attachment_url($image_id);
 
 								break;
 
 							case 'give_price' :
 
-								if ( give_has_variable_prices( $download->ID ) ) {
+								if (give_has_variable_prices($download->ID)) {
 
 									$prices = array();
-									foreach ( give_get_variable_prices( $download->ID ) as $price ) {
-										$prices[] = $price['name'] . ': ' . $price['amount'];
+									foreach (give_get_variable_prices($download->ID) as $price) {
+										$prices[] = $price['name'].': '.$price['amount'];
 									}
 
-									$row[ $key ] = implode( ' | ', $prices );
+									$row[$key] = implode(' | ', $prices);
 
 								} else {
 
-									$row[ $key ] = give_get_download_price( $download->ID );
+									$row[$key] = give_get_download_price($download->ID);
 
 								}
 
@@ -132,54 +132,54 @@ class Give_Batch_Forms_Export extends Give_Batch_Export {
 
 
 								$files = array();
-								foreach ( give_get_download_files( $download->ID ) as $file ) {
+								foreach (give_get_download_files($download->ID) as $file) {
 									$files[] = $file['file'];
 								}
 
-								$row[ $key ] = implode( ' | ', $files );
+								$row[$key] = implode(' | ', $files);
 
 								break;
 
 							default :
 
-								$row[ $key ] = get_post_meta( $download->ID, $key, true );
+								$row[$key] = get_post_meta($download->ID, $key, true);
 
 								break;
 
 						}
 
-					} elseif ( isset( $download->$key ) ) {
+					} elseif (isset($download->$key)) {
 
-						switch ( $key ) {
+						switch ($key) {
 
 							case 'post_author' :
 
-								$row[ $key ] = get_the_author_meta( 'user_login', $download->post_author );
+								$row[$key] = get_the_author_meta('user_login', $download->post_author);
 
 								break;
 
 							default :
 
-								$row[ $key ] = $download->$key;
+								$row[$key] = $download->$key;
 
 								break;
 						}
 
-					} elseif ( 'tags' == $key ) {
+					} elseif ('tags' == $key) {
 
-						$terms = get_the_terms( $download->ID, 'download_tag' );
-						if ( $terms ) {
-							$terms       = wp_list_pluck( $terms, 'name' );
-							$row[ $key ] = implode( ' | ', $terms );
+						$terms = get_the_terms($download->ID, 'download_tag');
+						if ($terms) {
+							$terms       = wp_list_pluck($terms, 'name');
+							$row[$key] = implode(' | ', $terms);
 						}
 
 
-					} elseif ( 'categories' == $key ) {
+					} elseif ('categories' == $key) {
 
-						$terms = get_the_terms( $download->ID, 'download_category' );
-						if ( $terms ) {
-							$terms       = wp_list_pluck( $terms, 'name' );
-							$row[ $key ] = implode( ' | ', $terms );
+						$terms = get_the_terms($download->ID, 'download_category');
+						if ($terms) {
+							$terms       = wp_list_pluck($terms, 'name');
+							$row[$key] = implode(' | ', $terms);
 						}
 
 					}
@@ -190,8 +190,8 @@ class Give_Batch_Forms_Export extends Give_Batch_Export {
 
 			}
 
-			$data = apply_filters( 'give_export_get_data', $data );
-			$data = apply_filters( "give_export_get_data_{$this->export_type}", $data );
+			$data = apply_filters('give_export_get_data', $data);
+			$data = apply_filters("give_export_get_data_{$this->export_type}", $data);
 
 			return $data;
 		}
@@ -210,20 +210,20 @@ class Give_Batch_Forms_Export extends Give_Batch_Export {
 
 		$args = array(
 			'post_type'      => 'give_forms',
-			'posts_per_page' => - 1,
+			'posts_per_page' => -1,
 			'post_status'    => 'any',
 			'fields'         => 'ids',
 		);
 
-		$downloads  = new WP_Query( $args );
+		$downloads  = new WP_Query($args);
 		$total      = (int) $downloads->post_count;
 		$percentage = 100;
 
-		if ( $total > 0 ) {
-			$percentage = ( ( 30 * $this->step ) / $total ) * 100;
+		if ($total > 0) {
+			$percentage = ((30 * $this->step) / $total) * 100;
 		}
 
-		if ( $percentage > 100 ) {
+		if ($percentage > 100) {
 			$percentage = 100;
 		}
 

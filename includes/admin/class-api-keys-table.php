@@ -53,11 +53,11 @@ class Give_API_Keys_Table extends WP_List_Table {
 		global $status, $page;
 
 		// Set parent defaults
-		parent::__construct( array(
-			'singular' => esc_html__( 'API Key', 'give' ),     // Singular name of the listed records
-			'plural'   => esc_html__( 'API Keys', 'give' ),    // Plural name of the listed records
+		parent::__construct(array(
+			'singular' => esc_html__('API Key', 'give'), // Singular name of the listed records
+			'plural'   => esc_html__('API Keys', 'give'), // Plural name of the listed records
 			'ajax'     => false                       // Does this table support ajax?
-		) );
+		));
 
 		$this->query();
 	}
@@ -73,8 +73,8 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 *
 	 * @return string Column Name
 	 */
-	public function column_default( $item, $column_name ) {
-		return $item[ $column_name ];
+	public function column_default($item, $column_name) {
+		return $item[$column_name];
 	}
 
 	/**
@@ -88,8 +88,8 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 *
 	 * @return string Column Name
 	 */
-	public function column_key( $item ) {
-		return '<input onClick="this.setSelectionRange(0, this.value.length)" readonly="readonly" type="text" class="large-text" value="' . esc_attr( $item['key'] ) . '"/>';
+	public function column_key($item) {
+		return '<input onClick="this.setSelectionRange(0, this.value.length)" readonly="readonly" type="text" class="large-text" value="'.esc_attr($item['key']).'"/>';
 	}
 
 	/**
@@ -103,8 +103,8 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 *
 	 * @return string Column Name
 	 */
-	public function column_token( $item ) {
-		return '<input onClick="this.setSelectionRange(0, this.value.length)" readonly="readonly" type="text" class="large-text" value="' . esc_attr( $item['token'] ) . '"/>';
+	public function column_token($item) {
+		return '<input onClick="this.setSelectionRange(0, this.value.length)" readonly="readonly" type="text" class="large-text" value="'.esc_attr($item['token']).'"/>';
 	}
 
 	/**
@@ -118,8 +118,8 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 *
 	 * @return string Column Name
 	 */
-	public function column_secret( $item ) {
-		return '<input onClick="this.setSelectionRange(0, this.value.length)" readonly="readonly" type="text" class="large-text" value="' . esc_attr( $item['secret'] ) . '"/>';
+	public function column_secret($item) {
+		return '<input onClick="this.setSelectionRange(0, this.value.length)" readonly="readonly" type="text" class="large-text" value="'.esc_attr($item['secret']).'"/>';
 	}
 
 	/**
@@ -127,48 +127,48 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.1
-	 * @return void
+	 * @return string
 	 */
-	public function column_user( $item ) {
+	public function column_user($item) {
 
 		$actions = array();
 
-		if ( apply_filters( 'give_api_log_requests', true ) ) {
+		if (apply_filters('give_api_log_requests', true)) {
 			$actions['view'] = sprintf(
 				'<a href="%s">%s</a>',
-				esc_url( add_query_arg( array(
+				esc_url(add_query_arg(array(
 					'view'      => 'api_requests',
 					'post_type' => 'give_forms',
 					'page'      => 'give-reports',
 					'tab'       => 'logs',
 					's'         => $item['email']
-				), 'edit.php' ) ),
-				esc_html__( 'View API Log', 'give' )
+				), 'edit.php')),
+				esc_html__('View API Log', 'give')
 			);
 		}
 
 		$actions['reissue'] = sprintf(
 			'<a href="%s" class="give-regenerate-api-key">%s</a>',
-			esc_url( wp_nonce_url( add_query_arg( array(
+			esc_url(wp_nonce_url(add_query_arg(array(
 				'user_id'          => $item['id'],
 				'give_action'      => 'process_api_key',
 				'give_api_process' => 'regenerate'
-			) ), 'give-api-nonce' ) ),
-			esc_html__( 'Reissue', 'give' )
+			)), 'give-api-nonce')),
+			esc_html__('Reissue', 'give')
 		);
-		$actions['revoke']  = sprintf(
+		$actions['revoke'] = sprintf(
 			'<a href="%s" class="give-revoke-api-key give-delete">%s</a>',
-			esc_url( wp_nonce_url( add_query_arg( array(
+			esc_url(wp_nonce_url(add_query_arg(array(
 				'user_id'          => $item['id'],
 				'give_action'      => 'process_api_key',
 				'give_api_process' => 'revoke'
-			) ), 'give-api-nonce' ) ),
-			esc_html__( 'Revoke', 'give' )
+			)), 'give-api-nonce')),
+			esc_html__('Revoke', 'give')
 		);
 
-		$actions = apply_filters( 'give_api_row_actions', array_filter( $actions ) );
+		$actions = apply_filters('give_api_row_actions', array_filter($actions));
 
-		return sprintf( '%1$s %2$s', $item['user'], $this->row_actions( $actions ) );
+		return sprintf('%1$s %2$s', $item['user'], $this->row_actions($actions));
 	}
 
 	/**
@@ -180,10 +180,10 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'user'   => esc_html__( 'Username', 'give' ),
-			'key'    => esc_html__( 'Public Key', 'give' ),
-			'token'  => esc_html__( 'Token', 'give' ),
-			'secret' => esc_html__( 'Secret Key', 'give' )
+			'user'   => esc_html__('Username', 'give'),
+			'key'    => esc_html__('Public Key', 'give'),
+			'token'  => esc_html__('Token', 'give'),
+			'secret' => esc_html__('Secret Key', 'give')
 		);
 
 		return $columns;
@@ -196,20 +196,20 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 * @access protected
 	 * @param string $which
 	 */
-	protected function display_tablenav( $which ) {
-		if ( 'top' === $which ) {
-			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
+	protected function display_tablenav($which) {
+		if ('top' === $which) {
+			wp_nonce_field('bulk-'.$this->_args['plural']);
 		}
 		?>
-		<div class="tablenav <?php echo esc_attr( $which ); ?>">
+		<div class="tablenav <?php echo esc_attr($which); ?>">
 
 			<div class="alignleft actions bulkactions">
-				<?php $this->bulk_actions( $which ); ?>
+				<?php $this->bulk_actions($which); ?>
 			</div>
 
 			<?php
-			$this->extra_tablenav( $which );
-			$this->pagination( $which );
+			$this->extra_tablenav($which);
+			$this->pagination($which);
 			?>
 
 			<br class="clear" />
@@ -225,19 +225,19 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 * @param  string $which
 	 * @return void
 	 */
-	function bulk_actions( $which = '' ) {
+	function bulk_actions($which = '') {
 		// These aren't really bulk actions but this outputs the markup in the right place
 		static $give_api_is_bottom;
 
-		if ( $give_api_is_bottom ) {
+		if ($give_api_is_bottom) {
 			return;
 		}
 		?>
 		<input type="hidden" name="give_action" value="process_api_key"/>
 		<input type="hidden" name="give_api_process" value="generate"/>
-		<?php wp_nonce_field( 'give-api-nonce' ); ?>
+		<?php wp_nonce_field('give-api-nonce'); ?>
 		<?php echo Give()->html->ajax_user_search(); ?>
-		<?php submit_button( esc_html__( 'Generate New API Keys', 'give' ), 'secondary', 'submit', false ); ?>
+		<?php submit_button(esc_html__('Generate New API Keys', 'give'), 'secondary', 'submit', false); ?>
 		<?php
 		$give_api_is_bottom = true;
 	}
@@ -250,7 +250,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 * @return int Current page number
 	 */
 	public function get_paged() {
-		return isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1;
+		return isset($_GET['paged']) ? absint($_GET['paged']) : 1;
 	}
 
 	/**
@@ -261,21 +261,21 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 * @return array
 	 */
 	public function query() {
-		$users = get_users( array(
+		$users = get_users(array(
 			'meta_value' => 'give_user_secret_key',
 			'number'     => $this->per_page,
-			'offset'     => $this->per_page * ( $this->get_paged() - 1 )
-		) );
-		$keys  = array();
+			'offset'     => $this->per_page * ($this->get_paged() - 1)
+		));
+		$keys = array();
 
-		foreach ( $users as $user ) {
-			$keys[ $user->ID ]['id']    = $user->ID;
-			$keys[ $user->ID ]['email'] = $user->user_email;
-			$keys[ $user->ID ]['user']  = '<a href="' . add_query_arg( 'user_id', $user->ID, 'user-edit.php' ) . '"><strong>' . $user->user_login . '</strong></a>';
+		foreach ($users as $user) {
+			$keys[$user->ID]['id']    = $user->ID;
+			$keys[$user->ID]['email'] = $user->user_email;
+			$keys[$user->ID]['user']  = '<a href="'.add_query_arg('user_id', $user->ID, 'user-edit.php').'"><strong>'.$user->user_login.'</strong></a>';
 
-			$keys[ $user->ID ]['key']    = Give()->api->get_user_public_key( $user->ID );
-			$keys[ $user->ID ]['secret'] = Give()->api->get_user_secret_key( $user->ID );
-			$keys[ $user->ID ]['token']  = Give()->api->get_token( $user->ID );
+			$keys[$user->ID]['key']    = Give()->api->get_user_public_key($user->ID);
+			$keys[$user->ID]['secret'] = Give()->api->get_user_secret_key($user->ID);
+			$keys[$user->ID]['token']  = Give()->api->get_token($user->ID);
 		}
 
 		return $keys;
@@ -292,13 +292,13 @@ class Give_API_Keys_Table extends WP_List_Table {
 	public function total_items() {
 		global $wpdb;
 
-		if ( ! get_transient( 'give_total_api_keys' ) ) {
-			$total_items = $wpdb->get_var( "SELECT count(user_id) FROM $wpdb->usermeta WHERE meta_value='give_user_secret_key'" );
+		if ( ! get_transient('give_total_api_keys')) {
+			$total_items = $wpdb->get_var("SELECT count(user_id) FROM $wpdb->usermeta WHERE meta_value='give_user_secret_key'");
 
-			set_transient( 'give_total_api_keys', $total_items, 60 * 60 );
+			set_transient('give_total_api_keys', $total_items, 60 * 60);
 		}
 
-		return get_transient( 'give_total_api_keys' );
+		return get_transient('give_total_api_keys');
 	}
 
 	/**
@@ -314,7 +314,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 		$hidden   = array(); // No hidden columns
 		$sortable = array(); // Not sortable... for now
 
-		$this->_column_headers = array( $columns, $hidden, $sortable, 'id' );
+		$this->_column_headers = array($columns, $hidden, $sortable, 'id');
 
 		$data = $this->query();
 
@@ -322,10 +322,10 @@ class Give_API_Keys_Table extends WP_List_Table {
 
 		$this->items = $data;
 
-		$this->set_pagination_args( array(
+		$this->set_pagination_args(array(
 				'total_items' => $total_items,
 				'per_page'    => $this->per_page,
-				'total_pages' => ceil( $total_items / $this->per_page )
+				'total_pages' => ceil($total_items / $this->per_page)
 			)
 		);
 	}

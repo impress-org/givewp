@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function give_logs_view_sales() {
-	include( dirname( __FILE__ ) . '/class-sales-logs-list-table.php' );
+	include(dirname(__FILE__).'/class-sales-logs-list-table.php');
 
 	$logs_table = new Give_Sales_Log_Table();
 	$logs_table->prepare_items();
@@ -31,7 +31,7 @@ function give_logs_view_sales() {
 
 }
 
-add_action( 'give_logs_view_sales', 'give_logs_view_sales' );
+add_action('give_logs_view_sales', 'give_logs_view_sales');
 
 
 /**
@@ -43,14 +43,14 @@ add_action( 'give_logs_view_sales', 'give_logs_view_sales' );
  * @return void
  */
 function give_logs_view_gateway_errors() {
-	include( dirname( __FILE__ ) . '/class-gateway-error-logs-list-table.php' );
+	include(dirname(__FILE__).'/class-gateway-error-logs-list-table.php');
 
 	$logs_table = new Give_Gateway_Error_Log_Table();
 	$logs_table->prepare_items();
 	$logs_table->display();
 }
 
-add_action( 'give_logs_view_gateway_errors', 'give_logs_view_gateway_errors' );
+add_action('give_logs_view_gateway_errors', 'give_logs_view_gateway_errors');
 
 /**
  * API Request Logs
@@ -62,7 +62,7 @@ add_action( 'give_logs_view_gateway_errors', 'give_logs_view_gateway_errors' );
  * @return void
  */
 function give_logs_view_api_requests() {
-	include( dirname( __FILE__ ) . '/class-api-requests-logs-list-table.php' );
+	include(dirname(__FILE__).'/class-api-requests-logs-list-table.php');
 
 	$logs_table = new Give_API_Request_Log_Table();
 	$logs_table->prepare_items();
@@ -75,12 +75,12 @@ function give_logs_view_api_requests() {
 		 *
 		 * @since 1.0
 		 */
-		do_action( 'give_logs_api_requests_top' );
+		do_action('give_logs_api_requests_top');
 		?>
 
-		<form id="give-logs-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=logs' ); ?>">
+		<form id="give-logs-filter" method="get" action="<?php echo admin_url('edit.php?post_type=give_forms&page=give-reports&tab=logs'); ?>">
 			<?php
-			$logs_table->search_box( esc_html__( 'Search', 'give' ), 'give-api-requests' );
+			$logs_table->search_box(esc_html__('Search', 'give'), 'give-api-requests');
 			$logs_table->display();
 			?>
 			<input type="hidden" name="post_type" value="give_forms"/>
@@ -93,14 +93,14 @@ function give_logs_view_api_requests() {
 		 *
 		 * @since 1.0
 		 */
-		do_action( 'give_logs_api_requests_bottom' );
+		do_action('give_logs_api_requests_bottom');
 		?>
 
 	</div>
 	<?php
 }
 
-add_action( 'give_logs_view_api_requests', 'give_logs_view_api_requests' );
+add_action('give_logs_view_api_requests', 'give_logs_view_api_requests');
 
 
 /**
@@ -111,12 +111,12 @@ add_action( 'give_logs_view_api_requests', 'give_logs_view_api_requests' );
  */
 function give_log_default_views() {
 	$views = array(
-		'sales'          => esc_html__( 'Donations', 'give' ),
-		'gateway_errors' => esc_html__( 'Payment Errors', 'give' ),
-		'api_requests'   => esc_html__( 'API Requests', 'give' )
+		'sales'          => esc_html__('Donations', 'give'),
+		'gateway_errors' => esc_html__('Payment Errors', 'give'),
+		'api_requests'   => esc_html__('API Requests', 'give')
 	);
 
-	$views = apply_filters( 'give_log_views', $views );
+	$views = apply_filters('give_log_views', $views);
 
 	return $views;
 }
@@ -129,13 +129,13 @@ function give_log_default_views() {
  */
 function give_log_views() {
 	$views        = give_log_default_views();
-	$current_view = isset( $_GET['view'] ) && array_key_exists( $_GET['view'], give_log_default_views() ) ? sanitize_text_field( $_GET['view'] ) : 'sales';
+	$current_view = isset($_GET['view']) && array_key_exists($_GET['view'], give_log_default_views()) ? sanitize_text_field($_GET['view']) : 'sales';
 	?>
 	<form id="give-logs-filter" method="get" action="edit.php">
 		<select id="give-logs-view" name="view">
 			<optgroup label="Log Type:">
-				<?php foreach ( $views as $view_id => $label ): ?>
-					<option value="<?php echo esc_attr( $view_id ); ?>" <?php selected( $view_id, $current_view ); ?>><?php echo $label; ?></option>
+				<?php foreach ($views as $view_id => $label): ?>
+					<option value="<?php echo esc_attr($view_id); ?>" <?php selected($view_id, $current_view); ?>><?php echo $label; ?></option>
 				<?php endforeach; ?>
 			</optgroup>
 		</select>
@@ -148,14 +148,14 @@ function give_log_views() {
 		 *
 		 * @since 1.0
 		 */
-		do_action( 'give_log_view_actions' );
+		do_action('give_log_view_actions');
 		?>
 
 		<input type="hidden" name="post_type" value="give_forms"/>
 		<input type="hidden" name="page" value="give-reports"/>
 		<input type="hidden" name="tab" value="logs"/>
 
-		<?php submit_button( esc_html__( 'Apply', 'give' ), 'secondary', 'submit', false ); ?>
+		<?php submit_button(esc_html__('Apply', 'give'), 'secondary', 'submit', false); ?>
 	</form>
 	<?php
 }

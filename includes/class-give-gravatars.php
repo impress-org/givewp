@@ -62,50 +62,50 @@ class Give_Donors_Gravatars {
 	 *
 	 * @return bool If the gravatar exists or not
 	 */
-	public function validate_gravatar( $id_or_email ) {
+	public function validate_gravatar($id_or_email) {
 		//id or email code borrowed from wp-includes/pluggable.php
 		$email = '';
-		if ( is_numeric( $id_or_email ) ) {
+		if (is_numeric($id_or_email)) {
 			$id   = (int) $id_or_email;
-			$user = get_userdata( $id );
-			if ( $user ) {
+			$user = get_userdata($id);
+			if ($user) {
 				$email = $user->user_email;
 			}
-		} elseif ( is_object( $id_or_email ) ) {
+		} elseif (is_object($id_or_email)) {
 			// No avatar for pingbacks or trackbacks
-			$allowed_comment_types = apply_filters( 'get_avatar_comment_types', array( 'comment' ) );
-			if ( ! empty( $id_or_email->comment_type ) && ! in_array( $id_or_email->comment_type, (array) $allowed_comment_types ) ) {
+			$allowed_comment_types = apply_filters('get_avatar_comment_types', array('comment'));
+			if ( ! empty($id_or_email->comment_type) && ! in_array($id_or_email->comment_type, (array) $allowed_comment_types)) {
 				return false;
 			}
 
-			if ( ! empty( $id_or_email->user_id ) ) {
+			if ( ! empty($id_or_email->user_id)) {
 				$id   = (int) $id_or_email->user_id;
-				$user = get_userdata( $id );
-				if ( $user ) {
+				$user = get_userdata($id);
+				if ($user) {
 					$email = $user->user_email;
 				}
-			} elseif ( ! empty( $id_or_email->comment_author_email ) ) {
+			} elseif ( ! empty($id_or_email->comment_author_email)) {
 				$email = $id_or_email->comment_author_email;
 			}
 		} else {
 			$email = $id_or_email;
 		}
 
-		$hashkey = md5( strtolower( trim( $email ) ) );
-		$uri     = 'http://www.gravatar.com/avatar/' . $hashkey . '?d=404';
+		$hashkey = md5(strtolower(trim($email)));
+		$uri     = 'http://www.gravatar.com/avatar/'.$hashkey.'?d=404';
 
-		$data = wp_cache_get( $hashkey );
-		if ( false === $data ) {
-			$response = wp_remote_head( $uri );
-			if ( is_wp_error( $response ) ) {
+		$data = wp_cache_get($hashkey);
+		if (false === $data) {
+			$response = wp_remote_head($uri);
+			if (is_wp_error($response)) {
 				$data = 'not200';
 			} else {
 				$data = $response['response']['code'];
 			}
-			wp_cache_set( $hashkey, $data, $group = '', $expire = 60 * 5 );
+			wp_cache_set($hashkey, $data, $group = '', $expire = 60 * 5);
 
 		}
-		if ( $data == '200' ) {
+		if ($data == '200') {
 			return true;
 		} else {
 			return false;
@@ -122,19 +122,19 @@ class Give_Donors_Gravatars {
 	 *
 	 * @return array        IDs if logs, false otherwise
 	 */
-	public function get_log_ids( $form_id = '' ) {
+	public function get_log_ids($form_id = '') {
 
 		// get Give_Logging class
 		global $give_logs;
 
 		// get log for this form
-		$logs = $give_logs->get_logs( $form_id );
+		$logs = $give_logs->get_logs($form_id);
 
-		if ( $logs ) {
+		if ($logs) {
 			$log_ids = array();
 
 			// make an array with all the donor IDs
-			foreach ( $logs as $log ) {
+			foreach ($logs as $log) {
 				$log_ids[] = $log->ID;
 			}
 
@@ -155,51 +155,51 @@ class Give_Donors_Gravatars {
 	 *
 	 * @return mixed
 	 */
-	public function get_payment_ids( $form_id = '' ) {
+	public function get_payment_ids($form_id = '') {
 
 		$give_options = give_get_settings();
 
-		$log_ids = $this->get_log_ids( $form_id );
+		$log_ids = $this->get_log_ids($form_id);
 
-		if ( $log_ids ) {
+		if ($log_ids) {
 
 			$payment_ids = array();
 
-			foreach ( $log_ids as $id ) {
+			foreach ($log_ids as $id) {
 				// get the payment ID for each corresponding log ID
-				$payment_ids[] = get_post_meta( $id, '_give_log_payment_id', true );
+				$payment_ids[] = get_post_meta($id, '_give_log_payment_id', true);
 			}
 
 			// remove donors who have donated more than once so we can have unique avatars
 			$unique_emails = array();
 
-			foreach ( $payment_ids as $key => $id ) {
+			foreach ($payment_ids as $key => $id) {
 
-				$email = get_post_meta( $id, '_give_payment_user_email', true );
+				$email = get_post_meta($id, '_give_payment_user_email', true);
 
-				if ( isset ( $give_options['give_donors_gravatars_has_gravatar_account'] ) ) {
-					if ( ! $this->validate_gravatar( $email ) ) {
+				if (isset ($give_options['give_donors_gravatars_has_gravatar_account'])) {
+					if ( ! $this->validate_gravatar($email)) {
 						continue;
 					}
 				}
 
-				$unique_emails[ $id ] = get_post_meta( $id, '_give_payment_user_email', true );
+				$unique_emails[$id] = get_post_meta($id, '_give_payment_user_email', true);
 
 			}
 
 			$unique_ids = array();
 
 			// strip duplicate emails
-			$unique_emails = array_unique( $unique_emails );
+			$unique_emails = array_unique($unique_emails);
 
 			// convert the unique IDs back into simple array
-			foreach ( $unique_emails as $id => $email ) {
+			foreach ($unique_emails as $id => $email) {
 				$unique_ids[] = $id;
 			}
 
 			// randomize the payment IDs if enabled
-			if ( isset( $give_options['give_donors_gravatars_random_gravatars'] ) ) {
-				shuffle( $unique_ids );
+			if (isset($give_options['give_donors_gravatars_random_gravatars'])) {
+				shuffle($unique_ids);
 			}
 
 			// return our unique IDs
@@ -220,22 +220,22 @@ class Give_Donors_Gravatars {
 	 *
 	 * @return string
 	 */
-	public function gravatars( $form_id = false, $title = '' ) {
+	public function gravatars($form_id = false, $title = '') {
 
 		// unique $payment_ids 
-		$payment_ids = $this->get_payment_ids( $form_id );
+		$payment_ids = $this->get_payment_ids($form_id);
 
 		$give_options = give_get_settings();
 
 		// return if no ID
-		if ( ! $form_id ) {
+		if ( ! $form_id) {
 			return;
 		}
 
 		// minimum amount of donations before showing gravatars
 		// if the number of items in array is not greater or equal to the number specified, then exit
-		if ( isset( $give_options['give_donors_gravatars_min_purchases_required'] ) && '' != $give_options['give_donors_gravatars_min_purchases_required'] ) {
-			if ( ! ( count( $payment_ids ) >= $give_options['give_donors_gravatars_min_purchases_required'] ) ) {
+		if (isset($give_options['give_donors_gravatars_min_purchases_required']) && '' != $give_options['give_donors_gravatars_min_purchases_required']) {
+			if ( ! (count($payment_ids) >= $give_options['give_donors_gravatars_min_purchases_required'])) {
 				return;
 			}
 		}
@@ -246,51 +246,51 @@ class Give_Donors_Gravatars {
 		echo '<div id="give-purchase-gravatars">';
 
 
-		if ( isset ( $title ) ) {
+		if (isset ($title)) {
 
-			if ( $title ) {
-				echo apply_filters( 'give_donors_gravatars_title', '<h3 class="give-gravatars-title">' . esc_attr( $title ) . '</h3>' );
-			} elseif ( isset( $give_options['give_donors_gravatars_heading'] ) ) {
-				echo apply_filters( 'give_donors_gravatars_title', '<h3 class="give-gravatars-title">' . esc_attr( $give_options['give_donors_gravatars_heading'] ) . '</h2>' );
+			if ($title) {
+				echo apply_filters('give_donors_gravatars_title', '<h3 class="give-gravatars-title">'.esc_attr($title).'</h3>');
+			} elseif (isset($give_options['give_donors_gravatars_heading'])) {
+				echo apply_filters('give_donors_gravatars_title', '<h3 class="give-gravatars-title">'.esc_attr($give_options['give_donors_gravatars_heading']).'</h2>');
 			}
 
 		}
 		echo '<ul class="give-purchase-gravatars-list">';
 		$i = 0;
 
-		if ( $payment_ids ) {
-			foreach ( $payment_ids as $id ) {
+		if ($payment_ids) {
+			foreach ($payment_ids as $id) {
 
 				// Give saves a blank option even when the control is turned off, hence the extra check
-				if ( isset( $give_options['give_donors_gravatars_maximum_number'] ) && '' != $give_options['give_donors_gravatars_maximum_number'] && $i == $give_options['give_donors_gravatars_maximum_number'] ) {
+				if (isset($give_options['give_donors_gravatars_maximum_number']) && '' != $give_options['give_donors_gravatars_maximum_number'] && $i == $give_options['give_donors_gravatars_maximum_number']) {
 					continue;
 				}
 
 				// get the payment meta
-				$payment_meta = get_post_meta( $id, '_give_payment_meta', true );
+				$payment_meta = get_post_meta($id, '_give_payment_meta', true);
 
 				// unserialize the payment meta
-				$user_info = maybe_unserialize( $payment_meta['user_info'] );
+				$user_info = maybe_unserialize($payment_meta['user_info']);
 
 				// get donor's first name
 				$name = $user_info['first_name'];
 
 				// get donor's email
-				$email = get_post_meta( $id, '_give_payment_user_email', true );
+				$email = get_post_meta($id, '_give_payment_user_email', true);
 
 				// set gravatar size and provide filter
-				$size = isset( $give_options['give_donors_gravatars_gravatar_size'] ) ? apply_filters( 'give_donors_gravatars_gravatar_size', $give_options['give_donors_gravatars_gravatar_size'] ) : '';
+				$size = isset($give_options['give_donors_gravatars_gravatar_size']) ? apply_filters('give_donors_gravatars_gravatar_size', $give_options['give_donors_gravatars_gravatar_size']) : '';
 
 				// default image
-				$default_image = apply_filters( 'give_donors_gravatars_gravatar_default_image', false );
+				$default_image = apply_filters('give_donors_gravatars_gravatar_default_image', false);
 
 				// assemble output
 				$output .= '<li>';
 
-				$output .= get_avatar( $email, $size, $default_image, $name );
+				$output .= get_avatar($email, $size, $default_image, $name);
 				$output .= '</li>';
 
-				$i ++;
+				$i++;
 
 			} // end foreach
 		}
@@ -299,7 +299,7 @@ class Give_Donors_Gravatars {
 		echo '</ul>';
 		echo '</div>';
 
-		return apply_filters( 'give_donors_gravatars', ob_get_clean() );
+		return apply_filters('give_donors_gravatars', ob_get_clean());
 	}
 
 	/**
@@ -311,7 +311,7 @@ class Give_Donors_Gravatars {
 	 * @return void
 	 */
 	public function register_widget() {
-		register_widget( 'Give_Donors_Gravatars_Widget' );
+		register_widget('Give_Donors_Gravatars_Widget');
 	}
 
 	/**
@@ -325,19 +325,19 @@ class Give_Donors_Gravatars {
 	 *
 	 * @return string
 	 */
-	public function shortcode( $atts, $content = null ) {
+	public function shortcode($atts, $content = null) {
 
-		$atts = shortcode_atts( array(
+		$atts = shortcode_atts(array(
 			'id'    => '',
 			'title' => ''
-		), $atts, 'give_donors_gravatars' );
+		), $atts, 'give_donors_gravatars');
 
 		// if no ID is passed on single give_forms pages, get the correct ID
-		if ( is_singular( 'give_forms' ) ) {
+		if (is_singular('give_forms')) {
 			$id = get_the_ID();
 		}
 
-		$content = $this->gravatars( $atts['id'], $atts['title'] );
+		$content = $this->gravatars($atts['id'], $atts['title']);
 
 		return $content;
 
@@ -353,56 +353,56 @@ class Give_Donors_Gravatars {
 	 *
 	 * @return array           Gravatar settings.
 	 */
-	public function settings( $settings ) {
+	public function settings($settings) {
 
 		$give_gravatar_settings = array(
 			array(
-				'name' => esc_html__( 'Donator Gravatars', 'give' ),
+				'name' => esc_html__('Donator Gravatars', 'give'),
 				'desc' => '<hr>',
 				'id'   => 'give_title',
 				'type' => 'give_title'
 			),
 			array(
-				'name' => esc_html__( 'Heading', 'give' ),
-				'desc' => esc_html__( 'The heading to display above the Gravatars.', 'give' ),
+				'name' => esc_html__('Heading', 'give'),
+				'desc' => esc_html__('The heading to display above the Gravatars.', 'give'),
 				'type' => 'text',
 				'id'   => 'give_donors_gravatars_heading'
 			),
 			array(
-				'name'    => esc_html__( 'Gravatar Size', 'give' ),
-				'desc'    => esc_html__( 'The size of each Gravatar in pixels (512px maximum).', 'give' ),
+				'name'    => esc_html__('Gravatar Size', 'give'),
+				'desc'    => esc_html__('The size of each Gravatar in pixels (512px maximum).', 'give'),
 				'type'    => 'text_small',
 				'id'      => 'give_donors_gravatars_gravatar_size',
 				'default' => '64'
 			),
 			array(
-				'name' => esc_html__( 'Minimum Unique Donations Required', 'give' ),
-				'desc' => esc_html__( 'The minimum number of unique donations a form must have before the Gravatars are shown. Leave blank for no minimum.', 'give' ),
+				'name' => esc_html__('Minimum Unique Donations Required', 'give'),
+				'desc' => esc_html__('The minimum number of unique donations a form must have before the Gravatars are shown. Leave blank for no minimum.', 'give'),
 				'type' => 'text_small',
 				'id'   => 'give_donors_gravatars_min_purchases_required',
 			),
 			array(
-				'name'    => esc_html__( 'Maximum Gravatars To Show', 'give' ),
-				'desc'    => esc_html__( 'The maximum number of gravatars to show. Leave blank for no limit.', 'give' ),
+				'name'    => esc_html__('Maximum Gravatars To Show', 'give'),
+				'desc'    => esc_html__('The maximum number of gravatars to show. Leave blank for no limit.', 'give'),
 				'type'    => 'text',
 				'id'      => 'give_donors_gravatars_maximum_number',
 				'default' => '20',
 			),
 			array(
-				'name' => esc_html__( 'Gravatar Visibility', 'give' ),
-				'desc' => esc_html__( 'Show only donors with a Gravatar account.', 'give' ),
+				'name' => esc_html__('Gravatar Visibility', 'give'),
+				'desc' => esc_html__('Show only donors with a Gravatar account.', 'give'),
 				'id'   => 'give_donors_gravatars_has_gravatar_account',
 				'type' => 'checkbox',
 			),
 			array(
-				'name' => esc_html__( 'Randomize Gravatars', 'give' ),
-				'desc' => esc_html__( 'Randomize the Gravatars.', 'give' ),
+				'name' => esc_html__('Randomize Gravatars', 'give'),
+				'desc' => esc_html__('Randomize the Gravatars.', 'give'),
 				'id'   => 'give_donors_gravatars_random_gravatars',
 				'type' => 'checkbox',
 			),
 		);
 
-		return array_merge( $settings, $give_gravatar_settings );
+		return array_merge($settings, $give_gravatar_settings);
 	}
 
 }
@@ -428,7 +428,7 @@ class Give_Donors_Gravatars_Widget extends WP_Widget {
 		// widget settings
 		$widget_ops = array(
 			'classname'   => 'give-donors-gravatars',
-			'description' => esc_html__( 'Displays gravatars of people who have donated using your your form. Will only show on the single form page.', 'give' ),
+			'description' => esc_html__('Displays gravatars of people who have donated using your your form. Will only show on the single form page.', 'give'),
 		);
 
 		// widget control settings
@@ -441,7 +441,7 @@ class Give_Donors_Gravatars_Widget extends WP_Widget {
 		// create the widget
 		parent::__construct(
 			'give_donors_gravatars_widget',
-			esc_html__( 'Give Donors Gravatars', 'give' ),
+			esc_html__('Give Donors Gravatars', 'give'),
 			$widget_ops,
 			$control_ops
 		);
@@ -461,29 +461,29 @@ class Give_Donors_Gravatars_Widget extends WP_Widget {
 	 *
 	 * @return void
 	 */
-	public function widget( $args, $instance ) {
+	public function widget($args, $instance) {
 
 		//@TODO: Don't extract it!!!
-		extract( $args );
+		extract($args);
 
-		if ( ! is_singular( 'give_forms' ) ) {
+		if ( ! is_singular('give_forms')) {
 			return;
 		}
 
 		// Variables from widget settings
-		$title = apply_filters( 'widget_title', $instance['title'] );
+		$title = apply_filters('widget_title', $instance['title']);
 
 		// Used by themes. Opens the widget
 		echo $before_widget;
 
 		// Display the widget title
-		if ( $title ) {
-			echo $before_title . $title . $after_title;
+		if ($title) {
+			echo $before_title.$title.$after_title;
 		}
 
 		$gravatars = new Give_Donors_Gravatars();
 
-		echo $gravatars->gravatars( get_the_ID(), null ); // remove title
+		echo $gravatars->gravatars(get_the_ID(), null); // remove title
 
 		// Used by themes. Closes the widget
 		echo $after_widget;
@@ -503,11 +503,11 @@ class Give_Donors_Gravatars_Widget extends WP_Widget {
 	 *
 	 * @return array Updated settings to save.
 	 */
-	public function update( $new_instance, $old_instance ) {
+	public function update($new_instance, $old_instance) {
 
 		$instance = $old_instance;
 
-		$instance['title'] = strip_tags( $new_instance['title'] );
+		$instance['title'] = strip_tags($new_instance['title']);
 
 		return $instance;
 
@@ -525,19 +525,19 @@ class Give_Donors_Gravatars_Widget extends WP_Widget {
 	 *
 	 * @return void
 	 */
-	public function form( $instance ) {
+	public function form($instance) {
 
 		// Set up some default widget settings.
 		$defaults = array(
 			'title' => '',
 		);
 
-		$instance = wp_parse_args( (array) $instance, $defaults ); ?>
+		$instance = wp_parse_args((array) $instance, $defaults); ?>
 
 		<!-- Title -->
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php esc_html_e( 'Title:', 'give' ) ?></label>
-			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo $instance['title']; ?>" />
+			<label for="<?php echo $this->get_field_id('title'); ?>"><?php esc_html_e('Title:', 'give') ?></label>
+			<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $instance['title']; ?>" />
 		</p>
 
 		<?php

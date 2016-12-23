@@ -38,16 +38,16 @@ class Give_Earnings_Export extends Give_Export {
 	 * @return void
 	 */
 	public function headers() {
-		ignore_user_abort( true );
+		ignore_user_abort(true);
 
-		if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
-			set_time_limit( 0 );
+		if ( ! give_is_func_disabled('set_time_limit') && ! ini_get('safe_mode')) {
+			set_time_limit(0);
 		}
 
 		nocache_headers();
-		header( 'Content-Type: text/csv; charset=utf-8' );
-		header( 'Content-Disposition: attachment; filename=' . apply_filters( 'give_earnings_export_filename', 'give-export-' . $this->export_type . '-' . date( 'n' ) . '-' . date( 'Y' ) ) . '.csv' );
-		header( "Expires: 0" );
+		header('Content-Type: text/csv; charset=utf-8');
+		header('Content-Disposition: attachment; filename='.apply_filters('give_earnings_export_filename', 'give-export-'.$this->export_type.'-'.date('n').'-'.date('Y')).'.csv');
+		header("Expires: 0");
 
 	}
 
@@ -61,10 +61,10 @@ class Give_Earnings_Export extends Give_Export {
 	public function csv_cols() {
 
 		$cols = array(
-			'date'      => esc_html__( 'Date', 'give' ),
-			'donations' => esc_html__( 'Donations', 'give' ),
+			'date'      => esc_html__('Date', 'give'),
+			'donations' => esc_html__('Donations', 'give'),
 			/* translators: %s: currency */
-			'earnings'  => sprintf( esc_html__( 'Income (%s)', 'give' ), html_entity_decode( give_currency_filter( '' ) ) )
+			'earnings'  => sprintf(esc_html__('Income (%s)', 'give'), html_entity_decode(give_currency_filter('')))
 		);
 
 		return $cols;
@@ -79,28 +79,28 @@ class Give_Earnings_Export extends Give_Export {
 	 */
 	public function get_data() {
 
-		$start_year  = isset( $_POST['start_year'] ) ? absint( $_POST['start_year'] ) : date( 'Y' );
-		$end_year    = isset( $_POST['end_year'] ) ? absint( $_POST['end_year'] ) : date( 'Y' );
-		$start_month = isset( $_POST['start_month'] ) ? absint( $_POST['start_month'] ) : date( 'n' );
-		$end_month   = isset( $_POST['end_month'] ) ? absint( $_POST['end_month'] ) : date( 'n' );
+		$start_year  = isset($_POST['start_year']) ? absint($_POST['start_year']) : date('Y');
+		$end_year    = isset($_POST['end_year']) ? absint($_POST['end_year']) : date('Y');
+		$start_month = isset($_POST['start_month']) ? absint($_POST['start_month']) : date('n');
+		$end_month   = isset($_POST['end_month']) ? absint($_POST['end_month']) : date('n');
 
 		$data  = array();
 		$year  = $start_year;
 		$stats = new Give_Payment_Stats;
 
-		while ( $year <= $end_year ) {
+		while ($year <= $end_year) {
 
-			if ( $year == $start_year && $year == $end_year ) {
+			if ($year == $start_year && $year == $end_year) {
 
 				$m1 = $start_month;
 				$m2 = $end_month;
 
-			} elseif ( $year == $start_year ) {
+			} elseif ($year == $start_year) {
 
 				$m1 = $start_month;
 				$m2 = 12;
 
-			} elseif ( $year == $end_year ) {
+			} elseif ($year == $end_year) {
 
 				$m1 = 1;
 				$m2 = $end_month;
@@ -112,28 +112,28 @@ class Give_Earnings_Export extends Give_Export {
 
 			}
 
-			while ( $m1 <= $m2 ) {
+			while ($m1 <= $m2) {
 
-				$date1 = mktime( 0, 0, 0, $m1, 1, $year );
-				$date2 = mktime( 0, 0, 0, $m1, cal_days_in_month( CAL_GREGORIAN, $m1, $year ), $year );
+				$date1 = mktime(0, 0, 0, $m1, 1, $year);
+				$date2 = mktime(0, 0, 0, $m1, cal_days_in_month(CAL_GREGORIAN, $m1, $year), $year);
 
 				$data[] = array(
-					'date'      => date_i18n( 'F Y', $date1 ),
-					'donations' => $stats->get_sales( 0, $date1, $date2 ),
-					'earnings'  => give_format_amount( $stats->get_earnings( 0, $date1, $date2 ) ),
+					'date'      => date_i18n('F Y', $date1),
+					'donations' => $stats->get_sales(0, $date1, $date2),
+					'earnings'  => give_format_amount($stats->get_earnings(0, $date1, $date2)),
 				);
 
-				$m1 ++;
+				$m1++;
 
 			}
 
 
-			$year ++;
+			$year++;
 
 		}
 
-		$data = apply_filters( 'give_export_get_data', $data );
-		$data = apply_filters( "give_export_get_data_{$this->export_type}", $data );
+		$data = apply_filters('give_export_get_data', $data);
+		$data = apply_filters("give_export_get_data_{$this->export_type}", $data);
 
 		return $data;
 	}

@@ -21,12 +21,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function give_upgrades_screen() {
-	$action = isset( $_GET['give-upgrade'] ) ? sanitize_text_field( $_GET['give-upgrade'] ) : '';
-	$step   = isset( $_GET['step'] ) ? absint( $_GET['step'] ) : 1;
-	$total  = isset( $_GET['total'] ) ? absint( $_GET['total'] ) : false;
-	$custom = isset( $_GET['custom'] ) ? absint( $_GET['custom'] ) : 0;
-	$number = isset( $_GET['number'] ) ? absint( $_GET['number'] ) : 100;
-	$steps  = round( ( $total / $number ), 0 );
+	$action = isset($_GET['give-upgrade']) ? sanitize_text_field($_GET['give-upgrade']) : '';
+	$step   = isset($_GET['step']) ? absint($_GET['step']) : 1;
+	$total  = isset($_GET['total']) ? absint($_GET['total']) : false;
+	$custom = isset($_GET['custom']) ? absint($_GET['custom']) : 0;
+	$number = isset($_GET['number']) ? absint($_GET['number']) : 100;
+	$steps  = round(($total / $number), 0);
 
 	$doing_upgrade_args = array(
 		'page'         => 'give-upgrades',
@@ -36,25 +36,25 @@ function give_upgrades_screen() {
 		'custom'       => $custom,
 		'steps'        => $steps
 	);
-	update_option( 'give_doing_upgrade', $doing_upgrade_args );
-	if ( $step > $steps ) {
+	update_option('give_doing_upgrade', $doing_upgrade_args);
+	if ($step > $steps) {
 		// Prevent a weird case where the estimate was off. Usually only a couple.
 		$steps = $step;
 	}
 	?>
 	<div class="wrap">
-		<h1><?php esc_html_e( 'Give - Upgrades', 'give' ); ?></h1>
+		<h1><?php esc_html_e('Give - Upgrades', 'give'); ?></h1>
 
-		<?php if ( ! empty( $action ) ) : ?>
+		<?php if ( ! empty($action)) : ?>
 
 			<div id="give-upgrade-status">
-				<p style="font-size: 20px;max-width: 900px;"><?php esc_html_e( 'The upgrade process has started, please be patient and do not close this window or navigate away from this page. This could take several minutes depending on the upgrade and the size of your website. You will be automatically redirected when the upgrade is finished.', 'give' ); ?>
-					<img src="<?php echo GIVE_PLUGIN_URL . '/assets/images/spinner.gif'; ?>" id="give-upgrade-loader" style="  position: relative; top: 3px; left: 6px;" />
+				<p style="font-size: 20px;max-width: 900px;"><?php esc_html_e('The upgrade process has started, please be patient and do not close this window or navigate away from this page. This could take several minutes depending on the upgrade and the size of your website. You will be automatically redirected when the upgrade is finished.', 'give'); ?>
+					<img src="<?php echo GIVE_PLUGIN_URL.'/assets/images/spinner.gif'; ?>" id="give-upgrade-loader" style="  position: relative; top: 3px; left: 6px;" />
 				</p>
 
-				<?php if ( ! empty( $total ) ) : ?>
+				<?php if ( ! empty($total)) : ?>
 					<p>
-						<strong><?php printf( esc_html__( 'Step %d of approximately %d running', 'give' ), $step, $steps ); ?></strong>
+						<strong><?php printf(esc_html__('Step %d of approximately %d running', 'give'), $step, $steps); ?></strong>
 					</p>
 				<?php endif; ?>
 			</div>
@@ -64,11 +64,14 @@ function give_upgrades_screen() {
 				}, 250 );
 			</script>
 
-		<?php else : ?>
+		<?php else {
+	: ?>
 
 			<div id="give-upgrade-status">
 				<p style="font-size: 20px;max-width: 900px;">
-					<?php esc_html_e( 'The upgrade process has started, please be patient and do not close this window or navigate away from this page. This could take several minutes depending on the upgrade and the size of your website. You will be automatically redirected when the upgrade is finished.', 'give' ); ?>
+					<?php esc_html_e( 'The upgrade process has started, please be patient and do not close this window or navigate away from this page. This could take several minutes depending on the upgrade and the size of your website. You will be automatically redirected when the upgrade is finished.', 'give' );
+}
+?>
 					<img src="<?php echo GIVE_PLUGIN_URL . '/assets/images/spinner.gif'; ?>" id="give-upgrade-loader" style="  position: relative; top: 3px; left: 6px;" />
 				</p>
 			</div>

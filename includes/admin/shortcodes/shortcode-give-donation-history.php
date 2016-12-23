@@ -21,9 +21,9 @@ class Give_Shortcode_Donation_History extends Give_Shortcode_Generator {
 	 */
 	public function __construct() {
 
-		$this->shortcode['label'] = esc_html__( 'Donation History', 'give' );
+		$this->shortcode['label'] = esc_html__('Donation History', 'give');
 
-		parent::__construct( 'donation_history' );
+		parent::__construct('donation_history');
 	}
 }
 

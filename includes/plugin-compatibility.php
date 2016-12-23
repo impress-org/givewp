@@ -19,6 +19,6 @@
  * @return void
  */
 function give_disable_mandrill_nl2br() {
-	add_filter( 'mandrill_nl2br', '__return_false' );
+	add_filter('mandrill_nl2br', '__return_false');
 }
-add_action( 'give_email_send_before', 'give_disable_mandrill_nl2br');
+add_action('give_email_send_before', 'give_disable_mandrill_nl2br');

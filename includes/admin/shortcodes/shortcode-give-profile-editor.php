@@ -21,9 +21,9 @@ class Give_Shortcode_Profile_Editor extends Give_Shortcode_Generator {
 	 */
 	public function __construct() {
 
-		$this->shortcode['label'] = esc_html__( 'Profile Editor', 'give' );
+		$this->shortcode['label'] = esc_html__('Profile Editor', 'give');
 
-		parent::__construct( 'give_profile_editor' );
+		parent::__construct('give_profile_editor');
 	}
 }
 

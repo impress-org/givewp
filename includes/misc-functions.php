@@ -10,7 +10,7 @@
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) {
+if ( ! defined('ABSPATH')) {
 	exit;
 }
 
@@ -25,7 +25,7 @@ function give_is_test_mode() {
 
 	$ret = give_get_option('test_mode', false);
 
-	return (bool) apply_filters( 'give_is_test_mode', $ret );
+	return (bool) apply_filters('give_is_test_mode', $ret);
 
 }
 
@@ -37,9 +37,9 @@ function give_is_test_mode() {
  */
 function give_get_currency() {
 
-	$currency = give_get_option( 'currency', 'USD' );
+	$currency = give_get_option('currency', 'USD');
 
-	return apply_filters( 'give_currency', $currency );
+	return apply_filters('give_currency', $currency);
 }
 
 /**
@@ -51,9 +51,9 @@ function give_get_currency() {
  */
 function give_get_currency_position() {
 
-	$currency_pos = give_get_option( 'currency_position', 'before' );
+	$currency_pos = give_get_option('currency_position', 'before');
 
-	return apply_filters( 'give_currency_position', $currency_pos );
+	return apply_filters('give_currency_position', $currency_pos);
 }
 
 
@@ -66,39 +66,39 @@ function give_get_currency_position() {
 
 function give_get_currencies() {
 	$currencies = array(
-		'USD'  => esc_html__( 'US Dollars ($)', 'give' ),
-		'EUR'  => esc_html__( 'Euros (€)', 'give' ),
-		'GBP'  => esc_html__( 'Pounds Sterling (£)', 'give' ),
-		'AUD'  => esc_html__( 'Australian Dollars ($)', 'give' ),
-		'BRL'  => esc_html__( 'Brazilian Real (R$)', 'give' ),
-		'CAD'  => esc_html__( 'Canadian Dollars ($)', 'give' ),
-		'CZK'  => esc_html__( 'Czech Koruna (Kč)', 'give' ),
-		'DKK'  => esc_html__( 'Danish Krone (kr)', 'give' ),
-		'HKD'  => esc_html__( 'Hong Kong Dollar ($)', 'give' ),
-		'HUF'  => esc_html__( 'Hungarian Forint (Ft)', 'give' ),
-		'ILS'  => esc_html__( 'Israeli Shekel (₪)', 'give' ),
-		'JPY'  => esc_html__( 'Japanese Yen (¥)', 'give' ),
-		'MYR'  => esc_html__( 'Malaysian Ringgits (RM)', 'give' ),
-		'MXN'  => esc_html__( 'Mexican Peso ($)', 'give' ),
-		'MAD'  => esc_html__( 'Moroccan Dirham (&#x2e;&#x62f;&#x2e;&#x645;)', 'give' ),
-		'NZD'  => esc_html__( 'New Zealand Dollar ($)', 'give' ),
-		'NOK'  => esc_html__( 'Norwegian Krone (Kr.)', 'give' ),
-		'PHP'  => esc_html__( 'Philippine Pesos (₱)', 'give' ),
-		'PLN'  => esc_html__( 'Polish Zloty (zł)', 'give' ),
-		'SGD'  => esc_html__( 'Singapore Dollar ($)', 'give' ),
-		'KRW'  => esc_html__( 'South Korean Won (₩)', 'give' ),
-		'ZAR'  => esc_html__( 'South African Rand (R)', 'give' ),
-		'SEK'  => esc_html__( 'Swedish Krona (kr)', 'give' ),
-		'CHF'  => esc_html__( 'Swiss Franc (CHF)', 'give' ),
-		'TWD'  => esc_html__( 'Taiwan New Dollars (NT$)', 'give' ),
-		'THB'  => esc_html__( 'Thai Baht (฿)', 'give' ),
-		'INR'  => esc_html__( 'Indian Rupee (₹)', 'give' ),
-		'TRY'  => esc_html__( 'Turkish Lira (₺)', 'give' ),
-		'RIAL' => esc_html__( 'Iranian Rial (﷼)', 'give' ),
-		'RUB'  => esc_html__( 'Russian Rubles (руб)', 'give' )
+		'USD'  => esc_html__('US Dollars ($)', 'give'),
+		'EUR'  => esc_html__('Euros (€)', 'give'),
+		'GBP'  => esc_html__('Pounds Sterling (£)', 'give'),
+		'AUD'  => esc_html__('Australian Dollars ($)', 'give'),
+		'BRL'  => esc_html__('Brazilian Real (R$)', 'give'),
+		'CAD'  => esc_html__('Canadian Dollars ($)', 'give'),
+		'CZK'  => esc_html__('Czech Koruna (Kč)', 'give'),
+		'DKK'  => esc_html__('Danish Krone (kr)', 'give'),
+		'HKD'  => esc_html__('Hong Kong Dollar ($)', 'give'),
+		'HUF'  => esc_html__('Hungarian Forint (Ft)', 'give'),
+		'ILS'  => esc_html__('Israeli Shekel (₪)', 'give'),
+		'JPY'  => esc_html__('Japanese Yen (¥)', 'give'),
+		'MYR'  => esc_html__('Malaysian Ringgits (RM)', 'give'),
+		'MXN'  => esc_html__('Mexican Peso ($)', 'give'),
+		'MAD'  => esc_html__('Moroccan Dirham (&#x2e;&#x62f;&#x2e;&#x645;)', 'give'),
+		'NZD'  => esc_html__('New Zealand Dollar ($)', 'give'),
+		'NOK'  => esc_html__('Norwegian Krone (Kr.)', 'give'),
+		'PHP'  => esc_html__('Philippine Pesos (₱)', 'give'),
+		'PLN'  => esc_html__('Polish Zloty (zł)', 'give'),
+		'SGD'  => esc_html__('Singapore Dollar ($)', 'give'),
+		'KRW'  => esc_html__('South Korean Won (₩)', 'give'),
+		'ZAR'  => esc_html__('South African Rand (R)', 'give'),
+		'SEK'  => esc_html__('Swedish Krona (kr)', 'give'),
+		'CHF'  => esc_html__('Swiss Franc (CHF)', 'give'),
+		'TWD'  => esc_html__('Taiwan New Dollars (NT$)', 'give'),
+		'THB'  => esc_html__('Thai Baht (฿)', 'give'),
+		'INR'  => esc_html__('Indian Rupee (₹)', 'give'),
+		'TRY'  => esc_html__('Turkish Lira (₺)', 'give'),
+		'RIAL' => esc_html__('Iranian Rial (﷼)', 'give'),
+		'RUB'  => esc_html__('Russian Rubles (руб)', 'give')
 	);
 
-	return apply_filters( 'give_currencies', $currencies );
+	return apply_filters('give_currencies', $currencies);
 }
 
 
@@ -113,12 +113,12 @@ function give_get_currencies() {
  *
  * @return string           The symbol to use for the currency
  */
-function give_currency_symbol( $currency = '' ) {
+function give_currency_symbol($currency = '') {
 
-	if ( empty( $currency ) ) {
+	if (empty($currency)) {
 		$currency = give_get_currency();
 	}
-	switch ( $currency ) :
+	switch ($currency) :
 		case 'GBP' :
 			$symbol = '£';
 			break;
@@ -197,7 +197,7 @@ function give_currency_symbol( $currency = '' ) {
 	endswitch;
 
 
-	return apply_filters( 'give_currency_symbol', $symbol, $currency );
+	return apply_filters('give_currency_symbol', $symbol, $currency);
 }
 
 
@@ -209,15 +209,15 @@ function give_currency_symbol( $currency = '' ) {
  */
 function give_get_current_page_url() {
 
-	if ( is_front_page() ) {
-		$current_url = home_url( '/' );
+	if (is_front_page()) {
+		$current_url = home_url('/');
 	} else {
-		$http_host = sanitize_text_field( $_SERVER['HTTP_HOST'] );
-		$request_uri = sanitize_text_field( $_SERVER['REQUEST_URI'] );
-		$current_url = set_url_scheme( 'http://' . $http_host . untrailingslashit( $request_uri ) );
+		$http_host = sanitize_text_field($_SERVER['HTTP_HOST']);
+		$request_uri = sanitize_text_field($_SERVER['REQUEST_URI']);
+		$current_url = set_url_scheme('http://'.$http_host.untrailingslashit($request_uri));
 	}
 
-	return apply_filters( 'give_get_current_page_url', $current_url );
+	return apply_filters('give_get_current_page_url', $current_url);
 }
 
 
@@ -238,15 +238,15 @@ function give_is_cc_verify_enabled() {
 	 */
 	$gateways = give_get_enabled_payment_gateways();
 
-	if ( count( $gateways ) == 1 && ! isset( $gateways['paypal'] ) && ! isset( $gateways['manual'] ) ) {
+	if (count($gateways) == 1 && ! isset($gateways['paypal']) && ! isset($gateways['manual'])) {
 		$ret = true;
-	} else if ( count( $gateways ) == 1 ) {
+	} else if (count($gateways) == 1) {
 		$ret = false;
-	} else if ( count( $gateways ) == 2 && isset( $gateways['paypal'] ) && isset( $gateways['manual'] ) ) {
+	} else if (count($gateways) == 2 && isset($gateways['paypal']) && isset($gateways['manual'])) {
 		$ret = false;
 	}
 
-	return (bool) apply_filters( 'give_verify_credit_cards', $ret );
+	return (bool) apply_filters('give_verify_credit_cards', $ret);
 }
 
 /**
@@ -258,26 +258,26 @@ function give_is_cc_verify_enabled() {
 function give_get_timezone_id() {
 
 	// if site timezone string exists, return it
-	if ( $timezone = get_option( 'timezone_string' ) ) {
+	if ($timezone = get_option('timezone_string')) {
 		return $timezone;
 	}
 
 	// get UTC offset, if it isn't set return UTC
-	if ( ! ( $utc_offset = 3600 * get_option( 'gmt_offset', 0 ) ) ) {
+	if ( ! ($utc_offset = 3600 * get_option('gmt_offset', 0))) {
 		return 'UTC';
 	}
 
 	// attempt to guess the timezone string from the UTC offset
-	$timezone = timezone_name_from_abbr( '', $utc_offset );
+	$timezone = timezone_name_from_abbr('', $utc_offset);
 
 	// last try, guess timezone string manually
-	if ( $timezone === false ) {
+	if ($timezone === false) {
 
-		$is_dst = date( 'I' );
+		$is_dst = date('I');
 
-		foreach ( timezone_abbreviations_list() as $abbr ) {
-			foreach ( $abbr as $city ) {
-				if ( $city['dst'] == $is_dst && $city['offset'] == $utc_offset ) {
+		foreach (timezone_abbreviations_list() as $abbr) {
+			foreach ($abbr as $city) {
+				if ($city['dst'] == $is_dst && $city['offset'] == $utc_offset) {
 					return $city['timezone_id'];
 				}
 			}
@@ -301,17 +301,17 @@ function give_get_ip() {
 
 	$ip = '127.0.0.1';
 
-	if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
+	if ( ! empty($_SERVER['HTTP_CLIENT_IP'])) {
 		//check ip from share internet
 		$ip = $_SERVER['HTTP_CLIENT_IP'];
-	} elseif ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
+	} elseif ( ! empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
 		//to check ip is pass from proxy
 		$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-	} elseif ( ! empty( $_SERVER['REMOTE_ADDR'] ) ) {
+	} elseif ( ! empty($_SERVER['REMOTE_ADDR'])) {
 		$ip = $_SERVER['REMOTE_ADDR'];
 	}
 
-	return apply_filters( 'give_get_ip', $ip );
+	return apply_filters('give_get_ip', $ip);
 }
 
 
@@ -326,9 +326,9 @@ function give_get_ip() {
  *
  * @uses  Give()->session->set()
  */
-function give_set_purchase_session( $purchase_data = array() ) {
-	Give()->session->set( 'give_purchase', $purchase_data );
-	Give()->session->set( 'give_email', $purchase_data['user_email'] );
+function give_set_purchase_session($purchase_data = array()) {
+	Give()->session->set('give_purchase', $purchase_data);
+	Give()->session->set('give_email', $purchase_data['user_email']);
 }
 
 /**
@@ -339,10 +339,10 @@ function give_set_purchase_session( $purchase_data = array() ) {
  *
  * @since 1.0
  * @uses  Give()->session->get()
- * @return mixed array | false
+ * @return string array | false
  */
 function give_get_purchase_session() {
-	return Give()->session->get( 'give_purchase' );
+	return Give()->session->get('give_purchase');
 }
 
 /**
@@ -357,14 +357,14 @@ function give_get_purchase_session() {
  *
  * @return string
  */
-function give_get_purchase_summary( $purchase_data, $email = true ) {
+function give_get_purchase_summary($purchase_data, $email = true) {
 	$summary = '';
 
-	if ( $email ) {
-		$summary .= $purchase_data['user_email'] . ' - ';
+	if ($email) {
+		$summary .= $purchase_data['user_email'].' - ';
 	}
 
-	$summary .= get_the_title( $purchase_data['post_data']['give-form-id'] );
+	$summary .= get_the_title($purchase_data['post_data']['give-form-id']);
 
 	return $summary;
 }
@@ -381,31 +381,31 @@ function give_get_purchase_summary( $purchase_data, $email = true ) {
 function give_get_host() {
 	$host = false;
 
-	if ( defined( 'WPE_APIKEY' ) ) {
+	if (defined('WPE_APIKEY')) {
 		$host = 'WP Engine';
-	} elseif ( defined( 'PAGELYBIN' ) ) {
+	} elseif (defined('PAGELYBIN')) {
 		$host = 'Pagely';
-	} elseif ( DB_HOST == 'localhost:/tmp/mysql5.sock' ) {
+	} elseif (DB_HOST == 'localhost:/tmp/mysql5.sock') {
 		$host = 'ICDSoft';
-	} elseif ( DB_HOST == 'mysqlv5' ) {
+	} elseif (DB_HOST == 'mysqlv5') {
 		$host = 'NetworkSolutions';
-	} elseif ( strpos( DB_HOST, 'ipagemysql.com' ) !== false ) {
+	} elseif (strpos(DB_HOST, 'ipagemysql.com') !== false) {
 		$host = 'iPage';
-	} elseif ( strpos( DB_HOST, 'ipowermysql.com' ) !== false ) {
+	} elseif (strpos(DB_HOST, 'ipowermysql.com') !== false) {
 		$host = 'IPower';
-	} elseif ( strpos( DB_HOST, '.gridserver.com' ) !== false ) {
+	} elseif (strpos(DB_HOST, '.gridserver.com') !== false) {
 		$host = 'MediaTemple Grid';
-	} elseif ( strpos( DB_HOST, '.pair.com' ) !== false ) {
+	} elseif (strpos(DB_HOST, '.pair.com') !== false) {
 		$host = 'pair Networks';
-	} elseif ( strpos( DB_HOST, '.stabletransit.com' ) !== false ) {
+	} elseif (strpos(DB_HOST, '.stabletransit.com') !== false) {
 		$host = 'Rackspace Cloud';
-	} elseif ( strpos( DB_HOST, '.sysfix.eu' ) !== false ) {
+	} elseif (strpos(DB_HOST, '.sysfix.eu') !== false) {
 		$host = 'SysFix.eu Power Hosting';
-	} elseif ( strpos( $_SERVER['SERVER_NAME'], 'Flywheel' ) !== false ) {
+	} elseif (strpos($_SERVER['SERVER_NAME'], 'Flywheel') !== false) {
 		$host = 'Flywheel';
 	} else {
 		// Adding a general fallback for data gathering
-		$host = 'DBH: ' . DB_HOST . ', SRV: ' . $_SERVER['SERVER_NAME'];
+		$host = 'DBH: '.DB_HOST.', SRV: '.$_SERVER['SERVER_NAME'];
 	}
 
 	return $host;
@@ -421,67 +421,67 @@ function give_get_host() {
  *
  * @return bool true if host matches, false if not
  */
-function give_is_host( $host = false ) {
+function give_is_host($host = false) {
 
 	$return = false;
 
-	if ( $host ) {
-		$host = str_replace( ' ', '', strtolower( $host ) );
+	if ($host) {
+		$host = str_replace(' ', '', strtolower($host));
 
-		switch ( $host ) {
+		switch ($host) {
 			case 'wpengine':
-				if ( defined( 'WPE_APIKEY' ) ) {
+				if (defined('WPE_APIKEY')) {
 					$return = true;
 				}
 				break;
 			case 'pagely':
-				if ( defined( 'PAGELYBIN' ) ) {
+				if (defined('PAGELYBIN')) {
 					$return = true;
 				}
 				break;
 			case 'icdsoft':
-				if ( DB_HOST == 'localhost:/tmp/mysql5.sock' ) {
+				if (DB_HOST == 'localhost:/tmp/mysql5.sock') {
 					$return = true;
 				}
 				break;
 			case 'networksolutions':
-				if ( DB_HOST == 'mysqlv5' ) {
+				if (DB_HOST == 'mysqlv5') {
 					$return = true;
 				}
 				break;
 			case 'ipage':
-				if ( strpos( DB_HOST, 'ipagemysql.com' ) !== false ) {
+				if (strpos(DB_HOST, 'ipagemysql.com') !== false) {
 					$return = true;
 				}
 				break;
 			case 'ipower':
-				if ( strpos( DB_HOST, 'ipowermysql.com' ) !== false ) {
+				if (strpos(DB_HOST, 'ipowermysql.com') !== false) {
 					$return = true;
 				}
 				break;
 			case 'mediatemplegrid':
-				if ( strpos( DB_HOST, '.gridserver.com' ) !== false ) {
+				if (strpos(DB_HOST, '.gridserver.com') !== false) {
 					$return = true;
 				}
 				break;
 			case 'pairnetworks':
-				if ( strpos( DB_HOST, '.pair.com' ) !== false ) {
+				if (strpos(DB_HOST, '.pair.com') !== false) {
 					$return = true;
 				}
 				break;
 			case 'rackspacecloud':
-				if ( strpos( DB_HOST, '.stabletransit.com' ) !== false ) {
+				if (strpos(DB_HOST, '.stabletransit.com') !== false) {
 					$return = true;
 				}
 				break;
 			case 'sysfix.eu':
 			case 'sysfix.eupowerhosting':
-				if ( strpos( DB_HOST, '.sysfix.eu' ) !== false ) {
+				if (strpos(DB_HOST, '.sysfix.eu') !== false) {
 					$return = true;
 				}
 				break;
 			case 'flywheel':
-				if ( strpos( $_SERVER['SERVER_NAME'], 'Flywheel' ) !== false ) {
+				if (strpos($_SERVER['SERVER_NAME'], 'Flywheel') !== false) {
 					$return = true;
 				}
 				break;
@@ -514,7 +514,7 @@ function give_is_host( $host = false ) {
  * @param string $replacement Optional. The function that should have been called.
  * @param array  $backtrace   Optional. Contains stack backtrace of deprecated function.
  */
-function _give_deprecated_function( $function, $version, $replacement = null, $backtrace = null ) {
+function _give_deprecated_function($function, $version, $replacement = null, $backtrace = null) {
 
 	/**
 	 * Fires while give deprecated function call occurs.
@@ -527,19 +527,19 @@ function _give_deprecated_function( $function, $version, $replacement = null, $b
 	 * @param string $replacement Optional. The function that should have been called.
 	 * @param string $version     The plugin version that deprecated the function.
 	 */
-	do_action( 'give_deprecated_function_run', $function, $replacement, $version );
+	do_action('give_deprecated_function_run', $function, $replacement, $version);
 
-	$show_errors = current_user_can( 'manage_options' );
+	$show_errors = current_user_can('manage_options');
 
 	// Allow plugin to filter the output error trigger
-	if ( WP_DEBUG && apply_filters( 'give_deprecated_function_trigger_error', $show_errors ) ) {
-		if ( ! is_null( $replacement ) ) {
-			trigger_error( sprintf( __( '%1$s is <strong>deprecated</strong> since Give version %2$s! Use %3$s instead.', 'give' ), $function, $version, $replacement ) );
-			trigger_error( print_r( $backtrace, 1 ) ); // Limited to previous 1028 characters, but since we only need to move back 1 in stack that should be fine.
+	if (WP_DEBUG && apply_filters('give_deprecated_function_trigger_error', $show_errors)) {
+		if ( ! is_null($replacement)) {
+			trigger_error(sprintf(__('%1$s is <strong>deprecated</strong> since Give version %2$s! Use %3$s instead.', 'give'), $function, $version, $replacement));
+			trigger_error(print_r($backtrace, 1)); // Limited to previous 1028 characters, but since we only need to move back 1 in stack that should be fine.
 			// Alternatively we could dump this to a file.
 		} else {
-			trigger_error( sprintf( __( '%1$s is <strong>deprecated</strong> since Give version %2$s with no alternative available.', 'give' ), $function, $version ) );
-			trigger_error( print_r( $backtrace, 1 ) );// Limited to previous 1028 characters, but since we only need to move back 1 in stack that should be fine.
+			trigger_error(sprintf(__('%1$s is <strong>deprecated</strong> since Give version %2$s with no alternative available.', 'give'), $function, $version));
+			trigger_error(print_r($backtrace, 1)); // Limited to previous 1028 characters, but since we only need to move back 1 in stack that should be fine.
 			// Alternatively we could dump this to a file.
 		}
 	}
@@ -553,8 +553,8 @@ function _give_deprecated_function( $function, $version, $replacement = null, $b
  * @return string $post_id
  */
 function give_get_admin_post_id() {
-	$post_id = isset( $_GET['post'] ) ? $_GET['post'] : null;
-	if ( ! $post_id && isset( $_POST['post_id'] ) ) {
+	$post_id = isset($_GET['post']) ? $_GET['post'] : null;
+	if ( ! $post_id && isset($_POST['post_id'])) {
 		$post_id = $_POST['post_id'];
 	}
 
@@ -568,7 +568,7 @@ function give_get_admin_post_id() {
  * @return string Arg separator output
  */
 function give_get_php_arg_separator_output() {
-	return ini_get( 'arg_separator.output' );
+	return ini_get('arg_separator.output');
 }
 
 
@@ -583,10 +583,10 @@ function give_get_php_arg_separator_output() {
  *
  * @return string Short month name
  */
-function give_month_num_to_name( $n ) {
-	$timestamp = mktime( 0, 0, 0, $n, 1, 2005 );
+function give_month_num_to_name($n) {
+	$timestamp = mktime(0, 0, 0, $n, 1, 2005);
 
-	return date_i18n( "M", $timestamp );
+	return date_i18n("M", $timestamp);
 }
 
 
@@ -599,10 +599,10 @@ function give_month_num_to_name( $n ) {
  *
  * @return bool Whether or not function is disabled.
  */
-function give_is_func_disabled( $function ) {
-	$disabled = explode( ',', ini_get( 'disable_functions' ) );
+function give_is_func_disabled($function) {
+	$disabled = explode(',', ini_get('disable_functions'));
 
-	return in_array( $function, $disabled );
+	return in_array($function, $disabled);
 }
 
 
@@ -613,31 +613,31 @@ function give_is_func_disabled( $function ) {
  */
 function give_get_newsletter() { ?>
 
-	<p class="newsletter-intro"><?php esc_html_e( 'Be sure to sign up for the Give newsletter below to stay informed of important updates and news.', 'give' ); ?></p>
+	<p class="newsletter-intro"><?php esc_html_e('Be sure to sign up for the Give newsletter below to stay informed of important updates and news.', 'give'); ?></p>
 
 	<div class="give-newsletter-form-wrap">
 
 		<form action="//givewp.us3.list-manage.com/subscribe/post?u=3ccb75d68bda4381e2f45794c&amp;id=12a081aa13" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
 			<div class="give-newsletter-confirmation">
-				<p><?php esc_html_e( 'Thanks for Subscribing!', 'give' ); ?> :)</p>
+				<p><?php esc_html_e('Thanks for Subscribing!', 'give'); ?> :)</p>
 			</div>
 
 			<table class="form-table give-newsletter-form">
 				<tr valign="middle">
 					<td>
-						<label for="mce-EMAIL" class="screen-reader-text"><?php esc_html_e( 'Email Address (required)', 'give' ); ?></label>
-						<input type="email" name="EMAIL" id="mce-EMAIL" placeholder="<?php esc_attr_e( 'Email Address (required)', 'give' ); ?>" class="required email" value="">
+						<label for="mce-EMAIL" class="screen-reader-text"><?php esc_html_e('Email Address (required)', 'give'); ?></label>
+						<input type="email" name="EMAIL" id="mce-EMAIL" placeholder="<?php esc_attr_e('Email Address (required)', 'give'); ?>" class="required email" value="">
 					</td>
 					<td>
-						<label for="mce-FNAME" class="screen-reader-text"><?php esc_html_e( 'First Name', 'give' ); ?></label>
-						<input type="text" name="FNAME" id="mce-FNAME" placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" class="" value="">
+						<label for="mce-FNAME" class="screen-reader-text"><?php esc_html_e('First Name', 'give'); ?></label>
+						<input type="text" name="FNAME" id="mce-FNAME" placeholder="<?php esc_attr_e('First Name', 'give'); ?>" class="" value="">
 					</td>
 					<td>
-						<label for="mce-LNAME" class="screen-reader-text"><?php esc_html_e( 'Last Name', 'give' ); ?></label>
-						<input type="text" name="LNAME" id="mce-LNAME" placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" class="" value="">
+						<label for="mce-LNAME" class="screen-reader-text"><?php esc_html_e('Last Name', 'give'); ?></label>
+						<input type="text" name="LNAME" id="mce-LNAME" placeholder="<?php esc_attr_e('Last Name', 'give'); ?>" class="" value="">
 					</td>
 					<td>
-						<input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button" value="<?php esc_attr_e( 'Subscribe', 'give' ); ?>">
+						<input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button" value="<?php esc_attr_e('Subscribe', 'give'); ?>">
 					</td>
 				</tr>
 			</table>
@@ -698,7 +698,7 @@ function give_social_media_elements() {
 		<a href="https://twitter.com/givewp" class="twitter-follow-button" data-show-count="false"><?php
 			printf(
 				/* translators: %s: Give twitter user @givewp */
-				esc_html_e( 'Follow %s', 'give' ),
+				esc_html_e('Follow %s', 'give'),
 				'@givewp'
 			);
 		?></a>
@@ -727,7 +727,7 @@ function give_social_media_elements() {
  *
  * @return string
  */
-function give_svg_icons( $icon ) {
+function give_svg_icons($icon) {
 
 	// Store your SVGs in an associative array
 	$svgs = array(
@@ -739,7 +739,7 @@ function give_svg_icons( $icon ) {
 	);
 
 	// Return the chosen icon's SVG string
-	return $svgs[ $icon ];
+	return $svgs[$icon];
 }
 
 /**
@@ -751,15 +751,15 @@ function give_svg_icons( $icon ) {
  *
  * @return mixed
  */
-function modify_nav_menu_meta_box_object( $post_type ) {
-	if ( isset( $post_type->name ) && $post_type->name == 'give_forms' ) {
-		$post_type->labels->name = esc_html__( 'Donation Forms', 'give' );
+function modify_nav_menu_meta_box_object($post_type) {
+	if (isset($post_type->name) && $post_type->name == 'give_forms') {
+		$post_type->labels->name = esc_html__('Donation Forms', 'give');
 	}
 
 	return $post_type;
 }
 
-add_filter( 'nav_menu_meta_box_object', 'modify_nav_menu_meta_box_object' );
+add_filter('nav_menu_meta_box_object', 'modify_nav_menu_meta_box_object');
 
 
 /**
@@ -773,7 +773,7 @@ add_filter( 'nav_menu_meta_box_object', 'modify_nav_menu_meta_box_object' );
  * @license    https://opensource.org/licenses/MIT MIT
  */
 
-if ( ! function_exists( 'array_column' ) ) {
+if ( ! function_exists('array_column')) {
 	/**
 	 * Returns the values from a single column of the input array, identified by
 	 * the $columnKey.
@@ -812,10 +812,10 @@ if ( ! function_exists( 'array_column' ) ) {
 		}
 
 		if ( ! is_int( $params[1] )
-		     && ! is_float( $params[1] )
-		     && ! is_string( $params[1] )
-		     && $params[1] !== null
-		     && ! ( is_object( $params[1] ) && method_exists( $params[1], '__toString' ) )
+			 && ! is_float( $params[1] )
+			 && ! is_string( $params[1] )
+			 && $params[1] !== null
+			 && ! ( is_object( $params[1] ) && method_exists( $params[1], '__toString' ) )
 		) {
 			trigger_error( esc_html__( 'array_column(): The column key should be either a string or an integer.', 'give' ), E_USER_WARNING );
 
@@ -823,10 +823,10 @@ if ( ! function_exists( 'array_column' ) ) {
 		}
 
 		if ( isset( $params[2] )
-		     && ! is_int( $params[2] )
-		     && ! is_float( $params[2] )
-		     && ! is_string( $params[2] )
-		     && ! ( is_object( $params[2] ) && method_exists( $params[2], '__toString' ) )
+			 && ! is_int( $params[2] )
+			 && ! is_float( $params[2] )
+			 && ! is_string( $params[2] )
+			 && ! ( is_object( $params[2] ) && method_exists( $params[2], '__toString' ) )
 		) {
 			trigger_error( esc_html__( 'array_column(): The index key should be either a string or an integer.', 'give' ), E_USER_WARNING );
 
@@ -847,26 +847,26 @@ if ( ! function_exists( 'array_column' ) ) {
 
 		$resultArray = array();
 
-		foreach ( $paramsInput as $row ) {
+		foreach ($paramsInput as $row) {
 			$key    = $value = null;
 			$keySet = $valueSet = false;
 
-			if ( $paramsIndexKey !== null && array_key_exists( $paramsIndexKey, $row ) ) {
+			if ($paramsIndexKey !== null && array_key_exists($paramsIndexKey, $row)) {
 				$keySet = true;
-				$key    = (string) $row[ $paramsIndexKey ];
+				$key    = (string) $row[$paramsIndexKey];
 			}
 
-			if ( $paramsColumnKey === null ) {
+			if ($paramsColumnKey === null) {
 				$valueSet = true;
 				$value    = $row;
-			} elseif ( is_array( $row ) && array_key_exists( $paramsColumnKey, $row ) ) {
+			} elseif (is_array($row) && array_key_exists($paramsColumnKey, $row)) {
 				$valueSet = true;
-				$value    = $row[ $paramsColumnKey ];
+				$value    = $row[$paramsColumnKey];
 			}
 
-			if ( $valueSet ) {
-				if ( $keySet ) {
-					$resultArray[ $key ] = $value;
+			if ($valueSet) {
+				if ($keySet) {
+					$resultArray[$key] = $value;
 				} else {
 					$resultArray[] = $value;
 				}
@@ -888,40 +888,40 @@ if ( ! function_exists( 'array_column' ) ) {
  *
  * @return bool Whether the receipt is visible or not.
  */
-function give_can_view_receipt( $payment_key = '' ) {
+function give_can_view_receipt($payment_key = '') {
 
 	$return = false;
 
-	if ( empty( $payment_key ) ) {
+	if (empty($payment_key)) {
 		return $return;
 	}
 
 	global $give_receipt_args;
 
-	$give_receipt_args['id'] = give_get_purchase_id_by_key( $payment_key );
+	$give_receipt_args['id'] = give_get_purchase_id_by_key($payment_key);
 
-	$user_id = (int) give_get_payment_user_id( $give_receipt_args['id'] );
+	$user_id = (int) give_get_payment_user_id($give_receipt_args['id']);
 
-	$payment_meta = give_get_payment_meta( $give_receipt_args['id'] );
+	$payment_meta = give_get_payment_meta($give_receipt_args['id']);
 
-	if ( is_user_logged_in() ) {
-		if ( $user_id === (int) get_current_user_id() ) {
+	if (is_user_logged_in()) {
+		if ($user_id === (int) get_current_user_id()) {
 			$return = true;
-		} elseif ( wp_get_current_user()->user_email === give_get_payment_user_email( $give_receipt_args['id'] ) ) {
+		} elseif (wp_get_current_user()->user_email === give_get_payment_user_email($give_receipt_args['id'])) {
 			$return = true;
-		} elseif ( current_user_can( 'view_give_sensitive_data' ) ) {
+		} elseif (current_user_can('view_give_sensitive_data')) {
 			$return = true;
 		}
 	}
 
 	$session = give_get_purchase_session();
-	if ( ! empty( $session ) && ! is_user_logged_in() ) {
-		if ( $session['purchase_key'] === $payment_meta['key'] ) {
+	if ( ! empty($session) && ! is_user_logged_in()) {
+		if ($session['purchase_key'] === $payment_meta['key']) {
 			$return = true;
 		}
 	}
 
-	return (bool) apply_filters( 'give_can_view_receipt', $return, $payment_key );
+	return (bool) apply_filters('give_can_view_receipt', $return, $payment_key);
 
 }
 
@@ -930,7 +930,7 @@ function give_can_view_receipt( $payment_key = '' ) {
  *
  * Fallback in case the calendar extension is not loaded in PHP; Only supports Gregorian calendar
  */
-if ( ! function_exists( 'cal_days_in_month' ) ) {
+if ( ! function_exists('cal_days_in_month')) {
 	/**
 	 * cal_days_in_month
 	 *
@@ -940,7 +940,7 @@ if ( ! function_exists( 'cal_days_in_month' ) ) {
 	 *
 	 * @return bool|string
 	 */
-	function cal_days_in_month( $calendar, $month, $year ) {
-		return date( 't', mktime( 0, 0, 0, $month, 1, $year ) );
+	function cal_days_in_month($calendar, $month, $year) {
+		return date('t', mktime(0, 0, 0, $month, 1, $year));
 	}
 }
