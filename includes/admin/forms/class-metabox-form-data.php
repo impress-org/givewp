@@ -225,6 +225,13 @@ class Give_MetaBox_Form_Data {
 								'placeholder' => esc_attr__( 'Give a Custom Amount', 'give' ),
 							),
 						),
+
+						array(
+							'name'		  => 'donation_options_docs',
+							'type'        => 'docs_link',
+							'url'		  => 'https://givewp.com/documentation/core/give-forms/',
+							'title'		  => "Documentation Options",
+						)
 					)
 				),
 			) ),
