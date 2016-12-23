@@ -225,12 +225,11 @@ class Give_MetaBox_Form_Data {
 								'placeholder' => esc_attr__( 'Give a Custom Amount', 'give' ),
 							),
 						),
-
 						array(
 							'name'		  => 'donation_options_docs',
 							'type'        => 'docs_link',
 							'url'		  => 'https://givewp.com/documentation/core/give-forms/',
-							'title'		  => "Documentation Options",
+							'title'		  => 'Documentation Options',
 						)
 					)
 				),
@@ -317,6 +316,12 @@ class Give_MetaBox_Form_Data {
 								),
 								'default' => 'global',
 							),
+							array(
+								'name'		  => 'form_display_docs',
+								'type'        => 'docs_link',
+								'url'		  => 'https://givewp.com/documentation/core/give-forms/',
+								'title'		  => 'Form Display',
+							),
 						)
 					),
 				)
@@ -393,6 +398,12 @@ class Give_MetaBox_Form_Data {
 							'placeholder' => esc_attr__( 'Thank you to all our donors, we have met our fundraising goal.', 'give' ),
 						),
 					),
+					array(
+						'name'		  => 'donation_goal_docs',
+						'type'        => 'docs_link',
+						'url'		  => 'https://givewp.com/documentation/core/give-forms/',
+						'title'		  => 'Donation Goal',
+					),
 				) ),
 			) ),
 
@@ -436,6 +447,12 @@ class Give_MetaBox_Form_Data {
 							'id'          => $prefix . 'form_content',
 							'type'        => 'wysiwyg',
 						),
+						array(
+							'name'		  => 'form_content_docs',
+							'type'        => 'docs_link',
+							'url'		  => 'https://givewp.com/documentation/core/give-forms/',
+							'title'		  => 'Form Content',
+						),
 					)
 				),
 			) ),
@@ -476,6 +493,12 @@ class Give_MetaBox_Form_Data {
 							'name' => esc_html__( 'Agreement Text', 'give' ),
 							'desc' => esc_html__( 'This is the actual text which the user will have to agree to in order to make a donation.', 'give' ),
 							'type' => 'wysiwyg',
+						),
+						array(
+							'name'		  => 'terms_docs',
+							'type'        => 'docs_link',
+							'url'		  => 'https://givewp.com/documentation/core/give-forms/',
+							'title'		  => 'Terms & Conditions',
 						),
 					)
 				),
