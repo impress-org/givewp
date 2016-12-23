@@ -40,11 +40,11 @@
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) {
+if ( ! defined('ABSPATH')) {
 	exit;
 }
 
-if ( ! class_exists( 'Give' ) ) :
+if ( ! class_exists('Give')) :
 
 	/**
 	 * Main Give Class
@@ -195,11 +195,11 @@ if ( ! class_exists( 'Give' ) ) :
 		 * @return    Give
 		 */
 		public static function instance() {
-			if ( ! isset( self::$instance ) && ! ( self::$instance instanceof Give ) ) {
+			if ( ! isset(self::$instance) && ! (self::$instance instanceof Give)) {
 				self::$instance = new Give;
 				self::$instance->setup_constants();
 
-				add_action( 'plugins_loaded', array( self::$instance, 'load_textdomain' ) );
+				add_action('plugins_loaded', array(self::$instance, 'load_textdomain'));
 
 				self::$instance->includes();
 				self::$instance->roles           = new Give_Roles();
@@ -232,7 +232,7 @@ if ( ! class_exists( 'Give' ) ) :
 		 */
 		public function __clone() {
 			// Cloning instances of the class is forbidden
-			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'give' ), '1.0' );
+			_doing_it_wrong(__FUNCTION__, __('Cheatin&#8217; huh?', 'give'), '1.0');
 		}
 
 		/**
@@ -245,7 +245,7 @@ if ( ! class_exists( 'Give' ) ) :
 		 */
 		public function __wakeup() {
 			// Unserializing instances of the class is forbidden.
-			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'give' ), '1.0' );
+			_doing_it_wrong(__FUNCTION__, __('Cheatin&#8217; huh?', 'give'), '1.0');
 		}
 
 		/**
@@ -259,33 +259,33 @@ if ( ! class_exists( 'Give' ) ) :
 		private function setup_constants() {
 
 			// Plugin version
-			if ( ! defined( 'GIVE_VERSION' ) ) {
-				define( 'GIVE_VERSION', '1.7.2' );
+			if ( ! defined('GIVE_VERSION')) {
+				define('GIVE_VERSION', '1.7.2');
 			}
 
 			// Plugin Folder Path
-			if ( ! defined( 'GIVE_PLUGIN_DIR' ) ) {
-				define( 'GIVE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+			if ( ! defined('GIVE_PLUGIN_DIR')) {
+				define('GIVE_PLUGIN_DIR', plugin_dir_path(__FILE__));
 			}
 
 			// Plugin Folder URL
-			if ( ! defined( 'GIVE_PLUGIN_URL' ) ) {
-				define( 'GIVE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+			if ( ! defined('GIVE_PLUGIN_URL')) {
+				define('GIVE_PLUGIN_URL', plugin_dir_url(__FILE__));
 			}
 
 			// Plugin Basename aka: "give/give.php"
-			if ( ! defined( 'GIVE_PLUGIN_BASENAME' ) ) {
-				define( 'GIVE_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
+			if ( ! defined('GIVE_PLUGIN_BASENAME')) {
+				define('GIVE_PLUGIN_BASENAME', plugin_basename(__FILE__));
 			}
 
 			// Plugin Root File
-			if ( ! defined( 'GIVE_PLUGIN_FILE' ) ) {
-				define( 'GIVE_PLUGIN_FILE', __FILE__ );
+			if ( ! defined('GIVE_PLUGIN_FILE')) {
+				define('GIVE_PLUGIN_FILE', __FILE__);
 			}
 
 			// Make sure CAL_GREGORIAN is defined
-			if ( ! defined( 'CAL_GREGORIAN' ) ) {
-				define( 'CAL_GREGORIAN', 1 );
+			if ( ! defined('CAL_GREGORIAN')) {
+				define('CAL_GREGORIAN', 1);
 			}
 		}
 
@@ -360,9 +360,9 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/template.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/actions.php';
 
-            if( defined( 'WP_CLI' ) && WP_CLI ) {
-                require_once GIVE_PLUGIN_DIR . 'includes/class-give-cli-commands.php';
-            }
+			if( defined( 'WP_CLI' ) && WP_CLI ) {
+				require_once GIVE_PLUGIN_DIR . 'includes/class-give-cli-commands.php';
+			}
 
 			if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 
@@ -424,26 +424,26 @@ if ( ! class_exists( 'Give' ) ) :
 		 */
 		public function load_textdomain() {
 			// Set filter for Give's languages directory
-			$give_lang_dir = dirname( plugin_basename( GIVE_PLUGIN_FILE ) ) . '/languages/';
-			$give_lang_dir = apply_filters( 'give_languages_directory', $give_lang_dir );
+			$give_lang_dir = dirname(plugin_basename(GIVE_PLUGIN_FILE)).'/languages/';
+			$give_lang_dir = apply_filters('give_languages_directory', $give_lang_dir);
 
 			// Traditional WordPress plugin locale filter
-			$locale = apply_filters( 'plugin_locale', get_locale(), 'give' );
-			$mofile = sprintf( '%1$s-%2$s.mo', 'give', $locale );
+			$locale = apply_filters('plugin_locale', get_locale(), 'give');
+			$mofile = sprintf('%1$s-%2$s.mo', 'give', $locale);
 
 			// Setup paths to current locale file
-			$mofile_local  = $give_lang_dir . $mofile;
-			$mofile_global = WP_LANG_DIR . '/give/' . $mofile;
+			$mofile_local  = $give_lang_dir.$mofile;
+			$mofile_global = WP_LANG_DIR.'/give/'.$mofile;
 
-			if ( file_exists( $mofile_global ) ) {
+			if (file_exists($mofile_global)) {
 				// Look in global /wp-content/languages/give folder
-				load_textdomain( 'give', $mofile_global );
-			} elseif ( file_exists( $mofile_local ) ) {
+				load_textdomain('give', $mofile_global);
+			} elseif (file_exists($mofile_local)) {
 				// Look in local location from filter `give_languages_directory`
-				load_textdomain( 'give', $mofile_local );
+				load_textdomain('give', $mofile_local);
 			} else {
 				// Load the default language files packaged up w/ Give
-				load_plugin_textdomain( 'give', false, $give_lang_dir );
+				load_plugin_textdomain('give', false, $give_lang_dir);
 			}
 		}
 

@@ -55,32 +55,32 @@ class Give_Tools_Recount_Customer_Stats extends Give_Batch_Export {
 
 		$args = array(
 			'number'  => $this->per_step,
-			'offset'  => $this->per_step * ( $this->step - 1 ),
+			'offset'  => $this->per_step * ($this->step - 1),
 			'orderby' => 'id',
 			'order'   => 'DESC',
 		);
 
-		$customers = Give()->customers->get_customers( $args );
+		$customers = Give()->customers->get_customers($args);
 
-		if ( $customers ) {
+		if ($customers) {
 
-			$allowed_payment_status = apply_filters( 'give_recount_donors_donation_statuses', give_get_payment_status_keys() );
+			$allowed_payment_status = apply_filters('give_recount_donors_donation_statuses', give_get_payment_status_keys());
 
-			foreach ( $customers as $customer ) {
+			foreach ($customers as $customer) {
 
-				$attached_payment_ids = explode( ',', $customer->payment_ids );
+				$attached_payment_ids = explode(',', $customer->payment_ids);
 
 				$attached_args = array(
 					'post__in' => $attached_payment_ids,
-					'number'   => - 1,
+					'number'   => -1,
 					'status'   => $allowed_payment_status,
 				);
 
-				$attached_payments = (array) give_get_payments( $attached_args );
+				$attached_payments = (array) give_get_payments($attached_args);
 
 				$unattached_args = array(
 					'post__not_in' => $attached_payment_ids,
-					'number'       => - 1,
+					'number'       => -1,
 					'status'       => $allowed_payment_status,
 					'meta_query'   => array(
 						array(
@@ -91,29 +91,29 @@ class Give_Tools_Recount_Customer_Stats extends Give_Batch_Export {
 					),
 				);
 
-				$unattached_payments = give_get_payments( $unattached_args );
+				$unattached_payments = give_get_payments($unattached_args);
 
-				$payments = array_merge( $attached_payments, $unattached_payments );
+				$payments = array_merge($attached_payments, $unattached_payments);
 
 				$purchase_value = 0.00;
 				$purchase_count = 0;
 				$payment_ids    = array();
 
-				if ( $payments ) {
+				if ($payments) {
 
-					foreach ( $payments as $payment ) {
+					foreach ($payments as $payment) {
 
 						$should_process_payment = 'publish' == $payment->post_status ? true : false;
-						$should_process_payment = apply_filters( 'give_donor_recount_should_process_donation', $should_process_payment, $payment );
+						$should_process_payment = apply_filters('give_donor_recount_should_process_donation', $should_process_payment, $payment);
 
-						if ( true === $should_process_payment ) {
+						if (true === $should_process_payment) {
 
-							if ( apply_filters( 'give_customer_recount_should_increase_value', true, $payment ) ) {
-								$purchase_value += give_get_payment_amount( $payment->ID );
+							if (apply_filters('give_customer_recount_should_increase_value', true, $payment)) {
+								$purchase_value += give_get_payment_amount($payment->ID);
 							}
 
-							if ( apply_filters( 'give_customer_recount_should_increase_count', true, $payment ) ) {
-								$purchase_count ++;
+							if (apply_filters('give_customer_recount_should_increase_count', true, $payment)) {
+								$purchase_count++;
 							}
 
 						}
@@ -123,7 +123,7 @@ class Give_Tools_Recount_Customer_Stats extends Give_Batch_Export {
 
 				}
 
-				$payment_ids = implode( ',', $payment_ids );
+				$payment_ids = implode(',', $payment_ids);
 
 				$customer_update_data = array(
 					'purchase_count' => $purchase_count,
@@ -131,8 +131,8 @@ class Give_Tools_Recount_Customer_Stats extends Give_Batch_Export {
 					'payment_ids'    => $payment_ids,
 				);
 
-				$customer_instance = new Give_Customer( $customer->id );
-				$customer_instance->update( $customer_update_data );
+				$customer_instance = new Give_Customer($customer->id);
+				$customer_instance->update($customer_update_data);
 
 			}
 
@@ -152,21 +152,21 @@ class Give_Tools_Recount_Customer_Stats extends Give_Batch_Export {
 	public function get_percentage_complete() {
 
 		$args = array(
-			'number'  => - 1,
+			'number'  => -1,
 			'orderby' => 'id',
 			'order'   => 'DESC',
 		);
 
-		$customers = Give()->customers->get_customers( $args );
-		$total     = count( $customers );
+		$customers = Give()->customers->get_customers($args);
+		$total     = count($customers);
 
 		$percentage = 100;
 
-		if ( $total > 0 ) {
-			$percentage = ( ( $this->per_step * $this->step ) / $total ) * 100;
+		if ($total > 0) {
+			$percentage = (($this->per_step * $this->step) / $total) * 100;
 		}
 
-		if ( $percentage > 100 ) {
+		if ($percentage > 100) {
 			$percentage = 100;
 		}
 
@@ -180,7 +180,7 @@ class Give_Tools_Recount_Customer_Stats extends Give_Batch_Export {
 	 *
 	 * @param array $request The Form Data passed into the batch processing
 	 */
-	public function set_properties( $request ) {
+	public function set_properties($request) {
 	}
 
 	/**
@@ -191,19 +191,19 @@ class Give_Tools_Recount_Customer_Stats extends Give_Batch_Export {
 	 */
 	public function process_step() {
 
-		if ( ! $this->can_export() ) {
-			wp_die( esc_html__( 'You do not have permission to recount stats.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+		if ( ! $this->can_export()) {
+			wp_die(esc_html__('You do not have permission to recount stats.', 'give'), esc_html__('Error', 'give'), array('response' => 403));
 		}
 
 		$had_data = $this->get_data();
 
-		if ( $had_data ) {
+		if ($had_data) {
 			$this->done = false;
 
 			return true;
 		} else {
 			$this->done    = true;
-			$this->message = esc_html__( 'Donor stats have been successfully recounted.', 'give' );
+			$this->message = esc_html__('Donor stats have been successfully recounted.', 'give');
 
 			return false;
 		}
@@ -213,10 +213,10 @@ class Give_Tools_Recount_Customer_Stats extends Give_Batch_Export {
 	 * Headers
 	 */
 	public function headers() {
-		ignore_user_abort( true );
+		ignore_user_abort(true);
 
-		if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
-			set_time_limit( 0 );
+		if ( ! give_is_func_disabled('set_time_limit') && ! ini_get('safe_mode')) {
+			set_time_limit(0);
 		}
 	}
 

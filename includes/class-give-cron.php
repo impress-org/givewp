@@ -34,8 +34,8 @@ class Give_Cron {
 	 * @see    Give_Cron::weekly_events()
 	 */
 	public function __construct() {
-		add_filter( 'cron_schedules', array( $this, 'add_schedules' ) );
-		add_action( 'wp', array( $this, 'schedule_Events' ) );
+		add_filter('cron_schedules', array($this, 'add_schedules'));
+		add_action('wp', array($this, 'schedule_Events'));
 	}
 
 	/**
@@ -48,11 +48,11 @@ class Give_Cron {
 	 *
 	 * @return array            An array of non-default cron schedules.
 	 */
-	public function add_schedules( $schedules = array() ) {
+	public function add_schedules($schedules = array()) {
 		// Adds once weekly to the existing schedules.
 		$schedules['weekly'] = array(
 			'interval' => 604800,
-			'display'  => esc_html__( 'Once Weekly', 'give' )
+			'display'  => esc_html__('Once Weekly', 'give')
 		);
 
 		return $schedules;
@@ -80,8 +80,8 @@ class Give_Cron {
 	 * @return void
 	 */
 	private function weekly_events() {
-		if ( ! wp_next_scheduled( 'give_weekly_scheduled_events' ) ) {
-			wp_schedule_event( current_time( 'timestamp' ), 'weekly', 'give_weekly_scheduled_events' );
+		if ( ! wp_next_scheduled('give_weekly_scheduled_events')) {
+			wp_schedule_event(current_time('timestamp'), 'weekly', 'give_weekly_scheduled_events');
 		}
 	}
 
@@ -94,8 +94,8 @@ class Give_Cron {
 	 * @return void
 	 */
 	private function daily_events() {
-		if ( ! wp_next_scheduled( 'give_daily_scheduled_events' ) ) {
-			wp_schedule_event( current_time( 'timestamp' ), 'daily', 'give_daily_scheduled_events' );
+		if ( ! wp_next_scheduled('give_daily_scheduled_events')) {
+			wp_schedule_event(current_time('timestamp'), 'daily', 'give_daily_scheduled_events');
 		}
 	}
 

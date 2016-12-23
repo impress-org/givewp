@@ -144,29 +144,29 @@ class Give_Customer {
 	 * @param  bool $_id_or_email 
 	 * @param  bool $by_user_id
 	 */
-	public function __construct( $_id_or_email = false, $by_user_id = false ) {
+	public function __construct($_id_or_email = false, $by_user_id = false) {
 
 		$this->db = new Give_DB_Customers;
 
-		if ( false === $_id_or_email || ( is_numeric( $_id_or_email ) && (int) $_id_or_email !== absint( $_id_or_email ) ) ) {
+		if (false === $_id_or_email || (is_numeric($_id_or_email) && (int) $_id_or_email !== absint($_id_or_email))) {
 			return false;
 		}
 
-		$by_user_id = is_bool( $by_user_id ) ? $by_user_id : false;
+		$by_user_id = is_bool($by_user_id) ? $by_user_id : false;
 
-		if ( is_numeric( $_id_or_email ) ) {
+		if (is_numeric($_id_or_email)) {
 			$field = $by_user_id ? 'user_id' : 'id';
 		} else {
 			$field = 'email';
 		}
 
-		$customer = $this->db->get_customer_by( $field, $_id_or_email );
+		$customer = $this->db->get_customer_by($field, $_id_or_email);
 
-		if ( empty( $customer ) || ! is_object( $customer ) ) {
+		if (empty($customer) || ! is_object($customer)) {
 			return false;
 		}
 
-		$this->setup_customer( $customer );
+		$this->setup_customer($customer);
 
 	}
 
@@ -182,15 +182,15 @@ class Give_Customer {
 	 *
 	 * @return bool             If the setup was successful or not.
 	 */
-	private function setup_customer( $customer ) {
+	private function setup_customer($customer) {
 
-		if ( ! is_object( $customer ) ) {
+		if ( ! is_object($customer)) {
 			return false;
 		}
 
-		foreach ( $customer as $key => $value ) {
+		foreach ($customer as $key => $value) {
 
-			switch ( $key ) {
+			switch ($key) {
 
 				case 'notes':
 					$this->$key = $this->get_notes();
@@ -205,11 +205,11 @@ class Give_Customer {
 		}
 
 		// Get donor's all email including primary email.
-		$this->emails   = (array) $this->get_meta( 'additional_email', false );
-		$this->emails = array( 'primary' => $this->email ) + $this->emails;
+		$this->emails = (array) $this->get_meta('additional_email', false);
+		$this->emails = array('primary' => $this->email) + $this->emails;
 
 		// Customer ID and email are the only things that are necessary, make sure they exist.
-		if ( ! empty( $this->id ) && ! empty( $this->email ) ) {
+		if ( ! empty($this->id) && ! empty($this->email)) {
 			return true;
 		}
 
@@ -223,16 +223,16 @@ class Give_Customer {
 	 * @since  1.0
 	 * @access public
 	 */
-	public function __get( $key ) {
+	public function __get($key) {
 
-		if ( method_exists( $this, 'get_' . $key ) ) {
+		if (method_exists($this, 'get_'.$key)) {
 
-			return call_user_func( array( $this, 'get_' . $key ) );
+			return call_user_func(array($this, 'get_'.$key));
 
 		} else {
 
 			/* translators: %s: property key */
-			return new WP_Error( 'give-customer-invalid-property', sprintf( esc_html__( 'Can\'t get property %s.', 'give' ), $key ) );
+			return new WP_Error('give-customer-invalid-property', sprintf(esc_html__('Can\'t get property %s.', 'give'), $key));
 
 		}
 
@@ -248,9 +248,9 @@ class Give_Customer {
 	 *
 	 * @return bool|int    False if not a valid creation, customer ID if user is found or valid creation.
 	 */
-	public function create( $data = array() ) {
+	public function create($data = array()) {
 
-		if ( $this->id != 0 || empty( $data ) ) {
+		if ($this->id != 0 || empty($data)) {
 			return false;
 		}
 
@@ -258,15 +258,15 @@ class Give_Customer {
 			'payment_ids' => ''
 		);
 
-		$args = wp_parse_args( $data, $defaults );
-		$args = $this->sanitize_columns( $args );
+		$args = wp_parse_args($data, $defaults);
+		$args = $this->sanitize_columns($args);
 
-		if ( empty( $args['email'] ) || ! is_email( $args['email'] ) ) {
+		if (empty($args['email']) || ! is_email($args['email'])) {
 			return false;
 		}
 
-		if ( ! empty( $args['payment_ids'] ) && is_array( $args['payment_ids'] ) ) {
-			$args['payment_ids'] = implode( ',', array_unique( array_values( $args['payment_ids'] ) ) );
+		if ( ! empty($args['payment_ids']) && is_array($args['payment_ids'])) {
+			$args['payment_ids'] = implode(',', array_unique(array_values($args['payment_ids'])));
 		}
 
 		/**
@@ -276,18 +276,18 @@ class Give_Customer {
 		 *
 		 * @param array $args Customer attributes.
 		 */
-		do_action( 'give_customer_pre_create', $args );
+		do_action('give_customer_pre_create', $args);
 
 		$created = false;
 
 		// The DB class 'add' implies an update if the customer being asked to be created already exists
-		if ( $this->db->add( $data ) ) {
+		if ($this->db->add($data)) {
 
 			// We've successfully added/updated the customer, reset the class vars with the new data
-			$customer = $this->db->get_customer_by( 'email', $args['email'] );
+			$customer = $this->db->get_customer_by('email', $args['email']);
 
 			// Setup the customer data with the values from DB
-			$this->setup_customer( $customer );
+			$this->setup_customer($customer);
 
 			$created = $this->id;
 		}
@@ -301,7 +301,7 @@ class Give_Customer {
 		 *                          customer ID if user is found or valid creation.
 		 * @param array    $args    Customer attributes.
 		 */
-		do_action( 'give_customer_post_create', $created, $args );
+		do_action('give_customer_post_create', $created, $args);
 
 		return $created;
 
@@ -317,13 +317,13 @@ class Give_Customer {
 	 *
 	 * @return bool        If the update was successful or not.
 	 */
-	public function update( $data = array() ) {
+	public function update($data = array()) {
 
-		if ( empty( $data ) ) {
+		if (empty($data)) {
 			return false;
 		}
 
-		$data = $this->sanitize_columns( $data );
+		$data = $this->sanitize_columns($data);
 
 		/**
 		 * Fires before updating customers.
@@ -333,14 +333,14 @@ class Give_Customer {
 		 * @param int   $customer_id Customer id.
 		 * @param array $data        Customer attributes.
 		 */
-		do_action( 'give_customer_pre_update', $this->id, $data );
+		do_action('give_customer_pre_update', $this->id, $data);
 
 		$updated = false;
 
-		if ( $this->db->update( $this->id, $data ) ) {
+		if ($this->db->update($this->id, $data)) {
 
-			$customer = $this->db->get_customer_by( 'id', $this->id );
-			$this->setup_customer( $customer );
+			$customer = $this->db->get_customer_by('id', $this->id);
+			$this->setup_customer($customer);
 
 			$updated = true;
 		}
@@ -354,7 +354,7 @@ class Give_Customer {
 		 * @param int   $customer_id Customer id.
 		 * @param array $data        Customer attributes.
 		 */
-		do_action( 'give_customer_post_update', $updated, $this->id, $data );
+		do_action('give_customer_post_update', $updated, $this->id, $data);
 
 		return $updated;
 	}
@@ -372,27 +372,27 @@ class Give_Customer {
 	 *
 	 * @return bool            If the attachment was successfuly.
 	 */
-	public function attach_payment( $payment_id = 0, $update_stats = true ) {
+	public function attach_payment($payment_id = 0, $update_stats = true) {
 
-		if ( empty( $payment_id ) ) {
+		if (empty($payment_id)) {
 			return false;
 		}
 
-		if ( empty( $this->payment_ids ) ) {
+		if (empty($this->payment_ids)) {
 
 			$new_payment_ids = $payment_id;
 
 		} else {
 
-			$payment_ids = array_map( 'absint', explode( ',', $this->payment_ids ) );
+			$payment_ids = array_map('absint', explode(',', $this->payment_ids));
 
-			if ( in_array( $payment_id, $payment_ids ) ) {
+			if (in_array($payment_id, $payment_ids)) {
 				$update_stats = false;
 			}
 
 			$payment_ids[] = $payment_id;
 
-			$new_payment_ids = implode( ',', array_unique( array_values( $payment_ids ) ) );
+			$new_payment_ids = implode(',', array_unique(array_values($payment_ids)));
 
 		}
 
@@ -404,20 +404,20 @@ class Give_Customer {
 		 * @param int $payment_id  Payment id.
 		 * @param int $customer_id Customer id.
 		 */
-		do_action( 'give_customer_pre_attach_payment', $payment_id, $this->id );
+		do_action('give_customer_pre_attach_payment', $payment_id, $this->id);
 
-		$payment_added = $this->update( array( 'payment_ids' => $new_payment_ids ) );
+		$payment_added = $this->update(array('payment_ids' => $new_payment_ids));
 
-		if ( $payment_added ) {
+		if ($payment_added) {
 
 			$this->payment_ids = $new_payment_ids;
 
 			// We added this payment successfully, increment the stats
-			if ( $update_stats ) {
-				$payment_amount = give_get_payment_amount( $payment_id );
+			if ($update_stats) {
+				$payment_amount = give_get_payment_amount($payment_id);
 
-				if ( ! empty( $payment_amount ) ) {
-					$this->increase_value( $payment_amount );
+				if ( ! empty($payment_amount)) {
+					$this->increase_value($payment_amount);
 				}
 
 				$this->increase_purchase_count();
@@ -434,7 +434,7 @@ class Give_Customer {
 		 * @param int  $payment_id    Payment id.
 		 * @param int  $customer_id   Customer id.
 		 */
-		do_action( 'give_customer_post_attach_payment', $payment_added, $payment_id, $this->id );
+		do_action('give_customer_post_attach_payment', $payment_added, $payment_id, $this->id);
 
 		return $payment_added;
 	}
@@ -452,33 +452,33 @@ class Give_Customer {
 	 *
 	 * @return boolean               If the removal was successful.
 	 */
-	public function remove_payment( $payment_id = 0, $update_stats = true ) {
+	public function remove_payment($payment_id = 0, $update_stats = true) {
 
-		if ( empty( $payment_id ) ) {
+		if (empty($payment_id)) {
 			return false;
 		}
 
-		$payment = new Give_Payment( $payment_id );
+		$payment = new Give_Payment($payment_id);
 
-		if ( 'publish' !== $payment->status && 'revoked' !== $payment->status ) {
+		if ('publish' !== $payment->status && 'revoked' !== $payment->status) {
 			$update_stats = false;
 		}
 
 		$new_payment_ids = '';
 
-		if ( ! empty( $this->payment_ids ) ) {
+		if ( ! empty($this->payment_ids)) {
 
-			$payment_ids = array_map( 'absint', explode( ',', $this->payment_ids ) );
+			$payment_ids = array_map('absint', explode(',', $this->payment_ids));
 
-			$pos = array_search( $payment_id, $payment_ids );
-			if ( false === $pos ) {
+			$pos = array_search($payment_id, $payment_ids);
+			if (false === $pos) {
 				return false;
 			}
 
-			unset( $payment_ids[ $pos ] );
-			$payment_ids = array_filter( $payment_ids );
+			unset($payment_ids[$pos]);
+			$payment_ids = array_filter($payment_ids);
 
-			$new_payment_ids = implode( ',', array_unique( array_values( $payment_ids ) ) );
+			$new_payment_ids = implode(',', array_unique(array_values($payment_ids)));
 
 		}
 
@@ -490,20 +490,20 @@ class Give_Customer {
 		 * @param int $payment_id  Payment id.
 		 * @param int $customer_id Customer id.
 		 */
-		do_action( 'give_customer_pre_remove_payment', $payment_id, $this->id );
+		do_action('give_customer_pre_remove_payment', $payment_id, $this->id);
 
-		$payment_removed = $this->update( array( 'payment_ids' => $new_payment_ids ) );
+		$payment_removed = $this->update(array('payment_ids' => $new_payment_ids));
 
-		if ( $payment_removed ) {
+		if ($payment_removed) {
 
 			$this->payment_ids = $new_payment_ids;
 
-			if ( $update_stats ) {
+			if ($update_stats) {
 				// We removed this payment successfully, decrement the stats
-				$payment_amount = give_get_payment_amount( $payment_id );
+				$payment_amount = give_get_payment_amount($payment_id);
 
-				if ( ! empty( $payment_amount ) ) {
-					$this->decrease_value( $payment_amount );
+				if ( ! empty($payment_amount)) {
+					$this->decrease_value($payment_amount);
 				}
 
 				$this->decrease_purchase_count();
@@ -520,7 +520,7 @@ class Give_Customer {
 		 * @param int  $payment_id      Payment id.
 		 * @param int  $customer_id     Customer id.
 		 */
-		do_action( 'give_customer_post_remove_payment', $payment_removed, $payment_id, $this->id );
+		do_action('give_customer_post_remove_payment', $payment_removed, $payment_id, $this->id);
 
 		return $payment_removed;
 
@@ -536,10 +536,10 @@ class Give_Customer {
 	 *
 	 * @return int        The donation count.
 	 */
-	public function increase_purchase_count( $count = 1 ) {
+	public function increase_purchase_count($count = 1) {
 
 		// Make sure it's numeric and not negative.
-		if ( ! is_numeric( $count ) || $count != absint( $count ) ) {
+		if ( ! is_numeric($count) || $count != absint($count)) {
 			return false;
 		}
 
@@ -553,9 +553,9 @@ class Give_Customer {
 		 * @param int $count       The number to increase by.
 		 * @param int $customer_id Customer id.
 		 */
-		do_action( 'give_customer_pre_increase_purchase_count', $count, $this->id );
+		do_action('give_customer_pre_increase_purchase_count', $count, $this->id);
 
-		if ( $this->update( array( 'purchase_count' => $new_total ) ) ) {
+		if ($this->update(array('purchase_count' => $new_total))) {
 			$this->purchase_count = $new_total;
 		}
 
@@ -568,7 +568,7 @@ class Give_Customer {
 		 * @param int $count          The number increased by.
 		 * @param int $customer_id    Customer id.
 		 */
-		do_action( 'give_customer_post_increase_purchase_count', $this->purchase_count, $count, $this->id );
+		do_action('give_customer_post_increase_purchase_count', $this->purchase_count, $count, $this->id);
 
 		return $this->purchase_count;
 	}
@@ -583,16 +583,16 @@ class Give_Customer {
 	 *
 	 * @return mixed      If successful, the new count, otherwise false.
 	 */
-	public function decrease_purchase_count( $count = 1 ) {
+	public function decrease_purchase_count($count = 1) {
 
 		// Make sure it's numeric and not negative
-		if ( ! is_numeric( $count ) || $count != absint( $count ) ) {
+		if ( ! is_numeric($count) || $count != absint($count)) {
 			return false;
 		}
 
 		$new_total = (int) $this->purchase_count - (int) $count;
 
-		if ( $new_total < 0 ) {
+		if ($new_total < 0) {
 			$new_total = 0;
 		}
 
@@ -604,9 +604,9 @@ class Give_Customer {
 		 * @param int $count       The number to decrease by.
 		 * @param int $customer_id Customer id.
 		 */
-		do_action( 'give_customer_pre_decrease_purchase_count', $count, $this->id );
+		do_action('give_customer_pre_decrease_purchase_count', $count, $this->id);
 
-		if ( $this->update( array( 'purchase_count' => $new_total ) ) ) {
+		if ($this->update(array('purchase_count' => $new_total))) {
 			$this->purchase_count = $new_total;
 		}
 
@@ -619,7 +619,7 @@ class Give_Customer {
 		 * @param int $count          The number decreased by.
 		 * @param int $customer_id    Customer id.
 		 */
-		do_action( 'give_customer_post_decrease_purchase_count', $this->purchase_count, $count, $this->id );
+		do_action('give_customer_post_decrease_purchase_count', $this->purchase_count, $count, $this->id);
 
 		return $this->purchase_count;
 	}
@@ -634,9 +634,9 @@ class Give_Customer {
 	 *
 	 * @return mixed        If successful, the new value, otherwise false.
 	 */
-	public function increase_value( $value = 0.00 ) {
+	public function increase_value($value = 0.00) {
 
-		$new_value = floatval( $this->purchase_value ) + $value;
+		$new_value = floatval($this->purchase_value) + $value;
 
 		/**
 		 * Fires before increasing customer lifetime value.
@@ -646,9 +646,9 @@ class Give_Customer {
 		 * @param float $value       The value to increase by.
 		 * @param int   $customer_id Customer id.
 		 */
-		do_action( 'give_customer_pre_increase_value', $value, $this->id );
+		do_action('give_customer_pre_increase_value', $value, $this->id);
 
-		if ( $this->update( array( 'purchase_value' => $new_value ) ) ) {
+		if ($this->update(array('purchase_value' => $new_value))) {
 			$this->purchase_value = $new_value;
 		}
 
@@ -661,7 +661,7 @@ class Give_Customer {
 		 * @param float $value          The value increased by.
 		 * @param int   $customer_id    Customer id.
 		 */
-		do_action( 'give_customer_post_increase_value', $this->purchase_value, $value, $this->id );
+		do_action('give_customer_post_increase_value', $this->purchase_value, $value, $this->id);
 
 		return $this->purchase_value;
 	}
@@ -676,11 +676,11 @@ class Give_Customer {
 	 *
 	 * @return mixed        If successful, the new value, otherwise false.
 	 */
-	public function decrease_value( $value = 0.00 ) {
+	public function decrease_value($value = 0.00) {
 
-		$new_value = floatval( $this->purchase_value ) - $value;
+		$new_value = floatval($this->purchase_value) - $value;
 
-		if ( $new_value < 0 ) {
+		if ($new_value < 0) {
 			$new_value = 0.00;
 		}
 
@@ -692,9 +692,9 @@ class Give_Customer {
 		 * @param float $value       The value to decrease by.
 		 * @param int   $customer_id Customer id.
 		 */
-		do_action( 'give_customer_pre_decrease_value', $value, $this->id );
+		do_action('give_customer_pre_decrease_value', $value, $this->id);
 
-		if ( $this->update( array( 'purchase_value' => $new_value ) ) ) {
+		if ($this->update(array('purchase_value' => $new_value))) {
 			$this->purchase_value = $new_value;
 		}
 
@@ -707,19 +707,19 @@ class Give_Customer {
 		 * @param float $value          The value decreased by.
 		 * @param int   $customer_id    Customer id.
 		 */
-		do_action( 'give_customer_post_decrease_value', $this->purchase_value, $value, $this->id );
+		do_action('give_customer_post_decrease_value', $this->purchase_value, $value, $this->id);
 
 		return $this->purchase_value;
 	}
 
 	/**
 	 * Decrease/Increase a customer's lifetime value.
-     *
-     * This function will update donation stat on basis of current amount and new amount donation difference.
-     * Difference value can positive or negative. Negative value will decrease user donation stat while positive value increase donation stat.
-     *
+	 *
+	 * This function will update donation stat on basis of current amount and new amount donation difference.
+	 * Difference value can positive or negative. Negative value will decrease user donation stat while positive value increase donation stat.
+	 *
 	 * @since  1.0
-     * @access public
+	 * @access public
 	 *
 	 * @param  float $curr_amount Current Donation amount.
 	 * @param  float $new_amount  New (changed) Donation amount.
@@ -727,50 +727,50 @@ class Give_Customer {
 	 * @return mixed              If successful, the new donation stat value, otherwise false.
 	 */
 	public function update_donation_value( $curr_amount, $new_amount ) {
-        /**
-         * Payment total difference value can be:
-         *  zero   (in case amount not change)
-         *  or -ve (in case amount decrease)
-         *  or +ve (in case amount increase)
-         */
-        $payment_total_diff = $new_amount - $curr_amount;
+		/**
+		 * Payment total difference value can be:
+		 *  zero   (in case amount not change)
+		 *  or -ve (in case amount decrease)
+		 *  or +ve (in case amount increase)
+		 */
+		$payment_total_diff = $new_amount - $curr_amount;
 
-        // We do not need to update donation stat if donation did not change.
-        if( ! $payment_total_diff ) {
-            return false;
-        }
+		// We do not need to update donation stat if donation did not change.
+		if( ! $payment_total_diff ) {
+			return false;
+		}
 
 
-        if( $payment_total_diff > 0 ) {
-            $this->increase_value( $payment_total_diff );
-        } else {
-            // Pass payment total difference as +ve value to decrease amount from user lifetime stat.
-            $this->decrease_value( -$payment_total_diff );
-        }
+		if( $payment_total_diff > 0 ) {
+			$this->increase_value( $payment_total_diff );
+		} else {
+			// Pass payment total difference as +ve value to decrease amount from user lifetime stat.
+			$this->decrease_value( -$payment_total_diff );
+		}
 
-        return $this->purchase_value;
+		return $this->purchase_value;
 	}
 
 	/**
 	 * Get the parsed notes for a customer as an array.
 	 *
 	 * @since  1.0
-     * @access public
+	 * @access public
 	 *
 	 * @param  int $length The number of notes to get.
 	 * @param  int $paged  What note to start at.
 	 *
 	 * @return array       The notes requested.
 	 */
-	public function get_notes( $length = 20, $paged = 1 ) {
+	public function get_notes($length = 20, $paged = 1) {
 
-		$length = is_numeric( $length ) ? $length : 20;
-		$offset = is_numeric( $paged ) && $paged != 1 ? ( ( absint( $paged ) - 1 ) * $length ) : 0;
+		$length = is_numeric($length) ? $length : 20;
+		$offset = is_numeric($paged) && $paged != 1 ? ((absint($paged) - 1) * $length) : 0;
 
 		$all_notes   = $this->get_raw_notes();
-		$notes_array = array_reverse( array_filter( explode( "\n\n", $all_notes ) ) );
+		$notes_array = array_reverse(array_filter(explode("\n\n", $all_notes)));
 
-		$desired_notes = array_slice( $notes_array, $offset, $length );
+		$desired_notes = array_slice($notes_array, $offset, $length);
 
 		return $desired_notes;
 
@@ -780,16 +780,16 @@ class Give_Customer {
 	 * Get the total number of notes we have after parsing.
 	 *
 	 * @since  1.0
-     * @access public
+	 * @access public
 	 *
 	 * @return int The number of notes for the customer.
 	 */
 	public function get_notes_count() {
 
 		$all_notes   = $this->get_raw_notes();
-		$notes_array = array_reverse( array_filter( explode( "\n\n", $all_notes ) ) );
+		$notes_array = array_reverse(array_filter(explode("\n\n", $all_notes)));
 
-		return count( $notes_array );
+		return count($notes_array);
 
 	}
 
@@ -797,28 +797,28 @@ class Give_Customer {
 	 * Add a note for the customer.
 	 *
 	 * @since  1.0
-     * @access public
+	 * @access public
 	 *
 	 * @param  string $note   The note to add. Default is empty.
 	 *
 	 * @return string|boolean The new note if added successfully, false otherwise.
 	 */
-	public function add_note( $note = '' ) {
+	public function add_note($note = '') {
 
-		$note = trim( $note );
-		if ( empty( $note ) ) {
+		$note = trim($note);
+		if (empty($note)) {
 			return false;
 		}
 
 		$notes = $this->get_raw_notes();
 
-		if ( empty( $notes ) ) {
+		if (empty($notes)) {
 			$notes = '';
 		}
 
-		$note_string = date_i18n( 'F j, Y H:i:s', current_time( 'timestamp' ) ) . ' - ' . $note;
-		$new_note    = apply_filters( 'give_customer_add_note_string', $note_string );
-		$notes .= "\n\n" . $new_note;
+		$note_string = date_i18n('F j, Y H:i:s', current_time('timestamp')).' - '.$note;
+		$new_note    = apply_filters('give_customer_add_note_string', $note_string);
+		$notes .= "\n\n".$new_note;
 
 		/**
 		 * Fires before customer note added.
@@ -828,11 +828,11 @@ class Give_Customer {
 		 * @param string $new_note    New note to add.
 		 * @param int    $customer_id Customer id.
 		 */
-		do_action( 'give_customer_pre_add_note', $new_note, $this->id );
+		do_action('give_customer_pre_add_note', $new_note, $this->id);
 
-		$updated = $this->update( array( 'notes' => $notes ) );
+		$updated = $this->update(array('notes' => $notes));
 
-		if ( $updated ) {
+		if ($updated) {
 			$this->notes = $this->get_notes();
 		}
 
@@ -845,7 +845,7 @@ class Give_Customer {
 		 * @param string $new_note       New note added.
 		 * @param int    $customer_id    Customer id.
 		 */
-		do_action( 'give_customer_post_add_note', $this->notes, $new_note, $this->id );
+		do_action('give_customer_post_add_note', $this->notes, $new_note, $this->id);
 
 		// Return the formatted note, so we can test, as well as update any displays
 		return $new_note;
@@ -856,13 +856,13 @@ class Give_Customer {
 	 * Get the notes column for the customer
 	 *
 	 * @since  1.0
-     * @access private
+	 * @access private
 	 *
 	 * @return string The Notes for the customer, non-parsed.
 	 */
 	private function get_raw_notes() {
 
-		$all_notes = $this->db->get_column( 'notes', $this->id );
+		$all_notes = $this->db->get_column('notes', $this->id);
 
 		return $all_notes;
 
@@ -879,8 +879,8 @@ class Give_Customer {
 	 *
 	 * @return mixed            Will be an array if $single is false. Will be value of meta data field if $single is true.
 	 */
-	public function get_meta( $meta_key = '', $single = true ) {
-		return Give()->customer_meta->get_meta( $this->id, $meta_key, $single );
+	public function get_meta($meta_key = '', $single = true) {
+		return Give()->customer_meta->get_meta($this->id, $meta_key, $single);
 	}
 
 	/**
@@ -890,13 +890,13 @@ class Give_Customer {
 	 * @access public
 	 *
 	 * @param  string $meta_key   Metadata name. Default is empty.
-	 * @param  mixed  $meta_value Metadata value.
+	 * @param  string  $meta_value Metadata value.
 	 * @param  bool   $unique     Optional. Whether the same key should not be added. Default is false.
 	 *
 	 * @return bool               False for failure. True for success.
 	 */
-	public function add_meta( $meta_key = '', $meta_value, $unique = false ) {
-		return Give()->customer_meta->add_meta( $this->id, $meta_key, $meta_value, $unique );
+	public function add_meta($meta_key = '', $meta_value, $unique = false) {
+		return Give()->customer_meta->add_meta($this->id, $meta_key, $meta_value, $unique);
 	}
 
 	/**
@@ -911,8 +911,8 @@ class Give_Customer {
 	 *
 	 * @return bool               False on failure, true if success.
 	 */
-	public function update_meta( $meta_key = '', $meta_value, $prev_value = '' ) {
-		return Give()->customer_meta->update_meta( $this->id, $meta_key, $meta_value, $prev_value );
+	public function update_meta($meta_key = '', $meta_value, $prev_value = '') {
+		return Give()->customer_meta->update_meta($this->id, $meta_key, $meta_value, $prev_value);
 	}
 
 	/**
@@ -922,69 +922,69 @@ class Give_Customer {
 	 * @access public
 	 *
 	 * @param  string $meta_key   Metadata name. Default is empty.
-	 * @param  mixed  $meta_value Optional. Metadata value. Default is empty.
+	 * @param  string  $meta_value Optional. Metadata value. Default is empty.
 	 *
 	 * @return bool               False for failure. True for success.
 	 */
-	public function delete_meta( $meta_key = '', $meta_value = '' ) {
-		return Give()->customer_meta->delete_meta( $this->id, $meta_key, $meta_value );
+	public function delete_meta($meta_key = '', $meta_value = '') {
+		return Give()->customer_meta->delete_meta($this->id, $meta_key, $meta_value);
 	}
 
 	/**
 	 * Sanitize the data for update/create
 	 *
 	 * @since  1.0
-     * @access private
+	 * @access private
 	 *
 	 * @param  array $data The data to sanitize.
 	 *
 	 * @return array       The sanitized data, based off column defaults.
 	 */
-	private function sanitize_columns( $data ) {
+	private function sanitize_columns($data) {
 
 		$columns        = $this->db->get_columns();
 		$default_values = $this->db->get_column_defaults();
 
-		foreach ( $columns as $key => $type ) {
+		foreach ($columns as $key => $type) {
 
 			// Only sanitize data that we were provided
-			if ( ! array_key_exists( $key, $data ) ) {
+			if ( ! array_key_exists($key, $data)) {
 				continue;
 			}
 
-			switch ( $type ) {
+			switch ($type) {
 
 				case '%s':
-					if ( 'email' == $key ) {
-						$data[ $key ] = sanitize_email( $data[ $key ] );
-					} elseif ( 'notes' == $key ) {
-						$data[ $key ] = strip_tags( $data[ $key ] );
+					if ('email' == $key) {
+						$data[$key] = sanitize_email($data[$key]);
+					} elseif ('notes' == $key) {
+						$data[$key] = strip_tags($data[$key]);
 					} else {
-						$data[ $key ] = sanitize_text_field( $data[ $key ] );
+						$data[$key] = sanitize_text_field($data[$key]);
 					}
 					break;
 
 				case '%d':
-					if ( ! is_numeric( $data[ $key ] ) || (int) $data[ $key ] !== absint( $data[ $key ] ) ) {
-						$data[ $key ] = $default_values[ $key ];
+					if ( ! is_numeric($data[$key]) || (int) $data[$key] !== absint($data[$key])) {
+						$data[$key] = $default_values[$key];
 					} else {
-						$data[ $key ] = absint( $data[ $key ] );
+						$data[$key] = absint($data[$key]);
 					}
 					break;
 
 				case '%f':
 					// Convert what was given to a float
-					$value = floatval( $data[ $key ] );
+					$value = floatval($data[$key]);
 
-					if ( ! is_float( $value ) ) {
-						$data[ $key ] = $default_values[ $key ];
+					if ( ! is_float($value)) {
+						$data[$key] = $default_values[$key];
 					} else {
-						$data[ $key ] = $value;
+						$data[$key] = $value;
 					}
 					break;
 
 				default:
-					$data[ $key ] = sanitize_text_field( $data[ $key ] );
+					$data[$key] = sanitize_text_field($data[$key]);
 					break;
 
 			}
@@ -1005,33 +1005,33 @@ class Give_Customer {
 	 *
 	 * @return bool            If the email was added successfully
 	 */
-	public function add_email( $email = '', $primary = false ) {
-		if( ! is_email( $email ) ) {
+	public function add_email($email = '', $primary = false) {
+		if ( ! is_email($email)) {
 			return false;
 		}
-		$existing = new Give_Customer( $email );
+		$existing = new Give_Customer($email);
 
-		if( $existing->id > 0 ) {
+		if ($existing->id > 0) {
 			// Email address already belongs to another customer
 			return false;
 		}
 
-		if ( email_exists( $email ) ) {
-			$user = get_user_by( 'email', $email );
-			if ( $user->ID != $this->user_id ) {
+		if (email_exists($email)) {
+			$user = get_user_by('email', $email);
+			if ($user->ID != $this->user_id) {
 				return false;
 			}
 		}
 
-		do_action( 'give_donor_pre_add_email', $email, $this->id, $this );
+		do_action('give_donor_pre_add_email', $email, $this->id, $this);
 
 		// Add is used to ensure duplicate emails are not added
-		$ret = (bool) $this->add_meta( 'additional_email', $email );
+		$ret = (bool) $this->add_meta('additional_email', $email);
 
-		do_action( 'give_donor_post_add_email', $email, $this->id, $this );
+		do_action('give_donor_post_add_email', $email, $this->id, $this);
 
-		if ( $ret && true === $primary ) {
-			$this->set_primary_email( $email );
+		if ($ret && true === $primary) {
+			$this->set_primary_email($email);
 		}
 
 		return $ret;
@@ -1047,16 +1047,16 @@ class Give_Customer {
 	 *
 	 * @return bool          If the email was removeed successfully
 	 */
-	public function remove_email( $email = '' ) {
-		if( ! is_email( $email ) ) {
+	public function remove_email($email = '') {
+		if ( ! is_email($email)) {
 			return false;
 		}
 
-		do_action( 'give_donor_pre_remove_email', $email, $this->id, $this );
+		do_action('give_donor_pre_remove_email', $email, $this->id, $this);
 
-		$ret = (bool) $this->delete_meta( 'additional_email', $email );
+		$ret = (bool) $this->delete_meta('additional_email', $email);
 
-		do_action( 'give_donor_post_remove_email', $email, $this->id, $this );
+		do_action('give_donor_post_remove_email', $email, $this->id, $this);
 
 		return $ret;
 	}
@@ -1073,16 +1073,16 @@ class Give_Customer {
 	 *
 	 * @return bool                      If the email was set as primary successfully
 	 */
-	public function set_primary_email( $new_primary_email = '' ) {
-		if( ! is_email( $new_primary_email ) ) {
+	public function set_primary_email($new_primary_email = '') {
+		if ( ! is_email($new_primary_email)) {
 			return false;
 		}
 
-		do_action( 'give_donor_pre_set_primary_email', $new_primary_email, $this->id, $this );
+		do_action('give_donor_pre_set_primary_email', $new_primary_email, $this->id, $this);
 
-		$existing = new Give_Customer( $new_primary_email );
+		$existing = new Give_Customer($new_primary_email);
 
-		if( $existing->id > 0 && (int) $existing->id !== (int) $this->id ) {
+		if ($existing->id > 0 && (int) $existing->id !== (int) $this->id) {
 			// This email belongs to another customer
 			return false;
 		}
@@ -1090,21 +1090,21 @@ class Give_Customer {
 		$old_email = $this->email;
 
 		// Update customer record with new email
-		$update = $this->update( array( 'email' => $new_primary_email ) );
+		$update = $this->update(array('email' => $new_primary_email));
 
 		// Remove new primary from list of additional emails
-		$remove = $this->remove_email( $new_primary_email );
+		$remove = $this->remove_email($new_primary_email);
 
 		// Add old email to additional emails list
-		$add = $this->add_email( $old_email );
+		$add = $this->add_email($old_email);
 
 		$ret = $update && $remove && $add;
 
-		if( $ret ) {
+		if ($ret) {
 			$this->email = $new_primary_email;
 		}
 
-		do_action( 'give_donor_post_set_primary_email', $new_primary_email, $this->id, $this );
+		do_action('give_donor_post_set_primary_email', $new_primary_email, $this->id, $this);
 
 		return $ret;
 	}

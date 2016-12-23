@@ -10,7 +10,7 @@
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) {
+if ( ! defined('ABSPATH')) {
 	exit;
 }
 
@@ -74,53 +74,53 @@ class Give_Session {
 	public function __construct() {
 
 		$this->use_php_sessions = $this->use_php_sessions();
-		$this->exp_option       = give_get_option( 'session_lifetime' );
+		$this->exp_option       = give_get_option('session_lifetime');
 
 		// PHP Sessions.
-		if ( $this->use_php_sessions ) {
+		if ($this->use_php_sessions) {
 
-			if ( is_multisite() ) {
+			if (is_multisite()) {
 
-				$this->prefix = '_' . get_current_blog_id();
+				$this->prefix = '_'.get_current_blog_id();
 
 			}
 
-			add_action( 'init', array( $this, 'maybe_start_session' ), - 2 );
+			add_action('init', array($this, 'maybe_start_session'), - 2);
 
 		} else {
 
-			if ( ! $this->should_start_session() ) {
+			if ( ! $this->should_start_session()) {
 				return;
 			}
 
 			// Use WP_Session.
-			if ( ! defined( 'WP_SESSION_COOKIE' ) ) {
-				define( 'WP_SESSION_COOKIE', 'give_wp_session' );
+			if ( ! defined('WP_SESSION_COOKIE')) {
+				define('WP_SESSION_COOKIE', 'give_wp_session');
 			}
 
-			if ( ! class_exists( 'Recursive_ArrayAccess' ) ) {
-				require_once GIVE_PLUGIN_DIR . 'includes/libraries/sessions/class-recursive-arrayaccess.php';
+			if ( ! class_exists('Recursive_ArrayAccess')) {
+				require_once GIVE_PLUGIN_DIR.'includes/libraries/sessions/class-recursive-arrayaccess.php';
 			}
 
-			if ( ! class_exists( 'WP_Session' ) ) {
-				require_once GIVE_PLUGIN_DIR . 'includes/libraries/sessions/class-wp-session.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/libraries/sessions/wp-session.php';
+			if ( ! class_exists('WP_Session')) {
+				require_once GIVE_PLUGIN_DIR.'includes/libraries/sessions/class-wp-session.php';
+				require_once GIVE_PLUGIN_DIR.'includes/libraries/sessions/wp-session.php';
 			}
 
-			add_filter( 'wp_session_expiration_variant', array( $this, 'set_expiration_variant_time' ), 99999 );
-			add_filter( 'wp_session_expiration', array( $this, 'set_expiration_time' ), 99999 );
+			add_filter('wp_session_expiration_variant', array($this, 'set_expiration_variant_time'), 99999);
+			add_filter('wp_session_expiration', array($this, 'set_expiration_time'), 99999);
 
 		}
 
 		// Init Session.
-		if ( empty( $this->session ) && ! $this->use_php_sessions ) {
-			add_action( 'plugins_loaded', array( $this, 'init' ), - 1 );
+		if (empty($this->session) && ! $this->use_php_sessions) {
+			add_action('plugins_loaded', array($this, 'init'), - 1);
 		} else {
-			add_action( 'init', array( $this, 'init' ), - 1 );
+			add_action('init', array($this, 'init'), - 1);
 		}
 
 		// Set cookie on Donation Completion page.
-		add_action( 'give_pre_process_donation', array( $this, 'set_session_cookies' ) );
+		add_action('give_pre_process_donation', array($this, 'set_session_cookies'));
 
 	}
 
@@ -136,8 +136,8 @@ class Give_Session {
 	 */
 	public function init() {
 
-		if ( $this->use_php_sessions ) {
-			$this->session = isset( $_SESSION[ 'give' . $this->prefix ] ) && is_array( $_SESSION[ 'give' . $this->prefix ] ) ? $_SESSION[ 'give' . $this->prefix ] : array();
+		if ($this->use_php_sessions) {
+			$this->session = isset($_SESSION['give'.$this->prefix]) && is_array($_SESSION['give'.$this->prefix]) ? $_SESSION['give'.$this->prefix] : array();
 		} else {
 			$this->session = WP_Session::get_instance();
 		}
@@ -172,10 +172,10 @@ class Give_Session {
 	 *
 	 * @return string      Session variable.
 	 */
-	public function get( $key ) {
-		$key = sanitize_key( $key );
+	public function get($key) {
+		$key = sanitize_key($key);
 
-		return isset( $this->session[ $key ] ) ? maybe_unserialize( $this->session[ $key ] ) : false;
+		return isset($this->session[$key]) ? maybe_unserialize($this->session[$key]) : false;
 
 	}
 
@@ -192,21 +192,21 @@ class Give_Session {
 	 *
 	 * @return string        Session variable.
 	 */
-	public function set( $key, $value ) {
+	public function set($key, $value) {
 
-		$key = sanitize_key( $key );
+		$key = sanitize_key($key);
 
-		if ( is_array( $value ) ) {
-			$this->session[ $key ] = serialize( $value );
+		if (is_array($value)) {
+			$this->session[$key] = serialize($value);
 		} else {
-			$this->session[ $key ] = $value;
+			$this->session[$key] = $value;
 		}
 
-		if ( $this->use_php_sessions ) {
-			$_SESSION[ 'give' . $this->prefix ] = $this->session;
+		if ($this->use_php_sessions) {
+			$_SESSION['give'.$this->prefix] = $this->session;
 		}
 
-		return $this->session[ $key ];
+		return $this->session[$key];
 	}
 
 	/**
@@ -220,10 +220,10 @@ class Give_Session {
 	 * @hook
 	 */
 	public function set_session_cookies() {
-		if ( ! headers_sent() ) {
-			$lifetime = current_time( 'timestamp' ) + $this->set_expiration_time();
-			@setcookie( session_name(), session_id(), $lifetime, COOKIEPATH, COOKIE_DOMAIN, false );
-			@setcookie( session_name() . '_expiration', $lifetime, $lifetime, COOKIEPATH, COOKIE_DOMAIN, false );
+		if ( ! headers_sent()) {
+			$lifetime = current_time('timestamp') + $this->set_expiration_time();
+			@setcookie(session_name(), session_id(), $lifetime, COOKIEPATH, COOKIE_DOMAIN, false);
+			@setcookie(session_name().'_expiration', $lifetime, $lifetime, COOKIEPATH, COOKIE_DOMAIN, false);
 		}
 	}
 
@@ -239,7 +239,7 @@ class Give_Session {
 	 */
 	public function set_expiration_variant_time() {
 
-		return ( ! empty( $this->exp_option ) ? ( intval( $this->exp_option ) - 3600 ) : 30 * 60 * 23 );
+		return ( ! empty($this->exp_option) ? (intval($this->exp_option) - 3600) : 30 * 60 * 23);
 	}
 
 	/**
@@ -254,7 +254,7 @@ class Give_Session {
 	 */
 	public function set_expiration_time() {
 
-		return ( ! empty( $this->exp_option ) ? intval( $this->exp_option ) : 30 * 60 * 24 );
+		return ( ! empty($this->exp_option) ? intval($this->exp_option) : 30 * 60 * 24);
 	}
 
 	/**
@@ -272,21 +272,21 @@ class Give_Session {
 		$ret = false;
 
 		// If the database variable is already set, no need to run auto detection.
-		$give_use_php_sessions = (bool) get_option( 'give_use_php_sessions' );
+		$give_use_php_sessions = (bool) get_option('give_use_php_sessions');
 
-		if ( ! $give_use_php_sessions ) {
+		if ( ! $give_use_php_sessions) {
 
 			// Attempt to detect if the server supports PHP sessions.
-			if ( function_exists( 'session_start' ) && ! ini_get( 'safe_mode' ) ) {
+			if (function_exists('session_start') && ! ini_get('safe_mode')) {
 
-				$this->set( 'give_use_php_sessions', 1 );
+				$this->set('give_use_php_sessions', 1);
 
-				if ( $this->get( 'give_use_php_sessions' ) ) {
+				if ($this->get('give_use_php_sessions')) {
 
 					$ret = true;
 
 					// Set the database option.
-					update_option( 'give_use_php_sessions', true );
+					update_option('give_use_php_sessions', true);
 
 				}
 			}
@@ -296,13 +296,13 @@ class Give_Session {
 		}
 
 		// Enable or disable PHP Sessions based on the GIVE_USE_PHP_SESSIONS constant.
-		if ( defined( 'GIVE_USE_PHP_SESSIONS' ) && GIVE_USE_PHP_SESSIONS ) {
+		if (defined('GIVE_USE_PHP_SESSIONS') && GIVE_USE_PHP_SESSIONS) {
 			$ret = true;
-		} elseif ( defined( 'GIVE_USE_PHP_SESSIONS' ) && ! GIVE_USE_PHP_SESSIONS ) {
+		} elseif (defined('GIVE_USE_PHP_SESSIONS') && ! GIVE_USE_PHP_SESSIONS) {
 			$ret = false;
 		}
 
-		return (bool) apply_filters( 'give_use_php_sessions', $ret );
+		return (bool) apply_filters('give_use_php_sessions', $ret);
 	}
 
 	/**
@@ -319,9 +319,9 @@ class Give_Session {
 
 		$start_session = true;
 
-		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
+		if ( ! empty($_SERVER['REQUEST_URI'])) {
 
-			$blacklist = apply_filters( 'give_session_start_uri_blacklist', array(
+			$blacklist = apply_filters('give_session_start_uri_blacklist', array(
 				'feed',
 				'feed',
 				'feed/rss',
@@ -329,21 +329,21 @@ class Give_Session {
 				'feed/rdf',
 				'feed/atom',
 				'comments/feed/',
-			) );
-			$uri       = ltrim( $_SERVER['REQUEST_URI'], '/' );
-			$uri       = untrailingslashit( $uri );
-			if ( in_array( $uri, $blacklist ) ) {
+			));
+			$uri       = ltrim($_SERVER['REQUEST_URI'], '/');
+			$uri       = untrailingslashit($uri);
+			if (in_array($uri, $blacklist)) {
 				$start_session = false;
 			}
-			if ( false !== strpos( $uri, 'feed=' ) ) {
+			if (false !== strpos($uri, 'feed=')) {
 				$start_session = false;
 			}
-			if ( is_admin() ) {
+			if (is_admin()) {
 				$start_session = false;
 			}
 		}
 
-		return apply_filters( 'give_start_session', $start_session );
+		return apply_filters('give_start_session', $start_session);
 	}
 
 	/**
@@ -359,11 +359,11 @@ class Give_Session {
 	 */
 	public function maybe_start_session() {
 
-		if ( ! $this->should_start_session() ) {
+		if ( ! $this->should_start_session()) {
 			return;
 		}
 
-		if ( ! session_id() && ! headers_sent() ) {
+		if ( ! session_id() && ! headers_sent()) {
 			session_start();
 		}
 
@@ -382,9 +382,9 @@ class Give_Session {
 
 		$expiration = false;
 
-		if ( session_id() && isset( $_COOKIE[ session_name() . '_expiration' ] ) ) {
+		if (session_id() && isset($_COOKIE[session_name().'_expiration'])) {
 
-			$expiration = date( 'D, d M Y h:i:s', intval( $_COOKIE[ session_name() . '_expiration' ] ) );
+			$expiration = date('D, d M Y h:i:s', intval($_COOKIE[session_name().'_expiration']));
 
 		}
 

@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return array        The altered list of views
  */
-function give_register_default_customer_views( $views ) {
+function give_register_default_customer_views($views) {
 
 	$default_views = array(
 		'overview' => 'give_customers_view',
@@ -31,11 +31,11 @@ function give_register_default_customer_views( $views ) {
 		'notes'    => 'give_customer_notes_view'
 	);
 
-	return array_merge( $views, $default_views );
+	return array_merge($views, $default_views);
 
 }
 
-add_filter( 'give_customer_views', 'give_register_default_customer_views', 1, 1 );
+add_filter('give_customer_views', 'give_register_default_customer_views', 1, 1);
 
 /**
  * Register a tab for the single customer view
@@ -46,17 +46,17 @@ add_filter( 'give_customer_views', 'give_register_default_customer_views', 1, 1 
  *
  * @return array       The altered list of tabs
  */
-function give_register_default_customer_tabs( $tabs ) {
+function give_register_default_customer_tabs($tabs) {
 
 	$default_tabs = array(
-		'overview' => array( 'dashicon' => 'dashicons-admin-users', 'title' => esc_html__( 'Donor Profile', 'give' ) ),
-		'notes'    => array( 'dashicon' => 'dashicons-admin-comments', 'title' => esc_html__( 'Donor Notes', 'give' ) )
+		'overview' => array('dashicon' => 'dashicons-admin-users', 'title' => esc_html__('Donor Profile', 'give')),
+		'notes'    => array('dashicon' => 'dashicons-admin-comments', 'title' => esc_html__('Donor Notes', 'give'))
 	);
 
-	return array_merge( $tabs, $default_tabs );
+	return array_merge($tabs, $default_tabs);
 }
 
-add_filter( 'give_customer_tabs', 'give_register_default_customer_tabs', 1, 1 );
+add_filter('give_customer_tabs', 'give_register_default_customer_tabs', 1, 1);
 
 /**
  * Register the Delete icon as late as possible so it's at the bottom
@@ -67,11 +67,11 @@ add_filter( 'give_customer_tabs', 'give_register_default_customer_tabs', 1, 1 );
  *
  * @return array       The altered list of tabs, with 'delete' at the bottom
  */
-function give_register_delete_customer_tab( $tabs ) {
+function give_register_delete_customer_tab($tabs) {
 
-	$tabs['delete'] = array( 'dashicon' => 'dashicons-trash', 'title' => esc_html__( 'Delete Donor', 'give' ) );
+	$tabs['delete'] = array('dashicon' => 'dashicons-trash', 'title' => esc_html__('Delete Donor', 'give'));
 
 	return $tabs;
 }
 
-add_filter( 'give_customer_tabs', 'give_register_delete_customer_tab', PHP_INT_MAX, 1 );
+add_filter('give_customer_tabs', 'give_register_delete_customer_tab', PHP_INT_MAX, 1);

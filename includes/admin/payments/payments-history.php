@@ -10,7 +10,7 @@
 */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) {
+if ( ! defined('ABSPATH')) {
 	exit;
 }
 
@@ -25,12 +25,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 */
 function give_payment_history_page() {
 
-	$give_payment = get_post_type_object( 'give_payment' );
+	$give_payment = get_post_type_object('give_payment');
 
-	if ( isset( $_GET['view'] ) && 'view-order-details' == $_GET['view'] ) {
-		require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/view-order-details.php';
+	if (isset($_GET['view']) && 'view-order-details' == $_GET['view']) {
+		require_once GIVE_PLUGIN_DIR.'includes/admin/payments/view-order-details.php';
 	} else {
-		require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/class-payments-table.php';
+		require_once GIVE_PLUGIN_DIR.'includes/admin/payments/class-payments-table.php';
 		$payments_table = new Give_Payment_History_Table();
 		$payments_table->prepare_items();
 	?>
@@ -44,10 +44,10 @@ function give_payment_history_page() {
 		 *
 		 * @since 1.7
 		 */
-		do_action( 'give_payments_page_top' );
+		do_action('give_payments_page_top');
 		?>
 
-		<form id="give-payments-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ); ?>">
+		<form id="give-payments-filter" method="get" action="<?php echo admin_url('edit.php?post_type=give_forms&page=give-payment-history'); ?>">
 			<input type="hidden" name="post_type" value="give_forms" />
 			<input type="hidden" name="page" value="give-payment-history" />
 			<?php $payments_table->views() ?>
@@ -61,7 +61,7 @@ function give_payment_history_page() {
 		 *
 		 * @since 1.7
 		 */
-		do_action( 'give_payments_page_bottom' );
+		do_action('give_payments_page_bottom');
 		?>
 
 	</div>
@@ -78,29 +78,29 @@ function give_payment_history_page() {
  * @param $title
  * @return string
  */
-function give_view_order_details_title( $admin_title, $title ) {
+function give_view_order_details_title($admin_title, $title) {
 
-	if ( 'give_forms_page_give-payment-history' != get_current_screen()->base ) {
+	if ('give_forms_page_give-payment-history' != get_current_screen()->base) {
 		return $admin_title;
 	}
 
-	if( ! isset( $_GET['give-action'] ) ) {
+	if ( ! isset($_GET['give-action'])) {
 		return $admin_title;
 	}
 
-	switch( $_GET['give-action'] ) :
+	switch ($_GET['give-action']) :
 
 		case 'view-order-details' :
 			$title = sprintf(
 				/* translators: %s: admin title */
-				esc_html__( 'View Donation Details - %s', 'give' ),
+				esc_html__('View Donation Details - %s', 'give'),
 				$admin_title
 			);
 			break;
 		case 'edit-payment' :
 			$title = sprintf(
 				/* translators: %s: admin title */
-				esc_html__( 'Edit Donation - %s', 'give' ),
+				esc_html__('Edit Donation - %s', 'give'),
 				$admin_title
 			);
 			break;
@@ -111,7 +111,7 @@ function give_view_order_details_title( $admin_title, $title ) {
 
 	return $title;
 }
-add_filter( 'admin_title', 'give_view_order_details_title', 10, 2 );
+add_filter('admin_title', 'give_view_order_details_title', 10, 2);
 
 /**
  * Intercept default Edit post links for Give payments and rewrite them to the View Order Details screen
@@ -123,20 +123,20 @@ add_filter( 'admin_title', 'give_view_order_details_title', 10, 2 );
  * @param $context
  * @return string
  */
-function give_override_edit_post_for_payment_link( $url, $post_id = 0, $context ) {
+function give_override_edit_post_for_payment_link($url, $post_id = 0, $context) {
 
-	$post = get_post( $post_id );
+	$post = get_post($post_id);
 
-	if( ! $post ) {
+	if ( ! $post) {
 		return $url;
 	}
 
-	if( 'give_payment' != $post->post_type ) {
+	if ('give_payment' != $post->post_type) {
 		return $url;
 	}
 
-	$url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $post_id );
+	$url = admin_url('edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id='.$post_id);
 
 	return $url;
 }
-add_filter( 'get_edit_post_link', 'give_override_edit_post_for_payment_link', 10, 3 );
+add_filter('get_edit_post_link', 'give_override_edit_post_for_payment_link', 10, 3);

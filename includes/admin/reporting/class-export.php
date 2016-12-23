@@ -37,7 +37,7 @@ class Give_Export {
 	 * @return bool Whether we can export or not
 	 */
 	public function can_export() {
-		return (bool) apply_filters( 'give_export_capability', current_user_can( 'export_give_reports' ) );
+		return (bool) apply_filters('give_export_capability', current_user_can('export_give_reports'));
 	}
 
 	/**
@@ -48,16 +48,16 @@ class Give_Export {
 	 * @return void
 	 */
 	public function headers() {
-		ignore_user_abort( true );
+		ignore_user_abort(true);
 
-		if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
-			set_time_limit( 0 );
+		if ( ! give_is_func_disabled('set_time_limit') && ! ini_get('safe_mode')) {
+			set_time_limit(0);
 		}
 
 		nocache_headers();
-		header( 'Content-Type: text/csv; charset=utf-8' );
-		header( 'Content-Disposition: attachment; filename=give-export-' . $this->export_type . '-' . date( 'm-d-Y' ) . '.csv' );
-		header( "Expires: 0" );
+		header('Content-Type: text/csv; charset=utf-8');
+		header('Content-Disposition: attachment; filename=give-export-'.$this->export_type.'-'.date('m-d-Y').'.csv');
+		header("Expires: 0");
 	}
 
 	/**
@@ -69,8 +69,8 @@ class Give_Export {
 	 */
 	public function csv_cols() {
 		$cols = array(
-			'id'   => esc_html__( 'ID', 'give' ),
-			'date' => esc_html__( 'Date', 'give' )
+			'id'   => esc_html__('ID', 'give'),
+			'date' => esc_html__('Date', 'give')
 		);
 
 		return $cols;
@@ -86,7 +86,7 @@ class Give_Export {
 	public function get_csv_cols() {
 		$cols = $this->csv_cols();
 
-		return apply_filters( "give_export_csv_cols_{$this->export_type}", $cols );
+		return apply_filters("give_export_csv_cols_{$this->export_type}", $cols);
 	}
 
 	/**
@@ -100,10 +100,10 @@ class Give_Export {
 	public function csv_cols_out() {
 		$cols = $this->get_csv_cols();
 		$i    = 1;
-		foreach ( $cols as $col_id => $column ) {
-			echo '"' . addslashes( $column ) . '"';
-			echo $i == count( $cols ) ? '' : ',';
-			$i ++;
+		foreach ($cols as $col_id => $column) {
+			echo '"'.addslashes($column).'"';
+			echo $i == count($cols) ? '' : ',';
+			$i++;
 		}
 		echo "\r\n";
 	}
@@ -120,16 +120,16 @@ class Give_Export {
 		$data = array(
 			0 => array(
 				'id'   => '',
-				'data' => date( 'F j, Y' )
+				'data' => date('F j, Y')
 			),
 			1 => array(
 				'id'   => '',
-				'data' => date( 'F j, Y' )
+				'data' => date('F j, Y')
 			)
 		);
 
-		$data = apply_filters( 'give_export_get_data', $data );
-		$data = apply_filters( "give_export_get_data_{$this->export_type}", $data );
+		$data = apply_filters('give_export_get_data', $data);
+		$data = apply_filters("give_export_get_data_{$this->export_type}", $data);
 
 		return $data;
 	}
@@ -147,14 +147,14 @@ class Give_Export {
 		$cols = $this->get_csv_cols();
 
 		// Output each row
-		foreach ( $data as $row ) {
+		foreach ($data as $row) {
 			$i = 1;
-			foreach ( $row as $col_id => $column ) {
+			foreach ($row as $col_id => $column) {
 				// Make sure the column is valid
-				if ( array_key_exists( $col_id, $cols ) ) {
-					echo '"' . addslashes( $column ) . '"';
-					echo $i == count( $cols ) ? '' : ',';
-					$i ++;
+				if (array_key_exists($col_id, $cols)) {
+					echo '"'.addslashes($column).'"';
+					echo $i == count($cols) ? '' : ',';
+					$i++;
 				}
 			}
 			echo "\r\n";
@@ -173,8 +173,8 @@ class Give_Export {
 	 * @return void
 	 */
 	public function export() {
-		if ( ! $this->can_export() ) {
-			wp_die( esc_html__( 'You do not have permission to export data.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+		if ( ! $this->can_export()) {
+			wp_die(esc_html__('You do not have permission to export data.', 'give'), esc_html__('Error', 'give'), array('response' => 403));
 		}
 
 		// Set headers

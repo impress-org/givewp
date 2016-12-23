@@ -35,11 +35,11 @@ class Give_DB_Customers extends Give_DB {
 		/* @var WPDB $wpdb */
 		global $wpdb;
 
-		$this->table_name  = $wpdb->prefix . 'give_customers';
+		$this->table_name  = $wpdb->prefix.'give_customers';
 		$this->primary_key = 'id';
 		$this->version     = '1.0';
 		
-		add_action( 'profile_update', array( $this, 'update_customer_email_on_user_update' ), 10, 2 );
+		add_action('profile_update', array($this, 'update_customer_email_on_user_update'), 10, 2);
 
 	}
 
@@ -82,7 +82,7 @@ class Give_DB_Customers extends Give_DB {
 			'purchase_value' => 0.00,
 			'purchase_count' => 0,
 			'notes'          => '',
-			'date_created'   => date( 'Y-m-d H:i:s' ),
+			'date_created'   => date('Y-m-d H:i:s'),
 		);
 	}
 
@@ -96,40 +96,40 @@ class Give_DB_Customers extends Give_DB {
 	 *
 	 * @return int|bool
 	 */
-	public function add( $data = array() ) {
+	public function add($data = array()) {
 
 		$defaults = array(
 			'payment_ids' => ''
 		);
 
-		$args = wp_parse_args( $data, $defaults );
+		$args = wp_parse_args($data, $defaults);
 
-		if ( empty( $args['email'] ) ) {
+		if (empty($args['email'])) {
 			return false;
 		}
 
-		if ( ! empty( $args['payment_ids'] ) && is_array( $args['payment_ids'] ) ) {
-			$args['payment_ids'] = implode( ',', array_unique( array_values( $args['payment_ids'] ) ) );
+		if ( ! empty($args['payment_ids']) && is_array($args['payment_ids'])) {
+			$args['payment_ids'] = implode(',', array_unique(array_values($args['payment_ids'])));
 		}
 
-		$customer = $this->get_customer_by( 'email', $args['email'] );
+		$customer = $this->get_customer_by('email', $args['email']);
 
-		if ( $customer ) {
+		if ($customer) {
 			// update an existing customer
 
 			// Update the payment IDs attached to the customer
-			if ( ! empty( $args['payment_ids'] ) ) {
+			if ( ! empty($args['payment_ids'])) {
 
-				if ( empty( $customer->payment_ids ) ) {
+				if (empty($customer->payment_ids)) {
 
 					$customer->payment_ids = $args['payment_ids'];
 
 				} else {
 
-					$existing_ids          = array_map( 'absint', explode( ',', $customer->payment_ids ) );
-					$payment_ids           = array_map( 'absint', explode( ',', $args['payment_ids'] ) );
-					$payment_ids           = array_merge( $payment_ids, $existing_ids );
-					$customer->payment_ids = implode( ',', array_unique( array_values( $payment_ids ) ) );
+					$existing_ids          = array_map('absint', explode(',', $customer->payment_ids));
+					$payment_ids           = array_map('absint', explode(',', $args['payment_ids']));
+					$payment_ids           = array_merge($payment_ids, $existing_ids);
+					$customer->payment_ids = implode(',', array_unique(array_values($payment_ids)));
 
 				}
 
@@ -137,13 +137,13 @@ class Give_DB_Customers extends Give_DB {
 
 			}
 
-			$this->update( $customer->id, $args );
+			$this->update($customer->id, $args);
 
 			return $customer->id;
 
 		} else {
 
-			return $this->insert( $args, 'customer' );
+			return $this->insert($args, 'customer');
 
 		}
 
@@ -158,24 +158,24 @@ class Give_DB_Customers extends Give_DB {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  bool|string|int $_id_or_email
+	 * @param  integer $_id_or_email
 	 *
 	 * @return bool|int
 	 */
-	public function delete( $_id_or_email = false ) {
+	public function delete($_id_or_email = false) {
 
-		if ( empty( $_id_or_email ) ) {
+		if (empty($_id_or_email)) {
 			return false;
 		}
 
-		$column   = is_email( $_id_or_email ) ? 'email' : 'id';
-		$customer = $this->get_customer_by( $column, $_id_or_email );
+		$column   = is_email($_id_or_email) ? 'email' : 'id';
+		$customer = $this->get_customer_by($column, $_id_or_email);
 
-		if ( $customer->id > 0 ) {
+		if ($customer->id > 0) {
 
 			global $wpdb;
 
-			return $wpdb->delete( $this->table_name, array( 'id' => $customer->id ), array( '%d' ) );
+			return $wpdb->delete($this->table_name, array('id' => $customer->id), array('%d'));
 
 		} else {
 			return false;
@@ -194,14 +194,14 @@ class Give_DB_Customers extends Give_DB {
 	 *
 	 * @return bool          True is exists, false otherwise.
 	 */
-	public function exists( $value = '', $field = 'email' ) {
+	public function exists($value = '', $field = 'email') {
 		
 		$columns = $this->get_columns();
-		if ( ! array_key_exists( $field, $columns ) ) {
+		if ( ! array_key_exists($field, $columns)) {
 			return false;
 		}
 
-		return (bool) $this->get_column_by( 'id', $field, $value );
+		return (bool) $this->get_column_by('id', $field, $value);
 
 	}
 
@@ -216,16 +216,16 @@ class Give_DB_Customers extends Give_DB {
 	 *
 	 * @return bool
 	 */
-	public function attach_payment( $customer_id = 0, $payment_id = 0 ) {
+	public function attach_payment($customer_id = 0, $payment_id = 0) {
 
-		$customer = new Give_Customer( $customer_id );
+		$customer = new Give_Customer($customer_id);
 
-		if ( empty( $customer->id ) ) {
+		if (empty($customer->id)) {
 			return false;
 		}
 
 		// Attach the payment, but don't increment stats, as this function previously did not
-		return $customer->attach_payment( $payment_id, false );
+		return $customer->attach_payment($payment_id, false);
 
 	}
 
@@ -240,16 +240,16 @@ class Give_DB_Customers extends Give_DB {
 	 *
 	 * @return bool
 	 */
-	public function remove_payment( $customer_id = 0, $payment_id = 0 ) {
+	public function remove_payment($customer_id = 0, $payment_id = 0) {
 
-		$customer = new Give_Customer( $customer_id );
+		$customer = new Give_Customer($customer_id);
 
-		if ( ! $customer ) {
+		if ( ! $customer) {
 			return false;
 		}
 
 		// Remove the payment, but don't decrease stats, as this function previously did not
-		return $customer->remove_payment( $payment_id, false );
+		return $customer->remove_payment($payment_id, false);
 
 	}
 
@@ -263,18 +263,18 @@ class Give_DB_Customers extends Give_DB {
 	 *
 	 * @return bool
 	 */
-	public function increment_stats( $customer_id = 0, $amount = 0.00 ) {
+	public function increment_stats($customer_id = 0, $amount = 0.00) {
 
-		$customer = new Give_Customer( $customer_id );
+		$customer = new Give_Customer($customer_id);
 
-		if ( empty( $customer->id ) ) {
+		if (empty($customer->id)) {
 			return false;
 		}
 
 		$increased_count = $customer->increase_purchase_count();
-		$increased_value = $customer->increase_value( $amount );
+		$increased_value = $customer->increase_value($amount);
 
-		return ( $increased_count && $increased_value ) ? true : false;
+		return ($increased_count && $increased_value) ? true : false;
 
 	}
 
@@ -289,18 +289,18 @@ class Give_DB_Customers extends Give_DB {
 	 *
 	 * @return bool
 	 */
-	public function decrement_stats( $customer_id = 0, $amount = 0.00 ) {
+	public function decrement_stats($customer_id = 0, $amount = 0.00) {
 
-		$customer = new Give_Customer( $customer_id );
+		$customer = new Give_Customer($customer_id);
 
-		if ( ! $customer ) {
+		if ( ! $customer) {
 			return false;
 		}
 
 		$decreased_count = $customer->decrease_purchase_count();
-		$decreased_value = $customer->decrease_value( $amount );
+		$decreased_value = $customer->decrease_value($amount);
 
-		return ( $decreased_count && $decreased_value ) ? true : false;
+		return ($decreased_count && $decreased_value) ? true : false;
 
 	}
 
@@ -313,33 +313,33 @@ class Give_DB_Customers extends Give_DB {
 	 * @param  int     $user_id       User ID.
 	 * @param  WP_User $old_user_data User data.
 	 *
-	 * @return bool
+	 * @return false|null
 	 */
-	public function update_customer_email_on_user_update( $user_id = 0, $old_user_data ) {
+	public function update_customer_email_on_user_update($user_id = 0, $old_user_data) {
 
-		$customer = new Give_Customer( $user_id, true );
+		$customer = new Give_Customer($user_id, true);
 
-		if( ! $customer ) {
+		if ( ! $customer) {
 			return false;
 		}
 
-		$user = get_userdata( $user_id );
+		$user = get_userdata($user_id);
 
-		if( ! empty( $user ) && $user->user_email !== $customer->email ) {
+		if ( ! empty($user) && $user->user_email !== $customer->email) {
 
-			if( ! $this->get_customer_by( 'email', $user->user_email ) ) {
+			if ( ! $this->get_customer_by('email', $user->user_email)) {
 
-				$success = $this->update( $customer->id, array( 'email' => $user->user_email ) );
+				$success = $this->update($customer->id, array('email' => $user->user_email));
 
-				if( $success ) {
+				if ($success) {
 					// Update some payment meta if we need to
-					$payments_array = explode( ',', $customer->payment_ids );
+					$payments_array = explode(',', $customer->payment_ids);
 
-					if( ! empty( $payments_array ) ) {
+					if ( ! empty($payments_array)) {
 
-						foreach ( $payments_array as $payment_id ) {
+						foreach ($payments_array as $payment_id) {
 
-							give_update_payment_meta( $payment_id, 'email', $user->user_email );
+							give_update_payment_meta($payment_id, 'email', $user->user_email);
 
 						}
 
@@ -353,7 +353,7 @@ class Give_DB_Customers extends Give_DB {
 					 * @param  WP_User       $user     WordPress User object.
 					 * @param  Give_Customer $customer Give customer object.
 					 */
-					do_action( 'give_update_customer_email_on_user_update', $user, $customer );
+					do_action('give_update_customer_email_on_user_update', $user, $customer);
 
 				}
 
@@ -370,50 +370,50 @@ class Give_DB_Customers extends Give_DB {
 	 * @access public
 	 *
 	 * @param  string $field ID or email. Default is 'id'.
-	 * @param  mixed  $value The Customer ID or email to search. Default is 0.
+	 * @param  integer  $value The Customer ID or email to search. Default is 0.
 	 *
 	 * @return mixed         Upon success, an object of the customer. Upon failure, NULL
 	 */
-	public function get_customer_by( $field = 'id', $value = 0 ) {
+	public function get_customer_by($field = 'id', $value = 0) {
 		/* @var WPDB $wpdb */
 		global $wpdb;
 
-		if ( empty( $field ) || empty( $value ) ) {
+		if (empty($field) || empty($value)) {
 			return null;
 		}
 
-		if ( 'id' == $field || 'user_id' == $field ) {
+		if ('id' == $field || 'user_id' == $field) {
 			// Make sure the value is numeric to avoid casting objects, for example,
 			// to int 1.
-			if ( ! is_numeric( $value ) ) {
+			if ( ! is_numeric($value)) {
 				return false;
 			}
 
-			$value = intval( $value );
+			$value = intval($value);
 
-			if ( $value < 1 ) {
+			if ($value < 1) {
 				return false;
 			}
 
-		} elseif ( 'email' === $field ) {
+		} elseif ('email' === $field) {
 
-			if ( ! is_email( $value ) ) {
+			if ( ! is_email($value)) {
 				return false;
 			}
 
-			$value = trim( $value );
+			$value = trim($value);
 		}
 
-		if ( ! $value ) {
+		if ( ! $value) {
 			return false;
 		}
 
-		switch ( $field ) {
+		switch ($field) {
 			case 'id':
 				$db_field = 'id';
 				break;
 			case 'email':
-				$value    = sanitize_text_field( $value );
+				$value    = sanitize_text_field($value);
 				$db_field = 'email';
 				break;
 			case 'user_id':
@@ -423,15 +423,15 @@ class Give_DB_Customers extends Give_DB {
 				return false;
 		}
 
-		if ( ! $customer = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $this->table_name WHERE $db_field = %s LIMIT 1", $value ) ) ) {
+		if ( ! $customer = $wpdb->get_row($wpdb->prepare("SELECT * FROM $this->table_name WHERE $db_field = %s LIMIT 1", $value))) {
 
 			// Look for customer from an additional email
-			if( 'email' === $field ) {
+			if ('email' === $field) {
 				$meta_table  = Give()->customer_meta->table_name;
-				$customer_id = $wpdb->get_var( $wpdb->prepare( "SELECT customer_id FROM {$meta_table} WHERE meta_key = 'additional_email' AND meta_value = %s LIMIT 1", $value ) );
+				$customer_id = $wpdb->get_var($wpdb->prepare("SELECT customer_id FROM {$meta_table} WHERE meta_key = 'additional_email' AND meta_value = %s LIMIT 1", $value));
 
-				if( ! empty( $customer_id ) ) {
-					return $this->get( $customer_id );
+				if ( ! empty($customer_id)) {
+					return $this->get($customer_id);
  				}
  			}
 
@@ -446,13 +446,13 @@ class Give_DB_Customers extends Give_DB {
 	 *
 	 * @since  1.0
 	 * @access public
-     *
-     * @param  array $args
-     *
-     * @return array|object|null Customers array or object. Null if not found.
+	 *
+	 * @param  array $args
+	 *
+	 * @return array|object|null Customers array or object. Null if not found.
 	 */
 	public function get_customers( $args = array() ) {
-        /* @var WPDB $wpdb */
+		/* @var WPDB $wpdb */
 		global $wpdb;
 
 		$defaults = array(
@@ -463,21 +463,21 @@ class Give_DB_Customers extends Give_DB {
 			'order'   => 'DESC'
 		);
 
-		$args = wp_parse_args( $args, $defaults );
+		$args = wp_parse_args($args, $defaults);
 
-		if ( $args['number'] < 1 ) {
+		if ($args['number'] < 1) {
 			$args['number'] = 999999999999;
 		}
 
 		$where = ' WHERE 1=1 ';
 
 		// specific customers
-		if ( ! empty( $args['id'] ) ) {
+		if ( ! empty($args['id'])) {
 
-			if ( is_array( $args['id'] ) ) {
-				$ids = implode( ',', array_map( 'intval', $args['id'] ) );
+			if (is_array($args['id'])) {
+				$ids = implode(',', array_map('intval', $args['id']));
 			} else {
-				$ids = intval( $args['id'] );
+				$ids = intval($args['id']);
 			}
 
 			$where .= " AND `id` IN( {$ids} ) ";
@@ -485,12 +485,12 @@ class Give_DB_Customers extends Give_DB {
 		}
 
 		// customers for specific user accounts
-		if ( ! empty( $args['user_id'] ) ) {
+		if ( ! empty($args['user_id'])) {
 
-			if ( is_array( $args['user_id'] ) ) {
-				$user_ids = implode( ',', array_map( 'intval', $args['user_id'] ) );
+			if (is_array($args['user_id'])) {
+				$user_ids = implode(',', array_map('intval', $args['user_id']));
 			} else {
-				$user_ids = intval( $args['user_id'] );
+				$user_ids = intval($args['user_id']);
 			}
 
 			$where .= " AND `user_id` IN( {$user_ids} ) ";
@@ -498,41 +498,41 @@ class Give_DB_Customers extends Give_DB {
 		}
 
 		//specific customers by email
-		if( ! empty( $args['email'] ) ) {
+		if ( ! empty($args['email'])) {
 
-			if( is_array( $args['email'] ) ) {
+			if (is_array($args['email'])) {
 
-				$emails_count       = count( $args['email'] );
-				$emails_placeholder = array_fill( 0, $emails_count, '%s' );
-				$emails             = implode( ', ', $emails_placeholder );
+				$emails_count       = count($args['email']);
+				$emails_placeholder = array_fill(0, $emails_count, '%s');
+				$emails             = implode(', ', $emails_placeholder);
 
-				$where .= $wpdb->prepare( " AND `email` IN( $emails ) ", $args['email'] );
+				$where .= $wpdb->prepare(" AND `email` IN( $emails ) ", $args['email']);
 			} else {
-				$where .= $wpdb->prepare( " AND `email` = %s ", $args['email'] );
+				$where .= $wpdb->prepare(" AND `email` = %s ", $args['email']);
 			}
 		}
 
 		// specific customers by name
-		if( ! empty( $args['name'] ) ) {
-			$where .= $wpdb->prepare( " AND `name` LIKE '%%%%" . '%s' . "%%%%' ", $args['name'] );
+		if ( ! empty($args['name'])) {
+			$where .= $wpdb->prepare(" AND `name` LIKE '%%%%".'%s'."%%%%' ", $args['name']);
 		}
 
 		// Customers created for a specific date or in a date range
-		if ( ! empty( $args['date'] ) ) {
+		if ( ! empty($args['date'])) {
 
-			if ( is_array( $args['date'] ) ) {
+			if (is_array($args['date'])) {
 
-				if ( ! empty( $args['date']['start'] ) ) {
+				if ( ! empty($args['date']['start'])) {
 
-					$start = date( 'Y-m-d H:i:s', strtotime( $args['date']['start'] ) );
+					$start = date('Y-m-d H:i:s', strtotime($args['date']['start']));
 
 					$where .= " AND `date_created` >= '{$start}'";
 
 				}
 
-				if ( ! empty( $args['date']['end'] ) ) {
+				if ( ! empty($args['date']['end'])) {
 
-					$end = date( 'Y-m-d H:i:s', strtotime( $args['date']['end'] ) );
+					$end = date('Y-m-d H:i:s', strtotime($args['date']['end']));
 
 					$where .= " AND `date_created` <= '{$end}'";
 
@@ -540,31 +540,31 @@ class Give_DB_Customers extends Give_DB {
 
 			} else {
 
-				$year  = date( 'Y', strtotime( $args['date'] ) );
-				$month = date( 'm', strtotime( $args['date'] ) );
-				$day   = date( 'd', strtotime( $args['date'] ) );
+				$year  = date('Y', strtotime($args['date']));
+				$month = date('m', strtotime($args['date']));
+				$day   = date('d', strtotime($args['date']));
 
 				$where .= " AND $year = YEAR ( date_created ) AND $month = MONTH ( date_created ) AND $day = DAY ( date_created )";
 			}
 
 		}
 
-		$args['orderby'] = ! array_key_exists( $args['orderby'], $this->get_columns() ) ? 'id' : $args['orderby'];
+		$args['orderby'] = ! array_key_exists($args['orderby'], $this->get_columns()) ? 'id' : $args['orderby'];
 
-		if ( 'purchase_value' == $args['orderby'] ) {
+		if ('purchase_value' == $args['orderby']) {
 			$args['orderby'] = 'purchase_value+0';
 		}
 
-		$cache_key = md5( 'give_customers_' . serialize( $args ) );
+		$cache_key = md5('give_customers_'.serialize($args));
 
-		$customers = wp_cache_get( $cache_key, 'customers' );
+		$customers = wp_cache_get($cache_key, 'customers');
 
-		$args['orderby'] = esc_sql( $args['orderby'] );
-		$args['order']   = esc_sql( $args['order'] );
+		$args['orderby'] = esc_sql($args['orderby']);
+		$args['order']   = esc_sql($args['order']);
 
-		if ( $customers === false ) {
-			$customers = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM  $this->table_name $where ORDER BY {$args['orderby']} {$args['order']} LIMIT %d,%d;", absint( $args['offset'] ), absint( $args['number'] ) ) );
-			wp_cache_set( $cache_key, $customers, 'customers', 3600 );
+		if ($customers === false) {
+			$customers = $wpdb->get_results($wpdb->prepare("SELECT * FROM  $this->table_name $where ORDER BY {$args['orderby']} {$args['order']} LIMIT %d,%d;", absint($args['offset']), absint($args['number'])));
+			wp_cache_set($cache_key, $customers, 'customers', 3600);
 		}
 
 		return $customers;
@@ -577,13 +577,13 @@ class Give_DB_Customers extends Give_DB {
 	 *
 	 * @since  1.0
 	 * @access public
-     *
-     * @param  array $args
-     *
-     * @return int         Total number of customers.
+	 *
+	 * @param  array $args
+	 *
+	 * @return int         Total number of customers.
 	 */
 	public function count( $args = array() ) {
-        /* @var WPDB $wpdb */
+		/* @var WPDB $wpdb */
 		global $wpdb;
 
 		$where = ' WHERE 1=1 ';
@@ -609,16 +609,16 @@ class Give_DB_Customers extends Give_DB {
 		}
 
 
-		$cache_key = md5( 'give_customers_count' . serialize( $args ) );
+		$cache_key = md5('give_customers_count'.serialize($args));
 
-		$count = wp_cache_get( $cache_key, 'customers' );
+		$count = wp_cache_get($cache_key, 'customers');
 
-		if ( $count === false ) {
-			$count = $wpdb->get_var( "SELECT COUNT($this->primary_key) FROM " . $this->table_name . "{$where};" );
-			wp_cache_set( $cache_key, $count, 'customers', 3600 );
+		if ($count === false) {
+			$count = $wpdb->get_var("SELECT COUNT($this->primary_key) FROM ".$this->table_name."{$where};");
+			wp_cache_set($cache_key, $count, 'customers', 3600);
 		}
 
-		return absint( $count );
+		return absint($count);
 
 	}
 
@@ -632,9 +632,9 @@ class Give_DB_Customers extends Give_DB {
 	 */
 	public function create_table() {
 
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		require_once(ABSPATH.'wp-admin/includes/upgrade.php');
 
-		$sql = "CREATE TABLE " . $this->table_name . " (
+		$sql = "CREATE TABLE ".$this->table_name." (
 		id bigint(20) NOT NULL AUTO_INCREMENT,
 		user_id bigint(20) NOT NULL,
 		email varchar(50) NOT NULL,
@@ -649,9 +649,9 @@ class Give_DB_Customers extends Give_DB {
 		KEY user (user_id)
 		) CHARACTER SET utf8 COLLATE utf8_general_ci;";
 
-		dbDelta( $sql );
+		dbDelta($sql);
 
-		update_option( $this->table_name . '_db_version', $this->version );
+		update_option($this->table_name.'_db_version', $this->version);
 	}
 	
 	/**
@@ -663,7 +663,7 @@ class Give_DB_Customers extends Give_DB {
 	 * @return bool Returns if the customers table was installed and upgrade routine run.
 	 */
 	public function installed() {
-		return $this->table_exists( $this->table_name );
+		return $this->table_exists($this->table_name);
 	}
 
 }

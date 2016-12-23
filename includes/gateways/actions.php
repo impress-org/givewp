@@ -21,14 +21,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @param $data
  */
-function give_process_gateway_select( $data ) {
-	if ( isset( $_POST['gateway_submit'] ) ) {
-		wp_redirect( esc_url( add_query_arg( 'payment-mode', $_POST['payment-mode'] ) ) );
+function give_process_gateway_select($data) {
+	if (isset($_POST['gateway_submit'])) {
+		wp_redirect(esc_url(add_query_arg('payment-mode', $_POST['payment-mode'])));
 		exit;
 	}
 }
 
-add_action( 'give_gateway_select', 'give_process_gateway_select' );
+add_action('give_gateway_select', 'give_process_gateway_select');
 
 /**
  * Loads a payment gateway via AJAX.
@@ -38,20 +38,20 @@ add_action( 'give_gateway_select', 'give_process_gateway_select' );
  * @return void
  */
 function give_load_ajax_gateway() {
-	if ( isset( $_POST['give_payment_mode'] ) ) {
+	if (isset($_POST['give_payment_mode'])) {
 		/**
 		 * Fire to render donation form.
 		 *
 		 * @since 1.7
 		 */
-		do_action( 'give_donation_form', $_POST['give_form_id'] );
+		do_action('give_donation_form', $_POST['give_form_id']);
 
 		exit();
 	}
 }
 
-add_action( 'wp_ajax_give_load_gateway', 'give_load_ajax_gateway' );
-add_action( 'wp_ajax_nopriv_give_load_gateway', 'give_load_ajax_gateway' );
+add_action('wp_ajax_give_load_gateway', 'give_load_ajax_gateway');
+add_action('wp_ajax_nopriv_give_load_gateway', 'give_load_ajax_gateway');
 
 /**
  * Sets an error within the donation form if no gateways are enabled.
@@ -63,11 +63,11 @@ add_action( 'wp_ajax_nopriv_give_load_gateway', 'give_load_ajax_gateway' );
 function give_no_gateway_error() {
 	$gateways = give_get_enabled_payment_gateways();
 
-	if ( empty( $gateways ) ) {
-		give_set_error( 'no_gateways', esc_html__( 'You must enable a payment gateway to use Give.', 'give' ) );
+	if (empty($gateways)) {
+		give_set_error('no_gateways', esc_html__('You must enable a payment gateway to use Give.', 'give'));
 	} else {
-		give_unset_error( 'no_gateways' );
+		give_unset_error('no_gateways');
 	}
 }
 
-add_action( 'init', 'give_no_gateway_error' );
+add_action('init', 'give_no_gateway_error');

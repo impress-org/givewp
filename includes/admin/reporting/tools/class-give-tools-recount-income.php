@@ -53,50 +53,50 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 	 */
 	public function get_data() {
 
-		if ( $this->step == 1 ) {
-			$this->delete_data( 'give_temp_recount_income' );
+		if ($this->step == 1) {
+			$this->delete_data('give_temp_recount_income');
 		}
 
-		$total = get_option( 'give_temp_recount_income', false );
+		$total = get_option('give_temp_recount_income', false);
 
-		if ( false === $total ) {
+		if (false === $total) {
 			$total = (float) 0;
-			$this->store_data( 'give_temp_recount_income', $total );
+			$this->store_data('give_temp_recount_income', $total);
 		}
 
-		$accepted_statuses = apply_filters( 'give_recount_accepted_statuses', array( 'publish' ) );
+		$accepted_statuses = apply_filters('give_recount_accepted_statuses', array('publish'));
 
-		$args = apply_filters( 'give_recount_income_args', array(
+		$args = apply_filters('give_recount_income_args', array(
 			'number' => $this->per_step,
 			'page'   => $this->step,
 			'status' => $accepted_statuses,
 			'fields' => 'ids'
-		) );
+		));
 
-		$payments = give_get_payments( $args );
+		$payments = give_get_payments($args);
 
-		if ( ! empty( $payments ) ) {
+		if ( ! empty($payments)) {
 
-			foreach ( $payments as $payment ) {
+			foreach ($payments as $payment) {
 
-				$total += give_get_payment_amount( $payment );
+				$total += give_get_payment_amount($payment);
 
 			}
 
-			if ( $total < 0 ) {
+			if ($total < 0) {
 				$totals = 0;
 			}
 
-			$total = round( $total, give_currency_decimal_filter() );
+			$total = round($total, give_currency_decimal_filter());
 
-			$this->store_data( 'give_temp_recount_income', $total );
+			$this->store_data('give_temp_recount_income', $total);
 
 			return true;
 
 		}
 
-		update_option( 'give_income_total', $total );
-		set_transient( 'give_income_total', $total, 86400 );
+		update_option('give_income_total', $total);
+		set_transient('give_income_total', $total, 86400);
 
 		return false;
 
@@ -110,25 +110,25 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 	 */
 	public function get_percentage_complete() {
 
-		$total = $this->get_stored_data( 'give_recount_income_total' );
+		$total = $this->get_stored_data('give_recount_income_total');
 
-		if ( false === $total ) {
-			$args = apply_filters( 'give_recount_income_total_args', array() );
+		if (false === $total) {
+			$args = apply_filters('give_recount_income_total_args', array());
 
-			$counts = give_count_payments( $args );
-			$total  = absint( $counts->publish );
-			$total  = apply_filters( 'give_recount_store_income_total', $total );
+			$counts = give_count_payments($args);
+			$total  = absint($counts->publish);
+			$total  = apply_filters('give_recount_store_income_total', $total);
 
-			$this->store_data( 'give_recount_income_total', $total );
+			$this->store_data('give_recount_income_total', $total);
 		}
 
 		$percentage = 100;
 
-		if ( $total > 0 ) {
-			$percentage = ( ( $this->per_step * $this->step ) / $total ) * 100;
+		if ($total > 0) {
+			$percentage = (($this->per_step * $this->step) / $total) * 100;
 		}
 
-		if ( $percentage > 100 ) {
+		if ($percentage > 100) {
 			$percentage = 100;
 		}
 
@@ -142,7 +142,7 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 	 *
 	 * @param array $request The Form Data passed into the batch processing
 	 */
-	public function set_properties( $request ) {
+	public function set_properties($request) {
 	}
 
 	/**
@@ -153,31 +153,31 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 	 */
 	public function process_step() {
 
-		if ( ! $this->can_export() ) {
-			wp_die( esc_html__( 'You do not have permission to recount stats.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+		if ( ! $this->can_export()) {
+			wp_die(esc_html__('You do not have permission to recount stats.', 'give'), esc_html__('Error', 'give'), array('response' => 403));
 		}
 
 		$had_data = $this->get_data();
 
-		if ( $had_data ) {
+		if ($had_data) {
 			$this->done = false;
 
 			return true;
 		} else {
-			$this->delete_data( 'give_recount_income_total' );
-			$this->delete_data( 'give_temp_recount_income' );
+			$this->delete_data('give_recount_income_total');
+			$this->delete_data('give_temp_recount_income');
 			$this->done    = true;
-			$this->message = esc_html__( 'Income stats have been successfully recounted.', 'give' );
+			$this->message = esc_html__('Income stats have been successfully recounted.', 'give');
 
 			return false;
 		}
 	}
 
 	public function headers() {
-		ignore_user_abort( true );
+		ignore_user_abort(true);
 
-		if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
-			set_time_limit( 0 );
+		if ( ! give_is_func_disabled('set_time_limit') && ! ini_get('safe_mode')) {
+			set_time_limit(0);
 		}
 	}
 
@@ -205,11 +205,11 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 	 *
 	 * @return mixed       Returns the data from the database
 	 */
-	private function get_stored_data( $key ) {
+	private function get_stored_data($key) {
 		global $wpdb;
-		$value = $wpdb->get_var( $wpdb->prepare( "SELECT option_value FROM $wpdb->options WHERE option_name = '%s'", $key ) );
+		$value = $wpdb->get_var($wpdb->prepare("SELECT option_value FROM $wpdb->options WHERE option_name = '%s'", $key));
 
-		return empty( $value ) ? false : maybe_unserialize( $value );
+		return empty($value) ? false : maybe_unserialize($value);
 	}
 
 	/**
@@ -222,10 +222,10 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 	 *
 	 * @return void
 	 */
-	private function store_data( $key, $value ) {
+	private function store_data($key, $value) {
 		global $wpdb;
 
-		$value = maybe_serialize( $value );
+		$value = maybe_serialize($value);
 
 		$data = array(
 			'option_name'  => $key,
@@ -239,7 +239,7 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 			'%s',
 		);
 
-		$wpdb->replace( $wpdb->options, $data, $formats );
+		$wpdb->replace($wpdb->options, $data, $formats);
 	}
 
 	/**
@@ -251,9 +251,9 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 	 *
 	 * @return void
 	 */
-	private function delete_data( $key ) {
+	private function delete_data($key) {
 		global $wpdb;
-		$wpdb->delete( $wpdb->options, array( 'option_name' => $key ) );
+		$wpdb->delete($wpdb->options, array('option_name' => $key));
 	}
 
 }

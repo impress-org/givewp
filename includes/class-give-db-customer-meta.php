@@ -33,11 +33,11 @@ class Give_DB_Customer_Meta extends Give_DB {
 		/* @var WPDB $wpdb */
 		global $wpdb;
 
-		$this->table_name  = $wpdb->prefix . 'give_customermeta';
+		$this->table_name  = $wpdb->prefix.'give_customermeta';
 		$this->primary_key = 'meta_id';
 		$this->version     = '1.0';
 
-		add_action( 'plugins_loaded', array( $this, 'register_table' ), 11 );
+		add_action('plugins_loaded', array($this, 'register_table'), 11);
 
 	}
 
@@ -85,13 +85,13 @@ class Give_DB_Customer_Meta extends Give_DB {
 	 *
 	 * @return  mixed                 Will be an array if $single is false. Will be value of meta data field if $single is true.
 	 */
-	public function get_meta( $customer_id = 0, $meta_key = '', $single = false ) {
-		$customer_id = $this->sanitize_customer_id( $customer_id );
-		if ( false === $customer_id ) {
+	public function get_meta($customer_id = 0, $meta_key = '', $single = false) {
+		$customer_id = $this->sanitize_customer_id($customer_id);
+		if (false === $customer_id) {
 			return false;
 		}
 
-		return get_metadata( 'customer', $customer_id, $meta_key, $single );
+		return get_metadata('customer', $customer_id, $meta_key, $single);
 	}
 
 	/**
@@ -109,13 +109,13 @@ class Give_DB_Customer_Meta extends Give_DB {
 	 *
 	 * @return  bool                  False for failure. True for success.
 	 */
-	public function add_meta( $customer_id = 0, $meta_key = '', $meta_value, $unique = false ) {
-		$customer_id = $this->sanitize_customer_id( $customer_id );
-		if ( false === $customer_id ) {
+	public function add_meta($customer_id = 0, $meta_key = '', $meta_value, $unique = false) {
+		$customer_id = $this->sanitize_customer_id($customer_id);
+		if (false === $customer_id) {
 			return false;
 		}
 
-		return add_metadata( 'customer', $customer_id, $meta_key, $meta_value, $unique );
+		return add_metadata('customer', $customer_id, $meta_key, $meta_value, $unique);
 	}
 
 	/**
@@ -138,13 +138,13 @@ class Give_DB_Customer_Meta extends Give_DB {
 	 *
 	 * @return  bool                  False on failure, true if success.
 	 */
-	public function update_meta( $customer_id = 0, $meta_key = '', $meta_value, $prev_value = '' ) {
-		$customer_id = $this->sanitize_customer_id( $customer_id );
-		if ( false === $customer_id ) {
+	public function update_meta($customer_id = 0, $meta_key = '', $meta_value, $prev_value = '') {
+		$customer_id = $this->sanitize_customer_id($customer_id);
+		if (false === $customer_id) {
 			return false;
 		}
 
-		return update_metadata( 'customer', $customer_id, $meta_key, $meta_value, $prev_value );
+		return update_metadata('customer', $customer_id, $meta_key, $meta_value, $prev_value);
 	}
 
 	/**
@@ -165,8 +165,8 @@ class Give_DB_Customer_Meta extends Give_DB {
 	 *
 	 * @return  bool                  False for failure. True for success.
 	 */
-	public function delete_meta( $customer_id = 0, $meta_key = '', $meta_value = '' ) {
-		return delete_metadata( 'customer', $customer_id, $meta_key, $meta_value );
+	public function delete_meta($customer_id = 0, $meta_key = '', $meta_value = '') {
+		return delete_metadata('customer', $customer_id, $meta_key, $meta_value);
 	}
 
 	/**
@@ -179,7 +179,7 @@ class Give_DB_Customer_Meta extends Give_DB {
 	 */
 	public function create_table() {
 
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		require_once(ABSPATH.'wp-admin/includes/upgrade.php');
 
 		$sql = "CREATE TABLE {$this->table_name} (
 			meta_id bigint(20) NOT NULL AUTO_INCREMENT,
@@ -191,9 +191,9 @@ class Give_DB_Customer_Meta extends Give_DB {
 			KEY meta_key (meta_key)
 			) CHARACTER SET utf8 COLLATE utf8_general_ci;";
 
-		dbDelta( $sql );
+		dbDelta($sql);
 
-		update_option( $this->table_name . '_db_version', $this->version );
+		update_option($this->table_name.'_db_version', $this->version);
 	}
 
 	/**
@@ -206,23 +206,23 @@ class Give_DB_Customer_Meta extends Give_DB {
 	 *
 	 * @return int|bool                The normalized customer ID or false if it's found to not be valid.
 	 */
-	private function sanitize_customer_id( $customer_id ) {
-		if ( ! is_numeric( $customer_id ) ) {
+	private function sanitize_customer_id($customer_id) {
+		if ( ! is_numeric($customer_id)) {
 			return false;
 		}
 
 		$customer_id = (int) $customer_id;
 
 		// We were given a non positive number
-		if ( absint( $customer_id ) !== $customer_id ) {
+		if (absint($customer_id) !== $customer_id) {
 			return false;
 		}
 
-		if ( empty( $customer_id ) ) {
+		if (empty($customer_id)) {
 			return false;
 		}
 
-		return absint( $customer_id );
+		return absint($customer_id);
 
 	}
 

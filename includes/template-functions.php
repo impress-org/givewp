@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function give_get_templates_dir() {
-	return GIVE_PLUGIN_DIR . 'templates';
+	return GIVE_PLUGIN_DIR.'templates';
 }
 
 /**
@@ -31,7 +31,7 @@ function give_get_templates_dir() {
  * @return string
  */
 function give_get_templates_url() {
-	return GIVE_PLUGIN_URL . 'templates';
+	return GIVE_PLUGIN_URL.'templates';
 }
 
 /**
@@ -45,22 +45,22 @@ function give_get_templates_url() {
  * @param string $default_path  Default path. Default is empty.
  */
 function give_get_template( $template_name, $args = array(), $template_path = '', $default_path = '' ) {
-    if ( ! empty( $args ) && is_array( $args ) ) {
-        extract( $args );
-    }
+	if ( ! empty( $args ) && is_array( $args ) ) {
+		extract( $args );
+	}
 
-    $template_names = array( $template_name . '.php' );
+	$template_names = array( $template_name . '.php' );
 
-    $located = give_locate_template( $template_names, $template_path, $default_path );
+	$located = give_locate_template( $template_names, $template_path, $default_path );
 
-    if ( ! file_exists( $located ) ) {
+	if ( ! file_exists( $located ) ) {
 		/* translators: %s: the template */
-        give_output_error( sprintf( __( 'The %s template was not found.', 'give' ), $located ), true );
-        return;
-    }
+		give_output_error( sprintf( __( 'The %s template was not found.', 'give' ), $located ), true );
+		return;
+	}
 
-    // Allow 3rd party plugin filter template file from their plugin.
-    $located = apply_filters( 'give_get_template', $located, $template_name, $args, $template_path, $default_path );
+	// Allow 3rd party plugin filter template file from their plugin.
+	$located = apply_filters( 'give_get_template', $located, $template_name, $args, $template_path, $default_path );
 
 	/**
 	 * Fires in give template, before the file is included.
@@ -74,9 +74,9 @@ function give_get_template( $template_name, $args = array(), $template_path = ''
 	 * @param string $located       Template file filter by 3rd party plugin.
 	 * @param array  $args          Passed arguments.
 	 */
-    do_action( 'give_before_template_part', $template_name, $template_path, $located, $args );
+	do_action( 'give_before_template_part', $template_name, $template_path, $located, $args );
 
-    include( $located );
+	include( $located );
 
 	/**
 	 * Fires in give template, after the file is included.
@@ -90,7 +90,7 @@ function give_get_template( $template_name, $args = array(), $template_path = ''
 	 * @param string $located       Template file filter by 3rd party plugin.
 	 * @param array  $args          Passed arguments.
 	 */
-    do_action( 'give_after_template_part', $template_name, $template_path, $located, $args );
+	do_action( 'give_after_template_part', $template_name, $template_path, $located, $args );
 }
 
 /**
@@ -106,7 +106,7 @@ function give_get_template( $template_name, $args = array(), $template_path = ''
  *
  * @return string 
  */
-function give_get_template_part( $slug, $name = null, $load = true ) {
+function give_get_template_part($slug, $name = null, $load = true) {
 
 	/**
 	 * Fires in give template part, before the template part is retrieved.
@@ -118,20 +118,20 @@ function give_get_template_part( $slug, $name = null, $load = true ) {
 	 * @param string $slug Template part file slug {slug}.php.
 	 * @param string $name Template part file name {slug}-{name}.php.
 	 */
-	do_action( "get_template_part_{$slug}", $slug, $name );
+	do_action("get_template_part_{$slug}", $slug, $name);
 
 	// Setup possible parts
 	$templates = array();
-	if ( isset( $name ) ) {
-		$templates[] = $slug . '-' . $name . '.php';
+	if (isset($name)) {
+		$templates[] = $slug.'-'.$name.'.php';
 	}
-	$templates[] = $slug . '.php';
+	$templates[] = $slug.'.php';
 
 	// Allow template parts to be filtered
-	$templates = apply_filters( 'give_get_template_part', $templates, $slug, $name );
+	$templates = apply_filters('give_get_template_part', $templates, $slug, $name);
 
 	// Return the part that is found
-	return give_locate_template( $templates, $load, false );
+	return give_locate_template($templates, $load, false);
 }
 
 /**
@@ -152,37 +152,37 @@ function give_get_template_part( $slug, $name = null, $load = true ) {
  *
  * @return string The template filename if one is located.
  */
-function give_locate_template( $template_names, $load = false, $require_once = true ) {
+function give_locate_template($template_names, $load = false, $require_once = true) {
 	// No file found yet
 	$located = false;
 
 	// Try to find a template file
-	foreach ( (array) $template_names as $template_name ) {
+	foreach ((array) $template_names as $template_name) {
 
 		// Continue if template is empty
-		if ( empty( $template_name ) ) {
+		if (empty($template_name)) {
 			continue;
 		}
 
 		// Trim off any slashes from the template name
-		$template_name = ltrim( $template_name, '/' );
+		$template_name = ltrim($template_name, '/');
 
 		// try locating this template file by looping through the template paths
-		foreach ( give_get_theme_template_paths() as $template_path ) {
+		foreach (give_get_theme_template_paths() as $template_path) {
 
-			if ( file_exists( $template_path . $template_name ) ) {
-				$located = $template_path . $template_name;
+			if (file_exists($template_path.$template_name)) {
+				$located = $template_path.$template_name;
 				break;
 			}
 		}
 
-		if ( $located ) {
+		if ($located) {
 			break;
 		}
 	}
 
-	if ( ( true == $load ) && ! empty( $located ) ) {
-		load_template( $located, $require_once );
+	if ((true == $load) && ! empty($located)) {
+		load_template($located, $require_once);
 	}
 
 	return $located;
@@ -199,17 +199,17 @@ function give_get_theme_template_paths() {
 	$template_dir = give_get_theme_template_dir_name();
 
 	$file_paths = array(
-		1   => trailingslashit( get_stylesheet_directory() ) . $template_dir,
-		10  => trailingslashit( get_template_directory() ) . $template_dir,
+		1   => trailingslashit(get_stylesheet_directory()).$template_dir,
+		10  => trailingslashit(get_template_directory()).$template_dir,
 		100 => give_get_templates_dir()
 	);
 
-	$file_paths = apply_filters( 'give_template_paths', $file_paths );
+	$file_paths = apply_filters('give_template_paths', $file_paths);
 
 	// sort the file paths based on priority
-	ksort( $file_paths, SORT_NUMERIC );
+	ksort($file_paths, SORT_NUMERIC);
 
-	return array_map( 'trailingslashit', $file_paths );
+	return array_map('trailingslashit', $file_paths);
 }
 
 /**
@@ -221,7 +221,7 @@ function give_get_theme_template_paths() {
  * @return string
  */
 function give_get_theme_template_dir_name() {
-	return trailingslashit( apply_filters( 'give_templates_dir', 'give' ) );
+	return trailingslashit(apply_filters('give_templates_dir', 'give'));
 }
 
 /**
@@ -231,10 +231,10 @@ function give_get_theme_template_dir_name() {
  * @return void
  */
 function give_version_in_header() {
-	echo '<meta name="generator" content="Give v' . GIVE_VERSION . '" />' . "\n";
+	echo '<meta name="generator" content="Give v'.GIVE_VERSION.'" />'."\n";
 }
 
-add_action( 'wp_head', 'give_version_in_header' );
+add_action('wp_head', 'give_version_in_header');
 
 /**
  * Determines if we're currently on the Donations History page.
@@ -244,9 +244,9 @@ add_action( 'wp_head', 'give_version_in_header' );
  */
 function give_is_donation_history_page() {
 
-	$ret = is_page( give_get_option( 'history_page' ) );
+	$ret = is_page(give_get_option('history_page'));
 
-	return apply_filters( 'give_is_donation_history_page', $ret );
+	return apply_filters('give_is_donation_history_page', $ret);
 }
 
 /**
@@ -258,25 +258,25 @@ function give_is_donation_history_page() {
  *
  * @return array Modified array of classes
  */
-function give_add_body_classes( $class ) {
+function give_add_body_classes($class) {
 	$classes = (array) $class;
 
-	if ( give_is_success_page() ) {
+	if (give_is_success_page()) {
 		$classes[] = 'give-success';
 		$classes[] = 'give-page';
 	}
 
-	if ( give_is_failed_transaction_page() ) {
+	if (give_is_failed_transaction_page()) {
 		$classes[] = 'give-failed-transaction';
 		$classes[] = 'give-page';
 	}
 
-	if ( give_is_donation_history_page() ) {
+	if (give_is_donation_history_page()) {
 		$classes[] = 'give-donation-history';
 		$classes[] = 'give-page';
 	}
 
-	if ( give_is_test_mode() ) {
+	if (give_is_test_mode()) {
 		$classes[] = 'give-test-mode';
 		$classes[] = 'give-page';
 	}
@@ -284,7 +284,7 @@ function give_add_body_classes( $class ) {
 	//Theme-specific Classes used to prevent conflicts via CSS
 	$current_theme = wp_get_theme();
 
-	switch ( $current_theme->template ) {
+	switch ($current_theme->template) {
 
 		case 'Divi':
 			$classes[] = 'give-divi';
@@ -298,10 +298,10 @@ function give_add_body_classes( $class ) {
 
 	}
 
-	return array_unique( $classes );
+	return array_unique($classes);
 }
 
-add_filter( 'body_class', 'give_add_body_classes' );
+add_filter('body_class', 'give_add_body_classes');
 
 
 /**
@@ -317,22 +317,22 @@ add_filter( 'body_class', 'give_add_body_classes' );
  *
  * @return array
  */
-function give_add_post_class( $classes, $class = '', $post_id = '' ) {
-	if ( ! $post_id || 'give_forms' !== get_post_type( $post_id ) ) {
+function give_add_post_class($classes, $class = '', $post_id = '') {
+	if ( ! $post_id || 'give_forms' !== get_post_type($post_id)) {
 		return $classes;
 	}
 
 	//@TODO: Add classes for custom taxonomy and form configurations (multi vs single donations, etc).
 
-	if ( false !== ( $key = array_search( 'hentry', $classes ) ) ) {
-		unset( $classes[ $key ] );
+	if (false !== ($key = array_search('hentry', $classes))) {
+		unset($classes[$key]);
 	}
 
 	return $classes;
 }
 
 
-add_filter( 'post_class', 'give_add_post_class', 20, 3 );
+add_filter('post_class', 'give_add_post_class', 20, 3);
 
 /**
  * Get the placeholder image URL for forms etc
@@ -342,85 +342,85 @@ add_filter( 'post_class', 'give_add_post_class', 20, 3 );
  */
 function give_get_placeholder_img_src() {
 
-	$placeholder_url = '//placehold.it/600x600&text=' . urlencode( esc_attr__( 'Give Placeholder Image', 'give' ) );
+	$placeholder_url = '//placehold.it/600x600&text='.urlencode(esc_attr__('Give Placeholder Image', 'give'));
 
-	return apply_filters( 'give_placeholder_img_src', $placeholder_url );
+	return apply_filters('give_placeholder_img_src', $placeholder_url);
 }
 
 
 /**
  * Global
  */
-if ( ! function_exists( 'give_output_content_wrapper' ) ) {
+if ( ! function_exists('give_output_content_wrapper')) {
 
 	/**
 	 * Output the start of the page wrapper.
 	 */
 	function give_output_content_wrapper() {
-		give_get_template_part( 'global/wrapper-start' );
+		give_get_template_part('global/wrapper-start');
 	}
 }
-if ( ! function_exists( 'give_output_content_wrapper_end' ) ) {
+if ( ! function_exists('give_output_content_wrapper_end')) {
 
 	/**
 	 * Output the end of the page wrapper.
 	 */
 	function give_output_content_wrapper_end() {
-		give_get_template_part( 'global/wrapper-end' );
+		give_get_template_part('global/wrapper-end');
 	}
 }
 
 /**
  * Single Give Form
  */
-if ( ! function_exists( 'give_left_sidebar_pre_wrap' ) ) {
+if ( ! function_exists('give_left_sidebar_pre_wrap')) {
 	function give_left_sidebar_pre_wrap() {
-		echo apply_filters( 'give_left_sidebar_pre_wrap', '<div id="give-sidebar-left" class="give-sidebar give-single-form-sidebar-left">' );
+		echo apply_filters('give_left_sidebar_pre_wrap', '<div id="give-sidebar-left" class="give-sidebar give-single-form-sidebar-left">');
 	}
 }
 
-if ( ! function_exists( 'give_left_sidebar_post_wrap' ) ) {
+if ( ! function_exists('give_left_sidebar_post_wrap')) {
 	function give_left_sidebar_post_wrap() {
-		echo apply_filters( 'give_left_sidebar_post_wrap', '</div>' );
+		echo apply_filters('give_left_sidebar_post_wrap', '</div>');
 	}
 }
 
-if ( ! function_exists( 'give_get_forms_sidebar' ) ) {
+if ( ! function_exists('give_get_forms_sidebar')) {
 	function give_get_forms_sidebar() {
-		give_get_template_part( 'single-give-form/sidebar' );
+		give_get_template_part('single-give-form/sidebar');
 	}
 }
 
-if ( ! function_exists( 'give_show_form_images' ) ) {
+if ( ! function_exists('give_show_form_images')) {
 
 	/**
 	 * Output the product image before the single product summary.
 	 */
 	function give_show_form_images() {
-		$featured_image_option = give_get_option( 'disable_form_featured_img' );
-		if ( $featured_image_option !== 'on' ) {
-			give_get_template_part( 'single-give-form/featured-image' );
+		$featured_image_option = give_get_option('disable_form_featured_img');
+		if ($featured_image_option !== 'on') {
+			give_get_template_part('single-give-form/featured-image');
 		}
 	}
 }
 
-if ( ! function_exists( 'give_template_single_title' ) ) {
+if ( ! function_exists('give_template_single_title')) {
 
 	/**
 	 * Output the product title.
 	 */
 	function give_template_single_title() {
-		give_get_template_part( 'single-give-form/title' );
+		give_get_template_part('single-give-form/title');
 	}
 }
 
-if ( ! function_exists( 'give_show_avatars' ) ) {
+if ( ! function_exists('give_show_avatars')) {
 
 	/**
 	 * Output the product title.
 	 */
 	function give_show_avatars() {
-		echo do_shortcode( '[give_donors_gravatars]' );
+		echo do_shortcode('[give_donors_gravatars]');
 	}
 }
 
@@ -428,7 +428,7 @@ if ( ! function_exists( 'give_show_avatars' ) ) {
  * Conditional Functions
  */
 
-if ( ! function_exists( 'is_give_form' ) ) {
+if ( ! function_exists('is_give_form')) {
 
 	/**
 	 * is_give_form
@@ -440,11 +440,11 @@ if ( ! function_exists( 'is_give_form' ) ) {
 	 * @return bool
 	 */
 	function is_give_form() {
-		return is_singular( array( 'give_form' ) );
+		return is_singular(array('give_form'));
 	}
 }
 
-if ( ! function_exists( 'is_give_category' ) ) {
+if ( ! function_exists('is_give_category')) {
 
 	/**
 	 * is_give_category
@@ -459,12 +459,12 @@ if ( ! function_exists( 'is_give_category' ) ) {
 	 *
 	 * @return bool
 	 */
-	function is_give_category( $term = '' ) {
-		return is_tax( 'give_forms_category', $term );
+	function is_give_category($term = '') {
+		return is_tax('give_forms_category', $term);
 	}
 }
 
-if ( ! function_exists( 'is_give_tag' ) ) {
+if ( ! function_exists('is_give_tag')) {
 
 	/**
 	 * is_give_tag
@@ -479,12 +479,12 @@ if ( ! function_exists( 'is_give_tag' ) ) {
 	 *
 	 * @return bool
 	 */
-	function is_give_tag( $term = '' ) {
-		return is_tax( 'give_forms_tag', $term );
+	function is_give_tag($term = '') {
+		return is_tax('give_forms_tag', $term);
 	}
 }
 
-if ( ! function_exists( 'is_give_taxonomy' ) ) {
+if ( ! function_exists('is_give_taxonomy')) {
 
 	/**
 	 * is_give_taxonomy
@@ -496,6 +496,6 @@ if ( ! function_exists( 'is_give_taxonomy' ) ) {
 	 * @return bool
 	 */
 	function is_give_taxonomy() {
-		return is_tax( get_object_taxonomies( 'give_form' ) );
+		return is_tax(get_object_taxonomies('give_form'));
 	}
 }

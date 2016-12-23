@@ -10,7 +10,7 @@
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) {
+if ( ! defined('ABSPATH')) {
 	exit;
 }
 
@@ -29,33 +29,33 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return void
  */
-function give_print_errors( $form_id ) {
+function give_print_errors($form_id) {
 
 	$errors = give_get_errors();
 
-	$request_form_id = isset( $_REQUEST['form-id'] ) ? intval( $_REQUEST['form-id'] ) : 0;
+	$request_form_id = isset($_REQUEST['form-id']) ? intval($_REQUEST['form-id']) : 0;
 
 	// Sanity checks first: Ensure that gateway returned errors display on the appropriate form.
-	if ( ! isset( $_POST['give_ajax'] ) && $request_form_id !== $form_id ) {
+	if ( ! isset($_POST['give_ajax']) && $request_form_id !== $form_id) {
 		return;
 	}
 
-	if ( $errors ) {
-		$classes = apply_filters( 'give_error_class', array(
+	if ($errors) {
+		$classes = apply_filters('give_error_class', array(
 			'give_errors',
-		) );
-		echo '<div class="' . implode( ' ', $classes ) . '">';
+		));
+		echo '<div class="'.implode(' ', $classes).'">';
 		// Loop error codes and display errors.
-		foreach ( $errors as $error_id => $error ) {
-			echo '<div class="give_error" id="give_error_' . $error_id . '"><p><strong>' . esc_html__( 'Error', 'give' ) . '</strong>: ' . $error . '</p></div>';
+		foreach ($errors as $error_id => $error) {
+			echo '<div class="give_error" id="give_error_'.$error_id.'"><p><strong>'.esc_html__('Error', 'give').'</strong>: '.$error.'</p></div>';
 		}
 		echo '</div>';
 		give_clear_errors();
 	}
 }
 
-add_action( 'give_donation_form_before_personal_info', 'give_print_errors' );
-add_action( 'give_ajax_donation_errors', 'give_print_errors' );
+add_action('give_donation_form_before_personal_info', 'give_print_errors');
+add_action('give_ajax_donation_errors', 'give_print_errors');
 
 /**
  * Get Errors
@@ -65,10 +65,10 @@ add_action( 'give_ajax_donation_errors', 'give_print_errors' );
  *
  * @since 1.0
  * @uses  Give_Session::get()
- * @return mixed array if errors are present, false if none found
+ * @return string array if errors are present, false if none found
  */
 function give_get_errors() {
-	return Give()->session->get( 'give_errors' );
+	return Give()->session->get('give_errors');
 }
 
 /**
@@ -84,13 +84,13 @@ function give_get_errors() {
  *
  * @return void
  */
-function give_set_error( $error_id, $error_message ) {
+function give_set_error($error_id, $error_message) {
 	$errors = give_get_errors();
-	if ( ! $errors ) {
+	if ( ! $errors) {
 		$errors = array();
 	}
-	$errors[ $error_id ] = $error_message;
-	Give()->session->set( 'give_errors', $errors );
+	$errors[$error_id] = $error_message;
+	Give()->session->set('give_errors', $errors);
 }
 
 /**
@@ -101,7 +101,7 @@ function give_set_error( $error_id, $error_message ) {
  * @return void
  */
 function give_clear_errors() {
-	Give()->session->set( 'give_errors', null );
+	Give()->session->set('give_errors', null);
 }
 
 /**
@@ -114,11 +114,11 @@ function give_clear_errors() {
  *
  * @return void
  */
-function give_unset_error( $error_id ) {
+function give_unset_error($error_id) {
 	$errors = give_get_errors();
-	if ( $errors ) {
-		unset( $errors[ $error_id ] );
-		Give()->session->set( 'give_errors', $errors );
+	if ($errors) {
+		unset($errors[$error_id]);
+		Give()->session->set('give_errors', $errors);
 	}
 }
 
@@ -129,7 +129,7 @@ function give_unset_error( $error_id ) {
  * @return string|void
  */
 function _give_die_handler() {
-	if ( defined( 'GIVE_UNIT_TESTS' ) ) {
+	if (defined('GIVE_UNIT_TESTS')) {
 		return '_give_die_handler';
 	} else {
 		die();
@@ -149,10 +149,10 @@ function _give_die_handler() {
  *
  * @return void
  */
-function give_die( $message = '', $title = '', $status = 400 ) {
-	add_filter( 'wp_die_ajax_handler', '_give_die_handler', 10, 3 );
-	add_filter( 'wp_die_handler', '_give_die_handler', 10, 3 );
-	wp_die( $message, $title, array( 'response' => $status ) );
+function give_die($message = '', $title = '', $status = 400) {
+	add_filter('wp_die_ajax_handler', '_give_die_handler', 10, 3);
+	add_filter('wp_die_handler', '_give_die_handler', 10, 3);
+	wp_die($message, $title, array('response' => $status));
 }
 
 /**
@@ -168,10 +168,10 @@ function give_die( $message = '', $title = '', $status = 400 ) {
  *
  * @return   string  $error
  */
-function give_output_error( $message, $echo = true, $error_id = 'warning' ) {
-	$error = '<div class="give_errors" id="give_error_' . $error_id . '"><p class="give_error  give_' . $error_id . '">' . $message . '</p></div>';
+function give_output_error($message, $echo = true, $error_id = 'warning') {
+	$error = '<div class="give_errors" id="give_error_'.$error_id.'"><p class="give_error  give_'.$error_id.'">'.$message.'</p></div>';
 
-	if ( $echo ) {
+	if ($echo) {
 		echo $error;
 	} else {
 		return $error;

@@ -9,13 +9,13 @@
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) {
+if ( ! defined('ABSPATH')) {
 	exit;
 }
 
 // Load WP_List_Table if not loaded.
-if ( ! class_exists( 'WP_List_Table' ) ) {
-	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
+if ( ! class_exists('WP_List_Table')) {
+	require_once ABSPATH.'wp-admin/includes/class-wp-list-table.php';
 }
 
 /**
@@ -44,11 +44,11 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 */
 	public function __construct() {
 		// Set parent defaults.
-		parent::__construct( array(
-			'singular' => give_get_forms_label_singular(),    // Singular name of the listed records.
-			'plural'   => give_get_forms_label_plural(),        // Plural name of the listed records.
+		parent::__construct(array(
+			'singular' => give_get_forms_label_singular(), // Singular name of the listed records.
+			'plural'   => give_get_forms_label_plural(), // Plural name of the listed records.
 			'ajax'     => false                        // Does this table support ajax?.
-		) );
+		));
 	}
 
 	/**
@@ -62,19 +62,19 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 *
 	 * @return string Column Name.
 	 */
-	public function column_default( $item, $column_name ) {
+	public function column_default($item, $column_name) {
 
-		switch ( $column_name ) {
+		switch ($column_name) {
 			case 'ID' :
 				return $item['ID_label'];
 			case 'payment_id' :
-				return empty( $item->payment_id ) ? esc_html__( 'n/a', 'give' ) : $item->payment_id;
+				return empty($item->payment_id) ? esc_html__('n/a', 'give') : $item->payment_id;
 			case 'gateway' :
-				return empty( $item->gateway ) ? esc_html__( 'n/a', 'give' ) : $item->gateway;
+				return empty($item->gateway) ? esc_html__('n/a', 'give') : $item->gateway;
 			case 'error' :
-				return get_the_title( $item['ID'] ) ? get_the_title( $item['ID'] ) : esc_html__( 'Payment Error', 'give' );
+				return get_the_title($item['ID']) ? get_the_title($item['ID']) : esc_html__('Payment Error', 'give');
 			default:
-				return $item[ $column_name ];
+				return $item[$column_name];
 		}
 	}
 
@@ -88,27 +88,27 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 *
 	 * @return void
 	 */
-	public function column_message( $item ) { ?>
-		<a href="#TB_inline?width=640&amp;inlineId=log-message-<?php echo $item['ID']; ?>" class="thickbox give-error-log-details-link button button-small" data-tooltip="<?php esc_attr_e( 'View Log Message', 'give' ); ?>"><span class="dashicons dashicons-visibility"></span></a>
+	public function column_message($item) { ?>
+		<a href="#TB_inline?width=640&amp;inlineId=log-message-<?php echo $item['ID']; ?>" class="thickbox give-error-log-details-link button button-small" data-tooltip="<?php esc_attr_e('View Log Message', 'give'); ?>"><span class="dashicons dashicons-visibility"></span></a>
 		<div id="log-message-<?php echo $item['ID']; ?>" style="display:none;">
 			<?php
 
-			$log_message = get_post_field( 'post_content', $item['ID'] );
+			$log_message = get_post_field('post_content', $item['ID']);
 
-			$serialized = strpos( $log_message, '{"' );
+			$serialized = strpos($log_message, '{"');
 
 			// Check to see if the log message contains serialized information
-			if ( $serialized !== false ) {
-				$length = strlen( $log_message ) - $serialized;
-				$intro  = substr( $log_message, 0, - $length );
-				$data   = substr( $log_message, $serialized, strlen( $log_message ) - 1 );
+			if ($serialized !== false) {
+				$length = strlen($log_message) - $serialized;
+				$intro  = substr($log_message, 0, - $length);
+				$data   = substr($log_message, $serialized, strlen($log_message) - 1);
 
-				echo wpautop( $intro );
-				echo wpautop( '<strong>' . esc_html__( 'Log data:', 'give' ) . '</strong>' );
-				echo '<div style="word-wrap: break-word;">' . wpautop( $data ) . '</div>';
+				echo wpautop($intro);
+				echo wpautop('<strong>'.esc_html__('Log data:', 'give').'</strong>');
+				echo '<div style="word-wrap: break-word;">'.wpautop($data).'</div>';
 			} else {
 				// No serialized data found
-				echo wpautop( $log_message );
+				echo wpautop($log_message);
 			}
 			?>
 		</div>
@@ -124,12 +124,12 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'ID'         => esc_html__( 'Log ID', 'give' ),
-			'error'      => esc_html__( 'Error', 'give' ),
-			'gateway'    => esc_html__( 'Gateway', 'give' ),
-			'payment_id' => esc_html__( 'Donation ID', 'give' ),
-			'date'       => esc_html__( 'Date', 'give' ),
-			'message'    => esc_html__( 'Details', 'give' )
+			'ID'         => esc_html__('Log ID', 'give'),
+			'error'      => esc_html__('Error', 'give'),
+			'gateway'    => esc_html__('Gateway', 'give'),
+			'payment_id' => esc_html__('Donation ID', 'give'),
+			'date'       => esc_html__('Date', 'give'),
+			'message'    => esc_html__('Details', 'give')
 		);
 
 		return $columns;
@@ -143,7 +143,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 * @return int Current page number
 	 */
 	public function get_paged() {
-		return isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1;
+		return isset($_GET['paged']) ? absint($_GET['paged']) : 1;
 	}
 
 	/**
@@ -153,7 +153,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 * @since  1.0
 	 * @return void
 	 */
-	public function bulk_actions( $which = '' ) {
+	public function bulk_actions($which = '') {
 		give_log_views();
 	}
 
@@ -171,7 +171,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 
 		// Prevent the queries from getting cached.
 		// Without this there are occasional memory issues for some installs.
-		wp_suspend_cache_addition( true );
+		wp_suspend_cache_addition(true);
 
 		$logs_data = array();
 		$paged     = $this->get_paged();
@@ -180,17 +180,17 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 			'paged'    => $paged
 		);
 
-		$logs = $give_logs->get_connected_logs( $log_query );
+		$logs = $give_logs->get_connected_logs($log_query);
 
-		if ( $logs ) {
-			foreach ( $logs as $log ) {
+		if ($logs) {
+			foreach ($logs as $log) {
 
 				$logs_data[] = array(
 					'ID'         => $log->ID,
-					'ID_label'   => '<span class=\'give-item-label give-item-label-gray\'>' . $log->ID . '</span>',
+					'ID_label'   => '<span class=\'give-item-label give-item-label-gray\'>'.$log->ID.'</span>',
 					'payment_id' => $log->post_parent,
 					'error'      => 'error',
-					'gateway'    => give_get_payment_gateway( $log->post_parent ),
+					'gateway'    => give_get_payment_gateway($log->post_parent),
 					'date'       => $log->post_date
 				);
 			}
@@ -212,19 +212,19 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 *
 	 * @param string $which
 	 */
-	protected function display_tablenav( $which ) {
-		if ( 'top' === $which ) {
-			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
+	protected function display_tablenav($which) {
+		if ('top' === $which) {
+			wp_nonce_field('bulk-'.$this->_args['plural']);
 		}
 		?>
-		<div class="tablenav <?php echo esc_attr( $which ); ?>">
+		<div class="tablenav <?php echo esc_attr($which); ?>">
 
 			<div class="alignleft actions bulkactions">
-				<?php $this->bulk_actions( $which ); ?>
+				<?php $this->bulk_actions($which); ?>
 			</div>
 			<?php
-			$this->extra_tablenav( $which );
-			$this->pagination( $which );
+			$this->extra_tablenav($which);
+			$this->pagination($which);
 			?>
 
 			<br class="clear"/>
@@ -251,14 +251,14 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 		$columns               = $this->get_columns();
 		$hidden                = array(); // No hidden columns
 		$sortable              = $this->get_sortable_columns();
-		$this->_column_headers = array( $columns, $hidden, $sortable );
+		$this->_column_headers = array($columns, $hidden, $sortable);
 		$this->items           = $this->get_logs();
-		$total_items           = $give_logs->get_log_count( 0, 'gateway_error' );
+		$total_items           = $give_logs->get_log_count(0, 'gateway_error');
 
-		$this->set_pagination_args( array(
+		$this->set_pagination_args(array(
 				'total_items' => $total_items,
 				'per_page'    => $this->per_page,
-				'total_pages' => ceil( $total_items / $this->per_page )
+				'total_pages' => ceil($total_items / $this->per_page)
 			)
 		);
 	}

@@ -12,7 +12,7 @@
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) {
+if ( ! defined('ABSPATH')) {
 	exit;
 }
 
@@ -33,16 +33,16 @@ final class Give_Shortcode_Button {
 	 */
 	public function __construct() {
 
-		if ( is_admin() ) {
-			add_filter( 'mce_external_plugins', array( $this, 'mce_external_plugins' ), 15 );
+		if (is_admin()) {
+			add_filter('mce_external_plugins', array($this, 'mce_external_plugins'), 15);
 
-			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_assets' ) );
-			add_action( 'admin_enqueue_scripts', array( $this, 'admin_localize_scripts' ), 13 );
-			add_action( 'media_buttons', array( $this, 'shortcode_button' ) );
+			add_action('admin_enqueue_scripts', array($this, 'admin_enqueue_assets'));
+			add_action('admin_enqueue_scripts', array($this, 'admin_localize_scripts'), 13);
+			add_action('media_buttons', array($this, 'shortcode_button'));
 		}
 
-		add_action( "wp_ajax_give_shortcode", array( $this, 'shortcode_ajax' ) );
-		add_action( "wp_ajax_nopriv_give_shortcode", array( $this, 'shortcode_ajax' ) );
+		add_action("wp_ajax_give_shortcode", array($this, 'shortcode_ajax'));
+		add_action("wp_ajax_nopriv_give_shortcode", array($this, 'shortcode_ajax'));
 	}
 
 	/**
@@ -54,15 +54,15 @@ final class Give_Shortcode_Button {
 	 *
 	 * @since 1.0
 	 */
-	public function mce_external_plugins( $plugin_array ) {
+	public function mce_external_plugins($plugin_array) {
 
-		if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) {
+		if ( ! current_user_can('edit_posts') && ! current_user_can('edit_pages')) {
 			return false;
 		}
 
-		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+		$suffix = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
 
-		$plugin_array['give_shortcode'] = GIVE_PLUGIN_URL . 'assets/js/admin/tinymce/mce-plugin' . $suffix . '.js';
+		$plugin_array['give_shortcode'] = GIVE_PLUGIN_URL.'assets/js/admin/tinymce/mce-plugin'.$suffix.'.js';
 
 		return $plugin_array;
 	}
@@ -76,12 +76,12 @@ final class Give_Shortcode_Button {
 	 */
 	public function admin_enqueue_assets() {
 
-		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+		$suffix = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
 
 		wp_enqueue_script(
 			'give_shortcode',
-			GIVE_PLUGIN_URL . 'assets/js/admin/admin-shortcodes' . $suffix . '.js',
-			array( 'jquery' ),
+			GIVE_PLUGIN_URL.'assets/js/admin/admin-shortcodes'.$suffix.'.js',
+			array('jquery'),
 			GIVE_VERSION,
 			true
 		);
@@ -96,17 +96,17 @@ final class Give_Shortcode_Button {
 	 */
 	public function admin_localize_scripts() {
 
-		if ( ! empty( self::$shortcodes ) ) {
+		if ( ! empty(self::$shortcodes)) {
 
 			$variables = array();
 
-			foreach ( self::$shortcodes as $shortcode => $values ) {
-				if ( ! empty( $values['required'] ) ) {
-					$variables[ $shortcode ] = $values['required'];
+			foreach (self::$shortcodes as $shortcode => $values) {
+				if ( ! empty($values['required'])) {
+					$variables[$shortcode] = $values['required'];
 				}
 			}
 
-			wp_localize_script( 'give_shortcode', 'scShortcodes', $variables );
+			wp_localize_script('give_shortcode', 'scShortcodes', $variables);
 		}
 	}
 
@@ -121,33 +121,33 @@ final class Give_Shortcode_Button {
 
 		$screen = get_current_screen();
 
-		$shortcode_button_pages = apply_filters( 'give_shortcode_button_pages', array(
+		$shortcode_button_pages = apply_filters('give_shortcode_button_pages', array(
 			'post.php',
 			'page.php',
 			'post-new.php',
 			'post-edit.php',
 			'edit.php',
 			'edit.php?post_type=page',
-		) );
+		));
 
 		// Only run in admin post/page creation and edit screens
-		if ( in_array( $screen->parent_file, $shortcode_button_pages )
-		     && apply_filters( 'give_shortcode_button_condition', true )
-		     && ! empty( self::$shortcodes )
+		if (in_array($screen->parent_file, $shortcode_button_pages)
+		     && apply_filters('give_shortcode_button_condition', true)
+		     && ! empty(self::$shortcodes)
 		) {
 
 			$shortcodes = array();
 
-			foreach ( self::$shortcodes as $shortcode => $values ) {
+			foreach (self::$shortcodes as $shortcode => $values) {
 
 				/**
 				 * Filters the condition for including the current shortcode
 				 *
 				 * @since 1.0
 				 */
-				if ( apply_filters( sanitize_title( $shortcode ) . '_condition', true ) ) {
+				if (apply_filters(sanitize_title($shortcode).'_condition', true)) {
 
-					$shortcodes[ $shortcode ] = sprintf(
+					$shortcodes[$shortcode] = sprintf(
 						'<div class="sc-shortcode mce-menu-item give-shortcode-item-%1$s" data-shortcode="%s">%s</div>',
 						$shortcode,
 						$values['label'],
@@ -156,37 +156,37 @@ final class Give_Shortcode_Button {
 				}
 			}
 
-			if ( ! empty( $shortcodes ) ) {
+			if ( ! empty($shortcodes)) {
 
 				// check current WP version
-				$img = ( version_compare( get_bloginfo( 'version' ), '3.5', '<' ) )
-					? '<img src="' . GIVE_PLUGIN_URL . 'assets/images/give-media.png" />'
-					: '<span class="wp-media-buttons-icon" id="give-media-button" style="background-image: url(' . give_svg_icons( 'give_grey' ) . ');"></span>';
+				$img = (version_compare(get_bloginfo('version'), '3.5', '<'))
+					? '<img src="'.GIVE_PLUGIN_URL.'assets/images/give-media.png" />'
+					: '<span class="wp-media-buttons-icon" id="give-media-button" style="background-image: url('.give_svg_icons('give_grey').');"></span>';
 
-				reset( $shortcodes );
+				reset($shortcodes);
 
-				if ( count( $shortcodes ) == 1 ) {
+				if (count($shortcodes) == 1) {
 
-					$shortcode = key( $shortcodes );
+					$shortcode = key($shortcodes);
 
 					printf(
 						'<button class="button sc-shortcode" data-shortcode="%s">%s</button>',
 						$shortcode,
-						sprintf( '%s %s %s',
+						sprintf('%s %s %s',
 							$img,
-							esc_html__( 'Insert', 'give' ),
-							self::$shortcodes[ $shortcode ]['label']
+							esc_html__('Insert', 'give'),
+							self::$shortcodes[$shortcode]['label']
 						)
 					);
 				} else {
 					printf(
-						'<div class="sc-wrap">' .
-						'<button class="button sc-button">%s %s</button>' .
-						'<div class="sc-menu mce-menu">%s</div>' .
+						'<div class="sc-wrap">'.
+						'<button class="button sc-button">%s %s</button>'.
+						'<div class="sc-menu mce-menu">%s</div>'.
 						'</div>',
 						$img,
-						esc_html__( 'Give Shortcodes', 'give' ),
-						implode( '', array_values( $shortcodes ) )
+						esc_html__('Give Shortcodes', 'give'),
+						implode('', array_values($shortcodes))
 					);
 				}
 			}
@@ -202,15 +202,15 @@ final class Give_Shortcode_Button {
 	 */
 	public function shortcode_ajax() {
 
-		$shortcode = isset( $_POST['shortcode'] ) ? $_POST['shortcode'] : false;
+		$shortcode = isset($_POST['shortcode']) ? $_POST['shortcode'] : false;
 		$response  = false;
 
-		if ( $shortcode && array_key_exists( $shortcode, self::$shortcodes ) ) {
+		if ($shortcode && array_key_exists($shortcode, self::$shortcodes)) {
 
-			$data = self::$shortcodes[ $shortcode ];
+			$data = self::$shortcodes[$shortcode];
 
-			if ( ! empty( $data['errors'] ) ) {
-				$data['btn_okay'] = array( esc_html__( 'Okay', 'give' ) );
+			if ( ! empty($data['errors'])) {
+				$data['btn_okay'] = array(esc_html__('Okay', 'give'));
 			}
 
 			$response = array(
@@ -222,10 +222,10 @@ final class Give_Shortcode_Button {
 			);
 		} else {
 			// todo: handle error
-			error_log( print_r( 'AJAX error!', 1 ) );
+			error_log(print_r('AJAX error!', 1));
 		}
 
-		wp_send_json( $response );
+		wp_send_json($response);
 	}
 }
 

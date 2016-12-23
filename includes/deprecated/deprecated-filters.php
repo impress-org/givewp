@@ -4,8 +4,8 @@
  */
 $give_map_deprecated_filters = give_deprecated_filters();
 
-foreach ( $give_map_deprecated_filters as $new => $old ) {
-	add_filter( $new, 'give_deprecated_filter_mapping', 10, 4 );
+foreach ($give_map_deprecated_filters as $new => $old) {
+	add_filter($new, 'give_deprecated_filter_mapping', 10, 4);
 }
 
 /**
@@ -29,8 +29,8 @@ function give_deprecated_filters() {
 	);
 
 	// Dynamic filters.
-	switch ( true ) {
-		case ( ! empty( $_GET['payment-confirmation'] ) ) :
+	switch (true) {
+		case ( ! empty($_GET['payment-confirmation'])) :
 			$give_deprecated_filters["give_donation_confirm_{$_GET['payment-confirmation']}"] = "give_payment_confirm_{$_GET['payment-confirmation']}";
 	}
 

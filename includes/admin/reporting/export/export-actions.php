@@ -10,7 +10,7 @@
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
+if ( ! defined('ABSPATH')) {
 	exit;
 }
 
@@ -22,11 +22,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_process_batch_export_form() {
 
-	if ( ! wp_verify_nonce( $_REQUEST['nonce'], 'give-batch-export' ) ) {
-		wp_die( esc_html__( 'Nonce verification failed.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+	if ( ! wp_verify_nonce($_REQUEST['nonce'], 'give-batch-export')) {
+		wp_die(esc_html__('Nonce verification failed.', 'give'), esc_html__('Error', 'give'), array('response' => 403));
 	}
 
-	require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/export/class-batch-export.php';
+	require_once GIVE_PLUGIN_DIR.'includes/admin/reporting/export/class-batch-export.php';
 
 	/**
 	 * Fires before batch export.
@@ -35,14 +35,14 @@ function give_process_batch_export_form() {
 	 *
 	 * @param atring $class Export class.
 	 */
-	do_action( 'give_batch_export_class_include', $_REQUEST['class'] );
+	do_action('give_batch_export_class_include', $_REQUEST['class']);
 
 	$export = new $_REQUEST['class'];
 	$export->export();
 
 }
 
-add_action( 'give_form_batch_export', 'give_process_batch_export_form' );
+add_action('give_form_batch_export', 'give_process_batch_export_form');
 
 /**
  * Exports earnings for a specified time period
@@ -53,14 +53,14 @@ add_action( 'give_form_batch_export', 'give_process_batch_export_form' );
  * @return void
  */
 function give_export_earnings() {
-	require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/class-export-earnings.php';
+	require_once GIVE_PLUGIN_DIR.'includes/admin/reporting/class-export-earnings.php';
 
 	$earnings_export = new Give_Earnings_Export();
 
 	$earnings_export->export();
 }
 
-add_action( 'give_earnings_export', 'give_export_earnings' );
+add_action('give_earnings_export', 'give_export_earnings');
 
 
 /**
@@ -73,14 +73,14 @@ add_action( 'give_earnings_export', 'give_export_earnings' );
  * @return void
  */
 function give_export_all_customers() {
-	require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/class-export-customers.php';
+	require_once GIVE_PLUGIN_DIR.'includes/admin/reporting/class-export-customers.php';
 
 	$customer_export = new Give_Donors_Export();
 
 	$customer_export->export();
 }
 
-add_action( 'give_email_export', 'give_export_all_customers' );
+add_action('give_email_export', 'give_export_all_customers');
 
 /**
  * Add a hook allowing extensions to register a hook on the batch export process
@@ -89,7 +89,7 @@ add_action( 'give_email_export', 'give_export_all_customers' );
  * @return void
  */
 function give_register_batch_exporters() {
-	if ( is_admin() ) {
+	if (is_admin()) {
 		/**
 		 * Fires in the admin, while plugins loaded.
 		 *
@@ -99,21 +99,21 @@ function give_register_batch_exporters() {
 		 *
 		 * @param string $class Export class.
 		 */
-		do_action( 'give_register_batch_exporter' );
+		do_action('give_register_batch_exporter');
 	}
 }
 
-add_action( 'plugins_loaded', 'give_register_batch_exporters' );
+add_action('plugins_loaded', 'give_register_batch_exporters');
 
 /**
  * Register the payments batch exporter
  * @since  1.5
  */
 function give_register_payments_batch_export() {
-	add_action( 'give_batch_export_class_include', 'give_include_payments_batch_processor', 10, 1 );
+	add_action('give_batch_export_class_include', 'give_include_payments_batch_processor', 10, 1);
 }
 
-add_action( 'give_register_batch_exporter', 'give_register_payments_batch_export', 10 );
+add_action('give_register_batch_exporter', 'give_register_payments_batch_export', 10);
 
 /**
  * Loads the payments batch process if needed
@@ -124,10 +124,10 @@ add_action( 'give_register_batch_exporter', 'give_register_payments_batch_export
  *
  * @return void
  */
-function give_include_payments_batch_processor( $class ) {
+function give_include_payments_batch_processor($class) {
 
-	if ( 'Give_Batch_Payments_Export' === $class ) {
-		require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/export/class-batch-export-payments.php';
+	if ('Give_Batch_Payments_Export' === $class) {
+		require_once GIVE_PLUGIN_DIR.'includes/admin/reporting/export/class-batch-export-payments.php';
 	}
 
 }
@@ -137,10 +137,10 @@ function give_include_payments_batch_processor( $class ) {
  * @since  1.5.2
  */
 function give_register_customers_batch_export() {
-	add_action( 'give_batch_export_class_include', 'give_include_customers_batch_processor', 10, 1 );
+	add_action('give_batch_export_class_include', 'give_include_customers_batch_processor', 10, 1);
 }
 
-add_action( 'give_register_batch_exporter', 'give_register_customers_batch_export', 10 );
+add_action('give_register_batch_exporter', 'give_register_customers_batch_export', 10);
 
 /**
  * Loads the customers batch process if needed
@@ -151,10 +151,10 @@ add_action( 'give_register_batch_exporter', 'give_register_customers_batch_expor
  *
  * @return void
  */
-function give_include_customers_batch_processor( $class ) {
+function give_include_customers_batch_processor($class) {
 
-	if ( 'Give_Batch_Customers_Export' === $class ) {
-		require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/export/class-batch-export-customers.php';
+	if ('Give_Batch_Customers_Export' === $class) {
+		require_once GIVE_PLUGIN_DIR.'includes/admin/reporting/export/class-batch-export-customers.php';
 	}
 
 }
@@ -165,10 +165,10 @@ function give_include_customers_batch_processor( $class ) {
  * @since  1.5
  */
 function give_register_forms_batch_export() {
-	add_action( 'give_batch_export_class_include', 'give_include_forms_batch_processor', 10, 1 );
+	add_action('give_batch_export_class_include', 'give_include_forms_batch_processor', 10, 1);
 }
 
-add_action( 'give_register_batch_exporter', 'give_register_forms_batch_export', 10 );
+add_action('give_register_batch_exporter', 'give_register_forms_batch_export', 10);
 
 /**
  * Loads the file downloads batch process if needed
@@ -179,10 +179,10 @@ add_action( 'give_register_batch_exporter', 'give_register_forms_batch_export', 
  *
  * @return void
  */
-function give_include_forms_batch_processor( $class ) {
+function give_include_forms_batch_processor($class) {
 
-	if ( 'Give_Batch_Forms_Export' === $class ) {
-		require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/export/class-batch-export-forms.php';
+	if ('Give_Batch_Forms_Export' === $class) {
+		require_once GIVE_PLUGIN_DIR.'includes/admin/reporting/export/class-batch-export-forms.php';
 	}
 
 }

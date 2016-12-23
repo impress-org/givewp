@@ -62,12 +62,12 @@ abstract class Give_Shortcode_Generator {
 	 *
 	 * @since 1.0
 	 */
-	public function __construct( $shortcode ) {
+	public function __construct($shortcode) {
 
 
 		$this->shortcode_tag = $shortcode;
 
-		add_action( 'admin_init', array( $this, 'init' ) );
+		add_action('admin_init', array($this, 'init'));
 
 	}
 
@@ -78,9 +78,9 @@ abstract class Give_Shortcode_Generator {
 	 */
 	public function init() {
 
-		if ( $this->shortcode_tag ) {
+		if ($this->shortcode_tag) {
 
-			$this->self = get_class( $this );
+			$this->self = get_class($this);
 
 			$this->errors   = array();
 			$this->required = array();
@@ -89,18 +89,18 @@ abstract class Give_Shortcode_Generator {
 			$fields = $this->get_fields();
 
 			$defaults = array(
-				'btn_close' => esc_html__( 'Close', 'give' ),
-				'btn_okay'  => esc_html__( 'Insert Shortcode', 'give' ),
+				'btn_close' => esc_html__('Close', 'give'),
+				'btn_okay'  => esc_html__('Insert Shortcode', 'give'),
 				'errors'    => $this->errors,
 				'fields'    => $fields,
-				'label'     => '[' . $this->shortcode_tag . ']',
+				'label'     => '['.$this->shortcode_tag.']',
 				'required'  => $this->required,
-				'title'     => esc_html__( 'Insert Shortcode', 'give' ),
+				'title'     => esc_html__('Insert Shortcode', 'give'),
 			);
 
-			if ( user_can_richedit() ) {
+			if (user_can_richedit()) {
 
-				Give_Shortcode_Button::$shortcodes[ $this->shortcode_tag ] = wp_parse_args( $this->shortcode, $defaults );
+				Give_Shortcode_Button::$shortcodes[$this->shortcode_tag] = wp_parse_args($this->shortcode, $defaults);
 
 			}
 		}
@@ -129,13 +129,13 @@ abstract class Give_Shortcode_Generator {
 	 *
 	 * @since 1.0
 	 */
-	protected function generate_fields( $defined_fields ) {
+	protected function generate_fields($defined_fields) {
 
 		$fields = array();
 
-		if ( is_array( $defined_fields ) ) {
+		if (is_array($defined_fields)) {
 
-			foreach ( $defined_fields as $field ) {
+			foreach ($defined_fields as $field) {
 
 				$defaults = array(
 					'label'       => false,
@@ -146,14 +146,14 @@ abstract class Give_Shortcode_Generator {
 					'type'        => '',
 				);
 
-				$field  = wp_parse_args( (array) $field, $defaults );
-				$method = 'generate_' . strtolower( $field['type'] );
+				$field  = wp_parse_args((array) $field, $defaults);
+				$method = 'generate_'.strtolower($field['type']);
 
-				if ( method_exists( $this, $method ) ) {
+				if (method_exists($this, $method)) {
 
-					$field = call_user_func( array( $this, $method ), $field );
+					$field = call_user_func(array($this, $method), $field);
 
-					if ( $field ) {
+					if ($field) {
 						$fields[] = $field;
 					}
 				}
@@ -173,22 +173,22 @@ abstract class Give_Shortcode_Generator {
 	protected function get_fields() {
 
 		$defined_fields   = $this->define_fields();
-		$generated_fields = $this->generate_fields( $defined_fields );
+		$generated_fields = $this->generate_fields($defined_fields);
 
 		$errors = array();
 
-		if ( ! empty( $this->errors ) ) {
-			foreach ( $this->required as $name => $alert ) {
-				if ( false === array_search( $name, array_column( $generated_fields, 'name' ) ) ) {
+		if ( ! empty($this->errors)) {
+			foreach ($this->required as $name => $alert) {
+				if (false === array_search($name, array_column($generated_fields, 'name'))) {
 
-					$errors[] = $this->errors[ $name ];
+					$errors[] = $this->errors[$name];
 				}
 			}
 
 			$this->errors = $errors;
 		}
 
-		if ( ! empty( $errors ) ) {
+		if ( ! empty($errors)) {
 
 			return $errors;
 		}
@@ -205,9 +205,9 @@ abstract class Give_Shortcode_Generator {
 	 *
 	 * @since 1.0
 	 */
-	protected function generate_container( $field ) {
+	protected function generate_container($field) {
 
-		if ( array_key_exists( 'html', $field ) ) {
+		if (array_key_exists('html', $field)) {
 
 			return array(
 				'type' => $field['type'],
@@ -253,8 +253,8 @@ abstract class Give_Shortcode_Generator {
 
 			// do not reindex array!
 			$field['options'] = array(
-				                    '' => ( $field['placeholder'] ? $field['placeholder'] : esc_attr__( '- Select -', 'give' ) ),
-			                    ) + $field['options'];
+									'' => ( $field['placeholder'] ? $field['placeholder'] : esc_attr__( '- Select -', 'give' ) ),
+								) + $field['options'];
 
 			foreach ( $field['options'] as $value => $text ) {
 				$new_listbox['values'][] = array(
@@ -278,7 +278,7 @@ abstract class Give_Shortcode_Generator {
 	 *
 	 * @since 1.0
 	 */
-	protected function generate_post( $field ) {
+	protected function generate_post($field) {
 
 		$args = array(
 			'post_type'      => 'post',
@@ -287,23 +287,23 @@ abstract class Give_Shortcode_Generator {
 			'posts_per_page' => 30,
 		);
 
-		$args    = wp_parse_args( (array) $field['query_args'], $args );
-		$posts   = get_posts( $args );
+		$args    = wp_parse_args((array) $field['query_args'], $args);
+		$posts   = get_posts($args);
 		$options = array();
 
-		if ( $posts ) {
-			foreach ( $posts as $post ) {
-				$options[ absint( $post->ID ) ] = $post->post_title;
+		if ($posts) {
+			foreach ($posts as $post) {
+				$options[absint($post->ID)] = $post->post_title;
 			}
 
 			$field['type']    = 'listbox';
 			$field['options'] = $options;
 
-			return $this->generate_listbox( $field );
+			return $this->generate_listbox($field);
 		}
 
 		// perform validation here before returning false
-		$this->validate( $field );
+		$this->validate($field);
 
 		return false;
 	}
@@ -317,9 +317,9 @@ abstract class Give_Shortcode_Generator {
 	 *
 	 * @since 1.0
 	 */
-	protected function generate_textbox( $field ) {
+	protected function generate_textbox($field) {
 
-		$textbox = shortcode_atts( array(
+		$textbox = shortcode_atts(array(
 			'label'     => '',
 			'maxLength' => '',
 			'minHeight' => '',
@@ -329,10 +329,10 @@ abstract class Give_Shortcode_Generator {
 			'tooltip'   => '',
 			'type'      => '',
 			'value'     => '',
-		), $field );
+		), $field);
 
-		if ( $this->validate( $field ) ) {
-			return array_filter( $textbox, array( $this, 'return_textbox_value' ) );
+		if ($this->validate($field)) {
+			return array_filter($textbox, array($this, 'return_textbox_value'));
 		}
 
 		return false;
@@ -345,7 +345,7 @@ abstract class Give_Shortcode_Generator {
 	 *
 	 * @return bool
 	 */
-	function return_textbox_value( $value ) {
+	function return_textbox_value($value) {
 		return $value !== '';
 	}
 
@@ -361,9 +361,9 @@ abstract class Give_Shortcode_Generator {
 	 *
 	 * @since 1.0
 	 */
-	protected function validate( $field ) {
+	protected function validate($field) {
 
-		extract( shortcode_atts(
+		extract(shortcode_atts(
 				array(
 					'name'     => false,
 					'required' => false,
@@ -371,36 +371,36 @@ abstract class Give_Shortcode_Generator {
 				), $field )
 		);
 
-		if ( $name ) {
+		if ($name) {
 
-			if ( isset( $required['error'] ) ) {
+			if (isset($required['error'])) {
 
 				$error = array(
 					'type' => 'container',
 					'html' => $required['error'],
 				);
 
-				$this->errors[ $name ] = $this->generate_container( $error );
+				$this->errors[$name] = $this->generate_container($error);
 			}
 
-			if ( ! ! $required || is_array( $required ) ) {
+			if ( ! ! $required || is_array($required)) {
 
-				$alert = esc_html__( 'Some of the shortcode options are required.', 'give' );
+				$alert = esc_html__('Some of the shortcode options are required.', 'give');
 
-				if ( isset( $required['alert'] ) ) {
+				if (isset($required['alert'])) {
 
 					$alert = $required['alert'];
 
-				} else if ( ! empty( $label ) ) {
+				} else if ( ! empty($label)) {
 
 					$alert = sprintf(
 					/* translators: %s: option label */
-						esc_html__( 'The "%s" option is required.', 'give' ),
-						str_replace( ':', '', $label )
+						esc_html__('The "%s" option is required.', 'give'),
+						str_replace(':', '', $label)
 					);
 				}
 
-				$this->required[ $name ] = $alert;
+				$this->required[$name] = $alert;
 			}
 
 			return true;

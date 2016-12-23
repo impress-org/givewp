@@ -25,82 +25,82 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @uses   give_pdf
  */
-function give_generate_pdf( $data ) {
+function give_generate_pdf($data) {
 
-	if ( ! current_user_can( 'view_give_reports' ) ) {
-		wp_die( esc_html__( 'You do not have permission to generate PDF sales reports.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+	if ( ! current_user_can('view_give_reports')) {
+		wp_die(esc_html__('You do not have permission to generate PDF sales reports.', 'give'), esc_html__('Error', 'give'), array('response' => 403));
 	}
 
-	if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'give_generate_pdf' ) ) {
-		wp_die( esc_html__( 'Nonce verification failed.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+	if ( ! wp_verify_nonce($_GET['_wpnonce'], 'give_generate_pdf')) {
+		wp_die(esc_html__('Nonce verification failed.', 'give'), esc_html__('Error', 'give'), array('response' => 403));
 	}
 
-	require_once GIVE_PLUGIN_DIR . '/includes/libraries/fpdf/fpdf.php';
-	require_once GIVE_PLUGIN_DIR . '/includes/libraries/fpdf/give_pdf.php';
+	require_once GIVE_PLUGIN_DIR.'/includes/libraries/fpdf/fpdf.php';
+	require_once GIVE_PLUGIN_DIR.'/includes/libraries/fpdf/give_pdf.php';
 
 	$daterange = utf8_decode(
 		sprintf(
 		/* translators: 1: start date 2: end date */
-			esc_html__( '%1$s to %2$s', 'give' ),
-			date_i18n( give_date_format(), mktime( 0, 0, 0, 1, 1, date( 'Y' ) ) ),
-			date_i18n( give_date_format() )
+			esc_html__('%1$s to %2$s', 'give'),
+			date_i18n(give_date_format(), mktime(0, 0, 0, 1, 1, date('Y'))),
+			date_i18n(give_date_format())
 		)
 	);
 
 	$pdf = new give_pdf();
-	$pdf->AddPage( 'L', 'A4' );
+	$pdf->AddPage('L', 'A4');
 
-	$pdf->SetTitle( utf8_decode( __( 'Donation report for the current year for all forms', 'give' ) ) );
-	$pdf->SetAuthor( utf8_decode( __( 'Give - Democratizing Generosity', 'give' ) ) );
-	$pdf->SetCreator( utf8_decode( __( 'Give - Democratizing Generosity', 'give' ) ) );
+	$pdf->SetTitle(utf8_decode(__('Donation report for the current year for all forms', 'give')));
+	$pdf->SetAuthor(utf8_decode(__('Give - Democratizing Generosity', 'give')));
+	$pdf->SetCreator(utf8_decode(__('Give - Democratizing Generosity', 'give')));
 
-	$pdf->Image( apply_filters( 'give_pdf_export_logo', GIVE_PLUGIN_URL . 'assets/images/give-logo-small.png' ), 247, 8 );
+	$pdf->Image(apply_filters('give_pdf_export_logo', GIVE_PLUGIN_URL.'assets/images/give-logo-small.png'), 247, 8);
 
-	$pdf->SetMargins( 8, 8, 8 );
-	$pdf->SetX( 8 );
+	$pdf->SetMargins(8, 8, 8);
+	$pdf->SetX(8);
 
-	$pdf->SetFont( 'Helvetica', '', 16 );
-	$pdf->SetTextColor( 50, 50, 50 );
-	$pdf->Cell( 0, 3, utf8_decode( __( 'Donation report for the current year for all forms', 'give' ) ), 0, 2, 'L', false );
+	$pdf->SetFont('Helvetica', '', 16);
+	$pdf->SetTextColor(50, 50, 50);
+	$pdf->Cell(0, 3, utf8_decode(__('Donation report for the current year for all forms', 'give')), 0, 2, 'L', false);
 
-	$pdf->SetFont( 'Helvetica', '', 13 );
+	$pdf->SetFont('Helvetica', '', 13);
 	$pdf->Ln();
-	$pdf->SetTextColor( 150, 150, 150 );
-	$pdf->Cell( 0, 6, utf8_decode( __( 'Date Range: ', 'give' ) ) . $daterange, 0, 2, 'L', false );
+	$pdf->SetTextColor(150, 150, 150);
+	$pdf->Cell(0, 6, utf8_decode(__('Date Range: ', 'give')).$daterange, 0, 2, 'L', false);
 	$pdf->Ln();
-	$pdf->SetTextColor( 50, 50, 50 );
-	$pdf->SetFont( 'Helvetica', '', 14 );
-	$pdf->Cell( 0, 10, utf8_decode( __( 'Table View', 'give' ) ), 0, 2, 'L', false );
-	$pdf->SetFont( 'Helvetica', '', 12 );
+	$pdf->SetTextColor(50, 50, 50);
+	$pdf->SetFont('Helvetica', '', 14);
+	$pdf->Cell(0, 10, utf8_decode(__('Table View', 'give')), 0, 2, 'L', false);
+	$pdf->SetFont('Helvetica', '', 12);
 
-	$pdf->SetFillColor( 238, 238, 238 );
-	$pdf->Cell( 70, 6, utf8_decode( __( 'Form Name', 'give' ) ), 1, 0, 'L', true );
-	$pdf->Cell( 30, 6, utf8_decode( __( 'Price', 'give' ) ), 1, 0, 'L', true );
-	$pdf->Cell( 50, 6, utf8_decode( __( 'Categories', 'give' ) ), 1, 0, 'L', true );
-	$pdf->Cell( 50, 6, utf8_decode( __( 'Tags', 'give' ) ), 1, 0, 'L', true );
-	$pdf->Cell( 45, 6, utf8_decode( __( 'Number of Donations', 'give' ) ), 1, 0, 'L', true );
-	$pdf->Cell( 35, 6, utf8_decode( __( 'Income to Date', 'give' ) ), 1, 1, 'L', true );
+	$pdf->SetFillColor(238, 238, 238);
+	$pdf->Cell(70, 6, utf8_decode(__('Form Name', 'give')), 1, 0, 'L', true);
+	$pdf->Cell(30, 6, utf8_decode(__('Price', 'give')), 1, 0, 'L', true);
+	$pdf->Cell(50, 6, utf8_decode(__('Categories', 'give')), 1, 0, 'L', true);
+	$pdf->Cell(50, 6, utf8_decode(__('Tags', 'give')), 1, 0, 'L', true);
+	$pdf->Cell(45, 6, utf8_decode(__('Number of Donations', 'give')), 1, 0, 'L', true);
+	$pdf->Cell(35, 6, utf8_decode(__('Income to Date', 'give')), 1, 1, 'L', true);
 
-	$year       = date( 'Y' );
-	$give_forms = get_posts( array( 'post_type' => 'give_forms', 'year' => $year, 'posts_per_page' => - 1 ) );
+	$year       = date('Y');
+	$give_forms = get_posts(array('post_type' => 'give_forms', 'year' => $year, 'posts_per_page' => -1));
 
-	if ( $give_forms ) {
-		$pdf->SetWidths( array( 70, 30, 50, 50, 45, 35 ) );
+	if ($give_forms) {
+		$pdf->SetWidths(array(70, 30, 50, 50, 45, 35));
 
-		foreach ( $give_forms as $form ):
-			$pdf->SetFillColor( 255, 255, 255 );
+		foreach ($give_forms as $form):
+			$pdf->SetFillColor(255, 255, 255);
 
 			$title = $form->post_title;
 
-			if ( give_has_variable_prices( $form->ID ) ) {
+			if (give_has_variable_prices($form->ID)) {
 
-				$prices = give_get_variable_prices( $form->ID );
+				$prices = give_get_variable_prices($form->ID);
 
 				$first = $prices[0]['_give_amount'];
-				$last  = array_pop( $prices );
+				$last  = array_pop($prices);
 				$last  = $last['_give_amount'];
 
-				if ( $first < $last ) {
+				if ($first < $last) {
 					$min = $first;
 					$max = $last;
 				} else {
@@ -108,51 +108,51 @@ function give_generate_pdf( $data ) {
 					$max = $first;
 				}
 
-				$price = html_entity_decode( give_currency_filter( give_format_amount( $min ) ) . ' - ' . give_currency_filter( give_format_amount( $max ) ) );
+				$price = html_entity_decode(give_currency_filter(give_format_amount($min)).' - '.give_currency_filter(give_format_amount($max)));
 			} else {
-				$price = html_entity_decode( give_currency_filter( give_get_form_price( $form->ID ) ) );
+				$price = html_entity_decode(give_currency_filter(give_get_form_price($form->ID)));
 			}
 
-			$categories = get_the_term_list( $form->ID, 'give_forms_category', '', ', ', '' );
-			$categories = ! is_wp_error( $categories ) ? strip_tags( $categories ) : '';
+			$categories = get_the_term_list($form->ID, 'give_forms_category', '', ', ', '');
+			$categories = ! is_wp_error($categories) ? strip_tags($categories) : '';
 
-			$tags = get_the_term_list( $form->ID, 'give_forms_tag', '', ', ', '' );
-			$tags = ! is_wp_error( $tags ) ? strip_tags( $tags ) : '';
+			$tags = get_the_term_list($form->ID, 'give_forms_tag', '', ', ', '');
+			$tags = ! is_wp_error($tags) ? strip_tags($tags) : '';
 
-			$sales    = give_get_form_sales_stats( $form->ID );
-			$link     = get_permalink( $form->ID );
-			$earnings = html_entity_decode( give_currency_filter( give_get_form_earnings_stats( $form->ID ) ) );
+			$sales    = give_get_form_sales_stats($form->ID);
+			$link     = get_permalink($form->ID);
+			$earnings = html_entity_decode(give_currency_filter(give_get_form_earnings_stats($form->ID)));
 
-			if ( function_exists( 'iconv' ) ) {
+			if (function_exists('iconv')) {
 				// Ensure characters like euro; are properly converted.
-				$price    = iconv( 'UTF-8', 'windows-1252', utf8_encode( $price ) );
-				$earnings = iconv( 'UTF-8', 'windows-1252', utf8_encode( $earnings ) );
+				$price    = iconv('UTF-8', 'windows-1252', utf8_encode($price));
+				$earnings = iconv('UTF-8', 'windows-1252', utf8_encode($earnings));
 			}
 
-			$pdf->Row( array( $title, $price, $categories, $tags, $sales, $earnings ) );
+			$pdf->Row(array($title, $price, $categories, $tags, $sales, $earnings));
 		endforeach;
 	} else {
-		$pdf->SetWidths( array( 280 ) );
-		$title = utf8_decode( esc_html__( 'No forms found.', 'give' ) );
-		$pdf->Row( array( $title ) );
+		$pdf->SetWidths(array(280));
+		$title = utf8_decode(esc_html__('No forms found.', 'give'));
+		$pdf->Row(array($title));
 	}
 
 	$pdf->Ln();
-	$pdf->SetTextColor( 50, 50, 50 );
-	$pdf->SetFont( 'Helvetica', '', 14 );
-	$pdf->Cell( 0, 10, utf8_decode( __( 'Graph View', 'give' ) ), 0, 2, 'L', false );
-	$pdf->SetFont( 'Helvetica', '', 12 );
+	$pdf->SetTextColor(50, 50, 50);
+	$pdf->SetFont('Helvetica', '', 14);
+	$pdf->Cell(0, 10, utf8_decode(__('Graph View', 'give')), 0, 2, 'L', false);
+	$pdf->SetFont('Helvetica', '', 12);
 
-	$image = html_entity_decode( urldecode( give_draw_chart_image() ) );
-	$image = str_replace( ' ', '%20', $image );
+	$image = html_entity_decode(urldecode(give_draw_chart_image()));
+	$image = str_replace(' ', '%20', $image);
 
-	$pdf->SetX( 25 );
-	$pdf->Image( $image . '&file=.png' );
-	$pdf->Ln( 7 );
-	$pdf->Output( apply_filters( 'give_sales_earnings_pdf_export_filename', 'give-report-' . date_i18n( 'Y-m-d' ) ) . '.pdf', 'D' );
+	$pdf->SetX(25);
+	$pdf->Image($image.'&file=.png');
+	$pdf->Ln(7);
+	$pdf->Output(apply_filters('give_sales_earnings_pdf_export_filename', 'give-report-'.date_i18n('Y-m-d')).'.pdf', 'D');
 }
 
-add_action( 'give_generate_pdf', 'give_generate_pdf' );
+add_action('give_generate_pdf', 'give_generate_pdf');
 
 /**
  * Draws Chart for PDF Report.
@@ -169,38 +169,38 @@ add_action( 'give_generate_pdf', 'give_generate_pdf' );
  * @return string $chart->getUrl() URL for the Google Chart
  */
 function give_draw_chart_image() {
-	require_once GIVE_PLUGIN_DIR . '/includes/libraries/googlechartlib/GoogleChart.php';
-	require_once GIVE_PLUGIN_DIR . '/includes/libraries/googlechartlib/markers/GoogleChartShapeMarker.php';
-	require_once GIVE_PLUGIN_DIR . '/includes/libraries/googlechartlib/markers/GoogleChartTextMarker.php';
+	require_once GIVE_PLUGIN_DIR.'/includes/libraries/googlechartlib/GoogleChart.php';
+	require_once GIVE_PLUGIN_DIR.'/includes/libraries/googlechartlib/markers/GoogleChartShapeMarker.php';
+	require_once GIVE_PLUGIN_DIR.'/includes/libraries/googlechartlib/markers/GoogleChartTextMarker.php';
 
-	$chart = new GoogleChart( 'lc', 900, 330 );
+	$chart = new GoogleChart('lc', 900, 330);
 
 	$i        = 1;
 	$earnings = "";
 	$sales    = "";
 
-	while ( $i <= 12 ) :
-		$earnings .= give_get_earnings_by_date( null, $i, date( 'Y' ) ) . ",";
-		$sales .= give_get_sales_by_date( null, $i, date( 'Y' ) ) . ",";
-		$i ++;
+	while ($i <= 12) :
+		$earnings .= give_get_earnings_by_date(null, $i, date('Y')).",";
+		$sales .= give_get_sales_by_date(null, $i, date('Y')).",";
+		$i++;
 	endwhile;
 
-	$earnings_array = explode( ",", $earnings );
-	$sales_array    = explode( ",", $sales );
+	$earnings_array = explode(",", $earnings);
+	$sales_array    = explode(",", $sales);
 
 	$i = 0;
-	while ( $i <= 11 ) {
-		if ( empty( $sales_array[ $i ] ) ) {
-			$sales_array[ $i ] = 0;
+	while ($i <= 11) {
+		if (empty($sales_array[$i])) {
+			$sales_array[$i] = 0;
 		}
-		$i ++;
+		$i++;
 	}
 
 	$min_earnings   = 0;
-	$max_earnings   = max( $earnings_array );
-	$earnings_scale = round( $max_earnings, - 1 );
+	$max_earnings   = max($earnings_array);
+	$earnings_scale = round($max_earnings, - 1);
 
-	$data = new GoogleChartData( array(
+	$data = new GoogleChartData(array(
 		$earnings_array[0],
 		$earnings_array[1],
 		$earnings_array[2],
@@ -213,25 +213,25 @@ function give_draw_chart_image() {
 		$earnings_array[9],
 		$earnings_array[10],
 		$earnings_array[11]
-	) );
+	));
 
-	$data->setLegend( esc_html__( 'Income', 'give' ) );
-	$data->setColor( '1b58a3' );
-	$chart->addData( $data );
+	$data->setLegend(esc_html__('Income', 'give'));
+	$data->setColor('1b58a3');
+	$chart->addData($data);
 
-	$shape_marker = new GoogleChartShapeMarker( GoogleChartShapeMarker::CIRCLE );
-	$shape_marker->setColor( '000000' );
-	$shape_marker->setSize( 7 );
-	$shape_marker->setBorder( 2 );
-	$shape_marker->setData( $data );
-	$chart->addMarker( $shape_marker );
+	$shape_marker = new GoogleChartShapeMarker(GoogleChartShapeMarker::CIRCLE);
+	$shape_marker->setColor('000000');
+	$shape_marker->setSize(7);
+	$shape_marker->setBorder(2);
+	$shape_marker->setData($data);
+	$chart->addMarker($shape_marker);
 
-	$value_marker = new GoogleChartTextMarker( GoogleChartTextMarker::VALUE );
-	$value_marker->setColor( '000000' );
-	$value_marker->setData( $data );
-	$chart->addMarker( $value_marker );
+	$value_marker = new GoogleChartTextMarker(GoogleChartTextMarker::VALUE);
+	$value_marker->setColor('000000');
+	$value_marker->setData($data);
+	$chart->addMarker($value_marker);
 
-	$data = new GoogleChartData( array(
+	$data = new GoogleChartData(array(
 		$sales_array[0],
 		$sales_array[1],
 		$sales_array[2],
@@ -244,46 +244,46 @@ function give_draw_chart_image() {
 		$sales_array[9],
 		$sales_array[10],
 		$sales_array[11]
-	) );
-	$data->setLegend( esc_html__( 'Donations', 'give' ) );
-	$data->setColor( 'ff6c1c' );
-	$chart->addData( $data );
+	));
+	$data->setLegend(esc_html__('Donations', 'give'));
+	$data->setColor('ff6c1c');
+	$chart->addData($data);
 
-	$chart->setTitle( esc_html__( 'Donations by Month for all Give Forms', 'give' ), '336699', 18 );
+	$chart->setTitle(esc_html__('Donations by Month for all Give Forms', 'give'), '336699', 18);
 
-	$chart->setScale( 0, $max_earnings );
+	$chart->setScale(0, $max_earnings);
 
-	$y_axis = new GoogleChartAxis( 'y' );
-	$y_axis->setDrawTickMarks( true )->setLabels( array( 0, $max_earnings ) );
-	$chart->addAxis( $y_axis );
+	$y_axis = new GoogleChartAxis('y');
+	$y_axis->setDrawTickMarks(true)->setLabels(array(0, $max_earnings));
+	$chart->addAxis($y_axis);
 
-	$x_axis = new GoogleChartAxis( 'x' );
-	$x_axis->setTickMarks( 5 );
-	$x_axis->setLabels( array(
-		esc_html__( 'Jan', 'give' ),
-		esc_html__( 'Feb', 'give' ),
-		esc_html__( 'Mar', 'give' ),
-		esc_html__( 'Apr', 'give' ),
-		esc_html__( 'May', 'give' ),
-		esc_html__( 'June', 'give' ),
-		esc_html__( 'July', 'give' ),
-		esc_html__( 'Aug', 'give' ),
-		esc_html__( 'Sept', 'give' ),
-		esc_html__( 'Oct', 'give' ),
-		esc_html__( 'Nov', 'give' ),
-		esc_html__( 'Dec', 'give' )
-	) );
-	$chart->addAxis( $x_axis );
+	$x_axis = new GoogleChartAxis('x');
+	$x_axis->setTickMarks(5);
+	$x_axis->setLabels(array(
+		esc_html__('Jan', 'give'),
+		esc_html__('Feb', 'give'),
+		esc_html__('Mar', 'give'),
+		esc_html__('Apr', 'give'),
+		esc_html__('May', 'give'),
+		esc_html__('June', 'give'),
+		esc_html__('July', 'give'),
+		esc_html__('Aug', 'give'),
+		esc_html__('Sept', 'give'),
+		esc_html__('Oct', 'give'),
+		esc_html__('Nov', 'give'),
+		esc_html__('Dec', 'give')
+	));
+	$chart->addAxis($x_axis);
 
-	$shape_marker = new GoogleChartShapeMarker( GoogleChartShapeMarker::CIRCLE );
-	$shape_marker->setSize( 6 );
-	$shape_marker->setBorder( 2 );
-	$shape_marker->setData( $data );
-	$chart->addMarker( $shape_marker );
+	$shape_marker = new GoogleChartShapeMarker(GoogleChartShapeMarker::CIRCLE);
+	$shape_marker->setSize(6);
+	$shape_marker->setBorder(2);
+	$shape_marker->setData($data);
+	$chart->addMarker($shape_marker);
 
-	$value_marker = new GoogleChartTextMarker( GoogleChartTextMarker::VALUE );
-	$value_marker->setData( $data );
-	$chart->addMarker( $value_marker );
+	$value_marker = new GoogleChartTextMarker(GoogleChartTextMarker::VALUE);
+	$value_marker->setData($data);
+	$chart->addMarker($value_marker);
 
 	return $chart->getUrl();
 }

@@ -36,29 +36,29 @@ class Give_Template_Loader {
 		/**
 		 * Templates
 		 */
-		add_filter( 'template_include', array( __CLASS__, 'template_loader' ) );
+		add_filter('template_include', array(__CLASS__, 'template_loader'));
 
 		/**
 		 * Content Wrappers
 		 */
-		add_action( 'give_before_main_content', 'give_output_content_wrapper', 10 );
-		add_action( 'give_after_main_content', 'give_output_content_wrapper_end', 10 );
+		add_action('give_before_main_content', 'give_output_content_wrapper', 10);
+		add_action('give_after_main_content', 'give_output_content_wrapper_end', 10);
 
 		/**
 		 * Entry Summary Classes
 		 */
-		add_filter( 'give_forms_single_summary_classes', array( $this, 'give_set_single_summary_classes' ) );
+		add_filter('give_forms_single_summary_classes', array($this, 'give_set_single_summary_classes'));
 
 		/**
 		 * Sidebar
 		 */
-		add_action( 'give_before_single_form_summary', array( $this, 'give_output_sidebar_option' ), 1 );
+		add_action('give_before_single_form_summary', array($this, 'give_output_sidebar_option'), 1);
 
 		/**
 		 * Single Forms Summary Box
 		 */
-		add_action( 'give_single_form_summary', 'give_template_single_title', 5 );
-		add_action( 'give_single_form_summary', 'give_get_donation_form', 10 );
+		add_action('give_single_form_summary', 'give_template_single_title', 5);
+		add_action('give_single_form_summary', 'give_get_donation_form', 10);
 
 	}
 
@@ -73,12 +73,12 @@ class Give_Template_Loader {
 	 *
 	 * @return string $classes List of space separated class names.
 	 */
-	public function give_set_single_summary_classes( $classes ) {
+	public function give_set_single_summary_classes($classes) {
 
-		$sidebar_option = give_get_option( 'disable_form_sidebar' );
+		$sidebar_option = give_get_option('disable_form_sidebar');
 
 		//Add full width class when feature image is disabled AND no widgets are present
-		if ( $sidebar_option == 'on' ) {
+		if ($sidebar_option == 'on') {
 			$classes .= ' give-full-width';
 		}
 
@@ -98,14 +98,14 @@ class Give_Template_Loader {
 	 */
 	public function give_output_sidebar_option() {
 
-		$sidebar_option = give_get_option( 'disable_form_sidebar' );
+		$sidebar_option = give_get_option('disable_form_sidebar');
 
 		//Add full width class when feature image is disabled AND no widgets are present
-		if ( $sidebar_option !== 'on' ) {
-			add_action( 'give_before_single_form_summary', 'give_left_sidebar_pre_wrap', 5 );
-			add_action( 'give_before_single_form_summary', 'give_show_form_images', 10 );
-			add_action( 'give_before_single_form_summary', 'give_get_forms_sidebar', 20 );
-			add_action( 'give_before_single_form_summary', 'give_left_sidebar_post_wrap', 30 );
+		if ($sidebar_option !== 'on') {
+			add_action('give_before_single_form_summary', 'give_left_sidebar_pre_wrap', 5);
+			add_action('give_before_single_form_summary', 'give_show_form_images', 10);
+			add_action('give_before_single_form_summary', 'give_get_forms_sidebar', 20);
+			add_action('give_before_single_form_summary', 'give_left_sidebar_post_wrap', 30);
 		}
 
 	}
@@ -127,20 +127,20 @@ class Give_Template_Loader {
 	 *
 	 * @return string $template
 	 */
-	public static function template_loader( $template ) {
-		$find = array( 'give.php' );
+	public static function template_loader($template) {
+		$find = array('give.php');
 		$file = '';
 
-		if ( is_single() && get_post_type() == 'give_forms' ) {
+		if (is_single() && get_post_type() == 'give_forms') {
 			$file   = 'single-give-form.php';
 			$find[] = $file;
-			$find[] = apply_filters( 'give_template_path', 'give/' ) . $file;
+			$find[] = apply_filters('give_template_path', 'give/').$file;
 		}
 
-		if ( $file ) {
-			$template = locate_template( array_unique( $find ) );
-			if ( ! $template ) {
-				$template = GIVE_PLUGIN_DIR . '/templates/' . $file;
+		if ($file) {
+			$template = locate_template(array_unique($find));
+			if ( ! $template) {
+				$template = GIVE_PLUGIN_DIR.'/templates/'.$file;
 			}
 		}
 

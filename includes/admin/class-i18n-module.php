@@ -66,23 +66,23 @@ class Give_i18n_Banner {
 	 * @param $args
 	 *
 	 */
-	public function __construct( $args ) {
+	public function __construct($args) {
 
 		//Only for admins.
-		if ( ! is_admin() ) {
+		if ( ! is_admin()) {
 			return;
 		}
 
 		//This plugin is en_US native.
 		$this->locale = get_locale();
-		if ( 'en_US' === $this->locale ) {
+		if ('en_US' === $this->locale) {
 			return;
 		}
 
-		$this->init( $args );
+		$this->init($args);
 
-		if ( ! $this->hide_promo() ) {
-			add_action( $this->hook, array( $this, 'promo' ) );
+		if ( ! $this->hide_promo()) {
+			add_action($this->hook, array($this, 'promo'));
 		}
 	}
 
@@ -93,8 +93,8 @@ class Give_i18n_Banner {
 	 *
 	 * @param array $args
 	 */
-	private function init( $args ) {
-		foreach ( $args as $key => $arg ) {
+	private function init($args) {
+		foreach ($args as $key => $arg) {
 			$this->$key = $arg;
 		}
 
@@ -108,11 +108,11 @@ class Give_i18n_Banner {
 	 * @return bool
 	 */
 	private function hide_promo() {
-		$hide_promo = get_transient( 'give_i18n_give_promo_hide' );
-		if ( ! $hide_promo ) {
-			if ( filter_input( INPUT_GET, 'remove_i18n_promo', FILTER_VALIDATE_INT ) === 1 ) {
+		$hide_promo = get_transient('give_i18n_give_promo_hide');
+		if ( ! $hide_promo) {
+			if (filter_input(INPUT_GET, 'remove_i18n_promo', FILTER_VALIDATE_INT) === 1) {
 				// No expiration time, so this would normally not expire, but it wouldn't be copied to other sites etc.
-				set_transient( 'give_i18n_give_promo_hide', true );
+				set_transient('give_i18n_give_promo_hide', true);
 				$hide_promo = true;
 			}
 		}
@@ -131,20 +131,20 @@ class Give_i18n_Banner {
 		$message = false;
 
 		//Using a translation less than 90% complete.
-		if ( $this->translation_exists && $this->translation_loaded && $this->percent_translated < 90 ) {
-			$message = __( 'As you can see, there is a translation of this plugin in %1$s. This translation is currently %3$d%% complete. We need your help to make it complete and to fix any errors. Please register at %4$s to help %5$s to %1$s!', 'give' );
-		} elseif ( ! $this->translation_loaded && $this->translation_exists ) {
-			$message = __( 'You\'re using WordPress in %1$s. While %2$s has been translated to %1$s for %3$d%%, it\'s not been shipped with the plugin yet. You can help! Register at %4$s to help complete the translation to %1$s!', 'give' );
-		} elseif ( ! $this->translation_exists ) {
-			$message = __( 'You\'re using WordPress in a language we don\'t support yet. We\'d love for %2$s to be translated in that language too, but unfortunately, it isn\'t right now. You can change that! Register at %4$s to help translate it!', 'give' );
+		if ($this->translation_exists && $this->translation_loaded && $this->percent_translated < 90) {
+			$message = __('As you can see, there is a translation of this plugin in %1$s. This translation is currently %3$d%% complete. We need your help to make it complete and to fix any errors. Please register at %4$s to help %5$s to %1$s!', 'give');
+		} elseif ( ! $this->translation_loaded && $this->translation_exists) {
+			$message = __('You\'re using WordPress in %1$s. While %2$s has been translated to %1$s for %3$d%%, it\'s not been shipped with the plugin yet. You can help! Register at %4$s to help complete the translation to %1$s!', 'give');
+		} elseif ( ! $this->translation_exists) {
+			$message = __('You\'re using WordPress in a language we don\'t support yet. We\'d love for %2$s to be translated in that language too, but unfortunately, it isn\'t right now. You can change that! Register at %4$s to help translate it!', 'give');
 		}
 
 		//Links.
-		$registration_link = sprintf( '<a href="%1$s" target="_blank">%2$s</a>', 'https://wordpress.org/support/register.php', esc_html__( 'WordPress.org', 'give' ) );
-		$translations_link = sprintf( '<a href="%1$s" target="_blank">%2$s</a>', 'https://translate.wordpress.org/projects/wp-plugins/give', esc_html__( 'complete the translation', 'give' ) );
+		$registration_link = sprintf('<a href="%1$s" target="_blank">%2$s</a>', 'https://wordpress.org/support/register.php', esc_html__('WordPress.org', 'give'));
+		$translations_link = sprintf('<a href="%1$s" target="_blank">%2$s</a>', 'https://translate.wordpress.org/projects/wp-plugins/give', esc_html__('complete the translation', 'give'));
 
 		//Message.
-		$message = sprintf( $message, esc_html( $this->locale_name ), esc_html( 'Give' ), $this->percent_translated, $registration_link, $translations_link );
+		$message = sprintf($message, esc_html($this->locale_name), esc_html('Give'), $this->percent_translated, $registration_link, $translations_link);
 
 
 		return $message;
@@ -159,7 +159,7 @@ class Give_i18n_Banner {
 		$this->translation_details();
 		$message = $this->promo_message();
 
-		if ( $message ) { ?>
+		if ($message) { ?>
 
 			<style>
 				/* Banner specific styles */
@@ -212,12 +212,12 @@ class Give_i18n_Banner {
 				<a href="https://wordpress.org/support/register.php" class="alignleft give-i18n-icon" style="margin:0" target="_blank"><span class="dashicons dashicons-translation" style="font-size: 110px; text-decoration: none;"></span></a>
 
 				<div class="give-i18n-notice-content">
-					<a href="<?php echo esc_url( add_query_arg( array( 'remove_i18n_promo' => '1' ) ) ); ?>" class="dismiss"><span class="dashicons dashicons-dismiss"></span></a>
+					<a href="<?php echo esc_url(add_query_arg(array('remove_i18n_promo' => '1'))); ?>" class="dismiss"><span class="dashicons dashicons-dismiss"></span></a>
 
-					<h2 style="margin: 10px 0;"><?php printf( esc_html__( 'Help Translate Give to %s', 'give' ), $this->locale_name ); ?></h2>
+					<h2 style="margin: 10px 0;"><?php printf(esc_html__('Help Translate Give to %s', 'give'), $this->locale_name); ?></h2>
 					<p><?php echo $message; ?></p>
 					<p>
-						<a href="https://wordpress.org/support/register.php" target="_blank"><?php _e( 'Register now &raquo;', 'give' ); ?></a>
+						<a href="https://wordpress.org/support/register.php" target="_blank"><?php _e('Register now &raquo;', 'give'); ?></a>
 					</p>
 				</div>
 			</div>
@@ -234,11 +234,11 @@ class Give_i18n_Banner {
 	 */
 	private function find_or_initialize_translation_details() {
 
-		$set = get_transient( 'give_i18n_give_' . $this->locale );
+		$set = get_transient('give_i18n_give_'.$this->locale);
 
-		if ( ! $set ) {
+		if ( ! $set) {
 			$set = $this->retrieve_translation_details();
-			set_transient( 'give_i18n_give_' . $this->locale, $set, DAY_IN_SECONDS );
+			set_transient('give_i18n_give_'.$this->locale, $set, DAY_IN_SECONDS);
 		}
 
 		return $set;
@@ -252,10 +252,10 @@ class Give_i18n_Banner {
 	private function translation_details() {
 		$set = $this->find_or_initialize_translation_details();
 
-		$this->translation_exists = ! is_null( $set );
-		$this->translation_loaded = is_textdomain_loaded( 'give' );
+		$this->translation_exists = ! is_null($set);
+		$this->translation_loaded = is_textdomain_loaded('give');
 
-		$this->parse_translation_set( $set );
+		$this->parse_translation_set($set);
 	}
 
 	/**
@@ -267,26 +267,26 @@ class Give_i18n_Banner {
 	 */
 	private function retrieve_translation_details() {
 
-		$api_url = trailingslashit( $this->glotpress_url );
+		$api_url = trailingslashit($this->glotpress_url);
 
-		$resp = wp_remote_get( $api_url );
+		$resp = wp_remote_get($api_url);
 
-		if ( is_wp_error( $resp ) || wp_remote_retrieve_response_code( $resp ) === '404' ) {
+		if (is_wp_error($resp) || wp_remote_retrieve_response_code($resp) === '404') {
 			return null;
 		}
 
-		$body = wp_remote_retrieve_body( $resp );
-		unset( $resp );
+		$body = wp_remote_retrieve_body($resp);
+		unset($resp);
 
-		if ( $body ) {
-			$body = json_decode( $body );
+		if ($body) {
+			$body = json_decode($body);
 
-			foreach ( $body->translation_sets as $set ) {
-				if ( ! property_exists( $set, 'wp_locale' ) ) {
+			foreach ($body->translation_sets as $set) {
+				if ( ! property_exists($set, 'wp_locale')) {
 					continue;
 				}
 
-				if ( $this->locale == $set->wp_locale ) {
+				if ($this->locale == $set->wp_locale) {
 					return $set;
 				}
 			}
@@ -302,8 +302,8 @@ class Give_i18n_Banner {
 	 *
 	 * @access private
 	 */
-	private function parse_translation_set( $set ) {
-		if ( $this->translation_exists && is_object( $set ) ) {
+	private function parse_translation_set($set) {
+		if ($this->translation_exists && is_object($set)) {
 			$this->locale_name        = $set->name;
 			$this->percent_translated = $set->percent_translated;
 		} else {

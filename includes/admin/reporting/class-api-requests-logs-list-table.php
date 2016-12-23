@@ -45,11 +45,11 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 		global $status, $page;
 
 		// Set parent defaults
-		parent::__construct( array(
-			'singular' => give_get_forms_label_singular(),    // Singular name of the listed records
-			'plural'   => give_get_forms_label_plural(),        // Plural name of the listed records
+		parent::__construct(array(
+			'singular' => give_get_forms_label_singular(), // Singular name of the listed records
+			'plural'   => give_get_forms_label_plural(), // Plural name of the listed records
 			'ajax'     => false                        // Does this table support ajax?
-		) );
+		));
 	}
 
 	/**
@@ -90,10 +90,10 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'ID'      => esc_html__( 'Log ID', 'give' ),
-			'details' => esc_html__( 'Request Details', 'give' ),
-			'ip'      => esc_html__( 'Request IP', 'give' ),
-			'date'    => esc_html__( 'Date', 'give' )
+			'ID'      => esc_html__('Log ID', 'give'),
+			'details' => esc_html__('Request Details', 'give'),
+			'ip'      => esc_html__('Request IP', 'give'),
+			'date'    => esc_html__('Date', 'give')
 		);
 
 		return $columns;
@@ -110,10 +110,10 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 *
 	 * @return string Column Name
 	 */
-	public function column_default( $item, $column_name ) {
-		switch ( $column_name ) {
+	public function column_default($item, $column_name) {
+		switch ($column_name) {
 			default:
-				return $item[ $column_name ];
+				return $item[$column_name];
 		}
 	}
 
@@ -127,26 +127,26 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 *
 	 * @return void
 	 */
-	public function column_details( $item ) {
+	public function column_details($item) {
 		?>
-		<a href="#TB_inline?width=640&amp;inlineId=log-details-<?php echo $item['ID']; ?>" class="thickbox"><?php esc_html_e( 'View Request', 'give' ); ?></a>
+		<a href="#TB_inline?width=640&amp;inlineId=log-details-<?php echo $item['ID']; ?>" class="thickbox"><?php esc_html_e('View Request', 'give'); ?></a>
 		<div id="log-details-<?php echo $item['ID']; ?>" style="display:none;">
 			<?php
 
-			$request = get_post_field( 'post_excerpt', $item['ID'] );
-			$error   = get_post_field( 'post_content', $item['ID'] );
-			echo '<p><strong>' . esc_html__( 'API Request:', 'give' ) . '</strong></p>';
-			echo '<div>' . $request . '</div>';
-			if ( ! empty( $error ) ) {
-				echo '<p><strong>' . esc_html__( 'Error', 'give' ) . '</strong></p>';
-				echo '<div>' . esc_html( $error ) . '</div>';
+			$request = get_post_field('post_excerpt', $item['ID']);
+			$error   = get_post_field('post_content', $item['ID']);
+			echo '<p><strong>'.esc_html__('API Request:', 'give').'</strong></p>';
+			echo '<div>'.$request.'</div>';
+			if ( ! empty($error)) {
+				echo '<p><strong>'.esc_html__('Error', 'give').'</strong></p>';
+				echo '<div>'.esc_html($error).'</div>';
 			}
-			echo '<p><strong>' . esc_html__( 'API User:', 'give' ) . '</strong></p>';
-			echo '<div>' . get_post_meta( $item['ID'], '_give_log_user', true ) . '</div>';
-			echo '<p><strong>' . esc_html__( 'API Key:', 'give' ) . '</strong></p>';
-			echo '<div>' . get_post_meta( $item['ID'], '_give_log_key', true ) . '</div>';
-			echo '<p><strong>' . esc_html__( 'Request Date:', 'give' ) . '</strong></p>';
-			echo '<div>' . get_post_field( 'post_date', $item['ID'] ) . '</div>';
+			echo '<p><strong>'.esc_html__('API User:', 'give').'</strong></p>';
+			echo '<div>'.get_post_meta($item['ID'], '_give_log_user', true).'</div>';
+			echo '<p><strong>'.esc_html__('API Key:', 'give').'</strong></p>';
+			echo '<div>'.get_post_meta($item['ID'], '_give_log_key', true).'</div>';
+			echo '<p><strong>'.esc_html__('Request Date:', 'give').'</strong></p>';
+			echo '<div>'.get_post_field('post_date', $item['ID']).'</div>';
 			?>
 		</div>
 	<?php
@@ -157,10 +157,10 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @return mixed String if search is present, false otherwise
+	 * @return string|false String if search is present, false otherwise
 	 */
 	public function get_search() {
-		return ! empty( $_GET['s'] ) ? urldecode( trim( $_GET['s'] ) ) : false;
+		return ! empty($_GET['s']) ? urldecode(trim($_GET['s'])) : false;
 	}
 
 
@@ -176,19 +176,19 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 *
 	 * @param string $which
 	 */
-	protected function display_tablenav( $which ) {
-		if ( 'top' === $which ) {
-			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
+	protected function display_tablenav($which) {
+		if ('top' === $which) {
+			wp_nonce_field('bulk-'.$this->_args['plural']);
 		}
 		?>
-		<div class="tablenav <?php echo esc_attr( $which ); ?>">
+		<div class="tablenav <?php echo esc_attr($which); ?>">
 
 			<div class="alignleft actions bulkactions">
-				<?php $this->bulk_actions( $which ); ?>
+				<?php $this->bulk_actions($which); ?>
 			</div>
 			<?php
-			$this->extra_tablenav( $which );
-			$this->pagination( $which );
+			$this->extra_tablenav($which);
+			$this->pagination($which);
 			?>
 
 			<br class="clear"/>
@@ -210,31 +210,31 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 
 		$search = $this->get_search();
 
-		if ( $search ) {
-			if ( filter_var( $search, FILTER_VALIDATE_IP ) ) {
+		if ($search) {
+			if (filter_var($search, FILTER_VALIDATE_IP)) {
 				// This is an IP address search
 				$key = '_give_log_request_ip';
-			} else if ( is_email( $search ) ) {
+			} else if (is_email($search)) {
 				// This is an email search
-				$userdata = get_user_by( 'email', $search );
+				$userdata = get_user_by('email', $search);
 
-				if ( $userdata ) {
+				if ($userdata) {
 					$search = $userdata->ID;
 				}
 
 				$key = '_give_log_user';
-			} elseif ( strlen( $search ) == 32 ) {
+			} elseif (strlen($search) == 32) {
 				// Look for an API key
 				$key = '_give_log_key';
-			} elseif ( stristr( $search, 'token:' ) ) {
+			} elseif (stristr($search, 'token:')) {
 				// Look for an API token
-				$search = str_ireplace( 'token:', '', $search );
+				$search = str_ireplace('token:', '', $search);
 				$key    = '_give_log_token';
 			} else {
 				// This is (probably) a user ID search
-				$userdata = get_userdata( $search );
+				$userdata = get_userdata($search);
 
-				if ( $userdata ) {
+				if ($userdata) {
 					$search = $userdata->ID;
 				}
 
@@ -260,7 +260,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 * @return int Current page number
 	 */
 	public function get_paged() {
-		return isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1;
+		return isset($_GET['paged']) ? absint($_GET['paged']) : 1;
 	}
 
 	/**
@@ -270,7 +270,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 * @since  1.0
 	 * @return void
 	 */
-	function bulk_actions( $which = '' ) {
+	function bulk_actions($which = '') {
 		give_log_views();
 	}
 
@@ -293,14 +293,14 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 			'meta_query' => $this->get_meta_query()
 		);
 
-		$logs = $give_logs->get_connected_logs( $log_query );
+		$logs = $give_logs->get_connected_logs($log_query);
 
-		if ( $logs ) {
-			foreach ( $logs as $log ) {
+		if ($logs) {
+			foreach ($logs as $log) {
 
 				$logs_data[] = array(
 					'ID'   => $log->ID,
-					'ip'   => get_post_meta( $log->ID, '_give_log_request_ip', true ),
+					'ip'   => get_post_meta($log->ID, '_give_log_request_ip', true),
 					'date' => $log->post_date
 				);
 			}
@@ -328,14 +328,14 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 		$columns               = $this->get_columns();
 		$hidden                = array(); // No hidden columns
 		$sortable              = $this->get_sortable_columns();
-		$this->_column_headers = array( $columns, $hidden, $sortable );
+		$this->_column_headers = array($columns, $hidden, $sortable);
 		$this->items           = $this->get_logs();
-		$total_items           = $give_logs->get_log_count( 0, 'api_requests' );
+		$total_items           = $give_logs->get_log_count(0, 'api_requests');
 
-		$this->set_pagination_args( array(
+		$this->set_pagination_args(array(
 				'total_items' => $total_items,
 				'per_page'    => $this->per_page,
-				'total_pages' => ceil( $total_items / $this->per_page )
+				'total_pages' => ceil($total_items / $this->per_page)
 			)
 		);
 	}

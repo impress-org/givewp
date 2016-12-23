@@ -10,13 +10,13 @@
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) {
+if ( ! defined('ABSPATH')) {
 	exit;
 }
 
 // Load WP_List_Table if not loaded
-if ( ! class_exists( 'WP_List_Table' ) ) {
-	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
+if ( ! class_exists('WP_List_Table')) {
+	require_once ABSPATH.'wp-admin/includes/class-wp-list-table.php';
 }
 
 /**
@@ -62,11 +62,11 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 		global $status, $page;
 
 		// Set parent defaults
-		parent::__construct( array(
-			'singular' => esc_html__( 'Donor', 'give' ),     // Singular name of the listed records
-			'plural'   => esc_html__( 'Donors', 'give' ),    // Plural name of the listed records
+		parent::__construct(array(
+			'singular' => esc_html__('Donor', 'give'), // Singular name of the listed records
+			'plural'   => esc_html__('Donors', 'give'), // Plural name of the listed records
 			'ajax'     => false                        // Does this table support ajax?
-		) );
+		));
 
 	}
 
@@ -81,9 +81,9 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 * @param string $text     Label for the search box
 	 * @param string $input_id ID of the search box
 	 *
-	 * @return false
+	 * @return false|null
 	 */
-	public function search_box( $text, $input_id ) {
+	public function search_box($text, $input_id) {
 		return;
 	}
 
@@ -98,20 +98,20 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 *
 	 * @return void
 	 */
-	public function give_search_box( $text, $input_id ) {
-		$input_id = $input_id . '-search-input';
+	public function give_search_box($text, $input_id) {
+		$input_id = $input_id.'-search-input';
 
-		if ( ! empty( $_REQUEST['orderby'] ) ) {
-			echo '<input type="hidden" name="orderby" value="' . esc_attr( $_REQUEST['orderby'] ) . '" />';
+		if ( ! empty($_REQUEST['orderby'])) {
+			echo '<input type="hidden" name="orderby" value="'.esc_attr($_REQUEST['orderby']).'" />';
 		}
-		if ( ! empty( $_REQUEST['order'] ) ) {
-			echo '<input type="hidden" name="order" value="' . esc_attr( $_REQUEST['order'] ) . '" />';
+		if ( ! empty($_REQUEST['order'])) {
+			echo '<input type="hidden" name="order" value="'.esc_attr($_REQUEST['order']).'" />';
 		}
 		?>
 		<p class="search-box donor-search" role="search">
 			<label class="screen-reader-text" for="<?php echo $input_id ?>"><?php echo $text; ?>:</label>
 			<input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>" />
-			<?php submit_button( $text, 'button', false, false, array( 'ID' => 'search-submit' ) ); ?>
+			<?php submit_button($text, 'button', false, false, array('ID' => 'search-submit')); ?>
 		</p>
 	<?php
 	}
@@ -124,29 +124,29 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 *
 	 * @param string $which
 	 */
-	protected function display_tablenav( $which ) {
+	protected function display_tablenav($which) {
 
-		if ( 'top' == $which ) {
-			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
+		if ('top' == $which) {
+			wp_nonce_field('bulk-'.$this->_args['plural']);
 		}
 		?>
-		<div class="tablenav give-clearfix <?php echo esc_attr( $which ); ?>">
+		<div class="tablenav give-clearfix <?php echo esc_attr($which); ?>">
 
-			<h3 class="alignleft reports-earnings-title"><span><?php esc_html_e( 'Donors Report', 'give' ); ?></span></h3>
+			<h3 class="alignleft reports-earnings-title"><span><?php esc_html_e('Donors Report', 'give'); ?></span></h3>
 
 			<div class="alignright tablenav-right">
 				<div class="actions bulkactions">
 					<?php
-					if ( 'top' == $which ) {
-						$this->give_search_box( esc_html__( 'Search Donors', 'give' ), 'give-donors-report-search' );
+					if ('top' == $which) {
+						$this->give_search_box(esc_html__('Search Donors', 'give'), 'give-donors-report-search');
 					}
 
-					$this->bulk_actions( $which ); ?>
+					$this->bulk_actions($which); ?>
 
 				</div>
 				<?php
-				$this->extra_tablenav( $which );
-				$this->pagination( $which );
+				$this->extra_tablenav($which);
+				$this->pagination($which);
 				?>
 			</div>
 
@@ -173,8 +173,8 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 
 			case 'num_purchases' :
 				$value = '<a href="' .
-				         admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( $item['email'] )
-				         ) . '">' . esc_html( $item['num_purchases'] ) . '</a>';
+						 admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( $item['email'] )
+						 ) . '">' . esc_html( $item['num_purchases'] ) . '</a>';
 				break;
 
 			case 'amount_spent' :
@@ -198,14 +198,14 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'name'          => esc_html__( 'Name', 'give' ),
-			'id'            => esc_html__( 'ID', 'give' ),
-			'email'         => esc_html__( 'Email', 'give' ),
-			'num_purchases' => esc_html__( 'Purchases', 'give' ),
-			'amount_spent'  => esc_html__( 'Total Spent', 'give' )
+			'name'          => esc_html__('Name', 'give'),
+			'id'            => esc_html__('ID', 'give'),
+			'email'         => esc_html__('Email', 'give'),
+			'num_purchases' => esc_html__('Purchases', 'give'),
+			'amount_spent'  => esc_html__('Total Spent', 'give')
 		);
 
-		return apply_filters( 'give_report_donor_columns', $columns );
+		return apply_filters('give_report_donor_columns', $columns);
 
 	}
 
@@ -218,10 +218,10 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 */
 	public function get_sortable_columns() {
 		return array(
-			'id'            => array( 'id', true ),
-			'name'          => array( 'name', true ),
-			'num_purchases' => array( 'purchase_count', false ),
-			'amount_spent'  => array( 'purchase_value', false ),
+			'id'            => array('id', true),
+			'name'          => array('name', true),
+			'num_purchases' => array('purchase_count', false),
+			'amount_spent'  => array('purchase_value', false),
 		);
 	}
 
@@ -232,7 +232,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 * @since  1.0
 	 * @return void
 	 */
-	public function bulk_actions( $which = '' ) {
+	public function bulk_actions($which = '') {
 		// These aren't really bulk actions but this outputs the markup in the right place
 		give_report_views();
 	}
@@ -245,7 +245,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 * @return int Current page number
 	 */
 	public function get_paged() {
-		return isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1;
+		return isset($_GET['paged']) ? absint($_GET['paged']) : 1;
 	}
 
 	/**
@@ -253,10 +253,10 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @return mixed string If search is present, false otherwise
+	 * @return string|false string If search is present, false otherwise
 	 */
 	public function get_search() {
-		return ! empty( $_GET['s'] ) ? urldecode( trim( $_GET['s'] ) ) : false;
+		return ! empty($_GET['s']) ? urldecode(trim($_GET['s'])) : false;
 	}
 
 	/**
@@ -273,10 +273,10 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 
 		$data    = array();
 		$paged   = $this->get_paged();
-		$offset  = $this->per_page * ( $paged - 1 );
+		$offset  = $this->per_page * ($paged - 1);
 		$search  = $this->get_search();
-		$order   = isset( $_GET['order'] ) ? sanitize_text_field( $_GET['order'] ) : 'DESC';
-		$orderby = isset( $_GET['orderby'] ) ? sanitize_text_field( $_GET['orderby'] ) : 'id';
+		$order   = isset($_GET['order']) ? sanitize_text_field($_GET['order']) : 'DESC';
+		$orderby = isset($_GET['orderby']) ? sanitize_text_field($_GET['orderby']) : 'id';
 
 		$args = array(
 			'number'  => $this->per_page,
@@ -285,21 +285,21 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 			'orderby' => $orderby
 		);
 
-		if ( is_email( $search ) ) {
+		if (is_email($search)) {
 			$args['email'] = $search;
-		} elseif ( is_numeric( $search ) ) {
+		} elseif (is_numeric($search)) {
 			$args['id'] = $search;
 		}
 
-		$donors = Give()->customers->get_customers( $args );
+		$donors = Give()->customers->get_customers($args);
 
-		if ( $donors ) {
+		if ($donors) {
 
-			$this->count = count( $donors );
+			$this->count = count($donors);
 
-			foreach ( $donors as $donor ) {
+			foreach ($donors as $donor) {
 
-				$user_id = ! empty( $donor->user_id ) ? absint( $donor->user_id ) : 0;
+				$user_id = ! empty($donor->user_id) ? absint($donor->user_id) : 0;
 
 				$data[] = array(
 					'id'            => $donor->id,
@@ -332,16 +332,16 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 		$hidden   = array(); // No hidden columns
 		$sortable = $this->get_sortable_columns();
 
-		$this->_column_headers = array( $columns, $hidden, $sortable );
+		$this->_column_headers = array($columns, $hidden, $sortable);
 
 		$this->items = $this->reports_data();
 
 		$this->total = give_count_total_customers();
 
-		$this->set_pagination_args( array(
+		$this->set_pagination_args(array(
 			'total_items' => $this->total,
 			'per_page'    => $this->per_page,
-			'total_pages' => ceil( $this->total / $this->per_page )
-		) );
+			'total_pages' => ceil($this->total / $this->per_page)
+		));
 	}
 }

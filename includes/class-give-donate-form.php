@@ -10,7 +10,7 @@
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) {
+if ( ! defined('ABSPATH')) {
 	exit;
 }
 
@@ -337,11 +337,11 @@ class Give_Donate_Form {
 	 * @param  bool  $_id   Post id. Default is false.
 	 * @param  array $_args Arguments passed.
 	 */
-	public function __construct( $_id = false, $_args = array() ) {
+	public function __construct($_id = false, $_args = array()) {
 
-		$donation_form = WP_Post::get_instance( $_id );
+		$donation_form = WP_Post::get_instance($_id);
 
-		return $this->setup_donation_form( $donation_form );
+		return $this->setup_donation_form($donation_form);
 	}
 
 	/**
@@ -354,23 +354,23 @@ class Give_Donate_Form {
 	 *
 	 * @return bool                   If the setup was successful or not.
 	 */
-	private function setup_donation_form( $donation_form ) {
+	private function setup_donation_form($donation_form) {
 
-		if ( ! is_object( $donation_form ) ) {
+		if ( ! is_object($donation_form)) {
 			return false;
 		}
 
-		if ( ! is_a( $donation_form, 'WP_Post' ) ) {
+		if ( ! is_a($donation_form, 'WP_Post')) {
 			return false;
 		}
 
-		if ( 'give_forms' !== $donation_form->post_type ) {
+		if ('give_forms' !== $donation_form->post_type) {
 			return false;
 		}
 
-		foreach ( $donation_form as $key => $value ) {
+		foreach ($donation_form as $key => $value) {
 
-			switch ( $key ) {
+			switch ($key) {
 
 				default:
 					$this->$key = $value;
@@ -394,16 +394,16 @@ class Give_Donate_Form {
 	 *
 	 * @return mixed
 	 */
-	public function __get( $key ) {
+	public function __get($key) {
 
-		if ( method_exists( $this, 'get_' . $key ) ) {
+		if (method_exists($this, 'get_'.$key)) {
 
-			return call_user_func( array( $this, 'get_' . $key ) );
+			return call_user_func(array($this, 'get_'.$key));
 
 		} else {
 
 			/* translators: %s: property key */
-			return new WP_Error( 'give-form-invalid-property', sprintf( esc_html__( 'Can\'t get property %s.', 'give' ), $key ) );
+			return new WP_Error('give-form-invalid-property', sprintf(esc_html__('Can\'t get property %s.', 'give'), $key));
 
 		}
 
@@ -419,30 +419,30 @@ class Give_Donate_Form {
 	 *
 	 * @return bool|int    False if data isn't passed and class not instantiated for creation, or New Form ID.
 	 */
-	public function create( $data = array() ) {
+	public function create($data = array()) {
 
-		if ( $this->id != 0 ) {
+		if ($this->id != 0) {
 			return false;
 		}
 
 		$defaults = array(
 			'post_type'   => 'give_forms',
 			'post_status' => 'draft',
-			'post_title'  => esc_html__( 'New Donation Form', 'give' )
+			'post_title'  => esc_html__('New Donation Form', 'give')
 		);
 
-		$args = wp_parse_args( $data, $defaults );
+		$args = wp_parse_args($data, $defaults);
 
 		/**
 		 * Fired before a donation form is created
 		 *
 		 * @param array $args The post object arguments used for creation.
 		 */
-		do_action( 'give_form_pre_create', $args );
+		do_action('give_form_pre_create', $args);
 
-		$id = wp_insert_post( $args, true );
+		$id = wp_insert_post($args, true);
 
-		$donation_form = WP_Post::get_instance( $id );
+		$donation_form = WP_Post::get_instance($id);
 
 		/**
 		 * Fired after a donation form is created
@@ -450,9 +450,9 @@ class Give_Donate_Form {
 		 * @param int   $id   The post ID of the created item.
 		 * @param array $args The post object arguments used for creation.
 		 */
-		do_action( 'give_form_post_create', $id, $args );
+		do_action('give_form_post_create', $id, $args);
 
-		return $this->setup_donation_form( $donation_form );
+		return $this->setup_donation_form($donation_form);
 
 	}
 
@@ -477,7 +477,7 @@ class Give_Donate_Form {
 	 * @return string Donation form name.
 	 */
 	public function get_name() {
-		return get_the_title( $this->ID );
+		return get_the_title($this->ID);
 	}
 
 	/**
@@ -490,13 +490,13 @@ class Give_Donate_Form {
 	 */
 	public function get_price() {
 
-		if ( ! isset( $this->price ) ) {
+		if ( ! isset($this->price)) {
 
-			$this->price = get_post_meta( $this->ID, '_give_set_price', true );
+			$this->price = get_post_meta($this->ID, '_give_set_price', true);
 
-			if ( $this->price ) {
+			if ($this->price) {
 
-				$this->price = give_sanitize_amount( $this->price );
+				$this->price = give_sanitize_amount($this->price);
 
 			} else {
 
@@ -514,7 +514,7 @@ class Give_Donate_Form {
 		 * @param string     $price The donation form price.
 		 * @param string|int $id    The form ID.
 		 */
-		return apply_filters( 'give_get_set_price', $this->price, $this->ID );
+		return apply_filters('give_get_set_price', $this->price, $this->ID);
 	}
 
 	/**
@@ -527,14 +527,14 @@ class Give_Donate_Form {
 	 */
 	public function get_minimum_price() {
 
-		if ( ! isset( $this->minimum_price ) ) {
+		if ( ! isset($this->minimum_price)) {
 
-			$allow_custom_amount = get_post_meta( $this->ID, '_give_custom_amount', true );
-			$this->minimum_price = get_post_meta( $this->ID, '_give_custom_amount_minimum', true );
+			$allow_custom_amount = get_post_meta($this->ID, '_give_custom_amount', true);
+			$this->minimum_price = get_post_meta($this->ID, '_give_custom_amount_minimum', true);
 
-			if ( $allow_custom_amount != 'no' && $this->minimum_price ) {
+			if ($allow_custom_amount != 'no' && $this->minimum_price) {
 
-				$this->minimum_price = give_sanitize_amount( $this->minimum_price );
+				$this->minimum_price = give_sanitize_amount($this->minimum_price);
 
 			} else {
 
@@ -544,7 +544,7 @@ class Give_Donate_Form {
 
 		}
 
-		return apply_filters( 'give_get_set_minimum_price', $this->minimum_price, $this->ID );
+		return apply_filters('give_get_set_minimum_price', $this->minimum_price, $this->ID);
 	}
 
 	/**
@@ -557,9 +557,9 @@ class Give_Donate_Form {
 	 */
 	public function get_prices() {
 
-		if ( ! isset( $this->prices ) ) {
+		if ( ! isset($this->prices)) {
 
-			$this->prices = get_post_meta( $this->ID, '_give_donation_levels', true );
+			$this->prices = get_post_meta($this->ID, '_give_donation_levels', true);
 
 		}
 
@@ -571,7 +571,7 @@ class Give_Donate_Form {
 		 * @param array      $prices The array of mulit-level prices.
 		 * @param int|string The     ID of the form.
 		 */
-		return apply_filters( 'give_get_donation_levels', $this->prices, $this->ID );
+		return apply_filters('give_get_donation_levels', $this->prices, $this->ID);
 
 	}
 
@@ -585,13 +585,13 @@ class Give_Donate_Form {
 	 */
 	public function get_goal() {
 
-		if ( ! isset( $this->goal ) ) {
+		if ( ! isset($this->goal)) {
 
-			$this->goal = get_post_meta( $this->ID, '_give_set_goal', true );
+			$this->goal = get_post_meta($this->ID, '_give_set_goal', true);
 
-			if ( $this->goal ) {
+			if ($this->goal) {
 
-				$this->goal = give_sanitize_amount( $this->goal );
+				$this->goal = give_sanitize_amount($this->goal);
 
 			} else {
 
@@ -601,7 +601,7 @@ class Give_Donate_Form {
 
 		}
 
-		return apply_filters( 'give_get_set_goal', $this->goal, $this->ID );
+		return apply_filters('give_get_set_goal', $this->goal, $this->ID);
 
 	}
 
@@ -615,10 +615,10 @@ class Give_Donate_Form {
 	 */
 	public function is_single_price_mode() {
 
-		$option = get_post_meta( $this->ID, '_give_price_options_mode', true );
+		$option = get_post_meta($this->ID, '_give_price_options_mode', true);
 		$ret    = 0;
 
-		if ( empty( $option ) || $option === 'set' ) {
+		if (empty($option) || $option === 'set') {
 			$ret = 1;
 		}
 
@@ -630,7 +630,7 @@ class Give_Donate_Form {
 		 * @param bool       $ret Is donation form in single price mode?
 		 * @param int|string The  ID of the donation form.
 		 */
-		return (bool) apply_filters( 'give_single_price_option_mode', $ret, $this->ID );
+		return (bool) apply_filters('give_single_price_option_mode', $ret, $this->ID);
 
 	}
 
@@ -644,10 +644,10 @@ class Give_Donate_Form {
 	 */
 	public function is_custom_price_mode() {
 
-		$option = get_post_meta( $this->ID, '_give_custom_amount', true );
+		$option = get_post_meta($this->ID, '_give_custom_amount', true);
 		$ret    = 0;
 
-		if ( $option === 'yes' ) {
+		if ($option === 'yes') {
 			$ret = 1;
 		}
 
@@ -659,7 +659,7 @@ class Give_Donate_Form {
 		 * @param bool       $ret Is donation form in custom price mode?
 		 * @param int|string The  ID of the donation form.
 		 */
-		return (bool) apply_filters( 'give_custom_price_option_mode', $ret, $this->ID );
+		return (bool) apply_filters('give_custom_price_option_mode', $ret, $this->ID);
 
 	}
 
@@ -675,10 +675,10 @@ class Give_Donate_Form {
 	 */
 	public function has_variable_prices() {
 
-		$option = get_post_meta( $this->ID, '_give_price_option', true );
+		$option = get_post_meta($this->ID, '_give_price_option', true);
 		$ret    = 0;
 
-		if ( $option === 'multi' ) {
+		if ($option === 'multi') {
 			$ret = 1;
 		}
 
@@ -688,7 +688,7 @@ class Give_Donate_Form {
 		 * @param bool       $ret Does donation form have variable prices?
 		 * @param int|string The  ID of the donation form.
 		 */
-		return (bool) apply_filters( 'give_has_variable_prices', $ret, $this->ID );
+		return (bool) apply_filters('give_has_variable_prices', $ret, $this->ID);
 
 	}
 
@@ -702,17 +702,17 @@ class Give_Donate_Form {
 	 */
 	public function get_type() {
 
-		if ( ! isset( $this->type ) ) {
+		if ( ! isset($this->type)) {
 
-			$this->type = get_post_meta( $this->ID, '_give_price_option', true );
+			$this->type = get_post_meta($this->ID, '_give_price_option', true);
 
-			if ( empty( $this->type ) ) {
+			if (empty($this->type)) {
 				$this->type = 'set';
 			}
 
 		}
 
-		return apply_filters( 'give_get_form_type', $this->type, $this->ID );
+		return apply_filters('give_get_form_type', $this->type, $this->ID);
 
 	}
 
@@ -728,23 +728,23 @@ class Give_Donate_Form {
 	 *
 	 * @return string
 	 */
-	public function get_form_classes( $args ) {
+	public function get_form_classes($args) {
 
-		$float_labels_option = give_is_float_labels_enabled( $args )
+		$float_labels_option = give_is_float_labels_enabled($args)
 			? 'float-labels-enabled'
 			: '';
 
-		$form_classes_array = apply_filters( 'give_form_classes', array(
+		$form_classes_array = apply_filters('give_form_classes', array(
 			'give-form',
-			'give-form-' . $this->ID,
-			'give-form-type-' . $this->get_type(),
+			'give-form-'.$this->ID,
+			'give-form-type-'.$this->get_type(),
 			$float_labels_option
-		), $this->ID, $args );
+		), $this->ID, $args);
 
 		// Remove empty class names.
-		$form_classes_array = array_filter( $form_classes_array );
+		$form_classes_array = array_filter($form_classes_array);
 
-		return implode( ' ', $form_classes_array );
+		return implode(' ', $form_classes_array);
 
 	}
 
@@ -759,19 +759,19 @@ class Give_Donate_Form {
 	 *
 	 * @return string
 	 */
-	public function get_form_wrap_classes( $args ) {
+	public function get_form_wrap_classes($args) {
 
-		$display_option = ( isset( $args['display_style'] ) && ! empty( $args['display_style'] ) )
+		$display_option = (isset($args['display_style']) && ! empty($args['display_style']))
 			? $args['display_style']
-			: get_post_meta( $this->ID, '_give_payment_display', true );
+			: get_post_meta($this->ID, '_give_payment_display', true);
 
-		$form_wrap_classes_array = apply_filters( 'give_form_wrap_classes', array(
+		$form_wrap_classes_array = apply_filters('give_form_wrap_classes', array(
 			'give-form-wrap',
-			'give-display-' . $display_option
-		), $this->ID, $args );
+			'give-display-'.$display_option
+		), $this->ID, $args);
 
 
-		return implode( ' ', $form_wrap_classes_array );
+		return implode(' ', $form_wrap_classes_array);
 
 	}
 
@@ -786,7 +786,7 @@ class Give_Donate_Form {
 	public function is_set_type_donation_form() {
 		$form_type = $this->get_type();
 
-		return ( 'set' === $form_type ? true : false );
+		return ('set' === $form_type ? true : false);
 
 	}
 
@@ -801,7 +801,7 @@ class Give_Donate_Form {
 	public function is_multi_type_donation_form() {
 		$form_type = $this->get_type();
 
-		return ( 'multi' === $form_type ? true : false );
+		return ('multi' === $form_type ? true : false);
 
 	}
 
@@ -815,15 +815,15 @@ class Give_Donate_Form {
 	 */
 	public function get_sales() {
 
-		if ( ! isset( $this->sales ) ) {
+		if ( ! isset($this->sales)) {
 
-			if ( '' == get_post_meta( $this->ID, '_give_form_sales', true ) ) {
-				add_post_meta( $this->ID, '_give_form_sales', 0 );
+			if ('' == get_post_meta($this->ID, '_give_form_sales', true)) {
+				add_post_meta($this->ID, '_give_form_sales', 0);
 			} // End if
 
-			$this->sales = get_post_meta( $this->ID, '_give_form_sales', true );
+			$this->sales = get_post_meta($this->ID, '_give_form_sales', true);
 
-			if ( $this->sales < 0 ) {
+			if ($this->sales < 0) {
 				// Never let sales be less than zero
 				$this->sales = 0;
 			}
@@ -844,13 +844,13 @@ class Give_Donate_Form {
 	 *
 	 * @return int|false     New number of total sales.
 	 */
-	public function increase_sales( $quantity = 1 ) {
+	public function increase_sales($quantity = 1) {
 
-		$sales       = give_get_form_sales_stats( $this->ID );
-		$quantity    = absint( $quantity );
+		$sales       = give_get_form_sales_stats($this->ID);
+		$quantity    = absint($quantity);
 		$total_sales = $sales + $quantity;
 
-		if ( $this->update_meta( '_give_form_sales', $total_sales ) ) {
+		if ($this->update_meta('_give_form_sales', $total_sales)) {
 
 			$this->sales = $total_sales;
 
@@ -871,17 +871,17 @@ class Give_Donate_Form {
 	 *
 	 * @return int|false     New number of total sales.
 	 */
-	public function decrease_sales( $quantity = 1 ) {
+	public function decrease_sales($quantity = 1) {
 
-		$sales = give_get_form_sales_stats( $this->ID );
+		$sales = give_get_form_sales_stats($this->ID);
 
 		// Only decrease if not already zero
-		if ( $sales > 0 ) {
+		if ($sales > 0) {
 
-			$quantity    = absint( $quantity );
+			$quantity    = absint($quantity);
 			$total_sales = $sales - $quantity;
 
-			if ( $this->update_meta( '_give_form_sales', $total_sales ) ) {
+			if ($this->update_meta('_give_form_sales', $total_sales)) {
 
 				$this->sales = $sales;
 
@@ -905,15 +905,15 @@ class Give_Donate_Form {
 	 */
 	public function get_earnings() {
 
-		if ( ! isset( $this->earnings ) ) {
+		if ( ! isset($this->earnings)) {
 
-			if ( '' == get_post_meta( $this->ID, '_give_form_earnings', true ) ) {
-				add_post_meta( $this->ID, '_give_form_earnings', 0 );
+			if ('' == get_post_meta($this->ID, '_give_form_earnings', true)) {
+				add_post_meta($this->ID, '_give_form_earnings', 0);
 			}
 
-			$this->earnings = get_post_meta( $this->ID, '_give_form_earnings', true );
+			$this->earnings = get_post_meta($this->ID, '_give_form_earnings', true);
 
-			if ( $this->earnings < 0 ) {
+			if ($this->earnings < 0) {
 				// Never let earnings be less than zero
 				$this->earnings = 0;
 			}
@@ -934,12 +934,12 @@ class Give_Donate_Form {
 	 *
 	 * @return float|false
 	 */
-	public function increase_earnings( $amount = 0 ) {
+	public function increase_earnings($amount = 0) {
 
-		$earnings   = give_get_form_earnings_stats( $this->ID );
+		$earnings   = give_get_form_earnings_stats($this->ID);
 		$new_amount = $earnings + (float) $amount;
 
-		if ( $this->update_meta( '_give_form_earnings', $new_amount ) ) {
+		if ($this->update_meta('_give_form_earnings', $new_amount)) {
 
 			$this->earnings = $new_amount;
 
@@ -961,16 +961,16 @@ class Give_Donate_Form {
 	 *
 	 * @return float|false
 	 */
-	public function decrease_earnings( $amount ) {
+	public function decrease_earnings($amount) {
 
-		$earnings = give_get_form_earnings_stats( $this->ID );
+		$earnings = give_get_form_earnings_stats($this->ID);
 
-		if ( $earnings > 0 ) {
+		if ($earnings > 0) {
 			// Only decrease if greater than zero
 			$new_amount = $earnings - (float) $amount;
 
 
-			if ( $this->update_meta( '_give_form_earnings', $new_amount ) ) {
+			if ($this->update_meta('_give_form_earnings', $new_amount)) {
 
 				$this->earnings = $new_amount;
 
@@ -994,22 +994,22 @@ class Give_Donate_Form {
 	 *
 	 * @return bool
 	 */
-	public function is_free( $price_id = false ) {
+	public function is_free($price_id = false) {
 
 		$is_free          = false;
-		$variable_pricing = give_has_variable_prices( $this->ID );
+		$variable_pricing = give_has_variable_prices($this->ID);
 
-		if ( $variable_pricing && ! is_null( $price_id ) && $price_id !== false ) {
-			$price = give_get_price_option_amount( $this->ID, $price_id );
-		} elseif ( ! $variable_pricing ) {
-			$price = get_post_meta( $this->ID, '_give_set_price', true );
+		if ($variable_pricing && ! is_null($price_id) && $price_id !== false) {
+			$price = give_get_price_option_amount($this->ID, $price_id);
+		} elseif ( ! $variable_pricing) {
+			$price = get_post_meta($this->ID, '_give_set_price', true);
 		}
 
-		if ( isset( $price ) && (float) $price == 0 ) {
+		if (isset($price) && (float) $price == 0) {
 			$is_free = true;
 		}
 
-		return (bool) apply_filters( 'give_is_free_donation', $is_free, $this->ID, $price_id );
+		return (bool) apply_filters('give_is_free_donation', $is_free, $this->ID, $price_id);
 
 	}
 
@@ -1028,10 +1028,10 @@ class Give_Donate_Form {
 	 */
 	public function is_close_donation_form() {
 		return (
-			       'yes' === get_post_meta( $this->ID, '_give_goal_option', true ) )
-		       && ( 'yes' === get_post_meta( $this->ID, '_give_close_form_when_goal_achieved', true ) )
-		       && ( $this->get_goal() <= $this->get_earnings()
-		       );
+				   'yes' === get_post_meta( $this->ID, '_give_goal_option', true ) )
+			   && ( 'yes' === get_post_meta( $this->ID, '_give_close_form_when_goal_achieved', true ) )
+			   && ( $this->get_goal() <= $this->get_earnings()
+			   );
 	}
 
 	/**
@@ -1045,29 +1045,29 @@ class Give_Donate_Form {
 	 *
 	 * @return bool                            The result of the update query.
 	 */
-	private function update_meta( $meta_key = '', $meta_value = '' ) {
+	private function update_meta($meta_key = '', $meta_value = '') {
 
 		/* @var WPDB $wpdb */
 		global $wpdb;
 
-		if ( empty( $meta_key ) ) {
+		if (empty($meta_key)) {
 			return false;
 		}
 
 		// Make sure if it needs to be serialized, we do
-		$meta_value = maybe_serialize( $meta_value );
+		$meta_value = maybe_serialize($meta_value);
 
-		if ( is_numeric( $meta_value ) ) {
-			$value_type = is_float( $meta_value ) ? '%f' : '%d';
+		if (is_numeric($meta_value)) {
+			$value_type = is_float($meta_value) ? '%f' : '%d';
 		} else {
 			$value_type = "'%s'";
 		}
 
-		$sql = $wpdb->prepare( "UPDATE $wpdb->postmeta SET meta_value = $value_type WHERE post_id = $this->ID AND meta_key = '%s'", $meta_value, $meta_key );
+		$sql = $wpdb->prepare("UPDATE $wpdb->postmeta SET meta_value = $value_type WHERE post_id = $this->ID AND meta_key = '%s'", $meta_value, $meta_key);
 
-		if ( $wpdb->query( $sql ) ) {
+		if ($wpdb->query($sql)) {
 
-			clean_post_cache( $this->ID );
+			clean_post_cache($this->ID);
 
 			return true;
 

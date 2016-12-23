@@ -27,13 +27,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return bool $ret True if guest checkout is enabled, false otherwise
  */
-function give_no_guest_checkout( $form_id ) {
+function give_no_guest_checkout($form_id) {
 
 	$backtrace = debug_backtrace();
 
-	_give_deprecated_function( __FUNCTION__, '1.4.1', null, $backtrace );
+	_give_deprecated_function(__FUNCTION__, '1.4.1', null, $backtrace);
 
-	$ret = get_post_meta( $form_id, '_give_logged_in_only', true );
+	$ret = get_post_meta($form_id, '_give_logged_in_only', true);
 
-	return (bool) apply_filters( 'give_no_guest_checkout', $ret );
+	return (bool) apply_filters('give_no_guest_checkout', $ret);
 }

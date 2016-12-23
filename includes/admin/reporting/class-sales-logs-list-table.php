@@ -9,13 +9,13 @@
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) {
+if ( ! defined('ABSPATH')) {
 	exit;
 }
 
 // Load WP_List_Table if not loaded
-if ( ! class_exists( 'WP_List_Table' ) ) {
-	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
+if ( ! class_exists('WP_List_Table')) {
+	require_once ABSPATH.'wp-admin/includes/class-wp-list-table.php';
 }
 
 /**
@@ -44,13 +44,13 @@ class Give_Sales_Log_Table extends WP_List_Table {
 		global $status, $page;
 
 		// Set parent defaults
-		parent::__construct( array(
-			'singular' => give_get_forms_label_singular(),    // Singular name of the listed records
-			'plural'   => give_get_forms_label_plural(),        // Plural name of the listed records
+		parent::__construct(array(
+			'singular' => give_get_forms_label_singular(), // Singular name of the listed records
+			'plural'   => give_get_forms_label_plural(), // Plural name of the listed records
 			'ajax'     => false                        // Does this table support ajax?
-		) );
+		));
 
-		add_action( 'give_log_view_actions', array( $this, 'give_forms_filter' ) );
+		add_action('give_log_view_actions', array($this, 'give_forms_filter'));
 	}
 
 	/**
@@ -74,8 +74,8 @@ class Give_Sales_Log_Table extends WP_List_Table {
 
 			case 'user_id' :
 				return '<a href="' .
-				       admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . ( ! empty( $item['user_id'] ) ? urlencode( $item['user_id'] ) : give_get_payment_user_email( $item['payment_id'] ) ) ) .
-				       '">' . $item['user_name'] . '</a>';
+					   admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . ( ! empty( $item['user_id'] ) ? urlencode( $item['user_id'] ) : give_get_payment_user_email( $item['payment_id'] ) ) ) .
+					   '">' . $item['user_name'] . '</a>';
 
 			case 'amount' :
 				return give_currency_filter( give_format_amount( $item['amount'] ) );
@@ -107,13 +107,13 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'ID'         => esc_html__( 'Log ID', 'give' ),
-			'user_id'    => esc_html__( 'Donor', 'give' ),
-			'form'       => esc_html__( 'Form', 'give' ),
-			'amount'     => esc_html__( 'Donation Amount', 'give' ),
-			'status'     => esc_html__( 'Status', 'give' ),
-			'payment_id' => esc_html__( 'Transaction ID', 'give' ),
-			'date'       => esc_html__( 'Date', 'give' )
+			'ID'         => esc_html__('Log ID', 'give'),
+			'user_id'    => esc_html__('Donor', 'give'),
+			'form'       => esc_html__('Form', 'give'),
+			'amount'     => esc_html__('Donation Amount', 'give'),
+			'status'     => esc_html__('Status', 'give'),
+			'payment_id' => esc_html__('Transaction ID', 'give'),
+			'date'       => esc_html__('Date', 'give')
 		);
 
 		return $columns;
@@ -127,7 +127,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 * @return int Current page number
 	 */
 	public function get_paged() {
-		return isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1;
+		return isset($_GET['paged']) ? absint($_GET['paged']) : 1;
 	}
 
 	/**
@@ -138,7 +138,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 * @return mixed int If User ID, string If Email/Login
 	 */
 	public function get_filtered_user() {
-		return isset( $_GET['user'] ) ? absint( $_GET['user'] ) : false;
+		return isset($_GET['user']) ? absint($_GET['user']) : false;
 	}
 
 	/**
@@ -149,7 +149,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 * @return int Download ID
 	 */
 	public function get_filtered_give_form() {
-		return ! empty( $_GET['form'] ) ? absint( $_GET['form'] ) : false;
+		return ! empty($_GET['form']) ? absint($_GET['form']) : false;
 	}
 
 	/**
@@ -157,10 +157,10 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @return mixed string If search is present, false otherwise
+	 * @return string|false string If search is present, false otherwise
 	 */
 	public function get_search() {
-		return ! empty( $_GET['s'] ) ? urldecode( trim( $_GET['s'] ) ) : false;
+		return ! empty($_GET['s']) ? urldecode(trim($_GET['s'])) : false;
 	}
 
 
@@ -176,20 +176,20 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 *
 	 * @param string $which
 	 */
-	protected function display_tablenav( $which ) {
+	protected function display_tablenav($which) {
 
-		if ( 'top' === $which ) {
-			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
+		if ('top' === $which) {
+			wp_nonce_field('bulk-'.$this->_args['plural']);
 		}
 		?>
-		<div class="tablenav <?php echo esc_attr( $which ); ?>">
+		<div class="tablenav <?php echo esc_attr($which); ?>">
 
 			<div class="alignleft actions bulkactions">
-				<?php $this->bulk_actions( $which ); ?>
+				<?php $this->bulk_actions($which); ?>
 			</div>
 			<?php
-			$this->extra_tablenav( $which );
-			$this->pagination( $which );
+			$this->extra_tablenav($which);
+			$this->pagination($which);
 			?>
 
 			<br class="clear"/>
@@ -212,7 +212,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 
 		$meta_query = array();
 
-		if ( $user ) {
+		if ($user) {
 			// Show only logs from a specific user
 			$meta_query[] = array(
 				'key'   => '_give_log_user_id',
@@ -221,8 +221,8 @@ class Give_Sales_Log_Table extends WP_List_Table {
 		}
 
 		$search = $this->get_search();
-		if ( $search ) {
-			if ( is_email( $search ) ) {
+		if ($search) {
+			if (is_email($search)) {
 				// This is an email search. We use this to ensure it works for guest users and logged-in users
 				$key     = '_give_log_user_info';
 				$compare = 'LIKE';
@@ -231,32 +231,32 @@ class Give_Sales_Log_Table extends WP_List_Table {
 				$key     = '_give_log_user_id';
 				$compare = 'LIKE';
 
-				if ( ! is_numeric( $search ) ) {
+				if ( ! is_numeric($search)) {
 					// Searching for user by username
-					$user = get_user_by( 'login', $search );
+					$user = get_user_by('login', $search);
 
-					if ( $user ) {
+					if ($user) {
 						// Found one, set meta value to user's ID
 						$search = $user->ID;
 					} else {
 						// No user found so let's do a real search query
-						$users = new WP_User_Query( array(
+						$users = new WP_User_Query(array(
 							'search'         => $search,
-							'search_columns' => array( 'user_url', 'user_nicename' ),
+							'search_columns' => array('user_url', 'user_nicename'),
 							'number'         => 1,
 							'fields'         => 'ids'
-						) );
+						));
 
 						$found_user = $users->get_results();
 
-						if ( $found_user ) {
+						if ($found_user) {
 							$search = $found_user[0];
 						}
 					}
 				}
 			}
 
-			if ( ! $this->file_search ) {
+			if ( ! $this->file_search) {
 				// Meta query only works for non file name searche
 				$meta_query[] = array(
 					'key'     => $key,
@@ -277,7 +277,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 * @since  1.0
 	 * @return void
 	 */
-	function bulk_actions( $which = '' ) {
+	function bulk_actions($which = '') {
 		give_log_views();
 	}
 
@@ -289,22 +289,22 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 * @return void
 	 */
 	public function give_forms_filter() {
-		$give_forms = get_posts( array(
+		$give_forms = get_posts(array(
 			'post_type'              => 'give_forms',
 			'post_status'            => 'any',
-			'posts_per_page'         => - 1,
+			'posts_per_page'         => -1,
 			'orderby'                => 'title',
 			'order'                  => 'ASC',
 			'fields'                 => 'ids',
 			'update_post_meta_cache' => false,
 			'update_post_term_cache' => false
-		) );
+		));
 
-		if ( $give_forms ) {
+		if ($give_forms) {
 			echo '<select name="form" id="give-log-form-filter">';
-			echo '<option value="0">' . esc_html__( 'All', 'give' ) . '</option>';
-			foreach ( $give_forms as $form ) {
-				echo '<option value="' . $form . '"' . selected( $form, $this->get_filtered_give_form() ) . '>' . esc_html( get_the_title( $form ) ) . '</option>';
+			echo '<option value="0">'.esc_html__('All', 'give').'</option>';
+			foreach ($give_forms as $form) {
+				echo '<option value="'.$form.'"'.selected($form, $this->get_filtered_give_form()).'>'.esc_html(get_the_title($form)).'</option>';
 			}
 			echo '</select>';
 		}
@@ -324,7 +324,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 
 		$logs_data = array();
 		$paged     = $this->get_paged();
-		$give_form = empty( $_GET['s'] ) ? $this->get_filtered_give_form() : null;
+		$give_form = empty($_GET['s']) ? $this->get_filtered_give_form() : null;
 		$user      = $this->get_filtered_user();
 
 		$log_query = array(
@@ -334,39 +334,39 @@ class Give_Sales_Log_Table extends WP_List_Table {
 			'meta_query'  => $this->get_meta_query()
 		);
 
-		$cache_key = give_get_cache_key( 'get_logs', $log_query );
+		$cache_key = give_get_cache_key('get_logs', $log_query);
 
 		// Return result from cache if exist.
-		if ( ! ( $logs_data = get_option( $cache_key ) ) ) {
+		if ( ! ($logs_data = get_option($cache_key))) {
 
-			$logs = $give_logs->get_connected_logs( $log_query );
+			$logs = $give_logs->get_connected_logs($log_query);
 
-			if ( $logs ) {
-				foreach ( $logs as $log ) {
-					$payment_id = get_post_meta( $log->ID, '_give_log_payment_id', true );
+			if ($logs) {
+				foreach ($logs as $log) {
+					$payment_id = get_post_meta($log->ID, '_give_log_payment_id', true);
 
 					// Make sure this payment hasn't been deleted
-					if ( get_post( $payment_id ) ) :
-						$user_info      = give_get_payment_meta_user_info( $payment_id );
-						$payment_meta   = give_get_payment_meta( $payment_id );
-						$payment_amount = give_get_payment_amount( $payment_id );
+					if (get_post($payment_id)) :
+						$user_info      = give_get_payment_meta_user_info($payment_id);
+						$payment_meta   = give_get_payment_meta($payment_id);
+						$payment_amount = give_get_payment_amount($payment_id);
 
 						$logs_data[] = array(
-							'ID'         => '<span class="give-item-label give-item-label-gray">' . $log->ID . '</span>',
+							'ID'         => '<span class="give-item-label give-item-label-gray">'.$log->ID.'</span>',
 							'payment_id' => $payment_id,
 							'form'       => $log->post_parent,
 							'amount'     => $payment_amount,
 							'user_id'    => $user_info['id'],
-							'user_name'  => $user_info['first_name'] . ' ' . $user_info['last_name'],
-							'date'       => get_post_field( 'post_date', $payment_id ),
+							'user_name'  => $user_info['first_name'].' '.$user_info['last_name'],
+							'date'       => get_post_field('post_date', $payment_id),
 						);
 
 					endif;
 				}
 
 				// Cache results.
-				if ( ! empty( $logs_data ) ) {
-					add_option( $cache_key, $logs_data, '', 'no' );
+				if ( ! empty($logs_data)) {
+					add_option($cache_key, $logs_data, '', 'no');
 				}
 			}
 		}
@@ -394,15 +394,15 @@ class Give_Sales_Log_Table extends WP_List_Table {
 		$columns               = $this->get_columns();
 		$hidden                = array();
 		$sortable              = $this->get_sortable_columns();
-		$this->_column_headers = array( $columns, $hidden, $sortable );
+		$this->_column_headers = array($columns, $hidden, $sortable);
 		$current_page          = $this->get_pagenum();
 		$this->items           = $this->get_logs();
-		$total_items           = $give_logs->get_log_count( $this->get_filtered_give_form(), 'sale', $this->get_meta_query() );
+		$total_items           = $give_logs->get_log_count($this->get_filtered_give_form(), 'sale', $this->get_meta_query());
 
-		$this->set_pagination_args( array(
+		$this->set_pagination_args(array(
 				'total_items' => $total_items,
 				'per_page'    => $this->per_page,
-				'total_pages' => ceil( $total_items / $this->per_page )
+				'total_pages' => ceil($total_items / $this->per_page)
 			)
 		);
 	}
