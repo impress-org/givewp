@@ -645,7 +645,7 @@ function give_docs_link( $field ) {
 	$field['url']         = isset( $field['url'] ) ? $field['url'] : 'https://givewp.com/documentation';
 	$field['title']         = isset( $field['title'] ) ? $field['title'] : 'Documentation';
 
-	echo '<p class="docs-link"><a href="' . $field['url'] . '" target="_blank">'. esc_html__('Need Help? See docs on ') . $field['title'] . '<span class="dashicons dashicons-editor-help"></span></a></p>';
+	echo '<p class="docs-link"><a href="' . $field['url'] . '" target="_blank">'. esc_html__('Need Help? See docs on "') . $field['title'] . '" <span class="dashicons dashicons-editor-help"></span></a></p>';
  }
 
 /**
