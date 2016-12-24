@@ -228,8 +228,8 @@ class Give_MetaBox_Form_Data {
 						array(
 							'name'		  => 'donation_options_docs',
 							'type'        => 'docs_link',
-							'url'		  => 'https://givewp.com/documentation/core/give-forms/',
-							'title'		  => 'Documentation Options',
+							'url'		  => 'https://docs.givewp.com/donationoptions',
+							'title'		  => esc_html__('Donation Options', 'give'),
 						)
 					)
 				),
@@ -319,8 +319,8 @@ class Give_MetaBox_Form_Data {
 							array(
 								'name'		  => 'form_display_docs',
 								'type'        => 'docs_link',
-								'url'		  => 'https://givewp.com/documentation/core/give-forms/',
-								'title'		  => 'Form Display',
+								'url'		  => 'https://docs.givewp.com/formdisplay',
+								'title'		  => esc_html__('Form Display', 'give'),
 							),
 						)
 					),
@@ -401,8 +401,8 @@ class Give_MetaBox_Form_Data {
 					array(
 						'name'		  => 'donation_goal_docs',
 						'type'        => 'docs_link',
-						'url'		  => 'https://givewp.com/documentation/core/give-forms/',
-						'title'		  => 'Donation Goal',
+						'url'		  => 'https://docs.givewp.com/donationgoal',
+						'title'		  => esc_html__('Donation Goal', 'give'),
 					),
 				) ),
 			) ),
@@ -450,8 +450,8 @@ class Give_MetaBox_Form_Data {
 						array(
 							'name'		  => 'form_content_docs',
 							'type'        => 'docs_link',
-							'url'		  => 'https://givewp.com/documentation/core/give-forms/',
-							'title'		  => 'Form Content',
+							'url'		  => 'http://docs.givewp.com/formcontent',
+							'title'		  => esc_html__('Form Content', 'give'),
 						),
 					)
 				),
@@ -497,8 +497,8 @@ class Give_MetaBox_Form_Data {
 						array(
 							'name'		  => 'terms_docs',
 							'type'        => 'docs_link',
-							'url'		  => 'https://givewp.com/documentation/core/give-forms/',
-							'title'		  => 'Terms & Conditions',
+							'url'		  => 'https://docs.givewp.com/terms',
+							'title'		  => esc_html__('Terms & Conditions', 'give'),
 						),
 					)
 				),
