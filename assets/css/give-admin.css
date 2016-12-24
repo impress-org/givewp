@@ -1120,16 +1120,16 @@ Export Form
 /*-------------------------------------
 DOCS LINKS
 -------------------------------------*/
-.give-metabox-panel-wrap .docs-link {
+.give-docs-link {
   text-align: right;
   margin-right: 15px; }
-  .give-metabox-panel-wrap .docs-link a {
+  .give-docs-link a {
     color: #999;
     text-decoration: none;
     font-style: italic; }
-    .give-metabox-panel-wrap .docs-link a:hover {
+    .give-docs-link a:hover {
       color: #0073aa; }
-    .give-metabox-panel-wrap .docs-link a span {
+    .give-docs-link a span {
       font-style: normal; }
 
 /**
