@@ -92,7 +92,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						),
                         array(
                             'name' => esc_html__( 'Access Control Docs Link', 'give' ),
-                            'id'   => 'currency_settings_docs_link',
+                            'id'   => 'access_control_docs_link',
                             'url'  => esc_url( 'http://docs.givewp.com/accesscontrol' ),
                             'title' => esc_html__( 'Access Control', 'give' ),
                             'type' => 'give_docs_link',
