@@ -86,6 +86,13 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 								'disabled' => __( 'Disabled', 'give' ),
 							)
 						),
+                        array(
+                            'name' => esc_html__( 'PayPal Standard Gateway Settings Docs Link', 'give' ),
+                            'id'   => 'paypal_standard_gateway_settings_docs_link',
+                            'url'  => esc_url( 'http://docs.givewp.com/paypalstandard' ),
+                            'title' => esc_html__( 'PayPal Standard Gateway Settings', 'give' ),
+                            'type' => 'give_docs_link',
+                        ),
 						array(
 							'type' => 'sectionend',
 							'id'   => 'give_title_gateway_settings_2',
@@ -138,6 +145,13 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 								'textarea_rows' => 6,
 							)
 						),
+                        array(
+                            'name' => esc_html__( 'Offline Donations Settings Docs Link', 'give' ),
+                            'id'   => 'offline_gateway_settings_docs_link',
+                            'url'  => esc_url( 'http://docs.givewp.com/offlinegateway' ),
+                            'title' => esc_html__( 'Offline Gateway Settings', 'give' ),
+                            'type' => 'give_docs_link',
+                        ),
 						array(
 							'type' => 'sectionend',
 							'id'   => 'give_title_gateway_settings_3',
@@ -175,6 +189,13 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 							'id'   => 'default_gateway',
 							'type' => 'default_gateway'
 						),
+                        array(
+                            'name' => esc_html__( 'Gateways Docs Link', 'give' ),
+                            'id'   => 'gateway_settings_docs_link',
+                            'url'  => esc_url( 'http://docs.givewp.com/gatewayssettings' ),
+                            'title' => esc_html__( 'Gateway Settings', 'give' ),
+                            'type' => 'give_docs_link',
+                        ),
 						array(
 							'id'   => 'give_title_gateway_settings_1',
 							'type' => 'sectionend'
