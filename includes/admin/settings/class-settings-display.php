@@ -87,6 +87,13 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 								'disabled' => __( 'Disabled', 'give' ),
 							)
 						),
+                        array(
+                            'name' => esc_html__( 'Display Settings Docs Link', 'give' ),
+                            'id'   => 'display_settings_docs_link',
+                            'url'  => esc_url( 'http://docs.givewp.com/displayoptions' ),
+                            'title' => esc_html__( 'Display Options Settings', 'give' ),
+                            'type' => 'give_docs_link',
+                        ),
 						array(
 							'id'   => 'give_title_display_settings_1',
 							'type' => 'sectionend'
@@ -163,6 +170,13 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 								'disabled' => __( 'Disabled', 'give' ),
 							)
 						),
+                        array(
+                            'name' => esc_html__( 'Post Types Docs Link', 'give' ),
+                            'id'   => 'post_types_settings_docs_link',
+                            'url'  => esc_url( 'http://docs.givewp.com/posttypessettings' ),
+                            'title' => esc_html__( 'Post Types Settings', 'give' ),
+                            'type' => 'give_docs_link',
+                        ),
 						array(
 							'id'   => 'give_title_display_settings_2',
 							'type' => 'sectionend'
@@ -198,6 +212,13 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 								'disabled' => __( 'Disabled', 'give' ),
 							)
 						),
+                        array(
+                            'name' => esc_html__( 'Taxonomies Docs Link', 'give' ),
+                            'id'   => 'taxonomies_settings_docs_link',
+                            'url'  => esc_url( 'http://docs.givewp.com/taxonomiessettings' ),
+                            'title' => esc_html__( 'Taxonomies Settings', 'give' ),
+                            'type' => 'give_docs_link',
+                        ),
 						array(
 							'id'   => 'give_title_display_settings_3',
 							'type' => 'sectionend'
@@ -237,6 +258,13 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'id'   => 'agreement_text',
 							'type' => 'wysiwyg'
 						),
+                        array(
+                            'name' => esc_html__( 'Terms and Conditions Docs Link', 'give' ),
+                            'id'   => 'terms_settings_docs_link',
+                            'url'  => esc_url( 'http://docs.givewp.com/termssettings' ),
+                            'title' => esc_html__( 'Terms and Conditions Settings', 'give' ),
+                            'type' => 'give_docs_link',
+                        ),
 						array(
 							'id'   => 'give_title_display_settings_4',
 							'type' => 'sectionend'
