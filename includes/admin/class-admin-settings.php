@@ -694,6 +694,21 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						echo $description;
 						break;
 
+					// Custom: Give Docs Link field type.
+					case 'give_docs_link' :
+						?>
+						<tr valign="top">
+						<td class="give-docs-link" colspan="2">
+						<?php
+							echo '<p class="give-docs-link"><a href="' . esc_url( $value['url'] )
+							. '" target="_blank">'
+							. sprintf( esc_html__( 'Need Help? See docs on "%s"' ), $value['title'] )
+							. '<span class="dashicons dashicons-editor-help"></span></a></p>';
+						?>
+						</td>
+						</tr><?php
+						break;
+
 					// Default: run an action
 					// You can add or handle your custom field action.
 					default:

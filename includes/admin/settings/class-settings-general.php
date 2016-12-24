@@ -214,6 +214,13 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'type'    => 'select',
 							'options' => give_get_country_list(),
 						),
+                        array(
+                            'name' => esc_html__( 'General Options Docs Link', 'give' ),
+                            'id'   => 'general_options_docs_link',
+                            'url'  => esc_url( 'https://docs.givewp.com/generaloptions' ),
+                            'title' => esc_html__( 'General Options', 'give' ),
+                            'type' => 'give_docs_link',
+                        ),
 						array(
 							'type' => 'sectionend',
 							'id'   => 'give_title_general_settings_1'
