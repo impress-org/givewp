@@ -353,7 +353,7 @@ function give_offline_add_settings( $settings ) {
 			'name'		  => 'offline_docs',
 			'type'        => 'docs_link',
 			'url'		  => 'http://docs.givewp.com/offlinegateway',
-			'title'		  => esc_html__('Offline Donations', 'give'),
+			'title'		  => __('Offline Donations', 'give'),
 		),
 	);
 

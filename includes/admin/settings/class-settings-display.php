@@ -91,7 +91,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
                             'name' => esc_html__( 'Display Settings Docs Link', 'give' ),
                             'id'   => 'display_settings_docs_link',
                             'url'  => esc_url( 'http://docs.givewp.com/displayoptions' ),
-                            'title' => esc_html__( 'Display Options Settings', 'give' ),
+                            'title' => __( 'Display Options Settings', 'give' ),
                             'type' => 'give_docs_link',
                         ),
 						array(
@@ -174,7 +174,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
                             'name' => esc_html__( 'Post Types Docs Link', 'give' ),
                             'id'   => 'post_types_settings_docs_link',
                             'url'  => esc_url( 'http://docs.givewp.com/posttypessettings' ),
-                            'title' => esc_html__( 'Post Types Settings', 'give' ),
+                            'title' => __( 'Post Types Settings', 'give' ),
                             'type' => 'give_docs_link',
                         ),
 						array(
@@ -216,7 +216,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
                             'name' => esc_html__( 'Taxonomies Docs Link', 'give' ),
                             'id'   => 'taxonomies_settings_docs_link',
                             'url'  => esc_url( 'http://docs.givewp.com/taxonomiessettings' ),
-                            'title' => esc_html__( 'Taxonomies Settings', 'give' ),
+                            'title' => __( 'Taxonomies Settings', 'give' ),
                             'type' => 'give_docs_link',
                         ),
 						array(
@@ -262,7 +262,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
                             'name' => esc_html__( 'Terms and Conditions Docs Link', 'give' ),
                             'id'   => 'terms_settings_docs_link',
                             'url'  => esc_url( 'http://docs.givewp.com/termssettings' ),
-                            'title' => esc_html__( 'Terms and Conditions Settings', 'give' ),
+                            'title' => __( 'Terms and Conditions Settings', 'give' ),
                             'type' => 'give_docs_link',
                         ),
 						array(

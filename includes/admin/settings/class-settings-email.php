@@ -83,7 +83,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
                             'name' => esc_html__( 'Email Settings Docs Link', 'give' ),
                             'id'   => 'email_settings_docs_link',
                             'url'  => esc_url( 'http://docs.givewp.com/emailsettings' ),
-                            'title' => esc_html__( 'Email Settings', 'give' ),
+                            'title' => __( 'Email Settings', 'give' ),
                             'type' => 'give_docs_link',
                         ),
 						array(
@@ -122,7 +122,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
                             'name' => esc_html__( 'Donation Receipt Settings Docs Link', 'give' ),
                             'id'   => 'donation_receipt_settings_docs_link',
                             'url'  => esc_url( 'http://docs.givewp.com/donationreceipt' ),
-                            'title' => esc_html__( 'Donation Receipt Settings', 'give' ),
+                            'title' => __( 'Donation Receipt Settings', 'give' ),
                             'type' => 'give_docs_link',
                         ),
 						array(
@@ -179,7 +179,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
                             'name' => esc_html__( 'Donation Notification Settings Docs Link', 'give' ),
                             'id'   => 'donation_notification_settings_docs_link',
                             'url'  => esc_url( 'http://docs.givewp.com/donationnotification' ),
-                            'title' => esc_html__( 'Donation Notification Settings', 'give' ),
+                            'title' => __( 'Donation Notification Settings', 'give' ),
                             'type' => 'give_docs_link',
                         ),
 						array(
