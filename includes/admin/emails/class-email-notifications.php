@@ -121,7 +121,7 @@ class Give_Email_Notifications {
 	}
 
 
-	public function get_columns(){
+	public function get_columns() {
 		/**
 		 * Filter the table columns
 		 *
@@ -132,7 +132,7 @@ class Give_Email_Notifications {
 			'name'       => __( 'Email', 'give' ),
 			'email_type' => __( 'Content Type', 'give' ),
 			'recipient'  => __( 'Recipient(s)', 'give' ),
-			'setting'    => ''
+			'setting'    => '',
 		) );
 	}
 
@@ -212,8 +212,9 @@ class Give_Email_Notifications {
 	/**
 	 * Get setting column.
 	 *
-	 * @since 1.8
+	 * @since  1.8
 	 * @access public
+	 *
 	 * @param Give_Email_Notification $email
 	 */
 	public function get_setting_column( Give_Email_Notification $email ) {
@@ -234,7 +235,7 @@ class Give_Email_Notifications {
 	 * @param string                  $column_name
 	 */
 	public function render_column( Give_Email_Notification $email, $column_name ) {
-		if( method_exists( $this, "get_{$column_name}_column" ) ) {
+		if ( method_exists( $this, "get_{$column_name}_column" ) ) {
 			$this->{"get_{$column_name}_column"}( $email );
 		} else {
 			do_action( "give_email_notification_setting_column_$column_name", $email );
@@ -280,11 +281,11 @@ class Give_Email_Notifications {
 
 		/* @var Give_Email_Notification $email */
 		foreach ( $this->get_email_notifications() as $email ) {
-			if( $email_type !== $email->get_id() ) {
+			if ( $email_type !== $email->get_id() ) {
 				continue;
 			}
 
-			if( $email_message = Give()->emails->build_email( $email->get_email_message() ) ) {
+			if ( $email_message = Give()->emails->build_email( $email->get_email_message() ) ) {
 
 				/**
 				 * Filter the email preview data
@@ -295,14 +296,12 @@ class Give_Email_Notifications {
 				 */
 				$email_preview_data = apply_filters( "give_{$email_type}_email_preview_data", array() );
 
-
 				/**
 				 * Fire the give_{$email_type}_email_preview action
 				 *
 				 * @since 1.8
 				 */
 				do_action( "give_{$email_type}_email_preview", $email );
-
 
 				/**
 				 * Filter the email message
@@ -317,7 +316,7 @@ class Give_Email_Notifications {
 
 				exit();
 			}
-		}
+		}// End foreach().
 	}
 
 

@@ -144,17 +144,17 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			$setting_fields = $this->get_default_setting_fields();
 
 			// Add extra setting field.
-			if( $extra_setting_field = $this->get_extra_setting_fields() ) {
+			if ( $extra_setting_field = $this->get_extra_setting_fields() ) {
 				$setting_fields = array_merge( $setting_fields, $extra_setting_field );
 			}
 
 			// Recipient field.
-			if( $this->has_recipient_field ) {
+			if ( $this->has_recipient_field ) {
 				$setting_fields[] = $this->get_recipient_setting_field();
 			}
 
 			// Preview field.
-			if( $this->has_preview ) {
+			if ( $this->has_preview ) {
 				$setting_fields[] = $this->get_preview_setting_field();
 			}
 
@@ -203,7 +203,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @access public
 		 * @return array
 		 */
-		public function get_preview_setting_field(){
+		public function get_preview_setting_field() {
 			return array(
 				'name' => esc_html__( 'Preview Email', 'give' ),
 				'desc' => esc_html__( 'Click the buttons to preview emails.', 'give' ),
@@ -292,7 +292,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @access public
 		 * @return string
 		 */
-		function get_email_subject(){
+		function get_email_subject() {
 			return give_get_option( "{$this->id}_email_subject", $this->get_default_email_subject() );
 		}
 
@@ -303,7 +303,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @access public
 		 * @return string
 		 */
-		function get_email_message(){
+		function get_email_message() {
 			return give_get_option( "{$this->id}_email_message", $this->get_default_email_message() );
 		}
 
@@ -318,7 +318,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		function get_email_message_field_description() {
 			$desc = esc_html__( 'Enter the subject line for email.', 'give' );
 
-			if( ! empty( give_get_email_tags() ) ) {
+			if ( ! empty( give_get_email_tags() ) ) {
 				$desc = sprintf(
 					esc_html__( 'Enter the email that is sent to users after completing a successful donation. HTML is accepted. Available template tags: %s', 'give' ),
 					give_get_emails_tags_list()
@@ -387,9 +387,9 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 					'type'    => 'radio_inline',
 					'default' => $this->notification_status,
 					'options' => array(
-						'enabled' => __( 'Enabled', 'give' ),
+						'enabled'  => __( 'Enabled', 'give' ),
 						'disabled' => __( 'Disabled', 'give' ),
-					)
+					),
 				),
 				array(
 					'id'      => "{$this->id}_email_subject",
@@ -404,7 +404,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 					'desc'    => $this->get_email_message_field_description(),
 					'type'    => 'wysiwyg',
 					'default' => $this->get_default_email_message(),
-				)
+				),
 			);
 		}
 
