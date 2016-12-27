@@ -70,17 +70,16 @@ class Give_Email_Notifications {
 
 		add_action( 'init', array( $this, 'preview_email' ) );
 
-		// Add Donation header to email preview.
-		add_action( 'give_donation-receipt_email_preview', array( $this, 'donation_receipt_email_preview_header') );
-		add_action( 'give_new-donation_email_preview', array( $this, 'donation_receipt_email_preview_header') );
+		/* @var Give_Email_Notification $email */
+		foreach ( $this->get_email_notifications() as $email ) {
+			if ( ! $email->is_email_preview_has_header() ) {
+				return false;
+			}
 
-		// Add email data.
-		add_filter( 'give_donation-receipt_email_preview_data', array( $this, 'email_preview_data') );
-		add_filter( 'give_new-donation_email_preview_data', array( $this, 'email_preview_data') );
-
-		// Replace email template tags.
-		add_filter( 'give_donation-receipt_email_preview_message', array( $this, 'email_preview_message'), 1, 2 );
-		add_filter( 'give_new-donation_email_preview_message', array( $this, 'email_preview_message'), 1, 2 );
+			add_action( "give_{$email->get_id()}_email_preview", array( $this, 'email_preview_header' ) );
+			add_filter( "give_{$email->get_id()}_email_preview_data", array( $this, 'email_preview_data' ) );
+			add_filter( "give_{$email->get_id()}_email_preview_message", array( $this, 'email_preview_message' ), 1, 2 );
+		}
 	}
 
 	/**
