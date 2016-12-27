@@ -50,7 +50,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 				2
 			);
 
-			add_filter( 'give_email_preview_new-donor-register_header', array( $this, 'email_preview_header' ), 10, 2 );
+			add_filter( 'give_email_preview_new-donor-register_header', array( $this, 'email_preview_header' ) );
 		}
 
 		/**
@@ -114,12 +114,11 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 		 * @since  1.8
 		 * @access public
 		 *
-		 * @param string                  $email_message
-		 * @param Give_Email_Notification $email
+		 * @param string $email_preview_header
 		 *
 		 * @return bool
 		 */
-		public function email_preview_header( $email_message, $email ) {
+		public function email_preview_header( $email_preview_header ) {
 			//Payment receipt switcher
 			$donor_id = give_check_variable( give_clean( $_GET ), 'isset', 0, 'donor_id' );
 
@@ -144,7 +143,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 			}
 
 			//Start constructing HTML output.
-			$transaction_header = '<div style="margin:0;padding:10px 0;width:100%;background-color:#FFF;border-bottom:1px solid #eee; text-align:center;">';
+			$email_preview_header = '<div style="margin:0;padding:10px 0;width:100%;background-color:#FFF;border-bottom:1px solid #eee; text-align:center;">';
 
 			//Inline JS function for switching donations.
 			$request_url = $_SERVER['REQUEST_URI'];
@@ -159,7 +158,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 			}
 
 
-			$transaction_header .= '<script>
+			$email_preview_header .= '<script>
 				 function change_preview(){
 				  var transactions = document.getElementById("give_preview_email_donor_id");
 			        var selected_trans = transactions.options[transactions.selectedIndex];
@@ -171,10 +170,10 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 				    }
 			    </script>';
 
-			$transaction_header .= '<label for="give_preview_email_donor_id" style="font-size:12px;color:#333;margin:0 4px 0 0;">' . esc_html__( 'Preview email with a donor:', 'give' ) . '</label>';
+			$email_preview_header .= '<label for="give_preview_email_donor_id" style="font-size:12px;color:#333;margin:0 4px 0 0;">' . esc_html__( 'Preview email with a donor:', 'give' ) . '</label>';
 
 			//The select field with 100 latest transactions
-			$transaction_header .= Give()->html->select( array(
+			$email_preview_header .= Give()->html->select( array(
 				'name'             => 'preview_email_donor_id',
 				'selected'         => $donor_id,
 				'id'               => 'give_preview_email_donor_id',
@@ -187,9 +186,9 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 			) );
 
 			//Closing tag
-			$transaction_header .= '</div>';
+			$email_preview_header .= '</div>';
 
-			echo $transaction_header;
+			echo $email_preview_header;
 		}
 
 		/* @todo Update email template tags in email preview on basis of selected donor */
