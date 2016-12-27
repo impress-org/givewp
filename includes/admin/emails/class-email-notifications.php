@@ -325,10 +325,30 @@ class Give_Email_Notifications {
 	 * Add header to donation receipt email preview
 	 *
 	 * @since   1.8
-	 * @access public
+	 * @access  public
+	 *
+	 * @param Give_Email_Notification $email
 	 */
-	public function donation_receipt_email_preview_header() {
-		echo give_get_preview_email_header();
+	public function email_preview_header( $email ) {
+		/**
+		 * Filter the all email preview headers.
+		 *
+		 * @since 1.8
+		 *
+		 * @param Give_Email_Notification $email
+		 */
+		$email_preview_header = apply_filters( 'give_email_preview_header', give_get_preview_email_header(), $email );
+
+		/**
+		 * Filter the specific email preview header.
+		 *
+		 * @since 1.8
+		 *
+		 * @param Give_Email_Notification $email
+		 */
+		$email_preview_header = apply_filters( "give_email_preview_{$email->get_id()}_header", $email_preview_header, $email );
+
+		echo $email_preview_header;
 	}
 
 	/**
