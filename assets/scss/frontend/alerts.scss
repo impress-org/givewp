@@ -1,0 +1,55 @@
+/*---------------------------------
+Notices, Warnings & Errors
+-----------------------------------*/
+.give_error, .give_success {
+  position: relative;
+  margin: 15px 0;
+  background: #F9F9F9;
+  padding: 1em 1em 1em 2em;
+  border-left: 4px solid $red;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.125);
+  clear: both;
+
+  > p {
+    margin: 0 !important;
+    color: $dark;
+  }
+
+  &:before {
+    @include iconstyle();
+    position: absolute;
+    top: 50%;
+    font-size: 16px;
+    margin-top: -15px;
+    left: -17px;
+    background-color: $red;
+    color: #FFF;
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    text-align: center;
+    line-height: 30px;
+    text-shadow: 1px 1px rgba(0, 0, 0, 0.5);
+    content: '\f02d';
+  }
+
+  &.give_warning {
+    border-color: $orange;
+
+    &:before {
+      background-color: $orange;
+      text-shadow: 1px 1px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+.give_success {
+  border-color: $green;
+
+  &:before {
+    background-color: $green;
+    content: '\e601';
+    text-shadow: 1px 1px rgba(0, 0, 0, 0.2);
+  }
+
+}

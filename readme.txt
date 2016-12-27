@@ -4,7 +4,7 @@ Donate link: https://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 4.2
 Tested up to: 4.7
-Stable tag: 1.7
+Stable tag: 1.7.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -164,7 +164,12 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 == Changelog ==
 
-= 1.7 =
+= 1.7.1: December 10, 2016 =
+* Fix: PayPal gateway is not properly passing the donation form name. [#1334](https://github.com/WordImpress/Give/issues/1334)
+* Fix: Add filter for Magnific modal options to close when the background is clicked and customize the modal's CSS class name. [#1328](https://github.com/WordImpress/Give/issues/1328)
+* Tweak: WordPress 4.7 adds a gray border around certain images in wp-admin. [#1322](https://github.com/WordImpress/Give/issues/1322)
+
+= 1.7: December 7, 2016  =
 * New: Custom HTML5 alert messages provide better context for donors. [#351](https://github.com/WordImpress/Give/issues/351)
 * New: Give CLI now included in Core for developers. [#841](https://github.com/WordImpress/Give/issues/841)
 * New: Donation details screen now displays more information and is mobile responsive. [#887](https://github.com/WordImpress/Give/issues/887)
@@ -192,18 +197,18 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Fix: Allow filter form title on basis of form id and form object. [#1290](https://github.com/WordImpress/Give/issues/1290)
 * Fix: Slowness on transactions and logs screens in WP-Admin. [#1172](https://github.com/WordImpress/Give/issues/1172)
 
-= 1.6.4 =
+= 1.6.4: November 10, 2016 =
 * New: {form_title} email tag that outputs only the donation form title and improved the email tag display in the plugin's settings. [#943](https://github.com/WordImpress/Give/issues/943)
 * Fix: {donation} email tag was not properly displaying the donation form title along with the level for multi-level donations.  [#943](https://github.com/WordImpress/Give/issues/943)
 * Fix: Removed all usage of ttf fonts within Give to prevent strict mod_security warnings on certain hosts. [#794](https://github.com/WordImpress/Give/issues/794)
 * Fix: If theme doesn't register image sizes there is a PHP Warning on the Give Settings page. [#1163](https://github.com/WordImpress/Give/issues/1163)
 
-= 1.6.3 =
+= 1.6.3: October 26, 2016 =
 * Fix: PayPal Standard donations payments being set incorrectly to failed. [#1152](https://github.com/WordImpress/Give/issues/1152)
 * Fix: Custom number of decimals formatting is not working in give_sanitize_amount. [#1144](https://github.com/WordImpress/Give/issues/1144)
 * Tweak: The "Email Access" message is now filtered via `give_email_access_message`. [#1147](https://github.com/WordImpress/Give/issues/1147)
 
-= 1.6.2 =
+= 1.6.2: October 4th, 2016 =
 * New: Internationalization banner now promotes to admins translating Give in languages it doesn't yet support. The banner will only display under Donations > Settings and is dismissible. [#1021](https://github.com/WordImpress/Give/issues/1021)
 * New: The Give widget has a new "Display Option" field which defaults to "modal" to help improve display in sidebars. [#1043](https://github.com/WordImpress/Give/issues/1034)
 * Tweak: The Give widget now uses radio buttons for options rather than a dropdown. [#1042](https://github.com/WordImpress/Give/issues/1042)
@@ -211,7 +216,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Fix: Donation form names with an apostrophe in them were displaying a backslash in the name for the PayPal Standard gateway. [#1079](https://github.com/WordImpress/Give/issues/1079)
 * Fix: Prevent the donor from saving an empty email address in the [give_profile_editor] shortcode. [#999](https://github.com/WordImpress/Give/issues/999)
 
-= 1.6.1 =
+= 1.6.1: September 6th, 2016 =
 * Fix: Donation date discrepancy in transaction details view. [#898](https://github.com/WordImpress/Give/issues/898)
 * Fix: Switching donation form in transaction view "-2" appears when no form set. [#877](https://github.com/WordImpress/Give/issues/877)
 * Fix: Styling issue on donor profile editor page. [#997](https://github.com/WordImpress/Give/issues/997)

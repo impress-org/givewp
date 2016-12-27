@@ -124,12 +124,12 @@ class Give_MetaBox_Form_Data {
 							) ),
 						),
 						array(
-							'name'          => esc_html__( 'Set Donation', 'give' ),
-							'description'   => esc_html__( 'This is the set donation amount for this form. If you have a "Custom Amount Minimum" set, make sure it is less than this amount.', 'give' ),
-							'id'            => $prefix . 'set_price',
-							'type'          => 'text_small',
-							'data_type'     => 'price',
-							'attributes'    => array(
+							'name'        => esc_html__( 'Set Donation', 'give' ),
+							'description' => esc_html__( 'This is the set donation amount for this form. If you have a "Custom Amount Minimum" set, make sure it is less than this amount.', 'give' ),
+							'id'          => $prefix . 'set_price',
+							'type'        => 'text_small',
+							'data_type'   => 'price',
+							'attributes'  => array(
 								'placeholder' => give_format_decimal( '1.00' ),
 								'value'       => give_format_decimal( $price ),
 								'class'       => 'give-money-field',
@@ -153,11 +153,11 @@ class Give_MetaBox_Form_Data {
 									'type' => 'levels_id',
 								),
 								array(
-									'name'         => esc_html__( 'Amount', 'give' ),
-									'id'           => $prefix . 'amount',
-									'type'         => 'text_small',
-									'data_type'    => 'price',
-									'attributes'   => array(
+									'name'       => esc_html__( 'Amount', 'give' ),
+									'id'         => $prefix . 'amount',
+									'type'       => 'text_small',
+									'data_type'  => 'price',
+									'attributes' => array(
 										'placeholder' => give_format_decimal( '1.00' ),
 										'class'       => 'give-money-field',
 									),
@@ -678,25 +678,31 @@ class Give_MetaBox_Form_Data {
 								$form_meta_value = wp_kses_post( $_POST[ $form_meta_key ] );
 								update_post_meta( $post_id, $form_meta_key, $form_meta_value );
 								break;
-							
+
 							case 'group':
 								$form_meta_value = array();
 
 								foreach ( $_POST[ $form_meta_key ] as $index => $group ) {
+
+									// Do not save template input field values.
+									if ( '{{row-count-placeholder}}' === $index ) {
+										continue;
+									}
+
 									$group_meta_value = array();
-									foreach ( $group as $field_id => $field_value ){
+									foreach ( $group as $field_id => $field_value ) {
 										switch ( $this->get_field_type( $field_id, $form_meta_key ) ) {
 											case 'wysiwyg':
-												$group_meta_value[$field_id] = wp_kses_post( $field_value );
+												$group_meta_value[ $field_id ] = wp_kses_post( $field_value );
 												break;
 
 											default:
-												$group_meta_value[$field_id] = give_clean( $field_value );
+												$group_meta_value[ $field_id ] = give_clean( $field_value );
 										}
 									}
 
-									if( ! empty( $group_meta_value ) ) {
-										$form_meta_value[$index] = $group_meta_value;
+									if ( ! empty( $group_meta_value ) ) {
+										$form_meta_value[ $index ] = $group_meta_value;
 									}
 								}
 
@@ -768,13 +774,13 @@ class Give_MetaBox_Form_Data {
 	 * @since  1.8
 	 *
 	 * @param  string $field_id
-	 * @param  string $group_id    Get sub field from group.
+	 * @param  string $group_id Get sub field from group.
 	 *
 	 * @return array
 	 */
 	function get_setting_field( $field_id, $group_id = '' ) {
 		$setting_field = array();
-		
+
 		$_field_id = $field_id;
 		$field_id  = empty( $group_id ) ? $field_id : $group_id;
 
@@ -789,10 +795,10 @@ class Give_MetaBox_Form_Data {
 				}
 			}
 		}
-		
-		
+
+
 		// Get field from group.
-		if( ! empty( $group_id ) ) {
+		if ( ! empty( $group_id ) ) {
 			foreach ( $setting_field['fields'] as $field ) {
 				if ( $field['id'] === $_field_id ) {
 					$setting_field = $field;

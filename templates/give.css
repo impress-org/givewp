@@ -65,13 +65,13 @@
 */
 @font-face {
   font-family: 'give-icomoon';
+  src: url("../assets/fonts/icomoon.eot?kdnr3d");
+  src: url("../assets/fonts/icomoon.eot?kdnr3d#iefix") format("embedded-opentype"), url("../assets/fonts/icomoon.woff?kdnr3d") format("woff"), url("../assets/fonts/icomoon.svg?kdnr3d#icomoon") format("svg");
   font-weight: normal;
   font-style: normal; }
 
 [class^="give-icon-"], [class*=" give-icon-"] {
   font-family: 'give-icomoon';
-  src: url("../assets/fonts/icomoon.eot?kdnr3d");
-  src: url("../assets/fonts/icomoon.eot?kdnr3d#iefix") format("embedded-opentype"), url("../assets/fonts/icomoon.woff?kdnr3d") format("woff"), url("../assets/fonts/icomoon.svg?kdnr3d#icomoon") format("svg");
   speak: none;
   font-style: normal;
   font-weight: normal;
@@ -119,8 +119,6 @@
 
 .dashicons-give:before {
   font-family: 'give-icomoon';
-  src: url("../assets/fonts/icomoon.eot?kdnr3d");
-  src: url("../assets/fonts/icomoon.eot?kdnr3d#iefix") format("embedded-opentype"), url("../assets/fonts/icomoon.woff?kdnr3d") format("woff"), url("../assets/fonts/icomoon.svg?kdnr3d#icomoon") format("svg");
   speak: none;
   font-style: normal;
   font-weight: normal;
@@ -833,13 +831,12 @@ Gravatar List
 /*------------------------------------
 Base Form Styles
 --------------------------------------*/
-form[id*='give-form'], #give-recurring-form, form.give-form {
-  color: #333;
+form[id*='give-form'] {
   margin: 0 0 25px;
   padding: 0; }
-  form[id*='give-form'] .give-hidden, #give-recurring-form .give-hidden, form.give-form .give-hidden {
+  form[id*='give-form'] .give-hidden {
     display: none; }
-  form[id*='give-form'] .give-tooltip, #give-recurring-form .give-tooltip, form.give-form .give-tooltip {
+  form[id*='give-form'] .give-tooltip {
     margin: 0 3px;
     padding: 0;
     font-size: 14px;
@@ -847,39 +844,39 @@ form[id*='give-form'], #give-recurring-form, form.give-form {
     -o-transition: 0.2s all linear;
     transition: 0.2s all linear;
     color: rgba(51, 51, 51, 0.5); }
-    form[id*='give-form'] .give-tooltip:hover, #give-recurring-form .give-tooltip:hover, form.give-form .give-tooltip:hover {
+    form[id*='give-form'] .give-tooltip:hover {
       color: #333; }
-  form[id*='give-form'] legend, form[id*='give-form'] h3.give-section-break, form[id*='give-form'] h4.give-section-break, #give-recurring-form legend, #give-recurring-form h3.give-section-break, #give-recurring-form h4.give-section-break, form.give-form legend, form.give-form h3.give-section-break, form.give-form h4.give-section-break {
+  form[id*='give-form'] legend, form[id*='give-form'] h3.give-section-break, form[id*='give-form'] h4.give-section-break {
     font-weight: bold;
     margin: 10px 0 15px;
     padding: 0 0 10px;
     border-bottom: 1px solid #EDEDED;
     width: 100%; }
-    form[id*='give-form'] legend span.sub-text, form[id*='give-form'] h3.give-section-break span.sub-text, form[id*='give-form'] h4.give-section-break span.sub-text, #give-recurring-form legend span.sub-text, #give-recurring-form h3.give-section-break span.sub-text, #give-recurring-form h4.give-section-break span.sub-text, form.give-form legend span.sub-text, form.give-form h3.give-section-break span.sub-text, form.give-form h4.give-section-break span.sub-text {
+    form[id*='give-form'] legend span.sub-text, form[id*='give-form'] h3.give-section-break span.sub-text, form[id*='give-form'] h4.give-section-break span.sub-text {
       font-style: italic;
       font-weight: normal; }
-  form[id*='give-form'] div[id^='section-'] .give-section-break, #give-recurring-form div[id^='section-'] .give-section-break, form.give-form div[id^='section-'] .give-section-break {
+  form[id*='give-form'] div[id^='section-'] .give-section-break {
     margin: 0; }
-  form[id*='give-form'] .form-row, #give-recurring-form .form-row, form.give-form .form-row {
+  form[id*='give-form'] .form-row {
     *zoom: 1;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     margin: 0 0 15px;
     padding: 0; }
-    form[id*='give-form'] .form-row:before, form[id*='give-form'] .form-row:after, #give-recurring-form .form-row:before, #give-recurring-form .form-row:after, form.give-form .form-row:before, form.give-form .form-row:after {
+    form[id*='give-form'] .form-row:before, form[id*='give-form'] .form-row:after {
       content: " ";
       display: table; }
-    form[id*='give-form'] .form-row:after, #give-recurring-form .form-row:after, form.give-form .form-row:after {
+    form[id*='give-form'] .form-row:after {
       clear: both; }
-    form[id*='give-form'] .form-row label, #give-recurring-form .form-row label, form.give-form .form-row label {
+    form[id*='give-form'] .form-row label {
       display: block;
       margin: 0 0 5px;
       position: relative;
       line-height: 1.7; }
-      form[id*='give-form'] .form-row label.checkbox, #give-recurring-form .form-row label.checkbox, form.give-form .form-row label.checkbox {
+      form[id*='give-form'] .form-row label.checkbox {
         display: inline; }
-    form[id*='give-form'] .form-row select, form[id*='give-form'] .form-row textarea, form[id*='give-form'] .form-row input[type="text"], form[id*='give-form'] .form-row input[type="tel"], form[id*='give-form'] .form-row input[type="email"], form[id*='give-form'] .form-row input[type="password"], #give-recurring-form .form-row select, #give-recurring-form .form-row textarea, #give-recurring-form .form-row input[type="text"], #give-recurring-form .form-row input[type="tel"], #give-recurring-form .form-row input[type="email"], #give-recurring-form .form-row input[type="password"], form.give-form .form-row select, form.give-form .form-row textarea, form.give-form .form-row input[type="text"], form.give-form .form-row input[type="tel"], form.give-form .form-row input[type="email"], form.give-form .form-row input[type="password"] {
+    form[id*='give-form'] .form-row select, form[id*='give-form'] .form-row textarea, form[id*='give-form'] .form-row input[type="text"], form[id*='give-form'] .form-row input[type="tel"], form[id*='give-form'] .form-row input[type="email"], form[id*='give-form'] .form-row input[type="password"] {
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
       box-sizing: border-box;
@@ -888,53 +885,47 @@ form[id*='give-form'], #give-recurring-form, form.give-form {
       outline: none;
       color: #333;
       background-color: #FDFDFD; }
-      form[id*='give-form'] .form-row select:focus, form[id*='give-form'] .form-row textarea:focus, form[id*='give-form'] .form-row input[type="text"]:focus, form[id*='give-form'] .form-row input[type="tel"]:focus, form[id*='give-form'] .form-row input[type="email"]:focus, form[id*='give-form'] .form-row input[type="password"]:focus, #give-recurring-form .form-row select:focus, #give-recurring-form .form-row textarea:focus, #give-recurring-form .form-row input[type="text"]:focus, #give-recurring-form .form-row input[type="tel"]:focus, #give-recurring-form .form-row input[type="email"]:focus, #give-recurring-form .form-row input[type="password"]:focus, form.give-form .form-row select:focus, form.give-form .form-row textarea:focus, form.give-form .form-row input[type="text"]:focus, form.give-form .form-row input[type="tel"]:focus, form.give-form .form-row input[type="email"]:focus, form.give-form .form-row input[type="password"]:focus {
+      form[id*='give-form'] .form-row select:focus, form[id*='give-form'] .form-row textarea:focus, form[id*='give-form'] .form-row input[type="text"]:focus, form[id*='give-form'] .form-row input[type="tel"]:focus, form[id*='give-form'] .form-row input[type="email"]:focus, form[id*='give-form'] .form-row input[type="password"]:focus {
         background-color: #fff; }
-      form[id*='give-form'] .form-row select.required, form[id*='give-form'] .form-row textarea.required, form[id*='give-form'] .form-row input[type="text"].required, form[id*='give-form'] .form-row input[type="tel"].required, form[id*='give-form'] .form-row input[type="email"].required, form[id*='give-form'] .form-row input[type="password"].required, #give-recurring-form .form-row select.required, #give-recurring-form .form-row textarea.required, #give-recurring-form .form-row input[type="text"].required, #give-recurring-form .form-row input[type="tel"].required, #give-recurring-form .form-row input[type="email"].required, #give-recurring-form .form-row input[type="password"].required, form.give-form .form-row select.required, form.give-form .form-row textarea.required, form.give-form .form-row input[type="text"].required, form.give-form .form-row input[type="tel"].required, form.give-form .form-row input[type="email"].required, form.give-form .form-row input[type="password"].required {
+      form[id*='give-form'] .form-row select.required, form[id*='give-form'] .form-row textarea.required, form[id*='give-form'] .form-row input[type="text"].required, form[id*='give-form'] .form-row input[type="tel"].required, form[id*='give-form'] .form-row input[type="email"].required, form[id*='give-form'] .form-row input[type="password"].required {
         color: #333; }
   form[id*='give-form'] .form-row-first,
   form[id*='give-form'] .form-row-last,
-  form[id*='give-form'] .form-row-two-thirds, #give-recurring-form .form-row-first,
-  #give-recurring-form .form-row-last,
-  #give-recurring-form .form-row-two-thirds, form.give-form .form-row-first,
-  form.give-form .form-row-last,
-  form.give-form .form-row-two-thirds {
+  form[id*='give-form'] .form-row-two-thirds {
     float: left;
     width: 48.5%;
     overflow: visible; }
-  form[id*='give-form'] .form-row-two-thirds, #give-recurring-form .form-row-two-thirds, form.give-form .form-row-two-thirds {
+  form[id*='give-form'] .form-row-two-thirds {
     float: left;
     width: 65.75%; }
-    form[id*='give-form'] .form-row-two-thirds.form-row-first, #give-recurring-form .form-row-two-thirds.form-row-first, form.give-form .form-row-two-thirds.form-row-first {
+    form[id*='give-form'] .form-row-two-thirds.form-row-first {
       margin-left: 0; }
-  form[id*='give-form'] .form-row-one-third, #give-recurring-form .form-row-one-third, form.give-form .form-row-one-third {
+  form[id*='give-form'] .form-row-one-third {
     float: left;
     width: 31.25%;
     margin-left: 3%; }
-    form[id*='give-form'] .form-row-one-third.form-row-first, #give-recurring-form .form-row-one-third.form-row-first, form.give-form .form-row-one-third.form-row-first {
+    form[id*='give-form'] .form-row-one-third.form-row-first {
       margin-left: 0; }
-  form[id*='give-form'] .form-row-last, #give-recurring-form .form-row-last, form.give-form .form-row-last {
+  form[id*='give-form'] .form-row-last {
     float: right; }
-  form[id*='give-form'] .form-row-wide, #give-recurring-form .form-row-wide, form.give-form .form-row-wide {
+  form[id*='give-form'] .form-row-wide {
     *zoom: 1;
     clear: both; }
-    form[id*='give-form'] .form-row-wide:before, form[id*='give-form'] .form-row-wide:after, #give-recurring-form .form-row-wide:before, #give-recurring-form .form-row-wide:after, form.give-form .form-row-wide:before, form.give-form .form-row-wide:after {
+    form[id*='give-form'] .form-row-wide:before, form[id*='give-form'] .form-row-wide:after {
       content: " ";
       display: table; }
-    form[id*='give-form'] .form-row-wide:after, #give-recurring-form .form-row-wide:after, form.give-form .form-row-wide:after {
+    form[id*='give-form'] .form-row-wide:after {
       clear: both; }
   form[id*='give-form'] .give-error,
-  form[id*='give-form'] .give-required-indicator, #give-recurring-form .give-error,
-  #give-recurring-form .give-required-indicator, form.give-form .give-error,
-  form.give-form .give-required-indicator {
+  form[id*='give-form'] .give-required-indicator {
     color: #a00; }
-  form[id*='give-form'] .card-expiration > select, #give-recurring-form .card-expiration > select, form.give-form .card-expiration > select {
+  form[id*='give-form'] .card-expiration > select {
     width: 44%;
     margin: 0; }
-  form[id*='give-form'] .card-expiration > span.exp-divider, #give-recurring-form .card-expiration > span.exp-divider, form.give-form .card-expiration > span.exp-divider {
+  form[id*='give-form'] .card-expiration > span.exp-divider {
     display: inline;
     text-align: center; }
-  form[id*='give-form'] .card-expiration select.card-expiry-year, #give-recurring-form .card-expiration select.card-expiry-year, form.give-form .card-expiration select.card-expiry-year {
+  form[id*='give-form'] .card-expiration select.card-expiry-year {
     float: right; }
 
 /*---------------------------------
@@ -1041,69 +1032,11 @@ form[id*='give-form'] #give-final-total-wrap {
     border-left: none;
     float: left; }
 
-.give-display-button-only .give-form-title,
-.give-display-button-only .give-form-content-wrap,
-.give-display-button-only .give-goal-progress,
-.give-display-button-only .give_error {
-  display: none; }
+.give-display-button-only > *:not(form) {
+  display: none !important; }
 
-.give-display-button-only form[id*='give-form'] > div,
-.give-display-button-only form[id*='give-form'] > fieldset,
-.give-display-button-only form[id*='give-form'] > ul {
-  display: none; }
-
-/*---------------------------------
-Notices, Warnings & Errors
------------------------------------*/
-.give_error, .give_success {
-  position: relative;
-  margin: 15px 0;
-  background: #F9F9F9;
-  padding: 1em 1em 1em 2em;
-  border-left: 4px solid #a00;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.125);
-  clear: both; }
-  .give_error > p, .give_success > p {
-    margin: 0 !important; }
-  .give_error:before, .give_success:before {
-    font-family: 'give-icomoon';
-    src: url("../assets/fonts/icomoon.eot?kdnr3d");
-    src: url("../assets/fonts/icomoon.eot?kdnr3d#iefix") format("embedded-opentype"), url("../assets/fonts/icomoon.woff?kdnr3d") format("woff"), url("../assets/fonts/icomoon.svg?kdnr3d#icomoon") format("svg");
-    speak: none;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    position: absolute;
-    top: 50%;
-    font-size: 16px;
-    margin-top: -15px;
-    left: -17px;
-    background-color: #a00;
-    color: #FFF;
-    width: 30px;
-    height: 30px;
-    font-size: 16px;
-    border-radius: 100%;
-    text-align: center;
-    line-height: 30px;
-    text-shadow: 1px 1px rgba(0, 0, 0, 0.5);
-    content: '\f02d'; }
-  .give_error.give_warning, .give_success.give_warning {
-    border-color: #ffba00; }
-    .give_error.give_warning:before, .give_success.give_warning:before {
-      background-color: #ffba00;
-      text-shadow: 1px 1px rgba(0, 0, 0, 0.1); }
-
-.give_success {
-  border-color: #7ad03a; }
-  .give_success:before {
-    background-color: #7ad03a;
-    content: '\e601';
-    text-shadow: 1px 1px rgba(0, 0, 0, 0.2); }
+.give-display-button-only form > *:not(.give-btn-modal) {
+  display: none !important; }
 
 /*---------------------------------
 Radio Lists
@@ -1122,7 +1055,7 @@ Radio Lists
       cursor: pointer;
       display: inline-block; }
     #give-donation-level-radio-list > li input[type="radio"] {
-      margin: 0 5px 0 0;
+      margin: 0 2px 0 0;
       outline: none;
       width: auto; }
 
@@ -1142,12 +1075,14 @@ Radio Lists
     margin-left: 0;
     list-style-type: none;
     list-style-image: none; }
-    #give-gateway-radio-list > li .give-gateway-option {
-      cursor: pointer; }
-      #give-gateway-radio-list > li .give-gateway-option input[type="radio"] {
-        margin: 0 5px 0 0;
-        outline: none;
-        width: auto; }
+    #give-gateway-radio-list > li label.give-gateway-option {
+      cursor: pointer;
+      display: inline; }
+    #give-gateway-radio-list > li input[type="radio"] {
+      margin: 0 2px 0 0;
+      outline: none;
+      width: auto;
+      display: inline; }
 
 /*---------------------------------
 Donation Level: Dropdown/Select
@@ -1193,8 +1128,6 @@ CC Validation
   line-height: 20px; }
   [id*='give_secure_site_wrapper'] span.padlock {
     font-family: 'give-icomoon';
-    src: url("../assets/fonts/icomoon.eot?kdnr3d");
-    src: url("../assets/fonts/icomoon.eot?kdnr3d#iefix") format("embedded-opentype"), url("../assets/fonts/icomoon.woff?kdnr3d") format("woff"), url("../assets/fonts/icomoon.svg?kdnr3d#icomoon") format("svg");
     speak: none;
     font-style: normal;
     font-weight: normal;
@@ -1288,8 +1221,6 @@ form[id*='give-form'] p.give-loading-text, form[id*='give-form'] span.give-loadi
 
 form[id*='give-form'] .give-loading-animation {
   font-family: 'give-icomoon';
-  src: url("../assets/fonts/icomoon.eot?kdnr3d");
-  src: url("../assets/fonts/icomoon.eot?kdnr3d#iefix") format("embedded-opentype"), url("../assets/fonts/icomoon.woff?kdnr3d") format("woff"), url("../assets/fonts/icomoon.svg?kdnr3d#icomoon") format("svg");
   speak: none;
   font-style: normal;
   font-weight: normal;
@@ -1392,6 +1323,57 @@ Responsiveness
   [id*='give-form'] div.images, [id*='give-form'] div.summary {
     width: 100%;
     float: none; } }
+
+/*---------------------------------
+Notices, Warnings & Errors
+-----------------------------------*/
+.give_error, .give_success {
+  position: relative;
+  margin: 15px 0;
+  background: #F9F9F9;
+  padding: 1em 1em 1em 2em;
+  border-left: 4px solid #a00;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.125);
+  clear: both; }
+  .give_error > p, .give_success > p {
+    margin: 0 !important;
+    color: #333; }
+  .give_error:before, .give_success:before {
+    font-family: 'give-icomoon';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    position: absolute;
+    top: 50%;
+    font-size: 16px;
+    margin-top: -15px;
+    left: -17px;
+    background-color: #a00;
+    color: #FFF;
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    text-align: center;
+    line-height: 30px;
+    text-shadow: 1px 1px rgba(0, 0, 0, 0.5);
+    content: '\f02d'; }
+  .give_error.give_warning, .give_success.give_warning {
+    border-color: #ffba00; }
+    .give_error.give_warning:before, .give_success.give_warning:before {
+      background-color: #ffba00;
+      text-shadow: 1px 1px rgba(0, 0, 0, 0.1); }
+
+.give_success {
+  border-color: #7ad03a; }
+  .give_success:before {
+    background-color: #7ad03a;
+    content: '\e601';
+    text-shadow: 1px 1px rgba(0, 0, 0, 0.2); }
 
 /* Magnific Popup CSS */
 .mfp-bg {
@@ -1878,7 +1860,7 @@ form.floated-labels .floatlabel {
   form.floated-labels .floatlabel textarea {
     font-size: 16px;
     line-height: normal;
-    background-color: inherit;
+    background-color: #fff;
     border: 1px solid #ccc;
     padding: 12px; }
   form.floated-labels .floatlabel select {
@@ -1894,7 +1876,7 @@ form.floated-labels .floatlabel {
   form.floated-labels .floatlabel.is-active select,
   form.floated-labels .floatlabel.is-active textarea {
     color: #333;
-    background-color: inherit;
+    background-color: #fff;
     border-color: #ccc;
     padding-top: 20px;
     padding-bottom: 4px; }
@@ -1903,7 +1885,7 @@ form.floated-labels .floatlabel {
   form.floated-labels .floatlabel.is-focused input,
   form.floated-labels .floatlabel.is-focused select,
   form.floated-labels .floatlabel.is-focused textarea {
-    background-color: inherit;
+    background-color: #fff;
     border-color: #ccc; }
   form.floated-labels .floatlabel label.floatlabel-label {
     position: absolute;

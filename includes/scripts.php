@@ -62,7 +62,7 @@ function give_load_scripts() {
 				'give_email'             => __( 'Please enter a valid email address.', 'give' ),
 				'give_user_login'        => __( 'Invalid username. Only lowercase letters (a-z) and numbers are allowed.', 'give' ),
 				'give_user_pass'         => __( 'Enter a password.', 'give' ),
-				'give_user_pass_confirm' => __( 'Enter a confirm password.', 'give' ),
+				'give_user_pass_confirm' => __( 'Enter the password confirmation.', 'give' ),
 				'give_agree_to_terms'    => __( 'You must agree to the terms and conditions.', 'give' ),
 			)
 		),

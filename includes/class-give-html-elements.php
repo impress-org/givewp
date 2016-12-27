@@ -110,7 +110,7 @@ class Give_HTML_Elements {
 			'selected'    => 0,
 			'chosen'      => false,
 			'number'      => 30,
-			'placeholder' => esc_attr__( 'Select a Form', 'give' )
+			'placeholder' => esc_attr__( 'Select a Donation Form', 'give' )
 		);
 
 		$args = wp_parse_args( $args, $defaults );
@@ -125,7 +125,7 @@ class Give_HTML_Elements {
 		$options = array();
 
 		if ( $forms ) {
-			$options[0] = esc_attr__( 'Select a Form', 'give' );
+			$options[0] = esc_attr__( 'Select a Donation Form', 'give' );
 			foreach ( $forms as $form ) {
 				$options[ absint( $form->ID ) ] = esc_html( $form->post_title );
 			}
