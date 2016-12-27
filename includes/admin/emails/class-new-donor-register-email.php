@@ -191,6 +191,8 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 
 			echo $transaction_header;
 		}
+
+		/* @todo Update email template tags in email preview on basis of selected donor */
 	}
 
 endif; // End class_exists check
