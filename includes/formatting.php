@@ -490,12 +490,17 @@ function give_validate_nonce( $nonce, $action = - 1, $wp_die_args = array() ) {
  * @since 1.8
  *
  * @param                   $variable
- * @param string (optional) $conditional , default value: isset
- * @param bool (optional)   $default     , default value: false
+ * @param string (optional) $conditional    default value: isset
+ * @param bool (optional)   $default        default value: false
+ * @param string (optional) $array_key_name default value: false
  *
  * @return mixed
  */
-function give_check_variable( $variable, $conditional = '', $default = false ) {
+function give_check_variable( $variable, $conditional = '', $default = false, $array_key_name = '' ) {
+	// Get value from array if array key non empty.
+	if( $array_key_name ) {
+		$variable = array_key_exists( $array_key_name, $variable ) ? $variable[ $array_key_name ] : $default;
+	}
 
 	switch ( $conditional ) {
 		case 'isset_empty':
