@@ -39,7 +39,6 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 
 			$this->has_recipient_field = true;
 			$this->notification_status = 'enabled';
-			$this->has_preview_header  = false;
 
 			parent::__construct();
 
@@ -50,6 +49,8 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 				10,
 				2
 			);
+
+			add_filter( 'give_email_preview_new-donor-register_header', array( $this, 'email_preview_header' ), 10, 2 );
 		}
 
 		/**
@@ -104,6 +105,91 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 
 			// Send email.
 			Give()->emails->send( $this->get_recipient(), $subject, $message );
+		}
+
+
+		/**
+		 * email preview header.
+		 *
+		 * @since  1.8
+		 * @access public
+		 *
+		 * @param string                  $email_message
+		 * @param Give_Email_Notification $email
+		 *
+		 * @return bool
+		 */
+		public function email_preview_header( $email_message, $email ) {
+			//Payment receipt switcher
+			$donor_id = give_check_variable( give_clean( $_GET ), 'isset', 0, 'donor_id' );
+
+			//Get payments.
+			$donors  = new Give_API();
+			$donors  = give_check_variable( $donors->get_customers(), 'empty', array(), 'donors' );
+			$options = array();
+
+			// Default option.
+			$options[0] = esc_html__( 'No donor(s) found.', 'give' );
+
+			//Provide nice human readable options.
+			if ( $donors ) {
+				$options[0] = esc_html__( '- Select a donor -', 'give' );
+				foreach ( $donors as $donor ) {
+					// Exclude customers for which wp user not exist.
+					if ( ! $donor['info']['user_id'] ) {
+						continue;
+					}
+					$options[ $donor['info']['user_id'] ] = esc_html( '#' . $donor['info']['customer_id'] . ' - ' . $donor['info']['email'] );
+				}
+			}
+
+			//Start constructing HTML output.
+			$transaction_header = '<div style="margin:0;padding:10px 0;width:100%;background-color:#FFF;border-bottom:1px solid #eee; text-align:center;">';
+
+			//Inline JS function for switching donations.
+			$request_url = $_SERVER['REQUEST_URI'];
+
+			// Remove payment id query param if set from request url.
+			if ( $donor_id ) {
+				$request_url_data = wp_parse_url( $_SERVER['REQUEST_URI'] );
+				$query            = $request_url_data['query'];
+				$query            = str_replace( "&donor_id={$donor_id}", '', $query );
+
+				$request_url = home_url( '/?' . str_replace( '', '', $query ) );
+			}
+
+
+			$transaction_header .= '<script>
+				 function change_preview(){
+				  var transactions = document.getElementById("give_preview_email_donor_id");
+			        var selected_trans = transactions.options[transactions.selectedIndex];
+				        console.log(selected_trans);
+				        if (selected_trans){
+				            var url_string = "' . $request_url . '&donor_id=" + selected_trans.value;
+				                window.location = url_string;
+				        }
+				    }
+			    </script>';
+
+			$transaction_header .= '<label for="give_preview_email_donor_id" style="font-size:12px;color:#333;margin:0 4px 0 0;">' . esc_html__( 'Preview email with a donor:', 'give' ) . '</label>';
+
+			//The select field with 100 latest transactions
+			$transaction_header .= Give()->html->select( array(
+				'name'             => 'preview_email_donor_id',
+				'selected'         => $donor_id,
+				'id'               => 'give_preview_email_donor_id',
+				'class'            => 'give-preview-email-donor-id',
+				'options'          => $options,
+				'chosen'           => false,
+				'select_atts'      => 'onchange="change_preview()"',
+				'show_option_all'  => false,
+				'show_option_none' => false,
+			) );
+
+			//Closing tag
+			$transaction_header .= '</div>';
+
+			echo $transaction_header;
 		}
 	}
 
