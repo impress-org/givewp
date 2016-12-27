@@ -80,11 +80,11 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 							'type'    => 'text'
 						),
                         array(
-                            'name' => esc_html__( 'Email Settings Docs Link', 'give' ),
-                            'id'   => 'email_settings_docs_link',
-                            'url'  => esc_url( 'http://docs.givewp.com/emailsettings' ),
+                            'name'  => esc_html__( 'Email Settings Docs Link', 'give' ),
+                            'id'    => 'email_settings_docs_link',
+                            'url'   => esc_url( 'http://docs.givewp.com/emailsettings' ),
                             'title' => __( 'Email Settings', 'give' ),
-                            'type' => 'give_docs_link',
+                            'type'  => 'give_docs_link',
                         ),
 						array(
 							'id'   => 'give_title_email_settings_1',
@@ -119,11 +119,11 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 							'default' => give_get_default_donation_receipt_email()
 						),
                         array(
-                            'name' => esc_html__( 'Donation Receipt Settings Docs Link', 'give' ),
-                            'id'   => 'donation_receipt_settings_docs_link',
-                            'url'  => esc_url( 'http://docs.givewp.com/donationreceipt' ),
+                            'name'  => esc_html__( 'Donation Receipt Settings Docs Link', 'give' ),
+                            'id'    => 'donation_receipt_settings_docs_link',
+                            'url'   => esc_url( 'http://docs.givewp.com/donationreceipt' ),
                             'title' => __( 'Donation Receipt Settings', 'give' ),
-                            'type' => 'give_docs_link',
+                            'type'  => 'give_docs_link',
                         ),
 						array(
 							'id'   => 'give_title_email_settings_2',
@@ -176,11 +176,11 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 							'default' => get_bloginfo( 'admin_email' )
 						),
                         array(
-                            'name' => esc_html__( 'Donation Notification Settings Docs Link', 'give' ),
-                            'id'   => 'donation_notification_settings_docs_link',
-                            'url'  => esc_url( 'http://docs.givewp.com/donationnotification' ),
+                            'name'  => esc_html__( 'Donation Notification Settings Docs Link', 'give' ),
+                            'id'    => 'donation_notification_settings_docs_link',
+                            'url'   => esc_url( 'http://docs.givewp.com/donationnotification' ),
                             'title' => __( 'Donation Notification Settings', 'give' ),
-                            'type' => 'give_docs_link',
+                            'type'  => 'give_docs_link',
                         ),
 						array(
 							'id'   => 'give_title_email_settings_3',

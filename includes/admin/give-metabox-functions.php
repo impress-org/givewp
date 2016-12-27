@@ -641,15 +641,15 @@ function give_default_gateway( $field ) {
   * @return void
 */
 
-function give_docs_link( $field ) {
-	$field['url']         = isset( $field['url'] ) ? $field['url'] : 'https://givewp.com/documentation';
-	$field['title']         = isset( $field['title'] ) ? $field['title'] : 'Documentation';
+function give_docs_link($field) {
+	$field['url']   = isset($field['url']) ? $field['url'] : 'https://givewp.com/documentation';
+	$field['title'] = isset($field['title']) ? $field['title'] : 'Documentation';
 
-	echo '<p class="give-docs-link"><a href="' . esc_url( $field['url'] )
+	echo '<p class="give-docs-link"><a href="' . esc_url($field['url'])
 		. '" target="_blank">'
-		. sprintf( esc_html__( 'Need Help? See docs on "%s"' ), $field['title'] )
+		. sprintf(esc_html__('Need Help? See docs on "%s"'), $field['title'])
 		. '<span class="dashicons dashicons-editor-help"></span></a></p>';
- }
+}
 
 /**
  * Get setting field value.
