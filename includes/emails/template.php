@@ -363,7 +363,7 @@ function give_get_preview_email_header() {
 
 	//Payment receipt switcher
 	$payment_count = give_count_payments()->publish;
-	$payment_id    = (int) isset( $_GET['preview_id'] ) ? $_GET['preview_id'] : '';
+	$payment_id    = give_check_variable( give_clean( $_GET ), 'isset', 0, 'preview_id' );
 
 	if ( $payment_count <= 0 ) {
 		return false;
