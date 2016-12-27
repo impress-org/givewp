@@ -339,6 +339,11 @@ function give_setup_email_tags() {
 			'function'    => 'give_email_tag_payment_method'
 		),
 		array(
+			'tag'         => 'payment_total',
+			'description' => esc_html__( 'The payment total for this donation.', 'give' ),
+			'function'    => 'give_email_tag_payment_total'
+		),
+		array(
 			'tag'         => 'sitename',
 			'description' => esc_html__( 'The name of your site.', 'give' ),
 			'function'    => 'give_email_tag_sitename'
@@ -603,6 +608,24 @@ function give_email_tag_payment_method( $payment_id ) {
 	$payment = new Give_Payment( $payment_id );
 
 	return give_get_gateway_checkout_label( $payment->gateway );
+}
+
+/**
+ * Email template tag: {payment_total}
+ *
+ * The payment donation for this donation.
+ *
+ * @since 1.8
+ *
+ * @param int $payment_id
+ *
+ * @return string
+ */
+function give_email_tag_payment_total( $payment_id ) {
+	/* @var Give_Payment $payment */
+	$payment = new Give_Payment( $payment_id );
+
+	return give_currency_filter( $payment->total );
 }
 
 /**
