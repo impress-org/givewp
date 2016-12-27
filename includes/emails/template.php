@@ -387,8 +387,6 @@ function give_get_preview_email_header() {
 			$options[ $payment->ID ] = esc_html( '#' . $payment->ID . ' - ' . $payment->email . ' - ' . $payment->form_title );
 
 		}
-	} else {
-		$options[0] = esc_html__( 'No donations found.', 'give' );
 	}
 
 	//Start constructing HTML output.
