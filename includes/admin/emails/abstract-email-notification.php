@@ -65,6 +65,13 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		protected $has_preview = true;
 
 		/**
+		 * @var     bool $has_preview Flag to check if email notification has preview header.
+		 * @access  protected
+		 * @since   1.8
+		 */
+		protected $has_preview_header = true;
+
+		/**
 		 * @var     bool $has_recipient_field Flag to check if email notification has recipient setting field.
 		 * @access  protected
 		 * @since   1.8
@@ -99,6 +106,9 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 
 			// Get email action.
 			$this->action = give_check_variable( $this->action, 'empty', str_replace( '-', '_', $this->id ) );
+
+			// Set email preview header status.
+			$this->has_preview_header = $this->has_preview && $this->has_preview_header ? true : false;
 
 			// Setup setting fields.
 			add_filter( 'give_get_settings_emails', array( $this, 'add_setting_fields' ), 10, 2 );
@@ -407,6 +417,17 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 */
 		public function is_email_notification_active() {
 			return give_is_setting_enabled( $this->get_notification_status() );
+		}
+
+		/**
+		 * Check email preview header active or not.
+		 *
+		 * @since  1.8
+		 * @access public
+		 * @return string
+		 */
+		public function is_email_preview_has_header() {
+			return $this->has_preview_header;
 		}
 	}
 
