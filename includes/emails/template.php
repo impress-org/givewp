@@ -417,7 +417,7 @@ function give_get_preview_email_header() {
 		'class'            => 'give-preview-email-payment-id',
 		'options'          => $options,
 		'chosen'           => false,
-		'select_atts'      => 'onchange="change_preview()">',
+		'select_atts'      => 'onchange="change_preview()"',
 		'show_option_all'  => false,
 		'show_option_none' => false
 	) );
