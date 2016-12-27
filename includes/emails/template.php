@@ -376,6 +376,9 @@ function give_get_preview_email_header() {
 	$payments = $payments->get_payments();
 	$options  = array();
 
+	// Default option.
+	$options[0] = esc_html__( 'No donations found.', 'give' );
+
 	//Provide nice human readable options.
 	if ( $payments ) {
 		$options[0] = esc_html__( '- Select a donation -', 'give' );
