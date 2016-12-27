@@ -69,7 +69,18 @@ class Give_Email_Notifications {
 		$this->add_emails_notifications();
 
 		add_action( 'init', array( $this, 'preview_email' ) );
+
+		// Add Donation header to email preview.
 		add_action( 'give_donation-receipt_email_preview', array( $this, 'donation_receipt_email_preview_header') );
+		add_action( 'give_new-donation_email_preview', array( $this, 'donation_receipt_email_preview_header') );
+
+		// Add email data.
+		add_filter( 'give_donation-receipt_email_preview_data', array( $this, 'email_preview_data') );
+		add_filter( 'give_new-donation_email_preview_data', array( $this, 'email_preview_data') );
+
+		// Replace email template tags.
+		add_filter( 'give_donation-receipt_email_preview_message', array( $this, 'email_preview_message'), 1, 2 );
+		add_filter( 'give_new-donation_email_preview_message', array( $this, 'email_preview_message'), 1, 2 );
 	}
 
 	/**
@@ -275,8 +286,36 @@ class Give_Email_Notifications {
 			}
 
 			if( $email_message = Give()->emails->build_email( $email->get_email_message() ) ) {
+
+				/**
+				 * Filter the email preview data
+				 *
+				 * @since 1.8
+				 *
+				 * @param array
+				 */
+				$email_preview_data = apply_filters( "give_{$email_type}_email_preview_data", array() );
+
+
+				/**
+				 * Fire the give_{$email_type}_email_preview action
+				 *
+				 * @since 1.8
+				 */
 				do_action( "give_{$email_type}_email_preview", $email );
-				echo $email_message;
+
+
+				/**
+				 * Filter the email message
+				 *
+				 * @since 1.8
+				 *
+				 * @param string                  $email_message
+				 * @param array                   $email_preview_data
+				 * @param Give_Email_Notification $email
+				 */
+				echo apply_filters( "give_{$email_type}_email_preview_message", $email_message, $email_preview_data, $email );
+
 				exit();
 			}
 		}
@@ -291,6 +330,41 @@ class Give_Email_Notifications {
 	 */
 	public function donation_receipt_email_preview_header() {
 		echo give_get_preview_email_header();
+	}
+
+	/**
+	 * Add email preview data
+	 *
+	 * @since   1.8
+	 * @access  public
+	 *
+	 * @param array $email_preview_data
+	 *
+	 * @return array
+	 */
+	public function email_preview_data( $email_preview_data ) {
+		$email_preview_data['payment_id'] = absint( give_check_variable( give_clean( $_GET ), 'isset', 0, 'preview_id' ) );
+
+		return $email_preview_data;
+	}
+
+	/**
+	 * Replace email template tags.
+	 *
+	 * @since   1.8
+	 * @access  public
+	 *
+	 * @param string $email_message
+	 * @param array  $email_preview_data
+	 *
+	 * @return string
+	 */
+	public function email_preview_message( $email_message, $email_preview_data ) {
+		if ( $email_preview_data['payment_id'] ) {
+			$email_message = give_do_email_tags( $email_message, $email_preview_data['payment_id'] );
+		}
+
+		return $email_message;
 	}
 }
 
