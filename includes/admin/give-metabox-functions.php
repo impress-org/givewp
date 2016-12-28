@@ -604,11 +604,14 @@ function give_default_gateway( $field ) {
 	global $thepostid, $post;
 
 	// get all active payment gateways.
-	$gateways = give_get_enabled_payment_gateways( $thepostid );
+	$gateways         = give_get_enabled_payment_gateways( $thepostid );
+	$field['options'] = array();
 
 	// Set field option value.
-	foreach ( $gateways as $key => $option ) {
-		$field['options'][ $key ] = $option['admin_label'];
+	if( ! empty( $gateways ) ) {
+		foreach ( $gateways as $key => $option ) {
+			$field['options'][ $key ] = $option['admin_label'];
+		}
 	}
 
 	//Add a field to the Give Form admin single post view of this field
