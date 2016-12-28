@@ -187,11 +187,13 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 */
 		function get_recipient_setting_field() {
 			return array(
-				'id'      => "{$this->id}_recipient",
-				'name'    => esc_html__( 'Donation Notification Emails', 'give' ),
-				'desc'    => __( 'Enter the email address(es) that should receive a notification anytime a donation is made, please only enter <span class="give-underline">one email address per line</span> and <strong>not separated by commas</strong>.', 'give' ),
-				'type'    => 'textarea',
-				'default' => $this->get_default_recipient(),
+				'id'               => "{$this->id}_recipient",
+				'name'             => esc_html__( 'Donation Notification Emails', 'give' ),
+				'desc'             => __( 'Enter the email address(es) that should receive a notification anytime a donation is made, please only enter <span class="give-underline">one email address per line</span> and <strong>not separated by commas</strong>.', 'give' ),
+				'type'             => 'email',
+				'default'          => $this->get_default_recipient(),
+				'repeat'           => true,
+				'repeat_btn_title' => esc_html__( 'Add Recipient', 'give' ),
 			);
 		}
 
