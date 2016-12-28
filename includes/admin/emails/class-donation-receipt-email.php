@@ -92,6 +92,26 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			 */
 			return apply_filters( 'give_default_donation_receipt_email', $message );
 		}
+
+
+		/**
+		 * Send preview email.
+		 *
+		 * @since  1.8
+		 * @access public
+		 */
+		public function send_preview_email() {
+			$subject = $this->get_email_subject();
+			$subject = give_do_email_tags( $subject, 0 );
+
+			$attachments = apply_filters( 'give_receipt_attachments', array(), 0, array() );
+
+			$message = give_email_preview_template_tags( give_get_email_body_content( 0, array() ) );
+
+			$this->email->__set( 'heading', esc_html__( 'Donation Receipt', 'give' ) );
+
+			$this->email->send( give_get_admin_notice_emails(), $subject, $message, $attachments );
+		}
 	}
 
 endif; // End class_exists check
