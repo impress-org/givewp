@@ -90,4 +90,4 @@ function give_send_test_email( $data ) {
 	exit;
 }
 
-add_action( 'give_send_test_email', 'give_send_test_email' );
+// add_action( 'give_send_test_email', 'give_send_test_email' );
