@@ -151,14 +151,12 @@ function give_email_preview_buttons_callback( $field ) {
 	echo sprintf(
 		'<a href="%1$s" aria-label="%2$s" class="button-secondary">%3$s</a>',
 		wp_nonce_url(
-			add_query_arg(
-				array(
-					'give_action'  => 'send_test_email',
-					'give-message' => 'sent-test-email',
-					'tag'          => 'emails',
-				), home_url() ), 'give-test-email'
-		),
-		esc_attr__( 'Send demo donation receipt to the emails listed below.', 'give' ),
+				add_query_arg( array(
+			'give_action'  => 'send_preview_email',
+			'email_type' => $field_id,
+			'give-message' => 'sent-test-email',
+		) ), 'give-send-preview-email' ),
+		esc_attr__( 'Send test email.', 'give' ),
 		esc_html__( 'Send Test Email', 'give' )
 	);
 
