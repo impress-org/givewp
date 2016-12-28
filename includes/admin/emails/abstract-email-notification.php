@@ -322,7 +322,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @return string
 		 */
 		function get_email_subject() {
-			return give_get_option( "{$this->id}_email_subject", $this->get_default_email_subject() );
+			return wp_strip_all_tags( give_get_option( "{$this->id}_email_subject", $this->get_default_email_subject() ) );
 		}
 
 		/**
