@@ -304,7 +304,7 @@ class Give_Email_Notifications {
 	 *
 	 * @since  1.8
 	 * @access public
-	 * @return bool
+	 * @return bool|null
 	 */
 	function preview_email() {
 		// Bailout.
@@ -430,7 +430,7 @@ class Give_Email_Notifications {
 	 *
 	 * @since  1.8
 	 * @access public
-	 * @return bool
+	 * @return bool|null
 	 */
 	function send_preview_email() {
 		// Bailout.
