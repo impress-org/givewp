@@ -481,6 +481,7 @@ a.give-delete {
 	.give-email-notification-status span {
 		color: white;
 		border-radius: 1em;
+		cursor: pointer;
 	}
 
 	.give-email-notification-enabled {
@@ -489,5 +490,10 @@ a.give-delete {
 
 	.give-email-notification-disabled {
 		background: #bbbbbb;
+	}
+
+	.spinner.is-active{
+		margin: 0;
+		float: none;
 	}
 }

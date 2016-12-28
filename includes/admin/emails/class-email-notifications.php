@@ -68,6 +68,9 @@ class Give_Email_Notifications {
 		// Load email notifications.
 		$this->add_emails_notifications();
 
+		// Load ajax handler.
+		require_once GIVE_PLUGIN_DIR . 'includes/admin/emails/ajax-handler.php';
+
 		add_action( 'init', array( $this, 'preview_email' ) );
 
 		/* @var Give_Email_Notification $email */
@@ -199,7 +202,7 @@ class Give_Email_Notifications {
 			$notification_status_class = $email->is_email_notification_active()
 				? 'dashicons-yes'
 				: 'dashicons-no-alt';
-			echo "<span class=\"give-email-notification-{$notification_status} dashicons {$notification_status_class}\"></span>";
+			echo "<span class=\"give-email-notification-{$notification_status} dashicons {$notification_status_class}\" data-status=\"{$notification_status}\" data-id=\"{$email->get_id()}\"></span><span class=\"spinner\"></span>";
 			?>
 		</td>
 		<?php

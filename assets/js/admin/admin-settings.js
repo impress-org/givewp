@@ -187,4 +187,46 @@ jQuery(document).ready(function ($) {
 	$( '.give-settings-page' ).on( 'click', 'span.give-remove-setting-field', function(e){
 		$(this).parents('p').remove();
 	});
+
+	/**
+	 * Enabled & disable email notification event.
+	 */
+	$( 'td.give-email-notification-status span').on( 'click', function(){
+		var $this = $(this),
+			$loader = $(this).next(),
+			set_notification_status = $(this).hasClass( 'give-email-notification-enabled' ) ? 'disabled' : 'enabled',
+			notification_id = $(this).data('id');
+
+		$.ajax({
+			url: ajaxurl,
+			method: 'POST',
+			data: {
+				action: 'give_set_notification_status',
+				status: set_notification_status,
+				notification_id: notification_id
+			},
+			beforeSend: function(){
+				$this.hide();
+				$loader.addClass('is-active');
+			},
+			success: function(res) {
+				if( res.success ) {
+					$this.removeClass( 'give-email-notification-' + $this.data('status') );
+					$this.addClass( 'give-email-notification-' + set_notification_status );
+					$this.data( 'status', set_notification_status );
+
+					if( 'enabled' === set_notification_status ) {
+						$this.removeClass('dashicons-no-alt');
+						$this.addClass('dashicons-yes');
+					} else{
+						$this.removeClass('dashicons-yes');
+						$this.addClass('dashicons-no-alt');
+					}
+
+					$loader.removeClass('is-active');
+					$this.show();
+				}
+			}
+		})
+	});
 });
