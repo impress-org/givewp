@@ -100,6 +100,13 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		protected $recipient_email = '';
 
 		/**
+		 * @var     string $recipient_group_name Categories single or group of recipient.
+		 * @access  protected
+		 * @since   1.8
+		 */
+		protected $recipient_group_name = '';
+
+		/**
 		 * Create a class instance.
 		 *
 		 * @param   mixed[] $objects
@@ -271,6 +278,17 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			}
 
 			return $recipient;
+		}
+
+		/**
+		 * Get recipient(s) group name.
+		 **
+		 * @since  1.8
+		 * @access public
+		 * @return string|array
+		 */
+		public function get_recipient_group_name() {
+			return $this->recipient_group_name;
 		}
 
 		/**
