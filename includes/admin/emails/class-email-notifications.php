@@ -168,7 +168,18 @@ class Give_Email_Notifications {
 	public function get_recipient_column( Give_Email_Notification $email ) {
 		?>
 		<td class="give-email-notification-settings-table-recipient">
-			<?php echo $email->get_recipient(); ?>
+			<?php
+			if ( $email->get_recipient_group_name() ) {
+				echo $email->get_recipient_group_name();
+			} else {
+				$recipients = $email->get_recipient();
+				if ( is_array( $recipients ) ) {
+					$recipients = implode( '<br>', $recipients );
+				}
+				
+				echo $recipients;
+			}
+			?>
 		</td>
 		<?php
 	}
