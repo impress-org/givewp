@@ -306,7 +306,7 @@ class Give_Email_Notifications {
 	 * @access public
 	 * @return bool|null
 	 */
-	function preview_email() {
+	public function preview_email() {
 		// Bailout.
 		if ( ! $this->is_preview_email() ) {
 			return false;
@@ -432,7 +432,7 @@ class Give_Email_Notifications {
 	 * @access public
 	 * @return bool|null
 	 */
-	function send_preview_email() {
+	public function send_preview_email() {
 		// Bailout.
 		if ( ! $this->is_send_preview_email() ) {
 			return false;
