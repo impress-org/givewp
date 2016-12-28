@@ -151,7 +151,7 @@ class Give_Email_Notifications {
 	public function get_name_column( Give_Email_Notification $email ) {
 		?>
 		<td class="give-email-notification-settings-table-name">
-			<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails&section=' . $email->get_id() ) ); ?>"><?php echo $email->get_label(); ?></a>
+			<a class="row-title" href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails&section=' . $email->get_id() ) ); ?>"><?php echo $email->get_label(); ?></a>
 			<?php if ( $desc = $email->get_description() ) : ?>
 				<br>
 				<span class="give-field-description">
