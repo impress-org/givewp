@@ -265,6 +265,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 *
 		 * Loops though the give options array and outputs each field.
 		 *
+		 * @todo: Refactor this function
 		 * @since  1.8
 		 *
 		 * @param  array  $options     Opens array to output
