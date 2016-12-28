@@ -38,6 +38,32 @@
 		width: 15em;
 	}
 
+	.give-repeat-setting-field{
+		margin: 10px 0;
+	}
+
+	.give-remove-setting-field{
+		width: 25px;
+		height: 25px;
+		padding: 0;
+		text-align: center;
+		line-height: 22px;
+		font-size: 21px;
+		font-weight: 300;
+		cursor: pointer;
+		margin-left: 20px;
+		display: inline-block;
+	}
+
+	.give-remove-setting-field:hover{
+		background-color: red;
+		color: white;
+		border-radius: 30px;
+	}
+
+	.give-forminp p:first-child .give-remove-setting-field{
+		display: none;
+	}
 }
 
 .give-setting-tab-header {

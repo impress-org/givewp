@@ -1541,6 +1541,29 @@ table.give-table td.row-title p {
 .give-settings-page table table input[type="text"] {
   width: 15em; }
 
+.give-settings-page .give-repeat-setting-field {
+  margin: 10px 0; }
+
+.give-settings-page .give-remove-setting-field {
+  width: 25px;
+  height: 25px;
+  padding: 0;
+  text-align: center;
+  line-height: 22px;
+  font-size: 21px;
+  font-weight: 300;
+  cursor: pointer;
+  margin-right: 20px;
+  display: inline-block; }
+
+.give-settings-page .give-remove-setting-field:hover {
+  background-color: red;
+  color: white;
+  border-radius: 30px; }
+
+.give-settings-page .give-forminp p:first-child .give-remove-setting-field {
+  display: none; }
+
 .give-setting-tab-header {
   clear: both;
   overflow: hidden;

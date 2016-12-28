@@ -164,4 +164,27 @@ jQuery(document).ready(function ($) {
 		$( 'img', $image_container ).attr( 'src', '' );
 	});
 
+	/**
+	 * Repeater setting field event.
+	 */
+	$( 'a.give-repeat-setting-field' ).on( 'click', function(e){
+		e.preventDefault();
+		var parent = $(this).parents('td'),
+			$first_setting_field_group = $( 'p:first-child', parent ),
+			$new_setting_field_group = $first_setting_field_group.clone(),
+			setting_field_count = $( 'p', parent ).not('.give-field-description').length;
+
+		// Set id and value for setting field.
+		$( 'input', $new_setting_field_group ).attr( 'id', $(this).data('id') + '_' + (++setting_field_count) );
+		$( 'input', $new_setting_field_group ).val( '' );
+
+		// Add setting field html to dom.
+		$(this).before( $new_setting_field_group );
+
+		return false;
+	});
+
+	$( '.give-settings-page' ).on( 'click', 'span.give-remove-setting-field', function(e){
+		$(this).parents('p').remove();
+	});
 });

@@ -277,12 +277,14 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 			// Field Default values.
 			$defaults = array(
-				'id'         => '',
-				'class'      => '',
-				'css'        => '',
-				'default'    => '',
-				'desc'       => '',
-				'table_html' => true,
+				'id'               => '',
+				'class'            => '',
+				'css'              => '',
+				'default'          => '',
+				'desc'             => '',
+				'table_html'       => true,
+				'repeat'           => false,
+				'repeat_btn_title' => __( 'Add Field', 'give' ),
 			);
 
 			foreach ( $options as $value ) {
@@ -385,21 +387,43 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						$type = $value['type'];
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
 
+						// Set default value for repeater field if not any value set yet.
+						if( $value['repeat'] && is_string( $option_value ) ) {
+							$option_value = array( $value['default'] );
+						}
 						?>
 						<tr valign="top">
 						<th scope="row" class="titledesc">
 							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
 						</th>
 						<td class="give-forminp give-forminp-<?php echo sanitize_title( $value['type'] ) ?>">
-							<input
-								name="<?php echo esc_attr( $value['id'] ); ?>"
-								id="<?php echo esc_attr( $value['id'] ); ?>"
-								type="<?php echo esc_attr( $type ); ?>"
-								style="<?php echo esc_attr( $value['css'] ); ?>"
-								value="<?php echo esc_attr( $option_value ); ?>"
-								class="give-input-field<?php echo( empty( $value['class'] ) ? '' : ' ' . esc_attr( $value['class'] ) ); ?>"
-								<?php echo implode( ' ', $custom_attributes ); ?>
-							/> <?php echo $description; ?>
+							<?php if ( $value['repeat'] ) : ?>
+								<?php foreach ( $option_value as $index => $field_value ) : ?>
+									<p>
+										<input
+												name="<?php echo esc_attr( $value['id'] ); ?>[]"
+												type="<?php echo esc_attr( $type ); ?>"
+												style="<?php echo esc_attr( $value['css'] ); ?>"
+												value="<?php echo esc_attr( $field_value ); ?>"
+												class="give-input-field<?php echo( empty( $value['class'] ) ? '' : ' ' . esc_attr( $value['class'] ) ); ?> <?php echo esc_attr( $value['id'] ); ?>"
+											<?php echo implode( ' ', $custom_attributes ); ?>
+										/>
+										<span class="give-remove-setting-field" title="<?php esc_html_e( 'Remove setting field', 'give' ); ?>">-</span>
+									</p>
+								<?php endforeach; ?>
+								<a href="#" data-id="<?php echo $value['id']; ?>" class="give-repeat-setting-field button-secondary"><?php echo $value['repeat_btn_title']; ?></a>
+							<?php else : ?>
+								<input
+									name="<?php echo esc_attr( $value['id'] ); ?>"
+									id="<?php echo esc_attr( $value['id'] ); ?>"
+									type="<?php echo esc_attr( $type ); ?>"
+									style="<?php echo esc_attr( $value['css'] ); ?>"
+									value="<?php echo esc_attr( $option_value ); ?>"
+									class="give-input-field<?php echo( empty( $value['class'] ) ? '' : ' ' . esc_attr( $value['class'] ) ); ?>"
+									<?php echo implode( ' ', $custom_attributes ); ?>
+								/>
+							<?php endif; ?>
+							<?php echo $description; ?>
 						</td>
 						</tr><?php
 						break;
