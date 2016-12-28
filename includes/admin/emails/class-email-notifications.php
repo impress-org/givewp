@@ -290,6 +290,10 @@ class Give_Email_Notifications {
 			return false;
 		}
 
+		// Security check.
+		give_validate_nonce( $_GET['_wpnonce'], 'give-preview-email' );
+
+
 		// Get email type.
 		$email_type = isset( $_GET['email_type'] ) ? esc_attr( $_GET['email_type'] ) : '';
 
