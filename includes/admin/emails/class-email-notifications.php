@@ -72,6 +72,7 @@ class Give_Email_Notifications {
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/emails/ajax-handler.php';
 
 		add_action( 'init', array( $this, 'preview_email' ) );
+		add_action( 'init', array( $this, 'send_preview_email' ) );
 
 		/* @var Give_Email_Notification $email */
 		foreach ( $this->get_email_notifications() as $email ) {
@@ -422,6 +423,35 @@ class Give_Email_Notifications {
 		}
 
 		return $email_message;
+	}
+
+	/**
+	 * Displays the email preview
+	 *
+	 * @since  1.8
+	 * @access public
+	 * @return bool
+	 */
+	function send_preview_email() {
+		// Bailout.
+		if ( ! $this->is_send_preview_email() ) {
+			return false;
+		}
+
+		// Security check.
+		give_validate_nonce( $_GET['_wpnonce'], 'give-send-preview-email' );
+
+
+		// Get email type.
+		$email_type = give_check_variable( give_clean( $_GET ), 'isset', '', 'email_type');
+
+		/* @var Give_Email_Notification $email */
+		foreach ( $this->get_email_notifications() as $email ) {
+			if( $email_type === $email->get_id() ) {
+				$email->send_preview_email();
+				break;
+			}
+		}
 	}
 }
 
