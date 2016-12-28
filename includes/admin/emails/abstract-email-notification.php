@@ -93,6 +93,13 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		protected $email_type = 'text/html';
 
 		/**
+		 * @var     string $recipient_email Donor email.
+		 * @access  protected
+		 * @since   1.8
+		 */
+		protected $recipient_email = '';
+
+		/**
 		 * Create a class instance.
 		 *
 		 * @param   mixed[] $objects
@@ -250,15 +257,17 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Get recipient(s).
 		 *
+		 * Note: in case of admin notification this fx will return array of emails otherwise empty string or email of donor.
+		 *
 		 * @since  1.8
 		 * @access public
-		 * @return string
+		 * @return string|array
 		 */
 		public function get_recipient() {
-			$recipient = __( 'Donor', 'give' );
+			$recipient = $this->recipient_email;
 
 			if ( $this->has_recipient_field ) {
-				$recipient = give_get_option( "{$this->id}_recipient", $this->get_default_recipient() );
+				$recipient = give_get_option( "{$this->id}_recipient", array( $this->get_default_recipient() ) );
 			}
 
 			return $recipient;
