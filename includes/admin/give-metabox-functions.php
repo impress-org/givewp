@@ -170,6 +170,10 @@ function give_render_field( $field ) {
 				'default' => __( 'Default' ),
 			);
 			break;
+
+		case 'docs_link':
+			$field['type'] = 'docs_link';
+			break;
 	}
 
 	// CMB2 compatibility: Add support to define field description by desc & description param.
@@ -623,6 +627,32 @@ function give_default_gateway( $field ) {
 	give_select( $field );
 }
 
+/**
+  * Output the documentation link.
+  *
+  * @since  1.8
+  * @param  array $field {
+  *     Optional. Array of customizable link attributes.
+  *
+  *     @type string             $name            Name of input field. Default ''.
+  *     @type string             $type            Type of input field. Default 'text'.
+  *     @type string             $url             Value to be passed as a link. Default 'https://givewp.com/documentation'.
+  *     @type string             $title           Value to be passed as text of link. Default 'Documentation'.
+  *     @type array              $attributes      List of attributes of input field. Default array().
+  *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class' => '****' )
+  * }
+  * @return void
+*/
+
+function give_docs_link($field) {
+	$field['url']   = isset($field['url']) ? $field['url'] : 'https://givewp.com/documentation';
+	$field['title'] = isset($field['title']) ? $field['title'] : 'Documentation';
+
+	echo '<p class="give-docs-link"><a href="' . esc_url($field['url'])
+		. '" target="_blank">'
+		. sprintf(esc_html__('Need Help? See docs on "%s"'), $field['title'])
+		. '<span class="dashicons dashicons-editor-help"></span></a></p>';
+}
 
 /**
  * Get setting field value.
