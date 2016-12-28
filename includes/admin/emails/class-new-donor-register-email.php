@@ -162,7 +162,6 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 				 function change_preview(){
 				  var transactions = document.getElementById("give_preview_email_donor_id");
 			        var selected_trans = transactions.options[transactions.selectedIndex];
-				        console.log(selected_trans);
 				        if (selected_trans){
 				            var url_string = "' . $request_url . '&donor_id=" + selected_trans.value;
 				                window.location = url_string;
