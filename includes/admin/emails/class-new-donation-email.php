@@ -35,14 +35,14 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		 * @since   1.8
 		 */
 		public function __construct( $objects = array() ) {
-			parent::__construct();
-
 			$this->id          = 'new-donation';
 			$this->label       = __( 'New Donation', 'give' );
 			$this->description = __( 'Donation Notification will be sent to recipient(s) when new donation received except offline donation.', 'give' );
 
 			$this->has_recipient_field = true;
 			$this->notification_status = 'enabled';
+
+			parent::__construct();
 		}
 
 		/**

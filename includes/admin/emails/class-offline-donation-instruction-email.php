@@ -35,13 +35,14 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 		 * @since   1.8
 		 */
 		public function __construct( $objects = array() ) {
-			parent::__construct();
-
 			$this->id          = 'offline-donation-instruction';
 			$this->label       = __( 'Offline Donation Instruction', 'give' );
 			$this->description = __( 'Offline Donation Instruction will be sent to recipient(s) when offline donation received.', 'give' );
 
-			$this->notification_status = 'enabled';
+			$this->notification_status  = 'enabled';
+			$this->recipient_group_name = __( 'Donor', 'give' );
+
+			parent::__construct();
 		}
 
 		/**

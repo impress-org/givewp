@@ -37,7 +37,8 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 			$this->label       = __( 'Donor Register', 'give' );
 			$this->description = __( 'Donor Register Notification will be sent to donor when new donor registered.', 'give' );
 
-			$this->notification_status = 'enabled';
+			$this->notification_status  = 'enabled';
+			$this->recipient_group_name = __( 'Donor', 'give' );
 
 			parent::__construct();
 
