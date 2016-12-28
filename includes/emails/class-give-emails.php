@@ -115,7 +115,7 @@ class Give_Emails {
 	 */
 	public function get_from_name() {
 		if ( ! $this->from_name ) {
-			$this->from_name = give_get_option( 'from_name', get_bloginfo( 'name' ) );
+			$this->from_name = give_get_option( 'from_name', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) );
 		}
 
 		return apply_filters( 'give_email_from_name', wp_specialchars_decode( $this->from_name ), $this );
