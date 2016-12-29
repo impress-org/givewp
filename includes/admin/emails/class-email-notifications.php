@@ -149,14 +149,45 @@ class Give_Email_Notifications {
 	 * @param Give_Email_Notification $email
 	 */
 	public function get_name_column( Give_Email_Notification $email ) {
+		$edit_url = esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails&section=' . $email->get_id() ) );
 		?>
 		<td class="give-email-notification-settings-table-name">
-			<a class="row-title" href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails&section=' . $email->get_id() ) ); ?>"><?php echo $email->get_label(); ?></a>
+			<a class="row-title" href="<?php echo $edit_url; ?>"><?php echo $email->get_label(); ?></a>
 			<?php if ( $desc = $email->get_description() ) : ?>
 				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( $desc ); ?>"></span>
 			<?php endif; ?>
+			<?php $this->print_row_actions( $email ); ?>
 		</td>
 		<?php
+	}
+
+
+	/**
+	 * Print row actions.
+	 *
+	 * @since 1.8
+	 * @access private
+	 * @param Give_Email_Notification $email
+	 */
+	private function print_row_actions( $email ) {
+		$edit_url = esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails&section=' . $email->get_id() ) );
+		$row_actions = apply_filters(
+			'give_email_notification_row_actions',
+			array( 'edit' => "<a href=\"{$edit_url}\">" . __( 'Edit', 'give' ) . "</a>" ),
+			$email
+		);
+		?>
+		<?php if( ! empty( $row_actions ) ) : $index = 0; ?>
+			<?php $sep = 0 < $index ? '&nbsp;|&nbsp;' : ''; ?>
+			<div class="row-actions">
+				<?php foreach ( $row_actions as $action => $link ) : ?>
+					<span class="<?php echo $action; ?>">
+						<?php echo $sep . $link; ?>
+					</span>
+				<?php endforeach; ?>
+			</div>
+		<?php
+		endif;
 	}
 
 	/**
