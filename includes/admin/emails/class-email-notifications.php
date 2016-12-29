@@ -153,10 +153,7 @@ class Give_Email_Notifications {
 		<td class="give-email-notification-settings-table-name">
 			<a class="row-title" href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails&section=' . $email->get_id() ) ); ?>"><?php echo $email->get_label(); ?></a>
 			<?php if ( $desc = $email->get_description() ) : ?>
-				<br>
-				<span class="give-field-description">
-					<?php echo $desc; ?>
-				</span>
+				<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( $desc ); ?>"></span>
 			<?php endif; ?>
 		</td>
 		<?php
