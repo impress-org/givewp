@@ -82,7 +82,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 		 */
 		function get_default_email_message( $args = array() ) {
 			$message = esc_attr__( 'New user registration on your site {sitename}:', 'give' ) . "\r\n\r\n";
-			$message .= esc_attr__( 'Username: {user_login}', 'give' ) . "\r\n\r\n";
+			$message .= esc_attr__( 'Username: {username}', 'give' ) . "\r\n\r\n";
 			$message .= esc_attr__( 'E-mail: {user_email}', 'give' ) . "\r\n";
 
 
