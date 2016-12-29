@@ -54,13 +54,15 @@ class Give_Email_Template_Tags {
 	 * @param string   $tag         Email tag to be replace in email
 	 * @param string   $description Email tag description text
 	 * @param callable $func        Hook to run when email tag is found
+	 * @param string   $context     Email tag category
 	 */
-	public function add( $tag, $description, $func ) {
+	public function add( $tag, $description, $func, $context = '' ) {
 		if ( is_callable( $func ) ) {
 			$this->tags[ $tag ] = array(
 				'tag'         => $tag,
 				'description' => $description,
-				'func'        => $func
+				'func'        => $func,
+				'context'     => give_check_variable( $context, 'empty', 'general' )
 			);
 		}
 	}
@@ -158,9 +160,10 @@ class Give_Email_Template_Tags {
  * @param string   $tag         Email tag to be replace in email
  * @param string   $description Description of the email tag added
  * @param callable $func        Hook to run when email tag is found
+ * @param string $context     Email tag category
  */
-function give_add_email_tag( $tag, $description, $func ) {
-	Give()->email_tags->add( $tag, $description, $func );
+function give_add_email_tag( $tag, $description, $func, $context = '' ) {
+	Give()->email_tags->add( $tag, $description, $func, $context );
 }
 
 /**
