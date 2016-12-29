@@ -79,14 +79,14 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		protected $has_recipient_field = false;
 
 		/**
-		 * @var     bool $notification_status Flag to check if email notification enabled or not.
+		 * @var     string $notification_status Flag to check if email notification enabled or not.
 		 * @access  protected
 		 * @since   1.8
 		 */
 		protected $notification_status = 'disabled';
 
 		/**
-		 * @var     bool $email_type Flag to check email type.
+		 * @var     string $email_type Flag to check email type.
 		 * @access  protected
 		 * @since   1.8
 		 */
@@ -373,7 +373,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @acess public
 		 * @return string
 		 */
-		function get_email_message_field_description() {
+		public function get_email_message_field_description() {
 			$desc = esc_html__( 'Enter the email message.', 'give' );
 
 			if ( $email_tag_list = $this->get_emails_tags_list_html() ) {
@@ -396,6 +396,33 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 */
 		function get_emails_tags_list_html() {
 
+			// Get all email tags.
+			$email_tags = $this->get_allowed_email_tags();
+
+			ob_start();
+			if ( count( $email_tags ) > 0 ) : ?>
+				<div class="give-email-tags-wrap">
+					<?php foreach ( $email_tags as $email_tag ) : ?>
+						<span class="give_<?php echo $email_tag['tag']; ?>_tag">
+					<code>{<?php echo $email_tag['tag']; ?>}</code> - <?php echo $email_tag['description']; ?>
+				</span>
+					<?php endforeach; ?>
+				</div>
+			<?php endif;
+
+			// Return the list.
+			return ob_get_clean();
+		}
+
+
+		/**
+		 * Get allowed email tags for current email notification.
+		 *
+		 * @since  1.9
+		 * @access private
+		 * @return array
+		 */
+		private function get_allowed_email_tags() {
 			// Get all email tags.
 			$email_tags = Give()->email_tags->get_tags();
 
@@ -421,19 +448,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 				}
 			}
 
-			ob_start();
-			if ( count( $email_tags ) > 0 ) : ?>
-				<div class="give-email-tags-wrap">
-					<?php foreach ( $email_tags as $email_tag ) : ?>
-						<span class="give_<?php echo $email_tag['tag']; ?>_tag">
-					<code>{<?php echo $email_tag['tag']; ?>}</code> - <?php echo $email_tag['description']; ?>
-				</span>
-					<?php endforeach; ?>
-				</div>
-			<?php endif;
-
-			// Return the list.
-			return ob_get_clean();
+			return $email_tags;
 		}
 
 
@@ -531,7 +546,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 *
 		 * @since  1.8
 		 * @access public
-		 * @return string
+		 * @return bool
 		 */
 		public function is_email_preview() {
 			return $this->has_preview;
@@ -542,7 +557,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 *
 		 * @since  1.8
 		 * @access public
-		 * @return string
+		 * @return bool
 		 */
 		public function is_email_preview_has_header() {
 			return $this->has_preview_header;
