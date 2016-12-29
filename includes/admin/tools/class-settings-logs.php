@@ -20,7 +20,7 @@ if ( ! class_exists( 'Give_Settings_Logs' ) ) :
 	 *
 	 * @sine 1.8
 	 */
-	class Give_Settings_Logs {
+	class Give_Settings_Logs extends Give_Settings_Page {
 
 		/**
 		 * Setting page id.
@@ -45,13 +45,14 @@ if ( ! class_exists( 'Give_Settings_Logs' ) ) :
 			$this->id    = 'logs';
 			$this->label = esc_html__( 'Logs', 'give' );
 
-			add_filter( 'give-tools_tabs_array', array( $this, 'add_settings_page' ), 20 );
-			add_action( "give-tools_settings_{$this->id}_page", array( $this, 'output' ) );
+			$this->default_tab = 'sales';
+
+			parent::__construct();
 
 			// Do not use main form for this tab.
-			if( give_get_current_setting_tab() === $this->id ) {
-				add_action( "give-tools_open_form", '__return_empty_string' );
-				add_action( "give-tools_close_form", '__return_empty_string' );
+			if ( give_get_current_setting_tab() === $this->id ) {
+				add_action( 'give-tools_open_form', '__return_empty_string' );
+				add_action( 'give-tools_close_form', '__return_empty_string' );
 			}
 		}
 
@@ -59,7 +60,9 @@ if ( ! class_exists( 'Give_Settings_Logs' ) ) :
 		 * Add this page to settings.
 		 *
 		 * @since  1.8
+		 *
 		 * @param  array $pages Lst of pages.
+		 *
 		 * @return array
 		 */
 		public function add_settings_page( $pages ) {
@@ -81,9 +84,9 @@ if ( ! class_exists( 'Give_Settings_Logs' ) ) :
 			// Get settings.
 			$settings = apply_filters( 'give_settings_system', array(
 				array(
-					'id'   => 'give_tools_logs',
-					'type' => 'title',
-					'table_html' => false
+					'id'         => 'give_tools_logs',
+					'type'       => 'title',
+					'table_html' => false,
 				),
 				array(
 					'id'   => 'api',
@@ -92,22 +95,41 @@ if ( ! class_exists( 'Give_Settings_Logs' ) ) :
 
 				),
 				array(
-					'id'   => 'give_tools_logs',
-					'type' => 'sectionend',
-					'table_html' => false
-				)
-			));
+					'id'         => 'give_tools_logs',
+					'type'       => 'sectionend',
+					'table_html' => false,
+				),
+			) );
 
 			/**
 			 * Filter the settings.
 			 *
 			 * @since  1.8
+			 *
 			 * @param  array $settings
 			 */
 			$settings = apply_filters( 'give_get_settings_' . $this->id, $settings );
 
 			// Output.
 			return $settings;
+		}
+
+		/**
+		 * Get sections.
+		 *
+		 * @since 1.8
+		 * @return array
+		 */
+		public function get_sections() {
+			$sections = array(
+				'sales'          => esc_html__( 'Donations', 'give' ),
+				'gateway_errors' => esc_html__( 'Payment Errors', 'give' ),
+				'api_requests'   => esc_html__( 'API Requests', 'give' ),
+			);
+
+			$sections = apply_filters( 'give_log_views', $sections );
+
+			return apply_filters( 'give_get_sections_' . $this->id, $sections );
 		}
 
 		/**
