@@ -170,10 +170,6 @@ function give_render_field( $field ) {
 				'default' => __( 'Default' ),
 			);
 			break;
-
-		case 'docs_link':
-			$field['type'] = 'docs_link';
-			break;
 	}
 
 	// CMB2 compatibility: Add support to define field description by desc & description param.
