@@ -137,7 +137,7 @@ class Give_Email_Notifications {
 			'name'       => __( 'Email', 'give' ),
 			'email_type' => __( 'Content Type', 'give' ),
 			'recipient'  => __( 'Recipient(s)', 'give' ),
-			'setting'    => '',
+			'setting'    => __( 'Edit Email', 'give' ),
 		) );
 	}
 
