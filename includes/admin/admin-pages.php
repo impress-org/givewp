@@ -371,6 +371,8 @@ add_filter( 'give-settings_get_settings_pages', 'give_settings_page_pages', 0, 1
  * @return array
  */
 function give_tools_page_pages( $settings ) {
+	include( 'abstract-admin-settings-page.php' );
+
 	$settings = array(
 		// System Info.
 		include( 'tools/class-settings-system-info.php' ),
